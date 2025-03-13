@@ -1,43 +1,44 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DB415B0EF;
-	Thu, 13 Mar 2025 18:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C4F1EFFBE;
+	Thu, 13 Mar 2025 18:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741889103; cv=none; b=lIOj9iKU+c5D8cKRoae600CaOqA9GjiqrmRouKs/W5ulPF5XF00lw3i8AQl7JYHEsh7j48cEophxElmDk/qILhKuB6dfIMJm40kI+HxBG/Ln9hclbMisIn+YWs0rssr995pt53KM+sv/MaLbSgiN3R1OsUibcyjsvbeHNofsQBY=
+	t=1741889540; cv=none; b=FWtqxCc1NHpxYXz8nPLDRzv5bu5i/8AQeDTvgC8npJLTH0C+Lo7Xy3ofNoYSoQUSYrhQKROsBvjJ/5zEsRfdchRvY37ZzPyFAJQOCmI3/y2pUDzKgJK4BpVyo/8dSUAnpbsQIr+hshWMEISrIZs2ZaenA3T0f1m0BYs7+bfbNOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741889103; c=relaxed/simple;
-	bh=viGHo9ETpG/2DHpXss2Awi+GjkBOpxh1L3SAnyML+kM=;
+	s=arc-20240116; t=1741889540; c=relaxed/simple;
+	bh=8Zqt9zi/FnC7k8GuHDy1ukGq3CUt3k0moSNlURadgLI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cjQ2BxGbTfzT1aiIhnHOK3escl2yKMZVJlg2yW9w+WIzWsIOFSZqI6Y4ydSFjWu6QOpJFXNfRxjtGHBjbij5o0o7i1AViLLqPqGEJ1AijNWbKgM7KvbtrguVDmbjEVxr2AOBVcOgFhKRDO4MXDR11gttp2JoZjPqtLFM4WMPpWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DmnWTjLG; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=Vf0W4VqmZg8ccsN0PnXjSRWgZwVrJUxqaLclrYApKMMmjBfj8tEzWK8yltW5ELM5e0/Y/lhuzcfYEd9HK1hEOfuPrVhhbQh8ER1wtHOoKBFogNnFPpQXMz90RkGXcz04lZEcBJB++JLMlQJqZWP3F9WdQoTZqshDBAK8/iYaSc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Vjde6D3e; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DmnWTjLG"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Vjde6D3e"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1741889098; x=1742148298;
-	bh=9b03ylqnCWBlZqF6+aU54k6mZhdi9vmbjM7AV8/K78g=;
+	s=protonmail; t=1741889533; x=1742148733;
+	bh=srZ9dMa1whdbkDsfnTWuQVdrHW1c6weSBgLs5X2xzXk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=DmnWTjLG1qtcBMXLMjHOST55G3FQ8b+VId9W82uRiF1LHBZII7ZOv5t2IsQyBlwlC
-	 f7onev26XCGLCtLhhW6tFO0JwVG7fihCF2MzvD8+ijbGXRdK/vPqUSCKnfdE85l6dR
-	 cI0wrNbC7VIDQHryO4fF1JJI6cb0Yejk4LAr3BjT1IKxrd43fnFrR778LZHnweW/z8
-	 MGubxSfNlw/fjPLi2mhL+ykRz/dUXwqH5xo5j8a1ysrSuTjArW67AgX4l5//wYPmVn
-	 DxjbCMRIADSaeAIliXlR2kSrT+5Cv0tdpzkDEZjbDDddAK57XVyGp6DMjjrLGnUCPd
-	 JTxskY6uEQ3gA==
-Date: Thu, 13 Mar 2025 18:04:54 +0000
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-input@vger.kernel.org, dri-devel@lists.freedesktop.org
+	b=Vjde6D3es+FZD2i6nszzd+Hgukt8o27vgDDfWp2jm96W+oLCnogjSWy9m1JzHPVJX
+	 1irYvVn3fp2UlTepZj4LPqame5PkF1jsA/iUl3OWvTXt9hYSi8UiXKaUQ99JEn/DEz
+	 fo2oDRmOFgswdoLgpDm5x+Ei8G2KeWGyHF3tYcWIgv8mZVR3cvzX8aEGShpo2vcghX
+	 vN6eboR5Md26RDXfVYE5uFKUhR/68AYzFJsEnXn97LUFJnEnlo1zgi4n1lY2E+/sIC
+	 QJaAeDw3MssC1B7ZprfH0fReKBb8747T8wWsl/TQKPc4bW24dWbtRN3QQ4SzLYD6Vz
+	 ZekcLQszuPFXg==
+Date: Thu, 13 Mar 2025 18:12:08 +0000
+To: Tamir Duberstein <tamird@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH RFC 0/3] Initial work for Rust abstraction for HID device driver development
-Message-ID: <D8FC5C8BR1Q4.16X95BO48L6WF@proton.me>
-In-Reply-To: <20250313160220.6410-2-sergeantsagara@protonmail.com>
-References: <20250313160220.6410-2-sergeantsagara@protonmail.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] rust: enable `clippy::as_underscore` lint
+Message-ID: <D8FCATTC479L.BDRZBC6TJ51Q@proton.me>
+In-Reply-To: <CAJ-ks9n1oGAGSrXYWjvR+_raw8h+skkdfSYpeSuQZ9jEs5q-6Q@mail.gmail.com>
+References: <20250309-ptr-as-ptr-v2-0-25d60ad922b7@gmail.com> <CAJ-ks9=TRDg3g=NG7k97P_5jXpZ4K4v0DxrmJFR+uF0-3zJkXw@mail.gmail.com> <CAJ-ks9=hAwOGtVv0zh9CcH7XOxjGnizvK1QOMAi8nKStocKr2Q@mail.gmail.com> <D8ELW7X9796K.2ZGJS34LDTHOP@proton.me> <CAJ-ks9k1gZ=tLSe6OjuKFgg6=QE5R_Ajo0ZJwZJp08_1LMiODw@mail.gmail.com> <D8ENBWTC8UPH.LLEGZ2D4U7KQ@proton.me> <CAJ-ks9mJ=2hFxfWEkq+9b=atE89sHXa5NBcdVNRd3az6MSv0pA@mail.gmail.com> <D8F76A4JSEXO.2OKKJLAU5OZN@proton.me> <CAJ-ks9n1oGAGSrXYWjvR+_raw8h+skkdfSYpeSuQZ9jEs5q-6Q@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: bd99d68b154b7741299e49349e3cb3b15723c133
+X-Pm-Message-ID: d74d9f9fe6f44074994f0914e725607f21a3708b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,71 +48,143 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu Mar 13, 2025 at 5:02 PM CET, Rahul Rameshbabu wrote:
-> Hello,
+On Thu Mar 13, 2025 at 6:50 PM CET, Tamir Duberstein wrote:
+> On Thu, Mar 13, 2025 at 10:11=E2=80=AFAM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>
+>> On Thu Mar 13, 2025 at 11:47 AM CET, Tamir Duberstein wrote:
+>> > On Wed, Mar 12, 2025 at 6:38=E2=80=AFPM Benno Lossin <benno.lossin@pro=
+ton.me> wrote:
+>> >>
+>> >> On Wed Mar 12, 2025 at 11:24 PM CET, Tamir Duberstein wrote:
+>> >> > On Wed, Mar 12, 2025 at 5:30=E2=80=AFPM Benno Lossin <benno.lossin@=
+proton.me> wrote:
+>> >> >>
+>> >> >> On Wed Mar 12, 2025 at 10:10 PM CET, Tamir Duberstein wrote:
+>> >> >> > On Wed, Mar 12, 2025 at 5:04=E2=80=AFPM Tamir Duberstein <tamird=
+@gmail.com> wrote:
+>> >> >> >>
+>> >> >> >> On Wed, Mar 12, 2025 at 5:01=E2=80=AFPM Benno Lossin <benno.los=
+sin@proton.me> wrote:
+>> >> >> >> > Always enable the features, we have `allow(stable_features)` =
+for this
+>> >> >> >> > reason (then you don't have to do this dance with checking if=
+ it's
+>> >> >> >> > already stable or not :)
+>> >> >> >>
+>> >> >> >> It's not so simple. In rustc < 1.84.0 the lints *and* the stric=
+t
+>> >> >> >> provenance APIs are behind `feature(strict_provenance)`. In rus=
+tc >=3D
+>> >> >> >> 1.84.0 the lints are behind `feature(strict_provenance_lints)`.=
+ So you
+>> >> >> >> need to read the config to learn that you need to enable
+>> >> >> >> `feature(strict_provenance_lints)`.
+>> >> >>
+>> >> >> I see... And `strict_provenance_lints` doesn't exist in <1.84? Tha=
+t's a
+>> >> >> bit of a bummer...
+>> >> >>
+>> >> >> But I guess we could have this config option (in `init/Kconfig`):
+>> >> >>
+>> >> >>     config RUSTC_HAS_STRICT_PROVENANCE
+>> >> >>             def_bool RUSTC_VERSION >=3D 108400
+>> >> >>
+>> >> >> and then do this in `lib.rs`:
+>> >> >>
+>> >> >>     #![cfg_attr(CONFIG_RUSTC_HAS_STRICT_PROVENANCE, feature(strict=
+_provenance_lints))]
+>> >> >
+>> >> > Yep! That's exactly what I did, but as I mentioned up-thread, the
+>> >> > result is that we only cover the `kernel` crate.
+>> >>
+>> >> Ah I see, can't we just have the above line in the other crate roots?
+>> >
+>> > The most difficult case is doctests. You'd have to add this to every
+>> > example AFAICT.
+>> >
+>> >> >> > Actually this isn't even the only problem. It seems that
+>> >> >> > `-Astable_features` doesn't affect features enabled on the comma=
+nd
+>> >> >> > line at all:
+>> >> >> >
+>> >> >> > error[E0725]: the feature `strict_provenance` is not in the list=
+ of
+>> >> >> > allowed features
+>> >> >> >  --> <crate attribute>:1:9
+>> >> >> >   |
+>> >> >> > 1 | feature(strict_provenance)
+>> >> >> >   |         ^^^^^^^^^^^^^^^^^
+>> >> >>
+>> >> >> That's because you need to append the feature to `rust_allowed_fea=
+tures`
+>> >> >> in `scripts/Makefile.build` (AFAIK).
+>> >> >
+>> >> > Thanks, that's a helpful pointer, and it solves some problems but n=
+ot
+>> >> > all. The root Makefile contains this bit:
+>> >> >
+>> >> >> KBUILD_HOSTRUSTFLAGS :=3D $(rust_common_flags) -O -Cstrip=3Ddebugi=
+nfo \
+>> >> >> -Zallow-features=3D $(HOSTRUSTFLAGS)
+>> >> >
+>> >> > which means we can't use the provenance lints against these host
+>> >> > targets (including e.g. `rustdoc_test_gen`). We can't remove this
+>> >> > -Zallow-features=3D either because then core fails to compile.
+>> >> >
+>> >> > I'm at the point where I think I need more involved help. Want to t=
+ake
+>> >> > a look at my attempt? It's here:
+>> >> > https://github.com/tamird/linux/tree/b4/ptr-as-ptr.
+>>
+>> With doing `allow(clippy::incompatible_msrv)`, I meant doing that
+>> globally, not having a module to re-export the functions :)
 >
-> I am a hobbyist developer who has been working on a project to create a n=
-ew Rust
-> HID device driver and the needed core abstractions for writing more HID d=
-evice
-> drivers in Rust. My goal is to support the USB Monitor Control Class need=
-ed for
-> functionality such as backlight control for monitors like the Apple Studi=
-o
-> Display and Apple Pro Display XDR. A new backlight API will be required t=
-o
-> support multiple backlight instances and will be mapped per DRM connector=
-. The
-> current backlight API is designed around the assumption of only a single
-> internal panel being present. I am currently working on making this new A=
-PI for
-> DRM in parallel to my work on the HID side of the stack for supporting th=
-ese
-> displays.
->
->   https://binary-eater.github.io/tags/usb-monitor-control/
->
-> Julius Zint had attempted to do so a year ago with a C HID driver but was=
- gated
-> by the lack of an appropriate backlight API for external displays. I aske=
-d him
-> for permission to do the work need in Rust and plan to accredit him for t=
-he HID
-> report handling for backlight in the USB Monitor Control Class standard.
->
->   https://lore.kernel.org/lkml/f95da7ff-06dd-2c0e-d563-7e5ad61c3bcc@redha=
-t.com/
->
-> I was hoping to get initial feedback on this work to make sure I am on th=
-e right
-> path for making a Rust HID abstraction that would be acceptable upstream.=
- The
-> patches compile with WERROR being disabled. This is necessary since Rust =
-treats
-> missing documentation comments as warnings (which is a good thing). I als=
-o need
-> to go in and add more SAFETY comments.
->
-> Thanks,
-> Rahul Rameshbabu
->
-> Rahul Rameshbabu (3):
->   rust: core abstractions for HID drivers
->   rust: hid: USB Monitor Control Class driver
->   rust: hid: demo the core abstractions for probe and remove
->
->  drivers/hid/Kconfig                |  16 ++
->  drivers/hid/Makefile               |   1 +
->  drivers/hid/hid_monitor_control.rs |  42 +++++
->  rust/bindings/bindings_helper.h    |   1 +
->  rust/kernel/hid.rs                 | 245 +++++++++++++++++++++++++++++
->  rust/kernel/lib.rs                 |   2 +
->  6 files changed, 307 insertions(+)
->  create mode 100644 drivers/hid/hid_monitor_control.rs
->  create mode 100644 rust/kernel/hid.rs
+> Yeah, but I think that's too big a hammer. It's a useful warning, and
+> it doesn't accept per-item configuration.
 
-I have taken a very quick look and haven't seen any big problems,
-there are some minor things, but not worth mentioning for an RFC.
+Hmm, I don't think it's as useful. We're going to be using more unstable
+features until we eventually bump the minimum version when we can
+disable `RUSTC_BOOTSTRAP=3D1`. From that point onwards, it will be very
+useful, but before that I don't think that it matters too much. Maybe
+the others disagree.
+
+>> >> I'll take a look tomorrow, you're testing my knowledge of the build
+>> >> system a lot here :)
+>> >
+>> > We're guaranteed to learn something :)
+>>
+>> Yep! I managed to get it working, but it is rather janky and
+>> experimental. I don't think you should use this in your patch series
+>> unless Miguel has commented on it.
+>>
+>> Notable things in the diff below:
+>> * the hostrustflags don't get the *provenance_casts lints (which is
+>>   correct, I think, but probably not the way I did it with filter-out)
+>> * the crates compiler_builtins, bindings, uapi, build_error, libmacros,
+>>   ffi, etc do get them, but probably shouldn't?
+>
+> Why don't we want host programs to have the same warnings applied? Why
+> don't we want it for all those other crates?
+
+I have never looked at the rust hostprogs before, so I'm missing some
+context here.
+
+I didn't enable them, because they are currently being compiled without
+any unstable features and I thought we might want to keep that. (though
+I don't really see a reason not to compile them with unstable features
+that we also use for the kernel crate)
+
+> I'd expect we want uniform diagnostics settings throughout which is
+> why these things are in the Makefile rather than in individual crates
+> in the first place.
+>
+> Your patch sidesteps the problems I'm having by not applying these
+> lints to host crates, but I think we should.
+
+We're probably working on some stuff that Miguel's new build system will
+do entirely differently. So I wouldn't worry too much about getting it
+perfect, as it will be removed in a couple cycles.
 
 ---
 Cheers,
