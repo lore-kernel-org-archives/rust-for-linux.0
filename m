@@ -1,137 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5426A1FECAA;
-	Fri, 14 Mar 2025 12:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A4318EFD4;
+	Fri, 14 Mar 2025 12:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741955120; cv=none; b=TOCdeaGnta7dvSIuyUmzUuG/0tPwTmYoAQdaZS5g6JqyVWkkdBY8mip1EM92CEqIh3+XfrWpPX2aTtKL1GCE9saGVgrmVhsPJtx37WPZXRoa3bkm++lZ8aNYvA3DmAWd9hpdFPE8kgPmkwp6aLT9Nl0ivdGI8Ty3uPpS8926IvQ=
+	t=1741955250; cv=none; b=c8MIzFiEz+RazqKrXPCkfcnXbFMpDPL9rZ4dPpWxcJQy5Q+VEgXaprJh8uWz0yZscDW3QDAXCOrsaGS9OnyhSv88YD1cStz9Gv2+plrEwxzzbt2MtrRpmiy7P/62g/Rh3nNDoD4XDkYApoRADQc8NaQt1F+P+lk0BhBYiCH4vlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741955120; c=relaxed/simple;
-	bh=lX6P6BkccktiL84ymCoW4M2tQiV48IROB/Z80qlWTb0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KCyb+sv8/e7dXuJYrdyhGbtefEMZs/OM93C7+cE+QWiuCr09xRxl3bR/OQJFzXtnQt7YR3/lpsPKZKc9hwX3yFB3L1tSjJk9n4txqa7b3HIUADE+FiedCrt/deaDFPy09IoZraKUUT7RBlDAEPn0xPFebYjXqaigi4+kjKUdmTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AHB8bRqb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741955250; c=relaxed/simple;
+	bh=4AV3UwKKeLK8/P2zg6naYEnpTmcDbmVCSxbXtAHjRV0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HwezfjhRmpmT1y37mAupfMHkTEMkK4zFxIeinHE/PJKxYChbC+/ffqg92gM/IVsLQ7RX2yGChJdIvaCeBg1rrHk+SMN7FIcRxWTRkg6zGexEguUU5i25Ik4xs8t6q38itVVNxIIU70vQdq8c/IKM01Zy7v9pb949cXZpR7iWAts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bVtusqA6; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AHB8bRqb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781FBC4CEE3;
-	Fri, 14 Mar 2025 12:25:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741955119;
-	bh=lX6P6BkccktiL84ymCoW4M2tQiV48IROB/Z80qlWTb0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AHB8bRqbxV3rn4ycF7li6ou2UcpeF2pQbc2g0MzUXfq4orqyWk76L/ai9nLC7SKfC
-	 4+8WBW1CUTVaJypQ01jEJkPdSHfcO3XjOTZUQwquT9Bqf+6887zIAkAvrLZr3iSqDc
-	 cDjoD/1aN4/sPFEgV3tDbdwqftXbj8Tuz3GRAvcA6eka1q0kfG+nwkT/9iEkayuNLc
-	 9bogWyNJZHjYgKGVQgwp8ZT60dG2cCPbYPIm0KtHpMeTSU6K8xV9lWYzmVBLBaxTEW
-	 3sn5AIlG/Y0twz9RoQ7oSYwoelGyhERqNrATpQIN8VWhdMu3cTNBayj/umC+Ws8sKn
-	 BN7+cBGm7pZ0w==
-Date: Fri, 14 Mar 2025 13:25:17 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	Danilo Krummrich <dakr@kernel.org>, mcanal@igalia.com, Alice Ryhl <aliceryhl@google.com>, 
-	Simona Vetter <sima@ffwll.ch>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC v3 27/33] rust: drm/kms: Add DriverCrtc::atomic_begin() and
- atomic_flush()
-Message-ID: <20250314-aspiring-prehistoric-caracara-ba6435@houat>
-References: <20250305230406.567126-1-lyude@redhat.com>
- <20250305230406.567126-28-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bVtusqA6"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30c461a45f8so11715101fa.1;
+        Fri, 14 Mar 2025 05:27:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741955246; x=1742560046; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4AV3UwKKeLK8/P2zg6naYEnpTmcDbmVCSxbXtAHjRV0=;
+        b=bVtusqA60eaOdqQGtwVc93tM60aFvBu2q1UIl0EWWu8Vr9OBJ5zpMGXoNgmJ4/Mc7c
+         9eX0HXHXlJFJHWZ9YHyXoTso5LrCcGuVe6gsuyNGkwMibDd3Yu7IILCFIEueItlPND47
+         oUvfJlL7LteDtDbrRzt9bnZP3Bv3ZZkFKVocPx+CyoVSZ4EWTCP9//OOV0sdJaJHcMD+
+         wna9zhIbP2bnQQDOgmOeWQphBb+EnGdVKuuCNqfXHyd1XxzOfXPeCRsf4/AcoHumHefG
+         R9AlOeHd8L3ZH5rLLuQlakRYN0wFFUYF1cc3dV7mJ1Ot5ilCZFywhRdHUM+bZIkLaOJc
+         AswQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741955246; x=1742560046;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4AV3UwKKeLK8/P2zg6naYEnpTmcDbmVCSxbXtAHjRV0=;
+        b=P1IoLhxd+gKswczTTZe9FL5iNkig70/aupQ1rhAU6L4dHAKhumdmZwYvVQRNtAkfHG
+         ZMTU0OKrC8QtnfcfECkiq2x/hegvv8pr4xtG/PidGCN2KizUSYGEfJApv1gWP5mcIQbl
+         06LtFGcBBm20+BLICvGGWBnQdzqVRKpq+iAyF/XkFufUfvp2p6hS8JWKDMBlYt3epm+r
+         89Gp0jw1KEAfM7kNMCrfgBb796LS4SnUqXIHb88EYNA1ytrHCluyEWlwFo8ifABcvmsm
+         48tXBZuuHEQbIWIJPXVN+wII959ZjMMRh59l7P21fn91kOayAuEd6UX3WHyKT+v/6QK/
+         Kz0g==
+X-Forwarded-Encrypted: i=1; AJvYcCUGPOMkrcbVuf+4T+RZsBnwjSmmxuiKoO69Jikxc3Ynorxq5fQe7xAiYQnVDUecO2wPKweIbw0c7FjBdAVG@vger.kernel.org, AJvYcCV+Q/KhjZDTrrhQQ9PD9xb6OyJp+oNiNtB4JHCezB+qyWG8moBkTEi9PZz5sbzwqA2EIWhq9BcZ+6JJWuUSAuY=@vger.kernel.org, AJvYcCV+VFFndnBGvJTpvORCgnj663sMGhc3s3ssVHBfnYuQ3BBE3mDSdeRV8m5eWb3+nmBAXbG45xw2U3Jk@vger.kernel.org, AJvYcCVToTdS+kiKk/+rfeRY4BhosQOHtew4HNEAD7PMkfgeYGJndtqt4p4H34uxZuMbUiufjL6HgDGelbnWYath6+qV@vger.kernel.org, AJvYcCWqkzUmwz4MjP4tlxj5va1jVFfBa1roACqYNQnju+FejZcpkGsoOXN3x8VrEN5Y9ksDpt4AYspXfWOt@vger.kernel.org, AJvYcCXUA4gIWE31vcS9C828JU0l6rboUhDnigrPZdsSNN1gnm2U1pIqyGogQNtlyy/VnoNLQZ9652yU9EAYwWA=@vger.kernel.org, AJvYcCXmAFDT3SyREruNDTN8judfJZByzP1xoQYYTam1gIjc5KHd5gVvuawtUqAVEF3h9iZiOsMJLRZX6LFGqxBQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDaEdr8HuI/9/f1wSqvlH38M2/9dnVseeNjOD5I2GaogIImnHl
+	6p579+IQzsTl1W2nd6L2Z3VloeviloEXTgRhJjlaq4ape7vqMsMIIOxV7qKOipz7wI0hgyVO6Tf
+	asQuiJs5RBVYTlOCQkbBiDjfyRq0=
+X-Gm-Gg: ASbGnctw9iQPXdwUUMlK9weOuUhK/5FB5tbVNABx84X5TePUC/Po7y0MeALrCAml1Kj
+	eSHNevWF03Kx6sYTnEvRI1BGZmh0eKT9oT9y0+xwvvOEu6EgYdn6Oexy2VxwK+LBQ3liAVONfHx
+	flUR0RSqT4BNhyGHTMBmbTlUznE2ZyVi0YKAQxO/eP5x82gvepm5VyiKdaXMBn
+X-Google-Smtp-Source: AGHT+IEKKOnXRbT30S7++IXtH98xYqOrgSQijm1XLQMpNWDgXvnnM4WeGBhsPv4Q9qav2mYGodu2muzBpg4PRWQVFUM=
+X-Received: by 2002:a2e:a417:0:b0:30b:f138:1b9f with SMTP id
+ 38308e7fff4ca-30c4a87a668mr7219251fa.17.1741955245674; Fri, 14 Mar 2025
+ 05:27:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="4vzvxz5ir4p5ljeq"
-Content-Disposition: inline
-In-Reply-To: <20250305230406.567126-28-lyude@redhat.com>
-
-
---4vzvxz5ir4p5ljeq
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <20250309-ptr-as-ptr-v2-0-25d60ad922b7@gmail.com>
+ <CAJ-ks9=TRDg3g=NG7k97P_5jXpZ4K4v0DxrmJFR+uF0-3zJkXw@mail.gmail.com>
+ <CAJ-ks9=hAwOGtVv0zh9CcH7XOxjGnizvK1QOMAi8nKStocKr2Q@mail.gmail.com>
+ <D8ELW7X9796K.2ZGJS34LDTHOP@proton.me> <CAJ-ks9k1gZ=tLSe6OjuKFgg6=QE5R_Ajo0ZJwZJp08_1LMiODw@mail.gmail.com>
+ <D8ENBWTC8UPH.LLEGZ2D4U7KQ@proton.me> <CAJ-ks9mJ=2hFxfWEkq+9b=atE89sHXa5NBcdVNRd3az6MSv0pA@mail.gmail.com>
+ <D8F76A4JSEXO.2OKKJLAU5OZN@proton.me> <CAJ-ks9n1oGAGSrXYWjvR+_raw8h+skkdfSYpeSuQZ9jEs5q-6Q@mail.gmail.com>
+ <D8FCATTC479L.BDRZBC6TJ51Q@proton.me>
+In-Reply-To: <D8FCATTC479L.BDRZBC6TJ51Q@proton.me>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 14 Mar 2025 08:26:48 -0400
+X-Gm-Features: AQ5f1Jow9Vznf8dlXUmINTov6itEsoPcxVta92-eK8lvO6ED3NnfFL22pY12X0A
+Message-ID: <CAJ-ks9=Goh4vWq4DqGALhU0aY9AVm4wv1oKiq4jJQfNGRAyRkA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/5] rust: enable `clippy::as_underscore` lint
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [RFC v3 27/33] rust: drm/kms: Add DriverCrtc::atomic_begin() and
- atomic_flush()
-MIME-Version: 1.0
 
-On Wed, Mar 05, 2025 at 05:59:43PM -0500, Lyude Paul wrote:
-> Optional trait methods for implementing the atomic_begin and atomic_flush
-> callbacks for a CRTC.
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  rust/kernel/drm/kms/crtc.rs | 90 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 88 insertions(+), 2 deletions(-)
->=20
-> diff --git a/rust/kernel/drm/kms/crtc.rs b/rust/kernel/drm/kms/crtc.rs
-> index aaa208b35c3c1..131d10505ba07 100644
-> --- a/rust/kernel/drm/kms/crtc.rs
-> +++ b/rust/kernel/drm/kms/crtc.rs
-> @@ -90,8 +90,16 @@ pub trait DriverCrtc: Send + Sync + Sized {
->              mode_set: None,
->              mode_valid: None,
->              mode_fixup: None,
-> -            atomic_begin: None,
-> -            atomic_flush: None,
-> +            atomic_begin: if Self::HAS_ATOMIC_BEGIN {
-> +                Some(atomic_begin_callback::<Self>)
-> +            } else {
-> +                None
-> +            },
-> +            atomic_flush: if Self::HAS_ATOMIC_FLUSH {
-> +                Some(atomic_flush_callback::<Self>)
-> +            } else {
-> +                None
-> +            },
->              mode_set_nofb: None,
->              mode_set_base: None,
->              mode_set_base_atomic: None,
-> @@ -132,6 +140,36 @@ fn atomic_check(
->      ) -> Result {
->          build_error::build_error("This should not be reachable")
->      }
-> +
-> +    /// The optional [`drm_crtc_helper_funcs.atomic_begin`] hook.
-> +    ///
-> +    /// This hook will be called before a set of [`Plane`] updates are p=
-erformed for the given
-> +    /// [`Crtc`].
-> +    ///
-> +    /// [`drm_crtc_helper_funcs.atomic_begin`]: srctree/include/drm/drm_=
-modeset_helper_vtables.h
-> +    fn atomic_begin(
-> +        _crtc: &Crtc<Self>,
-> +        _old_state: &CrtcState<Self::State>,
-> +        _new_state: CrtcStateMutator<'_, CrtcState<Self::State>>,
-> +        _state: &AtomicStateMutator<Self::Driver>,
-> +    ) {
-> +        build_error::build_error("This should not be reachable")
-> +    }
+On Thu, Mar 13, 2025 at 2:12=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> On Thu Mar 13, 2025 at 6:50 PM CET, Tamir Duberstein wrote:
+> > On Thu, Mar 13, 2025 at 10:11=E2=80=AFAM Benno Lossin <benno.lossin@pro=
+ton.me> wrote:
+> >>
+> >>
+> >> With doing `allow(clippy::incompatible_msrv)`, I meant doing that
+> >> globally, not having a module to re-export the functions :)
+> >
+> > Yeah, but I think that's too big a hammer. It's a useful warning, and
+> > it doesn't accept per-item configuration.
+>
+> Hmm, I don't think it's as useful. We're going to be using more unstable
+> features until we eventually bump the minimum version when we can
+> disable `RUSTC_BOOTSTRAP=3D1`. From that point onwards, it will be very
+> useful, but before that I don't think that it matters too much. Maybe
+> the others disagree.
 
-Another dumb question I guess. If it's optional, and the default
-implementation of a trait errors out at build time, how can it not break
-if we don't implement the method?
+I'd rather keep this narrowly scoped for now -- putting the genie back
+in the bottle later is usually harder.
 
-Maxime
+> > Why don't we want host programs to have the same warnings applied? Why
+> > don't we want it for all those other crates?
+>
+> I have never looked at the rust hostprogs before, so I'm missing some
+> context here.
+>
+> I didn't enable them, because they are currently being compiled without
+> any unstable features and I thought we might want to keep that. (though
+> I don't really see a reason not to compile them with unstable features
+> that we also use for the kernel crate)
+>
+> > I'd expect we want uniform diagnostics settings throughout which is
+> > why these things are in the Makefile rather than in individual crates
+> > in the first place.
+> >
+> > Your patch sidesteps the problems I'm having by not applying these
+> > lints to host crates, but I think we should.
+>
+> We're probably working on some stuff that Miguel's new build system will
+> do entirely differently. So I wouldn't worry too much about getting it
+> perfect, as it will be removed in a couple cycles.
 
---4vzvxz5ir4p5ljeq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ9QgLAAKCRAnX84Zoj2+
-doWXAYCngdcASoukMj94aBgAFaDc5rmGDv7xFouBULgQ1a7QU4FIOv1FrDDYBjjs
-LV/iy/IBfA7HXPThFtjNWgZICI73lieLqkSKUI9FtusEAO1W/HH19SsQJ+OivEhw
-euxbbwkLPg==
-=4Day
------END PGP SIGNATURE-----
-
---4vzvxz5ir4p5ljeq--
+I got it working, but it's pretty messy. Let's discuss on v3.
