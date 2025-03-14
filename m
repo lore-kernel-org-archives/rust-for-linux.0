@@ -1,100 +1,99 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0882DF60;
-	Fri, 14 Mar 2025 14:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741961746; cv=none; b=mMt3rrmgfr0lphnkeFCp/H7BOkVcHmbmXuRmYac6aGdANZGb8nIT83a3PW4Sbuzi4dtc/0KlKuQv7JyaRwrXZP4wdYAB2Femzne6rPWNsyhTLyDaXyU2Z4QY4BqR0ZbYs+9/erUzyR2qW749/OU/bNdq1LMx2l0YSmBuRqlmqcQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741961746; c=relaxed/simple;
-	bh=hoD5OuQ9XrVOKR/0IYi9oyZiNH0tYknwNIdLHImmP2s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EMdcWRuqd0OlnZHqI5gfwJVRRR9iCQvxXZel4BVkWwHOvoSbI35jJx+stLHwSx4qQc+d/gDuFWdHm93/iHTUVFgXCDtbMAujOzAzPF1wzzroZuJVrULZu8hZRtrnlJgZBZ7bQtwVv2TrQkS4MZwoIKjnrHJ8Uf8Q1LMgfeCdsRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fA2MZDoX; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5C61FDE0E
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Mar 2025 14:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741961981; cv=pass; b=bgSXJ+Qk5UnMuJgoWD6HRopaWo30tq2SZc5HrdsbsQhngMKleoD3boQP7cgbp1TDoYK3A7Mm6GD+LTQlye2gjEeiGDWeZC9sx5BAWXlYXkW4ZOX5CAxQ3Oj6GwmIj2Zjhd0spq5mBMNES64bFjIMFgPjB+WJXFg+BkVG8eUTq2I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741961981; c=relaxed/simple;
+	bh=s4Bo7vAGf03NLhUlfmxHpxirp1sQzPE6hZaWBAxsDMU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=rWMZ+P0b6FZWHpNiMyHA/Dvjlz8qgeElxYjGlI++IT2swkfgMVZUtGr/i7a8mwXyY3ElrW7A7Zl0v5Nqw9vpsyEQMpNiE8C+2U06r3dalJE1INznNCIvt1NR/xLDqcYmkGWFAbVK7FXSzRQS59w905DLt0exAxpJD+Q8SViCgS8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=C5L/Yz38; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fA2MZDoX"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30613802a04so23280201fa.2;
-        Fri, 14 Mar 2025 07:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741961743; x=1742566543; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hoD5OuQ9XrVOKR/0IYi9oyZiNH0tYknwNIdLHImmP2s=;
-        b=fA2MZDoXNrIg2rsGJQtW/NTHHlA43tboUya2BMD5ERJVJNcE5jRPe4vPrPJ6RvBpoX
-         bMI3S7PWkj3CSBIwAkisWfZSdqO+XrTaY9M/zvdOhkbL+Ah7pUX0DFk1ZFuZKGe6GCqD
-         DeJ5st+T6hyPEs+nAHBU6p/q27ByFNJAHKJX8oduqZhHWfSwaGT56JL+CL3abrmWdNqD
-         rF90XO6BFaTiziW2BbFAY24rGAH0Gz5xyYsxyC6xF8J9M3Nfhwa6p+9CZooPcabP3LxA
-         ufO9zbHwK+9zbpvO1ov0P+zraefyXEUlgSoWlsU9Ad+6aAAoCDQ9fHrjJmwwvutiHgqh
-         P8og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741961743; x=1742566543;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hoD5OuQ9XrVOKR/0IYi9oyZiNH0tYknwNIdLHImmP2s=;
-        b=J8sKeAlRlVYI3QdDn+F/0LjonYMxKQwvtMWgSzhcwmEeSvGFz53QvA2GirfBHDDsdp
-         6MeLa9pUXpZhV+MwHBJYg3eYL+qlGwRRq6aNpXfx6ba03fZIViSrQvfKxCX1h5NMlClg
-         k7hHgU0VISftk867WCjkPLUgpOT44/x0vHoE94gwWxOghjserHdI36YmhBCWgA95utLN
-         xCdtoEUVTiL9zUwiA9ZRP68Tpp0pFo2ZKDfMY6ZKo1CF22ogNWbXjyUTxiCLma/pYbTy
-         Op/CkBdFUIt9EgGAAjNHpmVfFMlReAMaGq4jTElis95bDGvv9BAvoEes2KUCYXUrpeLu
-         xeYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUP5RiXMD2lxZTXwmP07IdaQrapTs/7+GurQcthzLh4NWQeL/gnKpXFryiKc4LlOe4rJWonkCN+ExQWwdLDb+U=@vger.kernel.org, AJvYcCVz8VwoGGHqiD9gDS4tQifZqoUZSNQi5vFwhnjKNy3Gv+SOO8j6KNd/qCvlGG/D3LmM7KfHC7RRvDt5joM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuUjQJ6GwcnsKQq9kGvgWimy3+Zp1sNTjde7W0QQ/2tqX+7ozk
-	IZR6d4g+TounvGACJlXWyeEps7f+hzL6VBC3cjcyh6Op1HSeeoNErRVEYk1jfAmi0mLpJNmaJ7Y
-	PrZ3ei4+177wcbAcl/edsbWZr614=
-X-Gm-Gg: ASbGncv6cq3U6agcpAccAPTzn8chKV6x/RpMU9RraDZ/uTmz/zwKsM9BSGz4cWMKUTV
-	is7bXivtTYNFmmgFbtwtDnl4BUAcWh58jweAGK+bMAw2WlyyXcLzxfAW8hNPr55d+kLUo9g/0Ro
-	UV3k+eUw0E/YSxl0caNY+s5Fmi0Vd8Tb/1B27o3qd7sUggEt67+wx66h7Er4ez
-X-Google-Smtp-Source: AGHT+IE+cuUx3bVzPL1OFOTxDv+ajzkYB2XUMolDVCyX8pmDfijIlkLdfwFg4aM/XXqZBFG7pPWD4W8UgPyMK+NI60Q=
-X-Received: by 2002:a05:651c:b14:b0:30b:b987:b676 with SMTP id
- 38308e7fff4ca-30c4a754753mr9968651fa.2.1741961742896; Fri, 14 Mar 2025
- 07:15:42 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="C5L/Yz38"
+ARC-Seal: i=1; a=rsa-sha256; t=1741961954; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=lwfa0tkPnzNwiaFuVmDP7FMY1VA4LCYjYbz1bDZU4a9fIn4Do9ipOd+JNl3rMizLuCcoWxt9ubNhSWPjlgO6Tm5VakFPrXLnm1hFHTm6C2pYngh3jeGEm9HgHgeRIUqIVyph+yhXaCe4U3EX4DIDED2j2GowasCBEW0GCxJBDPk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1741961954; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=N3E+qEU1v3AArQxLQksDVAjGHNViblix80C5G3+laPA=; 
+	b=QCIpXm3EYTUQ24hAYxHOaBPxrBUoO4b2YGxuam3WxUEF/B49nl9PuGdvaub1cypBki7emzCXpe+m+yuT5hBEX39zfz1kuXxd3X/rEo3sq89ypl6njBbA0aN+tvvc/c9GVvf7QC6raFMQdMMe0IpXk1JgBvEhoufRU+I/N4+HHLk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741961954;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=N3E+qEU1v3AArQxLQksDVAjGHNViblix80C5G3+laPA=;
+	b=C5L/Yz38RLcaSAmw6CXReC9cExBU6crf4nhYfuGWvXPOjVroF9lGR8WUSRzV+IKs
+	AtZh+rZsXuDDnUOU/dXYA+ybTvaY16Wk0Apv1h7UYwFUrVls/zGukxpRuNy2oMlXEHE
+	T9HEkIm7v/R3Btx+yVUaOZ9OK6hrDfPFjLtQCGVk=
+Received: by mx.zohomail.com with SMTPS id 1741961951886914.1539316541287;
+	Fri, 14 Mar 2025 07:19:11 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250203-cstr-core-v8-0-cb3f26e78686@gmail.com>
- <CAJ-ks9kyozt45VeXG7GBTN-ejy_HGMOekFYFMmzS8AbEusZMWQ@mail.gmail.com>
- <CAH5fLgjUuCo5Ayx4WCfnrVAC1prvUbY-pvZdinkAb+KcSOWvpA@mail.gmail.com>
- <20250221142816.0c015e9f@eugeo> <CAJ-ks9=9OozDw7XotP_0Hpb4-p4VmPMSwmEdnnCpk1gCEJyZiA@mail.gmail.com>
-In-Reply-To: <CAJ-ks9=9OozDw7XotP_0Hpb4-p4VmPMSwmEdnnCpk1gCEJyZiA@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 14 Mar 2025 10:15:06 -0400
-X-Gm-Features: AQ5f1JqYWCwq_ty-NbNFuS5vkmJGhsSJl0kLU7uEsFDM1IlS7NQin4l0aSlBzoU
-Message-ID: <CAJ-ks9=Q3qwY-efP=hRH2N9XSZf6pN-2fCUMyC8z3p1jwVj3wg@mail.gmail.com>
-Subject: Re: [PATCH v8 0/4] rust: replace kernel::str::CStr w/ core::ffi::CStr
-To: Gary Guo <gary@garyguo.net>
-Cc: Alice Ryhl <aliceryhl@google.com>, Michal Rostecki <vadorovsky@protonmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
+Subject: Re: [PATCH] rust: add new macro for common bitwise operations
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <2025030439-sharpener-overkill-ada2@gregkh>
+Date: Fri, 14 Mar 2025 11:18:56 -0300
+Cc: Filipe Xavier <felipeaggger@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ rust-for-linux@vger.kernel.org,
+ felipe_life@live.com
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <1A434368-6B92-4C64-8B5A-17499C8E2F1B@collabora.com>
+References: <20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com>
+ <2025030439-sharpener-overkill-ada2@gregkh>
+To: Greg KH <gregkh@linuxfoundation.org>
+X-Mailer: Apple Mail (2.3826.400.131.1.6)
+X-ZohoMailClient: External
 
-On Fri, Feb 21, 2025 at 10:59=E2=80=AFAM Tamir Duberstein <tamird@gmail.com=
-> wrote:
->
-> On Fri, Feb 21, 2025 at 9:28=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote=
-:
-> >
-> > I'd want to add that we currently also have our own `BStr` and then we
-> > have the `CStr` -> `BStr` -> `[u8]` deref chain which is quite often
-> > useful. If we move to the `core::ffi::CStr` then we would lose ability
-> > to do so.
->
-> True. The best we could do is `impl AsRef<BStr> for CStr`, I think.
+Hi Greg,
 
-BStr now exists upstream (though it is unstable for now). Please see
-https://github.com/Rust-for-Linux/linux/issues/1146.
+> On 4 Mar 2025, at 11:09, Greg KH <gregkh@linuxfoundation.org> wrote:
+>=20
+> Nice, but why not use the same api/names that are already in the =
+kernel
+> for this type of functionality in the C .h files?  That way we have
+> consistent names everywhere?
+>=20
+> thanks,
+>=20
+> greg k-h
 
-I sent https://github.com/rust-lang/rust/pull/138498 to see whether it
-is possible to retain this functionality in the end state where
-upstream's BStr is stable and we're able to use it.
+IIUC, there is already someone working on that [0].
+
+Can we just leave this macro somewhat as-is as a mere convenience for =
+driver authors?
+
+My latest review comments include a name change to make it less =
+confusing in this regard.
+
+Or if [0] is not what you mean, can you provide a more concrete example?
+
+=E2=80=94 Daniel
+
+[0] =
+https://lore.kernel.org/rust-for-linux/20250310161947.1767855-2-bqe@google=
+.com/=
