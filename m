@@ -1,179 +1,100 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5043E1BC3C
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Mar 2025 14:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741961393; cv=pass; b=BUNzVqSadKdsRn6RFNNrQxSwpjBhS4xssccn0aNTg4jUCYW/38dj2Zd4F+DpVYlaRdUJMmq+6Ou4vX3w9HazM/PBwfb0yYSw2WytFqqmOGKX7g4h9Zm1tKMZdya4AdIc8z0FtlbNYrCIwsW5sOjVamoaQ5pmRjrRzEe7MPB5z2U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741961393; c=relaxed/simple;
-	bh=B8Hyh/SDYIG+1f5Y8CGOnvLXxwjKn37T0Sjjqqwg/DI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qO/OgAhKAP7VyZUL0NVCVW+2m40wCgk+zNDteT0p933D5j7wiLbhCoP9yOXeW8tmFrLq9XEqv1uOOwQVNaplTvlPhYHf+wdpeeHuPdkgnZ45FSfvi3jXWT+9ElZfBNkoA8Uv8OQDzRzfrrN7x28bkBrSozb0UQVDbi3izNr+MjA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Hy8PRptG; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0882DF60;
+	Fri, 14 Mar 2025 14:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1741961746; cv=none; b=mMt3rrmgfr0lphnkeFCp/H7BOkVcHmbmXuRmYac6aGdANZGb8nIT83a3PW4Sbuzi4dtc/0KlKuQv7JyaRwrXZP4wdYAB2Femzne6rPWNsyhTLyDaXyU2Z4QY4BqR0ZbYs+9/erUzyR2qW749/OU/bNdq1LMx2l0YSmBuRqlmqcQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1741961746; c=relaxed/simple;
+	bh=hoD5OuQ9XrVOKR/0IYi9oyZiNH0tYknwNIdLHImmP2s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EMdcWRuqd0OlnZHqI5gfwJVRRR9iCQvxXZel4BVkWwHOvoSbI35jJx+stLHwSx4qQc+d/gDuFWdHm93/iHTUVFgXCDtbMAujOzAzPF1wzzroZuJVrULZu8hZRtrnlJgZBZ7bQtwVv2TrQkS4MZwoIKjnrHJ8Uf8Q1LMgfeCdsRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fA2MZDoX; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Hy8PRptG"
-ARC-Seal: i=1; a=rsa-sha256; t=1741961369; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=CNWdahbJrCP1wSoOaKRO1N7je4HBsKs7yEqccQVD4ZyxfvB6CI7OKCeY6XAsXjI3OKlBAvFUoz/bnNZLzcsmGsoKYP8rwOV+SKK92N7YKXAd/Yvl3KaazMhjDTzSAlVP6wfBEedLsQeITBzYJDEmho0bT1a9mymu2rqL33jP23E=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1741961369; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=SGRxvpip7TbNbVhpn+m4nFFlJ/88DuM9bqFT9cnkcoc=; 
-	b=EzlrX+e74Tf0QRlP+X4jAFAvPMJPK0KZmRxNwWgI7U/ze5ECpcM0RUo7MLMvGUkoaPv+nOtHMZH1wEtfeZcUfOZxjhha5NuIF0u9r169F206J3DDv9sOGTbJ5Tl798L5gzZflW0w0XzW8GgEHKnacT+urHGYjyBqY0hcPd7Vldg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741961369;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=SGRxvpip7TbNbVhpn+m4nFFlJ/88DuM9bqFT9cnkcoc=;
-	b=Hy8PRptGX5c4a9N3vd9ONd8++DKbnt/tJIEu02hWBdYdgnWpKVkFHRgIdq1jKLAJ
-	7mYTEtvWKTsShveHc99pkjRM1/OgdlVj9fjcXG7SxAwDBo7pC88TxcRl/5ld+Jf2Uch
-	3uAHdh5Qme/V6UOaZ/sw2t55zomti5a+Pb6YCOZ4=
-Received: by mx.zohomail.com with SMTPS id 1741961367359294.85325309647544;
-	Fri, 14 Mar 2025 07:09:27 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fA2MZDoX"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30613802a04so23280201fa.2;
+        Fri, 14 Mar 2025 07:15:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741961743; x=1742566543; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hoD5OuQ9XrVOKR/0IYi9oyZiNH0tYknwNIdLHImmP2s=;
+        b=fA2MZDoXNrIg2rsGJQtW/NTHHlA43tboUya2BMD5ERJVJNcE5jRPe4vPrPJ6RvBpoX
+         bMI3S7PWkj3CSBIwAkisWfZSdqO+XrTaY9M/zvdOhkbL+Ah7pUX0DFk1ZFuZKGe6GCqD
+         DeJ5st+T6hyPEs+nAHBU6p/q27ByFNJAHKJX8oduqZhHWfSwaGT56JL+CL3abrmWdNqD
+         rF90XO6BFaTiziW2BbFAY24rGAH0Gz5xyYsxyC6xF8J9M3Nfhwa6p+9CZooPcabP3LxA
+         ufO9zbHwK+9zbpvO1ov0P+zraefyXEUlgSoWlsU9Ad+6aAAoCDQ9fHrjJmwwvutiHgqh
+         P8og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741961743; x=1742566543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hoD5OuQ9XrVOKR/0IYi9oyZiNH0tYknwNIdLHImmP2s=;
+        b=J8sKeAlRlVYI3QdDn+F/0LjonYMxKQwvtMWgSzhcwmEeSvGFz53QvA2GirfBHDDsdp
+         6MeLa9pUXpZhV+MwHBJYg3eYL+qlGwRRq6aNpXfx6ba03fZIViSrQvfKxCX1h5NMlClg
+         k7hHgU0VISftk867WCjkPLUgpOT44/x0vHoE94gwWxOghjserHdI36YmhBCWgA95utLN
+         xCdtoEUVTiL9zUwiA9ZRP68Tpp0pFo2ZKDfMY6ZKo1CF22ogNWbXjyUTxiCLma/pYbTy
+         Op/CkBdFUIt9EgGAAjNHpmVfFMlReAMaGq4jTElis95bDGvv9BAvoEes2KUCYXUrpeLu
+         xeYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUP5RiXMD2lxZTXwmP07IdaQrapTs/7+GurQcthzLh4NWQeL/gnKpXFryiKc4LlOe4rJWonkCN+ExQWwdLDb+U=@vger.kernel.org, AJvYcCVz8VwoGGHqiD9gDS4tQifZqoUZSNQi5vFwhnjKNy3Gv+SOO8j6KNd/qCvlGG/D3LmM7KfHC7RRvDt5joM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuUjQJ6GwcnsKQq9kGvgWimy3+Zp1sNTjde7W0QQ/2tqX+7ozk
+	IZR6d4g+TounvGACJlXWyeEps7f+hzL6VBC3cjcyh6Op1HSeeoNErRVEYk1jfAmi0mLpJNmaJ7Y
+	PrZ3ei4+177wcbAcl/edsbWZr614=
+X-Gm-Gg: ASbGncv6cq3U6agcpAccAPTzn8chKV6x/RpMU9RraDZ/uTmz/zwKsM9BSGz4cWMKUTV
+	is7bXivtTYNFmmgFbtwtDnl4BUAcWh58jweAGK+bMAw2WlyyXcLzxfAW8hNPr55d+kLUo9g/0Ro
+	UV3k+eUw0E/YSxl0caNY+s5Fmi0Vd8Tb/1B27o3qd7sUggEt67+wx66h7Er4ez
+X-Google-Smtp-Source: AGHT+IE+cuUx3bVzPL1OFOTxDv+ajzkYB2XUMolDVCyX8pmDfijIlkLdfwFg4aM/XXqZBFG7pPWD4W8UgPyMK+NI60Q=
+X-Received: by 2002:a05:651c:b14:b0:30b:b987:b676 with SMTP id
+ 38308e7fff4ca-30c4a754753mr9968651fa.2.1741961742896; Fri, 14 Mar 2025
+ 07:15:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: [PATCH] rust: add new macro for common bitwise operations
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com>
-Date: Fri, 14 Mar 2025 11:09:12 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org,
- felipe_life@live.com
+MIME-Version: 1.0
+References: <20250203-cstr-core-v8-0-cb3f26e78686@gmail.com>
+ <CAJ-ks9kyozt45VeXG7GBTN-ejy_HGMOekFYFMmzS8AbEusZMWQ@mail.gmail.com>
+ <CAH5fLgjUuCo5Ayx4WCfnrVAC1prvUbY-pvZdinkAb+KcSOWvpA@mail.gmail.com>
+ <20250221142816.0c015e9f@eugeo> <CAJ-ks9=9OozDw7XotP_0Hpb4-p4VmPMSwmEdnnCpk1gCEJyZiA@mail.gmail.com>
+In-Reply-To: <CAJ-ks9=9OozDw7XotP_0Hpb4-p4VmPMSwmEdnnCpk1gCEJyZiA@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 14 Mar 2025 10:15:06 -0400
+X-Gm-Features: AQ5f1JqYWCwq_ty-NbNFuS5vkmJGhsSJl0kLU7uEsFDM1IlS7NQin4l0aSlBzoU
+Message-ID: <CAJ-ks9=Q3qwY-efP=hRH2N9XSZf6pN-2fCUMyC8z3p1jwVj3wg@mail.gmail.com>
+Subject: Re: [PATCH v8 0/4] rust: replace kernel::str::CStr w/ core::ffi::CStr
+To: Gary Guo <gary@garyguo.net>
+Cc: Alice Ryhl <aliceryhl@google.com>, Michal Rostecki <vadorovsky@protonmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <E2FFC2EF-96BF-4306-84CB-B77348A10CEE@collabora.com>
-References: <20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com>
-To: Filipe Xavier <felipeaggger@gmail.com>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
-X-ZohoMailClient: External
 
-Hi Filipe,
+On Fri, Feb 21, 2025 at 10:59=E2=80=AFAM Tamir Duberstein <tamird@gmail.com=
+> wrote:
+>
+> On Fri, Feb 21, 2025 at 9:28=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote=
+:
+> >
+> > I'd want to add that we currently also have our own `BStr` and then we
+> > have the `CStr` -> `BStr` -> `[u8]` deref chain which is quite often
+> > useful. If we move to the `core::ffi::CStr` then we would lose ability
+> > to do so.
+>
+> True. The best we could do is `impl AsRef<BStr> for CStr`, I think.
 
-I=E2=80=99ve been using your code on a driver I=E2=80=99ve been working =
-on. It
-definitely avoids a lot of repetition, so thank you for that.
+BStr now exists upstream (though it is unstable for now). Please see
+https://github.com/Rust-for-Linux/linux/issues/1146.
 
-There are a few things I'd like to point out, though:
-
-I personally don't think that "bitmask" is a good name. Something like
-"impl_flags" would be more descriptive of what is actually done by the =
-macro, i.e.:
-
-
-mod flags {
-    use kernel::bits::bit_u32; // This is not upstream yet.
-    use kernel::prelude::*;
-
-    use crate::impl_flags;
-
-    impl_flags!(Flags, Flag, u32);
-
-    const FLAG_FOO: Flag =3D Flag(bits_u32(<some bit>));
-    const FLAG_BAR: Flag =3D Flag(bits_u32(<some other bit>));
-
-    impl SomeTrait for Flags {
-        ...
-    }
-
-    <etc>
-
-Additionally: =20
-
-Flags & Flag doesn't work, but should. This applies to all other =
-operators. In
-other words, you shouldn't have to write:
-
-let foo: Flags =3D ...;
-let bar: Flag =3D ...;
-let baz =3D foo & Flags::from(bar);
-
-Regarding the docs, as I said previously, you need to transpose the docs =
-to the
-type, e.g.:
-
-mod flags {
-    use crate::impl_flags;
-
-    /// Flags used for XYZ.   <--- has to appear in the generated code.
-    impl_flags!(Flags, Flag, u32);
-   =20
-     /// Used for ...
-    const FLAG_FOO: Flag =3D Flag(bits_u32(<some bit>));
-
-    /// Used for..
-    const FLAG_BAR: Flag =3D Flag(bits_u32(<some other bit>));
-
-    <etc>
-
-
-Also remove #[allow(missing_docs)]. You should capture this from the =
-macro
-invocation directly, if present:
-
-
-mod flags {
-    use crate::impl_flags;
-
-     #[allow(missing_docs)] // OK, user doesn't care about docs here.
-    impl_flags!(Flags, Flag, u32);
-
-
-This should result in:
-
-
-#[allow(missing_docs)
-pub struct Flags(..);
-
-#[allow(missing_docs)
-pub struct Flag(..);
-
-
-On top of that, your code will actually generate a warning depending on =
-the
-visibility of the enclosing item:
-
-my_driver.rs:
-
-pub mod foo {
-    mod bar {
-
-        impl_flags!(=E2=80=A6);
-        //
-        // Expands to:
-        //
-        // pub Flags(..); <-- Warning: Flags is pub but bar is private.
-        //
-        // pub Flag(..); <-- Same here
-     }
-}
-
-
-This means that you should let the visibility be controlled by the =
-caller.
-
-As you can see, there's a few things to be fixed still, but overall =
-great work,
-I appreciate it. Can you please add the suggested-by tags for Lyude and =
-I?
-
--- Daniel=
+I sent https://github.com/rust-lang/rust/pull/138498 to see whether it
+is possible to retain this functionality in the end state where
+upstream's BStr is stable and we're able to use it.
