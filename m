@@ -1,202 +1,424 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1812A1BF;
-	Fri, 14 Mar 2025 03:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A5834545
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Mar 2025 05:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741924160; cv=none; b=MZP22tTvwD8sSPKuoWrsMJmL4diC1NNhTofvJh0KcFXrjYvIfIqL90MnZz/WkxhMEFNjLSKD9tn0mspdB7e3d2CXX0GFKeTmfOcBg28lsl4ngmx5fASgSewE5cgJWmrBTUsKh+/ogXsINkXZ+oo44N8p8y3QR32WYD4utS+KsHg=
+	t=1741931078; cv=none; b=rwSrV8eBGixnSvDNhQgMsZ7RDfzx7HTaIkWhH//HESq7JfYvmiDS2BOKhfrYcP3aMnvLLPVHbbLloZjYCUgKgij+atNRAPmeu8IrIxcJuO+gyl3tX+fTfMei7dczjGltXZGiSOUlmxKDq/cWlcyMnSf41cq96yBNxA6QPc0voqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741924160; c=relaxed/simple;
-	bh=6MHSVqZBX/1UkJClIYEhzK4ww5XncIm7fi+D554tqWk=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=rt5HZzw6ZpzNIAiUZ0g+nB8ZoUORbIypMK/o8gsuuoO24BhhiRh63kYaxyGsmM34SxTH02Byqjapb7S3nvUDBJn0ztgvjQIpYLrTfjHZE3tVI+e7bU4z/9eLbNBj+pu+BhmOpdVL5i2iKOJAp5sv8aooknx7LbMVxFB4mEC+OCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ANMzNAVA; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741931078; c=relaxed/simple;
+	bh=06sFRIa1eNggMw6G9z5hDGUwUAkAvv4y3QoX/3vj9bY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TTAKl6H0n8XemsUNJaT18wW7Wi49ZhdKGIb0XUHbG9htKw3Wd8QwQ6483JLeKhvRpSPnpsXcjTrVGynn0xgrfyqMgaWDqfOYzFLxLy6qygmXhEJiHSD7WKSOmuJxMS+xO7iA6yOUji/g5Pj0VMUlcucWEY87zINlBiZxAj4FOsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W+oOTo5O; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ANMzNAVA"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2217875d103so5154365ad.3;
-        Thu, 13 Mar 2025 20:49:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W+oOTo5O"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6e8f4c50a8fso16085316d6.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Mar 2025 22:44:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741924158; x=1742528958; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GyR5g/+t0etewZf3PfQfv6XD7WUS/wGrOxiRBRLJ4R0=;
-        b=ANMzNAVAVSmtmljpabMo2mqcnKHWA8te0Q6A+nhH3slWCFyIjIA21CeCtnLzlAZdtd
-         jzm34A7rV5rOtaC/kUqvMGZlvzfUU54D1rNyOnamVpO2keEaB8miraRnkYHlj0ko+AIn
-         LaJnjpdSTs1K0lHHSt87X+M5ASGK+8t/4EMx/aA7+B/HPCS9Ui+W20PUOK2UwFEvnTac
-         5fhGQWN6zC7CG0X+8ba08QSBDX9VfqksfSg7KVV5wrIEOACpMiWbOo8KfAV1Zy6abb2x
-         WaBVsJDXWltG6BPrFdwweEBCr49J7o+rRY+4XG4XZvUN0fnDQgJSjyWQWStUUF39Rkco
-         eLEA==
+        d=google.com; s=20230601; t=1741931076; x=1742535876; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=oWDVNs/Ky1kr22nG+zE1aWzHgtPtsR/JIVAxbzOlUAI=;
+        b=W+oOTo5OB3yWDA+c+qr/tf5x1Rz/SHvFDQFLTqzog2JKWI1isVMlaFsLTUg4V2aEvU
+         491yEAtK1S6xaA1Ym2/+raaWIuN6/GdzcLejXxy60LAnTL6hhdrrDx+vqsCMVJPttOHU
+         0d5cN+KC0FZrkrztb8BDo3vGYc6R9Qkj1bcii9J39y5jPB222ghFg1zsRhCjDivZkdtf
+         VLTJo3SKahFsmsaKYw8Ot6acnZ3wcea077mYblS+kppxv1w2putSxjaVE6WpJKwG+sEW
+         SY/kKMWTy5bh9Uvdk7vgD1o6AHaFEkyZtTqqHIqr9uM4yDUeJ4Lv1Ri3svzO0KneIQil
+         e58A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741924158; x=1742528958;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GyR5g/+t0etewZf3PfQfv6XD7WUS/wGrOxiRBRLJ4R0=;
-        b=nlJHTBPuRQFdMXyboxtNkD+sjqXMQQlT6sK6WSX63wRM10C4UAGy/JN3s48TEZp8Xo
-         KjA5pMy7r9h8Ymeh+cHAmD7Yz5cMFThsvEpt+TPSfd3UfpRKhYVWXS4cJSv/6gNSMOws
-         PLgwFyDIpGxYB5HYVQfFxYtIwq0bo7sM91fT463MPIX9mQ1CunKi3kWx4tIa9UGI46Yh
-         L/6e6Zw6m7nGElsz5fyVQeLCefT6MYcZxtqbyInVBQMDxFOghGWq1IMeGONTCEE5sQnE
-         1mC4M0pPyQjaXBCgds/ASgz1JHC1JbYsnWo7zOYZQEA7p1QXqpI+thKFXQI6ZFjzevnU
-         c77A==
-X-Forwarded-Encrypted: i=1; AJvYcCV98N2Mo2Av3JjVrci5Inzsbj/4PW+arXd2dnVEFwX9DSV5XQpX7gX2ocmBfEkGGAL0YShKO4+OWPAghKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHHF60RtNVgpr7S4roPubpP3+FjftKLgm34JY5BDH6QP8OzneT
-	v7gVsd23rSFsfZNhRW3wwVgvyeMofQYMLcKAV+TPB06huwdOBkC/9mws7nx5
-X-Gm-Gg: ASbGncurNjMCqjUsZaLkmPYUs255+aT3RhZ8DZQ2LbzxYEPqjtJW3UPNJYBorVBAZeJ
-	BqpKSd8AwrGCZBtr/qOe7udb8VthJJGxThAd2AhKGY/rAUdV3tfamPPJP2DX5vDG1kFOA5rI9Vv
-	l+faxkDF1HRq0IP3Cop+O2p6BG8tZcj/oyoR4LeI0azeLAkMWCQE+oLTfCH/MLsCpQzw5dYiH65
-	CBi6oc2FZjn2hgG/5j6QlySij4JBgy87ioEP9J7A8SP8/f0rWG14+2ekiWwDVYTyxeoqZB1Uuj/
-	qnxotX2HgXV3EPl1AycklbB70ix9EA52nQbGvKtmutQePPwl7/d7
-X-Google-Smtp-Source: AGHT+IFudL966b1PN0CzGjZSQGWkRZpEPzupo6zFBXCHrUU99qo1VVRYbBd5DkMnmwrsk99ZMK0khg==
-X-Received: by 2002:a17:902:d50b:b0:21f:519:6bc6 with SMTP id d9443c01a7336-225e0ac874dmr4989275ad.9.1741924158139;
-        Thu, 13 Mar 2025 20:49:18 -0700 (PDT)
-Received: from ana.. ([138.94.103.170])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3015351a054sm199275a91.20.2025.03.13.20.49.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 20:49:17 -0700 (PDT)
-From: christian <christiansantoslima21@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	~lkcamp/patches@lists.sr.ht,
-	richard120310@gmail.com
-Subject: [PATCH v4] Add methods for FromBytes trait.
-Date: Fri, 14 Mar 2025 00:49:10 -0300
-Message-ID: <20250314034910.134463-1-christiansantoslima21@gmail.com>
-X-Mailer: git-send-email 2.48.1
+        d=1e100.net; s=20230601; t=1741931076; x=1742535876;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oWDVNs/Ky1kr22nG+zE1aWzHgtPtsR/JIVAxbzOlUAI=;
+        b=p2LqO5p77TJfnTBPQtHP7kwZMgQ1kt9T2/InVM2P+Xe6YfmIDFjP6q1cVhDfg9PeqQ
+         aVBi1Q9EgzK3cR/FFoXjHzzpWyQyVTJl5eO1ksZDMiAdr3nnxpwBqaFbGW0eUDpRWN0Q
+         JciXDxfLjN5IWHf2Ezt5ElG1nnxyKwIbHxofQhB9rHy6swjjxnrdUpa12goALvJskLBh
+         XPHwmoXvc0jAqLdXV5Ey0PDQodZvT+VdCxWier5IwHkYl0XA1Y6+EBb586XrwOLksB/f
+         9aDJjgfhQVq4nFTtN4Nzn6QI+lpwBJksPxO5WOQAA/eCWwpx8BdjvlgV/7XmOPrl96SR
+         0h/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWf++Xrd+XqZRFtE+7d6oMHLzdb6Aj9lLAhzIKcF6nKkBZ73ksi3YdUT55ybUADTh4lbBcOyusXqr9wvc8BSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjK/rbTewkc8M0M4weSqrFkytH+q7OgmM0XC7tlIeQJtmWkBgU
+	Aa44HdEa8j8A5Z3MAWtRi6pOvTRcpCwEbpHRVeXzsOtgeam63GsW8RVJSdsOr4TOdA1wcfaBdEl
+	Hzz2WWk6BaVhktNmnFaYqQvPzjkrCs6Hz7MhJ
+X-Gm-Gg: ASbGncuQ8rNslbJnh00J1dLgKhtUJZ1jNxurZ4bSGf7KO8I1BvLpR4ppzAJmxcQTM1l
+	uPhSVSKE+W+C0OIW3tX8uozeqgDOMYn7Rkkl/NyewWcqlt7Bmv/MOIqB5h6Sw8JfCMtZlvNhHIg
+	H0mdbtZRadhUWx0zM1qRDrnVxSt10=
+X-Google-Smtp-Source: AGHT+IFGh3IBCxZQsXyrAhad6lSlUVCw7oB6N7KFiVMK9lbF7R8xmBUyBEiMCVFLK/KAP8uIHN9iLVDOfUUkwcp3Itg=
+X-Received: by 2002:a05:6214:dab:b0:6d8:ab7e:e554 with SMTP id
+ 6a1803df08f44-6eaeaabea08mr20508076d6.34.1741931075581; Thu, 13 Mar 2025
+ 22:44:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250302221518.76874-1-sergio.collado@gmail.com>
+In-Reply-To: <20250302221518.76874-1-sergio.collado@gmail.com>
+From: David Gow <davidgow@google.com>
+Date: Fri, 14 Mar 2025 13:44:24 +0800
+X-Gm-Features: AQ5f1JpxMZ6q6jOB4Te9FybBMD4IIdV92-wLXuoAqTAIU1lY8GSqaO3csXEv5ao
+Message-ID: <CABVgOSm=5Q0fM6neBhxSbOUHBgNzmwf2V22vsYC10YRBT=kN1g@mail.gmail.com>
+Subject: Re: [PATCH v9] Kunit to check the longest symbol length
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Cc: Rae Moar <rmoar@google.com>, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000004276d063046efb3"
 
-Methods receive a slice and perform size check to add
-a valid way to make conversion safe.
-In the invalid case return the EINVAL error.
+--00000000000004276d063046efb3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The conversion between slices ([T])
-is separated from others, because I couldn't implement it
-in the same way as the other conversions.
+On Mon, 3 Mar 2025 at 06:15, Sergio Gonz=C3=A1lez Collado
+<sergio.collado@gmail.com> wrote:
+>
+> The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
+> in the reference [1]. This patch adds kunit test suite to check the longe=
+st
+> symbol length. These tests verify that the longest symbol length defined
+> is supported.
+>
+> This test can also help other efforts for longer symbol length,
+> like [2].
+>
+> The test suite defines one symbol with the longest possible length.
+>
+> The first test verify that functions with names of the created
+> symbol, can be called or not.
+>
+> The second test, verify that the symbols are created (or
+> not) in the kernel symbol table.
+>
+> [1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
+> [2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org=
+/
+>
+> Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+> Reviewed-by: Rae Moar <rmoar@google.com>
+> Signed-off-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/504
+> ---
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1119
-Signed-off-by: christian <christiansantoslima21@gmail.com>
----
- rust/kernel/transmute.rs | 67 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 64 insertions(+), 3 deletions(-)
+Acked-by: David Gow <davidgow@google.com>
 
-diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-index 1c7d43771a37..5924c0daccfc 100644
---- a/rust/kernel/transmute.rs
-+++ b/rust/kernel/transmute.rs
-@@ -2,6 +2,8 @@
- 
- //! Traits for transmuting types.
- 
-+use crate::prelude::{Error, EINVAL};
-+
- /// Types for which any bit pattern is valid.
- ///
- /// Not all types are valid for all values. For example, a `bool` must be either zero or one, so
-@@ -12,26 +14,85 @@
- /// # Safety
- ///
- /// All bit-patterns must be valid for this type. This type must not have interior mutability.
--pub unsafe trait FromBytes {}
-+///
-+/// # Example
-+///
-+/// ```
-+/// let foo = &[1, 2, 3, 4];
-+///
-+/// let result = u8::from_bytes(foo);
-+///
-+/// assert_eq!(*result, 0x40300201);
-+/// ```
-+pub trait FromBytes {
-+    /// Receives a slice of bytes and converts to a valid reference of Self when it's possible.
-+    fn from_bytes(slice_of_bytes: &[u8]) -> Result<&Self, Error>;
-+
-+    /// Receives a mutable slice of bytes and converts to a valid reference of Self when it's possible.
-+    fn from_bytes_mut(mut_slice_of_bytes: &mut [u8]) -> Result<&mut Self, Error>;
-+}
- 
- macro_rules! impl_frombytes {
-     ($($({$($generics:tt)*})? $t:ty, )*) => {
-         // SAFETY: Safety comments written in the macro invocation.
--        $(unsafe impl$($($generics)*)? FromBytes for $t {})*
-+        $(impl$($($generics)*)? FromBytes for $t {
-+            fn from_bytes(slice_of_bytes: &[u8]) -> Result<&$t, Error> {
-+                if slice_of_bytes.len() == core::mem::size_of::<$t>() {
-+                    let slice_ptr = slice_of_bytes.as_ptr() as *const $t;
-+                    unsafe { Ok(&*slice_ptr) }
-+                } else {
-+                    Err(EINVAL)
-+                }
-+            }
-+
-+            fn from_bytes_mut(mut_slice_of_bytes: &mut [u8]) -> Result<&mut $t, Error> {
-+                if mut_slice_of_bytes.len() == core::mem::size_of::<$t>() {
-+                    let slice_ptr = mut_slice_of_bytes.as_mut_ptr() as *mut $t;
-+                    unsafe { Ok(&mut *slice_ptr) }
-+                } else {
-+                    Err(EINVAL)
-+                }
-+            }
-+        })*
-     };
- }
- 
- impl_frombytes! {
-     // SAFETY: All bit patterns are acceptable values of the types below.
-+    // SAFETY: Dereferencing the pointer is safe because slice has the same size of Self.
-     u8, u16, u32, u64, usize,
-     i8, i16, i32, i64, isize,
- 
-     // SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
-     // patterns are also acceptable for arrays of that type.
--    {<T: FromBytes>} [T],
-+    // SAFETY: Dereferencing the pointer is safe because slice has the same size of Self.
-     {<T: FromBytes, const N: usize>} [T; N],
- }
- 
-+impl<T: FromBytes> FromBytes for [T] {
-+    fn from_bytes(slice_of_bytes: &[u8]) -> Result<&Self, Error> {
-+        let slice_ptr = slice_of_bytes.as_ptr() as *const T;
-+        if slice_of_bytes.len() % core::mem::size_of::<T>() == 0 {
-+            let slice_len = slice_of_bytes.len() / core::mem::size_of::<T>();
-+            // SAFETY: Creating a slice is safe because the slice can be divided into T sized blocks.
-+            unsafe { Ok(core::slice::from_raw_parts(slice_ptr, slice_len)) }
-+        } else {
-+            Err(EINVAL)
-+        }
-+    }
-+
-+    fn from_bytes_mut(mut_slice_of_bytes: &mut [u8]) -> Result<&mut Self, Error> {
-+        let slice_ptr = mut_slice_of_bytes.as_mut_ptr() as *mut T;
-+        if mut_slice_of_bytes.len() % core::mem::size_of::<T>() == 0 {
-+            let slice_len = mut_slice_of_bytes.len() / core::mem::size_of::<T>();
-+            // SAFETY: Creating a slice is safe because the slice can be divided into T sized blocks.
-+            unsafe { Ok(core::slice::from_raw_parts_mut(slice_ptr, slice_len)) }
-+        } else {
-+            Err(EINVAL)
-+        }
-+    }
-+}
-+
- /// Types that can be viewed as an immutable slice of initialized bytes.
- ///
- /// If a struct implements this trait, then it is okay to copy it byte-for-byte to userspace. This
--- 
-2.48.1
+I suspect that this might end up finding issues with some tools, so
+I'd not be surprised if it breaks something, but given the whole point
+is to uncover issues, we should accept it and find out. :-)
 
+Thanks for putting so much time into this -- sorry it ended up taking so lo=
+ng.
+-- David
+
+
+> V8 -> V9: removed unused macro & corrected error message
+> ---
+> V7 -> V8: typo fixed & rebased
+> ---
+> V6 -> V7: rebased
+> ---
+> V5 -> V6: remove tests with symbols of length KSYM_NAME_LEN+1
+> ---
+> V4 -> V5: fixed typo, added improved description
+> ---
+> V3 -> V4: add x86 mantainers, add new reference.
+> ---
+> V2 -> V3: updated base and added MODULE_DESCRIPTION() and MODULE_AUTHOR()
+> ---
+> V1 -> V2: corrected CI tests. Added fix proposed at [3]
+>
+> [3] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef0e12=
+bb834d01ed1ebdcae12ef5f2add342077
+>
+> The test execution should result in something like:
+> ```
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D longest-symbol (=
+4 subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] [PASSED] test_longest_symbol
+> [20:04:35] [PASSED] test_longest_symbol_kallsyms
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [PASSED] l=
+ongest-symbol =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> [20:04:35] Testing complete. Ran 4 tests: passed: 4
+> ```
+> ---
+>  arch/x86/tools/insn_decoder_test.c |  3 +-
+>  lib/Kconfig.debug                  |  9 ++++
+>  lib/Makefile                       |  2 +
+>  lib/longest_symbol_kunit.c         | 82 ++++++++++++++++++++++++++++++
+>  4 files changed, 95 insertions(+), 1 deletion(-)
+>  create mode 100644 lib/longest_symbol_kunit.c
+>
+> diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_dec=
+oder_test.c
+> index 472540aeabc2..6c2986d2ad11 100644
+> --- a/arch/x86/tools/insn_decoder_test.c
+> +++ b/arch/x86/tools/insn_decoder_test.c
+> @@ -10,6 +10,7 @@
+>  #include <assert.h>
+>  #include <unistd.h>
+>  #include <stdarg.h>
+> +#include <linux/kallsyms.h>
+>
+>  #define unlikely(cond) (cond)
+>
+> @@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
+>         }
+>  }
+>
+> -#define BUFSIZE 256
+> +#define BUFSIZE (256 + KSYM_NAME_LEN)
+>
+>  int main(int argc, char **argv)
+>  {
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 1af972a92d06..62d43aa9e8f0 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -2838,6 +2838,15 @@ config FORTIFY_KUNIT_TEST
+>           by the str*() and mem*() family of functions. For testing runti=
+me
+>           traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
+>
+> +config LONGEST_SYM_KUNIT_TEST
+> +       tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
+> +       depends on KUNIT && KPROBES
+> +       default KUNIT_ALL_TESTS
+> +       help
+> +         Tests the longest symbol possible
+> +
+> +         If unsure, say N.
+> +
+>  config HW_BREAKPOINT_KUNIT_TEST
+>         bool "Test hw_breakpoint constraints accounting" if !KUNIT_ALL_TE=
+STS
+>         depends on HAVE_HW_BREAKPOINT
+> diff --git a/lib/Makefile b/lib/Makefile
+> index d5cfc7afbbb8..e8fec9defec2 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -393,6 +393,8 @@ obj-$(CONFIG_FORTIFY_KUNIT_TEST) +=3D fortify_kunit.o
+>  obj-$(CONFIG_CRC_KUNIT_TEST) +=3D crc_kunit.o
+>  obj-$(CONFIG_SIPHASH_KUNIT_TEST) +=3D siphash_kunit.o
+>  obj-$(CONFIG_USERCOPY_KUNIT_TEST) +=3D usercopy_kunit.o
+> +obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) +=3D longest_symbol_kunit.o
+> +CFLAGS_longest_symbol_kunit.o +=3D $(call cc-disable-warning, missing-pr=
+ototypes)
+>
+>  obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_is_allowed.o
+>
+> diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
+> new file mode 100644
+> index 000000000000..e3c28ff1807f
+> --- /dev/null
+> +++ b/lib/longest_symbol_kunit.c
+> @@ -0,0 +1,82 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Test the longest symbol length. Execute with:
+> + *  ./tools/testing/kunit/kunit.py run longest-symbol
+> + *  --arch=3Dx86_64 --kconfig_add CONFIG_KPROBES=3Dy --kconfig_add CONFI=
+G_MODULES=3Dy
+> + *  --kconfig_add CONFIG_RETPOLINE=3Dn --kconfig_add CONFIG_CFI_CLANG=3D=
+n
+> + *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=3Dn
+> + */
+> +
+> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> +
+> +#include <kunit/test.h>
+> +#include <linux/stringify.h>
+> +#include <linux/kprobes.h>
+> +#include <linux/kallsyms.h>
+> +
+> +#define DI(name) s##name##name
+> +#define DDI(name) DI(n##name##name)
+> +#define DDDI(name) DDI(n##name##name)
+> +#define DDDDI(name) DDDI(n##name##name)
+> +#define DDDDDI(name) DDDDI(n##name##name)
+> +
+> +/*Generate a symbol whose name length is 511 */
+> +#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
+> +
+> +#define RETURN_LONGEST_SYM 0xAAAAA
+> +
+> +noinline int LONGEST_SYM_NAME(void);
+> +noinline int LONGEST_SYM_NAME(void)
+> +{
+> +       return RETURN_LONGEST_SYM;
+> +}
+> +
+> +_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) =3D=3D KSYM_NAME_LE=
+N,
+> +"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
+> +__stringify(KSYM_NAME_LEN) ", but found: "
+> +__stringify(sizeof(LONGEST_SYM_NAME)));
+> +
+> +static void test_longest_symbol(struct kunit *test)
+> +{
+> +       KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, LONGEST_SYM_NAME());
+> +};
+> +
+> +static void test_longest_symbol_kallsyms(struct kunit *test)
+> +{
+> +       unsigned long (*kallsyms_lookup_name)(const char *name);
+> +       static int (*longest_sym)(void);
+> +
+> +       struct kprobe kp =3D {
+> +               .symbol_name =3D "kallsyms_lookup_name",
+> +       };
+> +
+> +       if (register_kprobe(&kp) < 0) {
+> +               pr_info("%s: kprobe not registered", __func__);
+> +               KUNIT_FAIL(test, "test_longest_symbol kallsyms: kprobe no=
+t registered\n");
+> +               return;
+> +       }
+> +
+> +       kunit_warn(test, "test_longest_symbol kallsyms: kprobe registered=
+\n");
+> +       kallsyms_lookup_name =3D (unsigned long (*)(const char *name))kp.=
+addr;
+> +       unregister_kprobe(&kp);
+> +
+> +       longest_sym =3D
+> +               (void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAM=
+E));
+> +       KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, longest_sym());
+> +};
+> +
+> +static struct kunit_case longest_symbol_test_cases[] =3D {
+> +       KUNIT_CASE(test_longest_symbol),
+> +       KUNIT_CASE(test_longest_symbol_kallsyms),
+> +       {}
+> +};
+> +
+> +static struct kunit_suite longest_symbol_test_suite =3D {
+> +       .name =3D "longest-symbol",
+> +       .test_cases =3D longest_symbol_test_cases,
+> +};
+> +kunit_test_suite(longest_symbol_test_suite);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_DESCRIPTION("Test the longest symbol length");
+> +MODULE_AUTHOR("Sergio Gonz=C3=A1lez Collado");
+>
+> base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+> --
+> 2.39.2
+>
+
+--00000000000004276d063046efb3
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIUnQYJKoZIhvcNAQcCoIIUjjCCFIoCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
+4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
+mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
+KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
+VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
+ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
+vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
+BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
+OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
+1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
+ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
+BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
+18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
+bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
+AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
+BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
+A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
+MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
+jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
+0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
+jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
+jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
+C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
+NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
+zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
+A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
+hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+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
+YE9NAgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
+/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFHgsCGkO2Hex
+N6ybc+GeQEb6790qMFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
+MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
+LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
+bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
+FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQAs
+exV05yVDmPhHRqOq9lAbfWOUvEf8zydxabZUHna6bayb83jD2eb9nMGGEprfuNBRmFg35sgF1TyN
++ieuQakvQYmY8tzK49hhHa2Y3qhGCTqYTHO3ypHvhHsZiGbL0gmdgB9P8ssVIws//34ae99GUOxo
+XKTxPwwsQ5Arq42besv3/HXAW+4nRAT8d3ht5ZWCHc5rjL/vdGzu7PaYo3u0da69AZ8Sh4Gf5yoc
+QANr2ZkMrxXbLmSmnRvbkQrzlZp2YbTFnczx46429D6q75/FNFOL1vAjxtRAPzkyACvW0eKvchza
+TMvvD3IWERLlcBL5yXpENc3rI8/wVjqgAWYxlFg1b/4b/TCgYe2MZC0rx4Uh3zTIbmPNiHdN6QZ9
+oDiYzWUcqWZ5jCO4bMKNlVJXeCvdANLHuhcC8FONj5VzNgYXs6gWkp9/Wt6XnQPX4dF4JBa8JdL/
+cT46RJIzoiJHEx/8syO5FparZHIKbkunoq6niPsRaQUGeqWc56H4Z1sQXuBJN9fhqkIkG0Ywfrwt
+uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
+PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
+Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
+BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
+pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgtFcUOkUMFsL2fw/XskZJQbWTT4WK
+GxyE3JPp0GjzvS8wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+MzE0MDU0NDM2WjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
+AQEBBQAEggEAAdME5q75i+/F3r2epdfF6kCNY6otea9KIxoJCG03wXAGSuqGbDb+JvD5JXS0An1Y
+yDgiyX3VgKKNZLqZ7xRu6lzTniMQ8sCoZ4UMGDeUc1fiz1QGTDlLgaSrAWxKPQTHEdgE3yM83f5H
+S+WzQpzxK3/ivfxJMqR+Ve2WRzoa3UTh++K/LLTw+bqD8kJZ0TIrXZtnnzuOF3kI0yCdVfjhtmhR
+E0LnRD2FcBC3cFgLDWJUD9nRUW50bQUJWTzcwhZ7OCtFw8ixrG/Cq+irZVaXAnltGFPRQIMqzJoY
+Ov29PiI1vYPbt2swM/rfzqwwjglZIrDEuVHo3KmmYa97xdApgg==
+--00000000000004276d063046efb3--
