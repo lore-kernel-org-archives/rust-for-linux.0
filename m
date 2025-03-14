@@ -1,100 +1,111 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8B3202C21;
-	Fri, 14 Mar 2025 14:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D262D1990BA;
+	Fri, 14 Mar 2025 14:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741963418; cv=none; b=Y5QDwkXYQTsUZzjrD4sPiz2gwc0lFBWhPzPUD7D8ZGxnRxC/lcsfdKVWgByrMMD/aN2518tkzD2LOmu5BoYHFAN1vB4V7uTLzbf9aQS1jymyq2rj9uiofaAlCMO8dInB+wBPOquZ1T4uktFJzb72Cu3L7J4oOydUcNFNhs8WKsk=
+	t=1741963744; cv=none; b=RcF6qMrbR+si3eQ2WKhCfEVhZGSfn1eoaUVYix5OGyqDyAPo+fXj42CAIraAXFeJDt94w58crnSq9OIXO7SDDeh8g09SDEmarsM8IpbvIXyUVVZ/+cYJgDL+AwZU4J03aBkePjzy70nX5FKm/5qPtCy8apzJ47X2hPpPAxsBSRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741963418; c=relaxed/simple;
-	bh=XlYepE0qm5GS8Ms85NOW2h1KCpwn8+/laEx53InJ+i0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=miq3x5kNT0TkfVwLnnSGiwylajVTCwH84osJXLMAik+30Vvr39PLGRErrwN4emsuj7eVqGZE4/X25/Nd3D5hpEOtjzsYCJ2/WCSszg8CPmkiWyZxU0K8QjCFhNLCube5f5pRSr7ergnUQmPUdDvUHVQiTUK/n+0nyS1a9+RnXSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rg0iiy0V; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741963744; c=relaxed/simple;
+	bh=umdtNZvCMKR3hyTkxSzAD7wrEpgB28z7LyK6WGLi+Fw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dA3+TbLSggwtIJjXAg9yq9hp7mJnMgk+tRhTGgr9h4VaZcGxn6zUC1f77M+9duB0qAqamYrcviPYnmK3WmsghiGMsqGj6QwUopPRQovXdn/88UQ5YbTJ5nFzYkDZjSfpM2wSTliI6nBuijR14G6du4oVzs6gd146HFQZEu1dLKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFb1CS52; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rg0iiy0V"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-301317939a0so508403a91.2;
-        Fri, 14 Mar 2025 07:43:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741963417; x=1742568217; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XlYepE0qm5GS8Ms85NOW2h1KCpwn8+/laEx53InJ+i0=;
-        b=Rg0iiy0VnUsbiislzoQ/wIpGr3luq0m86cz/pjTxR7lR87Bgg5LxstWEEYCj8lov96
-         mRcQzPltrun3rN+kQvbEHs5+JICI1x9wnVYyrCrDId//8izRzu0t+H4kvZ/S+ABDAgow
-         qNjBvPbMvTGEfukudNzKOZaK/8an0c/Gut7vDMyqXtfX1l5jlMfyPK60+nj30BJp09t/
-         n5nzbq2qNb32qPA9EXAhkT7Di2r8DzTNsgtX+AU+AYswpSJLvm0I6bXhfOTdCmDg2ujZ
-         L8Z8foOageysz2dJG8rmLhzlFBTANkvj+0qxM5YrMi9+2NyaR+d7/T/5+iXYeuWF6Hv3
-         Todg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741963417; x=1742568217;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XlYepE0qm5GS8Ms85NOW2h1KCpwn8+/laEx53InJ+i0=;
-        b=oJxCOl3W0JCAGkn6B8hlmIP8mYJ81ukT78dakixTWNd+WfhqMlu52PAu7TLzmly+oP
-         7Iz6BWsuXoSgSr1J+IvPKP5/9PwltEgZiozU1X1Sg5zbBIks4QqxqNARkN8ptbE1bEv+
-         ZHkF5YuDaEhIm6NgTo0FJBWBQFR1K8xCYlzyTEPzuJyQG57IkSYJLTR58HcpmF4j4XIz
-         EXGdrRYWjt/9XjL+AHE8JwWHtbxhEgm83Si8VmLIIUfCNaASmy/De6BjLoriPtLgwT83
-         6Ps9YS0ssJG51L346WcF0V5n18F3vDzuLptDP2vxcNvPXp0uUkOu1OrOFijj6ttergVq
-         PF2A==
-X-Forwarded-Encrypted: i=1; AJvYcCV9Xug4eF1Z8ZSaYQyQwOG0Iq7XSR18SpCavwiWT3/ShAodUKJdh7h/4Ai19O5T2czKmYjAKRdfrJSXysY=@vger.kernel.org, AJvYcCW99RRGI1Lvb2tu5LI9CvgyaeYLayimx4s73kbejiyIyr/4j5hn9E75Keud7oUO37grB5Q9@vger.kernel.org, AJvYcCWKf+V2Iq2hyA1mp+l0W1lBPpKulLmnL12uBM+s39tHV9W3cDoGvJ8l3L0xVmnGaZ1AzUxpebkESbsG7ZseJO8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK4r7pO+m5UUR6QI+PvZhStUU+jdPTMU8d29KXFsHO7CmzduTJ
-	d6Sa9PIQGIjFnOP1QupfC8AUqcktPpfd9DTYmULfWkSZTOWF8Z9p0aA/yW7Hf6jMgbBsl7gt0RR
-	fXa0uukzrJsttsND8A+hssNVQbA8=
-X-Gm-Gg: ASbGncuk6B1UWz/mvE9sqMzWDyN157m2h/gUJ5M5HQFdv75gAY+DX6wGRAtXjYQ6ehK
-	ou3vBDiPYzPeaiDYJJnWGOQTJ2ObUsRnoyX/LuQCWupr7sHbJlbJ6dnB/ngHBU8CMsymyXxfwoP
-	7Bx2/ptF9Cwpb/vG6lIkoapDjCPg==
-X-Google-Smtp-Source: AGHT+IGrQ+XJ1EOoVoOVpa/rZyFLtn7pDDFG2lG8nu+cAc3IqwYiYm4lfiaEKGMt0ILOHT7mZysUFHafTEnb4rjqd90=
-X-Received: by 2002:a17:90b:4f82:b0:2ff:7c5a:216d with SMTP id
- 98e67ed59e1d1-30151d8178fmr1503361a91.5.1741963416698; Fri, 14 Mar 2025
- 07:43:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFb1CS52"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3D7C4CEE3;
+	Fri, 14 Mar 2025 14:49:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741963744;
+	bh=umdtNZvCMKR3hyTkxSzAD7wrEpgB28z7LyK6WGLi+Fw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kFb1CS52A91O11wr5MdYvoQ3kIKjDKCftOYtJBonBRofQ/ynlA2l4ZKjRVoyiopNa
+	 Hkw2h6F9wvGGLd6ri6eUd98mLx4XpWOcHIob/vxoVICTR7QiGLosi2eZ8g9jGeAgPl
+	 vL/Vrc5HbS58gfsb7hky1+0qf/dvrSODv+KsxKTJ2yo0d/sYCf8Qhv6ElKzrKaUXFs
+	 rWSMJKHA1gIlHyJlV9gIc61W6dJMxfjAqLWvnBOIkS50chYGyKO5dBUYMXHSJUbEvp
+	 cti+pZUpM9RUZ2o+dEebLzcwcd2JhesY3fJ5Tkx+6S817IPOoJ9ZyvfWnUfTBIIxkT
+	 tfiDt4DYNVlSQ==
+Date: Fri, 14 Mar 2025 16:48:59 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Fiona Behrens <me@kloenk.dev>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: TPM DEVICE DRIVER: linux-tpmdd-nixos
+Message-ID: <Z9RB2zwtCBq32CKy@kernel.org>
+References: <20250306211716.51120-1-jarkko@kernel.org>
+ <CANiq72kfo1zSsLc5TWr3wS3t2e5OK_hnECGMpAv-7ezyBsnPig@mail.gmail.com>
+ <Z8skWemfaM7siKl8@kernel.org>
+ <m2ikodxjbc.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250312101723.149135-1-richard120310@gmail.com> <20250313043006.GA1396688@joelnvbox>
-In-Reply-To: <20250313043006.GA1396688@joelnvbox>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 14 Mar 2025 15:43:23 +0100
-X-Gm-Features: AQ5f1JpdKA2_xM48XN7Rbmeslc2fqSu4W8JItvhuGzx6_FCp0JcLccJntLsSGCo
-Message-ID: <CANiq72m3pDny0fUkg4XAFsuA72ku0BKcoj5+zKza=o6Ek_QASQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: sync: rcu: Mark Guard methods as inline
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: I Hsin Cheng <richard120310@gmail.com>, rostedt@goodmis.org, paulmck@kernel.org, 
-	frederic@kernel.org, neeraj.upadhyay@kernel.org, joel@joelfernandes.org, 
-	josh@joshtriplett.org, boqun.feng@gmail.com, urezki@gmail.com, 
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com, 
-	qiang.zhang1211@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, rcu@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org, 
-	jserv@ccns.ncku.edu.tw
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <m2ikodxjbc.fsf@kloenk.dev>
 
-On Thu, Mar 13, 2025 at 5:30=E2=80=AFAM Joel Fernandes <joelagnelf@nvidia.c=
-om> wrote:
->
-> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
->
-> If no objections, I can queue it for 6.16 but let me know if Rust maintai=
-ners
-> prefer to take it.
+On Thu, Mar 13, 2025 at 12:26:47PM +0100, Fiona Behrens wrote:
+> Jarkko Sakkinen <jarkko@kernel.org> writes:
+> 
+> > On Fri, Mar 07, 2025 at 10:22:10AM +0100, Miguel Ojeda wrote:
+> >> On Thu, Mar 6, 2025 at 10:17 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >> >
+> >> > This is my new testing tree for my kernel tree. It will over time replace
+> >> > my previous BuildRoot based testing tree (but not just yet).
+> >> 
+> >> Thanks for Cc'ing! I assume this is related to your subsystem and that
+> >> it will go through there.
+> >> 
+> >> Cc'ing Fiona as well since she was interested in Nix and Tamir who
+> >> does macOS; so they may be interested.
+> >
+> > Yeah, so I just used get_maintainer.pl and it picked you but I'm
+> > happy if you enjoy it :-) linux-tpmdd comes originally from TPM driver
+> > but these days it's really just my maintainer tree for every possible
+> > pull request I do, as I'm also e.g. Linux keyring co-maintainer.
+> >
+> > My biggest barrier with Rust has been testing (like almost always in any
+> > software engineering problem) so I just figured out something that would
+> > sort it out for me. I also thought that by starting doing some testing
+> > for Rust patch sets that contain some tests would be a low-barrier way
+> > for me to learn a bit how everything works in that side.
+> >
+> > I think I quickly talked about this with Fiona and this is a bit
+> > different angle in a way i.e., using Nix for profit as a tool to
+> > implement together with Docker a trivial embedded build system so that
+> > you can build kernel + EFI in any operating system (I personally use
+> > Fedora).
+> 
+> Yeah exactly, took me a while to understand your usage :)
+> I use nix mainly as a dev shell and plan to add building the kernel
+> through nix.
+> 
+> Once I have the time and remember this still then I might try to include
+> your work in the nix repo I maintain. Maybe we can also build docker
+> container images for kernel development processes using nix and stuff
+> like that.
 
-Thanks! That would be great -- FWIW:
+Yes, so no plans to step on your toes. I'm going to keep this
+"opionated repository" for my own maintainer work :-) And
+possibly for some contributions outside my usual sandbox.
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+That said, anything can be taken for more generic use... [ping
+me for license incompatibility issues, I de-facto to GPLv3 but
+permit to other licensing framework on request].
 
-By the way, should `read_lock()` be marked too? It just calls another
-(now `#[inline]` one).
+> 
+> Thanks,
+> Fiona
 
-Cheers,
-Miguel
+BR, Jarkko
