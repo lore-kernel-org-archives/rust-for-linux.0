@@ -1,111 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D262D1990BA;
-	Fri, 14 Mar 2025 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22381FFC49
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Mar 2025 15:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741963744; cv=none; b=RcF6qMrbR+si3eQ2WKhCfEVhZGSfn1eoaUVYix5OGyqDyAPo+fXj42CAIraAXFeJDt94w58crnSq9OIXO7SDDeh8g09SDEmarsM8IpbvIXyUVVZ/+cYJgDL+AwZU4J03aBkePjzy70nX5FKm/5qPtCy8apzJ47X2hPpPAxsBSRI=
+	t=1741964560; cv=none; b=PmqoVe/bLpmhY//z0NrkuZjaTbuyHLPRb20Fx4LJb77KWpUR6AjjpfbWvnKOzNdQ18eAafUtsiB9DY/50cM4Ie2HAEO74U4gnAhTq8+xhTqOOm7gXFy5aNtUF2UXlxhN0eDLNmkGDMU6Hegsyohurkv7W5Z+te+x1OPcZ1hVbg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741963744; c=relaxed/simple;
-	bh=umdtNZvCMKR3hyTkxSzAD7wrEpgB28z7LyK6WGLi+Fw=;
+	s=arc-20240116; t=1741964560; c=relaxed/simple;
+	bh=oVTWb/iSf8zd5q71b+0aDp2MfQ1jwkV4CJwJ7ZKwr3Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dA3+TbLSggwtIJjXAg9yq9hp7mJnMgk+tRhTGgr9h4VaZcGxn6zUC1f77M+9duB0qAqamYrcviPYnmK3WmsghiGMsqGj6QwUopPRQovXdn/88UQ5YbTJ5nFzYkDZjSfpM2wSTliI6nBuijR14G6du4oVzs6gd146HFQZEu1dLKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFb1CS52; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UNSO2QQHR75cenghoPMtaBGZzFSOwoyJSceX8WmVFt2gppMBAzUd6kdRvQxwLxsZp76FrWS53cOQaBD8OQCGfXgu3g2L8g459Pb7SV5Qek8ETJVkS4b2918SYFqleJWxCyYw2XKJrpFXQpkq3IEDwisV5uUonlj84oM755BY3lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRKv00NP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFb1CS52"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3D7C4CEE3;
-	Fri, 14 Mar 2025 14:49:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741963744;
-	bh=umdtNZvCMKR3hyTkxSzAD7wrEpgB28z7LyK6WGLi+Fw=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRKv00NP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E9CC4CEE3;
+	Fri, 14 Mar 2025 15:02:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741964560;
+	bh=oVTWb/iSf8zd5q71b+0aDp2MfQ1jwkV4CJwJ7ZKwr3Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kFb1CS52A91O11wr5MdYvoQ3kIKjDKCftOYtJBonBRofQ/ynlA2l4ZKjRVoyiopNa
-	 Hkw2h6F9wvGGLd6ri6eUd98mLx4XpWOcHIob/vxoVICTR7QiGLosi2eZ8g9jGeAgPl
-	 vL/Vrc5HbS58gfsb7hky1+0qf/dvrSODv+KsxKTJ2yo0d/sYCf8Qhv6ElKzrKaUXFs
-	 rWSMJKHA1gIlHyJlV9gIc61W6dJMxfjAqLWvnBOIkS50chYGyKO5dBUYMXHSJUbEvp
-	 cti+pZUpM9RUZ2o+dEebLzcwcd2JhesY3fJ5Tkx+6S817IPOoJ9ZyvfWnUfTBIIxkT
-	 tfiDt4DYNVlSQ==
-Date: Fri, 14 Mar 2025 16:48:59 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Fiona Behrens <me@kloenk.dev>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	b=xRKv00NPTJ6FbFDg3SMgutO70tCDtfRsWXUfvfhH9jJ4hE+ociFwdIjl9ZVkncfly
+	 +8SVYrU5cKJ03auiiJCQUfQMB5ohwHVhrwcLzogoVYoWac2zjRUVJEUZHZRhgH/ECr
+	 xcw+71z8RSU5hIz3S5thSJpxSsDZG5JZTlTMFttI=
+Date: Fri, 14 Mar 2025 16:02:35 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Filipe Xavier <felipeaggger@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: TPM DEVICE DRIVER: linux-tpmdd-nixos
-Message-ID: <Z9RB2zwtCBq32CKy@kernel.org>
-References: <20250306211716.51120-1-jarkko@kernel.org>
- <CANiq72kfo1zSsLc5TWr3wS3t2e5OK_hnECGMpAv-7ezyBsnPig@mail.gmail.com>
- <Z8skWemfaM7siKl8@kernel.org>
- <m2ikodxjbc.fsf@kloenk.dev>
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	felipe_life@live.com
+Subject: Re: [PATCH] rust: add new macro for common bitwise operations
+Message-ID: <2025031444-acre-boxlike-8af1@gregkh>
+References: <20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com>
+ <2025030439-sharpener-overkill-ada2@gregkh>
+ <1A434368-6B92-4C64-8B5A-17499C8E2F1B@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <m2ikodxjbc.fsf@kloenk.dev>
+In-Reply-To: <1A434368-6B92-4C64-8B5A-17499C8E2F1B@collabora.com>
 
-On Thu, Mar 13, 2025 at 12:26:47PM +0100, Fiona Behrens wrote:
-> Jarkko Sakkinen <jarkko@kernel.org> writes:
+On Fri, Mar 14, 2025 at 11:18:56AM -0300, Daniel Almeida wrote:
+> Hi Greg,
 > 
-> > On Fri, Mar 07, 2025 at 10:22:10AM +0100, Miguel Ojeda wrote:
-> >> On Thu, Mar 6, 2025 at 10:17 PM Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >> >
-> >> > This is my new testing tree for my kernel tree. It will over time replace
-> >> > my previous BuildRoot based testing tree (but not just yet).
-> >> 
-> >> Thanks for Cc'ing! I assume this is related to your subsystem and that
-> >> it will go through there.
-> >> 
-> >> Cc'ing Fiona as well since she was interested in Nix and Tamir who
-> >> does macOS; so they may be interested.
-> >
-> > Yeah, so I just used get_maintainer.pl and it picked you but I'm
-> > happy if you enjoy it :-) linux-tpmdd comes originally from TPM driver
-> > but these days it's really just my maintainer tree for every possible
-> > pull request I do, as I'm also e.g. Linux keyring co-maintainer.
-> >
-> > My biggest barrier with Rust has been testing (like almost always in any
-> > software engineering problem) so I just figured out something that would
-> > sort it out for me. I also thought that by starting doing some testing
-> > for Rust patch sets that contain some tests would be a low-barrier way
-> > for me to learn a bit how everything works in that side.
-> >
-> > I think I quickly talked about this with Fiona and this is a bit
-> > different angle in a way i.e., using Nix for profit as a tool to
-> > implement together with Docker a trivial embedded build system so that
-> > you can build kernel + EFI in any operating system (I personally use
-> > Fedora).
+> > On 4 Mar 2025, at 11:09, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > 
+> > Nice, but why not use the same api/names that are already in the kernel
+> > for this type of functionality in the C .h files?  That way we have
+> > consistent names everywhere?
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
-> Yeah exactly, took me a while to understand your usage :)
-> I use nix mainly as a dev shell and plan to add building the kernel
-> through nix.
-> 
-> Once I have the time and remember this still then I might try to include
-> your work in the nix repo I maintain. Maybe we can also build docker
-> container images for kernel development processes using nix and stuff
-> like that.
+> IIUC, there is already someone working on that [0].
 
-Yes, so no plans to step on your toes. I'm going to keep this
-"opionated repository" for my own maintainer work :-) And
-possibly for some contributions outside my usual sandbox.
+Great!
 
-That said, anything can be taken for more generic use... [ping
-me for license incompatibility issues, I de-facto to GPLv3 but
-permit to other licensing framework on request].
+> Can we just leave this macro somewhat as-is as a mere convenience for driver authors?
 
-> 
-> Thanks,
-> Fiona
+Why have multiple apis for the same thing?  That just makes reviewers
+confused as well as developers.  We don't do that for C code :)
 
-BR, Jarkko
+> My latest review comments include a name change to make it less confusing in this regard.
+
+I would just like parity where ever possible to make things easier for
+everyone.
+
+thanks,
+
+greg k-h
