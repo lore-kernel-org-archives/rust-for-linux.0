@@ -1,40 +1,40 @@
-Received: from a8-71.smtp-out.amazonses.com (a8-71.smtp-out.amazonses.com [54.240.8.71])
+Received: from a48-105.smtp-out.amazonses.com (a48-105.smtp-out.amazonses.com [54.240.48.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181DD2E3368
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Mar 2025 03:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.8.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5684A2A1BF;
+	Fri, 14 Mar 2025 03:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.48.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741923955; cv=none; b=OiHSDm3ztD/u/0u0awLvFCbHwQ+Bya6ReMguBC1j8OAKCFiR/k7nNM4t/mZjE5ZBr0Ksl8+4I9QJ+b2sKNFiTIifme71xmZXJPjuUxWMXbS+id4nlDNMhgEDWgPs9oDZIvDsVCoUNaY5zREErRatz0/8297xdQmLkGdnI+Zh7+s=
+	t=1741923965; cv=none; b=WPK7+82jOV66EDzXOyDAoMs5uOaK2z+fDvFYjpdmwO7h7587HSyZeV3icaeyEpNMsPLCiUEKkiBg3krhvKfXUuoNcmEnBNQpbgX9YKw/aasLzmsCV8ytGpcES1rXFejFsrqkO/imEfyimK2LdCyoDFeZL6ognaUQ8WBAfY/0Vvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741923955; c=relaxed/simple;
-	bh=nqMW4C3NrIhhmINPXZE4/UA7SB+mYZp3/gNeD5mjykY=;
+	s=arc-20240116; t=1741923965; c=relaxed/simple;
+	bh=JMRugZggJ2ThMqml4c6bp2KzWmuB2zfRsMGqPrTwaxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cYRNoSEhgGeQ/64Mz1TH91po9nTGLdH6QjajEHKH6aH4RYNRNfP7Ua15psjam2RDttFMSyBkS+WqRRmb/jF/yAZkE8ihpjusqGa3yf+qAjT+HOIG5rHtQ+KroySMKUtXevmAxdFUAw7D4MjmJG/4YxFwCUpU20Ki/r1YArlIFrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=antoniohickey.com header.i=@antoniohickey.com header.b=bSljA+JT; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=pYiVReQi; arc=none smtp.client-ip=54.240.8.71
+	 MIME-Version; b=CVxVoUvzamwYp/gFCBbI+O0M3p8RfSpgaufGQaPvfo1+IY8tf3xBIKI+eqC08WUTPklwOVELzEYy4BhfywXZo12s1EpGvzKXtoYTqejnaE26rxiE+VoYcvRCzUxywvy/4CJnYTxd/CGHiuec/pdIBszHsKbXRhZyvwe7X9agJE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=antoniohickey.com header.i=@antoniohickey.com header.b=ZKMJNy9m; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=f7UyPLhJ; arc=none smtp.client-ip=54.240.48.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antoniohickey.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=antoniohickey.com header.i=@antoniohickey.com header.b="bSljA+JT";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="pYiVReQi"
+	dkim=pass (2048-bit key) header.d=antoniohickey.com header.i=@antoniohickey.com header.b="ZKMJNy9m";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="f7UyPLhJ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
 	s=cgcwyxycg75iw36cao5ku2ksreqpjkvc; d=antoniohickey.com;
-	t=1741923952;
+	t=1741923961;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
-	bh=nqMW4C3NrIhhmINPXZE4/UA7SB+mYZp3/gNeD5mjykY=;
-	b=bSljA+JTyX2xVLRa50bfPwFCw3Zl99uqhh8vfgfGmIs7BZPfzA5Tu2X8PgcnAoDT
-	pKTbn07tafsMpXYzF0cOqqBpsGSTuT/DOpzPsbgfgaqO0c/2BmLzlJIwp/20RNeeWVB
-	0JJwPXfh2rRtx3we8x8PG3Ww5PuG5LZyeDXTJCZgvDbHQ0QGBkEbvO35zSdoU3Sd68S
-	/BBkBJSEVdUdAecSzPvnEdFG1a0s5x9oeBgZ5OymAJi+itdDNics1t608a/VNdA6v7o
-	I0/E3ifDJricZd6c5HSzN5N7kmnJHtxbWN/0vHJoTAtiQuyD6z34P/EsWK9Yxtulraq
-	aEJYwlQk4A==
+	bh=JMRugZggJ2ThMqml4c6bp2KzWmuB2zfRsMGqPrTwaxo=;
+	b=ZKMJNy9ma4CXwMuLgTNiT1nrvyKd/NEQByA1VHKDZXCgzSFxwBbtkHkaU3GXvh5E
+	loI6M+t7BOQBblXHNVP9vMlkhkQ6Ru2KYL5geSmesvstCo0mG4BCZaJuLFWJFmTkZCn
+	7Lv5GssDi1GobRzjlxy0+S4BS6xv2gdVdab4tS7ZZzPyxritkExp5SYlYUb3r0Q6ZTM
+	qmDotyvUwRk279F+RVch+dMrG1wicrF7OTmVjM6Os0GGmUz+BqH86M+o6yiI4l6++c1
+	LwweMOl7fUTy14g5NKxL7N8P+pBSwOnlZ/QYp6HgoYtOoOVYWWP2fFv36l99eEZvrRi
+	/eZ+dkdRtg==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1741923952;
+	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1741923961;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
-	bh=nqMW4C3NrIhhmINPXZE4/UA7SB+mYZp3/gNeD5mjykY=;
-	b=pYiVReQiMWkc5EeKiDBi7EKsuoKy6XNKZ5dVahvL++8cSLi9sFqhJS+3mZWXZFJB
-	dpTuNhSE6Xs882r/TJpjPr0AfYrKs/TFmtLLnYidJbNpsFIYTLsCrKy5NevUyjWLTZ9
-	a4nKqcdOcoc8yP6A/8SHFu/BY44lSOtddA9ZvLlY=
+	bh=JMRugZggJ2ThMqml4c6bp2KzWmuB2zfRsMGqPrTwaxo=;
+	b=f7UyPLhJ5+zymfnnNY0ahcq36HUrykISgNgHe80FQp7IBXVbBTNbZVBRlUfNh+NC
+	FU5xG/I/BcXBcW8aTn9Tim+5p6JkqXA/DhS6WpMLY85HPQGG5IgfjT12JvFzUEeWsqn
+	rk5U/Mv6hNtSkUMnCPb72eraB34FpBY+bN4my7VE=
 From: Antonio Hickey <contact@antoniohickey.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -44,10 +44,10 @@ To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>
 Cc: Antonio Hickey <contact@antoniohickey.com>, 
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 0/3] rust: use &raw [mut] place instead of addr_of[_mut]!(place)
-Date: Fri, 14 Mar 2025 03:45:51 +0000
-Message-ID: <0100019592c224ba-0cf38e16-2aa2-459d-99cd-09a463d616d4-000000@email.amazonses.com>
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/3] rust: enable `raw_ref_op` feature
+Date: Fri, 14 Mar 2025 03:46:01 +0000
+Message-ID: <0100019592c24b7d-d6988aab-2a3f-4d9e-a8d8-fc524d8d25c2-000000@email.amazonses.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <010001958dfeacb5-9039aaab-6114-494a-9f1d-f13982091169-000000@email.amazonses.com>
 References: <010001958dfeacb5-9039aaab-6114-494a-9f1d-f13982091169-000000@email.amazonses.com>
@@ -59,44 +59,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Feedback-ID: ::1.us-east-1.3SHHfi5Rh4c+NdtIv+pxNWeqDT0J3zAhYZLMebdhE9o=:AmazonSES
-X-SES-Outgoing: 2025.03.14-54.240.8.71
+X-SES-Outgoing: 2025.03.14-54.240.48.105
 
-This patch set enables the `raw_ref_op` feature, which became stable in
-Rust 1.82. It then adds the previous macros for getting a raw pointer to a
-place to the disallowed macros in `.clippy.toml`. Finally it replaces
-all occurences of `addr_of!(place)` and `addr_of_mut!(place)` with 
-`&raw const place` and `&raw mut place`.
+Since Rust 1.82.0 the `raw_ref_op` feature is stable.
+
+By enabling this feature we can use `&raw const place` and `&raw mut place`
+instead of using `addr_of!(place)` and `addr_of_mut!(place)` macros.
+
+This will allow us to reduce macro complexity, and improve consistency
+with existing reference syntax as `&raw const`, `&raw mut` is very similar to
+`&`, `&mut` making it fit more naturally with other existing code than
+the previously used macros.
 
 Suggested-by: Benno Lossin <benno.lossin@proton.me>
 Link: https://github.com/Rust-for-Linux/linux/issues/1148
 Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+---
+ rust/kernel/lib.rs | 2 ++
+ 1 file changed, 2 insertions(+)
 
-
-Antonio Hickey (3):
-  rust: enable `raw_ref_op` feature
-  rust: clippy: disable `addr_of!` and `addr_of_mut` macros
-  rust: replace `addr_of[_mut]!` with `&raw [mut]`
-
- .clippy.toml                           |  4 ++++
- rust/kernel/block/mq/request.rs        |  4 ++--
- rust/kernel/faux.rs                    |  4 ++--
- rust/kernel/fs/file.rs                 |  2 +-
- rust/kernel/init.rs                    |  8 ++++----
- rust/kernel/init/macros.rs             | 28 +++++++++++++-------------
- rust/kernel/jump_label.rs              |  4 ++--
- rust/kernel/kunit.rs                   |  4 ++--
- rust/kernel/lib.rs                     |  2 ++
- rust/kernel/list.rs                    |  2 +-
- rust/kernel/list/impl_list_item_mod.rs |  6 +++---
- rust/kernel/net/phy.rs                 |  4 ++--
- rust/kernel/pci.rs                     |  4 ++--
- rust/kernel/platform.rs                |  4 +---
- rust/kernel/rbtree.rs                  | 22 ++++++++++----------
- rust/kernel/sync/arc.rs                |  2 +-
- rust/kernel/task.rs                    |  4 ++--
- rust/kernel/workqueue.rs               |  8 ++++----
- 18 files changed, 60 insertions(+), 56 deletions(-)
-
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 398242f92a96..1d078f69bb19 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -19,6 +19,8 @@
+ #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
+ #![feature(inline_const)]
+ #![feature(lint_reasons)]
++// Stable in Rust 1.82
++#![feature(raw_ref_op)]
+ // Stable in Rust 1.83
+ #![feature(const_maybe_uninit_as_mut_ptr)]
+ #![feature(const_mut_refs)]
 -- 
 2.48.1
 
