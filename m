@@ -1,291 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9F5205AB5;
-	Fri, 14 Mar 2025 16:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF16C1F957;
+	Fri, 14 Mar 2025 17:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741968593; cv=none; b=sy0GfntcOz7QLlSXJ3STLW+/sVbQXC15kr4i1CTIJg2nxKci/TboBEnsuOoTts56YkUQfvzCKgLnFIs0wmKPjJxwqMlyd5R/Xsez1VU0UfyX/QPrUwn/sx36DCbV4Ho5bukEfw89nPBium65GHhi8ALDGlyKhJLsmie+uZlz3Hw=
+	t=1741972927; cv=none; b=Ae2z6rGniFYBvEs9Ge+UAqRx89GIMTranOPCdI4q6vKKrBpjY9jCSi7TRL8nVFfS5pbtwal2Chw4S6c+CYUSQSENo9SXQJIsdTOmZEyAmy9Q6IQJ5ELLU/yYpZQMimGu+ZBqa1j/WNT/lRUJSsemGR2Bn7j5BA0rcwCzZWrg1oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741968593; c=relaxed/simple;
-	bh=9bMvDFkiEn0flcv2RD7JgC1AAL7/PYhrBNtwY663bsg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8mOmAmo17NLXI+JU/L2Y3wXQHnkyxkTG4AJyY2IjX4/KA+eI6MoWXnSaxYDG0wmc9E0FTYdkRdjBOYddkA5Zcqz20vzCUAKJ8/Kh9bleSg9e8XODKdA3UU+whzBgJr6Cr5/JrO3ryz+kDded0x9+wKnIuKUFrn1s8aI8sgrQHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCzDuS5D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1741972927; c=relaxed/simple;
+	bh=Qpn+bG8c+G44s5nAxOQUaHI/oGNgdPaCr4Uit8/ENoA=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dX7y8T2GsH4RCBbC56XMsGDq7Vq1UCwM1PvGEPdemoFIIX8ix1lzKE4JEm4Sn6eeH+eESea9jWO99WOKGVjOxD/+iccpZ/7r0KPumE5QVjw6/gUv9//5vPWC+rrOc1WIsIxOnmxLTNIRR4BYF2ZhXYhnHkvSSARVuf6OUSz5MDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J1advImG; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCzDuS5D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A54B0C4CEEF;
-	Fri, 14 Mar 2025 16:09:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741968592;
-	bh=9bMvDFkiEn0flcv2RD7JgC1AAL7/PYhrBNtwY663bsg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCzDuS5DsdhWyhh4LM0y517nhTgA5DMESROTsLNpPQ1fiAxx94RIxs2RrcGX3K943
-	 He8sBEWSL5luXxBTRcTQbQOmZV4imcvBifR9EUTMeuUGXyQkt8ViGqjmADqnMpLOzv
-	 fmL5orQM0Jdz5Nzllnd24huaAkPpGPet2OP7uUu5+RxSTahVJ9MdXoim2CGrID9si8
-	 nLybnRCUXUAbuiF2fnWpnt4okZix0Op8VQNpJy+BBrntjkIkRrPSOTIlob1VZr412g
-	 md6h2DwZvwzXx6C38HuM2dmWq+4PquC1WXw7BHerkATWTe8qNIZpVHLtN4fmDXzeK2
-	 8amjowJKKIrHg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	bhelgaas@google.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v2 4/4] rust: platform: fix unrestricted &mut platform::Device
-Date: Fri, 14 Mar 2025 17:09:07 +0100
-Message-ID: <20250314160932.100165-5-dakr@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250314160932.100165-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J1advImG"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6e8f7019422so21602636d6.1;
+        Fri, 14 Mar 2025 10:22:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741972924; x=1742577724; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NDFqyRfHBs3Ib4nK9Y58mYUmJM70ZfAiHj75uNoA7S8=;
+        b=J1advImG/gv5S8RC5gUndJ2ECejJsuydOmjUgOwrkc8d+x9sPjzP7eR0pV+c6PR37m
+         Wi8K5XNL2cgbDk2Y+yqnj5VU6QiSQERB+F2IKx3mXJZSUH/FJUfA0DVsNPgumbnzPJg/
+         nduCVSiAwSCB1MqWTFzEGYtA4KZUmc8JKZIZiFTwHF61TqBN2B484MD0oZ2OamDXHFTK
+         ymMnAJ7rorH4yRAVfYAbvWFsE4URD6HRcv4q1toQCdzCbgzIhib49eTM1d5f7UpTpLSQ
+         KyEtBtFzjTf+GrHzmsfGQG7SjeJFJhtnYepZ4HrJpeTGgepXiIst1LoFTbT2cdk3rcnz
+         HXag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741972924; x=1742577724;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NDFqyRfHBs3Ib4nK9Y58mYUmJM70ZfAiHj75uNoA7S8=;
+        b=kbk/je/0SFttq9vwsbwsNQjnIlhmTDlSEaMp7mNGdMZN5X/+t/nPZNGcCWZ+kh92FM
+         txD6uQ/NwOHl5ahjz3F1rTlXmn3Yphg8gjVfpp3UkMvhTWBvkZ0trcz4tp+jPWXmWjzx
+         2NTKe74/h8ji+g7eZxCSXwBte3Ujh5AU/SEcOf/5hTx0TJV6YOtjJwJhn/OnlbRBmenS
+         5bcegJIXc1v8FlXqxowwCkTvESvwYnbb4oCzd8WR8bay7ZgX5yvMYO0ivDXeGpOeC40Z
+         mf7XTj+KaFRzCDYZGh++KYv5YSU2VEBZe8b43SdbZyKl4687j5Y9sY1uUIV6RywpqVGS
+         BKCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUVaNR4F9L0Fc8kmX7Y455PtDG17GDkoRrp0dP43vh9YxDFrTgcFDWXbxtDcojEJtbrTsjfA/h7kK75bI4dVbI=@vger.kernel.org, AJvYcCWplpmMFE3ClyQMoiM4NR9aGEVL4j+yRNA0bX8uSZ1HYmlCDiNoRwDKxf+v72UcHq33Pe74FW7hM+5f@vger.kernel.org, AJvYcCXf4D4EKKaD8iDtDtGuP9U/mXe5LDMmVZtYaEZ8nbGYCQsVabsKIyAF3RJ1jdwAZ+Fhz/JRnPaI7TYEl9k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzP7wcXHH6A2hdt0hcN5ilIUP7nNRFqQ1A0HCUOoORUm0Vpjqhj
+	zVrpewuqKPBy5l6VoK2/TsfU5UnJrcyzDjX0/l3vUT7H5EZ2Kq4w
+X-Gm-Gg: ASbGncszfpZlPPyf4onfx6TixPK8F90McIaty8Duq6LMWS1aW1jblUTEOcoAkzCzJwl
+	TXqP34XD9LNlX7kuAf0huDT2Akrf3n+uowAO/vSaQ8n9fDazK77AW3HVl1pTHnL0qqb6NMQzC0o
+	byybtTwkW0RWsjyIRvppiQxcPShGOjf6nkiHPxG1dmbHLvuBMzIdfU/ki9ykRFp948i3VD/DA/h
+	+mS4JixZICutMaY1muUu68wra/QOmyMHQQcwtiE9HrZQr1I2RWGAWTC+vujNHUzG28NLCXiFnlY
+	fimtNLZyc3w454qrbY8kmD2fgNf/8BWDFrrrUFXX51V33yG0BZn4ydXZ7+skFAy5+KW2Nt18T7R
+	vz3SV3LvZY2o1es7HQ/Wo5zk5gRgu6bKgvdE=
+X-Google-Smtp-Source: AGHT+IE8ZpnVMAoh7J89E4hudMbrOTDQrofqBxlvs7WuNYHLhrTqDEL38lotFkF54kgkqxWMDG9fCw==
+X-Received: by 2002:ad4:5d6e:0:b0:6e8:9525:2ac3 with SMTP id 6a1803df08f44-6eaeaae55a0mr57080516d6.34.1741972923714;
+        Fri, 14 Mar 2025 10:22:03 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade35028esm26333146d6.117.2025.03.14.10.22.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Mar 2025 10:22:03 -0700 (PDT)
+Message-ID: <67d465bb.050a0220.d2e19.8fc9@mx.google.com>
+X-Google-Original-Message-ID: <Z9RlthXHWX3QNM-k@winterfell.>
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 747BA1200080;
+	Fri, 14 Mar 2025 13:22:02 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Fri, 14 Mar 2025 13:22:02 -0400
+X-ME-Sender: <xms:umXUZ7oAYI9le-lq3ogI-CaxqVBb05c73XozlSpVwoKo_85dBuXPbw>
+    <xme:umXUZ1qH9YuRENP3KQkhnGQtduHMyDzuqA9Tjx9Gku20WX9txluxls12dj2201Esk
+    QrVBEYcNDquVo-Czg>
+X-ME-Received: <xmr:umXUZ4PVffkgopzQGkIPzOdHUjF3wV26fY5_g06wPRqyKwhxVTrBaG6PoQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufedugeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
+    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
+    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
+    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudeipdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhr
+    tghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegshhgvlh
+    hgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprh
+    gtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhn
+    fegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhloh
+    hsshhinhesphhrohhtohhnrdhmvg
+X-ME-Proxy: <xmx:umXUZ-4GD_w9fHPd3Bb4VRK37LD0oPa6uU6U-8WZzv8nLxwcxo50ug>
+    <xmx:umXUZ66LS9YKI99zwsSV40eJTTZlpi5-g67SFnUkniu6wIlHNdNwqg>
+    <xmx:umXUZ2hp90ZJW0Z7EzzknJnirQn1nJwnQzsJ-KjV63C36MhrhAm25Q>
+    <xmx:umXUZ87iiE5d_5ZtffS5J76rSyb1SeD4bYz1vmH9pnTJuX3_4c61jg>
+    <xmx:umXUZ5Jypi5F55RLUpsa49BNtRPyGzexARzlpvmYzjzrLlf_lQQg_yEO>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 14 Mar 2025 13:22:01 -0400 (EDT)
+Date: Fri, 14 Mar 2025 10:21:58 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] rust: device: implement device context marker
 References: <20250314160932.100165-1-dakr@kernel.org>
+ <20250314160932.100165-3-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250314160932.100165-3-dakr@kernel.org>
 
-As by now, platform::Device is implemented as:
+On Fri, Mar 14, 2025 at 05:09:05PM +0100, Danilo Krummrich wrote:
+> Some bus device functions should only be called from bus callbacks,
+> such as probe(), remove(), resume(), suspend(), etc.
+> 
+> To ensure this add device context marker structs, that can be used as
+> generics for bus device implementations.
+> 
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
 
-	#[derive(Clone)]
-	pub struct Device(ARef<device::Device>);
+Try chronological order for the tags? It was suggested first and then
+reviewed.
 
-This may be convenient, but has the implication that drivers can call
-device methods that require a mutable reference concurrently at any
-point of time.
+Regards,
+Boqun
 
-Instead define platform::Device as
-
-	pub struct Device<Ctx: DeviceContext = Normal>(
-		Opaque<bindings::platform_dev>,
-		PhantomData<Ctx>,
-	);
-
-and manually implement the AlwaysRefCounted trait.
-
-With this we can implement methods that should only be called from
-bus callbacks (such as probe()) for platform::Device<Core>. Consequently,
-we make this type accessible in bus callbacks only.
-
-Arbitrary references taken by the driver are still of type
-ARef<platform::Device> and hence don't provide access to methods that are
-reserved for bus callbacks.
-
-Fixes: 683a63befc73 ("rust: platform: add basic platform device / driver abstractions")
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/platform.rs              | 95 +++++++++++++++++++---------
- samples/rust/rust_driver_platform.rs | 11 ++--
- 2 files changed, 72 insertions(+), 34 deletions(-)
-
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 50e6b0421813..c77c9f2e9aea 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
- 
- use crate::{
--    bindings, container_of, device, driver,
-+    bindings, device, driver,
-     error::{to_result, Result},
-     of,
-     prelude::*,
-@@ -14,7 +14,11 @@
-     ThisModule,
- };
- 
--use core::ptr::addr_of_mut;
-+use core::{
-+    marker::PhantomData,
-+    ops::Deref,
-+    ptr::{addr_of_mut, NonNull},
-+};
- 
- /// An adapter for the registration of platform drivers.
- pub struct Adapter<T: Driver>(T);
-@@ -54,14 +58,14 @@ unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
- 
- impl<T: Driver + 'static> Adapter<T> {
-     extern "C" fn probe_callback(pdev: *mut bindings::platform_device) -> kernel::ffi::c_int {
--        // SAFETY: The platform bus only ever calls the probe callback with a valid `pdev`.
--        let dev = unsafe { device::Device::get_device(addr_of_mut!((*pdev).dev)) };
--        // SAFETY: `dev` is guaranteed to be embedded in a valid `struct platform_device` by the
--        // call above.
--        let mut pdev = unsafe { Device::from_dev(dev) };
-+        // SAFETY: The platform bus only ever calls the probe callback with a valid pointer to a
-+        // `struct platform_device`.
-+        //
-+        // INVARIANT: `pdev` is valid for the duration of `probe_callback()`.
-+        let pdev = unsafe { &*pdev.cast::<Device<device::Core>>() };
- 
-         let info = <Self as driver::Adapter>::id_info(pdev.as_ref());
--        match T::probe(&mut pdev, info) {
-+        match T::probe(pdev, info) {
-             Ok(data) => {
-                 // Let the `struct platform_device` own a reference of the driver's private data.
-                 // SAFETY: By the type invariant `pdev.as_raw` returns a valid pointer to a
-@@ -120,7 +124,7 @@ macro_rules! module_platform_driver {
- /// # Example
- ///
- ///```
--/// # use kernel::{bindings, c_str, of, platform};
-+/// # use kernel::{bindings, c_str, device::Core, of, platform};
- ///
- /// struct MyDriver;
- ///
-@@ -138,7 +142,7 @@ macro_rules! module_platform_driver {
- ///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
- ///
- ///     fn probe(
--///         _pdev: &mut platform::Device,
-+///         _pdev: &platform::Device<Core>,
- ///         _id_info: Option<&Self::IdInfo>,
- ///     ) -> Result<Pin<KBox<Self>>> {
- ///         Err(ENODEV)
-@@ -160,41 +164,72 @@ pub trait Driver {
-     ///
-     /// Called when a new platform device is added or discovered.
-     /// Implementers should attempt to initialize the device here.
--    fn probe(dev: &mut Device, id_info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>>;
-+    fn probe(dev: &Device<device::Core>, id_info: Option<&Self::IdInfo>)
-+        -> Result<Pin<KBox<Self>>>;
- }
- 
- /// The platform device representation.
- ///
--/// A platform device is based on an always reference counted `device:Device` instance. Cloning a
--/// platform device, hence, also increments the base device' reference count.
-+/// This structure represents the Rust abstraction for a C `struct platform_device`. The
-+/// implementation abstracts the usage of an already existing C `struct platform_device` within Rust
-+/// code that we get passed from the C side.
- ///
- /// # Invariants
- ///
--/// `Device` holds a valid reference of `ARef<device::Device>` whose underlying `struct device` is a
--/// member of a `struct platform_device`.
--#[derive(Clone)]
--pub struct Device(ARef<device::Device>);
-+/// A [`Device`] instance represents a valid `struct platform_device` created by the C portion of
-+/// the kernel.
-+#[repr(transparent)]
-+pub struct Device<Ctx: device::DeviceContext = device::Normal>(
-+    Opaque<bindings::platform_device>,
-+    PhantomData<Ctx>,
-+);
- 
- impl Device {
--    /// Convert a raw kernel device into a `Device`
--    ///
--    /// # Safety
--    ///
--    /// `dev` must be an `Aref<device::Device>` whose underlying `bindings::device` is a member of a
--    /// `bindings::platform_device`.
--    unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
--        Self(dev)
-+    fn as_raw(&self) -> *mut bindings::platform_device {
-+        self.0.get()
-     }
-+}
- 
--    fn as_raw(&self) -> *mut bindings::platform_device {
--        // SAFETY: By the type invariant `self.0.as_raw` is a pointer to the `struct device`
--        // embedded in `struct platform_device`.
--        unsafe { container_of!(self.0.as_raw(), bindings::platform_device, dev) }.cast_mut()
-+impl Deref for Device<device::Core> {
-+    type Target = Device;
-+
-+    fn deref(&self) -> &Self::Target {
-+        let ptr: *const Self = self;
-+
-+        // CAST: `Device<Ctx>` is a transparent wrapper of `Opaque<bindings::platform_device>`.
-+        let ptr = ptr.cast::<Device>();
-+
-+        // SAFETY: `ptr` was derived from `&self`.
-+        unsafe { &*ptr }
-+    }
-+}
-+
-+impl From<&Device<device::Core>> for ARef<Device> {
-+    fn from(dev: &Device<device::Core>) -> Self {
-+        (&**dev).into()
-+    }
-+}
-+
-+// SAFETY: Instances of `Device` are always reference-counted.
-+unsafe impl crate::types::AlwaysRefCounted for Device {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-+        unsafe { bindings::get_device(self.as_ref().as_raw()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-+        unsafe { bindings::platform_device_put(obj.cast().as_ptr()) }
-     }
- }
- 
- impl AsRef<device::Device> for Device {
-     fn as_ref(&self) -> &device::Device {
--        &self.0
-+        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
-+        // `struct platform_device`.
-+        let dev = unsafe { addr_of_mut!((*self.as_raw()).dev) };
-+
-+        // SAFETY: `dev` points to a valid `struct device`.
-+        unsafe { device::Device::as_ref(dev) }
-     }
- }
-diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-index 8120609e2940..9bb66db0a4f4 100644
---- a/samples/rust/rust_driver_platform.rs
-+++ b/samples/rust/rust_driver_platform.rs
-@@ -2,10 +2,10 @@
- 
- //! Rust Platform driver sample.
- 
--use kernel::{c_str, of, platform, prelude::*};
-+use kernel::{c_str, device::Core, of, platform, prelude::*, types::ARef};
- 
- struct SampleDriver {
--    pdev: platform::Device,
-+    pdev: ARef<platform::Device>,
- }
- 
- struct Info(u32);
-@@ -21,14 +21,17 @@ impl platform::Driver for SampleDriver {
-     type IdInfo = Info;
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
- 
--    fn probe(pdev: &mut platform::Device, info: Option<&Self::IdInfo>) -> Result<Pin<KBox<Self>>> {
-+    fn probe(
-+        pdev: &platform::Device<Core>,
-+        info: Option<&Self::IdInfo>,
-+    ) -> Result<Pin<KBox<Self>>> {
-         dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
- 
-         if let Some(info) = info {
-             dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-         }
- 
--        let drvdata = KBox::new(Self { pdev: pdev.clone() }, GFP_KERNEL)?;
-+        let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
- 
-         Ok(drvdata.into())
-     }
--- 
-2.48.1
-
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/device.rs | 26 ++++++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index db2d9658ba47..21b343a1dc4d 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -209,6 +209,32 @@ unsafe impl Send for Device {}
+>  // synchronization in `struct device`.
+>  unsafe impl Sync for Device {}
+>  
+> +/// Marker trait for the context of a bus specific device.
+> +///
+> +/// Some functions of a bus specific device should only be called from a certain context, i.e. bus
+> +/// callbacks, such as `probe()`.
+> +///
+> +/// This is the marker trait for structures representing the context of a bus specific device.
+> +pub trait DeviceContext: private::Sealed {}
+> +
+> +/// The [`Normal`] context is the context of a bus specific device when it is not an argument of
+> +/// any bus callback.
+> +pub struct Normal;
+> +
+> +/// The [`Core`] context is the context of a bus specific device when it is supplied as argument of
+> +/// any of the bus callbacks, such as `probe()`.
+> +pub struct Core;
+> +
+> +mod private {
+> +    pub trait Sealed {}
+> +
+> +    impl Sealed for super::Core {}
+> +    impl Sealed for super::Normal {}
+> +}
+> +
+> +impl DeviceContext for Core {}
+> +impl DeviceContext for Normal {}
+> +
+>  #[doc(hidden)]
+>  #[macro_export]
+>  macro_rules! dev_printk {
+> -- 
+> 2.48.1
+> 
