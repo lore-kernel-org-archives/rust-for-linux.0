@@ -1,149 +1,185 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3A82046B5;
-	Fri, 14 Mar 2025 17:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690B4204581
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Mar 2025 19:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741974542; cv=none; b=Qs/jcs6/w+fCTRW21GgiB0KsRGpPPQXYn1r/ZXei96r9pKsTKBQ1OSaMo3iRPcjAzLq87a4GmWtqYoOr6Uz4XNAbXFCLf3+OPGPzMJMvPRar5OaBcGyx3JdvgebWUn7+wO2HaOHr/QLnJ21Z3H1bC81FyUFRbom7gPHkN7PDCcM=
+	t=1741980056; cv=none; b=ENuKLP0Ow8e0HkVniyqvNYqtcWgwc0RmrMBEE90ENS32yxiLG0TTsScPdXHGZuRCV89FjpNL0v9Ce0iWmtdXrauUES0YoYUGK/WroMTDK/xmArUG2OVOn70e+OTcJI4LFKwkYoQSnSJsE72xOXPzJqtbd4LnUsLO+5DTnLVlw3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741974542; c=relaxed/simple;
-	bh=5CX0PxqyCR/cXugcODKOqmcWv5REPQUfyw3SdDx6M1k=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BUW+kLXCNp2O1B5Ve7O11H8L4NXyYIAxjz1Cay+dR3Uaiap/YShZI0Ah0kJSGQLDjCF5RtwXwB3pxYy7m0CDaHaxPkgxWeID4TEau+QH8XAAgDNOGsdUNkEwDnMZkBZFIwX8DkhWWsh87GCv2LT0QX8rfC7cIozHP3ueHZXmoO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=heVTl5fY; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1741980056; c=relaxed/simple;
+	bh=wNQHuLdZvgcCKvlScN1lrTfyQ0hrUuljvEDBKsMOy6w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y0X3gsyDN5tLUAI4F8k44s2FSUZuT73/7XQz6aWHKbYIol5zgu3VqpLu2Fx5h379aqDCDxGV59m3hXrAzw7oZPMeafsDnsJB+5VUydI5DYrrQQ6q6pbo0bgtfgCMBEDggPUeR5kQHJxSU+DEpoJAUE5/9+5RNgvqzSet/Na1Iq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Fjs+NSzF; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="heVTl5fY"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-476ab588f32so31956781cf.2;
-        Fri, 14 Mar 2025 10:49:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741974539; x=1742579339; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dixI4ahQHaRBhFTm9g6VyvYe7UeqgOMzNkhyZ63tKIg=;
-        b=heVTl5fYLlEzRZnklLysYeGPTdBAscIh2i2ax6AYxN/y+g7Tu4fx4eYCTKvkbQm6tt
-         F5ShxFTSALrcbw5Rf739Zbe6cB+/+Kwh8YLdffAP2qCaBIU6no3tohS5UnE6yVSgEvop
-         tyQoqer+zieGfzMgt6geb5XWkfNOLVr3fKqkpDt8xmhVHUe7OmXMgTDmDbaFRp61DS1W
-         xzwuRUoBeKBtFk1lv4OAwmz/Okp5Ee5+K8q4NIn+W62dycfriJLeTvScHSKTvOlP7Ek6
-         UFNgOdOkTZKpL9s8Lym/BY5D7XuWr2ibSKq18bfEPL3Je9ULMCkXdwf3+1YfTvlR3MkW
-         VciQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741974539; x=1742579339;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dixI4ahQHaRBhFTm9g6VyvYe7UeqgOMzNkhyZ63tKIg=;
-        b=mblNAhT8Zl+Rfg5eRtNNO/xtLHEpXB+fyzTTzPCMVLYX5gIha7iUKCfa3VR7cZEQMr
-         pFeyORjBGqIgOikMdoJs1b6JhiuMvLGs4QMCeCq6R+9dwI6v26Eiy+f4R+BD9IvnO++X
-         II4X5BF9+ZSIIrjzBMzvifsfejyiJHZuIp7380x4/sG2T7M64KgCiTk/od/4IPYmJJgS
-         bVIj//hjuVKRMwgO9CMRRfLrgw2GgsrLTBTHgjPz/8lPwrVhskvocphg12F1qmndteuK
-         YJuMRQ1YOc9p9FeCPfLRhg0WB65X3psZjatUDSEm1ibd8JSajluJEVZE1JYaFKPWcjSb
-         gWXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVuC8974j0a7/QoL06HpU1pJ4t/L1pQWUQIBXm6X0GKjv7z2acosadqvjUp+9n5XL8LohWjSxnU+CmhJHkWCds=@vger.kernel.org, AJvYcCWCz58AsWFarlyjhCadaNbrqnfPM56RCWcbeWn1r7xaJt1MtmVUyf1r1L8Qtu9zHQK0xMTtPnokPIbcD8k=@vger.kernel.org, AJvYcCX9TVLR2XVqs61LUK6KWpuVjiesTfYERsOR+MHSzQRa/hDm1NC0cbuZJ0QKI89qZ/Y32Y0kTp/G7OQR@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzul3feZ85EFZj7m7AXpRtTGrlGDr6tfnk4lA3mBbGw4Ur/YNs1
-	/UppytlBFBnR27dTEGO1j8BMa7NncZEHJjR6R3MfuwLc4AdM3heu
-X-Gm-Gg: ASbGncuIT9xKfkIXZn6TgZy2+cZFwrJJFUKq8m77kJ0k1zixGXLL0CC7kfp1iMRX8IA
-	nnNzYUDJ7QF0GavyOxSafgAFyIqFthv98bZ72fIeIPahUvxabrnHEOrbdQwdYDigTm3z9pQBj31
-	k4pBJiqx1rnNcy8LZVZUnPvBJwaJMG/ZObLxmUBysrzjO4vYCszktTlUPo8tu5qUOu5X0hNUJQt
-	CrDBpMx9oaSfwsbzdExqH5nMSGyUxGrcHDRgIdllCPMyVz59RAuPlQPL2zqNB+DiANnxhsyM7eV
-	jGjWvgRP4nZPAxKtQK3bUsgx9kxeL159ypYjz1jgVjhyKL7fpo2iN3Aklp11kasxo/R+7MkK8ce
-	y+MYXAHlt6ARv85eOMITunfT1GWobMnHwZaE=
-X-Google-Smtp-Source: AGHT+IETlmM8hWJT8cSsf7LOVEUlZOqkH94DgERsFKpZv0JEfHuxAU2VESE/j8yYxTqEvss5fhNolg==
-X-Received: by 2002:a05:622a:5e8b:b0:472:6aa:d6be with SMTP id d75a77b69052e-476c8142d12mr44697011cf.17.1741974539224;
-        Fri, 14 Mar 2025 10:48:59 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-476bb82bf45sm25513721cf.75.2025.03.14.10.48.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 10:48:58 -0700 (PDT)
-Message-ID: <67d46c0a.050a0220.30a410.8bef@mx.google.com>
-X-Google-Original-Message-ID: <Z9RsBhMj01baL73W@winterfell.>
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6F3E21200043;
-	Fri, 14 Mar 2025 13:48:58 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Fri, 14 Mar 2025 13:48:58 -0400
-X-ME-Sender: <xms:CmzUZ7HmVt0brZLMe8VBEo-XzmQoPslQEmk5Dc-5jhFwR-GOUoI8PA>
-    <xme:CmzUZ4VbZcLSxmf5xWrQthK1PCVg6__haumM21E2kTN7AeyuIUvZnaH0Z4Kn-xEkZ
-    3gOj-OvGDHdHXNj9g>
-X-ME-Received: <xmr:CmzUZ9LNXYHlBq3miiJBib3Lyt0gzVzlZ5s_2Wkq-x9z7Mb_HRMrLYeKeRY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufedugeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
-    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudeipdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhr
-    tghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegshhgvlh
-    hgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprh
-    gtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhn
-    fegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhloh
-    hsshhinhesphhrohhtohhnrdhmvg
-X-ME-Proxy: <xmx:CmzUZ5G6Vno3joXRmrPjeZMgbML9Ek7wmKPtIwtMHlbTk7-6zX567w>
-    <xmx:CmzUZxV6e_q2vrDx0kaRMx-glG8tBhTNvpN5p23bVfYy3UtJR71zoQ>
-    <xmx:CmzUZ0N1hNhPUEz602X6XTBrH8UqE-kT1jyeXrXmVUcte3hPF3zzGw>
-    <xmx:CmzUZw2xIdjHIURlTexrvdx32T95ufawrOa_FZ3uCB2FlRgwbAbaVg>
-    <xmx:CmzUZ2XdFtJnycZqmTYss5tEeHSu7IBcK-CpJaO-w5mQwASsbJCOLMnH>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 14 Mar 2025 13:48:57 -0400 (EDT)
-Date: Fri, 14 Mar 2025 10:48:54 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] rust: device: implement device context marker
-References: <20250314160932.100165-1-dakr@kernel.org>
- <20250314160932.100165-3-dakr@kernel.org>
- <67d465bb.050a0220.d2e19.8fc9@mx.google.com>
- <Z9RoBMXWsrjg6jjg@cassiopeiae>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Fjs+NSzF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1741980046; x=1742239246;
+	bh=9dJbCsG+3iacLH4tb4fmUoDsa/aO1aDzdfXxttzDOrY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=Fjs+NSzFawSLNsa09TFnRz6biEqh10Ncv0mh+buk3EHwrZqdxqi8/wiragXH46+tA
+	 9Cqki42WkDSHpNksr6hBbaeNCimtpIfUk77+5bFIwplsBTWRCrSD5pyXAUgc6ha/i/
+	 F/AbXBhgVOheRGaQpCgNOJ1WeX0VMSBb//HLGSk0qlyIaAhYMF50PzCAQi0M3Or2oy
+	 OFlo7aXbxTagMLVm9NAcvmcaFEAvLBm4dlaKjRB4RLWOwN1hyQJ0hHh/otSU1UaaAM
+	 7jgt3qJkyGtcgZITwoPDGvyz7CJ7o1Hkj/k/FGaoCehgKXDM58Gr8vebZK412X1hTN
+	 VQyW65skxgrjw==
+Date: Fri, 14 Mar 2025 19:20:39 +0000
+To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: workqueue: remove HasWork::OFFSET
+Message-ID: <D8G8DV3PX8VX.2WHSM0TWH8JWV@proton.me>
+In-Reply-To: <20250307-no-offset-v1-2-0c728f63b69c@gmail.com>
+References: <20250307-no-offset-v1-0-0c728f63b69c@gmail.com> <20250307-no-offset-v1-2-0c728f63b69c@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 62e23f231bb6f0fe7703572b1bd93319989c4b3a
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z9RoBMXWsrjg6jjg@cassiopeiae>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 14, 2025 at 06:31:48PM +0100, Danilo Krummrich wrote:
-> On Fri, Mar 14, 2025 at 10:21:58AM -0700, Boqun Feng wrote:
-> > On Fri, Mar 14, 2025 at 05:09:05PM +0100, Danilo Krummrich wrote:
-> > > Some bus device functions should only be called from bus callbacks,
-> > > such as probe(), remove(), resume(), suspend(), etc.
-> > > 
-> > > To ensure this add device context marker structs, that can be used as
-> > > generics for bus device implementations.
-> > > 
-> > > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> > > Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> > 
-> > Try chronological order for the tags? It was suggested first and then
-> > reviewed.
-> 
-> Is that a thing? When I apply patches I usully keep ACKs, RBs and SOBs together
-> at the bottom.
+On Fri Mar 7, 2025 at 10:58 PM CET, Tamir Duberstein wrote:
+> Implement `HasWork::work_container_of` in `impl_has_work!`, narrowing
+> the interface of `HasWork` and replacing pointer arithmetic with
+> `container_of!`. Remove the provided implementation of
+> `HasWork::get_work_offset` without replacement; an implementation is
+> already generated in `impl_has_work!`. Remove the `Self: Sized` bound on
+> `HasWork::work_container_of` which was apparently necessary to access
+> `OFFSET` as `OFFSET` no longer exists.
+>
+> A similar API change was discussed on the hrtimer series[1].
+>
+> Link: https://lore.kernel.org/all/20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3=
+bf0ce6cc@kernel.org/ [1]
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+>  rust/kernel/workqueue.rs | 45 ++++++++++++------------------------------=
+---
+>  1 file changed, 12 insertions(+), 33 deletions(-)
 
-I don't think it's a hard requirement, but it makes logical sense to
-order the tags except your own SoB based on chronological order when
-re-submitting a new version IMO. It's in the same spirit of putting SoBs
-in chronological when multiple people handle the patches.
+What is the motivation of this change? I didn't follow the discussion,
+so if you explained it there, it would be nice if you could also add it
+to this commit message.
 
-But it's your choice, I just feel it's a bit odd in the current order
-;-)
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 0cd100d2aefb..0e2e0ecc58a6 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -429,51 +429,23 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bin=
+dings::work_struct {
+>  ///
+>  /// # Safety
+>  ///
+> -/// The [`OFFSET`] constant must be the offset of a field in `Self` of t=
+ype [`Work<T, ID>`]. The
+> -/// methods on this trait must have exactly the behavior that the defini=
+tions given below have.
+> +/// The methods on this trait must have exactly the behavior that the de=
+finitions given below have.
+>  ///
+>  /// [`impl_has_work!`]: crate::impl_has_work
+> -/// [`OFFSET`]: HasWork::OFFSET
+>  pub unsafe trait HasWork<T, const ID: u64 =3D 0> {
+> -    /// The offset of the [`Work<T, ID>`] field.
+> -    const OFFSET: usize;
+> -
+> -    /// Returns the offset of the [`Work<T, ID>`] field.
+> -    ///
+> -    /// This method exists because the [`OFFSET`] constant cannot be acc=
+essed if the type is not
+> -    /// [`Sized`].
+> -    ///
+> -    /// [`OFFSET`]: HasWork::OFFSET
+> -    #[inline]
+> -    fn get_work_offset(&self) -> usize {
+> -        Self::OFFSET
+> -    }
+> -
+>      /// Returns a pointer to the [`Work<T, ID>`] field.
+>      ///
+>      /// # Safety
+>      ///
+>      /// The provided pointer must point at a valid struct of type `Self`=
+.
+> -    #[inline]
+> -    unsafe fn raw_get_work(ptr: *mut Self) -> *mut Work<T, ID> {
+> -        // SAFETY: The caller promises that the pointer is valid.
+> -        unsafe { (ptr as *mut u8).add(Self::OFFSET) as *mut Work<T, ID> =
+}
+> -    }
+> +    unsafe fn raw_get_work(ptr: *mut Self) -> *mut Work<T, ID>;
+> =20
+>      /// Returns a pointer to the struct containing the [`Work<T, ID>`] f=
+ield.
+>      ///
+>      /// # Safety
+>      ///
+>      /// The pointer must point at a [`Work<T, ID>`] field in a struct of=
+ type `Self`.
+> -    #[inline]
+> -    unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut Self
+> -    where
+> -        Self: Sized,
 
-Regards,
-Boqun
+This bound is required in order to allow the usage of `dyn HasWork` (ie
+object safety), so it should stay.
+
+Maybe add a comment explaining why it's there.
+
+---
+Cheers,
+Benno
+
+> -    {
+> -        // SAFETY: The caller promises that the pointer points at a fiel=
+d of the right type in the
+> -        // right kind of struct.
+> -        unsafe { (ptr as *mut u8).sub(Self::OFFSET) as *mut Self }
+> -    }
+> +    unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut Self;
+>  }
+> =20
+>  /// Used to safely implement the [`HasWork<T, ID>`] trait.
+> @@ -504,8 +476,6 @@ macro_rules! impl_has_work {
+>          // SAFETY: The implementation of `raw_get_work` only compiles if=
+ the field has the right
+>          // type.
+>          unsafe impl$(<$($generics)+>)? $crate::workqueue::HasWork<$work_=
+type $(, $id)?> for $self {
+> -            const OFFSET: usize =3D ::core::mem::offset_of!(Self, $field=
+) as usize;
+> -
+>              #[inline]
+>              unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate::workq=
+ueue::Work<$work_type $(, $id)?> {
+>                  // SAFETY: The caller promises that the pointer is not d=
+angling.
+> @@ -513,6 +483,15 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crat=
+e::workqueue::Work<$work_typ
+>                      ::core::ptr::addr_of_mut!((*ptr).$field)
+>                  }
+>              }
+> +
+> +            #[inline]
+> +            unsafe fn work_container_of(
+> +                ptr: *mut $crate::workqueue::Work<$work_type $(, $id)?>,
+> +            ) -> *mut Self {
+> +                // SAFETY: The caller promises that the pointer points a=
+t a field of the right type
+> +                // in the right kind of struct.
+> +                unsafe { $crate::container_of!(ptr, Self, $field) }
+> +            }
+>          }
+>      )*};
+>  }
+
+
