@@ -1,125 +1,102 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from a8-71.smtp-out.amazonses.com (a8-71.smtp-out.amazonses.com [54.240.8.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC79B2E3364
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Mar 2025 02:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181DD2E3368
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Mar 2025 03:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.8.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741919654; cv=none; b=jZ/YwsMidHjs8bHlqr/jPoNPE6C1pW6R52zzuwqaKB6tATnMKb9zPvYWBMPn2O1iZjGCeNzzWFkHm+/7jilpCfVXVuECaIGb5KI2aDs8kNcMu57PpX9g2yPbbool/GVcaD3Fx0PGM+zj7R2V4UnWafUAS+yfAq0Yc2en1rYypk8=
+	t=1741923955; cv=none; b=OiHSDm3ztD/u/0u0awLvFCbHwQ+Bya6ReMguBC1j8OAKCFiR/k7nNM4t/mZjE5ZBr0Ksl8+4I9QJ+b2sKNFiTIifme71xmZXJPjuUxWMXbS+id4nlDNMhgEDWgPs9oDZIvDsVCoUNaY5zREErRatz0/8297xdQmLkGdnI+Zh7+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741919654; c=relaxed/simple;
-	bh=MJbZjBYRRxLsko3DCRXwP/Ob7hw+eq3uF70OQmbeR2Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pw9jndrngDVd0MJF4NB0IdZEX+lXz+ZpvGeHqskzF1VYrTh3h+GTPk1sP0v0maM34vCAIwdEmNiqPEXr4jjIO8arsQD3iBmzEWTZR9/Sb5j0STVooX3/MEOSKUNkgX16CnA2lh5bNjEZCpWHQju8hWmrQAM2PHJlFxzeaq8/mKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=k0cT0AAo; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1741923955; c=relaxed/simple;
+	bh=nqMW4C3NrIhhmINPXZE4/UA7SB+mYZp3/gNeD5mjykY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cYRNoSEhgGeQ/64Mz1TH91po9nTGLdH6QjajEHKH6aH4RYNRNfP7Ua15psjam2RDttFMSyBkS+WqRRmb/jF/yAZkE8ihpjusqGa3yf+qAjT+HOIG5rHtQ+KroySMKUtXevmAxdFUAw7D4MjmJG/4YxFwCUpU20Ki/r1YArlIFrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=amazonses.com; dkim=pass (2048-bit key) header.d=antoniohickey.com header.i=@antoniohickey.com header.b=bSljA+JT; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=pYiVReQi; arc=none smtp.client-ip=54.240.8.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=antoniohickey.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="k0cT0AAo"
-Message-ID: <6c874a4f-439e-4ab2-807d-d0f59b9fe569@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1741919645;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yqL1Zi4/6PZhtmhssx/6TvDWFYb0gRlk77dWOUqI3Zk=;
-	b=k0cT0AAorSL11q5p/K6C6bCBPkfT482NrjJM76iCAEysMUjCe8gRZXjY+G1rA0fAheDrxv
-	wvWEldj35n+FWNYPJgXoSa69rIETkveLkLXZCTvINSBFc6Lahd0iEm9PsGzwjFXajuElnd
-	bu1Wxsg7m92DlJ8Ck6FzX9Uliod+UYI=
-Date: Fri, 14 Mar 2025 10:33:22 +0800
+	dkim=pass (2048-bit key) header.d=antoniohickey.com header.i=@antoniohickey.com header.b="bSljA+JT";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="pYiVReQi"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=cgcwyxycg75iw36cao5ku2ksreqpjkvc; d=antoniohickey.com;
+	t=1741923952;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=nqMW4C3NrIhhmINPXZE4/UA7SB+mYZp3/gNeD5mjykY=;
+	b=bSljA+JTyX2xVLRa50bfPwFCw3Zl99uqhh8vfgfGmIs7BZPfzA5Tu2X8PgcnAoDT
+	pKTbn07tafsMpXYzF0cOqqBpsGSTuT/DOpzPsbgfgaqO0c/2BmLzlJIwp/20RNeeWVB
+	0JJwPXfh2rRtx3we8x8PG3Ww5PuG5LZyeDXTJCZgvDbHQ0QGBkEbvO35zSdoU3Sd68S
+	/BBkBJSEVdUdAecSzPvnEdFG1a0s5x9oeBgZ5OymAJi+itdDNics1t608a/VNdA6v7o
+	I0/E3ifDJricZd6c5HSzN5N7kmnJHtxbWN/0vHJoTAtiQuyD6z34P/EsWK9Yxtulraq
+	aEJYwlQk4A==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1741923952;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
+	bh=nqMW4C3NrIhhmINPXZE4/UA7SB+mYZp3/gNeD5mjykY=;
+	b=pYiVReQiMWkc5EeKiDBi7EKsuoKy6XNKZ5dVahvL++8cSLi9sFqhJS+3mZWXZFJB
+	dpTuNhSE6Xs882r/TJpjPr0AfYrKs/TFmtLLnYidJbNpsFIYTLsCrKy5NevUyjWLTZ9
+	a4nKqcdOcoc8yP6A/8SHFu/BY44lSOtddA9ZvLlY=
+From: Antonio Hickey <contact@antoniohickey.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Antonio Hickey <contact@antoniohickey.com>, 
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 0/3] rust: use &raw [mut] place instead of addr_of[_mut]!(place)
+Date: Fri, 14 Mar 2025 03:45:51 +0000
+Message-ID: <0100019592c224ba-0cf38e16-2aa2-459d-99cd-09a463d616d4-000000@email.amazonses.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <010001958dfeacb5-9039aaab-6114-494a-9f1d-f13982091169-000000@email.amazonses.com>
+References: <010001958dfeacb5-9039aaab-6114-494a-9f1d-f13982091169-000000@email.amazonses.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] rust: file: optimize rust symbol generation for
- FileDescriptorReservation
-Content-Language: en-US
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
- nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
- justinstitt@google.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- Kunwu Chan <kunwu.chan@hotmail.com>, Grace Deng <Grace.Deng006@gmail.com>
-References: <20250313084525.773620-1-kunwu.chan@linux.dev>
- <Z9K3vokYu5osMCwh@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kunwu Chan <kunwu.chan@linux.dev>
-In-Reply-To: <Z9K3vokYu5osMCwh@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Feedback-ID: ::1.us-east-1.3SHHfi5Rh4c+NdtIv+pxNWeqDT0J3zAhYZLMebdhE9o=:AmazonSES
+X-SES-Outgoing: 2025.03.14-54.240.8.71
 
-On 2025/3/13 18:47, Alice Ryhl wrote:
-> On Thu, Mar 13, 2025 at 04:45:25PM +0800, Kunwu Chan wrote:
->> From: Kunwu Chan <kunwu.chan@hotmail.com>
->>
->> When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
->> with ARCH=arm64, the following symbols are generated:
->>
->> $ nm vmlinux | grep ' _R'.*FileDescriptorReservation | rustfilt
->> ffff8000805b6ef0 T <kernel::fs::file::FileDescriptorReservation>
->> 						::fd_install
->> ffff8000805b6e60 T <kernel::fs::file::FileDescriptorReservation>
->> 						::get_unused_fd_flags
->> ffff8000805b6f08 T <kernel::fs::file::FileDescriptorReservation
->> 					 as core::ops::drop::Drop>::drop
->>
->> These Rust symbols are trivial wrappers around the C functions
->> fd_install, put_unused_fd and put_task_struct.It
->> doesn't make sense to go through a trivial wrapper for these
->> functions, so mark them inline.
->>
->> After doing so, the above symbol will not in output.
->>
->> Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
->> Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
->> Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-> A few notes:
->
-> * Your own Signed-off-by must always be last.
-> * You're missing Link: and Suggested-by: tags.
+This patch set enables the `raw_ref_op` feature, which became stable in
+Rust 1.82. It then adds the previous macros for getting a raw pointer to a
+place to the disallowed macros in `.clippy.toml`. Finally it replaces
+all occurences of `addr_of!(place)` and `addr_of_mut!(place)` with 
+`&raw const place` and `&raw mut place`.
 
-Thanks for the reply.
-
-I'll change my own Signed-off-by be last and add Link and Suggested-by 
-as the following:
-
-Link: https://github.com/Rust-for-Linux/linux/issues/1145
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
-
-> * There are some grammar issues, e.g. a missing space before "It" and
->    the phrase "will not in output" is not good.
-I'll  add a space before "It" and remove the last line.
-> * Let's also add the marker to `reserved_fd` to be on the safe side.
-Sure, I'll make 'reserved_fd ' inline in v2.
-> * I think it is easier to read the symbols if you list each sybmol on
->    one line like this:
->
-> ffff8000805b6ef0 T <kernel::fs::file::FileDescriptorReservation>::fd_install
-> ffff8000805b6e60 T <kernel::fs::file::FileDescriptorReservation>::get_unused_fd_flags
-> ffff8000805b6f08 T <kernel::fs::file::FileDescriptorReservation as core::ops::drop::Drop>::drop
-
-If in one line, checkpatch.pl will report a warning:
-
-WARNING:Prefer a maximum 75 chars per line (possible unwrapped commit 
-description?)
-
-If no need to  bother with the warning, I'll change it to one line in v2.
-
->
-> Alice
+Suggested-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://github.com/Rust-for-Linux/linux/issues/1148
+Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 
 
+Antonio Hickey (3):
+  rust: enable `raw_ref_op` feature
+  rust: clippy: disable `addr_of!` and `addr_of_mut` macros
+  rust: replace `addr_of[_mut]!` with `&raw [mut]`
+
+ .clippy.toml                           |  4 ++++
+ rust/kernel/block/mq/request.rs        |  4 ++--
+ rust/kernel/faux.rs                    |  4 ++--
+ rust/kernel/fs/file.rs                 |  2 +-
+ rust/kernel/init.rs                    |  8 ++++----
+ rust/kernel/init/macros.rs             | 28 +++++++++++++-------------
+ rust/kernel/jump_label.rs              |  4 ++--
+ rust/kernel/kunit.rs                   |  4 ++--
+ rust/kernel/lib.rs                     |  2 ++
+ rust/kernel/list.rs                    |  2 +-
+ rust/kernel/list/impl_list_item_mod.rs |  6 +++---
+ rust/kernel/net/phy.rs                 |  4 ++--
+ rust/kernel/pci.rs                     |  4 ++--
+ rust/kernel/platform.rs                |  4 +---
+ rust/kernel/rbtree.rs                  | 22 ++++++++++----------
+ rust/kernel/sync/arc.rs                |  2 +-
+ rust/kernel/task.rs                    |  4 ++--
+ rust/kernel/workqueue.rs               |  8 ++++----
+ 18 files changed, 60 insertions(+), 56 deletions(-)
 
 -- 
-Thanks,
-   Kunwu.Chan(Tao.chan)
+2.48.1
 
