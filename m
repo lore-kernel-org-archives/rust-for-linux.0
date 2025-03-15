@@ -1,82 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3128E204597
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 15:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEBE1F4170
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 16:07:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742053956; cv=none; b=e9tNjsNmq3YSJzLA6m8/rtiijTjvbM8lZ1DENxMz1WVWrk4Azjtfw1ZrAPSsY2jT06LqPSn2b0u8Vy1Cdu6ud2NQtbZL4BFzmPnjo3tXpC1njFwUuT3H5jqCEnDejz/p/tthFq+qpXBh1hgDm7nYmEQuW7pVijy0HB3G4zr0E8A=
+	t=1742054839; cv=none; b=i4E0jmZ5Wh8zJGJgXZeH/VJfu2xadVBAYAzjGVVddFHVdAyjxk+zE/LiD+PCme6p0Au2EOcGu4arYA8e3a1sbizKf6x5lek+7whpYnig8OY6M58jtkp8RoozYv5ycw0vx0xftfkQIeZtddbi1XxYqbM/sCLSJYoq+WjaQ2YVpBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742053956; c=relaxed/simple;
-	bh=1H2Zp9zT3Ov5Jw1YDxBIg5v1DVQ5gE8SiT8KloZQ3x8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H2QVjunPO/epiu8r9AgriXDH/rb4/9guQ1s20CBF7JqiHeQCBcTUMrftJlE1SSD7GbsPEVCXW/CfMFM0EFIeWD1FVtqsKGvPyrZhHvOFYWmowDvgUFk1v4cEz2iwDh2kuyF7UTOy4gmAINTm8S2nwVX0XGuPN15CATHSV0nN7Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hYfTFEoy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742054839; c=relaxed/simple;
+	bh=xTyWCh2A6otWR5zbCZJo8IUfB9rRPdKktJ3i9+qoYQQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pbpEED/kKZBc89RNvHkPvfZm3oBsdFvk3Yn7Nqyds2+/sCYRB7vv+KdxZkLEgwMursjjYuB0JxSUBG5oncfETKMDjp9wqk5GDrwgqmnAXq2FDAzDphfdY4RJ2lGK1CW/L72TvVr6eWJB6+dl58uitQliKR5smlXhibKqMmP6KKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GIDpgVAN; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hYfTFEoy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56145C4CEE5;
-	Sat, 15 Mar 2025 15:52:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742053955;
-	bh=1H2Zp9zT3Ov5Jw1YDxBIg5v1DVQ5gE8SiT8KloZQ3x8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hYfTFEoyQaMo4z9F60nb8GDtYCuERuKtPvHLHb0KLG3veTxKuiqWpwJSmSM5wet2w
-	 Nlqk+tTLBtSc2I1D9yUsurm6IYmxVctdlwyYo5WiX3P6U0N1reqUN2wasyM1HtTrg6
-	 AXXYrDs3kXICtQt84GHE4aLlqE3V83qrtTIIu9zI7RB1i/VY12+oDbctmqiFAFlo+8
-	 U0CEtwhDya/5L7EzjLcgHgchZqwOzoNoH78CbgItMgtQI+vXnwjju6TvvbKFpLbu0d
-	 NPrQGgEn1Oz+nXKQyGLMLf6LXth8Kd4PqqrZnJjVBAn/SeOyH14XVYRAJZVymKnFnx
-	 Q9J7p3J7XY2Fw==
-Date: Sat, 15 Mar 2025 16:52:30 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
-Cc: andrewjballance@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: alloc: add missing invariant in Vec::set_len()
-Message-ID: <Z9WiPlV7fZx_BbHr@cassiopeiae>
-References: <20250315154436.65065-1-dakr@kernel.org>
- <20250315154436.65065-2-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GIDpgVAN"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30613802a04so33876681fa.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 09:07:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742054834; x=1742659634; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DChenp/oAVMvSpkCbblCv3dXFqGdscdkp5di1OKHTCM=;
+        b=GIDpgVAN7XsRnFmWInqvuDKpHyc2OuYzid4NIjeblB7vHfMvk4arZ3Hm4ncjNW/rhN
+         5XCa9ARTNAa13iRRSaimB17OpbVaq8FxFZmn+qdFBnk8I7F2KUY4RZGDNbSpTqhpcqoh
+         cu3Bm8unEKnNZzgG9I8+uh69Hxz5KCxAjjwDCTZhaftEiLRXHOgXvOmcsOpZFr52ngaF
+         Iz62hLltzAmi9fNP7zfTMaK6iwlMxXro/fR1chwSmRIFrDsm0zANjFJh3H/96TsDda9f
+         BOoj9K8ehJqsQg2B3zoeCd9GELQfTA34F1DIQ6Ow6EyiUkRpjTMWUQrJFTsbagthnEX2
+         /IbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742054834; x=1742659634;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DChenp/oAVMvSpkCbblCv3dXFqGdscdkp5di1OKHTCM=;
+        b=CaFOAWI7QVxsQhXlUZFJe5R7AIEJ3JqH5fHT3vDhEe2UZkbUUmGsA8r7YK8W8g0lIb
+         7DO2bVTgPh1bxFG5B9cKYYqvSXjgZHjvYJKMYCh+gUlc8sw0X7dvbr+o7gUnEaLDRqvQ
+         Pl9FrsS/WuwZlKQN2Lm28Updc9LLdbYd7WJ849iG769NYiMXIGSYkFMOHPtc8HOp2Qdp
+         IL8eMGp28Ia/Ym0ZrLxlQjohnsDhWDhBWq7ARLDZmUuyIZAkFebNR//bRt6bpFg3+2Xr
+         CRSGbrgvxDPWIpKd070GxYvomrIl/PqmQsMUvYbxxL8nLPHFKnGWtAI+Fd7Cydckoktg
+         I3ug==
+X-Forwarded-Encrypted: i=1; AJvYcCW+DJGmGiSzPFrvoOLnjihdaGInq4xDRIr+Ll3UAYLHD4E3Dw1oH5DYibjNbCQwceOzRyx4MlnVwfm8KIIRfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwA9MFJ9EuF73QSG3I6WuvOnu2KmmL+85ylnRyZSn0dF9IdaExG
+	epT1uX9l2YX7PrbIgMwKo0HhdeXbiGBQDNJZvYSfgGyzsWo03NhKhQpIfHXopdED53JYKVO0dq4
+	XRp5Vvn0gAjMXFLzvk+tl0IEcdy0=
+X-Gm-Gg: ASbGncsypJ+5M1dOXB4EQbNA+kh/N4wRhTphA7bd0nqdCWqXlyTFffOQT4H6Or0wIJl
+	M0nnpVEpxlB0MzNIa6l3nBgpvZHgvedTE6fDpuNHbPf/P9iY9h/7nvMyOWR1X8fl3rNmyDN0nOM
+	Feu6ESeD2n5jk3zLvjUfalxEcvdekHsL4LtlTUaEb4zSe0sqH1qbZFE7YNONwv
+X-Google-Smtp-Source: AGHT+IGHjQl+mEiNeT0hcdP28GXJ+36MBgk/9CU1Wo8XvW1qCQM6kAtT+AVeUMGhqVWqMfGOG0LVy73Dn0u2fpDDRFE=
+X-Received: by 2002:a2e:a547:0:b0:30b:b00f:9507 with SMTP id
+ 38308e7fff4ca-30c4a8e1231mr26374591fa.24.1742054833456; Sat, 15 Mar 2025
+ 09:07:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250315154436.65065-2-dakr@kernel.org>
+References: <20250315154436.65065-1-dakr@kernel.org>
+In-Reply-To: <20250315154436.65065-1-dakr@kernel.org>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Sat, 15 Mar 2025 12:06:36 -0400
+X-Gm-Features: AQ5f1JolqxPTgnNGqfRexjlVTfe76E-JqgO2XXpfL-hJGk3DTxhFf1hyITm126w
+Message-ID: <CAJ-ks9mh4rsbQkg3ZSmfzR+j1tmrRcmZqqhk9zW8XyhYbLpVMw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of Vec::set_len()
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	andrewjballance@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 15, 2025 at 04:43:02PM +0100, Danilo Krummrich wrote:
-> When setting a new length, we have to justify that the set length
-> represents the exact number of elements stored in the vector.
-> 
+On Sat, Mar 15, 2025 at 11:45=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
+>
+> Extend the safety requirements of set_len() to consider the case when
+> the new length is smaller than the old length.
+>
 > Fixes: 2aac4cd7dae3 ("rust: alloc: implement kernel `Vec` type")
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-
-[1] probably justifies
-
-	Reported-by: Alice Ryhl <aliceryhl@google.com>
-
-[1] https://lore.kernel.org/rust-for-linux/20250311-iov-iter-v1-4-f6c9134ea824@google.com/
-
 > ---
->  rust/kernel/alloc/kvec.rs | 3 +++
->  1 file changed, 3 insertions(+)
-> 
+>  rust/kernel/alloc/kvec.rs | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
 > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index 8540d9e2b717..0a4681ad4ce9 100644
+> index ae9d072741ce..8540d9e2b717 100644
 > --- a/rust/kernel/alloc/kvec.rs
 > +++ b/rust/kernel/alloc/kvec.rs
-> @@ -195,6 +195,9 @@ pub fn len(&self) -> usize {
+> @@ -189,7 +189,9 @@ pub fn len(&self) -> usize {
+>      ///
+>      /// - `new_len` must be less than or equal to [`Self::capacity`].
+>      /// - If `new_len` is greater than `self.len`, all elements within t=
+he interval
+> -    ///   [`self.len`,`new_len`) must be initialized.
+> +    ///   [`self.len`,`new_len`) must be initialized,
+
+Why a comma here? There's a period on the previous list item, and a
+period seems more appropriate before the next item.
+
+> +    /// - if `new_len` is smaller than `self.len`, all elements within t=
+he interval
+> +    ///   [`new_len`, `self.len`) must either be dropped or copied and t=
+aken ownership of.
+
+Nit: I'd argue that dropping is a special case of taking ownership,
+and that such phrasing would be clearer.
+
 >      #[inline]
 >      pub unsafe fn set_len(&mut self, new_len: usize) {
->          debug_assert!(new_len <= self.capacity());
-> +
-> +        // INVARIANT: By the safety requirements of this method `new_len` represents the exact
-> +        // number of elements stored within `self`.
->          self.len = new_len;
->      }
->  
-> -- 
+>          debug_assert!(new_len <=3D self.capacity());
+>
+> base-commit: 80e54e84911a923c40d7bee33a34c1b4be148d7a
+> --
 > 2.48.1
-> 
+>
+>
+
+Minor comments.
+
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+
+It seems that the standard library also lacks this language, it would
+be good to send them a PR.
