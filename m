@@ -1,64 +1,182 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B82618DF73
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 10:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCE1133987;
+	Sat, 15 Mar 2025 11:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742033414; cv=none; b=D4hVANMu2cF1YYjTXT5AUErQixCesvOeghwmwseoWmwTaUHI7M7NlEnBo8demxf+1012BzOVvC/zQPmfBeJBh0mMmqcsCpkvez0W8VWgpfNf6XNE9pzxT6TBLdVvUt+pfmb4hiLOUzzkcyL3ljJoFB00aZjX1sT1FPWwy0xJjdo=
+	t=1742037357; cv=none; b=euTvCETlTWqmFpFZkcaHtc3PD1N1oP44B/5Np9F9Qvipy17HG/KgEvxYSCcYpQJ3HuzY2P1G2mLJ+2L5fr2iX5wZVl12u6HpfpMfm0hRI0cR0SSDUoTDGdozNwAtJM/AHD9lnPNsBTPFCapK6oQnQ60vslLC1ytDhiMahJD8mH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742033414; c=relaxed/simple;
-	bh=r7Zo2XWrtRv4X3V9iLD3xbfQeBf+CgjbidARWQSKhBI=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vCVela/tTMauFRga5X8dIc8NOieGDUOQIn2aNKCZzmHY4vzCbIxYl1O8awz0VPT8gYU4dp3lLaY3he3oOWROO4xJz6KDmbOAz1fw+itFwzJbGQ29vWTem7NqOSv0b5R7Uhgy/3OWJ0/VK3/ZBZyvN841jtTyaVvMOHbm7rNQzGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=I0bXoVB+; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742037357; c=relaxed/simple;
+	bh=m6ehkspKr2IXuGJm63dn4TwHsb7aj4gwJG3UE6JMseg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ius0I0OkZWBkzZEzMSw4aFD1QPvTpyvzwO/7nNAnynlbnh9ZWj3IaYP4u9mdhMkrbggcOnyYg2Me1giQKHY6O88Uk2anSj9c2N6EHnxJoQripgi4ts8iQSU+JOx4D9PDbMD3WtRUTG9N+Miv5pnb6FzW/QMIuiqyjAgm7bwpN/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XYSjmgPD; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="I0bXoVB+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742033405; x=1742292605;
-	bh=+Tktglt/oH5/YnWGKr/OddZjWfCWSqMjnQ64O9FHmDM=;
-	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=I0bXoVB+OWHVNgc3HMgIuPVU+p/6bThJWO1NkdGbQPljgBWSImAcyTx1hGOIyVouk
-	 ffVw0k2EjyPfXvzHFcI9V9aCXxUnOibwaXlobiEs1L5cOb80iAP81Mp0klnZ2iCIt+
-	 k/ChR26PSebdG0O+02NtqXozMb75veZkQ7Cvfe4bCYZm5sC1ahnAEWPS7FgsnGA0QW
-	 k3vzLET9v6+VC2UYuJNL1Ppm65Q6KcnOJPwLoBt/6BSXZQCp84BYzCxwQJRa4A6B4d
-	 PNSwgLObwJnq7+f4Jot97HHE9tQjcG/rwXboNAYh28maa6PFrjcnKWsJDofesPCgtl
-	 2jxHYqvoAG0ow==
-Date: Sat, 15 Mar 2025 10:10:00 +0000
-To: Andrew Ballance <andrewjballance@gmail.com>, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, acourbot@nvidia.com, nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Subject: Re: [PATCH 2/3] rust: alloc: add Vec::resize method
-Message-ID: <D8GRASU6UVLX.3C8EMGGXM35O0@proton.me>
-In-Reply-To: <20250315024235.5282-3-andrewjballance@gmail.com>
-References: <20250315024235.5282-1-andrewjballance@gmail.com> <20250315024235.5282-3-andrewjballance@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 0b0b71ccc623222af72834b86048786342382325
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XYSjmgPD"
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-601f1250436so235372eaf.3;
+        Sat, 15 Mar 2025 04:15:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742037355; x=1742642155; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fsE4ot+F7yV8gTFDUQj/QcGbskBzPPy0s/mWjVIBgJ4=;
+        b=XYSjmgPDP9dHzAZG/U7UsOW9tun796oD426IDdI9oop+h+DgafTGW+5CaM+RzX1lWB
+         2TEJRQ3Xyuaqj96tR+JrlaVj8TlVh4eFsaOlv5wq0ZGYcNu3SbwtO+MmrX1T7ut0FkYs
+         kQ5g5PvWNJCWAsFg4q7S6fXjqjZeIv4byQBz2b25uSJfuUuQwMGKq+W1S/2SzE6vt/oF
+         XZuOYab8jheoFIA+7hpDwGlZqi8OGLNR/NUfEzeAxcgGnsVJfYE/5lwpOuRkFUR3KMhu
+         JuF4c39nBvkLDr7hhOoPl8ibBGz37sXvOD9hENzl8dPx38J40Ax2OU7mSBPY/be7siZ5
+         IDcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742037355; x=1742642155;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fsE4ot+F7yV8gTFDUQj/QcGbskBzPPy0s/mWjVIBgJ4=;
+        b=NsOiv8UnUEniJ5lKi4J1AFQUjn/ePNujOWj7XUcYruvbR74ZNRI/qBPu+VX5Q2YczX
+         PiURyfvxwUOA9z6US5MifYhMvEBdEcQgRXHfa2DvKRMrZXGnkeO381V4FOwwsFu+f7k5
+         xFPfkzwXx3euJ38VETWRBeqaYLHb+M4i7rXv1PtDdelAIegXwju+JBYiTLtrukfjSZ37
+         yAFAb+X74hzDA9mKXyaiA2XoLSEF1QOcF/Ellpw4mlePML99+yqP2Xox/78CHzzxr7yp
+         QIxS6qpmBaO/r3s0rg3xfsd4HNt3bC6WGeV56Dqdef5jy/tDT5VWpU2quJtn6XoYsuj+
+         yxag==
+X-Forwarded-Encrypted: i=1; AJvYcCUEcxKZmSsBT4ewo++aNmSp9d9Klgg/aEcMqojDPFYa2jhAB2nTbCi9OkwsX4EMum2omU6llUhk17ndUTYl@vger.kernel.org, AJvYcCVhN76xw5f0ohexp1+R2VWgw+y8NrqWZIRUCvGGtKsPCWOabYw31Tf9lgjQweld3ZEP82zYrkIhNfA=@vger.kernel.org, AJvYcCXMNeSaQ7/m60q/P0J3Do2wBK+wMf2+AKjrrbmykTJvmuSlCf804rCUP5Q2lcWnLvp5D/jAxb78Fd/XJV5aFrc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyglruF9lUKtWVuinIQqDGW7lKCU+l5UDrmPWaIaXgVmF1S3XTg
+	4SVLZE5OMaDOm87EUFKLVRPjot/5D8k4psllVvwb2mFq1ufe6iO4
+X-Gm-Gg: ASbGncsVzfRKQ+QSsZr9pnlHGYjia4OalN/5zXPFLQFbctacFGGNZjvFO+XpvoI0VEf
+	AlQYMsz/OVPVnZg7yRRxesf5bdGby1KNQfgd0wlwkKKU5Xa6INu11wVRf6kYk1Qed5KNCTD6LjG
+	49wcvRF55T2oqIyqfY+mdHmo3olub1VV0yh0ISL4RPuEl1v6ojBPzv405wlLOKL++kcauVwVM1z
+	VAuzR0wa6WhAG8tw+z/6SSqksRuuqOPGYIU/NHA3ym4a+dtM6xUDnXo7E61wnziYs+rovSaW4ZZ
+	jVI/ag4j+TrpB3F6PCODCWYlD/kVRKbbL+6O0VZ/PS9fRafOXwSrs/Fqgo6d6d0Xkthu9I4aYFQ
+	xk4cYxzE+ExUVD6md
+X-Google-Smtp-Source: AGHT+IEtJfw/w3NFqPpk/9J3e/w+rGmcMb9d2v6gwwk8XdHXokvYktoc9+s3uuIp+BGxQ9A7JuIynw==
+X-Received: by 2002:a4a:ee85:0:b0:600:2ff9:acb9 with SMTP id 006d021491bc7-601e45a7a78mr3037153eaf.1.1742037355049;
+        Sat, 15 Mar 2025 04:15:55 -0700 (PDT)
+Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
+        by smtp.googlemail.com with ESMTPSA id 006d021491bc7-601db65a010sm913826eaf.1.2025.03.15.04.15.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Mar 2025 04:15:54 -0700 (PDT)
+From: Andrew Ballance <andrewjballance@gmail.com>
+To: benno.lossin@proton.me
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	airlied@gmail.com,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	andrewjballance@gmail.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	corbet@lwn.net,
+	dakr@kernel.org,
+	dri-devel@lists.freedesktop.org,
+	gary@garyguo.net,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	nouveau@lists.freedesktop.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	simona@ffwll.ch,
+	tmgross@umich.edu,
+	tzimmermann@suse.de
+Subject: Re: [PATCH 1/3] rust: alloc: add Vec::truncate method
+Date: Sat, 15 Mar 2025 06:15:11 -0500
+Message-ID: <20250315111511.107047-1-andrewjballance@gmail.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <D8GRAC8YQIVC.2LS1EIIIRZU3I@proton.me>
+References: <D8GRAC8YQIVC.2LS1EIIIRZU3I@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat Mar 15, 2025 at 3:42 AM CET, Andrew Ballance wrote:
-> implemnts the equivalent of the rust std's Vec::resize
-> on the kernel's Vec type.
->
-> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+On Sat, Mar 15, 2025 at 10:09:26AM +0000, Benno Lossin wrote:
+> On Sat Mar 15, 2025 at 3:42 AM CET, Andrew Ballance wrote:
+> > implements the equivalent to the std's Vec::truncate
+> > on the kernel's Vec type.
+> >
+> > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+> > ---
+> >  rust/kernel/alloc/kvec.rs | 36 ++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 36 insertions(+)
+> >
+> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > index ae9d072741ce..75e9feebb81f 100644
+> > --- a/rust/kernel/alloc/kvec.rs
+> > +++ b/rust/kernel/alloc/kvec.rs
+> > @@ -452,6 +452,42 @@ pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocEr
+> >  
+> >          Ok(())
+> >      }
+> > +
+> > +    /// Shortens the vector, setting the length to `len` and drops the removed values.
+> > +    /// If `len` is greater than or equal to the current length, this does nothing.
+> > +    ///
+> > +    /// This has no effect on the capacity and will not allocate.
+> > +    /// # Examples
+> > +    /// ```
+> > +    /// let mut v = kernel::kvec![1, 2, 3]?;
+> > +    /// v.truncate(1);
+> > +    /// assert_eq!(v.len(), 1);
+> > +    /// assert_eq!(&v, &[1]);
+> > +    ///
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    pub fn truncate(&mut self, len: usize) {
+> > +        if len >= self.len() {
+> > +            return;
+> > +        }
+> > +
+> > +        // [new_len, len) is guaranteed to be valid because [0, len) is guaranteed to be valid
+> > +        let drop_range = len..self.len();
+> > +
+> > +        // SAFETY:
+> > +        // we can safely ignore the bounds check because we already did our own check
+> > +        let ptr: *mut [T] = unsafe { self.get_unchecked_mut(drop_range) };
+> 
+> What's this `get_unchecked_mut` method, I don't see it in `rust-next` or
+> `alloc-next`.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Vec derefs into a slice which implements get_uncheked_mut
+https://rust.docs.kernel.org/next/kernel/alloc/kvec/struct.Vec.html#method.get_unchecked_mut
 
----
-Cheers,
-Benno
+> > +
+> > +        // SAFETY:
+> > +        // it is safe to shrink the length because the new length is
+> > +        // guaranteed to be less than the old length
+> 
+> Please take a look at the documentation of `set_len`, in the safety
+> section you'll find what you need to justify here.
+> 
+> > +        unsafe { self.set_len(len) };
+> > +
+> > +        // SAFETY:
+> 
+> A couple points missing:
+> - why is the pointer valid?
+> 
+> > +        // - the dropped values are valid `T`s
+> > +        // - we are allowed to invalidate [new_len, old_len) because we just changed the len
+> 
+> This should justify why the value will never be accessed again.
+> 
+
+I will fixup the safety comments for the v2. Thanks.
 
 > ---
->  rust/kernel/alloc/kvec.rs | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
-
+> Cheers,
+> Benno
+> 
+> > +        unsafe { ptr::drop_in_place(ptr) };
+> > +    }
+> >  }
+> >  
+> >  impl<T: Clone, A: Allocator> Vec<T, A> {
+> 
+> 
