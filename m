@@ -1,104 +1,199 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591941F5847;
-	Sat, 15 Mar 2025 12:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B811DF969
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 12:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742041256; cv=none; b=f5zQtICDVxKJNF/olro0lH7LOiYjMjN1gtkrFE1SViUaWkqKtU4zCLjl0N9r3tbclRSodcJ5BwRxMZJxtTO8JAm5Rwgd9e+fEBMnrOF7KYbAA4Lazqx4Je2RI0x+EYMyxce0Ukzj/9W7w1IJu4RGCxRtcrwrMFuNrxxrfvrHVRU=
+	t=1742041403; cv=none; b=l5Q+RxwEyn59Dw8JqMpRzEb281NDufUGdPieMis6VLo2DUqBJAi8yy6rV3Tz+a9Y2k3+QiIPa+71VwLopOB6PF2rM/DQ5AbMYXK/blX1hbyuRP9/gXnRCv7RVE+uivK6UZZYVP9uVpXdmzMtP/1CDJirUcS4ibFfosHvQitnA1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742041256; c=relaxed/simple;
-	bh=taJL1i+nVWCBfH1Pg+oM1jKI+MUMOq+Y602lDIgw4Tk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bv/ZS+MwCCmM4g5HZkryxGc1Z5ZFxVftfr7fJEYWdzePY5c80QTt8kiVpgnOE8LQe7lSv46Ln3VJaM5f7T1bfZoqiG7KXiBFydGTNTmKWsKMwYGthksktEnoDwxdYZlD2eobWesAmVsalV27E69/tYY7CKAxFIxjjg+LY1l8HdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dsMQOyvz; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742041403; c=relaxed/simple;
+	bh=Ukca3/ncqP9vO7wrUJD6tw4YmrjP4fcf9yvG7H3oX8E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oHKXe2/DuLnpVsGvVt/oYNBbVsOG8noQWQ/foGfTpTp08y7OL4qoGwrNos8RHcW1DaXocMC4zeT0DBIrDxovFENkP1H9A5S5K5EDiv61G7rkTwbzQlQSWGbWGl4khaGDRaNnaty93Yu65hBsl7jXoQSsOGAsbr3pnGWppS7+Qqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=ipKn7+Jq; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dsMQOyvz"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30613802a04so32537471fa.2;
-        Sat, 15 Mar 2025 05:20:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742041252; x=1742646052; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=taJL1i+nVWCBfH1Pg+oM1jKI+MUMOq+Y602lDIgw4Tk=;
-        b=dsMQOyvzQt7PLXC3iSm1EB84HixZa79LbE6ug+mlySoE2S7qyTokDxBzhrRGspdSgz
-         EEPdNO1XxTsh8k/tNyl3TprcmjNFCLQBrYyYnAzHiEo0gEaJMkpdQil+kE6eiWaMkqlE
-         TMJEwYyNEZTajmum4R68O/k/YTsQGW4olVKr+Lw39QQgZU6nWZJbWiwacaFNvo0Kl5PW
-         aK9PTnmG+NRj6sz79HaB/+HfXlbLnLRoa56BbXGeGKGcJgRy1JUJIpqpBA2dwljlL+Es
-         Rj6eJ4EnBUSxyf5TCOiXH7LOA3+LUVUPhmgTt+sUVe/mXsr9J+kqhVc7B8dH56BaKogH
-         ptlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742041252; x=1742646052;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=taJL1i+nVWCBfH1Pg+oM1jKI+MUMOq+Y602lDIgw4Tk=;
-        b=cXlGq0zk7MHL8f53fddazZkadnivWk0CJeshr0qV4Wg3iADrIkjVdRCciS+RSlaeXy
-         ujTTBTgxA0BewyspxozGJ2ACWipghIY+YPI+0Iai7O0M5Ykutw7Cd70kLZACRTnKFp3c
-         PXN7ZpGLR+ahqoGYW3TIAk6DU6pPAXtYwOF09s/9+7CvLxvP94gF7PWBvMCj86ULceD9
-         5kYNaMML9Flub5ysrWso0uoLFmQ/zjz2is739wqY6njbczzRrZ3scWKARYrW0TbgKagX
-         pPGjdmUCNQGSgLplFJwswNciaUEXcZk3dOTEYfcQjkt9tCVGPSkxegkzblKs62SWeP8L
-         1dMw==
-X-Forwarded-Encrypted: i=1; AJvYcCWvDGcbJeJ+maFSum8/G74tvN7TM47/9w3MZksZ1JfONQOXVGyQEUKEUWWc9mQL4cAnuxyVpFt1jkxi9d0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybBCY3ept/CD/U6B5JU+V1NWrZgJ60xcR4a3+yYTyUeVKrdMif
-	K4tZvjlaCQuXFstPoMAL6M29xP4BTc0JiNc2M42Z31Nuy/MrXHQJDwOJQmc+apCwpkzOxVqHjyr
-	kYNmABhYfB1ljgyLH2tKkKKvLMfQ=
-X-Gm-Gg: ASbGnctHQKn45vjyRGnyoRgDm5SUyDWg4Eo6QaeHUrJcnoTybnhi26Yg4OW5myeENkx
-	/PHUp14QHGB+kxs54+FUYvncwijQ6CoeQtH2CMOX97V2kT8+m6vP6w5dsnbbvVs2LNcCrxr9FCh
-	XGAEQS6/8MrLg7aFPiHFpVFV8vxRlI0Qq6PijW6ngRc8R6lZkqm2wdexbATamh
-X-Google-Smtp-Source: AGHT+IHre8gYoYOxjXZSdvK2VzoVhuvrxJ9TIF3avtTIz/hIj/9w6vb3T0czu+u0FCkSwNp+EhS9bXAl7HkZLU+ZjSw=
-X-Received: by 2002:a2e:a547:0:b0:30b:b00f:9507 with SMTP id
- 38308e7fff4ca-30c4a8e1231mr23955491fa.24.1742041252095; Sat, 15 Mar 2025
- 05:20:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="ipKn7+Jq"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 8AAFB240105
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 13:23:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1742041393; bh=Ukca3/ncqP9vO7wrUJD6tw4YmrjP4fcf9yvG7H3oX8E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
+	b=ipKn7+JqX40eMQ8BdC86W/3373kybHFYYmEboQbz0Bq/GB15srSJa13z/LmSqjJEC
+	 YAkI2UWEyDE14AbaWDNS5p8TWGipm29J6H8nNZnUS5xADVJvn24aYKNaD5i+usf9Zw
+	 zo3qkBYlxP0NPqPj5VxlH6Ym4p620BlUsz7/lAXuPMT9wAZ16OOFTGaQMNFroEU2Gb
+	 Gn7iysOnQM4w6qROYf5Y3cSr2P1z9QTLIGWcLzMARwJdfTNdeP6h10iLLlxJVPDc3z
+	 OC9npcQYoy+LluYe7kVVZBeiMwa3UPM3ZGHQAWqJZDvT1UHPC4qe2jQRcW5PERdIl6
+	 +Ppkv+ffUBNxg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZFL3y4D6Yz9rxD;
+	Sat, 15 Mar 2025 13:23:10 +0100 (CET)
+From: Panagiotis Foliadis <pfoliadis@posteo.net>
+Date: Sat, 15 Mar 2025 12:23:01 +0000
+Subject: [PATCH v3] rust: task: mark Task methods inline
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250311-rust-analyzer-host-v2-0-30220e116511@gmail.com> <20250311-rust-analyzer-host-v2-4-30220e116511@gmail.com>
-In-Reply-To: <20250311-rust-analyzer-host-v2-4-30220e116511@gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 15 Mar 2025 08:20:16 -0400
-X-Gm-Features: AQ5f1JpDsYW7F82__CF4lYDi-7o_mn90Imk8mmsBMVstzX4IxocD2ibF3zNr-xs
-Message-ID: <CAJ-ks9kSxK_=p2SMJWNVjS9wCSmNB9O0eOEDGEbwjCrAxsXMxg@mail.gmail.com>
-Subject: Re: [PATCH v2 4/7] scripts: generate_rust_analyzer.py: add type hints
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250315-inline-c-wrappers-v3-1-048e43fcef7d@posteo.net>
+X-B4-Tracking: v=1; b=H4sIACRx1WcC/23NQQrCMBCF4auUrI0kE9u0rryHuAjJ1A5IUpISl
+ dK7mxYXCl3+D+abmSWMhImdq5lFzJQo+BLqUDE7GH9HTq40AwG1UKLl5B/kkVv+jGYcMSbuTKv
+ QSgtGa1buxog9vTbzeis9UJpCfG8vslzXrybFjpYll9xpaE6yxkYpuIwhTRiOHie2chl+CblHQ
+ CE02K5zqu57pf6IZVk+qVJSKPYAAAA=
+X-Change-ID: 20250308-inline-c-wrappers-da83ec1c2a77
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Boris-Chengbiao Zhou <bobo1239@web.de>, Kees Cook <kees@kernel.org>, 
-	Fiona Behrens <me@kloenk.dev>
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Lukas Wirth <lukas.wirth@ferrous-systems.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ llvm@lists.linux.dev, Christian Schrefl <chrisi.schrefl@gmail.com>, 
+ Charalampos Mitrodimas <charmitro@posteo.net>, 
+ Panagiotis Foliadis <pfoliadis@posteo.net>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1742041390; l=5384;
+ i=pfoliadis@posteo.net; s=20250308; h=from:subject:message-id;
+ bh=Ukca3/ncqP9vO7wrUJD6tw4YmrjP4fcf9yvG7H3oX8E=;
+ b=v6wCwQhd50JlOIuoLOU8w2aDsC9KzDCmm1LpOPMHGSK9OTPwpSV8WV0szfPYAA2yZNBvDFZnm
+ pWEYaYGdRn0CLYOaZZO3FxyQAswTfULjqB+1jLGHA4kda3Eg+fu1vDp
+X-Developer-Key: i=pfoliadis@posteo.net; a=ed25519;
+ pk=/8ch2dv3mwtZ5ygYwiG7ldc/132K6XmLkAZDmIe0aQw=
 
-On Tue, Mar 11, 2025 at 9:17=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> Python type hints allow static analysis tools like mypy to detect type
-> errors during development, improving the developer experience.
->
-> Python type hints have been present in the kernel since 2019 at the
-> latest; see commit 6ebf5866f2e8 ("kunit: tool: add Python wrappers for
-> running KUnit tests").
->
-> Run `uv tool run mypy --strict scripts/generate_rust_analyzer.py` to
-> verify.
->
-> This removes `"is_proc_macro": false` from `rust-project.json` in
-> exchange for stricter types. This field is interpreted as false if
-> absent[1] so this doesn't change the behavior of rust-analyzer.
->
-> Link: https://github.com/rust-lang/rust-analyzer/blob/8d01570b5e812a49daa=
-1f08404269f6ea5dd73a1/crates/project-model/src/project_json.rs#L372-L373 [1=
-]
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+When you build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+toolchain provided by kernel.org, the following symbols are generated:
 
-Gentle ping. Please have a look if you aren't intimidated by python
-type hints :)
+$ nm vmlinux | grep ' _R'.*Task | rustfilt
+ffffffff817b2d30 T <kernel::task::Task>::get_pid_ns
+ffffffff817b2d50 T <kernel::task::Task>::tgid_nr_ns
+ffffffff817b2c90 T <kernel::task::Task>::current_pid_ns
+ffffffff817b2d00 T <kernel::task::Task>::signal_pending
+ffffffff817b2cc0 T <kernel::task::Task>::uid
+ffffffff817b2ce0 T <kernel::task::Task>::euid
+ffffffff817b2c70 T <kernel::task::Task>::current
+ffffffff817b2d70 T <kernel::task::Task>::wake_up
+ffffffff817b2db0 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::dec_ref
+ffffffff817b2d90 T <kernel::task::Task as kernel::types::AlwaysRefCounted>::inc_ref
+
+These Rust symbols are trivial wrappers around the C functions
+get_pid_ns, task_tgid_nr_ns, task_active_pid_ns, signal_pending, uid,
+euid, get_current, wake_up, get_task_struct and put_task_struct. It
+doesn't make sense to go through a trivial wrapper for these
+functions, so mark them inline.
+
+After applying this patch, the above command will produce no output.
+
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+Reviewed-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Panagiotis Foliadis <pfoliadis@posteo.net>
+---
+Changes in v3:
+- Fix typo in patch description
+- Link to v2: https://lore.kernel.org/r/20250311-inline-c-wrappers-v2-1-72c99d35ff33@posteo.net
+
+Changes in v2:
+- Added `#[inline] to all the remaining functions of task.rs file
+- Link to v1: https://lore.kernel.org/r/20250310-inline-c-wrappers-v1-1-d726415e6332@posteo.net
+---
+ rust/kernel/task.rs | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 07bc22a7645c0c7d792a0a163dd55b8ff0fe5f92..66b845a83acf3a57a59d281d11fcfb9107a214a8 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -132,6 +132,7 @@ pub fn current_raw() -> *mut bindings::task_struct {
+     /// # Safety
+     ///
+     /// Callers must ensure that the returned object doesn't outlive the current task/thread.
++    #[inline]
+     pub unsafe fn current() -> impl Deref<Target = Task> {
+         struct TaskRef<'a> {
+             task: &'a Task,
+@@ -166,6 +167,7 @@ fn deref(&self) -> &Self::Target {
+     /// # Safety
+     ///
+     /// Callers must ensure that the returned object doesn't outlive the current task/thread.
++    #[inline]
+     pub unsafe fn current_pid_ns() -> impl Deref<Target = PidNamespace> {
+         struct PidNamespaceRef<'a> {
+             task: &'a PidNamespace,
+@@ -273,24 +275,28 @@ pub fn pid(&self) -> Pid {
+     }
+ 
+     /// Returns the UID of the given task.
++    #[inline]
+     pub fn uid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_uid` on a valid task.
+         Kuid::from_raw(unsafe { bindings::task_uid(self.as_ptr()) })
+     }
+ 
+     /// Returns the effective UID of the given task.
++    #[inline]
+     pub fn euid(&self) -> Kuid {
+         // SAFETY: It's always safe to call `task_euid` on a valid task.
+         Kuid::from_raw(unsafe { bindings::task_euid(self.as_ptr()) })
+     }
+ 
+     /// Determines whether the given task has pending signals.
++    #[inline]
+     pub fn signal_pending(&self) -> bool {
+         // SAFETY: It's always safe to call `signal_pending` on a valid task.
+         unsafe { bindings::signal_pending(self.as_ptr()) != 0 }
+     }
+ 
+     /// Returns task's pid namespace with elevated reference count
++    #[inline]
+     pub fn get_pid_ns(&self) -> Option<ARef<PidNamespace>> {
+         // SAFETY: By the type invariant, we know that `self.0` is valid.
+         let ptr = unsafe { bindings::task_get_pid_ns(self.as_ptr()) };
+@@ -306,6 +312,7 @@ pub fn get_pid_ns(&self) -> Option<ARef<PidNamespace>> {
+ 
+     /// Returns the given task's pid in the provided pid namespace.
+     #[doc(alias = "task_tgid_nr_ns")]
++    #[inline]
+     pub fn tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
+         let pidns = match pidns {
+             Some(pidns) => pidns.as_ptr(),
+@@ -319,6 +326,7 @@ pub fn tgid_nr_ns(&self, pidns: Option<&PidNamespace>) -> Pid {
+     }
+ 
+     /// Wakes up the task.
++    #[inline]
+     pub fn wake_up(&self) {
+         // SAFETY: It's always safe to call `signal_pending` on a valid task, even if the task
+         // running.
+@@ -328,11 +336,13 @@ pub fn wake_up(&self) {
+ 
+ // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+ unsafe impl crate::types::AlwaysRefCounted for Task {
++    #[inline]
+     fn inc_ref(&self) {
+         // SAFETY: The existence of a shared reference means that the refcount is nonzero.
+         unsafe { bindings::get_task_struct(self.as_ptr()) };
+     }
+ 
++    #[inline]
+     unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+         // SAFETY: The safety requirements guarantee that the refcount is nonzero.
+         unsafe { bindings::put_task_struct(obj.cast().as_ptr()) }
+
+---
+base-commit: 7f0e9ee5e44887272627d0fcde0b19a675daf597
+change-id: 20250308-inline-c-wrappers-da83ec1c2a77
+
+Best regards,
+-- 
+Panagiotis Foliadis <pfoliadis@posteo.net>
+
