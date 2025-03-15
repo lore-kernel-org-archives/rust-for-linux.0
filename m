@@ -1,43 +1,43 @@
 Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079BF1F3BA5;
-	Sat, 15 Mar 2025 09:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAC215098F
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 09:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742032079; cv=none; b=i0DombKyvfSo4KcufjK2Lr2622n8I4D/AWz9K/++AvJcrA41i/dR/0yFRUGRnp2k/tXSrmuWdjgFMLt4itOwUFiYt5qpae2074g0VHLP6FI4eFVHngL0ThGK6JsfR/v2VAL6IUdbJV8lW1uvzgdznC6xTAadiDUaJO5LVtlrgog=
+	t=1742032703; cv=none; b=bUFeWqhHq0qmG+Zw+KGHPA8D4qdZ+cwARZWcafX0nNnThJyoUDUnwjt3fSeQyP8NV7UIxR/gqrbLvZ2oJy+G9wi0WuJIPBoHE6gkwEtbZiLnRglgGD0StpcS2lndhEIReR9yjVdcUE8RMb6DYaciNCT5qr/HiccePS/6umSAaLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742032079; c=relaxed/simple;
-	bh=7CqIO2/a0U9+oy6kNqO6XNpT52/jDsv0DiXJpmmUevA=;
+	s=arc-20240116; t=1742032703; c=relaxed/simple;
+	bh=wn09jwc2pBQvduyxyPV+H5IbnwLWYqsOUtLidwfnmGk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gfuuOR1x6/ld/PtseLd+CEbysXKVAnGHVlgkJt/TE+uR663RSvkLLPSDgu4p9Z2XWQy3M37ScEo1za74IzcmPNRtAgUvTa1nd9X+V/FPjtdCegmjn+doddRInECTR7d7HGW+yzjh9NwsAFuH3uIdlwtihHbwz5PZVatU4j+C/OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=huhRdlgp; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=Yv2qdhEGTCzdWNLE2JZyzMgEvmgrF3KtW34KUUoYIY/R9wSCV+mp/dArgryYVTnoHgG2T1Cin16dNGteUgfH4f+/bHvaubbGlhzKpXsMZHRJNQVGP9dezwLAg7PqO0OYjYUiima7NT6F6036SM9B3bRhR2csp/9TCVU/4CUIYCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bNzQlWKF; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="huhRdlgp"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bNzQlWKF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742032075; x=1742291275;
-	bh=YpMrKdCi6avddH9GQIVObLt9iwLl9bTrbYaJbhO6aWs=;
+	s=protonmail; t=1742032699; x=1742291899;
+	bh=TafzxovLbJfIiyPOpoOK0R8B3/B2rBQqxlLBlZOQQFg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=huhRdlgpk0zebEQhrgVrn61dI92d0m27GER/kzfWLJ8X2bK9QJPTc/zEU3l6MM8PE
-	 msflN1IByzbQOCx08jmvjixBLTxEHezv+d/ex8q5RTv5oOpStFdobWgHZnpCglf+GW
-	 4SrFNcTURHgHO2DOyu9KgU6JUp4WH0S0V0LGOcJr/gD6p8t94++9hTf7fNYNC91dud
-	 fRB4ASTPQxXB1mizw+ZsaimzeDbgp2NQqN4i3LI2Ts5UbBTcnoJUOZAb6rNlz9T6VS
-	 YM/iPt0GO2hfhA+6BwNtjMhQvGBMWTgrhImtggYdXQfKctdtaPspGUlbxHQNj18xLZ
-	 OWuYN4da9wX6g==
-Date: Sat, 15 Mar 2025 09:47:51 +0000
-To: Boqun Feng <boqun.feng@gmail.com>, Antonio Hickey <contact@antoniohickey.com>
+	b=bNzQlWKFQOr5ggqj3s+k51vZAIABzZKOV0oLqg/kr+zsfPqTbaFd9/czExISgzYyq
+	 /YOSfzbiRm1T/8+M+mIA70Cl1brniXLT894gORZkpaX+gHSj5BOK4/lz2oKQ9OcqiW
+	 kv1GTPmNZfiQMPgUvrgRLpdvYLrOtu/RsfozjisFXwAZGzvp+Z8GiTqTDuhaXJbamE
+	 DU+yFkHkLgv1UxQpOnINMSuvf3iuf8YLT2eYi6Jq4+vuOEibAxH2xuB5wJAQ3Rw+4r
+	 soBOaA7Q/IHww2q+s1ep2rUjFVWPKTuosEDvzxLEE1ckMNgG4zm0NTPnshhT0iWYWS
+	 46SSqozNPvf9g==
+Date: Sat, 15 Mar 2025 09:58:11 +0000
+To: Antonio Hickey <contact@antoniohickey.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, netdev@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] rust: replace `addr_of[_mut]!` with `&raw [mut]`
-Message-ID: <D8GQTTOG3YEA.L56HVS2ZWZMK@proton.me>
-In-Reply-To: <67d4c889.050a0220.35d7ce.b4b0@mx.google.com>
-References: <20250314234148.599196-1-contact@antoniohickey.com> <0100019597092d67-0da59c6d-9680-413f-bbce-109ef95724cc-000000@email.amazonses.com> <67d4c889.050a0220.35d7ce.b4b0@mx.google.com>
+Cc: Benno Lossin <y86-dev@protonmai.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] rust: enable `raw_ref_op` feature
+Message-ID: <D8GR1RC32370.2EJN57V2ZYA7R@proton.me>
+In-Reply-To: <0100019597091f92-cb55b6cd-4d06-4d14-8d9c-1a1314949a00-000000@email.amazonses.com>
+References: <20250314234148.599196-1-contact@antoniohickey.com> <0100019597091f92-cb55b6cd-4d06-4d14-8d9c-1a1314949a00-000000@email.amazonses.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f41ba0e3cf90358c69c91d746250ed35f9c78c43
+X-Pm-Message-ID: c8e8ddaef7ed051886a41c3dc5bd2993a44271c4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,36 +47,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat Mar 15, 2025 at 1:23 AM CET, Boqun Feng wrote:
-> On Fri, Mar 14, 2025 at 11:41:55PM +0000, Antonio Hickey wrote:
-> [...]
->> @@ -541,7 +541,7 @@ macro_rules! stack_try_pin_init {
->>  ///
->>  /// ```rust
->>  /// # use kernel::{macros::{Zeroable, pin_data}, pin_init};
->> -/// # use core::{ptr::addr_of_mut, marker::PhantomPinned};
->> +/// # use core::marker::PhantomPinned;
->>  /// #[pin_data]
->>  /// #[derive(Zeroable)]
->>  /// struct Buf {
->> @@ -554,7 +554,7 @@ macro_rules! stack_try_pin_init {
->>  /// pin_init!(&this in Buf {
->>  ///     buf: [0; 64],
->>  ///     // SAFETY: TODO.
->> -///     ptr: unsafe { addr_of_mut!((*this.as_ptr()).buf).cast() },
->> +///     ptr: unsafe { &raw mut (*this.as_ptr()).buf.cast() },
+On Sat Mar 15, 2025 at 12:41 AM CET, Antonio Hickey wrote:
+> Since Rust 1.82.0 the `raw_ref_op` feature is stable.
 >
-> This should be:
+> By enabling this feature we can use `&raw place` and `&raw mut place`
+> instead of using `addr_of!(place)` and `addr_of_mut!(place)` macros.
 >
+> This will allow us to reduce macro complexity, and improve consistency
+> with existing reference syntax as `&raw`, `&raw mut` is very similar to
+> `&`, `&mut` making it fit more naturally with other existing code.
 >
-> ///     ptr: unsafe { &raw mut ((*this.as_ptr()).buf).cast() },
->
-> , right?
+> Suggested-by: Benno Lossin <y86-dev@protonmai.com>
 
-I'd say it has to be `ptr: unsafe { (&raw mut ((*this.as_ptr()).buf)).cast(=
-) }
+This still has my old email, please use <benno.lossin@proton.me>.
 
 ---
 Cheers,
 Benno
+
+> Link: https://github.com/Rust-for-Linux/linux/issues/1148
+> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> ---
+>  rust/kernel/lib.rs | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 398242f92a96..1d078f69bb19 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -19,6 +19,8 @@
+>  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
+>  #![feature(inline_const)]
+>  #![feature(lint_reasons)]
+> +// Stable in Rust 1.82
+> +#![feature(raw_ref_op)]
+>  // Stable in Rust 1.83
+>  #![feature(const_maybe_uninit_as_mut_ptr)]
+>  #![feature(const_mut_refs)]
+
 
