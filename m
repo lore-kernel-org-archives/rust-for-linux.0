@@ -1,138 +1,107 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08701FECAD;
-	Sat, 15 Mar 2025 18:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6231F8901
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 18:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742062408; cv=none; b=KCBTNkis2iHORf2z9tp0yO67onX5lMDyvHNO8c1DM2gicjF2M+ITfIPskX3Vcnt0gdCDJSd3A2+4HAOfVn3b+Hbttk5Jb0FWQ70biPw1Td1Zli9w46/a96sZ2ecNpoEnVIi9brFS8thycSQhd8cchdfypXiThcMGcQtPD5RZ5XU=
+	t=1742063768; cv=none; b=QooNuX2ntgmene9SDNEIxOgtpS7IuGsIwFA/ZyczHeUBmL7Du51leYGgGkIwgKjOuxENmIUQfD6veTynG0AtzOHFMW+hfIyg5PvUqteihbIaBeVuJSxUn/LTgtPJ+kMrmx2QrBMeKea/BUHpl4hDykxAZw3bT2hkh8ZHtMRZNeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742062408; c=relaxed/simple;
-	bh=j3l0CwRAA7jzKYQesrIbEeXl2+YGefTcqALSuRxhtJE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g0Q5tf0HlqTytRZEZZJaXhVprLxBpbLvbI2SK+zNEIUTB9KDK6UVaBb5EFdWb1KnkKa/QOYosx5F368ggdX70+UkCoJ8PBgXbKMWf2knZDRr0+xZDjvcWynh72NQ9q0dHF6Mvx05g04pYpBPsgJIdkoVCSg7lRuRAimhOc4QDp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kJeNttz5; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742063768; c=relaxed/simple;
+	bh=TrBS4LSvYDPZza37W5YUBAZdjK1LxePff7WtFwfN0eI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fPQUHRygUEpR9pZjGxyx9r3pF0aRp9x/Kv7VxGB+gor9RSRn5zvdBRn3oVQVIOXrkTCXaCFPVkPSw6IBWg+4eqmskwYn0qJ+KrkUtfyAqfHduiNHwV6uEfk5buTjGGVVqU2+Fa7GRDGW/fJcjC2v1S34UzhyGYdXV65Ouhikh7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HD6Eli9a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kJeNttz5"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-307c13298eeso36054631fa.0;
-        Sat, 15 Mar 2025 11:13:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742062405; x=1742667205; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fw7G1r38bDsOV/Hp+FePWmAtnNh1LoMrSS/+4/QiIfA=;
-        b=kJeNttz5/Az//QSyIn1onLfEzNw7Z6ajsRfBtX1KYGFySqF3p8+nYyL01pcyKWNmIU
-         KqbG5ZZYTnntc9iYOaCzGy2X+/p5MMS/r16YImeYOZh7Zm+IXNvPfO2+IrHbWLF2VyhR
-         kvJUJ76N5MzH1zdOMY2WyI6KZKdlRTdHFmzzmAaOvNKRwm1F4VOLau03AMBNnFu+PAbI
-         QUNlisPBtSRi8eweO4zW9EdoWRfaNb3JoxiL7+LamU7uOgcYlSbYXrZ/9k0sSdpDBbyr
-         q7Gj8I4JUNcrpwJElvjDRjaLuerp8gYG6+QDRWLI28OzPhT68ab9Z3Dul/IkMpMB+gO0
-         tACg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742062405; x=1742667205;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fw7G1r38bDsOV/Hp+FePWmAtnNh1LoMrSS/+4/QiIfA=;
-        b=etQFM2W8bUEf+jZi1xtjivkV9omYjxgyatq35AGKJ9PYYsSLiOWF/joR5fzCC+M3FS
-         u1ORa1D3HCJnhQRBVeAxJAwNJ6sO0TlI7ux/X46DCwSfg+DaWVZ//0vXasOtmhh+ueI+
-         Zcqd5M57Nb15w5tkIzCNTf4HGy4vY/bFro8xE4nbwNPrV88pjKw6DAqhlBjccv8sjYEH
-         99xBHbbYcP3vvNDWA1bjcavwbqNC2rslg6BtAMPTI/N1BvUC90zv9EO1b+d3W/ZPlZKh
-         vFzjJB6BKvFarv1vJZl6gCxdHzGAmurH2KdayfmV4QnSYmtRETclvGtlbT9Vb6S/7A9m
-         P3ow==
-X-Forwarded-Encrypted: i=1; AJvYcCUEas5RSaatlburOehfNU9bqw/XoI0Z0Lj+x0+INpeIj5SqX2jIo+hss8ci++MHFdwDhoQgk5vAGqWndbyU3SU=@vger.kernel.org, AJvYcCUkPfRKF+cEXla2WaCfglCpTq+udQSWuQupV2tK4n1gTG0aiEdcfGFY+8L/SmSWqWOabMaC7qFYYq4o@vger.kernel.org, AJvYcCVz3LEkLG97tNNp44w7leVU636rIFa68p+t6xGilppq3hMW2yDKHd/iv5E2TpnVIPoBgYvYJ/RqirTE7jY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWZU+Q4v/H5Ae+nxRUXTYlOUwYeHyWiUdYSC8XaAwO6YpEFFGi
-	QVRjEwtcDrvIPe22RfkU/q8vo9vuLV6TvEwFuvfcV6fdGZrZF6mmkqhp2FgUD4Gj41RVS+vh85H
-	B0kCZ+R3Ij5ePV4vEvKzbFyML7Ps=
-X-Gm-Gg: ASbGncvw9YYc+QO3qblTYKsHL9genC0kFmSmkhXucI1GP+p+Jn60orEhNajxI+TmcVS
-	6X/gKTWVy2TAGf5HOt5114ZIN4l0Zf3fuAXPdGn/SyWbkfmxc6uhzT/MJVeDNTVK5x2/I0Nfg6m
-	g6yrOZZlsh+9Lw4BD2oviebAsjIK4ifTuZKFcKJyB+TTa+zoIyo3+MeGD2c3Vb
-X-Google-Smtp-Source: AGHT+IE0KAjbxCNTic2NO46G6ymGqtVgtOfyw7GNav0dyFztDRa2jv5OYpU6S/JmdNaLeStQlEXiGai7YwJdGALS1bo=
-X-Received: by 2002:a2e:8310:0:b0:30b:e73e:e472 with SMTP id
- 38308e7fff4ca-30c3de17df1mr38383941fa.14.1742062404658; Sat, 15 Mar 2025
- 11:13:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HD6Eli9a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA11CC4CEE5;
+	Sat, 15 Mar 2025 18:36:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742063768;
+	bh=TrBS4LSvYDPZza37W5YUBAZdjK1LxePff7WtFwfN0eI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HD6Eli9aOVHwiN7p2VjCkciejXrq/E5PU06uhifBZe1voLvkKif8umHHDuFzR7bVz
+	 /GOdb6js6ELEqwtWSe8TrIy8Ld+O48RODNTPdqLRbIqD7KSiFi7SoYZI97AMFCV4Im
+	 d57T91eb0orFrxv1DmNYFqJ/zQpC64j4LCuMeqbA50rJQI44EucfG0KBgDiEXtVoFW
+	 7o/FbA+DsLmJwP53x58WKFj772xATPnVgZ9MWSrwZCXjDhEXUD703xtfMKnI+EZl2L
+	 TdW1Fuo4aJ95bceBgXAFPzKl8oLFuYejH5FfQHxKTdOnyHH6UMAw8s8lDK2NtXKbT6
+	 bLhjXuQKjHhyw==
+Date: Sat, 15 Mar 2025 19:36:03 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of
+ Vec::set_len()
+Message-ID: <Z9XIk3WpzruUfh6O@pollux>
+References: <20250315154436.65065-1-dakr@kernel.org>
+ <D8H0YRU90WU9.2FX2QF3W9FKV9@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250307-no-offset-v1-0-0c728f63b69c@gmail.com>
- <20250307-no-offset-v1-2-0c728f63b69c@gmail.com> <D8G8DV3PX8VX.2WHSM0TWH8JWV@proton.me>
- <CAJ-ks9m2ZHguB9N9-WM0EsO5MjaZ9yRamo_9NytAdzaDdb9aWQ@mail.gmail.com>
- <D8GQGCVTK0IL.16YO67C0IKLHA@proton.me> <CAJ-ks9mUPkP=QDGekbi1PRfpKKigXj87-_a25JBGHVRSiEe_AA@mail.gmail.com>
- <D8H1FFDMNLR3.STRVYQI7J496@proton.me>
-In-Reply-To: <D8H1FFDMNLR3.STRVYQI7J496@proton.me>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 15 Mar 2025 14:12:48 -0400
-X-Gm-Features: AQ5f1JpCmV5HSBwmMBPR0tcNsqUNJYUMxZ9jOJqxNmNvCYCRpdj1FogTkOAVT1s
-Message-ID: <CAJ-ks9m-ab9Y5RD01higxZxbowZi_0tsSmCCw2umJLxBLH4dEw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: workqueue: remove HasWork::OFFSET
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D8H0YRU90WU9.2FX2QF3W9FKV9@proton.me>
 
-On Sat, Mar 15, 2025 at 2:06=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On Sat Mar 15, 2025 at 4:37 PM CET, Tamir Duberstein wrote:
-> > On Sat, Mar 15, 2025 at 5:30=E2=80=AFAM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
-> >>
-> >> On Fri Mar 14, 2025 at 9:44 PM CET, Tamir Duberstein wrote:
-> >> > On Fri, Mar 14, 2025 at 3:20=E2=80=AFPM Benno Lossin <benno.lossin@p=
-roton.me> wrote:
-> >> >>
-> >> >> On Fri Mar 7, 2025 at 10:58 PM CET, Tamir Duberstein wrote:
-> >> >> >      /// Returns a pointer to the struct containing the [`Work<T,=
- ID>`] field.
-> >> >> >      ///
-> >> >> >      /// # Safety
-> >> >> >      ///
-> >> >> >      /// The pointer must point at a [`Work<T, ID>`] field in a s=
-truct of type `Self`.
-> >> >> > -    #[inline]
-> >> >> > -    unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut S=
-elf
-> >> >> > -    where
-> >> >> > -        Self: Sized,
-> >> >>
-> >> >> This bound is required in order to allow the usage of `dyn HasWork`=
- (ie
-> >> >> object safety), so it should stay.
-> >> >>
-> >> >> Maybe add a comment explaining why it's there.
-> >> >
-> >> > I guess a doctest would be better, but I still don't understand why
-> >> > the bound is needed. Sorry, can you cite something or explain in mor=
-e
-> >> > detail please?
-> >>
-> >> Here is a link: https://doc.rust-lang.org/reference/items/traits.html#=
-dyn-compatibility
-> >>
-> >> But I realized that the trait wasn't object safe to begin with due to
-> >> the `OFFSET` associated constant. So I'm not sure we need this. Alice,
-> >> do you need `dyn HasWork`?
+On Sat, Mar 15, 2025 at 05:44:29PM +0000, Benno Lossin wrote:
+> On Sat Mar 15, 2025 at 4:43 PM CET, Danilo Krummrich wrote:
+> > Extend the safety requirements of set_len() to consider the case when
+> > the new length is smaller than the old length.
 > >
-> > I wrote a simple test:
->
-> [...]
->
-> > so I don't think adding the Sized bound makes sense - we'd end up
-> > adding it on every item in the trait.
->
-> Yeah the `Sized` bound was probably to make the cast work, so let's
-> remove it.
+> > Fixes: 2aac4cd7dae3 ("rust: alloc: implement kernel `Vec` type")
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  rust/kernel/alloc/kvec.rs | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > index ae9d072741ce..8540d9e2b717 100644
+> > --- a/rust/kernel/alloc/kvec.rs
+> > +++ b/rust/kernel/alloc/kvec.rs
+> > @@ -189,7 +189,9 @@ pub fn len(&self) -> usize {
+> >      ///
+> >      /// - `new_len` must be less than or equal to [`Self::capacity`].
+> >      /// - If `new_len` is greater than `self.len`, all elements within the interval
+> > -    ///   [`self.len`,`new_len`) must be initialized.
+> > +    ///   [`self.len`,`new_len`) must be initialized,
+> > +    /// - if `new_len` is smaller than `self.len`, all elements within the interval
+> > +    ///   [`new_len`, `self.len`) must either be dropped or copied and taken ownership of.
+> 
+> What is meant by "copied"? I agree with Tamir, this can probably just be
+> "taken ownership of".
 
-It's already removed, right?
+If not dropped in place, the only way to take ownership of the object is to copy
+the corresponding memory, i.e. the caller can not take ownership of the object
+at its current memory location, since this memory is owned by the vector.
+
+AFAIU, when we speak of ownership, we mean ownership over a value or object, but
+not ownership over the underlying memory.
+
+Hence, I think it's important to mention that it needs to be either dropped in
+place or copied in order to take ownership.
+
+Even if we agree that "drop in place" is considered as "take ownership", we need
+to differentiate between the special case of taking ownership where its dropped
+in place and the requirement to copy the value and then take ownership.
+
+> 
+> With that change:
+> 
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> 
+> ---
+> Cheers,
+> Benno
+> 
+> >      #[inline]
+> >      pub unsafe fn set_len(&mut self, new_len: usize) {
+> >          debug_assert!(new_len <= self.capacity());
+> >
+> > base-commit: 80e54e84911a923c40d7bee33a34c1b4be148d7a
+> 
+> 
