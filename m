@@ -1,127 +1,139 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEBE1F4170
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 16:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F8E13AD22;
+	Sat, 15 Mar 2025 16:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742054839; cv=none; b=i4E0jmZ5Wh8zJGJgXZeH/VJfu2xadVBAYAzjGVVddFHVdAyjxk+zE/LiD+PCme6p0Au2EOcGu4arYA8e3a1sbizKf6x5lek+7whpYnig8OY6M58jtkp8RoozYv5ycw0vx0xftfkQIeZtddbi1XxYqbM/sCLSJYoq+WjaQ2YVpBU=
+	t=1742057587; cv=none; b=EnRJtbCTMZCxc2ev1qJhCRZr+XMpyNs/4KCJ/0CW3iOTWTCq/DYZsjJvhrKX8YTsS7lJAw6+TeagZum5nelXa9F7mv2IDFj/j1rydVulRkajNZfWd2IxXz78GfFcICDF/5i0y4te0hLGp3u/pajwWJQZJn84ONk0dp5SbzRj8s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742054839; c=relaxed/simple;
-	bh=xTyWCh2A6otWR5zbCZJo8IUfB9rRPdKktJ3i9+qoYQQ=;
+	s=arc-20240116; t=1742057587; c=relaxed/simple;
+	bh=zjOSu9/dnsAEMjfIozr3ojYdoi0Fs9oyyhaZpqVgY3w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pbpEED/kKZBc89RNvHkPvfZm3oBsdFvk3Yn7Nqyds2+/sCYRB7vv+KdxZkLEgwMursjjYuB0JxSUBG5oncfETKMDjp9wqk5GDrwgqmnAXq2FDAzDphfdY4RJ2lGK1CW/L72TvVr6eWJB6+dl58uitQliKR5smlXhibKqMmP6KKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GIDpgVAN; arc=none smtp.client-ip=209.85.208.171
+	 To:Cc:Content-Type; b=SUixlBQhEGl5ZhzIFHU1u9VBY1e+z3c9YMgalU0N1uoPEisPk5JAS/mFLL3Q5HuO3aTawkrAmNHdU1XkjmWTG9XC3F/4Y3lOTnesLEOfbD1UupPZJbWhfzzkEnb9dIaOKNwlZ938vT2SuslgfGf5/zbJ2cqmyGT5600G4yVMkWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RHDMyUoH; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GIDpgVAN"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30613802a04so33876681fa.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 09:07:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RHDMyUoH"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30613802a59so34362771fa.0;
+        Sat, 15 Mar 2025 09:53:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742054834; x=1742659634; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742057584; x=1742662384; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DChenp/oAVMvSpkCbblCv3dXFqGdscdkp5di1OKHTCM=;
-        b=GIDpgVAN7XsRnFmWInqvuDKpHyc2OuYzid4NIjeblB7vHfMvk4arZ3Hm4ncjNW/rhN
-         5XCa9ARTNAa13iRRSaimB17OpbVaq8FxFZmn+qdFBnk8I7F2KUY4RZGDNbSpTqhpcqoh
-         cu3Bm8unEKnNZzgG9I8+uh69Hxz5KCxAjjwDCTZhaftEiLRXHOgXvOmcsOpZFr52ngaF
-         Iz62hLltzAmi9fNP7zfTMaK6iwlMxXro/fR1chwSmRIFrDsm0zANjFJh3H/96TsDda9f
-         BOoj9K8ehJqsQg2B3zoeCd9GELQfTA34F1DIQ6Ow6EyiUkRpjTMWUQrJFTsbagthnEX2
-         /IbA==
+        bh=j98XjoqRqS//TK0dhh02Y1wC/XiTzmRNvGvaHw/U+9E=;
+        b=RHDMyUoHIcv7hGOpMeoqZXZlO13zNMJLPrnbDpWbSATz2od/pHEXPVoUyHK7Kuhydi
+         HrC4mwB1uy/ZMBJ60JW0MxH+mghSGgatxuRfuw5tvbDcBoh8uwGipea+oqX4nkmiaAqQ
+         C+z57IWzSCAxseZwVUj/WSM7h7nxaBYvO6wv7l58VXVbmCDFF4SDap4BEAA8b1GR6GaA
+         2P161SljPGcjYbivGLrWmt6wxTEG5AcaqN5Zkeqmvh3oDk6Xtr5nVEPP46jjRS79sK6f
+         6Z2g/dJAHiFmX004U+mORftKsKg4azIe5d05LuaYKOC7K/toaJ3kBTFSlkjtuDPtHwmf
+         2hBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742054834; x=1742659634;
+        d=1e100.net; s=20230601; t=1742057584; x=1742662384;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DChenp/oAVMvSpkCbblCv3dXFqGdscdkp5di1OKHTCM=;
-        b=CaFOAWI7QVxsQhXlUZFJe5R7AIEJ3JqH5fHT3vDhEe2UZkbUUmGsA8r7YK8W8g0lIb
-         7DO2bVTgPh1bxFG5B9cKYYqvSXjgZHjvYJKMYCh+gUlc8sw0X7dvbr+o7gUnEaLDRqvQ
-         Pl9FrsS/WuwZlKQN2Lm28Updc9LLdbYd7WJ849iG769NYiMXIGSYkFMOHPtc8HOp2Qdp
-         IL8eMGp28Ia/Ym0ZrLxlQjohnsDhWDhBWq7ARLDZmUuyIZAkFebNR//bRt6bpFg3+2Xr
-         CRSGbrgvxDPWIpKd070GxYvomrIl/PqmQsMUvYbxxL8nLPHFKnGWtAI+Fd7Cydckoktg
-         I3ug==
-X-Forwarded-Encrypted: i=1; AJvYcCW+DJGmGiSzPFrvoOLnjihdaGInq4xDRIr+Ll3UAYLHD4E3Dw1oH5DYibjNbCQwceOzRyx4MlnVwfm8KIIRfw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwA9MFJ9EuF73QSG3I6WuvOnu2KmmL+85ylnRyZSn0dF9IdaExG
-	epT1uX9l2YX7PrbIgMwKo0HhdeXbiGBQDNJZvYSfgGyzsWo03NhKhQpIfHXopdED53JYKVO0dq4
-	XRp5Vvn0gAjMXFLzvk+tl0IEcdy0=
-X-Gm-Gg: ASbGncsypJ+5M1dOXB4EQbNA+kh/N4wRhTphA7bd0nqdCWqXlyTFffOQT4H6Or0wIJl
-	M0nnpVEpxlB0MzNIa6l3nBgpvZHgvedTE6fDpuNHbPf/P9iY9h/7nvMyOWR1X8fl3rNmyDN0nOM
-	Feu6ESeD2n5jk3zLvjUfalxEcvdekHsL4LtlTUaEb4zSe0sqH1qbZFE7YNONwv
-X-Google-Smtp-Source: AGHT+IGHjQl+mEiNeT0hcdP28GXJ+36MBgk/9CU1Wo8XvW1qCQM6kAtT+AVeUMGhqVWqMfGOG0LVy73Dn0u2fpDDRFE=
-X-Received: by 2002:a2e:a547:0:b0:30b:b00f:9507 with SMTP id
- 38308e7fff4ca-30c4a8e1231mr26374591fa.24.1742054833456; Sat, 15 Mar 2025
- 09:07:13 -0700 (PDT)
+        bh=j98XjoqRqS//TK0dhh02Y1wC/XiTzmRNvGvaHw/U+9E=;
+        b=ZKL6QZuBMq1Ugbp9onKdyoRUqrdpmDcgwDJej08sIp3qs1q+eo0bFlgsYBohOVOsxk
+         D3KADF9H1B4k4L8rwBwUMf6UCu1dNefnZ5xWX0ARdJU7Ip1tjD+al1lrkydOgP/BKfxI
+         C0uMcDKCoI6uRQXSMgFRao3168/KI9P/zR8eKQkHI5aRGSecgzsEIjTVAb6Nka0k5PrX
+         iuooEXOwQiZH3qYxeHYTPNhEX7i54lluiQHrasqZgSKveEnbNBHWHAPer8guOcuFfgmb
+         0PymACqGf3/2ozqDZ4n/NP2y/o5Av8vZ4rRVo3HtqxmVbJI08pCxx3ZByV8dajri0MSA
+         fm9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUesFFnAqMaraLRP2didkEfIqk91RVtB0COQcTYWzl5ZUwLHvltJW5G2ThNfl7/QnRTNCra@vger.kernel.org, AJvYcCV6kGgkVtLSAsJmgIMZNKCUCQjXs5febhgZXmr/c3aQarzbkjYth6bJx0rJFF+Q904TLizgcc7qnCjiXZsAatU=@vger.kernel.org, AJvYcCVUokwQoBfw+ARN9XQaBmoilgHyZ6vx9tlbUuupv1T1gl6bw2SvKFOZfGfbKtfz8x8j2gZj9X5jo8Bs@vger.kernel.org, AJvYcCWPdq8ed+bhUZhZ8eRu/i6v1wilZW0BpEwN6BF+96Otl+GrdOnRZ8vd7LDSe4txjCgx55nSiR/c4YPG@vger.kernel.org, AJvYcCXULiAbj1iTpmw0RLRIucCTrH6b+R5YTFThRVR3Kg5q7KBAIW2aCBzMxHP+IhmD88iaDNRMpKcNKWwnH6a2@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3sWvnRPkW5zxATc8YsrN+v7kvEsGJdCIT31YV0pTMDYRxzz21
+	C9cIa0GhGitAdVmSxsP5pOQ276ti+bgCWXLA9iQenDrHVSsbgYhUpyTYiXErj+AfrCrUJnSDvER
+	+3E9uXp1fjJQIB6iqVI/phVPKHpk=
+X-Gm-Gg: ASbGncs7p91bJCp8HBCLysuk9u0Rm5CkSnSeV+Rjjb9S6tn9o08548PO1yU7xEr/lhl
+	vObPRPO0aRwHNG5+lk2ut9hY5yJ5SdZZCsn7ZI4VMGO1R+C46+T4z7kR+UN5QPiGBgcrtFsCUK5
+	UrjOoSz2p12TXfX8FpaXrWXu4XqfRZ7OJaYMhEm9QYcse6NoLrJdp1re2kMwFk
+X-Google-Smtp-Source: AGHT+IE6nJLBDig190G3azOZOlfsw3kVizlD3XnA7F8SdKwqqWHAB/0dKbxRfepfM+ueRq00y/aoSc2PeAtrf/Ekzy4=
+X-Received: by 2002:a2e:97d8:0:b0:30b:b852:2f85 with SMTP id
+ 38308e7fff4ca-30c4a85fd06mr19914131fa.13.1742057583484; Sat, 15 Mar 2025
+ 09:53:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250315154436.65065-1-dakr@kernel.org>
-In-Reply-To: <20250315154436.65065-1-dakr@kernel.org>
+References: <20241219170425.12036-1-dakr@kernel.org> <20241219170425.12036-4-dakr@kernel.org>
+In-Reply-To: <20241219170425.12036-4-dakr@kernel.org>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 15 Mar 2025 12:06:36 -0400
-X-Gm-Features: AQ5f1JolqxPTgnNGqfRexjlVTfe76E-JqgO2XXpfL-hJGk3DTxhFf1hyITm126w
-Message-ID: <CAJ-ks9mh4rsbQkg3ZSmfzR+j1tmrRcmZqqhk9zW8XyhYbLpVMw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of Vec::set_len()
+Date: Sat, 15 Mar 2025 12:52:27 -0400
+X-Gm-Features: AQ5f1Jr3qW4JM43WfoNMs9V0OgzKr9fN_4HpoGcmMxFqsIJ2AosKUujuVF5CQVY
+Message-ID: <CAJ-ks9nnQU4ryR1mbaWqNqcH+b=-s8Y0xKxTF-TQvfNGsWO7+w@mail.gmail.com>
+Subject: Re: [PATCH v7 03/16] rust: implement `IdArray`, `IdTable` and `RawDeviceId`
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	andrewjballance@gmail.com, rust-for-linux@vger.kernel.org
+	tmgross@umich.edu, a.hindborg@samsung.com, aliceryhl@google.com, 
+	airlied@gmail.com, fujita.tomonori@gmail.com, lina@asahilina.net, 
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org, 
+	daniel.almeida@collabora.com, saravanak@google.com, dirk.behme@de.bosch.com, 
+	j@jannau.net, fabien.parent@linaro.org, chrisi.schrefl@gmail.com, 
+	paulmck@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, rcu@vger.kernel.org, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 15, 2025 at 11:45=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
+On Thu, Dec 19, 2024 at 12:08=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
  wrote:
 >
-> Extend the safety requirements of set_len() to consider the case when
-> the new length is smaller than the old length.
->
-> Fixes: 2aac4cd7dae3 ("rust: alloc: implement kernel `Vec` type")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/alloc/kvec.rs | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index ae9d072741ce..8540d9e2b717 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -189,7 +189,9 @@ pub fn len(&self) -> usize {
->      ///
->      /// - `new_len` must be less than or equal to [`Self::capacity`].
->      /// - If `new_len` is greater than `self.len`, all elements within t=
-he interval
-> -    ///   [`self.len`,`new_len`) must be initialized.
-> +    ///   [`self.len`,`new_len`) must be initialized,
+> +/// Marker trait to indicate a Rust device ID type represents a correspo=
+nding C device ID type.
+> +///
+> +/// This is meant to be implemented by buses/subsystems so that they can=
+ use [`IdTable`] to
+> +/// guarantee (at compile-time) zero-termination of device id tables pro=
+vided by drivers.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that:
+> +///   - `Self` is layout-compatible with [`RawDeviceId::RawType`]; i.e. =
+it's safe to transmute to
+> +///     `RawDeviceId`.
+> +///
+> +///     This requirement is needed so `IdArray::new` can convert `Self` =
+to `RawType` when building
+> +///     the ID table.
+> +///
+> +///     Ideally, this should be achieved using a const function that doe=
+s conversion instead of
+> +///     transmute; however, const trait functions relies on `const_trait=
+_impl` unstable feature,
+> +///     which is broken/gone in Rust 1.73.
+> +///
+> +///   - `DRIVER_DATA_OFFSET` is the offset of context/data field of the =
+device ID (usually named
+> +///     `driver_data`) of the device ID, the field is suitable sized to =
+write a `usize` value.
+> +///
+> +///     Similar to the previous requirement, the data should ideally be =
+added during `Self` to
+> +///     `RawType` conversion, but there's currently no way to do it when=
+ using traits in const.
+> +pub unsafe trait RawDeviceId {
+> +    /// The raw type that holds the device id.
+> +    ///
+> +    /// Id tables created from [`Self`] are going to hold this type in i=
+ts zero-terminated array.
+> +    type RawType: Copy;
+> +
+> +    /// The offset to the context/data field.
+> +    const DRIVER_DATA_OFFSET: usize;
+> +
+> +    /// The index stored at `DRIVER_DATA_OFFSET` of the implementor of t=
+he [`RawDeviceId`] trait.
+> +    fn index(&self) -> usize;
+> +}
 
-Why a comma here? There's a period on the previous list item, and a
-period seems more appropriate before the next item.
-
-> +    /// - if `new_len` is smaller than `self.len`, all elements within t=
-he interval
-> +    ///   [`new_len`, `self.len`) must either be dropped or copied and t=
-aken ownership of.
-
-Nit: I'd argue that dropping is a special case of taking ownership,
-and that such phrasing would be clearer.
-
->      #[inline]
->      pub unsafe fn set_len(&mut self, new_len: usize) {
->          debug_assert!(new_len <=3D self.capacity());
->
-> base-commit: 80e54e84911a923c40d7bee33a34c1b4be148d7a
-> --
-> 2.48.1
->
->
-
-Minor comments.
-
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-
-It seems that the standard library also lacks this language, it would
-be good to send them a PR.
+Very late to the game here, but have a question about the use of
+OFFSET here. Why is this preferred to a method that returns a pointer
+to the field?
