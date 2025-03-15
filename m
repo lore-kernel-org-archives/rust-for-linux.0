@@ -1,44 +1,43 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820D6202F9A;
-	Sat, 15 Mar 2025 18:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B875BBA3F;
+	Sat, 15 Mar 2025 18:04:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742061661; cv=none; b=sq9v4QEGWGvM8cjG8sSe5L/QcoOHfrilvBdbqaSjEACDfvnLQ5ODfSCkW2B6oW8lP99s9Jsf2nbYEpk9US+Nj6rQ6PsYMz1zSPnADzzaEcwuv2rlc2/TCResfKECwl2tnuKjYnJYUaN/bT/VbPgm2G+LHFm7bPrXfKhDcfaxRXY=
+	t=1742061872; cv=none; b=bMRMmKB+0AmTUSfptBd0TPlAgUJMdHYa3u/2obaz+CzozIgiam44N+2FKOmVX6CigJAjc7MRjdoxBTzxNR//eWMGN13oGgi4OYQnrJEA0KpC4DA+xsLhFHJWUj61k8IuKit6CCvaeO1iP3lKxbJpeysx9QtlL51hEXYjzF+bSPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742061661; c=relaxed/simple;
-	bh=AQGvhnW+89joQbtnIYgMqzkrKefUsN/EBiBpxqMXD3M=;
+	s=arc-20240116; t=1742061872; c=relaxed/simple;
+	bh=5wgmZ9tfirRVFkW1+FP9jANMf6MPpYG8m+ejetTk65w=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S6mQoDE+dhchrxROIzDimsAE3dGIidNYTcpJcccNwFmL0ZKBUhps0obYu2EoFTTnHUN+sHdT/xw/YNSIdtoJRMIuHGiWcZcxCGQbPdDSX0KknMkCpxLCM5cQvYKTvLkf7R6P21F7cI2y7fxSydK/wJ3NyCYW6ZuRnzcH3oq99kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=YQBSNm5r; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=qqEcLlpME7/wuZw5u1pg1pqxF9ACSCTX510gZEWimNFYrDNZY7AI0DhMuw5y+KKBuN35xxuV2mLTNiw8yCI+MlJqOp9S+knVpMGD9gi8GJoWC1KWFUSi/PTDx1KzeVyfC6hSPnE3c9PcECyxlyvFMAzuvInRcN2BT4nGmDtU7Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=lJDu4Gvz; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="YQBSNm5r"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lJDu4Gvz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742061656; x=1742320856;
-	bh=AQGvhnW+89joQbtnIYgMqzkrKefUsN/EBiBpxqMXD3M=;
+	s=protonmail; t=1742061868; x=1742321068;
+	bh=zMY+WAQc14J08GzAX+iNlnPGPVWT6EmF6qM4eIj0Zkk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=YQBSNm5rm3zDSkda26bpQz4cz3kOmYU0eTl0lth9UKvCZXGjSGzd6PsjFfUKKMy3J
-	 GrYoFmqDIXnYxh6q/bn2zQJdg3uA9rkmXmBHe5Tdyoc6rpYBojJlYDHrjGyIe2kR4t
-	 +EZ56x1KZ+F86WXa1sZThE/dGYNe/VVb2Ba8ITYCCd32Obp+P9T8bKEoZyUsv9k2M8
-	 ztNaBlLgOiveGrJphf+wqT8fq9AOcc2L/Iee/wIICoez++0FIyC7FUq8Kslmk+I8Lz
-	 PA+VltRu0qSquuI4YM48XtMZvBm6we7E28qwveNZlP5uQZvUZT963yorq5xNXTFwVP
-	 ch5qzW3cxAUmA==
-Date: Sat, 15 Mar 2025 18:00:50 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
+	b=lJDu4GvzZ4aGl5Gi3KECAOdZAhaYWikwvEsa/1w3x+kkD5sUxdgBBatmGwC0Zy8jN
+	 y/pmmeai818LZuGBiJPjcUIjxbaX+g+7lY7AKCtQlU4Sqet6mLm0cv8dOjJfIYbGqy
+	 M/76mNE2QIaPKKN7fQ+6Gd8uCdbMSnv99XT5MdIqOjqMIl+Pz0e8KhMSkwnX3nJ8+J
+	 yF8rzrSoe5YMVDuK2JDWqsSx/ARgssu2v+wb8AG6vo57mwbupaC2y+5fVm296mguMV
+	 64dLoyl9Buu5HF8TTROOpJKwUBGLJilGagdyBF8OIp6/EO8iRL5J5PH4E0ByM8Pszh
+	 RpxA7KwT1Mk4A==
+Date: Sat, 15 Mar 2025 18:04:20 +0000
+To: Andrew Ballance <andrewjballance@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 6/6] rust: use strict provenance APIs
-Message-ID: <D8H1B8HT45UJ.OQ8N8YS92UL5@proton.me>
-In-Reply-To: <Z9V0jSfuhqWi_t52@Mac.home>
-References: <20250314-ptr-as-ptr-v3-0-e7ba61048f4a@gmail.com> <20250314-ptr-as-ptr-v3-6-e7ba61048f4a@gmail.com> <67d4a57f.c80a0220.16ff45.9cf1@mx.google.com> <D8GQJQFGKB8C.DZBUZT4IJIM0@proton.me> <Z9V0jSfuhqWi_t52@Mac.home>
+Cc: a.hindborg@kernel.org, acourbot@nvidia.com, airlied@gmail.com, alex.gaynor@gmail.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, corbet@lwn.net, dakr@kernel.org, dri-devel@lists.freedesktop.org, gary@garyguo.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, maarten.lankhorst@linux.intel.com, mripard@kernel.org, nouveau@lists.freedesktop.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org, simona@ffwll.ch, tmgross@umich.edu, tzimmermann@suse.de
+Subject: Re: [PATCH 1/3] rust: alloc: add Vec::truncate method
+Message-ID: <D8H1DYGA2P3U.1PHDBOU2YOBS3@proton.me>
+In-Reply-To: <20250315111511.107047-1-andrewjballance@gmail.com>
+References: <D8GRAC8YQIVC.2LS1EIIIRZU3I@proton.me> <20250315111511.107047-1-andrewjballance@gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e83c3409294cafcbb4ff1e1cee286a3ff1c398c1
+X-Pm-Message-ID: 2f9f513866f9fb231af860e3cf39013bf22ca7b9
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,31 +47,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat Mar 15, 2025 at 1:37 PM CET, Boqun Feng wrote:
-> On Sat, Mar 15, 2025 at 09:34:42AM +0000, Benno Lossin wrote:
-> [...]
->> > The rest Rust code changes look good to me. Although I would suggest y=
-ou
->> > to split this patch into several patches: you can do the conversion fr=
-om
->> > "as" pattern to provenance API one file by one file, and this make it
->> > easier for people to review. And after the conversions are done, you c=
-an
->> > introduce the Makefile changes.
+On Sat Mar 15, 2025 at 12:15 PM CET, Andrew Ballance wrote:
+> On Sat, Mar 15, 2025 at 10:09:26AM +0000, Benno Lossin wrote:
+>> On Sat Mar 15, 2025 at 3:42 AM CET, Andrew Ballance wrote:
+>> > implements the equivalent to the std's Vec::truncate
+>> > on the kernel's Vec type.
+>> >
+>> > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+>> > ---
+>> >  rust/kernel/alloc/kvec.rs | 36 ++++++++++++++++++++++++++++++++++++
+>> >  1 file changed, 36 insertions(+)
+>> >
+>> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+>> > index ae9d072741ce..75e9feebb81f 100644
+>> > --- a/rust/kernel/alloc/kvec.rs
+>> > +++ b/rust/kernel/alloc/kvec.rs
+>> > @@ -452,6 +452,42 @@ pub fn reserve(&mut self, additional: usize, flag=
+s: Flags) -> Result<(), AllocEr
+>> > =20
+>> >          Ok(())
+>> >      }
+>> > +
+>> > +    /// Shortens the vector, setting the length to `len` and drops th=
+e removed values.
+>> > +    /// If `len` is greater than or equal to the current length, this=
+ does nothing.
+>> > +    ///
+>> > +    /// This has no effect on the capacity and will not allocate.
+>> > +    /// # Examples
+>> > +    /// ```
+>> > +    /// let mut v =3D kernel::kvec![1, 2, 3]?;
+>> > +    /// v.truncate(1);
+>> > +    /// assert_eq!(v.len(), 1);
+>> > +    /// assert_eq!(&v, &[1]);
+>> > +    ///
+>> > +    /// # Ok::<(), Error>(())
+>> > +    /// ```
+>> > +    pub fn truncate(&mut self, len: usize) {
+>> > +        if len >=3D self.len() {
+>> > +            return;
+>> > +        }
+>> > +
+>> > +        // [new_len, len) is guaranteed to be valid because [0, len) =
+is guaranteed to be valid
+>> > +        let drop_range =3D len..self.len();
+>> > +
+>> > +        // SAFETY:
+>> > +        // we can safely ignore the bounds check because we already d=
+id our own check
+>> > +        let ptr: *mut [T] =3D unsafe { self.get_unchecked_mut(drop_ra=
+nge) };
 >>=20
->> I think it's fine to do several of the `as` conversions in a single
+>> What's this `get_unchecked_mut` method, I don't see it in `rust-next` or
+>> `alloc-next`.
 >
-> Well, "fine" !=3D "recommended", right? ;-) If the patch was split,
-> reviewers would be able to give Reviewed-by to individual patches that
-> looks fine trivially. Then it's easier to make progress every iteration,
-> and also allows partially applying the changes. Of course it doesn't
-> have to be file-by-file.
+> Vec derefs into a slice which implements get_uncheked_mut
+> https://rust.docs.kernel.org/next/kernel/alloc/kvec/struct.Vec.html#metho=
+d.get_unchecked_mut
 
-While I see your point, in this case splitting file-by-file is too much.
-v4 has: 9 files changed, 82 insertions(+), 27 deletions(-). I've seen
-much bigger changes that do smaller things like this patch.
+Ah, I forgot about that... Can you change the safety comment to:
 
-At around 150 lines added + deleted I find it more and more difficult.
+    // SAFETY: `drop_range` is a subrange of `[0, len)` by the bounds check=
+ above.
 
 ---
 Cheers,
