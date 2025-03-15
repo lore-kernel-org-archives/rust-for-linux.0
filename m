@@ -1,107 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6231F8901
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 18:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E1E1917E4;
+	Sat, 15 Mar 2025 19:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742063768; cv=none; b=QooNuX2ntgmene9SDNEIxOgtpS7IuGsIwFA/ZyczHeUBmL7Du51leYGgGkIwgKjOuxENmIUQfD6veTynG0AtzOHFMW+hfIyg5PvUqteihbIaBeVuJSxUn/LTgtPJ+kMrmx2QrBMeKea/BUHpl4hDykxAZw3bT2hkh8ZHtMRZNeA=
+	t=1742067659; cv=none; b=IQX9i+6KV34R9s4dD2ja81X2zNx6UOP+YPEZgkCLxk127JEWhO4Qg4s9LGBpaD0Nd/+841TCQj5FzgQwWasNes5ZAv2qw3TAgIcCg81E4kp9cYgsRd6u1pqyLgGyCa6Wqd16pH22spB5gexAabEY2HRJWrwkOlOpeXQOIaegEII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742063768; c=relaxed/simple;
-	bh=TrBS4LSvYDPZza37W5YUBAZdjK1LxePff7WtFwfN0eI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fPQUHRygUEpR9pZjGxyx9r3pF0aRp9x/Kv7VxGB+gor9RSRn5zvdBRn3oVQVIOXrkTCXaCFPVkPSw6IBWg+4eqmskwYn0qJ+KrkUtfyAqfHduiNHwV6uEfk5buTjGGVVqU2+Fa7GRDGW/fJcjC2v1S34UzhyGYdXV65Ouhikh7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HD6Eli9a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742067659; c=relaxed/simple;
+	bh=laZAIbEZVXCBq3fZOiRaGSFxCaavR5HOBVJ9LIzb2q8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qxKo402wI1tL+y78+2quAxmia3IoudHlxb+F57G2JOKFI/zeMVtjHuDD5rYPaby70qKXcQ09IFB0lY/3lrBXgcbY1xeNcrEHSp1wVHK5QS35m92nOeXpkaOVVAJ4trEnBUpUKvAHKxGhBtXnSW368F0lAHfg4WdkLsU40/Lo3xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H1qYZBlI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HD6Eli9a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA11CC4CEE5;
-	Sat, 15 Mar 2025 18:36:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H1qYZBlI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3C6C4CEE5;
+	Sat, 15 Mar 2025 19:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742063768;
-	bh=TrBS4LSvYDPZza37W5YUBAZdjK1LxePff7WtFwfN0eI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HD6Eli9aOVHwiN7p2VjCkciejXrq/E5PU06uhifBZe1voLvkKif8umHHDuFzR7bVz
-	 /GOdb6js6ELEqwtWSe8TrIy8Ld+O48RODNTPdqLRbIqD7KSiFi7SoYZI97AMFCV4Im
-	 d57T91eb0orFrxv1DmNYFqJ/zQpC64j4LCuMeqbA50rJQI44EucfG0KBgDiEXtVoFW
-	 7o/FbA+DsLmJwP53x58WKFj772xATPnVgZ9MWSrwZCXjDhEXUD703xtfMKnI+EZl2L
-	 TdW1Fuo4aJ95bceBgXAFPzKl8oLFuYejH5FfQHxKTdOnyHH6UMAw8s8lDK2NtXKbT6
-	 bLhjXuQKjHhyw==
-Date: Sat, 15 Mar 2025 19:36:03 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of
- Vec::set_len()
-Message-ID: <Z9XIk3WpzruUfh6O@pollux>
-References: <20250315154436.65065-1-dakr@kernel.org>
- <D8H0YRU90WU9.2FX2QF3W9FKV9@proton.me>
+	s=k20201202; t=1742067658;
+	bh=laZAIbEZVXCBq3fZOiRaGSFxCaavR5HOBVJ9LIzb2q8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H1qYZBlIMNjF3EdiBtzLFp4vbmq9Uz9BMYWCJeFP6JRlMk2CcFsRtMMIkyCJjefqx
+	 6J273h+GaDISyfFYvsPL5x4gF/eo690xAAnXZdbzzsnB7hF+2CfcIrlbMWhHtXVRcx
+	 /mHr3OtZpKkUQyHFL1x4oxKGX3y79ibBJupH3IEawknSQTqYQlMypNT2SFkR4eXGa7
+	 yFmESW+HC3EbEQfhb5fOvetiPNTQCaA3WZMm3PpC1y/we+TXKqd1xTOv9VhJMMGWoV
+	 s23zE68GkQ1RwhC5YqrWtrCCKRPiUNATwcYDL8dhNq8eoXVSP5AH5ZeWjmLOMfNlmU
+	 x3vo8ckKkzJPQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	linux-kbuild@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH v2] rust: kbuild: skip `--remap-path-prefix` for `rustdoc`
+Date: Sat, 15 Mar 2025 20:40:45 +0100
+Message-ID: <20250315194045.2353200-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D8H0YRU90WU9.2FX2QF3W9FKV9@proton.me>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Mar 15, 2025 at 05:44:29PM +0000, Benno Lossin wrote:
-> On Sat Mar 15, 2025 at 4:43 PM CET, Danilo Krummrich wrote:
-> > Extend the safety requirements of set_len() to consider the case when
-> > the new length is smaller than the old length.
-> >
-> > Fixes: 2aac4cd7dae3 ("rust: alloc: implement kernel `Vec` type")
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > ---
-> >  rust/kernel/alloc/kvec.rs | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> > index ae9d072741ce..8540d9e2b717 100644
-> > --- a/rust/kernel/alloc/kvec.rs
-> > +++ b/rust/kernel/alloc/kvec.rs
-> > @@ -189,7 +189,9 @@ pub fn len(&self) -> usize {
-> >      ///
-> >      /// - `new_len` must be less than or equal to [`Self::capacity`].
-> >      /// - If `new_len` is greater than `self.len`, all elements within the interval
-> > -    ///   [`self.len`,`new_len`) must be initialized.
-> > +    ///   [`self.len`,`new_len`) must be initialized,
-> > +    /// - if `new_len` is smaller than `self.len`, all elements within the interval
-> > +    ///   [`new_len`, `self.len`) must either be dropped or copied and taken ownership of.
-> 
-> What is meant by "copied"? I agree with Tamir, this can probably just be
-> "taken ownership of".
+`rustdoc` only recognizes `--remap-path-prefix` starting with
+Rust 1.81.0, which is later than on minimum, so we cannot pass it
+unconditionally. Otherwise, we get:
 
-If not dropped in place, the only way to take ownership of the object is to copy
-the corresponding memory, i.e. the caller can not take ownership of the object
-at its current memory location, since this memory is owned by the vector.
+    error: Unrecognized option: 'remap-path-prefix'
 
-AFAIU, when we speak of ownership, we mean ownership over a value or object, but
-not ownership over the underlying memory.
+Note that `rustc` (the compiler) does recognize the flag since a long
+time ago (1.26.0).
 
-Hence, I think it's important to mention that it needs to be either dropped in
-place or copied in order to take ownership.
+Moreover, `rustdoc` since Rust 1.82.0 ICEs in out-of-tree builds when
+using `--remap-path-prefix`. The issue has been reduced and reported
+upstream [1].
 
-Even if we agree that "drop in place" is considered as "take ownership", we need
-to differentiate between the special case of taking ownership where its dropped
-in place and the requirement to copy the value and then take ownership.
+Thus workaround both issues by simply skipping the flag when generating
+the docs -- it is not critical there anyway.
 
-> 
-> With that change:
-> 
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> 
-> ---
-> Cheers,
-> Benno
-> 
-> >      #[inline]
-> >      pub unsafe fn set_len(&mut self, new_len: usize) {
-> >          debug_assert!(new_len <= self.capacity());
-> >
-> > base-commit: 80e54e84911a923c40d7bee33a34c1b4be148d7a
-> 
-> 
+The ICE does not reproduce under `--test`, but we still need to skip
+the flag as well for `RUSTDOC TK` since it is not recognized.
+
+Fixes: 6b5747d07138 ("kbuild, rust: use -fremap-path-prefix to make paths relative")
+Link: https://github.com/rust-lang/rust/issues/138520 [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+v2:
+  - Skip the flag also in `RUSTDOC TK`. The ICE does not apply there,
+    but we still need to skip the flag.
+
+ rust/Makefile | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/rust/Makefile b/rust/Makefile
+index ea3849eb78f6..089473a89d46 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -57,10 +57,14 @@ endif
+ core-cfgs = \
+     --cfg no_fp_fmt_parse
+
++# `rustc` recognizes `--remap-path-prefix` since 1.26.0, but `rustdoc` only
++# since Rust 1.81.0. Moreover, `rustdoc` ICEs on out-of-tree builds since Rust
++# 1.82.0 (https://github.com/rust-lang/rust/issues/138520). Thus workaround both
++# issues skipping the flag. The former also applies to `RUSTDOC TK`.
+ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
+       cmd_rustdoc = \
+ 	OBJTREE=$(abspath $(objtree)) \
+-	$(RUSTDOC) $(filter-out $(skip_flags),$(if $(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
++	$(RUSTDOC) $(filter-out $(skip_flags) --remap-path-prefix=%,$(if $(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
+ 		$(rustc_target_flags) -L$(objtree)/$(obj) \
+ 		-Zunstable-options --generate-link-to-definition \
+ 		--output $(rustdoc_output) \
+@@ -171,7 +175,7 @@ quiet_cmd_rustdoc_test_kernel = RUSTDOC TK $<
+ 	rm -rf $(objtree)/$(obj)/test/doctests/kernel; \
+ 	mkdir -p $(objtree)/$(obj)/test/doctests/kernel; \
+ 	OBJTREE=$(abspath $(objtree)) \
+-	$(RUSTDOC) --test $(rust_flags) \
++	$(RUSTDOC) --test $(filter-out --remap-path-prefix=%,$(rust_flags)) \
+ 		-L$(objtree)/$(obj) --extern ffi --extern kernel \
+ 		--extern build_error --extern macros \
+ 		--extern bindings --extern uapi \
+
+base-commit: bc5431693696b3f928b0b7acf8d7a120127db7a4
+--
+2.49.0
