@@ -1,81 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF22F205E37
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 15:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534571CD1F;
+	Sat, 15 Mar 2025 15:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742053491; cv=none; b=DJ4M1hmFH6zhV6WUJJQDTuRXWltjNhgJkrjohqTbf4V59hEn6BKHtaizZgBxEsZtFKjnIepThVYPeeBhD14lhcAclg/+z76gZnNsq8Cm+iokMimWTmaXeiyiCzEMC5vqn7DylYA1lBMlW+Rf72cPYE47Vi874bLyiGVMnZ2hxWA=
+	t=1742053794; cv=none; b=CECHEllW8f2Yr2cSNfzV8A5Qwri9Age7EGiuQeemB5TfawpgyGCQ6eu51t30WojDGHNp2bHeRbBhcGU7Afp1D4q3HV6jPpQzc4Zh9lzuqvUaoafa0UJ7y9Zwv7rUcARM27TQr3Y6OSjzjeAd+W+CTSEHy7pkerEtO4VIFZZ08gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742053491; c=relaxed/simple;
-	bh=K4DIQFf0+Dc7ZTM/US05VTixG10TJ9y6ZbCNXQ7jyhE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NErm7AJzoInmk1MMvckgSGxlno8jfgV7WSVvJfWC0/LgtxcyUTtDIIqcKG3T59PSgx2GLaJU4LBLIY+bx8DUKi49ifies4fk0XSrOmEwi6XIZ3Cr76yTOftaU7CrLvxmtQWtUVdwK47BCWFwCK/GKQk6CCu3jRal+fKDJwl8wfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCglUYuu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742053794; c=relaxed/simple;
+	bh=//VI9Ejxt3BysY3bBXysrBbAfxCY7XJI4CQgc51yUmc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M33KCCJoBQfBNsPf/IDKWR5chPXDuysthl41R8rVtRdgPTJUw9gD9atL1NIGedXGwqh0e1ekRP5cjleu3+Fr/5Cjj/4IN21tuMR0UHu7o11pFdgThpt/NAueRPu+yxXdsNtdwwtRyygGx6UrASvTBQsdX23e4uFSMXVrNx68qYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m5ov9XE2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCglUYuu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1393CC4CEEE;
-	Sat, 15 Mar 2025 15:44:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m5ov9XE2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC78AC4CEE5;
+	Sat, 15 Mar 2025 15:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742053490;
-	bh=K4DIQFf0+Dc7ZTM/US05VTixG10TJ9y6ZbCNXQ7jyhE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCglUYuuGj6Y5y/cEAacU5qd68bbwKGICil4VKNZPDwhwp24iEKV1x3ce9xjddfl7
-	 iAnYcsQ1nF372iYu1tW/y3GSC0szffqvhljJcYTPzLpccNAuctaeySBd+HMHoRJ6mA
-	 G5NhCMEm1DK6uiDTPqap3sqaSXJQecgQ6cKZCfu5Bcyl85guQTfKhT/Kw5OIksMX16
-	 cPHTaz9XbAN/ZtNpCgoxKkc4KwJtHfcCg9uPuU/uRU8/V9cgBqQsl+iU/Emst1MxKi
-	 XnXGRfn7uxqs+X6XBr4J1CzsVV+rBSAcfFm6rNCZ63a6EmLlIaXZhFaE/W/TbyfBDG
-	 9kQ6Qh9Hll7Cw==
+	s=k20201202; t=1742053793;
+	bh=//VI9Ejxt3BysY3bBXysrBbAfxCY7XJI4CQgc51yUmc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m5ov9XE2YyrA++4prSzQ7wQsF4OyCJztO3HJFlvwrvgFKdEbYU+hRxDc/0gjFMi6D
+	 ZSsc17tBd6HhqsJQUe+ymMjrT3aAnvhuriYVNsX/0KML/TfhemJUlx/mvHKfDDAiip
+	 2dGgM00BWbcYjgnbPPX1hfkU2OMh18PX+JAyxpBzplAOEP3Oja994fpUcRQ+GM38M0
+	 Ju38U18/eQp62jo93PzWM8TtRPAPtBx24r2UsoRZzXSAnDMmPcPZ/tMnV9lwY7fE+6
+	 15ZK5b867+B/zIpyqmVUlHNPpgiUJhfqvjSoeqAIfr/y2IzqOD8Isq+SRADN2LE7ks
+	 0dlyKpEl8xhWA==
+Date: Sat, 15 Mar 2025 16:49:47 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: andrewjballance@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 2/2] rust: alloc: add missing invariant in Vec::set_len()
-Date: Sat, 15 Mar 2025 16:43:02 +0100
-Message-ID: <20250315154436.65065-2-dakr@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250315154436.65065-1-dakr@kernel.org>
-References: <20250315154436.65065-1-dakr@kernel.org>
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	acourbot@nvidia.com, nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/3] rust: alloc: add Vec::truncate method
+Message-ID: <Z9Whm43kUWaiTETX@cassiopeiae>
+References: <20250315024235.5282-1-andrewjballance@gmail.com>
+ <20250315024235.5282-2-andrewjballance@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250315024235.5282-2-andrewjballance@gmail.com>
 
-When setting a new length, we have to justify that the set length
-represents the exact number of elements stored in the vector.
+On Fri, Mar 14, 2025 at 09:42:33PM -0500, Andrew Ballance wrote:
+> implements the equivalent to the std's Vec::truncate
+> on the kernel's Vec type.
+> 
+> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+> ---
+>  rust/kernel/alloc/kvec.rs | 36 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
+> 
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index ae9d072741ce..75e9feebb81f 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -452,6 +452,42 @@ pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocEr
+>  
+>          Ok(())
+>      }
+> +
+> +    /// Shortens the vector, setting the length to `len` and drops the removed values.
+> +    /// If `len` is greater than or equal to the current length, this does nothing.
+> +    ///
+> +    /// This has no effect on the capacity and will not allocate.
 
-Fixes: 2aac4cd7dae3 ("rust: alloc: implement kernel `Vec` type")
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/alloc/kvec.rs | 3 +++
- 1 file changed, 3 insertions(+)
+Nit: Please also add an empty line here.
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index 8540d9e2b717..0a4681ad4ce9 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -195,6 +195,9 @@ pub fn len(&self) -> usize {
-     #[inline]
-     pub unsafe fn set_len(&mut self, new_len: usize) {
-         debug_assert!(new_len <= self.capacity());
-+
-+        // INVARIANT: By the safety requirements of this method `new_len` represents the exact
-+        // number of elements stored within `self`.
-         self.len = new_len;
-     }
- 
--- 
-2.48.1
+> +    /// # Examples
+> +    /// ```
+> +    /// let mut v = kernel::kvec![1, 2, 3]?;
+> +    /// v.truncate(1);
+> +    /// assert_eq!(v.len(), 1);
+> +    /// assert_eq!(&v, &[1]);
+> +    ///
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn truncate(&mut self, len: usize) {
+> +        if len >= self.len() {
+> +            return;
+> +        }
+> +
+> +        // [new_len, len) is guaranteed to be valid because [0, len) is guaranteed to be valid
 
+We typically use markdown for comments.
+
+> +        let drop_range = len..self.len();
+> +
+> +        // SAFETY:
+> +        // we can safely ignore the bounds check because we already did our own check
+> +        let ptr: *mut [T] = unsafe { self.get_unchecked_mut(drop_range) };
+> +
+> +        // SAFETY:
+> +        // it is safe to shrink the length because the new length is
+> +        // guaranteed to be less than the old length
+> +        unsafe { self.set_len(len) };
+
+I just sent out a fix [1] for the safety requirements of set_len() in [1], which
+I think would be good to consider.
+
+[1] https://lore.kernel.org/rust-for-linux/20250315154436.65065-1-dakr@kernel.org/
