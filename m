@@ -1,113 +1,180 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69E61991C9
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 21:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F2719ABD4;
+	Sat, 15 Mar 2025 23:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742075313; cv=none; b=G1gaviPz/9s/PeAzHAOZUPvuAgcZ4QEBPE8IVmLsaHDGvmAnQaJeEjV7oSeOhRelzfEYTKpBxQn/3w76cikSbfxGyhTVvmDrHcz+vASEDzRtWQDyAYxV6BJEaPoXCPsO1p7R9pEgI2wMJSBe8X4rdoa6LUClprisBHuLOqNVx7c=
+	t=1742080077; cv=none; b=qIOsvhNzV5GSwOSGt0mpszIJjXMiVd/gBHoTLhfQ/MyTcp1h/Bm6SNaAzntRzVysiGnerdAyN3KfP5c/b5KATIeVcdHsXJ9roPjda+AJRpIl021zul8pqTiey9aPLCJdlh4umWA785LcNx7ICS5gocMBLr/qafFAEvdISyE6OSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742075313; c=relaxed/simple;
-	bh=DPEr7dKBqwOvfdAJaiq7ssYD2lRbnJRZa052tQbVmm0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gAi8PkG+4lRZ/M3ljm0UNN5ejmIZALHS/6wthk1KzpSnb6hieUNQ0vnR5nUA0SRjlS+nIx3QsK9IWswqK/3J6M9zT0wSbs7OfOG9OuOH/4LqJXi8kUXAoenBwKg3/mHCEt/HA7kpNDsqCQQC7WsfUiMdBik/pKAaiLOpRd1SJL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=e2qyhJAi; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1742080077; c=relaxed/simple;
+	bh=1MzmgdITQ4w4FO7Uemo0WSDZnXnbfyMIm6W8uzBT4Vk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VwyFRQ9r1FL+wOWqpRc14rxMSDIMykaZJmudqtN8SoGW1N0r5ciXixP4RKhy9JGAJf3wLHsAOZGekZQePlkuHCuOYbFseGbTsQ+9d8yav5OmCn0ttD7U+r2wA24PT+yWNMlAh/srMhFiIlmH8Z8swYXlTlftsAx58Hx9OBstXzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=wQ57sbG5; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="e2qyhJAi"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 2AE99240028
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 22:48:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1742075309; bh=DPEr7dKBqwOvfdAJaiq7ssYD2lRbnJRZa052tQbVmm0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:From;
-	b=e2qyhJAiGZQa79pWE3A5QEmm8cebE7GxWqDafr/9ijWfOmUWPH7rLjPBy6V20t1wm
-	 i+fk26vSR2R0NyGQ4ks9ff+6SYF/yLWb718/IbXsqtvE58JWUtvEz+9ZC6oTcZOpLG
-	 M5bd3fyhRq6d2uEucuO02EFt9FG78a2d9IZXLYg3yBQTQT/YpBdzpQP9Zf6jGgdm/G
-	 e0liACJ4gBFL1gvIVhrwRyQCpPhgUk4Tp+kXRAtyBkgMXgSjFta2UrJz0yJyk5DkA1
-	 nzng+OoDrWO30SIXq4oRlnzsg3+5b9EAlexzHLbnOM13EdZPDo4kmXnKHWNgOHxe2j
-	 87KB3aH6wAVcA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4ZFZcC4NzJz6tw3;
-	Sat, 15 Mar 2025 22:48:27 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-Date: Sat, 15 Mar 2025 21:48:11 +0000
-Subject: [PATCH] rust: rbtree: fix comments referring to Box instead of
- KBox
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="wQ57sbG5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1742080073; x=1742339273;
+	bh=TijwBr6V5VNMUYReFcqNhHWnkhDeChPquiPiCcW2nVM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=wQ57sbG5Z87dQmhS0W/fnZVQBKGKL+4Mob7mWPOTQQFJJDOb064pBi1XFiP4C5efP
+	 P2d5rbGhpHUNr/6BKL8Z1IYLqkUJItWy97K71fSQMAmDV5JXGlLG47VwKVe/+VvDsq
+	 tj0fxX+MIndsM/ivJVVRgGa9DnTcn8gvhJW6iO086ZausteORit4nN5CSsEmfQHUoc
+	 04qQB6Zt8Szp5PYdQagA3T7AiKTl5f6Z435QlZ5D/xHmxfA2S4aZBp4ZGX/qlJPaJ1
+	 8C3Gtzb8eKO30yzPbX4/HsuVjnui5TAlt/xFSehWken6eXVl5WUE9CcA2DX1g9WxD6
+	 iz0TWt/L2USPw==
+Date: Sat, 15 Mar 2025 23:07:50 +0000
+To: Benjamin Tissoires <bentiss@kernel.org>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-input@vger.kernel.org, dri-devel@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH RFC 0/3] Initial work for Rust abstraction for HID device driver development
+Message-ID: <87zfhlhozn.fsf@protonmail.com>
+In-Reply-To: <f6rizzlygznuebh22psrdkzfki7jfjzfaamuolobvpbgxoxjoi@gfu2eyzrm5wl>
+References: <20250313160220.6410-2-sergeantsagara@protonmail.com> <f6rizzlygznuebh22psrdkzfki7jfjzfaamuolobvpbgxoxjoi@gfu2eyzrm5wl>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: 704b0505bec48ce1339e1a2cf068581e382f0f79
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250315-rbtree-comment-fixes-v1-1-51f72c420ff0@posteo.net>
-X-B4-Tracking: v=1; b=H4sIAJr11WcC/x3L3QpAQBCG4VvRHJuyWFq3Igd+PsyBpVlJyb3bH
- D69vQ8FqCBQkzykuCTI7iNMmtC49n4ByxRNeZbbrDCWdTgV4HHfNviTZ7kR2DnYqi5LZ5yluB6
- KP8Sz7d73Ay3qz9VmAAAA
-X-Change-ID: 20250315-rbtree-comment-fixes-99e567449195
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1742075307; l=2266;
- i=charmitro@posteo.net; s=20250315; h=from:subject:message-id;
- bh=DPEr7dKBqwOvfdAJaiq7ssYD2lRbnJRZa052tQbVmm0=;
- b=fcxvFHIeD8d3XYKp+WqpDbt3Mr9dhKWKPBhf9CZCcPUcHUZc6iotwfJhQ/ysJMbIsYzc1Ub3A
- Zp80Iq/RAy8AzUeaTahdv4bmsLnNPusOIHXjyrvGIgqlK7XOSvIF2fP
-X-Developer-Key: i=charmitro@posteo.net; a=ed25519;
- pk=eTrChwENwXKiDOuJzxQN7RY0l7JF3/rO9B/pauP0ecw=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Several safety comments in the RBTree implementation still refer to
-"Box::from_raw" and "Box::into_raw", but the code actually uses KBox.
-These comments were not updated when the implementation transitioned
-from using Box to KBox.
+On Thu, 13 Mar, 2025 17:31:53 +0100 "Benjamin Tissoires" <bentiss@kernel.or=
+g> wrote:
+> Hi,
+>
+> [quick reply because I am completely under the water for the next 2
+> weeks]
+>
+> On Mar 13 2025, Rahul Rameshbabu wrote:
+>> Hello,
+>>
+>> I am a hobbyist developer who has been working on a project to create a =
+new Rust
+>> HID device driver and the needed core abstractions for writing more HID =
+device
+>> drivers in Rust. My goal is to support the USB Monitor Control Class nee=
+ded for
+>> functionality such as backlight control for monitors like the Apple Stud=
+io
+>> Display and Apple Pro Display XDR. A new backlight API will be required =
+to
+>> support multiple backlight instances and will be mapped per DRM connecto=
+r. The
+>> current backlight API is designed around the assumption of only a single
+>> internal panel being present. I am currently working on making this new =
+API for
+>> DRM in parallel to my work on the HID side of the stack for supporting t=
+hese
+>> displays.
+>
+> Thanks a lot for this work, though I wonder if your goal is not too big,
+> too far from the HID point of view. HID is simple, and there is only a
+> few bindings that you would need to be able to make "simple" HID
+> drivers.
+>
+> My assumption would be to introduce the binding with a functional but
+> small driver (like one that just changes the report descriptor, or does
+> a sime raw event processing). Then we can look at integrating with the
+> DRM interface.
+>
+> Though it's up to you to decide how you want to play ;)
+>
 
-Fixes: 8373147ce496 ("rust: treewide: switch to our kernel `Box` type")
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
----
- rust/kernel/rbtree.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Thanks for the suggestion, Benjamin! I think its a great suggestion for
+getting the Rust abstractions for HID cleaned up and integrated before
+taking on this more herculian challenge. I think it would be ideal to
+maybe do the following?
 
-diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-index 0d1e75810664e18c0abe851ece2223d203721f79..a7ce512773563150fc2c290c544f20baad6509bf 100644
---- a/rust/kernel/rbtree.rs
-+++ b/rust/kernel/rbtree.rs
-@@ -1168,12 +1168,12 @@ impl<'a, K, V> RawVacantEntry<'a, K, V> {
-     fn insert(self, node: RBTreeNode<K, V>) -> &'a mut V {
-         let node = KBox::into_raw(node.node);
- 
--        // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
-+        // SAFETY: `node` is valid at least until we call `KBox::from_raw`, which only happens when
-         // the node is removed or replaced.
-         let node_links = unsafe { addr_of_mut!((*node).links) };
- 
-         // INVARIANT: We are linking in a new node, which is valid. It remains valid because we
--        // "forgot" it with `Box::into_raw`.
-+        // "forgot" it with `KBox::into_raw`.
-         // SAFETY: The type invariants of `RawVacantEntry` are exactly the safety requirements of `rb_link_node`.
-         unsafe { bindings::rb_link_node(node_links, self.parent, self.child_field_of_parent) };
- 
-@@ -1259,7 +1259,7 @@ pub fn remove(self) -> V {
-     fn replace(self, node: RBTreeNode<K, V>) -> RBTreeNode<K, V> {
-         let node = KBox::into_raw(node.node);
- 
--        // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
-+        // SAFETY: `node` is valid at least until we call `KBox::from_raw`, which only happens when
-         // the node is removed or replaced.
-         let new_node_links = unsafe { addr_of_mut!((*node).links) };
- 
+1. Focus on the core Rust HID abstractions first to get something merged
+   for supporting "simple" HID drivers.
+2. Build a reference driver to validate the abstrations support "simple"
+   HID devices.
+  - https://rust-for-linux.com/rust-reference-drivers
+3. After getting the first two steps worked out, continue pursuing
+   monitor control as a Rust driver and work on the needed changes for
+   DRM connector backlight control API.
 
----
-base-commit: eb88e6bfbc0a975e08a18c39d1138d3e6cdc00a5
-change-id: 20250315-rbtree-comment-fixes-99e567449195
+Luckily, it seems to me that parts of 3 can be done in parallel to 1 and
+2. However, the advantage of this is that if the Rust HID abstration can
+support "simple" HID drivers initially, it has a path to get merged and
+iterated upon for supporting more complex drivers.
 
-Best regards,
--- 
-Charalampos Mitrodimas <charmitro@posteo.net>
+You mention this in the third patch in this series, but it would
+probably be good to find a simple device that requires a report fixup or
+some processing in .raw_event or .event callback.
+
+Making a reference driver for the Glorious PC Gaming Race mice seems
+like a good start. My only concern is the lack of complexity in the C
+driver not needing a .remove callback implementation. I wanted to have
+an example where architecting what device removal with Rust semantics
+would look like. I'll get into more details where you bring this up in
+third patch in this series.
+
+Thanks for the feedback,
+Rahul Rameshbabu
+
+>>
+>>   https://binary-eater.github.io/tags/usb-monitor-control/
+>>
+>> Julius Zint had attempted to do so a year ago with a C HID driver but wa=
+s gated
+>> by the lack of an appropriate backlight API for external displays. I ask=
+ed him
+>> for permission to do the work need in Rust and plan to accredit him for =
+the HID
+>> report handling for backlight in the USB Monitor Control Class standard.
+>>
+>>   https://lore.kernel.org/lkml/f95da7ff-06dd-2c0e-d563-7e5ad61c3bcc@redh=
+at.com/
+>>
+>> I was hoping to get initial feedback on this work to make sure I am on t=
+he right
+>> path for making a Rust HID abstraction that would be acceptable upstream=
+. The
+>> patches compile with WERROR being disabled. This is necessary since Rust=
+ treats
+>> missing documentation comments as warnings (which is a good thing). I al=
+so need
+>> to go in and add more SAFETY comments.
+>
+> K, I'll give you my opinion in the patches as the HID co-maintainer. I
+> do have a very little rust experience, but this is my first in kernel,
+> so I hope the more experience rust people here will chime in as well.
+>
+> Cheers,
+> Benjamin
+>
+>>
+>> Thanks,
+>> Rahul Rameshbabu
+>>
+>> Rahul Rameshbabu (3):
+>>   rust: core abstractions for HID drivers
+>>   rust: hid: USB Monitor Control Class driver
+>>   rust: hid: demo the core abstractions for probe and remove
+>>
+>>  drivers/hid/Kconfig                |  16 ++
+>>  drivers/hid/Makefile               |   1 +
+>>  drivers/hid/hid_monitor_control.rs |  42 +++++
+>>  rust/bindings/bindings_helper.h    |   1 +
+>>  rust/kernel/hid.rs                 | 245 +++++++++++++++++++++++++++++
+>>  rust/kernel/lib.rs                 |   2 +
+>>  6 files changed, 307 insertions(+)
+>>  create mode 100644 drivers/hid/hid_monitor_control.rs
+>>  create mode 100644 rust/kernel/hid.rs
+>>
+>> --
+>> 2.47.2
+>>
+>>
+
 
