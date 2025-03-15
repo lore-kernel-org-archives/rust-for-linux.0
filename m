@@ -1,130 +1,118 @@
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5288111713;
-	Sat, 15 Mar 2025 02:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B017A17BED0;
+	Sat, 15 Mar 2025 06:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742006615; cv=none; b=oMsfZUMYHxf9p3tmwSb0nkst68Dvteytlgtd4hNLtOKsaaYhgyg+9WoT+6tXpum+1glfnenUiFXaNYIt4nkqWEmbwUT12cQ/komQfJkC4QSbkw5f8trLmSfkBd8t+hORW2tAol3QGnOZI/AbbXff4CG9mCeOCjbOBYrYBYS4x5Y=
+	t=1742020196; cv=none; b=gutxSJAWtsVtmuqhibbae23cRZhlG60KZ9JMIea+sJCykn9H88MAly/mhfazfnAfpel38B+rHFX53BViUbFgIC3+3S114krhHJuoqWjZ0jhiLti9h1S4EaJrwsYcE4pC1OUNxnYTQiZ4ig35JVJuvKC3JMVn280MRtNe+xqLKS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742006615; c=relaxed/simple;
-	bh=GlntjgU3Lxdii6DqpKNjs6+MaX1eRLZ0d3LBMTa28eY=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6h59vC1B7lCRpX3Q1sA03LdoFuftbyy4eScpVIjvlUi4xkpv3vGQvBiujrJqxKxqslrVfC7/klya9VkQAwoJZlZ/tgV6bmqNOXVFtGUcoexFa7/+m/hBUfz9aiKOtkwsno1ZjMw1uQEqagQjQmbZYrGp5OSOm5X+gh7xms4tg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZPqmGaGm; arc=none smtp.client-ip=209.85.210.46
+	s=arc-20240116; t=1742020196; c=relaxed/simple;
+	bh=2HPC4NQ90xLggdKKKcJPiPY/4SPFxfrjKCH1FgSkKGA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cOMqabryJEItQg0F79hmHyetG7oS0ZtIWCbeG3V9tiwFT542xEUiU4Oub7c2yJSifdihODAB410tzyc3udW788UC6nbirKXOKZy3PMlaN8JUyfoW1PQemnGtP7LzmzIVPuuOwu6/lbK/3+edGRG1Lc4Myz7UeKhlI5/HypGuxVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DUn/T8II; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZPqmGaGm"
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-72a145521d6so1908736a34.3;
-        Fri, 14 Mar 2025 19:43:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DUn/T8II"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-30155bbbeaeso508088a91.2;
+        Fri, 14 Mar 2025 23:29:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742006613; x=1742611413; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MibvrQXj2P5QnlDxX5YbYon7Ne8dH6XMjJsYnk+RzkY=;
-        b=ZPqmGaGmoYNJAtfzfsci1WDuJQd9Fh0XCGGImHJILodVGZRd3kjf1NZIrsZHGsEkG3
-         Q0W2E0vAqCmdKDBU3bg9ncLzaGO0mOkmeF9bqLOSdu46/Zl/uecnaddy2bmjzhKoD7wu
-         +3MuUWKSvAs2pc0WnqssGEaXfBwYImE/FYVy5NSjdgFpstuTSJrvaXN4GY6KaPujvrEj
-         tJrHaLudL4RagYjOCtmZ2vxhfMxA3SMzp7LSeF6k2zxZrPYpaJIaOuginSAdEmKFdrIR
-         WiLtrZeXIBHyIX5oK7zhAF9Q9sSKIrrZbOcoNf6n1zqb3on0ic5zX8AijmD8JsZgmyOq
-         9zoQ==
+        d=gmail.com; s=20230601; t=1742020194; x=1742624994; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=tmfpLD0wSy9YLuamDc1npCFGqgQISAxicSJiRUT7xoY=;
+        b=DUn/T8II/5ujFAYXlG7DL9kx/Vbf9hKVIh14i68Z8BfNXrr8kwhzxg4FRxmOHgqVyV
+         4SwhJ1P3ydpaORiADotnsVET2uO/SPNMDgsJypDYXQWI5HtqruZWMDoTc7teD+5tjy9M
+         ij+DlxpqM+ChnljIL1GhArMQqCB8iqLDGcq6MYS7hV+EWGIjFcEv+MGPb20XsNIrTOO3
+         UXmaxNxnGgAdLG5EvgE9VV3kRFErtxU+on1jW1p/u+3NXrR0qEZIlkyZG9GK7ljUDBkF
+         0Pa+4di+ukEmyaBMTKlIYaj6yUSlPjzZSV0b4ACkgIyg+tLmETX0eMsme7SQYTf7JYSn
+         GMww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742006613; x=1742611413;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MibvrQXj2P5QnlDxX5YbYon7Ne8dH6XMjJsYnk+RzkY=;
-        b=lwcbv8TydL7O8th/jUUi7CFchzRWJEjiq/vgnvj+ewOnzl4bPOxgyyQWqyRlUtPXGm
-         j0kLnaOUpblmhcGyJ3BVYYPvHGfS1jr8z3JHXRAql2WDPJ4LLwGk5IHytbsmB5OlekrR
-         Sd2BddZ6cZ68uXNbClUNFWKSi6FsEjCl6N2GcL5ut+xWHiWT39Tnrpr08kp4Xs6NT6j6
-         2feoQjAEx1Oz4lbFtx+TjBi61kJ1660ymv7vDOP48ZkvYc7o+LF7J0p9UQWK9fDlMREs
-         aP0ejvgp9jCzTAvaJwg4QUMmfFhwntqr8HGLx1P44OnLaxs5E61UT0fDN4Q1d+cxHPXq
-         EckQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVROctpK9/v6+2nFIqOcuokZkRd/JnnJiu052T0jm3AqNCupTl8cOeVsPUyc0gw48zx6GxAkF89ZJvoJeQFdM=@vger.kernel.org, AJvYcCXXJz4hbiEB1/qp22unM2aLXnzs3Dm9oZ13IlJ2gB8K6Jx5QCYvVri7/Q//wC9KxtQkpJNK8D1VYb0=@vger.kernel.org, AJvYcCXzfLDsHXKjwGbVwlOVHY+yRiJf8U5il6S6gOXAv/K1DL8RWd8rI9In3DpNmuaOLRDENO5DCnP10daOsmkV@vger.kernel.org
-X-Gm-Message-State: AOJu0YywOnbToJ6rj9rkrqs0G8bUl+nQhaiPu3bz6ZvZT5S/XITR9620
-	MOJg9CmgNzvlCO1s/fBA2ZHZ7/Cikjv2cGdT1fETvnOGKtcPqW47
-X-Gm-Gg: ASbGnct2GphkIdn2Gbv7gbtyJjTEEv3akBf/XCmiOOQaS1GxBUxrSkaQrFLuZkvRmaW
-	wx+XvwpnhR+TVKliQsLcz/irMmSQ/PjOy3xfaIE17nEvhMz+J2DRs3KsKnDG8Nqa5jtAJMfLcZZ
-	Lk2BKk1vfYLPw407klOTnnevROI8l2AyJJ8YJUsa+OvcUgxbrsbf8YqdGky1V9TTo2WfoX37iga
-	Xt+ZDTuopJ1EMYzPsYWSuUV6MJCXtXc622rmvx7yZB4PLY+Lx62wHbbQD6rgDk1w0Upee6+O7kv
-	OxG/0gF6efMj8cRLn2Rl13lHS3RNAnrh5Q75U91wsAl4LC4dOArBxI3zYCwW8d9b73bRmUoAvo4
-	vPeOaMUivFuJMfbxV
-X-Google-Smtp-Source: AGHT+IH81UySJfquqqsqib4YT+37awiURcsJmKDQnrwiT5WTPoR6EFhWOtsz2pC9Fb1W+uChntifMg==
-X-Received: by 2002:a05:6830:3c86:b0:72b:992b:e50 with SMTP id 46e09a7af769-72bbc4ea2a6mr3535769a34.21.1742006613460;
-        Fri, 14 Mar 2025 19:43:33 -0700 (PDT)
-Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.googlemail.com with ESMTPSA id 46e09a7af769-72bb26bb82dsm882990a34.32.2025.03.14.19.43.28
+        d=1e100.net; s=20230601; t=1742020194; x=1742624994;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tmfpLD0wSy9YLuamDc1npCFGqgQISAxicSJiRUT7xoY=;
+        b=UrlzTu/cDvszQ558NPTRMbDY9b0uWzMsdFuauXZkmG92tpPYHeyxDYIiajc9PIGMJH
+         UmsgZxgELiBybn4MfGYikk8zhCYtJi86ArnJBlYefBgIYYzUlbiNEQ2S+ZnBHQElozoY
+         GPH0PE7qNYscTDXx5rIuf8NB9yU09mUsWZ6ks6g2BbtfTfkhtyEnqiULpH5tFjtC5GB1
+         vQrWEbiwhxr3NDrWRG48krA8SS2J0+YLPw10nDIbZbQwjjnVQl6uw3ZinBICx641Hoav
+         DJVUqBc1nnsyrhrtETw/s74GDhsNjTB7pva0gvV3NCiubtzmlq0pl3igeKYMJlpzCtta
+         cmBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEL5YJkuAM0qX5QiCPf5QbhYWkXJC+G2CDF4QZ2mXnzKjbIFvdATH3hu+tRDRAM9Fmi3ERavXz0nWIHjU=@vger.kernel.org, AJvYcCVjph+UV09aK83BVNEL+chViZUb/BYINFV04DKJ3bXYnWUtiRts0xcKDTtk1iSDyCf7L0P1@vger.kernel.org, AJvYcCVzuCI4iGT9/2UYBcWrbV+CIMEPrQcr7rS/xyzT5SuDEWfpZjXjG5/gSmIknFB6JcdjbdHSx6fHe9b7qoRpFdw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/xs+mgYJmLStaTO4cIR+hamR7/xZVOOLLfXLqjAWP40GQZWah
+	pzzl4W0LS5EOoD58sl4o6MGZO2thAHqPArJfG/tIbtEindNOTzBz
+X-Gm-Gg: ASbGnctyAXi/jHORf6QZ06ig72zcxPmtK6L505xciYOgdJxq6Wd+XFfdTo1o+chOWEw
+	gpBMgK2dVQx8NUyX5cNF0gI4cNkiNVKRNjJDLLMSSAt6OeFKUNUITsod8FRlkjCMZNaedtgmiaH
+	8rb5baECY7cfy1+b72Vf9s1Eq0NLHYVsZAcBNbaMP+AcPhM/A+z1IkbzDNXvmbl14U2RydaoKVp
+	/zxaYW4q3cB7z8x7wO8N6gMMw6Lg+UTapzdp5GHDmSChCCX6cwcJ/s89KH/PVaoZ3WhnPqwuWqI
+	LnEjRCho/ba4v3XHEeT2W5I60vet4my25sFKJ3hHmkJD91VQUq/EFoTXpJJhfw==
+X-Google-Smtp-Source: AGHT+IGEcLAhPjis5DBeTEtDbcfTF37HVEoGh0kLkHJ4BZpXiObeLfEaIXG7pBvmWdz4S7hygKD7Ug==
+X-Received: by 2002:a05:6300:14d:b0:1f5:a577:dd1b with SMTP id adf61e73a8af0-1f5c1126db5mr7478656637.1.1742020193858;
+        Fri, 14 Mar 2025 23:29:53 -0700 (PDT)
+Received: from vaxr-BM6660-BM6360 ([2001:288:7001:2703:c5e6:ccb8:a191:9f7d])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-737116b2bfasm3955892b3a.177.2025.03.14.23.29.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 19:43:33 -0700 (PDT)
-From: Andrew Ballance <andrewjballance@gmail.com>
-To: dakr@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	corbet@lwn.net,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	andrewjballance@gmail.com,
-	acourbot@nvidia.com,
-	nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH 3/3] gpu: nova-core: remove completed Vec extentions from task list
-Date: Fri, 14 Mar 2025 21:42:35 -0500
-Message-ID: <20250315024235.5282-4-andrewjballance@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250315024235.5282-1-andrewjballance@gmail.com>
-References: <20250315024235.5282-1-andrewjballance@gmail.com>
+        Fri, 14 Mar 2025 23:29:53 -0700 (PDT)
+Date: Sat, 15 Mar 2025 14:29:47 +0800
+From: I Hsin Cheng <richard120310@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>, rostedt@goodmis.org,
+	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
+	joel@joelfernandes.org, josh@joshtriplett.org, boqun.feng@gmail.com,
+	urezki@gmail.com, mathieu.desnoyers@efficios.com,
+	jiangshanlai@gmail.com, qiang.zhang1211@gmail.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, dakr@kernel.org, rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org, jserv@ccns.ncku.edu.tw
+Subject: Re: [PATCH] rust: sync: rcu: Mark Guard methods as inline
+Message-ID: <Z9UeWyrcK1t27SQV@vaxr-BM6660-BM6360>
+References: <20250312101723.149135-1-richard120310@gmail.com>
+ <20250313043006.GA1396688@joelnvbox>
+ <CANiq72m3pDny0fUkg4XAFsuA72ku0BKcoj5+zKza=o6Ek_QASQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72m3pDny0fUkg4XAFsuA72ku0BKcoj5+zKza=o6Ek_QASQ@mail.gmail.com>
 
-The requested Vec methods have been implemented thus, removes
-the completed item from the nova task list
+On Fri, Mar 14, 2025 at 03:43:23PM +0100, Miguel Ojeda wrote:
+> On Thu, Mar 13, 2025 at 5:30 AM Joel Fernandes <joelagnelf@nvidia.com> wrote:
+> >
+> > Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+> >
+> > If no objections, I can queue it for 6.16 but let me know if Rust maintainers
+> > prefer to take it.
+> 
+> Thanks! That would be great -- FWIW:
+> 
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> 
+> By the way, should `read_lock()` be marked too? It just calls another
+> (now `#[inline]` one).
+> 
+> Cheers,
+> Miguel
 
-Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
----
- Documentation/gpu/nova/core/todo.rst | 10 ----------
- 1 file changed, 10 deletions(-)
+Hi all,
 
-diff --git a/Documentation/gpu/nova/core/todo.rst b/Documentation/gpu/nova/core/todo.rst
-index ca08377d3b73..234d753d3eac 100644
---- a/Documentation/gpu/nova/core/todo.rst
-+++ b/Documentation/gpu/nova/core/todo.rst
-@@ -190,16 +190,6 @@ Rust abstraction for debugfs APIs.
- | Reference: Export GSP log buffers
- | Complexity: Intermediate
- 
--Vec extensions
----------------
--
--Implement ``Vec::truncate`` and ``Vec::resize``.
--
--Currently this is used for some experimental code to parse the vBIOS.
--
--| Reference vBIOS support
--| Complexity: Beginner
--
- GPU (general)
- =============
- 
--- 
-2.48.1
+Thanks for your kindly review and comments!
 
+> By the way, should `read_lock()` be marked too? It just calls another
+> (now `#[inline]` one).
+
+I'll do it and fix the typo mentioned by Charalampos. I'll send v2 to
+you ASAP. Thanks !
+
+Best regards,
+I Hsin Cheng
