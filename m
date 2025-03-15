@@ -1,40 +1,42 @@
-Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868C1193074
-	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 09:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349BF18DF73
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 10:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742032769; cv=none; b=h11cSnI4Wc5wx8DuG9uVcoLyP430KsOvxjXuRfLrB54ZZxzs35H+21TwlXC1tFBDsJPQDxamyjwuiDH9v5RVEFHVOQxDafnpR6m+y95fI/zgW9CNb1KJmtRnzX2rcLBqpZa6YVje//j2grrCqcFa9U60/L569PRMaaD9AYgSs5c=
+	t=1742033376; cv=none; b=dAjD8Q8Lx9EGmfjGqwVS5JbEGqvuEMJJAQmo0/jcasjMWm7V0GTzsEAGSERNGTZzp4CU6uTfbBeTNYGSFTJqFQ3VnGrB8oHla/n3X3aM4jasSDB9N9Jmi0eZhlFPD2O8e1ZKR9Ws3nWThzenWWMYA9/vf3L+YB39nROM4u4M5eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742032769; c=relaxed/simple;
-	bh=ceK+2LHucScSesExkMNpKWtYIeHc8VxmKVdHDkRAwmM=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=hwEzxQRa7dOpPeSeeF/rf8T98+bnjlPhrmpxr0IuZwi6jtyl8zHewbwJWSzHc1o6AbtJTUoZT52W83ZAeYOwio11TfWVKSR3tvtspB/Jc2B3RQDYB/oq4823aKJJqIblC53zZPTyULQfmuDhFOMNlNPSwoI3TXzCQVgfW8XzfCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PwFmLOnI; arc=none smtp.client-ip=109.224.244.17
+	s=arc-20240116; t=1742033376; c=relaxed/simple;
+	bh=8UhodB5lyzuH4a9GCl71ABJ8nhwY+/Eh9Yx2a9wuh/s=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lDU5fdBuYrlejFTLwHGY6swfDB38Gw5Wya9IADCPpjLCULKHLve/kgWtuITGIzUWc6wn5oouzm79b/eqfrs/s4+UDgXzy895n17G5Rc+sRMwzDxP54tr2uGU9wjCbA/RayCDOBbD5+luGA0XbdfwPy6/EdNNvmoi902AShgjyAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Tp+loHx4; arc=none smtp.client-ip=79.135.106.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PwFmLOnI"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Tp+loHx4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742032765; x=1742291965;
-	bh=umMDDdD/DyhUTEkQ9Mzw36CyII6AjHon398barZQATU=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=PwFmLOnIk1oLvtD/s1l/Z0z6/DrlDDLrcETg8uo5OyVQlz4ESsVTGuUG+xmqd2JyM
-	 HzHJVEGcekIEqix1HAHzqBCrKmVjfz2lsDADWR5RCepL4fldxdOsrXvNjUMDWeDrRF
-	 Bf40rIYx9LvL/U6fgp6eR/OB8FsetJOcoddEEUFeI8dgvgPShAFfgOR4x4dRRSuh1o
-	 5MfanuoUWsPzbH2MA3Tl0PoK/DJ+zEuTwK4V0eG9vo47Qa4juZvqMZPbaxIix19cIc
-	 zvES/yTOHthPmj6m5ARzQ5XC/n4I2EQjmM4OYzIZSSslOm2xm8dU3m+E+6KinK8C8P
-	 IL1dQgxW7N3cg==
-Date: Sat, 15 Mar 2025 09:59:19 +0000
-To: Antonio Hickey <contact@antoniohickey.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+	s=protonmail; t=1742033372; x=1742292572;
+	bh=OHcE70XPvRML9VaosSBT33NiXD1wPq+xwAXL+OkphTA=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=Tp+loHx48iHnl0Mbfw+IQKG0pY7CIKt+S8b5Qp0/uQFjpiVqxywW8bQJ1qjOxzgM3
+	 vZCvMH00hXsp4ZHB0GmTvxu/2jse5RgkhYpBzM+Hsn5PGzqPyC770t/HIBAvkQ2D97
+	 iTRoGMLHWXkjzR6pzV1/afXKBkftflUctRtFac7nXpyClHlxb5Lm/MLGY3Q8AgrxBp
+	 OMcGiqzQmSe8u8kXrlqF5fdpzMu1V3kibmmDoyVHiUuqDYryV6d9Zu2MvR+z0Y1oMF
+	 IgIeZoVDz/psd+eQBCBNU93NgINwW23tb+K3uZ48gep/Ytg7DidfZl4kjLPimZc4P5
+	 8eSzA3OKeOWKg==
+Date: Sat, 15 Mar 2025 10:09:26 +0000
+To: Andrew Ballance <andrewjballance@gmail.com>, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, acourbot@nvidia.com, nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Benno Lossin <y86-dev@protonmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] rust: clippy: disable `addr_of!` and `addr_of_mut` macros
-Message-ID: <D8GR2N2YKX3C.OCX0JXEJ5T@proton.me>
+Subject: Re: [PATCH 1/3] rust: alloc: add Vec::truncate method
+Message-ID: <D8GRAC8YQIVC.2LS1EIIIRZU3I@proton.me>
+In-Reply-To: <20250315024235.5282-2-andrewjballance@gmail.com>
+References: <20250315024235.5282-1-andrewjballance@gmail.com> <20250315024235.5282-2-andrewjballance@gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e5ce109781cd7969ba316c8197dad415ad27a8ba
+X-Pm-Message-ID: f76ad4a7a800f1deeb9c27a5c54e750de1d80a8c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,57 +46,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat Mar 15, 2025 at 12:41 AM CET, Antonio Hickey wrote:
-> With the `raw_ref_op` feature enabled we no longer want to
-> allow use of `addr_of!` and `addr_of_mut!` macros.
+On Sat Mar 15, 2025 at 3:42 AM CET, Andrew Ballance wrote:
+> implements the equivalent to the std's Vec::truncate
+> on the kernel's Vec type.
 >
-> We instead want to use `&raw` and `&raw mut` to get raw
-> pointers to a place.
-
-To what line length are you wrapping this commit message? I usually do
-72 (and I think checkpatch also checks for that?).
-
-Also it would be useful if you could link to
-https://github.com/rust-lang/rust-clippy/issues/11431
-and note that the lint isn't currently reliable, but we enable it
-nevertheless to 1) document that one shouldn't use the `addr_of!` macros
-and 2) when the lint becomes useful, we already have it enabled.
-
-> Suggested-by: Benno Lossin <y86-dev@protonmail.com>
-
-Please change my email to <benno.lossin@proton.me>.
-
-> Link: https://github.com/Rust-for-Linux/linux/issues/1148
-> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
 > ---
->  .clippy.toml | 4 ++++
->  1 file changed, 4 insertions(+)
+>  rust/kernel/alloc/kvec.rs | 36 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
 >
-> diff --git a/.clippy.toml b/.clippy.toml
-> index 815c94732ed7..95c73959f039 100644
-> --- a/.clippy.toml
-> +++ b/.clippy.toml
-> @@ -8,4 +8,8 @@ disallowed-macros =3D [
->      # The `clippy::dbg_macro` lint only works with `std::dbg!`, thus we =
-simulate
->      # it here, see: https://github.com/rust-lang/rust-clippy/issues/1130=
-3.
->      { path =3D "kernel::dbg", reason =3D "the `dbg!` macro is intended a=
-s a debugging tool" },
-> +    # With `raw_ref_op` feature enabled we no longer want to allow use o=
-f `addr_of!`
-> +    # and `addr_of_mut!` macros, but instead use `&raw` or `&raw mut`.
-> +    { path =3D "core::ptr::addr_of_mut", reason =3D "use `&raw mut` inst=
-ead `addr_of_mut!`" },
-> +    { path =3D "core::ptr::addr_of", reason =3D "use `&raw` instead `add=
-r_of!`" },
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index ae9d072741ce..75e9feebb81f 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -452,6 +452,42 @@ pub fn reserve(&mut self, additional: usize, flags: =
+Flags) -> Result<(), AllocEr
+> =20
+>          Ok(())
+>      }
+> +
+> +    /// Shortens the vector, setting the length to `len` and drops the r=
+emoved values.
+> +    /// If `len` is greater than or equal to the current length, this do=
+es nothing.
+> +    ///
+> +    /// This has no effect on the capacity and will not allocate.
+> +    /// # Examples
+> +    /// ```
+> +    /// let mut v =3D kernel::kvec![1, 2, 3]?;
+> +    /// v.truncate(1);
+> +    /// assert_eq!(v.len(), 1);
+> +    /// assert_eq!(&v, &[1]);
+> +    ///
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn truncate(&mut self, len: usize) {
+> +        if len >=3D self.len() {
+> +            return;
+> +        }
+> +
+> +        // [new_len, len) is guaranteed to be valid because [0, len) is =
+guaranteed to be valid
+> +        let drop_range =3D len..self.len();
+> +
+> +        // SAFETY:
+> +        // we can safely ignore the bounds check because we already did =
+our own check
+> +        let ptr: *mut [T] =3D unsafe { self.get_unchecked_mut(drop_range=
+) };
 
-This should be `&raw const`. With this and the above changes done, you
-may add:
+What's this `get_unchecked_mut` method, I don't see it in `rust-next` or
+`alloc-next`.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> +
+> +        // SAFETY:
+> +        // it is safe to shrink the length because the new length is
+> +        // guaranteed to be less than the old length
+
+Please take a look at the documentation of `set_len`, in the safety
+section you'll find what you need to justify here.
+
+> +        unsafe { self.set_len(len) };
+> +
+> +        // SAFETY:
+
+A couple points missing:
+- why is the pointer valid?
+
+> +        // - the dropped values are valid `T`s
+> +        // - we are allowed to invalidate [new_len, old_len) because we =
+just changed the len
+
+This should justify why the value will never be accessed again.
 
 ---
 Cheers,
 Benno
+
+> +        unsafe { ptr::drop_in_place(ptr) };
+> +    }
+>  }
+> =20
+>  impl<T: Clone, A: Allocator> Vec<T, A> {
+
 
