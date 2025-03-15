@@ -1,129 +1,108 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB8D366;
-	Sat, 15 Mar 2025 14:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30E22040B3;
+	Sat, 15 Mar 2025 14:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742050379; cv=none; b=Y6d/nyIhQ4E6BP1ygzv4XJTovo8iWqEhZWfpauxbXxzDqNBqJqxM3Ma06iHA2QLDkBPROxPlCsSQkOJEAUTOEwVRM+3GefG+q+cma8U8GLI6nT3wyFutK/voIQZL2LnXCpBI5zt/rYnLjYCqHr1MW/fxRe2UrtS1lwETamO+T0E=
+	t=1742050718; cv=none; b=nqceFQveh2job0vF4FcIl6Xw4I15KNzVgSnmxp11DIptgnBO2gZIHVcTn+nDHmEGs7J/um/9US4tU+M4O3k/OAG+6G8NcYCiAJsfqXue5FSoPE7ITdppcVZs8gXNvKY+pyl87FLTGxWzIKEYFORWzrurm4XhxAnSR7Zjk5TXnto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742050379; c=relaxed/simple;
-	bh=25toXEF63pIyQ4BAaA3+SY0YWyKwqbXfkZDOS2yXEXk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VnCTsJxWce/saO4H4G1xIF+bruSQpVI7Mt9l6Ha7+AduThmfVvlxe3c5cUmYbdSaBkExWX246BuLLjsIMe3whicBziJHkNGjuNLKBuUv4AkL0zJAEJhDBn9sDtKV6axk5RY04F0LolslkmVrpEt9hCzPag67k1KAlECq3bIubZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=StvcQOfM; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742050718; c=relaxed/simple;
+	bh=RAeAVhJmU92U3yF+8U1vMhCGpToAH8k8bD3rXfIhF4A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZIRjLgR37plCu90HO4cjkJMDtuv9GIuH+a5R3bb/MwH1xbQGEO7l8nLd+tv23QVfYP0ChWtQWgpEy9RnnM9G160/vdeoGr8tgmOnFCNvLvP1HskeKa7Iek6c4TBy93zolZ9hxJiObHmmWYHbf93OtXuKc6sflDKJKKMMzUtEHeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ThWrk6DE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="StvcQOfM"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30bfe0d2b6dso33088531fa.3;
-        Sat, 15 Mar 2025 07:52:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742050375; x=1742655175; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=25toXEF63pIyQ4BAaA3+SY0YWyKwqbXfkZDOS2yXEXk=;
-        b=StvcQOfMZsabErV8DBV42/ODW+fZVGzMk6ecV7FxwXVw42S841I1tZU8/AliKU21SC
-         onStk8UzRf98iVsvmfof/3NXahDXUpF14uZRvEtCr0fzf5M+V0Zu76kodD2PJUBlJo10
-         ePqc9KTHbH50ePsIXoFfXWsSh2Jxk7mJ/5uQ+nF5+33/kQohzqrymxxkFQAbdPBSpA7H
-         Eb51sPtaVMWtdkhArfwd8d8T3uMZ7qVHHLXgneaqPSQjB/1J53OfyA/HpwMCmlO+a7Zz
-         72ftThHpt4nnO7auws+3bGo/zj13TkR/JnenMJrAdcEZFyGQ+9bhDNtfHuBNjmXwxG7j
-         G9wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742050375; x=1742655175;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=25toXEF63pIyQ4BAaA3+SY0YWyKwqbXfkZDOS2yXEXk=;
-        b=oDRFvimbc/PV0sf3a8G+JVUXjTp3A/1qSgPkVt4TdqrPSZ0USHknEp9LE8kFEcudfg
-         D9sJiNYM2tEqE/OQ0cNjFerfuO0LyCqUlSnfN2ATh2oXkjwRVcRPigawENnzfnmLUBAb
-         LjXfv4EOiwW3ZLDhor9LE5ACs3uuES64Qgs4o5cIFr2vHsFrdU9eqn0CbNyzS304rC7D
-         cjWCCZhkgTAol6RtONC056etkbcH9wgg+0EKmAS9lHeWrV3e/pfRlKdQuMMUAiC2/0PI
-         /PhiYeUx1uA6fjDHIvBde2q0Cm90sZB7ikLmKd4kYOlV5Dc7rkHY8ESG+j78OpCXPB8C
-         8Nrw==
-X-Forwarded-Encrypted: i=1; AJvYcCU49P0qTcugGp834alFLslbPFzgf1LNLd5fc45Sj5fRhNdasQ/S8rOtvUkVLYkrDXO8tUTmWrwOOKk1wux6sWU=@vger.kernel.org, AJvYcCUqjk3SS8y0FMT/NDIIqn1u78Bih9i2mIg8V9omMEUzS+RTc9leT+neo4EaDrlK4AYnEwTefBJkB4+u@vger.kernel.org, AJvYcCVEVka0Ne7qSzHvGUS7WOuExFbfeq0RXy1VYq8nqSyYkflrxCWHlr05AIsESadjihY83DzURndSv0lOJxVZ@vger.kernel.org, AJvYcCVZfGy9qp5Jd2PwzVYvQ84rT0ATzuXG8qSHKDfcU8a5h1sihVFi2cIwEXe1kBrGWk09hifPkS7G3wucSA2Q@vger.kernel.org, AJvYcCWNNLK++edMZp26SclQxVV+lpaCRihB8T54kZRmuTDe0LdJ3NeKLcD1zYsrRBH8GXpH+kcJsP6fRGKw5dcyOCWC@vger.kernel.org, AJvYcCWPt+KkLOwXZo4c7m4oX26rv8vkBaBhvleRn018WPdT3dQMoxlqIEq+ELWw1xbWGq0CQ9iDtzhPUoWN@vger.kernel.org, AJvYcCXQa7u+65f6iOTPqbH3PrjlVRRMo5xedYmVh5ylEh3hxBsuedmmpVQy2Kxcc+hQFrMGDu7cCzDiqJOgbC8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykqka6F8FZIRml26Qb9+uDS0SvJ9ZryrC+tZqx+Iv1ylb6DBjE
-	BMrwdRdAUgTX+YI93kz6SQ8bkSyKaEpRfd37N3AbVe5vzH0ENifjB5iLBEdw0o/0pcfrJ/lTh9R
-	SZopoAN5oT5mg8U6Zuzgkbx5XHfo=
-X-Gm-Gg: ASbGncue3kp7EAAXrths7o1VlElVYuHb5/lIKl4ozpko6HfNIudHmTBsFT2EpXIOvFY
-	tf6Sr+U/GiIiJ+SCQ4om1zDLpBrEQscUXOoj47yMwTIwOKkEFFuG6HnPylKE2h5uFSobCcmodpN
-	Pkhc+muC0ISEypzMeMQaQRnh3g20mG+v5hhILNlBqB0rKKA23rcArotMMO/MW5
-X-Google-Smtp-Source: AGHT+IH8nC0TpYa6om1KJkuvMAniWm5KQw6dxG84o6l4T8qWuLbPOUtyA3zl+ap3w3tC9KO/f//DCnawBJXOvMWsW2o=
-X-Received: by 2002:a2e:2413:0:b0:30c:514c:55d4 with SMTP id
- 38308e7fff4ca-30c514c562cmr12196061fa.16.1742050375070; Sat, 15 Mar 2025
- 07:52:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ThWrk6DE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B560C4CEE5;
+	Sat, 15 Mar 2025 14:58:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742050718;
+	bh=RAeAVhJmU92U3yF+8U1vMhCGpToAH8k8bD3rXfIhF4A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ThWrk6DExab+UNESD77yz99cy3ckjADVyJxnz2jMAh9lALCsgIHqc0F/d+TFWvRxA
+	 1OfEtqMhMnNpdSDd455c3xHLHgxc4jLVNlrhw0jwa9gMWgwx6J5U8G/9pTI17iIP8h
+	 AYZZZbz38Z+aNWxtJKmdPAcappLSA9xZx2Xvj3JnmJ50VlqRO371Uz8EK8StzoI6D9
+	 EN7PL8h059EjEFYBnAy28eTaFnk/LJxAhMNoEhDB0F8KaKyzMRVLuaJnBaCZkMfmJp
+	 YrS1pvMjuTpyxtsG747d5BjAP4FdeTnBWSvA8tsXbtYAMYKir5crpPBVdiIj2tYQSl
+	 FYO+CkdJqmqJw==
+Date: Sat, 15 Mar 2025 15:58:31 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	acourbot@nvidia.com, nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/3] rust: alloc: add Vec::resize method
+Message-ID: <Z9WVl9ExWznVAhtY@cassiopeiae>
+References: <20250315024235.5282-1-andrewjballance@gmail.com>
+ <20250315024235.5282-3-andrewjballance@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250314-ptr-as-ptr-v3-0-e7ba61048f4a@gmail.com>
- <20250314-ptr-as-ptr-v3-6-e7ba61048f4a@gmail.com> <67d4a57f.c80a0220.16ff45.9cf1@mx.google.com>
- <D8GQJQFGKB8C.DZBUZT4IJIM0@proton.me> <Z9V0jSfuhqWi_t52@Mac.home>
- <CAJ-ks9k+5c-MYNaxv412Ri1LDAxvkdSQQfKEgQtTu6aEsS-XFA@mail.gmail.com> <Z9V5srg9h73ufu3G@Mac.home>
-In-Reply-To: <Z9V5srg9h73ufu3G@Mac.home>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 15 Mar 2025 10:52:18 -0400
-X-Gm-Features: AQ5f1JqjwDEWbdaR9Dml9SSN-lD5tP8ZfiC2uWZ_VNOu30cX7hVl5zfkNy74Ccw
-Message-ID: <CAJ-ks9=23BLX_eo9QYESHFR6JCWJg6AL2Bmg45GAS=wHqAZw4w@mail.gmail.com>
-Subject: Re: [PATCH v3 6/6] rust: use strict provenance APIs
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250315024235.5282-3-andrewjballance@gmail.com>
 
-On Sat, Mar 15, 2025 at 8:59=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Sat, Mar 15, 2025 at 08:41:49AM -0400, Tamir Duberstein wrote:
-> > On Sat, Mar 15, 2025 at 8:37=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > On Sat, Mar 15, 2025 at 09:34:42AM +0000, Benno Lossin wrote:
-> > > [...]
-> > > > > The rest Rust code changes look good to me. Although I would sugg=
-est you
-> > > > > to split this patch into several patches: you can do the conversi=
-on from
-> > > > > "as" pattern to provenance API one file by one file, and this mak=
-e it
-> > > > > easier for people to review. And after the conversions are done, =
-you can
-> > > > > introduce the Makefile changes.
-> > > >
-> > > > I think it's fine to do several of the `as` conversions in a single
-> > >
-> > > Well, "fine" !=3D "recommended", right? ;-) If the patch was split,
-> > > reviewers would be able to give Reviewed-by to individual patches tha=
-t
-> > > looks fine trivially. Then it's easier to make progress every iterati=
-on,
-> > > and also allows partially applying the changes. Of course it doesn't
-> > > have to be file-by-file.
-> >
-> > I sent v4 a little while ago, hopefully the resulting complexity is
-> > manageable now that the build system is untouched.
-> >
->
-> I have fun plans today (skiing!), so won't be able to take another
-> detailed look. What I was trying to say is that: should you split the
-> patches, I would have already given some Reviewed-bys ;-) But as Benno
-> said, it's fine, so don't worry, I will take another look later. Thanks!
+On Fri, Mar 14, 2025 at 09:42:34PM -0500, Andrew Ballance wrote:
+> implemnts the equivalent of the rust std's Vec::resize
+> on the kernel's Vec type.
 
-Have fun! =E2=9B=B7=EF=B8=8F
+Nit: It is preferred to use the imperative form, i.e. "Implement the equivalent
+[...]".
+
+> 
+> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+> ---
+>  rust/kernel/alloc/kvec.rs | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+> 
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index 75e9feebb81f..cbfef2e56f9c 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -554,6 +554,31 @@ pub fn from_elem(value: T, n: usize, flags: Flags) -> Result<Self, AllocError> {
+>  
+>          Ok(v)
+>      }
+> +
+> +    /// Resizes the [`Vec`] so that `len` is equal to `new_len`.
+> +    ///
+> +    /// If `new_len` is smaller than `len`, the `Vec` is [`Vec::truncate`]d.
+> +    /// If `new_len` is larger, each new slot is filled with clones of `value`.
+> +    ///
+> +    /// # Example
+
+Nit: Please add an empty line after the heading.
+
+> +    /// ```
+> +    /// let mut v = kernel::kvec![1, 2, 3]?;
+> +    /// v.resize(1, 42, GFP_KERNEL)?;
+> +    /// assert_eq!(&v, &[1]);
+> +    ///
+> +    /// v.resize(3, 42, GFP_KERNEL)?;
+> +    /// assert_eq!(&v, &[1, 42, 42]);
+> +    ///
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn resize(&mut self, new_len: usize, value: T, flags: Flags) -> Result<(), AllocError> {
+> +        if new_len > self.len() {
+> +            self.extend_with(new_len - self.len(), value, flags)
+> +        } else {
+> +            self.truncate(new_len);
+> +            Ok(())
+> +        }
+> +    }
+>  }
+>  
+>  impl<T, A> Drop for Vec<T, A>
+> -- 
+> 2.48.1
+> 
