@@ -1,182 +1,143 @@
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCE1133987;
-	Sat, 15 Mar 2025 11:15:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6D618B494;
+	Sat, 15 Mar 2025 11:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742037357; cv=none; b=euTvCETlTWqmFpFZkcaHtc3PD1N1oP44B/5Np9F9Qvipy17HG/KgEvxYSCcYpQJ3HuzY2P1G2mLJ+2L5fr2iX5wZVl12u6HpfpMfm0hRI0cR0SSDUoTDGdozNwAtJM/AHD9lnPNsBTPFCapK6oQnQ60vslLC1ytDhiMahJD8mH0=
+	t=1742038852; cv=none; b=SZdm5ROVD2uXD9H0EJM2RQwMaVmd1oD4bJJW4FSUi9PV/P/xj7GtMjVVp6nu9FqnMDttHMOJ63bz3pX9gjcAgKbC95ld42XxrQMgfs2oN38R1FH6SQsuBkvGrDEc0N8MxzxaTuvE6c8y+KPiNJ/1iB0cn8W26pOnmJbuVoQRRs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742037357; c=relaxed/simple;
-	bh=m6ehkspKr2IXuGJm63dn4TwHsb7aj4gwJG3UE6JMseg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ius0I0OkZWBkzZEzMSw4aFD1QPvTpyvzwO/7nNAnynlbnh9ZWj3IaYP4u9mdhMkrbggcOnyYg2Me1giQKHY6O88Uk2anSj9c2N6EHnxJoQripgi4ts8iQSU+JOx4D9PDbMD3WtRUTG9N+Miv5pnb6FzW/QMIuiqyjAgm7bwpN/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XYSjmgPD; arc=none smtp.client-ip=209.85.161.49
+	s=arc-20240116; t=1742038852; c=relaxed/simple;
+	bh=GZk4fae/MYr67eBVU1vWnrMYaBDTRXLN3fZqhAOhcd0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s30iibRsMlVPXSSCoty73HpTaJry7tvkIIYP5Jm3H2tB1PwcvpN/yBx7tNNtodZ0uGivyq0EpPYuSGGAOWu+G+6M3zlrVhko/OTrYGyvhdals/t8qDHFDuf0sR1kz68i2yh9YUCkouYJDe1BIQWsjzVrQTMxBt7jeV6LWpCHaQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KAlDNG7d; arc=none smtp.client-ip=209.85.167.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XYSjmgPD"
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-601f1250436so235372eaf.3;
-        Sat, 15 Mar 2025 04:15:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KAlDNG7d"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5498c742661so3193068e87.1;
+        Sat, 15 Mar 2025 04:40:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742037355; x=1742642155; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1742038848; x=1742643648; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fsE4ot+F7yV8gTFDUQj/QcGbskBzPPy0s/mWjVIBgJ4=;
-        b=XYSjmgPDP9dHzAZG/U7UsOW9tun796oD426IDdI9oop+h+DgafTGW+5CaM+RzX1lWB
-         2TEJRQ3Xyuaqj96tR+JrlaVj8TlVh4eFsaOlv5wq0ZGYcNu3SbwtO+MmrX1T7ut0FkYs
-         kQ5g5PvWNJCWAsFg4q7S6fXjqjZeIv4byQBz2b25uSJfuUuQwMGKq+W1S/2SzE6vt/oF
-         XZuOYab8jheoFIA+7hpDwGlZqi8OGLNR/NUfEzeAxcgGnsVJfYE/5lwpOuRkFUR3KMhu
-         JuF4c39nBvkLDr7hhOoPl8ibBGz37sXvOD9hENzl8dPx38J40Ax2OU7mSBPY/be7siZ5
-         IDcw==
+        bh=GZk4fae/MYr67eBVU1vWnrMYaBDTRXLN3fZqhAOhcd0=;
+        b=KAlDNG7dt4zKx0AH91qp79BI9taKzij5Xp8l4i4jCE8S5cht2xf91aik0LtrrilhNj
+         8rAMXrlLVWZ2W+dzlYZ2NDGeoAPf2SJiKrpkr4CrRcj1y1lbdLDH+ehXD12IlL22cm78
+         R0+62ysJdcoa3imc9rU0eI52QygsXkcROtQAveX5sXvsuMdl/K7VHawsHyd1PWGjkIyh
+         4+y+9GO21tvEbKwsOpIbQLhKLVDs7SOiKIfCR6DSRTBzW44a2KOH8BkA6TlB//b45V3z
+         /6fX5vyFx8xqDcu++9OZ204pquss/3UrOhfAcMhFKoHHIrrNu7oSx6qv7+7hmaXPiQFs
+         BCEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742037355; x=1742642155;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1742038848; x=1742643648;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fsE4ot+F7yV8gTFDUQj/QcGbskBzPPy0s/mWjVIBgJ4=;
-        b=NsOiv8UnUEniJ5lKi4J1AFQUjn/ePNujOWj7XUcYruvbR74ZNRI/qBPu+VX5Q2YczX
-         PiURyfvxwUOA9z6US5MifYhMvEBdEcQgRXHfa2DvKRMrZXGnkeO381V4FOwwsFu+f7k5
-         xFPfkzwXx3euJ38VETWRBeqaYLHb+M4i7rXv1PtDdelAIegXwju+JBYiTLtrukfjSZ37
-         yAFAb+X74hzDA9mKXyaiA2XoLSEF1QOcF/Ellpw4mlePML99+yqP2Xox/78CHzzxr7yp
-         QIxS6qpmBaO/r3s0rg3xfsd4HNt3bC6WGeV56Dqdef5jy/tDT5VWpU2quJtn6XoYsuj+
-         yxag==
-X-Forwarded-Encrypted: i=1; AJvYcCUEcxKZmSsBT4ewo++aNmSp9d9Klgg/aEcMqojDPFYa2jhAB2nTbCi9OkwsX4EMum2omU6llUhk17ndUTYl@vger.kernel.org, AJvYcCVhN76xw5f0ohexp1+R2VWgw+y8NrqWZIRUCvGGtKsPCWOabYw31Tf9lgjQweld3ZEP82zYrkIhNfA=@vger.kernel.org, AJvYcCXMNeSaQ7/m60q/P0J3Do2wBK+wMf2+AKjrrbmykTJvmuSlCf804rCUP5Q2lcWnLvp5D/jAxb78Fd/XJV5aFrc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyglruF9lUKtWVuinIQqDGW7lKCU+l5UDrmPWaIaXgVmF1S3XTg
-	4SVLZE5OMaDOm87EUFKLVRPjot/5D8k4psllVvwb2mFq1ufe6iO4
-X-Gm-Gg: ASbGncsVzfRKQ+QSsZr9pnlHGYjia4OalN/5zXPFLQFbctacFGGNZjvFO+XpvoI0VEf
-	AlQYMsz/OVPVnZg7yRRxesf5bdGby1KNQfgd0wlwkKKU5Xa6INu11wVRf6kYk1Qed5KNCTD6LjG
-	49wcvRF55T2oqIyqfY+mdHmo3olub1VV0yh0ISL4RPuEl1v6ojBPzv405wlLOKL++kcauVwVM1z
-	VAuzR0wa6WhAG8tw+z/6SSqksRuuqOPGYIU/NHA3ym4a+dtM6xUDnXo7E61wnziYs+rovSaW4ZZ
-	jVI/ag4j+TrpB3F6PCODCWYlD/kVRKbbL+6O0VZ/PS9fRafOXwSrs/Fqgo6d6d0Xkthu9I4aYFQ
-	xk4cYxzE+ExUVD6md
-X-Google-Smtp-Source: AGHT+IEtJfw/w3NFqPpk/9J3e/w+rGmcMb9d2v6gwwk8XdHXokvYktoc9+s3uuIp+BGxQ9A7JuIynw==
-X-Received: by 2002:a4a:ee85:0:b0:600:2ff9:acb9 with SMTP id 006d021491bc7-601e45a7a78mr3037153eaf.1.1742037355049;
-        Sat, 15 Mar 2025 04:15:55 -0700 (PDT)
-Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.googlemail.com with ESMTPSA id 006d021491bc7-601db65a010sm913826eaf.1.2025.03.15.04.15.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Mar 2025 04:15:54 -0700 (PDT)
-From: Andrew Ballance <andrewjballance@gmail.com>
-To: benno.lossin@proton.me
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	airlied@gmail.com,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	andrewjballance@gmail.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	corbet@lwn.net,
-	dakr@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	gary@garyguo.net,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	nouveau@lists.freedesktop.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	simona@ffwll.ch,
-	tmgross@umich.edu,
-	tzimmermann@suse.de
-Subject: Re: [PATCH 1/3] rust: alloc: add Vec::truncate method
-Date: Sat, 15 Mar 2025 06:15:11 -0500
-Message-ID: <20250315111511.107047-1-andrewjballance@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <D8GRAC8YQIVC.2LS1EIIIRZU3I@proton.me>
-References: <D8GRAC8YQIVC.2LS1EIIIRZU3I@proton.me>
+        bh=GZk4fae/MYr67eBVU1vWnrMYaBDTRXLN3fZqhAOhcd0=;
+        b=CdVMufDNsLbghnq1l9RlUNavGHm9MiA+FgEfMSbTPuuj8DkF4Wj875AB697hyhI6Jh
+         cKRoQaPhdE2uc42+WTfXYLwsPKUpkEgGN1Q2tAFo8LAr0/SMjp4dQH4KWOWidppuFEP0
+         yF8vAUK55f0R98/qKUfJcZvYekkw1tYepn56Jx9IOdb19ojEUqY9Cs0yQkiXZ7RrktCF
+         lhS681Iw52Qtw0Xoh8JgwAs0J/kbWgOyO7vsYdrLfRrwDjTkBURdBh/ckqwylXeTBpKU
+         FoqYW6cmQjOOnXQATqTuHHVG3ZCtvXDpgws9M1tU37DAA9CIk2/YUkJPM8iNPcY3O5s+
+         Y1yA==
+X-Forwarded-Encrypted: i=1; AJvYcCUbIA/2TqJLBqBUjmdcfzxfnHizYcjul0NnpwLhfu9dvZMmKE76JO1zZJBfR/55by7ri9/MOb7hvW9C@vger.kernel.org, AJvYcCVyoWwPuwNlvbG4nvhyhwpFAXr+c1bS+/tkhFiqliQjqOJ5ixvI5V3IQDyADyx7KbSUbvvEHkrAKJuAukDp@vger.kernel.org, AJvYcCW329spGndCqefyPRRvl/wsCD8uhi/YX+DdsoDniBHvHzS/2uSyb0vM3vHXgLGJ7RqoO9nseLdbba1NJw4=@vger.kernel.org, AJvYcCWCJhQ24QOo/dztb6+pOoFRNiNPOJCJJO31lXE4aEa1vPt3e97vDxHD+XPUZAdXjJklfVYcHOAAfFj/@vger.kernel.org, AJvYcCWLM/tdU8sVIyfKOsEo6LZ5UYk5GCQ7X2ZzwIUgBggNFOujGN9l/uo0XV0pwU4fw77zVuoRcNLTWwVJd4bwRf4=@vger.kernel.org, AJvYcCX5odi5CO2dYIdJ+ZDo6neaUqw150jjQUpROq0jzKRo0raauXWuDLIjhH4tUzdAJMyWF0K3icQKkfGW7aQ8mkqY@vger.kernel.org, AJvYcCX8pKeidYEco346y9OgHsUofNUj/YjHE5fFIlVURDVeagrArbFNVyfwgjX8NGRu2flT7LkA3h1saBSGmE7S@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGfBr5LYqNRe1WTW7VRBxXbO1MtN/1svz+CJuHGbh1KOEi1CJz
+	FalRS7uWYRprZS9anKAx5vV5raYA1ROmWLYfIRsr3xGW6XG7TtVCVxlyysPwmBaBsz/+0ubWYhv
+	ST8JrnTxKdqIShQnZHqkEyaVGTFU=
+X-Gm-Gg: ASbGnctChh6TJ98fNkh4xw7JrB/GEJaRTpD0juckxOX6L2defRnppTSv3dPLf8SJhH+
+	948uukqissJc5KSVHcUoVABxLWR4eAhfE1tcrIcUxoU5U5gDyyjitJcA36A8BN+/OZPJGT+EIA2
+	eNtxd8HMJsoErsrp3HZfPRsJCemCWHd+7aFAqUMIjG4wlj004akHn6BgkDsmwF
+X-Google-Smtp-Source: AGHT+IE5YOwdAlkimyDKgierukU/3MUe/Bnh+7Dt6lI9qeuVqTH+ammroy8zrPwyvHKRkmqwZzkFDYys53YFqpqT1HU=
+X-Received: by 2002:a05:6512:b0e:b0:545:3032:bc50 with SMTP id
+ 2adb3069b0e04-549c38fb8f3mr2455457e87.19.1742038848058; Sat, 15 Mar 2025
+ 04:40:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250314-ptr-as-ptr-v3-0-e7ba61048f4a@gmail.com>
+ <20250314-ptr-as-ptr-v3-6-e7ba61048f4a@gmail.com> <D8G9LZCS7ETL.9UPPQ73CAUQM@proton.me>
+ <CANiq72=JCgdmd+h4_2VguOO9kxdx3OuTqUmpLix3mTLLHLKbZw@mail.gmail.com>
+ <CAJ-ks9=Ec0xLg81GUYJ07uDzwtwhFkoEdxaa3kNtV6xSjZ57MQ@mail.gmail.com> <D8GQRANRVU11.SI7SZ8RAXXF@proton.me>
+In-Reply-To: <D8GQRANRVU11.SI7SZ8RAXXF@proton.me>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Sat, 15 Mar 2025 07:40:11 -0400
+X-Gm-Features: AQ5f1JoeAoHyy6Si2IMNvKKkRV0I5imCdPBPltc96FGLSP5A2aIFj72qS0jC_mU
+Message-ID: <CAJ-ks9m7GwHgBCEYcNiNC7HTMscO9es-RtvnCZLO=PmiU530yQ@mail.gmail.com>
+Subject: Re: [PATCH v3 6/6] rust: use strict provenance APIs
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 15, 2025 at 10:09:26AM +0000, Benno Lossin wrote:
-> On Sat Mar 15, 2025 at 3:42 AM CET, Andrew Ballance wrote:
-> > implements the equivalent to the std's Vec::truncate
-> > on the kernel's Vec type.
+On Sat, Mar 15, 2025 at 5:44=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> On Fri Mar 14, 2025 at 11:20 PM CET, Tamir Duberstein wrote:
+> > On Fri, Mar 14, 2025 at 6:00=E2=80=AFPM Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
+> >>
+> >> On Fri, Mar 14, 2025 at 9:18=E2=80=AFPM Benno Lossin <benno.lossin@pro=
+ton.me> wrote:
+> >> >
+> >> > I don't know when we'll be bumping the minimum version. IIRC 1.85.0 =
+is
+> >> > going to be in debian trixie, so eventually we could bump it to that=
+,
+> >> > but I'm not sure what the time frame will be for that.
+> >> >
+> >> > Maybe we can salvage this effort by gating both the lint and the
+> >> > unstable features on the versions where it works? @Miguel, what's yo=
+ur
+> >> > opinion?
+> >> >
+> >> > We could even make it simple, requiring 1.84 and not bothering with =
+the
+> >> > older versions.
+> >>
+> >> Regarding Debian Trixie: unknown, since my understanding is that it
+> >> does not have a release date yet, but apparently mid May is the Hard
+> >> Freeze and then it may take e.g. a month or two to the release.
+> >>
+> >> And when it releases, we may want to wait a while before bumping it,
+> >> depending on how much time has passed since Rust 1.85.0 and depending
+> >> on whether we managed to get e.g. Ubuntu LTSs to provide a versioned
+> >> package etc.
+>
+> Yeah that's what I thought, thanks for confirming.
+>
+> >> If something simple works, then let's just go for that -- we do not
+> >> care too much about older versions for linting purposes, since people
+> >> should be testing with the latest stable too anyway.
 > >
-> > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-> > ---
-> >  rust/kernel/alloc/kvec.rs | 36 ++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 36 insertions(+)
+> > It's not going to be simple because `rust_common_flags` is defined
+> > before the config is read, which means I'll have to sprinkle
+> > conditional logic in even more places to enable the lints.
 > >
-> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> > index ae9d072741ce..75e9feebb81f 100644
-> > --- a/rust/kernel/alloc/kvec.rs
-> > +++ b/rust/kernel/alloc/kvec.rs
-> > @@ -452,6 +452,42 @@ pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocEr
-> >  
-> >          Ok(())
-> >      }
-> > +
-> > +    /// Shortens the vector, setting the length to `len` and drops the removed values.
-> > +    /// If `len` is greater than or equal to the current length, this does nothing.
-> > +    ///
-> > +    /// This has no effect on the capacity and will not allocate.
-> > +    /// # Examples
-> > +    /// ```
-> > +    /// let mut v = kernel::kvec![1, 2, 3]?;
-> > +    /// v.truncate(1);
-> > +    /// assert_eq!(v.len(), 1);
-> > +    /// assert_eq!(&v, &[1]);
-> > +    ///
-> > +    /// # Ok::<(), Error>(())
-> > +    /// ```
-> > +    pub fn truncate(&mut self, len: usize) {
-> > +        if len >= self.len() {
-> > +            return;
-> > +        }
-> > +
-> > +        // [new_len, len) is guaranteed to be valid because [0, len) is guaranteed to be valid
-> > +        let drop_range = len..self.len();
-> > +
-> > +        // SAFETY:
-> > +        // we can safely ignore the bounds check because we already did our own check
-> > +        let ptr: *mut [T] = unsafe { self.get_unchecked_mut(drop_range) };
-> 
-> What's this `get_unchecked_mut` method, I don't see it in `rust-next` or
-> `alloc-next`.
+> > The most minimal version of this patch would drop all the build system
+> > changes and just have conditionally compiled polyfills for the strict
+> > provenance APIs. Are folks OK with that?
+>
+> So you'd not enable the lint, but fix all occurrences? I think we should
+> still have the lint (if it's too cumbersome, then let's only enable it
+> in the kernel crate).
 
-Vec derefs into a slice which implements get_uncheked_mut
-https://rust.docs.kernel.org/next/kernel/alloc/kvec/struct.Vec.html#method.get_unchecked_mut
-
-> > +
-> > +        // SAFETY:
-> > +        // it is safe to shrink the length because the new length is
-> > +        // guaranteed to be less than the old length
-> 
-> Please take a look at the documentation of `set_len`, in the safety
-> section you'll find what you need to justify here.
-> 
-> > +        unsafe { self.set_len(len) };
-> > +
-> > +        // SAFETY:
-> 
-> A couple points missing:
-> - why is the pointer valid?
-> 
-> > +        // - the dropped values are valid `T`s
-> > +        // - we are allowed to invalidate [new_len, old_len) because we just changed the len
-> 
-> This should justify why the value will never be accessed again.
-> 
-
-I will fixup the safety comments for the v2. Thanks.
-
-> ---
-> Cheers,
-> Benno
-> 
-> > +        unsafe { ptr::drop_in_place(ptr) };
-> > +    }
-> >  }
-> >  
-> >  impl<T: Clone, A: Allocator> Vec<T, A> {
-> 
-> 
+=F0=9F=91=8D
