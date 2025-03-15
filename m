@@ -1,43 +1,44 @@
-Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFA31F5847;
-	Sat, 15 Mar 2025 17:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820D6202F9A;
+	Sat, 15 Mar 2025 18:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742060893; cv=none; b=KmJjm1bOW1SoF3/E38JIYYi0dPVL5sPWKmFnUmzjHVuTrKJGlxNOIQQQOWaAHg/FfbAhNodsRhm70XldhbWaq3jONlqrWwZ2W4Bqn6tguRnnS/bGkQTPgILHz8WQF9EzJwQ44FqbNgrG9qT7ahgbok+A/9OokeGfFrxUifRPy0I=
+	t=1742061661; cv=none; b=sq9v4QEGWGvM8cjG8sSe5L/QcoOHfrilvBdbqaSjEACDfvnLQ5ODfSCkW2B6oW8lP99s9Jsf2nbYEpk9US+Nj6rQ6PsYMz1zSPnADzzaEcwuv2rlc2/TCResfKECwl2tnuKjYnJYUaN/bT/VbPgm2G+LHFm7bPrXfKhDcfaxRXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742060893; c=relaxed/simple;
-	bh=RfWdd+iWooQft/JQ8SdLIg0TGNmFGd3defhv4cFGeYc=;
+	s=arc-20240116; t=1742061661; c=relaxed/simple;
+	bh=AQGvhnW+89joQbtnIYgMqzkrKefUsN/EBiBpxqMXD3M=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jULRHH/nJ2kISp7T5VU3mqWQaN2hpIqqgXKxffFZmFyiDfDQ0ouwgn8KBSTMVlA3Ib7t3kLnFIKr6HsE2NWViAFvIwQ/1qR/p330euPU701zYrWCzk52nzgq0keOZ793Sq5em5sY85AyNL8g61OoON6/iHEIymafKdTcDpySbmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BwEMJi2P; arc=none smtp.client-ip=79.135.106.30
+	 MIME-Version:Content-Type; b=S6mQoDE+dhchrxROIzDimsAE3dGIidNYTcpJcccNwFmL0ZKBUhps0obYu2EoFTTnHUN+sHdT/xw/YNSIdtoJRMIuHGiWcZcxCGQbPdDSX0KknMkCpxLCM5cQvYKTvLkf7R6P21F7cI2y7fxSydK/wJ3NyCYW6ZuRnzcH3oq99kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=YQBSNm5r; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BwEMJi2P"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="YQBSNm5r"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742060889; x=1742320089;
-	bh=VtOFGapc7Hrt2pxDRBLYPcGygqLzAZFo+RD/jsMgI5k=;
+	s=protonmail; t=1742061656; x=1742320856;
+	bh=AQGvhnW+89joQbtnIYgMqzkrKefUsN/EBiBpxqMXD3M=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=BwEMJi2PL1DFvKgfMGsoGkUljR2PXCB+/15LBqPuAVGcYIEl0IEwJ7E5LuR03qGaH
-	 P9Quh9kdfw0SWeDmrz+SkoV5BfBQI1lJxwgFWVTebuEdf96koZttypj/dRgQAXISAb
-	 KUhmFO6xznZxxCZyaALTfmq4sun2/UpREH8Do0i9eLfLKJtiV+kaPdPT1uRumOPTRx
-	 TzJmMC03p92EUED0Id4iUpj2FH0ume1bhloTuWZIj1WdXRFPPRiioIlfEfNh0Wh1/w
-	 mTYGpUtetGLFIu1GOF2yZ6Xod8zyykE5m/wfRYHmspLihDOfpP4FAYyxg5AELEIEYA
-	 wpg3XwU87NaBw==
-Date: Sat, 15 Mar 2025 17:48:03 +0000
-To: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>
+	b=YQBSNm5rm3zDSkda26bpQz4cz3kOmYU0eTl0lth9UKvCZXGjSGzd6PsjFfUKKMy3J
+	 GrYoFmqDIXnYxh6q/bn2zQJdg3uA9rkmXmBHe5Tdyoc6rpYBojJlYDHrjGyIe2kR4t
+	 +EZ56x1KZ+F86WXa1sZThE/dGYNe/VVb2Ba8ITYCCd32Obp+P9T8bKEoZyUsv9k2M8
+	 ztNaBlLgOiveGrJphf+wqT8fq9AOcc2L/Iee/wIICoez++0FIyC7FUq8Kslmk+I8Lz
+	 PA+VltRu0qSquuI4YM48XtMZvBm6we7E28qwveNZlP5uQZvUZT963yorq5xNXTFwVP
+	 ch5qzW3cxAUmA==
+Date: Sat, 15 Mar 2025 18:00:50 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust/revocable: add try_with() convenience method
-Message-ID: <D8H11HOL93UD.31F853PYJA9U2@proton.me>
-In-Reply-To: <D8GWQXK312SX.2RI3EOHM1QGG3@nvidia.com>
-References: <20250313-try_with-v1-1-adcae7ed98a9@nvidia.com> <D8F7D2RPRVAO.2EF39MZXM6FPR@proton.me> <D8F8E4PBHK7O.399Y83M1L3XK3@nvidia.com> <D8F91L51P2EA.2FBHGJYSV06HY@proton.me> <Z9L-Z4Aw64Hi5Lj8@pollux> <D8FBUHBNPIEL.5A8GOEMPJSEA@proton.me> <D8GWCWYM15WI.3II7R71LIAEI9@nvidia.com> <Z9WL-95sJ0DCpaPa@pollux> <D8GWQXK312SX.2RI3EOHM1QGG3@nvidia.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 6/6] rust: use strict provenance APIs
+Message-ID: <D8H1B8HT45UJ.OQ8N8YS92UL5@proton.me>
+In-Reply-To: <Z9V0jSfuhqWi_t52@Mac.home>
+References: <20250314-ptr-as-ptr-v3-0-e7ba61048f4a@gmail.com> <20250314-ptr-as-ptr-v3-6-e7ba61048f4a@gmail.com> <67d4a57f.c80a0220.16ff45.9cf1@mx.google.com> <D8GQJQFGKB8C.DZBUZT4IJIM0@proton.me> <Z9V0jSfuhqWi_t52@Mac.home>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3c6b8247cf645c614ea56d9a7e76be0677e8c9d1
+X-Pm-Message-ID: e83c3409294cafcbb4ff1e1cee286a3ff1c398c1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,32 +48,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat Mar 15, 2025 at 3:26 PM CET, Alexandre Courbot wrote:
-> On Sat Mar 15, 2025 at 11:17 PM JST, Danilo Krummrich wrote:
->> On Sat, Mar 15, 2025 at 11:07:44PM +0900, Alexandre Courbot wrote:
->>> I suppose drivers could add their own macros to do that automatically
->>> and reduce code verbosity, at the cost of less cohesion across drivers.
->>> Guess I'll go with that if I cannot come with anything better.
->>
->> Maybe we could do something more specific but yet generic on top (for th=
-e
->> use-case above), but we still can't assume the exact error code a driver=
- wants
->> to derive from failing try_access(). So, maybe a driver specific wrapper=
- is
->> indeed what you want on top of what this patch provides.
+On Sat Mar 15, 2025 at 1:37 PM CET, Boqun Feng wrote:
+> On Sat, Mar 15, 2025 at 09:34:42AM +0000, Benno Lossin wrote:
+> [...]
+>> > The rest Rust code changes look good to me. Although I would suggest y=
+ou
+>> > to split this patch into several patches: you can do the conversion fr=
+om
+>> > "as" pattern to provenance API one file by one file, and this make it
+>> > easier for people to review. And after the conversions are done, you c=
+an
+>> > introduce the Makefile changes.
+>>=20
+>> I think it's fine to do several of the `as` conversions in a single
 >
-> So be it! It's not that bad and more flexible in the end.
+> Well, "fine" !=3D "recommended", right? ;-) If the patch was split,
+> reviewers would be able to give Reviewed-by to individual patches that
+> looks fine trivially. Then it's easier to make progress every iteration,
+> and also allows partially applying the changes. Of course it doesn't
+> have to be file-by-file.
 
-You could have the following signature:
+While I see your point, in this case splitting file-by-file is too much.
+v4 has: 9 files changed, 82 insertions(+), 27 deletions(-). I've seen
+much bigger changes that do smaller things like this patch.
 
-    fn try_access_with<R>(&self, on_vacant: Error, f: impl FnOnce(&T) -> Re=
-sult<R>) -> Result<R>;
-
-That will use the `on_vacant` error instead of hard coding ENXIO. But
-maybe it's better to just have such a wrapper in drivers that actually
-need it (ie even with the concrete error specified and not a parameter).
-You'll know better through actually trying to write a driver.
+At around 150 lines added + deleted I find it more and more difficult.
 
 ---
 Cheers,
