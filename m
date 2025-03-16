@@ -1,81 +1,82 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A2819D8BC
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 06:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF5B1A0731
+	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 06:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742106054; cv=none; b=eRtE2ehnNcnoqKxpm01+z3wZW4A8UxdtLKCU+1f0cwmkrI7PDxcnikVNjRye/tfvI+AYGGjKNxqdtUnSxVztY5lqQozqN5dDFSHttWzAH3fF4LwW4A6iTkhhFwIFT25npKNhtnpr1FMHsQUiQVcNJOR0pkvcJwwBu3X3q/QuamA=
+	t=1742106057; cv=none; b=RYKBOgdeugsR6d9xUJkIfELf6dGsUROW5b6N2JBs5l5xOesEXtb5sTyPwyXPMb8yC8mPWwE+ofi5lTWLSVAfSGo3si99dib3QZIwr0UK/32G97CDAPxAQaO31LbMf5v1z8HG5e1TVyMtryUE1PdocO8IFmxuJqdohjXfQn5zUBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742106054; c=relaxed/simple;
-	bh=KX3jPb+KdnhH7zSY4q+3YOyo/PiTXXKWO80j/bq2BPo=;
+	s=arc-20240116; t=1742106057; c=relaxed/simple;
+	bh=EqM50h/btgoJMdEf89EdWwvVqjoFb69GSCAu9mgcPp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oIutmdhnAUVqZNbvK2dbTDm43Xii0VbmuQfUZbDa2QKlhlVzoCUyomwjULvvaxFllLbQPuK2IzhcS/NO1elWaGK9FO27aUo70xbWcBDc/sgy6/OawrQMzvmm5kvU5AN7gYxbJvbSdN+6KKH9B1BJiI6icN6v+GmCRDtYXrMhS84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=byte-forge.io; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=Ghri5oND; arc=none smtp.client-ip=209.85.219.173
+	 MIME-Version; b=VvnQ53w86q4Bc+vmdSm2qbCsbtGeebremxqIFtmc9N7A3K2Ui9cp9S0vnLxOSDW8IdfuYNiNgSO+BAebysIWs+lsMeybfU2Zb2IhZNQ45MWUcBxWv+C0urYhnjM4GdRN/3xuzwyl/l3lQ+eJuKnI9x+HeZMvkuxpAKULGUHZ4Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=byte-forge.io; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=SvfDgMij; arc=none smtp.client-ip=209.85.219.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="Ghri5oND"
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-e639040ec74so3924496276.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 23:20:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="SvfDgMij"
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e3c8ae3a3b2so2745840276.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 23:20:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742106052; x=1742710852; darn=vger.kernel.org;
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742106054; x=1742710854; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qoSNx//L0CoaxkVlW3LsLIXWFgY8SicS6A0ILg7Zsv8=;
-        b=Ghri5oNDcCXP0EHFcst+lK5Um5Yzb28c6U91m7gaOb0SxYhqhDiOAnwugJWS8IBoej
-         Gvo8rQ4ntv1hMJb+svoJ4fWN9Uqyo1B+U/iBpDt+hVlCA5fQht+5AEHvO6SyNXHdLz6t
-         sYTQWdU4DA/NyHSowQpR0Q76wtSPxPg/hPai0HlVA2G0HBywSdB5d7L7MEZmOFKajZ2b
-         t2OSsI3dOvPf62RWAy9WoW1QzLD55hxPQEXmR2EiYn9OOrNh0GVogDp59groGpJ3vJHJ
-         GDJEYkAeadKVUp9MJY38ORlI76wJn/wJaxWcTTtI6QZDiAQhyaLKFpmRzF61I7176uHY
-         EB5A==
+        bh=241ofKXR9vke6qRBqiwABES078cvuaemVLjJE3c+p2U=;
+        b=SvfDgMijghFhKWOJO56k//6nMm9O9MSrUwn9dsO4x4nyTtlSBuOmHTmsiKaMqp7HnV
+         HsSpRJ4GcVxqHZztAeXqfuREWDX0wHsP1tHKJEOkVU4y6wZM18gCMJTD5oL+uVXNdaA6
+         CQ1gfqEXmQtD6pekol3PxVf8E2fgFdxajctes3+prTqLglYtu81vCLAW0SvuEtgUUs/4
+         9HhF9qgw0FUMx/CX12tE5OubuzW0bKlV9hbmZjjHnoMql1pMNd4j0UOtkciCVWdm/dNw
+         WlVqPNmCk7JN2yEfM6LG1EaRPy7pfjPub4OWdNOuwX7PJsvY7XKi0VNrCp6uOKVEjOj+
+         MSJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742106052; x=1742710852;
+        d=1e100.net; s=20230601; t=1742106054; x=1742710854;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qoSNx//L0CoaxkVlW3LsLIXWFgY8SicS6A0ILg7Zsv8=;
-        b=Vw0PY7Ppro2VPxEj/mfoBkUfwW0SzA85alB7Kx26JLjlS4FkHZFEMFYL9XmDrbecKA
-         pUlWfpYlVoDT8K6Lb6vRI3V4DrKG0W24ibB3T9SdPjHtTe5lV0KPRVUeSLl1wCuxIDRu
-         WfOn6ARy7tboNgKX9dCpdsJ8k/+r0H1EDZK0zC8dMsYFe/tnGt9iakdeC5nPygbveOfs
-         UEvFLf7Mxd09pjPE0gnHABLG9mtBJFg2fnj+ffr0qB4Oj6aUmJf3UaYhj6IakS7dWsB4
-         1IK8kb9ZHrlFyPSOMw/Rd/hdiRqhTc55bL72//Zf9leENbTF1SIYEYuAyEiOptuBqGwv
-         TViw==
-X-Forwarded-Encrypted: i=1; AJvYcCXtMFbdpQiyRWmHEt3wtOasCIis65JlhlKcpqrCEW/nD4TF2c0hJIfp3fGyQXcaKwB78ZWLy/CDqLlKMZdaSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1QQLNXv7VatMGNdjCrrhAOxahtTJXzpP9O6m7UZTLiCr/w0A2
-	fimQf5+p6FIrIur1IJhqn8kqkTXYV4ZUUmyZdaJtZ3ZyP0r1k42BaIxSSXr+ZR8=
-X-Gm-Gg: ASbGncvNDTP1JYlVhTLTNFU4dRMc+9Mr19BGjsofHv/9VTicrwuV/t5Brvm2hLQHZfA
-	YhguTXclRApALRwnFn4+8TlSJtfpUCE7AI/1vDhHGhbDLix1h0uLFSVimEGo8eCsI/1BiQKzq8e
-	FVXdE27tcCaWo5fY+9glDXOeIakOgcw/8lupsIyWaQ6X0+Tc7jxIHpX1j6+d0sEs+YYXjP5c5Bt
-	9V5hxUaRWUM8Ufbid3LxEuOKaSa8PO5rVhCSv7n9cKnnn9wPOgwmSc5os6AbK1KVw35a/jpIbdl
-	t66uxV6vjbPfRIE1gkNwkBHy7rDq/S943FHAKJ2Gfc0v2NY2n5+slN1d+65BK0/3dPKz8oZdFaj
-	68rFvq1nNXeHgw1zNwxft4XqSYH5JXg==
-X-Google-Smtp-Source: AGHT+IFSIjA+P2B+BI21ghjlbCWIPcaxEXwFyOsBLfnkUoZXHa8ieEB+f05Rm6wSnN3mOs2lKgytsQ==
-X-Received: by 2002:a05:6902:490f:b0:e5d:cc35:3e2d with SMTP id 3f1490d57ef6-e63e39c6b3cmr16371780276.4.1742106051819;
-        Sat, 15 Mar 2025 23:20:51 -0700 (PDT)
+        bh=241ofKXR9vke6qRBqiwABES078cvuaemVLjJE3c+p2U=;
+        b=lNVE1Oe6F0nx2yJJFPv5ve4KGTvwQ/DIGKwpT8U3u8l/LvVgqg9ZiuLRIQM4r7dv5y
+         4UV0+7+3tgt/98DOz9AxplyxMCYaMw2ALNaNbaD2J95Ra/lkGWQ8GYzcIvxV/+gpqtS4
+         sYNQ2b6hAvSGi7Yh9GqxR44to4rWff49W8g+0KY6/j36ouEPmRci4N5ZomzqCgNqo5St
+         ij6JXajXo/QotRmVUhbpmnnYt1ir3/93GRC4Vl1bPzs1Z5hVLAyhwA8BfsBJiQXt10Rw
+         PzJXXWSIBC7D2XT6rWrorTAWhvWfgyUb651GLLO8z26l6rgweSZTdx6rxvmaXNzjlvCM
+         IzeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjkjGJ5ieNplJcaLE2rs0u0npaPN4pF4OiMzSgDfwAcJnKacPYB52p/9nFwR0Ip6h10h36w+zA+JJUi3vpyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyH+ieyL3CyPAoc+dWhvoYTLMQeCMaUbw5NPmVqVfHTTMT3pFFp
+	XeiTk1bwTOpIjTshz2wf5sImc7jAGi5Z+lTnOwcS/4IT5lA4tXLHRQJI3WLO68U=
+X-Gm-Gg: ASbGncsO2ij51QhTruLBStdbsG8TCsNU2KTsPEICKNhQxamgxkRfqUiY165nmbHHx66
+	J+SIPenM6tNqjurdQevp6WeRjyRyz0pk7xMv1qcSXlNRiSK5LIxY4ZKNjuhYV/GmwszJJWe/vhu
+	7QoMl7m4wUFfsE7A9mIR7YSjR7lWQR6uls4r7p3VxFl9M3uSZpA91chxyq77oqmcm0zFMpX+r77
+	suKhvYJFDgc7aT7IvUmDPpKpLYaaKqpha9YbuNnWQXJGjIxvLkwwXyLihHXe+KS/kj4tbNfmQ7R
+	trPuiPQ4grDKo7/ZQazBCQzNfanOYivWybLYM7F8WxF3CtS8+gNNL1fKR6yeMnraiw3RXl4NFHU
+	2XupOEqZvGtQdTC16SH63Zo431C1xsQ==
+X-Google-Smtp-Source: AGHT+IGKBdFtgod+IDVWl6Fklt0hsLoHS9ez/t0qzlD1TVTBuTVrBJZz3FUeEagLsJQuRjXeXkbofg==
+X-Received: by 2002:a05:6902:2182:b0:e5d:cc41:75d with SMTP id 3f1490d57ef6-e63f6534433mr9215444276.26.1742106054606;
+        Sat, 15 Mar 2025 23:20:54 -0700 (PDT)
 Received: from Machine.lan (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e63e53fd277sm1618673276.11.2025.03.15.23.20.51
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e63e53fd277sm1618673276.11.2025.03.15.23.20.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Mar 2025 23:20:51 -0700 (PDT)
+        Sat, 15 Mar 2025 23:20:54 -0700 (PDT)
 From: Antonio Hickey <contact@byte-forge.io>
 X-Google-Original-From: Antonio Hickey <contact@antoniohickey.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+To: Andreas Hindborg <a.hindborg@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
 Cc: Antonio Hickey <contact@antoniohickey.com>,
+	linux-block@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 14/16] rust: fs: file: refactor to use `&raw [const|mut]`
-Date: Sun, 16 Mar 2025 02:14:23 -0400
-Message-ID: <20250316061429.817126-15-contact@antoniohickey.com>
+Subject: [PATCH v4 15/16] rust: block: refactor to use `&raw [const|mut]`
+Date: Sun, 16 Mar 2025 02:14:24 -0400
+Message-ID: <20250316061429.817126-16-contact@antoniohickey.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250316061429.817126-1-contact@antoniohickey.com>
 References: <20250316061429.817126-1-contact@antoniohickey.com>
@@ -98,19 +99,28 @@ Suggested-by: Benno Lossin <benno.lossin@proton.me>
 Link: https://github.com/Rust-for-Linux/linux/issues/1148
 Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 ---
- rust/kernel/fs/file.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/block/mq/request.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-index ed57e0137cdb..7ee4830b67f3 100644
---- a/rust/kernel/fs/file.rs
-+++ b/rust/kernel/fs/file.rs
-@@ -331,7 +331,7 @@ pub fn flags(&self) -> u32 {
-         // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
-         //
-         // FIXME(read_once): Replace with `read_once` when available on the Rust side.
--        unsafe { core::ptr::addr_of!((*self.as_ptr()).f_flags).read_volatile() }
-+        unsafe { (&raw const (*self.as_ptr()).f_flags).read_volatile() }
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index 7943f43b9575..4a5b7ec914ef 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -12,7 +12,7 @@
+ };
+ use core::{
+     marker::PhantomData,
+-    ptr::{addr_of_mut, NonNull},
++    ptr::NonNull,
+     sync::atomic::{AtomicU64, Ordering},
+ };
+ 
+@@ -187,7 +187,7 @@ pub(crate) fn refcount(&self) -> &AtomicU64 {
+     pub(crate) unsafe fn refcount_ptr(this: *mut Self) -> *mut AtomicU64 {
+         // SAFETY: Because of the safety requirements of this function, the
+         // field projection is safe.
+-        unsafe { addr_of_mut!((*this).refcount) }
++        unsafe { &raw mut (*this).refcount }
      }
  }
  
