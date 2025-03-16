@@ -1,125 +1,112 @@
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DB518D65C
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 06:20:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55C928F4;
+	Sun, 16 Mar 2025 09:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742106059; cv=none; b=cSYnTZwiMsJTideb6citx2qdZH79Z62PDDf2pWDeBwnRugNYSS4rIThn17SiMLe5TYfpogFe4dVImhBn4th4cDEIbQ+py9R/Dg9BzowuqBUJxPReLH0t5bTXqdCXxAtpsE00i0zOm5c7FNH7Hr+RlySaZMuTTHnUIP0Kpos5cJU=
+	t=1742116825; cv=none; b=NzDdexQobAC2/Fdlbzg2TWeyzJEbaXnQgS5clO7XI8MvaRTkYd0GLxBTfI9k0SL12JEed8i6W4Z4mrbmXRPzAUxvdhd0iDt/d4xADYehWTT5B9gkRjiXZXYnd+CbkwINTXGKwWbFxwMbIGQ3lsYPOTkzndru8fBrTSQqRJSFavY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742106059; c=relaxed/simple;
-	bh=6kUxBrQxMex82Dfiy9yN8C7YKntSC4CHpsJlbHDXZ/U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8q5lGBwpsVgnFcVPfhua0IJmj8Hk59poNrnJYh36XhvYpQs2TtKDVNEYKEGGq/uWE7ynS3Zo+WgoqGQEBdiVhiEcpLB9xtdBBpoy2VjRpJGMgBP+xkDIYCDaDJbip/O+wn5Vvccv1uXMipl9J0F2N96sW8TbvCsGt+O15XyQc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=byte-forge.io; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=rsamJEkT; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=byte-forge.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
+	s=arc-20240116; t=1742116825; c=relaxed/simple;
+	bh=Lq2nRa89GwzacBqB7cce7FrMWzbs9BvcYpclZTCdWCE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hyWRpfs8pRDdEkwsnSqq56xIE22vvcmWCci/cn8fLIzhBuurR1KAHp5IFqvRx5hEqMEdHBdwGslEhgcHOGNkZPWORidI93NTjh5xKN9UxdcDvdUq/w0EibgCT0chufAxlk6ua8PtrNWn2dTUIlOjmdurjz0qauDaOxftPn3h15U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eWMd6YWR; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="rsamJEkT"
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e589c258663so2979222276.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 15 Mar 2025 23:20:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742106056; x=1742710856; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=skUHTWyrumrekrxW/UyrijXP0S3ug25d6RXYwbstcOI=;
-        b=rsamJEkT8ezTH6UKn+fvnD1oQ+QlbzcEeoJls6jvdTdUx8j/yKDJ8k1GWu4BZClWps
-         BqD/T5Mf/OmluFBttl/YYN2PmXV+zujQN8ZVGhH9NxEyjCyWIkvwzaC/lV1zoutxHSis
-         8fStBgMIyUtSv3Vm6yak72+DjjD1yxAhsvOmBZh44qlaZ8bUJXzKEEbX23YpiLSayJA7
-         H0L8Mdkcr8ueyJK1f05cFMEyEDBmOfDfAfOFqDN0yl6ba4vVohLGSnHhqfuBBvVkiQgP
-         WzpEHewxtbJD97APsDvWkiMMax9G96RA35hctV49XlGcJnH05ZpDwKtpziN4rL0k1gL+
-         7QiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742106056; x=1742710856;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=skUHTWyrumrekrxW/UyrijXP0S3ug25d6RXYwbstcOI=;
-        b=c8jj33T9BpdhcMkUlZO26JIPhSSNv7jpgbPl6IwMHFUEHqu60az8KT27fqnCzHfi86
-         jS0YOQRlfQq17ZQWI5zEuKT7hQsdRMPClnOZxDAEZGa5De4paNE0H5DvAhse8wo09EzB
-         gA8EHqyRzMuHzBbZNBnkiyczrrQR8DOmK6iwirc1mzeP6KUwRhZUlYLQQmLw9QdT25Xf
-         BzZ7b6JBh7txaK1Twa9U1Sc6pGNlbVGuMO0ApfbMZFrxJ11ewH+2ChCYgJTpEq6KsIzs
-         df5mIF2Y1+WTJIbZix/NDV3AGjpJbBR76YduiBP2obUNUgLHBYZyrvcEdSebn6uYUp16
-         DdqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWjlqoWa9FIDb9gzVUaZVcMCWit6TOBZdDxk7GvVC3yAXE1NA3LCMctllZfi700kxJadfCyBAkXbsMpyhbYwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVlqrrg7gjAXHMbnolOLRHx5Y+B8wDspDpSyikzb0KeCP5fSQM
-	xCEHbIDC0iayPCC7CKUOnOE0iPqN63d63IvfuguCaTKRIjFTS/NsSk8SbPrWsrD98Jn8QkKhqI9
-	d1PxNJw==
-X-Gm-Gg: ASbGnctLO7yxIPAf4LTmXpaM3fDmXypJMVbbUX73e0cI6KVqvNYrTB1Dr6CR46BCm4y
-	w04uEzKkMc15ynPuZg6DU6jWEjc20y183NDHxKB31FjlNgjZuJZ7LhB/yupZhyEkT7g+qAF8D96
-	JsqdRWKGi6sTS/lrpsXGR3ihh1G6DYulIyWXIh5WkJkQXTtUzCyIsZFyi6wtDNQ12F7RbDGaQus
-	8NEEFJbAnyazPY35G9khc2UwOASiBl6RBiB0453843fJqMOywZ6acTwe2CcEcxoYLNWSwyIqWzf
-	Lga5sJT7nHN1CRnLUy+cDjAYNAXMEdWvK5JPHoWrg+wpWAAEZRa2L9xlDVRhKFl+EhpPieR1dH4
-	55Q38+WP38F5XwqM/e118qn6osj8pAQ==
-X-Google-Smtp-Source: AGHT+IFIA9jJmbRoN7Y4Lg46r7JSKPu6MnbK12bWhd74PXynRk8+s6RQ3a5OoitFk1+oG0NyrHvHGQ==
-X-Received: by 2002:a05:6902:2292:b0:e5d:e3b1:4868 with SMTP id 3f1490d57ef6-e63f65c360bmr9498636276.37.1742106056331;
-        Sat, 15 Mar 2025 23:20:56 -0700 (PDT)
-Received: from Machine.lan (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e63e53fd277sm1618673276.11.2025.03.15.23.20.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Mar 2025 23:20:55 -0700 (PDT)
-From: Antonio Hickey <contact@byte-forge.io>
-X-Google-Original-From: Antonio Hickey <contact@antoniohickey.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Antonio Hickey <contact@antoniohickey.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 16/16] rust: clippy: disable `addr_of[_mut]!` macros
-Date: Sun, 16 Mar 2025 02:14:25 -0400
-Message-ID: <20250316061429.817126-17-contact@antoniohickey.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250316061429.817126-1-contact@antoniohickey.com>
-References: <20250316061429.817126-1-contact@antoniohickey.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eWMd6YWR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742116814; x=1742376014;
+	bh=E/GOEqwdAKcscL6gdC1W9MW7dv8UhKopri8EjjSqrjQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=eWMd6YWRkr1W8LyagRNQGWyUjO6okmnXb0PLVPIEdEul9xQSwuEKu4qzME2j8beOj
+	 W0MWuYb9+DNNZH309pyKP77npcYRXAWHJRTA9rg18Ir2+V7x1CajmIwQ+RID0/EsnT
+	 u2d7ayIVtxkKnl/Wx6/rNu+khCEhT6TogfrtuVYjXlUcQPvT2Lch2z4uMoWh4PRSP8
+	 RTr5ER3BP5xu7UdwVFJ+JW/jEUbTwbKnHwQzwpeAU510VRSaVFvXQLkK2rUpr1jb20
+	 nez5nAPkwU/qvNpaq4sllhjKvbNEI3hvku/b856qb7yVJr0Ey5ob+RYw2Vk6bjM41r
+	 /LE6sGxTUYyJw==
+Date: Sun, 16 Mar 2025 09:20:08 +0000
+To: Charalampos Mitrodimas <charmitro@posteo.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: rbtree: fix comments referring to Box instead of KBox
+Message-ID: <D8HKV6149T8U.2HZ2WE1E8FCJ@proton.me>
+In-Reply-To: <20250315-rbtree-comment-fixes-v1-1-51f72c420ff0@posteo.net>
+References: <20250315-rbtree-comment-fixes-v1-1-51f72c420ff0@posteo.net>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: eeda091ed9a595ddf1ea9799160ab0b52e77b3fc
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-With the `raw_ref_op` feature enabled we no longer want to
-allow use of `addr_of!` and `addr_of_mut!` macros.
+On Sat Mar 15, 2025 at 10:48 PM CET, Charalampos Mitrodimas wrote:
+> Several safety comments in the RBTree implementation still refer to
+> "Box::from_raw" and "Box::into_raw", but the code actually uses KBox.
+> These comments were not updated when the implementation transitioned
+> from using Box to KBox.
+>
+> Fixes: 8373147ce496 ("rust: treewide: switch to our kernel `Box` type")
+> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
 
-We instead want to use `&raw` and `&raw mut` to get raw
-pointers to a place.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Note that this lint isn't currently reliable, but we enable
-it nevertheless because:
-1. Document that one shouldn't use the `addr_of[_mut]!` macros.
-2. When the lint becomes useful we will already have it enabled.
-
-Suggested-by: Benno Lossin <benno.lossin@proton.me>
-Link: https://github.com/Rust-for-Linux/linux/issues/1148
-Link: https://github.com/rust-lang/rust-clippy/issues/11431
-Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 ---
- .clippy.toml | 4 ++++
- 1 file changed, 4 insertions(+)
+Cheers,
+Benno
 
-diff --git a/.clippy.toml b/.clippy.toml
-index 815c94732ed7..95c73959f039 100644
---- a/.clippy.toml
-+++ b/.clippy.toml
-@@ -8,4 +8,8 @@ disallowed-macros = [
-     # The `clippy::dbg_macro` lint only works with `std::dbg!`, thus we simulate
-     # it here, see: https://github.com/rust-lang/rust-clippy/issues/11303.
-     { path = "kernel::dbg", reason = "the `dbg!` macro is intended as a debugging tool" },
-+    # With `raw_ref_op` feature enabled we no longer want to allow use of `addr_of!`
-+    # and `addr_of_mut!` macros, but instead use `&raw` or `&raw mut`.
-+    { path = "core::ptr::addr_of_mut", reason = "use `&raw mut` instead `addr_of_mut!`" },
-+    { path = "core::ptr::addr_of", reason = "use `&raw` instead `addr_of!`" },
- ]
--- 
-2.48.1
+> ---
+>  rust/kernel/rbtree.rs | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+> index 0d1e75810664e18c0abe851ece2223d203721f79..a7ce512773563150fc2c290c5=
+44f20baad6509bf 100644
+> --- a/rust/kernel/rbtree.rs
+> +++ b/rust/kernel/rbtree.rs
+> @@ -1168,12 +1168,12 @@ impl<'a, K, V> RawVacantEntry<'a, K, V> {
+>      fn insert(self, node: RBTreeNode<K, V>) -> &'a mut V {
+>          let node =3D KBox::into_raw(node.node);
+> =20
+> -        // SAFETY: `node` is valid at least until we call `Box::from_raw=
+`, which only happens when
+> +        // SAFETY: `node` is valid at least until we call `KBox::from_ra=
+w`, which only happens when
+>          // the node is removed or replaced.
+>          let node_links =3D unsafe { addr_of_mut!((*node).links) };
+> =20
+>          // INVARIANT: We are linking in a new node, which is valid. It r=
+emains valid because we
+> -        // "forgot" it with `Box::into_raw`.
+> +        // "forgot" it with `KBox::into_raw`.
+>          // SAFETY: The type invariants of `RawVacantEntry` are exactly t=
+he safety requirements of `rb_link_node`.
+>          unsafe { bindings::rb_link_node(node_links, self.parent, self.ch=
+ild_field_of_parent) };
+> =20
+> @@ -1259,7 +1259,7 @@ pub fn remove(self) -> V {
+>      fn replace(self, node: RBTreeNode<K, V>) -> RBTreeNode<K, V> {
+>          let node =3D KBox::into_raw(node.node);
+> =20
+> -        // SAFETY: `node` is valid at least until we call `Box::from_raw=
+`, which only happens when
+> +        // SAFETY: `node` is valid at least until we call `KBox::from_ra=
+w`, which only happens when
+>          // the node is removed or replaced.
+>          let new_node_links =3D unsafe { addr_of_mut!((*node).links) };
+> =20
+>
+> ---
+> base-commit: eb88e6bfbc0a975e08a18c39d1138d3e6cdc00a5
+> change-id: 20250315-rbtree-comment-fixes-99e567449195
+>
+> Best regards,
+
 
