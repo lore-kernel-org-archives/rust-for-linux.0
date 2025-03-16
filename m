@@ -1,110 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995954C80
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 12:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF701A314D;
+	Sun, 16 Mar 2025 12:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742128295; cv=none; b=CNBjLtO2JEIXrUc1lY0IJIYB04sYMwajH5fKraWbsT7ynH1u+hrBqZdH+Ft+OdaP7jBeCJxO27A1JOeD8OkLN/jYkp/zGTue2YapATxzcWVdcU6wwXu7tzNS0gGsCbD8zPKCQLePJrl2ly+wWhVnLcBkjjLbvaURBYdf5ray9+s=
+	t=1742128965; cv=none; b=srkNvSqW11qPx1suzROWkO6UmqxvfePBQkfOitnni1O2jULL7I89E70DpMHRw5LIv2RSq+2c1/PB+y088a0MAerkROYseDiMqz0zaKnvVhtNAEoNzYUPKD8cXAlzzd2kKT3WfUE4RHTbeuDipTSH8Unvb/emRb2nLf7sZsws4EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742128295; c=relaxed/simple;
-	bh=dliBJKeVoI375tBesVKxDmBswlAJk5v74sHtT0H8K/Q=;
+	s=arc-20240116; t=1742128965; c=relaxed/simple;
+	bh=xAYKZ2GH1Y6EihYmg2Dwo/ja48mVVaN+tmE3v0F1EhI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bK2W818eqhIwlEThMZI47ULGaWDUmEL8RdIsJgpVpwynK2uGgdmP4Y5SmzuqyOgpyI0dKbLD3guHhsxFOXhvp9sATqCJWxu8NGAs89MVvz6n0rkmwbOMvpq15EcSKJsq2iUcJ7t6IOh10bRFmJDZ/OGNayDbfhL/DnXp9FQT/Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWlcMnj/; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QxOtspwWU8Z322YfRd3li0OCObWxfWh1Em/0khN47iNPaJckjynKq8pI3YuIgpqfB5Fz07/CXeNiW0hLD3MovRfnEFnqW7rrP/aNrIhM7Dgmx02NeSTjL95aL1NXRkMDr19iJtjnunzLBLG/7HX1peD3CxKl6WTrkufpT4bCfYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ac6A//Sr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWlcMnj/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B021C4CEDD;
-	Sun, 16 Mar 2025 12:31:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ac6A//Sr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350E0C4CEDD;
+	Sun, 16 Mar 2025 12:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742128295;
-	bh=dliBJKeVoI375tBesVKxDmBswlAJk5v74sHtT0H8K/Q=;
+	s=k20201202; t=1742128963;
+	bh=xAYKZ2GH1Y6EihYmg2Dwo/ja48mVVaN+tmE3v0F1EhI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kWlcMnj/35vjdFhoTG/RfrcuY3i4Pghib2oCaKBBsQLcnJQ0J6UWNItopfcHNckli
-	 K9yCNzHm92X4P0FBIVadHUHBqoANkhXPM+yXdBV7jtIptXSp+rP/zelchBrpak6hmn
-	 fbsNjcJyEK0qOgGdh6HoLzFwCN1/BUk7ncPo7z7nFIVSs55kl3UxfIY7s6/p5GcuDY
-	 U9KgO7KVNNoXSxK90ZqyL8UqdrPxoQMprtPrjeNHGnlDiJsclfmaAwxu1ucS9kh2Xw
-	 AxL0TppDcrfG5V5CMUGpYtylFfx1hFdqMvrLxGcjqgEY0ux5SXvaFhpQyRVhV2MMYE
-	 2Tx+cdS/PrBIg==
-Date: Sun, 16 Mar 2025 13:31:30 +0100
+	b=ac6A//Sr2GnnY9HKpfmxdf3spSlYuh1qWE2aerO/g344Rr8yoiWrOKE+selJfBjov
+	 5jkoph2WGeLtBxCC7Xp2iwPCuV7GLG/frW4UkPxtWXIsfBWZcB9Uvq6Rup36LMAaMG
+	 thoOzyodZLmfoeg0kD1++KCV4kliOSB4r3/2PTPQWQ6aXrFIJL/BlvUZwsakSuj8Uv
+	 kijkYzSbR+xI0dSe2OOCzSL8XlBof7Vs/xhiDZHEmAbD21CKnFXoAe2AdY6zHUubhV
+	 yPkmqRAmv/GIASoYfbco2YykCQgmk6261mSNz7GE9UlGkOYCwSTYNc1vk9VtKQAxGW
+	 5WIZ/SL17Mwjw==
+Date: Sun, 16 Mar 2025 13:42:38 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Tamir Duberstein <tamird@gmail.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of
- Vec::set_len()
-Message-ID: <Z9bEosVk8-0sgSbw@pollux>
-References: <20250315154436.65065-1-dakr@kernel.org>
- <D8H0YRU90WU9.2FX2QF3W9FKV9@proton.me>
- <Z9XIk3WpzruUfh6O@pollux>
- <CAJ-ks9=vvuXpdCnxPKzDEF_ibxBxzGXbSb7hVGi-vDgZcDQnxw@mail.gmail.com>
- <D8HL95D099MI.2N779RERY6DAE@proton.me>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust/revocable: add try_with() convenience method
+Message-ID: <Z9bHPtYhT0HZ_dS0@pollux>
+References: <D8F7D2RPRVAO.2EF39MZXM6FPR@proton.me>
+ <D8F8E4PBHK7O.399Y83M1L3XK3@nvidia.com>
+ <D8F91L51P2EA.2FBHGJYSV06HY@proton.me>
+ <Z9L-Z4Aw64Hi5Lj8@pollux>
+ <D8FBUHBNPIEL.5A8GOEMPJSEA@proton.me>
+ <D8GWCWYM15WI.3II7R71LIAEI9@nvidia.com>
+ <Z9WL-95sJ0DCpaPa@pollux>
+ <D8GWQXK312SX.2RI3EOHM1QGG3@nvidia.com>
+ <D8H11HOL93UD.31F853PYJA9U2@proton.me>
+ <D8HOP09FU367.2MVDRQ5G0OPV@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <D8HL95D099MI.2N779RERY6DAE@proton.me>
+In-Reply-To: <D8HOP09FU367.2MVDRQ5G0OPV@nvidia.com>
 
-On Sun, Mar 16, 2025 at 09:38:23AM +0000, Benno Lossin wrote:
-> On Sun Mar 16, 2025 at 1:33 AM CET, Tamir Duberstein wrote:
-> > On Sat, Mar 15, 2025 at 2:36 PM Danilo Krummrich <dakr@kernel.org> wrote:
+On Sun, Mar 16, 2025 at 09:20:03PM +0900, Alexandre Courbot wrote:
+> On Sun Mar 16, 2025 at 2:48 AM JST, Benno Lossin wrote:
+> > On Sat Mar 15, 2025 at 3:26 PM CET, Alexandre Courbot wrote:
+> >> On Sat Mar 15, 2025 at 11:17 PM JST, Danilo Krummrich wrote:
+> >>> On Sat, Mar 15, 2025 at 11:07:44PM +0900, Alexandre Courbot wrote:
+> >>>> I suppose drivers could add their own macros to do that automatically
+> >>>> and reduce code verbosity, at the cost of less cohesion across drivers.
+> >>>> Guess I'll go with that if I cannot come with anything better.
+> >>>
+> >>> Maybe we could do something more specific but yet generic on top (for the
+> >>> use-case above), but we still can't assume the exact error code a driver wants
+> >>> to derive from failing try_access(). So, maybe a driver specific wrapper is
+> >>> indeed what you want on top of what this patch provides.
 > >>
-> >> On Sat, Mar 15, 2025 at 05:44:29PM +0000, Benno Lossin wrote:
-> >> >
-> >> > What is meant by "copied"? I agree with Tamir, this can probably just be
-> >> > "taken ownership of".
-> >>
-> >> If not dropped in place, the only way to take ownership of the object is to copy
-> >> the corresponding memory, i.e. the caller can not take ownership of the object
-> >> at its current memory location, since this memory is owned by the vector.
+> >> So be it! It's not that bad and more flexible in the end.
 > >
-> > I think this is the point I was trying to make: the language semantics
-> > are such that "taking ownership of" is equivalent to "become
-> > responsible for the dropping of", so it doesn't make sense to write
-> > that here, as though this requirement is specific to the semantics of
-> > this function.
+> > You could have the following signature:
 > >
-> >> AFAIU, when we speak of ownership, we mean ownership over a value or object, but
-> >> not ownership over the underlying memory.
-> >>
-> >> Hence, I think it's important to mention that it needs to be either dropped in
-> >> place or copied in order to take ownership.
-> >>
-> >> Even if we agree that "drop in place" is considered as "take ownership", we need
-> >> to differentiate between the special case of taking ownership where its dropped
-> >> in place and the requirement to copy the value and then take ownership.
+> >     fn try_access_with<R>(&self, on_vacant: Error, f: impl FnOnce(&T) -> Result<R>) -> Result<R>;
+> >
+> > That will use the `on_vacant` error instead of hard coding ENXIO. But
+> > maybe it's better to just have such a wrapper in drivers that actually
+> > need it (ie even with the concrete error specified and not a parameter).
+> > You'll know better through actually trying to write a driver.
 > 
-> I get where you're coming from, but I wouldn't call that copying a
-> value. Copying for me means that there would be two instances of the
-> same object. But since the one in `[new_len, len)` will get invalidated,
-> I don't think that copy makes sense.
+> Yeah, having the extra on_vacant parameter would require callers to
+> specify the error they need every time, where it is supposed to be
+> a per-driver constant.
 
-What I meant is "copy the memory where the value is stored".
+I think the signature proposed by Benno is useful, since even specific drivers
+may return a different error code depending on the semantic context of where
+this call fails.
 
-> 
-> Also why even is this a safety requirement? There is `mem::forget`, so
-> doing `vec.set_len(0)` can also be done by safe code:
-> 
->     while let Some(val) = vec.pop() {
->         forget(val);
->     }
-> 
-> I don't think this needs to be a safety requirement.
+> So I guess a per-driver macro or wrapper would be more ergonomic in the end.
 
-Given that mem::forget() is considered safe, you clearly have a point here.
-
-Let's go with just "must be taken ownership of" then. Unless there's subsequent
-feedback, I won't send a new version for this, since you both already gave your
-(conditional) RB for this.
-
-(I tend to forget that mem::forget() is formally safe, since it can cause all
-kinds of bugs, e.g. dead lock the whole machine if called for a lock in the
-kernel, etc.)
+I think this makes sense as an addition on top of the above.
