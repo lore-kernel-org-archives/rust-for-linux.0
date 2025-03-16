@@ -1,93 +1,82 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18753FE4;
-	Sun, 16 Mar 2025 19:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039FE1A5B94
+	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 19:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742151634; cv=none; b=p4qLTQeXWshcz5840FdR5BPZq5E1hsT0R2JS3c6lZD9R5oZtLKbOVoPWntckisTVz9Rx1q3lIEXeDRNdF2tvozuFzokdyE1UIgl2W0sy8q9MVy7WqIm7HtZ/TOxi03LBM+TJxNK6eeiho25wsJwB2vdKvBbnEHunieKoLL6Hshw=
+	t=1742152151; cv=none; b=q0dAhURo8wW2bo8zfO6vMREBmuPTEan4X/gIQRdHv82VrjUf+PbrW+tS/qJmwRyiZg1LvqA3UXXsNVGCPimjxMGmrK3W5TbOwTLmkO7zGG0LzkYL/NX9SI5aw42xhLoK6mWz5mqMTxXfvgQAXu/U6X5waYKPb6Je0qAxCvd9iCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742151634; c=relaxed/simple;
-	bh=naKeEvdk9+ozk7UuJjUlPj5liiJuaKNdEXADETTXuZE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H5glDrNqP9ligojemUXC0QAI7HQKh30K1vc63n4qGPoGjHU0On5qzKQkHEkOn1LH/V65WI12Lx47JL3b1N42LjWrgBDeLEiYeEwWB7gNUnhRPEzZHlsDa3OuZBzTfWyW2wcEhk/vpsMcFfemkpulWXjMV/rPg9NIIGj6PKLOIr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QiCr5ZG5; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742152151; c=relaxed/simple;
+	bh=kOWO3ydDguHv0lL5e8+r9sw43/HrKGZWoPGA/vxq4iA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fDsCh4P50yPzAurc+9mEpX1xfjCe63cqtvHfgAmlz1UAELzJk8Gwc3Q722rHl3E0va1fylh32a1tAm3O36o1LBw+655eisFjn0ewmjLvWKL8k9xh40TjqiN8983wJcbYD3G9FKOxOzojM4hxCXz6qx+DbEPHfb2c4ov8kMb4yM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DzFlzUn2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QiCr5ZG5"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30bf3f3539dso37868521fa.1;
-        Sun, 16 Mar 2025 12:00:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742151631; x=1742756431; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=naKeEvdk9+ozk7UuJjUlPj5liiJuaKNdEXADETTXuZE=;
-        b=QiCr5ZG5IzMGN+zibYo8QOVxceeeoL/6NPigP+Wgr8Hnf6akaitYodetOQ9AsAK0Ig
-         8BkjAVmE0ih7EO3Nx2RklpOHYC8OTxb4IGhfgAAf0K/Nuko3VQWvPk6e4elu0zWv/4u8
-         816wQZidJkLpgbejNFqIzrM6w4TydYVkqKUFCB3ZZgxCJw+U532FJgRPLjDEmOunzGTE
-         WkOJ3OQdsX7MyHAy4TXBvSiV0QpBehCOuKi8MxL41JqQeyGkKu1GL5865pP6XlJxRPK6
-         VJDycmcIeb3vkjQUHmOS4TzFglb0THdAT2qMCx6U+80Cnmqu/H14sHvSWVchnBJh6Xz3
-         kKFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742151631; x=1742756431;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=naKeEvdk9+ozk7UuJjUlPj5liiJuaKNdEXADETTXuZE=;
-        b=ODM9wr+w4chrio4xWdz+AEHNOB84u7wdMfshXz2ZqkNaJwdGVKLWb7aVOBP91MK1kw
-         wd3LYum4cHvotVpbHHcQatVnG/Lo8S8VtizNboElyuMjWwIA5psDdOZYdTYZKqigJ7Ct
-         VSGPFAddFv4fDifXo6HxF0Zk7K/IEp7vOZkO6YIBrmbgrrd+vS2PzjsYoDrGaDswaB0t
-         MJRGuFK0nFnNm8yPdKUkx1vuk7qQNRMwJ8WwASOHAoOY9W9grIvjKByjr6HbaSiS8hDi
-         iAHDNUhifEOrUXbh+z/Lh8UgF28EfqDr9lLznmn04bedOfN4I0jUv1JO+/dX3R9AnHc7
-         hhIA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGulvToY4rhSEB91rRY544evoVQoKN7FqgHzzm6IsOVgpXb7rkA/K3MWDuXxYEj63Fw5l0DF3mPygeyNA=@vger.kernel.org, AJvYcCV8bB6JLp/7hI7NTmkoY33DX1zB5RMJIqW3avgGGBDzktEG4yCT7p/o4dq19Klij0gvrwMd7CBETE+Oomuf6S0=@vger.kernel.org, AJvYcCXb/sHQnO0Y3YRijXNgjFMcBkYbAyUI+J7E41KKQY4rezczvW53u48qTebkGD3GeeYXTMpP6QU4E8Um@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiNjKC08Rtc+TgUROm/raj9WMMeiyzT9x2SgUHvAD0K+ZrDEWo
-	NkJbA+68C3QygKWptIwV0OhLmISjiPc4wATZioUeVCFxs4BVWcMMg54KUXR9IgwlTUORld64xwH
-	5mG1yvzYDD6Re5dBYtXTckmWyWIY=
-X-Gm-Gg: ASbGncvEN+iBwCOyHeDcMFqjNVONztE6sQqwAF67BmqZzGPbvpQIsMwW7Nb533fuJl4
-	5/A59zmHyhz2KQzinFBZe2ySkPjR0W2pRSkdmcltIT2psXGS5DezBtIbv68ui7Z/GFCFiZQWpUy
-	HMBsFbxq/b0UwX+d50nzNJSNjvw/iFNprhdNIwt5wRZWaDWbxb5f3umOPkbWOf
-X-Google-Smtp-Source: AGHT+IGTwU9YeVzBXKqgu0s9gGBozC+T1Jtztz6LIcVHnk/qa4lKpaynB7mmrDnm+HOk/QPhsi0bd9yvRAEOCYporI4=
-X-Received: by 2002:a2e:918c:0:b0:308:ee65:7f44 with SMTP id
- 38308e7fff4ca-30c4aaa2af3mr33621581fa.8.1742151630571; Sun, 16 Mar 2025
- 12:00:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DzFlzUn2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77BDC4CEDD;
+	Sun, 16 Mar 2025 19:09:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742152150;
+	bh=kOWO3ydDguHv0lL5e8+r9sw43/HrKGZWoPGA/vxq4iA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DzFlzUn2IICHNoKhrENaryGjxSyeCb5gPvXONu88RCOYcIJmH2b8yRpMHLJovy8uP
+	 0Es3KcBFhyb102G8xkskGns9foBoJO23FqK5dXOVj62vIzBh4B6Jm47lp1FKHODNNI
+	 U4kHqpcCLNs1TNciBSwpBloZo7zM8yMoLeeCIqjMyA1He643yNQ3S7LVrfzjVIvfiY
+	 11DTavo4vasUduH+x4WRkWF62IVJp1W4jp8I/BQWttbHf1V9JWsK2qi3dW9+1DQVAd
+	 S5FMfBKupRbhNMXrhVMSGtiTaUbXVScWYmj9UGcM6/Py5+amBmC6bBoAblQh27qP4W
+	 kncnWV1yY8QNw==
+Date: Sun, 16 Mar 2025 20:09:05 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Tamir Duberstein <tamird@gmail.com>, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of
+ Vec::set_len()
+Message-ID: <Z9ch0fgUI-V-rlGr@pollux>
+References: <Z9XIk3WpzruUfh6O@pollux>
+ <CAJ-ks9=vvuXpdCnxPKzDEF_ibxBxzGXbSb7hVGi-vDgZcDQnxw@mail.gmail.com>
+ <D8HL95D099MI.2N779RERY6DAE@proton.me>
+ <Z9bEosVk8-0sgSbw@pollux>
+ <CAJ-ks9nxTkZJa9Okq7ztZTrFvaKd4ovw5SLd3c9q4Kye23RfNg@mail.gmail.com>
+ <Z9bLtgJa3PNB0bkf@pollux>
+ <CAJ-ks9mAS1WHZcRqPzu4qhMOGXP9RNhdHUSbJK79znDvaFRHnA@mail.gmail.com>
+ <Z9bWODCNNEq3xI51@pollux>
+ <D8HVI9K91JWV.NHOPVELH5JE5@proton.me>
+ <Z9cfkKTVKtc3imyK@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250307-no-offset-v1-0-0c728f63b69c@gmail.com>
- <20250307-no-offset-v1-2-0c728f63b69c@gmail.com> <D8G8DV3PX8VX.2WHSM0TWH8JWV@proton.me>
- <CAJ-ks9m2ZHguB9N9-WM0EsO5MjaZ9yRamo_9NytAdzaDdb9aWQ@mail.gmail.com>
- <D8GQGCVTK0IL.16YO67C0IKLHA@proton.me> <CAJ-ks9mUPkP=QDGekbi1PRfpKKigXj87-_a25JBGHVRSiEe_AA@mail.gmail.com>
- <D8H1FFDMNLR3.STRVYQI7J496@proton.me> <CAJ-ks9m-ab9Y5RD01higxZxbowZi_0tsSmCCw2umJLxBLH4dEw@mail.gmail.com>
- <CAJ-ks9=AKR+LUMBjLNrC9NZst9+18Q3HTrWn4q+baz87BbG6Rw@mail.gmail.com> <D8HVKRW45ESG.3NP8BPWF76RYT@proton.me>
-In-Reply-To: <D8HVKRW45ESG.3NP8BPWF76RYT@proton.me>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sun, 16 Mar 2025 14:59:54 -0400
-X-Gm-Features: AQ5f1JrC_o7dZ4bxDZdzSgTtiII538sFdEPTVEXJYP8AoweSkwo8OIDOPkOagoI
-Message-ID: <CAJ-ks9nsEMALOFbQEjj69=griW=x_h_irDg4mHdo+hG+ZbGN5g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: workqueue: remove HasWork::OFFSET
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9cfkKTVKtc3imyK@pollux>
 
-On Sun, Mar 16, 2025 at 1:43=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> No change required, with my reply above I intended to take my
-> complaint away :)
+On Sun, Mar 16, 2025 at 07:59:34PM +0100, Danilo Krummrich wrote:
+> But let's define it then; what about:
+> 
+> "[`Vec::set_len`] takes (or kepps) ownership of all elements within the range
+> [0; `new_len`] and abandons ownership of all values outside of this range, if
+> any."
+> 
+> The caller may take ownership of the abandoned elements."
+> 
+> I'd argue that giving up ownership, while offering someone else to take it means
+> that it implies that otherwise we'll just end up forgetting about the value.
 
-Cool :) is there something else to be done to earn your RB, or do you
-mean to defer to Alice?
+Btw. I'd still prefer if we could enforce that the caller has to document what
+should happen to the abandoned value. But I acknowledge that the safety comment
+isn't the scope for it.
+
+It'd be great if e.g. clippy would give us a tool to do something analogous to
+safety comments.
+
+It think it would be useful to enfoce some additional safety documentation. For
+instance, I think the kernel would much benefit if we could enforce that
+mem::forget() must be justified with a comment, since as mentioned ina previous
+mail, it can cause fatal bugs, for instance when used on lock guards.
