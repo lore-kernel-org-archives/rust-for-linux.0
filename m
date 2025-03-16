@@ -1,126 +1,76 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09D019CD17;
-	Sun, 16 Mar 2025 12:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD751DFF8
+	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 13:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742129864; cv=none; b=k5Gqld7EbuPzfM0YCQIMI1daxwVWJlNfnyk502HW9D/BiYfHMEOm1KXaSQlvRcHJWlN6nK6/V/p09WI/k6VNqtyK3nljac/+PV74R58aERHToFjAvnT2ea1oaGWjY8rLeCsAY+lt/h7gjw3rouAoL8NKTyBuqJY5pPOV2tQqgNI=
+	t=1742130108; cv=none; b=sGNM0dIOKKXYZRNo4U+XwHJq/gdWG3/q1RNXgjcK5RXKBYtHJlfpJ+RzuhZD+IZnAWD6EvXtYjc93eAQBTrr24nCXr7cg3CbdS7tp+gbXNIYAN7xwu8sxV504cfPpOctPwfFzg6qotxVZJz/Fe4CNCUZ3Rn4efruImSI9Shi2ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742129864; c=relaxed/simple;
-	bh=qyO49BsrB+oWu2FE3bZEmtR4e4T5f7YS5toUZHn3w8E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lj2PW9ip7Q6LuUUNPOsIpUYmhN/StWRpL+RBa/VgVK1WoluEYRnCOMP5J6VL6fX9A2c6r4jzJ5VawsGdZHsLMBpr3JaiTTHdyK6IS9TRmbJP3/oxdf2P+0A0hVpElfDjHGetT4UX7C9h1MQfDDjCh5ByNOKAtMS9LOr9rThQT/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZMCKlgFm; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742130108; c=relaxed/simple;
+	bh=T6vf6YEfTkjChx81HQWilmJ0TjtehGdoCj0DQ3ZvFM0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AHqA28GvFg0UPdTxK7w3ZvhDRK12lHm0vAr6L1fL0lU7v/vhZMZVTG5B0oEVFRQ/y6vNadvr5NEEGvLwifWbfAkmLZXKyaAIQBWAfuzL655bND8eKW+aGThiSHkh25jixfoF2UpetDCtMZwZmkv2o9TwPsLWSuXpJtYvFSUY3cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDcIxA/u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZMCKlgFm"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30613802a59so39637121fa.0;
-        Sun, 16 Mar 2025 05:57:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742129861; x=1742734661; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1JY3+gZvsQCAKPjn/35sGgpLKMuRQJgJmL55nCwysRs=;
-        b=ZMCKlgFmm4O+zWICNqIFQcgtAnAPVVfAKOweOgDjVp7t805zM9mu2YhZV5HNrTT5W4
-         XzUxnsJMSIyuKJ/q0MVg6vwG7YLqC530Iu8hx6eYZrDKwXLLdvS41ChaU9iit3O32q62
-         9UrGMqam3V9GE3gL1R1acfYRYrLzyouonsvWxJJd+f5tahlG5SpwMekX/gqG2HOV9BuG
-         IiEbazPNJUUGNFp2u0JWLqsHgtGRZzMAq/FLoN3MbH9uSsbxXpawZxcjWQsFMok5IRPB
-         vv8Mtz8/b/R0/f09IWamuWXNqO9D3zxoYUTfwirGBE3A+D8BWGaCIrIuGOeZLSG5JAf0
-         Evfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742129861; x=1742734661;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1JY3+gZvsQCAKPjn/35sGgpLKMuRQJgJmL55nCwysRs=;
-        b=HrCYMG0FWQkAwA0OvWqiBP4GuMjLFL9h6Gm8WFYSw6EBTdYpL8kbZ07xd7HqsVfbPK
-         /GnXJqfSRoIrtHvpjt5RpS4PRMoa4OAQJ7sJl1YQllBYrp9puAWfqUtdT4ro88iMjy6z
-         Yc7ToVpGhuRzpHnTl/1wcLdP0zDdjLmZmzl2CkLMArKGZvf9K8vCFHyOmN8uIuoGS4KR
-         u/K2xqRA1qcAkl6SeQHFPF3ybU9fuUlphNHBvS7aGpwxGq/+GtA7fQHtUyDSVTcOqWne
-         gdvz8qRD8YChrG/1/blnQJSBjW5M5XOdy4QdHKqmWTi0NhhMG87rkOb2/5s5m7UD8EjN
-         uy1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUOfHer0eSNnIfn/MFVuvcuyigLU4lEqT4HB7y6Fbp0ToLwJ7DcLHUd5gtO5LBSM5uuQpw/Pl7UqdBucCI=@vger.kernel.org, AJvYcCWcKLF518PEzMXzzH/+sDRkPCxerGeThrb60Ai1rJsx0xm7UBgJGbSZE2eDcSos7h4Sg7BPzLhOmT99FjAfn3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFJ/E129v4sx4+I/C55o8QOdKgDtGK3nvHsxzMGmVcE/fo1wsP
-	q/zFeA9sXbKGfVhNijdrhHvpc9NZV/mSrmWG8Dd1P7OGjW1OF7+CPcZHcKgPpmATECXnkeEcs7z
-	DaGtn1fVifKIi8jgioWAc0J+C81s=
-X-Gm-Gg: ASbGncvnjlK8tcxRIwXK9F56fz8NZmRl6Z+gCjy1IvUoNvvzNZSICoJzc8oBAxQGV4w
-	Gbnziyd7GkFbPmwoNq89DaeLiWldh0328nbaJpHroUJ3tP6Cc7fcNy21nMU2PoyrnE0v+7+41gt
-	BTBcerWr0sDoZbMcqmztCkqKCwOBfy4vD5q6pIr483d0ikkk2Cx+QjlQAw/+Xs
-X-Google-Smtp-Source: AGHT+IFTL5w+to2vvj7wboKx55x/7iOZBQbyy0jqpqrGkj+hkmPD1Sq0AwcDFIImS2z5PzdSCWpEK5G9N7GDEBZag0Q=
-X-Received: by 2002:a05:6512:4029:b0:545:2d4d:36de with SMTP id
- 2adb3069b0e04-549c3922a93mr3691443e87.31.1742129860905; Sun, 16 Mar 2025
- 05:57:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDcIxA/u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F9DC4CEDD;
+	Sun, 16 Mar 2025 13:01:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742130107;
+	bh=T6vf6YEfTkjChx81HQWilmJ0TjtehGdoCj0DQ3ZvFM0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aDcIxA/upGuRttOswxL3Mx9EUYZ4wLJLa2JAwr6z1Wp3tKNeVg/wB1EPzhRqO4pZD
+	 JnlvG5bYb8zJ87SXoRYPIhrrIDZ7mkPwTUnJ/SezBbYGwsRNQOkEHC6+8rLUVmnkrf
+	 bCzxTfBUm2RQt7BB6WfFWsaVGBPvqGetU66D+sA8mtiFO/Ol+1Xt6iwxwthIU/rosM
+	 8u12Yu1OR2CNWzC+p61y8CzE3x1/Mh3bFpC6m8w6JkbZrGMUEqSysbcdvfW8xwBmPZ
+	 RUV6INaBPZxaiVHr47ia2cJyX32JzQGhuGdklRLmbksqjyK3xXU1kiA0kgjYcxKr5B
+	 k5rgqfS9R9PnQ==
+Date: Sun, 16 Mar 2025 14:01:42 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of
+ Vec::set_len()
+Message-ID: <Z9bLtgJa3PNB0bkf@pollux>
+References: <20250315154436.65065-1-dakr@kernel.org>
+ <D8H0YRU90WU9.2FX2QF3W9FKV9@proton.me>
+ <Z9XIk3WpzruUfh6O@pollux>
+ <CAJ-ks9=vvuXpdCnxPKzDEF_ibxBxzGXbSb7hVGi-vDgZcDQnxw@mail.gmail.com>
+ <D8HL95D099MI.2N779RERY6DAE@proton.me>
+ <Z9bEosVk8-0sgSbw@pollux>
+ <CAJ-ks9nxTkZJa9Okq7ztZTrFvaKd4ovw5SLd3c9q4Kye23RfNg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250316061429.817126-1-contact@antoniohickey.com> <20250316061429.817126-17-contact@antoniohickey.com>
-In-Reply-To: <20250316061429.817126-17-contact@antoniohickey.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sun, 16 Mar 2025 08:57:04 -0400
-X-Gm-Features: AQ5f1JppUsEbWsUorvGmyhZZ80Nk2uVHUVqf2xCQCmDZIU7XuhyuJYf6g7hD4OM
-Message-ID: <CAJ-ks9kMeb2xFaUOu=L3JYq7V7FsFjmDkbJieiUN0cdK9hhWnw@mail.gmail.com>
-Subject: Re: [PATCH v4 16/16] rust: clippy: disable `addr_of[_mut]!` macros
-To: Antonio Hickey <contact@byte-forge.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Antonio Hickey <contact@antoniohickey.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ-ks9nxTkZJa9Okq7ztZTrFvaKd4ovw5SLd3c9q4Kye23RfNg@mail.gmail.com>
 
-On Sun, Mar 16, 2025 at 2:38=E2=80=AFAM Antonio Hickey <contact@byte-forge.=
-io> wrote:
->
-> With the `raw_ref_op` feature enabled we no longer want to
-> allow use of `addr_of!` and `addr_of_mut!` macros.
->
-> We instead want to use `&raw` and `&raw mut` to get raw
-> pointers to a place.
->
-> Note that this lint isn't currently reliable, but we enable
-> it nevertheless because:
-> 1. Document that one shouldn't use the `addr_of[_mut]!` macros.
-> 2. When the lint becomes useful we will already have it enabled.
->
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1148
-> Link: https://github.com/rust-lang/rust-clippy/issues/11431
-> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
-> ---
->  .clippy.toml | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/.clippy.toml b/.clippy.toml
-> index 815c94732ed7..95c73959f039 100644
-> --- a/.clippy.toml
-> +++ b/.clippy.toml
-> @@ -8,4 +8,8 @@ disallowed-macros =3D [
->      # The `clippy::dbg_macro` lint only works with `std::dbg!`, thus we =
-simulate
->      # it here, see: https://github.com/rust-lang/rust-clippy/issues/1130=
-3.
->      { path =3D "kernel::dbg", reason =3D "the `dbg!` macro is intended a=
-s a debugging tool" },
-> +    # With `raw_ref_op` feature enabled we no longer want to allow use o=
-f `addr_of!`
-> +    # and `addr_of_mut!` macros, but instead use `&raw` or `&raw mut`.
-> +    { path =3D "core::ptr::addr_of_mut", reason =3D "use `&raw mut` inst=
-ead `addr_of_mut!`" },
-> +    { path =3D "core::ptr::addr_of", reason =3D "use `&raw` instead `add=
-r_of!`" },
->  ]
-> --
-> 2.48.1
+On Sun, Mar 16, 2025 at 08:42:43AM -0400, Tamir Duberstein wrote:
+> On Sun, Mar 16, 2025 at 8:31 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> 
+> > Let's go with just "must be taken ownership of" then. Unless there's subsequent
+> > feedback, I won't send a new version for this, since you both already gave your
+> > (conditional) RB for this.
+> 
+> What does it mean to take ownership, if not to run the destructor?
 
-Consider using the word "disallow" rather than "disable" in the
-subject line of this commit, given that this is the word used in the
-clippy config.
+Taking responsibility over the decision of what should happen to the value, i.e.
+forget about the value, drop it right away, keep it alive at a different memory
+location.
+
+> Given Benno's insight, I think the safety text is correct as it
+> existed before this patch.
+
+Without the addition there's no requirement for the caller to take ownership,
+but that's what we want here. Without the requirement it would be on set_len()
+to take a decision on what should happen with the value.
