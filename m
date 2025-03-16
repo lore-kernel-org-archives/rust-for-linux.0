@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A37B944E
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 17:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CAE1A5B96;
+	Sun, 16 Mar 2025 17:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742146839; cv=none; b=q9lz69pF3y1bieYpGtfVxZL65rK008xOZIiAwNkh19RBP3F19tj1FOKyL2Rs7+/B5s8mgLFcf7CVyI8xy2qsiPHQbD/yqzxuqULhB+Ts8HCjpeSG2REF5cPUMtO+b++xdL5gwvbz2wQemJ2DlDZ+ljdqUAOpEtS0j0ITJR3OAts=
+	t=1742147040; cv=none; b=Qm50/VGbUSFktzcgHaURoVSamahbQSjVF8eTWny27WWWLq0T4preioQRv/GSAm2RGpp+GWU4vC5vcNq6yF7xhqXLzefKxLJegBMhDa6PHzTeG8otkP2amcPrvwNVv1QIaYNYMsynOluaplqMOLYS6ave7qxxujE9O8QaWVbFjto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742146839; c=relaxed/simple;
-	bh=HvwjoNWdq+HvLydNSXIBI9qDKcnctNyWLr8qQpuX8m4=;
+	s=arc-20240116; t=1742147040; c=relaxed/simple;
+	bh=o64eLVoVog4ME4YWMUmN5sAS9sQJ8sYQ3gIuGlJTMgE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BoF7i+2Drr0F+wFX2XZvtYiQ47UkzxkStlkJEpFQIwuo3iJji1D8JYFC6tg8DThevrIp1Qm8sh5D46UcPU7dwg5W1vDOcU4L/1ozs+rpyheTOEDEG3QoTcbCYd0SHm94a9eQVdcOB7M0QPx8sl54bHALkgMr8a0B8Efp3a8UsH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=kxQ+uqIA; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=YckJ8cG+1Oib2ZtaAhWTuL4cId5+iQoPRUu+ybJaF3eI9shcXXholTtf7q+/w9izxwZkEhEaORVSAu3N/Kk5yBDVR8//wqeKpkMQgb7CG5mycNKTWV4ZK+pyEuQhkaXxZ5TkkXChX9+M+M4zzPTlJ2ZAm79RWvdVKupqMXdfBQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=l+3UZqp/; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="kxQ+uqIA"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="l+3UZqp/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742146835; x=1742406035;
-	bh=HvwjoNWdq+HvLydNSXIBI9qDKcnctNyWLr8qQpuX8m4=;
+	s=protonmail; t=1742147029; x=1742406229;
+	bh=kPw1f22H6ZHfTADi1LEXHxhp3GVsoW26GbykzG2hgu0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=kxQ+uqIAMjKcKnIuooD3olMVvNob1Q6iYahpTZ1cOVoTz6i++VQcjVhB3gDUH1s0a
-	 v7dqZF8XClayuDlVZoQnuopAY5bqo5zPPh4S2TaeZ5pDgTIrgtncEb7dpVzXVlHXEz
-	 tEj99nUke4oaTx0sV5LP0hV35rXj0EDpCi4BUhdf7nBYdZEpvUz+3hXS+O83dqSkhW
-	 Adqd+LRbxlDcOQNtlt3NCYcNRXfirLRqvF8PffQj71V74hcE9VkulWrlt4XfnMGbH+
-	 chw+t4+dt5i99ngLRaz2HBn90nKIXrSluZtswhj2KkONY6GYypY7aFKLIcCXJEOsXc
-	 fl8+gEKu8ag7Q==
-Date: Sun, 16 Mar 2025 17:40:29 +0000
-To: Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>
+	b=l+3UZqp/QeesG8Z9WzEWF+a9xHrqkYqL7X8dfFehQYOVHqOV7GoGMnP70RCvZcnmb
+	 6qywnVepjHzMnZVjT9AAmcGhQFmezKjCGSMdZuBk/yIfIAcLupXDHTCyKOkGU9TYBt
+	 SltEpyOImPtWhec9ZPCKdgDiItVLMUUxvC9SaW3glBbLHr8jUHinjTogyVXpb17clq
+	 HkAdCkxxf6SGRsZaZ4zAjpcFkyOiIZmsjEQIwQUE/x5L3POOn5lpbzUxm92VWfCrBl
+	 6s0OEyN8i/Ddbv9Dj7aYC/Lu1doNR8owYOCvWj0511teGv/y5hDBE7iZ19DuOtzM8u
+	 uQOqwlimXRJ9Q==
+Date: Sun, 16 Mar 2025 17:43:45 +0000
+To: Tamir Duberstein <tamird@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of Vec::set_len()
-Message-ID: <D8HVI9K91JWV.NHOPVELH5JE5@proton.me>
-In-Reply-To: <Z9bWODCNNEq3xI51@pollux>
-References: <20250315154436.65065-1-dakr@kernel.org> <D8H0YRU90WU9.2FX2QF3W9FKV9@proton.me> <Z9XIk3WpzruUfh6O@pollux> <CAJ-ks9=vvuXpdCnxPKzDEF_ibxBxzGXbSb7hVGi-vDgZcDQnxw@mail.gmail.com> <D8HL95D099MI.2N779RERY6DAE@proton.me> <Z9bEosVk8-0sgSbw@pollux> <CAJ-ks9nxTkZJa9Okq7ztZTrFvaKd4ovw5SLd3c9q4Kye23RfNg@mail.gmail.com> <Z9bLtgJa3PNB0bkf@pollux> <CAJ-ks9mAS1WHZcRqPzu4qhMOGXP9RNhdHUSbJK79znDvaFRHnA@mail.gmail.com> <Z9bWODCNNEq3xI51@pollux>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: workqueue: remove HasWork::OFFSET
+Message-ID: <D8HVKRW45ESG.3NP8BPWF76RYT@proton.me>
+In-Reply-To: <CAJ-ks9=AKR+LUMBjLNrC9NZst9+18Q3HTrWn4q+baz87BbG6Rw@mail.gmail.com>
+References: <20250307-no-offset-v1-0-0c728f63b69c@gmail.com> <20250307-no-offset-v1-2-0c728f63b69c@gmail.com> <D8G8DV3PX8VX.2WHSM0TWH8JWV@proton.me> <CAJ-ks9m2ZHguB9N9-WM0EsO5MjaZ9yRamo_9NytAdzaDdb9aWQ@mail.gmail.com> <D8GQGCVTK0IL.16YO67C0IKLHA@proton.me> <CAJ-ks9mUPkP=QDGekbi1PRfpKKigXj87-_a25JBGHVRSiEe_AA@mail.gmail.com> <D8H1FFDMNLR3.STRVYQI7J496@proton.me> <CAJ-ks9m-ab9Y5RD01higxZxbowZi_0tsSmCCw2umJLxBLH4dEw@mail.gmail.com> <CAJ-ks9=AKR+LUMBjLNrC9NZst9+18Q3HTrWn4q+baz87BbG6Rw@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 8827b71eac0fdb6eb9f7525099162f79a6bea2ff
+X-Pm-Message-ID: bb3f7db5462249942b49d555054b3196c99d5a46
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,68 +47,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun Mar 16, 2025 at 2:46 PM CET, Danilo Krummrich wrote:
-> On Sun, Mar 16, 2025 at 09:13:50AM -0400, Tamir Duberstein wrote:
->> On Sun, Mar 16, 2025 at 9:01=E2=80=AFAM Danilo Krummrich <dakr@kernel.or=
-g> wrote:
->> > On Sun, Mar 16, 2025 at 08:42:43AM -0400, Tamir Duberstein wrote:
->> > > On Sun, Mar 16, 2025 at 8:31=E2=80=AFAM Danilo Krummrich <dakr@kerne=
-l.org> wrote:
+On Sun Mar 16, 2025 at 1:55 PM CET, Tamir Duberstein wrote:
+> On Sat, Mar 15, 2025 at 2:12=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
+m> wrote:
+>>
+>> On Sat, Mar 15, 2025 at 2:06=E2=80=AFPM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>> >
+>> > On Sat Mar 15, 2025 at 4:37 PM CET, Tamir Duberstein wrote:
+>> > > On Sat, Mar 15, 2025 at 5:30=E2=80=AFAM Benno Lossin <benno.lossin@p=
+roton.me> wrote:
+>> > >>
+>> > >> On Fri Mar 14, 2025 at 9:44 PM CET, Tamir Duberstein wrote:
+>> > >> > On Fri, Mar 14, 2025 at 3:20=E2=80=AFPM Benno Lossin <benno.lossi=
+n@proton.me> wrote:
+>> > >> >>
+>> > >> >> On Fri Mar 7, 2025 at 10:58 PM CET, Tamir Duberstein wrote:
+>> > >> >> >      /// Returns a pointer to the struct containing the [`Work=
+<T, ID>`] field.
+>> > >> >> >      ///
+>> > >> >> >      /// # Safety
+>> > >> >> >      ///
+>> > >> >> >      /// The pointer must point at a [`Work<T, ID>`] field in =
+a struct of type `Self`.
+>> > >> >> > -    #[inline]
+>> > >> >> > -    unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mu=
+t Self
+>> > >> >> > -    where
+>> > >> >> > -        Self: Sized,
+>> > >> >>
+>> > >> >> This bound is required in order to allow the usage of `dyn HasWo=
+rk` (ie
+>> > >> >> object safety), so it should stay.
+>> > >> >>
+>> > >> >> Maybe add a comment explaining why it's there.
+>> > >> >
+>> > >> > I guess a doctest would be better, but I still don't understand w=
+hy
+>> > >> > the bound is needed. Sorry, can you cite something or explain in =
+more
+>> > >> > detail please?
+>> > >>
+>> > >> Here is a link: https://doc.rust-lang.org/reference/items/traits.ht=
+ml#dyn-compatibility
+>> > >>
+>> > >> But I realized that the trait wasn't object safe to begin with due =
+to
+>> > >> the `OFFSET` associated constant. So I'm not sure we need this. Ali=
+ce,
+>> > >> do you need `dyn HasWork`?
 >> > >
->> > > > Let's go with just "must be taken ownership of" then. Unless there=
-'s subsequent
->> > > > feedback, I won't send a new version for this, since you both alre=
-ady gave your
->> > > > (conditional) RB for this.
-
-I didn't realize the `forget` argument immediately, so I sadly have to
-take my RB back.
-
->> > > What does it mean to take ownership, if not to run the destructor?
+>> > > I wrote a simple test:
 >> >
->> > Taking responsibility over the decision of what should happen to the v=
-alue, i.e.
->> > forget about the value, drop it right away, keep it alive at a differe=
-nt memory
->> > location.
+>> > [...]
 >> >
->> > > Given Benno's insight, I think the safety text is correct as it
->> > > existed before this patch.
+>> > > so I don't think adding the Sized bound makes sense - we'd end up
+>> > > adding it on every item in the trait.
 >> >
->> > Without the addition there's no requirement for the caller to take own=
-ership,
->> > but that's what we want here. Without the requirement it would be on s=
-et_len()
->> > to take a decision on what should happen with the value.
->>=20
->> It isn't a safety requirement, right? I think it's fine to document,
->> but given that neglecting to run a destructor is safe, it doesn't seem
->> to affect safety.
+>> > Yeah the `Sized` bound was probably to make the cast work, so let's
+>> > remove it.
+>>
+>> It's already removed, right?
 >
-> I don't think there's a rule that safety requirements of unsafe functions=
- must
-> only be used to guarantee memory safety, etc.
+> Ping. Can you help me understand what change, if any, you think is requir=
+ed?
 
-Well that's their only point. Safety documentation should only be
-concerned with memory safety.
-
-You can still put it in the normal documentation though.
-
-> But you're right, if set_len() guarantees a default of what happens to th=
-e
-> value(s) when the caller doesn't take ownership, we could avoid the safet=
-y
-> requirement.
-
-Yeah the default is to forget the value.
-
-> But I don't want set_len() to make any guarantees about about a default, =
-instead
-> I want that the caller is forced to make an explicit and documented decis=
-ion
-> over what happens to the discarded values.
-
-But it shouldn't be part of the safety docs.
+No change required, with my reply above I intended to take my
+complaint away :)
 
 ---
 Cheers,
