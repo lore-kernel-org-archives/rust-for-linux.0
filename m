@@ -1,91 +1,91 @@
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62591188735
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 10:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D6719CC3E;
+	Sun, 16 Mar 2025 11:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742120115; cv=none; b=BOHlRWbnd/f2lV9MywFzPtOjq+UTen7/fkNicAJ/tBZSlg7iHSRKypK/pBU3ttfgfTDvUCrQrb4uPVysNDWSbVaiWeo3y/nkqd1Cx6wlldIeoJ3RpMefV4bp1ZLxx1SKfxxK0ev2cD46GtUJmPcSglOnX0lhB3oys7ah0yiEngg=
+	t=1742123415; cv=none; b=fyDCuGYXtiF35M/KXbJyrDBGBAL9GuwjFsoBuQh+IgBLQlT7sHsavsefvRV/lRqoiwhGjbxwN5ebb4ev7G0g9kgUtoqXeBhRZrpr9dHTDZ2AjjOPT3wUKlW8DEq3USLCwivN4dphtJfrVzLX2CM1G+9W1GJNEHw2k7U6kepZAXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742120115; c=relaxed/simple;
-	bh=2Jk5Wokn+8pKV7as5JF030ToM5JjsC+W0PrJ+TDSZmM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SOyL6zozUV/LcZEsWZGfad1o7p7TUrsQE39+ihId8hw75mawMv1nGcmBk+L9+LXDB/kxygZWCY39drObKKknVLzf8mvfeTdhMWj6UcmrePqkDuwOtZMPoGvo7TuqU761R1f3GyGmFDKm21AtbJVYW1CMqbl9R6h3t0MeSLkfdfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=R6i98oBY; arc=none smtp.client-ip=79.135.106.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742123415; c=relaxed/simple;
+	bh=0PDC8C0gTBkj5wmLeck9baY3eXSFemGyTut/439OrNI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YJ3PG2rxzcsoBAhqNN/CYLuwuDOQaOjok7J2v+6jUEzL3bhqj8w9H0iVR4f73Kzw6886hAD110nj2ce8h8ytPvWk+Gqq9pkzgjBWo66qdXoBCw35xyzJhSNvgpZfdQHzMuhD9kjf4j5PkF+IKfQY3svsp7BJ5lOkKtgy58XJ24c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u7SjcQbP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="R6i98oBY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742120105; x=1742379305;
-	bh=Lt21KLUUCgCro7DuWF5ZJ2ch0F89A+CFLZ2/hDqXRe4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=R6i98oBYDyMUOJ2fSBoPY7q2Nf56Ii1JxXxwxNJ+AwpnyjJTRatXDDMH1mJ4y+KlG
-	 76IkI4TZaPih1HFy2sPALrjTg7RoenuRlPhE1icbQpv9tvZgciF2BhqRG9IZYU7ppD
-	 V53cNR0vwwU5X6/IQdhQTtr4ikV9OyfVdn5GyevFpvR217RjFEALjMlnm5Bx6tpTmU
-	 702aFt+jQv47ks3XHWSPxbfhVLsqV+cH3YfU+6pJ0w6I7JT0nC7gs6M0kaCuvs0hLI
-	 w+gF1rSgX5u8d+swU8unIpt8cUnbjAoEqBSoV0uDBsFepYIRz3/6JgpwKTgfMDdJhO
-	 favgn2gEBK6Ag==
-Date: Sun, 16 Mar 2025 10:14:58 +0000
-To: Antonio Hickey <contact@byte-forge.io>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Antonio Hickey <contact@antoniohickey.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 02/16] rust: init: refactor to use `&raw [const|mut]`
-Message-ID: <D8HM15XV9W1G.I3I2N7MWWK2P@proton.me>
-In-Reply-To: <20250316061429.817126-3-contact@antoniohickey.com>
-References: <20250316061429.817126-1-contact@antoniohickey.com> <20250316061429.817126-3-contact@antoniohickey.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: a6526c96bc9b8662f4732ea5973134e7e5442211
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u7SjcQbP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD53C4CEEA;
+	Sun, 16 Mar 2025 11:10:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742123414;
+	bh=0PDC8C0gTBkj5wmLeck9baY3eXSFemGyTut/439OrNI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=u7SjcQbP5Yi65Flq/P50MssJLKvcvW0Kj7yig+ExWtkEE6vYai1AgrdfSk+ea6BHZ
+	 nCHfqGxVbDBE0jjKAWp5VH96cs9+5lfV6o7VWuyzZ332EgC8XmoxtpmVjsdL3ii5px
+	 JsDDDJNYp/rgjmZ+ZFrc28+rqeGQ9xCQSFQ5Mu9ubQ0L0IWM7ACqDVZPwpqw2YWAir
+	 1C4ga9wUZGCsSXHWvIjbFSWMBxxkkhlCobuNdCBQ3FzPR6BW8ihyvgdndXWTAvzmfr
+	 k0FxF3ahq6OIludW4pTKlePbKAkO4SLh4V9IdWFJ0SeqPIeagAIqHiE0ITTDRPhT90
+	 7+VSFf41hPbAg==
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3f6ab1b8fc1so2225742b6e.0;
+        Sun, 16 Mar 2025 04:10:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVp/V1nJtvHEsLxID4tqb0aw9cmVXHuMZmo+TWz98uX+4Xw95edYSibBGFgDu+TnJKzlKAWrbAqfpgk4jG1Ig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqLGbp3r8XeZzS90Lc+tNdr8JDwt8HYQ2+ey4jj1Zdm2IRetlE
+	XuhFxK06osWXWsgA/M9WQEwt6PQA7P9fZxAkQ50j53h6NNxAJp6gyFiqD2Qtc2kveQQYeSUlLqe
+	8hCR4WxKOAbjbkoBDQunQ0zbHoN0=
+X-Google-Smtp-Source: AGHT+IEKA9NXgbDXHvzu8iCEbvMJp3lA+yQY4XrI4MCf6p990YzOfAxxojD/oSanLhGXgdRem392hNTa/88RkpE6jgM=
+X-Received: by 2002:a05:6808:17a8:b0:3fa:3922:5fbe with SMTP id
+ 5614622812f47-3fdee55a37fmr5187648b6e.5.1742123413897; Sun, 16 Mar 2025
+ 04:10:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <2025031634-playing-lark-95f9@gregkh>
+In-Reply-To: <2025031634-playing-lark-95f9@gregkh>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Sun, 16 Mar 2025 12:10:01 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iPCuaLfG1ao_LVsGo1n+E5KK5Hz179BtZkz3NvDG5-Ag@mail.gmail.com>
+X-Gm-Features: AQ5f1JpcGdkPogNxITYPTCpjZN0sv9namY2P_rB0gBqBIJ5WL9fX4i5gFkQaAOc
+Message-ID: <CAJZ5v0iPCuaLfG1ao_LVsGo1n+E5KK5Hz179BtZkz3NvDG5-Ag@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: driver core: mark Rafael and Danilo as co-maintainers
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun Mar 16, 2025 at 7:14 AM CET, Antonio Hickey wrote:
-> Replacing all occurrences of `addr_of!(place)` and `addr_of_mut!(place)`
-> with `&raw const place` and `&raw mut place` respectively.
+On Sun, Mar 16, 2025 at 7:07=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> This will allow us to reduce macro complexity, and improve consistency
-> with existing reference syntax as `&raw const`, `&raw mut` are similar
-> to `&`, `&mut` making it fit more naturally with other existing code.
+> In talking it over with Rafael and Danilo, it makes more sense for
+> everyone to be a maintainer here, to share the load where possible.
 >
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1148
-> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+
 > ---
->  rust/kernel/init.rs        |  8 ++++----
->  rust/kernel/init/macros.rs | 28 ++++++++++++++--------------
->  2 files changed, 18 insertions(+), 18 deletions(-)
-
-When compiling this on Rust 1.78, I get:
-
-    error[E0658]: raw address of syntax is experimental
-      --> drivers/block/rnull.rs:57:9
-       |
-    57 | /         try_pin_init!(Self {
-    58 | |             _disk <- new_mutex!(disk?, "nullb:disk"),
-    59 | |         })
-       | |__________^
-       |
-       =3D note: see issue #64490 <https://github.com/rust-lang/rust/issues=
-/64490> for more information
-       =3D help: add `#![feature(raw_ref_op)]` to the crate attributes to e=
-nable
-       =3D note: this compiler was built on 2024-04-29; consider upgrading =
-it if it is out of date
-       =3D note: this error originates in the macro `$crate::__init_interna=
-l` which comes from the expansion of the macro `try_pin_init` (in Nightly b=
-uilds, run with -Z macro-backtrace for more info)
-
-So the previous commit also needs to affect doctests.
-
----
-Cheers,
-Benno
-
+>  MAINTAINERS | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 0427b32b3688..2f6e379547bd 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7101,8 +7101,8 @@ F:        include/linux/component.h
+>
+>  DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS
+>  M:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> -R:     "Rafael J. Wysocki" <rafael@kernel.org>
+> -R:     Danilo Krummrich <dakr@kernel.org>
+> +M:     "Rafael J. Wysocki" <rafael@kernel.org>
+> +M:     Danilo Krummrich <dakr@kernel.org>
+>  S:     Supported
+>  T:     git git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-c=
+ore.git
+>  F:     Documentation/core-api/kobject.rst
+> --
