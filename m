@@ -1,145 +1,209 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB42EBE;
-	Sun, 16 Mar 2025 04:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C433983A14
+	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 04:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742098525; cv=none; b=t/EKv+/TGK7xIO/D+5o7DAoKJrmpZTWc8tTmtnKkkWv4KsLmeO253WwG9qu19BzArFawNkSfQ02M1cAn133HRGG+8R+v0wQ/vCTUgFKp2EiBbUgPygQAP54m7g3Hn5vEWLPHNOrb798CYMg+Gk0Wydndlk62ipslP+NCS5fe9XI=
+	t=1742098844; cv=none; b=CCAbqbSb3E5Ah7nNsWVT2DxQEPE+Cm3953qeV0c8uG5CeDtQ9CzdqB83timivzt/uD94LrneYnkUwArrT1vxkclPUOFRrTZAdp0rEIKMXE5lAe6TzYnRTaB+coivj1XmBVzuF0Q4Ew2ssW841pIDFOagMSXbmShvXxk7LD1gzEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742098525; c=relaxed/simple;
-	bh=QdLPfHOpgg9eDBnJdTiWJNgY72yD73d61f//viDuw8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KmVXkzGh2CMVjmOnCc2P3GXRtJFKRAfPgbQ+g97p6/pyokfpsQ//ZIa1FRKGjVeA8QjFCBSBCUMktVeK2d+7qnuMMaMMal2qqyXYiSzk0sfNHItD//lWTYWuNfEL/MYeNzm6Jx3vaPwagewg93U90a/31VE/KbCSVDOJi7PHTUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lnAKQvEm; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742098844; c=relaxed/simple;
+	bh=76LcCISZoiU10fClL5qA7YwZd36UqCpbjjau7BlGO+k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qbd2ZnQ1XkPHHPQohl2HSFG94ZZoepBU0n92nN4xnxAkVTQcYJSuhQg2Jcd76zZfbSFbcpIdz42F2ZVptoEMjISEl5FWwtBQ3Yu9ZwXaj+m03+1Cgwbe3B5iJj7Gb93mtDrTlDJaJQmaH2tGcSJspsC4W6KBmRqfsPo+gVSlfMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=HHSWp+aA; arc=none smtp.client-ip=79.135.106.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lnAKQvEm"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-471fe5e0a80so30657061cf.1;
-        Sat, 15 Mar 2025 21:15:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742098523; x=1742703323; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mvMWMFB/hUHArUvcLdKUgOpO6qHWD0PVBQLUW1u7Ejk=;
-        b=lnAKQvEmqO6V3UMzKpuWde7FAQ9SHo0krvEBvzmZOrk93kEok72R5HuKgjQTIFXIff
-         sDskDPQLtNsIDtk//nhKU1wsHl2giMdRD9cgowm4hKCDCaKcXbVwHTwFfAkrQqt3qIlU
-         AphaR7bpR9ej+tbLCCrHE9AVTTwyQqiRLHqMQ9HvhqfY95wiRFdScH6nJhMDLROb5Fjm
-         f46zaEVvqtzzuBN979xqT8KoxqtSgnvOj15kTAFmVlA1jbWkDg9h2SEWtUHF1SV0BmKl
-         C7RGSjubS/moPL1qeI9gxuJCD2r63s2uTA1vgw933H/2qZnY9uzykdSBeBVyBHMpO9kj
-         M+Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742098523; x=1742703323;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mvMWMFB/hUHArUvcLdKUgOpO6qHWD0PVBQLUW1u7Ejk=;
-        b=WFZZsmsmMm1cq5ayVUwtdlrRVdUZd9zUEaAVQCy1v0OEK3sJBP/Xq7lKDbUz9d9tJh
-         LGmZ36cfDvrtbuhm3Rl0mqT0n6If5vmXLtc+t5kfg2PwsNnaE0KpVXVYnPIBEej/QC8z
-         bNg+bC6DINAOo5y3r3PrXS9OQPEs54OZF1dnUh7/bSGuLw2pv8xG5Xb6K3Ly/hDpnTTL
-         0DrEw55L/I23K4bjG8X791wFYa66WNMC1T728Hqa/lUuG7Q4WXzCyoIThceDKYWJxHZc
-         LzRU4YrKsWb2gZ9US3pQQzm0rDf0uXRQpoVsve8K19ih90wyIp2HGKo7YRzB3C1JqhoG
-         9gxA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdAyjWSfW54Izp/bPMITqT9Yzgu/55JMhDEdswf83Fy+ODGgF7f70t2FfVcNrGdkopi1Pr9w4NM63Kzi38z5U=@vger.kernel.org, AJvYcCVhew7hPatRg6p3HvaVynSL64jTvIpAbZqJHXlBVKOBIRd77DH+kFHQPChbwdDGoLwJ5u7xcXJaxW5eAPMcqgfA@vger.kernel.org, AJvYcCVijVKT5M83kOgZXGLH1Z1YgEPVjApPGpeEAY6arLXvHyEXg+xBWAL7X107RxU88Q1V8epBVAK8tMvG@vger.kernel.org, AJvYcCVmNng+afYS1PIvhrusA1P4W18ZIueGW2b4ganFUME1PRsjVgDqlGIqFwmVB5NmK+yETcdolPmD/ONchg==@vger.kernel.org, AJvYcCW8oRLaC46zexVG+9GdjvvPNh0JVwMJUUDFH3S3JhM00QPlAffJ7jzvQyx1HyHdu77ZBbh30UTK679tCaDG@vger.kernel.org, AJvYcCXBSV8SgBA6BlWF1UwiC4Xjo6eJGLbuAicCGVx81kEQ9LoxESWLaktzyJ4qUTkUJdtBYtjTtutA@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx27zdavri3ylDsuEnJmWeSxs19OUi+xH5h4rokVtN4AocfYsrq
-	oi4KaUsAfIk6kMzjf7jOkcmmytbgJqVFcIwJ7XBSCiKjSsie3JOy
-X-Gm-Gg: ASbGnctN7/K5Mj1KS1UixK1xLSLPowrc2Hsu10quyV7l84Uyy3M1R9/MErBKn/ffSIB
-	/OFk00EiXEdNa0FZZsFre4XnhZIxNYvvLcmjN7i2k0eYQd7HKO+4uc7HeqbPM3ksWOs23qdbhAd
-	eLUDpTkGgXhG3uBHWV4E1NaU3KQzYefZbNVu2+a3dZ8PhyrAO/ETf5MoU+KIQ0Z/JVRz0gQm6Qm
-	AY6JEGDu26OlsDQ/JfLW6WZshzSwGl38qJJQ6klLcaJWyZRc1v6FkyJKf2OWTgX49KQ+dvrtYHt
-	SAyvxyGzZgCXIDn1SRow5xIUKi8RqetZWkCRQ0SHCkddyUoqz0+NTrmxnKIwD6LStZbdky0Haj7
-	RZJNuck3hUSQTMP2EAikaWXVscK+N49Nc5jA=
-X-Google-Smtp-Source: AGHT+IHQGwXgWbnPN8FsSKmsTkKfZ7JrACeBVWAlSeDsUZfAPOA+ndsuFpLSTHyePO2ANb/zmZmWlg==
-X-Received: by 2002:ac8:5908:0:b0:476:89a8:f73f with SMTP id d75a77b69052e-476c81461damr122156681cf.21.1742098522990;
-        Sat, 15 Mar 2025 21:15:22 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-476bb7f3d0fsm40425921cf.59.2025.03.15.21.15.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Mar 2025 21:15:22 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9B0BA1200043;
-	Sun, 16 Mar 2025 00:15:21 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Sun, 16 Mar 2025 00:15:21 -0400
-X-ME-Sender: <xms:WVDWZz8S9sMETK0Gd_5N8fXHJs4n8xWjajbCIY-NoW1NUhpsUp8zlQ>
-    <xme:WVDWZ_t6NEDcYY62fyRQ4JbYVCKKLTGpR8i5Qsne2cozukfocdqkRrPpf7Ya67Lse
-    sFdIaFBlFyNcaXnoQ>
-X-ME-Received: <xmr:WVDWZxA3mn3aM1LfrI_-DcIG7jbx-JdYGzlOPK7TeQZ44P8NZ1rtfdS4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeehiedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhf
-    fvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcu
-    oegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhephe
-    dugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedvnecuvehl
-    uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomh
-    gvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeeh
-    heehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmh
-    gvpdhnsggprhgtphhtthhopedvhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
-    tghonhhtrggtthesrghnthhonhhiohhhihgtkhgvhidrtghomhdprhgtphhtthhopegrrd
-    hhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgih
-    nhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhogh
-    hlvgdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhm
-    vgdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
-    epsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsghr
-    vghnuggrnhdrhhhighhgihhnsheslhhinhhugidruggvvhdprhgtphhtthhopegurghkrh
-    eskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:WVDWZ_c9xe9HPIhNQWLxpA6kt5nyaPiC_v2-cm_iod1Lt-0yJ6_BOw>
-    <xmx:WVDWZ4MQn9rr62nGFnXBWTtnfbAvB9lScmQYKHcx006jFK8bwCKepw>
-    <xmx:WVDWZxlWOlKlu6ZNxsMAzocZxfh6v7FQ58Cc4O7d9rxl6sYklRUQTg>
-    <xmx:WVDWZyuw2usNk1kgRpbGpyrdn3xKRC1MpjzG6r_Xwm-AubA6J03ltA>
-    <xmx:WVDWZytxuKC0J-PLthMIdPHgKbPF1p_OuuSpCMHYhVr_n7Ym1EAW1hw8>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Mar 2025 00:15:21 -0400 (EDT)
-Date: Sat, 15 Mar 2025 21:15:19 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Antonio Hickey <contact@antoniohickey.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
-	benno.lossin@proton.me, bhelgaas@google.com,
-	bjorn3_gh@protonmail.com, brendan.higgins@linux.dev,
-	dakr@kernel.org, davidgow@google.com, fujita.tomonori@gmail.com,
-	gary@garyguo.net, gregkh@linuxfoundation.org,
-	kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-pci@vger.kernel.org, netdev@vger.kernel.org, ojeda@kernel.org,
-	rafael@kernel.org, rmoar@google.com, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
-Subject: Re: Re: [PATCH v3 2/3] rust: replace `addr_of[_mut]!` with `&raw
- [mut]`
-Message-ID: <Z9ZQV7EbzeOPsUUU@Mac.home>
-References: <67d4c74d.050a0220.66d0.b23d@mx.google.com>
- <010001959ce25be2-a436530e-858c-4da8-b823-24f98bad392b-000000@email.amazonses.com>
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="HHSWp+aA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1742098839; x=1742358039;
+	bh=vxWKNyTjKz9Zo+/oSESrfgugwQ/3Qi4ce/xUleXcD5k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=HHSWp+aAkObyPf+WNlDq3aMvoHY3NIpAZvcN3qy3tZv2hJumSNx4mX1tMXlyUe7jA
+	 Fl06Fs0CWJ3N/1DRJZ8mapIWBhtyr1ClWjuXcUi9wb22bsrUw9Co6qy88uIDw9y88G
+	 p9mTcGfM3DjQ+9yrjlhUPj3Z16iztfIMr/E1n239Q14p4I7hJWaomjAdskbnYJ5hbV
+	 74pZ8G6XO/tzbiC3v3w+Ly76nrxsZoXC/977X+aFgdolnFem7F8VH6wII0cmd72OaV
+	 6Vu1olF1kQbgvKlgd+pY4yMBBtduyshd0s/k/wYy/ytk9p3K7cwVJxf2g/yi4ewqy5
+	 hiCIWrk2BkRIA==
+Date: Sun, 16 Mar 2025 04:20:35 +0000
+To: Benjamin Tissoires <bentiss@kernel.org>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-input@vger.kernel.org, dri-devel@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH RFC 3/3] rust: hid: demo the core abstractions for probe and remove
+Message-ID: <87frjdhaii.fsf@protonmail.com>
+In-Reply-To: <m2cm4c4m7teaca3tog774tl25ynngicg4eav4i7xiqyrxsqwju@leh5og5d6uba>
+References: <20250313160220.6410-2-sergeantsagara@protonmail.com> <20250313160220.6410-6-sergeantsagara@protonmail.com> <m2cm4c4m7teaca3tog774tl25ynngicg4eav4i7xiqyrxsqwju@leh5og5d6uba>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: e7fc38772a099e3f17b7e79d87181ac9b498a011
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <010001959ce25be2-a436530e-858c-4da8-b823-24f98bad392b-000000@email.amazonses.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 16, 2025 at 02:57:15AM +0000, Antonio Hickey wrote:
-> On Fri, Mar 14, 2025 at 05:18:17PM -0700, Boqun Feng wrote:
-> > Besides, it'll be easy to review if you can split the changes into
-> > multiple patches. Thanks!
-> 
-> 
-> Hey Boqun,
-> 
-> Thanks for the review, do you think splitting this patch
-> into a seperate patch for each file would be best?
-> 
+On Thu, 13 Mar, 2025 18:05:36 +0100 "Benjamin Tissoires" <bentiss@kernel.or=
+g> wrote:
+> On Mar 13 2025, Rahul Rameshbabu wrote:
+>> This is a very basic "hello, world!" implementation to illustrate that t=
+he
+>> probe and remove callbacks are working as expected. I chose an arbitrary
+>> device I had on hand for populating in the HID device id table.
+>
+> Nice to see this live :)
+>
+> Though as I mentioned in the previous patch, I'd prefer having one full
+> driver in a single patch and one separate patch with the skeleton in the
+> docs.
+>
+> Do you have any meaningful processing that needs to be done in the
+> report fixup or in the .raw_event or .event callbacks?
+>
+> It would be much more interesting to show how this works together on a
+> minimalistic driver.
 
-That'll be my suggestion. Although you could group a few changes
-together for example, changes on rust/kernel/init.rs and
-rust/kernel/init/macro.rs can be put into one patch. Thanks!
+Agreed. Have a discussion about a device to potentially use for such a
+reference driver in another thread[1].
 
-Regards,
-Boqun
+>
+> FWIW, the driver in itself, though incomplete, looks familiar, which is
+> a good thing: we've got a probe and a remove. This is common with all
+> the other HID drivers, so it's not a brand new thing.
+>
+> I wonder however how and if we could enforce the remove() to be
+> automated by the binding or rust, to not have to deal with resource
+> leaking. Because the removal part, especially on failure, is the hardest
+> part.
 
-> Thanks,
-> Antonio
-> 
+One issue with the device I proposed in [1] is that it would not require
+the implementation of remove() or automation through Rust since the
+device is so "simple".
+
+Rust has the Drop trait[2]. If my understanding is correct, contained
+data that also implement the Drop trait cannot be enforced in terms of
+the order they are dropped/provide any kind of dependency management
+here. It's worth exploring. My concern is some very tricky ordering
+requirements on removal. I extracted the below from
+drivers/hid/hid-nvidia-shield.c.
+
+  static void shield_remove(struct hid_device *hdev)
+  {
+  =09struct shield_device *dev =3D hid_get_drvdata(hdev);
+  =09struct thunderstrike *ts;
+
+  =09ts =3D container_of(dev, struct thunderstrike, base);
+
+  =09hid_hw_close(hdev);
+  =09thunderstrike_destroy(ts);
+  =09del_timer_sync(&ts->psy_stats_timer);
+  =09cancel_work_sync(&ts->hostcmd_req_work);
+  =09hid_hw_stop(hdev);
+  }
+
+Here, we need to explicitly stop the timer before cancelling any work.
+
+The problem here is Rust's Drop trait does not gaurantee ordering for
+the teardown of members.
+
+Lets pretend I have the following and its functional in Rust.
+
+  // In hid_nvidia_shield.rs
+
+  struct Thunderstrike {
+      // Rest of my thunderstrike members from the C equivalent
+      psyStatsTimer: TimerList, // TimerList implements Drop
+      hostcmdReqWork: Work, // Work implements Drop
+  }
+
+  // hid.rs
+
+  struct Device<T> {
+      // Details omitted
+      privateData: T,
+  }
+
+  impl<T> Drop for Device<T> {
+      fn drop(&mut self) {
+          // Implementation here
+      }
+  }
+
+The problem here is when the Device instance is dropped, we cannot
+guarantee the order of the Drop::drop calls for the psyStatsTimer or
+hostcmdReqWork members as-is. There might be some clever trick to solve
+this problem that I am not aware of.
+
+[1] https://lore.kernel.org/rust-for-linux/Z9MxI0u2yCfSzTvD@cassiopeiae/T/#=
+m87f121ec72ba159071b20dccb4071cd7d2398050
+[2] https://doc.rust-lang.org/std/ops/trait.Drop.html
+
+Thanks for the review,
+Rahul Rameshbabu
+
+>
+> Cheers,
+> Benjamin
+>
+>>
+>>   [  +0.012968] monitor_control: Probing HID device vendor: 2389 product=
+: 29204 using Rust!
+>>   [  +0.000108] monitor_control: Removing HID device vendor: 2389 produc=
+t: 29204 using Rust!
+>>
+>> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+>> ---
+>>  drivers/hid/hid_monitor_control.rs | 9 +++++++--
+>>  1 file changed, 7 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/hid/hid_monitor_control.rs b/drivers/hid/hid_monito=
+r_control.rs
+>> index 18afd69a56d5..aeb6e4058a6b 100644
+>> --- a/drivers/hid/hid_monitor_control.rs
+>> +++ b/drivers/hid/hid_monitor_control.rs
+>> @@ -8,17 +8,22 @@
+>>      Driver,
+>>  };
+>>
+>> +const USB_VENDOR_ID_NVIDIA: u32 =3D 0x0955;
+>> +const USB_DEVICE_ID_NVIDIA_THUNDERSTRIKE_CONTROLLER: u32 =3D 0x7214;
+>> +
+>>  struct HidMonitorControl;
+>>
+>>  #[vtable]
+>>  impl Driver for HidMonitorControl {
+>>      fn probe(dev: &mut hid::Device, id: &hid::DeviceId) -> Result<()> {
+>>          /* TODO implement */
+>> +        pr_info!("Probing HID device vendor: {} product: {} using Rust!=
+\n", id.vendor(), id.product());
+>>          Ok(())
+>>      }
+>>
+>>      fn remove(dev: &mut hid::Device) {
+>>          /* TODO implement */
+>> +        pr_info!("Removing HID device vendor: {} product: {} using Rust=
+!\n", dev.vendor(), dev.product());
+>>      }
+>>  }
+>>
+>> @@ -26,8 +31,8 @@ fn remove(dev: &mut hid::Device) {
+>>      driver: HidMonitorControl,
+>>      id_table: [
+>>          kernel::usb_device! {
+>> -            vendor: /* TODO fill in */,
+>> -            product: /* TODO fill in */,
+>> +            vendor: USB_VENDOR_ID_NVIDIA,
+>> +            product: USB_DEVICE_ID_NVIDIA_THUNDERSTRIKE_CONTROLLER,
+>>          },
+>>      ],
+>>      name: "monitor_control",
+>> --
+>> 2.47.2
+>>
+>>
+
+
