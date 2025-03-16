@@ -1,52 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039FE1A5B94
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Mar 2025 19:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F1B15F306;
+	Sun, 16 Mar 2025 19:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742152151; cv=none; b=q0dAhURo8wW2bo8zfO6vMREBmuPTEan4X/gIQRdHv82VrjUf+PbrW+tS/qJmwRyiZg1LvqA3UXXsNVGCPimjxMGmrK3W5TbOwTLmkO7zGG0LzkYL/NX9SI5aw42xhLoK6mWz5mqMTxXfvgQAXu/U6X5waYKPb6Je0qAxCvd9iCk=
+	t=1742152801; cv=none; b=IMdvVf8zZPanCYnfJsWN1kJZ4f7JCCFDZmXxnY6SSA4L7xS7Y4xj3PpXpz4Bkju1NRKy+DtfmQJpVWaHI3oUA9mTawhhI4eymAGUMF9z31Ta891GOuYLHXBvZq644mZxdgRmBMoqgcXk9uIB7xOMkyvOWONYkGoDp6qX14HibzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742152151; c=relaxed/simple;
-	bh=kOWO3ydDguHv0lL5e8+r9sw43/HrKGZWoPGA/vxq4iA=;
+	s=arc-20240116; t=1742152801; c=relaxed/simple;
+	bh=Qs48kSaF/rFe+8NfU92PP5vQtEx0UzxhcUOSBSvxEDQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fDsCh4P50yPzAurc+9mEpX1xfjCe63cqtvHfgAmlz1UAELzJk8Gwc3Q722rHl3E0va1fylh32a1tAm3O36o1LBw+655eisFjn0ewmjLvWKL8k9xh40TjqiN8983wJcbYD3G9FKOxOzojM4hxCXz6qx+DbEPHfb2c4ov8kMb4yM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DzFlzUn2; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nh2PL+TjJxESBNC69FjHYu+tHmIw4WOHrPHJmK5P7dhnEQj4Bb4gbeYtSq7p9RZJ0GAw75F30De1w+1NWMkSAUn3OPXY1LAW9i4QSXK+fX/bm2cF+ArgBvC7MFPaMDIGl6XtcFY9bJHqsnYbQhwBAF4QgEVju1KJuHuHmzWpFNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WJdidqDD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DzFlzUn2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77BDC4CEDD;
-	Sun, 16 Mar 2025 19:09:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WJdidqDD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F366DC4CEDD;
+	Sun, 16 Mar 2025 19:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742152150;
-	bh=kOWO3ydDguHv0lL5e8+r9sw43/HrKGZWoPGA/vxq4iA=;
+	s=k20201202; t=1742152801;
+	bh=Qs48kSaF/rFe+8NfU92PP5vQtEx0UzxhcUOSBSvxEDQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DzFlzUn2IICHNoKhrENaryGjxSyeCb5gPvXONu88RCOYcIJmH2b8yRpMHLJovy8uP
-	 0Es3KcBFhyb102G8xkskGns9foBoJO23FqK5dXOVj62vIzBh4B6Jm47lp1FKHODNNI
-	 U4kHqpcCLNs1TNciBSwpBloZo7zM8yMoLeeCIqjMyA1He643yNQ3S7LVrfzjVIvfiY
-	 11DTavo4vasUduH+x4WRkWF62IVJp1W4jp8I/BQWttbHf1V9JWsK2qi3dW9+1DQVAd
-	 S5FMfBKupRbhNMXrhVMSGtiTaUbXVScWYmj9UGcM6/Py5+amBmC6bBoAblQh27qP4W
-	 kncnWV1yY8QNw==
-Date: Sun, 16 Mar 2025 20:09:05 +0100
+	b=WJdidqDDOv7uWe12OaeqnPPha7scvUBMk+l6gdylCwvV/zT9cMOQ6+xZ21CHNOIwn
+	 aD9inRyiQDkSwzZYldkIG8H4qck6e4osY8jPmPNSlW8C5/Dk55/utuoRXn4GtsklGX
+	 Y30RWzdQchRAFb+5LLJVGu1XzrNgME8tMt1c9eiJlSL7TeBVKBiz3oYTi37Ga0RGZ7
+	 AG3GyNhmhQTW1zIsn2qip28yvN/AHvx7RWVMZcfBPIEjp7KsLG4kEQWtkS4npkhg9B
+	 Atcczprp7hl05p4QBj8kX+Tbk8Ygg4cyWYOT+/SuCylYTPZuJbQn2A3+hVwfPc+9uT
+	 b5UeyzqmBL+KA==
+Date: Sun, 16 Mar 2025 20:19:54 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Tamir Duberstein <tamird@gmail.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of
- Vec::set_len()
-Message-ID: <Z9ch0fgUI-V-rlGr@pollux>
-References: <Z9XIk3WpzruUfh6O@pollux>
- <CAJ-ks9=vvuXpdCnxPKzDEF_ibxBxzGXbSb7hVGi-vDgZcDQnxw@mail.gmail.com>
- <D8HL95D099MI.2N779RERY6DAE@proton.me>
- <Z9bEosVk8-0sgSbw@pollux>
- <CAJ-ks9nxTkZJa9Okq7ztZTrFvaKd4ovw5SLd3c9q4Kye23RfNg@mail.gmail.com>
- <Z9bLtgJa3PNB0bkf@pollux>
- <CAJ-ks9mAS1WHZcRqPzu4qhMOGXP9RNhdHUSbJK79znDvaFRHnA@mail.gmail.com>
- <Z9bWODCNNEq3xI51@pollux>
- <D8HVI9K91JWV.NHOPVELH5JE5@proton.me>
- <Z9cfkKTVKtc3imyK@pollux>
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	acourbot@nvidia.com, nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] rust: alloc: add Vec::truncate method
+Message-ID: <Z9ckWiW7X0hX5Wvt@pollux>
+References: <20250316111644.154602-1-andrewjballance@gmail.com>
+ <20250316111644.154602-2-andrewjballance@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,28 +49,69 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z9cfkKTVKtc3imyK@pollux>
+In-Reply-To: <20250316111644.154602-2-andrewjballance@gmail.com>
 
-On Sun, Mar 16, 2025 at 07:59:34PM +0100, Danilo Krummrich wrote:
-> But let's define it then; what about:
+On Sun, Mar 16, 2025 at 06:16:42AM -0500, Andrew Ballance wrote:
+> implement the equivalent to the std's Vec::truncate
+> on the kernel's Vec type.
 > 
-> "[`Vec::set_len`] takes (or kepps) ownership of all elements within the range
-> [0; `new_len`] and abandons ownership of all values outside of this range, if
-> any."
+> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+> ---
+>  rust/kernel/alloc/kvec.rs | 36 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
 > 
-> The caller may take ownership of the abandoned elements."
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index ae9d072741ce..18bcc59f0b38 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -452,6 +452,42 @@ pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocEr
+>  
+>          Ok(())
+>      }
+> +
+> +    /// Shortens the vector, setting the length to `len` and drops the removed values.
+> +    /// If `len` is greater than or equal to the current length, this does nothing.
+> +    ///
+> +    /// This has no effect on the capacity and will not allocate.
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v = kernel::kvec![1, 2, 3]?;
+> +    /// v.truncate(1);
+> +    /// assert_eq!(v.len(), 1);
+> +    /// assert_eq!(&v, &[1]);
+> +    ///
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn truncate(&mut self, len: usize) {
+> +        if len >= self.len() {
+> +            return;
+> +        }
+> +
+> +        let drop_range = len..self.len();
+> +
+> +        // SAFETY: `drop_range` is a subrange of `[0, len)` by the bounds check above.
+> +        let ptr: *mut [T] = unsafe { self.get_unchecked_mut(drop_range) };
+> +
+> +        // SAFETY:
+> +        // - this will always shrink the vector because of the above bounds check
+> +        // - [`new_len`, `self.len`) will be dropped through the call to `drop_in_place` below
+
+We've just figured out that this part is not needed after all, sorry for the
+inconvenience. No need to resend for this though, I can remove this line when
+applying the patch.
+
+> +        unsafe { self.set_len(len) };
+> +
+> +        // SAFETY:
+> +        // - the dropped values are valid `T`s by the type invariant
+> +        // - we are allowed to invalidate [`new_len`, `old_len`) because we just changed the
+> +        //   len, therefore we have exclusive access to [`new_len`, `old_len`)
+> +        unsafe { ptr::drop_in_place(ptr) };
+> +    }
+>  }
+>  
+>  impl<T: Clone, A: Allocator> Vec<T, A> {
+> -- 
+> 2.48.1
 > 
-> I'd argue that giving up ownership, while offering someone else to take it means
-> that it implies that otherwise we'll just end up forgetting about the value.
-
-Btw. I'd still prefer if we could enforce that the caller has to document what
-should happen to the abandoned value. But I acknowledge that the safety comment
-isn't the scope for it.
-
-It'd be great if e.g. clippy would give us a tool to do something analogous to
-safety comments.
-
-It think it would be useful to enfoce some additional safety documentation. For
-instance, I think the kernel would much benefit if we could enforce that
-mem::forget() must be justified with a comment, since as mentioned ina previous
-mail, it can cause fatal bugs, for instance when used on lock guards.
