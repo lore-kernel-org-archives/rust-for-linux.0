@@ -1,136 +1,111 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FE31459F7
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2242038DD8
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742208495; cv=none; b=diNLLamM29yE3kE22oiwswpzLfrnprK4E3pXDgNxiF/BXGpd3MwqereqrjZiB1e8kAOZKoYwZ6ScA467SKBp41lFs5yPB/IBMlm1OmYyKNFMPZisfb3V4FMynVpVIfeZ3BR8em1+hBh+rInO6colRKZxRdMV0IuDLcAlT1yfaN0=
+	t=1742208620; cv=none; b=h//YK3pa9fK0yJ26XRbDsF2i/P1a8M4lmpWjWst3O5MK7JLSEMxp7TDnH0YvZflIsA4lMAxka1H/OD3/SfEl0Yq4ayLkBmHlJM14Bq0wwU4V93IfY9NxMH4YeHmgD0QJe9zA7zGVvKrBk78HwKGKIRimnoyzr9JN9ivNr2YXPaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742208495; c=relaxed/simple;
-	bh=jq3X0qE7jYhioS2GfUtcrq4s/m8J6errewmpVsYEE2A=;
+	s=arc-20240116; t=1742208620; c=relaxed/simple;
+	bh=apPmjzBp15h6BuYlIx9rExk+T2+yeZP997KXyoYkzB8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kkX3fbBu1dFVtJvZ9nnYSrp5d/5UYHeolcyKmHl3x775hkzEJGey1a79Ni5u2CwDNsSnRObhHLsxCk53StVMa0OqrmHtTToO+XSx0+wBZuvYSUqwb22cr+IxeDXWLveTtHpABkR9XP6uQay7c+nTAnYu19T5XRsye+Gd8/RNjRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A+pLKvMD; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=QY0aMDXYs48XNGQcspfDoDgsr/ZDZiS1K0wLHox6LB6/nZJqzDKX5B8vIdwehUslLuLVakruBMDF55rRDCRdJuhG4PsYHU04hPzxXFxZv7sgwAlJwmFvp60/ww/lZF7qSMrvQ492lZVcmr5FxnpBAy7TCHW2TPfuhxh0bHKlmCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eW4txa4L; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A+pLKvMD"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ce245c5acso22231395e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 03:48:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eW4txa4L"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf172ff63so11458325e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 03:50:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742208492; x=1742813292; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742208617; x=1742813417; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L1YqLMhKi92fKgJeFnMXT0ZI/xZbNY0Jf2K0ZDkFduU=;
-        b=A+pLKvMDLPAH4V4ihmTvWlgfx0uYCVBBvSUplK3EArr6NEWh2NuL9cpQtSYgxQUTa7
-         rC7kaIUSBIwG2r9baAiaIbxXH4eDnkCgUU7bmfIzzsq4bt6E1bF4W+nx4OHB+5Ze+C9/
-         lm5MuCJ1xMUSuje3cXJZXOzjsCwdGYclwP1xo1iY6ADRJowrD/9tBbtf1Su32M11DFSD
-         tjw6CRpohsuNeE4y0hLYzoDU8swDmS4uWbSnnlD7IhZ+AWxhayvZvSTx380ZyWtbbNRa
-         YsT0xm57NlyCQWbwkaFbeMKsDuDg4RMzgrkxq5706ihBaw6eIIat7/p5uDfrkmBt/uQh
-         PJCA==
+        bh=Up6B4MdDWj2/kfMDXbKASX6Gb+BsCApF2SDLkxZErAU=;
+        b=eW4txa4L/DFmFPOhbq4NDINaMtF6ioqDelHNV792lyzp1BDzxFEEn7VrTZHLwRP3HU
+         7w+Q6+ydGfhJTSDShFwYnkCqFoY99LQASx0Nr5hXAXav1PafsYX9LsnhH8Lw5TTOPvwi
+         K+JfZMHWDzVi/dQxscRrhZZOSuObhZHTIcsXdS5UMjR+l8V8QXXH0pzw7uC0O2ZlNR9W
+         9fP04x+xdXssO0JaDBlb29LIvo5Bi6Gtzo+2zrG8ZfnE2E44UnAZp0OgzDbL8chSnocX
+         l8b/FG05DClaRFLbAs/Ifi35Hbc+Q76aK1DtytAi9lkev8Y50cQbChEL8+F+TkbS9sw/
+         GP9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742208492; x=1742813292;
+        d=1e100.net; s=20230601; t=1742208617; x=1742813417;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L1YqLMhKi92fKgJeFnMXT0ZI/xZbNY0Jf2K0ZDkFduU=;
-        b=fVVHCBxIfmCxh6CzJS/2xHvYujk/spil3qe7VYH9p/Pvwm54+OZu1DOP8ICpIdVxwq
-         1F1Gzo52hinC4LkJjIWc4PwAgFGnlepU5LiwsKvinLbA20RATSU/KeVbgzI5i1iVAWoy
-         2G6PpFREC4PEO3Jm+/13PC1p2zBIWLHc1+/Idq81muGmXnKUE6MqNBwjT842l1mhmcxC
-         DECOTRMwQ9kYzFzO1vUViUwYvwXPbwUCFBoNvJGAc7r9oJk0HWnGtM6zQylBjeSA4oMu
-         Krtx1PiaSjXO4pIruPabRWwz0chf1NYdcHfPNForcRHnf5uopZqQ+Qpvph4u4g9/pRJ5
-         qRxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRwqLT1RRgHXL6NHkvNJYzeVFPfobAdcOtj/zdr384M0ze3gwgYau19MWiy0VqFQpPEtbq5YRBdirfjmYK2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRKXmJi4r8rJXz+dXg4WdzpoAjPkU3utshPfjgYeqEyXW3drG+
-	zlZyGSnTeWLxQP3m5aQhnF1kiqfF0Gpnnzy0Mni2erSvDizLjevtcL5kbfXQdFNBFhwWvd7TQRT
-	wZP9BCxTbx8AzDw==
-X-Google-Smtp-Source: AGHT+IF3KkGZpUivbQITsaAM4gxRphWh2JM6vssmC9PpAf7F4Mbtsj9GtT0ALM5KGS0vxlqAe/mqwVwDm3pM4Zk=
-X-Received: from wmbep23.prod.google.com ([2002:a05:600c:8417:b0:43c:f5b8:aad0])
+        bh=Up6B4MdDWj2/kfMDXbKASX6Gb+BsCApF2SDLkxZErAU=;
+        b=u/JjWn8CRpWzngC1KBR1eOTChhHZ6fEbOl9oQpV4By/LKCQQCx37LEJbTMwAS0Ra5L
+         c2ekPKp/8klJ6KZ1mZdKuPnYxSK6XQWjqZ4xS1h+NzgVsnNiMimlUBmKK0vXw4dwlhiE
+         Bv6l2E4TdyhstuQvt7UoRcKWVJ3inVGTlWeyfifxE8vu1vJpFUlhujPu9J3zyS7Phrn+
+         eJsp63tjCm5KdEXtyE1CS3RHMRZAEQKw2lk9i5mXjI5hsBtgf+Zz/SuvBBRQqulyEgjf
+         x+nY1hyih0LvmuemqmysN2ylMKGdS7500N8sklKyFcizAtGSz4UyK6LLkz5ql9ZBCyXO
+         NIWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUXbc07fY167uDwNPzPd13hYvjPDhiJ3I+gToISwC+LPX/2TdHqS0UNluYzm2q9Mom8TjNg9F2jglZac3PoEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRSGWOpQq+kdlUPvvF2il/D0rceE5LJRd4SHo4lqB1Cimx28wa
+	VMREzvLFt7JHEpmdWgFUGPHBJgI/14VW+34inJOVnoGw3OdZ6mkdiqzOUajG8ovCrcHMlVHrNk+
+	mur1T2CLDNbLwjQ==
+X-Google-Smtp-Source: AGHT+IF6IFyAlhN/n6Py4z3zsZpntW/Ns0z5jtqY9dqdYnp9Rx4qA7n2aFjUa1uf7DGmwKc656C0SK+M4oDPlBk=
+X-Received: from wmqd2.prod.google.com ([2002:a05:600c:34c2:b0:43c:f6c0:3375])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3106:b0:43c:fda5:41e9 with SMTP id 5b1f17b1804b1-43d1ecd933amr126390135e9.31.1742208492614;
- Mon, 17 Mar 2025 03:48:12 -0700 (PDT)
-Date: Mon, 17 Mar 2025 10:48:10 +0000
-In-Reply-To: <D8IGB61NVPBT.1I3IZYPVPIEMU@proton.me>
+ 2002:a05:600c:1c86:b0:43c:fa0e:4713 with SMTP id 5b1f17b1804b1-43d1ec66826mr115790365e9.2.1742208617612;
+ Mon, 17 Mar 2025 03:50:17 -0700 (PDT)
+Date: Mon, 17 Mar 2025 10:50:15 +0000
+In-Reply-To: <20250316-vec-set-len-v1-1-60f98a28723f@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com>
- <20250316-vec-set-len-v1-1-60f98a28723f@gmail.com> <D8IGB61NVPBT.1I3IZYPVPIEMU@proton.me>
-Message-ID: <Z9f96iXE0xxj8th7@google.com>
+References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com> <20250316-vec-set-len-v1-1-60f98a28723f@gmail.com>
+Message-ID: <Z9f-Z15bSh8MA1wJ@google.com>
 Subject: Re: [PATCH 1/2] rust: alloc: replace `Vec::set_len` with `inc_len`
 From: Alice Ryhl <aliceryhl@google.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Tamir Duberstein <tamird@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Mar 17, 2025 at 09:58:35AM +0000, Benno Lossin wrote:
-> On Sun Mar 16, 2025 at 11:32 PM CET, Tamir Duberstein wrote:
-> > Rename `set_len` to `inc_len` and simplify its safety contract.
-> > ---
-> >  rust/kernel/alloc/kvec.rs | 19 +++++++++----------
-> >  rust/kernel/str.rs        |  2 +-
-> >  rust/kernel/uaccess.rs    |  2 +-
-> >  3 files changed, 11 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> > index ae9d072741ce..d43a1d609434 100644
-> > --- a/rust/kernel/alloc/kvec.rs
-> > +++ b/rust/kernel/alloc/kvec.rs
-> > @@ -183,17 +183,16 @@ pub fn len(&self) -> usize {
-> >          self.len
-> >      }
-> >  
-> > -    /// Forcefully sets `self.len` to `new_len`.
-> > +    /// Increments `self.len` by `additional`.
-> 
-> I would keep the "Forcefully".
-> 
-> >      ///
-> >      /// # Safety
-> >      ///
-> > -    /// - `new_len` must be less than or equal to [`Self::capacity`].
-> > -    /// - If `new_len` is greater than `self.len`, all elements within the interval
-> > -    ///   [`self.len`,`new_len`) must be initialized.
-> > +    /// - `self.len + additional` must be less than or equal to [`Self::capacity`].
-> > +    /// - All elements within the interval [`self.len`,`self.len + additional`) must be initialized.
-> >      #[inline]
-> > -    pub unsafe fn set_len(&mut self, new_len: usize) {
-> > -        debug_assert!(new_len <= self.capacity());
-> > -        self.len = new_len;
-> > +    pub unsafe fn inc_len(&mut self, additional: usize) {
-> > +        debug_assert!(self.len() + additional <= self.capacity());
-> 
-> What if this overflows? Do we always have overflow debugging on when
-> debug assertions are enabled? If yes, then this is fine.
+On Sun, Mar 16, 2025 at 06:32:00PM -0400, Tamir Duberstein wrote:
+> Rename `set_len` to `inc_len` and simplify its safety contract.
 
-I don't think we do.
+You're missing a Signed-off-by tag.
 
-> > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> > index 28e2201604d6..005713839e9e 100644
-> > --- a/rust/kernel/str.rs
-> > +++ b/rust/kernel/str.rs
-> > @@ -840,7 +840,7 @@ pub fn try_from_fmt(args: fmt::Arguments<'_>) -> Result<Self, Error> {
-> >  
-> >          // SAFETY: The number of bytes that can be written to `f` is bounded by `size`, which is
-> >          // `buf`'s capacity. The contents of the buffer have been initialised by writes to `f`.
-> > -        unsafe { buf.set_len(f.bytes_written()) };
-> > +        unsafe { buf.inc_len(f.bytes_written()) };
+>  rust/kernel/alloc/kvec.rs | 19 +++++++++----------
+>  rust/kernel/str.rs        |  2 +-
+>  rust/kernel/uaccess.rs    |  2 +-
+>  3 files changed, 11 insertions(+), 12 deletions(-)
 > 
-> This change seems wrong unless the code was wrong to begin with.
-> 
-> Otherwise the change looks good.
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index ae9d072741ce..d43a1d609434 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -183,17 +183,16 @@ pub fn len(&self) -> usize {
+>          self.len
+>      }
+>  
+> -    /// Forcefully sets `self.len` to `new_len`.
+> +    /// Increments `self.len` by `additional`.
+>      ///
+>      /// # Safety
+>      ///
+> -    /// - `new_len` must be less than or equal to [`Self::capacity`].
+> -    /// - If `new_len` is greater than `self.len`, all elements within the interval
+> -    ///   [`self.len`,`new_len`) must be initialized.
+> +    /// - `self.len + additional` must be less than or equal to [`Self::capacity`].
+> +    /// - All elements within the interval [`self.len`,`self.len + additional`) must be initialized.
+>      #[inline]
+> -    pub unsafe fn set_len(&mut self, new_len: usize) {
+> -        debug_assert!(new_len <= self.capacity());
+> -        self.len = new_len;
+> +    pub unsafe fn inc_len(&mut self, additional: usize) {
+> +        debug_assert!(self.len() + additional <= self.capacity());
+> +        self.len += additional;
 
-The buffer has length zero as it was just created with:
-
-let mut buf = KVec::with_capacity(size, GFP_KERNEL)?;
+I guess we could use an INVARIANT: comment here.
 
 Alice
