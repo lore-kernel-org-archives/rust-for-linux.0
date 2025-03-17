@@ -1,130 +1,164 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E6E2E336F
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E0523FC55
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742223482; cv=none; b=Hml3lrlC1r0Zs85aGilZnV+k0/21MHO8gKV6c94beci7RwNzBiK0hlgbDrFnSuOjm3oMdrvaodnppp6hZPJu6vbsaI/NnVHUylIn5F/PGoTXKw8vE15hPjTUejrnw3ZzmUHPuBQWW1c7YBFiLQniDobfKnU1oekbAMQQLB35ex8=
+	t=1742223534; cv=none; b=q6P7C8WutAFwNpr6HJ1aSQzxBveOR8s42BnHr13M+I1sDg8V+5dCXFFJcFpJFAX0/Dp5XYiIK4ZaYQkfn9wezpZV8BQJF7CGm0ZwBy+8RGGGT93JQsAF5MGwACzhrM/NGaKwjo3KEgidknqT+AsG4Gdp0aIUw6d0LN8pWrA8Xqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742223482; c=relaxed/simple;
-	bh=TsYh26bJ/cAnSPwv/1d6/uTk9EAdE3AnYWdpAZDRkZY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F7EOx1yAlZvkGaeINZ0Tf5SLL4vp8rSGZ1+JNK6zIyotoMW/pVHTVwNzDSTvTui96vSet3CetUoAPPvO3irVPuqQGrG+onvClfOQL/S80b9xWc9p+nL2ZGs7E/3YDYliSmhZcZUvnk2joAVMqXz4bHOBF+Zt8DxYfEW1ZjxEikw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HM6uCM0a; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742223534; c=relaxed/simple;
+	bh=YSnrE2Mf4NXuMV4nwjpl5ipWPI5O+hoQ3wDnyAzryLM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=u0nqbQdnNotn/cjjidkjINCD08HaE3v6oOVfFC1Pa2CXKUDxGCoXPjNgLU8d8CeVXIIEF/Ik/JZJC7txcPChYmi4XcDCp5yATPc7kWwYH7Q6oQNbxTvft50i2K5n5Fipvidc9p71HUh+aGKHHevKJLLtOHK/0bJnHAuQKVzeyQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3SAfpPDm; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HM6uCM0a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742223478; x=1742482678;
-	bh=PAvCZljqfPwTmMvN4PeD741MglUp9JccMIXin6PBy4M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=HM6uCM0aaM/hGPNBbHGpRzeiP5MN19p0vSv9lht5KLfXGUY0lwnZWOe4NJcaTEAkK
-	 JIDzt7I15kxw9gJOug3WtNV/AsM2G1XWVMzC0yI6igOnGtPIwqdmOLroALRgzNtRqc
-	 qfWKa+s0svvGaE6+UWbaxBVlrOojBvqyeks6g/isqXwZLxceRC2BOnZAO3ZdDfgi4Z
-	 OJaDwYb1hlI1v7ZFbtx9+GGVXlTpeCuJWRC2V+kM+Voq2nrRwLNattl0jeTFIdxEhH
-	 3CP/ztIUAsThydPqtYrMMpGbSuHviKDbSvlD2RHrRxJ6AU5wMsuw8nLPP0+xfKfDrD
-	 pGttXwDUtqw7Q==
-Date: Mon, 17 Mar 2025 14:57:51 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Tamir Duberstein <tamird@gmail.com>, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of Vec::set_len()
-Message-ID: <D8IMOAKHKYGP.32PTT2W55UH6L@proton.me>
-In-Reply-To: <Z9gDt9JbqvoTFORV@pollux>
-References: <Z9XIk3WpzruUfh6O@pollux> <Z9bLtgJa3PNB0bkf@pollux> <CAJ-ks9mAS1WHZcRqPzu4qhMOGXP9RNhdHUSbJK79znDvaFRHnA@mail.gmail.com> <Z9bWODCNNEq3xI51@pollux> <D8HVI9K91JWV.NHOPVELH5JE5@proton.me> <Z9cfkKTVKtc3imyK@pollux> <Z9ch0fgUI-V-rlGr@pollux> <D8IG67RM4H53.2K2AW01FZLWJM@proton.me> <Z9gDt9JbqvoTFORV@pollux>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: a5d4f9bc15c7938237abf261859f7083035277d3
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3SAfpPDm"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3978ef9a284so1068602f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 07:58:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742223530; x=1742828330; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0W54RDOvcdnQzS3X6oJkrsyeDCVHCelcC6YCVp/JKWY=;
+        b=3SAfpPDmbm5V5eth1asmy7QRHMJgo22GeGYztFQ32ltGZvjWj8ogmSN3cEksrsi1n4
+         Rgd/AWDMLP/9jtpfErz18zvCAEd/Xqrs4KtelRUJ6QJHsWiqWAC+acvtXpljdkQS9izL
+         dH5OvIj7oHqFcqMeZ79gy8n2ZcCd6YbYLki6aK6W/y9oX6XMHyXOcop1srbVXEmyjs7s
+         NpDi99k5iEwIrZXs2wqP9ENqMInbWonPDgpA5PrGmEoT6VXLKLky3YUaeIBtAPQ8iJrI
+         ZFAZluQEtereUynfZF9UsRFKRQ6COrXs1DcVAuoqfthtTDX37rO421kbUgA+2c4wiagH
+         iXeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742223530; x=1742828330;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0W54RDOvcdnQzS3X6oJkrsyeDCVHCelcC6YCVp/JKWY=;
+        b=Y9tyrs1Fy+vU9obdvECyIFTvFm0+6QKas7PWqQ052qS9qLwanRvmcqvS+lwHHDpjOt
+         A90CyTpaXJCHauqlA4o56HokE9OmLhESpeoSNt8pmXBKb6ZEbJN+1MZaJDAnBiMQbpis
+         h/4ka+dzUyYccQHQphJP/QC5znCKbhHkyFUOH2v7D4vLL9ymBHvyJVCehO6B7S7WO+ZC
+         7hUj7c4BdZmUCaz7kpEY42Y6ZciFH/63zOnwU4ey69RHzCVKE1lJjQCwgUqPSNzWCW+F
+         VyeQ3BtuSmutizc/BoqaSOxfMiyJmSmUAT34gum1ol6rYxFlImhe7nHgewIi5AViKXeS
+         I3Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCXCqA4hVlLV8jdxtABduX9mip/2Z1GpUSsvTLlXC0BIRotzPn6RDUjSFM0qxHXkFY5g+4bDKrCKS2FR+UQMYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIl+LGGknUMJZ4PlBlKrifgVL66EJK/FYs5lfA6Tquz1emgkdn
+	ZsGYg45dHallAlxjcoKEiibh8x7FtMNH7nuumP8Pas/9UH7JyGMJFpGZXKxfQ/cMXUkvcl2Se8P
+	YtkhWSV8C+YDbFA==
+X-Google-Smtp-Source: AGHT+IGkKMstp6hUyo1fMGHnVlJ1yuahl6v9vWiGcfuGBZHhBDPMgMpxi1MLnx5580hjiU4Paz3WFdV5VN6fJOw=
+X-Received: from wmgg15.prod.google.com ([2002:a05:600d:f:b0:43d:1db0:6628])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:402a:b0:390:f2f1:2a21 with SMTP id ffacd0b85a97d-3971f9e4985mr14314647f8f.37.1742223530580;
+ Mon, 17 Mar 2025 07:58:50 -0700 (PDT)
+Date: Mon, 17 Mar 2025 14:58:48 +0000
+In-Reply-To: <87cyewhpxj.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <u-vC1KbeOK3Fd2PClzinb8LmqS_dntOW-pOSmZIFWotCZeTOg30xR_GYUc4oReAKZeuuu7ZaXWzfeTkpGMlr0A==@protonmail.internalid>
+ <20250122163932.46697-1-daniel.almeida@collabora.com> <87cyewhpxj.fsf@kernel.org>
+Message-ID: <Z9g4qDd7qp2t_e9u@google.com>
+Subject: Re: [PATCH v2] rust: irq: add support for request_irq()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Mon Mar 17, 2025 at 12:12 PM CET, Danilo Krummrich wrote:
-> On Mon, Mar 17, 2025 at 09:52:07AM +0000, Benno Lossin wrote:
->> On Sun Mar 16, 2025 at 8:09 PM CET, Danilo Krummrich wrote:
->> > On Sun, Mar 16, 2025 at 07:59:34PM +0100, Danilo Krummrich wrote:
->> >> But let's define it then; what about:
->> >>=20
->> >> "[`Vec::set_len`] takes (or kepps) ownership of all elements within t=
-he range
->> >> [0; `new_len`] and abandons ownership of all values outside of this r=
-ange, if
->> >> any."
->> >>=20
->> >> The caller may take ownership of the abandoned elements."
->> >>=20
->> >> I'd argue that giving up ownership, while offering someone else to ta=
-ke it means
->> >> that it implies that otherwise we'll just end up forgetting about the=
- value.
->> >
->> > Btw. I'd still prefer if we could enforce that the caller has to docum=
-ent what
->> > should happen to the abandoned value. But I acknowledge that the safet=
-y comment
->> > isn't the scope for it.
->> >
->> > It'd be great if e.g. clippy would give us a tool to do something anal=
-ogous to
->> > safety comments.
->> >
->> > It think it would be useful to enfoce some additional safety documenta=
-tion. For
->> > instance, I think the kernel would much benefit if we could enforce th=
-at
->> > mem::forget() must be justified with a comment, since as mentioned ina=
- previous
->> > mail, it can cause fatal bugs, for instance when used on lock guards.
->>=20
->> I get where you're coming from, but this probably will very quickly get
->> out of hand.
->>=20
->> For example, I can define `forget` safely:
->>=20
->>     fn forget<T>(value: T) {
->>         struct Cycle<T> {
->>             this: RefCell<Option<Arc<Self>>>,
->>             value: T,
->>         }
->>         let cycle =3D Arc::new(Cycle { this: RefCell::new(None), value }=
-);
->>         *cycle.this.borrow_mut() =3D Some(cycle.clone());
->>     }
->>=20
->> How would you ensure that this kind of pattern doesn't get written
->> accidentally (or with many indirections)?
->
-> I don't think that the possibility of writing safe (but yet buggy) code i=
-s an
-> argument against having the possibility of enforcing that a caller must w=
-rite a
-> comment for justification on certain things, such as mem::forget().
+On Tue, Mar 04, 2025 at 02:43:20PM +0100, Andreas Hindborg wrote:
+> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
+> > +    /// handler after suspending interrupts. For system wakeup devices users
+> > +    /// need to implement wakeup detection in their interrupt handlers.
+> > +    pub const COND_SUSPEND: Flags = Flags(bindings::IRQF_COND_SUSPEND as _);
+> > +
+> > +    /// Don't enable IRQ or NMI automatically when users request it. Users will
+> > +    /// enable it explicitly by `enable_irq` or `enable_nmi` later.
+> > +    pub const NO_AUTOEN: Flags = Flags(bindings::IRQF_NO_AUTOEN as _);
+> > +
+> > +    /// Exclude from runnaway detection for IPI and similar handlers, depends on
+> > +    /// `PERCPU`.
+> > +    pub const NO_DEBUG: Flags = Flags(bindings::IRQF_NO_DEBUG as _);
+> > +}
+> > +
+> > +/// The value that can be returned from an IrqHandler or a ThreadedIrqHandler.
+> > +pub enum IrqReturn {
+> 
+> I learned recently that if you choose the right representation here, you
+> don't need to cast here and when you call `Handler::handle_irq`. I think
+> `#[repr(u32)]` is the one to use here.
 
-My argument is that the problem of forgetting a value is not
-self-contained like `unsafe` code is. Even if we were to document all
-`forget` or `ManuallyDrop::new` invocations (which we definitely should)
-we wouldn't get the security that one can't accidentally forget a lock
-guard. I'm totally in favor of mandating an explaining comment above
-`forget` calls (but not as a `SAFETY` comment).
+I wonder if we can get it to use the repr of the same size as
+irqreturn_t?
 
-> But there's another reason I think having something like this could be
-> problematic: It might set the wrong incentive, as in "hey, I can just use=
- a
-> "sanity requirement" in my function rather figuring out how to ensure it =
-through
-> the type system, etc.".
+> > +    /// The interrupt was not from this device or was not handled.
+> > +    None = bindings::irqreturn_IRQ_NONE as _,
+> > +
+> > +    /// The interrupt was handled by this device.
+> > +    Handled = bindings::irqreturn_IRQ_HANDLED as _,
+> > +}
+> > +
+> > +/// Callbacks for an IRQ handler.
+> > +pub trait Handler: Sync {
+> > +    /// The actual handler function. As usual, sleeps are not allowed in IRQ
+> > +    /// context.
+> > +    fn handle_irq(&self) -> IrqReturn;
+> > +}
+> 
+> What is the reason for moving away from the following:
+> 
+> 
+>     pub trait Handler {
+>         /// The context data associated with and made available to the handler.
+>         type Data: ForeignOwnable;
+> 
+>         /// Called from interrupt context when the irq happens.
+>         fn handle_irq(data: <Self::Data as ForeignOwnable>::Borrowed<'_>) -> Return;
+>     }
+> 
+> 
+> I think we will run into problems if we want to pass `Arc<Foo>` as the
+> handler. I don't think we can `impl Handler for Arc<Foo>` in a driver
+> crate, since both `Handler` and `Arc` are defined in external crates
 
-I don't understand your point here, can you explain it more?
+My understanding is that since the data is not stored behind a
+private_data void pointer, we don't need ForeignOwnable. I think we
+should avoid using ForeignOwnable when it's not necessary.
 
----
-Cheers,
-Benno
+We can support the Arc / Box case by adding
 
+impl<T: ?Sized + Handler> Handler for Arc<T> {
+    fn handle_irq(&self) -> IrqReturn {
+        T::handle_irq(self)
+    }
+}
+
+This way, the user implements it for their struct and then it works with
+Arc<MyStruct> too.
+
+This kind of blanket impl for Arc/Box is very common in userspace Rust
+too. For example, the Tokio traits AsyncRead/AsyncWrite have blanket
+impls for Box.
+
+> > +#[pin_data(PinnedDrop)]
+> > +pub struct ThreadedRegistration<T: ThreadedHandler> {
+> > +    irq: u32,
+> > +    #[pin]
+> > +    handler: T,
+> > +    #[pin]
+> > +    /// Pinned because we need address stability so that we can pass a pointer
+> > +    /// to the callback.
+> > +    _pin: PhantomPinned,
+> > +}
+> 
+> As others have mentioned, I wonder if we can avoid the code duplication
+> that makes up most of the rest of this patch.
+
+I'm worried that getting rid of duplication makes the code too complex
+in this case. I could be wrong, but it seems difficult to deduplicate in
+a simple way.
+
+Alice
