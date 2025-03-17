@@ -1,133 +1,100 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1082376ED;
-	Mon, 17 Mar 2025 15:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897E5155322;
+	Mon, 17 Mar 2025 15:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742225884; cv=none; b=PWr38LfLKXvuo/7Fbmon499F1nQ14NK3Pe5xwt9Vfct1Fhc7trI8j2AzaI/Ay6e48jiTguAtx6jdCnXfyM3PoiziDPzrqfTZXvo5arwE7763rsq/Sxf8APQGkZE/J9YtM2c5d516Uvr3BntUZYbK4EUs/WeHpH3g3MS5z0bkgls=
+	t=1742226372; cv=none; b=GLghyQ7ZEoqyR2P1QrRgY5qhkpPDDo5dxDNjnpKRYTXVy8O9i7+M89xVvWF9spSih8EzXSKbQKlfmB0nBriciA8c9rPzrU+kAjWi/Ou4EX1x22m9mtxh0NkXVkaXycNEO+MpPOBLenG1vbIuLY9g+Fy4rOoR6YYtu9LEKKfLBbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742225884; c=relaxed/simple;
-	bh=ZZWzmUWTimLJAcdPXG8JY1eISTp/yQNRuJsjDNuSk6s=;
+	s=arc-20240116; t=1742226372; c=relaxed/simple;
+	bh=N0XXHSoerCz+fkW0gAlHMYillsKvgy/L8Pvju8fyza0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hB+zQlfvaO0osJIlUowMxJbMri7CUzGabxn0TKt/40OhW7o0f4gWtVMEWTdtKNrKyLlHF0JZCaUND/3htqXBLEV4JZbxLYASA0eqwtsOsl9LRuoiEatC7oY2RmJH8tzPTsSjzIcVa7aTfy/TlTlI5SZP5o+XOzWoIqEd2Pp2nBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nsU6IhzZ; arc=none smtp.client-ip=209.85.208.172
+	 To:Cc:Content-Type; b=QA3jvLhby/jcbKLY7DYDQyd9OPEIeMXD+vTMlAlAPQAmps4e0btIUR4fEGTvF9isvlrPyKOruVNTutQaEYdV+B+yTKXeB3MIfz8AwxyKIvwIET1GoAgm82vb2J2bStOPiXBDzWXbFOdSmDZ6aSnrRpW0Z1V+lGwaD5McJ6Xfh6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bmvQmwst; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nsU6IhzZ"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-30761be8fa8so7925321fa.2;
-        Mon, 17 Mar 2025 08:38:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bmvQmwst"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff62f9b6e4so615864a91.0;
+        Mon, 17 Mar 2025 08:46:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742225881; x=1742830681; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742226371; x=1742831171; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eUIrj43rm3bDSnVFHsMBGJ+fSVgHIGogbTLMRzpu2A4=;
-        b=nsU6IhzZ8AETp9r2rSgc0OpCAbWsU6qp0waT4Um4/jpgL7zGr1wPTBkaHWvoe7mKqd
-         rDdUSKXusINJAzGe6VazyUv6+/Jm5smsmK/yCBE5NKR3RF827EIV0yISRSvAgC4H8Rp0
-         ogeAZW+TKuhW/6tAIaS5tYJJKOA4uGeVboJkgd90qeDANrvRQ9RmZsygPE67ZIIhMWtE
-         h3AmC8anTPjzX9P3TZthHmdk2Wnd1s+1v/i3Fppxau1jMOu1QtqBn1yw2tH26dfYR9EF
-         LOkYkTNHUZ6pkqYAVInx+kHMKxKxI0KtZUcbXpcrc7ivPmXFAN5ormDZaF55tYm0d48N
-         9hNQ==
+        bh=N0XXHSoerCz+fkW0gAlHMYillsKvgy/L8Pvju8fyza0=;
+        b=bmvQmwstYYy3u0cj7D34fJ4uxtp8I3Jp7yHRO1WdoDkjqXbduyxW++v/Ry7EyP0h56
+         NF3nqSM+GgFE4YfjYaFiVBckIjMNiFMEbpGh8rsixilm/M8UiK4egdl/4ArYju+zJ6GU
+         01PvlHcvds7AcoM/xwE+ianEFMjzWvduBgXyE9eahDonBL2VkdOVURRMJwdT6wG/5Uqz
+         PF0NtT1feRa41ptXFati0P2SsdNBm6llaRy/6NReCIhdIGMsTeQrPDbGs4XWydc/IwlG
+         Eh3H2RQ3+lk8ln8M6f/NvS5G0LQsRZDn+mJd/1Qe+4y31OkkFAzWZ+GhfW7PIw2ihal6
+         qjrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742225881; x=1742830681;
+        d=1e100.net; s=20230601; t=1742226371; x=1742831171;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eUIrj43rm3bDSnVFHsMBGJ+fSVgHIGogbTLMRzpu2A4=;
-        b=In9SGLb5lPvv1JJHY/qnWhDtcQcjclZm8qvBoADElPamV34h/hyjgdxmQE0JQmH881
-         Za/CkErUD5iUUja94y65R/9sYB0TIZW7nHKJ9Mt2AAOfM6diPhiohK/5NIGKUIOL+2yF
-         ffwwrHvbk1x5E3Ufdh191KHd2TmlU9ZQf8c1F6B3fmQ1yXT40TlusoFBII3d3gbDEQdm
-         vAbtrhIXFkqvlDKYg2BDGIQVkRn2sW4s20Ku8CXbb5MSTN1QzlsB2lqPIUotV5n4B+Tn
-         9Aq8VXM5+xaeE1CQhWBvXfHyKUMS1UMcLW410Ar4oxncVhS373NJoI5sifbBNvArRJJT
-         becw==
-X-Forwarded-Encrypted: i=1; AJvYcCUj62CIJQjzjtgLG3rNRMapyfTsUn1uQTytH24ajbxScbWSECc4fyrq2lc8FL+ILrBX0kjChuLfGu/KYqS1Xkg=@vger.kernel.org, AJvYcCXRi0cFSQvstWWLs7u+LS1x8TfHcqQgk3JJlHiv5iSambNSMqviIpX3Psc1aXApH0UJlDsT0z4c6PXGxLk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKIkA39myhW2I0+pgG5LG1bSFYG0t4ywC18cb7u66xAWvXa3OJ
-	QT9/VAXdMloQJGErtAN+/kGnsbBwokUvgc1lcLvnhVbJlYbGRPj4igUL04gLEkqxoP+u2lwbx0I
-	HgK78gJLFoexU/CA1kyZU9h0faQk=
-X-Gm-Gg: ASbGnct5fCJPCJu8PPKNZ71FxwjBndDKKbELGUI5YZIA42KHTp2YkCiVrA91EVqQc1i
-	iDls1rIVSYqwYKDDdreVK0QUJDld8V3P+lLEY1J/gVwTGgfLpWuwiciWJZP1qW7DjAium2awkWU
-	0mWt7kFdu40Vjw1Hwdq7t2fj3xFgfYJSLBLjjhlFmtN0qKE9GQZNt5itUQbOgg
-X-Google-Smtp-Source: AGHT+IH5ohCk5uuMKetMbjr8G6G2cxZCP8S9CkJlvAvgc+Fk0dQ8gE41Sls+pmLoPm5tocBiLzRNUGBJihVNUQ/f394=
-X-Received: by 2002:a2e:9bc6:0:b0:30c:b2c:edb6 with SMTP id
- 38308e7fff4ca-30c4a876caamr74059371fa.18.1742225880670; Mon, 17 Mar 2025
- 08:38:00 -0700 (PDT)
+        bh=N0XXHSoerCz+fkW0gAlHMYillsKvgy/L8Pvju8fyza0=;
+        b=qgYS2RiKD9EG4SBV7gJckvfSneaDSLSchgDqhwSzYnwctWGvE/J4Hb7WZL6Lp42miQ
+         rbRpMfokg2YTav338iJzOR55gqeLHG7DnOn2TwXgj+VL2r0xcLUWNzkVE65/SipxV624
+         p9u0997RsbeVEtCUt7Bn3BUeW5QlbCFCpb54+Ndya+LDXXb+FNC1NhfMKAZ5gfPmwRPi
+         a2l/2fsBmaEsORCn2yGF0TbwgE++jfToNclZDImtx8Nu7sLj0vc/OG9T+aP3wEF3luT3
+         GHoaBIUblUxwbdHSGg3rrRtmTvgv2vC1s/PhLJO2kXucGHr+UIi2ZDn3MOM3K4UpSzIZ
+         vSUw==
+X-Forwarded-Encrypted: i=1; AJvYcCV7lEYHT+ry6cKN/0ZEoFlmRkU5hLeiZSAUgisRsdH9bqC7nlXaSrZ+shw0UL9eltDqg47oHNg3G2mwTbxOVp8=@vger.kernel.org, AJvYcCWejVatFYlrrMfHnOR2CaFZ3c3FdRdmEBiWBITt21vRbJDHJbYVqz+e+BaWi8MUTEYI4nOd38Nxj8shuIA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhmlHPey1CAlt8CzNUiRKKp2qP2B/E4ksC58tNet0xcVdFtstI
+	NZZCetKzkhKD7zfDqgRhICN2j5Azz88IJotDRMqUWwmeu8Kncal/erHflYtVSnhVDPZUMLBT0U1
+	pYEwWdKQ4Y4TxRXoeJa3UV5WSp4I=
+X-Gm-Gg: ASbGncvzyUGsy+MeJUsfKqXTHQ1D2HLl+a40ph3tHlvQK9DS2WBT84mHy658oigymQQ
+	r+/nDUD+FPBIhOZvwpd//hd7QQlA+iKXYhdem7eC3KxVF0suLk/yZ1lfYbjR4QN039z4QKJ2DDC
+	6aV2sYF4pRvQ3RjsD438vkwoZ1JIErPI//G89Z
+X-Google-Smtp-Source: AGHT+IGsWrTravBcGZquqTChLJG6sZsrdkGgwDZjO6DsTAiQ2OaxrCp+Yf91E1I1j0SrEDrf6Qq5rvoM9jANoIT8Hk0=
+X-Received: by 2002:a17:90b:38ce:b0:2ee:acea:9ec4 with SMTP id
+ 98e67ed59e1d1-30151d68999mr5992647a91.3.1742226370592; Mon, 17 Mar 2025
+ 08:46:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com>
- <20250316-vec-set-len-v1-2-60f98a28723f@gmail.com> <D8IGFTJXS2A1.9JBD1UKGN4PX@proton.me>
- <CAJ-ks9=oq+c_pMg41QgGWsj=phWYfntXQgpSrFmz16Vifofn3g@mail.gmail.com> <D8IMA0GUIPTD.34ZEZ3W8QSKTA@proton.me>
-In-Reply-To: <D8IMA0GUIPTD.34ZEZ3W8QSKTA@proton.me>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 17 Mar 2025 11:37:24 -0400
-X-Gm-Features: AQ5f1JrgHQYe1BFwoE76k6wYz6LF0WzHEWpp_g8GemEC4LULIpXbGBcJs3pFmq0
-Message-ID: <CAJ-ks9kXZDO-5utmQb2HLkxmxmQ-bg8jZ4FdvDatTj_79W2dMA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
+References: <D8HVNR3Q3UL8.1007IZIZTQ0XB@proton.me> <20250316185439.913013-1-contact@antoniohickey.com>
+ <D8IMV6MH4EVX.3BWHLLY5UGLC0@proton.me>
+In-Reply-To: <D8IMV6MH4EVX.3BWHLLY5UGLC0@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 17 Mar 2025 16:45:56 +0100
+X-Gm-Features: AQ5f1Jp_2ofObKoGGIUEWuo2lRMEHek0QXhzl1jwrCncDSj8dSCFentnj4Z5HAo
+Message-ID: <CANiq72kgNJGqe+3yNHj96UPcA8i7ozbQGf5FWBQcOytZqZ6ZMw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: uaccess: mark UserSliceWriter method inline
 To: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Antonio Hickey <contact@antoniohickey.com>, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
+	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dakr@kernel.org, gary@garyguo.net, justinstitt@google.com, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, morbo@google.com, 
+	nathan@kernel.org, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 17, 2025 at 10:39=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
+On Mon, Mar 17, 2025 at 4:07=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> On Mon Mar 17, 2025 at 12:34 PM CET, Tamir Duberstein wrote:
-> > On Mon, Mar 17, 2025 at 6:04=E2=80=AFAM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
-> >>
-> >> On Sun Mar 16, 2025 at 11:32 PM CET, Tamir Duberstein wrote:
-> >> > Add `Vec::dec_len` that reduces the length of the receiver. This met=
-hod
-> >> > is intended to be used from methods that remove elements from `Vec` =
-such
-> >> > as `truncate`, `pop`, `remove`, and others. This method is intention=
-ally
-> >> > not `pub`.
-> >>
-> >> I think it should be `pub`. Otherwise we're loosing functionality
-> >> compared to now. If one decides to give the raw pointer to some C API
-> >> that takes ownership of the pointer, then I want them to be able to ca=
-ll
-> >> `dec_len` manually.
-> >
-> > This is premature. It is trivial to make this function pub when the nee=
-d arises.
->
-> And it's trivial to do it now. If it's private now, someone will have to
-> change this in some random patch and it's annoying.
+> I don't 100% know what to do here, maybe Miguel can help. Personally,
+> I'd think that another v1 is confusing, but I have seen people in the
+> past add patches to their already existing series (while incrementing
+> the version number). I think it's a good idea to merge the patches into
+> a single one that handles the entire file though.
 
-It is my understanding that the kernel's policy is in general not to
-add API surface that doesn't have users. Rust-for-Linux of course
-often doesn't honor this by necessity, since many abstractions are
-needed before users (drivers) can be upstream. But in this case we
-can't even mention a specific use case - so as I mentioned on the
-previous reply, I am not comfortable putting my name on such an API.
+I would say that what is most important is to mention what was done,
+i.e. linking to the previous thread(s) and saying it was merged or not
+so that it is clear what is being done.
 
-> >> > +    ///
-> >> > +    /// # Safety
-> >> > +    ///
-> >> > +    /// - `count` must be less than or equal to `self.len`.
-> >>
-> >> I also think that we should use saturating_sub instead and then not ha=
-ve
-> >> to worry about this. (It should still be documented in the function
-> >> though). That way this can also be a safe function.
-> >
-> > This doesn't seem better to me. I'd prefer to have more rather than
-> > fewer guardrails on such low-level operations.
->
-> Your second sentence seems like an argument for making it safe? I think
-> it's a lot better as a safe function.
+If this is just `UserSliceWriter` and `UserSliceReader`, then yeah, a
+single patch seems good enough. It is not a fix, which could require
+different `Fixes:` tags or things like that.
 
-The guardrail I was referring to is the requirement that the caller
-write a safety comment.
+Thanks!
+
+Cheers,
+Miguel
