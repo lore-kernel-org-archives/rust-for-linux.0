@@ -1,158 +1,144 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCF41CA81;
-	Mon, 17 Mar 2025 17:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9123FA47;
+	Mon, 17 Mar 2025 18:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742234158; cv=none; b=Vbj47g2sDeVMJYNLJ2CFsAH6G+aff5ajkzmmfTi+V6uAYxK74ciUynpiQM1Ha1Gz/kP0EKqfefoJX8SjoyZtY6uqJveAZDzFne/lD3jdus0y5hXQX9XxkMPkzSGycdA+hddyY1unlSGFbaXINGA++8t6CjqFreqzPWZ7nhgFERA=
+	t=1742234714; cv=none; b=o/Fd+KIjmg6WQpILIHukk9dDeL9AGLGwE7dpsm2zbPCWq0r28lUvb4Y56LRbhcptjXjSnOonIVpFgk2xawFGooZ1wi8qznhQ7/tS5Nrch83aMQS0UvjAvcO02iBuFeVKN4bZ7VaCqY3wbHPohzRrko8p6eUlUXNrSkNrvbbpDsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742234158; c=relaxed/simple;
-	bh=odJtQofV1AZHLRfa4P5rRm51SHEXswsQ8eWRp93gFsA=;
+	s=arc-20240116; t=1742234714; c=relaxed/simple;
+	bh=yS19w8s2BxyjV6yv9nuygjxyYafL7takTriDGTwkTb0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MOGpJfFAsmmgSwZuUntNYNXMouJzY4qKjQlBK4LZzmVGqltimJZEIrSBeauUtIjcSMbk3SWS+d9DW3Oyfy47tbWnWQYEcr0gHBlWBdKb8hR0nh4Ajqsq64dEPk/7c/kQHs9au+tUOFiVyawKp7cqOXAGi0/+9LxipACQJcQRDmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DdTzysS4; arc=none smtp.client-ip=209.85.208.181
+	 To:Cc:Content-Type; b=DtBjBNEYWnOCEwRyQuHLqI8Sgrqhg/VHJqo758EPEcftTsSE7Pz0jzWXrpF01cnQl/8VmOBMlC2GPdWot4OIr/EvJ82jsJzWCEUplp/CBfft1XZatdWycncT7zvl/SplhXwCCwaidMbW0poBylSBwyE5RLTSFAd5wr+Yvo4ayaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i0oftvuO; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DdTzysS4"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30c05fd126cso45229771fa.3;
-        Mon, 17 Mar 2025 10:55:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i0oftvuO"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30bf8632052so50771761fa.0;
+        Mon, 17 Mar 2025 11:05:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742234155; x=1742838955; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742234711; x=1742839511; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9OAusYntyp6gDYkffujc8F9VaURwt1VLDqhe4L7vrH8=;
-        b=DdTzysS4pXPWYkfKL4DjzrY/Q1JXyOegrIrayqFqu1vyCLmFbdTTw4yDs+cfV5sePW
-         h3irzL1dDb+V7nrl6iWxaj0q86Y9QAKipPb2g7TJxlFQn0vkwG1VV0k3wHR/vK/EIy9e
-         crtaCJtKhVaYO3Z8k15Xmr+Xv/5yVXqaL+V7h13QyWxGsNiain0aeJS3yOOJjd1s1Hgd
-         QuyWswkVllKB2fbQAjuhWj3tnhC8zVL42WWa8tLFPALob0BxrUgCjJEuwAdkVs9MXON6
-         JFQb2SyIIU44satSZKZbE+BtjwgIvr488rsmjiGmLYcO0FtIl8SpNiJjtLE5c1/nxj+X
-         NJuw==
+        bh=frfHgQ+gFACrESJvw7LnNR39jC1AwPkl0OXU4bE+ZmE=;
+        b=i0oftvuO4eu0T62J1dW50/iMfanB5G7Cwm1GcbfC4HzL9OifdyBX1LD3dYrxElsCEo
+         ucgog4bH2bYNLXPduZ2/Kee/eogk7hyJ/3s0BysGpy0aFKvW3QaTr+CbcDWBVetTCORI
+         Ael8tPodEw+/1wvRgUdOVz6npAbxMmgcPqmz1HkGNzIufPCFXEdSai/PFk5NjMSzIWFI
+         HI5CAQEOpW9S9nmFI8G4bxiGBy45QToNxgHduC+Em9HF/qQdYbPE3GPEArBvnOTxHjE6
+         0IL7iIPjogfCBafbjaEcQqFetanDFSPHRYvACM8IcVI8EY5H+MwIpIxodk91/waQv+8r
+         tgqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742234155; x=1742838955;
+        d=1e100.net; s=20230601; t=1742234711; x=1742839511;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9OAusYntyp6gDYkffujc8F9VaURwt1VLDqhe4L7vrH8=;
-        b=Y8JBRmCrSRNPwr9ZBL5iuhuKsJPhKfU/9TUUXUtpDlERk0WcM0qtUCY8tz9f49gzTi
-         b9lNEb2vlwUOzAJkvtMSx/lkDBZRUOelgIWrgMRILpHHwrGxm1HwU3OPVEy+bxBlF8Dl
-         3XjsGCyLLB/qBtuN64BkDj7DBtkZa6G5wJdNeK3U2E1r9mBfZgtNxTuPoP2zeaGG511q
-         n23Lp/rFinQqkc+TrBibbmcyedgkih9tkBOG8l57Y2oMhtn1+okRMnBULhceXRUt8J2b
-         fZlajtg8i24toIdYkPL8JZ7eO2MhJ5hgF25kzdSBYeJELgsfTiKg8HycGpEg9Au3bwS9
-         0BGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFUay77u+xGdLCxHSKXDNMIFD4ZtjtMThKM8gN4E+atl51+H9iUc8e0zzB96QE/v+dKWO/lbAFphXZigw=@vger.kernel.org, AJvYcCUf2v4Tzxr+TWOB7civPIGTSPyAoP4lSp3AKBexkZokDJ8ajFBOPYf+CDgdHNXyeYu3sGf1UsWZNcapWeVC2XI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwASxoIPuRo9Bft7zALdGnQbMo5gyuTH3VM8+ORSsikRS/1omof
-	axHrBtIWpyCHVUO8S93tg+LLap683kxvdi5qwvOp6h45stvAX2oesBRgrZkkaFlXCzxK5OkJq/t
-	heG5JDlaOvXvAhZeBKMZ8FmJPLEA=
-X-Gm-Gg: ASbGnct8A/Ku5kzCn4ZQL5BdR1NUeUU0l+J/XyKFbmUDsSttjHHBxCa84DghLopFcVU
-	ELk7BsmmoOG2UOOVsbbWTqSMkFWKgUHOIJzQxTT3008zWHzzL+t2nYELg18VI2jt3x8r5ppekuB
-	lTRLZ/SVrDdMY6G4TqBkiifjnFddn3A3G0CLDMITojVRS6nh4qluH5hdpSUOQGmtLa5DcADDI=
-X-Google-Smtp-Source: AGHT+IHjiO8TcUXiHgA20o5N+AtK1Qj+Gy62ZTyhfAn6VbIfvnYUlUvEO6DX7i6hI4Oe9EfhlUNwkDslOnbyuatT8O4=
-X-Received: by 2002:a2e:9818:0:b0:30c:111d:d7b8 with SMTP id
- 38308e7fff4ca-30c4a8601ebmr66116811fa.10.1742234154842; Mon, 17 Mar 2025
- 10:55:54 -0700 (PDT)
+        bh=frfHgQ+gFACrESJvw7LnNR39jC1AwPkl0OXU4bE+ZmE=;
+        b=Cy9Ay73zm5KAYYdua0OMBP+j4BbAU9Mg/gX/vq0yy5y44nT2PNsNyU9wvwNRCBBdw4
+         rSPv8rm5keD6EyG8QEH4gx1QMBt0HuBhjVtsQYOxb3/fDehfIjv9v1NMA25e2QvkURHC
+         raiBU0Ccs7RtU8vGzQnm6YDqylWKbC5LwwwN+k5I9AWYkMFyq75ed7esriJw48iT1OJg
+         yCDwSiLQO74HK5wrz0BJx8wKwPCTUCTmDM1pkjHb0U/L1wdGvbcnGlXRr2fAd3WDyYu4
+         AtGpctg7e35z1k5OG/LtVqJILJKaEoXz7+zLvgBxKU+BvL2hWhd211VB2GFrlTROGfjX
+         b4TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7HwF+I1/0wx7pGNtpUsgwHeW/NlxtjJe5QdWOyOyhkiXW1nzGvdpME/0tzphqpdWUWaW97zHIN69qK8M=@vger.kernel.org, AJvYcCU8WiBR0AMU5foWY1OzMg0QMUE2pBRHjA5I8LCwwtMm58IN5vbnSf5qx7n2QDBBem6+IMi4UhUEulJQMlTkQccP@vger.kernel.org, AJvYcCUVJDor9zakiJQ7TizEqcR/SKWqpYm8UphnXbvmtQK9snF6bdwWuamUmY90gWvxhBO9PxpTXMmagC/nrtV9@vger.kernel.org, AJvYcCUY8rp2QVFNBGggPLpJJ7KHURrJsF/JGLyDjJgAmFXs2J7Q2igObZz+vUUks6gRA678+yo7G5GABlMx@vger.kernel.org, AJvYcCW8TRbQN0/SZMZHFG1CoahvOU0KcRPVMZjNd0slw7QEIK/0pD790Tjwvmy4y79PeVJDspoOcM6tIc9SIfs3SYo=@vger.kernel.org, AJvYcCXYy9PfxO1IVs3r88eLvtwe1IJmK9eIXZS5G47Gpt5rlym27I4DXoBiv8CWHH9kV9IepzcgC5pG9yrCmVUm@vger.kernel.org, AJvYcCXbTWObobo+/k6f0MVpMQoImzOIxzGa62uLzYPC4KhPORPALb4kwhvBElTTsnGcgN55AaiMpXxOj8l4@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjcP5YzxeNd34fxxnDbNQl/gw4bkmH3sCqWrjyB5a7IEDp30Zd
+	cSR8axeXzYoQX3EV8porIvpe5YfbfK5sz686FBO03QnIgmf/bQCQpmwyeXbFl/oFQ7fqH1uWplW
+	es82UV1bYHnRvXel9Rl35sL0mbbw=
+X-Gm-Gg: ASbGnctNTFk0WpsiUbQC78Z6jjGiVuU4nomliunp1LpF4xlbW+8qBpO0WRV6VIson0x
+	gzEeQP9S7tKexweFzBviUDGZQtUpcy9ryW8E4IlvH65xThT8JBIn6Wbhk0te0MPxFQwsXeM0wju
+	VhJOY0M+CyVFJK3tt5LvBZsv/tp8jRSCNm2ez0101hWr6r1MemEhkSveNqrMGp
+X-Google-Smtp-Source: AGHT+IHEiCRYqo5kdtDzu9DwfXgz8qSQf+aHXpVibcrV/eXTAUt79P6itWOg5iJJ3B8dHvF9R2vfggvwUwXXMy4e4BQ=
+X-Received: by 2002:a05:6512:39ca:b0:549:4e78:9ed7 with SMTP id
+ 2adb3069b0e04-549c39afb93mr8766794e87.49.1742234710429; Mon, 17 Mar 2025
+ 11:05:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com>
- <D8IM66U67XBD.28KWYO1XSF8ZQ@proton.me> <CAJ-ks9kq1cQ2-ZNzG9P4SBvk-AjXxT+na-89K33imB4fsCvu4A@mail.gmail.com>
- <Z9hXMcFVdF8MMusU@cassiopeiae> <D8IPQUN25M12.2CIZR4QHJ201N@proton.me>
- <Z9hcT4KPwgtHmiTT@cassiopeiae> <D8IQ5BDTLCLZ.1UBNYUXLK12X0@proton.me>
-In-Reply-To: <D8IQ5BDTLCLZ.1UBNYUXLK12X0@proton.me>
+References: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com>
+ <20250317-ptr-as-ptr-v5-6-5b5f21fa230a@gmail.com> <67d85e51.050a0220.2a36b.58b3@mx.google.com>
+In-Reply-To: <67d85e51.050a0220.2a36b.58b3@mx.google.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 17 Mar 2025 13:55:18 -0400
-X-Gm-Features: AQ5f1JrFZ2MdVZ2cTCig10DakcJD0IHRvR63HDOKHIDkDYVWx2MYSgz4WM56Xbo
-Message-ID: <CAJ-ks9=xLLXovsaduKFBfxvkfzYgTaSPhhW_oRN5y1QOuKJFkQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: use `spare_capacity_mut` to reduce unsafe
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Mon, 17 Mar 2025 14:04:34 -0400
+X-Gm-Features: AQ5f1Jo97QAJQPWntDNr9WhIHhk1SFsSEUSY6hlNcHKZZ-5cDJZTOBm_FAQM4OI
+Message-ID: <CAJ-ks9kBp8zPfaQuZRb0Unms1b13hDb5cRypceO8TWFR0Ty5Ww@mail.gmail.com>
+Subject: Re: [PATCH v5 6/6] rust: use strict provenance APIs
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, 
+	devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 17, 2025 at 1:41=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
+On Mon, Mar 17, 2025 at 1:39=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
 >
-> On Mon Mar 17, 2025 at 6:30 PM CET, Danilo Krummrich wrote:
-> > On Mon, Mar 17, 2025 at 05:22:15PM +0000, Benno Lossin wrote:
-> >> On Mon Mar 17, 2025 at 6:09 PM CET, Danilo Krummrich wrote:
-> >> > On Mon, Mar 17, 2025 at 10:39:05AM -0400, Tamir Duberstein wrote:
-> >> >> On Mon, Mar 17, 2025 at 10:34=E2=80=AFAM Benno Lossin <benno.lossin=
-@proton.me> wrote:
-> >> >> > On Mon Mar 17, 2025 at 12:42 PM CET, Tamir Duberstein wrote:
-> >> >> > > Use `spare_capacity_mut` in the implementation of `push` to red=
-uce the
-> >> >> > > use of `unsafe`. Both methods were added in commit 2aac4cd7dae3=
- ("rust:
-> >> >> > > alloc: implement kernel `Vec` type").
-> >> >> > >
-> >> >> > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> >> >> > > ---
-> >> >> > >  rust/kernel/alloc/kvec.rs | 11 ++---------
-> >> >> > >  1 file changed, 2 insertions(+), 9 deletions(-)
-> >> >> > >
-> >> >> > > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec=
-.rs
-> >> >> > > index ae9d072741ce..d2bc3d02179e 100644
-> >> >> > > --- a/rust/kernel/alloc/kvec.rs
-> >> >> > > +++ b/rust/kernel/alloc/kvec.rs
-> >> >> > > @@ -285,15 +285,8 @@ pub fn spare_capacity_mut(&mut self) -> &m=
-ut [MaybeUninit<T>] {
-> >> >> > >      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), A=
-llocError> {
-> >> >> > >          self.reserve(1, flags)?;
-> >> >> > >
-> >> >> > > -        // SAFETY:
-> >> >> > > -        // - `self.len` is smaller than `self.capacity` and he=
-nce, the resulting pointer is
-> >> >> > > -        //   guaranteed to be part of the same allocated objec=
-t.
-> >> >> > > -        // - `self.len` can not overflow `isize`.
-> >> >> > > -        let ptr =3D unsafe { self.as_mut_ptr().add(self.len) }=
-;
-> >> >> > > -
-> >> >> > > -        // SAFETY:
-> >> >> > > -        // - `ptr` is properly aligned and valid for writes.
-> >> >> > > -        unsafe { core::ptr::write(ptr, v) };
-> >> >> > > +        // The call to `reserve` was successful so the spare c=
-apacity is at least 1.
-> >> >> > > +        self.spare_capacity_mut()[0].write(v);
-> >> >> >
-> >> >> > I think the code uses unsafe to avoid a bounds check, but I'm not=
- 100%
-> >> >> > sure. Danilo might remember more info.
-> >> >
-> >> > Yes, that was the justification to use unsafe calls instead.
-> >> >
-> >> > (This may also justify keeping dec_len() unsafe, since otherwise it =
-would
-> >> > introduce an additional boundary check for pop().)
-> >>
-> >> If we use saturating_sub then we don't need a bounds check (at least o=
-n
-> >> non-debug builds), right?
+> On Mon, Mar 17, 2025 at 10:23:56AM -0400, Tamir Duberstein wrote:
+> [...]
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index fc6835cc36a3..c1b274c04a0f 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -17,6 +17,11 @@
+> >  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsiz=
+ed))]
+> >  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(dispatch_fro=
+m_dyn))]
+> >  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
+> > +#![cfg_attr(
+> > +    CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE,
+> > +    feature(strict_provenance_lints),
+> > +    deny(fuzzy_provenance_casts, lossy_provenance_casts)
+> > +)]
+> >  #![feature(inline_const)]
+> >  #![feature(lint_reasons)]
+> >  // Stable in Rust 1.83
+> > @@ -25,6 +30,109 @@
+> >  #![feature(const_ptr_write)]
+> >  #![feature(const_refs_to_cell)]
 > >
-> >       fn dec_len(&mut self, count: usize) -> &mut [T] {
-> >           self.len =3D self.len.saturating_sub(count);
-> >
-> >           // Potentially broken, since maybe `count > self.len`, hence =
-need an
-> >           // additional check.
-> >           unsafe { slice::from_raw_parts_mut(self.as_mut_ptr().add(self=
-.len), count) }
-> >       }
+> > +#[cfg(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE)]
+> > +#[allow(clippy::incompatible_msrv)]
+> > +mod strict_provenance {
+> > +    /// Gets the "address" portion of the pointer.
+> > +    ///
+> > +    /// See https://doc.rust-lang.org/stable/core/primitive.pointer.ht=
+ml#method.addr.
+> > +    #[inline]
+> > +    pub fn addr<T>(ptr: *const T) -> usize {
+> > +        ptr.addr()
+> > +    }
+> > +
 >
-> Ah sorry, in my mental model the function returned `()`. Do we need the
-> return value?
+> For addr(), I would just enable feature(strict_provenance) if
+> CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE=3Dn, because that feature is
+> available for 1.78. Plus we may need with_addr() or map_addr() in the
+> future.
 
-The return value is the whole genesis of `dec_len`, we want to return
-something to let the caller know they need to drop or copy the memory.
+We still need these stubs to avoid `clippy::incompatible_msrv`, and
+we'll need those until MSRV is above 1.84.
+
+>
+> It saves the cost of maintaining our own *addr() and removing it when
+> we bump to a strict_provenance stablized version as minimal verision in
+> the future. Thoughts?
+>
+
+I can do this by making this particular stub unconditional. I'll do that.
