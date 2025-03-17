@@ -1,96 +1,72 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CCD24337D;
-	Mon, 17 Mar 2025 14:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB4B2451EE
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742222552; cv=none; b=PWaLs0rLa96c1ur8WIzsH7whWJGvk1md02/xbnatMsY05RGLUdt3fL4hfzZMKUKbteL+QL0m8YlogDPZrHSlx2IcB/7Oz7L1eqamaRB6nT5DmrOCOkqA+TkZMS9kqy7gGYop+/PLnsmGo1axz2Iri69bMw5/YJl67g4yO7aXAiQ=
+	t=1742222611; cv=none; b=lFpr7g6kui3MJ1f8SX7FjQRDWGole6/26gnpMD/TgXDrVma6Fp1C5youU2bUYBkpMWOOIOK0gkdScUnP0CCQXOMPwCSJibSQ1rlsC8g5puJETXyrMZXAyDfi7ZEOuA9EIE6Md8djyWyuOUa1u/KgQwuJxLWpmoZVUxA49af8V90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742222552; c=relaxed/simple;
-	bh=B7w4fF/AQBq5dEVwxdmK1HtwIC8KWcaPAsFWCNa0C2U=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i9hwresmiacpdrsGZw24x7HxHd7na31j3M86LCxubmQLZsJLrJc0VNOWUt2fwlD0O/XuwL4v2mX7pSk0KM2eAqcOX8QphKkxi/xlGbBkabjKsRVrLapLXkb7IIQ28SGbo1/bsql8MbZ0YWcn9aFJZZUYPOYVOg5Wpt9fUbrZpGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ToKl/xxx; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742222611; c=relaxed/simple;
+	bh=y0MoIY1f0jG4tiO54zhiTP4RygS0t37nrAz4qSgkgUQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cTseqcvQ3enhqd00cTDQh5Y6Deku28OMNs84OZ3mbbAtjcAZRm3QOjDZQm5jqkkdHVIFtS+I1bZvb0JEehdhiMTM4NrmFC5seC+N0d899D60D0QgWj74trnjfMJRW60yHT7WWeHTwP7SK3+s9+sWy1gvRhUpIwn6cmA9Pq7oInQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=AYNdwMV/; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ToKl/xxx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742222548; x=1742481748;
-	bh=B7w4fF/AQBq5dEVwxdmK1HtwIC8KWcaPAsFWCNa0C2U=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=ToKl/xxxpx+5YIjI0l2d3U66G5GtgDC1CcUY33hlP+2YCs1G3xywS8/rb+xCyJfk8
-	 7QwgfrHvxjAzYc88oY8J8iYMGsIwF53WyT2x6Mpqoa9zdVSNej1lR9c7kF6dtOrE84
-	 htRcjMafXeKfVORHk6Gf1ThpPMmEcWw918B0KhvPoU69MitX8kmOte3ZtfKuV29G1k
-	 PZzca7AZmj+njtUZhx4Gcw3jsOdPkSyljrTG1VMdRPgEV7Raq5jXX1zTGqcq5fSzvk
-	 30n28sXXnG0PnfbTL/gEQbBKg6XsDYanWwDJuX3DjbyWZSjp+D0gtDBVDNFq1W3mgo
-	 y2dl9pz/eSsgg==
-Date: Mon, 17 Mar 2025 14:42:23 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Tamir Duberstein <tamird@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
-Message-ID: <D8IMCFZJ2G7C.28DHUZGDB596P@proton.me>
-In-Reply-To: <Z9gcqHihXLg6kcZb@google.com>
-References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com> <20250316-vec-set-len-v1-2-60f98a28723f@gmail.com> <D8IGFTJXS2A1.9JBD1UKGN4PX@proton.me> <CAJ-ks9=oq+c_pMg41QgGWsj=phWYfntXQgpSrFmz16Vifofn3g@mail.gmail.com> <Z9gL5hQWvCNy5XNH@google.com> <Z9gcqHihXLg6kcZb@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d709fa82dd85d03fde09c7bd5a390a1cececf112
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="AYNdwMV/"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id F1869240103
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 15:43:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1742222601; bh=y0MoIY1f0jG4tiO54zhiTP4RygS0t37nrAz4qSgkgUQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=AYNdwMV/KTHhPrXBbU1hGOw+xUXgBxt8zjWdTgOfwOwooHJgM8f+2BHVZUcXhZsi1
+	 HxyfjbhXkrrjeZDHPPCTKgWF37OFQLV2KRBZ0MEY0pVbQ5LIRxcN+Z6LUuv+W7ku7T
+	 I5TXCu8JB8GRdxAPS48g/L/o/2iH3iy2p+a2L48VP50WIDbAbcRDFqZkHdixnhYZG2
+	 gfqyc0/+JhevqCZwRyeeOV2o2HS+tBpCx1R3GLbrw4vFG/U8tX1NNfyA+gfBaqaiB0
+	 vHaktCiae7bgsqBGdbs1GvccBSgFKkJnfJO88jvGOlBYsFmT6wK66acrmOP55wIgfN
+	 5YL4IzMq7nLpw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZGd4l2vLrz6ty8;
+	Mon, 17 Mar 2025 15:43:19 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
+ <benno.lossin@proton.me>,  Andreas Hindborg <a.hindborg@kernel.org>,
+  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
+  Danilo Krummrich <dakr@kernel.org>,  Wedson Almeida Filho
+ <wedsonaf@gmail.com>,  rust-for-linux@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: uaccess: name the correct function
+In-Reply-To: <20250317-uaccess-typo-reserve-v1-1-bbfcb45121f3@gmail.com>
+	(Tamir Duberstein's message of "Mon, 17 Mar 2025 07:43:03 -0400")
+References: <20250317-uaccess-typo-reserve-v1-1-bbfcb45121f3@gmail.com>
+Date: Mon, 17 Mar 2025 14:43:18 +0000
+Message-ID: <m2ldt3btvd.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon Mar 17, 2025 at 1:59 PM CET, Alice Ryhl wrote:
-> On Mon, Mar 17, 2025 at 11:47:50AM +0000, Alice Ryhl wrote:
->> On Mon, Mar 17, 2025 at 07:34:44AM -0400, Tamir Duberstein wrote:
->> > On Mon, Mar 17, 2025 at 6:04=E2=80=AFAM Benno Lossin <benno.lossin@pro=
-ton.me> wrote:
->> > >
->> > > On Sun Mar 16, 2025 at 11:32 PM CET, Tamir Duberstein wrote:
->> > > > Add `Vec::dec_len` that reduces the length of the receiver. This m=
-ethod
->> > > > is intended to be used from methods that remove elements from `Vec=
-` such
->> > > > as `truncate`, `pop`, `remove`, and others. This method is intenti=
-onally
->> > > > not `pub`.
->> > >
->> > > I think it should be `pub`. Otherwise we're loosing functionality
->> > > compared to now. If one decides to give the raw pointer to some C AP=
-I
->> > > that takes ownership of the pointer, then I want them to be able to =
-call
->> > > `dec_len` manually.
->> >=20
->> > This is premature. It is trivial to make this function pub when the ne=
-ed arises.
->>=20
->> Normally I'd agree with Benno, but in this case I think having it
->> private is preferable. The function is safe, so it's too easy for
->> end-users to confuse it with truncate.
+Tamir Duberstein <tamird@gmail.com> writes:
+
+> Correctly refer to `reserve` rather than `try_reserve` in a comment.  This
+> comment has been incorrect since inception in commit 1b580e7b9ba2 ("rust:
+> uaccess: add userspace pointers").
 >
-> Thinking more about this ... I think we should have `set_len` and
-> `inc_len` instead. That way, both methods are unsafe so people will not
-> accidentally use `set_len` when they meant to use `truncate`.
+> Fixes: 1b580e7b9ba2 ("rust: uaccess: add userspace pointers")
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-I agree for this on the public API. The way I usually saw `set_len`
-being used for decrementing was truncation without dropping the old
-values. And that is going to be `vec.dec_len(vec.len())` with the
-current design. `vec.set_len(0);` is much clearer in that respect.
+Reviewed-by: Charalampos Mitrodimas <charmitro@posteo.net>
 
-But for the internals, I'd say that `dec_len` is nicer, so for `pop` one
-would then use `self.dec_len(1)`.
-
-How about we keep `set_len` and make `dec_len` a private, safe helper?
-
----
-Cheers,
-Benno
-
+--
+C. Mitrodimas
