@@ -1,43 +1,43 @@
 Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D839C23BCE9;
-	Mon, 17 Mar 2025 14:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472D424397A
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742222063; cv=none; b=OyJoh/stuybktBHbGR1rECOeGHUSyat010EY3g9HFuFgID9n2Ox/TH1kUdQRUBMMiuBxy6bj+GsR6V8ImGdPPNIHWNbwTB64hsM1l6yxh+JAcZhuBBuD0XB0aSXGSr2ZEQykzIfZLM2gHJaGpvTqcpvkrc4CSkFnsOI6lieSVeI=
+	t=1742222361; cv=none; b=DZ4pNrFm3dtEKQIuDu0Bth+EBEWKgtWosnjh2ZgMy3iWIp6e8sPf1W9wCqO5BDjeT2SyTgNuxnYjCdyjepmdS70Qa8QZz2SdABLMOLf7oNFAa6JvCY0i7B9iOCJlDplt0iiri3G/cvtSJmCxc0EhRRwDhF4aBfrXKJLx0y/RuVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742222063; c=relaxed/simple;
-	bh=aqTN5Fb1ifhh0Zr+EBpuw6EjHlzOqFLWifY9xjc5sd0=;
+	s=arc-20240116; t=1742222361; c=relaxed/simple;
+	bh=dV/6KfJ3nVUQ1IyjbNxpACkNcAzqxNbaMcKsz0VL41A=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kI4q5oxnsoIvMMrnmG13g0hp86X9s9fo5rkawOzZwKD4zWBs6UlVk61yMONyVVXTQ6JlsdxiKKzxHFnypmf5hV3zLZpOj+lY4vOzOrFZ31CZIIJlEPYciQ0CeMMKylT96k7JwgcWuwFjrPNx6WdHPHghu1HqEWstZfT+oDOD+BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FXQyKEmj; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=B1HCSEn3ygPHceMUzZL+cqmFTVeiXmE92BGbXASTYjQZisuwnUV3o+Kcp9Jry7IFqnoVW4Th2sgqj8V2JMC6pHQ9eGnoIzvPdevbnHAzn35NMEf1srtLrPw1uOj1NFbnfKpdqCPkSxw5jYP69Tc0UaoRjwkG3c7WELAxLGjGfY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Gs1oHG3Z; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FXQyKEmj"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Gs1oHG3Z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742222058; x=1742481258;
-	bh=CGaRfsA4WMnyqgQCKw98ncK+K05nwXJ5g8NBWtozIlg=;
+	s=protonmail; t=1742222358; x=1742481558;
+	bh=rOVo+0+B8snlkYD4v50XyEx7TvsqYnx13mj95B5c0pY=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=FXQyKEmj2HAjLRBjEXo7W9EIigwZI1jjHob33C9VJzSMsFKh9tesgVliy11poQLss
-	 2tQBwwzNbMS1PmH+EjZGqb7XSC0UKN1el3YGnZV0ValOa/FuMasGvUHA9LKystgMF5
-	 T8GLBWCTTyuMMW49AuvlpYaw11oM70Kv9lI3ueKSxFHelvLSSuPXLhnMUOSo4Lcuka
-	 fwLQDzDQVbaHB2oP4T1r/Kz0HAvMmiD2+192Bacs9U+8cqjfJG27Y/oR7cPl31OnXt
-	 Fg6G/kQX16R0D78ZkuvMBgwAbk6ffv5NP2MGUnY5bRvPm6orYgjjP+NIHphcoDb6E1
-	 wSTEOC8MAatZA==
-Date: Mon, 17 Mar 2025 14:34:12 +0000
-To: Tamir Duberstein <tamird@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+	b=Gs1oHG3ZH+X4/H0g+us26zzRXGMYV9nq+eoqZVTf0Kqg1lgHSfMnOHxBpaWSV/fVt
+	 OEwGbq7lUil21/W1aUjU3MZHgDF4vp0sTt+hxu2nFh7v2KiMlW1zyeBOiteioKDrJ3
+	 LrvswN+J3cDNNe0ip4cPUIcYuenkX2QdILxNGMN3zJWpVqkERSUz7P5p0HNFHGo5lL
+	 P2bWeF74DCqVxF8/MA0dlcf5wW8G0Vnz/CS/IT0CkF5OVOKAlPE1FXKfPivg7WF6ae
+	 BzozqIDpIcvoDE3S4Sx1JufLcwEzfqzI8nnA0ByLkf0LMuhipuQMFOi03rXgm2+OCf
+	 v6Y5ywyGX2gug==
+Date: Mon, 17 Mar 2025 14:39:12 +0000
+To: Tamir Duberstein <tamird@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: alloc: use `spare_capacity_mut` to reduce unsafe
-Message-ID: <D8IM66U67XBD.28KWYO1XSF8ZQ@proton.me>
-In-Reply-To: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com>
-References: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
+Message-ID: <D8IMA0GUIPTD.34ZEZ3W8QSKTA@proton.me>
+In-Reply-To: <CAJ-ks9=oq+c_pMg41QgGWsj=phWYfntXQgpSrFmz16Vifofn3g@mail.gmail.com>
+References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com> <20250316-vec-set-len-v1-2-60f98a28723f@gmail.com> <D8IGFTJXS2A1.9JBD1UKGN4PX@proton.me> <CAJ-ks9=oq+c_pMg41QgGWsj=phWYfntXQgpSrFmz16Vifofn3g@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d4db65e73fc46d0c73f8cff36b7bba0db3e413e5
+X-Pm-Message-ID: 8b3d3e1212f919ffe916b201b5c6cae29ae0c424
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,57 +47,76 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 17, 2025 at 12:42 PM CET, Tamir Duberstein wrote:
-> Use `spare_capacity_mut` in the implementation of `push` to reduce the
-> use of `unsafe`. Both methods were added in commit 2aac4cd7dae3 ("rust:
-> alloc: implement kernel `Vec` type").
+On Mon Mar 17, 2025 at 12:34 PM CET, Tamir Duberstein wrote:
+> On Mon, Mar 17, 2025 at 6:04=E2=80=AFAM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On Sun Mar 16, 2025 at 11:32 PM CET, Tamir Duberstein wrote:
+>> > Add `Vec::dec_len` that reduces the length of the receiver. This metho=
+d
+>> > is intended to be used from methods that remove elements from `Vec` su=
+ch
+>> > as `truncate`, `pop`, `remove`, and others. This method is intentional=
+ly
+>> > not `pub`.
+>>
+>> I think it should be `pub`. Otherwise we're loosing functionality
+>> compared to now. If one decides to give the raw pointer to some C API
+>> that takes ownership of the pointer, then I want them to be able to call
+>> `dec_len` manually.
 >
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
->  rust/kernel/alloc/kvec.rs | 11 ++---------
->  1 file changed, 2 insertions(+), 9 deletions(-)
->
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index ae9d072741ce..d2bc3d02179e 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -285,15 +285,8 @@ pub fn spare_capacity_mut(&mut self) -> &mut [MaybeU=
-ninit<T>] {
->      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError>=
- {
->          self.reserve(1, flags)?;
-> =20
-> -        // SAFETY:
-> -        // - `self.len` is smaller than `self.capacity` and hence, the r=
-esulting pointer is
-> -        //   guaranteed to be part of the same allocated object.
-> -        // - `self.len` can not overflow `isize`.
-> -        let ptr =3D unsafe { self.as_mut_ptr().add(self.len) };
-> -
-> -        // SAFETY:
-> -        // - `ptr` is properly aligned and valid for writes.
-> -        unsafe { core::ptr::write(ptr, v) };
-> +        // The call to `reserve` was successful so the spare capacity is=
- at least 1.
-> +        self.spare_capacity_mut()[0].write(v);
+> This is premature. It is trivial to make this function pub when the need =
+arises.
 
-I think the code uses unsafe to avoid a bounds check, but I'm not 100%
-sure. Danilo might remember more info.
+And it's trivial to do it now. If it's private now, someone will have to
+change this in some random patch and it's annoying.
+
+>> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+>> > ---
+>> >  rust/kernel/alloc/kvec.rs | 15 +++++++++++++++
+>> >  1 file changed, 15 insertions(+)
+>> >
+>> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+>> > index d43a1d609434..5d604e04b9a5 100644
+>> > --- a/rust/kernel/alloc/kvec.rs
+>> > +++ b/rust/kernel/alloc/kvec.rs
+>> > @@ -195,6 +195,21 @@ pub unsafe fn inc_len(&mut self, additional: usiz=
+e) {
+>> >          self.len +=3D additional;
+>> >      }
+>> >
+>> > +    /// Decreases `self.len` by `count`.
+>> > +    ///
+>> > +    /// Returns a mutable reference to the removed elements.
+>>
+>> s/reference/slice/
+>>
+>> I would also mention here that the elements won't be dropped when the
+>> user doesn't do that manually using the slice. So explain that this is a
+>> low-level operation and `clear` or `truncate` should be used instead
+>> where possible.
+>
+> Neither function exists. I've added a description of the semantics of the=
+ slice.
+
+Fair point, would still be nice to point users to these when they exist.
+
+>> > +    ///
+>> > +    /// # Safety
+>> > +    ///
+>> > +    /// - `count` must be less than or equal to `self.len`.
+>>
+>> I also think that we should use saturating_sub instead and then not have
+>> to worry about this. (It should still be documented in the function
+>> though). That way this can also be a safe function.
+>
+> This doesn't seem better to me. I'd prefer to have more rather than
+> fewer guardrails on such low-level operations.
+
+Your second sentence seems like an argument for making it safe? I think
+it's a lot better as a safe function.
 
 ---
 Cheers,
 Benno
-
-> =20
->          // SAFETY: We just initialised the first spare entry, so it is s=
-afe to increase the length
->          // by 1. We also know that the new length is <=3D capacity becau=
-se of the previous call to
->
-> ---
-> base-commit: cf25bc61f8aecad9b0c45fe32697e35ea4b13378
-> change-id: 20250317-vec-push-use-spare-27484fd016a9
->
-> Best regards,
-
 
