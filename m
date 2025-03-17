@@ -1,72 +1,65 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB4B2451EE
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4060724BC15
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742222611; cv=none; b=lFpr7g6kui3MJ1f8SX7FjQRDWGole6/26gnpMD/TgXDrVma6Fp1C5youU2bUYBkpMWOOIOK0gkdScUnP0CCQXOMPwCSJibSQ1rlsC8g5puJETXyrMZXAyDfi7ZEOuA9EIE6Md8djyWyuOUa1u/KgQwuJxLWpmoZVUxA49af8V90=
+	t=1742222629; cv=none; b=TxlRQep0Ozr3Ll02s+bGptp8jIVvXg8PzS4BTn/+WXiF5ZzQVjSBcv/Z9n55tIA4qzGfkO/CWLvak980BMP/HotrrEL2M5RexmB+S2QtgAjo+NGNeTo2HP8pg2+2UXRvc6dmidw9Pdy/RQ0nos7i3b5aUzE0GHxSR5tARDnRsrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742222611; c=relaxed/simple;
-	bh=y0MoIY1f0jG4tiO54zhiTP4RygS0t37nrAz4qSgkgUQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cTseqcvQ3enhqd00cTDQh5Y6Deku28OMNs84OZ3mbbAtjcAZRm3QOjDZQm5jqkkdHVIFtS+I1bZvb0JEehdhiMTM4NrmFC5seC+N0d899D60D0QgWj74trnjfMJRW60yHT7WWeHTwP7SK3+s9+sWy1gvRhUpIwn6cmA9Pq7oInQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=AYNdwMV/; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1742222629; c=relaxed/simple;
+	bh=7I7CHexxafQZbmnSocoE2kA9d9e97I6XrBxCsZuU39E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nPpztI+8pl/oDLQNVz+1m9qdEguxmnP86aVVP1hF4riipQNZABROp6y6kcUTtN1PdvOjsaW5uzjmpBmTU18FTgOBdUEqsj1NOe3C0s9BTbdSy4NSWti6YMFVge7TNRlLvqxOjQpUWZ4LCh0oyOBcw+5ckdZNVdpKvygLwk6p+Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=YEBVJb+s; arc=none smtp.client-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="AYNdwMV/"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id F1869240103
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 15:43:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1742222601; bh=y0MoIY1f0jG4tiO54zhiTP4RygS0t37nrAz4qSgkgUQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=AYNdwMV/KTHhPrXBbU1hGOw+xUXgBxt8zjWdTgOfwOwooHJgM8f+2BHVZUcXhZsi1
-	 HxyfjbhXkrrjeZDHPPCTKgWF37OFQLV2KRBZ0MEY0pVbQ5LIRxcN+Z6LUuv+W7ku7T
-	 I5TXCu8JB8GRdxAPS48g/L/o/2iH3iy2p+a2L48VP50WIDbAbcRDFqZkHdixnhYZG2
-	 gfqyc0/+JhevqCZwRyeeOV2o2HS+tBpCx1R3GLbrw4vFG/U8tX1NNfyA+gfBaqaiB0
-	 vHaktCiae7bgsqBGdbs1GvccBSgFKkJnfJO88jvGOlBYsFmT6wK66acrmOP55wIgfN
-	 5YL4IzMq7nLpw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4ZGd4l2vLrz6ty8;
-	Mon, 17 Mar 2025 15:43:19 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
- <benno.lossin@proton.me>,  Andreas Hindborg <a.hindborg@kernel.org>,
-  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
-  Danilo Krummrich <dakr@kernel.org>,  Wedson Almeida Filho
- <wedsonaf@gmail.com>,  rust-for-linux@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: uaccess: name the correct function
-In-Reply-To: <20250317-uaccess-typo-reserve-v1-1-bbfcb45121f3@gmail.com>
-	(Tamir Duberstein's message of "Mon, 17 Mar 2025 07:43:03 -0400")
-References: <20250317-uaccess-typo-reserve-v1-1-bbfcb45121f3@gmail.com>
-Date: Mon, 17 Mar 2025 14:43:18 +0000
-Message-ID: <m2ldt3btvd.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="YEBVJb+s"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742222626; x=1742481826;
+	bh=7I7CHexxafQZbmnSocoE2kA9d9e97I6XrBxCsZuU39E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=YEBVJb+sPqT3eXVpd7R7N8xMRtKQmqHQID1faEqUwTTbAneyghYpuZMc2nCzi4LXJ
+	 nHLUul5DJrIVrHTJtBO4FRzGuOs+oDuATja21UefmOEkZYjLxXZwCpMoLniDXOsQ9x
+	 WGPa0bajUHobHyLeTy/e5Rbr5i8bAkepy9FIvf/il8O2ZAq18cUswWwflAJMCW4ZGf
+	 3ejEGgdkCsmM16V3A1MTB7PVtapZfvYLxNZE+52Qf7oW/rmpdslagPDTbbZze5MVzw
+	 yAGlnWRgb0JYc8ytOrsrMRpIb+x0J/+25v2NCZUGUGNy66E0IM9R+WhfilwCgWgG8x
+	 gvWVAJUDqCveg==
+Date: Mon, 17 Mar 2025 14:43:39 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Tamir Duberstein <tamird@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: alloc: replace `Vec::set_len` with `inc_len`
+Message-ID: <D8IMDF0SXKHY.2Q57PAP87OBQV@proton.me>
+In-Reply-To: <CANiq72nZrHzhYztDMQnhuW3hhg3eXtwM+kZMd=3ARbWZTZWe9g@mail.gmail.com>
+References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com> <20250316-vec-set-len-v1-1-60f98a28723f@gmail.com> <D8IGB61NVPBT.1I3IZYPVPIEMU@proton.me> <CANiq72nZrHzhYztDMQnhuW3hhg3eXtwM+kZMd=3ARbWZTZWe9g@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 540012deab8b70ea7deeb137e637df1d7ebf0121
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Tamir Duberstein <tamird@gmail.com> writes:
-
-> Correctly refer to `reserve` rather than `try_reserve` in a comment.  This
-> comment has been incorrect since inception in commit 1b580e7b9ba2 ("rust:
-> uaccess: add userspace pointers").
+On Mon Mar 17, 2025 at 11:23 AM CET, Miguel Ojeda wrote:
+> On Mon, Mar 17, 2025 at 10:58=E2=80=AFAM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>
+>> What if this overflows? Do we always have overflow debugging on when
+>> debug assertions are enabled? If yes, then this is fine.
 >
-> Fixes: 1b580e7b9ba2 ("rust: uaccess: add userspace pointers")
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> No, they are independent settings.
 
-Reviewed-by: Charalampos Mitrodimas <charmitro@posteo.net>
+I see, then this needs to be `checked_add` or some avoid the overflow
+some different way.
 
---
-C. Mitrodimas
+---
+Cheers,
+Benno
+
