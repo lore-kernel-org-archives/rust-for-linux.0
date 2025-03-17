@@ -1,71 +1,74 @@
 Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD4E1AD403;
-	Mon, 17 Mar 2025 17:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCF41CA81;
+	Mon, 17 Mar 2025 17:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742233975; cv=none; b=IWh5C+v407743+fURaGEl5tqrwTSe99YWNRv+wAE7jPkEVXvWc68925SrX1ekjQXMVAjB43sblK7hQc3o2RJ0bC85yznqdx6b1eHinzL4UflLZWXMdWQyVPU6g3ikMUEkLcb7t0+41Dh3QuwCaUwncJD+hcIluo6kSiFEDr/5/U=
+	t=1742234158; cv=none; b=Vbj47g2sDeVMJYNLJ2CFsAH6G+aff5ajkzmmfTi+V6uAYxK74ciUynpiQM1Ha1Gz/kP0EKqfefoJX8SjoyZtY6uqJveAZDzFne/lD3jdus0y5hXQX9XxkMPkzSGycdA+hddyY1unlSGFbaXINGA++8t6CjqFreqzPWZ7nhgFERA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742233975; c=relaxed/simple;
-	bh=zl/nX8wj3yLCj3xnxXmmvs7Nrgt8lnuIVxCL59pWZuE=;
+	s=arc-20240116; t=1742234158; c=relaxed/simple;
+	bh=odJtQofV1AZHLRfa4P5rRm51SHEXswsQ8eWRp93gFsA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XImEbzMqPmnzg56QZoTg0wDhr27mdhLTl9VPXYDmN07NQGMRE9yIN08cKQqJuRtitvfh7HKlB9XUlrqLj2oW8zQD8PpDJ+3k7nGcx0ZrCz2xFWuy79lj2EI8MBXPWZj5CHNeoMpppnF7tlg2qjg59WThYb3pbZzcJ8JvelthiZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcjn2eXd; arc=none smtp.client-ip=209.85.208.181
+	 To:Cc:Content-Type; b=MOGpJfFAsmmgSwZuUntNYNXMouJzY4qKjQlBK4LZzmVGqltimJZEIrSBeauUtIjcSMbk3SWS+d9DW3Oyfy47tbWnWQYEcr0gHBlWBdKb8hR0nh4Ajqsq64dEPk/7c/kQHs9au+tUOFiVyawKp7cqOXAGi0/+9LxipACQJcQRDmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DdTzysS4; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcjn2eXd"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30613802a6bso53133361fa.1;
-        Mon, 17 Mar 2025 10:52:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DdTzysS4"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30c05fd126cso45229771fa.3;
+        Mon, 17 Mar 2025 10:55:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742233972; x=1742838772; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742234155; x=1742838955; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Z5thfR2ajzXn32xUhJ9gHgw/bHdU8lF5FnexVFpisXE=;
-        b=bcjn2eXdR9jIKK7Bcblc9TEiyj0Dr+gwzgtGsITBHqQ+TopdPz1ttvdM+vOkSovwle
-         SWySpa7nkKqlIakjscAqDpwy5oJ1q+YWR6ap4LkM5X4l9nNFqFdakC6DT1C+h2Z7VhUz
-         eXuJOGtBhNJXZsqVYZ09vxG9L6KZsSow9gH0I0MdBVmS6/DuJGKAZvZpzAzAnuP4WmNk
-         8en/VsayZe9V8oNmO2YsnOGtyzNl9hQl+z8gL9BDZt8mFNcu6QWLt+ANTkTpxRTQnNoA
-         LjFPLoWsjFXzLm/bS9TuMU0ngmFormNhYkIN3wsiIJ/uHxE/b8gQZ6J0hc6oXRL3EWqH
-         Y0qQ==
+        bh=9OAusYntyp6gDYkffujc8F9VaURwt1VLDqhe4L7vrH8=;
+        b=DdTzysS4pXPWYkfKL4DjzrY/Q1JXyOegrIrayqFqu1vyCLmFbdTTw4yDs+cfV5sePW
+         h3irzL1dDb+V7nrl6iWxaj0q86Y9QAKipPb2g7TJxlFQn0vkwG1VV0k3wHR/vK/EIy9e
+         crtaCJtKhVaYO3Z8k15Xmr+Xv/5yVXqaL+V7h13QyWxGsNiain0aeJS3yOOJjd1s1Hgd
+         QuyWswkVllKB2fbQAjuhWj3tnhC8zVL42WWa8tLFPALob0BxrUgCjJEuwAdkVs9MXON6
+         JFQb2SyIIU44satSZKZbE+BtjwgIvr488rsmjiGmLYcO0FtIl8SpNiJjtLE5c1/nxj+X
+         NJuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742233972; x=1742838772;
+        d=1e100.net; s=20230601; t=1742234155; x=1742838955;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Z5thfR2ajzXn32xUhJ9gHgw/bHdU8lF5FnexVFpisXE=;
-        b=kcIdI4BpoYRJ50XCQtzbmm9WHW9YDSUnV9XZauXxbq3bRTqG8sDruwzznb/zv7f/LP
-         I50SFHWveNgvN8D7IYlOW0l9rs6DWRgzQSNx4ynVz8/lZxkZHMljDjM/gyNww3Um8BQh
-         9yDz2cEQVZ0aysmbsK6LGwKYtQw1njg+AMgGKNUNLn/NA7xbuoHwzO4ek4ULTf7FLcLk
-         k321FDoFzWycYxtf/vua/WPgGeEownYjC+Qf+Xva4VKEbvasuTj8/MXgGUyHPwjuR5vP
-         SyPbFOtB5xoxIyT86ODL717Kla8ai+9pTM/GGXb3o5GjC1QCfb+fljA0+WsspuyCRjxK
-         zoZA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUDm0UW4tKXMnXia3LnMwrSYdAjjTzDLY6Jg8QKASXloUG+DYfUQoH9CG+G+/7j5CaqlLv+u/4gyjcJbs=@vger.kernel.org, AJvYcCVHJoXUyD92FQ6cl17CUyHt4JXhI5RmW0D1Ri4Ao9i8k5Qfuqic/VDTSLBdCNHhM0uOHSdSf36rGRhqQ4zB6tQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1dO9pR4NssQEj3d9IX4JRdVR0AL22k3uGBJsm430n6UC6Bg1e
-	nw5GIZNDrjxhHOwtM31pCUy23SYiwDS36tqAH0xMseyXqzR2MxV16bsCxsvs+PHMf7GNSwZfNp6
-	G9zcK6hHlFqIrsPDss+ttntgk1eg=
-X-Gm-Gg: ASbGnctW6jUE1RMdpn1VoaBxQC6GY61yIVdKDbJBqeDkqzZQUppxi+T6RPmjp25Kxxa
-	X6LYaxvS9Inm83b4z4LCMkKvn5WtpQzgxm4o4KHns8l1MY5iRb5+Wc+QCgslFOzBFNM4QdggFwR
-	EpVkxce2NL73x8AjP1lIruu138HlnwlyO0dDuRmLGLxu0sTW8d6TZtr/XIQ19t
-X-Google-Smtp-Source: AGHT+IEVurWRQByJ+jwpbSCBHSHIUFCLmbx852SJppmpGLil+MdtcsJIaRBBFH46mVtuOsJBn41cnzB9uh2ULeFSHQQ=
-X-Received: by 2002:a05:651c:b12:b0:30b:ba06:b6f9 with SMTP id
- 38308e7fff4ca-30c4a8cb5dbmr91075781fa.26.1742233971998; Mon, 17 Mar 2025
- 10:52:51 -0700 (PDT)
+        bh=9OAusYntyp6gDYkffujc8F9VaURwt1VLDqhe4L7vrH8=;
+        b=Y8JBRmCrSRNPwr9ZBL5iuhuKsJPhKfU/9TUUXUtpDlERk0WcM0qtUCY8tz9f49gzTi
+         b9lNEb2vlwUOzAJkvtMSx/lkDBZRUOelgIWrgMRILpHHwrGxm1HwU3OPVEy+bxBlF8Dl
+         3XjsGCyLLB/qBtuN64BkDj7DBtkZa6G5wJdNeK3U2E1r9mBfZgtNxTuPoP2zeaGG511q
+         n23Lp/rFinQqkc+TrBibbmcyedgkih9tkBOG8l57Y2oMhtn1+okRMnBULhceXRUt8J2b
+         fZlajtg8i24toIdYkPL8JZ7eO2MhJ5hgF25kzdSBYeJELgsfTiKg8HycGpEg9Au3bwS9
+         0BGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFUay77u+xGdLCxHSKXDNMIFD4ZtjtMThKM8gN4E+atl51+H9iUc8e0zzB96QE/v+dKWO/lbAFphXZigw=@vger.kernel.org, AJvYcCUf2v4Tzxr+TWOB7civPIGTSPyAoP4lSp3AKBexkZokDJ8ajFBOPYf+CDgdHNXyeYu3sGf1UsWZNcapWeVC2XI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwASxoIPuRo9Bft7zALdGnQbMo5gyuTH3VM8+ORSsikRS/1omof
+	axHrBtIWpyCHVUO8S93tg+LLap683kxvdi5qwvOp6h45stvAX2oesBRgrZkkaFlXCzxK5OkJq/t
+	heG5JDlaOvXvAhZeBKMZ8FmJPLEA=
+X-Gm-Gg: ASbGnct8A/Ku5kzCn4ZQL5BdR1NUeUU0l+J/XyKFbmUDsSttjHHBxCa84DghLopFcVU
+	ELk7BsmmoOG2UOOVsbbWTqSMkFWKgUHOIJzQxTT3008zWHzzL+t2nYELg18VI2jt3x8r5ppekuB
+	lTRLZ/SVrDdMY6G4TqBkiifjnFddn3A3G0CLDMITojVRS6nh4qluH5hdpSUOQGmtLa5DcADDI=
+X-Google-Smtp-Source: AGHT+IHjiO8TcUXiHgA20o5N+AtK1Qj+Gy62ZTyhfAn6VbIfvnYUlUvEO6DX7i6hI4Oe9EfhlUNwkDslOnbyuatT8O4=
+X-Received: by 2002:a2e:9818:0:b0:30c:111d:d7b8 with SMTP id
+ 38308e7fff4ca-30c4a8601ebmr66116811fa.10.1742234154842; Mon, 17 Mar 2025
+ 10:55:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250317-vec-push-use-spare-v2-1-5dc6583f732c@gmail.com> <D8IQ6GO56119.2JBP30MJWUK6Z@proton.me>
-In-Reply-To: <D8IQ6GO56119.2JBP30MJWUK6Z@proton.me>
+References: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com>
+ <D8IM66U67XBD.28KWYO1XSF8ZQ@proton.me> <CAJ-ks9kq1cQ2-ZNzG9P4SBvk-AjXxT+na-89K33imB4fsCvu4A@mail.gmail.com>
+ <Z9hXMcFVdF8MMusU@cassiopeiae> <D8IPQUN25M12.2CIZR4QHJ201N@proton.me>
+ <Z9hcT4KPwgtHmiTT@cassiopeiae> <D8IQ5BDTLCLZ.1UBNYUXLK12X0@proton.me>
+In-Reply-To: <D8IQ5BDTLCLZ.1UBNYUXLK12X0@proton.me>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 17 Mar 2025 13:52:15 -0400
-X-Gm-Features: AQ5f1JoNgxfJW1Kv1LL2mWZklUT1usJmmUiP35voBmcB8Wywblkhumy-vtjFzlQ
-Message-ID: <CAJ-ks9ks+-=rEUBw59LBg2EWieSejC8hvqeux3fwzRNSyMpO1w@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: alloc: use `spare_capacity_mut` to reduce unsafe
+Date: Mon, 17 Mar 2025 13:55:18 -0400
+X-Gm-Features: AQ5f1JrFZ2MdVZ2cTCig10DakcJD0IHRvR63HDOKHIDkDYVWx2MYSgz4WM56Xbo
+Message-ID: <CAJ-ks9=xLLXovsaduKFBfxvkfzYgTaSPhhW_oRN5y1QOuKJFkQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: use `spare_capacity_mut` to reduce unsafe
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -76,57 +79,80 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 17, 2025 at 1:42=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+On Mon, Mar 17, 2025 at 1:41=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
 e> wrote:
 >
-> On Mon Mar 17, 2025 at 6:23 PM CET, Tamir Duberstein wrote:
-> > Use `spare_capacity_mut` in the implementation of `push` to reduce the
-> > use of `unsafe`. Both methods were added in commit 2aac4cd7dae3 ("rust:
-> > alloc: implement kernel `Vec` type").
-> >
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
->
-> One nit below, with or without that fixed:
->
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
->
-> > ---
-> > Changes in v2:
-> > - Use `slice::get_unchecked_mut` to ensure we avoid a bounds check.
-> >   (Benno Lossin)
-> > - Link to v1: https://lore.kernel.org/r/20250317-vec-push-use-spare-v1-=
-1-7e025ef4ae14@gmail.com
-> > ---
-> >  rust/kernel/alloc/kvec.rs | 11 ++---------
-> >  1 file changed, 2 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> > index ae9d072741ce..b91b287e0d22 100644
-> > --- a/rust/kernel/alloc/kvec.rs
-> > +++ b/rust/kernel/alloc/kvec.rs
-> > @@ -285,15 +285,8 @@ pub fn spare_capacity_mut(&mut self) -> &mut [Mayb=
-eUninit<T>] {
-> >      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocErro=
-r> {
-> >          self.reserve(1, flags)?;
-> >
-> > -        // SAFETY:
-> > -        // - `self.len` is smaller than `self.capacity` and hence, the=
- resulting pointer is
-> > -        //   guaranteed to be part of the same allocated object.
-> > -        // - `self.len` can not overflow `isize`.
-> > -        let ptr =3D unsafe { self.as_mut_ptr().add(self.len) };
-> > -
-> > -        // SAFETY:
-> > -        // - `ptr` is properly aligned and valid for writes.
-> > -        unsafe { core::ptr::write(ptr, v) };
-> > +        // SAFETY: The call to `reserve` was successful so the spare c=
+> On Mon Mar 17, 2025 at 6:30 PM CET, Danilo Krummrich wrote:
+> > On Mon, Mar 17, 2025 at 05:22:15PM +0000, Benno Lossin wrote:
+> >> On Mon Mar 17, 2025 at 6:09 PM CET, Danilo Krummrich wrote:
+> >> > On Mon, Mar 17, 2025 at 10:39:05AM -0400, Tamir Duberstein wrote:
+> >> >> On Mon, Mar 17, 2025 at 10:34=E2=80=AFAM Benno Lossin <benno.lossin=
+@proton.me> wrote:
+> >> >> > On Mon Mar 17, 2025 at 12:42 PM CET, Tamir Duberstein wrote:
+> >> >> > > Use `spare_capacity_mut` in the implementation of `push` to red=
+uce the
+> >> >> > > use of `unsafe`. Both methods were added in commit 2aac4cd7dae3=
+ ("rust:
+> >> >> > > alloc: implement kernel `Vec` type").
+> >> >> > >
+> >> >> > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> >> >> > > ---
+> >> >> > >  rust/kernel/alloc/kvec.rs | 11 ++---------
+> >> >> > >  1 file changed, 2 insertions(+), 9 deletions(-)
+> >> >> > >
+> >> >> > > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec=
+.rs
+> >> >> > > index ae9d072741ce..d2bc3d02179e 100644
+> >> >> > > --- a/rust/kernel/alloc/kvec.rs
+> >> >> > > +++ b/rust/kernel/alloc/kvec.rs
+> >> >> > > @@ -285,15 +285,8 @@ pub fn spare_capacity_mut(&mut self) -> &m=
+ut [MaybeUninit<T>] {
+> >> >> > >      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), A=
+llocError> {
+> >> >> > >          self.reserve(1, flags)?;
+> >> >> > >
+> >> >> > > -        // SAFETY:
+> >> >> > > -        // - `self.len` is smaller than `self.capacity` and he=
+nce, the resulting pointer is
+> >> >> > > -        //   guaranteed to be part of the same allocated objec=
+t.
+> >> >> > > -        // - `self.len` can not overflow `isize`.
+> >> >> > > -        let ptr =3D unsafe { self.as_mut_ptr().add(self.len) }=
+;
+> >> >> > > -
+> >> >> > > -        // SAFETY:
+> >> >> > > -        // - `ptr` is properly aligned and valid for writes.
+> >> >> > > -        unsafe { core::ptr::write(ptr, v) };
+> >> >> > > +        // The call to `reserve` was successful so the spare c=
 apacity is at least 1.
-> > +        unsafe { self.spare_capacity_mut().get_unchecked_mut(0) }.writ=
-e(v);
+> >> >> > > +        self.spare_capacity_mut()[0].write(v);
+> >> >> >
+> >> >> > I think the code uses unsafe to avoid a bounds check, but I'm not=
+ 100%
+> >> >> > sure. Danilo might remember more info.
+> >> >
+> >> > Yes, that was the justification to use unsafe calls instead.
+> >> >
+> >> > (This may also justify keeping dec_len() unsafe, since otherwise it =
+would
+> >> > introduce an additional boundary check for pop().)
+> >>
+> >> If we use saturating_sub then we don't need a bounds check (at least o=
+n
+> >> non-debug builds), right?
+> >
+> >       fn dec_len(&mut self, count: usize) -> &mut [T] {
+> >           self.len =3D self.len.saturating_sub(count);
+> >
+> >           // Potentially broken, since maybe `count > self.len`, hence =
+need an
+> >           // additional check.
+> >           unsafe { slice::from_raw_parts_mut(self.as_mut_ptr().add(self=
+.len), count) }
+> >       }
 >
-> IMO it's difficult to tell which operation is the `unsafe` one here, so
-> how about you factor the `spare_capacity_mut` call out.
+> Ah sorry, in my mental model the function returned `()`. Do we need the
+> return value?
 
-=F0=9F=91=8D
+The return value is the whole genesis of `dec_len`, we want to return
+something to let the caller know they need to drop or copy the memory.
