@@ -1,73 +1,73 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92E979D2;
-	Mon, 17 Mar 2025 04:04:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F3E79D2;
+	Mon, 17 Mar 2025 04:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742184276; cv=none; b=DlObvQj97O6TC0zFl6S+CpJWjqo8dY/j+cLK2UVFTwCGD3aaGVCPJLhIawNZCNjtu1aB73HSl5FCLdzj2svFgFB/XkGDzCSOwE/dRR7dRfF7SalM9LJ16L9FjEhcIk2OoQ7ZSvOSrajUfBsLPKWTWUgh1YxlM1AcvRaB3CbJmWQ=
+	t=1742185265; cv=none; b=MFQVeCEkFIKBe1eWFlDkpX24l6uRJiYioXZefzDveFe3KgegmiBWaZk8b7vmyTyJw1M8nPhhOWcFVHMCPGF9jt2XFhfkezkPeQbTxjklxG1b92pQERXiQt6M/6YRf0A60ngsP5tSJNhka43jpjmSA7WD/d4cbb+tdMddNcwvLYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742184276; c=relaxed/simple;
-	bh=Zqx1VgtwCX1Jxqme0dY01T8ETZuysrsyCc9RI14Ut68=;
+	s=arc-20240116; t=1742185265; c=relaxed/simple;
+	bh=AQA9dlmoqy+Jsgn9EwnyKogUKDWd5Cey2OuVpyiC4JQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U/FJq6QmYawrEIBUP47+gcXakmHDjS8pu4XxF/BYQSfp4wnOCfyp3p3Kdx4ScTAsYy+6XkfWjf09e+QxLgrPr8ZGj6L2r1ZL+SwfjO8u2+GC9JwGgMSWwyModcggllc+SFUXkfcBRz4auU8NkkHBlM+Dk6KDfUTxSWkfM54fUQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X0g1w9sr; arc=none smtp.client-ip=209.85.219.41
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y+B6KVbhQB5rz+9Q7iD1WI74to6AYtPeZ+Klba8b8kUBNjh9nZGT3/Fr+a2kxo9Do95CHbckOtQ02La/YOY/8kY1lYHJ19INr83UDakH8ywsUYPccRHmkv6PHCpc86b324CgOWwG6KF7ccp+hzSid2Rstg6E1BJ4KNhPhyVMNuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4wNZGJy; arc=none smtp.client-ip=209.85.222.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X0g1w9sr"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6e90b1b20c6so22258266d6.3;
-        Sun, 16 Mar 2025 21:04:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4wNZGJy"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7be8f281714so442873185a.1;
+        Sun, 16 Mar 2025 21:21:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742184273; x=1742789073; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742185263; x=1742790063; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FdC2SWGkfGaYEex5fKxWwqou3YQPoCqtTCDGuK//30g=;
-        b=X0g1w9sr12mVD/4tyUg/7hHM19gHNV/jZS+woWUKTVccrcgUkzWCZApmyeM6NqWGhI
-         E9ckD4g9rvL4Rglna/VocwWRSH82AKl6H1ZUduvAEZUWCWUNKNDddU7NAwyi98s1kKX4
-         da1YJ+8pTJMSQBHrHd2ZuUxsjFkBO88NaVKjnuVWuTTQ7sLP0IvT8SAldJAUopnigfXT
-         KNlM2JO1CuA00FZX+m9NiUSJKo+AOteQ8hqKZ97ykWv69FtwKG0/aGE08nV+wnafNwn/
-         A5+wCHdvTIPgGF9qh49rL1WCtGbMjrvVN6DKg3hSX5XHpezlRpB3+ogvUnnbUrFMZdhM
-         +Oxg==
+        bh=IXhCFZU0KRigtJIqFtwicDR75ty228eo06CQmvCoMuA=;
+        b=S4wNZGJylXMCw52+NdmKQa1irAauxjqNCZwXaLB+89B5y1U0rlC4c90Iu0TUVQMZtb
+         iNvL9/cT22yUdOtwF4+QDcezZ9iMZDg3bmoHvWHaFtSAD7afKb18mH+eGaqgqXLuFnwx
+         TV2fRYlX9HWXfWtD5nGCVVSEBiEOHEN45XrR4f+eKw6W5OOMiSQv1A6VyMXG4lHH/ahp
+         /t8FnQY4GnsN61LiBw9RBqdfmwiQYuWpDf/X0y5e3KH5/8sSZmM7OvIOv0u5qKYeoFic
+         WOaIaVxIyFl1WZFItaWzYSKD5BDBI4OHflzTgrF4lqqhcAJtqCEYLdsP6EYryPQYHZZI
+         7Fbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742184273; x=1742789073;
+        d=1e100.net; s=20230601; t=1742185263; x=1742790063;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FdC2SWGkfGaYEex5fKxWwqou3YQPoCqtTCDGuK//30g=;
-        b=i32xVVxcGupb2TrebSKZeFEzY3V0jGeXLFxsqW5LMl9H8/CKwa6WdZEhScUZxplr6g
-         DrUr66sSy7kQgG7pQUdVq6wex2dI5lnWHnqEkFnm2v/IfHO6VN+jVNIWD/XA8sdu4n18
-         efpQjDx+V0Tgetwfw+qqv0otVXXV8CzChXXVa8q7A0zkP9+c0yljCS8OfO1AM3Zqnsw5
-         WO/+1imlv23bmUQvE8YmBNC/LgKUuLauFWW7qt/dDSvNZXbcyl3OC9H2wcHEQHxj+S/i
-         T0G+/sON0MXEIzY0i0o4H1Ap47Qo04uhtxmjppBVlctamya2UyA10lPYqxvCNL1fFH3S
-         1pCA==
-X-Forwarded-Encrypted: i=1; AJvYcCUnIFWGYR7Ph/N8iNvMJkYGzrH75NfAl03FL589Bm9UPAS+uMeDzOkv7xEjngjgfnNRKizPdHvguTUKvkH8@vger.kernel.org, AJvYcCWLZ+y0uyuXq1o+Nj1ZK8fQsKZOieM2EsdgkJeiq/D+32VnYI/60mVoVsZJZe/cHXqzP1+mdVoYWO4eGA==@vger.kernel.org, AJvYcCWnh3w40J4m/RQr2vYO209IiBwZc5tmy/zm+ZGE9eQ7YaggBLXNC2I5+EipogTl696G9SFtWT0aa2aP9xX9GKY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjI8DFLerFYaZLxdOLijqMGc4qrWAwsroyGD9c8SY7plQybrYB
-	TsBZZdicb3JxBXs1j2e26rxlqO4tVh613tuQoPjB51RDA9tyvmCm
-X-Gm-Gg: ASbGncu2qeL+Q8vSXzxEpbf6USgHfZuZpWdoncPIFzf3itnpueGAVP7L10x6C+YAKFO
-	X85lI6cCQhFBBiQqAxxr6dJjJWrLNWjRi1ow0wrVDYSPlBZDXeDG8z5jd7E9sKd3El2pkoarajT
-	nDizU+g+oGqBOInkoVvDDG+FaF4L/BJKI63WV5vzyAb/+wLdUG0LBac/+KXTR/V/X45c38HfiCF
-	pGokg8Lvk1lNu4lKK1D0tHQrc0LlC1f3aHHqbWAl8uaKomBY6tR2bMO4jEo6LIyS+DfryDKUMFK
-	JxAtL72iuGOczAmN5ifuHl7vAnroRObf8p0lcwtP+9X5NDVG3o1G9X0fVIshqZbC5QIiTcqhT3x
-	CZhV3wY2AZRagaorbeMl/MTfIFdOnl8KAdOs=
-X-Google-Smtp-Source: AGHT+IFBjKayl+RdbauHaxiuB08xXW4tWmQhml6RN5yk9hM6PR8a9pGbUs5bHQpeSWSWoGVm6b1QQw==
-X-Received: by 2002:a05:6214:23cd:b0:6e6:630c:71e8 with SMTP id 6a1803df08f44-6eaea995137mr171140126d6.7.1742184273679;
-        Sun, 16 Mar 2025 21:04:33 -0700 (PDT)
+        bh=IXhCFZU0KRigtJIqFtwicDR75ty228eo06CQmvCoMuA=;
+        b=sfV0krfn0YKuKmIkkZNallzq7CKheja0gqj9l1wWYviw0Tjin6K6OEC3P/4mzb9saZ
+         /jq5NGkUm4vDoG9I0xVw/FVvlSGzCcMA8F91YFpuJwmVCW+Ua+v5ABILOQg0hYldgXLj
+         2/TjjycrVDAyON/Vb7gI+t/2rSTm0xrn8uEQRoT7cHECPEog5eS+UIEQweAVtNwT9Shk
+         dnjYhE3WoHEuAjhsFY7PRtgMMRSul3AnBKeDGB1ei6q3zWw03UnDr3nlhch1t9eawR+G
+         9RyW2UXXQwas5fSMzOLpraoiK8p4J3G8/8yWNfRoznLHPoMBjwbg2h/rV05Q9bpEUh9A
+         On2A==
+X-Forwarded-Encrypted: i=1; AJvYcCXYtlwp1Yy6G8VtyvQ4LA0TGnfSodGhHjM0mGHNd/57Vd9W22L46qV41ZgjofNb9Fha0v01VnSxgcwhME6Cbk8=@vger.kernel.org, AJvYcCXcVG7YJO3BIZo3/ErHENHaC0Z0Xp5Arnpy3QjgPyRQKRfFY50I4YSCDF2p7QXwUclaSZD+EiYposQE6O0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcpzF2/wXGpG5BdX1vLJ+aG3N06igDMmwiSy4x3ASQ1I/3utsY
+	Ahv6f6Ca9SLrVM8buFTycOjdGwQNamGsFhP9PSZEzDln4Rwuh1Mh
+X-Gm-Gg: ASbGncuAw4ymp+wUeCo7qXOHMiqi1EIWvSotzsNSO5mI19RJse70MYkb0PXS3EgOM7Z
+	PhAuvKUbNAAb5X7TMZrU/CfOVAp8uEvxyfb3kkranmmtuuMoHkYfOE1uVXzpICL5Y24yDHrv27Y
+	i3WkL4qdIWsoII8dthp9hl8Xj5e2JrgpVv5MC9ReN6nBuNxI5dA3XQDtw+rPC1+lE7U8+CURMPj
+	nPAuK9l64YcNm8aHrA68hs/2F7QvlqYPZ973BRh621b8ICaqzZd6/MH57tFXiLCWjGhUtkbU33F
+	pwqvTdZh6m9JfyU7VPRzJic/XzIotDGRsIUb0/scvzT1xx5ztW8WFfwVOJZxaO6614D0y3mn97r
+	wjdoz08NOM4hitWA6KmPKtpG1KNBV4KCQeyE=
+X-Google-Smtp-Source: AGHT+IHeTb+KjpEzUGH6xxkquuGpqUeE2z3SLZ3YYMjBrmPOTTp5rs1Q+rSp7Hjqt7D5WZoi9QAyXw==
+X-Received: by 2002:a05:620a:27c4:b0:7c5:4caa:21a4 with SMTP id af79cd13be357-7c57c8fc42fmr2039679685a.55.1742185263212;
+        Sun, 16 Mar 2025 21:21:03 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade237957sm50558536d6.42.2025.03.16.21.04.32
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c573c4dd9fsm549102985a.4.2025.03.16.21.21.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Mar 2025 21:04:33 -0700 (PDT)
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B0B4F120007C;
-	Mon, 17 Mar 2025 00:04:32 -0400 (EDT)
+        Sun, 16 Mar 2025 21:21:02 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 446AF1200066;
+	Mon, 17 Mar 2025 00:21:02 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 17 Mar 2025 00:04:32 -0400
-X-ME-Sender: <xms:UJ_XZ6DDSwKCe5ZvCIEXH1KGlfQDsQKuZIX0e8WBS41-cWtXy72gug>
-    <xme:UJ_XZ0gnemuLMsj4msD-PDLSwpMC5WaYioNwnJ6cQdUdnnvre7GEvpua-qd21PqRl
-    9vGcNV9aVTwRKN9iw>
-X-ME-Received: <xmr:UJ_XZ9nBDSDUjviwonxZviSa_l5-bAJtAa9kUuvEeAsd2Ce2EDaVIDIb>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeekgeelucetufdoteggodetrf
+  by phl-compute-10.internal (MEProxy); Mon, 17 Mar 2025 00:21:02 -0400
+X-ME-Sender: <xms:LqPXZ52yovKdZjJ3SOnXeYxB2ej4pcMtiFkst1Vzy-dI-6N61hyscQ>
+    <xme:LqPXZwE3cZKsKNknfMLdyprrc48zjkpLWqOxmXwpl5r9BjMaaBoEWtMJbXuRM8Gh-
+    2Ll9bYg_zLO1mSXXA>
+X-ME-Received: <xmr:LqPXZ56p65tliJaUcEqA-rp-7I5Bef_B8KIPb7cHEo48xK8l837Yv5lh>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeekheefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
     pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
     gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
@@ -77,39 +77,39 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeekgeelucetufdote
     cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
     nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
     ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheptghonhhtrggtthessgihthgvqdhfohhrghgvrdhiohdprhgtphhtthhopegrrdhh
-    ihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtgho
-    mhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjh
-    horhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhho
-    rdhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrlhhitggvrhihhhhlse
+    nhgrmhgvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htoheptghonhhtrggtthessgihthgvqdhfohhrghgvrdhiohdprhgtphhtthhopehojhgv
+    uggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmh
+    grihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghp
+    thhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoh
+    epsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhi
+    nhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlse
     hgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:UJ_XZ4zr8yhGLZQx7SvvzOBbXveY6ewp8CsHMJ440O_E-YZJXcDH4A>
-    <xmx:UJ_XZ_TWzl77m1yLkxNrUxP5tImmzP7inyLPm8SPUL3OTF4W2fuZLw>
-    <xmx:UJ_XZzZaB3Xa2Z-v5ze5PZY0_tgvOqrL73nrCJX31l_IhbTfuDjtUg>
-    <xmx:UJ_XZ4R-k99u7Jz4wDc3fYp2lcbb3CAKZCPzhdgZQ384oDS6LkhDRQ>
-    <xmx:UJ_XZxBD2Nc4ayW3tgllwTe42yfoTsmXHxEBXh9qQ7cuxCKywKF6Cy1p>
+X-ME-Proxy: <xmx:LqPXZ22YRsRO65-Xihqf307y9YHUAHNSg0bjNr4VlDPn8lpXkgqrng>
+    <xmx:LqPXZ8GYwEWWFQMsQTRolSaYsHoGhzD5-4XKoG9fTP9Sm2suQV7onw>
+    <xmx:LqPXZ38MEW0gDgPOpdZ8B1NSavL6i_qnz5JpqEve2EjF7LQW4kz1wA>
+    <xmx:LqPXZ5n9LdvedigTHnbjdxPg_84htT8WEFfv-bhsNwHdPnryaIwYWA>
+    <xmx:LqPXZwE9KSRacawk3RMX8mH5rh6vsFZHOv1WOLW4dyRIEYf8W13OilEV>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 17 Mar 2025 00:04:32 -0400 (EDT)
-Date: Sun, 16 Mar 2025 21:04:31 -0700
+ 17 Mar 2025 00:21:01 -0400 (EDT)
+Date: Sun, 16 Mar 2025 21:21:00 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Antonio Hickey <contact@byte-forge.io>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Antonio Hickey <contact@antoniohickey.com>,
-	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 15/16] rust: block: refactor to use `&raw [const|mut]`
-Message-ID: <Z9efT3ramQIwwRXG@Mac.home>
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 09/16] rust: workqueue: refactor to use `&raw
+ [const|mut]`
+Message-ID: <Z9ejLCnJHvaRWgQ4@Mac.home>
 References: <20250316061429.817126-1-contact@antoniohickey.com>
- <20250316061429.817126-16-contact@antoniohickey.com>
+ <20250316061429.817126-10-contact@antoniohickey.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -118,9 +118,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250316061429.817126-16-contact@antoniohickey.com>
+In-Reply-To: <20250316061429.817126-10-contact@antoniohickey.com>
 
-On Sun, Mar 16, 2025 at 02:14:24AM -0400, Antonio Hickey wrote:
+On Sun, Mar 16, 2025 at 02:14:18AM -0400, Antonio Hickey wrote:
 > Replacing all occurrences of `addr_of!(place)` and `addr_of_mut!(place)`
 > with `&raw const place` and `&raw mut place` respectively.
 > 
@@ -131,38 +131,53 @@ On Sun, Mar 16, 2025 at 02:14:24AM -0400, Antonio Hickey wrote:
 > Suggested-by: Benno Lossin <benno.lossin@proton.me>
 > Link: https://github.com/Rust-for-Linux/linux/issues/1148
 > Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> ---
+>  rust/kernel/workqueue.rs | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 0cd100d2aefb..4e27df324d26 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -401,9 +401,10 @@ pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self
+>      pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
+>          // SAFETY: The caller promises that the pointer is aligned and not dangling.
+>          //
+> -        // A pointer cast would also be ok due to `#[repr(transparent)]`. We use `addr_of!` so that
+> -        // the compiler does not complain that the `work` field is unused.
+> -        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).work)) }
+> +        // A pointer cast would also be ok due to `#[repr(transparent)]`. We use
+> +        // `&raw const (*ptr).work` so that the compiler does not complain that the
+> +        // `work` field is unused.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+I think we can actually use the pointer casting here. Because now we use
+pin-init for Work initialization, so `work` field is always used.
+
+Could you replace this with a:
+
+	// CAST: `Work` is transparent to `bindings::work_struct`.
+	ptr.cast_mut().cast()
+
+in a separate patch?
+
+Thanks!
 
 Regards,
 Boqun
 
-> ---
->  rust/kernel/block/mq/request.rs | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-> index 7943f43b9575..4a5b7ec914ef 100644
-> --- a/rust/kernel/block/mq/request.rs
-> +++ b/rust/kernel/block/mq/request.rs
-> @@ -12,7 +12,7 @@
->  };
->  use core::{
->      marker::PhantomData,
-> -    ptr::{addr_of_mut, NonNull},
-> +    ptr::NonNull,
->      sync::atomic::{AtomicU64, Ordering},
->  };
->  
-> @@ -187,7 +187,7 @@ pub(crate) fn refcount(&self) -> &AtomicU64 {
->      pub(crate) unsafe fn refcount_ptr(this: *mut Self) -> *mut AtomicU64 {
->          // SAFETY: Because of the safety requirements of this function, the
->          // field projection is safe.
-> -        unsafe { addr_of_mut!((*this).refcount) }
-> +        unsafe { &raw mut (*this).refcount }
+> +        unsafe { Opaque::raw_get(&raw const (*ptr).work) }
 >      }
 >  }
 >  
+> @@ -510,7 +511,7 @@ macro_rules! impl_has_work {
+>              unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate::workqueue::Work<$work_type $(, $id)?> {
+>                  // SAFETY: The caller promises that the pointer is not dangling.
+>                  unsafe {
+> -                    ::core::ptr::addr_of_mut!((*ptr).$field)
+> +                    &raw mut (*ptr).$field
+>                  }
+>              }
+>          }
 > -- 
 > 2.48.1
 > 
