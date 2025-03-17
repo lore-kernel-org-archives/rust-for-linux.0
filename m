@@ -1,121 +1,125 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B1A237180;
-	Mon, 17 Mar 2025 11:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AA9233728;
+	Mon, 17 Mar 2025 11:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742211396; cv=none; b=k3wKffh08CvfR6uXUhyYDYQsz+mPFzYHvEru/HrPpkmtuzcFYlLx9v4pcp1NMhc2012YAgEjwRRuBMDodWchUSnWDJEycMhgMXhUsM7NiTmrTdhZRHqAT59hvBeJSGzjQt8pW0LPg7ekTuJ8HpHvjdaPzLqjHy5Y4sNRUQbh/SU=
+	t=1742211755; cv=none; b=Ln1qvnQQB1emf11JCe/W9ANz1FOruIwq6t+7lDR+yfDxy+ap60Iw4Q6mTXL6WndH6MLdr1x6H4/ZUPmgoTprkg2/Ee5FVhomsYlr7OfzDHygWL5qp45RTV/rASPJVG67hVdzEmMUiUjyHiKqEYbCyt630ccT2zP3VUDXA+8HadY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742211396; c=relaxed/simple;
-	bh=UPKa7wiKNJ4NEmUO8InLKxXfcJGuNHIW7cyYlKij5nk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dbyXxNRloBU/iNOpkrBwckyrmtXnmZZtYAgqhFSpaOVP/qWD9C+WnpwsIIt7LyOLKjyMudh0i084WpGb27QDipQGH9QhoelOGX+XASvXw+U0Vg+4NXjUc8sqvL5t60rnx9UTZvw+/mMUkZJxddJzEKONs4C3Qro5k8IEP23k1VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFI7J1o3; arc=none smtp.client-ip=209.85.167.49
+	s=arc-20240116; t=1742211755; c=relaxed/simple;
+	bh=//vxIGqnKxX4L6Wot1kvwfy2PgPrZ+A4crmQWKHy2BQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EMJuFhYrkm6+ppwbT5lJJftU8QMe0XTtMZXxMl+b62LLArs6LpU53ijDsexl5AV9VFO1ZjCh+YL1BxANKEeu6F7ysLAV/2YJ1At2UI8+hwQs7FyGPyuxsgddMoTMBnD2Vg8s84nI9LGN8hW9mxhbfJ+rFgK9He6mvMcjeXDxvxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BrIZI2kp; arc=none smtp.client-ip=209.85.219.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFI7J1o3"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54954fa61c8so4277826e87.1;
-        Mon, 17 Mar 2025 04:36:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BrIZI2kp"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6e8fca43972so40523216d6.1;
+        Mon, 17 Mar 2025 04:42:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742211392; x=1742816192; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q26ZKpH76gWldlWfJMlBYwp9Cc8xJFkwA1QjjgV34Lk=;
-        b=gFI7J1o3N9phsdYWJkSSMgSVQVH4PJRAOaNP2TVskJ6GUfkFiVjzZec9pUFX7NuLK1
-         HNVI8hKxWauz4kUA55mg3Zl1nMY3iqHhoV+xCP7BvGAa0Udu1ykrl2p/v9USGMZ7lb7b
-         LTdbU3n53EyBDoHGW9D/ZlyxGh4N3CdJXmSJuPOF+oe2RG7YLQwGHzw1TNNrhUqIcqG+
-         sKlXsrfe+t0UT7HJBH501UobukOvmtGQ0J/k3nHCzg+KgIf1a6YQIzukwfCP99TEyXAv
-         InG7nwbLxXz8xL4yUa2ADp8/d3WVaad/1yyJ64yBCEVVoPwJ1OJHJgTEOn5C8mrVmyoS
-         6HyQ==
+        d=gmail.com; s=20230601; t=1742211752; x=1742816552; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=39S3mS4hwmCD7YLvwbWlxuNVBuw4J8dUdZhCCUuBLsU=;
+        b=BrIZI2kpI6hrx4UUy6lJ/Q3Qk3R70nhHmLp0WoiexD5kya5iFThIHukUmmDVKV8sTY
+         BzG1xfvTl0KpXOdi6RHYB9cUaCXVOFBB+U7Ptrgd9s8Kz66N1twexE5ALqs9ZmyOsiRH
+         7C/lBrueewVYd7n3C8ruHU2GQyjSlNui5KMc9AMscxcOwsWPnoqHtHkqncAfszHx9f39
+         SNcEKjZjbgacNVzvC1tzi9v9/P/4Re4xkmlsgxC/QPQHrDXaMxS3L7dZULVZ1yxGj1SA
+         6cfciOv0SNkHw8KP0aJF3AUc5UDWIVqIas48gjQbc+IM+JpMxknZ7BHJD2ny5+D8ATAY
+         Tozw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742211392; x=1742816192;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q26ZKpH76gWldlWfJMlBYwp9Cc8xJFkwA1QjjgV34Lk=;
-        b=OhifFdIQxFwDAZPyPmVTMTSYICOzSJU4T3HjzvSa+FaJ+tZIdvgPfD/5Tze2/xHKsZ
-         OxJYyXiIxWFda4aa508h0T4RHXVOPFypBOHjdXAHrIa1cq7FUZajxG08zeARay3JM4uM
-         aMObHyi1Wfdhu8sVXJWfKmnc/6jiCchOj6ELwLa9wi+UKN0IHMcPtbtGyClfW6ITm/DJ
-         fLXuDhg9zo7zo9Tw6rO60egpljuEuhdJUvrahYHqQPY6ckxNFuFwfOOx5KwYg7lOO6NO
-         CXojLH+89PlB2evj1yWz5O2mcHS65twwgc3rny/gkFwmlY+5BGyFG8m7vknffGuczTxl
-         Laow==
-X-Forwarded-Encrypted: i=1; AJvYcCUA46/C2OZ6S+6/zdR8UzIQFMSi4tXEuJcFzoFNuJsoE3Fn+kcx5rQC+noaoTy6RqwvFFoWQ7VWsIrd9JY=@vger.kernel.org, AJvYcCVO4Oy1QbG1BR1Y0x4uaqX4i7th7Gjd/E3xNSoogQnH6ANqXpIXhsr2noL+5xEYfO3F1SvIIP0S9qEb@vger.kernel.org, AJvYcCX7w8FnFjH8e0ZE0leOl0djxDlzQPWzBqyMFIQU6KEtwQSIbRyplZfJuptrvDWKORd7SjLZyDO1q1FFLaX56jM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4dl1FtXjR8SFywlTJZaTxs2izx3LsPL7nYmS8Vt2TAviIYS7I
-	ytHTugi0ZehkUIukJhSgm4OnfeCn9u8pMIAKdRl0QqxXLwIAStELsqUsUNkDwWuAxrUDtf5c9go
-	HulWRzqAyRW/xPwR9EfcIdQ296XNi80xI/heHLg==
-X-Gm-Gg: ASbGncuJ9vbZe29Z3AobpafnjxVJPBHwIpTeHhOlq4fA3EjjR8wkSUwJaspOohO+WL3
-	oBfZQ9EISTCl7bW4fOr+qBPntRlB5Q0Kt0JtmQ/Ssnj3vKowb5i3QOM25DxF0VB6gymSOGYDO2w
-	ktSoT/RPu8EuuLMjyFagTTVQy9FxyjKQ1AV2OMGcpLOpMib+SN4FdEtfQ/bGbO
-X-Google-Smtp-Source: AGHT+IHKqFv0QNgyNezjaUTh1jqs1i1u4D5VOcfc/jBhkheVjMTPqz7Xk+BLw3dKO3MCJO8k+5okzMXlhyMs80nnbh4=
-X-Received: by 2002:a05:6512:696:b0:549:8b24:9896 with SMTP id
- 2adb3069b0e04-549c360f4a4mr6772488e87.0.1742211392331; Mon, 17 Mar 2025
- 04:36:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742211752; x=1742816552;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=39S3mS4hwmCD7YLvwbWlxuNVBuw4J8dUdZhCCUuBLsU=;
+        b=i/+sLylx5pY3FqmSSAqMzt83B1PLRvA5/AK0pOnQh1UPjMCE8sWQGlLrg+sXwJTlFA
+         N9dEYRS5AMGGsENLvPa3gTsPg8cX+YELwT50ILjRB84CiOdUCz/87OioCL0eH0gHz3bf
+         PWzGGcd7lFmm3B3XQdp9fhraQHQ6Th5Vwq7FQ9oQ9Gput9K9kM1Fn3v7vUTCJxvKQzk1
+         4f0Ng0RmlYUHh8Wdp4MU0BV7beu7U3VqdeKooiuckD+fZ2XSBBu1YUKkBwADlh3URAJJ
+         zKVt0D65+haOsM/AZPA2b1Lv6XTsgozt1Q3xXEx3lUv5ucGPlolI+eU61Wtlyj3VFBnY
+         VpOg==
+X-Forwarded-Encrypted: i=1; AJvYcCU68Ff+w6OQlIe2D7VSEKBwUjwgPlDJ3CAL2IhXdPVZDIBw1B++wueggZeBiEinDrsZcwjWgoKn7fUGYWc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4QN1p0u995v1CwsyumQ+xv5mzT0hIsEgsaZ6uUyxq2v6QIsey
+	VpVjXDQHdBeE/vw6eDfmpI4C+zPnblsjFGoHHbcUJJ2y6GfDrBPPY7dO7OEjnk4=
+X-Gm-Gg: ASbGncvJe5XtV7Bv+06uC8I4qCa8KfCU0GHMHhNJPTp/G/Bpi51KNHCr9UbunA/0TgL
+	/UEJah36WUBh5rz+cDPiz1CFyNpJy/zj8RR+vUcS5UuTTOdGBrAfXvvYhXaSdq2i8Hi3fUNnTCA
+	QpY4Kzg9JkXdcR1HS+vQLNhE73KareFjDx223WzpnY+wGpqF7WYQ84SuvtjhsSaHYNz4/V10pl9
+	TK8Xh8YX8PQBZE4VMLlYjdNsVvJcu7m8/qolvS5UKCHsurwvvFxroLPClbFI+mBUoVTenXRMtWT
+	cjuOrPGcDrUY7cG1svZyrAyj1AxSu4brSIdW1ZcgoUB5sSof4jd1u/3o/S1IcCdsSdwz3TZ8qA=
+	=
+X-Google-Smtp-Source: AGHT+IG4eUAbG2q19+R1IJNaTIqRbhDWmVRUB0OYLFlUOQsLGH+DLtgbhy8xaVehmC1/zuPiwBaSyw==
+X-Received: by 2002:a05:6214:2426:b0:6e8:99bb:f061 with SMTP id 6a1803df08f44-6eaeaa081b8mr201616326d6.18.1742211751819;
+        Mon, 17 Mar 2025 04:42:31 -0700 (PDT)
+Received: from tamird-mac.local ([2600:4041:5be7:7c00:ac75:40f2:fdb1:31e5])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade208e6bsm53849766d6.1.2025.03.17.04.42.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 04:42:31 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 17 Mar 2025 07:42:28 -0400
+Subject: [PATCH] rust: alloc: use `spare_capacity_mut` to reduce unsafe
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250307-no-offset-v1-0-0c728f63b69c@gmail.com>
- <20250307-no-offset-v1-2-0c728f63b69c@gmail.com> <Z9gIvLY1uubS6OX-@google.com>
-In-Reply-To: <Z9gIvLY1uubS6OX-@google.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 17 Mar 2025 07:35:55 -0400
-X-Gm-Features: AQ5f1JpZP3thvWGP6w51ph9dB-EdEsYxhhkkDjeOo_BaONfdRSLst3QLx0ZAYPo
-Message-ID: <CAJ-ks9njZbqRFVXTFkG1ms2UxsHtym+gP6Od-Hz+=sj+VeTX3g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: workqueue: remove HasWork::OFFSET
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAKMK2GcC/x3MQQqAIBBA0avErBtQs6yuEi2kppxNiUMRhHdPW
+ r7F/y8IJSaBsXoh0c3C51Gg6wqW4I+dkNdiMMq0qtEOb1owXhLwEkKJPhEaZ3u7rUp3foASxkQ
+ bP/90mnP+AJcL+R5kAAAA
+X-Change-ID: 20250317-vec-push-use-spare-27484fd016a9
+To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
 
-On Mon, Mar 17, 2025 at 7:34=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> On Fri, Mar 07, 2025 at 04:58:49PM -0500, Tamir Duberstein wrote:
-> > Implement `HasWork::work_container_of` in `impl_has_work!`, narrowing
-> > the interface of `HasWork` and replacing pointer arithmetic with
-> > `container_of!`. Remove the provided implementation of
-> > `HasWork::get_work_offset` without replacement; an implementation is
-> > already generated in `impl_has_work!`. Remove the `Self: Sized` bound o=
-n
-> > `HasWork::work_container_of` which was apparently necessary to access
-> > `OFFSET` as `OFFSET` no longer exists.
-> >
-> > A similar API change was discussed on the hrtimer series[1].
-> >
-> > Link: https://lore.kernel.org/all/20250224-hrtimer-v3-v6-12-rc2-v9-1-5b=
-d3bf0ce6cc@kernel.org/ [1]
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
->
-> Overall looks good to me, but please CC the WORKQUEUE maintainers on the
-> next version.
->
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->
-> Rust Binder still builds with this change:
->
-> Tested-by: Alice Ryhl <aliceryhl@google.com>
->
-> > -    where
-> > -        Self: Sized,
->
-> I did have trait object support in mind when I wrote these abstractions,
-> but I don't actually need it and I don't think I actually got it working
-> with trait objects.
->
-> Alice
+Use `spare_capacity_mut` in the implementation of `push` to reduce the
+use of `unsafe`. Both methods were added in commit 2aac4cd7dae3 ("rust:
+alloc: implement kernel `Vec` type").
 
-Thanks! Does there need to be another version? No changes have been request=
-ed.
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+ rust/kernel/alloc/kvec.rs | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index ae9d072741ce..d2bc3d02179e 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -285,15 +285,8 @@ pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] {
+     pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+         self.reserve(1, flags)?;
+ 
+-        // SAFETY:
+-        // - `self.len` is smaller than `self.capacity` and hence, the resulting pointer is
+-        //   guaranteed to be part of the same allocated object.
+-        // - `self.len` can not overflow `isize`.
+-        let ptr = unsafe { self.as_mut_ptr().add(self.len) };
+-
+-        // SAFETY:
+-        // - `ptr` is properly aligned and valid for writes.
+-        unsafe { core::ptr::write(ptr, v) };
++        // The call to `reserve` was successful so the spare capacity is at least 1.
++        self.spare_capacity_mut()[0].write(v);
+ 
+         // SAFETY: We just initialised the first spare entry, so it is safe to increase the length
+         // by 1. We also know that the new length is <= capacity because of the previous call to
+
+---
+base-commit: cf25bc61f8aecad9b0c45fe32697e35ea4b13378
+change-id: 20250317-vec-push-use-spare-27484fd016a9
+
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
+
