@@ -1,101 +1,76 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A384923F39E
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 15:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD34A241683;
+	Mon, 17 Mar 2025 15:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742223636; cv=none; b=kdD7REzfla7jhS/PpecSudFZ36pYqiDEhsNeHMD3EsMTDQC4AbnU3mh+QB73dbNKFR2cqG3oZSEZqk9q2sy6hHX79BN6jkUwHHZSI0kATQZZQmCP0M+OMK7q6Udok8ew1nepyESP/A4d0RvvbJv7gy7zpZMvAUOS6sgjP2GtG9c=
+	t=1742223637; cv=none; b=mTVkvepTRz1Ab+0/HG28Gqy7b/W/sZKWKIggoVJKdz9yDqRokHaF0ei3KLWAuSXT2dGIYha4nQMMxx89+J8GpoczsWmmysR+ehFLGThpf9argbo4GXtZKFMM+DUU5fzyMLJbc21wgfLbZbPwYiH0nMHgPvcQiUy/DCXuIXNsIw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742223636; c=relaxed/simple;
-	bh=mAKB0Zx3iVxZdShI2Q5YUUpwKTajXMRBDowwuz9uqoU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nDyLGXfuVQYPGlwzwgt0usdANp9X+74VImeKHgxn1Jy6UUQFHAaPkO0Pklbup0s+SyvxWNQqlv1EtUkZrI4DyeVnqVlH9ivUwkZjk24olmWr4vMlN9dF7ONlVxx2xpwWTJXsPCO+JLhczjX8XbZFnBkSDWx4vKuYY13oZEH6qPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BGCpThJh; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1742223637; c=relaxed/simple;
+	bh=cWkQsoSV/IZUx6NDHHMXi0u9x4VMUdLI8PhyNjOqZn8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JV5y3UA80cx1M63MG+m2FT272c3tBq3Yek0ZAQPiKQclzfP6/hk3Ow6fOW5HuV1LllKqbeoajTv1pQjqUkj8KOZ3Tequ+h/uILmwmAGqJuGxeMjnTDyVJ7ZaY4Zxv5A1BJTfC+iStxZK14M68eDO71IomQgtWTbJaLwLekDLglE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XNbAaFS7; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BGCpThJh"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d01024089so18765795e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 08:00:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742223633; x=1742828433; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+zsksQlsWDcFEtyYBbIuV4LzPqQIhMHHBTrQsSMgKk4=;
-        b=BGCpThJhbR05ZRZPckiqHMjUITaBfyz1zCpna7ohbpz2jlIvy/ZuVkfCcjol9N+SXc
-         XnNn73NhdNNSbYDOL/6RhC1TD+yZQdWLHqZr4dYrK7yFRe050AKMJnWARAbuhEJipMoy
-         6J5GftRTof4ZZl8QU0aZfKRGfVcZFzFQMX8j5Hs9uoU4znld/xcZVDV1fHuHkC10AJu1
-         DGHiChpodXvG9GGDPgMbmaauhcXTtI/VmJ1lCB/llM93cEVOZtChEXf1otuMlwB6vUBJ
-         3M0/HjbrfP7jkoenxYFxs/Gdx0DRhcInQNdatJLbzHUVmHR9RSb4B6VWx2jwnjlng8Lz
-         wOiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742223633; x=1742828433;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+zsksQlsWDcFEtyYBbIuV4LzPqQIhMHHBTrQsSMgKk4=;
-        b=imh9EE9q+NP1DoEL6/Z3sFoIfz9tQbFfrcpZzgrexEm1PHW5c65kvQmgnAY2H8jlVL
-         3KiGxN+JvTMZJHDA9Byyml3YRLk6Zr0P7RUuYPgCysBqqC5NBd2qxZaHgtN0vwjq+WKw
-         A1QXBl4MCkSwoGxZf7MwbSw3fhJgTncNUYyv5n8h54FcyITljSWL3y4Q465zSX0CcHMJ
-         1f+i/ou9paFrWIFFAFgTDHvtlTnHDBJBtoWp+U5hEf1JC3x2i7AtuSSU3vaMfK36fm1A
-         kbYaIUn84y5cRzfJNRFJzy7KwGKpbH//jD++l6vmWE6pOJR9ukIXm1cRWTp5Mvf56YLU
-         o7FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVamd4FJUSLNniKu4kYfgTbzWXgkGt/pRI0qyuQR+ikPJVZv9wT8wl8gpwm76gxFWE23BGYJJg2fZfdVe5wJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxmcbgkenwxpMKkYYi6D8BNHRC62skQrAhwLFy1YTqZf0TO3Jw
-	/rbNpyc1lNYRAW/CcLKJCRXhnIqekYcKXGB94LkD0FP5kazoF88D5PnwApdUepkXkeKtJtx3g9M
-	MUlwU6sxg9dIB0g==
-X-Google-Smtp-Source: AGHT+IGswhad3nelG5lK7EnJ+sAaTbYpeBborq/c2wWdagqpaRvsmk52bv4iWMs4SjsHpwflIii6ZpkjVpLr9ts=
-X-Received: from wmqc22.prod.google.com ([2002:a05:600c:a56:b0:43c:ee49:c14d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:154c:b0:439:9a40:aa0b with SMTP id 5b1f17b1804b1-43d1eced557mr116630355e9.25.1742223633034;
- Mon, 17 Mar 2025 08:00:33 -0700 (PDT)
-Date: Mon, 17 Mar 2025 15:00:31 +0000
-In-Reply-To: <2025031444-acre-boxlike-8af1@gregkh>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XNbAaFS7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742223633; x=1742482833;
+	bh=2jV32eFqRje1RzHN9WgvrVAw0d//cFd065kmoy6q4vw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=XNbAaFS7YmwSZSS6lTWs9g7U1K2XAtOZg0C3sK6ueUvAmr5BtDZj6IQw9+J5RQFQq
+	 FHsYc/2HGxesqxq1sChqL1n9z39vsXSbe9A1oli5+l+98nhgSKu1hB+JWtrwtN0MYI
+	 6onS600ofo+EkmZ4cAx7SuZAAYDxmTUFBmU+5eai6rRlrjX6EGgXArKDRcpVws3HDt
+	 yPvoV+A8wpCBfL3rDCa/mHpwj+FhDF7Ss3FEphgevmybLuJICw+ln3azmKqu89SeZ0
+	 /38zZWgOwlOLNn+7cdlWir3HndGMSX7/hNc8SRYODtPSlIr9HJFCvJL/hLGEmti3BG
+	 qUEqifVlTV5ww==
+Date: Mon, 17 Mar 2025 15:00:26 +0000
+To: Tamir Duberstein <tamird@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 6/6] rust: use strict provenance APIs
+Message-ID: <D8IMQ8OEOMAG.1AFKGZJ1C4DGQ@proton.me>
+In-Reply-To: <CAJ-ks9kH3SE91XSadBx1qFaG5dem93o_ctR0t2FwW-0ZfkRNwQ@mail.gmail.com>
+References: <20250315-ptr-as-ptr-v4-0-b2d72c14dc26@gmail.com> <20250315-ptr-as-ptr-v4-6-b2d72c14dc26@gmail.com> <D8IFS7175NNQ.3VAP8WA2QC8WF@proton.me> <CAJ-ks9mXzM6D++vq0QCugaFOS9ES0j7GpeWZqckY0dA3JwpnJw@mail.gmail.com> <CAJ-ks9kH3SE91XSadBx1qFaG5dem93o_ctR0t2FwW-0ZfkRNwQ@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 6436172b8e08da928624aeaa38482e05181d7d0f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com>
- <2025030439-sharpener-overkill-ada2@gregkh> <1A434368-6B92-4C64-8B5A-17499C8E2F1B@collabora.com>
- <2025031444-acre-boxlike-8af1@gregkh>
-Message-ID: <Z9g5D6X5k1fpUwuY@google.com>
-Subject: Re: [PATCH] rust: add new macro for common bitwise operations
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Filipe Xavier <felipeaggger@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, felipe_life@live.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 14, 2025 at 04:02:35PM +0100, Greg KH wrote:
-> On Fri, Mar 14, 2025 at 11:18:56AM -0300, Daniel Almeida wrote:
-> > Hi Greg,
-> > 
-> > > On 4 Mar 2025, at 11:09, Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > 
-> > > Nice, but why not use the same api/names that are already in the kernel
-> > > for this type of functionality in the C .h files?  That way we have
-> > > consistent names everywhere?
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > 
-> > IIUC, there is already someone working on that [0].
-> 
-> Great!
-> 
-> > Can we just leave this macro somewhat as-is as a mere convenience for driver authors?
-> 
-> Why have multiple apis for the same thing?  That just makes reviewers
-> confused as well as developers.  We don't do that for C code :)
+On Mon Mar 17, 2025 at 3:13 PM CET, Tamir Duberstein wrote:
+> On Mon, Mar 17, 2025 at 6:53=E2=80=AFAM Tamir Duberstein <tamird@gmail.co=
+m> wrote:
+>>
+>> On Mon, Mar 17, 2025 at 5:34=E2=80=AFAM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>> >
+>> > > +    pub fn expose_provenance<T>(addr: *const T) -> usize {
+>> > > +        addr.expose_provenance()
+>> >
+>> > Instead of having these stubs here, you can probably just do
+>> >
+>> >     pub use core::ptr::expose_provenance;
+>>
+>> This doesn't work for the methods on primitives, but it works for the
+>> free functions. Done.
+>
+> Have to revert this, writing `pub use ...` directly causes the MSRV
+> clippy lint to fire at the caller.
 
-I'm confused - the Bitmap type seems quite different from what this
-patch adds. I don't think it's the same thing.
+Ah that is unfortunate.
 
-Alice
+---
+Cheers,
+Benno
+
