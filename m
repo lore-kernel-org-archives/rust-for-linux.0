@@ -1,43 +1,43 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE4B142E67;
-	Mon, 17 Mar 2025 10:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF8B23716B
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742206071; cv=none; b=e8Mgrvl6mAavAbk9OvE+qBNnMvXPFy8ZFlEI2UEX/u+2GpFI1/Po8RrzSiqAHDLWkTtczuSSk4TVsLP/hRyHwIRQn+fPpCuFmNaySj7W/hOYD876ZG0YqEJkHRGv1HB8DVqhrkDJoD86o4Esc2AZb/NwdorIwJA/562RFV0KXjU=
+	t=1742206504; cv=none; b=A+pqEaJdPKrBU0Z2UYWU88l++4iuWW94w5fxJmwifJUyjIlvLsVjzXQSLlXiTWPatwEihb3WEFmvV0+TJb+D1+lHbP1IS9VKBCePPyMJqx6z4xj83eYu+kIJafXHP0eMGa0dFf/OLffC9X8L/gZq9fznoE4K3egmlkg5EjpMfmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742206071; c=relaxed/simple;
-	bh=xOdFdUpJqXs168lzXGK/iu7vViHn0S5IOwWenA0nwVI=;
+	s=arc-20240116; t=1742206504; c=relaxed/simple;
+	bh=6lX6qd6cHpyeXJtN8CbDJig30k7qEU+St8Ur0Q+BBN4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ido8OzEmQDbX1rPMSR7edDgIDZwfJSKGuMofiGnPm4hfriwbrjXUUVb/YCrPLPDWATIV6+hHZXeD+9s15bd/q5RAFfWWOP2nSMzeQUFDZ/HkgROK3FDJ3/ttKXJNrgGD+sxPzFuloYfUFvAj/12vg/y8kk0tChMPVHGgesgf1qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=fzPCVVFd; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=TZmVCVI949V3Sdz/pPwoqBlC7MaiNAtmZGOiHmxEgKZj8BDxKoGGznvxVz1fywWHObVoxNJEMdO0LnPACXqYgj7FP5d7h8S/KjwO9ooTrMIVhd3XNJK0U9hyNtmogviNekjwEBDbqsunY5cfAoRc83YLRTWgm9ILXRu96zG+YdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eEMVrUb2; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fzPCVVFd"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eEMVrUb2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742206067; x=1742465267;
-	bh=xOdFdUpJqXs168lzXGK/iu7vViHn0S5IOwWenA0nwVI=;
+	s=7dlnzbwkrbdztmvpnxie6e4fom.protonmail; t=1742206500; x=1742465700;
+	bh=IpqGC6kjpj6asVKqkNZWmw1IDhP0itPNVW7PmK6LSVA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=fzPCVVFdLnmSWb+djKDx6qAMrYdAsA9lVUQW8H48+r9V3ZP7WWP9eRU6wt+9/h5GW
-	 t41nEA2wUFEhq42aF9+3pDiOkSxb6jvqjLC69pn68mIk1ueLuKkw3oqB+BMqrhBjqv
-	 sLd096O1fJV9EVWK5pU9beMj2/QQjsaP3Cy0yKEgklaL95EfufB/eGwJZOJ8VOFZOG
-	 u6ufFnXAAb3fvPhks+DpDxh9A6/a9R227c1dw1eblqiWPsZpef8sf5HpCPtXxKBtIw
-	 SOlgAnvxGwsL6tiWo0Vnm46lUQBdJaT4Yz8bQX9hLZg+oSw/8KPvSbn4clfrxCshVV
-	 a/fr0I7AXnm8Q==
-Date: Mon, 17 Mar 2025 10:07:43 +0000
-To: Tamir Duberstein <tamird@gmail.com>
+	b=eEMVrUb2yhzEWNshPrV4mjw/plLWFOaMJtj9b1jMtF7zOGpkqezMj8q9rgOtl29w4
+	 zKN3N8Eman9k8RvFBma/jF7r4AqLHf/U6OnCV+xS7qxMon4ZOrlqdfWfG5FDxFtA+9
+	 gliew1Q5l1GwV8JVucZO1/LEk8Z543Hd85//JH/FQ7GySdVeu+DqYf1IImS/dKY/hK
+	 u8hYrOFhAXE8AIPL5cHSqT8cW3ypuX2d3HSnqQi1/UeyTaJs0Jl9n6O3SZ0sOBfo4B
+	 DIXezs+bH97aRUiFPBSRn4Iy1Q+16BQpkTbKXLBJibg+9FjVjCGKg6E7JFNvdc9BUJ
+	 kvqnRhaHMDgxQ==
+Date: Mon, 17 Mar 2025 10:14:54 +0000
+To: Kunwu Chan <kunwu.chan@linux.dev>, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: workqueue: remove HasWork::OFFSET
-Message-ID: <D8IGI57498GK.1NX41N6YMNERZ@proton.me>
-In-Reply-To: <CAJ-ks9nsEMALOFbQEjj69=griW=x_h_irDg4mHdo+hG+ZbGN5g@mail.gmail.com>
-References: <20250307-no-offset-v1-0-0c728f63b69c@gmail.com> <CAJ-ks9m2ZHguB9N9-WM0EsO5MjaZ9yRamo_9NytAdzaDdb9aWQ@mail.gmail.com> <D8GQGCVTK0IL.16YO67C0IKLHA@proton.me> <CAJ-ks9mUPkP=QDGekbi1PRfpKKigXj87-_a25JBGHVRSiEe_AA@mail.gmail.com> <D8H1FFDMNLR3.STRVYQI7J496@proton.me> <CAJ-ks9m-ab9Y5RD01higxZxbowZi_0tsSmCCw2umJLxBLH4dEw@mail.gmail.com> <CAJ-ks9=AKR+LUMBjLNrC9NZst9+18Q3HTrWn4q+baz87BbG6Rw@mail.gmail.com> <D8HVKRW45ESG.3NP8BPWF76RYT@proton.me> <CAJ-ks9nsEMALOFbQEjj69=griW=x_h_irDg4mHdo+hG+ZbGN5g@mail.gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, Kunwu Chan <kunwu.chan@hotmail.com>, Grace Deng <Grace.Deng006@Gmail.com>
+Subject: Re: [PATCH v2] rust: optimize rust symbol generation for SeqFile
+Message-ID: <D8IGNMOL2WPU.P9UB057VLDV3@proton.me>
+In-Reply-To: <20250317030418.2371265-1-kunwu.chan@linux.dev>
+References: <20250317030418.2371265-1-kunwu.chan@linux.dev>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f7d138c90f94a097e803782efe820c024cedaa0f
+X-Pm-Message-ID: 27001cdd7b13d5926d7c25cd21d0175d031e299d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,23 +47,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun Mar 16, 2025 at 7:59 PM CET, Tamir Duberstein wrote:
-> On Sun, Mar 16, 2025 at 1:43=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->>
->> No change required, with my reply above I intended to take my
->> complaint away :)
+On Mon Mar 17, 2025 at 4:04 AM CET, Kunwu Chan wrote:
+> From: Kunwu Chan <kunwu.chan@hotmail.com>
 >
-> Cool :) is there something else to be done to earn your RB, or do you
-> mean to defer to Alice?
-
-Ah sorry, I didn't end up adding it (:
+> When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+> with ARCH=3Darm64, the following symbols are generated:
+>
+> $nm vmlinux | grep ' _R'.*SeqFile | rustfilt
+> ffff8000805b78ac T <kernel::seq_file::SeqFile>::call_printf
+>
+> This Rust symbol is trivial wrappers around the C functions seq_printf.
+> It doesn't make sense to go through a trivial wrapper for its functions,
+> so mark it inline.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1145
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
+> Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
+> Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-It would be good if Alice could also take a look.
 
 ---
 Cheers,
 Benno
+
+> ---
+> Changes in v2:
+>  - Add link and Suggested-by
+>  - Reword commit msg
+> ---
+>  rust/kernel/seq_file.rs | 1 +
+>  1 file changed, 1 insertion(+)
 
