@@ -1,100 +1,171 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B134A24
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 03:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A44AEEBB;
+	Mon, 17 Mar 2025 04:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742180707; cv=none; b=NM5qV1Zcdq+R+XabcPIFUZtjiXh9lthViAHHzIQMFNkYHx7rGZvv/ij2NRu/B9EwK2FW0aXKnkNmkAU3Q0pbSS9CntKgAvlV0dvFjGeE26bMNe3ozJ8Fr3o+D+/dnV62oX3tMDiQLA+8CsbDHZksZmzi1dsClWLg23xQS8X/YDI=
+	t=1742184063; cv=none; b=RIFQEaxYBh6YH3c76b7AdP21xRUqCSklhnVeK/clHHyV0mYzGCVtvXiirPtOj7TEPXsv+i1U0UDiHTEfdZK/1ycPMbmqPgguEjxz2wzO497V4r4FoKaoB7nhr+Ge2L3YmI7Aq8VMTAWE7FUYrvZjNTkhH7rv3tqor3vT2tFmQQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742180707; c=relaxed/simple;
-	bh=tBWBQE8HpIVxEM5ccFjyfDv7HEXOnZryVAg4L2+2jpg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bpihFloa13rOOunqEKCX6yVGFK5S9eiO4SHXRXAIb/uepIFkmoIlBgpEupJNK+jOEXBlGpUwhljeaQCD6yyDGgiLye1XhkqWrfzFrvKFfL2t3iVnScFbeOu1KTC+m90KI+YHUvuZriD0At/bEfk6RFdwedZOe0CjKEgTQP/wctA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Pdn2Eod9; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742184063; c=relaxed/simple;
+	bh=CPRK+WJkOO4h0Vp9h8+sDfVxsygNEVJ8QoQNxeVtxbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U1KdMoDR9CAtwbwRh6eaB0KY1vH5AtwtSg0syW6fZo/Hc6qQQnqdD5n8AxEo2c2tCNu1+Y5cPFgIaWnSNZagSvAJgB21oi+189H1k5V3JX7VHXSzj5V85gMiFhFKVxxy3G0o52ESByDGZNGVGCCPU+V+TPkmuouBFa7BdWD3/Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aQfNIQPH; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Pdn2Eod9"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742180701;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0Gbw6EKbf2YDxk0S0ZIvcC7DhAFGYFGm30Q2QhYZ0bQ=;
-	b=Pdn2Eod9REoIp2XQsoSuEg+GQZcCmherQGIQ029OAGNm0onEZZ+2hIVvF/w+/Ijvfmj5f3
-	VfD8FcNWrplk+I/ZU8XRTElqFLadAmytmqu49hOS1gYv+SgiE2CfgPxJzED6Zrx0rGvoQ/
-	QnEbjcSkQZMHVrrW+u13QTx/s9tPRRQ=
-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Grace Deng <Grace.Deng006@Gmail.com>
-Subject: [PATCH v2] rust: optimize rust symbol generation for SeqFile
-Date: Mon, 17 Mar 2025 11:04:18 +0800
-Message-ID: <20250317030418.2371265-1-kunwu.chan@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aQfNIQPH"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7c0a159ded2so532055785a.0;
+        Sun, 16 Mar 2025 21:01:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742184060; x=1742788860; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N0RY31U7IeQCdaigqT63GbXTi4AkErC9Ud8HZP9nkSk=;
+        b=aQfNIQPHB3fF4RwzB2wM0ZKABeNLVOxp/if1vgEfc+fKbjFkroe//FBIlWYBz+q+I6
+         dljTUU5zFzSGWlhEqmoLQi2j5RIPyIShkfevh/PdfXIQu9UXx9cxNxaDP4Bb8G4owy4i
+         asyWpM7zNwqAuhCxSVMVIIKQ4Ek7Jee5HUbMhKuUvjNE04YKTA9zjykFkjzndg62wlnr
+         Z+B4co2CCIzKUvHnsG1jTIYjSPSp//YEistzS6e7tZ/Y293y09U926sATeFG6Zw9d+qf
+         C9fS6jpVeF8NnV5sYCIg//4urC7FqGcbPCdLFfo62s6KmPvugB5aLB/SLSIERI/8aCqE
+         eE8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742184060; x=1742788860;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N0RY31U7IeQCdaigqT63GbXTi4AkErC9Ud8HZP9nkSk=;
+        b=d8d6EZ8UDO7RDmRV59DwwOvujRg73IPLU7YacAxlDJ062rqfRYRULsTA8eDTmLp6w8
+         snAt9HyF3v/0Nbu7KhdAfyRgz2pW2Q2vxSuQLK1uvRUeQX0u1vd+h63DHUb8XsjbfqFp
+         NIr3JrJIrqBKMKcrvZz1eTUcbjOHMnFGBCtmcBNiL7CAs9qtDE5ui9m0WtaZ7D0pKzmE
+         G/rBB3HzOVG0HLAyXzhUv3F7S1hVTGB7vLpJ73Is/EcGHn5e/jw3U0m5Al4tj586JwF1
+         dyPJGROH0FdD5dxqdLMnOUDY3gKBBYh//OQUixvzfYB3pTFWcic+x1DPD2bEryGlaoU9
+         a5Zw==
+X-Forwarded-Encrypted: i=1; AJvYcCVAuKK2l1WuSVpRBli3Yp3ert13l1GcRccOC08GUOSxEceLgwJLadNUQXzhC8bL5WVQ8zWX/KrelU95lMY=@vger.kernel.org, AJvYcCX5Povw1SbRb3JBXenvYBHSYx195FQa0Z11nYcFXz3k+kAmVVJu/dMfjWItjPb75uNKSKs6zUVpzgxVvquJFzQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx87V++CwTBwwdoYCxLiunH2ZZGsHKOwVFoMwziAihBQ9e58Jf/
+	TqHyCUXh+Q76Hl005+ggAP0jW/b3QusleFiogqXrnj/KSWprACDx
+X-Gm-Gg: ASbGncucMlJtSRMPLN9+1MoBZPzDBpTbbJjpSDDI32+NjuPS5Bt8LAxdJI5PGg8zK69
+	hAxAa3DZLNRO7ajy+zUyMtUi9TigKBNI1Iq8jOGDYwQOxelU/PCUJGhfpas/pUG6oOdVKT1JGDG
+	Mq6wDD7D9pOkuxQPOloOebgoRIMJ180PJM/x+oXQcAeHOx56lDpSOY19NUz4rCS5PaTWt+u6jTs
+	b2waIMsxaSYD/iw5Jm7/zgmZ+ENi/gO5GtT2diy0oz2YEGEIiWF8RcEGYjJGcQW+kQrhSvzHyep
+	gKCbAjz+atKcNSqj961cnnoxTGDOg7223bgoZZhlkArBBKuE49GDDpajhuQch+bk6InXHBvQuhe
+	kfYMYXIhRiw6YiOfRb+2XwnEDzCyT/vkhhPA=
+X-Google-Smtp-Source: AGHT+IGYQe3AtIK+Tt+34wc6nrL/bqTpsVN0e/l7vVIWlB5VhW2ixXwbMxLBGm7aMe4he1pcGcwSGg==
+X-Received: by 2002:ad4:5f4f:0:b0:6e8:9d00:3d71 with SMTP id 6a1803df08f44-6eaeaa2389fmr161898576d6.21.1742184060285;
+        Sun, 16 Mar 2025 21:01:00 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade330b72sm50588896d6.72.2025.03.16.21.00.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Mar 2025 21:00:59 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5E4F6120007C;
+	Mon, 17 Mar 2025 00:00:59 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Mon, 17 Mar 2025 00:00:59 -0400
+X-ME-Sender: <xms:e57XZzMXD-BH5R5FyVdfv23mcleoZ0uDObogRhxq-0vvjtXrrTvlJg>
+    <xme:e57XZ9_OPtpybRUU2Dz3-rIxCHUe_qji5M_CF1RA8wAzTNI1Cl0j0WShnHnh2sEm7
+    TfkGabAlkVFqsG2Ug>
+X-ME-Received: <xmr:e57XZyTHjmkWCCDfmRGl1d-3y5HIKR5cJk0qFMrjd28k_6daLcE6vZ64>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeekgeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeejieeffeeffeehffdugfetveefhedtheeu
+    tdekudfhtefggfetieeiffekgffghfenucffohhmrghinhepghhithhhuhgsrdgtohhmpd
+    grshgpphhtrhdrghhrohhuphdprghspghpthhrrdhpihgunecuvehluhhsthgvrhfuihii
+    vgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuth
+    hhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhu
+    nhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtph
+    htthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghonhhtrggtthes
+    sgihthgvqdhfohhrghgvrdhiohdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghp
+    thhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpg
+    hghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhs
+    ihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdp
+    rhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:e57XZ3uOyErEeJWNcNCalErNQI94Y4kWfmLySK0Oj-nBon1rYuca1A>
+    <xmx:e57XZ7fwDkdAKMC6-sMSfl5_cb9IFKoeajSzfn2ThD9oktEfhn3tLQ>
+    <xmx:e57XZz2EO8kDXnoAso6ZXEZHkOzOowIndyyjxqZHXqKvc5PgfpuD8g>
+    <xmx:e57XZ3-t_2cDCytk2N9CWFGo-ixIqc6fBfE93QSKiaqLgmd-QqcqfA>
+    <xmx:e57XZ-_FgRkJXmbaivMMReNZRw1rwIidqAJarudCJVSPKRYe7p5TmV0f>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 17 Mar 2025 00:00:58 -0400 (EDT)
+Date: Sun, 16 Mar 2025 21:00:57 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Antonio Hickey <contact@byte-forge.io>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Antonio Hickey <contact@antoniohickey.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 04/16] rust: task: refactor to use `&raw [const|mut]`
+Message-ID: <Z9eeeTpSr-vVD5eL@Mac.home>
+References: <20250316061429.817126-1-contact@antoniohickey.com>
+ <20250316061429.817126-5-contact@antoniohickey.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250316061429.817126-5-contact@antoniohickey.com>
 
-From: Kunwu Chan <kunwu.chan@hotmail.com>
+Hi Antonio,
 
-When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-with ARCH=arm64, the following symbols are generated:
+On Sun, Mar 16, 2025 at 02:14:13AM -0400, Antonio Hickey wrote:
+> Replacing all occurrences of `addr_of!(place)` and `addr_of_mut!(place)`
+> with `&raw const place` and `&raw mut place` respectively.
+> 
+> This will allow us to reduce macro complexity, and improve consistency
+> with existing reference syntax as `&raw const`, `&raw mut` are similar
+> to `&`, `&mut` making it fit more naturally with other existing code.
+> 
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1148
 
-$nm vmlinux | grep ' _R'.*SeqFile | rustfilt
-ffff8000805b78ac T <kernel::seq_file::SeqFile>::call_printf
+You need to change the above because this patch doesn't replace
+addr_of_{,mut}!() with `&raw`, and also the patch title. Thanks!
 
-This Rust symbol is trivial wrappers around the C functions seq_printf.
-It doesn't make sense to go through a trivial wrapper for its functions,
-so mark it inline.
+Regards,
+Boqun
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1145
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
-
----
-Changes in v2:
- - Add link and Suggested-by
- - Reword commit msg
----
- rust/kernel/seq_file.rs | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/rust/kernel/seq_file.rs b/rust/kernel/seq_file.rs
-index 04947c672979..efc4dd09850a 100644
---- a/rust/kernel/seq_file.rs
-+++ b/rust/kernel/seq_file.rs
-@@ -30,6 +30,7 @@ pub unsafe fn from_raw<'a>(ptr: *mut bindings::seq_file) -> &'a SeqFile {
-     }
- 
-     /// Used by the [`seq_print`] macro.
-+    #[inline]
-     pub fn call_printf(&self, args: core::fmt::Arguments<'_>) {
-         // SAFETY: Passing a void pointer to `Arguments` is valid for `%pA`.
-         unsafe {
--- 
-2.43.0
-
+> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> ---
+>  rust/kernel/task.rs | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+> index 49012e711942..568b528e2cc4 100644
+> --- a/rust/kernel/task.rs
+> +++ b/rust/kernel/task.rs
+> @@ -257,7 +257,7 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
+>      pub fn group_leader(&self) -> &Task {
+>          // SAFETY: The group leader of a task never changes after initialization, so reading this
+>          // field is not a data race.
+> -        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
+> +        let ptr = unsafe { (*self.as_ptr()).group_leader };
+>  
+>          // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
+>          // and given that a task has a reference to its group leader, we know it must be valid for
+> @@ -269,7 +269,7 @@ pub fn group_leader(&self) -> &Task {
+>      pub fn pid(&self) -> Pid {
+>          // SAFETY: The pid of a task never changes after initialization, so reading this field is
+>          // not a data race.
+> -        unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
+> +        unsafe { (*self.as_ptr()).pid }
+>      }
+>  
+>      /// Returns the UID of the given task.
+> -- 
+> 2.48.1
+> 
