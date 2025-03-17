@@ -1,167 +1,132 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866AA1A83E5;
-	Mon, 17 Mar 2025 17:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD4E1AD403;
+	Mon, 17 Mar 2025 17:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742233853; cv=none; b=GVeXOBgOku4+8ef3qNiUWOiA90ZAiMwBG8vHABfqCLwNWtVo7avQZvvoN89vHqo+aOgoEsCW3EfZPEyvNReCLxTeBw2tGckKpT3/HMrYb4nYAsmgVDkowgno5hKaRtwja+kY2ERiPdZn8iTXXhEBoa+irpU24jvMjGFmDwJ/Osw=
+	t=1742233975; cv=none; b=IWh5C+v407743+fURaGEl5tqrwTSe99YWNRv+wAE7jPkEVXvWc68925SrX1ekjQXMVAjB43sblK7hQc3o2RJ0bC85yznqdx6b1eHinzL4UflLZWXMdWQyVPU6g3ikMUEkLcb7t0+41Dh3QuwCaUwncJD+hcIluo6kSiFEDr/5/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742233853; c=relaxed/simple;
-	bh=m1J+GlCnSs1V3eKSpEzP0HLIPlFQKU5vK8yQL04FOY0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CbBvi/eukUvINq1xT8f/zPuMSgpkNhoAocsgbhvHf7FNyKnvhNHOJ2VEfiqs1PSIz4OTE3kIn7c9hYI8lq68GDwS+IAUp+uNUuE+ZSWa3KCfCLjNtvuLtnN1VwgbCEjYG8BCvkmltm6zOJ1W7hM9M/IGa854u5BNLUDVFrFiA3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=P9J9ecPq; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742233975; c=relaxed/simple;
+	bh=zl/nX8wj3yLCj3xnxXmmvs7Nrgt8lnuIVxCL59pWZuE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XImEbzMqPmnzg56QZoTg0wDhr27mdhLTl9VPXYDmN07NQGMRE9yIN08cKQqJuRtitvfh7HKlB9XUlrqLj2oW8zQD8PpDJ+3k7nGcx0ZrCz2xFWuy79lj2EI8MBXPWZj5CHNeoMpppnF7tlg2qjg59WThYb3pbZzcJ8JvelthiZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcjn2eXd; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="P9J9ecPq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742233847; x=1742493047;
-	bh=jhrRLqEl3iEr57VAvfSUeb0SK6yGoWOiTfnMPFKUv4M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=P9J9ecPq5xxFQsW1R4INE7psjA2bcyMbqj/Vz1X1e+SxrtZrogqpde0pZMyioL05c
-	 5uV3Dx/3VajelTPuX0Yih3bFDflG+ok/jwCmrbJu+lYqOyw7PcemdvbEfWRjn+A4Ft
-	 rpcrqhQCMTF6MOZ7RT1EDlIM2Sqcflnkx/wboYcWytff2kWy/DDshWhhmCEVBFjDmC
-	 YQvAAduNkOl7fkOaksQ+b0DnTdhmBCXvbvCHTYrGTPUb+zEimn2Ewn94+w/w/XDpjj
-	 iZa64zb2mIEiXbxMupFt7SvvgTrruUhWhSKU2h31Y8vEBqlZHTyKVFCm58f9wOBGsI
-	 K2/9apW/Z/vJw==
-Date: Mon, 17 Mar 2025 17:50:38 +0000
-To: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 6/6] rust: use strict provenance APIs
-Message-ID: <D8IQCJHJWPNJ.1J2UO4OK0D0B3@proton.me>
-In-Reply-To: <20250317-ptr-as-ptr-v5-6-5b5f21fa230a@gmail.com>
-References: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com> <20250317-ptr-as-ptr-v5-6-5b5f21fa230a@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: bfb891ae1b62b7c3c15f976a4883734178cbd860
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcjn2eXd"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30613802a6bso53133361fa.1;
+        Mon, 17 Mar 2025 10:52:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742233972; x=1742838772; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z5thfR2ajzXn32xUhJ9gHgw/bHdU8lF5FnexVFpisXE=;
+        b=bcjn2eXdR9jIKK7Bcblc9TEiyj0Dr+gwzgtGsITBHqQ+TopdPz1ttvdM+vOkSovwle
+         SWySpa7nkKqlIakjscAqDpwy5oJ1q+YWR6ap4LkM5X4l9nNFqFdakC6DT1C+h2Z7VhUz
+         eXuJOGtBhNJXZsqVYZ09vxG9L6KZsSow9gH0I0MdBVmS6/DuJGKAZvZpzAzAnuP4WmNk
+         8en/VsayZe9V8oNmO2YsnOGtyzNl9hQl+z8gL9BDZt8mFNcu6QWLt+ANTkTpxRTQnNoA
+         LjFPLoWsjFXzLm/bS9TuMU0ngmFormNhYkIN3wsiIJ/uHxE/b8gQZ6J0hc6oXRL3EWqH
+         Y0qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742233972; x=1742838772;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z5thfR2ajzXn32xUhJ9gHgw/bHdU8lF5FnexVFpisXE=;
+        b=kcIdI4BpoYRJ50XCQtzbmm9WHW9YDSUnV9XZauXxbq3bRTqG8sDruwzznb/zv7f/LP
+         I50SFHWveNgvN8D7IYlOW0l9rs6DWRgzQSNx4ynVz8/lZxkZHMljDjM/gyNww3Um8BQh
+         9yDz2cEQVZ0aysmbsK6LGwKYtQw1njg+AMgGKNUNLn/NA7xbuoHwzO4ek4ULTf7FLcLk
+         k321FDoFzWycYxtf/vua/WPgGeEownYjC+Qf+Xva4VKEbvasuTj8/MXgGUyHPwjuR5vP
+         SyPbFOtB5xoxIyT86ODL717Kla8ai+9pTM/GGXb3o5GjC1QCfb+fljA0+WsspuyCRjxK
+         zoZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUDm0UW4tKXMnXia3LnMwrSYdAjjTzDLY6Jg8QKASXloUG+DYfUQoH9CG+G+/7j5CaqlLv+u/4gyjcJbs=@vger.kernel.org, AJvYcCVHJoXUyD92FQ6cl17CUyHt4JXhI5RmW0D1Ri4Ao9i8k5Qfuqic/VDTSLBdCNHhM0uOHSdSf36rGRhqQ4zB6tQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1dO9pR4NssQEj3d9IX4JRdVR0AL22k3uGBJsm430n6UC6Bg1e
+	nw5GIZNDrjxhHOwtM31pCUy23SYiwDS36tqAH0xMseyXqzR2MxV16bsCxsvs+PHMf7GNSwZfNp6
+	G9zcK6hHlFqIrsPDss+ttntgk1eg=
+X-Gm-Gg: ASbGnctW6jUE1RMdpn1VoaBxQC6GY61yIVdKDbJBqeDkqzZQUppxi+T6RPmjp25Kxxa
+	X6LYaxvS9Inm83b4z4LCMkKvn5WtpQzgxm4o4KHns8l1MY5iRb5+Wc+QCgslFOzBFNM4QdggFwR
+	EpVkxce2NL73x8AjP1lIruu138HlnwlyO0dDuRmLGLxu0sTW8d6TZtr/XIQ19t
+X-Google-Smtp-Source: AGHT+IEVurWRQByJ+jwpbSCBHSHIUFCLmbx852SJppmpGLil+MdtcsJIaRBBFH46mVtuOsJBn41cnzB9uh2ULeFSHQQ=
+X-Received: by 2002:a05:651c:b12:b0:30b:ba06:b6f9 with SMTP id
+ 38308e7fff4ca-30c4a8cb5dbmr91075781fa.26.1742233971998; Mon, 17 Mar 2025
+ 10:52:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250317-vec-push-use-spare-v2-1-5dc6583f732c@gmail.com> <D8IQ6GO56119.2JBP30MJWUK6Z@proton.me>
+In-Reply-To: <D8IQ6GO56119.2JBP30MJWUK6Z@proton.me>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 17 Mar 2025 13:52:15 -0400
+X-Gm-Features: AQ5f1JoNgxfJW1Kv1LL2mWZklUT1usJmmUiP35voBmcB8Wywblkhumy-vtjFzlQ
+Message-ID: <CAJ-ks9ks+-=rEUBw59LBg2EWieSejC8hvqeux3fwzRNSyMpO1w@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: alloc: use `spare_capacity_mut` to reduce unsafe
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 17, 2025 at 3:23 PM CET, Tamir Duberstein wrote:
-> Throughout the tree, use the strict provenance APIs stabilized in Rust
-> 1.84.0[1]. Retain backwards-compatibility by introducing forwarding
-> functions at the `kernel` crate root along with polyfills for rustc <
-> 1.84.0.
+On Mon, Mar 17, 2025 at 1:42=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> Use `#[allow(clippy::incompatible_msrv)]` to avoid warnings on rustc <
-> 1.84.0 as our MSRV is 1.78.0.
+> On Mon Mar 17, 2025 at 6:23 PM CET, Tamir Duberstein wrote:
+> > Use `spare_capacity_mut` in the implementation of `push` to reduce the
+> > use of `unsafe`. Both methods were added in commit 2aac4cd7dae3 ("rust:
+> > alloc: implement kernel `Vec` type").
+> >
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 >
-> In the `kernel` crate, enable the strict provenance lints on rustc >=3D
-> 1.84.0; do this in `lib.rs` rather than `Makefile` to avoid introducing
-> compiler flags that are dependent on the rustc version in use.
+> One nit below, with or without that fixed:
 >
-> Link: https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html#strict-prove=
-nance-apis [1]
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/all/D8EIXDMRXMJP.36TFCGWZBRS3Y@proton.me/
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+>
+> > ---
+> > Changes in v2:
+> > - Use `slice::get_unchecked_mut` to ensure we avoid a bounds check.
+> >   (Benno Lossin)
+> > - Link to v1: https://lore.kernel.org/r/20250317-vec-push-use-spare-v1-=
+1-7e025ef4ae14@gmail.com
+> > ---
+> >  rust/kernel/alloc/kvec.rs | 11 ++---------
+> >  1 file changed, 2 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > index ae9d072741ce..b91b287e0d22 100644
+> > --- a/rust/kernel/alloc/kvec.rs
+> > +++ b/rust/kernel/alloc/kvec.rs
+> > @@ -285,15 +285,8 @@ pub fn spare_capacity_mut(&mut self) -> &mut [Mayb=
+eUninit<T>] {
+> >      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocErro=
+r> {
+> >          self.reserve(1, flags)?;
+> >
+> > -        // SAFETY:
+> > -        // - `self.len` is smaller than `self.capacity` and hence, the=
+ resulting pointer is
+> > -        //   guaranteed to be part of the same allocated object.
+> > -        // - `self.len` can not overflow `isize`.
+> > -        let ptr =3D unsafe { self.as_mut_ptr().add(self.len) };
+> > -
+> > -        // SAFETY:
+> > -        // - `ptr` is properly aligned and valid for writes.
+> > -        unsafe { core::ptr::write(ptr, v) };
+> > +        // SAFETY: The call to `reserve` was successful so the spare c=
+apacity is at least 1.
+> > +        unsafe { self.spare_capacity_mut().get_unchecked_mut(0) }.writ=
+e(v);
+>
+> IMO it's difficult to tell which operation is the `unsafe` one here, so
+> how about you factor the `spare_capacity_mut` call out.
 
-One comment below, with that fixed:
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-> ---
->  init/Kconfig           |   3 ++
->  rust/kernel/alloc.rs   |   2 +-
->  rust/kernel/devres.rs  |   4 +-
->  rust/kernel/io.rs      |  14 +++----
->  rust/kernel/lib.rs     | 108 +++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  rust/kernel/of.rs      |   2 +-
->  rust/kernel/pci.rs     |   4 +-
->  rust/kernel/str.rs     |  16 +++-----
->  rust/kernel/uaccess.rs |  12 ++++--
->  9 files changed, 138 insertions(+), 27 deletions(-)
-
-
-> +#[cfg(not(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE))]
-> +mod strict_provenance {
-> +    /// Gets the "address" portion of the pointer.
-> +    ///
-> +    /// See https://doc.rust-lang.org/stable/core/primitive.pointer.html=
-#method.addr.
-> +    #[inline]
-> +    pub fn addr<T>(ptr: *const T) -> usize {
-> +        // This is core's implementation from
-> +        // https://github.com/rust-lang/rust/commit/4291332175d12e79e606=
-1cdc3f5dccac2e28b969 through
-> +        // https://github.com/rust-lang/rust/blob/1.84.0/library/core/sr=
-c/ptr/const_ptr.rs#L172
-> +        // which is the first version that satisfies `CONFIG_RUSTC_HAS_S=
-TABLE_STRICT_PROVENANCE`.
-> +        #[allow(clippy::undocumented_unsafe_blocks)]
-> +        unsafe {
-> +            #[allow(clippy::transmutes_expressible_as_ptr_casts)]
-> +            core::mem::transmute(ptr.cast::<()>())
-> +        }
-
-I think we should just use `ptr as usize` here instead. It's going away
-at some point and it will only affect optimizations (I don't even know
-if they exist at the moment) of old versions.
-
----
-Cheers,
-Benno
-
-> +    }
-> +
-> +    /// Exposes the "provenance" part of the pointer for future use in
-> +    /// [`with_exposed_provenance`] and returns the "address" portion.
-> +    ///
-> +    /// See https://doc.rust-lang.org/stable/core/primitive.pointer.html=
-#method.expose_provenance.
-> +    #[inline]
-> +    pub fn expose_provenance<T>(ptr: *const T) -> usize {
-> +        ptr.cast::<()>() as usize
-> +    }
-> +
-> +    /// Converts an address back to a pointer, picking up some previousl=
-y 'exposed'
-> +    /// provenance.
-> +    ///
-> +    /// See https://doc.rust-lang.org/stable/core/ptr/fn.with_exposed_pr=
-ovenance.html.
-> +    #[inline]
-> +    pub fn with_exposed_provenance<T>(addr: usize) -> *const T {
-> +        addr as *const T
-> +    }
-> +
-> +    /// Converts an address back to a mutable pointer, picking up some p=
-reviously 'exposed'
-> +    /// provenance.
-> +    ///
-> +    /// See https://doc.rust-lang.org/stable/core/ptr/fn.with_exposed_pr=
-ovenance_mut.html
-> +    #[inline]
-> +    pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
-> +        addr as *mut T
-> +    }
-> +
-> +    /// Creates a pointer with the given address and no [provenance][cra=
-te::ptr#provenance].
-> +    ///
-> +    /// See https://doc.rust-lang.org/stable/core/ptr/fn.without_provena=
-nce_mut.html.
-> +    #[inline]
-> +    pub fn without_provenance_mut<T>(addr: usize) -> *mut T {
-> +        addr as *mut T
-> +    }
-> +}
-> +
-> +pub use strict_provenance::*;
-> +
->  // Ensure conditional compilation based on the kernel configuration work=
-s;
->  // otherwise we may silently break things like initcall handling.
->  #[cfg(not(CONFIG_RUST))]
-
+=F0=9F=91=8D
