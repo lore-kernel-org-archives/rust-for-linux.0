@@ -1,43 +1,43 @@
 Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4BA23BCE9
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D839C23BCE9;
+	Mon, 17 Mar 2025 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742221980; cv=none; b=LYbd6Sfy86L8DH2bnngmSA/89pLrEY16TmJ4AultXjSz8fuJ50nI15Em2R0vvNIi6fvsEm88WQ6aGp/TfAVlkA8TgYP2VfPcmDoC560wAoZh+aw6F03FCp/J+NcJGEUvpZPCGW5BvQSkG+o21v8Ax5pFHdxst/bdBYteytPf/s8=
+	t=1742222063; cv=none; b=OyJoh/stuybktBHbGR1rECOeGHUSyat010EY3g9HFuFgID9n2Ox/TH1kUdQRUBMMiuBxy6bj+GsR6V8ImGdPPNIHWNbwTB64hsM1l6yxh+JAcZhuBBuD0XB0aSXGSr2ZEQykzIfZLM2gHJaGpvTqcpvkrc4CSkFnsOI6lieSVeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742221980; c=relaxed/simple;
-	bh=TVKK/j14D3wpA3c9J4ywxNEtSc68PYgo9aW5OzMIDhY=;
+	s=arc-20240116; t=1742222063; c=relaxed/simple;
+	bh=aqTN5Fb1ifhh0Zr+EBpuw6EjHlzOqFLWifY9xjc5sd0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A0P9eF6KFtYbXeubToE+Y1EB0mWXVWxega4dLpSdbnSBqggXifFZEaEOGJBVx8D52zsFa3aDkuXcAjeUNQjRPoeUjEhwTAJGlZco9FG7BIG0U3tMQd3lJRJ0Ni7uBoKG8RS9XAPMNFrDui3aHlgBXMLlY0CPtS7WRz9BJAu822o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=O+T4daLR; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=kI4q5oxnsoIvMMrnmG13g0hp86X9s9fo5rkawOzZwKD4zWBs6UlVk61yMONyVVXTQ6JlsdxiKKzxHFnypmf5hV3zLZpOj+lY4vOzOrFZ31CZIIJlEPYciQ0CeMMKylT96k7JwgcWuwFjrPNx6WdHPHghu1HqEWstZfT+oDOD+BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FXQyKEmj; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="O+T4daLR"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FXQyKEmj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=dngnbettsvhcvpi7th2bifctzm.protonmail; t=1742221976; x=1742481176;
-	bh=eCEXGHds/HURmPH33bYhQdeMJFhNM2yF/567CQG5upM=;
+	s=protonmail; t=1742222058; x=1742481258;
+	bh=CGaRfsA4WMnyqgQCKw98ncK+K05nwXJ5g8NBWtozIlg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=O+T4daLRPJQ9nUKvkX6IaLD9Nmebo16KY7r3a41NE/2QVPOWy+hLOSNN5hWsDac6J
-	 n2VTzB7BhLZBNReZIXoiLO5yLYlA30T/ahBqLRzgodX5CxVshnp5yddBKcd4lWELal
-	 DxzPzkfhDHlDlalBvyK6HsW2Qyb/GqGGYQYp4NJkdeDX0Gwrrd0EdG2eP76G/hxG5p
-	 6Y6Dx5c7r2jKi7HRrch9IDqjQ0SRcwWQaYk6ErB4tGTWijPxCJMzVsgrCqpBsnw05A
-	 3C8RfftBEWI5jEUYL5RM1GU4Y/rZHq++G7toWauGxDlh04sW2OuHADHzkkBOEaldsm
-	 KZ1QvI8H7mJbQ==
-Date: Mon, 17 Mar 2025 14:32:53 +0000
-To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>
+	b=FXQyKEmj2HAjLRBjEXo7W9EIigwZI1jjHob33C9VJzSMsFKh9tesgVliy11poQLss
+	 2tQBwwzNbMS1PmH+EjZGqb7XSC0UKN1el3YGnZV0ValOa/FuMasGvUHA9LKystgMF5
+	 T8GLBWCTTyuMMW49AuvlpYaw11oM70Kv9lI3ueKSxFHelvLSSuPXLhnMUOSo4Lcuka
+	 fwLQDzDQVbaHB2oP4T1r/Kz0HAvMmiD2+192Bacs9U+8cqjfJG27Y/oR7cPl31OnXt
+	 Fg6G/kQX16R0D78ZkuvMBgwAbk6ffv5NP2MGUnY5bRvPm6orYgjjP+NIHphcoDb6E1
+	 wSTEOC8MAatZA==
+Date: Mon, 17 Mar 2025 14:34:12 +0000
+To: Tamir Duberstein <tamird@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: uaccess: name the correct function
-Message-ID: <D8IM57J2C4NB.327CD9GTJ2SMR@proton.me>
-In-Reply-To: <20250317-uaccess-typo-reserve-v1-1-bbfcb45121f3@gmail.com>
-References: <20250317-uaccess-typo-reserve-v1-1-bbfcb45121f3@gmail.com>
+Subject: Re: [PATCH] rust: alloc: use `spare_capacity_mut` to reduce unsafe
+Message-ID: <D8IM66U67XBD.28KWYO1XSF8ZQ@proton.me>
+In-Reply-To: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com>
+References: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 456dbc246db6179d66d907dc5ee5a2ff71430259
+X-Pm-Message-ID: d4db65e73fc46d0c73f8cff36b7bba0db3e413e5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,47 +47,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 17, 2025 at 12:43 PM CET, Tamir Duberstein wrote:
-> Correctly refer to `reserve` rather than `try_reserve` in a comment.  Thi=
-s
-> comment has been incorrect since inception in commit 1b580e7b9ba2 ("rust:
-> uaccess: add userspace pointers").
+On Mon Mar 17, 2025 at 12:42 PM CET, Tamir Duberstein wrote:
+> Use `spare_capacity_mut` in the implementation of `push` to reduce the
+> use of `unsafe`. Both methods were added in commit 2aac4cd7dae3 ("rust:
+> alloc: implement kernel `Vec` type").
 >
-> Fixes: 1b580e7b9ba2 ("rust: uaccess: add userspace pointers")
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+>  rust/kernel/alloc/kvec.rs | 11 ++---------
+>  1 file changed, 2 insertions(+), 9 deletions(-)
+>
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index ae9d072741ce..d2bc3d02179e 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -285,15 +285,8 @@ pub fn spare_capacity_mut(&mut self) -> &mut [MaybeU=
+ninit<T>] {
+>      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError>=
+ {
+>          self.reserve(1, flags)?;
+> =20
+> -        // SAFETY:
+> -        // - `self.len` is smaller than `self.capacity` and hence, the r=
+esulting pointer is
+> -        //   guaranteed to be part of the same allocated object.
+> -        // - `self.len` can not overflow `isize`.
+> -        let ptr =3D unsafe { self.as_mut_ptr().add(self.len) };
+> -
+> -        // SAFETY:
+> -        // - `ptr` is properly aligned and valid for writes.
+> -        unsafe { core::ptr::write(ptr, v) };
+> +        // The call to `reserve` was successful so the spare capacity is=
+ at least 1.
+> +        self.spare_capacity_mut()[0].write(v);
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+I think the code uses unsafe to avoid a bounds check, but I'm not 100%
+sure. Danilo might remember more info.
 
 ---
 Cheers,
 Benno
 
-> ---
->  rust/kernel/uaccess.rs | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> index 719b0a48ff55..80a9782b1c6e 100644
-> --- a/rust/kernel/uaccess.rs
-> +++ b/rust/kernel/uaccess.rs
-> @@ -285,8 +285,7 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut Vec=
-<u8, A>, flags: Flags) -> R
->          let len =3D self.length;
->          buf.reserve(len, flags)?;
 > =20
-> -        // The call to `try_reserve` was successful, so the spare capaci=
-ty is at least `len` bytes
-> -        // long.
-> +        // The call to `reserve` was successful, so the spare capacity i=
-s at least `len` bytes long.
->          self.read_raw(&mut buf.spare_capacity_mut()[..len])?;
-> =20
->          // SAFETY: Since the call to `read_raw` was successful, so the n=
-ext `len` bytes of the
+>          // SAFETY: We just initialised the first spare entry, so it is s=
+afe to increase the length
+>          // by 1. We also know that the new length is <=3D capacity becau=
+se of the previous call to
 >
 > ---
 > base-commit: cf25bc61f8aecad9b0c45fe32697e35ea4b13378
-> change-id: 20250317-uaccess-typo-reserve-87f20265e6e2
+> change-id: 20250317-vec-push-use-spare-27484fd016a9
 >
 > Best regards,
 
