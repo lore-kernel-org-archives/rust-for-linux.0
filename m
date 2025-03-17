@@ -1,110 +1,130 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788441A3056
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 12:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750AD221F32;
+	Mon, 17 Mar 2025 13:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742216365; cv=none; b=kk6SygcYAuKvh2i1rSTKvQV2QibVrFkjQgZsQqkU30W9Gz+zTePI29en4AXZOb9FwD9boOC77l+Sg/sFTpfHgJZrfisQWyxYYC1mGbz2m/Pw6ko8RO/Y6AGnBST/JasmqDRCEx0PRVFJHmh3OyoPbe9CVN9CJl0ZY8VwmBQKdiA=
+	t=1742217548; cv=none; b=SheoxpJzXUo6r0Cjx4O0OTAhC/3CRLdGSOlJWWjM+RwT6EsIOy3tf6H5/mtkbXxNY8BTPdBRocWs4s19w9BHK4l6Xm66klXHh3InFnKgkRdvqM0Tr3niXSeLD6WZvP6c8ldI+w/kKnLptSwRzvbP2MSfCGr7EKz2Qq0TFhHvdUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742216365; c=relaxed/simple;
-	bh=MNWD1cIUWm1XxFKuHiH2VeFYyv4GJ0zDT6m9jD5QGKk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WImFnihtKZytwwPl3SInyXDk5iC0z3oiyrcNO4Wgc6MlifK0OP9UgGXhAaDxf/x8cUcGVKDmu07PFktX/+uCP+qy1Ezhyz6nn0sLgadOl8ticYW6kFR3BEPleUhqu/cZGZt8vr5jrKfoZpyPO9qrm38gyl829j6oDPDXtBDkVGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OpxWbWcv; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1742217548; c=relaxed/simple;
+	bh=/U1ZYfUDOFP0bW+Z3XsUnLRwFyKjGlp0THGpGlr1K+Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VcRi6/LjshPCI5JUUr9/aE7fhvWg+ox8p+EczF9POxh/YWqHgVqDk8hi7yIL1IHVxN4LbGsn83BGQG9a1g/l09Jz4kXbAVN5LLhvkv3m/SwaV/U+8i+TPgW/A6RhUgG6q32egy8BRRrS/los7ei81PQtSLjojOWMNAvFsvPrTrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g04jHRKW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OpxWbWcv"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-438e4e9a53fso12902495e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 05:59:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742216362; x=1742821162; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MNWD1cIUWm1XxFKuHiH2VeFYyv4GJ0zDT6m9jD5QGKk=;
-        b=OpxWbWcvV2uH7r/6LXH+WcugtbtMUcgtqhtOyis1eHemDfPkGXyT01kwuLstSaYv+t
-         m5lKRNiBhjzXElKiLmAPaPdP0CdeRvCQUmEv+T2IU+5jJWqFNaUs93LXhcWoJMfhjvWT
-         fxoo4F9boukbmhkFAVD/RD2E4KpmIpMdbCrjiJ+zJoy4kcpuAWqvWVlnZC915ZoY8IjL
-         5S+pp/X6CKe1R0nAkDY/UhgsQX6618AkcLCcoI54xrXeoxwc6S5IdkFIAMSmmLwn1LXn
-         cA/puQm/vzaVLpfCbJemHBkrmgPOCBbT8qj66WwR216cCiMhZtZPZQXV+lW2IPf0Itec
-         SvTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742216362; x=1742821162;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MNWD1cIUWm1XxFKuHiH2VeFYyv4GJ0zDT6m9jD5QGKk=;
-        b=xVakcZK1HbiDDZsPgTsqAZ0AfsVClRrUrSJmeND8lkS6iPtNgdh16HnQhBiKbVgAO1
-         CfYC4In35QGEBU0oUTd6LKGxiiXxFvQcAkkGzDWMxjG+P+lFM2yqaGRz6KrZgkK1gGHl
-         mo2VSrcsc1bGsXl7dH/za8dnVa8pdNDUPrHKWnc5l+ZhthAYQwV3Jig0uJkVINmjxpe9
-         mAlroij0LNKzyKsFmmlDQGUfKPIO3QMvpDCMS7H74ExDj5W0m7jd1ZMmujqkueCkMAfc
-         qTPJW5flFfN3FZXhoS4mqmqkg8EuWctTbPaoAMKQQfbnzwP4hWU91lLp8bkcSarnLLmX
-         0PEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVw2Ykv56ofJKjXRpfzu/ygQsse5ZV9bTOSp9KAhfZ6Nb2VadCGiJN8yFFKzsr/SS//SiOqu0Z2sbkmy1Xqyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyBN17lI0RCC59OC8wRzPLHMpTEo2iFD/RKvafYVmLbEwI6zgH
-	LaLZEK5lASO0ANSTu2eln0+5fDCzacLZALGqaHqTssMovgxXxM16Lj4OcIm5SjqEtsb2+PjIvKI
-	7i7KQDQTg5scEvw==
-X-Google-Smtp-Source: AGHT+IHNXx49Jd9rEff8/MOk93KTbDCS+XARW9OOfita1Iyp8QF4Fjm5GMrbKD2jMGCE3uAXpu1/FIsZ5BJL0yg=
-X-Received: from wmdd21.prod.google.com ([2002:a05:600c:a215:b0:43b:c914:a2d9])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c20:b0:43c:fb8e:aec0 with SMTP id 5b1f17b1804b1-43d1ec72879mr85330945e9.1.1742216361957;
- Mon, 17 Mar 2025 05:59:21 -0700 (PDT)
-Date: Mon, 17 Mar 2025 12:59:20 +0000
-In-Reply-To: <Z9gL5hQWvCNy5XNH@google.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g04jHRKW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2101EC4CEE3;
+	Mon, 17 Mar 2025 13:19:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1742217548;
+	bh=/U1ZYfUDOFP0bW+Z3XsUnLRwFyKjGlp0THGpGlr1K+Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g04jHRKWFxDXd2boNwLITh5VyZSRwGA9I3kdQvAxLEdg8/DGW3c5dtaVT40TdYIp8
+	 sqIml6Fn7HYvM+r3y5ZZpCi+xydqUSwvnFX6/NLBDqyqAPFEWD0BAl8xfN2R/+P3UF
+	 nN32iPen3kRbTMPM0Vf5PgNcoQlxd4sg1hfFsZnw=
+Date: Mon, 17 Mar 2025 14:17:44 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] Improve soundness of bus device abstractions
+Message-ID: <2025031711-create-proponent-5397@gregkh>
+References: <20250314160932.100165-1-dakr@kernel.org>
+ <2025031542-starry-finally-1a2c@gregkh>
+ <Z9gLeaQqZOef0Fqz@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com>
- <20250316-vec-set-len-v1-2-60f98a28723f@gmail.com> <D8IGFTJXS2A1.9JBD1UKGN4PX@proton.me>
- <CAJ-ks9=oq+c_pMg41QgGWsj=phWYfntXQgpSrFmz16Vifofn3g@mail.gmail.com> <Z9gL5hQWvCNy5XNH@google.com>
-Message-ID: <Z9gcqHihXLg6kcZb@google.com>
-Subject: Re: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Danilo Krummrich <dakr@kernel.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9gLeaQqZOef0Fqz@pollux>
 
-On Mon, Mar 17, 2025 at 11:47:50AM +0000, Alice Ryhl wrote:
-> On Mon, Mar 17, 2025 at 07:34:44AM -0400, Tamir Duberstein wrote:
-> > On Mon, Mar 17, 2025 at 6:04=E2=80=AFAM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
-> > >
-> > > On Sun Mar 16, 2025 at 11:32 PM CET, Tamir Duberstein wrote:
-> > > > Add `Vec::dec_len` that reduces the length of the receiver. This me=
-thod
-> > > > is intended to be used from methods that remove elements from `Vec`=
- such
-> > > > as `truncate`, `pop`, `remove`, and others. This method is intentio=
-nally
-> > > > not `pub`.
-> > >
-> > > I think it should be `pub`. Otherwise we're loosing functionality
-> > > compared to now. If one decides to give the raw pointer to some C API
-> > > that takes ownership of the pointer, then I want them to be able to c=
-all
-> > > `dec_len` manually.
-> >=20
-> > This is premature. It is trivial to make this function pub when the nee=
-d arises.
->=20
-> Normally I'd agree with Benno, but in this case I think having it
-> private is preferable. The function is safe, so it's too easy for
-> end-users to confuse it with truncate.
+On Mon, Mar 17, 2025 at 12:46:01PM +0100, Danilo Krummrich wrote:
+> On Sat, Mar 15, 2025 at 09:34:17AM +0100, Greg KH wrote:
+> > On Fri, Mar 14, 2025 at 05:09:03PM +0100, Danilo Krummrich wrote:
+> > > Currently, when sharing references of bus devices (e.g. ARef<pci::Device>), we
+> > > do not have a way to restrict which functions of a bus device can be called.
+> > > 
+> > > Consequently, it is possible to call all bus device functions concurrently from
+> > > any context. This includes functions, which access fields of the (bus) device,
+> > > which are not protected against concurrent access.
+> > > 
+> > > This is improved by applying an execution context to the bus device in form of a
+> > > generic type.
+> > > 
+> > > For instance, the PCI device reference that is passed to probe() has the type
+> > > pci::Device<Core>, which implements all functions that are only allowed to be
+> > > called from bus callbacks.
+> > > 
+> > > The implementation for the default context (pci::Device) contains all functions
+> > > that are safe to call from any context concurrently.
+> > > 
+> > > The context types can be extended as required, e.g. to limit availability  of
+> > > certain (bus) device functions to probe().
+> > > 
+> > > A branch containing the patches can be found in [1].
+> > > 
+> > > [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/device
+> > > 
+> > > Changes in v2:
+> > >   - make `DeviceContext` trait sealed
+> > >   - impl From<&pci::Device<device::Core>> for ARef<pci::Device>
+> > >   - impl From<&platform::Device<device::Core>> for ARef<platform::Device>
+> > >   - rebase onto v6.14-rc6
+> > >   - apply RBs
+> > > 
+> > > Danilo Krummrich (4):
+> > >   rust: pci: use to_result() in enable_device_mem()
+> > >   rust: device: implement device context marker
+> > >   rust: pci: fix unrestricted &mut pci::Device
+> > >   rust: platform: fix unrestricted &mut platform::Device
+> > > 
+> > >  rust/kernel/device.rs                |  26 +++++
+> > >  rust/kernel/pci.rs                   | 137 +++++++++++++++++----------
+> > >  rust/kernel/platform.rs              |  95 +++++++++++++------
+> > >  samples/rust/rust_driver_pci.rs      |   8 +-
+> > >  samples/rust/rust_driver_platform.rs |  11 ++-
+> > >  5 files changed, 187 insertions(+), 90 deletions(-)
+> > 
+> > Thanks for doing this work, looks good to me.  Mind if I suck it into
+> > the driver-core tree now?  Or do you want it to go through a different
+> > tree?
+> 
+> This series has a conflict with nova-core, it will require the following fixup
+> in -next and Linus' tree when he pulls things.
+> 
+> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+> index 63c19f140fbd..a08fb6599267 100644
+> --- a/drivers/gpu/nova-core/driver.rs
+> +++ b/drivers/gpu/nova-core/driver.rs
+> @@ -1,6 +1,6 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+> -use kernel::{bindings, c_str, pci, prelude::*};
+> +use kernel::{bindings, c_str, device::Core, pci, prelude::*};
+>  
+>  use crate::gpu::Gpu;
+>  
+> @@ -27,7 +27,7 @@ impl pci::Driver for NovaCore {
+>      type IdInfo = ();
+>      const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+>  
+> -    fn probe(pdev: &mut pci::Device, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
+> +    fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
+>          dev_dbg!(pdev.as_ref(), "Probe Nova Core GPU driver.\n");
+>  
+>          pdev.enable_device_mem()?;
+> 
 
-Thinking more about this ... I think we should have `set_len` and
-`inc_len` instead. That way, both methods are unsafe so people will not
-accidentally use `set_len` when they meant to use `truncate`.
+Ok, shouldn't be that hard of a merge issue, thanks for the diff as
+linux-next should soon hit this as well.
 
-Alice
+greg k-h
