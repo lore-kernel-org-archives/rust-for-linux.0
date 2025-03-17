@@ -1,110 +1,115 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515FE17A314
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 16:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681741922D3;
+	Mon, 17 Mar 2025 16:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742227440; cv=none; b=LQ6UeBKdkDsqVxnni+3caSuvJW7Q3U3vGWM6my1WxV+TeZMSRryoEmrNdF399j4lTxfDJgw9KI82KSxxxwudc0M9bxgMaxlheRJF+Xe4KMO7w0ODUyu/a5qV+l4oRV+xBsJimsPr9gyG2SMw16P4OpT4S6Q6pJhTTkNDSsUYaYA=
+	t=1742228221; cv=none; b=G4cJ93PkNs/cP29LY8qMFReoPZr2TB0j7oBYVFYZ1BMoGKG64yuwrNKeBvAkem5gj2Kuk/EWR5lD09dMWOov+jqTUKtoA9MqcEyj6zvtS97VmMk+ehFnySN2xWQm7ftyIVRAO/CYxqi11KKrUwFKsMxrD1r5ygsI7FwN88F12Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742227440; c=relaxed/simple;
-	bh=a6sGXaD3hXREHvYt4KjDd7v3l3lh/bdNC3gAibCLMvw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bdzVMHi1nlSQ5XPv0Gnb6SkDsG2xmD+LfzhLilTrF+A1Diu1Aq5FGUd5PBU07em42yOyQPE1ZGsNdQax/GQQlVa/KuL8mLTKRMwiEf6lT+w+ixtH2OCZHq7AHlR5+veROGC5ywfFslxF7XH90vAdam2sah4jdLI7MhGZCv1kdNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hSj3jXNt; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742228221; c=relaxed/simple;
+	bh=3nLJh160QmzXnmlwT9c83fok8ylSn9nGD1m5ScL+J7M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fGxY5/bHlSxqxeJrW3hBmxmBu1aQmbEjPuYCdfrFgSTX/d99hnYHzLeQYUCK31ZrkEwW5Gk5/g8f8/emnOob1zwY/di7rTFiH5+f9/f+dYxA7X/WdWJh0RCjur3p/W1VzoWWpcPYiRPX48B4/ZEeRTKRa+DQT/BqHcdkXGodwZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qmSjNK47; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hSj3jXNt"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-216513f8104so10053005ad.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 09:03:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742227438; x=1742832238; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TLHbmTl6Z2h2hNc2aOXjcxBQ9Vz2CPOpm/cFeldVGvs=;
-        b=hSj3jXNt0gFZsYYeCorvUlQS27FTf506KugKJZe6jajcbDgiTe8l6qmpJB07Dla5rX
-         3hp7xmldPaiaE8M0TSQNXU8qf+l9QK2fogxMSDKzHim8b3T7rTYbneh3E/mz/IFN81Y/
-         W2e6vqjPLF1UtJp3j2ERWlWQmWHsNHGTLtm/iXZZbOkSw6X21MHFqRiE/D+M3qBfCNIQ
-         L3DbpqYDo0uTfg6xgawy3AQde/znCkGFNTi1blc6msBJQrEHS+Dw6TEUxoIjObAIuKZQ
-         02VT3Sq2dDmNPg8LWAh4RrrG4Pl0dVpBL19J5W5knVGdlofaRxnIN2fgUY5k2aMri/uY
-         i0nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742227438; x=1742832238;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TLHbmTl6Z2h2hNc2aOXjcxBQ9Vz2CPOpm/cFeldVGvs=;
-        b=XzjeLnMu4jGnEupppa1BS3FGZx3bsgc27ARWjW94fKBj6LPbIUzFKomWw/okO5j+um
-         lDWDlydUXQWyeKYIA0u/Ntih991HIZcFipuNaOuWopL4eh9Oe2wMTSD3aqdHGkvCSCA6
-         A9BspAM9ULHV1Ea5qK7mFmt9zNXA/xsYCXgB+Qec8PICzBj5kRRGS+s2E/wI3K7tI1/j
-         grMLRjnJujk5jgaja9Irhv8RGxuDQkybjx58tAKIGA3d16KOR3IXp619MUAWXQ2Yfz5A
-         VFG4dz7z5V21ZgZPxjWZY5A97SfsQLfFEycQK8gyrv8FGsC6hh6XGVVpSohdhX64IaqR
-         I5aA==
-X-Forwarded-Encrypted: i=1; AJvYcCXg8pS9lahgaM+KWCHphY3wB8PGJz6jEO0SDUDjTG2kUgs1q/tiO63dIKEd34RNYu5fTGXNGu+TjMYVmxEZzQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7Iw4TpvjIdgKBRfFnw4GMLrIRWlaHF3BqjFzZ9HY9Gl/Epwba
-	rmORPEgc/IUyy17QyjJqR53M2NRsnWI5gAKamLTf46vyiY23I3wLS3qq3yolgFB0/EQ5UlZ0xfM
-	M21upHfVqtrCwQrWmR/8iW8GJ3Zw=
-X-Gm-Gg: ASbGnct5uBN3Drf6Mvc2PCdSfnwh28Dk46F7OrB0CeUjKunetLMhlqK2/93BbnOluS6
-	N4GIZb0RQ6WWCXqV26glEatvTMUdbpanlbHrIJayowWlZiLDn2op83HcYrvlCfHx4ZUn2/73VL0
-	W5FTQnrlvLeHwrBKXS0S2KUbxmyw==
-X-Google-Smtp-Source: AGHT+IFtIo2zqstgnH4Nj7j0rm9AcF3RvzwIGPreCoQ8fVKd6cilbS717XbMNHaB0e1D9vHc1tKPr1v+FL/zH6x7yxo=
-X-Received: by 2002:a17:903:2284:b0:224:1579:b347 with SMTP id
- d9443c01a7336-225e0aa6fc4mr56844355ad.7.1742227438391; Mon, 17 Mar 2025
- 09:03:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qmSjNK47"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E22BC4CEE3;
+	Mon, 17 Mar 2025 16:16:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742228220;
+	bh=3nLJh160QmzXnmlwT9c83fok8ylSn9nGD1m5ScL+J7M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qmSjNK47xIfKhoPiz22nCRMD8HYwX4zBP3o6A4S2CZxSjpbK3O8Zyb5Vb5WdzP0o5
+	 IOFEyP+heAucZhbDS/GA8tVn59/GHPlkGcASa/zn2IOONdZSYEyxJsWpsoBI4PwUfb
+	 nQlN2djuJAvB48Zz6pUGbEqSjTdGps2BoAQYjGo/UIM5KeFILjCsGMixygFGm0dPgN
+	 WYGbWSn8TFK4dMwyCYyERsW7WiNhweNEgf+uRVATRBAmWJvovmYgU6nkwjr0Lnr4Is
+	 BW3StaiXwpi5zydlCvVEmQBc9Ca9ntyt5U4mz4OqwoVErUYPz/WfYCl5GHBps4s0Ry
+	 FZRnXBIprGTiQ==
+Date: Mon, 17 Mar 2025 17:16:55 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
+Message-ID: <Z9hK9_zFqnH5XQC-@cassiopeiae>
+References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com>
+ <20250316-vec-set-len-v1-2-60f98a28723f@gmail.com>
+ <D8IGFTJXS2A1.9JBD1UKGN4PX@proton.me>
+ <CAJ-ks9=oq+c_pMg41QgGWsj=phWYfntXQgpSrFmz16Vifofn3g@mail.gmail.com>
+ <Z9gL5hQWvCNy5XNH@google.com>
+ <Z9gcqHihXLg6kcZb@google.com>
+ <D8IMCFZJ2G7C.28DHUZGDB596P@proton.me>
+ <CAJ-ks9kEpC=7jK9CLNKBWYpoOyAo_Wr8eyvaYf0ZSiC8m-VREQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <Z9XIk3WpzruUfh6O@pollux> <Z9bLtgJa3PNB0bkf@pollux>
- <CAJ-ks9mAS1WHZcRqPzu4qhMOGXP9RNhdHUSbJK79znDvaFRHnA@mail.gmail.com>
- <Z9bWODCNNEq3xI51@pollux> <D8HVI9K91JWV.NHOPVELH5JE5@proton.me>
- <Z9cfkKTVKtc3imyK@pollux> <Z9ch0fgUI-V-rlGr@pollux> <D8IG67RM4H53.2K2AW01FZLWJM@proton.me>
- <Z9gDt9JbqvoTFORV@pollux> <D8IMOAKHKYGP.32PTT2W55UH6L@proton.me> <Z9hGcClQXpEYUYZp@cassiopeiae>
-In-Reply-To: <Z9hGcClQXpEYUYZp@cassiopeiae>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 17 Mar 2025 17:03:46 +0100
-X-Gm-Features: AQ5f1JopCBBNsSQLLPVMYpyGJje4lvL7P_XzswuBytc7QDaFZC5Sv99bioTZXps
-Message-ID: <CANiq72m0jJfwBb0Sr7P8NZN30Q8FQYwn6QteQ0QbPuBW9Qj62g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of Vec::set_len()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Benno Lossin <benno.lossin@proton.me>, Tamir Duberstein <tamird@gmail.com>, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, andrewjballance@gmail.com, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ-ks9kEpC=7jK9CLNKBWYpoOyAo_Wr8eyvaYf0ZSiC8m-VREQ@mail.gmail.com>
 
-On Mon, Mar 17, 2025 at 4:57=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> Oh, I see where the misunderstanding might lie.
->
-> Let's take a look at FileDescriptorReservation::fd_install(). My proposal=
- is to
-> have something like:
->
->         // SANITY: `fd_install` consumed file descriptor
->         core::mem::forget(self);
->         // SANITY: `fd_install` consumed file reference
->         core::mem::forget(file);
->
-> Where we have e.g. clippy to complain if there is no "SANITY" (or whateve=
-r we
-> call it) comment for mem::forget().
->
-> I'm not proposing a SAFETY comment.
+On Mon, Mar 17, 2025 at 10:44:25AM -0400, Tamir Duberstein wrote:
+> On Mon, Mar 17, 2025 at 10:42 AM Benno Lossin <benno.lossin@proton.me> wrote:
+> >
+> > On Mon Mar 17, 2025 at 1:59 PM CET, Alice Ryhl wrote:
+> > > On Mon, Mar 17, 2025 at 11:47:50AM +0000, Alice Ryhl wrote:
+> > >> On Mon, Mar 17, 2025 at 07:34:44AM -0400, Tamir Duberstein wrote:
+> > >> > On Mon, Mar 17, 2025 at 6:04 AM Benno Lossin <benno.lossin@proton.me> wrote:
+> > >> > >
+> > >> > > On Sun Mar 16, 2025 at 11:32 PM CET, Tamir Duberstein wrote:
+> > >> > > > Add `Vec::dec_len` that reduces the length of the receiver. This method
+> > >> > > > is intended to be used from methods that remove elements from `Vec` such
+> > >> > > > as `truncate`, `pop`, `remove`, and others. This method is intentionally
+> > >> > > > not `pub`.
+> > >> > >
+> > >> > > I think it should be `pub`. Otherwise we're loosing functionality
+> > >> > > compared to now. If one decides to give the raw pointer to some C API
+> > >> > > that takes ownership of the pointer, then I want them to be able to call
+> > >> > > `dec_len` manually.
+> > >> >
+> > >> > This is premature. It is trivial to make this function pub when the need arises.
+> > >>
+> > >> Normally I'd agree with Benno, but in this case I think having it
+> > >> private is preferable. The function is safe, so it's too easy for
+> > >> end-users to confuse it with truncate.
+> > >
+> > > Thinking more about this ... I think we should have `set_len` and
+> > > `inc_len` instead. That way, both methods are unsafe so people will not
+> > > accidentally use `set_len` when they meant to use `truncate`.
+> >
+> > I agree for this on the public API. The way I usually saw `set_len`
+> > being used for decrementing was truncation without dropping the old
+> > values. And that is going to be `vec.dec_len(vec.len())` with the
+> > current design. `vec.set_len(0);` is much clearer in that respect.
+> >
+> > But for the internals, I'd say that `dec_len` is nicer, so for `pop` one
+> > would then use `self.dec_len(1)`.
+> >
+> > How about we keep `set_len` and make `dec_len` a private, safe helper?
+> 
+> This discussion is _way_ too speculative for my taste. If you'd like
+> to do this kind of thing, I'm happy to drop this patch or the series.
+> I'm not comfortable adding API whose usage I haven't seen and don't
+> understand.
 
-Clippy could "easily" do that, but if we are to do something like
-that, then I would want to the ability to mark which ones need extra
-comments in the signature/item (e.g. as an attribute) , i.e. instead
-of in a global list somewhere like `.clippy.toml`.
+Seems like setting the length of a vector is a hard thing to do. :)
 
-It is also related to the "colored `unsafe`" idea we discussed very
-early, but without extra blocks on the call, just a comment.
+I advocate for a middle ground.
 
-Cheers,
-Miguel
+(1) Let's keep dec_len() a private and safe helper, it clearly improves the
+internals.
+
+(2) Introduce set_len() as a public API and defer the question on how to support
+dec_len() in a public API once the need arises.
