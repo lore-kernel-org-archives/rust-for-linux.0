@@ -1,111 +1,83 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2242038DD8
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF5D2356B9
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742208620; cv=none; b=h//YK3pa9fK0yJ26XRbDsF2i/P1a8M4lmpWjWst3O5MK7JLSEMxp7TDnH0YvZflIsA4lMAxka1H/OD3/SfEl0Yq4ayLkBmHlJM14Bq0wwU4V93IfY9NxMH4YeHmgD0QJe9zA7zGVvKrBk78HwKGKIRimnoyzr9JN9ivNr2YXPaU=
+	t=1742208737; cv=none; b=B04EFgFH6r7M43ILdeuy/bnjH8Q+gH9O6LSGtQAWimprJx9P6u5D1YEXLNzVohj2gBw2Ws06tvD/dYU7tU9BevnMgrigWaeqFfA8GMhA0utccxBGrwspKT3DLaRj3HWWbSE91RqnOBid83hTOXlxl07Jc1tChwcPmD+WonKcIR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742208620; c=relaxed/simple;
-	bh=apPmjzBp15h6BuYlIx9rExk+T2+yeZP997KXyoYkzB8=;
+	s=arc-20240116; t=1742208737; c=relaxed/simple;
+	bh=eeuK4xT93WvjWp0Gg8f91YaCZEctTHOwolyCA3Zg9Ak=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QY0aMDXYs48XNGQcspfDoDgsr/ZDZiS1K0wLHox6LB6/nZJqzDKX5B8vIdwehUslLuLVakruBMDF55rRDCRdJuhG4PsYHU04hPzxXFxZv7sgwAlJwmFvp60/ww/lZF7qSMrvQ492lZVcmr5FxnpBAy7TCHW2TPfuhxh0bHKlmCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eW4txa4L; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=BoHw6mzIC19cW9u0pa6ZVAl3Yo6uqn3IgF8PeihX3BJ8261TAZWVKWiq5knFvsiMf1C3tlRgp+AvxavIFoWR56ibde65bqkwGkke57B6fC3dHS5P1Grk8FoCKmDcyDc6wT6YTB/O6NP4tJGWb7L3H9MrlX/KlEqsRwJy2ajfw8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c78jfA78; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eW4txa4L"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf172ff63so11458325e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 03:50:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c78jfA78"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3912580843fso3287160f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 03:52:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742208617; x=1742813417; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742208734; x=1742813534; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Up6B4MdDWj2/kfMDXbKASX6Gb+BsCApF2SDLkxZErAU=;
-        b=eW4txa4L/DFmFPOhbq4NDINaMtF6ioqDelHNV792lyzp1BDzxFEEn7VrTZHLwRP3HU
-         7w+Q6+ydGfhJTSDShFwYnkCqFoY99LQASx0Nr5hXAXav1PafsYX9LsnhH8Lw5TTOPvwi
-         K+JfZMHWDzVi/dQxscRrhZZOSuObhZHTIcsXdS5UMjR+l8V8QXXH0pzw7uC0O2ZlNR9W
-         9fP04x+xdXssO0JaDBlb29LIvo5Bi6Gtzo+2zrG8ZfnE2E44UnAZp0OgzDbL8chSnocX
-         l8b/FG05DClaRFLbAs/Ifi35Hbc+Q76aK1DtytAi9lkev8Y50cQbChEL8+F+TkbS9sw/
-         GP9g==
+        bh=Tcva91qbc81FGn1vXLB54WTmevbL6p5VxkTw10IeAI0=;
+        b=c78jfA78iTgjZbNr3HrLU/QKMsz6MBBES3vMgULWBhhEGY+LLsGPOfaB76dCAqJPS9
+         4qtMQd4jhi2L2rFu5sB3xtIKh9Btbz6SxVKmH/oEIr33SxkPCJrHOD+I9HuDp98WejIF
+         CL1wftCc+zJ1FtJsFVRWXzsAbqBOXUAKM5X+tq53t2ikNmwaXa8AutrvCNqTfY4KANzb
+         reyw7SXK5EfVUrM4rl9APYt7DXz+q0vf+x80aMAQ+EOoaVhx5iZ0geJa2l0bCmdi14cn
+         vOm4gUXx6NyAJZhqDusySAuFa9c5Z8/ns/uhgJQ7qJ7ovnbxoBWyTVB79eZn/dNtWDWq
+         kZig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742208617; x=1742813417;
+        d=1e100.net; s=20230601; t=1742208734; x=1742813534;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Up6B4MdDWj2/kfMDXbKASX6Gb+BsCApF2SDLkxZErAU=;
-        b=u/JjWn8CRpWzngC1KBR1eOTChhHZ6fEbOl9oQpV4By/LKCQQCx37LEJbTMwAS0Ra5L
-         c2ekPKp/8klJ6KZ1mZdKuPnYxSK6XQWjqZ4xS1h+NzgVsnNiMimlUBmKK0vXw4dwlhiE
-         Bv6l2E4TdyhstuQvt7UoRcKWVJ3inVGTlWeyfifxE8vu1vJpFUlhujPu9J3zyS7Phrn+
-         eJsp63tjCm5KdEXtyE1CS3RHMRZAEQKw2lk9i5mXjI5hsBtgf+Zz/SuvBBRQqulyEgjf
-         x+nY1hyih0LvmuemqmysN2ylMKGdS7500N8sklKyFcizAtGSz4UyK6LLkz5ql9ZBCyXO
-         NIWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUXbc07fY167uDwNPzPd13hYvjPDhiJ3I+gToISwC+LPX/2TdHqS0UNluYzm2q9Mom8TjNg9F2jglZac3PoEQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRSGWOpQq+kdlUPvvF2il/D0rceE5LJRd4SHo4lqB1Cimx28wa
-	VMREzvLFt7JHEpmdWgFUGPHBJgI/14VW+34inJOVnoGw3OdZ6mkdiqzOUajG8ovCrcHMlVHrNk+
-	mur1T2CLDNbLwjQ==
-X-Google-Smtp-Source: AGHT+IF6IFyAlhN/n6Py4z3zsZpntW/Ns0z5jtqY9dqdYnp9Rx4qA7n2aFjUa1uf7DGmwKc656C0SK+M4oDPlBk=
-X-Received: from wmqd2.prod.google.com ([2002:a05:600c:34c2:b0:43c:f6c0:3375])
+        bh=Tcva91qbc81FGn1vXLB54WTmevbL6p5VxkTw10IeAI0=;
+        b=Tuci72DheH/r/+QHeJmGJUlTzSRkB/SAO+etH1KXozBnMUHiPg+h1oDy7lsbnZTia7
+         qPfE2g/ulIX5LDh/Apknd83qt00yHSYuVvr8tOpgz4gUWwZxPnt1kkVCG8V3WElfxnwa
+         YVoKtDS+K2+lpFmIsR0oZpKzzDfSq96NyfQ4Q+S8WPbUKZJpKpFafscfY/sHvkospsHD
+         Knu9Zf/SBHogqMFJ4Zl0ijno+6l2/Bk0HR7dJKJqCMlGppvyg8JC6qKj8+6EYDkF3k/j
+         sNvzat3pQ4WdByoHEm7ZGX9ijSgvyq6h5YpVt5LzUooW4bpJ4len+lbgfhbuihQPbDRI
+         yG5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUGn3DTOw+yyIj+zXn62a61QNtb2yUbR/2Yr2fzCGw8v6Sbud+NpKkjL+52Pcg+SXJbaSaRQrXpcKwy8LYEug==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmDHBLv4TPHFpgTwPv7Ahkie4etYlMN3ioX7Z9cebjHe9w7ykf
+	ReFXDjTxM58YkFvCyHglN4YJeMufxbKmA7IV6qzMeli911yWbGEMEK+Lx8oRKBC4yxVn0IhZees
+	p7KUthB1wz9CdWw==
+X-Google-Smtp-Source: AGHT+IFQtLHmlkFGovhLbUUKxy0zWAm5TQqWXbx/kptXecEGH7yZZmlZwUeVlgdPVdE6B96JSpXhAC2rNrEEQ08=
+X-Received: from wrbch14.prod.google.com ([2002:a5d:5d0e:0:b0:38f:40d1:8309])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c86:b0:43c:fa0e:4713 with SMTP id 5b1f17b1804b1-43d1ec66826mr115790365e9.2.1742208617612;
- Mon, 17 Mar 2025 03:50:17 -0700 (PDT)
-Date: Mon, 17 Mar 2025 10:50:15 +0000
-In-Reply-To: <20250316-vec-set-len-v1-1-60f98a28723f@gmail.com>
+ 2002:a5d:5f8f:0:b0:390:fe05:da85 with SMTP id ffacd0b85a97d-3971d23750dmr14173105f8f.16.1742208734052;
+ Mon, 17 Mar 2025 03:52:14 -0700 (PDT)
+Date: Mon, 17 Mar 2025 10:52:12 +0000
+In-Reply-To: <20250307-no-offset-v1-1-0c728f63b69c@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com> <20250316-vec-set-len-v1-1-60f98a28723f@gmail.com>
-Message-ID: <Z9f-Z15bSh8MA1wJ@google.com>
-Subject: Re: [PATCH 1/2] rust: alloc: replace `Vec::set_len` with `inc_len`
+References: <20250307-no-offset-v1-0-0c728f63b69c@gmail.com> <20250307-no-offset-v1-1-0c728f63b69c@gmail.com>
+Message-ID: <Z9f-3Aj3_FWBZRrm@google.com>
+Subject: Re: [PATCH 1/2] rust: retain pointer mut-ness in `container_of!`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Tamir Duberstein <tamird@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sun, Mar 16, 2025 at 06:32:00PM -0400, Tamir Duberstein wrote:
-> Rename `set_len` to `inc_len` and simplify its safety contract.
-
-You're missing a Signed-off-by tag.
-
->  rust/kernel/alloc/kvec.rs | 19 +++++++++----------
->  rust/kernel/str.rs        |  2 +-
->  rust/kernel/uaccess.rs    |  2 +-
->  3 files changed, 11 insertions(+), 12 deletions(-)
+On Fri, Mar 07, 2025 at 04:58:48PM -0500, Tamir Duberstein wrote:
+> Avoid casting the input pointer to `*const _`, allowing the output
+> pointer to be `*mut` if the input is `*mut`. This allows a number of
+> `*const` to `*mut` conversions to be removed at the cost of slightly
+> worse ergonomics when the macro is used with a reference rather than a
+> pointer; the only example of this was in the macro's own doctest.
 > 
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index ae9d072741ce..d43a1d609434 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -183,17 +183,16 @@ pub fn len(&self) -> usize {
->          self.len
->      }
->  
-> -    /// Forcefully sets `self.len` to `new_len`.
-> +    /// Increments `self.len` by `additional`.
->      ///
->      /// # Safety
->      ///
-> -    /// - `new_len` must be less than or equal to [`Self::capacity`].
-> -    /// - If `new_len` is greater than `self.len`, all elements within the interval
-> -    ///   [`self.len`,`new_len`) must be initialized.
-> +    /// - `self.len + additional` must be less than or equal to [`Self::capacity`].
-> +    /// - All elements within the interval [`self.len`,`self.len + additional`) must be initialized.
->      #[inline]
-> -    pub unsafe fn set_len(&mut self, new_len: usize) {
-> -        debug_assert!(new_len <= self.capacity());
-> -        self.len = new_len;
-> +    pub unsafe fn inc_len(&mut self, additional: usize) {
-> +        debug_assert!(self.len() + additional <= self.capacity());
-> +        self.len += additional;
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-I guess we could use an INVARIANT: comment here.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
