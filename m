@@ -1,67 +1,67 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08E223BCFF
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E951A23AD
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742207062; cv=none; b=YWLoEbNZjrPP8SBd8RAQCZRRtciXWPyRo+I3yOQbLayXdykT72xvk333HIXmw/Ehij1gd/D+3p8VmEiJcvmiAmgAYFDVV+7eW5imukhctq67/gT/qHaLNo+3JdyPo/5ONCn0FdkG2D6xbX+vegfWQUKJ/RXuDNWeaZB5HfkmFjg=
+	t=1742207363; cv=none; b=qJd3qCoxHcuOb8rx3wUFblIs5zVMp8TMUR6Oct25ITIXcJd7ZTPmMt4IeHLoaHR+zp/lCPqWqwSh689jRmYWEfCyZ9BcTe3W7Ed4EmxehA06p8hegJe9WoAAVR8zKA3VYNE4AX2wIAfCXrH+xKI1OiidVHqen4M8tr2G8K33jAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742207062; c=relaxed/simple;
-	bh=T0XmXTPHuSifmlk1GQv7S8pl94t1Wv6LlKDhlqctDvU=;
+	s=arc-20240116; t=1742207363; c=relaxed/simple;
+	bh=BmHlcVeyDTGath6xJ5BkH3jTeyFsKHcpnCcAQlKKzB0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OQ+g2yOqcQEOrZxKjaiIkbw3jkmlPZUKiTcbkYe6FSrH9ScfmqbQKtaMlT1jv3CkAMQNOa8gkytSfwE5S0NL23RCRRghdRYL3sgdRjjjUinNaljL8aJ88azQYW+oqWXpnNO9pTGbatw/TGHgGw+k930Slw0avE6SPPvQ/vG2Fgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tbXy5sjp; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=euPj7rGATezTs/sQFMatmvq2i6KjRhMwc/riOgsebMrzM025pJBZf0/enXagWKC6sYB9/vXgkbmSHdzPQfnU8Q5Ng0CWfhtUepUFsXmsZxoIvuzhBYBPH/1V8WMBybrmLjp4ex9Ho9tNk+YM0ESqPUdLOzVmXGLkCladMdXhl9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CzKNJU91; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tbXy5sjp"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d007b2c79so15163135e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 03:24:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CzKNJU91"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43bd0586b86so10665995e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 03:29:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742207058; x=1742811858; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742207360; x=1742812160; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8K4Jrr2cHn05wONB/FH2XsdIcr9ioXUuaymWvPlQBPA=;
-        b=tbXy5sjpD4pVnpMxCVw579Xj25M68VmTzxLgZ1bUIeaZUY+7lP4u+agcaQiT4EVeY+
-         9x7FOKFggZLY8zNqTP3m4bVZZ6Hp2O4jZ6DTyqnFaTKbk/4fzfbE16drDXycgHYQpFqY
-         REr2ifWo5mf4NjrpUT04rSbE2N+/SlEZFlNefEjtK3VR72Oa2D+hyKmbk9VzBdtMwGHS
-         vjwElyx4Zl6qvNzxPTrvR7s9dqptYh5EKosbIBCET5tYlGeR2rPeP/kUQudM/swbbdpk
-         PWUwy4tj4vHkqLsP8qd5I9hdi+U0H/wLuh0jTV/VihUkj4RQD3vZf11Bqg1eAgyJd18X
-         8z8Q==
+        bh=yZNMaIMiKoZDo5cQ6GyfS8+tsfIDXP/+Z/RHe17Imqk=;
+        b=CzKNJU91Ku7SQqzYR9j+CnBmPiR213fxwdeYYnpiCP2UJq1XATNMMqp114S55tLZCK
+         FYgu856YDGjuiJXK3UOfgcpaOWQqLBONd6PjeZHTkm75xIOJvpJH8mDDebGiUrWLJci1
+         bOeb1sdiJWLiw+G8kwpSrWM+gEVL9sgBCnnNauZE0kYob//9LzYJRKbA6TwFsmcy4n+w
+         w8Blc0GWXkRvlXMRKaYvrnzN/3H+kicsYFPsgyOq8CgH4QMV7tHds4QuogkXb0B/vw6R
+         +sbffl3QwUmTtGUQOjCO0KTTk1FB0HA1Be+1SNLfRFS0W/APSs7jhc8jMTTiHjlGWXBR
+         dDyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742207058; x=1742811858;
+        d=1e100.net; s=20230601; t=1742207360; x=1742812160;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8K4Jrr2cHn05wONB/FH2XsdIcr9ioXUuaymWvPlQBPA=;
-        b=YMRaDauupfvE2/OYxdN7SkJQVqHy5F+kPyE9LmKAhoMbD09QXPTvcfJUiKI0saMbdM
-         LFjo20CsMRR0r3zPmxgeXYTQxI56mLh00u1wl9GVXRp9c4MxLCLswEioSRrFn5Pm0Bhp
-         AY5JKFK0tw5wIPr3dIcOWqSFvKsMszKgCHUmyXbWrR1bidwCA9/f3LSBhkttS0ChVRyR
-         szxlmw8+iexaMSC0RSCGLZx9c0RLyhxMiDpwX2lqiaDOX/EOo1WXv/wEnpjD3sdrhiUE
-         nphVnaKXgBzM9S3jBMP/5LeJGyievWYEIHU9teyBZi97tQqtQKAr+3pT/QywXTaMJzyF
-         jlvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWa5Dr1Ts8k6AHcv3vIV0XBKJirM+0avg3uAFnb8EvAFFYrqytUPbWjS4MpHJ7TLLTjnq0UQ1CdZEtGl/Bvfg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqETdKf8uEhvKeYaBaN8iP/iytTTxolIZVo6Gk+28+VobUGJu7
-	FBwhYMCx5Eh0c7hwz7QVpADVjvLcD0kne2Dd6R/3xSyT0l2wUf9+XLrhvCkDuEysOVumsqyfvw/
-	G/DXjTBW4ybiyIg==
-X-Google-Smtp-Source: AGHT+IGHM9Im2dqX3gfz0NV8cc0x3CfI4wJk+09faVb93t75tZtSx537hGUim5yDjXgoSpEfdSGA14kssfoPG70=
-X-Received: from wmgg6.prod.google.com ([2002:a05:600d:6:b0:43b:c450:ea70])
+        bh=yZNMaIMiKoZDo5cQ6GyfS8+tsfIDXP/+Z/RHe17Imqk=;
+        b=LjX4d5KCMZy2eFsed2lSX/d0xxGQIdpU0t/OKsXKHACvv9O5P1JGm3Blnm1BY3I9S1
+         Drz/RxR3qmlcj1lGxuRnGgyREAa/GwJnYHKKNHBWuy5lyyFeacB5qXwypDmrQauMsq4a
+         ak/PeJS6bZ0KPQJCK8FFmm84G8uT9DtmCO1ifMpBK3ZfL0BoNc2jBnPdBCsoZS1K419T
+         mAqRmNfMxQxtyYPIzl5w01kwH1ogb5OqsGjdvdfHe2WqcRz6KN1FlpuT8/eYQOhIYFtb
+         AQ9aDMfsNyhrEOxgQ9ggB6R7BLWM43qHlGO3XsMC0pWLH5rXel5rty/W3Rb26wzOVeih
+         Kv2w==
+X-Forwarded-Encrypted: i=1; AJvYcCUKBtf+vUKWGtujMV/CrTg64ALgjO+cdeJn3aY/NxQZpjRDes9+MZMZZMZepIgnYOZUDRmswo1VVyIncUyiyg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYpGF2oaxW8k5ECXHbuFM0KIFFx0S4fKOwJXtK9t7UQCy4p2gW
+	4lFfE9gUc7lH9hvKBTSzEX27TonDggHh0Mw9YpnH1RlLkbwRgZCaM/fwOna4A07xbv0rB7j9yST
+	oE/mTBhgR179bOg==
+X-Google-Smtp-Source: AGHT+IFN0mg3rfLnL9s+jfrXP1fPxsq6jKqq7a5CxuQ9zdvV/QwOOR7cfyj2a84t+UVdZyooaIvYicO+MWpTJRI=
+X-Received: from wmbfs18.prod.google.com ([2002:a05:600c:3f92:b0:43c:e51c:1a5a])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b0a:b0:43c:f969:13c2 with SMTP id 5b1f17b1804b1-43d1ece13a4mr114040775e9.28.1742207058149;
- Mon, 17 Mar 2025 03:24:18 -0700 (PDT)
-Date: Mon, 17 Mar 2025 10:24:15 +0000
-In-Reply-To: <20250317023702.2360726-1-kunwu.chan@linux.dev>
+ 2002:a05:600c:3b84:b0:43c:fcb1:528a with SMTP id 5b1f17b1804b1-43d1ec622c1mr109294525e9.6.1742207359884;
+ Mon, 17 Mar 2025 03:29:19 -0700 (PDT)
+Date: Mon, 17 Mar 2025 10:29:17 +0000
+In-Reply-To: <20250317081351.2503049-1-kunwu.chan@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250317023702.2360726-1-kunwu.chan@linux.dev>
-Message-ID: <Z9f4Twvl-UaX1NQp@google.com>
-Subject: Re: [PATCH v2] rust: file: optimize rust symbol generation for FileDescriptorReservation
+References: <20250317081351.2503049-1-kunwu.chan@linux.dev>
+Message-ID: <Z9f5fehO186xoNAV@google.com>
+Subject: Re: [PATCH] rust: sync: optimize rust symbol generation for CondVar
 From: Alice Ryhl <aliceryhl@google.com>
-To: Kunwu Chan <kunwu.chan@linux.dev>, Christian Brauner <brauner@kernel.org>
+To: Kunwu Chan <kunwu.chan@linux.dev>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
 	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
@@ -71,25 +71,33 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
 	Grace Deng <Grace.Deng006@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 
-Adding Christian Brauner who originally merged the
-rust/kernel/fs/file.rs file.
-
-On Mon, Mar 17, 2025 at 10:37:02AM +0800, Kunwu Chan wrote:
+On Mon, Mar 17, 2025 at 04:13:50PM +0800, Kunwu Chan wrote:
 > From: Kunwu Chan <kunwu.chan@hotmail.com>
 > 
 > When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
 > with ARCH=arm64, the following symbols are generated:
 > 
-> $ nm vmlinux | grep ' _R'.*FileDescriptorReservation | rustfilt
-> ... T <kernel::fs::file::FileDescriptorReservation>::fd_install
-> ... T <kernel::fs::file::FileDescriptorReservation>::get_unused_fd_flags
-> ... T <kernel::fs::file::FileDescriptorReservation as core::ops::drop::Drop>::drop
+> $nm vmlinux | grep ' _R'.*CondVar | rustfilt
+> ... T <kernel::sync::condvar::CondVar>::notify_all
+> ... T <kernel::sync::condvar::CondVar>::notify_one
+> ... T <kernel::sync::condvar::CondVar>::notify_sync
+> ... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
+> ... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
+> ... T <kernel::sync::poll::PollCondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
+> ... T <kernel::sync::poll::PollCondVar as core::ops::drop::Drop>::drop
 > 
-> These Rust symbols are trivial wrappers around the C functions
-> fd_install, put_unused_fd and put_task_struct. It
-> doesn't make sense to go through a trivial wrapper for these
+> These notify* symbols are trivial wrappers around the C functions
+> __wake_up and __wake_up_sync.
+> It doesn't make sense to go through a trivial wrapper for these
 > functions, so mark them inline.
-> 
+
+You don't need to send a new version just for this, but please format
+the paragraphs better in the future. For example:
+
+The notify* symbols are trivial wrappers around the C functions
+__wake_up and __wake_up_sync. It doesn't make sense to go through a
+trivial wrapper for these functions, so mark them inline.
+
 > Link: https://github.com/Rust-for-Linux/linux/issues/1145
 > Suggested-by: Alice Ryhl <aliceryhl@google.com>
 > Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
@@ -97,3 +105,4 @@ On Mon, Mar 17, 2025 at 10:37:02AM +0800, Kunwu Chan wrote:
 > Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
