@@ -1,164 +1,101 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E0523FC55
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A384923F39E
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 15:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742223534; cv=none; b=q6P7C8WutAFwNpr6HJ1aSQzxBveOR8s42BnHr13M+I1sDg8V+5dCXFFJcFpJFAX0/Dp5XYiIK4ZaYQkfn9wezpZV8BQJF7CGm0ZwBy+8RGGGT93JQsAF5MGwACzhrM/NGaKwjo3KEgidknqT+AsG4Gdp0aIUw6d0LN8pWrA8Xqs=
+	t=1742223636; cv=none; b=kdD7REzfla7jhS/PpecSudFZ36pYqiDEhsNeHMD3EsMTDQC4AbnU3mh+QB73dbNKFR2cqG3oZSEZqk9q2sy6hHX79BN6jkUwHHZSI0kATQZZQmCP0M+OMK7q6Udok8ew1nepyESP/A4d0RvvbJv7gy7zpZMvAUOS6sgjP2GtG9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742223534; c=relaxed/simple;
-	bh=YSnrE2Mf4NXuMV4nwjpl5ipWPI5O+hoQ3wDnyAzryLM=;
+	s=arc-20240116; t=1742223636; c=relaxed/simple;
+	bh=mAKB0Zx3iVxZdShI2Q5YUUpwKTajXMRBDowwuz9uqoU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=u0nqbQdnNotn/cjjidkjINCD08HaE3v6oOVfFC1Pa2CXKUDxGCoXPjNgLU8d8CeVXIIEF/Ik/JZJC7txcPChYmi4XcDCp5yATPc7kWwYH7Q6oQNbxTvft50i2K5n5Fipvidc9p71HUh+aGKHHevKJLLtOHK/0bJnHAuQKVzeyQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3SAfpPDm; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=nDyLGXfuVQYPGlwzwgt0usdANp9X+74VImeKHgxn1Jy6UUQFHAaPkO0Pklbup0s+SyvxWNQqlv1EtUkZrI4DyeVnqVlH9ivUwkZjk24olmWr4vMlN9dF7ONlVxx2xpwWTJXsPCO+JLhczjX8XbZFnBkSDWx4vKuYY13oZEH6qPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BGCpThJh; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3SAfpPDm"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3978ef9a284so1068602f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 07:58:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BGCpThJh"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d01024089so18765795e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 08:00:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742223530; x=1742828330; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742223633; x=1742828433; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0W54RDOvcdnQzS3X6oJkrsyeDCVHCelcC6YCVp/JKWY=;
-        b=3SAfpPDmbm5V5eth1asmy7QRHMJgo22GeGYztFQ32ltGZvjWj8ogmSN3cEksrsi1n4
-         Rgd/AWDMLP/9jtpfErz18zvCAEd/Xqrs4KtelRUJ6QJHsWiqWAC+acvtXpljdkQS9izL
-         dH5OvIj7oHqFcqMeZ79gy8n2ZcCd6YbYLki6aK6W/y9oX6XMHyXOcop1srbVXEmyjs7s
-         NpDi99k5iEwIrZXs2wqP9ENqMInbWonPDgpA5PrGmEoT6VXLKLky3YUaeIBtAPQ8iJrI
-         ZFAZluQEtereUynfZF9UsRFKRQ6COrXs1DcVAuoqfthtTDX37rO421kbUgA+2c4wiagH
-         iXeQ==
+        bh=+zsksQlsWDcFEtyYBbIuV4LzPqQIhMHHBTrQsSMgKk4=;
+        b=BGCpThJhbR05ZRZPckiqHMjUITaBfyz1zCpna7ohbpz2jlIvy/ZuVkfCcjol9N+SXc
+         XnNn73NhdNNSbYDOL/6RhC1TD+yZQdWLHqZr4dYrK7yFRe050AKMJnWARAbuhEJipMoy
+         6J5GftRTof4ZZl8QU0aZfKRGfVcZFzFQMX8j5Hs9uoU4znld/xcZVDV1fHuHkC10AJu1
+         DGHiChpodXvG9GGDPgMbmaauhcXTtI/VmJ1lCB/llM93cEVOZtChEXf1otuMlwB6vUBJ
+         3M0/HjbrfP7jkoenxYFxs/Gdx0DRhcInQNdatJLbzHUVmHR9RSb4B6VWx2jwnjlng8Lz
+         wOiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742223530; x=1742828330;
+        d=1e100.net; s=20230601; t=1742223633; x=1742828433;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0W54RDOvcdnQzS3X6oJkrsyeDCVHCelcC6YCVp/JKWY=;
-        b=Y9tyrs1Fy+vU9obdvECyIFTvFm0+6QKas7PWqQ052qS9qLwanRvmcqvS+lwHHDpjOt
-         A90CyTpaXJCHauqlA4o56HokE9OmLhESpeoSNt8pmXBKb6ZEbJN+1MZaJDAnBiMQbpis
-         h/4ka+dzUyYccQHQphJP/QC5znCKbhHkyFUOH2v7D4vLL9ymBHvyJVCehO6B7S7WO+ZC
-         7hUj7c4BdZmUCaz7kpEY42Y6ZciFH/63zOnwU4ey69RHzCVKE1lJjQCwgUqPSNzWCW+F
-         VyeQ3BtuSmutizc/BoqaSOxfMiyJmSmUAT34gum1ol6rYxFlImhe7nHgewIi5AViKXeS
-         I3Bg==
-X-Forwarded-Encrypted: i=1; AJvYcCXCqA4hVlLV8jdxtABduX9mip/2Z1GpUSsvTLlXC0BIRotzPn6RDUjSFM0qxHXkFY5g+4bDKrCKS2FR+UQMYw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIl+LGGknUMJZ4PlBlKrifgVL66EJK/FYs5lfA6Tquz1emgkdn
-	ZsGYg45dHallAlxjcoKEiibh8x7FtMNH7nuumP8Pas/9UH7JyGMJFpGZXKxfQ/cMXUkvcl2Se8P
-	YtkhWSV8C+YDbFA==
-X-Google-Smtp-Source: AGHT+IGkKMstp6hUyo1fMGHnVlJ1yuahl6v9vWiGcfuGBZHhBDPMgMpxi1MLnx5580hjiU4Paz3WFdV5VN6fJOw=
-X-Received: from wmgg15.prod.google.com ([2002:a05:600d:f:b0:43d:1db0:6628])
+        bh=+zsksQlsWDcFEtyYBbIuV4LzPqQIhMHHBTrQsSMgKk4=;
+        b=imh9EE9q+NP1DoEL6/Z3sFoIfz9tQbFfrcpZzgrexEm1PHW5c65kvQmgnAY2H8jlVL
+         3KiGxN+JvTMZJHDA9Byyml3YRLk6Zr0P7RUuYPgCysBqqC5NBd2qxZaHgtN0vwjq+WKw
+         A1QXBl4MCkSwoGxZf7MwbSw3fhJgTncNUYyv5n8h54FcyITljSWL3y4Q465zSX0CcHMJ
+         1f+i/ou9paFrWIFFAFgTDHvtlTnHDBJBtoWp+U5hEf1JC3x2i7AtuSSU3vaMfK36fm1A
+         kbYaIUn84y5cRzfJNRFJzy7KwGKpbH//jD++l6vmWE6pOJR9ukIXm1cRWTp5Mvf56YLU
+         o7FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVamd4FJUSLNniKu4kYfgTbzWXgkGt/pRI0qyuQR+ikPJVZv9wT8wl8gpwm76gxFWE23BGYJJg2fZfdVe5wJw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxmcbgkenwxpMKkYYi6D8BNHRC62skQrAhwLFy1YTqZf0TO3Jw
+	/rbNpyc1lNYRAW/CcLKJCRXhnIqekYcKXGB94LkD0FP5kazoF88D5PnwApdUepkXkeKtJtx3g9M
+	MUlwU6sxg9dIB0g==
+X-Google-Smtp-Source: AGHT+IGswhad3nelG5lK7EnJ+sAaTbYpeBborq/c2wWdagqpaRvsmk52bv4iWMs4SjsHpwflIii6ZpkjVpLr9ts=
+X-Received: from wmqc22.prod.google.com ([2002:a05:600c:a56:b0:43c:ee49:c14d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:402a:b0:390:f2f1:2a21 with SMTP id ffacd0b85a97d-3971f9e4985mr14314647f8f.37.1742223530580;
- Mon, 17 Mar 2025 07:58:50 -0700 (PDT)
-Date: Mon, 17 Mar 2025 14:58:48 +0000
-In-Reply-To: <87cyewhpxj.fsf@kernel.org>
+ 2002:a05:600c:154c:b0:439:9a40:aa0b with SMTP id 5b1f17b1804b1-43d1eced557mr116630355e9.25.1742223633034;
+ Mon, 17 Mar 2025 08:00:33 -0700 (PDT)
+Date: Mon, 17 Mar 2025 15:00:31 +0000
+In-Reply-To: <2025031444-acre-boxlike-8af1@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <u-vC1KbeOK3Fd2PClzinb8LmqS_dntOW-pOSmZIFWotCZeTOg30xR_GYUc4oReAKZeuuu7ZaXWzfeTkpGMlr0A==@protonmail.internalid>
- <20250122163932.46697-1-daniel.almeida@collabora.com> <87cyewhpxj.fsf@kernel.org>
-Message-ID: <Z9g4qDd7qp2t_e9u@google.com>
-Subject: Re: [PATCH v2] rust: irq: add support for request_irq()
+References: <20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com>
+ <2025030439-sharpener-overkill-ada2@gregkh> <1A434368-6B92-4C64-8B5A-17499C8E2F1B@collabora.com>
+ <2025031444-acre-boxlike-8af1@gregkh>
+Message-ID: <Z9g5D6X5k1fpUwuY@google.com>
+Subject: Re: [PATCH] rust: add new macro for common bitwise operations
 From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Filipe Xavier <felipeaggger@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, felipe_life@live.com
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Mar 04, 2025 at 02:43:20PM +0100, Andreas Hindborg wrote:
-> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
-> > +    /// handler after suspending interrupts. For system wakeup devices users
-> > +    /// need to implement wakeup detection in their interrupt handlers.
-> > +    pub const COND_SUSPEND: Flags = Flags(bindings::IRQF_COND_SUSPEND as _);
-> > +
-> > +    /// Don't enable IRQ or NMI automatically when users request it. Users will
-> > +    /// enable it explicitly by `enable_irq` or `enable_nmi` later.
-> > +    pub const NO_AUTOEN: Flags = Flags(bindings::IRQF_NO_AUTOEN as _);
-> > +
-> > +    /// Exclude from runnaway detection for IPI and similar handlers, depends on
-> > +    /// `PERCPU`.
-> > +    pub const NO_DEBUG: Flags = Flags(bindings::IRQF_NO_DEBUG as _);
-> > +}
-> > +
-> > +/// The value that can be returned from an IrqHandler or a ThreadedIrqHandler.
-> > +pub enum IrqReturn {
+On Fri, Mar 14, 2025 at 04:02:35PM +0100, Greg KH wrote:
+> On Fri, Mar 14, 2025 at 11:18:56AM -0300, Daniel Almeida wrote:
+> > Hi Greg,
+> > 
+> > > On 4 Mar 2025, at 11:09, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > 
+> > > Nice, but why not use the same api/names that are already in the kernel
+> > > for this type of functionality in the C .h files?  That way we have
+> > > consistent names everywhere?
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > 
+> > IIUC, there is already someone working on that [0].
 > 
-> I learned recently that if you choose the right representation here, you
-> don't need to cast here and when you call `Handler::handle_irq`. I think
-> `#[repr(u32)]` is the one to use here.
-
-I wonder if we can get it to use the repr of the same size as
-irqreturn_t?
-
-> > +    /// The interrupt was not from this device or was not handled.
-> > +    None = bindings::irqreturn_IRQ_NONE as _,
-> > +
-> > +    /// The interrupt was handled by this device.
-> > +    Handled = bindings::irqreturn_IRQ_HANDLED as _,
-> > +}
-> > +
-> > +/// Callbacks for an IRQ handler.
-> > +pub trait Handler: Sync {
-> > +    /// The actual handler function. As usual, sleeps are not allowed in IRQ
-> > +    /// context.
-> > +    fn handle_irq(&self) -> IrqReturn;
-> > +}
+> Great!
 > 
-> What is the reason for moving away from the following:
+> > Can we just leave this macro somewhat as-is as a mere convenience for driver authors?
 > 
-> 
->     pub trait Handler {
->         /// The context data associated with and made available to the handler.
->         type Data: ForeignOwnable;
-> 
->         /// Called from interrupt context when the irq happens.
->         fn handle_irq(data: <Self::Data as ForeignOwnable>::Borrowed<'_>) -> Return;
->     }
-> 
-> 
-> I think we will run into problems if we want to pass `Arc<Foo>` as the
-> handler. I don't think we can `impl Handler for Arc<Foo>` in a driver
-> crate, since both `Handler` and `Arc` are defined in external crates
+> Why have multiple apis for the same thing?  That just makes reviewers
+> confused as well as developers.  We don't do that for C code :)
 
-My understanding is that since the data is not stored behind a
-private_data void pointer, we don't need ForeignOwnable. I think we
-should avoid using ForeignOwnable when it's not necessary.
-
-We can support the Arc / Box case by adding
-
-impl<T: ?Sized + Handler> Handler for Arc<T> {
-    fn handle_irq(&self) -> IrqReturn {
-        T::handle_irq(self)
-    }
-}
-
-This way, the user implements it for their struct and then it works with
-Arc<MyStruct> too.
-
-This kind of blanket impl for Arc/Box is very common in userspace Rust
-too. For example, the Tokio traits AsyncRead/AsyncWrite have blanket
-impls for Box.
-
-> > +#[pin_data(PinnedDrop)]
-> > +pub struct ThreadedRegistration<T: ThreadedHandler> {
-> > +    irq: u32,
-> > +    #[pin]
-> > +    handler: T,
-> > +    #[pin]
-> > +    /// Pinned because we need address stability so that we can pass a pointer
-> > +    /// to the callback.
-> > +    _pin: PhantomPinned,
-> > +}
-> 
-> As others have mentioned, I wonder if we can avoid the code duplication
-> that makes up most of the rest of this patch.
-
-I'm worried that getting rid of duplication makes the code too complex
-in this case. I could be wrong, but it seems difficult to deduplicate in
-a simple way.
+I'm confused - the Bitmap type seems quite different from what this
+patch adds. I don't think it's the same thing.
 
 Alice
