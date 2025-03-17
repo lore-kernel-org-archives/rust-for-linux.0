@@ -1,161 +1,144 @@
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+Received: from de-smtp-delivery-113.mimecast.com (de-smtp-delivery-113.mimecast.com [194.104.111.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB2C183098
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 17:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857D51A4F21
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 17:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.104.111.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742232839; cv=none; b=ZJT8OMVNBqcz1i5VJAsKE0ql6nrW4O2kvj2+EEtppxjyWwJ3aj6Au/nhgO2Ky2xDzvQZ0C5g24yGaFpZmBuS5ScSPA+DeGOYebBOrrKsud2ByMX4zQI3ABL2GpDx/Jg/1VFxCYrSTu0OeR5mQlIOkLcImQx0LTJsA82iexMyoxk=
+	t=1742232970; cv=none; b=gAM8nFXp0pm9xgPr5EuqPVfw6L9WTch2rIDsKkpRCzurKYmrbO9d24Iz+Q92hB22ZLbJa8bgso437ydtqPkHv2uHswYS2WhA2rNWx1Lde7Dv6ltabiFFf5GxKz32rybxZec6viOFTa9OlzxlbGMM6gM2wjuXHKFIYr5BybdBFu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742232839; c=relaxed/simple;
-	bh=xZ5L5BGF+MIp5FZlTUfJqupUzzapAQVDUg6WsbJwBD0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ONNCBVqpwMN8QnF4jcaHtEGg98YlFsEYNqMhlVIueW5PRWLflaeKAx4MyRbkTTxJva0N02fpyGkLOYqQGnnhLSkzrgiqapjJ9DWAsQ3U2C/xODrVP7HwRCig/JoEtRzj/lP0AGNVuOXW13oYYpRGEbmQm8dmscWMETwBKDpC0Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KLHdPLlR; arc=none smtp.client-ip=79.135.106.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742232970; c=relaxed/simple;
+	bh=qySI4OnPCejaqsYREjO5w43Y0R42PTGctKRJG8xDFMA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YjBHQ+2s2Zgjdq9A51YjddX/kmuWfve81P07oBHea2vsOKsZPNpekI0G8sAg9BhVaWvGJZQEMK5Z9asDitlZ5MAvkgUWSCBBIRfGdjCqhbzrKjG+XDVkCFMYOoFxcy+jxI7UYGo7vN7BUhssX+feJHrGm6QZtHZ+07AjJT7FCXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com; spf=pass smtp.mailfrom=toradex.com; dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.b=L07/JWne; arc=none smtp.client-ip=194.104.111.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=toradex.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toradex.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KLHdPLlR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742232835; x=1742492035;
-	bh=mxqxLcfksY00NnDVH8r+4SUlKm30JD2P6UggtIQDaQ4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=KLHdPLlRrRwMmqWJJeanBCkkgNFg1DhodSkceRigD8BWVc+pnxMSxtBshooJX2qtr
-	 l9qnM/cOKY61abTLJJb2XoyL9Kr3MZWFPVxzp4zm2Lr3xUPW9SZuUW6MY3a7ON+ID4
-	 V1llocXEtfKPVzzSK0AM1AiVTOjnvBMhsmR1zJSh75c7h+vCmPzy98xpC6E4MH7CDO
-	 zgUOf4sGsY6VpOhzvnPPqQP8RV0elh5o8ooj0cFRwO7I7+I31GLVQy2GwZhpM5l/JB
-	 tub/g8vhqVMRQ7Qndfj6Uj8uF/mPFrNOP1HD5XEMmz7SF8mwh5dLSfEa1gbj3f9boI
-	 cwzV0Kp7iA/gQ==
-Date: Mon, 17 Mar 2025 17:33:51 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Tamir Duberstein <tamird@gmail.com>, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of Vec::set_len()
-Message-ID: <D8IPZQHSFFUP.KRO1145IG1RQ@proton.me>
-In-Reply-To: <Z9hGcClQXpEYUYZp@cassiopeiae>
-References: <Z9XIk3WpzruUfh6O@pollux> <Z9bWODCNNEq3xI51@pollux> <D8HVI9K91JWV.NHOPVELH5JE5@proton.me> <Z9cfkKTVKtc3imyK@pollux> <Z9ch0fgUI-V-rlGr@pollux> <D8IG67RM4H53.2K2AW01FZLWJM@proton.me> <Z9gDt9JbqvoTFORV@pollux> <D8IMOAKHKYGP.32PTT2W55UH6L@proton.me> <Z9hGcClQXpEYUYZp@cassiopeiae>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: af7c48d041932251d55b38105aff9b39232ed11f
+	dkim=pass (1024-bit key) header.d=toradex.com header.i=@toradex.com header.b="L07/JWne"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=toradex.com; s=toradex-com;
+	t=1742232966;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qySI4OnPCejaqsYREjO5w43Y0R42PTGctKRJG8xDFMA=;
+	b=L07/JWne3g+lg//BHja2p1N5o3n0Sy9C+GPM2mxUl+5kxcBVwX3liFiBw2jHI0nwZge4Gt
+	SN1p27dqDafXYE935mlsZCBhVcni/x7nODuY+RS0VCEDby/QjPdLlw4Y8L8zWipjj6/zwP
+	G6clF/pODFAh3wTwREG/tvr29x+dCQI=
+Received: from ZRAP278CU002.outbound.protection.outlook.com
+ (mail-switzerlandnorthazlp17010001.outbound.protection.outlook.com
+ [40.93.85.1]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ de-mta-12-m9TCG9quNXKAYVkrfa4IsQ-1; Mon, 17 Mar 2025 18:36:05 +0100
+X-MC-Unique: m9TCG9quNXKAYVkrfa4IsQ-1
+X-Mimecast-MFC-AGG-ID: m9TCG9quNXKAYVkrfa4IsQ_1742232965
+Received: from ZR0P278MB0460.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:34::12)
+ by ZR2P278MB1109.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:60::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Mon, 17 Mar
+ 2025 17:36:04 +0000
+Received: from ZR0P278MB0460.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::d337:170d:b47a:e4be]) by ZR0P278MB0460.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::d337:170d:b47a:e4be%4]) with mapi id 15.20.8534.031; Mon, 17 Mar 2025
+ 17:36:04 +0000
+From: =?iso-8859-1?Q?Jo=E3o_Paulo_Silva_Gon=E7alves?=
+	<joao.goncalves@toradex.com>
+To: "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+	"linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
+Subject: 
+Thread-Index: AQHbl2LooOsf7uMMp0CUUVsufjBe3Q==
+Date: Mon, 17 Mar 2025 17:36:04 +0000
+Message-ID: <ZR0P278MB0460DCEA52F66AEB5223C40989DF2@ZR0P278MB0460.CHEP278.PROD.OUTLOOK.COM>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: ZR0P278MB0460:EE_|ZR2P278MB1109:EE_
+x-ms-office365-filtering-correlation-id: 63b4a392-f7a2-495a-819f-08dd657a3155
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|4022899009|366016|1800799024|376014|38070700018
+x-microsoft-antispam-message-info: =?iso-8859-1?Q?KKq/vgpyRLtkfZGyzt/LZYU1W4Ai9Ix1u5k4D/CaoJ/gF+MXhaQiCdPgPK?=
+ =?iso-8859-1?Q?sB9bVjc2gP/BlGDnUcO8tYriov5ei+kXRPfokUxJ3qLsQfC9WIpH4SeMWS?=
+ =?iso-8859-1?Q?WXW1PKMAaZ8Z2xUjt6bjCJzxX3ztGXZRxfXUVCXnGy6Z5rUwsTz17FKNEh?=
+ =?iso-8859-1?Q?YPyXBiJoOI7UgIL1PsViVi3E71CeJaG3/ohUHtOWLp+J1yMdiiqxb5PkiK?=
+ =?iso-8859-1?Q?1w7ID/rFa/Xwc1c/q2rN5Fv3MjSpUaW/L81c/7iicHX+nZduMLuuyMiDkJ?=
+ =?iso-8859-1?Q?4l0OysUlrWD9YyHo9jlZp+IqPgT67PVxqJdrZqIKAEZV8w/sIoKZMc0MD0?=
+ =?iso-8859-1?Q?0oDC8w24e4AjfS0OXMo/RRjfXighVebiU00iMTek6E/zy4YmkVbQqK2Z2P?=
+ =?iso-8859-1?Q?XBpuJ7eHVHRcF6MbinwQs63MBz5wvecClu2DdFXXyeT5g+3AaCP39WLjzG?=
+ =?iso-8859-1?Q?Z6shGi+75k4Lsr27u0jsDpUClelIergrgWTpjBInvdld6Ka+wmh/4ZNvcb?=
+ =?iso-8859-1?Q?pBYcaZmyr5lbtximrxKpsmX970pt/3NBZVna1OEpjebk+PCLvBOZhC/w7z?=
+ =?iso-8859-1?Q?rJQ58pn+/IVS91xAeGV096RbugIkLR+G2LNbNLJE3LbcOUUPAT8w6JOLeD?=
+ =?iso-8859-1?Q?XSdY62ENikHtJVMQssrTzLZLfsBU6PDopKkXw+K4nvQM+qsEe9xipTT/3C?=
+ =?iso-8859-1?Q?fecF5I1nWz7tqNhGfntarT0/uZujVlAs4sCLY7wgEgTyP+jWGqDOl5Uym3?=
+ =?iso-8859-1?Q?gT1I1PoDViinCTy3kMaANSfUbQPg+LyNiGhl0vwo/oqfNpOlzDkeH2VKQG?=
+ =?iso-8859-1?Q?kwA2FUHD8c9MODOzPBedKiGVMR9F4pNlVKof89giRdnNl6630obTWMn0MI?=
+ =?iso-8859-1?Q?i49YRP4D190p/Vl8NYL9o22ifJuqM3VmgngfzGOeqkTDL2BIcb0Y9K8szm?=
+ =?iso-8859-1?Q?XZpCX+E//z75kWauFCBou2QgORqXQAkCszYNg/oUWsMafdA+xdlZghaTUi?=
+ =?iso-8859-1?Q?1bs+VuJOXotttHj9PKIUG2rPq11SgWTZ445Xcl2fCbLzA+Pl+iSXVGv127?=
+ =?iso-8859-1?Q?X1Zl7yPnREp3iLPBow6nmqpQUCWwfYlobX5FcWmO+vYrlc0mHfXRYTEGZa?=
+ =?iso-8859-1?Q?KUgSTEQf9FlWhzKbFozUDalBGEfRpYhkKcletkohprYVrt2Xxh9A8zwYgv?=
+ =?iso-8859-1?Q?4GG93EkkGGFWYLfha1UdBg8Z1IZ3GkflxSnhye7w1yI/0XGikDa5ETYmHz?=
+ =?iso-8859-1?Q?WTJIVja2EvBbAIbIM1avCo8vR88ahdEtkYCP4fjteeBD+GCO/sBCaRF+GR?=
+ =?iso-8859-1?Q?dTOkxV+wOF0I3H/BZZSQF2zLoGC2uG1ayCvlx4e+DGUOOmeU8bXnkK1qd5?=
+ =?iso-8859-1?Q?4qpF8OiHvbHhV44jZ5D8BxIH8M+4+A0soxucTqXpaEE9/usfzm8g3K5Nij?=
+ =?iso-8859-1?Q?OVOAE+M1qwhZht+JuVQXwU6d08gYk7m8sN/ZUvCuStWz4Ge5QEEtq8jP9Z?=
+ =?iso-8859-1?Q?V8u0LU5+6MMwyg/R07+yk6?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:pt;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZR0P278MB0460.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(4022899009)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1102
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?O3ZZ30fD2Dt5hQmMRhqSJa/YzHvMdB1oeVWRngZxDdmLXeR7h9dUIBHzD6?=
+ =?iso-8859-1?Q?gcz/cTtZlbZ2UYosW4ANlXyzbDZStaGmzzSV+yCucSys9u0KQ+F0KroEOs?=
+ =?iso-8859-1?Q?A315IeorS6YlLwdrL5AvYwdjLgF9KKsawnrDD5fRDFASV24GFU9dunngP4?=
+ =?iso-8859-1?Q?56xHxf9ZxAOHMc0qAuA328cGHS1D+YRdllHFpP3Nwp16SO9Tg4ra8uAAP0?=
+ =?iso-8859-1?Q?zcaP+F1p9QjBGoNSZS3w9xYvB84LJkHLZmXliFqyyLLX9WJMdK6pAw5hKO?=
+ =?iso-8859-1?Q?iUMAtRKrn9s5H7JclF1hbN0GW5sF3iUd8tZLPPOQDfRMldTsV7jStwwtqB?=
+ =?iso-8859-1?Q?xCEXR+5+LKFqxqGPFSxjIbXMeahW9INq4wynpraIRf9jzD0L8RxGUev7Ky?=
+ =?iso-8859-1?Q?25CbHev7xDlkHEmadY4PhHJCFBvVF6yNxjfSeggbyymK7jpJ/8vqyT34B2?=
+ =?iso-8859-1?Q?ykNLXWInx/5JKjr8VhVxDrdqP+wtGW449xuNRUOO1bPE83hGRJIWPcYOEP?=
+ =?iso-8859-1?Q?PLcEKyjCsJcpVnLEWKVLRHXXsy+K3CzFVLXM2dIKyWXA0QaEY7yjknLYgl?=
+ =?iso-8859-1?Q?lW/ERfV95TLLsDT9+NcfOLS+47iq/KdCrABHzIf5cesbZ5K0KoHrv/hQ5R?=
+ =?iso-8859-1?Q?iHyIGjhaOR0G6x/G1LsnfgSU2E9eYQrOdtMWeJQel5uGGjAoiWXuWOi7yi?=
+ =?iso-8859-1?Q?GgvyS+f9pbq7CWzOCCC/E/DAhP9TBY2NSQ4BLOPKwIU4Jrma7IBW6Z2a43?=
+ =?iso-8859-1?Q?jsK8ClsaTYpG7sLf5DXivu0Q3s5KgcynkTSXC5bgWS3SW5+dgi1poltcB9?=
+ =?iso-8859-1?Q?z14/TcB4FOL+742yP4eK64YOJ/Yhoj+jAbC0ieXDJlkXIJSM4SPgN8Q73j?=
+ =?iso-8859-1?Q?SzvV/YG6vCDObkn4BYIc5MPxiShGN+QxWxzZuZMzUo/JVCtMxSsRYDL44n?=
+ =?iso-8859-1?Q?C9ZUfp+7MIAwWuMQeXX28IjkvK+4GQL5T7Z7J9SExZ+aXFL3fG+QNqJsNw?=
+ =?iso-8859-1?Q?s7kOvRdJgbz2hvJDsqqWP4N8HUKEaF0k/tACbi0ddzs0W4FDQOz2Xxk4KU?=
+ =?iso-8859-1?Q?kWPZqY18Df8nvv3KnT5xJmZt0WqVgB3Y+AEnGWoDZZa2mmlmMafYzY926G?=
+ =?iso-8859-1?Q?WQR8TLczmu3N2bO77Gf51ON3xYoQtlL7k3MTlB/rC6HAbME9Br7Z8COulx?=
+ =?iso-8859-1?Q?qfmAfdUEykImp9f8pyxOwG1r90n9Vzxv+l+vRL2p9RhMVHe5w6ybZAaX1l?=
+ =?iso-8859-1?Q?CbEG/BwYBJc70KyAjL6mnjP7FhSva8FqU52SNjQuXr/DR2d/uiXBR2hmH4?=
+ =?iso-8859-1?Q?iihs1y2+AbcLupML5PzCT8/DnFJvHdNleLp3Pd9WxfDzjIcuTfnlHv1diZ?=
+ =?iso-8859-1?Q?I26aH9/AgkQUUlGI+mSEkGqe09pedBAjoV6B2Wcx+HBPSugSU3I4X1SFzx?=
+ =?iso-8859-1?Q?zKerSWrloc2jz5KRFHNufmeaqcWtRGqGjxlE7NgiDmanTm+c6ULvDwWiZA?=
+ =?iso-8859-1?Q?lNWNHElPvJchR4TTdFNAmsfDr/dbFDnIKT/nH8OgmQ4PzqvW/cVcYI2JqS?=
+ =?iso-8859-1?Q?zQWw6xkce9xctbXCFEV7WyLFGvWcv7PcyxeRsiB0EV5cLzMLa8144G7pHM?=
+ =?iso-8859-1?Q?PQOFlIH3CDx546ngu9SCVTrlLabIXIQXwy?=
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+X-OriginatorOrg: toradex.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: ZR0P278MB0460.CHEP278.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63b4a392-f7a2-495a-819f-08dd657a3155
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Mar 2025 17:36:04.4381
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6yHONaXsJDE+X0INJxeNKwQBHn3enTccDE/DukeFAO8zqs2CcykRXayKYgLXEM50kFi9j51xpSlWxLIX1ZzYbmpQiJWNn/LbaaMrXG2Q/L0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR2P278MB1109
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: fviZ_az0fJ8g6ectd2356Stc8S1GJeOsX0mm65mNQKI_1742232965
+X-Mimecast-Originator: toradex.com
+Content-Language: en-US
+Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 17, 2025 at 4:57 PM CET, Danilo Krummrich wrote:
-> On Mon, Mar 17, 2025 at 02:57:51PM +0000, Benno Lossin wrote:
->> On Mon Mar 17, 2025 at 12:12 PM CET, Danilo Krummrich wrote:
->> > On Mon, Mar 17, 2025 at 09:52:07AM +0000, Benno Lossin wrote:
->> >> On Sun Mar 16, 2025 at 8:09 PM CET, Danilo Krummrich wrote:
->> >> > On Sun, Mar 16, 2025 at 07:59:34PM +0100, Danilo Krummrich wrote:
->> >> >> But let's define it then; what about:
->> >> >>=20
->> >> >> "[`Vec::set_len`] takes (or kepps) ownership of all elements withi=
-n the range
->> >> >> [0; `new_len`] and abandons ownership of all values outside of thi=
-s range, if
->> >> >> any."
->> >> >>=20
->> >> >> The caller may take ownership of the abandoned elements."
->> >> >>=20
->> >> >> I'd argue that giving up ownership, while offering someone else to=
- take it means
->> >> >> that it implies that otherwise we'll just end up forgetting about =
-the value.
->> >> >
->> >> > Btw. I'd still prefer if we could enforce that the caller has to do=
-cument what
->> >> > should happen to the abandoned value. But I acknowledge that the sa=
-fety comment
->> >> > isn't the scope for it.
->> >> >
->> >> > It'd be great if e.g. clippy would give us a tool to do something a=
-nalogous to
->> >> > safety comments.
->> >> >
->> >> > It think it would be useful to enfoce some additional safety docume=
-ntation. For
->> >> > instance, I think the kernel would much benefit if we could enforce=
- that
->> >> > mem::forget() must be justified with a comment, since as mentioned =
-ina previous
->> >> > mail, it can cause fatal bugs, for instance when used on lock guard=
-s.
->> >>=20
->> >> I get where you're coming from, but this probably will very quickly g=
-et
->> >> out of hand.
->> >>=20
->> >> For example, I can define `forget` safely:
->> >>=20
->> >>     fn forget<T>(value: T) {
->> >>         struct Cycle<T> {
->> >>             this: RefCell<Option<Arc<Self>>>,
->> >>             value: T,
->> >>         }
->> >>         let cycle =3D Arc::new(Cycle { this: RefCell::new(None), valu=
-e });
->> >>         *cycle.this.borrow_mut() =3D Some(cycle.clone());
->> >>     }
->> >>=20
->> >> How would you ensure that this kind of pattern doesn't get written
->> >> accidentally (or with many indirections)?
->> >
->> > I don't think that the possibility of writing safe (but yet buggy) cod=
-e is an
->> > argument against having the possibility of enforcing that a caller mus=
-t write a
->> > comment for justification on certain things, such as mem::forget().
->>=20
->> My argument is that the problem of forgetting a value is not
->> self-contained like `unsafe` code is. Even if we were to document all
->> `forget` or `ManuallyDrop::new` invocations (which we definitely should)
->> we wouldn't get the security that one can't accidentally forget a lock
->> guard. I'm totally in favor of mandating an explaining comment above
->> `forget` calls (but not as a `SAFETY` comment).
->
-> Oh, I see where the misunderstanding might lie.
->
-> Let's take a look at FileDescriptorReservation::fd_install(). My proposal=
- is to
-> have something like:
->
-> =09// SANITY: `fd_install` consumed file descriptor
-> =09core::mem::forget(self);
-> =09// SANITY: `fd_install` consumed file reference
-> =09core::mem::forget(file);
->
-> Where we have e.g. clippy to complain if there is no "SANITY" (or whateve=
-r we
-> call it) comment for mem::forget().
->
-> I'm not proposing a SAFETY comment.
-
-Ok, that's good :)
-
-As for having a dedicated `SANITY` comment, I'm not sold yet. I'll think
-a bit more.
-
->> > But there's another reason I think having something like this could be
->> > problematic: It might set the wrong incentive, as in "hey, I can just =
-use a
->> > "sanity requirement" in my function rather figuring out how to ensure =
-it through
->> > the type system, etc.".
->>=20
->> I don't understand your point here, can you explain it more?
->
-> Does the explanation above make this concern clear for you?
-
-Do you mean having sanity requirements would lead to people putting less
-effort into designing a type system solution?
-
----
-Cheers,
-Benno
+unsubscribe=0A
 
