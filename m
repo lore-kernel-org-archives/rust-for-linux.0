@@ -1,43 +1,43 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF8B23716B
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908F323909E
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742206504; cv=none; b=A+pqEaJdPKrBU0Z2UYWU88l++4iuWW94w5fxJmwifJUyjIlvLsVjzXQSLlXiTWPatwEihb3WEFmvV0+TJb+D1+lHbP1IS9VKBCePPyMJqx6z4xj83eYu+kIJafXHP0eMGa0dFf/OLffC9X8L/gZq9fznoE4K3egmlkg5EjpMfmM=
+	t=1742206599; cv=none; b=CPUF1HlJ3jpPK0PzWzO4WIR5IDarzdS1D8j4MSGoq9fW+uR1bOLZ2Tr0HIT0D3SO/uoAW/sz3H0uoYCbBN/UzHMLiXooFm30VK7wciq5DPL96HNbeV5cuKVCxH3Q4IlylgAiSkCNtGe3o2hX2nIekaOGTh5YrS56pjMC/ehFVI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742206504; c=relaxed/simple;
-	bh=6lX6qd6cHpyeXJtN8CbDJig30k7qEU+St8Ur0Q+BBN4=;
+	s=arc-20240116; t=1742206599; c=relaxed/simple;
+	bh=tAXyC/Z0ZWitiHzL9nvON4Jigtijh73MzpCu2PhMbDI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TZmVCVI949V3Sdz/pPwoqBlC7MaiNAtmZGOiHmxEgKZj8BDxKoGGznvxVz1fywWHObVoxNJEMdO0LnPACXqYgj7FP5d7h8S/KjwO9ooTrMIVhd3XNJK0U9hyNtmogviNekjwEBDbqsunY5cfAoRc83YLRTWgm9ILXRu96zG+YdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eEMVrUb2; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=m7VqQa8gjMSRaXKm1+PnmYpgWozYzVKonjw0n9Dab1Bwf+Lvuwgq1uO9w2dtiZoTxzUY35HMa0a/QYIGJivLxcJyDDLeeMoIOIiHATnX2QW2RyxoKi0zsE3Q+6dNLZOSegGVuXqFu/37Kx2kQW/iWGjM2bmgKJK6qPagRnIuuRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ZehzFm9e; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eEMVrUb2"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZehzFm9e"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=7dlnzbwkrbdztmvpnxie6e4fom.protonmail; t=1742206500; x=1742465700;
-	bh=IpqGC6kjpj6asVKqkNZWmw1IDhP0itPNVW7PmK6LSVA=;
+	s=protonmail; t=1742206595; x=1742465795;
+	bh=KQoILsilHEJo5usuiJ2jeJyGOMiJd+yx37iGtpQVeHE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=eEMVrUb2yhzEWNshPrV4mjw/plLWFOaMJtj9b1jMtF7zOGpkqezMj8q9rgOtl29w4
-	 zKN3N8Eman9k8RvFBma/jF7r4AqLHf/U6OnCV+xS7qxMon4ZOrlqdfWfG5FDxFtA+9
-	 gliew1Q5l1GwV8JVucZO1/LEk8Z543Hd85//JH/FQ7GySdVeu+DqYf1IImS/dKY/hK
-	 u8hYrOFhAXE8AIPL5cHSqT8cW3ypuX2d3HSnqQi1/UeyTaJs0Jl9n6O3SZ0sOBfo4B
-	 DIXezs+bH97aRUiFPBSRn4Iy1Q+16BQpkTbKXLBJibg+9FjVjCGKg6E7JFNvdc9BUJ
-	 kvqnRhaHMDgxQ==
-Date: Mon, 17 Mar 2025 10:14:54 +0000
+	b=ZehzFm9e+0RYuDRbtyUDTPs4sG5OtU3hyazfGtACn6nkBSbTtMzfEBM9xf53BBC6V
+	 68krE7OdugTYXo45/E8WXDximPehcXRbg03aDL9GEQTvjNdygLChDdN9Evj1LZCAAj
+	 uK0CTzZDElClQtUaIgd0P+7qwWSQJ6ecEXcce09nuwvrrSNI1K/vZQBzj3ChsXqwSh
+	 Wp92sYWyJa6qGeYcJwxDftalNHzgLweijHUnnCsfD8Tk5yDYfbNBOrIwNJxIeawdB7
+	 uEHM76VU4ThinIyJcoN7Gi3tMVlLh1zC7bGe271p305RaDWU4SGqVfJagV/2d9VkJQ
+	 3ESD41nQZ+wSg==
+Date: Mon, 17 Mar 2025 10:16:30 +0000
 To: Kunwu Chan <kunwu.chan@linux.dev>, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, Kunwu Chan <kunwu.chan@hotmail.com>, Grace Deng <Grace.Deng006@Gmail.com>
-Subject: Re: [PATCH v2] rust: optimize rust symbol generation for SeqFile
-Message-ID: <D8IGNMOL2WPU.P9UB057VLDV3@proton.me>
-In-Reply-To: <20250317030418.2371265-1-kunwu.chan@linux.dev>
-References: <20250317030418.2371265-1-kunwu.chan@linux.dev>
+Subject: Re: [PATCH] rust: sync: optimize rust symbol generation for CondVar
+Message-ID: <D8IGOUUTDAZL.7LMGZFOHU4PU@proton.me>
+In-Reply-To: <20250317081351.2503049-1-kunwu.chan@linux.dev>
+References: <20250317081351.2503049-1-kunwu.chan@linux.dev>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 27001cdd7b13d5926d7c25cd21d0175d031e299d
+X-Pm-Message-ID: 4f3e90c92b18f37feebf3e6e5057f09b64505ab5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,18 +47,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 17, 2025 at 4:04 AM CET, Kunwu Chan wrote:
+On Mon Mar 17, 2025 at 9:13 AM CET, Kunwu Chan wrote:
 > From: Kunwu Chan <kunwu.chan@hotmail.com>
 >
 > When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
 > with ARCH=3Darm64, the following symbols are generated:
 >
-> $nm vmlinux | grep ' _R'.*SeqFile | rustfilt
-> ffff8000805b78ac T <kernel::seq_file::SeqFile>::call_printf
+> $nm vmlinux | grep ' _R'.*CondVar | rustfilt
+> ... T <kernel::sync::condvar::CondVar>::notify_all
+> ... T <kernel::sync::condvar::CondVar>::notify_one
+> ... T <kernel::sync::condvar::CondVar>::notify_sync
+> ... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::pa=
+nic_cold_explicit
+> ... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::pa=
+nic_cold_explicit
+> ... T <kernel::sync::poll::PollCondVar>::new::{closure#0}::{closure#0}::p=
+anic_cold_explicit
+> ... T <kernel::sync::poll::PollCondVar as core::ops::drop::Drop>::drop
 >
-> This Rust symbol is trivial wrappers around the C functions seq_printf.
-> It doesn't make sense to go through a trivial wrapper for its functions,
-> so mark it inline.
+> These notify* symbols are trivial wrappers around the C functions
+> __wake_up and __wake_up_sync.
+> It doesn't make sense to go through a trivial wrapper for these
+> functions, so mark them inline.
 >
 > Link: https://github.com/Rust-for-Linux/linux/issues/1145
 > Suggested-by: Alice Ryhl <aliceryhl@google.com>
@@ -73,10 +83,6 @@ Cheers,
 Benno
 
 > ---
-> Changes in v2:
->  - Add link and Suggested-by
->  - Reword commit msg
-> ---
->  rust/kernel/seq_file.rs | 1 +
->  1 file changed, 1 insertion(+)
+>  rust/kernel/sync/condvar.rs | 4 ++++
+>  1 file changed, 4 insertions(+)
 
