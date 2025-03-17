@@ -1,98 +1,94 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1151A1ACED7
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:36:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCF62222D2
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 10:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742207778; cv=none; b=jFBPfm2qeGKX6FLOXwbB+Ph/eCgBywRsiZEI+b3ERhHhvj/ux5UursKJa//GGIJrXQ2YcNbekqrXIqo2fo/QxgazgQXFGa8OFN/ordLAb/VqGysgQzgXm4wWGuH1PLOQHCnG7sDsyjoenKqE8TisNwkVLgUEax1RqfPnBbd+ey8=
+	t=1742208345; cv=none; b=ksec2wRThcc7fqpmjWsGoZxl2AG1KhU/GfWVcCVVyFdzNwlw+4QGAHGpQcrzP8gk/e14IFEeRGkL+Ponfus589UeRZdbc4l6f+kSNcacSvXXEf8iWJykJRdeenqn1YdPrweqJ6BJqEJ5HLahsq4S9wzsIEz+/CrQieotFn28NK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742207778; c=relaxed/simple;
-	bh=fNEj1B6FIZbVbIasOCYy/xUMqZR0pY2ne65RdVXEeIM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WMhu4wH78aGyUUmkXh/DDBbO/XHuR9Pa3iunWtpdjUDFLg9q3KK45QQAuMchI0Vx05klZrPE20erH6B3U7uLnZ3r37sJAEJWsq07doNbofRTuxQDkrbMNdVENJP4aFXuHKvgpwJ+TPHFNxtAUVW07k19x9iWfuQWWZxmRT7qt48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lELSILt5; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1742208345; c=relaxed/simple;
+	bh=qEUsMqL0xbq1BuNSIqcD/cL1QjhMxfBy0vCE/OsOcSU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=llX5DXbU11JiuUv7Deb8Fo/+SGKQYJCzA4SvSXYKczUJJL6XQAVF51jfDp/4YnSMRiLZsVMSUKdfTsrdPh6wnuxoq8VAIpEItVTPpqWjmRacbLVD6/4VeMsFOyeY5s6OBf2XGqrZq5bCvymYHT9L9Qt5+wdbLA3H6wBBi+ZkXig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=f9hRLIZU; arc=none smtp.client-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lELSILt5"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3912fc9861cso1918366f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 03:36:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742207774; x=1742812574; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mUhUAeqcJmBiRZRyh0/Vw0HdjnmMKCHnzf4Mk2t/YdE=;
-        b=lELSILt5Z4i0hYBBqhOxCKeEEYPb3J9nv1U1VloaGz+oAKjTNIso1NZv0hI/jcPewr
-         HUDNsQuFaweNtiMVN4tIe3TfwvjUInodLES5UiPdQS2LjxB9ws6v+wA9uoXYm3hr/SBp
-         TrjNbeIRgAptNO0N5Cu9DqzO4UYsH4YRzqYp8lvOhnwbpmwoKppnGwx30rE3hcAfsrKN
-         09Fy5AQ8N3NhZ7dS2oOCO+XyIMPYZsT+lhKKSUpExzj2v0LPCLVJfIAhNFWdN4vQTcM4
-         KNvqVsv7vhfVcnz77Rf9HfT6bkKI2bqX89l6RSUIENdi7Q2BikO2YKz8H/Wf3R+L4fFv
-         GIBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742207774; x=1742812574;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mUhUAeqcJmBiRZRyh0/Vw0HdjnmMKCHnzf4Mk2t/YdE=;
-        b=vcHcV60x0g6ptsmvwlz6DmhdRi9v/ddeE8N0UwEuJE5udQtJ0xj8E/Lr9QAqU9NGUs
-         uks/D3uJBvZNavcPGG98CA5sRoX7vGWAwIW9Y80AM4bkbwKY+7Nta0dMMw8+Dck/oa2I
-         BtRXxsph0nRx676JC/3nF+MJMYWDCWg6kAU8uVnS24oYpTl529cbN77LwIxsfDq/VhP+
-         98inn/V9u8mti8WYaJsykqd7seCcXtDIr0tcf1Vnlj9nva7fN3vzfdV5LCek1jBpwKVN
-         a1fNP/io69ZJM6rnM34hgq0lBZDTpGYT72x25x4cUsdAHQbPMjxnKAzzaT5R78XC5EOG
-         pPWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUArpdH5icFjfJS6kRK3qO53D0B2N1jHLBs17rp13evpjE9Lytu/d++lK9e3/6T1dA1UIARzhiK8n2B5sH0vg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoJqkKbC6cAp3SpNvdmfe8ay7FL6CLniVGg+ccBoojJWsd/nXm
-	FQO+dO+0owD6SNSolWizJJnUaLiOSGsS1Io+uUH56QFwcJZOfGp+1G4GUOM7vwdiE1o6hB4iyAx
-	v17tCmJtrEYqf7A==
-X-Google-Smtp-Source: AGHT+IEDRuT4jeF31APtVDRn+52dfI5qIO0NyZ4yyRRLaTH0XTmTrze1FXueNqyHRzGXRwMUpME0lNXtGmnrHxM=
-X-Received: from wmbgz10.prod.google.com ([2002:a05:600c:888a:b0:43c:f256:f4b3])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:64cf:0:b0:391:39bd:a361 with SMTP id ffacd0b85a97d-3971d520041mr10369056f8f.18.1742207774479;
- Mon, 17 Mar 2025 03:36:14 -0700 (PDT)
-Date: Mon, 17 Mar 2025 10:36:12 +0000
-In-Reply-To: <20250315154436.65065-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="f9hRLIZU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=jk32gevgy5cmdiaxj56sdk6bti.protonmail; t=1742208335; x=1742467535;
+	bh=l/3rpGFXqKUZ70O8CF/LgCCd/v+/i1KdDvKgkaAMmQ4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=f9hRLIZUet2TqYfjN2qdkwMdZ9VpvK58LyQP7eTjJsNrrm1YTDgZ83ZAFfwMxyHog
+	 DPGBFrOerDRma3ft2UJofrnbEL9uql+wv0g63IoOZve/BIjrqWYuJh65MXXlGhxQO9
+	 d8QMh7FOs+KHmK368JfJ90MIuufPgss+bsunzlggUNH56TQ9SuAYsz2UFwdXK94/XN
+	 YHQUv5XIDSduz+WZcqdzcmH5942T9FqwzR07jJGY8PV3gdB8fooi7VBIokRWjoblv7
+	 kb1GcFFBZrGjLoSgb4Jd51Fk6jJzBEh9bFxbDFxpevzqIHs8lGjG+v2QN5onqZWKW/
+	 hQae6qrN0EKGw==
+Date: Mon, 17 Mar 2025 10:45:27 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 00/22] make pin-init into a standalone crate
+Message-ID: <D8IHB1O3SDZB.1YRPCTVFR5YXS@proton.me>
+In-Reply-To: <CANiq72kg2-5PC4T_ieFTN9dqeMnZ0H5TqqPhW+GxB7fPV0COVQ@mail.gmail.com>
+References: <20250308110339.2997091-1-benno.lossin@proton.me> <CANiq72kg2-5PC4T_ieFTN9dqeMnZ0H5TqqPhW+GxB7fPV0COVQ@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 5e1e29b6d6615a96fc5091bf73a2915437748fb9
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250315154436.65065-1-dakr@kernel.org>
-Message-ID: <Z9f7HEpqiMNnwsLQ@google.com>
-Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of Vec::set_len()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, tmgross@umich.edu, andrewjballance@gmail.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 15, 2025 at 04:43:01PM +0100, Danilo Krummrich wrote:
-> Extend the safety requirements of set_len() to consider the case when
-> the new length is smaller than the old length.
-> 
-> Fixes: 2aac4cd7dae3 ("rust: alloc: implement kernel `Vec` type")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/alloc/kvec.rs | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index ae9d072741ce..8540d9e2b717 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -189,7 +189,9 @@ pub fn len(&self) -> usize {
->      ///
->      /// - `new_len` must be less than or equal to [`Self::capacity`].
->      /// - If `new_len` is greater than `self.len`, all elements within the interval
-> -    ///   [`self.len`,`new_len`) must be initialized.
-> +    ///   [`self.len`,`new_len`) must be initialized,
-> +    /// - if `new_len` is smaller than `self.len`, all elements within the interval
-> +    ///   [`new_len`, `self.len`) must either be dropped or copied and taken ownership of.
+On Sun Mar 16, 2025 at 10:07 PM CET, Miguel Ojeda wrote:
+> On Sat, Mar 8, 2025 at 12:04=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> Special thanks to Miguel for helping me a lot with getting the series
+>> ready!
+>
+> You're welcome -- I hope pin-init's life will be easier now that this
+> is finally in :)
+>
+> I had to do a couple re-arrangements to keep it building (and
+> `rustdoc`) for every commit on top of the `rust-next` we already had
+> -- please see below.
 
-This should not be a safety requirement. How about instead adding a
-guarantee to the caller that the caller may safely take ownership of the
-values?
+Took a quick look, LGTM :)
 
-Alice
+---
+Cheers,
+Benno
+
+> Applied to `rust-next` -- thanks everyone!
+>
+>     [ Remove the `expect` (and thus the `lint_reasons` feature) since
+>       the tree now uses `quote!` from `rust/macros/export.rs`. Remove the
+>       `TokenStream` import removal, since it is now used as well.
+>
+>       In addition, temporarily (i.e. just for this commit) use an `--exte=
+rn
+>       force:alloc` to prevent an unknown `new_uninit` error in the `rustd=
+oc`
+>       target. For context, please see a similar case in:
+>
+>           https://lore.kernel.org/lkml/20240422090644.525520-1-ojeda@kern=
+el.org/
+>
+>       And adjusted the message above. - Miguel ]
+>
+>     [ Undo the temporary `--extern force:alloc` since now we have content=
+s
+>       for `alloc` here. - Miguel ]
+>
+> Cheers,
+> Miguel
+
+
