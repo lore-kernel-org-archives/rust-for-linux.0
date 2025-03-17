@@ -1,115 +1,115 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A44AEEBB;
-	Mon, 17 Mar 2025 04:01:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92E979D2;
+	Mon, 17 Mar 2025 04:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742184063; cv=none; b=RIFQEaxYBh6YH3c76b7AdP21xRUqCSklhnVeK/clHHyV0mYzGCVtvXiirPtOj7TEPXsv+i1U0UDiHTEfdZK/1ycPMbmqPgguEjxz2wzO497V4r4FoKaoB7nhr+Ge2L3YmI7Aq8VMTAWE7FUYrvZjNTkhH7rv3tqor3vT2tFmQQg=
+	t=1742184276; cv=none; b=DlObvQj97O6TC0zFl6S+CpJWjqo8dY/j+cLK2UVFTwCGD3aaGVCPJLhIawNZCNjtu1aB73HSl5FCLdzj2svFgFB/XkGDzCSOwE/dRR7dRfF7SalM9LJ16L9FjEhcIk2OoQ7ZSvOSrajUfBsLPKWTWUgh1YxlM1AcvRaB3CbJmWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742184063; c=relaxed/simple;
-	bh=CPRK+WJkOO4h0Vp9h8+sDfVxsygNEVJ8QoQNxeVtxbw=;
+	s=arc-20240116; t=1742184276; c=relaxed/simple;
+	bh=Zqx1VgtwCX1Jxqme0dY01T8ETZuysrsyCc9RI14Ut68=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U1KdMoDR9CAtwbwRh6eaB0KY1vH5AtwtSg0syW6fZo/Hc6qQQnqdD5n8AxEo2c2tCNu1+Y5cPFgIaWnSNZagSvAJgB21oi+189H1k5V3JX7VHXSzj5V85gMiFhFKVxxy3G0o52ESByDGZNGVGCCPU+V+TPkmuouBFa7BdWD3/Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aQfNIQPH; arc=none smtp.client-ip=209.85.222.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=U/FJq6QmYawrEIBUP47+gcXakmHDjS8pu4XxF/BYQSfp4wnOCfyp3p3Kdx4ScTAsYy+6XkfWjf09e+QxLgrPr8ZGj6L2r1ZL+SwfjO8u2+GC9JwGgMSWwyModcggllc+SFUXkfcBRz4auU8NkkHBlM+Dk6KDfUTxSWkfM54fUQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X0g1w9sr; arc=none smtp.client-ip=209.85.219.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aQfNIQPH"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7c0a159ded2so532055785a.0;
-        Sun, 16 Mar 2025 21:01:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X0g1w9sr"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6e90b1b20c6so22258266d6.3;
+        Sun, 16 Mar 2025 21:04:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742184060; x=1742788860; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742184273; x=1742789073; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N0RY31U7IeQCdaigqT63GbXTi4AkErC9Ud8HZP9nkSk=;
-        b=aQfNIQPHB3fF4RwzB2wM0ZKABeNLVOxp/if1vgEfc+fKbjFkroe//FBIlWYBz+q+I6
-         dljTUU5zFzSGWlhEqmoLQi2j5RIPyIShkfevh/PdfXIQu9UXx9cxNxaDP4Bb8G4owy4i
-         asyWpM7zNwqAuhCxSVMVIIKQ4Ek7Jee5HUbMhKuUvjNE04YKTA9zjykFkjzndg62wlnr
-         Z+B4co2CCIzKUvHnsG1jTIYjSPSp//YEistzS6e7tZ/Y293y09U926sATeFG6Zw9d+qf
-         C9fS6jpVeF8NnV5sYCIg//4urC7FqGcbPCdLFfo62s6KmPvugB5aLB/SLSIERI/8aCqE
-         eE8Q==
+        bh=FdC2SWGkfGaYEex5fKxWwqou3YQPoCqtTCDGuK//30g=;
+        b=X0g1w9sr12mVD/4tyUg/7hHM19gHNV/jZS+woWUKTVccrcgUkzWCZApmyeM6NqWGhI
+         E9ckD4g9rvL4Rglna/VocwWRSH82AKl6H1ZUduvAEZUWCWUNKNDddU7NAwyi98s1kKX4
+         da1YJ+8pTJMSQBHrHd2ZuUxsjFkBO88NaVKjnuVWuTTQ7sLP0IvT8SAldJAUopnigfXT
+         KNlM2JO1CuA00FZX+m9NiUSJKo+AOteQ8hqKZ97ykWv69FtwKG0/aGE08nV+wnafNwn/
+         A5+wCHdvTIPgGF9qh49rL1WCtGbMjrvVN6DKg3hSX5XHpezlRpB3+ogvUnnbUrFMZdhM
+         +Oxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742184060; x=1742788860;
+        d=1e100.net; s=20230601; t=1742184273; x=1742789073;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N0RY31U7IeQCdaigqT63GbXTi4AkErC9Ud8HZP9nkSk=;
-        b=d8d6EZ8UDO7RDmRV59DwwOvujRg73IPLU7YacAxlDJ062rqfRYRULsTA8eDTmLp6w8
-         snAt9HyF3v/0Nbu7KhdAfyRgz2pW2Q2vxSuQLK1uvRUeQX0u1vd+h63DHUb8XsjbfqFp
-         NIr3JrJIrqBKMKcrvZz1eTUcbjOHMnFGBCtmcBNiL7CAs9qtDE5ui9m0WtaZ7D0pKzmE
-         G/rBB3HzOVG0HLAyXzhUv3F7S1hVTGB7vLpJ73Is/EcGHn5e/jw3U0m5Al4tj586JwF1
-         dyPJGROH0FdD5dxqdLMnOUDY3gKBBYh//OQUixvzfYB3pTFWcic+x1DPD2bEryGlaoU9
-         a5Zw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAuKK2l1WuSVpRBli3Yp3ert13l1GcRccOC08GUOSxEceLgwJLadNUQXzhC8bL5WVQ8zWX/KrelU95lMY=@vger.kernel.org, AJvYcCX5Povw1SbRb3JBXenvYBHSYx195FQa0Z11nYcFXz3k+kAmVVJu/dMfjWItjPb75uNKSKs6zUVpzgxVvquJFzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx87V++CwTBwwdoYCxLiunH2ZZGsHKOwVFoMwziAihBQ9e58Jf/
-	TqHyCUXh+Q76Hl005+ggAP0jW/b3QusleFiogqXrnj/KSWprACDx
-X-Gm-Gg: ASbGncucMlJtSRMPLN9+1MoBZPzDBpTbbJjpSDDI32+NjuPS5Bt8LAxdJI5PGg8zK69
-	hAxAa3DZLNRO7ajy+zUyMtUi9TigKBNI1Iq8jOGDYwQOxelU/PCUJGhfpas/pUG6oOdVKT1JGDG
-	Mq6wDD7D9pOkuxQPOloOebgoRIMJ180PJM/x+oXQcAeHOx56lDpSOY19NUz4rCS5PaTWt+u6jTs
-	b2waIMsxaSYD/iw5Jm7/zgmZ+ENi/gO5GtT2diy0oz2YEGEIiWF8RcEGYjJGcQW+kQrhSvzHyep
-	gKCbAjz+atKcNSqj961cnnoxTGDOg7223bgoZZhlkArBBKuE49GDDpajhuQch+bk6InXHBvQuhe
-	kfYMYXIhRiw6YiOfRb+2XwnEDzCyT/vkhhPA=
-X-Google-Smtp-Source: AGHT+IGYQe3AtIK+Tt+34wc6nrL/bqTpsVN0e/l7vVIWlB5VhW2ixXwbMxLBGm7aMe4he1pcGcwSGg==
-X-Received: by 2002:ad4:5f4f:0:b0:6e8:9d00:3d71 with SMTP id 6a1803df08f44-6eaeaa2389fmr161898576d6.21.1742184060285;
-        Sun, 16 Mar 2025 21:01:00 -0700 (PDT)
+        bh=FdC2SWGkfGaYEex5fKxWwqou3YQPoCqtTCDGuK//30g=;
+        b=i32xVVxcGupb2TrebSKZeFEzY3V0jGeXLFxsqW5LMl9H8/CKwa6WdZEhScUZxplr6g
+         DrUr66sSy7kQgG7pQUdVq6wex2dI5lnWHnqEkFnm2v/IfHO6VN+jVNIWD/XA8sdu4n18
+         efpQjDx+V0Tgetwfw+qqv0otVXXV8CzChXXVa8q7A0zkP9+c0yljCS8OfO1AM3Zqnsw5
+         WO/+1imlv23bmUQvE8YmBNC/LgKUuLauFWW7qt/dDSvNZXbcyl3OC9H2wcHEQHxj+S/i
+         T0G+/sON0MXEIzY0i0o4H1Ap47Qo04uhtxmjppBVlctamya2UyA10lPYqxvCNL1fFH3S
+         1pCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnIFWGYR7Ph/N8iNvMJkYGzrH75NfAl03FL589Bm9UPAS+uMeDzOkv7xEjngjgfnNRKizPdHvguTUKvkH8@vger.kernel.org, AJvYcCWLZ+y0uyuXq1o+Nj1ZK8fQsKZOieM2EsdgkJeiq/D+32VnYI/60mVoVsZJZe/cHXqzP1+mdVoYWO4eGA==@vger.kernel.org, AJvYcCWnh3w40J4m/RQr2vYO209IiBwZc5tmy/zm+ZGE9eQ7YaggBLXNC2I5+EipogTl696G9SFtWT0aa2aP9xX9GKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjI8DFLerFYaZLxdOLijqMGc4qrWAwsroyGD9c8SY7plQybrYB
+	TsBZZdicb3JxBXs1j2e26rxlqO4tVh613tuQoPjB51RDA9tyvmCm
+X-Gm-Gg: ASbGncu2qeL+Q8vSXzxEpbf6USgHfZuZpWdoncPIFzf3itnpueGAVP7L10x6C+YAKFO
+	X85lI6cCQhFBBiQqAxxr6dJjJWrLNWjRi1ow0wrVDYSPlBZDXeDG8z5jd7E9sKd3El2pkoarajT
+	nDizU+g+oGqBOInkoVvDDG+FaF4L/BJKI63WV5vzyAb/+wLdUG0LBac/+KXTR/V/X45c38HfiCF
+	pGokg8Lvk1lNu4lKK1D0tHQrc0LlC1f3aHHqbWAl8uaKomBY6tR2bMO4jEo6LIyS+DfryDKUMFK
+	JxAtL72iuGOczAmN5ifuHl7vAnroRObf8p0lcwtP+9X5NDVG3o1G9X0fVIshqZbC5QIiTcqhT3x
+	CZhV3wY2AZRagaorbeMl/MTfIFdOnl8KAdOs=
+X-Google-Smtp-Source: AGHT+IFBjKayl+RdbauHaxiuB08xXW4tWmQhml6RN5yk9hM6PR8a9pGbUs5bHQpeSWSWoGVm6b1QQw==
+X-Received: by 2002:a05:6214:23cd:b0:6e6:630c:71e8 with SMTP id 6a1803df08f44-6eaea995137mr171140126d6.7.1742184273679;
+        Sun, 16 Mar 2025 21:04:33 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade330b72sm50588896d6.72.2025.03.16.21.00.59
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade237957sm50558536d6.42.2025.03.16.21.04.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Mar 2025 21:00:59 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5E4F6120007C;
-	Mon, 17 Mar 2025 00:00:59 -0400 (EDT)
+        Sun, 16 Mar 2025 21:04:33 -0700 (PDT)
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B0B4F120007C;
+	Mon, 17 Mar 2025 00:04:32 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Mon, 17 Mar 2025 00:00:59 -0400
-X-ME-Sender: <xms:e57XZzMXD-BH5R5FyVdfv23mcleoZ0uDObogRhxq-0vvjtXrrTvlJg>
-    <xme:e57XZ9_OPtpybRUU2Dz3-rIxCHUe_qji5M_CF1RA8wAzTNI1Cl0j0WShnHnh2sEm7
-    TfkGabAlkVFqsG2Ug>
-X-ME-Received: <xmr:e57XZyTHjmkWCCDfmRGl1d-3y5HIKR5cJk0qFMrjd28k_6daLcE6vZ64>
+  by phl-compute-02.internal (MEProxy); Mon, 17 Mar 2025 00:04:32 -0400
+X-ME-Sender: <xms:UJ_XZ6DDSwKCe5ZvCIEXH1KGlfQDsQKuZIX0e8WBS41-cWtXy72gug>
+    <xme:UJ_XZ0gnemuLMsj4msD-PDLSwpMC5WaYioNwnJ6cQdUdnnvre7GEvpua-qd21PqRl
+    9vGcNV9aVTwRKN9iw>
+X-ME-Received: <xmr:UJ_XZ9nBDSDUjviwonxZviSa_l5-bAJtAa9kUuvEeAsd2Ce2EDaVIDIb>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeekgeelucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
     pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
     gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
     vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeejieeffeeffeehffdugfetveefhedtheeu
-    tdekudfhtefggfetieeiffekgffghfenucffohhmrghinhepghhithhhuhgsrdgtohhmpd
-    grshgpphhtrhdrghhrohhuphdprghspghpthhrrdhpihgunecuvehluhhsthgvrhfuihii
-    vgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuth
-    hhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhu
-    nhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtph
-    htthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghonhhtrggtthes
-    sgihthgvqdhfohhrghgvrdhiohdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghp
-    thhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpg
-    hghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhs
-    ihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdp
-    rhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:e57XZ3uOyErEeJWNcNCalErNQI94Y4kWfmLySK0Oj-nBon1rYuca1A>
-    <xmx:e57XZ7fwDkdAKMC6-sMSfl5_cb9IFKoeajSzfn2ThD9oktEfhn3tLQ>
-    <xmx:e57XZz2EO8kDXnoAso6ZXEZHkOzOowIndyyjxqZHXqKvc5PgfpuD8g>
-    <xmx:e57XZ3-t_2cDCytk2N9CWFGo-ixIqc6fBfE93QSKiaqLgmd-QqcqfA>
-    <xmx:e57XZ-_FgRkJXmbaivMMReNZRw1rwIidqAJarudCJVSPKRYe7p5TmV0f>
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefftdeihfeigedtvdeuueffieetvedtgeej
+    uefhhffgudfgfeeggfeftdeigeehvdenucffohhmrghinhepghhithhhuhgsrdgtohhmne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
+    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
+    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
+    nhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htoheptghonhhtrggtthessgihthgvqdhfohhrghgvrdhiohdprhgtphhtthhopegrrdhh
+    ihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtgho
+    mhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjh
+    horhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhho
+    rdhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrlhhitggvrhihhhhlse
+    hgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:UJ_XZ4zr8yhGLZQx7SvvzOBbXveY6ewp8CsHMJ440O_E-YZJXcDH4A>
+    <xmx:UJ_XZ_TWzl77m1yLkxNrUxP5tImmzP7inyLPm8SPUL3OTF4W2fuZLw>
+    <xmx:UJ_XZzZaB3Xa2Z-v5ze5PZY0_tgvOqrL73nrCJX31l_IhbTfuDjtUg>
+    <xmx:UJ_XZ4R-k99u7Jz4wDc3fYp2lcbb3CAKZCPzhdgZQ384oDS6LkhDRQ>
+    <xmx:UJ_XZxBD2Nc4ayW3tgllwTe42yfoTsmXHxEBXh9qQ7cuxCKywKF6Cy1p>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 17 Mar 2025 00:00:58 -0400 (EDT)
-Date: Sun, 16 Mar 2025 21:00:57 -0700
+ 17 Mar 2025 00:04:32 -0400 (EDT)
+Date: Sun, 16 Mar 2025 21:04:31 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Antonio Hickey <contact@byte-forge.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Antonio Hickey <contact@antoniohickey.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 04/16] rust: task: refactor to use `&raw [const|mut]`
-Message-ID: <Z9eeeTpSr-vVD5eL@Mac.home>
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 15/16] rust: block: refactor to use `&raw [const|mut]`
+Message-ID: <Z9efT3ramQIwwRXG@Mac.home>
 References: <20250316061429.817126-1-contact@antoniohickey.com>
- <20250316061429.817126-5-contact@antoniohickey.com>
+ <20250316061429.817126-16-contact@antoniohickey.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -118,11 +118,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250316061429.817126-5-contact@antoniohickey.com>
+In-Reply-To: <20250316061429.817126-16-contact@antoniohickey.com>
 
-Hi Antonio,
-
-On Sun, Mar 16, 2025 at 02:14:13AM -0400, Antonio Hickey wrote:
+On Sun, Mar 16, 2025 at 02:14:24AM -0400, Antonio Hickey wrote:
 > Replacing all occurrences of `addr_of!(place)` and `addr_of_mut!(place)`
 > with `&raw const place` and `&raw mut place` respectively.
 > 
@@ -132,40 +130,39 @@ On Sun, Mar 16, 2025 at 02:14:13AM -0400, Antonio Hickey wrote:
 > 
 > Suggested-by: Benno Lossin <benno.lossin@proton.me>
 > Link: https://github.com/Rust-for-Linux/linux/issues/1148
+> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 
-You need to change the above because this patch doesn't replace
-addr_of_{,mut}!() with `&raw`, and also the patch title. Thanks!
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
 Regards,
 Boqun
 
-> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 > ---
->  rust/kernel/task.rs | 4 ++--
+>  rust/kernel/block/mq/request.rs | 4 ++--
 >  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> index 49012e711942..568b528e2cc4 100644
-> --- a/rust/kernel/task.rs
-> +++ b/rust/kernel/task.rs
-> @@ -257,7 +257,7 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
->      pub fn group_leader(&self) -> &Task {
->          // SAFETY: The group leader of a task never changes after initialization, so reading this
->          // field is not a data race.
-> -        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
-> +        let ptr = unsafe { (*self.as_ptr()).group_leader };
+> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+> index 7943f43b9575..4a5b7ec914ef 100644
+> --- a/rust/kernel/block/mq/request.rs
+> +++ b/rust/kernel/block/mq/request.rs
+> @@ -12,7 +12,7 @@
+>  };
+>  use core::{
+>      marker::PhantomData,
+> -    ptr::{addr_of_mut, NonNull},
+> +    ptr::NonNull,
+>      sync::atomic::{AtomicU64, Ordering},
+>  };
 >  
->          // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
->          // and given that a task has a reference to its group leader, we know it must be valid for
-> @@ -269,7 +269,7 @@ pub fn group_leader(&self) -> &Task {
->      pub fn pid(&self) -> Pid {
->          // SAFETY: The pid of a task never changes after initialization, so reading this field is
->          // not a data race.
-> -        unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
-> +        unsafe { (*self.as_ptr()).pid }
+> @@ -187,7 +187,7 @@ pub(crate) fn refcount(&self) -> &AtomicU64 {
+>      pub(crate) unsafe fn refcount_ptr(this: *mut Self) -> *mut AtomicU64 {
+>          // SAFETY: Because of the safety requirements of this function, the
+>          // field projection is safe.
+> -        unsafe { addr_of_mut!((*this).refcount) }
+> +        unsafe { &raw mut (*this).refcount }
 >      }
+>  }
 >  
->      /// Returns the UID of the given task.
 > -- 
 > 2.48.1
 > 
