@@ -1,103 +1,126 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A98521B908
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 08:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DC221B9DA
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 08:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742199194; cv=none; b=hb3CxvPyjFwqPWSsCb0qXXkgOGdR2t9G2dKs39vCD7GVE7aZmVfRafn9/hjpX0bzYZhwKKYz3c0VkkVbAL1hpkaP6GkqMyF7oSpheqZHG4OIRw3n4U9zVWqdbrBCBaByqmzm2qKmjwPBvcG9zsVKJ+WL/S+pt+oVaNDDi/rQe40=
+	t=1742199303; cv=none; b=e08H3HJ4DBGwSLaIuxlVPW9vpePzewfPpEMONBY8lCDaaV8cLXutPJqMnYn3rz3mau7txgGsL2JiNKfM718ORblP+IHlL728nYUYcm6r4932U4BVnDhSMd2Ttp3neecHaplsPYcolmJLIomVbi5DanRJgXQD3MCp9uyjp/TUI58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742199194; c=relaxed/simple;
-	bh=Fjl481HJMJi5cqaKfICLtln5DZ73Bg73coVms1LmTro=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ceLdOsF3EHEWyLXVPJtqMvzIaj5sX3SuHtt5egLi3m0/vtWpKjHfbPdTGTJ2B0qkt5ylyxlrfDcUSQsKDevR6D440zYGhsHfffTCNTXU/So4AIq3+YSB+Xex2bh/xOLK/p+3J1mGswvIhNdAJU3GdjSONzUWf62Dl9pBrOfBSCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1gTeC5J3; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1742199303; c=relaxed/simple;
+	bh=Ik+juuv3vZG7o9rKpUv3FPBSdYaXCPaTs5wTp0dE0ro=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SoMqzrhj0jPJ6yD3YEP8IyqdBJrBwzh/FdCPcRsW6zgnqWuJ7itsAh9Ym0u2pxp9Yyd5wd7kv4lLvJmHOvR6b44L3wGGmXFLsSQVsi1Rm5WD8ArVsbt4FzcYY4/F6L/ViaezknUFQf/Jymli55LBsvOxts9oB5b88BPZnWvxymY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PdNGLK8I; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1gTeC5J3"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3913fdd0120so2072561f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 01:13:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742199191; x=1742803991; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fjl481HJMJi5cqaKfICLtln5DZ73Bg73coVms1LmTro=;
-        b=1gTeC5J3/3cHqIo6pQ6vs88zlxImJvpz2Gh9a/6+t90lyLDe1Dl4NhtOXFyHp47+IO
-         L4eR1z942iAZWXORIeS80n6ksz+51GA4Any9Vbq1b2PlRaotRLaHWaYaGbw6wLHjJPCI
-         3S81krcLT9gj+5ogjJLROp0ospECcPKPbTGsOxnSF5I9LRNlKriHuA6cffIe0cVGUvBw
-         rGy1AqXt/6npU5mvqhHM3Z/jYj1C2lcoRvc2+rCV7xjx6nGYQP5bHBfjLO+JkcwczBKo
-         900/C0JdrgmrPfdtdr3tjgSdK2Pil25hmK19jdi4T0cqU56xOsTD+OUZGi/ODi+d0adm
-         dFig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742199191; x=1742803991;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fjl481HJMJi5cqaKfICLtln5DZ73Bg73coVms1LmTro=;
-        b=RP/h8dEJJg5VI5bcVcuxHl+Fc2/OeCH9S5pOPGzdGae1ZiYWqHtYJ5sTVCUY2cEspH
-         mX5NPER+EORsSQAuX+435nM1DLeYR5OYW3C2Z4duTYyX4/oqW7Xywk10edjs5JmB9VyR
-         NhUmNJ5AaxsKJQmgTAtmFfw8GQQ8XjV8UPY+vA7i/gVBFOdVo4z39vA9p7T+t4E73RIj
-         KCuNUbdmZKnlqAJ7TEF7vvlSaSzBXBgOA0mSA+OmoqhZyQ7MJ6o0zZKLXXPZ3v7aCmgh
-         0Y8mkYbZUoUX/OIizqQ9e45p/vi7lEfmSTJ2aZERvhCdVfw7C1wy5AGi01e5GHmZ0FAp
-         +xTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzty8qWyqemyd/yMaFodrWzzHaX49BraoAW7NWEsd3B88WWOvgxECJQaufbDjKk+k4giDqk2Qmp5oS/vMh/Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKQ3fgoYDRsG58nicKAWBSUkQJ8BfOnr4ZkYF3We/WVMEszx6x
-	E9C5PlDbVsUUPT7wr/mwAgSFVX3XFH8XKhqxSU8+YpvGGLlJTiSyU/u8+7S2FOXIV9+shlMqEal
-	Ojp34kxaPmD3W78K3o9hBHMZ6x6gnrRKzgUSR
-X-Gm-Gg: ASbGnctEa4xPohi/meGeuAiIEtiTXM7fbYKa0yGh+Iuyb/dsl4YR/J+Ogis7rsCNDv8
-	hEKnBmt0rmb2NkpTjUVU9iNYj2zepXhqwghnDXOzKnpK0SS2vbx4OzvvV/AfHf2DfAozRwCUxQa
-	j6tUMLHsGj+5U7YDNLJY2nfhQX2wd2c3FshCH2lG4dO9Uyrsl6JkDIZs4p
-X-Google-Smtp-Source: AGHT+IHcLqG5WHE0LOJYXKmJh7WPwmg2PfwcibN1in7y/66c7Db4/DiFnCA71g1wAecSs71bQBHGcgcFUkpKlphRHMU=
-X-Received: by 2002:a05:6000:381:b0:397:8f09:600 with SMTP id
- ffacd0b85a97d-3978f185592mr10169130f8f.13.1742199190815; Mon, 17 Mar 2025
- 01:13:10 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PdNGLK8I"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1742199289;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LRqxEhaGGRBnjpe2vKuBwbtSeIwWfJeTVgBc1Z0wJ/4=;
+	b=PdNGLK8ITK14OXWrnSamvqcfkiWYMqi544OKblg8sMlGEo3ZtchjFR/F/EKJ3TZ3RWv7AC
+	Krrd+ft4xu9hbW6/5nNMQStRe3SWE94f1qo8JSlp0Cgsd5nNtC0yo6+22VYcbzroI0vKGs
+	07/uzWV71v1QcjBWFiYjl3pfYDbA7V4=
+From: Kunwu Chan <kunwu.chan@linux.dev>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Kunwu Chan <kunwu.chan@hotmail.com>,
+	Grace Deng <Grace.Deng006@Gmail.com>
+Subject: [PATCH] rust: sync: optimize rust symbol generation for CondVar
+Date: Mon, 17 Mar 2025 16:13:50 +0800
+Message-ID: <20250317081351.2503049-1-kunwu.chan@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250317030418.2371265-1-kunwu.chan@linux.dev>
-In-Reply-To: <20250317030418.2371265-1-kunwu.chan@linux.dev>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 17 Mar 2025 09:12:58 +0100
-X-Gm-Features: AQ5f1Jov4Za46UZWu9q06eR2JvM-UobNRlaF7fBfeVOrdeJd7W9eiP7leVAj_5A
-Message-ID: <CAH5fLgjOvytFDnz0Ms_3R3bA7GymCNrF-T=Du=UQi5GaqfZYJQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: optimize rust symbol generation for SeqFile
-To: Kunwu Chan <kunwu.chan@linux.dev>, Christian Brauner <brauner@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, Kunwu Chan <kunwu.chan@hotmail.com>, 
-	Grace Deng <Grace.Deng006@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Adding Christian Brauner who picked up the original SeqFile patch.
+From: Kunwu Chan <kunwu.chan@hotmail.com>
 
-On Mon, Mar 17, 2025 at 4:05=E2=80=AFAM Kunwu Chan <kunwu.chan@linux.dev> w=
-rote:
->
-> From: Kunwu Chan <kunwu.chan@hotmail.com>
->
-> When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-> with ARCH=3Darm64, the following symbols are generated:
->
-> $nm vmlinux | grep ' _R'.*SeqFile | rustfilt
-> ffff8000805b78ac T <kernel::seq_file::SeqFile>::call_printf
->
-> This Rust symbol is trivial wrappers around the C functions seq_printf.
-> It doesn't make sense to go through a trivial wrapper for its functions,
-> so mark it inline.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1145
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-> Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-> Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
+When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+with ARCH=arm64, the following symbols are generated:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+$nm vmlinux | grep ' _R'.*CondVar | rustfilt
+... T <kernel::sync::condvar::CondVar>::notify_all
+... T <kernel::sync::condvar::CondVar>::notify_one
+... T <kernel::sync::condvar::CondVar>::notify_sync
+... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
+... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
+... T <kernel::sync::poll::PollCondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
+... T <kernel::sync::poll::PollCondVar as core::ops::drop::Drop>::drop
+
+These notify* symbols are trivial wrappers around the C functions
+__wake_up and __wake_up_sync.
+It doesn't make sense to go through a trivial wrapper for these
+functions, so mark them inline.
+
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
+Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
+Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
+---
+ rust/kernel/sync/condvar.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index 7df565038d7d..a826896ba3f0 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -181,6 +181,7 @@ pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
+     }
+ 
+     /// Calls the kernel function to notify the appropriate number of threads.
++    #[inline]
+     fn notify(&self, count: c_int) {
+         // SAFETY: `wait_queue_head` points to valid memory.
+         unsafe {
+@@ -198,6 +199,7 @@ fn notify(&self, count: c_int) {
+     /// This method behaves like `notify_one`, except that it hints to the scheduler that the
+     /// current thread is about to go to sleep, so it should schedule the target thread on the same
+     /// CPU.
++    #[inline]
+     pub fn notify_sync(&self) {
+         // SAFETY: `wait_queue_head` points to valid memory.
+         unsafe { bindings::__wake_up_sync(self.wait_queue_head.get(), TASK_NORMAL) };
+@@ -207,6 +209,7 @@ pub fn notify_sync(&self) {
+     ///
+     /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
+     /// completely (as opposed to automatically waking up the next waiter).
++    #[inline]
+     pub fn notify_one(&self) {
+         self.notify(1);
+     }
+@@ -215,6 +218,7 @@ pub fn notify_one(&self) {
+     ///
+     /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
+     /// completely (as opposed to automatically waking up the next waiter).
++    #[inline]
+     pub fn notify_all(&self) {
+         self.notify(0);
+     }
+-- 
+2.43.0
+
