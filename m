@@ -1,108 +1,131 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D234C1537CB
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 17:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E36D1598F4;
+	Mon, 17 Mar 2025 17:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742232147; cv=none; b=HEQSnUVU1u8cdRTYElMR87nNjrRZyw5+SKKWlgxf1jUMvsonPHfBk5NSb3dI0dUPYiRJBBDfNWIC+uk9XlQTiYbfBYDzBJkrvXCihRpGdZ08K9qRW2/l1bDmh0b9Zy+MxPSxUAbQYn9XvhXDB16RIHk5o3Aciq0AjRvhFUEMFeM=
+	t=1742232202; cv=none; b=YVHOra5rFRzTDv/TYszQ7Iv+Ofv87BHlf1fivU7tJbBapsL/t1VnatKqLL77yoVKeTuxODAl8PNaPiyTs9LHjY/Ox2MX7PWqquwuOSEc723J9V43HLvEpLAKcTIUt4Gc1UOSXAJAj+7ngqQ3cZVj5idmCaAKO7EhpLQPCkvPLy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742232147; c=relaxed/simple;
-	bh=B+Up7d0Z8wa56e82ogZrDvmKDPW4RJZVDvjvFFZDNRw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tIXJJDwYr6CvFzaQefrRgVis6DLXQ/53STdzX/HsMG7cBts1OfpCHpoZ5izncQLiUrEZjEDMjXAei9dLKlziJf+1XLdixf4YHW+heEn8fYvrbL4Ra5JzjlrvP41A36WD9n1FZzrpQKcwOmo84D3K+4qwZwM6cldmiISf7FAXan8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=UU87RXA5; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742232202; c=relaxed/simple;
+	bh=5vxm/HEKlIPK/+zNIKuY7zqhLB4xKor4/veLY1kYxTo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hSNuR7N1a+dwBtYK1CQwMspunu2klU6Ca0MXwSphbvbhs0dB2Fd67LeibPcRQUgA7JtMkjpKyPwGgqu770gT9owJXokf6fweSqmLH+G922ppdhh+DKT37p2jnGirbK6mBlZHKN20+rhYK6c8TRwIc2H5qj9kdaKNmJ2j8AFSSG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IK8LPh1X; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="UU87RXA5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742232143; x=1742491343;
-	bh=DESxcuoCBw+aq4zHzk9noLj49928I7AbU/o2hoK4cnM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=UU87RXA5BRMvneWzmaI8Z8XZj1+ESi5u9or6emtjsj67lXFTS0hWiziPYJINU5p4H
-	 T5iydj69o9KIlYCe2+itcXl5SGbJhdyaK5U31SKO5RZ5xlFrUT22wFqqxKSxKE16ok
-	 f204eaw+S3Nra4ALii6BGP2cPTmics/IP6ge3dFUJ5sw5MibG8/2Xpy6j33lySOmJl
-	 wqguRR5IPzU6qjR64iN3EJXRBquXF5fRMs5IG/NZQTkneEAcFe3+Sqct+xPT25bU/M
-	 +2IHCEEt2sjbmxb3s9g1bscRPeoPfQIrqRhgaMrg2e5O243GOl19VbulBGl8JokbDU
-	 rAq8p1k7vsHcA==
-Date: Mon, 17 Mar 2025 17:22:15 +0000
-To: Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: alloc: use `spare_capacity_mut` to reduce unsafe
-Message-ID: <D8IPQUN25M12.2CIZR4QHJ201N@proton.me>
-In-Reply-To: <Z9hXMcFVdF8MMusU@cassiopeiae>
-References: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com> <D8IM66U67XBD.28KWYO1XSF8ZQ@proton.me> <CAJ-ks9kq1cQ2-ZNzG9P4SBvk-AjXxT+na-89K33imB4fsCvu4A@mail.gmail.com> <Z9hXMcFVdF8MMusU@cassiopeiae>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e266c822ec3552c9807e853f5439c912b8c7816c
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IK8LPh1X"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4766631a6a4so47539461cf.2;
+        Mon, 17 Mar 2025 10:23:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742232200; x=1742837000; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RV3/QPVb7oRU6oz0KDmtdy9mXqtl5ObgAszDpJd9zlM=;
+        b=IK8LPh1XtlahflVl9SE4YCDl4B/t6m3fIGrRcBYl/n9B86lXbvZvSvS9f7vzjWgGXj
+         65jTf3W5wid4Srbi7zvttgSbYtxg48cOe0X0haW0N5qnIjDus4gTRCx7X/voODyrcsWv
+         Qcw2GpfyYxzuRRb8zm0jD/M8gAeEWF9nYwtEVFO0E/igYGqa3wUnST1w38PpLuPC6+CL
+         DZAIWiTTpfLZTP/Sn9SI7ScvYL/BDef/YNgaAyJHzTwQVHaR3IJhTVF5b1e7Fv8+swmA
+         rpszk7JkYbD1mxLUhJr06UZGV1/4BS50xb78Op+jx6/6nShx4psV7Yoef4r7KjILRkxa
+         crYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742232200; x=1742837000;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RV3/QPVb7oRU6oz0KDmtdy9mXqtl5ObgAszDpJd9zlM=;
+        b=h1omEkcTed3qTw/D/q1BLUG3sQBPMng1FrM6f2l3Lci6793zlkjwRlGIKjeSTKlUpX
+         kzkIOck6R3biQogz5OUVn110DLIUZIRreQeQgmLkgPFOkWKXyNGXZRSyGgACOQS26LwG
+         ZVDfqjNLKVrJoPFqj12mxidWLPkXA2TRTU3saBFFI0EHWxk5vQFenJDKSA0pyLXEW8tl
+         VjJ+Yj/vDpNagXBn8Az3wmLh1Jat+hswCxxNLlJMI9jcy02GqloOTYx2WPMoTvMGtAZj
+         bAeD5K2pHYJqRblnmhWCFITkBm+Y3hoeL2d0mlDe4Vh2jep/5fboz5tgD6QYzsfBxdPN
+         Z2CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXkWhL7oirprBxgyqOLkuFeZT9GMApZ/sJ3nFfiojj+8xdcbj2CvjSNakaWMlBoB8P2gYkWgkFhyijVwnM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7BNVkeFsmnMnXYHIWygxXtigSLVJYapK68K29ReOO1On0D25D
+	4d1XyhW6xWLYg2KSp4pIcin7E1HXQzDT2IcKl5iOvrVt+8fTZcCF
+X-Gm-Gg: ASbGncvhJ0H0ByhUgsP4PF9R6QalBudRKkyWdJahq/icfSHGRPJiDx0gThpncMRqYjQ
+	ZGY3d1CiPph9qLO0UD91eJVHfGfhmp1TnEw8KuJZ5kWp6jsqWdCIj7eedlR/sdSsgSPt4FHAvYu
+	g++iQeKuAvFitVCBL5uWiON56Z4MW0OP+Zmf7feFadVySgTIH80ILgHlGpWBgBjg03aD4mn9fXP
+	bqBe72frnA6OnyNnTjE6xDJOC7k8Gp6aAzOiSxVwvlcdep5FjOwQJMSSWjElIa8ZpofsAYSVWFb
+	CDxdtBSbF0CaOwgs5JpHpM9sz5aYOwwiqA4zCiRfmRoMiqhhfocNdK5ydHw/PGnEmPpzPvyh1kB
+	mmXL4GA==
+X-Google-Smtp-Source: AGHT+IHmxy9vpg9M7E8kN6XgzJl0JzNKGPUQR3gwh/56CDWM2m0BxD3Xt9c6qpYaYbxk9qrzN3ULWw==
+X-Received: by 2002:a05:622a:4d4f:b0:476:98d6:1419 with SMTP id d75a77b69052e-476fc9b4f7fmr7933451cf.30.1742232200182;
+        Mon, 17 Mar 2025 10:23:20 -0700 (PDT)
+Received: from 1.0.0.127.in-addr.arpa ([2600:4041:5be7:7c00:6895:24c6:e898:e320])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade20998asm57237756d6.18.2025.03.17.10.23.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 10:23:19 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 17 Mar 2025 13:23:18 -0400
+Subject: [PATCH v2] rust: alloc: use `spare_capacity_mut` to reduce unsafe
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250317-vec-push-use-spare-v2-1-5dc6583f732c@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAIVa2GcC/32NQQ6CMBBFr0Jm7Rhaq1VW3sOwaMoUJhFKOtJoC
+ He3cgCX7+f/91cQSkwCTbVCoszCcSqgDxX4wU09IXeFQdf6XJ+UxUwe50UGXIRQZpcItTVXE7p
+ aXdwNynBOFPi9Sx9t4YHlFdNn/8jql/7VZYUKLZUGBeNImXs/On4efRyh3bbtC0JIcZ20AAAA
+X-Change-ID: 20250317-vec-push-use-spare-27484fd016a9
+To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
 
-On Mon Mar 17, 2025 at 6:09 PM CET, Danilo Krummrich wrote:
-> On Mon, Mar 17, 2025 at 10:39:05AM -0400, Tamir Duberstein wrote:
->> On Mon, Mar 17, 2025 at 10:34=E2=80=AFAM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
->> > On Mon Mar 17, 2025 at 12:42 PM CET, Tamir Duberstein wrote:
->> > > Use `spare_capacity_mut` in the implementation of `push` to reduce t=
-he
->> > > use of `unsafe`. Both methods were added in commit 2aac4cd7dae3 ("ru=
-st:
->> > > alloc: implement kernel `Vec` type").
->> > >
->> > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
->> > > ---
->> > >  rust/kernel/alloc/kvec.rs | 11 ++---------
->> > >  1 file changed, 2 insertions(+), 9 deletions(-)
->> > >
->> > > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
->> > > index ae9d072741ce..d2bc3d02179e 100644
->> > > --- a/rust/kernel/alloc/kvec.rs
->> > > +++ b/rust/kernel/alloc/kvec.rs
->> > > @@ -285,15 +285,8 @@ pub fn spare_capacity_mut(&mut self) -> &mut [M=
-aybeUninit<T>] {
->> > >      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocE=
-rror> {
->> > >          self.reserve(1, flags)?;
->> > >
->> > > -        // SAFETY:
->> > > -        // - `self.len` is smaller than `self.capacity` and hence, =
-the resulting pointer is
->> > > -        //   guaranteed to be part of the same allocated object.
->> > > -        // - `self.len` can not overflow `isize`.
->> > > -        let ptr =3D unsafe { self.as_mut_ptr().add(self.len) };
->> > > -
->> > > -        // SAFETY:
->> > > -        // - `ptr` is properly aligned and valid for writes.
->> > > -        unsafe { core::ptr::write(ptr, v) };
->> > > +        // The call to `reserve` was successful so the spare capaci=
-ty is at least 1.
->> > > +        self.spare_capacity_mut()[0].write(v);
->> >
->> > I think the code uses unsafe to avoid a bounds check, but I'm not 100%
->> > sure. Danilo might remember more info.
->
-> Yes, that was the justification to use unsafe calls instead.
->
-> (This may also justify keeping dec_len() unsafe, since otherwise it would
-> introduce an additional boundary check for pop().)
+Use `spare_capacity_mut` in the implementation of `push` to reduce the
+use of `unsafe`. Both methods were added in commit 2aac4cd7dae3 ("rust:
+alloc: implement kernel `Vec` type").
 
-If we use saturating_sub then we don't need a bounds check (at least on
-non-debug builds), right?=20
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+Changes in v2:
+- Use `slice::get_unchecked_mut` to ensure we avoid a bounds check.
+  (Benno Lossin)
+- Link to v1: https://lore.kernel.org/r/20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com
+---
+ rust/kernel/alloc/kvec.rs | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
->> We could use `slice::get_unchecked_mut` here to retain the same
->> guarantee of no bounds check. That would still be one fewer unsafe
->> blocks.
->
-> Sounds reasonable.
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index ae9d072741ce..b91b287e0d22 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -285,15 +285,8 @@ pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] {
+     pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+         self.reserve(1, flags)?;
+ 
+-        // SAFETY:
+-        // - `self.len` is smaller than `self.capacity` and hence, the resulting pointer is
+-        //   guaranteed to be part of the same allocated object.
+-        // - `self.len` can not overflow `isize`.
+-        let ptr = unsafe { self.as_mut_ptr().add(self.len) };
+-
+-        // SAFETY:
+-        // - `ptr` is properly aligned and valid for writes.
+-        unsafe { core::ptr::write(ptr, v) };
++        // SAFETY: The call to `reserve` was successful so the spare capacity is at least 1.
++        unsafe { self.spare_capacity_mut().get_unchecked_mut(0) }.write(v);
+ 
+         // SAFETY: We just initialised the first spare entry, so it is safe to increase the length
+         // by 1. We also know that the new length is <= capacity because of the previous call to
 
-+1
+---
+base-commit: cf25bc61f8aecad9b0c45fe32697e35ea4b13378
+change-id: 20250317-vec-push-use-spare-27484fd016a9
+
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
 
