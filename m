@@ -1,30 +1,30 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AA28F5C
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 02:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C3D1459F7
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 02:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742179082; cv=none; b=ODEDU/+ksMegAh2At1Z7JIy3tarvUh/BPdpwpFs+KPtalDxgpMrDUJpRX5LgWdLIXdMVdeHM81Ssj+tb0O74cV7tNBZVXJDopEyGvGzTvKFIhTw/dHHQmyTrRllG4MAM6rguCG6bEfBD/9xpfW8xdaoiZsvsEImJwcweLUe4Zz8=
+	t=1742179938; cv=none; b=V2Z75YmgCoUDi5kDU/26hXiJdWXpzGVljOwoklKsu0t+ZkcpOBxhqoimk54heWsH9D0OlHJV6EIgCteShdMg5RBCKrMkfvQQtoTJXmgK4F7rk0S+6S1YgP1xh147jlB3VOdY+vZyEab6xdR6huQYA4jnxEBFH9fqqg4zR35BzLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742179082; c=relaxed/simple;
-	bh=jr0Lv8Y0CURZU0fYeM2JurMzFEjQ0Bf3nLyiFUIIcCQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=soZsoE2E5GNcrnSs22UQhlYwFA67ESsMNXHI6rTdVFg85TExPvCxqP7Wb1S6lfl/8TNxFE8vN/j0El4lQbxq0INkh620tuy8GyKUnWx2p50Emu2k+a/N0lVVFATlw1tAZbtx2AXu86OEbU5L7hd3TAEsStGpzVBO8F5/Ku1GtDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gy/vxbLD; arc=none smtp.client-ip=91.218.175.182
+	s=arc-20240116; t=1742179938; c=relaxed/simple;
+	bh=4pNYgUd572qVLUQmKAyBjPckL2jfLJd2VnoIlYSwXh8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TbrIv/RpjYyRoQVPyOKyOOK2CJRIEq02+y0xGY1SIvKyxuN7dhwk/CHIi9gb6c2JHbHlYuWZA2/STeR9XNbrHcV6GA6ycpTmk9SQxabLhd8L6P1KMjxHFShI1/Cf6g+2NI379Fz9rP8ZDVRhlKLktbepODAUpUVxkDMg5s0N6tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cQ4PkSG0; arc=none smtp.client-ip=91.218.175.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gy/vxbLD"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cQ4PkSG0"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742179068;
+	t=1742179933;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=KgV8WKeIqrFYbTho8XnqGie8n4brTr0w7Y+jx2xAmy8=;
-	b=gy/vxbLDSKqJOi0srWT0l3xpyhDp8rW/EugXGU30Q3+27Dz48dG4a3YXsli2HGmCXdVxvq
-	qzda9ueG7Dva08dgq5aOIsivrK8eVnin5m2ILk3TaH0GPs77ofjWSwU+4G31d7YD1EL27W
-	NJPfquzlw7bMZCi5GqggmH/TqjGdlcs=
+	bh=E4ivVxzbgHS/z19TDHgdNYB0TyoBcztNZN1mrOul37U=;
+	b=cQ4PkSG0gL+dL0s6pqllMEikAA10584dZYitxzh+hpiZWWEuMmygHt7hgLIMxaEOzBJxBX
+	aUchyi2Lu7Ys2ZD9Th3EamholPnLYcZfiAfT9273oIPLHGUv9R9NWeZ7Z+OO/7SoWurb9u
+	GB+HntB5VcEcKfvARkhAtJ/n/L4cBOA=
 From: Kunwu Chan <kunwu.chan@linux.dev>
 To: ojeda@kernel.org,
 	alex.gaynor@gmail.com,
@@ -45,9 +45,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	llvm@lists.linux.dev,
 	Kunwu Chan <kunwu.chan@hotmail.com>,
 	Grace Deng <Grace.Deng006@Gmail.com>
-Subject: [PATCH v2] rust: file: optimize rust symbol generation for FileDescriptorReservation
-Date: Mon, 17 Mar 2025 10:37:02 +0800
-Message-ID: <20250317023702.2360726-1-kunwu.chan@linux.dev>
+Subject: [PATCH v2] rust: sync: optimize Rust symbol generation for PollCondVar
+Date: Mon, 17 Mar 2025 10:52:05 +0800
+Message-ID: <20250317025205.2366518-1-kunwu.chan@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -62,15 +62,16 @@ From: Kunwu Chan <kunwu.chan@hotmail.com>
 When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
 with ARCH=arm64, the following symbols are generated:
 
-$ nm vmlinux | grep ' _R'.*FileDescriptorReservation | rustfilt
-... T <kernel::fs::file::FileDescriptorReservation>::fd_install
-... T <kernel::fs::file::FileDescriptorReservation>::get_unused_fd_flags
-... T <kernel::fs::file::FileDescriptorReservation as core::ops::drop::Drop>::drop
+$nm vmlinux | grep ' _R'.*PollCondVar  | rustfilt
+... T <kernel::sync::poll::PollCondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
+... T <kernel::sync::poll::PollCondVar as kernel::init::PinnedDrop>::drop
+... T <kernel::sync::poll::PollCondVar as core::ops::drop::Drop>::drop
 
-These Rust symbols are trivial wrappers around the C functions
-fd_install, put_unused_fd and put_task_struct. It
-doesn't make sense to go through a trivial wrapper for these
-functions, so mark them inline.
+This Rust symbol
+(<kernel::sync::poll::PollCondVar as kernel::init::PinnedDrop>::drop)
+is trivial wrappers around the C functions __wake_up_pollfree
+and synchronize_rcu. It doesn't make sense to go through a trivial
+wrapper for its functions,so mark it inline.
 
 Link: https://github.com/Rust-for-Linux/linux/issues/1145
 Suggested-by: Alice Ryhl <aliceryhl@google.com>
@@ -81,48 +82,23 @@ Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
 ---
 Changes in v2:
  - Add link and Suggested-by
- - Mark 'reserved_fd' as inline
  - Reword commit msg
 ---
- rust/kernel/fs/file.rs | 4 ++++
- 1 file changed, 4 insertions(+)
+ rust/kernel/sync/poll.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-index e03dbe14d62a..736209a1b983 100644
---- a/rust/kernel/fs/file.rs
-+++ b/rust/kernel/fs/file.rs
-@@ -392,6 +392,7 @@ pub struct FileDescriptorReservation {
+diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
+index d5f17153b424..a4f92c545fec 100644
+--- a/rust/kernel/sync/poll.rs
++++ b/rust/kernel/sync/poll.rs
+@@ -107,6 +107,7 @@ fn deref(&self) -> &CondVar {
  
- impl FileDescriptorReservation {
-     /// Creates a new file descriptor reservation.
+ #[pinned_drop]
+ impl PinnedDrop for PollCondVar {
 +    #[inline]
-     pub fn get_unused_fd_flags(flags: u32) -> Result<Self> {
-         // SAFETY: FFI call, there are no safety requirements on `flags`.
-         let fd: i32 = unsafe { bindings::get_unused_fd_flags(flags) };
-@@ -405,6 +406,7 @@ pub fn get_unused_fd_flags(flags: u32) -> Result<Self> {
-     }
- 
-     /// Returns the file descriptor number that was reserved.
-+    #[inline]
-     pub fn reserved_fd(&self) -> u32 {
-         self.fd
-     }
-@@ -413,6 +415,7 @@ pub fn reserved_fd(&self) -> u32 {
-     ///
-     /// The previously reserved file descriptor is bound to `file`. This method consumes the
-     /// [`FileDescriptorReservation`], so it will not be usable after this call.
-+    #[inline]
-     pub fn fd_install(self, file: ARef<File>) {
-         // SAFETY: `self.fd` was previously returned by `get_unused_fd_flags`. We have not yet used
-         // the fd, so it is still valid, and `current` still refers to the same task, as this type
-@@ -433,6 +436,7 @@ pub fn fd_install(self, file: ARef<File>) {
- }
- 
- impl Drop for FileDescriptorReservation {
-+    #[inline]
-     fn drop(&mut self) {
-         // SAFETY: By the type invariants of this type, `self.fd` was previously returned by
-         // `get_unused_fd_flags`. We have not yet used the fd, so it is still valid, and `current`
+     fn drop(self: Pin<&mut Self>) {
+         // Clear anything registered using `register_wait`.
+         //
 -- 
 2.43.0
 
