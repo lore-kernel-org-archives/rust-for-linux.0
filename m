@@ -1,175 +1,141 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B542F30;
-	Mon, 17 Mar 2025 09:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE15F2236FC;
+	Mon, 17 Mar 2025 09:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742204046; cv=none; b=M0/jU38aoJp3GgL01zfJ2wmXxduoFARbXIfwzdIvia2u619vUD7T37iMrcsCQFCwb1/7Ow6AaHzQ19g/3/9Ulndx/EstZrqB+b3rN2PVLv0vJOzxSEQ/G+xxu7fHTTuMSaHUtR4Hw5pgCebXZNufPRBKT0NP0goz0gOqaII0zeI=
+	t=1742204467; cv=none; b=bmZNS1sQ5fEjGZ49Yi69QGuOiWCp9ukCAXnFHyZFJxctzcmvq0ejohjcCoBSaG8zxtesmM7VE4Jq3cCetOE0qVEOpnyVAwCq6H7nN1ewqK2T9ewPBQDUGUfZCxQWZtMV/3sx8o89dvkUeyRhx3+lTn3zvDh1yGLs2IuAYg2lPHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742204046; c=relaxed/simple;
-	bh=ELzfSEZuhr25sXbSFYa8Pvn+Hzk6Nq+k/X6C4475L78=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZEWrwwuRrheSUU3gLm9uzOLueiv1brgxRhRy31pZARYsOnHqre7Zm3Vh/0Xrcbb1stPx5z4Ov6kfVzRJSmihUFGwrfYRBa2JW0H8Mq7ROjjSA+SVREYUPRIh7cI2b8qp+LsOYff+toohRys9RlacdOErz1l5hl4IdOFRKp5eg2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=O6yrVXnX; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742204467; c=relaxed/simple;
+	bh=EFrzB9n6hijOkeb2lyBndIAZnvP8anhnOgTluUvD300=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iOiajARUlLiedf4iEszgNm0/iO7oWiun+qiIuVICI1EmUbh5N7hzoEGqGDlAqTxFEpAoCsHbZXpYSkHI5XUPSs4XlayavpjqpPzoYDCSqwgpZSc+olhW3MuQ2xWrjJ42yhU0Kpivd6/z3GaNcCqGpUa1DSwKUO/oc6ejjJ405Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xhfCFjhj; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="O6yrVXnX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742204040; x=1742463240;
-	bh=FMpu9u3oj6vcJmcZvMEZn/YisvXXjcOdgQLecCKsTSY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=O6yrVXnXOA3zGBPsi58FLNfuNpgVmzRiUQVSt6n2RvDFaScYeNrmXm3L1XRnQzrCB
-	 8YlXNeEvc40Q8ELt8iWYb+KxAyvWpjqulvZgkNYKWJO35Cij+vUrsQ0GE7dUOlk+Jc
-	 rzMvfujAWxXxusZkbpaGYypuRMbU0pOLD+IP4MHj08+imTci+wd6XeRMC5LuYndpni
-	 M9/0EHtFyD89TeUGfSMNoe5XXrjHoXufvS4DgXPkj63oNVXQntmnqx4q3dqLr5UZPP
-	 OuNLW59d65h/ntfWzcGZJHsxtH2V6/1dpPJRMXGxgh4h0t6z0VLLIpNrDRSFWnHQPf
-	 hwkSkhYH00J8Q==
-Date: Mon, 17 Mar 2025 09:33:52 +0000
-To: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 6/6] rust: use strict provenance APIs
-Message-ID: <D8IFS7175NNQ.3VAP8WA2QC8WF@proton.me>
-In-Reply-To: <20250315-ptr-as-ptr-v4-6-b2d72c14dc26@gmail.com>
-References: <20250315-ptr-as-ptr-v4-0-b2d72c14dc26@gmail.com> <20250315-ptr-as-ptr-v4-6-b2d72c14dc26@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ae828af5ffc8f596a802aaa8ecc51e4ae679d167
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xhfCFjhj"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1742204460;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=m0XSCnSukterJAo4E10iYkPySrScWtoaWdoov5OHuTo=;
+	b=xhfCFjhjUh11wsPpQQRCxJvI+8n/7UjQIM6gtj8fQGPitN38/M1YWROr6Tnd3N45K7EDbr
+	xMHaBiJcdaK59+3tjfnceNTDDMWTtnU46xzVYsT2ASol5eZ3yziw7TxIaGn534fZxSDSPT
+	W5+2tLX+riCc+2N1uVHRBmlPr4QvNzo=
+From: Kunwu Chan <kunwu.chan@linux.dev>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Kunwu Chan <kunwu.chan@hotmail.com>,
+	Grace Deng <Grace.Deng006@Gmail.com>
+Subject: [PATCH] rust: page:: optimize rust symbol generation for Page
+Date: Mon, 17 Mar 2025 17:40:04 +0800
+Message-ID: <20250317094004.2622640-1-kunwu.chan@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sat Mar 15, 2025 at 1:17 PM CET, Tamir Duberstein wrote:
-> Throughout the tree, use the strict provenance APIs stabilized in Rust
-> 1.84.0[1]. Retain backwards-compatibility by introducing forwarding
-> functions at the `kernel` crate root along with polyfills for rustc <
-> 1.84.0.
->
-> Use `#[allow(clippy::incompatible_msrv)]` to avoid warnings on rustc <
-> 1.84.0 as our MSRV is 1.78.0.
+From: Kunwu Chan <kunwu.chan@hotmail.com>
 
-This isn't necessary, right?
+When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+with ARCH=arm64, the following symbols are generated:
 
-> In the `kernel` crate, enable the strict provenance lints on rustc >=3D
-> 1.84.0; do this in `lib.rs` rather than `Makefile` to avoid introducing
-> compiler flags that are dependent on the rustc version in use.
+$nm vmlinux | grep ' _R'.*Page | rustfilt
+ffff8000805b6f98 T <kernel::page::Page>::alloc_page
+ffff8000805b715c T <kernel::page::Page>::fill_zero_raw
+ffff8000805b720c T <kernel::page::Page>::copy_from_user_slice_raw
+ffff8000805b6fb4 T <kernel::page::Page>::read_raw
+ffff8000805b7088 T <kernel::page::Page>::write_raw
+ffff8000805b72fc T <kernel::page::Page as core::ops::drop::Drop>::drop
 
-So it won't be enabled in the doctests, right?
+These Rust symbols are trivial wrappers around the C functions
+alloc_pages, kunmap_local and __free_pages.
+It doesn't make sense to go through a trivial wrapper for these
+functions, so mark them inline.
 
-> Link: https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html#strict-prove=
-nance-apis [1]
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/all/D8EIXDMRXMJP.36TFCGWZBRS3Y@proton.me/
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
->  init/Kconfig           |  3 +++
->  rust/kernel/alloc.rs   |  2 +-
->  rust/kernel/devres.rs  |  4 ++--
->  rust/kernel/io.rs      | 14 +++++++-------
->  rust/kernel/lib.rs     | 52 ++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  rust/kernel/of.rs      |  2 +-
->  rust/kernel/pci.rs     |  4 ++--
->  rust/kernel/str.rs     | 16 ++++++----------
->  rust/kernel/uaccess.rs | 12 ++++++++----
->  9 files changed, 82 insertions(+), 27 deletions(-)
-
-
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 486715528587..84eb2602e79e 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -17,6 +17,9 @@
->  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized=
-))]
->  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(dispatch_from_=
-dyn))]
->  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
-> +#![cfg_attr(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE, feature(strict_pr=
-ovenance_lints))]
-> +#![cfg_attr(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE, deny(fuzzy_proven=
-ance_casts))]
-> +#![cfg_attr(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE, deny(lossy_proven=
-ance_casts))]
->  #![feature(inline_const)]
->  #![feature(lint_reasons)]
->  // Stable in Rust 1.83
-> @@ -25,6 +28,55 @@
->  #![feature(const_ptr_write)]
->  #![feature(const_refs_to_cell)]
-> =20
-> +#[cfg(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE)]
-> +#[allow(clippy::incompatible_msrv)]
-
-Do we still need this allow?
-
-> +mod strict_provenance {
-> +    #[doc(hidden)]
-
-Why make them hidden in docs?
-
-> +    pub fn expose_provenance<T>(addr: *const T) -> usize {
-> +        addr.expose_provenance()
-
-Instead of having these stubs here, you can probably just do
-
-    pub use core::ptr::expose_provenance;
-
-> +    }
-> +
-> +    #[doc(hidden)]
-> +    pub fn without_provenance_mut<T>(addr: usize) -> *mut T {
-> +        core::ptr::without_provenance_mut(addr)
-> +    }
-> +
-> +    #[doc(hidden)]
-> +    pub fn with_exposed_provenance<T>(addr: usize) -> *const T {
-> +        core::ptr::with_exposed_provenance(addr)
-> +    }
-> +
-> +    #[doc(hidden)]
-> +    pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
-> +        core::ptr::with_exposed_provenance_mut(addr)
-> +    }
-> +}
-> +
-> +#[cfg(not(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE))]
-> +mod strict_provenance {
-> +    #[doc(hidden)]
-
-I think we should document these.
-
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
+Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
+Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
 ---
-Cheers,
-Benno
+ rust/kernel/page.rs | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> +    pub fn expose_provenance<T>(addr: *const T) -> usize {
-> +        addr.cast::<()>() as usize
-> +    }
-> +
-> +    #[doc(hidden)]
-> +    pub fn without_provenance_mut<T>(addr: usize) -> *mut T {
-> +        addr as *mut T
-> +    }
-> +
-> +    #[doc(hidden)]
-> +    pub fn with_exposed_provenance<T>(addr: usize) -> *const T {
-> +        addr as *const T
-> +    }
-> +
-> +    #[doc(hidden)]
-> +    pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
-> +        addr as *mut T
-> +    }
-> +}
-> +
-> +pub use strict_provenance::*;
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index f6126aca33a6..e75cbc5cafd4 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -69,6 +69,7 @@ impl Page {
+     /// let page = Page::alloc_page(GFP_KERNEL | __GFP_ZERO)?;
+     /// # Ok::<(), kernel::alloc::AllocError>(())
+     /// ```
++    #[inline]
+     pub fn alloc_page(flags: Flags) -> Result<Self, AllocError> {
+         // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
+         // is always safe to call this method.
+@@ -170,6 +171,7 @@ fn with_pointer_into_page<T>(
+     /// * Callers must ensure that `dst` is valid for writing `len` bytes.
+     /// * Callers must ensure that this call does not race with a write to the same page that
+     ///   overlaps with this read.
++    #[inline]
+     pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
+         self.with_pointer_into_page(offset, len, move |src| {
+             // SAFETY: If `with_pointer_into_page` calls into this closure, then
+@@ -192,6 +194,7 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
+     /// * Callers must ensure that `src` is valid for reading `len` bytes.
+     /// * Callers must ensure that this call does not race with a read or write to the same page
+     ///   that overlaps with this write.
++    #[inline]
+     pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Result {
+         self.with_pointer_into_page(offset, len, move |dst| {
+             // SAFETY: If `with_pointer_into_page` calls into this closure, then it has performed a
+@@ -212,6 +215,7 @@ pub unsafe fn write_raw(&self, src: *const u8, offset: usize, len: usize) -> Res
+     ///
+     /// Callers must ensure that this call does not race with a read or write to the same page that
+     /// overlaps with this write.
++    #[inline]
+     pub unsafe fn fill_zero_raw(&self, offset: usize, len: usize) -> Result {
+         self.with_pointer_into_page(offset, len, move |dst| {
+             // SAFETY: If `with_pointer_into_page` calls into this closure, then it has performed a
+@@ -235,6 +239,7 @@ pub unsafe fn fill_zero_raw(&self, offset: usize, len: usize) -> Result {
+     ///
+     /// Callers must ensure that this call does not race with a read or write to the same page that
+     /// overlaps with this write.
++    #[inline]
+     pub unsafe fn copy_from_user_slice_raw(
+         &self,
+         reader: &mut UserSliceReader,
+@@ -251,6 +256,7 @@ pub unsafe fn copy_from_user_slice_raw(
+ }
+ 
+ impl Drop for Page {
++    #[inline]
+     fn drop(&mut self) {
+         // SAFETY: By the type invariants, we have ownership of the page and can free it.
+         unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
+-- 
+2.43.0
 
