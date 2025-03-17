@@ -1,43 +1,43 @@
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863AC23F415
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E6E2E336F
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 14:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742222804; cv=none; b=FvuhQrayGinlhiZu28XNXaBragx/bbdNbIA52HIjp7J45w04xJBaIbdP65Vw7+Yh42nspumQLHbO1XiKlcYge5NDkwkS/fKJMWdlKUDqFQf+O8mxFrZeNz23Er0n6V0H/F1n/d0g33OciBYQXqamXc0oG2aoZ3BJBPxq4jCJp3M=
+	t=1742223482; cv=none; b=Hml3lrlC1r0Zs85aGilZnV+k0/21MHO8gKV6c94beci7RwNzBiK0hlgbDrFnSuOjm3oMdrvaodnppp6hZPJu6vbsaI/NnVHUylIn5F/PGoTXKw8vE15hPjTUejrnw3ZzmUHPuBQWW1c7YBFiLQniDobfKnU1oekbAMQQLB35ex8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742222804; c=relaxed/simple;
-	bh=dBrC1u0IiUOyDfFTSQe3LuUdm91RasyufM6i//hsVp8=;
+	s=arc-20240116; t=1742223482; c=relaxed/simple;
+	bh=TsYh26bJ/cAnSPwv/1d6/uTk9EAdE3AnYWdpAZDRkZY=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W9K44afU5/upznbeYBH5Qdbbl0loW0JJmwwRByERm93ssScI7JmG2qJkyumkTSvvHCs/+jSaSA81Ni2y8cYAg99x5gHi2bh60ve0JEMfCZ7FGufgdKe66mwRTiv887UdKbFy1sT0taqDu64c4ru3/lBfwc6WHhk0buu2/dvHJzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Wtb81bW1; arc=none smtp.client-ip=109.224.244.18
+	 MIME-Version:Content-Type; b=F7EOx1yAlZvkGaeINZ0Tf5SLL4vp8rSGZ1+JNK6zIyotoMW/pVHTVwNzDSTvTui96vSet3CetUoAPPvO3irVPuqQGrG+onvClfOQL/S80b9xWc9p+nL2ZGs7E/3YDYliSmhZcZUvnk2joAVMqXz4bHOBF+Zt8DxYfEW1ZjxEikw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HM6uCM0a; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Wtb81bW1"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HM6uCM0a"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742222794; x=1742481994;
-	bh=QY+djW/K3/3fwrxQnWk5eIq6mklf+YPdlaYKCGAZlxE=;
+	s=protonmail; t=1742223478; x=1742482678;
+	bh=PAvCZljqfPwTmMvN4PeD741MglUp9JccMIXin6PBy4M=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=Wtb81bW1n4BY/CP+BVk766mWLsb/m3xGn2EFocEA56KUW2Hd4+Da/lQRKfWc/N8fW
-	 zYHg2Kx+JlIPcDTXEbwmaokAM9Yz5HwXI1jnGe01vg42hLM8vlN6ApY2bBJVvC+u8i
-	 Om1delJfOJUfZb4yyBTarHovfYcnnAT9jLZTnikPc4d2JIUstx8zVM0g22RV0gI4i2
-	 CoNgGm6hy/P8NamSteO5XRQNCvVm4zuT6W1j2wG9SLsVZfYC7MxFJeNvxB0W/x+IUO
-	 5AZ/ZNhkfhDb85Dxd8Ie05mNvK35oSRSJ/t2CUre06zn2BYkkCqKSoYe09eH8fvBnk
-	 G3RuG4K1gaOFg==
-Date: Mon, 17 Mar 2025 14:46:30 +0000
-To: Tamir Duberstein <tamird@gmail.com>, Alice Ryhl <aliceryhl@google.com>
+	b=HM6uCM0aaM/hGPNBbHGpRzeiP5MN19p0vSv9lht5KLfXGUY0lwnZWOe4NJcaTEAkK
+	 JIDzt7I15kxw9gJOug3WtNV/AsM2G1XWVMzC0yI6igOnGtPIwqdmOLroALRgzNtRqc
+	 qfWKa+s0svvGaE6+UWbaxBVlrOojBvqyeks6g/isqXwZLxceRC2BOnZAO3ZdDfgi4Z
+	 OJaDwYb1hlI1v7ZFbtx9+GGVXlTpeCuJWRC2V+kM+Voq2nrRwLNattl0jeTFIdxEhH
+	 3CP/ztIUAsThydPqtYrMMpGbSuHviKDbSvlD2RHrRxJ6AU5wMsuw8nLPP0+xfKfDrD
+	 pGttXwDUtqw7Q==
+Date: Mon, 17 Mar 2025 14:57:51 +0000
+To: Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: alloc: replace `Vec::set_len` with `inc_len`
-Message-ID: <D8IMFM8UTOV6.1EYIRMPNAZ7I7@proton.me>
-In-Reply-To: <CAJ-ks9nSNweaSCVAruo-zWxMAFKcRxcJRScV06NRNBoeEZggfA@mail.gmail.com>
-References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com> <20250316-vec-set-len-v1-1-60f98a28723f@gmail.com> <D8IGB61NVPBT.1I3IZYPVPIEMU@proton.me> <Z9f96iXE0xxj8th7@google.com> <CAJ-ks9nSNweaSCVAruo-zWxMAFKcRxcJRScV06NRNBoeEZggfA@mail.gmail.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, andrewjballance@gmail.com, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: alloc: extend safety requirements of Vec::set_len()
+Message-ID: <D8IMOAKHKYGP.32PTT2W55UH6L@proton.me>
+In-Reply-To: <Z9gDt9JbqvoTFORV@pollux>
+References: <Z9XIk3WpzruUfh6O@pollux> <Z9bLtgJa3PNB0bkf@pollux> <CAJ-ks9mAS1WHZcRqPzu4qhMOGXP9RNhdHUSbJK79znDvaFRHnA@mail.gmail.com> <Z9bWODCNNEq3xI51@pollux> <D8HVI9K91JWV.NHOPVELH5JE5@proton.me> <Z9cfkKTVKtc3imyK@pollux> <Z9ch0fgUI-V-rlGr@pollux> <D8IG67RM4H53.2K2AW01FZLWJM@proton.me> <Z9gDt9JbqvoTFORV@pollux>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3b514c4267c74f0f38a70d821dda0b9b73e4ab0c
+X-Pm-Message-ID: a5d4f9bc15c7938237abf261859f7083035277d3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,102 +47,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 17, 2025 at 12:25 PM CET, Tamir Duberstein wrote:
-> On Mon, Mar 17, 2025 at 6:48=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
->>
->> On Mon, Mar 17, 2025 at 09:58:35AM +0000, Benno Lossin wrote:
->> > On Sun Mar 16, 2025 at 11:32 PM CET, Tamir Duberstein wrote:
->> > > Rename `set_len` to `inc_len` and simplify its safety contract.
->> > > ---
->> > >  rust/kernel/alloc/kvec.rs | 19 +++++++++----------
->> > >  rust/kernel/str.rs        |  2 +-
->> > >  rust/kernel/uaccess.rs    |  2 +-
->> > >  3 files changed, 11 insertions(+), 12 deletions(-)
->> > >
->> > > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
->> > > index ae9d072741ce..d43a1d609434 100644
->> > > --- a/rust/kernel/alloc/kvec.rs
->> > > +++ b/rust/kernel/alloc/kvec.rs
->> > > @@ -183,17 +183,16 @@ pub fn len(&self) -> usize {
->> > >          self.len
->> > >      }
->> > >
->> > > -    /// Forcefully sets `self.len` to `new_len`.
->> > > +    /// Increments `self.len` by `additional`.
+On Mon Mar 17, 2025 at 12:12 PM CET, Danilo Krummrich wrote:
+> On Mon, Mar 17, 2025 at 09:52:07AM +0000, Benno Lossin wrote:
+>> On Sun Mar 16, 2025 at 8:09 PM CET, Danilo Krummrich wrote:
+>> > On Sun, Mar 16, 2025 at 07:59:34PM +0100, Danilo Krummrich wrote:
+>> >> But let's define it then; what about:
+>> >>=20
+>> >> "[`Vec::set_len`] takes (or kepps) ownership of all elements within t=
+he range
+>> >> [0; `new_len`] and abandons ownership of all values outside of this r=
+ange, if
+>> >> any."
+>> >>=20
+>> >> The caller may take ownership of the abandoned elements."
+>> >>=20
+>> >> I'd argue that giving up ownership, while offering someone else to ta=
+ke it means
+>> >> that it implies that otherwise we'll just end up forgetting about the=
+ value.
 >> >
->> > I would keep the "Forcefully".
+>> > Btw. I'd still prefer if we could enforce that the caller has to docum=
+ent what
+>> > should happen to the abandoned value. But I acknowledge that the safet=
+y comment
+>> > isn't the scope for it.
+>> >
+>> > It'd be great if e.g. clippy would give us a tool to do something anal=
+ogous to
+>> > safety comments.
+>> >
+>> > It think it would be useful to enfoce some additional safety documenta=
+tion. For
+>> > instance, I think the kernel would much benefit if we could enforce th=
+at
+>> > mem::forget() must be justified with a comment, since as mentioned ina=
+ previous
+>> > mail, it can cause fatal bugs, for instance when used on lock guards.
+>>=20
+>> I get where you're coming from, but this probably will very quickly get
+>> out of hand.
+>>=20
+>> For example, I can define `forget` safely:
+>>=20
+>>     fn forget<T>(value: T) {
+>>         struct Cycle<T> {
+>>             this: RefCell<Option<Arc<Self>>>,
+>>             value: T,
+>>         }
+>>         let cycle =3D Arc::new(Cycle { this: RefCell::new(None), value }=
+);
+>>         *cycle.this.borrow_mut() =3D Some(cycle.clone());
+>>     }
+>>=20
+>> How would you ensure that this kind of pattern doesn't get written
+>> accidentally (or with many indirections)?
 >
-> Why? Is it possible to set it any other way?
+> I don't think that the possibility of writing safe (but yet buggy) code i=
+s an
+> argument against having the possibility of enforcing that a caller must w=
+rite a
+> comment for justification on certain things, such as mem::forget().
 
-Yeah when `truncate` and `resize` land. It conveys that this is a
-low-level operation.
+My argument is that the problem of forgetting a value is not
+self-contained like `unsafe` code is. Even if we were to document all
+`forget` or `ManuallyDrop::new` invocations (which we definitely should)
+we wouldn't get the security that one can't accidentally forget a lock
+guard. I'm totally in favor of mandating an explaining comment above
+`forget` calls (but not as a `SAFETY` comment).
 
->> > >      ///
->> > >      /// # Safety
->> > >      ///
->> > > -    /// - `new_len` must be less than or equal to [`Self::capacity`=
-].
->> > > -    /// - If `new_len` is greater than `self.len`, all elements wit=
-hin the interval
->> > > -    ///   [`self.len`,`new_len`) must be initialized.
->> > > +    /// - `self.len + additional` must be less than or equal to [`S=
-elf::capacity`].
->> > > +    /// - All elements within the interval [`self.len`,`self.len + =
-additional`) must be initialized.
->> > >      #[inline]
->> > > -    pub unsafe fn set_len(&mut self, new_len: usize) {
->> > > -        debug_assert!(new_len <=3D self.capacity());
->> > > -        self.len =3D new_len;
->> > > +    pub unsafe fn inc_len(&mut self, additional: usize) {
->> > > +        debug_assert!(self.len() + additional <=3D self.capacity())=
-;
->> >
->> > What if this overflows? Do we always have overflow debugging on when
->> > debug assertions are enabled? If yes, then this is fine.
->>
->> I don't think we do.
->
-> Rearranged as
->
->         debug_assert!(additional <=3D self.capacity() - self.len());
+> But there's another reason I think having something like this could be
+> problematic: It might set the wrong incentive, as in "hey, I can just use=
+ a
+> "sanity requirement" in my function rather figuring out how to ensure it =
+through
+> the type system, etc.".
 
-LGTM
-
-> It should be impossible for this to underflow because capacity must be
->>=3D len. Interestingly this isn't a documented invariant, but it is
-> relied upon by `spare_capacity_mut`.
-
-Oh yeah that should be an invariant. Feel free to open an issue or send
-a patch.
-
->> > > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
->> > > index 28e2201604d6..005713839e9e 100644
->> > > --- a/rust/kernel/str.rs
->> > > +++ b/rust/kernel/str.rs
->> > > @@ -840,7 +840,7 @@ pub fn try_from_fmt(args: fmt::Arguments<'_>) ->=
- Result<Self, Error> {
->> > >
->> > >          // SAFETY: The number of bytes that can be written to `f` i=
-s bounded by `size`, which is
->> > >          // `buf`'s capacity. The contents of the buffer have been i=
-nitialised by writes to `f`.
->> > > -        unsafe { buf.set_len(f.bytes_written()) };
->> > > +        unsafe { buf.inc_len(f.bytes_written()) };
->> >
->> > This change seems wrong unless the code was wrong to begin with.
->> >
->> > Otherwise the change looks good.
->>
->> The buffer has length zero as it was just created with:
->>
->> let mut buf =3D KVec::with_capacity(size, GFP_KERNEL)?;
-
-Ahh, I didn't look at the context. Makes sense.
-
-> Indeed. Added to the commit message.
-
-Thanks.
+I don't understand your point here, can you explain it more?
 
 ---
 Cheers,
