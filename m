@@ -1,126 +1,175 @@
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DC221B9DA
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 08:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B542F30;
+	Mon, 17 Mar 2025 09:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742199303; cv=none; b=e08H3HJ4DBGwSLaIuxlVPW9vpePzewfPpEMONBY8lCDaaV8cLXutPJqMnYn3rz3mau7txgGsL2JiNKfM718ORblP+IHlL728nYUYcm6r4932U4BVnDhSMd2Ttp3neecHaplsPYcolmJLIomVbi5DanRJgXQD3MCp9uyjp/TUI58=
+	t=1742204046; cv=none; b=M0/jU38aoJp3GgL01zfJ2wmXxduoFARbXIfwzdIvia2u619vUD7T37iMrcsCQFCwb1/7Ow6AaHzQ19g/3/9Ulndx/EstZrqB+b3rN2PVLv0vJOzxSEQ/G+xxu7fHTTuMSaHUtR4Hw5pgCebXZNufPRBKT0NP0goz0gOqaII0zeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742199303; c=relaxed/simple;
-	bh=Ik+juuv3vZG7o9rKpUv3FPBSdYaXCPaTs5wTp0dE0ro=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SoMqzrhj0jPJ6yD3YEP8IyqdBJrBwzh/FdCPcRsW6zgnqWuJ7itsAh9Ym0u2pxp9Yyd5wd7kv4lLvJmHOvR6b44L3wGGmXFLsSQVsi1Rm5WD8ArVsbt4FzcYY4/F6L/ViaezknUFQf/Jymli55LBsvOxts9oB5b88BPZnWvxymY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PdNGLK8I; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742204046; c=relaxed/simple;
+	bh=ELzfSEZuhr25sXbSFYa8Pvn+Hzk6Nq+k/X6C4475L78=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZEWrwwuRrheSUU3gLm9uzOLueiv1brgxRhRy31pZARYsOnHqre7Zm3Vh/0Xrcbb1stPx5z4Ov6kfVzRJSmihUFGwrfYRBa2JW0H8Mq7ROjjSA+SVREYUPRIh7cI2b8qp+LsOYff+toohRys9RlacdOErz1l5hl4IdOFRKp5eg2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=O6yrVXnX; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PdNGLK8I"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742199289;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LRqxEhaGGRBnjpe2vKuBwbtSeIwWfJeTVgBc1Z0wJ/4=;
-	b=PdNGLK8ITK14OXWrnSamvqcfkiWYMqi544OKblg8sMlGEo3ZtchjFR/F/EKJ3TZ3RWv7AC
-	Krrd+ft4xu9hbW6/5nNMQStRe3SWE94f1qo8JSlp0Cgsd5nNtC0yo6+22VYcbzroI0vKGs
-	07/uzWV71v1QcjBWFiYjl3pfYDbA7V4=
-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Grace Deng <Grace.Deng006@Gmail.com>
-Subject: [PATCH] rust: sync: optimize rust symbol generation for CondVar
-Date: Mon, 17 Mar 2025 16:13:50 +0800
-Message-ID: <20250317081351.2503049-1-kunwu.chan@linux.dev>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="O6yrVXnX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742204040; x=1742463240;
+	bh=FMpu9u3oj6vcJmcZvMEZn/YisvXXjcOdgQLecCKsTSY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=O6yrVXnXOA3zGBPsi58FLNfuNpgVmzRiUQVSt6n2RvDFaScYeNrmXm3L1XRnQzrCB
+	 8YlXNeEvc40Q8ELt8iWYb+KxAyvWpjqulvZgkNYKWJO35Cij+vUrsQ0GE7dUOlk+Jc
+	 rzMvfujAWxXxusZkbpaGYypuRMbU0pOLD+IP4MHj08+imTci+wd6XeRMC5LuYndpni
+	 M9/0EHtFyD89TeUGfSMNoe5XXrjHoXufvS4DgXPkj63oNVXQntmnqx4q3dqLr5UZPP
+	 OuNLW59d65h/ntfWzcGZJHsxtH2V6/1dpPJRMXGxgh4h0t6z0VLLIpNrDRSFWnHQPf
+	 hwkSkhYH00J8Q==
+Date: Mon, 17 Mar 2025 09:33:52 +0000
+To: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 6/6] rust: use strict provenance APIs
+Message-ID: <D8IFS7175NNQ.3VAP8WA2QC8WF@proton.me>
+In-Reply-To: <20250315-ptr-as-ptr-v4-6-b2d72c14dc26@gmail.com>
+References: <20250315-ptr-as-ptr-v4-0-b2d72c14dc26@gmail.com> <20250315-ptr-as-ptr-v4-6-b2d72c14dc26@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: ae828af5ffc8f596a802aaa8ecc51e4ae679d167
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Kunwu Chan <kunwu.chan@hotmail.com>
+On Sat Mar 15, 2025 at 1:17 PM CET, Tamir Duberstein wrote:
+> Throughout the tree, use the strict provenance APIs stabilized in Rust
+> 1.84.0[1]. Retain backwards-compatibility by introducing forwarding
+> functions at the `kernel` crate root along with polyfills for rustc <
+> 1.84.0.
+>
+> Use `#[allow(clippy::incompatible_msrv)]` to avoid warnings on rustc <
+> 1.84.0 as our MSRV is 1.78.0.
 
-When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-with ARCH=arm64, the following symbols are generated:
+This isn't necessary, right?
 
-$nm vmlinux | grep ' _R'.*CondVar | rustfilt
-... T <kernel::sync::condvar::CondVar>::notify_all
-... T <kernel::sync::condvar::CondVar>::notify_one
-... T <kernel::sync::condvar::CondVar>::notify_sync
-... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-... T <kernel::sync::poll::PollCondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-... T <kernel::sync::poll::PollCondVar as core::ops::drop::Drop>::drop
+> In the `kernel` crate, enable the strict provenance lints on rustc >=3D
+> 1.84.0; do this in `lib.rs` rather than `Makefile` to avoid introducing
+> compiler flags that are dependent on the rustc version in use.
 
-These notify* symbols are trivial wrappers around the C functions
-__wake_up and __wake_up_sync.
-It doesn't make sense to go through a trivial wrapper for these
-functions, so mark them inline.
+So it won't be enabled in the doctests, right?
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1145
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
+> Link: https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html#strict-prove=
+nance-apis [1]
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Link: https://lore.kernel.org/all/D8EIXDMRXMJP.36TFCGWZBRS3Y@proton.me/
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+>  init/Kconfig           |  3 +++
+>  rust/kernel/alloc.rs   |  2 +-
+>  rust/kernel/devres.rs  |  4 ++--
+>  rust/kernel/io.rs      | 14 +++++++-------
+>  rust/kernel/lib.rs     | 52 ++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  rust/kernel/of.rs      |  2 +-
+>  rust/kernel/pci.rs     |  4 ++--
+>  rust/kernel/str.rs     | 16 ++++++----------
+>  rust/kernel/uaccess.rs | 12 ++++++++----
+>  9 files changed, 82 insertions(+), 27 deletions(-)
+
+
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 486715528587..84eb2602e79e 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -17,6 +17,9 @@
+>  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized=
+))]
+>  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(dispatch_from_=
+dyn))]
+>  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
+> +#![cfg_attr(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE, feature(strict_pr=
+ovenance_lints))]
+> +#![cfg_attr(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE, deny(fuzzy_proven=
+ance_casts))]
+> +#![cfg_attr(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE, deny(lossy_proven=
+ance_casts))]
+>  #![feature(inline_const)]
+>  #![feature(lint_reasons)]
+>  // Stable in Rust 1.83
+> @@ -25,6 +28,55 @@
+>  #![feature(const_ptr_write)]
+>  #![feature(const_refs_to_cell)]
+> =20
+> +#[cfg(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE)]
+> +#[allow(clippy::incompatible_msrv)]
+
+Do we still need this allow?
+
+> +mod strict_provenance {
+> +    #[doc(hidden)]
+
+Why make them hidden in docs?
+
+> +    pub fn expose_provenance<T>(addr: *const T) -> usize {
+> +        addr.expose_provenance()
+
+Instead of having these stubs here, you can probably just do
+
+    pub use core::ptr::expose_provenance;
+
+> +    }
+> +
+> +    #[doc(hidden)]
+> +    pub fn without_provenance_mut<T>(addr: usize) -> *mut T {
+> +        core::ptr::without_provenance_mut(addr)
+> +    }
+> +
+> +    #[doc(hidden)]
+> +    pub fn with_exposed_provenance<T>(addr: usize) -> *const T {
+> +        core::ptr::with_exposed_provenance(addr)
+> +    }
+> +
+> +    #[doc(hidden)]
+> +    pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
+> +        core::ptr::with_exposed_provenance_mut(addr)
+> +    }
+> +}
+> +
+> +#[cfg(not(CONFIG_RUSTC_HAS_STABLE_STRICT_PROVENANCE))]
+> +mod strict_provenance {
+> +    #[doc(hidden)]
+
+I think we should document these.
+
 ---
- rust/kernel/sync/condvar.rs | 4 ++++
- 1 file changed, 4 insertions(+)
+Cheers,
+Benno
 
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index 7df565038d7d..a826896ba3f0 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -181,6 +181,7 @@ pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
-     }
- 
-     /// Calls the kernel function to notify the appropriate number of threads.
-+    #[inline]
-     fn notify(&self, count: c_int) {
-         // SAFETY: `wait_queue_head` points to valid memory.
-         unsafe {
-@@ -198,6 +199,7 @@ fn notify(&self, count: c_int) {
-     /// This method behaves like `notify_one`, except that it hints to the scheduler that the
-     /// current thread is about to go to sleep, so it should schedule the target thread on the same
-     /// CPU.
-+    #[inline]
-     pub fn notify_sync(&self) {
-         // SAFETY: `wait_queue_head` points to valid memory.
-         unsafe { bindings::__wake_up_sync(self.wait_queue_head.get(), TASK_NORMAL) };
-@@ -207,6 +209,7 @@ pub fn notify_sync(&self) {
-     ///
-     /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
-     /// completely (as opposed to automatically waking up the next waiter).
-+    #[inline]
-     pub fn notify_one(&self) {
-         self.notify(1);
-     }
-@@ -215,6 +218,7 @@ pub fn notify_one(&self) {
-     ///
-     /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
-     /// completely (as opposed to automatically waking up the next waiter).
-+    #[inline]
-     pub fn notify_all(&self) {
-         self.notify(0);
-     }
--- 
-2.43.0
+> +    pub fn expose_provenance<T>(addr: *const T) -> usize {
+> +        addr.cast::<()>() as usize
+> +    }
+> +
+> +    #[doc(hidden)]
+> +    pub fn without_provenance_mut<T>(addr: usize) -> *mut T {
+> +        addr as *mut T
+> +    }
+> +
+> +    #[doc(hidden)]
+> +    pub fn with_exposed_provenance<T>(addr: usize) -> *const T {
+> +        addr as *const T
+> +    }
+> +
+> +    #[doc(hidden)]
+> +    pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
+> +        addr as *mut T
+> +    }
+> +}
+> +
+> +pub use strict_provenance::*;
 
