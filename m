@@ -1,103 +1,71 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0441C21019E;
-	Tue, 18 Mar 2025 18:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FF2211A15
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 18:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742322522; cv=none; b=mfx5RdcST63dbT7nJRwaGOigMD9uQGUhLxXR6e/T4c53GG9FqqVuQTMKlZb0hHC25cD8UcrNotWwGC/IPifDBxmEl0dyuElJn4THPXktSM4dSIk1BHUFvgLiRvNyaeF04KGvrCihPpFSpCYtcutQ0yDhk3PdNJZuVKfSUGsFsyM=
+	t=1742323031; cv=none; b=Jbmbhnqawm90EVfgmB+R+CProPRXORX1OYzg0qymGZbj+iDLuIePB+l5aWc1tbThRQmPrH7gLN4kcuuYKyEyiWprDHliaQI1mJZh3hrX0sBgrn9NKrM7qh1yKoeccP3vpaRqs1fnwwB2QytGHkNiSUGzoPnY5xhbRVvF2E5fdcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742322522; c=relaxed/simple;
-	bh=BHtDkUF4GEXQWE5bB/wtsqUmcgm6GjPx9hsFXZLh7Eo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bqbYke4tXe42Lm06pAiA4jTg1hHjge+HjvZbtc8yO158zXiysQBSrMJIbkMl2Z/W3sx89QMSNRUVW9iGdbAvPoZeUMttwDy9waseJ3NINxvWGB4sdFCxqpL9m2fA40Me7cs/skh1g94ZpFHDsB2kdtSNl1pKV/sDvLeIYJ3CfrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PMNo3oak; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742323031; c=relaxed/simple;
+	bh=i7GuafmWBBFxpauQdZaROHEcBUjPAdboz1fmHtgeylA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WJ4bxDAlhHm68d2oex05Wv5btUmTC0wWt4Jxjk9RtmyfiFenNrxktSv+xeysH6jZvhYri9hmt3aie3PQzoEeFWi0uJHtRRmHcP3d+CBiPfd30bs+3qr287ufzwoAfnbgVjETxWpVMg9TB5zNknRwRfQLkdfe+LlfRx6X6VRd8Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CKZkYIQR; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PMNo3oak"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30613802a04so67770931fa.2;
-        Tue, 18 Mar 2025 11:28:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742322519; x=1742927319; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BHtDkUF4GEXQWE5bB/wtsqUmcgm6GjPx9hsFXZLh7Eo=;
-        b=PMNo3oakD6MA+kk2vd/rX+nJqku7FB6hlwYveHMLCayQV0d5ZooEM46EYW1dk06asu
-         17PkqY1BGKPohshrdOOvZgk4FkBHMpgiMIvNotbnS/btXVieIwGRBmzEdGEQzWN+EUb7
-         gsukZB1BkqRBxn8iQhI/C8Mi4DO4+Q1NSkeozIhKizD8lx24Sh/YuRpbU9noEAtJr9xQ
-         bgIOicxqg4dxmf7uYCC0e9eSzzX7w1si7TG+jYEdB+xTxOznJngEw6LKQAdsMlldzAz8
-         lC4x1hikriKhchxflwIAQUCgpb8VhCibz73M/qJ1H+ITFILGJoOl7GoVyTMOk9p87+++
-         NR3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742322519; x=1742927319;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BHtDkUF4GEXQWE5bB/wtsqUmcgm6GjPx9hsFXZLh7Eo=;
-        b=XQpW4K7GY8hPXOoi2ImC84b7/5i95UGMwaEvVyPaBxt2XnsRDE8bnXF4BB90G8oxPy
-         IbGUalEIE6MSws+dGl6Benkqq75iAvRHN2PztX0KGWr98yLwoSWUNcwbPrPIHBN/L00T
-         DdAFG55EVhYC1C1r06/bDPugxfdsdAUrRIeataX8PWBxbP1APMLD9VzZAFdBsICUV5FB
-         edeKHqU8+P4BZ1u0IsoYnppxQRl8GGAWjykWCakz6lh3PTni25Xo+W9DZndyXLFOSldn
-         CgOrs5ik/lwMxv+/sbPFSjdANtzT/002qSWJrgti4kH8ncA3b2vNp5aKUhuMq/IfXZv2
-         XaRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVEiXtWdT6ShFrcIn7/1GbhM+QyqUkzR26DI7n5YAvUTfqekrAEEfIsUk27vC1BQfhCTLSA/9TuGfUJDlY=@vger.kernel.org, AJvYcCVk2L820ZUIEKlaoKAVJw6YOr9B/924I/mgnBTHztGgSLnQ4xsghjqlASKXh+EZ7vRk6hMA3f5jJ/Qb8ER7Aac=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5lNoMHK65kBZWNCbL5YJxg9ttI3nKlrHoWWw4swS7E+bh9aO7
-	QBTjl/a1pyDsB44UP/kBd52SPbj6Lqu2EgucGjfRGDpApP2+7ayUdRTMFdZWTpUM/WXCPIQcydi
-	xnxs6HiUbkij6/PJ6L8rnEw1XjetE6JAB8y/cvA==
-X-Gm-Gg: ASbGncs0dvEmu9y+b7PJo597bU3UEns1jUb67UVh4rvA2CWSu9zn4yGlK0gk06m9yL5
-	KshS39wm+Gj9SvkiR59ki00lYPzoXYNjzriptZqjXLPjtPS/6rLBXa8HcG+GA1tZZDGja8Z+urn
-	cGp+Q0OtFOokKKh3VejNNXixpwVjkBVUvKoCPR0shKDOr8/1f/WUZH
-X-Google-Smtp-Source: AGHT+IG2h+piPhsMLzie+Qb4k6gsEXqMWr1CS64uv2t5OYlxPm4TG/FZ5e0Ly0kXQFS0Kd6ZCj6OBcJ1VVMTyXYwTDU=
-X-Received: by 2002:a2e:be8e:0:b0:30b:c6fe:4500 with SMTP id
- 38308e7fff4ca-30c97549310mr39187821fa.10.1742322518767; Tue, 18 Mar 2025
- 11:28:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CKZkYIQR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742323020; x=1742582220;
+	bh=Yqjw4oYBMyP+agQT2xlzF7ZEejJZSYZaTAXHjkwEyvo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=CKZkYIQRmel8zrpAeShCHV6LCC0P/elui7Y3GMW/++qszLvbDeng9caIx05kWj5Yr
+	 A+q74S/EgDyd7gCsL3PgS2lV+gjaR5GgZz6GFu0iHzX0H97W3Xk6gBwykbRj+lZP2e
+	 4RPoVYtWFIFkQtnwJqor2fLgX8LmsW15HzHeaNy5oioCZnCsIjy3wdY+mJ8M9HOTlf
+	 ltvqT37p5z/397VQpODCVK9O8k9Lz6I3Mj2SsVpCizqYGGsAweyPZ4sLI9gjceBR4e
+	 PrLQsdrlkfa/SI3rmgAJ4c+2ALZYHsQqFw59/wBwoQDXSCYgU7/Zf3Log2i6I6XYT8
+	 dqjiQhroS3ZuA==
+Date: Tue, 18 Mar 2025 18:36:52 +0000
+To: =?utf-8?Q?Beno=C3=AEt_du_Garreau?= <benoit@dugarreau.fr>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, airlied@gmail.com, acourbot@nvidia.com, jhubbard@nvidia.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] rust: auxiliary: add auxiliary registration
+Message-ID: <D8JLYJIT03KN.25S8FOEO26DOH@proton.me>
+In-Reply-To: <20250317204310.7804-1-benoit@dugarreau.fr>
+References: <20250317204310.7804-1-benoit@dugarreau.fr>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 52341dd8e7b999e11b7fcbcd4b0fa06e7b6ef2d4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com>
- <20250316-vec-set-len-v1-2-60f98a28723f@gmail.com> <D8IGFTJXS2A1.9JBD1UKGN4PX@proton.me>
- <CAJ-ks9=oq+c_pMg41QgGWsj=phWYfntXQgpSrFmz16Vifofn3g@mail.gmail.com>
- <Z9gL5hQWvCNy5XNH@google.com> <Z9gcqHihXLg6kcZb@google.com>
- <CAJ-ks9n=7fqtNr88co-EU7d9Wo1Dz1Wmp0p3K0b8RQE9mjrbHQ@mail.gmail.com>
- <Z9k9I6mp11Z358vz@google.com> <CAJ-ks9kcNvGqGrU1nKjYs_4XPbdxo2cW8Tj9JOGJesGO4StdAw@mail.gmail.com>
- <Z9mGv6ir4c96Of0Q@google.com>
-In-Reply-To: <Z9mGv6ir4c96Of0Q@google.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 18 Mar 2025 14:28:02 -0400
-X-Gm-Features: AQ5f1JrTgymBH_chfQDlNcA_P-PjOrmRzEaI0LnLwR8qZNsy7RFvjRZT6JoB6is
-Message-ID: <CAJ-ks9mHvjPn98mcXh3q18nB5pPH6YBj3jf1YH6510bP-mtFtQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Danilo Krummrich <dakr@kernel.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 18, 2025 at 10:44=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Mon Mar 17, 2025 at 9:42 PM CET, Beno=C3=AEt du Garreau wrote:
+> On Thu, 13 Mar 2025 03:23:52 +0100 Danilo Krummrich <dakr@kernel.org> wro=
+te:
+>> Implement the `auxiliary::Registration` type, which provides an API to
+>> +impl Registration {
+>> +    /// Create and register a new auxiliary device.
+>> +    pub fn new(parent: &device::Device, name: &CStr, id: u32, modname: =
+&CStr) -> Result<Self> {
+>> +        let boxed =3D KBox::new(Opaque::<bindings::auxiliary_device>::z=
+eroed(), GFP_KERNEL)?;
 >
-> On Tue, Mar 18, 2025 at 10:12:28AM -0400, Tamir Duberstein wrote:\
-> >
-> > The methods you're describing are all on Vec, right? In other words,
-> > their usage calls for a private `dec_len` or `set_len`. As I've said
-> > repeatedly in the course of this discussion: I would prefer not to
-> > introduce `dec_len` at all here. It (or `set_len`) can be introduced
-> > in the series that adds truncate or your patch that adds clear, where
-> > its signature can be properly scrutinized in the context of an actual
-> > caller.
->
-> Oh I did not see that you said that. Dropping patch 2 is fine with me.
->
-> Alice
+> You can use `KBox::init(kernel::init::zeroed(), GFP_KERNEL)` here. It avo=
+ids
+> the need for the first patch.
 
-Benno, Danilo: are you both OK with this? I'll discard this patch on
-the respin and prepend the patch adding the len <=3D cap invariant.
+We probably should have the zeroed function on the `Zeroable` trait...
+
+---
+Cheers,
+Benno
+
+
