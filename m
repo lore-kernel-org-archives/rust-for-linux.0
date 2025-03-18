@@ -1,151 +1,142 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B7C1A2C0E
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 14:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F4520C47B;
+	Tue, 18 Mar 2025 14:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742309064; cv=none; b=AKukcf16XFJOoJNsW+7ljoYEza8thcJiJ7EvCA3nnDHbjvHiI8UEHAC/N2P0GGVaH+2IYfI4Qw2cUqd7YhpUbZw1aPuDqCgIKiPiXtoYP9N54zR7B0yFzsjln1o8zyefwfsSfjE/AZiDUIXSWwqefUHxVF+lnuQaWvKcMtgTGnc=
+	t=1742309460; cv=none; b=ONqKOHSg6g/6SLLUlU+eAp3dXyys11vaTYAcazGmoygRZw6OnW2x5rOoi3N82+Ihhu3JjqBEa3sOAO5S6qGCx8W6Gblpc8G4h89WXs4MLzpYzr7XvoL9IQT+XwKd1SAVn8DM11GyxUxddsRvdyQcIPUhkrKDmFf6qZFTZLDTFS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742309064; c=relaxed/simple;
-	bh=fLIyFC84cNuRIkl6BuqtHem66qsH5HFpSzxSSvlHDek=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gPL2S4c4Zkq+a7jXeFHkPm/FKTygHtwdjAu6z2Kax0PUqJg24MYV9Sf2gwW3AiSMu+R5CVJaxG42sU+B65bf6vXXSjydmCIv3SgrAeNbHDcVr81/mdYNA+AZLVoTdumoBr2n/yt12nWQqjv04EspSlGiFwZ25NDpGouGTQLF/yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lq6J+6wY; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1742309460; c=relaxed/simple;
+	bh=AV1Nxik7JBkOIVEYVNlGI3SIY7/qAIdx7hP6IDQ9sHw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SRl+OVte8SUGGPwHWkXPDlpKeb2iWjvrUE4DoaOkxTeXjjFjTezXgajuD2H/PMagzETa5qoA3pzhPZUjRUbknORw2dHT5TYa25NCxwZXM2PJZP9fo707RQljZpiWHgR0baqr9KYIqHoszbFQdD37ioYe2mUsuqYsKz/iIjE9SsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H4oxc0Pv; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lq6J+6wY"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43d0830c3f7so29412725e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 07:44:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H4oxc0Pv"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30bf3f3539dso57204491fa.1;
+        Tue, 18 Mar 2025 07:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742309057; x=1742913857; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VfhIGoNUej7lluGTETydFlNEk1+KiJXUugkQI5WYNmw=;
-        b=lq6J+6wYk0wTEQ98YnBgrYUpdqDRZCnDpxwOtcv5/ATtDlG+3nnrRMXRJIK4s4I7he
-         gFKt2ZU9udRU4Tca5z1dcHUvNsyOQcYd3vdKbPcynCeq19HTbHiOgzcLuZFsquLGsBN5
-         PzRXe/MTk4WcVs2/eeX6sdTb15peLvtf3AIENyRq7x7XeMaZ8brtHOAKGzFE7Y5yhHlf
-         5Mrg30c/xS5CxIyF05vAkOmkFG17TMeCCKf3rMCaMfMCHj2gbIFxBSjSKSM6Bpwl1eet
-         cA8NRYIRb1lajCzyO2QbbsGANEod8aO3JzqVx5iM/yokNY4M+NI5GHZeoRlkXWsvTAEe
-         bZ8Q==
+        d=gmail.com; s=20230601; t=1742309453; x=1742914253; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AV1Nxik7JBkOIVEYVNlGI3SIY7/qAIdx7hP6IDQ9sHw=;
+        b=H4oxc0PvCeDDPsJArDnxVmZV9LI/er2Ez4zQlfQ+13cnk0XCAq6B5b7Usw1GoNraT/
+         GoFSGsMEVCME632Cus2a4lW42GDMNbqqHCX0QHdsZpPJtxoE8qjUYA4HhvenrVzRB0mY
+         AcgcSlNhPkCBpmfpPZmnMPPn24FeBzlFPkOZVMWpbNI4VHrkmxcm19PCbXrjG9/pZS2G
+         I6KX7ifVLYFi0+AaAeVjl8m19ALMKRcat7BVa8G+YByo7nb9psRgvJbrywSd4s2uNKat
+         XLEpmNyJyvgVOGoT6BqHZDmDSfqKZ3xzyliK/Pp6BAO8GnESgwC7C+H/KO9RnAMxfJZ3
+         OMdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742309057; x=1742913857;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VfhIGoNUej7lluGTETydFlNEk1+KiJXUugkQI5WYNmw=;
-        b=LlJRKqKMVFq7r1XA+qT2tO6VREZbiNyAoxNohC4rrhNRc7Lnzhg8rrds/EKnAtFwxn
-         sHMw8wP0NO2mtZYBg3UoORcuY98C8SJwRfrtb/XDTEthecdxsfJisvSw23VuHFQraB3a
-         OEmMxM+/CMgzuYpa8aA/QkBP7KL1MurPWb5OQ5zMFI9q0LOaqVkPRSfoVb34PzTq6o8f
-         FfPADQGW4cXrHleyunlRm1/iLFf2/0cc4u/CFE5z0d1koJYyieKJV6nlMdcwK0ksSuJo
-         8orxIHh9iy2JY7vCAWf5LjBeUzmbp6QyZheoCc6BvxUTzG5BuXrvx9ScARC0uqH94wuf
-         waCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVw+ZJd0CdFV7rybyHnPe7elVsDFdD8D4mxcUwuU4dKq7CZQk6LKIxTxZVjp2Tvy2NZnN+U35KqH8M9rbuDzA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxF2lQvpuzJaxlGdUBXSeIfSK/AWkk9/ctImcr+Y6Faj2o8WLbj
-	/nscreXXQ7YiLswSh98g+j1I8aIzfalV1QbgpzqewYNOdoSnhHJKA85LbbnTk2KifLwkgBBECoG
-	LHEeRNaMQLw0wzQ==
-X-Google-Smtp-Source: AGHT+IFNwcYMuZzCzcsU2UV1EOAK+v46c6jOpysGPV/S/nwnOcf365ojUr1p2lUcWGDAiU0cfSh+OfVPYWtWb74=
-X-Received: from wmbgx14.prod.google.com ([2002:a05:600c:858e:b0:43c:eaf6:525e])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3d85:b0:43c:f6b0:e807 with SMTP id 5b1f17b1804b1-43d3ba30defmr29194635e9.31.1742309056796;
- Tue, 18 Mar 2025 07:44:16 -0700 (PDT)
-Date: Tue, 18 Mar 2025 14:44:15 +0000
-In-Reply-To: <CAJ-ks9kcNvGqGrU1nKjYs_4XPbdxo2cW8Tj9JOGJesGO4StdAw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1742309453; x=1742914253;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AV1Nxik7JBkOIVEYVNlGI3SIY7/qAIdx7hP6IDQ9sHw=;
+        b=uQGl49eggbc4ry7wa/IGCGHqIsgFTQWHm8kUjHtP0ocAhBiy3/UmLRVsFv6260/Ls6
+         tYel5DCPZyuIfbTdypWRh6ZXW/QGruMp90MndYwnmMGBJKjgssvAePhVeCsj8eMiwlZo
+         WNm8V7Gz0rnaEXc2GUEawuL7q+nIM9j/5JlXIBTRN0Fvluh8isFPhcNRG7mspYJlUq97
+         KOuWQUru6fi1RdGquQOmgUmXNO2Jjli/W6Vm5p8cBoTR4TFJCftUWgpqnOnlvoL8BANg
+         0XnkdZxxGqVtk/+qK9iGwGbohJr0AYjXa7jnTMKP9yHTU4gxSMk+0hPwm0x3xDVQGFVl
+         IK0w==
+X-Forwarded-Encrypted: i=1; AJvYcCVMCz1XFXQjmAlTIYeXxMnTY5XsGQJ/0kgvUcO/hN3YDxPSztMafEc7Qlg2RT7TW/D85/ZoVbWnmBJs78IOVAM=@vger.kernel.org, AJvYcCW0cpqSAkeI6OlNpYaLKxGgWLlxSFeIHoq3Zf/u67Sj/gE0HIry3AZ3RCs1YtjpFIe74pxW7hJzXlj5@vger.kernel.org, AJvYcCWZUyQQTMyq3YXKrTqcUUPPf2/Cz4yqamok4EavW42WZ8ywSNV857sXpyey3VtkQTZ+gfEKnuD7LR4=@vger.kernel.org, AJvYcCWbwe/FZqsJKw66wqhBpkNpvr3/OGFJ+vHHmtGyC7NKrVTi1Oj5lHzlF/VAo/LDrISGUd/vp/IGxFHK488K@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0OH0Swj/gS6Bf3lT++KBhVGjiwvYfia6ehKSoZn7vVbz9zZgr
+	62RWeWaqYkOjNpqPInOLFCjCISHrPoEaUFAehQ2FZ7d0MZKtqmRoqZYw6IZFIxrT0OGektSj7NR
+	Qb3EoSfZfMUsEcl6JmESOVAYi/kI=
+X-Gm-Gg: ASbGnctdZE6+EX8fakrifKDZNZpgISbDoKdfvHDSaEwN85875rS5vmpngab+LkDouYH
+	jx5eUv/LOcnkJUj7GbUtrLlK6bXRA9WeM9yzJoNl2IFslj4nAgaUy4+YUjvw/621Gu605ZPaz78
+	SnUmuPawb4DXIr8eeUJIZLXpDojIlhpuspTv5fM5qvBQ==
+X-Google-Smtp-Source: AGHT+IHoYcofaDV167At8gyTlcxgahoKqecaiJRiqZIsUp3WL1jI7jHwfGXN+eAotV8neRNb+frmdsSnmpBQRfzAEi4=
+X-Received: by 2002:a2e:a781:0:b0:30c:12b8:fb97 with SMTP id
+ 38308e7fff4ca-30cd95cdfb0mr22215931fa.11.1742309452463; Tue, 18 Mar 2025
+ 07:50:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250316-vec-set-len-v1-0-60f98a28723f@gmail.com>
- <20250316-vec-set-len-v1-2-60f98a28723f@gmail.com> <D8IGFTJXS2A1.9JBD1UKGN4PX@proton.me>
- <CAJ-ks9=oq+c_pMg41QgGWsj=phWYfntXQgpSrFmz16Vifofn3g@mail.gmail.com>
- <Z9gL5hQWvCNy5XNH@google.com> <Z9gcqHihXLg6kcZb@google.com>
- <CAJ-ks9n=7fqtNr88co-EU7d9Wo1Dz1Wmp0p3K0b8RQE9mjrbHQ@mail.gmail.com>
- <Z9k9I6mp11Z358vz@google.com> <CAJ-ks9kcNvGqGrU1nKjYs_4XPbdxo2cW8Tj9JOGJesGO4StdAw@mail.gmail.com>
-Message-ID: <Z9mGv6ir4c96Of0Q@google.com>
-Subject: Re: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Danilo Krummrich <dakr@kernel.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <PsAMnW6hScU1fLV8ucb6wOkHECGXCrwXeSEfeVs3Hc-zbwrML674jGT8H_XNvWiF6EdymYJZSusanBrtAsZjAg==@protonmail.internalid>
+ <20250107035058.818539-1-alistair@alistair23.me> <878qrm6e2p.fsf@kernel.org>
+ <CAKmqyKO+O6H8+Y2ybz+qiAtgGbLeHMzswo9weWbg0Wc--gEiMA@mail.gmail.com> <CAKmqyKMFAUp0=FzNfhs+r+RfLK0n_Fp7YhUhjY2m=p7wSgFONg@mail.gmail.com>
+In-Reply-To: <CAKmqyKMFAUp0=FzNfhs+r+RfLK0n_Fp7YhUhjY2m=p7wSgFONg@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Tue, 18 Mar 2025 10:50:15 -0400
+X-Gm-Features: AQ5f1Jpsgdw9M0V8e3T4BspLDyv9RIhRJmXxkp78APBJs9vA4fZG8z3nwGNCckY
+Message-ID: <CAJ-ks9mtG+QcGNpSgZ2Wh-wgXtFiJ-7Xrr4-07xe9hxxdRuTSA@mail.gmail.com>
+Subject: Re: [PATCH v5 00/11] rust: bindings: Auto-generate inline static functions
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Alistair Francis <alistair@alistair23.me>, bhelgaas@google.com, 
+	rust-for-linux@vger.kernel.org, lukas@wunner.de, gary@garyguo.net, 
+	akpm@linux-foundation.org, tmgross@umich.edu, boqun.feng@gmail.com, 
+	ojeda@kernel.org, linux-cxl@vger.kernel.org, bjorn3_gh@protonmail.com, 
+	me@kloenk.dev, linux-kernel@vger.kernel.org, aliceryhl@google.com, 
+	alistair.francis@wdc.com, linux-pci@vger.kernel.org, benno.lossin@proton.me, 
+	alex.gaynor@gmail.com, Jonathan.Cameron@huawei.com, wilfred.mallawa@wdc.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 18, 2025 at 10:12:28AM -0400, Tamir Duberstein wrote:
-> On Tue, Mar 18, 2025 at 5:30=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > On Mon, Mar 17, 2025 at 09:53:04AM -0400, Tamir Duberstein wrote:
-> > > On Mon, Mar 17, 2025 at 8:59=E2=80=AFAM Alice Ryhl <aliceryhl@google.=
+On Tue, Mar 18, 2025 at 2:53=E2=80=AFAM Alistair Francis <alistair23@gmail.=
 com> wrote:
-> > > >
-> > > > On Mon, Mar 17, 2025 at 11:47:50AM +0000, Alice Ryhl wrote:
-> > > > > On Mon, Mar 17, 2025 at 07:34:44AM -0400, Tamir Duberstein wrote:
-> > > > > > On Mon, Mar 17, 2025 at 6:04=E2=80=AFAM Benno Lossin <benno.los=
-sin@proton.me> wrote:
-> > > > > > >
-> > > > > > > On Sun Mar 16, 2025 at 11:32 PM CET, Tamir Duberstein wrote:
-> > > > > > > > Add `Vec::dec_len` that reduces the length of the receiver.=
- This method
-> > > > > > > > is intended to be used from methods that remove elements fr=
-om `Vec` such
-> > > > > > > > as `truncate`, `pop`, `remove`, and others. This method is =
-intentionally
-> > > > > > > > not `pub`.
-> > > > > > >
-> > > > > > > I think it should be `pub`. Otherwise we're loosing functiona=
-lity
-> > > > > > > compared to now. If one decides to give the raw pointer to so=
-me C API
-> > > > > > > that takes ownership of the pointer, then I want them to be a=
-ble to call
-> > > > > > > `dec_len` manually.
-> > > > > >
-> > > > > > This is premature. It is trivial to make this function pub when=
- the need arises.
-> > > > >
-> > > > > Normally I'd agree with Benno, but in this case I think having it
-> > > > > private is preferable. The function is safe, so it's too easy for
-> > > > > end-users to confuse it with truncate.
-> > > >
-> > > > Thinking more about this ... I think we should have `set_len` and
-> > > > `inc_len` instead. That way, both methods are unsafe so people will=
- not
-> > > > accidentally use `set_len` when they meant to use `truncate`.
-> > > >
-> > > > Alice
+>
+> On Tue, Jan 14, 2025 at 4:02=E2=80=AFPM Alistair Francis <alistair23@gmai=
+l.com> wrote:
+> >
+> > On Tue, Jan 7, 2025 at 9:48=E2=80=AFPM Andreas Hindborg <a.hindborg@ker=
+nel.org> wrote:
 > > >
-> > > Isn't it fine to keep this function unsafe given that it can break
-> > > invariants in its current form? As expressed earlier, I would prefer
-> > > not to make it safe by using saturating_sub.
+> > > Thanks! Since Gary just sent v2 of the LTO patch [1], could you rebas=
+e
+> > > on that and list it as a dependency? If you are using b4 there is a n=
+ice
 > >
-> > I guess that's okay. But I would think that with the exception of
-> > `Vec::pop`, the interface you want for Vec methods that decrease the
-> > length is set_len, not dec_len. That is the case for clear, truncate,
-> > and drain.
+> > I can't get Gary's series to apply on rust-next (it does apply on
+> > master though).
 > >
-> > Even for the Vec methods that actually use
+> > I might just wait until Gary's series gets picked up to rust-next as
+> > there is already a lot of manual rebasing going on and my series
+> > currently applies on rust-next.
 > >
-> >         set_len(original_len - removed_cnt)
+> > Unfortunately there are just constant conflicts as the number of
+> > manual C helpers are continually growing.
 > >
-> > they make this call after having previously called set_len(0).
->=20
-> The methods you're describing are all on Vec, right? In other words,
-> their usage calls for a private `dec_len` or `set_len`. As I've said
-> repeatedly in the course of this discussion: I would prefer not to
-> introduce `dec_len` at all here. It (or `set_len`) can be introduced
-> in the series that adds truncate or your patch that adds clear, where
-> its signature can be properly scrutinized in the context of an actual
-> caller.
+> > Obviously when/if this series is approved I can do a final rebase, I
+> > would just like to avoid unnecessary churn in the meantime
+>
+> Any more thoughts on this?
 
-Oh I did not see that you said that. Dropping patch 2 is fine with me.
+Hi Alistair,
 
-Alice
+I can't speak for Gary as I don't know what his plans are for that LTO
+series, but I did review that series and this one, and at first glance
+the two seem orthogonal. The goal of Gary's series is to LTO C helpers
+into Rust, while the goal of this series is to machine-generate those
+helpers. Do I have that right?
+
+If yes, I think it's important to think about how the two fit
+together, at least conceptually. Mechanically I think there's an issue
+with this trick:
+
+#ifdef __BINDGEN__
+#define __rust_helper
+#else
+#define __rust_helper inline
+#endif
+
+which the LTO series uses to generate Rust stubs for these functions
+while also keeping them marked inline in LLVM IR/bitcode.
+
+That said, I see some discussion of cross-language LTO in "How to
+handle static inline functions" [1], so maybe there's another way that
+makes more sense in light of this series.
+
+Updating the cover letter to elucidate these details is where I'd
+suggest you start.
+
+Cheers.
+Tamir
+
+[1] https://github.com/rust-lang/rust-bindgen/discussions/2405
