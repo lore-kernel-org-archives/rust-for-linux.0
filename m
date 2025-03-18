@@ -1,139 +1,116 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DA41A264A;
-	Tue, 18 Mar 2025 19:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742325849; cv=pass; b=fOLLSLbhoMuTJfRGMV43VgUG5+cgbAn/wrJb7zB17ECWlpaIoIGp9DCrn8bEF8IqIBujcTrK7LterxrNzSi+j6aBZVxMRF4vwnxa59p/AN/sTR33RWsP2LRh+bespx7IjGYSXt4R2oKvtdq+s4/gC7DdgXQmmqqIz+4ayHZUD3g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742325849; c=relaxed/simple;
-	bh=FQEeIYlXqXUu0AIkMdzQBBWAMtn9hMMGYmCC3qrTfko=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ILn5d8QJ/szJdiAJrngIBzCRuPhesUnXofPjid/3S/bVqtE121W44XFDdagZQuAFYuJv8J/WYCsn+aiSpMTTCV9uuCDVEZbFILKh3EXwMqIcgyGmWOFZhMe9ss2uPuVQX5J9u326xWKylc4zvMNW6jZS+pfxniNJv8ruL7sVuwc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=WmQWxGoW; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C80154425;
+	Tue, 18 Mar 2025 19:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742326020; cv=none; b=dm0iywDtwjadtm4r+7lP8Xtk8j4SpqruuzsuvDZfz0mqDS+f3PVgu5EEJWJomquWTZhu1HKLOmOIbKZHbu5wE68V2nwOhU0/kqaS3XQVyc+J5eJzh8p+o7zbaKUqPfKyQ1QhB72U3dt3uh4qRqbsaJKUSPjtfnmqLwxehyzlSPg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742326020; c=relaxed/simple;
+	bh=HcpPBMONhitl56bp5F0RR7mimHNgclhIc79by5IL1Zo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hhczIR3XAoHtkbApUZ1+vYFKqWIfJFyp46KZrYW3n8KPonoFSQgmVxzxVMhEjzTvmw/1U+TwqVArmsKhpYB26D4PgWs23dOGsKKNciu7I3Cns2MDMTQ+DGzrueIetOzcoBM94/2BREtVUqwndLXBbfRbhy4vKWUdOr6W1sJ3h6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iuyui4pT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="WmQWxGoW"
-ARC-Seal: i=1; a=rsa-sha256; t=1742325811; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Vx5MJl4hUvJH91lbjym/2lADGGJD2jYtwKDZ465CsMw4d9Bxta67gNDnAweZ8s4j8CA8ZBDc4/uTYKfSXl8BazdZhC0nNHufnloDsIKzlexo9VeJAIuPVxHgqYDmw4lxqJRQyD5EoNyAFgo4EnRCp56QzyI6wS1b/LS9w8OCuis=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1742325811; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=HfYRoG5Q5EHI6+e63eFq0AZL9BjmOXOU/I+lIAD4KZI=; 
-	b=nq9N0vAqTtfkDrzV+6WGQaaHsBrl4g3L66VfEnT+PAK+FvuZTASNVfOnrc3OTh88zsD+d+Jg5nPetTdbktHJVjY8GTHfZK9fb7mXxCDVqXN6Q4Rg7SGsvdfVYMUVAUtLwc4QEkO7t/Cwf/RgA9iDh/mgkrWWcWuGMW65uSN80iY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742325811;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=HfYRoG5Q5EHI6+e63eFq0AZL9BjmOXOU/I+lIAD4KZI=;
-	b=WmQWxGoWdDH2xYTAw/hy191MJRCZTKLTqESfnsjq1GDTHjBy9A8eVICg5pqw4qTZ
-	NA3e5R3AyJXgz/0yOPaWsdrJeHUi0i3UR3tOLj5Q1v2rfyNVQbfXwizUdp3YM+8eqeS
-	PBT6Vy/O2ss0FNSAJTMBNqvogl+22h0q581cxjhs=
-Received: by mx.zohomail.com with SMTPS id 1742325808686508.48664192225283;
-	Tue, 18 Mar 2025 12:23:28 -0700 (PDT)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Tue, 18 Mar 2025 16:22:40 -0300
-Subject: [PATCH 6/7] rust: drm: gem: Add set_exportable() method
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iuyui4pT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCBBC4CEDD;
+	Tue, 18 Mar 2025 19:26:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742326019;
+	bh=HcpPBMONhitl56bp5F0RR7mimHNgclhIc79by5IL1Zo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iuyui4pTNA/21jsSGNTak1MaoYLoVi1v4NdO5dYebSyCAfi7lMavoMKFTOx0lisBP
+	 kh3WQei9qMDXBnhU2aw6KgJOM0qwd3v+W3MK/GgVI4OAqQc6LkXaUH3a56te3NgCGE
+	 Kj4clbZ6HzRz57KkyFuQ4JHTvCOoc+C0bvsmANwbFxltY/E8UOMYvWJjhcLtPoIFHr
+	 vUJ1t1/8vkre6WBCGmtPz/jL3DjZNDEwJouWbHc5d15j3cn18uQaVnX/DjWEXjvdfz
+	 MqApemIgwO/FXSI4xpvNLioLhYdxk4T8OMsUvgD0EzPAMjrvr9CGvfEtVdPFUCtmnt
+	 GjaSCFc3HnC1Q==
+Date: Tue, 18 Mar 2025 20:26:54 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
+Message-ID: <Z9nI_kM6LPELbodm@cassiopeiae>
+References: <CAJ-ks9=oq+c_pMg41QgGWsj=phWYfntXQgpSrFmz16Vifofn3g@mail.gmail.com>
+ <Z9gL5hQWvCNy5XNH@google.com>
+ <Z9gcqHihXLg6kcZb@google.com>
+ <CAJ-ks9n=7fqtNr88co-EU7d9Wo1Dz1Wmp0p3K0b8RQE9mjrbHQ@mail.gmail.com>
+ <Z9k9I6mp11Z358vz@google.com>
+ <CAJ-ks9kcNvGqGrU1nKjYs_4XPbdxo2cW8Tj9JOGJesGO4StdAw@mail.gmail.com>
+ <Z9mGv6ir4c96Of0Q@google.com>
+ <CAJ-ks9mHvjPn98mcXh3q18nB5pPH6YBj3jf1YH6510bP-mtFtQ@mail.gmail.com>
+ <Z9m_mfg5b0XE_HCF@cassiopeiae>
+ <CAJ-ks9=YSN8VRUW6VTfThkN8uh42rbq9pBwvrG=EuW2wpuXx5A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250318-drm-gem-shmem-v1-6-64b96511a84f@collabora.com>
-References: <20250318-drm-gem-shmem-v1-0-64b96511a84f@collabora.com>
-In-Reply-To: <20250318-drm-gem-shmem-v1-0-64b96511a84f@collabora.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-media@vger.kernel.org, 
- linaro-mm-sig@lists.linaro.org, Danilo Krummrich <dakr@kernel.org>, 
- Asahi Lina <lina@asahilina.net>, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ-ks9=YSN8VRUW6VTfThkN8uh42rbq9pBwvrG=EuW2wpuXx5A@mail.gmail.com>
 
-From: Asahi Lina <lina@asahilina.net>
+On Tue, Mar 18, 2025 at 02:53:48PM -0400, Tamir Duberstein wrote:
+> On Tue, Mar 18, 2025 at 2:46 PM Danilo Krummrich <dakr@kernel.org> wrote:
+> >
+> > On Tue, Mar 18, 2025 at 02:28:02PM -0400, Tamir Duberstein wrote:
+> > > On Tue, Mar 18, 2025 at 10:44 AM Alice Ryhl <aliceryhl@google.com> wrote:
+> > > >
+> > > > On Tue, Mar 18, 2025 at 10:12:28AM -0400, Tamir Duberstein wrote:\
+> > > > >
+> > > > > The methods you're describing are all on Vec, right? In other words,
+> > > > > their usage calls for a private `dec_len` or `set_len`. As I've said
+> > > > > repeatedly in the course of this discussion: I would prefer not to
+> > > > > introduce `dec_len` at all here. It (or `set_len`) can be introduced
+> > > > > in the series that adds truncate or your patch that adds clear, where
+> > > > > its signature can be properly scrutinized in the context of an actual
+> > > > > caller.
+> > > >
+> > > > Oh I did not see that you said that. Dropping patch 2 is fine with me.
+> > > >
+> > > > Alice
+> > >
+> > > Benno, Danilo: are you both OK with this? I'll discard this patch on
+> > > the respin and prepend the patch adding the len <= cap invariant.
+> >
+> > I mean, the whole reason to switch set_len() to inc_len() and have a separate
+> > dec_len() was to properly cover things like [1] and Alice' patch by having
+> > dec_len() return the abandoned entries.
+> >
+> > If we now only switch set_len() to inc_len() and drop dec_len() then what should
+> > Andrew do?
+> 
+> I'd be completely fine with Andrew (or Alice) taking this patch into
+> the truncate/resize series[1] (or the series that introduces clear
+> [2]). It can be properly reviewed there in context.
 
-This allows drivers to control whether a given GEM object is allowed to
-be exported via PRIME to other drivers.
+Sorry, I'm not willing to make this Andrew's responsibility; set_len() worked
+for his patches before.
 
-Signed-off-by: Asahi Lina <lina@asahilina.net>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/kernel/drm/gem/mod.rs   | 13 +++++++++++++
- rust/kernel/drm/gem/shmem.rs |  4 ++++
- 2 files changed, 17 insertions(+)
+If you're uncomfortable implementing your proposal without the existence of
+truncate(), please rebase onto Andrew's patches.
 
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 083faac8602885aee5ef213bb3302b79dfac4a95..3a7e9f80b414bf39301e342938ba33877bfac2cb 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -45,6 +45,10 @@ pub trait IntoGEMObject: Sized + crate::private::Sealed {
-     /// this owning object is valid.
-     fn gem_obj(&self) -> &bindings::drm_gem_object;
- 
-+    /// Returns a reference to the raw `drm_gem_object` structure, which must be valid as long as
-+    /// this owning object is valid.
-+    fn mut_gem_obj(&mut self) -> &mut bindings::drm_gem_object;
-+
-     /// Converts a pointer to a `drm_gem_object` into a pointer to this type.
-     fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self;
- }
-@@ -119,6 +123,10 @@ fn gem_obj(&self) -> &bindings::drm_gem_object {
-         &self.obj
-     }
- 
-+    fn mut_gem_obj(&mut self) -> &mut bindings::drm_gem_object {
-+        &mut self.obj
-+    }
-+
-     fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Object<T> {
-         // SAFETY: All of our objects are Object<T>.
-         unsafe { crate::container_of!(obj, Object<T>, obj) as *mut Object<T> }
-@@ -132,6 +140,11 @@ fn size(&self) -> usize {
-         self.gem_obj().size
-     }
- 
-+    /// Sets the exportable flag, which controls whether the object can be exported via PRIME.
-+    fn set_exportable(&mut self, exportable: bool) {
-+        self.mut_gem_obj().exportable = exportable;
-+    }
-+
-     /// Creates a new reference to the object.
-     fn reference(&self) -> ObjectRef<Self> {
-         // SAFETY: Having a reference to an Object implies holding a GEM reference
-diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-index cd080d820727fb39cb91cb0617df39310b5b68c8..fdf7dd7f2408bd2857f5b72027ef48e29c9dd9e3 100644
---- a/rust/kernel/drm/gem/shmem.rs
-+++ b/rust/kernel/drm/gem/shmem.rs
-@@ -261,6 +261,10 @@ fn gem_obj(&self) -> &bindings::drm_gem_object {
-         &self.obj.base
-     }
- 
-+    fn mut_gem_obj(&mut self) -> &mut bindings::drm_gem_object {
-+        &mut self.obj.base
-+    }
-+
-     fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Object<T> {
-         // SAFETY: The invariant guarantees this is correct.
-         unsafe {
+I think Alice' patch can also go on top of that, since it should just be
+truncate(0).
 
--- 
-2.48.1
-
+> 
+> > Maybe we should just revert to Tamir's first proposal, i.e. keep set_len() as it
+> > is, but make it return the abandoned entries, if any.
+> 
+> This wouldn't be my preference.
+> 
+> > [1] https://lore.kernel.org/rust-for-linux/20250316111644.154602-1-andrewjballance@gmail.com/
+> 
+> [2] https://lore.kernel.org/all/20250311-iov-iter-v1-4-f6c9134ea824@google.com/
