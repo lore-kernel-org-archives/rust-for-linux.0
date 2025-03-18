@@ -1,54 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDAE1AA782;
-	Tue, 18 Mar 2025 11:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FFF1FCF47;
+	Tue, 18 Mar 2025 11:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742296497; cv=none; b=ZSY4jOidKC9/iyL0f864LIS58naHNn6egT78pdQwuXWHW4qGCtKAnkYQPZCp0vDmpFQkwxBsWWqd10xbXaEzQFr7SagAC4Ehzbqewoxoomo+HLPXeDozHJILJlLupAkQsdTdI8heM+hqfLqUH4nkDTDXUEdGuhCRgXr1PDgLK4Y=
+	t=1742297744; cv=none; b=tUcBU4LcOeg5DHHxTVwPTTSTdgvs1u1kcNWfutUfTAVtR+9CgJI3VKW1L9MeVCbslpwlvEwqRg1PLHIyjMTrUwXUXUOla6N/rfCk7FFygn6l0JcgV7+wRtopIbsE5sH8vn6IRBT0rQR8HTAA5DceFXNLZGjygcBMOuIFbsqVY+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742296497; c=relaxed/simple;
-	bh=+MiiFhVlLVukSIit4S7AngH5+5niKoWoQChrZCrVrJg=;
+	s=arc-20240116; t=1742297744; c=relaxed/simple;
+	bh=xTvaV7861qose7rV8ILOMVV+gKbgSpHjdUOLPhFRjmQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=gdXQ6xqjRAbUMbWeqXbfKW8d93ts3xgNnTiLFjwC0xW5vFUxqCGG3tMUvk0uy+hPMAvIWeNJu/Y50qGCetURItkN5slj0+YdGYu8hbLNFzQhJoiIooS64G4hYnwdx9rT08agGky6krrw0kbmLrxBScXNEuz6GXn91i3H2zDwXOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d67jbRuw; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=YiINgGGi7aznOOxxbww3ZqSf0GtyJ+xTxTN9ire/gOWE/BPqPGdmsc0TQlmwQh046yDK08cmg3ZIKv0XAWmMGEdLHgX10wYbOmQP2r21zHNZPA/lT6iqZ3kalz4kW0Ge5edX4vRXFAXO+w3JBfthCjl+ZVNKY6QLcsFQgE2ZORw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ek4uqRWj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d67jbRuw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EA5C4CEEF;
-	Tue, 18 Mar 2025 11:14:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ek4uqRWj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4005C4CEDD;
+	Tue, 18 Mar 2025 11:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742296496;
-	bh=+MiiFhVlLVukSIit4S7AngH5+5niKoWoQChrZCrVrJg=;
+	s=k20201202; t=1742297744;
+	bh=xTvaV7861qose7rV8ILOMVV+gKbgSpHjdUOLPhFRjmQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=d67jbRuwYF2kpaS3Ajz3E5MA2uiiVL4TSwSIY7d5g4ZHsxZw9bWjWy9HwFbHWwe8p
-	 VK/vBex0ux3WXnsU/T/iEI6ammT9DCmyV5BiO/68et5151kV4dT8v5NBd2K2jURbK5
-	 5jYND//2PhftROAmsGkFwb/sgJTsojfZQrkyaIF3b1Zb9pWVZJ1uqjQrZcFdkbsR3f
-	 j0kYb61L/QQQkv2w3n7RIRLrbUuszr8ABwh97DKqLf+yk+mUpGnhsyurVbbGI5GZWs
-	 bvUkhBDk6NfcA/w46T48IXOdMi7RJAMWhjs8seEYdSCTRe6XH+pyIPP9dzighXp5Kp
-	 SeVTXVr3T2+zA==
+	b=ek4uqRWj+JqDiu/kFIPPtB4rUOzeASkYl2c7Ohy5h+eruoCUFKtX/FbzC3UinF1BK
+	 dN6Cb29ju8+tQc9LI5hlkr8UgV5lqeUKQA0Sife/xDSMBe1IPP6ox0XfjDYRBIOdyi
+	 eqMFatldtRwxI8WAT4YHhUewL6fWz3kFKDJfzw17HBwg/ZKGMx7yQ1givcg8yajR2u
+	 Ewa65bzmlEsbB7TrlrhDyOj66DhbwIrA02Nz8yKHC+On+J9wxlIf3+Ti3GlQJDihA/
+	 je1UgAZjmiofirLLheVcWrwjZi+GXKylfqV3xNpZimfqWu3AVhfWaezMNycd2MQymA
+	 4DRyAIVIokblA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Joel Becker" <jlbec@evilplan.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,
-	"Alex Gaynor" <alex.gaynor@gmail.com>,
-	"Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-	=?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	"Benno Lossin" <benno.lossin@proton.me>,
-	"Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-	"Danilo Krummrich" <dakr@kernel.org>,
-	"Peter Zijlstra" <peterz@infradead.org>,
-	"Ingo Molnar" <mingo@redhat.com>,  "Will Deacon" <will@kernel.org>,
-	"Waiman Long" <longman@redhat.com>,  "Fiona Behrens" <me@kloenk.dev>,
-	"Charalampos Mitrodimas" <charmitro@posteo.net>,
-	"Daniel Almeida" <daniel.almeida@collabora.com>,
-	<rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 0/4] rust: configfs abstractions
-In-Reply-To: <20250227-configfs-v5-0-c40e8dc3b9cd@kernel.org> (Andreas
-	Hindborg's message of "Thu, 27 Feb 2025 13:35:09 +0100")
-References: <41ZevHqZJoE8_8iyJejt99BGZVDfljWV3ycSSRkSxqBOEz-876GX03-R0Ca2z0SsGNhE4mIIV-6EegJL3ETAVw==@protonmail.internalid>
-	<20250227-configfs-v5-0-c40e8dc3b9cd@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,  "Fiona
+ Behrens" <me@kloenk.dev>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 04/22] rust: pin-init: move proc-macro documentation
+ into pin-init crate
+In-Reply-To: <20250308110339.2997091-5-benno.lossin@proton.me> (Benno Lossin's
+	message of "Sat, 08 Mar 2025 11:04:10 +0000")
+References: <20250308110339.2997091-1-benno.lossin@proton.me>
+	<MV3Dd6cjj9PCMrZhszmwYsMgAsXCTrIAa3Fr6rSkDd33d_Db4Myl-3TTnbpfp6pQXoG-3q3mXam8wY614QYYcQ==@protonmail.internalid>
+	<20250308110339.2997091-5-benno.lossin@proton.me>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 18 Mar 2025 12:14:36 +0100
-Message-ID: <87tt7qlher.fsf@kernel.org>
+Date: Tue, 18 Mar 2025 12:33:38 +0100
+Message-ID: <87iko6lgj1.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,41 +53,21 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Hi Joel,
+"Benno Lossin" <benno.lossin@proton.me> writes:
 
-"Andreas Hindborg" <a.hindborg@kernel.org> writes:
+> Move the documentation of proc-macros from pin-init-internal into
+> pin-init. This is because documentation can only reference types from
+> dependencies and pin-init-internal cannot have pin-init as a dependency,
+> as that would be cyclic.
+>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> Add a safe Rust API that allows Rust modules to interface the `configfs`
-> machinery.
->
-> Add an example for the samples folder to demonstrate usage of the API.
->
-> Add a maintainer entry for the Rust configfs abstractions in the last patch, to
-> make it absolutely clear that I will commit to maintain these abstractions, if
-> required.
->
-> The series is a dependency of `rnull`, the Rust null block driver.
-> Please see [1] for initial `configfs` support in `rnull`.
->
-> [1] https://github.com/metaspace/linux/tree/9ac53130f5fb05b9b3074fa261b445b8fde547dd/drivers/block/rnull
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-Since you are not responding to my emails, I must assume that either you
-did not see them, you are too busy to respond, or you are ignoring them.
-
-Please note that if the lack of response is due to you being busy, my
-offer to help out with C configfs still stands [1].
-
-If I do not hear anything back from you, I will have to ask for these
-patches to be routed through the rust subsystem tree instead of the
-configfs tree.
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
 
 Best regards,
 Andreas Hindborg
 
-
-
-[1] https://lore.kernel.org/all/87cyf3p6sj.fsf@kernel.org/
 
