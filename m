@@ -1,93 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD98A1EB5DB;
-	Tue, 18 Mar 2025 20:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53C41E1DE6;
+	Tue, 18 Mar 2025 21:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742331487; cv=none; b=eNE+Cc4Qz4Ec8WK9daCeLt6dlsXQScFCSv8Gm9SBgB9+t3zPaVlntaWhPsgEdjTLqQpwHgqhzkjmVDnXuOnVXtcx2kUT1F0d4y4VL+GBIYAF1tPB3NpCB1ACASxo8Vrr3C+K62lFT0IKHCVjhCZSppZkNSpGrBkYr3xvgcb40d4=
+	t=1742333388; cv=none; b=us8An0Cfk9kmtlcXmN9Txep3oyOVXkigw1RJ1VAteZI5XAKH7D1km9Hg1SlMGIxMRbsm94nC4kWB4ODO8UUfHzOesMu7tVn2ljkCbUukTCrfhtHzZzvo7meEmpQ2XgNvmDub37SqHnilWDPZVk7XXX5Ai1zV1zC79aGsIdWTYQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742331487; c=relaxed/simple;
-	bh=ORRl4Dl4BSdzJ8z4aLQ+6a+8EPxPXXkMtuRU3T9FXoQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CstCS6G3Viq1UBE+3SM64NQZ34muozLaMuylQoqwPA6j8tFcQqHTR6Iwpp5E2BoRYmZOf4EWEhWvXuQrXV6iqiYqoUla/fDFeLVnG5BSOvMbgu8Gj5i+iVvh754QFhiBpFBq/DI7FDpIe7LM+FtllHgskrBh9MFE6exTqQmG/M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHWT0pV1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742333388; c=relaxed/simple;
+	bh=R16CywZRjvAboLmxAjjnPLISPIrgvVdrl/sH5S8m/3k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X95nGnxDoHqlu0ySqPOXG60EP129BnRY9lXL7QRu7BsKN69J96veLAva43+LXR/Yi5/aeFylEhFdUf+XhX1nrTAE+wvHd+vLgkIN8JaEXTI1pfHAsuQEgrfmmbExRb2Tsr4+zjUzAP7cr1VbTIxLjjO6dEhVucbO0I/d0Sy3R3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SvN9y32h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHWT0pV1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3555C4CEDD;
-	Tue, 18 Mar 2025 20:58:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SvN9y32h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB6DC4CEDD;
+	Tue, 18 Mar 2025 21:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742331487;
-	bh=ORRl4Dl4BSdzJ8z4aLQ+6a+8EPxPXXkMtuRU3T9FXoQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FHWT0pV1hxbhwQSVgiqIrL2yA/fcDULD3ato3WE0QPD5C33P7E6wws0Iq9gbWSToh
-	 JywAUv+3WK1CKX1u/Fe0AVUMr3IGuKt0adRb/e/LbmCMLaSJkf49R/3LAZvJU0/y7o
-	 5s6VlLM+U4yE3iHcLxtVdgQqJqlpIJgZHVS1yBc1ZDn1/6BNejsnYEdIIr3jI4hHU9
-	 ZowG3jRsd+Vud3ahdKSfCAzddPiae37J8WK8MpXCC5bGyqgDwNlx7FbX3OOkE0YmLa
-	 cgehDGtiOQHIEZNol72UZ9Vm9w7IEBmcQBF04KRINcyuTnh6HpUEIXLq1Vj0RPOzvV
-	 EVPD1Tz0pb3xQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Alexander Viro"
- <viro@zeniv.linux.org.uk>,  "Arnd Bergmann" <arnd@arndb.de>,  "Miguel
- Ojeda" <ojeda@kernel.org>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary
- Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  "Benno Lossin" <benno.lossin@proton.me>,  "Trevor Gross"
- <tmgross@umich.edu>,  "Danilo Krummrich" <dakr@kernel.org>,  "Matthew
- Maurer" <mmaurer@google.com>,  "Lee Jones" <lee@kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 0/5] Rust support for `struct iov_iter`
-In-Reply-To: <2025031140-saffron-kilobyte-bd2e@gregkh> (Greg Kroah-Hartman's
-	message of "Tue, 11 Mar 2025 15:37:56 +0100")
-References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
-	<9pOFLtAJ1ScEHfLe7L2KqghIKBzL8sTupJttIVRB70ZmvdUpiEYrxCxIpJD_cBJVwv-TKxosDL-l6cq3qt563Q==@protonmail.internalid>
-	<2025031140-saffron-kilobyte-bd2e@gregkh>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 18 Mar 2025 21:57:55 +0100
-Message-ID: <878qp2hx9o.fsf@kernel.org>
+	s=k20201202; t=1742333388;
+	bh=R16CywZRjvAboLmxAjjnPLISPIrgvVdrl/sH5S8m/3k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SvN9y32hBoG0jdPjlh9rzEmMT8Wb2kFvyaT8nXgf/lXMqRo4YTmEhytIp+tYMxpf6
+	 fH98FMa4UzQAUflFf1s2Q3IP6bzSe1XyCmDaC9i9hxBcoGXmmioFBlX+PPdE7N7tJ1
+	 /p/qVGifTboDSeAjNp+0Zyqv2PLqr3q/mbscLfsUOl/Nq792n7QfM9mF3PkGT0ZmYk
+	 uJNX1EK+sxoikDSq1qBFGzDc92ALXsUPlpY6ABYlbAe8V4wnJjtKzQoMNQCtyxMHjN
+	 cP5jilMOD14Y1rh9Uqn0qYYsuByRf74/Gb3r50ZCd+p5qTx17RVZY2GRn3uRX00Iel
+	 3jvK+im0u7jMw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: bhelgaas@google.com,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Cc: linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 1/2] rust: pci: impl Send + Sync for pci::Device
+Date: Tue, 18 Mar 2025 22:29:21 +0100
+Message-ID: <20250318212940.137577-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Greg Kroah-Hartman" <gregkh@linuxfoundation.org> writes:
+Commit 7b948a2af6b5 ("rust: pci: fix unrestricted &mut pci::Device")
+changed the definition of pci::Device and discarded the implicitly
+derived Send and Sync traits.
 
-> On Tue, Mar 11, 2025 at 02:25:11PM +0000, Alice Ryhl wrote:
->> This series adds support for the `struct iov_iter` type. This type
->> represents an IO buffer for reading or writing, and can be configured
->> for either direction of communication.
->>
->> In Rust, we define separate types for reading and writing. This will
->> ensure that you cannot mix them up and e.g. call copy_from_iter in a
->> read_iter syscall.
->>
->> To use the new abstractions, miscdevices are given new methods read_iter
->> and write_iter that can be used to implement the read/write syscalls on
->> a miscdevice. The miscdevice sample is updated to provide read/write
->> operations.
->
-> Nice, this is good to have, but what's the odds of tieing in the
-> "untrusted buffer" logic here so that all misc drivers HAVE to properly
-> validate the data sent to them before they can touch it:
-> 	https://lore.kernel.org/r/20240925205244.873020-1-benno.lossin@proton.me
->
-> I'd like to force drivers to do this, otherwise it's just going to force
-> us to audit all paths from userspace->kernel that happen.
->
+This isn't required by upstream code yet, and hence did not cause any
+issues. However, it is relied on by upcoming drivers, hence add it back
+in.
 
-I think that for user backed iterators (`user_backed_iter(iter) != 0`)
-we will have the same problems as discussed in [1]. To validate, we
-would have to copy the data to another buffer and then validate it
-there, in a race free place. But the copying is apparently a problem.
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/kernel/pci.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 0ac6cef74f81..0d09ae34a64d 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -465,3 +465,10 @@ fn as_ref(&self) -> &device::Device {
+         unsafe { device::Device::as_ref(dev) }
+     }
+ }
++
++// SAFETY: A `Device` is always reference-counted and can be released from any thread.
++unsafe impl Send for Device {}
++
++// SAFETY: `Device` can be shared among threads because all methods of `Device`
++// (i.e. `Device<Normal>) are thread safe.
++unsafe impl Sync for Device {}
 
-Best regards,
-Andreas Hindborg
-
-
-[1] https://lore.kernel.org/all/ab8fd525-9a63-46e2-a443-b9d94eed6004@ralfj.de/
+base-commit: 4d320e30ee04c25c660eca2bb33e846ebb71a79a
+-- 
+2.48.1
 
