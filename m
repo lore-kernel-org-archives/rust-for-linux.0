@@ -1,88 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D555B3FC2;
-	Tue, 18 Mar 2025 11:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CB620C033
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 12:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742298790; cv=none; b=Y8CM6U8ANrMzNLy/ilDfACeTuA06NgYtGkNUxTgPFPLcwooq+Ofp5eTEsYUIr0zZNWMWgqem3+4yUagDcWfs30n2sMSnvmgf3XToXKlYOWPoInzQX/Qjp8x5E+uPEKcwUrhwDKRHgOHzzl6KezC43a3PCJrGckqIoNq3yp8NhaM=
+	t=1742300966; cv=none; b=a6SS/kFEkyWPvZ8VEVR0/dfQmGZocExF+IbsMbnvRAcaG1+lipSCZ4l0Bs4Yof+dp0JhBCNaKQdXNZaDfXs0b114FpwHsdjYUuCjQ6WlIpvQBDnNbHFMCoK34uDTwHStqGg7LGf6jrYc0NnLI1aD08TuRnLEXZ1FKJqEHrlaUo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742298790; c=relaxed/simple;
-	bh=gRmHonTx+tXy1+AP4ILZnp3ZnyyajmJA8Y5guRqzNFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eoRGpOClioC1xFmUMZShzwt6scSRxQKd7geDgXJ7e2mgAh8+UsnPISQyA4/H28SmwgHPSQYXA7IY6uRiw6SkKKw3keY30XjYLW+uCnNe2MS/YV9+45lTl1J+EjqDXM93m6CFqXnNDu6XT4o8ty3pXKclKjRi6QbzyPbl7jx87O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XNXw2L1Y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742300966; c=relaxed/simple;
+	bh=uZRIezSswVRQdoQoNwW4Q2XSahT1LKLGtDiBt3hrg0o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=IETLENoE102kWmGsoRsCQAc1jRWVPokTauetGf2h+EII0Dbc0213gFbEOxom/67veeyBmH6n+R/9mjhmyFFl92zxgShUQsspY5YRb0WEu+6EJRjJD+fSVDv0IQoupefrsD3QbOtpEeofZYGnvJ+G04pXVDFRjFb+lXPbe/LcuR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zrZ7WPLp; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XNXw2L1Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD02C4CEDD;
-	Tue, 18 Mar 2025 11:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742298790;
-	bh=gRmHonTx+tXy1+AP4ILZnp3ZnyyajmJA8Y5guRqzNFI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XNXw2L1Y1fdh/nn4aLtHxDFTU8pGYPXyfTAh4aGqj+oejyzSBabAmXHU8SbXGUUjf
-	 wWtXj4puZzFqW0WKxgShTVOHAVkQuu2uChoAgu9rMemhhJhmurWI3qUImGjB7M6b3H
-	 8Io8P7HtgI9ODZM07yQ2Oq+1HWgl1hJ3UXVCxav/c71kJ1/J4LicZKllnw60fjaboX
-	 2tLNsEeDTUrYQ7qRNKTJ9KV21nKgd8aHg1du7geUUmqYMJbbj/9K58aWxKJqvfSJKa
-	 UrarGx6gLxdhX5iXy4QpGBdN5+gwnega7HZ5oPPjPO+JrAl0vQGEMqqnjtE5bXouI6
-	 nNgZR7d2PyOSA==
-Date: Tue, 18 Mar 2025 12:53:04 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Tamir Duberstein <tamird@gmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: alloc: use `spare_capacity_mut` to reduce unsafe
-Message-ID: <Z9leoGrF5pQeZ3tH@pollux>
-References: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com>
- <D8IM66U67XBD.28KWYO1XSF8ZQ@proton.me>
- <CAJ-ks9kq1cQ2-ZNzG9P4SBvk-AjXxT+na-89K33imB4fsCvu4A@mail.gmail.com>
- <Z9hXMcFVdF8MMusU@cassiopeiae>
- <D8IPQUN25M12.2CIZR4QHJ201N@proton.me>
- <Z9hcT4KPwgtHmiTT@cassiopeiae>
- <D8IQ5BDTLCLZ.1UBNYUXLK12X0@proton.me>
- <CAJ-ks9=xLLXovsaduKFBfxvkfzYgTaSPhhW_oRN5y1QOuKJFkQ@mail.gmail.com>
- <Z9k7cwE5UNOIyoXR@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zrZ7WPLp"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43935e09897so21037785e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 05:29:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742300962; x=1742905762; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/4uc8oPSchxzVAiGTdez6IXx9stCzB5Vsutmi4LBJv0=;
+        b=zrZ7WPLprDfFC8OnWq1nuAuLdF1rZ/sbdlPk2AZSSfhBgH5s9j1ppfj3rYyyZm+vEm
+         oc94VmJ5XQ15KMR5hxuciuU/Rz4Qc1ThgEJNgAB5gJx/aTWW7ake86GJr12Emz/BBdHd
+         RG1zl3V7T9NI9dPw9j3RZtsKHxdDgFtwvw40ksa2x2mWtqnA2OTd65TjqOij71K/s1MB
+         HqL+w7t+levlmsuLI/BIqHwHqFOrUdj2lJsTg3nn2V60pkm51o/0Vh/cGBqq3vsOTfmx
+         xlFswVwBCMh9PhIqarCLGc5QKgq/Z1DeHoM1h4rGd0FeKX8QnSNWN6F6lIs4S74EPghY
+         Bftw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742300962; x=1742905762;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/4uc8oPSchxzVAiGTdez6IXx9stCzB5Vsutmi4LBJv0=;
+        b=S3qf1L/RIv3pCVZzsoXVZlsjv3jBRuQZtg7mrrcVSsBnLFcXvdYmFNAVy2LDAUjUm+
+         gZG8M+mWgRan/goIxOBlitPsy9BVySLfeVYM92znnkqXI9if9GT4ZTX8ddM5ZfqsiXtY
+         ry8iXSm8LgrOnr8SYIMvGgD1fbXRBeXvApze3ICRlEK5ZYJmwv1Fz+nCmYUOvFlbvDQG
+         52RZ6DLC280RLdecoGlHkph9u+KeoiI5nBnEvpzT+3aMpDyNUVcz80UCNXbFLlPdJs3H
+         LkLsn0HYDllhiGgwjJFrJVT8vSolPq570HrgrpijbiF31WbvKQhK9YV0HziSHXLk4Qx1
+         JT9w==
+X-Forwarded-Encrypted: i=1; AJvYcCVi3Mp0WDFQ3sIUhR0z5iGkBxYWkVpVTHZSt3K7nHd+uSug/Bg/S7ZLFh/PSLITi8h8uGSpv9zC/Z1gCuoeVA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YybhFg2wE0m92PsjUQNHQ3rUVMzq4Zo4xgT3TrPvVt1Py2/AwQk
+	4et2XRzOW53TQRPh1uZGl+7B5Lk8HhkFZTA6D9pamHwKQmHhQSB6/kHVrRx8aPiTgko5uoqpTdh
+	cGx/fexGdBpRgjw==
+X-Google-Smtp-Source: AGHT+IHTdWcjIEfhg6CLJJR2Oh32b985bMj+lx8iegeOAnBxJWcU7FmV4nt7+fy40gQUf7LkXWpBlfKNqoAPp/E=
+X-Received: from wmbep22.prod.google.com ([2002:a05:600c:8416:b0:43b:c9cc:b9b3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:490a:b0:43c:f64c:447f with SMTP id 5b1f17b1804b1-43d3ca66b73mr14926245e9.29.1742300961982;
+ Tue, 18 Mar 2025 05:29:21 -0700 (PDT)
+Date: Tue, 18 Mar 2025 12:29:20 +0000
+In-Reply-To: <20250317-ptr-as-ptr-v5-6-5b5f21fa230a@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z9k7cwE5UNOIyoXR@google.com>
+Mime-Version: 1.0
+References: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com> <20250317-ptr-as-ptr-v5-6-5b5f21fa230a@gmail.com>
+Message-ID: <Z9lnIJCcVSza6UVo@google.com>
+Subject: Re: [PATCH v5 6/6] rust: use strict provenance APIs
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Mar 18, 2025 at 09:22:59AM +0000, Alice Ryhl wrote:
-> On Mon, Mar 17, 2025 at 01:55:18PM -0400, Tamir Duberstein wrote:
-> > > >
-> > > >       fn dec_len(&mut self, count: usize) -> &mut [T] {
-> > > >           self.len = self.len.saturating_sub(count);
-> > > >
-> > > >           // Potentially broken, since maybe `count > self.len`, hence need an
-> > > >           // additional check.
-> > > >           unsafe { slice::from_raw_parts_mut(self.as_mut_ptr().add(self.len), count) }
-> > > >       }
-> > >
-> > > Ah sorry, in my mental model the function returned `()`. Do we need the
-> > > return value?
-> > 
-> > The return value is the whole genesis of `dec_len`, we want to return
-> > something to let the caller know they need to drop or copy the memory.
+On Mon, Mar 17, 2025 at 10:23:56AM -0400, Tamir Duberstein wrote:
+> Throughout the tree, use the strict provenance APIs stabilized in Rust
+> 1.84.0[1]. Retain backwards-compatibility by introducing forwarding
+> functions at the `kernel` crate root along with polyfills for rustc <
+> 1.84.0.
 > 
-> Hold on .. it returns &mut [T]. You're usually not allowed to take
-> ownership of or drop values behind a mutable reference.
+> Use `#[allow(clippy::incompatible_msrv)]` to avoid warnings on rustc <
+> 1.84.0 as our MSRV is 1.78.0.
+> 
+> In the `kernel` crate, enable the strict provenance lints on rustc >=
+> 1.84.0; do this in `lib.rs` rather than `Makefile` to avoid introducing
+> compiler flags that are dependent on the rustc version in use.
+> 
+> Link: https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html#strict-provenance-apis [1]
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Link: https://lore.kernel.org/all/D8EIXDMRXMJP.36TFCGWZBRS3Y@proton.me/
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-I think it should be fine. dec_len(), by returning this slice, indicates to the
-caller what's left behind in case no action is taken.
+I'm not convinced that the pros of this change outweigh the cons. I
+think this is going to be too confusing for the C developers who look at
+this code.
 
-Subsequent operations are unsafe anyways and can easily justify their validity
-by saying that they only take over, what otherwise would have been left behind.
+> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> index 719b0a48ff55..96393bcf6bd7 100644
+> --- a/rust/kernel/uaccess.rs
+> +++ b/rust/kernel/uaccess.rs
+> @@ -226,7 +226,9 @@ pub fn read_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> Result {
+>          }
+>          // SAFETY: `out_ptr` points into a mutable slice of length `len`, so we may write
+>          // that many bytes to it.
+> -        let res = unsafe { bindings::copy_from_user(out_ptr, self.ptr as *const c_void, len) };
+> +        let res = unsafe {
+> +            bindings::copy_from_user(out_ptr, crate::with_exposed_provenance(self.ptr), len)
+> +        };
+>          if res != 0 {
+>              return Err(EFAULT);
+>          }
+> @@ -264,7 +266,7 @@ pub fn read<T: FromBytes>(&mut self) -> Result<T> {
+>          let res = unsafe {
+>              bindings::_copy_from_user(
+>                  out.as_mut_ptr().cast::<c_void>(),
+> -                self.ptr as *const c_void,
+> +                crate::with_exposed_provenance(self.ptr),
+>                  len,
+>              )
+>          };
 
-Do I miss anything?
+That's especially true for cases like this. These are userspace pointers
+that are never dereferenced. It's not useful to care about provenance
+here.
+
+Alice
