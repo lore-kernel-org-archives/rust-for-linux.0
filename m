@@ -1,180 +1,116 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0A622094;
-	Tue, 18 Mar 2025 15:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742312176; cv=pass; b=BSeMfgFuHTXlfK7CrS4YmgYQqUZsFgGXg6C/5JGWh4IV6B+QfcXck0+9uVY4NXnWVtdQ8hfkTTMDKw8jgts3O2M8xg4nbDBiWGiAsiFuvAVbsuKCKk15Th40HWEVcUEchcbhW3jY7jplx//OqqagKNJDQd073ARd0QvSOxgjX18=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742312176; c=relaxed/simple;
-	bh=KSDyh3xX4NpwRCKn8pQcYihDzqthZ1dByOWQeJr5u7w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RLb/hraEueAiT+j4sS8/1NXUBh5gXvQqmZgPaThgAye39/yAc1moXAvrtdDeX1I111fotaxlz7zj9qgPKW5J+46e6rV3P1x6/Z3CYhANIeSt7vD4U4po8a0ps8Cla/3tr6a0FKzjQeWieJeaFBcfm/764B0PQ6g2ffNgHWxLwEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=SkVrIjjs; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6603120764A
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 15:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742312273; cv=none; b=IADoc1nrrL36gAmjw/w+J4bE0E3N2h9goN5fLgmo+HdSiNqAOwcW2BJ53uObx52RclcA41k1OAyUldw2Lf0fu0y47ik+tEI5urYVKw2XivDvWN+qH8lZed7a4MKk1+s/upWb0reH4D9d/9C+OfgWljGIvXMCuvUeTBrtC4RPUTk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742312273; c=relaxed/simple;
+	bh=/Je5UXiwOWqz6f08s+PYQFTOWZkBEsyOwgm9HBPZxO4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iaYGM1r0Ds+nzKOzbsXYvTSWuzQ7Tj9E0l0VN64vLYCtCZJD4xhm830sBqRkBKzQqcdB1iQGTu/hRWf5sDujRj7VhaQXHZkvtbSacbt1m9fRIq9IrbQ4Z3QldWp6o+quZbSKEPN58vkQFcDs35IxIhTtskUJNGqrgvPvAwvnX3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2+6o0UAI; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="SkVrIjjs"
-ARC-Seal: i=1; a=rsa-sha256; t=1742312140; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=V2HgVpnWNMaZ6MrCUK/16DvH8XxWaRB0bOHiGyQJPLTVy3zoWWPioVfjFpXdcn8qUBV86UeAyhsgFlYOfQ8OUQ0dk9Cya2f0xOdYNSFU17qUEH2MgjJVVpdlw6iykxe0m/Ofs2eILS18hgp18V2gPY0MIgWB1F+RVwXPiCDfb70=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1742312140; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=+Wz5sL+K/4QpxJnQDP/gRaek9Byo0kkjgZ4jrr/bG9A=; 
-	b=hOjm04zW+pwfhI9dVZ8MXpk/hXcZ7/QLGZF6vGyi0zKxIte53FfEMWlZQBVoEagS9D26qb5nmfxjxI7jmLwRYhAeljFkcz6m2Dd/gG5OIye5GkReUMsgkijyXsPMlWn4X2R5jXWuAq3MiHJ04iUsWCQmhtbtCOmJCgRs8s3G+KE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742312140;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
-	bh=+Wz5sL+K/4QpxJnQDP/gRaek9Byo0kkjgZ4jrr/bG9A=;
-	b=SkVrIjjsvuCVFYDaooPrS1XL7LSitYU3Mdh0ad3O5OQ4P0YU/ZAlowx30d4AJPpN
-	h3egTbDeopaqvUZYTF3dUSb4qeEdJpdLNXk/L9Biw9jj8dMwm/ED2vTsF7obhAGNCjE
-	UU7YuNfvKW0Kr/4D35USkx0Su8f2vDEPEmCOtk3E=
-Received: by mx.zohomail.com with SMTPS id 1742312137698822.5459740903046;
-	Tue, 18 Mar 2025 08:35:37 -0700 (PDT)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Tue, 18 Mar 2025 12:34:57 -0300
-Subject: [PATCH v4] rust: kernel: add support for bits/genmask macros
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2+6o0UAI"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-438e4e9a53fso22030375e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 08:37:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742312267; x=1742917067; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0W8HnfzAxnHkec7vQ+j5syBypIsUG+kdLlAbbpLVR5U=;
+        b=2+6o0UAIk/2hvU4i6x8Gsthw2vQA71VZsm7IN56tPgz2A41XaPHgmUNjoaCMlPWQkk
+         N/W7f8LSx/szjCOsnHSYZO2hGlDEaBiFyM1vOh3jKtDduxe8h7dHElflVviQ02R38v1S
+         1E+qqBxEaoEJ4eD6RpjkuK3x/sSMrWUgvLzDo9fSwNLqMZZxXLUvxntFnb/yBOO8YKGt
+         e+KhCoQKMaHFj7uq4hosVY/Ird5DQp3g7XkgGfE/8zaXJPeWnCRvVRlUZ8RT7t5umQcK
+         LSlm7Nxcn/jR0HtjlOWUTd1zn9qrzMfWDNkP8o9VdrIUV85mzfE3XtQCgvDSUn2tsBYZ
+         y+rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742312267; x=1742917067;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0W8HnfzAxnHkec7vQ+j5syBypIsUG+kdLlAbbpLVR5U=;
+        b=smAWZ+XTkiLLBn8qFvCxeCLqR1oydRybUV8kqqA22SR+rEuc0/4r2kzSrMUhgHmfA1
+         OfouIQQt+SpUzrA8XhucQNnJnWtNgYSUlkqZcXUG9Ov31Ef7wQHKSiry+ipztMVY/xzS
+         e30SvShsO8+Z8yf/uzMzuP7GVNEahOF6t57ovJu+Gy3Nm8nsuM1vgL1VJO1ZSc1aRFZe
+         Huc5vMtF3sw9HBFaLs0IvBC5Dlpm+rK4ArTyvdMgmpK+AkhuDxf3Y1yecFlrhrLNVDid
+         a5CTeM4+Z9ZuR6PDX8VeWkYZKma44+asP0AaMuVstbxgfLBULySc+pcDDEyeFXaZXW8G
+         qTWw==
+X-Forwarded-Encrypted: i=1; AJvYcCV7EvVmBWhNM00gFg3byi195/kWb27Tl6WnkaDM1GTYjUuXzPkNPWwW72nc+daET8ZGwVjLcLTX8PgItD+vng==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEeN5rAc4LaAkNYhB/jFaOO8NRkiTChqBCaU5PLRis8eiC3nFu
+	oD88PnQcVjSW7/w5zkd4D09ivCH1SD12ULF+hjaEpWSh1PuP4J89Xp+AVTwAnO8BWqrqheWDH8r
+	Cp9dg/3+3arytRw==
+X-Google-Smtp-Source: AGHT+IGA0qJ6PYrRhjzrqDj0mSaeJEyUJhZzeOOnoV2qfnSov2tcHVx0g2ACLAhAFvFXBUJ9xLW5yU4GNF2hCAk=
+X-Received: from wmbez8.prod.google.com ([2002:a05:600c:83c8:b0:43c:fce2:1db2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3b97:b0:439:9b2a:1b2f with SMTP id 5b1f17b1804b1-43d3b951b2cmr29925335e9.3.1742312266727;
+ Tue, 18 Mar 2025 08:37:46 -0700 (PDT)
+Date: Tue, 18 Mar 2025 15:37:44 +0000
+In-Reply-To: <87senajxlv.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <20250317185345.2608976-1-abdiel.janulgue@gmail.com>
+ <UiefwZ9WcVV7q7YyERsbNIYqOxTWUWEO9aZNxThH7uRFkjE4LDSUtaVdiLeShk_JYe5RJLD5MgFC9IxGUuzTEw==@protonmail.internalid>
+ <20250317185345.2608976-3-abdiel.janulgue@gmail.com> <87senajxlv.fsf@kernel.org>
+Message-ID: <Z9mTSNj23fLlBbSF@google.com>
+Subject: Re: [PATCH v15 02/11] rust: add dma coherent allocator abstraction.
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, rust-for-linux@vger.kernel.org, 
+	daniel.almeida@collabora.com, dakr@kernel.org, robin.murphy@arm.com, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org, 
+	Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
+	iommu@lists.linux.dev
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250318-topic-panthor-rs-genmask-v4-1-35004fca6ac5@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAKCS2WcC/33NTQqDMBCG4atI1k3JL5aueo/SRRwnGqqJJBJax
- Ls3Cm4K7fL9YJ5ZSMLoMJFrtZCI2SUXfAl1qgj0xndIXVuaCCYUZ0LSOUwO6GT83IdIY6Id+tG
- kJ7WmAV1Li1ZJUs6niNa9dvr+KN27NIf43j9lsa0Hqn6jWVBOL1rIGrhlgOYGYRhME6I5QxjJB
- md5YJpxwf9gsmAaZNNawQGZ/sbWdf0A/5E0axEBAAA=
-X-Change-ID: 20241023-topic-panthor-rs-genmask-fabc573fef43
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Fiona Behrens <me@kloenk.dev>, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
-X-ZohoMailClient: External
 
-In light of bindgen being unable to generate bindings for macros,
-manually define the bit and genmask C macros in Rust.
+On Tue, Mar 18, 2025 at 02:07:40PM +0100, Andreas Hindborg wrote:
+> "Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
+> 
+> [...]
+> 
+> > +/// Possible attributes associated with a DMA mapping.
+> > +///
+> > +/// They can be combined with the operators `|`, `&`, and `!`.
+> > +///
+> > +/// Values can be used from the [`attrs`] module.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// use kernel::device::Device;
+> > +/// use kernel::dma::{attrs::*, CoherentAllocation};
+> > +///
+> > +/// # fn test(dev: &Device) -> Result {
+> > +/// let attribs = DMA_ATTR_FORCE_CONTIGUOUS | DMA_ATTR_NO_WARN;
+> > +/// let c: CoherentAllocation<u64> =
+> > +///     CoherentAllocation::alloc_attrs(dev, 4, GFP_KERNEL, attribs)?;
+> > +/// # Ok::<(), Error>(()) }
+> > +/// ```
+> > +#[derive(Clone, Copy, PartialEq)]
+> > +#[repr(transparent)]
+> > +pub struct Attrs(u32);
+> > +
+> > +impl Attrs {
+> > +    /// Get the raw representation of this attribute.
+> > +    pub(crate) fn as_raw(self) -> crate::ffi::c_ulong {
+> > +        self.0 as _
+> > +    }
+> 
+> OT: I wonder why we do not have `usize: From<u32>`? It seems like this
+> should be fine, even on 32 bit systems?
 
-Bit and genmask are frequently used in drivers, and are simple enough to
-just be redefined. Their implementation is also unlikely to ever change.
+usize only implements From<unn> when it would work on all concievable
+platforms, so it's missing for u32 due to 16-bit platforms.
 
-These macros are converted from their kernel equivalent. Since
-genmask_u32 and genmask_u64 are thought to suffice, these two versions
-are implemented as const fns instead of declarative macros.
-
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
-Changes in v4:
-- Split bits into bits_u32 and bits_u64
-- Added r-b's
-- Rebased on top of rust-next
-- Link to v3: https://lore.kernel.org/r/20250121-topic-panthor-rs-genmask-v3-1-5c3bdf21ce05@collabora.com
-
-Changes in v3:
-- Changed from declarative macro to const fn
-- Added separate versions for u32 and u64
-- Link to v2: https://lore.kernel.org/r/20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com
-
-Changes in v2:
-
-- Added ticks around `BIT`, and `h >=l` (Thanks, Benno).
-- Decided to keep the arguments as `expr`, as I see no issues with that
-- Added a proper example, with an assert_eq!() (Thanks, Benno)
-- Fixed the condition h <= l, which should be h >= l.
-- Checked that the assert for the condition above is described in the
-  docs.
----
- rust/kernel/bits.rs | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs  |  1 +
- 2 files changed, 50 insertions(+)
-
-diff --git a/rust/kernel/bits.rs b/rust/kernel/bits.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..ec13bb480082de9584b7d23c78df0e76d0fbf132
---- /dev/null
-+++ b/rust/kernel/bits.rs
-@@ -0,0 +1,49 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Bit manipulation macros.
-+//!
-+//! C header: [`include/linux/bits.h`](srctree/include/linux/bits.h)
-+
-+/// Produces a literal where bit `n` is set.
-+///
-+/// Equivalent to the kernel's `BIT` macro.
-+pub const fn bit_u32(n: u32) -> u32 {
-+    1 << n
-+}
-+
-+/// Produces a literal where bit `n` is set.
-+///
-+/// Equivalent to the kernel's `BIT` macro.
-+pub const fn bit_u64(n: u32) -> u64 {
-+    1u64 << n as u64
-+}
-+
-+/// Create a contiguous bitmask starting at bit position `l` and ending at
-+/// position `h`, where `h >= l`.
-+///
-+/// # Examples
-+/// ```
-+///     use kernel::bits::genmask_u64;
-+///     let mask = genmask_u64(39, 21);
-+///     assert_eq!(mask, 0x000000ffffe00000);
-+/// ```
-+///
-+pub const fn genmask_u64(h: u32, l: u32) -> u64 {
-+    assert!(h >= l);
-+    (!0u64 - (1u64 << l) + 1) & (!0u64 >> (64 - 1 - h))
-+}
-+
-+/// Create a contiguous bitmask starting at bit position `l` and ending at
-+/// position `h`, where `h >= l`.
-+///
-+/// # Examples
-+/// ```
-+///     use kernel::bits::genmask_u32;
-+///     let mask = genmask_u32(9, 0);
-+///     assert_eq!(mask, 0x000003ff);
-+/// ```
-+///
-+pub const fn genmask_u32(h: u32, l: u32) -> u32 {
-+    assert!(h >= l);
-+    (!0u32 - (1u32 << l) + 1) & (!0u32 >> (32 - 1 - h))
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index c92497c7c655e8faefd85bb4a1d5b4cc696b8499..a90aaf7fe6755a5a42055b7b4008714fcafe6f6f 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -36,6 +36,7 @@
- pub use ffi;
- 
- pub mod alloc;
-+pub mod bits;
- #[cfg(CONFIG_BLOCK)]
- pub mod block;
- #[doc(hidden)]
-
----
-base-commit: cf25bc61f8aecad9b0c45fe32697e35ea4b13378
-change-id: 20241023-topic-panthor-rs-genmask-fabc573fef43
-
-Best regards,
--- 
-Daniel Almeida <daniel.almeida@collabora.com>
-
+Alice
