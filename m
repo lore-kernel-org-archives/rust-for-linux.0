@@ -1,97 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68A01C6FF4;
-	Tue, 18 Mar 2025 08:27:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D06842AB4;
+	Tue, 18 Mar 2025 09:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742286428; cv=none; b=b5Ufnxb2TLPOWNRQplGUxCPNm9wABAdiB8b0og17E7fOWVr/QZPj3Xvp/wbTzePiZrc2XZEkyRmojerqvb5vkN3a+ngnateM+Tjt6X1h6WcBEruBKRQ/6U7NL9f7EFUGLv5XLeKrCbgDW5mjWwiSGaDgLszKRprAyMwfqXFBGfI=
+	t=1742288730; cv=none; b=e3KjjGlwCgaRc3innvJnK6y6/93B+s2gaLezdXzlPlGZMM10zxutBKHzzG5ACpnOlVmKgMdZ7Cllq0BeifsaeZljahDBUVn4EcnNb3+xkRwdPgXIEz6yFsbEfEXMQwkNHDMQ8HpErMICT0zx+tn6pbld0Ggq62e3duzOjUtTiU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742286428; c=relaxed/simple;
-	bh=ROlfKfFEYmVi6Jef/7Ul9oBfKnMqC5hiSH7wMJxghcA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=owzHhspvgxnQ4lGGkPIhHKQ+9wraffOhJDfpfuJmvY2OMxgu8P6QDU3eFooTFPgCcvs2uhK2OT+KHn38qiyhylkgsmp3bMC3ix8+dN00O4zY6koiZ8yfoH85GAzsSqEhogUUlQTzZE931o8ekc5991dxM/nOy5pU9mL+J4RPO2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7MqOfFn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742288730; c=relaxed/simple;
+	bh=kVRUQzGSk66YW7u0x8fVsXfnKGIeaJiNsuHjxLSiOTw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ckSQR7yP6xLJkU5xHDrIuRKk8mOCaCVuS7HKcTqNpJmcOXPv7RYWsSZjdoMWg4EHJ4nhloLDEJhYOTM8D9JFE1fDFnfUo+1B0XZy/31QLhN3PtyuxI5/mXmV3AeNKXuUyNRRGudd8axKHSO/omtW/cJQx2VUm/epeNw2+zCy9P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mEb5W4Yy; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7MqOfFn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 678DBC4CEEF;
-	Tue, 18 Mar 2025 08:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742286427;
-	bh=ROlfKfFEYmVi6Jef/7Ul9oBfKnMqC5hiSH7wMJxghcA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7MqOfFn4kqcyAfz3rAusBuZrGFrnaC4v03ejlxPvyfVA+4L8LHF6K3mVzqyHKJ3x
-	 1AAAc7aFsmegnMD3TAP4hUX5VnoDtT/0w2DsAOL3EP/OfIObLIzsHj7fSu7hHhhprd
-	 BbZ5Gwuvyc5Ih6zKmuccd689aCKqLZKVyqQ6HcmLY0SITXEyoooapCX1vWcCxuRJKB
-	 bmAXNUkqkVHrmFFOV9QrQjpzn1ODTrtArXbfncBtQ7o0sIci8jfZl0LMBvjAQOeCWj
-	 t5zqDPOYb/oFIzZVl7JtjKWbn0slbiKA6mrwie+5/9/U+qmX6T8nUXjOWQTfXt9A+1
-	 dHQgZcjLjDq7w==
-From: Christian Brauner <brauner@kernel.org>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	Kunwu Chan <kunwu.chan@linux.dev>
-Cc: Christian Brauner <brauner@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Grace Deng <Grace.Deng006@Gmail.com>
-Subject: Re: [PATCH v2] rust: optimize rust symbol generation for SeqFile
-Date: Tue, 18 Mar 2025 09:26:46 +0100
-Message-ID: <20250318-delfin-bleichen-c931856104dd@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250317030418.2371265-1-kunwu.chan@linux.dev>
-References: <20250317030418.2371265-1-kunwu.chan@linux.dev>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mEb5W4Yy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742288718; x=1742547918;
+	bh=kVRUQzGSk66YW7u0x8fVsXfnKGIeaJiNsuHjxLSiOTw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=mEb5W4YycgPIfevEIDUWVq2FJz3xBEX+dXeB87hIpZrmkNoievewpa2kL4tnlT595
+	 LtHlBz3E3zlEwF338ut0Gw7Z9uP5kyNZqHaQSk8z4Q8lPMsp9cPZsXelPkhVRBY8N1
+	 hl3VDULYEgu1QHMi6YCzZMfXDSWetqTlFXaSjXln0fGhTS798ZlMEY6eC7x01pdmbO
+	 wZczB+cLGUKo59zozFOI1ED958MoFrBrZVfFnsS5jvD79YI2bBPq6AznXzZhV5jKeg
+	 DlMy1uU1lLsSryu3fiLk7HCgX7DdTpKsG2kdkXLOJmcNQLnmMKooFk/XAYrfq+m7Gx
+	 Mi/GGiL4xcbBw==
+Date: Tue, 18 Mar 2025 09:05:15 +0000
+To: Christian <christiansantoslima21@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, ~lkcamp/patches@lists.sr.ht, richard120310@gmail.com
+Subject: Re: [PATCH v4] Add methods for FromBytes trait.
+Message-ID: <D8J9SWEGNPVM.SVZXLT3LHVSA@proton.me>
+In-Reply-To: <CABm2a9c92FHGSHbg98B8UjPNF_=JNCV7_Pe3CambvSm2vxiBcw@mail.gmail.com>
+References: <20250314034910.134463-1-christiansantoslima21@gmail.com> <D8FXFGYZTEXT.24UM4V3HZ5MWH@proton.me> <CABm2a9c92FHGSHbg98B8UjPNF_=JNCV7_Pe3CambvSm2vxiBcw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 1844032a7298dd53e4ac435a16d2f51942c7462d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1259; i=brauner@kernel.org; h=from:subject:message-id; bh=ROlfKfFEYmVi6Jef/7Ul9oBfKnMqC5hiSH7wMJxghcA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaTf1PNkaLvR0XFW4n1mtv7nKo+g3dOrTeQSrm7bdkx68 c26D+7cHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhvCxSkAE/HjY/in+T1DR07bvem2/LU1 265rHnbP3s12S0/DOj/9xZWlHmtKGf4ZnGLlFYlZMGXXTXu5cJO/Tyc6pZaFbD3t76fLtdgoUoI XAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 17 Mar 2025 11:04:18 +0800, Kunwu Chan wrote:
-> When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-> with ARCH=arm64, the following symbols are generated:
-> 
-> $nm vmlinux | grep ' _R'.*SeqFile | rustfilt
-> ffff8000805b78ac T <kernel::seq_file::SeqFile>::call_printf
-> 
-> This Rust symbol is trivial wrappers around the C functions seq_printf.
-> It doesn't make sense to go through a trivial wrapper for its functions,
-> so mark it inline.
-> 
-> [...]
+On Tue Mar 18, 2025 at 12:14 AM CET, Christian wrote:
+> Hi, Benno.
+>
+>> It usually is a good idea to include a changelog and a link to any prior
+>> versions after this `---`. It won't be included in the final commit
+>> message, but help reviewers and others keep track of this series.
+>
+> Yeah, my bad. I forgot.
+>
+>> I think this section should go before the `Safety` section.
+>
+> I followed this section:
+> https://docs.kernel.org/rust/coding-guidelines.html#code-documentation,
+> but no problem, I'll change.
 
-Applied to the vfs-6.15.rust branch of the vfs/vfs.git tree.
-Patches in the vfs-6.15.rust branch should appear in linux-next soon.
+Ah I see, I'll change that then.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+>> Why is this trait becoming safe?
+>
+> I thought that if we change to a Result and get the Err case, it's not
+> a problem to be safe.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+A trait being `unsafe` means that the implementer needs to justify why
+their implementation is correct. The fact that you change the return
+type to `Result` doesn't change that the type must be transmutable from
+sufficiently many bytes.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+>> IMO it makes more sense for the return type to be `Option<&Self>`.
+>
+> I agree. I'll change.
+>
+>> This must also require that `Self: AsBytes`, since otherwise the user
+>> could write padding bytes into the original slice.
+>
+> Did you mean `ToBytes`? Should I create another patch with an empty trait=
+, e.g
+> ```
+> unsafe trait ToBytes {}
+> ```
+> or create the trait and its methods?
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.15.rust
+Nope, I mean `AsBytes`, it already exists in `rust/kernel/transmute.rs`.
 
-[1/1] rust: optimize rust symbol generation for SeqFile
-      https://git.kernel.org/vfs/vfs/c/0b9817caac1d
+>> Also the parameter name `mut_slice_of_bytes` is a bit long, how about
+>> `bytes`?
+>
+> I liked it, I'll change to `bytes` and `bytes_mut`
+
+I wouldn't put `_mut` in the parameter name, just name both of them
+`bytes`.
+
+>> What is this safety comment for?
+>
+> Idk if I should create another safety comment or just continue. In
+> this case, I choose the first and submit the patch. So how should I
+> proceed?
+
+I don't understand, the safety comment that you added there doesn't make
+any sense to me. I wouldn't have added it.
+
+---
+Cheers,
+Benno
+
