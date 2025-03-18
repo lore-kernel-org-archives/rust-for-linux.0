@@ -1,114 +1,119 @@
 Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2B71F873E
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 08:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A7620296B
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 08:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742285266; cv=none; b=q8tP2PEgryADwbJB3jWik0yaqAkdycLY0rKllnrARFNZSAnHBAqcZUD7t9pAXP8LGOiyh0IhOUrKwni1+be+hAzvVxP5ZTG3uv8zJgI3ozySvzpmxSy8MOV0lr4YX/BibU15Mv8C7KkLHXBuWnbThCH1SxRSvPH2t4r7HvIGCfQ=
+	t=1742285686; cv=none; b=tEg0heKY2098uyMp4Ln2vJhaLzlul/8obV9EUL+EZ8txxCmhjm/TizZAr0V+LMWekw0RRBOlou5M0JogruQwTt24fMI+TyFd3jRm4jyuhYofxCh40/Kwb5kwYiVa7U+V2lRkc/43NfMfcowYqIP0krdMcUizQlEzDMVGOR7hfr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742285266; c=relaxed/simple;
-	bh=ML/zTOHDn1FBtlceNyV01dmAneMu1QMobEBq4s/j0SE=;
+	s=arc-20240116; t=1742285686; c=relaxed/simple;
+	bh=9mYEX2Mg+DxyslqBIf3rm4LQeWFwP3pYWo41jJfrge4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PwFwN/4bJfLVmqXHCTbxSaf4bwIpT+xKe8JAXkm047utKEeOYqcmKYgLW5XzvqwhXTMsrIX8xXhgyeXggs/PPojbZL3dChEneaNy9lt0qCsg51htfpKkGgv6Gt1QesTmQqx7jtDVuiwMqM4tNdLXw078cMWnYa4LeeIWjmexMLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K01fvZ2N; arc=none smtp.client-ip=209.85.219.48
+	 To:Cc:Content-Type; b=iYOo91vDU9If57nGTMjBta7MmAJ537iBxKvMvLPW9J59FpdGT8W5gZ+QMRXiZX9dim7pGbRoCpQv5JCatxLVzsAap7ZHTfHOIdMpj6Auwd3+O6ximfzMF7mzqJAGJovECZ1X3C/p3lt8i0j5PZ3rgtXNNSPeHWUF9huxJhiFjLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1UItdhA6; arc=none smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K01fvZ2N"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6e900a7ce55so74443236d6.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 01:07:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1UItdhA6"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6e1b11859a7so17903276d6.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 01:14:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742285263; x=1742890063; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742285683; x=1742890483; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ML/zTOHDn1FBtlceNyV01dmAneMu1QMobEBq4s/j0SE=;
-        b=K01fvZ2NoGjr7aMW8vD0a9kD0bOHUoK0Pu4p9GdMcKDQt6TzPkaf4MQN930jZR+C+D
-         hXPD0bs9vxCWAquFWNBGSwm+hiw3HiG/6solX4MHy/Wm0ruvrMuvTsIt7dHisXPgbNPf
-         DJ7TZ5u/9ake2+dB5PJdN1V6Cfb8H8tzKvfxXYWQcg+Jc56+2n5WWjJmSlaxpAF/dtp2
-         MrAI2Vuf/52qvAnxs4/+yitAmAkzO8xs77A0VKSRgO/RCRAjPeltSqe9BkXxTwjAeIvp
-         ZttO5yv+bhLB5Yhxb6zInQUUvqkCM/n3soAu3Qsvz0n3+TTPCbcF0bKi616SgtVFvTKR
-         baoQ==
+        bh=9mYEX2Mg+DxyslqBIf3rm4LQeWFwP3pYWo41jJfrge4=;
+        b=1UItdhA6M7ShMv45x2RJxu3lDQ14yHz7ACytd0hqVJ29Ipq5VHgudDzwMwprId0LgI
+         MHkg7OPt8OUWZ4S8EnTuGs2wjkl56yirtXFL9RFq4QyauFq944qRotMbihebXDB/GxHQ
+         BZbkNkaJ3k2hn6FhWWkEXFPFb3ge9Mtr7vmeBBJRYZzHe6jiZdkxRMGBNMV8UJ+XL/Fe
+         GB8CwsMZNMB3SkcuCwQmSYo8Gr79cJYc6yUshCGcQqa+Rd2QsDIIsmdcGSzSEzbpakxc
+         s8ayhQevCZIJOHoRfhDqB68yKRF+xmtGHkVjUEUU++NG7HGVAywQOrnGrHp8wQMdd68r
+         QiSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742285263; x=1742890063;
+        d=1e100.net; s=20230601; t=1742285683; x=1742890483;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ML/zTOHDn1FBtlceNyV01dmAneMu1QMobEBq4s/j0SE=;
-        b=fjUIwIUGEXkC9tsRVh0OFYzm7VjMf0zLtwfSByW6LTcPm3Gbr16ptuwMjOnSu3vH1i
-         ZZI5L+sCkisb0V31b+TmsyfAOhMJL4oL0lNwX/SiZ5UeS6zEK4h8OF3lQo8vUzyv7LNq
-         /DkWuJIBJXIM9U7j3w4vYsRW+obwZ1Ae1Jky4/hl29c1wQV5zlzNjouhEISYkDFazXDh
-         Qrqb0+9QKqHtGPzM52SJ3076ocSIDrArcTST5NvmXL3WYksdsor84pVlnOdCwLNvn25e
-         ZIT30auQV9kPp/TnpDwmsnH0r9TLjzAn4TrhrTqqFRku5tTbwPVfVvyYN9Q8gWtyMwc+
-         pVjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWCzmFV49hBp0zDOfvkFO0h36eP8kIJylTqaYI258fn2PaJE1l3YnD1hUENqwxjEJYdTPMYyoPyJC4KfvDsyQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzC49Oqpee83eoSMCRsv+DK8KcdzBMAe9oWpXrM+qtRqfIcYoEV
-	9UBFgPoEAa1ZJvjpg5qW/UuVPuBqfJnKoNes7KS0z733H3SYfGoAeRP0F8TtPb0jjjb5M0o1nr2
-	zHg/1wEuqdsD+Rn7PfcIb3u/PUIILKjK1/rDx
-X-Gm-Gg: ASbGncv6fI1WPsF6MNUiiZaU9Iu5Jj2Xw/RM+uHZsPiVS4nSBjMqei/fSam+1XhjXTj
-	q17/o3lrfrmqCXgHGAAnXG8VFiyeYZhzC9rvQRh14cOynxqqvQmP4wzPIaGGXL9YEuewdPdWMxs
-	Ycgccha4QMzuAWG1z9o6uH+FlB88A=
-X-Google-Smtp-Source: AGHT+IFXUODysh1m9Gv30WU1iM9GK6zio2ea0ritM/Z7npdgfWiDiscTe68Zbm3hxySc+vdVePwq2PUewsO+jgB2rWw=
-X-Received: by 2002:ad4:5a0f:0:b0:6ea:d40e:2bc5 with SMTP id
- 6a1803df08f44-6eaea9e9152mr191909016d6.9.1742285262566; Tue, 18 Mar 2025
- 01:07:42 -0700 (PDT)
+        bh=9mYEX2Mg+DxyslqBIf3rm4LQeWFwP3pYWo41jJfrge4=;
+        b=Q6Vp4lGEc/CZbD10Eg8D8QZeQPOwZGVqyYEwdOW6fE0Oq0O3KuxzEIY4pDMRhJnM7V
+         QDllLpCB2VO+uLjePH1wLVk6ZKE9IDuasAsaM1UJrjjxVuutgUkoqdT4T72kVlIcxLAx
+         2ke5XAdomVnURLqCrZA0eO49korM+V98f7HDYuQg2SHYhCvdKkFl4CVPL+M7OZ8vGklr
+         qRfB0DTfvLhbXApWDF5Zpaq8v4BmrW79hL1dPafu+1zaKB7bfJsWFJ3k7T5Q8fvAOfwx
+         +j6eo1keztqWH6gJr4sxDmsknLIrT6U1L4vnpMpNqgQqI1FXWjqF8MF7hx0WpMbpZgDI
+         501w==
+X-Forwarded-Encrypted: i=1; AJvYcCVTINe+XhxNLwdl/ZD2etbTbeV/4gZIWOBMjSuqoJTfw4SqYkKljgq0jjBRzXlEcdGYx54nHqzR0c+DxCAdZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLWEnoPqQWKrKCW8FVOKKwyQ8dY3buOrKaOQtGh+ksrZAwJF4J
+	kVyozW+tL6C5MJwWMrBLOYph2HGmUAkKntqI7wu4ylkvGgbM4OqX21wtmZoQmBOgOF7mUfiTI2Q
+	94R+qTdnLjW7SGE1UGP2pAVYo9KE+OXQhEDu5
+X-Gm-Gg: ASbGncviXeXdMhU9GJO5rgFJ3re1jp1XCeL0TpUjhICt92d1scVMlGKcvUmQiZk36li
+	KmmlT51df21oYo7Plk1wWfS/ggVzvXgdp3TvkCaSfQSxTaRJGop0OaJVk6KBD87Z877CLbcHe1G
+	bXCxeWOR+rUfP5DcVgzr1ATtKY9J0=
+X-Google-Smtp-Source: AGHT+IGv6G6bZuvyvCNYjg6I29TxGtrildbuWSHYc54DxxcBAdp+r3zjvps7AvfXW0G8LmpcDxuWxjFtuIIaFjS379E=
+X-Received: by 2002:ad4:5beb:0:b0:6e8:ff18:9424 with SMTP id
+ 6a1803df08f44-6eaea994f88mr205656576d6.5.1742285683207; Tue, 18 Mar 2025
+ 01:14:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250208-rust-kunit-v1-0-94a026be6d72@weissschuh.net> <20250208-rust-kunit-v1-1-94a026be6d72@weissschuh.net>
-In-Reply-To: <20250208-rust-kunit-v1-1-94a026be6d72@weissschuh.net>
+References: <20250307090103.918788-1-davidgow@google.com>
+In-Reply-To: <20250307090103.918788-1-davidgow@google.com>
 From: David Gow <davidgow@google.com>
-Date: Tue, 18 Mar 2025 16:07:31 +0800
-X-Gm-Features: AQ5f1JpRKVNRYSd34to42tulrryjmS3NP8RYOLW-DOLTvOzFH0wYzkK0JSzhOa8
-Message-ID: <CABVgOSnwkDihbRzYF3uh3At_x0MgOB42_E8sUAD8moKwx+zjRw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: pass correct target to bindgen on Usermode Linux
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-um <linux-um@lists.infradead.org>
+Date: Tue, 18 Mar 2025 16:14:31 +0800
+X-Gm-Features: AQ5f1JrYsohyzgu3N6LdXRw6-spU2W74_7mxahz5_lifeA73g9Q62ThWeVGXSn0
+Message-ID: <CABVgOSmtBU=zvxC2--4=F0Vh=sh0GX5XNGB0coJuj-4fP=puDw@mail.gmail.com>
+Subject: Re: [PATCH v8 0/3] rust: kunit: Support KUnit tests with a user-space
+ like syntax
+To: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, Tamir Duberstein <tamird@gmail.com>
+Cc: kunit-dev@googlegroups.com, linux-kselftest@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000003335100630996601"
+	boundary="0000000000004664900630997fab"
 
---0000000000003335100630996601
+--0000000000004664900630997fab
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 8 Feb 2025 at 21:32, Thomas Wei=C3=9Fschuh <linux@weissschuh.net> w=
-rote:
+On Fri, 7 Mar 2025 at 17:01, David Gow <davidgow@google.com> wrote:
 >
-> Usermode Linux uses "um" as primary architecture name and the underlying
-> physical architecture is provided in "SUBARCH".
-> Resolve the target architecture flags through that underlying architectur=
-e.
-> This is the same pattern as used by scripts/Makefile.clang from which
-> the bindgen flags are derived.
+> Hi all,
 >
-> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> ---
+> This is v8 of the Rust/KUnit integration patch. I think all of the
+> suggestions have at least been responded to (even if there are a few I'm
+> leaving as either future projects or matters of taste). Hopefully this
+> is good-to-go for 6.15, so we can start using it concurrently with
+> making any additional improvements we may wish.
+>
+> This series was originally written by Jos=C3=A9 Exp=C3=B3sito, and has be=
+en
+> modified and updated by Matt Gilbride, Miguel Ojeda, and myself. The
+> original version can be found here:
+> https://github.com/Rust-for-Linux/linux/pull/950
 
-Is there anything holding this up for the upcoming merge window?
+Has anyone got any objections to this for 6.15?
 
-Miguel: I'm assuming you'd rather take this (and possibly [1] as well)
-via Rust, but if it goes in via the uml tree, that'd be fine by me,
-too.
+I'm happy for it to go in via the rust tree if that's most convenient,
+but if you'd rather it go in via kselftest/kunit, that's fine, too.
+
+The only reason for delay I can think of is all of the patches which
+adjust clippy warnings, etc., for things like addr_of_mut!() (and
+possibly some of the casting). I'm unlikely to have time to re-send
+everything out before the merge window with those fixed (I'm going to
+be away for the latter half of this week), so if folks are okay with
+either accepting this as-is, doing a follow-up fix, or delaying those
+warnings, that's ideal on my end.
 
 Cheers,
 -- David
 
-[1]: https://lore.kernel.org/linux-um/20250210105353.2238769-2-davidgow@goo=
-gle.com/
-
---0000000000003335100630996601
+--0000000000004664900630997fab
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -198,13 +203,13 @@ uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
 PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
 Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
 BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
-pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgriohMEZ66LjlarBmrJFO9KgnxO/i
-Kun8BMusnsZnvcgwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
-MzE4MDgwNzQzWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQg8xQ1LozwwEtk7a0zPlh/U1gm/+Qx
+iuf0IJ9WnBNr21swGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+MzE4MDgxNDQzWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
 YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEAPSwjUKvK4M4Q/c/QHB56/oWCYCS5l4KFHgzneKci49WJ0TY+HEqKPPUZ/VDRnKZm
-bZjzGCMCbROvTRud9C6V3gdlW+6rZc31NqWSk3ZXhHxRQZtLmOE39A49pugrgNI3jAdD7IHe0YrX
-Qo6e8ythXhdYHTcAeJCorJHIWNfgzoVENIJGWrF7wmbBqodB3KYDmqflG8K1PVGp6PMPOVeBE77V
-h3Rm/9znWt7FMx5PL4KQdfJLmYCySNwPle/erqnfcVTuo5wkZZaYGS9PuyMqjbKCtbvKigxc9UD8
-qEgexGu0AYORzeQrDjx8aqrEnT45ByZUDVUt8zcP3y27+CdShw==
---0000000000003335100630996601--
+AQEBBQAEggEAmlCKXYcgBoSaYWuQRSOqEDtDL7WZi8X27hTVEOtWO2CcLp28Sql0+dKkScU4my7j
+pmCbHMeDMm0T6U8agQQCWCJ0UHG2lGSl40LAd7baSk3or93IoMu8o6c8E7xkfYYR5/fShaLqct0L
+nnyFROE01gBKvclPJ9hDYWNTneCdM4UPP6cQ44MCSpc6vjDorgYTH/gwoCX5vh6v9WDKjyc++5V2
+ozshAX/lZD2DidrmK9XsBWawQNKK+YJtH38Wjyh0VQH5lNILlj2mQAcBLu0ABibt3vhmiii7uOsu
+LmHme11bAiQ1jf70MUSvgQjFxh8nH95SBoVBuTQz+2/Z/fyoKA==
+--0000000000004664900630997fab--
