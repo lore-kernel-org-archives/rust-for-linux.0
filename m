@@ -1,147 +1,350 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF801DED6E;
-	Tue, 18 Mar 2025 20:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD251F4C99;
+	Tue, 18 Mar 2025 20:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742329045; cv=none; b=IGJEf9M6dQzjTGjRoUJSaiUfsuieKCq/XViHD98LSuc+JvPws4G3iFz6+5tkxV2s+VN3bjlClezmjqDnxZ933ABvxvO4+vu7fIHQpuxOon/3ZEY4rEOKUAP3fTTF16dyB35BRC/yaBllOzTjnP0gI+226gQKZ1CLY+pj0xE1yco=
+	t=1742329075; cv=none; b=aSZWSFKgi0zoBw882dbNY5jnQLQVI7GKb94tdjBKLVETCsu+YGFAJCwLthp6tgHcjAJ+2qlvLdlTgPwDIafjrEGY+AKNFIpT6lup6UP9uPAYgIXvTnguA+IjFKWtWlJkIauga1xudTi/z90pXRPqM/Dv1hvY0Yf1Y/8UwciBwDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742329045; c=relaxed/simple;
-	bh=Y1xBwEjcZzjmqJ5gH2XrlDBNu1gUB2n7igslri/bUh0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mMfnt+H1/4s2mxh7nGP+cowyWN+gt7oZXdzJqhjXhZf/CjfJyyq+NhFq2DdcXkb3F6IoOWmykJBauzhXc91ZhSSqlfRrPNqkqACaSZ1Dz4e5OYzcD+zEreYYBrPMvXMVQXs5AqtNu4oYy3VwmTnkxei1XWV3/iW/Y0N72ZuhziY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hg99E6j2; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742329075; c=relaxed/simple;
+	bh=qjoI51DvAkOY4VBqJdc/V5YA+NOO+//yNH4o3cRoKfU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=I2/nieCeKGx35gqsdFr2rl5CibyImtzSK7coEzU+IDfE6yiWR9zK2UsrtR5mrEP/ITfwO9PLHzVJ7HpO75TUaZ7jQd+aQnI/gxUjUaYbJnU/+hHtKtColKMQWJsmiArFcvasUrPtZolgpZCVUrzrREsY2FTNLJ1miK/JjBht5kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cx64QfkP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hg99E6j2"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30bd21f887aso55438381fa.1;
-        Tue, 18 Mar 2025 13:17:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742329041; x=1742933841; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4whO+ZxVNLik2oHzFAiu+JwHpc4ckCB7J5pv1Uynz84=;
-        b=hg99E6j2LII955L4PmEtjs0OTdHXF1vgDRXKV26nXHmlRcAWuczOOV5YhrAzINvYnK
-         TnJXO7DWPASRiAg+aAqurjgjcwPOwALNOMfXUWwrUoL2q/IW8HtgR7qFvukdzeJ67V0M
-         qSJiGwHQerUcMdrB4+ZwoLQjVuEvb5pk2ZrSUSlTRh3EC/iGbKVgPHb6sBE44YSnG7H/
-         YiyTPT5lttiI5VfDjymmo3tclZzZtKSKahIpm2mQlmUc7d1Wu2DdWVOL7ez3mkaQFAfx
-         UTWwWQimrE6fN0B5UjY8M5lXcMWP1mTJKoSVoQc/GOHtxAKOL73fgjxfQMKJwwAEGQ83
-         d4ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742329041; x=1742933841;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4whO+ZxVNLik2oHzFAiu+JwHpc4ckCB7J5pv1Uynz84=;
-        b=tt+irQqRR1ttpem3hkJADLgEaTyCN74ICTLJTj0BWr+OUXSKWc5e2Vt7k0bugmECZx
-         upfAfOJGLE2fZ82M3b6fHHmWNKiIbXt9YcPBzNEbaQ0kM5FOD6ypkF1BNQU1LF6mCZ9X
-         fPBONZaU0R5BMzHpsgfvaeUsBK+L9yIu4Z58upS74bUf/+jqXldbaSS+AId8qFKL9dqM
-         iQWZ3W6X50FztJOFboPShsUXOPnTVKJXEfPMFKTT49Sexu55qkYgS4FnA+BlqX7+JgQ1
-         tO5a7zJAxmOpxB44ohMyJHte6sf8LQDLGZuTo445JH4so0WKVZsdIs3OFveHfFFIIonK
-         lkig==
-X-Forwarded-Encrypted: i=1; AJvYcCX8HqFcQMR4Qpt4HxgexzoT80T9iux2HYRu0V2Hh5XyVDzzHoODw126dSxJS8AHHZYCu8Lz7GMoQ2JuqNg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykDYknq917sbiMRIEEYNYZK9CpCB5NF6IpNUBltvUQpaQpfVtX
-	O6XQLZc1KlOcf0zcJcxAD7SSgAHgnmgIY0Kfo6TFq64Vm41n1uYRJg8Y9Ny1E1CfXUj6hfU6anJ
-	xONwJBMaRptgMrvQaUlFUHEYQEyp8yBbECqdJqg==
-X-Gm-Gg: ASbGncvJW/EyVf9hvtQHm6mc+Ed8OXy/2RiYIWnJTRU1sIcUv9RSIrynh9D4i+PC013
-	93qsVBT5jI0C6exMq7pDZfVY+4rQobhDMdYWQ4kFIpNmpvjG2WXg6XlfNya+7s1A9chcKjQZwnc
-	6HGrACI/SPVuWsPW/op4jtvz/u+F4NrnbSthC+XICfAg==
-X-Google-Smtp-Source: AGHT+IHrYh05F6/t/t39/nwpTj+mtPQtNKFj6frv6OKaMOpNssnAtmDKQ92A4K5n8dBBPDR/swKT+x49q13QIaRdKgc=
-X-Received: by 2002:a05:651c:221c:b0:30b:a92e:8b42 with SMTP id
- 38308e7fff4ca-30d6a43be64mr403441fa.26.1742329041019; Tue, 18 Mar 2025
- 13:17:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cx64QfkP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97090C4CEEE;
+	Tue, 18 Mar 2025 20:17:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742329073;
+	bh=qjoI51DvAkOY4VBqJdc/V5YA+NOO+//yNH4o3cRoKfU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Cx64QfkP3BvtV2i0Kqdrf3DzFFqNj7jsSp4qxnaGHj7oAyt+ragXbM2cvI1WBARR4
+	 BcymFmMGqaw0+IhNEo/tOdqWwIcnGYLTnluFZD1Vm1spmQyveS3SmK5FP/JNnsctKP
+	 WKVsM5SUk2CmJlIeoiEu2IX5u0x4PHTzQlS0MuYw4+yxliP7086U36yQqidQfBlG+v
+	 G0IK6zSc7OL5dWWjXkMS7hl2A+rZQf7kS963ly1pG6pB9Ctk1xMnV3+TwQ5NkxAy9e
+	 oK8Y17XCv1R8Bk/Myp/8PBBbE4F5jgR5hpjYgQhN7tRvFJL+blQNLnka+2TpJ/Yk6J
+	 Mr+EFO5dyPobA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
+Cc: <rust-for-linux@vger.kernel.org>,  <daniel.almeida@collabora.com>,
+  <dakr@kernel.org>,  <robin.murphy@arm.com>,  <aliceryhl@google.com>,
+  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Valentin Obst" <kernel@valentinobst.de>,  "open list"
+ <linux-kernel@vger.kernel.org>,  "Christoph Hellwig" <hch@lst.de>,  "Marek
+ Szyprowski" <m.szyprowski@samsung.com>,  <airlied@redhat.com>,  "open
+ list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Subject: Re: [PATCH v14 03/11] samples: rust: add Rust dma test sample driver
+In-Reply-To: <03902487-5cd3-45ed-b3cb-cabfd0ac5cb7@gmail.com> (Abdiel
+	Janulgue's message of "Tue, 18 Mar 2025 20:42:39 +0200")
+References: <20250311174930.2348813-1-abdiel.janulgue@gmail.com>
+	<20250311174930.2348813-4-abdiel.janulgue@gmail.com>
+	<87frjajwq2.fsf@kernel.org>
+	<wAjk3jNcvGi573b_S5kGahtGLyPKgJbhc2ZaLDfmh3IBKD-smledIpK_5r5-5R8t3l9okVmH7gZx7QcRHZVjmA==@protonmail.internalid>
+	<03902487-5cd3-45ed-b3cb-cabfd0ac5cb7@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Tue, 18 Mar 2025 21:17:41 +0100
+Message-ID: <87h63qhz4q.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250318-vec-set-len-v2-0-293d55f82d18@gmail.com> <20250318-vec-set-len-v2-3-293d55f82d18@gmail.com>
-In-Reply-To: <20250318-vec-set-len-v2-3-293d55f82d18@gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 18 Mar 2025 16:16:44 -0400
-X-Gm-Features: AQ5f1JrNJzvMufXDuDwcy3-knbDgaBa1LZbRXxZ-GQ6_SfCau-VUfpThKFTVPb4
-Message-ID: <CAJ-ks9n597+YPap+xMGbMwJ_AUGNRNjB7npaE5dee8SG5W=6iQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] rust: alloc: refactor `Vec::truncate` using `dec_len`
-To: Danilo Krummrich <dakr@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Tue, Mar 18, 2025 at 4:14=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> Use `checked_sub` to satisfy the safety requirements of `dec_len` and
-> replace nearly the whole body of `truncate` with a call to `dec_len`.
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
->  rust/kernel/alloc/kvec.rs | 29 +++++++++++------------------
->  1 file changed, 11 insertions(+), 18 deletions(-)
->
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index 97cc5ab11e2a..6f4dc89ef7f8 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -489,25 +489,18 @@ pub fn reserve(&mut self, additional: usize, flags:=
- Flags) -> Result<(), AllocEr
->      /// # Ok::<(), Error>(())
->      /// ```
->      pub fn truncate(&mut self, len: usize) {
-> -        if len >=3D self.len() {
-> -            return;
-> +        match self.len().checked_sub(len) {
-> +            None =3D> {}
-> +            Some(count) =3D> {
-> +                // SAFETY: `count` is `self.len() - len` so it is guaran=
-teed to be less than or
-> +                // equal to `self.len()`.
-> +                let tail =3D unsafe { self.dec_len(count) };
-> +
-> +                // SAFETY: the contract of `dec_len` guarantees that the=
- elements in `tail` are
-> +                // valid elements whose ownership has been transferred t=
-o the caller.
-> +                unsafe { ptr::drop_in_place(ptr) };
+"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
 
-Whoops, this should be s/ptr/tail/. Will fix on respin if necessary.
+> Hi,
+>
+> On 18/03/2025 15:26, Andreas Hindborg wrote:
+>> Abdiel Janulgue <abdiel.janulgue@gmail.com> writes:
+>>
+>>> Add a simple driver to excercise the basics of the Rust DMA
+>>> coherent allocator bindings.
+>>>
+>>> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+>>> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>>> ---
+>>>   samples/rust/Kconfig     | 11 +++++
+>>>   samples/rust/Makefile    |  1 +
+>>>   samples/rust/rust_dma.rs | 97 ++++++++++++++++++++++++++++++++++++++++
+>>>   3 files changed, 109 insertions(+)
+>>>   create mode 100644 samples/rust/rust_dma.rs
+>>>
+>>> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+>>> index 3b6eae84b297..e2d14aa6beec 100644
+>>> --- a/samples/rust/Kconfig
+>>> +++ b/samples/rust/Kconfig
+>>> @@ -78,4 +78,15 @@ config SAMPLE_RUST_HOSTPROGS
+>>>
+>>>   	  If unsure, say N.
+>>>
+>>> +config SAMPLE_RUST_DRIVER_DMA
+>>> +	tristate "DMA Test Driver"
+>>> +	depends on PCI
+>>> +	help
+>>> +	  This option builds the Rust dma test driver sample.
+>>> +
+>>> +	  To compile this as a module, choose M here:
+>>> +	  the module will be called dma.
+>>> +
+>>> +	  If unsure, say N.
+>>> +
+>>>   endif # SAMPLES_RUST
+>>> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+>>> index 0dbc6d90f1ef..1a9aff6e8d6a 100644
+>>> --- a/samples/rust/Makefile
+>>> +++ b/samples/rust/Makefile
+>>> @@ -7,6 +7,7 @@ obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+>>>   obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
+>>>   obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
+>>>   obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
+>>> +obj-$(CONFIG_SAMPLE_RUST_DRIVER_DMA)		+= rust_dma.o
+>>>
+>>>   rust_print-y := rust_print_main.o rust_print_events.o
+>>>
+>>> diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
+>>> new file mode 100644
+>>> index 000000000000..1740140faba6
+>>> --- /dev/null
+>>> +++ b/samples/rust/rust_dma.rs
+>>> @@ -0,0 +1,97 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +//! Rust DMA api test (based on QEMU's `pci-testdev`).
+>>> +//!
+>>> +//! To make this driver probe, QEMU must be run with `-device pci-testdev`.
+>>> +
+>>> +use kernel::{bindings, dma::CoherentAllocation, pci, prelude::*};
+>>> +
+>>> +struct DmaSampleDriver {
+>>> +    pdev: pci::Device,
+>>> +    ca: CoherentAllocation<MyStruct>,
+>>> +}
+>>> +
+>>> +const TEST_VALUES: [(u32, u32); 5] = [
+>>> +    (0xa, 0xb),
+>>> +    (0xc, 0xd),
+>>> +    (0xe, 0xf),
+>>> +    (0xab, 0xba),
+>>> +    (0xcd, 0xef),
+>>> +];
+>>> +
+>>> +struct MyStruct {
+>>> +    h: u32,
+>>> +    b: u32,
+>>> +}
+>>> +
+>>> +impl MyStruct {
+>>> +    fn new(h: u32, b: u32) -> Self {
+>>> +        Self { h, b }
+>>> +    }
+>>> +}
+>>> +// SAFETY: All bit patterns are acceptable values for `MyStruct`.
+>>> +unsafe impl kernel::transmute::AsBytes for MyStruct {}
+>>> +// SAFETY: Instances of `MyStruct` have no uninitialized portions.
+>>> +unsafe impl kernel::transmute::FromBytes for MyStruct {}
+>>> +
+>>> +kernel::pci_device_table!(
+>>> +    PCI_TABLE,
+>>> +    MODULE_PCI_TABLE,
+>>> +    <DmaSampleDriver as pci::Driver>::IdInfo,
+>>> +    [(
+>>> +        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
+>>> +        ()
+>>> +    )]
+>>> +);
+>>> +
+>>> +impl pci::Driver for DmaSampleDriver {
+>>> +    type IdInfo = ();
+>>> +    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+>>> +
+>>> +    fn probe(pdev: &mut pci::Device, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
+>>> +        dev_info!(pdev.as_ref(), "Probe DMA test driver.\n");
+>>> +
+>>> +        let ca: CoherentAllocation<MyStruct> =
+>>> +            CoherentAllocation::alloc_coherent(pdev.as_ref(), TEST_VALUES.len(), GFP_KERNEL)?;
+>>> +
+>>> +        || -> Result {
+>>> +            for (i, value) in TEST_VALUES.into_iter().enumerate() {
+>>> +                kernel::dma_write!(ca[i] = MyStruct::new(value.0, value.1));
+>>> +            }
+>>> +
+>>> +            Ok(())
+>>> +        }()?;
+>>
+>> Why is this placed in a closure? Left over from deferred error for pin-init?
+>>
+>
+> The macro expands into a block which needs to validate the function
+> item_from_index()?
 
-> +            }
->          }
-> -
-> -        let drop_range =3D len..self.len();
-> -
-> -        // SAFETY: `drop_range` is a subrange of `[0, len)` by the bound=
-s check above.
-> -        let ptr: *mut [T] =3D unsafe { self.get_unchecked_mut(drop_range=
-) };
-> -
-> -        // SAFETY:
-> -        // - this will always shrink the vector because of the above bou=
-nds check
-> -        // - [`new_len`, `self.len`) will be dropped through the call to=
- `drop_in_place` below
-> -        unsafe { self.set_len(len) };
-> -
-> -        // SAFETY:
-> -        // - the dropped values are valid `T`s by the type invariant
-> -        // - we are allowed to invalidate [`new_len`, `old_len`) because=
- we just changed the
-> -        //   len, therefore we have exclusive access to [`new_len`, `old=
-_len`)
-> -        unsafe { ptr::drop_in_place(ptr) };
->      }
->  }
+It is not required here, since we are already in a function that returns
+result.
+
 >
+>>> +
+>>> +        let drvdata = KBox::new(
+>>> +            Self {
+>>> +                pdev: pdev.clone(),
+>>> +                ca,
+>>> +            },
+>>> +            GFP_KERNEL,
+>>> +        )?;
+>>> +
+>>> +        Ok(drvdata.into())
+>>> +    }
+>>> +}
+>>> +
+>>> +impl Drop for DmaSampleDriver {
+>>> +    fn drop(&mut self) {
+>>> +        dev_info!(self.pdev.as_ref(), "Unload DMA test driver.\n");
+>>> +
+>>> +        let _ = || -> Result {
+>>> +            for (i, value) in TEST_VALUES.into_iter().enumerate() {
+>>> +                assert_eq!(kernel::dma_read!(self.ca[i].h), value.0);
+>>> +                assert_eq!(kernel::dma_read!(self.ca[i].b), value.1);
+>>
+>> We should probably change `dma_read!`/`dma_write!` to return `Result`,
+>> so that we don't have to wrap these calls in a closure for obscure reasons.
+>>
 >
-> --
-> 2.48.1
->
+> Changing `dma_read!`/`dma_write!` to return `Result` is probably not a
+> trivial change, would it be okay to have this fixed in a subsequent patch?
+
+It is actually trivial:
+
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index 027ef75a461a..52d235f61886 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -446,20 +446,22 @@ fn drop(&mut self) {
+ #[macro_export]
+ macro_rules! dma_read {
+     ($dma:expr, $idx: expr, $($field:tt)*) => {{
+-        let item = $crate::dma::CoherentAllocation::item_from_index(&$dma, $idx)?;
+-        // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
+-        // dereferenced. The compiler also further validates the expression on whether `field`
+-        // is a member of `item` when expanded by the macro.
+-        unsafe {
+-            let ptr_field = ::core::ptr::addr_of!((*item) $($field)*);
+-            $crate::dma::CoherentAllocation::field_read(&$dma, ptr_field)
+-        }
++        (|| -> Result<_> {
++            let item = $crate::dma::CoherentAllocation::item_from_index(&$dma, $idx)?;
++            // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
++            // dereferenced. The compiler also further validates the expression on whether `field`
++            // is a member of `item` when expanded by the macro.
++            unsafe {
++                let ptr_field = ::core::ptr::addr_of!((*item) $($field)*);
++                ::core::result::Result::Ok($crate::dma::CoherentAllocation::field_read(&$dma, ptr_field))
++            }
++        })()
+     }};
+     ($dma:ident [ $idx:expr ] $($field:tt)* ) => {
+-        $crate::dma_read!($dma, $idx, $($field)*);
++        $crate::dma_read!($dma, $idx, $($field)*)
+     };
+     ($($dma:ident).* [ $idx:expr ] $($field:tt)* ) => {
+-        $crate::dma_read!($($dma).*, $idx, $($field)*);
++        $crate::dma_read!($($dma).*, $idx, $($field)*)
+     };
+ }
+ 
+@@ -486,25 +488,31 @@ macro_rules! dma_read {
+ #[macro_export]
+ macro_rules! dma_write {
+     ($dma:ident [ $idx:expr ] $($field:tt)*) => {{
+-        $crate::dma_write!($dma, $idx, $($field)*);
++        $crate::dma_write!($dma, $idx, $($field)*)
+     }};
+     ($($dma:ident).* [ $idx:expr ] $($field:tt)* ) => {{
+-        $crate::dma_write!($($dma).*, $idx, $($field)*);
++        $crate::dma_write!($($dma).*, $idx, $($field)*)
+     }};
+     ($dma:expr, $idx: expr, = $val:expr) => {
+-        let item = $crate::dma::CoherentAllocation::item_from_index(&$dma, $idx)?;
+-        // SAFETY: `item_from_index` ensures that `item` is always a valid item.
+-        unsafe { $crate::dma::CoherentAllocation::field_write(&$dma, item, $val) }
++        (|| -> Result {
++            let item = $crate::dma::CoherentAllocation::item_from_index(&$dma, $idx)?;
++            // SAFETY: `item_from_index` ensures that `item` is always a valid item.
++            unsafe { $crate::dma::CoherentAllocation::field_write(&$dma, item, $val) }
++            ::core::result::Result::Ok(())
++        })()
+     };
+     ($dma:expr, $idx: expr, $(.$field:ident)* = $val:expr) => {
+-        let item = $crate::dma::CoherentAllocation::item_from_index(&$dma, $idx)?;
+-        // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
+-        // dereferenced. The compiler also further validates the expression on whether `field`
+-        // is a member of `item` when expanded by the macro.
+-        unsafe {
+-            let ptr_field = ::core::ptr::addr_of_mut!((*item) $(.$field)*);
+-            $crate::dma::CoherentAllocation::field_write(&$dma, ptr_field, $val)
+-        }
++        (|| -> Result {
++            let item = $crate::dma::CoherentAllocation::item_from_index(&$dma, $idx)?;
++            // SAFETY: `item_from_index` ensures that `item` is always a valid pointer and can be
++            // dereferenced. The compiler also further validates the expression on whether `field`
++            // is a member of `item` when expanded by the macro.
++            unsafe {
++                let ptr_field = ::core::ptr::addr_of_mut!((*item) $(.$field)*);
++                $crate::dma::CoherentAllocation::field_write(&$dma, ptr_field, $val)
++            }
++            ::core::result::Result::Ok(())
++        })()
+     };
+ }
+ 
+diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
+index 39b6050aa3b6..962e65322893 100644
+--- a/samples/rust/rust_dma.rs
++++ b/samples/rust/rust_dma.rs
+@@ -61,13 +61,10 @@ fn probe(pdev: &mut pci::Device, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>
+         let ca: CoherentAllocation<MyStruct> =
+             CoherentAllocation::alloc_coherent(pdev, TEST_VALUES.len(), GFP_KERNEL)?;
+ 
+-        || -> Result {
+-            for (i, value) in TEST_VALUES.into_iter().enumerate() {
+-                kernel::dma_write!(ca[i] = MyStruct::new(value.0, value.1));
+-            }
++        for (i, value) in TEST_VALUES.into_iter().enumerate() {
++            kernel::dma_write!(ca[i] = MyStruct::new(value.0, value.1))?;
++        }
+ 
+-            Ok(())
+-        }()?;
+ 
+         let drvdata = KBox::new(
+             Self {
+@@ -85,13 +82,10 @@ impl Drop for DmaSampleDriver {
+     fn drop(&mut self) {
+         dev_info!(self.pdev.as_ref(), "Unload DMA test driver.\n");
+ 
+-        let _ = || -> Result {
+-            for (i, value) in TEST_VALUES.into_iter().enumerate() {
+-                assert_eq!(kernel::dma_read!(self.ca[i].h), value.0);
+-                assert_eq!(kernel::dma_read!(self.ca[i].b), value.1);
+-            }
+-            Ok(())
+-        }();
++        for (i, value) in TEST_VALUES.into_iter().enumerate() {
++            assert_eq!(kernel::dma_read!(self.ca[i].h).unwrap(), value.0);
++            assert_eq!(kernel::dma_read!(self.ca[i].b).unwrap(), value.1);
++        }
+     }
+ }
+ 
+
+
+
+Best regards,
+Andreas Hindborg
+
+
