@@ -1,65 +1,65 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137D81F3BBF;
-	Tue, 18 Mar 2025 20:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCF81C5F3F;
+	Tue, 18 Mar 2025 20:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742328654; cv=none; b=sA42MQqLngM0l2eAM7Su9GSGXc6ZU2/UIk/DrP3kAYgAuWEMxZxtXPSgPdQoDfELjoRz9/o5WERwqiG/Loxnt6K3aYwS591wYGLrbIYjuocFZGdhhvVSJkH7l5imm36PQ3TLDSlKMhDBsegs7RIjwe6IKeULIuRa4NHJBlclcU8=
+	t=1742328787; cv=none; b=SgjVSeHW8rdpcNbPXsX1FdLawn2syFOq+jFMGaXDg+nV5nv7BL1zsNLJiTPciAYuq5CzBsqYlIZMbJ/p+4v9P1SsVFA3cGYpXXjmgGcr4Z1+9yEorf6KxuWCT2QfKWGuP4YtivhwbHy5KRj7skluCMfJznH5CtZuQg9vPNehG2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742328654; c=relaxed/simple;
-	bh=MuOtSCFgT6oU2AfS4IrhM0OgvY3M4O39QSynVA19Lr0=;
+	s=arc-20240116; t=1742328787; c=relaxed/simple;
+	bh=/knEF0guqSOeoMQAPj8xw00aC7XkPldoxcZPhDGnIqw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sa+Phar+DRnsI+F63vbDkwCbUp4GjfMtjqOKvMrY350+CaJ/fNuYClauTZ6/UuMMLWPlw046sSTxX/XoabRn5euCJAxSUfzdoXB+FlJebLKNGBtk4v3YHMfFTL3pUnovgJgAKsoBAyvUs1EPIfz54Ob6wY/Y/NwROGSSKEo+66s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KJrhF322; arc=none smtp.client-ip=209.85.208.48
+	 In-Reply-To:Content-Type; b=WlnvzDG1iV5P/lv47oTHbKGBeLgYpm34Ad98KwE0dtAy26UVF+84bR4VEZWF/UCsGGmI44wZxSDgSk90lJSqE/i9Cdo8IpnbyuZkCl9xqy0gVpAsDfKoVc+aj3hQdCscH950rb8aCWUaVY54ttXObUpjHknI+7ZBMOoYYbgCsos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zpj9rGkq; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KJrhF322"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5e5cded3e2eso8794753a12.0;
-        Tue, 18 Mar 2025 13:10:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zpj9rGkq"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ab78e6edb99so934325166b.2;
+        Tue, 18 Mar 2025 13:13:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742328650; x=1742933450; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742328784; x=1742933584; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=mY0uTsE5W1MbRnFgT/d+FEqF/DZDYn9yCiKZzqzSmlc=;
-        b=KJrhF322O0aN7CreZTdZD/fS1dhO+GAKkqrZQelIRyBsVWqwewyrUF95VcA4rxokLq
-         pxk3mEBWfPv9a/7godxBwzgjbvE1n/+t/6TMioJDP4Uh7YEVNqzITKACex1+LDGC93x6
-         fPJesJM+SPMIrT7DQJUVxGLBdKlTYx8mKe4gxDwEIzbpSHXyyeAqzG8pD0E2PYg+ssjP
-         1MgRzPYTzat6oRpL/uVL9Juh9UaFRXDIsctGE2DnJLeuI5M5Ct5FjcMAlh8rQdycqbnt
-         +AJMIMQoczrZF1UEqfUUVqVb4vMn/CH3ZsXyEiPFexL3efplFd9//W8zdzEZeKs9tlZY
-         B7IQ==
+        bh=+8svpLKvB6wZO5NP+nLCuQJd0zpfjUO62j2bUZj/+dM=;
+        b=Zpj9rGkqdKAGgu8BxN86rfqDLXPcriH9HB0CLoO8pM9pdLqvuExc2PU6y6fEISjZv4
+         qU5ZDDbgoSmEnhAaxeAW6R4X5poJphDpZfOM12FebOqCDXVL4PU1k77p1ngJV7FDqnVd
+         yRTf7JXKAwv+s6veH6uyQnbLBdjbOa9XhOKSGblP+4BSXetq3v618cZk4MoSNLiK8tc6
+         px/38iofU77OvrnfHDJbYFOATnI7ekwYzTF/PaETIM1BNrqmuBlBtVM6G1BJZMaLbxzm
+         k+hZQPnY7P1mlSkzT+sbO30/J+hrlgP20DxLN1CMrpnmvAZm0Auea4XgFziahJ/Ob8ve
+         eC2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742328650; x=1742933450;
+        d=1e100.net; s=20230601; t=1742328784; x=1742933584;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mY0uTsE5W1MbRnFgT/d+FEqF/DZDYn9yCiKZzqzSmlc=;
-        b=gePiDWxdTuuGuwUuIWStyBqvRj1yxza0du+igILcMTHxlcGRH6mAPfXGXcFOYTEI5J
-         J8t48KQLKHyGyDMyDUASIWIdOUEUO5V8zmigztyiDp9utzbtM7XN7Jqse2Y/WM+fuswK
-         EVvNYrv2R5WQJQt7p+gpy2w575qw/mqUuJTtL8imaCtYrMuTYQ0S3CKt9lCQpNX07cem
-         c6ElqUpmFsFufglwIGCR1uwY46q+/c55G3kNQ2Fx0r6iIrK5FsQb4QNvErI8X9H0842P
-         5xmvjYKYnizeLAFooDuvHPlNt/l8Jhpmj22QQ5tOFVs8oYyAEoD/vyuT8UDrgjV+S83w
-         5bOg==
-X-Forwarded-Encrypted: i=1; AJvYcCV2KabocyGexbNjV2h61RQpJVhNQXHoiyW3JP/WYwjuOpLReDENubzK5XDk2518UKySHMS+Z/1uZKVTsTMHJkA=@vger.kernel.org, AJvYcCWrXS3Z1djUbmcOIRVqhrkWY/iZZkmY68j96kT2gOHLVSFfWw2r1uTKPwAvndKnRelvWDciJMSfNgJAc0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEkbTcom6XtqXCj7Lef61tDnp3Crx8jRgdtxlGtMfqZACiIvAL
-	52ag3teAXEgMrZM+aP56yA2k/oN6g6ualwSGLEclIZxmZgk1QoO2
-X-Gm-Gg: ASbGncsLlj+ITIzCMIOesJwQCNA9QCaGZi0yfAJ+7Zi4qgJvRHp+OniLlNVfkxV0GsG
-	REjlohQZ15JT7OaTdY8UNm7pBL2L5lh/tHqiGK+CtXSe5wd43L+doDvzaFJXp2oQ141F38hx88g
-	zOqdzqjrlyDfoOnw1yft1pHg2Vnhpz9w/N/QcSWueA96m5TMrWBkmBEetn9aPTBQdQhBII4mstq
-	WK1KL43eemMr4D+NF2umgLP2ciDr2hX5QReGt9D6w0nH0LHkNslqN/GmJ7gG/iNDjuX5D1zvJKn
-	U+MUZGXpxW6bnYAs8X9wArNMpteJT3rPi1S3ktRu9+9Fj4i3qpaVhr4r69HXy/4egKRSl84kB3M
-	aKu/1kiio
-X-Google-Smtp-Source: AGHT+IFWib8MSZ6xi4u+fbeJ9cQuBQYTxvfhxqqj+550jUZ+pU7bmki+LtZfhKd/IZwPgZ0RpKwGhw==
-X-Received: by 2002:a05:6402:348b:b0:5e4:a88a:64e with SMTP id 4fb4d7f45d1cf-5eb80cdc9d9mr55922a12.5.1742328649944;
-        Tue, 18 Mar 2025 13:10:49 -0700 (PDT)
+        bh=+8svpLKvB6wZO5NP+nLCuQJd0zpfjUO62j2bUZj/+dM=;
+        b=Wm/AC52eUF3aZiuiRq2Pd2fIBRnhqObdiRciN/ufQzuTyqDw/GZ/3FIEvR6JFyF8lF
+         zNmt6ZxHQysPVT1sjB5Ksvi2GS5Zrc50v92/hPyfH7Y4Tp2MJSNGKhb8nQW+NSwhhyC6
+         OAeWcEPTjq/QDj6ub8fN0WyEyCQl8PILl42txRuWCxnkoTzBW6tb1Q1uCIu7Pu+OxYiY
+         OR5C1ObVgPEDDhkxPlmo/doXTUwqtyaoMkjju1eu0eFDMiDWq+NS41t7LIY0+GeFfjwI
+         TOU8IRC8C4yV84KnoeXUQvUXVCVTABUcZD/gbmg8Mvr1DhRhwv6X4eUCXoAuZIpKxR5t
+         x3EA==
+X-Forwarded-Encrypted: i=1; AJvYcCXTjmz24j6orI32ZmMojdqu6BGUoShozKE1zFjs65E+/qIKcSuov9NeDKbLxtLuIBGXyGZzIloAbCR/c2v/9M0=@vger.kernel.org, AJvYcCXkA89jhLWzHJ3leSdxR/GLDdnlz9eErCGNNZo6p2owUsKz5pYs5o5r+45FkY/Ei23GnA9kXL9fHJ0s+4A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq1YWc/SxrHRxAgnYTispE2i9u2KnGWzVgVQ2mYnGwJ8tPhj4a
+	cv/nxK6QHRREbOGiHAdnLm84ppvQSvdQCi+f7Lj4HKsU1vmO0rla
+X-Gm-Gg: ASbGnctrE/eCZnOX4SpDWmmz9KpVi6JgZKBLwQZcD0/WoMGrFf0OJJ0zpKS/U3nItUX
+	VzeT/Zkypr45CguLGUTrs60GrKx+UMkwwrYw6V6W3EheB2W1ecGCFCzyU84ZZF+cP2kT75K6Sj2
+	6+PHtu9wX24hqcMmrii2nVKzlM5CcZXhqJkK2Yfe4Ci9eudCrSV00Gp9xxZmfRJ5veMg4IUp+aG
+	tEli0M7NvTXUhqbZTpy5MRBdhGQycuog8KU6Y2iVhFiIeORqT18taJc5fGqwp8WuLog7Ym1SpqP
+	3qOS5BIvZsNvX/WNLXtkpTHA/aH/+cohvGggZiODyW1wmjraXocPwE1SUBy3pxFmPiak0SDQmcm
+	SoAGyDNef
+X-Google-Smtp-Source: AGHT+IEih5PPbGW303DwvPnaiIJ82tx/gYZKhfbTc7QmbLW7Iemm29mn/aZPJz75DE6oKj3W5l+YLw==
+X-Received: by 2002:a17:907:7241:b0:abf:4708:8644 with SMTP id a640c23a62f3a-ac330444cb9mr1969810966b.43.1742328783458;
+        Tue, 18 Mar 2025 13:13:03 -0700 (PDT)
 Received: from [10.1.1.5] (93-82-55-26.adsl.highway.telekom.at. [93.82.55.26])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816ad394fsm8380457a12.58.2025.03.18.13.10.48
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3146aed4fsm891156266b.26.2025.03.18.13.13.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Mar 2025 13:10:49 -0700 (PDT)
-Message-ID: <123de698-190f-460c-af8c-e51bcd948c0f@gmail.com>
-Date: Tue, 18 Mar 2025 21:10:47 +0100
+        Tue, 18 Mar 2025 13:13:02 -0700 (PDT)
+Message-ID: <439baec2-dba8-4dab-abb5-faa14fbda943@gmail.com>
+Date: Tue, 18 Mar 2025 21:13:01 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] rust: iov: add iov_iter abstractions for ITER_SOURCE
+Subject: Re: [PATCH 2/5] rust: iov: add iov_iter abstractions for ITER_DEST
 To: Alice Ryhl <aliceryhl@google.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Alexander Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>,
@@ -80,10 +80,10 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
 References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
- <20250311-iov-iter-v1-1-f6c9134ea824@google.com>
+ <20250311-iov-iter-v1-2-f6c9134ea824@google.com>
 Content-Language: en-US, de-DE
 From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20250311-iov-iter-v1-1-f6c9134ea824@google.com>
+In-Reply-To: <20250311-iov-iter-v1-2-f6c9134ea824@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
@@ -91,8 +91,8 @@ Hi Alice
 
 On 11.03.25 3:25 PM, Alice Ryhl wrote:
 > This adds abstractions for the iov_iter type in the case where
-> data_source is ITER_SOURCE. This will make Rust implementations of
-> fops->write_iter possible.
+> data_source is ITER_DEST. This will make Rust implementations of
+> fops->read_iter possible.
 > 
 > This series only has support for using existing IO vectors created by C
 > code. Additional abstractions will be needed to support the creation of
@@ -102,87 +102,83 @@ On 11.03.25 3:25 PM, Alice Ryhl wrote:
 > have internal self-references, which implies that it is valid to move it
 > between different local variables, and that you can make a copy of it to
 > get two IO vectors into the same buffers.
-
-Would it make sense to add comments in the C side `struct iov_iter` for
-these assumptions?
-
 > 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/kernel/iov.rs | 170 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs |   1 +
->  2 files changed, 171 insertions(+)
+>  rust/kernel/iov.rs | 140 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 139 insertions(+), 1 deletion(-)
 > 
 > diff --git a/rust/kernel/iov.rs b/rust/kernel/iov.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..4498f65e1f65bd964909810c020db3a9f8fae389
-> --- /dev/null
+> index 4498f65e1f65bd964909810c020db3a9f8fae389..dc32c27c5c76d059562fd7c6b9d4b178a8ea7c81 100644
+> --- a/rust/kernel/iov.rs
 > +++ b/rust/kernel/iov.rs
-> @@ -0,0 +1,170 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2025 Google LLC.
-> +
-> +//! IO vectors.
-> +//!
-> +//! C headers: [`include/linux/iov_iter.h`](srctree/include/linux/iov_iter.h),
-> +//! [`include/linux/uio.h`](srctree/include/linux/uio.h)
-> +
-> +use crate::{bindings, prelude::*, types::Opaque};
-> +use core::{marker::PhantomData, mem::MaybeUninit, slice};
-> +
-> +const ITER_SOURCE: bool = bindings::ITER_SOURCE != 0;
-> +const ITER_DEST: bool = bindings::ITER_DEST != 0;
-> +
-> +// Compile-time assertion for the above constants.
-> +const _: () = {
-> +    if ITER_SOURCE == ITER_DEST {
-> +        panic!("ITER_DEST and ITER_SOURCE should be different.");
-> +    }
+> @@ -7,7 +7,12 @@
+>  //! C headers: [`include/linux/iov_iter.h`](srctree/include/linux/iov_iter.h),
+>  //! [`include/linux/uio.h`](srctree/include/linux/uio.h)
+>  
+> -use crate::{bindings, prelude::*, types::Opaque};
+> +use crate::{
+> +    alloc::{Allocator, Flags},
+> +    bindings,
+> +    prelude::*,
+> +    types::Opaque,
 > +};
+>  use core::{marker::PhantomData, mem::MaybeUninit, slice};
+>  
+>  const ITER_SOURCE: bool = bindings::ITER_SOURCE != 0;
+> @@ -168,3 +173,136 @@ fn clone(&self) -> IovIterSource<'data> {
+>          unsafe { core::ptr::read(self) }
+>      }
+>  }
 > +
-> +/// An IO vector that acts as a source of data.
+> +/// An IO vector that acts as a destination for data.
 > +///
 > +/// # Invariants
 > +///
-> +/// Must hold a valid `struct iov_iter` with `data_source` set to `ITER_SOURCE`. The buffers
-> +/// referenced by the IO vector must be valid for reading for the duration of `'data`.
+> +/// Must hold a valid `struct iov_iter` with `data_source` set to `ITER_DEST`. The buffers
+> +/// referenced by the IO vector must be valid for writing for the duration of `'data`.
 > +///
 > +/// Note that if the IO vector is backed by a userspace pointer, it is always considered valid for
-> +/// reading.
+> +/// writing.
 > +#[repr(transparent)]
-> +pub struct IovIterSource<'data> {
+> +pub struct IovIterDest<'data> {
 > +    iov: Opaque<bindings::iov_iter>,
-> +    /// Represent to the type system that this value contains a pointer to readable data it does
+> +    /// Represent to the type system that this value contains a pointer to writable data it does
 > +    /// not own.
-> +    _source: PhantomData<&'data [u8]>,
+> +    _source: PhantomData<&'data mut [u8]>,
 > +}
+
+It might be a bit nicer to add a (private) struct 'IovIter' that implements the common operations.
+Then 'IovIterDest' and 'IovIterSource' could store that struct and forward the implementations to 
+it.
+But I'm not sure if that's really much better.
+
 > +
-> +// SAFETY: This struct is essentially just a fancy `std::io::Cursor<&[u8]>`, and that type is safe
-> +// to send across thread boundaries.
-> +unsafe impl<'data> Send for IovIterSource<'data> {}
-> +// SAFETY: This struct is essentially just a fancy `std::io::Cursor<&[u8]>`, and that type is safe
-> +// to share across thread boundaries.
-> +unsafe impl<'data> Sync for IovIterSource<'data> {}
+> +// SAFETY: This struct is essentially just a fancy `std::io::Cursor<&mut [u8]>`, and that type is
+> +// safe to send across thread boundaries.
+> +unsafe impl<'data> Send for IovIterDest<'data> {}
+> +// SAFETY: This struct is essentially just a fancy `std::io::Cursor<&mut [u8]>`, and that type is
+> +// safe to share across thread boundaries.
+> +unsafe impl<'data> Sync for IovIterDest<'data> {}
 > +
-> +impl<'data> IovIterSource<'data> {
-> +    /// Obtain an `IovIterSource` from a raw pointer.
+> +impl<'data> IovIterDest<'data> {
+> +    /// Obtain an `IovIterDest` from a raw pointer.
 > +    ///
 > +    /// # Safety
 > +    ///
 > +    /// * For the duration of `'iov`, the `struct iov_iter` must remain valid and must not be
 > +    ///   accessed except through the returned reference.
 > +    /// * For the duration of `'data`, the buffers backing this IO vector must be valid for
-> +    ///   reading.
+> +    ///   writing.
 > +    #[track_caller]
 > +    #[inline]
-> +    pub unsafe fn from_raw<'iov>(ptr: *mut bindings::iov_iter) -> &'iov mut IovIterSource<'data> {
+> +    pub unsafe fn from_raw<'iov>(ptr: *mut bindings::iov_iter) -> &'iov mut IovIterDest<'data> {
 > +        // SAFETY: The caller ensures that `ptr` is valid.
 > +        let data_source = unsafe { (*ptr).data_source };
-> +        assert_eq!(data_source, ITER_SOURCE);
+> +        assert_eq!(data_source, ITER_DEST);
 > +
 > +        // SAFETY: The caller ensures the struct invariants for the right durations.
-> +        unsafe { &mut *ptr.cast::<IovIterSource<'data>>() }
+> +        unsafe { &mut *ptr.cast::<IovIterDest<'data>>() }
 > +    }
 > +
 > +    /// Access this as a raw `struct iov_iter`.
@@ -206,9 +202,6 @@ these assumptions?
 > +                .count
 > +        }
 > +    }
-
-Maybe add a C helper to avoid having to use '__bindgen_anon_1'?
-
 > +
 > +    /// Returns whether there are any bytes left in this IO vector.
 > +    ///
@@ -239,73 +232,44 @@ Maybe add a C helper to avoid having to use '__bindgen_anon_1'?
 > +        unsafe { bindings::iov_iter_revert(self.as_raw(), bytes) };
 > +    }
 > +
-> +    /// Read data from this IO vector.
+> +    /// Write data to this IO vector.
 > +    ///
-> +    /// Returns the number of bytes that have been copied.
+> +    /// Returns the number of bytes that were written. If this is shorter than the provided slice,
+> +    /// then no more bytes can be written.
 > +    #[inline]
-> +    pub fn copy_from_iter(&mut self, out: &mut [u8]) -> usize {
-> +        // SAFETY: We will not write uninitialized bytes to `out`.
-> +        let out = unsafe { &mut *(out as *mut [u8] as *mut [MaybeUninit<u8>]) };
-> +
-> +        self.copy_from_iter_raw(out).len()
+> +    pub fn copy_to_iter(&mut self, input: &[u8]) -> usize {
+> +        // SAFETY: `input` is valid for `input.len()` bytes.
+> +        unsafe { bindings::_copy_to_iter(input.as_ptr().cast(), input.len(), self.as_raw()) }
 > +    }
 > +
-> +    /// Read data from this IO vector and append it to a vector.
+> +    /// Utility for implementing `read_iter` given the full contents of the file.
 > +    ///
-> +    /// Returns the number of bytes that have been copied.
+> +    /// The full contents of the file being read from is represented by `contents`. This call will
+> +    /// write the appropriate sub-slice of `contents` and update the file position in `ppos` so
+> +    /// that the file will appear to contain `contents` even if takes multiple reads to read the
+> +    /// entire file.
 > +    #[inline]
-> +    pub fn copy_from_iter_vec<A: Allocator>(
-> +        &mut self,
-> +        out: &mut Vec<u8, A>,
-> +        flags: Flags,
-> +    ) -> Result<usize> {
-> +        out.reserve(self.len(), flags)?;
-> +        let len = self.copy_from_iter_raw(out.spare_capacity_mut()).len();
-> +        // SAFETY: The next `len` bytes of the vector have been initialized.
-> +        unsafe { out.set_len(out.len() + len) };
-> +        Ok(len)
-> +    }
+> +    pub fn simple_read_from_buffer(&mut self, ppos: &mut i64, contents: &[u8]) -> Result<usize> {
+> +        if *ppos < 0 {
+> +            return Err(EINVAL);
+> +        }
+> +        let Ok(pos) = usize::try_from(*ppos) else {
+> +            return Ok(0);
+> +        };
+> +        if pos >= contents.len() {
+> +            return Ok(0);
+> +        }
 > +
-> +    /// Read data from this IO vector into potentially uninitialized memory.
-> +    ///
-> +    /// Returns the sub-slice of the output that has been initialized. If the returned slice is
-> +    /// shorter than the input buffer, then the entire IO vector has been read.
-> +    #[inline]
-> +    pub fn copy_from_iter_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> &mut [u8] {
-> +        // SAFETY: `out` is valid for `out.len()` bytes.
-> +        let len =
-> +            unsafe { bindings::_copy_from_iter(out.as_mut_ptr().cast(), out.len(), self.as_raw()) };
+> +        // BOUNDS: We just checked that `pos < contents.len()` above.
+> +        let num_written = self.copy_to_iter(&contents[pos..]);
 > +
-> +        // SAFETY: We just initialized the first `len` bytes of `out`.
-> +        unsafe { slice::from_raw_parts_mut(out.as_mut_ptr().cast(), len) }
+> +        // OVERFLOW: pos+num_written <= contents.len() <= isize::MAX <= i64::MAX
+> +        *ppos = (pos + num_written) as i64;
+> +
+> +        Ok(num_written)
 > +    }
 > +}
-> +
-> +impl<'data> Clone for IovIterSource<'data> {
-> +    #[inline]
-> +    fn clone(&self) -> IovIterSource<'data> {
-> +        // SAFETY: This duplicates the bytes inside the `Opaque` value exactly. Since `struct
-> +        // iov_iter` does not have any internal self references, that is okay.
-> +        //
-> +        // Since this IO vector only reads from the backing buffers, having multiple IO vectors to
-> +        // the same source can't lead to data races on the backing buffers.
-> +        unsafe { core::ptr::read(self) }
-> +    }
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 398242f92a961c3a445d681c65449047a847968a..de9d6e797953cb69637eef127997b1f357f3f90b 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -53,6 +53,7 @@
->  pub mod init;
->  pub mod io;
->  pub mod ioctl;
-> +pub mod iov;
->  pub mod jump_label;
->  #[cfg(CONFIG_KUNIT)]
->  pub mod kunit;
-> 
+
 
 Cheers
 Christian
-
