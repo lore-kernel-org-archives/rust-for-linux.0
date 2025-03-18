@@ -1,142 +1,137 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F4520C47B;
-	Tue, 18 Mar 2025 14:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EF720FAB6;
+	Tue, 18 Mar 2025 14:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742309460; cv=none; b=ONqKOHSg6g/6SLLUlU+eAp3dXyys11vaTYAcazGmoygRZw6OnW2x5rOoi3N82+Ihhu3JjqBEa3sOAO5S6qGCx8W6Gblpc8G4h89WXs4MLzpYzr7XvoL9IQT+XwKd1SAVn8DM11GyxUxddsRvdyQcIPUhkrKDmFf6qZFTZLDTFS8=
+	t=1742309571; cv=none; b=dUiTqrrhoKK+oENoG27bnVGNEHWBU5/qToflDjYXCXkjKhc1eI2cul2L9VQDo6EDS0vu+0DLnxn1qp7CpqDJAVwFY9Lkow/xQ1kOPPD/6gu1O5fwXgbJ8FB9cYZBRbnKluqzWdAJFEvsv/ghTBwlH4XgsF/c33X14sLvhu7hbBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742309460; c=relaxed/simple;
-	bh=AV1Nxik7JBkOIVEYVNlGI3SIY7/qAIdx7hP6IDQ9sHw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SRl+OVte8SUGGPwHWkXPDlpKeb2iWjvrUE4DoaOkxTeXjjFjTezXgajuD2H/PMagzETa5qoA3pzhPZUjRUbknORw2dHT5TYa25NCxwZXM2PJZP9fo707RQljZpiWHgR0baqr9KYIqHoszbFQdD37ioYe2mUsuqYsKz/iIjE9SsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H4oxc0Pv; arc=none smtp.client-ip=209.85.208.176
+	s=arc-20240116; t=1742309571; c=relaxed/simple;
+	bh=jhdYduB08vMcvK+n7n7kk7gvV2VFtq1KBexVwfFXt/Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GWaZc4IUc5szs919X6l5zgsgsiwbYg37+7ZkCjYQ2O7myEzm5NESlrOTyH7Yq3VWofGdNOVo3QLIIt9vm8G8rMZM4A+uI7OdzhWtk4aFxoO0CXVYZLpM1B90hAoGRXBXIR2RQWCPGedVRcsWSLMfmshjh66ApmU3SEaoaHc+dgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ak9DBRlL; arc=none smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H4oxc0Pv"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30bf3f3539dso57204491fa.1;
-        Tue, 18 Mar 2025 07:50:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ak9DBRlL"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6e900a7ce55so78627396d6.3;
+        Tue, 18 Mar 2025 07:52:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742309453; x=1742914253; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AV1Nxik7JBkOIVEYVNlGI3SIY7/qAIdx7hP6IDQ9sHw=;
-        b=H4oxc0PvCeDDPsJArDnxVmZV9LI/er2Ez4zQlfQ+13cnk0XCAq6B5b7Usw1GoNraT/
-         GoFSGsMEVCME632Cus2a4lW42GDMNbqqHCX0QHdsZpPJtxoE8qjUYA4HhvenrVzRB0mY
-         AcgcSlNhPkCBpmfpPZmnMPPn24FeBzlFPkOZVMWpbNI4VHrkmxcm19PCbXrjG9/pZS2G
-         I6KX7ifVLYFi0+AaAeVjl8m19ALMKRcat7BVa8G+YByo7nb9psRgvJbrywSd4s2uNKat
-         XLEpmNyJyvgVOGoT6BqHZDmDSfqKZ3xzyliK/Pp6BAO8GnESgwC7C+H/KO9RnAMxfJZ3
-         OMdA==
+        d=gmail.com; s=20230601; t=1742309564; x=1742914364; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PlkC1TMRL0WKywfXtAZhYM1FPaZOF5JeoqEk55iXZWc=;
+        b=Ak9DBRlLqN28LzpJmJF5QUuBr2BeXHkX/vlIBbhRwrYyQMDlog14w+mH979FZskt5i
+         pycvVO4ooe6MNtqITkokws2xnW4ouMEJPXuSD4EiCazeJFQxGF3ofPVLiz0ceoowDdOa
+         /8T0sYbdFOF6oSvCzpAxRTFNEm/bVL2l/57VVvn2ZKUpVHS8P7Dm9G134Zjn6rWtvh8l
+         Z13gEdawl+ez9Zwa6ceIZYrqdWrogQUMc6QJgPicxEGNTHaF9kAm2QdD9aL9SnHazLeo
+         l5eg6TdXDhzD/Y8YUiHTefhYPo0B76zthsDtIqnkPjy7EYZzlNluFzrhBowHO38KAngA
+         yzbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742309453; x=1742914253;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AV1Nxik7JBkOIVEYVNlGI3SIY7/qAIdx7hP6IDQ9sHw=;
-        b=uQGl49eggbc4ry7wa/IGCGHqIsgFTQWHm8kUjHtP0ocAhBiy3/UmLRVsFv6260/Ls6
-         tYel5DCPZyuIfbTdypWRh6ZXW/QGruMp90MndYwnmMGBJKjgssvAePhVeCsj8eMiwlZo
-         WNm8V7Gz0rnaEXc2GUEawuL7q+nIM9j/5JlXIBTRN0Fvluh8isFPhcNRG7mspYJlUq97
-         KOuWQUru6fi1RdGquQOmgUmXNO2Jjli/W6Vm5p8cBoTR4TFJCftUWgpqnOnlvoL8BANg
-         0XnkdZxxGqVtk/+qK9iGwGbohJr0AYjXa7jnTMKP9yHTU4gxSMk+0hPwm0x3xDVQGFVl
-         IK0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVMCz1XFXQjmAlTIYeXxMnTY5XsGQJ/0kgvUcO/hN3YDxPSztMafEc7Qlg2RT7TW/D85/ZoVbWnmBJs78IOVAM=@vger.kernel.org, AJvYcCW0cpqSAkeI6OlNpYaLKxGgWLlxSFeIHoq3Zf/u67Sj/gE0HIry3AZ3RCs1YtjpFIe74pxW7hJzXlj5@vger.kernel.org, AJvYcCWZUyQQTMyq3YXKrTqcUUPPf2/Cz4yqamok4EavW42WZ8ywSNV857sXpyey3VtkQTZ+gfEKnuD7LR4=@vger.kernel.org, AJvYcCWbwe/FZqsJKw66wqhBpkNpvr3/OGFJ+vHHmtGyC7NKrVTi1Oj5lHzlF/VAo/LDrISGUd/vp/IGxFHK488K@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0OH0Swj/gS6Bf3lT++KBhVGjiwvYfia6ehKSoZn7vVbz9zZgr
-	62RWeWaqYkOjNpqPInOLFCjCISHrPoEaUFAehQ2FZ7d0MZKtqmRoqZYw6IZFIxrT0OGektSj7NR
-	Qb3EoSfZfMUsEcl6JmESOVAYi/kI=
-X-Gm-Gg: ASbGnctdZE6+EX8fakrifKDZNZpgISbDoKdfvHDSaEwN85875rS5vmpngab+LkDouYH
-	jx5eUv/LOcnkJUj7GbUtrLlK6bXRA9WeM9yzJoNl2IFslj4nAgaUy4+YUjvw/621Gu605ZPaz78
-	SnUmuPawb4DXIr8eeUJIZLXpDojIlhpuspTv5fM5qvBQ==
-X-Google-Smtp-Source: AGHT+IHoYcofaDV167At8gyTlcxgahoKqecaiJRiqZIsUp3WL1jI7jHwfGXN+eAotV8neRNb+frmdsSnmpBQRfzAEi4=
-X-Received: by 2002:a2e:a781:0:b0:30c:12b8:fb97 with SMTP id
- 38308e7fff4ca-30cd95cdfb0mr22215931fa.11.1742309452463; Tue, 18 Mar 2025
- 07:50:52 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742309564; x=1742914364;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PlkC1TMRL0WKywfXtAZhYM1FPaZOF5JeoqEk55iXZWc=;
+        b=No0oIGrEdMcY53ODZ4fzjPujSN/kx+RfX2quUF6+D9n100UPC5SVe9Qe/8g8ulpWHA
+         sq6CY19SZTVU5Ey0Oz+FwWEUCst3xz/y5Bt9iCGMQGUc85JW94yUkbns/5jy89uv2nyF
+         77XTt1Pr/sV2W9s+iv6zGP8/CD+i/pCfycDJsbRusSV9j4MRaII34eiJc3+ZEFDhTOW8
+         zqBz30t43Uv1xd1ktd1d9AsVab+oBVZP5iN8aa5DzCXmFiIkFEJDE6m+DcUEl/un3djE
+         5FBSw+iIIHwSmWT0F6Wp80/5L3jDeTJrceU6RfmNl7L3HVHDigzBHXIonP1RR2Q43iNK
+         fU8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUR72/1pMQOg9HTo92/vR1HtYPrjqhOxWH9nhKJszSMUHr7PSEuC2vZsLtyCnDQuGydN+lJR3XmFn4kQgY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVmb9ZM8iKrfhlexlWqYaTSt3W12zN4MGGj27siZckolOkOAJs
+	Ww4IR6PtQusrn7A2yBoo2t6He49L46qFmuAuMW6ezejbVzcxM4cC+2jmnR5Fmac=
+X-Gm-Gg: ASbGncumSxoKcO7cUYsjRHEA0Oy1PkW+uXjp6AXgCjI5DKboYmmlcqpHsNwpZH+19il
+	ov4zTSLNDMT+i+CtfJegCmvN/gMAey28bI/6KsLwjGrBQzRTW77iHV2j6S3f2FcyZs5059jI6XG
+	k7Sq45w3qNG4aZZOubLuXi1jCH5g4QljDxPcx6sR43RU/mfXTqDQ5kjlKACINH0/VrDu9hpYS0k
+	yd4oykJzBdI0uwG+SgY4ftKezF7L1B1DXmsEkq4IIKnV0d+Qxx29FUaqeSo7e/64tfNQ4ZxZ1uw
+	MOrgk9iqxde5RNuT3NZ9xmrZnEZgE1SLVI79dtHwGVQzcNWO08SRq3xGpPmgkg==
+X-Google-Smtp-Source: AGHT+IG5q2ctphJNXtpsFqjE3xP/i87wbvAi2YL+7clt1/gn5Eeey3RkZfu8RZ0gBaSPkcLlJkGF4Q==
+X-Received: by 2002:a05:6214:b64:b0:6ea:d69c:a247 with SMTP id 6a1803df08f44-6eaea9e88a0mr295632796d6.4.1742309563829;
+        Tue, 18 Mar 2025 07:52:43 -0700 (PDT)
+Received: from 1.0.0.127.in-addr.arpa ([2620:10d:c091:600::1:45a])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade34c5f7sm68375376d6.96.2025.03.18.07.52.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Mar 2025 07:52:43 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Tue, 18 Mar 2025 10:52:42 -0400
+Subject: [PATCH v3] rust: alloc: use `spare_capacity_mut` to reduce unsafe
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <PsAMnW6hScU1fLV8ucb6wOkHECGXCrwXeSEfeVs3Hc-zbwrML674jGT8H_XNvWiF6EdymYJZSusanBrtAsZjAg==@protonmail.internalid>
- <20250107035058.818539-1-alistair@alistair23.me> <878qrm6e2p.fsf@kernel.org>
- <CAKmqyKO+O6H8+Y2ybz+qiAtgGbLeHMzswo9weWbg0Wc--gEiMA@mail.gmail.com> <CAKmqyKMFAUp0=FzNfhs+r+RfLK0n_Fp7YhUhjY2m=p7wSgFONg@mail.gmail.com>
-In-Reply-To: <CAKmqyKMFAUp0=FzNfhs+r+RfLK0n_Fp7YhUhjY2m=p7wSgFONg@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 18 Mar 2025 10:50:15 -0400
-X-Gm-Features: AQ5f1Jpsgdw9M0V8e3T4BspLDyv9RIhRJmXxkp78APBJs9vA4fZG8z3nwGNCckY
-Message-ID: <CAJ-ks9mtG+QcGNpSgZ2Wh-wgXtFiJ-7Xrr4-07xe9hxxdRuTSA@mail.gmail.com>
-Subject: Re: [PATCH v5 00/11] rust: bindings: Auto-generate inline static functions
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Alistair Francis <alistair@alistair23.me>, bhelgaas@google.com, 
-	rust-for-linux@vger.kernel.org, lukas@wunner.de, gary@garyguo.net, 
-	akpm@linux-foundation.org, tmgross@umich.edu, boqun.feng@gmail.com, 
-	ojeda@kernel.org, linux-cxl@vger.kernel.org, bjorn3_gh@protonmail.com, 
-	me@kloenk.dev, linux-kernel@vger.kernel.org, aliceryhl@google.com, 
-	alistair.francis@wdc.com, linux-pci@vger.kernel.org, benno.lossin@proton.me, 
-	alex.gaynor@gmail.com, Jonathan.Cameron@huawei.com, wilfred.mallawa@wdc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250318-vec-push-use-spare-v3-1-68741671d1af@gmail.com>
+X-B4-Tracking: v=1; b=H4sIALmI2WcC/4XNzQ6CMAzA8VchO1vDPmDoyfcwHpbRQRMRssqiI
+ by7g5MnPf6b9tdFMEZCFudiERETMY2PHPpQCN+7R4dAbW6hSlWVWlpI6GGauYeZEXhyEUFZ05j
+ QlrJ2J5EPp4iBXjt6veXuiZ9jfO8/ktymP7kkQYLFvIHBOJTm0g2O7kc/DmLjkvpPqExUra+rR
+ gerlf8m1nX9AE8tDhr3AAAA
+X-Change-ID: 20250317-vec-push-use-spare-27484fd016a9
+To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
 
-On Tue, Mar 18, 2025 at 2:53=E2=80=AFAM Alistair Francis <alistair23@gmail.=
-com> wrote:
->
-> On Tue, Jan 14, 2025 at 4:02=E2=80=AFPM Alistair Francis <alistair23@gmai=
-l.com> wrote:
-> >
-> > On Tue, Jan 7, 2025 at 9:48=E2=80=AFPM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
-> > >
-> > > Thanks! Since Gary just sent v2 of the LTO patch [1], could you rebas=
-e
-> > > on that and list it as a dependency? If you are using b4 there is a n=
-ice
-> >
-> > I can't get Gary's series to apply on rust-next (it does apply on
-> > master though).
-> >
-> > I might just wait until Gary's series gets picked up to rust-next as
-> > there is already a lot of manual rebasing going on and my series
-> > currently applies on rust-next.
-> >
-> > Unfortunately there are just constant conflicts as the number of
-> > manual C helpers are continually growing.
-> >
-> > Obviously when/if this series is approved I can do a final rebase, I
-> > would just like to avoid unnecessary churn in the meantime
->
-> Any more thoughts on this?
+Use `spare_capacity_mut` in the implementation of `push` to reduce the
+use of `unsafe`. Both methods were added in commit 2aac4cd7dae3 ("rust:
+alloc: implement kernel `Vec` type").
 
-Hi Alistair,
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+Changes in v3:
+- Clarify unsafe operation by factoring out safe call. (Benno Lossin)
+- Link to v2: https://lore.kernel.org/r/20250317-vec-push-use-spare-v2-1-5dc6583f732c@gmail.com
 
-I can't speak for Gary as I don't know what his plans are for that LTO
-series, but I did review that series and this one, and at first glance
-the two seem orthogonal. The goal of Gary's series is to LTO C helpers
-into Rust, while the goal of this series is to machine-generate those
-helpers. Do I have that right?
+Changes in v2:
+- Use `slice::get_unchecked_mut` to ensure we avoid a bounds check.
+  (Benno Lossin)
+- Link to v1: https://lore.kernel.org/r/20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com
+---
+ rust/kernel/alloc/kvec.rs | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-If yes, I think it's important to think about how the two fit
-together, at least conceptually. Mechanically I think there's an issue
-with this trick:
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index ae9d072741ce..f5b1f201a80a 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -285,15 +285,10 @@ pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] {
+     pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+         self.reserve(1, flags)?;
+ 
+-        // SAFETY:
+-        // - `self.len` is smaller than `self.capacity` and hence, the resulting pointer is
+-        //   guaranteed to be part of the same allocated object.
+-        // - `self.len` can not overflow `isize`.
+-        let ptr = unsafe { self.as_mut_ptr().add(self.len) };
++        let spare = self.spare_capacity_mut();
+ 
+-        // SAFETY:
+-        // - `ptr` is properly aligned and valid for writes.
+-        unsafe { core::ptr::write(ptr, v) };
++        // SAFETY: The call to `reserve` was successful so the spare capacity is at least 1.
++        unsafe { spare.get_unchecked_mut(0) }.write(v);
+ 
+         // SAFETY: We just initialised the first spare entry, so it is safe to increase the length
+         // by 1. We also know that the new length is <= capacity because of the previous call to
 
-#ifdef __BINDGEN__
-#define __rust_helper
-#else
-#define __rust_helper inline
-#endif
+---
+base-commit: cf25bc61f8aecad9b0c45fe32697e35ea4b13378
+change-id: 20250317-vec-push-use-spare-27484fd016a9
 
-which the LTO series uses to generate Rust stubs for these functions
-while also keeping them marked inline in LLVM IR/bitcode.
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
 
-That said, I see some discussion of cross-language LTO in "How to
-handle static inline functions" [1], so maybe there's another way that
-makes more sense in light of this series.
-
-Updating the cover letter to elucidate these details is where I'd
-suggest you start.
-
-Cheers.
-Tamir
-
-[1] https://github.com/rust-lang/rust-bindgen/discussions/2405
