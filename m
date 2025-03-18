@@ -1,145 +1,114 @@
 Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC21B1DE2CB
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 08:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2B71F873E
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 08:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742284953; cv=none; b=VfktwgclHQeyJ0smnxu3aC4Uzxbf2o484uxv6kSo1NywQVufVV5111p/mcyE+TSW+qtuKy3nbPmLHgFRXnl+e2o/ACtxWAkATbh1dPW0s8XY+EqPaPZnwwgm1ycrzscWCgrnSpCUO+pJeTASQE7yWEkL4xRIuvcj09aiJBOn7aY=
+	t=1742285266; cv=none; b=q8tP2PEgryADwbJB3jWik0yaqAkdycLY0rKllnrARFNZSAnHBAqcZUD7t9pAXP8LGOiyh0IhOUrKwni1+be+hAzvVxP5ZTG3uv8zJgI3ozySvzpmxSy8MOV0lr4YX/BibU15Mv8C7KkLHXBuWnbThCH1SxRSvPH2t4r7HvIGCfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742284953; c=relaxed/simple;
-	bh=wSXI0Evi0l19oAhirQ9Fvua93FSht/9Ic3hkfVpb95w=;
+	s=arc-20240116; t=1742285266; c=relaxed/simple;
+	bh=ML/zTOHDn1FBtlceNyV01dmAneMu1QMobEBq4s/j0SE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DES4VGyxQ+bExntVzU4IMyMzdZ8AbLl+PZ9qWJTApBOy0Ng2zwHtjSk27SktB24BuHKIuD+u88Q25MkTP2ADUS80G/GKpUtjO3pGAZTier3P/SGMZ3DnLm7HMB2wnNsXG+mRqDGHQuTrGjpbmJ1hulnaIwfd/cUoUMeCcIPuemQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H0AoD37w; arc=none smtp.client-ip=209.85.219.48
+	 To:Cc:Content-Type; b=PwFwN/4bJfLVmqXHCTbxSaf4bwIpT+xKe8JAXkm047utKEeOYqcmKYgLW5XzvqwhXTMsrIX8xXhgyeXggs/PPojbZL3dChEneaNy9lt0qCsg51htfpKkGgv6Gt1QesTmQqx7jtDVuiwMqM4tNdLXw078cMWnYa4LeeIWjmexMLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K01fvZ2N; arc=none smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H0AoD37w"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6e904f53151so43141986d6.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 01:02:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K01fvZ2N"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6e900a7ce55so74443236d6.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 01:07:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742284949; x=1742889749; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742285263; x=1742890063; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wSXI0Evi0l19oAhirQ9Fvua93FSht/9Ic3hkfVpb95w=;
-        b=H0AoD37ww2n8E1giTxsq+4Jzj7vr93hoqhZ3V0ZUckuBN+EPgyRmq55DD2QviWZhSU
-         U4OZrKX895y4Cca6ecrgOaJ7qUfCTn7p1SL+ceXKgCdA/rsuF9+X0i8cXt0GZToeIBBI
-         rN0RDVNqf76etQuFrmoLjkwq4qIpVGO92jCd3P6YAXSYYcQucHeL5owyqlMkaBvH+Fph
-         giiifxLG62R1tHTcZCGg6vNNIPyPHRAUx73QDcpnG3AugHUjDnf6ZBxDRmv53jWiE4V9
-         v01msdkRyuFY5EjoOKe11IfGChmTBSm5keJ6vX/4r3XuGD2772/04pbXul7tuCllXyEv
-         Q1mg==
+        bh=ML/zTOHDn1FBtlceNyV01dmAneMu1QMobEBq4s/j0SE=;
+        b=K01fvZ2NoGjr7aMW8vD0a9kD0bOHUoK0Pu4p9GdMcKDQt6TzPkaf4MQN930jZR+C+D
+         hXPD0bs9vxCWAquFWNBGSwm+hiw3HiG/6solX4MHy/Wm0ruvrMuvTsIt7dHisXPgbNPf
+         DJ7TZ5u/9ake2+dB5PJdN1V6Cfb8H8tzKvfxXYWQcg+Jc56+2n5WWjJmSlaxpAF/dtp2
+         MrAI2Vuf/52qvAnxs4/+yitAmAkzO8xs77A0VKSRgO/RCRAjPeltSqe9BkXxTwjAeIvp
+         ZttO5yv+bhLB5Yhxb6zInQUUvqkCM/n3soAu3Qsvz0n3+TTPCbcF0bKi616SgtVFvTKR
+         baoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742284949; x=1742889749;
+        d=1e100.net; s=20230601; t=1742285263; x=1742890063;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=wSXI0Evi0l19oAhirQ9Fvua93FSht/9Ic3hkfVpb95w=;
-        b=VZaXTYkjZ45ZsOhy2RDQyXyC1aHXRQeS7gk0Cqt/k1BC0lblbZc8uKZPRiFJrs9dO/
-         Y1upZM7Hl2Q3AOX2+LRNRgle+37a1vmtpADcGkj/WQp63VE4tgAl7BzYzhEPRAigxMT2
-         YV4UVxBp23z+mrvTyGi+FP/RPWyW8Gf68E7x40JFXbovLtLp8AG9wWh9SZQM38lHCzai
-         CNEHTmBr61gxaz0UFjQ+coOOINtUF5aVyukVDnWzkm0HlM4dldWjPpGN/k5XrIfTfCJQ
-         izHi+4BNOAnpsYJB0EdXP9IZrmerYKJMPpFEQoNPHsk1WWCmCWf2gIPjc2igRmbAHMm6
-         XpGg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7mINXDtGvy90lhd+/cSFJkoZ5Dovt8v/che3/Q25budJlzJRvjtVy5P+Ra50yvUD5yvuY3Sz/7KyuZjDjiw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0fOFkPlRJMlaODigrVPj7IZR2AIu8iSjOvK8JmhXywqgx6rwV
-	ejaB9hIfk19j3fc04E0dV5okl/0WRRtMNg+451PRgxD9mjo/pGAPBqZqdZH7gI0YfipQf9cazNy
-	0Pp7ouwuvVNdphwAcFrcP00iG7sREJIeeUaTT
-X-Gm-Gg: ASbGnctVXHS/RvPcLfsTVaSSVdYiqqzFaZyOza4qqzZFt09KHeftx6wOXf8QSqj1LmB
-	+agU2R8FfxL6f5PV+JySBffQIxBCbItV5G58VNigybRyHaIru2FmLzwQwEa5+XmSIXq4y6rw9X0
-	JoYVLmboe2vjquh0TabWfIr1U+SAiOXRBbmWYACg==
-X-Google-Smtp-Source: AGHT+IF34bowB9DnchLGS1HtrhOPM6MA5sLsMtlmKCJ+4KJc1I+Faaxr0PpHxAFDrO2ZmG1WIsTFnpfDwGMLlWa3afI=
-X-Received: by 2002:ad4:5ba4:0:b0:6d8:a39e:32a4 with SMTP id
- 6a1803df08f44-6eaeaa62062mr257331636d6.25.1742284948609; Tue, 18 Mar 2025
- 01:02:28 -0700 (PDT)
+        bh=ML/zTOHDn1FBtlceNyV01dmAneMu1QMobEBq4s/j0SE=;
+        b=fjUIwIUGEXkC9tsRVh0OFYzm7VjMf0zLtwfSByW6LTcPm3Gbr16ptuwMjOnSu3vH1i
+         ZZI5L+sCkisb0V31b+TmsyfAOhMJL4oL0lNwX/SiZ5UeS6zEK4h8OF3lQo8vUzyv7LNq
+         /DkWuJIBJXIM9U7j3w4vYsRW+obwZ1Ae1Jky4/hl29c1wQV5zlzNjouhEISYkDFazXDh
+         Qrqb0+9QKqHtGPzM52SJ3076ocSIDrArcTST5NvmXL3WYksdsor84pVlnOdCwLNvn25e
+         ZIT30auQV9kPp/TnpDwmsnH0r9TLjzAn4TrhrTqqFRku5tTbwPVfVvyYN9Q8gWtyMwc+
+         pVjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCzmFV49hBp0zDOfvkFO0h36eP8kIJylTqaYI258fn2PaJE1l3YnD1hUENqwxjEJYdTPMYyoPyJC4KfvDsyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC49Oqpee83eoSMCRsv+DK8KcdzBMAe9oWpXrM+qtRqfIcYoEV
+	9UBFgPoEAa1ZJvjpg5qW/UuVPuBqfJnKoNes7KS0z733H3SYfGoAeRP0F8TtPb0jjjb5M0o1nr2
+	zHg/1wEuqdsD+Rn7PfcIb3u/PUIILKjK1/rDx
+X-Gm-Gg: ASbGncv6fI1WPsF6MNUiiZaU9Iu5Jj2Xw/RM+uHZsPiVS4nSBjMqei/fSam+1XhjXTj
+	q17/o3lrfrmqCXgHGAAnXG8VFiyeYZhzC9rvQRh14cOynxqqvQmP4wzPIaGGXL9YEuewdPdWMxs
+	Ycgccha4QMzuAWG1z9o6uH+FlB88A=
+X-Google-Smtp-Source: AGHT+IFXUODysh1m9Gv30WU1iM9GK6zio2ea0ritM/Z7npdgfWiDiscTe68Zbm3hxySc+vdVePwq2PUewsO+jgB2rWw=
+X-Received: by 2002:ad4:5a0f:0:b0:6ea:d40e:2bc5 with SMTP id
+ 6a1803df08f44-6eaea9e9152mr191909016d6.9.1742285262566; Tue, 18 Mar 2025
+ 01:07:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250316061429.817126-1-contact@antoniohickey.com> <20250316061429.817126-9-contact@antoniohickey.com>
-In-Reply-To: <20250316061429.817126-9-contact@antoniohickey.com>
+References: <20250208-rust-kunit-v1-0-94a026be6d72@weissschuh.net> <20250208-rust-kunit-v1-1-94a026be6d72@weissschuh.net>
+In-Reply-To: <20250208-rust-kunit-v1-1-94a026be6d72@weissschuh.net>
 From: David Gow <davidgow@google.com>
-Date: Tue, 18 Mar 2025 16:02:15 +0800
-X-Gm-Features: AQ5f1JoyDgkyKfSn2ILKRx7lYGdBI8Zv__hsqi5zf37jqkfPw4u53_aSqKYCX5A
-Message-ID: <CABVgOSkKD2Z60_+MoP_nu3YCUocvxJaohMBZpXy=_aavUZ99XA@mail.gmail.com>
-Subject: Re: [PATCH v4 08/16] rust: kunit: refactor to use `&raw [const|mut]`
-To: Antonio Hickey <contact@byte-forge.io>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <rmoar@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Tue, 18 Mar 2025 16:07:31 +0800
+X-Gm-Features: AQ5f1JpRKVNRYSd34to42tulrryjmS3NP8RYOLW-DOLTvOzFH0wYzkK0JSzhOa8
+Message-ID: <CABVgOSnwkDihbRzYF3uh3At_x0MgOB42_E8sUAD8moKwx+zjRw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: pass correct target to bindgen on Usermode Linux
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Antonio Hickey <contact@antoniohickey.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-um <linux-um@lists.infradead.org>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000007dadfe0630995378"
+	boundary="0000000000003335100630996601"
 
---0000000000007dadfe0630995378
+--0000000000003335100630996601
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 16 Mar 2025 at 14:20, Antonio Hickey <contact@byte-forge.io> wrote:
+On Sat, 8 Feb 2025 at 21:32, Thomas Wei=C3=9Fschuh <linux@weissschuh.net> w=
+rote:
 >
-> Replacing all occurrences of `addr_of!(place)` and `addr_of_mut!(place)`
-> with `&raw const place` and `&raw mut place` respectively.
+> Usermode Linux uses "um" as primary architecture name and the underlying
+> physical architecture is provided in "SUBARCH".
+> Resolve the target architecture flags through that underlying architectur=
+e.
+> This is the same pattern as used by scripts/Makefile.clang from which
+> the bindgen flags are derived.
 >
-> This will allow us to reduce macro complexity, and improve consistency
-> with existing reference syntax as `&raw const`, `&raw mut` are similar
-> to `&`, `&mut` making it fit more naturally with other existing code.
->
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1148
-> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 > ---
 
-Thanks, Antonio.
+Is there anything holding this up for the upcoming merge window?
 
-So this looks fine, but it's also a bit annoying, as the remaining
-KUnit/Rust integration patches[1] were recently updated to use
-`addr_of_mut!()`, so either this patch, or those, will need updating.
+Miguel: I'm assuming you'd rather take this (and possibly [1] as well)
+via Rust, but if it goes in via the uml tree, that'd be fine by me,
+too.
 
-In general, I think changes such as those in this series are going to
-get progressively more prone to conflicts as Rust is adopted by other
-subsystems, as the 'rust' tree won't be the only one carrying changes
-which could be affected. Maybe in the future it'd make sense to split
-these up into a series which enables the new feature, and only then
-put the warnings in place in the next version?
-
-In the KUnit case in particular, since the patches haven't actually
-been merged yet, we have three options:
-- Merge this into rust-next, and send out a new version of the KUnit
-patches which depend on it, which then are also carried in rust-next,
-or delayed (again) to 6.16. I suspect given how close to the merge
-window we are, the delay is more likely.
-- Merge the KUnit changes as-is (either into rust-next or
-kselftest/kunit), and send out a new version of this series which also
-updates it (probably in 6.16, but maybe sooner if everything goes via
-rust-next).
-- Merge both, and accept that there'll be some clippy errors until a
-follow-up patch fixing them is sent and merged.
-
-As someone with a vested interest in the KUnit changes, and at best a
-mild academic interest in the addr_of_muit!() deprecation, my
-preferences are with the latter two options. (I'd also, in general,
-whinge that the frequency of new Rust versions / warnings is high
-enough that it's taking a not insignificant portion of the limited
-time I have working on Rust things to understand and deal with the
-churn.)
-
-Regardless, apart from the minor irritation of having to learn yet
-another new syntax, I have no objections to this patch in particular.
-
-Reviewed-by: David Gow <davidgow@google.com>
-
-Thanks (and sorry for the grumpiness: don't take it personally),
+Cheers,
 -- David
 
-[1]: https://lore.kernel.org/rust-for-linux/20250307090103.918788-1-davidgow@google.com/
+[1]: https://lore.kernel.org/linux-um/20250210105353.2238769-2-davidgow@goo=
+gle.com/
 
---0000000000007dadfe0630995378
+--0000000000003335100630996601
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -229,13 +198,13 @@ uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
 PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
 Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
 BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
-pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgbW0wDv8MxuJgkskbbt7IUunJFrIN
-XG4ql/hgZR/dmx8wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
-MzE4MDgwMjI5WjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgriohMEZ66LjlarBmrJFO9KgnxO/i
+Kun8BMusnsZnvcgwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+MzE4MDgwNzQzWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
 YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEAQ0lfhqtQBRad/bJb8DhiA6qgXZBOer2EYv517emWEW2CIl2ppC58FG65OHhAxYj9
-ql8Bd24peRIhWRxcHiEEBqzEK2pMvHBdNCX0ScagGJfkupF+emZuahAbh3WLTMyVx2fw5oCSeGq4
-snelKEetKtZ5Ecur3jIEN6ubgKZBQ8K4cjpVpNLSpB+Xdwps5DqpBfwI1zFqhUXVqjc0wYTC6qKz
-+3+naCGFTlSegv+hK4Pf3dbZNNDQ/E3hBrssi/lJUy0W2e9H32oimIdQKkZYXroWUrcWLJiwbkib
-qRBYxrDg9RrR6aXg1NsF1ymWQEa3KhWC1f9pb0b5ANDK9j1LNA==
---0000000000007dadfe0630995378--
+AQEBBQAEggEAPSwjUKvK4M4Q/c/QHB56/oWCYCS5l4KFHgzneKci49WJ0TY+HEqKPPUZ/VDRnKZm
+bZjzGCMCbROvTRud9C6V3gdlW+6rZc31NqWSk3ZXhHxRQZtLmOE39A49pugrgNI3jAdD7IHe0YrX
+Qo6e8ythXhdYHTcAeJCorJHIWNfgzoVENIJGWrF7wmbBqodB3KYDmqflG8K1PVGp6PMPOVeBE77V
+h3Rm/9znWt7FMx5PL4KQdfJLmYCySNwPle/erqnfcVTuo5wkZZaYGS9PuyMqjbKCtbvKigxc9UD8
+qEgexGu0AYORzeQrDjx8aqrEnT45ByZUDVUt8zcP3y27+CdShw==
+--0000000000003335100630996601--
