@@ -1,321 +1,185 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6444A128816
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 17:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742320494; cv=none; b=Qe/F//acLOWrQkVUxMBPJZZHvtn+9Y3iSpduDtrc63Aaj03gZpeIAvNOuWPw6ObS0IuqeOlv9IqQOn5BoQC5xGnpQnYXM1zjuZUINU/hOUqEWV4CJpw7XLx7cMBnh5G6KdGtIv/yYsrCJm1Izp++Bj6AIoEFKkCVsY1knm788EA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742320494; c=relaxed/simple;
-	bh=FK69DBDbx15AGsjLQn4hzKCgIPn8W+7OJ5VoUogYe68=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UDLtGQwCfNsTHEoKuUjdkQ1+K7zW56q8eN4lUA6H6RP24hex3oErTm/aQ3XyCodnnKARVcbXkLj6hrejB7X49q+YKPit49UfpPEDr7nVECMgmCp5Nx3hfjYRLDaXpDbFm1M9s/K5Z8/727UVj54ijC0kJxi0HNO1YSNJRf4veYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rPbhFtPA; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2E21917FB;
+	Tue, 18 Mar 2025 18:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742322204; cv=pass; b=q1KCqNwig4J4BpYjyn2JfzT9cEb3qmqpSz4qBzcb1MHzs0B+AT4/YihI8AOH2TSAJ/d9uHJH4GBBux6vQDq7R85QYULVnVhDfV5ZRRTdHaEfxPeV3ndC09Vt5WrQCZXm4h2QoaWAbjHHfIt/tF2UNpKuRh9dGU38aG1VFPsbMVQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742322204; c=relaxed/simple;
+	bh=JQor4MlEvVYK8iLvFu1ZaYzbdCr52smhN74Cto7jXhA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=UAH0tmRLafx5wcDZwqoaVoZNs6BDXRoO5Dwilyi0gWod3Fm/odgqrsWH0tBS/XuiQlD/llw25l41qjvuMtLztlv1RKvT+7mtJs6MkzcUQSVA+Zb6wQMMlwZC81ds/SVHLU0TdPnt8pclQmOhQvROhcSgRmN2OwGR+ZTinBqdhNI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=EKDHu0/r; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rPbhFtPA"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d00017e9dso22338105e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 10:54:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742320491; x=1742925291; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ucaWlpvQ0hnSoOA7AlIgnz0cgmqZKnUxsdJt8CvjyU8=;
-        b=rPbhFtPA4b0vTDeYJQn4MIrBMR2JXxD2NOBS2g/5Blj10LoIJaTD7vPFtxGaBy+tbv
-         vC5HC+1+s1RZUal3pbYjPwMcQc5xC+lXJYDOEZPi2WoS67P0zpaDK8g9lOqelacDWLrJ
-         7yhO6On1zA8VTQ0U9bCa6HaWRmMx0XildTqhr6e0EAfKROY8IdIMVt44WZZ8nnKIqme+
-         0CI3P4aDF8dP1xYEW+b3iFGhOU6TuL5VGOOycIVRWtOeZPREnEgyt8fO2eaY+qdClPKV
-         cvbK5fV0InEJwhiZTVyR/lTbm5cOcow7BPEl/nYYm4oWWZN1Lzw8wwW0rPbtleYtRYzA
-         AAmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742320491; x=1742925291;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ucaWlpvQ0hnSoOA7AlIgnz0cgmqZKnUxsdJt8CvjyU8=;
-        b=EaO6UwEoyaYHLwopEoANFVEDL2ejl718K3n/9vr5SvHwdaTdif9Nqk4iuX0XU68oRn
-         VeqS5LmkiZF+GjL2rIZWkBTRt6vyfOSKD5c+RtA7xAo8c1g1LMejwAQbSUkbxg6RO7e8
-         rLcnX1RWpiPzX1Wf+n39WmzlZaPzKQzRbZXTznr1GD84ZVp/u6ylc3QYG/6YjGx1nEQH
-         6j/mYIEzih7c9HIWajkWLcyx1TM1Az72UhFuX9gJfldSIbKHFAUuYfOUm7W9DZxEa6K8
-         per9oHJTpPKJecCXbQmwjFMpmQ7NzApnWjQogaEV0jLeONxThe7/DiNgF37aQb3Mamf6
-         9NxA==
-X-Forwarded-Encrypted: i=1; AJvYcCXMDS2ecfsIOB7ntil1I+4vH7+b3SdkxXRN0sXnencdHjn+7SOzmk7JSQlTvvqPpwEFGZdei7cjAxXPQcipTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwngumnK7yEwMv4MsL5F47eIlXyL5okxECAdxl+Lj45IYToHwIi
-	oYwYOBjDvxz+nxbghVAqsvdGehl8BTOS01QUwOBM3PUm9O2TnA0Uv37JqmwZpgqB3Q==
-X-Google-Smtp-Source: AGHT+IE9HCWFwX0V1dhe93zc5NW/AaGRcwmRfIgKOL0NRLkOirF6/Xjn0gSPZ7HpqYNpucDNRmXSVn0=
-X-Received: from wmbdl18.prod.google.com ([2002:a05:600c:6692:b0:43c:f256:f4b3])
- (user=bqe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b97:b0:43c:e467:d6ce
- with SMTP id 5b1f17b1804b1-43d3b9504a6mr34302145e9.4.1742320490880; Tue, 18
- Mar 2025 10:54:50 -0700 (PDT)
-Date: Tue, 18 Mar 2025 17:54:09 +0000
-In-Reply-To: <20250318164221.1533590-1-bqe@google.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="EKDHu0/r"
+ARC-Seal: i=1; a=rsa-sha256; t=1742322175; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=b2rs+cCaYXPdMyS8VcK3Q8hcOXWUpuBB5aoM1UvtA03WtKyzp1TXN6RT4EUnnO6l+ON01OdePPf6/u9OSPoi9HxPnUyrMiGjg9g6SVJf3A5tPEncI7NxYrdiLfaipCqQBYHcc2iyuWAvwBesDiXXsu5+OrPo2wfRK/LOtW0r4+8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1742322175; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=MjgEMTLTXR3ykUAZxJQ5ZFEgeZV2qtBNQAlh289P238=; 
+	b=cbtAUoeD0FUdKt0oYr2Y1Bu3NDYMknVgqBMfqJFzAIirqLuV8wWcCqKnHus33DPNHgGjdTY6z9hUy8NzvlesebUHk0DOweOnP98jE5J4NAh6scE3Zxw4FvWq3RrlG1yB6Q5jvUR1H+e7xdjUgv8JL5O5wlI6Vqa2xgT5jBEY5Is=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742322175;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=MjgEMTLTXR3ykUAZxJQ5ZFEgeZV2qtBNQAlh289P238=;
+	b=EKDHu0/rzE1PheRxod9pkGQaYQx1wR1GmfC3BdYXrwDGgmGa8Cd4VpP4FpuZOeUy
+	BJscnG3szHxExRIQKyxkoXzfY87cHIi+uWUG0RQaN5NxnKcHXu/nJk2MNgDVZfnNi2/
+	9FrIRe6MOQ76JQK6bl32FgQDQf0T7x/KaBDif5TE=
+Received: by mx.zohomail.com with SMTPS id 1742322173580262.17469035229453;
+	Tue, 18 Mar 2025 11:22:53 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250318164221.1533590-1-bqe@google.com>
-X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
-Message-ID: <20250318175423.1627715-2-bqe@google.com>
-Subject: [PATCH v4 3/3] Add DynamicIdPool Rust API.
-From: Burak Emir <bqe@google.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
+Subject: Re: [PATCH v7 3/3] rust: platform: allow ioremap of platform
+ resources
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <Z9mwu-RHwZ8qwcbH@cassiopeiae>
+Date: Tue, 18 Mar 2025 15:22:37 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FF128DEF-28D6-4302-9C53-2DD4D417053A@collabora.com>
+References: <20250318-topics-tyr-platform_iomem-v7-0-7438691d9ef7@collabora.com>
+ <20250318-topics-tyr-platform_iomem-v7-3-7438691d9ef7@collabora.com>
+ <Z9mwu-RHwZ8qwcbH@cassiopeiae>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.400.131.1.6)
+X-ZohoMailClient: External
 
-This is a port of the Binder data structure introded in commit
-15d9da3f818c ("binder: use bitmap for faster descriptor lookup") to
-Rust.
+Hi Danilo,
 
-The file drivers/android/dbitmap.h uses bitmaps for allocating and
-releasing IDs. We provide an equivalent Rust API that gives clients
-fine-grained control over when to allocate a new bitmap.
+> On 18 Mar 2025, at 14:43, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> Hi Daniel,
+>=20
+> On Tue, Mar 18, 2025 at 02:20:43PM -0300, Daniel Almeida wrote:
+>> The preceding patches added support for resources, and for a general
+>> IoMem abstraction, but thus far there is no way to access said IoMem
+>> from drivers, as its creation is unsafe and depends on a resource =
+that
+>> must be acquired from some device first.
+>>=20
+>> Now, allow the ioremap of platform resources themselves, thereby =
+making
+>> the IoMem available to platform drivers.
+>>=20
+>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> ---
+>> rust/kernel/platform.rs | 123 =
++++++++++++++++++++++++++++++++++++++++++++++++-
+>> 1 file changed, 122 insertions(+), 1 deletion(-)
+>=20
+> You need to rebase this onto driver-core-next.
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Burak Emir <bqe@google.com>
----
- MAINTAINERS                    |   3 +-
- rust/kernel/dynamic_id_pool.rs | 191 +++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs             |   1 +
- 3 files changed, 194 insertions(+), 1 deletion(-)
- create mode 100644 rust/kernel/dynamic_id_pool.rs
+Right, I totally forgot about this.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b3bbce9274f0..d429ede24d3c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4036,12 +4036,13 @@ F:	rust/helpers/bitmap.c
- F:	rust/helpers/cpumask.c
- 
- BITMAP API [RUST]
--M:	Alice Ryhl <aliceryhl@google.com> (bitmap)
-+M:	Alice Ryhl <aliceryhl@google.com> (bitmap,dynamic_id_pool)
- M:	Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
- R:	Yury Norov <yury.norov@gmail.com>
- S:	Maintained
- F:	rust/kernel/bitmap.rs
- F:	rust/kernel/cpumask.rs
-+F:	rust/kernel/dynamic_id_pool.rs
- 
- BITOPS API
- M:	Yury Norov <yury.norov@gmail.com>
-diff --git a/rust/kernel/dynamic_id_pool.rs b/rust/kernel/dynamic_id_pool.rs
-new file mode 100644
-index 000000000000..3e243358cd6b
---- /dev/null
-+++ b/rust/kernel/dynamic_id_pool.rs
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2025 Google LLC.
-+
-+//! Rust API for an ID pool backed by a `Bitmap`.
-+
-+use crate::alloc::{AllocError, Flags};
-+use crate::bitmap::Bitmap;
-+
-+/// Represents a dynamic ID pool backed by a `Bitmap`.
-+///
-+/// Clients acquire and release IDs from zero bits in a bitmap.
-+///
-+/// The ID pool can grow or shrink as needed. It has been designed
-+/// to support the scenario where users need to control the time
-+/// of allocation of a new backing bitmap, which may require release
-+/// of locks.
-+/// These operations then, are verified to determine if the grow or
-+/// shrink is sill valid.
-+///
-+/// # Examples
-+///
-+/// Basic usage
-+///
-+/// ```
-+/// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
-+/// use kernel::dynamic_id_pool::DynamicIdPool;
-+///
-+/// let mut pool = DynamicIdPool::new(64, GFP_KERNEL)?;
-+/// for i in 0..64 {
-+///   pool.acquire_next_id(i).ok_or(ENOSPC)?;
-+/// }
-+/// assert_eq!(pool.acquire_next_id(63), None);
-+/// let resizer = pool.grow_alloc().alloc(GFP_KERNEL)?;
-+/// pool.grow(resizer);
-+/// assert_eq!(pool.acquire_next_id(63), Some(64));
-+/// # Ok::<(), Error>(())
-+/// ```
-+///
-+/// Releasing spinlock to grow the pool
-+///
-+/// ```
-+/// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
-+/// use kernel::sync::{new_spinlock, SpinLock};
-+/// use kernel::dynamic_id_pool::DynamicIdPool;
-+///
-+/// struct Example {
-+///   pool: DynamicIdPool
-+/// }
-+///
-+/// fn get_id_maybe_alloc(s: &SpinLock<Example>) -> Result<usize, AllocError> {
-+///   let mut guard = s.lock();
-+///   let mut resizer = None;
-+///   loop {
-+///     match guard.pool.acquire_next_id(0) {
-+///       index @ Some(_) => return Ok(index),
-+///       None => {
-+///         let alloc_request = guard.pool.grow_alloc();
-+///         drop(guard);
-+///         let resizer = alloc_request.alloc(GFP_KERNEL)?;
-+///         guard = s.lock();
-+///         guard.pool.grow(resizer)
-+///       }
-+///     }
-+///   }
-+/// }
-+/// ```
-+pub struct DynamicIdPool {
-+    map: Bitmap,
-+}
-+
-+/// Returned when the `DynamicIdPool` should change size.
-+pub struct AllocRequest {
-+    nbits: usize,
-+}
-+
-+/// Contains an allocated `Bitmap` for resizing `DynamicIdPool`.
-+pub struct PoolResizer {
-+    new: Bitmap,
-+}
-+
-+impl AllocRequest {
-+    /// Allocates a new `Bitmap` for `DynamicIdPool`.
-+    pub fn alloc(&self, flags: Flags) -> Result<PoolResizer, AllocError> {
-+        let new = Bitmap::new(self.nbits, flags)?;
-+        Ok(PoolResizer { new })
-+    }
-+}
-+
-+/// Minimum size we want to use for our backing `Bitmap`.
-+const NBITS_MIN: usize = bindings::BITS_PER_LONG as usize;
-+
-+impl DynamicIdPool {
-+    ///
-+    #[inline]
-+    pub fn new(mut nbits: usize, flags: Flags) -> Result<Self, AllocError> {
-+        if nbits < NBITS_MIN {
-+            nbits = NBITS_MIN
-+        }
-+        let map = Bitmap::new(nbits, flags)?;
-+        Ok(Self { map })
-+    }
-+
-+    /// Returns how many IDs this pool can currently have.
-+    #[inline]
-+    pub fn len(&self) -> usize {
-+        self.map.len()
-+    }
-+
-+    /// Returns an `AllocRequest` if the can be shrunk, or None if not possible.
-+    #[inline]
-+    pub fn shrink_alloc(&self) -> Option<AllocRequest> {
-+        let len = self.map.len();
-+        if len == NBITS_MIN {
-+            return None
-+        }
-+        /*
-+         * Determine if the bitmap can shrink based on the position of
-+         * its last set bit. If the bit is within the first quarter of
-+         * the bitmap then shrinking is possible. In this case, the
-+         * bitmap should shrink to half its current size.
-+         */
-+        match self.map.find_last_bit() {
-+            Some(bit) => {
-+                if bit < (len >> 2) {
-+                    Some(AllocRequest { nbits: len >> 1 })
-+                } else {
-+                    None
-+                }
-+            }
-+            None => Some(AllocRequest { nbits: NBITS_MIN }),
-+        }
-+    }
-+
-+    /// Shrinks pool by using a new `Bitmap`, if still possible.
-+    #[inline]
-+    pub fn shrink(&mut self, mut resizer: PoolResizer) {
-+        // Verify that shrinking is still possible. The `resizer`
-+        // bitmap might have been allocated without locks, so this call
-+        // could now be outdated. In this case, drop `resizer` and move on.
-+        if let Some(AllocRequest { nbits }) = self.shrink_alloc() {
-+            if nbits <= resizer.new.len() {
-+                resizer.new.copy_prefix_from_bitmap(&self.map);
-+                self.map = resizer.new;
-+                return;
-+            }
-+        }
-+    }
-+
-+    /// Returns an `AllocRequest` for growing this `DynamicIdPool`.
-+    #[inline]
-+    pub fn grow_alloc(&self) -> AllocRequest {
-+        AllocRequest {
-+            nbits: self.map.len() << 1,
-+        }
-+    }
-+
-+    /// Grows pool by using a new `Bitmap`, if still necessary.
-+    #[inline]
-+    pub fn grow(&mut self, mut resizer: PoolResizer) {
-+        // `resizer` bitmap might have been allocated without locks,
-+        // so this call could now be outdated. In this case, drop
-+        // `resizer` and move on.
-+        if resizer.new.len() <= self.map.len() {
-+            return;
-+        }
-+
-+        resizer.new.copy_from_bitmap_and_extend(&self.map);
-+        self.map = resizer.new;
-+    }
-+
-+    /// Acquires a new ID by finding and setting the next zero bit in the
-+    /// bitmap. Upon success, returns its index. Otherwise, returns `None`
-+    /// to indicate that a `grow_alloc` is needed.
-+    #[inline]
-+    pub fn acquire_next_id(&mut self, offset: usize) -> Option<usize> {
-+        match self.map.find_next_zero_bit(offset) {
-+            res @ Some(nr) => {
-+                self.map.set_bit(nr);
-+                res
-+            }
-+            None => None,
-+        }
-+    }
-+
-+    /// Releases an ID.
-+    #[inline]
-+    pub fn release_id(&mut self, id: usize) {
-+        self.map.clear_bit(id);
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index be06ffc47473..4789e707dacc 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -47,6 +47,7 @@
- pub mod device_id;
- pub mod devres;
- pub mod driver;
-+pub mod dynamic_id_pool;
- pub mod error;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
- pub mod firmware;
--- 
-2.49.0.rc1.451.g8f38331e32-goog
+>=20
+>>=20
+>> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+>> index =
+1297f5292ba9b7ca9784f84979efbeccb0768bd3..56f3d7c0d536d77082d7f8d2407de17e=
+e3e95ffa 100644
+>> --- a/rust/kernel/platform.rs
+>> +++ b/rust/kernel/platform.rs
+>> @@ -5,8 +5,14 @@
+>> //! C header: =
+[`include/linux/platform_device.h`](srctree/include/linux/platform_device.=
+h)
+>>=20
+>> use crate::{
+>> -    bindings, container_of, device, driver,
+>> +    bindings, container_of, device,
+>> +    devres::Devres,
+>> +    driver,
+>>     error::{to_result, Result},
+>> +    io::{
+>> +        mem::{ExclusiveIoMem, IoMem},
+>> +        resource::Resource,
+>> +    },
+>>     of,
+>>     prelude::*,
+>>     str::CStr,
+>> @@ -191,6 +197,121 @@ fn as_raw(&self) -> *mut =
+bindings::platform_device {
+>>         // embedded in `struct platform_device`.
+>>         unsafe { container_of!(self.0.as_raw(), =
+bindings::platform_device, dev) }.cast_mut()
+>>     }
+>> +
+>> +    /// Maps a platform resource through ioremap() where the size is =
+known at
+>> +    /// compile time.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```no_run
+>> +    /// use kernel::{bindings, c_str, platform};
+>> +    ///
+>> +    /// fn probe(pdev: &mut platform::Device, /* ... */) -> =
+Result<()> {
+>> +    ///     let offset =3D 0; // Some offset.
+>> +    ///
+>> +    ///     // If the size is known at compile time, use =
+`ioremap_resource_sized`.
+>> +    ///     // No runtime checks will apply when reading and =
+writing.
+>> +    ///     let resource =3D pdev.resource(0).ok_or(ENODEV)?;
+>> +    ///     let iomem =3D =
+pdev.ioremap_resource_sized::<42>(&resource)?;
+>> +    ///
+>> +    ///     // Read and write a 32-bit value at `offset`. Calling =
+`try_access()` on
+>> +    ///     // the `Devres` makes sure that the resource is still =
+valid.
+>> +    ///     let data =3D =
+iomem.try_access().ok_or(ENODEV)?.readl(offset);
+>> +    ///
+>> +    ///     iomem.try_access().ok_or(ENODEV)?.writel(data, offset);
+>=20
+> I'd probably write this as
+>=20
+> || -> Result {
+> let iomem =3D iomem.try_access().ok_or(ENODEV)?;
+>=20
+> iomem.read32(offset);
+> iomem.write32(data, offset);
+>=20
+> Ok(())
+> }()?;
+>=20
+> There's also a patch [1] in progress that makes this more convenient.
+>=20
+> [1] =
+https://lore.kernel.org/rust-for-linux/20250313-try_with-v1-1-adcae7ed98a9=
+@nvidia.com/
+
+Thanks!
+
+=E2=80=94 Daniel
+
 
