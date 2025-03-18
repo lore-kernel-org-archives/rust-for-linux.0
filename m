@@ -1,141 +1,147 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6594A23
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 02:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404D917D355
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 05:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742265107; cv=none; b=sC9Jvt0saTsHpu0N6whB3BeY6Y8v6vuiyit87aqqGlG/a2pVdbCk5NTc2JwrcwBI+Yn3zgdRWxwWR4RJIJmVEE7cVckM6O9aHxOW5SXPhhh+lJLIeMd1ofvEhQgKzDPlNaeRDdtPxADrWd7AxtTiZhnLa3TVM89/UYpBIe0nnzc=
+	t=1742277452; cv=none; b=EbWA4Rgj41LGEj+f56KAydtKHaS6ibfi4rRSiJOJNsJdoa9EeaThmxCTnn/qNJjD9o/1BrqH6or7AtV+SuVmbUeWpVPZGtK5uI6F1zPOvXeaWPYTXwyA4APUkbRfXjbllbK49kbmyHGhlVhzfGVzfXNMTnLN3NrAH/lq7L4wLhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742265107; c=relaxed/simple;
-	bh=vQSLBLyCtrqqUbnB9Jd0JSErcOJ4DeaiJqq0yJ11DkY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oY22swLQp/9o0r3wQltb2BMmQW/ZqBrqPr/yXE3/KVRRk5N04diDR9uxg2214XVEah5/qIbPEJkfKt1z8c/OfFZhiiarpZhSYG8HVImMmUP9GEgaEjPBstCY4DZQrv8ggz7pJbjIU/4iEDBnuGk6wbPAeTUcVlmXwNVv3lB9Vw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mMEPE/Ic; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742277452; c=relaxed/simple;
+	bh=+sCbQh8R9TiUu2oyJra9dESUle0tKB3+uLGKQZ/N9mQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FtvBvI7DBW2qCgWcwIICr9ynaTPnuKfVCOvq1Sh9QgjSc8PDqoXczwL2/KEaBPLAwus6oNxno55cMjGN+KpLQ22DTMo6J60UOc7EkRYTdkGgKh5w2z4SLhSgdpWQ+QV76M7IOpqNBz0d0dC+HI1E0M6YzR3OpTG2N/s2zenj5wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TDocyHhF; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mMEPE/Ic"
-Message-ID: <0a5408e8-aefc-4e2d-8329-094e17484890@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742265093;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SU2F01MONWPqBi1tnAE5cvFx2suDORnQGe0qTDWa2ig=;
-	b=mMEPE/IcX9CFHq0GR13rSHzBVER0hj/KRdTXlwaI/sf+0uAPAGvCznEhsgqhsaVMNpwLQc
-	MgPkV9Q2yncaSIvaYk5sEfvv2iWqOQHntbNNpUQaJwLd/B9PVx3SPqoClEE+ULlIfAyU/N
-	dvSO8hkn6ZLUvOLp+ujuYfftjvPg2Y0=
-Date: Tue, 18 Mar 2025 10:30:39 +0800
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TDocyHhF"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ff615a114bso3875920a91.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 22:57:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742277450; x=1742882250; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aeBl6UcsWDr5MR5JO0HAraFd7qqgoYlegSDWTc4mF74=;
+        b=TDocyHhF9xHl6UQit6JetGMGlFOuk8gVHsZstEslB0WnSDxEbgWiM5wngvSBIMppC1
+         cGxeS9CCPfbD9JbO2KquRW9QK0QQbtnaZqRsYMG/ixw1ZVfJn3/5GLmoQ9a9hV31VIEe
+         n0qQCaT+C95lVmYzos6HDsCBSiH9DmCoLSp91Aig0mD3niiP1DRnCz46J1RZkMzeDlRu
+         /Pi0ZyyOHs2OuJVp8DxILB/C4FgvxjOhlgFu45UnyEn2zN1fGAXRgX2KlG9Ot/0cxta2
+         YlsacoGBweSQsvFTLQBrV4s9Zd40U+1l5ajd1ugCNwxMLUUxC5MUew4hShmfcXaMgRMd
+         Mqjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742277450; x=1742882250;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aeBl6UcsWDr5MR5JO0HAraFd7qqgoYlegSDWTc4mF74=;
+        b=Buwr7FF5ZIWmcgSnsClWEotviLp6LE4dT2gSWnuWBDr9zP4Pae/Fky6Dl3CJjAjQpb
+         KGTtDjlRN6/6xbB9C1rMpZT82R8K8m1wej+ROSzf8ETSjtcFqPaDpAeSlsdb7zhfFBy/
+         z33STew8ZT2iCOCBBBBj4Kx59yCOyHpOXD6l6d/MQ+3DAWhAIK1cRLVhmLXMXST+12zu
+         GVA7WHh1IyrEa4HTTj/LqcrsYnnXzOE3VGsMi23UIvRVmoDUZuTRI9DNQRfkun/pNQiW
+         vh5Y6/eqV0VauEls4kbCDTw7x+pisfRi9xlLq9XDnTAihFYzYKmHc6P8c39pR7kHzXYQ
+         lI4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUYgpRzHKEpKqPTsbA9s0VGRcMZPl5F6L1skx73maOgq1c6CIZcZsXOeKOhG5LPbAeUdOqq/ZQ3w30qeB7VAA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy8iMhkDltqRNFhJcIk02IQhQeTW+80FMVZszV7cPyCxp7oP4p
+	403nGFh3vwnSax2amKGZo0PseGaET6AmXzWYxRegO77XL4y9GsSgP5aNbot5aKs=
+X-Gm-Gg: ASbGncv3EAwu36HAbVp9gNZhhjp9U7rJDL5VGIIO1nLsiu3rkUYuN6FfAEqBES23HZs
+	pxD4dP36ElUQLLRt/YF85NYUuWLj2V2hgEkxIZacbeaZbCh3Znlg5X1vWR/hvy/WR5QEVxR2LLg
+	0UOKE9YQpUKNJTb0/K1QsircYFEEmCZOlO1ADGZ8IZ6rJcz+EHWdWsyX8YMtQvbQY8vZVdfDuY1
+	pIM0UHjlxHUc56s91lST3DimUH11fCeXHRIQomhIDv7AHm0zRSOJELFQNOmy/QUdYRLsu2+zhda
+	XwwGuFKnzBvhi2dsLG2pXMXCpLxBnF7y7jPW7Jue+xnRL4vMytYOUMlT
+X-Google-Smtp-Source: AGHT+IGZoqhHvlj2fz0gcgs7G9e+hylpXfVfEtrS7DVAG1eIEQ0QX829SvXWTu+13YtzB692qBmerw==
+X-Received: by 2002:a05:6a21:1fc1:b0:1ee:a410:4aa5 with SMTP id adf61e73a8af0-1fa50bd891emr2828484637.17.1742277450486;
+        Mon, 17 Mar 2025 22:57:30 -0700 (PDT)
+Received: from localhost ([122.172.84.15])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7371152951bsm8981519b3a.15.2025.03.17.22.57.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 22:57:29 -0700 (PDT)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH V4 0/2] rust: Add basic clock abstractions
+Date: Tue, 18 Mar 2025 11:27:13 +0530
+Message-Id: <cover.1742276963.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] rust: page:: optimize rust symbol generation for Page
-Content-Language: en-US
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
- nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
- justinstitt@google.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- Kunwu Chan <kunwu.chan@hotmail.com>, Grace Deng <Grace.Deng006@gmail.com>
-References: <20250317094004.2622640-1-kunwu.chan@linux.dev>
- <Z9f6Zi2_eZFFY0Q7@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kunwu Chan <kunwu.chan@linux.dev>
-In-Reply-To: <Z9f6Zi2_eZFFY0Q7@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-On 2025/3/17 18:33, Alice Ryhl wrote:
-> On Mon, Mar 17, 2025 at 05:40:04PM +0800, Kunwu Chan wrote:
->> From: Kunwu Chan <kunwu.chan@hotmail.com>
->>
->> When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
->> with ARCH=arm64, the following symbols are generated:
->>
->> $nm vmlinux | grep ' _R'.*Page | rustfilt
->> ffff8000805b6f98 T <kernel::page::Page>::alloc_page
->> ffff8000805b715c T <kernel::page::Page>::fill_zero_raw
->> ffff8000805b720c T <kernel::page::Page>::copy_from_user_slice_raw
->> ffff8000805b6fb4 T <kernel::page::Page>::read_raw
->> ffff8000805b7088 T <kernel::page::Page>::write_raw
->> ffff8000805b72fc T <kernel::page::Page as core::ops::drop::Drop>::drop
->>
->> These Rust symbols are trivial wrappers around the C functions
->> alloc_pages, kunmap_local and __free_pages.
->> It doesn't make sense to go through a trivial wrapper for these
->> functions, so mark them inline.
->>
->> Link: https://github.com/Rust-for-Linux/linux/issues/1145
->> Suggested-by: Alice Ryhl <aliceryhl@google.com>
->> Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
->> Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
->> Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
-> For sure `alloc_page` and `drop` should be inline, but the other methods
-> are not as simple. It is less clear that they should be inline.
->
-> At the very least, the claim that they are a trivial wrapper around
-> "kunmap_local" is false. They don't just call that method.
+Hello,
 
-Yes, I'm not sure if that's the case, cause there are more layers of 
-nesting and it's more complex.
+This adds initial abstractions for the clk APIs. These provide the minimal
+functionality needed for common use cases, making them straightforward to
+introduce in the first iteration.
 
- From objdump, it can be seen that LLVM will currently inline according 
-to the 'inline' mark.
+These will be used by Rust based cpufreq / OPP layers to begin with.
 
-$aarch64-linux-gnu-objdump -d vmlinux | rustfilt | grep -A 20 
-"kernel::page::"
-ffff8000805b6f6c <kernel::page::page_align>:
-ffff8000805b6f6c:       d503245f        bti     c
-ffff8000805b6f70:       b13ffc08        adds    x8, x0, #0xfff
-ffff8000805b6f74:       54000062        b.cs    ffff8000805b6f80 
-<kernel::page::page_align+0x14>  // b.hs,
-b.nlast
-ffff8000805b6f78:       9274cd00        and     x0, x8, #0xfffffffffffff000
-ffff8000805b6f7c:       d65f03c0        ret
-ffff8000805b6f80:       d503233f        paciasp
-ffff8000805b6f84:       a9bf7bfd        stp     x29, x30, [sp, #-16]!
-ffff8000805b6f88:       910003fd        mov     x29, sp
-ffff8000805b6f8c:       d0006420        adrp    x0, ffff80008123c000 
-<core::unicode::unicode_data::white_sp
-ace::WHITESPACE_MAP+0x6756>
-ffff8000805b6f90:       910b6000        add     x0, x0, #0x2d8
-ffff8000805b6f94:       97e98ac3        bl      ffff800080019aa0 
-<core::panicking::panic_const::panic_const
-_add_overflow>
+For now I have added them under the maintainership umbrella of the common clk
+framework, please let me know if I should do it differently.
 
-ffff8000805b6f98 <<kernel::pci::Device>::as_raw>:
-ffff8000805b6f98:       d503245f        bti     c
-ffff8000805b6f9c:       f9400008        ldr     x8, [x0]
-ffff8000805b6fa0:       f1031d1f        cmp     x8, #0xc7
-ffff8000805b6fa4:       54000069        b.ls    ffff8000805b6fb0 
-<<kernel::pci::Device>::as_raw+0x18>  // b
-.plast
-ffff8000805b6fa8:       d1032100        sub     x0, x8, #0xc8
-ffff8000805b6fac:       d65f03c0        ret
-ffff8000805b6fb0:       d503233f        paciasp
-ffff8000805b6fb4:       a9bf7bfd        stp     x29, x30, [sp, #-16]!
-ffff8000805b6fb8:       910003fd        mov     x29, sp
-ffff8000805b6fbc:       b0006420        adrp    x0, ffff80008123b000 
-<core::unicode::unicode_data::white_sp
-ace::WHITESPACE_MAP+0x5756>
+If possible, I would like to get these merged via the PM tree along with
+cpufreq/OPP abstractions, but its okay otherwise too.
 
+Miguel: I have dropped the changes related to a Guard implementation for clk
+APIs as the discussion wasn't conclusive enough. Maybe we can tackle that later
+if required.
 
-Either we commits and merges the 'alloc_page' and 'drop' first.
+--
+Viresh
 
-I'll change it in the v2 version.
+V3->V4:
+- Enable clk abstractions only for cfg(CONFIG_COMMON_CLK) (Stephen Boyd).
+- New struct implementation of Hertz.
+- Added examples for all the structures.
+- Make methods inline.
+- Improved comments, Invariants, INVARIANT, SAFETY sections / comments, use
+  intra-doc links.
+- Other minor improvements.
 
->
-> Alice
+V2->V3:
+- Add type Hertz (Daniel Almeida).
+- Improved comments in helpers.rs (Daniel Almeida).
+- s/Clk::new/Clk::get/ (Daniel Almeida).
+- Implement OptionalClk as well (Rob Herring).
+- Fix Safety comments (Danilo Krummrich).
+- Add tags from Daniel Almeida.
+
+V1->V2:
+- Post this as an independent series.
+- Include more APIs, apart from clk_get() and clk_put().
+
+Viresh Kumar (2):
+  rust: Add clk helpers
+  rust: Add initial clk abstractions
+
+ MAINTAINERS                     |   2 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/clk.c              |  66 +++++++
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/clk.rs              | 304 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 6 files changed, 376 insertions(+)
+ create mode 100644 rust/helpers/clk.c
+ create mode 100644 rust/kernel/clk.rs
 
 -- 
-Thanks,
-   Kunwu.Chan
+2.31.1.272.g89b43f80a514
 
