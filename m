@@ -1,124 +1,88 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885AD20B806
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 11:52:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D555B3FC2;
+	Tue, 18 Mar 2025 11:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742298728; cv=none; b=jKE2Tg+yDrj6wMnNva+l8kYcSjG+cdtfit2VyteGAFrqyBSYMU3bdPWEQI1CozF5Y7NIH/ZAs/YQYqODNdFjrYEdJT6aHONJNuShkY1QTSkQ8hRb78GgJJ23TCbc7eYu5+TLsJo7ZaYvI3MBGFZNMH80ZFjIGjN1f87pTImmPKg=
+	t=1742298790; cv=none; b=Y8CM6U8ANrMzNLy/ilDfACeTuA06NgYtGkNUxTgPFPLcwooq+Ofp5eTEsYUIr0zZNWMWgqem3+4yUagDcWfs30n2sMSnvmgf3XToXKlYOWPoInzQX/Qjp8x5E+uPEKcwUrhwDKRHgOHzzl6KezC43a3PCJrGckqIoNq3yp8NhaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742298728; c=relaxed/simple;
-	bh=LlFQ6OvYGbUt6MCGuSx23PZIigfDNBT0i4vyidNAkp0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nkbe9fOQ7tqF8oJsePoJF7t+d/n4e0T6c18C4L6lQH6V1jQDZOj01Jkpg+zdAWxK+qTu1fbriHV2bdjHRZ+xwm8y6iSKJKkVtxa7/QTrgHsZnGq42hCzZ/UWbiag9L1nBJsSeYcbfZwxJDKe/eQAGLmMOdH8zjVom140EsnodhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PO23g+F/; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1742298790; c=relaxed/simple;
+	bh=gRmHonTx+tXy1+AP4ILZnp3ZnyyajmJA8Y5guRqzNFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eoRGpOClioC1xFmUMZShzwt6scSRxQKd7geDgXJ7e2mgAh8+UsnPISQyA4/H28SmwgHPSQYXA7IY6uRiw6SkKKw3keY30XjYLW+uCnNe2MS/YV9+45lTl1J+EjqDXM93m6CFqXnNDu6XT4o8ty3pXKclKjRi6QbzyPbl7jx87O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XNXw2L1Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PO23g+F/"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-224191d92e4so103907125ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 04:52:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742298723; x=1742903523; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WqQw43mLNdk4RGf4hzRLUcoMNPzaWJ7WBFpnNihOCEU=;
-        b=PO23g+F/eZcQlAZ8txe7sqOTnjDJplkAwOzifiJZFW/iMH4cJ/kx2fr5rd4Bv1c1yk
-         USbn3OG9++0Riys7UXMCZ3Enrzt/MuobDGOyl8hHYkIoRc0dfX5EAnCwI4ALNmcaPsSQ
-         8Oz3W5n1drLJwXXe2kJ8NhDxV3wm7WvmpP6wwSC9OwUuAJNHdba1E4GLg7xwRtZMGSAx
-         ogp63+0gg/9Hm+dHy84hE+OloMgi6lyIsk6+BDFbVJJpPiZcT3ChYnhPdYCLDOhM6Lta
-         VnhwE02KhNlUaEmnZKEDOlMFJFVG1+RgGFJDnncC2C/k8eba6ayZB6Y6/rMLPe2CUTx6
-         nx3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742298723; x=1742903523;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WqQw43mLNdk4RGf4hzRLUcoMNPzaWJ7WBFpnNihOCEU=;
-        b=G0NdaU9ozDRwZM+tGMEeievNJP5nnJOkfdd9XlAEpNfnikVuqVEhrXudqM3OsP4Z/w
-         CKZiHFdl91hbdjTtrf2+esXARxsBnoNvowVYkf0z7r3xH7DmKWTmZ9h9INjTjxnkLmf+
-         HiSnZEbR2PDdCSfGSqfAC8fU87Xl7tQlW8LfBqLZLAs+EvBeD9MO4bHQf7kQJrceMXQc
-         DQqvlXj5eSZ4QXfrusig96lIiFsvOd1dhn5UnX220Brrw2delUEZCpRHIxhUIX0fXVU/
-         GXrhoKIee8HEgGhDzc0VfaXjtxxDVagYFuH48CQ5aWumt64HPYviRphUJWul8b9XKpz4
-         by6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVIab/WZX89CnsJN5oZYZVTGytU1ZzVKptT64RelLRqii5g4/8xkACdK+cH+WwrLvZfwYzEKLch1AwjlIxR1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHJFqvpaCZQF8bRkYVtepE7NT/eBy3gCZwtw37khL6D5wtdfOn
-	81VHaRmRQv1hRGEwIHgzVkfK/cI8MBre+2K/aqRET6U5sEm7FG8y7UWeHb8mWSGLhsbBIfsHmPl
-	F
-X-Gm-Gg: ASbGnctg/fLGLx/OaYWpxDxSk2zMqFODblgU3Vd5F9lr7H6ku3mJyd1tBeRea/foRS4
-	M5hRROryc1eAya76VoIui9TaBERQwCOnXVSW9LjNAMZMClx8lYXMpSSov5xV5O0P4SOncfVpHIr
-	M7U3y0o0luoLn0M0wkLMpselJr5suhLj7bSBNo5LrRyH2iX2+x3tjdhAegbHeUNyPQaKu1BFyFm
-	oQW9dwJxJPdFN+WCzCLfCMuxK85gES4cQCE1vmar0eTHWgAYRXF8r411tHxRUTK24GYmE2rL4vn
-	ATtIE5PpCMOwe631TY4VNvzwO5la5PS4hluospAqu3b7FA==
-X-Google-Smtp-Source: AGHT+IHR3Ra9GbL7M0mpcaPU8xBsJRCbItcu9BQ6LIdVNRTHi2iS+SQD83bYoZBSaU1ohrQWzaWstw==
-X-Received: by 2002:a05:6a20:d80f:b0:1ee:b8ec:7062 with SMTP id adf61e73a8af0-1f5c11e5dddmr23171575637.25.1742298722889;
-        Tue, 18 Mar 2025 04:52:02 -0700 (PDT)
-Received: from localhost ([122.172.84.15])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73711557ee8sm9669695b3a.52.2025.03.18.04.52.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 04:52:02 -0700 (PDT)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XNXw2L1Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD02C4CEDD;
+	Tue, 18 Mar 2025 11:53:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742298790;
+	bh=gRmHonTx+tXy1+AP4ILZnp3ZnyyajmJA8Y5guRqzNFI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XNXw2L1Y1fdh/nn4aLtHxDFTU8pGYPXyfTAh4aGqj+oejyzSBabAmXHU8SbXGUUjf
+	 wWtXj4puZzFqW0WKxgShTVOHAVkQuu2uChoAgu9rMemhhJhmurWI3qUImGjB7M6b3H
+	 8Io8P7HtgI9ODZM07yQ2Oq+1HWgl1hJ3UXVCxav/c71kJ1/J4LicZKllnw60fjaboX
+	 2tLNsEeDTUrYQ7qRNKTJ9KV21nKgd8aHg1du7geUUmqYMJbbj/9K58aWxKJqvfSJKa
+	 UrarGx6gLxdhX5iXy4QpGBdN5+gwnega7HZ5oPPjPO+JrAl0vQGEMqqnjtE5bXouI6
+	 nNgZR7d2PyOSA==
+Date: Tue, 18 Mar 2025 12:53:04 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tamir Duberstein <tamird@gmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>,
-	rust-for-linux@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Burak Emir <bqe@google.com>
-Subject: [PATCH V3 2/2] MAINTAINERS: Add entry for Rust bitmap API
-Date: Tue, 18 Mar 2025 17:21:50 +0530
-Message-Id: <cddb90075c7f892e30f5039c3b3d14e6a239d915.1742296835.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1742296835.git.viresh.kumar@linaro.org>
-References: <cover.1742296835.git.viresh.kumar@linaro.org>
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: alloc: use `spare_capacity_mut` to reduce unsafe
+Message-ID: <Z9leoGrF5pQeZ3tH@pollux>
+References: <20250317-vec-push-use-spare-v1-1-7e025ef4ae14@gmail.com>
+ <D8IM66U67XBD.28KWYO1XSF8ZQ@proton.me>
+ <CAJ-ks9kq1cQ2-ZNzG9P4SBvk-AjXxT+na-89K33imB4fsCvu4A@mail.gmail.com>
+ <Z9hXMcFVdF8MMusU@cassiopeiae>
+ <D8IPQUN25M12.2CIZR4QHJ201N@proton.me>
+ <Z9hcT4KPwgtHmiTT@cassiopeiae>
+ <D8IQ5BDTLCLZ.1UBNYUXLK12X0@proton.me>
+ <CAJ-ks9=xLLXovsaduKFBfxvkfzYgTaSPhhW_oRN5y1QOuKJFkQ@mail.gmail.com>
+ <Z9k7cwE5UNOIyoXR@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9k7cwE5UNOIyoXR@google.com>
 
-Update the MAINTAINERS file to include the Rust abstractions for bitmap
-API.
+On Tue, Mar 18, 2025 at 09:22:59AM +0000, Alice Ryhl wrote:
+> On Mon, Mar 17, 2025 at 01:55:18PM -0400, Tamir Duberstein wrote:
+> > > >
+> > > >       fn dec_len(&mut self, count: usize) -> &mut [T] {
+> > > >           self.len = self.len.saturating_sub(count);
+> > > >
+> > > >           // Potentially broken, since maybe `count > self.len`, hence need an
+> > > >           // additional check.
+> > > >           unsafe { slice::from_raw_parts_mut(self.as_mut_ptr().add(self.len), count) }
+> > > >       }
+> > >
+> > > Ah sorry, in my mental model the function returned `()`. Do we need the
+> > > return value?
+> > 
+> > The return value is the whole genesis of `dec_len`, we want to return
+> > something to let the caller know they need to drop or copy the memory.
+> 
+> Hold on .. it returns &mut [T]. You're usually not allowed to take
+> ownership of or drop values behind a mutable reference.
 
-Yury has indicated that he does not wish to maintain the Rust code but
-would like to be listed as a reviewer.
+I think it should be fine. dec_len(), by returning this slice, indicates to the
+caller what's left behind in case no action is taken.
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+Subsequent operations are unsafe anyways and can easily justify their validity
+by saying that they only take over, what otherwise would have been left behind.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 315cff76df29..c55db52590cb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4026,6 +4026,12 @@ M:	Yury Norov <yury.norov@gmail.com>
- S:	Maintained
- F:	rust/helpers/cpumask.c
- 
-+BITMAP API [RUST]
-+M:	Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
-+R:	Yury Norov <yury.norov@gmail.com>
-+S:	Maintained
-+F:	rust/kernel/cpumask.rs
-+
- BITOPS API
- M:	Yury Norov <yury.norov@gmail.com>
- R:	Rasmus Villemoes <linux@rasmusvillemoes.dk>
--- 
-2.31.1.272.g89b43f80a514
-
+Do I miss anything?
