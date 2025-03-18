@@ -1,151 +1,128 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74F6211A20;
-	Tue, 18 Mar 2025 20:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064AD2116FE;
+	Tue, 18 Mar 2025 20:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742328814; cv=none; b=XxG1B7BtMCs/BjIxWT/nnYUr99HXORQDQbpJPS9EaMaKdCOMSHAuFqkJaLNTVYkzByNeP1xEADpoieJdXycMuXBjGmKEm3q9ig3bNe/HUplNTxcCfnDYH9st3WC2UsfT966ziNpFr8STCke5Nkom28fwU3YadWIyoAtn/yR0WWw=
+	t=1742328861; cv=none; b=pXhpAQRobOyat5pT/cGxDECSHajCp/7aGNHCI89WufAljE/yajfKdXrmutOquaseTy38laUauYhgu5bEY8tkOQy4Wqaud9kNjqcuyrK9KR3Td+84v8KRRv2FvbVoe6BSOJOhfEcSp5DDiuugV+yKwBbvdUkqBe8cKt9hawgY7RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742328814; c=relaxed/simple;
-	bh=4Usj3tdB8BDICov6mR5o0KIXlCATwRV1+kMj1koCmOE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P1+D66uDv+U7DV8n8HoSSlLLszfZpweg/N3KvKDByJqfyPLWcWKEqlb081vKZvQcXTU2dQPZqNc/rqlx3xkqxIe5UF2TxT95gnfJ+ylobMThBNYyX9PGfQavWVkuIhN1xNIeUuPZqkJn9Pd2Uuy8RxiYXkYdmIR0MtUQ39F/Mk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XEO519EC; arc=none smtp.client-ip=209.85.208.181
+	s=arc-20240116; t=1742328861; c=relaxed/simple;
+	bh=ZC+/wZFnozTe1tBwRApiqqljhJdQUMtpD1iDQ9v6X+I=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mKD+BGQP0vN8Mcu1yQsM6XQy7XNN/6GaWcA5IGF6Ch3g5ZMONlJd31PanPtGUqURwQ7I3BOwJKa5AAyi8cP2IibpjvrumzD15vvqBYKfioB5sr9G3YiNuYzKMdGzMQho9lU14eLQdtbRUgaXVsb1h5iSZMn+ff2jF9KuHzsZ17A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FaVHB+W8; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XEO519EC"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30bfd4d4c63so59749101fa.2;
-        Tue, 18 Mar 2025 13:13:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FaVHB+W8"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6e8fce04655so51795046d6.3;
+        Tue, 18 Mar 2025 13:14:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742328810; x=1742933610; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7EYuK/t2IJSGOT76QGj0LoVWETpAfuQmAmJNAdEEvyY=;
-        b=XEO519EC3Sv0T9DZOZLgyy9W1CCl5NaClGEh3zFE6nOKJb5nMH+GihCTedl2X8RwcI
-         TZnpGmHNvzvw1+ZTpBp3iZo3uewF8UESPV9mBgs5prytH8DTsnU1Gy8ACs363bIo7Bh/
-         dMcxuxGTSj1fqlOK59LerxAA+JaZxvf2jx9b4wRG/0OjUbSTsazBvVTrT3iAtZ5eEqG/
-         BNR0+zkjzb0ZQKiM7nJRgMSS0ETRD2ULswlv/MSpYnpwrVpD8Y1rXn0Vby+HjGlrELyZ
-         9XVmXeZQ9wLdHv6hJYpfHKQ3Wz4bW3y5U6I1dZ8/63Y6gM5TtA0xpExftgL8dZtRzBKB
-         W3iA==
+        d=gmail.com; s=20230601; t=1742328858; x=1742933658; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ke2dF+Mv4THIY9Xuoy975jdDp9kAFU9oMkxfHatBWa4=;
+        b=FaVHB+W8iL7dtPRxdPY+H4jIM5u+B/5NjeUK+3JnTEQCfcFB6Lv5gsX3gDV3a+bfH1
+         cywTSpa7IbTVQhRqgOYTrlaMrpUbyjg/XaIQLvTFub9fHlQfUfaFy1gvb12lUjYHDpu1
+         9L6vW5Sn0aQD/MVi0382vUxiGA66Ufase5a6DokV6cJ5Yrr767SgT22g0lYBnNiMm7DS
+         vKeTPAKI429UnnH+Z1gZ0W+sW8rWFkCIWCzrnJZywIn6PmIDKP+Jk84UneLLJFvsJVgg
+         d+mWUp6uGoyFihB8+ITKrGGrXd59l5Mk989Jcjwm+pwAd+urshL2Mss6+AG3PmRDiLGx
+         018Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742328810; x=1742933610;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7EYuK/t2IJSGOT76QGj0LoVWETpAfuQmAmJNAdEEvyY=;
-        b=akNmC4dW2oA4RSARsU5kUjRhIUFXmkMsMrXhdnSCdZFc4EernMLxCa+lt4+6zy0SpW
-         +2kIvgCCjK5parIVnhcqWCiu911bCR6hdR6xWFLIXEpa4n7EuLp0VnTcVSBGm1kVSVO3
-         nKgJN2rah8G0WsDS3gTGZYEphGZ5PefXNwVUD2cJCR4k2su3NhSSnywkgIwOGqIw5GEj
-         AI/xxoybJh+mKKJ9Z4DlGt+GU/y3m7xm1RvUKyJnQLBLhLI1aoA7meY/2zIVQ2ThpwUM
-         XxRdHOo4muCHj/Z5tIlcj/fv9jACnib5wlawlt4KbpcTPqHpfVJBStqHODGtTRFe6pXt
-         uRwg==
-X-Forwarded-Encrypted: i=1; AJvYcCWi29wVXR2247HyDoZml4vB9xfacWw/+SPw39BQGi20faIh/CDRC1JZAtc5lnpoveEYt6FmDQuiwEQ=@vger.kernel.org, AJvYcCWp/YFNIhyP6dqWwpus0u8isZQ3b48kF6M7Mz6pnV34XuhPqJmDc6yYGYANU6f9WF7gNK5n9xiz1E9h0RNe7nc=@vger.kernel.org, AJvYcCXtgEE/IOZq1euFd3q6ibYEHpK3LdOkOBl5qIqilh+WoU62iOV6FaYkjJAS9FtSQPb9kd7qOox0isov0w64@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1fXGabI5XVus1PiqlIaJm1m42IsJov94EPqGFRu7UMkOub9eF
-	k/nxJPYSfaXCp0ShO7upkoLsG++4ut/TE+5gpXJIndtMsA84ZzsxsBqtKcidL9Z9KJrks+0dSkH
-	7RDC2TlCMfWWdx+A/aAYLsmV2PC0=
-X-Gm-Gg: ASbGncuqkuqdWJ3AR8kQUhhPQaOXZgS9alI08L/pCzyXNGIwammsUEcHT275zzU7VGv
-	V4x+Yuuo09YG9s5ULtscPmZUvjbW7EaZdi/XwgTw8X1RaT554Lv6RRQl2NfPtk80aE3nJEzHU68
-	7+ZXm6iUdi7HQ4TqWUahR8L3KgBzxp3ZXAfnNZcCzyfg==
-X-Google-Smtp-Source: AGHT+IE03XdTIPJlrlbTe4XTC7CjLxzzw2MmqZ7G1kRhG67FU/kpFzEBbds8p2MpkhI2rqH08hJOoadGnI+7Ukp7gec=
-X-Received: by 2002:a05:651c:a0b:b0:30b:f52d:148f with SMTP id
- 38308e7fff4ca-30d6a3e2be0mr420101fa.18.1742328809683; Tue, 18 Mar 2025
- 13:13:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742328858; x=1742933658;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ke2dF+Mv4THIY9Xuoy975jdDp9kAFU9oMkxfHatBWa4=;
+        b=WwgfJ+TabwRw9F8wDjBzRLqjhTpjiJ3pmvpYxr3+jX2w8B7YUbxYfx4Syw18bAJfP/
+         L3ZTnfJVCcwyfpgmKEDCLrJDsHcPFjfiaiMKnpKJFPWGlblmaIxN1OT3RQRImURpFsJS
+         k5o+47kfujqTQdO1Tl0Bs10wzlGdN5KQCmA8TUokzwFEE9uHm7RSmaRwL6URkTyaTnSr
+         XdZmgOjzSzwz7noyAQyztuQLcJaN3kl1BaVEIeaQ71oBwxbiO0o+aBqkyM/yPfiLnRvl
+         kyB3+OgO8eyPvzhZuOBsEA5E6nBEMKNArIE6M38o5k9wsbWdh4s+DFWJ5MHSCNVrcuMn
+         0nRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV07BY5Sthz00tNdWUCdBQiORGi6dSlG4XAqW3DRJUGnqpx0/RAsFcimjrCc2btumeC72zyrLCOwUtaIQ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8+2FLRfHQazBUfZAcfthwGwjTMs4UVd4W6143seGQU/YSguwq
+	NUnNrkd2W85ceakPvBFHtWEqvRxgEQyA7Plkh3l7pJ17OkHDfOPj
+X-Gm-Gg: ASbGncvX4Yug/kE2RzZEnkAEJuvKUebUkEZzqE9iZuYtcQDfybUvZhrL+qB6lBLlJc6
+	HWBvVHIxjljApJWW2/ONfl3+br4B8C4eA8T+7yw5CQv3T5s2Vu7Y2dgRCwNM5bojuSsOMeWCfc0
+	sLU2wzj9y/SZSJDEmrWs/sCOwjB5lSOqFCMK/g9m4o+4Id/0i6jyvya6u1KJeucr0mW9M5avLlX
+	xbmftmZ5Bsofae5EMGb5Ad6yUaDywHfwLrf0E+5CsJr/uiA4/83+m2u0wzg+qc2az8l/x7FDVuG
+	LXTIOzWNGsNXkAFVfUoJHbWb5u+VQeHPQ39M/aG424Ra/+n/2f3n/HSaFA==
+X-Google-Smtp-Source: AGHT+IG5OV1zgGWKFbtolbXWh3IyHPJMJstn4NFzhyUsmg/s5e2nNmwPc9ykZoatV2c0xsQ8eMIR+Q==
+X-Received: by 2002:ad4:5d4b:0:b0:6e8:ebc6:fd5f with SMTP id 6a1803df08f44-6eb2939fb0cmr2802956d6.20.1742328858583;
+        Tue, 18 Mar 2025 13:14:18 -0700 (PDT)
+Received: from 1.0.0.127.in-addr.arpa ([2620:10d:c091:600::1:e903])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eade209335sm71301046d6.22.2025.03.18.13.14.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Mar 2025 13:14:18 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Subject: [PATCH v2 0/4] rust: alloc: split `Vec::set_len` into
+ `Vec::{inc,dec}_len`
+Date: Tue, 18 Mar 2025 16:13:52 -0400
+Message-Id: <20250318-vec-set-len-v2-0-293d55f82d18@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250316111644.154602-1-andrewjballance@gmail.com> <20250316111644.154602-3-andrewjballance@gmail.com>
-In-Reply-To: <20250316111644.154602-3-andrewjballance@gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 18 Mar 2025 16:12:53 -0400
-X-Gm-Features: AQ5f1JqGHb-xKycRwPr6BJPWKgZnlSyF596guWZP_moUzsbI0d82WEiS8RZpmM4
-Message-ID: <CAJ-ks9kAROOfyPtxMe6LE4-UPsvXca2sQ2VDjhRchZp3HLddGg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] rust: alloc: add Vec::resize method
-To: Andrew Ballance <andrewjballance@gmail.com>
-Cc: dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
-	corbet@lwn.net, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	acourbot@nvidia.com, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAHU2WcC/22Py27EIAwAfyXiXKqAeebU/6j2AI7ZIG2SFmjUa
+ rX/Xpq99ji2PBrfWaWSqbJpuLNCR6553zrIl4HhErYr8Tx3ZnKUegRh+EHIKzV+o417H8kgKgd
+ WsX7xUSjl79P2fum85Nr28nPKD/E3/d9zCD5yMybvgnRWQnq7riHfXnFf2eXxFBf6/Op17WlnM
+ VTifb/mNg2YpI5oRHKBMMw+jqh0IpDGWwJNQUUBYN3ZGBou/alpcDpIowKgJWd6FtkIZvZCghK
+ gkkb0QoExPeHxCzOT0YMoAQAA
+X-Change-ID: 20250316-vec-set-len-99be6cc48374
+To: Danilo Krummrich <dakr@kernel.org>, 
+ Andrew Ballance <andrewjballance@gmail.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
 
-On Sun, Mar 16, 2025 at 7:17=E2=80=AFAM Andrew Ballance
-<andrewjballance@gmail.com> wrote:
->
-> implement the equivalent of the rust std's Vec::resize
-> on the kernel's Vec type.
->
-> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-> ---
->  rust/kernel/alloc/kvec.rs | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
->
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index 18bcc59f0b38..eb6d40a1bf8b 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -554,6 +554,32 @@ pub fn from_elem(value: T, n: usize, flags: Flags) -=
-> Result<Self, AllocError> {
->
->          Ok(v)
->      }
-> +
-> +    /// Resizes the [`Vec`] so that `len` is equal to `new_len`.
-> +    ///
-> +    /// If `new_len` is smaller than `len`, the `Vec` is [`Vec::truncate=
-`]d.
-> +    /// If `new_len` is larger, each new slot is filled with clones of `=
-value`.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let mut v =3D kernel::kvec![1, 2, 3]?;
-> +    /// v.resize(1, 42, GFP_KERNEL)?;
-> +    /// assert_eq!(&v, &[1]);
-> +    ///
-> +    /// v.resize(3, 42, GFP_KERNEL)?;
-> +    /// assert_eq!(&v, &[1, 42, 42]);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn resize(&mut self, new_len: usize, value: T, flags: Flags) -> =
-Result<(), AllocError> {
-> +        if new_len > self.len() {
-> +            self.extend_with(new_len - self.len(), value, flags)
-> +        } else {
-> +            self.truncate(new_len);
-> +            Ok(())
-> +        }
-> +    }
+This series is the product of a discussion[0] on the safety requirements
+of `set_len`.
 
-You can avoid underflow checking in debug builds by using `checked_sub`:
+This series depends on "rust: alloc: add Vec::truncate method" by Andrew
+Ballance <andrewjballance@gmail.com> [1] and rewrites `Vec::truncate`
+using `Vec::dec_len`.
 
-        match new_len.checked_sub(self.len()) {
-            Some(n) =3D> self.extend_with(n, value, flags),
-            None =3D> {
-                self.truncate(new_len);
-                Ok(())
-            }
-        }
+Link: https://lore.kernel.org/all/20250315154436.65065-1-dakr@kernel.org/ [0]
+Link: https://lore.kernel.org/all/20250316111644.154602-2-andrewjballance@gmail.com/ [1]
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+Changes in v2:
+- Avoid overflow in `set_len`. (Benno Lossin)
+- Explained `CString::try_from_fmt` usage of `set_len`. (Benno Lossin,
+  Miguel Ojeda, Alice Ryhl)
+- Added missing SoB. (Alice Ryhl)
+- Prepend a patch documenting `Vec::len() <= Vec::capacity()` invariant.
+- Add a patch rewriting `Vec::truncate` in terms of `Vec::dec_len`.
+- Link to v1: https://lore.kernel.org/r/20250316-vec-set-len-v1-0-60f98a28723f@gmail.com
 
->  }
->
->  impl<T, A> Drop for Vec<T, A>
-> --
-> 2.48.1
->
->
+---
+Tamir Duberstein (4):
+      rust: alloc: add Vec::len() <= Vec::capacity invariant
+      rust: alloc: add `Vec::dec_len`
+      rust: alloc: refactor `Vec::truncate` using `dec_len`
+      rust: alloc: replace `Vec::set_len` with `inc_len`
 
-Either way:
+ rust/kernel/alloc/kvec.rs | 87 +++++++++++++++++++++++++++--------------------
+ rust/kernel/str.rs        |  2 +-
+ rust/kernel/uaccess.rs    |  2 +-
+ 3 files changed, 53 insertions(+), 38 deletions(-)
+---
+base-commit: cf25bc61f8aecad9b0c45fe32697e35ea4b13378
+change-id: 20250316-vec-set-len-99be6cc48374
+prerequisite-patch-id: 85a264a3c7e86025e7b36d91234134f5cc914366
 
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
+
