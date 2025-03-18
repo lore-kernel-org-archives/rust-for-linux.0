@@ -1,54 +1,54 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9892320B807
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 17:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557AF1AA1E0
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 17:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742320162; cv=none; b=XgqkhCFv56CE01nK2cIoj8JPFg82KkcH8VO0dKi3ZKHc8HliFs7z9BsLwIJaA8KdeX2k/x9Z8zc/+LuN1IYCaD60g0m3V7+g9rIrF6WvJafhTREINecW/5bmqgH+81y7mHl6ARgJlVHjbz8dM59XK/aJOICqqVz09jQI94q53Lk=
+	t=1742320444; cv=none; b=TnfyW1J7tVBErLnGlLFtGRcl/ARQa5ZPGTiX6O2CysP30u4Iv59iz5ZUq0+rtJJ0xPMNHoaoTngaCd+hJCouY+YB2dpw1Fk1/d/ZG5ymYukCoqQFRFpvgUjzMB7GB4WmjHSBRHAc0DPnuDAB7XZDpp1heNDOLt/B5yGqnTlrWX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742320162; c=relaxed/simple;
-	bh=uJIutiU4F9uJdD39iNb8Ou5XvYDbRa8EcLckqr3kp10=;
+	s=arc-20240116; t=1742320444; c=relaxed/simple;
+	bh=RwSUxJCEIuMsb7Jqi8oaa0p9OZd3rsArgVJSEyzwtm8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Y60gyHW+zDLShpmLZCYo2OKfqJq6RRYQtdV05Gl5xAbcK90TTd3V1uA9RDADg9YIppopgHQ0zhCyefOYRXhdVcL/U5yLmyolPDkIYZLNSmEnEFzFtAU9x5BEbKc4O5sAHbjGArDGpdOgBpABzVv7szA4W4LAtbuyPR+t57sxmn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mazzuzZB; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=L2NFLqN9us62EHmAibi+/rxMb0S3uJtDBAtCVWI5vn08Sd2TAxTXHZg/Mjzjax7UiSKC2jfSVXTcmvirFCo/y5sXcT60EDWERbFB074MlSlFoc2MSf+SHaYbiGvDnXwAA5Ngfd1xzEMnwSxOEDeZLi+W7lhdyycjSq25APjJJsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xfwW1Xpt; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mazzuzZB"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43941ad86d4so18550915e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 10:49:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xfwW1Xpt"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf3168b87so20049775e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 10:54:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742320159; x=1742924959; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742320439; x=1742925239; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PSbH1lMYu7B70rx8iHcL63GgWlDTcxDGerlsbQLm9MQ=;
-        b=mazzuzZBB6JASR0+GwTWFRNlh1tpYoyxTRhT/MrvYEZ2kjDrVxopj6T0IQOOA1/YRw
-         hZ/Qw89zgFdW625xnq8yCsUjZDwkDih6RbP6zg6Wmq4DYsXQuEdaonbhPQcqeXSPRu70
-         rUwim6HriVQhzU4ieswYm3YUU5sxXvo2V03l7rFvwUXzpKLE2YOmHJnOyXXkNNIncmTM
-         bvlkbUiSizEpFLwx6HO+giyVmDe6LvVa4Pbm+KMY7jDhmzMBxWlyI+c1j+Gq8MVVURnq
-         8HGV7H4VELQi9A3H47AFNWC9qwGfqc+tDGQWs9NQ9m+QBCAnD1Kf+ZDXj5FaHfDSouKi
-         Zj3w==
+        bh=JtRRUpBmdbrhDkJPpcQ9zxxSGQP77/v+ZvbBB0uFPno=;
+        b=xfwW1XptNybX8bgU8/kD6ETH851p9fQv/1zH7qG2swuOkiMZwBLUND69l6Y8GgDLbM
+         HpcTPTUwxbpnDBxdvSMtHSva3G10d+/KSdyDi+zYkU/d59XxyD2U+o6gf8sdaSpSCh44
+         4HvDbb9mE4HR7+jtp2euMWMgvaJNsuJcdH9cdL3HLNdZXI8BGdjUcHXC6/XRf4xErVms
+         VYgVHqAV9X+d/ks4gOE6swyLAU6kISymYDaj3V9RKHybVze6rdZZe9MvEQpFfC+X3eye
+         7VSy85doFVBlgmTR5TaJqRCPExb0xqRRjHNIa0P0u8jFM3hPecK1CFWsH6FU1haiDWcD
+         D09Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742320159; x=1742924959;
+        d=1e100.net; s=20230601; t=1742320439; x=1742925239;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PSbH1lMYu7B70rx8iHcL63GgWlDTcxDGerlsbQLm9MQ=;
-        b=fdzeVNuvGINAjZwpht8VYNZxt1sZKqFFx8H++ZTvlrtdeP+yLrwxbLNfmd9gmPfuXQ
-         CRmHFkEU/4IMBQHwOn9xZGhz28zhEU8RHXuJt2LRrsO/a1Rt2fHLcl2SixHcmRAOmaUL
-         7gkv/Vt8Jobu5Gmu0agOlrgb6Vihrkv95Ytrd232H77raIIrwP6y8blKhKfO35wkzD9U
-         RpilUPPyq4qmGRiycznjb6E1ynPWdFQ4jsdPWLCEGeyBvYswCyPygiWetdQsnjiBGANK
-         KagxguDhdkkvhC7cmm68ed1y6DZHUN1kB5JnD8mK5jKApzaRigtUuzgvzTjcTq6JnFRf
-         Wrmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWF4PSAvaWZ+hr8/vJbP8oqmPltMGDmZSvLavyuNHtWub25VR0HYspgx/i6QSj+uvkS4+CgTTaX/vio+/QjJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUrUEF/b6HgopEh/qno3Tu5IlzpQ0T9zhfjJBgxn7mq1HgHVgp
-	Y32In2UhG+IC0WDAvgm68AktR6IIvRD/KSt3FH/IispT/45bC5hl42C51Gnk6VS4ZQ==
-X-Google-Smtp-Source: AGHT+IGwrDuMxtuMxwl92MGb7Xvh2jSFb+fFzxcdzRaMOUfOAdTNuPSleq3PgEtUak+wFqpPII4/qFo=
-X-Received: from wmqd2.prod.google.com ([2002:a05:600c:34c2:b0:43b:c9fc:b269])
- (user=bqe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:1d2a:b0:43c:e2dd:98ea
- with SMTP id 5b1f17b1804b1-43d3b9cd71bmr30430905e9.22.1742320159036; Tue, 18
- Mar 2025 10:49:19 -0700 (PDT)
-Date: Tue, 18 Mar 2025 17:45:45 +0000
+        bh=JtRRUpBmdbrhDkJPpcQ9zxxSGQP77/v+ZvbBB0uFPno=;
+        b=XDYyilU2M9uzACVbvF/1WFvM4z+p38zU08mlBxUquohVhBPUlUxey1NEJrLXo5kCWt
+         N54yHThu1pYOSC15GIpr4zdm0VMYNe79MA3Fz+Mae7JK/ETQ/P4Yx++OkNa1awkjQ5db
+         uYxZ3Opv8dr4bRXhnO9W6XLvtloo1t8272QtWd3exCQSoTQUhSDUR3jbN8m17jhFs/wM
+         ID8yyqqehFdx/r1B+TVR5x1yOf4R+ZitNMy+YDcDSX2rUSRddVOW4tg6fSUz0l+fLOVU
+         0i6PALoYTpfiei+dFZsauGsVmYzAFBQ8ppby+x1CDrSbTfrHNeNm3LloUO52qbMjCK0b
+         gDbg==
+X-Forwarded-Encrypted: i=1; AJvYcCV+OyJAckJoayTmOHCYdXSRd7v2tFrugKVa4A9oXyy3Xm4/PIaivBw3FqeMUBMcQLN7RY0uJN4kmS2sYGxBKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6G4j+XidZEdIptM6p9jcgsh8y97yzgQtbS5e3NMtn07S65d/Q
+	MvgKA9H8OsAA9wbVstH0UkMLvFuu/DlFI1brTqmr9mnkofPRE+JU4qdbF7dqnK/FCA==
+X-Google-Smtp-Source: AGHT+IEow0KUsXork9VOcbrrv1ftSkiGbKuFjzVfSZqoviK0i8inh8tCQQYcQe8VZNOsFlLNOQg7Hys=
+X-Received: from wmcn9.prod.google.com ([2002:a05:600c:c0c9:b0:43c:e69c:d4e6])
+ (user=bqe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:5106:b0:43c:fe90:1279
+ with SMTP id 5b1f17b1804b1-43d3b9bceaemr30467085e9.21.1742320439795; Tue, 18
+ Mar 2025 10:53:59 -0700 (PDT)
+Date: Tue, 18 Mar 2025 17:51:53 +0000
 In-Reply-To: <20250318164221.1533590-1-bqe@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250318164221.1533590-1-bqe@google.com>
 X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
-Message-ID: <20250318174756.1625571-3-bqe@google.com>
-Subject: [PATCH v4 1/3] Adds bitmap.c and bitops.c Rust bindings.
+Message-ID: <20250318175322.1627073-2-bqe@google.com>
+Subject: [PATCH v4 2/3] Adds Rust Bitmap API.
 From: Burak Emir <bqe@google.com>
 To: Yury Norov <yury.norov@gmail.com>
 Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
@@ -71,113 +71,296 @@ Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Adds helpers for bitmap.c and bitops.c to get Rust bindings
-for inline methods __set_bit and __clear_bit (these are
-non-atomic variants) as well as bitmap_copy_and_extend.
+Provides an abstraction for C bitmap API and bitops operations.
+This includes enough functionality to reimplementing a Binder
+data structure (drivers/android/dbitmap.h). More methods can be
+added later. We offer a safe API through bounds checks which
+panic if violated.
 
-These are needed for providing a basic Rust Bitmap API.
-Update MAINTAINERS.
+We use the `usize` type for sizes and indices into the bitmap,
+because Rust generally always uses that type for indices and lengths
+and it will be more convenient if the API accepts that type. This means
+that we need to perform some casts to/from u32 and usize, since the C
+headers use unsigned int instead of size_t/unsigned long for these
+numbers in some places.
 
 Suggested-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Burak Emir <bqe@google.com>
 ---
- MAINTAINERS                     | 11 +++++++++++
- rust/bindings/bindings_helper.h |  1 +
- rust/helpers/bitmap.c           |  9 +++++++++
- rust/helpers/bitops.c           | 13 +++++++++++++
- rust/helpers/helpers.c          |  2 ++
- 5 files changed, 36 insertions(+)
- create mode 100644 rust/helpers/bitmap.c
- create mode 100644 rust/helpers/bitops.c
+ MAINTAINERS           |   2 +
+ rust/kernel/bitmap.rs | 234 ++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs    |   1 +
+ 3 files changed, 237 insertions(+)
+ create mode 100644 rust/kernel/bitmap.rs
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index c43d66bd85f3..50f44d7e5c6e 100644
+index 50f44d7e5c6e..b3bbce9274f0 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -4029,6 +4029,12 @@ F:	tools/include/vdso/bits.h
- F:	tools/lib/bitmap.c
- F:	tools/lib/find_bit.c
+@@ -4036,9 +4036,11 @@ F:	rust/helpers/bitmap.c
+ F:	rust/helpers/cpumask.c
  
-+BITMAP API BINDINGS [RUST]
-+M:	Yury Norov <yury.norov@gmail.com>
-+S:	Maintained
-+F:	rust/helpers/bitmap.c
-+F:	rust/helpers/cpumask.c
-+
  BITMAP API [RUST]
++M:	Alice Ryhl <aliceryhl@google.com> (bitmap)
  M:	Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
  R:	Yury Norov <yury.norov@gmail.com>
-@@ -4049,6 +4055,11 @@ F:	include/linux/bitops.h
- F:	lib/test_bitops.c
- F:	tools/*/bitops*
- 
-+BITOPS API BINDINGS [RUST]
-+M:	Yury Norov <yury.norov@gmail.com>
-+S:	Maintained
-+F:	rust/helpers/bitops.c
-+
- BLINKM RGB LED DRIVER
- M:	Jan-Simon Moeller <jansimon.moeller@gmx.de>
  S:	Maintained
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 55354e4dec14..6bd4396b9cd3 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -7,6 +7,7 @@
-  */
++F:	rust/kernel/bitmap.rs
+ F:	rust/kernel/cpumask.rs
  
- #include <kunit/test.h>
-+#include <linux/bitmap.h>
- #include <linux/blk-mq.h>
- #include <linux/blk_types.h>
- #include <linux/blkdev.h>
-diff --git a/rust/helpers/bitmap.c b/rust/helpers/bitmap.c
+ BITOPS API
+diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
 new file mode 100644
-index 000000000000..a50e2f082e47
+index 000000000000..e8117e0dbe05
 --- /dev/null
-+++ b/rust/helpers/bitmap.c
-@@ -0,0 +1,9 @@
++++ b/rust/kernel/bitmap.rs
+@@ -0,0 +1,234 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+#include <linux/bitmap.h>
++// Copyright (C) 2025 Google LLC.
 +
-+void rust_helper_bitmap_copy_and_extend(unsigned long *to, const unsigned long *from,
-+		unsigned int count, unsigned int size)
-+{
-+	bitmap_copy_and_extend(to, from, count, size);
++//! Rust API for bitmap.
++//!
++//! C headers: [`include/linux/bitmap.h`](srctree/include/linux/bitmap.h).
++
++use crate::alloc::{AllocError, Flags};
++use crate::bindings;
++use core::ptr::NonNull;
++
++/// Represents a bitmap.
++///
++/// Wraps underlying C bitmap API.
++///
++/// # Examples
++///
++/// Basic usage
++/// ```
++/// use kernel::alloc::flags::GFP_KERNEL;
++/// use kernel::bitmap::Bitmap;
++///
++/// let mut b = Bitmap::new(16, GFP_KERNEL)?;
++/// assert_eq!(16, b.len());
++/// for i in 0..16 {
++///   if i % 4 == 0 {
++///     b.set_bit(i);
++///   }
++/// }
++/// assert_eq!(Some(1), b.find_next_zero_bit(0));
++/// assert_eq!(Some(5), b.find_next_zero_bit(5));
++/// assert_eq!(Some(12), b.find_last_bit());
++/// # Ok::<(), Error>(())
++/// ```
++///
++/// # Invariants
++///
++/// `ptr` is obtained from a successful call to `bitmap_zalloc` and
++/// holds the address of an initialized array of `unsigned long`
++/// that is large enough to hold `nbits` bits.
++/// `nbits` is `<= u32::MAX` and never changes.
++pub struct Bitmap {
++    /// Pointer to an array of `unsigned long`.
++    ptr: NonNull<usize>,
++    /// How many bits this bitmap stores. Must be `<= u32::MAX`.
++    nbits: usize,
 +}
-diff --git a/rust/helpers/bitops.c b/rust/helpers/bitops.c
-new file mode 100644
-index 000000000000..0ea1611b95dc
---- /dev/null
-+++ b/rust/helpers/bitops.c
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0
 +
-+#include <linux/bitops.h>
-+
-+void rust_helper___set_bit(unsigned int nr, unsigned long *addr)
-+{
-+	__set_bit(nr, addr);
++impl Drop for Bitmap {
++    fn drop(&mut self) {
++        // SAFETY: `self.ptr` was returned by the C `bitmap_zalloc`.
++        //
++        // INVARIANT: there is no other use of the `self.ptr` after this
++        // call and the value is being dropped so the broken invariant is
++        // not observable on function exit.
++        unsafe { bindings::bitmap_free(self.as_mut_ptr()) };
++    }
 +}
 +
-+void rust_helper___clear_bit(unsigned int nr, unsigned long *addr)
-+{
-+	__clear_bit(nr, addr);
++impl Bitmap {
++    /// Constructs a new [`Bitmap`].
++    ///
++    /// Fails with [`AllocError`] when the [`Bitmap`] could not be
++    /// allocated. This includes the case when `nbits` is greater
++    /// than `u32::MAX`.
++    #[inline]
++    pub fn new(nbits: usize, flags: Flags) -> Result<Self, AllocError> {
++        if let Ok(nbits_u32) = u32::try_from(nbits) {
++            // SAFETY: `nbits == 0` is permitted and `nbits <= u32::MAX`.
++            let ptr = unsafe { bindings::bitmap_zalloc(nbits_u32, flags.as_raw()) };
++            // Zero-size allocation is ok and yields a dangling pointer.
++            let ptr = NonNull::new(ptr).ok_or(AllocError)?;
++            // INVARIANT: ptr returned by C `bitmap_zalloc` and nbits checked.
++            Ok(Bitmap { ptr, nbits })
++        } else {
++            Err(AllocError)
++        }
++    }
++
++    /// Returns how many bits this [`Bitmap`] holds.
++    #[inline]
++    pub fn len(&self) -> usize {
++        self.nbits
++    }
++
++    /// Returns true if this [`Bitmap`] has length `0`.
++    #[inline]
++    pub fn is_empty(&self) -> bool {
++        self.nbits == 0
++    }
++
++    /// Returns a mutable raw pointer to the backing [`Bitmap`].
++    #[inline]
++    fn as_mut_ptr(&mut self) -> *mut usize {
++        self.ptr.as_ptr()
++    }
++
++    /// Returns a raw pointer to the backing [`Bitmap`].
++    #[inline]
++    fn as_ptr(&self) -> *const usize {
++        self.ptr.as_ptr()
++    }
++
++    /// Sets bit with index `index`.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `index` is greater than or equal to `self.nbits`.
++    #[inline]
++    pub fn set_bit(&mut self, index: usize) {
++        assert!(
++            index < self.nbits,
++            "Bit `index` must be < {}, was {}",
++            self.nbits,
++            index
++        );
++        // SAFETY: Bit `index` is within bounds.
++        unsafe { bindings::__set_bit(index as u32, self.as_mut_ptr()) };
++    }
++
++    /// Clears bit with index `index`.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `index` is greater than or equal to `self.nbits`.
++    #[inline]
++    pub fn clear_bit(&mut self, index: usize) {
++        assert!(
++            index < self.nbits,
++            "Bit `index` must be < {}, was {}",
++            self.nbits,
++            index
++        );
++        // SAFETY: Bit `index` is within bounds.
++        unsafe { bindings::__clear_bit(index as u32, self.as_mut_ptr()) };
++    }
++
++    /// Replaces this [`Bitmap`] with `src` and sets any remaining bits to zero.
++    ///
++    /// # Panics
++    ///
++    /// Panics if `src` is longer than this [`Bitmap`].
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
++    /// use kernel::bitmap::Bitmap;
++    ///
++    /// let mut long_bitmap = Bitmap::new(256, GFP_KERNEL)?;
++    /// let short_bitmap = Bitmap::new(16, GFP_KERNEL)?;
++    /// long_bitmap.copy_from_bitmap_and_extend(&short_bitmap);
++    /// # Ok::<(), AllocError>(())
++    /// ```
++    #[inline]
++    pub fn copy_from_bitmap_and_extend(&mut self, src: &Bitmap) {
++        assert!(
++            src.nbits <= self.nbits,
++            "Length of `src` must be <= {}, was {}",
++            self.nbits,
++            src.nbits
++        );
++        // SAFETY: `nbits == 0` is supported and access to `self` and `src` is within bounds.
++        unsafe {
++            bindings::bitmap_copy_and_extend(
++                self.as_mut_ptr(),
++                src.as_ptr(),
++                src.nbits as u32,
++                self.nbits as u32,
++            )
++        };
++    }
++
++    /// Replaces this bitmap with a prefix of `src` that fits into this [`Bitmap`].
++    ///
++    /// # Panics
++    ///
++    /// Panics if `src` is shorter than this [`Bitmap`].
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
++    /// use kernel::bitmap::Bitmap;
++    ///
++    /// let mut short_bitmap = Bitmap::new(16, GFP_KERNEL)?;
++    /// let long_bitmap = Bitmap::new(256, GFP_KERNEL)?;
++    /// short_bitmap.copy_prefix_from_bitmap(&long_bitmap);
++    /// # Ok::<(), AllocError>(())
++    /// ```
++    #[inline]
++    pub fn copy_prefix_from_bitmap(&mut self, src: &Bitmap) {
++        assert!(
++            self.nbits <= src.nbits,
++            "Length of `src` must be >= {}, was {}",
++            self.nbits,
++            src.nbits
++        );
++        // SAFETY: `nbits == 0` is supported and access to `self` and `src` is within bounds.
++        unsafe {
++            bindings::bitmap_copy_and_extend(
++                self.as_mut_ptr(),
++                src.as_ptr(),
++                self.nbits as u32,
++                self.nbits as u32,
++            )
++        };
++    }
++
++    /// Finds the last bit that is set.
++    #[inline]
++    pub fn find_last_bit(&self) -> Option<usize> {
++        // SAFETY: `nbits == 0` is supported and access is within bounds.
++        let index = unsafe { bindings::_find_last_bit(self.as_ptr(), self.nbits) };
++        if index == self.nbits {
++            None
++        } else {
++            Some(index)
++        }
++    }
++
++    /// Finds the next zero bit, starting from `offset`.
++    #[inline]
++    pub fn find_next_zero_bit(&self, offset: usize) -> Option<usize> {
++        // SAFETY: `nbits == 0` and out-of-bounds offset is supported.
++        let index = unsafe { bindings::_find_next_zero_bit(self.as_ptr(), self.nbits, offset) };
++        if index == self.nbits {
++            None
++        } else {
++            Some(index)
++        }
++    }
 +}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 0640b7e115be..74e5e10694a4 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -7,6 +7,8 @@
-  * Sorted alphabetically.
-  */
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index efbd7be98dab..be06ffc47473 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -36,6 +36,7 @@
+ pub use ffi;
  
-+#include "bitmap.c"
-+#include "bitops.c"
- #include "blk.c"
- #include "bug.c"
- #include "build_assert.c"
+ pub mod alloc;
++pub mod bitmap;
+ #[cfg(CONFIG_BLOCK)]
+ pub mod block;
+ #[doc(hidden)]
 -- 
 2.49.0.rc1.451.g8f38331e32-goog
 
