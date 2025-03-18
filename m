@@ -1,72 +1,74 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404D917D355
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 05:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F05E1DE2D4
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Mar 2025 05:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742277452; cv=none; b=EbWA4Rgj41LGEj+f56KAydtKHaS6ibfi4rRSiJOJNsJdoa9EeaThmxCTnn/qNJjD9o/1BrqH6or7AtV+SuVmbUeWpVPZGtK5uI6F1zPOvXeaWPYTXwyA4APUkbRfXjbllbK49kbmyHGhlVhzfGVzfXNMTnLN3NrAH/lq7L4wLhk=
+	t=1742277457; cv=none; b=qfyImzjOY5bK4bR29Lc08dsbYHRlaeOlMjZ1aN9RZryHnA7EXGRFn/5m86ugexFGQ8Pz91I8MH15iDjFtNBMbfRQXiwvojBeksKWBjXPdwrAgjCVI/FuKRWP4/GFFQK/CsGvNmhis+XPccg+ZqhZjftLVg6/J6V4lnGswNmj3FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742277452; c=relaxed/simple;
-	bh=+sCbQh8R9TiUu2oyJra9dESUle0tKB3+uLGKQZ/N9mQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FtvBvI7DBW2qCgWcwIICr9ynaTPnuKfVCOvq1Sh9QgjSc8PDqoXczwL2/KEaBPLAwus6oNxno55cMjGN+KpLQ22DTMo6J60UOc7EkRYTdkGgKh5w2z4SLhSgdpWQ+QV76M7IOpqNBz0d0dC+HI1E0M6YzR3OpTG2N/s2zenj5wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TDocyHhF; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1742277457; c=relaxed/simple;
+	bh=VNorIlJrBMTZi3vbOgZiolGqGyUVBlGTnWAqVyyJeWM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sCgfF/rbQ3Zlhcy7KcBH6wYP0gWfMsKYcaHeQCtqeYTRIel1+B9SEHfah1p6BmdY7X5JmBTYMb5mrPTVZpjGSBeHIdN78WjcshSae5CiOeRBibKzH9pFMvrlzjyYp5ewn14Ohcd6Ssh5+LuituailCQpmRnmPgqZrTTYQuW9fxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qOrrjkQh; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TDocyHhF"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ff615a114bso3875920a91.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 22:57:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qOrrjkQh"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-224341bbc1dso96357015ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Mar 2025 22:57:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742277450; x=1742882250; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aeBl6UcsWDr5MR5JO0HAraFd7qqgoYlegSDWTc4mF74=;
-        b=TDocyHhF9xHl6UQit6JetGMGlFOuk8gVHsZstEslB0WnSDxEbgWiM5wngvSBIMppC1
-         cGxeS9CCPfbD9JbO2KquRW9QK0QQbtnaZqRsYMG/ixw1ZVfJn3/5GLmoQ9a9hV31VIEe
-         n0qQCaT+C95lVmYzos6HDsCBSiH9DmCoLSp91Aig0mD3niiP1DRnCz46J1RZkMzeDlRu
-         /Pi0ZyyOHs2OuJVp8DxILB/C4FgvxjOhlgFu45UnyEn2zN1fGAXRgX2KlG9Ot/0cxta2
-         YlsacoGBweSQsvFTLQBrV4s9Zd40U+1l5ajd1ugCNwxMLUUxC5MUew4hShmfcXaMgRMd
-         Mqjw==
+        d=linaro.org; s=google; t=1742277455; x=1742882255; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=llikhmZ0VyhG0hV+3+6urJ6KvAwqIcQWJl1kQJnPD9w=;
+        b=qOrrjkQhTc4G/uGlq2p6r1GAeOflf6jTccwVXpwIwBftALn+KJccgUE1MM/pukUb/V
+         z7sRhZSx4y1MYjp1bOSql+MEQPkZD8g8M/oiu/zweLnEAMBZkfR6TyYF8SJuTFHLseOR
+         H2L1rCwoAcvw2XtmqfnoFFxAqxlKNWdkGC5FWMrxkdwF5ZGyLp1xQehi3+VqcVTdbpTS
+         cbSbdFJshq00D7sa0YW7Jn2jGaWAtEWZVtljwNQ2WpL3bhp1cgJdr4vEpF2/MnPFVohr
+         1BsAlq2G1w/wFXukiTZj4uOiV/d0Tm40Tehc+iAwRm5jAPC/rnQDgR4xo2VgyE6yVgrh
+         92kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742277450; x=1742882250;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aeBl6UcsWDr5MR5JO0HAraFd7qqgoYlegSDWTc4mF74=;
-        b=Buwr7FF5ZIWmcgSnsClWEotviLp6LE4dT2gSWnuWBDr9zP4Pae/Fky6Dl3CJjAjQpb
-         KGTtDjlRN6/6xbB9C1rMpZT82R8K8m1wej+ROSzf8ETSjtcFqPaDpAeSlsdb7zhfFBy/
-         z33STew8ZT2iCOCBBBBj4Kx59yCOyHpOXD6l6d/MQ+3DAWhAIK1cRLVhmLXMXST+12zu
-         GVA7WHh1IyrEa4HTTj/LqcrsYnnXzOE3VGsMi23UIvRVmoDUZuTRI9DNQRfkun/pNQiW
-         vh5Y6/eqV0VauEls4kbCDTw7x+pisfRi9xlLq9XDnTAihFYzYKmHc6P8c39pR7kHzXYQ
-         lI4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUYgpRzHKEpKqPTsbA9s0VGRcMZPl5F6L1skx73maOgq1c6CIZcZsXOeKOhG5LPbAeUdOqq/ZQ3w30qeB7VAA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy8iMhkDltqRNFhJcIk02IQhQeTW+80FMVZszV7cPyCxp7oP4p
-	403nGFh3vwnSax2amKGZo0PseGaET6AmXzWYxRegO77XL4y9GsSgP5aNbot5aKs=
-X-Gm-Gg: ASbGncv3EAwu36HAbVp9gNZhhjp9U7rJDL5VGIIO1nLsiu3rkUYuN6FfAEqBES23HZs
-	pxD4dP36ElUQLLRt/YF85NYUuWLj2V2hgEkxIZacbeaZbCh3Znlg5X1vWR/hvy/WR5QEVxR2LLg
-	0UOKE9YQpUKNJTb0/K1QsircYFEEmCZOlO1ADGZ8IZ6rJcz+EHWdWsyX8YMtQvbQY8vZVdfDuY1
-	pIM0UHjlxHUc56s91lST3DimUH11fCeXHRIQomhIDv7AHm0zRSOJELFQNOmy/QUdYRLsu2+zhda
-	XwwGuFKnzBvhi2dsLG2pXMXCpLxBnF7y7jPW7Jue+xnRL4vMytYOUMlT
-X-Google-Smtp-Source: AGHT+IGZoqhHvlj2fz0gcgs7G9e+hylpXfVfEtrS7DVAG1eIEQ0QX829SvXWTu+13YtzB692qBmerw==
-X-Received: by 2002:a05:6a21:1fc1:b0:1ee:a410:4aa5 with SMTP id adf61e73a8af0-1fa50bd891emr2828484637.17.1742277450486;
-        Mon, 17 Mar 2025 22:57:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742277455; x=1742882255;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=llikhmZ0VyhG0hV+3+6urJ6KvAwqIcQWJl1kQJnPD9w=;
+        b=Lv6PboBO/VclZ1EanF/UD9lyhM0arFH3i0DAK94lXMd/ybN+7zgRetk56tKbu0XlRn
+         FpkfdEIiaR0dKsCj7SSgJXXRAhmcuxF6BtSE0FiLYI9te6llnQtPb6iSm01Mi9d9N8aQ
+         OUN3JT8nV93x3obizjlCzwwT3yswNLfqPPu/trkLqQVsOX1XYya9FVjb1aGcJvPEPVGG
+         hxmu5DBncYP6pMn+4OffDPi+HxioBwbKEgMNHl1mmhxx0EUK0FT3f3vp9b08qKInPiNC
+         OAoBkx+ByqDd/9svQuItHLZLaYDsLsQyWh6N5VS0dBlVUrY4rlX5FCrbKM6kE7SuM4ac
+         cGtg==
+X-Forwarded-Encrypted: i=1; AJvYcCWwrWv1f8PDsZYSjPzldBkSdv7dfYg01SagWiG8P1qSciiUmsRWOuSfSEmNDAknuzPK2a5gFNlPW9WB//iXFQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6Z3tFVFY4PAW5cHULMjr1zIxnaMqZu9azQquFuu2Zr82NIrdX
+	EJen366SPSpk0cOkjB8YPj/guZbEDHrw97KfCpBSkWtZFQBAhFNnNDBhPaqqDKs=
+X-Gm-Gg: ASbGncvvFJu/ISIswt/tcJPnB8LihOdhHXiwK+xFpEcZ5yZdadw9tSep4ZDpSprlUzQ
+	wHhoW8NY6t57PE0dmdyh0tqKj0FttYCU2eNRQLnoEe9kQMBdmygtl1n8gYYNSg9pzIO9mxqwepq
+	li9dgE0RtYZjBK+QzE6zTIIzM2j/KaOGtygdUH/AS7mKhrReA0ExTQ/XThG3aNYQ2sy5wf5Jvec
+	v5oaMtpSNDlIwR6S5VQxOFjYS+kdl/gzWyWL99O0VISPIOV8xOY6odkDzVqPrK3ClCkQJU+gz9P
+	YVCRH19ctwvEGh21pSCCYbKoJ0lFhqort8P58Ug70SG1oA==
+X-Google-Smtp-Source: AGHT+IHt4dP/2ZCotnLRvPmF95XeDbGWHGlcVUF0swIV4HUIiEJWdVoagzWLCHWRlpu/tKYoi70Y7g==
+X-Received: by 2002:a17:902:ced0:b0:220:e156:63e0 with SMTP id d9443c01a7336-2262c51bc95mr19693135ad.8.1742277454770;
+        Mon, 17 Mar 2025 22:57:34 -0700 (PDT)
 Received: from localhost ([122.172.84.15])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7371152951bsm8981519b3a.15.2025.03.17.22.57.29
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c68887bfsm85715745ad.34.2025.03.17.22.57.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 22:57:29 -0700 (PDT)
+        Mon, 17 Mar 2025 22:57:34 -0700 (PDT)
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alex Gaynor <alex.gaynor@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
 	Michael Turquette <mturquette@baylibre.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>
+	Stephen Boyd <sboyd@kernel.org>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	Russell King <linux@armlinux.org.uk>,
 	linux-clk@vger.kernel.org,
@@ -74,10 +76,12 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	rust-for-linux@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: [PATCH V4 0/2] rust: Add basic clock abstractions
-Date: Tue, 18 Mar 2025 11:27:13 +0530
-Message-Id: <cover.1742276963.git.viresh.kumar@linaro.org>
+Subject: [PATCH V4 1/2] rust: Add clk helpers
+Date: Tue, 18 Mar 2025 11:27:14 +0530
+Message-Id: <171b6cd811ff4e913880ab33bc11e634f7cdeecb.1742276963.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
+In-Reply-To: <cover.1742276963.git.viresh.kumar@linaro.org>
+References: <cover.1742276963.git.viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -86,62 +90,131 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+Non-trivial C macros and inlined C functions cannot be used directly
+in the Rust code and are used via functions ("helpers") that wrap
+those so that they can be called from Rust.
 
-This adds initial abstractions for the clk APIs. These provide the minimal
-functionality needed for common use cases, making them straightforward to
-introduce in the first iteration.
+In order to prepare for adding Rust abstractions for the clock APIs,
+add clock helpers required by the Rust implementation.
 
-These will be used by Rust based cpufreq / OPP layers to begin with.
-
-For now I have added them under the maintainership umbrella of the common clk
-framework, please let me know if I should do it differently.
-
-If possible, I would like to get these merged via the PM tree along with
-cpufreq/OPP abstractions, but its okay otherwise too.
-
-Miguel: I have dropped the changes related to a Guard implementation for clk
-APIs as the discussion wasn't conclusive enough. Maybe we can tackle that later
-if required.
-
---
-Viresh
-
-V3->V4:
-- Enable clk abstractions only for cfg(CONFIG_COMMON_CLK) (Stephen Boyd).
-- New struct implementation of Hertz.
-- Added examples for all the structures.
-- Make methods inline.
-- Improved comments, Invariants, INVARIANT, SAFETY sections / comments, use
-  intra-doc links.
-- Other minor improvements.
-
-V2->V3:
-- Add type Hertz (Daniel Almeida).
-- Improved comments in helpers.rs (Daniel Almeida).
-- s/Clk::new/Clk::get/ (Daniel Almeida).
-- Implement OptionalClk as well (Rob Herring).
-- Fix Safety comments (Danilo Krummrich).
-- Add tags from Daniel Almeida.
-
-V1->V2:
-- Post this as an independent series.
-- Include more APIs, apart from clk_get() and clk_put().
-
-Viresh Kumar (2):
-  rust: Add clk helpers
-  rust: Add initial clk abstractions
-
- MAINTAINERS                     |   2 +
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/clk.c              |  66 +++++++
- rust/helpers/helpers.c          |   1 +
- rust/kernel/clk.rs              | 304 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |   2 +
- 6 files changed, 376 insertions(+)
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ MAINTAINERS                     |  1 +
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers/clk.c              | 66 +++++++++++++++++++++++++++++++++
+ rust/helpers/helpers.c          |  1 +
+ 4 files changed, 69 insertions(+)
  create mode 100644 rust/helpers/clk.c
- create mode 100644 rust/kernel/clk.rs
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 25c86f47353d..726110d3c988 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5778,6 +5778,7 @@ F:	include/dt-bindings/clock/
+ F:	include/linux/clk-pr*
+ F:	include/linux/clk/
+ F:	include/linux/of_clk.h
++F:	rust/helpers/clk.c
+ X:	drivers/clk/clkdev.c
+ 
+ COMMON INTERNET FILE SYSTEM CLIENT (CIFS and SMB3)
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 55354e4dec14..4e4e16c3b479 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -10,6 +10,7 @@
+ #include <linux/blk-mq.h>
+ #include <linux/blk_types.h>
+ #include <linux/blkdev.h>
++#include <linux/clk.h>
+ #include <linux/cred.h>
+ #include <linux/errname.h>
+ #include <linux/ethtool.h>
+diff --git a/rust/helpers/clk.c b/rust/helpers/clk.c
+new file mode 100644
+index 000000000000..6d04372c9f3b
+--- /dev/null
++++ b/rust/helpers/clk.c
+@@ -0,0 +1,66 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/clk.h>
++
++/*
++ * The "inline" implementation of below helpers are only available when
++ * CONFIG_HAVE_CLK or CONFIG_HAVE_CLK_PREPARE aren't set.
++ */
++#ifndef CONFIG_HAVE_CLK
++struct clk *rust_helper_clk_get(struct device *dev, const char *id)
++{
++	return clk_get(dev, id);
++}
++
++void rust_helper_clk_put(struct clk *clk)
++{
++	clk_put(clk);
++}
++
++int rust_helper_clk_enable(struct clk *clk)
++{
++	return clk_enable(clk);
++}
++
++void rust_helper_clk_disable(struct clk *clk)
++{
++	clk_disable(clk);
++}
++
++unsigned long rust_helper_clk_get_rate(struct clk *clk)
++{
++	return clk_get_rate(clk);
++}
++
++int rust_helper_clk_set_rate(struct clk *clk, unsigned long rate)
++{
++	return clk_set_rate(clk, rate);
++}
++#endif
++
++#ifndef CONFIG_HAVE_CLK_PREPARE
++int rust_helper_clk_prepare(struct clk *clk)
++{
++	return clk_prepare(clk);
++}
++
++void rust_helper_clk_unprepare(struct clk *clk)
++{
++	clk_unprepare(clk);
++}
++#endif
++
++struct clk *rust_helper_clk_get_optional(struct device *dev, const char *id)
++{
++	return clk_get_optional(dev, id);
++}
++
++int rust_helper_clk_prepare_enable(struct clk *clk)
++{
++	return clk_prepare_enable(clk);
++}
++
++void rust_helper_clk_disable_unprepare(struct clk *clk)
++{
++	clk_disable_unprepare(clk);
++}
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 0640b7e115be..4700ee7aaf85 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -11,6 +11,7 @@
+ #include "bug.c"
+ #include "build_assert.c"
+ #include "build_bug.c"
++#include "clk.c"
+ #include "cred.c"
+ #include "device.c"
+ #include "err.c"
 -- 
 2.31.1.272.g89b43f80a514
 
