@@ -1,110 +1,99 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCB1256C7C;
-	Wed, 19 Mar 2025 13:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7402744E;
+	Wed, 19 Mar 2025 13:50:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742391794; cv=none; b=lvTLG1BqNxJUqafU4mJzkBkWzv3zDtIJC6qBS8/w/BUJ0vS5m6WVpS5/cT+RIPh/DbfGTQ1R6+o2mKH+Dyu+kRD9eC9qkvUOqnhYpRYDfqPVrgZKDgIT4T1Tc0nzOW0dKe8+WsRBtPut3/T4WLLSzwuQqbLbfT2FQ2RBuFSwFY4=
+	t=1742392250; cv=none; b=gMyhoGxWyQkSjyNFD3/YhOAX5UvtsbRvwTP+PDoNnjxQKp+lCewK8/04cHFskrShueukMLbi/ni2FjhSsG6OY39nuZfFa57JJDzzk4aAuutzAD+wk4ZIIN/o9DLDB27yuFuKdyS/TrqCal64/gRpJwhD4QjV9ZvHW68Xo8vI+h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742391794; c=relaxed/simple;
-	bh=EW2+CjP+11PZnip+nDDx8uqTPNkbK1009G41iNbWFqw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rjKSx7J2qF2dsqxZcUlQE6ISlfaLkypsv1RDmOqVkX2uzhF92doPn5gYN97fqw0A23qeJ8eMuQVN5dYYRcRODYoQCAkDd3E+lG0Vz/kL4Eaz3FSBBBzSMr9DHyzKROjdX5MA3mWaViO26VbqE9ZYVx7FteGh+YayIcaBOWHo9ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ve2JD+4y; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742392250; c=relaxed/simple;
+	bh=6nS6/AYW1GHhT1dfaTBG7mfQ9JZhlHMqZBge6DkvVQM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cXXU5kwUyj/YngftZHNHNajpilSGba//DqWNwrChwKWLGbSDdUmic9N2kVjBrkuKsEXLv8gjnx8z8rlK60s+bsNUqRdrvXBy8AFq+WGAI9i2UcWWJOCWYUg2MMVdlseX1/+CfRG1lfH76JG5omUY+0vDdir3JC8bIHFyzsno/F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pzh3Gqkm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ve2JD+4y"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30c44a87b9cso61078641fa.3;
-        Wed, 19 Mar 2025 06:43:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742391790; x=1742996590; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V2MSofc8cyvKVxUKPs8pE0XcoDtUlgqxF6FfrtYMUiE=;
-        b=Ve2JD+4yg6zfxSkP88AZp25F1EQ1zjLCqA1INid+tjVwqEgfe0s2FNzcR5TdQQJ+vI
-         tthcu5n5Z3jUC9PMHgYU1TCgd8DhLCUhI8uxzlxur37iis5v3faOuH8dbsbs69P6Wxfh
-         9cHkl51kADFybqZTDS0DFUzgdPZxkDM6X92AkGKv4Hp+mpoqcB8sjzWoh6x+6T71/OHA
-         nPh+gabi0xtDbzCuTuMEJVc5YcbqIHIQgA6yCpZ4TNBK6iwm5lt6e8sulasNuzfPQhYF
-         b4uYuUgAxXoQV8zOVksPjyVkecJift1TrijtpAzICxF4RRYCecj42BYRoY/odOURe2OK
-         NdXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742391790; x=1742996590;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V2MSofc8cyvKVxUKPs8pE0XcoDtUlgqxF6FfrtYMUiE=;
-        b=gsJlbKUMx5PGrY8XcFvjh8dW12JBW48v8LusaDDxE3NiVcyenlliywOMAuNfyGN+S8
-         37aDil59vOWoFsZoWznS5vKmDuCHRKUjnhaaCcnuqItNQ8pzx9/mVlLBOq6l2CkWFI23
-         xB+1tJJaMjigIIUe15MbNWaa6HVC6uQsenHYZ+2Ic9nugcoTNPT3utlcsEYuzijCL0iU
-         7L02d2MP2LCYsV5Psez7lmAF+I4lxjNSicd2jLKVQJJk7NJHmlzGVoKJxwHJP+uWQg78
-         u4QOYwLAjIGWL3MAsy8ZHY9h1HGMMOkVciuDQPeW6Eq02DhOKGe+KDWlhi3P5IsiHSVm
-         Y3Rw==
-X-Forwarded-Encrypted: i=1; AJvYcCV76ibGkQz6oJBx/DWp9+2UHc4GbZBxzVB8HmpnpR4tuYQMLLB1tNflmM27xJDLq/3e0R8ozwkwSNs=@vger.kernel.org, AJvYcCWSnKtM85iDQTazOcjunwM2w48TG6r1tFuAzmN2YVbpj9VW6Y4t6s+29bBeM+9tdVHzkdhBhAOGSd2bjumA@vger.kernel.org, AJvYcCXSAapBlOYtY1R7kM5n9efUUXu9WiHpCjvmidjslnqWcdddNE7g++fvgYC+y8OKFOoUF9KRCDqj63+fOXEQg+4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgdqcUN9u4PhlOnvpypiiHm/6P/2JiDZn0NEt2jJbLPKuFULr0
-	DYRxMbSRgs4u2/L6mdcwhKs5KNnRPgIIcYXwdJoq5wKhHoUP8dDkoOqm1v+euDy1GX4+sHTM/Mu
-	Xk5trTDVbZbPrAl8Yt+/z/hJoBjo=
-X-Gm-Gg: ASbGncvbXaoqtuM2pzTI1CH+AarFtLpXzwFPqVrz/sKYmQPB/wZkbNj8YDYFzRRV4Ki
-	biNKb4AYGy9pxw/wKVaKEzQtBEPIRXhtVQhVy0z4tJVKsIxpML0CRQaILMX7IpbbvgOzmoWKWta
-	uPc9sGB0ByY+G1a9JXySGN2xpeyBLN6OcovyU//8dimg==
-X-Google-Smtp-Source: AGHT+IF4UZnEdUSdxleThqoQmroEP7JDDLQW+0nYHiycAoFsWFqa8q5lYSIadDHk2oU9ljzuqsif8/Cf1eEeLepUQng=
-X-Received: by 2002:a05:651c:1541:b0:30c:f60:6c6 with SMTP id
- 38308e7fff4ca-30d6a39d6demr10181131fa.6.1742391790128; Wed, 19 Mar 2025
- 06:43:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pzh3Gqkm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8BAC4CEE4;
+	Wed, 19 Mar 2025 13:50:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742392249;
+	bh=6nS6/AYW1GHhT1dfaTBG7mfQ9JZhlHMqZBge6DkvVQM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pzh3GqkmyN1pfDuO0NDTQ7Os5CTdeYc3r5Ua1VlCm+UB4x73CvZqxJMAcCrngeDP1
+	 OI6OjoXytg5uLqnxxCXMn5cM9sRgMQ0HpCLSRO4K6Sd9czWmDG0MA9YPHDlxjhAYey
+	 KAlEXblnbSHARJTm3FSBKAn0TM6EXyiiSEGOlZGMp1YsHXSwwDvgh7Qvv6iLq325d5
+	 IPzhrJ/q+mAx5q/4jJ6BlCnJ8zh7OeW00dFYszKRipzKRKc0zddFItlL96RwR8QXBf
+	 s/5rkmUvtjNVxojVLBAyQUMHJCOtI6Vo/xl1H1Uo5qlb6Ni9acZG1enzHaCcZNCIOi
+	 QbsbGM9iFaHDA==
+Date: Wed, 19 Mar 2025 14:50:43 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, tmgross@umich.edu, linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: pci: impl Send + Sync for pci::Device
+Message-ID: <Z9rLs9jY1h7IdImw@cassiopeiae>
+References: <20250318212940.137577-1-dakr@kernel.org>
+ <Z9qy-UNJjazZZnQw@google.com>
+ <Z9q8xcsAYhQjIpe4@cassiopeiae>
+ <Z9rDxOJ2V2bPjj5i@google.com>
+ <Z9rG8QFRv_lQlXV4@cassiopeiae>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250316111644.154602-1-andrewjballance@gmail.com>
- <20250316111644.154602-3-andrewjballance@gmail.com> <CAJ-ks9kAROOfyPtxMe6LE4-UPsvXca2sQ2VDjhRchZp3HLddGg@mail.gmail.com>
- <D8JTWL8JY7DM.3IVH6FZ4M49CB@proton.me>
-In-Reply-To: <D8JTWL8JY7DM.3IVH6FZ4M49CB@proton.me>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 19 Mar 2025 09:42:33 -0400
-X-Gm-Features: AQ5f1JrzlMF52hRTEnPnE3fmFFgkh9IFrPPTcapQYiPgOpAS7vBvzN1PK6u3ims
-Message-ID: <CAJ-ks9k+A1+0CWXZmD2m0+jRqTRTNFn-=d9VXqytiOqvn4BR0w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] rust: alloc: add Vec::resize method
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Andrew Ballance <andrewjballance@gmail.com>, dakr@kernel.org, airlied@gmail.com, 
-	simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
-	tzimmermann@suse.de, corbet@lwn.net, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	acourbot@nvidia.com, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9rG8QFRv_lQlXV4@cassiopeiae>
 
-On Tue, Mar 18, 2025 at 8:50=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On Tue Mar 18, 2025 at 9:12 PM CET, Tamir Duberstein wrote:
-> > On Sun, Mar 16, 2025 at 7:17=E2=80=AFAM Andrew Ballance
-> > <andrewjballance@gmail.com> wrote:
-> >> +    pub fn resize(&mut self, new_len: usize, value: T, flags: Flags) =
--> Result<(), AllocError> {
-> >> +        if new_len > self.len() {
-> >> +            self.extend_with(new_len - self.len(), value, flags)
-> >> +        } else {
-> >> +            self.truncate(new_len);
-> >> +            Ok(())
-> >> +        }
-> >> +    }
-> >
-> > You can avoid underflow checking in debug builds by using `checked_sub`=
-:
->
-> `checked_sub` doesn't only avoid underflow in debug builds, but rather
-> in all builds. But the code below is a good suggestion.
+On Wed, Mar 19, 2025 at 02:30:31PM +0100, Danilo Krummrich wrote:
+> On Wed, Mar 19, 2025 at 01:16:52PM +0000, Alice Ryhl wrote:
+> > On Wed, Mar 19, 2025 at 01:47:01PM +0100, Danilo Krummrich wrote:
+> > > On Wed, Mar 19, 2025 at 12:05:13PM +0000, Alice Ryhl wrote:
+> > > > On Tue, Mar 18, 2025 at 10:29:21PM +0100, Danilo Krummrich wrote:
+> > > > > Commit 7b948a2af6b5 ("rust: pci: fix unrestricted &mut pci::Device")
+> > > > > changed the definition of pci::Device and discarded the implicitly
+> > > > > derived Send and Sync traits.
+> > > > > 
+> > > > > This isn't required by upstream code yet, and hence did not cause any
+> > > > > issues. However, it is relied on by upcoming drivers, hence add it back
+> > > > > in.
+> > > > > 
+> > > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > > > 
+> > > > I have a question related to this ... does the Driver trait need to
+> > > > require T: Send?
+> > > 
+> > > The driver trait does not have a generic, it doesn't need one. But I think I
+> > > still get what you're asking.
+> 
+> Turns out I did not. :)
+> 
+> > Right I mean, should it be:
+> > 
+> > trait Driver: Send + Sync {
+> >     ...
+> > }
+> 
+> Yes, you're absolutely right with this, thanks for pointing this out.
 
-Yes, I know :)
+Just to clarify, the reason we need Sync is that we want to be able to access
+the driver's private data from an IRQ handler. Otherwise, we can only ever
+safely access the driver's private data from bus callbacks, which should be
+synchronized by the device' mutex.
 
-I included that language because the underflow check is likely
-optimized away in release builds.
-
-Tamir
+> 
+> > 
+> > > The driver trait never owns a shared reference of the device, it only ever gives
+> > > out a reference that the driver core guarantees to be valid.
+> > > 
+> > > > The change itself LGTM, so:
+> > > > 
+> > > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > > > 
+> > > > Alice
