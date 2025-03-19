@@ -1,64 +1,81 @@
-Received: from localhost.localdomain (unknown [210.12.148.147])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 4300C1AB50D;
-	Wed, 19 Mar 2025 10:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.12.148.147
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF7C253B48;
+	Wed, 19 Mar 2025 11:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742381493; cv=none; b=PC2re5qzHsqrjK0LhKCfti83rlfzHVuxLWFZ9c1dq/2JsTOtk0KwZWsHeb9u1Pe3RvsOWs+YnUxSXkfPjv3jjqDmqje96x/4qJ0HR7BGz+KNvo/dSRQV++5C/KBWJmPszUQxuwQw/GK57Y3N0kia5HH3QEZ43vUl98jtSfRaaX4=
+	t=1742382275; cv=none; b=CjL0C2FqOonZ5jXd1geF/i3SmbuhMXfEdqa0CKbpVZsnRNiPkla0JcNkSzhbTCTXiC/MGoH40KCdvCgJPFlKWg/vdcJJSyC/jboFEAFHQvdMC+hu3tdKH7j7clDGcBbZycWyPA5Q3z6YHsTBw/d3jvBOe0xmAgVDbWZx2T2+1P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742381493; c=relaxed/simple;
-	bh=gYSCdIi8TyNW1DwAcRwNxoVGP7/ycEQBkqAOmDQNm2Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=duQxkfSFi8tiydPPVp+on1/+6aLqQIPNHfgEfHAf3S1SVOBHbUhjQJjOBXRDxLdGZoT1d6ZYzDVHrhHVQuCDPURtdaIDOshapKRlNROwBPJz47elu9JNWyijxW1HKMaaEnyeSQz3UxC6gsozFLXwRRCklMVsIARRkgUf08MsgEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=didiglobal.com; spf=none smtp.mailfrom=localhost.localdomain; arc=none smtp.client-ip=210.12.148.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=didiglobal.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=localhost.localdomain
-Received: by localhost.localdomain (Postfix, from userid 601)
-	id 16D971C5914A; Wed, 19 Mar 2025 18:44:14 +0800 (CST)
-From: chentaotao <chentaotao@didiglobal.com>
-To: a.hindborg@kernel.org
-Cc: boqun.feng@gmail.com,
-	bjorn3_gh@protonmail.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	chentao325@qq.com,
-	chentaotao <chentaotao@didiglobal.com>
-Subject: [PATCH] rust: block: Remove unnecessary comma in introduction
-Date: Wed, 19 Mar 2025 18:44:12 +0800
-Message-Id: <20250319104412.50625-1-chentaotao@didiglobal.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	s=arc-20240116; t=1742382275; c=relaxed/simple;
+	bh=UpiMmmMfB/MDr7vxb3W6l/P+ytPlb9GDBWaa+pQ7gPA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=IiP/m/VRfIu7FEzPwSx4+6D6NmZ29UslJJUETB+gq/Q3hOXSj7slSexCSJUpPkkOZOJNCEXgUvSqXPo7Er6xnl12L2EJs0/BJgVH6DcBRjMElfsZhzJmriVS6dlJEexxHTj7EdTnMztm3oDc5PXBcQf42m1IiAfxAjRO3P+HsYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dp6M4tu/; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dp6M4tu/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E83C4CEE9;
+	Wed, 19 Mar 2025 11:04:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742382273;
+	bh=UpiMmmMfB/MDr7vxb3W6l/P+ytPlb9GDBWaa+pQ7gPA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Dp6M4tu/wdkMafn4IKE5uj2NHEorp8xW5uEWxTExBIlpK1IGJcjbXf+hKNvTuYyUQ
+	 o6xQtZYYI6A8vtqD0BKbw1MqvqJDCNpjDM53jZVwlGJ4NqztotKqAa3IOrO/SLlNSM
+	 8pwxcC7FwL8GheOFIAmlstC7kmu0O6B2h4JE5X5928PN55GpPD8VP53djaRdNjI9uM
+	 FuL16c+jvp89MdnO4cPER+sRqqMFCKtY9q4kO55buMpcvnAv085ZcQa4cQHRw5TaYd
+	 luyFUCOppmmszXa/SlhSVo4RgsvqhDSHjct5FsYC+yMuuMpMqsP4DhyaBdQYcNNV/H
+	 lLiaoLwkmKB0Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "chentaotao" <chentaotao@didiglobal.com>
+Cc: <boqun.feng@gmail.com>,  <bjorn3_gh@protonmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <chentao325@qq.com>
+Subject: Re: [PATCH] rust: block: Remove unnecessary comma in introduction
+In-Reply-To: <20250319104412.50625-1-chentaotao@didiglobal.com>
+	(chentaotao@didiglobal.com's message of "Wed, 19 Mar 2025 18:44:12 +0800")
+References: <j2rsp4Jty5pW-HOPkZX9ssG_ESGp1SAlh--rbhrhTQ6Z81f-tRt5SjBx42XS9jZo2vytk_ry-q4RYXMSD6B9xg==@protonmail.internalid>
+	<20250319104412.50625-1-chentaotao@didiglobal.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 19 Mar 2025 12:04:25 +0100
+Message-ID: <8734f9i8na.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-The comma after "methods" was not needed and has been removed for
-better readability and correctness.
+"chentaotao" <chentaotao@didiglobal.com> writes:
 
-Signed-off-by: chentaotao <chentaotao@didiglobal.com>
----
- rust/kernel/block/mq.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> The comma after "methods" was not needed and has been removed for
+> better readability and correctness.
+>
+> Signed-off-by: chentaotao <chentaotao@didiglobal.com>
+> ---
+>  rust/kernel/block/mq.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+> index fb0f393c1..ee8f34f40 100644
+> --- a/rust/kernel/block/mq.rs
+> +++ b/rust/kernel/block/mq.rs
+> @@ -23,7 +23,7 @@
+>  //! IO requests are passed to the driver as [`kernel::types::ARef<Request>`]
+>  //! instances. The `Request` type is a wrapper around the C `struct request`.
+>  //! The driver must mark end of processing by calling one of the
+> -//! `Request::end`, methods. Failure to do so can lead to deadlock or timeout
+> +//! `Request::end` methods. Failure to do so can lead to deadlock or timeout
+>  //! errors. Please note that the C function `blk_mq_start_request` is implicitly
+>  //! called when the request is queued with the driver.
+>  //!
 
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index fb0f393c1..ee8f34f40 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -23,7 +23,7 @@
- //! IO requests are passed to the driver as [`kernel::types::ARef<Reques=
-t>`]
- //! instances. The `Request` type is a wrapper around the C `struct requ=
-est`.
- //! The driver must mark end of processing by calling one of the
--//! `Request::end`, methods. Failure to do so can lead to deadlock or ti=
-meout
-+//! `Request::end` methods. Failure to do so can lead to deadlock or tim=
-eout
- //! errors. Please note that the C function `blk_mq_start_request` is im=
-plicitly
- //! called when the request is queued with the driver.
- //!
---=20
-2.34.1
+
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+
+Best regards,
+Andreas Hindborg
+
 
