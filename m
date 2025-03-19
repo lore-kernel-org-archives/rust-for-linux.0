@@ -1,52 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A669B253351;
-	Wed, 19 Mar 2025 11:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F998F5A;
+	Wed, 19 Mar 2025 11:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742383377; cv=none; b=gXE3q2aMj4ata/wpVKTwPZCRBH6WmaCn06oWf8VV6ErIF4wQQuwj3nQ32SbmMlqGrxAnOa8VJLAajytQc3/bMST+qCi5siG5pLLV3jVG+YDo+fkutjhkqo4BMFQf/oltUpt5FRCzOT8b960p7sSMVphrCq+JsKrdinGLChdGuuo=
+	t=1742383529; cv=none; b=jPefCDVgonV99RrED3EkVbS56+Nf0iZYR2se1fuXsqMC7LyiNsU9JU4h9vSE6ExdgJKbGuiO68uQMkVGt8P/Sif9Ip3cEeq4eEGolyfILDcrjbimDZ+hQjdHFPjRpJIFw8GbS0A/Ftw2123g/xkYRHmO3TgDE5eRKZB5zKNurwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742383377; c=relaxed/simple;
-	bh=7fB+Q1MU36xNwuP51zEOf7SZsy0PlEFZ0MMEK4uHCPQ=;
+	s=arc-20240116; t=1742383529; c=relaxed/simple;
+	bh=MJqM5yOhWAMZ87htLDZYjYynv/mgewh+JWoF0niIk60=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SILxSgbngBK5PGVxSiAyGeWEOVSxKzUzfv2URd+6V0vCbtR24scb95HJG83z8f47fhZTv69DWeA7pbuIyOCcmeo/3Z1ETkUTXJv7iI/lsPgUMuYKr1R6hvbQfB9PClnJaUUnFpIudiEPsfC5un4oq7N9P30KLRcsrEs9K+ea0g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4fAt4UR; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AF3ZNjhppDbvZKZ1iYkqWSIr6juEovkdCXZbv4xhfb5uxzr/iyDHE5nz/wSlHq4DUgwzaz51tFxPcJr+KN3gG+mohdf2vkMWB2Lemq18HN21zG2Y/YAYzuy0mRrPgWNSKvlLm7RZqFBxXPqQSTd8q7ADUIdOfJKY6MHCuZcIVtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VIay126Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4fAt4UR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509DDC4CEE9;
-	Wed, 19 Mar 2025 11:22:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VIay126Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F92EC4CEEE;
+	Wed, 19 Mar 2025 11:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742383377;
-	bh=7fB+Q1MU36xNwuP51zEOf7SZsy0PlEFZ0MMEK4uHCPQ=;
+	s=k20201202; t=1742383528;
+	bh=MJqM5yOhWAMZ87htLDZYjYynv/mgewh+JWoF0niIk60=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H4fAt4URPZbgEeMRNwaTGWAHXUYCpZJ46KfDkR2D1zVKsUHtrn5+6lNCRuayWpg0s
-	 F87Vd3Sdy9kcl4SH9SWcjv+OLIpdsm3F6yJPExzcCGLsVYzSuqdoX11ciNx3y8CEW7
-	 ASd8Cm1Z9HxmIVDwRlatdJBNFXU/6+zFM1/xihcOqW/0iD/5hdPp07AEO8AUkh99hS
-	 GULL4P0JelFyut1xJnuuqkapmYCRFu40PHFjr6CrO9f8/osmt/gus2w8v8U+U02vGT
-	 sZAQvkxa9oPwgVAOKJdczt4LSPJ4G9ItyBeM7UsMxmENziRQfsEWR8IyP/ce4ToGMv
-	 z0tDxqA+3Sh1w==
-Date: Wed, 19 Mar 2025 12:22:51 +0100
+	b=VIay126QqT6XWiOuJBVKo0wQa4qp7DobLplN0afy0i9TB5K4LT9khSARMpbN4gHmP
+	 u5c7D0Ub+qZgzudpkKb+7Q2P9l1vD5Ael6uUmvRlTYa7W/LbFq4WwSUrKXqmIoZ+xV
+	 RLCEQFCiaKnws+5A+HzG2APbAeH09lnl2ZN2l4fN6Mh7G0aDCaDFcmNlRUIoQ4MWEe
+	 Ydo/Q/sRXzy+GdLT5UZqNsZ211GurqXfaEzSgqFUTyTcbBc+z/JhfKaXATQ/VuxhY+
+	 7x24e5W9xklbmVYTZYVkUvgsIzFQkYHsQT4/WO+y0z5SlFRyOYiJ7cp05XPDD/JKUr
+	 47wmORQNt+wkg==
+Date: Wed, 19 Mar 2025 12:25:23 +0100
 From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v7 3/3] rust: platform: allow ioremap of platform
- resources
-Message-ID: <Z9qpC1EapJFNadME@pollux>
-References: <20250318-topics-tyr-platform_iomem-v7-0-7438691d9ef7@collabora.com>
- <20250318-topics-tyr-platform_iomem-v7-3-7438691d9ef7@collabora.com>
- <Z9mwu-RHwZ8qwcbH@cassiopeiae>
- <FF128DEF-28D6-4302-9C53-2DD4D417053A@collabora.com>
- <D8JTUPQ28758.2SKKTA6IL6Y8E@proton.me>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	aliceryhl@google.com, tmgross@umich.edu, linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: pci: impl Send + Sync for pci::Device
+Message-ID: <Z9qpo0zp1jqnh9we@pollux>
+References: <ddLRqqXuFiaRVyCNUWk5k3cc0pJCteUQ5tBxGr5_7QXDeygE0d-YFc9nbJD0pNJ8RjZ3nCaWOCM56r0ZWmWdJw==@protonmail.internalid>
+ <20250318212940.137577-1-dakr@kernel.org>
+ <87o6xxgtf8.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,36 +47,56 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <D8JTUPQ28758.2SKKTA6IL6Y8E@proton.me>
+In-Reply-To: <87o6xxgtf8.fsf@kernel.org>
 
-On Wed, Mar 19, 2025 at 12:48:00AM +0000, Benno Lossin wrote:
-> On Tue Mar 18, 2025 at 7:22 PM CET, Daniel Almeida wrote:
-> > On 18 Mar 2025, at 14:43, Danilo Krummrich <dakr@kernel.org> wrote:
-> >> On Tue, Mar 18, 2025 at 02:20:43PM -0300, Daniel Almeida wrote:
-> >>> +    ///     // Read and write a 32-bit value at `offset`. Calling `try_access()` on
-> >>> +    ///     // the `Devres` makes sure that the resource is still valid.
-> >>> +    ///     let data = iomem.try_access().ok_or(ENODEV)?.readl(offset);
-> >>> +    ///
-> >>> +    ///     iomem.try_access().ok_or(ENODEV)?.writel(data, offset);
-> >> 
-> >> I'd probably write this as
-> >> 
-> >> || -> Result {
-> >> let iomem = iomem.try_access().ok_or(ENODEV)?;
-> >> 
-> >> iomem.read32(offset);
-> >> iomem.write32(data, offset);
-> >> 
-> >> Ok(())
-> >> }()?;
+On Wed, Mar 19, 2025 at 12:18:35PM +0100, Andreas Hindborg wrote:
+> "Danilo Krummrich" <dakr@kernel.org> writes:
 > 
-> Why use a closure here?
+> > Commit 7b948a2af6b5 ("rust: pci: fix unrestricted &mut pci::Device")
+> > changed the definition of pci::Device and discarded the implicitly
+> > derived Send and Sync traits.
+> >
+> > This isn't required by upstream code yet, and hence did not cause any
+> > issues. However, it is relied on by upcoming drivers, hence add it back
+> > in.
+> >
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  rust/kernel/pci.rs | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> > index 0ac6cef74f81..0d09ae34a64d 100644
+> > --- a/rust/kernel/pci.rs
+> > +++ b/rust/kernel/pci.rs
+> > @@ -465,3 +465,10 @@ fn as_ref(&self) -> &device::Device {
+> >          unsafe { device::Device::as_ref(dev) }
+> >      }
+> >  }
+> > +
+> > +// SAFETY: A `Device` is always reference-counted and can be released from any thread.
+> > +unsafe impl Send for Device {}
+> > +
+> > +// SAFETY: `Device` can be shared among threads because all methods of `Device`
+> > +// (i.e. `Device<Normal>) are thread safe.
+> > +unsafe impl Sync for Device {}
+> >
+> > base-commit: 4d320e30ee04c25c660eca2bb33e846ebb71a79a
+> 
+> I can't find the base-commit and the patch does not apply clean on v6.14-rc7:
+> 
+>   patching file rust/kernel/pci.rs
+>   Hunk #1 succeeded at 432 with fuzz 1 (offset -33 lines).
+> 
+> Otherwise looks good. You might want to rebase?
 
-Calling try_access() only once and not having the closure is fine too.
+This is intentional, the base commit is from the driver-core tree, where also
+commit 7b948a2af6b5 ("rust: pci: fix unrestricted &mut pci::Device") landed.
 
-But I also think it would be good practice for an example to explicitly limit
-the scope of the corresponding guard.
-
-Ideally, it uses [1], once available.
-
-[1] https://lore.kernel.org/rust-for-linux/20250313-try_with-v1-1-adcae7ed98a9@nvidia.com/
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> 
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
