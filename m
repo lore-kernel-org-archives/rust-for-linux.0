@@ -1,278 +1,99 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F791DDC2D
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 16:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E151DE4FB;
+	Wed, 19 Mar 2025 16:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742400231; cv=none; b=IqoeBx3uWBsjP39fMkkugOuFYz2ydtcHtorURAIKzbSDo8GBkyQCClWxxYwpP7oaIDVOn5IGO7afKgBUwyFArVyE5qfS9RXONcVs1K61304gL/unQHl2DzlzGIhhBF/nrgEafG0qGhmu6HsPuI+Ufg++3TXGUt3O11rEs/pWFPM=
+	t=1742400415; cv=none; b=QlT5jmoXnyVPX06ANY2FO9p7Zj5btBYBizRec3xy76SAHJlUpIvUNNOdabY5kYAXSyndZrhxYlq1aFoAg7IGiIvt1rS79ApwlNm7wTj9aJ0b2FwUXVVrKzVMU3Xq/5qK7CYlee/hW2SOwAoS9fyMiqirB29DpSTjG5ZkYMnFa/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742400231; c=relaxed/simple;
-	bh=eAi0lc8RcPRGMdrSrhO/TZUzEY1q+zLsi62jnNknOiU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jLWf7WdQUbe066z0pfixZfMePKdnO5BaXboGWhms7XRSQONQWHpSALafq9Fwz7LKRvclIlk4WmUg87yuJydKDGYnqID33jFu8sw5rNIs+cGx+wkcsZIjCc2+4ANrEU0zylPEJSCkot1HUifnZT2+MdAMww/DaDjomPQX07rIzDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GFY3yTYx; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1742400415; c=relaxed/simple;
+	bh=zOvNy6cuX1wOoW8pRGs7qcnquFhdC/sbHrVaQCrxSA8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IjCKkcTcAst3q/wcLzE65a/3WJf2u5514GA6P08tTTmuYSRNlE/pz2o7MFOlFjJ7N3OfH/MeYzMirnGMa7ouwcoNfwkguiV5zyYBkG+huzQI9LCm3/4BAx4h16/Kvux9urxcQ2cXbvclGUAs4SYkDvyavIaremoBAqfgIDIM200=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DImMQxs/; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GFY3yTYx"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43bd0586a73so29037575e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 09:03:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DImMQxs/"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so1085286a91.0;
+        Wed, 19 Mar 2025 09:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742400228; x=1743005028; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BHxsFj/uocig97RZFz1WpNfGjTCy5/hwtb9C6pS20Pk=;
-        b=GFY3yTYxG1CDXy9mhfkAOOs2y0PK8PCrwLfasazkKNGn2JKUCBN6nJRYmnX4J8WuoL
-         daln/6RvLG1gM2aYI9d5fQnwXeQHiQUHuS/8wa/InfIDD5AnySpID24T8kqthsxg1AM9
-         mNR0rWu35ndQBoBvkiVM6s+EOoOM+MNoQvJXMJEcNbwp39MRSj+MbgGLJOYng7MZabIz
-         EidUJ8fvxhj67UGR4NWPqiiNOGAfpmuGGapR2+ltkPMcp5xoH+yURXF+6cKX2kAyQSBq
-         gUBb/9G3OywYavBHzqiK8v4eENeRSqCoT98cKRvtg9PQr3z0sTIh1fHywfvhsJJDYHuO
-         0BZw==
+        d=gmail.com; s=20230601; t=1742400412; x=1743005212; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zOvNy6cuX1wOoW8pRGs7qcnquFhdC/sbHrVaQCrxSA8=;
+        b=DImMQxs/Sy1fH0QJhXeW6pvGwWS9US/dpqxEofzGzYZCa0Dw1VuPOL2Q6UI2pD/FyZ
+         MuNCe4lVQPFg4rL4n2ZnHC5CethZhAvHMSl8RNO/7NxPYV8PxlUsmi0934I9D7JzEuoI
+         S8AKDDu/Rj0Q4gCod746la/CsBexwaEew2sRt0Y2v1CRePxyN94thK3Xe2b4pwRnORql
+         owdyL4z+aJlX2K0C4sFOCai38+09VemZA6TKProQrt6dImI2nqkAFDmlSAf7HuvverYr
+         I9gB24gATI3xRDgZuNEVX9usH50PBIY1dJI/yJJBl4AZb6k5ZGlVIQo1ZiB0DiEWp2CC
+         MClQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742400228; x=1743005028;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BHxsFj/uocig97RZFz1WpNfGjTCy5/hwtb9C6pS20Pk=;
-        b=sY2n3ZnQPlGFJJcz6q0oC9SbL/NxUdAqM2FWJ4nYT04hQOHktlEp4J66luWyr6JV5d
-         R+m8JBpH7jKv9I9pK+31UUK0zA363VQehsvJBrvI1MhS356e3Z/iEzuko5AKFzuHaSso
-         5vGgf1uU+AVsXme6R2iKqjMbI4bjF919yUiqgUAkDhXrZs3sQ6Ha/RQUbJEO7qUTtYmZ
-         ZA2U4MdDiUHg1yE4I5sLbNrtLD5Ydyp6CGys0acFSdKM/BprZ0ESXcMAMWp4fSsVNqjl
-         Oq5fCBHFpQ0x9mdDoLuLmzgF9OyItmYRNRQFy5PcoV8mgQ0sQWGvM3PUCXuobb4kb6On
-         ZGIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6CMR2R/1EaLjaWKsw2er+tJJLQT/52zasxwj704COlA6CmSgCOUCP4lG5P/53GuCNV3ijlQMWSlEmhomKcA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU2V7TeB1HL5XBwVJPlnUqWNykdYa8zrSi1CJMPwkbagZyEGlh
-	trPeZAZo50OKMOZxFTRwF+LTbwbrPc9ZxcD9byP3NfPk40Shz6O1cZBoqE/NGVquA9OmWX8Tu2t
-	SRi5rdiHA5+Gy5Q==
-X-Google-Smtp-Source: AGHT+IEcBACVEs0HkFKRvQ8yJq+2Qu4+aoc9KdGNlHFNUdOFNeiJIeo3uHAMSxwxLbIWwWTWs7Voz7ZMWvAQw/8=
-X-Received: from wmoo18.prod.google.com ([2002:a05:600d:112:b0:43d:1d5:26e6])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1e07:b0:43d:b85:1831 with SMTP id 5b1f17b1804b1-43d436c7be6mr33893625e9.0.1742400227880;
- Wed, 19 Mar 2025 09:03:47 -0700 (PDT)
-Date: Wed, 19 Mar 2025 16:03:45 +0000
-In-Reply-To: <Z9rVMJMlx4klpt4h@thinkpad>
+        d=1e100.net; s=20230601; t=1742400412; x=1743005212;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zOvNy6cuX1wOoW8pRGs7qcnquFhdC/sbHrVaQCrxSA8=;
+        b=snpV6JkVmbdUcrj0b1VQ2IK1qTaycTBG54J2UuP7Njva48WJuSFOMJECvIxrheg0Ja
+         +4tDhKsVJKBOTAE+KAa0XcQLKgW+E2lAvJX4HShtTKbbFMTlFnDgPQkuk2tPkOPeG5B1
+         HUqExUK1IyuuQU5PXQ2IT61Q0ADAz4z6MR4x+YUVEnWEdQ3k1gqT4U/Q9zoA+8F6oEWP
+         zCMZ+x2UnUH0z60fLY3nvM6lz1NxUYlSvU6hb9mO/ZuX1aMvMl9xL3eZMjogA6pwJQom
+         ibU29lRUg1k/Fl8pigbn0HYEkMQ5D0NiPHGmhkyXHA6ZGl54/5hdX4tJ7G7/SFr1dd6R
+         w35A==
+X-Forwarded-Encrypted: i=1; AJvYcCVmT428jCSEKDCoJnU4n6sMd/mtu8mMHuq3QjxFfcjQVd5XbWqSytzCBYoYempundCbvzPlveHZN4MXUaQO@vger.kernel.org, AJvYcCWb3EkSr4Y7vM2q1fgfOgNqrRr4Cx7Q8zNdWTmessAp46Hpru+KZXl5/QUrIR91MP9w+6aGyNiMshkjxJ/KN0Y=@vger.kernel.org, AJvYcCXyDGcMrE+0CbNHlKL3DSRHnivgsOdbQwjjFOrCKaFOHeb44Mlp7UJySm/YOGOxgGeLaAlv8rXtxRU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaBZPf6y9Ros7MpL4+vUh/cjUo9KR+qEgTs/w7i2Rb8P4UlKQi
+	KdrkD88sjltcP9VGLPFi7QtLKhYWlny6CT/NgabmAy6LiknvDquCsQ7VjY4uk3f+PP6a6QHzM07
+	cmGZKJRnFYxWZ7f0Bu+cMQa9Jv8E=
+X-Gm-Gg: ASbGncsu3okiWjdjnk7jxHPwDMFQ1p+sd1Fgivna5JEwNKnnST1itkMbI6lSw3pXCSr
+	tJQeUZ/8NnwZur8xEHb+6DYCe6E18gHkDC5Mc6v539Aaz82qsuNKQn2WNLdzKpqtZSFtfuWBKTw
+	FkFU10DSOJ8X5ZV6cdgjd7BqzvjQ==
+X-Google-Smtp-Source: AGHT+IGKH7dGzo9CR9DyO61FwA7cxqxKg1zlVUXDQ/9/34mE4QzwcvBU2hSm+dhh6M/XvRm1n6FGq53W1euSYJyTZJY=
+X-Received: by 2002:a17:90b:2246:b0:301:1c11:aa7a with SMTP id
+ 98e67ed59e1d1-301bfc749d3mr1656740a91.3.1742400412036; Wed, 19 Mar 2025
+ 09:06:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250318164221.1533590-1-bqe@google.com> <20250318175322.1627073-2-bqe@google.com>
- <Z9nUzjinU_mozCXC@thinkpad> <Z9qe_cLk4FDg_fAE@google.com> <Z9rVMJMlx4klpt4h@thinkpad>
-Message-ID: <Z9rq4aqY3PR8XzEN@google.com>
-Subject: Re: [PATCH v4 2/3] Adds Rust Bitmap API.
-From: Alice Ryhl <aliceryhl@google.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20250316111644.154602-1-andrewjballance@gmail.com>
+ <20250316111644.154602-3-andrewjballance@gmail.com> <CAJ-ks9kAROOfyPtxMe6LE4-UPsvXca2sQ2VDjhRchZp3HLddGg@mail.gmail.com>
+ <D8JTWL8JY7DM.3IVH6FZ4M49CB@proton.me> <CAJ-ks9k+A1+0CWXZmD2m0+jRqTRTNFn-=d9VXqytiOqvn4BR0w@mail.gmail.com>
+ <D8KBFC9M74H5.4ZJ2SJK06SGR@proton.me> <CAJ-ks9=NQrz3ySacKt+XXm2vS+Fn9gjmtqAaaoz1k=iTG_1HXw@mail.gmail.com>
+In-Reply-To: <CAJ-ks9=NQrz3ySacKt+XXm2vS+Fn9gjmtqAaaoz1k=iTG_1HXw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 19 Mar 2025 17:06:39 +0100
+X-Gm-Features: AQ5f1JrZzeF8YqgUhS2ui73zsg8Ty3fstbUTrdh2di_k7zMf5vS2OO4mnq0-LQ8
+Message-ID: <CANiq72mnT73Mb7RJhZjf4de=_Orv4pipunMhOersOj_aqrFA-g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] rust: alloc: add Vec::resize method
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Andrew Ballance <andrewjballance@gmail.com>, dakr@kernel.org, 
+	airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, acourbot@nvidia.com, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 19, 2025 at 10:31:12AM -0400, Yury Norov wrote:
-> On Wed, Mar 19, 2025 at 10:39:57AM +0000, Alice Ryhl wrote:
-> > On Tue, Mar 18, 2025 at 04:17:18PM -0400, Yury Norov wrote:
-> > > On Tue, Mar 18, 2025 at 05:51:53PM +0000, Burak Emir wrote:
-> 
-> [...]
-> 
-> > > Are those 'drop' and 'new' something like a special rust words? If not -
-> > > can you use alloc and free wording? Would be nice to have rust part
-> > > looking similar to C. Nobody wants to keep two sets of names in mind.
-> > 
-> > Rewording `new` to `alloc` seems reasonable.
-> > 
-> > As for "drop", that word is special. It's the destructor that is called
-> > automatically when the bitmap goes out of scope - you can't call it
-> > directly. It must be called "drop".
-> 
-> OK, then drop and new.
-> 
-> > > > +        if let Ok(nbits_u32) = u32::try_from(nbits) {
-> > > > +            // SAFETY: `nbits == 0` is permitted and `nbits <= u32::MAX`.
-> > > > +            let ptr = unsafe { bindings::bitmap_zalloc(nbits_u32, flags.as_raw()) };
-> > > > +            // Zero-size allocation is ok and yields a dangling pointer.
-> > > 
-> > > Maybe it's OK, but I'm not aware of any a correct algorithm that needs
-> > > 0-sized bitmaps. I already asked for it on previous iteration, right?
-> > > So unless you can show me such an example and explain what for you need
-> > > 0-sized bitmaps, please drop this wording.
-> > 
-> > Thinking about it, I actually think there is a good reason to support
-> > zero-sized bitmaps for the Binder use-case. Right now, we always
-> > allocate at least one long worth of bits even if they're all 0. But we
-> > can improve the memory usage of this code by not allocating any memory
-> > for the bitmap until the first time we use it.
-> > 
-> > The reason that dbitmap.h doesn't do this is historical. Originally, the
-> > bitmap started out having BIT(0) set to 1, so we needed an allocation to
-> > hold that from the very beginning. But that was changed in commit
-> > 11512c197d38 ("binder: fix descriptor lookup for context manager"), so
-> > the bitmap now starts out empty.
-> 
-> Empty bitmap is not a 0-length bitmap, right?
-> 
-> If it was me inventing dynamic bitmaps, and if I was concerned about
-> usability and performance, I would think carefully what exactly the
-> request for 0-bits Bitmap object means.
-> 
-> I would probably consider it as a caller error, which makes total
-> sense.
-> 
-> Or I would consider it as a special hint, like 'give me something to
-> begin with'.
-> 
-> If I decided to go with the 2nd option, I'd probably avoid memory
-> allocation at all, and re-use the pointer as the bitmap of the length
-> BITS_PER_LONG. That would save _a lot_ on useless small kmalloc()
-> calls.
+On Wed, Mar 19, 2025 at 4:59=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> If we're talking about the same thing then I think we're both wrong
+> and the correct phrasing would have been: "you can avoid underflow
+> checking when CONFIG_RUST_OVERFLOW_CHECKS=3Dy by using `checked_sub`". I
+> was referring to the underflow check implicit in `new_len -
+> self.len()`.
 
-Okay that's clever. We would probably avoid the need for allocations in
-the vast vast majority of cases with that approach.
+`checked_sub` always checks (if not optimized away). The config option
+is about the implicit one.
 
-> The whole business of dynamic arrays is about potentially infinite
-> number of elements. User of your array doesn't even care about the
-> exact length, because it may get changed anytime, right?
-> 
-> In that case, the comment would sound like:
-> 
->   // Zero-size Bitmap request yields a bitmap of an arbitrary
->   // non-zero length.
-> 
-> [...]
->  
-> > The clippy linter emits a warning if you have a `len` method but don't
-> > have an `is_empty` method, since Rust containers usually have both.
-> > 
-> > https://rust-lang.github.io/rust-clippy/master/index.html#len_without_is_empty
-> > 
-> > But the confusion with "no set bits" seems like a good reason to silence
-> > that warning for bitmap.
->  
-> So the comment at your link says:
-> 
->  It is good custom to have both methods, because for some data structures,
->  asking about the length will be a costly operation, whereas .is_empty()
->  can usually answer in constant time.
-> 
-> In this case both len() and is_empty() are O(1), but the last one
-> is totally misleading.
-> 
-> You guys would better teach your linter to understand when the len()
-> is cheap, so is_empty() is useless.
+Do you mean avoiding panics?
 
-Heh, I'm not sure I agree with the lint's explanation. But all stdlib
-Rust data structures have both `len` and `is_empty` even if computing
-the length is O(1). In my eyes, it's just a convention, similar to
-calling the constructor "new".
-
-> > > > +    /// Sets bit with index `index`.
-> > > > +    ///
-> > > > +    /// # Panics
-> > > > +    ///
-> > > > +    /// Panics if `index` is greater than or equal to `self.nbits`.
-> > > > +    #[inline]
-> > > > +    pub fn set_bit(&mut self, index: usize) {
-> > > 
-> > > set_bit() is an atomic name, but you wire it to a non-atomic operation.
-> > > This is a mess.
-> > 
-> > Hmm. I do generally agree that we should try to match C names, but I'm
-> > unsure about this particular case due to the underscores.
-> > 
-> > This method takes "&mut self" rather than "&self", which means that the
-> > caller must have exclusive access to the bitmap to call this method.
-> > Attempting to call it when the bitmap is shared will result in a
-> > compilation failure, so it is impossible to call the non-atomic method
-> > in cases where you must use the atomic version.
-> 
-> Does mutual access implies memory barriers? Your code doesn't add
-> them. Is rust compiler so smart to realize that you need it?
-> 
-> I mean the following scenario:
-> 
-> CPU1                            CPU2
-> a.set_bit(1)
->                                 a.test_bit(1) -> 0
-> cache_flush()
->                                 a.test_bit(1) -> 1
-> 
-> If the above is impossible, then yes, your set_bit is atomic.
-
-Yes, if a method is "&mut self" then this case is impossible.
-
-Basically, the way it works is that the only APIs that hand out `&mut`
-references to a value must somehow enforce that the access is exclusive.
-How it enforces that is up to the API.
-
-So for example, if you have a local variable that you know is not
-shared, you can just obtain a `&mut` reference to it. No barriers needed
-since it's a local variable that is not shared.
-
-On the other hand, if you have a variable protected by a spinlock, then
-the spinlock API will only hand out `&mut` references when the spinlock
-is locked. And the borrow-checker enforces that the `&mut` can't be used
-after you unlock it again. In this case, the spin_lock / spin_unlock
-calls are sufficient barriers to use __set_bit.
-
-And so on for each synchronization method.
-
-Point is, any time you have a `&mut` reference to a value, you know that
-it's exclusive, because whichever API created that reference has some
-mechanism to ensure that.
-
-> > We could call this method __set_bit, but using underscore prefixes for
-> > methods is very very rare in Rust code because prefixing a name with an
-> > underscore usually means "do not emit warnings if this thing is unused".
-> > For example, when locking a mutex, you might write this:
-> > 
-> > {
-> >     let _lock = my_mutex.lock();
-> >     // do stuff ...
-> > 
-> >     // _lock goes out of scope here, unlocking the mutex
-> > }
-> > 
-> > Here, if you called the variable "lock" you would get an unused variable
-> > warning, but prefixing the variable name with an underscore silences
-> > that warning.
-> 
-> But underscored method is not a local underscored variable. It doesn't
-> have scope.
-
-If a method isn't public, then Rust will perform a similar check to the
-entire compilation unit and emit a warning if it's unused. The
-underscore silences that.
-
-Though as Miguel points out, this particular method is public, so the
-check is not performed - there might be callers in other compilation
-units that this rustc invocation doesn't know about.
-
-> > We can still call the method __set_bit if you think that is best, but
-> 
-> No I don't. Nobody likes underscored notation for non-atomic bit ops,
-> but it's a historical thing.
-> 
-> > because underscore prefixes usually mean something different in Rust, I
-> > wonder if we should use slightly different names in Rust. Thoughts?
-> 
-> This is a new project, and you may decide to change notation. Just
-> please be very specific about it.
-> 
-> So I'd suggest the following:
-> 
-> 1. Mirror C interface: __set_bit() and set_bit()
-> 2. set_bit_nonatomic() and set_bit()
-> 3. set_bit() and set_bit_atomic()
-> 
-> The last one looks the best to me, except that it just the opposite
-> to what people got used to in Linux. If you go with #3, please add
-> both atomic and non-atomic set_bit()s in the same patch, together with
-> a bunch of comments, so people will be aware.
-
-Solution #3 sounds good to me.
-
-Alice
+Cheers,
+Miguel
