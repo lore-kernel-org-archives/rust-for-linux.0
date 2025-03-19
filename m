@@ -1,83 +1,90 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2011E1DF4
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 12:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD2F253B7B
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 12:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742385936; cv=none; b=qvtlivH4nQOIQX/0a4+cYM9dCUjGivMjeR50jg6Cew42OaJL6sQA4BYMmrrLjw8uW+1+F3fq3HjJTDIEzJqLGsMdyU4Uv3ZhVwHm3i9p9Gu+z6+nKYy+/1gVumAkN00ODkhkjuWWmtDm70bpNDWwptFpKvZKmVO+xobq9jZxvcE=
+	t=1742385985; cv=none; b=uyXRQvoqXgEvN9iuhoJRHlIUB9P+SKv9XLwYX0iXcS3gUVWpGSV+jwxq7QzR8PafT6G7SnqtwGJPo/3UbLoZZ3deg+aFMhiCvbetxbFiCh1Q5rsRe1eIAGfiBT2++ohybsNkCdm/ee1ti2F42iV+0D9Mam6STJ84QiSfWHdJ2UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742385936; c=relaxed/simple;
-	bh=/sgMUq9kyU4ZUSQimzoCzp9shmlalLR1UBW+34qXz2s=;
+	s=arc-20240116; t=1742385985; c=relaxed/simple;
+	bh=O29GWBbnGpDP3vt5LO38+vNeYxjy8uY5wGxT+fv2A64=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=L7czsUqamPP42yybdHgCYUvzpmUEeoYAkU6Nk4k33C5RwIcjBnv3b/T8imydqACN0bYeSruyjFxBqo25y6YMTL2Ue5GP/siKkqDhCxrlGbImEwEOl5J+zG9XaOAndO3ZHdPJVyuV5M6MoQMvyt9DPxUZPivhSnYIaSMP6fgPtvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=feKZdc2S; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=FWLfmzHLRBggv0G8o6mSv0Tnb9S4JRQk9023jkxdkIgxCwGkc17b16iWIf+8TKce77qpZHk3cy4POIoXGoOw7Ctc4uUjDoCuGHBvS/Daa4pnseZfzX1vez8WU2DqiwzWAPzq/YRGoxhNJoXGPr9Q0TqtVZpYrl4fTMNcyCjXpfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MgKuMLG7; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="feKZdc2S"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf5196c25so23354615e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 05:05:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MgKuMLG7"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43bd0586a73so27240005e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 05:06:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742385934; x=1742990734; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742385982; x=1742990782; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Afx+r5Luww/Abgd2iSJsqzRz7kjWQCvle2A8j07pIdc=;
-        b=feKZdc2SrwdwXAbfZnX4Xrmd3/r/9NJiqSRG6NkLVzd0GIabC1RiN4OO8qmSIdM1+V
-         v3AXPdKCUTo6UawHMiMShgZTg/OvVplbNI7Vil0WDb7FmoqhP7rVoeC2o/fAC78ECYDz
-         KaxDMPCppca9aJmMK4xTGaiIP4LTsntvVIddgF5/sfY+wyaDZRVfIOzVlna5KbQFYCrV
-         26ExxqmVK8bpWDkj5sHuOP6ey+icVbTm0A/g73bzyLOPTUPnnxUvd/ckPraP+EQqWzO6
-         fjKJCR1R0VyD4skm+QloxqBzNueOSykyQPauJg7vbLM8P76dIwz9jGd3SEmc5+eQBpLi
-         lhWw==
+        bh=uIznqglTZy019YwLgXF2t7sJ9J4X12Fp4umldfnnkg8=;
+        b=MgKuMLG7Awe1MMUCGHrxdLfqZ/1fJXKBPQtCYX6Ope7MRUcFWDDr/AEYNIC9Hz+1US
+         1uMAFdj/2wpdOzve/0cVJKnazJDhhjqKE5zXOXnTRrl8BqdqqRH4ra9GYBwNuVtLoVlh
+         4m3Wfq6An+n30fvSsxSQzA+VWkeETf8JPVEXjzLR5FaMzPr8GtJxOxkYc++ACB0CqRk0
+         HmNDxOlMOb0RE8SnN6sCxAvcaq+TP6SKNsNsR0OJx+ZXnivGW5dXHCQWC29EhRFdbVYV
+         //6GQHSRsL3E5gDVWCwoK4eLFyvoCin2jF9dSJ4pa9NbhRQw0oNh3leTYc4dcBNx905P
+         AHcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742385934; x=1742990734;
+        d=1e100.net; s=20230601; t=1742385982; x=1742990782;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Afx+r5Luww/Abgd2iSJsqzRz7kjWQCvle2A8j07pIdc=;
-        b=PDD909a4k+T+rwPYLGNGou6vHnZveEGY1dHKlq3NQqasMBWXQqJjTKDzJvQGGI1Msj
-         Ng8oD7AKiPzt+b0WC5h76MvASuR+CmeJ/Q26QOqi2rLjmDhdZWxFyq3DSLppIeH4FrsB
-         2mrgIXwUmuzeqZvvOW6N1rAmBFaVy3uVCf+Sa8IFAkz0zlfuIwUztSUekcOGF0V9F7l8
-         0GEiy2IKiWePNqj8FUq6iegVx07pUlubUhKOYslMlA9ZZ717j85RtxfLk7cj40h03cBJ
-         pkOR8jSc6oCWvGLpfqDPmh0kwi6E2013r3+XNSkueg2sZcMLXOfZ1zN5AMJP+uPktDc9
-         U1qw==
-X-Forwarded-Encrypted: i=1; AJvYcCVkhWVroPzPYcT0pF8Y3WLlrHgdSaN9gjqyXH0nIbACu0zGRpzCT8eCuWSRwysDIxW7/fG50C9IiMSsODsLSg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq7KEq773oTjIcxoS08CHkNjZEAtbLgUKkLdFg+eucpdXhXAWz
-	ldkLGFvinnvxW9W2R35yCUjWhWoKZNKjm3wirFfo6DeZMpv3zcWVDMnh63rPSsdiM1gHz/kVUsz
-	vJfXluor7cbWEug==
-X-Google-Smtp-Source: AGHT+IF4W9TrsaeGW9ftDK5AwQdh8v1B1xsNPi4MJVe6OyLmzGV662Yxr2zDVzBA/BPZdMbIvH+MLcJTtHS+ZYg=
-X-Received: from wmbg8.prod.google.com ([2002:a05:600c:a408:b0:43d:1f62:f36c])
+        bh=uIznqglTZy019YwLgXF2t7sJ9J4X12Fp4umldfnnkg8=;
+        b=MG0wAOvi4+wP6b31dP5GWQOvpOqOQRs+xxSBR9yddC3F1EgQeTfKdfXpFxwzs42t9G
+         /aIwMximQziz/EtRKf6yoE59TPf66T5lwTLXbs2PYRV10tt5+0lA2sBOHQ0J6DXcPIf5
+         spPu+KhImxmz+KTxQRX49J3UXY15GvUfOatD2t4FqxFO/vw94mMJGVS6wHWpCQWRhHUj
+         Wb1RHibJqhGBxl9e1KLRCYIBmz6NYWLoQJBlfJPtOvfC5MMifbbZjCU2uBJjdI2vnX97
+         oMczkM7vapGvpdQUtR0nvjL3TX9O5swc9FfSGdhVSmALcnUAHndSd0fZnEaS6+1Xmeje
+         mYgw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNq1Qo+3t0BFvSUivJautMGIujzFfC8omas5YXglVXU82tFGFjBUsSaUm3STCY7o7a4qTyw2xee9jSMWx58g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhShpiFiH7uX2GhbBd1y/jygJmeYmMZF1luA+HQJReQ+UFB3Lg
+	N+VMIbHimfmeEqlHCBIPTvp5XekrWayBSe9FCj41dLh5ihXxycq6tkqLVomvR4gIAt3lT8RBTzV
+	yWnBOlSpHeLfuaw==
+X-Google-Smtp-Source: AGHT+IGqauryNOQLYRTywgLEJywGQ+qmcp6L37Fmu8lttjDSEdhKi0R/yUZe6VREubsHAspkFyKKzK3KaQqYByU=
+X-Received: from wmgg15.prod.google.com ([2002:a05:600d:f:b0:43b:c450:ea70])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f0d:b0:43d:ed:acd5 with SMTP id 5b1f17b1804b1-43d4378d039mr25931565e9.10.1742385933857;
- Wed, 19 Mar 2025 05:05:33 -0700 (PDT)
-Date: Wed, 19 Mar 2025 12:05:31 +0000
-In-Reply-To: <20250318212940.137577-2-dakr@kernel.org>
+ 2002:a05:600c:3b92:b0:439:9a40:aa0b with SMTP id 5b1f17b1804b1-43d43882ebcmr19110095e9.25.1742385982576;
+ Wed, 19 Mar 2025 05:06:22 -0700 (PDT)
+Date: Wed, 19 Mar 2025 12:06:20 +0000
+In-Reply-To: <20250318231815.917621-2-samitolvanen@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250318212940.137577-1-dakr@kernel.org> <20250318212940.137577-2-dakr@kernel.org>
-Message-ID: <Z9qzCxlACKUgYstd@google.com>
-Subject: Re: [PATCH 2/2] rust: platform: impl Send + Sync for platform::Device
+References: <20250318231815.917621-2-samitolvanen@google.com>
+Message-ID: <Z9qzPGVYaDD-UC5p@google.com>
+Subject: Re: [PATCH] rust: kbuild: Don't export __pfx symbols
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, tmgross@umich.edu, linux-pci@vger.kernel.org, 
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Mar 18, 2025 at 10:29:22PM +0100, Danilo Krummrich wrote:
-> Commit 4d320e30ee04 ("rust: platform: fix unrestricted &mut
-> platform::Device") changed the definition of platform::Device and
-> discarded the implicitly derived Send and Sync traits.
+On Tue, Mar 18, 2025 at 11:18:16PM +0000, Sami Tolvanen wrote:
+> With CONFIG_PREFIX_SYMBOLS, objtool adds __pfx prefix symbols
+> to claim the compiler emitted call padding bytes. When
+> CONFIG_X86_KERNEL_IBT is not selected, the symbols are added to
+> individual object files and for Rust objects, they end up being
+> exported, resulting in warnings with CONFIG_GENDWARFKSYMS as the
+> symbols have no debugging information:
 > 
-> This isn't required by upstream code yet, and hence did not cause any
-> issues. However, it is relied on by upcoming drivers, hence add it back
-> in.
+> warning: gendwarfksyms: symbol_print_versions: no information for symbol __pfx_rust_helper_put_task_struct
+> warning: gendwarfksyms: symbol_print_versions: no information for symbol __pfx_rust_helper_task_euid
+> warning: gendwarfksyms: symbol_print_versions: no information for symbol __pfx_rust_helper_readq_relaxed
+> ...
 > 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Filter out the __pfx prefix from exported symbols similarly to
+> the existing __cfi and __odr_asan prefixes.
+> 
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
