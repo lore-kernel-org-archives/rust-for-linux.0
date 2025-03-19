@@ -1,34 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B258210E0;
-	Wed, 19 Mar 2025 20:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF291EC013;
+	Wed, 19 Mar 2025 20:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742416295; cv=none; b=ctLoBGdYGQiry/peqXLvbe/ZHFnPOIl20TNsgs+UzlsI/Py/VLTDxSDJbA9i8kQYBZobuHNVnjEkKWlyaggg7l3rchywlMqKcejyN70oibA/4QBBsySEe4iqe136BKk8z/5eLy0ZeG0yj/OUpCFapfsDIMd7m6cnqqKLmqxhyos=
+	t=1742416501; cv=none; b=LhWUGyE2vJ04da+faUAHzeWcyVfJpisfIHGXRajNYrNDElPgzKEC3r+bfFU9jFr2TCwi9wN2+fUoz8xwBllpR8DdMPGa0PBz/3LNiy5AMe4ORv8zcjTD2t6tf4KgOzifx+z7SyG6F7ju0v6NwDVQ4FOC7b48RG6zYpmVjAF+2Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742416295; c=relaxed/simple;
-	bh=8dSbmv6RUXno2wJjkEPEkGjO99eu0MpD6e+agTv04vE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJHr/8IBPRv3cRwawDtP03Y+fJxgDwoAVbcUghtvoIpJ90D8e1WuCg3dZDtVDyi2OaBhrAZez8ana0ktbrCohTt6+VvGLxrA0f7kB22RByxoy6AHokB6P6BUsajKlTxYAXJCpJ+F0yZYExTBkYdWG7mnlrbRJ0ZSqm9zlGllyZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GdMiZXcU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742416501; c=relaxed/simple;
+	bh=H0rFOMCRzN8MVAiRADCgAvh9RBoNUtNwjYU5xaKEGAA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lpDciqoK9IIozHBH34p5YBjaiOfAIaXELhyG+9E2S2DgeHGjuOiWgMdlwhUK+tgtWn7HI0++PEVEosuDjuWoH5lwWVccGCCjXr9arsNaRg86KeyLedTp9ge5XAhtAIS6Ejifn70t/byFKvdJ9TVeu9oxjay/5P09w4dCReNXbUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=up0KQCd8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GdMiZXcU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012C9C4CEE4;
-	Wed, 19 Mar 2025 20:31:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="up0KQCd8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8731C4CEE4;
+	Wed, 19 Mar 2025 20:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742416295;
-	bh=8dSbmv6RUXno2wJjkEPEkGjO99eu0MpD6e+agTv04vE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GdMiZXcUBwYVxbdCg/A4RqfgFZb7QwFmp96v/B5fdXrFMCap6wzgWr+ASfnY71f0R
-	 fkEo3oZtjuJFGqnS8TwpPrV/5Q0t3Ccgm4dWUrdWitH6gCIV2+Aua/wyB+sEpdZCXT
-	 KWuxYZPGHC+BMll1ksUN70PAuEFsOpXLzRDvhsXeWxXJsL6UD3YMlNIMBd4Yl/rfqy
-	 vVdJ1inQ2E3XHGscx79qSVMNx2i/KT5F++PW1pOd4jXDf57xmRFcNknLni7qPsXQKM
-	 0bh2eyNsELxhE2mpU+7AR/RiFvDeGF5iVhRAuc3x3vfPbVSr7jv/hfOh1NZnS1Zjnq
-	 P40uxgUVCTKOw==
+	s=k20201202; t=1742416500;
+	bh=H0rFOMCRzN8MVAiRADCgAvh9RBoNUtNwjYU5xaKEGAA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=up0KQCd8jxONa+a0C34prRiS6W0LLEbK3ue6PfqxEI2CbDi+Km15MMYq9CbZiRsax
+	 OjQlAth+PJ+eeyyPnQWMyoH6oAM9PMVlz11gHq3/yXHFVryiZuolL58HwObJNiqK8L
+	 klkH4JiSlZqIDtL4z4hHBFCdOegTxwmSPrZ9F9ja/zCP768GjeJYAoxIB/k/JeC80s
+	 dRYqJ8Bs3TdDdBoS2NZ0jAP0PnjCZM8V6M04/kgUPG/0YrGKexM71FyaGFOxBz8nRg
+	 Tb+v8umr6N2ZlQ9Lw3swev/xzMK7DUxUAnMLY41EQ7hLoBVmcvXB2KBpSu9BL93bj1
+	 PUBrvlgGqMdAg==
 From: Danilo Krummrich <dakr@kernel.org>
-To: bhelgaas@google.com,
-	gregkh@linuxfoundation.org,
+To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
 	ojeda@kernel.org,
 	alex.gaynor@gmail.com,
@@ -38,17 +36,17 @@ To: bhelgaas@google.com,
 	benno.lossin@proton.me,
 	a.hindborg@kernel.org,
 	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: linux-pci@vger.kernel.org,
+	tmgross@umich.edu,
+	airlied@gmail.com,
+	acourbot@nvidia.com,
+	jhubbard@nvidia.com
+Cc: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 4/4] rust: platform: impl TryFrom<&Device> for &platform::Device
-Date: Wed, 19 Mar 2025 21:30:28 +0100
-Message-ID: <20250319203112.131959-5-dakr@kernel.org>
+Subject: [PATCH v3 0/5] Auxiliary bus Rust abstractions
+Date: Wed, 19 Mar 2025 21:33:52 +0100
+Message-ID: <20250319203455.132539-1-dakr@kernel.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250319203112.131959-1-dakr@kernel.org>
-References: <20250319203112.131959-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,64 +55,54 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implement TryFrom<&device::Device> for &Device.
+This series adds Rust abstractions for the auxiliary bus.
 
-This allows us to get a &platform::Device from a generic &Device in a safe
-way; the conversion fails if the device' bus type does not match with
-the platform bus type.
+It implements the required abstractions to write auxiliary drivers and create
+auxiliary device registrations. A driver sample illustrates how the
+corresponding abstractions work.
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/platform.rs | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+The auxiliary abstractions are required for the Nova driver project, in order to
+connect nova-core with the nova-drm driver.
 
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index e37531bae8e9..c17fc6e7c596 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
- 
- use crate::{
--    bindings, device, driver,
-+    bindings, container_of, device, driver,
-     error::{to_result, Result},
-     of,
-     prelude::*,
-@@ -17,7 +17,7 @@
- use core::{
-     marker::PhantomData,
-     ops::Deref,
--    ptr::{addr_of_mut, NonNull},
-+    ptr::{addr_of, addr_of_mut, NonNull},
- };
- 
- /// An adapter for the registration of platform drivers.
-@@ -234,6 +234,24 @@ fn as_ref(&self) -> &device::Device {
-     }
- }
- 
-+impl TryFrom<&device::Device> for &Device {
-+    type Error = kernel::error::Error;
-+
-+    fn try_from(dev: &device::Device) -> Result<Self, Self::Error> {
-+        if dev.bus_type_raw() != addr_of!(bindings::platform_bus_type) {
-+            return Err(EINVAL);
-+        }
-+
-+        // SAFETY: We've just verified that the bus type of `dev` equals
-+        // `bindings::platform_bus_type`, hence `dev` must be embedded in a valid
-+        // `struct platform_device`.
-+        let pdev = unsafe { container_of!(dev.as_raw(), bindings::platform_device, dev) };
-+
-+        // SAFETY: `pdev` is a valid pointer to a `struct platform_device`.
-+        Ok(unsafe { &*pdev.cast() })
-+    }
-+}
-+
- // SAFETY: A `Device` is always reference-counted and can be released from any thread.
- unsafe impl Send for Device {}
- 
+This patch series depends on patches queued for v6.15-rc1 from different trees
+(driver-core, nova), plus the patches in [1]; a branch containing the patches,
+including the dependencies can be found in [2].
+
+[1] https://lore.kernel.org/lkml/20250319203112.131959-1-dakr@kernel.org/
+[2] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/auxiliary
+
+Changes in v3:
+  - export auxiliary_bus_type
+  - implement impl TryFrom<&Device> for &auxiliary::Device
+  - implement Send + Sync for Registration and Device
+
+Changes in v2:
+  - implement bus device soundness improvements from [2]
+
+Danilo Krummrich (5):
+  rust: types: add `Opaque::zeroed`
+  driver: core: auxiliary: export auxiliary_bus_type
+  rust: auxiliary: add auxiliary device / driver abstractions
+  rust: auxiliary: add auxiliary registration
+  samples: rust: add Rust auxiliary driver sample
+
+ MAINTAINERS                           |   2 +
+ drivers/base/auxiliary.c              |   3 +-
+ include/linux/auxiliary_bus.h         |   2 +
+ rust/bindings/bindings_helper.h       |   1 +
+ rust/helpers/auxiliary.c              |  23 ++
+ rust/helpers/helpers.c                |   1 +
+ rust/kernel/auxiliary.rs              | 383 ++++++++++++++++++++++++++
+ rust/kernel/lib.rs                    |   2 +
+ rust/kernel/types.rs                  |   8 +
+ samples/rust/Kconfig                  |  12 +
+ samples/rust/Makefile                 |   1 +
+ samples/rust/rust_driver_auxiliary.rs | 110 ++++++++
+ 12 files changed, 547 insertions(+), 1 deletion(-)
+ create mode 100644 rust/helpers/auxiliary.c
+ create mode 100644 rust/kernel/auxiliary.rs
+ create mode 100644 samples/rust/rust_driver_auxiliary.rs
+
 -- 
 2.48.1
 
