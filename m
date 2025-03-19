@@ -1,105 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76C717A30D;
-	Wed, 19 Mar 2025 14:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E24C1C1F0F
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 14:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742393334; cv=none; b=mWH0f+ma2QaQ3KfqxRiZg7Q5OgIjz5KqjvR3aDHtBotGBd/I9sSx5fnWSXXVdQ+mwyciNLlDRsQxCvXPFSMdAdrP78hrMsMoglIJODHYDUpQPXY2E5Wlk2iMFxHjCYkCFLF49CuMuHGx1yrQBbxkFLGYzE7TvwpeupGly2hLZjc=
+	t=1742393590; cv=none; b=ei0191Jh/qqfl6/XME/bvuEKxH86OVZNBAGZSU0DJPa+Y9J19AQJ2lGha84QasPp0qu0Zyxm3EV0byHklgkEruLfqHGMYXD6ABqbYxldQ7T2GMaNwMwhjEaMLECU+uVkunuRfRXyKijdjyakLj19exq3fO7S/hEtfFMOHjaBgWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742393334; c=relaxed/simple;
-	bh=LlAkLD1dio/nKpQIdNOz/ALlg+KpmPdToguR0IZvsAs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mfhY2OeldSlFmrw2sXD6qq62pcCMP4sGzza5ICBdzUs2iRqCG1xS+bkqYsdACRTrASI0eHgDDZkaYksuljF7L87hMckKcG67pq+p0Vc7K2man/nAzU7ZjT+II6WED6InjGtbV9aKQB1o7WN3Af/KWhXcvoAszj8wPjVmGD2f7qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1cOA3+L; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742393590; c=relaxed/simple;
+	bh=173mR8ZcqIucBbAsooxSJ7aCrBDlB0BXxLNyDYR2IkI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nDhKB2kBDyfK9j/kSpkMGRbxKjabU2PF/7V0v70vPZdwiCGHEox2MpdMVYKzLMlZ6OqtxOZ/reebcoLtrfHZZrST2fKgOR2EGfBrPQXzh2mUycSRTs+K2OvmHdb0II89M2j7igzTyfOeIcH4cxMNXKp4Zfa+gSXB5Chou5dmW2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HY5WWWTf; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1cOA3+L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C343C4CEE4;
-	Wed, 19 Mar 2025 14:08:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742393334;
-	bh=LlAkLD1dio/nKpQIdNOz/ALlg+KpmPdToguR0IZvsAs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O1cOA3+LupLFrasNCeQ6NYpiyPnj1ZD7aj88ccKh6lmCgHMJJk6tiRi/851BnpdUm
-	 5bPHZrP3bqJneLIrtm8nUugEeZGoBfPvVYiVJBW3zaHT4Hxr2altEVW2BX75Vz5Obx
-	 zHQNlzKge8rM1zX6LsUhbcrIMA/Qn/u8E+Dmhnxnf8aIOsetax/uIOpVXEyHlgLQt+
-	 t7v6ujnc64TI5tBJqJJTaVJTpCFL61UCgmdNcA72RqsELWvtxOcu4hW3LC6dgnpoWg
-	 UrnqtsbT6ggA4tEaahbAsBda0LRkutPyDZew3Rtqhu8BY/LBGKagt0ydJ4ew6vbUJX
-	 iGKRs3fvLR+yw==
-Date: Wed, 19 Mar 2025 15:08:48 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, tmgross@umich.edu, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: pci: impl Send + Sync for pci::Device
-Message-ID: <Z9rP8BO1rAYI7UBK@cassiopeiae>
-References: <20250318212940.137577-1-dakr@kernel.org>
- <Z9qy-UNJjazZZnQw@google.com>
- <Z9q8xcsAYhQjIpe4@cassiopeiae>
- <Z9rDxOJ2V2bPjj5i@google.com>
- <Z9rG8QFRv_lQlXV4@cassiopeiae>
- <Z9rLs9jY1h7IdImw@cassiopeiae>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HY5WWWTf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742393584; x=1742652784;
+	bh=yYLcfHuvK6FvGpwQFNJmILNKHihIkpgM2uT8zMa5DCs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=HY5WWWTfyhBjxkHduWvmBtGULW1loewR5xlXgUfO5cZ5gwsKQ+U9rARjqqR/ALYv1
+	 +7y34Ofkw0vwjdy2JiXZ9r2t2yTrNbDQv4pFyhFj6HbWhMoiwWyODDCS8wN+akkQek
+	 U+tBqfAGz3XVg7UgROscGQ0kz+AxoH+89vlSLpVSw/YWaUuke9/b0wjvEHxPJW8GXX
+	 XSuAJdj9v+KWeco8H7tBOcXAORnJVDPg+YFGFPL88D7x8jhh/8bJEgLGLmUFyqB4r7
+	 QTr4jNb/Wc5AuxkHZDQuAJKR7mGVHgGRU/t8nL6Iu365mtROL9ymCv+eD17DuBCqSu
+	 GdmtHSpSs7sng==
+Date: Wed, 19 Mar 2025 14:13:00 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v7 3/3] rust: platform: allow ioremap of platform resources
+Message-ID: <D8KAZ2NYJ4C3.STH2PZYCM7X4@proton.me>
+In-Reply-To: <Z9qpC1EapJFNadME@pollux>
+References: <20250318-topics-tyr-platform_iomem-v7-0-7438691d9ef7@collabora.com> <20250318-topics-tyr-platform_iomem-v7-3-7438691d9ef7@collabora.com> <Z9mwu-RHwZ8qwcbH@cassiopeiae> <FF128DEF-28D6-4302-9C53-2DD4D417053A@collabora.com> <D8JTUPQ28758.2SKKTA6IL6Y8E@proton.me> <Z9qpC1EapJFNadME@pollux>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 72b1eaec6fc8bf9fcfcb1f6690c590f709d0dbd4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z9rLs9jY1h7IdImw@cassiopeiae>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 19, 2025 at 02:50:49PM +0100, Danilo Krummrich wrote:
-> On Wed, Mar 19, 2025 at 02:30:31PM +0100, Danilo Krummrich wrote:
-> > On Wed, Mar 19, 2025 at 01:16:52PM +0000, Alice Ryhl wrote:
-> > > On Wed, Mar 19, 2025 at 01:47:01PM +0100, Danilo Krummrich wrote:
-> > > > On Wed, Mar 19, 2025 at 12:05:13PM +0000, Alice Ryhl wrote:
-> > > > > On Tue, Mar 18, 2025 at 10:29:21PM +0100, Danilo Krummrich wrote:
-> > > > > > Commit 7b948a2af6b5 ("rust: pci: fix unrestricted &mut pci::Device")
-> > > > > > changed the definition of pci::Device and discarded the implicitly
-> > > > > > derived Send and Sync traits.
-> > > > > > 
-> > > > > > This isn't required by upstream code yet, and hence did not cause any
-> > > > > > issues. However, it is relied on by upcoming drivers, hence add it back
-> > > > > > in.
-> > > > > > 
-> > > > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > > > > 
-> > > > > I have a question related to this ... does the Driver trait need to
-> > > > > require T: Send?
-> > > > 
-> > > > The driver trait does not have a generic, it doesn't need one. But I think I
-> > > > still get what you're asking.
-> > 
-> > Turns out I did not. :)
-> > 
-> > > Right I mean, should it be:
-> > > 
-> > > trait Driver: Send + Sync {
-> > >     ...
-> > > }
-> > 
-> > Yes, you're absolutely right with this, thanks for pointing this out.
-> 
-> Just to clarify, the reason we need Sync is that we want to be able to access
-> the driver's private data from an IRQ handler. Otherwise, we can only ever
-> safely access the driver's private data from bus callbacks, which should be
-> synchronized by the device' mutex.
+On Wed Mar 19, 2025 at 12:22 PM CET, Danilo Krummrich wrote:
+> On Wed, Mar 19, 2025 at 12:48:00AM +0000, Benno Lossin wrote:
+>> On Tue Mar 18, 2025 at 7:22 PM CET, Daniel Almeida wrote:
+>> > On 18 Mar 2025, at 14:43, Danilo Krummrich <dakr@kernel.org> wrote:
+>> >> On Tue, Mar 18, 2025 at 02:20:43PM -0300, Daniel Almeida wrote:
+>> >>> +    ///     // Read and write a 32-bit value at `offset`. Calling `=
+try_access()` on
+>> >>> +    ///     // the `Devres` makes sure that the resource is still v=
+alid.
+>> >>> +    ///     let data =3D iomem.try_access().ok_or(ENODEV)?.readl(of=
+fset);
+>> >>> +    ///
+>> >>> +    ///     iomem.try_access().ok_or(ENODEV)?.writel(data, offset);
+>> >>=20
+>> >> I'd probably write this as
+>> >>=20
+>> >> || -> Result {
+>> >> let iomem =3D iomem.try_access().ok_or(ENODEV)?;
+>> >>=20
+>> >> iomem.read32(offset);
+>> >> iomem.write32(data, offset);
+>> >>=20
+>> >> Ok(())
+>> >> }()?;
+>>=20
+>> Why use a closure here?
+>
+> Calling try_access() only once and not having the closure is fine too.
+>
+> But I also think it would be good practice for an example to explicitly l=
+imit
+> the scope of the corresponding guard.
 
-On the other hand, that's up to the IRQ handler abstraction. So, we really
-should be good with only requiring Send.
+Ah you're using the closure to limit the lifetime of the guard. You
+don't need a closure, braces suffice.
 
-> 
-> > 
-> > > 
-> > > > The driver trait never owns a shared reference of the device, it only ever gives
-> > > > out a reference that the driver core guarantees to be valid.
-> > > > 
-> > > > > The change itself LGTM, so:
-> > > > > 
-> > > > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > > > > 
-> > > > > Alice
+> Ideally, it uses [1], once available.
+>
+> [1] https://lore.kernel.org/rust-for-linux/20250313-try_with-v1-1-adcae7e=
+d98a9@nvidia.com/
+
+Yeah that sounds best.
+
+---
+Cheers,
+Benno
+
