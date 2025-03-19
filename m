@@ -1,118 +1,181 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A28F1DE898
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 12:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2C1254AFC
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 12:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742386127; cv=none; b=SdNtPAFGgPXKfmXwWfIsO7JoYacWenyqvh1TqkUHIbimAIyFH0k8OaRPyu0wFE8p6JaoKuuAVWhExMof2jMYqymrhGzckvO9DHZ34JvfyTsXzOzZXsf2gynUjexetHdWCoRumdJ0RVRsM7y3k9TYiTSi78J70wtIuKNBDrIKM+0=
+	t=1742386892; cv=none; b=dZIHtVqJPd2O1ccI/EYi5nGYFhSJq3ZGyxYkkabn1VITm5cUR7++f9bYbH/DSjZ0dGPPEySVn5sVfztVAIDCMnK0WcOyGycB1wBrLjRnZW+mD6wCDTScn6rEOiKTxh70Y84voZ53prWzGAEGvDgFbFAtKesgfJP9cWlLHOuhj7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742386127; c=relaxed/simple;
-	bh=Uu5dXM9ILfjH5TJ5YQGk13KTL641uUmhuLSYu+lGQ+c=;
+	s=arc-20240116; t=1742386892; c=relaxed/simple;
+	bh=jQ2XTKuB6AVO07blsmCwb/jirYqaGHLm3w5XZc2R/Mc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZhcKaGguXYS2nbJUY24cY0FfS1zU7Sto7ITPh0uO02bkiEPvD2psKRSFkc/oSxIBcktyS771HP7IJVWJifLALPv1TTqFTSYXYl6V8croHoqyTFBQT3RGLu0u3FzhU81RIPXq0mJSKFbj76yaFuBYP0hsTOy3E5f+ZfnryrGDhkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZtxnKYjT; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=Xb1bzqKS3otyiAAyY3flY1/1VTemZw+uJqg9P6VojcocGAFL+aZFRHBPmxQOtVUflq1WW/2BdV5Qr0pMUdro2HLgP3ADEF+VjzHCAon001ZVRQS6xdzP3ztb30KZM8EeRljC/N8QzK2YTZlH6Lf8q+j5XelNSkJpjwXj1MZHMdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LE9K8PSo; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZtxnKYjT"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cec217977so29611905e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 05:08:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LE9K8PSo"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-39135d31ca4so410308f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 05:21:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742386125; x=1742990925; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742386889; x=1742991689; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hsK/Ju+fyU70N3qDFOX/p7Jl1CF8IdfwtoJGuoZeV9Y=;
-        b=ZtxnKYjTAlTa1cP7E1/KhbmDJCa6uc6A/cer+RsFTBVKprXnJFo+eoxKXEixGS5dkl
-         L2N5SkSUjcGXm4qWZVfpVrcCEwsejuW+Q/zsMYX/ZdZLS+0jN/0hmWqV8KknvS9yqriJ
-         CbZfN8fc5hEA/+ZhC6txS/N7++1Ym64Cj9BGQ/772we3ohHcP/RKA+SEm1YysdntCNoe
-         QT3CTLX+HXX02glmJVeYDn8qJwc2Y6tgGLtMVVCICVEcT/QcyoZtV4WL23J9AuY1iz29
-         2wN26wh6aCHQGB6pbY9NrwvVJxcew6pFho80Wwlxn2dBY0dvEHOdDcyE+786Xicx7DMZ
-         tj/Q==
+        bh=EHWBkflhHhA0k6UljFMCWCGqLZ5e7Nxh2HAh+CEJok4=;
+        b=LE9K8PSoOkSuPSj6WweIyZZyk6ErQrtM423LlE5TW4vcWzWdzlFTKGTofmf2jVIqng
+         8K51F3dUZ7Xh2ZUBG4c2Pa32WhNPZ0FBMotO7w4bRIksOXqZrAoWdMCaWYdQIIEKNhmN
+         QrMS9vrSocXMLHrSFrbpaqoU+PsEziuKqc2BVUTOflZ9jeC49GCEeUsO1hmSUy9JLCgx
+         vwZtQFAg4nASWYAvT+a6iY4ab7jT1ZwlnBj36LlQ+3E8k7JnC2tsDzE25mkkBdKAgU0o
+         2Hi7MIV9VsRmskLWasjI0cHpQEhQJnehxB2Rcs4uOw8SF42nMZTABBnDpofIaKlZ6m4B
+         047g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742386125; x=1742990925;
+        d=1e100.net; s=20230601; t=1742386889; x=1742991689;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hsK/Ju+fyU70N3qDFOX/p7Jl1CF8IdfwtoJGuoZeV9Y=;
-        b=RPmwePrNZYX6w2KozIYheir20xILmcFY3yQf5dhJl+an5AsmQRYTqBfqd/XC/EVdYM
-         UIZUSgR3MRupyCMP4rds8KRlGz/EMuvRJZcDHj3NBO5XC07uGQrhihbKrPNBHW7HhppQ
-         NGGFSogijBsotepmTCwByzPZKY3LnbP42ACj9bdWv0OD/cflXkZJNuwMCzF1GFjt4iwl
-         Rp7Syq4Mj6qNx7r41owQ7y771+ZWMz1S/LfNIZbm3tbDSkgCaI0mBc4bHLFfMarhkHij
-         gRdmaB17TvCxpczIN6pVjOjo+gZ9JeJkzXIve3gvn1IotkNDwrWXWejDcRrVizrn0j+E
-         kSZg==
-X-Forwarded-Encrypted: i=1; AJvYcCWf7yrm8mWy5ek7/JRhkKwId0E6mJiYvh1h5G4mgb/E16cKtdZ3AUqnRbqyrzLtni/jj1h5Jr+eNPb5OHwRsw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEBl7SHR+D5SmCjMsF7alSkpz+E7CcqBDdlpE4X4niEKRKJh/P
-	9RaxNH/JeZVtAinyQxObMnHCr49/a/6F2ZWlOLSdMoCAXC2gVP+WD9aoaCuMCz1t4ncU6htI7Yd
-	QOkN0KNDIS7I+VQ==
-X-Google-Smtp-Source: AGHT+IHd1aW4u/kzG/dypqQfgnodStD5Twuyynf5bbudirbCcFVKmaxlhD5DRkvuqFc/qi4LsGdKy4E0fjxPxp4=
-X-Received: from wmqd12.prod.google.com ([2002:a05:600c:34cc:b0:43b:d6ca:6dd3])
+        bh=EHWBkflhHhA0k6UljFMCWCGqLZ5e7Nxh2HAh+CEJok4=;
+        b=qDFB/gEL+X0kN5yNIi3UdKjqPp+It6NtYK/qkT0sb1ra605iSdt6c1tUTjYDfOz35e
+         b1DaQj2C82aA1KxzDygqxUYm6zWnCqFXguBjRnGbfkhiPxg+XPn9Xns6QCIg8PnM/lHv
+         ct+kOmtowgFfUy/zhJF4fJSpGKZGGiJXb5n0Pt+m/Ih3+Pqr8vwJng4OazYoJunr+klM
+         ViCTWFKT8ZwKdXo4/krOXLzJ9TMaZkjcyJxzaPXkXgdbk9IdEI48l0lGaKQouUeUkTwZ
+         GZF5In1TrjprfrgY1E97Flgeov7T3ECMBNfltSgyPiAIsvHyfpXzYIKUYfEKB/6PTlDy
+         hmzg==
+X-Forwarded-Encrypted: i=1; AJvYcCUCsHFYXCZGekNCxP1JrLa1EJedjmH9kArhzPFJ60tlkXgMd4ZzULzIuug6BpcgpzqzzAGpEufzb1NGXAfQqA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzewOhqhKkBBuWRlbVNAkDMIS3DNvXYQdrfh09012RNVo+jK11
+	p9oju9XtCN+8UYyxdVGXMokTuYwNOtY98gJKeR91OkG257cbankTGvKt7qNf4taIoUVZcs2xjSm
+	5A0t5UzsSq36u5g==
+X-Google-Smtp-Source: AGHT+IGjUd/O+erjuD5BXOa5wRMainYOBynzUEHQOeJBcSeY0RjUPbJ2jh8iCG1+BdArwJY1AdHvh/jPCke4/i4=
+X-Received: from wmsp17.prod.google.com ([2002:a05:600c:1d91:b0:43c:ef1f:48d3])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8187:b0:43d:47e:3205 with SMTP id 5b1f17b1804b1-43d43793a12mr23610325e9.11.1742386124780;
- Wed, 19 Mar 2025 05:08:44 -0700 (PDT)
-Date: Wed, 19 Mar 2025 12:08:42 +0000
-In-Reply-To: <123de698-190f-460c-af8c-e51bcd948c0f@gmail.com>
+ 2002:a05:6000:1868:b0:390:e9e0:5cc6 with SMTP id ffacd0b85a97d-3996ba46ce6mr6001691f8f.1.1742386889079;
+ Wed, 19 Mar 2025 05:21:29 -0700 (PDT)
+Date: Wed, 19 Mar 2025 12:21:26 +0000
+In-Reply-To: <D8JTC30W0NF6.17SR73Y9I99ZT@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
- <20250311-iov-iter-v1-1-f6c9134ea824@google.com> <123de698-190f-460c-af8c-e51bcd948c0f@gmail.com>
-Message-ID: <Z9qzytBl2GLztjwC@google.com>
-Subject: Re: [PATCH 1/5] rust: iov: add iov_iter abstractions for ITER_SOURCE
+References: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com>
+ <20250317-ptr-as-ptr-v5-6-5b5f21fa230a@gmail.com> <Z9lnIJCcVSza6UVo@google.com>
+ <D8JTC30W0NF6.17SR73Y9I99ZT@proton.me>
+Message-ID: <Z9q2xpwsNMDzZ2Gp@google.com>
+Subject: Re: [PATCH v5 6/6] rust: use strict provenance APIs
 From: Alice Ryhl <aliceryhl@google.com>
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, 
+	devicetree@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Mar 18, 2025 at 09:10:47PM +0100, Christian Schrefl wrote:
-> Hi Alice
+On Wed, Mar 19, 2025 at 12:23:44AM +0000, Benno Lossin wrote:
+> On Tue Mar 18, 2025 at 1:29 PM CET, Alice Ryhl wrote:
+> > On Mon, Mar 17, 2025 at 10:23:56AM -0400, Tamir Duberstein wrote:
+> >> Throughout the tree, use the strict provenance APIs stabilized in Rust
+> >> 1.84.0[1]. Retain backwards-compatibility by introducing forwarding
+> >> functions at the `kernel` crate root along with polyfills for rustc <
+> >> 1.84.0.
+> >> 
+> >> Use `#[allow(clippy::incompatible_msrv)]` to avoid warnings on rustc <
+> >> 1.84.0 as our MSRV is 1.78.0.
+> >> 
+> >> In the `kernel` crate, enable the strict provenance lints on rustc >=
+> >> 1.84.0; do this in `lib.rs` rather than `Makefile` to avoid introducing
+> >> compiler flags that are dependent on the rustc version in use.
+> >> 
+> >> Link: https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html#strict-provenance-apis [1]
+> >> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> >> Link: https://lore.kernel.org/all/D8EIXDMRXMJP.36TFCGWZBRS3Y@proton.me/
+> >> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> >
+> > I'm not convinced that the pros of this change outweigh the cons. I
+> > think this is going to be too confusing for the C developers who look at
+> > this code.
 > 
-> On 11.03.25 3:25 PM, Alice Ryhl wrote:
-> > This adds abstractions for the iov_iter type in the case where
-> > data_source is ITER_SOURCE. This will make Rust implementations of
-> > fops->write_iter possible.
-> > 
-> > This series only has support for using existing IO vectors created by C
-> > code. Additional abstractions will be needed to support the creation of
-> > IO vectors in Rust code.
-> > 
-> > These abstractions make the assumption that `struct iov_iter` does not
-> > have internal self-references, which implies that it is valid to move it
-> > between different local variables, and that you can make a copy of it to
-> > get two IO vectors into the same buffers.
+> 1) I think we should eliminate all possible `as` conversions. They are
+>    non-descriptive (since they can do may *very* different things) and
+>    ptr2int conversions are part of that.
+> 2) At some point we will have to move to the provenance API, since
+>    that's what Rust chose to do. I don't think that doing it at a later
+>    point is doing anyone a favor.
+
+We don't *have* to do anything. Sure, most `as` conversions can be
+removed now that we have fixed the integer type mappings, but I'm still
+not convinced by this case.
+
+Like, sure, use it for that one case in `kernel::str` where it uses
+integers for pointers for some reason. But most other cases, provenance
+isn't useful.
+
+> 3) I don't understand the argument that this is confusing to C devs.
+>    They are just normal functions that are well-documented (and if
+>    that's not the case, we can just improve them upstream). And
+>    functions are much easier to learn about than `as` casts (those are
+>    IMO much more difficult to figure out than then strict provenance
+>    functions).
+
+I really don't think that's true, no matter how good the docs are. If
+you see `addr as *mut c_void` as a C dev, you are going to immediately
+understand what that means. If you see with_exposed_provenance(addr),
+you're not going to understand what that means from the name - you have
+to interrupt your reading and look up the function with the weird name.
+
+And those docs probably spend a long time talking about stuff that
+doesn't matter for your pointer, since it's probably a userspace pointer
+or similar.
+
+> Thus I think we should keep this patch (with Boqun's improvement).
 > 
-> Would it make sense to add comments in the C side `struct iov_iter` for
-> these assumptions?
-
-Good idea.
-
-> > +    /// Returns the number of bytes available in this IO vector.
-> > +    ///
-> > +    /// Note that this may overestimate the number of bytes. For example, reading from userspace
-> > +    /// memory could fail with EFAULT, which will be treated as the end of the IO vector.
-> > +    #[inline]
-> > +    pub fn len(&self) -> usize {
-> > +        // SAFETY: It is safe to access the `count` field.
-> > +        unsafe {
-> > +            (*self.iov.get())
-> > +                .__bindgen_anon_1
-> > +                .__bindgen_anon_1
-> > +                .as_ref()
-> > +                .count
-> > +        }
-> > +    }
+> >> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> >> index 719b0a48ff55..96393bcf6bd7 100644
+> >> --- a/rust/kernel/uaccess.rs
+> >> +++ b/rust/kernel/uaccess.rs
+> >> @@ -226,7 +226,9 @@ pub fn read_raw(&mut self, out: &mut [MaybeUninit<u8>]) -> Result {
+> >>          }
+> >>          // SAFETY: `out_ptr` points into a mutable slice of length `len`, so we may write
+> >>          // that many bytes to it.
+> >> -        let res = unsafe { bindings::copy_from_user(out_ptr, self.ptr as *const c_void, len) };
+> >> +        let res = unsafe {
+> >> +            bindings::copy_from_user(out_ptr, crate::with_exposed_provenance(self.ptr), len)
+> >> +        };
+> >>          if res != 0 {
+> >>              return Err(EFAULT);
+> >>          }
+> >> @@ -264,7 +266,7 @@ pub fn read<T: FromBytes>(&mut self) -> Result<T> {
+> >>          let res = unsafe {
+> >>              bindings::_copy_from_user(
+> >>                  out.as_mut_ptr().cast::<c_void>(),
+> >> -                self.ptr as *const c_void,
+> >> +                crate::with_exposed_provenance(self.ptr),
+> >>                  len,
+> >>              )
+> >>          };
+> >
+> > That's especially true for cases like this. These are userspace pointers
+> > that are never dereferenced. It's not useful to care about provenance
+> > here.
 > 
-> Maybe add a C helper to avoid having to use '__bindgen_anon_1'?
+> I agree for this case, but I think we shouldn't be using raw pointers
+> for this to begin with. I'd think that a newtype wrapping `usize` is a
+> much better fit. It can then also back the `IoRaw` type. AFAIU user
+> space pointers don't have provenance, right? (if they do, then we should
+> use this API :)
 
-I guess I could do that. Though it introduces a mandatory function call
-that can't be inlined to get the length.
+We're doing that to the fullest extent possible already. We only convert
+them to pointers when calling C FFI functions that take user pointers as
+a raw pointer.
 
 Alice
