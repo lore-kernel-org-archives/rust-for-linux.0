@@ -1,44 +1,53 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF7C253B48;
-	Wed, 19 Mar 2025 11:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031C4255235;
+	Wed, 19 Mar 2025 11:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742382275; cv=none; b=CjL0C2FqOonZ5jXd1geF/i3SmbuhMXfEdqa0CKbpVZsnRNiPkla0JcNkSzhbTCTXiC/MGoH40KCdvCgJPFlKWg/vdcJJSyC/jboFEAFHQvdMC+hu3tdKH7j7clDGcBbZycWyPA5Q3z6YHsTBw/d3jvBOe0xmAgVDbWZx2T2+1P0=
+	t=1742382617; cv=none; b=iUiQ4+TdzuR6nM0CQKgBovGPHWzD9F9ITEeHOcomrgO2q7VC6ir2F0PuUn/ZFd6GG/wETSMFmL0h14H9fO/R9hyjDHLULoY3LHjo28/2+r/e4JV587ibwQPmoRLKXEYsyv21vSTqr8RKcDFfLdciX0a+KAP475a7V8/8wAHJUYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742382275; c=relaxed/simple;
-	bh=UpiMmmMfB/MDr7vxb3W6l/P+ytPlb9GDBWaa+pQ7gPA=;
+	s=arc-20240116; t=1742382617; c=relaxed/simple;
+	bh=CAoeZD1MgopoFeqxnSsaxsGHyeVVfnpt0CDKMF2W17k=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=IiP/m/VRfIu7FEzPwSx4+6D6NmZ29UslJJUETB+gq/Q3hOXSj7slSexCSJUpPkkOZOJNCEXgUvSqXPo7Er6xnl12L2EJs0/BJgVH6DcBRjMElfsZhzJmriVS6dlJEexxHTj7EdTnMztm3oDc5PXBcQf42m1IiAfxAjRO3P+HsYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dp6M4tu/; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=oUwgD4JEj4UmE+RCUkhjbEY3dB+zI74VSRBu7lFjFcFSCSiJOIAjEkvxoWKKr6OlxdnKjuN8IOxSa1OZ4cbeKY5ZQToKlw9hvTTsv5o8gf+Q9pxhd5tMBgswTf2b6HzswizhCGFP/ahm1ixiat/sIY65I+DjHujWRTaDKpvlTFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sksC1cM4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dp6M4tu/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E83C4CEE9;
-	Wed, 19 Mar 2025 11:04:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sksC1cM4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2A5C4CEEA;
+	Wed, 19 Mar 2025 11:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742382273;
-	bh=UpiMmmMfB/MDr7vxb3W6l/P+ytPlb9GDBWaa+pQ7gPA=;
+	s=k20201202; t=1742382614;
+	bh=CAoeZD1MgopoFeqxnSsaxsGHyeVVfnpt0CDKMF2W17k=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Dp6M4tu/wdkMafn4IKE5uj2NHEorp8xW5uEWxTExBIlpK1IGJcjbXf+hKNvTuYyUQ
-	 o6xQtZYYI6A8vtqD0BKbw1MqvqJDCNpjDM53jZVwlGJ4NqztotKqAa3IOrO/SLlNSM
-	 8pwxcC7FwL8GheOFIAmlstC7kmu0O6B2h4JE5X5928PN55GpPD8VP53djaRdNjI9uM
-	 FuL16c+jvp89MdnO4cPER+sRqqMFCKtY9q4kO55buMpcvnAv085ZcQa4cQHRw5TaYd
-	 luyFUCOppmmszXa/SlhSVo4RgsvqhDSHjct5FsYC+yMuuMpMqsP4DhyaBdQYcNNV/H
-	 lLiaoLwkmKB0Q==
+	b=sksC1cM4ZWiL59p/FC5z+rufru5cjhEILZWNflhdY4SH+de0znts4kuSnPStVnLOi
+	 Z216OYMZthBiyOJESdHneOtPnYuKH2TCppoXkYBVJezoniSFInqXh0vSPdlznXpXd3
+	 XPBVrmXDEWngwfnqbgMRX9rSLrascyeUsmriH0ibJPUjqqY4KTznQOIaZ6vgfn7DaW
+	 lKdO6+ysSMEr2fvc6w1VH3HwiYz9ZuJu8VTVtB9ymayxOumbM74GJB0gAFnSlsH9C9
+	 z6JSkyilwDWmtHpYK81p3mzjb3HQSawPQCRNOkKo6ARr/P0TCAfg8FeKtrvrNtebLh
+	 vBECD7F467X8g==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "chentaotao" <chentaotao@didiglobal.com>
-Cc: <boqun.feng@gmail.com>,  <bjorn3_gh@protonmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <chentao325@qq.com>
-Subject: Re: [PATCH] rust: block: Remove unnecessary comma in introduction
-In-Reply-To: <20250319104412.50625-1-chentaotao@didiglobal.com>
-	(chentaotao@didiglobal.com's message of "Wed, 19 Mar 2025 18:44:12 +0800")
-References: <j2rsp4Jty5pW-HOPkZX9ssG_ESGp1SAlh--rbhrhTQ6Z81f-tRt5SjBx42XS9jZo2vytk_ry-q4RYXMSD6B9xg==@protonmail.internalid>
-	<20250319104412.50625-1-chentaotao@didiglobal.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Alexander Viro"
+ <viro@zeniv.linux.org.uk>,  "Arnd Bergmann" <arnd@arndb.de>,  "Miguel
+ Ojeda" <ojeda@kernel.org>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary
+ Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  "Benno Lossin" <benno.lossin@proton.me>,  "Trevor Gross"
+ <tmgross@umich.edu>,  "Danilo Krummrich" <dakr@kernel.org>,  "Matthew
+ Maurer" <mmaurer@google.com>,  "Lee Jones" <lee@kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 0/5] Rust support for `struct iov_iter`
+In-Reply-To: <2025031804-eardrum-surplus-5ff9@gregkh> (Greg Kroah-Hartman's
+	message of "Tue, 18 Mar 2025 16:34:21 -0700")
+References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
+	<9pOFLtAJ1ScEHfLe7L2KqghIKBzL8sTupJttIVRB70ZmvdUpiEYrxCxIpJD_cBJVwv-TKxosDL-l6cq3qt563Q==@protonmail.internalid>
+	<2025031140-saffron-kilobyte-bd2e@gregkh> <878qp2hx9o.fsf@kernel.org>
+	<_faLZHT6mnujSjNGxKLz9hgfs7W4w_MLWjiFHHYughpAFkITeHHgVAqHUhc3-FvYC_rdOjygOzVQC3zXSDTEqg==@protonmail.internalid>
+	<2025031804-eardrum-surplus-5ff9@gregkh>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 19 Mar 2025 12:04:25 +0100
-Message-ID: <8734f9i8na.fsf@kernel.org>
+Date: Wed, 19 Mar 2025 12:10:03 +0100
+Message-ID: <87wmclgttg.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,32 +56,48 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"chentaotao" <chentaotao@didiglobal.com> writes:
+"Greg Kroah-Hartman" <gregkh@linuxfoundation.org> writes:
 
-> The comma after "methods" was not needed and has been removed for
-> better readability and correctness.
+> On Tue, Mar 18, 2025 at 09:57:55PM +0100, Andreas Hindborg wrote:
+>> "Greg Kroah-Hartman" <gregkh@linuxfoundation.org> writes:
+>>
+>> > On Tue, Mar 11, 2025 at 02:25:11PM +0000, Alice Ryhl wrote:
+>> >> This series adds support for the `struct iov_iter` type. This type
+>> >> represents an IO buffer for reading or writing, and can be configured
+>> >> for either direction of communication.
+>> >>
+>> >> In Rust, we define separate types for reading and writing. This will
+>> >> ensure that you cannot mix them up and e.g. call copy_from_iter in a
+>> >> read_iter syscall.
+>> >>
+>> >> To use the new abstractions, miscdevices are given new methods read_iter
+>> >> and write_iter that can be used to implement the read/write syscalls on
+>> >> a miscdevice. The miscdevice sample is updated to provide read/write
+>> >> operations.
+>> >
+>> > Nice, this is good to have, but what's the odds of tieing in the
+>> > "untrusted buffer" logic here so that all misc drivers HAVE to properly
+>> > validate the data sent to them before they can touch it:
+>> > 	https://lore.kernel.org/r/20240925205244.873020-1-benno.lossin@proton.me
+>> >
+>> > I'd like to force drivers to do this, otherwise it's just going to force
+>> > us to audit all paths from userspace->kernel that happen.
+>> >
+>>
+>> I think that for user backed iterators (`user_backed_iter(iter) != 0`)
+>> we will have the same problems as discussed in [1]. To validate, we
+>> would have to copy the data to another buffer and then validate it
+>> there, in a race free place. But the copying is apparently a problem.
 >
-> Signed-off-by: chentaotao <chentaotao@didiglobal.com>
-> ---
->  rust/kernel/block/mq.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-> index fb0f393c1..ee8f34f40 100644
-> --- a/rust/kernel/block/mq.rs
-> +++ b/rust/kernel/block/mq.rs
-> @@ -23,7 +23,7 @@
->  //! IO requests are passed to the driver as [`kernel::types::ARef<Request>`]
->  //! instances. The `Request` type is a wrapper around the C `struct request`.
->  //! The driver must mark end of processing by calling one of the
-> -//! `Request::end`, methods. Failure to do so can lead to deadlock or timeout
-> +//! `Request::end` methods. Failure to do so can lead to deadlock or timeout
->  //! errors. Please note that the C function `blk_mq_start_request` is implicitly
->  //! called when the request is queued with the driver.
->  //!
+> We already copy all data first, that's not an issue.  Validate it after
+> it has been copied before you do something with it, just like we do
+> today for normal ioctl C code.  Same goes for data coming from hardware,
+> it's already been copied into a buffer that you can use, no need to copy
+> it again, just "validate" it before using it.
 
-
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+I guess that depends on the user of the `iov_iter`? At least when it is
+used for direct IO, the operation is zero copy with pages mapped into
+kernel and IO performed directly from those pages.
 
 
 Best regards,
