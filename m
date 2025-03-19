@@ -1,113 +1,115 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F238D212FA0;
-	Wed, 19 Mar 2025 21:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD782135DE
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 21:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742418375; cv=none; b=talVQkiZV2Z4O6jI+7SlGJlzHRlohc67dhAzMV4Z4Cxn9YiGBjSTk6d7SrLc+NuWz+fUdvcYnqYhLTr1id9Dp+631eCyVI/+ctv/Yz0M0GRihmjaTDsK5ruLi2EoDBQDiS4awdj9sIgFwetyntYP0wJFZUVh468DY0uwD1T/kH8=
+	t=1742418731; cv=none; b=Pki2MZnTbtAVcdWmKux4nQO8xb6DWCV7a2XoxjYV7y3jM+ruNm0ZADPBNe5QwuGScdheMvqFsNR6qzic0ZaBHJ4v6sWaUrAxiaQpD8zl+1lxx5KjaTcVDT98FewN8xKqtq4pS/9g5rPRkBQcjhTu+XJtMuNcCvMtJzz8/PntbME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742418375; c=relaxed/simple;
-	bh=e6HUDFunHFfYtPY/EoRGxpqtTPMlKnvDcmj4WUBULSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RO+owXcMJa5t0AhMB2VVVV89uASACJ1tfHnFw6O9rMeYvYlJaHHyT+peeV7qhQc931BoGBPw2dIUzwuaMvD08woRYivEZdqxynR7RIL/WE10gMJ5GVwMZqI3S0M23NqrTVGKjtyhv6iEJ7fXkFFfKPW1O9pTRp/q2pnK1IX+2K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gsObby/p; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1742418731; c=relaxed/simple;
+	bh=W79Rsy+zd+dgPSnOkEZWD7mS+bvrS3hy8Sfn2T1mSG0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XqBo54lZWhW7tavaReiRVteJ1smS55vbCGtXUudZX2Cf5DYEmcr3n68oD3vEIy420u1Y+uIPpgYOY/SXHFBiXtDhNdcEEuZMn82P6qsOb+ZMRcZ63x1qNiAISGWhcFLFh74ffL5bAYTRjmIrPby7svGUDmtQTXo31zFXiWCaFuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=F2Or04t5; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gsObby/p"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742418373; x=1773954373;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=e6HUDFunHFfYtPY/EoRGxpqtTPMlKnvDcmj4WUBULSs=;
-  b=gsObby/p8zCJJsRdKEJxomcWqdY/zu1TgS7CHpr+nKKWmec9yn4darSe
-   +MOozQtCqRR8uBjdOTUNems3y2B2j4UQQGCgIrAIxM8hXqc4Ubw1vAUt4
-   Qac23pi17wyMbQe5PbDjw2iqcQWpWQXtDozZe3efAScMBBr6NfgfZiCxX
-   V1Psw4XiuS7pYyvrXrZ9j81BeoJM6Rku0gpgUGa97e2iaOoH3Wpusarnu
-   Wbb9e8bAMAdTCqGBN9DzH7Vh4FRYb6uQmBJWAm66SQQDJ/Pkw1UeP0nVX
-   TdctO2pfx5k+eCCHr6pukwKLDuiNRXEredQZqLtFh4zayWExc082gM6f8
-   w==;
-X-CSE-ConnectionGUID: mC7oJn+pT1qqnmA6lNS7Aw==
-X-CSE-MsgGUID: VIPWKFtcSrq+nuHzfUn+xg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11378"; a="61021784"
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; 
-   d="scan'208";a="61021784"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2025 14:06:12 -0700
-X-CSE-ConnectionGUID: e9lDKsTWTASy50Bmpe8jwQ==
-X-CSE-MsgGUID: 5VXOzZZ9QaOhoa2RqDshkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,259,1736841600"; 
-   d="scan'208";a="122618558"
-Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 19 Mar 2025 14:06:09 -0700
-Received: from kbuild by a4747d147074 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tv0bU-000FfG-08;
-	Wed, 19 Mar 2025 21:05:49 +0000
-Date: Thu, 20 Mar 2025 05:05:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tamir Duberstein <tamird@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: oe-kbuild-all@lists.linux.dev, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
-Subject: Re: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
-Message-ID: <202503200447.aF1NxDEq-lkp@intel.com>
-References: <20250316-vec-set-len-v1-2-60f98a28723f@gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="F2Or04t5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742418726; x=1742677926;
+	bh=XehIVCTSzumbYatfExiY6GZ+ddy62vDbZcUJxu968c4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=F2Or04t58U7gkMiwx+rCdLGrhDxEj2uR7c6OXEuxeBjYqK7kKLMYcXFTCw/TbpTNG
+	 5ALGid4ZWLaY/QFmoFWt3vy3A0B8MOJE1UjGFGb0RgFhogA72vYC9acxjFZPrDX4nZ
+	 qiXYG/mJwiCixedtHT+DjAshv1H8JBzgM83UDINYHsRL6QTz5ew7G3i231StbEMhBS
+	 bq6O4EYAa7ouymAGWlHA//8g4X/fWWf7ceBd7X6BrZyhC9AcYgZAVp7aag8Ln1LSzo
+	 MCwS2SMOU+Z3EHBomkc/EmBYpCLZXV/JChp+pTb4N0vb+L1tZk7K8r15OlpJeyXmle
+	 DTPr7eW+3EeNA==
+Date: Wed, 19 Mar 2025 21:12:01 +0000
+To: Christian Schrefl <chrisi.schrefl@gmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/5] rust: iov: add iov_iter abstractions for ITER_DEST
+Message-ID: <D8KJVUZUHCMQ.1WS0MBO4ZJLLM@proton.me>
+In-Reply-To: <52db38f9-427f-4cea-826f-eae5f39480c5@gmail.com>
+References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com> <20250311-iov-iter-v1-2-f6c9134ea824@google.com> <XR-HMXHiYqCkDupCkyfLz4Rz-ucS6r5sCg1TmHQ7KeqAvf7-4ofJJcSCc2jKmS8WDivMc5oDgAYThptx7X_ExQ==@protonmail.internalid> <439baec2-dba8-4dab-abb5-faa14fbda943@gmail.com> <87v7s4g7ev.fsf@kernel.org> <52db38f9-427f-4cea-826f-eae5f39480c5@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: f658f2b0a50a0efdf8e6d6207d32c5d30975fee1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250316-vec-set-len-v1-2-60f98a28723f@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Tamir,
+On Wed Mar 19, 2025 at 9:01 PM CET, Christian Schrefl wrote:
+> On 19.03.25 8:14 PM, Andreas Hindborg wrote:
+>> "Christian Schrefl" <chrisi.schrefl@gmail.com> writes:
+>>> On 11.03.25 3:25 PM, Alice Ryhl wrote:
+>>>> +/// An IO vector that acts as a destination for data.
+>>>> +///
+>>>> +/// # Invariants
+>>>> +///
+>>>> +/// Must hold a valid `struct iov_iter` with `data_source` set to `IT=
+ER_DEST`. The buffers
+>>>> +/// referenced by the IO vector must be valid for writing for the dur=
+ation of `'data`.
+>>>> +///
+>>>> +/// Note that if the IO vector is backed by a userspace pointer, it i=
+s always considered valid for
+>>>> +/// writing.
+>>>> +#[repr(transparent)]
+>>>> +pub struct IovIterDest<'data> {
+>>>> +    iov: Opaque<bindings::iov_iter>,
+>>>> +    /// Represent to the type system that this value contains a point=
+er to writable data it does
+>>>> +    /// not own.
+>>>> +    _source: PhantomData<&'data mut [u8]>,
+>>>> +}
+>>>
+>>> It might be a bit nicer to add a (private) struct 'IovIter' that implem=
+ents the common operations.
+>>> Then 'IovIterDest' and 'IovIterSource' could store that struct and forw=
+ard the implementations to
+>>> it.
+>>> But I'm not sure if that's really much better.
+>>=20
+>> Yea, I was thinking the same. Maybe we could have an `IovInner` and a
+>> local `AsIovInner` trait that would give all the shared methods?
+>>=20
+>> I am sure Alice knows the idiomatic way to achieve code sharing here.
+>>=20
+>
+> It would also be possible to use generics here.
+>
+> Something like (Maybe using types instead of the const-generic):
+>
+> pub struct IovIter<const DEST: bool> {
+>    ...
+> }
+>
+> impl <const DEST: bool> IovIter<DEST> {
+>    // Common functions
+> }
+>
+> impl IovIter<false> {
+>    // Source functions
+> }
+>
+> impl IovIter<false> {
+>    // Dest functions
+> }
 
-kernel test robot noticed the following build warnings:
+I would prefer generic types, so `IovIter<Dest>` similar to what Danilo
+implemented for `Device<Core>` and `Device<Normal>`. `false` and `true`
+aren't descriptive and you also made a typo above :)
 
-[auto build test WARNING on cf25bc61f8aecad9b0c45fe32697e35ea4b13378]
+---
+Cheers,
+Benno
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tamir-Duberstein/rust-alloc-replace-Vec-set_len-with-inc_len/20250317-103338
-base:   cf25bc61f8aecad9b0c45fe32697e35ea4b13378
-patch link:    https://lore.kernel.org/r/20250316-vec-set-len-v1-2-60f98a28723f%40gmail.com
-patch subject: [PATCH 2/2] rust: alloc: add `Vec::dec_len`
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250320/202503200447.aF1NxDEq-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250320/202503200447.aF1NxDEq-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503200447.aF1NxDEq-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> warning: method `dec_len` is never used
-   --> rust/kernel/alloc/kvec.rs:205:15
-   |
-   161 | / impl<T, A> Vec<T, A>
-   162 | | where
-   163 | |     A: Allocator,
-   | |_________________- method in this implementation
-   ...
-   205 |       unsafe fn dec_len(&mut self, count: usize) -> &mut [T] {
-   |                 ^^^^^^^
-   |
-   = note: `#[warn(dead_code)]` on by default
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
