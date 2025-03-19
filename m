@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AD64204E
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 00:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F881146D53
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 00:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742345289; cv=none; b=LDTTtyEtBs+wWe4F4Xaf8XGZzL18jwvWSUSNW1//+7hUakHy8PIycUj1+mobdq9Gv/hgbOTDp28+jM8gJSNYfX+ZHGgSwcKZf1cAaFhTXT0nZiFQm580tZ0WcUUy2bjXWrqpBcGBWvbDHEWXM9egdh0I+yA2GkdioEimvj5LFqI=
+	t=1742345448; cv=none; b=JqblwlW1f7dPDCexsERZDnrnWUYckqPDldUcI6nKPiyAxRFkbpQDrZ7b5EawsdkmBSYHpkLLR0cPzhz3E6Tqo8AQeJBWXcqWjSREj5iwNa+VzQ4d8y5YA6wXOL7uohLbpkg7cOosphEUKlkYuV7Id7CMdgpSJQH5WsN5BJE5gzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742345289; c=relaxed/simple;
-	bh=88RSRJHHBhxMshZ3imHtSjghTe5cGLoqBCcL/vxy7IM=;
+	s=arc-20240116; t=1742345448; c=relaxed/simple;
+	bh=NeEU7i74gwTAa1WttGzCW7vliZqsygMpqhOWUejssws=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ryws9gDIqG/1Wz7rBA3nVJOVsS9yODYuM3NslI8WPGwUO912lnede7ClGVf2pyimafxQqfPFEVAd4I/TaIIYmhKTSI83OfNlM5DOPppAPI2YTfh9CDEVLk12LGIKMEoZFL9Oh2ty1kyZ0BYv2iWTa38ZkHwReZ1v8kDSuaHE6Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iV4TIxnu; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=sHX4Hbxqvl4SCFQ76mgLc/cscZCwNFo+uyKQ7IfhpHL5tKB8TK8dZ6HC2dAna6Jl+aHpa8LMxnicCDnBcZ2oklFiCU4b2oL0PCrL6fcTOKttBLJzU1DtaRKD4vZLOP0I7SGFJRc/EBsIoYWbEbyDZsk7jDbZvBtRaMBVoRy5dqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OuvlnTKG; arc=none smtp.client-ip=79.135.106.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iV4TIxnu"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OuvlnTKG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742345286; x=1742604486;
-	bh=XsYfzUgN4o1yfTiUpKiI5jJ/eisefpfDOqZEdYuY4+A=;
+	s=6jba5to2fzf2tmn4smqyqpdmoq.protonmail; t=1742345439; x=1742604639;
+	bh=VkL2Mxif+LYFPEMvRY4YuHUJQ31AetP3+c0xD9LJp+0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=iV4TIxnuhmD58RFuM537UJVfxdSHQ4Ao8bQTQPqjDwB1POfPoV57CMLc08S66SF5/
-	 qkpQlNjhPU7KDxkZKfByxBVXs5vgsOnebEVzEObc45fnYcNbYzsc9iv5O32or4JtHT
-	 PggRnvDQhc2o/2JSHdrAjPJr5d2i9oZFPfvCwWavr8rkCNT27tLS/gB7ugORX1leNG
-	 MMfE1ZJFXu7LDu/tsRurQ+hYF3d1TqXls0oA1YBaagKLmamkydZ3p+pvwUFpRRaJDv
-	 v/Yms7SHDkz2Tghk3oukzxb8OTqCBa1/bEYGS/Dh24BMMVqAeM2OY+CgR8MF+PMys9
-	 HvLxJiVExHvmA==
-Date: Wed, 19 Mar 2025 00:48:00 +0000
-To: Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>
+	b=OuvlnTKGDYLlG88upDBw7wr7g3AGCYM0aTNk3kRAoVprUuW+CF/kqquXw1cSicdLT
+	 uVn/H329nesx/xyayy2Fazl1UVyHZV/K9jTFAG2dKFAG0dRAq2X9EKmPTvy44/LhqH
+	 UHiRD60+7g1KXwgS4aJRWHPWE1eO7El1z6MIJnTGMDd/5NPPy77oQsWCNSa40MHR0S
+	 +WoI4I0EQk/x2iIHvxkVkXQ4zY4IbT36G7wYMVsFjOsIpmc8INPwpP/zzcrIZZVBJD
+	 ylra/qToQwv/F1EBGmh2weZubQEmvOe9vyQrqoJEt34Dm4R4WYR1Ork8tDUjgM+Fbl
+	 mmXzZ4qWCyItw==
+Date: Wed, 19 Mar 2025 00:50:29 +0000
+To: Tamir Duberstein <tamird@gmail.com>, Andrew Ballance <andrewjballance@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v7 3/3] rust: platform: allow ioremap of platform resources
-Message-ID: <D8JTUPQ28758.2SKKTA6IL6Y8E@proton.me>
-In-Reply-To: <FF128DEF-28D6-4302-9C53-2DD4D417053A@collabora.com>
-References: <20250318-topics-tyr-platform_iomem-v7-0-7438691d9ef7@collabora.com> <20250318-topics-tyr-platform_iomem-v7-3-7438691d9ef7@collabora.com> <Z9mwu-RHwZ8qwcbH@cassiopeiae> <FF128DEF-28D6-4302-9C53-2DD4D417053A@collabora.com>
+Cc: dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, acourbot@nvidia.com, nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] rust: alloc: add Vec::resize method
+Message-ID: <D8JTWL8JY7DM.3IVH6FZ4M49CB@proton.me>
+In-Reply-To: <CAJ-ks9kAROOfyPtxMe6LE4-UPsvXca2sQ2VDjhRchZp3HLddGg@mail.gmail.com>
+References: <20250316111644.154602-1-andrewjballance@gmail.com> <20250316111644.154602-3-andrewjballance@gmail.com> <CAJ-ks9kAROOfyPtxMe6LE4-UPsvXca2sQ2VDjhRchZp3HLddGg@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 75237889a665dd04e655583ac856311a01bc0291
+X-Pm-Message-ID: 124220e04b60981fd23d64c8176e2b18357079aa
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,32 +47,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue Mar 18, 2025 at 7:22 PM CET, Daniel Almeida wrote:
-> On 18 Mar 2025, at 14:43, Danilo Krummrich <dakr@kernel.org> wrote:
->> On Tue, Mar 18, 2025 at 02:20:43PM -0300, Daniel Almeida wrote:
->>> +    ///     // Read and write a 32-bit value at `offset`. Calling `try=
-_access()` on
->>> +    ///     // the `Devres` makes sure that the resource is still vali=
-d.
->>> +    ///     let data =3D iomem.try_access().ok_or(ENODEV)?.readl(offse=
-t);
->>> +    ///
->>> +    ///     iomem.try_access().ok_or(ENODEV)?.writel(data, offset);
->>=20
->> I'd probably write this as
->>=20
->> || -> Result {
->> let iomem =3D iomem.try_access().ok_or(ENODEV)?;
->>=20
->> iomem.read32(offset);
->> iomem.write32(data, offset);
->>=20
->> Ok(())
->> }()?;
+On Tue Mar 18, 2025 at 9:12 PM CET, Tamir Duberstein wrote:
+> On Sun, Mar 16, 2025 at 7:17=E2=80=AFAM Andrew Ballance
+> <andrewjballance@gmail.com> wrote:
+>> +    pub fn resize(&mut self, new_len: usize, value: T, flags: Flags) ->=
+ Result<(), AllocError> {
+>> +        if new_len > self.len() {
+>> +            self.extend_with(new_len - self.len(), value, flags)
+>> +        } else {
+>> +            self.truncate(new_len);
+>> +            Ok(())
+>> +        }
+>> +    }
+>
+> You can avoid underflow checking in debug builds by using `checked_sub`:
 
-Why use a closure here?
+`checked_sub` doesn't only avoid underflow in debug builds, but rather
+in all builds. But the code below is a good suggestion.
 
 ---
 Cheers,
 Benno
+
+>         match new_len.checked_sub(self.len()) {
+>             Some(n) =3D> self.extend_with(n, value, flags),
+>             None =3D> {
+>                 self.truncate(new_len);
+>                 Ok(())
+>             }
+>         }
+>
+>>  }
+>>
+>>  impl<T, A> Drop for Vec<T, A>
+>> --
+>> 2.48.1
+>>
+>>
+>
+> Either way:
+>
+> Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+
 
