@@ -1,90 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322B912C499;
-	Wed, 19 Mar 2025 14:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D92A1DED78;
+	Wed, 19 Mar 2025 15:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742396040; cv=none; b=AA2BrP5Z0Lg+1jzSIGAn1/txPt09vL1JEpi48kpjIboBRJsvOkgmLGTaNVQBtpB1RgLC4Lhz9ZCLvfvKU2FcumnEBefaJi3dOq3eAV2yZVXzk1QyZ4QIeYxwnmtakN/PCrojrN3FZaYIGUQn3grEyaOjsYdZIsOLcOB2Kl/gRhk=
+	t=1742396560; cv=none; b=qXRXuSVkObR/MUzDap7xWPXNd6W7PUSzI7jD8Lz9PIDpYL5NyZOSPt9aKDh0P2s9VgtiLVY39qVejRtCLVlpbWDDD+DmX7/5XI/wT7nPzW4uGRq9Mxj9A7FH7ym2tfcU+YFgL2NCEFLJwPnjjk+WIDKiAELYDUEb9LJ1O3BWO9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742396040; c=relaxed/simple;
-	bh=UbK7w+zXIirXffFtrlTXfemOE22THTSAu37y25idMog=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=moHU8m618CnfRVwN9iOFMU1I2oqXqbBbX91WuXGtC9UitBOVPRWvf12byTI04QpLb5KrEQ7r024F1C8KtLdiDR407ZNWNyF/+oKvMQCLu2yrZUoyagGx+3JBG3drkKN3E0yrpFsObFoM7lmQoRLyTkmUi5+J8HFK0Bl3o56UXMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y4qD2VAX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742396560; c=relaxed/simple;
+	bh=4D2+8aGVe4QkSjthIto/zgZ6PvyVLX0cNGhuA5OBVCw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fbV+A7L1dClqHhQxRoyIG2BLdbHuS8T9918ZmB8Zrlug0Q1NLPAxgwAwlhtQhjvHvghT69RE9tykG4HOYJ89Qg/jilvS6NeItftAyauKG5LCro+bA/oTPVuUemUoS6Yf306GHJLhuCFWyKKOeipBzH1CRjDvhcR8qw6toI7WKdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=H/LL6Ac+; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y4qD2VAX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA14C4CEEC;
-	Wed, 19 Mar 2025 14:53:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742396039;
-	bh=UbK7w+zXIirXffFtrlTXfemOE22THTSAu37y25idMog=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4qD2VAXSvm2lK+Tgjl7+RXJZRdsk4arFDNiB8407Z3Q1AI2bWv7vKlOZhbYc4RQS
-	 uCQpUvXtsBQpIxyVwtOvSGcdZAIs9yUsHNwnzdDjP4gEI3YhDoRmHA2JUEsEgHVQzM
-	 eB2vG2dZq8koIEATdNPt+0tlPtc2V2vW4xSOztH+Sbiv/I0KmpiZKKDFyi5Q/pCkoB
-	 UQYQ2UE7Ijiap1Sqgo3TE3kSeHNkqUNbVoWk/NIFA+arg7jltcNgqgaGVcboVPoXKb
-	 uBOxo/ALVfo2SBaK6aEEUcKlDohZ1covUS5SN7DFMLdKL1zQRlSdYdwA+rfFsU72an
-	 X32rKGq2lNobA==
-From: Danilo Krummrich <dakr@kernel.org>
-To: bhelgaas@google.com,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 2/2] rust: platform: require Send for Driver trait implementers
-Date: Wed, 19 Mar 2025 15:52:56 +0100
-Message-ID: <20250319145350.69543-2-dakr@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250319145350.69543-1-dakr@kernel.org>
-References: <20250319145350.69543-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="H/LL6Ac+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742396556; x=1742655756;
+	bh=mAK7ljkqrLvv2ILU+ldozQgfrMSW5hXpjPvcc6kqTXU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=H/LL6Ac+WRtWKvJg9AgWO0HV+5SbItXbZaSaQuEVi9nBKuMEMK3loJT7wkSlARlyw
+	 ZtCC+ndadBvabtXOAJA1CBHfG/R/exvu/gE6ltwxAYxcD5wQP4MhUqBc/oCHCjkOf5
+	 3it4NrU3a7spWGq5P6He4ix9g+FL66pfUUDzj2CSTRKGhlnsh5ZksSObcg5hgBgfkr
+	 KiIOy/KsX7f7LGelntxyzZrj6Em+Msd7pkjtwirZbtTGx8PyiBHwX/CEflIkQlJQ4X
+	 rFYcqKbT/fjSQ6k1S0nXxq4cqj+Yn1A0oa4lIPpoiLFG+r5cGf2bJg1uWposuUczAn
+	 /Am8MjpQCLROQ==
+Date: Wed, 19 Mar 2025 15:02:30 +0000
+To: Danilo Krummrich <dakr@kernel.org>, bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: platform: require Send for Driver trait implementers
+Message-ID: <D8KC0YODQ29U.MR1GUFKWS93J@proton.me>
+In-Reply-To: <20250319145350.69543-2-dakr@kernel.org>
+References: <20250319145350.69543-1-dakr@kernel.org> <20250319145350.69543-2-dakr@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: d0e586a50f8355844dba8236a4586a8c8ca51250
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-The instance of Self, returned and created by Driver::probe() is
-dropped in the bus' remove() callback.
+On Wed Mar 19, 2025 at 3:52 PM CET, Danilo Krummrich wrote:
+> The instance of Self, returned and created by Driver::probe() is
+> dropped in the bus' remove() callback.
+>
+> Request implementers of the Driver trait to implement Send, since the
+> remove() callback is not guaranteed to run from the same thread as
+> probe().
+>
+> Fixes: 683a63befc73 ("rust: platform: add basic platform device / driver =
+abstractions")
+> Reported-by: Alice Ryhl <aliceryhl@google.com>
+> Closes: https://lore.kernel.org/lkml/Z9rDxOJ2V2bPjj5i@google.com/
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Request implementers of the Driver trait to implement Send, since the
-remove() callback is not guaranteed to run from the same thread as
-probe().
+Good catch Alice!
 
-Fixes: 683a63befc73 ("rust: platform: add basic platform device / driver abstractions")
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Closes: https://lore.kernel.org/lkml/Z9rDxOJ2V2bPjj5i@google.com/
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
 ---
- rust/kernel/platform.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Cheers,
+Benno
 
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 2811ca53d8b6..e37531bae8e9 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -149,7 +149,7 @@ macro_rules! module_platform_driver {
- ///     }
- /// }
- ///```
--pub trait Driver {
-+pub trait Driver: Send {
-     /// The type holding driver private data about each device id supported by the driver.
-     ///
-     /// TODO: Use associated_type_defaults once stabilized:
--- 
-2.48.1
+> ---
+>  rust/kernel/platform.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+> index 2811ca53d8b6..e37531bae8e9 100644
+> --- a/rust/kernel/platform.rs
+> +++ b/rust/kernel/platform.rs
+> @@ -149,7 +149,7 @@ macro_rules! module_platform_driver {
+>  ///     }
+>  /// }
+>  ///```
+> -pub trait Driver {
+> +pub trait Driver: Send {
+>      /// The type holding driver private data about each device id suppor=
+ted by the driver.
+>      ///
+>      /// TODO: Use associated_type_defaults once stabilized:
+
 
