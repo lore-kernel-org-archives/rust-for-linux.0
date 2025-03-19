@@ -1,151 +1,133 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5D920B20D;
-	Wed, 19 Mar 2025 18:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB93B1E5B63;
+	Wed, 19 Mar 2025 18:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742408628; cv=none; b=lF0vON7Hs3Nf16wxwEfYmVHYMxtNsvYZC+O6mU3QmuKtlUYWvgastkpf0dcPp6ptTqytxNk1FOtJBeHX0tTgjFZg+70X3ZbE7S/REYnxNkcFUHqGSZRWLjthyckyNT7G0UULlS5M6+iDzYkPr1yWwl7wTHlj4VSm2rqBYFmOFzA=
+	t=1742408690; cv=none; b=baizFbuCakORbeBk1oIUjMSeBkiR9czYF0kJjoKcDZGodRxxTW47cT1+MALnVbRME4BcKoLnzOX3cN2pwTxvb4nXfegk1XyKT1wXQqDpphq6SrV/MvMMWL9LB/EztyX5ZvbuLyRsgzrEAvkbUez1aTl6VUK130M1QowOgjpFL7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742408628; c=relaxed/simple;
-	bh=7GpRSo1f4MpmUps8FOp+0DDkfwMvKF616oD0sC3QzMU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sUttccy8dgHGAqGI6YkjIR+DfaRgKhO71mAINxUlNwRqSzRZ0SEMzIdiaa0lU+3EdRKd4TTqG5zQhlHqjiRmji0sN5xX7HsXEU/NI7nV88Yx0yDZKm+9e8Siko5x5/yXY33r/FEzTG7uU7RsRnC6x/T6rKDs3MfGFBip2/Hp4dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j4HjHWU0; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742408690; c=relaxed/simple;
+	bh=F3sdvUpiNzFI/SiTaFtPM6nmUNKR5jQhkoPu3GTYdM8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=YAWSN9mcvH+noU5BqLBLl5t2Jf0IBiTG3QeNIRvVDBvn/K3PcPKZeulvvjS9VzRul0ygRAGQ4CIMXOtSy6Nag1URc7BDdTpnfiKQaGHMbjX0YHUtQBIgi00vyD7ZPpNTYBXunZz2XJ4wmu6UczeJPAu4j65gpkv1t4bOr8LBGe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrhSdHZ1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j4HjHWU0"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30bd11bfec6so73521fa.0;
-        Wed, 19 Mar 2025 11:23:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742408624; x=1743013424; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vM5vjdDKgplT27wll6RHU/DkDnOyBUK3CxhD6DbHY44=;
-        b=j4HjHWU07NGBxMj1a8I06uk+LpqLa2bIvA+H672d3ZjkKvw0iyBYWX50nKfowdS0Na
-         gTWGOomv2tjjvkoGELZUOLrP7RRQ3uSGDZf8u3wZ6yw6oy6JYtp3k0s59LT8o1pt1Smm
-         CMaQxacgezEO7WTg83+67eP8mZ3bt0K4Lm0M8rAyrq8ehgf8tKe1/G975lJ1+01voyQL
-         3Nbv+nUWiIezWhnwS+t+qsh75+0goCKMCGYpeEA++rUZqmaA4Axd6CZ8wbs8C/JxLZfF
-         q2qcSCrKI9SvOXLCuVy/XLAeyJYKs/d4FhjrPF7UX0NimPlG6+1A/OqrcupL7xR/dUKb
-         fsiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742408624; x=1743013424;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vM5vjdDKgplT27wll6RHU/DkDnOyBUK3CxhD6DbHY44=;
-        b=iKu0qP2VJYKe16/yzjki1E2A4JXhrA332PmB3ovL0Fa2+ylJx5MfpQehwjhUVEA7PJ
-         3YaTo7/w/YcVOUVsPV/wizBrkBLfrKV5zCSo5PTAPZvJVfweAFMm/3OaPBYmtJAn5aGJ
-         yCVXna95LObJA6+1txR6x3FH/rmnfu67330j9Pll+rpCK30RPTNu1pfbc271NJmTEPjg
-         OUW64ItTS/xRuyJMdWrKzmlhHsQbX6xCRK+dhtXCHDaMP/NY529dhFgQZl/EaJpq2c80
-         CkZ4CcNhdXgNlUk5fwL++eOTzGS330tCtDvE85kYBkp6pIIycb2xefXkjLDO6yicQvI0
-         nWQw==
-X-Forwarded-Encrypted: i=1; AJvYcCVsDCgFHowtbrq0f6s2UAwq9pPnZqFFggJh9wtEv7em3e9+Rnarlrv0z9yZch9QCI9licEI1qgExNNZ@vger.kernel.org, AJvYcCW30xbqKv+WcxkBH+HZVX/FU4v5yNbWqmnE5shfIDIdyV5MkOIC0J8PFEIn33GWZvcvYTHB+MtD8If+I3CzayU=@vger.kernel.org, AJvYcCWLkh9IMSmSZIKxgII1iR3XuhtzkPWuHcriSomD/CwTrOrmwrM0NMKOp2tcIwp5BCNiFXqpCg2BcYjR7nf4nQ3y@vger.kernel.org, AJvYcCWOz8TMoSvkZ336uXQN4ZSMAQqB+ebXxX3lAjrT9mGXP1mE1FG6TVakrT4H8/Xo5wmS+317yZxDq+H2HvM=@vger.kernel.org, AJvYcCX+Bp9gPkyQu3dIvl2e22CvVw/et1ktYTR8P15Hu7uXiy8zrYR9HeRgxTtIWdXzZdXjDeY2ACoEJOMdO6nL@vger.kernel.org, AJvYcCX/8dh34L+e9Uv0/MB+Tu64Upy2Y+R0jWnCdpXrfqitZfU6bnMfbnBIvtNVroFsfFZmPBN7ZcM3H14N@vger.kernel.org, AJvYcCXWPnpT3diCGZMNKG+G5pncopaZ9VKLRVE1oOgTwt19fwBbfqVvSgfM+cICM9LLKZPD1FscydUhpwpH0csL@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOii58+VsG5yxGS/QMPsOaqWbTJz3+eo5C2S3tTIXx9+f36Ooq
-	3OB2DADHtBLveSqCxWhRLo0rtzpNFAeoY0NQoPkXuWm6q+s2DGTPNxqyPxctCg7YMNju4SKX83v
-	0/4lD9hAutDFw/Eyh6kvJFdz/PM0=
-X-Gm-Gg: ASbGncvEFUgMEZ+ZhSQX6k3QDY9fgMQbFPPZRc/o9QRKSgyhoJrztdE7UTfsqpwtQqZ
-	nHQald3ydURBrRU7NRPevLgJxkOkIljYnz2N8lLdci3t9l79D+jVjNjURnfLfybv5GAbsO7mwtH
-	6trRzP0tGeI3F5Mmo0cesnYtdPvUR02M0loeJ1iNEK6g==
-X-Google-Smtp-Source: AGHT+IGEOK5N8tHIazzaBBFYwKPt7IK0lEyYARQ8Yuk7nnN9JY1twqyBbq57jCCO+3DJSYYYx9K5vKdbuZ/veyaYAWE=
-X-Received: by 2002:a2e:a912:0:b0:30b:9813:afff with SMTP id
- 38308e7fff4ca-30d6a465c16mr17800591fa.31.1742408624335; Wed, 19 Mar 2025
- 11:23:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrhSdHZ1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9984BC4CEE4;
+	Wed, 19 Mar 2025 18:24:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742408690;
+	bh=F3sdvUpiNzFI/SiTaFtPM6nmUNKR5jQhkoPu3GTYdM8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=QrhSdHZ1OXBw8Jv/B04fkEwMJLZeoDhw3JoMXgIIItZazP70t74LKQHmigMV7o00N
+	 UthJWQBK5av6Nsp9skmt5NOdgT9nGVohNF3ZAU9rp8gr5rDOpm2UH5YDasKaA0+y9j
+	 OsqSm6i4re6WsUXww+ggMY04HgT3RbmpesAMp3/3vHJ968UYaTOW6Ue6nlKcyc3V8W
+	 XVY1gJEA7XIes60Bcaz3y4E+u2QIytiXiZxBbYYgAdd1lmODmCa4xGz4UDFEngbni0
+	 1RMB1wurruz5z21VNxM6uak/p3Ip/x+E3mzXEi+WQhC4U1TCIb0elPQGGSN4Ws6/Ow
+	 RMivSySkvQxEA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Alexander Viro"
+ <viro@zeniv.linux.org.uk>,  "Arnd Bergmann" <arnd@arndb.de>,  "Miguel
+ Ojeda" <ojeda@kernel.org>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary
+ Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  "Benno Lossin" <benno.lossin@proton.me>,  "Trevor Gross"
+ <tmgross@umich.edu>,  "Danilo Krummrich" <dakr@kernel.org>,  "Matthew
+ Maurer" <mmaurer@google.com>,  "Lee Jones" <lee@kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 0/5] Rust support for `struct iov_iter`
+In-Reply-To: <2025031928-connected-confider-dda5@gregkh> (Greg Kroah-Hartman's
+	message of "Wed, 19 Mar 2025 04:42:34 -0700")
+References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
+	<9pOFLtAJ1ScEHfLe7L2KqghIKBzL8sTupJttIVRB70ZmvdUpiEYrxCxIpJD_cBJVwv-TKxosDL-l6cq3qt563Q==@protonmail.internalid>
+	<2025031140-saffron-kilobyte-bd2e@gregkh> <878qp2hx9o.fsf@kernel.org>
+	<_faLZHT6mnujSjNGxKLz9hgfs7W4w_MLWjiFHHYughpAFkITeHHgVAqHUhc3-FvYC_rdOjygOzVQC3zXSDTEqg==@protonmail.internalid>
+	<2025031804-eardrum-surplus-5ff9@gregkh> <87wmclgttg.fsf@kernel.org>
+	<oh-co9UVC3VqmBa5gLwEBOLDlqJKfYVhRzy_0obFzjfVgs0q6Zw8TGa8EQcWa5R9G7E5OwEFSGMO_mfroI0GDg==@protonmail.internalid>
+	<2025031928-connected-confider-dda5@gregkh>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 19 Mar 2025 19:24:41 +0100
+Message-ID: <87cyecho9i.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com>
- <20250317-ptr-as-ptr-v5-6-5b5f21fa230a@gmail.com> <Z9lnIJCcVSza6UVo@google.com>
- <D8JTC30W0NF6.17SR73Y9I99ZT@proton.me> <Z9q2xpwsNMDzZ2Gp@google.com>
- <CAJ-ks9m8r_ABh4ift3wmM_wpbYLo=ZuhUarfLJKQnS7TcGHRdg@mail.gmail.com> <D8KBL9Z0B68N.2Q3MU9UK9YI6G@proton.me>
-In-Reply-To: <D8KBL9Z0B68N.2Q3MU9UK9YI6G@proton.me>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 19 Mar 2025 14:23:07 -0400
-X-Gm-Features: AQ5f1JqqkJVkMtcz0tmGeT7J4y37KKPcDpFZR1eCkSoR2DOM6YfFaGeUBI4_56I
-Message-ID: <CAJ-ks9kD++_T_3my1Etam9PRJHHZvdM=zbkWgbxW3oybwMTw9w@mail.gmail.com>
-Subject: Re: [PATCH v5 6/6] rust: use strict provenance APIs
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Wed, Mar 19, 2025 at 10:42=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
+"Greg Kroah-Hartman" <gregkh@linuxfoundation.org> writes:
+
+> On Wed, Mar 19, 2025 at 12:10:03PM +0100, Andreas Hindborg wrote:
+>> "Greg Kroah-Hartman" <gregkh@linuxfoundation.org> writes:
+>>
+>> > On Tue, Mar 18, 2025 at 09:57:55PM +0100, Andreas Hindborg wrote:
+>> >> "Greg Kroah-Hartman" <gregkh@linuxfoundation.org> writes:
+>> >>
+>> >> > On Tue, Mar 11, 2025 at 02:25:11PM +0000, Alice Ryhl wrote:
+>> >> >> This series adds support for the `struct iov_iter` type. This type
+>> >> >> represents an IO buffer for reading or writing, and can be configured
+>> >> >> for either direction of communication.
+>> >> >>
+>> >> >> In Rust, we define separate types for reading and writing. This will
+>> >> >> ensure that you cannot mix them up and e.g. call copy_from_iter in a
+>> >> >> read_iter syscall.
+>> >> >>
+>> >> >> To use the new abstractions, miscdevices are given new methods read_iter
+>> >> >> and write_iter that can be used to implement the read/write syscalls on
+>> >> >> a miscdevice. The miscdevice sample is updated to provide read/write
+>> >> >> operations.
+>> >> >
+>> >> > Nice, this is good to have, but what's the odds of tieing in the
+>> >> > "untrusted buffer" logic here so that all misc drivers HAVE to properly
+>> >> > validate the data sent to them before they can touch it:
+>> >> > 	https://lore.kernel.org/r/20240925205244.873020-1-benno.lossin@proton.me
+>> >> >
+>> >> > I'd like to force drivers to do this, otherwise it's just going to force
+>> >> > us to audit all paths from userspace->kernel that happen.
+>> >> >
+>> >>
+>> >> I think that for user backed iterators (`user_backed_iter(iter) != 0`)
+>> >> we will have the same problems as discussed in [1]. To validate, we
+>> >> would have to copy the data to another buffer and then validate it
+>> >> there, in a race free place. But the copying is apparently a problem.
+>> >
+>> > We already copy all data first, that's not an issue.  Validate it after
+>> > it has been copied before you do something with it, just like we do
+>> > today for normal ioctl C code.  Same goes for data coming from hardware,
+>> > it's already been copied into a buffer that you can use, no need to copy
+>> > it again, just "validate" it before using it.
+>>
+>> I guess that depends on the user of the `iov_iter`? At least when it is
+>> used for direct IO, the operation is zero copy with pages mapped into
+>> kernel and IO performed directly from those pages.
 >
-> On Wed Mar 19, 2025 at 3:14 PM CET, Tamir Duberstein wrote:
-> > On Wed, Mar 19, 2025 at 8:21=E2=80=AFAM Alice Ryhl <aliceryhl@google.co=
-m> wrote:
-> >> On Wed, Mar 19, 2025 at 12:23:44AM +0000, Benno Lossin wrote:
-> >> > On Tue Mar 18, 2025 at 1:29 PM CET, Alice Ryhl wrote:
-> >> > > On Mon, Mar 17, 2025 at 10:23:56AM -0400, Tamir Duberstein wrote:
-> >> > >> @@ -264,7 +266,7 @@ pub fn read<T: FromBytes>(&mut self) -> Resul=
-t<T> {
-> >> > >>          let res =3D unsafe {
-> >> > >>              bindings::_copy_from_user(
-> >> > >>                  out.as_mut_ptr().cast::<c_void>(),
-> >> > >> -                self.ptr as *const c_void,
-> >> > >> +                crate::with_exposed_provenance(self.ptr),
-> >> > >>                  len,
-> >> > >>              )
-> >> > >>          };
-> >> > >
-> >> > > That's especially true for cases like this. These are userspace po=
-inters
-> >> > > that are never dereferenced. It's not useful to care about provena=
-nce
-> >> > > here.
-> >> >
-> >> > I agree for this case, but I think we shouldn't be using raw pointer=
-s
-> >> > for this to begin with. I'd think that a newtype wrapping `usize` is=
- a
-> >> > much better fit. It can then also back the `IoRaw` type. AFAIU user
-> >> > space pointers don't have provenance, right? (if they do, then we sh=
-ould
-> >> > use this API :)
-> >>
-> >> We're doing that to the fullest extent possible already. We only conve=
-rt
-> >> them to pointers when calling C FFI functions that take user pointers =
-as
-> >> a raw pointer.
-> >>
-> >> Alice
-> >
-> > Personally, I agree with Benno that `as` conversions are a misfeature
-> > in the language.
-> >
-> > I think this patch and the ensuing discussion is making perfect the
-> > enemy of good, so I'd prefer to drop it and revisit when the
-> > ergonomics have improved.
+> Great, and then, before you actually do something with that data, you
+> have to validate it that it is correct, right?  If this is just a
+> "pass-through" then no need to do anything to it.  But if you have to
+> inspect/act-on-it, then just inspect it in the verifier portion.
 >
-> I don't think that we need to rush on the rest of the patch series.
-> Boqun's suggestion is very good and I'm not sure which ergonomics need
-> to be improved here.
+> I'm not trying to add any additional overhead here, as you normally
+> would have to verify the data is correct before doing something with it,
+> but rather just forcing that validation to be done in an obvious place
+> where everyone can see that it is being done, or not being done.
+>
+> In other words, make it obvious to reviewers that this is happening,
+> instead of forcing them to dig through code paths to hopefully find out
+> where it happens.
 
-The improved ergonomics arrive in Rust 1.79. See Boqun's reply that
-explains we need to keep all the stubs until then.
+I would agree.
 
-Regarding landing the rest of the series - you said it yourself: "it's
-only going to get more painful in the long run to change this". The
-nature of lints is that the longer you don't enable them, the likelier
-you are to have a higher hill to climb later.
+Just to be clear, I am not objecting to validating data before
+interpreting, that is the only sane thing to do. I'm just raising a
+concern in relation to reading pages mapped from user space in Rust.
+Because apparently it is undefined behavior, as discussed in the thread
+I linked.
+
+
+Best regards,
+Andreas Hindborg
+
+
