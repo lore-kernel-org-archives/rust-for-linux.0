@@ -1,109 +1,112 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5572F1DE3AA;
-	Wed, 19 Mar 2025 16:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9361DF739
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 16:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742400421; cv=none; b=RKIPe/lwi08+yhlqprR5qDUGsflrMK8FtENYgZpfCffXYOONgVkRQ3ADALL51GVGJYlht4sD2EWhKRsXMhlt3pzvOvpBLJc5DXBZpr78FYiBwJRsxV04jnJtWtcbRcE1bXDf/yXT48cRCS0DHHoMg82dKIDDhAhVGHIOECoY8C8=
+	t=1742400691; cv=none; b=hM0j3OeffGn+avA5slPwCJY5lJE+Iidg4ihan/XSmVuKt+L63mXMPawJDDJfwTnS3cXfryCmTB1I4Qg/qUfNuFtzOAQI34CBHGMbqnkdAjvUCNWTTNQUk0Xz6rNa+yppQLuPrlCJlZlZBnwX6aBmQvjcWDIoo3CIBchZAwyaLtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742400421; c=relaxed/simple;
-	bh=QT0GuWhMfzcfyxlGH/RH2ms1bLQNjqGC/NE3qMLr4qI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=egI8HgJBCoIepCswTQXE4G2TNmekT+vAkRkO8kxIt3DimmwtMuPorT5MhYJ9qzySUyq+7EA37OsUw1TNkHRoA727Oae66aMlEzAWH3u+ENMVIXnEWJhswvQMjtngMU/Y5asGKdgkganbFl8FM50XJfx1x40UVMKvGnw6m5COFa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mve8MFSN; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742400691; c=relaxed/simple;
+	bh=8DqBsikgA7zOXmG6eiKnL/aYl0OdYNLj+g4Ue5RXTKY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bUOh2RvFTY2frvVJkJ7ehpNS7Jr/TTiZy/zny48MjzssbnOByHtCghf+Yy89jWzFH7j80SntOBLR1+VjrDKqSgc+GpvtrI1YLCVHg9tOMxy/SlyQn8GxyF66cKVtIX70QcWY7wo/O5fJb0uRcmpSrl3WEgMQbpy9SeMdXo6lz0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IJ6PjV7x; arc=none smtp.client-ip=209.85.167.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mve8MFSN"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-225fbdfc17dso73954745ad.3;
-        Wed, 19 Mar 2025 09:07:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IJ6PjV7x"
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3f94b7bd964so3972880b6e.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 09:11:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742400419; x=1743005219; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=hKJDA/dDId3Esj4Lemw4mM+nB5Kzyt6ZrsLmPv4i3Nc=;
-        b=Mve8MFSNQKHXmZMg3N+k6FAXXJG0zs3a4g+5J5Fs2cP8ac6dibqg8znnYzLyStBQ8G
-         cgYCsA8EeDE5iVm3foXrZJV6vdgVoLA5aKCiWTplf47ZZ2atT7bsS4PlbQtYO5gZcNNv
-         lG7LRcpVo0v5j5Alj9KrABACj/Tw41DkT0yBZzmcPUzVwIJd9oWSk8wcDwqMS4ky731E
-         AaApWlM6L/UACec7lY9BZflSQxiS6LfpenHFU52AQGj5ULR//g4m6Oe0nmhnrinTAQ/h
-         LNFlYtlBqlMQ2+0q6GghK5+BCYxfRKad7I+G+0LeS/gNvLTfQqQIY36hYGy78avWZinP
-         cM3Q==
+        d=google.com; s=20230601; t=1742400689; x=1743005489; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8DqBsikgA7zOXmG6eiKnL/aYl0OdYNLj+g4Ue5RXTKY=;
+        b=IJ6PjV7xT2yKSD72s30VOx1xkroEkpZ0UYYWSNYeOrpzxuDcUgG3ufibNz8OWoksl1
+         FPNkB9AtmM8wUgrQHyfazvDtbxftnlgudStraelfkjDQr6grsqbSGHzyv5pWY0kx1+4Z
+         Nnt6vBCMHSch+H0YCZmrtICLY1Hf809encfOqLhjuR8LXOmesSgluckk8H/p8DqekHor
+         0eIoWxyc3Cut/asjEVTLfbccaeqafTBufPpDOFaoWh124bZQPbYOuz1/Ku+25CvU+FZ8
+         jH/ucpza5y2kliAVShOq8oFn0JBWY2sQhD7iE9jdp8NPBl7wKd2rV1ARmI2OqAkmsGyp
+         z9Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742400419; x=1743005219;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hKJDA/dDId3Esj4Lemw4mM+nB5Kzyt6ZrsLmPv4i3Nc=;
-        b=ZFMIqGylGRA0eHhmDJG2kv9zkwyyHkPIDl+jSm2FnRxWcFqe8DPrw6oend2uKYYWDb
-         cnvz17X4WbfykladpGjvVgLGGw/NJ/UKEJJ3jyPBl+RmHjJtvn0q334a/2IqGXRc0PW9
-         rqhTPgtU1M0cgocyhJB08+OUomk8+jcmm4weeeETr5IkuPZZSnbQmjN4t5S0s/pwT7AB
-         SmhWU3dQsthFsiQ9ZMijh/E/Pqqfgn2OdniQANwl/QQyRpQUSDwq7zzQQvG/KJ8T2izZ
-         hjcGjmBpFuNx85wvhIa/SUepw4t3Ad12PtQYoEQk2AHp8cTRjOVNR87LyiYiqjst9mQh
-         M/og==
-X-Forwarded-Encrypted: i=1; AJvYcCWjeYUUyXqamukTIY/zBnBpR983JDViRBSr2esS8he52zuVIZejP+LMmqXVs6kaNGfUMsFxuviI0cqZQtrbuXk=@vger.kernel.org, AJvYcCXmAyeXCDH0XcycaleJEahH3H3dHiRD+R8XlCC4KZm++0IA9e8qZ0UXO6fO6Lvv4y+m2Vja5SxwsRy+XCo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGPP4mI2bxdpc6v1N4EshxTJZa2dW0Kx8al+PpJjtLgRp5N3hj
-	StpLn0rAu0pfl6/cjwJOMYsqQNFn6IZnHD+E4/kP1wwmKWe856KY
-X-Gm-Gg: ASbGncu/9Q8rzCu7eJvVzT9nX6yfDMuszAjKuA32zA1xO+pHyOsXf35IyM3XwGskQFg
-	aGSOYCy0uLiBBIF7vp8rSDl0XPp2TzfYC98Zrl7PE1Y4AI5Mm136OfqD4xjBNZJqqHF/F7bn5g1
-	9cXi71t+GZxMSh+lJfqqSbuIGXrnImYd2VF5zpfvVVxzb6DvafbxH47zToobI+E/WLdZsXhx+GQ
-	rCySGTYgm8brjMm+wjr52E/jUKopWvme5fbMm0tfZSrk8LVOScSnLwt5Nbfkk+YE/eaVUueHxRc
-	eMJgEciEK9QbaUixvEFntadid86vHuIp5PZ53abqi/XI
-X-Google-Smtp-Source: AGHT+IFDNUuR1/pAujkQm5tujG6ypvEZ2piQK6Qgl0neiLzXFI5cG3ACWX/2gDjCRPpGZ4cqkzdJ0Q==
-X-Received: by 2002:a17:90b:1b47:b0:2ee:d824:b559 with SMTP id 98e67ed59e1d1-301be1e7519mr4767708a91.28.1742400419364;
-        Wed, 19 Mar 2025 09:06:59 -0700 (PDT)
-Received: from localhost ([216.228.125.130])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301bf5a1d1fsm1799250a91.27.2025.03.19.09.06.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 09:06:58 -0700 (PDT)
-Date: Wed, 19 Mar 2025 12:06:56 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Burak Emir <bqe@google.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: adds bindings for bitmap.c and bitops.c
-Message-ID: <Z9rroCn3MAsXz1Lw@thinkpad>
-References: <20250319112822.1961241-2-bqe@google.com>
- <CANiq72=fBJLhgW64vohSopsR0RQLch+_cKqRKDQT7yR9B6A-mw@mail.gmail.com>
- <CACQBu=UC-DmLGpg30=Dyp5hhWV7HGXG+bL73YBSq5vSa4t3mig@mail.gmail.com>
- <CANiq72k8-5YRwmcn1h+avuyusAC36ttOqwsMH_eO-DLxTm5gpw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1742400689; x=1743005489;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8DqBsikgA7zOXmG6eiKnL/aYl0OdYNLj+g4Ue5RXTKY=;
+        b=WJYo3piJP3V47aGdmw9x8r6rXz5vwIrfulco23kcxtL7k1jwG5d9qa9HlIelwcJ6O5
+         uJKbKRJ4091X4UqHAz6mSlDWNmhaXo62nsGYM0vGobafikgId+15hVm6Jx50D0pE94om
+         u8mkL/Pj+wsX9rXIn+gGCosmlIFKo7msWXQ5FbkdDweHxkAtyN6D9jv9EkrzDc7iImA4
+         K4AJeH0zo+VvI6yE9b+f69KXhvCINAwxbvaCIKvFKmxla6k7bskLvtEt9tl+MDLhEXNQ
+         G7AlSWuvT4yK4imvFYxp37YR4SIsxrdzMlLnK3TR8GGJykkHJKyLT/VtlC2WmLcEQuAN
+         xloA==
+X-Forwarded-Encrypted: i=1; AJvYcCXJMjT+UnE25JRxkDjR9N7R3XLulS8UPDzSLdqCNWdGCdcV9zmv/COQGN6QxJ57FM8NEzykGZjXAOEv8D3IQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYv+N6Xx3ON0GbmydHk8N3BSjsn5IKFnN8bVc7LAg/9o4fBqUH
+	q+KdvIzrAh0TqLsmKov2PIrJYTgRIrV83FXKgA1MLH68j6ms+bvWeIKhEe5Vlb5a2BKmS4zSIhl
+	uoBzMwPhSoUDtO2bQjm+oMbUspT72iwcOzDC3
+X-Gm-Gg: ASbGncv5SCnn9jN+lpdlUnza91VLd9WpAvOJDsLOlnsClXSMp9ph9OjTjS5Fvm2AWnc
+	ddVkS/oM9jypNJcDrSr8/8ptIpnsDfaazbtQqZd755qklaOaSt0mOEakVY2hYvXQjtrsxp9EpOp
+	4Cl41aKsMBWnKGVUA248UugDF9q5VB98nqWl7vSWxlZwbkvqIYGqly07PQofjGyuqeIFg=
+X-Google-Smtp-Source: AGHT+IEW9jnPz92hsq7khlXESplWvRv/nknbjLt/n9wh6GdkzRZMnj0RC4JOEcC0Vxh+2e7utxkJXS51NVDXJP+g6MM=
+X-Received: by 2002:a05:6808:1692:b0:3fb:177e:f987 with SMTP id
+ 5614622812f47-3feb4ab7158mr33311b6e.20.1742400688840; Wed, 19 Mar 2025
+ 09:11:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72k8-5YRwmcn1h+avuyusAC36ttOqwsMH_eO-DLxTm5gpw@mail.gmail.com>
+References: <20250319112822.1961241-2-bqe@google.com> <CANiq72=fBJLhgW64vohSopsR0RQLch+_cKqRKDQT7yR9B6A-mw@mail.gmail.com>
+ <CACQBu=UC-DmLGpg30=Dyp5hhWV7HGXG+bL73YBSq5vSa4t3mig@mail.gmail.com>
+ <CANiq72k8-5YRwmcn1h+avuyusAC36ttOqwsMH_eO-DLxTm5gpw@mail.gmail.com> <Z9rroCn3MAsXz1Lw@thinkpad>
+In-Reply-To: <Z9rroCn3MAsXz1Lw@thinkpad>
+From: Burak Emir <bqe@google.com>
+Date: Wed, 19 Mar 2025 17:11:15 +0100
+X-Gm-Features: AQ5f1Jr0LaiSOo7wg9Oxek0xiU32mVJbIh4vLfpBtIPhus0dJ2MigWJRIumPGXo
+Message-ID: <CACQBu=XbepNPkeGW649Ogf9PNQ59kebatpM8XTgFN162TVj9-g@mail.gmail.com>
+Subject: Re: [PATCH] rust: adds bindings for bitmap.c and bitops.c
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 19, 2025 at 04:43:50PM +0100, Miguel Ojeda wrote:
-> On Wed, Mar 19, 2025 at 2:58 PM Burak Emir <bqe@google.com> wrote:
+On Wed, Mar 19, 2025 at 5:07=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
+rote:
+>
+> On Wed, Mar 19, 2025 at 04:43:50PM +0100, Miguel Ojeda wrote:
+> > On Wed, Mar 19, 2025 at 2:58=E2=80=AFPM Burak Emir <bqe@google.com> wro=
+te:
+> > >
+> > > Thanks, I was unsure about this. I understand the desire to not add d=
+ead code.
+> > > Yet, next-20250318 does now contain helpers for `cpumask.c` without
+> > > corresponding `cpumask.rs`
+> > >
+> > > So, I will include this in v5 of the rebased series, but with BITOPS
+> > > API BINDINGS [RUST] in its own patch.
+> > > Thanks for bearing with me : )
 > >
-> > Thanks, I was unsure about this. I understand the desire to not add dead code.
-> > Yet, next-20250318 does now contain helpers for `cpumask.c` without
-> > corresponding `cpumask.rs`
-> >
-> > So, I will include this in v5 of the rebased series, but with BITOPS
-> > API BINDINGS [RUST] in its own patch.
-> > Thanks for bearing with me : )
-> 
-> No worries at all! Perhaps wait a bit in case I misunderstood and Yury
-> wants to clarify.
+> > No worries at all! Perhaps wait a bit in case I misunderstood and Yury
+> > wants to clarify.
+>
+> Yes, the general idea is to be able look through the all software pieces
+> in a single series - from C wrappers all the way down to rust end users.
+>
+> This way I'll make sure you are using the API in a right way. And I
+> think I already helped you in that department, right?
 
-Yes, the general idea is to be able look through the all software pieces
-in a single series - from C wrappers all the way down to rust end users.
-
-This way I'll make sure you are using the API in a right way. And I
-think I already helped you in that department, right?
+Yep, thank you for the timely reviews with the comments. The series got
+quite a few better. I'd love to be as timely with sending back the new vers=
+ions,
+still getting used to the conventions, workflow and limitations of the
+infrastructure.
