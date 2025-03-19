@@ -1,181 +1,285 @@
-Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544431AF0D7
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 14:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C6714B08A;
+	Wed, 19 Mar 2025 14:31:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742394352; cv=none; b=evRgdWpi5pRIOdjOaZKp0g49PGzlewG4z09e7OYerISX4MoP7U35DWLh/TB8kzKT+snWV+WCJapU3Vrb0IVHWZpxsC6fa8AociBlB3CzDKvCgKsvhYIEgK3+lDGKxNExdtsd7uKMD7dPdXRgf6tALpEOPcbhduKVAGMZAwvIOog=
+	t=1742394679; cv=none; b=jZRu5I7LCoMUPPzO6GFDiglEZBlptk/mc44lYmphswC3iF7BNcvGGnqEyUVzYa+VVqheIMNosWpG9ZSrOdt7whKeEsOSHMBEyqOmN/Z3lix+FbevBoAVtkEAcbhghbv4v5WFrWLmc3X3JHTeM4aPdIIDJQ5WIyHxOO9+H9o1hy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742394352; c=relaxed/simple;
-	bh=QjvonDKsUZ4V2iHv4/1U+AOqOqV/gfEXuo3Gcj7IC+0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YE9WnZexE+OLOqATma89QKKPyeIAtrgSTNb+2ppmaAeAdIPbUzQeOlx0jABy0qnSBO6SlTZJJaeu3N2oXAMZvYKze83/rfqS77TrFMz94R/OL0gghti/wn/lQTOVshOlCyr1aAlrTc4wQcthz4vRXL/MB6NOK7FPPA82ifGvBV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iJnRTbTc; arc=none smtp.client-ip=79.135.106.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742394679; c=relaxed/simple;
+	bh=1LmqcPYwnCj3mzAbHZoHuXE/jGcVZCyiynN75T7aUcY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ty+by83Q4XO/RBfwU9c8zjV3LZsZ8h7FzvSw9abSrfA+M+hqy53Q4+OmUulOvwSiHpgv1suQbCmynqd/1gj9qjEnQ6/Q1U162l9PWZwDCkVBmgrt405libeNRODMOxsY9g3Y3T6MCcmXXpCMpkCPC54JiME+amUzahoicWHTP1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VHds8Fky; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iJnRTbTc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=vrle5chyzvelni2thueqk7aiii.protonmail; t=1742394341; x=1742653541;
-	bh=QzhvFGzMYNRsuB/5rn3tyDmEPC9S1uTQvs7bilK0myo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=iJnRTbTck6nxRS/SxHCsvttxYgnywoVmmrKnn/tl56xuKAnWWDFK+fKXFAT3OeShj
-	 TQ5mMAlWWjL0Pq+Dcfme0Apn8FsLJl8yQNl/p49IY7sdoi0nFvNsyjy/lxs28n20ec
-	 v7Xfb+Q6dqA2w7s+iK8fyanWa4aS18OwabFgWrm5SKN4dQd32mC2Oj2x29IViyuh14
-	 Q8QKrnlrkNQB70Q9pXtRifybiraRdeEdlkMuF+liSYg2Ch+s5/AT6ZCFTpqoy1sQxc
-	 Sij/gGAsvpMZ1bSJQfJeJ+NDpsr5tVb+9I+oMrMT5EfcO3dR0QrHV9MV7V65XRkj85
-	 IKO6P4YFCk/ZA==
-Date: Wed, 19 Mar 2025 14:25:35 +0000
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VHds8Fky"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-30185d00446so1181524a91.0;
+        Wed, 19 Mar 2025 07:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742394675; x=1742999475; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vvqgHRbIrrQWkBdA7Z6+Pzs4LSHBoaPOWki4q4Ueoz0=;
+        b=VHds8FkylgObG2mM3wfa0CNAGbv1J/iCROBf+yslzskL83HaBCltUKaJRhbXB+9tyy
+         5hmSCWiDN1e/PhJb5mzzejN56vWNcniKS7fpNtyil2DKalqiDPyR0nvoQwgosqirwTHc
+         VIf6ADjB3tJHH1d+/bhLObwRqh4k/L66WXeeNhcAV65jHsljKnuGw8dW5qly8Kv2AI9g
+         3+QyT4W6gj34O0CjOcVWqJvH6cCAZANKsI+bCYPoD+//9/klwlMOw8We6SVHQv/nD893
+         RWQ0pDaoo42oQuJywYOOyX47U1EqfG7x6KtUuTzkfpNqYP2Kt29JNdmTpJyNXSN308KR
+         PgJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742394675; x=1742999475;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vvqgHRbIrrQWkBdA7Z6+Pzs4LSHBoaPOWki4q4Ueoz0=;
+        b=hPRhFilHYH8vl+EyQoY4qVCnx6oUSx3DcFhsKekpdbpLsn9mYVNLvXPKMyR66tO+SZ
+         /olGNjo5o3OJCyoare7YQwq/E3E8LndaHMNJD+CYwFAtYJyiwfC0hfQeMb/YPaodwitc
+         heULBOgPNPxLPBqYSMQ/p/c1SNbsZKljT5p/aHs9HOUMiPbcNbLyTLFtgjfvuQjv/smu
+         ZHH4BfKVFnKhSKQZf6fpeMjNeqaVIVKU/SmVJ34An8oEomrUmoSGo+NVKtidPTJyZ+PV
+         VituX2UEeExaZPsI9Dz9F0hvxIR1jVtrBOdU/+gxGfve3NYI9/2VAcPZfHxf0QvR7Zt8
+         dzEA==
+X-Forwarded-Encrypted: i=1; AJvYcCWF6tCYD28elwo9W8jU/ebo5E8O++k/MTtqDH2sEANrAf28pLeuozUHcZvkjv/fXjhT3MdKW/k6MD7zBxA=@vger.kernel.org, AJvYcCXGUWImzZabNt8wxxHHFUhLUSdQrn7Ma8bF0DP3jSDC6EY7qYP+/jSFXUqawM3JmRnUIXcWb9OSBLNWWE76NPY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrIJ0LzozvTz/sQntXPjrjNofUza2pih5tmaHmB+48nt72Q9Lf
+	FfejZjWnD2VZzWwHOv5TnhEXPco26iS0tJwNqPdSwVqtpq4y1Yf1
+X-Gm-Gg: ASbGncsKUtK8ReRA5tel3cRSr0Mx1NbNqhb0SeyRDH5CvlS4k1+6WGvRpDNvGflXV61
+	SZX+LtRb7xzo+ATmAhRX3m4p5qDNw5WebGMZid8lYZF6Q6ob2YnkOKnrCJNGYcJhgTRd0NDnRWy
+	Cp8uRSRaEY9JG3Ksoup5hkjDEter6m3p/MCV7EMpZaGDAE+sEKDCkR59+wmcW5xDOqxAjnCirCQ
+	4mSup+QQ1h4d2N6i6n7+OzwwSw3hIatNFwusfuHiiZ1Gbwcoz2rbnD5hZcoBk4Lj908A/fNf9Q2
+	wvcOoeiCG1YnU0P7X2oNBawv91tN1MOxIH9Q3FA1ygZ5ZzycXgZ4uae3katA+QCZSqnsV0iahYd
+	wKQo=
+X-Google-Smtp-Source: AGHT+IF6yMlkkpmwRZofLzUPvdoVeiuovJSIu7oyivZzgn36B31pLb/gQA8RJPRcpim+DfrT0mQnSg==
+X-Received: by 2002:a17:90b:3909:b0:2fa:4926:d18d with SMTP id 98e67ed59e1d1-301a5bde7edmr10820194a91.13.1742394674799;
+        Wed, 19 Mar 2025 07:31:14 -0700 (PDT)
+Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301bf61b34dsm1627865a91.30.2025.03.19.07.31.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Mar 2025 07:31:14 -0700 (PDT)
+Date: Wed, 19 Mar 2025 10:31:12 -0400
+From: Yury Norov <yury.norov@gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 6/6] rust: use strict provenance APIs
-Message-ID: <D8KB8OW0SDQJ.B0BDYQPT3NAH@proton.me>
-In-Reply-To: <Z9q2xpwsNMDzZ2Gp@google.com>
-References: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com> <20250317-ptr-as-ptr-v5-6-5b5f21fa230a@gmail.com> <Z9lnIJCcVSza6UVo@google.com> <D8JTC30W0NF6.17SR73Y9I99ZT@proton.me> <Z9q2xpwsNMDzZ2Gp@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: b823c4633caec0aa5f392421097f913030dfea86
+Cc: Burak Emir <bqe@google.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] Adds Rust Bitmap API.
+Message-ID: <Z9rVMJMlx4klpt4h@thinkpad>
+References: <20250318164221.1533590-1-bqe@google.com>
+ <20250318175322.1627073-2-bqe@google.com>
+ <Z9nUzjinU_mozCXC@thinkpad>
+ <Z9qe_cLk4FDg_fAE@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9qe_cLk4FDg_fAE@google.com>
 
-On Wed Mar 19, 2025 at 1:21 PM CET, Alice Ryhl wrote:
-> On Wed, Mar 19, 2025 at 12:23:44AM +0000, Benno Lossin wrote:
->> On Tue Mar 18, 2025 at 1:29 PM CET, Alice Ryhl wrote:
->> > On Mon, Mar 17, 2025 at 10:23:56AM -0400, Tamir Duberstein wrote:
->> >> Throughout the tree, use the strict provenance APIs stabilized in Rus=
-t
->> >> 1.84.0[1]. Retain backwards-compatibility by introducing forwarding
->> >> functions at the `kernel` crate root along with polyfills for rustc <
->> >> 1.84.0.
->> >>=20
->> >> Use `#[allow(clippy::incompatible_msrv)]` to avoid warnings on rustc =
-<
->> >> 1.84.0 as our MSRV is 1.78.0.
->> >>=20
->> >> In the `kernel` crate, enable the strict provenance lints on rustc >=
-=3D
->> >> 1.84.0; do this in `lib.rs` rather than `Makefile` to avoid introduci=
-ng
->> >> compiler flags that are dependent on the rustc version in use.
->> >>=20
->> >> Link: https://blog.rust-lang.org/2025/01/09/Rust-1.84.0.html#strict-p=
-rovenance-apis [1]
->> >> Suggested-by: Benno Lossin <benno.lossin@proton.me>
->> >> Link: https://lore.kernel.org/all/D8EIXDMRXMJP.36TFCGWZBRS3Y@proton.m=
-e/
->> >> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
->> >
->> > I'm not convinced that the pros of this change outweigh the cons. I
->> > think this is going to be too confusing for the C developers who look =
-at
->> > this code.
->>=20
->> 1) I think we should eliminate all possible `as` conversions. They are
->>    non-descriptive (since they can do may *very* different things) and
->>    ptr2int conversions are part of that.
->> 2) At some point we will have to move to the provenance API, since
->>    that's what Rust chose to do. I don't think that doing it at a later
->>    point is doing anyone a favor.
->
-> We don't *have* to do anything. Sure, most `as` conversions can be
-> removed now that we have fixed the integer type mappings, but I'm still
-> not convinced by this case.
->
-> Like, sure, use it for that one case in `kernel::str` where it uses
-> integers for pointers for some reason. But most other cases, provenance
-> isn't useful.
+On Wed, Mar 19, 2025 at 10:39:57AM +0000, Alice Ryhl wrote:
+> On Tue, Mar 18, 2025 at 04:17:18PM -0400, Yury Norov wrote:
+> > On Tue, Mar 18, 2025 at 05:51:53PM +0000, Burak Emir wrote:
 
-I disagree, it's only going to get more painful in the long run to
-change this.
+[...]
 
->> 3) I don't understand the argument that this is confusing to C devs.
->>    They are just normal functions that are well-documented (and if
->>    that's not the case, we can just improve them upstream). And
->>    functions are much easier to learn about than `as` casts (those are
->>    IMO much more difficult to figure out than then strict provenance
->>    functions).
->
-> I really don't think that's true, no matter how good the docs are. If
-> you see `addr as *mut c_void` as a C dev, you are going to immediately
-> understand what that means. If you see with_exposed_provenance(addr),
-> you're not going to understand what that means from the name - you have
-> to interrupt your reading and look up the function with the weird name.
+> > Are those 'drop' and 'new' something like a special rust words? If not -
+> > can you use alloc and free wording? Would be nice to have rust part
+> > looking similar to C. Nobody wants to keep two sets of names in mind.
+> 
+> Rewording `new` to `alloc` seems reasonable.
+> 
+> As for "drop", that word is special. It's the destructor that is called
+> automatically when the bitmap goes out of scope - you can't call it
+> directly. It must be called "drop".
 
-I see this as a double edged sword, yes `addr as *mut c_void` might seem
-more easily digestible on the first encounter, but that might also lead
-them to never look up what it exactly does.
+OK, then drop and new.
 
-And I don't think that we should optimize these functions for C readers.
-They aren't used commonly (or supposed to IMO) and there are several
-other functions that are similarly confusing if not more already in our
-codebase.
+> > > +        if let Ok(nbits_u32) = u32::try_from(nbits) {
+> > > +            // SAFETY: `nbits == 0` is permitted and `nbits <= u32::MAX`.
+> > > +            let ptr = unsafe { bindings::bitmap_zalloc(nbits_u32, flags.as_raw()) };
+> > > +            // Zero-size allocation is ok and yields a dangling pointer.
+> > 
+> > Maybe it's OK, but I'm not aware of any a correct algorithm that needs
+> > 0-sized bitmaps. I already asked for it on previous iteration, right?
+> > So unless you can show me such an example and explain what for you need
+> > 0-sized bitmaps, please drop this wording.
+> 
+> Thinking about it, I actually think there is a good reason to support
+> zero-sized bitmaps for the Binder use-case. Right now, we always
+> allocate at least one long worth of bits even if they're all 0. But we
+> can improve the memory usage of this code by not allocating any memory
+> for the bitmap until the first time we use it.
+> 
+> The reason that dbitmap.h doesn't do this is historical. Originally, the
+> bitmap started out having BIT(0) set to 1, so we needed an allocation to
+> hold that from the very beginning. But that was changed in commit
+> 11512c197d38 ("binder: fix descriptor lookup for context manager"), so
+> the bitmap now starts out empty.
 
-> And those docs probably spend a long time talking about stuff that
-> doesn't matter for your pointer, since it's probably a userspace pointer
-> or similar.
+Empty bitmap is not a 0-length bitmap, right?
 
-For userspace pointers, see below.
+If it was me inventing dynamic bitmaps, and if I was concerned about
+usability and performance, I would think carefully what exactly the
+request for 0-bits Bitmap object means.
 
->> Thus I think we should keep this patch (with Boqun's improvement).
->>=20
->> >> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
->> >> index 719b0a48ff55..96393bcf6bd7 100644
->> >> --- a/rust/kernel/uaccess.rs
->> >> +++ b/rust/kernel/uaccess.rs
->> >> @@ -226,7 +226,9 @@ pub fn read_raw(&mut self, out: &mut [MaybeUninit=
-<u8>]) -> Result {
->> >>          }
->> >>          // SAFETY: `out_ptr` points into a mutable slice of length `=
-len`, so we may write
->> >>          // that many bytes to it.
->> >> -        let res =3D unsafe { bindings::copy_from_user(out_ptr, self.=
-ptr as *const c_void, len) };
->> >> +        let res =3D unsafe {
->> >> +            bindings::copy_from_user(out_ptr, crate::with_exposed_pr=
-ovenance(self.ptr), len)
->> >> +        };
->> >>          if res !=3D 0 {
->> >>              return Err(EFAULT);
->> >>          }
->> >> @@ -264,7 +266,7 @@ pub fn read<T: FromBytes>(&mut self) -> Result<T>=
- {
->> >>          let res =3D unsafe {
->> >>              bindings::_copy_from_user(
->> >>                  out.as_mut_ptr().cast::<c_void>(),
->> >> -                self.ptr as *const c_void,
->> >> +                crate::with_exposed_provenance(self.ptr),
->> >>                  len,
->> >>              )
->> >>          };
->> >
->> > That's especially true for cases like this. These are userspace pointe=
-rs
->> > that are never dereferenced. It's not useful to care about provenance
->> > here.
->>=20
->> I agree for this case, but I think we shouldn't be using raw pointers
->> for this to begin with. I'd think that a newtype wrapping `usize` is a
->> much better fit. It can then also back the `IoRaw` type. AFAIU user
->> space pointers don't have provenance, right? (if they do, then we should
->> use this API :)
->
-> We're doing that to the fullest extent possible already. We only convert
-> them to pointers when calling C FFI functions that take user pointers as
-> a raw pointer.
+I would probably consider it as a caller error, which makes total
+sense.
 
-We should make bindgen use that type in those interfaces already.
+Or I would consider it as a special hint, like 'give me something to
+begin with'.
 
----
-Cheers,
-Benno
+If I decided to go with the 2nd option, I'd probably avoid memory
+allocation at all, and re-use the pointer as the bitmap of the length
+BITS_PER_LONG. That would save _a lot_ on useless small kmalloc()
+calls.
+
+The whole business of dynamic arrays is about potentially infinite
+number of elements. User of your array doesn't even care about the
+exact length, because it may get changed anytime, right?
+
+In that case, the comment would sound like:
+
+  // Zero-size Bitmap request yields a bitmap of an arbitrary
+  // non-zero length.
+
+[...]
+ 
+> The clippy linter emits a warning if you have a `len` method but don't
+> have an `is_empty` method, since Rust containers usually have both.
+> 
+> https://rust-lang.github.io/rust-clippy/master/index.html#len_without_is_empty
+> 
+> But the confusion with "no set bits" seems like a good reason to silence
+> that warning for bitmap.
+ 
+So the comment at your link says:
+
+ It is good custom to have both methods, because for some data structures,
+ asking about the length will be a costly operation, whereas .is_empty()
+ can usually answer in constant time.
+
+In this case both len() and is_empty() are O(1), but the last one
+is totally misleading.
+
+You guys would better teach your linter to understand when the len()
+is cheap, so is_empty() is useless.
+
+> > > +    /// Sets bit with index `index`.
+> > > +    ///
+> > > +    /// # Panics
+> > > +    ///
+> > > +    /// Panics if `index` is greater than or equal to `self.nbits`.
+> > > +    #[inline]
+> > > +    pub fn set_bit(&mut self, index: usize) {
+> > 
+> > set_bit() is an atomic name, but you wire it to a non-atomic operation.
+> > This is a mess.
+> 
+> Hmm. I do generally agree that we should try to match C names, but I'm
+> unsure about this particular case due to the underscores.
+> 
+> This method takes "&mut self" rather than "&self", which means that the
+> caller must have exclusive access to the bitmap to call this method.
+> Attempting to call it when the bitmap is shared will result in a
+> compilation failure, so it is impossible to call the non-atomic method
+> in cases where you must use the atomic version.
+
+Does mutual access implies memory barriers? Your code doesn't add
+them. Is rust compiler so smart to realize that you need it?
+
+I mean the following scenario:
+
+CPU1                            CPU2
+a.set_bit(1)
+                                a.test_bit(1) -> 0
+cache_flush()
+                                a.test_bit(1) -> 1
+
+If the above is impossible, then yes, your set_bit is atomic.
+
+> We could call this method __set_bit, but using underscore prefixes for
+> methods is very very rare in Rust code because prefixing a name with an
+> underscore usually means "do not emit warnings if this thing is unused".
+> For example, when locking a mutex, you might write this:
+> 
+> {
+>     let _lock = my_mutex.lock();
+>     // do stuff ...
+> 
+>     // _lock goes out of scope here, unlocking the mutex
+> }
+> 
+> Here, if you called the variable "lock" you would get an unused variable
+> warning, but prefixing the variable name with an underscore silences
+> that warning.
+
+But underscored method is not a local underscored variable. It doesn't
+have scope.
+
+> We can still call the method __set_bit if you think that is best, but
+
+No I don't. Nobody likes underscored notation for non-atomic bit ops,
+but it's a historical thing.
+
+> because underscore prefixes usually mean something different in Rust, I
+> wonder if we should use slightly different names in Rust. Thoughts?
+
+This is a new project, and you may decide to change notation. Just
+please be very specific about it.
+
+So I'd suggest the following:
+
+1. Mirror C interface: __set_bit() and set_bit()
+2. set_bit_nonatomic() and set_bit()
+3. set_bit() and set_bit_atomic()
+
+The last one looks the best to me, except that it just the opposite
+to what people got used to in Linux. If you go with #3, please add
+both atomic and non-atomic set_bit()s in the same patch, together with
+a bunch of comments, so people will be aware.
+
+> > > +        assert!(
+> > > +            index < self.nbits,
+> > > +            "Bit `index` must be < {}, was {}",
+> > > +            self.nbits,
+> > > +            index
+> > > +        );
+> > > +        // SAFETY: Bit `index` is within bounds.
+> > > +        unsafe { bindings::__set_bit(index as u32, self.as_mut_ptr()) };
+> > > +    }
+> > > +
+> > > +    /// Clears bit with index `index`.
+> > > +    ///
+> > > +    /// # Panics
+> > > +    ///
+> > > +    /// Panics if `index` is greater than or equal to `self.nbits`.
+> > > +    #[inline]
+> > > +    pub fn clear_bit(&mut self, index: usize) {
+> > > +        assert!(
+> > > +            index < self.nbits,
+> > > +            "Bit `index` must be < {}, was {}",
+> > > +            self.nbits,
+> > > +            index
+> > > +        );
+> > > +        // SAFETY: Bit `index` is within bounds.
+> > > +        unsafe { bindings::__clear_bit(index as u32, self.as_mut_ptr()) };
+> > > +    }
+> > > +
+> > > +    /// Replaces this [`Bitmap`] with `src` and sets any remaining bits to zero.
+> > 
+> > Please: replace and set, not replaces and sets.
+
+Also, bitmap_replace() is an existing function. It's better to avoid
+that word in different context at all.
 
