@@ -1,67 +1,78 @@
-Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7421208970
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 20:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796881B0F20;
+	Wed, 19 Mar 2025 20:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742414800; cv=none; b=FBsm05Aca4+mXd2WldpFswi4tqIrIGaJ7k8zowSKNctZyuxjBxdZ69PfxQoJBIJJv+H/WEoqBFw8Oy8btt1Wv0GHIS0L/OAQAxwaQ4zNOlvrW17xraXFfclbhk/sWjml4hutQFzuM1jjBBGm0OoFGcna5KBwgcyPbrupnK3gXqs=
+	t=1742415400; cv=none; b=p2bZjghhz1fZUZtgY0QV9gQSsYIecdTF475MnxdsnlWTzsgfqVN8/VWu/Ma2+c0xwWfMnqj/wMYq0DOcDPUqfYbctOLtVab35lYIZDEq8UZyWH11XL9vZt9Ui4NLT0v2QD9pu31ztemN1NLQOlnYXVaV8S/MVrdSRml0FAne398=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742414800; c=relaxed/simple;
-	bh=sBQizwXG0Ih32L76gbEuUHAYkdvvLkptVImMH98yU3M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qNO0mfRQ9D1KIjsrqsUfJ3hcFWwarDrYghDIW9rVSghbAJu49VKfsCqd+uvpcNm9PCbvaSmZ+BwpVsXtigEKb9bvZa/5Y5GKJqe0cIIpHY6y/j5ov2MT3PdToo1SS97I8bgd2QVs8TkuOMKK6zIyQd1M4jRHiQdaIkIxJeoCZ5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TkmI5WJR; arc=none smtp.client-ip=79.135.106.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742415400; c=relaxed/simple;
+	bh=nz5Sorhb4ps7kptLjC/ZGul4mOFCsLRQTWZ0j3Yv2IE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ESWtYV/qywjt18pJPXZYc3rAHuMROje/+s7UFkXRcXWywnzfFVSZr242QD9bfgYt+oKWIKZeSTcBRFwNN1RCbNMWiMxA7FExpFKH/C7xlQkxLUHQ51Ci7l9IPB1sfYxQfEJKwqMAE5E5dkoKLoBRvsbp1XsFSS59XKIWxyOdUZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kt9iWFZk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TkmI5WJR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742414796; x=1742673996;
-	bh=sBQizwXG0Ih32L76gbEuUHAYkdvvLkptVImMH98yU3M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=TkmI5WJRmBKhXPvPqG28K9WsoFVFQRoTF2o7mjeqwqWaVj7NYOKz3YJdtyRz/Ycmf
-	 y3jkM559fQZgtjcBKLQadCBdCaJK0mEvKs47V9jt4ZKYfgFVYdUpHkA13KUcmKp5nM
-	 VmJxTbb9yQLkM5rwYsNnGl4JeWCUvchQ30gG+0kPyWBySCiRx1/50uPo1dXsuT0iPd
-	 CwVTF4oSriUDdZiJXdmrp+0AdEBAjcalyw5VMV9e2ZZbYjqBrkJ9802qvoct4mo3go
-	 myp3ofL6xrG+nOkP6V3+x8cNMsPIz8D1mOm9Jr3LSNUMMP50nqtA8Rdi6gFq/WX0vS
-	 IcUQAA5CEDb5g==
-Date: Wed, 19 Mar 2025 20:06:29 +0000
-To: Tamir Duberstein <tamird@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 6/6] rust: use strict provenance APIs
-Message-ID: <D8KIHNXCPE0P.K4MD7QJ1AC17@proton.me>
-In-Reply-To: <CAJ-ks9kD++_T_3my1Etam9PRJHHZvdM=zbkWgbxW3oybwMTw9w@mail.gmail.com>
-References: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com> <20250317-ptr-as-ptr-v5-6-5b5f21fa230a@gmail.com> <Z9lnIJCcVSza6UVo@google.com> <D8JTC30W0NF6.17SR73Y9I99ZT@proton.me> <Z9q2xpwsNMDzZ2Gp@google.com> <CAJ-ks9m8r_ABh4ift3wmM_wpbYLo=ZuhUarfLJKQnS7TcGHRdg@mail.gmail.com> <D8KBL9Z0B68N.2Q3MU9UK9YI6G@proton.me> <CAJ-ks9kD++_T_3my1Etam9PRJHHZvdM=zbkWgbxW3oybwMTw9w@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: c1e16fe86517918748b68b2b3bbf9b93cc99ada5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kt9iWFZk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F28C4CEE4;
+	Wed, 19 Mar 2025 20:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742415399;
+	bh=nz5Sorhb4ps7kptLjC/ZGul4mOFCsLRQTWZ0j3Yv2IE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Kt9iWFZkWXaex7mWHax18ZZ53kp9CUm7trX4T4TuDW7phABDZtkEJUwJ0lv/gutRh
+	 mp4bQTPEZVhTZaPRc0IvZscB2J8UQeP2TCeDPiBWqQvit4Dsnu81Q9whty1HwQhrPK
+	 rGBbJo/FtCYkDx1w0w9d162UACDAiunTq+0BABjC3NUPsyCQM5oxaSVqPG8sifUcvc
+	 T2DYTOX/yYRtssK5Wv4TEFT0tGssVZ7rtzuumbFI39ZPCOKxz1AT0rMPQL87mTcSW0
+	 KqKb5wSdRuA5rUcXifcybXj7/Ij4MgQ49mzVz7FHUadxdwxW99axCDZKa03JCOpA0c
+	 3eV4DvE5vdk1w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Alexander Viro"
+ <viro@zeniv.linux.org.uk>,  "Arnd Bergmann" <arnd@arndb.de>,  "Miguel
+ Ojeda" <ojeda@kernel.org>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary
+ Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  "Benno Lossin" <benno.lossin@proton.me>,  "Trevor Gross"
+ <tmgross@umich.edu>,  "Danilo Krummrich" <dakr@kernel.org>,  "Matthew
+ Maurer" <mmaurer@google.com>,  "Lee Jones" <lee@kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 5/5] samples: rust_misc_device: Expand the sample to
+ support read()ing from userspace
+In-Reply-To: <20250311-iov-iter-v1-5-f6c9134ea824@google.com> (Alice Ryhl's
+	message of "Tue, 11 Mar 2025 14:25:16 +0000")
+References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
+	<Tfm4k4u95E5X-U3bEYcGAPbGrFqPmDV3F-MsJkvz9QST_luT89M_m27RzR2UG7ajOcfH83xsMIG6KxRWtk4Bwg==@protonmail.internalid>
+	<20250311-iov-iter-v1-5-f6c9134ea824@google.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 19 Mar 2025 21:11:16 +0100
+Message-ID: <87bjtwg4rf.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Wed Mar 19, 2025 at 7:23 PM CET, Tamir Duberstein wrote:
-> The improved ergonomics arrive in Rust 1.79. See Boqun's reply that
-> explains we need to keep all the stubs until then.
+"Alice Ryhl" <aliceryhl@google.com> writes:
+
+> From: Lee Jones <lee@kernel.org>
 >
-> Regarding landing the rest of the series - you said it yourself: "it's
-> only going to get more painful in the long run to change this". The
-> nature of lints is that the longer you don't enable them, the likelier
-> you are to have a higher hill to climb later.
+> A userland application can now operate on the char device with read() in
+> order to consume a locally held buffer.  Memory for the buffer is to be
+> provisioned and the buffer populated in its subsequently provided
+> write() counterpart.
+>
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Yeah that's also true (for some reason I was understanding "dropping"
-the patch as "abandoning" the patch :)
-As discussed in the meeting, feel free to split the series.
 
----
-Cheers,
-Benno
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+
+Best regards,
+Andreas Hindborg
+
 
