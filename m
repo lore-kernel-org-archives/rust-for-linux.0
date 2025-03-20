@@ -1,63 +1,63 @@
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766D01DE2CE
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 02:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1217D1E32C3
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 02:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742436538; cv=none; b=a6klYyI6R6yq3KuplI8P8O7UtLYnYdydP6VdMhKmtNg2C9oQyPiDLl4ciF9uMEk2FOv7lNYBApMTzTdogiFIoAheg8iwL1JG5KgTqSiS7GzgsnCkFEVfs/p6viKUOFDMZzLxUfHnh7PclnH/S+t8kgdFemzevDdd8ZmcrCQOLZU=
+	t=1742436539; cv=none; b=ffNpVulZW95lo1SZCYq+YUz/ob1JbNhTK0RJuxo6Yb2QDO5NHJZEJ4Eeg2pi0MMu9SIVW18PsWZvPpvUOR91Ct/8oIDI+AbggBi8tSNlUwZjAzku4P8NfJ4hk37M7wu9s0x0JDkczu82kx0HxfKKASSP0JQIiqCmYWs/f/GoU1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742436538; c=relaxed/simple;
-	bh=Ei46/XSjgfzkcjSL5NbmSt9DgtmSmLVGDDGjD5wOnw0=;
+	s=arc-20240116; t=1742436539; c=relaxed/simple;
+	bh=w+3mxkeJWPRgWkPVeh+q6udIrxC+GmIGcgfPuZvQ/hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xeidv7U5K08Y9Z1cHBfQcpffSP+q0XXta4FefIE4lYLp3/3RX/DrVGm9GisXfRlNwBV49QotYUS1okWxtg7sS0nohSosh9D71Cj7CwJaNs+IFljpo5xhH4RqiYmF7T8rsH6qRoHqozNvCoR3BmxLMcfk9XoSZG/rljf4CcbIkLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=g0EuQedb; arc=none smtp.client-ip=209.85.128.182
+	 MIME-Version; b=e5l4jYl8kXqasPrcG+yb6VpAX7+Qw7aV+84HmL19q7De8vD2ks3oiGYk15PcJOiKgQUGrszknp3faAJmcldvDWnONwwbrHkV9N3b8yrmQ6UttTrAVVI+/Qq+RW49UtJxspWNCPkEzMmtbgr7Pfl1dbQaB5aqVIETftGBfmfA1pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=Sh/k5bkL; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="g0EuQedb"
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6f74b78df93so3404627b3.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 19:08:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="Sh/k5bkL"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6ff07872097so2437377b3.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 19:08:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742436535; x=1743041335; darn=vger.kernel.org;
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742436537; x=1743041337; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=P9FHzui9Ab3LHBQvPmz9xI55DK1wU77PLMSFevFbEbg=;
-        b=g0EuQedbkYXF6jLrAVInhGwSbXufC1Gtm6eioFieybJU6zQhd9jKz9vfxJJzTCsFkK
-         dlFanuhWnCryNh2SY1wyCVrUuTa8jX7Md+Ti5ayHh92RNA/EMc6Y1F4sPjELlhpNwsQN
-         97ZDUOvuaJMtaeyRpdFfmm7yN+ghhMGzdVAjB/02k2UkUg3seuNXsODWPOLmFeRJXSYg
-         +B+RzrzHrlz9lMOHstD7wtfaeykHYln+z54T9mQ6aRijsTaMJQSXQo1q+TegjFYq+Ked
-         3QbeXG0mUtGw8GhIg+W22KPWfQU9pA7Af2GQoRSO3ntMPHF2SMsLOpNs0qJOkiTtwbHe
-         c1pw==
+        bh=wj78UMgSb6SZsH/TEr/IJNi7K+Iee3Ee8oiL2FOp1sE=;
+        b=Sh/k5bkL+lqe3TpKVLgF5UeotqbmvlrXqNPMNxver0rBqSBpgYYlxY1/MVTnlcswiX
+         iXWZ/MGB4GaOxwTP4Go7wWzPpAbTmKl8b130p5sUt5SSD3pTCiYRoJ1S/3obSTLF3bis
+         5XRjsYvaMp61Q2Nv42sc+YUGiG8gmatm8jobU+nKlKccd/KxfDpMm/5KLcIHUqVYinU4
+         6/rbMg1GQSH9SYzfG19y4qGkAX+cqv9qeMgychePNJTOrgJumvuHT68xmkPKGMIpcX/G
+         XIVaothuqDWrDNR+TIQvFa67ZEPP47cf5Kl9aWmSzNtEYw/k/HTI7ASrVPgki0xHD9cp
+         fjaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742436535; x=1743041335;
+        d=1e100.net; s=20230601; t=1742436537; x=1743041337;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P9FHzui9Ab3LHBQvPmz9xI55DK1wU77PLMSFevFbEbg=;
-        b=fZD8AVa0+TjQhgDZ2ir5V0xbP4MsTpAPqkkzY0tDtH3EYwS99ddmNrwKqJKYr6tQFc
-         BwCkaiqiCDxfFj8qSvOpRs23SpZuA485hDG+6aGQohwo41eywLUAGdn9oH0GEKElYCWW
-         37M5CHeJmQ7Zsp/vIBNfXCOKE25xHp7fypnwlPPDe6/sEcdJIDIHtKjwykOTEz6tWSBK
-         GmcNv11NiMbtjyfjHND0s71owNChyJriTFjtwN3SpptslT1/GBnxau0Gq2DQvE+5co/X
-         NUu8eclpXyDOpyyZCyZaCSQ12FcFnepTf/4AzRHF2eARNTEjZ4Dhl6dphe2InxJ6D0t+
-         FHsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXlx7+OMqZMvbxLJ7GBNJ4FbTX8UfDzaRCHwMxcNvjOv3gvyz31d90YmC7P7mJRngUR2kFpWWUIhL0SxNr4qg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3EGRA0TQEdTVxE8/t6FRoWwwRq3Y+LQn8g8c1s/5W+kMCcpOy
-	GMCZY7CHJ0KpPbG0/8WkhWifXO5i40LziGrVjWZMno8iP3cZHEJkMMPoeuXaLxc=
-X-Gm-Gg: ASbGncvE2XpQv/4Jlj+8YsLX3oVr/4I2ncFNnXx0kEmZHcwVVdxpdPCFvP8jJJYAsNH
-	2jzTllpdxC2N/I80tePOIbNzGlnpwtN993N2wth7zcpGjTEmx37Ks5WAuyCcS3yfQKOk3QQ4kby
-	IP+SK5Lo0ECAp3jEICHO1B/FFVqHgLcpOvR8MaH5l0zs/mVzTGtqsYjbVvIEZBnFN426nLGsKw9
-	25FaZXlbkShPVR7wH+ZFKVxIsdqbMt2hUWUr+50ujK2GW+SOG2RsTWkILHnqBZOdnIIPa5p8n0k
-	5pDOQMLHBrRaRDkKlSkQJQMwJgerrDsRTA2LzyFXJRcqfh7yp9dNEjLW4wd7dRpZTkzLvp2YyD2
-	pc8kcaET2tyfV6P6ydx+GpNIbCrkN+mXsNALk3x+P
-X-Google-Smtp-Source: AGHT+IHa6JKiYio8gKv8paGdcIO0IZzOY+f2BKAM9umcVjti6jZO+C9x6PaGEBUZlcxkLfGY6lbIQA==
-X-Received: by 2002:a05:690c:6109:b0:6fd:dfcf:2b11 with SMTP id 00721157ae682-700ac6c670fmr18931267b3.24.1742436535429;
-        Wed, 19 Mar 2025 19:08:55 -0700 (PDT)
+        bh=wj78UMgSb6SZsH/TEr/IJNi7K+Iee3Ee8oiL2FOp1sE=;
+        b=POXIQ4m6VfVBJnDzZh9OdO7KMoWzk/8u7xFdjFh+hzetnUjaMvMyOeXe8G3zCRVOct
+         XXsvET6ZSMz+WG6cdTUpK27u2LyPOPsGmFbmRgGaBJP7LrioDVMFzSsL7h6b/zay/ml9
+         FiUYeic3QplwfxyjupH8puOQCvQW3yb8LWNYXN7jSrS/U6xAe4BTePyXW5MKj3VTE1CH
+         mj0x2yucxc9xi+VKtk85EAmNnwqE0YOMEAVLZjb5RjkhUs7OKOhX7dUlNJ+Hl5xBmBbv
+         Kr9YhuYdf0WFM+n8EW5/xCO385pyji/hcc4N0ZBYIb3dpThhteThCcGKyLHgGYNuJAyT
+         o6tA==
+X-Forwarded-Encrypted: i=1; AJvYcCVXvElVF/MmokdePDm+hAM8gNkkmWLTjd2zace/itIZSEX6J/95f/iIN7KAFZFAumUYkV1JvYEDoLaGaPjJow==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwC6j0dAPPUITlDL5AN58ehGDbiM+rWKHaZMtVeQ17snMziHWnM
+	LOaUDK5uhtLVnZ7UFVPjcJjxKMx2C5d1JFADpz35nHQqRNO2/uaBQsyd73Vprtg=
+X-Gm-Gg: ASbGnctSdivif+Sfzarf13wZE4TfYrmF71xupO6zgx22ySxEzeIZHDmrZlVb5ISS+Pl
+	dL97/Le35wk9QIRTVPqdk9aBqm8Rm3b6/9pzZYuLA29FjZGg1/j4HmiJF5E0DirPh4fJ7/p9vzC
+	VOMhdNNP6qr4xy45J4g0inVTvRQRiOZupZBrsBCVnnlo8vYtjOC3xLZOwN/ek5MsVyK3D6n5ltw
+	dww25TOEiIujanz5PiJetwp0m1xt44Bzv83q/7UYmewRHVLb3+ZsQIleQ9mkMPuRhv2rB6K91N3
+	ZCWq5VtaknDxutwBjV8MEAvYcgEx9aIL9m86M8zUQcvFj3kZ4IpRZf1bp6AW87SyrKjPIQiOGeo
+	EQiGWxl4yGR03hp7T+RQN1Ank7VvUaA==
+X-Google-Smtp-Source: AGHT+IEkG7Np3EYPQLzZcOpztGKxz58/1QQ7YJesvBpbwMvnGp6f2VV8gB17oSsnBOO4JzGhyGZfAw==
+X-Received: by 2002:a05:690c:7246:b0:6fd:459f:dfa7 with SMTP id 00721157ae682-7009c15a3a9mr71229657b3.36.1742436537066;
+        Wed, 19 Mar 2025 19:08:57 -0700 (PDT)
 Received: from Machine.lan (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6ff32cb598asm32826357b3.111.2025.03.19.19.08.54
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6ff32cb598asm32826357b3.111.2025.03.19.19.08.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 19:08:55 -0700 (PDT)
+        Wed, 19 Mar 2025 19:08:56 -0700 (PDT)
 From: Antonio Hickey <contact@antoniohickey.com>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -72,9 +72,9 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 Cc: Antonio Hickey <contact@antoniohickey.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 09/17] rust: workqueue: refactor to use `&raw [const|mut]`
-Date: Wed, 19 Mar 2025 22:07:28 -0400
-Message-ID: <20250320020740.1631171-10-contact@antoniohickey.com>
+Subject: [PATCH v5 10/17] rust: workqueue: replace `raw_get` with pointer cast
+Date: Wed, 19 Mar 2025 22:07:29 -0400
+Message-ID: <20250320020740.1631171-11-contact@antoniohickey.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250320020740.1631171-1-contact@antoniohickey.com>
 References: <20250320020740.1631171-1-contact@antoniohickey.com>
@@ -86,45 +86,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replacing all occurrences of `addr_of!(place)` and `addr_of_mut!(place)`
-with `&raw const place` and `&raw mut place` respectively.
+Now that `Work` is initialized via `pin-init`, the `work` field
+is always used. This allows us to replace the use of unsafe
+`Opaque::raw_get` with direct pointer casting.
 
-This will allow us to reduce macro complexity, and improve consistency
-with existing reference syntax as `&raw const`, `&raw mut` are similar
-to `&`, `&mut` making it fit more naturally with other existing code.
-
-Suggested-by: Benno Lossin <benno.lossin@proton.me>
-Link: https://github.com/Rust-for-Linux/linux/issues/1148
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/all/20250316061429.817126-1-contact@antoniohickey.com/T/#mc7a4757e8c132f84228b728c7d123d73841501d6
 Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 ---
- rust/kernel/workqueue.rs | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ rust/kernel/workqueue.rs | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 0cd100d2aefb..4e27df324d26 100644
+index 4e27df324d26..5cc259c1e502 100644
 --- a/rust/kernel/workqueue.rs
 +++ b/rust/kernel/workqueue.rs
-@@ -401,9 +401,10 @@ pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self
+@@ -399,12 +399,8 @@ pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self
+     /// need not be initialized.)
+     #[inline]
      pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
-         // SAFETY: The caller promises that the pointer is aligned and not dangling.
-         //
--        // A pointer cast would also be ok due to `#[repr(transparent)]`. We use `addr_of!` so that
--        // the compiler does not complain that the `work` field is unused.
--        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).work)) }
-+        // A pointer cast would also be ok due to `#[repr(transparent)]`. We use
-+        // `&raw const (*ptr).work` so that the compiler does not complain that the
-+        // `work` field is unused.
-+        unsafe { Opaque::raw_get(&raw const (*ptr).work) }
+-        // SAFETY: The caller promises that the pointer is aligned and not dangling.
+-        //
+-        // A pointer cast would also be ok due to `#[repr(transparent)]`. We use
+-        // `&raw const (*ptr).work` so that the compiler does not complain that the
+-        // `work` field is unused.
+-        unsafe { Opaque::raw_get(&raw const (*ptr).work) }
++        // CAST: `Work` is transparent to `bindings::work_struct`.
++        ptr.cast_mut().cast()
      }
  }
  
-@@ -510,7 +511,7 @@ macro_rules! impl_has_work {
-             unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate::workqueue::Work<$work_type $(, $id)?> {
-                 // SAFETY: The caller promises that the pointer is not dangling.
-                 unsafe {
--                    ::core::ptr::addr_of_mut!((*ptr).$field)
-+                    &raw mut (*ptr).$field
-                 }
-             }
-         }
 
