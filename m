@@ -1,88 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D7621CC4A;
-	Thu, 20 Mar 2025 12:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE742139E
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 12:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742473160; cv=none; b=mBIXqusSIM10zuKAOG4n8/J02EzlrWHfeBSQuAekM15bKGEqOV4WlGxuIz+Ao2dVO5JcnDALE8RWP9bMZ5I8p5eqKFsMDIK2FiZNekyqmLNjQrczr+/ccmXZvpEOc4JTf6VViTisDDmuklmwMTpCYFbjALi6qNziht/eCFZ72o4=
+	t=1742474883; cv=none; b=AERHYGOVv4iN16YIcZmJZvGXX7z0u3CbaT84iZJD2w04kvCFp6Co5CA262pqntECScm80cvRcIhoDfBybowZkb3SC17pDSnQVEzaOlRBXh+zRSvQUlxBctm6ZoeDP3rkC9DsYZIaH2TD7BktFjfReFUz1oGXiDXlRrUGO52vDho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742473160; c=relaxed/simple;
-	bh=IgacscJu0BctP1CTVeEZ9NwpbUaiPSFQC+NgqU0li6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ARZQRlFPe4t2G+SHuv/SmrIukbpO8TfgtxBkMnxr9ZZy76b89x5HpSbZjXeq+igQfAsRosrkgXbhIxZvz4hv74ZHxlt4jDuT9nkmG9FvM2NfPv8/cYO/xpM7PG1kJk10N2TedNzFzrOLoCrsqBZtwfwYZrlSC2Blv7f2xS3IwmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QvnCtAMR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742474883; c=relaxed/simple;
+	bh=IDXJl1i8J/l2RNFsvY0vgM0l739CZxYxycHd2ToDpb0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cdm89Snjwf2mXjlck3M+Vmr5W4N/ZoEsioEmydU9wu5cdiXNQGXscRkKidrlxwb/v0Bl+lulRLsEQuuos9MO8P1dfeO8tEaEeJ6t93/CBwHHtZA91QsNqhiVfqsPvakLZfaqRAJ0MnYVUawI2RB0g9ptzC+T46Rgiti6o6MPXzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=PvKhbGaB; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QvnCtAMR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6343C4CEDD;
-	Thu, 20 Mar 2025 12:19:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742473157;
-	bh=IgacscJu0BctP1CTVeEZ9NwpbUaiPSFQC+NgqU0li6c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QvnCtAMR+Cdxhn515+kNe7/mOya6e3QfxwbVaNQe3ALkjZ0fOw18xkwon2X4bRL/s
-	 EPUBVWXn6ycWxGNjRerBUTuFMmLWQj+suAtjxPTyFEzKsMxDIe4+OVYP/j7zufls8m
-	 4O/3gLyT+5r1oeNt4IAS8psKlMfSSTxhr6rC7ENa+N/XrXMF1EGxjEccllbBzzh+tL
-	 poRfIuckikq87dLxa/3Ce9LdM9E7yNSJIDcl6rUfdwJMsmB/WKfazNr5+eSxXYwVq2
-	 uKiP5U32g+4/e2zMPIdzIONQl8wVstmvW1EcmS5tRcx8Jh5U8I7m2nDuQxfso7lVW0
-	 nuS7+No287dIQ==
-Date: Thu, 20 Mar 2025 13:19:11 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, tmgross@umich.edu, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] rust: device: implement Device::parent()
-Message-ID: <Z9wHv-2HXfoYZFmk@pollux>
-References: <20250319203112.131959-1-dakr@kernel.org>
- <20250319203112.131959-2-dakr@kernel.org>
- <Z9vTDUnr-G4vmUqS@google.com>
- <CAH5fLggvFanUvysDkZiLqFz4Ay7XSP5LF3CvxBU3xgWE3PSZXQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="PvKhbGaB"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4394a823036so7319675e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 05:48:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1742474880; x=1743079680; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yRTmEzyfg+Wz6HIOSkkIOgmGqmh0KFaXiwIBIUrCw2k=;
+        b=PvKhbGaBGw+zOo34+cdp03/WbjbcwwhOEEjLib/s6Zx3BkvkhBWFlTSK5iMHfsSLbb
+         WD1skXKZBqhuAMl5ONYxYizUvavv/FCOUDxyvpARuf2OXA5X5NyVTNYtSd0zvkX66zru
+         ie2tV3jQdzZTFSUkZbtxpNhgxR1xY7P+hH80RdWf3COONqCcirJj9sJ5ObTRLSxnJz0n
+         1XNkyT6jZiIzJ8+OUtqiX67lywSQ4s/05Ok9TNi2f2KYQYlMCSKyIbRQfV7oBAqnDD7U
+         eiSWkdppj4ea4m2LjW2OXkkSB8pM9W7HrX8LX/Zb8/7i7VEN8Eb/SwAm6ZIMysj4J0NX
+         Wo6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742474880; x=1743079680;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yRTmEzyfg+Wz6HIOSkkIOgmGqmh0KFaXiwIBIUrCw2k=;
+        b=o68+U1HLGbRFrJ5PhOGzsQ45JKpQcL/oo3eb5H4cDcHTKRe9Bnjm4COG1e3pkr1EE5
+         dU9j4ULecmQZP/toDPrIWjfKDhj61Prfwd9haTKrBTyjGcHhyMt4KtcuTeZuyEWZN2Xs
+         GgFbPmy7At92Pbbf2RhE//TNVltWhdx2cRLB6zIZiPYxfS89IO2ncQuloKM+WzUOcZ//
+         /PVGvtoWJeFqclwvrcC/ufp+9fgmj114bIZeMnYwwGIt0gIDwCxUSMlqK6lHAr9whzVY
+         Lh/lZs6fsOtrik6JexvXYyp8QfRcqvk8olHnJHKuwoAJw0H7m7irjmiA597RwW/IxJU2
+         RBLA==
+X-Forwarded-Encrypted: i=1; AJvYcCX5PCPOnVeqom//A85TctfvQRE6fwWm8m0ibzJJAjboKX5H/Z0uaHop5B2Dy1rLYeS6DGq0VYCpH8tbpdcuxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywkwt5iMGB3LVyk78S6iyU0YJ7h6Od0E4mtwguSd8/+fQtMC84f
+	XgAN3mKDhzi+ff9Gt6ZUMaFAcJl2N30n0hYpCb5HPd/kPaH1e/REVluDWI2XtUA=
+X-Gm-Gg: ASbGncskp+8V/mZ0Y0mZctt+GgU3q2tynMtXxl+y6NjGVtSLQ9/Wh535ABhmRTQ5OUJ
+	cv+BqGmEoc7HMrvIH4bUYIPSkki0hGLpliP00t7a7QJ/BVYU2auzk7QuPT49ruOpwq5xnZa4g1v
+	CAo8Vt388Y2acH1IeE7nw3mYnA4DAo4UZNk7GDCiQDVyVOqmQPYaONT79SeOJSasgeK3At0F3hA
+	7+NWAk6bw5oTuXJDeBWxTjePoZKK17NKV+LjQ/1Yh2s2IyCs/5Y9pgtBj08OXrGTIl7v5JCgRMB
+	FBFxQYEkfVo3KA2hYVrMw7NiIjys2W5siADMYTVTbc0EfjDF
+X-Google-Smtp-Source: AGHT+IFK8cnKd03UI58c58N9tTUhbs8lTuMEB2+nvwJxneGk0ZnWe422V+Lm7Z/j4ELAov50+NMyvQ==
+X-Received: by 2002:a05:600c:3b92:b0:43d:1824:aadc with SMTP id 5b1f17b1804b1-43d438a1d8bmr63258995e9.29.1742474880123;
+        Thu, 20 Mar 2025 05:48:00 -0700 (PDT)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43f589bfsm47675145e9.22.2025.03.20.05.47.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Mar 2025 05:47:59 -0700 (PDT)
+Message-ID: <efc4dde0-66f0-45fd-8018-00e94c3497b8@suse.com>
+Date: Thu, 20 Mar 2025 13:47:58 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/7] rust: extend `module!` macro with integer
+ parameter support
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Daniel Gomez <da.gomez@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ Luis Chamberlain <mcgrof@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
+ <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>,
+ Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
+References: <20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org>
+ <Q_mSCTsSMDQ6DylWZTrkH1Wru3fQ1LFIiuk1pHElSsTc12fDdaCrgzWvEEQRE2_WBxOBzPuCE-qBJjw7LhHbjQ==@protonmail.internalid>
+ <nh23cbbpf5yk6mafn7gz7urlau22egilideytnnh7paagusaih@t7y7q7jha4fz>
+ <87frj8dmlb.fsf@kernel.org>
+ <CANiq72kyAx=wbvYWBTmPb4eppfvGuFsjVMa49nZBrXGbLEDiCw@mail.gmail.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <CANiq72kyAx=wbvYWBTmPb4eppfvGuFsjVMa49nZBrXGbLEDiCw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLggvFanUvysDkZiLqFz4Ay7XSP5LF3CvxBU3xgWE3PSZXQ@mail.gmail.com>
 
-On Thu, Mar 20, 2025 at 09:40:45AM +0100, Alice Ryhl wrote:
-> On Thu, Mar 20, 2025 at 9:34 AM Alice Ryhl <aliceryhl@google.com> wrote:
-> >
-> > On Wed, Mar 19, 2025 at 09:30:25PM +0100, Danilo Krummrich wrote:
-> > > Device::parent() returns a reference to the device' parent device, if
-> > > any.
-> > >
-> > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > > ---
-> > >  rust/kernel/device.rs | 13 +++++++++++++
-> > >  1 file changed, 13 insertions(+)
-> > >
-> > > diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> > > index 21b343a1dc4d..76b341441f3f 100644
-> > > --- a/rust/kernel/device.rs
-> > > +++ b/rust/kernel/device.rs
-> > > @@ -65,6 +65,19 @@ pub(crate) fn as_raw(&self) -> *mut bindings::device {
-> > >          self.0.get()
-> > >      }
-> > >
-> > > +    /// Returns a reference to the parent device, if any.
-> > > +    pub fn parent<'a>(&self) -> Option<&'a Self> {
-> > > +        // SAFETY: By the type invariant `self.as_raw()` is always valid.
-> > > +        let parent = unsafe { *self.as_raw() }.parent;
-> >
-> > This means:
-> > 1. Copy the entire `struct device` onto the stack.
-> > 2. Read the `parent` field of the copy.
-> >
-> > Please write this instead to only read the `parent` field:
-> > let parent = unsafe { *self.as_raw().parent };
+On 3/20/25 13:00, Miguel Ojeda wrote:
+> On Thu, Mar 20, 2025 at 11:26 AM Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>
+>> As far as I understand, Miguel would take patch 1-5 for v6.15 and
+>> modules would take patch 6-7 for v6.16. At least that is my
+>> understanding from [1], @Petr and @Miguel please correct me if I am
+>> wrong.
 > 
-> Sorry I meant (*self.as_raw()).parent
+> So I offered that as an option -- I assume it is OK since nobody said
+> anything (please correct me if I am wrong), and it would help get
+> things moving.
+> 
+> So I will take 1-5 later today or tomorrow unless someone shouts.
 
-Good catch, thanks! 
+Yep, looks good to me.
+
+-- 
+Thanks,
+Petr
