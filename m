@@ -1,125 +1,175 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C0B78F5B;
-	Thu, 20 Mar 2025 01:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02A51B81DC
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 01:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742434549; cv=none; b=jSx80l8bIyOSl2yaAw3699AmyFwmAKm46BJsgMB+8sfoAT9nI1s8oPpnmhZtpQS6y0M43MZeMj3+qhKoXuz+YolHutNinJBqxZivuDGOhesREH2p2Jcbv3NeDfMoOb4VmB5FmfziS6/EL/hAQFu9YAu/qL7iycjg3+0kkbT/kN8=
+	t=1742434774; cv=none; b=Ot4TqtgfOH1KDrnchG3Tw+sRpfg4ziRAUIoGgfn7FayO/UgR2XSYKWM0hq/W+OI1oHuNIW6HXNZ0bcKysl4BRZNmOUnLpt2AP9dWUXv6zpYPgdcQ0rk1XDenvNO48GD7CU6Qe23huvZZ/yrM7+IEhTLFqPJJfACUKhk1gg0ISEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742434549; c=relaxed/simple;
-	bh=7525e3eoJqomtoRV1Bt7D7RRP9j7P7vy9wIAyE+BzUA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sVdJcsXhFyXBrlYHowVxGFyNDpV/9ON3NVkFKYGebJUp5dQKAmA6P6XiC81OI5FVbqvzVVdfWWbwP5a2jhnl8jaE2OGtf7GkrYZbOODpvrp4ffKDOHBaGa30aX9aeMAvxQPxry7POgym7+t17Zz7qZ6CXP7nr+RfTEbWgScP+GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S+e8E4us; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742434774; c=relaxed/simple;
+	bh=27mpZuEVEQno+5TPJE+eEzq0bBK6c0B4p2xQ1RoHrmI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pGqazltPIrOns4ri9QMNPNNV7oqh1/3NBUgV/5kJaFCSmCw1M9zPJfCnKX2bJSs7ik96K83asJdw0mn36jSv9ZLF9t8BBVY86XiXKoRPZcjmqrDehhoCXiiuVTihVez0u30GQsXjAM6eJ89Us4U+kvJ5lJfBZKsS3qNSZ9CeJPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=ZAGMXENr; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S+e8E4us"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7c547932d2eso18812585a.0;
-        Wed, 19 Mar 2025 18:35:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="ZAGMXENr"
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e589c258663so193573276.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 18:39:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742434546; x=1743039346; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oNec/KkMxzLVOdqdkkrMoSw+e6khofSKMCyFDQBT/V4=;
-        b=S+e8E4us7FTZHLVVQa1vd2Us+204Xhy2colWH0ZZtM/ieMmKWqiEkgzfIofMrbl+QC
-         YjOo5tHpkb9cYkvEOKm318okN+074isxpI2RkIblbzMGoVG7yWimCm26cUEg1gGE4+vn
-         Wa7ig9BTEk4dv7rBLphYQ1kR+eqkR+acZBc1/X44eVjMG/LK9whB84vGN+p/5JG5vHd0
-         U6q6kEh4KdZQ3ascDWJ1hQI1Kl4KGSn96xbWGDjuo5uib2cU3pCiytbTI8/ubMSub6c4
-         CMJQw98POU8wWbnSPHKGTJ6ZHUxzh4Kg47ktUAkjCGxbEu+PsEjeJDdmgoprcRKsR8/8
-         Xnbw==
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742434771; x=1743039571; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S7jNVH6rSqYVR4bOYTIgJDwm7uMfL3wte7+2+Ir1kGk=;
+        b=ZAGMXENrrk0PBIXYkodP7VGh+BxzSW49W+Bz4tNKTQZFH+LDiBj7qF/FIhqgNKATxl
+         5PptI8MeN6MAVDqxCfOtg2mRMNTeBHE9APlZJNIpsD0OKb6HMGOAzhBfCCNtxU95/huG
+         UAnzPGuYURBQQQRVcjPOKJUQ9/yIM6lJ8M8xcaw+2Ne1VwrD3rwm91BQeMUvYLDMzyyu
+         m6JCVqnmnvSjvOT1RRAAmiXDSE7539rfchsWcgiq6thhzfkjyYRYKMnT3iezqr+NQz6/
+         xkTsQQXs7H/+xXnOTsyiATCoNnsiikpHiqGCMf3I9ke00w2MwBFJsBaiIy6A5JALFIuN
+         1/kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742434546; x=1743039346;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oNec/KkMxzLVOdqdkkrMoSw+e6khofSKMCyFDQBT/V4=;
-        b=BUT0igEgF+vav1GOXcHC3ifwCQNzD8LWeB9MD52wqstkTCIVYyn87yzWnS76HwSyDP
-         pgFjXFiaVUsUABpEzsm8PrFtbiZQNe8S1+C6h2VK/1/piIRdo76yksMWnASnCt5uui7b
-         4Eo3EKSgpFFfaCCO7C64SIkHbAhCIvPe2sKG6HRny0iBM+Oqiw9NzFNPt6wff+amf9t1
-         ZZO740Vr+QRJfO8ALw8OM4Wuj+jrGGEjZmVbbc5SSmJnrtzkbQWX2gcCJny4g4DVGBEG
-         2P05eHBkmcL5ERAT2VA/5ZKP3XmN5OK8x0sJ+9+3qDiulHStP9j2q0UbZw79mw3L8DW7
-         suGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVHVfcSpPVBIBCD7Zmt53rfb0K5SbXcv4K7IxX/bZLkSswIZTWxHx+y93fNCG8iORmJhKQ1H8Si0qJkiR0vJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRLY5UmATFgeTdRK03Uh+Uq+lqU1FJXeKAwbu8tSU1rMTyVS0K
-	WncVGPzeplCV4ZClEcqLwZBCW8vfAGk4ZZoW4buCcvxMk/ubMqh+
-X-Gm-Gg: ASbGncsJDcCwOMZ0YXyLzcs7sSPYO+U66QRtszxlWRmHFXbNkC43DQijLgzyn1MH03Z
-	uNfkDVt7cPnIZoCpeEC+eDM6g2enlscfCKm2K3R8fPBksHWwyQWJ029vR5yXjhrUI9L0qgXNV+P
-	1q4EehYFzGRsvyE/R93kjGnX5QcOQ4DTSx5D0Y+Dius51n2iZOXhCn5rEwKnPr2LvUzb79UGld6
-	XST2nraFO+NlRIhrUla4tHR/ID211FbTW602yXTbQdc52b2q7+XWwX4owxyyCKyLqmBixaM5S5x
-	32GZF8VCkCh55Mux0N0NAhEurqLjtQnK1rpn3w9X3IL2ab/ZOXsf/uMP4ivwI4t5K8ChYmH4YzK
-	ySfiop+FsS97oF+q39L3qR52y09ZB1SEeKNQGtIofYkjbznxskPzBS4cTUUUfbu3MwSVGzxiz
-X-Google-Smtp-Source: AGHT+IFUSS7Rm2X6okaNyD1UjCKmxvAwc7AOgLWUZ6RrB/MGid6lFLZ7AxsAdMnscA8ujtr8VmirLg==
-X-Received: by 2002:a05:620a:25d1:b0:7c5:3b8d:9f37 with SMTP id af79cd13be357-7c5b0c9401bmr185292485a.30.1742434545623;
-        Wed, 19 Mar 2025 18:35:45 -0700 (PDT)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2600:4041:5be7:7c00:1098:764b:3230:64c5])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c573d72b94sm938468385a.77.2025.03.19.18.35.43
+        d=1e100.net; s=20230601; t=1742434771; x=1743039571;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S7jNVH6rSqYVR4bOYTIgJDwm7uMfL3wte7+2+Ir1kGk=;
+        b=RlMuh1xkrl721WgoGhuvVnx3j5YBIuaE+TXEFKtosU+QfPozKvDxV47Ei6jEbTnsm6
+         DYwDGQSIVjTw5yHagzsVwe3a3bs3eHndpoaCC9qQbnpAODyMqG+ZGMVFNW5ye5CV1GPc
+         ffVmWe7Sxs0T/UhYKrH+vujTh/aVvo/u2GQVcEuql8sB8OKJMHE3uqBLz1w+5PmTKI8y
+         hY884Ob4Qr84jST9PDdLzi0nSOsiN3RikxKIrNIZHZKUEfKb1KvWXsVVcJHy1r09/abm
+         0zLjJxyce79PsF99lVW39nClq3LxSv0C6DkzXUGRPbGaoxsbTumLRmd17RUrcGxfPDOt
+         gVbw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9J+uDue7T1puQZxqnuLFvLax8WtUQR4iqyvy/KP/dQBupSivPzo8wfuhlbE17wbLQK5hvdMjRGzg5JinozQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg87c6dtndM82T9dzxjYKRaKRiM8ZyFQXeaAm3oZRp4MefElAM
+	wkAdYW5Iz/DFHzjmacIF9smE1GuFuo8C4O61nHXauKRpNkk4AMCMHz/i+r8GES4=
+X-Gm-Gg: ASbGnctXpkATV4ZoCg2//HC4uFjnZ6wHVzJiqs1kNXuJ2NN093Lt8n+yN3fyokFW2yt
+	G3GXMWcQDS2ZhchUNM3bz7Z0Lgm1vnQZFmC90Oksph65PdVRqQTvor2kNaRetTBz7W+rYVr87y5
+	Z0sWOsty9+Vc3ZlI6+wvX2qJkLQbPxgNjQnefYHYRyPZGRi/rZdn4MEuSOS2g8HJcpvLOe5+Q7x
+	q5WP99B2zcI9Or2H5PKEsQVw9w9WXoelRU89YzBhmxPtkVPTk5e6BYfM/MzyxdfuSag2bGGXqBW
+	2XsK+pwYWLLF2Q/2ispAK7pU1Yj1QEZ9rZa03dA9RuHE0uZmLThImo8QkGpcsphvF6Gi38bE8+4
+	PyXoyuriolw7rsyEioGEOnvo5imdIbA==
+X-Google-Smtp-Source: AGHT+IFL6cyWgnxfRgdiB3jtlITSX9PQTiA/2jd0FNeP8bLOx0MbABDKhlIhcynnouA1DM2N3q7f3A==
+X-Received: by 2002:a05:6902:138d:b0:e58:8e82:5345 with SMTP id 3f1490d57ef6-e6691fd823amr2021927276.4.1742434771477;
+        Wed, 19 Mar 2025 18:39:31 -0700 (PDT)
+Received: from Machine.lan (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e6414a21a08sm2158969276.17.2025.03.19.18.39.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 18:35:44 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 19 Mar 2025 21:35:40 -0400
-Subject: [PATCH] rust: pin_init_internal: fix rust-analyzer `mod quote`
+        Wed, 19 Mar 2025 18:39:31 -0700 (PDT)
+From: Antonio Hickey <contact@antoniohickey.com>
+To: davidgow@google.com
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	brendan.higgins@linux.dev,
+	contact@antoniohickey.com,
+	contact@byte-forge.io,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	ojeda@kernel.org,
+	rmoar@google.com,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH v4 08/16] rust: kunit: refactor to use `&raw [const|mut]`
+Date: Wed, 19 Mar 2025 21:39:13 -0400
+Message-ID: <20250320013913.1624829-1-contact@antoniohickey.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <CABVgOSkKD2Z60_+MoP_nu3YCUocvxJaohMBZpXy=_aavUZ99XA@mail.gmail.com>
+References: <CABVgOSkKD2Z60_+MoP_nu3YCUocvxJaohMBZpXy=_aavUZ99XA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250319-pin-init-internal-quote-v1-1-19de6a33a257@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAOtw22cC/x2MzQqDMBAGX0X23AWTIP68SulB7VddkNUmsQgh7
- 27oZWAOM4kCvCDQUCXy+EmQXYuYR0XzOuoClndxsrVtamd6PkRZVGJBhNdx4++5R/DUwjTo0Vn
- nqNSHx0eu//n5yvkG1HiyP2kAAAA=
-X-Change-ID: 20250319-pin-init-internal-quote-b7e15e9e8233
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
+Content-Transfer-Encoding: 8bit
 
-Replace the `#[path]` attribute with a symlink to work around a
-limitation in rust-analyzer that requires all modules to belong to the
-same "source root". This allows code navigation from `pin_init_internal`
-to `quote` to work properly.
+On Tue, Mar 18, 2025 at 04:02:15PM +0800, David Gow wrote:
+> On Sun, 16 Mar 2025 at 14:20, Antonio Hickey <contact@byte-forge.io> wrote:
+> >
+> > Replacing all occurrences of `addr_of!(place)` and `addr_of_mut!(place)`
+> > with `&raw const place` and `&raw mut place` respectively.
+> >
+> > This will allow us to reduce macro complexity, and improve consistency
+> > with existing reference syntax as `&raw const`, `&raw mut` are similar
+> > to `&`, `&mut` making it fit more naturally with other existing code.
+> >
+> > Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1148
+> > Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> > ---
+> 
+> Thanks, Antonio.
+> 
+> So this looks fine, but it's also a bit annoying, as the remaining
+> KUnit/Rust integration patches[1] were recently updated to use
+> `addr_of_mut!()`, so either this patch, or those, will need updating.
+> 
+> In general, I think changes such as those in this series are going to
+> get progressively more prone to conflicts as Rust is adopted by other
+> subsystems, as the 'rust' tree won't be the only one carrying changes
+> which could be affected. Maybe in the future it'd make sense to split
+> these up into a series which enables the new feature, and only then
+> put the warnings in place in the next version?
+> 
 
-Link: https://github.com/rust-lang/rust-analyzer/issues/3898
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
- rust/pin-init/internal/src/lib.rs   | 1 -
- rust/pin-init/internal/src/quote.rs | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+Hi David,
 
-diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src/lib.rs
-index babe5e878550..fdd95afe3864 100644
---- a/rust/pin-init/internal/src/lib.rs
-+++ b/rust/pin-init/internal/src/lib.rs
-@@ -20,7 +20,6 @@
- use proc_macro::TokenStream;
- 
- #[cfg(kernel)]
--#[path = "../../../macros/quote.rs"]
- #[macro_use]
- mod quote;
- #[cfg(not(kernel))]
-diff --git a/rust/pin-init/internal/src/quote.rs b/rust/pin-init/internal/src/quote.rs
-new file mode 120000
-index 000000000000..27a213d1a6ba
---- /dev/null
-+++ b/rust/pin-init/internal/src/quote.rs
-@@ -0,0 +1 @@
-+../../../macros/quote.rs
-\ No newline at end of file
+I understand your general frustration around this, but I do
+think it's better to have a higher frequency of change now while
+Rust adoption is still early than later on. I know you're looking
+at this in a more forward lense of the future, and I think you have
+a fair point that this can be more problematic as adoption increases. 
 
----
-base-commit: ff7f9b199e3f4cc7d61df5a9a26a7cbb5c1492e6
-change-id: 20250319-pin-init-internal-quote-b7e15e9e8233
+> In the KUnit case in particular, since the patches haven't actually
+> been merged yet, we have three options:
+> - Merge this into rust-next, and send out a new version of the KUnit
+> patches which depend on it, which then are also carried in rust-next,
+> or delayed (again) to 6.16. I suspect given how close to the merge
+> window we are, the delay is more likely.
+> - Merge the KUnit changes as-is (either into rust-next or
+> kselftest/kunit), and send out a new version of this series which also
+> updates it (probably in 6.16, but maybe sooner if everything goes via
+> rust-next).
+> - Merge both, and accept that there'll be some clippy errors until a
+> follow-up patch fixing them is sent and merged.
 
-Best regards,
--- 
-Tamir Duberstein <tamird@gmail.com>
+I'm currently preparing to send out a new version of my patch right 
+now. Depending on how the timing of our patches plays out, I'm not
+opposed to updating your patches KUnit changes within my patch set, as
+it's very much aligned with the scope of my patch set.
+
+> 
+> As someone with a vested interest in the KUnit changes, and at best a
+> mild academic interest in the addr_of_muit!() deprecation, my
+> preferences are with the latter two options. (I'd also, in general,
+> whinge that the frequency of new Rust versions / warnings is high
+> enough that it's taking a not insignificant portion of the limited
+> time I have working on Rust things to understand and deal with the
+> churn.)
+> 
+> Regardless, apart from the minor irritation of having to learn yet
+> another new syntax, I have no objections to this patch in particular.
+> 
+> Reviewed-by: David Gow <davidgow@google.com>
+> 
+> Thanks (and sorry for the grumpiness: don't take it personally),
+> -- David
+
+Haha no problem, you have a fair point.
+
+Thanks,
+Antonio
+
+> 
+> [1]: https://lore.kernel.org/rust-for-linux/20250307090103.918788-1-davidgow@google.com/
+
 
