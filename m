@@ -1,184 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38F2224253;
-	Thu, 20 Mar 2025 10:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4721C1F2F;
+	Thu, 20 Mar 2025 11:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742466414; cv=none; b=OyXLbVgttAHRI952fjUsdwUapRfe7VDlQgt/TGkqZ9ewZmGEeZ3xgbpfX4FhfIR+CDoIc60qtWlY2CqvOii9FJOgjDEE5ipz9+boS7pjSiLH1S6cN3n3OBrZ3WQ1q1WrVrlt1EreVZ8tx1IHQHljLt0LCwBOL7U+9UbO30weutI=
+	t=1742469719; cv=none; b=LheY4GZDf3WWHivv8Uu5tQhH8H3V2TEbwmdVuiSc33jfa7dwdHJsxYdW00wHWiEPd/DL3EPePdChcaHUAels5nH+03rOE+gnFOKAa1YpWv+G5b80vvO2Y4G8qNTwikl7JyT1VgIRLmbI2g6m2qAJya4UhFV1eQvKwDkJT1MpHdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742466414; c=relaxed/simple;
-	bh=2INiMlEgtKjR+OIVK8ORlyTWDnWHNjO8BiiHuQYIXlU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HNTkT4qNAB4WfO5S+XDnAsH6xQUSlbzdQDM3ilW6WBmC+Cdb3NDbGBLsxgJt3asbQx/ys30Y8AH5wJXnUushKmAMwuFQJq+oIFEmB0irbYqwWVOP2zlIEyV8KAJOoYFxBscvfMRl3/lT9ZSxYOaUFKMXrDZMy66BaUNqNDKio/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JhsvhQfJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742469719; c=relaxed/simple;
+	bh=k3mrXD+OZ3IUnCcb5OnLyDwzPqKGoZTi9oVugUiEAVM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ttyr9puFXakZAVmOH0nU4msRSVFykEx83nP4NLApRR1tHCplZWH+micgepstn3PodN5sRihWe19c9xoI9dZ+GJ+K5/GNHXlVS4PqOCRhNiMn04Wu0SBRO0x6kpwvbzj89dj+IvXfhdDr5tp0BauTQviJaPWjUZyE9cwEiO3tgZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GAExXYuQ; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JhsvhQfJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF74FC4CEDD;
-	Thu, 20 Mar 2025 10:26:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742466413;
-	bh=2INiMlEgtKjR+OIVK8ORlyTWDnWHNjO8BiiHuQYIXlU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=JhsvhQfJVfPOA1EoFHN3t8VuXSJ4eRZfNzUeSFZMtkHbROzRIn4dpCSZDfSyU4dkz
-	 JlDpEtYKrBKpc7x6kGh9zeBT1h6YVYY+HzHpFlNO2Ab2c/qdpk8sZff1tj5YPtJ81g
-	 zlPEYDbKQmOLfGmk3U2trUuByJVu1We0UlN+5K03XOeCXAGevGaEgOvyhz4CPna4MJ
-	 vDSaItWbqD9ve/fmZE41TmKT115ASYSsPK9Ow2cVySIWvJVIhvG/gfHlvPrdVvByyi
-	 sF8doRPHMmY5c7IuFme3ktgNdTZPm81Z+1sDUYETQPY9DkRzC6MpuQdbNhUBh84Jbr
-	 w2kWKuqs0g2DA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Daniel Gomez" <da.gomez@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada"
- <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,
-  "Nicolas Schier" <nicolas@fjasle.eu>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Trevor Gross" <tmgross@umich.edu>,  "Adam
- Bratschi-Kaye" <ark.email@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-kbuild@vger.kernel.org>,  "Sami
- Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v8 0/7] rust: extend `module!` macro with integer
- parameter support
-In-Reply-To: <nh23cbbpf5yk6mafn7gz7urlau22egilideytnnh7paagusaih@t7y7q7jha4fz>
-	(Daniel Gomez's message of "Thu, 20 Mar 2025 09:41:58 +0100")
-References: <20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org>
-	<Q_mSCTsSMDQ6DylWZTrkH1Wru3fQ1LFIiuk1pHElSsTc12fDdaCrgzWvEEQRE2_WBxOBzPuCE-qBJjw7LhHbjQ==@protonmail.internalid>
-	<nh23cbbpf5yk6mafn7gz7urlau22egilideytnnh7paagusaih@t7y7q7jha4fz>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 20 Mar 2025 11:26:40 +0100
-Message-ID: <87frj8dmlb.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GAExXYuQ"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-224104a9230so1415335ad.1;
+        Thu, 20 Mar 2025 04:21:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742469717; x=1743074517; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iFB3BqXH2e8TxvxT6l759Ym4N0OaYQbHqoLpgW4lhNg=;
+        b=GAExXYuQ+uvLtKTGENbOzAlDUdsf+QEtiLIZ7Ukz2l9r8mzV9f3MR+srOgbzjvudNW
+         W1c9pJCK81cuWPFKhKZyU4R+KF69TwIW8uuornruPS6RKDn8bn9L8QiOVZWeq0wYawtK
+         CxiW9hfBSpcD508uwMsE92QKazijAQeIKlEQAbXMJHoIw5/t4KfkQ5A+IYZNLtcR1tr/
+         JJ1638KO4DLaJMvEi2moZtImDdniw/fuJJa48MWSVoKiT9PWvl03LLj2tnMElplP8UKx
+         SWju0CTD0xUhzwMpNa30G3fMgySG38jGRKFQadjBroBQRZf44P0401TPD0HzLidrDYAy
+         xLmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742469717; x=1743074517;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iFB3BqXH2e8TxvxT6l759Ym4N0OaYQbHqoLpgW4lhNg=;
+        b=kxguiyqiv9UV3q/KGIey0G6WoZNX+EF1jsPNEVR/6+8c7rnjP/BKJPCzRllnIoTc7/
+         6ZDYzsQOqI7BiI+I4qaZr8fTNGDthDtWqM35Lhqft0aPOz5ICl2/sIpAHHDGd1npSG02
+         ldphY5BQZ0a9dBk/Z7eq3GGLa56yltGQMVOOSbSGYflB3EpermOwIvOuTrZyIxywoSEn
+         XhsRAFvFRfsLd23xLS4A6SYc0CTP0sxxnFlgHYGGtCbBTSJbrNwSPYHUmLKjwWIxOYTq
+         6RB9EDuhDYujA0Jk+D24LNhB5aYEPLHUMAadIp6jveMUOvVvEZ//ZTLMHeKCbIIIeLJP
+         3uTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsLeLR0Q55R/gJvYP7YlEs+EmDAOteJOBoFiD3p72FQj4TCiWxoo7afjzLfUMnnACOC0i9xkeDHHwlseB808M=@vger.kernel.org, AJvYcCWJOoEtXoFTcGAPLKTZOKCOCd7v/0+oO/sLI3CS6T6wALAc9JyfEGmJCHV5Y0ZivamJKnD48ehsVHpL/wo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjjIcmVvaL4+9qsni4pzsurdo9N/tSCCkBe2SCWr39+/pIBR2v
+	NyaWQ87O4qHOfCCRFbi0uk92wmjM6Sr5h8MtTn4ViLAHmXfP6UmzUnhQTZu4houQgienifJqrVb
+	4ut4Eyg6cLmBKYMvtV6NFAdLJHpE=
+X-Gm-Gg: ASbGncuJTiMe0qSCPTFMLJ9PYw4MZjz87oCUmgkcsQ4J8WEZVzUbWjZOerhOAWR2crZ
+	YzvUBGncSUW+A25rKe3K+Sl/oj7E6xumzp/BWHFchy3EsmQaTkIGCAhLNg4SWHFuq9lL6QerLv6
+	oOKKCYi2eJ1L2LtXuOhPmTrwJp6w==
+X-Google-Smtp-Source: AGHT+IGASnHt9kNdq4d2lMO0TzafwSvDobso+TMwUI77RRq+dwIZX0mnFiZmhKy1QI2Pzn9arbywzIffrQpEHdWmdiU=
+X-Received: by 2002:a17:903:8c7:b0:221:7854:7618 with SMTP id
+ d9443c01a7336-2264c6053e1mr35338755ad.8.1742469717435; Thu, 20 Mar 2025
+ 04:21:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250208-rust-kunit-v1-0-94a026be6d72@weissschuh.net>
+In-Reply-To: <20250208-rust-kunit-v1-0-94a026be6d72@weissschuh.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 20 Mar 2025 12:21:44 +0100
+X-Gm-Features: AQ5f1JpS94wTwKsmexWFYTQXZEkTRXemKuXOU31dkuRuFGtc1-F5e7wOCbLzIPk
+Message-ID: <CANiq72=UKxv9EeV1Ozg5bcOtuoaFwCkm=7Yi+kBihoR7XzqHpQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] rust: two small improvements for kunit
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Daniel Gomez" <da.gomez@kernel.org> writes:
+On Sat, Feb 8, 2025 at 2:32=E2=80=AFPM Thomas Wei=C3=9Fschuh <linux@weisssc=
+huh.net> wrote:
+>
+> Two quality of live improvements for running kunit tests for rust/.
+> While today there are only the doctests, more are coming [0].
+>
+>         $ ./tools/testing/kunit/kunit.py run --kunitconfig rust/
+>         [14:25:48] Configuring KUnit Kernel ...
+>         [14:25:48] Building KUnit Kernel ...
+>         Populating config with:
+>         $ make ARCH=3Dum O=3D.kunit olddefconfig
+>         Building with:
+>         $ make all compile_commands.json ARCH=3Dum O=3D.kunit --jobs=3D16
+>         [14:25:53] Starting KUnit Kernel (1/1)...
+>         [14:25:53] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>         Running tests with:
+>         $ .kunit/linux kunit.enable=3D1 mem=3D1G console=3Dtty kunit_shut=
+down=3Dhalt
+>         [14:25:53] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D rust_doctests_kernel=
+ (135 subtests) =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>         [14:25:53] [PASSED] rust_doctest_kernel_alloc_kbox_rs_0
+>
+>         ...
+>
+>         [14:25:53] [PASSED] rust_doctest_kernel_workqueue_rs_3
+>         [14:25:53] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [PASSED] ru=
+st_doctests_kernel =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>         [14:25:53] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>         [14:25:53] Testing complete. Ran 135 tests: passed: 135
+>         [14:25:53] Elapsed time: 5.431s total, 0.001s configuring, 5.314s=
+ building, 0.086s running
+>
+> [0] https://lore.kernel.org/rust-for-linux/20241213081035.2069066-1-david=
+gow@google.com/
+>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 
-> Hi,
-> On Thu, Feb 27, 2025 at 03:38:06PM +0100, Andreas Hindborg wrote:
->> Extend the `module!` macro with support module parameters. Also add some string
->> to integer parsing functions and updates `BStr` with a method to strip a string
->> prefix.
->>
->> Based on code by Adam Bratschi-Kaye lifted from the original `rust` branch [1].
->>
->> Link: https://github.com/Rust-for-Linux/linux/tree/bc22545f38d74473cfef3e9fd65432733435b79f [1]
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->
-> I've tested this series including the following patches from Andreas' tree [1]
-> as dependency for module testing parameters with the Rust Null Block driver:
->
-> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git/log/?h=rnull-v6.14-rc1
->
-> 51d304103b7f rust: refactor: rename `RawWriter` to `BufferWriter`
-> 544811b24574 LIST: [PATCH v2 1/3] rust: sync: change `<Arc<T> as ForeignOwnable>::PointedTo` to `T`
-> 3f097abd58de LIST: [PATCH v15 1/3] rust: types: add `ForeignOwnable::PointedTo`
-> 0525eda0ff8d LIST: [PATCH v7 3/14] rust: sync: add `Arc::as_ptr`
-> ce7343b48e63 LIST: [PATCH v2 2/3] rust: configfs: introduce rust support for configfs
-> 6efae1a9a226 rust: rnull: add module parameter support
-> b6545e0eaf94 rust: rnull: enable configuration via `configfs`
-> 6a3bc0dc31d0 rust: rnull: move driver to separate directory
->
-> * modinfo
-> sudo modinfo rnull_mod
-> filename:       /lib/modules/6.14.0-rc6-00015-g51d304103b7f/kernel/drivers/block/rnull/rnull_mod.ko
-> author:         Andreas Hindborg
-> description:    Rust implementation of the C null block driver
-> license:        GPL v2
-> name:           rnull_mod
-> intree:         Y
-> depends:
-> vermagic:       6.14.0-rc6-00015-g51d304103b7f mod_unload modversions
-> parm:           nr_devices:Number of devices to register (u64)
-> parm:           bs:Block size (in bytes) (u32)
-> parm:           rotational:Set the rotational feature for the device (0 for false, 1 for true). Default: 0 (u8)
-> parm:           gb:Device capacity in MiB (u64)
->
-> * Testing nr_devices parameter:
-> sudo modprobe rnull_mod nr_devices=100
->
-> sudo ls /dev/rnullb* | wc -l
-> 100
->
-> * Testing block size and capacity parameters:
-> sudo rmmod rnull_mod
-> sudo modprobe rnull_mod nr_devices=1 bs=512 gb=1024
->
-> sudo fdisk -l /dev/rnullb0
-> Disk /dev/rnullb0: 1 GiB, 1073741824 bytes, 2097152 sectors
-> Units: sectors of 1 * 512 = 512 bytes
-> Sector size (logical/physical): 512 bytes / 512 bytes
-> I/O size (minimum/optimal): 512 bytes / 512 bytes
->
-> * Testing block size with fio and blkalgn [1] (tool for validating driver block
-> size):
->
-> [1] blkalgn is an eBPF-based tool for tracing block operations that also reports
-> block granularity and alignment histograms:
-> https://github.com/dkruces/bcc/tree/blkalgn
->
-> Install:
-> https://github.com/dkruces/bcc/releases/latest/download/blkalgn-$(uname -m) \
-> --output /usr/sbin/blkalgn \
-> && sudo chmod +x /usr/sbin/blkalgn
->
-> sudo modprobe rnull_mod nr_devices=1 bs=1024 gb=1024
-> sudo curl --location \
->
-> sudo blkalgn --disk=rnullb0 --ops=Write
-> sudo fio --name=test --direct=1 --rw=write --bs=1024 --size=512k \
-> --filename=/dev/rnullb0 --loop=1000
->
-> I/O Granularity Histogram for Device rnullb0 (lbads: 10 - 1024 bytes)
-> Total I/Os: 10748
->      Bytes         : count    distribution
->         1024       : 10748    |****************************************|
->
-> I/O Alignment Histogram for Device rnullb0
->      Bytes               : count    distribution
->          0 -> 1          : 0        |                                        |
->          2 -> 3          : 0        |                                        |
->          4 -> 7          : 0        |                                        |
->          8 -> 15         : 0        |                                        |
->         16 -> 31         : 0        |                                        |
->         32 -> 63         : 0        |                                        |
->         64 -> 127        : 0        |                                        |
->        128 -> 255        : 0        |                                        |
->        256 -> 511        : 0        |                                        |
->        512 -> 1023       : 0        |                                        |
->       1024 -> 2047       : 10748    |****************************************|
->
-> Tested-by: Daniel Gomez <da.gomez@samsung.com>
->
->
-> Andreas, Petr, Miguel,
->
-> Based on the discussion in v7, it seems that all these patches will go through
-> the Rust tree. Is that correct? What would be missing from the module's side?
->
-> I agree with Petr in that thread that if the changes are mostly limited to
-> rust-module files, they can go through the module's tree. However, that is not
-> the case yet.
+Applied to `rust-next` -- thanks everyone!
 
-As far as I understand, Miguel would take patch 1-5 for v6.15 and
-modules would take patch 6-7 for v6.16. At least that is my
-understanding from [1], @Petr and @Miguel please correct me if I am
-wrong.
+    [ David says:
 
+          (...) this is enough to get Rust-for-Linux working with gcc under
+          64-bit UML on my system.
 
-Best regards,
-Andreas Hindborg
+        - Miguel ]
 
-[1] https://lore.kernel.org/all/CANiq72mW94Y-bsJFMHqF8fbXhvAizEn7-NnxawTW+5brbxJHBg@mail.gmail.com
-
-
+Cheers,
+Miguel
