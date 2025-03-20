@@ -1,106 +1,100 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0238F22172B;
-	Thu, 20 Mar 2025 12:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CFD1C5F18;
+	Thu, 20 Mar 2025 12:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742472033; cv=none; b=jS0qvvEBhABI6YeZqDV88JRFcsRMIfA8H8PvL1gH7V5QHlFU2m4OMZXnUmhR2S2C3n2DHVoC3ltWGYKeLozo/T5O6y+LKJKYzOd84DEQBq6TYJXgO96fT+hx3Sy6fcFU1Lhlool9tXwkXUPkbmgkmHEixeQdmPq3FdN98kSiA3Q=
+	t=1742473013; cv=none; b=F+Aa9a9mgoYkjDI+1gkV4/0SZddycjj9WBiuAwiG9HDM5b8lCc4C6K2imS6GlEzxMOEiTYgZNJSE2Ya/aAGgyoRfmPPcMqpxS+7r417dRq/WqJSBwX/u3fGEeC1+4RUKrwavu696QdOrwHg2KfVVE2AO11CU96/d/U4cmgcEnd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742472033; c=relaxed/simple;
-	bh=+JpqTZlUDUYwRI2Af2UJVSssidKLH53a8o68argLTeo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HHJZA5/kWUZFLg6XXv/NTOYcGh79wtJG3AjsPu+nX9ANFRB2P0c9CZEiXhI/S8xGI5mQF67f9guVgyQyM4T1TQlGVhpAN2OIqOi+G17Fl0Bo2Uh1yuks4wFZsliLO7ikK6faW9Hq8u8MLx9REwYeh/KoNzRl0VEXpId54j6qs7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jjBrpQx0; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742473013; c=relaxed/simple;
+	bh=ZvuqjknG7yAxkL1CzWawxgQk1+VvmW9sjcfknkdESO8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SBbAJ5evIFSQiZLr6lmGMLDt71/9TJXtlXz/ZGfKGjftSaBrTw8Ab1E1ptWq1gyTAqX50HFXKjjnvfL81k01Q8Ap1WLs2c3grHqxRFr+Nz5msLIw80K4gekQZK6MtH8FARM1+LQ51ab4cB8WiWH1uGEQzzdxNXRIFx0n4sVdYkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BFI6bOJU; arc=none smtp.client-ip=79.135.106.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jjBrpQx0"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-30144a72db9so165559a91.1;
-        Thu, 20 Mar 2025 05:00:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742472031; x=1743076831; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+JpqTZlUDUYwRI2Af2UJVSssidKLH53a8o68argLTeo=;
-        b=jjBrpQx0XwE4t13JwPSpuKEQ+CWt8ARiWNUyWj24H0JhGmtVZ7R1Tcuzkym03laZ19
-         NGwV6zIkxySIsccdbm/uOofp2tM3Cj0hdIBc2HqXsgMoECXYkWUbVfq7UFd6Q72vvHPa
-         RypwT7+98nIlmN15rXAaQeM+/zQugZuYXpaMMlDswzI1vb2aDFhAcQSTebD8xOuMfmp+
-         7FtrRraTqS0tXBCqSI91COVdOXC8yneITQnH52scu2iWi7rQY1BmHiGp76ApfX9/yGZU
-         OqccOwtskBOusqwEB0Y/HegA4Eb4QxoufBjhgFmNoqJpdCeW/d7ERXqIFMwkg392gX9/
-         NUkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742472031; x=1743076831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+JpqTZlUDUYwRI2Af2UJVSssidKLH53a8o68argLTeo=;
-        b=DYhRBXIZN8lQeyQ/hqIUd0N7XxjlJJQ4yoWmXOPh6wh8/NTXosgkGSNAanZDnUqqsA
-         SAsZBA8PCBtEvUTEUIdfXcdA4IQjMaxpbs3k4Mg8EzRlrOArs6K5X/GyxuPY8S2JZuC8
-         OpohG/pFFV3g0JB5nMeZBgYzoTO9WMSB507WJNcV9A58S05IY8jpf9krkPaLC90XDzZn
-         pl97k/uM5Ns+fYrHOc+U68a+EM9AjTezDr/mRbTFZGkUrIGGdmFePXy5L5ZB/o72G4AS
-         KRDrCWKVMN++xrBdUJtkShv4BiVhNtuw9WPxAZDJU8FQ/1kffB84wuPsvhUGmHxuiYDB
-         jToQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZjn9NgStZxV/BdmP6oCjwCeYU3lfM+wtxjyhc3NvMiIasTqZey1HnKI1NGXEqjrhr9NdfxR1IMcYrbeFhMg==@vger.kernel.org, AJvYcCVN8M7etE/Cv3GHbTTlkwLQ4262774Db6OOMj3Ruvdx7eM3LoKhZibVj+TMgLS4iIe+pV9UF1VofQUQCqw=@vger.kernel.org, AJvYcCWV4/Gvnbx22P8aOMGVftQ/5pGfjmE7lIT2XICGUYTYtCeNf53jC1jFUzNOx2w+QpY5zKlo/XyDe6MoDpVD/KI=@vger.kernel.org, AJvYcCWippg9bRZ/yuBGHx7uJBnmm7BszaJC8KZNEpKBf5GwOT+IVVFlnhZP+5qdHKieBh351rNuOS048VqF3Ls6@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc5OJzcB7SESW8M9RTO7wI9uyuuGipsZEsXNEQUutiygnx5Zns
-	19j+s4BdtQU0h8RUpBdsp6F2Hzlc8hkQG/+Vnlf4P12edV1QEWFQWf9C/BlODlW5K+fo16lN5rb
-	WS20aavDSCuaVQ7OBsmVRZCOT928=
-X-Gm-Gg: ASbGnctSw8QT8P/ya7o5RVD/q5QXrp15yMswBSNZfbMMJstOSOWUj991VbK8MQeraR3
-	/tLXShSujVbRe/WDWEYpYFcatFd9bbmPoECM+ZWZFU/mLdYGOvkltE/roL6pfmiiqjVUePoNuQ3
-	9x23VYLiSn5Ko4a9IdO/KvROgN6A==
-X-Google-Smtp-Source: AGHT+IGLnHem81pSy849Xj5e5pWE83gWruoVX126M+G8/5J8tR1iaCU2Org4jEG9DcYNth8MQP8v31q+vtP6uB3x6JE=
-X-Received: by 2002:a17:90b:4a03:b0:2ff:682b:b754 with SMTP id
- 98e67ed59e1d1-301bfbd457fmr3463081a91.2.1742472031169; Thu, 20 Mar 2025
- 05:00:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BFI6bOJU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742473002; x=1742732202;
+	bh=MFgPk8/BSkbocZYmBFnZkvxSg25u6ztS27j5I4vVS8o=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=BFI6bOJUrmKJIPfkOnUeuQV56wXkX8mBA8nxP5uiUR1n75jIqR0+tlbu1IvVv1ycH
+	 sGgSxOa3C9vntEmQAQZrZjvq/4t2biiRWa7HACPXkgmR/1xL67lxFZUqYFeOFX9uxQ
+	 PQwoN7nF4KlIl9fVeELORvFOAjmlfXaDlItO34luvl3WL/bxfr1aJQluo3cVcAMAYF
+	 wH0G07TL7OK3Zgze9oQaVxp4qsf0tZMRftJc2yt6xi6L8SsGFYFzTRkjI1qlRhC8TL
+	 mVVD0mcBhmHOqGWLutVv/r29Cf5XFXdRPwOvqeW12z/jNskSzUee006sD2ePt4CJ0j
+	 kSslT6Hr8dgRQ==
+Date: Thu, 20 Mar 2025 12:16:36 +0000
+To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: pin_init_internal: fix rust-analyzer `mod quote`
+Message-ID: <D8L34IUZGXWX.D2LSS2S2NAN7@proton.me>
+In-Reply-To: <20250319-pin-init-internal-quote-v1-1-19de6a33a257@gmail.com>
+References: <20250319-pin-init-internal-quote-v1-1-19de6a33a257@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: dca386c56fc7854e653ff3cd7336d87160bda96c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org>
- <Q_mSCTsSMDQ6DylWZTrkH1Wru3fQ1LFIiuk1pHElSsTc12fDdaCrgzWvEEQRE2_WBxOBzPuCE-qBJjw7LhHbjQ==@protonmail.internalid>
- <nh23cbbpf5yk6mafn7gz7urlau22egilideytnnh7paagusaih@t7y7q7jha4fz> <87frj8dmlb.fsf@kernel.org>
-In-Reply-To: <87frj8dmlb.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 20 Mar 2025 13:00:19 +0100
-X-Gm-Features: AQ5f1JqT0bJ1nCq6lcjr_QnPneXhQ7sT5zkUrLM9y47BNLBzjIHnH9YbYE6UIy0
-Message-ID: <CANiq72kyAx=wbvYWBTmPb4eppfvGuFsjVMa49nZBrXGbLEDiCw@mail.gmail.com>
-Subject: Re: [PATCH v8 0/7] rust: extend `module!` macro with integer
- parameter support
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Daniel Gomez <da.gomez@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Luis Chamberlain <mcgrof@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Simona Vetter <simona.vetter@ffwll.ch>, Greg KH <gregkh@linuxfoundation.org>, 
-	Fiona Behrens <me@kloenk.dev>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 20, 2025 at 11:26=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
+On Thu Mar 20, 2025 at 2:35 AM CET, Tamir Duberstein wrote:
+> Replace the `#[path]` attribute with a symlink to work around a
+> limitation in rust-analyzer that requires all modules to belong to the
+> same "source root". This allows code navigation from `pin_init_internal`
+> to `quote` to work properly.
 >
-> As far as I understand, Miguel would take patch 1-5 for v6.15 and
-> modules would take patch 6-7 for v6.16. At least that is my
-> understanding from [1], @Petr and @Miguel please correct me if I am
-> wrong.
+> Link: https://github.com/rust-lang/rust-analyzer/issues/3898
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+>  rust/pin-init/internal/src/lib.rs   | 1 -
+>  rust/pin-init/internal/src/quote.rs | 1 +
+>  2 files changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/s=
+rc/lib.rs
+> index babe5e878550..fdd95afe3864 100644
+> --- a/rust/pin-init/internal/src/lib.rs
+> +++ b/rust/pin-init/internal/src/lib.rs
+> @@ -20,7 +20,6 @@
+>  use proc_macro::TokenStream;
+> =20
+>  #[cfg(kernel)]
+> -#[path =3D "../../../macros/quote.rs"]
+>  #[macro_use]
+>  mod quote;
+>  #[cfg(not(kernel))]
+> diff --git a/rust/pin-init/internal/src/quote.rs b/rust/pin-init/internal=
+/src/quote.rs
+> new file mode 120000
+> index 000000000000..27a213d1a6ba
+> --- /dev/null
+> +++ b/rust/pin-init/internal/src/quote.rs
+> @@ -0,0 +1 @@
+> +../../../macros/quote.rs
+> \ No newline at end of file
+>
+> ---
+> base-commit: ff7f9b199e3f4cc7d61df5a9a26a7cbb5c1492e6
+> change-id: 20250319-pin-init-internal-quote-b7e15e9e8233
+>
+> Best regards,
 
-So I offered that as an option -- I assume it is OK since nobody said
-anything (please correct me if I am wrong), and it would help get
-things moving.
+I'd rather not have this change, since this will introduce a dangling
+symlink upstream [1].
 
-So I will take 1-5 later today or tomorrow unless someone shouts.
+[1]: https://github.com/rust-for-Linux/pin-init
 
-Thanks!
-
+---
 Cheers,
-Miguel
+Benno
+
