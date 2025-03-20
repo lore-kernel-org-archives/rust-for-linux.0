@@ -1,109 +1,92 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D731F5F6;
-	Thu, 20 Mar 2025 23:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1431224251;
+	Thu, 20 Mar 2025 23:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742513046; cv=none; b=mi3JtaTxLmupmXWz1GIC8mH1K16Dfs2IFiloP7V6jgHSZMPrfZY50qet5W0bnqJt9LcscyUnEPGJK5Pcc/Cgk6Su7xdK07k/pqaNpWFWfnTlTVIsENPgGINkQK4sbrW2eX28+mSlNIVOyYGXRm34hnHHHc7tBF+yfvtdy10HQ6A=
+	t=1742514259; cv=none; b=ngdGYbvupgSIQWH3X+E8xEsOdqKk3/CubRrM0eHYS4Fa4QmdgM/D5aZhxCc9dSee28WD1g/4VzYHUa55ne06wERUs+y9td5f2ycAFV2B2klYYS2ulYCJkGRLem0JwvUV4rpVouXj41EGBe58p7Q32te3Zl1bflMnRMWVrpBw2+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742513046; c=relaxed/simple;
-	bh=W8uyn4r11WjWx6rPaEdn+7zFfeY+5yijNLO6XpQjZV0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dpqhq5HwFVdxY53l5ubJZRVwBhCwh0UDnXTg9z8jQ61q2HetpQLdb0d4kpAkfPyj/MJVcrC5m88nn0pDMYH4LvcPjB/1IoDiS71MMg79kcuvHpq3vrE3REoUOXIcLlU5OYZdO71bP6/lDMtw+/6llajBsJ83WYoBQyGrTKHsvnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fRwV9ZeF; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742514259; c=relaxed/simple;
+	bh=Bg08hwoUReW52vaziORinJXS6O+KUquRWe5M+sADcGo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ayhazSWf82ywzh5hceykWCM5A2+K4nhGPElIEPwAAo775HgBhSEt1sN41BUK7W7cCDw0kuWpl5Mx+ewL3ZeQEgWrUFkw5mDnzUx/QLTmS23T1G80YNlx33Xb+LiaBHbsq/2tA07YvsM3RryS/uKr5+zVQCs6dRwuqJzSE20KKtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IRNL8Fhh; arc=none smtp.client-ip=79.135.106.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fRwV9ZeF"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22400301e40so2933585ad.1;
-        Thu, 20 Mar 2025 16:24:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742513045; x=1743117845; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=78UJncGiTadhrD6Xoh05yr4EEiB6STPqGdF7/vPmhI4=;
-        b=fRwV9ZeFFJ1wYX8snSEo9Mr/tBYadfxxww1e1utZ6dJ2DaXZu+RcAfOzojukJ9e4Xo
-         hSskOQTgIlOFmfH2OZFGKcKLbcWM2ZYFH1Ks0mrQavj4DKR/vab5/QTS7qWK1jquXtpO
-         HgrhYWl2ss1LwMzYhYgzYYg+VtGdpvRQqO3kVSQaG4FPBuq2pk9KkYtAyqiti5tziIxf
-         MiaP44FvARfWU1xURrGE/Aj9CI3G6sq0HSNlRp75jvLCLYArTBTPk8iXxUVvD4ARMtyn
-         xMKEiPj/0U19nlRfhd0BZKwnc5vzJXHN0DMi7LCJzbufiBnrxqX392360TTzxqj8N2Gp
-         GdUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742513045; x=1743117845;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=78UJncGiTadhrD6Xoh05yr4EEiB6STPqGdF7/vPmhI4=;
-        b=Zmok8Sn+emwEJso3m329sYjodO1eUbjdLsW6ly8u+9t5ZIZoGdAvspzVLzgbORLLZI
-         09uQbfDeRgStNfR3G6M7c08HkNoMxeNMX3/GjwiuTkddVRQcgI7tuWaSGxQtK2Xffnqt
-         lo2sAOVoj9hdSYIGCle4zt1bu1rhWO66UJhdYXX2yZKdBj+nEBM6uFN5qEHya0ZcPvgi
-         eyke5o3ZlFCUEhf/2MRkFPw3zP2HOONcV0fQ8SlsaQiufiPVKC2tZS6cupEsuBMmZsJk
-         PFePT2hpZzQf49bdFfGJFQwlKCG5cwI9cR7XY9rossU0WE9UfrSVJW+KFl2EUFNz58qE
-         VP9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUBFjWPhPb69GfLkB676I2hoySz0M1i7u7bLip0PIcfVnYc7TyIHHF5Zz4J5vGtqwnuRrVMELHVY1mVfK2JkMU=@vger.kernel.org, AJvYcCUxvnQOWHd3Z1KENhU3ylIrx2m3nxazZBV29dYv0tijtNd0iaY9qRieAryXb9nMuj0H7wXXTpyXGU1yPR5I@vger.kernel.org, AJvYcCWAgsMfx6wtVPU6TvlcyX/2B0cf/GjULlnlA6NwLfKTpnHaQ3nAAtyPRLvxPMVmIgnuSDufsX9WZ90PTQZAWg==@vger.kernel.org, AJvYcCWjFKE4IqVoBs9r2BEHxwaaAm0aSYJHpaYBGTr6vQnv1amvV7DmlF9MIJPcceZcpPNjf7ruvwJZwCF3FFQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYA7lYx1yXH988p8XRCPJ9eINc5RRIRgWzw64W66MPb/DMVQCF
-	QSw/9qRdnDDktQifglN0F3PNGTlC7udSplq5K5QF0N1q+OlrSqCZlFAOfQLB43sdFW+kjn2tqqO
-	9pTCf7EFDMMYMuq69BBFojxtppUI=
-X-Gm-Gg: ASbGncvJ4tAJ26kKVCkgEpcG3kljeoq7TvOJmSpJiaWwQk5Qf7LLWMPS7yX8j8j2TSh
-	NWISG1APXVWKu0Kj90w1E74vDrEMFC9m07cZuPJLrtDJM7qqQg159h7ew5/btl17sXibN0y6y1D
-	arfAl/YHL1lVjhrfdMwXCqsfR/xQ==
-X-Google-Smtp-Source: AGHT+IGWcw7ORKtOYVJClKluL8nolATENO4O9yVP8mhgL3334V4Sm9uTXwtZCL5NZynw5a04Z6B31v2ztFvhC4kR5eA=
-X-Received: by 2002:a17:902:fc48:b0:21f:1365:8bcf with SMTP id
- d9443c01a7336-22780de63a0mr8497675ad.10.1742513044776; Thu, 20 Mar 2025
- 16:24:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IRNL8Fhh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742514247; x=1742773447;
+	bh=VUqN+IP+y7JdfWhBmesM1Cx23jDtU1FYWcIG5o6G+4Y=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=IRNL8FhhuO7zn+uVKpaGxcVFVJX84/f7jrUJre5OR3oCw2IIq/QdGjOF+x57tzzm4
+	 XeGZnLnjH7WLs3Igb/mPOl4DRDKWd4ctezBtyyS1mqGtYs9GcJUIo/uXCB+4fAMMxq
+	 ic4eah1sSvKq23BV3FmBXUr6BKDaAvtGziHmSVoGtcCHKV0kLolfJEoxVafRJZG/nK
+	 yKfMyYSHIfRTHl33c6p4fbVCkvhTK7FVsjg/5gXb5Kyto0W5EEqHFbpvm/aerAH5fr
+	 NKq7d5Xar+ixhThGdBYmy5xtebluumfhm+ckuutklz3YR93rNIGjjwueCXPRvFkWzW
+	 yTclZXfkmzHsw==
+Date: Thu, 20 Mar 2025 23:44:01 +0000
+To: Danilo Krummrich <dakr@kernel.org>, bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] rust: pci: impl TryFrom<&Device> for &pci::Device
+Message-ID: <D8LHQSKES3SR.2EW347ONXZ22H@proton.me>
+In-Reply-To: <20250320222823.16509-4-dakr@kernel.org>
+References: <20250320222823.16509-1-dakr@kernel.org> <20250320222823.16509-4-dakr@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 20827e8e42723db1bb567796c49c0a267182b5ed
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org>
-In-Reply-To: <20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 21 Mar 2025 00:23:50 +0100
-X-Gm-Features: AQ5f1Jq6P6370em5rW3xTAKNPORSy5LT2z6OT2b1hTDzjQB4Ly6uKjhiWGGrWlM
-Message-ID: <CANiq72mQe-WBmFRNaLT=yCHb2x2Uyi7MsxThCs9S6Vmp6yVSpw@mail.gmail.com>
-Subject: Re: [PATCH v8 0/7] rust: extend `module!` macro with integer
- parameter support
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Luis Chamberlain <mcgrof@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
-	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 27, 2025 at 3:39=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> Extend the `module!` macro with support module parameters. Also add some =
-string
-> to integer parsing functions and updates `BStr` with a method to strip a =
-string
-> prefix.
->
-> Based on code by Adam Bratschi-Kaye lifted from the original `rust` branc=
-h [1].
->
-> Link: https://github.com/Rust-for-Linux/linux/tree/bc22545f38d74473cfef3e=
-9fd65432733435b79f [1]
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Thu Mar 20, 2025 at 11:27 PM CET, Danilo Krummrich wrote:
+> @@ -466,6 +466,23 @@ fn as_ref(&self) -> &device::Device {
+>      }
+>  }
+> =20
+> +impl TryFrom<&device::Device> for &Device {
+> +    type Error =3D kernel::error::Error;
+> +
+> +    fn try_from(dev: &device::Device) -> Result<Self, Self::Error> {
+> +        if dev.bus_type_raw() !=3D addr_of!(bindings::pci_bus_type) {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        // SAFETY: We've just verified that the bus type of `dev` equals=
+ `bindings::pci_bus_type`,
+> +        // hence `dev` must be embedded in a valid `struct pci_dev`.
 
-Applied (1-4) to `rust-next` -- thanks everyone!
+I think it'd be a good idea to mention that this is something guaranteed
+by the C side. Something like "... must be embedded in a valid `struct
+pci_dev` by the C side." or similar.
 
-    [ Pluralized section name. Hid `use`. - Miguel ]
+With that:
 
-For the moment, I skipped 5 due to the UB I found.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
+---
 Cheers,
-Miguel
+Benno
+
+> +        let pdev =3D unsafe { container_of!(dev.as_raw(), bindings::pci_=
+dev, dev) };
+> +
+> +        // SAFETY: `pdev` is a valid pointer to a `struct pci_dev`.
+> +        Ok(unsafe { &*pdev.cast() })
+> +    }
+> +}
+> +
+>  // SAFETY: A `Device` is always reference-counted and can be released fr=
+om any thread.
+>  unsafe impl Send for Device {}
+> =20
+
+
