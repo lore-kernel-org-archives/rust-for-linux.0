@@ -1,97 +1,92 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73ECA1E503D
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 08:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED79A215162;
+	Thu, 20 Mar 2025 08:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742460153; cv=none; b=TgRQHfa2sChS+qjVLUXW31bgL901gPVz/MdLGv2w1SbdYf7GU0OuSwE+w4Z0eRLRYrCNvzP3vgeilBGIRTiCg2wCjQmJ6rFrY9Gb+oibTrKFdAOHW0cDW+T+kgt4B8cnK63Za2bu/jFWwFmuYzDRsH/aZ2UcWk13NHJCllbWc3g=
+	t=1742460854; cv=none; b=K4UX5W4RpouqPD3bvBPtqH4rjQEqVfMRgKJa276nzF+mtpovdmQOFqH4XCyJuzrVNLfO4amPtCjZWCwd+Qe6ojCK+V2m7aS/jCdLb2g7LAYOF1YxVtBihWjwLFGorovm66LYb/SA58gYU5Wm9FBtOdOYG/3Nz8ELo23BIpRfHcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742460153; c=relaxed/simple;
-	bh=ETHNPzysFdBVxyexfBEmHBJj29mukUKke0l1rtbYB9E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TJiE/BJ4xsId+ofBVChn/ZNC62Fcw6sZidzc79Oi8l4cEVrXzRywGGPYma32dXKZrX/zbPeQrXoMiWew3PheJ1OdW1zfBrB7z3u3UEFN47mnBkHh1UrlAfGnzb2zm1XryEseYJRZ2+ofJGsOTZp788KzxS3bPrxZFB3AVkvlwn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qHBDNMPD; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1742460854; c=relaxed/simple;
+	bh=F55ugxVH5lNvnYmcUAixAJ8y/QoIFHaC+YlixKioZyM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XCua+9yx25WLiB+9trNgm48bM2TcPf5ZRurBKGXYwMJs6LM4+CjqioQC6BVJSc4o1Oi3yNsPMLo3WY69m+cauKAfvgo4fjSF/IPYwsMPaMZCrYA+81lJjoTauM2HT2UjJ7OK2io8r1QyZgfInEjJwYTrqRZoy4tHaEYAC8XfVY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BJAl2gYF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qHBDNMPD"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43d0830c3f7so4224035e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 01:42:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742460150; x=1743064950; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0q/pCfHYYPtBzoXiRpe1vIV+5BdA4Fjd+4hDTSR/RtY=;
-        b=qHBDNMPDWXPKlaYZyGt0POBWgiaLkzlnlpdkGeUReduF8XtrJTJl4XrlSFKZR/s2jI
-         OSdorvzXaa7I2MlLCXyu8Vvm0osY0tgscpFd26j8D/xjV6QPrYSLtKaNNzxqIu/Bu+EW
-         V6mdpeQpQjWsfNuhjG7Oh0L+vZKtl41D7sqmyO7djN3lzUPxa1gFSYMDuEeB2UPVHTeu
-         Xk6ScYCEmog6RhAspVIOy4ua8ZWRktXpIi+lPbZeJ4S52k7ZdfWE8y7rqX6O8qNKjcJH
-         dRYHjCr6OQ1a1eDS3hSXr0N/tWoR5vNfe0NxzQ3zozFrMQohFannVazBmGdiJV1f7Ri4
-         Maug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742460150; x=1743064950;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0q/pCfHYYPtBzoXiRpe1vIV+5BdA4Fjd+4hDTSR/RtY=;
-        b=M5ZYcMGSFplxfmIzyJyMKNDpb1DW6AW4r6jm5UIdKzGAb3p08RIRgI+n9MIG+UFF1N
-         73m3+CsFBx4DaGY6I3sYg60VUNRC/nVBv9aAeV2M/h7PXWI10eoXHYX3FS2jI+szxCcm
-         Sbqv4VU0EQ9GMY71Od8QwLNDJ8CbcR/WHUV6lzkMZQHxsY6MtdGqzoZm4ZY15OW1dhf+
-         Ry/gqXuxcy/57h5n6V8YALJ+wno2n0TDK/DWMmGE6dMO3KhvUU32s2Om37m9SZZ6Qwl9
-         q8DkOGaC99YCN1+aOj0VkYilLJ5XAiowKGijJFRdTWf3HYmAB+z5Fen9SmC05Ck1EZjJ
-         ib1g==
-X-Forwarded-Encrypted: i=1; AJvYcCVmvEcetgUrj5Ovr8UsF8If7vwPY9OZV2/bg1yCe3BobK8eHmMFF8BcvRrcu7Via1/9ivoK40UhbMX5TmkkUw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1hVI922TMVr1EvXX7xfeclwXlxBKZyJ1p7OzbpngTtwYfxkbS
-	GHDyJ/v+ilJn8RbhwukrDX4TQO+jQWvUls7GasPlAyV1wdyc2U2Z0Uhy0GyqLw9dFhiV03tq+OP
-	k/pBBtVT7Bsk6+Q==
-X-Google-Smtp-Source: AGHT+IG0ZxbKLoTEaoTwO913p2LfPABAlZp2ArpAG4/VyJdVxYakp4RPsHWiV0l8Ao9KV2sMc4Ra47lUkav23Ig=
-X-Received: from wmbbd5.prod.google.com ([2002:a05:600c:1f05:b0:43c:f6c0:3375])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3d18:b0:43d:738:4a9 with SMTP id 5b1f17b1804b1-43d495bd8f2mr14990235e9.27.1742460149944;
- Thu, 20 Mar 2025 01:42:29 -0700 (PDT)
-Date: Thu, 20 Mar 2025 08:42:28 +0000
-In-Reply-To: <20250317025205.2366518-1-kunwu.chan@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJAl2gYF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFEDC4CEDD;
+	Thu, 20 Mar 2025 08:54:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742460853;
+	bh=F55ugxVH5lNvnYmcUAixAJ8y/QoIFHaC+YlixKioZyM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BJAl2gYFIZV5wPyhf3FaQZcfrMy00B6eSZGPHh0y5cAkaHkEZfLX69dPmlg6N1huu
+	 20wai01+6nkllBGBUjGp3oZ0HaoJ2SJU/faJXornK+ckGpG4KIPFyXsLys7dia7RJ/
+	 isu3SFKPqwf+3mHq06v2p8LsrTCbOs8GmL4USTJULfwRNbhGz0o4wZtwZfx8okAXmH
+	 13x4BjHncNaFywu29DCMGlP9HByYGIa/ubhP/SL5AGhUCIxSbpyytYxm/DS5DReG+x
+	 ko6ueCQIFdk7YOJuDlqZQCLAFCpXHx9vCmhJBF/WQCCkcbqvwp+GgGEQe3CVO5MjlD
+	 J1/6/+v0PPzqg==
+Date: Thu, 20 Mar 2025 09:54:11 +0100
+From: Daniel Gomez <da.gomez@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>, R@macos
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, Petr Pavlu <petr.pavlu@suse.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
+	Simona Vetter <simona.vetter@ffwll.ch>, Greg KH <gregkh@linuxfoundation.org>, 
+	Fiona Behrens <me@kloenk.dev>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-modules@vger.kernel.org
+Subject: Re: [PATCH v8 7/7] modules: add rust modules files to MAINTAINERS
+Message-ID: <cdudbtd7qkspxgglsdfjmd665cqij7u57sdvakyj3wudobsqzm@t7lpbrc3byqy>
+References: <20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org>
+ <20250227-module-params-v3-v8-7-ceeee85d9347@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250317025205.2366518-1-kunwu.chan@linux.dev>
-Message-ID: <Z9vU9G9A0mneuqT0@google.com>
-Subject: Re: [PATCH v2] rust: sync: optimize Rust symbol generation for PollCondVar
-From: Alice Ryhl <aliceryhl@google.com>
-To: Kunwu Chan <kunwu.chan@linux.dev>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, Kunwu Chan <kunwu.chan@hotmail.com>, 
-	Grace Deng <Grace.Deng006@gmail.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250227-module-params-v3-v8-7-ceeee85d9347@kernel.org>
 
-On Mon, Mar 17, 2025 at 10:52:05AM +0800, Kunwu Chan wrote:
-> From: Kunwu Chan <kunwu.chan@hotmail.com>
+On Thu, Feb 27, 2025 at 03:38:13PM +0100, Andreas Hindborg wrote:
+> The module subsystem people agreed to maintain rust support for modules
+> [1]. Thus, add entries for relevant files to modules entry in MAINTAINERS.
 > 
-> When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-> with ARCH=arm64, the following symbols are generated:
-> 
-> $nm vmlinux | grep ' _R'.*PollCondVar  | rustfilt
-> ... T <kernel::sync::poll::PollCondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-> ... T <kernel::sync::poll::PollCondVar as kernel::init::PinnedDrop>::drop
-> ... T <kernel::sync::poll::PollCondVar as core::ops::drop::Drop>::drop
-> 
-> This Rust symbol
-> (<kernel::sync::poll::PollCondVar as kernel::init::PinnedDrop>::drop)
-> is trivial wrappers around the C functions __wake_up_pollfree
-> and synchronize_rcu. It doesn't make sense to go through a trivial
-> wrapper for its functions,so mark it inline.
-> 
-> Link: https://github.com/Rust-for-Linux/linux/issues/1145
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-> Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-> Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
+> Link: https://lore.kernel.org/all/0d9e596a-5316-4e00-862b-fd77552ae4b5@suse.com/ [1]
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+And this is what we signed up for here:
+
+https://lore.kernel.org/all/ZsPANzx4-5DrOl5m@bombadil.infradead.org/
+
+Acked-by: Daniel Gomez <da.gomez@samsung.com>
+
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 896a307fa065..ff65178f6e06 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -15991,6 +15991,8 @@ F:	include/linux/kmod.h
+>  F:	include/linux/module*.h
+>  F:	kernel/module/
+>  F:	lib/test_kmod.c
+> +F:	rust/kernel/module_param.rs
+> +F:	rust/macros/module.rs
+>  F:	scripts/module*
+>  F:	tools/testing/selftests/kmod/
+>  
+> 
+> -- 
+> 2.47.0
+> 
+> 
