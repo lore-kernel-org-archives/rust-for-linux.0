@@ -1,123 +1,127 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB6B22256C
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 22:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9866B22A4E1;
+	Thu, 20 Mar 2025 22:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742508684; cv=none; b=RceQ+OVlOSHbO45EqKIIu22D/rsG8MNxNz/sQw5qfI6WyjwHhJALI7jE1tdoXW7W8rukWrZFtm/heTgGxIB1bdETZkVQ/hNf0PSLwuZwXcohqVRMPXWKh54XT68az0JS0s2QmkRFy6not/tFDp4Ym1WJvcfHsUfiNPtl9GcH9cw=
+	t=1742508810; cv=none; b=ntaY1OOJQjkCfByqlRo+IknrnVDR5gjEq5HFpecajVfjEwz3ZIySFoc3anIaX/5L0RNKA/VrPx/3fFF2xAPbUR4PjrAY5tdyQd0rW9PVob1q7g5QWSLjsbb74161G0FV8/GUU+DA5zzyHxPgvbeUOEQx5N4zMCDm96hLmR7mMLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742508684; c=relaxed/simple;
-	bh=j4m/4kR3AKIDf1SGcymhk4lpp5b2oiTqmH3M80tjwaU=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Q14sSsBg+4XS3vObUjCOE+ZISk36UY1WIanwDB+IG0lR/DEsXpoGhiFPX7CNFhRg92+bILT7jPLg4AHuMUk5akGOTrcuY7RJT9bau4+s1oLM2fV9DTWD1sIYommLmIO7m71m2VAO2xbMAeRU4e2xwZOowkAD1aC1eZpz5eLeqQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=a42aE7eW; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742508810; c=relaxed/simple;
+	bh=KgiuVskFuqPodQ88jiuald1cK0Yq6BI+rekg6RVxwKk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qx1ujgKZA50D7Ldwk+ExgrsioDGDUparTfDiTXC2dwr9LaF74heXnn6uuRvxrQ9/wo4IvHsh7du6NGLzU0xIr91S7oo+9YzvxFVFqnVJAsMNPO2P1i4C02bnDH7gQYOfO3h8OAc8bfO56G/hG4mN6zbohyuUY3Ugdp3S5oLYBjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CZSTVI8e; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="a42aE7eW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742508675; x=1742767875;
-	bh=8j0eHeB4bjnnAP0B/WbCNB3mG2MsYZ2VTB5+OyhqIWc=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=a42aE7eWqFnDX3Wp+LBVfwzs+Q111qUU9KLlmIgoaUph/wPm0ewKiSRKOnJGD5xrm
-	 FV1BY3PwVDEVCH2HS4oxKhR9eA4Wevd9gVVrccgSWV4ry1KSaoVGarqz0gl0MSUll2
-	 +u0jwhtTaBvz3zYPGfYqmko4dJlvm0UbipqyPGTo3/F75XcZ+e4RFdZWcT/szs1Rkz
-	 kNLWYFYbRLmYMx+S/qpZrnseWcW5CVNdkkk/3t5wBZyx+9AVu30dK3eN92r9bz8wAu
-	 m/8ziESVYlcgFyWEhlejuiAiXKd4KactbdkEHwKcZHsB1ZtC3C0qk+zT/5MmGUuk5V
-	 QqUYIM68MMuKA==
-Date: Thu, 20 Mar 2025 22:11:09 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/5] rust: alloc: add Vec::pop
-Message-ID: <D8LFRQ5IX33R.35U012LFZ06W0@proton.me>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: b20d688fdac027eaa34781278aefbde8eb19aedc
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CZSTVI8e"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30bfc79ad97so24335101fa.1;
+        Thu, 20 Mar 2025 15:13:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742508806; x=1743113606; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uAFxENMZn4QcPzJ1M/33TjyaxDestwUuk1FF0bJ1mGE=;
+        b=CZSTVI8euG0YebS6ltK8hDAFffK9qHMstckbVds8rApHyT6EDzDBF572IKJSuhUE9a
+         +SLBgU6Zapk61v3u6kGNkrvlg70RUricp8Nw7MkclRHXocJ2IaxiXo/I+H4NpCT+8P8l
+         6OcBotdDRo2gFvRKnCOf2Zm9tErkzFnFJw/dfxyg6DMOCDd/1vK0HdaPDt+PWpPP0dTl
+         ferQkLfajmnKLpDQVWFq/rrqWy7kzf4qic27I+JCstgq1jnm89zmu75eU1GdbflHWM5E
+         IM0QfDlKN9+rdmdHhwtVO/ZQbB9nhoQqKizkqcj165ptquaCUqd5Hfj/NUqwnhKg+CIJ
+         3Oeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742508806; x=1743113606;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uAFxENMZn4QcPzJ1M/33TjyaxDestwUuk1FF0bJ1mGE=;
+        b=VcMlZ0qfuMn7MwK0TAUM/N4kNXLSVK6FPB4UptWkiB8H/DExtg2Juoj/V9sKrPwGCN
+         6Ju1PvKAH5nzNsVg3A9Aj23xavJtxkeYvtmyoQZ/u/ltLMulHnkMs+6wvgj7bSq2dwUb
+         BeVXweGckcYPxFzJnLTR3pA59ItsRfoLXqIhPE50zo3Q2Sz4UiK6MbmdM2pIsq2ACc+Y
+         vBwka/kfEcHk/sQ+EChoBMJhxh00r8jVxUzkZPlM4S7frmomlJKyS/EOrQ8QuCN9/9F+
+         h0OEIegT5QBaMICDREqTLLZdW3rf+rCOXF+kK8twjLSPWNNJ/yr8NOR7Zxu77IjtyVne
+         BWug==
+X-Forwarded-Encrypted: i=1; AJvYcCV79AYLQL5JWQrUxW/+E5Ohxi4aix/cvEW58+RYSw6Q952wzU+dXrqUn3vzV/oukPZqooUJqX7pELUEgCU=@vger.kernel.org, AJvYcCXzaUucxkBdO5pUMRUs1cq/lhHaUDMRMyagIdiDOqsekUWvrFDvgIQIKjcNNDnSqfSdmFybsi4cCfvm+/xWq5o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy32+piIDcnZzR1sE8rAhfEC1IxMFt4LnUQc9aKJ1N6yz1iGlWL
+	JDUq0OUCD9x7kkWfTX4xDOabQzO/T55JRC9DcS5uo6zGcJSeU/Vv8GIJaSiVo3vM+oOdnV/ekhC
+	LIgwtY4q0JpVA3THlWKZvd2BdRso=
+X-Gm-Gg: ASbGnctaZBlCtRG52qj3Kum5D/CZ3jwR5gPBaSd0dGolLCrPwm7hWt7cYI/QAtFCa+v
+	8U/ZG947RBNDXTu9O3l4zVP49A2ejvLNpnnH+HxMPlP6nyVY76Bymq9DElcKskj8cFcczL5rZGY
+	WtElS/krwaaO3/vgW+Y/3XmfNahhpCHXfPPG2OfXsKPw==
+X-Google-Smtp-Source: AGHT+IEfRLZm/iAzfrGhRw3gUEIzjK7pWZsGSEejyzKMWKCzaLSHBcDKlDg9oPvyH1jxAjXznCm+yWylqqY5IPu/dyc=
+X-Received: by 2002:a2e:6817:0:b0:30b:f599:d78f with SMTP id
+ 38308e7fff4ca-30d727317a3mr21754151fa.7.1742508806373; Thu, 20 Mar 2025
+ 15:13:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250320-vec-methods-v1-0-7dff5cf25fe8@google.com> <20250320-vec-methods-v1-4-7dff5cf25fe8@google.com>
+In-Reply-To: <20250320-vec-methods-v1-4-7dff5cf25fe8@google.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Thu, 20 Mar 2025 18:12:50 -0400
+X-Gm-Features: AQ5f1Jr2DYB_Zdwm3HARPJ4W1U2NuURVVPm9kt-h-3RHgSrYd1T_64m_bOS-Fbo
+Message-ID: <CAJ-ks9mM6cb_b0G_ZZh+tnijOPo1imWv-bzhgrLpGcNXMsMjBA@mail.gmail.com>
+Subject: Re: [PATCH 4/5] rust: alloc: add Vec::drain_all
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu Mar 20, 2025 at 2:52 PM CET, Alice Ryhl wrote:
-> This introduces a basic method that our custom Vec is missing. I expect
-> that it will be used in many places, but at the time of writing, Rust
-> Binder has six calls to Vec::pop.
+On Thu, Mar 20, 2025 at 9:56=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> This is like the stdlib method drain, except that it's hard-coded to use
+> the entire vector's range. Rust Binder uses it in the range allocator to
+> take ownership of everything in a vector in a case where reusing the
+> vector is desirable.
+>
+> Implementing `DrainAll` in terms of `slice::IterMut` lets us reuse some
+> nice optimizations in core for the case where T is a ZST.
 >
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/kernel/alloc/kvec.rs | 31 +++++++++++++++++++++++++++++++
->  1 file changed, 31 insertions(+)
+>  rust/kernel/alloc/kvec.rs | 57 +++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 57 insertions(+)
 >
 > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index 95e752ed27395fce72d372976b74fb1b0e957194..9943358c70aa63f5ad7ed9782=
-cb8879d7a80a8fb 100644
+> index df930ff0d0b85b8b03c9b7932a2b31dfb62612ed..303198509885f5e24b74da5a9=
+2382b518de3e1c0 100644
 > --- a/rust/kernel/alloc/kvec.rs
 > +++ b/rust/kernel/alloc/kvec.rs
-> @@ -302,6 +302,37 @@ pub fn push(&mut self, v: T, flags: Flags) -> Result=
-<(), AllocError> {
->          Ok(())
+> @@ -564,6 +564,30 @@ pub fn truncate(&mut self, len: usize) {
+>          //   len, therefore we have exclusive access to [`new_len`, `old=
+_len`)
+>          unsafe { ptr::drop_in_place(ptr) };
 >      }
-> =20
-> +    /// Removes the last element from a vector and returns it, or `None`=
- if it is empty.
+> +
+> +    /// Takes ownership of all items in this vector without consuming th=
+e allocation.
 > +    ///
 > +    /// # Examples
 > +    ///
 > +    /// ```
-> +    /// let mut v =3D KVec::new();
-> +    /// v.push(1, GFP_KERNEL)?;
-> +    /// v.push(2, GFP_KERNEL)?;
-> +    /// assert_eq!(&v, &[1, 2]);
+> +    /// let mut v =3D kernel::kvec![0, 1, 2, 3]?;
 > +    ///
-> +    /// assert_eq!(v.pop(), Some(2));
-> +    /// assert_eq!(v.pop(), Some(1));
-> +    /// assert_eq!(v.pop(), None);
-> +    /// # Ok::<(), Error>(())
+> +    /// for (i, j) in v.drain_all().enumerate() {
+> +    ///     assert_eq!(i, j);
+> +    /// }
+> +    ///
+> +    /// assert!(v.capacity() >=3D 4);
 > +    /// ```
-> +    pub fn pop(&mut self) -> Option<T> {
-> +        let Some(len_sub_1) =3D self.len.checked_sub(1) else {
-> +            return None;
-> +        };
+> +    pub fn drain_all(&mut self) -> DrainAll<'_, T> {
+> +        let len =3D self.len();
+> +        // INVARIANT: The first 0 elements are valid.
+> +        self.len =3D 0;
 
-Isn't it possible to do:?
-   =20
-    let len_sub_1 =3D self.len.checked_sub(1)?;
+Could you use `self.dec_len(self.len)` here? Then you'd have a &mut
+[T] rather than `MaybeUninit`. Provided you agree `dec_len` is sound,
+of course.
 
-> +
-> +        // INVARIANT: If the first `len` elements are valid, then the fi=
-rst `len-1` elements are
-
-Please add spaces around `-`.
-
-> +        // valid.
-> +        self.len =3D len_sub_1;
-> +
-> +        // INVARIANT: This invalidates a value in this vector's allocati=
-on, but the Vec invariants
-> +        // do not require it to be valid because `self.len <=3D len_sub_=
-1`.
-
-I don't think this should be an `INVARIANT` comment. Maybe we don't even
-need it.
-
----
-Cheers,
-Benno
-
-> +        // SAFETY: Since `len_sub_1` is less than the value `self.len` h=
-ad at the beginning of
-> +        // `pop`, this index holds a valid value.
-> +        Some(unsafe { self.as_mut_ptr().add(len_sub_1).read() })
-> +    }
-> +
->      /// Creates a new [`Vec`] instance with at least the given capacity.
->      ///
->      /// # Examples
-
-
+Link: https://lore.kernel.org/rust-for-linux/20250318-vec-set-len-v2-2-293d=
+55f82d18@gmail.com/
