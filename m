@@ -1,70 +1,75 @@
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2070.outbound.protection.outlook.com [40.107.100.70])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2053.outbound.protection.outlook.com [40.107.243.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787EB21B9D3;
-	Thu, 20 Mar 2025 13:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2081388;
+	Thu, 20 Mar 2025 13:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742477731; cv=fail; b=pRd8XlffwBdMJHUWpRz8vBicNS+FpR6/PGFGbRW0nJoT/F76LsyAEbcouYwBfRPKHCS4eDmqEE/Nk8lXKNfnovnrLV14UZGmvu8V2M2NXJ+nQ0T0tgUQ1aYZ6tErx9xdkt8hnb1jFaBvx/n8LAy+g0Bq2NnID17QwPXR53B2OWg=
+	t=1742477978; cv=fail; b=df7t5WhGnvFY0y1EGX4+SKMsXW97D5rH8ek8qWySJqck5s0UGzH/a/OAXrLt8kCgwf/36cNSlXVFp7uW5R3LtDe5urPAFT4uLBFsZRxKT/kZ19r1+x4fiXFYDkZOjQjFdYLKfs5epoUlhsJ5DPPZoxhgCaXuYX0HkQH2fN5beqM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742477731; c=relaxed/simple;
-	bh=Sjgp1dmQVRBciWTINlIqPFzBOWxXCIe2KJpg6PpAWd8=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=RBt60o9+sTbcx3PNpW56HlWg+wxWXzPrPMgkpSxSQWtUnoSrTRS6E7wWsSUPqXZ7h+X8OhiejqLa1DRC98lf+pu+pLbF3H2A66OyLNAQHKGgc3TBK81uUqWEmk9Rh3LrgOqBEdtg1T6vb4DB4bF5QcKfyWl+1NRjAVkTI8T/k+c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WKBXp5Bh; arc=fail smtp.client-ip=40.107.100.70
+	s=arc-20240116; t=1742477978; c=relaxed/simple;
+	bh=fpgfrH75+jOzGjkeuncgLbsJIvMrO/05zeJITGWN+yQ=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=Ue0vhvxHQnZFKH91bMBae2RqBL5rnlGyvtLAcTDB3BVbZ9uUxNUTBW19eLdRjm3l5CeMgy99XYPQTo1Er8vdEXqTcTvC8hlGSim5ga5yffETyfkR2K+8ZIZ/bOKJRpZZy9VFZWjAug27Yr519PExqTDnp9mGB+lktPodTH2g+78=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fDoj44+J; arc=fail smtp.client-ip=40.107.243.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WKBXp5Bh"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fDoj44+J"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=muffJi33AKUoCqgdefT1DTXJFzUaQ6QOlfovL7xqBIS39YNSah0lRQmpQcjWxB5uwohICWe7d0oAYynYsenn5tVmTR7hpXBLl3siDffaijQPmUyC1ELsowvjX2jcPqF1He14pcb9mSAj7YKHjt+vC9DHDxmkTtyR/SsixW7ziA2tESOjEEQXkdsydyIfNRFXuiQ0lRqimw0H+UUVlYBls8IU9myESk4eq0jvAqrAg8EOL91haYvtvdjHtuQ/T1rMvv0XB/FusoZ/5imAKEBfun0r9JFxD26BElF+QaekVbJewQ7o6uARkkf7+ec257vIK8GA4ZLwNORZhAFiieQczw==
+ b=somZd7puMJKMEbix4lGyHnYNSfHvI0Ow9vsAzUWLrLqMene8chzGFS0cuE8504A3t6rBiZ8hDxULmfj/OUHm3DjCWzjQDSqzR/056wYriggeYZqDZWG/jrd41WG667CtrT0hiJg1ZBaDAtn7lMAYxFrHuEvM2cSh4ydgzK20E6WvLly2GSuiqZNvWlfej8HN1JCnnoG5tBOx2TyP65BVkJgPyYKpAHqL/Tp6wURRkFG5yOAcctk+HWuW3lxU29ZzxEyzwxLr9uidTmv7rKCI98QScpZTvgZdj8eCh71r2r3tksEFb0lVyxjy+kdyoRBoOHgOfOYCDfZBqtd8AXHekw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XI8D7kl6BHk7qy8XlFYRD3ea21wnBWqN5k8EGroWgAw=;
- b=xnfc+S9FzB63+afwqRZguSPtEKoTugwR919QXKbmfbk/gp8iv4dRAywz1/N38VBoyTGkk/1tdolcvEmJmkx4d13bz6nz5EkZp1fH5YwWotC2GS1imUZNdu+9xhxNJDl22fr2KzkqxVomq96ltrZkAR/ZINeGHNBl3o66x7/rdIHzP42fYBXCcPJrGbBoR0vzbpY2tzWsSxrzC7tzILlvd1mXvCOlCY1c98B58PJXzrxN6lbhJTlgEIOAzG4w2Xpza6XbUjOm3nsRCOsX6Rt2oc/pzEL42udPdGIpUO/qHfzg+HurVSRUXxAD9Pa5MVsaGwnETHapmZO8pN8UmpK6Pg==
+ bh=EK4S6/fFpJEHWr5HZhZMZylVlvtpfoJFbihN6XU5xSA=;
+ b=LtsS/zelUfeo2AWhHjh/bE/jDYHHvmSTx1rfEClVE7fc51WinAx8GNsS2B8nfi1qA1qFcI9rcWsAK1wPEMDUDvd2XQXizeLE0h2BoJ8XRKeTHLRWpngJckne7QOCcQYxNkInbuNxvztUW1x+tUl8hqCUiT5IH5/WIAgKxe32RLO6p08+Ob1PTDNV3ZRtNSDZGsERBM858QLvYRIyWRD3ZjKNvG3hl8Oau/UbH07CQRG2MXTB/bBqw5uG4qVKpvFf+sFw4UMlkk4W75AfEFXgbONZF762VoOG56Cmphik650v1Z926q/C91IMIwXgpwcIxqHam5mxV1/l0IYFs7fw0w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XI8D7kl6BHk7qy8XlFYRD3ea21wnBWqN5k8EGroWgAw=;
- b=WKBXp5Bh7ndPC6/s21/weNEE31J5TqFD8Ue1cfSyJbmTCL+DeEukmPPuIST3CWiJWfbriqFJTWxzFx0d5DgX1caYniwiIi8uc7DqtEhcBJyGz/NAfUzeTZKnW7MJSrMW8g6ls5RESFkBgYucV+Sfl/gYOp53jufCB8h52H7YVhQ25x9GPpMYxqCjbM6AoyiP/oz2uqaje03B50+ui5KA0QrEPvWY//ZBwLbc8uFCP0T7W8LgF7sbRpnYtdnYzPfbAf4dw6HmMLlKiOY31zUWw8Aaslth9kTES0r3ywFJ/ccngwvjV5km7yadoWBedctwxLAJt/a4j7ZowXUv02VdOQ==
+ bh=EK4S6/fFpJEHWr5HZhZMZylVlvtpfoJFbihN6XU5xSA=;
+ b=fDoj44+J8X6CwV/yNnipoJ3iWoH1vq4tjiohXS9VMJvow2uWHZr8Q+CkhBEzTaGk+A+3aZn65/vizO7ux2Ih23oEX3Q/QnHqGgskpjRP4uYbF9jIxsQPfluEMblBQBoic7pZB6uS4+53nmqIW3jXLKnR3qofcGm89m4jWpyiN8vawdWY+zTK9yQEc4DPHQ1MC1c9VhWea+fqdjPnzNUcvmNM7wEp7D6Ba8jsfTi7clIxEqmlaBevr4XV1PvI1pidq0TScxlkDMjlW3U6ROiA/NVgbTQ659He0AhBrn2eXjq+f8yMB7rvzIQMzml+dw8ABJM4DcJkjJbaIH3Ucrvz+A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA1PR12MB9001.namprd12.prod.outlook.com (2603:10b6:806:387::5) with
+ by IA1PR12MB6409.namprd12.prod.outlook.com (2603:10b6:208:38b::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.36; Thu, 20 Mar
- 2025 13:35:25 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.35; Thu, 20 Mar
+ 2025 13:39:32 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::6e37:569f:82ee:3f99%6]) with mapi id 15.20.8534.034; Thu, 20 Mar 2025
- 13:35:24 +0000
+ 13:39:32 +0000
 From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Thu, 20 Mar 2025 22:35:09 +0900
-Subject: [PATCH RFC v2] rust: add macros to define registers layout
+Subject: [RFC PATCH v3 0/7] gpu: nova-core: register definitions and basic
+ timer and falcon devices
+Date: Thu, 20 Mar 2025 22:39:08 +0900
+Message-Id: <20250320-nova_timer-v3-0-79aa2ad25a79@nvidia.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250320-registers-v2-1-d277409bcde8@nvidia.com>
-X-B4-Tracking: v=1; b=H4sIAIwZ3GcC/23OTW7DIBCG4atYrIuFB/wTq6pyjyoLDGMbJQZ3c
- FGrKHcvjit10+WHhlfPnUUkh5H1xZ0RJhdd8HnAS8HMrP2E3Nm8GQiohawkJ5xc3JAib0drBml
- P0AyC5fuVcHRfz9b7Je853wX6fqZTtb/+V0kVr3hn1amrZYvdAGefnHW6NGFhl8fRJfz4zLTti
- P/JMlSAqgRIvoXVGb5qv82BeA5P6Bcdr3zUg6lbOeKoZJ/ULl0wRv0beD1MogEAKZsSpOogk6y
- +0vmK5PFWBpre9n+Djsiza3FbX6SmrBQnU2fl4weuoRIiSAEAAA==
-X-Change-ID: 20250313-registers-7fdcb3d926b0
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+X-B4-Tracking: v=1; b=H4sIAHwa3GcC/23P70rDMBQF8Fcp/ewtyU36xyKy9xCRNL3p4tZkJ
+ l1Qxt7drFPmwI/3wvlxzqmMFCzFsi9OZaBko/UuH+KhKPVWuYnAjvkukWHNkDfgfFJvi50pgG4
+ epWC8k6aWZQ4cAhn7uWIvr/ne2rj48LXaiV++v0z7l0kcGLSdrpUmHB+7duOSHa2qtJ/Li5Pwl
+ hVM3mUxZzszcGGE6bQxd9nztVSgj2Metlyb3Xb1RSYlZyhg8Qer4aDcsvUBQoSJ3KziDowadN0
+ KQ0aKPq0zZ4pR/QBP10FZ4TVjbYWsRSYFcFDDaGlfvSt33E9H2kyzsvtLref/DcEaRBSiqVDID
+ rMwql3Y7Ci4zPgwrblBRYKMzHbpi9RUXELQdV56/gZdHpYAygEAAA==
+X-Change-ID: 20250216-nova_timer-c69430184f54
+To: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
+ John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
  Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <benno.lossin@proton.me>, 
  Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+ Trevor Gross <tmgross@umich.edu>, Simona Vetter <simona@ffwll.ch>
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Alexandre Courbot <acourbot@nvidia.com>
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
 X-Mailer: b4 0.14.2
-X-ClientProxiedBy: TYWP286CA0031.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:262::19) To CH2PR12MB3990.namprd12.prod.outlook.com
+X-ClientProxiedBy: TYCP286CA0286.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c8::18) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -73,534 +78,180 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB9001:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7aeccd79-2bf3-42a4-8675-08dd67b41134
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA1PR12MB6409:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5c4401a5-2b3a-408f-c495-08dd67b4a584
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|7416014|376014|1800799024|921020;
+	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SEoySVVrNmtScXFLdThMckV4LytRak1YZVZXWis3ZHdjQ1o2Rm9Jamk0UmZY?=
- =?utf-8?B?VlVRNTVOdTBpRjZ0UzdJSVg5cnRsWVVNWVFBR0RMREhYcWtGVWVKTGQxeDdT?=
- =?utf-8?B?UjJ6RXdNUHo1SXVrNFg4U2laZGlWSHpZOFp2NWhsV0trZG96NXRGbmM2UnhZ?=
- =?utf-8?B?TUpjN00wWVJFS1JKNHA3RmtVcm5aNG10NXVOYTVvOXFkRk40UDBUVy9GdGVn?=
- =?utf-8?B?MTkrOElEYzdUVjcvMjRUdHlacS9LYmU0QVhEQTlYZi82N3NrQ1JhaWtmZ1hr?=
- =?utf-8?B?Z0czUDcrVnRvTnMrV1Y4eURlOTYvZXh0VDJiQXNpWTZOYUx4NHJmU1NSTFJB?=
- =?utf-8?B?a2F4alRWK1hlYm1hdnQ2SzM5WVdweWxPZ1RmR2RTYURYTHNCYVVJWXhITTQv?=
- =?utf-8?B?VHZDcm1QQnJ6aW5tT3Y4S21NRVptcG9MMUsyQ3dLWXd1N3ZvRHBob2lBc2ZR?=
- =?utf-8?B?SnlPQ01hRURKRXlzVEcyMllWaVVzWHptUmlmQlBFcFZoOElyRW9uREVGTnFV?=
- =?utf-8?B?aWFqREkrUGFTZWNvVHZMbnRwTUNiUWZTTkRsSno0R3MzaG5pYjk4K0hUbHNC?=
- =?utf-8?B?dldnZm5vNzRrbVA3U0JPNHhsV1JYT3dGRUE0KzErN0ZaM0llQlduTXV3NS9L?=
- =?utf-8?B?Nis4dS9JY0NKbWpLUEJhMjc5SXpiWTZISjZnVjZhTDlVMENNSlRjUkRuTnRL?=
- =?utf-8?B?OGlzZjkyZnZHVzlFTHZqWFJqNzlzUXBVUlZrckozZTVCOGwxb3NLcGM4b0Vk?=
- =?utf-8?B?TjF0dlJsY0pGMmlBbmtRNyt1a0JTR251UFNkZEc0YzJjMHhucHFaczNydEVN?=
- =?utf-8?B?elZHbHl5QW04VjRSTktoTGIvcjk5YU9KaVlidlZqZnVmZHBGUGVpQkZXbjNj?=
- =?utf-8?B?K1UxVE1nUFY1dEk4dTdSUVdDSEJKQXZHZVNLVUhPdGJlb3VZMnlPdWxwQVBV?=
- =?utf-8?B?ZFV0WGpVQTJ6UlhCU2g0aVB4NXliRUI4NGxab0lBSVQ2c3BqbWUrNFZ2SmlB?=
- =?utf-8?B?Yzh1WTVUM1FxWFpDSHJOTjB0QWhOL0FZZUh3bHZRSmVHR01wZXpXUlZqeXBu?=
- =?utf-8?B?VUJiV3FsMTdENG9LQmxvT1ZLT1RvMy9OK0szNmFVMVgwbmhrbG90a0ttYkFw?=
- =?utf-8?B?WDNuUHo2UzNXQTRGWUcwTzhOL1lSQk5YYW1CZ09VWTU3cDBMZ0Z5b3ZZUi9x?=
- =?utf-8?B?dG5FTms3alY2b1RoQ1RUWHgvQkZZckxrVVhHd1A2MVhFQ1kzaTFkVFdlVmJ6?=
- =?utf-8?B?MlNLdllHeHNCUk5qNkVCOFFqZzBLTEFzOGJjOXhVWVM0QmVGMk5pTVg1TFhZ?=
- =?utf-8?B?T24xN2ZGZUkrTnR5TnhWNVRQdzVjWUlZMGhvTXY1SWc1VWRQdWFCb0pTOVBh?=
- =?utf-8?B?NWd0YStmQnlQWTdhWEFEVjA2cHJKai9PcE9RWmw2WkJOdWV5K2hERlhYZ2My?=
- =?utf-8?B?ZFpzNkt1Yi9kWjZqZWZiVHhOMmIxZUpKbnVSOU94MjNiNGs3ZXVYR3djNkw0?=
- =?utf-8?B?aWl5SzRxNERKTExrTzgvNVdBaHJmY0hrTHlCRG5FaXhNd2p3Uk5kUTM4Mk82?=
- =?utf-8?B?VkhMRkNpcFdYeHNabmRSTmFBMTRJYy9TWkI1WVNuRlR0Qzg2NHVPQU1uMDJi?=
- =?utf-8?B?YXRBUjg5WlVRR1p5ditucFJZMUYrNFpKNFk3cmUzaG83eVJtMGU5ZDZETzl4?=
- =?utf-8?B?NmRISTRPWktNcTVmaWU5VWZXVkhZdlU1dCtSYkZxenlzS3JnSFBOZkFBMWdt?=
- =?utf-8?B?a3F0U2NxaXIxVTZ4U3ZBMERMTm1iSUgvMmxuRkswRk1JYlpDcHJ0dmVoeEVw?=
- =?utf-8?B?dkcrRTJ6V0RscGlDVXJDaE41VUU0cU5Nc1hHeEJITUFVNC90eWpOMFZabWo4?=
- =?utf-8?B?aDgrNFRtbDhXMlJlYjhKSHdZb1RaWFg3QXBtcEptRGp3K003YjNKTEtIQjZH?=
- =?utf-8?Q?XoPwhaZ9CHI=3D?=
+	=?utf-8?B?WFE5TTB4TEQ3bzdVUUZVYktha0FJSVlMRW0wZ2ZabWcyOTdpQ3pka0cyK1po?=
+ =?utf-8?B?SXh2S0lSMTBzQS85RlFZYURxdnIySlNiWTRlaHRPZWZJcDR1RnN0S0cvVDZT?=
+ =?utf-8?B?a3BvbWZhRnRWbVVxR3JnSUtBUnNENWtobmNWcEYzNkxneCtmTVlORTgrNk1w?=
+ =?utf-8?B?SUdTbVZOTzdONXoyZTFnYlY1RDk5ZTljRXdmWEpaSzlXeWgyMUN6dFlPaGFL?=
+ =?utf-8?B?ek9zcHIwcDVTMG9wamxERS9qcWtsSi9ONEpMVnBXVmhMZ1hGeFM5U01mbzBp?=
+ =?utf-8?B?SDNycXFFSWJ6TzlTQm9tK1psRXF4SmsvYURNdUVqVVdNS3ROU1gwdXRrbnpU?=
+ =?utf-8?B?ekd0eUlFazJTbXlheStva1ZScEJrbWVTM1k3ejBWdjdUa2kzYWZnS0FCYVFG?=
+ =?utf-8?B?YXRRbjl2VkFkV0xkeVRJalk4OWtodVd3ajE5NkhGV2FMMXlkTUt4eTVNOE9N?=
+ =?utf-8?B?Q0JKbEZRcXFMdjhkaENCNFVrQTJ3WGlOejR6YkZMQVJPQWdkU1lCNElLWll0?=
+ =?utf-8?B?bk1UVS9tYlVpM2R2S0k3dS9qcjI4NkFEZlA0Q01sV25ISG0rNkh1d3NOdnlH?=
+ =?utf-8?B?UTJiRFk5R1hhMlY2d1ZzUWFqR1lsKzRobkRVbU5rVEI4dDFtZVdBbUJwVEZv?=
+ =?utf-8?B?UGpQYlZ3U1oxUXpGYkFHelFLUTNWRml2M2JpU2kzZXZHU2RIa2NsL0dQRWla?=
+ =?utf-8?B?eVpheVRtMzFJNGxmVmpvS1NpYm9tdm9lWXlQM2J4YTJJL1lyZzRRY0IvR05z?=
+ =?utf-8?B?R3VQVG5oUVFoSFd5WWswbFpsTzFoaFdjZ3ROZTluTEtkQjZsa3dMeGMyMTVZ?=
+ =?utf-8?B?L3hIT0huVmNCRFZjTHFKazhEUmhCR1RRcUllbTgybGN6Vmt1SktPejNQLzYr?=
+ =?utf-8?B?MWFvNU1QaXprRlo1S2Y2M1ZnYkh3YjFjeHdCMTV2dlFzOE1YdStXV2xvbGRQ?=
+ =?utf-8?B?ZmMxcFg2Z2MvN0dSTGhCbmxVUFMxckpZTFM1NGtKTVNDNUxyaEo0a0gvK2Yw?=
+ =?utf-8?B?Tjd5TnhzT09LVFJUNDVKdGdYQS9qUWNoSk5lNmtMWWF4S1E1eGFvRnpYU0Ey?=
+ =?utf-8?B?TWQzVGdWOXRJaEQybE5XY0czczc1MUhiQnpwR3Fjb2tLSWx4dWtnT0h5cTZm?=
+ =?utf-8?B?VHoyL2hJR0JtNWxXdkJjMHZnY0NqN2FRWUtrUDVneDFmVXhiOWtJTktkeEtK?=
+ =?utf-8?B?VHNaZjdXTU93T3psMThONThvZ2VqTmdsaEdMRUVETWNWZk5PQWF6Tm55amQ5?=
+ =?utf-8?B?MGYvdytBblRIYjA3ZzkxVmo5RVFLNlA4aS9HL2F4OWhFM2tFMzRzdU9LaStj?=
+ =?utf-8?B?eDV3eDFjSUt0dEFWZHVtMnh2RFBFckhlOVVxSVRPRmJmak8yMkJ4ZUxsT3hs?=
+ =?utf-8?B?SmNQSitkYmhYT056eTVxRS9IOUxRUlJvRGl6T2w0cjVFcWxHTzh0eUJwVGU1?=
+ =?utf-8?B?cXVTeTR4Ni9YMVE1TVFnRUpQUTl3bEgyQVJENVM3aGlPOU93OForSTVBTjhP?=
+ =?utf-8?B?Tk9xemZEa2haU0FtNXhYeHplRHh5MUdtV0UrQkRUWkVNVDhNZi9CYXNrbWlK?=
+ =?utf-8?B?UUZVbUV3cjlxeldMbGtQRFhXWlAvaTk0M1IxbFBBYXJib0JPSk9ack54YXJq?=
+ =?utf-8?B?S09HL0p4RnVxU29SclRmOFhUZ0NURWNOUmR3UHN5SnRoMWljVlNEYVVWUzhE?=
+ =?utf-8?B?OWJXYThCMmtScEN2a3VMaEpNVkdyMUw0eThiRnowTVRuMUovQUxkb0ZkY0tz?=
+ =?utf-8?B?aTNaUVBodFlIZmE4dm9YbmdyVS9UeEl4TmZpZ29uUlVKbjZXdG1LKzlrMGdU?=
+ =?utf-8?B?VHdUNHp2VnIvZjBWLzhmZS80M3BackpidlB3QzRTSmE5clkwWXBiSUZkM1dL?=
+ =?utf-8?B?REhhVmtFSHZ0UGpuOXdOeWxLU0s2QUorOWlXbENtbDRQaXZwNldmVGk1L1Js?=
+ =?utf-8?Q?a+kYujcj0RM=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(7416014)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZVd4WDJXRnNDeG9xVVd3aU0zMjU1UnZORCt2VUpaaGZONWEvMGthMGJLNjIy?=
- =?utf-8?B?a3dLRFJDQ3UvdklZNVpMa0pOdmNpWkswSkZVLy9PTCs2bmxLc2VkUnZ5cTVp?=
- =?utf-8?B?R2x4eWY2NGxhWG1zcEZjZHhYOS9PMXhGdUIrKzBvSDhuU3hOaUNseDVQb1V6?=
- =?utf-8?B?VkZpWTRqcDg0aEZsMHNrazN0MU44SDBJaWJLNTQxcjlnanA0MVpXd0I1b2d2?=
- =?utf-8?B?a2xtZlJVdmNvUkZweWowSjJhRVFjR2tJUzFML0d2WnZFcnpreUNhRlBiM3BG?=
- =?utf-8?B?Ui9ETThKM0pWSVVoaW1Tc2xpTzBhOVZqYWN1N004UUJGSTExNk80akZ0bVlI?=
- =?utf-8?B?RmNsTUlkNnhaV0kzc2pBUHBOL2hLT21uWDV1eDZHWThHZmNaKzQ5M0hZUlFa?=
- =?utf-8?B?V1N3K2M0d05JM2ZQcHA0ZzIxT0dJVmpid0QzcnRIQVBoMUF1NHMvTVNrcm9R?=
- =?utf-8?B?TUtRd25CMHRTaVRkVW1wREEzdjRFR2RPQ2N3SHFqNW5Tb3NPamxVUXZMcHJY?=
- =?utf-8?B?NzFVWmRjelRlNHNnTWdJVTlIV1dqWTFQOGdaVVI5OVpWMVA0UlJKUmlZNEZI?=
- =?utf-8?B?azRWdjhGcmZocXdMMGUzVjJDZUpKL3lWY2E2WjRicWNGWWlrUWFYVUQyT2ZK?=
- =?utf-8?B?Mnc5S093YzVzMkRlVk5tUWJFZkRJUHd3aDF2blFlRDNNM0JZTnFTLzg5TU1I?=
- =?utf-8?B?VlNCRkNqZmR0eWdpdG4yNVM3TFM3WDFlb3lzYW1helFPTUZpb2JXS3kwRXpl?=
- =?utf-8?B?MjAvaS9GVE1NZUV2cFFtcFJyZVNGTWpqR01PTUExMnZiOHNrdmEzMk5Fak1O?=
- =?utf-8?B?N0hDVXhvZ0h6Nk96c21mdmNReWZmdWJJRnJ2SWFvU0hicDdINDBzRFA4OHlT?=
- =?utf-8?B?NnlycXRBRW5pRkZRWDRJMGtiakVjb0lSR0VwVlhYRGpWZXdLeG54cTFkdmly?=
- =?utf-8?B?NUZ3OFUyWDlnaWRtT2k2ZTVvaGRNRDBsbmV5bDJpK3JkVWhnRG9KcFlMOS83?=
- =?utf-8?B?UldXYlRLcWhkaUdaRGtRMUNFSEx2aFVNUEVwc0FOUUc2VjRneTY0VXppM2dW?=
- =?utf-8?B?cUVBZlJiY0RoZGY1TWJML1JSZzQwbzdzcXZKT1JPVzBNVkFSWnllQ0dTY1lq?=
- =?utf-8?B?TWtIZkpHL0p6cVg2aWc1akpTeG5mdk1UQlNqZWErR0FLZytCcnFreU9zQW8y?=
- =?utf-8?B?TlJFdmxjWm4vS0hxWEdJMmFacmxxUjcwN2hlWElsdkdyd3NGRCt2eWZpOXcv?=
- =?utf-8?B?STJJRHRlbEdpNndkejRoRWVZZGEwYUZZQXhTeGZsLzcxNEhqT2lvcE9hK280?=
- =?utf-8?B?ZlNpdm82VURHbGczeDg1K0pCMFM0ZXBoU0hEZEp1Nkk4akZSdFQwdnRSOTlH?=
- =?utf-8?B?bHB3OW9OZURZdGRFYnJyTkM1dnRKdStNTTlRRU1JWVFETEtOOThXcEdrNjM0?=
- =?utf-8?B?aHp3WXBtU1dJSUdMQXpuL0R3eTRkMHZOUmFMNnRKS2FpTkV2SldkbkNHOTR2?=
- =?utf-8?B?RzNQdXZXbGdvMzQ5elpMVHdQOThkOElzYkpXWFg5T1JZbGM1N3RkUXI3Mk15?=
- =?utf-8?B?anNNcHlrY1JRRFZrMG03TnJQZ1B1bHpVekNpUmROQXJZdWlLeW5sSCtyWGxS?=
- =?utf-8?B?SFhUOUNEcGtSY3pNamdJZmw1dXBESGpTeCt0cXZMQnVJWnR2TU45L3ZQQVc1?=
- =?utf-8?B?WXM1REFSbzVNTHhHdVg3bk5ZSENqaENkanJJSjJXbVpjc0dScDRYWDcwUEZT?=
- =?utf-8?B?dUZnRThTMkVSNUpwdklaWnhhVkgvdVN3RlVUSDYrV1loM3hCZWpOb1FvaWpo?=
- =?utf-8?B?UTBiWnVUd2dZODVGK0FsZ21yN21HUGJIbFViTlNqUW54cnRCZVVjdHkyVDF3?=
- =?utf-8?B?YzYwTTRVYlNKd2pwMVRZbW03b3JkSlJTT0Ixd0czK3ArUmpyL2F2b0ZlSG42?=
- =?utf-8?B?dkhHb1A0YUNaWmJ3TVEwQWN4ZHprZjREWWNyUlpkbEUyeDVrOWcvNDJkT0Zy?=
- =?utf-8?B?VkhSYWYvMzB3K0V2RHNSVVdEcy9xZnNLckxycnpwSStqYSsweFZZaVRuSk9L?=
- =?utf-8?B?OXIvUVJmeGE0L0I4dDA4Um1qYjdhRTRmK1BGdXNuWGJ0dTVyeHVYRkE5VUM1?=
- =?utf-8?B?NWI3VHFQT1V2OTlseTR3Q3YyL2NTd2U5T0tWQ1NMQ1ZuZUIvNkhyeUVQVXpW?=
- =?utf-8?Q?baqK/SjqEPtlaHjmA7rPYooT5VMspBgJ9rA35YDdn5yd?=
+	=?utf-8?B?QkFvY0Vyb3IvTURLQkF4WjRZUzRJRlcxNHpUQnJSeUlMamtjclE1RjA4RjVK?=
+ =?utf-8?B?SGx4ZlVGMHlVaDFBdFlFY29sOXBQeHlzaUhWYmlUREszQTdrQW4rMGsvREZn?=
+ =?utf-8?B?QkRPRGRVRVZxVUk1cVNKbkt4KzNJcjlKVDB4R1MvRWpHbmc4ZUVTRTVkbTB6?=
+ =?utf-8?B?Qll3SUF4TFdxT2dRVEMrRHZkcWROUHNDLzhzMCt0aGkzRENPUStHTDVvTita?=
+ =?utf-8?B?eEVFVVdLdnBOenpIRHdpQzk2dlZleHJSOXRlZjEvUjFmSkRLcHFCYVo0Y3Mx?=
+ =?utf-8?B?VWp2TlF4c1RFNDI4bXdqNHUxL3B3NjBTc2VXRUF4S3ZobEgzL2VNeXdiZ3Fo?=
+ =?utf-8?B?NXdPVkRlOEt0aTJZL1hnYWVNSi8zRXBuK2c0UzVTMkF1N0lZS0w5RG5ZaFc1?=
+ =?utf-8?B?ZGM4NnBrekd1VW1ySlRMbmFGMUEyMGZ4VUtJcEUvS3Vqd3c2S29Rc0t6eEJs?=
+ =?utf-8?B?dlhldkd0S3dQTFpRd01GMzdVQ0prREt1d09KSzlCeExhdjRMSDFrOVJSRWRu?=
+ =?utf-8?B?WGlqMnliOSsvU3BUSWtOY2VtNk9BVEl4a2Y3L1RUdmpXdWZpOGZNeVJXdFFE?=
+ =?utf-8?B?ZXBSenlkQzE2M1hhYjJzSlpwMUY0TGxjbUV1bWI1RnRmbS9hR0FhZGhMZmJX?=
+ =?utf-8?B?aHJYdkRoUHBram5uRnJSQ0U5KzFUZjFablA3QVdSR3pKai81d0J6akJNYzhj?=
+ =?utf-8?B?TjM5dDdVTHA0RHpRb1RUNTNJc09xOHZyZ3lCWmNzalBmcGpMMVlVLy9wVy9h?=
+ =?utf-8?B?Q0xRUEhjaHpBOFFMM0pPd0lYNDdrNjkzUXkwRitMTDJKM21IaWwzODRKYzAr?=
+ =?utf-8?B?REM4c1hQQXpSYmhEc1dURkNtNkwyS01yV3Y1K2dRTGRzcUpMSEZ1RU1yUExB?=
+ =?utf-8?B?QWpzOG9sNCtoaXUwN1RzcEN3K1ZDYjhjN0I4UmFoVWRGSnNOazlQK2dHTUto?=
+ =?utf-8?B?UFVJNXdQMXlvUWszRWJmbENiUzZ6QjYva3Q0QkdIeTV2cEgyQVdwWTA3SVJk?=
+ =?utf-8?B?a1dkN0tlV3NTYTkvRzRZNDk2YkIvY0hXM0ZDajhHNk1aK29TZ1NheUlqNXpz?=
+ =?utf-8?B?NE1RMHFzUlFRaHdEOWdFcHdUOS9kNDlydnNicjZiK2s5RTN4VWlSMnl6Zitt?=
+ =?utf-8?B?cUpMQXlkOWpyeWpWK01ISTZnVkpjeWd2dkhpL0dVeUQrZTRwT096a1dZZHNj?=
+ =?utf-8?B?WEl6aUFPZWpiSG9sUUw0Wm45Z0xhWnM2VC9oOWJkOGNmOEs3QSt1eDhGcFY2?=
+ =?utf-8?B?dG50QVNTVmtocGd2MlNieHIxT2tvd3p3S2JaM1RqLzB2a3YwQ3FuRFV4eEJw?=
+ =?utf-8?B?RWI4UWdQSnBsbzBLVUNFeSt6OE9PVlErUkhwZ1VVWXhrMTZ1OVlxbGxrVkJ6?=
+ =?utf-8?B?ckxFbnFoaVBHNUl0Q3Blbm5VS3I5UkZtQ2l3MlM5enVLcHFDN2J6cGpMTis2?=
+ =?utf-8?B?dFJKeXIyTWVLSnBOdmp4VTg5V1VSMEFtRnFQS3lMaUZKWHRCNURlS1BTZkRN?=
+ =?utf-8?B?VUVScTNGdHBCR096Y0p2Wlg2R29seFZjZDYxSUVjQnRBZWFhZzB4ZFpQZm9O?=
+ =?utf-8?B?UzI1a3phaGtWajUyZlVDY0NFUVRCOGRYVVVVUjhyNTFIWTJLRElGS0VqUW1B?=
+ =?utf-8?B?YzFWdE00RFZ5SkxWa2tMT0NNRW5LbmtlaEZuSnN2T2JxamtxTjBEVWRCeFJ5?=
+ =?utf-8?B?QlNVOEFaZHFUNlF6cjFHd0YwU2p1anl3R3RtZmJEU043ZmFjYk5LRENFd01Z?=
+ =?utf-8?B?Y3V0U1lJOTVObGF3WlNnUE5iM045OXBzUnM3aUQ0aklwcnNnOFVNWVFNRGZa?=
+ =?utf-8?B?WEg5R3I3eVNTeTZISkR4c0poQnE3NU9rSDFZUjBjNVZLcDN4eUEzbWtvNHVX?=
+ =?utf-8?B?SldwandxWGo3MWZQT1NDNkhRcDRwaUllRGFPY08yRDErdDJIWkRTSGlnREdE?=
+ =?utf-8?B?UUg1S3BOZUxTQTR1cjBnc3RoZnFQazlQYnJsOGtDRm11cDlwSks0V2ZMT1lY?=
+ =?utf-8?B?SU5mWitFRWxtem9ORWEzRzhreEhHWDlVbVNJcndET0dFRGxlNG9oZmxLMys3?=
+ =?utf-8?B?K29kdlV2WW50c2VZMDRkUkVieURrT1dWSG5Vb1NrM1pPVjMrV25IQjFVRVpY?=
+ =?utf-8?B?WHFWVElWU25VSmNnOUZqTlFXSjRta0dpYklWTWwxWUh4bm8xS0VkOHdzQVBl?=
+ =?utf-8?Q?1ycsfg2Xj3pW0difSZO5herpZjvaBmsGgKz8qgG2ufVy?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7aeccd79-2bf3-42a4-8675-08dd67b41134
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c4401a5-2b3a-408f-c495-08dd67b4a584
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2025 13:35:24.3661
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2025 13:39:32.6434
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FAUujoUFlgB4L2OaV0bioTfah7UqNjxg47YLYXUsLNc+LflwHr8R9WFjWwwcBP3iioa8q3dvwna4Oyn3gYQPEQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9001
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1d3XPbTiCmDhQYXnSnh3vU+xIy5mBQybst/sWNHebhVCNcbH33TL3tTDXV3VTub9zqt4v0p4ro1uoYHBihDtow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6409
 
-Add two macros, register!() and register_rel!(), that define a given
-register's layout and provide accessors for absolute or relative
-offsets, respectively.
+Hi everyone,
 
-The following example (taken from the rustdoc) helps understanding how
-they are used:
+New RFC for the first steps towards bringing booting the GSP, with more
+complete Falcon code. This code has been successfully used to run the
+FECS-FRTS firmware from the bios and create the WPR2 region, although
+this series alone is not enough to reproduce this - the next revision
+will probably include the code required to extract that firmware from
+the BIOS.
 
-    register!(Boot0@0x00000100, "Basic revision information about the chip";
-        3:0     minor_rev => as u8, "minor revision of the chip";
-        7:4     major_rev => as u8, "major revision of the chip";
-        28:20   chipset => try_into Chipset, "chipset model"
-    );
+As for the previous revisions, the goal is to get more eyes to look at
+the general direction of the driver and raise concerns if there are any,
+the main point of discussion being probably the register!() macro that
+is used to define register layouts.
 
-This defines a `Boot0` type which can be read or written from offset
-`0x100` of an `Io` region. It is composed of 3 fields, for instance
-`minor_rev` is made of the 4 less significant bits of the register. Each
-field can be accessed and modified using helper methods:
-
-    // Read from offset `0x100`.
-    let boot0 = Boot0::read(&bar);
-    pr_info!("chip revision: {}.{}", boot0.major_rev(), boot0.minor_rev());
-
-    // `Chipset::try_from` will be called with the value of the field and
-    // returns an error if the value is invalid.
-    let chipset = boot0.chipset()?;
-
-    // Update some fields and write the value back.
-    boot0.set_major_rev(3).set_minor_rev(10).write(&bar);
-
-    // Or just update the register value in a single step:
-    Boot0::alter(&bar, |r| r.set_major_rev(3).set_minor_rev(10));
-
-Fields are made accessible using one of the following strategies:
-
-- `as <type>` simply casts the field value to the requested type.
-- `as_bit <type>` turns the field into a boolean and calls
-  <type>::from()` with the obtained value. To be used with single-bit
-  fields.
-- `into <type>` calls `<type>::from()` on the value of the field. It is
-  expected to handle all the possible values for the bit range selected.
-- `try_into <type>` calls `<type>::try_from()` on the value of the field
-  and returns its result.
-
-The documentation strings are optional. If present, they will be added
-to the type or the field getter and setter methods they are attached to.
-
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
-I have written these initially for the nova-core driver, then it has
-been suggested that they might be useful outside of it as well, so here
-goes.
-
-I have considered as suggested to turn these into a single procedural
-macro, but could not even get even the basics to parse properly yet -
-procedural macros are not easy to begin with, but kernel procedural
-macros are also different from user-space ones, making it all the more
-difficult. I will keep looking into it but wanted to post a new revision
-meanwhile, since it is used by my next nova-core series revision.
-
-The following things needs to be improved before we can remove the [RFC]
-flag:
-
-- Inner types other than `u32` need to be supported - this can probably
-  just be an extra parameter of the macro.
-- The syntax can certainly be improved. I've tried to some with
-  something that makes the register layout obvious, while fitting within
-  the expectations of the Rust macro parser, but my lack of experience
-  certainly shows here.
-- We probably need an option to make some fields or whole registers
-  read-only.
-- The I/O offset and read/write methods should be optional, so the
-  layout part can be used for things that are not registers.
-- The visibility of the helper macros is a bit of a headache - I haven't
-  found a way to completely hide them to the outside, so I have prefixed
-  them with `__` for now. Using a procedural macro should help with
-  that too.
+The falcon code is still quite in a work-in-progress state, I am notably
+still thinking of the best way to implement the HAL for chip-dependent
+operations (right now we branch depending on the chipset, but that
+obviously won't scale). So the overall design is still very much
+flexible.
 
 Dependencies:
 
-- [1] https://lore.kernel.org/rust-for-linux/20250318-topic-panthor-rs-genmask-v4-1-35004fca6ac5@collabora.com/
-- [2] https://lore.kernel.org/rust-for-linux/20250306222336.23482-1-dakr@kernel.org/
+- https://lore.kernel.org/rust-for-linux/20250318-topic-panthor-rs-genmask-v4-1-35004fca6ac5@collabora.com/
+- https://lore.kernel.org/rust-for-linux/20250319-try_with-v2-0-822ec63c05fb@nvidia.com/
+- https://lore.kernel.org/rust-for-linux/20250224115007.2072043-1-abdiel.janulgue@gmail.com/
+- https://lore.kernel.org/rust-for-linux/20250306222336.23482-1-dakr@kernel.org/
+- https://lore.kernel.org/rust-for-linux/20250320-registers-v2-1-d277409bcde8@nvidia.com/
+
+TODO:
+
+- Document more registers and fields,
+- Add BIOS extractor code to obtain the FWSEC-FRTS firmware,
+- Complete FWSEC-FRTS execution to obtain WPR2 region.
+
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
+Changes in v3:
+- Fixed typo in Boot0 register definition that made probing fail.
+- Moved the register definition macros to their own patch series.
+- Used Revocable::try_access_with() when accessing registers.
+- Added all the Falcon code required to boot FWSEC-FRTS.
+- Link to v2: https://lore.kernel.org/r/20250304-nova_timer-v2-0-8fb13f3f8cff@nvidia.com
+
 Changes in v2:
-- Moved to the io module.
-- Rename the macros to "register!()" and "register_rel!()".
-- Properly clear field in setter methods.
-- Use the genmask macros from [1].
-- Add "alter" and "try_alter" methods to modify a register's content
-  using a closure.
-- Link to v1: https://lore.kernel.org/r/20250313-registers-v1-1-8d498537e8b2@nvidia.com
+- Don't hold the Bar guard in methods that can sleep.
+- Added a Timestamp type for Timer to safely and easily get durations
+  between two measurements.
+- Added a macro to make register definitions easier.
+- Added a very basic falcon implementation to define more registers and
+  exercise the register definition macro.
+- Link to v1: https://lore.kernel.org/r/20250217-nova_timer-v1-0-78c5ace2d987@nvidia.com
+
 ---
- rust/kernel/io.rs          |   2 +
- rust/kernel/io/register.rs | 305 +++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/reg.rs         |   2 +
- 3 files changed, 309 insertions(+)
+Alexandre Courbot (7):
+      rust: add useful ops for u64
+      rust: make ETIMEDOUT error available
+      gpu: nova-core: derive useful traits for Chipset
+      gpu: nova-core: add missing GA100 definition
+      gpu: nova-core: use register!() to define register layout
+      gpu: nova-core: add basic timer device
+      gpu: nova-core: add falcon register definitions and probe code
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index d4a73e52e3ee68f7b558749ed0108acde92ae5fe..acecbf196be1751c9de7bc50dc47b213f9ba2362 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -7,6 +7,8 @@
- use crate::error::{code::EINVAL, Result};
- use crate::{bindings, build_assert};
- 
-+mod register;
-+
- /// Raw representation of an MMIO region.
- ///
- /// By itself, the existence of an instance of this structure does not provide any guarantees that
-diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..14eac88677f57ca92b80f50d03cee535ab685f07
---- /dev/null
-+++ b/rust/kernel/io/register.rs
-@@ -0,0 +1,305 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Types and macros to define register layout and accessors.
-+//!
-+//! A single register typically includes several fields, which are accessed through a combination
-+//! of bit-shift and mask operations that introduce a class of potential mistakes, notably because
-+//! not all possible field values are necessarily valid.
-+//!
-+//! The macros in this module allow to define, using an intruitive and readable syntax, a dedicated
-+//! type for each register with its own field accessors that can return an error is a field's value
-+//! is invalid. They also provide a builder type allowing to construct a register value to be
-+//! written by combining valid values for its fields.
-+
-+/// Helper macro for the `register` macro.
-+///
-+/// Defines the wrapper `$name` type, as well as its relevant implementations (`Debug`, `BitOr`,
-+/// and conversion to regular `u32`).
-+#[macro_export]
-+macro_rules! __reg_def_common {
-+    ($name:ident $(, $type_comment:expr)?) => {
-+        $(
-+        #[doc=$type_comment]
-+        )?
-+        #[repr(transparent)]
-+        #[derive(Clone, Copy, Default)]
-+        pub(crate) struct $name(u32);
-+
-+        // TODO: should we display the raw hex value, then the value of all its fields?
-+        impl ::core::fmt::Debug for $name {
-+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-+                f.debug_tuple(stringify!($name))
-+                    .field(&format_args!("0x{0:x}", &self.0))
-+                    .finish()
-+            }
-+        }
-+
-+        impl core::ops::BitOr for $name {
-+            type Output = Self;
-+
-+            fn bitor(self, rhs: Self) -> Self::Output {
-+                Self(self.0 | rhs.0)
-+            }
-+        }
-+
-+        impl From<$name> for u32 {
-+            fn from(reg: $name) -> u32 {
-+                reg.0
-+            }
-+        }
-+    };
-+}
-+
-+/// Helper macro for the `register` macro.
-+///
-+/// Defines the getter method for $field.
-+#[macro_export]
-+macro_rules! __reg_def_field_getter {
-+    (
-+        $hi:tt:$lo:tt $field:ident
-+            $(=> as $as_type:ty)?
-+            $(=> as_bit $bit_type:ty)?
-+            $(=> into $type:ty)?
-+            $(=> try_into $try_type:ty)?
-+        $(, $comment:expr)?
-+    ) => {
-+        $(
-+        #[doc=concat!("Returns the ", $comment)]
-+        )?
-+        #[inline]
-+        pub(crate) fn $field(self) -> $( $as_type )? $( $bit_type )? $( $type )? $( core::result::Result<$try_type, <$try_type as TryFrom<u32>>::Error> )? {
-+            const MASK: u32 = ::kernel::bits::genmask_u32($hi, $lo);
-+            const SHIFT: u32 = MASK.trailing_zeros();
-+            let field = (self.0 & MASK) >> SHIFT;
-+
-+            $( field as $as_type )?
-+            $(
-+            // TODO: it would be nice to throw a compile-time error if $hi != $lo as this means we
-+            // are considering more than one bit but returning a bool...
-+            <$bit_type>::from(if field != 0 { true } else { false }) as $bit_type
-+            )?
-+            $( <$type>::from(field) )?
-+            $( <$try_type>::try_from(field) )?
-+        }
-+    }
-+}
-+
-+/// Helper macro for the `register` macro.
-+///
-+/// Defines all the field getter methods for `$name`.
-+#[macro_export]
-+macro_rules! __reg_def_getters {
-+    (
-+        $name:ident
-+        $(; $hi:tt:$lo:tt $field:ident
-+            $(=> as $as_type:ty)?
-+            $(=> as_bit $bit_type:ty)?
-+            $(=> into $type:ty)?
-+            $(=> try_into $try_type:ty)?
-+        $(, $field_comment:expr)?)* $(;)?
-+    ) => {
-+        #[allow(dead_code)]
-+        impl $name {
-+            $(
-+            ::kernel::__reg_def_field_getter!($hi:$lo $field $(=> as $as_type)? $(=> as_bit $bit_type)? $(=> into $type)? $(=> try_into $try_type)? $(, $field_comment)?);
-+            )*
-+        }
-+    };
-+}
-+
-+/// Helper macro for the `register` macro.
-+///
-+/// Defines the setter method for $field.
-+#[macro_export]
-+macro_rules! __reg_def_field_setter {
-+    (
-+        $hi:tt:$lo:tt $field:ident
-+            $(=> as $as_type:ty)?
-+            $(=> as_bit $bit_type:ty)?
-+            $(=> into $type:ty)?
-+            $(=> try_into $try_type:ty)?
-+        $(, $comment:expr)?
-+    ) => {
-+        kernel::macros::paste! {
-+        $(
-+        #[doc=concat!("Sets the ", $comment)]
-+        )?
-+        #[inline]
-+        pub(crate) fn [<set_ $field>](mut self, value: $( $as_type)? $( $bit_type )? $( $type )? $( $try_type)? ) -> Self {
-+            const MASK: u32 = ::kernel::bits::genmask_u32($hi, $lo);
-+            const SHIFT: u32 = MASK.trailing_zeros();
-+
-+            let value = ((value as u32) << SHIFT) & MASK;
-+            self.0 = (self.0 & !MASK) | value;
-+            self
-+        }
-+        }
-+    };
-+}
-+
-+/// Helper macro for the `register` macro.
-+///
-+/// Defines all the field setter methods for `$name`.
-+#[macro_export]
-+macro_rules! __reg_def_setters {
-+    (
-+        $name:ident
-+        $(; $hi:tt:$lo:tt $field:ident
-+            $(=> as $as_type:ty)?
-+            $(=> as_bit $bit_type:ty)?
-+            $(=> into $type:ty)?
-+            $(=> try_into $try_type:ty)?
-+        $(, $field_comment:expr)?)* $(;)?
-+    ) => {
-+        #[allow(dead_code)]
-+        impl $name {
-+            $(
-+            ::kernel::__reg_def_field_setter!($hi:$lo $field $(=> as $as_type)? $(=> as_bit $bit_type)? $(=> into $type)? $(=> try_into $try_type)? $(, $field_comment)?);
-+            )*
-+        }
-+    };
-+}
-+
-+/// Defines a dedicated type for a register with an absolute offset, alongside with getter and
-+/// setter methods for its fields and methods to read and write it from an `Io` region.
-+///
-+/// Example:
-+///
-+/// ```no_run
-+/// register!(Boot0@0x00000100, "Basic revision information about the chip";
-+///     3:0     minor_rev => as u8, "minor revision of the chip";
-+///     7:4     major_rev => as u8, "major revision of the chip";
-+///     28:20   chipset => try_into Chipset, "chipset model"
-+/// );
-+/// ```
-+///
-+/// This defines a `Boot0` type which can be read or written from offset `0x100` of an `Io` region.
-+/// It is composed of 3 fields, for instance `minor_rev` is made of the 4 less significant bits of
-+/// the register. Each field can be accessed and modified using helper methods:
-+///
-+/// ```no_run
-+/// // Read from offset 0x100.
-+/// let boot0 = Boot0::read(&bar);
-+/// pr_info!("chip revision: {}.{}", boot0.major_rev(), boot0.minor_rev());
-+///
-+/// // `Chipset::try_from` will be called with the value of the field and returns an error if the
-+/// // value is invalid.
-+/// let chipset = boot0.chipset()?;
-+///
-+/// // Update some fields and write the value back.
-+/// boot0.set_major_rev(3).set_minor_rev(10).write(&bar);
-+///
-+/// // Or just update the register value in a single step:
-+/// Boot0::alter(&bar, |r| r.set_major_rev(3).set_minor_rev(10));
-+/// ```
-+///
-+/// Fields are made accessible using one of the following strategies:
-+///
-+/// - `as <type>` simply casts the field value to the requested type.
-+/// - `as_bit <type>` turns the field into a boolean and calls `<type>::from()` with the obtained
-+///   value. To be used with single-bit fields.
-+/// - `into <type>` calls `<type>::from()` on the value of the field. It is expected to handle all
-+///   the possible values for the bit range selected.
-+/// - `try_into <type>` calls `<type>::try_from()` on the value of the field and returns its
-+///   result.
-+///
-+/// The documentation strings are optional. If present, they will be added to the type or the field
-+/// getter and setter methods they are attached to.
-+#[macro_export]
-+macro_rules! register {
-+    (
-+        $name:ident@$offset:expr $(, $type_comment:expr)?
-+        $(; $hi:tt:$lo:tt $field:ident
-+            $(=> as $as_type:ty)?
-+            $(=> as_bit $bit_type:ty)?
-+            $(=> into $type:ty)?
-+            $(=> try_into $try_type:ty)?
-+        $(, $field_comment:expr)?)* $(;)?
-+    ) => {
-+        ::kernel::__reg_def_common!($name);
-+
-+        #[allow(dead_code)]
-+        impl $name {
-+            #[inline]
-+            pub(crate) fn read<const SIZE: usize, T: Deref<Target=Io<SIZE>>>(bar: &T) -> Self {
-+                Self(bar.readl($offset))
-+            }
-+
-+            #[inline]
-+            pub(crate) fn write<const SIZE: usize, T: Deref<Target=Io<SIZE>>>(self, bar: &T) {
-+                bar.writel(self.0, $offset)
-+            }
-+
-+            #[inline]
-+            pub(crate) fn alter<const SIZE: usize, T: Deref<Target=Io<SIZE>>, F: FnOnce(Self) -> Self>(bar: &T, f: F) {
-+                let reg = f(Self::read(bar));
-+                reg.write(bar);
-+            }
-+        }
-+
-+        ::kernel::__reg_def_getters!($name; $( $hi:$lo $field $(=> as $as_type)? $(=> as_bit $bit_type)? $(=> into $type)? $(=> try_into $try_type)? $(, $field_comment)? );*);
-+
-+        ::kernel::__reg_def_setters!($name; $( $hi:$lo $field $(=> as $as_type)? $(=> as_bit $bit_type)? $(=> into $type)? $(=> try_into $try_type)? $(, $field_comment)? );*);
-+    };
-+}
-+
-+/// Defines a dedicated type for a register with a relative offset, alongside with getter and
-+/// setter methods for its fields and methods to read and write it from an `Io` region.
-+///
-+/// See the documentation for [`register`] for more details. This macro works similarly to
-+/// `register`, with the exception that the `read` and `write` methods take a `base` argument that
-+/// is added to the offset of the register before access, and the `try_read` and `try_write`
-+/// methods are added to allow access with offsets unknown at compile-time.
-+#[macro_export]
-+macro_rules! register_rel {
-+    (
-+        $name:ident@$offset:expr $(, $type_comment:expr)?
-+        $(; $hi:tt:$lo:tt $field:ident
-+            $(=> as $as_type:ty)?
-+            $(=> as_bit $bit_type:ty)?
-+            $(=> into $type:ty)?
-+            $(=> try_into $try_type:ty)?
-+        $(, $field_comment:expr)?)* $(;)?
-+    ) => {
-+        ::kernel::__reg_def_common!($name);
-+
-+        #[allow(dead_code)]
-+        impl $name {
-+            #[inline]
-+            pub(crate) fn read<const SIZE: usize, T: Deref<Target=Io<SIZE>>>(bar: &T, base: usize) -> Self {
-+                Self(bar.readl(base + $offset))
-+            }
-+
-+            #[inline]
-+            pub(crate) fn write<const SIZE: usize, T: Deref<Target=Io<SIZE>>>(self, bar: &T, base: usize) {
-+                bar.writel(self.0, base + $offset)
-+            }
-+
-+            #[inline]
-+            pub(crate) fn alter<const SIZE: usize, T: Deref<Target=Io<SIZE>>, F: FnOnce(Self) -> Self>(bar: &T, base: usize, f: F) {
-+                let reg = f(Self::read(bar, base));
-+                reg.write(bar, base);
-+            }
-+
-+            #[inline]
-+            pub(crate) fn try_read<const SIZE: usize, T: Deref<Target=Io<SIZE>>>(bar: &T, base: usize) -> ::kernel::error::Result<Self> {
-+                bar.try_readl(base + $offset).map(Self)
-+            }
-+
-+            #[inline]
-+            pub(crate) fn try_write<const SIZE: usize, T: Deref<Target=Io<SIZE>>>(self, bar: &T, base: usize) -> ::kernel::error::Result<()> {
-+                bar.try_writel(self.0, base + $offset)
-+            }
-+
-+            #[inline]
-+            pub(crate) fn try_alter<const SIZE: usize, T: Deref<Target=Io<SIZE>>, F: FnOnce(Self) -> Self>(bar: &T, base: usize, f: F) -> ::kernel::error::Result<()> {
-+                let reg = f(Self::try_read(bar, base)?);
-+                reg.try_write(bar, base)
-+            }
-+        }
-+
-+        ::kernel::__reg_def_getters!($name; $( $hi:$lo $field $(=> as $as_type)? $(=> as_bit $bit_type)? $(=> into $type)? $(=> try_into $try_type)? $(, $field_comment)? );*);
-+
-+        ::kernel::__reg_def_setters!($name; $( $hi:$lo $field $(=> as $as_type)? $(=> as_bit $bit_type)? $(=> into $type)? $(=> try_into $try_type)? $(, $field_comment)? );*);
-+    };
-+}
-diff --git a/rust/kernel/reg.rs b/rust/kernel/reg.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..139597f9cb07c5d48bed18984ec4747f4b4f3438
---- /dev/null
-+++ b/rust/kernel/reg.rs
-@@ -0,0 +1,2 @@
-+
-+
-
+ drivers/gpu/nova-core/driver.rs    |   4 +-
+ drivers/gpu/nova-core/falcon.rs    | 618 +++++++++++++++++++++++++++++++++++++
+ drivers/gpu/nova-core/gpu.rs       |  78 ++++-
+ drivers/gpu/nova-core/nova_core.rs |  14 +
+ drivers/gpu/nova-core/regs.rs      | 261 ++++++++++++----
+ drivers/gpu/nova-core/timer.rs     | 132 ++++++++
+ rust/kernel/error.rs               |   1 +
+ rust/kernel/lib.rs                 |   1 +
+ rust/kernel/num.rs                 |  52 ++++
+ 9 files changed, 1101 insertions(+), 60 deletions(-)
 ---
 base-commit: 1d53763dc16c9fc9329a4cdc14d691979d47568f
-change-id: 20250313-registers-7fdcb3d926b0
+change-id: 20250216-nova_timer-c69430184f54
 prerequisite-change-id: 20241023-topic-panthor-rs-genmask-fabc573fef43:v4
 prerequisite-patch-id: 182945904fd914573eed9388a559ce8a642310ef
+prerequisite-message-id: <20250224115007.2072043-1-abdiel.janulgue@gmail.com>
+prerequisite-patch-id: 73f4047ae5d3e4d51cfa285bd8fd0f1c04d47409
+prerequisite-patch-id: 5ad45352d9d457a45886eeea90a46cc21516356e
+prerequisite-patch-id: 725e7d42309919c759fdd0585a97810b1eb72706
 prerequisite-message-id: <20250306222336.23482-1-dakr@kernel.org>
 prerequisite-patch-id: de15c0d16727e6af2d79f88f5b67be4c06212552
 prerequisite-patch-id: f8bca95d983222da29508cc6e6886e4b0f992588
