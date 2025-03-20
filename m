@@ -1,40 +1,40 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEA022156B
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 22:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB6B22256C
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 22:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742508392; cv=none; b=hnEG8+Yvps5GL8c8Vp7zLR6+B0MxMJ15s7GQi/p/ROATUteDmXq05Q2a8LXJQJaiS2LzeFJKyZW6/prcbCBi44CMN1Frn3lQOuXg6Exmv3QI7W8aX7ag0LWucu1emuC/jNzW5vsPihtlgQXs+ISCSUIROZchid1BZTl9d+3Nl+Q=
+	t=1742508684; cv=none; b=RceQ+OVlOSHbO45EqKIIu22D/rsG8MNxNz/sQw5qfI6WyjwHhJALI7jE1tdoXW7W8rukWrZFtm/heTgGxIB1bdETZkVQ/hNf0PSLwuZwXcohqVRMPXWKh54XT68az0JS0s2QmkRFy6not/tFDp4Ym1WJvcfHsUfiNPtl9GcH9cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742508392; c=relaxed/simple;
-	bh=lwhRW9LZfC6DDfNgBikPXiasdzWyMPP7AL4zVb4J/i0=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=BtO1VLaU79yBp5HRmIs7lG5azL/Gul1hPH0l7J1eV/egbLlBp44DQ+vleSN+VtW7mHPnohkLxg86x2GUEVihGKU/XgkbWYBiqB1r8btK3kR9WZqYfq1KCthyrsDdiadb/zPqJebmFAEdoJ9ljeipAvRmWkeguifgKwPWmZy823I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QGoU8YQa; arc=none smtp.client-ip=185.70.43.22
+	s=arc-20240116; t=1742508684; c=relaxed/simple;
+	bh=j4m/4kR3AKIDf1SGcymhk4lpp5b2oiTqmH3M80tjwaU=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Q14sSsBg+4XS3vObUjCOE+ZISk36UY1WIanwDB+IG0lR/DEsXpoGhiFPX7CNFhRg92+bILT7jPLg4AHuMUk5akGOTrcuY7RJT9bau4+s1oLM2fV9DTWD1sIYommLmIO7m71m2VAO2xbMAeRU4e2xwZOowkAD1aC1eZpz5eLeqQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=a42aE7eW; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QGoU8YQa"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="a42aE7eW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=7kezcdiusrdpdbs7lcg6czolh4.protonmail; t=1742508382; x=1742767582;
-	bh=L9EFWfM29ztfK7aUGDd3jp1hf7p6SmSSDAbBTO0mD9Y=;
+	s=protonmail; t=1742508675; x=1742767875;
+	bh=8j0eHeB4bjnnAP0B/WbCNB3mG2MsYZ2VTB5+OyhqIWc=;
 	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
 	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
 	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=QGoU8YQaw5n2OFiD6TyAqSwJQx858n8VIpZkaEmso53mroIF8U6m6b3O2oK9HfWcB
-	 gecEGbhjl2uf6kCt4D8XmCa6lD7L6iNp/JHa12PbqiYXPD8blt6hlEotDhTpG68Db0
-	 YnsGf9iUE6NNi1CBZ0J+S2NqrQUc04Mwza48Mbt4i/GX16LOiuLLK/sIGs+K+JENnM
-	 /3VANvme743vLkgQIABwh/8UQHx/+TcgP7cZ9Wx29rBVUu4Ua9x7R++ydHXbcI340P
-	 jq0d07+pHLizVby2lKJ/O9c01iiR8u1ytEHU5u1apSXDJlS1I04FfHjpoNNuOeZW/X
-	 sY8YHCfN0CcyQ==
-Date: Thu, 20 Mar 2025 22:06:18 +0000
+	b=a42aE7eWqFnDX3Wp+LBVfwzs+Q111qUU9KLlmIgoaUph/wPm0ewKiSRKOnJGD5xrm
+	 FV1BY3PwVDEVCH2HS4oxKhR9eA4Wevd9gVVrccgSWV4ry1KSaoVGarqz0gl0MSUll2
+	 +u0jwhtTaBvz3zYPGfYqmko4dJlvm0UbipqyPGTo3/F75XcZ+e4RFdZWcT/szs1Rkz
+	 kNLWYFYbRLmYMx+S/qpZrnseWcW5CVNdkkk/3t5wBZyx+9AVu30dK3eN92r9bz8wAu
+	 m/8ziESVYlcgFyWEhlejuiAiXKd4KactbdkEHwKcZHsB1ZtC3C0qk+zT/5MmGUuk5V
+	 QqUYIM68MMuKA==
+Date: Thu, 20 Mar 2025 22:11:09 +0000
 To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/5] rust: alloc: add Vec::drain_all
-Message-ID: <D8LFO0LQOPQJ.30AC77E0BOH3@proton.me>
+Subject: Re: [PATCH 2/5] rust: alloc: add Vec::pop
+Message-ID: <D8LFRQ5IX33R.35U012LFZ06W0@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f2678cb660883584f780a54e3b83c4de3f123652
+X-Pm-Message-ID: b20d688fdac027eaa34781278aefbde8eb19aedc
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,115 +45,79 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On Thu Mar 20, 2025 at 2:52 PM CET, Alice Ryhl wrote:
-> This is like the stdlib method drain, except that it's hard-coded to use
-> the entire vector's range. Rust Binder uses it in the range allocator to
-> take ownership of everything in a vector in a case where reusing the
-> vector is desirable.
-
-Is the reason for not implementing `drain` complexity?
-
-> Implementing `DrainAll` in terms of `slice::IterMut` lets us reuse some
-> nice optimizations in core for the case where T is a ZST.
+> This introduces a basic method that our custom Vec is missing. I expect
+> that it will be used in many places, but at the time of writing, Rust
+> Binder has six calls to Vec::pop.
 >
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-
-The code is good, but I'd like to know the answer to the above question
-before giving my RB.
-
 > ---
->  rust/kernel/alloc/kvec.rs | 57 +++++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 57 insertions(+)
+>  rust/kernel/alloc/kvec.rs | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
 >
 > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index df930ff0d0b85b8b03c9b7932a2b31dfb62612ed..303198509885f5e24b74da5a9=
-2382b518de3e1c0 100644
+> index 95e752ed27395fce72d372976b74fb1b0e957194..9943358c70aa63f5ad7ed9782=
+cb8879d7a80a8fb 100644
 > --- a/rust/kernel/alloc/kvec.rs
 > +++ b/rust/kernel/alloc/kvec.rs
-> @@ -564,6 +564,30 @@ pub fn truncate(&mut self, len: usize) {
->          //   len, therefore we have exclusive access to [`new_len`, `old=
-_len`)
->          unsafe { ptr::drop_in_place(ptr) };
+> @@ -302,6 +302,37 @@ pub fn push(&mut self, v: T, flags: Flags) -> Result=
+<(), AllocError> {
+>          Ok(())
 >      }
-> +
-> +    /// Takes ownership of all items in this vector without consuming th=
-e allocation.
+> =20
+> +    /// Removes the last element from a vector and returns it, or `None`=
+ if it is empty.
 > +    ///
 > +    /// # Examples
 > +    ///
 > +    /// ```
-> +    /// let mut v =3D kernel::kvec![0, 1, 2, 3]?;
+> +    /// let mut v =3D KVec::new();
+> +    /// v.push(1, GFP_KERNEL)?;
+> +    /// v.push(2, GFP_KERNEL)?;
+> +    /// assert_eq!(&v, &[1, 2]);
 > +    ///
-> +    /// for (i, j) in v.drain_all().enumerate() {
-> +    ///     assert_eq!(i, j);
-> +    /// }
-> +    ///
-> +    /// assert!(v.capacity() >=3D 4);
+> +    /// assert_eq!(v.pop(), Some(2));
+> +    /// assert_eq!(v.pop(), Some(1));
+> +    /// assert_eq!(v.pop(), None);
+> +    /// # Ok::<(), Error>(())
 > +    /// ```
-> +    pub fn drain_all(&mut self) -> DrainAll<'_, T> {
-> +        let len =3D self.len();
-> +        // INVARIANT: The first 0 elements are valid.
-> +        self.len =3D 0;
+> +    pub fn pop(&mut self) -> Option<T> {
+> +        let Some(len_sub_1) =3D self.len.checked_sub(1) else {
+> +            return None;
+> +        };
 
-Why not `set_len`?
+Isn't it possible to do:?
+   =20
+    let len_sub_1 =3D self.len.checked_sub(1)?;
 
-> +        // INVARIANT: The first `len` elements of the spare capacity are=
- valid values, and as we
-> +        // just set the length to zero, we may transfer ownership to the=
- `DrainAll` object.
-> +        DrainAll {
-> +            elements: self.spare_capacity_mut()[..len].iter_mut(),
-> +        }
-> +    }
->  }
-> =20
->  impl<T: Clone, A: Allocator> Vec<T, A> {
-> @@ -1049,3 +1073,36 @@ fn into_iter(self) -> Self::IntoIter {
->          }
->      }
->  }
 > +
-> +/// An iterator that owns all items in a vector, but does not own its al=
-location.
-> +///
-> +/// # Invariants
-> +///
-> +/// Every `&mut MaybeUninit<T>` returned by the iterator contains a vali=
-d `T` owned by this
-> +/// `DrainAll`.
-> +pub struct DrainAll<'vec, T> {
-> +    elements: slice::IterMut<'vec, MaybeUninit<T>>,
-> +}
-> +
-> +impl<'vec, T> Iterator for DrainAll<'vec, T> {
-> +    type Item =3D T;
-> +
-> +    fn next(&mut self) -> Option<T> {
-> +        let elem =3D self.elements.next()?;
-> +        // SAFETY: By the type invariants, we may take ownership of the =
-value in this
-> +        // `MaybeUninit<T>`.
-> +        Some(unsafe { elem.assume_init_read() })
-> +    }
-> +
-> +    fn size_hint(&self) -> (usize, Option<usize>) {
-> +        self.elements.size_hint()
-> +    }
-> +}
-> +
-> +impl<'vec, T> Drop for DrainAll<'vec, T> {
-> +    fn drop(&mut self) {
-> +        if core::mem::needs_drop::<T>() {
+> +        // INVARIANT: If the first `len` elements are valid, then the fi=
+rst `len-1` elements are
 
-This is neat!
+Please add spaces around `-`.
+
+> +        // valid.
+> +        self.len =3D len_sub_1;
+> +
+> +        // INVARIANT: This invalidates a value in this vector's allocati=
+on, but the Vec invariants
+> +        // do not require it to be valid because `self.len <=3D len_sub_=
+1`.
+
+I don't think this should be an `INVARIANT` comment. Maybe we don't even
+need it.
 
 ---
 Cheers,
 Benno
 
-> +            while self.next().is_some() {}
-> +        }
+> +        // SAFETY: Since `len_sub_1` is less than the value `self.len` h=
+ad at the beginning of
+> +        // `pop`, this index holds a valid value.
+> +        Some(unsafe { self.as_mut_ptr().add(len_sub_1).read() })
 > +    }
-> +}
+> +
+>      /// Creates a new [`Vec`] instance with at least the given capacity.
+>      ///
+>      /// # Examples
 
 
