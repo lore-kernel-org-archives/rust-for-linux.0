@@ -1,102 +1,146 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a1-smtp.messagingengine.com (fout-a1-smtp.messagingengine.com [103.168.172.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA397FBD6;
-	Thu, 20 Mar 2025 14:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B158518641;
+	Thu, 20 Mar 2025 15:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742480152; cv=none; b=R9GaASNUAV/JK3Wi+ZQh2mPGKeCTLxD28nDak52PEbbNEI+A7i6dUn4k4rJLNoeVl1RcVLTwqltN5C9nWT9qMd86yFD64gEOUqbowqOnkTlFgSP+YNsO2N2qdlpAzB6NUVioPkS4XJYy4GgsiEVfCcSJtJ4BY+EyN8U00X/qPJk=
+	t=1742486104; cv=none; b=KC4Dpsd9d7KbQ6AgsZ6plFACz51g69KQeaX0/IxBYs+cK2nYBMjx3Vg2JDsOPgWhr7123tcuUCywhKKtTBN8aZ8rcCknqscDceJleayvKnFzt0unz6fauyWbRdlLsQQFqksWqNXW/S9h1MAoT5Pa2p4Vo3c3KCQGzSGQ1R/jSMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742480152; c=relaxed/simple;
-	bh=jdSpzcpFMSxD+yHrtxtYUj7JjrIBKbvo4JpzpwSGQ0o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pCeBxRobevqkcAz8iVx8AGQBfXm5FqW/8yCYBJtnZJA/BEZkKOyndWCTB6JqfdypkE8jdtw81GC+AhdYivLWd6YyD74irHpYTwnjzCuPwyUqZW9CBfZ5PlG6WbPmt8C5SVE4XdXAJBm6enFQTaHD4deIgs9NBlSI4s7/T8TfSwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X5HAxdiy; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742486104; c=relaxed/simple;
+	bh=JPhGvaVVq83qrqOrcG18vVFZ/OzY+TAyphkOif27k1k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LiuvbSlFyuJE8rzbuLEByboG82VdSklnlT7N5BCB7uTIl4bJfKLOTojaola4oQNLQqef0M3sIn3s5ip9TBYQi6LHWTCvtBbUbDI4C8QxNdLyll9yqvn7g2CNAiy37Sw2mYnfAWu/2mpXfYdV1BV2CVqQuqSVebutoVHeve7G8WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=db48x.net; spf=pass smtp.mailfrom=db48x.net; dkim=pass (2048-bit key) header.d=db48x.net header.i=@db48x.net header.b=f92PAHz9; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pWbUC/SZ; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=db48x.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=db48x.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X5HAxdiy"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30c461a45f8so9176361fa.1;
-        Thu, 20 Mar 2025 07:15:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742480148; x=1743084948; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jdSpzcpFMSxD+yHrtxtYUj7JjrIBKbvo4JpzpwSGQ0o=;
-        b=X5HAxdiyMyGD5HhpMA0Q4ZzG/ZKbfDnPglF7/lgkf6zGHJOGsoRA1w6nSQG3BaAeWZ
-         O/Xik50J4KXMxn+rlzS7/ZmX5Cg30O796pWmAI+F7qZihAR+JcwJX8boisVGdg8+B+Qd
-         RuL1F+5yc4z56Qf+XY0aORzaW+kBAglHJ7BEUzWecekJuHtG4uqKGTqQUuE6YKKUmBLW
-         XzGEEblmhkE6ltjWsygwN80LOK7c4YL5o/MwEFEXT0diXzcrSnbheVwixFfPiJCFsntx
-         ET54D5dKx9Tt4eDLXUC0nGU7Jya2SKqC06whKv5Zz0vcreq+8whjk3DH5sF708vkbIFa
-         cUxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742480148; x=1743084948;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jdSpzcpFMSxD+yHrtxtYUj7JjrIBKbvo4JpzpwSGQ0o=;
-        b=WgdeYpaoFq5qzAAONH28isy0a6tr4k6omk606Kv55DL82WZWaHDum56wdtPm4HM2Wg
-         1dWr0fU5h5dgG5LARyVKjFJI6Uf1Z4aEpDrs0P13uSaX3ZoCWgAn1nYk9fJ6rYZf2ih2
-         rdwXuIv1cjsFqm0VMZnu27maiTOwUsPz/q1x4gOQV3V+K+6AGtAtbmzn/prRbq53IKTq
-         1Dc6XI59KseUQ5xtFZys2MW55GYqi5yIVRzygqsIqQCXdINAV4xdbqXypdAV51sQDzC6
-         ImLKzomVIO/Lovnn24jCILJvR6TEK9XnxEP/7CIJCeHsQCidWJEomIDzsxFlRGXcHr9e
-         7r5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUCfhmXY8BRT2aQWUZQ5hGb9EZC1KITt3QTqH8HHxE/T9SnUe0o4u6gCTwDAvsdYzpVSrySGCthc/i8wGk70rs=@vger.kernel.org, AJvYcCXyZCk+Xqho4Uw2HbNl/LnS/bd0zmUJKWYuctVD7D2fMJCWMC0eE66CoenijonZujeW7KDbDS9wL8WGJ+8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrY/gy9rFyrNdfTUKxTlnWyhYDYCetHFJ52/MR5OrsdDNwdnWJ
-	45aWPwcv4WAMrP2FEDcb9uBJFMBFJawzWdn2Qk6F2VdOtQn6mDY8pf0ncJwqAVdGtsQh6GqFcjf
-	SMFsVd5Okk2X7xuGngAw4onYCZ68=
-X-Gm-Gg: ASbGnctSaDym91m1bkRgeL+8ZMmPhKun4zF4Y2BQneFYbavd8ZRd7oGI/fy5rftEri2
-	0ZD2Zc9QzXpj/KthWrr+MU1on1Xx3mi849lxqQ3wfGmhZJGkBQMwVOfvAKndNqJqd8M801lhYl9
-	URiFyQRiQSRBw/6sbkNH7Qt+Dv4n6jaNwMssuh7+zEzw==
-X-Google-Smtp-Source: AGHT+IEFnvDpyUhpQ0aq5SjcgsYomornya+aah0zvslRXJWqXW8zpVnOjTwNC1PWjWbtDIKQA9FXGFP+BM6hudsprBc=
-X-Received: by 2002:a2e:b88b:0:b0:30d:7c13:8a88 with SMTP id
- 38308e7fff4ca-30d7c138ae1mr1309301fa.7.1742480148246; Thu, 20 Mar 2025
- 07:15:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=db48x.net header.i=@db48x.net header.b="f92PAHz9";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pWbUC/SZ"
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id 9EB2A1383446;
+	Thu, 20 Mar 2025 11:55:01 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Thu, 20 Mar 2025 11:55:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=db48x.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1742486101;
+	 x=1742572501; bh=TjbqBCbLA8NWX59i5FOeG9AwtG5k4TfiyzQOVtNKUJM=; b=
+	f92PAHz9acjmk3qfyhM61KE1L9dyP/rTGEg1KIoLTQsAPrAW3j9Xxu6F3PMKu1VZ
+	eTvDyxpX266c4vH0vWeyOp9/kHEoD+SmMsS1qdx7Id18bW9zYx42XPj9GWo5zacz
+	/qxlsU0rtLwnKskvPat1fZk9t2spgL8esLc80GWYlgo6TxdyuqUu3rnDJeWuvkP7
+	VExoKTDUv4BRwfhm3HocIuLu5fBMPlskSPYqJ9CTkEG3stdAgnzpGqhL3N75CVCl
+	buNU2Axq39NuhElLYmxbNStyR7iMmrDFnb1eHAFpCAa24IX/C9FZBnV1aN/iaEUh
+	odwj6SppQo+we4A38jGVoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1742486101; x=
+	1742572501; bh=TjbqBCbLA8NWX59i5FOeG9AwtG5k4TfiyzQOVtNKUJM=; b=p
+	WbUC/SZ3m6QQTTQ0g8IEfSeBOJnjZ8dhYW8IFz0LIK2/daIlqXG37M66HB8VIdp8
+	pYSn/JqtF5rUwy96qJB+oZ91wYVUO4dgdqsQrOdrKxH8eyzOZJW7W9IsmZgxbbbi
+	g/zpOjaLF3EVy1dlwvvRcCatx9Z71440Zrbkp85a6coBeZmt13iureAHODXpLmUL
+	II7X6KSOCJcDvlaaaI2usEfGaTr+zZ2UHCSpjSiYR2aSLxh5xBUWk4XIuJJBGBDa
+	7MX1/9465LBM87LmZUQjT4rWVP8KTUw3ke/Bgy90JepjpUUwbw2SG+TnFvmUFBvs
+	5rrAP/11soUe/Rhk3iRfA==
+X-ME-Sender: <xms:VTrcZxl9mVbzL0uge9aAox1tv6xoLvvH2uxFqFecMGFVyzUfoC22GA>
+    <xme:VTrcZ83VwA4jI7AACmLisX1ww7Cd9oSz0VVJjiuFvnn7L5mDlXhVIV4jIxqR81rJF
+    043rE1Ns8haeOENEg8>
+X-ME-Received: <xmr:VTrcZ3qOjV6xcUdUtmH8wIMJh9m-7p1hAf9xwvw0xfFFI6vZtgOyFuRUNjurUug>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeekiedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhephffvvefujghffffkfgggtgfgsehtqhertddt
+    reejnecuhfhrohhmpeffrghnihgvlhcuuehrohhokhhsuceouggsgeekgiesuggsgeekgi
+    drnhgvtheqnecuggftrfgrthhtvghrnhepvdduteegieeujeelieejleetffdtjeeifeet
+    vdetteejkeeuueetgeduveejkeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepuggsgeekgiesuggsgeekgidrnhgvthdpnhgspghrtghpthht
+    ohepudelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurhhiqdguvghvvghlse
+    hlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtohepnhhouhhvvggr
+    uheslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphhtthhopehruhhsth
+    dqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
+    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtohepthhmghhrohhsshesuhhmihgt
+    hhdrvgguuhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprh
+    gtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    sggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgv
+X-ME-Proxy: <xmx:VTrcZxmyotkBHWBUAIHEIdtSZTonjXSHrXlbuXDaIHsP-TPqYn6B7Q>
+    <xmx:VTrcZ_0OmO_ANVxNQsPx0VtQhsC3movZLdkYAUO1lnW_u2ar0Vlixg>
+    <xmx:VTrcZwtMWFlB6xO1u63EYZxsmR3DZb0EDLhULUPz4d1MA66OwoQ2oA>
+    <xmx:VTrcZzXUq3Uid0b-NrarYAO1TLGZaJkCcwwvlsXkBToQQwKxPeczcA>
+    <xmx:VTrcZ06P8yYCSNy9cuPEZE39GMVL2CxXD8pftguBL50R17s_H8UtHyuJ>
+Feedback-ID: ie0194691:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 20 Mar 2025 11:54:58 -0400 (EDT)
+From: Daniel Brooks <db48x@db48x.net>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,  David Airlie <airlied@gmail.com>,
+  John Hubbard <jhubbard@nvidia.com>,  Ben Skeggs <bskeggs@nvidia.com>,
+  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Benno Lossin
+ <benno.lossin@proton.me>,  Andreas Hindborg <a.hindborg@kernel.org>,
+  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
+  Simona Vetter <simona@ffwll.ch>,  linux-kernel@vger.kernel.org,
+  rust-for-linux@vger.kernel.org,  nouveau@lists.freedesktop.org,
+  dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH RFC v3 6/7] gpu: nova-core: add basic timer device
+In-Reply-To: <20250320-nova_timer-v3-6-79aa2ad25a79@nvidia.com> (Alexandre
+	Courbot's message of "Thu, 20 Mar 2025 22:39:14 +0900")
+References: <20250320-nova_timer-v3-0-79aa2ad25a79@nvidia.com>
+	<20250320-nova_timer-v3-6-79aa2ad25a79@nvidia.com>
+Face: iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAABGdBTUEAALGOfPtRkwAAABJQ
+ TFRFpKfbdou67PD6JjJgAwUWXGSeIcyLHgAAAkZJREFUOI1VU8Fy6yAMxLi+Q13fCZ3cnQL3dqTc
+ 7RD+/1feStDXVnXHDuvVSivZTMba2GPdw3gyCGcMAFxTyrTd9dwGoxHiZX9PmRFUHYAQlGGtXY+F
+ Uk0SJOxgJiUEnH1qkitT9D+pQub7qGAmUbR6bu3CvI96Yv6QqkBBMrsyfZccr1/RDXGDTLf4P7ZY
+ glVxe2V+/ACXWO1gvDO9/gDRpFFVmPluvLcmBjd5H6d8DEte+Pbk4rcY/Fa5tLKLOtCZsuQKYhpa
+ LOkYDT7hESya7/WIET3lfQBqX0pwFtbI832Is0ayMUR9B+12xjgPCQ089cfwkCkX6L5TPmRelJTh
+ zMS0Sz1PyjLAMCUWjcmgQLWQMds+e3aaauZDf9dU9A2/8kPVF2odCUoMKHkfjJR+mbgC+DRiycw5
+ 3XSqGe6HmhN/AWjHypkAXOAFW5EiuA1ge2GiZuMb0s1fSEXcATeLUfbyEY2L8yPOmdSsdghQXx3K
+ pz2eoeXuYvMCINVFDrCdNfVUp4eJ6cSEbjbgFjBEvonGGTrgv9cHjAc8aVgSAPoxaONbzfwhDIhR
+ at7IIS7fAGiDSwIA9alhhTBzfA7YM2FY6eMwayrIGK8FDFmshmUA43WqhFtpvoqG9HHaJ7fqtgTz
+ 8EWVkgZgtsylFliHDgk0MB7KAEC45C/rgnGvanNLXyzOeTzcT2nw/N44gfrtYXRQLoz9Q3TgmJRx
+ 2Mx/Q51qzpm+l3m8z2SWBqC5+PZXAtNYlGFf/gKfHfjFkDT4x7od7R+w3Ls+ZdQBuQAAAABJRU5E
+ rkJggg==
+Date: Thu, 20 Mar 2025 08:54:57 -0700
+Message-ID: <87v7s3zoha.fsf@db48x.net>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250319-pin-init-internal-quote-v1-1-19de6a33a257@gmail.com>
- <D8L34IUZGXWX.D2LSS2S2NAN7@proton.me> <CAJ-ks9nTmno12ZC4DnLxV_b0NLUK5Kn5K+cRi4BEvKtveQzJjg@mail.gmail.com>
- <D8L5JXRXHX0N.UIFZ5M15FB3S@proton.me>
-In-Reply-To: <D8L5JXRXHX0N.UIFZ5M15FB3S@proton.me>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 20 Mar 2025 10:15:12 -0400
-X-Gm-Features: AQ5f1JqlJFQi6BV6NIpZvwrqkCi2Dgkd4NnCLQajuoYyZ5aMPFD7lL3SZi06-xY
-Message-ID: <CAJ-ks9mwNiJbr4MN5jfr7KCJc8j=B5=MUfX9XfhPg6yeRiFK=g@mail.gmail.com>
-Subject: Re: [PATCH] rust: pin_init_internal: fix rust-analyzer `mod quote`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 20, 2025 at 10:10=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->
-> On Thu Mar 20, 2025 at 2:31 PM CET, Tamir Duberstein wrote:
-> > On Thu, Mar 20, 2025 at 8:16=E2=80=AFAM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
-> >> I'd rather not have this change, since this will introduce a dangling
-> >> symlink upstream [1].
-> >>
-> >> [1]: https://github.com/rust-for-Linux/pin-init
-> >
-> > I agree it's aesthetically displeasing. I'm not aware of any
-> > alternative that fixes the development workflow of this crate in the
-> > kernel.
->
-> I don't think it's too bad, and this code is going away soon-ish
-> anyways.
+Alexandre Courbot <acourbot@nvidia.com> writes:
 
-What would Andreas say? :)
+> +impl Add<Duration> for Timestamp {
+> +    type Output =3D Self;
+> +
+> +    fn add(mut self, rhs: Duration) -> Self::Output {
+> +        let mut nanos =3D rhs.as_nanos();
+> +        while nanos > u64::MAX as u128 {
+> +            self.0 =3D self.0.wrapping_add(nanos as u64);
+> +            nanos -=3D u64::MAX as u128;
+> +        }
+> +
+> +        Timestamp(self.0.wrapping_add(nanos as u64))
+> +    }
+> +}
 
-I don't think the going away soon argument is relevant in this case -
-the same applies to the dangling symlink.
+Perhaps I missed something, but couldn=E2=80=99t you simplify this method l=
+ike
+this:
+
+    fn add(mut self, rhs: Duration) -> Self::Output {
+        let stamp =3D self.0 as u128;
+        Timestamp(stamp.wrapping_add(rhs.as_nanos()) as u64)
+    }
+
+db48x
