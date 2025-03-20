@@ -1,113 +1,105 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5FE22259F;
-	Thu, 20 Mar 2025 23:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C7722A7FF;
+	Thu, 20 Mar 2025 23:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742512565; cv=none; b=h9OzhzDNeyaJdSnIu53NVvRf46Lob2igqxoJeVPysuCLfijXrhizeskXI+wzL1PWTOUWB8GG3G+1S4uYoXIoPK+E+GnP1CFMUTGNKz8ki1qn/OApE1DkjyPnJrjtUCJrUNe6ysfEnR/bWYu6NW+9LEUV26jvjVskoD0BLJ36zIc=
+	t=1742512950; cv=none; b=s7rt5lZHJapBEVAM68JmFayieUzh5eUQ2qD0PrmSud/Oyl5iNhXHXae/mcKsg68ZweCRrQ8RFjIIHuj+aZ1dqRwd/oMU4VSUtA7HsmPwfHorAfL57ngBb59wA4+ny6JRTPEW81k/PnJkZONzwj/1W+ot8TJDP80SqcnE4EuAQYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742512565; c=relaxed/simple;
-	bh=Ydxfige0Qt9rhjF9s2BhO4yX2CTtIsRjAujiYNVvwfo=;
+	s=arc-20240116; t=1742512950; c=relaxed/simple;
+	bh=rsqeVDdht3L66LHZac8aylMcpBieGO2/hBxpHx2hDBs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sW7YVp4zYIf7j6CGa9n9YF+rx2bUv7CY9wKVfjeejHwuBWgDQWVzciKJDREWyzJ7JZ16LjQNixg14UbqURQT30TB9yieGMuXnIQTTHdZaR1QH7i9QAgfsGUsTi2JFCsgLNu0h6yfY6MRX2TDQGQvDFJrZb2b08kOpMoZ1fa2OLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fcZO1KqH; arc=none smtp.client-ip=209.85.216.52
+	 To:Cc:Content-Type; b=svUNUaZf6LSeaTw3MPf9/zW/er8GoXbu1kzlCPoMbWD8bZBJsjp/EgndkeBmNTbsOpYdk1MOgT9uOwlj21e54OOZd/0C1nz6XEndrecXE9EALB33XcDbzjI7WPYpH4jz7+d/tvHYWs46qB1eFK8q4qtBduFGNxOQv42E06XH1Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G/eHqXvt; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fcZO1KqH"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-30144a72db9so330658a91.1;
-        Thu, 20 Mar 2025 16:16:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G/eHqXvt"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-225887c7265so3001865ad.0;
+        Thu, 20 Mar 2025 16:22:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742512563; x=1743117363; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742512949; x=1743117749; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ydxfige0Qt9rhjF9s2BhO4yX2CTtIsRjAujiYNVvwfo=;
-        b=fcZO1KqHh8ecuSfZldeBL3h2khhbDnVan66VbGszPTdrK6AyG7cVE2SKb4YruaOWKu
-         jIdiSlrpX/HXO/sGuZpSzB8NJHAmJyV4RneG5/0zGo4LR3xLbvX9aC3Ocw3ikgWybQvu
-         /P8fgwJYjVt7z6Gw/fh16fG8RZuvj++GEd0AhgCLtgL2xcG4FWwXlqgj/9GExIAJ7tS7
-         +IYupKhCkiyIcR00+dmLNJyJMGQwd1XeruKZa+4DU3J38fffWIWV1dWmBilMBYR7TLjh
-         aRAQLMF3VFUIKLDWHLOHgxVjTeD/gHRH9qUBgCD66JI9rYfnVSTAiUhajtm+4jWOOgm1
-         mGZw==
+        bh=WdKauJu93MoJRBBc3vto2MePH9Tt2mlxWo5dQZdkk6c=;
+        b=G/eHqXvt5cmn2TiBdAijtb40APV1fdMbHO6MTNCCjDhGX5FJCL4CCXXR9ofwUkPw3Y
+         Iw0TRwKfqqeo43fYjnbPHmPNMR02a4PByUobfBXSPdRQvz16lTz3NMZP3IeL982phKEz
+         gaqki1lcXwBElqkkh+iioT3dQbT+OtFNFB9u5gUyMHC0qPXgFBBzpzL28HLrH+xSOIqn
+         9hQH3hVQs08tcG1ymoLQfAHlt9tO8L0UPl3MP+bnRGqhBlXJ7pRL/jxIq3+zOA4whnQ/
+         dLbo196bzaOMtOenFLqXBNGW3g0K94u/VxeQ4E6CQg4z9aPAjwsm5ArqF1D3O2Ff9u2k
+         4GtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742512563; x=1743117363;
+        d=1e100.net; s=20230601; t=1742512949; x=1743117749;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ydxfige0Qt9rhjF9s2BhO4yX2CTtIsRjAujiYNVvwfo=;
-        b=bkfeMPiH8v/MV1cW0ioMXl4y7ccIHJgtEXM3JyN7/ZGGeJT/Lur/HY1+e4RXk4IIGZ
-         BLFaRWupa5z7YJUu/5SbagHMulnbssDMrB9nRwHBqclAAgj6JLQrHTSSBuzvjVjXHh71
-         3AURwqDVwATZRNA1E8togKhJBUjveAyg4VwhoAUA7FEpyZeMzUhXySKhwIBgF7EVF0ll
-         ynPYCwgpbcYSG4N2WThgKsloIRemRsET0mByXQpdOmW6oylUR8KPfywEpX4s9wb2NiaL
-         0l9Jw85l1GeFwlCC/9PnXJJEcw6q3i/IpvS0vY+qhPoILZWDfAuNoZ7Hw2xKN7QYcYLY
-         JumA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6KAyMMSmi8eTxPtGwfz8CtGndvxjqUeWF5pPq750MV3kse7AsjLLSDulDMl0yd8Fsw+jeGpVgew7DbEqu6BTk@vger.kernel.org, AJvYcCWAzgGtti8Ab7bssrgJaHDyx/R40XNj9EeKaYJzdr2O9AUHzjqdH9XdIDgOq66fZtCXSfQE24TMJjEQ6bQ=@vger.kernel.org, AJvYcCXCrp5Uy96qv84oOhljUvdmwCj85P0puEJAb4FeM0ec4wafBKkuaQPUweum5/IViPcEsvlyTS0FSJ+OKEol5b0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBvIK4Q6rfbjFS15FGbkEplL95Gw0AsS6hycO/oMUDp2TxIUsW
-	ucMiC2OioJIyMBcv8Fj+403GfKM285HqKcoy1t3QL7b1HOFm9W39BQaVDYdno688QCZ/3NqgpkV
-	PYbHTn4P//ULzU/zffsEWRCb6YRs=
-X-Gm-Gg: ASbGncud6iaLFq4Qfl3o4hqO5o2kkUZikJ751L9yC4n7fJGQE26OPuqLCO7HIB76HLl
-	LwPSD0xkzXRX+EP3U26EHuoe+/k/3RGjtLBIMrjMvTCVxo+pP+b6XQxw9b1IkFdII5LsGQrnU1B
-	vKEscw4NhXfRgIJ5gIQTiz+/soww==
-X-Google-Smtp-Source: AGHT+IEPthy1/e/i4AFWlh6vRu8JgcwxaoROuqkfEcIemV6NB/GcdEIEE0+HBaASQjzuFJSpiJ7txn/KiNZA6nAcf68=
-X-Received: by 2002:a17:90b:3a90:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-3031321b196mr234814a91.5.1742512562872; Thu, 20 Mar 2025
- 16:16:02 -0700 (PDT)
+        bh=WdKauJu93MoJRBBc3vto2MePH9Tt2mlxWo5dQZdkk6c=;
+        b=nfzhAOnkoUafOpprRPP4NWI7mkknvomHOOC5RKBCcXGe0zCPTQ7T4nY6d5hstPUZ0L
+         2pKC2w5sbnGW02zpiLTVP1s7tKPhHkGnSkSCOK6gXyvMV35t7KzsLYJxMwuufZ/RZT+b
+         h3nlXFyzqYWOieswkrJtRbf6I8RujDTZUTeZmyCjahp6jXpvV1rJdigWzqqTs7iZ+sK/
+         /ED4PZL9OOXH2kbsJj0kdP2F9cnVA/GPxqu8oklRjrwREpy76DJC3p7n85qxKFZeid5Z
+         JvW9/FqmdmiPxIAF8qD9dR0EGxlF1YfObxJthNNqFRTSb6mTLIvFj09DgqBzldLJRfWD
+         NRcw==
+X-Forwarded-Encrypted: i=1; AJvYcCUh2RsPYwH2LaxitN9RB20aBu209I54ckXd/CQ/meyVcPAIu1Kfw3vZrOpXOPx2yHyG91EsVjBAfuTruxY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcnmpU7/bdpuUV7Py2NYsQQoa2yflLT8sDt3/6VP7HO7fMckjp
+	GZtsFXbegQ29YAZBUofu5mu85mWLyxExW2z/AxiLp9wMYI3z133BKiKiOXliYFxAtN2m/lt+CNs
+	9GUW0mvHjPxjpV+9rer8N7cbH4N8=
+X-Gm-Gg: ASbGncsSeH9jJusm85cMOOV0v3FVo1gbTUOO8GL+/QHzFiNQAXgfzHDfsFzEXez5J4n
+	lRRy4p3nse+YyzQes6HEZPulUWocTTgzaIvEAaNTbSlQUfu8a6Fm7g+aNk0JwB25v7gENjBhymh
+	DgEkmz46tI0ggGiNo9nQ1p9YUpww==
+X-Google-Smtp-Source: AGHT+IHBYgL2z5SOF0wcGeJiLprNiblgwngPdjLO6Y46Kvg1U568ayZ1Q7zD3yMLx1qf5LEfFZGbpyKvtwUTOO2J9NQ=
+X-Received: by 2002:a17:902:d4c1:b0:223:28a8:610b with SMTP id
+ d9443c01a7336-227852b8081mr2510905ad.14.1742512948653; Thu, 20 Mar 2025
+ 16:22:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250316061429.817126-1-contact@antoniohickey.com>
- <20250316061429.817126-9-contact@antoniohickey.com> <CABVgOSkKD2Z60_+MoP_nu3YCUocvxJaohMBZpXy=_aavUZ99XA@mail.gmail.com>
-In-Reply-To: <CABVgOSkKD2Z60_+MoP_nu3YCUocvxJaohMBZpXy=_aavUZ99XA@mail.gmail.com>
+References: <20250317185345.2608976-1-abdiel.janulgue@gmail.com>
+In-Reply-To: <20250317185345.2608976-1-abdiel.janulgue@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 21 Mar 2025 00:15:49 +0100
-X-Gm-Features: AQ5f1JpuFaFwMimQ5FPKyDiYDaVf3vM9hX1WsOImxjBowRVA4KFUcl3e3XdKgGA
-Message-ID: <CANiq72=jXTpoPAHhFC=T2SCyz3195=pG5h+-yohCCxdds-2hHg@mail.gmail.com>
-Subject: Re: [PATCH v4 08/16] rust: kunit: refactor to use `&raw [const|mut]`
-To: David Gow <davidgow@google.com>
-Cc: Antonio Hickey <contact@byte-forge.io>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	Rae Moar <rmoar@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Fri, 21 Mar 2025 00:22:16 +0100
+X-Gm-Features: AQ5f1JpBk6Nt5QqSgaZxqHC41axRSzyVxdHhPrG_3P7bjcNOlmhVgpt7sAY0xjw
+Message-ID: <CANiq72kAK84N-2ZzB1tKPQ-gwiYzE=QginDc1Fw4g7FBLDn4yw@mail.gmail.com>
+Subject: Re: [PATCH v15 00/11] rust: add dma coherent allocator abstraction
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com, 
+	dakr@kernel.org, robin.murphy@arm.com, aliceryhl@google.com, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Antonio Hickey <contact@antoniohickey.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, 
+	open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com, 
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 18, 2025 at 9:02=E2=80=AFAM David Gow <davidgow@google.com> wro=
-te:
+On Mon, Mar 17, 2025 at 7:54=E2=80=AFPM Abdiel Janulgue
+<abdiel.janulgue@gmail.com> wrote:
 >
-> In general, I think changes such as those in this series are going to
-> get progressively more prone to conflicts as Rust is adopted by other
-> subsystems, as the 'rust' tree won't be the only one carrying changes
-> which could be affected. Maybe in the future it'd make sense to split
-> these up into a series which enables the new feature, and only then
-> put the warnings in place in the next version?
+> This series adds the rust bindings for the dma coherent allocator which
+> is needed for nova-core[0].
+>
+> For v15, document safety comments on the exception of usage on
+> read_volatile and write_volatile as suggested by Boqun Feng.
+>
+> This is tested on a Nvidia GA104 GPU device using PoC code which parses
+> and loads the GSP firmware via DMA.
 
-+1, I had to do a two-cycle split for other things in the past
-already, e.g. for Gary's FFI series.
+Applied (up to the `MAINTAINERS` patch, as discussed) to `rust-next`
+-- thanks everyone!
 
-I agree that churn for this kind of change has a cost. For tree-wide
-series, it will become harder and harder over time, just like in C,
-and some changes and cleanups may take several cycles.
+    [ Removed period. - Miguel ]
 
-For Clippy lints, I think we have some extra flexibility. We still aim
-to keep everything Clippy-clean (and patches sent should be sent clean
-under the latest stable Rust version at least, and maintainers should
-enable Clippy in their test runs), but if something slips in a
-particular corner/config/arch that is not routinely tested, it is not
-the end of the world as long as it gets cleaned up.
-
-Anyway, KUnit `#[test]`s are in -- I was not planning to merge this
-now anyway, it should be reviewed a bit more.
-
-Thanks!
+    [ Renamed Kconfig symbol and moved it up. Migrated to the new
+      `authors` key in `module!`. Fixed module name in description
+      and typo in commit message. - Miguel ]
 
 Cheers,
 Miguel
