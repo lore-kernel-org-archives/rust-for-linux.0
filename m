@@ -1,82 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6611F4CAA;
-	Thu, 20 Mar 2025 07:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D481DE2C2
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 07:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742456063; cv=none; b=enXF75o6V4N/lBE+34bSp/kmLijKyzaySV8TgIyeMB0hwXarc4liQ6tn8foB/mYwrB2NQLCzDzOzleFOXHOYEq3iMP0dto/KXwUwEHDw1aWXQe17PqzLY3UVIcEWRDUfzGSoXVGGuMc36W4Uh/023WLm4kynewXV+o5yC5CSwbw=
+	t=1742456815; cv=none; b=rHBOZjwob5VT2L75JAzEiCSKoetOIFMCFATRliUbQz/Q7CEFPMXoSbhuQPBBbvpJTICfk085xDtKuOWhKLQnYZMmntr3R6DAA9BQtGJtsXAp1rNKNGwR4Pg9Bor9w2+dZWUFzZ6Kj0gC2gtYhqKZP0abfEcbb0KaizIZWLBWOLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742456063; c=relaxed/simple;
-	bh=D8dEjTpCok8GhumKlynQf36TwBF26qcEOQJa75sXYwM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GR/iPrjHalZ5LjdFTEiMkXQADWDfeY2lgRGRTg/J0oUbm1lX8wmSZErRCjV/zLGIRCx8c2Zr+Qxc5/24va0Pd4PCAsxGZ9q2d8ZuQq2mZtWMo7Khj905tHpWzmxMGHwmTIRgvMXLhWDGTnE8dNAFVi+aF9PZgbafCIp7JKqzScA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+P69TQ5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742456815; c=relaxed/simple;
+	bh=gj0T5HuZKUF4LsyqYn4Oi6dgRfTp9BHyFdoHpQ/q1xw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lKCcuszpmZ4PjG+Vn8m6Mp1XEh5ZsL9Q7Rcoy4fMm/OQGuX9xU4IYjVXFc2Mc+kS3L+oAUd+znVb7DhDI42exJUCI8cAtZ/HskgyB4TyuW7FfeEWYoOYFu95Ak8crEgUiQBUauXidroPfUNii2gsRSBUqaEG7OYltl9ZuQoswzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=137+w+Jj; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+P69TQ5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940A4C4CEEC;
-	Thu, 20 Mar 2025 07:34:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742456062;
-	bh=D8dEjTpCok8GhumKlynQf36TwBF26qcEOQJa75sXYwM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=T+P69TQ5Ud7PPISyxUjWGt4LntRsjBZFE8ItGUVLxjXKltHFHJ/ZMSaxbQwzgK1DM
-	 YAB2qrK1xTKlk2KDcZv9HDjY5Tz9ejJonjXAZ3vyxG55wYXiCNsF/Ikh9Nt5XrWqIv
-	 Qxbzurion/SX1sORPg8z/gRISPqfFBPhE4PixUzIrfjkPPuY5Qoy3i0njXkxchYS4M
-	 rWrdBMxumzTShbIv5ftN0rrXpwjc9mn+kKgtTmbUuiwtk6DCuofZxXa5TWINocXfR2
-	 5wa++JRKytY40ANju3/ScagMq/jRuQdHjsjVue/WtCKYRzGL30Qyp//J6CL50RnNzX
-	 0BzTE4KL8juVA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Antonio Hickey" <contact@antoniohickey.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
- <dakr@kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 17/17] rust: clippy: disallow `addr_of[_mut]!` macros
-In-Reply-To: <20250320020740.1631171-18-contact@antoniohickey.com> (Antonio
-	Hickey's message of "Wed, 19 Mar 2025 22:07:36 -0400")
-References: <20250320020740.1631171-1-contact@antoniohickey.com>
-	<orynt7hABIvK7AQ6jcYlCEZEInSFjqSs356m4sceNtXzqRxNh8j2chJW8b-32sAY_x8eyhh4pMbOq67cpu2Efg==@protonmail.internalid>
-	<20250320020740.1631171-18-contact@antoniohickey.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 20 Mar 2025 08:33:24 +0100
-Message-ID: <87ldt0dum3.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="137+w+Jj"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ce245c5acso4869665e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 00:46:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1742456812; x=1743061612; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RWnZOZ4G2UEQUs8BB1HUlPKLt/pxBX0R0xeUfMvdz+o=;
+        b=137+w+JjAsT8S1thfJb8gkG4RpmM74D4J7K13fU6pX4xCGmi6w140CHtqg45aDa56U
+         J+CvBClmOgpl/kADguZoAOuU4QFDyKx80g6LmYbejOqPgowxnY1ki+HHHOROu7HJXTe+
+         tbkJUsNerzzBdA6ox0gNCirUrD+ELJgZ1gZBzL6k+X14w7flcSYorr6kjk/cNCIgNHZq
+         Nwj8uMBYrK+N/cB9+SIGbX33b81MXEZHxWGRmhhx475BwFP+POJvQPBZDvmIlgwnD9f0
+         tPP1JuZnpOlwhpReE3dpDwUyuEc+Ux1DPXhX1UvQvOOCH7vgG6tZiTDeKWPddJhmTuQo
+         MVTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742456812; x=1743061612;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RWnZOZ4G2UEQUs8BB1HUlPKLt/pxBX0R0xeUfMvdz+o=;
+        b=YJ3gN9hzjZGeg4OQxx7eHg1wELNkOks5ktKmGLbf6aCzKURYlPxdqCoLkUBJMY+KlJ
+         X7DQKS6yKaBGj5PMRFnEOfNUqITSKJhzzDM0rBWofEMI7wRwJnyaZKmvVaHQ2GWWCJAj
+         RWxIpRbkJrN4G6UAfn1dfC1DS/m9eN9LrU3YmJBok7FXUJCgVfKBdpdGGQlzBkfpRbqL
+         zM/exRYyDL/51a5/fYso0IJTbA2BV33ioxw4b5PT0NuHNrc3wNMtz5hfGAZdEB/XEOXT
+         Xmj+DaZJFeS/dtX0U7CUuhSRDiSGoucfTCh1SR8dutQHeP8ZH0iDFTodD88qRVL8t0bE
+         xKTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWGAHNx4s32EntcZmyHdKeQV0aWeZZdrXg5LTLtI86BmrtuMKW7NxU3JWy7sidPJ/SgmcqPyD6fQbFSRSgQdQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxotWExOXeS5D2KK5nVEzXW4+Yj0hMZdlOqfwS3KDDAx3uI69El
+	z6OIU0PaI+5+6YyujuzT39is3ooVFGcitZQJ10fRV8WD51bQuxpOQb2WiuS4DYLlEnvrFUeb/Uc
+	qvZ2f86mM2aFvug==
+X-Google-Smtp-Source: AGHT+IGPFtgrWNwVI2qhejZwBO5cZfS5Ix8SCkNN3ywkYIRQi5Uz0gg/ddHWAw7vDTz/ahAJLiPwu/mwevGIzv4=
+X-Received: from wmqa14.prod.google.com ([2002:a05:600c:348e:b0:43c:ebbe:4bce])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3508:b0:43c:f513:9585 with SMTP id 5b1f17b1804b1-43d49547751mr12399505e9.13.1742456812739;
+ Thu, 20 Mar 2025 00:46:52 -0700 (PDT)
+Date: Thu, 20 Mar 2025 07:46:50 +0000
+In-Reply-To: <20250319-pin-init-internal-quote-v1-1-19de6a33a257@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20250319-pin-init-internal-quote-v1-1-19de6a33a257@gmail.com>
+Message-ID: <Z9vH6qSAx2Hps3SX@google.com>
+Subject: Re: [PATCH] rust: pin_init_internal: fix rust-analyzer `mod quote`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-"Antonio Hickey" <contact@antoniohickey.com> writes:
+On Wed, Mar 19, 2025 at 09:35:40PM -0400, Tamir Duberstein wrote:
+> Replace the `#[path]` attribute with a symlink to work around a
+> limitation in rust-analyzer that requires all modules to belong to the
+> same "source root". This allows code navigation from `pin_init_internal`
+> to `quote` to work properly.
+> 
+> Link: https://github.com/rust-lang/rust-analyzer/issues/3898
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-> With the `raw_ref_op` feature enabled we no longer want to
-> allow use of the `addr_of!` and `addr_of_mut!` macros.
->
-> We instead want to use `&raw const` and `&raw mut` to get raw
-> pointers to a place.
->
-> Note that this lint isn't currently reliable, but we enable
-> it nevertheless because:
-> 1. Document that one shouldn't use the `addr_of[_mut]!` macros.
-> 2. When the lint becomes useful we will already have it enabled.
->
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1148
-> Link: https://github.com/rust-lang/rust-clippy/issues/11431
-> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+Are we allowed to have symlinks?
 
-
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+Alice
