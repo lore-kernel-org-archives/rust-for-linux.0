@@ -1,121 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82681B422A;
-	Thu, 20 Mar 2025 22:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44A422A4FD
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 22:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742509724; cv=none; b=r5/4TYJ0s439xNYTAX+/FVXdyjl9mY2wtXjNROu8wC4pSB0OOLyJcDWCj2q1ISYsCPRcS7yFfeMT8jAsKMV7zjO2BELqaY2JWnPu2B3JnWPNL3nCNwATjBLFG9nPgRXZi2R9Ai/RxIC6PRkxLTWlbPPqiWKzNOcRdtx2KAqApwc=
+	t=1742510690; cv=none; b=uiy85RfDW+tyofMKo/rwauISLlLmeejeM7U/FggLMRGYnTR78tFXETGnFgaaDvDtD/F/22r5yPBrXtUlrhxEvTcBhgcmfusiujsnCLafBADM6io6lMfdZFMYrdb9s9l0a+/XUPuQyO/f7iD3a8kRNzBLKQMoXmUwUuGCoVFV2KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742509724; c=relaxed/simple;
-	bh=uKiDVjqXqoM1jJa6VHOyG2y9M/M3KF8/oYD/JGcLH6s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuovsKSv+8sjSSPrf4kvCEcGrDUysK45n/okobRBU4957vJ+w9NkRuygKzuGbP7T8+wCra9+EkKHjEmVb2q0LB1ZndyQ29f2Q+0o6MV+dQikCnOTYoJs+ctnLK5FD4NHVUI6jsCRtgOVWxARAVuDnb1NroIIhu08TFvts9wSysA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5TnhhjS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742510690; c=relaxed/simple;
+	bh=40BW+We2nULTEHa6DHwaIs9HCvCGKiHZ63/cMV/sFtU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bo577qf7L+vX/84RDdgOlyDyCKlNFYLPOCrb2R5o7NwLiLXuVaESHqJk3W3w09WJnp//uSwy1WarcmqkXSEk6ULP71fdlHd4S1oiin04bjizvIwFir6Qbs6Xbl3Zxe0GQ96Kda6EgpWBrP0NzVq2BLHb5bRy3GyJWKJWdJh4QoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=kpdT7ZmQ; arc=none smtp.client-ip=79.135.106.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5TnhhjS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9852BC4CEE3;
-	Thu, 20 Mar 2025 22:28:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742509723;
-	bh=uKiDVjqXqoM1jJa6VHOyG2y9M/M3KF8/oYD/JGcLH6s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5TnhhjS8/65mAe7kflOqEpFEWsoZ/1SlwSLgDGc/CSvOpY4LJen769jEqHMdBG5A
-	 qMCEgqdbwprJwpV0MFJiJbnwyu3geHNWpZNjA+WCZEIHTkHw/SfT86shnxoCHNS24g
-	 MoCnoefJWM+Rz7aVEimnU0WOeATLiJ6iQRZIFXdn0T99dAPJXmdvQ3hKO+eAaKF68y
-	 pux/gXoIyE5CwTSsKH+kc0O6P0nqXPFpNrJWSGtfFDdFLdKIyk+oH99dR/ecFybupK
-	 f7vVaAx54q/P5odJAhwQSpCZWa6nWHt1FKFsNJvkMijtDz2YnLF1ddAgeodB9e4jw/
-	 s5OXrRvb0D29A==
-From: Danilo Krummrich <dakr@kernel.org>
-To: bhelgaas@google.com,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v2 4/4] rust: platform: impl TryFrom<&Device> for &platform::Device
-Date: Thu, 20 Mar 2025 23:27:46 +0100
-Message-ID: <20250320222823.16509-5-dakr@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250320222823.16509-1-dakr@kernel.org>
-References: <20250320222823.16509-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="kpdT7ZmQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742510685; x=1742769885;
+	bh=eMIKFH+4BplOMHp9sw3+b1wsh6xUXS4OrypEx48ZjbU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=kpdT7ZmQBc9eoxhepvNEsgAPULs7gXD17lG/vdx0DnLMFWS+0/mGVdd+qG44+YVHm
+	 a6nbZv0fYJpl5E5D4sbTE+iePpwz5o0TcmdolpvuZVxPw+kieC2V3U5TcEnhxJzDbF
+	 ushyIkH7rCrNIkq4tR4uiMDQgP1Es8tOjfm8KqXoAoHaLKSUGo1gmQNxn90lMeZmyo
+	 cm28nLPpDvfBzuncMRo1M62368QzKy19hl7Vtlu2qEvYWshsX4gfXalrUPi+mfYegj
+	 9hKFX5eWuKXvyR7+5fx02Z6L7WzsHyq1zTDlxSN+i1iLm5V0sUvowF8hSC2X58EJYt
+	 HzfOenKN3Rm5g==
+Date: Thu, 20 Mar 2025 22:44:38 +0000
+To: Danilo Krummrich <dakr@kernel.org>, bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] rust: device: implement Device::parent()
+Message-ID: <D8LGHC6DMPIW.29Y3XD1X6Q1L3@proton.me>
+In-Reply-To: <20250320222823.16509-2-dakr@kernel.org>
+References: <20250320222823.16509-1-dakr@kernel.org> <20250320222823.16509-2-dakr@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 2dfcc79fa82cd5cd9ae2ba0513cb32c715df3875
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Implement TryFrom<&device::Device> for &Device.
+On Thu Mar 20, 2025 at 11:27 PM CET, Danilo Krummrich wrote:
+> Device::parent() returns a reference to the device' parent device, if
+> any.
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/device.rs | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index 21b343a1dc4d..f6bdc2646028 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -65,6 +65,21 @@ pub(crate) fn as_raw(&self) -> *mut bindings::device {
+>          self.0.get()
+>      }
+> =20
+> +    /// Returns a reference to the parent device, if any.
+> +    pub fn parent<'a>(&self) -> Option<&'a Self> {
+> +        // SAFETY:
+> +        // - By the type invariant `self.as_raw()` is always valid.
+> +        // - The parent device is only ever set at device creation.
+> +        let parent =3D unsafe { (*self.as_raw()).parent };
+> +
+> +        if parent.is_null() {
+> +            None
+> +        } else {
+> +            // SAFETY: Since `parent` is not NULL, it must be a valid po=
+inter to a `struct device`.
+> +            Some(unsafe { Self::as_ref(parent) })
 
-This allows us to get a &platform::Device from a generic &Device in a safe
-way; the conversion fails if the device' bus type does not match with
-the platform bus type.
+Why is this valid for `'static`? Since you declare the lifetime `'a`
+independently from the elided one on `&self`, the user can set it to
+`'static`.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- rust/kernel/platform.rs | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+Cheers,
+Benno
 
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index e37531bae8e9..c17fc6e7c596 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
- 
- use crate::{
--    bindings, device, driver,
-+    bindings, container_of, device, driver,
-     error::{to_result, Result},
-     of,
-     prelude::*,
-@@ -17,7 +17,7 @@
- use core::{
-     marker::PhantomData,
-     ops::Deref,
--    ptr::{addr_of_mut, NonNull},
-+    ptr::{addr_of, addr_of_mut, NonNull},
- };
- 
- /// An adapter for the registration of platform drivers.
-@@ -234,6 +234,24 @@ fn as_ref(&self) -> &device::Device {
-     }
- }
- 
-+impl TryFrom<&device::Device> for &Device {
-+    type Error = kernel::error::Error;
-+
-+    fn try_from(dev: &device::Device) -> Result<Self, Self::Error> {
-+        if dev.bus_type_raw() != addr_of!(bindings::platform_bus_type) {
-+            return Err(EINVAL);
-+        }
-+
-+        // SAFETY: We've just verified that the bus type of `dev` equals
-+        // `bindings::platform_bus_type`, hence `dev` must be embedded in a valid
-+        // `struct platform_device`.
-+        let pdev = unsafe { container_of!(dev.as_raw(), bindings::platform_device, dev) };
-+
-+        // SAFETY: `pdev` is a valid pointer to a `struct platform_device`.
-+        Ok(unsafe { &*pdev.cast() })
-+    }
-+}
-+
- // SAFETY: A `Device` is always reference-counted and can be released from any thread.
- unsafe impl Send for Device {}
- 
--- 
-2.48.1
+> +        }
+> +    }
+> +
+>      /// Convert a raw C `struct device` pointer to a `&'a Device`.
+>      ///
+>      /// # Safety
+
 
