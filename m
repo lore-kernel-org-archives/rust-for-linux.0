@@ -1,62 +1,63 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD6470807
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 02:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790641C5D77
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 02:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742436479; cv=none; b=vAn+pumjYjVDSr5IQwtz0WF7kFFgW46uGqoCnU2YrQ7MwAhnrMi6Kdv64K4NTc9Ez5cdw7y8s45KVOYkXXLl/zrr+n6i4DHARAi9dSGa5NZ7T9IUuJ7xrnlE2qGBCqdojS7TcT0xkicm92bVhL3GiFyWKewijLskBpYQyhOBLgE=
+	t=1742436485; cv=none; b=MrM3rLUFljzX4ccc5ziTaf+ZNaq49bJ54KFuR7Lgte/diFRN5qxEAE9kgY8K1EipkETFdLxjzn2P8/Bj3i8Vu8167pTy5BW0C6irT9VuCV3pUUddRLXs+9ldJmXuBnYPkThEkj9OEVOFiSfl0++/f/g7aa76wsy0mavV9Uh7v18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742436479; c=relaxed/simple;
-	bh=FPOaIYLnn2OPEVTSCHCF4VOFfG1fiD4ZDOeP/ou1wVw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=etpOFLR13OVlonCi/RQDLNPyjc1eZ/wUHEJTc+ic7F9st33TOTAWlHLraiq7+nV06eRLy0f84NDsbbXDnbLXWzv/I8VGB6fpKoclDiDxi19sBXM3bejQT4w5b0cNjv7SIWbl5dvJ6RThRbJq7Z5Kc9j9SZbsrTM00pqJlMhFQ0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=FaYp0vtv; arc=none smtp.client-ip=209.85.128.180
+	s=arc-20240116; t=1742436485; c=relaxed/simple;
+	bh=m42DtURYMZCXyWHkUzDgb3x5mmA/f+mhAyyGrxqczQo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=I69ddDv7MRxV4KcjRRxU42QUr4Omz+nDAgWQ9oyFFNZe08IW08Cj6Ezx4yKkIMJQyrlsbOT6tVpcxGLc1rxbLORM2SAloARdVxXw2/U/6QheSkKBXl7dEgak0C8GkoQ0Qq5VQpbpQ6l/Bc/udeXV2FErQ9nXvQ0mvCMGiCFLBFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=UFjO01R8; arc=none smtp.client-ip=209.85.128.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="FaYp0vtv"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6febf391132so2647847b3.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 19:07:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="UFjO01R8"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6f47ed1f40dso2074167b3.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Mar 2025 19:08:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742436476; x=1743041276; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6IprsZmLsWJ1W+SXEGJm+5gLIm+beldY+cLbCePzQVA=;
-        b=FaYp0vtviIr574vcS9rpJ1vimeyllVbIdpM/+77kPX/scaioK0wCZhhrIXYZ1CHmiL
-         6SwSKcSxrWHfKd9TEjzVUFKGPH/h8sGigKo+AZ+ZwU78yxNK11WYv/kxZFdwQcK1MDzW
-         bsabNPHZ/GdQl4R/mX3OP4wjSihqp+rPslkc+KMT/hMPjcCujx4UQldywut2Lhq0MkGg
-         XrphT7OmUtMUOfw4JQG27aJ66mXFP4Zz7f5FRtUyGcZFpFw6aHvh84OxHNBeaA70sZtH
-         RBoIhilwlYF0vw4FJyere3n7pRdt7mFSs7ze+j35JopDzi9aR6Fm6aPEiFNauucXV8ym
-         Z/oA==
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742436481; x=1743041281; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wYfvvRu1GHzIQ/b+4BIBn6FA6Z0KJrVipVcw92I95Mo=;
+        b=UFjO01R82Phi/zsptuvfQSn/vE7R8p+3ZHT+VM7PZml6YajaixBZq6427VCHKWAEr8
+         Hwl3FyfNnZ0MqYP55JVL/ZlP1tEcHr7nRI1M/1RuJo0UhgtJRQkWVQSGhHYGZeTxCL9b
+         /uhSvSzb2XwEzu44MgzIxVRVyzDlxi0rrtSJXtJYY9cqx5LXnwC7F2KRZyHuCMjzebPg
+         /X/+cK13kTiL5Jbu303EXMpJaGhR77Yri1hKjCZJOJF0c4z3Omk+PhJBmaZhfLwwg6J6
+         f8KcR5rEtkT3oTY8PWkVGb2dXKvkFAPflJT+nZt8KmNGVZKQuWSluSd8J5vBnGLNvmEf
+         KCCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742436476; x=1743041276;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6IprsZmLsWJ1W+SXEGJm+5gLIm+beldY+cLbCePzQVA=;
-        b=NaRsMRU7Z4x8QhyKPNu3QTQ1dpmbNYdrxS9HEaFqL94L+X4OtlllEiqmsUij9BxL1U
-         J9wscqaAkkKRF/UTIPku2e46FwhbeiGhUR9z0JvYTDvbm+6UKcXSv8hoLASjDElqzCji
-         2gxPO8Hmcla/tL9wnimrS9je5BLhV+Z+RaYPmQsi4M8uZyK7ncK9aq4R1+kzcdRXdIw7
-         SkPG1cK7+R49lXVUp52dOscPg6IFn6VaCeTP1JsPF2scHrUE1KBe2tECEhHYISc1Dcg6
-         d5UU0pyzWADykOwEOPyOS7p0KdvmZhsAk61cWya7Hmli4+UNJSGpfNLEe+u862kC2E6H
-         dJJA==
-X-Forwarded-Encrypted: i=1; AJvYcCWshGxIzpDPhiy7Vq7gL0oWSHCTSaMDyfHrwciKOMVoGF1m3PksRoYe9d5LIh5u8bKjkM37vrLUQJcPV401dA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt0OgKEt85ufe8FpbojDhFGB1ThBhWLoVjv1VHAe4YNQVrbzO9
-	moHmX1c9c4mpVmXYZ9BJ35xT8gmTNWS3M5VJSPBbykYUrAA6iiiABvyd+AsIra3AVMPQWEN1cOg
-	K6LE=
-X-Gm-Gg: ASbGncs/OPOvHwOiVhHnPZf+uBdCdti5Y/knTghcS9ZpB2O/MtURZFOBGLXMELORoTN
-	o5mC5v8nqN14yeB85W3oUM334FpmQDrapCeGAfNHHkuOaZujMbnXyi9pSfYhhQkoUSOKPTMywIt
-	UnSgwnAbeXvqzE4Y/R50KHsdIWsnLBqd6DVb1pAjqcjCm3F+nR6E9LXJAxO2GSj+gpdG1+aipOu
-	97qOMO4qvFwM0lEZfw93ZtdiuLnbXZGLSI6x+0jLxVFtSNh7og3wnEKm5Soe3IyetXE7BoCgr07
-	ozN3ZS2G7meYxG+tApTkq/mAjjwWYURMmcJgsyAQWr6FRAvAdmRI/70l/+icAFTTsB8/kee6PFw
-	iQAHrr2MELoW5baYHUk36s3shbE90Vg==
-X-Google-Smtp-Source: AGHT+IGn9MsvhBrphdch5568J8s/1p7rWVeurpQ14cLnVtuIprIyi3uU25kkj7ENbCqtI3Mix3n8+g==
-X-Received: by 2002:a05:690c:f14:b0:6fe:b88e:4d86 with SMTP id 00721157ae682-700ac5ce5admr16680087b3.9.1742436476174;
-        Wed, 19 Mar 2025 19:07:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742436481; x=1743041281;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wYfvvRu1GHzIQ/b+4BIBn6FA6Z0KJrVipVcw92I95Mo=;
+        b=Q0/TSvl/AgM4HmRSgIRTveJ3MSm3YBEwzddhwIWf1lTM1ct/idrMx6w3WIRRFsyBcW
+         tzc/HI0GQ0onCyv+2nAfzBpiJhif5AJtx65lhsDM2IwcNt6SiD8P0vLPJs+9r9dLM3S7
+         ZzzNr9cfNViev+uJcnz5C1GW2/oW6sSjtt/DAhAgqBGHC8cAG5fISzHjxFu03RcKTUxN
+         WB3SsgMI+3GwLusuavAFaKPAhfyrrQJvPlHDvOogjkO8EE+1xZxivAztFOrF+UDc3loV
+         OTs1PrAqgl6Mk5iFeHJrptI1ar4Yd5J7pLRkqVXNHOFpJpMt9fpztcd8v8WwJg6cSIKj
+         DqSw==
+X-Forwarded-Encrypted: i=1; AJvYcCUR91jkdwYfwTcObrqgwOEjc3V93zg4ZawJzfCg/+58ZpbrJPiJhuTonwJyNnjstJI99OYH1wUmKfSNCM06cg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHIKUakqOeu4vHsxE7NmXy5JCko4u4CMsKEijoQ5W06Stb8+qk
+	UVtL8tzXGYibrKAxaD7A0KxroJcW2MT9j2o7IMF7yKl++5pqt6t7VC6+fBlq24Y=
+X-Gm-Gg: ASbGncts12cv4k+/PTdn3f7C8j5w5G2+S1r/s7Vnae3za6oSdRMwVRRz7uiAw+nxxx6
+	hk+ChXLdUbmMcHkyZEURi4aP+UiYOjhb0GGjfjxJqRgxszfJedcF/WGMp2IuC4sYNLMobPvCSIB
+	01xNetNQtJ4TRrC4ajBPSum/q7AUW8SifHygyOHqwNETJQ3UghJ5hy8A3og2bzYw22yXIGmq+eu
+	ncGygQ9exXZ7lPqwhmsHMQvYME/b+cjAGtgDuDnHPbyRYNDeM0bGalcCiz19f37ToppsTC+PUhP
+	xZotHYN4NbE9xpA4q/aUlmgSZSCweELGjnPFsgqF+Yar6GT07WKJMCBVTtCowVeeyg+4KhjX3x8
+	pARsbBZZZA5KxNwaUSko5qB9CkvDOkw==
+X-Google-Smtp-Source: AGHT+IFDVdDbb9X/ieVCAhVOJq33/2ZkRWOn2SMlUCHTT1LWFdTkxTojsuUWjAEuoUU3PICEQ5tJdw==
+X-Received: by 2002:a05:690c:2093:b0:700:a63c:641a with SMTP id 00721157ae682-700a63c6433mr37471867b3.0.1742436481396;
+        Wed, 19 Mar 2025 19:08:01 -0700 (PDT)
 Received: from Machine.lan (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6ff32cb598asm32826357b3.111.2025.03.19.19.07.55
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6ff32cb598asm32826357b3.111.2025.03.19.19.08.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 19:07:55 -0700 (PDT)
+        Wed, 19 Mar 2025 19:08:01 -0700 (PDT)
 From: Antonio Hickey <contact@antoniohickey.com>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -67,13 +68,20 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>
 Cc: Antonio Hickey <contact@antoniohickey.com>,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v5 00/17] refactor to utilize `&raw [const|mut]`
-Date: Wed, 19 Mar 2025 22:07:19 -0400
-Message-ID: <20250320020740.1631171-1-contact@antoniohickey.com>
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH v5 01/17] rust: enable `raw_ref_op` feature
+Date: Wed, 19 Mar 2025 22:07:20 -0400
+Message-ID: <20250320020740.1631171-2-contact@antoniohickey.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250320020740.1631171-1-contact@antoniohickey.com>
+References: <20250320020740.1631171-1-contact@antoniohickey.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -82,88 +90,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch set enables the `raw_ref_op` feature, which became stable 
-in Rust 1.82.
+Since Rust 1.82.0 the `raw_ref_op` feature is stable.
 
-It then replaces all occurences of `addr_of!(place)` and
-`addr_of_mut!(place)` with `&raw const place` and `&raw mut place`.
+By enabling this feature we can use `&raw const place` and
+`&raw mut place` instead of using `addr_of!(place)` and
+`addr_of_mut!(place)` macros.
 
-Finally it adds the previous macros `addr_of!` and `addr_of_mut!` to
-the disallowed macros in `.clippy.toml`.
-
-Changes in v5:
-- Fix doctest errors when compiling on the minimum Rust version (1.78)
-  due to not having the `raw_ref_op` feature enabled for doctests.
-- Reword commit messages to more accurately describe the changes.
-- Replace unsafe call to `Opaque::raw_get` with pointer casting
-  in workqueue.
-- Fix clippy disallowed macros message for `core::ptr::addr_of`
-- Link to v4: https://lore.kernel.org/all/20250316061429.817126-1-contact@antoniohickey.com/
-
-Changes in v4:
-- Fix comment typo.
-- Fix clippy issues.
-- Add more context and link for disallowed macros with clippy.
-- Separate the patch replacing of `addr_of[_mut]!` macros with
-  `&raw [const|mut]` into smaller patches for each section.
-  (PATCH v3 2/3 -> PATCH v4 2/16 through 15/16)
-- Fix email typo.
-- Link to v3: https://lore.kernel.org/all/0100019597091f92-cb55b6cd-4d06-4d14-8d9c-1a1314949a00-000000@email.amazonses.com/
-
-Changes in v3:
-- Re ordered the patches, so that the patch adding the `addr_of[_mut]!`
-  macros to the disallowed macros in clippy is applied after replacing
-  all the instances of `addr_of_[_mut]` with `&raw [const|mut]`.
-  (moved PATCH v2 2/3 -> PATCH v3 3/3 and PATCH v2 3/3 -> PATCH v3 2/3)
-- Link to v2: https://lore.kernel.org/all/0100019592c224ba-0cf38e16-2aa2-459d-99cd-09a463d616d4-000000@email.amazonses.com/
-
-Changes in v2:   
-- Fix `&raw place` should be `&raw const place`
-- Fix email typo
-- Link to v1: https://lore.kernel.org/all/010001958dfeacb5-9039aaab-6114-494a-9f1d-f13982091169-000000@email.amazonses.com/
+Allowing us to reduce macro complexity, and improve consistency
+with existing reference syntax as `&raw const`, `&raw mut` are
+similar to `&`, `&mut` making it fit more naturally with other
+existing code.
 
 Suggested-by: Benno Lossin <benno.lossin@proton.me>
 Link: https://github.com/Rust-for-Linux/linux/issues/1148
 Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+---
+ rust/kernel/lib.rs     | 2 ++
+ scripts/Makefile.build | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-
-
-Antonio Hickey (17):
-  rust: enable `raw_ref_op` feature
-  rust: init: refactor to use `&raw [const|mut]`
-  rust: list: refactor to use `&raw [const|mut]`
-  rust: task: remove use of `addr_of!` macro
-  rust: faux: refactor to use `&raw [const|mut]`
-  rust: platform: refactor to use `&raw [const|mut]`
-  rust: pci: refactor to use `&raw [const|mut]`
-  rust: kunit: refactor to use `&raw [const|mut]`
-  rust: workqueue: refactor to use `&raw [const|mut]`
-  rust: workqueue: replace `raw_get` with pointer cast
-  rust: rbtree: refactor to use `&raw [const|mut]`
-  rust: net: phy: refactor to use `&raw [const|mut]`
-  rust: sync: arc: refactor to use `&raw [const|mut]`
-  rust: jump_label: refactor to use `&raw [const|mut]`
-  rust: fs: file: refactor to use `&raw [const|mut]`
-  rust: block: refactor to use `&raw [const|mut]`
-  rust: clippy: disallow `addr_of[_mut]!` macros
-
- .clippy.toml                           |  4 ++++
- rust/kernel/block/mq/request.rs        |  4 ++--
- rust/kernel/faux.rs                    |  4 ++--
- rust/kernel/fs/file.rs                 |  2 +-
- rust/kernel/init.rs                    |  8 ++++----
- rust/kernel/init/macros.rs             | 28 +++++++++++++-------------
- rust/kernel/jump_label.rs              |  4 ++--
- rust/kernel/kunit.rs                   |  4 ++--
- rust/kernel/lib.rs                     |  2 ++
- rust/kernel/list.rs                    |  2 +-
- rust/kernel/list/impl_list_item_mod.rs |  6 +++---
- rust/kernel/net/phy.rs                 |  4 ++--
- rust/kernel/pci.rs                     |  4 ++--
- rust/kernel/platform.rs                |  4 +---
- rust/kernel/rbtree.rs                  | 22 ++++++++++----------
- rust/kernel/sync/arc.rs                |  2 +-
- rust/kernel/task.rs                    |  4 ++--
- rust/kernel/workqueue.rs               |  9 +++------
- scripts/Makefile.build                 |  4 ++--
- 19 files changed, 61 insertions(+), 60 deletions(-)
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 398242f92a96..1d078f69bb19 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -19,6 +19,8 @@
+ #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
+ #![feature(inline_const)]
+ #![feature(lint_reasons)]
++// Stable in Rust 1.82
++#![feature(raw_ref_op)]
+ // Stable in Rust 1.83
+ #![feature(const_maybe_uninit_as_mut_ptr)]
+ #![feature(const_mut_refs)]
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 993708d11874..a73aaa028e34 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -224,9 +224,9 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+ 	$(call if_changed_dep,cc_lst_c)
+ 
+ # Compile Rust sources (.rs)
+-# ---------------------------------------------------------------------------
++# --------------------------------------------------------------------------------------
+ 
+-rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons
++rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,raw_ref_op
+ 
+ # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+ # current working directory, which may be not accessible in the out-of-tree
