@@ -1,43 +1,40 @@
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C4015D5B6;
-	Thu, 20 Mar 2025 22:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC4122A7E1
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 22:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742509044; cv=none; b=g5zkIK4EFyXhhS4uEtggHnmIv7paQ1kTekLABwUtx0+4uiQaxvjUBvA0O/znVM9VuiDkSUmGIjomRCZDDyxSfPDcbgVTGTwO8BnbuiTwQFrFSohrEseqTexuOZpqVJMuPSL0vzfmxKGkUvb7Ec10CpqPPyN/9YnexCHN0ABcE+8=
+	t=1742509330; cv=none; b=oZCyxvkFSloSs1vdgOEeLojE9k4WP3PsXSZYIKD04cXIcX9bhPY9rU6jQFKIRBnTh+0QILdOvAPL4gVJIpsqJKRjozzUea/Gk92sfW2NNLzNTrhqIS6lDq9FZs4V9lYpeRc+yAfGb1Vq8wjljNKVAuY7/jNovpXTVgjJpJ+qYRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742509044; c=relaxed/simple;
-	bh=xFlc6Q6TzfQb0wCt8sKQnHij0eKpqLd8jx0a8TNgiwk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iLjelvFJRNX10iOmMQwh913X3mjEQ4usSDVwfi9stCuWIB1wiUtF4BQJIX1Uhr9RGzSNAk2FoH2C9TwjErKi+apr10iFvxhHLTYpDMEf8x2O8U2XV+eeWH2lkV1fbh0ue5/uTKZAQoL78viqhPkTeiU39nExK/50A0JRpP/AWNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=dgsqi3U0; arc=none smtp.client-ip=109.224.244.16
+	s=arc-20240116; t=1742509330; c=relaxed/simple;
+	bh=/9IupfoS+aiHJcuUOULQMXT2HMqYQt1igYXUTT8eIEo=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=fNv16pJHHaJrrF2oif/28iJqJkxZduysG0Etwo6Z5I1AlfGItaNdACHNVe0B1oM6XvqvTCARKQoNC9CztJZSbKoCQGq4/KTOf8QeGTeoXlCMvZczg4KiKkclfoqpWwLT32X+z/mX7JN49woz57Xn4hYcIlfu8RAV+8sVKSZzDvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=d6T5yEly; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dgsqi3U0"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="d6T5yEly"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742509034; x=1742768234;
-	bh=UIuScVKVgPXJsm/Noly02l3epcZR+EAf8OYgOgJU3IE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=dgsqi3U0Qcm1zneJzI3+tlfm/GxVyVh4sA88fMDuAkWJtZdeAjKaD7Kt8BTJKWFC2
-	 Pg0YFdT70aMr3EvzHQKUPUhB2uoVrJaYf6Kr6K993WEICJPXxoD4J4bmbhgcM/OVRl
-	 mm2zWmtCem41qVX4S6xBRw6XKjETi77zDq7ndQWOVtwJoXYJ573W+kimPZf0rXeJDT
-	 5TE1cZoHTjZ/24GEpSpGO18hoQXQC90zf+O/nT6TTCCblMjIpU9BLyXADM5kj6VvDB
-	 CZQn/+Mjfs2uP+59EU6ghjs+IbZTU4Sl7TJmZRP4GVILcjPN8+dRteK3cJyTna2g83
-	 N8N8nV6Id2//Q==
-Date: Thu, 20 Mar 2025 22:17:10 +0000
+	s=protonmail; t=1742509321; x=1742768521;
+	bh=TrJztFCk8Z9fLwx377hSlrUS+2GuthUOlCSMAdqQEjU=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=d6T5yElyaFIeWZTPgB9GjHR5MGtP1o4kjzRyT/gEJcJGNaS4mgNt88Uc3PMoljR6r
+	 6suzLqO2n92vFu0d3cY77he8yofRl/2VQpw6wF242f4Xzz/7SunZisJOO4033D+9xv
+	 lxFfW3CMYhTAXEToQmRu/iTWqv13n5CxAFA+VQDrBdsFFBk8uRNwAZVRpQYgOlOC99
+	 vkOobpj9kJ4t0Tt7kbasld0WLtOJRY3AV45kvrKnTkemJhlkpRUkGrJU4zZ8cHpmfr
+	 5A/efeZOI4gm7EbxK0IAvDAxwkjfvatC6ZYVhIVf89ljYs+WZe3yyXEvKTpbSPqKdw
+	 Iodqm5xbSCnXw==
+Date: Thu, 20 Mar 2025 22:21:56 +0000
 To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/5] rust: alloc: add Vec::push_within_capacity
-Message-ID: <D8LFWBYIFHSP.ZR8DMPGGM9SE@proton.me>
-In-Reply-To: <20250320-vec-methods-v1-3-7dff5cf25fe8@google.com>
-References: <20250320-vec-methods-v1-0-7dff5cf25fe8@google.com> <20250320-vec-methods-v1-3-7dff5cf25fe8@google.com>
+Subject: Re: [PATCH 5/5] rust: alloc: add Vec::retain
+Message-ID: <D8LFZZXODIR4.5XCGWBP93NNX@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 05417ab6c002c265e99ee01e8fae7d84f5937dca
+X-Pm-Message-ID: eb9a79e14a0a7ed328c405e7c699b82953c5a550
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,24 +44,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu Mar 20, 2025 at 2:52 PM CET, Alice Ryhl wrote:
-> This introduces a new method called `push_within_capacity` for appending
-> to a vector without attempting to allocate if the capacity is full. Rust
-> Binder will use this in various places to safely push to a vector while
-> holding a spinlock.
->
-> The existing Vec::push method is reimplemented in terms of the new
-> method.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Thu Mar 20, 2025 at 2:53 PM CET, Alice Ryhl wrote:
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index 303198509885f5e24b74da5a92382b518de3e1c0..00dabea8ea6c8a742a7fc9595=
+4d8de58be124493 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -588,6 +588,20 @@ pub fn drain_all(&mut self) -> DrainAll<'_, T> {
+>              elements: self.spare_capacity_mut()[..len].iter_mut(),
+>          }
+>      }
+> +
+> +    /// Removes all elements that don't match the provided closure.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Can you also add an example here? Otherwise the code looks good.
 
 ---
 Cheers,
 Benno
 
-> ---
->  rust/kernel/alloc/kvec.rs | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+> +    pub fn retain(&mut self, mut f: impl FnMut(&mut T) -> bool) {
+> +        let mut num_kept =3D 0;
+> +        let mut next_to_check =3D 0;
+> +        while let Some(to_check) =3D self.get_mut(next_to_check) {
+> +            if f(to_check) {
+> +                self.swap(num_kept, next_to_check);
+> +                num_kept +=3D 1;
+> +            }
+> +            next_to_check +=3D 1;
+> +        }
+> +        self.truncate(num_kept);
+> +    }
+>  }
+> =20
+>  impl<T: Clone, A: Allocator> Vec<T, A> {
+
 
