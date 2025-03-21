@@ -1,86 +1,91 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9EE1E98EB
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 12:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682DF1E87B;
+	Fri, 21 Mar 2025 13:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742560114; cv=none; b=e5ytJh00zc2ugOrXvFVbjJTSzUEg4gGtu43kRRhxnkKOO5XYLKLsloCvKh/ANGyBNUTOAy6nDabQX5QcQWnRW8HyvOOGbU/vjmzVCIP32To0AyIkbn3Ni7LZMr2iaA9MuVSo8ssC38FK72brsKsZuwE6XlKySGcyo9uO5ta5CK8=
+	t=1742562217; cv=none; b=CF2Wn5G4ch7HdGRuhgNGJqVDukDRPiZmqUiXJeSlsCpP2d/8H5mUhwy+3ZY415FhHXkYP/G5ak2+D+TGHNoWYpbZl7gU6/7iZUQb5yn8HEOTIo+RsBndSSlwtyRBOvYXo5OGG6DBc4lWpOPQdMe6lkG+rC/biuVzkRfMA4yRTz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742560114; c=relaxed/simple;
-	bh=xNTdXsPV7ZLLw7TInR7IVWdNotSiaVd6/yq6CpjdPNI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ddYAdN49w6kQo7vYupoTYRrlqymv5lSrmCbqhwr28CkHzaQTHlGZs4hFhPJZSret9l8U0O11x65RN36M5Xu7O4rXATfwM8/fgk7oX2CJwMlI304tVQ6+QjbkAG+5Drp6JDERGsN/1Ua/33LdctWo9nudTC+GCmbsLiWorOmL2SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=djTuvp78; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1742562217; c=relaxed/simple;
+	bh=k2xJTgHnNugRE2PnfmjVd4Mic9Bg4XqXyk2wp2c0aP8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PmTIgxHiR3f5FWH0va79zDmXO1u9cuDDAhmfyn3l521ZNrCfF96oQu4PZDgFPr/EaOTnYQvKhguioRmQCenCZTs/QabZIRbgMGGMeW9nSelzHGNxgM2HgU+nLiijpIOotVfIauppPkjWQQ8MLu3LQETVJ4SW+ZjMDWnECKwQFno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RF5dU4Uk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="djTuvp78"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf446681cso10176815e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 05:28:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742560111; x=1743164911; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b5TcWZiE0ilse5UvOGyrUMGqPLytNxTeNJ6aN4o6LPo=;
-        b=djTuvp78Hd7WYLs7kv3RNP7s7vmIuHPSrN5tSXBHpBqngQguGzoB4qh/As8psd/+4x
-         l9SHG1NmeMK/2AQ9dh4xklezwyozDJdb5NvVNex2euqkpsRBT2v0ZU4A2MrCNp42XWtH
-         sHzzcJLWhELOJHEj9A3fW6ojN9lQTWVMQdyWePgxwS1mCjTbevhdy+SY6bmL9kLdXxVN
-         BvQup3VsA6A48cj4ZYuApwcBMMBY9erzwKG49i2pzLxZ/JZjiAc9WrMc6XVfNcccQcA5
-         coxrWuC7LS31cDQSSHdtHTRWeTv+maW0WT7Zzu1kPxjqDXsxxgKixXhDK7gWiSJjf++i
-         RXXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742560111; x=1743164911;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b5TcWZiE0ilse5UvOGyrUMGqPLytNxTeNJ6aN4o6LPo=;
-        b=cMaD0O75q/0cIqmO02iuE7K6v6Z/3CDAdIpl5876DdMjx1WSt383rBFGWUuUw1XOwk
-         yyi6YWAi6TDhIvegBX1z/fH67Zryhjqk2LWal7M6Qrj/f1Rdk/h6xQktqJJvNkUh7NCi
-         NR2bfz94QKScxT0yXd2eSxWI5lyvyatLu5YNFOt4OzBPsaJ3+novpnEx+6zGMm3etxdk
-         msKGMfLYOvChTN2VnK5I/FzsbbpIDwtZMZpR0OKeG1zRX1rCVIQSGzXNhE+3+FuqyrSC
-         LxgOb8fmd/SUgdHQbjS+H+/7RhjnboPe+fLw+xheYijIduQlgsacS3nQZZUYh/ylr4PG
-         BcEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXUvVzgW9R5WD+eMvFvS/ZmZAER9cTyBFpgPu/XDmqrZRaEArOT7gWPcbdX6v4QDpn0m6f2VunahDVjURJfvA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkNG9C+Q269q7dHy4UBX/L/TqeqakJ8aXBdlR1bIs6e/yJ0QDu
-	/O+GUIsgy4veBwlbjruFATAjCua2ckc8F/paRz91bU2F2RsOERsOM1frlqjBjWdc9esHPeV+XfH
-	OX5jKuoKfRxeKXA==
-X-Google-Smtp-Source: AGHT+IENczTHdx1nb9pOMIzleGyvG3hLaKmxIgbwMngbB9RAPEpzfQoh1+OX1XkGUsZAGg09pVhxpuOz4Ajl+44=
-X-Received: from wmbh11.prod.google.com ([2002:a05:600c:a10b:b0:43d:4fae:83fb])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4512:b0:43b:c878:144c with SMTP id 5b1f17b1804b1-43d509ee50amr30863035e9.12.1742560111811;
- Fri, 21 Mar 2025 05:28:31 -0700 (PDT)
-Date: Fri, 21 Mar 2025 12:28:29 +0000
-In-Reply-To: <20250321-vec-methods-v2-0-6d9c8a4634cb@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RF5dU4Uk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A94E6C4CEE3;
+	Fri, 21 Mar 2025 13:03:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742562216;
+	bh=k2xJTgHnNugRE2PnfmjVd4Mic9Bg4XqXyk2wp2c0aP8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RF5dU4UkKiP32X4oCvEc1gJIQyYatY0pNokMcFNq6bHpvxvoZPJ36v9MntJjKAnpL
+	 IsR5C8G8RBBCu7/bpKRwRBFa8f7oJfW39drJnI/kRpg4UpHuCZqzu7WaSbjnfVYkuA
+	 zZZu3qjxUY/GJJlF6A8MB8mFQSGVJz17qsLB/P9VAQN9epSVuh+QroE4Fx5HemU2fY
+	 NWFD/hbw8WxKHaR97XkwtqLv+0AUSqc5pBMLVL5PUgOP7jlAvpHqczE0GwiVJRmOAB
+	 wTkeKXRk6TdXTmVzRvZuvnld8EZl/Mhh6JpF+++K3wkyM95h7zLstbOhlKFudPAvWj
+	 qVEg5BWAc2yIA==
+Date: Fri, 21 Mar 2025 14:03:30 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: bhelgaas@google.com, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] rust: device: implement Device::parent()
+Message-ID: <Z91joggxxBh3e0d8@pollux>
+References: <20250320222823.16509-1-dakr@kernel.org>
+ <20250320222823.16509-2-dakr@kernel.org>
+ <2025032018-perceive-expectant-5c48@gregkh>
+ <Z90rlKC_S5WQzO8P@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250321-vec-methods-v2-0-6d9c8a4634cb@google.com>
-Message-ID: <Z91bbTevB0LCp2qK@google.com>
-Subject: Re: [PATCH v2 0/7] Additional methods for Vec
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Benno Lossin <benno.lossin@proton.me>, 
-	Tamir Duberstein <tamird@gmail.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z90rlKC_S5WQzO8P@pollux>
 
-On Fri, Mar 21, 2025 at 12:09:55PM +0000, Alice Ryhl wrote:
-> This adds various Vec methods. Some of them are needed by Rust Binder,
-> and others are needed in other places. Each commit explains where it is
-> needed.
+On Fri, Mar 21, 2025 at 10:04:26AM +0100, Danilo Krummrich wrote:
+> On Thu, Mar 20, 2025 at 06:40:56PM -0700, Greg KH wrote:
+> > On Thu, Mar 20, 2025 at 11:27:43PM +0100, Danilo Krummrich wrote:
+> > > Device::parent() returns a reference to the device' parent device, if
+> > > any.
+> > 
+> > Ok, but why?  You don't use it in this series, or did I miss it?
 > 
-> I'm not sure what we concluded on the set_len / dec_len changes, so I
-> don't depend on that series for now.
+> Indeed, it should rather be at the auxbus series.
 > 
-> This series is based on top of Vec::truncate from
-> https://lore.kernel.org/rust-for-linux/20250316111644.154602-1-andrewjballance@gmail.com/
+> > A driver shouldn't care about the parent of a device, as it shouldn't
+> > really know what it is.  So what is this needed for?
 > 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Generally, that's true. I use in the auxbus example and in nova-drm [1] (which
+> is connected through the auxbus to nova-core) to gather some information about
+> the device managed by nova-core.
+> 
+> Later on, since that's surely not enough, we'll have an interface to nova-core
+> that takes the corresponding auxiliary device. nova-core can then check whether
+> the given device originates from nova-core, and through the parent find its own
+> device.
+> 
+> [1] https://gitlab.freedesktop.org/drm/nova/-/blob/staging/nova-drm/drivers/gpu/drm/nova/driver.rs
 
-Oops, this doesn't compile. Looks like I've already gone on vacation
-mentally. Sorry guys!
+Another category of drivers that came to my mind and seems valid for this is
+MFD.
 
-Alice
+Other than that I found a couple of cases where platform drivers interact with
+their corresponding parent devices (mostly embedded platforms where the topology
+is known), as well as a couple of HID devices that access their parent to issue
+USB transactions etc., which all seems more like an abuse due to a lack of
+proper APIs, which may or may not exist at the time the corresponding driver was
+written.
+
+So, maybe we should make Device::parent() crate private instead, such that it
+can't be accessed by drivers, but only the core abstractions and instead only
+provide accessors for the parent device for specific bus devices, where this is
+reasonable to be used by drivers, e.g. auxiliary.
