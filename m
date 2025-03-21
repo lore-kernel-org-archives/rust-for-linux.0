@@ -1,131 +1,118 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3B17E107
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 02:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AB31E2007
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 02:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742524103; cv=none; b=S9kFsWOTYDpKfkLHG6vhzDpQHs5nZAPEGpi3PIErXtdMeZZ98U+/wjK5eSJ7vgHBX4V6688RLneP/E/qmei6gwMobaU6ZXR71GdhXrqGwhd9WG9HaJqREUqIP0Tg92+kYurp/j1uZCCqBZYuBrDrQ3EdO8vuIDKbSQcCu4cQoOo=
+	t=1742524112; cv=none; b=sd0EDq66P/E8heVtg95Ndy6Uuq2uZxxmWSa+c0pOYMmN58H/iwowmrqVbqf0MvnDLDRSyfw49BO5YyWG2OqQ2cxK/Aif+7ZN29v07Oes9qvLhopXe1Ed/k4YeF6VlUOaVptEzlj/4gH/w2IlooyPMZj4tJMNVsUtE9tbpj2IKI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742524103; c=relaxed/simple;
-	bh=aR4b2pLa+YCokAZa+dJiroghvXMaK917Yst2WzXjaUY=;
+	s=arc-20240116; t=1742524112; c=relaxed/simple;
+	bh=pneXQNBQMBTCTmga2Si1ryYOMbZ0HN+GTgHsMh+bAZk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IlZ08K2ptOV7f7DD0JGoD/2vZ4ddNWIbnEGckWnu3yEdWq1vZanySe04gRQQ8cPYqOaSucQZ2gdL37ncikHhskMwrmOv9GedNVKxF38csMC2f3SmGsOI0HGPAMEh4z77Cs4bazC+S2463riGa3ZXUq7oyBX54+Pt984kmupPZ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I4iZG0U3; arc=none smtp.client-ip=209.85.219.51
+	 To:Cc:Content-Type; b=NUxU2X/tOuVveAIyrjob4euaS0NkZvzpm9GEM5r7znXVwTXLPeGAsN7stWn0mkdpJJtryIb2PP2M6j1kgiqKronRywWBKAKdQErhV9IFn9LMyLUbR/fSpTEL1iw3V2MizH8qgdNbDB/VFHbac1UOcEHNRd5mHcJ7zCU998qe0OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AzYcgB/2; arc=none smtp.client-ip=209.85.219.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I4iZG0U3"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6e6c082eac0so12855906d6.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 19:28:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AzYcgB/2"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6e8efefec89so13084726d6.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Mar 2025 19:28:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742524101; x=1743128901; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1742524109; x=1743128909; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aR4b2pLa+YCokAZa+dJiroghvXMaK917Yst2WzXjaUY=;
-        b=I4iZG0U3wLqfNKBHAO9AF/vDQSXdTwSFd71oXu7LlMini4gTS3VGhRxVizap4gk8mR
-         hj+K/ocVPgHTQFH+jKMNkaU74uv3Kszg06GUm3Vjzc/IR2cc2k6CBb+pYMZuAVvoj6qQ
-         2zdcggTSV0xrImSDYWq/LKb/9w6uOP2dQDrRY83Cf+TiiLQW7Kw/OxJU1ZhYLeunFLB+
-         ruBidLqHRqsaWupCMdC7JigO5yNK7V5sJidG6+Yg+E4eCVBIJmzD1KooHHOxYlFPFxbH
-         FTD1bYRxlz7J3nmS97TCw7kM7LXLuExtJBs0O3QFGOz+FnTMLJRJ/rUWGETNgi9s0Yht
-         zpMw==
+        bh=51G+aKDq8ODMSG8HzX/AyaGtBlxGXyqRZ3hrX+LuAtc=;
+        b=AzYcgB/2P/rwnw4T9vhAdZSz1Sh4QgBjRmUq0Qdl2fCGL7Se0RW/XszOwApfLL9XWi
+         nh5l1AdIASGlPZr9937+OXWrlwGJQhqr2QA6PsXuk3ljk6lpol8w9PoDOkeChHhetGVu
+         SO+gazsRoECmfL26GwnkfQJShXw/gqMSN0oonLCvtDE07nUW1sbch4r3aJPmYSJ/33Qc
+         MBP3a7pYy8yMUbBnV5KLICUbJQXuutRrGXUgPm9B77cI5z4BVSgpA/mY8o/nn9S8IW96
+         QYyKPb8w24Jp2GQw880RrOZGQoYEN6qHQ5RpOPiZd54h4c5vzqpfl6LwtgCfkmhI8y1+
+         kZlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742524101; x=1743128901;
+        d=1e100.net; s=20230601; t=1742524109; x=1743128909;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aR4b2pLa+YCokAZa+dJiroghvXMaK917Yst2WzXjaUY=;
-        b=FkrySANXREz5vKEABJfn5ZksKqlmDW1e4DpWd+0/Cq5EyR1rfigDQl/PvGGtLY65dU
-         egKkF2gNiaEntKl1DtmfjgNvidz/U5wMAB+aLvmp8Bb6U5WGo7In5pDlo1lpgSwt51Mm
-         vJ0WJwbUxho6nADPhFeBDspvJwPbIhMg25aP/QSVwMQzmreYLBrhIT/32Hd1OMjizdSU
-         DGTJh4AjsQxoDylG6aXfaY4Qfr6Dvdft3Z5bI3Qn5cuXcrYNmL90ZLD08ZfWuq9RSSgC
-         x4GCrwtZqIRlSuhTKmvkc77F0kLSoxuwbvf2wqUt5Jyjio0ybjCFhd0GIt6H3v49AJt+
-         pGYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqkP8klHBcZZL2Wu8fJQAqEe3mOtz/+Gpj9i9XtAwh4b/pfEyTCmOFrOZwzaPktacPPnSkGEOt4LXJFmqNcQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK2596NAdXiS7tortPNn8Hb8KQKpn0kSSzl1wvtsz1JoDF4Ft5
-	jtSy+h1zsRgGE4rfXzl6ZJjJku28wL58LEnNscTgdsK6MJGFJJhr6vhgd+mxBfAkGWpIeu4L7w6
-	RTbae0T5gPYEf8y6NKKOzP/ZkvsSvv86kGY91
-X-Gm-Gg: ASbGnctSkVHlcTtkf1562SRBYLzzyfsbIYOUNGON2tha6ewnk/Z4mNv7znrsSPTlnb0
-	jBKRuMMS2RVbO3KD9oh5ubraxFd+4x428fw8VnUdRL5n9kRwY83XYF6p6UBwuHH/IFIoJD+BrKs
-	58knvMmhPfI5bUoadO0LjuGqkPkkg=
-X-Google-Smtp-Source: AGHT+IEIrMWi/v7OLLk4VKmWjaT2Rd8Xa0zB/bbsaRDS+bMjpu2oUZ0Q3dJSxKhkFIcb3Ta3nlmSO1DVEktZegYqRbc=
-X-Received: by 2002:ad4:5de8:0:b0:6e6:606b:a7be with SMTP id
- 6a1803df08f44-6eb3f33ca2cmr24395086d6.34.1742524100966; Thu, 20 Mar 2025
- 19:28:20 -0700 (PDT)
+        bh=51G+aKDq8ODMSG8HzX/AyaGtBlxGXyqRZ3hrX+LuAtc=;
+        b=VEP9w0zQhS5d5EjhCehVWhkM6FPn+czTdh0xwhHnUuiSLCh3iEv+kaL7ZMyebZHZng
+         XoNhZvTNzwWWLcCQxeQ3KjINiqwjZlCpn1JJFjDTHQ02cXAqmqvLFzJQlZ8iIqfpOH+/
+         VKS2T2KTzQuksWZgxAGb7XfY/fVu/PM8+O5AMCKRUhjQNKZ6YAUR8bgLdJxmjHAMu1TF
+         tBwsdlrsKYNrfxxXUvLGI9XEMQorPZN9zHxw/LDwrRy4H8rq7SQmLxc6DKZ+OakPutWs
+         /bysEWtI98b7UxucBpLuF8anQabVK0cWfiXDNjsUwRTzPp+LeYgDFcusnMW/fZQ7P1jj
+         Yc5A==
+X-Forwarded-Encrypted: i=1; AJvYcCVuTBKwwNNL1Fm7jnPZ848yM/95neRIMuan43UzJtMNUIUFg8XEl6KRTPIPaJWK+LpOUWK7N52+pf0e0XXIxw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKRXs3GmxgDvoGAHgoZKifwcrTu03FdQDqMIMyKROl5HAKpmfB
+	bMNcmoaim7DkPK3Q0nC8gq0hVoV2QXsx6NwlZPNGp07nYQ/J/n+DjKNJSo7BaeB8kHQYKtwIedE
+	IB8a8xaSLl7YmsQQpB3dy2Ch3raRmmENgwVOL
+X-Gm-Gg: ASbGncszN5wWEi5Buivvr3blNwWSiV6k3WPtKtJK4AIo+ug8SjkEKaSrRit6mAUZNYb
+	7Np3Uj/rWluwpD8GCreWZEVZDaCxdu997+m3kKt9SNezu6VxQWAjKbtBekAv1FH54CvUZnQu7yy
+	JIU90gq8GQH2vixQ9Xvg4SDq2VAEwqp/5hrx/gjA==
+X-Google-Smtp-Source: AGHT+IGpn/OkPb/RskO0BRz7zvjpuG17prmzU6Rg3VfYnCR6nOlOO0RKVOdLwuXRTJDLGlqYQdMBh2TasrwIqemy+ns=
+X-Received: by 2002:ad4:576e:0:b0:6e8:fb8c:e6dd with SMTP id
+ 6a1803df08f44-6eb3f27f43emr21089706d6.5.1742524109256; Thu, 20 Mar 2025
+ 19:28:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250316061429.817126-1-contact@antoniohickey.com>
- <20250316061429.817126-9-contact@antoniohickey.com> <CABVgOSkKD2Z60_+MoP_nu3YCUocvxJaohMBZpXy=_aavUZ99XA@mail.gmail.com>
- <CANiq72=jXTpoPAHhFC=T2SCyz3195=pG5h+-yohCCxdds-2hHg@mail.gmail.com>
-In-Reply-To: <CANiq72=jXTpoPAHhFC=T2SCyz3195=pG5h+-yohCCxdds-2hHg@mail.gmail.com>
+References: <20250307090103.918788-1-davidgow@google.com> <CANiq72mi_9fJ2S=hoJnKSOvMkiuqX7J5Xx__Nn1nh9Rt=qVPBQ@mail.gmail.com>
+In-Reply-To: <CANiq72mi_9fJ2S=hoJnKSOvMkiuqX7J5Xx__Nn1nh9Rt=qVPBQ@mail.gmail.com>
 From: David Gow <davidgow@google.com>
-Date: Fri, 21 Mar 2025 10:28:06 +0800
-X-Gm-Features: AQ5f1JoAg65Ohw4O0Kz-Hj12k53VKhIGDMqmpH3o-T1fKYNhYf28GMylxmSSkPE
-Message-ID: <CABVgOSmhMP4F74GuwRG3bWyumgF19WxmC=ymbehuWVD==OxdnQ@mail.gmail.com>
-Subject: Re: [PATCH v4 08/16] rust: kunit: refactor to use `&raw [const|mut]`
+Date: Fri, 21 Mar 2025 10:28:16 +0800
+X-Gm-Features: AQ5f1JrS3-bIRv6UZLgzcnQY3APVARhT9wStbgujqeQ3AQRRlJ2kc6j3KawBx-s
+Message-ID: <CABVgOS=_YGXtXi+s-tdUyEE=_Etk14kKcjxoo5yvhkt=JrmZFQ@mail.gmail.com>
+Subject: Re: [PATCH v8 0/3] rust: kunit: Support KUnit tests with a user-space
+ like syntax
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Antonio Hickey <contact@byte-forge.io>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	Rae Moar <rmoar@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Antonio Hickey <contact@antoniohickey.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	Rae Moar <rmoar@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Matt Gilbride <mattgilbride@google.com>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, Tamir Duberstein <tamird@gmail.com>, kunit-dev@googlegroups.com, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000014cc3d0630d10295"
+	boundary="00000000000092a2220630d10279"
 
---00000000000014cc3d0630d10295
+--00000000000092a2220630d10279
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 21 Mar 2025 at 07:16, Miguel Ojeda
+On Thu, 20 Mar 2025 at 19:24, Miguel Ojeda
 <miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Tue, Mar 18, 2025 at 9:02=E2=80=AFAM David Gow <davidgow@google.com> w=
+> On Fri, Mar 7, 2025 at 10:01=E2=80=AFAM David Gow <davidgow@google.com> w=
 rote:
 > >
-> > In general, I think changes such as those in this series are going to
-> > get progressively more prone to conflicts as Rust is adopted by other
-> > subsystems, as the 'rust' tree won't be the only one carrying changes
-> > which could be affected. Maybe in the future it'd make sense to split
-> > these up into a series which enables the new feature, and only then
-> > put the warnings in place in the next version?
+> > This is v8 of the Rust/KUnit integration patch. I think all of the
+> > suggestions have at least been responded to (even if there are a few I'=
+m
+> > leaving as either future projects or matters of taste). Hopefully this
+> > is good-to-go for 6.15, so we can start using it concurrently with
+> > making any additional improvements we may wish.
 >
-> +1, I had to do a two-cycle split for other things in the past
-> already, e.g. for Gary's FFI series.
+> Applied to `rust-next` -- thanks everyone!
 >
-> I agree that churn for this kind of change has a cost. For tree-wide
-> series, it will become harder and harder over time, just like in C,
-> and some changes and cleanups may take several cycles.
+>     [ Applied Markdown in comment. - Miguel ]
 >
-> For Clippy lints, I think we have some extra flexibility. We still aim
-> to keep everything Clippy-clean (and patches sent should be sent clean
-> under the latest stable Rust version at least, and maintainers should
-> enable Clippy in their test runs), but if something slips in a
-> particular corner/config/arch that is not routinely tested, it is not
-> the end of the world as long as it gets cleaned up.
+>     [ Removed spurious (in rendered form) newline in docs. - Miguel ]
+>
+> (finally! Special thanks to David here.)
 >
 
-Sounds like the right sort of compromise to me: if we aim to have
-things be clean on the branches they're applied to, we can clean up
-any warnings which arise as a result of merging afterwards.
+Woohoo! Glad to see this finally at the finish line.
 
-> Anyway, KUnit `#[test]`s are in -- I was not planning to merge this
-> now anyway, it should be reviewed a bit more.
+I'll be able to finally have the chocolate I've been saving for when this l=
+ands!
 
-Excellent! I'll make sure to review the new version of the patch when
-it's rebased.
-
-Cheers,
+Thanks,
 -- David
 
---00000000000014cc3d0630d10295
+--00000000000092a2220630d10279
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -215,13 +202,13 @@ uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
 PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
 Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
 BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
-pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgGPnHvooxQOpM5+UhZ2XfbWcgIose
-SMwpv2XAkYBExV8wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
-MzIxMDIyODIxWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgHBNl3lf3Sfaf805JHASKLAWSYzSR
+4vZ0oW73c+ojXigwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+MzIxMDIyODI5WjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
 YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEAWoAGp7HnG7nYrhJlSN/S5K6IHjJw+/HpcEDt6Lt9fw7M5Ma8bgYmo4Kvg5HKyyhT
-rVWHg3D92yeUsNXZDMka6O3QE0emjBFC4wHjERBvSJ+TnzcGpS6saJYTe0aCRQGm7QWUDdXFQq5W
-3XF9GY9WrhPH4xwe2SnoTAmurbHE2we7eQnhs7lZxUeiEl7+gGtgsy6Il1LRiyenqILC0EegWErE
-VlTeuz1dlxE2r+EJlMO+qgEZMNq5XbRpte7s2D9daa+O72S0xK4tP8I/Vrp1kHSbopS6Gj23I7DF
-TLY6lQC+QjhsXPef15vB/q2kVyfRk7Dpu+FOkMj/x1RH17qT3g==
---00000000000014cc3d0630d10295--
+AQEBBQAEggEASUTUrxHJqcaEQ3u7zB86NkqN0k2pJcYWPMY1IL/Uz2zM66x+Lu9vkHWeX7Yu1fej
+DifcAivH7TgeGj5E/dEk7ZDRNOMqPjMZt02SRpqzd4bLS+hiYOJNtf5Rx0e86Ne0chTpklwximvH
+ZH6E99NW2/fWh+tZHaP7NgIFlPuKyKS9SrWGulkbRGayjum2iU9nidFvwh8L/CCIIixbI5ji/7Sk
+fzQHM3xXa41KTmRFeuwKKVl3VZTdPPDM2WkiIbpXbogCmhqM4O7Go4hzetcFU/fk2jiBvdMv5AnH
+52YA5MA+hiXDvm0WOKyEuBYR2oxBSJe7JIPCAdwuP36v5+qQDQ==
+--00000000000092a2220630d10279--
