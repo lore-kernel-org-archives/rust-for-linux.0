@@ -1,70 +1,70 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F06D221548
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 23:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC981F152D
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 23:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742601018; cv=none; b=PYLSBAaI0wRDIwfRA5lnUNsZhTTFran7W+33mUEDFJ2TI2XNBK0YLKDT4UbjkTpy7LOnyPGpH2HMNANAvzstE4UVMTJk0oZea3GTS6L6BWUu+42M2qSntTjympgvohKs+rJ5LkZt+ylKCNF7rcpG0bmG6LbVHVfbA3hCV9aY5Og=
+	t=1742601153; cv=none; b=immaxtHTIWcHmMtSs2x+qQoNCtHDAy+jZUbBheo835q3antfrWxp57TD7enONEAcqIOTQtODmdxNprfpIGY5G52hSo8wNj1k9U06qgO+1Wv6OBxwFcU5fT0T7e/N5keeRCF2Z7qkcaMCR/oYhx5JuNpV3zF2rIRkN8+F111EojU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742601018; c=relaxed/simple;
-	bh=r3QZyPOTF9gxAktsfGidZWGEziLvPzaArIRV6aZMZ08=;
+	s=arc-20240116; t=1742601153; c=relaxed/simple;
+	bh=RIvh//ipv7E5Zvf4W/70UQHB5Y9ZXuIEXJ65WbeIe/M=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k3KL1aHJSzhk/Dw3Y2PysfyA1DKchlFoJZizosf7waAJarslkuMECWAnxftb4qQsmmfUbnaF1pGkK9t9OmHTVuVITMKu4Y2YpAuLDEcgwM57Qx/sIxI1PXS6mQ1xMFGJyyd1vKoF6iPkyah6OQwohYfxZNCr7Vk2bsjOcsu0KS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PFMySfSn; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=VCQbkmVLCI9VoaWXCsLzKRe0mHUFIJEkZYWCiGwQsh8agD/450pMci44zGotHv2DF6AwpspLWF6Qo/Kb+3fQ/j0Datct1KzWGKwVV/+nJUon4ub/i0TtyGV7lUDZ+qyoo/dydeAyxoq65FkGzm5DFqPbOsIWkHkkvxSsgye5NvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fsHI+48l; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PFMySfSn"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fsHI+48l"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742601014;
+	s=mimecast20190719; t=1742601150;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NrKRoNH3IdyIjo35xLHsqEua4+zOXZg0HlVIQMRCreI=;
-	b=PFMySfSnFD2OCTMHeI/5YlfLZGSsQdzbjc1Scr0tkuDA+l+Zedt7jN8+DNyLf5daeBVWpo
-	HH470jc6y+wD3R/Yghwu636/Zd/7JMHq43bV634kq6+xUKWo9iCtPAk2WM+RAge5bys9M/
-	uwrgG/2YjsU446ZP0CK4Aaq861z8CYk=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=/W162Lk5eFVFuf7b+NhjnYDJjSqT7mKIwDUb9pj7zM8=;
+	b=fsHI+48lmGor1adzWbe6y0qEMGqmPhV1JEYkBn0Qq4Xv1h3/0GYQFjUYbgTUfZrKhazDe7
+	e+r7S9Wx9IsRq3WHjqsTuuUMoCHX/sKVrxijJ7E7yTIHtZvpeVmt85Zabp8AVYQA829TMK
+	+yq4Z77Uwaz8/HD1/Nkw3T8cRr7REOk=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-3zF0Wh2nPzmOHsh3vJUx7w-1; Fri, 21 Mar 2025 19:50:11 -0400
-X-MC-Unique: 3zF0Wh2nPzmOHsh3vJUx7w-1
-X-Mimecast-MFC-AGG-ID: 3zF0Wh2nPzmOHsh3vJUx7w_1742601011
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7c54e7922a1so528191385a.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 16:50:11 -0700 (PDT)
+ us-mta-441-FgFTrSe-MKeAhdktOhpIpg-1; Fri, 21 Mar 2025 19:52:27 -0400
+X-MC-Unique: FgFTrSe-MKeAhdktOhpIpg-1
+X-Mimecast-MFC-AGG-ID: FgFTrSe-MKeAhdktOhpIpg_1742601147
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6e8f64eb467so21930856d6.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 16:52:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742601011; x=1743205811;
+        d=1e100.net; s=20230601; t=1742601147; x=1743205947;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NrKRoNH3IdyIjo35xLHsqEua4+zOXZg0HlVIQMRCreI=;
-        b=ncK8aB/qlPSLz0RbEED9uSOJvFlcvcboLQQ0xetOKVVmA2DhIjAYgXgMYZPjotEA2+
-         We/jqud/1ZeNiHnwDah1+5JPjMTlNiMXroiWPEfRJoHDt5Wry5nZuW6fG6l7U3XkatLT
-         tNyayd3xII5MoxYDnhBp6p/AR6Ups9eALQHeTGty41dqZO5O7wmVqDYwNUMlFDohzAxu
-         C+FZLu2NwOISCselk+XyMtv+CB6m5OUMUUs0lAAMYIvXyPjIto4d1bDKrWYMLzwpsqt0
-         OzMt9x3qjpejlrgVidXkvM26sO7PdnU3IIoSwTtCSOuuAAGlR5ON3qvZJuFsAPPZZUR5
-         9EGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxni1+XjyE3AILAksrumLEjngq84huX9ZHLX2+1K11iwGZOjsA2HClxq9J0xW4gwA7QIewnz6YC7Viz1rszg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJEZTMlj0MCGWDH8GOyzFgTGsjzQkSXSk4FRkE5N/GUSWuFaS0
-	WXoSrwd8Fq9jDMXL71vEP0gzLd0qEdwQDKvJwcZP84vTRkE4CNMW3sRdJMNuQxGFN+s8Vx04Qla
-	Vt5uvtpeKNTdmFqVVV24yPOTZiP9W0jJf64isjGkOM6i00oqzEVhCXTjl+c3JgS7q
-X-Gm-Gg: ASbGncsfOkO0ydxt9T/Jz7g3264yhU6n3czJb7chWrKC6vwLl+puT3K9DYEz93D1PU8
-	mTAbex+OAJs6FmjAERdZ2aXiTGGZr2XKaZpNao7JuedBsYyiRupgcYQC62eMGiEZXhL7k6/7/2d
-	qAKaOIzuRYmuiJ3VrlBTDUawmMOiBMoJQAKQLq2iqe9NGuDbdhEtZTiiq7FNQct16re3aVnNPt+
-	yY9TZH3YJeRMSiHEk3hQ+jj+LU3kVgmT61xaagak5UZrBuu0Qq1HKdRCRbBWOwTkZ/x2mQzHpul
-	NjMP9dNeMgat4dqn1EJKrg==
-X-Received: by 2002:a05:620a:394a:b0:7c5:5768:40b3 with SMTP id af79cd13be357-7c5ba1de27amr783953685a.45.1742601010904;
-        Fri, 21 Mar 2025 16:50:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmpv2fzAYbhX3XAzFz7cpBk3vunR0rYchL5E9OJtzTtguekXsRP42AxoqALK345r8BELl/dQ==
-X-Received: by 2002:a05:620a:394a:b0:7c5:5768:40b3 with SMTP id af79cd13be357-7c5ba1de27amr783951385a.45.1742601010603;
-        Fri, 21 Mar 2025 16:50:10 -0700 (PDT)
+        bh=/W162Lk5eFVFuf7b+NhjnYDJjSqT7mKIwDUb9pj7zM8=;
+        b=Cfp9u5W8/j53D+MqCiYbWy7M1bnZ2jyIDFREjajDL2l95ZW3m1+S7o4juDUULplJ+M
+         wHPurmfmmGPN2fYq9JU3NZAPlLl0gf+OEP2cvROide7D8e0BFb27U2N4YCtL8ms4X+Y7
+         W39xtjOOWkHOxQkq6iyYcBIfv6BqN7SYHWoCgsOnJvh5mZsZPxOjjl59DHH5OS6Y2HxE
+         mpNgoeEaLKpkoVYnnl9FoFIUts7V9b/1mb2ekoY7QaopHcRXjsuk9g8CbIbDmn+WJ2K2
+         gavy3eXS/ZiYFRkyqHkXEEfi7expmEh69H1QXN0O3i4iLHvv8NhmWCdX1Qmz7ky4hbIG
+         uBjw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMWmuTS0HwzbKGe4e3VqYWAlsZbaz1lO0/MvNWMWrYpKWON0M482449Jf5sCPe9SJk/pFh+kemyRdt5g9fNA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyz08+j4PgrILhrWGhc0dV8lIyMXpn2dsulKzB9XHF+7qaDmIw4
+	SPGOClywtJKM2k4PiGtyexABj4KYwB/BZh2/wVqmiPdiCvcagcH5IIUDmiKsQUrIDzzhcAcXr94
+	hM7SjBhKUVHhzCttvHnjCJhUCbfDx/NGrudJylgBSgXtrTP0aVMSe55UeSirlt8k4
+X-Gm-Gg: ASbGncuDJ2Ey/NTMvfcXv/HwUsobFTLV8UiPFRJIOHxBxxpl0XiViOYS8DwU+4bonDI
+	HoP5S0SkpZ/2QWbKU2oLT4aRvlxGt4Xzn0A/3TzsmCBIo3X9hVWsMzCXHpxEDAkD7XnkL8g6UeB
+	vpU/b0KLz0DQg+WVCzCXaD4r6TndSnHn6kS4nM8XDnq0if0apViWStdLLt7mGTXzvHj0fusd5zD
+	mv9SdQ8cfHuaUC0pKujeuU5OqfZcHkzfHGAjyQMdmjdTr3P6jix3z89kMMBvP8hvpdBOj7KBaJM
+	shrACBE6jfT/laNRiDQ0pQ==
+X-Received: by 2002:ad4:5cc3:0:b0:6e4:442c:288b with SMTP id 6a1803df08f44-6eb3f2862b7mr60525546d6.11.1742601147017;
+        Fri, 21 Mar 2025 16:52:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEw7aMUnE5KQAyNz66ZiPWs8EpBZtDp5zailO8JWbAqrBQuYZXpuePtLgdQPHt3fM5t241euQ==
+X-Received: by 2002:ad4:5cc3:0:b0:6e4:442c:288b with SMTP id 6a1803df08f44-6eb3f2862b7mr60525206d6.11.1742601146500;
+        Fri, 21 Mar 2025 16:52:26 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c5b9356b7esm189254485a.106.2025.03.21.16.50.08
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3ef33527sm16606296d6.63.2025.03.21.16.52.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 16:50:09 -0700 (PDT)
-Message-ID: <dea3218eb31f3e91d2a10f93a7bc6cfa674546e6.camel@redhat.com>
+        Fri, 21 Mar 2025 16:52:25 -0700 (PDT)
+Message-ID: <2d39187892737438c35791aa59681b1af7e62de7.camel@redhat.com>
 Subject: Re: [RFC v3 10/33] rust: drm/kms: Add
  ConnectorGuard::add_modes_noedid()
 From: Lyude Paul <lyude@redhat.com>
@@ -80,11 +80,12 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Danilo
  Kroah-Hartman	 <gregkh@linuxfoundation.org>, Asahi Lina
  <lina@asahilina.net>, Wedson Almeida Filho <wedsonaf@gmail.com>, open list
  <linux-kernel@vger.kernel.org>
-Date: Fri, 21 Mar 2025 19:50:08 -0400
-In-Reply-To: <20250314-observant-cyber-chowchow-bfe5f9@houat>
+Date: Fri, 21 Mar 2025 19:52:23 -0400
+In-Reply-To: <dea3218eb31f3e91d2a10f93a7bc6cfa674546e6.camel@redhat.com>
 References: <20250305230406.567126-1-lyude@redhat.com>
-	 <20250305230406.567126-11-lyude@redhat.com>
-	 <20250314-observant-cyber-chowchow-bfe5f9@houat>
+		 <20250305230406.567126-11-lyude@redhat.com>
+		 <20250314-observant-cyber-chowchow-bfe5f9@houat>
+	 <dea3218eb31f3e91d2a10f93a7bc6cfa674546e6.camel@redhat.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -94,63 +95,76 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: NKH0dFEzPVsANfuaYhmoM2mJZ5OwiVRjeML47Gg-7UY_1742601011
+X-Mimecast-MFC-PROC-ID: aHsjHUBTLYrUmbqNJyB6a59Gq5AgGHJYgXFxmDQqGpk_1742601147
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2025-03-14 at 13:02 +0100, Maxime Ripard wrote:
-> On Wed, Mar 05, 2025 at 05:59:26PM -0500, Lyude Paul wrote:
-> > A simple binding for drm_add_modes_noedid() using the ConnectorGuard ty=
-pe
-> > we just added.
+On Fri, 2025-03-21 at 19:50 -0400, Lyude Paul wrote:
+> On Fri, 2025-03-14 at 13:02 +0100, Maxime Ripard wrote:
+> > On Wed, Mar 05, 2025 at 05:59:26PM -0500, Lyude Paul wrote:
+> > > A simple binding for drm_add_modes_noedid() using the ConnectorGuard =
+type
+> > > we just added.
+> > >=20
+> > > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > > ---
+> > >  rust/bindings/bindings_helper.h  |  1 +
+> > >  rust/kernel/drm/kms/connector.rs | 11 +++++++++++
+> > >  2 files changed, 12 insertions(+)
+> > >=20
+> > > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings=
+_helper.h
+> > > index 27828dd36d4f2..846eb6eb8fc4c 100644
+> > > --- a/rust/bindings/bindings_helper.h
+> > > +++ b/rust/bindings/bindings_helper.h
+> > > @@ -13,6 +13,7 @@
+> > >  #include <drm/drm_crtc.h>
+> > >  #include <drm/drm_device.h>
+> > >  #include <drm/drm_drv.h>
+> > > +#include <drm/drm_edid.h>
+> > >  #include <drm/drm_encoder.h>
+> > >  #include <drm/drm_file.h>
+> > >  #include <drm/drm_fbdev_dma.h>
+> > > diff --git a/rust/kernel/drm/kms/connector.rs b/rust/kernel/drm/kms/c=
+onnector.rs
+> > > index 14de3b0529f89..855a47b189a91 100644
+> > > --- a/rust/kernel/drm/kms/connector.rs
+> > > +++ b/rust/kernel/drm/kms/connector.rs
+> > > @@ -446,6 +446,17 @@ fn deref(&self) -> &Self::Target {
+> > >      }
+> > >  }
+> > > =20
+> > > +impl<'a, T: DriverConnector> ConnectorGuard<'a, T> {
+> > > +    /// Add modes for a [`ConnectorGuard`] without an EDID.
+> > > +    ///
+> > > +    /// Add the specified modes to the connector's mode list up to t=
+he given maximum resultion.
+> > > +    /// Returns how many modes were added.
+> > > +    pub fn add_modes_noedid(&self, (max_h, max_v): (i32, i32)) -> i3=
+2 {
 > >=20
-> > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> > ---
-> >  rust/bindings/bindings_helper.h  |  1 +
-> >  rust/kernel/drm/kms/connector.rs | 11 +++++++++++
-> >  2 files changed, 12 insertions(+)
+> > Why do we need a tuple of i32 there instead of two u32/usize parameter?
 > >=20
-> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
-elper.h
-> > index 27828dd36d4f2..846eb6eb8fc4c 100644
-> > --- a/rust/bindings/bindings_helper.h
-> > +++ b/rust/bindings/bindings_helper.h
-> > @@ -13,6 +13,7 @@
-> >  #include <drm/drm_crtc.h>
-> >  #include <drm/drm_device.h>
-> >  #include <drm/drm_drv.h>
-> > +#include <drm/drm_edid.h>
-> >  #include <drm/drm_encoder.h>
-> >  #include <drm/drm_file.h>
-> >  #include <drm/drm_fbdev_dma.h>
-> > diff --git a/rust/kernel/drm/kms/connector.rs b/rust/kernel/drm/kms/con=
-nector.rs
-> > index 14de3b0529f89..855a47b189a91 100644
-> > --- a/rust/kernel/drm/kms/connector.rs
-> > +++ b/rust/kernel/drm/kms/connector.rs
-> > @@ -446,6 +446,17 @@ fn deref(&self) -> &Self::Target {
-> >      }
-> >  }
-> > =20
-> > +impl<'a, T: DriverConnector> ConnectorGuard<'a, T> {
-> > +    /// Add modes for a [`ConnectorGuard`] without an EDID.
-> > +    ///
-> > +    /// Add the specified modes to the connector's mode list up to the=
- given maximum resultion.
-> > +    /// Returns how many modes were added.
-> > +    pub fn add_modes_noedid(&self, (max_h, max_v): (i32, i32)) -> i32 =
-{
+> > And the return type should be unsigned as well.
 >=20
-> Why do we need a tuple of i32 there instead of two u32/usize parameter?
->=20
-> And the return type should be unsigned as well.
+> I think I was just copying C (or whatever the bindings here translate the=
+ C
+> type to), but I don't see any issue with changing this to u32.
 
-I think I was just copying C (or whatever the bindings here translate the C
-type to), but I don't see any issue with changing this to u32.
+...wait. Now I remember why I did this: it's not that we expect it to be
+unsigned, it's that the largest possible u32 value cannot be expressed in a
+i32, and I think the C side of things uses i32. Days like this I really wis=
+h
+we had a u31...
+
+think it would be OK for us to convert this to unsigned on the C side of
+things?
 
 >=20
-> Maxime
+> >=20
+> > Maxime
+>=20
 
 --=20
 Cheers,
