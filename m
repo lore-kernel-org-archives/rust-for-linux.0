@@ -1,71 +1,72 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5832A1C9
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 23:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426A91EBA19
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 23:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742600548; cv=none; b=paoHPXPocPhsn3TXD6HnZvKUci4y8nLsT031bqJ1EHJwUlbZMqQ/ybEGlJD/nGo3SzPCU9qmpeZ9hYRETAr9qp/0YcsqZXxfcgOENt1LQtgFubevPcudQ3Arl37+fOmRbjClTs4UXz0RnR7jVwFXPjkmIVst6OgwTkuYLK1pOwU=
+	t=1742600873; cv=none; b=Wkfe80CRlD1nfLsmfAjBc/O02pbO2LNtycAmRei7jkn0sRe/2MusyxMPtvVWcZBtJlHgX6QUZwQ25Du/viVXVGPAiGVXcHvCLlJZHZQtoMeNO6aelBovNC+0hnTRf9MJveEowt08CEZKa3eTS3zS7rp/kj8SatWTRY6gCokqMr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742600548; c=relaxed/simple;
-	bh=ey6GIcNEiX7ve9IMdRE1Qt6NLCh2Iyf602d679nR4r4=;
+	s=arc-20240116; t=1742600873; c=relaxed/simple;
+	bh=07bV6wCmABRVlSLA8nvswhWQuiWLf7chTLpHYhipRxY=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FFioHDYTl/LXyfmDJ9dBvONtnCpfpzMpYhp2NnYddnWcxc7AJIHoj22zgnnK+47VRAPprIN7+dy5DFc4pZhC7K8a5b4V5RYJw4hYWp/Q5Wm1WB/ZOsbclyCCqtpkWfLFHoHTvmmzb6m35EN6rTCnpwhvPup5O9lPwZVxYx0pBy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FlnMFk6M; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=Rro/+8vKPOPuZU7bhPtz0VpgS6F5vU79GqNPpZAYNGuj3TYJOxWzuXa72qtFuqlG4D9vy6MOR0Wfww+nJeijW2wi0Sanv5JQdfpD4o+/nXTxc70rQmft1kgLLBtfe+O4VVFDW7EyJBeAyQRyFicTKrTts2ECy70XyeTz33YF0hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FiTiKy71; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FlnMFk6M"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FiTiKy71"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742600546;
+	s=mimecast20190719; t=1742600871;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zZpNf7khH2Js4tOY3mnDKV33a/y91jvPlLT+xZiqQak=;
-	b=FlnMFk6Msh6QP94M0mgmaqQJwU4I4G8C7x3d/McB3jgPRp3NvJB+/9HWwYGFUxgUOFoqDU
-	X6VxzSVOCkkJC09vDaLPCuwY54N/UI6OiZGcYDhJI2X4viMGLPiDqGVs8jsJHKF0uD1X3w
-	f5Dn389R5p5/+y11rhxUmhlthMNZCQk=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=07bV6wCmABRVlSLA8nvswhWQuiWLf7chTLpHYhipRxY=;
+	b=FiTiKy71Um5DOas5YRjZy7A0VfreedT9JK4BELOo/vRz52F7Rb44jjsBogvQdDlCZM3dps
+	4jUdalX5hb2YHoRnyn4HBg4gIDIYPH05pNcjgDfG4gWbikFDm2PV0KCCl9Am6KQuB0i+hg
+	OM03cbbhFlPWzBusYwjHmiexzxzClvk=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-_vhaGpm_O1CeQV1pKD8S-Q-1; Fri, 21 Mar 2025 19:42:23 -0400
-X-MC-Unique: _vhaGpm_O1CeQV1pKD8S-Q-1
-X-Mimecast-MFC-AGG-ID: _vhaGpm_O1CeQV1pKD8S-Q_1742600543
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6eb2e88d7dfso35217346d6.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 16:42:23 -0700 (PDT)
+ us-mta-554-3BH1N4DSOW29fUAMfbnPYw-1; Fri, 21 Mar 2025 19:47:50 -0400
+X-MC-Unique: 3BH1N4DSOW29fUAMfbnPYw-1
+X-Mimecast-MFC-AGG-ID: 3BH1N4DSOW29fUAMfbnPYw_1742600869
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4766c80d57eso37785321cf.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 16:47:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742600542; x=1743205342;
+        d=1e100.net; s=20230601; t=1742600869; x=1743205669;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zZpNf7khH2Js4tOY3mnDKV33a/y91jvPlLT+xZiqQak=;
-        b=F7WshsmGx0HK1axT+9lNLa5lZVrmZkhAIM8nDI9Nz8KaK7C3DcX2FJz0cKyld9pOo4
-         5IjD4hEGrJDggVLCGNs+edjfq7rUR0rk5fEOQ1tTaw7GlF+PeJFeF57Mp/l8z+Pp3kLL
-         uRiMX0Z/spI+qup9c9ndBaFMF5a0ZrwehyEef5Ygya3wJxz5TfIn2IAKLNyzmazZukOy
-         3xjS7d+YXxyKfCee49BEuCMRoQ7NFSEUYUjVlsNGLdAMbPCDeq2JEzBCKAtAyiEw/jjT
-         B7xCRseBeGgEah4+i2NdLaN3UkXtFY7Ra+zUDRDbGfT8Fpx0twlUsHEv//jyCJgh6G0/
-         yzfg==
-X-Forwarded-Encrypted: i=1; AJvYcCVr8ZgTzbZo4Vs9xZ6a1OMZHV32mk2nFMAEHscfclK1hoeKNUGG4cqL2dhtcTlpsPesG4X5vuv/orU7L9KXjw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6+88wC9TpdyoUrKr8oMhMFb+EEl7GbGMRLwWBGNqSHQW81tJp
-	uAqbP8ThzvB28TkaDL/VzH4jje3E5SjSn0wRM/r9HDiKW4+sPsmk7x/33ll8b8j5ig75LZpCVV9
-	OMrfU0pjyUJlpbS/XPLyHgrO4NFIbZBz21GoezCPepNn8ucA65eYR2b8nYe0AMDGLcPOpA9tg
-X-Gm-Gg: ASbGncsTEyW5eR/Ujjf4A9XsOVHwnQYBNv6OgohZCnKo8ivFiPwuT+PcYQQ4VsW3vxx
-	9YHXIz2+m+4B9xjia/gbLSwo6M8gCPCtNkMXORM92JkoO/k3GZBnC2szGCNq+CFzCttmhAw25Sd
-	w78EbAZ+u8TXVbOUqhjDR3pyxnsCk7ZilAbo0yJhyYR26NRjvbYUZkN1rJDlYXE7diABhXESh6F
-	I7aqA2p/tdUKJwonFbPgCNZ6jOCYCVAnIWEKikemeWecEVHUUV65B4P+AkOlu0PDiIqJOxrqz2o
-	0CDRcZuJGWpuAmosR2FYwA==
-X-Received: by 2002:a05:6214:1c0e:b0:6ea:d393:962a with SMTP id 6a1803df08f44-6eb3f27d77dmr72162756d6.1.1742600542733;
-        Fri, 21 Mar 2025 16:42:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEgUe/0T/fsNk+5sy7Ip3+VWlwBBC8GZ6FTkBhcxDw1iLXCqbNgdmxsyxXrvEPQgtYKN1zdag==
-X-Received: by 2002:a05:6214:1c0e:b0:6ea:d393:962a with SMTP id 6a1803df08f44-6eb3f27d77dmr72162596d6.1.1742600542458;
-        Fri, 21 Mar 2025 16:42:22 -0700 (PDT)
+        bh=07bV6wCmABRVlSLA8nvswhWQuiWLf7chTLpHYhipRxY=;
+        b=sDYdsN1huBW2YlXSAmxJr/fBuFhM6cDc84x8J3zb1TNHvHQl6zuIrZFPf313kaEeyp
+         edMvO3NJ8v6AitAeLbacsinNj8++Q7AYn75nBnhrZyQ/6RxF4GobgBudyooNUrgplwoy
+         LE+SnMGPXzsVvSeUm3l3W2LfagKfHvLSzplKpCtlCU+ybTnSn9LaBFKJZTpoAa3OOvti
+         ZC4HE76Cvcxt3umEerbomXudnoLzrGAlyZa7x7VGZxwxGlKZ9L8Ks3D7pXU4KHZ6Fp3F
+         wqQZV3RoQHMRHRSjN5rzVS9CErWkbH+vvqrehRkvMbMFtSah6OsoGhJwXUFdms5aLhgV
+         mx8w==
+X-Forwarded-Encrypted: i=1; AJvYcCWDQoZozep9bQcV6MbnG4jWH9dNeBkrps1zaqyJQRkE7HPYVmaB/vFnI3ECSM6kGMenKKJ97jrsMA/a5gPSmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwleoI1C7j6gHtXWEkWjbKYxHv60FcClyPdAynhZZqmwrtolEoy
+	1kc55k8S3X+1PN1eH0kOsLeUOmolLePEhwmYP45VaDYp7pbg+blNrdObIVTmg9qr3isz5DsQ2VN
+	zvgPxXiFxZ1HhLp6D8YIDqdStvsQOoaNEP9b6cx3VYlus3MQu2B1K1kqzqMEs5Jtt
+X-Gm-Gg: ASbGnctQGXOQ/hSMuoVIRa9zRJBD2TQrrInKWIYhfmSx/eGulfQq6I8HrWiXyxtDbwi
+	VpQAVGHdD9dglgwCYJBLx40yF0B/9KE5ZqRknXYqiquWbbyXatuG5GxiCzcDhK+/bFUtPJO308F
+	xTJOPzvIl4Pfnc6FcrE5lC2YQfkxqRN7JXw8srjjt1GX/PFUI8natyL5ewJTSofYzQB3M8G8b6u
+	a7n+sjYBZJ0USHjhDFdJrOMbmuIn2gCSVQ6XdILs7AJSu8DGlDK1WJAAMwOKu1QozvuneC01ihV
+	xXR5HwsU6T5UahFPWmfODQ==
+X-Received: by 2002:a05:622a:17c5:b0:476:80ce:a614 with SMTP id d75a77b69052e-4771dd92415mr80106511cf.19.1742600869546;
+        Fri, 21 Mar 2025 16:47:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyKv8SSrBWWw7daDLJFvc54fXLHOhK0DQ8PDkDuUVdJ3V8Cl8E2pWGzTi9qgoa1eCAvEPCxw==
+X-Received: by 2002:a05:622a:17c5:b0:476:80ce:a614 with SMTP id d75a77b69052e-4771dd92415mr80106141cf.19.1742600869248;
+        Fri, 21 Mar 2025 16:47:49 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3efc5bf5sm16263896d6.70.2025.03.21.16.42.20
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4771d635b94sm17366501cf.76.2025.03.21.16.47.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 16:42:21 -0700 (PDT)
-Message-ID: <514f42ce85cbb9867109e9e69d02818953315aec.camel@redhat.com>
-Subject: Re: [RFC v3 07/33] rust: drm/kms: Add drm_encoder bindings
+        Fri, 21 Mar 2025 16:47:48 -0700 (PDT)
+Message-ID: <330309618d5139e360bef4b62ea9fc6368d0077a.camel@redhat.com>
+Subject: Re: [RFC v3 09/33] rust: drm/kms: Add DriverConnector::get_mode
+ callback
 From: Lyude Paul <lyude@redhat.com>
 To: Maxime Ripard <mripard@kernel.org>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Danilo
@@ -78,11 +79,11 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Danilo
  Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Asahi
  Lina <lina@asahilina.net>,  Wedson Almeida Filho	 <wedsonaf@gmail.com>,
  open list <linux-kernel@vger.kernel.org>
-Date: Fri, 21 Mar 2025 19:42:19 -0400
-In-Reply-To: <20250314-manipulative-important-mackerel-7a25ba@houat>
+Date: Fri, 21 Mar 2025 19:47:46 -0400
+In-Reply-To: <20250314-gigantic-frisky-condor-9b35c8@houat>
 References: <20250305230406.567126-1-lyude@redhat.com>
-	 <20250305230406.567126-8-lyude@redhat.com>
-	 <20250314-manipulative-important-mackerel-7a25ba@houat>
+	 <20250305230406.567126-10-lyude@redhat.com>
+	 <20250314-gigantic-frisky-condor-9b35c8@houat>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -92,44 +93,58 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: z8Mmodo6e7iEmuiMgr5eY6xs8Cb_iwvmuQ6Dn9hsLFo_1742600543
+X-Mimecast-MFC-PROC-ID: I_pc7gOR95YE3ud7sP-ku7R6zPBngdn74rorGI_YFq4_1742600869
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2025-03-14 at 12:48 +0100, Maxime Ripard wrote:
-> On Wed, Mar 05, 2025 at 05:59:23PM -0500, Lyude Paul wrote:
-> > +unsafe extern "C" fn encoder_destroy_callback<T: DriverEncoder>(
-> > +    encoder: *mut bindings::drm_encoder,
-> > +) {
-> > +    // SAFETY: DRM guarantees that `encoder` points to a valid initial=
-ized `drm_encoder`.
-> > +    unsafe { bindings::drm_encoder_cleanup(encoder) };
-> > +
-> > +    // SAFETY:
-> > +    // - DRM guarantees we are now the only one with access to this [`=
-drm_encoder`].
-> > +    // - This cast is safe via `DriverEncoder`s type invariants.
-> > +    unsafe { drop(KBox::from_raw(encoder as *mut Encoder<T>)) };
-> > +}
+On Fri, 2025-03-14 at 12:57 +0100, Maxime Ripard wrote:
+> It's kind of what I wanted to express in my earlier statements I guess,
+> but I'm not really sure we should force down helpers on drivers. The
+> larger approach KMS has taken over the years was to provide hooks and
+> default implementations, with the drivers allowed to use different
+> implementations if they wanted to.
 >=20
-> I'm not sure we should expose drm_encoder_cleanup() there, if only
-> because it's not really up to the driver to deal with it anymore. We're
-> switching to drmm_encoder_alloc/init where having a destroy hook is
-> explicitly rejected.
+> That approach largely worked for us I think, so I'm a bit worried about
+> changing that.
 
-so - I'm totally for doing this on the C side of things, but unless I'm
-misunderstanding something I don't think we can use managed resources like
-this in rust. Mainly because dropping objects in rust is very often more
-complicated then just dropping an allocation due to RAII. So we need -
-somewhere- to hook in additional behavior when a subclassed structure is
-destroyed.
-
-...unless you're saying we could have ->destroy without drm_encoder_cleanup=
-()?
+This is mainly just another case of "this is the only way of probing we
+support right now". In the future when we add more fine-grained behavior he=
+re,
+we can stop passing helpers explicitly and only pass them when the appropri=
+ate
+trait methods are defined.
 
 >=20
-> Maxime
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 debugfs_init: None,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 oob_hotplug_event: None,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 atomic_duplicate_state: Some(atomic_duplicate_state_callback::<Se=
+lf::State>),
+> > @@ -114,7 +114,7 @@ pub trait DriverConnector: Send + Sync + Sized {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 helper_funcs: bi=
+ndings::drm_connector_helper_funcs {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 mode_valid: None,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 atomic_check: None,
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 get=
+_modes: None,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 get=
+_modes: Some(get_modes_callback::<Self>),
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 detect_ctx: None,
+>=20
+> Since you pass (the equivalent of) the locking context to get_modes, I'd
+> rather keep the convention you have with detect here and use the _ctx
+> suffix, or drop the one from detect_ctx, and pass the context
+> everywhere. But we should be consistent there at least.
+
+Not totally sure what you mean by this? get_modes_callback() is just the
+automatically generated vtable function, which gets generated based off the
+rust trait implementation. but I can rename it if you think we should.
 
 --=20
 Cheers,
