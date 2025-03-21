@@ -1,173 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EA122D797;
-	Fri, 21 Mar 2025 12:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A327225761;
+	Fri, 21 Mar 2025 12:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742559299; cv=none; b=FJmHGxEkM4mD/Mi006MjMiOkytPupXEtxhroiSWAnVS8WCTjiaiQWwisdNslt39k07o1aCpVIVug6OfZmiMUHmOWY/bA/r4kGIKa0Ticei2BI+/rmJkTuv0weKzs8Y6nlvp9skzfbCEAKPWtajWcEpPomVRUXcvN5n0zSY6MMDM=
+	t=1742559936; cv=none; b=O4+Zmmpiye+F5S1DRvQNX8KhksLKkVaqC/2kdEomjcouSVEgfHIElN0FEWK8+QmyDphHMgYARlnjfotcw+tsSBnCCwXFRloUhM0AsCOY9/270ImF8v/v7t1Ldsbc7hFkyk2ThIKhR1xbBbsn0k8aSb9FNvhrzE8ersDCb7LcKvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742559299; c=relaxed/simple;
-	bh=jy30EXuNa8upxpkBQWSMCwf+q4I7fePKwXreoaYc4f8=;
-	h=From:To:Cc:Subject:In-Reply-To:Message-ID:References:Date:
-	 MIME-Version:Content-Type; b=RHFCbaTn/Xa0GszadKpjFZlNaaiOY4kPkeTdSqqFaV0Dds2D7m4dez12Ye8qJ0E4qMPIMlOcFtI2+ZKE/4hnaCkaJODrYVPXSjN0z0oVchNgjpuP1q1AGULBUaKLttrvltC6blnnGnUthzGAPo7HNP1k1wx77Kst1NbL1ISkEWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dxqkxxiJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742559936; c=relaxed/simple;
+	bh=i+IG2fA8Z0bs8YjGeW1YZRWkmPZPG7E8hMzKSXgw5zo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hIOzSlEcltUvpdKCULYbAzL9K6rexT1BN2ydmBb8GiKyD0XlmrKQ9KAX3FjPemFJxn2LmS9hk10sNhSiZJCfXM8IGiiF1pWBJboaSsUEQzToyK2XYItl4I7lYfNc8O1bgyPnsNcokhtqsh7Zzk27KRabwsBOp0VbJfz8LGwU6pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ykw+MUFF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dxqkxxiJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACB0C4CEE3;
-	Fri, 21 Mar 2025 12:14:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ykw+MUFF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B4AC4CEE3;
+	Fri, 21 Mar 2025 12:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742559299;
-	bh=jy30EXuNa8upxpkBQWSMCwf+q4I7fePKwXreoaYc4f8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dxqkxxiJgMXNjR2nWBVTvRGUpThYQhgRtcoIJjBQC7sVl3js12k713F9ArXW/5rLu
-	 2BBcEiy6SRmotn+73UQ0Su+RQLBU+6t2q+CsrPVqiuXbfC+mM2dAxe3E+MPBtapsEa
-	 HpO5sEX/DtKHz8MYO1y2ybQJ3XNES7xu6HkB3Tzq/pdFSX4dTFhYwD2IOfhPrxGjJk
-	 fplF+b6HsLJVXpPXzEjcri6KxcRQ7DJftRSYlO7sNM+Y8K6qAaLzd1u36mXtepiqmv
-	 gI4WZQhUiePEg8q2T7V/ct1pZlhJh925NZ1yBe+OcCuRZFYtW+EHAj9l0uovzcJHm+
-	 J1jFZl5NqAYgg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,  "Frederic Weisbecker"
- <frederic@kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,
-  linux-kernel@vger.kernel.org,  "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [GIT PULL] Rust `hrtimer` support for v6.15
-In-Reply-To: <87pliljcvy.fsf@kernel.org> (Andreas Hindborg's message of "Thu,
-	13 Mar 2025 14:09:21 +0100")
-Message-ID: <87tt7md1s6.fsf@kernel.org>
-References: <87pliljcvy.fsf@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Fri, 21 Mar 2025 13:10:07 +0100
+	s=k20201202; t=1742559935;
+	bh=i+IG2fA8Z0bs8YjGeW1YZRWkmPZPG7E8hMzKSXgw5zo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ykw+MUFFbXJNMkrIj/0ENTyUR5/IPKbhIQiJQgvo+JOuDJA9Usff1aXzqzPoYbN1I
+	 LX+W8XgF3isl1Dy86VoCDcXCKfJWAGORg1Fbi5x8eFhrfKLaLP/HmTwUQOd40lyDGv
+	 TinMtGSy6e7j3OYI5pFqNS/H1LryXZ+HyjUP7CVWQvoA4V98aKgzHMlUXNH8yXTP5J
+	 4pxruwSk5RwRhF6w9LSu/gcGZOCAXSaiL6zP+vA8hXdDrlQhMEsMJl6xUL2w/Rb0pH
+	 5H4imtUamYudmCSnIwhTIc/yAK0+j4ySZUgLELtnn3eeUffeTk/L1yxJrOc74bWmxm
+	 pmzZtOZfz3A0Q==
+Date: Fri, 21 Mar 2025 13:25:31 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Benno Lossin <benno.lossin@proton.me>,
+	Tamir Duberstein <tamird@gmail.com>
+Subject: Re: [PATCH v2 0/7] Additional methods for Vec
+Message-ID: <Z91au1h1zhDT9IxQ@pollux>
+References: <20250321-vec-methods-v2-0-6d9c8a4634cb@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250321-vec-methods-v2-0-6d9c8a4634cb@google.com>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Fri, Mar 21, 2025 at 12:09:55PM +0000, Alice Ryhl wrote:
+> This adds various Vec methods. Some of them are needed by Rust Binder,
+> and others are needed in other places. Each commit explains where it is
+> needed.
+> 
+> I'm not sure what we concluded on the set_len / dec_len changes, so I
+> don't depend on that series for now.
 
-Hi Miguel,
+So far I see no reason to assume otherwise, so it probably makes sense to
+rebase. Unless Tamir is fine to rebase his changes onto this series.
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+> 
+> This series is based on top of Vec::truncate from
+> https://lore.kernel.org/rust-for-linux/20250316111644.154602-1-andrewjballance@gmail.com/
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Changes in v2:
+> - Add two more methods that I needed.
+> - Introduce some uses of set_len.
 
-> Hi Miguel,
->
-> Please pull the Rust support for hrtimer for v6.15.
->
-> This initial support allows for intrusive use of timers without
-> allocating when starting a timer. We support `Pin<Box<T>>`, `Arc<T>`,
-> `Pin<&T>` and `Pin<&mut T>` pointer types for working with these
-> intrusive timers. We support at most one `HrTimer` field in a struct for
-> use with this API.
->
-> For now, the primary users will be the Rust null block driver, `rnull`,
-> and the Rust kernel mode setting driver `rkvms`. I expect us to add more
-> features to the API as the demands from users grow.
->
-> The PR also includes two changes for the core rust and rust/alloc
-> subsytems that are dependencies of the hrtimer Rust API: `Arc::as_ptr`
-> and `Box::into_pin`. The alloc change was Ack'd by Danilo.
->
-> The commits were in linux-next since next-20250313.
+I think the added Vec::remove() modifies self.len directly.
 
-Please find an updated pull request below.
-
-As discussed, I fixed the UB you fund in:
-
-  rust: hrtimer: allow timer restart from timer handler
-
-by casting to `u32` when assigning enum values. The commits below this
-commit are unchanged, the later commits were replayed on top of the
-changed commit.
-
-The following changes since commit a64dcfb451e254085a7daee5fe51bf22959d52d3:
-
-  Linux 6.14-rc2 (2025-02-09 12:45:03 -0800)
-
-are available in the Git repository at:
-
-  https://github.com/rust-for-linux/linux.git tags/rust-hrtimer-for-v6.15-v2
-
-for you to fetch changes up to ac4f9157e8d7f6a9793209a693cb3e3a6f840983:
-
-  rust: hrtimer: add maintainer entry (2025-03-21 12:56:38 +0100)
-
-
-Best regards,
-Andreas Hindborg
-
-
-- ----------------------------------------------------------------
-Rust hrtimer API for v6.15
-
-Introduce Rust support for the `hrtimer` subsystem:
-
- - Add a way to use the `hrtimer` subsystem from Rust. Rust code can now set up
-   intrusive timers without allocating when starting the timer.
-
- - Add support for `Pin<Box<_>>`, `Arc<_>`, `Pin<&_>` and `Pin<&mut _>` as
-   pointer types for use with timer callbacks.
-
- - Add support for setting clock source and timer mode.
-
-`kernel` crate:
-
- - Add `Arc::as_ptr` for converting an `Arc` to a raw pointer. This is a
-   dependency for the `hrtimer` API.
-
- - Add `Box::into_pin` for converting a `Box<_>` into a `Pin<Box<_>>` to align
-   with Rust `alloc`. This is a dependency for the `hrtimer` API.
-
-- ----------------------------------------------------------------
-Andreas Hindborg (13):
-      rust: hrtimer: introduce hrtimer support
-      rust: sync: add `Arc::as_ptr`
-      rust: hrtimer: implement `HrTimerPointer` for `Arc`
-      rust: hrtimer: allow timer restart from timer handler
-      rust: hrtimer: add `UnsafeHrTimerPointer`
-      rust: hrtimer: add `hrtimer::ScopedHrTimerPointer`
-      rust: hrtimer: implement `UnsafeHrTimerPointer` for `Pin<&T>`
-      rust: hrtimer: implement `UnsafeHrTimerPointer` for `Pin<&mut T>`
-      rust: alloc: add `Box::into_pin`
-      rust: hrtimer: implement `HrTimerPointer` for `Pin<Box<T>>`
-      rust: hrtimer: add `HrTimerMode`
-      rust: hrtimer: add clocksource selection through `ClockId`
-      rust: hrtimer: add maintainer entry
-
- MAINTAINERS                         |  15 ++
- rust/kernel/alloc/kbox.rs           |   6 +
- rust/kernel/sync/arc.rs             |  13 +-
- rust/kernel/time.rs                 |  68 +++++
- rust/kernel/time/hrtimer.rs         | 517 ++++++++++++++++++++++++++++++++++++
- rust/kernel/time/hrtimer/arc.rs     | 100 +++++++
- rust/kernel/time/hrtimer/pin.rs     | 104 ++++++++
- rust/kernel/time/hrtimer/pin_mut.rs | 108 ++++++++
- rust/kernel/time/hrtimer/tbox.rs    | 120 +++++++++
- 9 files changed, 1049 insertions(+), 2 deletions(-)
- create mode 100644 rust/kernel/time/hrtimer.rs
- create mode 100644 rust/kernel/time/hrtimer/arc.rs
- create mode 100644 rust/kernel/time/hrtimer/pin.rs
- create mode 100644 rust/kernel/time/hrtimer/pin_mut.rs
- create mode 100644 rust/kernel/time/hrtimer/tbox.rs
------BEGIN PGP SIGNATURE-----
-
-iQJKBAEBCAA0FiEEEsH5R1a/fCoV1sAS4bgaPnkoY3cFAmfdVykWHGEuaGluZGJv
-cmdAa2VybmVsLm9yZwAKCRDhuBo+eShjd18rD/0UMWTrZZRm/KPD2V9oZzoT/yYy
-cM9nANXm7FXJJMUaqzKv0rzKl7bxqo6wJwaNJPFBCSkVEKAQhuJo35+REiXTr7nU
-8UnTUtNWl8nhX9q1+fMmQqTwZpYGlydTFn0cjyFtqQe9ahPhfCR/iF+kvb/VtR/s
-3ow8v93epAXy01/4fwcWW7Iozu5GqvTyyz4H8n+6B8UNVSgQp+lo4sylfl27EtQn
-7i/hrAQYaLv765UrxYsQVNyxL2qU3XXKOlDKr0KY9GFXuMVSwm765rbobGNXeD4Q
-kEZ9BU70ebS29ZHHsTncUN0AuiE22iwL/dMdZaSvyjMrD4WgH3oLbtVIuRjLQNJ1
-D4hCryTc5gHvRHJ6ZYZJNv4dqRJ0CJ0GqdR3g19Yi6U8S8GD5HK7QGz84RusiM33
-6LoKEO/XauPPaHP/ZlyDIJmuwrKRz+t9SNiEMmDFtl6UjPq/N4ghqG4zsG3wRbWq
-VBFDKP3nxaOOKTXSF0D7yGec4eENuo6EuGswoXoS4OvC0c9i8KwKBkutoLVw1c4l
-OYrwDeloyAP6V/cKbVgvxKeq3j/MKiBfYsuJBV3iQe8L7r0qoLQrCtM+dzWTRaxT
-IVkKSBnRReVyVNsatf4jmBBwN1eAeNaWUCYy+w8AdCLoGggchjSNizW+FqorR3KQ
-u6wfok7Z9QtTDT4HOA==
-=B5KA
------END PGP SIGNATURE-----
-
+> - Add example to retain.
+> - Simplify pop.
+> - Adjust 11 to 10 in push_within_capacity example.
+> - Link to v1: https://lore.kernel.org/r/20250320-vec-methods-v1-0-7dff5cf25fe8@google.com
+> 
+> ---
+> Alice Ryhl (7):
+>       rust: alloc: add Vec::clear
+>       rust: alloc: add Vec::pop
+>       rust: alloc: add Vec::push_within_capacity
+>       rust: alloc: add Vec::drain_all
+>       rust: alloc: add Vec::retain
+>       rust: alloc: add Vec::remove
+>       rust: alloc: add Vec::insert_within_capacity
+> 
+>  rust/kernel/alloc/kvec.rs | 202 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 202 insertions(+)
+> ---
+> base-commit: a337a03281efc4553191b432d757d4c04884bf4c
+> change-id: 20250320-vec-methods-adfa41e55311
+> 
+> Best regards,
+> -- 
+> Alice Ryhl <aliceryhl@google.com>
+> 
