@@ -1,154 +1,168 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A278B20DD4E
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 10:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6851F0E49
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 11:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742553347; cv=none; b=C7C1nbJbwzZ447IvS9OY9MmCFnk3r/qDdTjGAr3NXG4WWpXwOQ5/xBJqNRAOzH1SGQzQQ59UUyN0z/WznhPMeuYhE2xSjvAykKHRc9qV4dqkEzzmvX3Jc4hA6F0jhKPkOn0dKvWOfD2QxrVsOhS2be/ohNZ9kcZAwN+oX9UnbDs=
+	t=1742555741; cv=none; b=uPPaJQPRMmouFrVcEUkDEhJioGJeupIdKzJE6TBYFA9tJMgkhGYc4x1QKD6EIasPMtjLcJtVltrf49CNYNReqphQD2V0V1krbJDnYEAYE6MjndXNIykNx7B7x4bA2eSQSq7MXmVLy4ivmZl32MmG+/T2Otuq3eZl6PdolzG1ay4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742553347; c=relaxed/simple;
-	bh=UFU0KTT+0ZXUZfo4jTJqt/1srLaMuyKRdeW9iHScmXg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iA0vhZV+fYHZ6hiDYPORGEILyEp5CuHPAFR6gh9A4Ge31nWgoFVJ11pfgiUTyhBt6j47TO5sHEtyTUTzZAaFKZXjsXKuVTxcEL0JfOzKvue5O9EbWj11gFEsI2OoY7Ka9ruuzF2uNLIGdCXKWVlGT2aLiP6sC03ZEyb3wj2MHJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=QqJ5IXTz; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1742555741; c=relaxed/simple;
+	bh=LyjkH2QySCOSXFplZGe3Yr1geWyES/LDmYVnuE8oHAw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MPgZ3E6X9xuFIpeHKnVveL+p1MumyZAiP7mqNVkN/SSSLBOsM46HaqJYStXGAMCJQLKN5JaYNhKc+eRnRO/kwF/9vX5VPyDTiHY9O/01HZPM6tJhHmZTGVb8N6a8C7Nmc972sVqZsARZJt3yvrPUn7HJDky3u72Q91WqLS2nDJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I3eL+UbO; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="QqJ5IXTz"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43bb6b0b898so15828025e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 03:35:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I3eL+UbO"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-399744f742bso457166f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 04:15:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1742553344; x=1743158144; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e3Kfp6sALNxTTtUe+bIHaZwZakvZcPmpmO3uXVTBrCw=;
-        b=QqJ5IXTzwMmdv1+3WjARdrwOOi1wYxIc5Ya8McNBP+MX83XutWB3x0j6FFaG20ML8A
-         5uv3o2zIIGBSzbl9dTLGgD1E6HJ1i94TgyULMkx18y0IAH8fW0EI7Tetfi3aJ8Yckj7r
-         Gw7/PCtDSqPgCnjaYFD41Hd2pJDanGhaeVsX0=
+        d=google.com; s=20230601; t=1742555738; x=1743160538; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qBvkAQAnHQym5/2Fqa0WauNlKK3Lda/hKmXyAeHcCFE=;
+        b=I3eL+UbOHZZCjxqzbFONrw+eD5eJccRsqLPxh9U6yzNdfZX1UDzxbfje12AozYqSLG
+         IMiho81RAjncxriUgbiDrLgYTcmNLAieGdzGdVv7xcxjcGAnw4RkTdfBZ7ILK96bYmQ3
+         Op/MYBmd0ruwYiLvvXY5wKAkca+8Az7D+8fh0aTwBYz7CV2dCqncyEQPkgpxgFNRy7/c
+         j89LTCla1xUHiwrc9xbWTCfO89kn3B9JJunHpUmDdNzMGTNJpeDaxof1NNYeELTzIEtJ
+         fv2A53xjGoGysSZ7je9EEQ2vNjFubE4enUUCyWxWQDo8t0opPf4tNR+V6H/yi9Od1fkv
+         rNMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742553344; x=1743158144;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e3Kfp6sALNxTTtUe+bIHaZwZakvZcPmpmO3uXVTBrCw=;
-        b=KHWT1im+eWxX9ZwgUmEw0zNRQ7Pp+IZ+Jc9tNRZO41M4Jt+HbnPHq2/rwDZwrJ3RR5
-         z9JHWjoOjvxaF1mBzofkwvLEobMRtXwHVrcg5DrDlkBwPZZDstglLZeVs1AFRcTDuePa
-         O9J8bYbz7zoBjdfXj/ZzeF6OYcQQpaL0IUbwXSX/Wp8Qh7vOWhLYwSV1Y5opML8M6kyA
-         sDJRsE+qq+a5RnvC/prUWTuSpze9nE9HAkNbG2u2E3JTuS5mGshbtHHEs+Wt+mJMg2rJ
-         Bbrll2eGBb7B/JH1MfEUmlgl9ROsAGLisIgFcxF8drJTMFHngEOe8b3Y1ujjxBNntJau
-         lxXg==
-X-Forwarded-Encrypted: i=1; AJvYcCWIEwBA+YV1MtOWypCfrtsIAGb3aN7zrAHn0wWhBGTdEKNmqqHuVvkk6SGPNku+tT5E2EAmedNQHb4D9QNcMg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9KBoHE8rcnDNndqOU+21CAeoSb5awiVduEq94esp26uidPNuP
-	hQNpLyXnLp2fAIVAkaE/6spRUEqa4syTcnhENSDTxrQSvekdfVRW4WdqtP8x9d8=
-X-Gm-Gg: ASbGncuGNPh5BwFnMGSwZhrBaeyJk3G5uMSRfXNuvje8GOA+Kv1mTYUPI5atkQUkrt+
-	O9x0ME3yEO5+aH2KHlwi6VgepgbD7eRnlS2uPzkSZ0YFTQHlY+GW0tiEgM9ZTu9jfsuWaqHw2Vq
-	m1W4qz0AVRiclIzkqpImN22q8xvhU1g6zHVneMqZHL/eQd+BQ5wPPZkd17vuBC9UYkRJuPz8NtH
-	7qJrpadmZmR13i1gGXnXBiUeUlB2XNyF2xvit4sPbsCihT+YrIcDBVHPNnh9fuU0nF1zqSxRLSY
-	7HcaOrj+ENYIM6mys1dPKZedGWvY2dzEQSCjIjA6OveoMAeZdwg7d9t/
-X-Google-Smtp-Source: AGHT+IGdgqrnktS88HQx0VeXm5vsHxDPIPUGT/Sqr6rq09y+ynhAfmQF/0b/+MUc3ZwiGzOBD/Pjgw==
-X-Received: by 2002:a05:600c:3c9b:b0:43d:4686:5cfb with SMTP id 5b1f17b1804b1-43d50a361f8mr15516775e9.27.1742553343656;
-        Fri, 21 Mar 2025 03:35:43 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9eff79sm2000820f8f.95.2025.03.21.03.35.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 03:35:42 -0700 (PDT)
-Date: Fri, 21 Mar 2025 11:35:40 +0100
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <Z91A_Dz-nY2iFqYb@phenom.ffwll.local>
-Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-References: <Z8f9mgD4LUJN_dWw@phenom.ffwll.local>
- <20250305151012.GW133783@nvidia.com>
- <Z8l8HgZOV7sDWqBh@phenom.ffwll.local>
- <20250306153236.GE354511@nvidia.com>
- <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
- <20250307123255.GK354511@nvidia.com>
- <Z8rv-DQuGdxye28N@phenom.ffwll.local>
- <20250307145557.GO354511@nvidia.com>
- <Z9LsbhzjI-P3-edQ@phenom.ffwll.local>
- <20250319172132.GL9311@nvidia.com>
+        d=1e100.net; s=20230601; t=1742555738; x=1743160538;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qBvkAQAnHQym5/2Fqa0WauNlKK3Lda/hKmXyAeHcCFE=;
+        b=DrWA3feWQNAvObQIjjjfs40Ze5EyZim/ZQIMvUc89YIcK1HDep2ONAhaA9IHL/HSEc
+         YKUQosPWCznfUrOTxeYDK/c6tAeBlSizcnFoI16Yea6CgcfQBcKJBb/t3XYeGf/JhJXa
+         d762V81d+/ktoWotg6f6KtpfXWrIS7dyfbQuChQKfVRRp4bezW5QTbahZlh41RG1XC6o
+         yPYdK9eeLtTELkk90oFoPwuGgHICqBNq+sCn1xHkYRCYB45Vpw2lAD7BDkKMZRZevXVZ
+         MN3UuWhkbrw1XqJBqZ91exhZkrFTjaJyYS07sikvdttUtS6vsOJjk6J9eCeqUDL5NSpQ
+         o45w==
+X-Forwarded-Encrypted: i=1; AJvYcCWy0UOUz5gPpt/uK/kxnrk6E8ZnhMUBNG5c6ajEYbMFXoU08f9OMgl//EmnJsNP15CXB1rv1SbrXJPHH8qlFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxG9MDvOzX5YRyLOEdfHbNlraQbRiEzImwHeU2H9TvKelpoknB+
+	nhkTk3WNzCHvq33q2yD0i8ZETuybn+LzqIfwyuJ2klzLNKtReQZVaVov7fYfgozL0g==
+X-Google-Smtp-Source: AGHT+IGvGCNRv4Fwv9/22IwIwHSyIDpU5GhOukXbyPHIPAvB/yrxhXrGXLFYgGlFBizZci8CUEfYuBU=
+X-Received: from wmbbd5.prod.google.com ([2002:a05:600c:1f05:b0:43c:f6c0:3375])
+ (user=bqe job=prod-delivery.src-stubby-dispatcher) by 2002:a5d:6da1:0:b0:391:10c5:d1c6
+ with SMTP id ffacd0b85a97d-3997f8ed9c9mr2425752f8f.2.1742555738222; Fri, 21
+ Mar 2025 04:15:38 -0700 (PDT)
+Date: Fri, 21 Mar 2025 11:15:28 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250319172132.GL9311@nvidia.com>
-X-Operating-System: Linux phenom 6.12.11-amd64 
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
+Message-ID: <20250321111535.3740332-1-bqe@google.com>
+Subject: [PATCH v5 0/4] rust: adds Bitmap API, ID pool and bindings
+From: Burak Emir <bqe@google.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Mar 19, 2025 at 02:21:32PM -0300, Jason Gunthorpe wrote:
-> On Thu, Mar 13, 2025 at 03:32:14PM +0100, Simona Vetter wrote:
-> 
-> > So I think you can still achieve that building on top of revocable and a
-> > few more abstractions that are internally unsafe. Or are you thinking of
-> > different runtime checks?
-> 
-> I'm thinking on the access side of the revocable you don't have a
-> failure path. Instead you get the access or runtime violation if the
-> driver is buggy. This eliminates all the objectionable failure paths
-> and costs on the performance paths of the driver.
-> 
-> And perhaps also on the remove path you have runtime checking if
-> "driver lifetime bound" objects have all been cleaned up.
-> 
-> The point is to try to behave more like the standard fence pattern and
-> get some level of checking that can make r4l comfortable without
-> inventing new kernel lifecycle models.
-> 
-> > Yeah maybe we're not that far really. But I'm still not clear how to do
-> > an entirely revoke-less world.
-> 
-> Not entirely, you end up revoking big things. Like RDMA revokes the
-> driver ops callbacks using SRCU. It doesn't revoke individual
-> resources or DMA maps.
-> 
-> I have the same feeling about this micro-revoke direction, I don't
-> know how to implement this. The DMA API is very challenging,
-> especially the performance use of DMA API.
+This series adds a Rust bitmap API for porting the approach from 
+commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
+to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
 
-Ah I think we're in agreement, I think once we get to big subsystems we
-really want subsystem-level revokes like you describe here. And rust
-already has this concept of a "having one thing guarantess you access to
-another". For example an overall lock to a big datastructure gives you
-access to all the invidiual nodes, see LockedBy. So I think we're covered
-here.
+The Rust bitmap API provides a safe abstraction to underlying bitmap
+and bitops operations. For now, only includes method necessary for 
+dbitmap.h, more can be added later. We perform bounds checks for 
+hardening, violations are programmer errors that result in panics.
 
-For me the basic Revocable really is more for all the odd-ball
-random pieces that aren't covered by subsystem constructs already. And
-maybe drm needs to rethink a bunch of things in this area in general, not
-just for rust. So maybe we should extend the rustdoc to explain that bare
-Revocable isn't how entire subsystems rust abstractions should be built?
+This version includes an optimization to represent the bitmap inline,
+as suggested by Yury.
 
-Cheers, Aima
+The Rust equivalent of dbitmap.h is included as id_pool.rs, which is
+tightly coupled to the bitmap API. Includes an example of usage
+that requires releasing a spinlock, as expected in Binder driver.
+
+This is v5 of a patch introducing Rust bitmap API [v4]. Thanks
+for all the helpful comments, this series has improved significantly
+as a result of your work.
+
+Changes v4 --> v5: (suggested by Yury and Alice)
+- rebased on next-20250318
+- split MAINTAINERS changes
+- no dependencies on [1] and [2] anymore - Viresh,
+  please do add a separate section if you want to maintain cpumask.rs
+  separately.
+- imports atomic and non-atomic variants, introduces a naming convention
+  set_bit and set_bit_atomic on the Rust side.
+- changed naming and comments. Keeping `new`.
+- change dynamic_id_pool to id_pool
+- represent bitmap inline when possible
+- add some more tests
+- add bqe@google.com as M: for the Rust abstractions
+
+Changes v3 --> v4:
+- Rebased on Viresh's v3 [2].
+- split into multiple patches, separate Rust and bindings. (Yury)
+- adds dynamic_id_pool.rs to show the Binder use case. (Yury)
+- include example usage that requires release of spinlock (Alice)
+- changed bounds checks to `assert!`, shorter (Yury)
+- fix param names in binding helpers. (Miguel)
+- proper rustdoc formatting, and use examples as kunit tests. (Miguel)
+- reduce number of Bitmap methods, and simplify API through
+  use Option<usize> to handle the "not found" case.
+- make Bitmap pointer accessors private, so Rust Bitmap API
+  provides an actual abstraction boundary (Tamir)
+- we still return `AllocError` in `Bitmap::new` in case client code
+  asks for a size that is too large. Intentionally
+  different from other bounds checks because it is not about
+  access but allocation, and we expect that client code need
+  never handle AllocError and nbits > u32::MAX situations
+  differently.
+
+Changes v2 --> v3:
+- change `bitmap_copy` to `copy_from_bitmap_and_extend` which
+  zeroes out extra bits. This enables dbitmap shrink and grow use
+  cases while offering a consistent and understandable Rust API for
+  other uses (Alice)
+
+Changes v1 --> v2:
+- Rebased on Yury's v2 [1] and Viresh's v3 [2] changes related to
+  bitmap.
+- Removed import of `bindings::*`, keeping only prefix (Miguel)
+- Renamed panic methods to make more explicit (Miguel)
+- use markdown in doc comments and added example/kunit test (Miguel)
+- Added maintainer section for BITOPS API BINDINGS [RUST] (Yury)
+- Added M: entry for bitmap.rs which goes to Alice (Viresh, Alice)
+- Changed calls from find_* to _find_*, removed helpers (Yury)
+- Use non-atomic __set_bit and __clear_bit from Bitmap Rust API (Yury)
+
+Link [1] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.com/
+Link [2] https://lore.kernel.org/rust-for-linux/cover.1742296835.git.viresh.kumar@linaro.org/
+Link [v4]: https://lore.kernel.org/lkml/20250318164221.1533590-1-bqe@google.com/
+
+Burak Emir (4):
+  rust: add bindings for bitmap.h
+  rust: add bindings for bitops.h
+  rust: add bitmap API.
+  rust: add dynamic ID pool abstraction for bitmap
+
+ MAINTAINERS                     |  14 ++
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/bitmap.c           |   9 +
+ rust/helpers/bitops.c           |  23 +++
+ rust/helpers/helpers.c          |   2 +
+ rust/kernel/bitmap.rs           | 293 ++++++++++++++++++++++++++++++++
+ rust/kernel/id_pool.rs          | 201 ++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 8 files changed, 545 insertions(+)
+ create mode 100644 rust/helpers/bitmap.c
+ create mode 100644 rust/helpers/bitops.c
+ create mode 100644 rust/kernel/bitmap.rs
+ create mode 100644 rust/kernel/id_pool.rs
+
 -- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+2.49.0.395.g12beb8f557-goog
+
