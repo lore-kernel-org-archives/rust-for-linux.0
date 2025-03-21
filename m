@@ -1,68 +1,68 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C51B22ACC6;
-	Fri, 21 Mar 2025 13:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF0378F30;
+	Fri, 21 Mar 2025 14:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742562653; cv=none; b=P5V3ixbw+N8GYs/2pIch0TDp6NL5Psp9jVxsLOxUDurpColMi7VSwqijCCSmilzWHEIHv+SOX1cSZwt/nAuA5pc7bXfdBUwieJuAgF869Txga09ZlhWhcAbDwyNBJXZx3UnGIHI2adcT9m9joh5O8/px4d3j8oKHwHdKvUEekBw=
+	t=1742566624; cv=none; b=YXmld0baVNe3/bgOXtULTAvBC5xW3N9jBkGceMkhe1ppd7N+WSVQ1KZKiCZP66WaiEaIYlTKOpaxlLXm0O/vqRERVzLXuGbqqN5CXFUjy0A9JdWGAjr5ydTGkTjuirkd3zBWB3UA/aGb1ZOKvQ2O9E78FbnVp97nnKAIDIlZ8vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742562653; c=relaxed/simple;
-	bh=gyxfuz3biyX/j0JM6faVvSVxFfuTvlSqD8bchmBZM5Y=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UUnJAELXCRsZ6vO79Borj3OuK5qtFM898KS6dJnBGcIartMXZFIe3kWho/5UvT0pKoeIMzyb4uUdQBd6WFW59yheNrEGb2v5vyDxz3iqDerwEvxIJ+ITF7J0W9NNEMGq2bOUUNUNSRyMSKpuC1z2gJ0LVfRUH6GfBfTmSXaZgM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EMELKBL8; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742566624; c=relaxed/simple;
+	bh=PPVA1fNAUhdDaHasRrNPO4YX0KSbv/bRNVmd+tmnrbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BH//xq6cI9jGaElkD032w2d1yWd2SR7rGDl7OwgpLw+LzrUHCJj4BY2a8hYXgFvnvu79sxhT7ZInko+EAM3K4UA3fxaQivKt4+FemOoeZgL2LOV8tjWaFs34ghdiO0L2XIC5maHdR8bylM+67QJnQ/dgQMA/ra1UnlEzssdrlZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LbpPINaL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EMELKBL8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742562649; x=1742821849;
-	bh=gyxfuz3biyX/j0JM6faVvSVxFfuTvlSqD8bchmBZM5Y=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=EMELKBL8/SGvy8hoXif+WYGKhj4Et1CiKweY1a4gVLvYHEiz8h7GErZauSOyeLqfe
-	 YAxOJ5ZLwAPXVP5AOKUVfQTTI4GjbkMXTN9quh8qxj+zh8b9t6hXNG8H9IoMYlITh7
-	 aV7++qwTdLO1j5btGvHq2CCLsu/Q9RuZ48kW947tale0BZqB3dz/gX3bIB+Lx9U+an
-	 Brb1NgMf+xbCXjdVLivcAjWhvoiuQG5JI/VCo+CgGSEw7068ZIokVBxbKJDZrh1MlX
-	 gJ1GJSS0HbnkmQR4vzF2z2deevzyuNahBtpfN2Tg5oR071pI/vfv3gC4Wu0QKeMEno
-	 471qmkRMF0MzQ==
-Date: Fri, 21 Mar 2025 13:10:43 +0000
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
-Subject: Re: [PATCH v2 0/7] Additional methods for Vec
-Message-ID: <D8LYWIFUVJOC.ZIPANZF9ONJJ@proton.me>
-In-Reply-To: <Z91au1h1zhDT9IxQ@pollux>
-References: <20250321-vec-methods-v2-0-6d9c8a4634cb@google.com> <Z91au1h1zhDT9IxQ@pollux>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: dd867d54f4fcedc4ea50f2cc667bafddde2aa966
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LbpPINaL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E85C4CEE9;
+	Fri, 21 Mar 2025 14:17:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742566624;
+	bh=PPVA1fNAUhdDaHasRrNPO4YX0KSbv/bRNVmd+tmnrbQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LbpPINaLM2qWYebZ2KO9melSvj5M0Dce+2UJzyhB3rmjUWoYG4LAMBkUQKbTojCtw
+	 IYwbFau76BNx7AAMTEBDtehH5+ChpUJd5kWRQYastI44o2n9W7xnd/8yItb2KS1rN8
+	 goxhqdGQ+8sipzT41KFOc0iIQFZk75KdjkQ4QqS1+ydo7a7ArWNbxtZr5qS9yzbbnJ
+	 FfoQPDvqau9dPNHMrakse3IJn0cv0qyPaqY/rSEhrbKS1eTEsaEwo92r4xrPt1A5zJ
+	 q7ZLTlsM4/1NdR6kmrjpGvihmH8wWtYEQ8QdngRFGzetWJIrYJrciwTtdDfbijTRcV
+	 NMcGRhpFsyvLw==
+Date: Fri, 21 Mar 2025 15:16:58 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: bhelgaas@google.com, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] rust: device: implement Device::parent()
+Message-ID: <Z9102vdwS0RTwAP7@pollux>
+References: <20250320222823.16509-1-dakr@kernel.org>
+ <20250320222823.16509-2-dakr@kernel.org>
+ <2025032018-perceive-expectant-5c48@gregkh>
+ <Z90rlKC_S5WQzO8P@pollux>
+ <Z91joggxxBh3e0d8@pollux>
+ <2025032149-erasure-halt-d179@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025032149-erasure-halt-d179@gregkh>
 
-On Fri Mar 21, 2025 at 1:25 PM CET, Danilo Krummrich wrote:
-> On Fri, Mar 21, 2025 at 12:09:55PM +0000, Alice Ryhl wrote:
->> This adds various Vec methods. Some of them are needed by Rust Binder,
->> and others are needed in other places. Each commit explains where it is
->> needed.
->>=20
->> I'm not sure what we concluded on the set_len / dec_len changes, so I
->> don't depend on that series for now.
->
-> So far I see no reason to assume otherwise, so it probably makes sense to
-> rebase. Unless Tamir is fine to rebase his changes onto this series.
+On Fri, Mar 21, 2025 at 06:09:06AM -0700, Greg KH wrote:
+> On Fri, Mar 21, 2025 at 02:03:30PM +0100, Danilo Krummrich wrote:
+> > So, maybe we should make Device::parent() crate private instead, such that it
+> > can't be accessed by drivers, but only the core abstractions and instead only
+> > provide accessors for the parent device for specific bus devices, where this is
+> > reasonable to be used by drivers, e.g. auxiliary.
+> > 
+> 
+> That sounds reasonable, thanks!
 
-I haven't yet taken a look at the reworked version of dec_len, so I'd
-wait until we have finished discussion on that.
-
----
-Cheers,
-Benno
-
+Cool, I will drop the patch from this series then, since when being crate
+private it needs an #[expect(unused)] until actually being used. So, I rather
+add it to the auxbus series.
