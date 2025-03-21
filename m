@@ -1,77 +1,111 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCF1BA34;
-	Fri, 21 Mar 2025 14:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F4A150980;
+	Fri, 21 Mar 2025 14:41:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742567509; cv=none; b=ovQ1VxWHT3j/+a/OCjeal77z3R+4M7fYqFu0WrhFO1+vw3eO8kVTTaz/9yev4ToK2GAJM0x4i0PxICo8uvEQXIjTpPhgM/vR3b5rus0e55qTmV/z7sxGXN8igttb+d47/Pbkk1TkWFI8OPWRmBhyvBIoLeopKcBy0MkK5gWCLdc=
+	t=1742568062; cv=none; b=PogSuwK1dePArjvPujuoadSO+XzR7j/owgxFKpjZ2NcP/3PFya0H+D1/R4kbOPJ1e+0/SLP2PGS2oQ+wocdMEZJ5bFERjzXk1JeXWs7TMCkOC4M1opMLdbczX4GpGuOXgyVQeMx4BM/S3bciW3IhBnGVay2Xz6LJbFs+7AW6K9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742567509; c=relaxed/simple;
-	bh=RTQefJqTAzYLfZppY+wZsfkXVzM9bfIBw2SW56kizqM=;
+	s=arc-20240116; t=1742568062; c=relaxed/simple;
+	bh=Z90p+xaK+EFoEhStSRUoWkQBIthseEVLwQPurEI6st0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gew5QINE2FRoKEMc8Kn/dXslerqMD6iMTdqteiINbXkkbDbFn3gPkICj7a2xaTJWpnEe06Aw9+Gv2cfsKV5hElmyCQun8TxYjTTQfh3ptRvIjCPLQfU6iJpnwvPd8VXfplN8KuDut4IrcyoH3ZpvwfYU2OIsfePTd2sXXN6n8O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bHUlG41r; arc=none smtp.client-ip=209.85.214.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=C+0COsXlo1GfDl+KFlile6XNVn72GVYo4TCKhcCvR60AOA1lbiSo9vXF8TPtY5V9bbMbq2qKDTkzneMU9r4I6ztfEYWOdSPkDuL+9xsjv95CeTAMIrxyPcC/7G4ozKE5RNwHp4Ef4iarvx7MCo7GmvfATULDdPfFqBAE4VszHE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NozLB0Kf; arc=none smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bHUlG41r"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22435603572so38640325ad.1;
-        Fri, 21 Mar 2025 07:31:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NozLB0Kf"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-46c8474d8f6so18806911cf.3;
+        Fri, 21 Mar 2025 07:41:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742567507; x=1743172307; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742568060; x=1743172860; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G/qMB4nk8UO6FCZc0IM6h+rgFVIvLZFIGvxML74AIHw=;
-        b=bHUlG41rJPmR2UpCcesppL8DoWMabBLQBkn3d2bgwFpozWk0Ex9XTIyXgVW866QvAN
-         R1I9fPDwKQI3Obsea+1hbggctM76VIE4ZZ8cdWIoFgHBfwoVqW6+7rqv7hfh+lL6dh5p
-         67zJTnfd4B/WDc3O/Bd+MidTKWh7ecCIUhap+DYET5JFKHyPE6HTfsMXFB20wMSVyIZj
-         luYYfuTHfuUJ8KW5dj/AhYSjoEgL2sUSJtvwfFbA6QYrwdZcvK/rL1335TqapCDrDJ/F
-         zPGAJFK5onlM1npCt+dyUnXkdQpy2Yf73KwmiGQk5PEVqL+CLYsPGDNgBynpP1ewpnfA
-         CHrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742567507; x=1743172307;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G/qMB4nk8UO6FCZc0IM6h+rgFVIvLZFIGvxML74AIHw=;
-        b=UPIc/j18DsZ0Nqh7eOpvIP9pMCOC7zSBx1HlZinwlUu11ON+git2p11pKBXTxiKKzN
-         F5MVwo/srRNWsVDtojjidyAQmLhnFTlfq2gTdyigalWI56zvME0v7x2mIBocQ0qOVHkh
-         XfyCW/qWeBob7lCc+2qNLnKkakbrqGpGl8QMazJn9jC5Qislu+5C25M82RNhMBzxIi9D
-         GEvp4d0EDOHcj5dYSGr7R6cmmOBxYor29Zv6H5GO3Mn90IQSLGfv6ZDVC2XCrJ8jkiex
-         V1wOyTJI2/umucfm1W+CgpERgxT6fAeYpaJitsrTolDdBTT6Jw2vdtPGBMgdNdxnQH4m
-         ZOXA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNUcYI2AziDX8+gaSN+JE0FlYl5i6nsqvFbq7gdS2ZMau7oLYJWQY8qsEYvDlAwAYKQzd5yN+kcpoJfPg=@vger.kernel.org, AJvYcCWuCvUGmB3YEt5AuUpA9njAjzYsto8EtgnVL4nwU3j1CNfgU1cadATN2DobV9u+D/kMrmz6zieFsJ4WIYDf1o0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6DI+4FTqikJ8zODS2wWpD/bWKn5ErXRQBmyCwqQEvaymsIZD4
-	VyOKkCTE88zpTDQgvruUA8yor+pOuu571CRG6c4N85FxM9AvdVxB
-X-Gm-Gg: ASbGncugIY0C97NSPw41tf75jg742SrGM0vblJhoWvZgzj1X+Qt5TCOS+MBDthtDXZ3
-	qaSWSk6Jw8Fy7woFm5H7cmv3zugwJ/xvabEKAdB7hJ0nfuJ1tIUutX45Q9TbVL7i+llW9Sih0XG
-	KLGvtzgOD/JQIQ2Z4yUnaAt1kGfCMsS7X6wq3tM9wLt/DZKzRe2+Jx/7XqXhEJgQkVegqIuDYn3
-	vC+H3n4+yRorALnQc5C7mNG8XNgGQwUmHg9bD7ItESfzwlyBZo6+pD/LAR5IQELKqLtJoNdKSIn
-	+VQ5O18zSfSzppyk/6MTd+9fU1WuqC/KGDLQfDDcCMzp
-X-Google-Smtp-Source: AGHT+IHA3SF38DceXUmvzTjbMwYvElk1EQpFK8FGNzT+iiLoZDAZeCHZ190P7REZ8AZ4jp/a/gcz5Q==
-X-Received: by 2002:aa7:8892:0:b0:728:e2cc:bfd6 with SMTP id d2e1a72fcca58-73905a3b9d0mr6169792b3a.18.1742567506741;
-        Fri, 21 Mar 2025 07:31:46 -0700 (PDT)
-Received: from localhost ([216.228.125.130])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af8a28059e8sm1781581a12.20.2025.03.21.07.31.45
+        bh=I3mohH8SHkTJY14n+eN1OWy5xiwG9NkgqimAihyHiYw=;
+        b=NozLB0Kf61BisQjfye/4Ihh64SzEiWN/OubPH0EayHWmmqQ89Ewcd5CutsWEe9DNhC
+         IWkM7QYWWdBGyguxe1tfZDENO9cleKCKONbm5M94SxLn6kM2np8pC4f5tWNRkw0ZGD13
+         FLKYjzFIU2A9vXjTl7NE4q2UsNtT9fTowVLkpT8NUJTmL0Z1xnOSjoHf7OVvcSXB0psT
+         7nrb1P2iUiEdL00fYbyy/Cit6UJoIBGndYy95A3zt3jUbR6fh4mko0IbMIAQqOq8jJQK
+         DOMXW8rNy7EtxNry+3UtzYNyeMlyjX0iNt5aWy/hYmZRvsdfBO2PstME3JZrjrcln21U
+         idJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742568060; x=1743172860;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I3mohH8SHkTJY14n+eN1OWy5xiwG9NkgqimAihyHiYw=;
+        b=iPf2I75fsDrQETJdSJUaLV2qiTjnNobg6dseZWWIrbmeW7Pavcqfd4x7uPA0Kx4lZX
+         pS9U0hDpg6jmjG4EjjPRKxIAVRpzA3hefIfWLqj8q0pJ4YlJbvgK1bNdtv3s23osWiha
+         oZ3eUrDIXhWe5fssANL5WjZDfiUG7UsyzmtjumL9duWI7bpYSK0FwIiP67XnLM9KU93n
+         LAG62/iDyBaRFoVKO9f0JPzlgemTCu8TganZOLMFvhIATjTOf9oIxIr9xUNsL+Ff9qHh
+         Bd50eo7IqqW65AAhn2Uzz/9+OU1+b24Ufff3ErXTKR0Jpjfb1QnOiwEWXktEkxMNkmfU
+         3WnA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ4ZC3CTgKBq/9dg7lzyh0/EWeiOrGN5En8BmCKAK2aPSMTkptHQhXCYghRXgj5c6wANvyaZwHTHiQETULP7I=@vger.kernel.org, AJvYcCVpTaLKI1752SH+XRZMQsGAjsqdavt5ROI14zc5K2ffpLShipuksMGz3J/kIx45RdO5d01Z6ljNj6nD@vger.kernel.org, AJvYcCXPIAbZi13zRtJbc/MJU/ZwTC2w3ohwHX8VLi6UloPbjssIqB2S2qcO/VKZ7vdkU7oGxFm8lzJCfx7WKbI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWRMUuAARLzhlXGnnIvW4WEpyD4OlqZvihx6DV6+U614m3fuMd
+	0QVUUqS6ACXt4JyLNMqMKt7igNiqpwtbwfa/lhm+5/2idu5qXdLd
+X-Gm-Gg: ASbGncvuat4gyrP411rWRlJwv21f41VnIyI0lasrVIYAp9DwSdo01Ka23sWSQ7IgNv+
+	S269pClORppJQnOV6YluX/u8LE4xr9Fvu+SLZqQz+fxADxoV39PjkPOICpIPyVB/EOetsK3BP/l
+	A4Qg0dgkww9KAUWUffOBTbzkfoAhqusPcwiyA8oDeoGVD8ocs/l0yY+0fvbEzsuHqUVRGlO243j
+	AvauEAYpfRPLAA3aF/fgkfrTU5pmid2/uTEmnJ2+YgxytiiowDdjjXe1xqC22LAaxVuvInZt/R7
+	KmvQvcFTZ0ERTDo7rB4Ijcwf6kCofE5uWierBGcz5a+wV21vWzYf+/uYOWDMFlgRW92Z9HCSQ+O
+	c33bGEIzcRv4+BK1pjnM+806JxZG3jeUle7w=
+X-Google-Smtp-Source: AGHT+IHficuxFrMnFN+Rk+trHWLoibEnKIefdrekPnY0DXmRibPCCevZfMnRJgOdu5b6m/yO4alZ1Q==
+X-Received: by 2002:a05:622a:2b45:b0:476:977c:2eb0 with SMTP id d75a77b69052e-4771ddc8c90mr65433161cf.30.1742568059798;
+        Fri, 21 Mar 2025 07:40:59 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4771d635ca1sm12560541cf.78.2025.03.21.07.40.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 07:31:45 -0700 (PDT)
-Date: Fri, 21 Mar 2025 10:31:43 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Burak Emir <bqe@google.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] rust: adds Bitmap API, ID pool and bindings
-Message-ID: <Z914T_oYHvV_Zk74@thinkpad>
-References: <20250321111535.3740332-1-bqe@google.com>
+        Fri, 21 Mar 2025 07:40:59 -0700 (PDT)
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id EE2A81200043;
+	Fri, 21 Mar 2025 10:40:58 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 21 Mar 2025 10:40:58 -0400
+X-ME-Sender: <xms:enrdZygOe6TlfJYX71gXF8kGGrwhrSdoyTxSTXMLdKFYnL4Mt0YEDA>
+    <xme:enrdZzAT85tyf4fKhEDEuyeg10tNy8JpqwugnTIVbrkWm4ajr_fwe0NiFEK9Ts3WS
+    YX1ABalwrw23Xd8OA>
+X-ME-Received: <xmr:enrdZ6GjXBHfCR-zrfWlcledLpiTTtJ-vFehM3s-bOvD5V5qEN8auiZl>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduhedufeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
+    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
+    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
+    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudeipdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphhtthhopehg
+    rhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrg
+    hfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprh
+    gtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhn
+    fegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhloh
+    hsshhinhesphhrohhtohhnrdhmvg
+X-ME-Proxy: <xmx:enrdZ7S9w1oVsZ2E0ba2FZIb0PM5bkochXd1Lsop3GrYlZYLunyu7g>
+    <xmx:enrdZ_xB-7d_PA55qmSP2X08xVO1SvXDZ44_FYwCwgk1ePJNTaCpvw>
+    <xmx:enrdZ54cevD9X1P59JeaE0v-hT-znshE7skq5C984RjOUeWYxXVheA>
+    <xmx:enrdZ8y0-fGWkEH7aiS1UCbVrNIms1xlXKZkfcaAYTAKitt_Ws1fPw>
+    <xmx:enrdZ7gPgvx1oci5f_pZVIZKdRAyaii95hOeutbWO71ToFmVfzg5batT>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 21 Mar 2025 10:40:58 -0400 (EDT)
+Date: Fri, 21 Mar 2025 07:40:57 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] rust: device: implement Device::parent()
+Message-ID: <Z916eZ1_Jd3VQz3Y@Mac.home>
+References: <20250320222823.16509-1-dakr@kernel.org>
+ <20250320222823.16509-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,57 +114,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250321111535.3740332-1-bqe@google.com>
+In-Reply-To: <20250320222823.16509-2-dakr@kernel.org>
 
-On Fri, Mar 21, 2025 at 11:15:28AM +0000, Burak Emir wrote:
-> This series adds a Rust bitmap API for porting the approach from 
-> commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
-> to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
+On Thu, Mar 20, 2025 at 11:27:43PM +0100, Danilo Krummrich wrote:
+> Device::parent() returns a reference to the device' parent device, if
+> any.
 > 
-> The Rust bitmap API provides a safe abstraction to underlying bitmap
-> and bitops operations. For now, only includes method necessary for 
-> dbitmap.h, more can be added later. We perform bounds checks for 
-> hardening, violations are programmer errors that result in panics.
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/device.rs | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 > 
-> This version includes an optimization to represent the bitmap inline,
-> as suggested by Yury.
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index 21b343a1dc4d..f6bdc2646028 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -65,6 +65,21 @@ pub(crate) fn as_raw(&self) -> *mut bindings::device {
+>          self.0.get()
+>      }
+>  
+> +    /// Returns a reference to the parent device, if any.
+> +    pub fn parent<'a>(&self) -> Option<&'a Self> {
+> +        // SAFETY:
+> +        // - By the type invariant `self.as_raw()` is always valid.
+> +        // - The parent device is only ever set at device creation.
+> +        let parent = unsafe { (*self.as_raw()).parent };
+> +
+> +        if parent.is_null() {
+> +            None
+> +        } else {
+> +            // SAFETY: Since `parent` is not NULL, it must be a valid pointer to a `struct device`.
+> +            Some(unsafe { Self::as_ref(parent) })
 
-We have a tag for it:
+The safety comment also needs to explain why the parent device won't be
+gone, I assume a struct device holds a refcount of its parent? Therefore
+the borrow checker would ensure the parent exists as long as the Device
+is borrowed.
 
-Suggested-by: Yury Norov <yury.norov@gmail.com>
- 
-> The Rust equivalent of dbitmap.h is included as id_pool.rs, which is
-> tightly coupled to the bitmap API. Includes an example of usage
-> that requires releasing a spinlock, as expected in Binder driver.
+Regards,
+Boqun
 
-I don't think it's worth to refer the existing dbitmap.h, because:
-
-1. It's buggy;
-2. You limit yourself with committing to provide an 'equivalent' API.
-3. If you want to bring the existing dbitmaps.h, you'd just bring
-   bindings for them, not a re-implementation.
-
-Can you just say that you're adding dynamic bit arrays in rust?
-
-> This is v5 of a patch introducing Rust bitmap API [v4]. Thanks
-> for all the helpful comments, this series has improved significantly
-> as a result of your work.
+> +        }
+> +    }
+> +
+>      /// Convert a raw C `struct device` pointer to a `&'a Device`.
+>      ///
+>      /// # Safety
+> -- 
+> 2.48.1
 > 
-> Changes v4 --> v5: (suggested by Yury and Alice)
-> - rebased on next-20250318
-> - split MAINTAINERS changes
-> - no dependencies on [1] and [2] anymore - Viresh,
->   please do add a separate section if you want to maintain cpumask.rs
->   separately.
-> - imports atomic and non-atomic variants, introduces a naming convention
->   set_bit and set_bit_atomic on the Rust side.
-> - changed naming and comments. Keeping `new`.
-> - change dynamic_id_pool to id_pool
-> - represent bitmap inline when possible
-> - add some more tests
-> - add bqe@google.com as M: for the Rust abstractions
-
-Instead of 'bqe@google.com' just say: myself.
-
-Thanks,
-Yury
