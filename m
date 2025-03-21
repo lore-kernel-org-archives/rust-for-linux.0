@@ -1,143 +1,159 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F6B22D4C0
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 18:29:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049B113C914;
+	Fri, 21 Mar 2025 18:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742581744; cv=none; b=jr5E3/WGdr3Pn2rB3Q/L4E9qdzo1gdYfTCucohPSNf/Xuttml5GzaNyiNeZNvP7Z50yLysujkbMjqwGkuK6dl77bWslXe3gyyZnq0IpvdWqNVoHlCko5PU//utAH7VB/6GlogoALSdtCbzR6iIJXBbM91iZIUbO2RetXbtqIAOs=
+	t=1742583012; cv=none; b=NXCsHDRGz0bYYYIWIVA9HJHMc4kBjQAY6TAQUDNZakhULXmP3nGns/4XuPP50PTFlp3cQ5FyvONefgYCrXZRpXmBsb7CGYBUxJYfgq9JMqX/YCAoAR/AeDHxkqzAXkbTlENqfFRk/CtS2Pq23FiJsIdxBwsgDSS2g6kvDeVblJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742581744; c=relaxed/simple;
-	bh=vhRSD/sXVHlXEO82NM8Vc+1oXUYVgQcVeL2JYmSpP9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=juaJKPZrAhlCzlZHLvWBLYv274aPhPSyKxOyUfHkTfZMfXeOw2GsZVnX3vk9LEinY6DirIRAIpN6Ymr1nlCeYD2GWTuQQXax2Y5gWZcrct8zx47lR+5LgXzmevmD8ITiqPxrtwOpCIhVZFbYD3bEIByJN3/LfLy3fu3ceyROaa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=UHqUobbR; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1742583012; c=relaxed/simple;
+	bh=PAq4YSXlLH92f6ljS7pmGtSfDM5r2ttCPvDBxri8m18=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UdxnFcKtT5F3lCcknYgkVKKhj4+fWhn8QVmn4/TQeUeFl1C8yyfH7LArQ8yG6Q1FSBpi94I6UgS/1cMa+/SEXGVWoG9VmDAQAMZwPO9pMOMHOg+vgmyxyE98eydzG6qyYrVWAe9lCVUHb4sKPqwEtU2JlYt6wrTdl0Pop3zMSSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rjig29wJ; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="UHqUobbR"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6eb1e09f7e4so25392636d6.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 11:29:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rjig29wJ"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ff6b9a7f91so654244a91.3;
+        Fri, 21 Mar 2025 11:50:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1742581742; x=1743186542; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OrQ0EzEMWWG6jQuSoJHeIyls2E9YhdY6/vRFZgsC7e0=;
-        b=UHqUobbRnVFT97pGCaj8rvS5P+q3ZbkIf/O2qAG1Ofh5FPnoU38S5IpIFBmew2sFOz
-         mIZCuqHpLFodRK4Ce+wJ9hOnpLaNTXVvRKCP05PHILjRJ42sGNnTbF9YSLTww+4TyuH1
-         UngwjWbM87qq6fe+3c0n9fpwhAfpwjSUgm7hMTTr65XPBa9ctF7JeYxZh43ICo0yWMaZ
-         /bYMXc55qZM+JwtQgWlOZswBnFWLQw2r9n+VTMMSdK5zItRR434E3wOI0g9Xz/OhMYf4
-         xL+DcZjwcIHcDTuXSh1qW7ST5KDDxRUNIMkJl5wMhRUCRO9YPyqk/d0wWMC9A/o33MWy
-         FRHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742581742; x=1743186542;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1742583010; x=1743187810; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OrQ0EzEMWWG6jQuSoJHeIyls2E9YhdY6/vRFZgsC7e0=;
-        b=mmUuep1u/uiI2xRQoP1aa707BxU+d0PSyp/heuDbOwGotrwc3KhQFTDNS6JiXv35z7
-         B6jkBRi3EJRNt9IuAELgC0M23i34u79TdXX97Sgb1HJQEFOxaKMqXUGGvGn5yIegB9RG
-         vXzE4Z40fkYhgnLRuvmIJciKSrn/tpBV2SvYitU+bgosxd5g8U+6uc7Iv6Bsh5uHMIFQ
-         tCm8xkbcStLA7Z5HvMp7El+hGv0oyq6DEgTw0uqwRcAH05HNwU/ElI8sFRrBmMW/BnMm
-         hzQNXePhjrBVEHIG6XyLrEXKLGJHpCm6Gl2q7ipm+r/e/ratb5ITt3f3wz5cNtYGKPXL
-         Jlhw==
-X-Forwarded-Encrypted: i=1; AJvYcCX57X0PJ0f0hGbpC8sOjQ5YqErgCuFoQrZ/axTl8Q+kr9EGpYj5ne/tX4rT3cbcoCTQVuMS2lcaNmwfC9otww==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmwSOlrykaPxOpwDnKjqMoMDvekOAfbxIgOJBVBMDRj1DgC9jY
-	vGtnRQ1smXqK9yz3rib38bO6r9F+aXpoYtEvzdvLjktFFjJDEa529FDTlfqmz4M=
-X-Gm-Gg: ASbGnctvjmMDxyUmigI4Xg2UZtuxbe2ezpZ5/e+tLJ/OhCyMy4k1xm1qFliyW7w/Vg1
-	6K9uiqfN9BLdOu3eVRT0qnSLXRSNKS0juE3uIX8+lx/y2u4rHJJnosee6sMKPqfVHJ3bPYDFs5E
-	A69D/J1BT1mFVOB1VH42di/bj+TsrXXToXMsk4P1HdObLLP0PoP9WyP/VRvQ76Mqw4X5WCykypn
-	b2AuRQhb7ml8YfQSb4yuKvdHWJIqh9LJfx72/nodQ1wOdfvltSQqNfMqNyT689YgX6UZ6mwD1VS
-	JVJLoTqKNDA9aJh54dEtkDncLgU8gaWRiYWpbbSyizU501v6QxZDk3CN0CooxvTeCVqkldTGpO5
-	kin9tRb6TZfkI2OxxCZHMli4=
-X-Google-Smtp-Source: AGHT+IE8/kN4YgJruUR+/bfMJ7DomcrEj95sqf6MWrpr+dGE/We4hf0Dqm3GWvJMjve9Iw4bEfc0/g==
-X-Received: by 2002:a05:6214:2469:b0:6e8:fbb7:6769 with SMTP id 6a1803df08f44-6eb3f2937c0mr69832456d6.14.1742581742075;
-        Fri, 21 Mar 2025 11:29:02 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-219-86.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.219.86])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3ef0ed67sm13821566d6.12.2025.03.21.11.29.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 11:29:01 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tvh77-000000016ZW-0DDA;
-	Fri, 21 Mar 2025 15:29:01 -0300
-Date: Fri, 21 Mar 2025 15:29:01 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
-	robin.murphy@arm.com, aliceryhl@google.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v13 2/7] rust: add dma coherent allocator abstraction.
-Message-ID: <20250321182901.GQ126678@ziepe.ca>
-References: <20250307110821.1703422-1-abdiel.janulgue@gmail.com>
- <20250307110821.1703422-3-abdiel.janulgue@gmail.com>
- <20250321172353.GO126678@ziepe.ca>
- <Z92jPXvMOqhgv04k@pollux>
+        bh=PAq4YSXlLH92f6ljS7pmGtSfDM5r2ttCPvDBxri8m18=;
+        b=Rjig29wJgCnOfl7BwsgjE3GFaZIQXoMOvMkDFdO/yWOtzw0pt7ZTY+UF+xMisA4+EP
+         ljVJYK8ehG5f0/e7C1xFmp4UAziUPvh+JDP698+4FK92xdxNO43oOjuJOHTbgXkYEDp3
+         36tygtNOcH4l0jUor52BAKtvgHeGtZiciLoYYhqiXfzw5b+mqt+A/cdrsMzz0YGXkbHp
+         51sghcv/wdghlpXvzKBN63+HfsIrvwnOeRNz5KklD44dPkTYtFbSniLgRNUDXzfzlbQO
+         9RzbqL6qOWmylEfJzD5DO5dSee1xFSUUpZ72SrVFekBdoAW6u7xXHq90sLRKAfR4by7h
+         Nyfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742583010; x=1743187810;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PAq4YSXlLH92f6ljS7pmGtSfDM5r2ttCPvDBxri8m18=;
+        b=Ak9b+Vf1uvYaRhO7ooyxghY6tcRRRqwnhM6cZxtsZspPcwNbHpiimkCUNVdAqfMHcF
+         N2mebYfVrpKkk/rIpDwF6R5ZgKaw6uWK+ffoXfjDl5hkUN26acS5iR+YDBpWaA7vMtmy
+         I971dswGJgPcuqkw1B6Q7NLgrgLqBAyxsKM7MplpUiJ+byXEbeJpJ+JkgIOBnV/DJHXS
+         PdwQ53V6gQMr6GXg2a4vORnSCr9b3X62eWVU5cuxS6Q831Sqdmv+CVNqZz68Bk6qqhGG
+         FIbnvmmSj6QxnLj9t76g8GJbVUNHNU6ZuVcR6NzI0SLZkG75fvZPQ/xiiOze8z9Qz/Fk
+         1xDw==
+X-Forwarded-Encrypted: i=1; AJvYcCXg6hzfLnMkQFal2SHf99LoiBHKQo7bICgTVwmF7amdVYTKJnu043PcJxuVhog9xC5KGZsphqJ/we0jX1hGBwU=@vger.kernel.org, AJvYcCXstENHr575DdkZtBNarHdAxMeP2sXoJZ9NV73QUnNlsZNIbifmZTAxhHgQD4DGCAKx53Eie2QdBWG5uhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw13n0xfAgSy1EOpl+l4NejXuswLt+RlIJjbfNM0+qnxXn90mV0
+	6dSnDzoW20FAZ0QMXe5Qq9CzLfa8AzyxEwwjG7ziOQW702P9HLiw937Pmpcg02xRMS806bUOGbA
+	BT9Ijka55RHgDrnLC2koGtJObuoA=
+X-Gm-Gg: ASbGncu6Dxdy6xyDnPyT9Ifs7f2sr/jepKdn2SL1Q7VMzw98S0mz9TqAvmR12TBSLbj
+	1Y4qpPCjVJAh0yzfzrJl/Cp3roXKy+qDZAQb1v2nWjTX58V7f72iiUaxM+SQxzTNKyKUCD3kne9
+	AjtHs+dUBIx1bxy034NYnlYZP/FA==
+X-Google-Smtp-Source: AGHT+IFZTxovkwT+vDiPvlu9XVghR0Bg3UXmwzcuOoaNC/Hfewejjf04kI82WgRv9nDG6XEPA2ggYqyAA2z4UTaw9zo=
+X-Received: by 2002:a17:90b:3a90:b0:2ff:7970:d2b6 with SMTP id
+ 98e67ed59e1d1-3031f4eacacmr874973a91.5.1742583009924; Fri, 21 Mar 2025
+ 11:50:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z92jPXvMOqhgv04k@pollux>
+References: <20250321111535.3740332-1-bqe@google.com> <20250321111535.3740332-4-bqe@google.com>
+ <Z92N8dyIE42ROW2t@thinkpad>
+In-Reply-To: <Z92N8dyIE42ROW2t@thinkpad>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 21 Mar 2025 19:49:57 +0100
+X-Gm-Features: AQ5f1JoamPxaZDszfEleFQXyjzGMmWaW9WuNHZ-MmlZmGQBEto1yEIVCBzHA7QA
+Message-ID: <CANiq72kYzx7JTVqrJuP0Wo9=1qtaN7s7fqkD5DDcjA59SgMizQ@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] rust: add bitmap API.
+To: Yury Norov <yury.norov@gmail.com>, David Gow <davidgow@google.com>
+Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 21, 2025 at 06:34:53PM +0100, Danilo Krummrich wrote:
-> On Fri, Mar 21, 2025 at 02:23:53PM -0300, Jason Gunthorpe wrote:
-> > On Fri, Mar 07, 2025 at 01:06:19PM +0200, Abdiel Janulgue wrote:
-> > 
-> > > +        // SAFETY: Device pointer is guaranteed as valid by the type invariant on `Device`.
-> > > +        let ret = unsafe {
-> > > +            bindings::dma_alloc_attrs(
-> > > +                dev.as_raw(),
-> > > +                size,
-> > > +                &mut dma_handle,
-> > > +                gfp_flags.as_raw(),
-> > > +                dma_attrs.as_raw(),
-> > > +            )
-> > 
-> > This is not the correct safety statement, the device must have a driver
-> > bound to call this function, a struct device reference is not
-> > sufficient.
-> > 
-> > I belive Danilo was suggesting to ignore this unsafety for now, but if
-> > so it should be documented correctly.
-> 
-> If just landed patches [1], which are the foundation of addressing this issue.
+Hi Yury,
 
-Those patches say:
+A couple comments in case it helps regarding the docs/comments discussion..=
+.
 
- The context types can be extended as required, e.g. to limit availability  of
- certain (bus) device functions to probe().
+On Fri, Mar 21, 2025 at 5:04=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
+rote:
+>
+> In C we separate declarations from function body with an empty line.
+> Can you do that in rust? Can you point to a rust coding style? Do you
+> guys really use 2-whitespace tabs?
 
-Which is not an appropriate limitation for dma_alloc_coherent, we
-expect it to be called outside probe in real drivers. Is there more to
-that story?
+Please see https://docs.kernel.org/rust/coding-guidelines.html.
 
-Regardless, the safety comment should not be merged with incorrect
-information. :\
+You are right that the example block you quoted should have the
+formatting fixed.
 
-> > Also think the use of devres here is going to be very problematic for
-> > drivers to use as I said in other emails. :(
-> 
-> In an earlier reply today in a different thread already gave you the link [2] of
-> what we landed, which, besides explaining the situation, also makes clear that
-> there is *no* Devres wrapper around a CoherentAllocation and why.
+I am not sure what you mean by separating declarations from body here.
+I guess you mean variable declarations in C vs. the rest of the body
+-- in Rust it is not done, i.e. declaring new bindings in the middle
+as they are needed is expected (and sometimes needed).
 
-Yes, I see, I have so much email right now it is hard find all the
-different versions of everything.
+> I think I already asked to make the test a separate unit. It's amazing
+> that rust understands scattered commented blocks of code and can turn
+> them into unit tests. Unfortunately, I'm not.
+>
+> Please create a separate unit and test everything there, just like we
+> do with normal C code.
 
-Jason
+APIs should have examples, ideally good ones etc. The above looks like
+an standard example, but maybe I am missing something.
+
+The examples are meant to be documentation first and foremost, that
+happens to double as a test (so that it does not get out of sync
+etc.). It is how we document everything else in Rust, and in fact we
+are becoming stricter in requesting more examples when people add more
+APIs (otherwise they never get added :)
+
+If actual tests are needed (i.e. on top of what examples provide),
+then we just finally landed in -next `#[test]`-like support, i.e. unit
+tests that can be written separately. We try to have tests as close as
+possible to the code they exercise, too, but in some cases it may be
+best to separate them (e.g. if there are way too many).
+
+> For find_bit functions we have a lib/find_bit_benchmark.c Can you add
+> a similar rust test, so we'll make sure you're not introducing
+> performance regressions with your wrappers?
+>
+> Please don't use KUNITs. It's not ready for benchmarks, and tests built
+> against it don't run on major distros.
+
+Cc'ing David here in case he has more context around this...
+
+I agree having a good "integrated benchmark" system would be nice, and
+being able to mark particular "tests" as benchmarks etc.
+
+Regarding distributions, it sounds an orthogonal issue to me, but I
+may be lacking context...
+
+> Are you sure a public method description should bear implementation
+> details? I'm not. If implementation changes in future, the public API
+> should stay stable (yes, including comments).
+
+To clarify, it is describing the invariants of a type (i.e. it is not
+a method description).
+
+The invariants in some cases refer to private details (e.g. typically
+a field), and whether to allow that or not is something we discussed
+several times in the past.
+
+We went with allowing the `# Invariants` section to refer to the
+fields of a type if needed, as a practical decision. However, if
+something is a "private invariant" that others must not rely on, then
+we should still point it out explicitly etc.
+
+I hope that clarifies.
+
+Cheers,
+Miguel
