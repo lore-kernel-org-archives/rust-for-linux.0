@@ -1,128 +1,103 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2165522B5A8
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 12:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEFB2253A5
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 12:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742559047; cv=none; b=pVm+4GQe14irCUrixscpQhf2k+iGMyZGYUa5AjHRpKlECh+pm/Hx9kS9C7kjD995XcNCtXQeKKDfRSP0VV0Hl/qY6PNS61yahKzosvQ7Tai3LvZ1lqK3AV70AjO1Rza6xznObT5xQGXuXni5eaqE+eQSBOF8nTGLFimTO1zAxys=
+	t=1742559126; cv=none; b=Vlww667BMk6vGbUyeHZ0dH4dCLOxSTtBIua2u1/QM6Am/Lsz3zDjEldXGyYL1KL4bQU1PXVlSx8lzTiK4PGXQAtrNbbDREReVo7+Vq3Y0yZTC27H9Hbve/4YRtwyyJ8eHrmarl0m69xHQozJ6NOWRj1w4EsdzztFRljjheQRW0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742559047; c=relaxed/simple;
-	bh=op8FOXsG8eKuiuXoYyinweSNuAafqCPjsxLJhA3CuUA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YL5aLqzmNKlLqO+Dp0/tVTYlob/3o6rBMUrubeE9MlG0uy3qGqmHuPHpUk3BxgZDhJkbRm9yjavzPW3sy9WByjzVnVnjAdZgUmecDBIBINY6c+TlHMvkES1gmFBkr869QsECQ4jGZn9y3N5tKhfBkKP0PrIOzpmFa5eYsVLSUgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PazOPxuL; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1742559126; c=relaxed/simple;
+	bh=UNNCij3fMV5Om5k9iqqBpbqo+0QEFQXW5NWRoa/bHY0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gJu7SW8O+Ylv4qWOLJ0Jsqn8fKAiubF6UyDNuVTtKlY46CbtzbFr8Kqa93ClJqZRke5KwBOBvH9Y24Pt0CYz10fPz0jCJw7fEJB4KVgGFUnJ+jzQ3p6LpkHh8/7B1FBqrExbQO9uBTP/vxmfeRoL1J3Z41OZ/1OO+yOSb6ChyLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uqLqPeH8; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PazOPxuL"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d0830c3f7so16579095e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 05:10:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uqLqPeH8"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38f2f391864so1055530f8f.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 05:12:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742559042; x=1743163842; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=65EXsBa9VCEM2Xc9qqeAJo/ccGDFW5pMORs8L2NFvxE=;
-        b=PazOPxuLh5I4meT1Qb4aUQipXQyjRKmbUUx47on2b3Q2/Pf2j1rUEmmxAX3c6mzd/h
-         A7XugF8czcuFzo8hb3sndusEQDBUe18cPBYD/pMdfhvxSPGMdW/DnckDLCGOQhuk03GR
-         NTLqpJ31j74hsOqPYMAFRyHMWLQ16AKNhuCGZrL8bo5y6/9hmPHd5Twi8aHYfvNqDyVN
-         hk8U0ri1pLmZXoMUBEEXxre4hWHy6JQ9Yf2QCopjpkb6fSLOmp+j7C9DgtV6EAjHyA3l
-         FcWl0785LzaRUgkI5z9TpyLW71IvaSv7B3hy+Ca95xVnRfU23xotf3uoCs+gQqZOVLWr
-         HAjQ==
+        d=google.com; s=20230601; t=1742559123; x=1743163923; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jxPHoqhgPR3ScfztQgxMw9I0oJllqAs23ggh4XWBe44=;
+        b=uqLqPeH8SXL9uJ46G8BR/pzliLpuMA83/himHieOyhAMlVRP+GUKt5GXb7Sak1Uze/
+         mooJuZUFpvHwBaEpNTh3EPaLaFTEK088EZgK7LmyLinuChslWfD6y9XYjl52WMSJoVu0
+         jspEfWtQPzkJIjjjJFEqUppatIYeONY/4BF2GWkamBurO0lKcaxcMLc/1fYQCfLDP3WL
+         HT3SHZyfn/oLUQUuyrB0Bu6DFPf7xXYmCpkOxX9WnaNetIC98UQKc/3aJPfWeEzMEqU1
+         MPrAQR6R0t6egvdteO95xFsmu3YeCGafuBIPtvxtIgZtPJCJ2KagEJjOP8rma7NKW7bO
+         5ECg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742559042; x=1743163842;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=65EXsBa9VCEM2Xc9qqeAJo/ccGDFW5pMORs8L2NFvxE=;
-        b=jgiy97BZoFWzwJuLUqyrKqEcnkW9GrNyG52fibzurGvnizcvF8i4Er+SD1PfmeI2TH
-         DV0sj+kkFfQLTWyVCl+0X3QarVH8oNoBnNa2mDnWFxq6EiwRUvtKkkFH5nqtP/mmveEX
-         4OTBSzddTZGO6X5IQeouH4r6siSKfL1SQsDvDXPSAbdbKz+8QPdTfeElg2jTiezCVys7
-         9x6BOCnXfasxmbPRZLK2e6BAoBuEfIHArcGNdfc23+SQGYghEGjDdkkDPEFiFLe8HXv2
-         zKVw59Xwca0QzFPDkXPtMJO37bHtai9hGYiMarJMu58+4Yzk0ril9d76Euvut7FZzUKL
-         HQug==
-X-Forwarded-Encrypted: i=1; AJvYcCWSEWCnkxaL4hbRBJMQ3w2g+Q1D5HRShIBpIgkKeuCaLFJCIFIMgv00H8Uh7DjuwqSNTQEvakisFqq92FkLGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYawI9VcXqTiWIk029BClLS15vNy4IMI7Pw9zzyqvf4Mam1Tld
-	rahrkPKXnN5+/zQZqkQ92TaGXRTx7/H2Oxxs6+wFmd9dvaRPhIZ2rjUY7nvUKGJKitNJMd/bY0n
-	urdyFx21Dy9Lz0w==
-X-Google-Smtp-Source: AGHT+IFOO2Wy+xG5LzSEhSafYmkXsCDVc1uW2ONz8f494sMu+TmkfaiuuJVB8qhS6G8b2lOHhyxpCsyngE6rBVI=
-X-Received: from wmbhc9.prod.google.com ([2002:a05:600c:8709:b0:43d:1ef1:b314])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:468a:b0:43c:ef55:f1e8 with SMTP id 5b1f17b1804b1-43d509f4983mr25528385e9.13.1742559037417;
- Fri, 21 Mar 2025 05:10:37 -0700 (PDT)
-Date: Fri, 21 Mar 2025 12:10:02 +0000
-In-Reply-To: <20250321-vec-methods-v2-0-6d9c8a4634cb@google.com>
+        d=1e100.net; s=20230601; t=1742559123; x=1743163923;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jxPHoqhgPR3ScfztQgxMw9I0oJllqAs23ggh4XWBe44=;
+        b=KGbW8xSRcoUMn48RSgbl0RNmUK+drDjCCJ7CjepS415nulHftkcyos/wbjoJ8HKuoI
+         /UVe5DC8Ck7doRNBCpxyuHBuBHoX7qBtnf6DLYyPpfDQP+wsq07J+SLS2PXr2+hIhRUN
+         GjwJuYNhEUH250j0L68fA4G417GtgYvbp9USr7e/pPrTP4IyBjpgQbv2d/7vJXDmgu14
+         h6g8shYI2p/mjKXtxHHRVapUBIQSnDLo7wlL/+M5oka5yIbWLYkxQXh4lwElMEWSadAz
+         38b3IpEvYi/l4HVgIO64neZLJsxYAU7+zsmsz0FIq37FJT3/E8HtGIKGR990J8sOiCTA
+         zHyw==
+X-Gm-Message-State: AOJu0Yw5wiXu8MGYl0rw75D1noJnzuuF/Im0onGliJdelw7Yx3tbE0qy
+	KGshgXlLzDXnmZoJ+S3myKkUctT9a+XfJKiQS1ReXhla8IKWFYeihKyPlVJpUHbHWcBgc4e0ry+
+	IpFKmH4z6QYymsSpA1p+MvsLyAH4mgkt4sasg
+X-Gm-Gg: ASbGncviHV2cf13iGAmgSlue3pk6uPXhYjhRgeMxbDCYuoMpJu28Q3XW0stRS5rtqUm
+	jN6wimBUHDcQd+/ppjdwqbZxEMRVkB7itypPoIQCGlUWKgAJuCph1av6ehWKKBz98B2GCLLVXqc
+	I9NQIvuK9sSNKCYGzGg8gJBtSHdtH0LIQ+4Le45Q==
+X-Google-Smtp-Source: AGHT+IHcoh8/QLn7mrObj0kGT04nCNT3y+m/6M10pyXOF/OwjgtcjH1lC6eTC2KVDOD+2C0+ZdF3uSQni3goOcVZ8S4=
+X-Received: by 2002:a05:6000:178d:b0:394:7c55:7030 with SMTP id
+ ffacd0b85a97d-3997f90e02fmr2478820f8f.30.1742559123170; Fri, 21 Mar 2025
+ 05:12:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250321-vec-methods-v2-0-6d9c8a4634cb@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1923; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=op8FOXsG8eKuiuXoYyinweSNuAafqCPjsxLJhA3CuUA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBn3VcqVJ3vDPsIBvOO+bI8RrCdXtJ8eKSCKt2ZG
- 1FdyCgakL6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ91XKgAKCRAEWL7uWMY5
- RqJYD/9Ofti/igTSpvAQmd2uQ3JHgyZhw12A/8M4zfIZKjmDKBjUMIYVWQ2+Ag6hY3qeuupROoW
- ki/qGeewtku66mr5Jt3Juka3HlZTOKw1fgf0i5XdHJNZDhYa2JcoCNYarO2XM1vJi9z3HwyzO2U
- JzF0ocNfDS0WdxoP2/VUBGY1qd4M43cVmiZ51ikYZte2NAKw671Nlz/dNJ34moDuSKkMdfjRevy
- SEfQdhYPHV0GxGoLudURQ90+S8Dx1cQzflup66zMatT+eKEd5gDNWdbMjqhgf+46Ex7DtQfKLyF
- BGxSYSy9rUhYejv4FZh9Nt2cV1S1jjcnMFCZT27JlcGY2t1lPDr+uuRGh0Wv4X1TIpUUQ6q30U0
- TKjkWNHsF5TFF16j8QqS6bcSLMN8teBXTkrn9/oW+1mrP9Sl6MRf+2Mcl4Rq0cBX64qB66L3hWi
- bh1ko1YxypBenbPu5CQ/K3FITQrF8v1MKff2hv5zrQEcuf4cb6QQtkb3FRIgKmOFSQHRtx20Rqo
- bnPfY1/3y66MGULXuOA/00/oQpMjlZWMu8kSQ7kROa5ueQ+L0UWKXU9QlRhqXZaRP/1nobASv+0
- PQ9k74QrNLAKtNJ/G0wFJgHqAcvuNTuqg872hXCKibOpTOQtGlDwbQ5ou/oSaj1YPWk2d9v8Ez3 2W+zQLS11op734g==
-X-Mailer: b4 0.14.2
-Message-ID: <20250321-vec-methods-v2-7-6d9c8a4634cb@google.com>
-Subject: [PATCH v2 7/7] rust: alloc: add Vec::insert_within_capacity
+MIME-Version: 1.0
+References: <20250320-vec-methods-v1-0-7dff5cf25fe8@google.com>
+In-Reply-To: <20250320-vec-methods-v1-0-7dff5cf25fe8@google.com>
 From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 21 Mar 2025 13:11:51 +0100
+X-Gm-Features: AQ5f1JqeMlZW7mWOFw0Am6uJ3EhRKQScUKs9fqcHcnY5iXEdr9Vcqb8rhgOVseo
+Message-ID: <CAH5fLgganhjZjoVipYtMDpVMLYy4-k+L-TRG1zo31OCWvXsZWw@mail.gmail.com>
+Subject: Re: [PATCH 0/5] Additional methods for Vec
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This adds a variant of Vec::insert that does not allocate memory. This
-makes it safe to use this function while holding a spinlock. Rust Binder
-uses it for the range allocator fast path.
+On Thu, Mar 20, 2025 at 2:53=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> This adds various Vec methods. Some of them are needed by Rust Binder,
+> and others are needed in other places. Each commit explains where it is
+> needed.
+>
+> I'm not sure what we concluded on the set_len / dec_len changes, so I
+> don't depend on that series for now.
+>
+> This series is based on top of Vec::truncate from
+> https://lore.kernel.org/rust-for-linux/20250316111644.154602-1-andrewjbal=
+lance@gmail.com/
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Alice Ryhl (5):
+>       rust: alloc: add Vec::clear
+>       rust: alloc: add Vec::pop
+>       rust: alloc: add Vec::push_within_capacity
+>       rust: alloc: add Vec::drain_all
+>       rust: alloc: add Vec::retain
+>
+>  rust/kernel/alloc/kvec.rs | 147 ++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 147 insertions(+)
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/alloc/kvec.rs | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+I went ahead and sent a new version now. It's a bit quicker than I
+would normally do, but I wanted to get it out before I go on vacation.
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index f7f7f9c650f8167ad6f53b0d83e328203445aa1f..38ffd0cf2af6e375f8d4fc2f9afe9295b29e7db0 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -327,6 +327,27 @@ pub fn push_within_capacity(&mut self, v: T) -> Result<(), T> {
-         Ok(())
-     }
- 
-+    pub fn insert_within_capacity(&mut self, index: usize, element: T) -> Result<(), T> {
-+        assert!(index <= self.len());
-+
-+        if self.len() >= self.capacity() {
-+            return Err(element);
-+        }
-+
-+        // SAFETY: This is in bounds since `index <= len < capacity`.
-+        let p = unsafe { vec.as_mut_ptr().add(index) };
-+        // INVARIANT: This breaks the Vec invariants by making `index` contain an invalid element,
-+        // but we restore the invariants below.
-+        // SAFETY: Both the src and dst ranges end no later than one element after the length.
-+        // Since the length is less than the capacity, both ranges are in bounds of the allocation.
-+        unsafe { ptr::copy(p, p.add(1), len - index) };
-+        // INVARIANT: This restores the Vec invariants.
-+        // SAFETY: The pointer is in-bounds of the allocation.
-+        unsafe { ptr::write(p, element) };
-+        // SAFETY: Index `len` contains a valid element due to the above copy and write.
-+        unsafe { vec.set_len(len + 1) };
-+    }
-+
-     /// Removes the last element from a vector and returns it, or `None` if it is empty.
-     ///
-     /// # Examples
-
--- 
-2.49.0.395.g12beb8f557-goog
-
+Alice
