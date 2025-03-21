@@ -1,193 +1,146 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2073.outbound.protection.outlook.com [40.107.94.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D1D22A4F8;
-	Fri, 21 Mar 2025 17:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.73
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742579367; cv=fail; b=MgUn/h1L2v/ezuFCk7gkk0VWL+Zw9v4szWie2cz4T03zEu2hoWt4aFdqx6rRLDk1ezUyf676KGLJztxWxypyHa7dK5TFwcQsdNgOFreEQ7uHvUgJHznIo40Hlu167FVwhyxSO8UtsCz+Z0r5/4tRY0icrFAVHv2KaA21ld+88bo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742579367; c=relaxed/simple;
-	bh=AVpQClKhLGaymu1VSTr4BCZtErlqLeKc5yHQaa+nhCQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fbsrLLX/v9xL5SpcW91DiUTGF3hWWw6pbmuwDTnpf7hBtErNzq7Qdhv7MzFp0GGq+UIrfGIN4Fbf66jw1m2zQM1hcZqUQUgwUjDQtShw5w/jV76Ne3iJ5x6SKY/na4wCFI4ZYtm34RGl3kJbCj4uhreFhQNh+l7mg8Qw1qn9LAg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nBKV3R5s; arc=fail smtp.client-ip=40.107.94.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC069222582
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 18:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742581543; cv=none; b=OsHZaCSARD76NVKSwdTSV4q3dGsq9Dd4JNhpfxXlv2JoBmPZpnqUY9i5Sh2LYqbYoxqwCr+/LqiSxvPZujgX7rojy457RSM8ry9nOYnddK69ZcuVNvegASiNL2Hj0TAljuxOnfH834DsJeNJNGQ0/rGj2DRylWQBmenXCZdhwYI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742581543; c=relaxed/simple;
+	bh=jemg1ODGg1pK6bsHf0OEdD0dT3yUnEMJLXk8hBjZYxE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g2cqi2kCZGKKM3eDjYw9AC5qSuyV6zgD7UZWV3uRtNlw+RQbjrXIHti4npO7odKUD3XA2X9sLOTMfufyz7BosJHwit9+dp5OYrwuFJTN7whLTByJhgnOznMms9BSy4YsiSZaEMapPcgT+QZn2B3s1BLVzeyrtox+k0W+plHEgqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=M1IHhNw1; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nBKV3R5s"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Clp6sYvjaa34jHRDCFGn2GNZQnrL9XwApsKNtvcAHp5BzpPUrkxtnrVL0Hd7v2gj8aR0mUqw2ppdEBSsU/2ysjE1nNWuAuH+SKCVQ4+fCfIN53MO/j1haKlfJVuUxPjuXM6+WphU5kACH/oaVnA3lmIh+UMp8lNKZZ9cTesE09AbxFMJix4pfPeghq/wZjsS2qIYYx2rcBMAT3TCWG9l/McqnK0Y6Er8vo6pJdGBF3dIb5/80FSNw41WLGu/rksYoPeTXagCQXENOdZ30rrGGQn80GxhMviqPG/qUgsURZ4xni73GFr1kz6t5eornbMqVuQBIfTpj81ALEhn3eK3uQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AVpQClKhLGaymu1VSTr4BCZtErlqLeKc5yHQaa+nhCQ=;
- b=yo7X3jYwnrS+au73b8wngR7g2HFGbUx/+Z/N1Gh3DmD6W/MOefLZhJ6X0UH4H10yynL4Dk+bNF6Vieo8FLNk0TNfAq6AhsoljbS8xyR23VEa87QOLJSnP4Jax/IW96Z8TxfCEWQYsjAdZ0s6d0wuZf/jo4CaUqMEbutZVF8XiRBgFcoSpEpU81bNo2ayGvCaxW7K19xuCi311GKiOCSmlyeow7+j9CUjdPHx6vbM9tbZTk46r/V0VDajBD8IJyhHVfo01IRt3qbXIAXdzbTePZYjN3bfWVVQpVINtymbvvw7ajw5Hy6rCHhZ5gQJlRVK/12XXb5fG9kwX3DbNBVwYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AVpQClKhLGaymu1VSTr4BCZtErlqLeKc5yHQaa+nhCQ=;
- b=nBKV3R5smaIhHYpgFrQ4+T6S4881UPFgcO2snSh+jfvYx77OdjKHhOXQHUEh9AOIfOzxMJRI0XPePlCUWu6K2uZAJGfzqbVEnjuBFfdszUe02rj6kDz9mZXbSjafv4/Gy5WBoPkp2KRdnTL8fD8jU5LjNk4Btd1E2cxmA6gV7oH+w11+WPkCdS79OF8UpgrqI0o+VsmSm4EgK6K1noJRwJkcthLv7XXORwW226HZRclFpPQOdDje5ifNcReOVnCHsEh71tvQJAlOSdtKqtfKv0BCs6i1+5vW9AGrSVXLoXNCX31t/tDJ0MoOKcmuEbRmPXVh8lPDBPMRItBJTcm5gg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by LV3PR12MB9354.namprd12.prod.outlook.com (2603:10b6:408:211::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Fri, 21 Mar
- 2025 17:49:21 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8534.036; Fri, 21 Mar 2025
- 17:49:21 +0000
-Date: Fri, 21 Mar 2025 14:49:20 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: John Hubbard <jhubbard@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	paulmck@kernel.org
-Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
- implementation
-Message-ID: <20250321174920.GZ206770@nvidia.com>
-References: <20250306153236.GE354511@nvidia.com>
- <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
- <20250307123255.GK354511@nvidia.com>
- <Z8rv-DQuGdxye28N@phenom.ffwll.local>
- <20250307145557.GO354511@nvidia.com>
- <Z9LsbhzjI-P3-edQ@phenom.ffwll.local>
- <20250319172132.GL9311@nvidia.com>
- <Z91A_Dz-nY2iFqYb@phenom.ffwll.local>
- <20250321120416.GX206770@nvidia.com>
- <Z91XrltJYtJdkLUS@pollux>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z91XrltJYtJdkLUS@pollux>
-X-ClientProxiedBy: MN2PR08CA0030.namprd08.prod.outlook.com
- (2603:10b6:208:239::35) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="M1IHhNw1"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6e41e18137bso16575586d6.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 11:25:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1742581541; x=1743186341; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4DRNDu+mZPYgGquCy2SeZdyPfdQyJHb3d44tNADVang=;
+        b=M1IHhNw1R9ZQMCmOQL90iwHYcU1BJw2ArHDDp8y12TvacSzmuiJiPxm4tL5It98war
+         MwKZ5fNbPFXORUnQAlA+CN7VUOvL5Ys4TVd0H+Gxh5B+/Xojkt0ouGib6cJoe05lQfsN
+         2q+yvGq7jJK3rw+1YSo4BRTmPvGBBguijzYNo5Z7q/Tl5GFwlhTQH0DeNjQ/Q2J2Vv4x
+         eHaH1K/Bn3Is7oXTLzD21RTv9yFsHMD/9RpMaMiSmHt+OWI+XwddiKTW3sa0nRc5b/tp
+         GBgFxqVO9HkXzirutRhmUk/fU3bBAbF9NspYOpJQY18mTmHtOCaXNasxltcTFRhdB9RN
+         R0TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742581541; x=1743186341;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4DRNDu+mZPYgGquCy2SeZdyPfdQyJHb3d44tNADVang=;
+        b=ZOMkkpeVkasiEQYmcWMjJRYIrhl+F/QBd2wTrlG4MfKPkcPADwWxSIZscf6R734DzU
+         sRB3+cx3Iwi/WGW4AwoxqD4CtXT7QeXCl0ZtUSzDnclrv9jUUgJB/YmQpNmrQsU5kYEl
+         g5HQLiAgCldK9JXXw7PzBS41OWXOM6uG2sZ67+BVAoKnbdrbbwFv11QkgEBPo30IFm6F
+         WW8ecF5Swt8IpJMJ+K/VmJ6UhxIVPq5NqHMxKDMQB6dpPYMR+9zTLrQ50jds6CDoCQHl
+         PG19MNwiQsW/ojSyVLsE4FPwDAFVuMy3ZXwEK1pkviGZa2JaeesJ1MwCvVXqiLVWXIUe
+         eieg==
+X-Gm-Message-State: AOJu0YwEnoxM4d8UqQWZ4dHWpLTGQO/dEuj8gGEE2fkveqTsiofsVlm5
+	t0Ut/iT0IulOAdfaf5hUDNjUPfwcOHwkWP2ZwLMLfN5UcMqE29eHkqs2ptFqrZGtWos+NbscCQi
+	B
+X-Gm-Gg: ASbGncucBEJaNyK6ZgZl7mOgy8ujc9JJyLidU7zyxZSFR8Q8kbYTmVvpDwaLEdddDro
+	Ud1jRI2Ja8xeGt5ZkZXmdIz6k/+cTCgEnJ2A9NdcN/OxRF4AsK9u6ewPr+ElkANJ/9pNhDUlMw/
+	BV+mBnUOrxq6t35Kj8cNzxUqVdfk3ozOh+/VQgkwHge0vfgXClNvU4HEZKpLU+lQ6Jsr+9OhCLD
+	XxaKm4t2wripuDQT9YILJ/rVZBmrD9TVaXwEZhCyYWRCj+sw28F6BH9H3B9Qn8RXVjBAcNhBNsM
+	oWe1in81ti08hYD78id4vFSF1kJJPk0wANHa97Un1NN/s8swXsJerZT7HtxpzTPK0uc8h6g6+xK
+	kr7gxad+8sGLv4knGK6pvKao=
+X-Google-Smtp-Source: AGHT+IFpNIlarhIX3KQ1uNeuExxcnUQwaoKxWUOhP9ifvqi6wUM9+9o3gFTu/dM5lv3aP3HzJCq1dQ==
+X-Received: by 2002:a05:6214:268f:b0:6e8:ddf6:d122 with SMTP id 6a1803df08f44-6eb3f294de9mr65457026d6.3.1742581540524;
+        Fri, 21 Mar 2025 11:25:40 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-219-86.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.219.86])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3efda6ccsm13609536d6.113.2025.03.21.11.25.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Mar 2025 11:25:39 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1tvh3r-000000016XB-1iiC;
+	Fri, 21 Mar 2025 15:25:39 -0300
+Date: Fri, 21 Mar 2025 15:25:39 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, daniel.almeida@collabora.com,
+	dakr@kernel.org, robin.murphy@arm.com, aliceryhl@google.com,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>, airlied@redhat.com,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+Subject: Re: [PATCH v14 02/11] rust: add dma coherent allocator abstraction.
+Message-ID: <20250321182539.GP126678@ziepe.ca>
+References: <20250311174930.2348813-1-abdiel.janulgue@gmail.com>
+ <20250311174930.2348813-3-abdiel.janulgue@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|LV3PR12MB9354:EE_
-X-MS-Office365-Filtering-Correlation-Id: b97cdd80-6a9f-4950-4d40-08dd68a0b5e6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Zes6DUxjXvmeYGX1WIK0sEy/Ef6dkgmrCyfUhHKNvtkYZM2BuWyh1Qy5GOXj?=
- =?us-ascii?Q?Yl8NpGZ1F5X53G1fRdVUJJdkWFLZjC6Uqbz64Eq0bZJdieTQdL/vzuVTdFH2?=
- =?us-ascii?Q?Wl2hq96dUlavqZyjeHurIm0lthEsrBwLVm+xu+otTKQZ8PH6Xy0AFp4f6fj8?=
- =?us-ascii?Q?ozLUFTa4dNG6yf1N2iIRhxT8144gDKFSrJA8ohBpuKxbCoebC0u01LKwPhhH?=
- =?us-ascii?Q?O/m4cEfDNOxciy6kmH0TYxi5HAov0+zF8LwFDc4KLQW8sT18WcJq+oGCyvnf?=
- =?us-ascii?Q?z3+m81a5U8a1Rlaelja+SedLHVTvAlputTSBBjpuVO/DTlczcbUUtiAyH0s6?=
- =?us-ascii?Q?8Ibz3cDeeVpTiWc9sZGqQ/U8gATGaEyvrcvl7KfdfLbZo2l4k4ksyvWYaLj3?=
- =?us-ascii?Q?wWLUwCixax5EB88GcyRBlhvn0YsCbkzp7aazqfa7yUCPzMVW8ypeOIUUAoPA?=
- =?us-ascii?Q?ZOX2eGdus6nNq2lC+HymVqMoFu4/QKzmbMfBX7E8y7x0VPKGjvT1HZx25aOL?=
- =?us-ascii?Q?oPp3VvacDdOmUJo7/4Fayn5FxqvI0pqNrOkmxbs0dUqk2/eGdy2ipmuYivIG?=
- =?us-ascii?Q?XQbq8U3Art6EjLvY/Nc1Wp7EfgV2IaO9Sv1KLL1QNDQrwSHnnWemM6JVv1Yh?=
- =?us-ascii?Q?ua0bfFzhPEiJ1fo1g1ZXVNSG5MqqOuh+y479996RE8Vlphxr5YPB54vo2gOX?=
- =?us-ascii?Q?IVWOqlTjnmXf8TknEKBSuhGRUEqRfCVhWgRTENndm4qxFQy2+NzmfAIKoKm9?=
- =?us-ascii?Q?kJGfivoNnYecfEbEgNOaxYGq+48EnJxnNa64hV60fk1yVA2Af9ukrmt7A62/?=
- =?us-ascii?Q?QRR7JhiP92KlTh7NK4Q0yRzHn8Qco8waoGUdyzKAtDACQumdRTzu17xg+b0t?=
- =?us-ascii?Q?EVVvdhNxAWswzXx0meqmTKx7KDvkBdS6nSoWyT5oaY2KABUvDQHd2T+gaONR?=
- =?us-ascii?Q?z4YIWg7pDG43AwqkMUfEkrVfuTedaBr3lMTyxLI+hi/utJbEoCFeNcRAk7kx?=
- =?us-ascii?Q?TxDqhhNz+451zqd+/bvI1HOiwf7XZJcZ4QwZWrIG3Yd2zQhy/BD7d4U0cV3k?=
- =?us-ascii?Q?uveTOGMYyVPtP/fVcFqmrXVjSk+lPdRZM5LKXd5vXhoT+LGR6UZuEvxc9o0B?=
- =?us-ascii?Q?T6jgnr6Ipf603D/2WijMFWnAUGnUfQhcmIUb9SpqlGBRYsH+s2+EOKV7wvpz?=
- =?us-ascii?Q?qQ+9wfD4+VCp5rX67LsgP238tLjHjhsle6/GrMS/Dzpp0m4BJWo97Xcder0p?=
- =?us-ascii?Q?Rtjv/hWR93PzumJXbVxBrXMqQdkXxj+pLgaeBL/mBbyAbI7lqS/fA20/cESD?=
- =?us-ascii?Q?4fNRFmAqIrIwm/csKgwmQg2Qnw0AMyULqb8Ct52+u/OsjNdIsbBVIcMGzRwC?=
- =?us-ascii?Q?faMawoQi7LLgmlyWbF4QnAFqmvIa?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7z4o93BwFY9H6A/yobi/KCXsTY+uZ5hykyPt1iAKwHc0/8nuN8Zv6w8bg/3h?=
- =?us-ascii?Q?VzmFQOO5ObyWC5TS7Kq2PtoX1jmFyk6p79vxflzNPDwG+BVC3o90R2aqSOzq?=
- =?us-ascii?Q?NjsoFpFswWxoVkBZvWQHq8gF92eYyz//uL5JeMsCHgsqfu7qqbnNpyhmvSHI?=
- =?us-ascii?Q?Q2auEzTbc1LzqPNlIPaTgfkrPvu1B07SIlBvoPVwOCCouscbkHTwyKkKt8pa?=
- =?us-ascii?Q?oLpTPEXVHLRrpnaES4RBqnShoVMoWpJISvvBy7VdwQ8Cvw9tlMeRNxKJCJtV?=
- =?us-ascii?Q?3FBHII79JYbptakvnIl8vPZ76oQvbN2XcTWSGdvAo4Asrx2L86A34NrkGO3v?=
- =?us-ascii?Q?wTPuxULJpTgF/9JY8WMXFBvBENpsYdaRDzdTwahF6ug70fTJCfz+3ySz9JBj?=
- =?us-ascii?Q?D4R6svpp6C0MM/WU3+o79n+txHhDOUAk79aUaZe9czMGL9vsPx+V8inDsylm?=
- =?us-ascii?Q?Ray9LY+Lcz69Zb23Uq39uLioRvjxvjjmwc1/1eXTXGT9GsEAlKwRlaRzQXWT?=
- =?us-ascii?Q?N/8zPXw2loG4Y7Zrcye8ZcPc8QrN/lCRU8pQS8oR6Tg3CAjiSPP9e2+9XU6Y?=
- =?us-ascii?Q?I+y7eTOXnqjSBF4Y8RKe1bXbaO6gvRfRc/XBuekJYH269KEJW2c2WiHoa3W2?=
- =?us-ascii?Q?00pizUqCcpPnCJCCOeNDTt+ZIKnDikdcldZyCig92MqRQSM2Me7OCBBdIMhL?=
- =?us-ascii?Q?YSl9+5VGuwEmF2ThhKv0kBBPd2pp+Xba5estQQTfpZPg5QLbujwho9fSK8a0?=
- =?us-ascii?Q?iBqCROs9twp6JcX3VUWy88XZ2nX1YlNwFWL3b7MW1JJF0BkjAGtcoNO0Kc3y?=
- =?us-ascii?Q?stdFsjnP+dq5k3WJ1fH+kqmuNwaax06GoqGpqcrx9sFnfcD+hkigHk3R70iW?=
- =?us-ascii?Q?Cr95wE/EMzwDbx7iyxVnBrzczLMfkHSzD1kxeRSE0P3Yeg9gSJqa3Bh4cepf?=
- =?us-ascii?Q?gTNIopBtUnmHOavH3i1gIiWCRs+ciLdW9aA8KI7kHSxzrpw4YF0PwXn2OeiG?=
- =?us-ascii?Q?626GB84wTOTfD8PA1CNLuCesxLeJPgIRBcNlZGgXdbVpWU5xvxbkBePkhYiz?=
- =?us-ascii?Q?ACNBS6OX6EcdJXTCndDrTL8yK0eKU+ul8m+sQz3Q69+XMJMDedWE/dKb0/Ll?=
- =?us-ascii?Q?/A9NVmf2FbQFjj2UkrBBngHdesFsVDx/6hgQ59JHbt40mY3qGczpG0NZxXYU?=
- =?us-ascii?Q?wg4akZpR7AVcj2zbch/M2jrYrXDXYqIW77y4Vesnda2KivSjChxT7WCVmzDF?=
- =?us-ascii?Q?aqXx/ds9+mnftw47DyqRN2zF/UvS0x5cTI2923sjvfFDCF6NkiJdu/8iEEpK?=
- =?us-ascii?Q?as4yztaa/lxIfKrhxoMMpoPxw+Hp00XDtoR8ohNv8G3g6d7qBk4oUN2Tp9+6?=
- =?us-ascii?Q?WFrmCqZmERL1+GrEQFDRzOKprrKM73AyEkJgl5Jw6yom5/ru5wmBgKGLwzpW?=
- =?us-ascii?Q?gu0Y1xKW3r1lYUojGI8h3tP8PxMqrYf/Izd4s485/03hZWfDI8Ev5RRaLYiL?=
- =?us-ascii?Q?RZs4NfKiaVzgRFCJq8OUhAYQoEI1QeaxI+49onC12L+Fp631Tm64FgZmkUAJ?=
- =?us-ascii?Q?AcAmIZ5ZjkdKX4Ne5MzVONXLTxeaJh/KSvdW9lQF?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b97cdd80-6a9f-4950-4d40-08dd68a0b5e6
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2025 17:49:21.5516
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9w/xAWh5i1TkRqs9SKlEaXzMV8Vw7IKFOlzThsvD/6osKwiZDc+q1799Pa8fW117
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9354
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250311174930.2348813-3-abdiel.janulgue@gmail.com>
 
-On Fri, Mar 21, 2025 at 01:12:30PM +0100, Danilo Krummrich wrote:
+On Tue, Mar 11, 2025 at 07:47:58PM +0200, Abdiel Janulgue wrote:
+> +pub struct CoherentAllocation<T: AsBytes + FromBytes> {
+> +    dev: ARef<Device>,
+> +    dma_handle: bindings::dma_addr_t,
+> +    count: usize,
+> +    cpu_addr: *mut T,
+> +    dma_attrs: Attrs,
+> +}
 
-> Not all device resources are managed in the context of the subsystem, so
-> subsystem-level revokes do not apply.
+I'd like to point out how memory wasteful this is from what real
+drivers are doing today when they use the coherent API. Let's compare
+against SMMUv3's use for the CD table..
 
-They could, you could say that these rust APIs are only safe to use
-for device drivers with C code providing a fence semantic, eg through
-a subsystem.
+This would be the code in arm_smmu_alloc_cd_ptr()
 
-> For the DMA coherent allocations, please see my comment in [1]. Revoking the
-> device resources associated with a DMA coherent allocation should hence never
-> cause any overhead for accessing DMA memory.
+It is making a 2 level radix tree.
 
-> [1] https://github.com/Rust-for-Linux/linux/blob/rust-next/rust/kernel/dma.rs#L120
+The cpu_addr is stored in a linear array of pointers:
 
-I don't know what to make of this. You argued so much to support
-revocable for rust ideological reasons and in the end the proposal is
-to just completely gives up on all of that?
+			struct arm_smmu_cdtab_l2 **l2ptrs;
 
-Not even an optional runtime check? :(
+The dma_addr is encoded into the HW data structure itself:
 
-And I'm not sure about the comment written:
+		arm_smmu_write_cd_l1_desc(&cd_table->l2.l1tab[idx],
+						  l2ptr_dma);
 
-> // However, it is neither desirable nor necessary to protect the allocated memory of the DMA
-> // allocation from surviving device unbind;
+The size of the allocation is fixed size:
+			*l2ptr = dma_alloc_coherent(smmu->dev, sizeof(**l2ptr),
+                                                                ^^^^^^^^^^^^
+						    &l2ptr_dma, GFP_KERNEL);
 
-There are alot of things on this path that depend on the struct
-device, there are two kinds of per-device coherent memory allocators
-and swiotlb as well.
+It doesn't need a struct device pointer or reference because this uses
+the usual kernel 'fence' reasoning for destruction.
 
-It looks like there are cases where the actual memory must not outlive
-the driver binding.
+It doesn't even use dma_attrs. (why is this in a long term struct?)
 
-So, I'd argue that it is necessary, and changing that on the C side
-looks like a big project.
+So, smmu manages to do this with a single array of 8 bytes/entry to shadow
+the CPU pointer, and recovers the dma_addr from the HW data structure:
+
+			dma_free_coherent(smmu->dev,
+					  sizeof(*cd_table->l2.l2ptrs[i]),
+					  cd_table->l2.l2ptrs[i],
+					  arm_smmu_cd_l1_get_desc(&cd_table->l2.l1tab[i]));
+
+Basically, it was designed to be very memory efficient.
+
+If we imagine driving the same HW in rust the array storing the CPU
+pointer would have to expand to 40 bytes/entry to hold every
+CoherentAllocation. This means rust would need a new high order memory
+allocation to hold the CoherentAllocation memory array!
 
 Jason
