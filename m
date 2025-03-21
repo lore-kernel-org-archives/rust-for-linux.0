@@ -1,134 +1,122 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1647229405;
-	Fri, 21 Mar 2025 15:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7720C1E571B;
+	Fri, 21 Mar 2025 15:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742570711; cv=none; b=s/9Y0kMFRgbl2tLU02cZORxGDsSsiK5L3SsY4jSqfG4z5hIQuaUKvRSFmcv9zmRyQdHDcnFoGvJcBkWcudAMVp36VaQrkXjcKAQ6eK92e8e/bkhqYThLNAWX7/wiHlSWzLJNdqNn3NwsxTwdqMgDO9eOgP7hVhky3selz4utyFg=
+	t=1742572068; cv=none; b=p2psAbEYos3+a0i5Z0go/stqJhDI2ltkX3FHYPJIuNANyDTa27pbA5uTGRSUSM8CryCKHvWap0RZUq0fViyxhWACCGGEO9mcA8OGWJYJMMeX1RQYWzXb0fAJbG9b1E3+g/p8m1CcRA7vAVNnNNIt86WWrfpgyUxizb9s95uCRcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742570711; c=relaxed/simple;
-	bh=gonmBaD35T6vhYWzr4nVLaUUNngSAuVoY9nj188RzKY=;
+	s=arc-20240116; t=1742572068; c=relaxed/simple;
+	bh=atEPVjr7daeEQp2Xt3XW7y4mzFJL7kChqqXC6O6fZtI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dAgsnFeEtwTaTrlM2khwsscfmB15aKaPwvaNFn4QD7b/F4xo+QiYLyECu/m2MJzLFASs48LEx2F85zDEXRj7Z+tp4VER5tay2CFacK3jt2VD5s8TBHr/TDGmUN/UnyvgfiiQ21UNm0H63KCFV4OsaEg2v9Qj4biKPzjrzDArWoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UCIcH9EC; arc=none smtp.client-ip=209.85.208.171
+	 To:Cc:Content-Type; b=k5xxvKvmj3yHF5nln2atcjL54lSlDIfdtd/iNhO1OmPFNqw9W+Rkbn5KY0tlEHcZoaXPbHtqYuyngfG1Q1pc3wl7snMbM0FDbLOV4i/+QQEH2PpZZ4gyGVH0erNBn9gEVNIkGO8VIN0w7caAONfiHnbJ5dGYQYK8yLcIFgDsEO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gg1f+lO9; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UCIcH9EC"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30bf1d48843so20329861fa.2;
-        Fri, 21 Mar 2025 08:25:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gg1f+lO9"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30761be8fa8so22158351fa.2;
+        Fri, 21 Mar 2025 08:47:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742570708; x=1743175508; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742572063; x=1743176863; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9FeMkEswfDRDBCyza92nNhHVhv8r9MHi5/ng87liaRo=;
-        b=UCIcH9ECfC0huBZyIcrC4rKhmxKUheAn/sOY17bEe4VN7oldlJqR+08r68zwtsshr5
-         P02WJwqlkYiD8Mb94PHXLv3YD4Yzd08AucHU1pGBBcPiinq0X8EEqFdq1gM9cx6DZIIF
-         YnmKoZPN0LEGU4qP1vqcpI7lKikhLr2eYP4ftcoiK/Zr12aIDogXoHyKoF1z7MVWCjvy
-         uCnhXqy+n7OclFPtCMnD91UFUkWWKQ1iPFLxxcjRqUZkMFqCJ8D7Z7zaMt4KG6xDh9/q
-         6tpRh+62TIb7DP12i6fj+ZatBAs6JOfKLK2uH2Gd54ZS8M+AOGKuggOL1+tS6fMBSoJk
-         2p7Q==
+        bh=ZI1O1RvgUqTEgM/cOz6gpXU53w7kyKs1V4Uu+k+QeY0=;
+        b=gg1f+lO9wG0kFADjekuls6sm0GxJvJI1NG3o7nclrKl1rYLixBaEbAZjOcWyqgBAKB
+         ar3IKqQW7EnX4urxJyjKGgq4H/AgsbS/K+3TY26N3ORZXUyg85ahRt99oD3Yd+cvE/WZ
+         XYLgXgtETu+Xc77n6dYpgqLmjJ8mHVTk3g5abJVXPvzw6iwCuIwiW76lC0r+HYaBRT0v
+         3NOivt5lDnLbtTdZ3kM0aXYHdxvsDkwjl9dncci6YBcQKdi3ZmbzPHvgoFQPzz+0bn7p
+         LpRcHzL1SrfPl9sIe68v1DVsOkVkBelLoFncqNAdhQcUKv9hOwmmZ7PLa/znwYPwVBUr
+         DVuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742570708; x=1743175508;
+        d=1e100.net; s=20230601; t=1742572063; x=1743176863;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9FeMkEswfDRDBCyza92nNhHVhv8r9MHi5/ng87liaRo=;
-        b=n93vae7AHQq1OqHVtS3iReMc19PLXyUTOIPODMMyD50jO/zTZ+/Q3r2CfLTrPFTycA
-         ne7iwtvTcuR+5J2qvZHHSvEBy9L9jaGgC6LQQKTs3owo/feJhha2D+0HdJVkv6IYcHeJ
-         ifYe2figPOqo5QTIN/jv6nslPKEGZHZuQmwvSK23ZjtbzZ9GfVpSnScN0oYkWQfL7Zhs
-         1hViFkxC/4/k5idau9fWplNNh7gTG47dJiXikIKH2QWF9QwANMNXVck5zEQhVerIB1n9
-         8L9AMSdTY0mt17AmFplSZ15YfZsNKVqtmv8svPRiyK77BBsbE4k1muoX7nUTXRXCwIxe
-         uorg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWF/JAqfrLvbHxxKDieO+MEmvgp336jGAg8LoBR7dcc2bvk5SB2hlW1AMrlvJzTYg0OCtFAF5n2wJzEDY=@vger.kernel.org, AJvYcCXi/7YJ/z+kl6UT5QSDHz/yzTWwwJhxW8lKnJPbe3WkEkNqHkuhoXfRqXNxQkJ1xpgIGT38nUZzIIAjmxCY8Pw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3XSlKjKr2x/f5OS0DF2BQ/J5YXutjzj43pFAc1YpT1YK1FZ2D
-	RHctQ+EvJBYffPIhCZNHLwbj/ZrtotbFhVYz9LyHR8OPKF9FyG0voMeb5LxmIkkVJh51mBuUCaa
-	HdD8g30PngkgBjToEHf2KPKUuSTKOn3vwEbbdTQ==
-X-Gm-Gg: ASbGncse9H0WMqSperGsrTNo+l/oOZA+VGrsIYMrqhcR+lnWY83qmNUG4Pw38YxmoPN
-	pZrICnCE8H4Tmft6JdppF4J/SvH+x7l3kx53CWeSP5CeMGCSaC6IO+Rzx6Jq8BVSIprQHQontmt
-	IoT+ffKWgToBMZrLFUFvTNIdrHi2Gf3qvOnH1K64dtZLPB6HWgUK1y
-X-Google-Smtp-Source: AGHT+IFV1kwk7Dc1/DJ8opPqj/YijponY1HB8C2Apxe4rbjqW+R/8bqgWst9NM8QjnR++Gs/zUMZYMaJ9OZq75kwj08=
-X-Received: by 2002:a05:651c:1189:b0:30c:160b:c766 with SMTP id
- 38308e7fff4ca-30d7e22790emr12839181fa.14.1742570707834; Fri, 21 Mar 2025
- 08:25:07 -0700 (PDT)
+        bh=ZI1O1RvgUqTEgM/cOz6gpXU53w7kyKs1V4Uu+k+QeY0=;
+        b=kFuukGYvR+iCpDfIke8Lcfb4/S4AID5le9B/zKdAoyqal8+9psrmErZrNzGoKzMQiJ
+         T9jIZGyret8VgmUuk6ar20kDLHHZ0e36WevWxvVHPjexVdZ8SxnP82Db18/9/pknhJa5
+         /crdvvDR9ZjoaKpD7YgNbsEOgS8oTaRW1jNkuq9WyhvGQykVTvIxVqgJFbefZ9VcFtRo
+         2nLZ4gE5ihx7kA76wIkz58wwMyT57dTwG5rXqVv2JyBIrnMbZ9Fok5qxLSuCjBItuQWl
+         /aRm1pediMyW0WGvThSxrPTj8aAdtb4/9npzpGrhaLhxWCkx/6TF3C9YO8dlRPdFF0PM
+         TuAA==
+X-Forwarded-Encrypted: i=1; AJvYcCWh2yztN1kIb7fbKa/wvbTXmc8v+QrRA8J44VQhY2QQZUJnV/a0vogGJdPIPSpR5eFuuIzsb7MX/PcjdSc1Hk4=@vger.kernel.org, AJvYcCXugZLdvnAuWVNfTfXw4zvaPfICIddBevJ8tNoANPM2TMqSdDHl8Kxj0So60Kyc0EqfP539HC//uAHD+a8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhOoRcLj2NkZ5U6cFlDFJo5GAQ8cfTsZ5r3ix9OZ0YniMGxK6p
+	eZF6qHhMc3RrZFlWWE0nmLB2kxA3xczysa8Zdj1x9EZeh6dhpBXOKAg/aaK9Xci3qEtddkMkwyl
+	/VVDHGHQDrLA0OxL+uuwKIfl0X90=
+X-Gm-Gg: ASbGnctErKI07qAsQjlcZlJYsfs7+VJ8vQ+0OUciB9GLCmHCSZ4Sy0fK0qMFwiCUtls
+	etokfbm2Q/1ffukk5sFZINhwVzWxyadDE1mNkO5A1JhuwWNLPcUcGxLZJfoYssbsHKMqbWA1HSI
+	+NwURC2EA2eL9K6iR9WJ3Vo84X8ZiRlBnkBGyCeQJL1VIL+z84Si0D
+X-Google-Smtp-Source: AGHT+IGjgqAUQuUxAQol6yWac/IbEOq7lPOeoWX+btKHU5g256W8ec3xKb1Dxl6YWOMiHfQxen7ebIKBRWLxAWwdups=
+X-Received: by 2002:a05:651c:231d:b0:309:1fee:378d with SMTP id
+ 38308e7fff4ca-30d7e2398admr12606941fa.19.1742572063068; Fri, 21 Mar 2025
+ 08:47:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250320-vec-methods-v1-0-7dff5cf25fe8@google.com> <20250320-vec-methods-v1-5-7dff5cf25fe8@google.com>
-In-Reply-To: <20250320-vec-methods-v1-5-7dff5cf25fe8@google.com>
+References: <20250321-vec-methods-v2-0-6d9c8a4634cb@google.com>
+In-Reply-To: <20250321-vec-methods-v2-0-6d9c8a4634cb@google.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 21 Mar 2025 11:24:30 -0400
-X-Gm-Features: AQ5f1JpXBlGnQ3JazYbDH3PPIovQYCgLxV02N5l_V4O0jjX8zkwXC8nGFpuSlPI
-Message-ID: <CAJ-ks9k=SxS_zAATadm8SZkfcY2OciYNaty3=WEs2iv5nFJRyA@mail.gmail.com>
-Subject: Re: [PATCH 5/5] rust: alloc: add Vec::retain
+Date: Fri, 21 Mar 2025 11:47:07 -0400
+X-Gm-Features: AQ5f1JpwgPj3ooHY_cy-n-Zupcz3hhp5-3c3R6A-Iv8v0KstNOG_5RgEY19xlQY
+Message-ID: <CAJ-ks9=RXZDsrqNDEyy4U_FL=ou=VJLXorqFoftepmZe98Xb0Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] Additional methods for Vec
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Benno Lossin <benno.lossin@proton.me>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 20, 2025 at 9:57=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+On Fri, Mar 21, 2025 at 8:10=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> This adds a common Vec method called `retain` that removes all elements
-> that don't match a certain condition. Rust Binder uses it to find all
-> processes that match a given pid.
+> This adds various Vec methods. Some of them are needed by Rust Binder,
+> and others are needed in other places. Each commit explains where it is
+> needed.
 >
-> The stdlib retain method takes &T rather than &mut T and has a separate
-> retain_mut for the &mut T case. However, this is considered an API
-> mistake that can't be fixed now due to backwards compatibility. There's
-> no reason for us to repeat that mistake.
+> I'm not sure what we concluded on the set_len / dec_len changes, so I
+> don't depend on that series for now.
 >
-> To verify the correctness of this implementation, you may run the
-> following program in userspace:
+> This series is based on top of Vec::truncate from
+> https://lore.kernel.org/rust-for-linux/20250316111644.154602-1-andrewjbal=
+lance@gmail.com/
 >
->     fn retain<T>(vec: &mut Vec<T>, f: impl Fn(&T) -> bool) {
->         let mut num_kept =3D 0;
->         let mut next_to_check =3D 0;
->         while let Some(to_check) =3D vec.get_mut(next_to_check) {
->             if f(to_check) {
->                 vec.swap(num_kept, next_to_check);
->                 num_kept +=3D 1;
->             }
->             next_to_check +=3D 1;
->         }
->         vec.truncate(num_kept);
->     }
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Changes in v2:
+> - Add two more methods that I needed.
+> - Introduce some uses of set_len.
+> - Add example to retain.
+> - Simplify pop.
+> - Adjust 11 to 10 in push_within_capacity example.
+> - Link to v1: https://lore.kernel.org/r/20250320-vec-methods-v1-0-7dff5cf=
+25fe8@google.com
 >
->     fn verify(c: &[bool]) {
->         let mut vec1: Vec<usize> =3D (0..c.len()).collect();
->         let mut vec2: Vec<usize> =3D (0..c.len()).collect();
+> ---
+> Alice Ryhl (7):
+>       rust: alloc: add Vec::clear
+>       rust: alloc: add Vec::pop
+>       rust: alloc: add Vec::push_within_capacity
+>       rust: alloc: add Vec::drain_all
+>       rust: alloc: add Vec::retain
+>       rust: alloc: add Vec::remove
+>       rust: alloc: add Vec::insert_within_capacity
 >
->         vec1.retain(|i| c[*i]);
->         retain(&mut vec2, |i| c[*i]);
->
->         assert_eq!(vec1, vec2);
->     }
->
->     // Used to loop through all 2^n bit vectors.
->     fn add(value: &mut [bool]) -> bool {
->         let mut carry =3D true;
->         for v in value {
->             let new_v =3D carry !=3D *v;
->             carry =3D carry && *v;
->             *v =3D new_v;
->         }
->         carry
->     }
->
->     fn main() {
->         for len in 0..10 {
->             let mut retain =3D vec![false; len];
->             while !add(&mut retain) {
->                 verify(&retain);
->             }
->         }
->         println!("ok!");
->     }
+>  rust/kernel/alloc/kvec.rs | 202 ++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 202 insertions(+)
+> ---
+> base-commit: a337a03281efc4553191b432d757d4c04884bf4c
+> change-id: 20250320-vec-methods-adfa41e55311
 
-Now that we have kunit in rust-next, should we make this into a test?
+I think this doesn't specify the dependencies properly. The
+base-commit looks to be
+https://lore.kernel.org/all/20250316111644.154602-3-andrewjballance@gmail.c=
+om/
+locally applied. This prevents `b4 shazam` from working with this
+series.
