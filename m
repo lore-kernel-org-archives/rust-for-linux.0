@@ -1,113 +1,74 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5D41F0E45
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 08:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC608BEE;
+	Fri, 21 Mar 2025 09:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742544147; cv=none; b=funNs4ELRG/KJZlXctn5DUBMlCJmow3dKfCpSziCHVlla8Q8elVC9yJxDJuq8QFaWChGQPk8gyGx9mJrLCgTtPw+z3PDEdapyhdQkJud3gyWnozgIRjwsqKrE9PTH0jwGff5a7j9TC78v2+68HCOpPSRn3F8mdf5c6XoOZDjpFk=
+	t=1742547866; cv=none; b=g1KxdX5M0KKWPJKfYlwQQWngtVm5/iGzFkJQzBo3xb/Mg1FcVqVJBs/c11psBM1lWwEjtdOdyrF7ehNzI+BIL0sIyRQqsvbST5cDx/AKtgqNzRXLSImFpCFQeHwRxplk3bjtuqBloxQ5I5EWBG7JK8IkhTeTYkBMUMY+oRFRaEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742544147; c=relaxed/simple;
-	bh=E/3xA5TSRplkqcvUWy2xH8YWhw0I/szCKQFmgqO5W1U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p/ooTsv3KmrsRsSFVvu3la5mVLImF9khTS4Saob0ytTuIIdyAEncB1udpbkjw2EWQJ5gDwOsHBIv9O7OssFE6B+l4LYIDxMDv/ILkYKglnKC40roMX+K4MSbuZsqoe21csK7VHXY+mBJ0wm4VNbDTTNpZo0bHYnvdnvV6+3p+KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HU3zTDFk; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742547866; c=relaxed/simple;
+	bh=gg9hEPqRWjLsC34kOaZebN3D3xciWD7Inmq5RpjuyTo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a7hYsh2ImjGz6AWzeNVLoZ0ZBp7+kofRgUt5GsVdojA9+/suKn+VGeei95NeZTMh6HGRl16imAyXTDJLxCQ3VCkbgK4dAkeZg/gJythie9EP6DtvTEp4O+KCDXl90EQp13if+pvpC37BceFMf0LAaLy02uCFm7LUYd9vr5QQ9X4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bomm0v7m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HU3zTDFk"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742544139;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=M5i/nd2YL8RmqyaRGqU7qQe2+6A4Zpd/zpAtI9MB0u4=;
-	b=HU3zTDFkcJOvYJTXaZJQ7JFJNmvrrrYlYjO5+jHb0byL1Rsq6z90YZH/783BxGh/e+zCBd
-	vYLD/e+w/1DHmaxsn+Xqm05oG4ppONLzJGnOr5DU/gIjCxSvnd887GKG5piCGJX1+Ag4Qd
-	1jeC+BvlUXpW/oGq3zTVbow/MiqDRy4=
-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Grace Deng <Grace.Deng006@Gmail.com>
-Subject: [PATCH v2] rust: page:: optimize rust symbol generation for Page
-Date: Fri, 21 Mar 2025 16:01:24 +0800
-Message-ID: <20250321080124.484647-1-kunwu.chan@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bomm0v7m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28552C4CEE8;
+	Fri, 21 Mar 2025 09:04:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742547866;
+	bh=gg9hEPqRWjLsC34kOaZebN3D3xciWD7Inmq5RpjuyTo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bomm0v7m/qiXPg9sp+hvXCAusT7kty5EkAKNLho7jGZPNyaRWKA8VMpsqMEb9EXvu
+	 tiGo59MUtpYLLjNwnRJUlV5reWJa59uZKszehT9gaBGaQT+7MZZDJ4yxnyM0r65zDD
+	 SF2BR7v6wIbQT+uV9BYXEBz0mzXZAvbG5VEokv8/PmhehYzGM1obqUruvhmU7y6awM
+	 VJr2EuLpqc83C0GDCE5aaOx8/MTnoDXTKiyGVqCjDWfIA+qKWbvbquKZIHeZvbLfDk
+	 m35l9yyigN12aWBPPRNQIB2vLsPGWdAXsThgb1wIlGVxtAx6toEr1aWRU6zp56FKLg
+	 DOBu5SpYqmjgA==
+Date: Fri, 21 Mar 2025 10:04:20 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: bhelgaas@google.com, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] rust: device: implement Device::parent()
+Message-ID: <Z90rlKC_S5WQzO8P@pollux>
+References: <20250320222823.16509-1-dakr@kernel.org>
+ <20250320222823.16509-2-dakr@kernel.org>
+ <2025032018-perceive-expectant-5c48@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025032018-perceive-expectant-5c48@gregkh>
 
-From: Kunwu Chan <kunwu.chan@hotmail.com>
+On Thu, Mar 20, 2025 at 06:40:56PM -0700, Greg KH wrote:
+> On Thu, Mar 20, 2025 at 11:27:43PM +0100, Danilo Krummrich wrote:
+> > Device::parent() returns a reference to the device' parent device, if
+> > any.
+> 
+> Ok, but why?  You don't use it in this series, or did I miss it?
 
-When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-with ARCH=arm64, the following symbols are generated:
+Indeed, it should rather be at the auxbus series.
 
-$nm vmlinux | grep ' _R'.*Page | rustfilt
-ffff8000805b6f98 T <kernel::page::Page>::alloc_page
-ffff8000805b715c T <kernel::page::Page>::fill_zero_raw
-ffff8000805b720c T <kernel::page::Page>::copy_from_user_slice_raw
-ffff8000805b6fb4 T <kernel::page::Page>::read_raw
-ffff8000805b7088 T <kernel::page::Page>::write_raw
-ffff8000805b72fc T <kernel::page::Page as core::ops::drop::Drop>::drop
+> A driver shouldn't care about the parent of a device, as it shouldn't
+> really know what it is.  So what is this needed for?
 
-These Rust symbols(alloc_page and drop) are trivial wrappers around the C
-functions alloc_pages and __free_pages. It doesn't make sense to go
-through a trivial wrapper for these functions, so mark them inline.
+Generally, that's true. I use in the auxbus example and in nova-drm [1] (which
+is connected through the auxbus to nova-core) to gather some information about
+the device managed by nova-core.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1145
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
+Later on, since that's surely not enough, we'll have an interface to nova-core
+that takes the corresponding auxiliary device. nova-core can then check whether
+the given device originates from nova-core, and through the parent find its own
+device.
 
----
-Changes in v2:
-- mark inline only for 'alloc_page' and 'drop'
-- reword commit msg
----
- rust/kernel/page.rs | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index f6126aca33a6..7c1b17246ed5 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -69,6 +69,7 @@ impl Page {
-     /// let page = Page::alloc_page(GFP_KERNEL | __GFP_ZERO)?;
-     /// # Ok::<(), kernel::alloc::AllocError>(())
-     /// ```
-+    #[inline]
-     pub fn alloc_page(flags: Flags) -> Result<Self, AllocError> {
-         // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
-         // is always safe to call this method.
-@@ -251,6 +252,7 @@ pub unsafe fn copy_from_user_slice_raw(
- }
- 
- impl Drop for Page {
-+    #[inline]
-     fn drop(&mut self) {
-         // SAFETY: By the type invariants, we have ownership of the page and can free it.
-         unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
--- 
-2.43.0
-
+[1] https://gitlab.freedesktop.org/drm/nova/-/blob/staging/nova-drm/drivers/gpu/drm/nova/driver.rs
