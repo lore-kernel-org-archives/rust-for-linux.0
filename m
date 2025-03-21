@@ -1,71 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEA21E7C3A
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 23:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5832A1C9
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 23:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742600307; cv=none; b=vFWiXjMVznwTJB9/qmPHgZCPp659QbISm0ug/88JTMfKso2UdvPSFhKS9LTCJbteaFCcm809jh2bj7kL0reN/v+X6x8aIorALIoMXLS+BoceZaansg562JgWTUtkSAdEP4sJ+wjyZPpTqBN1kULOVLmH0IlH/lS9SixYc+vgfSk=
+	t=1742600548; cv=none; b=paoHPXPocPhsn3TXD6HnZvKUci4y8nLsT031bqJ1EHJwUlbZMqQ/ybEGlJD/nGo3SzPCU9qmpeZ9hYRETAr9qp/0YcsqZXxfcgOENt1LQtgFubevPcudQ3Arl37+fOmRbjClTs4UXz0RnR7jVwFXPjkmIVst6OgwTkuYLK1pOwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742600307; c=relaxed/simple;
-	bh=pgUELZXwitonyu8HEmlCKfLK/1PBCiWxoWAj3hHCP5U=;
+	s=arc-20240116; t=1742600548; c=relaxed/simple;
+	bh=ey6GIcNEiX7ve9IMdRE1Qt6NLCh2Iyf602d679nR4r4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f0bNtE/7H2F9qeqx5qIael8G+0eDEgI4TA5nkM1jbsiWRQ/p8vxEV7c8RyPuM2+cjhUwubhOk1gTnwoIhW0l7ms3n7LKVZkIKuJFP2Mz1QM5jq8vD8g2LkiAiVwX0QMtlawVnuijsubIDbD0CSnkZLf5bfNa2n+eIoss+p99KoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TRayAld4; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=FFioHDYTl/LXyfmDJ9dBvONtnCpfpzMpYhp2NnYddnWcxc7AJIHoj22zgnnK+47VRAPprIN7+dy5DFc4pZhC7K8a5b4V5RYJw4hYWp/Q5Wm1WB/ZOsbclyCCqtpkWfLFHoHTvmmzb6m35EN6rTCnpwhvPup5O9lPwZVxYx0pBy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FlnMFk6M; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TRayAld4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FlnMFk6M"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742600304;
+	s=mimecast20190719; t=1742600546;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pgUELZXwitonyu8HEmlCKfLK/1PBCiWxoWAj3hHCP5U=;
-	b=TRayAld4d8L5W/slm8mKc6nX1zz/48cCKsrUJezZZwRm6KVs0LXfSXJwfe+/Pz5WMqAH3p
-	JUY0hzBhtC5vc4ATs56j2k+D8cF47UJtP0rlO9+/COhyLX/eOhTw1wS09DOLFGhEXiJ0+Q
-	PdADpdD72mlPQCFhC7JA5jdCnvg1NcU=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=zZpNf7khH2Js4tOY3mnDKV33a/y91jvPlLT+xZiqQak=;
+	b=FlnMFk6Msh6QP94M0mgmaqQJwU4I4G8C7x3d/McB3jgPRp3NvJB+/9HWwYGFUxgUOFoqDU
+	X6VxzSVOCkkJC09vDaLPCuwY54N/UI6OiZGcYDhJI2X4viMGLPiDqGVs8jsJHKF0uD1X3w
+	f5Dn389R5p5/+y11rhxUmhlthMNZCQk=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-zF3jYT-0OW2qrpRUodaHnQ-1; Fri, 21 Mar 2025 19:38:23 -0400
-X-MC-Unique: zF3jYT-0OW2qrpRUodaHnQ-1
-X-Mimecast-MFC-AGG-ID: zF3jYT-0OW2qrpRUodaHnQ_1742600303
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6e19e09cc20so47233976d6.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 16:38:23 -0700 (PDT)
+ us-mta-644-_vhaGpm_O1CeQV1pKD8S-Q-1; Fri, 21 Mar 2025 19:42:23 -0400
+X-MC-Unique: _vhaGpm_O1CeQV1pKD8S-Q-1
+X-Mimecast-MFC-AGG-ID: _vhaGpm_O1CeQV1pKD8S-Q_1742600543
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6eb2e88d7dfso35217346d6.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 16:42:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742600303; x=1743205103;
+        d=1e100.net; s=20230601; t=1742600542; x=1743205342;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aYnmU3avh88HdvO93ru6my28atpPur8I2tB/vuT/PjU=;
-        b=X+JuTI4cR3yyVNiVC7yZ6xZZfOvTSNpnOlqf4CIjpA1JiYhPWMKhTp7lcvvdx5A+/J
-         ckg7DugohxHydkVc8Nv+5vWt1zlEcIsAbocqYeBaJmBBM0E7/+J+oMlQWq+PoBPsTSW6
-         Kcc1Zq10WRLH85mXMc9D3gT6e8aI1rPH2HJyhFnT1DR5AMD+BfnxqPwpl8V61sRhBnYy
-         nDTBCGXsG0LYKSy9pWwzsx6wTho9f6rDXwVXvSjlGQZEUJkQQEqLryxv3iudr50Cr2qY
-         39bCYFLjFN8wecyrvUloe59tt/YA4RYE5/v5Qb8u6vdR3HtxDGPu97BhQ+mpQLYXQdQa
-         ri3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUqgVSfUZiEPEpbN7+YaY7el/HI7Z7zBZW5mQ1tUD+wIv6V8BzrUlU3Jd6Xdh73GebGL/ndYmrEm33Lm5gnSA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq2JXD7ypMs5Bx4i0cp3tecQUjOgvgV+WrCYFE7AvG1noUI7VS
-	RtzofKGWAJms5eTekRzPvICRmIMSDYvUAV22kjc0dwOLQttNVPWA1xhFYS2xSnVNWPctfNy7x/1
-	+F31nD3XtO82q9kH2jfIgwhwd5Ej5xQlj2ooZhEB4PoKxU76+sc2F2j2IFQaI7X9K
-X-Gm-Gg: ASbGncuuLMxcQt3+iiOeYsXYvBlzEMdw/Og95xMoSTwli1LEugO+wXdivZ/iHmRLrvU
-	jLHQfTJBDZNCxYnrUj1iELrvez1l+f0IdZ9FpijifNms24IlhQdnJ21GpRi05bO5u1ThpOQmWrk
-	hQVwDeqcg/KjeJPnj7QuPTioY2FZXUDSrg6h8Ec8kx4kXHPpgZa+kT9gWiHa1nypHRpvEZHt3fx
-	hYWmTqAtjrQR2E0y2H3rDHc85dyjVDQGYxd9Gpa7C+oV7Q3KpIYpMFCSo5EJpHICl6ePJvD0Dhj
-	Dlmk+13bUkKzwFW1UN2BFg==
-X-Received: by 2002:a05:6214:d4e:b0:6e8:f9a9:397b with SMTP id 6a1803df08f44-6eb3f28f50cmr89965436d6.15.1742600302853;
-        Fri, 21 Mar 2025 16:38:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKN3Bq2OXqArBojXUpDWvIFJfSc9GjhgWgPa5NmxQ4mXCCMNou5rxPUalLa6fq9Z9RDfK6Zw==
-X-Received: by 2002:a05:6214:d4e:b0:6e8:f9a9:397b with SMTP id 6a1803df08f44-6eb3f28f50cmr89965136d6.15.1742600302563;
-        Fri, 21 Mar 2025 16:38:22 -0700 (PDT)
+        bh=zZpNf7khH2Js4tOY3mnDKV33a/y91jvPlLT+xZiqQak=;
+        b=F7WshsmGx0HK1axT+9lNLa5lZVrmZkhAIM8nDI9Nz8KaK7C3DcX2FJz0cKyld9pOo4
+         5IjD4hEGrJDggVLCGNs+edjfq7rUR0rk5fEOQ1tTaw7GlF+PeJFeF57Mp/l8z+Pp3kLL
+         uRiMX0Z/spI+qup9c9ndBaFMF5a0ZrwehyEef5Ygya3wJxz5TfIn2IAKLNyzmazZukOy
+         3xjS7d+YXxyKfCee49BEuCMRoQ7NFSEUYUjVlsNGLdAMbPCDeq2JEzBCKAtAyiEw/jjT
+         B7xCRseBeGgEah4+i2NdLaN3UkXtFY7Ra+zUDRDbGfT8Fpx0twlUsHEv//jyCJgh6G0/
+         yzfg==
+X-Forwarded-Encrypted: i=1; AJvYcCVr8ZgTzbZo4Vs9xZ6a1OMZHV32mk2nFMAEHscfclK1hoeKNUGG4cqL2dhtcTlpsPesG4X5vuv/orU7L9KXjw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6+88wC9TpdyoUrKr8oMhMFb+EEl7GbGMRLwWBGNqSHQW81tJp
+	uAqbP8ThzvB28TkaDL/VzH4jje3E5SjSn0wRM/r9HDiKW4+sPsmk7x/33ll8b8j5ig75LZpCVV9
+	OMrfU0pjyUJlpbS/XPLyHgrO4NFIbZBz21GoezCPepNn8ucA65eYR2b8nYe0AMDGLcPOpA9tg
+X-Gm-Gg: ASbGncsTEyW5eR/Ujjf4A9XsOVHwnQYBNv6OgohZCnKo8ivFiPwuT+PcYQQ4VsW3vxx
+	9YHXIz2+m+4B9xjia/gbLSwo6M8gCPCtNkMXORM92JkoO/k3GZBnC2szGCNq+CFzCttmhAw25Sd
+	w78EbAZ+u8TXVbOUqhjDR3pyxnsCk7ZilAbo0yJhyYR26NRjvbYUZkN1rJDlYXE7diABhXESh6F
+	I7aqA2p/tdUKJwonFbPgCNZ6jOCYCVAnIWEKikemeWecEVHUUV65B4P+AkOlu0PDiIqJOxrqz2o
+	0CDRcZuJGWpuAmosR2FYwA==
+X-Received: by 2002:a05:6214:1c0e:b0:6ea:d393:962a with SMTP id 6a1803df08f44-6eb3f27d77dmr72162756d6.1.1742600542733;
+        Fri, 21 Mar 2025 16:42:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEgUe/0T/fsNk+5sy7Ip3+VWlwBBC8GZ6FTkBhcxDw1iLXCqbNgdmxsyxXrvEPQgtYKN1zdag==
+X-Received: by 2002:a05:6214:1c0e:b0:6ea:d393:962a with SMTP id 6a1803df08f44-6eb3f27d77dmr72162596d6.1.1742600542458;
+        Fri, 21 Mar 2025 16:42:22 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3efc5a28sm16185986d6.89.2025.03.21.16.38.20
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3efc5bf5sm16263896d6.70.2025.03.21.16.42.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 16:38:21 -0700 (PDT)
-Message-ID: <a27e378d73b8d8900b514d493ad37daee5211e2f.camel@redhat.com>
-Subject: Re: [RFC v3 05/33] rust: drm/kms: Add drm_plane bindings
+        Fri, 21 Mar 2025 16:42:21 -0700 (PDT)
+Message-ID: <514f42ce85cbb9867109e9e69d02818953315aec.camel@redhat.com>
+Subject: Re: [RFC v3 07/33] rust: drm/kms: Add drm_encoder bindings
 From: Lyude Paul <lyude@redhat.com>
 To: Maxime Ripard <mripard@kernel.org>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Danilo
@@ -75,15 +75,14 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Danilo
  Gaynor <alex.gaynor@gmail.com>, Boqun Feng	 <boqun.feng@gmail.com>, Gary
  Guo <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
  <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Greg
- Kroah-Hartman	 <gregkh@linuxfoundation.org>, Asahi Lina
- <lina@asahilina.net>, Wedson Almeida Filho <wedsonaf@gmail.com>, open list
- <linux-kernel@vger.kernel.org>
-Date: Fri, 21 Mar 2025 19:38:19 -0400
-In-Reply-To: <20250314-tunneling-brown-hornet-a6c584@houat>
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Asahi
+ Lina <lina@asahilina.net>,  Wedson Almeida Filho	 <wedsonaf@gmail.com>,
+ open list <linux-kernel@vger.kernel.org>
+Date: Fri, 21 Mar 2025 19:42:19 -0400
+In-Reply-To: <20250314-manipulative-important-mackerel-7a25ba@houat>
 References: <20250305230406.567126-1-lyude@redhat.com>
-	 <20250305230406.567126-6-lyude@redhat.com>
-	 <20250314-tunneling-brown-hornet-a6c584@houat>
+	 <20250305230406.567126-8-lyude@redhat.com>
+	 <20250314-manipulative-important-mackerel-7a25ba@houat>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -93,74 +92,42 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: tY_fOPOrrCk04YEfh7g_jaHjEn0ga_Wd1VpdQyw4IIg_1742600303
+X-Mimecast-MFC-PROC-ID: z8Mmodo6e7iEmuiMgr5eY6xs8Cb_iwvmuQ6Dn9hsLFo_1742600543
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2025-03-14 at 12:37 +0100, Maxime Ripard wrote:
-> On Wed, Mar 05, 2025 at 05:59:21PM -0500, Lyude Paul wrote:
-> > The next step is adding a set of basic bindings to create a plane, whic=
-h
-> > has to happen before we can create a CRTC (since we need to be able to =
-at
-> > least specify a primary plane for a CRTC upon creation). This mostly
-> > follows the same general pattern as connectors (AsRawPlane,
-> > AsRawPlaneState, etc.).
-> >=20
-> > There is one major difference with planes vs. other types of atomic mod=
-e
-> > objects: drm_plane_state isn't the only base plane struct used in DRM
-> > drivers, as some drivers will use helpers like drm_shadow_plane_state w=
-hich
-> > have a drm_plane_state embedded within them.
+On Fri, 2025-03-14 at 12:48 +0100, Maxime Ripard wrote:
+> On Wed, Mar 05, 2025 at 05:59:23PM -0500, Lyude Paul wrote:
+> > +unsafe extern "C" fn encoder_destroy_callback<T: DriverEncoder>(
+> > +    encoder: *mut bindings::drm_encoder,
+> > +) {
+> > +    // SAFETY: DRM guarantees that `encoder` points to a valid initial=
+ized `drm_encoder`.
+> > +    unsafe { bindings::drm_encoder_cleanup(encoder) };
+> > +
+> > +    // SAFETY:
+> > +    // - DRM guarantees we are now the only one with access to this [`=
+drm_encoder`].
+> > +    // - This cast is safe via `DriverEncoder`s type invariants.
+> > +    unsafe { drop(KBox::from_raw(encoder as *mut Encoder<T>)) };
+> > +}
 >=20
-> It's one of the things where I also think you could have broken down the
-> patch some more. drm_shadow_plane_state, while useful, is not central
-> and could be handled later on. Both would ease the review, and we could
-> merge the "central" plane support without it if we disagree only on that
-> part for example.
+> I'm not sure we should expose drm_encoder_cleanup() there, if only
+> because it's not really up to the driver to deal with it anymore. We're
+> switching to drmm_encoder_alloc/init where having a destroy hook is
+> explicitly rejected.
 
-whoops! you're right, except this was actually from an earlier version of t=
-his
-series because I ended up dropping drm_shadow_plane_state support. I meant =
-to
-remove this part of the commit message a while ago. We -could- add it somed=
-ay,
-but my experiment with that basically left me with the impression that it
-doesn't actually make much sense to have this rust land, at least not in it=
-'s
-current form.
+so - I'm totally for doing this on the C side of things, but unless I'm
+misunderstanding something I don't think we can use managed resources like
+this in rust. Mainly because dropping objects in rust is very often more
+complicated then just dropping an allocation due to RAII. So we need -
+somewhere- to hook in additional behavior when a subclassed structure is
+destroyed.
 
-I'll make sure to drop this comment on the next version
+...unless you're saying we could have ->destroy without drm_encoder_cleanup=
+()?
 
->=20
->=20
-> > Since we'll eventually be adding bindings for shadow planes, we introdu=
-ce a
-> > PlaneStateHelper trait - which represents any data type which can be us=
-ed
-> > as the main wrapping structure around a drm_plane_state - and we implem=
-ent
-> > this trait for PlaneState<T>. This trait can be used in our C callbacks=
- to
-> > allow for drivers to use different wrapping structures without needing =
-to
-> > implement a separate set of FFI callbacks for each type. Currently plan=
-es
-> > are the only type I'm aware of which do this.
->=20
-> And I don't think it's any different to any other driver structure. It
-> looks like most of the users except two don't have any additional data
-> so can't we do something like
->=20
-> struct ShadowPlaneState<T: Default> {
-> =09...,
->=20
-> =09data: T,
-> }
->=20
-> And just put that into PlaneState just like any other driver?
 >=20
 > Maxime
 
