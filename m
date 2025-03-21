@@ -1,159 +1,132 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049B113C914;
-	Fri, 21 Mar 2025 18:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8117B664;
+	Fri, 21 Mar 2025 18:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742583012; cv=none; b=NXCsHDRGz0bYYYIWIVA9HJHMc4kBjQAY6TAQUDNZakhULXmP3nGns/4XuPP50PTFlp3cQ5FyvONefgYCrXZRpXmBsb7CGYBUxJYfgq9JMqX/YCAoAR/AeDHxkqzAXkbTlENqfFRk/CtS2Pq23FiJsIdxBwsgDSS2g6kvDeVblJ8=
+	t=1742583307; cv=none; b=l7hAti0bePkYzAXxYpOBlDqmLHfGYSDy94P3PVkIAmEEYR+fDyICawJr2G2h9JKNUgUWiaQME+WL4Eokj9AeXNF3On1TZIYrRgCiKcj1Q9X3vXoeultc/cxyd7kdmsy8DUAo+ejnmQFTJAd1OGbcKWZQ6S2gul0AHK22baiFiZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742583012; c=relaxed/simple;
-	bh=PAq4YSXlLH92f6ljS7pmGtSfDM5r2ttCPvDBxri8m18=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UdxnFcKtT5F3lCcknYgkVKKhj4+fWhn8QVmn4/TQeUeFl1C8yyfH7LArQ8yG6Q1FSBpi94I6UgS/1cMa+/SEXGVWoG9VmDAQAMZwPO9pMOMHOg+vgmyxyE98eydzG6qyYrVWAe9lCVUHb4sKPqwEtU2JlYt6wrTdl0Pop3zMSSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rjig29wJ; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742583307; c=relaxed/simple;
+	bh=rMMq1uu2izef6+gd184FJdDmgM39ReEWsi5zY0wKNNY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YQfhC3pFbiXTUX8OcsZJZc3BNmxI4hIUEzpMdGvGIjO9cErq02TWoREeeTqJakme62fPnBTjjeEl4gsfuc2w0X1IR55oTQshRJfafA5O9G3aahlCYoTwASC4BsTw0ATd/6y5fVw5+oP/pM/lhTGjRbxJkwPkRQDJj0blLnUCmVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DdB+fJ+B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rjig29wJ"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ff6b9a7f91so654244a91.3;
-        Fri, 21 Mar 2025 11:50:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742583010; x=1743187810; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PAq4YSXlLH92f6ljS7pmGtSfDM5r2ttCPvDBxri8m18=;
-        b=Rjig29wJgCnOfl7BwsgjE3GFaZIQXoMOvMkDFdO/yWOtzw0pt7ZTY+UF+xMisA4+EP
-         ljVJYK8ehG5f0/e7C1xFmp4UAziUPvh+JDP698+4FK92xdxNO43oOjuJOHTbgXkYEDp3
-         36tygtNOcH4l0jUor52BAKtvgHeGtZiciLoYYhqiXfzw5b+mqt+A/cdrsMzz0YGXkbHp
-         51sghcv/wdghlpXvzKBN63+HfsIrvwnOeRNz5KklD44dPkTYtFbSniLgRNUDXzfzlbQO
-         9RzbqL6qOWmylEfJzD5DO5dSee1xFSUUpZ72SrVFekBdoAW6u7xXHq90sLRKAfR4by7h
-         Nyfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742583010; x=1743187810;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PAq4YSXlLH92f6ljS7pmGtSfDM5r2ttCPvDBxri8m18=;
-        b=Ak9b+Vf1uvYaRhO7ooyxghY6tcRRRqwnhM6cZxtsZspPcwNbHpiimkCUNVdAqfMHcF
-         N2mebYfVrpKkk/rIpDwF6R5ZgKaw6uWK+ffoXfjDl5hkUN26acS5iR+YDBpWaA7vMtmy
-         I971dswGJgPcuqkw1B6Q7NLgrgLqBAyxsKM7MplpUiJ+byXEbeJpJ+JkgIOBnV/DJHXS
-         PdwQ53V6gQMr6GXg2a4vORnSCr9b3X62eWVU5cuxS6Q831Sqdmv+CVNqZz68Bk6qqhGG
-         FIbnvmmSj6QxnLj9t76g8GJbVUNHNU6ZuVcR6NzI0SLZkG75fvZPQ/xiiOze8z9Qz/Fk
-         1xDw==
-X-Forwarded-Encrypted: i=1; AJvYcCXg6hzfLnMkQFal2SHf99LoiBHKQo7bICgTVwmF7amdVYTKJnu043PcJxuVhog9xC5KGZsphqJ/we0jX1hGBwU=@vger.kernel.org, AJvYcCXstENHr575DdkZtBNarHdAxMeP2sXoJZ9NV73QUnNlsZNIbifmZTAxhHgQD4DGCAKx53Eie2QdBWG5uhU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw13n0xfAgSy1EOpl+l4NejXuswLt+RlIJjbfNM0+qnxXn90mV0
-	6dSnDzoW20FAZ0QMXe5Qq9CzLfa8AzyxEwwjG7ziOQW702P9HLiw937Pmpcg02xRMS806bUOGbA
-	BT9Ijka55RHgDrnLC2koGtJObuoA=
-X-Gm-Gg: ASbGncu6Dxdy6xyDnPyT9Ifs7f2sr/jepKdn2SL1Q7VMzw98S0mz9TqAvmR12TBSLbj
-	1Y4qpPCjVJAh0yzfzrJl/Cp3roXKy+qDZAQb1v2nWjTX58V7f72iiUaxM+SQxzTNKyKUCD3kne9
-	AjtHs+dUBIx1bxy034NYnlYZP/FA==
-X-Google-Smtp-Source: AGHT+IFZTxovkwT+vDiPvlu9XVghR0Bg3UXmwzcuOoaNC/Hfewejjf04kI82WgRv9nDG6XEPA2ggYqyAA2z4UTaw9zo=
-X-Received: by 2002:a17:90b:3a90:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-3031f4eacacmr874973a91.5.1742583009924; Fri, 21 Mar 2025
- 11:50:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DdB+fJ+B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BE9C4CEE3;
+	Fri, 21 Mar 2025 18:55:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742583307;
+	bh=rMMq1uu2izef6+gd184FJdDmgM39ReEWsi5zY0wKNNY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DdB+fJ+B+Tnzc3k43NwDuLYGiQQy0ujnSpNzowHog6mHXHqgVF2fc3CWaenHUWpdn
+	 H2qtWJU7uv5An1rxG9b7v4DbD9odAbyDlDIUYAZaj0js8BKM3QyZss1O4Qrx28GA1P
+	 AWx21102KI1UX0ridwsx6VEf5pKuxTNyBgkmkZjlu3uWwJBw51cBgHCKK7gkuUwMRM
+	 IHrJkauJ4iLknflstQIeNwCKN4EQMn8a72jhCacsGFWqLK2SneUerFqR6aPBMlC1eL
+	 5X+Jm6ehGJOWXiaAnddv+ZvsRZ4bHPJTVNEV0uyG/AzhELsM53bf5pUIdh67AoG9gy
+	 usOMOmBJzhrUg==
+Date: Fri, 21 Mar 2025 19:54:55 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Dave Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	paulmck@kernel.org
+Subject: Re: [RFC PATCH 0/3] gpu: nova-core: add basic timer subdevice
+ implementation
+Message-ID: <Z921_7-I0bXDN_Si@cassiopeiae>
+References: <Z8rKVZolu8n6lB1P@phenom.ffwll.local>
+ <20250307123255.GK354511@nvidia.com>
+ <Z8rv-DQuGdxye28N@phenom.ffwll.local>
+ <20250307145557.GO354511@nvidia.com>
+ <Z9LsbhzjI-P3-edQ@phenom.ffwll.local>
+ <20250319172132.GL9311@nvidia.com>
+ <Z91A_Dz-nY2iFqYb@phenom.ffwll.local>
+ <20250321120416.GX206770@nvidia.com>
+ <Z91XrltJYtJdkLUS@pollux>
+ <20250321174920.GZ206770@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250321111535.3740332-1-bqe@google.com> <20250321111535.3740332-4-bqe@google.com>
- <Z92N8dyIE42ROW2t@thinkpad>
-In-Reply-To: <Z92N8dyIE42ROW2t@thinkpad>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 21 Mar 2025 19:49:57 +0100
-X-Gm-Features: AQ5f1JoamPxaZDszfEleFQXyjzGMmWaW9WuNHZ-MmlZmGQBEto1yEIVCBzHA7QA
-Message-ID: <CANiq72kYzx7JTVqrJuP0Wo9=1qtaN7s7fqkD5DDcjA59SgMizQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/4] rust: add bitmap API.
-To: Yury Norov <yury.norov@gmail.com>, David Gow <davidgow@google.com>
-Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250321174920.GZ206770@nvidia.com>
 
-Hi Yury,
+On Fri, Mar 21, 2025 at 02:49:20PM -0300, Jason Gunthorpe wrote:
+> On Fri, Mar 21, 2025 at 01:12:30PM +0100, Danilo Krummrich wrote:
+> 
+> > Not all device resources are managed in the context of the subsystem, so
+> > subsystem-level revokes do not apply.
+> 
+> They could, you could say that these rust APIs are only safe to use
+> for device drivers with C code providing a fence semantic, eg through
+> a subsystem.
 
-A couple comments in case it helps regarding the docs/comments discussion..=
-.
+Not sure how such an implementation would look like. How would you model such a
+requirement through the type system? Or do you propose to just use unsafe {}?
 
-On Fri, Mar 21, 2025 at 5:04=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
-rote:
->
-> In C we separate declarations from function body with an empty line.
-> Can you do that in rust? Can you point to a rust coding style? Do you
-> guys really use 2-whitespace tabs?
+> > For the DMA coherent allocations, please see my comment in [1]. Revoking the
+> > device resources associated with a DMA coherent allocation should hence never
+> > cause any overhead for accessing DMA memory.
+> 
+> > [1] https://github.com/Rust-for-Linux/linux/blob/rust-next/rust/kernel/dma.rs#L120
+> 
+> I don't know what to make of this. You argued so much to support
+> revocable for rust ideological reasons and in the end the proposal is
+> to just completely gives up on all of that?
 
-Please see https://docs.kernel.org/rust/coding-guidelines.html.
+And I still do so for certain cases, such as I/O memory.
 
-You are right that the example block you quoted should have the
-formatting fixed.
+For the CoherentAllocation though, AFAICS, there is no reason to revoke all the
+memory, but just the device resources behind.
 
-I am not sure what you mean by separating declarations from body here.
-I guess you mean variable declarations in C vs. the rest of the body
--- in Rust it is not done, i.e. declaring new bindings in the middle
-as they are needed is expected (and sometimes needed).
+You gave me the relevant cause for thought on this. I don't see why you would be
+unhappy with the idea. We still correspond with the rules of the driver core,
+i.e. ensure that device resources do not out-live driver unbind, but still don't
+have to deal with a revocable wrapper.
 
-> I think I already asked to make the test a separate unit. It's amazing
-> that rust understands scattered commented blocks of code and can turn
-> them into unit tests. Unfortunately, I'm not.
->
-> Please create a separate unit and test everything there, just like we
-> do with normal C code.
+(One side note, please stop continuously accusing me of things, such as having
+"rust ideological reasons", not having gone through proper review with the
+driver core abstractions, etc. It won't achieve anything and does not come
+across very professional.)
 
-APIs should have examples, ideally good ones etc. The above looks like
-an standard example, but maybe I am missing something.
+> 
+> Not even an optional runtime check? :(
 
-The examples are meant to be documentation first and foremost, that
-happens to double as a test (so that it does not get out of sync
-etc.). It is how we document everything else in Rust, and in fact we
-are becoming stricter in requesting more examples when people add more
-APIs (otherwise they never get added :)
+What kind of runtime check do you propose in the meantime? Maybe you can send a
+patch? That'd be very much appreciated.
 
-If actual tests are needed (i.e. on top of what examples provide),
-then we just finally landed in -next `#[test]`-like support, i.e. unit
-tests that can be written separately. We try to have tests as close as
-possible to the code they exercise, too, but in some cases it may be
-best to separate them (e.g. if there are way too many).
+> 
+> And I'm not sure about the comment written:
+> 
+> > // However, it is neither desirable nor necessary to protect the allocated memory of the DMA
+> > // allocation from surviving device unbind;
+> 
+> There are alot of things on this path that depend on the struct
+> device, there are two kinds of per-device coherent memory allocators
+> and swiotlb as well.
+> 
+> It looks like there are cases where the actual memory must not outlive
+> the driver binding.
 
-> For find_bit functions we have a lib/find_bit_benchmark.c Can you add
-> a similar rust test, so we'll make sure you're not introducing
-> performance regressions with your wrappers?
->
-> Please don't use KUNITs. It's not ready for benchmarks, and tests built
-> against it don't run on major distros.
+I don't see why actual memory allocations would ever be required to be freed
+immediately when the driver is unbound. It has nothing to do with the device.
 
-Cc'ing David here in case he has more context around this...
+Do you have an example where this would be a requirement?
 
-I agree having a good "integrated benchmark" system would be nice, and
-being able to mark particular "tests" as benchmarks etc.
+> 
+> So, I'd argue that it is necessary, and changing that on the C side
+> looks like a big project.
 
-Regarding distributions, it sounds an orthogonal issue to me, but I
-may be lacking context...
-
-> Are you sure a public method description should bear implementation
-> details? I'm not. If implementation changes in future, the public API
-> should stay stable (yes, including comments).
-
-To clarify, it is describing the invariants of a type (i.e. it is not
-a method description).
-
-The invariants in some cases refer to private details (e.g. typically
-a field), and whether to allow that or not is something we discussed
-several times in the past.
-
-We went with allowing the `# Invariants` section to refer to the
-fields of a type if needed, as a practical decision. However, if
-something is a "private invariant" that others must not rely on, then
-we should still point it out explicitly etc.
-
-I hope that clarifies.
-
-Cheers,
-Miguel
+I don't think that the idea is trivial to implement, but ideally the C side
+should benefit as well.
