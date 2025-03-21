@@ -1,122 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E815F1D7E26;
-	Fri, 21 Mar 2025 14:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B9664A8F;
+	Fri, 21 Mar 2025 15:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742569164; cv=none; b=PnScb89NWQ/CRlEnLU96/4azOSsPHjOLgKo3b7X9OAhap4a5mrbkmtFiSIQPIb2OFMb7UynXSmTelwP/4sG7/WulVhu3DvxDV++uWAnIt1y+/QeRFhleqDlQujoS/ajehePheRCs+lN2z4uHegrgtOY/DP4BzjrVgrVMIFJaUL4=
+	t=1742570580; cv=none; b=tA/W9pLVoWVdnXwTZ+LYKrFVLwIVvKye2iQ1lhd4W1GPn1H71aTnu12eNH4nrshmlZxQf2ezhULdTAdzjKIplZ7g5uM8EDz/Vt3om7I9xrxgvpHfQR5CCSSXGRkCkUDZ5gRkMAVYBccuMjav9003ZfeSL2vdewLXv7mR1R+j2V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742569164; c=relaxed/simple;
-	bh=XK3ss92XB9PpaMbmmBVABAPs+6dJW9sFNmtLOGmVRwA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G8R8ECgxZejJF3xvXrHuMxfEVvv7lxNbUyrp0YQ0aPwTorkyLPsgMUZLGVrglL1z5xogoKHTIDquVcSa0UUUEAYGADTAkiIzuBpOnTs5dQrvYA8hml7HAQQYjK42bw6qwV+z6+8IJ6QBza7bU5yFZHGk31Ed3I9Qg5BJ+B4D7Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Umk6rLD+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742570580; c=relaxed/simple;
+	bh=NP5yRsiuzlqMxHRcHuBhZYOrMEcgFy7u5CFgBe8v/G8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=guL/Zavm0UY0J9CySBsrdDxX5P7dbJkFExyqMdPt+Xlb0d9XpTFwXSIjnR8i3NSdDPQ0wQER0UlWRpxj2DSHUZFYoz76vZ9ETDB7Qs2qDOrMrX/V825tH4OGvlCM6W5DUH6R2wk9fJvZ8FsgEXAngvsELj/Fuhx2ehJVKLBlo5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RsKdcGF/; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Umk6rLD+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B28C4CEEC;
-	Fri, 21 Mar 2025 14:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742569163;
-	bh=XK3ss92XB9PpaMbmmBVABAPs+6dJW9sFNmtLOGmVRwA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Umk6rLD+QQhysD2ySV+lZiJVTixCw6GXeItNx/BQVMzrYqlS6zGQlYsu/8Dp2d7L3
-	 LgQeMj1DpTM0F1aW54X+lI3tBFcq9eZ8kX/F4yFiqm/Woc2H+pb9CfxDZVah0+uwiv
-	 eZN8e7aZoUw+DuLDGrfqOybrt6PwWzTXfWx9oXnZLarnapKtIyK8+wRt1mexhr2/3O
-	 /8JsqroJ5ime7A3ZmpkHcW9JOK6i3BCdlkERm9wJmY1AgezTbnT9pUQhsPtk80jlLg
-	 QICtwkbfoJZsitlOYXWhBFISHbmjvcLFpar/vG4sJxHw7rEzULNRajXhJCwqPRWuBA
-	 UmCbncsRiTtnw==
-From: Danilo Krummrich <dakr@kernel.org>
-To: bhelgaas@google.com,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v3 3/3] rust: platform: impl TryFrom<&Device> for &platform::Device
-Date: Fri, 21 Mar 2025 15:57:58 +0100
-Message-ID: <20250321145906.3163-4-dakr@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250321145906.3163-1-dakr@kernel.org>
-References: <20250321145906.3163-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RsKdcGF/"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30bfe0d2b6dso22597541fa.3;
+        Fri, 21 Mar 2025 08:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742570577; x=1743175377; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qfrErcag9Q092oLaTM67M17Xruxr3+6yAHhWH9MGFgc=;
+        b=RsKdcGF/6OfrdfLjWmbajxHE+f9aoyTl+NBsI/PgoRnCNa7d5Z1WfSlSjMQMklI0Rd
+         AiPZ+KfJ/JmBEpD3EBmEzPoG2tGTkxr1cHeHMDxLjZ5QYX5XvfnrV/uGzqgtTZ0UMDEH
+         RtOTfmCo147CGy5Gd+CrWyI1FB0ejn7/oOUhOwpE1TQ203HC3CQyEe1Yyho7gHucVfyz
+         Y37tn11HtpX6qFnoAyMF6gNbteFpZTQeVKOAIqBr6W/DFHEFZ1Pjcw2qhpj5FlSiDG6T
+         IH+9YUip8cxUmz+Y+POkIw3vlmKt+OS7oh5bKcASaWVmQbG3Rog3+Fb15HYHzkYQkb9v
+         3m3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742570577; x=1743175377;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qfrErcag9Q092oLaTM67M17Xruxr3+6yAHhWH9MGFgc=;
+        b=cDxIzaygy3SOoW5pADXyiycYV/02h2L3+ur4CwWr4erj7nRPVYY5J+VNlhTDJnNZco
+         Y4+4CR1fP7tcy9+iGZe2kPEjHaS1B2TyiCCfBw65O4U0Z80zxRajCEeGDxrCh+h+72tH
+         20xjQXsKhKTnzSujTyvLlDRxcBu6r6Jw5UodUVYr/xSHNG+ujlYJmsy5Fh43Dxhx5HV0
+         Eey3y42aaXCayPg7yke9vZBH9DjeclnQLCcnButyCNmnEZf/r7dlItIYFtEgCV5NwCFK
+         v2qcuNyew5NxNvW7/CnhJXlwFChEl3N8qhlhwBzSnkC6PCrSLo3ZrU9LEJYaMytaPBNF
+         n6SA==
+X-Forwarded-Encrypted: i=1; AJvYcCWG1Sjg1OvK+5ZhuhhrPJqWsFb8OY3I3rOxoDJOtRyaLkFKEPSVcYTdEkMDjjuTnz8wNx7vi9BZq56SD2eXN70=@vger.kernel.org, AJvYcCWImCsDlyw+kaAhiaAPGkkRNr6SUGoQLdrFPagu9RDMM9dvqxUENAZeVpa+8LZXzFnLfZOoS0dtETHYx1I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtBvPfjg7G8bGBEgNgSiH2ook59mLowESC3FYVo16OwjS2CLGW
+	R1g8oxbpYQa/hp7HUCkz4F6w+3smb69V85IpNYPSobvmYB5Ara9TYeNRo1g4rAs2wpfENrVQZol
+	MJ+s1dih2nHex5xpDsr5DDOllLj9qC+QZOyaByIOS
+X-Gm-Gg: ASbGncvWIT069Gcf471150qEegR2nuo1nhinFNy/VDT/qjMys/JaAIj21GMG5G2nprN
+	k6qEEEcPmns3gnXQ+Ci9UULrf4O6gJIbzcXx0NPpeMPJo18fJAUVclf6oThcG1XvEKdalkD47Dp
+	pqLbhkOMfCNAyQZ75GjJnZ/z66p62PIpLmEEVoCi7PYw==
+X-Google-Smtp-Source: AGHT+IEFmQtpfMpBZqMXt7QD3NIaKyDBBl/rhs1v/ToyN3SVhxZRO9zIGjPQ309BUsUvmDWvTMlZiIeOSnSs3rRtves=
+X-Received: by 2002:a2e:95ca:0:b0:30c:1d:b147 with SMTP id 38308e7fff4ca-30d7e22a5b7mr12483731fa.19.1742570576694;
+ Fri, 21 Mar 2025 08:22:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250320-vec-methods-v1-0-7dff5cf25fe8@google.com> <20250320-vec-methods-v1-3-7dff5cf25fe8@google.com>
+In-Reply-To: <20250320-vec-methods-v1-3-7dff5cf25fe8@google.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 21 Mar 2025 11:22:20 -0400
+X-Gm-Features: AQ5f1Jrng4wUdLdKFKlmT_YGTLp_gs8rZxxYAHCfCXDw4YcmhXdOgqlmy-1DkDk
+Message-ID: <CAJ-ks9kFU+epCF3C4yUo5E2dVeyeBf+Fuc+rWe+2CM1OQvRDTA@mail.gmail.com>
+Subject: Re: [PATCH 3/5] rust: alloc: add Vec::push_within_capacity
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Implement TryFrom<&device::Device> for &Device.
+On Thu, Mar 20, 2025 at 9:57=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> This introduces a new method called `push_within_capacity` for appending
+> to a vector without attempting to allocate if the capacity is full. Rust
+> Binder will use this in various places to safely push to a vector while
+> holding a spinlock.
+>
+> The existing Vec::push method is reimplemented in terms of the new
+> method.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/alloc/kvec.rs | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+>
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index 9943358c70aa63f5ad7ed9782cb8879d7a80a8fb..df930ff0d0b85b8b03c9b7932=
+a2b31dfb62612ed 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -284,6 +284,31 @@ pub fn spare_capacity_mut(&mut self) -> &mut [MaybeU=
+ninit<T>] {
+>      /// ```
+>      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError>=
+ {
+>          self.reserve(1, flags)?;
+> +        let err =3D self.push_within_capacity(v);
+> +        // SAFETY: The call to `reserve` was successful, so `push_within=
+_capacity` cannot fail.
+> +        unsafe { err.unwrap_unchecked() };
 
-This allows us to get a &platform::Device from a generic &Device in a safe
-way; the conversion fails if the device' bus type does not match with
-the platform bus type.
+I'd prefer an unsafe inner helper to this `unwrap_unchecked` call --
+this safety comment is actually describing the semantics of a safe
+function which can change without necessarily triggering scrutiny of
+its callers.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/platform.rs | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+> +        Ok(())
+> +    }
+> +
+> +    /// Appends an element to the back of the [`Vec`] instance.
+> +    ///
+> +    /// Fails if the vector does not have capacity for the new element.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v =3D KVec::with_capacity(10, GFP_KERNEL);
+> +    /// for i in 0..10 {
+> +    ///     v.push_within_capacity(i).unwrap();
+> +    /// }
+> +    ///
+> +    /// assert!(v.push_within_capacity(11).is_err());
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn push_within_capacity(&mut self, v: T) -> Result<(), T> {
+> +        if self.len() >=3D self.capacity() {
 
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index e37531bae8e9..d7796967cffa 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
- 
- use crate::{
--    bindings, device, driver,
-+    bindings, container_of, device, driver,
-     error::{to_result, Result},
-     of,
-     prelude::*,
-@@ -17,7 +17,7 @@
- use core::{
-     marker::PhantomData,
-     ops::Deref,
--    ptr::{addr_of_mut, NonNull},
-+    ptr::{addr_of, addr_of_mut, NonNull},
- };
- 
- /// An adapter for the registration of platform drivers.
-@@ -234,6 +234,24 @@ fn as_ref(&self) -> &device::Device {
-     }
- }
- 
-+impl TryFrom<&device::Device> for &Device {
-+    type Error = kernel::error::Error;
-+
-+    fn try_from(dev: &device::Device) -> Result<Self, Self::Error> {
-+        if dev.bus_type_raw() != addr_of!(bindings::platform_bus_type) {
-+            return Err(EINVAL);
-+        }
-+
-+        // SAFETY: We've just verified that the bus type of `dev` equals
-+        // `bindings::platform_bus_type`, hence `dev` must be embedded in a valid
-+        // `struct platform_device` as guaranteed by the corresponding C code.
-+        let pdev = unsafe { container_of!(dev.as_raw(), bindings::platform_device, dev) };
-+
-+        // SAFETY: `pdev` is a valid pointer to a `struct platform_device`.
-+        Ok(unsafe { &*pdev.cast() })
-+    }
-+}
-+
- // SAFETY: A `Device` is always reference-counted and can be released from any thread.
- unsafe impl Send for Device {}
- 
--- 
-2.48.1
+len() > capacity() should be impossible by the (implied until
+https://lore.kernel.org/rust-for-linux/20250318-vec-set-len-v2-1-293d55f82d=
+18@gmail.com/)
+type invariant.
 
+> +            return Err(v);
+> +        }
+>
+>          // SAFETY:
+>          // - `self.len` is smaller than `self.capacity` and hence, the r=
+esulting pointer is
+>
+> --
+> 2.49.0.rc1.451.g8f38331e32-goog
+>
+>
