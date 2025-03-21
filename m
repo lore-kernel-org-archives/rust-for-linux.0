@@ -1,72 +1,72 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426A91EBA19
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 23:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F06D221548
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 23:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742600873; cv=none; b=Wkfe80CRlD1nfLsmfAjBc/O02pbO2LNtycAmRei7jkn0sRe/2MusyxMPtvVWcZBtJlHgX6QUZwQ25Du/viVXVGPAiGVXcHvCLlJZHZQtoMeNO6aelBovNC+0hnTRf9MJveEowt08CEZKa3eTS3zS7rp/kj8SatWTRY6gCokqMr4=
+	t=1742601018; cv=none; b=PYLSBAaI0wRDIwfRA5lnUNsZhTTFran7W+33mUEDFJ2TI2XNBK0YLKDT4UbjkTpy7LOnyPGpH2HMNANAvzstE4UVMTJk0oZea3GTS6L6BWUu+42M2qSntTjympgvohKs+rJ5LkZt+ylKCNF7rcpG0bmG6LbVHVfbA3hCV9aY5Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742600873; c=relaxed/simple;
-	bh=07bV6wCmABRVlSLA8nvswhWQuiWLf7chTLpHYhipRxY=;
+	s=arc-20240116; t=1742601018; c=relaxed/simple;
+	bh=r3QZyPOTF9gxAktsfGidZWGEziLvPzaArIRV6aZMZ08=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rro/+8vKPOPuZU7bhPtz0VpgS6F5vU79GqNPpZAYNGuj3TYJOxWzuXa72qtFuqlG4D9vy6MOR0Wfww+nJeijW2wi0Sanv5JQdfpD4o+/nXTxc70rQmft1kgLLBtfe+O4VVFDW7EyJBeAyQRyFicTKrTts2ECy70XyeTz33YF0hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FiTiKy71; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=k3KL1aHJSzhk/Dw3Y2PysfyA1DKchlFoJZizosf7waAJarslkuMECWAnxftb4qQsmmfUbnaF1pGkK9t9OmHTVuVITMKu4Y2YpAuLDEcgwM57Qx/sIxI1PXS6mQ1xMFGJyyd1vKoF6iPkyah6OQwohYfxZNCr7Vk2bsjOcsu0KS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PFMySfSn; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FiTiKy71"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PFMySfSn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742600871;
+	s=mimecast20190719; t=1742601014;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=07bV6wCmABRVlSLA8nvswhWQuiWLf7chTLpHYhipRxY=;
-	b=FiTiKy71Um5DOas5YRjZy7A0VfreedT9JK4BELOo/vRz52F7Rb44jjsBogvQdDlCZM3dps
-	4jUdalX5hb2YHoRnyn4HBg4gIDIYPH05pNcjgDfG4gWbikFDm2PV0KCCl9Am6KQuB0i+hg
-	OM03cbbhFlPWzBusYwjHmiexzxzClvk=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=NrKRoNH3IdyIjo35xLHsqEua4+zOXZg0HlVIQMRCreI=;
+	b=PFMySfSnFD2OCTMHeI/5YlfLZGSsQdzbjc1Scr0tkuDA+l+Zedt7jN8+DNyLf5daeBVWpo
+	HH470jc6y+wD3R/Yghwu636/Zd/7JMHq43bV634kq6+xUKWo9iCtPAk2WM+RAge5bys9M/
+	uwrgG/2YjsU446ZP0CK4Aaq861z8CYk=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-3BH1N4DSOW29fUAMfbnPYw-1; Fri, 21 Mar 2025 19:47:50 -0400
-X-MC-Unique: 3BH1N4DSOW29fUAMfbnPYw-1
-X-Mimecast-MFC-AGG-ID: 3BH1N4DSOW29fUAMfbnPYw_1742600869
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4766c80d57eso37785321cf.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 16:47:49 -0700 (PDT)
+ us-mta-563-3zF0Wh2nPzmOHsh3vJUx7w-1; Fri, 21 Mar 2025 19:50:11 -0400
+X-MC-Unique: 3zF0Wh2nPzmOHsh3vJUx7w-1
+X-Mimecast-MFC-AGG-ID: 3zF0Wh2nPzmOHsh3vJUx7w_1742601011
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7c54e7922a1so528191385a.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 16:50:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742600869; x=1743205669;
+        d=1e100.net; s=20230601; t=1742601011; x=1743205811;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=07bV6wCmABRVlSLA8nvswhWQuiWLf7chTLpHYhipRxY=;
-        b=sDYdsN1huBW2YlXSAmxJr/fBuFhM6cDc84x8J3zb1TNHvHQl6zuIrZFPf313kaEeyp
-         edMvO3NJ8v6AitAeLbacsinNj8++Q7AYn75nBnhrZyQ/6RxF4GobgBudyooNUrgplwoy
-         LE+SnMGPXzsVvSeUm3l3W2LfagKfHvLSzplKpCtlCU+ybTnSn9LaBFKJZTpoAa3OOvti
-         ZC4HE76Cvcxt3umEerbomXudnoLzrGAlyZa7x7VGZxwxGlKZ9L8Ks3D7pXU4KHZ6Fp3F
-         wqQZV3RoQHMRHRSjN5rzVS9CErWkbH+vvqrehRkvMbMFtSah6OsoGhJwXUFdms5aLhgV
-         mx8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWDQoZozep9bQcV6MbnG4jWH9dNeBkrps1zaqyJQRkE7HPYVmaB/vFnI3ECSM6kGMenKKJ97jrsMA/a5gPSmw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwleoI1C7j6gHtXWEkWjbKYxHv60FcClyPdAynhZZqmwrtolEoy
-	1kc55k8S3X+1PN1eH0kOsLeUOmolLePEhwmYP45VaDYp7pbg+blNrdObIVTmg9qr3isz5DsQ2VN
-	zvgPxXiFxZ1HhLp6D8YIDqdStvsQOoaNEP9b6cx3VYlus3MQu2B1K1kqzqMEs5Jtt
-X-Gm-Gg: ASbGnctQGXOQ/hSMuoVIRa9zRJBD2TQrrInKWIYhfmSx/eGulfQq6I8HrWiXyxtDbwi
-	VpQAVGHdD9dglgwCYJBLx40yF0B/9KE5ZqRknXYqiquWbbyXatuG5GxiCzcDhK+/bFUtPJO308F
-	xTJOPzvIl4Pfnc6FcrE5lC2YQfkxqRN7JXw8srjjt1GX/PFUI8natyL5ewJTSofYzQB3M8G8b6u
-	a7n+sjYBZJ0USHjhDFdJrOMbmuIn2gCSVQ6XdILs7AJSu8DGlDK1WJAAMwOKu1QozvuneC01ihV
-	xXR5HwsU6T5UahFPWmfODQ==
-X-Received: by 2002:a05:622a:17c5:b0:476:80ce:a614 with SMTP id d75a77b69052e-4771dd92415mr80106511cf.19.1742600869546;
-        Fri, 21 Mar 2025 16:47:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEyKv8SSrBWWw7daDLJFvc54fXLHOhK0DQ8PDkDuUVdJ3V8Cl8E2pWGzTi9qgoa1eCAvEPCxw==
-X-Received: by 2002:a05:622a:17c5:b0:476:80ce:a614 with SMTP id d75a77b69052e-4771dd92415mr80106141cf.19.1742600869248;
-        Fri, 21 Mar 2025 16:47:49 -0700 (PDT)
+        bh=NrKRoNH3IdyIjo35xLHsqEua4+zOXZg0HlVIQMRCreI=;
+        b=ncK8aB/qlPSLz0RbEED9uSOJvFlcvcboLQQ0xetOKVVmA2DhIjAYgXgMYZPjotEA2+
+         We/jqud/1ZeNiHnwDah1+5JPjMTlNiMXroiWPEfRJoHDt5Wry5nZuW6fG6l7U3XkatLT
+         tNyayd3xII5MoxYDnhBp6p/AR6Ups9eALQHeTGty41dqZO5O7wmVqDYwNUMlFDohzAxu
+         C+FZLu2NwOISCselk+XyMtv+CB6m5OUMUUs0lAAMYIvXyPjIto4d1bDKrWYMLzwpsqt0
+         OzMt9x3qjpejlrgVidXkvM26sO7PdnU3IIoSwTtCSOuuAAGlR5ON3qvZJuFsAPPZZUR5
+         9EGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxni1+XjyE3AILAksrumLEjngq84huX9ZHLX2+1K11iwGZOjsA2HClxq9J0xW4gwA7QIewnz6YC7Viz1rszg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJEZTMlj0MCGWDH8GOyzFgTGsjzQkSXSk4FRkE5N/GUSWuFaS0
+	WXoSrwd8Fq9jDMXL71vEP0gzLd0qEdwQDKvJwcZP84vTRkE4CNMW3sRdJMNuQxGFN+s8Vx04Qla
+	Vt5uvtpeKNTdmFqVVV24yPOTZiP9W0jJf64isjGkOM6i00oqzEVhCXTjl+c3JgS7q
+X-Gm-Gg: ASbGncsfOkO0ydxt9T/Jz7g3264yhU6n3czJb7chWrKC6vwLl+puT3K9DYEz93D1PU8
+	mTAbex+OAJs6FmjAERdZ2aXiTGGZr2XKaZpNao7JuedBsYyiRupgcYQC62eMGiEZXhL7k6/7/2d
+	qAKaOIzuRYmuiJ3VrlBTDUawmMOiBMoJQAKQLq2iqe9NGuDbdhEtZTiiq7FNQct16re3aVnNPt+
+	yY9TZH3YJeRMSiHEk3hQ+jj+LU3kVgmT61xaagak5UZrBuu0Qq1HKdRCRbBWOwTkZ/x2mQzHpul
+	NjMP9dNeMgat4dqn1EJKrg==
+X-Received: by 2002:a05:620a:394a:b0:7c5:5768:40b3 with SMTP id af79cd13be357-7c5ba1de27amr783953685a.45.1742601010904;
+        Fri, 21 Mar 2025 16:50:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGmpv2fzAYbhX3XAzFz7cpBk3vunR0rYchL5E9OJtzTtguekXsRP42AxoqALK345r8BELl/dQ==
+X-Received: by 2002:a05:620a:394a:b0:7c5:5768:40b3 with SMTP id af79cd13be357-7c5ba1de27amr783951385a.45.1742601010603;
+        Fri, 21 Mar 2025 16:50:10 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4771d635b94sm17366501cf.76.2025.03.21.16.47.47
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c5b9356b7esm189254485a.106.2025.03.21.16.50.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 16:47:48 -0700 (PDT)
-Message-ID: <330309618d5139e360bef4b62ea9fc6368d0077a.camel@redhat.com>
-Subject: Re: [RFC v3 09/33] rust: drm/kms: Add DriverConnector::get_mode
- callback
+        Fri, 21 Mar 2025 16:50:09 -0700 (PDT)
+Message-ID: <dea3218eb31f3e91d2a10f93a7bc6cfa674546e6.camel@redhat.com>
+Subject: Re: [RFC v3 10/33] rust: drm/kms: Add
+ ConnectorGuard::add_modes_noedid()
 From: Lyude Paul <lyude@redhat.com>
 To: Maxime Ripard <mripard@kernel.org>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Danilo
@@ -76,14 +76,15 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Danilo
  Gaynor <alex.gaynor@gmail.com>, Boqun Feng	 <boqun.feng@gmail.com>, Gary
  Guo <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
  <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Asahi
- Lina <lina@asahilina.net>,  Wedson Almeida Filho	 <wedsonaf@gmail.com>,
- open list <linux-kernel@vger.kernel.org>
-Date: Fri, 21 Mar 2025 19:47:46 -0400
-In-Reply-To: <20250314-gigantic-frisky-condor-9b35c8@houat>
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Greg
+ Kroah-Hartman	 <gregkh@linuxfoundation.org>, Asahi Lina
+ <lina@asahilina.net>, Wedson Almeida Filho <wedsonaf@gmail.com>, open list
+ <linux-kernel@vger.kernel.org>
+Date: Fri, 21 Mar 2025 19:50:08 -0400
+In-Reply-To: <20250314-observant-cyber-chowchow-bfe5f9@houat>
 References: <20250305230406.567126-1-lyude@redhat.com>
-	 <20250305230406.567126-10-lyude@redhat.com>
-	 <20250314-gigantic-frisky-condor-9b35c8@houat>
+	 <20250305230406.567126-11-lyude@redhat.com>
+	 <20250314-observant-cyber-chowchow-bfe5f9@houat>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -93,58 +94,63 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: I_pc7gOR95YE3ud7sP-ku7R6zPBngdn74rorGI_YFq4_1742600869
+X-Mimecast-MFC-PROC-ID: NKH0dFEzPVsANfuaYhmoM2mJZ5OwiVRjeML47Gg-7UY_1742601011
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2025-03-14 at 12:57 +0100, Maxime Ripard wrote:
-> It's kind of what I wanted to express in my earlier statements I guess,
-> but I'm not really sure we should force down helpers on drivers. The
-> larger approach KMS has taken over the years was to provide hooks and
-> default implementations, with the drivers allowed to use different
-> implementations if they wanted to.
+On Fri, 2025-03-14 at 13:02 +0100, Maxime Ripard wrote:
+> On Wed, Mar 05, 2025 at 05:59:26PM -0500, Lyude Paul wrote:
+> > A simple binding for drm_add_modes_noedid() using the ConnectorGuard ty=
+pe
+> > we just added.
+> >=20
+> > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > ---
+> >  rust/bindings/bindings_helper.h  |  1 +
+> >  rust/kernel/drm/kms/connector.rs | 11 +++++++++++
+> >  2 files changed, 12 insertions(+)
+> >=20
+> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
+elper.h
+> > index 27828dd36d4f2..846eb6eb8fc4c 100644
+> > --- a/rust/bindings/bindings_helper.h
+> > +++ b/rust/bindings/bindings_helper.h
+> > @@ -13,6 +13,7 @@
+> >  #include <drm/drm_crtc.h>
+> >  #include <drm/drm_device.h>
+> >  #include <drm/drm_drv.h>
+> > +#include <drm/drm_edid.h>
+> >  #include <drm/drm_encoder.h>
+> >  #include <drm/drm_file.h>
+> >  #include <drm/drm_fbdev_dma.h>
+> > diff --git a/rust/kernel/drm/kms/connector.rs b/rust/kernel/drm/kms/con=
+nector.rs
+> > index 14de3b0529f89..855a47b189a91 100644
+> > --- a/rust/kernel/drm/kms/connector.rs
+> > +++ b/rust/kernel/drm/kms/connector.rs
+> > @@ -446,6 +446,17 @@ fn deref(&self) -> &Self::Target {
+> >      }
+> >  }
+> > =20
+> > +impl<'a, T: DriverConnector> ConnectorGuard<'a, T> {
+> > +    /// Add modes for a [`ConnectorGuard`] without an EDID.
+> > +    ///
+> > +    /// Add the specified modes to the connector's mode list up to the=
+ given maximum resultion.
+> > +    /// Returns how many modes were added.
+> > +    pub fn add_modes_noedid(&self, (max_h, max_v): (i32, i32)) -> i32 =
+{
 >=20
-> That approach largely worked for us I think, so I'm a bit worried about
-> changing that.
+> Why do we need a tuple of i32 there instead of two u32/usize parameter?
+>=20
+> And the return type should be unsigned as well.
 
-This is mainly just another case of "this is the only way of probing we
-support right now". In the future when we add more fine-grained behavior he=
-re,
-we can stop passing helpers explicitly and only pass them when the appropri=
-ate
-trait methods are defined.
+I think I was just copying C (or whatever the bindings here translate the C
+type to), but I don't see any issue with changing this to u32.
 
 >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 debugfs_init: None,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 oob_hotplug_event: None,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 atomic_duplicate_state: Some(atomic_duplicate_state_callback::<Se=
-lf::State>),
-> > @@ -114,7 +114,7 @@ pub trait DriverConnector: Send + Sync + Sized {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 helper_funcs: bi=
-ndings::drm_connector_helper_funcs {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 mode_valid: None,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 atomic_check: None,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 get=
-_modes: None,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 get=
-_modes: Some(get_modes_callback::<Self>),
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 detect_ctx: None,
->=20
-> Since you pass (the equivalent of) the locking context to get_modes, I'd
-> rather keep the convention you have with detect here and use the _ctx
-> suffix, or drop the one from detect_ctx, and pass the context
-> everywhere. But we should be consistent there at least.
-
-Not totally sure what you mean by this? get_modes_callback() is just the
-automatically generated vtable function, which gets generated based off the
-rust trait implementation. but I can rename it if you think we should.
+> Maxime
 
 --=20
 Cheers,
