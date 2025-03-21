@@ -1,123 +1,113 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10D5433A4
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 07:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5D41F0E45
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 08:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742543692; cv=none; b=a7S2vaZFsekml3lXpI4oxDqLZmfNU+1pc4hERwxCdH7l0SRjoJFBuXX0MQY6YG90GfUDizJTJK5qTAfUL3/QxEIABg3PhcsAFdFzUS4FjURJxkAiWUJhjOjCQ5GZQGka6S1c/1ErTQF0Ly+h9ebNXDraUVDkwCkhqsNFj+j6HKc=
+	t=1742544147; cv=none; b=funNs4ELRG/KJZlXctn5DUBMlCJmow3dKfCpSziCHVlla8Q8elVC9yJxDJuq8QFaWChGQPk8gyGx9mJrLCgTtPw+z3PDEdapyhdQkJud3gyWnozgIRjwsqKrE9PTH0jwGff5a7j9TC78v2+68HCOpPSRn3F8mdf5c6XoOZDjpFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742543692; c=relaxed/simple;
-	bh=IfxtfZC/DSyx9qgxArTfZTkcfTHSCvHiZx5BHh8a9Gg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JPNGEu0cMh15c1Hcio5D6mFLO/+DYduyTal3A21wgeKafscpALroRi2PW56tzUgmGI8qeGPfnpDMHuvyjNMixC92YoXcO/AE1QPkOAOgo2n168m7ggUQH2K2riSkv8Wtj47q2yWLFkYjrKqBIIhPx9v4pmfw1nfN6QRuqdqmsss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hJLLqnCF; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1742544147; c=relaxed/simple;
+	bh=E/3xA5TSRplkqcvUWy2xH8YWhw0I/szCKQFmgqO5W1U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p/ooTsv3KmrsRsSFVvu3la5mVLImF9khTS4Saob0ytTuIIdyAEncB1udpbkjw2EWQJ5gDwOsHBIv9O7OssFE6B+l4LYIDxMDv/ILkYKglnKC40roMX+K4MSbuZsqoe21csK7VHXY+mBJ0wm4VNbDTTNpZo0bHYnvdnvV6+3p+KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HU3zTDFk; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hJLLqnCF"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-39131851046so713225f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Mar 2025 00:54:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742543688; x=1743148488; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=h+KRRdQFV3JbNEfysN8wjnaqcelmmd73dgVDwOPrsCM=;
-        b=hJLLqnCFQ0T7iYYfJIesJMqlJqLI5CPluZy+xO+SEdCUx2/dV6W693ZQ50gS22zNav
-         XnszD93N2sjZq+2WwCYzXCS3bkzfDEp+3V2Fb02+ne7iVkMWtbsfvunpACSUhSFwpDs8
-         +5RWA51uUKVthSIsI0Vf8bv7g9WokQSApyQpTnSssbVoKpJSMQyyVM54TJFVUJh3idby
-         SrSw7U/qxwvNYxJ8cO3HgxnOovIxoClz5bXz2MN+zaG6s5J40DkCNIoV0Sd2tvjMoTXo
-         gNBQncTvG+h1KzCIqziwdp+NKnJPo9e/FBLFIHhFyCVStHtsXBz8l3M75I0yPdkXD+r6
-         fzOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742543688; x=1743148488;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=h+KRRdQFV3JbNEfysN8wjnaqcelmmd73dgVDwOPrsCM=;
-        b=UclIdcTPrDUhzyRKId6WiWReiY1aO2XK5eoCyt/NLFnsCYbDaaurt37kMbG44s73wt
-         wD6Uv7bPPMEkG6BRcnF0yIHvebXf2P1nOa4oz/wLvUa8070ON/QeKyosuH7LL8ciFClQ
-         Wxb3Jw+cmisYibL5ilM6I8jVAfEpByDH6Mrb/w4C+JY8HxaZEiUCF+DyP7++tJZq3DQs
-         KoUtijAGAgpscKEUq5bxM6MoL2IgHceHgJZ7zviijnC9ps2PMQrEpdsRm3LBP/yJwrm6
-         6f68Qrr/dT9NmGMfat4nKjtT6ZnV/Dp9IrE56ooOlSTcFAupUkihdnQKv/r55yAfxfNe
-         87VA==
-X-Forwarded-Encrypted: i=1; AJvYcCVAugJT9CNUlcedspT2IeWualunlBKt/mjAgovvDyZp6icRbUm86xB+Et5hyHJFeLjfCmuYuamGGNucr8Emqw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVtjfFEjrCJmKJhKzX9D+V+g1AZeUYoCQeEM+Dv9k7FyGGSRat
-	KtZWmM8bt/LZb0z7WPhoQIEdgx5t4R0iCZJiN05oBpIILAtMovyydf5PmS3/c59Oo46bTXcOtZg
-	buJxYWMC8qBYN5Q==
-X-Google-Smtp-Source: AGHT+IF/QwGTIDerBJ0F5n+udFZJ9M7eyBqfA3cx4U4QzPC2ePLBun9xUCeB/wsQ1CbCiUSMBc51JPPdWHb4Lfc=
-X-Received: from wmbbd27.prod.google.com ([2002:a05:600c:1f1b:b0:43d:4055:98e3])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:64ab:0:b0:391:487f:27e4 with SMTP id ffacd0b85a97d-3997f90d377mr2419066f8f.27.1742543688246;
- Fri, 21 Mar 2025 00:54:48 -0700 (PDT)
-Date: Fri, 21 Mar 2025 07:54:46 +0000
-In-Reply-To: <D8LFO0LQOPQJ.30AC77E0BOH3@proton.me>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HU3zTDFk"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1742544139;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=M5i/nd2YL8RmqyaRGqU7qQe2+6A4Zpd/zpAtI9MB0u4=;
+	b=HU3zTDFkcJOvYJTXaZJQ7JFJNmvrrrYlYjO5+jHb0byL1Rsq6z90YZH/783BxGh/e+zCBd
+	vYLD/e+w/1DHmaxsn+Xqm05oG4ppONLzJGnOr5DU/gIjCxSvnd887GKG5piCGJX1+Ag4Qd
+	1jeC+BvlUXpW/oGq3zTVbow/MiqDRy4=
+From: Kunwu Chan <kunwu.chan@linux.dev>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Kunwu Chan <kunwu.chan@hotmail.com>,
+	Grace Deng <Grace.Deng006@Gmail.com>
+Subject: [PATCH v2] rust: page:: optimize rust symbol generation for Page
+Date: Fri, 21 Mar 2025 16:01:24 +0800
+Message-ID: <20250321080124.484647-1-kunwu.chan@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <D8LFO0LQOPQJ.30AC77E0BOH3@proton.me>
-Message-ID: <Z90bRpdK7qZio80g@google.com>
-Subject: Re: [PATCH 4/5] rust: alloc: add Vec::drain_all
-From: Alice Ryhl <aliceryhl@google.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Mar 20, 2025 at 10:06:18PM +0000, Benno Lossin wrote:
-> On Thu Mar 20, 2025 at 2:52 PM CET, Alice Ryhl wrote:
-> > This is like the stdlib method drain, except that it's hard-coded to use
-> > the entire vector's range. Rust Binder uses it in the range allocator to
-> > take ownership of everything in a vector in a case where reusing the
-> > vector is desirable.
-> 
-> Is the reason for not implementing `drain` complexity?
+From: Kunwu Chan <kunwu.chan@hotmail.com>
 
-Yes.
+When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
+with ARCH=arm64, the following symbols are generated:
 
-> > Implementing `DrainAll` in terms of `slice::IterMut` lets us reuse some
-> > nice optimizations in core for the case where T is a ZST.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> The code is good, but I'd like to know the answer to the above question
-> before giving my RB.
-> 
-> > ---
-> >  rust/kernel/alloc/kvec.rs | 57 +++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 57 insertions(+)
-> >
-> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> > index df930ff0d0b85b8b03c9b7932a2b31dfb62612ed..303198509885f5e24b74da5a92382b518de3e1c0 100644
-> > --- a/rust/kernel/alloc/kvec.rs
-> > +++ b/rust/kernel/alloc/kvec.rs
-> > @@ -564,6 +564,30 @@ pub fn truncate(&mut self, len: usize) {
-> >          //   len, therefore we have exclusive access to [`new_len`, `old_len`)
-> >          unsafe { ptr::drop_in_place(ptr) };
-> >      }
-> > +
-> > +    /// Takes ownership of all items in this vector without consuming the allocation.
-> > +    ///
-> > +    /// # Examples
-> > +    ///
-> > +    /// ```
-> > +    /// let mut v = kernel::kvec![0, 1, 2, 3]?;
-> > +    ///
-> > +    /// for (i, j) in v.drain_all().enumerate() {
-> > +    ///     assert_eq!(i, j);
-> > +    /// }
-> > +    ///
-> > +    /// assert!(v.capacity() >= 4);
-> > +    /// ```
-> > +    pub fn drain_all(&mut self) -> DrainAll<'_, T> {
-> > +        let len = self.len();
-> > +        // INVARIANT: The first 0 elements are valid.
-> > +        self.len = 0;
-> 
-> Why not `set_len`?
+$nm vmlinux | grep ' _R'.*Page | rustfilt
+ffff8000805b6f98 T <kernel::page::Page>::alloc_page
+ffff8000805b715c T <kernel::page::Page>::fill_zero_raw
+ffff8000805b720c T <kernel::page::Page>::copy_from_user_slice_raw
+ffff8000805b6fb4 T <kernel::page::Page>::read_raw
+ffff8000805b7088 T <kernel::page::Page>::write_raw
+ffff8000805b72fc T <kernel::page::Page as core::ops::drop::Drop>::drop
 
-I can use set_len.
+These Rust symbols(alloc_page and drop) are trivial wrappers around the C
+functions alloc_pages and __free_pages. It doesn't make sense to go
+through a trivial wrapper for these functions, so mark them inline.
 
-Alice
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
+Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
+Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
+
+---
+Changes in v2:
+- mark inline only for 'alloc_page' and 'drop'
+- reword commit msg
+---
+ rust/kernel/page.rs | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index f6126aca33a6..7c1b17246ed5 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -69,6 +69,7 @@ impl Page {
+     /// let page = Page::alloc_page(GFP_KERNEL | __GFP_ZERO)?;
+     /// # Ok::<(), kernel::alloc::AllocError>(())
+     /// ```
++    #[inline]
+     pub fn alloc_page(flags: Flags) -> Result<Self, AllocError> {
+         // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
+         // is always safe to call this method.
+@@ -251,6 +252,7 @@ pub unsafe fn copy_from_user_slice_raw(
+ }
+ 
+ impl Drop for Page {
++    #[inline]
+     fn drop(&mut self) {
+         // SAFETY: By the type invariants, we have ownership of the page and can free it.
+         unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
+-- 
+2.43.0
+
