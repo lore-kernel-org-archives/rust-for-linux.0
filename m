@@ -1,89 +1,192 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1C99443;
-	Sat, 22 Mar 2025 22:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0711DF72C;
+	Sat, 22 Mar 2025 22:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742681133; cv=none; b=q3y01sUVKcuKePg+uOkPLXYHgj8CwnUS4VXhuhv4EfO9r0NvzFeWzjKvh+CaDek8ztadmhLwQqYZK3iLv9Wxhd/CilMdM58D+CPZ48mqKriGQBVWnOLMkHuLzXzfiH6ug8F1YkVu3S2aVKXnBjXS33wqMjWbLg7myFtydUeTWIw=
+	t=1742683249; cv=none; b=R7mfpxN0U8BxeMtSl7RbphCywXmxqw71CyaUsHmwhZxvGX1IrzpnSW/XXCyopMU7ffuvHZXshhqad0B+lEos5wyhzgxFiMakvsE79bd2rC0X6kLKfy6QXwkZmEXfjJVosgImrFJAGTSgNT670nxXfo9eCXSUCZnSRX+Ch7C6VP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742681133; c=relaxed/simple;
-	bh=KiPIRwdeUGquhKmV2rD1HVku6R1A8nvlN3f+YFmqi0Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=sNDVeihjK9Ll9njZhm39R5e1Ex4GtRZLlHokx6OiYRuV2VnhXdQBdgaAG7ShMIHfYGvruqw4bgwURRL70rzr3man55KRjbWawD7E7GsEBw90VMAhTHjmoiN64EfcvDe64qgQRZTJDP9cCGyoGxRkOp1jtT0pWa07JnurI0WRtDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AhaOI6Lz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742683249; c=relaxed/simple;
+	bh=kaGJw1UN+eBP3ZezlrS616HN8vMDvS2SbeAfdkGtfyU=;
+	h=From:To:Cc:Subject:In-Reply-To:Message-ID:References:Date:
+	 MIME-Version:Content-Type; b=LuIHcScY216tyLn/oBSSWPSqIBOA8F2P2zMdkmCIciHpybXtM4r//2LWv73C9KvBQXNpdbcS65YifpmwmhbgyU6RuFfEB5xS6iKJg3LWLWWjfv6A6fR14qsMJrgdo/M6sgkB6Befqo+PwhY8ZmGFVDuIMy4p56YqkqI8QaJGJrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=csIFGbR7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AhaOI6Lz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00639C4CEDD;
-	Sat, 22 Mar 2025 22:05:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="csIFGbR7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FB5C4CEDD;
+	Sat, 22 Mar 2025 22:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742681132;
-	bh=KiPIRwdeUGquhKmV2rD1HVku6R1A8nvlN3f+YFmqi0Q=;
+	s=k20201202; t=1742683249;
+	bh=kaGJw1UN+eBP3ZezlrS616HN8vMDvS2SbeAfdkGtfyU=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=AhaOI6LzHvACFnWIL8VsPe/Mx/OEEfaNU2i/VGPSY43M0ggTD5nQF3t1eAFRcKJy7
-	 lbJXRhU5aLlnuLdwB6HICmiG24Bjhmz+bhorv+Mw0BesmDM1b1OA+y6YP9ktC24Sl4
-	 XSt2soVhZzuy4V9kKos80lXnGWPY3ppXxzGHr8sBQI5eKwORwmzbUEP4V1JGEmdTaa
-	 dyq9HQXOj0qZ6b9w8JtK0U9OGWFX2BVkx/9FjFVvyPuKH7Ctpe9adIgzNjvmYtOeDa
-	 U2dYPyHNoAFkIu+gPc/wtx2YV1bGdJGZb4w0W70V3xyM0xAhIhFgATw+Y0zBrVU9g9
-	 go+9GD+aXm2MQ==
+	b=csIFGbR7M0A7dEy3uy8Zts0U0jDb7wD8qDsOFpPkH50/PQTuuwjSY7kJZMN3T2pyL
+	 E0D2fMGpS2rWoof3KuDQ6RS1f3EEW46SRVzlMS/+inRzr/YP4nvB6rmnWfvQlMq60d
+	 MfbRqTh0+npCq73qO34o11jfTqCOBUqAdNbEK5B+C7u4H2gnWyMBRqIYNwyNYOIzBr
+	 b2SpMf2adOKXJeKykbxZFTVXbiRv0DbJdsNY98YBXygcRCGG+VVuLY2Tl3cNvbtR3w
+	 tfcgOEGULR7X5vFaS2ur/nLyGaJ9e26wUOFo6nekS0J9FWOR9347KxZzyHkb3B5JH3
+	 c09h0y3klkTxA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Ralf Jung" <post@ralfj.de>, "Alice Ryhl" <aliceryhl@google.com>,
-	"Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-	"Alexander Viro" <viro@zeniv.linux.org.uk>,
-	"Arnd Bergmann" <arnd@arndb.de>,  "Miguel Ojeda" <ojeda@kernel.org>,
-	"Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-	=?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	"Benno Lossin" <benno.lossin@proton.me>,
-	"Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich" <dakr@kernel.org>,
-	"Matthew Maurer" <mmaurer@google.com>,  "Lee Jones" <lee@kernel.org>,
-	<linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 1/5] rust: iov: add iov_iter abstractions for ITER_SOURCE
-In-Reply-To: <CANiq72=QN3Sr5xS-uFhZVX0+L2==moR7cBzRJ8kKxDa5s75-jw@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Sat, 22 Mar 2025 22:00:26 +0100")
-References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
-	<v6RopSmSHmV8uiLBqkIh2II4bCry2OIo_7opQKqq2H4DftxIuRvY2YaLdhLUKw-Ndyv8MpHCgBbBEQntdLU9DQ==@protonmail.internalid>
-	<20250311-iov-iter-v1-1-f6c9134ea824@google.com>
- <871pushmw5.fsf@kernel.org>
-	<k-Ep8amSWFdVcWjGYTHXkFyQt8LEmpPa_sGZ-6zTdKv_B4bms_2GhfXev84YUxyp0tO1ZrEWB_iSOW-VcWU6qg==@protonmail.internalid>
-	<CANiq72=QN3Sr5xS-uFhZVX0+L2==moR7cBzRJ8kKxDa5s75-jw@mail.gmail.com>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>,  <tglx@linutronix.de>,
+  <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  <netdev@vger.kernel.org>,  <andrew@lunn.ch>,  <hkallweit1@gmail.com>,
+  <tmgross@umich.edu>,  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,
+  <gary@garyguo.net>,  <bjorn3_gh@protonmail.com>,
+  <benno.lossin@proton.me>,  <a.hindborg@samsung.com>,
+  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
+  <frederic@kernel.org>,  <arnd@arndb.de>,  <jstultz@google.com>,
+  <sboyd@kernel.org>,  <mingo@redhat.com>,  <peterz@infradead.org>,
+  <juri.lelli@redhat.com>,  <vincent.guittot@linaro.org>,
+  <dietmar.eggemann@arm.com>,  <rostedt@goodmis.org>,
+  <bsegall@google.com>,  <mgorman@suse.de>,  <vschneid@redhat.com>,
+  <tgunders@redhat.com>,  <me@kloenk.dev>,  <david.laight.linux@gmail.com>
+Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
+ DELAY/SLEEP and TIMEKEEPING API
+In-Reply-To: <Z96zstZIiPsP4mSF@Mac.home> (Boqun Feng's message of "Sat, 22 Mar
+	2025 05:57:22 -0700")
+Message-ID: <871puoelnj.fsf@kernel.org>
+References: <87jz8ichv5.fsf@kernel.org> <87o6xu15m1.ffs@tglx>
+	<67ddd387.050a0220.3229ca.921c@mx.google.com>
+	<20250322.110703.1794086613370193338.fujita.tomonori@gmail.com>
+	<8n9Iwb8Z00ljHvj7jIWUybn9zwN_JLhLSWrljBKG9RE7qQx4MTMqUkTJeVeBZtexynIlqH1Lgt6g0ofLLwnoyQ==@protonmail.internalid>
+	<Z96zstZIiPsP4mSF@Mac.home>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Sat, 22 Mar 2025 23:05:11 +0100
-Message-ID: <877c4gen6w.fsf@kernel.org>
+Date: Sat, 22 Mar 2025 23:40:21 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+Hi All,
 
-> On Wed, Mar 19, 2025 at 7:54=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
+"Boqun Feng" <boqun.feng@gmail.com> writes:
+
+> On Sat, Mar 22, 2025 at 11:07:03AM +0900, FUJITA Tomonori wrote:
+>> Thank you all!
 >>
->> Don't we have some kind of `build_assert` macro to do this? If not,
->> maybe we should.
+>> On Fri, 21 Mar 2025 14:00:52 -0700
+>> Boqun Feng <boqun.feng@gmail.com> wrote:
+>>
+>> > On Fri, Mar 21, 2025 at 09:38:46PM +0100, Thomas Gleixner wrote:
+>> >> On Fri, Mar 21 2025 at 20:18, Andreas Hindborg wrote:
+>> >> >> Could you add me as a reviewer in these entries?
+>> >> >>
+>> >> >
+>> >> > I would like to be added as well.
+>> >>
+>> >> Please add the relevant core code maintainers (Anna-Maria, Frederic,
+>> >> John Stultz and myself) as well to the reviewers list, so that this does
+>> >> not end up with changes going in opposite directions.
+>> >>
+>> >
+>> > Make sense, I assume you want this to go via rust then (althought we
+>> > would like it to go via your tree if possible ;-))?
+>>
 >
-> `static_assert!` is the one (`build_assert!` is the other one, which
-> is a heavier hammer that should only be used if really needed).
+> Given Andreas is already preparing the pull request of the hrtimer
+> abstraction to Miguel, and delay, timekeeping and hrtimer are related,
+> these timekeeping/delay patches should go via Andreas (i.e.
+> rust/hrtimer-next into rust/rust-next) if Thomas and Miguel are OK with
+> it. Works for you, Andreas? If so...
 >
-> Though our `static_assert!` does not have support for an (optional)
-> message -- we could add that, perhaps as a good first issue. In this
-> case it is not a big deal either way.
+>> Once the following review regarding fsleep() is complete, I will submit
+>> patches #2 through #6 as v12 for rust-next:
+>>
+>> https://lore.kernel.org/linux-kernel/20250322.102449.895174336060649075.fujita.tomonori@gmail.com/
+>>
+>> The updated MAINTAINERS file will look like the following.
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index cbf84690c495..858e0b34422f 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -10370,6 +10370,18 @@ F:	kernel/time/timer_list.c
+>>  F:	kernel/time/timer_migration.*
+>>  F:	tools/testing/selftests/timers/
+>>
+>> +DELAY AND SLEEP API [RUST]
+>> +M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> +R:	Boqun Feng <boqun.feng@gmail.com>
+>> +R:	Andreas Hindborg <a.hindborg@kernel.org>
 >
->> How did you arrive at this conclusion? In the discussions with Ralph on
+> ... this "R:" entry would be "M:",
 >
-> Ralf?
+>> +R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
+>> +R:	Frederic Weisbecker <frederic@kernel.org>
+>> +R:	Thomas Gleixner <tglx@linutronix.de>
+>> +L:	rust-for-linux@vger.kernel.org
+>> +L:	linux-kernel@vger.kernel.org
+>
+> +T:	git https://github.com/Rust-for-Linux/linux.git hrtimer-next
+>
+>> +S:	Maintained
+>
+> I will let Andreas decide whether this is a "Supported" entry ;-)
+>
+>> +F:	rust/kernel/time/delay.rs
+>> +
+>>  HIGH-SPEED SCC DRIVER FOR AX.25
+>>  L:	linux-hams@vger.kernel.org
+>>  S:	Orphan
+>> @@ -23944,6 +23956,17 @@ F:	kernel/time/timekeeping*
+>>  F:	kernel/time/time_test.c
+>>  F:	tools/testing/selftests/timers/
+>>
+>> +TIMEKEEPING API [RUST]
+>
+> and similar things for this entry as well.
+>
+>> +M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> +R:	Boqun Feng <boqun.feng@gmail.com>
+>> +R:	Andreas Hindborg <a.hindborg@kernel.org>
+>> +R:	John Stultz <jstultz@google.com>
+>> +R:	Thomas Gleixner <tglx@linutronix.de>
+>
+> +R:      Stephen Boyd <sboyd@kernel.org>
+>
+> ?
+>
+>> +L:	rust-for-linux@vger.kernel.org
+>> +L:	linux-kernel@vger.kernel.org
+>> +S:	Maintained
+>> +F:	rust/kernel/time.rs
+>> +
+>
+> Tomo, let's wait for Andreas' rely and decide how to change these
+> entries. Thanks!
 
-Sorry, misspell. Ralf Jung, added to CC.
+My recommendation would be to take all of `rust/kernel/time` under one
+entry for now. I suggest the following, folding in the hrtimer entry as
+well:
 
+DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
+M:	Andreas Hindborg <a.hindborg@kernel.org>
+R:	Boqun Feng <boqun.feng@gmail.com>
+R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
+R:	Lyude Paul <lyude@redhat.com>
+R:	Frederic Weisbecker <frederic@kernel.org>
+R:	Thomas Gleixner <tglx@linutronix.de>
+R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
+R:	John Stultz <jstultz@google.com>
+L:	rust-for-linux@vger.kernel.org
+S:	Supported
+W:	https://rust-for-linux.com
+B:	https://github.com/Rust-for-Linux/linux/issues
+T:	git https://github.com/Rust-for-Linux/linux.git rust-timekeeping-next
+F:	rust/kernel/time.rs
+F:	rust/kernel/time/
+
+If that is acceptable to everyone, it is very likely that I can pick 2-6
+for v6.16.
+
+I assume patch 1 will go through the sched/core tree, and then Miguel
+can pick 7.
 
 Best regards,
 Andreas Hindborg
-
 
 
