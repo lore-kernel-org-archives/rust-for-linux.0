@@ -1,177 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DE31F37CE;
-	Sat, 22 Mar 2025 10:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683C31F8AC8
+	for <rust-for-linux@vger.kernel.org>; Sat, 22 Mar 2025 10:16:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742638257; cv=none; b=F74WKqGU5r9goS1bTqeuv5kLRnrJ022DafzFFfHkkTurBNEaxPsUBBxCM53e00ROyTAZ2GlK43F562rnT3dIwHNy0+J9JSj7QdGEuF/1APpD1ICf4hG1wHdJ9DIV+XzpoCj8eGrMRzTp2O7eHCWO5oVu6RFS4MkIM9IPArX/Y3w=
+	t=1742638577; cv=none; b=hYnKWpx6f09hRPk+OtDs773qDRbL/7XsSZeYlJFUfy8jliCeT5PHfYNozXVbsIw4NG/4Ornw63C2cgHxEVGooINvbEhGhl7Y51zqge4+rgO5P1b0qdL9z01wF2nYVK+FgwCB2tPj4Dg28Hvxp03TuUUEI1yshWjQMDMDV0UWH8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742638257; c=relaxed/simple;
-	bh=s5SsZ1ZfndtxDRrW4P12D0A21t0bU6sBDxfleux/0uk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SAyUZlo6P0/iMYZbw3/cv0Ni6KUfLhC2tomW4nsrShJ8qG6NcMabC9YuWrpYpOMTXgMEezdVYiJJRgo5Fc1c9swfv6NsngbRiPPXmINgfq2PtQDxdNjBWXAQ8wgnACfdgp1U4Wh6iZ6XEie+l/SY1AemWW93XhwKRPPnte7tMxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BsWK3eIF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742638577; c=relaxed/simple;
+	bh=BD8i4MlmnIcVcqfuILodMgdpM1y64lVQ0zfuhe3xs8M=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=odzqTJPPCIjDaU4ZM1cHHMuz3WNei7Q96FoAioAlqmHyuq0MyvykO3v3QKDlGKBl3iDTzUv2IgYLGumH3qpaDN+kw5VRMNm37bFInnPlfnc53uY0uZw5Z88CTcbUicygIiexQwl3eRhZj5zo7uGE1a3RV5YYDtMH6zqtMlLC0PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PBJBfjN1; arc=none smtp.client-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BsWK3eIF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40E2C4CEE9;
-	Sat, 22 Mar 2025 10:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742638257;
-	bh=s5SsZ1ZfndtxDRrW4P12D0A21t0bU6sBDxfleux/0uk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BsWK3eIFYMcUcy1Z5eM8u03+bcapNKK46RHNpRtZHnm3pon4s9JTzepGl+8but9Bi
-	 gY33Lmtfm7iLJalJDYY9ofnutGwNbuNhI/zKQp+24WlMHWJvYYQqqhfVnRCl2Vsum0
-	 4ywkwlT1wpmnryS6IqUra7U5btGujaL2VjEBP4Ml4Qxc2kFLRhvnltdtKydals44DN
-	 E5MYMFA3XD15NnRh+WWGPUnM5alkv9f6zba0qUGPeJqKurh33HzzjYkuKSnIKtI8rp
-	 VQtNGacLRi+f7P2L3VrnPY2L1dksWCSNAIw8aQF1KsWAN8nNxkSS4cXD2BxnHsCC1J
-	 o/PQaYxt/FrXw==
-Date: Sat, 22 Mar 2025 11:10:52 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: bhelgaas@google.com, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] rust: pci: impl TryFrom<&Device> for &pci::Device
-Message-ID: <Z96MrGQvpVrFqWYJ@pollux>
-References: <20250321214826.140946-1-dakr@kernel.org>
- <20250321214826.140946-3-dakr@kernel.org>
- <2025032158-embezzle-life-8810@gregkh>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PBJBfjN1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742638566; x=1742897766;
+	bh=q/x2RCqLV8wNjcRkvoZvtM3RODnKdXJg5XuR7JY+vG0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=PBJBfjN1QJm0Vd20y7bITmLyJuCx0POLk9PlsIqHvMGq6ov7ttj2DIqo28Qj/3yI/
+	 Rzc5IpZ881rFXrWL4vMRfXyqq+bgcMQgPe2sj2ibO82/7DeTqPZBVY3wHcj0sXRVgP
+	 5cQXzPz6XFCCB4UG3CN6fcsxZMtMgOKGyucwMyUNIAxNVgi0slyjSL8p5ICmeBaWdd
+	 n1c7BemuC0NIDA8apUBIStz8VqoI79tDZeNqikgMSXEonGsNmi0SqhJ0UWHfZYgAbm
+	 eYFvz27T/sxBVvvO+UU3isnuI2wK06BXZJqF+V+T55TuGy2A8+VwnJOPLjVqzTnwED
+	 tP35utTSp1xOA==
+Date: Sat, 22 Mar 2025 10:16:01 +0000
+To: Antonio Hickey <contact@antoniohickey.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH v5 01/17] rust: enable `raw_ref_op` feature
+Message-ID: <D8MPT9V5JAEN.JZ5APEZ4TYPA@proton.me>
+In-Reply-To: <20250320020740.1631171-2-contact@antoniohickey.com>
+References: <20250320020740.1631171-1-contact@antoniohickey.com> <20250320020740.1631171-2-contact@antoniohickey.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: d785bd8839a1788a99cc156edab53128ba279761
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025032158-embezzle-life-8810@gregkh>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 21, 2025 at 08:25:07PM -0700, Greg KH wrote:
-> On Fri, Mar 21, 2025 at 10:47:54PM +0100, Danilo Krummrich wrote:
+On Thu Mar 20, 2025 at 3:07 AM CET, Antonio Hickey wrote:
+> Since Rust 1.82.0 the `raw_ref_op` feature is stable.
 >
-> Yes, over time, many subsystems were forced to come up with ways of
-> determining the device type, look at dev_is_pci() and where it's used
-> all over the place (wait, why can't you just use that here too?)
+> By enabling this feature we can use `&raw const place` and
+> `&raw mut place` instead of using `addr_of!(place)` and
+> `addr_of_mut!(place)` macros.
+>
+> Allowing us to reduce macro complexity, and improve consistency
+> with existing reference syntax as `&raw const`, `&raw mut` are
+> similar to `&`, `&mut` making it fit more naturally with other
+> existing code.
+>
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1148
+> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 
-It's a macro and bindgen doesn't pick it up for us to use.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-> But
-> those usages are the rare exception.  And I still think that was the
-> wrong choice.
-> 
-> What I don't want to see is this type of function to be the only way you
-> can get a pci device from a struct device in rust.
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 993708d11874..a73aaa028e34 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -224,9 +224,9 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+>  =09$(call if_changed_dep,cc_lst_c)
+> =20
+>  # Compile Rust sources (.rs)
+> -# ----------------------------------------------------------------------=
+-----
+> +# ----------------------------------------------------------------------=
+----------------
 
-I see where you're coming from and I totally agree with that.
+Not sure about this change.
 
-The goal is to cover as much as possible by the corresponding abstractions, such
-that the abstraction already provide the driver with the correct (device) type,
-just like the bus callbacks do.
+---
+Cheers,
+Benno
 
-We can do the same thing with IOCTLs, sysfs ops, etc. The miscdevice
-abstractions are a good example for this. The DRM abstractions will also provide
-the DRM device (typed to its corresponding driver) for all DRM IOCTLs a driver
-registers.
+> =20
+> -rust_allowed_features :=3D asm_const,asm_goto,arbitrary_self_types,lint_=
+reasons
+> +rust_allowed_features :=3D asm_const,asm_goto,arbitrary_self_types,lint_=
+reasons,raw_ref_op
+> =20
+>  # `--out-dir` is required to avoid temporaries being created by `rustc` =
+in the
+>  # current working directory, which may be not accessible in the out-of-t=
+ree
 
-> That's going to be
-> messy as that is going to be a very common occurance (maybe, I haven't
-> seen how you use this), and would force everyone to always test the
-> return value, adding complexity and additional work for everyone, just
-> because the few wants it.
 
-Given the above, I think in most cases we are (and plan to be) a step ahead and
-(almost) never have the driver in the situation that it ever needs any
-container_of() like thing, because the abstraction already provides the correct
-type.
-
-However, there may be some rare exceptions, where we need the driver to
-"upcast", more below.
-
-> So where/how are you going to use this?  Why can't you just store the
-> "real" reference to the pci device?  If you want to save off a generic
-> device reference, where did it come from?  Why can't you just explicitly
-> save off the correct type at the time you stored it?  Is this just
-> attempting to save a few pointers?  Is this going to be required to be
-> called as the only way to get from a device to a pci device in a rust
-> driver?
-
-As mentioned above, wherever the abstraction can already provide the correct
-(device) type to the driver, that's what we should do instead.
-
-One specific use-case I see with this is for the auxiliary bus and likely MFD,
-where we want to access the parent of a certain device.
-
-For instance, in nova-drm we'll probe against an auxiliary device registered by
-nova-core. nova-drm will use its auxiliary device to call into nova-core.
-nova-core can then validate that it is the originator of the auxiliary device
-(e.g. by name and ID, or simply pointer comparison).
-
-Subsequently, nova-core can find its (in this case) pci::Device instance through
-the parent device (Note that I changed this, such that you can only get the
-parent device from an auxiliary::Device, as discussed).
-
-	pub fn some_operation(adev: &auxiliary::Device, ...) -> ... {
-	   // validate that `adev` was created by us
-
-	   if let Some(parent) = adev.parent() {
-              let pdev: &pci::Device = parent.try_into()?;
-	      ...
-	   }
-	}
-
-Now, I understand that your concern isn't necessarily about the fact that we
-"upcast", but that it is fallible.
-
-And you're not wrong about this, nova-core knows for sure that the parent device
-must be its PCI device, since it can indeed validate that the auxiliary device
-was created and registered by itself.
-
-However, any other API that does not validate that `parent` is actually a
-pci::Device in the example above would be fundamentally unsafe. And I think we
-don't want to give out unsafe APIs to drivers.
-
-Given that this is only needed in very rare cases (since most of the time the
-driver should be provided with the correct type directly) I'm not concerned
-about the small overhead of the underlying pointer comparison. It's also not
-creating messy code as it would be in C.
-
-In C it would be
-
-		struct pci_dev *pdev;
-
-		if (!dev_is_pci(parent))
-			return -EINVAL;
-
-		pdev = to_pci_dev(parent);
-
-Whereas in Rust it's only
-
-		let pdev: &pci::Device = parent.try_into()?;
-
-and without any validation in Rust
-
-		// SAFETY: explain why this is safe to do
-		let pdev = unsafe { pci::Device::from_device(parent) };
-
-> Along these lines, if you can convince me that this is something that we
-> really should be doing, in that we should always be checking every time
-> someone would want to call to_pci_dev(), that the return value is
-> checked, then why don't we also do this in C if it's going to be
-> something to assure people it is going to be correct?  I don't want to
-> see the rust and C sides get "out of sync" here for things that can be
-> kept in sync, as that reduces the mental load of all of us as we travers
-> across the boundry for the next 20+ years.
-
-I think in this case it is good when the C and Rust side get a bit
-"out of sync":
-
-For most of the cases where we can cover things through the type system and
-already provide the driver with the correct object instance from the get-go,
-that's a great improvement over C.
-
-For the very rare cases where we have to "upcast", I really think it's better to
-uphold providing safe APIs to drivers, rather than unsafe ones.
