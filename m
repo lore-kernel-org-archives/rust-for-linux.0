@@ -1,116 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB6F33D8;
-	Sat, 22 Mar 2025 03:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4561B1EBFE4;
+	Sat, 22 Mar 2025 10:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742614392; cv=none; b=k/a9AiBLsMPLvsGD2JKuw+guS9kA3ay4epLxHiIY05GKwuDPRfFDTaeI+9g5RHHnkRiAAqTNypKTtnpmzIOZsjYEhSai4LQ1/xo4BN6xxsOSmP68vbyZXa/EjX5vdHpGhvGU3yHdeJChRnogCSxEqK9Yzk8DMl74LzDPu8aaFnA=
+	t=1742638150; cv=none; b=rN9+mkeCJ1DLfJujsDWGfW5K+ovLlLARxGynYpAgN6ZBvB/BpM+goVB5o9y0va6t/zaTJRT1qNgQbRWGFfGMrJ1RvSBu0Fl+QtPCv7K/2IePSq6e70l7TUtqd/cE3BHRVgCOwHXdQ5LujcG0qSI11kLqmKNLYbh0e2V+G2Bo3W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742614392; c=relaxed/simple;
-	bh=ceGLH2OtSdendbouHLsqHGgZ+QIApJ9DTY98Efe95Y8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RSZSc3X9TkA9bCa8ybWL3bk38WKTuC4Od7RvZK2KpVJ1pbNczPLfM2aQGtOcN7tIjJt5nyZANZcjrIM0ldBud0tSjksNfNgKubew/eRFZcwv5T6pIVzi5aVX9MWPF7+/QCmjUE7D+664XQ1zVM5LwRfKBw9u0hCVddkkf4k1mbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUYVwEye; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742638150; c=relaxed/simple;
+	bh=Hdv42PI+SQv5JUjnRTSo8idtKkWDywJe2XkqlGKHXbk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h1z8UkmyJhPqzjsfZn2JuCkdbyXbuZJfrxEVB2JmHC7F9q0tK5IH90y+2FzhljjzfAt3aJUTlVYi5H8NS9iB9vgGVb/Ap7lfMOBmEdPapgznWNc067MjIN8KsZsMyrTuqiN4v45pFg+qoOEY9Fv5wrAQVkT9Li7aAeii9aJ2M6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=As+i6puU; arc=none smtp.client-ip=79.135.106.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUYVwEye"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15ED9C4CEDD;
-	Sat, 22 Mar 2025 03:33:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742614391;
-	bh=ceGLH2OtSdendbouHLsqHGgZ+QIApJ9DTY98Efe95Y8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mUYVwEyeG7U805rVloJImuzfUgeuOHtqFrcsMTFLpCD8BjC7PYHtEM59/P+Yjka3Y
-	 qdWJBqw8VX0MnVfwNBM2xKhUpnw3pDwefzhyFDoW9i7WHC5T2fn5ELv/6Cgi8RM8WX
-	 PW4iAnvbgWnIzYy3JxZFxQKnFgq5LdgN8zdCrK2k=
-Date: Fri, 21 Mar 2025 20:31:49 -0700
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
-	mcanal@igalia.com, Alice Ryhl <aliceryhl@google.com>,
-	Simona Vetter <sima@ffwll.ch>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC v3 10/33] rust: drm/kms: Add
- ConnectorGuard::add_modes_noedid()
-Message-ID: <2025032142-handsaw-gumming-40db@gregkh>
-References: <20250305230406.567126-1-lyude@redhat.com>
- <20250305230406.567126-11-lyude@redhat.com>
- <20250314-observant-cyber-chowchow-bfe5f9@houat>
- <dea3218eb31f3e91d2a10f93a7bc6cfa674546e6.camel@redhat.com>
- <2d39187892737438c35791aa59681b1af7e62de7.camel@redhat.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="As+i6puU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742638138; x=1742897338;
+	bh=ZFFKz10EMacfDB3xAKr3jPI1Qcnx3CwnTAUEEkeCMJo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=As+i6puUOChqNYwjfuQbipHqiHnACG+UwFrA+edTl42+0UFiXWTzD4tcgdaGwMqLU
+	 8cu8mBWPDyKg4fu5zvg8aLH9COXNyWd7D2vEiQU5hr0UKwsuFq9qAjD1z8N1sUvZ6p
+	 sRYKDRiub1ZX2qHx1VV7djzTwPKnP1N8Ha6VtRrOMJ9PUiapxHj/T/tqxr04TRPBfk
+	 MJZt0KwVBayBmwVaQCOuqnh1ZTGu5+gzqYjSi/3dj/+jto6XCYlfFAw+CkNg4fqrfT
+	 44rcKBAZomTosmwdCDQhkwJXCf0iOK8jidYdlPUkFKq76bnI9PmW2LRcHX7dxTHuRe
+	 V5zRzmShxw5+g==
+Date: Sat, 22 Mar 2025 10:08:53 +0000
+To: kernel test robot <lkp@intel.com>, Danilo Krummrich <dakr@kernel.org>, bhelgaas@google.com, gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] rust: pci: impl TryFrom<&Device> for &pci::Device
+Message-ID: <D8MPNRAYNZIS.T7U3XLKHN523@proton.me>
+In-Reply-To: <202503220040.TDePlxma-lkp@intel.com>
+References: <20250320222823.16509-4-dakr@kernel.org> <202503220040.TDePlxma-lkp@intel.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: dfc469007ca1960c05e3b75300ee8c8b99f6f5a4
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d39187892737438c35791aa59681b1af7e62de7.camel@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 21, 2025 at 07:52:23PM -0400, Lyude Paul wrote:
-> On Fri, 2025-03-21 at 19:50 -0400, Lyude Paul wrote:
-> > On Fri, 2025-03-14 at 13:02 +0100, Maxime Ripard wrote:
-> > > On Wed, Mar 05, 2025 at 05:59:26PM -0500, Lyude Paul wrote:
-> > > > A simple binding for drm_add_modes_noedid() using the ConnectorGuard type
-> > > > we just added.
-> > > > 
-> > > > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> > > > ---
-> > > >  rust/bindings/bindings_helper.h  |  1 +
-> > > >  rust/kernel/drm/kms/connector.rs | 11 +++++++++++
-> > > >  2 files changed, 12 insertions(+)
-> > > > 
-> > > > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> > > > index 27828dd36d4f2..846eb6eb8fc4c 100644
-> > > > --- a/rust/bindings/bindings_helper.h
-> > > > +++ b/rust/bindings/bindings_helper.h
-> > > > @@ -13,6 +13,7 @@
-> > > >  #include <drm/drm_crtc.h>
-> > > >  #include <drm/drm_device.h>
-> > > >  #include <drm/drm_drv.h>
-> > > > +#include <drm/drm_edid.h>
-> > > >  #include <drm/drm_encoder.h>
-> > > >  #include <drm/drm_file.h>
-> > > >  #include <drm/drm_fbdev_dma.h>
-> > > > diff --git a/rust/kernel/drm/kms/connector.rs b/rust/kernel/drm/kms/connector.rs
-> > > > index 14de3b0529f89..855a47b189a91 100644
-> > > > --- a/rust/kernel/drm/kms/connector.rs
-> > > > +++ b/rust/kernel/drm/kms/connector.rs
-> > > > @@ -446,6 +446,17 @@ fn deref(&self) -> &Self::Target {
-> > > >      }
-> > > >  }
-> > > >  
-> > > > +impl<'a, T: DriverConnector> ConnectorGuard<'a, T> {
-> > > > +    /// Add modes for a [`ConnectorGuard`] without an EDID.
-> > > > +    ///
-> > > > +    /// Add the specified modes to the connector's mode list up to the given maximum resultion.
-> > > > +    /// Returns how many modes were added.
-> > > > +    pub fn add_modes_noedid(&self, (max_h, max_v): (i32, i32)) -> i32 {
-> > > 
-> > > Why do we need a tuple of i32 there instead of two u32/usize parameter?
-> > > 
-> > > And the return type should be unsigned as well.
-> > 
-> > I think I was just copying C (or whatever the bindings here translate the C
-> > type to), but I don't see any issue with changing this to u32.
-> 
-> ...wait. Now I remember why I did this: it's not that we expect it to be
-> unsigned, it's that the largest possible u32 value cannot be expressed in a
-> i32, and I think the C side of things uses i32. Days like this I really wish
-> we had a u31...
-> 
-> think it would be OK for us to convert this to unsigned on the C side of
-> things?
+On Fri Mar 21, 2025 at 5:56 PM CET, kernel test robot wrote:
+> Hi Danilo,
+>
+> kernel test robot noticed the following build errors:
+>
+> [auto build test ERROR on 51d0de7596a458096756c895cfed6bc4a7ecac10]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Danilo-Krummrich/r=
+ust-device-implement-Device-parent/20250321-063101
+> base:   51d0de7596a458096756c895cfed6bc4a7ecac10
+> patch link:    https://lore.kernel.org/r/20250320222823.16509-4-dakr%40ke=
+rnel.org
+> patch subject: [PATCH v2 3/4] rust: pci: impl TryFrom<&Device> for &pci::=
+Device
+> config: x86_64-buildonly-randconfig-005-20250321 (https://download.01.org=
+/0day-ci/archive/20250322/202503220040.TDePlxma-lkp@intel.com/config)
+> compiler: clang version 20.1.1 (https://github.com/llvm/llvm-project 424c=
+2d9b7e4de40d0804dd374721e6411c27d1d1)
+> rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20250322/202503220040.TDePlxma-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202503220040.TDePlxma-lkp=
+@intel.com/
+>
+> All errors (new ones prefixed by >>):
+>
+>    ***
+>    *** Rust bindings generator 'bindgen' < 0.69.5 together with libclang =
+>=3D 19.1
+>    *** may not work due to a bug (https://github.com/rust-lang/rust-bindg=
+en/pull/2824),
+>    *** unless patched (like Debian's).
+>    ***   Your bindgen version:  0.65.1
+>    ***   Your libclang version: 20.1.1
+>    ***
+>    ***
+>    *** Please see Documentation/rust/quick-start.rst for details
+>    *** on how to set up the Rust support.
+>    ***
+>>> error[E0133]: use of extern static is unsafe and requires unsafe block
+>    --> rust/kernel/pci.rs:473:43
+>    |
+>    473 |         if dev.bus_type_raw() !=3D addr_of!(bindings::pci_bus_ty=
+pe) {
+>    |                                           ^^^^^^^^^^^^^^^^^^^^^^ use=
+ of extern static
+>    |
+>    =3D note: extern statics are not controlled by the Rust type system: i=
+nvalid data, aliasing violations or data races will cause undefined behavio=
+r
 
-Yes please.
+This is just a minor annoyance with these error reports, but I would
+very much like the error to have the correct indentation:
+
+>> error[E0133]: use of extern static is unsafe and requires unsafe block
+    --> rust/kernel/pci.rs:473:43
+        |
+    473 |         if dev.bus_type_raw() !=3D addr_of!(bindings::pci_bus_typ=
+e) {
+        |                                           ^^^^^^^^^^^^^^^^^^^^^^ =
+use of extern static
+        |
+
+Would that be possible to fix? That way the `^^^^` align with the item
+they are referencing.
+
+Otherwise they are very helpful!
+
+---
+Cheers,
+Benno
+
