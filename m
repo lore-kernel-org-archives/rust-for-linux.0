@@ -1,202 +1,145 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E93233D9C;
-	Sat, 22 Mar 2025 13:24:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F5278F4C
+	for <rust-for-linux@vger.kernel.org>; Sat, 22 Mar 2025 15:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742649849; cv=none; b=AzuE6G8VXHotxsFxQA1kN/KFtXCdT1+vwGRmNKqymeSQnqCtinzQ2BLOt3ly34/rG/P9Ad8tQx8oMrO824cHwhtnITbWKHH6jG/VF14Ssc2wq+pQP5H5TOyslZkOlExPTXSSNt18Ir2T6P0kbZZBpTXxe0y+BjSAz04Xo3LB6jk=
+	t=1742655766; cv=none; b=kd7TkYQWfV+x7dEXt4N0wOE2IUusJvk+CuPLMgiJKbvMFcQzscHh3W+Y6sosf9v50h8M2URztWrnmZ8heI1M2x+zNy2MBuiMerQn/rnXZCaqzSjocTmhrRkCFeKpGL3pQQ8Wa8gL1p9LTwu+iIIVyZT3BjTjWKPxCwZD0ck8jik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742649849; c=relaxed/simple;
-	bh=IsZISYkXaWsxWzZj1rMLpmr6Td8PuMuiqOORtOd1umw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Is9NK7o9xavQfNmbW2O1hfA4sqkVugOUGh3n1jsRrvpp9aOTKAn1/XjDiNp1AKIKg2laYxhej64f9M+fAHuz0N3LVsKHiLMXH8FnCUXFHcxNyK4iykh0jP1+O4C8r59bytzDvYuyIj4YBL3670Kl/Ge7IOrerspZZgepD3wxAH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZjoPbY1; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742655766; c=relaxed/simple;
+	bh=xmaBHHV+pBO1cdNj9lOsTobDcjk4fT7ScUbArphMew4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kKmvYc48tmZqwWFf0xwxxDKQ1FZ5/gjDI0rDKivkiUgp7oEcF3CV0TPYKhfCUt51r+a3G+BV006vlkKj8XrK25P8A8fyj+TYLwNvHdhHKv6NHjpHsb4a8rF2zx6VA6uC67uIFQPt3p3UT0mDpkxdGcH5ZRKnBw9kCd1ttX/4PdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=O1fL6+eG; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZjoPbY1"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6dd01781b56so37755396d6.0;
-        Sat, 22 Mar 2025 06:24:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="O1fL6+eG"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6f768e9be1aso38427877b3.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 22 Mar 2025 08:02:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742649847; x=1743254647; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Mr6D2UA7pCoLImjVcUbfEdn2wzR9cS/0FKL2QlWd99M=;
-        b=RZjoPbY1QdKMYVyxi5arF5KdiYxYV+wTDoUpsBEwwUfqxIn+MnqvxTti0YlqF8bZ2+
-         IU7U40u2YOc4RXNkJk6FPUWgimj0vNig2oNdmhcuxxc9N0FT9jMClv8C75gfUFoUNkEr
-         Db5t/vmLfF/kVH4uauU3+gloGAFg/WAQiZned5OS/0nU9JLbQWAtK4BTV3Eh8OoGKuVf
-         YVrXGOmagxAea4IdnZ8WXH4h2ei1A1EKgg+2RmOF5KGgVsF+JaH4m2DwI+QufL1RDh0S
-         BBmZ2tmwfi1dmXu41fkRCShkA4QJ/Nkonr33UZFkCLODEZREIOieq2l3cl3MOVMWaCXf
-         nN+Q==
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742655762; x=1743260562; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oFV0r1ify5HIIcyLd8ZfZYsL133OkFOEjRPT1PjsIps=;
+        b=O1fL6+eG7WedNBGfCyX6/ec/mBPCCb788J+BJh7tB8p3zVmQ7INQcPc45cFSPplr9N
+         QBp6FJpA4MRSt8veEfCsYPJQUSvALQz/uAdsxcNRtPoc4ydzj4g8REAZt/olEW9YBK68
+         1aPxSdWBeL4/F09EQEx7TJ14dQ6kMl+vxw16I07bgjapgHdsnhx7agg4LSWWKGMNd+eU
+         l++CCrhQanhHnIKfaf0AzPG/6Yn17kCebG7d94Z1oh8DRTSGKXwe0IIrgflr6OQ5p4Vk
+         j1iNBn8wUNxWpyDrL61eNZNxUSxzBjasg4/YcHt3kV0eciGx9kw6l+poNDi6KNKints7
+         aJTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742649847; x=1743254647;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1742655762; x=1743260562;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Mr6D2UA7pCoLImjVcUbfEdn2wzR9cS/0FKL2QlWd99M=;
-        b=RVFCJZUQEXarELOmtJuv6QyA1JK7p7Io2OYnKIE6T0sHFOio4jp3/qk2Q6HTqSFykK
-         x3pFC1wNK1akorJYK1uoBLJUEoF0WVFPz1kxq/CkRf5mMCm7or0dGhHmt6TXD201wRZR
-         Go1ffqVgsCTdXesnIibV/UfJPKgxZIenadH5rJcya/j1dhQKfY+NFQ1DcvIqD3meB1pJ
-         mVLLVRBFoQMW8KHuHveeGIlS6KsqbvF48jWvKAeQX8fFMWiaAAMlH7mmvKN9pufG08Lm
-         6YzkluBvXZrdS54Pt8M1F0Y8zUItNLwL9Eeg01Cmw94xrqjterWbeGRxCR8HJEHYmZCr
-         PZ/g==
-X-Forwarded-Encrypted: i=1; AJvYcCV/+28LsKW+iMMgRXcW6Wqb2l5Vdc2U8Y+6Qfsf62NwSOR/Jp27Jqyg3uU0JPd5QzQJF0PdVEjYSygyK9Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwI78grUyn2b6teyfz0fFn5q3gtzCuSK6dQCqHj1iRvlyW6tIF
-	GgLvknzGK4/kUSpFoiAVcC22PxkmCiH6qbFrYEIMaHJx/x9M8AfU
-X-Gm-Gg: ASbGncuH5Zmc85Be81FBTt0aKX8JeNNs/Ogr3CdLzdHASM9VTFCR98ozs4nABP1yrS3
-	tjkrkxxK11LK0HxXvgnXr2oBqW6F28a2oEL/N5Cj4K5i8aPJfudl2EggEn0TrzuEMaEVcNOI1mP
-	JW1vu1erwwKmKwrMa2bcWa6gtcC7mYM+PBuytkPN0pz+wbI+6zGdnDbxWdHWW/BPyOmASvWljdr
-	UyxnyBq611b7Pl9U0wB9ia3AwgpHIs1kBVplM+2zx6jjOg+I/hTdj6qg0pP2jjsP/jR69hlnnra
-	0S07VYB77tjhHaRI0H68knzD+5Xkqxvyf2wWY7o6iberXtyG27HvzMvYYtI8rQ8XaMzJx+2mnt1
-	31v6rNk1UqbaywA+Ha+EHjmHLCZ8JzqhH46N4jgnUP8K78aM2Un2OiYHCf8oDtokInueaVwc=
-X-Google-Smtp-Source: AGHT+IEQ1JeEO89dAWOuRCIXLuR1S5LG8FJ/6hXCBbGClTRDzxD4H9ykPjmdiWjRS/hD6npa9yFmPw==
-X-Received: by 2002:a05:6214:5190:b0:6e8:9957:e705 with SMTP id 6a1803df08f44-6eb3f34b715mr82568376d6.34.1742649846515;
-        Sat, 22 Mar 2025 06:24:06 -0700 (PDT)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2600:4041:5be7:7c00:5ff:9758:a8dd:1917])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3efda6f2sm21944596d6.116.2025.03.22.06.24.05
+        bh=oFV0r1ify5HIIcyLd8ZfZYsL133OkFOEjRPT1PjsIps=;
+        b=TRQY/robBZ3pRbP9PtXyIG1RVfKb+CXjfnwvZljIQ8qT/qzt9ohScr1/4SZG5Xg2oj
+         P3oXnr1Nl6WtOXhNlojreZGk6rW30WmeaBBSRcj7tQQbGFxFFIQ69I1tNXU1onF5mBSQ
+         eJPQvpKYCXk/O1n5UXHh0rOci0CURMtmuVxYqTcGGiRqNrOzlTA+6ucZ6AnCIpnhUJlY
+         CcoK/s/acBrdDHTTNPoPn4xrrXGOjYFS4a088AzE4mbKul7PtnU01HFXZSw2anEvGRu+
+         7ZMYPu3yG1b4/q8HiRCi9ZAV5nItBu/s02b6GU0ICNcLHsA8DnypE6PUmJcLnpNiJ4OC
+         ZrgA==
+X-Forwarded-Encrypted: i=1; AJvYcCUd6t2MGTWiR/LtN/CrRA8CRcVGxeFDEVp6oN7buOgVRUXIv+uydQuF3TTzIsZ4Saq4aYEa3nY28QNZDU95Bw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz20wxsoNRXj1bDO8gRLKZ1CcYEGyUxBu1XVlU1R9+ehBQmXm1w
+	WXDpLxDQ6izNH6K02OOmgI2BQhaYatFDl3jRX3ZjEyfLD/A8KmQkF4VoJGcAs5U=
+X-Gm-Gg: ASbGncsQT/pYFiFV62Ej1M8KKWOrEEYRahIMPpSw/7ZhvKj5cdRWv/CE3tzBs5tIkI8
+	kDXCS/S92gs/5drsurvUECE6Wvx9Ccb3kIGQGfcFgCktu4VNExNkDlVyIkGtkH9hfo/XfMpB+MY
+	vxESLjpA9Sc4wJGyrBNLMsOpqUgspZcxThbwqbSAf+shmSb0yHLmN714mJoLkVXxWDXJR+JEZho
+	D28bbnIaPcGKCxsXde3of0BVQYSzJc4UDuyM8XKGBuzKJk/TxXM41nTwqnJL7XpYLwWiGpPGbFt
+	BQ11R3svJ7J3pReYQtvMCb2UkoZI4EgWNG5ToBMyUJeQ4ioo0HxvrmeZb3pOlb1YV9ne09Ik4Ow
+	UYLVQToahF0cR3cTpv0AlxxlpoHhFACMw3SZPJX7y
+X-Google-Smtp-Source: AGHT+IF2ZG+6e1bR4Awen52wPxMIUEY8IX43biiu2wKoBJJwjGEumXzrFQv+3RyxSGDzYPrMHT7LBg==
+X-Received: by 2002:a05:690c:6c8e:b0:6ea:8901:dad8 with SMTP id 00721157ae682-700ba305d15mr106328367b3.3.1742655762158;
+        Sat, 22 Mar 2025 08:02:42 -0700 (PDT)
+Received: from Machine.lan (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-700ba73d085sm7897807b3.15.2025.03.22.08.02.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Mar 2025 06:24:06 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 22 Mar 2025 09:23:46 -0400
-Subject: [PATCH v4 11/11] scripts: generate_rust_analyzer.py: use
- `cfg_groups`
+        Sat, 22 Mar 2025 08:02:41 -0700 (PDT)
+From: Antonio Hickey <contact@antoniohickey.com>
+To: benno.lossin@proton.me
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	contact@antoniohickey.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	masahiroy@kernel.org,
+	nathan@kernel.org,
+	nicolas@fjasle.eu,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH v5 01/17] rust: enable `raw_ref_op` feature 
+Date: Sat, 22 Mar 2025 11:02:35 -0400
+Message-ID: <20250322150235.1851241-1-contact@antoniohickey.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <D8MPT9V5JAEN.JZ5APEZ4TYPA@proton.me>
+References: <D8MPT9V5JAEN.JZ5APEZ4TYPA@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250322-rust-analyzer-host-v4-11-1f51f9c907eb@gmail.com>
-References: <20250322-rust-analyzer-host-v4-0-1f51f9c907eb@gmail.com>
-In-Reply-To: <20250322-rust-analyzer-host-v4-0-1f51f9c907eb@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Boris-Chengbiao Zhou <bobo1239@web.de>, Kees Cook <kees@kernel.org>, 
- Fiona Behrens <me@kloenk.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Lukas Wirth <lukas.wirth@ferrous-systems.com>, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
+Content-Transfer-Encoding: 8bit
 
-Declare common `cfg`s just once to reduce the size of rust-analyzer.json
-from 30619 to 2624 lines.
+On Sat, Mar 22, 2025 at 10:16:01AM +0000, Benno Lossin wrote:
+> On Thu Mar 20, 2025 at 3:07 AM CET, Antonio Hickey wrote:
+> > Since Rust 1.82.0 the `raw_ref_op` feature is stable.
+> >
+> > By enabling this feature we can use `&raw const place` and
+> > `&raw mut place` instead of using `addr_of!(place)` and
+> > `addr_of_mut!(place)` macros.
+> >
+> > Allowing us to reduce macro complexity, and improve consistency
+> > with existing reference syntax as `&raw const`, `&raw mut` are
+> > similar to `&`, `&mut` making it fit more naturally with other
+> > existing code.
+> >
+> > Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1148
+> > Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> 
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> 
+> > diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> > index 993708d11874..a73aaa028e34 100644
+> > --- a/scripts/Makefile.build
+> > +++ b/scripts/Makefile.build
+> > @@ -224,9 +224,9 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+> >  	$(call if_changed_dep,cc_lst_c)
+> >  
+> >  # Compile Rust sources (.rs)
+> > -# ---------------------------------------------------------------------------
+> > +# --------------------------------------------------------------------------------------
+> 
+> Not sure about this change.
 
-Link: https://github.com/rust-lang/rust-analyzer/commit/2607c09fddef36da0d6f0a84625db5e20a5ebde3
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
- scripts/generate_rust_analyzer.py | 35 +++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+This change is so I could enable the `raw_ref_op` feature for doctests
+since the minimum Rust version 1.78 still has `raw_ref_op` as an
+expiramental feature, and will throw errors at compile if a doctest uses
+it. Is there a better way to do this?
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 957b413fe0b6..3d89c0198db4 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -37,6 +37,7 @@ class Crate(TypedDict):
-     root_module: str
-     is_workspace_member: bool
-     deps: List[Dependency]
-+    cfg_groups: List[str]
-     cfg: List[str]
-     edition: Literal["2021"]
-     env: Dict[str, str]
-@@ -59,15 +60,8 @@ def generate_crates(
-     sysroot_src: pathlib.Path,
-     external_src: pathlib.Path,
-     cfgs: List[str],
-+    cfg_groups: List[str],
- ) -> List[Crate]:
--    # Generate the configuration list.
--    cfg = []
--    with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
--        for line in fd:
--            line = line.replace("--cfg=", "")
--            line = line.replace("\n", "")
--            cfg.append(line)
--
-     # Now fill the crates list.
-     crates: List[Crate] = []
-     crates_cfgs = args_crates_cfgs(cfgs)
-@@ -77,6 +71,7 @@ def generate_crates(
-         root_module: pathlib.Path,
-         deps: List[Dependency],
-         cfg: List[str] = [],
-+        cfg_groups: List[str] = [],
-         is_workspace_member: bool = True,
-     ) -> Crate:
-         return {
-@@ -85,6 +80,7 @@ def generate_crates(
-             "is_workspace_member": is_workspace_member,
-             "deps": deps,
-             "cfg": cfg,
-+            "cfg_groups": cfg_groups,
-             "edition": "2021",
-             "env": {
-                 "RUST_MODFILE": "This is only for rust-analyzer"
-@@ -101,10 +97,13 @@ def generate_crates(
-         root_module: pathlib.Path,
-         deps: List[Dependency],
-         cfg: List[str] = [],
-+        cfg_groups: List[str] = [],
-         is_workspace_member: bool = True,
-     ) -> Dependency:
-         return register_crate(
--            build_crate(display_name, root_module, deps, cfg, is_workspace_member)
-+            build_crate(
-+                display_name, root_module, deps, cfg, cfg_groups, is_workspace_member
-+            )
-         )
- 
-     def append_proc_macro_crate(
-@@ -190,7 +189,7 @@ def generate_crates(
-             display_name,
-             srctree / "rust" / display_name / "lib.rs",
-             deps,
--            cfg=cfg,
-+            cfg_groups=cfg_groups,
-         )
-         crate["env"]["OBJTREE"] = str(objtree.resolve(True))
-         crate_with_generated: CrateWithGenerated = {
-@@ -252,7 +251,7 @@ def generate_crates(
-                 name,
-                 path,
-                 [core, kernel],
--                cfg=cfg,
-+                cfg_groups=cfg_groups,
-             )
- 
-     return crates
-@@ -277,9 +276,21 @@ def main() -> None:
-     # Making sure that the `sysroot` and `sysroot_src` belong to the same toolchain.
-     assert args.sysroot in args.sysroot_src.parents
- 
-+    # Generate the configuration list.
-+    with open(args.objtree / "include" / "generated" / "rustc_cfg") as fd:
-+        cfg_groups = {"rustc_cfg": [line.lstrip("--cfg=").rstrip("\n") for line in fd]}
-+
-     rust_project = {
--        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs),
-+        "crates": generate_crates(
-+            args.srctree,
-+            args.objtree,
-+            args.sysroot_src,
-+            args.exttree,
-+            args.cfgs,
-+            list(cfg_groups.keys()),
-+        ),
-         "sysroot": str(args.sysroot),
-+        "cfg_groups": cfg_groups,
-     }
- 
-     json.dump(rust_project, sys.stdout, sort_keys=True, indent=4)
+Thanks,
+Antonio
 
--- 
-2.48.1
-
+> 
+> ---
+> Cheers,
+> Benno
+> 
+> >  
+> > -rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons
+> > +rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,raw_ref_op
+> >  
+> >  # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+> >  # current working directory, which may be not accessible in the out-of-tree
+> 
+>
