@@ -1,131 +1,100 @@
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8129329CEB
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Mar 2025 20:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A705214F121;
+	Sat, 22 Mar 2025 21:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742674345; cv=none; b=B04oV5oFr3aPx2m5CTHY47aQiFNypF7Pjpm2aO5s9qx16KIPYhYWEJFRdwyxcgbhsG6K7zpa/SuE+ihfcPKKux+68u/tVJ/FlF2guvqK8LrhlXNAqEwdDUQuGrOZoGAUqHUuoMcRCsgmkvYskFiA+TqzOQRnsoUYHv4MKU1Np1U=
+	t=1742677241; cv=none; b=Hv3EDugc4DHRnhXefPi6zvtFjLM1LHnUluGv7HXuiwpYKbDTD5szmqC619xNGxa87YWurcbCfWUrGOPADPacuhFpX6NjF9I6IYrfJBdp66qKOmfpvss29tMfaWb3YVIkZxLSuwZS/4EluvlGAwi+37z0/PabrqyqM8Q+gho3x9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742674345; c=relaxed/simple;
-	bh=FyKkeKQ5wFneLXjBFFmhNdP7NtjNnMECbVyBDl05Z20=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=coDQ+coEpziljCOpILZAZQdKCZs0PkzdoPLrrwUk3VY57VNaKAeyAtFJWFwYipOUMMK3ETXCXwyKtOVc5X433Sx8rDOVetMm6TsUMJRuYGo6ZjilkRFwW24090njSpCgy4DJRga2ZXB6yHxP55CMuf9090Fcarru3aEUngWJFrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=Bgm1m+1F; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
+	s=arc-20240116; t=1742677241; c=relaxed/simple;
+	bh=t+uIrP6PQdTy3yUktGlZVz5mBCJ35FKR8kpdNcrZ0w0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jnakbxoxbRxf1QzyY//Mpwh1pspTWfTLKJCbmh5x8eLQU87dYXncQK8ThTjRo1DKH29TOy8cZPWX6gaS6YFVoL/EkGYJycT8ZRnVLIQ36RoqgyQS4rRduzEr9U9fR/E17XXi8+O8V22+6wWZuA70aE1UbcsIZxb2ALGNv9KorK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O5VYlffu; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="Bgm1m+1F"
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e5ad75ca787so2729190276.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 22 Mar 2025 13:12:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O5VYlffu"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2241c95619eso7798005ad.0;
+        Sat, 22 Mar 2025 14:00:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1742674342; x=1743279142; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1742677239; x=1743282039; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XftD/bet0ahddNcDhTpxgjJPCDxkr3EcvVPGIXtlOks=;
-        b=Bgm1m+1FdeLWjtREBOPjSk9vY5UBtgXcpNHpOuueqRpYA4vamxdeRh/+j+WnBrEOWq
-         uoMUHIgLuSane7sljWj9063CGK/5/6MMvukCUMWbNYLxdNE/7yGrM9GqI1vQ4utblYhq
-         8JQ2jNfs6LkMPylJ4guJBW5FL55Z6d2zZmiVdT0P34s/WL0NzTJSwL0FzYhF1euZkXkO
-         YBeELP1ov+qDDivvRaTPXyxmKWiGDUamWdGqLQr7TlxhwBgs5AAjCbKcfraMUv0D6lQ4
-         0MudcL+5Mjzi++nLVfgJQl5HEbtZ/jqQblnWngF4NjL16nnFY8pFVF12Nqd/Yl+Odqkv
-         UutA==
+        bh=t+uIrP6PQdTy3yUktGlZVz5mBCJ35FKR8kpdNcrZ0w0=;
+        b=O5VYlffu2JXIMsNTf86DMIh0tPV7Q1zREfmicCDnPbkdnL1eG/WW1ahQR1afBYn5c5
+         tVuiW9pPj9gAWGQrgHBMxlhQuwD+IofRKS7BFUBv5/k10iFB8l+b5SGMN25pxuz9ZncT
+         S86JYVeXj20XhnqrD+u6AL2aqcpXfJmqODO/JJP24nTKpb/kl0mx1KnDp2NbeDrQMGj5
+         0IRzAKRrLRYGtkeFpEuaxxTi58y7gY6wpaj1VF7K3JCq/ztw/1GJSzCbP4kZnu+uz6XC
+         nXRGOTwARwIkmmKOPTUSRopuaLptkL0bwA3wmpFJdjkqVx4z6hfO45moy5RKCh9HIPI6
+         hSCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742674342; x=1743279142;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1742677239; x=1743282039;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XftD/bet0ahddNcDhTpxgjJPCDxkr3EcvVPGIXtlOks=;
-        b=DgiZh2Wg1QP9I8prwyy2Uad+vgtKIaqxBmZq/dMZnHE4S6ZZQaYV3+IjRTToQR/H1h
-         ewcniL1UUHzwIa8kP+6t0najitXx7n85Fq3OEx2RzGMXAEBPx9MiS+PAlSokWCyXgzqp
-         uNYgsP1JxNuIAjEcu94mR7/Xu7J6f1m2ev1C93x/W3qFqZS8pK9nx/oJaBy+HW80U6Pt
-         v01ElMrxqd+kBKsiKP4GFuE7eLGPxpnmMBvg2UMAN25fepKQdofTD1hQGXM2qgKi/+QH
-         SQSVRQ3cQrYMuBXu+6tnjhCarGF9u8kf+hJ3gRrXSVWzvruEkZ76HvkV2TRaiiFRb8wE
-         1wJg==
-X-Forwarded-Encrypted: i=1; AJvYcCW08A3eVyF5RBINLOG3yfTmHTNjaNhebjNcxn7XsjM+M8MAYF+sHozA59MBXOO8qz9/wlKCgJXkCCcHeTPkzg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAb8d7dIB0pBpF1cNTYO3Szz+Vkzn3fvFGjZUdt0/08ndKt73f
-	jnWzIgbJoAN4pzQIZQwdhL4n49C7wB5k1V+JVLRhSFJwGp4/fDEdvWnycK/Hw+c=
-X-Gm-Gg: ASbGnctlxOpWGmAxFogGGU6hmfo9CIL2Q22ZmpE6p/yUYydTR31FKb+Ry8AMzI7LUDf
-	2fQoogttxItOUp69e/orsQHRlwS24+3nhw+hGBKGa7q/UWJuoo2U+bojg0VOWmQP3LvbYdLUoZn
-	dWdUAUHC/UwKI+JMFMgfTcL+/tpvtLR2FNHuSkqifLEsnZ+XBCvadMpyU0i4SPG2slqrlG3oOTN
-	ZIp5lfTveuCJiDjKLJflt19o1rJMSGG9uYM6HhWeazNmhPV2RPMrQqbehCcm88MhpcQWaFWVdGM
-	UBkXlbS2ZgZ2KA8DyePGHOpU4FVpoRzha3k8kaMAimPXw23Ulg0ATGlCKZ8LiMNaHBdUITopkX4
-	sQLpnRl1lbrDRlRSDEvS9rXgT2NC/hg==
-X-Google-Smtp-Source: AGHT+IGHS6lOSvoLhDMVoyZEV4FQ3Hl2dcaBZHwKEjAP67NOWR+FvTBSQKC3rq/SW7tAZ1/KBxRqTw==
-X-Received: by 2002:a05:6902:240f:b0:e60:88f9:b081 with SMTP id 3f1490d57ef6-e66a32ab0d4mr10539765276.17.1742674342100;
-        Sat, 22 Mar 2025 13:12:22 -0700 (PDT)
-Received: from Machine.lan (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e66a4246db8sm880436276.13.2025.03.22.13.12.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Mar 2025 13:12:21 -0700 (PDT)
-From: Antonio Hickey <contact@antoniohickey.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	contact@antoniohickey.com,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	masahiroy@kernel.org,
-	nathan@kernel.org,
-	nicolas@fjasle.eu,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tamird@gmail.com,
-	tmgross@umich.edu
-Subject: Re: [PATCH v5 01/17] rust: enable `raw_ref_op` feature 
-Date: Sat, 22 Mar 2025 16:12:17 -0400
-Message-ID: <20250322201219.1947215-1-contact@antoniohickey.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <CANiq72=5Q=H1dUD+RQE+Bg579HvB8iE=hyFmtDAJD77JqoUjpg@mail.gmail.com>
-References: <CANiq72=5Q=H1dUD+RQE+Bg579HvB8iE=hyFmtDAJD77JqoUjpg@mail.gmail.com>
+        bh=t+uIrP6PQdTy3yUktGlZVz5mBCJ35FKR8kpdNcrZ0w0=;
+        b=vFWXtCsdh27rg+Onat8tlI3KC90aQMLQMFnBLUszZUA9DNh7u3tGBATGGCH5ckrkDA
+         4S/bqo7kiCBD7PsQyO1BcZqw+kbJPM/tW/DX8cspMEFEb96xmUhS9NCAdz21Wb9hfXhO
+         EVfhJOhFLvVNhMERlrprI/Hg1d7bFEWTJQ2oowBJmsyGRwh01HFDi5FSNkG0MlxUCMon
+         XmT7jY3SIjWUbFUnHGrjVoA9LQG1f6l0TJTR0S2iZFdENBcOEHJ6XQAHMvGuMlml5Tcr
+         8/kx6X5C3cz10a28JqKypvm38FG0uFN4DNJJNaJlMGs2jct8U4HZ5tnvpaaotu4p1Vyu
+         Qq0g==
+X-Forwarded-Encrypted: i=1; AJvYcCU29vqhsjnHjx+Wd8lg/wx9PegIdysADdx1mY9XHr3BwH3c6GlkF4yIFR11mGbnX+nGSxBe1+VEXmlFjuE=@vger.kernel.org, AJvYcCXQj1yqJLoKKI2p8oL5NhwDOrsrc8e9hz4rOlDQw+Y653NFbb7p7FnPo1/y9AvvJLoKZN+j0QLDDytYw+t205o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw11lxySbwxB4CLVZlpN8dTKYPwuiOoC+x99M3KYflkgkQihZNT
+	OWg+u1ShRs6eJtWVFl1FM7T0Qetopil+0/FsZE18nYywWilnwd260D9KXBktZ2pFRUee8XnGhF+
+	qsCeCr0a2vvWGit1UpDc58k2MGO8=
+X-Gm-Gg: ASbGncs0f7CyeawMUwaJY3pFWzCyUHLNb8UCxpKKvXkqpxJhL3gzRS7K4WDMDq5vDFK
+	zStUPDlDri5FeXu9ELPX2kyVU1AkuRguMUyFQOcT4lv2HPppTMoHShE+nInw+tasduMcGphhI14
+	TTvyF10SPMdK5t8BGkBLi1jrTgrQ==
+X-Google-Smtp-Source: AGHT+IHpMX/UoN6CObJko0seKXczCa07uTX8BTaw7Iu8C8Ux4hkr7raaOl6tqmIY5CTWUTRqbp9tmUtqn25OcYstec0=
+X-Received: by 2002:a17:902:d481:b0:215:2bfb:3cd7 with SMTP id
+ d9443c01a7336-22780df0f46mr47579105ad.10.1742677238664; Sat, 22 Mar 2025
+ 14:00:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250311-iov-iter-v1-0-f6c9134ea824@google.com>
+ <v6RopSmSHmV8uiLBqkIh2II4bCry2OIo_7opQKqq2H4DftxIuRvY2YaLdhLUKw-Ndyv8MpHCgBbBEQntdLU9DQ==@protonmail.internalid>
+ <20250311-iov-iter-v1-1-f6c9134ea824@google.com> <871pushmw5.fsf@kernel.org>
+In-Reply-To: <871pushmw5.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 22 Mar 2025 22:00:26 +0100
+X-Gm-Features: AQ5f1Jp8TYnJfOcFCj5LEg4YDWwMDyEMEIIHodm1diMs_NbP1j_3xAl_CdT2pvs
+Message-ID: <CANiq72=QN3Sr5xS-uFhZVX0+L2==moR7cBzRJ8kKxDa5s75-jw@mail.gmail.com>
+Subject: Re: [PATCH 1/5] rust: iov: add iov_iter abstractions for ITER_SOURCE
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 22, 2025 at 08:41:11PM +0100, Miguel Ojeda wrote:
-> On Sat, Mar 22, 2025 at 8:12 PM Antonio Hickey
-> <contact@antoniohickey.com> wrote:
-> >
-> > Ahh ok yea that makes sense, thanks Tamir, sorry Benno I misunderstood.
-> >
-> > So the reason I extended the dashed line was because before my change
-> > the dashed line perfectly aligned with number of characters in the line
-> > I changed. I figured it was supposed to match the amount of characters
-> > of the line.
-> >
-> > Giving this a deeper look it looks like the all the other dashed lines
-> > are maxed at 77 characters.
-> 
-> Yeah, it is just following other section "lines".
-> 
-> > I will update this.
-> 
-> Benno is right -- no need to send another version for that, I can
-> remove the change on apply. :)
+On Wed, Mar 19, 2025 at 7:54=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> Don't we have some kind of `build_assert` macro to do this? If not,
+> maybe we should.
 
-Yay my first patch to be applied :)
+`static_assert!` is the one (`build_assert!` is the other one, which
+is a heavier hammer that should only be used if really needed).
 
-Hopefully many more to come, thanks a lot everyone I
-have learned so much just through this simple patch
-series. Appreciate all the help and patience +1
+Though our `static_assert!` does not have support for an (optional)
+message -- we could add that, perhaps as a good first issue. In this
+case it is not a big deal either way.
 
-Thanks,
-Antonio
+> How did you arrive at this conclusion? In the discussions with Ralph on
 
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
+Ralf?
 
+Cheers,
+Miguel
