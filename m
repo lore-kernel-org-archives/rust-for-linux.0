@@ -1,54 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FD22AD20;
-	Sat, 22 Mar 2025 10:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A086742056;
+	Sat, 22 Mar 2025 11:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742639276; cv=none; b=CHGjch9HbZGZ33c7zu9rzSVCnA78ohs/SnGlASFBhUJxWmoJL9kwxyvP1YzO9NqhhbO7Qq0gV3KleGXszRZRyXMeiqd1KLy0879AnyEIXm7ax81cZ+5rfk+vJth/s7oJOq56kh1doGH4w/77sW9aStQW/w6gPJHqxx9boerJLdo=
+	t=1742642198; cv=none; b=YjOcuK4KcR88QbklJaJ65N86Ldh+2k580BRNg+hd7DzP04zeAirAIIxzaVkDF6SPH+ri6CS+XxVDeORh76oJlrI0LCUSa6yHCS4gXUHnDDs+d1dkGOrYepZJ31VtBSqNvIHrrChHWQkaJJycDAJZJ04ZeCcMespOBXZldcXrpJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742639276; c=relaxed/simple;
-	bh=vLWfAQEsX8V/JhXcponrpJXR7sIl61gCbFDK1wZH7ZU=;
+	s=arc-20240116; t=1742642198; c=relaxed/simple;
+	bh=/0507CEN/UCBW1XFee4UVNEfifTU32fi6iuHytZvrYs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ikjh1Siyvt50XA9kXhdqYSLuD9Ui05JLDVsNn0pxOboitC+he0tZ83O5Sn0yWz6Zn35w8bUQmLLIsJpG/0nopfix6hI3ROKxB/PtmDZ/Qybn2TozQRpeNNOkbrpcjQhKMT58JZsV/HK1EpwkBrwr/I710EKkq8fONsULqH8wDuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAixLSS3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=uq6BY/N8c8VszFC9bBRL88+t7D3MsP+bj6jH9r6iI+P3dP2zruZh67Df57U4+oJQ4l00SDZNHVPMfseqRFCZSRBVXjkqrQgLlFNVifsGtTzZ44piDTJaGdwaMPMJoKGN7643c2ZnhdurmduHfWDIuMNlN+lpNVCpBVNk/+RW9jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=prkca6eX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAixLSS3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01179C4CEED;
-	Sat, 22 Mar 2025 10:27:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="prkca6eX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B50DC4CEDD;
+	Sat, 22 Mar 2025 11:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742639275;
-	bh=vLWfAQEsX8V/JhXcponrpJXR7sIl61gCbFDK1wZH7ZU=;
+	s=k20201202; t=1742642198;
+	bh=/0507CEN/UCBW1XFee4UVNEfifTU32fi6iuHytZvrYs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XAixLSS3Kmb4bav7wKHDl16DBJM+KOO8A1Bj/akdC/Rzi1ifuKnKjFghzXtjyc31j
-	 1QGOm5p8+750FEnvGEKGFSZSs+sb3r+qilu9Q5r42c077uabw2PyWotudk8ghDD9mt
-	 3TKwbIgxeq7yLYHIMhMN/uvUMXa5SBu4X2ty7dcChKjB6xpj5gxTG1j4w2Ha9JlFLr
-	 yrMGjbzDGkjLCF1fUqIwNi9nc4Hqno9eQmhzxphwAUQRBH4Agy1YMLt8IRNjvL22xL
-	 3+C1YHVx9vZT4v0zMKCTiim1St6IHeVZwHHrfQ0aPUH8kszrF3fA0VYIcVkXMbQbPm
-	 UEK1sYxZzMFyA==
+	b=prkca6eXpeTnyCegC4XnPFgyhSDZ/ASwCo9kGP4LKDQPfMx1hu1cLqKqrp+Re4Vj5
+	 rr5+54hg2oqQxOdtk9Q3xjhhdsqkAwzmnO+4Oy7RdfSytJxLLyQZ5WMzv0o2DEKGnX
+	 eQhgA+9aVfvAuNRskjEIxdeE7HwBjUc7BoQkn+b+Yqa0q+SZ8XEFwJDvI2/Z6iVWvO
+	 Yki47jjBEMdwgkBXTZYFSx9w0KCro5aHVMjUl/F0K5xS3WicgPbHALWY2P8V0aagtJ
+	 /OhXFzbi07NHnCu9IPkJqyrSMS1FLszlTHRiwrzDtvOm7i4VawcFLEavRNWvyurG+U
+	 vl/hrl0v0fYIw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org,  Daniel Almeida
- <daniel.almeida@collabora.com>,  Andrew Lunn <andrew@lunn.ch>,  Alice Ryhl
- <aliceryhl@google.com>,  Gary Guo <gary@garyguo.net>,  Fiona Behrens
- <me@kloenk.dev>,  rust-for-linux@vger.kernel.org,  netdev@vger.kernel.org,
-  hkallweit1@gmail.com,  tmgross@umich.edu,  ojeda@kernel.org,
-  alex.gaynor@gmail.com,  bjorn3_gh@protonmail.com,
-  benno.lossin@proton.me,  a.hindborg@samsung.com,
-  anna-maria@linutronix.de,  frederic@kernel.org,  tglx@linutronix.de,
-  arnd@arndb.de,  jstultz@google.com,  sboyd@kernel.org,  mingo@redhat.com,
-  peterz@infradead.org,  juri.lelli@redhat.com,
-  vincent.guittot@linaro.org,  dietmar.eggemann@arm.com,
-  rostedt@goodmis.org,  bsegall@google.com,  mgorman@suse.de,
-  vschneid@redhat.com,  tgunders@redhat.com,  david.laight.linux@gmail.com
-Subject: Re: [PATCH v11 3/8] rust: time: Introduce Delta type
-In-Reply-To: <20250220070611.214262-4-fujita.tomonori@gmail.com> (FUJITA
-	Tomonori's message of "Thu, 20 Feb 2025 16:06:05 +0900")
-References: <20250220070611.214262-1-fujita.tomonori@gmail.com>
-	<20250220070611.214262-4-fujita.tomonori@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,  "Frederic Weisbecker"
+ <frederic@kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,
+  linux-kernel@vger.kernel.org,  "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [GIT PULL] Rust `hrtimer` support for v6.15
+In-Reply-To: <87tt7md1s6.fsf@kernel.org> (Andreas Hindborg's message of "Fri,
+	21 Mar 2025 13:10:07 +0100")
+References: <87pliljcvy.fsf@kernel.org> <87tt7md1s6.fsf@kernel.org>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Sat, 22 Mar 2025 09:50:48 +0100
-Message-ID: <8734f5cutz.fsf@kernel.org>
+Date: Sat, 22 Mar 2025 12:15:53 +0100
+Message-ID: <87r02pb9jq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,153 +47,141 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-> Introduce a type representing a span of time. Define our own type
-> because `core::time::Duration` is large and could panic during
-> creation.
+Hi Miguel,
+
+Andreas Hindborg <a.hindborg@kernel.org> writes:
+
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA256
 >
-> time::Ktime could be also used for time duration but timestamp and
-> timedelta are different so better to use a new type.
+> Hi Miguel,
 >
-> i64 is used instead of u64 to represent a span of time; some C drivers
-> uses negative Deltas and i64 is more compatible with Ktime using i64
-> too (e.g., ktime_[us|ms]_delta() APIs return i64 so we create Delta
-> object without type conversion.
+> Andreas Hindborg <a.hindborg@kernel.org> writes:
 >
-> i64 is used instead of bindings::ktime_t because when the ktime_t
-> type is used as timestamp, it represents values from 0 to
-> KTIME_MAX, which is different from Delta.
+>> Hi Miguel,
+>>
+>> Please pull the Rust support for hrtimer for v6.15.
+>>
+>> This initial support allows for intrusive use of timers without
+>> allocating when starting a timer. We support `Pin<Box<T>>`, `Arc<T>`,
+>> `Pin<&T>` and `Pin<&mut T>` pointer types for working with these
+>> intrusive timers. We support at most one `HrTimer` field in a struct for
+>> use with this API.
+>>
+>> For now, the primary users will be the Rust null block driver, `rnull`,
+>> and the Rust kernel mode setting driver `rkvms`. I expect us to add more
+>> features to the API as the demands from users grow.
+>>
+>> The PR also includes two changes for the core rust and rust/alloc
+>> subsytems that are dependencies of the hrtimer Rust API: `Arc::as_ptr`
+>> and `Box::into_pin`. The alloc change was Ack'd by Danilo.
+>>
+>> The commits were in linux-next since next-20250313.
 >
-> as_millis() method isn't used in this patchset. It's planned to be
-> used in Binder driver.
+> Please find an updated pull request below.
 >
-> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Reviewed-by: Fiona Behrens <me@kloenk.dev>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-
-
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-Two suggestions below, take or leave.
-
-> ---
->  rust/kernel/time.rs | 88 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 88 insertions(+)
+> As discussed, I fixed the UB you fund in:
 >
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 48b71e6641ce..622cd01e24d7 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -8,9 +8,15 @@
->  //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
->  //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
->  
-> +/// The number of nanoseconds per microsecond.
-> +pub const NSEC_PER_USEC: i64 = bindings::NSEC_PER_USEC as i64;
-> +
->  /// The number of nanoseconds per millisecond.
->  pub const NSEC_PER_MSEC: i64 = bindings::NSEC_PER_MSEC as i64;
->  
-> +/// The number of nanoseconds per second.
-> +pub const NSEC_PER_SEC: i64 = bindings::NSEC_PER_SEC as i64;
-> +
->  /// The time unit of Linux kernel. One jiffy equals (1/HZ) second.
->  pub type Jiffies = crate::ffi::c_ulong;
->  
-> @@ -81,3 +87,85 @@ fn sub(self, other: Ktime) -> Ktime {
->          }
->      }
->  }
-> +
-> +/// A span of time.
-> +///
-> +/// This struct represents a span of time, with its value stored as nanoseconds.
-> +/// The value can represent any valid i64 value, including negative, zero, and
-> +/// positive numbers.
-> +#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Debug)]
-> +pub struct Delta {
-> +    nanos: i64,
-> +}
-> +
-> +impl Delta {
-> +    /// A span of time equal to zero.
-> +    pub const ZERO: Self = Self { nanos: 0 };
-> +
-> +    /// Create a new [`Delta`] from a number of microseconds.
-> +    ///
-> +    /// The `micros` can range from -9_223_372_036_854_775 to 9_223_372_036_854_775.
+>   rust: hrtimer: allow timer restart from timer handler
+>
+> by casting to `u32` when assigning enum values. The commits below this
+> commit are unchanged, the later commits were replayed on top of the
+> changed commit.
 
-To make these numbers truly useful, it would be nice to have them as
-constants, for example `Delta::MAX_MICROS`, `Delta::MIN_MICROS`.
+I'm sorry, but I have to do another update. My usual workflow missed a
+clippy warning because it depends on clippy warnings being treated as
+errors when building with `W=e`. I forgot that is not upstream yet.
 
-> +    /// If `micros` is outside this range, `i64::MIN` is used for negative values,
-> +    /// and `i64::MAX` is used for positive values due to saturation.
-> +    #[inline]
-> +    pub const fn from_micros(micros: i64) -> Self {
-> +        Self {
-> +            nanos: micros.saturating_mul(NSEC_PER_USEC),
-> +        }
-> +    }
-> +
-> +    /// Create a new [`Delta`] from a number of milliseconds.
-> +    ///
-> +    /// The `millis` can range from -9_223_372_036_854 to 9_223_372_036_854.
-> +    /// If `millis` is outside this range, `i64::MIN` is used for negative values,
-> +    /// and `i64::MAX` is used for positive values due to saturation.
-> +    #[inline]
-> +    pub const fn from_millis(millis: i64) -> Self {
-> +        Self {
-> +            nanos: millis.saturating_mul(NSEC_PER_MSEC),
-> +        }
-> +    }
-> +
-> +    /// Create a new [`Delta`] from a number of seconds.
-> +    ///
-> +    /// The `secs` can range from -9_223_372_036 to 9_223_372_036.
-> +    /// If `secs` is outside this range, `i64::MIN` is used for negative values,
-> +    /// and `i64::MAX` is used for positive values due to saturation.
-> +    #[inline]
-> +    pub const fn from_secs(secs: i64) -> Self {
-> +        Self {
-> +            nanos: secs.saturating_mul(NSEC_PER_SEC),
-> +        }
-> +    }
-> +
-> +    /// Return `true` if the [`Delta`] spans no time.
-> +    #[inline]
-> +    pub fn is_zero(self) -> bool {
-> +        self.as_nanos() == 0
-> +    }
-> +
-> +    /// Return `true` if the [`Delta`] spans a negative amount of time.
-> +    #[inline]
-> +    pub fn is_negative(self) -> bool {
-> +        self.as_nanos() < 0
-> +    }
-> +
-> +    /// Return the number of nanoseconds in the [`Delta`].
-> +    #[inline]
-> +    pub const fn as_nanos(self) -> i64 {
-> +        self.nanos
-> +    }
-> +
-> +    /// Return the smallest number of microseconds greater than or equal
-> +    /// to the value in the [`Delta`].
-> +    #[inline]
-> +    pub const fn as_micros_ceil(self) -> i64 {
-> +        self.as_nanos().saturating_add(NSEC_PER_USEC - 1) / NSEC_PER_USEC
-> +    }
-> +
-> +    /// Return the number of milliseconds in the [`Delta`].
+I added `#[allow(clippy::unnecessary_cast)]` to silence clippy in the
+cases where the types match for `HrTimerRestart`.
 
-We might consider adding "rounded towards zero" to this doc string.
+The following changes since commit a64dcfb451e254085a7daee5fe51bf22959d52d3:
+
+  Linux 6.14-rc2 (2025-02-09 12:45:03 -0800)
+
+are available in the Git repository at:
+
+  https://github.com/rust-for-linux/linux.git tags/rust-hrtimer-for-v6.15-v3
+
+for you to fetch changes up to 142d93914b8575753f56f0c3571bd81f214b7418:
+
+  rust: hrtimer: add maintainer entry (2025-03-22 12:08:54 +0100)
 
 
 Best regards,
 Andreas Hindborg
 
+
+- ----------------------------------------------------------------
+Rust hrtimer API for v6.15
+
+Introduce Rust support for the `hrtimer` subsystem:
+
+ - Add a way to use the `hrtimer` subsystem from Rust. Rust code can now set up
+   intrusive timers without allocating when starting the timer.
+
+ - Add support for `Pin<Box<_>>`, `Arc<_>`, `Pin<&_>` and `Pin<&mut _>` as
+   pointer types for use with timer callbacks.
+
+ - Add support for setting clock source and timer mode.
+
+`kernel` crate:
+
+ - Add `Arc::as_ptr` for converting an `Arc` to a raw pointer. This is a
+   dependency for the `hrtimer` API.
+
+ - Add `Box::into_pin` for converting a `Box<_>` into a `Pin<Box<_>>` to align
+   with Rust `alloc`. This is a dependency for the `hrtimer` API.
+
+- ----------------------------------------------------------------
+Andreas Hindborg (13):
+      rust: hrtimer: introduce hrtimer support
+      rust: sync: add `Arc::as_ptr`
+      rust: hrtimer: implement `HrTimerPointer` for `Arc`
+      rust: hrtimer: allow timer restart from timer handler
+      rust: hrtimer: add `UnsafeHrTimerPointer`
+      rust: hrtimer: add `hrtimer::ScopedHrTimerPointer`
+      rust: hrtimer: implement `UnsafeHrTimerPointer` for `Pin<&T>`
+      rust: hrtimer: implement `UnsafeHrTimerPointer` for `Pin<&mut T>`
+      rust: alloc: add `Box::into_pin`
+      rust: hrtimer: implement `HrTimerPointer` for `Pin<Box<T>>`
+      rust: hrtimer: add `HrTimerMode`
+      rust: hrtimer: add clocksource selection through `ClockId`
+      rust: hrtimer: add maintainer entry
+
+ MAINTAINERS                         |  15 ++
+ rust/kernel/alloc/kbox.rs           |   6 +
+ rust/kernel/sync/arc.rs             |  13 +-
+ rust/kernel/time.rs                 |  68 +++++
+ rust/kernel/time/hrtimer.rs         | 519 ++++++++++++++++++++++++++++++++++++
+ rust/kernel/time/hrtimer/arc.rs     | 100 +++++++
+ rust/kernel/time/hrtimer/pin.rs     | 104 ++++++++
+ rust/kernel/time/hrtimer/pin_mut.rs | 108 ++++++++
+ rust/kernel/time/hrtimer/tbox.rs    | 120 +++++++++
+ 9 files changed, 1051 insertions(+), 2 deletions(-)
+ create mode 100644 rust/kernel/time/hrtimer.rs
+ create mode 100644 rust/kernel/time/hrtimer/arc.rs
+ create mode 100644 rust/kernel/time/hrtimer/pin.rs
+ create mode 100644 rust/kernel/time/hrtimer/pin_mut.rs
+ create mode 100644 rust/kernel/time/hrtimer/tbox.rs
+-----BEGIN PGP SIGNATURE-----
+
+iQJKBAEBCAA0FiEEEsH5R1a/fCoV1sAS4bgaPnkoY3cFAmfem+kWHGEuaGluZGJv
+cmdAa2VybmVsLm9yZwAKCRDhuBo+eShjd81tD/94J4FDlaOlfz/WMkbxQo2B3lef
+XztcyQ6G3zPfyMOZ50ZrbvQPyHtnKPxjD0rjfuCCQnzmcKs0fqUxcBKXpvRusi0Q
+dC3f8fBT7n+8wvU6eOO/gzR0pblvu4yepardP/MSPaTH4pBF0xgaRFqM3S8syejY
+elHnw1y9mSH7EbSJFJvVIodXLE0MXifb5FicN5iawQ27IeBCdZDoQa0x/tLBsYpY
+8CkAqsWUUU424dvGrKjcsUjfLYJXiXfDQmuLi5tReVpoWF8g47DmbnLv+s/4r87S
+fOLaNyzn81tStYze0+DaEOpkXID6y64EyfwmXGV09CRJAE432tbBxRzouKTvDZxt
+gO9VPBGtoN7tm6bzobQuCTXsLlrNCIh36Ju952uR1fjgQ8uNg15qPgZdRi++K2Rq
+KX7LEQTONpkfm0brPj4mZQjOwU2iQRdytwQrE15mMjqvAjQuZLDyYuPmyCiz6YeQ
+LdbC7oJC0n9LX23H97mTHiuq3AXZzskt5twrL9a4ol3mBSPopyiGM78/qIoqXI5k
+Vz4pu8pxwm6VEyHeShWBFTi+Xw2mlSE7q2JiBEug2IZAY9qI8yrKj29rFvYw1JlE
+v/ur2emLJtWsCudzr0eNgjoQqHC/aRu41LtAfJA1rJzwdRwrod6zE0plvWTNVkTG
+zDTqNl4OVmIifTK9Kg==
+=CxhJ
+-----END PGP SIGNATURE-----
 
