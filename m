@@ -1,92 +1,92 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598BB3A8C1;
-	Sun, 23 Mar 2025 22:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6C518FC9D;
+	Sun, 23 Mar 2025 22:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742769088; cv=none; b=Q0Y97R8FwxQAUpnm81ISxVaa/WDXk45qiulm7eFKw6H8mJMdltksQesOZqy7Ga2fE7/U+3q+npcqMRfDTu5Ztzo0G3qhlhYeJqBG7gAzucgkIoXbDrpCVLZocNrPSbnP1Eqeemahr0pINIZsAJhWVWisP1l4Cj3hq4NIlaQFQgE=
+	t=1742769128; cv=none; b=t9wb+dL64iyB1mTXmFK974T+cWPeES3SRnaLSZQih6WvX1BogRtJjQEFcwlId6rR4XcK6669QyGj4YD36gS4X49noSFMeja5T2a3Oq0O33vc0oFGY3uJeF8YULAagfq/2beOv/e5485J3YQ/m1EvJyNdG2O8hhi5Q7VDctRGOtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742769088; c=relaxed/simple;
-	bh=vi8nwrQRl+Ctbxa5rHKQmTF1XKMZtYj/xv44j6HGrKo=;
+	s=arc-20240116; t=1742769128; c=relaxed/simple;
+	bh=ckiFsgnFRsndBCSUp0jyyeFBVCRJh6uCFlkCY7hHwho=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AOu3CO2haKKFonPABuULtFC7KVChva44tZsA1+gURWQnfSiN9/0Fs8rs7RpxzmGPKv9gDfY08+pus8BA2y8uOLNNqbmwxJQ/hGxZew6Qq27iiv1ZVYtXnUxItWCg0qH53UM584VbbfT6z98LSd+HXuP2LzKLWlhpKUk0dDdmVus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hYmtxTxm; arc=none smtp.client-ip=209.85.216.53
+	 To:Cc:Content-Type; b=WDoQnw6C8mLsHzijJeWdAJmA5h77yrwYdovb1c/phSN0mDztcDYyQtg8ybwseIEaGPxkI10fBG8/u1DG5jYdgm497eUBamNFOtYC2tva1igLJ9j/Pl8XcFeCfWGIVVbQ+Ie5tX2o+kw+hUuM9lysZJJ4jdCKWUzjgq9kWoWVBtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MOEoACuq; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hYmtxTxm"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ff7255b8c6so733295a91.0;
-        Sun, 23 Mar 2025 15:31:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MOEoACuq"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-301001bc6a8so1049140a91.1;
+        Sun, 23 Mar 2025 15:32:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742769086; x=1743373886; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742769126; x=1743373926; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vi8nwrQRl+Ctbxa5rHKQmTF1XKMZtYj/xv44j6HGrKo=;
-        b=hYmtxTxm8VEuh6tIwTyfIZsaF516X0ma/pv18qyLlrSZjql+fPkQejXUrmt/IRTun6
-         cMWNmPB+mogI395WqAIXcr22RbYSQs5AMdnAty+EVXr6ED6hfupzAxArzBobI6CYEHS5
-         NODGu/Q96ei6m95QUzDc0JxvGJ7aOuCeGWvzVfwjeTz8Ge4CxNxYxPXheaI6VELxZJx+
-         dFqotIwpPTvCb8wOwSHMndT4W7s2lbFflMmS1B1mEdxhk3J6ldxBiD3RI4DRaiILn7Jo
-         L/E8IaftsH9XItkSp4gRi6DP8D6uqPZN4V/MHm2ADx22iRfCX6PKyXPzm1dmtt3AJCBz
-         9sjQ==
+        bh=qpQmANioPLvwRb3ZUWp7uoDXu2wKpVE/XtCKMWjV3HY=;
+        b=MOEoACuqJRhemsZVKkpC3OV8BAUDYjidv4QXMzpl4UDrcdX9GPGJIyywMwhrz47V9m
+         jMIqQb8T1IEx0UA8V9H0IQlwhRBXEvwhZM1x09UfjDoReBjdiLWfyWEOZXedd7lIJDUb
+         Gpbx0HgiRRtf/MkLD694otVwWsrSat2oRXJnrva0J9MnIwheeyssiOhlwaLi9Z0/n/Ry
+         T2Br0fxtDPAzffgivvVJaszfyF6VVzSs3mTeGgRDmT2KM93PbgHfXM8tZqoq9N7vo9/T
+         uQKK7rdiy9IE/Gd+hX1Gc0sPIIuKh6UtxYSrOoVRnxqJ8lwFqnd1wAxbBTBtdL+bQJC9
+         ghyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742769086; x=1743373886;
+        d=1e100.net; s=20230601; t=1742769126; x=1743373926;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vi8nwrQRl+Ctbxa5rHKQmTF1XKMZtYj/xv44j6HGrKo=;
-        b=VeYGLp8ndPlB/jzXeHy8BgtYfyFOzjIsptCZkyKxXLwLUtecYcBpd2JirNHaZl8meE
-         PvQ4oUWo68TrvBabSqG7tDGuxafzxnsKsh8JyWBa5qdvnwwGJIUqaKcSFgd0SIF0pTkt
-         uYf+rTssbtG21wDGCgkcoE5NYJo9hAEu/+IuJ6lm7sR+e0irVJauIW5ij26arrO9cBh0
-         uCMvECdpSMEA5b5hvYRinYhP4kwjBrVv8lWDmiWRwhyUpnVHtnC/MlFDWvOE/frEp//+
-         Tmb6nv5W9Sz1YeVm1D3Su6vwh2PF4e16bJlKQoE4rtgkDh2cdhUgWAy0yCso3wDkBFna
-         s21A==
-X-Forwarded-Encrypted: i=1; AJvYcCUwOylDWzqvzKO5pH/qFL5fPc6LkMnhyGiOJO9U6roCufyFix9K3A4qN4jY+HU1mzMiPmE1yXtnKphaG88=@vger.kernel.org, AJvYcCVmHrKza6GN/fhd7pJHlrhxZDfig8AeO6P/rzpDqp8c1HJ3I96tCXXa6i/Ye76ipbXMYjv1IvHG9Po9fZmhysE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIsPN+W7xMUoJdIYfupN6YpD3Ky7dkaJHJwN7nWk557OrBFbhp
-	Iq8WOzDzRDZ6no4dJRkUrvFB8gJM14S6lW+Z562vOCKBX+oLQIj7GnOzxl173/5fEOTSDPKCiAj
-	jSarq3SJsIWnha8PjLfsFByqiZu0=
-X-Gm-Gg: ASbGnctlepX8eZqN15kMk37wjgVhucpAJssB9RM8a2HGnL9tTQlwh2zJESWnjANbI4C
-	4xBYT9WelrUXM9LmWYRAHtlvSBl9TcvoJ/ZjT4JufxJc4lSZGc2Lg1L4bYvdHYok+glvAxHKTyU
-	PWWMDpvdcz9Z0C6nCnD+Nuk4kP9w==
-X-Google-Smtp-Source: AGHT+IHQo2n43xO8//iL3FcMh8NVFex2EDQgWKMg8A8PyOkWXaQbgL5V3eTTRHK7jFG4UW9PyVXdDJdhHm6u9RxsXzM=
-X-Received: by 2002:a17:90b:4b51:b0:2ff:7c5a:216d with SMTP id
- 98e67ed59e1d1-3030ff0e874mr6971249a91.5.1742769086548; Sun, 23 Mar 2025
- 15:31:26 -0700 (PDT)
+        bh=qpQmANioPLvwRb3ZUWp7uoDXu2wKpVE/XtCKMWjV3HY=;
+        b=mWqhiIfy0cHHD8zFWS8xQFJpWlHjn/yBIPgyC7NyxBuK/aR3cCC6ypq94b+ZXDQOvr
+         7eVyKFUamkpJwRSnLxSeZLP8ZMu1S1gNJzkupkV3Rz7UluprdYFAUa3jhY0cxUxLpGD3
+         NOj8vwxPZze52DJepJ7oJkMOLIvLXQ3f2OHo1I370Y2piZNMyQ4ho/9F5j8+3OL1sJYm
+         dwapYABPbPqdeBVfZ9LWjJMM5AWXYNTNFYeC1gDerrQ9BU/AKZR593hjToJI7Tpsvaqi
+         WPjhinRFtiVnW5Jo6feMe7ZzhitOXcu91NT0mKYWERA8g+DESFPpldB1Oear4BPUaLLI
+         EymQ==
+X-Forwarded-Encrypted: i=1; AJvYcCURp041nMYtCvIKs0eg2J1/oNA4qJU1m7q0PFjFePlvOTTWxCvOs9C2fn15R+Nh21Cwjz9LQjXgPwY9VLPvSO0=@vger.kernel.org, AJvYcCVwaq9a3mMvlDnozAUWHMBJ7ujwC4JICnLhkyRFdv5k/3XgM9WI9h/i71q1ryJpvU30tTCu+nnpsEWY7Qw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZLnVGEzvQGREdYziCguwvtNUOtaC9ftHTvyaBCivglX2p68rh
+	7bf2968aVVlZ9BAXtiQgOrtozkcQqFD9qGyl/AZ4zaVp5/ZVqKh5drwDwOk7Vsqt7txn9QzA6q9
+	lajY/w90mmEmfdg818geoMLGRIHo=
+X-Gm-Gg: ASbGnctYHWx6QzmUEH0U++C+LfqMjWwIoStfRn0GkXhs3lYtRvLTTFUMVE5tv49JjXO
+	a7XIssByjOloqQL1A8QCS+VWShsak/vCzKmvlssI4tJUQTvdQUuEow547dWSnhlJVHnBSx4b7EQ
+	O17sGj7iV8/Fh33y15+AKbdKbC8w==
+X-Google-Smtp-Source: AGHT+IGoYvW+9AOT9407sdZ1db01as5vEkY9PtOhh2CNc3kSweQvqagzcV4Sk489fRHFECKiV93ufdAokH+a/1PaS+g=
+X-Received: by 2002:a17:903:1a23:b0:224:1001:6777 with SMTP id
+ d9443c01a7336-22780c7f938mr65469125ad.4.1742769125695; Sun, 23 Mar 2025
+ 15:32:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250315-rbtree-comment-fixes-v1-1-51f72c420ff0@posteo.net>
-In-Reply-To: <20250315-rbtree-comment-fixes-v1-1-51f72c420ff0@posteo.net>
+References: <20250317-uaccess-typo-reserve-v1-1-bbfcb45121f3@gmail.com>
+In-Reply-To: <20250317-uaccess-typo-reserve-v1-1-bbfcb45121f3@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 23 Mar 2025 23:31:13 +0100
-X-Gm-Features: AQ5f1Jr8BpEbYPANsPPeKmiuu_KlFlW0fSE0d-7cy_vl3DPimUSjADFb4a9XWJI
-Message-ID: <CANiq72mGvYnK-iuOO2e4q9MZJ0h4V_mLZp4xKsaPcXrnA_RJ8Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: rbtree: fix comments referring to Box instead of KBox
-To: Charalampos Mitrodimas <charmitro@posteo.net>
+Date: Sun, 23 Mar 2025 23:31:53 +0100
+X-Gm-Features: AQ5f1JoYBxrfDvizw0dfXIBUvPU5PO_SHXCaIZc2uNUkRdDTxqWtAZpkbSiSTuM
+Message-ID: <CANiq72nJRbh6HZgKSUY2cibOvSd3UaBqYoKZQhX8+hBCPMo1ag@mail.gmail.com>
+Subject: Re: [PATCH] rust: uaccess: name the correct function
+To: Tamir Duberstein <tamird@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 15, 2025 at 10:48=E2=80=AFPM Charalampos Mitrodimas
-<charmitro@posteo.net> wrote:
+On Mon, Mar 17, 2025 at 12:43=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
+> wrote:
 >
-> Several safety comments in the RBTree implementation still refer to
-> "Box::from_raw" and "Box::into_raw", but the code actually uses KBox.
-> These comments were not updated when the implementation transitioned
-> from using Box to KBox.
+> Correctly refer to `reserve` rather than `try_reserve` in a comment.  Thi=
+s
+> comment has been incorrect since inception in commit 1b580e7b9ba2 ("rust:
+> uaccess: add userspace pointers").
 >
-> Fixes: 8373147ce496 ("rust: treewide: switch to our kernel `Box` type")
-> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+> Fixes: 1b580e7b9ba2 ("rust: uaccess: add userspace pointers")
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
 Applied to `rust-next` -- thanks everyone!
 
