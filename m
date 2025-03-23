@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B648E20408D
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Mar 2025 10:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED80718D65F
+	for <rust-for-linux@vger.kernel.org>; Sun, 23 Mar 2025 10:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742726515; cv=none; b=vCwQ1ujw9zCxf57kxre21U0nRSl5TMXCvOdUpg/dY6lMDr/wliL2YQtmkBYIxExsHeu2WMjQ4ungDZDzG0QRetxRyB7ptOqgv2MGg7QER97INc7ng7VmTShCF20gP8eSs77zwtCvP76kcrWCKnY+XCipimq7UUal3V4RCpOqo/U=
+	t=1742726740; cv=none; b=FvmnD9Rm+37qlT+yj6PiHyVIZC4hTstPEiVS0zgnltx/WjB2cuIue+9eZsSGiaxLuSdRbfLEq0INaWBq6S83f2+yAOA8hsm/l0Af8+eENz+/vcblOL+sRkUPKQFCYaVNq9wAQGejYgDk06zQl6hQ+z4yRBG3t+wTsnBFthohOzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742726515; c=relaxed/simple;
-	bh=sdF7VhGK5QqartT25xz0XzktC1JwQlwKTCSiMXSOwdU=;
+	s=arc-20240116; t=1742726740; c=relaxed/simple;
+	bh=t7seGj/8iRdZjFgZVLRuU4txUrDvdMsUsU2TeufHYAw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kATERPuuJo/podMLiXOcXpyTZ4LgPfDtbafVrDBKvYhczheGFRqDU9sLcDCm8FAaIGP+d791QZmskx3RDSiKlyVi9GP1+M0etFcQ+h+bbkxo8GGa4JUnbo7C7O5MCWrTEUDg95hEko+TvkuUQrd43Bj1YVJ8mPWB/ggyZPa8ZNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CW1kWy9G; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=csEesmH/Hywjyae3hzmmsMGRcMifIpWuVMVBEVnZV+oceS6uZp6UrkGxFtsSXUVQEQw0KL/VYppbRaT2B4e2MVmH2HJ9woHGTttD6j96qWG6lywgLow/P/1bptl+i/E+jGLj9MJvMqsOphsjjYLkRSUWlLoE4fwyOlEq9P4++JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=g2e2tH6K; arc=none smtp.client-ip=79.135.106.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CW1kWy9G"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="g2e2tH6K"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742726510; x=1742985710;
-	bh=RDroXS8EH8dxs+A85SlVDo0XJpIxHTrGJsgkqKqGlTQ=;
+	s=protonmail; t=1742726737; x=1742985937;
+	bh=t7seGj/8iRdZjFgZVLRuU4txUrDvdMsUsU2TeufHYAw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=CW1kWy9G4bTMURoeqYgOkAYYELZ7eyf7W0CJXDDzrrdakHHKVDbjl1NA6YwezVa+j
-	 HzFlW4zxLB/COTGJUsGmCqoq+ti/iLHnP23e/vUAEGNzS5OgpcJRHoECV5obQBctZL
-	 oCeB7qQaFKrO1Jiolab75opwuBfWxFGor/CsXnlE2YZ6dkjSgi6IeFpGQFOgWZrnpm
-	 HDJnJJo39a9J4t8yncZWbNYHvd88JgSTDw5gd12Rztn3dh5kX7gPp+E0rFsj4VCmFO
-	 mdki1TbWndaQKbM/qDSGRwORHG73T1d/Mi9xzosWsz7LLpoECmKWW+7AZHyHRec8fh
-	 yO03eRKy4tT1Q==
-Date: Sun, 23 Mar 2025 10:41:46 +0000
+	b=g2e2tH6Ksl2g/rN86nmr3cVFHezD7lAiKLN5DvXboCz8ICnpdpSyo541zOHHr8udq
+	 g047J3c7jgY0yWhu16G4ZZeakdt8KPP2ZiuaFM7RqPGwOJd7t68L82/3DXeWn9rbNW
+	 3QFsL9ZpmqZRJOxzAv/UjyPNt/foYjNH3t9lofxWYXKRQaYOPp60gz5WAEx85MaaGH
+	 rYCX1ovk3UPjVs+JUZVrE8emOy970EmVg4uzSfbcNGkBvmzNwFLjXX9dQDQPzNJDRi
+	 qvhOjbiWLSee4vEbXpCVHFn+J0qTb12yZ2xFKDyluMFVuRZvTweU+vfSNEBWjbHmsc
+	 gcbdNSJjPtkYg==
+Date: Sun, 23 Mar 2025 10:45:33 +0000
 To: Antonio Hickey <contact@antoniohickey.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 17/17] rust: clippy: disallow `addr_of[_mut]!` macros
-Message-ID: <D8NKZI8Y820Y.2HLCWKHV2GYN@proton.me>
-In-Reply-To: <20250320020740.1631171-18-contact@antoniohickey.com>
-References: <20250320020740.1631171-1-contact@antoniohickey.com> <20250320020740.1631171-18-contact@antoniohickey.com>
+Cc: rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 00/17] refactor to utilize `&raw [const|mut]`
+Message-ID: <D8NL2FYJMGLJ.3DAF43L0TKNMW@proton.me>
+In-Reply-To: <20250320020740.1631171-1-contact@antoniohickey.com>
+References: <20250320020740.1631171-1-contact@antoniohickey.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3d923fc74ccefd9a0655bdc81c763d3190c31943
+X-Pm-Message-ID: e181025f1fe4cbead6f091ca1c55bc8a4626fa38
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,29 +48,24 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On Thu Mar 20, 2025 at 3:07 AM CET, Antonio Hickey wrote:
-> With the `raw_ref_op` feature enabled we no longer want to
-> allow use of the `addr_of!` and `addr_of_mut!` macros.
+> This patch set enables the `raw_ref_op` feature, which became stable=20
+> in Rust 1.82.
 >
-> We instead want to use `&raw const` and `&raw mut` to get raw
-> pointers to a place.
+> It then replaces all occurences of `addr_of!(place)` and
+> `addr_of_mut!(place)` with `&raw const place` and `&raw mut place`.
 >
-> Note that this lint isn't currently reliable, but we enable
-> it nevertheless because:
-> 1. Document that one shouldn't use the `addr_of[_mut]!` macros.
-> 2. When the lint becomes useful we will already have it enabled.
->
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1148
-> Link: https://github.com/rust-lang/rust-clippy/issues/11431
-> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> Finally it adds the previous macros `addr_of!` and `addr_of_mut!` to
+> the disallowed macros in `.clippy.toml`.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Thanks for this series! I think you probably should send a new version,
+since I did find several (very small) things and we shouldn't make
+Miguel fix them all when picking the patches. I would wait at least
+until one week has passed, since other people might still want to give
+you some other feedback. Please also pick up my RBs (Reviewed-by: tags),
+but only if you don't make big changes/only do the changes that I
+requested. Also don't forget the rebase :)
 
 ---
 Cheers,
 Benno
-
-> ---
->  .clippy.toml | 4 ++++
->  1 file changed, 4 insertions(+)
 
