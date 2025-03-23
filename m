@@ -1,40 +1,43 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06F21FC107
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Mar 2025 10:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8C8201033
+	for <rust-for-linux@vger.kernel.org>; Sun, 23 Mar 2025 10:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742726305; cv=none; b=tTSqa2zGAV5Jmu2JL2kWq4xMHCXtTpAbQU+kX7UXVsjqJH2ZftDgSqWSxTE1Mz0YNrHeK+xiFl+O8A/rHpwSlxNFpeW6V6FQ/J77Xz96id9RkNJr6gHB4PX3b2zqt6HK0JlYJRFl4ijXgnlgO8B/upP3y7SaV3geNoF0ANhg/+o=
+	t=1742726342; cv=none; b=GY6M2aNBZE+hO2fDj/wfReW4cTzFPzwhI2iky9SW5N9ahje7vhBqokfNCGI1U+6jS79ku9uIDWgpLdop+CuG4Ex/EdSQRSduP2p5o/O+sEiCP7Z6yJWdi5HpkQbmENyEt+/6DCFnOSaeC5c6EoMRP5wm8wu4rw5tG7W6FWGyi4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742726305; c=relaxed/simple;
-	bh=2WdCRvs1sUkmEEUK1LC0i8qzti5aHQtF8Ti+JfUtUR4=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=GCShzJxGlcXHdRKXfk6GcRd3S4Ea3NV8emqbiSypWlDs+wiABU+vxS7MxhjWqjdRVk1Eg3b1krxCbkKLscif+JKsx9OcaZd9sSH7KHh+uUUFXvFBSL8oOm7LxDWnMSmvuaR6uyQJuBInd5Sv7P80IZxHZnw3gRf0XdQtPzSFgTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AEW9UApa; arc=none smtp.client-ip=185.70.40.134
+	s=arc-20240116; t=1742726342; c=relaxed/simple;
+	bh=oMcbht4Qs7Z/lsIyggDKMZRC5JfG6lRFD7TyuPjZL8Y=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=euX43I9AupUvi2X7RbF/4D9BCQ3wa3m9rOwX+8mrL+5gHg0ijnmxv3HEpGMbfW1ulLikknoQAi/UBfncx0k5U9S6QV6rbP0o+gVjGoBXG0vQiGyoaQFvy+sqk2HChJkfTjFVJmfBFYfQgGJ9IO7XaLV0+21tQeN2nvdmdB4rBJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EhtcXJiZ; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AEW9UApa"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EhtcXJiZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742726302; x=1742985502;
-	bh=2JgJh2J6m4AP672rD2rN34JCsBBoXTRkwtHyIXpap/I=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=AEW9UApaTpQ2tvSz08e+tc+w0sPSfTQUR7tKB8lVBh98lY3/UvTYKavKABJ7EjJg3
-	 yPi7WvfN2oK0LWEJ3zBbU+XKEqsB8TOUalc6iwGxbF5BduDiyJkbWwtZYMC86DEwBQ
-	 UHU3gRxz5dKkPt/Wgv7+Wta1YpeSvxoIwPTn1Xpj7oWsPFoxxCmMtcGkdFBMlhfMKN
-	 /1qNgiJ8/kgbNFuOREKklnfS2B56m+gPNw0gFMOk0YxHebhoh3Efp/9AMuQrCjhDC+
-	 v+inLfnuvDVyg+FTQK10/+KZGGBwaHhsq0XwD6gm0YiOmxzCLJyAtfjW1C8TgUHvak
-	 +f1+/zsrov6sQ==
-Date: Sun, 23 Mar 2025 10:38:17 +0000
+	s=protonmail; t=1742726338; x=1742985538;
+	bh=JhWYioR0TnMhs+2LvrIpLH4Vufg6hj1LMtCyz37NSE8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=EhtcXJiZ38oMVRNHVdbysktqCST4lKoj4zEHSFhSTY8ybUD1VI8Iys+dMtmv2ZP1K
+	 mJhOB9cOh+5ddKS7FpBynOG8GAMXS1Xdk03UL5SkBu93wF4mYDwPmFgh7ZN/zlPCqX
+	 CK5/EIE5OJgjObzNrJ7sqFNCW3w3/1MCyd17dT+uimUXQVa4qTrZwmlk4eMGHlcaoM
+	 ot+so1MZvDI281/lrNLHmRZRl68nXB1uq+pHCqRtf9IP4Z4Vpmhbn0LcWGeRRvNVVK
+	 rFlGAme44Buy/hQg2EYv+B6DsOYeU5c4/rjNbUikdfq3FcTOy+XDNjiLaqyjEx7yrm
+	 UcKnznWj40QFQ==
+Date: Sun, 23 Mar 2025 10:38:55 +0000
 To: Antonio Hickey <contact@antoniohickey.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 10/17] rust: workqueue: replace `raw_get` with pointer cast
-Message-ID: <D8NKWUQK703Y.38SYPI7LCXKO3@proton.me>
+Subject: Re: [PATCH v5 11/17] rust: rbtree: refactor to use `&raw [const|mut]`
+Message-ID: <D8NKXBX3CQGT.1MR9MKL6H4G86@proton.me>
+In-Reply-To: <20250320020740.1631171-12-contact@antoniohickey.com>
+References: <20250320020740.1631171-1-contact@antoniohickey.com> <20250320020740.1631171-12-contact@antoniohickey.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 8f96a89c1b0b8046897cd4d722875da30abbc529
+X-Pm-Message-ID: 34e1fbc301c389088d279158285f5073652bef37
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,58 +48,24 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On Thu Mar 20, 2025 at 3:07 AM CET, Antonio Hickey wrote:
-> Now that `Work` is initialized via `pin-init`, the `work` field
-> is always used. This allows us to replace the use of unsafe
-> `Opaque::raw_get` with direct pointer casting.
+> Replacing all occurrences of `addr_of_mut!(place)`
+> with `&raw mut place`.
 >
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Link: https://lore.kernel.org/all/20250316061429.817126-1-contact@antonio=
-hickey.com/T/#mc7a4757e8c132f84228b728c7d123d73841501d6
+> This will allow us to reduce macro complexity, and improve consistency
+> with existing reference syntax as `&raw mut` is similar to `&mut`
+> making it fit more naturally with other existing code.
+>
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1148
 > Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 
-One nit below, but regardless:
-
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-> ---
->  rust/kernel/workqueue.rs | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
->
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index 4e27df324d26..5cc259c1e502 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -399,12 +399,8 @@ pub fn new(name: &'static CStr, key: &'static LockCl=
-assKey) -> impl PinInit<Self
->      /// need not be initialized.)
->      #[inline]
->      pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struc=
-t {
-> -        // SAFETY: The caller promises that the pointer is aligned and n=
-ot dangling.
-> -        //
-> -        // A pointer cast would also be ok due to `#[repr(transparent)]`=
-. We use
-> -        // `&raw const (*ptr).work` so that the compiler does not compla=
-in that the
-> -        // `work` field is unused.
-> -        unsafe { Opaque::raw_get(&raw const (*ptr).work) }
-> +        // CAST: `Work` is transparent to `bindings::work_struct`.
-
-I usually write:
-
-    // CAST: `Work` is transparently wrapping `bindings::work_struct`.
-
-So feel free to use that. (I find the "transparent to" a bit strange,
-but this isn't a huge complaint)
 
 ---
 Cheers,
 Benno
 
-> +        ptr.cast_mut().cast()
->      }
->  }
-> =20
-
+> ---
+>  rust/kernel/rbtree.rs | 22 +++++++++++-----------
+>  1 file changed, 11 insertions(+), 11 deletions(-)
 
