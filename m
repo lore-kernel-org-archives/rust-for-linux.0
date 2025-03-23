@@ -1,34 +1,34 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DE515575B
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Mar 2025 21:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254CB1A2C06
+	for <rust-for-linux@vger.kernel.org>; Sun, 23 Mar 2025 21:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742764756; cv=none; b=HXGHRHLA+HwVNHQT0KhMa3H06cmtOpeBkO14GMitDDCJU0Qnp+oXRrO6bjXFtoEJwJEuh+Wxq4YKDNVIQYz9XKI6651lD8teqO2joYUYP3NWXdqqf87V2Rhj/6uWTO9ElEEr0efjsN9KrFgSbn0TBSy/h3tdqD9LyP7x0v5K4C4=
+	t=1742766275; cv=none; b=Yrjcqk2ZrFsWvSDTxVhWSx10KYE+ixNJlO8ghmlcbe+yFoFNOI8awhBuOan1Hgh0yQuLFfjVGxldLYuCufYIl3VTXhcZAP2mL87P2C8ROKgi/lN9Rx2/twQkxWZm0SzO83m1L+tx4sAWjKQHelBlWgcnOoZR1GF1agM0s+7dy0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742764756; c=relaxed/simple;
-	bh=9S7RKKhhOELyjtyd8BaQKXsc3EjmXfRPfSpW0zWxZ3c=;
+	s=arc-20240116; t=1742766275; c=relaxed/simple;
+	bh=Np008TJr5PK+P6vSrV7C4URKZjMVCbHKWGNlLBsimIs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EG58r6w1/x5sMv8MLdv8Zp5gPd5uYG1JlQkzdde11XSmeKlGUkqhlbLK/NAtZdlRt1mW3i/Vh59cWfwNBuvcH/6aaJPbg/N0ithGda9gYOAxYQunRzd1jEl5LOUTAVvtL4bgnaol4jpB1pkUAS66nMQitUcoKWZd/8jVNZugoOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=b3eLBULz; arc=none smtp.client-ip=95.215.58.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=GzxBQwz8ldJzrGnOPan+IIuitzwTkfiHTRu4Hzgg8N3gXk8K+qd5z2dhGAWEZl8MCvslUHLzR4EgHFX+i6Gru8RRYVUtXhA+kEKcCeZk4CsKW/9Fv6ihNorS4DfIcNJ4PE8LsOiOySO4SaaOSky5quCXc0CPICLLdPSuBoxCTWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=nZ9Le3K9; arc=none smtp.client-ip=95.215.58.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosenzweig.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="b3eLBULz"
-Date: Sun, 23 Mar 2025 17:18:49 -0400
+	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="nZ9Le3K9"
+Date: Sun, 23 Mar 2025 17:44:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
-	s=key1; t=1742764739;
+	s=key1; t=1742766271;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wPlC94AM010WZW8moD0YzW91Vm5e7DR3TS+SPuJHxV0=;
-	b=b3eLBULz46IcHBiPzzA6apX7WoWCRsF73fSS+jtN1xfxJzeNP5ZAmZR9OzYdhFT3OyJHE2
-	dKosWAHDrjSstQLNbOdbHT73E9IQTixfNVQ2JGOn+BtMQMq8HVdvdOEih7MVC/Uq2r5psE
-	at17txaMiEIxdkeGFId0K3JCqb5QykTPE89o5O4LKZASRa1uWEac8jRAqmpsC5jps7hs6l
-	AOC2Gxe3NETgytlAOKNRdhlPe8+BjuWw7AMPxJOufWVrl7qR45PPy6ZlPhJn7UwQj+AU7y
-	Y801thcyZQHvcKyEOfVdh7Bmjb83QVZ/s2+8lzpLhpkMQXolwVBsFL90zh043g==
+	bh=QjI5CAIKnyK0cdKaefRJI+q3uIG7lhr68HrdHr6otHQ=;
+	b=nZ9Le3K9grAmT8NSqrDY7VgqawNr/XTrJxRvN1cnBj5rG5ctGZFQCbYbmgaahOqfE4y8X6
+	9KiTK78LgpYvRwVN+5zFnyPVfkywDFasGxtxhKNwLwWoFJmI3aEZJwku1/EAvQL4segCBL
+	GKMhFQ9tW6Sie6nKkCQzSyxkQg/G91JQl5JBVLihPfSOBgK0Rw9zfLdsp5oL61XNAM2K4y
+	EOadBxaZValTGWpyOOX2ozW/iNrMvBnfzLdCp+xW/A4nUucYKeDqrqta/rfKTlhwkGNgDe
+	CZGYYmPXcuH8jntdQWJIvZ7MVHpgdSGE0X7sP901OWfGmctB8KHsZb9uFe7BFA==
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Alyssa Rosenzweig <alyssa@rosenzweig.io>
 To: Faith Ekstrand <faith.ekstrand@collabora.com>
@@ -55,7 +55,7 @@ Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
 	linux-doc <linux-doc@vger.kernel.org>,
 	Asahi Lina <lina@asahilina.net>
 Subject: Re: [PATCH v3] drm: Add UAPI for the Asahi driver
-Message-ID: <Z-B6uc7EEAdBPXmt@blossom>
+Message-ID: <Z-CAtz-D-CslvABE@blossom>
 References: <20250314-agx-uapi-v3-1-3abf7e74ea2f@rosenzweig.io>
  <195b507d4b3.b25d0dad175771.7566427576910952468@collabora.com>
  <195b582682b.121ba4d5e219032.3109114844776468245@collabora.com>
@@ -71,163 +71,22 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <195b582682b.121ba4d5e219032.3109114844776468245@collabora.com>
 X-Migadu-Flow: FLOW_OUT
 
->  >  > +/** 
->  >  > + * enum drm_asahi_bind_op - Bind operation 
->  >  > + */ 
->  >  > +enum drm_asahi_bind_op { 
->  >  > +    /** @DRM_ASAHI_BIND_OP_BIND: Bind a BO to a GPU VMA range */ 
->  >  > +    DRM_ASAHI_BIND_OP_BIND = 0, 
+>  >  > +struct drm_asahi_queue_create { 
+>  >  > +    /** @flags: MBZ */ 
+>  >  > +    __u32 flags; 
 >  >  > + 
->  >  > +    /** @DRM_ASAHI_BIND_OP_UNBIND: Unbind a GPU VMA range */ 
->  >  > +    DRM_ASAHI_BIND_OP_UNBIND = 1, 
+>  >  > +    /** @vm_id: The ID of the VM this queue is bound to */ 
+>  >  > +    __u32 vm_id; 
 >  >  > + 
->  >  > +    /** @DRM_ASAHI_BIND_OP_UNBIND_ALL: Unbind all mappings of a given BO */ 
->  >  > +    DRM_ASAHI_BIND_OP_UNBIND_ALL = 2, 
-> 
-> Do you use this? We don't have it in nouveau and NVK gets by fine. Or does the asahi kernel do something where it expects you to unbind everything before the buffer is really destroyed? I think I remember talking to Lina about this a while ago but I don't remember the details.
-
-We do not use it and I don't know why it's here either. In fact,
-drm/asahi does an unbind_all equivalently when closing a GEM
-handle, so should be definitely ok without.
-
-Dropped in v4, thanks.
-
->  >  > +    /** 
->  >  > +     * @DRM_ASAHI_BIND_SINGLE_PAGE: Map a single page of the BO repeatedly 
->  >  > +     * across the VA range. 
->  >  > +     * 
->  >  > +     * This is useful to fill a VA range with scratch pages or zero pages. 
->  >  > +     * It is intended as a mechanism to accelerate sparse. 
->  >  > +     */ 
->  >  > +    DRM_ASAHI_BIND_SINGLE_PAGE = (1L << 2), 
-> 
-> Does this require the BO to be a single page? If so, does it require offset==0? Or does it just take whatever page is at the specified offset?
-
-I believe the intention is that it takes whatever page is at the
-specified offset and just maps that a bunch of times. HK doesn't use
-this yet though it probably should (this was added to help reduce
-overhead when emulating sparse with scratch/zero pages, which is still
-very new functionality in hk).
-
-Accelerating this properly involves GPUVM patches - although even without
-that, moving the loop into the kernel so it's only a single ioctl
-(user-kernel roundtrip) seems worth keeping the flag for.
-
-Added comments in v4.
-
->  >  > +    /** @object_handle: Object handle (out for BIND, in for UNBIND) */ 
->  >  > +    __u32 object_handle; 
-> 
-> How is this different from the GEM handle? I mean, I know it's different, but What is this handle for? Just a thing we can pass in later?
-
-Yes, this is just a handle that's passed with the submit, see the
-comment in drm_asahi_timestamp.
-
+>  >  > +    /** @queue_caps: Bitmask of DRM_ASAHI_QUEUE_CAP_* */ 
+>  >  > +    __u32 queue_caps; 
+>  >  > + 
 >  >  > +    /** @priority: Queue priority, 0-3 */ 
 >  >  > +    __u32 priority; 
 > 
 > Is one of these priorities REALTIME and only usable by privileged apps? If so, maybe document that and/or have an enum?
 
-Added an enum, thanks.
-
-I haven't actually implemented the priority check because that means
-even more rust bindings, and I don't think it's actually a uAPI
-regression to tighten the permissions later now that I've documented
-that we may do so.
-
->  >  > +    /** 
->  >  > +     * @usc_exec_base: GPU base address for all USC binaries (shaders) on 
->  >  > +     * this queue. USC addresses are 32-bit relative to this 64-bit base. 
->  >  > +     * 
->  >  > +     * This sets the following registers on all queue commands: 
->  >  > +     * 
->  >  > +     *    USC_EXEC_BASE_TA  (vertex) 
->  >  > +     *    USC_EXEC_BASE_ISP (fragment) 
->  >  > +     *    USC_EXEC_BASE_CP  (compute) 
->  >  > +     * 
->  >  > +     * While the hardware lets us configure these independently per command, 
->  >  > +     * we do not have a use case for this. Instead, we expect userspace to 
->  >  > +     * fix a 4GiB VA carveout for USC memory and pass its base address here. 
->  >  > +     */ 
->  >  > +    __u64 usc_exec_base; 
-> 
-> I mean, you could have a command for this or or something but meh. That can be an extension on top of the current UAPI later if it's ever needed.
-
-Yep, and I really cannot fathom a use case for doing this at
-finer-than-queue granularity.
-
->  >  > +    /** 
->  >  > +     * @barriers: Array of command indices per subqueue to wait on. 
->  >  > +     * 
->  >  > +     * Barriers are indices relative to the beginning of a given submit. A 
->  >  > +     * barrier of 0 waits on commands submitted to the subqueue in previous 
->  >  > +     * submit ioctls. A barrier of N waits on N previous commands on the 
->  >  > +     * subqueue within the current submit ioctl. As a special case, passing 
->  >  > +     * @DRM_ASAHI_BARRIER_NONE avoids waiting on any commands in the 
->  >  > +     * subqueue. 
->  >  > +     * 
->  >  > +     * Examples: 
->  >  > +     * 
->  >  > +     *   (0, 0): This waits on all previous work. 
->  >  > +     * 
->  >  > +     *   (NONE, 0): This waits on previously submitted compute commands but 
->  >  > +     *   does not wait on any render commands. 
->  >  > +     * 
->  >  > +     *   (1, NONE): This waits on the first render command in the submit. 
->  >  > +     *   This only makes sense if there are multiple render commands in the 
->  >  > +     *   same submit. 
->  >  > +     * 
->  >  > +     * Barriers only make sense for hardware commands. Synthetic software 
->  >  > +     * commands to set attachments must pass (NONE, NONE) here. 
->  >  > +     */ 
->  >  > +    __u16 barriers[DRM_ASAHI_SUBQUEUE_COUNT]; 
-> 
-> I'm not sure how good of an idea this is. You said in the comment above that SUBQUEUE_COUNT must be a power of 2. However, once you use it to size an array in the command header, it can never change ever. I'm not sure what to do about that. The command header being 8B is kinda nice... But also, will we ever need more than 2? I'd hate to have to change the size of the header.
-> 
-> Another option would be to potentially have a barrier command which would then be extensible but that sounds kinda annoying.
-
-I think the mistake here is making this an array instead of just
-`vdm_barrier`, `cdm_barrier` fields. It will never be not-2, at least
-not without such large hardware changes that we'd be due for a refresh
-of this uAPI anyway.
-
-I don't love the idea of the extra command, adds a lot more
-complexity/overhead for a hard-to-fathom theoretical future hw issue
-(that we could address with a drm_asahi_cmd_header_m7 if we
-need that.)
-
-Addressed in v4.
-
->  >  > +/** 
->  >  > + * struct drm_asahi_timestamp - Describe a timestamp write. 
->  >  > + * 
->  >  > + * The firmware can optionally write the GPU timestamp at render pass 
->  >  > + * granularities, but it needs to be mapped specially via 
->  >  > + * DRM_IOCTL_ASAHI_GEM_BIND_OBJECT. This structure therefore describes where to 
->  >  > + * write as a handle-offset pair, rather than a GPU address like normal. 
-> 
-> Given that this struct is embedded in other structs, it might be worth a comment saying it can never be extended without breaking those structs.
-
-Done (for each of the places mentioned).
-
->  >  > +struct drm_asahi_helper_program { 
->  >  > +    /** 
->  >  > +     * @binary: USC address to the helper program binary. This is a tagged 
->  >  > +     * pointer with configuration in the bottom bits. 
->  >  > +     */ 
->  >  > +    __u32 binary; 
->  >  > + 
->  >  > +    /** @cfg: Configuration bits for the helper program. */ 
->  >  > +    __u32 cfg; 
-> 
-> There's configuratin bits here and in the binary pointer abov?
-
-Yes. Not sure what the different bits mean exactly. My guess is that the
-binary pointer is tagged as "enable the helper prog?".
-
-The one known @cfg bit is when the helper program is needed within a
-preamble shader, i.e. if the preamble spills.
-
-> Woo! I made it to the end. I think that's all for now. I mostly asked a lot of questions.
-
-Hooray! Thank you so much for reviewing!
+Actually, I've reserved realtime&high but always deny right now to make
+sure Mesa doesn't assume it can use them, then we can relax in the
+future once the kernel permission gating is there. (Needs rust
+bindings.)
