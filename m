@@ -1,40 +1,43 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4855204587
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Mar 2025 10:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2F348CFC;
+	Sun, 23 Mar 2025 10:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742725968; cv=none; b=FYMPxAlc4ZsnDvJqpayOx61zQbUm/sjDaJHYS3cFeQcKpXFncUaMN5hr13vBEzF5ZH3e4M6OKCh7gWFNuHcFif4IYsJhGQcXmJOwnnIctRCmK+11qZZ0JT7tRecnD4gTgvyxP7bEUN0OIwmwmLCHLQmxgp+2rf7T5WxDWU6nfGI=
+	t=1742726012; cv=none; b=lcQCWKRM0xhDPHE4ImV9bjUEI8MsNU2d+IlkFsXYkKdI3dJ5b997WOOtfw+p0lEaxcrBZqCkashXncJ+L2gW8tM0bWXcrd96vERx/nSdLCvVdqTiu49qSXY7frBhLWgl7oxiVm+vCPaHLL7GPeTKYJVbqR6x20GTwnfOc4dSZPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742725968; c=relaxed/simple;
-	bh=6l2eQCSW3JNYIBYkHrSb3EFJN8alvjO6wGejc8D1AqI=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=fLiCrb8dIgGctyxHjJgktca+yH172jDP1KPTjONyzJXZMaqLxfyL4Tvk1C/QBQ1SHO5mquFvYDQz3PlWH5bKsoOSCRU608KU4fVJqInw76MxXNPEb958+Ehm5aVRpTu4U2Mv+P83OTK3kmSwW6Y34Q/APmWwkUodqb16Rt0+sww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NKBcmdpb; arc=none smtp.client-ip=79.135.106.31
+	s=arc-20240116; t=1742726012; c=relaxed/simple;
+	bh=ojwCJlaJNkBkDqt/q55hzD1cDqXmXzMPNEqR10c3NxM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t2SpuYUpFytXUCP7E/fsjnbhd4RUc+3zmCwh6QZKU5j0VisoONbcj3mWUkEZIGV3moRiV/LzNfHVnNtkoBGrxG4ZQvILwoyt2OoosL9Gb+JLs0c+/m90LvzBgmgqiY30Ez29Pmyn7Wsfxdt8u8PnqBoKgyfRQoicwBeADqp8dLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=fVn6Dv33; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NKBcmdpb"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fVn6Dv33"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742725958; x=1742985158;
-	bh=rEFExDG0DgUmP8S1Fyzj6/pKJXTe3E+Sz6RF5IpWpsQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=NKBcmdpb6OoAOBWfB3nWSjf4HGihO1PkHgufLY08//j4JYa0SK2KCZkS6FAc0h1ZX
-	 i06i3S7zC81uIv2HXTjFQAP223hXaVe/VtZJ6KUKEMUXCT1L1IKRutYzoaggZh2WP9
-	 NOiHiMJfGap7nEPKoEljFWr/GeUtwAxFdS+PwBMZtfz1Uhpyip8TzAtORWXFxrYL49
-	 LD2byOr4jtxlLJKOMXKZt55W2up0V/GpoIfk/Au+FNpmYArBmwS+p6SxTRo5h+MO/t
-	 fLbgmfFo3+46U0zC+EOZkAx3WjSMIEOEKrw7gHPOxHw2yJj5qK81a8vln6ch4/izVG
-	 efEiCqQLjYBbQ==
-Date: Sun, 23 Mar 2025 10:32:31 +0000
-To: Antonio Hickey <contact@antoniohickey.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+	s=protonmail; t=1742726009; x=1742985209;
+	bh=oZsUgrUW5VD5eWiBvUUGdqpMAZFTSIHHL+KckUkfTlE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=fVn6Dv33ipOhltygwzQi5zeWuV4soWwiUq1yzdp3HwPOktsJGXZeIGXKgfVTHTwNk
+	 1Hf/JTWYEwxyyJ60S1BjfDQ9gBZvkJAS7mQhsKbjDELMbWQKjam0U/w+/gAsxaoTax
+	 WmEVmcBHSxN/SOdwtgIGY4ezjQZt2B50OJHj7S+zEL09wffMPOrQIleyUaCU+nJ1kr
+	 95vwNDE5HCVLjfZPjwyhycVBTkc9ATUmCqtugnrfn/T9/FzPBNm1HAz6AIO7gSWNZA
+	 NM/Q8grFxCB6YqS7QtpZ9tFgdVUIVYSeR2MRwjupNQTn6C6b+11Xrn65yVJFPKH69H
+	 S7zF5OS/3x1ig==
+Date: Sun, 23 Mar 2025 10:33:26 +0000
+To: Antonio Hickey <contact@antoniohickey.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 04/17] rust: task: remove use of `addr_of!` macro
-Message-ID: <D8NKSFPTB0OG.3QION5HVGH7CL@proton.me>
+Subject: Re: [PATCH v5 05/17] rust: faux: refactor to use `&raw [const|mut]`
+Message-ID: <D8NKT5LVWLVJ.5OB13K601J1R@proton.me>
+In-Reply-To: <20250320020740.1631171-6-contact@antoniohickey.com>
+References: <20250320020740.1631171-1-contact@antoniohickey.com> <20250320020740.1631171-6-contact@antoniohickey.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: c83f0c40be50c89859a9bca3b25058e5eb809b71
+X-Pm-Message-ID: 0f9d087fd5b6d817e9161e78a02f928f08f39719
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,13 +48,15 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On Thu Mar 20, 2025 at 3:07 AM CET, Antonio Hickey wrote:
-> The use of `addr_of!` here is unnecessary since its immediately
-> dereferenced. The main benefit of `addr_of!` is to avoid intermediate
-> field loads without immediate dereferencing, so there's no benefit in
-> using it here.
->
-> We can achieve the same behavior by directly accessing the
-> `group_leader` and `pid` fields, which is more idiomatic.
+> Replacing all occurrences of `addr_of_mut!(place)`
+> with `&raw mut place`.
+
+This text wrapping looks strange, if you send a new version, please fix
+it, otherwise Miguel will do it.
+
+> This will allow us to reduce macro complexity, and improve consistency
+> with existing reference syntax as `&raw mut` is similar to `&mut`
+> making it fit more naturally with other existing code.
 >
 > Suggested-by: Benno Lossin <benno.lossin@proton.me>
 > Link: https://github.com/Rust-for-Linux/linux/issues/1148
@@ -64,6 +69,6 @@ Cheers,
 Benno
 
 > ---
->  rust/kernel/task.rs | 4 ++--
+>  rust/kernel/faux.rs | 4 ++--
 >  1 file changed, 2 insertions(+), 2 deletions(-)
 
