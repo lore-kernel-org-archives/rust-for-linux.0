@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3DD145B3E;
-	Sun, 23 Mar 2025 20:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2F14C8F;
+	Sun, 23 Mar 2025 20:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742761196; cv=none; b=D7zs2JjzIdgA5pjqhVrt9TwQCNf4lU4xfOmicpQXuRfGvHPR11zX8rz4SThv1mwiUE8/RPuZbcwxdGGWw3XP0p3j1UaSxQUdEnRgB1eaI2Mh//UQamCknqUDXRh9IaBsOu4CpgHjhbp6TFtqJ7xf3QFBq1EtPzcuo7l32Y/CJXU=
+	t=1742762836; cv=none; b=DOLlzaiw0xZ7hIYbXF5JjkdPKXl/1tnRnmehPO0moX2gAZsPjI/uj6iXvRFX1lcjEkHbjv+L5kp0eO3nB3Kk3jV0zEDxcU0eqmIUjpGR5w73UL7FkOGjtuLKTuSN+KLpiPZWQWlY26QEKYlyUUe2O3m/Mg3Xv1eJU1wLWo+Abe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742761196; c=relaxed/simple;
-	bh=xhUPi/g2/yskLtrdaoNGXPYU+I4iMKmTmti4et33U90=;
+	s=arc-20240116; t=1742762836; c=relaxed/simple;
+	bh=roK0RQYsyVbN97cREq5L8qoivVijAhsR5NYcKzYdlHs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Wnrn9/Zjc5BLb9AtEAWC0iRCUGeDbM2Dlqp0AeC4AlPwXChGBpkwGsNRLzlIhe/ZJVIr/mz/ivp+oJ3VBR1KbzW8bz+0TPbdW+MbcZcifOADAI5a3qWbI4eD99lKKx1DfMqFxp8Ru8F0ZESAhVY4io/uYCDMdPnj/6H1xv+JpMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMUj9nxe; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=dxW0Mu44XE3QtqN3G8Uxa7TYILBnMHguhFTxGrFa8mFiYmvoYgCGRT4UgBnspfitHVuCKA+aV17LvDfCPkOTqxAKFzPiMb7UHUCw7FZXkxf45U8KYF8RDAyGt/HuNZ5eNwzobqVjvZnmFhcHMFaLz6D/GBZ6n5jV8SOwm37iJ/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fOw9fyb2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMUj9nxe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69B1C4CEE2;
-	Sun, 23 Mar 2025 20:19:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOw9fyb2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E664BC4CEE2;
+	Sun, 23 Mar 2025 20:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742761195;
-	bh=xhUPi/g2/yskLtrdaoNGXPYU+I4iMKmTmti4et33U90=;
+	s=k20201202; t=1742762835;
+	bh=roK0RQYsyVbN97cREq5L8qoivVijAhsR5NYcKzYdlHs=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KMUj9nxe9JACll85SbGAzE37bk7VdMn07IuNFJndd4YeoP0e89dy4uat2AMtLoRW4
-	 IiqjqsVW9RenL8s0IBeOnyMhEsIzA5xGanuHzZ/QEg4rPYltWrbC0O/A2CuetrBUge
-	 1RHPYG2EtDSKT9u0P0xJb5oYS298D7QGcisUDQf0IuYWQpadhwN3jbO7oC1UjDf/iK
-	 ijw7NlLnQWVtNPwHFmAFcfBLLssVOVPPX99GmDGZ9zKRK9MlGEy8hKWHvsowAn6ktz
-	 zXM3hqPsadJgYcqI+SvdHWzPAheX+4RPdiALSYsqVVEYPgXhn8bGRwLaJVbwrMIYms
-	 CtbfczImv4QmA==
+	b=fOw9fyb2UKg1gsRQ5BkUyNHB/SVAe6RlIFBKKYj1mLzBGaPU/YvOBkGp2r7qCuaAl
+	 f5mzQXBUPdRruOYMMBpvFF7OAnXo7COg64JCotfEJ2k2NKFtm6Osd9r5weZlrjjffL
+	 iGJ9AWK1IxpJaC0jOaIsTWFLL8RJSaQAyeoC4DSqHobw6v6ZuYUE+vYsF24U1HLkXP
+	 LWMUFUa9HgkGZWmQ+kaearJfk/NZgsjHFScXT/nx1g0/z7ZrB/Vy8DHIwVhFcNbFEE
+	 3ZvO+QC61QF8r/HgxF3tOigDs9iUNxZ83YU8VxEWFS5Kw3efq0INwohSkgxQp2XBaz
+	 GLydJAXNsv7aA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Oliver Mangold" <oliver.mangold@pm.me>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
@@ -35,15 +35,15 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
  Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
   "Trevor Gross" <tmgross@umich.edu>,  "Asahi Lina" <lina@asahilina.net>,
   <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v8 0/4] New trait OwnableRefCounted for ARef<->Owned
- conversion.
-In-Reply-To: <20250313-unique-ref-v8-0-3082ffc67a31@pm.me> (Oliver Mangold's
-	message of "Thu, 13 Mar 2025 06:59:57 +0000")
-References: <GwULoA3hxsCsNdxJ4lw7WqNC5bhCMacx5xMre9hZV2GWDdYmQx9rYVzHadna4KGiko3Glypv-AeXUsoECQB-EA==@protonmail.internalid>
-	<20250313-unique-ref-v8-0-3082ffc67a31@pm.me>
+Subject: Re: [PATCH v8 1/4] rust: types: Add Ownable/Owned types
+In-Reply-To: <20250313-unique-ref-v8-1-3082ffc67a31@pm.me> (Oliver Mangold's
+	message of "Thu, 13 Mar 2025 07:00:04 +0000")
+References: <20250313-unique-ref-v8-0-3082ffc67a31@pm.me>
+	<mBH9ahiN0rvkW_87wciSG676vkmnXR0TXkkuPK1xJ8oIpDTC0rJ03Ep83yQ-M_m6-hvbsWvgL8uoAEW16RBiVw==@protonmail.internalid>
+	<20250313-unique-ref-v8-1-3082ffc67a31@pm.me>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Sun, 23 Mar 2025 21:19:35 +0100
-Message-ID: <87sen37b54.fsf@kernel.org>
+Date: Sun, 23 Mar 2025 21:46:40 +0100
+Message-ID: <87msdb79vz.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,33 +52,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Hi Oliver,
-
-Thanks for sending this!
-
 "Oliver Mangold" <oliver.mangold@pm.me> writes:
 
-> This allows to convert between ARef<T> and Owned<T> by
-> implementing the new trait OwnedRefCounted.
+> From: Asahi Lina <lina@asahilina.net>
 >
-> This way we will have a shared/unique reference counting scheme
-> for types with built-in refcounts in analogy to Arc/UniqueArc.
+> By analogy to AlwaysRefCounted and ARef, an Ownable type is a (typically
+> C FFI) type that *may* be owned by Rust, but need not be. Unlike
+> AlwaysRefCounted, this mechanism expects the reference to be unique
+> within Rust, and does not allow cloning.
 >
+> Conceptually, this is similar to a KBox<T>, except that it delegates
+> resource management to the T instead of using a generic allocator.
+>
+> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> [ om: make from_raw() and into_raw() public, small fixes to documentation ]
 > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
 
-[...]
-
-> ---
-> base-commit: 4b2ee22fe32ea9b255926effbb6f26450607c391
-> change-id: 20250305-unique-ref-29fcd675f9e9
-
-I think you based the diff on a commit in one of my trees. It does not
-apply cleanly to upstream. Could you rebase this on something like
-v6.14-rc7?
+Please see review comments for the original posting of the patch from
+Alice [1] and me [2].
 
 
 Best regards,
 Andreas Hindborg
 
 
+[1] https://lore.kernel.org/all/CAH5fLggscATtCgQwCYSms77oSFOMkjTscRDqAOZsSgoHsOoPQw@mail.gmail.com
+[2] https://lore.kernel.org/all/87h64qe3dt.fsf@kernel.org
 
