@@ -1,84 +1,94 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66759134AB
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Mar 2025 22:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598BB3A8C1;
+	Sun, 23 Mar 2025 22:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742768562; cv=none; b=t6LXiB+aFVrVjoJwXd0693Izk0ZDIW1tR+9YWIljqDYf4FUyXJn4f2K7t4+4n6WTk7e6Bpl+vh4UEdwp7w6p1zKT7pCFPxjii/X9NaEVgHPvPXXBwT69p1fHuls12jbtAtHxM71pNxZp8zsJZaujgW2vWHUuLpE3QuhHv87v38o=
+	t=1742769088; cv=none; b=Q0Y97R8FwxQAUpnm81ISxVaa/WDXk45qiulm7eFKw6H8mJMdltksQesOZqy7Ga2fE7/U+3q+npcqMRfDTu5Ztzo0G3qhlhYeJqBG7gAzucgkIoXbDrpCVLZocNrPSbnP1Eqeemahr0pINIZsAJhWVWisP1l4Cj3hq4NIlaQFQgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742768562; c=relaxed/simple;
-	bh=UaDSzJEFU3HxiKYeBIN3vLKun7CzCFd06gaVh2Rjc1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eJ6QJgqnEa4fMIWCWFe4eJlIbdoKS8v4p4QqgMnquStX9K65mXPEuzkTeBTqXQRprvmQSCqMRKG4XczBqrn77u3COuflBxgo3Oe9z4v5AFCkbOUfmr87gG1nuHQA207YZnTsn/djZR/Af8kXpl7cgqIFLXV2zd0CZ1HB+X2aEtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=JDUR9PGO; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosenzweig.io
+	s=arc-20240116; t=1742769088; c=relaxed/simple;
+	bh=vi8nwrQRl+Ctbxa5rHKQmTF1XKMZtYj/xv44j6HGrKo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AOu3CO2haKKFonPABuULtFC7KVChva44tZsA1+gURWQnfSiN9/0Fs8rs7RpxzmGPKv9gDfY08+pus8BA2y8uOLNNqbmwxJQ/hGxZew6Qq27iiv1ZVYtXnUxItWCg0qH53UM584VbbfT6z98LSd+HXuP2LzKLWlhpKUk0dDdmVus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hYmtxTxm; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="JDUR9PGO"
-Date: Sun, 23 Mar 2025 18:22:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
-	s=key1; t=1742768548;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jBdt6K+1FRRtxV1RM4zhQcREKVKV+utbOhrg0IIMgak=;
-	b=JDUR9PGOmfNe81ydDTGeaPgibvwP+SUVdVLswyyJwxIz2iVH8XXxHPVGYF2LC/pY45mjzF
-	PRpvDOQUvJ92PMV32TRGuW9xbOELBG6MGwDpMNq5uyxAUgAP2TEoh0sSBPRgbve6ImHre1
-	1eKqPR/gkbftnMQ+vixiX7QzCCfCkypI88USsZ/2351OLZSNat8cu+/I5oqvl0Bo3JStWn
-	+RmDK83Pu2Qywy+7pzss7KwJVDVBWdLCYI4/pmycEN5RzH6/An/O/LdaxhxQtoxDWyJqDo
-	bixjdLUYkrjfUCbZdyfX4h/WASPJHOMW6d1s20h5dyAxhZpnpenFdoweKMBh0Q==
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-To: Faith Ekstrand <faith.ekstrand@collabora.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?=22Bj=F6rn_Roy_Baron=22?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Janne Grunau <j@jannau.net>, Sven Peter <sven@svenpeter.dev>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sergio Lopez Pascual <slp@sinrega.org>,
-	Ryan Houdek <sonicadvance1@gmail.com>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	asahi <asahi@lists.linux.dev>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	linux-doc <linux-doc@vger.kernel.org>,
-	Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH v3] drm: Add UAPI for the Asahi driver
-Message-ID: <Z-CJmw9BKteSj1Qx@blossom>
-References: <20250314-agx-uapi-v3-1-3abf7e74ea2f@rosenzweig.io>
- <195b507d4b3.b25d0dad175771.7566427576910952468@collabora.com>
- <195b582682b.121ba4d5e219032.3109114844776468245@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hYmtxTxm"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ff7255b8c6so733295a91.0;
+        Sun, 23 Mar 2025 15:31:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742769086; x=1743373886; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vi8nwrQRl+Ctbxa5rHKQmTF1XKMZtYj/xv44j6HGrKo=;
+        b=hYmtxTxm8VEuh6tIwTyfIZsaF516X0ma/pv18qyLlrSZjql+fPkQejXUrmt/IRTun6
+         cMWNmPB+mogI395WqAIXcr22RbYSQs5AMdnAty+EVXr6ED6hfupzAxArzBobI6CYEHS5
+         NODGu/Q96ei6m95QUzDc0JxvGJ7aOuCeGWvzVfwjeTz8Ge4CxNxYxPXheaI6VELxZJx+
+         dFqotIwpPTvCb8wOwSHMndT4W7s2lbFflMmS1B1mEdxhk3J6ldxBiD3RI4DRaiILn7Jo
+         L/E8IaftsH9XItkSp4gRi6DP8D6uqPZN4V/MHm2ADx22iRfCX6PKyXPzm1dmtt3AJCBz
+         9sjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742769086; x=1743373886;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vi8nwrQRl+Ctbxa5rHKQmTF1XKMZtYj/xv44j6HGrKo=;
+        b=VeYGLp8ndPlB/jzXeHy8BgtYfyFOzjIsptCZkyKxXLwLUtecYcBpd2JirNHaZl8meE
+         PvQ4oUWo68TrvBabSqG7tDGuxafzxnsKsh8JyWBa5qdvnwwGJIUqaKcSFgd0SIF0pTkt
+         uYf+rTssbtG21wDGCgkcoE5NYJo9hAEu/+IuJ6lm7sR+e0irVJauIW5ij26arrO9cBh0
+         uCMvECdpSMEA5b5hvYRinYhP4kwjBrVv8lWDmiWRwhyUpnVHtnC/MlFDWvOE/frEp//+
+         Tmb6nv5W9Sz1YeVm1D3Su6vwh2PF4e16bJlKQoE4rtgkDh2cdhUgWAy0yCso3wDkBFna
+         s21A==
+X-Forwarded-Encrypted: i=1; AJvYcCUwOylDWzqvzKO5pH/qFL5fPc6LkMnhyGiOJO9U6roCufyFix9K3A4qN4jY+HU1mzMiPmE1yXtnKphaG88=@vger.kernel.org, AJvYcCVmHrKza6GN/fhd7pJHlrhxZDfig8AeO6P/rzpDqp8c1HJ3I96tCXXa6i/Ye76ipbXMYjv1IvHG9Po9fZmhysE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIsPN+W7xMUoJdIYfupN6YpD3Ky7dkaJHJwN7nWk557OrBFbhp
+	Iq8WOzDzRDZ6no4dJRkUrvFB8gJM14S6lW+Z562vOCKBX+oLQIj7GnOzxl173/5fEOTSDPKCiAj
+	jSarq3SJsIWnha8PjLfsFByqiZu0=
+X-Gm-Gg: ASbGnctlepX8eZqN15kMk37wjgVhucpAJssB9RM8a2HGnL9tTQlwh2zJESWnjANbI4C
+	4xBYT9WelrUXM9LmWYRAHtlvSBl9TcvoJ/ZjT4JufxJc4lSZGc2Lg1L4bYvdHYok+glvAxHKTyU
+	PWWMDpvdcz9Z0C6nCnD+Nuk4kP9w==
+X-Google-Smtp-Source: AGHT+IHQo2n43xO8//iL3FcMh8NVFex2EDQgWKMg8A8PyOkWXaQbgL5V3eTTRHK7jFG4UW9PyVXdDJdhHm6u9RxsXzM=
+X-Received: by 2002:a17:90b:4b51:b0:2ff:7c5a:216d with SMTP id
+ 98e67ed59e1d1-3030ff0e874mr6971249a91.5.1742769086548; Sun, 23 Mar 2025
+ 15:31:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <195b582682b.121ba4d5e219032.3109114844776468245@collabora.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20250315-rbtree-comment-fixes-v1-1-51f72c420ff0@posteo.net>
+In-Reply-To: <20250315-rbtree-comment-fixes-v1-1-51f72c420ff0@posteo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 23 Mar 2025 23:31:13 +0100
+X-Gm-Features: AQ5f1Jr8BpEbYPANsPPeKmiuu_KlFlW0fSE0d-7cy_vl3DPimUSjADFb4a9XWJI
+Message-ID: <CANiq72mGvYnK-iuOO2e4q9MZJ0h4V_mLZp4xKsaPcXrnA_RJ8Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: rbtree: fix comments referring to Box instead of KBox
+To: Charalampos Mitrodimas <charmitro@posteo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->  >  > +    /** 
->  >  > +     * @user_timestamp_frequency_hz: Timebase frequency for user timestamps 
->  >  > +     */ 
->  >  > +    __u64 user_timestamp_frequency_hz; 
->  >  
->  > Why is this different? What are user timestamps and how are they different from GPU timestamps? 
+On Sat, Mar 15, 2025 at 10:48=E2=80=AFPM Charalampos Mitrodimas
+<charmitro@posteo.net> wrote:
+>
+> Several safety comments in the RBTree implementation still refer to
+> "Box::from_raw" and "Box::into_raw", but the code actually uses KBox.
+> These comments were not updated when the implementation transitioned
+> from using Box to KBox.
+>
+> Fixes: 8373147ce496 ("rust: treewide: switch to our kernel `Box` type")
+> Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
 
-In v4, I've made get_time return nanos which should clarify things.
-(Since it hides the SoC clock rate from userspace, leaving only the GPU
-firmware clock rate and nanoseconds as the two time rates to worry
-about.)
+Applied to `rust-next` -- thanks everyone!
+
+Cheers,
+Miguel
