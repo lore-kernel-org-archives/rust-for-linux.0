@@ -1,78 +1,80 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4639EF510;
-	Sun, 23 Mar 2025 19:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787681946C7;
+	Sun, 23 Mar 2025 19:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742757848; cv=none; b=UDhKbd2djcwij5vLiEkokXxQa0n3/ycarKhlab6WKbjmJEhR07AXITBg3+izudtrq9GaA6m5ZouKp3fVK2oQPYh8+JMWKoCVrxsYC154R4w4uPb4INiiLra1LsA0JxLjFxLlgHn6Qk/GD8z95rsBU8PvOZc9uDuiPt7A5Xrrr6Q=
+	t=1742758107; cv=none; b=Xkld4p2MZ2CYsCyz43k0nxgtoXkClLdrUsUUyP1MK7JR7jmg1YCQaiv+4GRrL/nIl27tGXWDh16fqKQvAPKiBHkM/JDPruavSkWlOIutxALBEw0OhofJAKnFvBU3wGfQcCibvg+/guYFOafkc7WDzV5LC6fbYhy+aFmQkRyq9xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742757848; c=relaxed/simple;
-	bh=Dy0hpGo8yWQ5rtG4Jhlvejlc9fuQ+WBwppGj/BD+sf0=;
+	s=arc-20240116; t=1742758107; c=relaxed/simple;
+	bh=kGH5/CTpQKM7kf9ZgU2OdVOxJkNxotXc5CxI5Z5VwRY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MWOxwfh/VOoupRYzEJoxrP1YKdPqqs1xKaz0Pq+RXSNdZpaHWSXzZzpXBTXqeX2xMbsnG9CovHVtbew5FRsAt+eerdu5Hm+bpO2uD8zYv2WUIElznrr0tJmrAsgXBX40O7KsEECIJ9Oq1gQfRy/q0xvpYRZIoOeB9BFf6n9/Nys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lFze4F12; arc=none smtp.client-ip=209.85.214.170
+	 To:Cc:Content-Type; b=oae4cocKXUPOS4o9op9d5xStod9iVKFaz8zQsWpavtlB4nTJ0pqpylNPvBu6IG80gctKCWN73J/igW8DyK1B3gIe+2Wa4rt0WyKaQLbgQKF0SanmmoEAh6ei9ZXVzV1V5mT12OwhJFOP+eWiFQEY2d5dWOIc5Qv1KoXW2RlZE2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QJs0YjcU; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lFze4F12"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-224104a9230so7805935ad.1;
-        Sun, 23 Mar 2025 12:24:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QJs0YjcU"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2240b4de10eso9722455ad.1;
+        Sun, 23 Mar 2025 12:28:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742757846; x=1743362646; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742758105; x=1743362905; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Dy0hpGo8yWQ5rtG4Jhlvejlc9fuQ+WBwppGj/BD+sf0=;
-        b=lFze4F12QL60Q52lWhYnGR8tdi8uZ7hB+wSYRKf3XanTzOxZNV9XQ2wB1qITcdl8fj
-         4GNSrakX3Xoi74AFkEhu6OPvotntGGlYqXouijul2HhoYnF63sZUKnQ0oJyIa8NdTQOF
-         BDT19ltEBNYxRcLx1lfcXrPQmNXBXSyHTEj//UzLU7crPY6RHpI4H68OriXNC3ZD4Oi2
-         IerasWLOOdHDSMQwr2LIF0PZUGKIzxU7gZsUwM3TYBUtrHAaBI/i6NPFN5ljmnkKtCAV
-         rAokHh8UuL02aT3qXnZVz3ihlfW8Q2VKs8oSlSXqC0Hp66wWoWbxEOBYzgBHX5GCDH3H
-         G3+A==
+        bh=kGH5/CTpQKM7kf9ZgU2OdVOxJkNxotXc5CxI5Z5VwRY=;
+        b=QJs0YjcUpXF+V6wkeS811rTa+SBwf3cf4zaBYMj4F4ZC0wAKw0g8GyTwWCxzw1b5Tl
+         8RfCbN4F3YJlbR+TJCnf8MpDNuFMsYp20RhZWV0dovO4ZVQxs/c/7ukMXeeyBSNBRjNc
+         59QGNKjqAY3Wn4pF3TU8NsHZVVk8d8rp6dL91BTeB8rJfxQ6rJ7pIeMPmEfW0ZgocrRW
+         7vMK3o19mtBabbcMvQbWyXIIIu+hS2SrywpyZR/LMqpuuBiSIDDhxK4laSU8Tdlu9+9i
+         LH6SvCJ7se79XvWeOjAcEXDOR6vBcAVu9r9l/lhosdz5qRUNLBl7KbT92yzI89+Wflb5
+         P/Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742757846; x=1743362646;
+        d=1e100.net; s=20230601; t=1742758105; x=1743362905;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Dy0hpGo8yWQ5rtG4Jhlvejlc9fuQ+WBwppGj/BD+sf0=;
-        b=N7cVVT59mqnCzanB1BTTJ0aUWQO6adXRvY099i05MjCH0BpGjWmE0Mv+PL/Bz3hXOx
-         A7STSzDn04vuanm0ddxFrRzzdRM0xVF0RKG2biLAUvO2XCsz3c8tX++NzqE8Z8UkSl9D
-         Yb++VIV/+fRrbSy/K6YwoiGl52Qkp5RhZGFs4OBFVQTqMffmSHfD6FER3d29CeTxTKDK
-         VBU3f8RQun2VtruPq5e5isz+3usYQPKEaQa7HYiErY1ybhBj0tMcKumKoNJf0S41Z4Xi
-         uCj1b8Gr9olyOAcFvlrNZpMitzo9FvQkxsahb8YEq3eMu2qhOSyUoraMbu9cbkhp3pRx
-         T7Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9OHsKRSdV3301tbc+NGbabhOXfGcBGbGXnFntZm1SeMJeM9+pk/qCtQ38Lfo+lBcVOtS7BqKJlvOKYAYzJto=@vger.kernel.org, AJvYcCXTnOjZM2acMkmSgZyD7FDTzbCZhEHs2JVzY3P52U7DSNCgugFSRYv2iONRlJvJuM1T7LMDlUEdp/Um+Aw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyw5E2DM5ZxPOf5RyqlEwLX8Hw0BsQPS1q/jkkKfbbbD/H1LtHk
-	ykAIgXa2C8vwcpBUSyIV5J0Q6etdQW3GDpLqCGWFCDP+/LCtxTRerKgSzBmz+Nk2RcuRxe3G/Mc
-	rauwG+PDCVuGe/ljZ/fcjykB402w=
-X-Gm-Gg: ASbGncuRVcLoNCXC7FDNxcjv4E6ydk+/5o5G39aslqZvq+WZJ60kiMz76gQTGdCH6ns
-	456eVVhBrYmRE+u/5dyR1UptSne3AKsG82dXLpZGWRPZVS9CmJR8LOsZUGXiQFtAxO4eyz9/LdS
-	6UCZAFzX8ADJ+BxAnS3lCcirwZwQ==
-X-Google-Smtp-Source: AGHT+IHC8QLKOnPKCgOf+JWajmyOwdyDtRcfdh4lYiTz+ecifAojfb8ts4i5aO/iCHz9pkPn+34QNCDocIBAGwQugdw=
-X-Received: by 2002:a17:902:ea07:b0:224:1579:b347 with SMTP id
- d9443c01a7336-22780d82835mr55110405ad.7.1742757846436; Sun, 23 Mar 2025
- 12:24:06 -0700 (PDT)
+        bh=kGH5/CTpQKM7kf9ZgU2OdVOxJkNxotXc5CxI5Z5VwRY=;
+        b=LKmPsqvGu+pDnvte0rsTfAjbZusIJqBcYMd8k4xD+CzSMvaZQRwgjVhw7N819B3UWK
+         eDpzkBPVXj5KfAVdpXB5SIzyNyRgUeBsnhZfHQcwK+o/9qzsw2sLeYCARmbttx14ffCe
+         iRad81PKmlg0TCplueJwPxTFGMVHb7LyQbCVmBcOdoYbZ/09EWmWDjQayPrS0hcNK0f0
+         O1uy15HORAozX3rYReWP/8Xhf9ndF6oUlwdtRTjEMa3S7yIw6R9sU/AUdf1WcFOFQjkK
+         mmMwis2822ltMk2Hs/gfupWliQ3OKKUg06ePE52Z2IPJniTrtKKtz9uFiQYeUbz2lhO7
+         ZBZw==
+X-Forwarded-Encrypted: i=1; AJvYcCUaFMeo60n/UNxQcIbhtieAIxoR56aojWDctChsy1o2ycOBTts7wEn5R4k0Vjbw1NOWaHNX6Q4X1dALb4AvOi7j@vger.kernel.org, AJvYcCVoqHSGWhrZd+9lNKkSXzyxn+st9ErL3PyliXPyEcGdp6WIWlPUemBuZFvB1YOw9OccpOQlZkaO4vLsM87+UFs=@vger.kernel.org, AJvYcCXr77YU1ZFH6ssTAdlyaPAdQy4LBglPouleYIL1leZWwLzy+bUZdzwBu0QKluZ3qI8VHyzdV9rM6DP7Czo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtGXkRxkTLTYMZ5fDlDJO+rZ9F5hUkqRFOfYEaB28TzZyjK01A
+	rGXSF68ECJu1SNOJrW4qzwEPaogYUx2MTzpYk1V4b1P40mSKV3asfU/NiKo+P30bsnSwD4aTYr1
+	AHZCDX/bkTsQqmo+GqKADI0MmW4k=
+X-Gm-Gg: ASbGnctxuymlU5/ZgtR19DEqk0/+L8C/2flaAv1W8UL86xuDLlZrx+/Qb6YNcm6gjLr
+	D5gvEftadC45N8QmKHI4uBsKoV0bQ5LqN9EGJXq2eF8mdsertjrgD1M5cNvnBgJO2JLFbZ1iE13
+	mAPAbK40Y5YhWI3oFjmeasTaodV36toTgKYpTE
+X-Google-Smtp-Source: AGHT+IEms8Zqvix1j44iZCMGR7rzEuXMhZQmOiNQtD8SeMAWae3Hu/55rylGMMQD9D/NmoQhXT3P4ZHnKpJYPWuZvYQ=
+X-Received: by 2002:a17:902:d543:b0:223:4b53:7349 with SMTP id
+ d9443c01a7336-22780df1736mr61515375ad.11.1742758105615; Sun, 23 Mar 2025
+ 12:28:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250320020740.1631171-1-contact@antoniohickey.com> <20250320020740.1631171-5-contact@antoniohickey.com>
-In-Reply-To: <20250320020740.1631171-5-contact@antoniohickey.com>
+References: <20250320020740.1631171-1-contact@antoniohickey.com> <20250320020740.1631171-9-contact@antoniohickey.com>
+In-Reply-To: <20250320020740.1631171-9-contact@antoniohickey.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 23 Mar 2025 20:23:52 +0100
-X-Gm-Features: AQ5f1JoXHHwahhVe3ZkJprXZ8Y39wGvnwQDCHA7qtcnvzRh2eol_yxMAY0pLvRY
-Message-ID: <CANiq72mZrLWQ+cCdGZ5aWA_upDFEq00CG9kMLxu_-8g2QSHe-g@mail.gmail.com>
-Subject: Re: [PATCH v5 04/17] rust: task: remove use of `addr_of!` macro
+Date: Sun, 23 Mar 2025 20:28:12 +0100
+X-Gm-Features: AQ5f1Jqvq_eKaV5-b8YwtT1cUR6hqrQQAMYIapt-T07hwVu_magImFA6N8hGwIU
+Message-ID: <CANiq72nw0QOq0gJDVn8FKXqiFGHi3S1XZP-ti-KCnVwr6XB0xw@mail.gmail.com>
+Subject: Re: [PATCH v5 08/17] rust: kunit: refactor to use `&raw [const|mut]`
 To: Antonio Hickey <contact@antoniohickey.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -80,13 +82,26 @@ Content-Transfer-Encoding: quoted-printable
 On Thu, Mar 20, 2025 at 3:08=E2=80=AFAM Antonio Hickey
 <contact@antoniohickey.com> wrote:
 >
+> Replacing all occurrences of `addr_of!(place)` with
+> `&raw const place`.
+>
+> This will allow us to reduce macro complexity, and improve consistency
+> with existing reference syntax as `&raw const` is similar to `&` making
+> it fit more naturally with other existing code.
+>
 > Suggested-by: Benno Lossin <benno.lossin@proton.me>
 > Link: https://github.com/Rust-for-Linux/linux/issues/1148
+> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 
-I think I would drop these two lines -- Benno definitely suggested
-what triggered this series, but I think the Link does not apply to
-this particular patch, and Boqun suggested this particular change in a
-review anyway.
+In general, you should pick the previous tags (e.g. Reviewed-by) that
+you were given for each patch (unless you think there are enough
+changes that it should not be done anymore etc.).
+
+For instance, in v4, this one was Reviewed-by: David, and a couple
+others were Reviewed-by Boqun; and from what I can tell, they didn't
+change.
+
+Thanks!
 
 Cheers,
 Miguel
