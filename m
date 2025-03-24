@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2B02A1CA;
-	Mon, 24 Mar 2025 20:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989221CBEAA
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Mar 2025 20:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742847389; cv=none; b=RVR+gtI5s5cV7VaQwXkYZFkDm1XnvQv32njsqqlqNoZvI/bXEObcmc1NV6BK5H1A2PxBCBxEKulY91HmpNWmtWH7N7hTNl94jnJpgiZYQpG5PHIX/Iz5N0tlDGxogrCtF0ZAHjfS/pIgpicoE8INkxJdF2sNDKZOHS0dzsXTHp8=
+	t=1742847749; cv=none; b=BYOF9JDzyshBsSWWr/Pir/jXPtP8A6L7M9VSWZzUKeZkE6XRXHlBDiQ+8CoZMLP3vRzJOJpH/y0nc05Kpwu3hHorrrFfAbQNxA25MQ34mcpjwd7u61V67rBWMxiTeE01ymo3txAfqPYNmojinJVPq+c/xnDQyJGZTiQqicFueiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742847389; c=relaxed/simple;
-	bh=pi/J5f+zxa5+vr4I4x8F+Q+w3M7QcKQqlVHWcxr7Mbc=;
+	s=arc-20240116; t=1742847749; c=relaxed/simple;
+	bh=qCCekKi+RpiTvTSUEDHAhSz2dIi8KIRY0LLAUwkHIdU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Af/gdKfaKjNWLPBtosrAWc8Q9R2wZsAre+yKCKhwKn+abUFub7GzYkveaTP4TA4i4MPcbSV7TCDLhuZyo0O08TOY2sWjSwDcmvZnlmwV3uiGGN/4yJc72UsLFMY7cVq1r/cGIkZMaJWsWiWYYZgJ2bLd9pyh1k+gatIaqtjZbgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TI71ew07; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=WxPoBzwDGHnlBB0JCwnUZcBj7ygnAQHkqu4SqFJpZ4p3XBEu9SqyPvRiYscXQt70AKDocW65A1YZ8SIlAWkke7MwK7H3oGUgrHVsHZI3Ymh9ZcLtkB6xckW4v1TVHPUcXUcFMg4i7ro021jH5qyqGKNGi9/8/Vjx+YKWFaEnQSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eGN9sYHe; arc=none smtp.client-ip=109.224.244.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TI71ew07"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eGN9sYHe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742847380; x=1743106580;
-	bh=5zkri0TfwaVQ5Do9MmCdBt/y8+WtBGC8HaDSalWQ/b8=;
+	s=protonmail; t=1742847744; x=1743106944;
+	bh=vf70c5tOfKHHC/BHZEA6asmxjvC7HiIGPQLTOZOZaWw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=TI71ew073ff2IQeYGaFDBN5e4BpGTt+SQkDr3Gkx+pNBx1wepjbufC3naVIb0fTMo
-	 J2yr7/mP9FptcD9UZh5KkLdy+CarcuEfod41sZ3T24kmeQSSMoeWGVSmafgHR/6KBJ
-	 J29pRX64HDAQU0ukZj2mUOBhTIO8UNETpQgZs/eGfIS4WLTI8KO8Lw0tooKRx+TDdE
-	 ZLlUBETcRMBO7pIfsQc0d+rlN/I9yBKB0Vom9Rl01ucsiWJhLsG1GCy3nMuXHvBInX
-	 dRHApYxwuXhZH/un8+cFYrQfOFEOtO5JPJH/8s50xSt9+q4265ZNup+5zk0vSxihPO
-	 KYVjDrnsAN9dQ==
-Date: Mon, 24 Mar 2025 20:16:15 +0000
-To: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>
+	b=eGN9sYHedaDbr80DjvrasOB+loXQ+JpB6blmIU+KMI14/UypDrsrEtbL5qfmoYfb1
+	 aFf5JfmYsYUIr2VI4E+qAk1jNPugIahoq4rnsDJ9Evz/KEyaaDcFtRYyZSTXfgs/ZZ
+	 epaCm6z8v1NXZx1RVPXM/yg/8ge1523P/bCg7qPUV3jhD8KcqF7hfNIHX0NDgeZG8S
+	 dmtZYZNgh/oDNBGBTzOTMgrGQuMBWyv8T9TChxXqoEMChbxS7p1YY28FuQH5Xmtdmb
+	 yKiPdW+0FOC6SIgViq/UwMBDTnOktsyzEYjtcADp8zXmkKKNL6nRTDF+qMOOdAvvno
+	 1CbY/jurC/ozg==
+Date: Mon, 24 Mar 2025 20:22:20 +0000
+To: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 0/6] rust: reduce pointer casts, enable related lints
-Message-ID: <D8ORTXSUTKGL.1KOJAGBM8F8TN@proton.me>
-In-Reply-To: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com>
-References: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Sumit Semwal <sumit.semwal@linaro.org>, =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, Boris Brezillon <boris.brezillon@collabora.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH 2/2] rust: drm: Add GPUVM abstraction
+Message-ID: <D8ORYL7ZZG8R.1LEAYI5807G9H@proton.me>
+In-Reply-To: <509EADD7-607B-4DED-ADAC-152D7338EB50@collabora.com>
+References: <20250324-gpuvm-v1-0-7f8213eebb56@collabora.com> <20250324-gpuvm-v1-2-7f8213eebb56@collabora.com> <CANiq72mQ3zuYmsq1PD-49kKLNji8OJwuvxK5QWkNaBMuC-PHQg@mail.gmail.com> <509EADD7-607B-4DED-ADAC-152D7338EB50@collabora.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 389621328b72d358f474de1a56bb51cdd22e9db2
+X-Pm-Message-ID: b9d8d4ae2ff8425c2b69e06a7ab40a7407bb0645
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,107 +47,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 17, 2025 at 3:23 PM CET, Tamir Duberstein wrote:
-> This started with a patch that enabled `clippy::ptr_as_ptr`. Benno
-> Lossin suggested I also look into `clippy::ptr_cast_constness` and I
-> discovered `clippy::as_ptr_cast_mut`. This series now enables all 3
-> lints. It also enables `clippy::as_underscore` which ensures other
-> pointer casts weren't missed. The first commit reduces the need for
-> pointer casts and is shared with another series[1].
+On Mon Mar 24, 2025 at 8:25 PM CET, Daniel Almeida wrote:
+>> On 24 Mar 2025, at 14:36, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>=
+ wrote:
+>>=20
+>> Hi Daniel,
+>>=20
+>> A few quick notes for future versions on style/docs to try to keep
+>> things consistent upstream -- not an actual review.
+>>=20
+>> On Mon, Mar 24, 2025 at 4:14=E2=80=AFPM Daniel Almeida
+>> <daniel.almeida@collabora.com> wrote:
+>>>=20
+>>> +#[allow(type_alias_bounds)]
+>>=20
+>> The documentation says this is highly discouraged -- it may be good to
+>> mention why it is OK in this instance in a comment or similar.
 >
-> The final patch also enables pointer provenance lints and fixes
-> violations. See that commit message for details. The build system
-> portion of that commit is pretty messy but I couldn't find a better way
-> to convincingly ensure that these lints were applied globally.
-> Suggestions would be very welcome.
-
-I applied the patches to v6.14-rc7 and did a quick pass with
-
-    rg -nC 3 -t rust ' as ' | bat -l rust
-
-to see if there are any cases left that we could fix and I found a
-couple:
-
-* there are several cases of `number as int_type` (like `num as c_int`
-  or `my_u32 as usize` etc.) not sure what we can do about these, some
-  are probably unavoidable, but since the kernel doesn't support 16 bit
-  systems (that is true, right?), we *could* have a `From<u32> for
-  usize` impl...
-* some instances of `'|' as u32` (samples/rust/rust_misc_device.rs:112).
-  There is a `From<char> for u32` impl, so this can just be replaced
-  with `.into()` (or maybe by using a byte literal `b'|'`?).
-* `shared_ref as *const _` (for example in rust/kernel/uaccess.rs:247,
-  rust/kernel/str.rs:32 and rust/kernel/fs/file.rs:367), these we can
-  replace with `let ptr: *const ... =3D shared_ref;`. Don't know if there
-  is a clippy lint for this.
-* some pointer casts in rust/kernel/list/impl_list_item_mod.rs:{253,254}
-  not sure if they can be converted though (maybe they are unsizing the
-  pointer?)
-  Another pointer cast in rust/kernel/driver.rs:81 (I'm pretty sure this
-  one can be replaced by a `.cast()`)
-
-Some clippy lints that we could also enable that share the spirit of
-this series:
-
-* `char_lit_as_u8` (maybe that also covers the `'|' as u32` case from
-  above?)
-* `cast_lossless` (maybe this catches some of the `num as int_type`
-  conversions I mentioned above)
-
-I'll leave it up to you what you want to do with this: add it to this
-series, make a new one, or let someone else handle it. If you don't want
-to handle it, let me know, then I'll create a good-first-issue :)
-
-> ---
-> Tamir Duberstein (6):
->       rust: retain pointer mut-ness in `container_of!`
->       rust: enable `clippy::ptr_as_ptr` lint
->       rust: enable `clippy::ptr_cast_constness` lint
->       rust: enable `clippy::as_ptr_cast_mut` lint
->       rust: enable `clippy::as_underscore` lint
->       rust: use strict provenance APIs
+> Someone correct me here, but I see no issue with this warning. That=
+=E2=80=99s
+> because we need the bound to make `<T::Driver as drv::Driver>` work in th=
+e
+> first place. Otherwise, we=E2=80=99d get a compiler error saying that the=
+re=E2=80=99s
+> no `Driver` associated type (assuming the case where a random T gets
+> passed in)
 >
->  Makefile                               |   4 ++
->  init/Kconfig                           |   3 +
->  rust/bindings/lib.rs                   |   1 +
->  rust/kernel/alloc.rs                   |   2 +-
->  rust/kernel/alloc/allocator_test.rs    |   2 +-
->  rust/kernel/alloc/kvec.rs              |   4 +-
->  rust/kernel/block/mq/operations.rs     |   2 +-
->  rust/kernel/block/mq/request.rs        |   7 +-
->  rust/kernel/device.rs                  |   5 +-
->  rust/kernel/device_id.rs               |   2 +-
->  rust/kernel/devres.rs                  |  19 +++---
->  rust/kernel/error.rs                   |   2 +-
->  rust/kernel/firmware.rs                |   3 +-
->  rust/kernel/fs/file.rs                 |   2 +-
->  rust/kernel/io.rs                      |  16 ++---
->  rust/kernel/kunit.rs                   |  15 ++---
->  rust/kernel/lib.rs                     | 113 +++++++++++++++++++++++++++=
-+++++-
->  rust/kernel/list/impl_list_item_mod.rs |   2 +-
->  rust/kernel/miscdevice.rs              |   2 +-
->  rust/kernel/of.rs                      |   6 +-
->  rust/kernel/pci.rs                     |  15 +++--
->  rust/kernel/platform.rs                |   6 +-
->  rust/kernel/print.rs                   |  11 ++--
->  rust/kernel/rbtree.rs                  |  23 +++----
->  rust/kernel/seq_file.rs                |   3 +-
->  rust/kernel/str.rs                     |  18 ++----
->  rust/kernel/sync/poll.rs               |   2 +-
->  rust/kernel/uaccess.rs                 |  12 ++--
->  rust/kernel/workqueue.rs               |  12 ++--
->  rust/uapi/lib.rs                       |   1 +
->  30 files changed, 218 insertions(+), 97 deletions(-)
-> ---
-> base-commit: 498f7ee4773f22924f00630136da8575f38954e8
+> So, for this to be a problem, we would need to mix this up with something=
+ that
+> also has a `Driver` associated type, and this associated type would also =
+need a
+> drv::Driver bound.
+>
+> In other words, we would need a lot of things to align for this to actual=
+ly
+> have a chance of being misused. When you consider that this is then only =
+used
+> in a few places, the balance tips heavily in favor of the convenience of =
+having
+> the type alias IMHO.
+>
+> In fact, the docs point to the exact thing I am trying to do, i.e.:
+>
+>>  these bounds may have secondary effects such as enabling the use of =
+=E2=80=9Cshorthand=E2=80=9D associated type paths
+>
+>>  I.e., paths of the form T::Assoc where T is a type parameter bounded by=
+ trait Trait which defines an associated type called Assoc as opposed to a =
+fully qualified path of the form <T as Trait>::Assoc.=20
 
-Btw I didn't find this commit anywhere I usually check, where is it
-from?
+You can avoid the allow by using:
+
+    type DriverObject<T> =3D <<T as DriverGpuVm>::Driver as drv::Driver>::O=
+bject;
+
+That is more wordy, but avoids the allow (it still errors when you put
+in something that doesn't implement `DriverGpuVm`).
 
 ---
 Cheers,
 Benno
-
-> change-id: 20250307-ptr-as-ptr-21b1867fc4d4
 
