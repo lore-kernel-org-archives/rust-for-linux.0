@@ -1,96 +1,96 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EE2261568;
-	Mon, 24 Mar 2025 18:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A5725F986
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Mar 2025 18:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742841837; cv=none; b=id/HvaAxwlzpbJfzqB1FAl4qfgKuwImrwxizAE4fwD+q8Bo4P6XWUpwF84MdZ0jOQNm3HkLii896Zf2HYCrDhQiK9PlBNJSCkpM97dGBX1A5DU323lwQ/lq7zA3x4RNkAUlSytOwq+k1O7n+f8B9lvIaAtxfLXG+FDnrpAl6BeI=
+	t=1742841929; cv=none; b=gYORwj+RSB7ZCAKRyY7frVZ41QUYGEGsEsBDMcsfI7GN/9wJ8yfFYEwplpGmyXy04/WiDUZil2rooRg+6AE4f9E4YtSGb310SF7SIem9aBdPEoyl/IzFxL7Y/4qNG+iXRTvpIqD+8Fp72oSXscmxuVi9DvqTOlTR244BmBeWOjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742841837; c=relaxed/simple;
-	bh=iMov1ZOhncFsgdM286Ci8CuleD6X2zoM/gNTP2+28hw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ObNCIxku1vD2qz9gBC+L6eiYmESGrA6z8OFyda0xL/ubZdtm/lPxvZVUI/kkLT3zATGC2spCWJ3brmDKCNL4UNQ8c7fyQVXPIRv93DTFx3PU4ivZMzXJX0564PBBNNiLn9KqgQs/Bo80KZFzdfKMCopYW2Lm3Rk3MhROiXiQYio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RTuqEDAo; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742841929; c=relaxed/simple;
+	bh=NToJm6VpcJU5waw1fyi2HhnHQgHci0gUkxcU33Ou7LA=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=LlIMTLK7IqtkPGiJkTLmmf8v7t3wnqZ42s0xaDVnJ17cjclnI32q0i+j1n2F0rcePFCTdmDTfd8wjH4t056yeq5M1JYeEwizyQGKcEuYp0y6clJ8QMySf9qu9Oosj2AhKmgHL764FnGEwo04qXOMyvxJWgfT9RsVypIfpWah27U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu; spf=pass smtp.mailfrom=ozlu.eu; dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b=B3KCXGqj; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlu.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RTuqEDAo"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so1269240a91.2;
-        Mon, 24 Mar 2025 11:43:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742841835; x=1743446635; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IDhZCTYQpfVjqWAeaYWpsSp1wpfRNQxkv4etm8lhI/M=;
-        b=RTuqEDAoCGwcXWC2kMP6m0iyBsL3rsk0tOZncb21bOpSgRR86gjtJAN3NHL+IPutfV
-         +MT/Y3mq19TN/ojTPZPNP0NQW9tavJSI4211Q1GDPTri2/0wEmrI+f61h1ehc7sYwQiR
-         Y3yDCLq2cozvKdQWsnyTj/VPhDHbyTc9c6V5Zk9JcpOu31y4JW0sPpF0Dap/Dc9blHJi
-         liTbPdUGWTnMZ9M1qzOz8r1wsrPMjBZ9rgIwTamN1kvsGYUthikS/uSOxeU0d+6xvl/d
-         qV306XoNlIqXUQ0aTC3Psi2yiqmHBXmclk4GnNWvHTF2Aobk23afLVnoAP98LCf2uUdL
-         AZWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742841835; x=1743446635;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IDhZCTYQpfVjqWAeaYWpsSp1wpfRNQxkv4etm8lhI/M=;
-        b=AR6URtHs+SZmJHH/sAn5JzRpWdcbxi1PDs4ds6gu8qkBJ+5FSVrBQTDLKRch15zbfm
-         j2LM3M/loh+PV2R0OGzAmSvBPrYaFvCRlH/QLafPu4fVX3oy3FFPOQaXJG2VfgJhptDI
-         c7u6B61rXKqwVkLGxYvBw8v32M7mMLkmRPtPEvYg1yROBCY37ky4mo9b5xhNQ2l5YXo4
-         NS/bU68a2qS/wHiBf894D5f8e//3fgdRpqBlV8JOGUWdrImJQlclvWUp4zLJFQguuEl9
-         /5HULp6Q4isxbzJt6NMiHYRWG8b9yysr7VcX6I5t8+pmEo4yFUaZA5WNEu+5zCrmgyib
-         5k6A==
-X-Forwarded-Encrypted: i=1; AJvYcCVt0YnSjmvUnGMPmKUqapLDIf53vy9Og7sQLaF/icLp3jMxgn+5VTkflL+hArCV3/nnQgYp9n2ET1qNnieloME=@vger.kernel.org, AJvYcCXxKP5WyWFj0ovurBj+HN26v1XDpw/XINdZdORTZLtebUhvcdt2l5XMo5qZiPX0GshrZxmkKzAULB2KCj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0yR5dIcpwKaZeDvUkf4MbJc5VByQ16B58uQsjA8/XJ+6EfFb0
-	V+er3NtoDmmuLstODbB3LHWYw25oVeD3xgZrF94vRbxF5E/mm/1bFzmjIK/F2wHMtwJ7xzAFRzL
-	QhufwF9JM9QRSYuQ6zGcoSD7UVzM=
-X-Gm-Gg: ASbGnctzEn/fQkd+QkTsnbik4H+FtLOR7Ha7n9q/I+rodr2U3nhQNljWHmQ8vv1nnrT
-	OId1M9MHkGuqjOo7v9QGmeceRsT38dL+ZYO11Q7Ff0tYWlZ8gldTxgmuc7WxElPbYy5hqXn1N4f
-	DjhNEZGXyGakK7iPeiSrfNauLPg5PYbO6ckKGT
-X-Google-Smtp-Source: AGHT+IGyNAuquWNXQ8BnCGJq15TIHzIgTVg6j416k3z+H33/HqAmOnr+27+fP2eK6DCAaVfDoLUn/2gDZU94hXSuIYU=
-X-Received: by 2002:a17:90b:380d:b0:2ff:6bcf:540a with SMTP id
- 98e67ed59e1d1-3036b4b348amr9879a91.6.1742841835419; Mon, 24 Mar 2025 11:43:55
- -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b="B3KCXGqj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlu.eu;
+	s=protonmail; t=1742841910; x=1743101110;
+	bh=+QmIQIkeLzelhbr7jSpVwrcXYaORYbvwfRFIVAof/kg=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=B3KCXGqjKWaLAk5aRnqz0MUGkkmjqqjm1k5MPNX87qoCge1r3g+0PJ5E70b0ak44P
+	 ZPVXm5VWvZ8BRYSFfu1T8H/t+znDHjwwRirOnNhukakDePQgpaxgKfxq51DyMoL12U
+	 ZTHBuFbIyvvq92EtSuDaoOGMfgbMjKaemDkUFcVMz4M9eJJr7ueWgON9JPAj+Wr67+
+	 JzCxumZa4wxAJDOMw1IzJ8XyH1hK6JxpmmrB1wUNvfnJ69HQ+JFgcrpXAZtL20FyFd
+	 pGaY7ZboRwu7Du8ubwvaHnZbWXu1l386HDpPXM4iCOVlwW2HqtJx/OqfctJtv93NU+
+	 4z02p0x2DYPGA==
+Date: Mon, 24 Mar 2025 18:45:05 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+From: Altan Ozlu <altan@ozlu.eu>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, Altan Ozlu <altan@ozlu.eu>
+Subject: [PATCH] rust: static_assert: add optional message
+Message-ID: <20250324184403.868691-2-altan@ozlu.eu>
+Feedback-ID: 127873954:user:proton
+X-Pm-Message-ID: 816eea0a00a6a11d81683be904dd1cf18c7d6f13
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250324-gpuvm-v1-0-7f8213eebb56@collabora.com> <20250324-gpuvm-v1-1-7f8213eebb56@collabora.com>
-In-Reply-To: <20250324-gpuvm-v1-1-7f8213eebb56@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 24 Mar 2025 19:43:42 +0100
-X-Gm-Features: AQ5f1Jo5s1OdGZqVubb6Tq-h2U2YrkskT9NsblmlA-2DdQThwVXaEW7IQM4bz4E
-Message-ID: <CANiq72nLRe1TXqj5fjgknatwgR=RqUA9WmmwY9fs44fYS9yu5w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: helpers: Add bindings/wrappers for dma_resv
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Asahi Lina <lina@asahilina.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 24, 2025 at 4:14=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> -const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL =3D BLK_FEAT_=
-ROTATIONAL;
-> +const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL =3D
-> +       BLK_FEAT_ROTATIONAL;
+Add optional panic message for `static_assert!` macro.
 
-Spurious change?
+It doesn't support argument formatting, due to `const_format_args`
+being experimental. It will fail to compile if a message with argument
+is given.
 
-Ah, this is probably the result of applying `clang-format`, which is
-something that perhaps we should consider, but separately... :)
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1149
+Signed-off-by: Altan Ozlu <altan@ozlu.eu>
+---
+ rust/kernel/static_assert.rs | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Cheers,
-Miguel
+diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
+index 3115ee0ba8e9..27771dc2988a 100644
+--- a/rust/kernel/static_assert.rs
++++ b/rust/kernel/static_assert.rs
+@@ -6,6 +6,9 @@
+ ///
+ /// Similar to C11 [`_Static_assert`] and C++11 [`static_assert`].
+ ///
++/// It has optional argument for custom panic messages.
++/// Panic message doesn't support formatting.
++///
+ /// The feature may be added to Rust in the future: see [RFC 2790].
+ ///
+ /// [`_Static_assert`]: https://en.cppreference.com/w/c/language/_Static_a=
+ssert
+@@ -24,11 +27,11 @@
+ /// const fn f(x: i32) -> i32 {
+ ///     x + 2
+ /// }
+-/// static_assert!(f(40) =3D=3D 42);
++/// static_assert!(f(40) =3D=3D 42, "f(x) must add 2 to the given input.")=
+;
+ /// ```
+ #[macro_export]
+ macro_rules! static_assert {
+-    ($condition:expr) =3D> {
+-        const _: () =3D core::assert!($condition);
++    ($condition:expr $(,$arg:tt)?) =3D> {
++        const _: () =3D core::assert!($condition $(,$arg)?);
+     };
+ }
+
+base-commit: a0b539ad369fe434fe488faf92d4ae770a27a90f
+--=20
+2.48.1
+
+
