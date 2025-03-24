@@ -1,126 +1,96 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9D1264FAB;
-	Mon, 24 Mar 2025 18:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EE2261568;
+	Mon, 24 Mar 2025 18:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742841183; cv=none; b=cH8su4BTcmkU59t7s5GS/QkdlFok67hA+zO9eGiACxb0YO6TBJ9JSDCNeq9QElpcxa+6nrSyV5bBOvvtJRxDAOaoJTZ7Zt8c2TzrSWgoiVgoPbPuaXx7YP/iOEutXGHEACnoriNO1n4r/i7OENOAI35YIx+1qf3gXTnlAd1c5cI=
+	t=1742841837; cv=none; b=id/HvaAxwlzpbJfzqB1FAl4qfgKuwImrwxizAE4fwD+q8Bo4P6XWUpwF84MdZ0jOQNm3HkLii896Zf2HYCrDhQiK9PlBNJSCkpM97dGBX1A5DU323lwQ/lq7zA3x4RNkAUlSytOwq+k1O7n+f8B9lvIaAtxfLXG+FDnrpAl6BeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742841183; c=relaxed/simple;
-	bh=giOVo/hMU9EM1ySCHMr8Kfg9AjH/yxV3BztyAZ+Mcc8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s4R90G1QpC6AGR298mP7GerPS5cVcIQ5DUTPmnNHckuqvvrsAmxnsUG0EUn4P36nD2ROBdrslrcXVG10c3fH8M8ZFXV+6RTdvFfANwO5N0kT26tohfBkiQfGftMJ/iPq9mwXcG3teMGcRa//J4va8RbZtdtmidg7cQeBzvJDmGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AHBdPPyR; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742841837; c=relaxed/simple;
+	bh=iMov1ZOhncFsgdM286Ci8CuleD6X2zoM/gNTP2+28hw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ObNCIxku1vD2qz9gBC+L6eiYmESGrA6z8OFyda0xL/ubZdtm/lPxvZVUI/kkLT3zATGC2spCWJ3brmDKCNL4UNQ8c7fyQVXPIRv93DTFx3PU4ivZMzXJX0564PBBNNiLn9KqgQs/Bo80KZFzdfKMCopYW2Lm3Rk3MhROiXiQYio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RTuqEDAo; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AHBdPPyR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742841178; x=1743100378;
-	bh=3JQmVZ7nQgL0C1nvQoKUI780iq8dM/BIdl9nGsDpqHI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=AHBdPPyRQ4Kj+DHt71Btr9k2vTlKtwhIqDhJEo2/YnHbu54qTIx4WlHv7AsgYXZWK
-	 Nc4RAzPk1r4WLFWlQFLelVacFDNLSF4l5K5fV9eFIz1Z8S/7ahBwsUoZ73KbsTOez9
-	 DLNVeZa+XEnAMmVeWb7O1Yb4hJeute3rL3SzXnlWdV3GXyVwzBZITQkZjKSUUDdLOO
-	 a95WbqubEFazBc1hrv960lST4Zr3vbZX0vBbCNJhNGhAFVCOeXPeigvxbR6HrxGxG7
-	 Tf++Q+SMy3pVnTQRs9pDSaTW9V1Ic26es+aN7dRSZVgZ/AJLgcZrFDQIzwTBGWwKK9
-	 2hkZ3qFMRUgMA==
-Date: Mon, 24 Mar 2025 18:32:53 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg KH <gregkh@linuxfoundation.org>, bhelgaas@google.com, rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] rust: pci: impl TryFrom<&Device> for &pci::Device
-Message-ID: <D8OPMRYE0SO5.2JQD6ZIYXHP68@proton.me>
-In-Reply-To: <Z-Ggu_YZBPM2Kf8J@cassiopeiae>
-References: <20250321214826.140946-1-dakr@kernel.org> <20250321214826.140946-3-dakr@kernel.org> <2025032158-embezzle-life-8810@gregkh> <Z96MrGQvpVrFqWYJ@pollux> <Z-CG01QzSJjp46ad@pollux> <D8ON7WC8WMFG.2S2JRK6G9TOSL@proton.me> <Z-GNDE68vwhk0gaV@cassiopeiae> <D8OOFRRSLHP4.1B2FHQRGH3LKW@proton.me> <Z-Ggu_YZBPM2Kf8J@cassiopeiae>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 76de513fbfba2241a6334f65c143226078d51e1b
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RTuqEDAo"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so1269240a91.2;
+        Mon, 24 Mar 2025 11:43:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742841835; x=1743446635; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IDhZCTYQpfVjqWAeaYWpsSp1wpfRNQxkv4etm8lhI/M=;
+        b=RTuqEDAoCGwcXWC2kMP6m0iyBsL3rsk0tOZncb21bOpSgRR86gjtJAN3NHL+IPutfV
+         +MT/Y3mq19TN/ojTPZPNP0NQW9tavJSI4211Q1GDPTri2/0wEmrI+f61h1ehc7sYwQiR
+         Y3yDCLq2cozvKdQWsnyTj/VPhDHbyTc9c6V5Zk9JcpOu31y4JW0sPpF0Dap/Dc9blHJi
+         liTbPdUGWTnMZ9M1qzOz8r1wsrPMjBZ9rgIwTamN1kvsGYUthikS/uSOxeU0d+6xvl/d
+         qV306XoNlIqXUQ0aTC3Psi2yiqmHBXmclk4GnNWvHTF2Aobk23afLVnoAP98LCf2uUdL
+         AZWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742841835; x=1743446635;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IDhZCTYQpfVjqWAeaYWpsSp1wpfRNQxkv4etm8lhI/M=;
+        b=AR6URtHs+SZmJHH/sAn5JzRpWdcbxi1PDs4ds6gu8qkBJ+5FSVrBQTDLKRch15zbfm
+         j2LM3M/loh+PV2R0OGzAmSvBPrYaFvCRlH/QLafPu4fVX3oy3FFPOQaXJG2VfgJhptDI
+         c7u6B61rXKqwVkLGxYvBw8v32M7mMLkmRPtPEvYg1yROBCY37ky4mo9b5xhNQ2l5YXo4
+         NS/bU68a2qS/wHiBf894D5f8e//3fgdRpqBlV8JOGUWdrImJQlclvWUp4zLJFQguuEl9
+         /5HULp6Q4isxbzJt6NMiHYRWG8b9yysr7VcX6I5t8+pmEo4yFUaZA5WNEu+5zCrmgyib
+         5k6A==
+X-Forwarded-Encrypted: i=1; AJvYcCVt0YnSjmvUnGMPmKUqapLDIf53vy9Og7sQLaF/icLp3jMxgn+5VTkflL+hArCV3/nnQgYp9n2ET1qNnieloME=@vger.kernel.org, AJvYcCXxKP5WyWFj0ovurBj+HN26v1XDpw/XINdZdORTZLtebUhvcdt2l5XMo5qZiPX0GshrZxmkKzAULB2KCj8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0yR5dIcpwKaZeDvUkf4MbJc5VByQ16B58uQsjA8/XJ+6EfFb0
+	V+er3NtoDmmuLstODbB3LHWYw25oVeD3xgZrF94vRbxF5E/mm/1bFzmjIK/F2wHMtwJ7xzAFRzL
+	QhufwF9JM9QRSYuQ6zGcoSD7UVzM=
+X-Gm-Gg: ASbGnctzEn/fQkd+QkTsnbik4H+FtLOR7Ha7n9q/I+rodr2U3nhQNljWHmQ8vv1nnrT
+	OId1M9MHkGuqjOo7v9QGmeceRsT38dL+ZYO11Q7Ff0tYWlZ8gldTxgmuc7WxElPbYy5hqXn1N4f
+	DjhNEZGXyGakK7iPeiSrfNauLPg5PYbO6ckKGT
+X-Google-Smtp-Source: AGHT+IGyNAuquWNXQ8BnCGJq15TIHzIgTVg6j416k3z+H33/HqAmOnr+27+fP2eK6DCAaVfDoLUn/2gDZU94hXSuIYU=
+X-Received: by 2002:a17:90b:380d:b0:2ff:6bcf:540a with SMTP id
+ 98e67ed59e1d1-3036b4b348amr9879a91.6.1742841835419; Mon, 24 Mar 2025 11:43:55
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250324-gpuvm-v1-0-7f8213eebb56@collabora.com> <20250324-gpuvm-v1-1-7f8213eebb56@collabora.com>
+In-Reply-To: <20250324-gpuvm-v1-1-7f8213eebb56@collabora.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 24 Mar 2025 19:43:42 +0100
+X-Gm-Features: AQ5f1Jo5s1OdGZqVubb6Tq-h2U2YrkskT9NsblmlA-2DdQThwVXaEW7IQM4bz4E
+Message-ID: <CANiq72nLRe1TXqj5fjgknatwgR=RqUA9WmmwY9fs44fYS9yu5w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: helpers: Add bindings/wrappers for dma_resv
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Asahi Lina <lina@asahilina.net>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 24, 2025 at 7:13 PM CET, Danilo Krummrich wrote:
-> On Mon, Mar 24, 2025 at 05:36:45PM +0000, Benno Lossin wrote:
->> On Mon Mar 24, 2025 at 5:49 PM CET, Danilo Krummrich wrote:
->> > On Mon, Mar 24, 2025 at 04:39:25PM +0000, Benno Lossin wrote:
->> >> On Sun Mar 23, 2025 at 11:10 PM CET, Danilo Krummrich wrote:
->> >> > On Sat, Mar 22, 2025 at 11:10:57AM +0100, Danilo Krummrich wrote:
->> >> >> On Fri, Mar 21, 2025 at 08:25:07PM -0700, Greg KH wrote:
->> >> >> > Along these lines, if you can convince me that this is something=
- that we
->> >> >> > really should be doing, in that we should always be checking eve=
-ry time
->> >> >> > someone would want to call to_pci_dev(), that the return value i=
-s
->> >> >> > checked, then why don't we also do this in C if it's going to be
->> >> >> > something to assure people it is going to be correct?  I don't w=
-ant to
->> >> >> > see the rust and C sides get "out of sync" here for things that =
-can be
->> >> >> > kept in sync, as that reduces the mental load of all of us as we=
- travers
->> >> >> > across the boundry for the next 20+ years.
->> >> >>=20
->> >> >> I think in this case it is good when the C and Rust side get a bit
->> >> >> "out of sync":
->> >> >
->> >> > A bit more clarification on this:
->> >> >
->> >> > What I want to say with this is, since we can cover a lot of the co=
-mmon cases
->> >> > through abstractions and the type system, we're left with the not s=
-o common
->> >> > ones, where the "upcasts" are not made in the context of common and=
- well
->> >> > established patterns, but, for instance, depend on the semantics of=
- the driver;
->> >> > those should not be unsafe IMHO.
->> >>=20
->> >> I don't think that we should use `TryFrom` for stuff that should only=
- be
->> >> used seldomly. A function that we can document properly is a much bet=
-ter
->> >> fit, since we can point users to the "correct" API.
->> >
->> > Most of the cases where drivers would do this conversion should be cov=
-ered by
->> > the abstraction to already provide that actual bus specific device, ra=
-ther than
->> > a generic one or some priv pointer, etc.
->> >
->> > So, the point is that the APIs we design won't leave drivers with a re=
-ason to
->> > make this conversion in the first place. For the cases where they have=
- to
->> > (which should be rare), it's the right thing to do. There is not an al=
-ternative
->> > API to point to.
->>=20
->> Yes, but for such a case, I wouldn't want to use `TryFrom`, since that
->> trait to me is a sign of a canonical way to convert a value.
+On Mon, Mar 24, 2025 at 4:14=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
 >
-> Well, it is the canonical way to convert, it's just that by the design of=
- other
-> abstractions drivers should very rarely get in the situation of needing i=
-t in
-> the first place.
+> -const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL =3D BLK_FEAT_=
+ROTATIONAL;
+> +const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL =3D
+> +       BLK_FEAT_ROTATIONAL;
 
-I'd still prefer it though, since one can spot a
+Spurious change?
 
-    let dev =3D CustomDevice::checked_from(dev)?
+Ah, this is probably the result of applying `clang-format`, which is
+something that perhaps we should consider, but separately... :)
 
-much better in review than the `try_from` conversion. It also prevents
-one from giving it to a generic interface expecting the `TryFrom` trait.
-
----
 Cheers,
-Benno
-
+Miguel
