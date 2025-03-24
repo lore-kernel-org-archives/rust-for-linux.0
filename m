@@ -1,44 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BC025F96B;
-	Mon, 24 Mar 2025 13:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AB92505C5
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Mar 2025 14:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742824569; cv=none; b=Q1Ksw9CYeY9AEirpW2Uh5jj6aPM+oS5cIe/bYUbVxSiSMNiqQs+PPXdhHH9iuVxiPGPJIoNBxm/HefTEsYGjKYhCwpTwP24/Izw4w5R56nmoV5CKRzMM/C0hs8U7mPmKLCsiMEkeWF2GltCVbV9NswvvoTIua+8s9SHF+mit+Oo=
+	t=1742825456; cv=none; b=iXdIuYLnL2tmdi4CFmUzUOyVQbeaJ/bOEs/186/CLjI3SLBh7WrRleNzKzbCThSzRoLsgdyllE/gO4ln5LKwX4Y8uu4DTC9I9S3jtPDuQHGpULbTMo+C8rcyYJ7OQLhVsril9Ne2OoMzS6AL+c7QUiJq6uZl1CPRKfC2aGV3giw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742824569; c=relaxed/simple;
-	bh=R0sbiRhZ3b/K+7TBxgPDlLC9UTOWrZ7/h/2nQO4FbF4=;
+	s=arc-20240116; t=1742825456; c=relaxed/simple;
+	bh=NqNPPpCkaZkUwbNQKKvy64w/LnM2Bd6Jjp5jMp418XA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rphFPOBb7Uz9A5NcLF6UpFPIC8c3FGTt5FeWCGn4eal90wBaDpNBJKt45Voiyx3YQYqqwSmJg11VKPoD/qV8AjDZPoIjaTgxpMX1sCnCAeD45hrdnNz6m9oiS39JW8q9cIchycozWka6Rz+IWcghSZrCyRAdsIhCOsxlWbrlar0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMMK8ZG4; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=hpENRKpg93TX1G/D7CuWajSsM0x+IOusuuDpIj58ROIuOAqbCQACUEF/+8VP1uh6ZOA5ZMwZzkloKXRlYEZaUmHf0cDFsCjAxjKxQXOSONYr04wvlPPkfcyEgFBvRj5I91B0TISWT7gAaHSB+TaUCDd9FEIsb3t1aLJSbet4F8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=dgM8qoQK; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosenzweig.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMMK8ZG4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08F2C4CEE9;
-	Mon, 24 Mar 2025 13:56:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1742824569;
-	bh=R0sbiRhZ3b/K+7TBxgPDlLC9UTOWrZ7/h/2nQO4FbF4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sMMK8ZG4bN4gGhv5DiIpiPriUMfytAanKWxG1fn+81adkaFvP8ZLilJx/Bc388AVD
-	 Qrx2lXE8Mr+f+Vu4lt2NIjEbvF7+1qaiEWwyloAE2iWAAC8DmQfVBGhPI66/PjZmRo
-	 /Y1rlgX47tYLAR9pebeMevsMFWaSnh1cLxUFCNoQ=
-Date: Mon, 24 Mar 2025 06:54:47 -0700
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: bhelgaas@google.com, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] rust: pci: impl TryFrom<&Device> for &pci::Device
-Message-ID: <2025032455-elk-whoops-3439@gregkh>
-References: <20250321214826.140946-1-dakr@kernel.org>
- <20250321214826.140946-3-dakr@kernel.org>
- <2025032158-embezzle-life-8810@gregkh>
- <Z96MrGQvpVrFqWYJ@pollux>
- <Z-CG01QzSJjp46ad@pollux>
+	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="dgM8qoQK"
+Date: Mon, 24 Mar 2025 10:10:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
+	s=key1; t=1742825449;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5QavDf4YfF4g6incDfR8g3M+4C53fdbJxU8hmz4md/c=;
+	b=dgM8qoQKNJIEi0dY32L6hBabt7HjG8XUm1NhIZaImSKprfR8JXsfBfhH9cTCPrcLg9wfGD
+	o23+bo8cMWxTi36khM1fvKGG4apkYQpsaXdP8sgYZRtIQ6jZU1waJ/RfnEJxDXhZnj6hMt
+	l4zSCzE8vSv3ylcINppjWvFaV7fjmBwjcieTx3E9R4I0dwULWMbcw+IcB7uU72j8Pi/ESl
+	15pJTFdt9S+sGypIz635REFAIlyLDRUk/TZpfAg/E3oncgVQLclL0tPPh5xQu2kDhPTHMJ
+	CFfNp00ClfbxNtP9JaOZCdso+fJ06mjS+jj+Drg6EAouBFLpdKHMNTre/Gp2cA==
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Faith Ekstrand <faith.ekstrand@collabora.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Janne Grunau <j@jannau.net>, Sven Peter <sven@svenpeter.dev>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sergio Lopez Pascual <slp@sinrega.org>,
+	Ryan Houdek <sonicadvance1@gmail.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	asahi <asahi@lists.linux.dev>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+	linux-doc <linux-doc@vger.kernel.org>,
+	Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH v3] drm: Add UAPI for the Asahi driver
+Message-ID: <Z-Fn4niI6_Yd06Ze@blossom>
+References: <20250314-agx-uapi-v3-1-3abf7e74ea2f@rosenzweig.io>
+ <195b507d4b3.b25d0dad175771.7566427576910952468@collabora.com>
+ <195b582682b.121ba4d5e219032.3109114844776468245@collabora.com>
+ <Z-B6uc7EEAdBPXmt@blossom>
+ <260D98E1-7204-4535-A84F-D55A4527FF7E@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,169 +69,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z-CG01QzSJjp46ad@pollux>
+In-Reply-To: <260D98E1-7204-4535-A84F-D55A4527FF7E@collabora.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Sun, Mar 23, 2025 at 11:10:27PM +0100, Danilo Krummrich wrote:
-> On Sat, Mar 22, 2025 at 11:10:57AM +0100, Danilo Krummrich wrote:
-> > On Fri, Mar 21, 2025 at 08:25:07PM -0700, Greg KH wrote:
-> > > On Fri, Mar 21, 2025 at 10:47:54PM +0100, Danilo Krummrich wrote:
-> > >
-> > > Yes, over time, many subsystems were forced to come up with ways of
-> > > determining the device type, look at dev_is_pci() and where it's used
-> > > all over the place (wait, why can't you just use that here too?)
+> >>>> +    /** 
+> >>>> +     * @DRM_ASAHI_BIND_SINGLE_PAGE: Map a single page of the BO repeatedly 
+> >>>> +     * across the VA range. 
+> >>>> +     * 
+> >>>> +     * This is useful to fill a VA range with scratch pages or zero pages. 
+> >>>> +     * It is intended as a mechanism to accelerate sparse. 
+> >>>> +     */ 
+> >>>> +    DRM_ASAHI_BIND_SINGLE_PAGE = (1L << 2),
+> >> 
+> >> Does this require the BO to be a single page? If so, does it require offset==0? Or does it just take whatever page is at the specified offset?
 > > 
-> > It's a macro and bindgen doesn't pick it up for us to use.
+> > I believe the intention is that it takes whatever page is at the
+> > specified offset and just maps that a bunch of times. HK doesn't use
+> > this yet though it probably should (this was added to help reduce
+> > overhead when emulating sparse with scratch/zero pages, which is still
+> > very new functionality in hk).
 > > 
-> > > But
-> > > those usages are the rare exception.  And I still think that was the
-> > > wrong choice.
-> > > 
-> > > What I don't want to see is this type of function to be the only way you
-> > > can get a pci device from a struct device in rust.
-> > 
-> > I see where you're coming from and I totally agree with that.
-> > 
-> > The goal is to cover as much as possible by the corresponding abstractions, such
-> > that the abstraction already provide the driver with the correct (device) type,
-> > just like the bus callbacks do.
-> > 
-> > We can do the same thing with IOCTLs, sysfs ops, etc. The miscdevice
-> > abstractions are a good example for this. The DRM abstractions will also provide
-> > the DRM device (typed to its corresponding driver) for all DRM IOCTLs a driver
-> > registers.
-> > 
-> > > That's going to be
-> > > messy as that is going to be a very common occurance (maybe, I haven't
-> > > seen how you use this), and would force everyone to always test the
-> > > return value, adding complexity and additional work for everyone, just
-> > > because the few wants it.
-> > 
-> > Given the above, I think in most cases we are (and plan to be) a step ahead and
-> > (almost) never have the driver in the situation that it ever needs any
-> > container_of() like thing, because the abstraction already provides the correct
-> > type.
-> > 
-> > However, there may be some rare exceptions, where we need the driver to
-> > "upcast", more below.
-> > 
-> > > So where/how are you going to use this?  Why can't you just store the
-> > > "real" reference to the pci device?  If you want to save off a generic
-> > > device reference, where did it come from?  Why can't you just explicitly
-> > > save off the correct type at the time you stored it?  Is this just
-> > > attempting to save a few pointers?  Is this going to be required to be
-> > > called as the only way to get from a device to a pci device in a rust
-> > > driver?
-> > 
-> > As mentioned above, wherever the abstraction can already provide the correct
-> > (device) type to the driver, that's what we should do instead.
-> > 
-> > One specific use-case I see with this is for the auxiliary bus and likely MFD,
-> > where we want to access the parent of a certain device.
-> > 
-> > For instance, in nova-drm we'll probe against an auxiliary device registered by
-> > nova-core. nova-drm will use its auxiliary device to call into nova-core.
-> > nova-core can then validate that it is the originator of the auxiliary device
-> > (e.g. by name and ID, or simply pointer comparison).
-> > 
-> > Subsequently, nova-core can find its (in this case) pci::Device instance through
-> > the parent device (Note that I changed this, such that you can only get the
-> > parent device from an auxiliary::Device, as discussed).
-> > 
-> > 	pub fn some_operation(adev: &auxiliary::Device, ...) -> ... {
-> > 	   // validate that `adev` was created by us
-> > 
-> > 	   if let Some(parent) = adev.parent() {
-> >               let pdev: &pci::Device = parent.try_into()?;
-> > 	      ...
-> > 	   }
-> > 	}
-> > 
-> > Now, I understand that your concern isn't necessarily about the fact that we
-> > "upcast", but that it is fallible.
-> > 
-> > And you're not wrong about this, nova-core knows for sure that the parent device
-> > must be its PCI device, since it can indeed validate that the auxiliary device
-> > was created and registered by itself.
-> > 
-> > However, any other API that does not validate that `parent` is actually a
-> > pci::Device in the example above would be fundamentally unsafe. And I think we
-> > don't want to give out unsafe APIs to drivers.
-> > 
-> > Given that this is only needed in very rare cases (since most of the time the
-> > driver should be provided with the correct type directly) I'm not concerned
-> > about the small overhead of the underlying pointer comparison. It's also not
-> > creating messy code as it would be in C.
-> > 
-> > In C it would be
-> > 
-> > 		struct pci_dev *pdev;
-> > 
-> > 		if (!dev_is_pci(parent))
-> > 			return -EINVAL;
-> > 
-> > 		pdev = to_pci_dev(parent);
-> > 
-> > Whereas in Rust it's only
-> > 
-> > 		let pdev: &pci::Device = parent.try_into()?;
-> > 
-> > and without any validation in Rust
-> > 
-> > 		// SAFETY: explain why this is safe to do
-> > 		let pdev = unsafe { pci::Device::from_device(parent) };
-> > 
-> > > Along these lines, if you can convince me that this is something that we
-> > > really should be doing, in that we should always be checking every time
-> > > someone would want to call to_pci_dev(), that the return value is
-> > > checked, then why don't we also do this in C if it's going to be
-> > > something to assure people it is going to be correct?  I don't want to
-> > > see the rust and C sides get "out of sync" here for things that can be
-> > > kept in sync, as that reduces the mental load of all of us as we travers
-> > > across the boundry for the next 20+ years.
-> > 
-> > I think in this case it is good when the C and Rust side get a bit
-> > "out of sync":
+> > Accelerating this properly involves GPUVM patches - although even without
+> > that, moving the loop into the kernel so it's only a single ioctl
+> > (user-kernel roundtrip) seems worth keeping the flag for.
 > 
-> A bit more clarification on this:
-> 
-> What I want to say with this is, since we can cover a lot of the common cases
-> through abstractions and the type system, we're left with the not so common
-> ones, where the "upcasts" are not made in the context of common and well
-> established patterns, but, for instance, depend on the semantics of the driver;
-> those should not be unsafe IMHO.
-> 
-> I think for C the situation is a bit different, because there we don't have a
-> type system that can take care of the majority of cases (at compile time). Every
-> such operation is fundamentally unsafe. So, it's a bit hard to draw a boundary.
-> 
-> (In Rust, it's pretty simple to draw the boundary; if it can't be covered by the
-> type system or by the abstraction, we need to check to uphold the safety
-> guarantees.)
-> 
-> So, for the majority of cases, since it's *always* an additional runtime check
-> in C, I think we shouldn't have it. But probably there are rare cases where it
-> also wouldn't be the worst idea to check. :)
+> FYI: I will be posting a patch for the GPUVM abstraction soon.
 
-Thanks for the long writeup, that makes more sense.
-
-Ok, I'll not object to this change at all, so if you need them to go
-through a different tree, feel free to take them.  But as I think it's
-the merge window now, it will have to wait till -rc1 is out.
-
-And yes, maybe we do need a version of this for C code. :)
-
-> In Rust we should be able to cover the majority of cases through abstractions
-> and the type system, but in the cases where we can't do so, I don't think we
-> should fall back to unsafe code for drivers.
-> 
-> > For most of the cases where we can cover things through the type system and
-> > already provide the driver with the correct object instance from the get-go,
-> > that's a great improvement over C.
-> > 
-> > For the very rare cases where we have to "upcast", I really think it's better to
-> > uphold providing safe APIs to drivers, rather than unsafe ones.
-
-Fair enough, hopefully this makes things simpler for driver authors in
-the end as it is not a common case.
-
-greg k-h
+Great to hear :) Although in this case, I meant that accelerating
+DRM_ASAHI_BIND_SINGLE_PAGE requires patches to extend the actual C
+implementation of drm/gpuvm, not just the Rust abstraction. Which is a
+bit annoying for non-essential functionality with regards to upstreaming
+things...
