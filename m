@@ -1,102 +1,132 @@
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AB92505C5
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Mar 2025 14:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742825456; cv=none; b=iXdIuYLnL2tmdi4CFmUzUOyVQbeaJ/bOEs/186/CLjI3SLBh7WrRleNzKzbCThSzRoLsgdyllE/gO4ln5LKwX4Y8uu4DTC9I9S3jtPDuQHGpULbTMo+C8rcyYJ7OQLhVsril9Ne2OoMzS6AL+c7QUiJq6uZl1CPRKfC2aGV3giw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742825456; c=relaxed/simple;
-	bh=NqNPPpCkaZkUwbNQKKvy64w/LnM2Bd6Jjp5jMp418XA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hpENRKpg93TX1G/D7CuWajSsM0x+IOusuuDpIj58ROIuOAqbCQACUEF/+8VP1uh6ZOA5ZMwZzkloKXRlYEZaUmHf0cDFsCjAxjKxQXOSONYr04wvlPPkfcyEgFBvRj5I91B0TISWT7gAaHSB+TaUCDd9FEIsb3t1aLJSbet4F8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=dgM8qoQK; arc=none smtp.client-ip=95.215.58.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosenzweig.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0A7261396;
+	Mon, 24 Mar 2025 15:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742829297; cv=pass; b=KA+SeResZJgVTtZBYPwWcxipw0By3VNtqC0xRnV49AbRo87WN0DniUdopx/sa5X9f8fg6M/4zhqaTmaQKsWv/Alft+macSRoFj3ybRny/yFmH1czMMhIZ+ZMDrBqw1KVmKSfd/+oBlrj2w7j3tckSdRteDoZI0msqwCuM9+pBY8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742829297; c=relaxed/simple;
+	bh=yyWBoVIdgM9yd55s/XqWCPB+EHlT41sHUz5jV+dNppk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Sr24SyvIPzumxiGfDq23COO/mGjYSGKILayWr+wIfiN68h5/E9zHudIf44I7Oe2YOFuE4vC5L2fi0UjKc3BF4fyEgBj/6kSgFBfBTV8jFpMHsVz5PtstaqzDmV9yGjHiqKZNvQWHXBOUb+a/hdqGySYSSSgaYmZLaE9FPd6gKUE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=My3I3Mp9; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="dgM8qoQK"
-Date: Mon, 24 Mar 2025 10:10:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
-	s=key1; t=1742825449;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5QavDf4YfF4g6incDfR8g3M+4C53fdbJxU8hmz4md/c=;
-	b=dgM8qoQKNJIEi0dY32L6hBabt7HjG8XUm1NhIZaImSKprfR8JXsfBfhH9cTCPrcLg9wfGD
-	o23+bo8cMWxTi36khM1fvKGG4apkYQpsaXdP8sgYZRtIQ6jZU1waJ/RfnEJxDXhZnj6hMt
-	l4zSCzE8vSv3ylcINppjWvFaV7fjmBwjcieTx3E9R4I0dwULWMbcw+IcB7uU72j8Pi/ESl
-	15pJTFdt9S+sGypIz635REFAIlyLDRUk/TZpfAg/E3oncgVQLclL0tPPh5xQu2kDhPTHMJ
-	CFfNp00ClfbxNtP9JaOZCdso+fJ06mjS+jj+Drg6EAouBFLpdKHMNTre/Gp2cA==
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Faith Ekstrand <faith.ekstrand@collabora.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Janne Grunau <j@jannau.net>, Sven Peter <sven@svenpeter.dev>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sergio Lopez Pascual <slp@sinrega.org>,
-	Ryan Houdek <sonicadvance1@gmail.com>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	asahi <asahi@lists.linux.dev>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	linux-doc <linux-doc@vger.kernel.org>,
-	Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH v3] drm: Add UAPI for the Asahi driver
-Message-ID: <Z-Fn4niI6_Yd06Ze@blossom>
-References: <20250314-agx-uapi-v3-1-3abf7e74ea2f@rosenzweig.io>
- <195b507d4b3.b25d0dad175771.7566427576910952468@collabora.com>
- <195b582682b.121ba4d5e219032.3109114844776468245@collabora.com>
- <Z-B6uc7EEAdBPXmt@blossom>
- <260D98E1-7204-4535-A84F-D55A4527FF7E@collabora.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="My3I3Mp9"
+ARC-Seal: i=1; a=rsa-sha256; t=1742829273; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=FXPdAeI3f+wrKHfylHGK4lXWlXx1asWt6oTR6MWN+rR5EBKONwlGVzk0Ne6VXnSwW138eA8Uh33Dwwko3lXCJgXNOTRpGw7ihhj/+4FuWDa6OFRuW6CmnuwsOTOugYxPvvNZketVzPaDRlB/EugCvd9tfq0cmyaKWTCX2CQSiP4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1742829273; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=0GC8XAU9kSZizGu7pirgOvAlkT/SjNy72/DTHBMZsj8=; 
+	b=bp+xEitzIzdPSgM7ciQCzhUyVZ4fojqWQGfAqBO3aAOk9eVXLFsbUEFHNkDj+Q0mM8PAVfqRWTmKSy0unQqOAAsBf5Minb0wyy1uehGadw+TOM+cpgDN61Shr1Rn7gH4D3kFKhcNB8nJ8l4VeP398L7B7aXCWgXaEicMo6qrTzE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742829273;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=0GC8XAU9kSZizGu7pirgOvAlkT/SjNy72/DTHBMZsj8=;
+	b=My3I3Mp9qHOHIPnuXmVVMRivjE55FPuydbJuD5lBmm9xPwHDIxUiavN+N9SJBROk
+	8aWEuPnmOJ7JZ7dNJK5Qta6C6fRsOCoxWyP5i1kVaVtJkgxwTSEFEtZfCvPEU5y0fnp
+	8xsm/rwbKJZ+AO+OeBYP0r0xBo1gQalPIDN+S6aA=
+Received: by mx.zohomail.com with SMTPS id 1742829270854331.91542821528924;
+	Mon, 24 Mar 2025 08:14:30 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Mon, 24 Mar 2025 12:13:54 -0300
+Subject: [PATCH 1/2] rust: helpers: Add bindings/wrappers for dma_resv
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <260D98E1-7204-4535-A84F-D55A4527FF7E@collabora.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250324-gpuvm-v1-1-7f8213eebb56@collabora.com>
+References: <20250324-gpuvm-v1-0-7f8213eebb56@collabora.com>
+In-Reply-To: <20250324-gpuvm-v1-0-7f8213eebb56@collabora.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Sumit Semwal <sumit.semwal@linaro.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Boris Brezillon <boris.brezillon@collabora.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, Asahi Lina <lina@asahilina.net>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-> >>>> +    /** 
-> >>>> +     * @DRM_ASAHI_BIND_SINGLE_PAGE: Map a single page of the BO repeatedly 
-> >>>> +     * across the VA range. 
-> >>>> +     * 
-> >>>> +     * This is useful to fill a VA range with scratch pages or zero pages. 
-> >>>> +     * It is intended as a mechanism to accelerate sparse. 
-> >>>> +     */ 
-> >>>> +    DRM_ASAHI_BIND_SINGLE_PAGE = (1L << 2),
-> >> 
-> >> Does this require the BO to be a single page? If so, does it require offset==0? Or does it just take whatever page is at the specified offset?
-> > 
-> > I believe the intention is that it takes whatever page is at the
-> > specified offset and just maps that a bunch of times. HK doesn't use
-> > this yet though it probably should (this was added to help reduce
-> > overhead when emulating sparse with scratch/zero pages, which is still
-> > very new functionality in hk).
-> > 
-> > Accelerating this properly involves GPUVM patches - although even without
-> > that, moving the loop into the kernel so it's only a single ioctl
-> > (user-kernel roundtrip) seems worth keeping the flag for.
-> 
-> FYI: I will be posting a patch for the GPUVM abstraction soon.
+From: Asahi Lina <lina@asahilina.net>
 
-Great to hear :) Although in this case, I meant that accelerating
-DRM_ASAHI_BIND_SINGLE_PAGE requires patches to extend the actual C
-implementation of drm/gpuvm, not just the Rust abstraction. Which is a
-bit annoying for non-essential functionality with regards to upstreaming
-things...
+This is just for basic usage in the DRM shmem abstractions for implied
+locking, not intended as a full DMA Reservation abstraction yet.
+
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+---
+ rust/bindings/bindings_helper.h |  4 +++-
+ rust/helpers/dma-resv.c         | 13 +++++++++++++
+ rust/helpers/helpers.c          |  1 +
+ 3 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index e6020ba5b00237a08402fbd609c7fba27b970dd9..53111b5b35588541eca05e574a8d24cdafbf1dd6 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -18,6 +18,7 @@
+ #include <linux/blkdev.h>
+ #include <linux/cred.h>
+ #include <linux/device/faux.h>
++#include <linux/dma-resv.h>
+ #include <linux/errname.h>
+ #include <linux/ethtool.h>
+ #include <linux/file.h>
+@@ -53,5 +54,6 @@ const gfp_t RUST_CONST_HELPER_GFP_NOWAIT = GFP_NOWAIT;
+ const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
+ const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
+ const gfp_t RUST_CONST_HELPER___GFP_NOWARN = ___GFP_NOWARN;
+-const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL =
++	BLK_FEAT_ROTATIONAL;
+ const fop_flags_t RUST_CONST_HELPER_FOP_UNSIGNED_OFFSET = FOP_UNSIGNED_OFFSET;
+diff --git a/rust/helpers/dma-resv.c b/rust/helpers/dma-resv.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..05501cb814513b483afd0b7f220230d867863c2f
+--- /dev/null
++++ b/rust/helpers/dma-resv.c
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/dma-resv.h>
++
++int rust_helper_dma_resv_lock(struct dma_resv *obj, struct ww_acquire_ctx *ctx)
++{
++	return dma_resv_lock(obj, ctx);
++}
++
++void rust_helper_dma_resv_unlock(struct dma_resv *obj)
++{
++	dma_resv_unlock(obj);
++}
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 7a06d6bc48537248c8a3ec4243b37d8fb2b1cb26..c5e536d688bc35c7b348daa61e868c91a7bdbd23 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -14,6 +14,7 @@
+ #include "build_bug.c"
+ #include "cred.c"
+ #include "device.c"
++#include "dma-resv.c"
+ #include "drm.c"
+ #include "err.c"
+ #include "fs.c"
+
+-- 
+2.48.1
+
