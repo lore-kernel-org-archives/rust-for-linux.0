@@ -1,92 +1,94 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C774A0C;
-	Mon, 24 Mar 2025 23:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2B81DED79;
+	Mon, 24 Mar 2025 23:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742857328; cv=none; b=c/Q+GyJ9N+M5spWMbU7w/tWrh1lfk2zoi7VxWwsXdL43aHMSGJNhOVT3OpC+xaVENLVgEgI5mCu+hxfUqlFeiIEdG3jYRSHXw579j4DLJqA3iJAh+f0z36vWfz9rWDtpoTQbbbc8iZqd0+D9eR72F0DOIDekFkbz2z6v8rQIt08=
+	t=1742857812; cv=none; b=QK5XD5xDDzoWdwafMaxEHKHLLMElR45TLFqiHmGZTiXWA+quDsWTyxCKNsTRoiTFaZb7QqzP6/kmirk/5FdYp9UATtpvkPWux1SN7ZOo4RcY3IJVLwP/cIbD2E2OVsrqC2kmQk4iO1tE5NCZ5d3n2MTWSWvjWJSRRcf5zNg08fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742857328; c=relaxed/simple;
-	bh=Sm/shJ53dQVUaek3eh5J6vClMZ+mhRTsX2hjr08eZAo=;
+	s=arc-20240116; t=1742857812; c=relaxed/simple;
+	bh=9I8KQKYlVXXDa2GWgnH9sokfNCoithb5dsrUI8nor1s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ccOvhTolSGLk5I5v3Id0g2A1GrfGNtkigck0mauU5cjETwp+phsKr4ofPf6mr8I6um6wrTuZv5KNjrn8EXWM6aQsBaYKEqVkDW3WrVWQ6kNFR/un0GonjjoCvksMz5aYG5C7K2b15JCXOwZgB6h6s8zVJmT/BHtpMDkGloHjyOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHitfKLM; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=V0C2iHAqdu78xwHXrHwUpIONTZui0XfnInsS5JadXH/rASN8K97YkDlTGrVeEJLr22Bjmi1aQ4XnJaQm8wsKUwTSDZYs98xij5SASMD2x7SWWTK/Mp3sK1dddGOEBT8bCrE9Pw7+btcs/vR7gkCQhw7vTJxKrtHnykBA4byuKTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T8vwAsyQ; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHitfKLM"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-301b4f97cc1so1529025a91.2;
-        Mon, 24 Mar 2025 16:02:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T8vwAsyQ"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff7255b8c6so987460a91.0;
+        Mon, 24 Mar 2025 16:10:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742857326; x=1743462126; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742857810; x=1743462610; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Sm/shJ53dQVUaek3eh5J6vClMZ+mhRTsX2hjr08eZAo=;
-        b=nHitfKLMBT/ce7wg4xDeBwxjmfITI4fs1wSdi6WQhjbM2smaL7MXilBpPRIWWURaon
-         5xfm2CnjbDC2U/KJVktyfkgH6eb9f/Fpr1V0OajzbqlMmmKR/JEv0t/hHl+GkmETLLCj
-         Mnlbs1+39eyXIkYYdgEbA+WZLR3GTP+ShFXxZGXnZTzdv5b5nBLUZyRrckL6TlXS64qY
-         O4p3Iq/US7IzYbCgmioMQOsjqZD1aPNTm3ZLoRVP9oBhVL6i+rel4SSGdX9m2FoS132Q
-         0fEQ2sxx6Mg5dj8y8UsA+Awdn1YruzLIHfMJkdwSHa77VKmmYufgWY0XFvCDxndQva+Y
-         CN5Q==
+        bh=9I8KQKYlVXXDa2GWgnH9sokfNCoithb5dsrUI8nor1s=;
+        b=T8vwAsyQ0QmsHn9cX/w8ctHR7ai6w2gZLdHd8B/Ep0Ln4tNvbdBYqxKFrgO6aoj4TA
+         jRgbxtZlmTyrmjsWvkRHEel0MyRlrJyfr14MUcwiZfAGTs5M/lGCI3xG/5aGcYI/xV/8
+         NcuvWKg2ZVAtmDh12Gvrb+63tg5ZMSK43iSREMaVHwr+8GB3vsBj+BWR3KzguDEcXFwK
+         JuVokdx+klMyG/U59bNiaefYpUGadtbIJ1KctbGKm5c5+UH3eDCjWHfEjYA2O8jkpLv7
+         lGW3A+JyXAYsHpfEB1WdhP4HNlRXQCkQKVWzimEB9Kk0XM0l+3WxKM5UU+r7TAmZ6D9d
+         HDog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742857326; x=1743462126;
+        d=1e100.net; s=20230601; t=1742857810; x=1743462610;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Sm/shJ53dQVUaek3eh5J6vClMZ+mhRTsX2hjr08eZAo=;
-        b=ICBLHAzuoQ8iLFj1hDfb9e00VTImkAMnGyipBkBtV4CVx38Pv0OBdQ1ZRdkOnqXfgf
-         jJhpMj3iDhu3Bc6gFpeUZCEbqzB7yWrZWyoW8pSju0qVrMNXJdG5toZHQvpJDyySSaT9
-         kD8FxD6LUXZ0RxCYQTzI9sZsakaM3Q/6y+cUx/WuSvS0qHIlovVjTXGl19iReH9APVSg
-         9kxgjA8+OnfrhnT3bgiT5wiG1Cm9W1A2Hoi/vBx9h7fpk54BXIOWdGRYzqB99GlVl0fb
-         M8krYD78D0PO9BKmzeHUMSpV3X5kLicjVfWI4hvdOCz8BkDAySVTrdL1z05C5MP9LRoJ
-         fi3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUm5uTDtYG+eYNmrXPThhkkxeQ5NND7dgRsPgpqaCnpJrtSPoS6DnEI5Y+nzG+yykv5zZcYFrC1CJL0VkhsdGM=@vger.kernel.org, AJvYcCWbvFoFNXe/gJDdqacmM5luCtwlebjRIKk6cQtf1PZeIKPNPXXyMhWgbicRcWGklvhMFmkBhvj/sZhrSCc=@vger.kernel.org, AJvYcCXhAhzgxcqaHCGFpepilSefRyOJ/l/zc009VWpqaKL7wBVP4PxdAoO/pzff//XydusI0TRugNSjxlPA@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOjpr5Tz2pjdq4oP5CPgvc16GOB3VIWs3QAb77AU/nJZQuRUNc
-	C5+bx23E5Y90JENg2l8BUC0KNVCsr6ifYFyA/VYJ8BpjvUJB7I+tqGIGAyOZ/pJkLMnNaFJOCKu
-	pUcb15gk82mB2vBjgls1fmU1Cj2U=
-X-Gm-Gg: ASbGnctSimxiS0SmrYblTj1UkbWap/biZYdcm8GGNCq8FCfSH6yM0DPSE+OpMuytnlB
-	bleoq5ndY65vGXH8R6y2pq7V3W2kECi9+QC/1v/KjfY6UJCo7599+8teSPBHvI38iC1lPUQ/5sx
-	BwRJAeCucJLFdVqQQUpp0/7tqJfg==
-X-Google-Smtp-Source: AGHT+IF0N3IVoZm41r+EPPfeHaAlJgTDOk4ghAT1O/mKxGfrCPY/HsBSeXWetofbrS+dczLITSUjUfjwMphj7YT+nAY=
-X-Received: by 2002:a17:90b:33d2:b0:2fe:91d0:f781 with SMTP id
- 98e67ed59e1d1-3030fe534b9mr8779881a91.2.1742857326284; Mon, 24 Mar 2025
- 16:02:06 -0700 (PDT)
+        bh=9I8KQKYlVXXDa2GWgnH9sokfNCoithb5dsrUI8nor1s=;
+        b=N83mEAVM22Cx8zV1Q6ICSXUa2CDRziBJTe6WzWmpbvIMMD45I1airhOse0UDu1gM01
+         gEpxYRmjxN36AjepDEOoAGVdHgsB0vLSC2yEZOqY2s8nLba6sEjE6DkU241Izn82sGFB
+         QRh8eS3yE9EB3SD5tmTvy3ua7cE/GGqHE/ndhu7utgI4em4foDC8liE4MJQ9OQo6uhEL
+         tizBWc3qOfcACKcm6VtV8UjKNS74mDVzk1y8CI5u5fk2+E1PyAshBF4DrkeiJe9wqBuo
+         lH+sTPxK7YMe7kBpJb0OMF0UII6byNY5gJ0X7px+TavHRz3vIofFutPkEFmM/W06rfdv
+         4MUw==
+X-Forwarded-Encrypted: i=1; AJvYcCUSc6YXRRoKiVhA45aJq6k1P+jrA8wdlgORXypUunGVw1UsE28usetsxibOnlE20uHGGauByu7tETA3mLc=@vger.kernel.org, AJvYcCXt5ctIfTvIaH50Pl0EE8nxOpD3JnWpem2LPqeuXIni81Ltn4yxIcdeKeo1ORaUzq+FxbCQkykLq+732gjiOGA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPP4C5HJNlpdWBl0hwdFwDP8JqPm841JbpYX1LFtn3ZVTeGZ4/
+	9hBVtLiqzjkqrdCENRlPzD8l3ALbsu9ZbqgokUbx2dD0b3rLbbcK3dDLXoOj5arCUM/nLKSew6n
+	wwy8eNKVBfNimfw72fmQTBI2iyxE=
+X-Gm-Gg: ASbGncvZcfaJUjpGynOlRbELCV6g41H+085uHoD3GojaTymKRTszsApiVchCdi72kv3
+	iPhZXrKTRp1REOU+/xSdBawutz86B56pWN6sHKcQhZXSK1a5of2ralBjNn2Q+pBX81uvORTkLFx
+	RgkrMnQFCwVcYvnOf+bfcbyQy9OVr9bQ9aC2wK
+X-Google-Smtp-Source: AGHT+IHiw5wJimpAjJws1j5GfyzNNmvdTmtt+Gdtx8BghKlWqDwaQomsOsLGjrJpvBuh7t+if89qAAVbaQkJFUfRQ3U=
+X-Received: by 2002:a17:90b:1645:b0:2ff:4b7a:f0a4 with SMTP id
+ 98e67ed59e1d1-3030fef4ad2mr8519928a91.3.1742857809561; Mon, 24 Mar 2025
+ 16:10:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250324210359.1199574-1-ojeda@kernel.org> <20250324210359.1199574-8-ojeda@kernel.org>
- <D8OV6JF1S63H.NG5CXUZDQQP6@proton.me>
-In-Reply-To: <D8OV6JF1S63H.NG5CXUZDQQP6@proton.me>
+References: <20250324210359.1199574-1-ojeda@kernel.org> <D8OVATSS19YC.1GXZRNM6TBA0X@proton.me>
+In-Reply-To: <D8OVATSS19YC.1GXZRNM6TBA0X@proton.me>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 25 Mar 2025 00:01:54 +0100
-X-Gm-Features: AQ5f1Jp-b9ijstGk-lJRPks97YVdRTn8tjg1pmMJXHRdMAlOigQ_u0TkE93n4J0
-Message-ID: <CANiq72kMGLYP9RzraKy8wSSYJ2e3PmBLyoSPjUbkhTT308Yr5w@mail.gmail.com>
-Subject: Re: [PATCH 07/10] rust: pci: fix docs related to missing Markdown
- code spans
+Date: Tue, 25 Mar 2025 00:09:57 +0100
+X-Gm-Features: AQ5f1JpnGCnEckuxVoIN7plR0rZlCRqSBHxkP_kvLOHPlP1ckzapWMGe-fd5zW8
+Message-ID: <CANiq72ng_ABVR5ihxMeN5Ast6Lu0-zxkgjnKzbtn4j3ghFKgZg@mail.gmail.com>
+Subject: Re: [PATCH 00/10] rust: clean and enable Clippy `doc_markdown` lint
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Bjorn Helgaas <bhelgaas@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pci@vger.kernel.org
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 24, 2025 at 11:54=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+On Mon, Mar 24, 2025 at 11:59=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
 me> wrote:
 >
-> Wouldn't "([`struct pci_device_id`])" make more sense?
+> Not sure what you mean by this, but I think we need some way to disable
+> it for some acronyms.
 
-Yeah, definitely, it should have the `struct` to be consistent with
-our usual style.
+I meant that maintaining the list in that file (i.e. globally) could
+be a bit painful if we get a lot of terms, but I guess we can find
+workarounds for that if it gets bad.
+
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
+Thanks!
 
 Cheers,
 Miguel
