@@ -1,239 +1,120 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42992E3381;
-	Mon, 24 Mar 2025 19:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742844354; cv=pass; b=d5h/jI6YxZMV0nlV14udVnfPcMZoRjAetungbKbiqv4m8pJ4S5F3mjdPdqnkCXLZfZubwpq1S7LzZCRF7QbS/9Y9onBN7R1vSlejyA1U4lNeRyfRa3hOp9blVnn8zsYXGJh9HnDIbeHmgVA2v77Sxp5KrrA6sLIvoANstq/TRu4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742844354; c=relaxed/simple;
-	bh=+kFk9rhdiDAm/oCDyLKl9B/OAxtodeYjS1Mr/hB+Q/4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=TmOETr2oq+mwPY8XGrHTspZHxRMZ6CFBh4gPxKtWjQh4e2YGKl7oL6kiVPIEIu8qE11HrKPUnH6wDNZxf9xrqifJhrrN5Dlb+zjxKjYf0RN6+BLHnHYolKVtcdVzcrIoMUaVGb5vkQlt5c1I/yD3fO33aTEWr5Sbf7Xn8gPyd5A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TPl1nyZU; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65ABE199E88;
+	Mon, 24 Mar 2025 19:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742845111; cv=none; b=IhXy+1/XSq6oT8xLodLqFURA0rxzj4DqMBnZtUdSg6zL4vRy85wZlSNioxuQRHgsuhm+ZI5AAqKH8WOb/UNWDpTrW0lQEKYK8K0r5mYkADkni5QUBJp9FC+qGf9R2nNiiKr8dOsCMq3VKGWSBLvGIX21mRfpIptcTCRCM/YfhZA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742845111; c=relaxed/simple;
+	bh=g83wf0IEi+f+2DpKce8QxRkFG7Qa2QHDJEAGQpQF9DI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TJ+7T8EgTR8vKBpra2jxYpK6/LlIBZH8q4/tUfaatABmsrupd1RQfq1M+PzB+XdSgOthAXu5rkTcqzWqE26R1K24GpYkkABheL09fTxnmiYeq6rGrxDfHXYq2COVFfWtFH8oAUEbx4WndIuw+QgAK5tMKvgXGH5IgpLTALEdNfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aDWr3mpD; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TPl1nyZU"
-ARC-Seal: i=1; a=rsa-sha256; t=1742844327; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Swya0szKRZ74K4uMDR5Q2HYkhrNTsV98nQASLIUdYSTu0pX1TV0ufTqnyUXOt0MDBjoAxvZnQhMHjH295lK7G1/YMt9AJp3kpK6uBOb+pzUB7ww2xNCGkIDpRmmlvK9RlmXZyzbI9CUL9x13mAdQWKfj8nBu/okltIxW2hj9bTI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1742844327; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=k8Y7CFUOAycS3oTxDxslZk149LNwr8JZUVw30eo4R5Y=; 
-	b=lsL0Xg7e8xAwEY5wdiYLM3H9Refz4PUSVk/9M7q+udDrxI/XIpXxDaT1843eVvGuJUCas9U6EaB0N+iP1Llavs8lpTZwMt7ziSTEa9GQhINekKXO7EJdJsZijKpeRXTos79kOENjSbJLVroQEpJEJG0ga6pbXWpbUDvN+Fckz1c=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742844327;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=k8Y7CFUOAycS3oTxDxslZk149LNwr8JZUVw30eo4R5Y=;
-	b=TPl1nyZUbi2yI//ivducmbo9Tst2FtnT0BPYqZbm2M8BZZO/mOxK4JdGZIWxbyUh
-	fTPnkm0YRH+q9aoRBvSiEbNoqXoSWdH2xoYe4ol+/GxlFGlsQKTvgju/qSKw/Nq2A7p
-	4FQcdhsx8x88ulnveQ7pAbX4FUBamkeVksTLeca4=
-Received: by mx.zohomail.com with SMTPS id 1742844324407222.7563228461404;
-	Mon, 24 Mar 2025 12:25:24 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aDWr3mpD"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff5544af03so1478435a91.1;
+        Mon, 24 Mar 2025 12:38:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742845109; x=1743449909; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D/1WJJoHQRs17pT9/JxCO6Fw+nrbC0tR3gi1sviT9Qg=;
+        b=aDWr3mpDuH/5xZS56lUR9b9/u/m3mLH4bVNn3De4+00wuHw4cXpHU/ERuiEosZiw/U
+         rJnXTJ7dHVL4n2uSt2IVSX3O7fwIfhcefI5mlknmJbqt1g6DEpGJl/Bc0DPH0rB6U3ZP
+         K/8DfapufjYjZwEc75UXeatCEO9pG22H9YAQHO6xwxd9luFOwzJOnD6mHI56eDyTNFOr
+         Wq4ZWLWfJc1lHEhE++4Rr1JZZilg6CqfXr4Z150yNxLaAGXISKTh1eKf9geuhFEo3y9o
+         uYsaCj5jAPYAdzgucm7PBjkICAoW3mAlohlRp7ilTiEUKQY3H80W77lEt2x1CrFrGWBn
+         Jj1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742845109; x=1743449909;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=D/1WJJoHQRs17pT9/JxCO6Fw+nrbC0tR3gi1sviT9Qg=;
+        b=AGEVkyu3GMaAq+IJ3wu9JY18/DXyWZbKo2j48H/NVQpp75WIIRGzOdX7fLArUOsiDd
+         K+2ek+qhmoCvAUggCYNlgdmFx6cHJngumv3a+Eqc3z5MabdjAtBZrMdu3PumTL5agSXb
+         w6f7gtQS3vDD+bJkhrgSo4bizSQDILBAZrg+aivvXmBsVvMUsHenD1OelIQFWo3eG9ej
+         /ze9JZhX0Y8ejYz9pjY5GkrwksxoGPmV88biW9fRI9Mn/QrTDZUoYBDIOS/vinqcDXI1
+         UMBYRS0lftwuSSoupotU+TP+aukoS/3FCTaOn0MxkEJd1Vzfo7rwbre+uNcj52m2wsbZ
+         URrA==
+X-Forwarded-Encrypted: i=1; AJvYcCUibhbaQ+bHvA4F20jWjxlp7LLTDoUVCsFqn2Bw8LoC86Sl8OZsq/iLXdGskTmwBtir69fgWdZ/lSIDvXQ=@vger.kernel.org, AJvYcCXV20VyHF3DP5C/sUYJsOHx5bEYQt5tn4X2cQNwuX4J6+AOfCBvtJP78EOVw9fa09rV1L6FOAhqS+4TZAcMYB4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPDRiUpGdbb0ASdH1XysX+JUTbJXupkHTemJLecdZhyRkeeUa1
+	Jo8q0Im1fLOVuB18nBFKvEow36hRvuLwBlq9OPYslWVwfvPSPiNBUIKGJvE9mlCdnRgl3lj57Bt
+	xjBc5HORvUTRG19jqcAuFB/rjkI0=
+X-Gm-Gg: ASbGncvdXh8V/ZllyvywARz2FT/AmU3zMFvWd9TKQXCQf81+Pz5jXggHoS2CDv6kUFj
+	uxgPkp0gipX+30ZPgDftlrneLP853FnFFolzNGDUeBccINYnIOR+SJExco47uMBmb+nG1WzJIXU
+	D4c99LEJbmh4VyTdsJnFunII6ESQ==
+X-Google-Smtp-Source: AGHT+IEMUSgfwqdKG7ewoqDLmuTi+jz5Z8D+a7P7lvhW95GrosUyZ6srAtGj1z0Sm9IhoTqBMT68weNwQYnP7YyHjjw=
+X-Received: by 2002:a17:90b:1647:b0:2ee:6563:20b5 with SMTP id
+ 98e67ed59e1d1-3030fb1fbc7mr7922237a91.0.1742845109433; Mon, 24 Mar 2025
+ 12:38:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: [PATCH 2/2] rust: drm: Add GPUVM abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CANiq72mQ3zuYmsq1PD-49kKLNji8OJwuvxK5QWkNaBMuC-PHQg@mail.gmail.com>
-Date: Mon, 24 Mar 2025 16:25:07 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- Asahi Lina <lina@asahilina.net>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <509EADD7-607B-4DED-ADAC-152D7338EB50@collabora.com>
+MIME-Version: 1.0
 References: <20250324-gpuvm-v1-0-7f8213eebb56@collabora.com>
- <20250324-gpuvm-v1-2-7f8213eebb56@collabora.com>
- <CANiq72mQ3zuYmsq1PD-49kKLNji8OJwuvxK5QWkNaBMuC-PHQg@mail.gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
-X-ZohoMailClient: External
+ <20250324-gpuvm-v1-2-7f8213eebb56@collabora.com> <CANiq72mQ3zuYmsq1PD-49kKLNji8OJwuvxK5QWkNaBMuC-PHQg@mail.gmail.com>
+ <509EADD7-607B-4DED-ADAC-152D7338EB50@collabora.com>
+In-Reply-To: <509EADD7-607B-4DED-ADAC-152D7338EB50@collabora.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 24 Mar 2025 20:38:17 +0100
+X-Gm-Features: AQ5f1Jrk0Og2yGB9k38WW0Nb1tuHdGjlzNVcWtDKGMvkDWjXn2FYepG3LyWjwKs
+Message-ID: <CANiq72=aVRMvOaU48DBLL=p+VoG3RvHK+K48XQhvHw3ARc0BNg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: drm: Add GPUVM abstraction
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Asahi Lina <lina@asahilina.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel, thanks for having a look at this:
-
-> On 24 Mar 2025, at 14:36, Miguel Ojeda =
-<miguel.ojeda.sandonis@gmail.com> wrote:
->=20
-> Hi Daniel,
->=20
-> A few quick notes for future versions on style/docs to try to keep
-> things consistent upstream -- not an actual review.
->=20
-> On Mon, Mar 24, 2025 at 4:14=E2=80=AFPM Daniel Almeida
-> <daniel.almeida@collabora.com> wrote:
->>=20
->> +#[allow(type_alias_bounds)]
->=20
-> The documentation says this is highly discouraged -- it may be good to
-> mention why it is OK in this instance in a comment or similar.
-
-Someone correct me here, but I see no issue with this warning. That=E2=80=99=
-s
-because we need the bound to make `<T::Driver as drv::Driver>` work in =
-the
-first place. Otherwise, we=E2=80=99d get a compiler error saying that =
-there=E2=80=99s
-no `Driver` associated type (assuming the case where a random T gets
-passed in)
-
-So, for this to be a problem, we would need to mix this up with =
-something that
-also has a `Driver` associated type, and this associated type would also =
-need a
-drv::Driver bound.
-
-In other words, we would need a lot of things to align for this to =
-actually
-have a chance of being misused. When you consider that this is then only =
-used
-in a few places, the balance tips heavily in favor of the convenience of =
-having
-the type alias IMHO.
-
-In fact, the docs point to the exact thing I am trying to do, i.e.:
-
->  these bounds may have secondary effects such as enabling the use of =
-=E2=80=9Cshorthand=E2=80=9D associated type paths
-
->  I.e., paths of the form T::Assoc where T is a type parameter bounded =
-by trait Trait which defines an associated type called Assoc as opposed =
-to a fully qualified path of the form <T as Trait>::Assoc.=20
-
->=20
-> Also, could this be `expect`? (e.g. if it triggers in all compiler
-> versions we support)
->=20
->> +// A convenience type for the driver's GEM object.
->=20
-> Should this be a `///` comment, i.e. docs?
->=20
->> +/// Trait that must be implemented by DRM drivers to represent a DRM =
-GpuVm (a GPU address space).
->=20
-> (Throughout the file) Markdown in documentation, e.g. `GpuVm`.
-
-By the way, maybe we should have a lint for CamelCase in docs? I tried =
-my best to
-cover all of these, but some slip through :/
-
-i.e.: if you write something in CamelCase somewhere in the docs, there's =
+On Mon, Mar 24, 2025 at 8:25=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
+>
+> By the way, maybe we should have a lint for CamelCase in docs? I tried my=
+ best to
+> cover all of these, but some slip through :/
+>
+> i.e.: if you write something in CamelCase somewhere in the docs, there's =
 a high
-chance that you should actually use Markdown and link as appropriate.
+> chance that you should actually use Markdown and link as appropriate.
+>
+> I have no idea whether this would actually work in practice, to be honest=
+. It=E2=80=99s just
+> a random suggestion (that I'd be willing to help with).
 
-I have no idea whether this would actually work in practice, to be =
-honest. It=E2=80=99s just
-a random suggestion (that I'd be willing to help with).
+Yeah, I asked upstream if we could have something that at least
+detects what could have been intra-doc links, because that should not
+have too many false positives since it is a subset:
 
+    https://github.com/rust-lang/rust/issues/131510
 
->=20
-> (Throughout the file) Intra-doc links where they work, e.g. [`GpuVm`]
-> (assuming it works this one).
->=20
->> +        // - Ok(()) is always returned.
->=20
-> (Throughout the file) Markdown in normal comments too.
->=20
->> +/// A transparent wrapper over `drm_gpuva_op_map`.
->=20
-> (Throughout the file) A link to C definitions is always nice if there
-> is a good one, e.g.
->=20
->    [`drm_gpuva_op_map`]:
-> https://docs.kernel.org/gpu/drm-mm.html#c.drm_gpuva_op_map
->=20
-> Ideally we will eventually have a better way to link these
-> automatically, but for the time being, this helps (and later we can do
-> a replace easier).
->=20
->> +/// `None`.
->> +
->> +/// Note: the reason for a dedicated remap operation, rather than =
-arbitrary
->=20
-> Missing `///` (?).
->=20
->> +#[repr(C)]
->> +#[pin_data]
->> +/// A GPU VA range.
->> +///
->> +/// Drivers can use `inner` to store additional data.
->=20
-> (Throughout the file) We typically place attributes go below the
-> documentation -- or is there a reason to do it like this?
+It is still tricky, because e.g. `Some` or `None` would need to be
+excluded, even if you require the exact same case. So it probably
+still requires extra heuristics.
 
-I will be honest with you here: I never remember the right order for =
-docs and attributes.
+Then there is:
 
-I=E2=80=99ll fix this.
+    https://rust-lang.github.io/rust-clippy/master/index.html#doc_markdown
 
->=20
-> We had cases with e.g. Clippy bugs regarding safety comments that
-> could be workarounded with "attribute movement", but it does not seem
-> to be the case here.
->=20
->> +        if p.is_null() {
->> +            Err(ENOMEM)
->=20
-> For error cases, we typically try to do early returns instead.
->=20
->> +    /// Iterates the given range of the GPU VA space. It utilizes
->> +    /// [`DriverGpuVm`] to call back into the driver providing the =
-split and
->> +    /// merge steps.
->=20
-> This title (and the next one) may be a bit too long (or not -- please
-> check in the rendered docs), i.e. the first paragraph is the "title",
-> which is used differently in the rendered docs. If there is a way to
-> have a shorter title that still differentiates between the two
-> methods, that would be nice.
->=20
->> +    /// # Arguments
->> +    ///
->> +    /// - `ctx`: A driver-specific context.
->> +    /// - `req_obj`: The GEM object to map.
->> +    /// - `req_addr`: The start address of the new mapping.
->> +    /// - `req_range`: The range of the mapping.
->> +    /// - `req_offset`: The offset into the GEM object.
->=20
-> Normally we try to avoid this kind of sections and instead reference
-> the arguments from the text (e.g. "...the range of the mapping
-> (`req_range`)...") -- but if there is no good way to do it, then it is
-> OK.
+which is closer to your idea. It has a few false positives (e.g.
+KUnit) from a quick try, so probably we cannot enable it for
+everything, unless we commit to maintain a list of terms in the
+config. It spots a handful of things we should fix, though -- I can
+send a few patches or create good first issues.
 
-Ack.
-
->=20
->> +// SAFETY: All our trait methods take locks
->=20
-> (Throughout the file) Period at the end.
->=20
-> Thanks!
->=20
-> Cheers,
-> Miguel
-
-=E2=80=94 Daniel=
+Cheers,
+Miguel
