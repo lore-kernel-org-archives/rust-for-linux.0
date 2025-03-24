@@ -1,98 +1,94 @@
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE131E3DE0
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Mar 2025 21:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA88A1DED76;
+	Mon, 24 Mar 2025 21:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742850109; cv=none; b=fnitdpUVFo/3kTeDSKGACoV/zSBz4wxCsY2JUjLDfZGY6RpzFbro2BmgFJX6xcYDePiJTy0CY9IGGDh/po8WGD1JG8wMfFBC0hmOaREA3l7u3IULMU+MeZgkUlY2A8oI3Znw0PIsXDVldFGCEjSFd4J3gHRNdb9+HlNNc3U329g=
+	t=1742850251; cv=none; b=Klbl46Gr8GrfLrpQeQMi5GJd48Vn8kyAfOC1hpuE0ZuMbEDW39Kefe2gjVhgsiv514tzy1Hq1Ngl7odTkypc7DazteWXodPc1AVdGlsvbkz50IsLtxxldtTp57HZScAaMyfivsClG78y5wslMRz5mSHhZyA2aC4hKGXDh0wjfsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742850109; c=relaxed/simple;
-	bh=IuZaHTzu9UBcmm4eUbLU7i0K+28T43waqoKj8h1oT5w=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LfK504UV1JKL4cLG2thfAS0e1uPdrdd65LdiA52jXk3n7YGz9wzl4x5SBKFfyNsNhpNv8neb5+RoLGvrL2lT6Z3jxzXIvcqHeO47IKe+df7JHtUVC8QP0At24aBfwFld46izh+uQ2BLGeKwGA4CwjR6qnAyL1BLJ2J4MryZixik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu; spf=pass smtp.mailfrom=ozlu.eu; dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b=RZqrWsOi; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlu.eu
+	s=arc-20240116; t=1742850251; c=relaxed/simple;
+	bh=o72TB1NTQ+rLH2wrbrpTZbwQ6E6S4RZ1mc9yiTyQiI8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kbm3jBZ3oO9iBAxRtUOGgkRVsMFud5u7TKNCvrsgj+DG0rfXLgpEsd9tcUW43tUlq5/+gG/KQDVg/36suPaoj7BDsp+l83LAB/xS3dg0sMmM2tQO646PrSfg0hdIo4runQAX7LdMk792kBAt3nAyL+Z89tyzL147hepAOIfRrC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rmh7hgSh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b="RZqrWsOi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlu.eu;
-	s=protonmail; t=1742850091; x=1743109291;
-	bh=FKlFDQqFC2nZLyVyf4freRM/9AP2n0Vzy+mvPLfraN4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=RZqrWsOilSXf05bata7U0EWSKs1Wd0eWNQbEm1pNsWc6EBwfFPRvelMu9sehREUGq
-	 CJPRvMBF4ApXHTCDViiXfS1KbiPvf4fwv4vT+bZREJbF2M0N9dfXy4rcr5aKv+IptK
-	 38PnEp4rvOVrz9YLCu2V94Ssznt4Egf7EkrdCPH0Mjg8HmDyGNWDzeyweHkattWG2P
-	 Cg4SkXJ+h7LCjMyUFg9Y0JAynJI25Tvwe9+tXgaOy5wXpJ396jfV1YzUhHDdXkMcBZ
-	 dbdLORdkfnV/5odFpLYFn4cWdy7ukt3Aka6gZIvfpG5MoDOahzOqw8tNvuSG3p1R2l
-	 BNFAI6H1BserA==
-Date: Mon, 24 Mar 2025 21:01:25 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-From: Altan Ozlu <altan@ozlu.eu>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, Altan Ozlu <altan@ozlu.eu>
-Subject: [PATCH v2] rust: static_assert: add optional message
-Message-ID: <20250324210005.990827-2-altan@ozlu.eu>
-In-Reply-To: <20250324184403.868691-2-altan@ozlu.eu>
-References: <20250324184403.868691-2-altan@ozlu.eu>
-Feedback-ID: 127873954:user:proton
-X-Pm-Message-ID: ca3a6b49093bdf654052f92c84ebdb39ffcaac36
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rmh7hgSh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E57C4CEDD;
+	Mon, 24 Mar 2025 21:04:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742850250;
+	bh=o72TB1NTQ+rLH2wrbrpTZbwQ6E6S4RZ1mc9yiTyQiI8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rmh7hgShasVbB4t238GyVkm5FFPWr5JdPrbJoUvATk6TCrWuYz81+UU86sS90/q6z
+	 3J5reJs6pkbuS5wyGvRKGcF5Aehi0ifT7QmU0TR6JjbvAUdhUy8vGK73VrZTKkU5Bh
+	 hLwVjyFREE4acfl/W3n2GvQWKWOVqYBXRp4rlEyNoa181fl6AuBPsWyKSrqJF0E/7Z
+	 7XG3vMwj8f4MkhxcfEumTaeX/GoJ7XxYsebubSU4ou7yhc/nVFt+lFGpdT899TvIkE
+	 oQkyJzpsO62O3F0LM31COnN+8erv5TngDZwZG3QAAqkJgCTs7sWP7P+Ag3BsqAx6uU
+	 vjY8Bu6GraElQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH 00/10] rust: clean and enable Clippy `doc_markdown` lint
+Date: Mon, 24 Mar 2025 22:03:47 +0100
+Message-ID: <20250324210359.1199574-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Add optional panic message for `static_assert!` macro.
+This is how it would look like -- I am not sure how many false positives
+we will get, so I marked the last commit as RFC and perhaps we just want
+this lint as an opt-in in e.g. `W=2`.
 
-It doesn't support argument formatting, due to `const_format_args`
-being experimental. It will fail to compile if a message with argument
-is given.
+However, so far, we only got one ("KUnit"), plus a couple others that
+are in C side comments that were copied, and thus someone may want to
+keep them exactly in sync. So it seems pretty OK so far.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1149
-Signed-off-by: Altan Ozlu <altan@ozlu.eu>
----
- rust/kernel/static_assert.rs | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Another question is whether we want to commit to something like the
+global list in `.clippy.toml`.
 
-diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
-index 3115ee0ba8e9..b0569dccfb76 100644
---- a/rust/kernel/static_assert.rs
-+++ b/rust/kernel/static_assert.rs
-@@ -6,6 +6,9 @@
- ///
- /// Similar to C11 [`_Static_assert`] and C++11 [`static_assert`].
- ///
-+/// It supports an optional argument for custom panic messages.
-+/// The panic message doesn't support formatting.
-+///
- /// The feature may be added to Rust in the future: see [RFC 2790].
- ///
- /// [`_Static_assert`]: https://en.cppreference.com/w/c/language/_Static_a=
-ssert
-@@ -25,10 +28,11 @@
- ///     x + 2
- /// }
- /// static_assert!(f(40) =3D=3D 42);
-+/// static_assert!(f(40) =3D=3D 42, "f(x) must add 2 to the given input.")=
-;
- /// ```
- #[macro_export]
- macro_rules! static_assert {
--    ($condition:expr) =3D> {
--        const _: () =3D core::assert!($condition);
-+    ($condition:expr $(,$arg:literal)?) =3D> {
-+        const _: () =3D core::assert!($condition $(,$arg)?);
-     };
- }
+Anyway, please take a look -- the other commits should probably be
+picked even if we do not enable the lint.
 
-base-commit: a0b539ad369fe434fe488faf92d4ae770a27a90f
---=20
-2.48.1
+Thanks!
 
+Miguel Ojeda (10):
+  drm/panic: add missing space
+  drm/panic: add missing Markdown code span
+  rust: alloc: add missing Markdown code spans
+  rust: alloc: add missing Markdown code span
+  rust: dma: add missing Markdown code span
+  rust: of: add missing Markdown code span
+  rust: pci: fix docs related to missing Markdown code spans
+  rust: platform: fix docs related to missing Markdown code spans
+  rust: task: add missing Markdown code spans and intra-doc links
+  rust: kbuild: enable `doc_markdown` Clippy lint
 
+ .clippy.toml                        |  4 ++++
+ Makefile                            |  1 +
+ drivers/gpu/drm/drm_panic_qr.rs     |  4 ++--
+ rust/kernel/alloc.rs                |  4 ++--
+ rust/kernel/alloc/allocator_test.rs |  2 +-
+ rust/kernel/dma.rs                  |  2 +-
+ rust/kernel/of.rs                   |  2 +-
+ rust/kernel/pci.rs                  | 15 +++++++++------
+ rust/kernel/platform.rs             |  9 +++++----
+ rust/kernel/task.rs                 |  4 ++--
+ 10 files changed, 28 insertions(+), 19 deletions(-)
+
+--
+2.49.0
