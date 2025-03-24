@@ -1,125 +1,80 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF3017BEBF
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Mar 2025 06:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A7613B797
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Mar 2025 07:32:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742797162; cv=none; b=XdJxvicep6XSlvgYBXxh2yJGy4K0nT0dO66Gq9SnLM5m3kQm+TUKMC1Iuo2efTsnKsyhqnZSmRTwRYNAWk6uuptqGMQwn2SRoLXuiv8C36SguuEax1MEDMSCVYSlbK/H8uElqulrqo27r0MkR+Ix4z+vHlViluaQF9f/z7XN2KM=
+	t=1742801543; cv=none; b=CezeNB9bIkFJXSg11tuS9EJNX0aMEEtiA2St4js9W0NcsvfmDG05NAnXiWxSxbP7L1w0dE4GkEzh42oia1RL00eRCdDIPBzCd2NyeZLLvKS5+xiXwOv2o51yDhWXJAr8zj6AIdS48JhE3ObyM8FhpLUI6sFGlQQIn6P0gRJSxr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742797162; c=relaxed/simple;
-	bh=EmIz2lLWZAsWPVRdqglI5WF3ic5iH2SgqlIBROEY68o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WHLBnDmbcz3ZchZJSySsP+B17aHhaHdxFUIBukT7wcbJ9SWUuf78bm3FAkPOzTipTQBNKYwg6BlHzLvg9sm13aAF54mf/re+qE751HIBk0cC/UHplIsG/0cOanOkdFd8MqsnHQV6oP/rl+fira/8KuRDCdNCpSz0YNHABauAFKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wdSu9NA2; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742801543; c=relaxed/simple;
+	bh=4kwONzzGAb7j/EpmGAg17PKdIoNNEIO0Nr6aIZBujKk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gXrxX5xtpQbPG2dXkP2Ay5rHMpo39uU55V42aupslaM7xmJq1iRUo277ne7LLJUhK02N0KPUpQ+YnAwirVnx9E/VW3vXtYkr3s6FfVJEKM6pLqCIvDEdVMgY+85v4a5oScAINw45k73vLp5XGFKk8EKZCcaI4lvyNWuN9KDg1Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=lS2Vvd+U; arc=none smtp.client-ip=109.224.244.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wdSu9NA2"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742797158;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TvhJEaWvDoaTAezZAcDpCCpB9iCGHWPgiSVGgqYu6Jw=;
-	b=wdSu9NA2wq9kblJR8pfDVQKz92XQlXP6gCDG2m2E9Tp/aF6Mt81S11Rdsa3vEkaxu/E18b
-	qSQBerdoesC6V1NVZ+A199MCDebZaqphngOYA6/uUtxKyPqy2VHgFbNYVb9ExakOonKMb/
-	K//b+D2JBF2kziIGsisiO5RjgCyHZto=
-From: Kunwu Chan <kunwu.chan@linux.dev>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Grace Deng <Grace.Deng006@Gmail.com>
-Subject: [PATCH v2] rust: sync: optimize rust symbol generation for CondVar
-Date: Mon, 24 Mar 2025 14:18:34 +0800
-Message-ID: <20250324061835.1693125-1-kunwu.chan@linux.dev>
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="lS2Vvd+U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1742801534; x=1743060734;
+	bh=4kwONzzGAb7j/EpmGAg17PKdIoNNEIO0Nr6aIZBujKk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=lS2Vvd+UTX1sIAbF7ZC1bbVL/akHfHgu+rE0oP9lme1NE2qWwvymzfeMQcD7d71de
+	 Bu0v/qk69aLEhfr76BHaCb3Hrsvk0LgHczcYj7V54Y9a0pVujFPkOM28xDpN5VZ9GJ
+	 GEohJM8xE0BBVbLXNRelPo4pACT+GhSXAjQqZnW+eBif8ckWFzHElayerYjYBmCHtt
+	 2jHGiuIfpdSsYcgH8zQremtkNcyWzA8gFvTMSPiyj5o48ng4Pn6WhBrYQ+knKpiNCp
+	 3NvQkpbTiuIQ0/cLG33zBJOoBB7bB78fA3B6IppgDPvq8M7VzH7uSNVsV050hX9vDe
+	 TwL7oW7Jg7mmw==
+Date: Mon, 24 Mar 2025 07:32:08 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 2/4] rust: rename AlwaysRefCounted to RefCounted
+Message-ID: <Z-EKcUppzh-5oTI6@mango>
+In-Reply-To: <67dd91ca.050a0220.acaf0.79d2@mx.google.com>
+References: <20250313-unique-ref-v8-0-3082ffc67a31@pm.me> <20250313-unique-ref-v8-2-3082ffc67a31@pm.me> <67dd91ca.050a0220.acaf0.79d2@mx.google.com>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 22a341c52edd1bfe218b1fd297c33dd5943465b6
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Kunwu Chan <kunwu.chan@hotmail.com>
+On 250321 0920, Boqun Feng wrote:
+> On Thu, Mar 13, 2025 at 07:00:11AM +0000, Oliver Mangold wrote:
+> > AlwaysRefCounted will become a marker trait to indicate that it is allo=
+wed
+> > to obtain an ARef from a `&`, which cannot be allowed for types which a=
+re
+> > also Ownable.
+> >
+>=20
+> This commit log doesn't explain why we need to do this.
 
-When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-with ARCH=arm64, the following symbols are generated:
+Hi Boqun,
 
-$nm vmlinux | grep ' _R'.*CondVar | rustfilt
-... T <kernel::sync::condvar::CondVar>::notify_all
-... T <kernel::sync::condvar::CondVar>::notify_one
-... T <kernel::sync::condvar::CondVar>::notify_sync
-... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-... T <kernel::sync::poll::PollCondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-... T <kernel::sync::poll::PollCondVar as core::ops::drop::Drop>::drop
+what exactly do you have in mind? It mentions that it is to allow types tha=
+t
+are both Ownable and RefCounted. That the next step is to introduce
+OwnableRefCounted? That we want to safely convert from ARef to Owned?
 
-These notify_* symbols are trivial wrappers around the C functions
-__wake_up and __wake_up_sync. It doesn't make sense to go through
-a trivial wrapper for these functions, so mark them inline.
+> > +
+> > +// SAFETY: we currently do not implement `Ownable`, thus it is okay to=
+ can obtain an `ARef<Request>`
+>=20
+> s/we/We
+>=20
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1145
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Missed that one. Thanks.
 
----
-Changes in v2:
-- Remove '#[inline]' for notify()
-- Reword commit msg
-- v1 link: https://lore.kernel.org/rust-for-linux/01c67d96-6477-4851-81ae-0cbee3b9e893@linux.dev
----
- rust/kernel/sync/condvar.rs | 3 +++
- 1 file changed, 3 insertions(+)
+Best regards,
 
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index caebf03f553b..c6ec64295c9f 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -216,6 +216,7 @@ fn notify(&self, count: c_int) {
-     /// This method behaves like `notify_one`, except that it hints to the scheduler that the
-     /// current thread is about to go to sleep, so it should schedule the target thread on the same
-     /// CPU.
-+    #[inline]
-     pub fn notify_sync(&self) {
-         // SAFETY: `wait_queue_head` points to valid memory.
-         unsafe { bindings::__wake_up_sync(self.wait_queue_head.get(), TASK_NORMAL) };
-@@ -225,6 +226,7 @@ pub fn notify_sync(&self) {
-     ///
-     /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
-     /// completely (as opposed to automatically waking up the next waiter).
-+    #[inline]
-     pub fn notify_one(&self) {
-         self.notify(1);
-     }
-@@ -233,6 +235,7 @@ pub fn notify_one(&self) {
-     ///
-     /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
-     /// completely (as opposed to automatically waking up the next waiter).
-+    #[inline]
-     pub fn notify_all(&self) {
-         self.notify(0);
-     }
--- 
-2.43.0
+Oliver
 
