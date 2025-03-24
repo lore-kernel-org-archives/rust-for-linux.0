@@ -1,158 +1,97 @@
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59ACF257443
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Mar 2025 07:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F5725D554;
+	Mon, 24 Mar 2025 09:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742803157; cv=none; b=YoEVVQxCfpSULOdkQo678yw0jnuduoRfwjSLQbcnocJHVtE9IgwG92dkxWQC3JiNEc6+miJHbo0Egz/ziENc11jhOlLNW0N+wJf3SGwuaI3i6lFGEkXvVA31RhuviUJWcpsFMT7Ny349uRiE15mIUNu5Z6cqJdBkvyFWs+IEnGM=
+	t=1742809073; cv=none; b=kn9UjWc4irCHgg8lq42TeNBMfQrZaIaOk7godI5H+nWE/uxurJXbkMvAV70qI/snywdCEde6MChTgyF41iqpLzhPmtNHbdfw9Pb5Mi/pqvy5J3jdCmy8XEeIelo18/roXJvGIQ87zP6VHp6b/8QX+iKZgMfkGz0vszINUl9kPbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742803157; c=relaxed/simple;
-	bh=cQv7TD29YFOXq9eSJ7bWcsI3cggdcLl5k5/BLWPJuos=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eiRW/HaeJ3fnc8FqX0MGGeuobTT/u9MB3tyI5NRIcsWmTkm0PGvPkEzHP//4Fa+G/miiChRNQgr8nOYwW5Pwn6+Ook4b54SeRkMiXoQFEBFyVlUOldxk41uCi9wWbe2hNOmFjeuPFfJdQdhcDiKHLC9dT1ysU+Rj2yetZowxP5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=j2gIYRSZ; arc=none smtp.client-ip=79.135.106.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1742809073; c=relaxed/simple;
+	bh=F09joWCE15FJHzvmnuhZZDe0J85P+cppG5qFK6Ig3eM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dfMaQy9qWFYD8rL3NE5g0aXxcwPQtKzHqbTwS4OcYDVSYutXODo18e+iFjBNPO0qeJGYsz8DzzjudRajEWlszs8Ge5GpgdzVypOgZs6Pi1HOYWkYyEGd6qLYOGaWFv0gkGntOQaq6gP0AQmOpvToSFw7c4q6heqLgKxxFbK/8+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D4ZJw7Cy; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="j2gIYRSZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1742803146; x=1743062346;
-	bh=0TjUvF28ALbT0hUt0OU2d7JN+ZbneHIxGYIojNxdUeU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=j2gIYRSZ6scbJN1NIHamQenYBFPt8lmz0Y2INjcVknRypmhmmVcbAEpc2p2eX0KPk
-	 bpT5K4xH+8Bl8QMjg1wiMjX3FO4i2KtGH+mYQa7jjdURtdnFWCSofYrmdfH2sKFLSs
-	 w+/xvvcZZz2eiNEB9iZDfi5u0b6fjR6Xq6r06EVWzj8o/VE9eX6GmYf0kb7oXB7C2n
-	 v8ZLnEWus0kloK1bqwpnVEFIexK/CgZ/5yuuup2zGV3sP3qA7uwHwvYl/4A3Uvih4A
-	 TsnQeBQ0XuzTyMvY1xUE4I2jwavhqhfTy5/grUcX5Dk9Z70ZR1wcxm5fE+2EWu6CfY
-	 jwUQztvXI2GEQ==
-Date: Mon, 24 Mar 2025 07:59:01 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 4/4] rust: adding OwnableRefCounted and SimpleOwnableRefCounted
-Message-ID: <Z-EQwgxLC2-iFtz7@mango>
-In-Reply-To: <67dd95be.050a0220.ff22e.716f@mx.google.com>
-References: <20250313-unique-ref-v8-0-3082ffc67a31@pm.me> <20250313-unique-ref-v8-4-3082ffc67a31@pm.me> <67dd95be.050a0220.ff22e.716f@mx.google.com>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 385175752ba1fc1cf604748e4c3c05d8a6789ed3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D4ZJw7Cy"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-223f7b10cbbso8334445ad.3;
+        Mon, 24 Mar 2025 02:37:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742809071; x=1743413871; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F09joWCE15FJHzvmnuhZZDe0J85P+cppG5qFK6Ig3eM=;
+        b=D4ZJw7Cy/8X4UceQ/sr5/i1UkJwvFgmwbmGCXrE6fpvVsnGKXPZ+wCao6mSd+OFCZX
+         UDh7hZWks75PpP0fzWsIuBE/xeezilGx/vynFevDDy32YrCZq35SMqTJ5niweX/g47gN
+         aqz+555xbi/SyCUxPP3D8Rh9mzaXnb4uvgnit0K4TxIzv8et+bOgAntyYYxJ3d5Osn8T
+         Q3e/+yjwr47GFHgupJCO8CYpHPXMj1UuC2oR+S+DFMsGr4UjU3Mtl/lMd1jGApbxpjYZ
+         t8r9sFNXmpOyQUyCD0IupQRaZXeRDPweDGbsh4AnJZIDRSkYe+orKtthzi1ph3OTHNTO
+         5bbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742809071; x=1743413871;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F09joWCE15FJHzvmnuhZZDe0J85P+cppG5qFK6Ig3eM=;
+        b=GeYiLzPe6v9+Y6B72KwpAYpW2CXw595mXGXbkspiyAOXt6DMhmnBbMdjl7JiKT6JGD
+         WJae1h6ZjdmN8XHXL0ZdQCN3xto1HyMp+D7md2ApV4IiS7d/Bvo41gIL5PtYycZPOBVW
+         JQORKSkwCdiQLkftU9x7KK/Wq+bg9hsaEW8miqaifqCycFh5RbJMgMmeWZ3t0QduFo/2
+         Grs/k9PQiHhBstRk1p+6EqcAygniQtHnfPzqTdAvKQ67ZaEX1OaTUAwl70/K0DXJxekW
+         hh7bhnCCgmGnd4tpMy14Q+0BAO2YilClIdlcym22xNBYKOOQWdRj2Id8KuxXFZw/tXjQ
+         mZUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV2sFhe8+XFzm9TmNl8KGV/Y8Lz3Ujaq1uEnOj31ucfq6e+RtKOvUpZuU4YO8DXkkQYsJnBq515ulqNUAgGkwY=@vger.kernel.org, AJvYcCWa8z3+t+Xt8gx40aFKVLFIU9Xlerzkao/6epFk8Iu/+Y91jqz0hjFCIASoWnAHvWkd4oDXIeoL17BJ++E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGwIEZiPnoARsEVEegDgWZ9u6JZ55/BESbGcg3vNczsdpAkq5p
+	gnkKRxjVQBevfE+XqBCTDDVwdKFOww2IWOhEwtLab4x7KgZRWy3OPP6zqpiezVQ5Ns4EuJem6Xe
+	dV7T/hOi5Muencqf148bFhpCJBwU=
+X-Gm-Gg: ASbGncuqP9jKKI3Am3BaGugtMrY0uI1i02fTQfhaK+0BzNjhcW3JXdAG/w+AttdPqYT
+	12N860Ekcws8tzObFiaEO8ecxsVPF0eLO5s+wctXOwZ3T0f8zlC9P2Dp6OzEr1MGQEs8yt9W4+o
+	jOz4Jz1oZKQCRFvdN/idno9UIkQg==
+X-Google-Smtp-Source: AGHT+IEdykui222hm/ZWYGLSJ8TexC3iOARKnbXgoXKpded+UXemeqbT/BZzY3q6RLfstwRMsEnNOERjQExhvXa3/JQ=
+X-Received: by 2002:a17:902:d511:b0:223:364f:7a5 with SMTP id
+ d9443c01a7336-227913b871dmr50503065ad.11.1742809070900; Mon, 24 Mar 2025
+ 02:37:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250324061835.1693125-1-kunwu.chan@linux.dev>
+In-Reply-To: <20250324061835.1693125-1-kunwu.chan@linux.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 24 Mar 2025 10:37:38 +0100
+X-Gm-Features: AQ5f1Jqf8saODp4jWXHiWsm4m-HG1gDbjXnY9txF5lZmpm0WlV9pTLQSxoUMJEE
+Message-ID: <CANiq72=KjT8HRJA0NStHeqm-9286gay496CU8edNALPQ9_N+ww@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: sync: optimize rust symbol generation for CondVar
+To: Kunwu Chan <kunwu.chan@linux.dev>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
+	morbo@google.com, justinstitt@google.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	Kunwu Chan <kunwu.chan@hotmail.com>, Grace Deng <Grace.Deng006@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 250321 0937, Boqun Feng wrote:
-> >
-> > +/// A trait for objects that can be wrapped in either one of the refer=
-ence types [`Owned`] and
-> > +/// [`ARef`].
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Implementers must ensure that:
-> > +///
-> > +/// - Both the safety requirements for [`Ownable`] and [`RefCounted`] =
-are fulfilled.
-> > +/// - The uniqueness invariant of [`Owned`] is upheld until dropped.
->=20
-> Could you explain what this safety requirement means? Isn't this part of
-> the safe requirement of `impl Ownable`?
+On Mon, Mar 24, 2025 at 7:19=E2=80=AFAM Kunwu Chan <kunwu.chan@linux.dev> w=
+rote:
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1145
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
 
-To be honest, I don't remember. Right now I also can't see a good reason
-for it. Might be I was confused by the documentation of the safety
-requirements for Ownable.
+Nit: I typically use Link after Suggested-by, to mimic what the docs
+require about Reported-by with Link. (No need to resend a new version
+just for this :)
 
-Thinking about it, there seems to be something wrong with these:
+> - Remove '#[inline]' for notify()
 
-> /// # Safety
-> ///
-> /// Implementers must ensure that any objects borrowed directly as `&T` s=
-tay alive for the duration
-> /// of the lifetime, and that any objects owned by Rust as [`Owned<T>`] s=
-tay alive while that owned
-> /// reference exists, until the [`Ownable::release()`] trait method is ca=
-lled.
-> pub unsafe trait Ownable {
->     /// Releases the object (frees it or returns it to foreign ownership)=
-.
->     ///
->     /// # Safety
->     ///
->     /// Callers must ensure that the object is no longer referenced after=
- this call.
->     unsafe fn release(this: NonNull<Self>);
-> }
->=20
-> /// A subtrait of Ownable that asserts that an [`Owned<T>`] Rust referenc=
-e is not only unique
-> /// within Rust and keeps the `T` alive, but also guarantees that the C c=
-ode follows the
-> /// usual mutable reference requirements. That is, the kernel will never =
-mutate the
-> /// `T` (excluding internal mutability that follows the usual rules) whil=
-e Rust owns it.
-> ///
-> /// When this type is implemented for an [`Ownable`] type, it allows [`Ow=
-ned<T>`] to be
-> /// dereferenced into a &mut T.
-> ///
-> /// # Safety
-> ///
-> /// Implementers must ensure that the kernel never mutates the underlying=
- type while
-> /// Rust owns it.
-> pub unsafe trait OwnableMut: Ownable {}
+It is good that the commit matches the log now, though I wonder if in
+the future we may want the `#[inline]` for `notify` anyway, even if
+LLVM does that one on its own today.
 
-As an Owned hands out an `&` to an Ownable, the requirement about the kerne=
-l
-not mutating it should apply to an Ownable just the same as to an OwnableMu=
-t.
-
-The point of OwnableMut should by to declare that it is safe to hand out an
-`&mut` which implies that it is not pinned.
-
-I didn't want to mess too much with Asahi Lina's patch, so I left it as is.
-Maybe she wanted to assign a different meaning of these traits.
-
-Thoughts?
-
-> > +///
-> > +/// struct Foo {
-> > +///     refcount: Cell<usize>,
->=20
-> It's fine to use a Cell for now, but eventually we want to replace this
-> with either Gary's Refcount [1] or LKMM atomics.
->=20
-> [1]: https://lore.kernel.org/rust-for-linux/20250219201602.1898383-1-gary=
-@garyguo.net/
->=20
-> (just keeping a note here)
-
-Ok, then I will leave it as is. I was wondering if I should make it atomic,
-but I didn't because of the recent Rust atomics vs. kernel atomics
-discussion, which I understood as there being some unresolved questions.
-
-> > +pub unsafe trait OwnableRefCounted: RefCounted + Ownable + Sized {
-> > +    /// Checks if the [`ARef`] is unique and convert it to an [`Owned`=
-] it that is that case.
-> > +    /// Otherwise it returns again an [`ARef`] to the same underlying =
-object.
-> > +    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<S=
-elf>>;
-> > +    /// Converts the [`Owned`] into an [`ARef`].
-> > +
->=20
-> ^ this blanket line seems to be at the wrong place.
-
-Right. Thanks.
-
-Best regards,
-
-Oliver
-
+Cheers,
+Miguel
