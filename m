@@ -1,91 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069052620C3;
-	Mon, 24 Mar 2025 16:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD46263F37;
+	Mon, 24 Mar 2025 16:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742834963; cv=none; b=a4R/VVjTVjiNxm6IrAutfdtUmNkRzS+NuHRQnj84vH9FCiw7WDWJALSyXaDxvJtcUbtCRVehqHRaeAENrnIkQb0QhenSYHwGCTkvz8S0G8hNWmverDgV/m6HvnJynTeQjLFu1O+imsBkS2cm+5G5+L3gAf0kEHuwOETYrfSZa1U=
+	t=1742834977; cv=none; b=UBy81Geq3tJnfZFo2a4mOND/bNL0P5Jv+zfpqox41oYoBMqM2q4xE0i7zltciDqseWUTFCSW8Uh2b9ASbsmCA3kWxHS8e9dNC8etRg4UfREkpnUGh12SYQuslqJZvEWwvsXmgCrqqWcDMbZ8IYTDo3SuLQxrWJOO8RZIidR/JDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742834963; c=relaxed/simple;
-	bh=KJqgtiZ5ZdlB750vGe4zUjRFX7IN6DR7LFII+F/opFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ibECJvvgYOafanJWubwM291DMczISUTicgP0UUggWrseZnTrEW0K8HFtTqAIl5XtkCfd8EX7b8ZvQ4NAA4hA/7FEv+2GVqzkuvOJxcecEbZSUxDlc78oSPpbJ8Y7DJgqAlo5BbWul3QyzoXgaLO7KjYCZlXN7lP3GRE6nytWuJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1Z6IMN+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742834977; c=relaxed/simple;
+	bh=1cW3XXPLhenC0aPM0QTbraRgM3ezYhhg4cN/zcLWDKc=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bgHalYWeCkup/L3jaB2TIH5K+yehaVDqJzT0XrWzihiz9jmX2FI13WOkfIMa4uqVM2sWEZlmN0R7LNvHB20p/IWVVRbHn11C34hwxQ5Ak0GovGKoWoBleI/vh8eUCHtBBwX8yAC1mcD0/GKW5A7a9mKYIONFy7OEG0o/B7rPToQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3w6GWDs; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1Z6IMN+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AD2C4CEDD;
-	Mon, 24 Mar 2025 16:49:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742834962;
-	bh=KJqgtiZ5ZdlB750vGe4zUjRFX7IN6DR7LFII+F/opFU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h1Z6IMN+gzcXp78xjN9Nz7rDBrBS1QswNCk7WK8ESxNOrWujJyeza3GcQrTfIf37S
-	 2lelpI7YanKBeKFlRvkThrBaXOYvrJohirHQvR9RfHWbIn/zNzD0io7b71eJnkps+d
-	 uHe0awWqgGx0aL5BHfwu8JPwsqPTs5f1TbsnFqJiqTRKJ2rXA2S+dnV3aKxCou0W2b
-	 foXKV0Jh20xLNCLiWr9DOMTsQxiFjBLhGv+iv9Cu3ON9cPLizbME3C+jEZPGLcrmWE
-	 IbfmxoIBr/hFklaCe37r84kuauHt8FUqXYsN68pw1l8G4GLbce7Ie7XrjED7n/YPXJ
-	 Zs5f6xNLK34cA==
-Date: Mon, 24 Mar 2025 17:49:16 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg KH <gregkh@linuxfoundation.org>, bhelgaas@google.com,
-	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] rust: pci: impl TryFrom<&Device> for &pci::Device
-Message-ID: <Z-GNDE68vwhk0gaV@cassiopeiae>
-References: <20250321214826.140946-1-dakr@kernel.org>
- <20250321214826.140946-3-dakr@kernel.org>
- <2025032158-embezzle-life-8810@gregkh>
- <Z96MrGQvpVrFqWYJ@pollux>
- <Z-CG01QzSJjp46ad@pollux>
- <D8ON7WC8WMFG.2S2JRK6G9TOSL@proton.me>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3w6GWDs"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6e8ffa00555so38294336d6.0;
+        Mon, 24 Mar 2025 09:49:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742834974; x=1743439774; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:subject:cc:to:from:date:feedback-id
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bf2kh6G05pGLPdSuj7dYJ6UhpBm6ycRh7eYTtN26Igs=;
+        b=M3w6GWDsa6uBbIYHuR7jKiTEBiTllhdsmO8rTaBo+q6sz3xuYjRLd4twMeyehgXaWm
+         A+7sZCMNr1o65gLOWPE79dy/9KfT20X60hitsyOVd24GnxqyUVUPLjgpB7zqOdqg+UqU
+         ToN2dSPRLe80Qo3ErLyfQW4WNSAUSZALVdobLsp9ISj9Q+3JCRVs0haMponXNGlLkbYm
+         nh5VssGfmqDTtUCZQu3A3g0riUR+WUKQRPzKi8pVw2oFeXUCZuJ8aDwyDcvVyJsJ+8mY
+         BOLGHdHg339lukeGBTlYLIRjJee2QC6YWruG+kDUdmLQF9DwqgAyJ5I/RL8xy9ilAt2z
+         A3jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742834974; x=1743439774;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:subject:cc:to:from:date:feedback-id
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Bf2kh6G05pGLPdSuj7dYJ6UhpBm6ycRh7eYTtN26Igs=;
+        b=V3ZV3WxwKjL0llUnEtCmA4AVF824LGrakkzeOAXe8zAKiMnYmKLLUH6k97mOloZENB
+         tNukCXihFgE1YZs7jJ2UR1Y+80tX07qysOuhnXxk+pU3lHDpdVLS4p0xfHOI3DfDAz/3
+         7Q3pn86lHFgiwrO++//DtTPJ96gvyedk3oU3M5Ok+Zm7vqrffvcNR7Qsc8DA+dA5rzBr
+         3A0IR/anZj7bq2LOj54CnFFFuaIU7s2sM0SU7twlShPNXlRVTK1IGAbJZrKc+kjNHF8f
+         vrEGbLe8+Fkyej0dDq05HHv6uIpg8dq1EZpT3DgKMTqo2xMqQe2CnGTqg/95zxtun8RV
+         ei1A==
+X-Forwarded-Encrypted: i=1; AJvYcCWnjg+1UW6UQX35Fv+yiJWTQ2Zl/C/2cGv4pPxpV6canVDe8BWBlWt02c+u/zPj7gl6n/1dI+gNcqPwOEBQQvU=@vger.kernel.org, AJvYcCWxBumoUadlScVDOhNhXRY9FdHAMkZzTC2MP+vKMNe+VBimwUSigpBXOdtKgBjwHDibfI/BrJCbDtZLfr4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAwfd8hompdcPLQRCKoKwPJIkAR3kEXukLx617mKPzpj1P+zd9
+	kkyEf44j8wP+eD8HZiTg/5hetdrLaUAUpcrQFRcyYYkKxsKnvOqD
+X-Gm-Gg: ASbGncugc7inQOZsrOONDeR8cynIajMujwsZJQkdL1NCcn2LQJGzYZz8QMK79efcYkO
+	CmryplU6G0qNfme1/h20TgXkGs7EHSJkEJ+oG4bWyTQMnio1owStSCh2YKDHu2PLA3jGjFhWP+L
+	vmeo7/e+MsKfdCQSrHEq0BFYBPX6sFf6cnCZE2kJm/l3wyW20ZvDvi9ar6WLiI7ky4rau0xoUvI
+	tRKJLhZkUqB9YF1SOdPziqgppOq6X9Smq+fuJfBXJ3zhNLlyygcdxfHYaVYwz/hGnEvhg4LqyW0
+	IPs4B4goEUIcxA6hzNB0I8VHzquyKaptYkBR/v1p+8CacGZmmvm5Sl89SSnIKB+JUGebWlhiLjI
+	JG6dmiRMshVGyVrTJ3F69uNSs4N4QAVixy4s=
+X-Google-Smtp-Source: AGHT+IF7uIUBThvsY+ZL5DCMtDH932EJZ9y8lXz+Nizlpbf5Qr1xvu8w9feQIVuqiS66Bs6YbhNFdw==
+X-Received: by 2002:a05:6214:2407:b0:6e8:c713:321f with SMTP id 6a1803df08f44-6eb3f339e06mr247763406d6.35.1742834974211;
+        Mon, 24 Mar 2025 09:49:34 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3ef0eceesm46989946d6.22.2025.03.24.09.49.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 09:49:33 -0700 (PDT)
+Message-ID: <67e18d1d.d40a0220.1a1e10.296f@mx.google.com>
+X-Google-Original-Message-ID: <Z-GNGwN8Kv29ybB0@winterfell.>
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E6C1A120007C;
+	Mon, 24 Mar 2025 12:49:32 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Mon, 24 Mar 2025 12:49:32 -0400
+X-ME-Sender: <xms:HI3hZ6Ieop_8G7-9NdMDSsHUixqR7Neaupd93Om_wcFdI_TT4TZTag>
+    <xme:HI3hZyKz2qDOJcjciBZaqvu34CogmjdRZEyXiEwFrbasfPlgUbXiarXuV6hje97oQ
+    kcjY7fwniTGgLIAWA>
+X-ME-Received: <xmr:HI3hZ6spx5AvU5WKhvGcLile6HxgGoZ_T1lq7pfv6CuuuoHkMrvbBo2d6mU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduiedtvdelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
+    tdejnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
+    hilhdrtghomheqnecuggftrfgrthhtvghrnhepgeekgeettdelffekfedtveelueeiudev
+    jeegieekvdegkedufeetfeeiiedvueelnecuffhomhgrihhnpehgihhthhhusgdrtghomh
+    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhq
+    uhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqud
+    ejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgv
+    rdhnrghmvgdpnhgspghrtghpthhtohepvddupdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopehmihhguhgvlhdrohhjvggurgdrshgrnhguohhnihhssehgmhgrihhlrdgtohhm
+    pdhrtghpthhtohepkhhunhifuhdrtghhrghnsehlihhnuhigrdguvghvpdhrtghpthhtoh
+    epohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhho
+    rhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+    dprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgt
+    phhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhope
+    grrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghr
+    hihhlhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:HI3hZ_bLw4zxWGG2Z5E7mtt8nF3OXydAO1yPsOuhiQRMU_tOhNnTgQ>
+    <xmx:HI3hZxagqG_VmqT0vVzHga_RR_X4t0cLBZLPNhS-39Ahfebw9eDfpA>
+    <xmx:HI3hZ7CJzjMNIEmsX36lbsoHgtONPJLr-0ZoCNyPLmQrNKdCSW_3KQ>
+    <xmx:HI3hZ3ZRgp8DbZEpbTfKe7EZ03CXWqIwHuNAYRitvdkKeuK2xj3goQ>
+    <xmx:HI3hZxqAJXWJJFCR17qdW8iyOKgUk6UvcvDUWa2mJMOofWma99U260aZ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Mar 2025 12:49:32 -0400 (EDT)
+Date: Mon, 24 Mar 2025 09:49:31 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Kunwu Chan <kunwu.chan@linux.dev>, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com, morbo@google.com,
+	justinstitt@google.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	Kunwu Chan <kunwu.chan@hotmail.com>,
+	Grace Deng <Grace.Deng006@gmail.com>
+Subject: Re: [PATCH v2] rust: sync: optimize rust symbol generation for
+ CondVar
+References: <20250324061835.1693125-1-kunwu.chan@linux.dev>
+ <CANiq72=KjT8HRJA0NStHeqm-9286gay496CU8edNALPQ9_N+ww@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <D8ON7WC8WMFG.2S2JRK6G9TOSL@proton.me>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=KjT8HRJA0NStHeqm-9286gay496CU8edNALPQ9_N+ww@mail.gmail.com>
 
-On Mon, Mar 24, 2025 at 04:39:25PM +0000, Benno Lossin wrote:
-> On Sun Mar 23, 2025 at 11:10 PM CET, Danilo Krummrich wrote:
-> > On Sat, Mar 22, 2025 at 11:10:57AM +0100, Danilo Krummrich wrote:
-> >> On Fri, Mar 21, 2025 at 08:25:07PM -0700, Greg KH wrote:
-> >> > Along these lines, if you can convince me that this is something that we
-> >> > really should be doing, in that we should always be checking every time
-> >> > someone would want to call to_pci_dev(), that the return value is
-> >> > checked, then why don't we also do this in C if it's going to be
-> >> > something to assure people it is going to be correct?  I don't want to
-> >> > see the rust and C sides get "out of sync" here for things that can be
-> >> > kept in sync, as that reduces the mental load of all of us as we travers
-> >> > across the boundry for the next 20+ years.
-> >> 
-> >> I think in this case it is good when the C and Rust side get a bit
-> >> "out of sync":
+On Mon, Mar 24, 2025 at 10:37:38AM +0100, Miguel Ojeda wrote:
+> On Mon, Mar 24, 2025 at 7:19 AM Kunwu Chan <kunwu.chan@linux.dev> wrote:
 > >
-> > A bit more clarification on this:
-> >
-> > What I want to say with this is, since we can cover a lot of the common cases
-> > through abstractions and the type system, we're left with the not so common
-> > ones, where the "upcasts" are not made in the context of common and well
-> > established patterns, but, for instance, depend on the semantics of the driver;
-> > those should not be unsafe IMHO.
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1145
+> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
 > 
-> I don't think that we should use `TryFrom` for stuff that should only be
-> used seldomly. A function that we can document properly is a much better
-> fit, since we can point users to the "correct" API.
+> Nit: I typically use Link after Suggested-by, to mimic what the docs
+> require about Reported-by with Link. (No need to resend a new version
+> just for this :)
+> 
+> > - Remove '#[inline]' for notify()
+> 
+> It is good that the commit matches the log now, though I wonder if in
+> the future we may want the `#[inline]` for `notify` anyway, even if
+> LLVM does that one on its own today.
+> 
 
-Most of the cases where drivers would do this conversion should be covered by
-the abstraction to already provide that actual bus specific device, rather than
-a generic one or some priv pointer, etc.
+IMO, inlining should be mostly decided by compilers instead of
+programmers, so if we don't have evidences that compilers need some
+guidance, we shouldn't introduce the `#[inline]` attribute.
 
-So, the point is that the APIs we design won't leave drivers with a reason to
-make this conversion in the first place. For the cases where they have to
-(which should be rare), it's the right thing to do. There is not an alternative
-API to point to.
+Maybe Kunwu has an example saying otherwise?
+
+Regards,
+Boqun
+
+> Cheers,
+> Miguel
