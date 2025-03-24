@@ -1,121 +1,50 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2790154BE4;
-	Mon, 24 Mar 2025 18:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99776189520;
+	Mon, 24 Mar 2025 18:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742839248; cv=none; b=CSpomSm+IkZJTkxOQQsQoNNDzbaxmWqvA4/NEsxHTvglB1kQjEhv/qlLxqh2jDM696QU1y24uXpx5rw2JJM0at2bUo3TpvsNiLeYW9c6Y/SV0w9FndBsmpuCQTZDsPxFEgwTeEBpmNYfxAIYxpy1U6Dj4oZhLgBCwDw91GAGE9s=
+	t=1742840001; cv=none; b=hUJrrYpFU1HTIUcPut2FAm+V7/jP6ygJhltTS3sZmw6h/1U5fEgeaiJD0cHUkWOBjIsGjPrIMI7wBa2vCIl5s3jvt7q/DWY+v578dGzorLTULZQK/zmp+uvbPYqPN3NzdfNuSHKFKBpbnr3BDE9SGxgOR9iRn2lm8vFfCiMGWf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742839248; c=relaxed/simple;
-	bh=2u1pQswtfbbtYrllsPjiOGGlvhCAk1KcYcAx9KdocPI=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M9sAw1Bu4R6EKQlq5yMTFvWGdlJJdRFo1EvnATFHdUnrmSxbEv3l3q3jAmvKugjgFemJvrICwkOK0CJhCFxaJ/6AUfwGUc8Ka1zDzqGotGx14JpcV9DPZxm5GCkm4+hWR6IAj1HPmys9jTpdwHeukLcAFMPc2Lklpbn28t+asHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mkbXWx7v; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742840001; c=relaxed/simple;
+	bh=HxL4j75EqQZXg4nUUxuhCgYtvVucbH/8DgVWCMZjacs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e+n+ycl03d+++GEcuR+ur4bddkaynnuq95dPKk4jVVf94kMkiM39qlApOJtM4NXJizhcRiqIP2434x0nRIPVDj+TRs/Tv/nZy+wlYqIWGu7HYvmyRUSI2nIc6BxeFW7Wn68uyUFqmysGYz4+bG6ftk2TfGDvc+2k6phEQXSRdvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTopPn3R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mkbXWx7v"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6e8f06e13a4so51266546d6.0;
-        Mon, 24 Mar 2025 11:00:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742839245; x=1743444045; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IxegvS/gmdX5MahtcjlhaOV/WbLLvOW/4APvLi3D66M=;
-        b=mkbXWx7vsBdiF80XUm3yv+Qdhm4KXUj9A+8xFXir1q26H7Ai2o1GW60lzws3DTn3yx
-         8T0ijOv5pgenTgq+OnRskU1QoMHnM5SFOuh0/po6C70i6uf8agEuEsP30LzsdOQS2BWi
-         ULZWQk4ZKHxrvuR500bE2WF2/hSrmYUmuSBNcL431d1P3P/Vwls4ueQMxiaFjXVumn9w
-         pEQkaeKdq3n4fKfM7KxntoiAWky7lHGRN/8VFBIYprvNhoocColtqeTYFNd1R2vjGK7V
-         dx5Fp1jOdGX2hgEQNGBwiWO60gVguahkLmEzECWY3JVsjRx+ck/alsWPowB6Fo8onRQk
-         AUWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742839245; x=1743444045;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IxegvS/gmdX5MahtcjlhaOV/WbLLvOW/4APvLi3D66M=;
-        b=PvECdB8Z+maiT7fa6adSLUtrvwCYRS+yZCH6gc63jKjwBZ5GRLkNrGwfzQaahlAHIi
-         M9aTJSwjIjUxofGE/6zNAfH6BfGiJFDTEhrQqEL3ywHzUktuy3UnFgIaR2Qtu58gVK6Q
-         UyMavkfpAlPzVGFqNItAJ8a854up80qJ+kDiPXK2RSFxCAddHZ9Jcski2wpzx9CGbNB9
-         KMhEPjYwWWvUdVJDpcXq+8cyaTPHzLS7lX3sUHUuPpnVW2+nMz2h4FXDOGs9XB5gckdv
-         gygXynn5U2n4epLvsV2I1nqrMUxRCyJwVMRmd80cutLHSjJFxNqd45ng1t3/UBw6T+xU
-         xT+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUdHEXX8Gqq2gYcKf+tE3q7ZnGscbT9VqKLrx42YQFQ0K2oFCUdsJqo5QDaZXZTaQKfKXLClzv23NCLluX80FI=@vger.kernel.org, AJvYcCVqejzaOSTciUUeR16A28TttNVz9YIKxCcKlspoHMlwUFbJxZeqdp8o1qX+4Jzer+O0gjfjeuFbNrznnA==@vger.kernel.org, AJvYcCXSoP/9OlthCFZp83wmBOOs10Rktt2El8sVqMB6FErQi2016hRXPmaCiQsdSOsbc9zS2lMvTYclcgoOgmw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywf51T9wGvOwdayqxZZzlyfTR1UUpFu6l4iIAioJBg3PU2lTtVA
-	k3ysLEjmE3seIc9yVBn4+w8NcvOsJFB2DNKYH12fz5vsSku8nXaD
-X-Gm-Gg: ASbGncsSmITDEOtMsybTAzNm5qu2j5jrUdepfyOszdPZCXj7sg8ESnPZgJ+UIPEx7lw
-	PW8IgNXxZmgc5MtZE4KOqpmsMHBYOBFEEpiRjxq8M5+DXZ4ZtH6obM4hmTzvNJVpjsxsRvb4tQg
-	meTEJtM3wXe94Z8sVKyqEzpXFpAYV2FiwFCfJ7yxzBVzUvlfTFoUDCESNSpH1rwEAIKnGAy4mqw
-	uqMVgwQbmpNotNtQJD/maMF/fB4kSxLyDrffuDMPvcnZdNIvvls6NekRbDotSfygoKWKOqw24ct
-	sTMZ3mip9yiYnQ+OofAc8i+zCOr0AsRJOpkaBzzY6nRmyeg4qp8cQaj9SVevIrUVuhHiWXRmAxZ
-	49E5ad0+ZtMs1FSyXcWTrMkvPKZ4q4KhEr3g=
-X-Google-Smtp-Source: AGHT+IHsd+IFmnbdrEWTTxfoPrgW0qHvvuQf3D0PGaby/SHA+37i0fcg8c4VJfrr2wYgvG7daVMjpw==
-X-Received: by 2002:ad4:5d43:0:b0:6e8:f120:80ce with SMTP id 6a1803df08f44-6eb34a4ae02mr302241246d6.22.1742839243600;
-        Mon, 24 Mar 2025 11:00:43 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eb3ef1f51esm47519356d6.26.2025.03.24.11.00.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 11:00:43 -0700 (PDT)
-Message-ID: <67e19dcb.050a0220.bdc26.35e5@mx.google.com>
-X-Google-Original-Message-ID: <Z-GdyCoaf1o01ban@winterfell.>
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8ED061200043;
-	Mon, 24 Mar 2025 14:00:42 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Mon, 24 Mar 2025 14:00:42 -0400
-X-ME-Sender: <xms:yp3hZ18y2n9NObdE9hXwsoFVpnf4mKUriGoaOsKGnsawQywgzhWmJw>
-    <xme:yp3hZ5vospLPMVwQOYCqCzM42W2XR-_H79JB0clLGALOfmKsJpYtT9F9eF3gAIPtY
-    0IYqdvt1XNo5AdYtw>
-X-ME-Received: <xmr:yp3hZzCkbANHQai2uAeDoJ5T5KR8PiskAkbvMbrVKqgTQMvNpVkGWSdyAhI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduiedtgeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedv
-    teehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggsughivghlrdhj
-    rghnuhhlghhuvgesghhmrghilhdrtghomhdprhgtphhtthhopegurghkrheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdp
-    rhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprh
-    gtphhtthhopehsfhhrsegtrghnsgdrrghuuhhgrdhorhhgrdgruhdprhgtphhtthhopegu
-    rghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhope
-    hrohgsihhnrdhmuhhrphhhhiesrghrmhdrtghomhdprhgtphhtthhopegrrdhhihhnuggs
-    ohhrgheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:yp3hZ5d06FEPwd4NwSmV5AC_xr_9qI5OBEl_aJ9dQKOEwxrDoGisPg>
-    <xmx:yp3hZ6MSMWL0opM9rOvWXo7PLKTErZ9EM-4trzalErYkVxPP0gB13g>
-    <xmx:yp3hZ7n9ze5sWivLXoiWQHl2MfmwE6o2F9kLlTmvWGYirYDUVbyl3A>
-    <xmx:yp3hZ0vP0oaAGDRlB0zwyiMM2gCn44bX9mwyweu5hwnF80_u7bpFcg>
-    <xmx:yp3hZ8tx1Pm_NPLBt6zhCbfVqIkydDZpgB_1jqYeWtVl_xFP_emmpMAb>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 24 Mar 2025 14:00:41 -0400 (EDT)
-Date: Mon, 24 Mar 2025 11:00:40 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, linux-next@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH] rust: dma: add `Send` implementation for
- `CoherentAllocation`
-References: <20250324174048.1075597-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTopPn3R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB14C4CEDD;
+	Mon, 24 Mar 2025 18:13:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742840001;
+	bh=HxL4j75EqQZXg4nUUxuhCgYtvVucbH/8DgVWCMZjacs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZTopPn3RAljPZx+g/g5IBXvkmaMMWchrjVzdIS5V9f1ViyUW54vubwIMO5krcXWTw
+	 OZ4UKGnqeSCBtW5zqETbG8Dd0YK/R0pzIruYv/EmUdSCCtWJt0AE6MZhKtzeMEllnx
+	 1nWBCPV8k4QUXdNoaR8sVG6iVYagoSnYXXLAvwanO/tUfJCAyhyTNoNjdH31isHCPD
+	 TLjbvBDUkHiw89+DnTz5Lm8BjqUQ/GHT0yi9QwS5IrQ187nIIucvuA+jt99reEwYXz
+	 DOQINh8mr5aC1FeTB3dIzkvg02/s7PyItJ7fxP3Penwt/LXlpHBQ9sNuszRlsJnNQ7
+	 deC1Xd8wYuDnQ==
+Date: Mon, 24 Mar 2025 19:13:15 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Greg KH <gregkh@linuxfoundation.org>, bhelgaas@google.com,
+	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] rust: pci: impl TryFrom<&Device> for &pci::Device
+Message-ID: <Z-Ggu_YZBPM2Kf8J@cassiopeiae>
+References: <20250321214826.140946-1-dakr@kernel.org>
+ <20250321214826.140946-3-dakr@kernel.org>
+ <2025032158-embezzle-life-8810@gregkh>
+ <Z96MrGQvpVrFqWYJ@pollux>
+ <Z-CG01QzSJjp46ad@pollux>
+ <D8ON7WC8WMFG.2S2JRK6G9TOSL@proton.me>
+ <Z-GNDE68vwhk0gaV@cassiopeiae>
+ <D8OOFRRSLHP4.1B2FHQRGH3LKW@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -124,59 +53,50 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250324174048.1075597-1-ojeda@kernel.org>
+In-Reply-To: <D8OOFRRSLHP4.1B2FHQRGH3LKW@proton.me>
 
-On Mon, Mar 24, 2025 at 06:40:48PM +0100, Miguel Ojeda wrote:
-> From: Danilo Krummrich <dakr@kernel.org>
+On Mon, Mar 24, 2025 at 05:36:45PM +0000, Benno Lossin wrote:
+> On Mon Mar 24, 2025 at 5:49 PM CET, Danilo Krummrich wrote:
+> > On Mon, Mar 24, 2025 at 04:39:25PM +0000, Benno Lossin wrote:
+> >> On Sun Mar 23, 2025 at 11:10 PM CET, Danilo Krummrich wrote:
+> >> > On Sat, Mar 22, 2025 at 11:10:57AM +0100, Danilo Krummrich wrote:
+> >> >> On Fri, Mar 21, 2025 at 08:25:07PM -0700, Greg KH wrote:
+> >> >> > Along these lines, if you can convince me that this is something that we
+> >> >> > really should be doing, in that we should always be checking every time
+> >> >> > someone would want to call to_pci_dev(), that the return value is
+> >> >> > checked, then why don't we also do this in C if it's going to be
+> >> >> > something to assure people it is going to be correct?  I don't want to
+> >> >> > see the rust and C sides get "out of sync" here for things that can be
+> >> >> > kept in sync, as that reduces the mental load of all of us as we travers
+> >> >> > across the boundry for the next 20+ years.
+> >> >> 
+> >> >> I think in this case it is good when the C and Rust side get a bit
+> >> >> "out of sync":
+> >> >
+> >> > A bit more clarification on this:
+> >> >
+> >> > What I want to say with this is, since we can cover a lot of the common cases
+> >> > through abstractions and the type system, we're left with the not so common
+> >> > ones, where the "upcasts" are not made in the context of common and well
+> >> > established patterns, but, for instance, depend on the semantics of the driver;
+> >> > those should not be unsafe IMHO.
+> >> 
+> >> I don't think that we should use `TryFrom` for stuff that should only be
+> >> used seldomly. A function that we can document properly is a much better
+> >> fit, since we can point users to the "correct" API.
+> >
+> > Most of the cases where drivers would do this conversion should be covered by
+> > the abstraction to already provide that actual bus specific device, rather than
+> > a generic one or some priv pointer, etc.
+> >
+> > So, the point is that the APIs we design won't leave drivers with a reason to
+> > make this conversion in the first place. For the cases where they have to
+> > (which should be rare), it's the right thing to do. There is not an alternative
+> > API to point to.
 > 
-> Stephen found a future build failure in linux-next [1]:
-> 
->     error[E0277]: `*mut MyStruct` cannot be sent between threads safely
->       --> samples/rust/rust_dma.rs:47:22
->        |
->     47 | impl pci::Driver for DmaSampleDriver {
->        |                      ^^^^^^^^^^^^^^^ `*mut MyStruct` cannot be sent between threads safely
-> 
-> It is caused by the interaction between commit 935e1d90bf6f ("rust: pci:
-> require Send for Driver trait implementers") from the driver-core tree,
-> which fixes a missing concurrency requirement, and commit 9901addae63b
-> ("samples: rust: add Rust dma test sample driver") which adds a sample
-> that does not satisfy that requirement.
-> 
-> Add a `Send` implementation to `CoherentAllocation`, which allows the
-> sample (and other future users) to satisfy it.
-> 
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Closes: https://lore.kernel.org/linux-next/20250324215702.1515ba92@canb.auug.org.au/
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  rust/kernel/dma.rs | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index 9d00f9c49f47..18de693c4924 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -301,6 +301,10 @@ fn drop(&mut self) {
->      }
->  }
->  
-> +// SAFETY: It is safe to send a `CoherentAllocation` to another thread if `T`
-> +// can be send to another thread.
+> Yes, but for such a case, I wouldn't want to use `TryFrom`, since that
+> trait to me is a sign of a canonical way to convert a value.
 
-s/can be send/can be sent
-
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-
-Regards,
-Boqun
-
-> +unsafe impl<T: AsBytes + FromBytes + Send> Send for CoherentAllocation<T> {}
-> +
->  /// Reads a field of an item from an allocated region of structs.
->  ///
->  /// # Examples
-> -- 
-> 2.49.0
-> 
+Well, it is the canonical way to convert, it's just that by the design of other
+abstractions drivers should very rarely get in the situation of needing it in
+the first place.
