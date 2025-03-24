@@ -1,108 +1,92 @@
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992F914EC46
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Mar 2025 22:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C774A0C;
+	Mon, 24 Mar 2025 23:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742857169; cv=none; b=c57ZrpbCv8ErQ3jX0JLmXSwZdXpXlAaRJp3NFirg8I80txrZ1Uwp7DvsPtCaRmVUdOINFOndZOiydZ7wADzF2YPpn2jlbwHxPXPhP+loGnDoUHr87y9RbC/2uHDq5+i5IY+JDPVxv1dvll93I/dl/lYTvS916AzccaY9oWzi44Q=
+	t=1742857328; cv=none; b=c/Q+GyJ9N+M5spWMbU7w/tWrh1lfk2zoi7VxWwsXdL43aHMSGJNhOVT3OpC+xaVENLVgEgI5mCu+hxfUqlFeiIEdG3jYRSHXw579j4DLJqA3iJAh+f0z36vWfz9rWDtpoTQbbbc8iZqd0+D9eR72F0DOIDekFkbz2z6v8rQIt08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742857169; c=relaxed/simple;
-	bh=j3AtbBepxVY9t4s2Hi3h6u0/eJQIjx5Yl0Fb4JK3+wM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aEyXnaLDHTMn+J+xstuoNqMxwQUuL/nMk/uc3UNdhEn+JW4Tots+UEiUyrv1xiWojVfbj4rzxmWeuTSG10bRY0WAu4TvSgTIqTLbPWPSEigONb/g30oTOfvukG91WlWgQQDs0Re4/mNvfkM/fa6e7p7/hbexbfmPT58IMK//Sd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Ju3AGeh6; arc=none smtp.client-ip=109.224.244.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742857328; c=relaxed/simple;
+	bh=Sm/shJ53dQVUaek3eh5J6vClMZ+mhRTsX2hjr08eZAo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ccOvhTolSGLk5I5v3Id0g2A1GrfGNtkigck0mauU5cjETwp+phsKr4ofPf6mr8I6um6wrTuZv5KNjrn8EXWM6aQsBaYKEqVkDW3WrVWQ6kNFR/un0GonjjoCvksMz5aYG5C7K2b15JCXOwZgB6h6s8zVJmT/BHtpMDkGloHjyOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHitfKLM; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Ju3AGeh6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742857165; x=1743116365;
-	bh=UkVSl0Pru0KKuSb5x4nU9T1S7nrs/LDzBYVaKWSryss=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=Ju3AGeh6bAflmU8tuB2a6+dalFaD10S3vxKIbxUhAJW7AignUSoB38bGeKyJHzt4F
-	 OkdEmupXefgu5Ww1ORUuoFlmdo47WFJunrqMikr/nFjqV5htyQmsrTQoaEY89EEJLT
-	 32uVMpqQ8FB8SlQv550UB+58IszlOaLIL8sWBCEnntZKNdUgrjlASsGmP9tav3X63K
-	 IYnntr8zEzmvGdnqkNrO5Be4BwyTAe4luxOAbT5cEw8TcPIDouJFdQQji37efTod9X
-	 mj3KMNAdwNz/205DGVTQkKQMw1EM2yAMsmAmSY4DK0vmJkA1yNU2mvy8+53U8vj0GF
-	 onIJkEpOy7qPw==
-Date: Mon, 24 Mar 2025 22:59:22 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 00/10] rust: clean and enable Clippy `doc_markdown` lint
-Message-ID: <D8OVATSS19YC.1GXZRNM6TBA0X@proton.me>
-In-Reply-To: <20250324210359.1199574-1-ojeda@kernel.org>
-References: <20250324210359.1199574-1-ojeda@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f923cfed497f62b6bdc1c007c1284d6c95c1ef17
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHitfKLM"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-301b4f97cc1so1529025a91.2;
+        Mon, 24 Mar 2025 16:02:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742857326; x=1743462126; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Sm/shJ53dQVUaek3eh5J6vClMZ+mhRTsX2hjr08eZAo=;
+        b=nHitfKLMBT/ce7wg4xDeBwxjmfITI4fs1wSdi6WQhjbM2smaL7MXilBpPRIWWURaon
+         5xfm2CnjbDC2U/KJVktyfkgH6eb9f/Fpr1V0OajzbqlMmmKR/JEv0t/hHl+GkmETLLCj
+         Mnlbs1+39eyXIkYYdgEbA+WZLR3GTP+ShFXxZGXnZTzdv5b5nBLUZyRrckL6TlXS64qY
+         O4p3Iq/US7IzYbCgmioMQOsjqZD1aPNTm3ZLoRVP9oBhVL6i+rel4SSGdX9m2FoS132Q
+         0fEQ2sxx6Mg5dj8y8UsA+Awdn1YruzLIHfMJkdwSHa77VKmmYufgWY0XFvCDxndQva+Y
+         CN5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742857326; x=1743462126;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Sm/shJ53dQVUaek3eh5J6vClMZ+mhRTsX2hjr08eZAo=;
+        b=ICBLHAzuoQ8iLFj1hDfb9e00VTImkAMnGyipBkBtV4CVx38Pv0OBdQ1ZRdkOnqXfgf
+         jJhpMj3iDhu3Bc6gFpeUZCEbqzB7yWrZWyoW8pSju0qVrMNXJdG5toZHQvpJDyySSaT9
+         kD8FxD6LUXZ0RxCYQTzI9sZsakaM3Q/6y+cUx/WuSvS0qHIlovVjTXGl19iReH9APVSg
+         9kxgjA8+OnfrhnT3bgiT5wiG1Cm9W1A2Hoi/vBx9h7fpk54BXIOWdGRYzqB99GlVl0fb
+         M8krYD78D0PO9BKmzeHUMSpV3X5kLicjVfWI4hvdOCz8BkDAySVTrdL1z05C5MP9LRoJ
+         fi3g==
+X-Forwarded-Encrypted: i=1; AJvYcCUm5uTDtYG+eYNmrXPThhkkxeQ5NND7dgRsPgpqaCnpJrtSPoS6DnEI5Y+nzG+yykv5zZcYFrC1CJL0VkhsdGM=@vger.kernel.org, AJvYcCWbvFoFNXe/gJDdqacmM5luCtwlebjRIKk6cQtf1PZeIKPNPXXyMhWgbicRcWGklvhMFmkBhvj/sZhrSCc=@vger.kernel.org, AJvYcCXhAhzgxcqaHCGFpepilSefRyOJ/l/zc009VWpqaKL7wBVP4PxdAoO/pzff//XydusI0TRugNSjxlPA@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOjpr5Tz2pjdq4oP5CPgvc16GOB3VIWs3QAb77AU/nJZQuRUNc
+	C5+bx23E5Y90JENg2l8BUC0KNVCsr6ifYFyA/VYJ8BpjvUJB7I+tqGIGAyOZ/pJkLMnNaFJOCKu
+	pUcb15gk82mB2vBjgls1fmU1Cj2U=
+X-Gm-Gg: ASbGnctSimxiS0SmrYblTj1UkbWap/biZYdcm8GGNCq8FCfSH6yM0DPSE+OpMuytnlB
+	bleoq5ndY65vGXH8R6y2pq7V3W2kECi9+QC/1v/KjfY6UJCo7599+8teSPBHvI38iC1lPUQ/5sx
+	BwRJAeCucJLFdVqQQUpp0/7tqJfg==
+X-Google-Smtp-Source: AGHT+IF0N3IVoZm41r+EPPfeHaAlJgTDOk4ghAT1O/mKxGfrCPY/HsBSeXWetofbrS+dczLITSUjUfjwMphj7YT+nAY=
+X-Received: by 2002:a17:90b:33d2:b0:2fe:91d0:f781 with SMTP id
+ 98e67ed59e1d1-3030fe534b9mr8779881a91.2.1742857326284; Mon, 24 Mar 2025
+ 16:02:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250324210359.1199574-1-ojeda@kernel.org> <20250324210359.1199574-8-ojeda@kernel.org>
+ <D8OV6JF1S63H.NG5CXUZDQQP6@proton.me>
+In-Reply-To: <D8OV6JF1S63H.NG5CXUZDQQP6@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 25 Mar 2025 00:01:54 +0100
+X-Gm-Features: AQ5f1Jp-b9ijstGk-lJRPks97YVdRTn8tjg1pmMJXHRdMAlOigQ_u0TkE93n4J0
+Message-ID: <CANiq72kMGLYP9RzraKy8wSSYJ2e3PmBLyoSPjUbkhTT308Yr5w@mail.gmail.com>
+Subject: Re: [PATCH 07/10] rust: pci: fix docs related to missing Markdown
+ code spans
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Bjorn Helgaas <bhelgaas@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon Mar 24, 2025 at 10:03 PM CET, Miguel Ojeda wrote:
-> This is how it would look like -- I am not sure how many false positives
-> we will get, so I marked the last commit as RFC and perhaps we just want
-> this lint as an opt-in in e.g. `W=3D2`.
-
-I think we should try. If it's too much trouble, we can disable it
-again.
-
-> However, so far, we only got one ("KUnit"), plus a couple others that
-> are in C side comments that were copied, and thus someone may want to
-> keep them exactly in sync. So it seems pretty OK so far.
+On Mon, Mar 24, 2025 at 11:54=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+me> wrote:
 >
-> Another question is whether we want to commit to something like the
-> global list in `.clippy.toml`.
+> Wouldn't "([`struct pci_device_id`])" make more sense?
 
-Not sure what you mean by this, but I think we need some way to disable
-it for some acronyms.
+Yeah, definitely, it should have the `struct` to be consistent with
+our usual style.
 
-> Anyway, please take a look -- the other commits should probably be
-> picked even if we do not enable the lint.
-
-For the entire series:
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
----
 Cheers,
-Benno
-
-> Thanks!
->
-> Miguel Ojeda (10):
->   drm/panic: add missing space
->   drm/panic: add missing Markdown code span
->   rust: alloc: add missing Markdown code spans
->   rust: alloc: add missing Markdown code span
->   rust: dma: add missing Markdown code span
->   rust: of: add missing Markdown code span
->   rust: pci: fix docs related to missing Markdown code spans
->   rust: platform: fix docs related to missing Markdown code spans
->   rust: task: add missing Markdown code spans and intra-doc links
->   rust: kbuild: enable `doc_markdown` Clippy lint
->
->  .clippy.toml                        |  4 ++++
->  Makefile                            |  1 +
->  drivers/gpu/drm/drm_panic_qr.rs     |  4 ++--
->  rust/kernel/alloc.rs                |  4 ++--
->  rust/kernel/alloc/allocator_test.rs |  2 +-
->  rust/kernel/dma.rs                  |  2 +-
->  rust/kernel/of.rs                   |  2 +-
->  rust/kernel/pci.rs                  | 15 +++++++++------
->  rust/kernel/platform.rs             |  9 +++++----
->  rust/kernel/task.rs                 |  4 ++--
->  10 files changed, 28 insertions(+), 19 deletions(-)
->
-> --
-> 2.49.0
-
-
+Miguel
