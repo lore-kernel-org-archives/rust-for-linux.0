@@ -1,168 +1,120 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355DE19CC2E;
-	Tue, 25 Mar 2025 09:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7990F1DE4EC;
+	Tue, 25 Mar 2025 10:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742896381; cv=none; b=HsXQTuI5hKa/i6Y2LyYFUeyP8doIPM2BWiAwhllCpmpGlQnbQEXrzZb7FgbefZFSLeBFzz20XYWiVXTWQ9NXOg4NTdnTG+5qjYTl1VSe2bJIhZcmp5+g1j/w8Jd6Po1qM+Dot3nzvAYNP7hJnjqYPAfzeEjYVdknp45ilQ17m4s=
+	t=1742897594; cv=none; b=kFpmPFLHG5yJsHLI6uTsH+BAkvLApNIySae5HG6LrG9UVt8qR7jcMp9RdZ62EwVkBErvNurSYLJhlatgsNpv0sR5OvYRaztOhiOc1I9cROnxxf73/g0mwtSs1I+iWnShIR2/Dsv3wgzbl8RLWnrzxRlXsA90+mtJIy1Wu2nYrh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742896381; c=relaxed/simple;
-	bh=G7dq4opATscHa1GwAcwYDZ/9MxMZNOO+pOreXVSwxLo=;
+	s=arc-20240116; t=1742897594; c=relaxed/simple;
+	bh=EsU90UIiG95rJav2ydFFuzd10jY7lOEUJhuV6bJUvE4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q6GuVOxd2rsUQkpL79kyLxP8CEOiobYRBWol79LQetYylMaB46rMXB//gmuxEXovOBYKTAHWepJqhyQSpU5ZAyJUvrI42S9XlUej1iUOoWvfjyTQa9t+rLMX8u1TAwEhKJ1FXR5MRiPsqHOJnsxpGOV1dLK2Xft86DdY1o6aVOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QDVrOTBE; arc=none smtp.client-ip=209.85.208.179
+	 To:Cc:Content-Type; b=LpaBHolAQxewLwuZmFp8PgqztioFAJ8UmhbAExJAegPr0GiZPPx5fCd25+PMQwzebRyx4oDfkeQ9ib8Aumb2TiP/pqvIhkyB8DwMg0DK1bJoq3Vb0X+AE+b6bNYM2H9/wNNHAYDdXYwhOiA8bNDXgtBBi/Yvgn0lUg/NIMj+m2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=npWPWvX0; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QDVrOTBE"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30bf7d0c15eso54205691fa.0;
-        Tue, 25 Mar 2025 02:52:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="npWPWvX0"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2260202c2a1so10943565ad.3;
+        Tue, 25 Mar 2025 03:13:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742896377; x=1743501177; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742897593; x=1743502393; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0SDAsr7EomDTz5Y8FEYcT8NLpoB17+E7CJw8BsOZA9s=;
-        b=QDVrOTBEAyNdO3PmDFipWP/TyXte4Bl3DchugqbCaU0XKzgVjStMkeDcjzEr9wvMwg
-         RE3Ses8SjkOCjIWJ9qsOf0sWD12RzvMeV2wYKirN4dFUU67KZHJOqJYsrH1hXbhPdPF4
-         a9RHtbajvzRx0brTxf4XUipz++353Iks8sD4vsra/vbqtpa5uiM5s7BXc/DVpvK+/3t4
-         GCOgj3xzBXiobJRiASbCIOiiCUd9SHA3FZm8t6hBQQ71pYNYc0ZsboM4b2KUQGACcoyo
-         Glw5Hy3dYn9fS2IV4kI77YiT+KJHt317gJ7FlR00t4sl21rRpcXbkIEHLJ1ErRAFlq7h
-         Htew==
+        bh=JEDq1UJUqtq05PctL877nPjaHHGlNyms9RQr2/wNvlE=;
+        b=npWPWvX0HQ09XD2E4MUWTVXZhDqQMafSXJ60v/wMLjJh1b5DIh0/rxKDhVcidZlNkS
+         6JT7AdH2Vbs36UsELrKFUE3D44B6aoq8pX0Y5frvFBkHax8WarDqpFr1WYn4zxr38asY
+         ChWahgPLytcZgKmwBX+oLoGA7XeZ6WqC3NmzQroRAM4gWLDHWTeDPoiSt9q8T5bE5Wjw
+         h+vs0AivLiMMGKBRUej/LFRwAqLd//FTz4Jo1EwFW5TdmH1eKGRqYjmXaNaMRYdsO9QC
+         y3ON2daDVE4HnaEK1HWJ64q+yd4jKsFWlJqnQp+mT7D0u4DVfSSNDa3lY9E25wTe1vh+
+         neeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742896377; x=1743501177;
+        d=1e100.net; s=20230601; t=1742897593; x=1743502393;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0SDAsr7EomDTz5Y8FEYcT8NLpoB17+E7CJw8BsOZA9s=;
-        b=hJHUu5sHNTXEaUsk0XbjTRP5PlH8JhkKugkzaT4DXqBRiEkWzmuToaXBtZxACZg4Pa
-         3qlBSG9dSWEP4Qxqz8NugfFJn285MaLQ6eEOC0yIitCvlKKoxjjFnVbf8rJ3CBRFo7U0
-         VjLLYsf6AVV4AY2VwllKv2pHVch4huXkahbIo6vOVkC9eQJqk7xjVtdEFRgYJ4n0fh+G
-         YULBoXYg1A7yJ5jj0nfUu2Cgu00GUpK6rZzPQZ9M36ITdfTopucwcTYY0UAvmEWFfjvl
-         m/jcUWvJpOCHnRYu3HgOJhwTL/cysx0LjYd17Pgry5XNFkCXJkedf+c1hQM6E9cTz7R2
-         wjuA==
-X-Forwarded-Encrypted: i=1; AJvYcCVIj/BWiENi1lkCtE/K9RW9KfHupl/buZU3LNienMwPpfnoPa/+TBMKkQbtRIpbyWYZqcH54R/Al/OcyDE=@vger.kernel.org, AJvYcCWBISOpyWIIDnkj/vF/HuNjdYEIlla+T1aQcBtV7CeFgMmvaE2qZYZTXA872sTnRMVO+cl+NjWRuom4@vger.kernel.org, AJvYcCXj9R2NYkwZ+jH9hDD4Qwf5ntiEXqRs5BqEZ5pH0H2bGWR40Ho5Q2d1sjR5zLvfAWj+OxW4cbDf2FXlQ4B9YTQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyR7oI4pbWrOl0ZrSr1ff6lTrT5/9MoTuF4ARHa+0Ti5gPlfOD9
-	PcFgF/NtkQCsekThPu0XYGGcABYv+eb32cD5QgD/+af/sShLp79pP15dBH8F6FUl6XQshoc33kh
-	gVo5vq7F57djhF9QcJzk3Z90HMys=
-X-Gm-Gg: ASbGncvlwTOmNJcJu3exmk/ELUU/Y2geoNzNSIfSqeOXgLtPSeRZPjvUpCi9DbH7nzk
-	gEdoWhN3EruobKnzLXScC+qdXY85QOLOgw0kD4UzRgkLwtFuIEadgihOi7bxNejJ4/Adg17/LyU
-	5eHthHFjKFb6RFjvFOwYQTRzs5Mc+JsaGYSwlvhDPKykxm7QkW0e0urUi0tYA=
-X-Google-Smtp-Source: AGHT+IFl+A+Ba20JPX9FmogbjoD7hGniVYN8d0KWTnxk/lLm/Lu/HBymNbtUAkDiT5NORHcz7MGSZqNNo3xaEtNJgzc=
-X-Received: by 2002:a2e:7817:0:b0:30b:fca2:6ac1 with SMTP id
- 38308e7fff4ca-30d7e23c2aemr55848501fa.22.1742896376916; Tue, 25 Mar 2025
- 02:52:56 -0700 (PDT)
+        bh=JEDq1UJUqtq05PctL877nPjaHHGlNyms9RQr2/wNvlE=;
+        b=tiPMhPvy0jAAz7MNbiN9MR1Mwl6cgxXfegV5H//3Z6tk/icNNoHZYhd0i3Wpp7laEM
+         wJis9VdRlaARNTDxDs0gqOiwMrYl0AiJ06r9u/EMWEX5uw0JNckOeIFUi6SWTfjPaRMN
+         pwp1Sd0g3DFoQV559zKLRC5RlrKGghUe9rYYU/kl7xM+PdCPEDTXmftzJqLInT4fd0lE
+         FVaYWnqJxxzywF1uhpIScxbFsJGdupb4Ni24XXUd4oZt9O0ldfMEcm1fTTNEctlrDa+n
+         wgH0TNMxCMlbjs6Ljj/lPFIiWoR9EjHmJiK0iHPrerYQZCCvUmCDYAcG0delGzXDKX6M
+         nrwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHKaPjEkRQJ/orynywEF61WVPLdryLF1UoUYzYRpzH5PJadGGFxwNbGP0jC8t4kONePr2ngVuPtN9R284=@vger.kernel.org, AJvYcCXr6vNh58SZws8t52LLDGG0egePm7BHC57FAqLcJ3iQrkC3Wx7OMr4xaa03yuQJR5XpFC10yW1r3kHGeGgeSTg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxA7wP3gre9WBGG37KFATAfjzwg2CW1DjNWUmkGQ6vuAtv+gAJo
+	LLBwTN5gLRoXSFed4OEvB2jJrQNHo74V8PXltBWmXjYo5xd6tWRww+4UFWYkQ9/D2CP/UtExpKO
+	WzBwi6KvlAFD5173ane1pGq1u1bw=
+X-Gm-Gg: ASbGncvVLfCIfsFz46igY0PNfvoLNCNkk3Uwk22unriHSxtvQ30lTwJXA1mTlspkqS0
+	YgjWHUMHCGwNe6vN+GiBp8MlubkK4dkJBnRMRSHurd19UF9Foub8XT0GjUOHMWKYRzDAdbKTfXb
+	XO22Avxi1Ibd7P8uG15nVA772OJg==
+X-Google-Smtp-Source: AGHT+IGNIu/26kDQcyv6aovbIEaxRmM9jIjrb8hE/W/g3KOwMrnzrKUZGYd3te7lujLCPoR0R3YJ3Fd4QcZ+SvYxRao=
+X-Received: by 2002:a17:902:ec84:b0:224:10b0:4ee5 with SMTP id
+ d9443c01a7336-22780ba2e0emr81920905ad.0.1742897592462; Tue, 25 Mar 2025
+ 03:13:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250324-list-no-offset-v1-0-afd2b7fc442a@gmail.com>
- <20250324-list-no-offset-v1-3-afd2b7fc442a@gmail.com> <67e1d1b3.050a0220.4c4ff.6e89@mx.google.com>
- <CAJ-ks9moCO83cGkKuONR-2JMN61x18T2UVO98jhspDR=uyaVqw@mail.gmail.com>
- <CAJ-ks9kPhb00-Dv8KucYGOVjLFMVYvfpBnqrV87M+eJmODAmyw@mail.gmail.com> <Z-Iq6Okk1j3ImH1u@Mac.home>
-In-Reply-To: <Z-Iq6Okk1j3ImH1u@Mac.home>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 25 Mar 2025 05:52:20 -0400
-X-Gm-Features: AQ5f1JrtiJucZ4hs_wMZ1sKyb5AnOZiV8hIMZ0BUk72C9G6LuNd267LkKeV2Nu0
-Message-ID: <CAJ-ks9n66_vVg3ww58VqfXV6+phng8Bhq9C=NNn854gXK0KAHg@mail.gmail.com>
-Subject: Re: [PATCH 3/5] rust: list: use consistent type parameter names
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org
+References: <20250324061835.1693125-1-kunwu.chan@linux.dev>
+ <CANiq72=KjT8HRJA0NStHeqm-9286gay496CU8edNALPQ9_N+ww@mail.gmail.com> <52e7d34e-cf86-40d6-a294-b318df98d72a@linux.dev>
+In-Reply-To: <52e7d34e-cf86-40d6-a294-b318df98d72a@linux.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 25 Mar 2025 11:12:59 +0100
+X-Gm-Features: AQ5f1JqyCfGL5XbhQM2bU_PPn0fepDdpk4JpK1BPHHTum3dXPrHhVO5NorHN1DI
+Message-ID: <CANiq72=iMaEOALbh8EBrgEc5t0KQ2BTPADro3vmBtEM75pO3aw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: sync: optimize rust symbol generation for CondVar
+To: Kunwu Chan <kunwu.chan@linux.dev>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
+	morbo@google.com, justinstitt@google.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	Kunwu Chan <kunwu.chan@hotmail.com>, Grace Deng <Grace.Deng006@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 25, 2025 at 12:02=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> =
-wrote:
+On Tue, Mar 25, 2025 at 4:02=E2=80=AFAM Kunwu Chan <kunwu.chan@linux.dev> w=
+rote:
 >
-> On Mon, Mar 24, 2025 at 05:56:57PM -0400, Tamir Duberstein wrote:
-> > On Mon, Mar 24, 2025 at 5:51=E2=80=AFPM Tamir Duberstein <tamird@gmail.=
-com> wrote:
-> > >
-> > > On Mon, Mar 24, 2025 at 5:42=E2=80=AFPM Boqun Feng <boqun.feng@gmail.=
-com> wrote:
-> > > >
-> > > > On Mon, Mar 24, 2025 at 05:33:45PM -0400, Tamir Duberstein wrote:
-> > > > > Refer to the type parameters of `impl_has_list_links{,_self_ptr}!=
-` by
-> > > > > the same name used in `impl_list_item!`.
-> > > > >
-> > > > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > > > > ---
-> > > > >  rust/kernel/list/impl_list_item_mod.rs | 10 +++++-----
-> > > > >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > > > >
-> > > > > diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel=
-/list/impl_list_item_mod.rs
-> > > > > index 5ed66fdce953..9d2102138c48 100644
-> > > > > --- a/rust/kernel/list/impl_list_item_mod.rs
-> > > > > +++ b/rust/kernel/list/impl_list_item_mod.rs
-> > > > > @@ -41,7 +41,7 @@ unsafe fn raw_get_list_links(ptr: *mut Self) ->=
- *mut ListLinks<ID> {
-> > > > >  /// Implements the [`HasListLinks`] trait for the given type.
-> > > > >  #[macro_export]
-> > > > >  macro_rules! impl_has_list_links {
-> > > > > -    ($(impl$(<$($implarg:ident),*>)?
-> > > > > +    ($(impl$(<$($generics:ident),*>)?
-> > > > >         HasListLinks$(<$id:tt>)?
-> > > > >         for $self:ty
-> > > > >         { self$(.$field:ident)* }
-> > > > > @@ -51,7 +51,7 @@ macro_rules! impl_has_list_links {
-> > > > >          //
-> > > > >          // The behavior of `raw_get_list_links` is not changed s=
-ince the `addr_of_mut!` macro is
-> > > > >          // equivalent to the pointer offset operation in the tra=
-it definition.
-> > > > > -        unsafe impl$(<$($implarg),*>)? $crate::list::HasListLink=
-s$(<$id>)? for $self {
-> > > > > +        unsafe impl$(<$($generics),*>)? $crate::list::HasListLin=
-ks$(<$id>)? for $self {
-> > > > >              const OFFSET: usize =3D ::core::mem::offset_of!(Self=
-, $($field).*) as usize;
-> > > > >
-> > > > >              #[inline]
-> > > > > @@ -81,16 +81,16 @@ pub unsafe trait HasSelfPtr<T: ?Sized, const =
-ID: u64 =3D 0>
-> > > > >  /// Implements the [`HasListLinks`] and [`HasSelfPtr`] traits fo=
-r the given type.
-> > > > >  #[macro_export]
-> > > > >  macro_rules! impl_has_list_links_self_ptr {
-> > > > > -    ($(impl$({$($implarg:tt)*})?
-> > > > > +    ($(impl$({$($generics:tt)*})?
-> > > >
-> > > > While you're at it, can you also change this to be
-> > > >
-> > > >         ($(impl$(<$($generics:tt)*>)?
-> > > >
-> > > > ?
-> > > >
-> > > > I don't know why we chose <> for impl_has_list_links, but {} for
-> > > > impl_has_list_links_self_ptr ;-)
-> > >
-> > > This doesn't work in all cases:
-> > >
-> > > error: local ambiguity when calling macro `impl_has_work`: multiple
-> > > parsing options: built-in NTs tt ('generics') or 1 other option.
-> > >    --> ../rust/kernel/workqueue.rs:522:11
-> > >     |
-> > > 522 |     impl<T> HasWork<Self> for ClosureWork<T> { self.work }
-> > >
-> > > The reason that `impl_has_list_links` uses <> and all others use {} i=
-s
-> > > that `impl_has_list_links` is the only one that captures the generic
-> > > parameter as an `ident`, the rest use `tt`. So we could change
->
-> Why impl_has_list_links uses generics at `ident` but rest use `tt`? I'm
-> a bit curious.
+> Thanks for the kind reminder, I'll follow this next time
 
-I think it's because `ident` cannot deal with lifetimes or const
-generics - or at least I was not able to make it work with them.
+You're welcome!
+
+> Now, the default '-Copt-level' is 2 when define
+> 'CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE',
+> and in  KBUILD_RUSTFLAGS the  '-Ccodegen-units' is 1.
+>
+> So if the config not change, the result should be the same.
+
+I don't think that is true, because there are a few `rustc` versions
+as well as LLVM ones that we support, so how inlining happens (at both
+`rustc` and LLVM levels) may change even if the configuration is
+essentially the same.
+
+And, of course, then there are other non-compiler-related kernel
+config options (i.e. not compiler flags, but other stuff, like `cfg`s)
+that influence which and how gets emitted and thus the inlining
+decisions.
+
+Eventually we should have pure GCC builds too, which is yet another factor.=
+..
+
+To be clear, I agree with Boqun that having to write `#[inline]`
+everywhere is not great. Rust 1.75 already started to tag small
+functions as `#[inline]` to try to prevent the proliferation of the
+attribute, which is good (i.e. which is what triggered the message in
+Compiler Explorer).
+
+By the way, one difference is whether it is `pub` -- the `notify()`
+isn't (unlike the others), but if it were, then we would have needed
+the `#[inline]`, from a quick test.
+
+Thanks!
+
+Cheers,
+Miguel
