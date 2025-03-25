@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EC4269CFD
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 23:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABAA269CFD
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 23:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742946958; cv=none; b=kDGHdkxygiA8BJks+h+2lanw/l/VHWOc3AM+ZMqpKpeRqXEY0waAKPfrWIfGZ3cBfV/yFEcaCnQgUPnZ3zZtquB0e6Vq0cfB610wJ7gzdSnQwhRYuo14KaOJRa72ikybZUCVxJm0FS5EzHb6Ww+zbWHrCXvuaevLgv3CDr4g4qw=
+	t=1742946961; cv=none; b=ZxCMcoRa3Y3OB19d4m+5Myu0cUW4LM99yLoPaxEmVPg1EUkwbVhoCaZnEO3yfemAdRprrS/fdpFvwJkPYyj5TXqmz/G2QxQzSjWE+xONC7yFcD9qHeiXoQWD+HetbRnCGevh/BMuJjkGmXqeS2UZ4k/yNpmGmkseT1CZL+AnodI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742946958; c=relaxed/simple;
-	bh=wHi7SCmtPH7BG/xAKxNRXbpGfNZECeqRL1JQGN1ovng=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RxbMyvxNKW7h8FcsWjNUvE96nWm9wgWy2iuU5EX5ZDzFyZC+uxALCvsZbEXPZLuMUBQAlhUN05PYopoEIsd0Nh3ntKt0ZfIBzZeo1mKI/q5QLWYcl98/RmfIYeYklOit/zHnY9pUhT4mTBOnJM2g2KbjedXunjmNZ9E2TymUfFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n4lrI9xS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742946961; c=relaxed/simple;
+	bh=gbQWs+XqUEguuUUQJu5BMH1eTiDw5cZcaoPqIr1wioM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SIUanrlpEDAcbTFXciP7LZWtFdnGY/7zAVAX4UPAZnNOo/dhAd0AefYDbvznyiRwJ6Ja8Mf2Ei875oXTGaXbMjkHLtdFA08ea7DbIYOT0rWLYAxeGTMpW6B++uQp97DXbwbQLZ4K1dp2pumewryxYQ2a3/oy0uRmxKy0kkovOns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ftCzzsLt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n4lrI9xS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516E3C4CEE4;
-	Tue, 25 Mar 2025 23:55:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ftCzzsLt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E300EC4CEED;
+	Tue, 25 Mar 2025 23:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742946956;
-	bh=wHi7SCmtPH7BG/xAKxNRXbpGfNZECeqRL1JQGN1ovng=;
-	h=From:To:Cc:Subject:Date:From;
-	b=n4lrI9xSqetPPY37bE7q/8e8cgZl+FZy2LEvD3RLuCi3szuRcWkJkAs7g9JdZ46+W
-	 FIUaTIPgcMiSH6UlG+kiC5g68eZhHHf+xxvMoDrBT6vP/EqEHDpdwKC5A0O0zMUtzT
-	 FUSi0zlt4ZG/5Q8NwG3xFSXT62ZJVpVGM6Rxm65jL31ovSQMRa3aIha2nSsD4xunMz
-	 EsGdRLOPGqPR/gtYVexJ9EPz44FxFX6ujmVwbIIMerH/0VQ3m6D2/TY9HhU/1wb+bS
-	 z7mu062Jy83xybdxmGDW1dvZ5vIspSaBCU2hvl5p2FcXtKqi8/k3T7hZhYASo2GIoP
-	 +7gw1oTb58j6w==
+	s=k20201202; t=1742946961;
+	bh=gbQWs+XqUEguuUUQJu5BMH1eTiDw5cZcaoPqIr1wioM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ftCzzsLtW2wXoLPvOqYJ5ehUMVnLo5Rw+tZhgMLRHY9DnZakvPDSx8E/QxATVUR7D
+	 li4p+ec3+deOGBenRIqelpS3a5Ad812lSFw0VQVOaTWY5slB0DvjAfUqH8zs1D3S2R
+	 PQKoc0zxsiqRgPzvYVY9iSg8h6VMIiU7sANB/syynv6KjDEfNwyHsOfIlBS6IzefTG
+	 1cRVElpYdMsR6CPd1Vl1CV+Lz1uVV+lsI9qPsY9fAiRYozTB1L6pIzm50iUvu7IXm3
+	 Dh14EdX/sBGUWzT6MhdLZ6TKDsBVQX4gbC7OYmoo+mhAkrdwQJZk/yq/DWmF20glxP
+	 dCUCbAkq71XJA==
 From: Danilo Krummrich <dakr@kernel.org>
 To: airlied@gmail.com,
 	simona@ffwll.ch,
@@ -48,10 +49,12 @@ Cc: ojeda@kernel.org,
 	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 0/8] DRM Rust abstractions
-Date: Wed, 26 Mar 2025 00:54:27 +0100
-Message-ID: <20250325235522.3992-1-dakr@kernel.org>
+Subject: [PATCH 1/8] drm: drv: implement __drm_dev_alloc()
+Date: Wed, 26 Mar 2025 00:54:28 +0100
+Message-ID: <20250325235522.3992-2-dakr@kernel.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250325235522.3992-1-dakr@kernel.org>
+References: <20250325235522.3992-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,73 +63,134 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is the series for the initial DRM Rust abstractions, including DRM device /
-driver, IOCTL, File and GEM object abstractions.
+In the Rust DRM device abstraction we need to allocate a struct
+drm_device.
 
-This series has been posted previously, however this is a long time ago and I
-reworked a lot of things quite heavily. Hence, I decided to post this as a whole
-new series.
+Currently, there are two options, the deprecated drm_dev_alloc() (which
+does not support subclassing) and devm_drm_dev_alloc(). The latter
+supports subclassing, but also manages the initial reference through
+devres for the parent device.
 
-Besides the rework, I want to credit Lina for her initial work, which this
-series is based on.
+In Rust we want to conform with the subclassing pattern, but do not want
+to get the initial reference managed for us, since Rust has its own,
+idiomatic ways to properly deal with it.
 
-In a private mail Lina told me to "feel free to take anything that's useful
-from my past patch submissions or the downstream branches and use it/submit it
-in any way".
+There are two options to achieve this.
 
-@Lina: If you, however, feel uncomfortable with any of the Co-developed-by:
-tags, due to the major changes, please let me know.
+  1) Allocate the memory ourselves with a KBox.
+  2) Implement __drm_dev_alloc(), which supports subclassing, but is
+     unmanged.
 
-Those changes include:
-  - switch to the subclassing pattern for DRM device
-  - rework of the GEM object abstraction; dropping the custom reference types in
-    favor of AlwaysRefCounted
-  - rework of the File abstractions
-  - rework of the driver registration
-  - lots of minor changes (e.g. to better align with existing abstractions)
+While (1) would be possible, it would be cumbersome, since it would
+require exporting drm_dev_init() and drmm_add_final_kfree().
 
-This patch series is also available in [1]; an example usage from nova-drm can
-be found in [2] and [3].
+Hence, go with option (2) and implement __drm_dev_alloc().
 
-[1] https://gitlab.freedesktop.org/drm/misc/kernel/-/tree/topic/rust-drm
-[2] https://lore.kernel.org/nouveau/20250325232222.5326-1-dakr@kernel.org/
-[3] https://gitlab.freedesktop.org/drm/nova/-/tree/staging/nova-drm
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ drivers/gpu/drm/drm_drv.c | 58 ++++++++++++++++++++++++++++-----------
+ include/drm/drm_drv.h     |  5 ++++
+ 2 files changed, 47 insertions(+), 16 deletions(-)
 
-Asahi Lina (1):
-  rust: drm: ioctl: Add DRM ioctl abstraction
-
-Danilo Krummrich (7):
-  drm: drv: implement __drm_dev_alloc()
-  rust: drm: add driver abstractions
-  rust: drm: add device abstraction
-  rust: drm: add DRM driver registration
-  rust: drm: file: Add File abstraction
-  rust: drm: gem: Add GEM object abstraction
-  MAINTAINERS: add DRM Rust source files to DRM DRIVERS
-
- MAINTAINERS                     |   1 +
- drivers/gpu/drm/drm_drv.c       |  58 ++++--
- include/drm/drm_drv.h           |   5 +
- rust/bindings/bindings_helper.h |   6 +
- rust/helpers/drm.c              |  19 ++
- rust/helpers/helpers.c          |   1 +
- rust/kernel/drm/device.rs       | 195 +++++++++++++++++++
- rust/kernel/drm/driver.rs       | 194 +++++++++++++++++++
- rust/kernel/drm/file.rs         |  99 ++++++++++
- rust/kernel/drm/gem/mod.rs      | 321 ++++++++++++++++++++++++++++++++
- rust/kernel/drm/ioctl.rs        | 159 ++++++++++++++++
- rust/kernel/drm/mod.rs          |  19 ++
- rust/kernel/lib.rs              |   2 +
- rust/uapi/uapi_helper.h         |   1 +
- 14 files changed, 1064 insertions(+), 16 deletions(-)
- create mode 100644 rust/helpers/drm.c
- create mode 100644 rust/kernel/drm/device.rs
- create mode 100644 rust/kernel/drm/driver.rs
- create mode 100644 rust/kernel/drm/file.rs
- create mode 100644 rust/kernel/drm/gem/mod.rs
- create mode 100644 rust/kernel/drm/ioctl.rs
- create mode 100644 rust/kernel/drm/mod.rs
-
+diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
+index 3cf440eee8a2..6f8fcf0376ae 100644
+--- a/drivers/gpu/drm/drm_drv.c
++++ b/drivers/gpu/drm/drm_drv.c
+@@ -740,36 +740,62 @@ void *__devm_drm_dev_alloc(struct device *parent,
+ EXPORT_SYMBOL(__devm_drm_dev_alloc);
+ 
+ /**
+- * drm_dev_alloc - Allocate new DRM device
+- * @driver: DRM driver to allocate device for
++ * __drm_dev_alloc - Allocation of a &drm_device instance
+  * @parent: Parent device object
++ * @driver: DRM driver
++ * @size: the size of the struct which contains struct drm_device
++ * @offset: the offset of the &drm_device within the container.
+  *
+- * This is the deprecated version of devm_drm_dev_alloc(), which does not support
+- * subclassing through embedding the struct &drm_device in a driver private
+- * structure, and which does not support automatic cleanup through devres.
++ * This should *NOT* be by any drivers, but is a dedicated interface for the
++ * corresponding Rust abstraction.
+  *
+- * RETURNS:
+- * Pointer to new DRM device, or ERR_PTR on failure.
++ * This is the same as devm_drm_dev_alloc(), but without the corresponding
++ * resource management through the parent device, but not the same as
++ * drm_dev_alloc(), since the latter is the deprecated version, which does not
++ * support subclassing.
++ *
++ * Returns: A pointer to new DRM device, or an ERR_PTR on failure.
+  */
+-struct drm_device *drm_dev_alloc(const struct drm_driver *driver,
+-				 struct device *parent)
++void *__drm_dev_alloc(struct device *parent,
++		      const struct drm_driver *driver,
++		      size_t size, size_t offset)
+ {
+-	struct drm_device *dev;
++	void *container;
++	struct drm_device *drm;
+ 	int ret;
+ 
+-	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+-	if (!dev)
++	container = kzalloc(size, GFP_KERNEL);
++	if (!container)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	ret = drm_dev_init(dev, driver, parent);
++	drm = container + offset;
++	ret = drm_dev_init(drm, driver, parent);
+ 	if (ret) {
+-		kfree(dev);
++		kfree(container);
+ 		return ERR_PTR(ret);
+ 	}
++	drmm_add_final_kfree(drm, container);
+ 
+-	drmm_add_final_kfree(dev, dev);
++	return container;
++}
++EXPORT_SYMBOL(__drm_dev_alloc);
+ 
+-	return dev;
++/**
++ * drm_dev_alloc - Allocate new DRM device
++ * @driver: DRM driver to allocate device for
++ * @parent: Parent device object
++ *
++ * This is the deprecated version of devm_drm_dev_alloc(), which does not support
++ * subclassing through embedding the struct &drm_device in a driver private
++ * structure, and which does not support automatic cleanup through devres.
++ *
++ * RETURNS:
++ * Pointer to new DRM device, or ERR_PTR on failure.
++ */
++struct drm_device *drm_dev_alloc(const struct drm_driver *driver,
++				 struct device *parent)
++{
++	return __drm_dev_alloc(parent, driver, sizeof(struct drm_device), 0);
+ }
+ EXPORT_SYMBOL(drm_dev_alloc);
+ 
+diff --git a/include/drm/drm_drv.h b/include/drm/drm_drv.h
+index 9952b846c170..f4c02d018f98 100644
+--- a/include/drm/drm_drv.h
++++ b/include/drm/drm_drv.h
+@@ -473,6 +473,11 @@ drmm_cgroup_register_region(struct drm_device *dev,
+ 
+ struct drm_device *drm_dev_alloc(const struct drm_driver *driver,
+ 				 struct device *parent);
++
++void *__drm_dev_alloc(struct device *parent,
++		      const struct drm_driver *driver,
++		      size_t size, size_t offset);
++
+ int drm_dev_register(struct drm_device *dev, unsigned long flags);
+ void drm_dev_unregister(struct drm_device *dev);
+ 
 -- 
 2.49.0
 
