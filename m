@@ -1,44 +1,40 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-24422.protonmail.ch (mail-24422.protonmail.ch [109.224.244.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCD21F3BA8;
-	Tue, 25 Mar 2025 20:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACF0266B71
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 21:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742934559; cv=none; b=qCh2jtv9KvS5+KHu5OtrLYAImPTUD11rNHMvx568C4LhlJhra4trBYzg7TZUrQnTuXN0l+50r9cJUP+3iUoXvfhywzy20XNdraNO11a0AONluYp2UYqAZdiPzRO5Iaq+nlstdKvTS5F6QJVflzihmZ8YNsuWCGb/jZO4wAJllM0=
+	t=1742937051; cv=none; b=jc8MeBQ+OSDNQFetSUF2zwiWKScXl/F4lhYb8uoPbSt3ZUhmAWSWDi9tWZ3Q8nmTZ7u4fzIQrEX/hI1uHqgSIfNtqOfSCY4fmSksBY0ckQ5ivOjVuaDKueCErqj59ymT/xhsWImR6weF9TkTFhPOhSjC+ed0nQ5D0bFT7evbx6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742934559; c=relaxed/simple;
-	bh=NsitWpF5+dUl6XB3pC20OcXtL3Kh1Nr2StHOUU26Rww=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D5/N+YsnWIb5eSG1V2zzmIxS9T7befeKdmMrFCXtZuKhQ5hTOGYTmvaTwXKN+rpvpAr9hNO0zbrK1ozwiaHDnpsZm8cc8PMdLCfiuu/tRNPBNNnK7tzyJ6mXnM8XFSVACfI1m6/WvigGlqCyMG2vxFuFVYx2Eu/muhnw43zmz2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NoDVDhB0; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742937051; c=relaxed/simple;
+	bh=juJC2ldUcGTzWh4/wtL22UseRqE2RUdLQ4htrhrJv/c=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=QfIxnzqCvZKO5s5L16puMILMAjn2/zuXt9FWDZXaMbOJUW4gD1EBXR3Q5eK1zpkG/B6ng0h+QFDYXjgEX6ZXiDAfK9qcMC7K1wKADDZOHRwtjmIwFAxsw5oICKlCRwdGLxuxUytvhVv/XsxvrYsocbCHJoy9KCUKWotPeLMJ4+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu; spf=pass smtp.mailfrom=ozlu.eu; dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b=Zudxyay5; arc=none smtp.client-ip=109.224.244.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlu.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NoDVDhB0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742934549; x=1743193749;
-	bh=fTPMqJdkIWV8h1b6QmmqOOGLsg9Vu94+5wCbSBo1U7M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=NoDVDhB0CCmupcRCAvZNSH3l1aD/WNyg9Mg4ubXTk2x9A1WwphRRcBy/NfuIy7beH
-	 5xdp33WpCl5Len7Jvp4qcFppKQ9WTY+A7MuM3oOrTENvmDD+q+XmxJbVVtnCk6OPe0
-	 JXSZgIjTnagLUB5xZiH/xReFA5Up4rHcSiXJgHZ/gbo81dZg+KdsuxY/MyAkhFNHCV
-	 1iW0Q5kvL0EtnlXmT5navgKbHpRNYjA9xcIP2bV1bvcya2U1olC2W/5hDzEDJ02onQ
-	 C5Z5jApw9fbSAEaureo70Wul/jT2ZXBjleb8MB+1vDPK/kREjQRv2ktHjxndOedxe/
-	 s1gEN5loBVDvg==
-Date: Tue, 25 Mar 2025 20:29:01 +0000
-To: Tamir Duberstein <tamird@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 0/6] rust: reduce pointer casts, enable related lints
-Message-ID: <D8PMQ9AY26ST.1PH9M02PY6JI2@proton.me>
-In-Reply-To: <CAJ-ks9mMVzm4m20AxiZ53DyAmSEaEh9veMoVB5XRxmTQP_H_ZQ@mail.gmail.com>
-References: <20250317-ptr-as-ptr-v5-0-5b5f21fa230a@gmail.com> <D8ORTXSUTKGL.1KOJAGBM8F8TN@proton.me> <CAJ-ks9n-z0SETz+zBfJmda6Q_vJDeM2jmDXx48xX9qpMmR-mdQ@mail.gmail.com> <D8OTXLDQCOKI.34R1U5R0JSB8H@proton.me> <CAJ-ks9nc0ptzfh+tHj47aTCMqoaKB0SnGpZOLQ06upt7x8EBMQ@mail.gmail.com> <D8PAQXHJDVQE.36QKQGBVVL4QU@proton.me> <CAJ-ks9kuG8SyybioKQ0+bYwjnCQFMhip+4A1WnMhsdgnNZGiZQ@mail.gmail.com> <D8PGG7NTWB6U.3SS3A5LN4XWMN@proton.me> <CAJ-ks9mMVzm4m20AxiZ53DyAmSEaEh9veMoVB5XRxmTQP_H_ZQ@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3bb29e99a5a636aa3b2a32b49e8de7a3d3efd080
+	dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b="Zudxyay5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlu.eu;
+	s=protonmail; t=1742937039; x=1743196239;
+	bh=vIGN2bl418EBKyeDnX8uco6KGhKBTGfqXuFc0cW8E1Y=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=Zudxyay59VVmbglnR8xcKnHEWWIIgxqYhyN/YBQvMcrgYpfENi9b/QxFzlKH21i/J
+	 g5D+AST554xWEjgnSLN97HnwRQ7SLM/SSF5RPmnZRraY2+m75ONMwHVkN+oWcmyBkf
+	 QBVK8w9dOaS/BhIgCpIMeJ21ytr2jH36TCOkKjJQskZVAkI7PSKovZZ1UsyVcTJFQ4
+	 Nnqr+yN72J7Ok1TBS970Zu/UM0BP4Qb52lYiyn3Y9M+hdvl/a1gERNP0kRop/3eYql
+	 51puRmaCbpXOKylzwhXvlQxFP4YcrvcEmTqiLIMhrdXbQ4H6Bfbr+GXK83zeCms/IG
+	 G9+QlmZAaf5aw==
+Date: Tue, 25 Mar 2025 21:10:35 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+From: Altan Ozlu <altan@ozlu.eu>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, Altan Ozlu <altan@ozlu.eu>
+Subject: [PATCH v3] rust: static_assert: add optional message
+Message-ID: <20250325211011.1093374-2-altan@ozlu.eu>
+Feedback-ID: 127873954:user:proton
+X-Pm-Message-ID: 72a7af79bcd78464fd72513b317d9a9c97797ce9
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,70 +44,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue Mar 25, 2025 at 6:17 PM CET, Tamir Duberstein wrote:
-> On Tue, Mar 25, 2025 at 11:33=E2=80=AFAM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->> On Tue Mar 25, 2025 at 2:34 PM CET, Tamir Duberstein wrote:
->> > On Tue, Mar 25, 2025 at 7:05=E2=80=AFAM Benno Lossin <benno.lossin@pro=
-ton.me> wrote:
->> >> On Mon Mar 24, 2025 at 10:59 PM CET, Tamir Duberstein wrote:
->> >> > On Mon, Mar 24, 2025 at 5:55=E2=80=AFPM Benno Lossin <benno.lossin@=
-proton.me> wrote:
->> >> >> On Mon Mar 24, 2025 at 9:55 PM CET, Tamir Duberstein wrote:
->> >> >> > On Mon, Mar 24, 2025 at 4:16=E2=80=AFPM Benno Lossin <benno.loss=
-in@proton.me> wrote:
->> >> >> >> I'll leave it up to you what you want to do with this: add it t=
-o this
->> >> >> >> series, make a new one, or let someone else handle it. If you d=
-on't want
->> >> >> >> to handle it, let me know, then I'll create a good-first-issue =
-:)
->> >> >> >
->> >> >> > I'll add a patch for `cast_lossless` -- the rest should probably=
- go
->> >> >> > into an issue.
->> >> >>
->> >> >> Do you mind filing the issue? Then you can decide yourself what yo=
-u want
->> >> >> to do yourself vs what you want to leave for others. Feel free to =
-copy
->> >> >> from my mail summary.
->> >> >
->> >> > Well, I don't really know what's left to do. We're pretty close at
->> >> > this point to having enabled everything but the nukes. Then there's
->> >> > the strict provenance thing, which I suppose we can write down.
->> >>
->> >> Yes, but there are also these from my original mail:
->> >> * `shared_ref as *const _` (for example in rust/kernel/uaccess.rs:247=
-,
->> >>   rust/kernel/str.rs:32 and rust/kernel/fs/file.rs:367), these we can
->> >>   replace with `let ptr: *const ... =3D shared_ref;`. Don't know if t=
-here
->> >>   is a clippy lint for this.
->> >
->> > I don't think we should go fixing things for which we don't have a
->> > clippy lint. That way lies madness, particularly as patches begin to
->> > be carried by other trees.
->>
->> There already exists a lint for that: `clippy::ref_as_ptr` (almost
->> created an issue asking for one :)
->
-> =F0=9F=AB=A1 picked this one up as well.
+Add an optional panic message for `static_assert!` macro.
 
-Sniped yet again :)
+It doesn't support argument formatting, because currently `assert!`
+doesn't allow formatting in const contextes.
 
-Thanks a lot for adding this one as well.
-
->> Here is another lint that we probably want to enable (after the `&raw
->> {const,mut}` series lands): `clippy::borrow_as_ptr`.
->
-> This sounds like a good one to file.
-
-Since `raw_ref_op` is already enabled in rust-next, I just filed it:
-
-    https://github.com/Rust-for-Linux/linux/issues/1152
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1149
+Signed-off-by: Altan Ozlu <altan@ozlu.eu>
 
 ---
-Cheers,
-Benno
+Link to v2: https://lore.kernel.org/rust-for-linux/20250324210005.990827-2-=
+altan@ozlu.eu/
+---
+ rust/kernel/static_assert.rs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
+index 3115ee0ba8e9..b0569dccfb76 100644
+--- a/rust/kernel/static_assert.rs
++++ b/rust/kernel/static_assert.rs
+@@ -6,6 +6,9 @@
+ ///
+ /// Similar to C11 [`_Static_assert`] and C++11 [`static_assert`].
+ ///
++/// It supports an optional argument for custom panic messages.
++/// The panic message doesn't support formatting.
++///
+ /// The feature may be added to Rust in the future: see [RFC 2790].
+ ///
+ /// [`_Static_assert`]: https://en.cppreference.com/w/c/language/_Static_a=
+ssert
+@@ -25,10 +28,11 @@
+ ///     x + 2
+ /// }
+ /// static_assert!(f(40) =3D=3D 42);
++/// static_assert!(f(40) =3D=3D 42, "f(x) must add 2 to the given input.")=
+;
+ /// ```
+ #[macro_export]
+ macro_rules! static_assert {
+-    ($condition:expr) =3D> {
+-        const _: () =3D core::assert!($condition);
++    ($condition:expr $(,$arg:literal)?) =3D> {
++        const _: () =3D core::assert!($condition $(,$arg)?);
+     };
+ }
+
+base-commit: a0b539ad369fe434fe488faf92d4ae770a27a90f
+--=20
+2.48.1
+
 
