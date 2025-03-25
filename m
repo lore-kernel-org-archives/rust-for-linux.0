@@ -1,104 +1,176 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B750A1F3B90;
-	Tue, 25 Mar 2025 20:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092CD19D086;
+	Tue, 25 Mar 2025 20:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742933039; cv=none; b=W3hSV5ahYoGC59TtwzwCuypfMH3o1y20jiscSpU2qqbhPf9y7jwWUpWjw14o0DLhofD6CDGMxpQU7s5HgYOafDbxxZRDZy62FkdhtJcpfAz5P3n4xjdthJHosCchehi0bchgqOvZ6WMf51vDF1UHuH1f5aiw2R6ZgguOfj8Nk/Q=
+	t=1742933202; cv=none; b=buDqva62Gxk8qx9+6mg+v6L0PdOFZouxb2fIsRjuekjsBwRP4b7+O9WISa9LOKCvFfsm1nYFf6NgnANN4QxMTJpBlt4bJs9PjG9BhMaRlrqYc3vMQ1ZBqg7OfUsy6VaF9EJkeP9/ZCleId8IGaLCbIqYWgRr5c6NLYWcNRADmFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742933039; c=relaxed/simple;
-	bh=O6R5vStplW5nRfRkI3i54E6IZ6L6vROkfTyRjs9kAhk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BFPRQPU7fF3s8F0HUDqZ4+FfUP8ghYbVh/ncpDIELFGuasle4wbAQo37FlfaWNVniRcPRULn+RciSRyZea/a3Ggez8k+D9VMCJgPsItwN9S9QATMR7QbLypVzR8pW8/+K/xZ/tch/FTloR9YcfamoLLHyq2yDIbDK3Ta24iw/8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ksPX684X; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1742933202; c=relaxed/simple;
+	bh=37juYYRqY6OHu5SY94dbPEG1lj9f7gZuSP/ozLzc7cs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rXMP4G6fjOF6S+naN+pttkAGkcA6vRhXXw+gvVtgGnS177IxkUlk/V5zHWuVtli5GuLt3Taq7Uo7FHCpMtdxYkwUNyu/sziQ8XdODxqrlZTJ78FBwZ/qYKzx/CIwLj3UXLKCDXMvRRwk8pe2U6I41sMj9Zw9yKZO4YcEUytKSsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W7jTLw59; arc=none smtp.client-ip=209.85.160.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ksPX684X"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff67f44fcaso1653114a91.3;
-        Tue, 25 Mar 2025 13:03:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W7jTLw59"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-47677b77725so53044741cf.3;
+        Tue, 25 Mar 2025 13:06:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742933037; x=1743537837; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J+A7Kx73f0r/rQykEaZU0+gBmprXdCz4INqBdyDs75w=;
-        b=ksPX684XgwdRBC2mMb97cly3+QOdxaADh2wqdUBn2Ku1C6ENdq4xInXS6mbb//ObbR
-         xDNjf6HkliO98758FgLoPdlWymoqDwnPNaz51wKX13wDi6edy1X1UPN1h35vaE5asVfS
-         hUMT6HmVtpFPoL4xU+sXvcuPo2QClYWOakqYazEmfZdMxOYDi+yKmjH9hYpHqY0c/113
-         ZzqpfozI2NGMf3SrZMwmZ2xKAkpesDcc8235rj8GCNpDQheF72Wzs6aPTtOZR0X8nZUn
-         we9NSp+vgwRtUMrNczU+EVjA/75dSXsHXwkosckSBWH8m8icx1rkYCh2pczLW4tdVJwK
-         AmJg==
+        d=gmail.com; s=20230601; t=1742933200; x=1743538000; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NWwBrYfMvlFJt8r0M0ffvzNJQz4ZELXtcONy+nGTPbs=;
+        b=W7jTLw59yfl/04Dw/ZI0rCHKvGSvDjzvOuAvl+vusAOTOPwqL15yRYgzsb1hFJW2Nb
+         +JWTD1U+hb1M4pl5viGcrVd425U7arHktj6NE4ZFzwAEMFRNaEW3EZJaLdi/zALNMA9x
+         U/UMtEVN5AA+2v9OFwqHu4jr3Wd4AGOzV+u1Vfh84oUj8SFfIxfZrc6HcduyISLjxuxQ
+         +GZj3vnJhj1TSMYtbG0qjWHp1TjAV+O4ZBNwOZbOnyRohAhtf9j/6sCt2BEgi5iSxWqb
+         iXUPtP1R4ApBhuWggQjbHpHKYOmQlDV0wbwjJHeIUKeerW9wJoRK1VtTqvHdI5MGnVOR
+         wEuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742933037; x=1743537837;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J+A7Kx73f0r/rQykEaZU0+gBmprXdCz4INqBdyDs75w=;
-        b=f7TDDVkLi0qW5b4PmaNGsyZls19D4t/ESigE57cX89Af7f/KAIwzS9I4POrWQweREj
-         QqfQfpWlNlPUqhAx2LnQSTZCzbQzyIeavRAfwNXXjkYcAf16u+NvDxnzAqbLCGv0Zu8Q
-         8KSsNTdutppe+LqBKK1vsurvDaozd0tdugUp2IItZDENNHyaQBJK9vcHw26M4NDVFRum
-         vq26+LhjsxAru5jtjn8dbWvuZ4ZPZ0fs9NfS90EcNTOOVKhCT10gtHJVMbWi7pveHphd
-         WwimnEm4EQI7/b0Z9rCpdUcOg8QCIUsa5c9yn3SXeIpceKW6rZQJaU9cM7akknru8IZK
-         xh+A==
-X-Forwarded-Encrypted: i=1; AJvYcCU4GJyDft8jbRLRuqJbcYUNErTH+h1eiJvSBW/GBqqg4TfZbibLTQkqc803tm+V1icqmsaVEJ4CzCXhY54=@vger.kernel.org, AJvYcCWgjdTffz9/iuq8fSxvpBhwpapodU3pfXMmUuoG0/7dVac/ECl8Vni55SCfYCJsNDW5VcVtGGu+rXzU3P95QPI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0JzOmQJ02M1/PEJyJdNeXMWxkj08+8w8T6gFt5j1NRmJiZNQc
-	snttu01/VVedWsk89pm4fQrULBtxIEFnyLnxVWsGnrQ+8WKtKtG9dwxnJ8KJOPOLxXQ4HEx4keG
-	bMVB36KbNAI/wHpRPj1LPd/CkVHI=
-X-Gm-Gg: ASbGncv5F0nO6aSDZcwnvyfW/ECuvgDmqJGXqSKCY5XFOLatTfy8B5YVi2edkB4dPFe
-	/qOGQAm8J9blkdLQYXf6tfvRdhf2/XbGsnGgWs1jj76PJaMestNkz59vNzhk1koAox15f8lHAOW
-	1m4k2YxY1lEofd2Z9RgZfYnpmUyQ==
-X-Google-Smtp-Source: AGHT+IF77yfJsEs1rNlWIdeIMX6PH20OJhiYagR24JLzgL/YjqkLtfQ980ZkNSwjPWRXeltKVbheDFZnhlBV4anpCKE=
-X-Received: by 2002:a17:90b:4b51:b0:2fa:6055:17e7 with SMTP id
- 98e67ed59e1d1-3030ff111e8mr11378369a91.8.1742933036780; Tue, 25 Mar 2025
- 13:03:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742933200; x=1743538000;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NWwBrYfMvlFJt8r0M0ffvzNJQz4ZELXtcONy+nGTPbs=;
+        b=FVWyxKfq18xJgzGBhb18YvPeWnK8YsEiWFpRpbWRX2GjIJWIx0EWm3IxZH/ThqMD26
+         FuP0Pet6iPdibl1MTyRDdltgXgkLV+sRH5Dzn6BbCsecpZFH/Cmu6JAAFJTtA8HSIVkj
+         XYvDt7EQ+ASvV3ZVmQR+z+zi9ANY7bXlcRjYW5AYZHvODtMkQz0m2ERFqHiVGB9K2wKw
+         dEFoLC7zRfNZzGMJytKZ4rKSQz23nNt0s4aJ4qsPKUS/DErKemXxkv0ZoqQgkUTQ/zWq
+         4wmHOlx3d6jVvFd8cPQ6c20OaP22rb71ldPRhpp+btZVpgO74rbDbP2vGmpnQOli9KgH
+         uAAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIvzXuL7d0PNrjh9jquNzq5Ue7/u/O6qIknB0C1eZ+J8EPmlfO7srNI9hI7yGaJ0bZ0J+dMpVBZK7cE6Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsyGvfHqZPIAacdqaEVNqgXDuCUUHhsBlJrzMPsU3KM6ldyCBm
+	dPJ1VIbQuuA7SOhGgWyL/mKQyw7/525+g5byrWg5hydk1EgZ//VG
+X-Gm-Gg: ASbGnctevEg0GAxGisb5ujk299TsShLJRwji11jBSFJqODHoCsflDTVJkFbBh7vdoi/
+	zEOVccCEMRi+CZ5PdMTghLFzBgwuJjELhhqHvVYM+6sWAJ9kyZ8/HmtksU2l1k82AFcMay+G26F
+	sxwaRYL3RR/9+dUN/WEJlYWMVDJ8/byQIkZbWz9NCMwWSXbmTPUFUEOLz/1jDLeF6CipSROgztZ
+	9mAxziM+7v8qUeL9/4JknaTRgOhs61GwAh/9W2r2qc/akjXJI5N0yZxHBjQRLsNnFyczIdpOAP0
+	xnNU5hZlT5dZXmreWyiXg9cBC/XzyneNwXQNufrlAApCdu7knbTSzNOo3THTE53u7dHmPqhYGn3
+	JZ7W/r0U0kI0KwzOEADEF/cxub9La4Lw6R+fKcoHVDrKDEcTMv0tMyQ==
+X-Google-Smtp-Source: AGHT+IFepJRsVKmCNDmpptRQJvDtbt9c0wB2ebPH7poonDcfu9JIbwI8zP6fJws9cdkkc+/3wR7YDQ==
+X-Received: by 2002:a05:620a:4409:b0:7c0:a0ba:2029 with SMTP id af79cd13be357-7c5ba1e9625mr2904836785a.40.1742933199638;
+        Tue, 25 Mar 2025 13:06:39 -0700 (PDT)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2620:10d:c091:600::1:38f6])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c5b92ed179sm673528485a.57.2025.03.25.13.06.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Mar 2025 13:06:39 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Subject: [PATCH v5 00/13] rust: generate_rust_analyzer.py: define host
+ crates and scripts
+Date: Tue, 25 Mar 2025 16:06:23 -0400
+Message-Id: <20250325-rust-analyzer-host-v5-0-385e7f1e1e23@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <87pliljcvy.fsf@kernel.org> <87tt7md1s6.fsf@kernel.org>
-In-Reply-To: <87tt7md1s6.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 25 Mar 2025 21:03:44 +0100
-X-Gm-Features: AQ5f1JptoHYM6pIDmyum5kL3Y74I2pu5LLA3LU6gvLquJNER5Pz_N-xIGJeRAuo
-Message-ID: <CANiq72kGAbhSi6y-2iouuRYhEZ9rGnDmQKJo8YwYjcaM+P5FpQ@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust `hrtimer` support for v6.15
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL8M42cC/33OzQ7CIAzA8VdZOIuhBebmyfcwHnCWjUSHgUn8y
+ N5d5sXFLB7/TfprXyxScBTZtnixQMlF5/scelWwpjN9S9ydcjMUqAWKmodbHLjpzfnxpMA7n0v
+ JI4iq1FpvKpYXr4Gsu3/Q/SF35+Lgw+NzI8E0/csl4IIbxKo0aNAauWsvxp3Xjb+wiUv4JSTAI
+ oGZkAJREECpAX4JOSeWv5ATkbeVIkJ5wl9CzQjERUJlAqwGWze12NBxTozj+AZOzoP9fQEAAA=
+ =
+X-Change-ID: 20250209-rust-analyzer-host-43b108655578
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Boris-Chengbiao Zhou <bobo1239@web.de>, Kees Cook <kees@kernel.org>, 
+ Fiona Behrens <me@kloenk.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Lukas Wirth <lukas.wirth@ferrous-systems.com>, 
+ Tamir Duberstein <tamird@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.15-dev
 
-On Fri, Mar 21, 2025 at 1:14=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> As discussed, I fixed the UB you fund in:
->
->   rust: hrtimer: allow timer restart from timer handler
->
-> by casting to `u32` when assigning enum values. The commits below this
-> commit are unchanged, the later commits were replayed on top of the
-> changed commit.
+This series updates rust-project.json to differentiate between host and
+target crates, where the former are used as dependencies of the `macros`
+crate. Please see individual commit messages for details.
 
-I reduced it and filled an issue upstream:
+The first 3 commits contain mechanical formatting changes and are
+optional. The series can be taken without them.
 
-    https://github.com/rust-lang/rust-bindgen/issues/3179
+I avoided more significant formatting or changes where possible to
+reduce the diff. Unfortunately `scripts/generate_rust_analyzer.py` is
+not consistently formatted before nor after this series.
 
-And I sent a potential patch to deal with this cleanly in a single
-place (as long as the C headers allow for it, which in your case it
-does), please see:
+The 5th commit ("scripts: generate_rust_analyzer.py: use
+str(pathlib.Path)") can also be considered optional. It removes an
+inconsistency I noticed while working on this series and which occurs on
+a line which churns in this series anyway.
 
-    https://lore.kernel.org/rust-for-linux/20250325184309.97170-1-ojeda@ker=
-nel.org/
+The trailing commits can also be considered optional, as they can be
+submitted separately. I included them in this series because they depend
+on it, but they can be split out if this is preferred.
 
-By the way, it wasn't UB, no? i.e. the UB one was the parsing patch on
-the modules series, which we discussed roughly at the same time.
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+Changes in v5:
+- Split remove `"is_proc_macro": false` into separate patch. (Daniel
+  Almeida)
+- Move whitespace change from "add type hints" to "add missing
+  whitespace".
+- Add patch to avoid default arguments and force keyword arguments.
+- Add patch to add type hints for CLI parameters.
+- Replace some instances of `str.replace` with `str.{l,r}strip`.
+- Rebase on next-20250325. This must be rooted on linux-next because
+  it's the only place rust-next and rust-fixes have been merged.
+- Link to v4: https://lore.kernel.org/r/20250322-rust-analyzer-host-v4-0-1f51f9c907eb@gmail.com
 
-I hope that helps!
+Changes in v4:
+- Fix typo (s/generate/generated/).
+- Pull Trevor's suggested change into a separate patch with a
+  Suggested-by tag.
+- Add patch to avoid file descriptor leak.
+- Add patch to generate rust-project.json entries for scripts/*.rs.
+- Add patch to use `cfg_groups` to reduce size of `rust-project.json` by
+  90%.
+- Link to v3: https://lore.kernel.org/r/20250319-rust-analyzer-host-v3-0-311644ee23d2@gmail.com
 
-Cheers,
-Miguel
+Changes in v3:
+- Rebase on linux-next. This is needed to pick up all the conflicts from
+  both rust-next and rust-fixes.
+- Drop `uv` from `mypy` command. (Trevor Gross)
+- Add `--python-version 3.8` to `mypy` command. (Trevor Gross)
+- `from typings import ...` directly. (Trevor Gross)
+- Extract `build_crate` and `register_crate` to avoid peeking into
+  `crates[-1]`. (Trevor Gross)
+- Link to v2: https://lore.kernel.org/r/20250311-rust-analyzer-host-v2-0-30220e116511@gmail.com
+
+Changes in v2:
+- Rebased on "rust: fix rust-analyzer configuration for generated files" [1]
+  Link: https://lore.kernel.org/all/CANiq72nv7nQ+1BinCHe2qsvwdUb-y9t7x=RGSppi_n9TBXNHpw@mail.gmail.com/ [1]
+- Link to v1: https://lore.kernel.org/r/20250209-rust-analyzer-host-v1-0-a2286a2a2fa3@gmail.com
+
+---
+Tamir Duberstein (13):
+      scripts: generate_rust_analyzer.py: add missing whitespace
+      scripts: generate_rust_analyzer.py: use double quotes
+      scripts: generate_rust_analyzer.py: add trailing comma
+      scripts: generate_rust_analyzer.py: extract `{build,register}_crate`
+      scripts: generate_rust_analyzer.py: drop `"is_proc_macro": false`
+      scripts: generate_rust_analyzer.py: add type hints
+      scripts: generate_rust_analyzer.py: avoid optional arguments
+      scripts: generate_rust_analyzer.py: use str(pathlib.Path)
+      scripts: generate_rust_analyzer.py: identify crates explicitly
+      scripts: generate_rust_analyzer.py: define host crates
+      scripts: generate_rust_analyzer.py: avoid FD leak
+      scripts: generate_rust_analyzer.py: define scripts
+      scripts: generate_rust_analyzer.py: use `cfg_groups`
+
+ scripts/generate_rust_analyzer.py | 330 ++++++++++++++++++++++++++++----------
+ 1 file changed, 243 insertions(+), 87 deletions(-)
+---
+base-commit: eb4bc4b07f66f01618d9cb1aa4eaef59b1188415
+change-id: 20250209-rust-analyzer-host-43b108655578
+
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
+
