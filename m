@@ -1,55 +1,56 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9547525A342;
-	Tue, 25 Mar 2025 14:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A74255E20;
+	Tue, 25 Mar 2025 14:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742913566; cv=pass; b=PcTCA/UsjRU1qAa9+bbRbtjP/nlxYGVXCdZSkqRM8DeDMeuYK6LCtu9b8axsdv51V5CD2jUxQ+w8+BOUQCmqRUeXAoDHRpNnK+AAF/mf5x4a6g66SFH1WPj2HQK1AEoM7A6HU+pndB0X2C7ii84RlyvoMJ4LVPNTOc+A0Nqle1k=
+	t=1742913662; cv=pass; b=QyWRmJ7yx9iG4kc7G7bccHPUVCWLz6vYfiosI5c9OnVqtUO5KaFuUKa8ek+uXGZeBtzzQDefajgly5e8XGXV8iWUxpbTQDq9nwe7yElTqo24WbzEaJi/ZwbxIHvjU9F7jQPHJLYZ3Lmy9P7SwnX6PGt/1aAkHR56DorY3Go9eB0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742913566; c=relaxed/simple;
-	bh=Gvt8K1sA1CaAsu2eb2QGQYOlpD6tSJd58vP4p0vCBcM=;
+	s=arc-20240116; t=1742913662; c=relaxed/simple;
+	bh=63lOYZV7NkFONXEi2MTSmxaYbqmMmjBPS/7IpjDqqfU=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qINw90ceOFlSHDwJqviscJ1oR39SG5IolArankbLrJTF7dr7gJX+HqcoM129u76igYMpp/v575WCZcUQL+ymxWUkdRXs5nNH/uyz2taFWc2VKTHtyjhq4VR5CalVii3f9Rlxi/efaFt+rj7apKNF6oIajY5VR5BUFKyLYeCsy08=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Q7Qn2w1J; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=DaL8NFBiKvIrx+Arw10sLjZmMZzJ6nR0s3kySOI8RpQo7d3LyMz13QE3qtruNEN8EeA7mZwdb/DbysOs93px6ffl/vMoypbcCIdugtx8Arb+m9R2df5Xc6aFfwq2REJ4imUVbPk4+6KRdUIZFhGkVwGywpPutdGdWSx0u7eIhow=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Dpgy+j9n; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Q7Qn2w1J"
-ARC-Seal: i=1; a=rsa-sha256; t=1742913536; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Dpgy+j9n"
+ARC-Seal: i=1; a=rsa-sha256; t=1742913635; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=VUVu38pF+ELp8GK6YdhvjNb30da9YOmDDJeYolZO0WNipKoxltMmo5HeRYRobHll4LCMbsJy6+KHZ6Ut/iJwSTcHC09FcWZtKe/W121VHvsWMsk1Zuwf9Oi/Z5N6BAbxQ3S/g3bgxaspCNr7FfPeDVhdDFD/R9xG4S6jAdK8sE8=
+	b=mSK7534lsmuMY1yU3gzoUV4tV9NhSWqiA1nNa+QGr3tJ1iDqZQdkBB1krYOQQ8Kx73pVuKGStY0yEd+LMqMO8DlIWWfAJthF7lu0C3z3gEhK9gyFp4Qh9JZoEh7euxkXOV2RnvXfEUEM5FoEFo64vUSzbXmpEPkX0Q0u/g/nurI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1742913536; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=jQZDBSONaTvaFu9T91EHjA31tT8fr2Z46N42ed/1SWE=; 
-	b=YArRVSUZZTzD8qeJuueVTNj+oJgISEaAn8RKep0aAYZDdIYEUA8qfHmOOxwm8LKSueDgeopsSldV12csgi1CwvXiIz73qLPyCGgnNP+OMwm6vbkpQcnJ4pK98Xl0IyvhqJ0r62dwc+kV9bjOVruuNjoge1N+MqP50ya4UMSoV6s=
+	t=1742913635; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=63lOYZV7NkFONXEi2MTSmxaYbqmMmjBPS/7IpjDqqfU=; 
+	b=YRmQFIRSoaE051hfd9AeUGSOqAv4Nb5xB+lS0L7cGG3NnPmHuf0VpFq5cZXxOFlbeMcFXy+Q6pkFnYInRL11pN8IgXxyxLSFhj4J5vOJ1hWqUjfU7FvFKp8FaibDnARHwhuTTS9850NBZDJ5nfPdN1q1WyJcu5+t0CSFLbZXEuc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742913536;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742913635;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=jQZDBSONaTvaFu9T91EHjA31tT8fr2Z46N42ed/1SWE=;
-	b=Q7Qn2w1JM5e57wWolQ/0oebm+F7PwyjAchnvl2wXYY5kojAq/8ZcJUmUYJuTcxew
-	/9Bxb0bOUzla+YBFln50TijQTU4zWg8yXDC9y50oF9bjvrkm2PnIA/shcdOt7iDkK25
-	KH10JYmXBKXFe1ZyY8dkVabM2kMfa9NzU23Hbl08=
-Received: by mx.zohomail.com with SMTPS id 17429135343111014.0342799037822;
-	Tue, 25 Mar 2025 07:38:54 -0700 (PDT)
+	bh=63lOYZV7NkFONXEi2MTSmxaYbqmMmjBPS/7IpjDqqfU=;
+	b=Dpgy+j9nXqCUsuO7ZDmq6VCajWqGeZZqZ9vqo2DVta1FVyf3kqief2gogvd2uIiT
+	dQHuIuDMEDh3dgQASRoJ42Of6JLLV3CrZkeFxxoC3czJz8sxitdFQQShdKDc0z0hQmj
+	YgxjpKT8e1L3aweyqkbQQ/3s+/L4aMjI9acSr+Rk=
+Received: by mx.zohomail.com with SMTPS id 174291363222697.63769696253098;
+	Tue, 25 Mar 2025 07:40:32 -0700 (PDT)
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: [PATCH v4 11/11] scripts: generate_rust_analyzer.py: use
- `cfg_groups`
+Subject: Re: [PATCH v4 05/11] scripts: generate_rust_analyzer.py: add type
+ hints
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250322-rust-analyzer-host-v4-11-1f51f9c907eb@gmail.com>
-Date: Tue, 25 Mar 2025 11:38:37 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
+In-Reply-To: <CANiq72k0J1PqH6mQ3DJVMbM=yrzXsFZU5NpDX-rPU-DP_4QHeA@mail.gmail.com>
+Date: Tue, 25 Mar 2025 11:40:16 -0300
+Cc: Tamir Duberstein <tamird@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
@@ -66,144 +67,34 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
  linux-kernel@vger.kernel.org,
  Lukas Wirth <lukas.wirth@ferrous-systems.com>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <CFD8E300-A2A3-41C6-A11A-1177F20A56A7@collabora.com>
+Message-Id: <3A2F6F3A-D86E-4F9D-B0F9-6E37FE15E8EA@collabora.com>
 References: <20250322-rust-analyzer-host-v4-0-1f51f9c907eb@gmail.com>
- <20250322-rust-analyzer-host-v4-11-1f51f9c907eb@gmail.com>
-To: Tamir Duberstein <tamird@gmail.com>
+ <20250322-rust-analyzer-host-v4-5-1f51f9c907eb@gmail.com>
+ <FB3D0F03-B162-4AD5-B288-4E307421276B@collabora.com>
+ <3DC4063A-3E9E-412B-AAF4-AA0C33DEEBFC@collabora.com>
+ <CANiq72k0J1PqH6mQ3DJVMbM=yrzXsFZU5NpDX-rPU-DP_4QHeA@mail.gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 X-Mailer: Apple Mail (2.3826.400.131.1.6)
 X-ZohoMailClient: External
 
+Hi Miguel,
 
+> On 25 Mar 2025, at 11:19, Miguel Ojeda =
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>=20
+> On Tue, Mar 25, 2025 at 2:39=E2=80=AFPM Daniel Almeida
+> <daniel.almeida@collabora.com> wrote:
+>>=20
+>> $ mypy --strict scripts/generate_rust_analyzer.py --python-version =
+3.8
+>> Success: no issues found in 1 source file
+>=20
+> Should this be a Tested-by? Or am I confused and did you mean =
+something else?
+>=20
+> Cheers,
+> Miguel
 
-> On 22 Mar 2025, at 10:23, Tamir Duberstein <tamird@gmail.com> wrote:
->=20
-> Declare common `cfg`s just once to reduce the size of =
-rust-analyzer.json
-> from 30619 to 2624 lines.
->=20
-> Link: =
-https://github.com/rust-lang/rust-analyzer/commit/2607c09fddef36da0d6f0a84=
-625db5e20a5ebde3
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
-> scripts/generate_rust_analyzer.py | 35 =
-+++++++++++++++++++++++------------
-> 1 file changed, 23 insertions(+), 12 deletions(-)
->=20
-> diff --git a/scripts/generate_rust_analyzer.py =
-b/scripts/generate_rust_analyzer.py
-> index 957b413fe0b6..3d89c0198db4 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -37,6 +37,7 @@ class Crate(TypedDict):
->     root_module: str
->     is_workspace_member: bool
->     deps: List[Dependency]
-> +    cfg_groups: List[str]
->     cfg: List[str]
->     edition: Literal["2021"]
->     env: Dict[str, str]
-> @@ -59,15 +60,8 @@ def generate_crates(
->     sysroot_src: pathlib.Path,
->     external_src: pathlib.Path,
->     cfgs: List[str],
-> +    cfg_groups: List[str],
-> ) -> List[Crate]:
-> -    # Generate the configuration list.
-> -    cfg =3D []
-> -    with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-> -        for line in fd:
-> -            line =3D line.replace("--cfg=3D", "")
-> -            line =3D line.replace("\n", "")
-> -            cfg.append(line)
-> -
->     # Now fill the crates list.
->     crates: List[Crate] =3D []
->     crates_cfgs =3D args_crates_cfgs(cfgs)
-> @@ -77,6 +71,7 @@ def generate_crates(
->         root_module: pathlib.Path,
->         deps: List[Dependency],
->         cfg: List[str] =3D [],
-> +        cfg_groups: List[str] =3D [],
->         is_workspace_member: bool =3D True,
->     ) -> Crate:
->         return {
-> @@ -85,6 +80,7 @@ def generate_crates(
->             "is_workspace_member": is_workspace_member,
->             "deps": deps,
->             "cfg": cfg,
-> +            "cfg_groups": cfg_groups,
->             "edition": "2021",
->             "env": {
->                 "RUST_MODFILE": "This is only for rust-analyzer"
-> @@ -101,10 +97,13 @@ def generate_crates(
->         root_module: pathlib.Path,
->         deps: List[Dependency],
->         cfg: List[str] =3D [],
-> +        cfg_groups: List[str] =3D [],
->         is_workspace_member: bool =3D True,
->     ) -> Dependency:
->         return register_crate(
-> -            build_crate(display_name, root_module, deps, cfg, =
-is_workspace_member)
-> +            build_crate(
-> +                display_name, root_module, deps, cfg, cfg_groups, =
-is_workspace_member
-> +            )
->         )
->=20
->     def append_proc_macro_crate(
-> @@ -190,7 +189,7 @@ def generate_crates(
->             display_name,
->             srctree / "rust" / display_name / "lib.rs",
->             deps,
-> -            cfg=3Dcfg,
-> +            cfg_groups=3Dcfg_groups,
->         )
->         crate["env"]["OBJTREE"] =3D str(objtree.resolve(True))
->         crate_with_generated: CrateWithGenerated =3D {
-> @@ -252,7 +251,7 @@ def generate_crates(
->                 name,
->                 path,
->                 [core, kernel],
-> -                cfg=3Dcfg,
-> +                cfg_groups=3Dcfg_groups,
->             )
->=20
->     return crates
-> @@ -277,9 +276,21 @@ def main() -> None:
->     # Making sure that the `sysroot` and `sysroot_src` belong to the =
-same toolchain.
->     assert args.sysroot in args.sysroot_src.parents
->=20
-> +    # Generate the configuration list.
-> +    with open(args.objtree / "include" / "generated" / "rustc_cfg") =
-as fd:
-> +        cfg_groups =3D {"rustc_cfg": =
-[line.lstrip("--cfg=3D").rstrip("\n") for line in fd]}
-> +
->     rust_project =3D {
-> -        "crates": generate_crates(args.srctree, args.objtree, =
-args.sysroot_src, args.exttree, args.cfgs),
-> +        "crates": generate_crates(
-> +            args.srctree,
-> +            args.objtree,
-> +            args.sysroot_src,
-> +            args.exttree,
-> +            args.cfgs,
-> +            list(cfg_groups.keys()),
-> +        ),
->         "sysroot": str(args.sysroot),
-> +        "cfg_groups": cfg_groups,
->     }
->=20
->     json.dump(rust_project, sys.stdout, sort_keys=3DTrue, indent=3D4)
->=20
-> --=20
-> 2.48.1
->=20
->=20
+Yes, that was a bit convoluted, sorry.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-
+Tested-by: Daniel Almeida <daniel.almeida@collabora.com>=
