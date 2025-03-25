@@ -1,111 +1,104 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E629B1F0E59;
-	Tue, 25 Mar 2025 19:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B750A1F3B90;
+	Tue, 25 Mar 2025 20:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742932112; cv=none; b=hAbCqGr5mepxy4blXOu+HQ/Os0IUBe99qSLrmZXabdpZpF4pa+Wv2SfWgL8NVWPAFqt9rHTOtvBYQq11UEBJDpg7EBk11zoflGsp5Wh+DUiMzRyftp3Z32M77s+JpgWMRPg7Q1NvuVOALZWP9nEFQSNHuyBU3jW3wFjfkqOzmiY=
+	t=1742933039; cv=none; b=W3hSV5ahYoGC59TtwzwCuypfMH3o1y20jiscSpU2qqbhPf9y7jwWUpWjw14o0DLhofD6CDGMxpQU7s5HgYOafDbxxZRDZy62FkdhtJcpfAz5P3n4xjdthJHosCchehi0bchgqOvZ6WMf51vDF1UHuH1f5aiw2R6ZgguOfj8Nk/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742932112; c=relaxed/simple;
-	bh=kWRz7TnGEyqbpdoqqbqwf78f4CQUMOrIDZK4ebHnEkI=;
+	s=arc-20240116; t=1742933039; c=relaxed/simple;
+	bh=O6R5vStplW5nRfRkI3i54E6IZ6L6vROkfTyRjs9kAhk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K2nwpS8nOPssCcxy8OAIACxXdo5YV02jk5lExqnlv71wI88I539kZsADfypPQQHEmk0NT6r/sgO966LeLlCuakuuCs9grSeOoHh/cKwjjjVpu5T3P69FYMXZzNOp1R9O2PamrzuW5Ow107DqNsr832xIgm/+TYDjP1lDuRM3/OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nkxxXbog; arc=none smtp.client-ip=209.85.214.173
+	 To:Cc:Content-Type; b=BFPRQPU7fF3s8F0HUDqZ4+FfUP8ghYbVh/ncpDIELFGuasle4wbAQo37FlfaWNVniRcPRULn+RciSRyZea/a3Ggez8k+D9VMCJgPsItwN9S9QATMR7QbLypVzR8pW8/+K/xZ/tch/FTloR9YcfamoLLHyq2yDIbDK3Ta24iw/8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ksPX684X; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nkxxXbog"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22403c99457so14007025ad.3;
-        Tue, 25 Mar 2025 12:48:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ksPX684X"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff67f44fcaso1653114a91.3;
+        Tue, 25 Mar 2025 13:03:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742932110; x=1743536910; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742933037; x=1743537837; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N8OkNb0Gk1huvCdNeb+R5YeTaXEOuCO6fGN5IzB1KVw=;
-        b=nkxxXbogKk6zfxQRBGT/6ooGRow+99Bws1svl8U825Y5g7wOi8gSbhuhklSx36TdnJ
-         mMnWqB1tGvjG5swculswOyqX4UpVQ5gw592PCx5STijyWIgD8Ecyskg7ruyIcy49EBwP
-         Y91lbg7Gjlac3CiqaRfLBn8C3ekjdq0n4qmf3jd7LVGlLzOTiGQ3mOVq3pa0A6tKDnKg
-         nPloQiJGnVeiHJ6YzFOVKp2X/l9R6m7PfxaJItDd18xYkzdL1AWvUHCLFHVdPJkuhD1e
-         81PtvLuPyqgWMltHvcZBuB21p5EalG1+XxXMLC8kktgHRJ/c+nE07fUHfvURNkaKLrD2
-         4jwQ==
+        bh=J+A7Kx73f0r/rQykEaZU0+gBmprXdCz4INqBdyDs75w=;
+        b=ksPX684XgwdRBC2mMb97cly3+QOdxaADh2wqdUBn2Ku1C6ENdq4xInXS6mbb//ObbR
+         xDNjf6HkliO98758FgLoPdlWymoqDwnPNaz51wKX13wDi6edy1X1UPN1h35vaE5asVfS
+         hUMT6HmVtpFPoL4xU+sXvcuPo2QClYWOakqYazEmfZdMxOYDi+yKmjH9hYpHqY0c/113
+         ZzqpfozI2NGMf3SrZMwmZ2xKAkpesDcc8235rj8GCNpDQheF72Wzs6aPTtOZR0X8nZUn
+         we9NSp+vgwRtUMrNczU+EVjA/75dSXsHXwkosckSBWH8m8icx1rkYCh2pczLW4tdVJwK
+         AmJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742932110; x=1743536910;
+        d=1e100.net; s=20230601; t=1742933037; x=1743537837;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N8OkNb0Gk1huvCdNeb+R5YeTaXEOuCO6fGN5IzB1KVw=;
-        b=vIwA0Up8mowI9F2MOCbywK9fYOR+2Y6CQMIrnQhhbshIh4SqdNB2Jkqyi6gMRJVBgK
-         FDpUNuaetLwXqtzyEnU0O/AdvsX+e11ai4Qm1naJUWDo/LbVsGQDCRDR7hyLAjVuKi5D
-         qPAxqDTSI+SdZvC5HYgwmhWmlSUjXfVANUiA4x+IL5FpkkG7mewoZGQbrJRomS3/S5P/
-         FxLMgdWVIrBFHRpdKGkF2rpSK0jEPLfw8dlu2wgRlB2RXIs3N5Jp0Pwj9Z21N4w+ZSt4
-         guPbJY+i0Bvq0Y2frySkqawkayK6twOfEeKi3Ju2XCWXNRVAUSlZoEjUx8dKYlgqASX7
-         ZEsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUbq44M7KdG3E67V5dVsgfkJB7swCx0kQdOitoguagBuWNAsVTfZYGyxZJOQGSLHBuEZWGnK6PbQALSSEd6S60=@vger.kernel.org, AJvYcCWGzAA1nTSDsnyd4Tpa7kJUJfLyMwRGOF+OhDOXAkcqArnXw72dFfaz3U8yPrAktP+kPxpa/6f6FzW2NFk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHhVp89mjCo+o62+J67iEOnUF3INza/SmjMMywdQdzJQEk2SVO
-	q4rj2u/OZt2+UN/ieIFicyoVjku+cxcyMuau/kfTwlZ34usR+yS34zfGBoK/SqCRAlILcOMTGSz
-	OLp1wdKqEGMRl1kLqLqatAIapUHk=
-X-Gm-Gg: ASbGncucvKdN2e2iC8p+O3KD8k8nNvLDFzokpoPMplpCKKACqQ+oQv0RI+Gb7I1FOgq
-	WrUt79ewg4EMisZhxPNaTcHpL5dPoVWj64m1ngsN4f7FgN1RA4CFWLw8jpIs1zs5vvn7jC4CDkj
-	kWMTNA8F06SJWRfsj6N0OlkH1zUA==
-X-Google-Smtp-Source: AGHT+IFxBWD68KB8/HxS5e8dGM3BB7KTxo4N4mhnjuZj5L+9yyTC70mMnIp1cyTclOTT83cY3hEXidYZMRLFX4HVM5Y=
-X-Received: by 2002:a17:903:234e:b0:223:5525:622f with SMTP id
- d9443c01a7336-22780c503a9mr99495195ad.1.1742932109937; Tue, 25 Mar 2025
- 12:48:29 -0700 (PDT)
+        bh=J+A7Kx73f0r/rQykEaZU0+gBmprXdCz4INqBdyDs75w=;
+        b=f7TDDVkLi0qW5b4PmaNGsyZls19D4t/ESigE57cX89Af7f/KAIwzS9I4POrWQweREj
+         QqfQfpWlNlPUqhAx2LnQSTZCzbQzyIeavRAfwNXXjkYcAf16u+NvDxnzAqbLCGv0Zu8Q
+         8KSsNTdutppe+LqBKK1vsurvDaozd0tdugUp2IItZDENNHyaQBJK9vcHw26M4NDVFRum
+         vq26+LhjsxAru5jtjn8dbWvuZ4ZPZ0fs9NfS90EcNTOOVKhCT10gtHJVMbWi7pveHphd
+         WwimnEm4EQI7/b0Z9rCpdUcOg8QCIUsa5c9yn3SXeIpceKW6rZQJaU9cM7akknru8IZK
+         xh+A==
+X-Forwarded-Encrypted: i=1; AJvYcCU4GJyDft8jbRLRuqJbcYUNErTH+h1eiJvSBW/GBqqg4TfZbibLTQkqc803tm+V1icqmsaVEJ4CzCXhY54=@vger.kernel.org, AJvYcCWgjdTffz9/iuq8fSxvpBhwpapodU3pfXMmUuoG0/7dVac/ECl8Vni55SCfYCJsNDW5VcVtGGu+rXzU3P95QPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0JzOmQJ02M1/PEJyJdNeXMWxkj08+8w8T6gFt5j1NRmJiZNQc
+	snttu01/VVedWsk89pm4fQrULBtxIEFnyLnxVWsGnrQ+8WKtKtG9dwxnJ8KJOPOLxXQ4HEx4keG
+	bMVB36KbNAI/wHpRPj1LPd/CkVHI=
+X-Gm-Gg: ASbGncv5F0nO6aSDZcwnvyfW/ECuvgDmqJGXqSKCY5XFOLatTfy8B5YVi2edkB4dPFe
+	/qOGQAm8J9blkdLQYXf6tfvRdhf2/XbGsnGgWs1jj76PJaMestNkz59vNzhk1koAox15f8lHAOW
+	1m4k2YxY1lEofd2Z9RgZfYnpmUyQ==
+X-Google-Smtp-Source: AGHT+IF77yfJsEs1rNlWIdeIMX6PH20OJhiYagR24JLzgL/YjqkLtfQ980ZkNSwjPWRXeltKVbheDFZnhlBV4anpCKE=
+X-Received: by 2002:a17:90b:4b51:b0:2fa:6055:17e7 with SMTP id
+ 98e67ed59e1d1-3030ff111e8mr11378369a91.8.1742933036780; Tue, 25 Mar 2025
+ 13:03:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250325184309.97170-1-ojeda@kernel.org>
-In-Reply-To: <20250325184309.97170-1-ojeda@kernel.org>
+References: <87pliljcvy.fsf@kernel.org> <87tt7md1s6.fsf@kernel.org>
+In-Reply-To: <87tt7md1s6.fsf@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 25 Mar 2025 20:48:17 +0100
-X-Gm-Features: AQ5f1JpNyVdd47wH2I_NWPgt1x_uShOAv6Q_Kz6PcSYhTfdjyZuGqcfgDJh1oE8
-Message-ID: <CANiq72kWumOHt=VgV3mb2G4mOE3bCVUCUrKdjk4caFJPVCTBbA@mail.gmail.com>
-Subject: Re: [PATCH] rust: workaround `bindgen` issue with forward references
- to `enum` types
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Date: Tue, 25 Mar 2025 21:03:44 +0100
+X-Gm-Features: AQ5f1JptoHYM6pIDmyum5kL3Y74I2pu5LLA3LU6gvLquJNER5Pz_N-xIGJeRAuo
+Message-ID: <CANiq72kGAbhSi6y-2iouuRYhEZ9rGnDmQKJo8YwYjcaM+P5FpQ@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust `hrtimer` support for v6.15
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 25, 2025 at 7:43=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Fri, Mar 21, 2025 at 1:14=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> Instead, let's have a section at the top of our `bindings_helper.h` that
-> `#include`s the headers with the affected types -- hopefully there are
-> not many cases and there is a single ordering that covers all cases.
+> As discussed, I fixed the UB you fund in:
+>
+>   rust: hrtimer: allow timer restart from timer handler
+>
+> by casting to `u32` when assigning enum values. The commits below this
+> commit are unchanged, the later commits were replayed on top of the
+> changed commit.
 
-By the way, I was curious and from a quick look at generated bindings
-lines matching `type.*i32` for a x86_64 build I have, I see only other
-three cases:
+I reduced it and filled an issue upstream:
 
-  - `key_serial_t` is not an `enum`, i.e. it is correct.
+    https://github.com/rust-lang/rust-bindgen/issues/3179
 
-  - `fs_value_type` and `drm_mode_status` are both `enum`s, and they
-indeed suffer from this issue. However, we do not use them and I don't
-see any patches posted for them either.
+And I sent a potential patch to deal with this cleanly in a single
+place (as long as the C headers allow for it, which in your case it
+does), please see:
 
-Those are good news.
+    https://lore.kernel.org/rust-for-linux/20250325184309.97170-1-ojeda@ker=
+nel.org/
 
-However, there are also bad news: if for instance we actually needed
-either of those two latter ones, then we cannot just include the
-header that defines them, because that header happens to include
-others that in turn use forward references to that `enum` the root one
-defines.
+By the way, it wasn't UB, no? i.e. the UB one was the parsing patch on
+the modules series, which we discussed roughly at the same time.
 
-So in some cases, if we start to use them before we have a fix, would
-require C header changes to avoid the forward references. Thus, for
-those, I think it may be simpler to instead use a cast and mark them
-with a comment so that we know we should clean them up.
+I hope that helps!
 
 Cheers,
 Miguel
