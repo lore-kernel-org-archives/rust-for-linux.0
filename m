@@ -1,71 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193FE16EB4C
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 09:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7761E8351
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 09:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742893348; cv=none; b=FwZZgdAkse7vM64nIjRPOgeW9C0yezo4U4xYZKTXuEJS/VcbMkGu1swUM2kjPcBnDdzc41PvC3e0Ug0d4CzUAgqnddPWwar5l9daNRXDcKUaPbH7Bi7TMV5t2aVuLxRNToLIv3o9jXFNXdcCZrIXmllXgSf3+j8fp/rzgh/OsRg=
+	t=1742893524; cv=none; b=dRUb3B7HkkBVAAzZqGcbIvPVBpwomVfNwg4h1Ji0NBnYCklkMhMUsadK/N/rL18zTQoEEyDnaMlG8hDXYIQX08vSMOzNIgHcdZBx8JdywW+hSSxTQ4u433hRFxhW8mX/vAgbUzD3Dq/o5yNtooF2PDO1WNHktn1D5aXdm48aZ/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742893348; c=relaxed/simple;
-	bh=wcSRVHryt2bmCq50gGdWBD1baQzrF0iPIIeTmkanllw=;
+	s=arc-20240116; t=1742893524; c=relaxed/simple;
+	bh=mKJ++G7wNhJzW9MVSALnmcUFApSRdiNlAhwjAt23yKs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XJzqIBXzVplY4/9MxqGIorzRoXjhLAYln9TsUN1qX0raJikRZXgAOa4hWXOW0aTxHjemQnIJdd/mY8V2iDMqmXB4F/CyvlIvXWEP4eJiYQ6cBUhIRnxocrQttD05ioKf9E+q1QO4KSC9dJ8XussMQ29lhnU/2BTEK9PmHRwznxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hJKOv3x9; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=cWBUJTneFI4UpolZvBN4/b7qEmEhM3qdfDBEqxi6kNf6OKC1nXsLiObFyvj3AfZrthBNNtpFuX4nIhVSjdNcTTcRv7/2wxc+zQKzg4IjjM0GA9/PbW6WagJYdyl2O1oNfSIEoQucbaAxtO9kRL79e0dFb0tWTsxKmJzNTyQAZCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZpEvNuLF; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hJKOv3x9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZpEvNuLF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742893346;
+	s=mimecast20190719; t=1742893521;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Wj1IChreYTEW7S1AiPXdgyUmHcauFp5NeY4Eqtc9FGw=;
-	b=hJKOv3x9LSrXF23YoQlw2ngGe9MmiGZu3lzlPMCmDQtt4SEmI2bqnr7KK84hA+g2WhFlY6
-	nNT7pKOAQiDO8jmglkRG5o2w1gdLRCtPP1nhqk+mksE3LIE1cGWWfECUSSFRIhF4wiElMf
-	CpZNR1eSdCQEyi8IhG0EvOLeDpRzzAk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=PrC6whXEB8tIJZm3Od4OEZVDDngb94gqrtSVDSXgtaI=;
+	b=ZpEvNuLFrcm6tVy5UwMKQb9KyApmpaHkVbdy7H3EFalU6THlA2cuGLgqkIIvEd4OMPECFn
+	T0TvIi8tneru2CVHr4ZL930YXgHnvRybI2GXc7kEj8LlqGpaEfoXBs70cOHvT2AdPc3Ktz
+	Zhgs6YKiT6xt71DuRYDq7ovrdQkT1Uo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-NiCV_FHqOBq5wS1dVb4SnQ-1; Tue, 25 Mar 2025 05:02:24 -0400
-X-MC-Unique: NiCV_FHqOBq5wS1dVb4SnQ-1
-X-Mimecast-MFC-AGG-ID: NiCV_FHqOBq5wS1dVb4SnQ_1742893343
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-39131f2bbe5so2240037f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 02:02:24 -0700 (PDT)
+ us-mta-516-YWmNE4K_MROu6QVD4S_y6Q-1; Tue, 25 Mar 2025 05:05:18 -0400
+X-MC-Unique: YWmNE4K_MROu6QVD4S_y6Q-1
+X-Mimecast-MFC-AGG-ID: YWmNE4K_MROu6QVD4S_y6Q_1742893517
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43ce8f82e66so31922655e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 02:05:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742893343; x=1743498143;
+        d=1e100.net; s=20230601; t=1742893517; x=1743498317;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wj1IChreYTEW7S1AiPXdgyUmHcauFp5NeY4Eqtc9FGw=;
-        b=mYWu2bL/Srdlswp9AaQjPZUiSmex17+oPbonhNUHaScYAJQlhBTxPdxwsiGkuG962Q
-         y/U5dEUe/Yrt++nvNDQl4p/e38jgENYaerICo+CECXiRw++5rBnrQs7ZFva+cIjS0GjR
-         S0JrCYFqyCqRrt+Nj82K6WS9HC1AI4Wf8aCchf2K77vx9sV8uDxWeJYPQcTwAxSPQNrh
-         UhClL32yuqr/Ds3IG6+007O84gjMED3op4VBkntddEGHW13fBFt/PghUavys3iJl9H3e
-         K8H8NPzUloHOvG02tpiSUgQhQyCD+2UKPWHrp+b5hkMAkTNaxe46HWnECWiczRHV6YJd
-         RIfg==
-X-Forwarded-Encrypted: i=1; AJvYcCV+1IGtIHxfZadJit2Hi89tkjRvJ8gfQnYhc+0h96OgZ94/g1s397Mt7OLdkVP+ESzj0ji9Xu71SFrsgLRR3Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxFQ0b+emZ47hMw9W6nnrOI04ju3nZgDH1zQRr2gothda3BEQT
-	MiuHiE2Wcoq/IFn/AmSRUhKjn//7BaHT5gKuwqqT3haxcEK+DXj8DaE8Z94mIK0g35dYM+WU0zJ
-	gkVClg3oJR/FwDj877s/8l+Br7bqN+mThQeP2agQYnCwBRea/6nE3Lut42+LMpb6w
-X-Gm-Gg: ASbGncux8H3MfkuePY1kSI8yDqTcRlOdgCQxt8UZQeEjoHbxRiFDednBguL0H8ELx08
-	niD+D1WQWf4Eii3RBRR/46MM4A00KPX4NnVQVgoKzbUHR4pT2HtvsyrLrNm/rvsPmgDp/DRXAzu
-	QoxJSIIx/vHMNScRCY//vOTUWk64mbyAOJ63Ef2/v3sxCHEWqVQE+7PQw2jyf2NvYd7DdMKobSV
-	IfGPVk6z7YC3SmBTW82pCrKhBIvE8poUWqwizTvGO8/wahUoZAj7Q2TFbenL0llp1a0zPPo8eDR
-	jxwrVg3HentB/9H5/GHzwEIJ/TD0fzEp4oIp5v2KAIbXQjSwW/SLenc=
-X-Received: by 2002:a05:6000:410a:b0:390:e8d4:6517 with SMTP id ffacd0b85a97d-3997f8ff121mr13032940f8f.21.1742893343069;
-        Tue, 25 Mar 2025 02:02:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmIfLZm7khPWjwEcKM+sZzsNS9/OV7LqARaa/EFUtim00jKs/LTQtUTCr53eUD4BnsaUPNvA==
-X-Received: by 2002:a05:6000:410a:b0:390:e8d4:6517 with SMTP id ffacd0b85a97d-3997f8ff121mr13032888f8f.21.1742893342596;
-        Tue, 25 Mar 2025 02:02:22 -0700 (PDT)
+        bh=PrC6whXEB8tIJZm3Od4OEZVDDngb94gqrtSVDSXgtaI=;
+        b=GZunXPBn6nfpOZUyhEfZ9FnpePkYX27/nNBIzCE099SZsWVNkyl3p46SGwbYIrbmVI
+         53R/V0MIxFnhyNYbMZHfuAhTPmYNIG977geMbdUuM9IvDTpK5mlo4wcQEWY7KHkjwDEE
+         VsdvNPCr0fRZe+pBRHGvkNCm3LYfYpdGriZTNmithar6Rn0H/63DBeNQp/UdT/37UGTu
+         FHKR/8H1Fg87f8mrtGicCkDRSOixAtnt27OStTGD6kjT/lTy/7U1d6nbFUjbHVYsdgB+
+         dx2dXJ4yaHdPUigffKG6Fc+eeUcrvm/VT4YSMKZnAODKGDVWyHlAaEHeUSKC9976pm8E
+         twUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWZwF+t+S+wbAH9CP7lb07/lmhWtMjRIDw19RPSSHvZRHSMMnMgniCqwFR8dp2EOn3jsUkJgF63OaiWOw9mXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNzy26UfmQtez5go40uWyj+MzAv3nFlNLt8PYQ+druTmubStyn
+	l+uR8D7T3ssf0jxcM8OUSRGHuluB/xp5bo4R5z6AtL23wahzK0y2arhlvJeUOya1akUFglW5Nmy
+	ir38Hha6YqbNHzs4MwVykWOYn+S8To1cL0KQIW5lcJmmwl/bslLlZFEVF93g2rsUP
+X-Gm-Gg: ASbGnctDPR4WorNP4ekao/NkpFQneWyZAQ5eVfEN6pLtFpewM6Ef5lsHPf4adDPEBxQ
+	UfOIWLt9IQFhi+kgYNSdke/zfOg/vPb6VZ+oD1lobVQQfJ4OVjInaSg7Qo/x7RIG2lnhoejWJ+W
+	XAlgERKIWHFNXMb6hNVOx0ujNh9XSBoiTxXDoblgNFEVkjTsciAgUxaYMQxN1eBOTj/3qIjC2Q8
+	L3zyKK1tqyRagZ5Y1V3nKjrGCLiEbthXKp35ZeJHNq3NbW/PHTCLup0ZqLLB9MEa4C7gKOKX5XV
+	+4BQl3gVoc1yiArlYvUPp790J1lOcIb+L+IfZJ4e1EdlyBOPEAReXN4=
+X-Received: by 2002:a05:6000:2a4:b0:391:ba6:c066 with SMTP id ffacd0b85a97d-3997f932dc7mr15340761f8f.35.1742893516847;
+        Tue, 25 Mar 2025 02:05:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGTBT9UgEXQQoZOQCZf+geD9eCV4pZV+LkpuIAC9M/oAzFE2WYScIhUIhi8NX1J2SaBNujAOg==
+X-Received: by 2002:a05:6000:2a4:b0:391:ba6:c066 with SMTP id ffacd0b85a97d-3997f932dc7mr15340713f8f.35.1742893516379;
+        Tue, 25 Mar 2025 02:05:16 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9b409fsm13375318f8f.50.2025.03.25.02.02.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d4fcea6ecsm145624925e9.5.2025.03.25.02.05.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Mar 2025 02:02:22 -0700 (PDT)
-Message-ID: <2628502d-5b43-41da-978f-66a68623889d@redhat.com>
-Date: Tue, 25 Mar 2025 10:02:19 +0100
+        Tue, 25 Mar 2025 02:05:14 -0700 (PDT)
+Message-ID: <dd1616d5-4808-46be-9167-6fbfe76e0c73@redhat.com>
+Date: Tue, 25 Mar 2025 10:05:13 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -73,7 +73,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] drm/panic: add missing space
+Subject: Re: [PATCH 02/10] drm/panic: add missing Markdown code span
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
@@ -87,18 +87,18 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
  dri-devel@lists.freedesktop.org
 References: <20250324210359.1199574-1-ojeda@kernel.org>
- <20250324210359.1199574-2-ojeda@kernel.org>
+ <20250324210359.1199574-3-ojeda@kernel.org>
 From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20250324210359.1199574-2-ojeda@kernel.org>
+In-Reply-To: <20250324210359.1199574-3-ojeda@kernel.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _2_6o2ZQw6i_8AVr38T8tGwjXxrsn_aTh9DQ1Eu-TgI_1742893343
+X-Mimecast-MFC-PROC-ID: EEzF93SHP9Nw7GW5P4LLdMDOSsGnBu4HooMS6G2nFlI_1742893517
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US, fr
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 24/03/2025 22:03, Miguel Ojeda wrote:
-> Add missing space in sentence.
+> Add missing Markdown code span.
 > 
 > This was found using the Clippy `doc_markdown` lint, which we may want
 > to enable.
@@ -106,6 +106,14 @@ On 24/03/2025 22:03, Miguel Ojeda wrote:
 Thanks, it looks good to me.
 
 Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+
+You want to take the whole series in the rust tree?
+
+Otherwise I can push the patch 1-2 to drm-misc-next if needed.
+
+-- 
+
+Jocelyn
 
 > 
 > Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
@@ -115,16 +123,16 @@ Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
 >   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-> index ecd87e8ffe05..9bd4d131f033 100644
+> index 9bd4d131f033..a8f832598c70 100644
 > --- a/drivers/gpu/drm/drm_panic_qr.rs
 > +++ b/drivers/gpu/drm/drm_panic_qr.rs
-> @@ -5,7 +5,7 @@
->   //! It is called from a panic handler, so it should't allocate memory and
->   //! does all the work on the stack or on the provided buffers. For
->   //! simplification, it only supports low error correction, and applies the
-> -//! first mask (checkerboard). It will draw the smallest QRcode that can
-> +//! first mask (checkerboard). It will draw the smallest QR code that can
->   //! contain the string passed as parameter. To get the most compact
->   //! QR code, the start of the URL is encoded as binary, and the
->   //! compressed kmsg is encoded as numeric.
+> @@ -914,7 +914,7 @@ fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
+>   ///    will be encoded as binary segment, otherwise it will be encoded
+>   ///    efficiently as a numeric segment, and appended to the URL.
+>   /// * `data_len`: Length of the data, that needs to be encoded, must be less
+> -///    than data_size.
+> +///    than `data_size`.
+>   /// * `data_size`: Size of data buffer, it should be at least 4071 bytes to hold
+>   ///    a V40 QR code. It will then be overwritten with the QR code image.
+>   /// * `tmp`: A temporary buffer that the QR code encoder will use, to write the
 
