@@ -1,98 +1,89 @@
-Received: from mail-24422.protonmail.ch (mail-24422.protonmail.ch [109.224.244.22])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACF0266B71
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 21:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C06B1F0E5B
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 21:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742937051; cv=none; b=jc8MeBQ+OSDNQFetSUF2zwiWKScXl/F4lhYb8uoPbSt3ZUhmAWSWDi9tWZ3Q8nmTZ7u4fzIQrEX/hI1uHqgSIfNtqOfSCY4fmSksBY0ckQ5ivOjVuaDKueCErqj59ymT/xhsWImR6weF9TkTFhPOhSjC+ed0nQ5D0bFT7evbx6A=
+	t=1742938123; cv=none; b=aIL6M4GI2DBXWbMdBFvz/GYSQUSijaXHnhcxx18N2Ems1I9PCzV8+LV3HQ5lTM+kExPxRYazOtqTa6DjfuJmo1vZ/Cn2eA2oFxz0bfovzKdx/OuDnu5DPsld40mFbJ46N/4JeU3qhRjVBgskeeBYuIWhxWuFNL5uBi0BxUkDSUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742937051; c=relaxed/simple;
-	bh=juJC2ldUcGTzWh4/wtL22UseRqE2RUdLQ4htrhrJv/c=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=QfIxnzqCvZKO5s5L16puMILMAjn2/zuXt9FWDZXaMbOJUW4gD1EBXR3Q5eK1zpkG/B6ng0h+QFDYXjgEX6ZXiDAfK9qcMC7K1wKADDZOHRwtjmIwFAxsw5oICKlCRwdGLxuxUytvhVv/XsxvrYsocbCHJoy9KCUKWotPeLMJ4+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu; spf=pass smtp.mailfrom=ozlu.eu; dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b=Zudxyay5; arc=none smtp.client-ip=109.224.244.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlu.eu
+	s=arc-20240116; t=1742938123; c=relaxed/simple;
+	bh=aIZN0H+vRPvUvu/EgbjorzUci/LLtLkNYYQsA1h8uN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=quEwRGQQiU9zOcGss6t1/NXJbNSdvF0G5MCALZwRTesiqE/mvsctXYz1t5gmHx75g1Co/rAUTwdXLjsMudocRjOj1Onzf87I3Pum9fHcOW6wPhI0orQ3TMoGjxvR7+2ErjpC5kRmWz2zHYVPA+GQ9IvLG/lcfgOBsAXBGEZTiAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SuzzHNzM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b="Zudxyay5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlu.eu;
-	s=protonmail; t=1742937039; x=1743196239;
-	bh=vIGN2bl418EBKyeDnX8uco6KGhKBTGfqXuFc0cW8E1Y=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=Zudxyay59VVmbglnR8xcKnHEWWIIgxqYhyN/YBQvMcrgYpfENi9b/QxFzlKH21i/J
-	 g5D+AST554xWEjgnSLN97HnwRQ7SLM/SSF5RPmnZRraY2+m75ONMwHVkN+oWcmyBkf
-	 QBVK8w9dOaS/BhIgCpIMeJ21ytr2jH36TCOkKjJQskZVAkI7PSKovZZ1UsyVcTJFQ4
-	 Nnqr+yN72J7Ok1TBS970Zu/UM0BP4Qb52lYiyn3Y9M+hdvl/a1gERNP0kRop/3eYql
-	 51puRmaCbpXOKylzwhXvlQxFP4YcrvcEmTqiLIMhrdXbQ4H6Bfbr+GXK83zeCms/IG
-	 G9+QlmZAaf5aw==
-Date: Tue, 25 Mar 2025 21:10:35 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-From: Altan Ozlu <altan@ozlu.eu>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, Altan Ozlu <altan@ozlu.eu>
-Subject: [PATCH v3] rust: static_assert: add optional message
-Message-ID: <20250325211011.1093374-2-altan@ozlu.eu>
-Feedback-ID: 127873954:user:proton
-X-Pm-Message-ID: 72a7af79bcd78464fd72513b317d9a9c97797ce9
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SuzzHNzM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742938120;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MsV2w/Rn5mfBpb+ogTXQ4dOfXGpaAgBdA4ur9xVQST4=;
+	b=SuzzHNzM9+d+0aIpw68D8bO4ufIseFP/D/ZV0T5YoKVHNvMBLHsl9alL4+4t1YZwk8zZGj
+	vEr9bKu9/qNOJN8AZqxj/JsXWLDfUuUaq7AcXpiCQYNEp8v5zfci27aNvgcDYNptm7ByCR
+	4GfxkxQB4lHaGICnRyChWhPrVW7p92E=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-82-1Esz6RrROoSxfU32bi7beA-1; Tue,
+ 25 Mar 2025 17:28:37 -0400
+X-MC-Unique: 1Esz6RrROoSxfU32bi7beA-1
+X-Mimecast-MFC-AGG-ID: 1Esz6RrROoSxfU32bi7beA_1742938115
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1160E19560BB;
+	Tue, 25 Mar 2025 21:28:35 +0000 (UTC)
+Received: from chopper.lyude.net (unknown [10.22.80.20])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C772819541A5;
+	Tue, 25 Mar 2025 21:28:31 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: Maxime Ripard <mripard@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org (open list:RUST:Keyword:\b(?i:rust)\b)
+Subject: [PATCH 0/2] drm: Make some resolution info unsigned
+Date: Tue, 25 Mar 2025 17:27:03 -0400
+Message-ID: <20250325212823.669459-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Add an optional panic message for `static_assert!` macro.
+During the review of some of my patches for KMS bindings in Rust, it was
+pointed out we have some areas of DRM that are storing resolutions as
+signed integers when it doesn't really make sense. Since there's no real
+usecase for this and it's a bit more obvious when writing rust code then
+it is in C, let's fix this.
 
-It doesn't support argument formatting, because currently `assert!`
-doesn't allow formatting in const contextes.
+Lyude Paul (2):
+  drm/edid: Use unsigned int in drm_add_modes_noedid()
+  drm/mode_config: Make drm_mode_config.(max|min)_(width|height) signed
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1149
-Signed-off-by: Altan Ozlu <altan@ozlu.eu>
+ drivers/gpu/drm/drm_edid.c    | 2 +-
+ include/drm/drm_edid.h        | 2 +-
+ include/drm/drm_mode_config.h | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
----
-Link to v2: https://lore.kernel.org/rust-for-linux/20250324210005.990827-2-=
-altan@ozlu.eu/
----
- rust/kernel/static_assert.rs | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
-index 3115ee0ba8e9..b0569dccfb76 100644
---- a/rust/kernel/static_assert.rs
-+++ b/rust/kernel/static_assert.rs
-@@ -6,6 +6,9 @@
- ///
- /// Similar to C11 [`_Static_assert`] and C++11 [`static_assert`].
- ///
-+/// It supports an optional argument for custom panic messages.
-+/// The panic message doesn't support formatting.
-+///
- /// The feature may be added to Rust in the future: see [RFC 2790].
- ///
- /// [`_Static_assert`]: https://en.cppreference.com/w/c/language/_Static_a=
-ssert
-@@ -25,10 +28,11 @@
- ///     x + 2
- /// }
- /// static_assert!(f(40) =3D=3D 42);
-+/// static_assert!(f(40) =3D=3D 42, "f(x) must add 2 to the given input.")=
-;
- /// ```
- #[macro_export]
- macro_rules! static_assert {
--    ($condition:expr) =3D> {
--        const _: () =3D core::assert!($condition);
-+    ($condition:expr $(,$arg:literal)?) =3D> {
-+        const _: () =3D core::assert!($condition $(,$arg)?);
-     };
- }
-
-base-commit: a0b539ad369fe434fe488faf92d4ae770a27a90f
---=20
+base-commit: 5da39dce1fa3c81dc6552a16a9f748ba2980d630
+-- 
 2.48.1
-
 
