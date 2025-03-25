@@ -1,110 +1,97 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723151DD9D3;
-	Tue, 25 Mar 2025 14:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742911796; cv=pass; b=sOztdSuUnEGeHTR8E9Wi/pmVoXRptFRWkCz2ymaUeOhaID+ESFhzDnjT/KnK3D+ol6up0YGREKpZf7Ikk+5FGhLTeMx43hm6w+nTLL0rxfOwSZWlinLsFzCCKuS9YYWgJN2H5QScL92M0IqepwfgfN8ogASQ0kmcZ+kdfcJw+7I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742911796; c=relaxed/simple;
-	bh=LNIxqLWu7KptjhAubWb1gWHI/laNC8Zcyz6V1AFcJgU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=J5NPaRTWztqTJQAE9NTZWzPbIsZQ+gxCZo0I+aIIT5xI8+iVPfnEeVJXqSduOhOzdrdIo3Wzbemtd7lSkCG4FpJ9Pxjo+hVLOxklNsmsSgGmolLkn9pn/tFHY9e1zfdrJLZEw15iTFYNN5/ov8TcoE6x9ZIV+ZQ8SaYNfFF+9C0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CpLHgFCm; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A93255E46;
+	Tue, 25 Mar 2025 14:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742912267; cv=none; b=BrGNDaOKUK+Y2ePwdhu0YG22vVb4t9nZRD5KlrJHlmiP01htVKeXizFedsrNZnosavjIltkwarn6tFjmbyiDe1HTxdjZvCAIwAaEvnrNF4V5qak4vwD8bAnfaLVAH9FoBFfGX9yAmwYqwmB4yupsYOW4womHclU//qtDt6Z+fCE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742912267; c=relaxed/simple;
+	bh=bxnLVExzAbVNZlcwUQ+EuHdmVGqO2jOXVg8Rvy5+13Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LfBoH2LyVd8k7g+a7Xx0kY8a1GsxLgRHlap+WcmpTszIoqjPbh5WF7XIO5FLUppJClrvN6+sGTwdFCLZ3xP2x2hb7P24OkKqvqBpM6CVYphr+jf71QtPt7iozFimTbZpkPVWqaBMZYzg3otjrUkrxmZ1VuIynvTrf30DtnZ8ooo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j1lUNK+1; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CpLHgFCm"
-ARC-Seal: i=1; a=rsa-sha256; t=1742911638; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ncJ52/Q5NqGoSP0kBa5A3acAjZsX+sM8LWlCzpjv7e+Cf6QAtfPUNrsfTNE/zqS6p1/AB4+sqd680PT7SArZBdPN+dAE9x4mclSB0F7MbNzwUS7PfIaoHVEYklBFAAKyF/4xRWyC0XYuRGu3+0E99G/YIUSbGCn/oz8s+tYZL2w=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1742911638; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=DnUjQnltcNh6I2kOpe5b8pDo1IEr9myQnFAoNaCUY/M=; 
-	b=DLsI3ZPnET6Bhk1S/XYUIfBylecm+Dlhj5Cxg/ZsMqrBUuqbMb/QfIINcIuHNcycZqcppwjkSHoRCW67W+1AktqYY8bkeHhKyBBjYPOy20JRIUYYq25LxwKea/8klvS376BbVQ2Q8zz7jFA2uuYclrx9/6j3Utl6wHUz+I1+QdI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1742911638;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=DnUjQnltcNh6I2kOpe5b8pDo1IEr9myQnFAoNaCUY/M=;
-	b=CpLHgFCme1iWkCcrvmKZWwdCfx6CZ/1Efp6ATysb6f8+AoBMIPWpFXF2TbFOMJC0
-	VbupbuOEfL8yjeLsooFe+4Qiqp+Xr+7REo2jhv/j1OjBmZWt4bBWjcxeld2uckIgUMz
-	XCSjS5/N8UgWQxkrukE+03tH30zd9GgaAWC7gs4k=
-Received: by mx.zohomail.com with SMTPS id 1742911635918478.89731093055434;
-	Tue, 25 Mar 2025 07:07:15 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j1lUNK+1"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so1565147a91.0;
+        Tue, 25 Mar 2025 07:17:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742912265; x=1743517065; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yiAxxfZBeIiK5a2HBBXitFpStb7QFVYBiaYLfAZYFgg=;
+        b=j1lUNK+1GAIv39/eRLqKk1q3x6EjQDOpyaCW/fC8UAuA3bgs1y8NiMqVmniO4fyH9z
+         +1Ks23MJOhxRv7Avi+ue6/KX6kHf/BnxJrTK79SbGkpi3LgBPbuVfB0hHtxDvun8T+xd
+         CScnachl+WqDyhN4LmPj/5V9B13chDrj1Mlhl3dTM+m2kYUaJawqS6TCjl0adY49rBBZ
+         32JCc7p1zVBzsb2W/HgV8I/WM66qoBq6ZL5L9txif4fFtuBo4ixDS0qjE/6ZbBpacx/i
+         ZL+firrcycUd5ylXTD7GqLiFpUlK+LXRlCHKX/3eBWSljaYjflAOAHfX4erOZxJuK7rc
+         IXqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742912265; x=1743517065;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yiAxxfZBeIiK5a2HBBXitFpStb7QFVYBiaYLfAZYFgg=;
+        b=gpHZXPqgtTgaTV9Tj5bHaJSeycRmbQH/bIyOu6RGTJ2ZsKfuvco4wCHdtAfEZEdacd
+         NKYz54jTT4l2TQT/VgXsxsOgLjGA4jXp+Gza2ohd8UsKHfjVvTrqYdO3UxmxaXk99gOr
+         mfGtfv2JskuWGYAXAZWePeGfRQ+5tPhOdquqUP0ewBI3DGFDBEKWJUfKBFKfo28nGPSV
+         uaAKCwd/mTEcdByO3Bz0lFc9rF/QTQQG0Mv3ZeCvqYdtjFq5K6sOyq19A1jCbq9MM00S
+         m2BPX5//zlU/uPtMs+hMOEtGILVit29aQtxSiSBA2Xb/aZ8QdHY3rMqmeWW0H2cL4B+L
+         wZ4A==
+X-Forwarded-Encrypted: i=1; AJvYcCXRWOMN8XXbBfUIOM3RcVAr9ebBzK7g6UWRWKajTuX10idxh+h6qrRXSSIX8z3d8iGVVrdLGhNjNwXaIY0=@vger.kernel.org, AJvYcCXrHPg8Wo8zmmTJaM584FzrqwcNi4odY/FsyYr8NC6DHFqvELHHBR2aorY4915kbFmYdDw3pbi9gGWs4D+nYas=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPxRpIXjtqJYiNOd9vES7LtwI2ip/aNv8GGy7AlQI8dSUMtsNk
+	Wnu+09cjzmQ3rOpbkXR9ETl+/+IxB+lo1Fo1ZNo5QA6oAbEICXTeLBAlfzXN/jWUCCSgYQIHYTV
+	bD71jOnsAaq5ZGtZpF1yvurqU5I6fZDNzmA0=
+X-Gm-Gg: ASbGncua27sl1v+I32sGtf9AX4htKDRj+3XVYKrplOOYZROtZ30Y9gS5xO0YqqvXx7V
+	mtfHF1nF2Y1hcxfjfpv3ASF/uUQM1egbfGkteRAMS4rv/mNsK2iIRhyDwCZ3HKibAqYzSOf6ovM
+	6lwAiD5cPZY121X6uFjAyHyvAwqw==
+X-Google-Smtp-Source: AGHT+IGwUtqDN9/gKOU8D3rc7eewlWrEw5Yldn+0hCf3frdUZFYWU0VKlZ+SzQiAqLHzncX80HoFxER+12RCQiUSp0c=
+X-Received: by 2002:a17:90b:1647:b0:2ee:6563:20b5 with SMTP id
+ 98e67ed59e1d1-3030fb1fbc7mr9477978a91.0.1742912264922; Tue, 25 Mar 2025
+ 07:17:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
-Subject: Re: [PATCH v4 09/11] scripts: generate_rust_analyzer.py: avoid FD
- leak
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250322-rust-analyzer-host-v4-9-1f51f9c907eb@gmail.com>
-Date: Tue, 25 Mar 2025 11:06:59 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Boris-Chengbiao Zhou <bobo1239@web.de>,
- Kees Cook <kees@kernel.org>,
- Fiona Behrens <me@kloenk.dev>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Lukas Wirth <lukas.wirth@ferrous-systems.com>
+MIME-Version: 1.0
+References: <20250325-feat-add-bitmask-macro-v2-1-d3beabdad90f@gmail.com> <D8PDWRH06U1X.3JGHP1311BPPY@proton.me>
+In-Reply-To: <D8PDWRH06U1X.3JGHP1311BPPY@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 25 Mar 2025 15:17:32 +0100
+X-Gm-Features: AQ5f1JrNG9IMxQMOkhvrXLzEDQWYrISIuIZhgF6lHcZlHfC1fPERYeufzxN3OEM
+Message-ID: <CANiq72nm=Sz7s3o81FFP6o5hKCH6M=BtzmvF7eVeZx0C8aWW1g@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: add new macro for common bitmap operations
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Filipe Xavier <felipeaggger@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, daniel.almeida@collabora.com, 
+	rust-for-linux@vger.kernel.org, felipe_life@live.com, 
+	linux-kernel@vger.kernel.org, Lyude Paul <lyude@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <15D9DEFA-12F6-4632-979E-F67C7315E95F@collabora.com>
-References: <20250322-rust-analyzer-host-v4-0-1f51f9c907eb@gmail.com>
- <20250322-rust-analyzer-host-v4-9-1f51f9c907eb@gmail.com>
-To: Tamir Duberstein <tamird@gmail.com>
-X-Mailer: Apple Mail (2.3826.400.131.1.6)
-X-ZohoMailClient: External
 
+On Tue, Mar 25, 2025 at 2:34=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> Please use absolute paths to refer to items, in this case
+> `::core::convert::From` (note the leading `::`). More cases below.
+>
+> I filed an issue to add a new clippy lint to catch this:
+>
+>     https://github.com/rust-lang/rust-clippy/issues/14472
 
+Linked in our list:
 
-> On 22 Mar 2025, at 10:23, Tamir Duberstein <tamird@gmail.com> wrote:
->=20
-> Use a context manager to avoid leaking file descriptors.
->=20
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
-> scripts/generate_rust_analyzer.py | 3 ++-
-> 1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/scripts/generate_rust_analyzer.py =
-b/scripts/generate_rust_analyzer.py
-> index bd6e321a6aa5..ccb15aa66929 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -211,7 +211,8 @@ def generate_crates(
->=20
->     def is_root_crate(build_file: pathlib.Path, target: str) -> bool:
->         try:
-> -            return f"{target}.o" in open(build_file).read()
-> +            with open(build_file) as f:
-> +                return f"{target}.o" in f.read()
->         except FileNotFoundError:
->             return False
->=20
->=20
-> --=20
-> 2.48.1
->=20
->=20
+    https://github.com/Rust-for-Linux/linux/issues/349
 
-Oh, nice!
+Thanks!
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+Cheers,
+Miguel
