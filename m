@@ -1,103 +1,111 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B551C8619;
-	Tue, 25 Mar 2025 19:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E629B1F0E59;
+	Tue, 25 Mar 2025 19:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742929506; cv=none; b=BFCwae1DjJ3IrR9G9Y0Pw7K85XirxbnCxFB2QsUDkUgPtemiIG2IKxnqE8p7nL5y25TKKAzxng4CWrM0jy5ZPlRoK9rH8U2siS8XQPWoDbTjlzyZ6poPvT33qBoiLXQxT2XqFjRI/acvPn0f70eIviCWxIMZNOuihXhZLcIXRXw=
+	t=1742932112; cv=none; b=hAbCqGr5mepxy4blXOu+HQ/Os0IUBe99qSLrmZXabdpZpF4pa+Wv2SfWgL8NVWPAFqt9rHTOtvBYQq11UEBJDpg7EBk11zoflGsp5Wh+DUiMzRyftp3Z32M77s+JpgWMRPg7Q1NvuVOALZWP9nEFQSNHuyBU3jW3wFjfkqOzmiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742929506; c=relaxed/simple;
-	bh=6TMgaEW+9sayzHvoDGxPrtSjxiQA+4hzRkywj2TAG0U=;
+	s=arc-20240116; t=1742932112; c=relaxed/simple;
+	bh=kWRz7TnGEyqbpdoqqbqwf78f4CQUMOrIDZK4ebHnEkI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ouCnnS/quqHd0gn/JFjQjFsyp5vsoiDUt/PxmM/1SPC0IfVOqAI/mEKw/A8/KxYOd/6F6a8nWsJBc47Mq3ICIqe54BqtfGn6SWd9NewBXy8ZIiVbmT8nDyPiJPrjS9AFd7Gczn6/J+JMncMAMKG3GSHK88lWtIEHBQUMKkJ0Hs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YkQHMeqm; arc=none smtp.client-ip=209.85.216.52
+	 To:Cc:Content-Type; b=K2nwpS8nOPssCcxy8OAIACxXdo5YV02jk5lExqnlv71wI88I539kZsADfypPQQHEmk0NT6r/sgO966LeLlCuakuuCs9grSeOoHh/cKwjjjVpu5T3P69FYMXZzNOp1R9O2PamrzuW5Ow107DqNsr832xIgm/+TYDjP1lDuRM3/OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nkxxXbog; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YkQHMeqm"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so1561023a91.2;
-        Tue, 25 Mar 2025 12:05:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nkxxXbog"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-22403c99457so14007025ad.3;
+        Tue, 25 Mar 2025 12:48:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742929504; x=1743534304; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742932110; x=1743536910; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6TMgaEW+9sayzHvoDGxPrtSjxiQA+4hzRkywj2TAG0U=;
-        b=YkQHMeqmVLLS97tItqY9zjSq9CsYwgffXnuCDnyo3WqBpQfkiCfDQBj1+dOcomWP5i
-         vpF2KU9XGpkIpoTNYmDSbyV6v9N3nhfKoxBVHci71B1ClbpD4o8TSLl70W4BaFDDMRSJ
-         n80/RMLEX1u9aF5Z7ZdL0WVaC8cHxMs0jtaqauuTrTqPrVkK3FTV7B/BrbniAPIzCcP6
-         3p63XsyJq90yP7LZROOQlrG+3Hh3njpOWBJZ5Nv8faF07TPDlY3bM6ib6f6JeGby6Z8U
-         juKTT8WXejs7qfeexTBoFJfSn6GBfXTGWjN/8vfbwRBtUIVOh1Ux8CnrQLaQRROd8GEN
-         TQgA==
+        bh=N8OkNb0Gk1huvCdNeb+R5YeTaXEOuCO6fGN5IzB1KVw=;
+        b=nkxxXbogKk6zfxQRBGT/6ooGRow+99Bws1svl8U825Y5g7wOi8gSbhuhklSx36TdnJ
+         mMnWqB1tGvjG5swculswOyqX4UpVQ5gw592PCx5STijyWIgD8Ecyskg7ruyIcy49EBwP
+         Y91lbg7Gjlac3CiqaRfLBn8C3ekjdq0n4qmf3jd7LVGlLzOTiGQ3mOVq3pa0A6tKDnKg
+         nPloQiJGnVeiHJ6YzFOVKp2X/l9R6m7PfxaJItDd18xYkzdL1AWvUHCLFHVdPJkuhD1e
+         81PtvLuPyqgWMltHvcZBuB21p5EalG1+XxXMLC8kktgHRJ/c+nE07fUHfvURNkaKLrD2
+         4jwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742929504; x=1743534304;
+        d=1e100.net; s=20230601; t=1742932110; x=1743536910;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6TMgaEW+9sayzHvoDGxPrtSjxiQA+4hzRkywj2TAG0U=;
-        b=gBSsY2RXnVNW+qYiPagRRu9ttS4kNe2Zx3QdL5dkoIUMBVW08n2snClOWdciORvpCa
-         cpALkshOuE1mWVZUfL5de5v+E3KhRQGAqXA6zI7UjG4SEqb6Qb9iDGW5QnNPOJjysbP3
-         f8J3ItGvaSNc6L0Ol/AksPZwpGKEN4mNclMqDbGl1h/Xa0dwELP4PX5ZXX+biVb+KFA6
-         ENV+BhvgDHzHEIkOS04IUWOzWxI2faUMXJs1oC8EJdj4QKagM0dA0vJXhZNoNP9Nqad4
-         MwobjIDt1T0CgPosrnYMNXcESykKcQZ9t2awfpKZqMky8txcgknR8yntFEPTzCD7l/De
-         i7SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUW72Jc+jTr5PNRD116bEhtnk0Hv8O0Gno2CKOSAiNouhneR9THdPiHo+5zkK2Ctcv04J5+ubrac/AFSp0=@vger.kernel.org, AJvYcCVBiPbyp0Ly2DPYzT5jWxNVmxGYlN3Kn0Im06cNw2rvXlAafwDeYEFQMeF4fkDEMIJhB4F0NJQyOJKo1sDAHco=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcKankGWPiJM6wfOsIz97Uyrb0SNqGHhFTVWtsEHPiO1INKlx1
-	F5B82/+dq/s/bSzHxB17xZPtt/o5LjaCY7m5SJmyBZeCUe1+xgUaKwAoU8O6+CYBadKU7bFNmNM
-	z83wXGgCQyoqISICgU+5L1627WLs=
-X-Gm-Gg: ASbGncu2e0N5TEGVp1QQpbIk48owlrnUKGzW10mG23H42sq/aTRMU8rCLIYsAEqLNme
-	RNTlP3tnPWF/u+JfHsulLEwmbG9JCPaNKMD5N0TJqf+eIw0f5o+cmDvOsM3+O+XWpXtu3AKd6Sv
-	TeqPFHOrj2OCS9ZB+UP/zgmyAYyA==
-X-Google-Smtp-Source: AGHT+IEaXErss0xXwV0lJBIcOaPCzt+p7KmJRqpZTTvZUvZnCO8fOgnNeypm8mZP1MAMagB1I17kUy/UdhjTcObxQRA=
-X-Received: by 2002:a17:90b:3a8d:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-3036b4abf73mr2506809a91.5.1742929504147; Tue, 25 Mar 2025
- 12:05:04 -0700 (PDT)
+        bh=N8OkNb0Gk1huvCdNeb+R5YeTaXEOuCO6fGN5IzB1KVw=;
+        b=vIwA0Up8mowI9F2MOCbywK9fYOR+2Y6CQMIrnQhhbshIh4SqdNB2Jkqyi6gMRJVBgK
+         FDpUNuaetLwXqtzyEnU0O/AdvsX+e11ai4Qm1naJUWDo/LbVsGQDCRDR7hyLAjVuKi5D
+         qPAxqDTSI+SdZvC5HYgwmhWmlSUjXfVANUiA4x+IL5FpkkG7mewoZGQbrJRomS3/S5P/
+         FxLMgdWVIrBFHRpdKGkF2rpSK0jEPLfw8dlu2wgRlB2RXIs3N5Jp0Pwj9Z21N4w+ZSt4
+         guPbJY+i0Bvq0Y2frySkqawkayK6twOfEeKi3Ju2XCWXNRVAUSlZoEjUx8dKYlgqASX7
+         ZEsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbq44M7KdG3E67V5dVsgfkJB7swCx0kQdOitoguagBuWNAsVTfZYGyxZJOQGSLHBuEZWGnK6PbQALSSEd6S60=@vger.kernel.org, AJvYcCWGzAA1nTSDsnyd4Tpa7kJUJfLyMwRGOF+OhDOXAkcqArnXw72dFfaz3U8yPrAktP+kPxpa/6f6FzW2NFk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHhVp89mjCo+o62+J67iEOnUF3INza/SmjMMywdQdzJQEk2SVO
+	q4rj2u/OZt2+UN/ieIFicyoVjku+cxcyMuau/kfTwlZ34usR+yS34zfGBoK/SqCRAlILcOMTGSz
+	OLp1wdKqEGMRl1kLqLqatAIapUHk=
+X-Gm-Gg: ASbGncucvKdN2e2iC8p+O3KD8k8nNvLDFzokpoPMplpCKKACqQ+oQv0RI+Gb7I1FOgq
+	WrUt79ewg4EMisZhxPNaTcHpL5dPoVWj64m1ngsN4f7FgN1RA4CFWLw8jpIs1zs5vvn7jC4CDkj
+	kWMTNA8F06SJWRfsj6N0OlkH1zUA==
+X-Google-Smtp-Source: AGHT+IFxBWD68KB8/HxS5e8dGM3BB7KTxo4N4mhnjuZj5L+9yyTC70mMnIp1cyTclOTT83cY3hEXidYZMRLFX4HVM5Y=
+X-Received: by 2002:a17:903:234e:b0:223:5525:622f with SMTP id
+ d9443c01a7336-22780c503a9mr99495195ad.1.1742932109937; Tue, 25 Mar 2025
+ 12:48:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250324210359.1199574-1-ojeda@kernel.org> <20250324210359.1199574-3-ojeda@kernel.org>
- <dd1616d5-4808-46be-9167-6fbfe76e0c73@redhat.com>
-In-Reply-To: <dd1616d5-4808-46be-9167-6fbfe76e0c73@redhat.com>
+References: <20250325184309.97170-1-ojeda@kernel.org>
+In-Reply-To: <20250325184309.97170-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 25 Mar 2025 20:04:52 +0100
-X-Gm-Features: AQ5f1JpmlWonQlCTJ2hC2bel5qL6r28Y6ygrNFDOCt0MmPyi13zbtF_Iod_7f3o
-Message-ID: <CANiq72kz9SW8Rexj7feZRvTAhgF+cBwarpFnqu0TSk6C2r9SRQ@mail.gmail.com>
-Subject: Re: [PATCH 02/10] drm/panic: add missing Markdown code span
-To: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Tue, 25 Mar 2025 20:48:17 +0100
+X-Gm-Features: AQ5f1JpNyVdd47wH2I_NWPgt1x_uShOAv6Q_Kz6PcSYhTfdjyZuGqcfgDJh1oE8
+Message-ID: <CANiq72kWumOHt=VgV3mb2G4mOE3bCVUCUrKdjk4caFJPVCTBbA@mail.gmail.com>
+Subject: Re: [PATCH] rust: workaround `bindgen` issue with forward references
+ to `enum` types
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	dri-devel@lists.freedesktop.org
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 25, 2025 at 10:05=E2=80=AFAM Jocelyn Falempe <jfalempe@redhat.c=
-om> wrote:
+On Tue, Mar 25, 2025 at 7:43=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> Thanks, it looks good to me.
->
-> Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
->
-> You want to take the whole series in the rust tree?
->
-> Otherwise I can push the patch 1-2 to drm-misc-next if needed.
+> Instead, let's have a section at the top of our `bindings_helper.h` that
+> `#include`s the headers with the affected types -- hopefully there are
+> not many cases and there is a single ordering that covers all cases.
 
-Please take them if possible, since others may want to take them
-through their tree anyway, plus it should have less conflicts if you
-change other bits, plus these are independent fixes anyway that can go
-in on their own whether or not the lint gets eventually enabled.
+By the way, I was curious and from a quick look at generated bindings
+lines matching `type.*i32` for a x86_64 build I have, I see only other
+three cases:
 
-Thanks!
+  - `key_serial_t` is not an `enum`, i.e. it is correct.
+
+  - `fs_value_type` and `drm_mode_status` are both `enum`s, and they
+indeed suffer from this issue. However, we do not use them and I don't
+see any patches posted for them either.
+
+Those are good news.
+
+However, there are also bad news: if for instance we actually needed
+either of those two latter ones, then we cannot just include the
+header that defines them, because that header happens to include
+others that in turn use forward references to that `enum` the root one
+defines.
+
+So in some cases, if we start to use them before we have a fix, would
+require C header changes to avoid the forward references. Thus, for
+those, I think it may be simpler to instead use a cast and mark them
+with a comment so that we know we should clean them up.
 
 Cheers,
 Miguel
