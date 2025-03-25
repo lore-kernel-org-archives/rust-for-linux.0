@@ -1,138 +1,150 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7761E8351
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 09:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF8E194094;
+	Tue, 25 Mar 2025 09:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742893524; cv=none; b=dRUb3B7HkkBVAAzZqGcbIvPVBpwomVfNwg4h1Ji0NBnYCklkMhMUsadK/N/rL18zTQoEEyDnaMlG8hDXYIQX08vSMOzNIgHcdZBx8JdywW+hSSxTQ4u433hRFxhW8mX/vAgbUzD3Dq/o5yNtooF2PDO1WNHktn1D5aXdm48aZ/A=
+	t=1742895828; cv=none; b=TUmMTCjaVpYIzUN8PhzMlgyiOohZETqUN7gTNY0xLgU/2yuUL7owMntQC1g+7QBpl/CVdTgehOpe/FJ34Q8lsUkTITJNhUdFanXiGGakchfRpI/puMwxZrEaGYFLGfes1ZsAz8OYe5tx8Wiq+co+yNZRvELi5x87ZtpkuDZqO0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742893524; c=relaxed/simple;
-	bh=mKJ++G7wNhJzW9MVSALnmcUFApSRdiNlAhwjAt23yKs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cWBUJTneFI4UpolZvBN4/b7qEmEhM3qdfDBEqxi6kNf6OKC1nXsLiObFyvj3AfZrthBNNtpFuX4nIhVSjdNcTTcRv7/2wxc+zQKzg4IjjM0GA9/PbW6WagJYdyl2O1oNfSIEoQucbaAxtO9kRL79e0dFb0tWTsxKmJzNTyQAZCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZpEvNuLF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1742895828; c=relaxed/simple;
+	bh=npI0ndsczys6+b4roCsPnmGmK3zIFp25GSsVytASrkc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bqx5t/ZMEZ+uOx4aV2SCuSo4CLwRcpme+06qTR7uCEeWbxr+aOjEleYmr6fKyTI++NwaHFNW0EK1MnoYZpgfBHv/MWX9wEeEDBlWNpsiyPJs4YBkSk2mhTTN2+oF4BN0M6u4gpr54iOimZ2cjKvfvqeJ29BEx+0fhedsPOAIYnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7EGESl2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZpEvNuLF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742893521;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PrC6whXEB8tIJZm3Od4OEZVDDngb94gqrtSVDSXgtaI=;
-	b=ZpEvNuLFrcm6tVy5UwMKQb9KyApmpaHkVbdy7H3EFalU6THlA2cuGLgqkIIvEd4OMPECFn
-	T0TvIi8tneru2CVHr4ZL930YXgHnvRybI2GXc7kEj8LlqGpaEfoXBs70cOHvT2AdPc3Ktz
-	Zhgs6YKiT6xt71DuRYDq7ovrdQkT1Uo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-516-YWmNE4K_MROu6QVD4S_y6Q-1; Tue, 25 Mar 2025 05:05:18 -0400
-X-MC-Unique: YWmNE4K_MROu6QVD4S_y6Q-1
-X-Mimecast-MFC-AGG-ID: YWmNE4K_MROu6QVD4S_y6Q_1742893517
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43ce8f82e66so31922655e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 02:05:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742893517; x=1743498317;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PrC6whXEB8tIJZm3Od4OEZVDDngb94gqrtSVDSXgtaI=;
-        b=GZunXPBn6nfpOZUyhEfZ9FnpePkYX27/nNBIzCE099SZsWVNkyl3p46SGwbYIrbmVI
-         53R/V0MIxFnhyNYbMZHfuAhTPmYNIG977geMbdUuM9IvDTpK5mlo4wcQEWY7KHkjwDEE
-         VsdvNPCr0fRZe+pBRHGvkNCm3LYfYpdGriZTNmithar6Rn0H/63DBeNQp/UdT/37UGTu
-         FHKR/8H1Fg87f8mrtGicCkDRSOixAtnt27OStTGD6kjT/lTy/7U1d6nbFUjbHVYsdgB+
-         dx2dXJ4yaHdPUigffKG6Fc+eeUcrvm/VT4YSMKZnAODKGDVWyHlAaEHeUSKC9976pm8E
-         twUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWZwF+t+S+wbAH9CP7lb07/lmhWtMjRIDw19RPSSHvZRHSMMnMgniCqwFR8dp2EOn3jsUkJgF63OaiWOw9mXA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNzy26UfmQtez5go40uWyj+MzAv3nFlNLt8PYQ+druTmubStyn
-	l+uR8D7T3ssf0jxcM8OUSRGHuluB/xp5bo4R5z6AtL23wahzK0y2arhlvJeUOya1akUFglW5Nmy
-	ir38Hha6YqbNHzs4MwVykWOYn+S8To1cL0KQIW5lcJmmwl/bslLlZFEVF93g2rsUP
-X-Gm-Gg: ASbGnctDPR4WorNP4ekao/NkpFQneWyZAQ5eVfEN6pLtFpewM6Ef5lsHPf4adDPEBxQ
-	UfOIWLt9IQFhi+kgYNSdke/zfOg/vPb6VZ+oD1lobVQQfJ4OVjInaSg7Qo/x7RIG2lnhoejWJ+W
-	XAlgERKIWHFNXMb6hNVOx0ujNh9XSBoiTxXDoblgNFEVkjTsciAgUxaYMQxN1eBOTj/3qIjC2Q8
-	L3zyKK1tqyRagZ5Y1V3nKjrGCLiEbthXKp35ZeJHNq3NbW/PHTCLup0ZqLLB9MEa4C7gKOKX5XV
-	+4BQl3gVoc1yiArlYvUPp790J1lOcIb+L+IfZJ4e1EdlyBOPEAReXN4=
-X-Received: by 2002:a05:6000:2a4:b0:391:ba6:c066 with SMTP id ffacd0b85a97d-3997f932dc7mr15340761f8f.35.1742893516847;
-        Tue, 25 Mar 2025 02:05:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTBT9UgEXQQoZOQCZf+geD9eCV4pZV+LkpuIAC9M/oAzFE2WYScIhUIhi8NX1J2SaBNujAOg==
-X-Received: by 2002:a05:6000:2a4:b0:391:ba6:c066 with SMTP id ffacd0b85a97d-3997f932dc7mr15340713f8f.35.1742893516379;
-        Tue, 25 Mar 2025 02:05:16 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d4fcea6ecsm145624925e9.5.2025.03.25.02.05.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Mar 2025 02:05:14 -0700 (PDT)
-Message-ID: <dd1616d5-4808-46be-9167-6fbfe76e0c73@redhat.com>
-Date: Tue, 25 Mar 2025 10:05:13 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7EGESl2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13445C4CEE4;
+	Tue, 25 Mar 2025 09:43:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742895828;
+	bh=npI0ndsczys6+b4roCsPnmGmK3zIFp25GSsVytASrkc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c7EGESl22gT6F6f7NGR0wf2KlQOYKzG6WRbZRCS1YzkvF+SUgAyo4F352/hr817pc
+	 oLvuLYnm6wyKpkZAuPvQB//CW5ljDyGI713pAEODubEvqutRs+TFSJa0JM00aymOGH
+	 qhvrNgSW5UX85pac+6Fg0XmcSFpZYzkFee/PVWvRb8asYzwCi2V6xJDk+lGu/oWsEU
+	 BhWKYdophdPgOF9cF38/Xm7lHHc7W4cCy8257dY97W9q/SYK+FuR96VjEtJk2lTYJF
+	 0ws+0fGJO4J1kDuAsmuAr5MqDyPpkUw9bZYX0eHP+gcc2IpYpf5BL2jZIGwBCW+45K
+	 XBBAYtjlrr0lQ==
+Date: Tue, 25 Mar 2025 10:43:45 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>, mcanal@igalia.com, Alice Ryhl <aliceryhl@google.com>, 
+	Simona Vetter <sima@ffwll.ch>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Asahi Lina <lina@asahilina.net>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC v3 10/33] rust: drm/kms: Add
+ ConnectorGuard::add_modes_noedid()
+Message-ID: <20250325-sage-catfish-of-art-5eede3@houat>
+References: <20250305230406.567126-1-lyude@redhat.com>
+ <20250305230406.567126-11-lyude@redhat.com>
+ <20250314-observant-cyber-chowchow-bfe5f9@houat>
+ <dea3218eb31f3e91d2a10f93a7bc6cfa674546e6.camel@redhat.com>
+ <2d39187892737438c35791aa59681b1af7e62de7.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/10] drm/panic: add missing Markdown code span
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org
-References: <20250324210359.1199574-1-ojeda@kernel.org>
- <20250324210359.1199574-3-ojeda@kernel.org>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20250324210359.1199574-3-ojeda@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: EEzF93SHP9Nw7GW5P4LLdMDOSsGnBu4HooMS6G2nFlI_1742893517
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="oxntiycjdkz5tlww"
+Content-Disposition: inline
+In-Reply-To: <2d39187892737438c35791aa59681b1af7e62de7.camel@redhat.com>
 
-On 24/03/2025 22:03, Miguel Ojeda wrote:
-> Add missing Markdown code span.
-> 
-> This was found using the Clippy `doc_markdown` lint, which we may want
-> to enable.
 
-Thanks, it looks good to me.
+--oxntiycjdkz5tlww
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RFC v3 10/33] rust: drm/kms: Add
+ ConnectorGuard::add_modes_noedid()
+MIME-Version: 1.0
 
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+On Fri, Mar 21, 2025 at 07:52:23PM -0400, Lyude Paul wrote:
+> On Fri, 2025-03-21 at 19:50 -0400, Lyude Paul wrote:
+> > On Fri, 2025-03-14 at 13:02 +0100, Maxime Ripard wrote:
+> > > On Wed, Mar 05, 2025 at 05:59:26PM -0500, Lyude Paul wrote:
+> > > > A simple binding for drm_add_modes_noedid() using the ConnectorGuar=
+d type
+> > > > we just added.
+> > > >=20
+> > > > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > > > ---
+> > > >  rust/bindings/bindings_helper.h  |  1 +
+> > > >  rust/kernel/drm/kms/connector.rs | 11 +++++++++++
+> > > >  2 files changed, 12 insertions(+)
+> > > >=20
+> > > > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindin=
+gs_helper.h
+> > > > index 27828dd36d4f2..846eb6eb8fc4c 100644
+> > > > --- a/rust/bindings/bindings_helper.h
+> > > > +++ b/rust/bindings/bindings_helper.h
+> > > > @@ -13,6 +13,7 @@
+> > > >  #include <drm/drm_crtc.h>
+> > > >  #include <drm/drm_device.h>
+> > > >  #include <drm/drm_drv.h>
+> > > > +#include <drm/drm_edid.h>
+> > > >  #include <drm/drm_encoder.h>
+> > > >  #include <drm/drm_file.h>
+> > > >  #include <drm/drm_fbdev_dma.h>
+> > > > diff --git a/rust/kernel/drm/kms/connector.rs b/rust/kernel/drm/kms=
+/connector.rs
+> > > > index 14de3b0529f89..855a47b189a91 100644
+> > > > --- a/rust/kernel/drm/kms/connector.rs
+> > > > +++ b/rust/kernel/drm/kms/connector.rs
+> > > > @@ -446,6 +446,17 @@ fn deref(&self) -> &Self::Target {
+> > > >      }
+> > > >  }
+> > > > =20
+> > > > +impl<'a, T: DriverConnector> ConnectorGuard<'a, T> {
+> > > > +    /// Add modes for a [`ConnectorGuard`] without an EDID.
+> > > > +    ///
+> > > > +    /// Add the specified modes to the connector's mode list up to=
+ the given maximum resultion.
+> > > > +    /// Returns how many modes were added.
+> > > > +    pub fn add_modes_noedid(&self, (max_h, max_v): (i32, i32)) -> =
+i32 {
+> > >=20
+> > > Why do we need a tuple of i32 there instead of two u32/usize paramete=
+r?
+> > >=20
+> > > And the return type should be unsigned as well.
+> >=20
+> > I think I was just copying C (or whatever the bindings here translate t=
+he C
+> > type to), but I don't see any issue with changing this to u32.
+>=20
+> ...wait. Now I remember why I did this: it's not that we expect it to be
+> unsigned, it's that the largest possible u32 value cannot be expressed in=
+ a
+> i32, and I think the C side of things uses i32. Days like this I really w=
+ish
+> we had a u31...
+>=20
+> think it would be OK for us to convert this to unsigned on the C side of
+> things?
 
-You want to take the whole series in the rust tree?
+Yeah, I can't think of a valid reason to use a signed integer for a
+maximum size.
 
-Otherwise I can push the patch 1-2 to drm-misc-next if needed.
+Maxime
 
--- 
+--oxntiycjdkz5tlww
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Jocelyn
+-----BEGIN PGP SIGNATURE-----
 
-> 
-> Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->   drivers/gpu/drm/drm_panic_qr.rs | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-> index 9bd4d131f033..a8f832598c70 100644
-> --- a/drivers/gpu/drm/drm_panic_qr.rs
-> +++ b/drivers/gpu/drm/drm_panic_qr.rs
-> @@ -914,7 +914,7 @@ fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
->   ///    will be encoded as binary segment, otherwise it will be encoded
->   ///    efficiently as a numeric segment, and appended to the URL.
->   /// * `data_len`: Length of the data, that needs to be encoded, must be less
-> -///    than data_size.
-> +///    than `data_size`.
->   /// * `data_size`: Size of data buffer, it should be at least 4071 bytes to hold
->   ///    a V40 QR code. It will then be overwritten with the QR code image.
->   /// * `tmp`: A temporary buffer that the QR code encoder will use, to write the
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCZ+J6zQAKCRAnX84Zoj2+
+dpXTAYDGVzbqu/X+saivvhCPH2YLWD6MWARZYKBOIeGahaH7hJR2bFSLODMnxhn/
+CZFm0CgBgJCwgds5uW6jOhXIdiWbMZ+/Fp/7ySr9uAG4GFSgohPdfPD17FvpAqoR
+Uz+a+/6NCQ==
+=eYMF
+-----END PGP SIGNATURE-----
 
+--oxntiycjdkz5tlww--
