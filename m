@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6839E19ABD8
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 23:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6738A19ABD8
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 23:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742944972; cv=none; b=nE61zxIWwMVHI5ZrWuZB+c/p2p0WNGeXJxR+RPlJsD8xCUvEU/Unn6DCqLzCxwqqg6Usv3RloMBDnCMvQPhDB6irKYVxmjrtXpZd2hsainQ0OA7xocteQ0ntVMI3ck0s3hW54CI/xWK9EsCPXJMtKIxnWOrCtgXM2Qr1XO6sZ8Y=
+	t=1742944977; cv=none; b=cfMnJm7JRLnKhOXTgXAC6YWp0rz+HcnK8B/HE13QXVfbi+fRt3EY9caS9TbIOzTj5VR0onUhcL6OGgMwXgMDryZZHJ19XY5/nS3vxaU45FtfYH+pWfcHOYclSA5zozzkePr6lDWqpC54CIkAf9C3cH3mIsNxEOrFm9NIMwNkmmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742944972; c=relaxed/simple;
-	bh=VK9ZJNnvMvLR69pPVF7hCnOJMsL6WneMp/VWN/uzFYE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GmkT0iiQGtxODsR/ahJV8PiA7oZOY/BPtIlQcfS5HUPoXEvdeb5dRhWAV3cMCsbD4uivJF+mdNzbam4tuZNhumeBakx/cjt2Hk+vWV1+IRx4HsoWd7Hp4tLaWQMbnI08TLUybJKuaxFK87JzGXugWCQ4vV7b5vjmSG3IX7f7CPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qjhZ5SnY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1742944977; c=relaxed/simple;
+	bh=yMKjqA8+nvwGclcEzRzPOItFlMyNrbXdEhrynmZPv24=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FHGwf8nUK0jwtCTsjZiCotVX3hi7I0f0CZee9qCAiAiFUZY5zjJtY3Z5FM/6HF0BNFwNPU53xqzjZ79p4cjlipaQjlSKG6hzmsRHyP5lNMmbI7gTXZ0H6RCPYjkRHLUPVOpOH91Dg1OyXdxmJyor6uKEKr2IRK2C17uCqr27wcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifYujVim; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qjhZ5SnY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66FAC4CEE4;
-	Tue, 25 Mar 2025 23:22:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifYujVim"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463AEC4CEE9;
+	Tue, 25 Mar 2025 23:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742944971;
-	bh=VK9ZJNnvMvLR69pPVF7hCnOJMsL6WneMp/VWN/uzFYE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qjhZ5SnYXCiQ/RxLcz15xLHTqtwvMRQ0ZiTHuie4Ypeaf8I2Li1bg1U99cjUFWNP1
-	 PAKSde1ro1EfYGGlrjizMEuqhCT6awTgxw91HQTE01wdDy0zBodaBRrxu12dBoVsMx
-	 5cu4zMOd2RLCeDY1dv8UPU76AF4Qj9xiBQ8RRq7GLSU0nkNB1Ycc3UysvYEumK6n89
-	 geWyP4mQlYD6lNdUH52FDgYfjvNHROCmcV91EtR8esnG6+8QJ0KCiKF3voTF3mI5vS
-	 DjWTKQHOQCDuwOcrwFr2FJMW0WhlnZF+DHMQcaprK8H18YbLf7NzMW8vFqfonm0FcQ
-	 Z/Tffi49dvndQ==
+	s=k20201202; t=1742944977;
+	bh=yMKjqA8+nvwGclcEzRzPOItFlMyNrbXdEhrynmZPv24=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ifYujVimCKe1BZVrKrSJ9a74YPfb1RAiND2hccz9thEj+06K88NkZC1rzXSm1+G5B
+	 qdLy3AwnwRQFW9hLerTM9Mcd8U396AP3ITHKy9vE8gkAV5SFLb5m8SAQ8vmMQHv4wz
+	 CYDfkf7hbUdkMHVq+vZGscYaZwmAFncRvQy5d6N3FbeE21lz7dBnUfzVDoZGr5wqtV
+	 xFM+EdimsRsnxR2rM9uYBh7h2YifVd741b4s+2Hvmu5UtfsMDm12p9fCF+FFUaC/Rg
+	 W3XFfpsHZvrXVlCZ7+fPJped1z7g0xmVgvB9FMG6arxozszWbEu+dokkXoW4AUwXdW
+	 ITXPe84E/+vsA==
 From: Danilo Krummrich <dakr@kernel.org>
 To: airlied@gmail.com,
 	simona@ffwll.ch,
@@ -52,10 +53,12 @@ Cc: ojeda@kernel.org,
 	nouveau@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 0/2] Nova DRM skeleton driver
-Date: Wed, 26 Mar 2025 00:21:47 +0100
-Message-ID: <20250325232222.5326-1-dakr@kernel.org>
+Subject: [PATCH 1/2] gpu: nova-core: register auxiliary device for nova-drm
+Date: Wed, 26 Mar 2025 00:21:48 +0100
+Message-ID: <20250325232222.5326-2-dakr@kernel.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250325232222.5326-1-dakr@kernel.org>
+References: <20250325232222.5326-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -64,62 +67,75 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series adds the nova-drm skeleton driver.
+Register an auxiliary device for nova-drm.
 
-nova-drm is connected to nova-core through the auxiliary bus and implements the
-DRM parts of the nova driver stack.
+For now always use zero for the auxiliary device' ID; we don't use it yet
+anyways. However, once it lands, we should switch to XArray.
 
-For now, it implements the fundamental DRM abstractions, i.e. creates a DRM
-device and registers it, exposing a three sample IOCTLs.
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ drivers/gpu/nova-core/Kconfig      | 1 +
+ drivers/gpu/nova-core/driver.rs    | 9 ++++++++-
+ drivers/gpu/nova-core/nova_core.rs | 2 ++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-  DRM_IOCTL_NOVA_GETPARAM
-    - provides the PCI bar size from the bar that maps the GPUs VRAM from
-      nova-core
-
-  DRM_IOCTL_NOVA_GEM_CREATE
-    - creates a new dummy DRM GEM object and returns a handle
-
-  DRM_IOCTL_NOVA_GEM_INFO
-    - provides metadata for the DRM GEM object behinda given handle
-
-I implemented a small userspace test suite [1] that utilizes this
-interface.
-
-This patch series depends on the auxiliary bus abstractions [2] and the DRM
-abstractions [3]; the patches from this series are also in [4].
-
-[1] https://gitlab.freedesktop.org/dakr/drm-test
-[2] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/auxiliary
-[3] https://gitlab.freedesktop.org/drm/misc/kernel/-/tree/topic/rust-drm
-[4] https://gitlab.freedesktop.org/drm/nova/-/tree/staging/nova-drm
-
-Danilo Krummrich (2):
-  gpu: nova-core: register auxiliary device for nova-drm
-  drm: nova-drm: add initial driver skeleton
-
- MAINTAINERS                        |  12 ++++
- drivers/gpu/drm/Kconfig            |   2 +
- drivers/gpu/drm/Makefile           |   1 +
- drivers/gpu/drm/nova/Kconfig       |  14 ++++
- drivers/gpu/drm/nova/Makefile      |   3 +
- drivers/gpu/drm/nova/driver.rs     |  70 ++++++++++++++++++++
- drivers/gpu/drm/nova/file.rs       |  68 +++++++++++++++++++
- drivers/gpu/drm/nova/gem.rs        |  49 ++++++++++++++
- drivers/gpu/drm/nova/nova.rs       |  17 +++++
- drivers/gpu/nova-core/Kconfig      |   1 +
- drivers/gpu/nova-core/driver.rs    |   9 ++-
- drivers/gpu/nova-core/nova_core.rs |   2 +
- include/uapi/drm/nova_drm.h        | 101 +++++++++++++++++++++++++++++
- rust/uapi/uapi_helper.h            |   1 +
- 14 files changed, 349 insertions(+), 1 deletion(-)
- create mode 100644 drivers/gpu/drm/nova/Kconfig
- create mode 100644 drivers/gpu/drm/nova/Makefile
- create mode 100644 drivers/gpu/drm/nova/driver.rs
- create mode 100644 drivers/gpu/drm/nova/file.rs
- create mode 100644 drivers/gpu/drm/nova/gem.rs
- create mode 100644 drivers/gpu/drm/nova/nova.rs
- create mode 100644 include/uapi/drm/nova_drm.h
-
+diff --git a/drivers/gpu/nova-core/Kconfig b/drivers/gpu/nova-core/Kconfig
+index ad0c06756516..67f99b6a023a 100644
+--- a/drivers/gpu/nova-core/Kconfig
++++ b/drivers/gpu/nova-core/Kconfig
+@@ -1,5 +1,6 @@
+ config NOVA_CORE
+ 	tristate "Nova Core GPU driver"
++	depends on AUXILIARY_BUS
+ 	depends on PCI
+ 	depends on RUST
+ 	depends on RUST_FW_LOADER_ABSTRACTIONS
+diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
+index a08fb6599267..9ed39637d43f 100644
+--- a/drivers/gpu/nova-core/driver.rs
++++ b/drivers/gpu/nova-core/driver.rs
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-use kernel::{bindings, c_str, device::Core, pci, prelude::*};
++use kernel::{auxiliary, bindings, c_str, device::Core, pci, prelude::*};
+ 
+ use crate::gpu::Gpu;
+ 
+@@ -8,6 +8,7 @@
+ pub(crate) struct NovaCore {
+     #[pin]
+     pub(crate) gpu: Gpu,
++    _reg: auxiliary::Registration,
+ }
+ 
+ const BAR0_SIZE: usize = 8;
+@@ -38,6 +39,12 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self
+         let this = KBox::pin_init(
+             try_pin_init!(Self {
+                 gpu <- Gpu::new(pdev, bar)?,
++                _reg: auxiliary::Registration::new(
++                    pdev.as_ref(),
++                    c_str!("nova-drm"),
++                    0, // TODO: Once it lands, use XArray, for now we don't use the ID.
++                    crate::MODULE_NAME
++                )?,
+             }),
+             GFP_KERNEL,
+         )?;
+diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+index a91cd924054b..618632f0abcc 100644
+--- a/drivers/gpu/nova-core/nova_core.rs
++++ b/drivers/gpu/nova-core/nova_core.rs
+@@ -8,6 +8,8 @@
+ mod regs;
+ mod util;
+ 
++pub(crate) const MODULE_NAME: &kernel::str::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
++
+ kernel::module_pci_driver! {
+     type: driver::NovaCore,
+     name: "NovaCore",
 -- 
 2.49.0
 
