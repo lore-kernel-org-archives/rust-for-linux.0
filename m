@@ -1,202 +1,130 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A173A4A05;
-	Tue, 25 Mar 2025 04:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193FE16EB4C
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 09:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742875374; cv=none; b=AHo4KWob556m/KuPt4jpxAoXe5BclgdpokhpCMWB5poWC6ERmdfd3N/xff82i7ARxGQvR4Fda/Udrv3JbH2EybgKGiv+pj7EUhK/HuWQVPQto5q9oMItrha5JAm3Pr9oO4/mwn4dKDeLtHls91nBO9Smuc6zrKnVDiR3FI7bKho=
+	t=1742893348; cv=none; b=FwZZgdAkse7vM64nIjRPOgeW9C0yezo4U4xYZKTXuEJS/VcbMkGu1swUM2kjPcBnDdzc41PvC3e0Ug0d4CzUAgqnddPWwar5l9daNRXDcKUaPbH7Bi7TMV5t2aVuLxRNToLIv3o9jXFNXdcCZrIXmllXgSf3+j8fp/rzgh/OsRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742875374; c=relaxed/simple;
-	bh=0QleKfKx3+7JEbvAep9cx/z5aVsYDS0vLUk7PkcEwag=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KGmbVY4ee7XuFRV5EdSIBh8wC/87sjDQvlvWSiaFewWgniz3P+j36MfJ2UZbUdxzZqW4O9NC6GbyprpJkNomN9mZ0O7invr+14/0SutupL26rGtQK/CfCUNUOSQBJTDF7GzQU8kh88N5ZYzaJ18I32lrKRjaLzl0x6QHEgwOFNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QYkbUssC; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742893348; c=relaxed/simple;
+	bh=wcSRVHryt2bmCq50gGdWBD1baQzrF0iPIIeTmkanllw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XJzqIBXzVplY4/9MxqGIorzRoXjhLAYln9TsUN1qX0raJikRZXgAOa4hWXOW0aTxHjemQnIJdd/mY8V2iDMqmXB4F/CyvlIvXWEP4eJiYQ6cBUhIRnxocrQttD05ioKf9E+q1QO4KSC9dJ8XussMQ29lhnU/2BTEK9PmHRwznxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hJKOv3x9; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QYkbUssC"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4774193fdffso24484371cf.1;
-        Mon, 24 Mar 2025 21:02:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742875371; x=1743480171; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=KGInYOKpBu6xGCgfKciFdK87cegZomp2gFItoPQocck=;
-        b=QYkbUssCThtefZ6eAu19ixBTTEddKJP5hUhTHKn4x7ORLyE4K1S7GU6gYkDJGwB13B
-         r+9ziPGRv0JRndu2P31oeF6p2LTg86vQ7RbKKPAXdmMHY2H4axFy9L7A7htfrf4KepSC
-         ne69xe2Vu5RoU53oqqdl16LvUdib3gvtukqGaDG0XWn4LEyJCg6WWi8kuSnte0WrH8Z8
-         oWGhDgLQIV7pFvTkG8GlGkfMqGP3InJsL3oqvvrlhVBwls+G8QHJqDYO788un4Bab8bO
-         nf2gK+W/gFNFF7LZMLi01y4hPyI/ZZGJflttyrVbV2ys9kEOtVbY78U5mSkKzzisn1hM
-         GGuA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hJKOv3x9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742893346;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Wj1IChreYTEW7S1AiPXdgyUmHcauFp5NeY4Eqtc9FGw=;
+	b=hJKOv3x9LSrXF23YoQlw2ngGe9MmiGZu3lzlPMCmDQtt4SEmI2bqnr7KK84hA+g2WhFlY6
+	nNT7pKOAQiDO8jmglkRG5o2w1gdLRCtPP1nhqk+mksE3LIE1cGWWfECUSSFRIhF4wiElMf
+	CpZNR1eSdCQEyi8IhG0EvOLeDpRzzAk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-652-NiCV_FHqOBq5wS1dVb4SnQ-1; Tue, 25 Mar 2025 05:02:24 -0400
+X-MC-Unique: NiCV_FHqOBq5wS1dVb4SnQ-1
+X-Mimecast-MFC-AGG-ID: NiCV_FHqOBq5wS1dVb4SnQ_1742893343
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-39131f2bbe5so2240037f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 02:02:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742875371; x=1743480171;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KGInYOKpBu6xGCgfKciFdK87cegZomp2gFItoPQocck=;
-        b=SIsy9zr7DxvFhpOhoTqIeLLYcOdZ5YBgt7Ao7evM8kx2dL2t+C92zOUZM+BtZZ9swn
-         +aEw+usxUsmi6FmZ79zPJiMPYTVXOMrcTXMVFSONbEi72meQDNKhbKxRtWBy6zxqcJUS
-         njGvjHSXw9xHLv+7gm+yUt7lJ6pHVf3GrnIfmz7AqneBPvOI6SIg9ilIhc1pV/D7ZGtC
-         6zxXeRql0LJQ7pn9y4HGbw+jCGZQ60qplizIt4dBd1x4dTRMdpiCSf/++nb8kLCgq1/1
-         WOA3e3Cr7d23j077JcO6H4r+9l7ABFtZ8g8YrVksH90Ys07KK4XqhO93n9QgTSAP67+g
-         /oQw==
-X-Forwarded-Encrypted: i=1; AJvYcCVE5yEC9itrtKa2vUfZHR/68ZkhsD0tpFeO3DvKSBohxunBZCoAEJmQw/ezr/qP8VCjDcblEtw25mQby9MMepA=@vger.kernel.org, AJvYcCVpRVL05/jXWdQQ0MW1em8Ihx1RfzuS/dU+HIfsV/Tq9Oazwhyts30HBLmj5kg6JmkqhsnkhMD04TAw@vger.kernel.org, AJvYcCXPmVTu5hAm2KFLZxASrjpfXiYjhmGQLzwj3o4ZHj4jbcCVRSUP6uYeRhTsYr/fN/if+pEuowQRXmh2Z1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPWgsK46AZviSgcy1rKMIrm56zVjRM+k+09mlzc4oan2lugjx7
-	ToM6GVqNyv6HjqZF/OjhcuZW5L3G6NhvKxKhuJ/A/uPf4cGpjUec
-X-Gm-Gg: ASbGncsvecGyQlictBHpAz7zQbQP/0U+X6dA1zXuKAqgj6oYvpfjKBtQpuK+OkpeBJw
-	c261zC4CqnQZk59R6t9lVI9Ke2dEhvVodvA0WgJ3Pn0okGYzOYsbqKqViZ3CH/P9gc7sEKfMMs2
-	FWX7Cm7Xu/f7sjiLhMDWRK3kKEIOMyDfw1ONRu5q/FwbLzecGy40Yg0oH31VSMBcctdRbnzTnSd
-	bfV/DZ+Mq0lztlmlkLL8h5RSOFgjogYagUtIQzbFPOTQohljXAP7WM7OcF2ff4UDq9g6GYm0qgu
-	VS/VT3yp3JRW/G4FIuKTiAYFYYKXX4vtJ+iE+tZRB9rV0JsTGWMYG8Glv4QcTs6mJBSeJU7dz9f
-	ZVeyOw7/pvJgtsYffSx2ngyWdaMp/cwVq8sk=
-X-Google-Smtp-Source: AGHT+IGgVbi/YlG27PUIcuRctsRoEQHsggM20XkTEzCPpJTzpTw4pxS0MwqWHBizCL/grByDThmSNA==
-X-Received: by 2002:a05:622a:8c4:b0:476:8cad:72d7 with SMTP id d75a77b69052e-4771dd6086amr247712261cf.8.1742875371191;
-        Mon, 24 Mar 2025 21:02:51 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4771d179f42sm55669171cf.25.2025.03.24.21.02.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 21:02:50 -0700 (PDT)
-Received: from phl-compute-13.internal (phl-compute-13.phl.internal [10.202.2.53])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 50714120007C;
-	Tue, 25 Mar 2025 00:02:50 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-13.internal (MEProxy); Tue, 25 Mar 2025 00:02:50 -0400
-X-ME-Sender: <xms:6iriZ8oxNAkGrfM0mRWiGFfg5hdpITz2bCv0nG7JqDzMQ8iGwfyocg>
-    <xme:6iriZyrLIiqShoE_EqGU0JBJC4D7ln7xWEqV8LR_4g3QKiJoFw-MyLxXVvvAPm2Lq
-    XCXk6P_itMkvEo_EQ>
-X-ME-Received: <xmr:6iriZxOVcOG6x_xgnP3v9nye8ABWdGoUIhGBUULddb-FKZKgoEtTrNhN>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieduieegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
-    tdejnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
-    hilhdrtghomheqnecuggftrfgrthhtvghrnhepvefghfeuveekudetgfevudeuudejfeel
-    tdfhgfehgeekkeeigfdukefhgfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
-    rghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpe
-    epghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedujedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepthgrmhhirhgusehgmhgrihhlrdgtoh
-    hmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghl
-    vgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrh
-    ihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghi
-    lhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvg
-    dprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepthhmghhroh
-    hsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:6iriZz73RU_t0RmI_MYZwAaVH9GULDlMd0xqudLhye4QEZ8s6bIixw>
-    <xmx:6iriZ769V4qAtattThW_488CU8zjYkCl6pMGTaEvh1F27VhvYunZjg>
-    <xmx:6iriZzga4-veHxbaLFmuAU1qp2lrJx0oyowqbu-2ACz3ofiF6-GSuQ>
-    <xmx:6iriZ14Lfqd0hucK2yc13v4PE8DUmADu41QQUKzWEy6Va4GXDMdKbw>
-    <xmx:6iriZ-IXOpYWm-GjaFspaA957CmkcCdLltVTT_JWhI2Yle1xHZ7ot4H8>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Mar 2025 00:02:49 -0400 (EDT)
-Date: Mon, 24 Mar 2025 21:02:48 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH 3/5] rust: list: use consistent type parameter names
-Message-ID: <Z-Iq6Okk1j3ImH1u@Mac.home>
-References: <20250324-list-no-offset-v1-0-afd2b7fc442a@gmail.com>
- <20250324-list-no-offset-v1-3-afd2b7fc442a@gmail.com>
- <67e1d1b3.050a0220.4c4ff.6e89@mx.google.com>
- <CAJ-ks9moCO83cGkKuONR-2JMN61x18T2UVO98jhspDR=uyaVqw@mail.gmail.com>
- <CAJ-ks9kPhb00-Dv8KucYGOVjLFMVYvfpBnqrV87M+eJmODAmyw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1742893343; x=1743498143;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wj1IChreYTEW7S1AiPXdgyUmHcauFp5NeY4Eqtc9FGw=;
+        b=mYWu2bL/Srdlswp9AaQjPZUiSmex17+oPbonhNUHaScYAJQlhBTxPdxwsiGkuG962Q
+         y/U5dEUe/Yrt++nvNDQl4p/e38jgENYaerICo+CECXiRw++5rBnrQs7ZFva+cIjS0GjR
+         S0JrCYFqyCqRrt+Nj82K6WS9HC1AI4Wf8aCchf2K77vx9sV8uDxWeJYPQcTwAxSPQNrh
+         UhClL32yuqr/Ds3IG6+007O84gjMED3op4VBkntddEGHW13fBFt/PghUavys3iJl9H3e
+         K8H8NPzUloHOvG02tpiSUgQhQyCD+2UKPWHrp+b5hkMAkTNaxe46HWnECWiczRHV6YJd
+         RIfg==
+X-Forwarded-Encrypted: i=1; AJvYcCV+1IGtIHxfZadJit2Hi89tkjRvJ8gfQnYhc+0h96OgZ94/g1s397Mt7OLdkVP+ESzj0ji9Xu71SFrsgLRR3Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxFQ0b+emZ47hMw9W6nnrOI04ju3nZgDH1zQRr2gothda3BEQT
+	MiuHiE2Wcoq/IFn/AmSRUhKjn//7BaHT5gKuwqqT3haxcEK+DXj8DaE8Z94mIK0g35dYM+WU0zJ
+	gkVClg3oJR/FwDj877s/8l+Br7bqN+mThQeP2agQYnCwBRea/6nE3Lut42+LMpb6w
+X-Gm-Gg: ASbGncux8H3MfkuePY1kSI8yDqTcRlOdgCQxt8UZQeEjoHbxRiFDednBguL0H8ELx08
+	niD+D1WQWf4Eii3RBRR/46MM4A00KPX4NnVQVgoKzbUHR4pT2HtvsyrLrNm/rvsPmgDp/DRXAzu
+	QoxJSIIx/vHMNScRCY//vOTUWk64mbyAOJ63Ef2/v3sxCHEWqVQE+7PQw2jyf2NvYd7DdMKobSV
+	IfGPVk6z7YC3SmBTW82pCrKhBIvE8poUWqwizTvGO8/wahUoZAj7Q2TFbenL0llp1a0zPPo8eDR
+	jxwrVg3HentB/9H5/GHzwEIJ/TD0fzEp4oIp5v2KAIbXQjSwW/SLenc=
+X-Received: by 2002:a05:6000:410a:b0:390:e8d4:6517 with SMTP id ffacd0b85a97d-3997f8ff121mr13032940f8f.21.1742893343069;
+        Tue, 25 Mar 2025 02:02:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmIfLZm7khPWjwEcKM+sZzsNS9/OV7LqARaa/EFUtim00jKs/LTQtUTCr53eUD4BnsaUPNvA==
+X-Received: by 2002:a05:6000:410a:b0:390:e8d4:6517 with SMTP id ffacd0b85a97d-3997f8ff121mr13032888f8f.21.1742893342596;
+        Tue, 25 Mar 2025 02:02:22 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9b409fsm13375318f8f.50.2025.03.25.02.02.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Mar 2025 02:02:22 -0700 (PDT)
+Message-ID: <2628502d-5b43-41da-978f-66a68623889d@redhat.com>
+Date: Tue, 25 Mar 2025 10:02:19 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ-ks9kPhb00-Dv8KucYGOVjLFMVYvfpBnqrV87M+eJmODAmyw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/10] drm/panic: add missing space
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org
+References: <20250324210359.1199574-1-ojeda@kernel.org>
+ <20250324210359.1199574-2-ojeda@kernel.org>
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <20250324210359.1199574-2-ojeda@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: _2_6o2ZQw6i_8AVr38T8tGwjXxrsn_aTh9DQ1Eu-TgI_1742893343
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 24, 2025 at 05:56:57PM -0400, Tamir Duberstein wrote:
-> On Mon, Mar 24, 2025 at 5:51 PM Tamir Duberstein <tamird@gmail.com> wrote:
-> >
-> > On Mon, Mar 24, 2025 at 5:42 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> > >
-> > > On Mon, Mar 24, 2025 at 05:33:45PM -0400, Tamir Duberstein wrote:
-> > > > Refer to the type parameters of `impl_has_list_links{,_self_ptr}!` by
-> > > > the same name used in `impl_list_item!`.
-> > > >
-> > > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > > > ---
-> > > >  rust/kernel/list/impl_list_item_mod.rs | 10 +++++-----
-> > > >  1 file changed, 5 insertions(+), 5 deletions(-)
-> > > >
-> > > > diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl_list_item_mod.rs
-> > > > index 5ed66fdce953..9d2102138c48 100644
-> > > > --- a/rust/kernel/list/impl_list_item_mod.rs
-> > > > +++ b/rust/kernel/list/impl_list_item_mod.rs
-> > > > @@ -41,7 +41,7 @@ unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut ListLinks<ID> {
-> > > >  /// Implements the [`HasListLinks`] trait for the given type.
-> > > >  #[macro_export]
-> > > >  macro_rules! impl_has_list_links {
-> > > > -    ($(impl$(<$($implarg:ident),*>)?
-> > > > +    ($(impl$(<$($generics:ident),*>)?
-> > > >         HasListLinks$(<$id:tt>)?
-> > > >         for $self:ty
-> > > >         { self$(.$field:ident)* }
-> > > > @@ -51,7 +51,7 @@ macro_rules! impl_has_list_links {
-> > > >          //
-> > > >          // The behavior of `raw_get_list_links` is not changed since the `addr_of_mut!` macro is
-> > > >          // equivalent to the pointer offset operation in the trait definition.
-> > > > -        unsafe impl$(<$($implarg),*>)? $crate::list::HasListLinks$(<$id>)? for $self {
-> > > > +        unsafe impl$(<$($generics),*>)? $crate::list::HasListLinks$(<$id>)? for $self {
-> > > >              const OFFSET: usize = ::core::mem::offset_of!(Self, $($field).*) as usize;
-> > > >
-> > > >              #[inline]
-> > > > @@ -81,16 +81,16 @@ pub unsafe trait HasSelfPtr<T: ?Sized, const ID: u64 = 0>
-> > > >  /// Implements the [`HasListLinks`] and [`HasSelfPtr`] traits for the given type.
-> > > >  #[macro_export]
-> > > >  macro_rules! impl_has_list_links_self_ptr {
-> > > > -    ($(impl$({$($implarg:tt)*})?
-> > > > +    ($(impl$({$($generics:tt)*})?
-> > >
-> > > While you're at it, can you also change this to be
-> > >
-> > >         ($(impl$(<$($generics:tt)*>)?
-> > >
-> > > ?
-> > >
-> > > I don't know why we chose <> for impl_has_list_links, but {} for
-> > > impl_has_list_links_self_ptr ;-)
-> >
-> > This doesn't work in all cases:
-> >
-> > error: local ambiguity when calling macro `impl_has_work`: multiple
-> > parsing options: built-in NTs tt ('generics') or 1 other option.
-> >    --> ../rust/kernel/workqueue.rs:522:11
-> >     |
-> > 522 |     impl<T> HasWork<Self> for ClosureWork<T> { self.work }
-> >
-> > The reason that `impl_has_list_links` uses <> and all others use {} is
-> > that `impl_has_list_links` is the only one that captures the generic
-> > parameter as an `ident`, the rest use `tt`. So we could change
-
-Why impl_has_list_links uses generics at `ident` but rest use `tt`? I'm
-a bit curious.
-
-Regards,
-Boqun
-
-> > `impl_has_list_links` to use {}, but not the other way around.
+On 24/03/2025 22:03, Miguel Ojeda wrote:
+> Add missing space in sentence.
 > 
-> I've changed it to `{}` so it's consistent everywhere.
+> This was found using the Clippy `doc_markdown` lint, which we may want
+> to enable.
+
+Thanks, it looks good to me.
+
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+
+> 
+> Fixes: cb5164ac43d0 ("drm/panic: Add a QR code panic screen")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>   drivers/gpu/drm/drm_panic_qr.rs | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+> index ecd87e8ffe05..9bd4d131f033 100644
+> --- a/drivers/gpu/drm/drm_panic_qr.rs
+> +++ b/drivers/gpu/drm/drm_panic_qr.rs
+> @@ -5,7 +5,7 @@
+>   //! It is called from a panic handler, so it should't allocate memory and
+>   //! does all the work on the stack or on the provided buffers. For
+>   //! simplification, it only supports low error correction, and applies the
+> -//! first mask (checkerboard). It will draw the smallest QRcode that can
+> +//! first mask (checkerboard). It will draw the smallest QR code that can
+>   //! contain the string passed as parameter. To get the most compact
+>   //! QR code, the start of the URL is encoded as binary, and the
+>   //! compressed kmsg is encoded as numeric.
+
