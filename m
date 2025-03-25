@@ -1,28 +1,28 @@
 Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6570018024;
-	Tue, 25 Mar 2025 16:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B491F78E4;
+	Tue, 25 Mar 2025 17:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742921617; cv=none; b=Lk7JXQ11VblGMP4Ha2+4oJfvV8n/x4N0ypCoVlLOsXFrJSqWVVsXqgg3zsYRhhW5v5R17wE50NMFBorgSE6rL6JZAaACEm5myDVo28ev/5B+ozmhzZouljvIKqNhUos2hH4pUQAMBxOUaPWFn8WHx5HG61N0+yydN+WEiPunOVg=
+	t=1742922065; cv=none; b=d1thVuWrh39a4tHpSchyG5OhcubXpLG5dYf4lfiuRQhiqfiZ2Qubo/drKUWu1cX41F2UtX6+uKtgUQ9cNkxKGRXPeFljChNiSbP/+2WjEB0PN6oBEnaRDjXvGVe3Im1wifynvy0uZufaeImJX/mvX73zMECE+Az3Z2GaR23G8rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742921617; c=relaxed/simple;
-	bh=hMu3F5A7E/FLhFE8qjTp9Dh+g3WdfFy2lRyHYPslvNc=;
+	s=arc-20240116; t=1742922065; c=relaxed/simple;
+	bh=PwpIbtsMKdklh7mU8DSqzL9BZfqOSwkmWcxfEyJc++8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=M3m3s8ZuwmjDszMAkfSpxJHoPI2YUhQdNbQLenYB/Q+jpaXANzJ3MSjZaXpzjdI6PEv7C6XRFiv9gQMcCwrxYEAaSzb65h9DJZIozl0gaGZiXuXBxdfgPtY0h8czQvHazHEZWFk/2p3IKVi26vFedMFTXtjMt6Tbw/8uQoilDNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=bXsHHn5G; arc=none smtp.client-ip=49.12.72.200
+	 MIME-Version:Content-Type; b=kfi5a98C6+zHG0cgmI+mfj1bPYDyCvVsaCrguR3ROlr4eHhbJ/uW4n++mZyfviGc/2ghTcRWOW3654/rO9MkwZg9K3ZyUCCuDv8e0FuMB4dQTUDM0++FJD5oFbH07j3J5qIdPtJ8LowWKO+OpTKMDoHgziareo3qdDc6kdyK4BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=M3yZMJSr; arc=none smtp.client-ip=49.12.72.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="bXsHHn5G"
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="M3yZMJSr"
 From: Fiona Behrens <me@kloenk.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1742921613; bh=Q+vkSXKuCmtJtcgUm7TN9k3tjPef1FkD3IqpkOhHcFk=;
+	t=1742921478; bh=0RJLNZjqqj5cxoZcag+7ikIRbyKubwxWsq91NsxmA38=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=bXsHHn5GrXq8/Mea6U7PvoW4lbMK+P/2JmaIJy7vR03420umLU1XUZLk+5yok/N2n
-	 iE6kOomwvHRdxl4BDfjDspUlla1BfJ2aHR196MW8Ukmnqu3UrzRf/Oo4JWZKJwZCtJ
-	 rAkuRvTfZ7UAExg1xLV0nZ6kCoSiccXjXDrfzXpY=
+	b=M3yZMJSrPY0t0QhRXIsfJdRr0Bce4dQOJrFmJqVZJOnxDzCeQbGviQH6FHUdAruNB
+	 ZLrqDxJCHtcXOl2QgEaXacuMMt0aySgv9y1Mezqq27R4LB99FI43NTasvatYKFeNTq
+	 OdRZ4SbedxxmECBQgN5SJPQ7xurujal4WCdtltMw=
 To: Tamir Duberstein <tamird@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
   Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
@@ -34,14 +34,14 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
  <bobo1239@web.de>,  Kees Cook <kees@kernel.org>,
   rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,  Lukas
  Wirth <lukas.wirth@ferrous-systems.com>
-Subject: Re: [PATCH v4 10/11] scripts: generate_rust_analyzer.py: define
- scripts
-In-Reply-To: <20250322-rust-analyzer-host-v4-10-1f51f9c907eb@gmail.com> (Tamir
-	Duberstein's message of "Sat, 22 Mar 2025 09:23:45 -0400")
+Subject: Re: [PATCH v4 04/11] scripts: generate_rust_analyzer.py: extract
+ `{build,register}_crate`
+In-Reply-To: <20250322-rust-analyzer-host-v4-4-1f51f9c907eb@gmail.com> (Tamir
+	Duberstein's message of "Sat, 22 Mar 2025 09:23:39 -0400")
 References: <20250322-rust-analyzer-host-v4-0-1f51f9c907eb@gmail.com>
-	<20250322-rust-analyzer-host-v4-10-1f51f9c907eb@gmail.com>
-Date: Tue, 25 Mar 2025 17:53:32 +0100
-Message-ID: <m27c4d9hmb.fsf@kloenk.dev>
+	<20250322-rust-analyzer-host-v4-4-1f51f9c907eb@gmail.com>
+Date: Tue, 25 Mar 2025 17:51:17 +0100
+Message-ID: <m2iknx9hq2.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,38 +52,88 @@ Content-Type: text/plain
 
 Tamir Duberstein <tamird@gmail.com> writes:
 
-> Generate rust-project.json entries for scripts written in Rust. This is
-> possible now that we have a definition for `std` built for the host.
+> Extract helpers from `append_crate` to avoid the need to peek into
+> `crates[-1]`. This improves readability.
 >
+> Suggested-by: Trevor Gross <tmgross@umich.edu>
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
 Reviewed-by: Fiona Behrens <me@kloenk.dev>
 
 > ---
->  scripts/generate_rust_analyzer.py | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  scripts/generate_rust_analyzer.py | 35 ++++++++++++++++++++++++++++++-----
+>  1 file changed, 30 insertions(+), 5 deletions(-)
 >
 > diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-> index ccb15aa66929..957b413fe0b6 100755
+> index e997d923268d..03f55cce673c 100755
 > --- a/scripts/generate_rust_analyzer.py
 > +++ b/scripts/generate_rust_analyzer.py
-> @@ -209,6 +209,19 @@ def generate_crates(
->      uapi = append_crate_with_generated("uapi", [core])
->      kernel = append_crate_with_generated("kernel", [core, macros, build_error, bindings, pin_init, uapi])
+> @@ -35,7 +35,14 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+>      crates_indexes = {}
+>      crates_cfgs = args_crates_cfgs(cfgs)
 >  
-> +    scripts = srctree / "scripts"
-> +    with open(scripts / "Makefile") as f:
-> +        makefile = f.read()
-> +    for path in scripts.glob("*.rs"):
-> +        name = path.name.replace(".rs", "")
-> +        if f"{name}-rust" not in makefile:
-> +            continue
-> +        _script = append_crate(
-> +            name,
-> +            path,
-> +            [host_std],
+> -    def append_crate(display_name, root_module, deps, cfg=[], is_workspace_member=True, is_proc_macro=False):
+> +    def build_crate(
+> +        display_name,
+> +        root_module,
+> +        deps,
+> +        cfg=[],
+> +        is_workspace_member=True,
+> +        is_proc_macro=False,
+> +    ):
+>          crate = {
+>              "display_name": display_name,
+>              "root_module": str(root_module),
+> @@ -54,9 +61,26 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+>                  stdin=subprocess.DEVNULL,
+>              ).decode('utf-8').strip()
+>              crate["proc_macro_dylib_path"] = f"{objtree}/rust/{proc_macro_dylib_name}"
+> -        crates_indexes[display_name] = len(crates)
+> +        return crate
+> +
+> +    def register_crate(crate):
+> +        crates_indexes[crate["display_name"]] = len(crates)
+>          crates.append(crate)
+>  
+> +    def append_crate(
+> +        display_name,
+> +        root_module,
+> +        deps,
+> +        cfg=[],
+> +        is_workspace_member=True,
+> +        is_proc_macro=False,
+> +    ):
+> +        register_crate(
+> +            build_crate(
+> +                display_name, root_module, deps, cfg, is_workspace_member, is_proc_macro
+> +            )
 > +        )
 > +
->      def is_root_crate(build_file: pathlib.Path, target: str) -> bool:
->          try:
->              with open(build_file) as f:
+>      def append_sysroot_crate(
+>          display_name,
+>          deps,
+> @@ -116,20 +140,21 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+>          display_name,
+>          deps,
+>      ):
+> -        append_crate(
+> +        crate = build_crate(
+>              display_name,
+>              srctree / "rust" / display_name / "lib.rs",
+>              deps,
+>              cfg=cfg,
+>          )
+> -        crates[-1]["env"]["OBJTREE"] = str(objtree.resolve(True))
+> -        crates[-1]["source"] = {
+> +        crate["env"]["OBJTREE"] = str(objtree.resolve(True))
+> +        crate["source"] = {
+>              "include_dirs": [
+>                  str(srctree / "rust" / display_name),
+>                  str(objtree / "rust")
+>              ],
+>              "exclude_dirs": [],
+>          }
+> +        register_crate(crate)
+>  
+>      append_crate_with_generated("bindings", ["core"])
+>      append_crate_with_generated("uapi", ["core"])
