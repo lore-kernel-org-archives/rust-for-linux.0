@@ -1,94 +1,67 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2B81DED79;
-	Mon, 24 Mar 2025 23:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51954B666;
+	Tue, 25 Mar 2025 00:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742857812; cv=none; b=QK5XD5xDDzoWdwafMaxEHKHLLMElR45TLFqiHmGZTiXWA+quDsWTyxCKNsTRoiTFaZb7QqzP6/kmirk/5FdYp9UATtpvkPWux1SN7ZOo4RcY3IJVLwP/cIbD2E2OVsrqC2kmQk4iO1tE5NCZ5d3n2MTWSWvjWJSRRcf5zNg08fs=
+	t=1742861852; cv=none; b=L4VmP7gasNHLIhSkhYallxJs3tL4k5SowI7kDBQhRwAiwgjehGAur5cvlPiKzr5+MTTeHtYVcx2NMmMIczOdRTN7ZePQIhDN5w2e+RmeCDWSVia/Eu9mHFTbGEQddurKJUYwSs6oAT4rqyngtMluiFJXBB7fIqb3guL5rV+TZZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742857812; c=relaxed/simple;
-	bh=9I8KQKYlVXXDa2GWgnH9sokfNCoithb5dsrUI8nor1s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V0C2iHAqdu78xwHXrHwUpIONTZui0XfnInsS5JadXH/rASN8K97YkDlTGrVeEJLr22Bjmi1aQ4XnJaQm8wsKUwTSDZYs98xij5SASMD2x7SWWTK/Mp3sK1dddGOEBT8bCrE9Pw7+btcs/vR7gkCQhw7vTJxKrtHnykBA4byuKTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T8vwAsyQ; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1742861852; c=relaxed/simple;
+	bh=cLAAuPtLI8/s6nCDYc9Z0I6GkG9Lzg+p3j7ak9XuX6U=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZoJXUJR/2G7TUqrrNOUArLluQlfZJPTego5BIjl6dQ4/o9PrFmrU8ER98RxAWTyRn1SCQ/7QIQ9IltP5s4/Qa+XtCHkspbZ2S3FD4HlRY1UtWDfYgq06nG/7EHhpWr55pwCCNKNJvSHTBujipCQ43z0Tfr+wAPlHA/5Z9W5QQXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Qg6dTDPt; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T8vwAsyQ"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff7255b8c6so987460a91.0;
-        Mon, 24 Mar 2025 16:10:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742857810; x=1743462610; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9I8KQKYlVXXDa2GWgnH9sokfNCoithb5dsrUI8nor1s=;
-        b=T8vwAsyQ0QmsHn9cX/w8ctHR7ai6w2gZLdHd8B/Ep0Ln4tNvbdBYqxKFrgO6aoj4TA
-         jRgbxtZlmTyrmjsWvkRHEel0MyRlrJyfr14MUcwiZfAGTs5M/lGCI3xG/5aGcYI/xV/8
-         NcuvWKg2ZVAtmDh12Gvrb+63tg5ZMSK43iSREMaVHwr+8GB3vsBj+BWR3KzguDEcXFwK
-         JuVokdx+klMyG/U59bNiaefYpUGadtbIJ1KctbGKm5c5+UH3eDCjWHfEjYA2O8jkpLv7
-         lGW3A+JyXAYsHpfEB1WdhP4HNlRXQCkQKVWzimEB9Kk0XM0l+3WxKM5UU+r7TAmZ6D9d
-         HDog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742857810; x=1743462610;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9I8KQKYlVXXDa2GWgnH9sokfNCoithb5dsrUI8nor1s=;
-        b=N83mEAVM22Cx8zV1Q6ICSXUa2CDRziBJTe6WzWmpbvIMMD45I1airhOse0UDu1gM01
-         gEpxYRmjxN36AjepDEOoAGVdHgsB0vLSC2yEZOqY2s8nLba6sEjE6DkU241Izn82sGFB
-         QRh8eS3yE9EB3SD5tmTvy3ua7cE/GGqHE/ndhu7utgI4em4foDC8liE4MJQ9OQo6uhEL
-         tizBWc3qOfcACKcm6VtV8UjKNS74mDVzk1y8CI5u5fk2+E1PyAshBF4DrkeiJe9wqBuo
-         lH+sTPxK7YMe7kBpJb0OMF0UII6byNY5gJ0X7px+TavHRz3vIofFutPkEFmM/W06rfdv
-         4MUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUSc6YXRRoKiVhA45aJq6k1P+jrA8wdlgORXypUunGVw1UsE28usetsxibOnlE20uHGGauByu7tETA3mLc=@vger.kernel.org, AJvYcCXt5ctIfTvIaH50Pl0EE8nxOpD3JnWpem2LPqeuXIni81Ltn4yxIcdeKeo1ORaUzq+FxbCQkykLq+732gjiOGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPP4C5HJNlpdWBl0hwdFwDP8JqPm841JbpYX1LFtn3ZVTeGZ4/
-	9hBVtLiqzjkqrdCENRlPzD8l3ALbsu9ZbqgokUbx2dD0b3rLbbcK3dDLXoOj5arCUM/nLKSew6n
-	wwy8eNKVBfNimfw72fmQTBI2iyxE=
-X-Gm-Gg: ASbGncvZcfaJUjpGynOlRbELCV6g41H+085uHoD3GojaTymKRTszsApiVchCdi72kv3
-	iPhZXrKTRp1REOU+/xSdBawutz86B56pWN6sHKcQhZXSK1a5of2ralBjNn2Q+pBX81uvORTkLFx
-	RgkrMnQFCwVcYvnOf+bfcbyQy9OVr9bQ9aC2wK
-X-Google-Smtp-Source: AGHT+IHiw5wJimpAjJws1j5GfyzNNmvdTmtt+Gdtx8BghKlWqDwaQomsOsLGjrJpvBuh7t+if89qAAVbaQkJFUfRQ3U=
-X-Received: by 2002:a17:90b:1645:b0:2ff:4b7a:f0a4 with SMTP id
- 98e67ed59e1d1-3030fef4ad2mr8519928a91.3.1742857809561; Mon, 24 Mar 2025
- 16:10:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Qg6dTDPt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742861848; x=1743121048;
+	bh=cLAAuPtLI8/s6nCDYc9Z0I6GkG9Lzg+p3j7ak9XuX6U=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=Qg6dTDPtuDSNSCD7Sd6wjPnmzqS+8XuwqKkX6cxIqtB7g5uqaJA3qwQnxmJGLq4sd
+	 LKESnpUn7wi1UD35URriiURudk/e+vSLz/EnbbV0km9bGvfj3fR/oeMozyR6sxlYlV
+	 Hkc3VBRKw9f5wwZLU2w06p03bimS+lKPuexEF5nrf5nhHoRV4UdFHUhSlSvQ19xIkA
+	 nsUdas7i3wEDGJanVRK/Ep7FVfHdj4pCOVpI8qwuMLg330ymFYLmLIeRzj2J1VRfUL
+	 5P5qRQL1l9fyO2sP/gu2tWw4BOJYQjihzBy/mkpIFH1mOX5OsKA9wvIzjh1tcpFJRa
+	 InPiAduz0SjNg==
+Date: Tue, 25 Mar 2025 00:17:23 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 00/10] rust: clean and enable Clippy `doc_markdown` lint
+Message-ID: <D8OWYJ6X7KIW.2CM77MJ6X8QYL@proton.me>
+In-Reply-To: <CANiq72ng_ABVR5ihxMeN5Ast6Lu0-zxkgjnKzbtn4j3ghFKgZg@mail.gmail.com>
+References: <20250324210359.1199574-1-ojeda@kernel.org> <D8OVATSS19YC.1GXZRNM6TBA0X@proton.me> <CANiq72ng_ABVR5ihxMeN5Ast6Lu0-zxkgjnKzbtn4j3ghFKgZg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: d927ecfc36ab8efdc63673df1eb8d5f0416605d0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250324210359.1199574-1-ojeda@kernel.org> <D8OVATSS19YC.1GXZRNM6TBA0X@proton.me>
-In-Reply-To: <D8OVATSS19YC.1GXZRNM6TBA0X@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 25 Mar 2025 00:09:57 +0100
-X-Gm-Features: AQ5f1JpnGCnEckuxVoIN7plR0rZlCRqSBHxkP_kvLOHPlP1ckzapWMGe-fd5zW8
-Message-ID: <CANiq72ng_ABVR5ihxMeN5Ast6Lu0-zxkgjnKzbtn4j3ghFKgZg@mail.gmail.com>
-Subject: Re: [PATCH 00/10] rust: clean and enable Clippy `doc_markdown` lint
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 24, 2025 at 11:59=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
+On Tue Mar 25, 2025 at 12:09 AM CET, Miguel Ojeda wrote:
+> On Mon, Mar 24, 2025 at 11:59=E2=80=AFPM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>
+>> Not sure what you mean by this, but I think we need some way to disable
+>> it for some acronyms.
 >
-> Not sure what you mean by this, but I think we need some way to disable
-> it for some acronyms.
+> I meant that maintaining the list in that file (i.e. globally) could
+> be a bit painful if we get a lot of terms, but I guess we can find
+> workarounds for that if it gets bad.
 
-I meant that maintaining the list in that file (i.e. globally) could
-be a bit painful if we get a lot of terms, but I guess we can find
-workarounds for that if it gets bad.
+I think we can just see if it's a problem. If we keep each term on its
+own line, merging should be easy.
 
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-Thanks!
-
+---
 Cheers,
-Miguel
+Benno
+
