@@ -1,67 +1,111 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51954B666;
-	Tue, 25 Mar 2025 00:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3611494D8
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Mar 2025 03:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742861852; cv=none; b=L4VmP7gasNHLIhSkhYallxJs3tL4k5SowI7kDBQhRwAiwgjehGAur5cvlPiKzr5+MTTeHtYVcx2NMmMIczOdRTN7ZePQIhDN5w2e+RmeCDWSVia/Eu9mHFTbGEQddurKJUYwSs6oAT4rqyngtMluiFJXBB7fIqb3guL5rV+TZZM=
+	t=1742871774; cv=none; b=PZW1ahPfiXMwsy3TvXhO2w76lZmKOu21j3DGPlw8AuTXfTtay7h0rv3Iw9qt5V38gsD1T3aYJB2zraIAs0QKzDVmrgZibOL/4Opm6qakB1GVWUIeVxbR/8CVuBBKX2XIzZxFGj9D0BvbFC5YYxy0In2sQVZhyCo1nFzRRe7LqZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742861852; c=relaxed/simple;
-	bh=cLAAuPtLI8/s6nCDYc9Z0I6GkG9Lzg+p3j7ak9XuX6U=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZoJXUJR/2G7TUqrrNOUArLluQlfZJPTego5BIjl6dQ4/o9PrFmrU8ER98RxAWTyRn1SCQ/7QIQ9IltP5s4/Qa+XtCHkspbZ2S3FD4HlRY1UtWDfYgq06nG/7EHhpWr55pwCCNKNJvSHTBujipCQ43z0Tfr+wAPlHA/5Z9W5QQXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Qg6dTDPt; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1742871774; c=relaxed/simple;
+	bh=p+6PwRCtOXKT7ZJv96aTDIh/LRMyr3o7sI/Y1/kJn5I=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ChUSmaDdYnlloRwaveQkRvY6pDojhNkdrcqQqFiU6RsEOZqEqHpiTZIGz+yoRLB7vDaoRmUHJZpKkeW0K9OvlN1ky6FMpEEJZrUmYp+yPt92lApGnzLX75mt+f+xKZ4LOqP6iSvseejj6YgjmoYFX5sAS/BERp5xfaEMs8k2PLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PUu+TYpj; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Qg6dTDPt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1742861848; x=1743121048;
-	bh=cLAAuPtLI8/s6nCDYc9Z0I6GkG9Lzg+p3j7ak9XuX6U=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=Qg6dTDPtuDSNSCD7Sd6wjPnmzqS+8XuwqKkX6cxIqtB7g5uqaJA3qwQnxmJGLq4sd
-	 LKESnpUn7wi1UD35URriiURudk/e+vSLz/EnbbV0km9bGvfj3fR/oeMozyR6sxlYlV
-	 Hkc3VBRKw9f5wwZLU2w06p03bimS+lKPuexEF5nrf5nhHoRV4UdFHUhSlSvQ19xIkA
-	 nsUdas7i3wEDGJanVRK/Ep7FVfHdj4pCOVpI8qwuMLg330ymFYLmLIeRzj2J1VRfUL
-	 5P5qRQL1l9fyO2sP/gu2tWw4BOJYQjihzBy/mkpIFH1mOX5OsKA9wvIzjh1tcpFJRa
-	 InPiAduz0SjNg==
-Date: Tue, 25 Mar 2025 00:17:23 +0000
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 00/10] rust: clean and enable Clippy `doc_markdown` lint
-Message-ID: <D8OWYJ6X7KIW.2CM77MJ6X8QYL@proton.me>
-In-Reply-To: <CANiq72ng_ABVR5ihxMeN5Ast6Lu0-zxkgjnKzbtn4j3ghFKgZg@mail.gmail.com>
-References: <20250324210359.1199574-1-ojeda@kernel.org> <D8OVATSS19YC.1GXZRNM6TBA0X@proton.me> <CANiq72ng_ABVR5ihxMeN5Ast6Lu0-zxkgjnKzbtn4j3ghFKgZg@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d927ecfc36ab8efdc63673df1eb8d5f0416605d0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PUu+TYpj"
+Message-ID: <52e7d34e-cf86-40d6-a294-b318df98d72a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1742871760;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IGGsd72H09Ek4y5Nasx3ldah0+WIfjmF4R9A3El2Gqs=;
+	b=PUu+TYpjV89j/VYrhe12ry4OhxeGSCw5aIZ3H1/JBah4h8SPGbDBX7xlgwnNaSRF5bdnYw
+	Ex9q8FoYlmI6FH0MWym2+K6fCdyFdznFmZChjy6qVGWvCS80saUwOh3nqhlOa2H05nGVua
+	/ha1F1sMacAizT5OrurYNI8iWw7xMGc=
+Date: Tue, 25 Mar 2025 11:01:45 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kunwu Chan <kunwu.chan@linux.dev>
+Subject: Re: [PATCH v2] rust: sync: optimize rust symbol generation for
+ CondVar
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
+ morbo@google.com, justinstitt@google.com, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ Kunwu Chan <kunwu.chan@hotmail.com>, Grace Deng <Grace.Deng006@gmail.com>
+References: <20250324061835.1693125-1-kunwu.chan@linux.dev>
+ <CANiq72=KjT8HRJA0NStHeqm-9286gay496CU8edNALPQ9_N+ww@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CANiq72=KjT8HRJA0NStHeqm-9286gay496CU8edNALPQ9_N+ww@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue Mar 25, 2025 at 12:09 AM CET, Miguel Ojeda wrote:
-> On Mon, Mar 24, 2025 at 11:59=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>
->> Not sure what you mean by this, but I think we need some way to disable
->> it for some acronyms.
->
-> I meant that maintaining the list in that file (i.e. globally) could
-> be a bit painful if we get a lot of terms, but I guess we can find
-> workarounds for that if it gets bad.
+On 2025/3/24 17:37, Miguel Ojeda wrote:
+> On Mon, Mar 24, 2025 at 7:19 AM Kunwu Chan<kunwu.chan@linux.dev> wrote:
+>> Link:https://github.com/Rust-for-Linux/linux/issues/1145
+>> Suggested-by: Alice Ryhl<aliceryhl@google.com>
+> Nit: I typically use Link after Suggested-by, to mimic what the docs
+> require about Reported-by with Link. (No need to resend a new version
+> just for this :)
+Thanks for the kind reminder, I'll follow this next time
+>> - Remove '#[inline]' for notify()
+> It is good that the commit matches the log now, though I wonder if in
+> the future we may want the `#[inline]` for `notify` anyway, even if
+> LLVM does that one on its own today.
+Now, the default '-Copt-level' is 2 when define 
+'CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE',
+and in  KBUILD_RUSTFLAGS the  '-Ccodegen-units' is 1.
 
-I think we can just see if it's a problem. If we keep each term on its
-own line, merging should be easy.
+So if the config not change, the result should be the same.
 
----
-Cheers,
-Benno
+And the actualy compile steps for rust/kernel.o is as following:
+
+make -f ./scripts/Makefile.build obj=rust
+# RUSTC L rust/kernel.o
+OBJTREE=/media/kunwuchan/68d922f3-5dde-45b0-af93-c45ba81d85ef/linux-next 
+rustc --edition=2021 -Zbinary_dep_depinfo=y -Astable_features 
+-Dnon_ascii_idents -Dunsafe_op_in_unsafe_fn -Wmissing_docs 
+-Wrust_2018_idioms -Wunreachable_pub -Wclippy::all 
+-Wclippy::ignored_unit_patterns -Wclippy::mut_mut 
+-Wclippy::needless_bitwise_bool -Wclippy::needless_continue 
+-Aclippy::needless_lifetimes -Wclippy::no_mangle_with_rust_abi 
+-Wclippy::undocumented_unsafe_blocks 
+-Wclippy::unnecessary_safety_comment -Wclippy::unnecessary_safety_doc 
+-Wrustdoc::missing_crate_level_docs -Wrustdoc::unescaped_backticks 
+-Cpanic=abort -Cembed-bitcode=n -Clto=n -Cforce-unwind-tables=n 
+-Ccodegen-units=1 -Csymbol-mangling-version=v0 -Crelocation-model=static 
+-Zfunction-sections=n -Wclippy::float_arithmetic 
+--target=aarch64-unknown-none-softfloat -Cforce-unwind-tables=n 
+-Zbranch-protection=bti,pac-ret -Copt-level=2 -Cdebug-assertions=y 
+-Coverflow-checks=y -Cforce-frame-pointers=y -Cdebuginfo=1 
+@./include/generated/rustc_cfg --extern ffi --extern pin_init --extern 
+build_error --extern macros --extern bindings --extern uapi 
+--emit=dep-info=rust/.kernel.o.d --emit=obj=rust/kernel.o 
+--emit=metadata=rust/libkernel.rmeta --crate-type rlib -L./rust 
+--crate-name kernel rust/kernel/lib.rs --sysroot=/dev/null
+# EXPORTS rust/exports_kernel_generated.h
+   llvm-nm -p --defined-only rust/kernel.o | awk '$2~/(T|R|D|B)/ && 
+$3!~/__cfi/ && $3!~/__odr_asan/ { printf "EXPORT_SYMBOL_RUST_GPL(%s);
+",$3 }' > rust/exports_kernel_generated.h
+
+> Cheers,
+> Miguel
+
+-- 
+Thanks,
+   Kunwu.Chan(Tao.Chan)
 
