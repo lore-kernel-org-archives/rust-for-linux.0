@@ -1,142 +1,115 @@
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166C249659;
-	Wed, 26 Mar 2025 21:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6D725E45B;
+	Wed, 26 Mar 2025 21:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743023277; cv=none; b=JfjNFy6CYXTyPwbAN1sYjt+Atk1mZJikuM3qHqEkbL9F/hg3y+aE3cuTzjLa74QcvZhUUoXd8retSlFKKUZkXqYBQvdcHgkJMvZEnWNmULYLaMIyeC8HXKahlcyNIvirkkv1eFMhpkplY8qN9POtez9yAYRxMjAGb5RV7Mc2g7E=
+	t=1743023395; cv=none; b=AwK4WbvcCE0+UqhCFGJ+oYue3wo2wUX6Eux4yCR6e6KTDSu8ZirkEPLrqzl144WiR1iGCL+TeRZKNa2B80nyM7S9LTChgZbDKcOuH6H8HThMwuUPl8rQJlZXSKOzFU1sHeegi5wSXi+zLth7zn+zMAiDKp9sifJ+Rg5HGV8Ke1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743023277; c=relaxed/simple;
-	bh=jmbqtD4LiwyaAg4ke+KGdaXaPri7TsWFk0ZUUjhHzmY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKIZTfurqjgUork0HRfChdI03y7Ft1b2aAEuMoyOyYv8zH/L7BmfhoCmUFsG0jMtmcYVpUwokDQw1XxONcggJyjUdQLQlFxJnM3xYVoUmiGsm+2oatRXwJPazth17YX3ChYrrcnQaL2uLSEz2TiNiiUoBcvYH/TA76tBunxZxNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mwVKtNKW; arc=none smtp.client-ip=209.85.167.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743023395; c=relaxed/simple;
+	bh=RpFb68sfUuLucQKFl/LvCo6BIWrsfhNT9hY9gKkIojc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TpCw+92Gwss/Qc1FROpkbLL/E+g4lxxIIRbJzkf9S6H1PRIMFBWvkqYZMRWU4y8jDlOqfIwK9iCH6NtbO4/4bDKdEyVeMKQd2SSq/jnbpVl3JVWfIZv7H1auTCgV3WbPuPgyQqp7BWf52wyw65+zBA5umCvhJFpzSqisL/fOK1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=YIjfw2wK; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mwVKtNKW"
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3f6eaa017d0so167018b6e.0;
-        Wed, 26 Mar 2025 14:07:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743023275; x=1743628075; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b9znL/gfjemJ+KXWcUzaQgpfYO6FdHTZCtOPGxnSFho=;
-        b=mwVKtNKWy966RUgg97DCXdfDAVed6wIOYVxjEA0NHEyvnTRaMlDn3ge5aM9asbm7nD
-         vBhWjGF4noTs7YJUt5jS2BkNmhshh2FlATn3h0t2K8H9YBGoZ/q3Qml3TawKfc4XWs8h
-         7hb1TvqbBStwjO+bzz/Rt5SMCc3oZXT1vhG8z8TS2ZHTBQ0ZdQMqlxT2QpIlxgyN3WbI
-         OQmqfugkOyXwO3Epw2uV68zroeWp8JRCI8EZ+zH3gXZRVhQDti7C9z7ZfIGdLGPuywXq
-         iptXY4PrJOP6dIMzgXuFR47vl0D1eVMab5ygs3YBlz5S2kFFQLJJXGNb5ACPDGsS4yfy
-         NFCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743023275; x=1743628075;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b9znL/gfjemJ+KXWcUzaQgpfYO6FdHTZCtOPGxnSFho=;
-        b=GcKn9Rc9Uc3YcMJi454oqWF8LKAF4CSGVE757TyD4R7TT9YI2TIR1Kk8EAFMp37XZo
-         919qGqaINlP+DTInDvJZeb4jHeEBatDwSZ0nhYU6+PwUTZfSpqW/3PZR6Q/QnghA/ld5
-         ykb2U8yTt5w5z2P8Lrb0912Gf9Y0IVtHqeIHiDkske1aTrKxg3P5fNdDAx7lPLMdFbCf
-         lngCpkCcmVAu+AK++MoUZ8cZ5XWYTZrYcCbSwRds5a4koXOjuwetlG6wuobeL3ZamSCd
-         c9oZQUBcPXupOtnmxlOVQRCiqd3q3ythtHXTGDqJYbity7lB2qv6rRUNUgTOqZVQIn1j
-         WTOw==
-X-Forwarded-Encrypted: i=1; AJvYcCVF7FKpmIuwid7CI0MYWHdM+d+CnvF/IDtL8fRQueNJiGgE4CspbRrF3IkkOxHS+J75/GoVW6IyiBm7@vger.kernel.org, AJvYcCVVijhNI9thTjF8Lfgbo0BaSGwWmJCpNAcrQpzDqJy+MxHDjkQzUItynEyzgqWzj9RjwtvR59uaYku8Hg==@vger.kernel.org, AJvYcCVuOHeJxMxbmwSzyHNZ8HHDcK4/K6/6h1/WQMkVNSqOn3a4nox9JLu36lwPZtS5gUXR/Az5RsJhtkltTOyz4jc=@vger.kernel.org, AJvYcCW5JZnYMbRsjZVwPbiyxxEv577FQSnP7TbjTOU9UWXBxXrawMqUg8AT9oQP4b4ZxHaezbmLjAes3QE0/vVO@vger.kernel.org
-X-Gm-Message-State: AOJu0YynhUeOMh6M73/FWNzKT4Qc7STVWRe+Y1hrc1bKtQKNbUnYfub0
-	1KAM8CygyuEqe0ApELBjoQMk3cWBsj1RnOcmGDE31DZ5LnIHMtYg
-X-Gm-Gg: ASbGnctBVYbBjYVFmuCgWwyZx8S5Mm3bpIXmmjA944vyeTKxRt+UP5fIhGqoiHFQbHa
-	Vd1Xnf9tUEme22RmWa1yYNexhpfxDx8jreDN4euPR9SjTEkivc+npXkqqoAW9cf6u3DvDKnghWR
-	w4VCHo2aW2Q2FclrmeoU60VcKwEFcMO/kCE76l3oWz+7oZlKD+qphQU0Qz0SBovBtQ7wg9HTECH
-	ycxQXw1vsm8Sfrbn96EX4aC6JKHSYXSWfS0HWKepsLrMIQP55Ha2VI7T1QClDGe9OgS+EAF0B7o
-	ENlD+hfVIi9WN9+Xw2/PTQ0UhaJelrmogaj8HWs5cGwfp4dZTVxGEbTwNThg2ZIX2UdX1cCbJl2
-	6NiG7/4ydt+mvDcG6
-X-Google-Smtp-Source: AGHT+IHGlSz2JhKYJ/vK1VoVPk1F9VLiFYz2AZWwMLdwOM6QUxtEq4lCiOjisnM3b7gChCZNmlPl0A==
-X-Received: by 2002:a05:6808:6905:b0:3f9:cbc0:7420 with SMTP id 5614622812f47-3fefa5c263emr602333b6e.27.1743023274896;
-        Wed, 26 Mar 2025 14:07:54 -0700 (PDT)
-Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.googlemail.com with ESMTPSA id 006d021491bc7-60234783ac2sm1874282eaf.23.2025.03.26.14.07.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 14:07:54 -0700 (PDT)
-From: Andrew Ballance <andrewjballance@gmail.com>
-To: remo@buenzli.dev
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	andriy.shevchenko@linux.intel.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	devicetree@vger.kernel.org,
-	dirk.behme@de.bosch.com,
-	djrscally@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	heikki.krogerus@linux.intel.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	rafael@kernel.org,
-	robh@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	sakari.ailus@linux.intel.com,
-	saravanak@google.com,
-	tmgross@umich.edu,
-	andrewjballance@gmail.com
-Subject: Re: [PATCH 08/10] rust: property: Add property_get_reference_args
-Date: Wed, 26 Mar 2025 16:07:35 -0500
-Message-ID: <20250326210735.696416-1-andrewjballance@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250326171411.590681-9-remo@buenzli.dev>
-References: <20250326171411.590681-9-remo@buenzli.dev>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="YIjfw2wK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1743023391; x=1743282591;
+	bh=RpFb68sfUuLucQKFl/LvCo6BIWrsfhNT9hY9gKkIojc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=YIjfw2wK1j2h6azYTqWRVEH0cuiyeF3PG94+4kPpWByxyEylHxw0yQ73QMVZYJpHE
+	 enuZwCDqIfktzADNY3W4VW9qxXpnNVZ+qU/+ZkmsA1kaA9IhNHEyTAFxsbAfN7CGob
+	 yjy+Nsyi17yd4c4EO69HPaAvBFwtz+mx3Q85qArKW5RqcxXdKP4h7NjQDNwMtfVB2+
+	 1qU3SaIvILaFIGyOtnlmAmy2At8S/6bHl2gQ8TwJrAUGPmnGDFFPBY2nRrP6R1QHcn
+	 h2ILwNEWubh1bOBRCdkoe5lERIkf3BJHUs9m7fkcfvkvILO7/wnIc7ox7EkEr4A/tN
+	 7bP6FyKUEueYg==
+Date: Wed, 26 Mar 2025 21:09:47 +0000
+To: Tamir Duberstein <tamird@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v7 7/7] rust: enable `clippy::ref_as_ptr` lint
+Message-ID: <D8QI804Q3DAS.2BV4WSL81H52Z@proton.me>
+In-Reply-To: <CAJ-ks9ntTxBM=c5nUZWGv3MoRt-LveBchn-c1Xy-DGap7fLVRA@mail.gmail.com>
+References: <20250325-ptr-as-ptr-v7-0-87ab452147b9@gmail.com> <D8PPIYIJCNX8.13VPQULEI0ALN@proton.me> <CAJ-ks9k6220j6CQSOF4TDrgY9qq4PfV9uaMXz1Qk4m=eeSr5Ag@mail.gmail.com> <D8Q4MSXXZ7OI.1NC226MO02VSN@proton.me> <CAJ-ks9nHKpQPuSBypXTSATYhbAFkQTJzUq8jN0nu4t=Kw+0xxg@mail.gmail.com> <D8QCK3CQES3Y.3LTZ4MVO5B3KT@proton.me> <CAJ-ks9nKT2PUDm6=b4AB1QUWwwvcqPn7Vz60=c0B+uFMZrqPew@mail.gmail.com> <D8QDOBUM6NF0.CGJY7ZA5KD9S@proton.me> <CAJ-ks9ntTxBM=c5nUZWGv3MoRt-LveBchn-c1Xy-DGap7fLVRA@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: db89d0d8c8162336c902db644badce1251720b1b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 26, 2025 at 12:13 PM Remo Senekowitsch Wrote: 
-> +    pub fn property_get_reference_args(
-> +        &self,
-> +        prop: &CStr,
-> +        nargs: NArgs<'_>,
-> +        index: u32,
-> +    ) -> Result<(
-> +        ARef<Self>,
-> +        ArrayVec<{ bindings::NR_FWNODE_REFERENCE_ARGS as usize }, u64>,
-> +    )> {
-> +        let mut out_args = bindings::fwnode_reference_args::default();
-> +
-> +        let (nargs_prop, nargs) = match nargs {
-> +            NArgs::Prop(nargs_prop) => (nargs_prop.as_char_ptr(), 0),
-> +            NArgs::N(nargs) => (ptr::null(), nargs),
-> +        };
-> +
-> +        let ret = unsafe {
-> +            bindings::fwnode_property_get_reference_args(
-> +                self.0.get(),
-> +                prop.as_char_ptr(),
-> +                nargs_prop,
-> +                nargs,
-> +                index,
-> +                &mut out_args,
-> +            )
-> +        };
-> +        to_result(ret)?;
-> +
-> +        let node = unsafe { FwNode::from_raw(out_args.fwnode) };
-> +        let mut args = ArrayVec::default();
-> +
-> +        for i in 0..out_args.nargs {
-> +            args.push(out_args.args[i as usize]);
-> +        }
-> +
-> +        Ok((node, args))
-> +    }
+On Wed Mar 26, 2025 at 8:06 PM CET, Tamir Duberstein wrote:
+> On Wed, Mar 26, 2025 at 1:36=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>> On Wed Mar 26, 2025 at 5:57 PM CET, Tamir Duberstein wrote:
+>> > In the current code you're looking at, yes. But in the code I have
+>> > locally I'm transmuting `[u8]` to `BStr`. See my earlier reply where I
+>> > said "Hmm, looking at this again we can just transmute ref-to-ref and
+>> > avoid pointers entirely. We're already doing that in
+>> > `CStr::from_bytes_with_nul_unchecked`".
+>>
+>> `CStr::from_bytes_with_nul_unchecked` does the transmute with
+>> references. That is a usage that the docs of `transmute` explicitly
+>> recommend to change to an `as` cast [1].
+>
+> RIght. That guidance was written in 2016
+> (https://github.com/rust-lang/rust/pull/34609) and doesn't present any
+> rationale for `as` casts being preferred to transmute. I posted a
+> comment in the most relevant issue I could find:
+> https://github.com/rust-lang/rust/issues/34249#issuecomment-2755316610.
 
-This function is missing safety comments.
+Not sure if that's the correct issue, maybe we should post one on the
+UCG (unsafe code guidelines). But before that we probably should ask on
+zulip...
 
-Andrew
+>> No idea about provenance still.
+>
+> Well that's not surprising, nobody was thinking about provenance in
+> 2016. But I really don't think we should blindly follow the advice in
+> this case. It doesn't make an iota of sense to me - does it make sense
+> to you?
+
+For ptr-to-int transmutes, I know that they will probably remove
+provenance, hence I am a bit cautious about using them for ptr-to-ptr or
+ref-to-ref.
+
+>> [1]: https://doc.rust-lang.org/std/mem/fn.transmute.html#alternatives
+>>
+>> >> I tried to find some existing issues about the topic and found that
+>> >> there exists a clippy lint `transmute_ptr_to_ptr`. There is an issue
+>> >> asking for a better justification [1] and it seems like nobody provid=
+ed
+>> >> one there. Maybe we should ask the opsem team what happens to provena=
+nce
+>> >> when transmuting?
+>> >
+>> > Yeah, we should do this - but again: not relevant in this discussion.
+>>
+>> I think it's pretty relevant.
+>
+> It's not relevant because we're no longer talking about transmuting
+> pointer to pointer. The two options are:
+> 1. transmute reference to reference.
+> 2. coerce reference to pointer, `as` cast pointer to pointer (triggers
+> `ptr_as_ptr`), reborrow pointer to reference.
+>
+> If anyone can help me understand why (2) is better than (1), I'd
+> certainly appreciate it.
+
+I am very confident that (2) is correct. With (1) I'm not sure (see
+above), so that's why I mentioned it.
+
+---
+Cheers,
+Benno
+
