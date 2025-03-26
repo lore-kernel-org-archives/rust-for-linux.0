@@ -1,106 +1,56 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26F12904
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Mar 2025 01:49:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117A42628C
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Mar 2025 08:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742953751; cv=none; b=EVGXJqBtfhhkJLggGQHp6cRyHSdQkHgcEuBM85QX0fx6kP8MqmK3x+ARpTfMLtD8d/dm1/QkHQzGSdBij0lG6ZDHXKZxGK1EVvtCG456By2LDrS6oL7XVfVne6P6rWKZDmWkiSdXLb4bYRD48HhQnC8AHl2zLoJJI3FCTzePYNU=
+	t=1742978781; cv=none; b=lF4eklX9mvtDdFVBdxZDQFZ307fqLLWga7H3FiqaCavdTQRM/QrsO+h7MFMJyg/qUT2GI9Lb7L/4QevAnIX8PelweTX6dMm0lb+1QwpTA50JFZoPGHT75HTmoMEd51bdLaAC8BaO7UQgjyrA4yxJO7PLn4Wjt5hnNXioP/FTBW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742953751; c=relaxed/simple;
-	bh=O7Qk0wXNBps68dTV5i9fSeG1T4a0HtGZ4oJIUpuWXO8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O5yFjSxOy5XXzHUW/JfU1B0tM4WedKBQB9qcReHxfpCgeOoxdpdpNXX43L4A+k/1RH0B1WzGnKx/xJtIFHiZW960vLAhJSm6nBFbSmWgyBZgEzo7FBiK5Mka9xIhZHnvrM/Tp3aEVbvaWzYgCYxPH+lv2EHV76dPWwNoGxKkKfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=B1y07/b3; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1742978781; c=relaxed/simple;
+	bh=uDjnAPivhTKuVNSo+18ftJxD9akeknBIx6lNFUOkFkA=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=RQjofb9rR0+O5tPFAs1WoCf6ZxssgtpA/jkXvQ+ny70kq/1A/Q0FW9HdB/gVuwC3KxdSoydnHVUphMK7C4MiQG5MVnZL2PNL0hHfF4mJ8Zh4QLh4zAmK97SGIpcJiTj6IWSaDZrD5wNqqvnA9cOcBG13jKH5BzCqrJ7OETsYA5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KgJ5F8yV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="B1y07/b3"
-Message-ID: <d193a3bb-8faf-4741-88c3-0173fa36b209@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1742953737;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m0cjfegyVHmVqLXT1DagyHv6BuDO34qa1ULxUGVqEAU=;
-	b=B1y07/b3N6ie3Mfn9JnlrdV/pLKng5ESrYZQXroDPWq0bsLRfu26KaPqZdBgcy2poDIknh
-	FUjQQ31+gbGD7cZoPTSCohyLUcwg2PqJaT6KKpwHy1WFYocVXzi/SdwLITXGtGXcF5xf9c
-	DSo3h4RxT2PCoKhGuzJ5rEgj/bLwxuU=
-Date: Wed, 26 Mar 2025 09:48:07 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KgJ5F8yV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1BAC4CEE2;
+	Wed, 26 Mar 2025 08:46:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742978780;
+	bh=uDjnAPivhTKuVNSo+18ftJxD9akeknBIx6lNFUOkFkA=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=KgJ5F8yV9A3pEeN8PODfL90zI3m6llp/Nw5NG7h8yE1a8l0O9LxqdVGdg5vg47GHx
+	 Nj7hGXFzYgRaHV2acNbEj+57qMY2EBlLgzMKc9a4cifEVuvggIO41941zQe7kxeh4p
+	 o+2uWoMVAhDTAIfg29PZnPZJrMzt+RnGJelfHIohx/iobxJaYmX44gXuxmDXC35GwN
+	 TImwV77eN+0UQXLcr/wmWN65++1T4KAl/4ujH8so+YFnDVUdtXGMwDe0k4So7wdKNq
+	 5uIvfDx2ifTDOyv6Mb5PuNWjRZFdwgllb3Pa00WHYdfhTb/qwuuNscWtRkyaN7TogJ
+	 nOFCt+g6pwYgQ==
+Message-ID: <ccdce4920ae2ba95a2afe8bb4d6f0f60@kernel.org>
+Date: Wed, 26 Mar 2025 08:46:17 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 1/8] drm: drv: implement __drm_dev_alloc()
+In-Reply-To: <20250325235522.3992-2-dakr@kernel.org>
+References: <20250325235522.3992-2-dakr@kernel.org>
+Cc: a.hindborg@kernel.org, acurrid@nvidia.com, airlied@gmail.com, alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, daniel.almeida@collabora.com, dri-devel@lists.freedesktop.org, gary@garyguo.net, j@jannau.net, lina@asahilina.net, lyude@redhat.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org, simona@ffwll.ch, tmgross@umich.edu, tzimmermann@suse.de, "Maxime
+ Ripard" <mripard@kernel.org>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH v2] rust: sync: optimize rust symbol generation for
- CondVar
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
- morbo@google.com, justinstitt@google.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- Kunwu Chan <kunwu.chan@hotmail.com>, Grace Deng <Grace.Deng006@gmail.com>
-References: <20250324061835.1693125-1-kunwu.chan@linux.dev>
- <CANiq72=KjT8HRJA0NStHeqm-9286gay496CU8edNALPQ9_N+ww@mail.gmail.com>
- <52e7d34e-cf86-40d6-a294-b318df98d72a@linux.dev>
- <CANiq72=iMaEOALbh8EBrgEc5t0KQ2BTPADro3vmBtEM75pO3aw@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kunwu Chan <kunwu.chan@linux.dev>
-In-Reply-To: <CANiq72=iMaEOALbh8EBrgEc5t0KQ2BTPADro3vmBtEM75pO3aw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-On 2025/3/25 18:12, Miguel Ojeda wrote:
-> On Tue, Mar 25, 2025 at 4:02 AM Kunwu Chan <kunwu.chan@linux.dev> wrote:
->> Thanks for the kind reminder, I'll follow this next time
-> You're welcome!
->
->> Now, the default '-Copt-level' is 2 when define
->> 'CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE',
->> and in  KBUILD_RUSTFLAGS the  '-Ccodegen-units' is 1.
->>
->> So if the config not change, the result should be the same.
-> I don't think that is true, because there are a few `rustc` versions
-> as well as LLVM ones that we support, so how inlining happens (at both
-> `rustc` and LLVM levels) may change even if the configuration is
-> essentially the same.
->
-> And, of course, then there are other non-compiler-related kernel
-> config options (i.e. not compiler flags, but other stuff, like `cfg`s)
-> that influence which and how gets emitted and thus the inlining
-> decisions.
-> Eventually we should have pure GCC builds too, which is yet another factor...
->
-> To be clear, I agree with Boqun that having to write `#[inline]`
-> everywhere is not great. Rust 1.75 already started to tag small
-> functions as `#[inline]` to try to prevent the proliferation of the
-> attribute, which is good (i.e. which is what triggered the message in
-> Compiler Explorer).
+On Wed, 26 Mar 2025 00:54:28 +0100, Danilo Krummrich wrote:
+> In the Rust DRM device abstraction we need to allocate a struct
+> drm_device.
+> 
+> Currently, there are two options, the deprecated drm_dev_alloc() (which
+> does not support subclassing) and devm_drm_dev_alloc(). The latter
+> 
+> [ ... ]
 
-Thanks for the detailed reply.
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
 
-Sure on the one hand, the decisions is a result of many factors,
-
-on the other hand the rustc and llvm is rapidly developing.
-
-It's a complicated thing.
-
-> By the way, one difference is whether it is `pub` -- the `notify()`
-> isn't (unlike the others), but if it were, then we would have needed
-> the `#[inline]`, from a quick test.
-That is a easy way to judge. I learned.
-> Thanks!
->
-> Cheers,
-> Miguel
-
--- 
-Thanks,
-   Kunwu.Chan(Tao.Chan)
-
+Thanks!
+Maxime
