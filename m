@@ -1,218 +1,110 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D461531C5
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Mar 2025 09:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2531ACEAF;
+	Wed, 26 Mar 2025 10:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742981383; cv=none; b=pYKysQNgwKiZj8/jdu1DihqlSSsGT0Z+sgs+4YGHyjngGCfhWoJmn5kwwwuazHshNFoGNa9yHMoQT3SjPwCzG6oD6x3mXexlKFloJQLRZHUMfz0BiA+JEfSRvgb9bTm41bebjqcmtRjQRlfL/anS6OO3i/oCOltvM48FESnGnrk=
+	t=1742985069; cv=none; b=OyoKMIq4yuQ4n1TqiucWr0O/RuBdnFqIXQwgi6UAbFdEE17lWZekzfU3Yxx94EscrLm/BVrzjHlH2yRKriTh/2XmOwCfo+/dDVZSSHsBIAyQmo6hRcHHDeOa7F74+6/YGa+E5tBm87q5WiT2nRBOtbeSRnbNXr29aXAb2AO71wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742981383; c=relaxed/simple;
-	bh=XNxiDXdUii5+6jtcVssnK0QG/NSun2SoqoNA+Q5kiMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nx5qv9DcflmC5j1KE8bLwhyR1DubSjKcR02llGgIyCXznIZrdpqlCnC8iJi/NaI0n91P16XKXTCuSbqQOZc5pNT2cM1hkcq8ZJJzUyzu7+RymdoR4+VcmxaWXww+k54DhcB68AiwEzLL0m7B3+fTiNWMoBh4XlSo3W/mcsI2ze0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QGtMg2U0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Xxv2O7WJ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QGtMg2U0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Xxv2O7WJ; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1742985069; c=relaxed/simple;
+	bh=pSoI1WGaycGSmBtCOUNQSjGw+nskVB7jyyqdbGzX9pE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ncvpb7w7tbUILWIH+762f9hHpsIRPMeKu4tBtTYdkWEhGHNSKL9ULCDREtHtfJUpCSscC6GBi1QXuydvV9bkBTtu93ZLO6jhWA9kmhKCL4PfhvXlpVU9H5f19vEY5CQfKT6j0VSJoTiobUv9AW/HCTyFbGd86UlUwefu/Nlow5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ViqpvZj2; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QGtMg2U0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Xxv2O7WJ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QGtMg2U0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Xxv2O7WJ"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 47AD81F391;
-	Wed, 26 Mar 2025 09:29:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1742981380; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NBb0DLxbZ1Xy8lV9iYYVobxQWtWXO/9x6FdnTg4oeN8=;
-	b=QGtMg2U0W13REvRyAO6iDul3Ln6Bx540Pebz0AnigxAlctpaW5tnp/Tr9s107PyFC16lzg
-	rNczVYQsyqUn7Lp9J6TfMsoKosduFhkUL+TGCCal108Z0OOnYWlOGcjC+qmxevt3TRpvn+
-	1eB1Zj9AhorFqlWNVmDZb6rn7c5Y+JU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1742981380;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NBb0DLxbZ1Xy8lV9iYYVobxQWtWXO/9x6FdnTg4oeN8=;
-	b=Xxv2O7WJ45F+uM7cVwGdJbh1i6TGufa2DOjjrVXsA7xVB5GzhRyBVfpnYRhe0Nx1K4Zjqx
-	Bu2fT1EhfApvJlCQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1742981380; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NBb0DLxbZ1Xy8lV9iYYVobxQWtWXO/9x6FdnTg4oeN8=;
-	b=QGtMg2U0W13REvRyAO6iDul3Ln6Bx540Pebz0AnigxAlctpaW5tnp/Tr9s107PyFC16lzg
-	rNczVYQsyqUn7Lp9J6TfMsoKosduFhkUL+TGCCal108Z0OOnYWlOGcjC+qmxevt3TRpvn+
-	1eB1Zj9AhorFqlWNVmDZb6rn7c5Y+JU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1742981380;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NBb0DLxbZ1Xy8lV9iYYVobxQWtWXO/9x6FdnTg4oeN8=;
-	b=Xxv2O7WJ45F+uM7cVwGdJbh1i6TGufa2DOjjrVXsA7xVB5GzhRyBVfpnYRhe0Nx1K4Zjqx
-	Bu2fT1EhfApvJlCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DC3061374A;
-	Wed, 26 Mar 2025 09:29:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eRKQNAPJ42fQZAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 26 Mar 2025 09:29:39 +0000
-Message-ID: <65cd8976-3e07-4886-8eaa-f9a6094f6f1e@suse.de>
-Date: Wed, 26 Mar 2025 10:29:39 +0100
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ViqpvZj2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1742985064; x=1743244264;
+	bh=PD6QsKlbd/UTEIZFjdWL2INF7cdUTBh6ExeiHs8aHeE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=ViqpvZj2DYShZqRsjkXRHya7dm+a8V1pJaSqmByjF0GxUAhLHBw9zK8OGj2tJfKYn
+	 W22bKXuOek30uCw7TONhJ+SsJ5O2t36d68I0KUmw1yXcEV0uuTtKPD0yOVbeuOSTeB
+	 eGeVXA9Js4rg17xXT76DaF91riSkaGXNVfpX6+zdJxwt16NqaSXUZGFh6s1LLN5KEU
+	 gflg5QvG69rpxM1yFrnnlcWKeat+CI7hMkQ/PiLfWdwH2ouVQcYV6hfwWt4oXPjVxq
+	 OP5L7EM+1YJYcwmU6Bqj6wY6i2ytPo1CNgJx1tbMtBTTsAOpafptEC3pI24CS7+euR
+	 W1EGIj+3YmK+Q==
+Date: Wed, 26 Mar 2025 10:30:56 +0000
+To: Tamir Duberstein <tamird@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v7 7/7] rust: enable `clippy::ref_as_ptr` lint
+Message-ID: <D8Q4MSXXZ7OI.1NC226MO02VSN@proton.me>
+In-Reply-To: <CAJ-ks9k6220j6CQSOF4TDrgY9qq4PfV9uaMXz1Qk4m=eeSr5Ag@mail.gmail.com>
+References: <20250325-ptr-as-ptr-v7-0-87ab452147b9@gmail.com> <20250325-ptr-as-ptr-v7-7-87ab452147b9@gmail.com> <D8POWLFKWABG.37BVXN2QCL8MP@proton.me> <CAJ-ks9mUYw4FEJQfmDrHHt0oMy256jhp7qZ-CHp6R5c_sOCD4w@mail.gmail.com> <D8PPIYIJCNX8.13VPQULEI0ALN@proton.me> <CAJ-ks9k6220j6CQSOF4TDrgY9qq4PfV9uaMXz1Qk4m=eeSr5Ag@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: e50c9b550854ec00eb95a773d66c999d39fa5c32
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/edid: Use unsigned int in drm_add_modes_noedid()
-To: Lyude Paul <lyude@redhat.com>, Maxime Ripard <mripard@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- "open list:RUST:Keyword:b(?i:rust)b" <rust-for-linux@vger.kernel.org>
-References: <20250325212823.669459-1-lyude@redhat.com>
- <20250325212823.669459-2-lyude@redhat.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250325212823.669459-2-lyude@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,gmail.com,ffwll.ch,kernel.org,garyguo.net,protonmail.com,proton.me,google.com,umich.edu,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,bootlin.com:url]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi
-
-Am 25.03.25 um 22:27 schrieb Lyude Paul:
-> A negative resolution doesn't really make any sense, no one goes into a TV
-> store and says "Hello sir, I would like a negative 4K TV please", that
-> would make everyone look at you funny.
+On Wed Mar 26, 2025 at 12:54 AM CET, Tamir Duberstein wrote:
+> On Tue, Mar 25, 2025 at 6:40=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>> On Tue Mar 25, 2025 at 11:33 PM CET, Tamir Duberstein wrote:
+>> > On Tue, Mar 25, 2025 at 6:11=E2=80=AFPM Benno Lossin <benno.lossin@pro=
+ton.me> wrote:
+>> >> On Tue Mar 25, 2025 at 9:07 PM CET, Tamir Duberstein wrote:
+>> >> > diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+>> >> > index 40034f77fc2f..6233af50bab7 100644
+>> >> > --- a/rust/kernel/str.rs
+>> >> > +++ b/rust/kernel/str.rs
+>> >> > @@ -29,7 +29,7 @@ pub const fn is_empty(&self) -> bool {
+>> >> >      #[inline]
+>> >> >      pub const fn from_bytes(bytes: &[u8]) -> &Self {
+>> >> >          // SAFETY: `BStr` is transparent to `[u8]`.
+>> >> > -        unsafe { &*(bytes as *const [u8] as *const BStr) }
+>> >> > +        unsafe { &*(core::mem::transmute::<*const [u8], *const Sel=
+f>(bytes)) }
+>> >>
+>> >> Hmm I'm not sure about using `transmute` here. Yes the types are
+>> >> transparent, but I don't think that we should use it here.
+>> >
+>> > What's your suggestion? I initially tried
+>> >
+>> > let bytes: *const [u8] =3D bytes;
+>> > unsafe { &*bytes.cast() }
+>> >
+>> > but that doesn't compile because of the implicit Sized bound on pointe=
+r::cast.
+>>
+>> This is AFAIK one of the only places where we cannot get rid of the `as`
+>> cast. So:
+>>
+>>     let bytes: *const [u8] =3D bytes;
+>>     // CAST: `BStr` transparently wraps `[u8]`.
+>>     let bytes =3D bytes as *const BStr;
+>>     // SAFETY: `bytes` is derived from a reference.
+>>     unsafe { &*bytes }
+>>
+>> IMO a `transmute` is worse than an `as` cast :)
 >
-> So, let's make these parameters a bit more reasonable and ensure that
-> they're unsigned - which makes the resulting rust bindings for this
-> function a bit easier to understand and work with.
+> Hmm, looking at this again we can just transmute ref-to-ref and avoid
+> pointers entirely. We're already doing that in
+> `CStr::from_bytes_with_nul_unchecked`
 >
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Maxime Ripard <mripard@kernel.org>
-> ---
->   drivers/gpu/drm/drm_edid.c | 2 +-
->   include/drm/drm_edid.h     | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-> index 13bc4c290b17d..2e2e1d2347397 100644
-> --- a/drivers/gpu/drm/drm_edid.c
-> +++ b/drivers/gpu/drm/drm_edid.c
-> @@ -7099,7 +7099,7 @@ EXPORT_SYMBOL(drm_add_edid_modes);
->    * Return: The number of modes added or 0 if we couldn't find any.
->    */
->   int drm_add_modes_noedid(struct drm_connector *connector,
-> -			int hdisplay, int vdisplay)
-> +			 unsigned int hdisplay, unsigned int vdisplay)
+> Why is transmute worse than an `as` cast?
 
-You should also remove these branches:
+It's right in the docs: "`transmute` should be the absolute last
+resort." [1]. IIRC, Gary was a bit more lenient in its use, but I think
+we should avoid it as much as possible such that people copying code or
+taking inspiration also don't use it.
 
-  https://elixir.bootlin.com/linux/v6.13.7/source/drivers/gpu/drm/drm_edid.c#L7109
+So for both cases I'd prefer an `as` cast.
 
-Best regards
-Thomas
+[1]: https://doc.rust-lang.org/std/mem/fn.transmute.html
 
->   {
->   	int i, count, num_modes = 0;
->   	struct drm_display_mode *mode;
-> diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
-> index eaac5e665892a..b38409670868d 100644
-> --- a/include/drm/drm_edid.h
-> +++ b/include/drm/drm_edid.h
-> @@ -437,7 +437,7 @@ bool drm_detect_monitor_audio(const struct edid *edid);
->   enum hdmi_quantization_range
->   drm_default_rgb_quant_range(const struct drm_display_mode *mode);
->   int drm_add_modes_noedid(struct drm_connector *connector,
-> -			 int hdisplay, int vdisplay);
-> +			 unsigned int hdisplay, unsigned int vdisplay);
->   
->   int drm_edid_header_is_valid(const void *edid);
->   bool drm_edid_is_valid(struct edid *edid);
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+---
+Cheers,
+Benno
 
