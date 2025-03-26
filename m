@@ -1,150 +1,262 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from sonic309-48.consmr.mail.ne1.yahoo.com (sonic309-48.consmr.mail.ne1.yahoo.com [66.163.184.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1804A28F4;
-	Wed, 26 Mar 2025 19:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD31B13C9A3
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Mar 2025 19:16:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743016019; cv=none; b=LW5i8X0o7ECsneNNaJJV38hM88vnamW6EnYLW1E3Ujtp/Sb9xu9pie3d0TUGQ+9zMZztvMkOB0aGvrYjEK03jG2tdbw27OMjxLafFsopahnXHJCB++hyTgZXk3h/GpzxPTnB4PCKYGm+xO3eq1MSUz5E+ngu+pgZh6hMstYryV8=
+	t=1743016568; cv=none; b=RRMVyLDnPXdfKfoc2HnZAf/jTjPGtk7uSvvDSkmmucn1YXmKFNFy7VnodZ1c8zNdiVA60apksYwOuORj37DD62uwmBAzDGa1doYe+UOnOfxjRNhn4KXofb5+sBEZ54y5sX61BSChZnDpEsg7N2w3SxkVIXY+8hIY6diIuIYT45g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743016019; c=relaxed/simple;
-	bh=xyxvZkbyduy9RmkQ3WSeK6/tBzwWPMrfRAoEJmlTmuE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XPRRJFjPZ3tUZYhJqdvDZd0R9AMtbCAd8+xdFbD0GIZGfj3M5E0oPAFCl2P4X22rz4lV8eA84QefGpIFAgwufX5pXGfzVoKUR2kwGfNH04vWnBETPlUfd0+bln6nnvcdmHvzmIQuQKXFAcN5BSRco/y/xIRzgXfmHXwc5lJ5an0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aTiaoPUT; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743016568; c=relaxed/simple;
+	bh=PC1X3HEsEgH48fE/eyOZ1oJ29z21EtAGAhy1RT20v6Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=AqA48fue31hQaYz3HpOSwp0/BW/ljiKwBFyN6r1z+EwyESoMu7ls1pVK0SpXVQ7Q2pDtFcLh/tfWY3+4reDPM9oIHkV0mhbqGrrSec6lGlivjXGQZfyokyO6BWwBrb2TvxDPhcePyHlh6K/X5XLGEe79bQALRi301tm2nrTKIkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=jFGwaLmh; arc=none smtp.client-ip=66.163.184.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aTiaoPUT"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30bfed67e08so2255321fa.2;
-        Wed, 26 Mar 2025 12:06:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743016016; x=1743620816; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xyxvZkbyduy9RmkQ3WSeK6/tBzwWPMrfRAoEJmlTmuE=;
-        b=aTiaoPUTXhlz0TWPtz+Y44JteqxaDLfRo2CXuDryjK/5Nef0PPICQBIUqY4YIhhTmU
-         i/w8AGV/lTNgNPYNX0ulVacg3IZAwpb6vEJa0jVz/TlWZXtmQYm0aiLO6pLvjVuav4Ul
-         aH3Pg62nzVPkXRmdrPv/aC9LoddjkxcuySQGlvO0ongu1fTtJhytIDkGYSLrZAH+wCzb
-         lCCEFdGDf8Q8bPct91/6D1LpnBe7A3cSuDnbyBc+lVvCuB6VfGrOJGFC9TyjjrbsZJuL
-         HZfrlp4hsiIl7BQsJz1daj/KyLt8q4ovKxNCr0DYCClG6RWXmaMkv3qg5Y4dQskrykJ/
-         Kx+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743016016; x=1743620816;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xyxvZkbyduy9RmkQ3WSeK6/tBzwWPMrfRAoEJmlTmuE=;
-        b=u7ASLFfjWU3+C4Hbd8ojDjidpvZA8E9wg5fXGtu2Oyu30jJjtQEfukZEmelEyUDeq/
-         Z1lIlXAz3uMD4JTFy0F+/LzxsZtXqhOUzy4H5EqzQDxiZ9YwhnhCENa15bBZsEat3w6u
-         ltwzmAMnK5RmkpsvYfOf1CybN1wToLbV5XeHBA3VwreXwYz5eDaXyS9nyQtiXQI77F9T
-         J2WzxuT+WLstCyq7zfKiqO6m62c/a/3w2INuw/SldqSxSXAR5SzZFnCRR3BCRUAk7KQo
-         qhorjFKUy2cY1CNfRaDzW8fQfY8UUvKvobnQuJmWk06mgqaPQhJ5fEDDAFHAyJMKlZ6L
-         S4zw==
-X-Forwarded-Encrypted: i=1; AJvYcCUjstPFP8AutMsI7KFZy2sxUcI8lpofjeaDtujc5nZb1KM+DSaDgiEDV5Ysph54mc2TjPjX0cKg@vger.kernel.org, AJvYcCUlWlE3gQ4V5qI4mnZA5OfZsXjeEkP0FnyYhEn/0UI5vw09LXjkBETsMNzz6dGwJMPRAlM0yLhyGIWY@vger.kernel.org, AJvYcCUxHO5cL5xOtYBwQ4ssyK3pbgD2Sx5vPX0/kCnar1Bt68z3AFL4c4bpwVyqynkAOWCpjAg95aaruIlAGIsG@vger.kernel.org, AJvYcCUzHrs9hhZPhJHdc8T2hQSfJtlajJClJaaTZZXirNG0rLunB5dfXHvrXxPP4ZrmRYVcf8al2TMrf496wno=@vger.kernel.org, AJvYcCV83ZrNc7qR83APq23ziwqVAqEMJHhCntcCJ2HPdrnQgF9M4z/LnkKOZRQmA7MMggUgv4aX1wtSOP6f@vger.kernel.org, AJvYcCW0MGnWhUKfW7WLe9XElSZ0h6mA+cr+9XzQYCzItXbThwc1R+4GA4KWxlm7eYWhA4LQBWDsQOH8dSP8Mka/ECg=@vger.kernel.org, AJvYcCWCLHlsCqrgPCLB4YzC8gG2XkkJwu2g8DsAqwyr/Kh6P6FfhT0tKSAIIJs7LpXZM+O244iUptxoqmHNfbmd@vger.kernel.org, AJvYcCWRPQKLEotIxfWvm7jfKl4WN43SEV3G8V1tEtQFTmCnMSyHUG5Ld5vnER6ofRGzWKRbMBrBRb3uCP8x9RZnoKPh@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzvx5V1cHjnkhzKrKY5P8Z1exSSq9Zq4BWDAxyt0QTmSthHycBf
-	gy970IOCP5mamWPyrxXOnU9xa0jcvhuiTPwtTM6oJZPXKPjgFlubsskDMFAbqWKF6PJL2i+MFp6
-	40fnd+cwpaboLAdwkBQnCtluHI/A=
-X-Gm-Gg: ASbGnctj9WgJZ7cCM3YPJaNxw5v6UwiJ+j7IeNOxGRp0wt24ooHXhLAGEJ0S9u9NLk2
-	fylV1BlBEoN3wpI8nMsMBO288/mmCph6NfqixLXVGcNuti+otdsyTbQzLqwTZHRRC+F2JYBLQd3
-	Iyi3B6OtmlcYHkTt1/o8iDkT32YFBnWeh6IYgFQMHXXQ==
-X-Google-Smtp-Source: AGHT+IHDYgVo8MGaQ9BkG5+GyvT0+QD0Hn1jlcmz/IJfG8ECGaCOtoHRacJDMqa8JoaxSiLcVOV3Dc1Whxt+lMktHno=
-X-Received: by 2002:a05:651c:4ca:b0:30b:e440:dbdb with SMTP id
- 38308e7fff4ca-30dc5f45b99mr3646831fa.37.1743016015848; Wed, 26 Mar 2025
- 12:06:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="jFGwaLmh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743016565; bh=P5BPCMQPyvXf+kCrxNahBE6rC2TPx4so0PvFtA5+q4A=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=jFGwaLmhfcMmLPyGO0qeFmOtSGvTO4JFCiINQh9ScmV2fkAlAkK/RxHicoD9AOj36q6fDjPr4RW/bS9nVqf5On8K78EFgu8vkD/HvQMnLQVP6Fo00RDXW0LdjQBPXZfR30qQKZ7a1wTzh6gGumK5fHm+vAAvxPP3b0u7wgO/jmPYcoGaaWdIPnmWcHEsomvEWrwPUq1NjREyypiOhgfUYpIqWIjeEXJOdwdH7OL70PJAsrMnljZeGfhb6VBgMt8heZ09atlITvUgPMZ+DNSLNonXf7etmhJlm6KxlENMFcfJ54ct3N8vYgUKgh/J8+31u/jB/VyuDp7Z6vO7MA5hIA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743016565; bh=7fhthpKkW8YU9fLetdV1AgwyM47Dj4HH+YcikwJHCum=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=OlQmYdTOIBPLKEPDz/5i4rD3TnAeiLG3lZN31xp60AcjKs+1JRNexCY6czwecYooDHwS5fbeXyj/9TtBs0mAcfoFR071jOU6HbKsciupoAhRdfAEc7ZEkmHBDeR90CDo5qHHeYzsgPyd+ZcOwNqn+siR2Ao/ORFZ+FQ+JWFyjJkj66HPN1d01SqfnDsFr/+FkHoAvn7vXMmgMcWrdP03s8WpqsldwgiTT7WJbLM0UzivEcEDA1zisdWFmSRmZahLvCwPJ5xFmQhJFQRzwZ/0JswTE96AkeBBMEMw78vof5VANC2X3Gb3i2972/Dl7qWZ63svS6EYEsReucQFWd2rvg==
+X-YMail-OSG: zSdiKsMVM1meCqwPCYkaxoEZdJ1j3bCR8tMNBzg5dcDp986tr9wyczEtL.AMHlw
+ 9nIzipiO1j_U0tyYI3PfXXNyS86skhLXDmYEb_UsjbVCtHxNp4WBfmdZq2YAfgiA6BRiZQojH1UJ
+ iUNkw1gJc4Z3iZlTIANR.VcqRJIy7I5eVMLPZqsUIHXv5ZjWEwkzwEq0KmM2r.oXCipTO5lQBI4g
+ sFL7VBtlDBtWNwa0rzptr6nMir.Q4sglXKj339qruUS3zJwPFB4ZAQWy1Kx7a_KlnoVXnTv9seHn
+ Anr4aT1JTYcBQJyaLn22QVk2HTrd9puG5qzT.lctXfFfjUkfgFSlM_1Q1F3puEFv2os2YnCZFnYu
+ 89oI5mXRGVcLdnSxpm03aqN8EN3hug9j5O.sJjM5jlR.NiglJk5VeKc88HWuiNTakfhARg1uwbzb
+ MjQFQapPYu8WmFGqRM5xTA7HRl94ME5V4knBQHDGTltDYrTCurZUhvjtCAyswV4sWbryGgoStioH
+ JH2JiD71FxqfJWZuHIZa_xNmCa_dgQgE17GdLlw.epgGNtx.QsbTEON9WUZm8qy7cvbbEiPog3RX
+ 6FSTLMO1Ay.5t0uvBHqHv1UccgNeEGKZFMswKY5YawBvLYk9GlT6ozNYXpy04L4xMPl_qf8UfLuX
+ 6LRkoCZIPzCGqzxNXC6afXAkRZp1ApzZLLukX.iXe0AMJVi7Cf1qRBhYhq_BvMl26KOLvi9UnJo2
+ p6cfPYnMeXkTca5fKRPrXOYhYWF.tt3kKxQAfvcwbgnTzS16wrwYQtSJcbt5_zMEBXkQs_93M_ZT
+ kNGNfvT0AFnCTgn7ZrxtXSBbHcfpeWAT3XHe62zB4GzdwN1dvhOvL8HqpC97SnO4S8PjZ5vJum2Y
+ Jbwa1nqexR4NwWb6575hvhpIMii4854citEik.PnQxxyU4zNPCF67SIa4_dnvj8qqi9vPK4HLGMA
+ 1vAhWx6WM7PHe2j6Li8_BSKt5qx.PnzhUUf.Fz8Nm2XjHV53fEZBq.pAWl2_ErFPu.RrjHewvYlM
+ 3WYSstVns47.9LE6Q_yDq.bfAQYWbHqvBiLD9MQtdfRlQ98iSFXS4fBN4tQxVopkt706N5ZIEOFb
+ HrHgr0JOJp7NjPN6.NtsCbbRgRzIjpu.0P0Cz.YHre_p0VDsQniwEiAQeRjv0fsnzxW1e22QrG8C
+ qL0PjsN.8YmBaISIj5xCvqh1OK5gGyVB8xlvaFdbLhQs5QHALU4ppOGVDHwbVsJAd2SvxEbMbonB
+ MGGQ_L14jurJNSGd8ytzV9cHIIeCmw9d3Q6FmXTJjGa4pWvvEnAZqfvjiSXyEXGbEUQuBz0.VCIX
+ PVlt4CkBNIAWk701Dg6NdCw4K6w6lqGDr.sDswz.8AxgC2VetMIItyEzZal9rL0f4MMZSgged4eP
+ 2f9I_1okvdaMErP_17AV51mGI6TE_KvR4W17OEcM9kxr3E1SFrk.oQQH.S.jKW_XECvWvXm_HdcH
+ BtphufbPK73U8PvMaeYApChIjm3inyTfxv6hG4cMm9U2CIOQtoPfnPBbOY1idzmeVQ6EUlg1YHQ2
+ n0i3icuPy8ed1x7q5l99LuuYhC3FYHFLz8f1osg.I5Mnbxgax51l81_iqh2YS5b4KDPYu3P7neDP
+ lNNNk5MfhSNGIa65vwQmQlIaHQn6KX_79mFMcpCO2TVDrixymK3S92lw6BUu_HqNmntn3_r3ltih
+ .81Uf0LmXrv1j1NYt7AKgcmVbOtLqpcGdq7649XceLt39rax_l2iXJAmiYtGMW0qnT_BUNThXhOz
+ mUD.hr26EEWL1xG4tOinJwsz5jXYzOWxoSRIdNEAtRli5la2zs7pi6_Ycu.iWs1rMWyB.szN7Cqp
+ Jt50IzPKAdQwt4FPXo0v47zpzhy7VYUOlT5e3CYxUgVjorU2Eui09xFa7En6vmBVEdRRJziVjlG3
+ ETTN5TSCKien18MB6g._K4L0_lMVjI6FZfmjRwSaD8ePDPI.eMI0EZpQQROsrIkF0MCMewJ7maCp
+ uujdfdEIf7HhCRcVu7TaP7zRz_BcJQmSKjCHUmcMqI8eNFQ_xkV4duEYsqgBhY.egowe2.9T1xPG
+ mIN3ac7Yhi_0BAHIpSYxvmzoryCmnJaLzj6p2TVVj_Yhe_de2u2ACHKJzIGg3zIraLuCt2CLF_t1
+ iUXTPLGOUubdhkBzGff_Ezai.cr_cHbkCH2WpoGUqL8.YVmUi3CcC8HQXqtcIxCat.LsM3RAT9yl
+ Q7cqTtaigtQ4GwrFupTBfGN7xlot6mS6Mdw.bH0i_dLkyugttfWPWFHgWWDHFy5aT7tL5yPBp8Xv
+ qfzdHG5XLN5ncu9eJ
+X-Sonic-MF: <igor.korotin@yahoo.com>
+X-Sonic-ID: bad28dbd-b838-4313-9c73-b76b9da4c2dd
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Wed, 26 Mar 2025 19:16:05 +0000
+Received: by hermes--production-ir2-54ff696c44-s8xcj (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 708334a26c0cb005829019b77067cf3f;
+          Wed, 26 Mar 2025 18:23:30 +0000 (UTC)
+From: Igor Korotin <igor.korotin@yahoo.com>
+To: linux-kernel@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	Igor Korotin <igor.korotin@yahoo.com>,
+	y86-dev <y86-dev@protonmail.com>
+Subject: [PATCH] rust: macros: Fix macro referencing core and kernel crates
+Date: Wed, 26 Mar 2025 18:23:02 +0000
+Message-ID: <20250326182302.5650-1-igor.korotin@yahoo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250325-ptr-as-ptr-v7-0-87ab452147b9@gmail.com>
- <20250325-ptr-as-ptr-v7-7-87ab452147b9@gmail.com> <D8POWLFKWABG.37BVXN2QCL8MP@proton.me>
- <CAJ-ks9mUYw4FEJQfmDrHHt0oMy256jhp7qZ-CHp6R5c_sOCD4w@mail.gmail.com>
- <D8PPIYIJCNX8.13VPQULEI0ALN@proton.me> <CAJ-ks9k6220j6CQSOF4TDrgY9qq4PfV9uaMXz1Qk4m=eeSr5Ag@mail.gmail.com>
- <D8Q4MSXXZ7OI.1NC226MO02VSN@proton.me> <CAJ-ks9nHKpQPuSBypXTSATYhbAFkQTJzUq8jN0nu4t=Kw+0xxg@mail.gmail.com>
- <D8QCK3CQES3Y.3LTZ4MVO5B3KT@proton.me> <CAJ-ks9nKT2PUDm6=b4AB1QUWwwvcqPn7Vz60=c0B+uFMZrqPew@mail.gmail.com>
- <D8QDOBUM6NF0.CGJY7ZA5KD9S@proton.me>
-In-Reply-To: <D8QDOBUM6NF0.CGJY7ZA5KD9S@proton.me>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 26 Mar 2025 15:06:19 -0400
-X-Gm-Features: AQ5f1Jou-JUIkYYZHmN0n0DjKziFwOI3NizL41USvJvQpjSfAnBz0gZwusssOLs
-Message-ID: <CAJ-ks9ntTxBM=c5nUZWGv3MoRt-LveBchn-c1Xy-DGap7fLVRA@mail.gmail.com>
-Subject: Re: [PATCH v7 7/7] rust: enable `clippy::ref_as_ptr` lint
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	linux-pci@vger.kernel.org, linux-block@vger.kernel.org, 
-	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+References: <20250326182302.5650-1-igor.korotin.ref@yahoo.com>
 
-On Wed, Mar 26, 2025 at 1:36=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On Wed Mar 26, 2025 at 5:57 PM CET, Tamir Duberstein wrote:
-> >
-> >
-> > In the current code you're looking at, yes. But in the code I have
-> > locally I'm transmuting `[u8]` to `BStr`. See my earlier reply where I
-> > said "Hmm, looking at this again we can just transmute ref-to-ref and
-> > avoid pointers entirely. We're already doing that in
-> > `CStr::from_bytes_with_nul_unchecked`".
->
-> `CStr::from_bytes_with_nul_unchecked` does the transmute with
-> references. That is a usage that the docs of `transmute` explicitly
-> recommend to change to an `as` cast [1].
+To prevent issues where user-defined modules named `core` or `kernel`
+could be picked up instead of the standard ones, update macros to use
+absolute paths, `::core::...` and `::kernel::...`, for core and kernel
+references.
 
-RIght. That guidance was written in 2016
-(https://github.com/rust-lang/rust/pull/34609) and doesn't present any
-rationale for `as` casts being preferred to transmute. I posted a
-comment in the most relevant issue I could find:
-https://github.com/rust-lang/rust/issues/34249#issuecomment-2755316610.
+Suggested-by: y86-dev <y86-dev@protonmail.com>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1150
+Signed-off-by: Igor Korotin <igor.korotin@yahoo.com>
+---
+ rust/ffi.rs                  | 2 +-
+ rust/kernel/device.rs        | 2 +-
+ rust/kernel/device_id.rs     | 4 ++--
+ rust/kernel/kunit.rs         | 8 ++++----
+ rust/kernel/static_assert.rs | 4 ++--
+ rust/kernel/str.rs           | 4 ++--
+ rust/macros/lib.rs           | 6 +++---
+ scripts/rustdoc_test_gen.rs  | 8 ++++++--
+ 8 files changed, 21 insertions(+), 17 deletions(-)
 
-> No idea about provenance still.
+diff --git a/rust/ffi.rs b/rust/ffi.rs
+index 584f75b49862..d60aad792af4 100644
+--- a/rust/ffi.rs
++++ b/rust/ffi.rs
+@@ -17,7 +17,7 @@ macro_rules! alias {
+ 
+         // Check size compatibility with `core`.
+         const _: () = assert!(
+-            core::mem::size_of::<$name>() == core::mem::size_of::<core::ffi::$name>()
++            ::core::mem::size_of::<$name>() == ::core::mem::size_of::<::core::ffi::$name>()
+         );
+     )*}
+ }
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index db2d9658ba47..2b19a8597158 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -214,7 +214,7 @@ unsafe impl Sync for Device {}
+ macro_rules! dev_printk {
+     ($method:ident, $dev:expr, $($f:tt)*) => {
+         {
+-            ($dev).$method(core::format_args!($($f)*));
++            ($dev).$method(::core::format_args!($($f)*));
+         }
+     }
+ }
+diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
+index e5859217a579..0a4eb56d98f2 100644
+--- a/rust/kernel/device_id.rs
++++ b/rust/kernel/device_id.rs
+@@ -159,7 +159,7 @@ macro_rules! module_device_table {
+                     "_", line!(),
+                     "_", stringify!($table_name))
+         ]
+-        static $module_table_name: [core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
+-            unsafe { core::mem::transmute_copy($table_name.raw_ids()) };
++        static $module_table_name: [::core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
++            unsafe { ::core::mem::transmute_copy($table_name.raw_ids()) };
+     };
+ }
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 1604fb6a5b1b..81833a687b75 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -59,7 +59,7 @@ macro_rules! kunit_assert {
+             }
+ 
+             static FILE: &'static $crate::str::CStr = $crate::c_str!($file);
+-            static LINE: i32 = core::line!() as i32 - $diff;
++            static LINE: i32 = ::core::line!() as i32 - $diff;
+             static CONDITION: &'static $crate::str::CStr = $crate::c_str!(stringify!($condition));
+ 
+             // SAFETY: FFI call without safety requirements.
+@@ -130,11 +130,11 @@ unsafe impl Sync for UnaryAssert {}
+             unsafe {
+                 $crate::bindings::__kunit_do_failed_assertion(
+                     kunit_test,
+-                    core::ptr::addr_of!(LOCATION.0),
++                    ::core::ptr::addr_of!(LOCATION.0),
+                     $crate::bindings::kunit_assert_type_KUNIT_ASSERTION,
+-                    core::ptr::addr_of!(ASSERTION.0.assert),
++                    ::core::ptr::addr_of!(ASSERTION.0.assert),
+                     Some($crate::bindings::kunit_unary_assert_format),
+-                    core::ptr::null(),
++                    ::core::ptr::null(),
+                 );
+             }
+ 
+diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
+index 3115ee0ba8e9..f3f8c6eb7360 100644
+--- a/rust/kernel/static_assert.rs
++++ b/rust/kernel/static_assert.rs
+@@ -16,7 +16,7 @@
+ ///
+ /// ```
+ /// static_assert!(42 > 24);
+-/// static_assert!(core::mem::size_of::<u8>() == 1);
++/// static_assert!(::core::mem::size_of::<u8>() == 1);
+ ///
+ /// const X: &[u8] = b"bar";
+ /// static_assert!(X[1] == b'a');
+@@ -29,6 +29,6 @@
+ #[macro_export]
+ macro_rules! static_assert {
+     ($condition:expr) => {
+-        const _: () = core::assert!($condition);
++        const _: () = ::core::assert!($condition);
+     };
+ }
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index 878111cb77bc..aed7b2617c32 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -595,7 +595,7 @@ fn deref(&self) -> &str {
+ 
+     macro_rules! format {
+         ($($f:tt)*) => ({
+-            &*String::from_fmt(kernel::fmt!($($f)*))
++            &*String::from_fmt(::kernel::fmt!($($f)*))
+         })
+     }
+ 
+@@ -944,5 +944,5 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+ /// A convenience alias for [`core::format_args`].
+ #[macro_export]
+ macro_rules! fmt {
+-    ($($f:tt)*) => ( core::format_args!($($f)*) )
++    ($($f:tt)*) => ( ::core::format_args!($($f)*) )
+ }
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 9acaa68c974e..cb429eceff71 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -283,7 +283,7 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
+ /// # const binder_driver_return_protocol_BR_FAILED_REPLY: u32 = 14;
+ /// macro_rules! pub_no_prefix {
+ ///     ($prefix:ident, $($newname:ident),+) => {
+-///         kernel::macros::paste! {
++///         ::kernel::macros::paste! {
+ ///             $(pub(crate) const $newname: u32 = [<$prefix $newname>];)+
+ ///         }
+ ///     };
+@@ -340,7 +340,7 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
+ /// # const binder_driver_return_protocol_BR_FAILED_REPLY: u32 = 14;
+ /// macro_rules! pub_no_prefix {
+ ///     ($prefix:ident, $($newname:ident),+) => {
+-///         kernel::macros::paste! {
++///         ::kernel::macros::paste! {
+ ///             $(pub(crate) const fn [<$newname:lower:span>]() -> u32 { [<$prefix $newname:span>] })+
+ ///         }
+ ///     };
+@@ -375,7 +375,7 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
+ /// ```
+ /// macro_rules! create_numbered_fn {
+ ///     ($name:literal, $val:literal) => {
+-///         kernel::macros::paste! {
++///         ::kernel::macros::paste! {
+ ///             fn [<some_ $name _fn $val>]() -> u32 { $val }
+ ///         }
+ ///     };
+diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
+index 036635fb1621..981b9a3d57b4 100644
+--- a/scripts/rustdoc_test_gen.rs
++++ b/scripts/rustdoc_test_gen.rs
+@@ -172,7 +172,9 @@ pub extern "C" fn {kunit_name}(__kunit_test: *mut kernel::bindings::kunit) {{
+     #[allow(unused)]
+     macro_rules! assert {{
+         ($cond:expr $(,)?) => {{{{
+-            kernel::kunit_assert!("{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $cond);
++            ::kernel::kunit_assert!(
++                "{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $cond
++            );
+         }}}}
+     }}
+ 
+@@ -180,7 +182,9 @@ macro_rules! assert {{
+     #[allow(unused)]
+     macro_rules! assert_eq {{
+         ($left:expr, $right:expr $(,)?) => {{{{
+-            kernel::kunit_assert_eq!("{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $left, $right);
++            ::kernel::kunit_assert_eq!(
++                "{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $left, $right
++            );
+         }}}}
+     }}
+ 
+-- 
+2.43.0
 
-Well that's not surprising, nobody was thinking about provenance in
-2016. But I really don't think we should blindly follow the advice in
-this case. It doesn't make an iota of sense to me - does it make sense
-to you?
-
->
-> [1]: https://doc.rust-lang.org/std/mem/fn.transmute.html#alternatives
->
-> >> I tried to find some existing issues about the topic and found that
-> >> there exists a clippy lint `transmute_ptr_to_ptr`. There is an issue
-> >> asking for a better justification [1] and it seems like nobody provide=
-d
-> >> one there. Maybe we should ask the opsem team what happens to provenan=
-ce
-> >> when transmuting?
-> >
-> > Yeah, we should do this - but again: not relevant in this discussion.
->
-> I think it's pretty relevant.
-
-It's not relevant because we're no longer talking about transmuting
-pointer to pointer. The two options are:
-1. transmute reference to reference.
-2. coerce reference to pointer, `as` cast pointer to pointer (triggers
-`ptr_as_ptr`), reborrow pointer to reference.
-
-If anyone can help me understand why (2) is better than (1), I'd
-certainly appreciate it.
