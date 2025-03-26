@@ -1,92 +1,133 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928F41B424A;
-	Wed, 26 Mar 2025 10:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232DE1C84C9
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Mar 2025 10:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742985567; cv=none; b=QFQOYESphpRfrYokrKyqf5m7+3Ghy5Eaj+1JgG3ar0xKUH/JokyY/irJszVnqIE1N2LZLWppkidlXh1ya9jE92dQnK3JCX7/qOeFXvsO7gmaG6Y+kyEZjAKkXMaIB4vuY684gGUj6JtSE4olw6E4xGLtgeeTNS2GjhcoMEix1XQ=
+	t=1742986022; cv=none; b=UaQukOT8FJmoCrLEcEaz3js81YcoDrJ+u0EzbmCfpJnFJ9wkwwUo1WB8lxXiN582XSftPVl/00T4ciUKyXKwoXWm6aB2wsN3vRf2tsNYYDZeYpOIyMwj8iyve3haJZ/3NN4iHmN3KgirvG11QxRVV/f4O9/akw0gfR/s6XpUPo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742985567; c=relaxed/simple;
-	bh=jzGCBkutBgzfiA+VlgU2fbb9z16gst/HAke89+6OrwA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BuBj82+cE0qcOuvL+zgznFqWPYuPisJ85ljlJJ6sZyV+yZsydeJI8BCZTHJlIFRQ//OdDYKPWilE9SjBuPkTlNQQMWgGGBZTVTXDNO/Q8MUQInN4kv5LNGmGcefaXxgeVxuRWcIZGJtaSS/8aPXTSIw0cGagSalA3wxIUb9AGb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J5BQnGxL; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1742986022; c=relaxed/simple;
+	bh=L4j3g8wiZqG0wfHlUP7eCw+iP9FoHwcb5XdoYR3/sK8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=unHOzgeITAaFr1GF4cZMelwnwmulbG1SN8jQStxBB2msZHHYEmbnujVT3x1uUvmqS0Cbn+GFxyFR3nRSn8fQeJL5hfZxnNBJXt0h4d5mxJyIXR+akkdrdrhUcPxz3PT1fjZDG5bKmWPzMfCutckSmrlWfk3jQ9M/omHAIV8YQtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EuSWk+Lg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J5BQnGxL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742985566; x=1774521566;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=jzGCBkutBgzfiA+VlgU2fbb9z16gst/HAke89+6OrwA=;
-  b=J5BQnGxLvpZXYXzxcSin+RHftXe9JR8PqMa4cUduh3FGdV1Bo6XeWJQB
-   au1XkPJLrYPLtz7QKUorNKM1u4fjtEo8n6cVa0unKGGwuvvo3DcEkwnnY
-   BDLp5Gc2c3eIrwAYQzWyKvTcBde6kVO8oboyPlI19Ro55XzlZHWMZXB8a
-   KXIOgIZUTgu1R/J+dIO8U7YJ4N/5uHG5T0EOScVNc8f9gAUwW+vutQ9VO
-   pdDQn8Rnc0RP87pv7Rsl2sDLHqE7+itPUmfLt5PDex57toRdC/ZMCvt9c
-   8t8ETrPU9jLHZaJPftrQVhWIrHV9VeiVw85Eqt7aL1qQEaQ4Y5s6FgM5Y
-   A==;
-X-CSE-ConnectionGUID: g9ny3ka3SNm450JQR0ZL2A==
-X-CSE-MsgGUID: +Hn+qYKwQoyj9NszBVoYeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11384"; a="44144992"
-X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; 
-   d="scan'208";a="44144992"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 03:39:24 -0700
-X-CSE-ConnectionGUID: 8tQtKnKxS7yJ/BafNRrroA==
-X-CSE-MsgGUID: R2XbqdYXSyS3ofmm/GBCqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,277,1736841600"; 
-   d="scan'208";a="124896092"
-Received: from carterle-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.210])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 03:39:18 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Lyude Paul <lyude@redhat.com>, Maxime Ripard <mripard@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, "open
- list:RUST:Keyword:b(?i:rust)b" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 1/2] drm/edid: Use unsigned int in drm_add_modes_noedid()
-In-Reply-To: <20250325212823.669459-2-lyude@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250325212823.669459-1-lyude@redhat.com>
- <20250325212823.669459-2-lyude@redhat.com>
-Date: Wed, 26 Mar 2025 12:39:15 +0200
-Message-ID: <87wmcc6ppo.fsf@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EuSWk+Lg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE926C4CEE2;
+	Wed, 26 Mar 2025 10:46:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742986021;
+	bh=L4j3g8wiZqG0wfHlUP7eCw+iP9FoHwcb5XdoYR3/sK8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EuSWk+LgRI4Q0fjQh1ZNgYzXT3waiXc6XY+XSufexb7hlQJqfTDP3q6gUBBwCsxfS
+	 Ucb1b/rwdmsAea9ECcp3p/XY3XhBRlE9xfvTT3mkt26ISr10z/BaWUXoWtSBHlfpbk
+	 gR7M8DKq3b7RQaE3DizEX/xIiG4iu7/t/6EuMVCjJfPga46Om6bpXkDMksy3mtZmfu
+	 ACU0zj1ps3CbJO8HEwX+WMje1mTsS8aClqwgyQdWXcBYmUxfW2LlWM9ZYjkkCZzbRd
+	 pDossO/QIZoz5WsW4xOsqcliLAwjrQHW63XqIxxKE4FiQ2B0MCxrHTxxAdC+pyMDht
+	 rics4MWxsf58w==
+Date: Wed, 26 Mar 2025 11:46:54 +0100
+From: Danilo Krummrich <dakr@kernel.org>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	tzimmermann@suse.de, lyude@redhat.com, acurrid@nvidia.com,
+	lina@asahilina.net, daniel.almeida@collabora.com, j@jannau.net,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 5/8] rust: drm: add DRM driver registration
+Message-ID: <Z-PbHiaMNqR0FPbY@pollux>
+References: <20250325235522.3992-1-dakr@kernel.org>
+ <20250325235522.3992-6-dakr@kernel.org>
+ <20250326-loyal-scrupulous-leech-59d44a@houat>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250326-loyal-scrupulous-leech-59d44a@houat>
 
-On Tue, 25 Mar 2025, Lyude Paul <lyude@redhat.com> wrote:
-> A negative resolution doesn't really make any sense, no one goes into a TV
-> store and says "Hello sir, I would like a negative 4K TV please", that
-> would make everyone look at you funny.
+On Wed, Mar 26, 2025 at 10:24:43AM +0100, Maxime Ripard wrote:
+> Hi,
+> 
+> On Wed, Mar 26, 2025 at 12:54:32AM +0100, Danilo Krummrich wrote:
+> > Implement the DRM driver `Registration`.
+> > 
+> > The `Registration` structure is responsible to register and unregister a
+> > DRM driver. It makes use of the `Devres` container in order to allow the
+> > `Registration` to be owned by devres, such that it is automatically
+> > dropped (and the DRM driver unregistered) once the parent device is
+> > unbound.
+> 
+> The code looks correct, but the wording is confusing to me.
+> drm_dev_unregister does indeed unregister the device, but it's not freed
+> until the last reference is dropped, so it's not really "dropped once
+> the parent device is unbound", the reference is, and it's not active
+> anymore.
 
-That is largely the point, though. You know something fishy is going on
-when you have a negative resolution. Nobody blinks an eye when you ask
-for 4294963K telly, but it's still just as bonkers as that negative 4K.
+The above wording is related to the Registration structure itself, i.e. the
+Registration is dropped, but not the the DRM device itself. However, if the
+Registration had the last reference to the DRM device, then of course it's
+freed.
 
-I think the change at hand is fine, but please let's not pretend using
-unsigned somehow protects us from negative numbers.
+> > +impl<T: Driver> Drop for Registration<T> {
+> > +    /// Removes the registration from the kernel if it has completed successfully before.
+> > +    fn drop(&mut self) {
+> > +        // SAFETY: Safe by the invariant of `ARef<drm::Device<T>>`. The existence of this
+> > +        // `Registration` also guarantees the this `drm::Device` is actually registered.
+> > +        unsafe { bindings::drm_dev_unregister(self.0.as_raw()) };
+> > +    }
+> > +}
+> 
+> drm_dev_unregister also have an hotplug-aware variant in
+> drm_dev_unplug(). However, most devices are hotpluggable, even if only
+> through sysfs. So drm_dev_unplug() is generally a better option. Should
+> we use it here, and / or should we provide multiple options still?
+> 
+> Another thing worth mentioning I think is that drm_dev_unplug() works by
+> setting a flag, and drivers are expected to check that their access to
+> device-bound resources (so registers mapping, clocks, regulators, etc.)
+> are still there through drm_dev_enter/drm_dev_exit. It's pretty fragile
+> overall, so I wonder if it's something we could abstract away in Rust.
 
+DRM should not have to take care of the lifetime of device resources of the
+parent device. This is the responsibility of the driver core abstractions.
 
-BR,
-Jani.
+At least for the device resources we directly give out to drivers, it has to be,
+since otherwise it would mean that the driver core abstraction is unsound.
+Drivers could otherwise extend the lifetime of device resources arbitrarily.
 
+For instance, I/O memory is only ever given out by bus abstractions embedded in
+a Devres container (e.g. Devres<pci::Bar>). Once the parent device is unbound
+the pci::Bar within the Devres container won't be accessible any more and will
+be dropped internally. So, that's nothing DRM has to take care of.
 
--- 
-Jani Nikula, Intel
+However, there are cases where it's better to let subsystem abstractions manage
+the lifetime of device resources, (e.g. DMA mappings). The relevant thing is,
+that we never hand out device resources to a driver in a way that the driver can
+extend their lifetime arbitrarily.
+
+There are also other mechanisms that I plan to encode in the type system of
+(bus) devices. With [1] I implemented a generic for (bus specific) devices to
+indicate their context (e.g. to indicate whether this reference comes from a bus
+callback, in which case we'd be allowed to call some methods without
+(additional) synchronization). I want to use this to also let abstractions
+indicate whether the device is guaranteed to be bound through the entire
+duration of subsequent calls to drivers.
+
+So, there are basically three ways to deal with this:
+
+  1. Use type system encodings where possible, since it can be validated at
+     compile time and is zero cost on runtime.
+  2. Let specific subsystem abstractions take care of device resource lifetimes.
+  3. Wrap device resources directly managed by drivers in a Devres container.
+
+Also note that for Devres, I'm working on patches that will ensure that there is
+only one single synchronize_rcu() per device / driver binding, rather than for
+every Devres container instance.
+
+[1] https://lore.kernel.org/lkml/20250314160932.100165-1-dakr@kernel.org/
