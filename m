@@ -1,262 +1,180 @@
-Received: from sonic309-48.consmr.mail.ne1.yahoo.com (sonic309-48.consmr.mail.ne1.yahoo.com [66.163.184.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD31B13C9A3
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Mar 2025 19:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743016568; cv=none; b=RRMVyLDnPXdfKfoc2HnZAf/jTjPGtk7uSvvDSkmmucn1YXmKFNFy7VnodZ1c8zNdiVA60apksYwOuORj37DD62uwmBAzDGa1doYe+UOnOfxjRNhn4KXofb5+sBEZ54y5sX61BSChZnDpEsg7N2w3SxkVIXY+8hIY6diIuIYT45g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743016568; c=relaxed/simple;
-	bh=PC1X3HEsEgH48fE/eyOZ1oJ29z21EtAGAhy1RT20v6Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=AqA48fue31hQaYz3HpOSwp0/BW/ljiKwBFyN6r1z+EwyESoMu7ls1pVK0SpXVQ7Q2pDtFcLh/tfWY3+4reDPM9oIHkV0mhbqGrrSec6lGlivjXGQZfyokyO6BWwBrb2TvxDPhcePyHlh6K/X5XLGEe79bQALRi301tm2nrTKIkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=jFGwaLmh; arc=none smtp.client-ip=66.163.184.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA3C9475;
+	Wed, 26 Mar 2025 19:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743018619; cv=pass; b=D8Fh0V/dcey/JaZbMcB89X3YznmKRAD+7IvrJa8xOhKzeHiT6/UCQPB3Q9DMfvZnDZldqq6ZJuj0OjFaPsrGiJxUFWN4rsk+a9SGATKt2n1M7IqGstOg9T2xSzU755nkl05j7d8F6YSFnTPlYgFG7ZE/lT8d51C13OLr8Nt/zSk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743018619; c=relaxed/simple;
+	bh=DZjH0rnZ9KQepcFyfGU052IuDKdqdy6SNdZ7KN0z9F0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=CXBiYuWpOFyI6Prazio+/s13zs3Mnovrx+qr/LjTbKj8xDK0BIVovMU+QiG+8PujulHm4HHChXs3451qFdAQ1ZIh9o3XW9cQxYFDh2F9Kd7wqS+/+r4xKGWCssreip9/y8eK0+Ocanti4nORuioxm1BnLWpxAu4jMJfKR1kln9U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=jH439jNm; arc=pass smtp.client-ip=136.143.184.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="jFGwaLmh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743016565; bh=P5BPCMQPyvXf+kCrxNahBE6rC2TPx4so0PvFtA5+q4A=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=jFGwaLmhfcMmLPyGO0qeFmOtSGvTO4JFCiINQh9ScmV2fkAlAkK/RxHicoD9AOj36q6fDjPr4RW/bS9nVqf5On8K78EFgu8vkD/HvQMnLQVP6Fo00RDXW0LdjQBPXZfR30qQKZ7a1wTzh6gGumK5fHm+vAAvxPP3b0u7wgO/jmPYcoGaaWdIPnmWcHEsomvEWrwPUq1NjREyypiOhgfUYpIqWIjeEXJOdwdH7OL70PJAsrMnljZeGfhb6VBgMt8heZ09atlITvUgPMZ+DNSLNonXf7etmhJlm6KxlENMFcfJ54ct3N8vYgUKgh/J8+31u/jB/VyuDp7Z6vO7MA5hIA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743016565; bh=7fhthpKkW8YU9fLetdV1AgwyM47Dj4HH+YcikwJHCum=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=OlQmYdTOIBPLKEPDz/5i4rD3TnAeiLG3lZN31xp60AcjKs+1JRNexCY6czwecYooDHwS5fbeXyj/9TtBs0mAcfoFR071jOU6HbKsciupoAhRdfAEc7ZEkmHBDeR90CDo5qHHeYzsgPyd+ZcOwNqn+siR2Ao/ORFZ+FQ+JWFyjJkj66HPN1d01SqfnDsFr/+FkHoAvn7vXMmgMcWrdP03s8WpqsldwgiTT7WJbLM0UzivEcEDA1zisdWFmSRmZahLvCwPJ5xFmQhJFQRzwZ/0JswTE96AkeBBMEMw78vof5VANC2X3Gb3i2972/Dl7qWZ63svS6EYEsReucQFWd2rvg==
-X-YMail-OSG: zSdiKsMVM1meCqwPCYkaxoEZdJ1j3bCR8tMNBzg5dcDp986tr9wyczEtL.AMHlw
- 9nIzipiO1j_U0tyYI3PfXXNyS86skhLXDmYEb_UsjbVCtHxNp4WBfmdZq2YAfgiA6BRiZQojH1UJ
- iUNkw1gJc4Z3iZlTIANR.VcqRJIy7I5eVMLPZqsUIHXv5ZjWEwkzwEq0KmM2r.oXCipTO5lQBI4g
- sFL7VBtlDBtWNwa0rzptr6nMir.Q4sglXKj339qruUS3zJwPFB4ZAQWy1Kx7a_KlnoVXnTv9seHn
- Anr4aT1JTYcBQJyaLn22QVk2HTrd9puG5qzT.lctXfFfjUkfgFSlM_1Q1F3puEFv2os2YnCZFnYu
- 89oI5mXRGVcLdnSxpm03aqN8EN3hug9j5O.sJjM5jlR.NiglJk5VeKc88HWuiNTakfhARg1uwbzb
- MjQFQapPYu8WmFGqRM5xTA7HRl94ME5V4knBQHDGTltDYrTCurZUhvjtCAyswV4sWbryGgoStioH
- JH2JiD71FxqfJWZuHIZa_xNmCa_dgQgE17GdLlw.epgGNtx.QsbTEON9WUZm8qy7cvbbEiPog3RX
- 6FSTLMO1Ay.5t0uvBHqHv1UccgNeEGKZFMswKY5YawBvLYk9GlT6ozNYXpy04L4xMPl_qf8UfLuX
- 6LRkoCZIPzCGqzxNXC6afXAkRZp1ApzZLLukX.iXe0AMJVi7Cf1qRBhYhq_BvMl26KOLvi9UnJo2
- p6cfPYnMeXkTca5fKRPrXOYhYWF.tt3kKxQAfvcwbgnTzS16wrwYQtSJcbt5_zMEBXkQs_93M_ZT
- kNGNfvT0AFnCTgn7ZrxtXSBbHcfpeWAT3XHe62zB4GzdwN1dvhOvL8HqpC97SnO4S8PjZ5vJum2Y
- Jbwa1nqexR4NwWb6575hvhpIMii4854citEik.PnQxxyU4zNPCF67SIa4_dnvj8qqi9vPK4HLGMA
- 1vAhWx6WM7PHe2j6Li8_BSKt5qx.PnzhUUf.Fz8Nm2XjHV53fEZBq.pAWl2_ErFPu.RrjHewvYlM
- 3WYSstVns47.9LE6Q_yDq.bfAQYWbHqvBiLD9MQtdfRlQ98iSFXS4fBN4tQxVopkt706N5ZIEOFb
- HrHgr0JOJp7NjPN6.NtsCbbRgRzIjpu.0P0Cz.YHre_p0VDsQniwEiAQeRjv0fsnzxW1e22QrG8C
- qL0PjsN.8YmBaISIj5xCvqh1OK5gGyVB8xlvaFdbLhQs5QHALU4ppOGVDHwbVsJAd2SvxEbMbonB
- MGGQ_L14jurJNSGd8ytzV9cHIIeCmw9d3Q6FmXTJjGa4pWvvEnAZqfvjiSXyEXGbEUQuBz0.VCIX
- PVlt4CkBNIAWk701Dg6NdCw4K6w6lqGDr.sDswz.8AxgC2VetMIItyEzZal9rL0f4MMZSgged4eP
- 2f9I_1okvdaMErP_17AV51mGI6TE_KvR4W17OEcM9kxr3E1SFrk.oQQH.S.jKW_XECvWvXm_HdcH
- BtphufbPK73U8PvMaeYApChIjm3inyTfxv6hG4cMm9U2CIOQtoPfnPBbOY1idzmeVQ6EUlg1YHQ2
- n0i3icuPy8ed1x7q5l99LuuYhC3FYHFLz8f1osg.I5Mnbxgax51l81_iqh2YS5b4KDPYu3P7neDP
- lNNNk5MfhSNGIa65vwQmQlIaHQn6KX_79mFMcpCO2TVDrixymK3S92lw6BUu_HqNmntn3_r3ltih
- .81Uf0LmXrv1j1NYt7AKgcmVbOtLqpcGdq7649XceLt39rax_l2iXJAmiYtGMW0qnT_BUNThXhOz
- mUD.hr26EEWL1xG4tOinJwsz5jXYzOWxoSRIdNEAtRli5la2zs7pi6_Ycu.iWs1rMWyB.szN7Cqp
- Jt50IzPKAdQwt4FPXo0v47zpzhy7VYUOlT5e3CYxUgVjorU2Eui09xFa7En6vmBVEdRRJziVjlG3
- ETTN5TSCKien18MB6g._K4L0_lMVjI6FZfmjRwSaD8ePDPI.eMI0EZpQQROsrIkF0MCMewJ7maCp
- uujdfdEIf7HhCRcVu7TaP7zRz_BcJQmSKjCHUmcMqI8eNFQ_xkV4duEYsqgBhY.egowe2.9T1xPG
- mIN3ac7Yhi_0BAHIpSYxvmzoryCmnJaLzj6p2TVVj_Yhe_de2u2ACHKJzIGg3zIraLuCt2CLF_t1
- iUXTPLGOUubdhkBzGff_Ezai.cr_cHbkCH2WpoGUqL8.YVmUi3CcC8HQXqtcIxCat.LsM3RAT9yl
- Q7cqTtaigtQ4GwrFupTBfGN7xlot6mS6Mdw.bH0i_dLkyugttfWPWFHgWWDHFy5aT7tL5yPBp8Xv
- qfzdHG5XLN5ncu9eJ
-X-Sonic-MF: <igor.korotin@yahoo.com>
-X-Sonic-ID: bad28dbd-b838-4313-9c73-b76b9da4c2dd
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Wed, 26 Mar 2025 19:16:05 +0000
-Received: by hermes--production-ir2-54ff696c44-s8xcj (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 708334a26c0cb005829019b77067cf3f;
-          Wed, 26 Mar 2025 18:23:30 +0000 (UTC)
-From: Igor Korotin <igor.korotin@yahoo.com>
-To: linux-kernel@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	Igor Korotin <igor.korotin@yahoo.com>,
-	y86-dev <y86-dev@protonmail.com>
-Subject: [PATCH] rust: macros: Fix macro referencing core and kernel crates
-Date: Wed, 26 Mar 2025 18:23:02 +0000
-Message-ID: <20250326182302.5650-1-igor.korotin@yahoo.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="jH439jNm"
+ARC-Seal: i=1; a=rsa-sha256; t=1743018585; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Q9spLhNCKxguD9VttGffJojcVwi/6S2c1tLW4rS4hlQQ6JLJZF+KzpcuQbnt9vBH+PUaZZyI/+xTiYJVIGYOdxapRB2KuHNclyjAW5GlB3fTzQysgCXlYh6OJVZhCwyHUYQq82AebfmZBqlyRypNz8PHsqABmSM0/Tsc7rS9/uc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1743018585; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=mxJOGuLS0MjjMJI0F/iG7CmGwB7XgMzMDMhBqNuWWHY=; 
+	b=ebK1H+KW5iGv+nB44vvqvM2HJj+HSAC2lxdZd9cIysrn/nNmAV5sWGO2x2ae+VOpovGO2QF/k140hlKtz843nd8MiO9QDIk9vxsygfGOVgSFblGoq4ZFn8FoVmTkQA4tjdU5HxeKRD9+Bu1lTaBZKNkZiznOH3Uq0nW0tnAgPNU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743018585;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=mxJOGuLS0MjjMJI0F/iG7CmGwB7XgMzMDMhBqNuWWHY=;
+	b=jH439jNmyoxLuHKBfkyTQR1X/T40vJO/bA1pakU8y9vk8a1osBiAAHGFhMEznXiD
+	oLlI6W51dGcjdmUG0NNZcgahcOspKL7usBZJY551k/Px9bw7KSakfDdlfMRSi1ZjJ6m
+	g01tTS3wrHFZARoGzCnXrj8/wemkGN0ib68TQwFg=
+Received: by mx.zohomail.com with SMTPS id 1743018582753218.35820885183966;
+	Wed, 26 Mar 2025 12:49:42 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-References: <20250326182302.5650-1-igor.korotin.ref@yahoo.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
+Subject: Re: [PATCH RESEND v2] rust: regulator: add a bare minimum regulator
+ abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <a98eb789-4c49-4607-ad15-76e260888d64@sirena.org.uk>
+Date: Wed, 26 Mar 2025 16:49:26 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ lgirdwood@gmail.com,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0698A75E-D43C-4D02-B734-BFE1B3CC5D34@collabora.com>
+References: <20250326-topics-tyr-regulator-v2-1-780b0362f70d@collabora.com>
+ <a98eb789-4c49-4607-ad15-76e260888d64@sirena.org.uk>
+To: Mark Brown <broonie@kernel.org>
+X-Mailer: Apple Mail (2.3826.400.131.1.6)
+X-ZohoMailClient: External
 
-To prevent issues where user-defined modules named `core` or `kernel`
-could be picked up instead of the standard ones, update macros to use
-absolute paths, `::core::...` and `::kernel::...`, for core and kernel
-references.
 
-Suggested-by: y86-dev <y86-dev@protonmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1150
-Signed-off-by: Igor Korotin <igor.korotin@yahoo.com>
----
- rust/ffi.rs                  | 2 +-
- rust/kernel/device.rs        | 2 +-
- rust/kernel/device_id.rs     | 4 ++--
- rust/kernel/kunit.rs         | 8 ++++----
- rust/kernel/static_assert.rs | 4 ++--
- rust/kernel/str.rs           | 4 ++--
- rust/macros/lib.rs           | 6 +++---
- scripts/rustdoc_test_gen.rs  | 8 ++++++--
- 8 files changed, 21 insertions(+), 17 deletions(-)
 
-diff --git a/rust/ffi.rs b/rust/ffi.rs
-index 584f75b49862..d60aad792af4 100644
---- a/rust/ffi.rs
-+++ b/rust/ffi.rs
-@@ -17,7 +17,7 @@ macro_rules! alias {
- 
-         // Check size compatibility with `core`.
-         const _: () = assert!(
--            core::mem::size_of::<$name>() == core::mem::size_of::<core::ffi::$name>()
-+            ::core::mem::size_of::<$name>() == ::core::mem::size_of::<::core::ffi::$name>()
-         );
-     )*}
- }
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index db2d9658ba47..2b19a8597158 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -214,7 +214,7 @@ unsafe impl Sync for Device {}
- macro_rules! dev_printk {
-     ($method:ident, $dev:expr, $($f:tt)*) => {
-         {
--            ($dev).$method(core::format_args!($($f)*));
-+            ($dev).$method(::core::format_args!($($f)*));
-         }
-     }
- }
-diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
-index e5859217a579..0a4eb56d98f2 100644
---- a/rust/kernel/device_id.rs
-+++ b/rust/kernel/device_id.rs
-@@ -159,7 +159,7 @@ macro_rules! module_device_table {
-                     "_", line!(),
-                     "_", stringify!($table_name))
-         ]
--        static $module_table_name: [core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
--            unsafe { core::mem::transmute_copy($table_name.raw_ids()) };
-+        static $module_table_name: [::core::mem::MaybeUninit<u8>; $table_name.raw_ids().size()] =
-+            unsafe { ::core::mem::transmute_copy($table_name.raw_ids()) };
-     };
- }
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 1604fb6a5b1b..81833a687b75 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -59,7 +59,7 @@ macro_rules! kunit_assert {
-             }
- 
-             static FILE: &'static $crate::str::CStr = $crate::c_str!($file);
--            static LINE: i32 = core::line!() as i32 - $diff;
-+            static LINE: i32 = ::core::line!() as i32 - $diff;
-             static CONDITION: &'static $crate::str::CStr = $crate::c_str!(stringify!($condition));
- 
-             // SAFETY: FFI call without safety requirements.
-@@ -130,11 +130,11 @@ unsafe impl Sync for UnaryAssert {}
-             unsafe {
-                 $crate::bindings::__kunit_do_failed_assertion(
-                     kunit_test,
--                    core::ptr::addr_of!(LOCATION.0),
-+                    ::core::ptr::addr_of!(LOCATION.0),
-                     $crate::bindings::kunit_assert_type_KUNIT_ASSERTION,
--                    core::ptr::addr_of!(ASSERTION.0.assert),
-+                    ::core::ptr::addr_of!(ASSERTION.0.assert),
-                     Some($crate::bindings::kunit_unary_assert_format),
--                    core::ptr::null(),
-+                    ::core::ptr::null(),
-                 );
-             }
- 
-diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
-index 3115ee0ba8e9..f3f8c6eb7360 100644
---- a/rust/kernel/static_assert.rs
-+++ b/rust/kernel/static_assert.rs
-@@ -16,7 +16,7 @@
- ///
- /// ```
- /// static_assert!(42 > 24);
--/// static_assert!(core::mem::size_of::<u8>() == 1);
-+/// static_assert!(::core::mem::size_of::<u8>() == 1);
- ///
- /// const X: &[u8] = b"bar";
- /// static_assert!(X[1] == b'a');
-@@ -29,6 +29,6 @@
- #[macro_export]
- macro_rules! static_assert {
-     ($condition:expr) => {
--        const _: () = core::assert!($condition);
-+        const _: () = ::core::assert!($condition);
-     };
- }
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 878111cb77bc..aed7b2617c32 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -595,7 +595,7 @@ fn deref(&self) -> &str {
- 
-     macro_rules! format {
-         ($($f:tt)*) => ({
--            &*String::from_fmt(kernel::fmt!($($f)*))
-+            &*String::from_fmt(::kernel::fmt!($($f)*))
-         })
-     }
- 
-@@ -944,5 +944,5 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- /// A convenience alias for [`core::format_args`].
- #[macro_export]
- macro_rules! fmt {
--    ($($f:tt)*) => ( core::format_args!($($f)*) )
-+    ($($f:tt)*) => ( ::core::format_args!($($f)*) )
- }
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 9acaa68c974e..cb429eceff71 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -283,7 +283,7 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
- /// # const binder_driver_return_protocol_BR_FAILED_REPLY: u32 = 14;
- /// macro_rules! pub_no_prefix {
- ///     ($prefix:ident, $($newname:ident),+) => {
--///         kernel::macros::paste! {
-+///         ::kernel::macros::paste! {
- ///             $(pub(crate) const $newname: u32 = [<$prefix $newname>];)+
- ///         }
- ///     };
-@@ -340,7 +340,7 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
- /// # const binder_driver_return_protocol_BR_FAILED_REPLY: u32 = 14;
- /// macro_rules! pub_no_prefix {
- ///     ($prefix:ident, $($newname:ident),+) => {
--///         kernel::macros::paste! {
-+///         ::kernel::macros::paste! {
- ///             $(pub(crate) const fn [<$newname:lower:span>]() -> u32 { [<$prefix $newname:span>] })+
- ///         }
- ///     };
-@@ -375,7 +375,7 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
- /// ```
- /// macro_rules! create_numbered_fn {
- ///     ($name:literal, $val:literal) => {
--///         kernel::macros::paste! {
-+///         ::kernel::macros::paste! {
- ///             fn [<some_ $name _fn $val>]() -> u32 { $val }
- ///         }
- ///     };
-diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
-index 036635fb1621..981b9a3d57b4 100644
---- a/scripts/rustdoc_test_gen.rs
-+++ b/scripts/rustdoc_test_gen.rs
-@@ -172,7 +172,9 @@ pub extern "C" fn {kunit_name}(__kunit_test: *mut kernel::bindings::kunit) {{
-     #[allow(unused)]
-     macro_rules! assert {{
-         ($cond:expr $(,)?) => {{{{
--            kernel::kunit_assert!("{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $cond);
-+            ::kernel::kunit_assert!(
-+                "{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $cond
-+            );
-         }}}}
-     }}
- 
-@@ -180,7 +182,9 @@ macro_rules! assert {{
-     #[allow(unused)]
-     macro_rules! assert_eq {{
-         ($left:expr, $right:expr $(,)?) => {{{{
--            kernel::kunit_assert_eq!("{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $left, $right);
-+            ::kernel::kunit_assert_eq!(
-+                "{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $left, $right
-+            );
-         }}}}
-     }}
- 
--- 
-2.43.0
+> On 26 Mar 2025, at 15:56, Mark Brown <broonie@kernel.org> wrote:
+>=20
+> On Wed, Mar 26, 2025 at 03:39:33PM -0300, Daniel Almeida wrote:
+>=20
+> This is flagged as a resend but appears to be the first copy I've
+> seen...
+
+Hi Mark, you were not on cc earlier this morning, which is why this is =
+being
+resent. I left a comment about this, but apparently b4 did not pick it =
+up.
+
+>> Add a bare minimum regulator abstraction to be used by Rust drivers.
+>> This abstraction adds a small subset of the regulator API, which is
+>> thought to be sufficient for the drivers we have now.
+>=20
+>> +//! Regulators are modeled with two types: [`Regulator`] and
+>> +//! [`EnabledRegulator`].
+>=20
+> It would be helpful to see what the client code actually looks like
+> here.
+
+Ack, I'll include examples in v3.
+
+>=20
+>> +    /// Enables the regulator.
+>> +    pub fn enable(self) -> Result<EnabledRegulator> {
+>> +        // SAFETY: Safe as per the type invariants of `Regulator`.
+>> +        let res =3D to_result(unsafe { =
+bindings::regulator_enable(self.inner.as_ptr()) });
+>> +        res.map(|()| EnabledRegulator { inner: self })
+>> +    }
+>=20
+> I assume this map does soemthing to report errors?
+
+map() returns the error to the caller, if any. Notice that the return =
+type is
+Result<EnabledRegulator>.
+
+>=20
+>> +impl EnabledRegulator {
+>=20
+>> +    /// Disables the regulator.
+>> +    pub fn disable(self) -> Result<Regulator> {
+>> +        // Keep the count on `regulator_get()`.
+>> +        let regulator =3D ManuallyDrop::new(self);
+>> +
+>> +        // SAFETY: Safe as per the type invariants of `Self`.
+>> +        let res =3D to_result(unsafe { =
+bindings::regulator_disable(regulator.as_ptr()) });
+>> +
+>> +        res.map(|()| Regulator {
+>> +            inner: regulator.inner.inner,
+>> +        })
+>> +    }
+>=20
+> This looks like user code could manually call it which feels like =
+asking
+> for trouble?
+
+Yes, user code can call this. My understanding is that drivers may want =
+to
+disable the regulator at runtime, possibly to save power when the device =
+is
+idle?
+
+What trouble are you referring to?
+
+
+>> +    /// Sets the voltage for the regulator.
+>> +    pub fn set_voltage(&self, min_uv: Microvolt, max_uv: Microvolt) =
+-> Result {
+>> +        // SAFETY: Safe as per the type invariants of `Regulator`.
+>> +        to_result(unsafe { =
+bindings::regulator_set_voltage(self.as_ptr(), min_uv.0, max_uv.0) })
+>> +    }
+>=20
+> set_voltage() is only implemented for enabled regulators.  It is
+> reasonable for a driver to want to set the voltage for a regulator =
+prior
+> to enabling it in order to ensure that the device powers up cleanly,
+> there may be different requirements for power on from on and idle so =
+the
+> constraints may not be enough to ensure that a device can power on
+> cleanly.
+>=20
+>> +    /// Gets the current voltage of the regulator.
+>> +    pub fn get_voltage(&self) -> Result<Microvolt> {
+>> +        // SAFETY: Safe as per the type invariants of `Regulator`.
+>> +        let voltage =3D unsafe { =
+bindings::regulator_get_voltage(self.as_ptr()) };
+>> +        if voltage < 0 {
+>> +            Err(Error::from_errno(voltage))
+>> +        } else {
+>> +            Ok(Microvolt(voltage))
+>> +        }
+>> +    }
+>=20
+> Same issue here.
+
+Ok, we can move the implementation to Regulator then.
+
+=E2=80=94 Daniel
 
