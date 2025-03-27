@@ -1,131 +1,182 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3061A8418;
-	Thu, 27 Mar 2025 21:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7FB1B6D08
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Mar 2025 22:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743110868; cv=none; b=PLRzbuoewm7gfVSk30NPe2kiOmR1VW0LwM2+k9Hvcj8T3rj/XSD1Dl8jdwhiUR3yFPB67/21PfGcgIu3SBuyvXllCUKlTNyIqxCuhn2T3/ghq3w/JPv52ucQI87kqmCDo6vCykZOJ/BdfF2QfLsSjig/UroKXgbbJcH+JVIqsLc=
+	t=1743113613; cv=none; b=fH2Np/WC2b1GIEGq++MMiSgtAKevn0fw9jtrVDttHoRZ1EvxlIPBMrsXL1qDgmTeMp9VTLpy1Zj0PYcoIYE4UHMX2W3jg1l5KTQjB/AUSFClPbgIksh1Ovyj/BG3Jlk+NDwXfTw8cNc6550rLtsDHQcDcF6wiz3o2JtWwkJu+v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743110868; c=relaxed/simple;
-	bh=mzO6TlYvpCcsgHCtdzRZWF7q6fjXidij/YnDo77jK9I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mXpnfOVqUoY4w2LmgZvz/mrSD2my3wgs9hLViqjjf0o7m6AAPNhYeq6e7QfDTYTSHHuWORCfmhAIR2tKrqqfJWZbFISGWmj4kObGxO0jg3LsG+aDDBa8FeDvhZICI8octKCJSTEzV/ylf3snk3+oFuEnjbEJb4OR/f/DEvpgl8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eq8PG5b1; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743113613; c=relaxed/simple;
+	bh=TYGJ8FnfsKT1SKjoZWBosa8mBZ3KjzthRNE8P8nvecE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z71NZ9I/k8t3aHvnjDM7+gB1nf2+FEVOy6Sd8Y9Bo6TVXmnkzjncJbMS4hLDYe9uFNl52L0K2DmPyV9MJ4NtJwajSXTl4bgY9ERpq6djn1uHp1JADdP7PznzW+B/cFlvly0EpCX7aANiRLnh+amqF1DeU+F5Nfu3ak+mPZEknW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=RfneHWSi; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eq8PG5b1"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-30363975406so304958a91.0;
-        Thu, 27 Mar 2025 14:27:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743110866; x=1743715666; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wE3bwjdheiC/MNEGJyk/opgX6NdwvbHJyEFnCfH1pq8=;
-        b=Eq8PG5b11r/G776a0X8oqr9asmJcuyGgmSO3PZQ362PbvwYrQ2sRA7QgNXMJ13z+8x
-         ijnyYeOVFqwDURnljKlndkSpHpF3q1ZfhnSLpfLpdZPfBERprD9KssSbDa9OZnz80uMc
-         X5RJ/b3aag8keUYwtTwPK+BN54wCf4ikopD1OfjzUZvwLDbs5Qw1IL2Vjar0gWOUQNzs
-         Q2ZByp0RSootncvN6lc7oZUB6aIjP7NC2XhpkuCEuaLPDEIpYUQTTm9E+r4KUZqqMIX4
-         mPQXJu0Xwnwv4jeHWsJ45xOBPwpjOH5KKXi9oWG4KkB4c9/G3lDgIU1XQn89jQL8bwIW
-         ykCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743110866; x=1743715666;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wE3bwjdheiC/MNEGJyk/opgX6NdwvbHJyEFnCfH1pq8=;
-        b=U/Bpekz+QW71AXRcuRQd0q0okXZgn3XX8zffHHQ6K/UyutPjZ5gnUukQc4tkBpkO/H
-         qymPByhJwIIFr3mwlKldstW/UtNSD5xFJn1VzQdxtD9fmLEDZp9UbcahOMGweX/hlieY
-         ZkybbsOzbNswA+IhgZDR/Y81H/yhGchRZ1wQG+1AT6NP8L179Tuk93YPcgU01W5ZMAM+
-         ifZ+3C7qyEQ1dwj5rGAAWk3uIItaNk6QemqvHU+fKzpEFx7SxDDGJnnuRgqMmx/JaNvr
-         u4TyksXjyqxZrfX2WbpD7X4Mx79atiPrfMzrgyRfBeX7xdrmUokKpmLb7fBZMgaC/L7m
-         +PPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUr30C7rX28k3k3ksJ3g3Ova5xJZTn4qpkFYQxyP7LhifPlGRLoZnfpLOGSDfLT0HCJMw8T1X8IuMoyYR2hlvc=@vger.kernel.org, AJvYcCW6H1lxAPFbVBaSmKdl4kHEYFdPgvJKg1dBXgynAMrpQiaJqgwtYo4XU6J25FLN3aLEIjBdHxcc7+LMa0Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBk6H8K4MVg2xOvVrnL/W0UZnnPugw5u0lzq4DJDPNv0d8MmGk
-	daqapPhAuV/V0y4cYX/LnlkAM2qUjXCEHGjrqrP+w/gGq+sahMcgS+qeRf0PnINnbGdYgYCw/rk
-	nXQ1ZJfWAp/s6glm71NWEDYi3CmM=
-X-Gm-Gg: ASbGncuhfIog1dW5SKJuPekAlZ3ii1rW2bFVqn9SJbFtFQ/R4gVffZQF+YtzEOIgYeu
-	RBGDuej1xdMCsqRLNk6Q4He8WY8pPPjvp610YaIEILsfZssfJbAOuA3xfx+BLhP0Rw4hOpJ1Htg
-	CEUYhWXl8EudWOAQ6v7jsaTMmv4tlcIMzKZyym
-X-Google-Smtp-Source: AGHT+IHseV5LI2fbMCtNieCQxJtP/5+INePZ/4ozx0Jkw2ykgR0+w7R29qBuW7MYAJ6XAXE6nFroYJ9itWMfFaygdWc=
-X-Received: by 2002:a17:90b:314c:b0:2ff:6941:9b6a with SMTP id
- 98e67ed59e1d1-3051ab84235mr356116a91.3.1743110865739; Thu, 27 Mar 2025
- 14:27:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="RfneHWSi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=rq2gsk3pfvay7fg5nyq3ghjsg4.protonmail; t=1743113609; x=1743372809;
+	bh=Vrk6CcpdVcblD8Yoi4uM8XudDIG9EgjbDWgg5W2/PO0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=RfneHWSiAyNxultd7Fssx0bbLRtJdVbBqsZJz5oD6qD2GsbQ4/36TWrpLy7lg+DmF
+	 vnlER0HAcssPgET0HTb9yNDxki7tEztPSH0C8H67N0XPwy+gZ5WPbq2qCtQ1eENQPU
+	 kOnGYplP6tb3H4rtk29pwmRMCS+7s+FUcGx5PhMAr0lDOuWfLKDneKOrlEvWAFlLOD
+	 ZKXQkFuKl2U1Wg5B2xRsUOnmUFtHUGK38R/UbIZATR7RBxqKrAlbLOCJHbYXGQN5dv
+	 GPE9uqewuMZymcnHSm0Xzu1EsICI8eYZMERYJRwmRIsRkK/LbcTptqGpefovzTB26o
+	 BEe/cCRP+vMxA==
+Date: Thu, 27 Mar 2025 22:13:22 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH] rust: clarify the language unstable features in use
+Message-ID: <D8RE79BLHK7K.1ZM2N5RBYGUY8@proton.me>
+In-Reply-To: <20250327211302.286313-1-ojeda@kernel.org>
+References: <20250327211302.286313-1-ojeda@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 57039260adb80c49be970e0c87108b8ac94d43c1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250326-topic-panthor-rs-genmask-v5-1-bfa6140214da@collabora.com>
-In-Reply-To: <20250326-topic-panthor-rs-genmask-v5-1-bfa6140214da@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 27 Mar 2025 22:27:32 +0100
-X-Gm-Features: AQ5f1JqR9pPPRdsS3Lb-1y7FA50rzNTM3sAftgsRrCyk-pWbY9_HzUHCkvDWZ6k
-Message-ID: <CANiq72kkgBtEWNQtu_tZpUYC+b-_3RsnWFO2biHPB74mrKE=AQ@mail.gmail.com>
-Subject: Re: [PATCH v5] rust: kernel: add support for bits/genmask macros
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi Daniel,
-
-My usual docs-only review... I hope that helps!
-
-On Wed, Mar 26, 2025 at 3:07=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+On Thu Mar 27, 2025 at 10:13 PM CET, Miguel Ojeda wrote:
+> We track the details of which Rust features we use at our usual "live
+> list" [1] (and its sub-lists), but in light of a discussion in the LWN
+> article [2], it would help to clarify it in the source code.
 >
-> +/// Equivalent to the kernel's `BIT` macro.
+> In particular, we are very close to rely only on stable Rust language-wis=
+e
+> -- essentially only two language features remain (including the `kernel`
+> crate).
+>
+> Thus add some details in both the feature list of the `kernel` crate as
+> well as the list of allowed features.
+>
+> This does not over every single feature, and there are quite a few
+> non-language features that we use too. To have the full picture, please
+> refer to [1].
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/2 [1]
+> Link: https://lwn.net/Articles/1015409/ [2]
+> Suggested-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-"To the C `BIT` macro" or "The C side ..." or similar -- these one
-would be also the kernel's :)
+LGTM, so:
 
-> +/// Create a contiguous bitmask starting at bit position `l` and ending =
-at
-> +/// position `h`, where `h >=3D l`.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-The first paragraph is a "short description" / title -- you may want
-to leave the details to a second sentence, i.e. in a second paragraph.
-Please check in any case how it looks in the rendered docs -- it may
-be fine to have all in the title.
+And left two suggestions below.
 
-In fact, given you `assert!`, we should probably mention that very
-prominently e.g. in a `# Panics` section. Or, better, avoid the panics
-to begin with if it makes sense.
+> ---
+>  rust/kernel/lib.rs     | 27 ++++++++++++++++++++-------
+>  scripts/Makefile.build |  8 ++++++++
+>  2 files changed, 28 insertions(+), 7 deletions(-)
+>
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index ba0f3b0297b2..660a3ab6f9d4 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -12,21 +12,34 @@
+>  //! do so first instead of bypassing this crate.
+> =20
+>  #![no_std]
+> -#![feature(arbitrary_self_types)]
+> -#![cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, feature(derive_coerce_point=
+ee))]
+> -#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized=
+))]
+> -#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(dispatch_from_=
+dyn))]
+> -#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
+> +
+> +// Please see https://github.com/Rust-for-Linux/linux/issues/2 for detai=
+ls on
+> +// the unstable features in use.
+> +
+> +// Stable since Rust 1.79.0.
+>  #![feature(inline_const)]
+> +
+> +// Stable since Rust 1.81.0.
+>  #![feature(lint_reasons)]
+> -// Stable in Rust 1.82
+> +
+> +// Stable since Rust 1.82.0.
+>  #![feature(raw_ref_op)]
+> -// Stable in Rust 1.83
+> +
+> +// Stable since Rust 1.83.0.
+>  #![feature(const_maybe_uninit_as_mut_ptr)]
+>  #![feature(const_mut_refs)]
+>  #![feature(const_ptr_write)]
+>  #![feature(const_refs_to_cell)]
+> =20
+> +// Expected to become stable.
+> +#![feature(arbitrary_self_types)]
+> +
+> +// `feature(derive_coerce_pointee)` is the one expected to become stable=
+.
+> +#![cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, feature(derive_coerce_point=
+ee))]
+> +#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized=
+))]
+> +#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(dispatch_from_=
+dyn))]
+> +#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
 
-> +/// # Examples
-> +/// ```
+Does it make sense to add another comment in front of these three along
+the lines of:
 
-(Multiple instances) Newline between these.
+    // Before Rust 1.82.0 `feature(derive_coerce_pointee)` doesn't exist, s=
+o enable the predecessor
+    // features.
 
-> +///     use kernel::bits::genmask_u64;
+> +
+>  // Ensure conditional compilation based on the kernel configuration work=
+s;
+>  // otherwise we may silently break things like initcall handling.
+>  #[cfg(not(CONFIG_RUST))]
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 56be83024851..41a640990cfa 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -226,6 +226,14 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+>  # Compile Rust sources (.rs)
+>  # ----------------------------------------------------------------------=
+-----
+> =20
+> +# The features in this list are the ones allowed for non-`rust/` code.
+> +#
+> +#   - Stable since Rust 1.81.0: `feature(lint_reasons)`.
+> +#   - Stable since Rust 1.82.0: `feature(asm_const)`, `feature(raw_ref_o=
+p)`.
+> +#   - Stable since Rust 1.87.0: `feature(asm_goto)`.
 
-(Multiple instances) You can hide this one with `#` -- when the `use`
-is just for a single free function, I think it is not very useful to
-show in the rendered docs, i.e. it is clear that you are showing that
-one since the docs go with it.
+Probably a good idea to add:
 
-> +///     let mask =3D genmask_u64(39, 21);
-> +///     assert_eq!(mask, 0x000000ffffe00000);
+    #   - Expected to become stable: `arbitrary_self_types`.
 
-(Multiple instances) The example is overindented, as if it was inside
-a function.
-
-> +///
-> +pub const fn genmask_u32(h: u32, l: u32) -> u32 {
-
-(Multiple instances) Extra `///` line.
-
-Thanks!
-
+---
 Cheers,
-Miguel
+Benno
+
+> +#
+> +# Please see https://github.com/Rust-for-Linux/linux/issues/2 for detail=
+s on
+> +# the unstable features in use.
+>  rust_allowed_features :=3D asm_const,asm_goto,arbitrary_self_types,lint_=
+reasons,raw_ref_op
+> =20
+>  # `--out-dir` is required to avoid temporaries being created by `rustc` =
+in the
+>
+> base-commit: e6ea10d5dbe082c54add289b44f08c9fcfe658af
+
+
