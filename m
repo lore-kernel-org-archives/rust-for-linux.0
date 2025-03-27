@@ -1,43 +1,40 @@
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE2A1531C5;
-	Thu, 27 Mar 2025 22:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5501D15442A
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Mar 2025 22:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743114670; cv=none; b=uWrn9riAJf1tq0szh++ESYVTu/KCu1vcuEzcpJLsUotTT7AoTUfGlz+TPrc+nJgKU1t84fibREvd/gV6RlAvqvfW3yif6hbOX3zHAxKd9LFrRRsO0F4TvZ6PjSjrM8RqEIbah5gAGWwkuIYoUCiz0OuR550bG2NtMcWGeNxoapc=
+	t=1743115314; cv=none; b=rieNW/q9Kmh1N1pezTJA9jHxycWS3dVOtVKLKwLoNNsUgQpsm+y+ukDyQVYm/Lt8su8vxhRkTiQaXw5vk18MgxPa74cysI0FcQzxDKer7FFgzW4MZ4f4u+dm9NKyDP1RXMZiSVP+ElQrMLBOx+zNyqJTU9vwIQKoeTQYfsEQAh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743114670; c=relaxed/simple;
-	bh=2aHeBIPKxpMZEgjX1iWdfj20zYYepW1kIT/PFNeYnOw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aBdkDYfX97cHG1NF3y4VxHwXvMs9MvUGbA5uX7wbfnOmDGEpbTst8sXKHqWj443uqymYXlblflfk8h1X0uomk//gbHYMTH9L9oeJ7jEEHaSbs5fKeNfM0z/SsNsG3TVreV0RddWxaP2gollMKpPAlG+Dyi5AjgPiSBSDRd6Moe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=LpN8H0WO; arc=none smtp.client-ip=79.135.106.29
+	s=arc-20240116; t=1743115314; c=relaxed/simple;
+	bh=FBx4nKK3OEmgGkauAnRAkTqtUoasdBg2C6ihvzQ6Yqk=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=fuONNRes6CDBbQ8aX3HiLYDKlpZGosES0DuZBnPe/nQUgDnhIo2TfPokkXpGMp0EyZ1peNSUEuyVHCc10utu6NokPk4aj1pdsw/IxgEKDZQy0sIJx129YpGUYK8/OGDP4cBwYDFTzGtomy29hCh4fM7SiNs2F89uU4CuLJ7Q4rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=e4/pzT+c; arc=none smtp.client-ip=109.224.244.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LpN8H0WO"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="e4/pzT+c"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1743114667; x=1743373867;
-	bh=d7MxYS+vRUZFKyaaYKSIuKEGdkGBo63TfmEbiGnp33E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=LpN8H0WORY3223K3dGw4KTfAsg1UXFcDcvCVsQyRDPsTRqU/GLsjA+1xxDZf1D/Tq
-	 ANPEAEaiNc99Y9joglRccNv0QQS/GWtZCBW25ZwojYVCU2DH2FII+arXfC4K2jVO+6
-	 GOEqGgVNqclTmy5GS7hEwugzGz2ekw2EOIV6hrIDSl04MOLB4wZPGRn7e2TnQMjVx3
-	 6rM+rutQOUOJUA99BErhFawg9NvlQImRqnmk7PhE9EMw0l0jQrD8Z+Su+cRKqG8pv2
-	 b1t9YNoAUsCQ9gaXnovQcDMvBxsy4FBzluYBzbuBOzMwTBt18GOstFMFPNpsOhuxk9
-	 IcyXClQoRgq7Q==
-Date: Thu, 27 Mar 2025 22:31:02 +0000
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>, a.hindborg@kernel.org, ojeda@kernel.org
+	s=protonmail; t=1743115304; x=1743374504;
+	bh=HhkSj+DmQtbL6xk+beVl0PqyK+XB6QIVL/GjBE8hJkk=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=e4/pzT+ckmfFs6751IGeIB2W06tef4I35e+w4zSlAb3Nnv7MZDQZRs8OMJzQ3yZ7a
+	 6GqY0Y2sH+fgA7P+7kJ/b419UNlCe0B2GBdaTv0okZYY52z3k7H2/STp7ZZhkDfKCm
+	 l9Sd39L+L9pZktsYKLHm0o29Ga2qnNhhQhP2vegQxdfOPCjv85hiwus6tL8HpthAqc
+	 cOXMF4iE8FkmfXqIhTKp0WAXUW7Ds/lKfG7WNB3FNPHDcvZfgNqEBsVE9wUvtyRJpy
+	 gkLE6z1mWfWYyJgAH5M8/gSCplgI7ci8SBvTnrvFd7w8pTv74m1QKeKTxklgGtD5J5
+	 ovl5CDTU7577A==
+Date: Thu, 27 Mar 2025 22:41:38 +0000
+To: Altan Ozlu <altan@ozlu.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, "open list:DMA MAPPING HELPERS DEVICE DRIVER API [RUST]" <rust-for-linux@vger.kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/3] rust: dma: add as_slice/write functions for CoherentAllocation
-Message-ID: <D8REKSIL1W0E.6A40JD86RFPZ@proton.me>
-In-Reply-To: <20250326201230.3193329-4-abdiel.janulgue@gmail.com>
-References: <20250326201230.3193329-1-abdiel.janulgue@gmail.com> <20250326201230.3193329-4-abdiel.janulgue@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4] rust: static_assert: add optional message
+Message-ID: <D8RESWOSOSY0.1W6K6HZ4IMIQI@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 8dc58c6ccf0f878f43e983ad024beb70b1ba0049
+X-Pm-Message-ID: 8be09d83505c8faed6c424b0df4e3cb87e12c49d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,62 +44,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed Mar 26, 2025 at 9:11 PM CET, Abdiel Janulgue wrote:
-> +    /// Returns the data from the region starting from `offset` as a sli=
-ce.
-> +    /// `offset` and `count` are in units of `T`, not the number of byte=
-s.
-> +    ///
-> +    /// Due to the safety requirements of slice, the caller should consi=
-der that the region could
-> +    /// be modified by the device at anytime. For ringbuffer type of r/w=
- access or use-cases where
-> +    /// the pointer to the live data is needed, `start_ptr()` or `start_=
-ptr_mut()` could be
-> +    /// used instead.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * Callers must ensure that no hardware operations that involve t=
-he buffer are currently
-> +    ///   taking place while the returned slice is live.
-> +    /// * Callers must ensure that this call does not race with a write =
-to the same region while
-> +    ///   while the returned slice is live.
-> +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result=
-<&[T]> {
-> +        let end =3D offset.checked_add(count).ok_or(EOVERFLOW)?;
-> +        if end >=3D self.count {
-> +            return Err(EINVAL);
-> +        }
-> +        // SAFETY:
-> +        // - The pointer is valid due to type invariant on `CoherentAllo=
-cation`,
-> +        // we've just checked that the range and index is within bounds.=
- The immutability of the
-> +        // of data is also guaranteed by the safety requirements of the =
-function.
-> +        // - `offset` can't overflow since it is smaller than `self.coun=
-t` and we've checked
-> +        // that `self.count` won't overflow early in the constructor.
-> +        Ok(unsafe { core::slice::from_raw_parts(self.cpu_addr.add(offset=
-), count) })
+On Wed Mar 26, 2025 at 9:25 PM CET, Altan Ozlu wrote:
+> Add an optional panic message to the `static_assert!` macro.
+>
+> The panic message doesn't support argument formatting, because the
+> `assert!` macro only supports formatting in non-const contexts.
+>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1149
+> Signed-off-by: Altan Ozlu <altan@ozlu.eu>
 
-I vaguely recall that there was some discussion on why this is OK (ie
-the value behind the reference being modified by the device), but I
-haven't followed it. Can you add the reasoning for why that is fine to
-some comment here?
-
-I also am not really fond of the phrase "hardware operations that
-involve the buffer":
-* what do you mean with "buffer"? `self`?
-* what are "hardware operations"? (I no nothing about hardware, so that
-  might be a knowledge gap on my part)
-* what does "involve" mean?
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 ---
 Cheers,
 Benno
 
-> +    }
+> ---
+> Link to v3: https://lore.kernel.org/rust-for-linux/20250325211011.1093374=
+-2-altan@ozlu.eu/
+> ---
+>  rust/kernel/static_assert.rs | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 
