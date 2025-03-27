@@ -1,132 +1,106 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AEA20DD4D;
-	Thu, 27 Mar 2025 13:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743083223; cv=pass; b=DsMfWXEGi4xxsamCy/js1e/8vL83ZM3HGB2dVP1x5O/Rr+8eJqTE67pY9+JtigUyI2TrPxlG8OQ/kGivyYT3PyXdCpCB/4xB5vPkl6LK7ku/ku0QKQFziyBQr9OeOmPtLvCBv0LRD1y5gDcOVQBOAzPm1maciIR81dTcGdGwFoU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743083223; c=relaxed/simple;
-	bh=SLUxjfTytuTXkm0ZV5mwqh8ZxkVkPIHWO5tXHBHT3Fw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nDT0UGj7ocEIw2JVriUn7faaEAxgs99D2zu4iTpg7nmtxjOcboNyiFo9kh4ri4AeKY8ZiZOID+h2+TWXfHVIVE3sO/1Gb+WtNNk57TMWWz+gcud2Hki7usJYDbiFKmHmNnHF4MeFPHqBNW/yOsni/QF5GOsgdjZ07vtmutk3CpI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=lQ5T7J3T; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C16B8BEC;
+	Thu, 27 Mar 2025 13:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743083756; cv=none; b=ljPm6gWvwuqslo+mYjnRNipGqMokEuXk2ZDSMHT+Sg2yNdfl2jaD4DHodrIf0oVdRCQOSlJhNblG6qA3K2kMY79gcHShvwndrOu3QR2V6ths45vZ9S/ZIcFFbdk8YzfgOPJjLjAZ2hDttkagrggX3s7wWRd6ITNoEKY8Wvyx6ZE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743083756; c=relaxed/simple;
+	bh=1ahn52S0KUDmtK33z7svEfP2CGjDVfmB/atebDqTFKQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ETgi2RUyMnrkCiCNYKL5ea7+XBws3sMUZknC+Y34v0n4lVfcGU8Lx+2YyVBri+W7UTX0HfF360c/jF294LD6jJY4iGvnarpAFnl592+dSw062veor/yruVidkiFKK/8O8GQ9QkvP2LrIaJ243+JASezVRlHjpwcVJBqxJlw2JKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EV/KxfQb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="lQ5T7J3T"
-ARC-Seal: i=1; a=rsa-sha256; t=1743083196; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=NVYMy9HnNLqGZG42kIKaNWeUamhFYNAVgfBG1tqLMhUYnILfAzLS908F1HdJRSnBQS+SUnnTcODgzoZKoFqiq7brP0Lrh0EC3JOw7Wv8YMk8XRhFoVMb2cnWx1r9FAD4xTC8c0l+9DBUC033oV7Zwf9js4JarkF+UT2mVoeRVJo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1743083196; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ehwn0eQcEIVrlPhTdcgJsA+l7jiw8BKWzcfn+2hit6M=; 
-	b=hZYTrDx5O5oJwTQz+FUWaSxwevdbjO0lZYBxCAi41ON4LOZUWtQ/uANBaTPaopo5aWysI8Fc5+2Nah8SuE8fZOrAE2jPAFYsHMXvcWat6h90/WdL2wHfptFsdn0MWtsp4m8Cm+5sAmzKj4ijkT8Iet0VJX/0XU6OqUdjmEHKEM0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743083196;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=ehwn0eQcEIVrlPhTdcgJsA+l7jiw8BKWzcfn+2hit6M=;
-	b=lQ5T7J3TIvcUHiFIKN9JmJLijCyY3Auv4iBU4toqnmwDQJ0k0gUeyjGSj+M7tgOW
-	LwUoTEhd9ZtAFeNNukjUNwmY9mCOZX+c70L9AlIbf9dacIPOh7drc11ROC8BEN3G0a7
-	fXJqer+Jpvu2luXFR7SqELomUkaDRPRdVamPoy/c=
-Received: by mx.zohomail.com with SMTPS id 1743083195187729.6171611042369;
-	Thu, 27 Mar 2025 06:46:35 -0700 (PDT)
-Received: by venus (Postfix, from userid 1000)
-	id 669F4180510; Thu, 27 Mar 2025 14:46:30 +0100 (CET)
-Date: Thu, 27 Mar 2025 14:46:30 +0100
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, lgirdwood@gmail.com, broonie@kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RESEND v2] rust: regulator: add a bare minimum regulator
- abstraction
-Message-ID: <opip2gbm6tpjqnx4hqk4mghbkhv7egexeqs5ukfn7oz3mm7nev@y7qffwz5ckdz>
-References: <20250326-topics-tyr-regulator-v2-1-780b0362f70d@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EV/KxfQb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D0DC4CEF4;
+	Thu, 27 Mar 2025 13:55:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743083755;
+	bh=1ahn52S0KUDmtK33z7svEfP2CGjDVfmB/atebDqTFKQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=EV/KxfQbKVQE/Xhh32pls3VHowTGMWwBqvlK5i+uCtF7tMlVRZ8TkWIBLp9tCMxgy
+	 0p5001fqREESfEQLGaJhAcLrm44OHWW33HEmVz3G4H0XHD1HEXOsISIC9aDEYY3Svs
+	 e5URMla/v2QstTdDob5RnwvcTzGMvtdrIT5AOcB62bN4v3AgYaz0zan3dViDHBZ5ER
+	 LSX+nFaVX0bK2De+dWKX3ybxLogcAVskmEg1mxaPYiemdEf9AHKljSpRnkcuVyXIzc
+	 MEkz0Lth5m3VK+5xYxZrXqJFOinJ6JqT6/jG+E6sAjKaWtVYjR4hVRLuG9GW5sxjSn
+	 jdgBZ++XNtnqQ==
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ac2af2f15d1so132364066b.1;
+        Thu, 27 Mar 2025 06:55:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV+WIWp3JRR/hhcv7wugUAW7FBuH4OHCTKGLPL0jtQEsJ6sLWXtw9OuDJllAb7IBO1sQVoC4ozqziAP@vger.kernel.org, AJvYcCVcESlG2cNg/0qCMavJQlIM3JyEHx2ja8n3S1+LGB9ZltnLhFy3cNy+erH+mwpn8HY0OV+T/y/u2VJx2w==@vger.kernel.org, AJvYcCWXPpuUXbqYd1nzJPcHscCs+Gv32xk0PAuEWDe46G3+bx6NRObaG8ES/xl3VJ+ckXS1McIrSStZQZzG0TdZoXo=@vger.kernel.org, AJvYcCWZ5rUILW81xvBYMzA9D3Ua7TSiHOrpl+HW1t8RIYHSi3b0s1qSUl++T8gdji9G//EALONq6D9rdi/MJm8J@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBhk9dpq+742DUSwFwTYxKg//zM9lXZuXE9z/56yzSuYahKr3y
+	meK41Fb19bM5m3Qy+nPnp8nDjrWr180oZtX+KwqorMfD9K5i8tPihHuNR+EkWpRElIXmiaFzjFM
+	cPUK1BJsDfpbj0CCndhEDNq8JiA==
+X-Google-Smtp-Source: AGHT+IEfUnAlbEn5c8C7zrv5VilBfYXTQwORXTJobYHDkpxBenmsrtDu6IozbVwFugPY8mIaVUJRwg4U2RpBt2Ktt8w=
+X-Received: by 2002:a17:906:dc8a:b0:abf:7a26:c486 with SMTP id
+ a640c23a62f3a-ac6fb10c9ebmr335651766b.40.1743083753985; Thu, 27 Mar 2025
+ 06:55:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ublvsxzjg6uy6qpe"
-Content-Disposition: inline
-In-Reply-To: <20250326-topics-tyr-regulator-v2-1-780b0362f70d@collabora.com>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-1.4.2/243.29.94
-X-ZohoMailClient: External
+References: <20250326171411.590681-1-remo@buenzli.dev> <20250326171411.590681-2-remo@buenzli.dev>
+ <Z-UOUKq8GKZM1wuo@smile.fi.intel.com>
+In-Reply-To: <Z-UOUKq8GKZM1wuo@smile.fi.intel.com>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 27 Mar 2025 08:55:42 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKY17zfLo5rUd9zvO46M1_dR0-V1X-d-NmsO+exDbGY5A@mail.gmail.com>
+X-Gm-Features: AQ5f1JpHBP9OYrAt6ksLNzcvIfJhXRJNf4iMM1GxH64Mmcu5lH6rMLCYPLqF7Fs
+Message-ID: <CAL_JsqKY17zfLo5rUd9zvO46M1_dR0-V1X-d-NmsO+exDbGY5A@mail.gmail.com>
+Subject: Re: [PATCH 01/10] rust: Move property_present to property.rs
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Remo Senekowitsch <remo@buenzli.dev>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Mar 27, 2025 at 3:37=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Wed, Mar 26, 2025 at 06:13:40PM +0100, Remo Senekowitsch wrote:
+> > Not all property-related APIs can be exposed directly on a device.
+> > For example, iterating over child nodes of a device will yield
+> > fwnode_handle. Thus, in order to access properties on these child nodes=
+,
+> > the APIs has to be duplicated on a fwnode as they are in C.
+> >
+> > A related discussion can be found on the R4L Zulip[1].
+> >
+> > [1] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General=
+/topic/DS90UB954.20driver.20done.2C.20ready.20to.20upstream.3F/near/5054156=
+97
+>
+> You can make the above to be a Link tag like
+>
+> Link: ... [1]
+>
+> > Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+>
+> ...
+>
+> > +struct fwnode_handle *rust_helper_dev_fwnode(struct device *dev)
+> > +{
+> > +     return dev_fwnode(dev);
+> > +}
+>
+> Why not const? For most of the property retrieval APIs the parameter is c=
+onst.
 
---ublvsxzjg6uy6qpe
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH RESEND v2] rust: regulator: add a bare minimum regulator
- abstraction
-MIME-Version: 1.0
+Because you might need to modify the refcount.
 
-Hi,
+Though the rust code should probably use __dev_fwnode() and/or
+__dev_fwnode_const() directly and avoid the need for the helper here.
 
-On Wed, Mar 26, 2025 at 03:39:33PM -0300, Daniel Almeida wrote:
-> +    pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
-> +        // SAFETY: It is safe to call `regulator_get()`, on a device pointer
-> +        // received from the C code.
-> +        let inner = from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_ptr()) })?;
-> +
-> +        // SAFETY: We can safely trust `inner` to be a pointer to a valid
-> +        // regulator if `ERR_PTR` was not returned.
-> +        let inner = unsafe { NonNull::new_unchecked(inner) };
-> +
-> +        Ok(Self { inner })
-> +    }
-
-I think it's worth discussing using regulator_get() VS
-regulator_get_optional(). We somehow ended up with the C regulator
-API being more or less orthogonal to other in-kernel C APIs (clocks,
-gpio, reset, LED) with the _optional suffixed version returning
--ENODEV for a missing regulator (and thus needing explicit handling)
-and the normal version creating a dummy regulator (and a warning).
-
-Considering the Rust API is new, it would be possible to let the
-Rust get() function call regulator_get_optional() instead and then
-introduce something like get_or_dummy() to call the normal
-regulator_get() C function.
-
-I see reasons in favor and against this. I just want to make sure it
-has been considered before the API is being used, which makes it a
-lot harder to change.
-
-Greetings,
-
--- Sebastian
-
---ublvsxzjg6uy6qpe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmflVrIACgkQ2O7X88g7
-+pq9zA/9FENRJp4Q0a5/LfXxwh5lGHBar89GysLA5RJRRQG6kURjfTzWhMeND0tU
-ZN0o9TA9vfg85DmYM3zLFvuNBKZvclGIQrapwVjWgYFomQL3O9EGSf6GG/fdIhIF
-M4k4qQPsDWhd+/pKS15bBPQp1XhSRhxxFrCwEQkn6uBiRhPupxBfaU3ezrqz8/yB
-samus3LsVYXHa6eKZ6BT52rnFyPkNeDvjJte6WRNMRTKxnmLNVVcH3yJ6BXG2J5f
-wJzdjyCY1nk7JbDKGOiClsZbR17LyQdQMjZD6Vh/0ejddY83IZ1EPylyMP2t0AHm
-DLL6WXo53CWd024SMRiC9cPOFpFTBTK1AjgleJRmls4G6LqrPX7TTYisH0IqDEVA
-DqTACMskQovxZ9ObR9tX1j24275IlBBneLbi6f9UqeZ9opu4u/Fk3s0luEySKU4+
-gaggrWgo9o6MQzFiLK5F1RqQ8yhSDYQuSd8DRgSKdfwrORGN6wmz5vnOGz3Qf/ba
-uNDeK9GtuhWD7A+hdM1kAGdHxC2Fi0KZD/ob/T+R4QEKvUHepaNtuhy0euhARQtT
-UN6ymILyCuhU6p5zLfmL7pUjaE+JmVO8qo977Ja6mY1Gwv8z77yR1GOBi3FI1H6d
-UW0eGuLAr8p0eEn5ieWgzvDvL3X/SjOPipmhyf7ORGT7azxuV+g=
-=NRAH
------END PGP SIGNATURE-----
-
---ublvsxzjg6uy6qpe--
+Rob
