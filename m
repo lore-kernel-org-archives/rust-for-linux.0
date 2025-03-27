@@ -1,110 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD891531E1;
-	Thu, 27 Mar 2025 15:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD46186E20
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Mar 2025 15:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743088024; cv=none; b=ib9g9asQeS8HfyKKX1HTPta0PUey2ZDTXojzuKQuX2dX/SpAgZPJkocLYuuFdFAhqCd4jPHG+viUNWIK5z3EOOvMm72KwAlP8SFFgg+IXPVr9aqufSMlpHap1xixRdKao1J6vOxbVT3oK3nx4tvMYo40HNqmQOWn3g2hYqG/pWI=
+	t=1743088972; cv=none; b=ZkNYWWQ/07p511qTmJs4IlCV9yO4qKIPY+1BYt+rKQQBFZZZfzxTwy6Sa4Ie5mcTsMnVigYpkVZ1KbjfO4jbHWGm/G3jsnuqsE1P5IBLgnYF+8bY8qtoW+wfrnbx6vH35Xwy6a0mmJu0L+MUQ5a+ulf7m12uVAdBLZ6e0LgA99o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743088024; c=relaxed/simple;
-	bh=x2reJLSWX+cp6sO7ytQo1ksI0rQfspbr+6o7HOUNB40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ltjHEKoVNGdq91HySTTVCvo7oRxli4iTJKvNJt2yeVspI6LrQ53KEEXkeq9MYDtMU3akCDC/aj5MSUeS1IEx328fECUQhJFYa9Gn4CFLaUyxzfN2dl8x0AEUsJ+cd92KeELPCZ2UrRRVfEp+hiIjqtT75iUDpAE6yRyuyFRtdfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvPjxZ4W; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743088972; c=relaxed/simple;
+	bh=1nGruMCbppY7qn4neYE0wvu8NfeEHt8bZVd8Orps9qk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UZs8xfI5+dXvAg3jvVn6FmzfB99RmMLTYfE2gFYll5GEok67Ee0pY3UWKksCQ7MQIkGGQIhvxNkJ9BXIDhra0jiTBVFkLn4+y/VjrbNv/mSirZDHHIJm2l6jeBU0oCoRIgLBKG9yG6AcVmDiQXMPARiCJwUq21sDNIooqNrfLS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aoJjBXvT; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvPjxZ4W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FF8C4CEED;
-	Thu, 27 Mar 2025 15:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743088023;
-	bh=x2reJLSWX+cp6sO7ytQo1ksI0rQfspbr+6o7HOUNB40=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TvPjxZ4WPE8fn4uMNzBS71aFmbc+E0akaCOweiWDtj4B4BSxvhFNBP/GUJsF7K0Bc
-	 5bBfuZAu7/OYvPgg+fOVoNgfR11+PXaOmO0cVPzebKJT+uPqusteAaH4SbzKcG1sAi
-	 EJcZbptYF416kPlpzl3DVa9i+ER1anCEfGDcwvmKQ40+s8+iv+z1D+5Q5MzzZJNDuk
-	 RZnb96mnSrgSQwiyceQy8KBeCbE607nxE9iJgFESF9Pm1WBpXE/1nyjXvlJJxVGC4k
-	 S5MxjmI2VwxLq2P3Y6J8rwrR2X2W6QCQlGX9nE0WI4/qED9Zcpiiccoysu/Tttr0DN
-	 8ymAAsDMMmcpw==
-Date: Thu, 27 Mar 2025 15:06:57 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RESEND v2] rust: regulator: add a bare minimum regulator
- abstraction
-Message-ID: <93581b77-7126-4d93-bc65-e1bc24f1ba77@sirena.org.uk>
-References: <20250326-topics-tyr-regulator-v2-1-780b0362f70d@collabora.com>
- <opip2gbm6tpjqnx4hqk4mghbkhv7egexeqs5ukfn7oz3mm7nev@y7qffwz5ckdz>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aoJjBXvT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743088969;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KyIB6mZ7OHIQ8TN1E0AWKE682onUFLQ3XEbxIz51DMc=;
+	b=aoJjBXvTG6ZabkrU6jjp2FKkMwfICmt9aNTrfHqMv7BVc/7Z6s6PX+nf1KYQSNT7w6gAYr
+	3yyfrr6M24D2/YWWX+B4Y2yAAmNVvt7U9Q7Q6VEZ4KLmiSPZqZQ4JWNZAYWZlibccnB2nd
+	RPyfNc5JXN94i09798iZYfOaOhlN8GA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-538-Sx5bEwmHMruGcRiSDIdmUQ-1; Thu, 27 Mar 2025 11:22:48 -0400
+X-MC-Unique: Sx5bEwmHMruGcRiSDIdmUQ-1
+X-Mimecast-MFC-AGG-ID: Sx5bEwmHMruGcRiSDIdmUQ_1743088967
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-391315098b2so490520f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Mar 2025 08:22:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743088967; x=1743693767;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KyIB6mZ7OHIQ8TN1E0AWKE682onUFLQ3XEbxIz51DMc=;
+        b=tlb/7gVz4HNFgxiiuml8LI2LAMVm7KvMfhWYnNQwNuh0KdwgB7/V8uYMCPSPBi6F1f
+         ZOPOLCIH5AL8lQq2+jAc8kRuuFDuYDQGjhmN1REn7AgXBhE6VUFdkZuiErImkF9Sgqtf
+         3FK5qaxSEy0fNZg40KFaAvvptrjbxZX7wkf4H+L37YqIOKucz3w+eYJYbk4hpE6uKeEk
+         X4yHCNDsHRRmzyYVXPmwLE4kCrFcOldj3E9FgiXsCUOtLS4H+QIX57lW7xjduZa5uUxq
+         Q5jxJZzn8JI64arZrOV3Qd3TRB8KOvHUBXNuDGNh4Y7hhVgO93y9J596EuYMnVFGI0uv
+         cWsw==
+X-Forwarded-Encrypted: i=1; AJvYcCUNrscjjvUiWRAs9tAJrKd8aFbI/fr3dW9RnS5ZSkZT772UpLwF1qAM6xOdIZs5G/fHLba2YEP4E4jKO/w5rA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylgQrYOoBI80ZfVP/gfhr2QGMZVs42+u4De4j2KU7O/UTZ7N0+
+	eLNKZ8vMJDG1QooR97WazYlNOzCqqSrz2au8fSVY9iZ5pZ4B9IZ/RqVdgnTJv5e+/zHM+AYHgMB
+	GhrzPix7NNnYxd/okXCPwnH04bdMeEcS1F1FKMcSgyCzRUmECYkptfPeIjDJLUgw4
+X-Gm-Gg: ASbGncs9krSM/YzhPv8FajYtDfnvnGO+/ZvmfXxUwmKCTN1JJO37Up0muyfG5DYbdCc
+	lgLnX2z+wIvd1fLEojpxIfyUyDa3QM4W0tXWKP/R4yyLMFvmM/HC3/DDN5Kz6ND1BVXuENZpb/H
+	PDAliktjtF+UONyt8fDEmwoR5toGBs4uEAm9ZLMxsMaxUgTeY7saNcr4qIYaYhnStzDf5W8G4y0
+	0gfBdbiw3V0CY5pgUwrjz0GRGxFlXh6BevOhBgflyu+sDDMLlO4xoQHkcCVMcc/82+mzLB0yg9i
+	9Bss7Z/JQQF4JE6uggrdxGw7JYZcBIGbCfZKTW42PzsEQ3AwFuHoHbI=
+X-Received: by 2002:a05:6000:1f88:b0:38f:6697:af93 with SMTP id ffacd0b85a97d-39ad1740e6amr3598493f8f.9.1743088967245;
+        Thu, 27 Mar 2025 08:22:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF9Nh306S6nC8D3y6/2MymAxytzfH2EE+T7OhkoPuApxgDdG2zQZrGWFxbxp5lSU2j1CNBGxg==
+X-Received: by 2002:a05:6000:1f88:b0:38f:6697:af93 with SMTP id ffacd0b85a97d-39ad1740e6amr3598456f8f.9.1743088966782;
+        Thu, 27 Mar 2025 08:22:46 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d82dede98sm41019095e9.6.2025.03.27.08.22.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 27 Mar 2025 08:22:46 -0700 (PDT)
+Message-ID: <a495133b-7fae-4b88-8254-78d65677990f@redhat.com>
+Date: Thu, 27 Mar 2025 16:22:44 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8amVInRnHjhg5JCD"
-Content-Disposition: inline
-In-Reply-To: <opip2gbm6tpjqnx4hqk4mghbkhv7egexeqs5ukfn7oz3mm7nev@y7qffwz5ckdz>
-X-Cookie: Multics is security spelled sideways.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/10] drm/panic: add missing Markdown code span
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org
+References: <20250324210359.1199574-1-ojeda@kernel.org>
+ <20250324210359.1199574-3-ojeda@kernel.org>
+ <dd1616d5-4808-46be-9167-6fbfe76e0c73@redhat.com>
+ <CANiq72kz9SW8Rexj7feZRvTAhgF+cBwarpFnqu0TSk6C2r9SRQ@mail.gmail.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <CANiq72kz9SW8Rexj7feZRvTAhgF+cBwarpFnqu0TSk6C2r9SRQ@mail.gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: NDTJbRj7O2jo6SLLsgnsp2pKszIEXfUTwJBz0A_JFp4_1743088967
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+On 25/03/2025 20:04, Miguel Ojeda wrote:
+> On Tue, Mar 25, 2025 at 10:05 AM Jocelyn Falempe <jfalempe@redhat.com> wrote:
+>>
+>> Thanks, it looks good to me.
+>>
+>> Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+>>
+>> You want to take the whole series in the rust tree?
+>>
+>> Otherwise I can push the patch 1-2 to drm-misc-next if needed.
+> 
+> Please take them if possible, since others may want to take them
+> through their tree anyway, plus it should have less conflicts if you
+> change other bits, plus these are independent fixes anyway that can go
+> in on their own whether or not the lint gets eventually enabled.
 
---8amVInRnHjhg5JCD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I just pushed 1-2 to drm-misc-next
 
-On Thu, Mar 27, 2025 at 02:46:30PM +0100, Sebastian Reichel wrote:
-> On Wed, Mar 26, 2025 at 03:39:33PM -0300, Daniel Almeida wrote:
+Thanks,
 
-> > +    pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
-> > +        // SAFETY: It is safe to call `regulator_get()`, on a device pointer
-> > +        // received from the C code.
-> > +        let inner = from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_ptr()) })?;
+-- 
 
-> I think it's worth discussing using regulator_get() VS
-> regulator_get_optional(). We somehow ended up with the C regulator
-> API being more or less orthogonal to other in-kernel C APIs (clocks,
-> gpio, reset, LED) with the _optional suffixed version returning
-> -ENODEV for a missing regulator (and thus needing explicit handling)
-> and the normal version creating a dummy regulator (and a warning).
+Jocelyn
+> 
+> Thanks!
+> 
+> Cheers,
+> Miguel
+> 
 
-regulator was first here...
-
-> Considering the Rust API is new, it would be possible to let the
-> Rust get() function call regulator_get_optional() instead and then
-> introduce something like get_or_dummy() to call the normal
-> regulator_get() C function.
-
-> I see reasons in favor and against this. I just want to make sure it
-> has been considered before the API is being used, which makes it a
-> lot harder to change.
-
-Unless rust somehow magically allows devices to work without power this
-would just be broken.
-
---8amVInRnHjhg5JCD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmflaZAACgkQJNaLcl1U
-h9DDaAf+J6/JAUsghoQCNC12ESMZbImBjWXjl+SJNvREj/BjI2u5hMzpJDz+EKOT
-/X4JXo4rlL0g3o2y27JH4KyCRp39gVEOT2um6VgPcUnBgZSgdrO5pt3LpBTXUhvr
-FgkBvrs9a+sRuOSZ3tqwK/uaStKS99ZV1dMgVyZPz3hCPSHJjclQ4eOgxxg/qRTR
-DBCGUV93I4n1vlU4ur2C64C5hiojeXdtqBejJ1z8eHzzfkFqPa5iSlNPFPo3ynZZ
-jOwM31Kn83EiVOe4L61gwHXd7CNZLGD9UPk0SaSiHFi7JlWjuYwrkZGdlhtoXyew
-Hyv+QotIRtURu9fyoHIglt24g+4t8g==
-=Z0Ik
------END PGP SIGNATURE-----
-
---8amVInRnHjhg5JCD--
