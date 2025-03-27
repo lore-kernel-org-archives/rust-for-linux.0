@@ -1,155 +1,124 @@
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08F92135D5
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Mar 2025 11:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743075784; cv=none; b=ag/p2C0AJ0KWuwX67IDXGm5EWVxtaI9WAJYSTzGs2BCiRfO/0WtmGlo/f3ZZP2WSlILsWdNsJK/Vh8/6dG3x+AWPuhoJP1qOwUpQayYnG+QbDxnN5S3nBxgD1BzsisOSiJjgBwXFBdExYkykLLxVK0Zamx2POaGA6so1eD+CZrU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743075784; c=relaxed/simple;
-	bh=bEp6xigsLHHyRGydgFG6cY5JkgkV+AnE2CCNkdUAcfU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KMiFjS3/YK63PqsIli7L6H4tCTvJ288dIncTht7Sf/sbDMidgi/gbPme5R8DuBBKDFaXMjcIMHgfr8f855n9EXy1MML83fpRfuZmNmvv5AZ4B3bSTHy0chq6YvA1XgCyXZ0bJ03dexvkRdO0IwromcCjXLzWN1wu+alI5pDiMx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GVJ4hpuI; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CAD1F94A;
+	Thu, 27 Mar 2025 11:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743076040; cv=pass; b=SeqcAABftSAbl94jcaHm1eVuaLQMhKhJgI992RKQe1Q8/utJRQf4h2GcSwWkHuWDJTyn2jzdAojiR7BuhYfth1jIsukDk3ewRBL1LUj0WgHpgjOGrndjIXa5hXoC0m1YAEej7HMDIqHeQ7D84F/3ZyH+NnS8aozKgHl+q4EqX9E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743076040; c=relaxed/simple;
+	bh=B0F6xvi62XtdN3jBvAHF73z3nzzlNq+vFLwDxvr3n8E=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=GzZxD+lMfhfODMuV1MmLXzAksAAt5gEAhVWl5GxrRSAbt2mLufwb96v8i6hKoD1UyWVbG7YAJCX+fBrqDNktC7BY4qxr/AuGtODRXjdhlwOOuoUn7/VFiN/mbS1Uzm199X9i1Usft6CYVbUcdRfjhbKAcV0nbhT7fHsM9yG5ciE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=SskbvwwL; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GVJ4hpuI"
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3f6ab1b8fc1so573622b6e.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Mar 2025 04:43:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1743075782; x=1743680582; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=098/WJlPRFtgRjWciBzH25sdsG+k8IR2+Xx5OaMFgJQ=;
-        b=GVJ4hpuIO15f01GJzFASI174Nium1ihRU5q+BT6SL4t071ihAZr/HHQzMo1N1oa7zR
-         NRx6G8fzqLBEMnCgHNyK9fv94jil89q1krZxmDCxLwASfiMC9U/eUA99G+PFz2+HiziG
-         Tf2bZ3f1aGtoR/nXywSoyTgGEE51liM4YAt+eowcdC3FT1+9rv7JH6RqRTdK+WPptl1+
-         hjEuVhxBjsrzdZdPjz1sYNhoL2qHzUkMDP5757EJ6s089Hl4cS5B36X30aB+iNsEqbpY
-         NoWTOx71/s2AoGwaIflyMXem6uCJmy0FkcEzB31RbEfkZYbr2aUbp0mt8S8tlesDHnnE
-         FEkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743075782; x=1743680582;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=098/WJlPRFtgRjWciBzH25sdsG+k8IR2+Xx5OaMFgJQ=;
-        b=k+crREO0HocwKjw2vwZWlOR8Ny+5GVj1n7ZMn5TMm6EVEgu+Xd2LDxKEzbqOm9wIlD
-         etXfU3pRfAi7eS+GYz/uXW+wJFafpyTCn0S0Mgcucp1x1KkyD18VQes2ajbNXhZCZ3V3
-         FQWMD9OKNfne+9BkvRqk+Uk4vDYsTy5C6KVVtddFFWKtRvIUTRN+viB3vG87EWArZI4M
-         BVFbuqCeguVE30Q/1WgfC7mdqHFY0/tkRf/HB4h7t3SI5fW8UqiMwp0aLSqViaWeDGzk
-         Z0Ur3w70Q+TR1IG+/nMzTwiHnbD4+0X0T3c8E076SQn9vw4fUPbxbffo/RWclIjpAQSO
-         ZJdA==
-X-Forwarded-Encrypted: i=1; AJvYcCWy4lCuYw1kmrzURFfgAueTQyeXpwzVXBtufjRFT1zujgsCU6ctYmZX4wqD/noweOnQQMixhEZj0Nab1JbpIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNFgUhCn/vjMTPmBIXbJh9KSn7Q9GEFlHgwwoUWEzkuCzOAhy5
-	mZchsMpnFqjf/qXfUC1K6DDVUaPdWJ6R8EHHJzWvglP8jZFqEspD4JnE0Axd2qs/kqp9aRTTBog
-	RHubf+TxxWgni5yK8iqKM0Io/6VDnTcjmmpf4
-X-Gm-Gg: ASbGncuHJJbbiVb6QUg/TdWTmf2GDU9W32MfWWBM11NDMrwGvNQc+E+mWP8YSIuVCmR
-	JnXWwjPOypg+D3IspcIdx/uqN51snQD/CIUkFaoX5zcap8CdnI6oIuwBQVoRbr2iVUmhmVwMK/w
-	1rR8ocqnhKZZdKG/XmiQB5lwm1fuy3i2QUmqrw9b/dla44ZMHEHxq8G++D
-X-Google-Smtp-Source: AGHT+IHrE4C+ttk8AOVzYXJZpyZmoKHktd4gYEnnr3J+sxJW7Zapo3xVbvsYHA1pnlz/dYwvWEo5DwFoTPjiAUN91gY=
-X-Received: by 2002:a05:6808:1456:b0:3fa:c549:cff6 with SMTP id
- 5614622812f47-3fefa6055c7mr1749381b6e.36.1743075781556; Thu, 27 Mar 2025
- 04:43:01 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="SskbvwwL"
+ARC-Seal: i=1; a=rsa-sha256; t=1743076014; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TWV2T4aqmLJ5IEWBHY4MzW82t7Ka7fPOFMqOx0NIfUeBUOs7dWiz03iYWU4dRRE5qY75XvxRM8ATxvIsfztXJw44Bx8EamfBgOIpZHfy8moTO4gjX2ZJCrS2HksTnOTJKpZ5prPTvGKOD9byHD0pI+PR1ivJxnMYYDl1UHCIPkI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1743076014; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=lEHkj5Yx4zM0auDPQ9llr7Y10Y+yqKkLT+9PKE6Q5jY=; 
+	b=aOcZAmnTye+W/wF+AxWbjzCaza0bajpLQIrIFZWqWJ/Yll+pta/ut3mD9yLohZN3w2PKqE1bPoas3R7/eDp81XWxNc/XjNWzxCE+sVYxjbJNE39zbd7GAamiLF/fI7nZ6prQLpO+m/QdQDNV/vfXkur48jt3WXZMJNz7BQzyvM0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743076014;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=lEHkj5Yx4zM0auDPQ9llr7Y10Y+yqKkLT+9PKE6Q5jY=;
+	b=SskbvwwLDDSsfOmdShIC1FZ8qtVJ+DK/Mn1rO0yyZejsb8QPvvdkxISL99xNu5lY
+	ZOTE39UJDSc1b4TxRLAXqFGMH1xGJyXoNti2Ss7uPBNoJeUle8k/tNG9/GAYdwMi8OO
+	yzsCLOzJHkra8ZQP8sNCVXUunLiCkY7u/zgHv0ew=
+Received: by mx.zohomail.com with SMTPS id 1743076013029441.6226911590842;
+	Thu, 27 Mar 2025 04:46:53 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250321111535.3740332-1-bqe@google.com> <Z914T_oYHvV_Zk74@thinkpad>
-In-Reply-To: <Z914T_oYHvV_Zk74@thinkpad>
-From: Burak Emir <bqe@google.com>
-Date: Thu, 27 Mar 2025 12:42:49 +0100
-X-Gm-Features: AQ5f1Jq9HEDp_I46TikkToJM7nDxnpvmpKqtRZdrU7TGIlcs4amJcteaeH1O1l0
-Message-ID: <CACQBu=Xp7TfVHyVq8Ew+vOvEO-kWg=9b6bhdzhNDVqYE5yUSjw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/4] rust: adds Bitmap API, ID pool and bindings
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
+Subject: Re: [PATCH RESEND v2] rust: regulator: add a bare minimum regulator
+ abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <f22cbd85-1896-4842-8746-d74ee160ab3c@sirena.org.uk>
+Date: Thu, 27 Mar 2025 08:46:29 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ lgirdwood@gmail.com,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <D9ADCA08-C3B3-4964-BDB9-E62A2C7DE85F@collabora.com>
+References: <20250326-topics-tyr-regulator-v2-1-780b0362f70d@collabora.com>
+ <a98eb789-4c49-4607-ad15-76e260888d64@sirena.org.uk>
+ <0698A75E-D43C-4D02-B734-BFE1B3CC5D34@collabora.com>
+ <f22cbd85-1896-4842-8746-d74ee160ab3c@sirena.org.uk>
+To: Mark Brown <broonie@kernel.org>
+X-Mailer: Apple Mail (2.3826.400.131.1.6)
+X-ZohoMailClient: External
 
-On Fri, Mar 21, 2025 at 3:31=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
-rote:
->
-> On Fri, Mar 21, 2025 at 11:15:28AM +0000, Burak Emir wrote:
-> > This series adds a Rust bitmap API for porting the approach from
-> > commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
-> > to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
-> >
-> > The Rust bitmap API provides a safe abstraction to underlying bitmap
-> > and bitops operations. For now, only includes method necessary for
-> > dbitmap.h, more can be added later. We perform bounds checks for
-> > hardening, violations are programmer errors that result in panics.
-> >
-> > This version includes an optimization to represent the bitmap inline,
-> > as suggested by Yury.
->
-> We have a tag for it:
->
-> Suggested-by: Yury Norov <yury.norov@gmail.com>
+Hi Mark,
 
-Will add.
+> On 27 Mar 2025, at 08:32, Mark Brown <broonie@kernel.org> wrote:
+>=20
+> On Wed, Mar 26, 2025 at 04:49:26PM -0300, Daniel Almeida wrote:
+>>> On 26 Mar 2025, at 15:56, Mark Brown <broonie@kernel.org> wrote:
+>=20
+>>>> +    /// Disables the regulator.
+>>>> +    pub fn disable(self) -> Result<Regulator> {
+>>>> +        // Keep the count on `regulator_get()`.
+>>>> +        let regulator =3D ManuallyDrop::new(self);
+>=20
+>>> This looks like user code could manually call it which feels like =
+asking
+>>> for trouble?
+>=20
+>> Yes, user code can call this. My understanding is that drivers may =
+want to
+>> disable the regulator at runtime, possibly to save power when the =
+device is
+>> idle?
+>=20
+>> What trouble are you referring to?
+>=20
+> My understanding was that the enable was done by transforming a
+> Regulator into an EnabledRegulator but if you can explicitly call
+> disable() on an EnabledRegulator without destroying it then you've got
+> an EnabledRegulator which isn't actually enabled.  Perhaps it's not
+> clear to me how the API should work?
 
->
-> > The Rust equivalent of dbitmap.h is included as id_pool.rs, which is
-> > tightly coupled to the bitmap API. Includes an example of usage
-> > that requires releasing a spinlock, as expected in Binder driver.
->
-> I don't think it's worth to refer the existing dbitmap.h, because:
->
-> 1. It's buggy;
-> 2. You limit yourself with committing to provide an 'equivalent' API.
-> 3. If you want to bring the existing dbitmaps.h, you'd just bring
->    bindings for them, not a re-implementation.
->
-> Can you just say that you're adding dynamic bit arrays in rust?
->
+No, you misunderstood a bit, but that=E2=80=99s on me, I should have =
+included examples.
 
-True, "equivalent" is maybe too strong.
+> +impl EnabledRegulator {
 
-I considered "DybamicBitmap" but dbitmap is only providing a
-dynamically sized bitmap under the hood (and with a specific API).
-It does not expose `set_bit`, `clear_bit` methods as one would expect
-from a Bitmap API.
+> +    /// Disables the regulator.
+> +    pub fn disable(self) -> Result<Regulator>=20
 
-That is why I found IdPool a better name. I am not attached to the
-name, just dynamic bitmap seems misleading.
-It is essentially a dynamically sized thing that happens to be
-implemented efficiently using a bitmap.
-I will leave it to Alice to explain why Binder needs it.
+disable() consumes EnabledRegulator to return Regulator.
+
+Any function that takes 'self' by value (i.e.: =E2=80=9Cself" instead of =
+=E2=80=9C&self=E2=80=9D )
+effectively kills it. So, in that sense, disable() performs a conversion
+between the two types after calling regulator_disable().
+
+=E2=80=94 Daniel
 
 
-> > This is v5 of a patch introducing Rust bitmap API [v4]. Thanks
-> > for all the helpful comments, this series has improved significantly
-> > as a result of your work.
-> >
-> > Changes v4 --> v5: (suggested by Yury and Alice)
-> > - rebased on next-20250318
-> > - split MAINTAINERS changes
-> > - no dependencies on [1] and [2] anymore - Viresh,
-> >   please do add a separate section if you want to maintain cpumask.rs
-> >   separately.
-> > - imports atomic and non-atomic variants, introduces a naming conventio=
-n
-> >   set_bit and set_bit_atomic on the Rust side.
-> > - changed naming and comments. Keeping `new`.
-> > - change dynamic_id_pool to id_pool
-> > - represent bitmap inline when possible
-> > - add some more tests
-> > - add bqe@google.com as M: for the Rust abstractions
->
-> Instead of 'bqe@google.com' just say: myself.
-
-Sure thing : )
-
-Thanks,
-Burak
