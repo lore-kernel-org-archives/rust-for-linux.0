@@ -1,118 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74152114;
-	Thu, 27 Mar 2025 00:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B4E3FC3;
+	Thu, 27 Mar 2025 05:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743033790; cv=none; b=SHE3uGmfsJGcnZ0irax4375NSHtGBAx4QMbvc2GKrvqWvFz29trsfYDQ6zh+L5zS27/55rcOd4wej8jcK/xmLPySCKNk5ScA0rxEKbrJb9y4r2X1CwPhWFQRWlp+cHhLPIhdaXFeEwzRmq1QRYTzqic3W6mwZXdZerRRDrCoUnQ=
+	t=1743052011; cv=none; b=Hy+aEEetMYuOFO+4rPpM8G5pJe7weeiGIEd545Cwa8uPQlJ47kL618Zc8Dp0AsaDqyjcYWmlppMv0lwb8gcCvspFma/cPCnNipydw/luVHpNTpa9dKrXpgAJCXKr4bDCdlFmVppOvX8NSU8yl2+YgKYh7IzuKnHBQBDQ75lUoZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743033790; c=relaxed/simple;
-	bh=CCjSPDZVo2hoLF4g6LePOKhEhcRY89Xy5MCm450/MOU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mGjvi71tfcSCvviMv6nessEEMLWpY8bKKnQK38bGpia2t7OFsvxkJnZcfMtvjJMZ5Jp/WNMsSnj4HMUp+ubRfETsVhWqJHxsx6bpN0ohZEUjESERiXnzmoEk85XUGXZKrKkbE1vxqHz8Gb2RFnmzKMpboFzIkAGWVYiCcZ54CII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vL+NKwqp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743052011; c=relaxed/simple;
+	bh=QZLA+YWmkUgWaU8UO4CO8t8Sl4UJJ33oXkNapqZpkSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LAltjkQ427goO4Xz7Ex6E69Y/zQzG9nC8m1MJOmsj5KhUqvNEg8R09gvcNNIaJsOVbLa7FRz4XkmYlxntlYDdiKhvgYupscbS2/Gf2FE3202LA2zpX3CTBUV2s1sElzwFU3AWqqgZ+z7iIVY6tpbtwxyULiYZD3gQxfPkbiH1Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VDw3Xafn; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vL+NKwqp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF98C4CEE2;
-	Thu, 27 Mar 2025 00:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743033790;
-	bh=CCjSPDZVo2hoLF4g6LePOKhEhcRY89Xy5MCm450/MOU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=vL+NKwqp8c9HC5c30Q6ri1Y5yuTsi/EpenHjDf9CNMaeXqpxghA8YA6YWhwz1hQ+F
-	 VUWA5uSym/8DTgSLWQImCc80GnbJE3NnA1VWdjal24PqvWRmIOA+gf/9OAo9DRVTRW
-	 3JpAp9PAt7xs7L0tLjRrrvowhdrURlG2LlCwfG/tg/1NGrjUnDxkvAEGYyM3fu6RLx
-	 eIjePamEWaufKTbh1ZSrGZGKhmIlxxiVVLjS89zWUt1kPQy/79qOwHN+ej0psdlae/
-	 tzkFnZyhZjYS/msFoHekHQO90cwrJ+u7NsVP8yS0Xu7SCYrhnD/BlOLShy4MmLa0OC
-	 A/Ffz0TWBl1XA==
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5e5e8274a74so616917a12.1;
-        Wed, 26 Mar 2025 17:03:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV2n2u31D6yVidZr7RcImNkQfw0HmVVHa7aiKsQ6HwmexO1b+49n9obxfGrSQ8dBz4N5hOzUZLa3BP4bA==@vger.kernel.org, AJvYcCVcDrf0PJX7ciz8oUIQ1S6BwjMyvmbWYZkV8rj4GQTq7pU1jlwDLziR+7SOK1snnErdgJsRGzHRIR2u0kMF@vger.kernel.org, AJvYcCVkwJdWe+ySZCXd8eloOvyNFIrbCGBgkOD+/ftzjk9mCy9VgWYCVa/tW9ovVkcMqvUqowpVoezGEtJd@vger.kernel.org, AJvYcCWWftW046uoOpveLYzNSAgFTN3Sdt7PItfTjZmHna+HvP1eeLDWtdH8hgJLqaoS1A+mo5K75VPkHaYPU/1Cl3w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3U7e55GOL+UndvZdMfZgC12m9LnuqxhgzCgnVjBPNARS6UTdo
-	hfM7bB5u+E+u9FZcJs0Zb/2gex9vwcIf+U0rjL3m3SObMhOK28+ZETQ+T2jZAPFLYDEGu+6/fxA
-	YfI3Z8MYKZBBanSMwHEPjgAOHFw==
-X-Google-Smtp-Source: AGHT+IERzT0kl1LknG2usIHMI1+Lt1VD4s7YUfGbLkTeY7qe+y/QCZpxxzGJSyF5y3Gin8FJCELvt/lRJqwoZFoadfA=
-X-Received: by 2002:a17:907:d89:b0:ac6:d9cb:58c0 with SMTP id
- a640c23a62f3a-ac6fb1a73c2mr107112066b.50.1743033788647; Wed, 26 Mar 2025
- 17:03:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VDw3Xafn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743052009; x=1774588009;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QZLA+YWmkUgWaU8UO4CO8t8Sl4UJJ33oXkNapqZpkSY=;
+  b=VDw3Xafnf3mHZsgskTgkLibo5HjiPKKrXx8lEnOLcldN0eELurDFkNAa
+   Jx8qKhaLzamhOFZJYd/lzPw5ncg0eOw8MXXQ3UtVhEoz3V76DIR8L92GT
+   4UcQSvDNVx/E7GpvxlhJXxJRcBXOaAFC+mcdBHKLVJmJGI58tOvN+XVBv
+   s2OHz85PCnxmzO2qDSPhNwD9GJia6FQO1xIG9DVc9o2WxGl4gmNSQ2tT0
+   VFV7n02ZdWVs+5uf4UteduHx8ypZ3TQ/E6K4hf7yVRIoQ5GWuh0f33Waz
+   AaGRfbsjYdHUtoB/eKRZoUYCcT+m5LErU4feAdXXOu9vYpMvirPRmvkyI
+   Q==;
+X-CSE-ConnectionGUID: ImTQNK+gS0y/1ez1cnV1dw==
+X-CSE-MsgGUID: oyIN9g8oRS6UvIH/mj4yQA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="48241850"
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; 
+   d="scan'208";a="48241850"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2025 22:06:48 -0700
+X-CSE-ConnectionGUID: Z0QRF+MaQFmANCuRmqa1jw==
+X-CSE-MsgGUID: u8PPwCnlRmGXX1fBkKmIHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,279,1736841600"; 
+   d="scan'208";a="130140137"
+Received: from lkp-server02.sh.intel.com (HELO e98e3655d6d2) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 26 Mar 2025 22:06:43 -0700
+Received: from kbuild by e98e3655d6d2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1txfRx-0006NX-20;
+	Thu, 27 Mar 2025 05:06:41 +0000
+Date: Thu, 27 Mar 2025 13:05:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: Filipe Xavier <felipeaggger@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org, felipe_life@live.com,
+	linux-kernel@vger.kernel.org,
+	Filipe Xavier <felipeaggger@gmail.com>,
+	Lyude Paul <lyude@redhat.com>
+Subject: Re: [PATCH v2] rust: add new macro for common bitmap operations
+Message-ID: <202503271256.KMMeri1M-lkp@intel.com>
+References: <20250325-feat-add-bitmask-macro-v2-1-d3beabdad90f@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250326171411.590681-1-remo@buenzli.dev> <20250326171411.590681-11-remo@buenzli.dev>
- <20250326220129.GD2844851-robh@kernel.org> <D8QJSRGJIYHS.K4H9W8N8N0YO@buenzli.dev>
-In-Reply-To: <D8QJSRGJIYHS.K4H9W8N8N0YO@buenzli.dev>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 26 Mar 2025 19:02:56 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqK0SH+HTtquxDNvp8jCLwJgg7YJDNQT8h=kHO=nJChk4Q@mail.gmail.com>
-X-Gm-Features: AQ5f1JpETx50vOdiMhHoK95MGuYfdGvgMOPx1IsTpXGdDGU44Po8M857aSNDVHs
-Message-ID: <CAL_JsqK0SH+HTtquxDNvp8jCLwJgg7YJDNQT8h=kHO=nJChk4Q@mail.gmail.com>
-Subject: Re: [PATCH 10/10] samples: rust: platform: Add property read examples
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250325-feat-add-bitmask-macro-v2-1-d3beabdad90f@gmail.com>
 
-On Wed, Mar 26, 2025 at 5:24=E2=80=AFPM Remo Senekowitsch <remo@buenzli.dev=
-> wrote:
->
-> On Wed Mar 26, 2025 at 11:01 PM CET, Rob Herring wrote:
-> >>
-> >> +        let prop =3D dev
-> >> +            .property_read::<bool>(c_str!("test,bool-prop"))
-> >> +            .required()?;
-> >
-> > The 'required' is kind of odd for boolean properties. They are never
-> > required as not present is the only way to to get false.
->
-> Agreed. I can think of a few alternatives:
->
-> * Make the trait `Property` more flexible to allow each implementor to sp=
-ecify
->   what its output type for the `read` function is, via an associated type=
-.
->   I really don't like this idea, because overly generic APIs can mess wit=
-h type
->   inference and become less ergonomic because of it.
->
-> * Use `propert_present` instead. That doesn't perfectly express the inten=
-tion,
->   because it doesn't warn if the property is present but has a type other=
- than
->   bool.
+Hi Filipe,
 
-Right. I've been cleaning up the tree to use of_property_read_bool()
-on bools and of_property_present() on non-bools, so don't want to go
-back to 1 function. The C code now warns on a mismatch.
+kernel test robot noticed the following build warnings:
 
-> * Add an additional inherent method `property_read_bool`, which returns a=
- plain
->   `bool` instead of `PropertyGuard<bool>`. Then there will be three sligh=
-tly
->   different ways to read a bool: `property_present`, `property_read_bool`=
- and
->   `property_read::<bool>`. Maybe that's confusing.
->
-> * Add `property_read_bool` and remove `impl Property for bool`. That woul=
-d avoid
->   confusion between `property_read_bool` and `property_read::<bool>`, onl=
-y the
->   former would work.
+[auto build test WARNING on beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d]
 
-I think I would go with this option. Easier to add another way later
-than remove one.
+url:    https://github.com/intel-lab-lkp/linux/commits/Filipe-Xavier/rust-add-new-macro-for-common-bitmap-operations/20250325-213139
+base:   beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+patch link:    https://lore.kernel.org/r/20250325-feat-add-bitmask-macro-v2-1-d3beabdad90f%40gmail.com
+patch subject: [PATCH v2] rust: add new macro for common bitmap operations
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250327/202503271256.KMMeri1M-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250327/202503271256.KMMeri1M-lkp@intel.com/reproduce)
 
-Rob
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503271256.KMMeri1M-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> warning: unresolved link to `BitOr`
+   --> rust/kernel/impl_flags.rs:8:55
+   |
+   8 | /// - Implementations of common bitmask operations ([`BitOr`], [`BitAnd`], etc.).
+   |                                                       ^^^^^ no item named `BitOr` in scope
+   |
+   = help: to escape `[` and `]` characters, add '' before them like `[` or `]`
+   = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
+--
+>> warning: unresolved link to `BitAnd`
+   --> rust/kernel/impl_flags.rs:8:66
+   |
+   8 | /// - Implementations of common bitmask operations ([`BitOr`], [`BitAnd`], etc.).
+   |                                                                  ^^^^^^ no item named `BitAnd` in scope
+   |
+   = help: to escape `[` and `]` characters, add '' before them like `[` or `]`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
