@@ -1,98 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBBD1F55FB;
-	Wed, 26 Mar 2025 22:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74152114;
+	Thu, 27 Mar 2025 00:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743028894; cv=none; b=JFs2lfS/2aKrLn6DzykUFuzXRz84vXsayqjLxmqddbnl6dwtDe6mqveSxyqPmjU2vhS/38dkLQ8UKD53/UskLMFTjEr40c0m4bINIezVfePDJ1EpNGJRbZN3q9yQ3gDntTeK+MV41QD3/P9K7XEojenzk4Cfk62+oYowrTcujTc=
+	t=1743033790; cv=none; b=SHE3uGmfsJGcnZ0irax4375NSHtGBAx4QMbvc2GKrvqWvFz29trsfYDQ6zh+L5zS27/55rcOd4wej8jcK/xmLPySCKNk5ScA0rxEKbrJb9y4r2X1CwPhWFQRWlp+cHhLPIhdaXFeEwzRmq1QRYTzqic3W6mwZXdZerRRDrCoUnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743028894; c=relaxed/simple;
-	bh=lqViN5Eu7Ch/V4e0CAlSLoRL5PM7JT6zJCd7tWfuf80=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fkGreby/UYhZZq6Ahm4MEEVB6ugeNwEjZ6OQu5MUeJDRF3gU2c+HqRGBcugeGCM8VMxNMR/krXOmISM/kf1UBvCeVBcmoKyL3rkWrCCKiG29laaYm/ElB0ncz0UM47zIsY60URE+vVz2T3ndsqQIsyOf1OiG2tMWNRzJ+Jp6/zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cvHzBxHm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743033790; c=relaxed/simple;
+	bh=CCjSPDZVo2hoLF4g6LePOKhEhcRY89Xy5MCm450/MOU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mGjvi71tfcSCvviMv6nessEEMLWpY8bKKnQK38bGpia2t7OFsvxkJnZcfMtvjJMZ5Jp/WNMsSnj4HMUp+ubRfETsVhWqJHxsx6bpN0ohZEUjESERiXnzmoEk85XUGXZKrKkbE1vxqHz8Gb2RFnmzKMpboFzIkAGWVYiCcZ54CII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vL+NKwqp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cvHzBxHm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AF2C4CEE2;
-	Wed, 26 Mar 2025 22:41:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vL+NKwqp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF98C4CEE2;
+	Thu, 27 Mar 2025 00:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743028893;
-	bh=lqViN5Eu7Ch/V4e0CAlSLoRL5PM7JT6zJCd7tWfuf80=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cvHzBxHmPy+Ul3xEP3SsXt4oVcY/0S4iEmX1MGmr50C+EAefcC7FOo8Og7euEjkuI
-	 YaqXLva51MPq3l0kn8mFBkKsDeFNKBO8D0QYhyhnCQu02bAVcMgi5h0pp2LnX72WeG
-	 caLUbA3pTrvBQUMCughZnEV0ndl+PpICOKScEMTBCYEEpCrHVFVCohLKWql6ri18O7
-	 668wEV8hvp23gOBzlljdqQV2DR5LpXgrshg6N+eFybKyagiqdfhbTjg5zK3gap1OZJ
-	 JT9/kYySWOg7HGgYM0k3xX5DFdPbxUnuzaVzz7BurWd7vdsVp4KPOaV6xPAFY/+uKK
-	 lggK61WcaNcUQ==
-Date: Wed, 26 Mar 2025 17:41:32 -0500
-From: Rob Herring <robh@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 01/10] rust: Move property_present to property.rs
-Message-ID: <20250326224132.GA2958946-robh@kernel.org>
-References: <20250326171411.590681-1-remo@buenzli.dev>
- <20250326171411.590681-2-remo@buenzli.dev>
- <20250326205106.GB2787672-robh@kernel.org>
+	s=k20201202; t=1743033790;
+	bh=CCjSPDZVo2hoLF4g6LePOKhEhcRY89Xy5MCm450/MOU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=vL+NKwqp8c9HC5c30Q6ri1Y5yuTsi/EpenHjDf9CNMaeXqpxghA8YA6YWhwz1hQ+F
+	 VUWA5uSym/8DTgSLWQImCc80GnbJE3NnA1VWdjal24PqvWRmIOA+gf/9OAo9DRVTRW
+	 3JpAp9PAt7xs7L0tLjRrrvowhdrURlG2LlCwfG/tg/1NGrjUnDxkvAEGYyM3fu6RLx
+	 eIjePamEWaufKTbh1ZSrGZGKhmIlxxiVVLjS89zWUt1kPQy/79qOwHN+ej0psdlae/
+	 tzkFnZyhZjYS/msFoHekHQO90cwrJ+u7NsVP8yS0Xu7SCYrhnD/BlOLShy4MmLa0OC
+	 A/Ffz0TWBl1XA==
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5e5e8274a74so616917a12.1;
+        Wed, 26 Mar 2025 17:03:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV2n2u31D6yVidZr7RcImNkQfw0HmVVHa7aiKsQ6HwmexO1b+49n9obxfGrSQ8dBz4N5hOzUZLa3BP4bA==@vger.kernel.org, AJvYcCVcDrf0PJX7ciz8oUIQ1S6BwjMyvmbWYZkV8rj4GQTq7pU1jlwDLziR+7SOK1snnErdgJsRGzHRIR2u0kMF@vger.kernel.org, AJvYcCVkwJdWe+ySZCXd8eloOvyNFIrbCGBgkOD+/ftzjk9mCy9VgWYCVa/tW9ovVkcMqvUqowpVoezGEtJd@vger.kernel.org, AJvYcCWWftW046uoOpveLYzNSAgFTN3Sdt7PItfTjZmHna+HvP1eeLDWtdH8hgJLqaoS1A+mo5K75VPkHaYPU/1Cl3w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3U7e55GOL+UndvZdMfZgC12m9LnuqxhgzCgnVjBPNARS6UTdo
+	hfM7bB5u+E+u9FZcJs0Zb/2gex9vwcIf+U0rjL3m3SObMhOK28+ZETQ+T2jZAPFLYDEGu+6/fxA
+	YfI3Z8MYKZBBanSMwHEPjgAOHFw==
+X-Google-Smtp-Source: AGHT+IERzT0kl1LknG2usIHMI1+Lt1VD4s7YUfGbLkTeY7qe+y/QCZpxxzGJSyF5y3Gin8FJCELvt/lRJqwoZFoadfA=
+X-Received: by 2002:a17:907:d89:b0:ac6:d9cb:58c0 with SMTP id
+ a640c23a62f3a-ac6fb1a73c2mr107112066b.50.1743033788647; Wed, 26 Mar 2025
+ 17:03:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250326205106.GB2787672-robh@kernel.org>
+References: <20250326171411.590681-1-remo@buenzli.dev> <20250326171411.590681-11-remo@buenzli.dev>
+ <20250326220129.GD2844851-robh@kernel.org> <D8QJSRGJIYHS.K4H9W8N8N0YO@buenzli.dev>
+In-Reply-To: <D8QJSRGJIYHS.K4H9W8N8N0YO@buenzli.dev>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 26 Mar 2025 19:02:56 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqK0SH+HTtquxDNvp8jCLwJgg7YJDNQT8h=kHO=nJChk4Q@mail.gmail.com>
+X-Gm-Features: AQ5f1JpETx50vOdiMhHoK95MGuYfdGvgMOPx1IsTpXGdDGU44Po8M857aSNDVHs
+Message-ID: <CAL_JsqK0SH+HTtquxDNvp8jCLwJgg7YJDNQT8h=kHO=nJChk4Q@mail.gmail.com>
+Subject: Re: [PATCH 10/10] samples: rust: platform: Add property read examples
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 26, 2025 at 03:51:06PM -0500, Rob Herring wrote:
-> On Wed, Mar 26, 2025 at 06:13:40PM +0100, Remo Senekowitsch wrote:
-> > Not all property-related APIs can be exposed directly on a device.
-> > For example, iterating over child nodes of a device will yield
-> > fwnode_handle. Thus, in order to access properties on these child nodes,
-> > the APIs has to be duplicated on a fwnode as they are in C.
-> 
-> s/has/have/
-> 
-> > 
-> > A related discussion can be found on the R4L Zulip[1].
-> > 
-> > [1] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/DS90UB954.20driver.20done.2C.20ready.20to.20upstream.3F/near/505415697
-> 
-> Useful below the '---', but I don't think we want to keep this link 
-> forever. And who knows how long it will be valid? The commit msg needs 
-> to stand on its own, and I think it does.
-> 
-> > 
-> > Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> > ---
-> >  rust/helpers/helpers.c  |  1 +
-> >  rust/helpers/property.c | 13 ++++++++
-> >  rust/kernel/device.rs   |  7 ----
-> >  rust/kernel/lib.rs      |  1 +
-> >  rust/kernel/property.rs | 73 +++++++++++++++++++++++++++++++++++++++++
-> >  5 files changed, 88 insertions(+), 7 deletions(-)
-> >  create mode 100644 rust/helpers/property.c
-> >  create mode 100644 rust/kernel/property.rs
+On Wed, Mar 26, 2025 at 5:24=E2=80=AFPM Remo Senekowitsch <remo@buenzli.dev=
+> wrote:
+>
+> On Wed Mar 26, 2025 at 11:01 PM CET, Rob Herring wrote:
+> >>
+> >> +        let prop =3D dev
+> >> +            .property_read::<bool>(c_str!("test,bool-prop"))
+> >> +            .required()?;
+> >
+> > The 'required' is kind of odd for boolean properties. They are never
+> > required as not present is the only way to to get false.
+>
+> Agreed. I can think of a few alternatives:
+>
+> * Make the trait `Property` more flexible to allow each implementor to sp=
+ecify
+>   what its output type for the `read` function is, via an associated type=
+.
+>   I really don't like this idea, because overly generic APIs can mess wit=
+h type
+>   inference and become less ergonomic because of it.
+>
+> * Use `propert_present` instead. That doesn't perfectly express the inten=
+tion,
+>   because it doesn't warn if the property is present but has a type other=
+ than
+>   bool.
 
-Also, property.rs needs to be added to MAINTAINERS. I guess it goes 
-under driver core with Greg.
+Right. I've been cleaning up the tree to use of_property_read_bool()
+on bools and of_property_present() on non-bools, so don't want to go
+back to 1 function. The C code now warns on a mismatch.
+
+> * Add an additional inherent method `property_read_bool`, which returns a=
+ plain
+>   `bool` instead of `PropertyGuard<bool>`. Then there will be three sligh=
+tly
+>   different ways to read a bool: `property_present`, `property_read_bool`=
+ and
+>   `property_read::<bool>`. Maybe that's confusing.
+>
+> * Add `property_read_bool` and remove `impl Property for bool`. That woul=
+d avoid
+>   confusion between `property_read_bool` and `property_read::<bool>`, onl=
+y the
+>   former would work.
+
+I think I would go with this option. Easier to add another way later
+than remove one.
 
 Rob
