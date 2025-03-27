@@ -1,43 +1,44 @@
 Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7FB1B6D08
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Mar 2025 22:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9181ACEBE;
+	Thu, 27 Mar 2025 22:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743113613; cv=none; b=fH2Np/WC2b1GIEGq++MMiSgtAKevn0fw9jtrVDttHoRZ1EvxlIPBMrsXL1qDgmTeMp9VTLpy1Zj0PYcoIYE4UHMX2W3jg1l5KTQjB/AUSFClPbgIksh1Ovyj/BG3Jlk+NDwXfTw8cNc6550rLtsDHQcDcF6wiz3o2JtWwkJu+v8=
+	t=1743113842; cv=none; b=JjAMGBYKi5unv9oPzb4F7gwlovTkne5jCCFeNi9+nnuUMURVt4vK0SvU/raTjAUd/wG7ETMUFlxqXheoIwNlaQbllpJUQsOBDm2fhtjXTawKBy0fTXha96KYd7Gy5oCwrB6j47ypDpA+CujVr93zdIgb8eJxKK6E2VHSm5B2Nsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743113613; c=relaxed/simple;
-	bh=TYGJ8FnfsKT1SKjoZWBosa8mBZ3KjzthRNE8P8nvecE=;
+	s=arc-20240116; t=1743113842; c=relaxed/simple;
+	bh=89psVsuhmLnpB0D1Kli4UHQLPn+imufHphtlmAmXIs0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z71NZ9I/k8t3aHvnjDM7+gB1nf2+FEVOy6Sd8Y9Bo6TVXmnkzjncJbMS4hLDYe9uFNl52L0K2DmPyV9MJ4NtJwajSXTl4bgY9ERpq6djn1uHp1JADdP7PznzW+B/cFlvly0EpCX7aANiRLnh+amqF1DeU+F5Nfu3ak+mPZEknW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=RfneHWSi; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=Yj1jiFYyPNoKQl+l+O+b07F1z86xYEMDAGueip+THKLPuwU85vKsUxH0oxueoiDnTWO/XfUV6VjTXd+EbMJgeTElPUnDAhNwoyIC+ZhiRge+GXJQEkZWqdADZ8GFqTU0feCecPqyzxNL8C0Xs6JKcrIiwXO6mqx+EPYVBwe2GEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=jic0rZP8; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="RfneHWSi"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="jic0rZP8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=rq2gsk3pfvay7fg5nyq3ghjsg4.protonmail; t=1743113609; x=1743372809;
-	bh=Vrk6CcpdVcblD8Yoi4uM8XudDIG9EgjbDWgg5W2/PO0=;
+	s=protonmail; t=1743113838; x=1743373038;
+	bh=pOr0DNwW22udl+QjNXdk6JXxuaFTQiZdJAYlJD9wBnM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=RfneHWSiAyNxultd7Fssx0bbLRtJdVbBqsZJz5oD6qD2GsbQ4/36TWrpLy7lg+DmF
-	 vnlER0HAcssPgET0HTb9yNDxki7tEztPSH0C8H67N0XPwy+gZ5WPbq2qCtQ1eENQPU
-	 kOnGYplP6tb3H4rtk29pwmRMCS+7s+FUcGx5PhMAr0lDOuWfLKDneKOrlEvWAFlLOD
-	 ZKXQkFuKl2U1Wg5B2xRsUOnmUFtHUGK38R/UbIZATR7RBxqKrAlbLOCJHbYXGQN5dv
-	 GPE9uqewuMZymcnHSm0Xzu1EsICI8eYZMERYJRwmRIsRkK/LbcTptqGpefovzTB26o
-	 BEe/cCRP+vMxA==
-Date: Thu, 27 Mar 2025 22:13:22 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+	b=jic0rZP8jIRDUlYJVFn/WyH0SzSXhx/zI69q9kX7QeIHgrcfENJqk0J8WRHjnVLi8
+	 NYQ1OQjEs2l7GGNjObJEnLrPxDYndr08EDpfs5TYJPPr+lShwi3LeLeDuagfKMTX0v
+	 UXJnlwsDLJtsylUVLqPjRLZYRG8dDGGuGYSii/uS3sv0xX1IDXSgSC7+Wz31lLkvL2
+	 5BnTTLJTUPFluto7iYwREkzHvpTxJGSFCr0IhBxuyRScrQ9B5ClXkGkU0BdIv7WVEx
+	 65PCUwy1qRK0ngPc/CSLFvWJ2GfvoP8cmalbSSqimzg1t97SUicTxDSvJk0LsHlwll
+	 zekMJyBpIF4Pg==
+Date: Thu, 27 Mar 2025 22:17:13 +0000
+To: Tamir Duberstein <tamird@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH] rust: clarify the language unstable features in use
-Message-ID: <D8RE79BLHK7K.1ZM2N5RBYGUY8@proton.me>
-In-Reply-To: <20250327211302.286313-1-ojeda@kernel.org>
-References: <20250327211302.286313-1-ojeda@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, linux-block@vger.kernel.org, devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v7 7/7] rust: enable `clippy::ref_as_ptr` lint
+Message-ID: <D8REA6VW7QFS.Y5195VX38USO@proton.me>
+In-Reply-To: <CAJ-ks9n3BdKkfCpMXhE8M8Sx4B5rASoNvbmA4zPU3rmPQwZCiQ@mail.gmail.com>
+References: <20250325-ptr-as-ptr-v7-0-87ab452147b9@gmail.com> <CAJ-ks9nKT2PUDm6=b4AB1QUWwwvcqPn7Vz60=c0B+uFMZrqPew@mail.gmail.com> <D8QDOBUM6NF0.CGJY7ZA5KD9S@proton.me> <CAJ-ks9ntTxBM=c5nUZWGv3MoRt-LveBchn-c1Xy-DGap7fLVRA@mail.gmail.com> <D8QI804Q3DAS.2BV4WSL81H52Z@proton.me> <CAJ-ks9mA5QDeZ3EvOD3THayFt4TtDysgm0jp2aiSF2mQCrhWiQ@mail.gmail.com> <D8QJMH5UR6VG.2OT5MXJJQU5QT@proton.me> <CAJ-ks9m96vf_HxttuopuC_UfNGJbHHNdEGS2er6nZZG38pe3HQ@mail.gmail.com> <CAJ-ks9n3BdKkfCpMXhE8M8Sx4B5rASoNvbmA4zPU3rmPQwZCiQ@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 57039260adb80c49be970e0c87108b8ac94d43c1
+X-Pm-Message-ID: 82a53baabf13e0ce95fda485724e51f17f7c7368
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,136 +48,90 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu Mar 27, 2025 at 10:13 PM CET, Miguel Ojeda wrote:
-> We track the details of which Rust features we use at our usual "live
-> list" [1] (and its sub-lists), but in light of a discussion in the LWN
-> article [2], it would help to clarify it in the source code.
+On Thu Mar 27, 2025 at 8:44 PM CET, Tamir Duberstein wrote:
+> On Thu, Mar 27, 2025 at 10:15=E2=80=AFAM Tamir Duberstein <tamird@gmail.c=
+om> wrote:
+>> On Wed, Mar 26, 2025 at 6:15=E2=80=AFPM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>> > On Wed Mar 26, 2025 at 11:09 PM CET, Tamir Duberstein wrote:
+>> > > On Wed, Mar 26, 2025 at 5:09=E2=80=AFPM Benno Lossin <benno.lossin@p=
+roton.me> wrote:
+>> > >> On Wed Mar 26, 2025 at 8:06 PM CET, Tamir Duberstein wrote:
+>> > >> > On Wed, Mar 26, 2025 at 1:36=E2=80=AFPM Benno Lossin <benno.lossi=
+n@proton.me> wrote:
+>> > >> >> On Wed Mar 26, 2025 at 5:57 PM CET, Tamir Duberstein wrote:
+>> > >> >> >
+>> > >> >> > Yeah, we should do this - but again: not relevant in this disc=
+ussion.
+>> > >> >>
+>> > >> >> I think it's pretty relevant.
+>> > >> >
+>> > >> > It's not relevant because we're no longer talking about transmuti=
+ng
+>> > >> > pointer to pointer. The two options are:
+>> > >> > 1. transmute reference to reference.
+>> > >> > 2. coerce reference to pointer, `as` cast pointer to pointer (tri=
+ggers
+>> > >> > `ptr_as_ptr`), reborrow pointer to reference.
+>> > >> >
+>> > >> > If anyone can help me understand why (2) is better than (1), I'd
+>> > >> > certainly appreciate it.
+>> > >>
+>> > >> I am very confident that (2) is correct. With (1) I'm not sure (see
+>> > >> above), so that's why I mentioned it.
+>> > >
+>> > > Can you help me understand why you're confident about (2) but not (1=
+)?
+>> >
+>> > My explanation from above explains why I'm not confident about (1):
+>> >
+>> >     For ptr-to-int transmutes, I know that they will probably remove
+>> >     provenance, hence I am a bit cautious about using them for ptr-to-=
+ptr or
+>> >     ref-to-ref.
+>> >
+>> > The reason I'm confident about (2) is that that is the canonical way t=
+o
+>> > cast the type of a reference pointing to an `!Sized` value.
+>>
+>> Do you have a citation, other than the transmute doc?
+
+Not that I am aware of anything.
+
+> Turns out this appeases clippy:
 >
-> In particular, we are very close to rely only on stable Rust language-wis=
-e
-> -- essentially only two language features remain (including the `kernel`
-> crate).
->
-> Thus add some details in both the feature list of the `kernel` crate as
-> well as the list of allowed features.
->
-> This does not over every single feature, and there are quite a few
-> non-language features that we use too. To have the full picture, please
-> refer to [1].
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/2 [1]
-> Link: https://lwn.net/Articles/1015409/ [2]
-> Suggested-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> index 80a9782b1c6e..7a6fc78fc314 100644
+> --- a/rust/kernel/uaccess.rs
+> +++ b/rust/kernel/uaccess.rs
+> @@ -240,9 +240,10 @@ pub fn read_raw(&mut self, out: &mut
+> [MaybeUninit<u8>]) -> Result {
+>      /// Fails with [`EFAULT`] if the read happens on a bad address,
+> or if the read goes out of
+>      /// bounds of this [`UserSliceReader`]. This call may modify
+> `out` even if it returns an error.
+>      pub fn read_slice(&mut self, out: &mut [u8]) -> Result {
+> +        let out: *mut [u8] =3D out;
+>          // SAFETY: The types are compatible and `read_raw` doesn't
+> write uninitialized bytes to
+>          // `out`.
+> -        let out =3D unsafe { &mut *(out as *mut [u8] as *mut
+> [MaybeUninit<u8>]) };
+> +        let out =3D unsafe { &mut *(out as *mut [MaybeUninit<u8>]) };
+>          self.read_raw(out)
+>      }
 
-LGTM, so:
+Seems like your email client auto-wrapped that :(
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Benno, would that work for you? Same in str.rs, of course.
 
-And left two suggestions below.
-
-> ---
->  rust/kernel/lib.rs     | 27 ++++++++++++++++++++-------
->  scripts/Makefile.build |  8 ++++++++
->  2 files changed, 28 insertions(+), 7 deletions(-)
->
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index ba0f3b0297b2..660a3ab6f9d4 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -12,21 +12,34 @@
->  //! do so first instead of bypassing this crate.
-> =20
->  #![no_std]
-> -#![feature(arbitrary_self_types)]
-> -#![cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, feature(derive_coerce_point=
-ee))]
-> -#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized=
-))]
-> -#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(dispatch_from_=
-dyn))]
-> -#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
-> +
-> +// Please see https://github.com/Rust-for-Linux/linux/issues/2 for detai=
-ls on
-> +// the unstable features in use.
-> +
-> +// Stable since Rust 1.79.0.
->  #![feature(inline_const)]
-> +
-> +// Stable since Rust 1.81.0.
->  #![feature(lint_reasons)]
-> -// Stable in Rust 1.82
-> +
-> +// Stable since Rust 1.82.0.
->  #![feature(raw_ref_op)]
-> -// Stable in Rust 1.83
-> +
-> +// Stable since Rust 1.83.0.
->  #![feature(const_maybe_uninit_as_mut_ptr)]
->  #![feature(const_mut_refs)]
->  #![feature(const_ptr_write)]
->  #![feature(const_refs_to_cell)]
-> =20
-> +// Expected to become stable.
-> +#![feature(arbitrary_self_types)]
-> +
-> +// `feature(derive_coerce_pointee)` is the one expected to become stable=
-.
-> +#![cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, feature(derive_coerce_point=
-ee))]
-> +#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized=
-))]
-> +#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(dispatch_from_=
-dyn))]
-> +#![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
-
-Does it make sense to add another comment in front of these three along
-the lines of:
-
-    // Before Rust 1.82.0 `feature(derive_coerce_pointee)` doesn't exist, s=
-o enable the predecessor
-    // features.
-
-> +
->  // Ensure conditional compilation based on the kernel configuration work=
-s;
->  // otherwise we may silently break things like initcall handling.
->  #[cfg(not(CONFIG_RUST))]
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 56be83024851..41a640990cfa 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -226,6 +226,14 @@ $(obj)/%.lst: $(obj)/%.c FORCE
->  # Compile Rust sources (.rs)
->  # ----------------------------------------------------------------------=
------
-> =20
-> +# The features in this list are the ones allowed for non-`rust/` code.
-> +#
-> +#   - Stable since Rust 1.81.0: `feature(lint_reasons)`.
-> +#   - Stable since Rust 1.82.0: `feature(asm_const)`, `feature(raw_ref_o=
-p)`.
-> +#   - Stable since Rust 1.87.0: `feature(asm_goto)`.
-
-Probably a good idea to add:
-
-    #   - Expected to become stable: `arbitrary_self_types`.
+For this specific case, I do have a `cast_slice_mut` function I
+mentioned in the other thread, but that is still stuck in the untrusted
+data series, I hope that it's ready tomorrow or maybe next week. I'd
+prefer if we use that (since its implementation also doesn't use `as`
+casts :). But if you can't wait, then the above is fine.
 
 ---
 Cheers,
 Benno
-
-> +#
-> +# Please see https://github.com/Rust-for-Linux/linux/issues/2 for detail=
-s on
-> +# the unstable features in use.
->  rust_allowed_features :=3D asm_const,asm_goto,arbitrary_self_types,lint_=
-reasons,raw_ref_op
-> =20
->  # `--out-dir` is required to avoid temporaries being created by `rustc` =
-in the
->
-> base-commit: e6ea10d5dbe082c54add289b44f08c9fcfe658af
-
 
