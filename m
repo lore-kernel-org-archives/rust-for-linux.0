@@ -1,43 +1,43 @@
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C221E18A92D;
-	Fri, 28 Mar 2025 21:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881EE1E1E11;
+	Fri, 28 Mar 2025 21:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743198500; cv=none; b=qlREzhg4l23vaG+dhbrZZgd6JVnhjm1VK414dGhRE6ae36Nh6bYlPCJEXyoPgKHjdJX22uOqgb60j1wFhKjOApLkpX4bN+3Gxb/9zQ067R/FAcTuCmyef3bUukhUGq3HfaWs8ruCV1DY4DThwVw+gKSTLKUcTlaODIgPtO76PoU=
+	t=1743198636; cv=none; b=tknGqD7BZ/b9KIKrITr26pozin9u2ircENEADHFZednenXWf/xqmRONJQaSiGrYc/R9UEANfhwWdlGiJAaE7XzdioZ4318XLTuJceDwXP6Wf6RI+vdNfNke4zTtOWlRCyblpQHK7WjYs1+ZBYw4a/mCsxmu/HQum1qVMCBLvRVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743198500; c=relaxed/simple;
-	bh=w3ACs6rTfc/po9dQcPQwGPJr3B1S4bhmSiFUpxWpEEI=;
+	s=arc-20240116; t=1743198636; c=relaxed/simple;
+	bh=xA/HGFv/EsKPCdBIXVGOMHfpAAFyy6nmg470K7yJVyk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IYHqYLLAW1vuHsVjMm1rtIsbiFGahbuXrjbV8pURbo7hrFCKD26pbscbnXo8HwJcNWnUWXWmk9WBT3N3xNeUgZiBg0CPk5AlW5tBhXanBbl2ZlbXt1nxa4Xsoeb/IPbElqKDEQVJZmWoeMnrtUCEDP3QZZn4+foj4IPqnyraa9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=M3VgqoXF; arc=none smtp.client-ip=109.224.244.18
+	 MIME-Version:Content-Type; b=Q85nhmwnTeNA+5hQP2VkG3VCrMYiToLwKTmE8CFbm5dkUF1AJJoHI8YN645v1aPS+loPLHnf0RHDNLqk6gI7IspYNZenYDhRs0lgFeE6NuNf4T5+Tb8PK88smIqt/RWEiLGIJPcHQInlqC0wwvkbovWobFLC9WeWJEFN2TZ7gaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=d7aWhZVW; arc=none smtp.client-ip=79.135.106.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="M3VgqoXF"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="d7aWhZVW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1743198496; x=1743457696;
-	bh=mp/YgxMmFO+kOEx0tFPHbQk5ClolWrqq0KLqSJf5bwU=;
+	s=protonmail; t=1743198627; x=1743457827;
+	bh=CN6cRrOpEKT1gAzrcmidhzmRfsqv0twK4mJ6/TD+VFU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=M3VgqoXF31wEmMk0hlUwwPEUjRuNZLNRqAxKMN3O8qyzbPC6ikOOXAoJ1smrB48Jh
-	 oBKJ7CV03eTkrrYgGr+XCt/1hx6GhO77gJK9DkJTtg2mm+cvalN26N1a8SikRlwigY
-	 c0N7Pyv61qe6w9xCqvjEm7oFwgWuVQn9tE/WZ/ZYppQJpUWXLi9r6D3alhD71xmLu+
-	 o/3yqKYCpdNXC/Cn0IxUyFnyf4KwRRwiJygQ5uwYRGrkJ4yo17jy2AxogmnoNX9LO7
-	 6AersOBZnKDCUUHyzuZo56P31cfHHHq29vQsSzIs8/EU15TfNrOe4UqPhSZ/5HdrBa
-	 vMJpzsl3uIk0A==
-Date: Fri, 28 Mar 2025 21:48:12 +0000
+	b=d7aWhZVWk32kXjeuh1S6OhIpWD5QVFFQcnf+NoR2tmFvkgwWIUgWwddJjvxn/xWgb
+	 kfNBYlbmgfsz81BsiVwJMM8r5klH9MrNzLQ6+IA50XEVcbS8ptOb+LtTmLMHXriDBq
+	 JCxK9tw5ensaPnxVHW0c/JbsOKCuLjbrTfDuekadJnIg+XCL/tbrLaJVs0tk+Kbdrn
+	 uvXewnwawU55rfGpo7GVLYJGpciuk8jgNlKhwVyGQFR52a1ouBAzsriakmPjq+nSe0
+	 OTu7wj1cS0L3wONwFGUmvy4EW0O7KiK+JdsL3yGb8bj5Hcc9Whjb+DKBIP8y2e1xZr
+	 dZzrUjflv2SvQ==
+Date: Fri, 28 Mar 2025 21:50:21 +0000
 To: Igor Korotin <igor.korotin@yahoo.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 0/1] rust: macros: Fix macro referencing core and kernel crates v2
-Message-ID: <D8S8AIAU4NQP.1IVXRJMF4I9AF@proton.me>
-In-Reply-To: <20250328180312.2025317-1-igor.korotin@yahoo.com>
-References: <D8RHIOTYBFI5.3ETKTDNGZW3FH@proton.me> <20250328180312.2025317-1-igor.korotin@yahoo.com>
+Subject: Re: [PATCH v2 1/1] rust: macros: Fix macro referencing core and kernel crates v2
+Message-ID: <D8S8C5W0FCVD.1LH1E86H6PXZD@proton.me>
+In-Reply-To: <20250328180312.2025317-2-igor.korotin@yahoo.com>
+References: <D8RHIOTYBFI5.3ETKTDNGZW3FH@proton.me> <20250328180312.2025317-1-igor.korotin@yahoo.com> <20250328180312.2025317-2-igor.korotin@yahoo.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 104095309b3fdc6f7c15616d55a7aa8f689270ae
+X-Pm-Message-ID: 7e491c078fa94a96da17aeb651691900356dd25e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,64 +47,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-This email seems to be a cover letter for the next version of your
-patch. In that case, you should send it as its own thread to the list
-(and not in reply to my previous email).
-
 On Fri Mar 28, 2025 at 7:03 PM CET, Igor Korotin wrote:
->> > To prevent issues where user-defined modules named `core` or `kernel`
->> > could be picked up instead of the standard ones, update macros to use
->> > absolute paths, `::core::...` and `::kernel::...`, for core and kernel
->> > references.
->>=20
->> Please split this sentence up into smaller parts. Also "standard ones"
->> sounds weird to me, `core` and `kernel` are crates and not modules.
->
-> Simplified the commit message.
+> Update macros to always use absolute paths for crates `core` and `kernel`=
+.
+> This guarantees that macros will not pick up user-defined crates `core`
+> or `kernel` by accident.
 
-You don't need to reply if you're fine with the suggestion :)
+The crates are not user-defineable. Your initial message was correct in
+that the user can define *modules* that have precedence over the crates
+`core` and `kernel`.
 
->> > Suggested-by: y86-dev <y86-dev@protonmail.com>
->>=20
->> Please use my real name and other mail address instead:
->>   =20
->>     Benno Lossin <benno.lossin@proton.me>
->
-> Sure. Tried to find your creds via your github profile/commits without=20
-> success.
->
->> > Closes: https://github.com/Rust-for-Linux/linux/issues/1150
->> > Signed-off-by: Igor Korotin <igor.korotin@yahoo.com>
->> > ---
->> >  rust/ffi.rs                  | 2 +-
->> >  rust/kernel/device.rs        | 2 +-
->> >  rust/kernel/device_id.rs    | 4 ++--
->> >  rust/kernel/kunit.rs        | 8 ++++----
->> >  rust/kernel/static_assert.rs | 4 ++--
->> >  rust/kernel/str.rs          | 4 ++--
->> >  rust/macros/lib.rs          | 6 +++---
->> >  scripts/rustdoc_test_gen.rs  | 8 ++++++--
->> >  8 files changed, 21 insertions(+), 17 deletions(-)
->>=20
->> There are also some occurrences of `kernel::` & `core::` in proc macros,
->> for example:
->> - rust/macros/kunit.rs:129
->> - rust/macros/module.rs:347
->> - ...
->>=20
->> Could you also add those to the patch? Thanks!
->>=20
->> (line numbers after applying your patch to rust-next)
->
-> Agreed. Fixed references in auto-generated code in files
-> 1. rust/macros/kunit.rs           =20
-> 2. rust/macros/module.rs          =20
-> 3. scripts/rustdoc_test_builder.rs=20
-> 4. scripts/rustdoc_test_gen.rs    =20
+> Changes since v1:
+> - Fixed paths in auto-generated code.
 
-Yeah those last two are also good finds.
+The changelog shouldn't be in the commit message. Instead place it below
+the `---`, but before the change stats.
+
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1150
+> Signed-off-by: Igor Korotin <igor.korotin@yahoo.com>
+> ---
+
+(put the changelog here)
 
 ---
 Cheers,
 Benno
+
+>  rust/ffi.rs                     |  2 +-
+>  rust/kernel/device.rs           |  2 +-
+>  rust/kernel/device_id.rs        |  4 ++--
+>  rust/kernel/kunit.rs            |  8 ++++----
+>  rust/kernel/static_assert.rs    |  4 ++--
+>  rust/kernel/str.rs              |  4 ++--
+>  rust/macros/kunit.rs            | 22 +++++++++++-----------
+>  rust/macros/lib.rs              |  6 +++---
+>  rust/macros/module.rs           | 31 ++++++++++++++++---------------
+>  scripts/rustdoc_test_builder.rs |  6 +++---
+>  scripts/rustdoc_test_gen.rs     | 16 ++++++++++------
+>  11 files changed, 55 insertions(+), 50 deletions(-)
 
