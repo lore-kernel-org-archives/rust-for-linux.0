@@ -1,76 +1,73 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22B917BA3;
-	Fri, 28 Mar 2025 09:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3CD1ACECB
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 10:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743152797; cv=none; b=JzSp6d8/lwEQ01icLcn5Duk5CgIvwr2g4kL1LXdlqSGAuzTUpYZRizXiL0g0K1GTJ44ffdLK/F6gdgd+ZCxnk8P/guitESlj48Drw7UfGe9r7bAZLWi3U2lN/SQylYdwgm5jvUOUpku9PVtrTaiXEM5xaLoQTEDxK1SVJ1Xsnnk=
+	t=1743158226; cv=none; b=ZV1lerUHXl13aXQTrrQT3490k212T2A14Y3pnfv2BE2K/NVWwYtcayOLjTB0NgsSqcKDBJjRz/Fbjm+WR/Fcomo2U5yO0vaIbxVQCp1j4+B3D1IypFmHkz5ZPC2aJTe1E3p9DV9TcEd880g4nCjlwItaO1bPCMKdMgLwcMw5SQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743152797; c=relaxed/simple;
-	bh=0bBzDSKbEvvFa69CxhVUVwtBwFVzp9lyfRZu0hRQ/TQ=;
+	s=arc-20240116; t=1743158226; c=relaxed/simple;
+	bh=z3ksBUtKGMhnSAUFixflk3lu7mtpyOLXTJP5h+pPtoE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UkLRk0USdxuHlqzFY6qGbWpOQmYpi7+zxt1axDsbqHERhIFZOCJstcB5sqZfoNwU8wPsTe5hH1o2Abyej739ImqaLxKKsbpdCOU1pmN+Iq8BeunvfQUGGljRAPtrDiE39039YXWkIY++JRMcKMwbc4anREMQyEXV2vTCoYbAhlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OebNbKYy; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=YJieFqQTgL/c5d1VLFZ90txzlE5+cVPM5m1cOu8tKVVnXtGu13G3ISo2Yk82NczaRY70iocJjqyFFEyrVIPaDCqbGvp/sMSsE8KylzxGMsbOpkMJKFSMqeQZccfphheorwg4WiABOJsdqtugD8T4NrdFZjafbfRoUc09nwNdtMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dgzem1jN; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OebNbKYy"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so437584a91.0;
-        Fri, 28 Mar 2025 02:06:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dgzem1jN"
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-601a46ee19fso1089333eaf.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 03:37:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743152795; x=1743757595; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1743158223; x=1743763023; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0bBzDSKbEvvFa69CxhVUVwtBwFVzp9lyfRZu0hRQ/TQ=;
-        b=OebNbKYyV10v9RypumzzLNi2Ou9piofyS7p5TmUHCcQ0fh2LkUNAbyYYSN/ZmolVNy
-         73wUjPoL5AwBQVUTv/YXmqQbLhYkZX3k3GTp9zp3gy1sqhxI2KBIlgi+g5eJWLWI8ZXs
-         Ec2xUMyt/aAQXkTFhL1PBcHuSk4XJiPRBQ1haZbEYnwyBfKB18XoD3/GB6q7KtfOBDYN
-         DJKNXpNq0sBp/LVhY6h56ZfITKJ2X3zeuGKRBfXtL5xttXdz248eSYiVxZHtwV1Wx09Z
-         IDZ/UTXSBt3IJjQ7rxeSa2rkROTgVlnF5SEsa6lBLGzxkHGOOfAcIoje8REgtbYZ78Lb
-         YbNA==
+        bh=D71hAvxN4dfg0uyyLwXMt1dR0b7weYtqf2f47TrEbos=;
+        b=dgzem1jNgRh9v5bnyuTCZ9tSdnwwgIRC+C965AEX/X4qXmRDJYB5PMCTNPzIPOEn+w
+         OSEfa2WNq0akaY4SVEawwPgM0Og4sAgzjhQ4coYALevzxjP7CNUO8RvPbAOc6Vnb/NDa
+         XpkLZKMstQtX95Ktfgd+LxuPqZhnNT7CBaDI38ugdESlEU0tYY/xv+WL31n9w1JfR8TH
+         PsmNtl3/QCF/uPsJPXOUkfCGBXguTSMaumQY7PZYMtXXP6dbnDc+bDB+SzVV92FYn1Aa
+         R4fdEv7lYd1P78X6q1wrZ/3d7Dsrj8lrsPnEHC4LClIWWw0hkzeFXlfQj7YujFRqGvE3
+         ecSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743152795; x=1743757595;
+        d=1e100.net; s=20230601; t=1743158223; x=1743763023;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0bBzDSKbEvvFa69CxhVUVwtBwFVzp9lyfRZu0hRQ/TQ=;
-        b=bg02nb8xfkjm3RORk429WAFIged7592PUj/Y1MzypCEE38VuYfthOcHjzFcXO15yQy
-         n0gVYM0J7CCRQrZP4X3c4l3Jqlqu1pNu6Q8yzKVVtY0HRe43DaglcZNcu63KQ8RSPhOD
-         GugGy9wKl97betCaXCmcMa9RrrVchRNLrCogOF/Ev6k9aQDLV9tYsacaFtr1KwOQWv5F
-         HiV8809+Ob6oBqoSYek+ivyHV/6GoDpAx1lYTEwDA12IF0ycM/jqPfMqXPUpwCgFVERa
-         M0LACNN8admx/ApjrsYDVvkNItqnhXPUda5zYJV1MCyFx8plHxTueQj3FLB0+j8xOcdQ
-         bTgw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4N7kRNjsMWJdaGaBaNsTxw7uQJhoD+srLbxssr+H6XgFNz4hOOA+pZtOZVQ1oaBwNBbpgP5vCOm6Tqxw1HuQ=@vger.kernel.org, AJvYcCXfS6KXrBlJitCv04n629dgTtZ7BAxN0KaEfZdKQBx1MtA1gt5qzW+PYyAV42GedRTrdLD+gmu2xYONQ3w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSB4eCCXjh+mb0w1itU2jIgqz4D1rqMv7llMGB0T8cZxfxb1Mi
-	EoLHuL95Uh+AOsDodfuO3g2X2Gb6rQCLXmsKgA3PVzcyOrrAWCS99McS4Aa7N4dUJvGRSwns9rQ
-	dvqKc9HBm9X+WwbZ0WK/3TsYWqF4=
-X-Gm-Gg: ASbGncszSttwgv7fmMIRqvGFZQ14pPCvWir5VZpXTTpgVAfCKmSYb1scfNxXfUjop5F
-	51TtmFXoOp7w4ULeZv19K9lrlwW6mzC8vLsA+rxGPUMvp7jlkf4iIjYljNoMA5FPUgrJ0JnUQzE
-	Ka4rou19zS7EgmZB9/N5LKxANeYA==
-X-Google-Smtp-Source: AGHT+IGIoygOoyq3S/AxJAttswGhPDydP0zM9nr7Nj8c/C372RKes9cQ4gpXwog2lLiJizISmEm7Zggjy61Xyq8lTkE=
-X-Received: by 2002:a17:90b:1d04:b0:2fe:8fa0:e7a1 with SMTP id
- 98e67ed59e1d1-303b211144dmr3432897a91.2.1743152794867; Fri, 28 Mar 2025
- 02:06:34 -0700 (PDT)
+        bh=D71hAvxN4dfg0uyyLwXMt1dR0b7weYtqf2f47TrEbos=;
+        b=mB7NhlwKnvTMPPzORouBeNSmOk/JNMhny5a5ENqD90yxFqo0G/ciL7dNkdweeSCYrU
+         6+surNwufy8IHUk68e+3AtgdjddxjIUZOQ2yeQc3YkkEI4zv/zPhcUOtt5kvm1ldJror
+         xDqvZhwMkDxGc5ARcL1pVxRxm7EjhcZ8KgDon+8oOUTx5qjtvmMNyM/Lqxzz8uWKO2XI
+         MHjhNxo9s1dNcWrcCDUyhwvaN6mjbvO4UsKCVJzJbvUqqFlWcZ1fH1nzzWhlTFa7qsva
+         9HXYxSxkUlJtoq+bSpRlbOmxIYgLUu8CKFsnNprd9RFnaOddh1fi2toNKuyIwZTM3xxI
+         MRyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUfEpJ6P+7dVEedtwE/qv+WT9V88ffJQYgWL8cA03k49BZhEyf41mrSh+olUc4d31pCA7zHSOnAIhunDOs42w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXqe9zaydiRlg1sPpAOLrlCz0nvBBbeA9xto1LwZ1Q/j+zsRkd
+	NguAlygIu8Y4p/DFIseDqdR3iinZlhyS0D6Etnhj7w9dupH8wOXMmmUVfPOfcFNe6PNvdFkZm01
+	NSj8pgdaA1pY8U5SKzg43+vXiU32WqpaO+GKK
+X-Gm-Gg: ASbGncuQFtpF+hEJ10TjKB4H5xH0UFauoY3qQRYRI+qYDGReBtOjnxeCzUDDrWI/b0f
+	wn0PPzQioeJaS7gox8Dme0U0YjYGKIQoQNVokIATlFpOMlF+seMOParZ+Au000XmJV1YJ8Vwvhn
+	3qDrKK5P4gVwNMrjo4TePERKbhMhwdE+sBiS4O2Dft8WLfysrbT0hBFB0Z+uinv/oDABU=
+X-Google-Smtp-Source: AGHT+IGbQFY+OTvXiffGq25jj6WoNUuJwbo2McO34CraqtsUmhmrMS62JZIYcYdOaljJ8NDLv4M/yQAwWoC564Meu44=
+X-Received: by 2002:a05:6820:740d:b0:602:ad5:b0ac with SMTP id
+ 006d021491bc7-60278522d38mr3460889eaf.1.1743158222387; Fri, 28 Mar 2025
+ 03:37:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250321111535.3740332-1-bqe@google.com> <20250321111535.3740332-4-bqe@google.com>
- <Z92N8dyIE42ROW2t@thinkpad> <CANiq72kYzx7JTVqrJuP0Wo9=1qtaN7s7fqkD5DDcjA59SgMizQ@mail.gmail.com>
- <CABVgOSkjYFwHhQfbmY83iK7crq9ZN9+93Xe514ndhAm6Me3UwQ@mail.gmail.com>
-In-Reply-To: <CABVgOSkjYFwHhQfbmY83iK7crq9ZN9+93Xe514ndhAm6Me3UwQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 28 Mar 2025 10:06:20 +0100
-X-Gm-Features: AQ5f1Jr-wLdE8wgAsmjLhcOdvkbySbtJv6LsQafWBlALqZPoNu2chMV-ZrC6L2M
-Message-ID: <CANiq72=rbA-Tie7JPY8rj5c5iHBqV0oYZvx5AX7UAJvp1ER7MA@mail.gmail.com>
-Subject: Re: [PATCH v5 3/4] rust: add bitmap API.
-To: David Gow <davidgow@google.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+References: <20250327161617.117748-1-bqe@google.com> <20250327161617.117748-4-bqe@google.com>
+In-Reply-To: <20250327161617.117748-4-bqe@google.com>
+From: Burak Emir <bqe@google.com>
+Date: Fri, 28 Mar 2025 11:36:51 +0100
+X-Gm-Features: AQ5f1Jpcfy2_0dKhF4eYEUoEZqUiDNncf6n38IWDuHZt6UoTlViv916E6kawBGA
+Message-ID: <CACQBu=VBYx+LoZnSjAsU7DJsnQJ0R1WEc3aJfgNxoU1zG4=emg@mail.gmail.com>
+Subject: Re: [PATCH v6 3/4] rust: add bitmap API.
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -80,34 +77,429 @@ Cc: Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 28, 2025 at 9:51=E2=80=AFAM David Gow <davidgow@google.com> wro=
-te:
+On Thu, Mar 27, 2025 at 5:16=E2=80=AFPM Burak Emir <bqe@google.com> wrote:
 >
-> KUnit. That being said, I suspect that supporting the "just build this
-> one test module against your existing kernel" case is going to be a
-> bit more of a pain here anyway, as it might end up depending on having
-> exactly the same toolchain/config/etc due to Rust's ABI not being
-> stable. (Am I missing anything here, Miguel?) And, of course, Rust's
-> built-in tests here would get automatically compiled down to KUnit
-> tests if enabled.
+> Provides an abstraction for C bitmap API and bitops operations.
+> Includes enough to implement a Binder data structure that was
+> introduced in commit 15d9da3f818c ("binder: use bitmap for faster
+> descriptor lookup"), namely drivers/android/dbitmap.h.
+>
+> The implementation is optimized to represent the bitmap inline
+> if it would take the space of a pointer. This saves allocations.
+> We offer a safe API through bounds checks which panic if violated.
+>
+> Atomic variants set_bit_atomic and clear_bit_atomic are provided.
+> For these, absence of data races is ensured by the Rust type system:
+> all non-atomic operations require a &mut reference which amounts
+> to exclusive access.
+>
+> We use the `usize` type for sizes and indices into the bitmap,
+> because Rust generally always uses that type for indices and lengths
+> and it will be more convenient if the API accepts that type. This means
+> that we need to perform some casts to/from u32 and usize, since the C
+> headers use unsigned int instead of size_t/unsigned long for these
+> numbers in some places.
+>
+> Adds new MAINTAINERS section BITMAP API [RUST].
+>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Suggested-by: Yury Norov <yury.norov@gmail.com>
+> Signed-off-by: Burak Emir <bqe@google.com>
+> ---
+>  MAINTAINERS           |   7 +
+>  rust/kernel/bitmap.rs | 306 ++++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs    |   1 +
+>  3 files changed, 314 insertions(+)
+>  create mode 100644 rust/kernel/bitmap.rs
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 11bc11945838..efb0d367dea2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4034,6 +4034,13 @@ S:       Maintained
+>  F:     rust/helpers/bitmap.c
+>  F:     rust/helpers/cpumask.c
+>
+> +BITMAP API [RUST]
+> +M:     Alice Ryhl <aliceryhl@google.com>
+> +M:     Burak Emir <bqe@google.com>
+> +R:     Yury Norov <yury.norov@gmail.com>
+> +S:     Maintained
+> +F:     rust/kernel/bitmap.rs
+> +
+>  BITOPS API
+>  M:     Yury Norov <yury.norov@gmail.com>
+>  R:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+> new file mode 100644
+> index 000000000000..2622af3af1ec
+> --- /dev/null
+> +++ b/rust/kernel/bitmap.rs
+> @@ -0,0 +1,306 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2025 Google LLC.
+> +
+> +//! Rust API for bitmap.
+> +//!
+> +//! C headers: [`include/linux/bitmap.h`](srctree/include/linux/bitmap.h=
+).
+> +
+> +use crate::alloc::{AllocError, Flags};
+> +use crate::bindings;
+> +use core::ptr::NonNull;
+> +
+> +/// Holds either a pointer to array of `unsigned long` or a small bitmap=
+.
+> +#[repr(C)]
+> +union BitmapRepr {
+> +    bitmap: usize,
+> +    ptr: NonNull<usize>,
+> +}
+> +
+> +/// Represents a bitmap.
+> +///
+> +/// Wraps underlying C bitmap API.
+> +///
+> +/// # Examples
+> +///
+> +/// Basic usage
+> +///
+> +/// ```
+> +/// use kernel::alloc::flags::GFP_KERNEL;
+> +/// use kernel::bitmap::Bitmap;
+> +///
+> +/// let mut b =3D Bitmap::new(16, GFP_KERNEL)?;
+> +///
+> +/// assert_eq!(16, b.len());
+> +/// for i in 0..16 {
+> +///     if i % 4 =3D=3D 0 {
+> +///       b.set_bit(i);
+> +///     }
+> +/// }
+> +/// assert_eq!(Some(1), b.next_zero_bit(0));
+> +/// assert_eq!(Some(5), b.next_zero_bit(5));
+> +/// assert_eq!(Some(12), b.last_bit());
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +///
+> +/// Requesting too large values results in [`AllocError`]
+> +///
+> +/// ```
+> +/// use kernel::alloc::flags::GFP_KERNEL;
+> +/// use kernel::bitmap::Bitmap;
+> +///
+> +/// assert!(Bitmap::new(1 << 31, GFP_KERNEL).is_err());
+> +/// ```
+> +///
+> +/// # Invariants
+> +///
+> +/// * `nbits` is `<=3D i32::MAX` and never changes.
+> +/// * if `nbits <=3D bindings::BITS_PER_LONG`, then `repr` is a bitmap.
+> +/// * otherwise, `repr` holds a non-null pointer that was obtained from =
+a
+> +///   successful call to `bitmap_zalloc` and holds the address of an ini=
+tialized
+> +///   array of `unsigned long` that is large enough to hold `nbits` bits=
+.
+> +pub struct Bitmap {
+> +    /// Representation of bitmap.
+> +    repr: BitmapRepr,
+> +    /// Length of this bitmap. Must be `<=3D i32::MAX`.
+> +    nbits: usize,
+> +}
+> +
+> +impl Drop for Bitmap {
+> +    fn drop(&mut self) {
+> +        if self.nbits <=3D bindings::BITS_PER_LONG as _ {
+> +            return;
+> +        }
+> +        // SAFETY: `self.ptr` was returned by the C `bitmap_zalloc`.
+> +        //
+> +        // INVARIANT: there is no other use of the `self.ptr` after this
+> +        // call and the value is being dropped so the broken invariant i=
+s
+> +        // not observable on function exit.
+> +        unsafe { bindings::bitmap_free(self.as_mut_ptr()) };
+> +    }
+> +}
+> +
+> +impl Bitmap {
+> +    /// Constructs a new [`Bitmap`].
+> +    ///
+> +    /// Fails with [`AllocError`] when the [`Bitmap`] could not be alloc=
+ated. This
+> +    /// includes the case when `nbits` is greater than `i32::MAX`.
+> +    #[inline]
+> +    pub fn new(nbits: usize, flags: Flags) -> Result<Self, AllocError> {
+> +        if nbits <=3D bindings::BITS_PER_LONG as _ {
+> +            return Ok(Bitmap {
+> +                repr: BitmapRepr { bitmap: 0 },
+> +                nbits,
+> +            });
+> +        }
+> +        if nbits > i32::MAX.try_into().unwrap() {
+> +            return Err(AllocError);
+> +        }
+> +        let nbits_u32 =3D u32::try_from(nbits).unwrap();
+> +        // SAFETY: `bindings::BITS_PER_LONG < nbits` and `nbits <=3D i32=
+::MAX`.
+> +        let ptr =3D unsafe { bindings::bitmap_zalloc(nbits_u32, flags.as=
+_raw()) };
+> +        let ptr =3D NonNull::new(ptr).ok_or(AllocError)?;
+> +        // INVARIANT: `ptr` returned by C `bitmap_zalloc` and `nbits` ch=
+ecked.
+> +        return Ok(Bitmap {
+> +            repr: BitmapRepr { ptr },
+> +            nbits,
+> +        });
+> +    }
+> +
+> +    /// Returns length of this [`Bitmap`].
+> +    #[inline]
+> +    pub fn len(&self) -> usize {
+> +        self.nbits
+> +    }
+> +
+> +    /// Returns a mutable raw pointer to the backing [`Bitmap`].
+> +    #[inline]
+> +    fn as_mut_ptr(&mut self) -> *mut usize {
+> +        if self.nbits <=3D bindings::BITS_PER_LONG as _ {
+> +            // SAFETY: Bitmap is represented inline.
+> +            unsafe { core::ptr::addr_of_mut!(self.repr.bitmap) }
+> +        } else {
+> +            // SAFETY: Bitmap is represented as array of `unsigned long`=
+.
+> +            unsafe { self.repr.ptr.as_mut() }
+> +        }
+> +    }
+> +
+> +    /// Returns a raw pointer to the backing [`Bitmap`].
+> +    #[inline]
+> +    fn as_ptr(&self) -> *const usize {
+> +        if self.nbits <=3D bindings::BITS_PER_LONG as _ {
+> +            // SAFETY: Bitmap is represented inline.
+> +            unsafe { core::ptr::addr_of!(self.repr.bitmap) }
+> +        } else {
+> +            // SAFETY: Bitmap is represented as array of `unsigned long`=
+.
+> +            unsafe { self.repr.ptr.as_ptr() }
+> +        }
+> +    }
+> +
+> +    /// Set bit with index `index`.
 
-The ABI is not stable indeed, and modules need to be built with the
-same toolchain.
+I missed this, will change to /// Set `index` bit,
 
-> So, what I suspect you're looking for here is a separate module /
-> crate which benchmarks the bitmap type. With the way Rust crates are
-> laid out, I suspect this would need to live in a separate directory
-> and look something like samples/rust/rust_minimal.rs?
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `index` is greater than or equal to `self.nbits`.
+> +    #[inline]
+> +    pub fn set_bit(&mut self, index: usize) {
+> +        assert!(
+> +            index < self.nbits,
+> +            "Bit `index` must be < {}, was {}",
+> +            self.nbits,
+> +            index
+> +        );
+> +        // SAFETY: Bit `index` is within bounds.
+> +        unsafe { bindings::__set_bit(index as u32, self.as_mut_ptr()) };
+> +    }
+> +
+> +    /// Set bit with index `index`, atomically.
 
-Yeah, the module Yury mentioned seems like a normal one that calls
-`ktime_get()` etc., so doing something like that in Rust should be
-fine too.
+dto, will change to /// Set `index` bit, atomically.
 
-But, yeah, I was thinking more in terms of having a proper framework
-for those, rather than doing a custom thing per module and even having
-those `ktime_get()` calls manually placed for every test etc.
+> +    ///
+> +    /// WARNING: this is a relaxed atomic operation (no implied memory b=
+arriers).
 
-Thanks for the context!
+Is this the kind of warning you had in mind?
 
-Cheers,
-Miguel
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `index` is greater than or equal to `self.nbits`.
+> +    #[inline]
+> +    pub fn set_bit_atomic(&self, index: usize) {
+> +        assert!(
+> +            index < self.nbits,
+> +            "Bit `index` must be < {}, was {}",
+> +            self.nbits,
+> +            index
+> +        );
+> +        // SAFETY: `index` is within bounds and there cannot be any data=
+ races
+> +        // because all non-atomic operations require exclusive access th=
+rough
+> +        // a &mut reference.
+
+I have considered marking set_bit_atomic as unsafe, but then come
+around to think that it is actually safe.
+
+I'd appreciate a review of the reasoning by my fellow Rust-for-Linux folks.
+
+What must be ensured is absence of data race, e.g. that an atomic op
+does not happen concurrently with a conflicting non-synchronized,
+non-atomic op.
+Do I need to worry about non-atomic accesses in the same thread
+(temporarily reborrowing a &mut to & in the same thread is a
+possibility)?
+
+> +        unsafe { bindings::set_bit(index as u32, self.as_ptr() as *mut u=
+size) };
+> +    }
+> +
+> +    /// Clear `index` bit.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `index` is greater than or equal to `self.nbits`.
+> +    #[inline]
+> +    pub fn clear_bit(&mut self, index: usize) {
+> +        assert!(
+> +            index < self.nbits,
+> +            "Bit `index` must be < {}, was {}",
+> +            self.nbits,
+> +            index
+> +        );
+> +        // SAFETY: `index` is within bounds.
+> +        unsafe { bindings::__clear_bit(index as u32, self.as_mut_ptr()) =
+};
+> +    }
+> +
+> +    /// Clear `index` bit, atomically.
+> +    ///
+> +    /// WARNING: this is a relaxed atomic operation (no implied memory b=
+arriers).
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `index` is greater than or equal to `self.nbits`.
+> +    #[inline]
+> +    pub fn clear_bit_atomic(&self, index: usize) {
+> +        assert!(
+> +            index < self.nbits,
+> +            "Bit `index` must be < {}, was {}",
+> +            self.nbits,
+> +            index
+> +        );
+> +        // SAFETY: `index` is within bounds and there cannot be any data=
+ races
+> +        // because all non-atomic operations require exclusive access th=
+rough
+> +        // a &mut reference.
+> +        unsafe { bindings::clear_bit(index as u32, self.as_ptr() as *mut=
+ usize) };
+> +    }
+> +
+> +    /// Copy `src` into this [`Bitmap`] and set any remaining bits to ze=
+ro.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
+> +    /// use kernel::bitmap::Bitmap;
+> +    ///
+> +    /// let mut long_bitmap =3D Bitmap::new(256, GFP_KERNEL)?;
+> +    //
+> +    /// assert_eq!(None, long_bitmap.last_bit());
+> +    //
+> +    /// let mut short_bitmap =3D Bitmap::new(16, GFP_KERNEL)?;
+> +    //
+> +    /// short_bitmap.set_bit(7);
+> +    /// long_bitmap.copy_and_extend(&short_bitmap);
+> +    /// assert_eq!(Some(7), long_bitmap.last_bit());
+> +    ///
+> +    /// long_bitmap.clear_bit(7);
+> +    /// assert_eq!(None, long_bitmap.last_bit());
+> +    ///
+> +    /// # Ok::<(), AllocError>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn copy_and_extend(&mut self, src: &Bitmap) {
+> +        let len =3D core::cmp::min(src.nbits, self.nbits);
+> +        // SAFETY: access to `self` and `src` is within bounds.
+> +        unsafe {
+> +            bindings::bitmap_copy_and_extend(
+> +                self.as_mut_ptr(),
+> +                src.as_ptr(),
+> +                len as u32,
+> +                self.nbits as u32,
+> +            )
+> +        };
+> +    }
+> +
+> +    /// Finds last set bit.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
+> +    /// use kernel::bitmap::Bitmap;
+> +    ///
+> +    /// let bitmap =3D Bitmap::new(64, GFP_KERNEL)?;
+> +    ///
+> +    /// match bitmap.last_bit() {
+> +    ///     Some(idx) =3D> {
+> +    ///         pr_info!("The last bit has index {idx}.\n");
+> +    ///     }
+> +    ///     None =3D> {
+> +    ///         pr_info!("All bits in this bitmap are 0.\n");
+> +    ///     }
+> +    /// }
+> +    /// # Ok::<(), AllocError>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn last_bit(&self) -> Option<usize> {
+> +        // SAFETY: access is within bounds.
+> +        let index =3D unsafe { bindings::_find_last_bit(self.as_ptr(), s=
+elf.nbits) };
+> +        if index =3D=3D self.nbits {
+> +            None
+> +        } else {
+> +            Some(index)
+> +        }
+> +    }
+> +
+> +    /// Finds next zero bit, starting from `start`.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if `index` is greater than or equal to `self.nbits`.
+> +    #[inline]
+> +    pub fn next_zero_bit(&self, start: usize) -> Option<usize> {
+> +        assert!(
+> +            start < self.nbits,
+> +            "`start` must be < {}, was {}",
+> +            self.nbits,
+> +            start
+> +        );
+> +
+> +        // SAFETY: access is within bounds.
+> +        let index =3D unsafe { bindings::_find_next_zero_bit(self.as_ptr=
+(), self.nbits, start) };
+> +        if index =3D=3D self.nbits {
+> +            None
+> +        } else {
+> +            Some(index)
+> +        }
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 7697c60b2d1a..c82b23236056 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -36,6 +36,7 @@
+>  pub use ffi;
+>
+>  pub mod alloc;
+> +pub mod bitmap;
+>  #[cfg(CONFIG_BLOCK)]
+>  pub mod block;
+>  #[doc(hidden)]
+> --
+> 2.49.0.395.g12beb8f557-goog
+>
