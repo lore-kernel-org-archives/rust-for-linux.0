@@ -1,143 +1,88 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E792E2F41;
-	Fri, 28 Mar 2025 00:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A248158535;
+	Fri, 28 Mar 2025 00:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743120612; cv=none; b=QvLsLnkL1sybx3yvLTB87JLF7QxYZspXTr9PQQn4HRnLI+82oRd8yiHM1w6KTlJn91JK05Ryp5N7eI6YZzYcnHhv8MIgAfDN8HxhbHoto7msSgfN1vRXXvAdUKMRrZ1PXHG6p/MoHNdLfSt9wNVnyoaqukq/6dlgM7LjDypkpD8=
+	t=1743122970; cv=none; b=IcJ23XSNBblyJdSBrU/Bxf9AqyNhttrRlTF4P/WDi25klTQ02N91uCaMk3mwnYE0ZQXs/5lakgmUr9GZtJ3o5T5Vlsgjjemml/i+dAhSTEjqgeCtyc/d/rhJX/f+9A7wSRl7aIsL4IUswaVJz12lnWhQxB1hQxeaWTdaKSfKT5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743120612; c=relaxed/simple;
-	bh=kRmfQHhdsEfz51+Ij+AlR850u7cAKWODyMGyKix5U20=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O1mV/cbuQPBBy2mqtvO1W1/BXpWCuy5XstkkCHNIMswmIMUAfndMCyb2o+0mUWS5ZSbS60ijtdTxKAs9SxdhfX67M5SfmvgtgPrS60s7h/regLxlXi+LaclAzDSsRE58odHwa2no+iVL5n1PSoRDL0sLflcz+vseU/tSv35iJ78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HFUngHB9; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1743122970; c=relaxed/simple;
+	bh=CDd1GTucEoHrrZlomf52vHn8hPmoPQzITPrNeUXkf+A=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=i+kjxYN8Pmuu7kR3yQ4K/Wwm8eItwrSw2R15qL+xxZ/O47Y9RdFAjF+sGrfw/UUW84b3Lr92j1oX5MiNFEsPZlv8CmpVEBaTFBF4G8aoifKrsGd6Z+PCxIM1Is4K9g1aBkflHpuyvr/DKQeNWMnXa19wRL9EDIVV1nL3NbYp4oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Oo52v3KT; arc=none smtp.client-ip=109.224.244.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HFUngHB9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743120611; x=1774656611;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kRmfQHhdsEfz51+Ij+AlR850u7cAKWODyMGyKix5U20=;
-  b=HFUngHB9ftL7M9AbK/mvGA1seXQw17vvH4fSdDcKu6c7SqGWce07xWgn
-   KTUt3dsCgPB3U0EaRCl3b7vKdAjC+wO0duIfVDGyO9GeXhtH5AtvoahCM
-   9GDxCsO0dVDmhqngdt5lJbRCJk4FWmqft64iQd9b8kXHbQXBtGBl8wgNo
-   eX3OTLII6PC8MWlQ4gTbmu9svFPV45xrg3q2LLFsjxLhwlnBwtAxw/F3r
-   GZZ0bEZdVzcW/fQA7knb37LeCMLkZO/ZhDXB3RJKn/JXNfCWYtxxau5c1
-   PA0Hk2LMzBuWzxSKhwkCY4bEfJ3k6L9SrtXkPzqDX4gNnZcC0JELKcqpG
-   Q==;
-X-CSE-ConnectionGUID: Ww8IH197Sa25FPJuaXXvhg==
-X-CSE-MsgGUID: /AEGC2chRR+96ck6yazjRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11385"; a="66948869"
-X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; 
-   d="scan'208";a="66948869"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2025 17:10:09 -0700
-X-CSE-ConnectionGUID: bebUCIUZQCqjFD56NdIMiQ==
-X-CSE-MsgGUID: 8mO7oFR0THK+ptYySqaUkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,281,1736841600"; 
-   d="scan'208";a="125208486"
-Received: from lkp-server02.sh.intel.com (HELO e98e3655d6d2) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 27 Mar 2025 17:10:06 -0700
-Received: from kbuild by e98e3655d6d2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1txxIQ-00071K-32;
-	Fri, 28 Mar 2025 00:10:02 +0000
-Date: Fri, 28 Mar 2025 08:08:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH] rust: clarify the language unstable features in use
-Message-ID: <202503280805.Oq84ECdB-lkp@intel.com>
-References: <20250327211302.286313-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Oo52v3KT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1743122965; x=1743382165;
+	bh=rk99a3TNP9iPxT1r/wOUmQVVkZw/unTaG0OiNb8uqsU=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=Oo52v3KT4XbOFJNmr/FmSIOBGXqQ4NfJtzdTjX41G1M9U7JBNwnqf/lE8DXt1ALlO
+	 va4p//pkXihA85/hhJ1jZ/PIA4CZ9wzckG+KP9D10TKG0d4AN3hMtcO9+rzxIi3H9G
+	 kK9kBmTADxQekUj/rS2r1+EEkVjOiX0aJ/ITMAvvmR1kgDsi3ayrQ6JJWOxQ6oRGE1
+	 gBLmCvmC5xX7TOnWFPfJ02wdYqaJu4DE+TuShp45OliPhad9wzlEx1BjwmRXrobzX/
+	 UQVSy+jBe/bsr8ieX/Va6q4ktpKt2eEuB7muoDM7KAkuKSGiA+X5m+7S6xlDMarpf3
+	 gtTxfv6ORVgdQ==
+Date: Fri, 28 Mar 2025 00:49:21 +0000
+To: Igor Korotin <igor.korotin@yahoo.com>, linux-kernel@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, y86-dev <y86-dev@protonmail.com>
+Subject: Re: [PATCH] rust: macros: Fix macro referencing core and kernel crates
+Message-ID: <D8RHIOTYBFI5.3ETKTDNGZW3FH@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 8b7a0f89dd873e1ab6d9e246ec9d7d70515e6697
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250327211302.286313-1-ojeda@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
+On Wed Mar 26, 2025 at 7:23 PM CET, Igor Korotin wrote:
+> To prevent issues where user-defined modules named `core` or `kernel`
+> could be picked up instead of the standard ones, update macros to use
+> absolute paths, `::core::...` and `::kernel::...`, for core and kernel
+> references.
 
-kernel test robot noticed the following build errors:
+Please split this sentence up into smaller parts. Also "standard ones"
+sounds weird to me, `core` and `kernel` are crates and not modules.
 
-[auto build test ERROR on e6ea10d5dbe082c54add289b44f08c9fcfe658af]
+> Suggested-by: y86-dev <y86-dev@protonmail.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Miguel-Ojeda/rust-clarify-the-language-unstable-features-in-use/20250328-051650
-base:   e6ea10d5dbe082c54add289b44f08c9fcfe658af
-patch link:    https://lore.kernel.org/r/20250327211302.286313-1-ojeda%40kernel.org
-patch subject: [PATCH] rust: clarify the language unstable features in use
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250328/202503280805.Oq84ECdB-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250328/202503280805.Oq84ECdB-lkp@intel.com/reproduce)
+Please use my real name and other mail address instead:
+   =20
+    Benno Lossin <benno.lossin@proton.me>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503280805.Oq84ECdB-lkp@intel.com/
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1150
+> Signed-off-by: Igor Korotin <igor.korotin@yahoo.com>
+> ---
+>  rust/ffi.rs                  | 2 +-
+>  rust/kernel/device.rs        | 2 +-
+>  rust/kernel/device_id.rs     | 4 ++--
+>  rust/kernel/kunit.rs         | 8 ++++----
+>  rust/kernel/static_assert.rs | 4 ++--
+>  rust/kernel/str.rs           | 4 ++--
+>  rust/macros/lib.rs           | 6 +++---
+>  scripts/rustdoc_test_gen.rs  | 8 ++++++--
+>  8 files changed, 21 insertions(+), 17 deletions(-)
 
-All errors (new ones prefixed by >>):
+There are also some occurrences of `kernel::` & `core::` in proc macros,
+for example:
+- rust/macros/kunit.rs:129
+- rust/macros/module.rs:347
+- ...
 
-   PATH=/opt/cross/clang-18/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   INFO PATH=/opt/cross/rustc-1.78.0-bindgen-0.65.1/cargo/bin:/opt/cross/clang-18/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   /usr/bin/timeout -k 100 12h /usr/bin/make W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
-   make: Entering directory '/kbuild/src/consumer'
-   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
->> Diff in rust/kernel/lib.rs at line 12:
-    //! do so first instead of bypassing this crate.
-    
-    #![no_std]
-   -
-    // Please see https://github.com/Rust-for-Linux/linux/issues/2 for details on
-    // the unstable features in use.
-    
-   Diff in rust/kernel/lib.rs at line 19:
-    // Stable since Rust 1.79.0.
-    #![feature(inline_const)]
-   -
-    // Stable since Rust 1.81.0.
-    #![feature(lint_reasons)]
-   -
-    // Stable since Rust 1.82.0.
-    #![feature(raw_ref_op)]
-   -
-    // Stable since Rust 1.83.0.
-    #![feature(const_maybe_uninit_as_mut_ptr)]
-    #![feature(const_mut_refs)]
-   Diff in rust/kernel/lib.rs at line 31:
-    #![feature(const_ptr_write)]
-    #![feature(const_refs_to_cell)]
-   -
-    // Expected to become stable.
-    #![feature(arbitrary_self_types)]
-   -
-    // `feature(derive_coerce_pointee)` is the one expected to become stable.
-    #![cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, feature(derive_coerce_pointee))]
-    #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized))]
-   make[2]: *** [Makefile:1811: rustfmt] Error 123
-   make[2]: Target 'rustfmtcheck' not remade because of errors.
-   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
-   make[1]: *** [Makefile:251: __sub-make] Error 2
-   make[1]: Target 'rustfmtcheck' not remade because of errors.
-   make: *** [Makefile:251: __sub-make] Error 2
-   make: Target 'rustfmtcheck' not remade because of errors.
-   make: Leaving directory '/kbuild/src/consumer'
+Could you also add those to the patch? Thanks!
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+(line numbers after applying your patch to rust-next)
+
+---
+Cheers,
+Benno
+
