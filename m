@@ -1,84 +1,88 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69E34A05
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 22:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFA71922D4
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 22:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743199219; cv=none; b=oMCsiPqTYukjrj5GlmLcWsMQg/z/dURu7PyIQlFkr+IAdtJxjT3nfoV57E/63owfe2L7Y5sV7kCEMzDoPchIPLAcfKqGyrPoYXi+RyCQuC4rxGYhN3zpcylObNR8pmqgqz7E2fAynnilWFFAQktcAFClWoMw9gbG56I3LCeHFvc=
+	t=1743200871; cv=none; b=DdanRTq7c5jDcQhBz1VU2Zessx73DaljsM2QfWO9BZWqAZqL7gx9e2YHD56bH/7/13BK5bfqfPcYv8ajMRiseThGt2OY2MHa47RF86WXVBd0c3mtWyT3WDdsVRrX+2jKEmhEpVOSzty54RYRJ2B/jR8j5YHaNOXoYJPC1enObqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743199219; c=relaxed/simple;
-	bh=Ywdg+pAWAaZLKrcCvfA3m8UGIrB4LlK7TRhcKEgvgL8=;
+	s=arc-20240116; t=1743200871; c=relaxed/simple;
+	bh=Jhh4GOfxTgWkZ+lLWPv5tfUdJa6zi73ewHAbS9EDap0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H1sA2/FM18gO0VmazK16004N62dzQZ/fiep0DTFbYpxqpLSKPm6G7U602At/xWK6SI20kBpYZaPKf0SQ6Y4iOdfPGQDBInGbNzxb/MxXsvlp2nel6Zm0DxVridc7Hb2SdVCm1itkk4Oeal33lUyYx59yhRrILSNxP+++pY9amrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f/JmXZLk; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=IDAqEfU6y2RNXXDqgaPu8qsyfSPxDyNFYKAhLzE+e/MNhEfxFDeWu7sy7dr0ZO5EpslfUUcHpXOQfg4BAlNtoEBxSRySzwjCuDxfxSyVdYA49MyAKVn2+nwu/T8PMP+0FViTwx6g2baqd+njcahvhYn26b1y46zpNxVX+Xn7oeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b+oOoW68; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f/JmXZLk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b+oOoW68"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743199216;
+	s=mimecast20190719; t=1743200869;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ywdg+pAWAaZLKrcCvfA3m8UGIrB4LlK7TRhcKEgvgL8=;
-	b=f/JmXZLk97K7Z+Oge+S0X9BDWxWlP4rgPMGVRksgxsxRARljC1idr86WkBPUmKyzfoPiJ/
-	FmA1j+vSJmEJx8sxB9rHt+UN67hpq/ubJnTX+yGr8SGXZz+yJA+dTGuYtiazZ+b+3O7BKb
-	T/qOESQQ/NAfZ+D5+chfAY87E2e0qs0=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Jhh4GOfxTgWkZ+lLWPv5tfUdJa6zi73ewHAbS9EDap0=;
+	b=b+oOoW68/w+rtRca6Z3GHSZop9kBgYvFe7/od4yvyd8qpQV0BcitULGvSLTTDAQTXaLOQy
+	L4UGTWp43BX0+yC+SQZTf8F84ttvDfkzGP1qTSUMgBBbYxfGBsiRrEr/dflC4E228WT001
+	o6AZamc9GhWWcfsDcllaoLcPg28FNek=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-69m0ZsVNPVyJkJmkFrF4FA-1; Fri, 28 Mar 2025 18:00:15 -0400
-X-MC-Unique: 69m0ZsVNPVyJkJmkFrF4FA-1
-X-Mimecast-MFC-AGG-ID: 69m0ZsVNPVyJkJmkFrF4FA_1743199215
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6e91d8a7183so45817056d6.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 15:00:15 -0700 (PDT)
+ us-mta-114-8nmiZsKZM3mbbPqwoPrvUA-1; Fri, 28 Mar 2025 18:27:48 -0400
+X-MC-Unique: 8nmiZsKZM3mbbPqwoPrvUA-1
+X-Mimecast-MFC-AGG-ID: 8nmiZsKZM3mbbPqwoPrvUA_1743200867
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6ed0cc28f7dso57251006d6.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 15:27:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743199214; x=1743804014;
+        d=1e100.net; s=20230601; t=1743200867; x=1743805667;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ywdg+pAWAaZLKrcCvfA3m8UGIrB4LlK7TRhcKEgvgL8=;
-        b=Tc6Duww18b6aGY8FmIb+E/Iswmjm4dtjyAyerve5z9PTR2OCnghzUuSgakUCTkG8t9
-         CXwAU7WbQqtOSJPGd2juULnvck4ekEqAdcC0eIoNQFB44v8vmC/mDkvRDwDkaJ6DcX6d
-         Z9EXapK48GnkH08tc5WoERe8Cqmm6VN3j/qktPfqRzzV1zTFZqjlJPpEuCkU00Juwjw6
-         +tHAwA+d1z3HmAgmdCJ62HffTObQRJgxOxmJdekUuazkx2tIchf54A/tz++6pwhwtwis
-         qAvhBNycWGwBMIAqb2CpPs+GF8KGNLn1GYyVwLbcXWT+Z/DBNT6sJkQDl0VEEB3kInRs
-         eoXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCPUqQ2EqHIA1duYgWlC2y+0UT6AxtoSlgTE2XBHvTuhRifVZNVfun3TCBBg818MLR3hyIPh5SMGMbZVJ5xw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYGw//gFJTZuaYT2Dg10ZckWr0PBhFd/z2LvRisUhQqrYagHZQ
-	WzRoF9vLnjbYNa0gN28bDcPhqZxCGsAOA+K9DDJOlqCMg99347uY90ROJNBxyprd8S7htXpjnRC
-	tyM3QmyhipV10x1CKoYYStLkd3k1dC8XrEMF4qlo7bhaV19b5utNS7n5qTGjMdqUo
-X-Gm-Gg: ASbGncua0t8wIewDE3zIVjDMG3Gb9aRAbhr9bicCPv46wRY7/ZwSc1v8gylWzueY77O
-	O5+zbe+HFIk8dNj4KX/bNaC5d1U3AxPtQfHpfkscevuwPWqGKpOqTsgmnlDPzM8svGHwRDdCS8V
-	0sGb93/IRGR/OD/X3TDF09A4ATfTkqMobB9OM+pifEt0UQ/W8lHKKYkFVzQ6nq9/yqGsUij6v57
-	Yumlh+MDaaD/hxz3yhKuUz1PRbOjZEXYkAhHfx0PXlTJoYJUuyiGBKWudmBIJLOpw1HhMHeaGJB
-	oJ7GOon2uJrPJ0Eowrfu7w==
-X-Received: by 2002:a05:6214:b6d:b0:6d8:af66:6344 with SMTP id 6a1803df08f44-6eed663fdd0mr7772846d6.2.1743199214256;
-        Fri, 28 Mar 2025 15:00:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHW2vXW+zbU/fwAUf4xwmLMA8uaUE+AYbieWICl5FxIoX/88IBn0ZFz0jIBFUwYjXqhkGm6pQ==
-X-Received: by 2002:a05:6214:b6d:b0:6d8:af66:6344 with SMTP id 6a1803df08f44-6eed663fdd0mr7772146d6.2.1743199213766;
-        Fri, 28 Mar 2025 15:00:13 -0700 (PDT)
+        bh=Jhh4GOfxTgWkZ+lLWPv5tfUdJa6zi73ewHAbS9EDap0=;
+        b=gLxh2Hen/ADBbahQ74Ap4D5hsmQd8mV1GCmeSN8BuNBvW+P7mS5VrdeItRRhZGM/g4
+         U+pM0/ONMg83OnF7dhTX6UAzw089O1SOyz58ydPiuJhSM20HJRi2PpESatO/R6fBx5Mn
+         I5rKfD4ctvS5CUGn6G9jXuTIC/l41GLahodCFLOjF9Pq/HUa6lJmBbWjknBz7KIm2Ee4
+         ZjjuPvZ7uzUaYT5AIfFahdPHU1qJLMQ8VQykCQFJQIBovREHrguu/XiRNER62Dre2xwA
+         BjcBAyK39X79/pT+DP1t+3Wmv2h+RnFJZLtrgYsSJpHsmvR8RKnx43ycbncUGQntL+oF
+         NNUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNMsVoVp4uPDM5cEofkMMUvmAWi1hMc9Vr2EKErBwL7nJa2YNVsK6LSX8xy6+dgtvTYm+lFnajUVuqpiSJSg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAcZyX9XNbXmG9KjPEeNIPZwLSmEFLHajR0ekXhOr5vFjOQN7W
+	JUrfirADUMvbGIgOpb8OFkWIsGCtOKPUjwCP4DFJwQ4M5SW2BTzd3ukpL4Aua/UuW7saPXBDoEa
+	HVbrDuk9A88VfFXYAMVKeh6k1kxLkH1iKVtqxlUgkDiEimAWUbJgYMEBhRncQPsxf
+X-Gm-Gg: ASbGnct+fGwJZFjfL6lM3AKuWOA5cfn25mZNyRqEMoz/KOwhGK3SNCLrFzM4FrVlDJe
+	ySyFGK5K8S7M8upn5QHizMsNk7koeYHvALqv3/5I6/921pPGwwkhf4R7dhzbHYmVAsfVtnZsg2i
+	5z+/3vo4KiO+vF+eu7N4sIaUm862Elq4x05M20LENnJiSR5oeDbVr9l3lCKzrelfbPG/7KkzXxl
+	l8Yy+ldVGPVZMPfLlfc8qCM5wEnrvtE/q4IyrvfXaruOuAuFMKPC0H97XrtOtlsgmKvnd6Hogxx
+	5zgq62jEEilvlHTSm7qENQ==
+X-Received: by 2002:ad4:4ee3:0:b0:6e6:6c18:3ab7 with SMTP id 6a1803df08f44-6eed6047d62mr14589826d6.27.1743200867324;
+        Fri, 28 Mar 2025 15:27:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEjyL4biZE9ozvh3m02yQBXHM9056XaR/9O8oAUC9kvaYE0AXqmAZrys9hRorMhunswshStKw==
+X-Received: by 2002:ad4:4ee3:0:b0:6e6:6c18:3ab7 with SMTP id 6a1803df08f44-6eed6047d62mr14589306d6.27.1743200866751;
+        Fri, 28 Mar 2025 15:27:46 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eec9646269sm15896396d6.41.2025.03.28.15.00.11
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eec9645d1esm16090676d6.35.2025.03.28.15.27.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Mar 2025 15:00:12 -0700 (PDT)
-Message-ID: <43ad9fdcc62897bd0a78689020a8dd291b045ce4.camel@redhat.com>
-Subject: Re: [PATCH 3/8] rust: drm: add driver abstractions
+        Fri, 28 Mar 2025 15:27:46 -0700 (PDT)
+Message-ID: <4a7f76493305b0afc6ae8d14cfd7bc031316b3d0.camel@redhat.com>
+Subject: Re: [PATCH 1/2] drm/edid: Use unsigned int in drm_add_modes_noedid()
 From: Lyude Paul <lyude@redhat.com>
-To: Danilo Krummrich <dakr@kernel.org>, airlied@gmail.com, simona@ffwll.ch, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- 	acurrid@nvidia.com, lina@asahilina.net, daniel.almeida@collabora.com,
- j@jannau.net
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Date: Fri, 28 Mar 2025 18:00:11 -0400
-In-Reply-To: <20250325235522.3992-4-dakr@kernel.org>
-References: <20250325235522.3992-1-dakr@kernel.org>
-	 <20250325235522.3992-4-dakr@kernel.org>
+To: Jani Nikula <jani.nikula@linux.intel.com>, Maxime Ripard
+	 <mripard@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann
+	 <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter	
+ <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor	
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo	
+ <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>,  "open list:RUST:Keyword:b(?i:rust)b"	
+ <rust-for-linux@vger.kernel.org>
+Date: Fri, 28 Mar 2025 18:27:44 -0400
+In-Reply-To: <87wmcc6ppo.fsf@intel.com>
+References: <20250325212823.669459-1-lyude@redhat.com>
+	 <20250325212823.669459-2-lyude@redhat.com> <87wmcc6ppo.fsf@intel.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -88,92 +92,41 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: MaLkW2mExJmfpQ9RG0uj_8TY8Yt-VUFf9j8lChvPN9k_1743199215
+X-Mimecast-MFC-PROC-ID: Ozr72OPqaRvjQAbX9b10R5u9dhF8E3YZOPa6sJPYiEE_1743200867
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2025-03-26 at 00:54 +0100, Danilo Krummrich wrote:
-> diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-> new file mode 100644
-> index 000000000000..1ac770482ae0
-> --- /dev/null
-> +++ b/rust/kernel/drm/driver.rs
-> @@ -0,0 +1,143 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR MIT
-> +
-> +//! DRM driver core.
-> +//!
-> +//! C header: [`include/linux/drm/drm_drv.h`](srctree/include/linux/drm/=
-drm_drv.h)
-> +
-> +use crate::{bindings, drm, str::CStr};
-> +use macros::vtable;
-> +
-> +/// Driver use the GEM memory manager. This should be set for all modern=
- drivers.
-> +pub const FEAT_GEM: u32 =3D bindings::drm_driver_feature_DRIVER_GEM;
-> +/// Driver supports mode setting interfaces (KMS).
-> +pub const FEAT_MODESET: u32 =3D bindings::drm_driver_feature_DRIVER_MODE=
-SET;
-> +/// Driver supports dedicated render nodes.
-> +pub const FEAT_RENDER: u32 =3D bindings::drm_driver_feature_DRIVER_RENDE=
-R;
-> +/// Driver supports the full atomic modesetting userspace API.
-> +///
-> +/// Drivers which only use atomic internally, but do not support the ful=
-l userspace API (e.g. not
-> +/// all properties converted to atomic, or multi-plane updates are not g=
-uaranteed to be tear-free)
-> +/// should not set this flag.
-> +pub const FEAT_ATOMIC: u32 =3D bindings::drm_driver_feature_DRIVER_ATOMI=
-C;
-> +/// Driver supports DRM sync objects for explicit synchronization of com=
-mand submission.
-> +pub const FEAT_SYNCOBJ: u32 =3D bindings::drm_driver_feature_DRIVER_SYNC=
-OBJ;
-> +/// Driver supports the timeline flavor of DRM sync objects for explicit=
- synchronization of command
-> +/// submission.
-> +pub const FEAT_SYNCOBJ_TIMELINE: u32 =3D bindings::drm_driver_feature_DR=
-IVER_SYNCOBJ_TIMELINE;
-> +/// Driver supports compute acceleration devices. This flag is mutually =
-exclusive with `FEAT_RENDER`
-> +/// and `FEAT_MODESET`. Devices that support both graphics and compute a=
-cceleration should be
-> +/// handled by two drivers that are connected using auxiliary bus.
-> +pub const FEAT_COMPUTE_ACCEL: u32 =3D bindings::drm_driver_feature_DRIVE=
-R_COMPUTE_ACCEL;
-> +/// Driver supports user defined GPU VA bindings for GEM objects.
-> +pub const FEAT_GEM_GPUVA: u32 =3D bindings::drm_driver_feature_DRIVER_GE=
-M_GPUVA;
-> +/// Driver supports and requires cursor hotspot information in the curso=
-r plane (e.g. cursor plane
-> +/// has to actually track the mouse cursor and the clients are required =
-to set hotspot in order for
-> +/// the cursor planes to work correctly).
-> +pub const FEAT_CURSOR_HOTSPOT: u32 =3D bindings::drm_driver_feature_DRIV=
-ER_CURSOR_HOTSPOT;
+On Wed, 2025-03-26 at 12:39 +0200, Jani Nikula wrote:
+> On Tue, 25 Mar 2025, Lyude Paul <lyude@redhat.com> wrote:
+> > A negative resolution doesn't really make any sense, no one goes into a=
+ TV
+> > store and says "Hello sir, I would like a negative 4K TV please", that
+> > would make everyone look at you funny.
+>=20
+> That is largely the point, though. You know something fishy is going on
+> when you have a negative resolution. Nobody blinks an eye when you ask
+> for 4294963K telly, but it's still just as bonkers as that negative 4K.
+>=20
+> I think the change at hand is fine, but please let's not pretend using
+> unsigned somehow protects us from negative numbers.
 
-IMHO I don't think that we should be exposing any of these constants, build=
-ing
-the feature flag mask should honestly be abstracted away into the rust
-bindings as not doing so means it's very easy to break assumptions that cou=
-ld
-lead to unsoundness.
+So - it actually does protect us to a limited extent on the rust side of
+things. With CONFIG_RUST_OVERFLOW_CHECKS=3Dy, arithematic checks are builti=
+n to
+the language. This isn't the default config of course, but it's better then
+nothing.
 
-As an example using the KMS bindings, assume we're handling passing the fla=
-gs
-manually. If I were to have a type implement drm::drv::Driver and
-drm::kms::KmsDriver, we now have access to various Kms method calls on the
-drm::device::Device. But all of those method calls assume that we actually =
-set
-up Kms in the first place, since checking this at runtime would lead to mos=
-t
-of the Kms API being fallible in places that don't make sense. So if we tri=
-ed
-calling a Kms specific method on a device that didn't set FEAT_MODESET |
-FEAT_ATOMIC, we'd hit undefined behavior.
+I probably should have mentioned this in the commit message so I'll do that=
+ on
+the next respin.
+>=20
+>=20
+> BR,
+> Jani.
+>=20
+>=20
+
 --=20
 Cheers,
  Lyude Paul (she/her)
