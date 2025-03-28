@@ -1,166 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AC71B6D08
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 14:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC44C1BBBE5
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 14:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743172087; cv=none; b=W03SGpe8lI5OLNxeWRTXPsX/NQLjSFTfR3IquDeqBVAZ3vUM4/z2NEiI/iTEwcNjeqB0POa2RRs+ong6otMBKWyjxKZJOlbuTeskC80JfsI0Hy+xjJzMJGZRnBmdbmJvBLpYYRklrkQR5+Wcy5gTcE3raNIf1H4gDBq0OpXhEOI=
+	t=1743172945; cv=none; b=L1G9liu4H5P8o2jgxpIjvLl7N9smPGP3nJ9+imqpMDDwEOVjv0hULb32ePWev6ILpBzcuuVnEc06CZOdm63Oqof6TGpe4zxUbdSd08tguIoOdYMPbguTK4PEGyR67llMPTVJ7hD565ah3BtB3BK1nIPO219d66Tbm9nl+ucE/oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743172087; c=relaxed/simple;
-	bh=2uknwqe+Y6i7pMdOjoqSIIMaI/JT+FSHvmuSZYqm9ao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kc50IrSA87i82zvw28llVaXOa6Zoulj96yqer1Oqa962oWaKylRKgUKJ8yaOJAQMllROYR2pcu7cP8nnRyD1uDNZLiwuJuXIOPAiaII26nZqevY8kfz8BO8xgOW0CryPZ14Unb1Q0g2Fgf9APRP7LWnS61ZFCgtw0suIksyrO0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oWM0CN97; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743172945; c=relaxed/simple;
+	bh=+zPTZBmyIEAoaSW++4iG9w8dxUKOISHbMHDdQn6vQpE=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=MGXlf+B6pibQ2qvcj7KsZjTzui98brzZnKjGhN+JwqhUI7lTTCH9R8gMQ7eJE1O81A0r74yjHlKKotr8l0TFZ2PYgkVvk9lC5iOkoxnIqMIvM/232EtrLQd4ENW3nKNFyh3Ig/UIZKc8MOgnGUpsoWmghVCk8+7Tbgw4bp3cdxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uNve0Z0O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oWM0CN97"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26D2C4CEEA;
-	Fri, 28 Mar 2025 14:28:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uNve0Z0O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8EBC4CEE4;
+	Fri, 28 Mar 2025 14:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743172087;
-	bh=2uknwqe+Y6i7pMdOjoqSIIMaI/JT+FSHvmuSZYqm9ao=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oWM0CN97srCgu07X54677tyhZpT67sX/u6RNoWG3my9j17UvNNXiWqapNtjpF3kVN
-	 lhcbfz0TglfnGi0IDUU8q3YQEss0hV6Jc3EynVY3RWAxbasJ+9gftsIC03fzIeZUcp
-	 93tGRbbx/7m1gAKzPnw4WhNiT3Z2FmWGAudU84obUsdg+z8WMstK15XeKigbFV2Cpz
-	 PCc+tdehJwluqQ8xqZ7gbk+ozaWrv9i0kjWwxr6ArNjqtcT521zl4oeObSqBadImOY
-	 ZE5JaNjJpnMpTrcSfrPEbn5cuXaw+Gxt2gRAAnLW+1UDbJEGP/9W9llVfEyqQPUO8b
-	 ytv+yyOfdi7uA==
-Date: Fri, 28 Mar 2025 15:28:04 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
-	tzimmermann@suse.de, lyude@redhat.com, acurrid@nvidia.com, lina@asahilina.net, 
-	daniel.almeida@collabora.com, j@jannau.net, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 5/8] rust: drm: add DRM driver registration
-Message-ID: <20250328-impossible-locust-of-merriment-b625bd@houat>
-References: <20250325235522.3992-1-dakr@kernel.org>
- <20250325235522.3992-6-dakr@kernel.org>
- <20250326-loyal-scrupulous-leech-59d44a@houat>
- <Z-PbHiaMNqR0FPbY@pollux>
+	s=k20201202; t=1743172944;
+	bh=+zPTZBmyIEAoaSW++4iG9w8dxUKOISHbMHDdQn6vQpE=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=uNve0Z0OC8fr2iOSBZeNLlyXVaJ+/OlT7lmoLw4dMUE0hPCAwvc3svkM8QiA0KF+r
+	 20kkHT8Xt/wHdUcq2MOFx1lMUNzKnSCrdBjz/qJJpn8t0OOl16A8rHEuWqdb3K/ZOi
+	 QBRCxH5PebTopMSvTYShH06l/XUoJBLMLeYfnq8GHS3SKVs9I/gIA7XBHJey5KNJ9s
+	 2CJnrepU00pI6AtL3Pkn3SajQmZwfXnlM7Dd5K8TJhEPwrz1nGhzn6q3wdqNMdKC9L
+	 a7MjioMqaUA7erSFeloHkoaHE8u+cg4UOHPs8YWAhU+KPip2TZHxmpfGD2GlN0sHVl
+	 Z8RPEPP737CSg==
+Message-ID: <f3f8c1b43675e821e48cf9268fd15b05@kernel.org>
+Date: Fri, 28 Mar 2025 14:42:22 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 6/8] rust: drm: file: Add File abstraction
+In-Reply-To: <20250325235522.3992-7-dakr@kernel.org>
+References: <20250325235522.3992-7-dakr@kernel.org>
+Cc: a.hindborg@kernel.org, acurrid@nvidia.com, airlied@gmail.com, alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, daniel.almeida@collabora.com, dri-devel@lists.freedesktop.org, gary@garyguo.net, j@jannau.net, lina@asahilina.net, lyude@redhat.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org, simona@ffwll.ch, tmgross@umich.edu, tzimmermann@suse.de, "Maxime
+ Ripard" <mripard@kernel.org>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yogbmzuaf53os4lx"
-Content-Disposition: inline
-In-Reply-To: <Z-PbHiaMNqR0FPbY@pollux>
 
-
---yogbmzuaf53os4lx
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 5/8] rust: drm: add DRM driver registration
-MIME-Version: 1.0
-
-On Wed, Mar 26, 2025 at 11:46:54AM +0100, Danilo Krummrich wrote:
-> On Wed, Mar 26, 2025 at 10:24:43AM +0100, Maxime Ripard wrote:
-> > Hi,
-> >=20
-> > On Wed, Mar 26, 2025 at 12:54:32AM +0100, Danilo Krummrich wrote:
-> > > Implement the DRM driver `Registration`.
-> > >=20
-> > > The `Registration` structure is responsible to register and unregiste=
-r a
-> > > DRM driver. It makes use of the `Devres` container in order to allow =
-the
-> > > `Registration` to be owned by devres, such that it is automatically
-> > > dropped (and the DRM driver unregistered) once the parent device is
-> > > unbound.
-> >=20
-> > The code looks correct, but the wording is confusing to me.
-> > drm_dev_unregister does indeed unregister the device, but it's not freed
-> > until the last reference is dropped, so it's not really "dropped once
-> > the parent device is unbound", the reference is, and it's not active
-> > anymore.
+On Wed, 26 Mar 2025 00:54:33 +0100, Danilo Krummrich wrote:
+> A DRM File is the DRM counterpart to a kernel file structure,
+> representing an open DRM file descriptor.
 >=20
-> The above wording is related to the Registration structure itself, i.e. t=
-he
-> Registration is dropped, but not the the DRM device itself. However, if t=
-he
-> Registration had the last reference to the DRM device, then of course it's
-> freed.
-
-Ok, my bad then :)
-
-> > > +impl<T: Driver> Drop for Registration<T> {
-> > > +    /// Removes the registration from the kernel if it has completed=
- successfully before.
-> > > +    fn drop(&mut self) {
-> > > +        // SAFETY: Safe by the invariant of `ARef<drm::Device<T>>`. =
-The existence of this
-> > > +        // `Registration` also guarantees the this `drm::Device` is =
-actually registered.
-> > > +        unsafe { bindings::drm_dev_unregister(self.0.as_raw()) };
-> > > +    }
-> > > +}
-> >=20
-> > drm_dev_unregister also have an hotplug-aware variant in
-> > drm_dev_unplug(). However, most devices are hotpluggable, even if only
-> > through sysfs. So drm_dev_unplug() is generally a better option. Should
-> > we use it here, and / or should we provide multiple options still?
-> >=20
-> > Another thing worth mentioning I think is that drm_dev_unplug() works by
-> > setting a flag, and drivers are expected to check that their access to
-> > device-bound resources (so registers mapping, clocks, regulators, etc.)
-> > are still there through drm_dev_enter/drm_dev_exit. It's pretty fragile
-> > overall, so I wonder if it's something we could abstract away in Rust.
+> Add a Rust abstraction to allow drivers to implement their own File types
+> that implement the DriverFile trait.
 >=20
-> DRM should not have to take care of the lifetime of device resources of t=
-he
-> parent device. This is the responsibility of the driver core abstractions.
->
-> At least for the device resources we directly give out to drivers, it has=
- to be,
-> since otherwise it would mean that the driver core abstraction is unsound.
-> Drivers could otherwise extend the lifetime of device resources arbitrari=
-ly.
+> [ ... ]
 
-Sure.
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
 
-> For instance, I/O memory is only ever given out by bus abstractions embed=
-ded in
-> a Devres container (e.g. Devres<pci::Bar>). Once the parent device is unb=
-ound
-> the pci::Bar within the Devres container won't be accessible any more and=
- will
-> be dropped internally. So, that's nothing DRM has to take care of.
->=20
-> However, there are cases where it's better to let subsystem abstractions =
-manage
-> the lifetime of device resources, (e.g. DMA mappings). The relevant thing=
- is,
-> that we never hand out device resources to a driver in a way that the dri=
-ver can
-> extend their lifetime arbitrarily.
-
-I was talking about the opposite though: when the driver is still around
-but the device (and its resources) aren't anymore.
-
-It makes total sense to tie the lifetime of the device resources to the
-device. However, the DRM device and driver will far outlive the device
-it was bound to so it needs to deal with that kind of degraded "the DRM
-driver can still be called by userspace, but it doesn't have a device
-anymore" scenario. That's what I was talking about.
-
+Thanks!
 Maxime
-
---yogbmzuaf53os4lx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZ+ax9AAKCRDj7w1vZxhR
-xRi7AQCZe5y9bi0+6xnE2QtnR5CfK9kyAMyEiwgRrYFv1zkJnwD/RTJYHFLlyypZ
-AkDjxaDIihAM/IBomZ31OeO/Y1yJNwE=
-=iLCa
------END PGP SIGNATURE-----
-
---yogbmzuaf53os4lx--
