@@ -1,107 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C2E2F3B
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 22:46:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1E1EEC0
+	for <rust-for-linux@vger.kernel.org>; Sat, 29 Mar 2025 02:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743201980; cv=none; b=Iu9FRXN/RBBKz8BG0fBKu9fEkRfT6ULKuKtuFKvEVKLCP52+rUBthEfV3036gfYpFgyUhiOKmupDyIGkSBw27bMPHk0LxxBMwD6QYXY5+P5EtpKAoBKEOxjZXuLmRa91BoGwFThkHJ05HS0iBNtu3knTpIpQzk1uApcnl/EV9DI=
+	t=1743216200; cv=none; b=I4RLgx2MZ4nmMQ7WrJL+yTZyCjgq9fPfpg3T/6lgwM6UJd1KuaFwCu0p4KqjGPtVSzIOiN2l3fBJF9pp/IthzUrVtIoFsPPwCpCrAXWs0xuVkOcJrK735B58gT52OMcvhhFvv5ncpzb80z2Frh8uY1sSswHIolkCQY9RKxb3Z1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743201980; c=relaxed/simple;
-	bh=gKPBVUpj+xuutNs0NDxBSv7wG9g2bTlQC3qVmWnO40M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j7hfwFc5vni2TMeVaRUkuytkYp2CDEpyG3firPB9/viRUjuI7umfaTFAdlvpJMO/iOL1SsNtCc6z80Fv26UJC2KSr1rVOV3Mtty3TOIarkhCtIzYcoboyh37ti+oq7S6AVhE5a0tjdiWl1NMrIGC2oeZRj8s4yN58gd5GVGEiT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y54rwQTD; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y54rwQTD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9D6C4CEE4;
-	Fri, 28 Mar 2025 22:46:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743201979;
-	bh=gKPBVUpj+xuutNs0NDxBSv7wG9g2bTlQC3qVmWnO40M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y54rwQTDxr9Sw0n66Or5YPHaLyYjr4sGExbr41S8t31zFTNaZNJEOG/oLYRaCkZrO
-	 aUJzCmHOl2hwoCMWfue25wgvXNICtaN7dH6SjkSKCwRjsJPsHIn0wBEanCUyiTQNzm
-	 HFP/Z9XSX0azyE3zZAcvV/R390L7Ha6MHfbwL0fmrRwqpAKRsjPajJwO1/2zRgvseH
-	 c0rlHtxpyJdRq6UQIZfazbgAg5KA9jWs+5qIIXdLTKouWhIevRm8cSKCQZgPlrZ+ju
-	 r3oh34cRdmxtnxmFZIhE3BDXgisIQMbU33ZF47VA0g6t0OHEeeFXbWtDoiG9Ju3RjP
-	 ZWqMPqNqMCjzA==
-Date: Fri, 28 Mar 2025 23:46:12 +0100
-From: Danilo Krummrich <dakr@kernel.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, acurrid@nvidia.com,
-	lina@asahilina.net, daniel.almeida@collabora.com, j@jannau.net,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 3/8] rust: drm: add driver abstractions
-Message-ID: <Z-cmtEZzILsLVpu9@pollux>
-References: <20250325235522.3992-1-dakr@kernel.org>
- <20250325235522.3992-4-dakr@kernel.org>
- <43ad9fdcc62897bd0a78689020a8dd291b045ce4.camel@redhat.com>
+	s=arc-20240116; t=1743216200; c=relaxed/simple;
+	bh=HcIGeBrGMpCMxWsLaMVzZX0Pv11Can9GqBFjhYG624s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LsUS+Uup7TUqE5iy2w0Axy1ociwPNoCkP7VPf8F4ILtfWVBNbPbbm3KPnvMP5kv3gxwim5RyCa7WoGIn8GFXfUUdpILbSQ0nZikaaKOkIJNLyk4TqFP9cl76F9nmNkWrUIwWDRzm+lxYjPw3k4gUVN1dNysYfafcB5QGrSpxJ+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [209.85.219.174])
+	by gateway (Coremail) with SMTP id _____8DxjXI8Xudn+BCqAA--.22430S3;
+	Sat, 29 Mar 2025 10:43:09 +0800 (CST)
+Received: from mail-yb1-f174.google.com (unknown [209.85.219.174])
+	by front1 (Coremail) with SMTP id qMiowMDx_MQ5XudnicBlAA--.38728S3;
+	Sat, 29 Mar 2025 10:43:06 +0800 (CST)
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e5ad75ca787so2566902276.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Mar 2025 19:43:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW3TRA4NAD3kTMROFAK0r6/6Q5rk3+KXRFhqNhEYWSGtOHL53TJC4O4+B0RwmZDRi6QNNyCaApySrt6hBsvRQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCAMX6uOEvqV9stJvTkmNkTGwnFc0RhTz7ttojih3uAzYXydt8
+	PFnBkc7hHUWK6b42v13fBS6IspycehlV+1B29Gtlkz829qJjHN4v5VAMGweTsg9oRNSZ4WeOFZc
+	aHVeuZUnlimXt9yIySEXHwDpuSxCTDar4oUVgYg==
+X-Google-Smtp-Source: AGHT+IGk4jLVMMvZ9NO4g+M6cXpWM89jtepREBCULlvcxr5aiChB5Hx8NjFVELFpjOU4wIk0eMDYI9EFrsKCf5pBsNY=
+X-Received: by 2002:a05:6902:230a:b0:e61:f51a:a79c with SMTP id
+ 3f1490d57ef6-e6b736c36f9mr6818089276.19.1743216184810; Fri, 28 Mar 2025
+ 19:43:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <43ad9fdcc62897bd0a78689020a8dd291b045ce4.camel@redhat.com>
+References: <20250304073554.20869-1-wangrui@loongson.cn> <aab657d72a3ee578e5c7a09c6c044e0d5c5add9a.camel@xry111.site>
+ <CAAhV-H5ayw7NxbSbCeAFaxOz+TZ8QeghmhW6-j2B1vTcjYxsJQ@mail.gmail.com> <CANiq72=AZ+CN4SScZcnRBpkS8ogCaZ=Uhe=k7fhGCVyecyRu5g@mail.gmail.com>
+In-Reply-To: <CANiq72=AZ+CN4SScZcnRBpkS8ogCaZ=Uhe=k7fhGCVyecyRu5g@mail.gmail.com>
+From: WANG Rui <wangrui@loongson.cn>
+Date: Sat, 29 Mar 2025 10:42:54 +0800
+X-Gmail-Original-Message-ID: <CAHirt9jg2hMJDb7o2H33-6DqnF0boUwdfiwmaJahg5C2=sPi0g@mail.gmail.com>
+X-Gm-Features: AQ5f1Jrp_Grtk1mM9tgpZbrZSf0byvB8hoYloKhjBdo_j1DwQ_sq-aJDwVxK7Po
+Message-ID: <CAHirt9jg2hMJDb7o2H33-6DqnF0boUwdfiwmaJahg5C2=sPi0g@mail.gmail.com>
+Subject: Re: [PATCH] rust: Fix enabling Rust and building with GCC for LoongArch
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>, Xi Ruoyao <xry111@xry111.site>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:qMiowMDx_MQ5XudnicBlAA--.38728S3
+X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CF1UuFW7tF1xAr1DJr1DurX_yoW8Xw1rpr
+	WkKasrCr4kKFW8t3WxA340vayjk3ykurW8CrW5X342v3Z8uF1SgrW0qF1a9Fy8WF1kWw4j
+	vanF9a1rKFWqvFcCm3ZEXasCq-sJn29KB7ZKAUJUUUUk529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	JVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+	xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU4L0eDUUUU
 
-On Fri, Mar 28, 2025 at 06:00:11PM -0400, Lyude Paul wrote:
-> On Wed, 2025-03-26 at 00:54 +0100, Danilo Krummrich wrote:
-> > diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-> > new file mode 100644
-> > index 000000000000..1ac770482ae0
-> > --- /dev/null
-> > +++ b/rust/kernel/drm/driver.rs
-> > @@ -0,0 +1,143 @@
-> > +// SPDX-License-Identifier: GPL-2.0 OR MIT
-> > +
-> > +//! DRM driver core.
-> > +//!
-> > +//! C header: [`include/linux/drm/drm_drv.h`](srctree/include/linux/drm/drm_drv.h)
-> > +
-> > +use crate::{bindings, drm, str::CStr};
-> > +use macros::vtable;
-> > +
-> > +/// Driver use the GEM memory manager. This should be set for all modern drivers.
-> > +pub const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
-> > +/// Driver supports mode setting interfaces (KMS).
-> > +pub const FEAT_MODESET: u32 = bindings::drm_driver_feature_DRIVER_MODESET;
-> > +/// Driver supports dedicated render nodes.
-> > +pub const FEAT_RENDER: u32 = bindings::drm_driver_feature_DRIVER_RENDER;
-> > +/// Driver supports the full atomic modesetting userspace API.
-> > +///
-> > +/// Drivers which only use atomic internally, but do not support the full userspace API (e.g. not
-> > +/// all properties converted to atomic, or multi-plane updates are not guaranteed to be tear-free)
-> > +/// should not set this flag.
-> > +pub const FEAT_ATOMIC: u32 = bindings::drm_driver_feature_DRIVER_ATOMIC;
-> > +/// Driver supports DRM sync objects for explicit synchronization of command submission.
-> > +pub const FEAT_SYNCOBJ: u32 = bindings::drm_driver_feature_DRIVER_SYNCOBJ;
-> > +/// Driver supports the timeline flavor of DRM sync objects for explicit synchronization of command
-> > +/// submission.
-> > +pub const FEAT_SYNCOBJ_TIMELINE: u32 = bindings::drm_driver_feature_DRIVER_SYNCOBJ_TIMELINE;
-> > +/// Driver supports compute acceleration devices. This flag is mutually exclusive with `FEAT_RENDER`
-> > +/// and `FEAT_MODESET`. Devices that support both graphics and compute acceleration should be
-> > +/// handled by two drivers that are connected using auxiliary bus.
-> > +pub const FEAT_COMPUTE_ACCEL: u32 = bindings::drm_driver_feature_DRIVER_COMPUTE_ACCEL;
-> > +/// Driver supports user defined GPU VA bindings for GEM objects.
-> > +pub const FEAT_GEM_GPUVA: u32 = bindings::drm_driver_feature_DRIVER_GEM_GPUVA;
-> > +/// Driver supports and requires cursor hotspot information in the cursor plane (e.g. cursor plane
-> > +/// has to actually track the mouse cursor and the clients are required to set hotspot in order for
-> > +/// the cursor planes to work correctly).
-> > +pub const FEAT_CURSOR_HOTSPOT: u32 = bindings::drm_driver_feature_DRIVER_CURSOR_HOTSPOT;
-> 
-> IMHO I don't think that we should be exposing any of these constants, building
-> the feature flag mask should honestly be abstracted away into the rust
-> bindings as not doing so means it's very easy to break assumptions that could
-> lead to unsoundness.
+On Sat, Mar 29, 2025 at 12:15=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
 
-Yep, that was the plan, just forgot to make them crate private; on the other
-hand I should probably drop them entirely for now.
+Thanks for the review and feedback!
 
-- Danilo
+> In any case, the usual question for these "skipped flags" is whether
+> they could affect the output of `bindgen`, i.e. could they modify
+> layouts somehow?
+
+These "skipped flags" won't affect the output of `bindgen`.
+
+>
+> Also, it would be nice to mention a bit more what was the build error
+> and the GCC version in the commit message.
+
+To make it easier for the maintainer to include more details in the
+commit message, I've attached the original build error message below.
+
+  BINDGEN rust/bindings/bindings_generated.rs
+error: unknown argument: '-mexplicit-relocs'
+error: unknown argument: '-mdirect-extern-access'
+error: unsupported argument 'normal' to option '-mcmodel=3D' for target 'un=
+known'
+error: unknown target triple 'unknown'
+panicked at /home/hev/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/=
+bindgen-0.71.1/ir/context.rs:564:15:
+libclang error; possible causes include:
+- Invalid flag syntax
+- Unrecognized flags
+- Invalid flag arguments
+- File I/O errors
+- Host vs. target architecture mismatch
+If you encounter an error missing from this list, please file an issue or a=
+ PR!
+
+gcc version 14.2.0 (crosstool-NG 1.27.0)
+
+>
+> Finally, regarding the Cc: stable, I guess that means 6.12+ since it
+> is the first LTS with loongarch64, right?
+
+Also, the `Cc: stable` is indeed targeting 6.12+, as it's the first
+LTS with LoongArch64.
+
+Thanks again!
+
+Cheers,
+-Rui
+
