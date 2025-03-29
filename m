@@ -1,104 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525D035972;
-	Sat, 29 Mar 2025 08:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC15123774;
+	Sat, 29 Mar 2025 12:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743238377; cv=none; b=IpfUIncuTeXMT/rxHNrJWbu5cCrIVBog9w/tUi9u1D3Hguy0AjM7B2uOQrD3O6LV2MuLGEYTlY1e3+liMteM3zccKA6kTenzNQzfvPyWFqZu3D/eMJmjT2RpWZnyK172nq0+PFKmMnlzoMdPlIs0IqruF8yYb/eoXZoNCwczU6o=
+	t=1743249891; cv=none; b=lEWyzjzYX0PyZRSuw0Z4NqynzpiFDtaN0MkvILVMT8lTJISf4GY+asNyoSNxEDnPs4kNZ+gL97Juq8F9qVVHb5yzedJm1JdEvCTMxe//yXmYFDHGqJ1YHzJw2yHTNFdAP/AIrDDJOhohIJRPGrTz1EhhVuLhCkPY6ipiFQmuWes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743238377; c=relaxed/simple;
-	bh=VuNKaSttNCraDAMFXX4IwdkGLy4R9KErqa/ImpP7GDI=;
+	s=arc-20240116; t=1743249891; c=relaxed/simple;
+	bh=wdGfX1nkkaOW4O4ujEOaMydVXl5u/twkpDKmuOuz89c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uTTXN9vqIhjcWVmSM+dxr5GPABa+4uRvEfLfi18/zTvCBbDKhOHrqh7x/7pQ+8bqBIw/lslPx/hetlOvvtjaghqOHPw3HLUvqhabRLzc4EykP0OzbkJ1wi7RYFdMgMDL1UiGKeM3JQic3Va1a7GGQEMWa7c7uvmBj1JyhVyaS3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e65lhkwZ; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=aoVTyHNP65bDe1IRvjM03WYAl+iw5rCCmainpOvM+gmWNzTu2V4f5isYI4kHpSaxGvTePswNXzFrCEYWMgFPoDm9va9IAV3/yjWxJ7jLAbOIUVcFV6+pBaNJtEkwI8XHk0kYuBo+7lMZW/4+/sqxrICncWl7F+eIj00zbsGGqDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xq/sPumm; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e65lhkwZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41E9C4CEE2;
-	Sat, 29 Mar 2025 08:52:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743238376;
-	bh=VuNKaSttNCraDAMFXX4IwdkGLy4R9KErqa/ImpP7GDI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=e65lhkwZazJXDxHke7ITrqrGsNTa/7lBo7ScI8lwRLjDm+wC1YFiDX5bnYK75Hw4P
-	 y+WJSwrfTZtXQ4EhINWX/wJTpVu4SiMprLh0xw2x7UGUa8/qljf1W/ooggQqTnJnY1
-	 u49qG78g/yRn/Q7TbulS4AG5ZLvW43fTNi/VXhGZjKgPoEvjg90LKngLl0JTc3ehX9
-	 tbfiSM3wGV6/uIuWm6UCuB9+6eISC/dUQeCPeLw8V1/8Vbza0bl6TtBJJ9zeFws7wb
-	 Hh+nDdJF50HT8ZOT+Yh/ieLHp6Q828JUrIbzT3bD0cqvTlezt8BBoY8Ut9KGa+2mBU
-	 diRGhVYLs99/A==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e6167d0536so1689576a12.1;
-        Sat, 29 Mar 2025 01:52:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUn7YVVrN99SK8VpnAVI5Lr6/i2eebryxxB2LLpRzS30CmZPzBUHDdr4jTFNsl1FSwILYhbmHaU@vger.kernel.org, AJvYcCVDG8XIX9kuuy0M/Yjz0JOTylZ+YTIskNg/jRJN8TgkiVcloe3pLG1RWjKVKmoIi4w6APl3WS0AsOw1Tx0=@vger.kernel.org, AJvYcCXARvY8tKOsZFNPaEtTSnh6qYDXyYQwhmMQH4kpcPGqSwEJWgwrlITLSOMO8Tj2jBOuT2t5w7fzwjsuxkzxv/g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEXa+d5CvTQpVPGcJPGioFs+RamU952ofde/a954Lcc34/WteB
-	x4l5LSm6/GhNeGM7/lAoN6SRRABpeAcmgmInImsSNPKmtj4SwYHyBjxLYnMxt5ofP75RVqWjhhP
-	wObWKkW3CpvbadxCjdGHCe5uBnXE=
-X-Google-Smtp-Source: AGHT+IFcTBlHFMe+cnzJ3GscmxD7DadfgO659/mYjAgkv2zsYhCstTT+cs4vEk+dCL2YR1W8PvXdP/Jf5yhQc854D64=
-X-Received: by 2002:a17:907:6092:b0:ac4:491:1549 with SMTP id
- a640c23a62f3a-ac738a088edmr212495866b.1.1743237957112; Sat, 29 Mar 2025
- 01:45:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xq/sPumm"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ff5f2c5924so665133a91.2;
+        Sat, 29 Mar 2025 05:04:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743249889; x=1743854689; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wdGfX1nkkaOW4O4ujEOaMydVXl5u/twkpDKmuOuz89c=;
+        b=Xq/sPumm8MI92xzjYEbflbWpmBDnGCbVH2ZEDM6ZbFc5lVZ+fCbwfi4B7fPHlRMnrP
+         TMZIp7xLJgn96WIdHWW8b6WeQ2ckRfENk/Fy507TUwZPMlGO3P7sLUY7mNyDpuoWJinQ
+         8fpdSpfIDez91MtuXpCjYHiiac/vBvA9exvMGdBwaGC/2XzrprYGBlekW8SiSZE2T2fc
+         Kr7LNGseghsRhKn2d4jsnco07hw/hI/W8MG3UnXyeBqr7ir/HN31JAVveop38nzDYffX
+         7dBY6WFIZqwQHJ83KtoQh1B0ltc5D1hudFpsWH0oeqGDnlpYFrwtwFW0pPfWe9VM2g+4
+         /51A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743249889; x=1743854689;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wdGfX1nkkaOW4O4ujEOaMydVXl5u/twkpDKmuOuz89c=;
+        b=nmoZCSfe4LF/4eQ0Caw4lxmK/SUyNQ9Tn09KXJKXw4eIFz1XhaWjpEZ56B0FNhkOKN
+         0xTKYPnEuZyHzFRHGnmj++Rn41t7iqS2MLKTwDSmvnQxmI827+w+rfxfkFZ4aczP6hC+
+         v2X+u9FNfQb18UzhzOjJSwYFCb0Gy8YEVdGc5I/4hhVxqSc0WhnsUFSc8qywUaXXkz01
+         UjQ4G53wnexPnSv0A5fnZt9ui/AQOuTHGkJFP8hh1LQDiF2qDIEFnWaE8SdDxqXjvQc5
+         591b4YCokzb80uqGhvYqi8RU86248BCgfgQQhOSfCU/1qXHnv2pIa3XNm81lv3hMCS2Z
+         yn+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWdbabJa37UI3/9N2lHNvAhkbglGvpqeKrCeWLLaPp4XVufLRD8gpyHXpVdlDDIvCPzT3PGHxK+RIr/1NU=@vger.kernel.org, AJvYcCXsBuUukvn9ohAYRumMqVP4qIN3MZs+x4HydN2CBMCNZ2z/vE0FG+ZWG67NjZ4RCpW6FvdEmio4I6cIbtAxMhw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzG05Tq3enChuFW9eHNqfLz43LCcnv95nqpfMrxQZ1GC//aqZan
+	xe/KW9PwlEd5cxMWnjRGAlqvH/yOqfXAzXx72eE6yW/wO296W6GFCin5P0QqVQSJ1xxdHPoYngv
+	Qul+aQFmgq1KbPqbgJ9gwxgh90eM=
+X-Gm-Gg: ASbGncuUhwKQQRS3q2mSqxabB4btOO4xS+EKiJXGWJUZwOK2rpps+D7Kd9Wt7L25StG
+	5Ma47W1q2/ur0iG92HRoQUBifc6VbdJ6gAp0/63EPyjT/VzCyWJwuP+9/IczgJV3L9/ItSN2Lwc
+	PHRAM3sbsAHGglsnRFgwyjrNv0RQ==
+X-Google-Smtp-Source: AGHT+IFo2UW5T+sFxhmwqIg+9PDnfH9AlwSZ2JIdsgHYNVzUvdlOAsTTCFjCh8UvJiZBM9onqJ46wvoqPc/VqkxO740=
+X-Received: by 2002:a17:90b:390f:b0:2ff:4be6:c5e2 with SMTP id
+ 98e67ed59e1d1-3053216fadamr1374643a91.7.1743249889149; Sat, 29 Mar 2025
+ 05:04:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250304073554.20869-1-wangrui@loongson.cn> <aab657d72a3ee578e5c7a09c6c044e0d5c5add9a.camel@xry111.site>
- <CAAhV-H5ayw7NxbSbCeAFaxOz+TZ8QeghmhW6-j2B1vTcjYxsJQ@mail.gmail.com> <CANiq72=AZ+CN4SScZcnRBpkS8ogCaZ=Uhe=k7fhGCVyecyRu5g@mail.gmail.com>
-In-Reply-To: <CANiq72=AZ+CN4SScZcnRBpkS8ogCaZ=Uhe=k7fhGCVyecyRu5g@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 29 Mar 2025 16:45:49 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5Yc8d4qSN0Fwe=wShXHzJrdJ0KX87kV0_0ToQiHBEECQ@mail.gmail.com>
-X-Gm-Features: AQ5f1Jo_BhIWW_S-wVrrfYgevxjvR72OSEu-wwQPjbXYleu9ZtV1saltGmiCwUg
-Message-ID: <CAAhV-H5Yc8d4qSN0Fwe=wShXHzJrdJ0KX87kV0_0ToQiHBEECQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: Fix enabling Rust and building with GCC for LoongArch
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Xi Ruoyao <xry111@xry111.site>, WANG Rui <wangrui@loongson.cn>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20250325212823.669459-1-lyude@redhat.com> <20250325212823.669459-2-lyude@redhat.com>
+ <87wmcc6ppo.fsf@intel.com> <4a7f76493305b0afc6ae8d14cfd7bc031316b3d0.camel@redhat.com>
+In-Reply-To: <4a7f76493305b0afc6ae8d14cfd7bc031316b3d0.camel@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 29 Mar 2025 13:04:36 +0100
+X-Gm-Features: AQ5f1Jqbd9HZU2nzqFw8nwbypmV9t7OkAeLVo0-UYJymAEYKQwYKoPABHjKi-rQ
+Message-ID: <CANiq72n_PJWF=2Duxt_bTzzH2opAcNMRt+31WcDLuu1Qx2Nz2A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] drm/edid: Use unsigned int in drm_add_modes_noedid()
+To: Lyude Paul <lyude@redhat.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org
+	"open list:RUST:Keyword:b(?i:rust)b" <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Miguel,
+On Fri, Mar 28, 2025 at 11:27=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrot=
+e:
+>
+> So - it actually does protect us to a limited extent on the rust side of
+> things. With CONFIG_RUST_OVERFLOW_CHECKS=3Dy, arithematic checks are buil=
+tin to
+> the language. This isn't the default config of course, but it's better th=
+en
+> nothing.
 
-On Sat, Mar 29, 2025 at 12:15=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Tue, Mar 4, 2025 at 10:12=E2=80=AFAM Huacai Chen <chenhuacai@kernel.or=
-g> wrote:
-> >
-> > Don't rely on  default behavior, things may change in future.
-> > Acked-by: Huacai Chen <chenhuacai@loongson.cn>
->
-> I was pinged about this one -- are you picking this one through your tree=
-?
-OK, I wll pick it to the loongarch tree, thanks.
+It is the default! :)
 
-Huacai
-
->
-> I didn't test it, but the change seems safe to me for other
-> architectures that we have at the moment, since they don't seem to set
-> any of those three from a quick look, so:
->
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
->
-> In any case, the usual question for these "skipped flags" is whether
-> they could affect the output of `bindgen`, i.e. could they modify
-> layouts somehow?
->
-> Also, it would be nice to mention a bit more what was the build error
-> and the GCC version in the commit message.
->
-> Finally, regarding the Cc: stable, I guess that means 6.12+ since it
-> is the first LTS with loongarch64, right?
->
-> Thanks!
->
-> Cheers,
-> Miguel
+Cheers,
+Miguel
