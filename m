@@ -1,57 +1,64 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AEC21A45A;
-	Mon, 31 Mar 2025 20:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4331E3DEB
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Mar 2025 22:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743452967; cv=none; b=Kc4rGvK3bnfmL/RM9OBqUIjRDXHsjgbzm1pcMt9l8qbDP6zTT/O/qAC6GGsFut+6qThYEwvlJAQ4WG6UCBlnaDRObMGBQLK/dlAV71ISrzWTtKYdWWZP2BdcTYsEIsH/Jki1nbl3/hX2oNXn3osU6QkvVSke6OsPK0brAbdxwTk=
+	t=1743459971; cv=none; b=jdeBr5b1m7R21adl9fJDyiLaKcBDDcF/p7O28C+bfFTdCVY1I8hUXwEiJxdNq2DnMUh6smBLrU1fO8z0MUH8Fx0EoeE9zHMD5ZEw+rbJI7oOTCmQLp2OkMYK/CWLArjqSZhmxOk78ExCL3Jg9a5UspUxTvT3GwfsNuf/xzs6Gts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743452967; c=relaxed/simple;
-	bh=qrHamV6jaiuFnZizd0nUtJBmUrT9qGDrGOwrWzjYKZ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlTeb0q1yHEM3djhEyLyPNYKpMj6hiPAxw73vazrlaFHrCY0V6dMJLRGChja0EhirAhugqrgkuKNJP7EbXyCmbi7QnijWG4fAy18TU7zUyfn2Ark5foWVILp9S61RI/YmPqOvRfqqzdvM7oVQVlRdE32003RvoL3evKcSbAZlmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/+2mW+y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743459971; c=relaxed/simple;
+	bh=6IrO6SXtDScxgp3ed8nh+SkpL02XcBv5462ChvxjB94=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NKKC/uiSAYWbwnEz5bpE/rt9Uf5ZTLQSManBLqmJw6Uj/n4fr/Ze0uhrDsPWz/Dww+9BDmyOsMxNSytSNFLLFOtP9E0qZjggtK52tIvxvKQt2GxTPAJ/TpoF+GYa3b4DkernMAwezrOnEQGhA5KNdYLAem1uGVTxq+tJAfCdPeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gXpGPt0T; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/+2mW+y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E978BC4CEE3;
-	Mon, 31 Mar 2025 20:29:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743452966;
-	bh=qrHamV6jaiuFnZizd0nUtJBmUrT9qGDrGOwrWzjYKZ0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/+2mW+yHhqtKcbzaLf8i5CXTcfYLBL+PTIhxRRZGHzb4BOGFJ9aqglEbzspXYtjI
-	 HrAvqS/s6I5Iqj2zTEq3wuaaRmTFtZptBTsteO+QeKLsfqGSacXfMOKZbb3i+LqDFK
-	 MF0/mkSYcQJo7Aapn7w7Oe+t6Bv4Xe01mWXTTNxNyZDvfYygsfuAAcJAUpsFDdSTbS
-	 RWyDkCZUDMyCSDnt6b7ltOtHX3oaFQ2kD88ect/O+rgnypaniODdkrFV926IDlIupX
-	 dIT9NH/T1rLqugqDRTfi3ZEBF3z6m3G5xh/sFEilLfOWIca/UsGAdP4PAYbZkIWW6p
-	 BTraSG5Ob5/7g==
-From: Danilo Krummrich <dakr@kernel.org>
-To: bhelgaas@google.com,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	abdiel.janulgue@gmail.com
-Cc: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	daniel.almeida@collabora.com,
-	robin.murphy@arm.com,
-	linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gXpGPt0T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743459969;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=H/jpW2BEwJU2pLfB4Wx9wSH+N5MVmLI78aVsOX9iIlQ=;
+	b=gXpGPt0TRtTqG6ffe4llPAUnF5yohX37FoJLNSTU/Rxr012iP+TtDlovPXn8nsyaR01Jqg
+	lCdmcVOYqoUiaJEtsWHEgl4yHTad/65EDCH+a96YSyD0p8JfBT8DMM6T4XaIJqaRBH0pnZ
+	JiOg3O1nP/ORe+86q0GFSUFhttS2lVY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-4T6zkkQCNK-vzc3FpngeHg-1; Mon,
+ 31 Mar 2025 18:26:05 -0400
+X-MC-Unique: 4T6zkkQCNK-vzc3FpngeHg-1
+X-Mimecast-MFC-AGG-ID: 4T6zkkQCNK-vzc3FpngeHg_1743459964
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8A92819560B7;
+	Mon, 31 Mar 2025 22:26:03 +0000 (UTC)
+Received: from chopper.lyude.net (unknown [10.22.80.91])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A07B31955D81;
+	Mon, 31 Mar 2025 22:25:59 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: Maxime Ripard <mripard@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 9/9] rust: dma: require a bound device
-Date: Mon, 31 Mar 2025 22:28:02 +0200
-Message-ID: <20250331202805.338468-10-dakr@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250331202805.338468-1-dakr@kernel.org>
-References: <20250331202805.338468-1-dakr@kernel.org>
+	Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org (open list:RUST:Keyword:\b(?i:rust)\b)
+Subject: [PATCH v2 0/2] drm: Make some resolution info unsigned
+Date: Mon, 31 Mar 2025 18:23:53 -0400
+Message-ID: <20250331222556.454334-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,72 +66,26 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Require the Bound device context to be able to create new
-dma::CoherentAllocation instances.
+During the review of some of my patches for KMS bindings in Rust, it was
+pointed out we have some areas of DRM that are storing resolutions as
+signed integers when it doesn't really make sense. Since Rust has
+arithematic overflow checking by default in the kernel, let's change
+these to unsigned so that we can take advantage of that.
 
-DMA memory allocations are only valid to be created for bound devices.
+Lyude Paul (2):
+  drm/edid: Use unsigned int in drm_add_modes_noedid()
+  drm/mode_config: Make drm_mode_config.(max|min)_(width|height)
+    unsigned
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/dma.rs | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/drm_edid.c    | 10 ++--------
+ include/drm/drm_edid.h        |  2 +-
+ include/drm/drm_mode_config.h |  4 ++--
+ 3 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 8cdc76043ee7..605e01e35715 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -6,7 +6,7 @@
- 
- use crate::{
-     bindings, build_assert,
--    device::Device,
-+    device::{Bound, Device},
-     error::code::*,
-     error::Result,
-     transmute::{AsBytes, FromBytes},
-@@ -22,10 +22,10 @@
- /// # Examples
- ///
- /// ```
--/// use kernel::device::Device;
-+/// # use kernel::device::{Bound, Device};
- /// use kernel::dma::{attrs::*, CoherentAllocation};
- ///
--/// # fn test(dev: &Device) -> Result {
-+/// # fn test(dev: &Device<Bound>) -> Result {
- /// let attribs = DMA_ATTR_FORCE_CONTIGUOUS | DMA_ATTR_NO_WARN;
- /// let c: CoherentAllocation<u64> =
- ///     CoherentAllocation::alloc_attrs(dev, 4, GFP_KERNEL, attribs)?;
-@@ -143,16 +143,16 @@ impl<T: AsBytes + FromBytes> CoherentAllocation<T> {
-     /// # Examples
-     ///
-     /// ```
--    /// use kernel::device::Device;
-+    /// # use kernel::device::{Bound, Device};
-     /// use kernel::dma::{attrs::*, CoherentAllocation};
-     ///
--    /// # fn test(dev: &Device) -> Result {
-+    /// # fn test(dev: &Device<Bound>) -> Result {
-     /// let c: CoherentAllocation<u64> =
-     ///     CoherentAllocation::alloc_attrs(dev, 4, GFP_KERNEL, DMA_ATTR_NO_WARN)?;
-     /// # Ok::<(), Error>(()) }
-     /// ```
-     pub fn alloc_attrs(
--        dev: &Device,
-+        dev: &Device<Bound>,
-         count: usize,
-         gfp_flags: kernel::alloc::Flags,
-         dma_attrs: Attrs,
-@@ -194,7 +194,7 @@ pub fn alloc_attrs(
-     /// Performs the same functionality as [`CoherentAllocation::alloc_attrs`], except the
-     /// `dma_attrs` is 0 by default.
-     pub fn alloc_coherent(
--        dev: &Device,
-+        dev: &Device<Bound>,
-         count: usize,
-         gfp_flags: kernel::alloc::Flags,
-     ) -> Result<CoherentAllocation<T>> {
+
+base-commit: cf05922d63e2ae6a9b1b52ff5236a44c3b29f78c
 -- 
-2.49.0
+2.48.1
 
