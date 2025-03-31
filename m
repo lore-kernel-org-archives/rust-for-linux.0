@@ -1,93 +1,79 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D597E107;
-	Mon, 31 Mar 2025 12:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0581E5B76;
+	Mon, 31 Mar 2025 12:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743423948; cv=none; b=jTN16K2kDp+KL5BdYjbQffTnM7bq1mHsdJBzWM7jAUzqk8IeM/41K7wuW1WHMLXlLNGZZk1aRZJGBql7aKZQi+c7D0361xTcSwP3GlZY6XBkzfYTtljZ5poNaHAtOF7sqEUZg+gGOQVYaE6SesyElKmJEt+rfF4A4mqumszEOKE=
+	t=1743424187; cv=none; b=lRbTibMh7jcAnkJemY+bg/+v9W0Up+MghYiiaGSKrNU3Fr+sY/LsvvoQ7g9WD3zaW0/ttHPFypAyq096Eff7QLGdq6/Llk/zGRTAXWpY719ddKdt0GDjpQjr5LWSfX8rrw8IUpCVlk/K07ENL3bSjcbZR4X9XJHCjIZzvinaWA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743423948; c=relaxed/simple;
-	bh=f3f4yDUdtRhSiam6cy1Cin3H9xYlR63AKA6qk8Ithgo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I1mlqFrWKZNJZUcGfq1SH23XBX5gNEUmuU9IWlFdy2HHMnSNK/cNGpXoSOg5saIvF3PdYkaJfSJsTZeAZ7HZM37j65y2lgp89rf4Ix/LGRLMhAzfQNucyoYDEdwBesYDGGhrmPnf/5RcESyKpak5vff2LukXALRr+uRfnYZ6AIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eLjH9Rbn; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743424187; c=relaxed/simple;
+	bh=Q0uMus4E1XkPX9O5u3vzmN3QB+2Nx+b7VVilwTqYSGc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Srbb6SPnavMdgDpSIEEjPoI5MUDLOZa+kqqFA2xkgA+0zIycWLl40HZM8d3xtQuulaufQDutrZdpEfw054Ukbk7YhHXnN7Ex0mDRxGyPtDL5FXmXHd/WZuZNBTPOI5UTU4bWTC2cJdO8WeXolMI8CBG4lFldVo3FnqFm1bVCtms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXo+cz57; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eLjH9Rbn"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-301a6347494so1070121a91.3;
-        Mon, 31 Mar 2025 05:25:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743423947; x=1744028747; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f3f4yDUdtRhSiam6cy1Cin3H9xYlR63AKA6qk8Ithgo=;
-        b=eLjH9Rbn21FGp3n1jNlxcMbd0yfP//055fYz3D1jK2yI2Y9kXgj12mA8/oGmPa4XDx
-         B5m5nl+9rkfXkiQFqcKlMKAr4B8Y9neT6TBhuMbM6RaunRXUMpYsc4RzHRfqilLB1zLw
-         WkdEVv3Le+4Oxdw5KEEjrfUxn3T3qnHZqEXSauHFEA7hu6gg+vFB1ynaZDLY8utaLX9t
-         5IhOV6FD8l0tlRguXxCtkiwu4Xp9DkPMLETd9EYUE9GPc/G66Yo9oZlnsnz+Bujf2EaN
-         6aw7Js91JeB0d37DYvl9SOnhfevimw3ubl7EuNVKjUy/OF4e7wyPbgUkrN57eKtY5y/K
-         13KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743423947; x=1744028747;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f3f4yDUdtRhSiam6cy1Cin3H9xYlR63AKA6qk8Ithgo=;
-        b=Aepu09oGy0KqZUwZ4UnDelGvFYK8aFmiX0OoFEYtBF1OnGwWXxp0dlxgD5r2GSS3oL
-         VkQ3oOZyxrsJscoeWsEhIXDTl6+ekqPXZZcntmRMQP+OAHdJtBEEKnAu0xZv9naXQeCV
-         L+UHvWCITa8L5nb08M/HChP+3sLLPjL2GBvb2OIHilkVb/KAm98Qp4700iVX2IbB8R8U
-         Yos+FHGQ/YkTUbGdBt2SrrBbOU9JtLB97u5S2FIvBO1s0CKfwVzjQDvgjIzGEmOHvpmK
-         W2fnjDY5d8Bfn2yzfLrq/CQhMFiRnsIzuJh0QMpKSMuhKmFm+2SNEaxZSnny/QHVnUqt
-         GcWw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8HBlyywERTuvHGnTCxuMTlWq3hDlazPB5RtHZ0fqlYmgL5qc6RwcoaA0NyF/YVkWan/g10wEITiAhBN4EX8o=@vger.kernel.org, AJvYcCXYm+9yVx89WflrjLjI2X2Kb3ZbqcsSbb8vYnb1vgaw6bkKrXRJARtSVtuSDGaxM1kiuStz0BjID2KTHtc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhudOzXb7VC/TJLcTDuOlchW3pyMfoKdilacXaD+GOA3b1LvBh
-	bh1Dm0FnTj/MPbz5A/BR/Y14X2njOVM1pgXL4SG/y3UNEdljwxhFfFF4uzcbBi92EXD3Z8KdfDz
-	dNEYKIHOtc80Nvg15e33VT0NYSvc=
-X-Gm-Gg: ASbGncsWu7OFwo5yJaKarBBsZ5tiwbVPQ0gyBz0gZ2AmXbtzboS2xHW2aVzqpZUykO2
-	H/ovs8xzW/ezSMgsTCRYN1s3tgW6CX+CSv2oJiwOXPmEYNcFsU+W7BMEoCyHEfnC3IBcBspkWdL
-	DRrZsZVGsS91kcE/PDv+Cf7HQVE1oCldHQwqzo
-X-Google-Smtp-Source: AGHT+IFXjTzcP1dpJeNlWbgRpNKcabyx09FyU8J+ehdd/BvJs2O+z4KeIrkbzZLmWpt6qZj/Pr3H5SOAQ/ojXym4usg=
-X-Received: by 2002:a17:90b:1a8f:b0:2fe:b45b:e7ec with SMTP id
- 98e67ed59e1d1-305321652a1mr4107685a91.8.1743423946770; Mon, 31 Mar 2025
- 05:25:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXo+cz57"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFC4C4CEE3;
+	Mon, 31 Mar 2025 12:29:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743424187;
+	bh=Q0uMus4E1XkPX9O5u3vzmN3QB+2Nx+b7VVilwTqYSGc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SXo+cz57pkOnm+kSCCxSUJBNpjoFROzKrb2V8ym7xf5lTrY3/3VRyVO6yti9WvZVL
+	 7Qm/72sIzXYTzo4nPJ5Qlco1KHi+pZe18uE7SUqqEWW8/0LCuI4m76qK8jtajgj1QE
+	 ahnajdygLEL2QT0eNZ5uA6yS+QS00gIF/j6rtWdp3h5uFd53AbIjvDcO43hEY8A8WM
+	 W30qp/SMdUL9cvBwDEBB9t2Yqq+HpGjVHmV3hAXxTnmGZBmrk1ZiaTA2dQ3bHqk6+O
+	 VNI5DGvuX8u778DD3SziBk+fzps3maDMmzq7q5YwBpCYAxA25r2fUwbq4ZaCKd4tOK
+	 OXFZ0gSmHIfKg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.15 merge
+Date: Mon, 31 Mar 2025 14:29:26 +0200
+Message-ID: <20250331122926.607374-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250330170535.546869-1-ojeda@kernel.org> <CAHk-=wjpDpK0cd=tBk2t005nrddL0hXRQ+h+iZPHfVsi6qQY+w@mail.gmail.com>
-In-Reply-To: <CAHk-=wjpDpK0cd=tBk2t005nrddL0hXRQ+h+iZPHfVsi6qQY+w@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 31 Mar 2025 14:25:34 +0200
-X-Gm-Features: AQ5f1Jr1TNpRPr6ywqwdw9w9qPxmrphgiBhjUqlHN8ZciUoRSaWsBfJoqzi-pxo
-Message-ID: <CANiq72mjK=DmAnkfpmpw_ym3xLiG+Dub-_wU+yCbF7E5VfpAjg@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust for 6.15
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 31, 2025 at 2:07=E2=80=AFAM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> I'll learn eventually, in the meantime please do continue to give me
-> example merges and I'll use them as training wheels.
+Hi Linus,
 
-Sure. I noticed you added a missing `\n` in a `pr_info!` that I missed
--- thanks!
+A small fix due to a typo during merge.
 
-There was a second small difference in your merge -- Andrei Lalaev
-sent a patch for it already, so I am sending a quick PR with it.
+Since Andrei had already sent a fix for it, I am sending this as a PR in
+case you prefer that, but of course please feel free to directly apply
+it as a patch instead.
+
+Thanks!
 
 Cheers,
 Miguel
+
+The following changes since commit 4e82c87058f45e79eeaa4d5bcc3b38dd3dce7209:
+
+  Merge tag 'rust-6.15' of git://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux (2025-03-30 17:03:26 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.15-merge
+
+for you to fetch changes up to c1f4534b213d7be41b5d8b815a42d201a8f2978f:
+
+  scripts: generate_rust_analyzer: fix pin-init name in kernel deps (2025-03-31 10:50:54 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v6.15 merge
+
+Fix 'generate_rust_analyzer.py' due to typo during merge.
+
+----------------------------------------------------------------
+Andrei Lalaev (1):
+      scripts: generate_rust_analyzer: fix pin-init name in kernel deps
+
+ scripts/generate_rust_analyzer.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
