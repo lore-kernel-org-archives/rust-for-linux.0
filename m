@@ -1,95 +1,105 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E46D1DE3A5;
-	Mon, 31 Mar 2025 18:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968A71D86DC
+	for <rust-for-linux@vger.kernel.org>; Mon, 31 Mar 2025 18:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743445907; cv=none; b=QttzNOICLOiW7SPLk5RU35m/C+DanAnOfgm8L/FFP7O/ywN3ulBQ2lK9LkB1Gh2Ywp+NW7Di4b4AQZIw2vVonAbY1924yyL/zpAIktyrROxydDxQa2oq9euIcTrVEvbCZIgwaPjkNKcCJYAfa8kXvkNKFZhcC1KBzw58pcNLlg8=
+	t=1743446034; cv=none; b=jCUXyU92vbTIFNHmzaSRomVUTmlt6/iwpS8aimcG8rhHlvCC5p8clzeWKefkRnvsMJ83Q/3NZc/krgn5qRwZfreEXa6zFWpkil9OG37h5DKTf21MOziSOsRUldI4fQKnc0H9pG1vG0gAPEYPQTrAxlEpMfrMoAKlEDUOVK/qbjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743445907; c=relaxed/simple;
-	bh=Ryh0YL1/glEMLDYhovf0G+MET7UjsHYY7E9OvB3iRs0=;
+	s=arc-20240116; t=1743446034; c=relaxed/simple;
+	bh=vrNk5gWMw7fslC/aSH1cmMvB6VpmLM4R+bB7EgWYcKs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QDgzDWKNxPgSNCYdp0hKAPhopa97EbtJRzXWc+4uGPvZSFTuVOpP0jQha39/tpw9o/sYozOoGR3y6SCD1C53tiylC/5pdDgEpYbtDXJ7krx3bdUeyTArjLlTtOywE1mK2OB10F8oCK/AAm+DewDZbDPZjVE+6tzeuYAlRUqtEGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mL2Cc24u; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=P5CgCZddNnMDiudO7ZWFMXxI/z6Bj6tnJ9/ziFEt3bRcxs53uTCY6LER36VTvuHSncglU9QeOY7/sK32vP8ePNSoAe+ElBX8Yw5Nn7519ScRxJcEYpOYWZ8L6BxA9oIoj2PDPtGycKMFUiosZPkjbsgoMRYvPYnS+3yCQfzcZFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WfP5AT3x; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mL2Cc24u"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so1056322a91.0;
-        Mon, 31 Mar 2025 11:31:46 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WfP5AT3x"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5e614da8615so4701345a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Mar 2025 11:33:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743445906; x=1744050706; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ryh0YL1/glEMLDYhovf0G+MET7UjsHYY7E9OvB3iRs0=;
-        b=mL2Cc24uc+/m24APX0gKDPlbqNrLmrG11a/FH3mWmYYBgEQ13BnpmU4OvG0MzdwJD0
-         oYpN/4T/WMXyjQ/mEU9yj0l8sqA1dN6g0vy59hm+kOBKPZqiIzRW80xqM7F8LITYJ3/X
-         4HHRSCjrvkslZzFCeRNhtN6sX6Z2k6IqaxgaaN+9DW3Z3Cf87FmRvdY9hanpuh1J4X8C
-         ueHT7geQ+jBGbGiDXOfSJPxBvj7+NMNNzgZ564aWutz+PHMQvk8p2TvFh80wQ53w/RxP
-         0AYQYf82si6AsdD/9ECgym0KputOgALjqwGZnAiHd6MxOmDFQaURNLuuJRbBlX/h8XAc
-         jW1Q==
+        d=linux-foundation.org; s=google; t=1743446031; x=1744050831; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qm1O3MAg26LYGeV9+5npvrxVPsd76nUJvpjvmTv2VoQ=;
+        b=WfP5AT3xhp/kBDaIzDItYY2VaJyki75ZKTHnbcb7lgbT/m8V/+v59rkCOnEEJNcON2
+         BQQ4Vs9ZWR1NswZZJ+pILHr6jn4lUMDnijkxcLjwoIlTISjXvBMkKM97pOPmL+CxRsCT
+         CMyDettZAOSog8EM8Lz1p+YeePS3xn3RKpl4Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743445906; x=1744050706;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ryh0YL1/glEMLDYhovf0G+MET7UjsHYY7E9OvB3iRs0=;
-        b=KZQJiayKXGUESHPl2xBgaZ+5gdWwYpWDu9KXfErdtmQut4tG70mMQdmXWDUEEQiahU
-         Efrjeefb4Ek0KQ4js07tmqxO37+muhcPzBccs+JgABaVhoTck4ZDI0DDFZsqnUtCFWXQ
-         Kk4v1b0RvDcKkpKhGjDpr3YF1wYUwElXUSsKfk5E5d09CMonSRvbMhzRuGpncM8fwCx/
-         l+VlLPD3Yg4K+ibsm2J98diFfdaXJw7MD2ilYJjgwWXaDUSXnZQjg4R1GdhXhN7sx2UD
-         k8YIun2tn2N5lFX2OLJOyS/NzxdXAlg7uYIQhL7IK+3/pJbLuSHY+zsoMtbv7eK2Mk2z
-         DElg==
-X-Forwarded-Encrypted: i=1; AJvYcCVNKY9YyckW3ccwvR+j3tnKgM1UbSLvgyE9FoeiP+fN58SAsi0jXvPw8HKzlCVTw5eIEyiufkniMoYpZU4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc5KErN2Bg/FQY2NDHqdAc2oLMNn21pneZ0s04Ld1gpIelD/6n
-	TNsZoNm+r70JnL9pOOnh+K+t45KBbcfWCttc+A0N7AE6lccLeIkfBFXiDh/Ed2rjx7UBLKDTjNo
-	+OyimFoMfz5gi1VJEtdlXokUfuj0=
-X-Gm-Gg: ASbGncuMqMekVCaaBwp8etnuhLJ8m2yIGC+b6sCcDuvFO4z9lK85/Gq7y5E2UOjbAFj
-	ZS9ljbPWIg9nbo9sBeJTCp+gfPO1l8XZHB2gMPjAXSGF2T54F6izy8v0o+xk/AJKUMyixGr92Uj
-	7KW9LegCmG6qEvQfhErIYNsdUo4Q==
-X-Google-Smtp-Source: AGHT+IExcKaWB2a/1tgKfOwDy66H8kdPcVShSGcwccJM3AQzOSIBJFBWGCgs6XPOYp08SDi9M9EdzX5sWLy0eBdIhKM=
-X-Received: by 2002:a17:90b:3e8d:b0:301:1c11:aa7a with SMTP id
- 98e67ed59e1d1-305321512bdmr6000911a91.3.1743445905701; Mon, 31 Mar 2025
- 11:31:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743446031; x=1744050831;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qm1O3MAg26LYGeV9+5npvrxVPsd76nUJvpjvmTv2VoQ=;
+        b=uZ1LRhuFZnQpU9yonnXDr1ARxddXvLbdzXDL1Ihhqy55dCR9aTqQ1g2FJOkMnW9NhM
+         UF8puYxQj2kXTzKiqR1pQcUK/uyfBaCayErWLmjsLixf19KjDzx9H38INfFgUvqoFh5A
+         I7Nc9mtYTrUlmblJ6BrVTYEV7oHNdk8sCgYnJ0xCryyHzNbClZRGEt43nMOr00TJbsGo
+         7EICzFWenfYCBVc4hQ3je0kMMumM2vOtFXV32Xb/mnwrJRXW1KxH0z1pmkHwIDAASeti
+         xnzbCsM2nc/CLUM+fWeY6Sff7jNPexFLzMvhLdD4hrxj70+MgTbXOkZP/kiXAPcfbx+G
+         ZMiA==
+X-Gm-Message-State: AOJu0YyZ5NX763kcj370RIHGzo1WwOPKW8+6wQEjuBaZ/fu5Epkxf3TS
+	UWNJ7wqOCy/7tNvJd1X3tbxL9hoosTgXiQQy1pz3Aak4Fjw6cNxYgZ7Fr22QbbK66yLO7DZSzai
+	KqRY=
+X-Gm-Gg: ASbGncsZG5hakZshGmuaUs5qNMplLxXnCzlMnJq8LxHN4vJmJOEULXhn1JOHZCsxMm/
+	1dVjx9eXNC8r0z8MjwTefeRFq4cPlZefFFqfZnucEtdaNkC+4WzOEmSo05iVZU3OYcZPyoxTJWh
+	n6X7cLltL/QmEOjgYeKYhPgrJjOPxq9xQjz73QCe4j66rrchAfJFOAjxAW1lC98ES3CK7KoOUMN
+	rcD3+by5pVpfxrzVSX4uZIwrrMZbIMMs8F/bn8QJru07j5U4/LIC7BXyFcRGybq+N0YIAi/vjqN
+	on5uKlLtJCzt4QnaGkAUteWZW9PEO5bIMdv9LBdJvI6R6G9bZN4XKK4Aa7iWe1+mPzWeRmxybmZ
+	XOBTJ/utohopYI1azNw0=
+X-Google-Smtp-Source: AGHT+IFfpYPPYk9JffmOjuPmrFKg91dn60qYPzz7V9PmU6I6AWgn8MiYoK3ULN/0ygZHOMGP3AcrwQ==
+X-Received: by 2002:a05:6402:278b:b0:5ed:5cf6:e168 with SMTP id 4fb4d7f45d1cf-5edf5965b03mr9494990a12.9.1743446030762;
+        Mon, 31 Mar 2025 11:33:50 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ee17fc4b83sm4029017a12.13.2025.03.31.11.33.49
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 31 Mar 2025 11:33:50 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ab771575040so1143234666b.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 31 Mar 2025 11:33:49 -0700 (PDT)
+X-Received: by 2002:a17:906:6a1e:b0:ac2:3a1:5a81 with SMTP id
+ a640c23a62f3a-ac7369c1867mr725809666b.26.1743446029615; Mon, 31 Mar 2025
+ 11:33:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250330234039.29814-1-christiansantoslima21@gmail.com>
- <20250330234039.29814-2-christiansantoslima21@gmail.com> <CANiq72=GWwhMEfwBgUFpEUFoT2Wga2=uhH6Nw7fotQYjz2G=EA@mail.gmail.com>
- <CABm2a9ek5+KYaX9fGqXVQhG-hV1esn5EnD0PxKR29D_pwfZUeg@mail.gmail.com>
-In-Reply-To: <CABm2a9ek5+KYaX9fGqXVQhG-hV1esn5EnD0PxKR29D_pwfZUeg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 31 Mar 2025 20:31:32 +0200
-X-Gm-Features: AQ5f1JqeX5XxF7_IM_NbyI2yON3IxrzIQpRw8ymtxMwge62n-Poad1wJkf3AP20
-Message-ID: <CANiq72=++3SO+VcxmyxQGK9hXEu-=jaumGiwhExdykrKkfuihA@mail.gmail.com>
-Subject: Re: [PATCH] rust: transmute: Add methods for FromBytes trait
-To: Christian <christiansantoslima21@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>
+References: <20250331122926.607374-1-ojeda@kernel.org>
+In-Reply-To: <20250331122926.607374-1-ojeda@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 31 Mar 2025 11:33:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgyOSX4tbq0qhAkk0OCZqwiCA4EtwKZOBXAdkBW6FOANQ@mail.gmail.com>
+X-Gm-Features: AQ5f1Jq4JU66PPrn8dDycOvivpUoHu2ypgpPWx05AnaaKLgbL8gGe3Xow4zKumo
+Message-ID: <CAHk-=wgyOSX4tbq0qhAkk0OCZqwiCA4EtwKZOBXAdkBW6FOANQ@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust fixes for 6.15 merge
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 31, 2025 at 8:18=E2=80=AFPM Christian
-<christiansantoslima21@gmail.com> wrote:
+On Mon, 31 Mar 2025 at 05:29, Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> Hi, Miguel. Idk what happened seems the git send-email took the commit
-> and the .patch together. Sorry about that and I forgot to reply all. :(
->
-> Should I submit another patch because of duplication?
+> A small fix due to a typo during merge.
 
-No worries, there is no need to resend for that reason.
+Well, duh.
 
-Thanks!
+Sometimes I have too much copy-paste, in this case I obviously didn't
+have enough of it, and just fixed the conflict - incorrectly - by
+hand.
 
-Cheers,
-Miguel
+I obviously didn't see any bad effects of this typo in my build
+testing, which means that clearly this rust-analyzer thing isn't
+getting exercised by my normal build.
+
+Now that I know about the typo, I can see the error with
+
+    make rust-analyzer
+
+and it's not like I'm going to add this to my normal build rules, but
+maybe you can give a list of things that I should be doing when I see
+rust merge conflicts so that next time around I'll notice these things
+rather than have silly typo mistakes.
+
+Thanks,
+              Linus
