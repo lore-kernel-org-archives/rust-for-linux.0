@@ -1,145 +1,234 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A21D2147FC;
-	Mon, 31 Mar 2025 16:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743439189; cv=none; b=gMHULePGOFgqdETcDpqssYrFp9VKDMZi8dnyplNMGbwj/GKW/u0D4D6PtkT1RcdxewvtpQB/ii/7UxtbpAFREqeO5k8Yw14M4sowvDbs0NShldjtF95QT2+8iA1XXLALZGehCUe3Vx+QWRPMzbGGt6fhEVeuPfK97ZLZ6Sb/noo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743439189; c=relaxed/simple;
-	bh=y9DjxzvYKkOuWhLyDm1rLNLi/8mPIN7AhH54tJnFfrw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SJs/fbagqLf2CHPn5/gUU/Mwn6755IE+CzsswtyhTUrleZ0ftMdFgja8IjRkQG5VAYYe7o9btQB/1k//yBKohwBapSRQo5nkK2l4wIAGktnepF2kAP+ZYnVi/dEFuE019uutwvIIgaXFdUYxRi8lYRV1vcSOXR5BIXy/nxr3xoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OJH5bClD; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6DC3234;
+	Mon, 31 Mar 2025 16:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743439644; cv=pass; b=hFyhwFAtlxJp9eLBfzZwZ3V1yB/v2hPLEIrSzSj+KOB86LShQgQQfckT/h/868wBVQ5u/JUdNxTrKhWfRQPhIaODnk/SEdkfilUhxEQNJ6xI3yCymXpFrpWal3L2ZFuf9HIeQK+dNO+LbOE8ZV2Wb3PlPrjAh67l48ztoyulJA0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743439644; c=relaxed/simple;
+	bh=0vlUCrk0+5RCAX0Hlm6MMaWOEWWn3iJwSKKyxtsb69M=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=RJ2hmWiav3O0q1+sxjgeLWgLkLrKHDDAHSWeuEXQf8pfVcEbnEitOH2OAAWT7I7wvFDTyMDAW+J1+19pTnv65ZbviAZKEn4NajA7y/DYFUwJBhv1H2gFnINg5pWEyqQa4wIO3V3B8mgrbrviPszOInJRqAG/hpFRC/O9Svln+SY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=jWgKUsa0; arc=pass smtp.client-ip=136.143.184.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OJH5bClD"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22548a28d0cso125281235ad.3;
-        Mon, 31 Mar 2025 09:39:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743439187; x=1744043987; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nuo9R6kBMQ8ErmyjEUnklnwysWWYfSzr5ZmBZ3GrfFg=;
-        b=OJH5bClDlY7mwzERo+KnUH4SnkxiIyNXH092620h3t23HhWDJh7ynolMUtz3yBvwow
-         lV9McrCm9jS+OctwThq88nbghu0EE0Qq1Fc6hh7Y171kjKWuveUIGnhzyKRMil5s9Idk
-         4NDYlTEI6qP/DYU0b3b6tU3W80tmOMB1Ud/YWZiHKXfjo3CjD+HDmq1o1tgg+H39tzcJ
-         A4sO1LnblgbVeV6ErroerzKEo4Pn5HwRXiCgYDu4spbEv8yI8F8I2zXEd+o/rPu5ENPW
-         WGSXT5GNUK5wmMq1u8qlVM+JRU+NAl7K2zuuINHL6eRKYTSnnbSF0L09mU+abMGUACLc
-         FxCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743439187; x=1744043987;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nuo9R6kBMQ8ErmyjEUnklnwysWWYfSzr5ZmBZ3GrfFg=;
-        b=lONRdt24xAEHgnLEeFrJ080F7kcz7QSG493/7Ak1WFSadTJJjVx55hE6zcwO7pNp84
-         6uSB1SCICbhjVCHeIDMjwRdlR6os52/ZENDgeDedg/4mr+Jf1vxxNeoUF8wBH5Sm8m1V
-         P0MfOq4yVlc9r4hIylWbTRfVIuTAoinzgK6Y/mfFdLToYpKvuC74jLuUhIPtwPwNE4uQ
-         /+Pi7y8r0dMlZv1Ma+qfwoimClx5ecp0BpjqKXlUfjmduw08jnC7VZD8lG/PCB5JMT6q
-         XJBcToo4dNMzshdHwGlBKqIfVmuJ4fpPN/6HuPOEDBC9+IbIy3mVuS6Z5Gqofh8G/4K5
-         B6BQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVFSekqn2ctH1rSYSVBt5wboRYBC/dE372+CcEWPysabaQutDcUc1EwL8uGL0FAKPwG3xP7Mbk6ts0UZ48=@vger.kernel.org, AJvYcCXRvFFhXZ14/e4/qx/c8Wtb61WW+0AhRR6DO4Vt6GdieCBnYbHFJyVONyqIWcw82d+E++qLnOsEDRiGKrR2zOo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1OFF2V/3JhIh7k1SfcUr0E2SM87h6cIOnlFOAEdG3386DtKRy
-	Li6HEdGjI/vE7mXUPQQznRX2nB+IiMz3BtJ/4Q+fXSz70BhEeawO
-X-Gm-Gg: ASbGncsq7sfu4uibM6BWlnsdOxaLv/Ggei1jxvm/IHZ11/mV784Mt/bYU5igVO9FIHX
-	bjhUq2R7xhA+/6+QPNdYLUbM3Fu0phKk+w6fDe3ZWbqDPaVpJPwTITtnVo9+mOSmA+lRrySY1WZ
-	ABK/t2ErgF7OPkPSNgHYGLSPS2AJ+ofkFIbe4vZnhWwIWul7PZZrn61HcXtBUUDEBylbATxXwcB
-	0vEusnWu7Zch77ymmPAuhfLa5hDlOK0rRI/p4gs/iM8BcXapsumrN9+rzhThiWCsOTR+W1+7Tzr
-	qyGrmE3vfjemNOmAu5ZYbO5Szc37ty5HYtl8eTkUYzjy
-X-Google-Smtp-Source: AGHT+IEd+cTzESBGxh0UkfpYnHDf9ZNNUSlxraHyUfVa7hUxFSvZ4BMxmgZF13Jut3YEagFo2XUvng==
-X-Received: by 2002:a05:6a00:b8c:b0:732:a24:7354 with SMTP id d2e1a72fcca58-7398033f3ecmr15275876b3a.4.1743439186612;
-        Mon, 31 Mar 2025 09:39:46 -0700 (PDT)
-Received: from localhost ([216.228.125.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73970deebc9sm7350497b3a.12.2025.03.31.09.39.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Mar 2025 09:39:45 -0700 (PDT)
-Date: Mon, 31 Mar 2025 12:39:43 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Burak Emir <bqe@google.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/4] rust: adds Bitmap API, ID pool and bindings
-Message-ID: <Z-rFPhrNTB8t5xTF@thinkpad>
-References: <20250327161617.117748-1-bqe@google.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="jWgKUsa0"
+ARC-Seal: i=1; a=rsa-sha256; t=1743439606; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=QD7mAiUTvUL4jNnp9uEif+fQ5An18gxisD4YqnDAFEY2gmkLOG6ftvht+AN3zNTMEpTyQkFzT2yLQ6gzr7qV+ye4z+uGOd+hcqYr97UHxVJebvKr+3PWAWzTwAkRVlQ2l2Ds4mMjnVnNdwDrcYJ7xyr17wxb1s6fEXK4W+Rtf4g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1743439606; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=F+Ki+s1FhlzIig2fQE6VQlydduQOlAiMcuRkAel+8Jw=; 
+	b=H2D3pboqyyEvyDLMw+hfm3bFZc6qSDqZ05FLiUcbwW6qjElHIjs/2VwhYYXBDtFoTZCs4DXev1FyLYmVbrIz9QNLSfNPr7aZIavX3d5U75RNhEAA0i0qbfCpYQHf3kBom5g6TXJtHraOATo0SayjCLob7vq7/FGYWz+m4onlKf0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743439606;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=F+Ki+s1FhlzIig2fQE6VQlydduQOlAiMcuRkAel+8Jw=;
+	b=jWgKUsa0p6R+JVR7Yzgf+pO/gH1I2G6011ECzfQMAmcOF/OwXrv4DQ7KOFInTsIX
+	pGpNU1iaywSwNtBGiSZVq09oVqhTh6QEakBuwZM5CexVhG0Ju89okGzkl2t5PcK4Z7o
+	mXqKU2tLjDAsh6t8/3kmrQETSkC1SEOjIUMbWDjU=
+Received: by mx.zohomail.com with SMTPS id 1743439604019510.32565357923045;
+	Mon, 31 Mar 2025 09:46:44 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250327161617.117748-1-bqe@google.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
+Subject: Re: [PATCH v5 05/13] scripts: generate_rust_analyzer.py: drop
+ `"is_proc_macro": false`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250325-rust-analyzer-host-v5-5-385e7f1e1e23@gmail.com>
+Date: Mon, 31 Mar 2025 13:46:27 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Boris-Chengbiao Zhou <bobo1239@web.de>,
+ Kees Cook <kees@kernel.org>,
+ Fiona Behrens <me@kloenk.dev>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Lukas Wirth <lukas.wirth@ferrous-systems.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C35C7A09-A25B-445B-8C35-D75FB2F6FBDE@collabora.com>
+References: <20250325-rust-analyzer-host-v5-0-385e7f1e1e23@gmail.com>
+ <20250325-rust-analyzer-host-v5-5-385e7f1e1e23@gmail.com>
+To: Tamir Duberstein <tamird@gmail.com>
+X-Mailer: Apple Mail (2.3826.400.131.1.6)
+X-ZohoMailClient: External
 
-On Thu, Mar 27, 2025 at 04:16:10PM +0000, Burak Emir wrote:
-> This series adds a Rust bitmap API for porting the approach from
-> commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
-> to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
-> 
-> The Rust bitmap API provides a safe abstraction to underlying bitmap
-> and bitops operations. For now, only includes method necessary for
-> dbitmap.h, more can be added later. We perform bounds checks for
-> hardening, violations are programmer errors that result in panics.
+Hi Tamir
 
-So, I hung around and found the bit_set crate. Rust implements BitSet,
-BitVec, and it seems it has functionality that you bind here.
+> On 25 Mar 2025, at 17:06, Tamir Duberstein <tamird@gmail.com> wrote:
+>=20
+> Add a dedicated `append_proc_macro_crate` function to reduce =
+overloading
+> in `append_crate`. This has the effect of removing `"is_proc_macro":
+> false` from the output; this field is interpreted as false if =
+absent[1]
+> so this doesn't change the behavior of rust-analyzer.
+>=20
+> Link: =
+https://github.com/rust-lang/rust-analyzer/blob/8d01570b5e812a49daa1f08404=
+269f6ea5dd73a1/crates/project-model/src/project_json.rs#L372-L373 [1]
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+> scripts/generate_rust_analyzer.py | 55 =
++++++++++++++++++++++++++++------------
+> 1 file changed, 39 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/scripts/generate_rust_analyzer.py =
+b/scripts/generate_rust_analyzer.py
+> index 71e6038964f6..80eb21c0d082 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -41,13 +41,11 @@ def generate_crates(srctree, objtree, sysroot_src, =
+external_src, cfgs):
+>         deps,
+>         cfg=3D[],
+>         is_workspace_member=3DTrue,
+> -        is_proc_macro=3DFalse,
+>     ):
+> -        crate =3D {
+> +        return {
+>             "display_name": display_name,
+>             "root_module": str(root_module),
+>             "is_workspace_member": is_workspace_member,
+> -            "is_proc_macro": is_proc_macro,
+>             "deps": [{"crate": crates_indexes[dep], "name": dep} for =
+dep in deps],
+>             "cfg": cfg,
+>             "edition": "2021",
+> @@ -55,13 +53,6 @@ def generate_crates(srctree, objtree, sysroot_src, =
+external_src, cfgs):
+>                 "RUST_MODFILE": "This is only for rust-analyzer"
+>             }
+>         }
+> -        if is_proc_macro:
+> -            proc_macro_dylib_name =3D subprocess.check_output(
+> -                [os.environ["RUSTC"], "--print", "file-names", =
+"--crate-name", display_name, "--crate-type", "proc-macro", "-"],
+> -                stdin=3Dsubprocess.DEVNULL,
+> -            ).decode('utf-8').strip()
+> -            crate["proc_macro_dylib_path"] =3D =
+f"{objtree}/rust/{proc_macro_dylib_name}"
+> -        return crate
+>=20
+>     def register_crate(crate):
+>         crates_indexes[crate["display_name"]] =3D len(crates)
+> @@ -73,14 +64,48 @@ def generate_crates(srctree, objtree, sysroot_src, =
+external_src, cfgs):
+>         deps,
+>         cfg=3D[],
+>         is_workspace_member=3DTrue,
+> -        is_proc_macro=3DFalse,
+>     ):
+>         register_crate(
+>             build_crate(
+> -                display_name, root_module, deps, cfg, =
+is_workspace_member, is_proc_macro
+> +                display_name,
+> +                root_module,
+> +                deps,
+> +                cfg,
+> +                is_workspace_member,
+>             )
+>         )
+>=20
+> +    def append_proc_macro_crate(
+> +        display_name,
+> +        root_module,
+> +        deps,
+> +        cfg=3D[],
+> +    ):
+> +        crate =3D build_crate(display_name, root_module, deps, cfg)
+> +        proc_macro_dylib_name =3D (
+> +            subprocess.check_output(
+> +                [
+> +                    os.environ["RUSTC"],
+> +                    "--print",
+> +                    "file-names",
+> +                    "--crate-name",
+> +                    display_name,
+> +                    "--crate-type",
+> +                    "proc-macro",
+> +                    "-",
+> +                ],
+> +                stdin=3Dsubprocess.DEVNULL,
+> +            )
+> +            .decode("utf-8")
+> +            .strip()
+> +        )
+> +        proc_macro_crate =3D {
+> +            **crate,
+> +            "is_proc_macro": True,
+> +            "proc_macro_dylib_path": =
+f"{objtree}/rust/{proc_macro_dylib_name}",
+> +        }
+> +        register_crate(proc_macro_crate)
+> +
+>     def append_sysroot_crate(
+>         display_name,
+>         deps,
+> @@ -108,11 +133,10 @@ def generate_crates(srctree, objtree, =
+sysroot_src, external_src, cfgs):
+>         [],
+>     )
+>=20
+> -    append_crate(
+> +    append_proc_macro_crate(
+>         "macros",
+>         srctree / "rust" / "macros" / "lib.rs",
+>         ["std", "proc_macro"],
+> -        is_proc_macro=3DTrue,
+>     )
+>=20
+>     append_crate(
+> @@ -121,12 +145,11 @@ def generate_crates(srctree, objtree, =
+sysroot_src, external_src, cfgs):
+>         ["core", "compiler_builtins"],
+>     )
+>=20
+> -    append_crate(
+> +    append_proc_macro_crate(
+>         "pin_init_internal",
+>         srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
+>         [],
+>         cfg=3D["kernel"],
+> -        is_proc_macro=3DTrue,
+>     )
+>=20
+>     append_crate(
+>=20
+> --=20
+> 2.49.0
+>=20
+>=20
 
-I didn't find any discussions related to the bit_set in kernel context.
-Is it possible to use it in kernel? If not, can you mention that in commit
-message? If yes, I think you should consider to use internal language
-tools.
+In terms of testing, a diff shows that the only change to the output is =
+the removal of `is_proc_macro: false`
+as indicated by the commit message.
 
-> We include set_bit_atomic and clear_bit_atomic operations. One has
-> to avoid races with non-atomic operations, which is ensure by the
-> Rust type system: either callers have shared references &bitmap in
-> which case the mutations are atomic operations. Or there is a
-> exclusive reference &mut bitmap, in which case there is no concurrent
-> access.
-> 
-> This version includes an optimization to represent the bitmap inline,
-> as suggested by Yury.
-> 
-> We introduce a Rust API that would replace (dbitmap.h) in file id_pool.rs. 
-> This data structure is tightly coupled to the bitmap API. Includes an example of usage
-> that requires releasing a spinlock, as expected in Binder driver.
-> 
-> This is v6 of a patch introducing Rust bitmap API [v5]. Thanks
-> for all the helpful comments, this series has improved significantly
-> as a result of your work.
-> 
-> Not adding separate unit tests: the Rust unit test infrastructure
-> is very new, and there does not seem to be benchmarking support
-> for Rust tests yet.
+This looks good to me.
 
-I don't understand this.
+Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Benchmarking is a very simple procedure - as simple as surrounding
-blocks of tested code with ktime_get(). And I see that Alice even
-implemented the Ktime class last year.
+=E2=80=94 Daniel
 
-> Are the # Examples tests enough?
-> Alternatively, can we add more test cases to those until 
-> the unit test infrastructure is in place?
-
-I encourage you to implement the tests as normal kernel tests - in
-source files that may be enabled in config. I can't insist on that,
-and will not block the series because of lack of benchmarks and
-tests written in a traditional way.
-
-But to me, scattered wrongly formatted commented-out in-place way of
-writing tests is something fundamentally wrong. Not mentioning that
-it bloats source files, making them harder to read.
-
-Thanks,
-Yury
