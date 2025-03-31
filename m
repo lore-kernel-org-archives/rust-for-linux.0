@@ -1,225 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC87214A90;
-	Mon, 31 Mar 2025 19:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CF42185B1;
+	Mon, 31 Mar 2025 20:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743450245; cv=none; b=qV9bcAll/dXa3xIIOlaaTlaIXYP4Vmtw+PbwbIIVPb85jnssqhqbbLzG+i1MGcUhV+7a4fpx2e86nTE6i6QCiUy/SO5ZW0xX9EOpbv9nSeiaCf4qaY80AKci9nQR8ONZMX9Y5CV7epA0pUpb5kQGHOP6ezATPo3Y80+hZnNXtQk=
+	t=1743452930; cv=none; b=CpZ5qIE5lVqKdqd8puLW1WVsnq/OeZIYFKVj3Fk6ZxpTGBIB0iWA4imf0463NrPQy8XC1vdGOl7S70u5GGgaYoq+oCaeCa69c2yHUhV7vsqq0fz+Qk57cdV8VOzDWKmwcAvhB27I2JwiLcKEovOWgEyczuNWBDnk/o3N9ayA8k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743450245; c=relaxed/simple;
-	bh=W5IkG6CzmoQxTTfBZXkRe1Tz4Qq4ydM2xIKYA5CEC+Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=G5dNHVBBuwUdH56pd+4qPwGbsuI3wVqEiRE1Bi6V2CMCSNJb81iRmQCZ0+bTr4+Q9oNVz8bhee607WcAeKvXt1LB60Xsx38LTClLgjpL/M55+bnL8HBKIBjpy1tk3JrM27VkqFHobdKHv3g3BCOWwr5Z1FnWxJfAafdPWOGOw5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lde1OVph; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743452930; c=relaxed/simple;
+	bh=Rrf+5xSTJqr72Z1AgQYdkyHpTJi/G7k0zIP9x0ej4BQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=riDPNFXleaOsuaG9MeFZkRbK4WPAxe+H8bxCz1YZA4PmFKMS55guKTIB0hUcScqM9iTMJ1f+Y33vBygT27RKhPozCdTza9hIJqjk33IA7hjrf1rpON3wN1pNb1V+/tRhn4/4Sij6pc8vfKbc+VEyeN/isS1KbLSHfFDjRYVdB8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rlknMpqS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lde1OVph"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A815C4CEE5;
-	Mon, 31 Mar 2025 19:43:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rlknMpqS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF06EC4CEE3;
+	Mon, 31 Mar 2025 20:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743450245;
-	bh=W5IkG6CzmoQxTTfBZXkRe1Tz4Qq4ydM2xIKYA5CEC+Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lde1OVphjSPpoSO4Hk6XylrdVbNeB3sDZ/ZzD8jJcL+B/FEvYjY7N47JOChudzgEI
-	 GpcO6EsjWMOerh+geFp87aMv6Cp9/2P8vYHVy4O1XsXc42HnHe8LfkFdbd+pZR8YAa
-	 mus1JeKDJNf2fsXfFJ3ZprnI0HJ+6z5gAsvEk4ZIaPBRqnGAB8map8SxVw+cHjckh6
-	 8Gq2AtsQCoTFSkjeIYFaIiq+AeX73iV79EctKNfRtXK2c3jt7pZCJ1olJL7eQueHf6
-	 4+4rtqw7b5LsReOCg7BDJ0IRKSMe4xa+LAiZFbGapZTJ1pyltKubYGpKI+6NUyggZg
-	 GkM23GbjZvM0w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>,  <tglx@linutronix.de>,
-  <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <netdev@vger.kernel.org>,  <andrew@lunn.ch>,  <hkallweit1@gmail.com>,
-  <tmgross@umich.edu>,  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,
-  <gary@garyguo.net>,  <bjorn3_gh@protonmail.com>,
-  <benno.lossin@proton.me>,  <a.hindborg@samsung.com>,
-  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
-  <frederic@kernel.org>,  <arnd@arndb.de>,  <jstultz@google.com>,
-  <sboyd@kernel.org>,  <mingo@redhat.com>,  <peterz@infradead.org>,
-  <juri.lelli@redhat.com>,  <vincent.guittot@linaro.org>,
-  <dietmar.eggemann@arm.com>,  <rostedt@goodmis.org>,
-  <bsegall@google.com>,  <mgorman@suse.de>,  <vschneid@redhat.com>,
-  <tgunders@redhat.com>,  <me@kloenk.dev>,  <david.laight.linux@gmail.com>
-Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
- DELAY/SLEEP and TIMEKEEPING API
-In-Reply-To: <Z-qgo5gl6Qly-Wur@Mac.home> (Boqun Feng's message of "Mon, 31 Mar
-	2025 07:03:15 -0700")
-References: <87jz8ichv5.fsf@kernel.org> <87o6xu15m1.ffs@tglx>
-	<67ddd387.050a0220.3229ca.921c@mx.google.com>
-	<20250322.110703.1794086613370193338.fujita.tomonori@gmail.com>
-	<8n9Iwb8Z00ljHvj7jIWUybn9zwN_JLhLSWrljBKG9RE7qQx4MTMqUkTJeVeBZtexynIlqH1Lgt6g0ofLLwnoyQ==@protonmail.internalid>
-	<Z96zstZIiPsP4mSF@Mac.home> <871puoelnj.fsf@kernel.org>
-	<RGjlasf3jfs3sL9TWhGeAJxH0MNvvn0DDqGl9FVo2JNvwTDpUqrr_V515QzLaEp0T4B1m6PJ0z7Jpw1obiG58w==@protonmail.internalid>
-	<Z-qgo5gl6Qly-Wur@Mac.home>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 31 Mar 2025 21:43:50 +0200
-Message-ID: <87ecyd3s09.fsf@kernel.org>
+	s=k20201202; t=1743452929;
+	bh=Rrf+5xSTJqr72Z1AgQYdkyHpTJi/G7k0zIP9x0ej4BQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rlknMpqS+hm6xR8cXi/IsjNDkTNyVL4MFD3C5yOis4Sk+gjV1waL7iBGP6mLFO42G
+	 a9XG0FWPPEm2ZWmgiVpMK+ZBKRRdqWm/w6c+kNffEFc/VvpqiUGwCXHdDO2DGzhBRU
+	 CoiC4IMWIPOrAw5Yerdtgz+RBpA8aOrCosW7ZRfPjXlf6Y0R2i6nzQMtLGBCarHCer
+	 RmKztntFkPdyypDWT0zq+M6KaqGT3tfqhsHFU5L2M3YRgwGBolZk/+8REIpnklByfr
+	 5AoUw1meDcE5uKG3a6BKlABcPnNTYU63C1lx3I2ms7EZDz0yDNV+hr3PIALCywvztH
+	 ASSgsRnzNs16g==
+From: Danilo Krummrich <dakr@kernel.org>
+To: bhelgaas@google.com,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	abdiel.janulgue@gmail.com
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 0/9] Implement "Bound" device context
+Date: Mon, 31 Mar 2025 22:27:53 +0200
+Message-ID: <20250331202805.338468-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-"Boqun Feng" <boqun.feng@gmail.com> writes:
+Currently, we do not ensure that APIs that require a bound device instance can
+only be called with a bound device.
 
-> On Sat, Mar 22, 2025 at 11:40:21PM +0100, Andreas Hindborg wrote:
->> Hi All,
->>
->> "Boqun Feng" <boqun.feng@gmail.com> writes:
->>
->> > On Sat, Mar 22, 2025 at 11:07:03AM +0900, FUJITA Tomonori wrote:
->> >> Thank you all!
->> >>
->> >> On Fri, 21 Mar 2025 14:00:52 -0700
->> >> Boqun Feng <boqun.feng@gmail.com> wrote:
->> >>
->> >> > On Fri, Mar 21, 2025 at 09:38:46PM +0100, Thomas Gleixner wrote:
->> >> >> On Fri, Mar 21 2025 at 20:18, Andreas Hindborg wrote:
->> >> >> >> Could you add me as a reviewer in these entries?
->> >> >> >>
->> >> >> >
->> >> >> > I would like to be added as well.
->> >> >>
->> >> >> Please add the relevant core code maintainers (Anna-Maria, Frederi=
-c,
->> >> >> John Stultz and myself) as well to the reviewers list, so that thi=
-s does
->> >> >> not end up with changes going in opposite directions.
->> >> >>
->> >> >
->> >> > Make sense, I assume you want this to go via rust then (althought we
->> >> > would like it to go via your tree if possible ;-))?
->> >>
->> >
->> > Given Andreas is already preparing the pull request of the hrtimer
->> > abstraction to Miguel, and delay, timekeeping and hrtimer are related,
->> > these timekeeping/delay patches should go via Andreas (i.e.
->> > rust/hrtimer-next into rust/rust-next) if Thomas and Miguel are OK with
->> > it. Works for you, Andreas? If so...
->> >
->> >> Once the following review regarding fsleep() is complete, I will subm=
-it
->> >> patches #2 through #6 as v12 for rust-next:
->> >>
->> >> https://lore.kernel.org/linux-kernel/20250322.102449.8951743360606490=
-75.fujita.tomonori@gmail.com/
->> >>
->> >> The updated MAINTAINERS file will look like the following.
->> >>
->> >> diff --git a/MAINTAINERS b/MAINTAINERS
->> >> index cbf84690c495..858e0b34422f 100644
->> >> --- a/MAINTAINERS
->> >> +++ b/MAINTAINERS
->> >> @@ -10370,6 +10370,18 @@ F:	kernel/time/timer_list.c
->> >>  F:	kernel/time/timer_migration.*
->> >>  F:	tools/testing/selftests/timers/
->> >>
->> >> +DELAY AND SLEEP API [RUST]
->> >> +M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
->> >> +R:	Boqun Feng <boqun.feng@gmail.com>
->> >> +R:	Andreas Hindborg <a.hindborg@kernel.org>
->> >
->> > ... this "R:" entry would be "M:",
->> >
->> >> +R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
->> >> +R:	Frederic Weisbecker <frederic@kernel.org>
->> >> +R:	Thomas Gleixner <tglx@linutronix.de>
->> >> +L:	rust-for-linux@vger.kernel.org
->> >> +L:	linux-kernel@vger.kernel.org
->> >
->> > +T:	git https://github.com/Rust-for-Linux/linux.git hrtimer-next
->> >
->> >> +S:	Maintained
->> >
->> > I will let Andreas decide whether this is a "Supported" entry ;-)
->> >
->> >> +F:	rust/kernel/time/delay.rs
->> >> +
->> >>  HIGH-SPEED SCC DRIVER FOR AX.25
->> >>  L:	linux-hams@vger.kernel.org
->> >>  S:	Orphan
->> >> @@ -23944,6 +23956,17 @@ F:	kernel/time/timekeeping*
->> >>  F:	kernel/time/time_test.c
->> >>  F:	tools/testing/selftests/timers/
->> >>
->> >> +TIMEKEEPING API [RUST]
->> >
->> > and similar things for this entry as well.
->> >
->> >> +M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
->> >> +R:	Boqun Feng <boqun.feng@gmail.com>
->> >> +R:	Andreas Hindborg <a.hindborg@kernel.org>
->> >> +R:	John Stultz <jstultz@google.com>
->> >> +R:	Thomas Gleixner <tglx@linutronix.de>
->> >
->> > +R:      Stephen Boyd <sboyd@kernel.org>
->> >
->> > ?
->> >
->> >> +L:	rust-for-linux@vger.kernel.org
->> >> +L:	linux-kernel@vger.kernel.org
->> >> +S:	Maintained
->> >> +F:	rust/kernel/time.rs
->> >> +
->> >
->> > Tomo, let's wait for Andreas' rely and decide how to change these
->> > entries. Thanks!
->>
->> My recommendation would be to take all of `rust/kernel/time` under one
->> entry for now. I suggest the following, folding in the hrtimer entry as
->> well:
->>
->> DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
->> M:	Andreas Hindborg <a.hindborg@kernel.org>
->
-> Given you're the one who would handle the patches, I think this make
-> more sense.
->
->> R:	Boqun Feng <boqun.feng@gmail.com>
->> R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
->
-> Tomo, does this look good to you?
->
->> R:	Lyude Paul <lyude@redhat.com>
->> R:	Frederic Weisbecker <frederic@kernel.org>
->> R:	Thomas Gleixner <tglx@linutronix.de>
->> R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
->> R:	John Stultz <jstultz@google.com>
->
-> We should add:
->
-> R:      Stephen Boyd <sboyd@kernel.org>
->
-> If Stephen is not against it.
+Examples of such APIs are Devres, dma::CoherentAllocation and
+pci::Device::iomap_region().
 
-Yes =F0=9F=91=8D
+This patch series introduces the "Bound" device context such that we can ensure
+to only ever pass a bound device to APIs that require this precondition.
 
->
->> L:	rust-for-linux@vger.kernel.org
->> S:	Supported
->> W:	https://rust-for-linux.com
->> B:	https://github.com/Rust-for-Linux/linux/issues
->> T:	git https://github.com/Rust-for-Linux/linux.git rust-timekeeping-next
->> F:	rust/kernel/time.rs
->> F:	rust/kernel/time/
->>
->> If that is acceptable to everyone, it is very likely that I can pick 2-6
->> for v6.16.
->>
->
-> You will need to fix something because patch 2-6 removes `Ktime` ;-)
+In order to get there, we need some prerequisites:
 
-Yea, but `Instant` is almost a direct substitution, right? Anyway, Tomo
-can send a new spin and change all the uses of Ktime, or I can do it. It
-should be straight forward. Either way is fine with me.
+(1) Implement macros to consistently derive Deref implementations for the
+    different device contexts. For instance, Device<Core> can be dereferenced to
+    Device<Bound>, since all device references we get from "core" bus callbacks
+    are guaranteed to be from a bound device. Device<Bound> can always be
+    dereferenced to Device (i.e. Device<Normal>), since the "Normal" device
+    context has no specific requirements.
 
+(2) Implement device context support for the generic Device type. Some APIs such
+    as Devres and dma::CoherentAllocation work with generic devices.
 
-Best regards,
-Andreas Hindborg
+(3) Preserve device context generics in bus specific device' AsRef
+    implementation, such that we can derive the device context when converting
+    from a bus specific device reference to a generic device reference.
 
+With this, Devres::new(), for instance, can take a &Device<Bound> argument and
+hence ensure that it can't be called with a Device reference that is not
+guaranteed to be bound to a driver.
 
+This patch series is based on driver-core-next (with rust-next merged into it);
+a branch containing the commits can be found in [1]. It is targeting v6.16-rc1.
+
+[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/device-bound
+
+Danilo Krummrich (9):
+  rust: device: implement impl_device_context_deref!
+  rust: device: implement impl_device_context_into_aref!
+  rust: device: implement device context for Device
+  rust: platform: preserve device context in AsRef
+  rust: pci: preserve device context in AsRef
+  rust: device: implement Bound device context
+  rust: pci: move iomap_region() to impl Device<Bound>
+  rust: devres: require a bound device
+  rust: dma: require a bound device
+
+ rust/kernel/device.rs   | 71 +++++++++++++++++++++++++++++++++++++++--
+ rust/kernel/devres.rs   | 17 ++++------
+ rust/kernel/dma.rs      | 14 ++++----
+ rust/kernel/pci.rs      | 31 ++++++------------
+ rust/kernel/platform.rs | 30 ++++-------------
+ 5 files changed, 98 insertions(+), 65 deletions(-)
+
+-- 
+2.49.0
 
