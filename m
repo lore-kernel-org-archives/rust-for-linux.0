@@ -1,126 +1,77 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6B22135CE;
-	Mon, 31 Mar 2025 14:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A21D2147FC;
+	Mon, 31 Mar 2025 16:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743429802; cv=none; b=SzK80erkfS3sx0jr0bIWvjcC+L2JehLqwybp6L+7AModsYTjK7RmmfQ2Wy5WsUrpASkUdRqX79ZTQNWyOqcUcbKhyDG3u0xIFZ3gr1gJ108kOSunRgi82GW1h9iMbAYMXl8QkxioIidtS5LBC0UyN4uIVyJJP6MGb7Rh4I7WqV4=
+	t=1743439189; cv=none; b=gMHULePGOFgqdETcDpqssYrFp9VKDMZi8dnyplNMGbwj/GKW/u0D4D6PtkT1RcdxewvtpQB/ii/7UxtbpAFREqeO5k8Yw14M4sowvDbs0NShldjtF95QT2+8iA1XXLALZGehCUe3Vx+QWRPMzbGGt6fhEVeuPfK97ZLZ6Sb/noo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743429802; c=relaxed/simple;
-	bh=Vad6Bngms7LR/SnVaW/fBqPRddI72xsArTDQuo7o+yQ=;
+	s=arc-20240116; t=1743439189; c=relaxed/simple;
+	bh=y9DjxzvYKkOuWhLyDm1rLNLi/8mPIN7AhH54tJnFfrw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H+jEFnnQAw/LZkVJ9Ul0rE0tg59QDOwPcFLlon5lk1uiEjCqU9B7quqhbNI5Q19eLZw6paixVM42S68R9ZdU+UtOlsxeM+z8rW8160NCiEJOiZIcSfmTBXptF382YVQ8HtfCe/kGT1HyxdJjCQMEFS32MRiDsZ3d/O/7JPGMxug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dVJ2J1mm; arc=none smtp.client-ip=209.85.219.42
+	 Content-Type:Content-Disposition:In-Reply-To; b=SJs/fbagqLf2CHPn5/gUU/Mwn6755IE+CzsswtyhTUrleZ0ftMdFgja8IjRkQG5VAYYe7o9btQB/1k//yBKohwBapSRQo5nkK2l4wIAGktnepF2kAP+ZYnVi/dEFuE019uutwvIIgaXFdUYxRi8lYRV1vcSOXR5BIXy/nxr3xoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OJH5bClD; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dVJ2J1mm"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6eb16dfa988so42503506d6.2;
-        Mon, 31 Mar 2025 07:03:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OJH5bClD"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22548a28d0cso125281235ad.3;
+        Mon, 31 Mar 2025 09:39:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743429800; x=1744034600; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743439187; x=1744043987; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WeVIRckOKHplZvokKLugkVq4VXYBWlOKbJnfEv8Is8M=;
-        b=dVJ2J1mmT0DYRMyn2es8D8OfsV7cxTutTknMZCMoqIHvkY7lFeejQ9z5D00+LldRbT
-         7vg6SVaEC+D29AHT2h02B0Xhbz/pPV/vhpYsIzGmwAvjhE6SeFGbhwaBOltG/13QIiqd
-         UACVbNO0apCCPdgOyC2v9kSFICjLUDPu8Dk0PgULgMFiISLjA7IVJXJWyUd+pxrzHjyY
-         8MoGEN/J7onHyxEtW9SaOn2vipjpHFUSjDZF8PtRIf0/+m3EUvJcBg2gSfBivBXWTACG
-         Oa17JKSGhT6yif+4PpHHKaC6MMleiuWsEQMLQAiSAwUuipwtLpJXejaRD8rTbZBaSrRF
-         ufTw==
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nuo9R6kBMQ8ErmyjEUnklnwysWWYfSzr5ZmBZ3GrfFg=;
+        b=OJH5bClDlY7mwzERo+KnUH4SnkxiIyNXH092620h3t23HhWDJh7ynolMUtz3yBvwow
+         lV9McrCm9jS+OctwThq88nbghu0EE0Qq1Fc6hh7Y171kjKWuveUIGnhzyKRMil5s9Idk
+         4NDYlTEI6qP/DYU0b3b6tU3W80tmOMB1Ud/YWZiHKXfjo3CjD+HDmq1o1tgg+H39tzcJ
+         A4sO1LnblgbVeV6ErroerzKEo4Pn5HwRXiCgYDu4spbEv8yI8F8I2zXEd+o/rPu5ENPW
+         WGSXT5GNUK5wmMq1u8qlVM+JRU+NAl7K2zuuINHL6eRKYTSnnbSF0L09mU+abMGUACLc
+         FxCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743429800; x=1744034600;
+        d=1e100.net; s=20230601; t=1743439187; x=1744043987;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WeVIRckOKHplZvokKLugkVq4VXYBWlOKbJnfEv8Is8M=;
-        b=PXDBNVx60eATMdbvLfMoIff9JfwW1AEBKbNf4WZY8TpoIEWAb4LUTKw1Prdot3ayFi
-         VszoSniDL+5uMPO/gaPW1sEtaT89Wow2km3rgL5XwnZtL9Zkl9ht0KQ7FfkvFNTA7Jk+
-         6nofpbuvEWqNEy79il4LaMVqaTxdWZzPeLJxqcZ5RlY3Zt0HO7nzuJcmXHolbL+m/i0A
-         CJILQ1TuXiyjVkW+1KZkb0gKBpgrfDDzc1inOOextQmm7xRo+IA0Gz5/kjs8V43MF/+0
-         zcWZdGCcxpzLQvr79bVl3FElBp2xQj7hTrfFAv48CR3W6A/jf0WJQamf0rTXPDhzrLMW
-         Jj6w==
-X-Forwarded-Encrypted: i=1; AJvYcCW3KDKTMQIedlJuCrh5wxpWeDnx1/B6cy+CgD5Ov5lcZUvizHykAXcdmPreMV0nq51/S/cw9rXRibMXoc0=@vger.kernel.org, AJvYcCWTLctxCTUsnzmm1bjWjw0dCBouYVbDgToAxU2kUhyLLPE+UuCrvaXH6Dm9YuZPVEHzhdnqWuHCCHYlBzauMwc=@vger.kernel.org, AJvYcCX/NWh+Zp70TMYhoWBIDEpS5HMwfdMMmcz+ehyt5GgbDXv2639is2Z2XZQO5RRAzhRpiRoFZJX/@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9DL+Pakp9CVyRRgAsUK6ihnJnC0actne0heSfJ8gX/KYofZso
-	gbMwKbgi0ifZKlMWCoBEKIbE3oE2DEGAXnse7/mrrNchamDvc8yX
-X-Gm-Gg: ASbGncu3QR9nhzQKoLEHcVMY++OA+t/59jXmDjnaSlLr7vYe9r0HGQTsDA/0U8ZTRo6
-	DGlrhsjl3YWNZTG03QxK9ZrFidjFFtwkaAPr1OjuYe7ilYNKURAezw5HZ3+ZrmFidvkpClNK/QT
-	cp2roAL2Uy/wktl5nZdZkjLJHawoXQceYOO8T6ndmNf8SBLhI6jGe4YKmI/4FNeak6kXpxh8jwT
-	S/Uxav13nrgL8t6peXwx8CnMBoG5RLDYp2dLVXXukBzSZ7cYJLLN2rRPqHEAQXH46u4geyacG3C
-	9BYsZnr2WKMsKrweDu5q4JV8e8DKRMJ/exkAKccbzwgpS5E33YhQuturi5nRaYX2Fp5RweAcH+s
-	5OEp2BEWdm91kWr4odQueDCAC8bA5mAYr1S8=
-X-Google-Smtp-Source: AGHT+IEDlEMGN6Y4UOiJurFexdK8lqE3yLdBlGqLJ0B32vylkCFGY21A6PxaVo7GzxXzrVRSyGSlLQ==
-X-Received: by 2002:a05:6214:408:b0:6eb:28e4:8516 with SMTP id 6a1803df08f44-6eed6210e02mr137625586d6.33.1743429799321;
-        Mon, 31 Mar 2025 07:03:19 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6eec9771b63sm46984486d6.85.2025.03.31.07.03.18
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nuo9R6kBMQ8ErmyjEUnklnwysWWYfSzr5ZmBZ3GrfFg=;
+        b=lONRdt24xAEHgnLEeFrJ080F7kcz7QSG493/7Ak1WFSadTJJjVx55hE6zcwO7pNp84
+         6uSB1SCICbhjVCHeIDMjwRdlR6os52/ZENDgeDedg/4mr+Jf1vxxNeoUF8wBH5Sm8m1V
+         P0MfOq4yVlc9r4hIylWbTRfVIuTAoinzgK6Y/mfFdLToYpKvuC74jLuUhIPtwPwNE4uQ
+         /+Pi7y8r0dMlZv1Ma+qfwoimClx5ecp0BpjqKXlUfjmduw08jnC7VZD8lG/PCB5JMT6q
+         XJBcToo4dNMzshdHwGlBKqIfVmuJ4fpPN/6HuPOEDBC9+IbIy3mVuS6Z5Gqofh8G/4K5
+         B6BQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFSekqn2ctH1rSYSVBt5wboRYBC/dE372+CcEWPysabaQutDcUc1EwL8uGL0FAKPwG3xP7Mbk6ts0UZ48=@vger.kernel.org, AJvYcCXRvFFhXZ14/e4/qx/c8Wtb61WW+0AhRR6DO4Vt6GdieCBnYbHFJyVONyqIWcw82d+E++qLnOsEDRiGKrR2zOo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1OFF2V/3JhIh7k1SfcUr0E2SM87h6cIOnlFOAEdG3386DtKRy
+	Li6HEdGjI/vE7mXUPQQznRX2nB+IiMz3BtJ/4Q+fXSz70BhEeawO
+X-Gm-Gg: ASbGncsq7sfu4uibM6BWlnsdOxaLv/Ggei1jxvm/IHZ11/mV784Mt/bYU5igVO9FIHX
+	bjhUq2R7xhA+/6+QPNdYLUbM3Fu0phKk+w6fDe3ZWbqDPaVpJPwTITtnVo9+mOSmA+lRrySY1WZ
+	ABK/t2ErgF7OPkPSNgHYGLSPS2AJ+ofkFIbe4vZnhWwIWul7PZZrn61HcXtBUUDEBylbATxXwcB
+	0vEusnWu7Zch77ymmPAuhfLa5hDlOK0rRI/p4gs/iM8BcXapsumrN9+rzhThiWCsOTR+W1+7Tzr
+	qyGrmE3vfjemNOmAu5ZYbO5Szc37ty5HYtl8eTkUYzjy
+X-Google-Smtp-Source: AGHT+IEd+cTzESBGxh0UkfpYnHDf9ZNNUSlxraHyUfVa7hUxFSvZ4BMxmgZF13Jut3YEagFo2XUvng==
+X-Received: by 2002:a05:6a00:b8c:b0:732:a24:7354 with SMTP id d2e1a72fcca58-7398033f3ecmr15275876b3a.4.1743439186612;
+        Mon, 31 Mar 2025 09:39:46 -0700 (PDT)
+Received: from localhost ([216.228.125.131])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73970deebc9sm7350497b3a.12.2025.03.31.09.39.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Mar 2025 07:03:18 -0700 (PDT)
-Received: from phl-compute-13.internal (phl-compute-13.phl.internal [10.202.2.53])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B4DB0120007C;
-	Mon, 31 Mar 2025 10:03:17 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-13.internal (MEProxy); Mon, 31 Mar 2025 10:03:17 -0400
-X-ME-Sender: <xms:paDqZ1WmUHDn8KYoEyGyxluVxQOfPkMCMs3Bwv748hxXqB7sBX9nXA>
-    <xme:paDqZ1lMGZy-468fiwH6f-JvSFBNbNYuDHo9ukcKu1lfK6tdRjb7lXWXBFOgawPIq
-    _XBQvVWBASFnwM03w>
-X-ME-Received: <xmr:paDqZxbQybjNBvaaNM90eHs_3vYXJzU1EmGSZHXyfzmCQyNStkpMEAg0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukedtudduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeelhfehhfelhefgvddtheejleejledvleel
-    geffleelkeeutdeikeevffffteefheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpd
-    hgihhthhhusgdrtghomhdprhhushhtqdhfohhrqdhlihhnuhigrdgtohhmpdduiedrhiho
-    uhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepfeegpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfh
-    hujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtthhopehtghhl
-    gieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlh
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhi
-    nhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehnvghtuggvvhesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvfieslhhunhhnrdgt
-    hhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesghhmrghilhdrtghomhdprhgtphhtth
-    hopehtmhhgrhhoshhssehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:paDqZ4XJDCyVDshfxzc6AUdnSEei20UIM9yvC2HQ6wxIEhRn1ODQdg>
-    <xmx:paDqZ_kPX5ekefWznYk7mrrWDjkLEB13wbiJ3Jq4QXpUXdZshbqHcQ>
-    <xmx:paDqZ1cfRgSUUUfw61jTfxxHP6E5yd4nNsGIU85C1uxumcOQcxkQOA>
-    <xmx:paDqZ5ET1ZrRzDoM6YZaYKsfEqwskSmWR3JL2p4JJn7tAquiklIrGw>
-    <xmx:paDqZ5lnqixO2fHtluENiEMSxVpZotDtw6ObuFX26eY94tVoq128AfzE>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 31 Mar 2025 10:03:16 -0400 (EDT)
-Date: Mon, 31 Mar 2025 07:03:15 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, tglx@linutronix.de,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, arnd@arndb.de,
-	jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
-	peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
-	david.laight.linux@gmail.com
-Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
- DELAY/SLEEP and TIMEKEEPING API
-Message-ID: <Z-qgo5gl6Qly-Wur@Mac.home>
-References: <87jz8ichv5.fsf@kernel.org>
- <87o6xu15m1.ffs@tglx>
- <67ddd387.050a0220.3229ca.921c@mx.google.com>
- <20250322.110703.1794086613370193338.fujita.tomonori@gmail.com>
- <8n9Iwb8Z00ljHvj7jIWUybn9zwN_JLhLSWrljBKG9RE7qQx4MTMqUkTJeVeBZtexynIlqH1Lgt6g0ofLLwnoyQ==@protonmail.internalid>
- <Z96zstZIiPsP4mSF@Mac.home>
- <871puoelnj.fsf@kernel.org>
+        Mon, 31 Mar 2025 09:39:45 -0700 (PDT)
+Date: Mon, 31 Mar 2025 12:39:43 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Burak Emir <bqe@google.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 0/4] rust: adds Bitmap API, ID pool and bindings
+Message-ID: <Z-rFPhrNTB8t5xTF@thinkpad>
+References: <20250327161617.117748-1-bqe@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -129,159 +80,66 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <871puoelnj.fsf@kernel.org>
+In-Reply-To: <20250327161617.117748-1-bqe@google.com>
 
-On Sat, Mar 22, 2025 at 11:40:21PM +0100, Andreas Hindborg wrote:
-> Hi All,
+On Thu, Mar 27, 2025 at 04:16:10PM +0000, Burak Emir wrote:
+> This series adds a Rust bitmap API for porting the approach from
+> commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
+> to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
 > 
-> "Boqun Feng" <boqun.feng@gmail.com> writes:
+> The Rust bitmap API provides a safe abstraction to underlying bitmap
+> and bitops operations. For now, only includes method necessary for
+> dbitmap.h, more can be added later. We perform bounds checks for
+> hardening, violations are programmer errors that result in panics.
+
+So, I hung around and found the bit_set crate. Rust implements BitSet,
+BitVec, and it seems it has functionality that you bind here.
+
+I didn't find any discussions related to the bit_set in kernel context.
+Is it possible to use it in kernel? If not, can you mention that in commit
+message? If yes, I think you should consider to use internal language
+tools.
+
+> We include set_bit_atomic and clear_bit_atomic operations. One has
+> to avoid races with non-atomic operations, which is ensure by the
+> Rust type system: either callers have shared references &bitmap in
+> which case the mutations are atomic operations. Or there is a
+> exclusive reference &mut bitmap, in which case there is no concurrent
+> access.
 > 
-> > On Sat, Mar 22, 2025 at 11:07:03AM +0900, FUJITA Tomonori wrote:
-> >> Thank you all!
-> >>
-> >> On Fri, 21 Mar 2025 14:00:52 -0700
-> >> Boqun Feng <boqun.feng@gmail.com> wrote:
-> >>
-> >> > On Fri, Mar 21, 2025 at 09:38:46PM +0100, Thomas Gleixner wrote:
-> >> >> On Fri, Mar 21 2025 at 20:18, Andreas Hindborg wrote:
-> >> >> >> Could you add me as a reviewer in these entries?
-> >> >> >>
-> >> >> >
-> >> >> > I would like to be added as well.
-> >> >>
-> >> >> Please add the relevant core code maintainers (Anna-Maria, Frederic,
-> >> >> John Stultz and myself) as well to the reviewers list, so that this does
-> >> >> not end up with changes going in opposite directions.
-> >> >>
-> >> >
-> >> > Make sense, I assume you want this to go via rust then (althought we
-> >> > would like it to go via your tree if possible ;-))?
-> >>
-> >
-> > Given Andreas is already preparing the pull request of the hrtimer
-> > abstraction to Miguel, and delay, timekeeping and hrtimer are related,
-> > these timekeeping/delay patches should go via Andreas (i.e.
-> > rust/hrtimer-next into rust/rust-next) if Thomas and Miguel are OK with
-> > it. Works for you, Andreas? If so...
-> >
-> >> Once the following review regarding fsleep() is complete, I will submit
-> >> patches #2 through #6 as v12 for rust-next:
-> >>
-> >> https://lore.kernel.org/linux-kernel/20250322.102449.895174336060649075.fujita.tomonori@gmail.com/
-> >>
-> >> The updated MAINTAINERS file will look like the following.
-> >>
-> >> diff --git a/MAINTAINERS b/MAINTAINERS
-> >> index cbf84690c495..858e0b34422f 100644
-> >> --- a/MAINTAINERS
-> >> +++ b/MAINTAINERS
-> >> @@ -10370,6 +10370,18 @@ F:	kernel/time/timer_list.c
-> >>  F:	kernel/time/timer_migration.*
-> >>  F:	tools/testing/selftests/timers/
-> >>
-> >> +DELAY AND SLEEP API [RUST]
-> >> +M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
-> >> +R:	Boqun Feng <boqun.feng@gmail.com>
-> >> +R:	Andreas Hindborg <a.hindborg@kernel.org>
-> >
-> > ... this "R:" entry would be "M:",
-> >
-> >> +R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
-> >> +R:	Frederic Weisbecker <frederic@kernel.org>
-> >> +R:	Thomas Gleixner <tglx@linutronix.de>
-> >> +L:	rust-for-linux@vger.kernel.org
-> >> +L:	linux-kernel@vger.kernel.org
-> >
-> > +T:	git https://github.com/Rust-for-Linux/linux.git hrtimer-next
-> >
-> >> +S:	Maintained
-> >
-> > I will let Andreas decide whether this is a "Supported" entry ;-)
-> >
-> >> +F:	rust/kernel/time/delay.rs
-> >> +
-> >>  HIGH-SPEED SCC DRIVER FOR AX.25
-> >>  L:	linux-hams@vger.kernel.org
-> >>  S:	Orphan
-> >> @@ -23944,6 +23956,17 @@ F:	kernel/time/timekeeping*
-> >>  F:	kernel/time/time_test.c
-> >>  F:	tools/testing/selftests/timers/
-> >>
-> >> +TIMEKEEPING API [RUST]
-> >
-> > and similar things for this entry as well.
-> >
-> >> +M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
-> >> +R:	Boqun Feng <boqun.feng@gmail.com>
-> >> +R:	Andreas Hindborg <a.hindborg@kernel.org>
-> >> +R:	John Stultz <jstultz@google.com>
-> >> +R:	Thomas Gleixner <tglx@linutronix.de>
-> >
-> > +R:      Stephen Boyd <sboyd@kernel.org>
-> >
-> > ?
-> >
-> >> +L:	rust-for-linux@vger.kernel.org
-> >> +L:	linux-kernel@vger.kernel.org
-> >> +S:	Maintained
-> >> +F:	rust/kernel/time.rs
-> >> +
-> >
-> > Tomo, let's wait for Andreas' rely and decide how to change these
-> > entries. Thanks!
+> This version includes an optimization to represent the bitmap inline,
+> as suggested by Yury.
 > 
-> My recommendation would be to take all of `rust/kernel/time` under one
-> entry for now. I suggest the following, folding in the hrtimer entry as
-> well:
+> We introduce a Rust API that would replace (dbitmap.h) in file id_pool.rs. 
+> This data structure is tightly coupled to the bitmap API. Includes an example of usage
+> that requires releasing a spinlock, as expected in Binder driver.
 > 
-> DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
-> M:	Andreas Hindborg <a.hindborg@kernel.org>
-
-Given you're the one who would handle the patches, I think this make
-more sense.
-
-> R:	Boqun Feng <boqun.feng@gmail.com>
-> R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
-
-Tomo, does this look good to you?
-
-> R:	Lyude Paul <lyude@redhat.com>
-> R:	Frederic Weisbecker <frederic@kernel.org>
-> R:	Thomas Gleixner <tglx@linutronix.de>
-> R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
-> R:	John Stultz <jstultz@google.com>
-
-We should add:
-
-R:      Stephen Boyd <sboyd@kernel.org>
-
-If Stephen is not against it.
-
-> L:	rust-for-linux@vger.kernel.org
-> S:	Supported
-> W:	https://rust-for-linux.com
-> B:	https://github.com/Rust-for-Linux/linux/issues
-> T:	git https://github.com/Rust-for-Linux/linux.git rust-timekeeping-next
-> F:	rust/kernel/time.rs
-> F:	rust/kernel/time/
+> This is v6 of a patch introducing Rust bitmap API [v5]. Thanks
+> for all the helpful comments, this series has improved significantly
+> as a result of your work.
 > 
-> If that is acceptable to everyone, it is very likely that I can pick 2-6
-> for v6.16.
-> 
+> Not adding separate unit tests: the Rust unit test infrastructure
+> is very new, and there does not seem to be benchmarking support
+> for Rust tests yet.
 
-You will need to fix something because patch 2-6 removes `Ktime` ;-)
+I don't understand this.
 
-> I assume patch 1 will go through the sched/core tree, and then Miguel
-> can pick 7.
-> 
+Benchmarking is a very simple procedure - as simple as surrounding
+blocks of tested code with ktime_get(). And I see that Alice even
+implemented the Ktime class last year.
 
-Patch 1 & 7 probably should go together, but we can decide it later.
+> Are the # Examples tests enough?
+> Alternatively, can we add more test cases to those until 
+> the unit test infrastructure is in place?
 
-Regards,
-Boqun
+I encourage you to implement the tests as normal kernel tests - in
+source files that may be enabled in config. I can't insist on that,
+and will not block the series because of lack of benchmarks and
+tests written in a traditional way.
 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
-> 
+But to me, scattered wrongly formatted commented-out in-place way of
+writing tests is something fundamentally wrong. Not mentioning that
+it bloats source files, making them harder to read.
+
+Thanks,
+Yury
