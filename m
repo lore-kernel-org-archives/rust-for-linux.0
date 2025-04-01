@@ -1,133 +1,127 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC5E1EDA11;
-	Tue,  1 Apr 2025 11:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A9D1F09A1
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Apr 2025 11:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743505340; cv=none; b=tG2QYKLD9oQNCGzKqF3HSRjrmzc5kmmJaJRI+b2EwcENnLq82aia5fUYIhr9edynhuzbumPN5Osdg4pAiEWULxHCGQKeN4CSA+W4iPaOP15j7GP5IQQnaMXq8HuPqxMVpzRgLMsuL2Q5JkceL3tG9uMSspEcQA/xT5KrR7SEej8=
+	t=1743506592; cv=none; b=ThG/lwOMOJidLeS99KkuitqL0PpQNYs0ZFgCrhN3QxVxDx/L68NRALu8d2UvzSB3fST/MIC6WqfyW4QXUlRcRdYtGYj+p9rfOkwxd+pCuek5yHX61xyqxfUcdmu+3/KUuOLsdSQkbXFUEZFlkPdhQv80Gq1+S2vSqNyCUfLjFwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743505340; c=relaxed/simple;
-	bh=WM8uWp1n6LtHojEQ3XQ7/DrsURN0rpKjNln6ogHwAPQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JAtBN4R0wtLcXqRZLydHxdIOJ31tmXkREoAYFQZlI49OnsD8GnP8eYckF4uN1E9JzhwSder/dghkNa+sA83iEV9QpXkN8pRsn/nhPT7XGTzcjrGcTAkMh5kS6nntl8lQD0PqhniK28ZdNMXXIwkYk12tkN0bYEf4687wweJd/oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZC6i3kcX; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743506592; c=relaxed/simple;
+	bh=VAL8eQeQLv1jZ0ItTtHH0GpG4kM4IKAFMuR0hxuIUN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ncdG6mTm0A68vGRRrZKOKINzNvbpKSAgvrp2NfNOXZ2mJx/hdLtx3j6UPkwF1rU756zJzIK7qMm4+XRmD3oi0MzvmqeuT+AF9rO4APOQWSgWFSvkTo7m7JwZhqMT2iNIeNn8fmE8bVH2tGpJRUj0dIgoluMlBr3P/LFTdGwQN9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=h7blEy0s; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZC6i3kcX"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff62f9b6e4so1162102a91.0;
-        Tue, 01 Apr 2025 04:02:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="h7blEy0s"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2260c91576aso85855505ad.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Apr 2025 04:23:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743505337; x=1744110137; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KIMYgWDoZA4nluKsAd+dlkqOPs7SwU4W2ipuyeJ7NLI=;
-        b=ZC6i3kcXDgCG5QMdujeO30jxG77DdPLSjlnEPS9Ylm9ZbYo7xS/sNYOvQCEvffP14E
-         UfJRq0+bXpIL/vWFlqxmfINGOjJsPLN23gj4LuPHmsqzxQMwGEKueOKUKSwZvuLmcye8
-         uQWJdTmI3yqQGkLF/NDZDjVPdSQJBGtkA3pGzaQfclRMCmfHiwGoZxe6PPlBfGy/Oj7+
-         ufT3432CPa1x0PWGe2UQpDUAZ8oouAhvBprYBiakADup3kcH6+SHCuEMAKFtbCSiXZvU
-         BvRLhj0e1my/jIyNOu8Hm466hVor5WdhLLy7tfNW2bs1z3Lva43ySDa2QFRXkUG2g/ve
-         m6cA==
+        d=linaro.org; s=google; t=1743506589; x=1744111389; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rHfK3avWXg/wr5RZir9EpDN+jJ5pXFV8xfPClJ4u5GY=;
+        b=h7blEy0sZCXPLZWJu/75R93+W7BNR7FLyBIXvvDSmE2gyFhgXsr1Xet+8FQ8U2RMQL
+         sZ5OVxAdwOczBCh2ZDP5H5Cjh7fz5Fq6xm7BE1b9rPwUWYy7Cs5AOgxaaujnWnLUO3eN
+         Kebvuf6HO7DRvy4lBBRwuSQE0JFktb849GZ4+ZsqV40qs1VcqXv/x7CfhuqA6iwgaN8j
+         uSPkz/bqnLZH0hAFc2SDBNKV7omFI8dj27vD056swTndP8IJ+CFA+QaSFavbUpIc9h8x
+         ez1p9v5SU4uU7PHl1vPRYkZRPSRzjP4isGaRyKI3uXfF9gn+IVzOusPBpkB5nFHUopP1
+         Yx1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743505337; x=1744110137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KIMYgWDoZA4nluKsAd+dlkqOPs7SwU4W2ipuyeJ7NLI=;
-        b=PDvBjDDvdkS7Lln3GuorGCED4E0Y7L58Cp3cewbHvP2TXzOeYzSbwujc3bvbHxCPtV
-         kGT1IUc60pFTudP66B+fJ1nfI27XSBGhrKDJEJNl+8iHGVHR1VZN6K5N+OAfNU3Bs42m
-         3lO31tK/S3tlBiPWYYD9HmntNAks6+05hO4clJNTJVEQXt5v1HoJpRFxIk9QbA46LKrf
-         hIHOz4FM0WvI9HqXPTQDtU7aCezfS42zDTuhCPlw44Sg4+TA/kVwSYdJmy5m3NHJEJSm
-         q3sPEzEM6SM/+AvFRS4UrAuItGWUC8u9VEnPYX9JXwQMAxSmfWoMay+OUNrIXZiwbB+U
-         0GaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUXPw/7pWnKKHmJtrCkfFE/X2l9epsnm9uJzrc2LXvrEyBb4UDvQYYKHgX/WtxJzRehdPbGjRxp0QqzQtQ=@vger.kernel.org, AJvYcCWBVu0eJxxGVl3oGiIoxJD5qzNS7ZL9iwiy670SbZAiYwIJxXrtLAEOzuwRqxJsSOStwFwx3D2dX5rMS0cBFbA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu3yjTDmHNS4LfsFn0+Z0c96LN+LTSHagjxNlvOTiOiFQ8BFle
-	YxZLtYVOiO5jEf3qwA/S/MbTwJnhdEaL1q+okChgSAfyxSthIalWSIpT0kiw5+qHgBmaV5Q+Pnc
-	Y/ioLRDQeHk8v36Y9lAW0sc2QiYI=
-X-Gm-Gg: ASbGncuqy7ypsoNxt9WXJo6pV1E9BbBvuZ6du49+pArJNN1eEdF/QDPjC0NchVF/jmO
-	3BPIl7vzKibTmdkTZogczFR34NmFD3kdLxj3KENaqCHskfrZt+12D1g8LNdY/HEockkfj9CwUbP
-	D9GAMTb03btuA95a2aQP6cYrJ53A==
-X-Google-Smtp-Source: AGHT+IGWpGpW6d5ZIfdsFzWaamUgj+TZ7rfkoUKHNrFDGQXG2niCef3YklVtnipGJqAFbJCaUpCJyFAcq1X/5kdmbwA=
-X-Received: by 2002:a17:90b:1d87:b0:304:eacf:8bba with SMTP id
- 98e67ed59e1d1-30562e63830mr1176346a91.4.1743505337443; Tue, 01 Apr 2025
- 04:02:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743506589; x=1744111389;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rHfK3avWXg/wr5RZir9EpDN+jJ5pXFV8xfPClJ4u5GY=;
+        b=c4z3up2QYGFbYWXPskJhFvqWX5rMIzgOE5wC1uYt2mQDIW45gfz6M1DIW5IZ0xsfw9
+         zTbCA/rcOtoVAjv9KsDOGRupI4bufxuWYBTRQA7XCCY9s9UgKujCm4nBW5TYymV4LAg3
+         pZHGr4ILAnf6/k80h2lCLiaScgwRZc7KnrZTWnXkUGaqXBhDM/GMdslBHwJF35PVKRay
+         bMLVhoA+aFUTumnIShjZHD9lG4lj15RN+PFP3WLJNu6s+l+Bpqfps9I2iOGVHbJUjrHv
+         1usaQn9ner0ux6hIls7Fj+99giaktOod9/QGodNf3EBhxcbyJ8Y9JnMYIjJyruUkJbtw
+         LxPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXpFI3QWKj3+RNzKZTn/oCuS0xF7tj74LkUWiQtd7/zW0rjobegNCDVGZFE+aDzXW32vFNE5Gb0sVRl2roFjQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq5vYlevQQ61uADdZok0oDJidZ6THzg9DQKuFwqaoT+RNY1Hrt
+	XoBosT/EJYnvrOjnaaD/j62ZVP6EZm4AkME+CfQyD3QzGTtfWUo4GeVnr7GABhU=
+X-Gm-Gg: ASbGncvj2hKS/QyJkMTdOmBvz9gc5s1P6zBLTIZB5A4TuTuNegvVKyH1ZkJnakmOvsE
+	SNr5Pn29woHaD9panv61qJuXfDqfiTKRoT+I1PdcSZzK1Ww5QwdDYfuvSlGu4N0xN4UG/HTKhuW
+	GQB6UVIEEoxgHNEzkyoZrjkKOqTNXyv2WKm/IFnIh6dltiLhmM63sUXQQF0P0s4UReGZhMbVMae
+	ugEQyhDE45H89lK5dd75sjcDK5MmtgpOn0qBs/cZro1NAyaoGLeYnfzThtak7BtFRsIvsQAqsuM
+	jBt1engOi9P7hP3Og9r2HVPTuJASPUutBcwC97fgYe2sE36ZBR/la043
+X-Google-Smtp-Source: AGHT+IHETR0ZDX3a2JwDqDubub9VhOb/rg7MYqbwYjCU/FGmaqg6uSF35xx+BLX7z3+XFAebMVnSyw==
+X-Received: by 2002:a17:902:da83:b0:227:e7c7:d451 with SMTP id d9443c01a7336-2292f974b3emr209239775ad.29.1743506589196;
+        Tue, 01 Apr 2025 04:23:09 -0700 (PDT)
+Received: from localhost ([122.172.83.32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291f1cf14csm85705505ad.137.2025.04.01.04.23.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Apr 2025 04:23:08 -0700 (PDT)
+Date: Tue, 1 Apr 2025 16:53:06 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Cc: linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+	rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Burak Emir <bqe@google.com>
+Subject: Re: [PATCH V3 2/2] MAINTAINERS: Add entry for Rust bitmap API
+Message-ID: <20250401112306.z5krtedzzxphlwez@vireshk-i7>
+References: <cover.1742296835.git.viresh.kumar@linaro.org>
+ <cddb90075c7f892e30f5039c3b3d14e6a239d915.1742296835.git.viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250331122926.607374-1-ojeda@kernel.org> <CAHk-=wgyOSX4tbq0qhAkk0OCZqwiCA4EtwKZOBXAdkBW6FOANQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wgyOSX4tbq0qhAkk0OCZqwiCA4EtwKZOBXAdkBW6FOANQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 1 Apr 2025 13:02:05 +0200
-X-Gm-Features: AQ5f1Jo1sOir9D-7T1Zekx56nDF09h48BlY5ge96gd19VdjjnO1UUJRm4FiPLCM
-Message-ID: <CANiq72kkjGVAtWNZjz5VGen4xoVLfRa+Wv399PUO=EfcA4TEfQ@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust fixes for 6.15 merge
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cddb90075c7f892e30f5039c3b3d14e6a239d915.1742296835.git.viresh.kumar@linaro.org>
 
-On Mon, Mar 31, 2025 at 8:33=E2=80=AFPM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> maybe you can give a list of things that I should be doing when I see
-> rust merge conflicts so that next time around I'll notice these things
-> rather than have silly typo mistakes.
+On 18-03-25, 17:21, Viresh Kumar wrote:
+> Update the MAINTAINERS file to include the Rust abstractions for bitmap
+> API.
+> 
+> Yury has indicated that he does not wish to maintain the Rust code but
+> would like to be listed as a reviewer.
+> 
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Reviewed-by: Yury Norov <yury.norov@gmail.com>
+> ---
+>  MAINTAINERS | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 315cff76df29..c55db52590cb 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4026,6 +4026,12 @@ M:	Yury Norov <yury.norov@gmail.com>
+>  S:	Maintained
+>  F:	rust/helpers/cpumask.c
+>  
+> +BITMAP API [RUST]
+> +M:	Viresh Kumar <viresh.kumar@linaro.org> (cpumask)
+> +R:	Yury Norov <yury.norov@gmail.com>
+> +S:	Maintained
+> +F:	rust/kernel/cpumask.rs
 
-These are the ones we have:
+Yury,
 
-  - `make rustfmtcheck` (or `make rustfmt` to apply): This one you
-already know about.
+How should I name this section now (since we have separate sections for bitmap
+and cpumask abstractions now in MAINTAINERS) ?
 
-  - `make rust-analyzer`: The one from today.
+BITMAP (CPUMASK) API [RUST]
 
-    Since it just generates a config file "blindly", the config file
-could still be completely broken even if the Python script succeeds.
-But running it is straightforward and quick, so there is no loss
-running it on merge conflicts.
+or something else ?
 
-  - `make rustdoc`: What generates e.g. rust.docs.kernel.org.
+Wanted to get it right before sending a new version with this change.
 
-    It could catch some issues, e.g. "broken intra-doc links".
-Warnings would not be a huge deal, but any errors here would be nice
-to avoid so that developers and rust.docs.kernel.org can always
-generate them.
-
-    This one (for the moment) always re-generates from scratch, but if
-you just run it on merge conflicts, it is fairly quick (more or less
-like building the Rust code).
-
-  - `make rusttest`: Runs a few userspace-only tests.
-
-    We don't really use or change the feature much, so it is unlikely
-you will have any merge conflicts here to begin with, but it is also
-quick to run. Perhaps in the future we may reuse the target for more
-things.
-
-  - `make CLIPPY=3D1`: A linter.
-
-    I am not sure about this one, at least for the time being. It
-could spot something that is fishy after a merge, especially if you
-had to rearrange code, but they are lints after all, and sometimes it
-may not be clear what to do (e.g. `#[allow(...)]` locally) and you may
-hit bugs or false positives.
-
-    We will probably end up defining a set of lints that we want to
-really, really keep clean, and then that would be what you could run
-on conflicts, and leave others to something like `W=3D` levels.
-
-    Note that if you decide to try it, it is a different binary, like
-a twin of the compiler, which means rebuilding Rust code. Also, if you
-do `WERROR=3Dy` you may want `KRUSTFLAGS=3D-Wwarnings` when running Clippy
-if there happens to be a lint not cleaned up somewhere (e.g. right now
-there is one, its patch going through trees).
-
-Thanks!
-
-Cheers,
-Miguel
+-- 
+viresh
