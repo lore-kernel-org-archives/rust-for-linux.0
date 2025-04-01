@@ -1,121 +1,135 @@
-Received: from sonic310-23.consmr.mail.ne1.yahoo.com (sonic310-23.consmr.mail.ne1.yahoo.com [66.163.186.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02B913BAF1
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Apr 2025 13:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABEE4C2C6;
+	Tue,  1 Apr 2025 13:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743514745; cv=none; b=XTqESF7f+8aL/tJKgMd+RR9c831uwUSZu4c4CaWBlq2PrGHqEr6Jw2HdNBlwolSlBqNXtyOdGbIJ0Swo15iCgw74zWkVoaTxIAsM1/4hnPYO51+tfLKPD34HTjjLA47XfutxnJuw1/45K4lA1Z/CKX90OYLzbvD7B80IIhfHivQ=
+	t=1743515510; cv=none; b=PMS5QrwiU99VNuH3od+3VWjPpOGmwZ6AImeENfmze/YHy0dIka+mtsLbaKOFza4NZoEwRvY7E7LrAfT/qP5zCa7v/bsC4X36IPQ8VovZhAhAS0LchjWKtgut1UHTdTqf7qaxO3EWDHlC1DItnA3+FFwT9EhgNlQp99gtAbyKRNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743514745; c=relaxed/simple;
-	bh=ofszlQT1ij4224kS39xzL9ruH3CaD0DyNdd1U3SNlLs=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UCMV/6b/6P33uPtUdTxvdPeXc9OeeS3cafMij6uZOP5481+RbxATkS+KDhjHaCTMAfmyBh6M24X/WqOuPf18ZIHlU2Uir/7aKXoTiwAi5VrhD1M2WKuJy+4XeAR26xoDTvEYm5JxiSpErUMyi3la6v4GXR6QRaG3EGDXGQ7/7y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=Y3hhR3aN; arc=none smtp.client-ip=66.163.186.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1743515510; c=relaxed/simple;
+	bh=miTjMsIeXP+zyjE/C/mAbMIuGdRq77YdfWs2fJWn9VU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IyCeqwFHKI8z664fEVXCpQHhjR9SFBRRIzEYwRj+sEvTN3KgXJrPveNgmzgEJkbmN2/mhTVFqPeLPiIl0G75IPL/U+7u3E/SHzJ7Ui2kFFZSeJR8qW0HakDGZMhLs5fkzuCDOwiL60NCOlzoAWZkH+G8Wgcqwhwvr/qOw4TlbT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDKiMeEe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Y3hhR3aN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743514737; bh=OYr+j/h0p8WSfIy2qZZhOkytnU5ItiVO4YfIuCxZw0s=; h=Date:From:Subject:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=Y3hhR3aNPBqL+M6IMaLH4ZRvu+sh4EBVvq4n7qPjzqa3QpUGBA21dpd6mZ5H320nX2FsvADOO1LnlDrg75IdWEKDKzapMnoVPkSQiR9trNU8+k6BfiCh2PZNjd1hSajWGIDUh8Q9DAT10vh3PYO/yokbroSchlDBRyORw7VNjAj72uqexL5nJCswzs8Yj4kO67HiZPqHsj13hn25fgwfI29cN3bBTgaVM6oI8rCLMS1AGqloMP2pZF+cNqpOvZ1R0gW4iwYKLKW/nmGBXWfvwUD4QgErMy7TsbAUbAx7UaUcbUERzoIbEFz0JWCXmXb7NIdkSA9Lm8z0YXl1BTlEdw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743514737; bh=w34EaG3a7fiXVb02QZb3p34NRpQH48Qms82IrwhFR72=; h=X-Sonic-MF:Date:From:Subject:To:From:Subject; b=eGYwvZSm9gviSfHU7WmOcKx8vDflzXo79HEcT3wxooawO1ZV+MNejFflTk/jkJiAXxJvkYg+81IUZN2NMvZvMU8/ErxkV2qmLbMTepZxmfs18+yZzCPEhL2r8f4ZwkRjXQ7px5hJ4PnU1UT8BrEnx+N2QHjnyj5d6QtUplY7httcs0TttDomt/tQgsK0YKzt7Oymj/deaiy0n+Cx1/vzeneFerJzXlFoZEBwJK3rGoyRjCZ+1gVhjLglDMykw/A8wpuZLlGpp93zUh4HqqYnaATtVMFWZUDM5pPer0iA30i/bDGIZt3NHQh0hiSHxEJUF6IArdSC4tNELkQ2aq83oQ==
-X-YMail-OSG: 91LnQWYVM1k8rDaHQaNsvZxs96az6rm9NFw0fPAZGWkQEUw6zbHsPaFeZqGyR2F
- jpN59gThY908AdDwA4zuqp3PiGbBznE8Ql0PC6J.hz8ll7jKt5N.QQ7uYaliyTU.EbdO8MpQEZt9
- mcziZ3igEqs2jBo2z83chDtkhIYBJSg_pbYRrcnZxgLTq7RLYiZ0ZwKD.zMSIqz4vWXBvj.gw6N0
- AWQb.rmCMscLRJD1f_m_X.omR8CIDbpuvrlGxvOU3KVG0XKcp_GmYsHzH.r_FQzomexyeBEVHIsw
- 1KirRHAeP_CPi2yrc5D95SCe1HjkM.ONugqI_VJVdgLf0e_G9DRPj__7tG8hZcf5R0hZzjAzEtbF
- JmzcOwH6jy262SU2gjZRPAcutnt7V_6LDQnOtXJMbIkJwu6rLj0w9k1Hy.W9RnuzkP1n6rLeMlzv
- 4VM9MmmRFnWd_raCQzZHAe_aYc_KEM7RojHSGP._EG2RU_Jdz0qGyowwzuT1Z0N2ebRtOSvquTV6
- AgK8d07JHaYdbbvNAAcZXC1QA2ZjBYeB2wzhE2z37hSQZC33WKYk4p.upkZx67BR7qsUWxf5p31f
- oDO3W28ud5ruTJCNUTjEqCKgMR36reKkhGgGS0n7vaEkzJ3VUlQFVAwdVMTFTNRTtYNUZHCPYjL8
- VkYwvVOKXK1ZX1LAEPIUHPHpttpMwhwKSyX9nNiyibGhdc.lHrAGy1HUpX6kLe5yI.KRSMzd1Ryq
- iZ2JEZHntQlWz74VY_vlIAJ.duWKRad3aovjMnYU85H9i9BR0ThBTPIedbaVzwutCigh5H4Qh1Yq
- tc.Pz2N_u8v_rQyAxrry4bgwUxjJTwjAmVOxcTFX8ptdGGcFqMJJ3c79XhXxeWSUSGB.XtM4mVAF
- tPgr2PJidAWJ0b8g8UNC8W77IY3GjUM6FeACluXBm1ib8YyxUdWorYPH_GLMvNpOwTJJKY0a3sny
- uNofsEU9dKZDZCdFyagHCekhe7UZ.Oqr9H45.KBKml6fi.T3Otnatet8IWwCEvaT6tu7Wy7SRBlI
- 68cnyb6jAGPdGHVezlDBRmcuxEwvQ3JtzK99fwKwiYX5nIimtMDkqfh.Q7O1AHcIIgIWnStuVuO4
- bmr4KKqmQw9z9enBlG9VTUo2PB6bu8ZgZnAZUE2tpyJOnbPt_nq1a5LXGAFdYoNRQ72SxeqEOmuk
- voVadDUHNucgJpDZyKLGdJ.2_iQqlHH4FsEtPiDeBZtYC6ZJ3buQgaJo2L4FqaAm0m8SCdPSyNVK
- 6cY1w3BqUQDwP9A_kK7pXAuveG3sD2AIqIIZ4nDwUgWre9OeyKCGHXd4tzWWwCGbnY1nTeedEhco
- X1a3WX0ldgpgAtbVY0.ikUOPd8mY1ZEDHUVzhFzenew4OQyU1tsef0iH_gJVa9ay4F1_s6P7Z1Qr
- O8MGnrjVkJfmVUHupCyOgLNUqbF2JBjqKfHt3k15JvlTjCLwoKchNZmsLDYUu1SagvUAAclAn42p
- 2LW8RGY7kyooQ67etprfnVEwRsuo1PlF4X_JxbrVTrFhvH6YAQjuAOp97aA4HIHwqsuf9fkKHqK.
- EiJOPDjxDBKV.0CIwoLBGRgPQjX1l8lMtupJ.8R4jl6DyA5r7OFrhZi.T6VZcUiZiMeO7IrP7pra
- nJKQw8cvRCwD6SQ6SrvhStQyFQvmAlrDq23qzrekpcFO6G4EvCFlokgQvAo.Q_5JDgMlRXkvvzZA
- a8Gcu4KLLZvSE8usmJgeY5.S1WJEvIIGZzQ_SwqChmGZ0KcJbm_AXTb9hkzHBFGl71OaMwAmNoNe
- c7vAEqCJG6rn86QI18BCzb9FdquygwjW8g7eXNze9oWCSJbRdLU_7LYWhHcxpM5cpGTbSX8xX97J
- fmA8eJzcO_e24IPPBvqowUh9PlReUGWGeUkdh4p5gcDBT18w6dLzdjqi0GeGuOtq0.Qxhs19HE7x
- vOONF5TZxWJ6LGDkjPddHqoZsr2vypTzACmqosajzdx4HT8QBMaQmv2wyd9OLcuXEkLxIS3wezCF
- 3.HZbISX_Kgs2Jak9Xv2Ckm1LZvgX_JZNlO_8FiIDJ3_MslpNvFOIRiZu4iBPTaF7lVjMOrWsB9Y
- TXasOCtP7yVFQ_OyPYLRD8q0LaKZd7nTkLHKovwu0fyDyGG4k2lQHW1.F0RNp9H7zcp8zA2Jt3mZ
- 7A0gR4iss7kyCoCTVDEoo1jSBIuG5RVnqUFh63j9hshwF7_Jp1.fxMuNoJh4ZncsUemgbQnFk_oC
- 5id8ElbsycN77zm9dgqiAilwRNBPttQnKBmWdiZoxoYZD
-X-Sonic-MF: <igor.korotin@yahoo.com>
-X-Sonic-ID: 8e63d912-5186-451e-be97-3db38ca25400
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Tue, 1 Apr 2025 13:38:57 +0000
-Received: by hermes--production-ir2-54ff696c44-cc2xz (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 45ccd3bb692b94e3f4314e563aa58318;
-          Tue, 01 Apr 2025 13:38:51 +0000 (UTC)
-Message-ID: <0ecc8ec6-eb5d-4589-b3d6-bbddcf75ae91@yahoo.com>
-Date: Tue, 1 Apr 2025 14:38:50 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDKiMeEe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374F1C4CEE4;
+	Tue,  1 Apr 2025 13:51:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743515510;
+	bh=miTjMsIeXP+zyjE/C/mAbMIuGdRq77YdfWs2fJWn9VU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LDKiMeEeHXVYDT5mzu0Eh40do6d2HQFkKr4xxien6kZcRC1WNz2DxufBJ0yMC0JQ/
+	 UGis9Xaq/F++sAvhXWtgCFPCvIUbUO9EI5IvWbuPe15sf2SHLgnhN/DgC2oiaSgThl
+	 p8UQFvfuw91ULpECLKr5sd501HsRLbmE3XgFdo5SCBVEX74G8njKWJGQ1esDPHlvk9
+	 wEoWTNSlSrchS+4iIlkTFavrdmVAMZIPQiVF+uma9eHSgcbtqZzxAb+WrzT/0JQzxS
+	 Ryfgi/rXVikXEfuuALndCO4PCpGtp9JVoGs8bZR/4sRlsSbE3gTEHKYZ+pMIk741Wu
+	 Ny65oBn0dbnEA==
+Date: Tue, 1 Apr 2025 15:51:44 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Greg KH <gregkh@linuxfoundation.org>, bhelgaas@google.com,
+	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] rust: pci: impl TryFrom<&Device> for &pci::Device
+Message-ID: <Z-vvcPfgyaRdd0xQ@pollux>
+References: <20250321214826.140946-1-dakr@kernel.org>
+ <20250321214826.140946-3-dakr@kernel.org>
+ <2025032158-embezzle-life-8810@gregkh>
+ <Z96MrGQvpVrFqWYJ@pollux>
+ <Z-CG01QzSJjp46ad@pollux>
+ <D8ON7WC8WMFG.2S2JRK6G9TOSL@proton.me>
+ <Z-GNDE68vwhk0gaV@cassiopeiae>
+ <D8OOFRRSLHP4.1B2FHQRGH3LKW@proton.me>
+ <Z-Ggu_YZBPM2Kf8J@cassiopeiae>
+ <D8OPMRYE0SO5.2JQD6ZIYXHP68@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Igor Korotin <igor.korotin@yahoo.com>
-Subject: Re: [PATCH] docs: rust: quick-start: update Ubuntu instructions
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-References: <D8S8C5W0FCVD.1LH1E86H6PXZD@proton.me>
- <20250331170118.1376899-1-igor.korotin@yahoo.com>
- <CANiq72ngOZs8idtvxP05k1TK8kcM+Yd7ztSuq1PaAoHHBEQBhQ@mail.gmail.com>
- <44928637.255825.1743501279791@mail.yahoo.com>
- <CANiq72nZsGcDCdE6ddxLg0daLnfuyKWkXzkb+j1PGL0kun+zgg@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CANiq72nZsGcDCdE6ddxLg0daLnfuyKWkXzkb+j1PGL0kun+zgg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.23590 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D8OPMRYE0SO5.2JQD6ZIYXHP68@proton.me>
 
-On 4/1/25 12:26, Miguel Ojeda wrote:
-> On Tue, Apr 1, 2025 at 11:54 AM Igor Korotin <igor.korotin@yahoo.com> wrote:
->>
->> One of the issues is that bindgen-0.65, by default, uses Ubuntu’s Rust compiler (version 1.75), which is not
->> compatible with the latest kernel sources.
+On Mon, Mar 24, 2025 at 06:32:53PM +0000, Benno Lossin wrote:
+> On Mon Mar 24, 2025 at 7:13 PM CET, Danilo Krummrich wrote:
+> > On Mon, Mar 24, 2025 at 05:36:45PM +0000, Benno Lossin wrote:
+> >> On Mon Mar 24, 2025 at 5:49 PM CET, Danilo Krummrich wrote:
+> >> > On Mon, Mar 24, 2025 at 04:39:25PM +0000, Benno Lossin wrote:
+> >> >> On Sun Mar 23, 2025 at 11:10 PM CET, Danilo Krummrich wrote:
+> >> >> > On Sat, Mar 22, 2025 at 11:10:57AM +0100, Danilo Krummrich wrote:
+> >> >> >> On Fri, Mar 21, 2025 at 08:25:07PM -0700, Greg KH wrote:
+> >> >> >> > Along these lines, if you can convince me that this is something that we
+> >> >> >> > really should be doing, in that we should always be checking every time
+> >> >> >> > someone would want to call to_pci_dev(), that the return value is
+> >> >> >> > checked, then why don't we also do this in C if it's going to be
+> >> >> >> > something to assure people it is going to be correct?  I don't want to
+> >> >> >> > see the rust and C sides get "out of sync" here for things that can be
+> >> >> >> > kept in sync, as that reduces the mental load of all of us as we travers
+> >> >> >> > across the boundry for the next 20+ years.
+> >> >> >> 
+> >> >> >> I think in this case it is good when the C and Rust side get a bit
+> >> >> >> "out of sync":
+> >> >> >
+> >> >> > A bit more clarification on this:
+> >> >> >
+> >> >> > What I want to say with this is, since we can cover a lot of the common cases
+> >> >> > through abstractions and the type system, we're left with the not so common
+> >> >> > ones, where the "upcasts" are not made in the context of common and well
+> >> >> > established patterns, but, for instance, depend on the semantics of the driver;
+> >> >> > those should not be unsafe IMHO.
+> >> >> 
+> >> >> I don't think that we should use `TryFrom` for stuff that should only be
+> >> >> used seldomly. A function that we can document properly is a much better
+> >> >> fit, since we can point users to the "correct" API.
+> >> >
+> >> > Most of the cases where drivers would do this conversion should be covered by
+> >> > the abstraction to already provide that actual bus specific device, rather than
+> >> > a generic one or some priv pointer, etc.
+> >> >
+> >> > So, the point is that the APIs we design won't leave drivers with a reason to
+> >> > make this conversion in the first place. For the cases where they have to
+> >> > (which should be rare), it's the right thing to do. There is not an alternative
+> >> > API to point to.
+> >> 
+> >> Yes, but for such a case, I wouldn't want to use `TryFrom`, since that
+> >> trait to me is a sign of a canonical way to convert a value.
+> >
+> > Well, it is the canonical way to convert, it's just that by the design of other
+> > abstractions drivers should very rarely get in the situation of needing it in
+> > the first place.
 > 
-> Hmm... I am not sure what you mean, but `bindgen` does not use the
-> Rust compiler. Of course, both are used by the kernel build, but they
-> are independent.
+> I'd still prefer it though, since one can spot a
+> 
+>     let dev = CustomDevice::checked_from(dev)?
+> 
+> much better in review than the `try_from` conversion. It also prevents
+> one from giving it to a generic interface expecting the `TryFrom` trait.
 
-Though `bindgen` might not use rust compiler, nonetheless bindgen-0.65
-deb package requires rustc in its dependencies:
+(I plan to rebase this on my series introducing the Bound device context [1].)
 
-     root@c4a63fba5ac2:/# apt-cache depends bindgen-0.65
-     bindgen-0.65
-       Depends: clang-17
-       Depends: rustc
-         rustc-1.74
-       Depends: libc6
-       Depends: libgcc-s1
+I thought about this for a while and I still think TryFrom is fine here.
 
-Even if one uses the command:
+At some point I want to replace this implementation with a macro, since the code
+is pretty similar for bus specific devices. I think that's a bit cleaner with
+TryFrom compared to with a custom method, since we'd need the bus specific
+device to call the macro from the generic impl, i.e.
 
-     apt install rustc-1.80 rust-1.80-src bindgen-0.65 rustfmt-1.80 
-rust-1.80-clippy
+	impl<Ctx: DeviceContext> Device<Ctx>
 
-It anyway installs both rustc(as default) and rustc-1.80. Can be easily
-reproduced in ubuntu:24.04 docker container.
+rather than a specific one, which we can't control. We can control it for
+TryFrom though.
 
+However, I also do not really object to your proposal, hence I'm willing to make
+the change.
 
-I’ll send a reworked patch for quick-start.rst once it’s ready.
+Do you want to make a proposal for the corresponding doc comment switching to a
+custom method?
 
-Best Regards
-Igor
-
+[1] https://lore.kernel.org/lkml/20250331202805.338468-1-dakr@kernel.org/
