@@ -1,118 +1,178 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D591F236E
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Apr 2025 11:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743506778; cv=none; b=dgwNBXOWG8dYXLhAetvaAL8Qsbf6KHGhtbdMyZTQHL7d5BqygHdtM2vYFZJTh0XHOLt+udKOB2XPRpD5JRzx+XHmBmc2AIXiYcC22IEE6DLh+6yiBXrwPYeLfP0oTQzE3lVQjt6vtkBUpcoYBsCe0A1LYfbF4/A/oEokooOc18w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743506778; c=relaxed/simple;
-	bh=4q00NjhK+XTzB+lx/jR6zs3IV0wtbJFoamhSIKUeR5c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GIt0GumYcRFS7ctPS/79V17gPMYCmXrR2H8Gjpfr9ggJvf246eQrJgYkEKfnx6DBmE40xM9gYgx5koQgeLUYAX1LP/kjEyTMq2MpmNQSLgMFJOilD/WBKjVs5/jwr5pcLotENVd+ltDPysN79OEprsjqbgxYaokb0pcEmIQgklo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CFHqa6c7; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22491519B8;
+	Tue,  1 Apr 2025 12:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1743512389; cv=pass; b=uHW+NrvF9SSBYk5uyDyogsJj1rbiB8tvUFXCaFQkOQ3HLmMy+FoGEI6dX0xVxU2ldjCHYhCuzh1g9AJJX0vuGikM1wxqiTNNTgwtFEjMZrfrj8TTdnZVIwl+f0LRLb9FjWDq2qdKJru65L2AwXzGfLurdVk+bRy4X3LQ1MwkfPw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1743512389; c=relaxed/simple;
+	bh=f6mLAQf6ewULXu0GR7bfELaoivoxdxwjFEP5/+g8KrU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=hoUukwRY6SKLDS76HtLA2atAGS+y0VPGhMt7ZpNi5KNMqAKklsr2MGia1a4c2tjfAg3gIPQNisG+icMJFrGXJQGg+29SQFRIZot593pb5WjiUW3JTK9iHJqPjmppEXtJktLPBMfqXiysdxX1L37cR4UITOjpKCG+WV3hAt1A0+A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Vc0m+rgi; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CFHqa6c7"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-224172f32b3so11509085ad.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Apr 2025 04:26:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743506775; x=1744111575; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VNQtxr93zTxu/gSfXTlwOuMLWRgHJFdjc65dqLVMyNg=;
-        b=CFHqa6c76VmoRsZ4y32JoiTyxqIq4VTp26aEPsQCN0+NIC8mJ9iZSisl4J35wILX98
-         ejeXoIZYde1K0UqZhoNfGGIy+ynrbr9Xo7hpH73e+CjcQb11MDFeXJD69TcDg/ke98Yd
-         LrVGCKYEdV/erJC6EHdU2C0L8rTsPFqvLta8eDT+mz/J8R2sf0o48J+nHkjPuAQO4lJU
-         h7i97WjDDHHuDJ67Evr1/CHCQe3G7GQgFnzBlAf2gMXo83cQu9UgJ+y2hFGAogqqhiOv
-         mf0t9qoSBEJR9g4Jo0w73SLb4tHlTq9UxqLZGVLpIigbrvc3eZvmbUXFePKgIQr8RGd9
-         1bpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743506775; x=1744111575;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VNQtxr93zTxu/gSfXTlwOuMLWRgHJFdjc65dqLVMyNg=;
-        b=KbvvJXAY0ZhH3tlLQFwjGQj6rArcXPHFhgX71KO/S+kDHuqzeEogZ10d24xOb8Vfab
-         STu5s5LUr8mHsRq/0X+Gx/quC0wLu9LXPMQD46CaNjDCVDLwLy/0RGB/O8uBEWvt/csF
-         7Po6Q50C0Kyq1ogOnJhfAdwCZTlvT89w5jBWbLm9nCJIJZ4QYeac5zT2TStpZma10fUg
-         3ek3vzAav5ns3MLfDwyq9u0C+GSwNrhAWQkW4G+bbd8glwGtUCOrZQYRZqMCr4LdvYcS
-         MnjIv97gSW4/XLTlRvgxUhk1+38OvYHYEXJ1eG9Faog+JPux8DOp0+xS6+ZJ+sclQAuk
-         SkUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWiAI6gWSNthNhjOywRhAc00Or2pnT7cdHYO0gLOgRHHFPFlr7xqJVSaDWnPCsq/okyBBOyeknSnyUzvAyr2A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbCViv5U8ThX44+IxheQ48gW600gyInG0xzPA+0sXe1CMCTBPX
-	FAdAerlW7SsDebUm4qnQTSBSos0ALkr52JV7SZ5TGiZO3s74wgqT3VK1IzjyisZBQuxQmxF49iQ
-	pjt3gjrTSm/DjWoyJ2zfqD227odc=
-X-Gm-Gg: ASbGncuVZRf7pMJ7FF9zAPh+JdJVHa2Ck5TVY5fEgGJLIDR9ZGLYEOiMnrvjT24vc2h
-	cOHzHE4shOiTwpGVzDvzvUgfSG3Bgg10OQRo5vAASHAGmVBHEZFTisqO3cP3+yIZwPNQWoZ8ELg
-	AkXJNe+5TtfZe/F7Yz0xT7WZ+QHg==
-X-Google-Smtp-Source: AGHT+IGS2h6crh5EexWRIwYyfwLo/Ky3x6D27XfHqMeU9uBJjtuUgFyAXfo5oP6j5WoocStiQF8JEIAjpEOIvknbygs=
-X-Received: by 2002:a17:902:fc47:b0:215:8d29:af0b with SMTP id
- d9443c01a7336-2295ef12acamr12139995ad.14.1743506775447; Tue, 01 Apr 2025
- 04:26:15 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Vc0m+rgi"
+ARC-Seal: i=1; a=rsa-sha256; t=1743512357; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=GBtYm76tIuinjoE7owRCKgat8CjJ44vGLLpu70elbdQfmwNC/MEGhAh8Pl/zcw5RW7ZeEIlVEdrSsW91OzwLhhn0n9AY24WKps0LPG0eWGUuGIlCgSZ7980ObhPddqjotF7m4PkRosMiaESTtyYP9j25V5K2wAF5MeNbMWN7hvs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1743512357; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=eVppIKvmTMpG1wI2U0Pa+9csa+B4U5fgzTpOMWMirjY=; 
+	b=MyF/VXeb1iPpnlJF0rRVMhk/yjVw1tnVj/ItwKgZMmbWJyZrhkGCU2U9B2JL+ODRjOYewT9A7+4UZiRP0t85+T4erwxbWZhcOpyIdaqF1g/SUKe0V2qfXfUoF26JGihZLbrZs4sS1Ow7eYamPD1YL60a7eHZ4QP2GqABleRyLEE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1743512357;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=eVppIKvmTMpG1wI2U0Pa+9csa+B4U5fgzTpOMWMirjY=;
+	b=Vc0m+rgi44hW3Wp47u+sygY5LrN6TY2w+C+S/4k6kLSBtjkYNDaTI5KvmN1Ku3QY
+	rsBNYOvyPh4L59a3oyFBWhE4coD00NfLZJLfzmysZTtpArTWva3Pr/hS+9F7M4IGUZE
+	U/bzLuw93/whRo1xeXT8RT3zyy/GxYX8l33vm2mk=
+Received: by mx.zohomail.com with SMTPS id 1743512339761844.7601541518382;
+	Tue, 1 Apr 2025 05:58:59 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <D8S8C5W0FCVD.1LH1E86H6PXZD@proton.me> <20250331170118.1376899-1-igor.korotin@yahoo.com>
- <CANiq72ngOZs8idtvxP05k1TK8kcM+Yd7ztSuq1PaAoHHBEQBhQ@mail.gmail.com> <44928637.255825.1743501279791@mail.yahoo.com>
-In-Reply-To: <44928637.255825.1743501279791@mail.yahoo.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 1 Apr 2025 13:26:03 +0200
-X-Gm-Features: AQ5f1Jo6jIK8006O9s4S6ZEZF4QO3Witf4F7AVFzF0W5qdQWIdBAJ8_h7yq9GJ4
-Message-ID: <CANiq72nZsGcDCdE6ddxLg0daLnfuyKWkXzkb+j1PGL0kun+zgg@mail.gmail.com>
-Subject: Re: [PATCH] docs: rust: quick-start: update Ubuntu instructions
-To: Igor Korotin <igor.korotin@yahoo.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.400.131.1.6\))
+Subject: Re: [PATCH v5 07/13] scripts: generate_rust_analyzer.py: avoid
+ optional arguments
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250325-rust-analyzer-host-v5-7-385e7f1e1e23@gmail.com>
+Date: Tue, 1 Apr 2025 09:58:40 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Boris-Chengbiao Zhou <bobo1239@web.de>,
+ Kees Cook <kees@kernel.org>,
+ Fiona Behrens <me@kloenk.dev>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Lukas Wirth <lukas.wirth@ferrous-systems.com>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <CCB6D89D-D513-4514-8992-AC37313F5588@collabora.com>
+References: <20250325-rust-analyzer-host-v5-0-385e7f1e1e23@gmail.com>
+ <20250325-rust-analyzer-host-v5-7-385e7f1e1e23@gmail.com>
+To: Tamir Duberstein <tamird@gmail.com>
+X-Mailer: Apple Mail (2.3826.400.131.1.6)
+X-ZohoMailClient: External
 
-On Tue, Apr 1, 2025 at 11:54=E2=80=AFAM Igor Korotin <igor.korotin@yahoo.co=
-m> wrote:
->
-> One of the issues is that bindgen-0.65, by default, uses Ubuntu=E2=80=99s=
- Rust compiler (version 1.75), which is not
-> compatible with the latest kernel sources.
+Hi Tamir,
 
-Hmm... I am not sure what you mean, but `bindgen` does not use the
-Rust compiler. Of course, both are used by the kernel build, but they
-are independent.
+This patch looks good to me but,
 
-> Do the environment variables RUSTC=3Drustc-1.80 and BINDGEN=3Dbindgen-0.6=
-5 ensure that the correct
-> versions of rustdoc, rust-clang, rust-lld, and rust-llvm-dwp are used? If=
- not, perhaps those should
-> be explicitly set as well.
+> On 25 Mar 2025, at 17:06, Tamir Duberstein <tamird@gmail.com> wrote:
+>=20
+> Make all arguments required to reduce the probability of incorrect
+> implicit behavior. Use keyword arguments for clarity.
+>=20
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+> scripts/generate_rust_analyzer.py | 90 =
++++++++++++++++++++++++++++------------
+> 1 file changed, 62 insertions(+), 28 deletions(-)
+>=20
+> diff --git a/scripts/generate_rust_analyzer.py =
+b/scripts/generate_rust_analyzer.py
+> index b37d8345486a..badcef4126cf 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -69,9 +69,10 @@ def generate_crates(
+>     def build_crate(
+>         display_name: str,
+>         root_module: pathlib.Path,
+> +        *,
+>         deps: List[str],
+> -        cfg: List[str] =3D [],
+> -        is_workspace_member: bool =3D True,
+> +        cfg: List[str],
+> +        is_workspace_member: bool,
+>     ) -> Crate:
+>         return {
+>             "display_name": display_name,
+> @@ -92,21 +93,34 @@ def generate_crates(
+>     def append_crate(
+>         display_name: str,
+>         root_module: pathlib.Path,
+> +        *,
+>         deps: List[str],
+> -        cfg: List[str] =3D [],
+> -        is_workspace_member: bool =3D True,
+> +        cfg: List[str],
+>     ) -> None:
+>         register_crate(
+> -            build_crate(display_name, root_module, deps, cfg, =
+is_workspace_member)
+> +            build_crate(
+> +                display_name,
+> +                root_module,
+> +                deps=3Ddeps,
+> +                cfg=3Dcfg,
+> +                is_workspace_member=3DTrue,
+> +            )
+>         )
+>=20
+>     def append_proc_macro_crate(
+>         display_name: str,
+>         root_module: pathlib.Path,
+> +        *,
+>         deps: List[str],
+> -        cfg: List[str] =3D [],
+> +        cfg: List[str],
+>     ) -> None:
+> -        crate =3D build_crate(display_name, root_module, deps, cfg)
+> +        crate =3D build_crate(
+> +            display_name,
+> +            root_module,
+> +            deps=3Ddeps,
+> +            cfg=3Dcfg,
+> +            is_workspace_member=3DTrue,
+> +        )
+>         proc_macro_dylib_name =3D (
+>             subprocess.check_output(
+>                 [
+> @@ -133,66 +147,75 @@ def generate_crates(
+>=20
+>     def append_sysroot_crate(
+>         display_name: str,
+> +        *,
+>         deps: List[str],
+> -        cfg: List[str] =3D [],
+> +        cfg: List[str],
+>     ) -> None:
+> -        append_crate(
+> -            display_name,
+> -            sysroot_src / display_name / "src" / "lib.rs",
+> -            deps,
+> -            cfg,
+> -            is_workspace_member=3DFalse,
+> +        register_crate(
+> +            build_crate(
+> +                display_name,
+> +                sysroot_src / display_name / "src" / "lib.rs",
+> +                deps=3Ddeps,
+> +                cfg=3Dcfg,
+> +                is_workspace_member=3DFalse,
+> +            )
+>         )
 
-To customize the binaries, you want `RUSTC` and `BINDGEN`, and you may
-additionally need `RUSTDOC`, `RUSTFMT` and `CLIPPY_DRIVER` depending
-on what you build, but the rest you mention are not used by the kernel
-build.
+Why the change from append to register+build here? Maybe this change
+should be in another patch?
 
-They cannot be passed as environment variables, though -- one needs to
-pass them as arguments to `make`. Which is definitely painful to do
-manually for normal development.
-
-> I'll try to come with some different format of this configuration mention=
-ing the command:
->     "make LLVM=3D1 RUSTC=3Drustc-1.80 BINDGEN=3Dbindgen-0.65"
-
-Perhaps mention the full one, if we are going to do it anyway.
-
-By the way, please do not use HTML -- your emails will be dropped by
-lists automatically if you do so.
-
-Thanks!
-
-Cheers,
-Miguel
+=E2=80=94 Daniel=
