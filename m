@@ -1,190 +1,133 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6832C1E47A6
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Apr 2025 07:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC5E1EDA11;
+	Tue,  1 Apr 2025 11:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743491726; cv=none; b=AKkmnBdFYNYkPq9oFKxKv96ykGQwwAX8rTFh9YiHBhvt7gjVQUcrA2m4aHxKi//4Dbl5/yiGKASMT1tIjTKCs5mV3V7poZY+c9ZrrL8OeAKP3Y7uZ3qxHwrSoXlzJk4yDaigxhsjpWnaqFDSSFGnYrlXN19HVes3lU8WMtUwqU4=
+	t=1743505340; cv=none; b=tG2QYKLD9oQNCGzKqF3HSRjrmzc5kmmJaJRI+b2EwcENnLq82aia5fUYIhr9edynhuzbumPN5Osdg4pAiEWULxHCGQKeN4CSA+W4iPaOP15j7GP5IQQnaMXq8HuPqxMVpzRgLMsuL2Q5JkceL3tG9uMSspEcQA/xT5KrR7SEej8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743491726; c=relaxed/simple;
-	bh=Bgm+4ox12ICSRJ9n6RnH5Kxz5rlQEQp75AGPeM2oXUM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PI7mj9bY5yjGSFJavRW6XyMGwmouNZcvu8ao5guYM//NSGs49MiBgX+OJutsHX0mk2KiZKBQpWVLCrl4D4Z8XFKPNBhUBCF1cGT5e0JiKQtrJr2qkOJzW0wm3pp1zzBd5rxy1Mi7DmER+IwV7mo1QN4BM67RqrDMEwv49xQZp3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=j79kWSlI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7eRHRuAG; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=j79kWSlI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7eRHRuAG; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1743505340; c=relaxed/simple;
+	bh=WM8uWp1n6LtHojEQ3XQ7/DrsURN0rpKjNln6ogHwAPQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JAtBN4R0wtLcXqRZLydHxdIOJ31tmXkREoAYFQZlI49OnsD8GnP8eYckF4uN1E9JzhwSder/dghkNa+sA83iEV9QpXkN8pRsn/nhPT7XGTzcjrGcTAkMh5kS6nntl8lQD0PqhniK28ZdNMXXIwkYk12tkN0bYEf4687wweJd/oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZC6i3kcX; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="j79kWSlI";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7eRHRuAG";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="j79kWSlI";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7eRHRuAG"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5B66D1F38E;
-	Tue,  1 Apr 2025 07:15:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1743491716; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=H/yLPG2vYkVHyf8czEbkycGYqrbmBtML8bo0oviqpe4=;
-	b=j79kWSlIf/jFUulGWCR20xR/SVsUL7uUbnNrjkxA2xvDysZ6JLqDDGxJA7/Q8VOMyE8CRV
-	K/CMGhpHJGM62cvr+3vt6dJc8MJ9Y88V+F1L0cuzQe+WWUIePKKJ9zx/PkX9tCdRPVFLiL
-	ElQxcyJDuXuD6YGI0OwO0tYOtnmKa5g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1743491716;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=H/yLPG2vYkVHyf8czEbkycGYqrbmBtML8bo0oviqpe4=;
-	b=7eRHRuAGKQ7NB/Znde8INcFP/PGWO/oxAaOIQj/2/6iPlJUmbnjtyCqef83CRvabHAzGUi
-	n+4rej3EVNooJJDQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1743491716; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=H/yLPG2vYkVHyf8czEbkycGYqrbmBtML8bo0oviqpe4=;
-	b=j79kWSlIf/jFUulGWCR20xR/SVsUL7uUbnNrjkxA2xvDysZ6JLqDDGxJA7/Q8VOMyE8CRV
-	K/CMGhpHJGM62cvr+3vt6dJc8MJ9Y88V+F1L0cuzQe+WWUIePKKJ9zx/PkX9tCdRPVFLiL
-	ElQxcyJDuXuD6YGI0OwO0tYOtnmKa5g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1743491716;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=H/yLPG2vYkVHyf8czEbkycGYqrbmBtML8bo0oviqpe4=;
-	b=7eRHRuAGKQ7NB/Znde8INcFP/PGWO/oxAaOIQj/2/6iPlJUmbnjtyCqef83CRvabHAzGUi
-	n+4rej3EVNooJJDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EE22713691;
-	Tue,  1 Apr 2025 07:15:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id X9fIOIOS62cSUQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 01 Apr 2025 07:15:15 +0000
-Message-ID: <abcd542e-ee0e-4a11-9ae6-c66a924f2f99@suse.de>
-Date: Tue, 1 Apr 2025 09:15:15 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZC6i3kcX"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff62f9b6e4so1162102a91.0;
+        Tue, 01 Apr 2025 04:02:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743505337; x=1744110137; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KIMYgWDoZA4nluKsAd+dlkqOPs7SwU4W2ipuyeJ7NLI=;
+        b=ZC6i3kcXDgCG5QMdujeO30jxG77DdPLSjlnEPS9Ylm9ZbYo7xS/sNYOvQCEvffP14E
+         UfJRq0+bXpIL/vWFlqxmfINGOjJsPLN23gj4LuPHmsqzxQMwGEKueOKUKSwZvuLmcye8
+         uQWJdTmI3yqQGkLF/NDZDjVPdSQJBGtkA3pGzaQfclRMCmfHiwGoZxe6PPlBfGy/Oj7+
+         ufT3432CPa1x0PWGe2UQpDUAZ8oouAhvBprYBiakADup3kcH6+SHCuEMAKFtbCSiXZvU
+         BvRLhj0e1my/jIyNOu8Hm466hVor5WdhLLy7tfNW2bs1z3Lva43ySDa2QFRXkUG2g/ve
+         m6cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743505337; x=1744110137;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KIMYgWDoZA4nluKsAd+dlkqOPs7SwU4W2ipuyeJ7NLI=;
+        b=PDvBjDDvdkS7Lln3GuorGCED4E0Y7L58Cp3cewbHvP2TXzOeYzSbwujc3bvbHxCPtV
+         kGT1IUc60pFTudP66B+fJ1nfI27XSBGhrKDJEJNl+8iHGVHR1VZN6K5N+OAfNU3Bs42m
+         3lO31tK/S3tlBiPWYYD9HmntNAks6+05hO4clJNTJVEQXt5v1HoJpRFxIk9QbA46LKrf
+         hIHOz4FM0WvI9HqXPTQDtU7aCezfS42zDTuhCPlw44Sg4+TA/kVwSYdJmy5m3NHJEJSm
+         q3sPEzEM6SM/+AvFRS4UrAuItGWUC8u9VEnPYX9JXwQMAxSmfWoMay+OUNrIXZiwbB+U
+         0GaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXPw/7pWnKKHmJtrCkfFE/X2l9epsnm9uJzrc2LXvrEyBb4UDvQYYKHgX/WtxJzRehdPbGjRxp0QqzQtQ=@vger.kernel.org, AJvYcCWBVu0eJxxGVl3oGiIoxJD5qzNS7ZL9iwiy670SbZAiYwIJxXrtLAEOzuwRqxJsSOStwFwx3D2dX5rMS0cBFbA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu3yjTDmHNS4LfsFn0+Z0c96LN+LTSHagjxNlvOTiOiFQ8BFle
+	YxZLtYVOiO5jEf3qwA/S/MbTwJnhdEaL1q+okChgSAfyxSthIalWSIpT0kiw5+qHgBmaV5Q+Pnc
+	Y/ioLRDQeHk8v36Y9lAW0sc2QiYI=
+X-Gm-Gg: ASbGncuqy7ypsoNxt9WXJo6pV1E9BbBvuZ6du49+pArJNN1eEdF/QDPjC0NchVF/jmO
+	3BPIl7vzKibTmdkTZogczFR34NmFD3kdLxj3KENaqCHskfrZt+12D1g8LNdY/HEockkfj9CwUbP
+	D9GAMTb03btuA95a2aQP6cYrJ53A==
+X-Google-Smtp-Source: AGHT+IGWpGpW6d5ZIfdsFzWaamUgj+TZ7rfkoUKHNrFDGQXG2niCef3YklVtnipGJqAFbJCaUpCJyFAcq1X/5kdmbwA=
+X-Received: by 2002:a17:90b:1d87:b0:304:eacf:8bba with SMTP id
+ 98e67ed59e1d1-30562e63830mr1176346a91.4.1743505337443; Tue, 01 Apr 2025
+ 04:02:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] drm: Make some resolution info unsigned
-To: Lyude Paul <lyude@redhat.com>, Maxime Ripard <mripard@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- "open list:RUST:Keyword:b(?i:rust)b" <rust-for-linux@vger.kernel.org>
-References: <20250331222556.454334-1-lyude@redhat.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250331222556.454334-1-lyude@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,proton.me,google.com,umich.edu,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid]
-X-Spam-Score: -2.80
-X-Spam-Flag: NO
+References: <20250331122926.607374-1-ojeda@kernel.org> <CAHk-=wgyOSX4tbq0qhAkk0OCZqwiCA4EtwKZOBXAdkBW6FOANQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wgyOSX4tbq0qhAkk0OCZqwiCA4EtwKZOBXAdkBW6FOANQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 1 Apr 2025 13:02:05 +0200
+X-Gm-Features: AQ5f1Jo1sOir9D-7T1Zekx56nDF09h48BlY5ge96gd19VdjjnO1UUJRm4FiPLCM
+Message-ID: <CANiq72kkjGVAtWNZjz5VGen4xoVLfRa+Wv399PUO=EfcA4TEfQ@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust fixes for 6.15 merge
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-for the series.
-
-Best regards
-Thomas
-
-Am 01.04.25 um 00:23 schrieb Lyude Paul:
-> During the review of some of my patches for KMS bindings in Rust, it was
-> pointed out we have some areas of DRM that are storing resolutions as
-> signed integers when it doesn't really make sense. Since Rust has
-> arithematic overflow checking by default in the kernel, let's change
-> these to unsigned so that we can take advantage of that.
+On Mon, Mar 31, 2025 at 8:33=E2=80=AFPM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> Lyude Paul (2):
->    drm/edid: Use unsigned int in drm_add_modes_noedid()
->    drm/mode_config: Make drm_mode_config.(max|min)_(width|height)
->      unsigned
->
->   drivers/gpu/drm/drm_edid.c    | 10 ++--------
->   include/drm/drm_edid.h        |  2 +-
->   include/drm/drm_mode_config.h |  4 ++--
->   3 files changed, 5 insertions(+), 11 deletions(-)
->
->
-> base-commit: cf05922d63e2ae6a9b1b52ff5236a44c3b29f78c
+> maybe you can give a list of things that I should be doing when I see
+> rust merge conflicts so that next time around I'll notice these things
+> rather than have silly typo mistakes.
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+These are the ones we have:
 
+  - `make rustfmtcheck` (or `make rustfmt` to apply): This one you
+already know about.
+
+  - `make rust-analyzer`: The one from today.
+
+    Since it just generates a config file "blindly", the config file
+could still be completely broken even if the Python script succeeds.
+But running it is straightforward and quick, so there is no loss
+running it on merge conflicts.
+
+  - `make rustdoc`: What generates e.g. rust.docs.kernel.org.
+
+    It could catch some issues, e.g. "broken intra-doc links".
+Warnings would not be a huge deal, but any errors here would be nice
+to avoid so that developers and rust.docs.kernel.org can always
+generate them.
+
+    This one (for the moment) always re-generates from scratch, but if
+you just run it on merge conflicts, it is fairly quick (more or less
+like building the Rust code).
+
+  - `make rusttest`: Runs a few userspace-only tests.
+
+    We don't really use or change the feature much, so it is unlikely
+you will have any merge conflicts here to begin with, but it is also
+quick to run. Perhaps in the future we may reuse the target for more
+things.
+
+  - `make CLIPPY=3D1`: A linter.
+
+    I am not sure about this one, at least for the time being. It
+could spot something that is fishy after a merge, especially if you
+had to rearrange code, but they are lints after all, and sometimes it
+may not be clear what to do (e.g. `#[allow(...)]` locally) and you may
+hit bugs or false positives.
+
+    We will probably end up defining a set of lints that we want to
+really, really keep clean, and then that would be what you could run
+on conflicts, and leave others to something like `W=3D` levels.
+
+    Note that if you decide to try it, it is a different binary, like
+a twin of the compiler, which means rebuilding Rust code. Also, if you
+do `WERROR=3Dy` you may want `KRUSTFLAGS=3D-Wwarnings` when running Clippy
+if there happens to be a lint not cleaned up somewhere (e.g. right now
+there is one, its patch going through trees).
+
+Thanks!
+
+Cheers,
+Miguel
