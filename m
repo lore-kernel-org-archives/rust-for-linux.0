@@ -1,107 +1,101 @@
-Received: from sonic302-21.consmr.mail.ne1.yahoo.com (sonic302-21.consmr.mail.ne1.yahoo.com [66.163.186.147])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB88F1F0E2C
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 13:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7287B367;
+	Wed,  2 Apr 2025 13:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743601971; cv=none; b=i7jGffYBUOcUhw8zMpvMxURqsv+uUlssg08tIi9eAQnopNHPnuxcdqfPYk/GO+3WS+AJrtW+af2rDJAe8te/7e3TQYJ11FseKwFaEd9WY+mEy9QW9TQH4qbi7yPmU9gJDdSjNMu2X3xGj/G6S/+TCXIhvgm0hZlJZH/EpQ2nPCY=
+	t=1743602344; cv=none; b=YNG4+b0ByhQRQdDquEv40hgdtt8NQ64pZO6xlMHtjouqVbdHJOKHYa3+TBk/e2KUC34bBkuidpSL6QOXFauS5QWxK07jz9ZxlGo1pEd/VcQ1rFfv6J+4W/EqWONdkKdDiTTiHLJGW6M90ztqjyIUteXjw4rhx1Uca2n3riLbt0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743601971; c=relaxed/simple;
-	bh=lipHkSOi3h356FBXqs7ScOA6Ih4jLc9BhCEACpR7Yw8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aj67RwlRcvKmzLt8/jJwlQ0eW3QZDUqJO/Hy3vrM+F5qfXwA1p1zjzAld7+vP0wjrVozTZECZ0zHr7JSaQAKIXWAZlmwnNMft7ec1JJrJ4S1XoydVcAODIDe9p9NJg2M/+zKgWoDVR5bU/yTD6UG6o50d6blvUc9tdJI2o7e91U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=rBZnBBW+; arc=none smtp.client-ip=66.163.186.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1743602344; c=relaxed/simple;
+	bh=vTMqK5JsGJkV3D9uwxiRrS81D76Lq1lchZmymzYuSgQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p3Nhrm9QTTs9rnNUXnGwF8dNTM/k+FxvA1Y3/ifRl0P2XwAC0FtweGYvJnn3gmKv4OoIdRdGw1QAbkhJOd0aYcsLiVX5k+gCt7tgtW5OVVIusv2uJVn+wcYK6HBSmeuxX5r38TXwLiytkcrhOV7uuu7F5fPvLJVDDNcP9NbZ2j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i8tz5lF8; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="rBZnBBW+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743601963; bh=5qCXny3N92aeQsJHD43bwMFhPLx8y5+HLUHDF7Zp/cc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=rBZnBBW++qibZEAbGsAiU92/j7BvWZNCaeAkXquoGyIhi7MynTO+1C6GQdwxEFzpSoQl9E6Z+q9+GxDKoJqrl1tU8J+EX5hgq0y6kfeMCoTe+4M3Q+iKRtzm0lPVhgazQEg7k55i2uaDrw2oy0XNSjy5A5sSjUgOfjHoFqSfZnJEwPytPAO5fdU0NunNlrs9r2AnFi1c4O+1Ti0a27YfdaAPBBoL+vgtlsKFu5w0Sr8mJ74HxSdYm5s+ETBDUHRkvnS1rpsNpkv6et+ElMppDwx3n/j7TdxLfi4L6i8GkrQy/pZY2QxooV2U3KQhfKUbToMUXUyu7a/6LbstaXI6Jg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743601963; bh=LL3G/zmuIUgsiorgTQ4LiBld5fWfRSkNLCuaGYLChB4=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=mS9RcdvVsfRKcaiXl61dlAq9QLXLat/XdDZRsZaPiyhSTazqw84V0KpXOGASgSUxU5jrzcIEOXr47V1aF1qaNqJDWM4C/3OI1IPkNhCb+BItheZ98Z00sKco90bX/cSoX7AVDmjzs8qTHnl5qIwbnCFxU8cYW77mwgveGam05oK3qbwft96/bOoMJREnJKHrVzlJWg5ias+ho2sp86wkPkuq6dgvkYPr11ynupFYIaMuxMn0tFeSz5gj9UtAptd+ZJ8Puw2fOQlZF/DnbVFQ69u4pCIDnJYv3kS/vmMAwXsEdfNdNO3/aClK30AtCcFDKHw7p2yxCyJcXw2LoC4vcw==
-X-YMail-OSG: fDXnA.kVM1l.C9zCZCFIe5MtofnaDyYA1z.zDJQbNoD.XHY009WkzdlY9o2evy.
- NynHd4lJ6X41e_jVkri1UclLq.Gzpdqfkt1UI39ThDCgfKZTWnmfgeYzI48MtYn7iiMwT1qcugqs
- zrCXIefCUGvJHIFhQM4Leccc5NQikxoQgYHSuIUzJd1SFcAQshFk8wlr1Lw_jBc9ZMzezbIPJJCd
- VyowSSuYHYOCPuJ1exmaQll3B_NK5Llelkwl_q78fMZX_8UlhEIYSeC3lbgboE1EEw2Oe8ba1XAt
- LjuyG1sajx_RcD4qlIbZAG.li6Z_b9DGehYDPKNVp3kghS.026JbmskWU89jALoFA57IORFNUPRJ
- uLnBmvp0K_xSReSI94j2UCmZbeLUlVi9pxd_pbGkZHtLTpAViAFJ1YI92P7DXcnHDhAReDSQYrqy
- ddfEaxjF40FllHDv6nrUVjsVXx5Ow7oswxpzdbn_yI7pxNUScHxpbkqqN09KdeCFm1SmAUWI3mGq
- 1LJr.zhTEcEdQiwHIOqfbQaU4r24qbpXqBhoqXpFd6U.BhbBn1X6WMsFTvmzJLAWkL0C1WJMSvb4
- w3qYavpFg5mQrraIkxHyGJJIFaTxT0MvdjXUNqqevvC.yphGgn1fWAl66oXmCqnRgumbtlbLwG8w
- H7akLN7b98wWZt9CXYyZode.D0hIS6jy8MqyuCvZI49BCsM4SuO8Uv05bFePsXcfK0eY_.NuYKGH
- Oo7uDZYq.IjahMtiDxaZDQXCdeKbqPxRstJEUHxxTpVZljPn6Pt80ITg92LIEb9IjeZQS.zKwGfW
- aRYp4yvcEDRSWvH9Yl6nBHSCJ6FZIju4WqfDcL7WFtSl6co5_nXgRR_dOQnbiwMxM8MXcaom3MmJ
- S9BP1Td7jQj.mGjYo05QDLNXI_01vq1jthsIldN8oErS_fF6Sce6eG1DRChtySkfyzNZZ9yIzMW0
- SNPcEbvKXipujW8JUtxIm5ITJXpjbRS5amLxm1NM5ePaF62k1cVl0fdw15stTOe6L7uovk.f4EN6
- ewddKFiRM00Uzrb9XNt6jG61cTQBAO5LegnZM1VueXFXTbu6IdJ_xj9FxOmMEz3HZbmuzMNADrT2
- 9R7D8Vbk3fuszsWJiM0qVz9IcTMq3xErT0qazWoQgFMRoUZJFTidbzLIPeQ2nmZ4I5iOnxCTswdS
- 7gtptp_.I3CJ0u.2VEXbTP72Ggz0LJfh0eSTwE.CT0pXnZa5gYk66SvyBXqphkt2xiPnRKTvYDJz
- bDA.wY614odmcJ_.fmss1J5mc_if8L3acWiD3KAAigA77T3PTTUJio5BT9b.U2nvBvFYvmCZkH0i
- _bRJTg2pBlpV5cmiEv5dcYiTqixuYM6bTBJQqE2pBTemvZxnBW7_zJki8SvynB9XXUyo.GGUExs_
- g71b.7ScPYI5iBrg.COn9MrQ.F7rSUqAUqiKl.wZqCc4xVESAY_29Yex_Ix_r0_NTCoKW2jTDnIs
- lOSPiZqMxUFi0XF6IbZMw5a8DFBEFPuBf_5htyz7C3TiPwu.uJXeUNZYh9yrayRJESk_EsEbD8GD
- 98x2uGCVy.auBoFe31Kx.BsBdhdbeYtdnSGAYhZ9qTQDSjf73lhBfW80sawC4cxYUNwYR3Y.Rahb
- bfHQ1zxERkQyB5Nw9uWWZyKVxlRoSFkEWf.UnLsWGA_GqWXa3lTj01bKcqqnTW4DchXwtuCNdyep
- m37ODHD5ev.rfVU1TaFAbN1bK7zOiHbk36cpoiYYPVta_Sg3lqhwm.a5CAFdYei7aSc6_VGsjtGQ
- kGbvT1kY_9jL.ytuw1j.R7wcb.Sj8C_iKbKPBDOzoYnCisSBzOJjma8vwqdYBF3NCxZ0cO_sROAw
- PR8wbqPSyOzKizn3h1K24LYPhhWsnobxF6UfxnBAugCIWn_rqctf2n_wn_W.bFlI5NS1UIsrdXFk
- 1Fy_TLGZ4fp.3qgQvOOUGNOEB65Fn6SMM9OJckhp2UhyLg4lpjk5nhrIT0U7mFItpMc39POoGKkO
- 2RbWKyaWfxx1gXOOAYGg09dMtkXVoMGtZHBhjE9srtkyHVaG_7p0eTXZe7kPCBsibtvvwiVhWAG.
- V2qaQ8UAUWuoaobemBUT.bokAJCy.QHqvnKduCRwxffoMxGse7XWB8xztyDNkdqgtL1H3VaUFJLY
- jCWxmkuIR2LgpJluwz3h2NIM0wEnUJStfygSQxkv2zNorT5xxFJTm0sECUwXvfhzpKV6gXDoUYbf
- SSq3I8yu1xR23d5jWIB_bXZ2uR33jVjfRP1CkRkg3cjr98EQ-
-X-Sonic-MF: <igor.korotin@yahoo.com>
-X-Sonic-ID: 9b42be02-0921-4497-9953-cd2dd3f3de2d
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Wed, 2 Apr 2025 13:52:43 +0000
-Received: by hermes--production-ir2-54ff696c44-2j284 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c5026a28b2bfc6e9bc27b4bbac0751bb;
-          Wed, 02 Apr 2025 13:52:41 +0000 (UTC)
-Message-ID: <29f73af3-e097-4c7d-889c-394ae1d2d961@yahoo.com>
-Date: Wed, 2 Apr 2025 14:52:40 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i8tz5lF8"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-30bfed67e08so68579891fa.2;
+        Wed, 02 Apr 2025 06:59:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743602341; x=1744207141; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vTMqK5JsGJkV3D9uwxiRrS81D76Lq1lchZmymzYuSgQ=;
+        b=i8tz5lF8BiXzlz5YFY5MWXZCfPz60ra/Iz69MzG+wN9Y6BulyBgnl2ST3uTSkAaXwr
+         x3hwChQM3L4pVJivcAP6KMSqAXwYUecxN/oTalq7hzE0zjXo+L/vMwPornaorkjhqF8l
+         Wlt6Bme3N9D+h+BHlpRs5LcMOClmfs2rApmWuxqsdTp6t5ZyTd++QK7oLUK7ys1sIE6f
+         hAxFrCVD212DI9UJCVE30Pu+eIIIYPHGXHqE+TcPOx6w7yUG1od3Zz6qvDEiYAA4GAmt
+         f+7lUUGrJ3750QPyBjUpVzEWZ0wfb5K6QwRIUCTiSkSc+ga395xv6/A/faJz5BIVDcCD
+         CFFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743602341; x=1744207141;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vTMqK5JsGJkV3D9uwxiRrS81D76Lq1lchZmymzYuSgQ=;
+        b=YUnEcb3vGuYeXg2q3zT0d2rwUL3fA6BMum1UoBZ4jzpu4ecCDVUyLRbyafafkDnpCz
+         xoQGlVO23UCoD8zXizKJCdoE8R46PIUQ1SzMdIZS3boBMFlqeT2s5Hhi8su+D5ZzvVqE
+         9JXmWyslTF/k6dsv7MOVCq0/CWqEz2uTBRg6dYxUShDqPwMT9CidgVfhjTQwGVI5cakw
+         /rW3K+5je6qs0SVFvk4Ir+nEJkG+dhS8CTU1f1USmg7HTMa9g1AGy2cJ1cHWHpR1V6O7
+         qvrgVdligStc/97zyaN9HJdKeeYh/znad+rCfSdPMkf5LBRL3TIlkO9D/3yUecoJG5gt
+         5P+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWfIoKtBuhXCH7Cx3L2Pc6lL5nAUOtMimKkJtrKekLLgvW2VlUDkbROQD9FCgT4PQX8H183jB0nl8kILMQ=@vger.kernel.org, AJvYcCWtrhY8TPhZ4/NQ5qIbWVRU5w8G63ASoXeHSgpwXMTMVFSKONuOVq0G5ZxPHLk+E5aff3Jkdk4/Dq7Ci04Zwz4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbT9LsNbIBGJQD4xUcJj35jkFC6pDZusaq1foL7jLrvqTTs3EZ
+	MdaKQLa7VyFIpAlGdsI6DRg45Xp0AkBspfGUmXLNAR8kF/s+Muxyfa/lqV29xfjQvFH08NSqUbH
+	/fRhAvkfU1vni7hmUNC1Mi+Oe988=
+X-Gm-Gg: ASbGncsnNVkVjKP5VFqZzA/6GM2AB0EdPEqMochkrTQDInScVfvlVEQsshuz6/7c6HX
+	wRTdGHc6pvQybKpGVcs7YSyfQXXnimgPPFB80khG3PAD0xXYyFqJj/SOZQcDoGj8oxG1R85z91n
+	CWbOYrBZ8W3tSkTE5fxcfRmlo7dqKSCMDdkF3Lk7ht1g==
+X-Google-Smtp-Source: AGHT+IEoOP9OJacFp4ypS6GUG779N/1XqdaJI4YYpqIYC5vpdqMDP+fGMWlF4r2D8VUDYn6eHoqMl8exjta7+xc7RV0=
+X-Received: by 2002:a05:651c:2203:b0:30c:3099:13d0 with SMTP id
+ 38308e7fff4ca-30de027899dmr64849571fa.21.1743602340379; Wed, 02 Apr 2025
+ 06:59:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] docs: rust: quick-start: update Ubuntu instructions
+References: <20250401221205.52381-1-ojeda@kernel.org> <D8VPGBN60E61.1Z48FQW6TL3A@proton.me>
+ <CANiq72mdvnHvWbVNQbiXSRxd1xrF+A=v0RdJO74xeY3HyhRmcg@mail.gmail.com>
+In-Reply-To: <CANiq72mdvnHvWbVNQbiXSRxd1xrF+A=v0RdJO74xeY3HyhRmcg@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 2 Apr 2025 09:58:22 -0400
+X-Gm-Features: AQ5f1Jq2gyAHyF-tCYUwI-tokOiFWHXkHJV1fpYwtQRaEhz50SkLmO1wNlDMOqA
+Message-ID: <CAJ-ks9nAAcoJoFF+qNPbhsM32kOh9u+LGYUwFN_n9qqudB6YhA@mail.gmail.com>
+Subject: Re: [PATCH] rust: clean Rust 1.86.0 new `clippy::needless_continue` cases
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-References: <20250402104759.1764282-1-igor.korotin.ref@yahoo.com>
- <20250402104759.1764282-1-igor.korotin@yahoo.com>
- <CANiq72mysmMph1zGAxPKDY_FixbRRa0kS3pSqj4Qhq6Yjqq2AA@mail.gmail.com>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin@yahoo.com>
-In-Reply-To: <CANiq72mysmMph1zGAxPKDY_FixbRRa0kS3pSqj4Qhq6Yjqq2AA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.23590 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Apr 2, 2025 at 7:15=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Wed, Apr 2, 2025 at 1:53=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+> >
+> > I'm not too sure about this change, if the loop is longer than one
+> > screen, it makes a lot of sense to have a `continue` instead of `()`,
+> > since one might not see that there is nothing after the `match`.
+> >
+> > I also think that an explicit `continue` is nicer from a expressability
+> > standpoint. So I think we should keep them.
+>
+> Yeah, I feel similarly. It is sad because the lint did find other
+> cases in the past that were useful.
+>
+> If nobody else cares about keeping this one enabled, then I will send
+> the alternative patch. Hopefully we can re-enable it at some point in
+> the future.
 
-
-On 4/2/25 12:26, Miguel Ojeda wrote:
-> Also, weren't we going to mention `RUSTDOC`, `RUSTFMT` and `CLIPPY_DRIVER`?
-
-While re-writing my changes I found out that while packages rustc, 
-rustdoc and
-rustfmt of version 1.80 in 22.04 and 24.04 at least create symbolic 
-links to
-their tools in /usr/bin/, rust-1.80-clippy does not do it. So the 
-clippy-driver
-is only accessible by its full path /usr/lib/rust-1.80/bin/clippy-driver.
-I'm sure this quick-start.rst should be updated, because from my 
-experience I know that it is painful for newcomer to configure Rust for 
-kernel properly in Ubuntu 22.04/24.04. And to be honest, I see 
-`PATH=/usr/lib/rust-1.80/bin:$PATH` the easiest solution. Rust packages 
-in 22.04/24.04 are screwed. I checked 24.10/25.04 and these versions do 
-not have such problems at all, it's just enough to use `apt rustc 
-rustdoc rustfmt bindgen rust-clippy` to install rust 1.84 and bindgen 
-0.71 and set `RUST_LIB_SRC` variable.
-
-Best Regards
-Igor
-
+Rather than disabling globally, why not `#[expect]` these instances
+with a reason?
