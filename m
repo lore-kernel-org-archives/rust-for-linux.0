@@ -1,61 +1,61 @@
-Received: from sonic313-56.consmr.mail.ne1.yahoo.com (sonic313-56.consmr.mail.ne1.yahoo.com [66.163.185.31])
+Received: from sonic302-21.consmr.mail.ne1.yahoo.com (sonic302-21.consmr.mail.ne1.yahoo.com [66.163.186.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113DC235BFB
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 11:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB88F1F0E2C
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 13:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743595171; cv=none; b=jd0arseTvIIdho3ysXbYU39oFDMbx1fIFDm+dYCSnlAvLzv33luj0ng54Y8+a+cqYVcfR1BxXahfXjhGE857otII1L1jkDxRgEsT6qH1UfE1UDtxnTHj6DQIv7bNagjd0WquvY2/SoCbphPmDEAp43NgyH0F98Ec0NhsbpuadDU=
+	t=1743601971; cv=none; b=i7jGffYBUOcUhw8zMpvMxURqsv+uUlssg08tIi9eAQnopNHPnuxcdqfPYk/GO+3WS+AJrtW+af2rDJAe8te/7e3TQYJ11FseKwFaEd9WY+mEy9QW9TQH4qbi7yPmU9gJDdSjNMu2X3xGj/G6S/+TCXIhvgm0hZlJZH/EpQ2nPCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743595171; c=relaxed/simple;
-	bh=K9mgS3gB83UNYPiJrFTJbiz5/atmBVU2yJ0hy/JCmjE=;
+	s=arc-20240116; t=1743601971; c=relaxed/simple;
+	bh=lipHkSOi3h356FBXqs7ScOA6Ih4jLc9BhCEACpR7Yw8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CG14h9uEzJvOAYMUiobXVbtBhSrWVy+kUa9SpRt41j/gAX0IGnRC7e6qr0cyGe7RQjiOGpTgU8iKwr9Z8lBpd1RoYimjDzJ2RXVwtrYclQvO0hk8JWpoq0mNZorvFZ0+HYFbq3MXteuVHTGr8B4p6MOmp+r4IeyhPHJ3K1y7uHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=ODmC5kKA; arc=none smtp.client-ip=66.163.185.31
+	 In-Reply-To:Content-Type; b=aj67RwlRcvKmzLt8/jJwlQ0eW3QZDUqJO/Hy3vrM+F5qfXwA1p1zjzAld7+vP0wjrVozTZECZ0zHr7JSaQAKIXWAZlmwnNMft7ec1JJrJ4S1XoydVcAODIDe9p9NJg2M/+zKgWoDVR5bU/yTD6UG6o50d6blvUc9tdJI2o7e91U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=rBZnBBW+; arc=none smtp.client-ip=66.163.186.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="ODmC5kKA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743595163; bh=6IzAKpf/lnjFDO7jeweEIN/2TWpXazBiCV70Zfhg8BE=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=ODmC5kKAVnB1KW2SnscgZbobg3b5rzIGDKs3t5m41UdggNFz/zOl38Teb9zEP2CnKSBxmv+8uMOwoRXuBEJPoBqjwTm/q953Dpw4LPmAgF6P96k+s74/ybtdrVI/4xH0nU2QGDRbZkCpR0rQ3r2fJvq8c+/NAr79pPw4c5mGPG5SZ41Mu3ipEEQ729B0QAHRPmj0PFHBxrRMlq8+CGs2+hfyP2c47aoBm8dUTliTgWo9nyiLHE1T/167WaFTsbJmvSKPJVBkCkJOS26bHVH3KrJHnRBWvdbd1a/+8daylOendEHaAhIwobxqV56tr49FmIgGaZbt3NAaS3gMvuuqUQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743595163; bh=E9Pq4s7EmjLiN4m66lfBTZ1IU5gWwScm/YcW2oG8dIZ=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=rhG2+h+c8XnIdg6deKg8WH24Owg3SD6P7UKFtO/K/Wp7yfoUt4HCpQqi5+VwvyjFUrvfWo6iDkPrcvHjSraKsCiszRnXrQBeTVJy/KzNUggQLwk09CmuVTm575GwtFS7YwvxBOyFaZzKAijYTiZZL8Ctc1JS0aQFdh7ztw7mAh71v8V3nfgobiJ6+iAIrPQDT9Jk9AMk08lH7q5fEbQrs7ZvksFHERbRCMVpY3hIrHzoRKvIxdpKpsFPBOaZonPewB4rYqTsAWIDe3xy/Er5/IDdzJzKmX7CbxE0k8imQoCVVcdJC+awWDGemSOadlDopptgp+WzrZ9NOq7LL0q+Mw==
-X-YMail-OSG: aCExLDUVM1nR0khNM8NmyNboVtWDlG1O3.5pwXI._R7a3xbYSJPgfquKR_3WvLY
- TbDR2tuRQTkvpmiRlZrlTXeuqYFUzmdHJdCIiwj.QFgnDqik5zuUp9UVyTfih_xNby.vf9fseoBC
- DIjDMFROfLD1JBiQwZpVpBlB6z0jC.HAq9TdjNo_u29BUwhts_VW2gFUzT8Em48zYQ2yWHpr3NTU
- 28mW_8_2N0Px6WsNxCBdQ.fesboM2qSEFHMhvsVtFrVTHubSQxneACBgMllb4Kwf4EokNac.1wtz
- oZ8aJfXpKlGoHLqG5iscO9_jPnVTuWPoqmwWeb6TJNOFxZP_UlkUBRnsZcOEwPWBIdo0YESCRxZu
- lQw3OYPMewf9DkeqBHS_zv5RG_kij84dmXxjXl6D33loyhxvvLKt2xS7qJH8diFM9sxGmwY670ku
- Gg9k3RgVbD7kWyzanCIh3E8efD5Oyepyvd8BBSGvVQDDaustX3yofwNZSTMQtiL6pPAYRYNHxXYH
- duKcRaEuuIhMHDB23sYsYfqUBEGhg9LLSYqelMkI.XfzvReYU9BBC7OE901tumicicYEWqBWQfxt
- oIeFhJdV8kbOSernp28YctHt1j5uJCJQvTP6ElDyPID8Rwv7NEog6YWAsp3.JrYFC4fcavpumadZ
- eZL1PfaIkzV_dWs7HcRjNOczWFYWgMcQbN75bdleejfmV9mp9YYReP.xIH8uI8d3qTqoFBi74zU3
- ae0LmNc7b7AbrLWBq7LfQYgZq2wQkUruMj2x3xqXiG7gvDw.Mps4Vjvv0ec7vGh7L_jWgh5hQH6a
- EtoyKOoaoinCUjgaFdEGG_tBeNO9zsZqfhAK54qPGQ61wGGDpgK8qnFX6BKwVufmxIlrBontHnRd
- oz.HX75xr83A9kDdnD1f0GsWZletEp7kLyKYoudXLECTcyB_RQNPGCSDEXyMdZdsPWQqAwPabQOV
- WOUQlSeF9HRW5VMalNS8rE1gr1AHxnaikNNPkURP_ZuOO2ODgcUV9GnBVXky2cjR86Zi.Q2nA_N7
- ex2tnqB4QxNb4WfOOo0Y_IP.nrZqpdrUNe1FLURb9K3nwzalqu9G_FE8k04E02AymYvKt7rd1Qgg
- 7MoxyWiTELLEMdOMhoGEvbojOO9wEUxLdJrey5noPfP1QHfg5psENQoFT7AokG1fP2fR6rw.Ruoa
- nYrxbGyMpIEDfBx3zuPGU4PS_GIl6BpbqyIcgQHAqrq0EKc5h9msuPrHwCAuFRcQL3KzqzoQ8y6z
- 2FhFssWY358VdBdwiuXuRgQWLs390ty25XfY72NQCzgarq0cmRQziEg9QGCqBBINAMkD0FdM3un7
- wyNPuhIX27epTM7zMy7TDXqBl96WNTyDhdF.epstfmmHH0_jlesR06mP0ZWSJy5mWF.TKgm8WR5e
- 05d5pXQOrRhMDG27yR.omU340Z8cjtSJhSecQi.hZWGqGO8KHzG_0mTKezV.4LV0rIc_5.YHFLRY
- y6hIoiMDrOOVcwDG5R2CtRfhN6v.g7t81DI5GzgSE8HGka2xg_DIUcz7YvleADuCjCcipY8hcQEj
- J2P.JwGYyc_B6vEm.gZJHzYJHKcFoJ9lqQ6S59KUgEbL5t8sTdQJlpNqVg_SO7Fiq7cymKjR2iX0
- 7NYevenAyB6WZLyxEQ47nMi5gTumgd2E8THRwWXtjCzXazqigy.CeArnMuxzqURGsPkR2F.9ER0G
- XS0HUZP8r3ZLXtrVEL7Q4Yu4G3oI8FOc65h6rl5GVrZoN3qrj4FHNrTtJedXguXE6lmoEKMJHJXL
- MNgBadhfPTAkzZHLOJ.BDlRdU0kyAKVHswoeEh8hHxeL6R9J8WUGqJx4ifCuykWH3lgHQN0j.476
- BnMwkBIt6jVCbmf4MyI011P07SuP888RhR_w7BUglShA0lbercyPha.AAppfEcbONZGkQ6AgLiN4
- rCXN2aU4LBUP.Kq0tkFysGTrznnr1HVGQ3vZ8qFgelDOzGBioG55NxDAHukEV3cRUk3w74.HaIho
- yjCjshlIZzcvJEzgySdee7.v_7dPAsHAHfnqNMkxaOiKcjgmAPORHdThhPuBrcSLc_zEp1bVNj9Z
- Hq_J2haRO6k6wmTz34y7_roFvfy5Br1jZpZS3OUilibHVmsYXXd7hAT6u0rH.3hZlTXjGVXBzRlH
- bmuYGULKibfy.i0ZXnx4jxef5ETxhe9WFjNXD9tEQqOKgb8ziRRNmiMbkPdhMT6ILLMvOfFnfp1s
- tPG862rV.BUS7.Cy4THmYvibI5ZKOH.bcgq8QKQLJ7ySXGK8Jbw--
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="rBZnBBW+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743601963; bh=5qCXny3N92aeQsJHD43bwMFhPLx8y5+HLUHDF7Zp/cc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=rBZnBBW++qibZEAbGsAiU92/j7BvWZNCaeAkXquoGyIhi7MynTO+1C6GQdwxEFzpSoQl9E6Z+q9+GxDKoJqrl1tU8J+EX5hgq0y6kfeMCoTe+4M3Q+iKRtzm0lPVhgazQEg7k55i2uaDrw2oy0XNSjy5A5sSjUgOfjHoFqSfZnJEwPytPAO5fdU0NunNlrs9r2AnFi1c4O+1Ti0a27YfdaAPBBoL+vgtlsKFu5w0Sr8mJ74HxSdYm5s+ETBDUHRkvnS1rpsNpkv6et+ElMppDwx3n/j7TdxLfi4L6i8GkrQy/pZY2QxooV2U3KQhfKUbToMUXUyu7a/6LbstaXI6Jg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743601963; bh=LL3G/zmuIUgsiorgTQ4LiBld5fWfRSkNLCuaGYLChB4=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=mS9RcdvVsfRKcaiXl61dlAq9QLXLat/XdDZRsZaPiyhSTazqw84V0KpXOGASgSUxU5jrzcIEOXr47V1aF1qaNqJDWM4C/3OI1IPkNhCb+BItheZ98Z00sKco90bX/cSoX7AVDmjzs8qTHnl5qIwbnCFxU8cYW77mwgveGam05oK3qbwft96/bOoMJREnJKHrVzlJWg5ias+ho2sp86wkPkuq6dgvkYPr11ynupFYIaMuxMn0tFeSz5gj9UtAptd+ZJ8Puw2fOQlZF/DnbVFQ69u4pCIDnJYv3kS/vmMAwXsEdfNdNO3/aClK30AtCcFDKHw7p2yxCyJcXw2LoC4vcw==
+X-YMail-OSG: fDXnA.kVM1l.C9zCZCFIe5MtofnaDyYA1z.zDJQbNoD.XHY009WkzdlY9o2evy.
+ NynHd4lJ6X41e_jVkri1UclLq.Gzpdqfkt1UI39ThDCgfKZTWnmfgeYzI48MtYn7iiMwT1qcugqs
+ zrCXIefCUGvJHIFhQM4Leccc5NQikxoQgYHSuIUzJd1SFcAQshFk8wlr1Lw_jBc9ZMzezbIPJJCd
+ VyowSSuYHYOCPuJ1exmaQll3B_NK5Llelkwl_q78fMZX_8UlhEIYSeC3lbgboE1EEw2Oe8ba1XAt
+ LjuyG1sajx_RcD4qlIbZAG.li6Z_b9DGehYDPKNVp3kghS.026JbmskWU89jALoFA57IORFNUPRJ
+ uLnBmvp0K_xSReSI94j2UCmZbeLUlVi9pxd_pbGkZHtLTpAViAFJ1YI92P7DXcnHDhAReDSQYrqy
+ ddfEaxjF40FllHDv6nrUVjsVXx5Ow7oswxpzdbn_yI7pxNUScHxpbkqqN09KdeCFm1SmAUWI3mGq
+ 1LJr.zhTEcEdQiwHIOqfbQaU4r24qbpXqBhoqXpFd6U.BhbBn1X6WMsFTvmzJLAWkL0C1WJMSvb4
+ w3qYavpFg5mQrraIkxHyGJJIFaTxT0MvdjXUNqqevvC.yphGgn1fWAl66oXmCqnRgumbtlbLwG8w
+ H7akLN7b98wWZt9CXYyZode.D0hIS6jy8MqyuCvZI49BCsM4SuO8Uv05bFePsXcfK0eY_.NuYKGH
+ Oo7uDZYq.IjahMtiDxaZDQXCdeKbqPxRstJEUHxxTpVZljPn6Pt80ITg92LIEb9IjeZQS.zKwGfW
+ aRYp4yvcEDRSWvH9Yl6nBHSCJ6FZIju4WqfDcL7WFtSl6co5_nXgRR_dOQnbiwMxM8MXcaom3MmJ
+ S9BP1Td7jQj.mGjYo05QDLNXI_01vq1jthsIldN8oErS_fF6Sce6eG1DRChtySkfyzNZZ9yIzMW0
+ SNPcEbvKXipujW8JUtxIm5ITJXpjbRS5amLxm1NM5ePaF62k1cVl0fdw15stTOe6L7uovk.f4EN6
+ ewddKFiRM00Uzrb9XNt6jG61cTQBAO5LegnZM1VueXFXTbu6IdJ_xj9FxOmMEz3HZbmuzMNADrT2
+ 9R7D8Vbk3fuszsWJiM0qVz9IcTMq3xErT0qazWoQgFMRoUZJFTidbzLIPeQ2nmZ4I5iOnxCTswdS
+ 7gtptp_.I3CJ0u.2VEXbTP72Ggz0LJfh0eSTwE.CT0pXnZa5gYk66SvyBXqphkt2xiPnRKTvYDJz
+ bDA.wY614odmcJ_.fmss1J5mc_if8L3acWiD3KAAigA77T3PTTUJio5BT9b.U2nvBvFYvmCZkH0i
+ _bRJTg2pBlpV5cmiEv5dcYiTqixuYM6bTBJQqE2pBTemvZxnBW7_zJki8SvynB9XXUyo.GGUExs_
+ g71b.7ScPYI5iBrg.COn9MrQ.F7rSUqAUqiKl.wZqCc4xVESAY_29Yex_Ix_r0_NTCoKW2jTDnIs
+ lOSPiZqMxUFi0XF6IbZMw5a8DFBEFPuBf_5htyz7C3TiPwu.uJXeUNZYh9yrayRJESk_EsEbD8GD
+ 98x2uGCVy.auBoFe31Kx.BsBdhdbeYtdnSGAYhZ9qTQDSjf73lhBfW80sawC4cxYUNwYR3Y.Rahb
+ bfHQ1zxERkQyB5Nw9uWWZyKVxlRoSFkEWf.UnLsWGA_GqWXa3lTj01bKcqqnTW4DchXwtuCNdyep
+ m37ODHD5ev.rfVU1TaFAbN1bK7zOiHbk36cpoiYYPVta_Sg3lqhwm.a5CAFdYei7aSc6_VGsjtGQ
+ kGbvT1kY_9jL.ytuw1j.R7wcb.Sj8C_iKbKPBDOzoYnCisSBzOJjma8vwqdYBF3NCxZ0cO_sROAw
+ PR8wbqPSyOzKizn3h1K24LYPhhWsnobxF6UfxnBAugCIWn_rqctf2n_wn_W.bFlI5NS1UIsrdXFk
+ 1Fy_TLGZ4fp.3qgQvOOUGNOEB65Fn6SMM9OJckhp2UhyLg4lpjk5nhrIT0U7mFItpMc39POoGKkO
+ 2RbWKyaWfxx1gXOOAYGg09dMtkXVoMGtZHBhjE9srtkyHVaG_7p0eTXZe7kPCBsibtvvwiVhWAG.
+ V2qaQ8UAUWuoaobemBUT.bokAJCy.QHqvnKduCRwxffoMxGse7XWB8xztyDNkdqgtL1H3VaUFJLY
+ jCWxmkuIR2LgpJluwz3h2NIM0wEnUJStfygSQxkv2zNorT5xxFJTm0sECUwXvfhzpKV6gXDoUYbf
+ SSq3I8yu1xR23d5jWIB_bXZ2uR33jVjfRP1CkRkg3cjr98EQ-
 X-Sonic-MF: <igor.korotin@yahoo.com>
-X-Sonic-ID: 6fa753fb-2bde-48ad-be1b-01ae2c5bac15
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Wed, 2 Apr 2025 11:59:23 +0000
-Received: by hermes--production-ir2-54ff696c44-6c6z5 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c1f234074c8b9a8996b30914a55443ef;
-          Wed, 02 Apr 2025 11:49:09 +0000 (UTC)
-Message-ID: <cdcf14f6-76e2-4895-b85e-cef0439a30cc@yahoo.com>
-Date: Wed, 2 Apr 2025 12:49:08 +0100
+X-Sonic-ID: 9b42be02-0921-4497-9953-cd2dd3f3de2d
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Wed, 2 Apr 2025 13:52:43 +0000
+Received: by hermes--production-ir2-54ff696c44-2j284 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c5026a28b2bfc6e9bc27b4bbac0751bb;
+          Wed, 02 Apr 2025 13:52:41 +0000 (UTC)
+Message-ID: <29f73af3-e097-4c7d-889c-394ae1d2d961@yahoo.com>
+Date: Wed, 2 Apr 2025 14:52:40 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -78,65 +78,30 @@ Content-Language: en-US
 From: Igor Korotin <igor.korotin@yahoo.com>
 In-Reply-To: <CANiq72mysmMph1zGAxPKDY_FixbRRa0kS3pSqj4Qhq6Yjqq2AA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.23590 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
 
 
 On 4/2/25 12:26, Miguel Ojeda wrote:
-> On Wed, Apr 2, 2025 at 12:48 PM Igor Korotin <igor.korotin@yahoo.com> wrote:
->>
->> +``PATH`` needs to be set when installing rust 1.80 with apt, e.g.::
->> +
->> +       PATH=/usr/lib/rust-1.80/bin:$PATH
-> 
-> Why does it need to be set? i.e. why not `RUSTC=...` for that one too?
-> 
-> In other words, why are we mixing the approaches? We can explain both,
-> but mixing them seems confusing.
-
-I checked what happens with other tools(For example rustdoc) if I define 
-only
-`RUSTC=rustc-1.80`. Unsurprisingly `rustdoc` remains 1.75, which is 
-installed from `rustc` package, which in its turn is dependency for the 
-package `bindgen-0.65`. Though I see that this mix works fine, it seems 
-a little bit weird when you have one tool of version 1.80 another 1.75, 
-etc. Without a doubt one can define each tool explicitly using `RUSTC`, 
-`RUSTDOC`, etc. On the other hand defining `PATH` to 
-`/usr/lib/rust-1.80/bin/` automatically makes build to use rust-1.80 
-tools.
-
->> +Deb package bindgen-0.65 does not set itself as a default, thus it should be set
->> +explicitly, e.g.::
->> +
->> +       BINDGEN=bindgen-0.65
-> 
-> I don't think this example adds much, since we already show it below.
-
-This was intention to explain each additional environment part of the 
-overall command.
-
->> +       make LLVM=1 PATH=/usr/lib/rust-1.80/bin:$PATH \
->> +               RUST_LIB_SRC=/usr/src/rustc-$(rustc-1.80 --version | cut -d' ' -f2)/library \
-> 
-> Note that `RUST_LIB_SRC` (and `PATH`) are not needed there, i.e. those
-> two can be set as environment variables.
-> 
-> Perhaps we could just add something like this to the existing paragraph:
-> 
->      ``RUST_LIB_SRC`` needs to be set (possibly as an environment variable) ...
-
-By adding these as part of the overall build command, I was going by 
-your earlier statement that you prefer setups that minimize global changes.
-
-> 
 > Also, weren't we going to mention `RUSTDOC`, `RUSTFMT` and `CLIPPY_DRIVER`?
 
-This one was supposed to be covered by `PATH=/usr/lib/rust-1.80/bin:$PATH`
-
-Thanks for the review
+While re-writing my changes I found out that while packages rustc, 
+rustdoc and
+rustfmt of version 1.80 in 22.04 and 24.04 at least create symbolic 
+links to
+their tools in /usr/bin/, rust-1.80-clippy does not do it. So the 
+clippy-driver
+is only accessible by its full path /usr/lib/rust-1.80/bin/clippy-driver.
+I'm sure this quick-start.rst should be updated, because from my 
+experience I know that it is painful for newcomer to configure Rust for 
+kernel properly in Ubuntu 22.04/24.04. And to be honest, I see 
+`PATH=/usr/lib/rust-1.80/bin:$PATH` the easiest solution. Rust packages 
+in 22.04/24.04 are screwed. I checked 24.10/25.04 and these versions do 
+not have such problems at all, it's just enough to use `apt rustc 
+rustdoc rustfmt bindgen rust-clippy` to install rust 1.84 and bindgen 
+0.71 and set `RUST_LIB_SRC` variable.
 
 Best Regards
 Igor
-
 
