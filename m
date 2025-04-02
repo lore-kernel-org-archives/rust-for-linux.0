@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB8B1F541E
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 21:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2C31F428C
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 21:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743630098; cv=none; b=sZgs22nhEBu0hNza8XiPLby+h7zqkHFsgKlEWmJXv6PxvrJThNnJFVWhj4I4UATSwUZDI2qPJWKtPxn7gYPBuIWMW+jHnaYB2XqocF4vLp/xcven8M3F4WUIKPRSYq8zu/8AqnaE5rp7mvxcJxvhUteNX80cnfQezEmbRXHqAJQ=
+	t=1743630100; cv=none; b=OUSXe5PiKpq2YCN+RN+159s2WrrjklB6ARgGupH5kouyn9meezDE0kBhzi9r6H7fCF0SHo2APUdK8HEPXCKf0ENLfGQTFqgIQaPzXxOGbWD/5P7XIkTUrLUfa9z3UOStvjE/ENN1i6iP4KiD4N9Epv/lay8k22jCPZECCbRCrn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743630098; c=relaxed/simple;
-	bh=Mt8jE/SZhTju8949LLhJnwf1Rcrul0/sLIfum+k63Lg=;
+	s=arc-20240116; t=1743630100; c=relaxed/simple;
+	bh=vShHOWeitIbxplb9p87vnjIjjfuH54NQw+mD4RqzBcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/GndbDGl0Q6iVjKGfUVxxYqbeJ4/zV1CviCdeyzjcG5yAREZ3Z4AHfdZQIcEvgCdknUjbfupxARtLUVUdyTe/NxvnGym8BtaE8EKSM/g3DQEnifIaO6Bfy8fTl+ltQBNMMpH86v1RIzbE1dePcLBfv+stVQ+IrnqaXjHmvaE7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xyxxd5bN; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=h5RTT7I7sC+PYaJ6BJYegIrGSRJwgFXGdIc7UYtWEZFa1hRD6mtfhZqSINacEqwxcaMWnbfHm4tpzkFhz14dYw7KWDSDWLHzoTUUXP2VllXolTDIiD69BxPdbh4x0UV0ArKtzDsKbJAKNdF+UV+sjCazXNMImgEuJNrR1TqbgT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YEGzVDuK; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xyxxd5bN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YEGzVDuK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1743630096;
+	s=mimecast20190719; t=1743630097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MC4jjMAzL+F+yN9B7xbTp8xSqrSEsEpBfudmMEov+PI=;
-	b=Xyxxd5bNxP+RJLtF4TsFdjzckRx8Gb40Y62908puJfOO9GABJoB+ZFHlhV3nX7tEo2D5FS
-	UQY/yPSgXc9qlvoHsJlagOvYyaWOIKdVvnGIP7B8mnjL3k4NlABUZGOMGh6tt+/Q0NVhAL
-	os6PbAFf60MIuiE6MZ4nfvW4UTCXRzU=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=n5nfhRkfaRcNmMXeHmWOJewhTgQsNNEyzLVy0F5Lha0=;
+	b=YEGzVDuKNBLR78Mio7W4dTfZ/ijzkWkvXfiE6+6ZDl4cZAL9SHEDChuVelNdCrYqFJxVAR
+	SpCd37591aRDE1FhGdVj7Z1spFj8DwM3cjaR7YVWx/Kx3hUFhy0D7gYrfrjW/vvow43kk3
+	7wZEMhdZbuBvSdmeta4JjWcD0mcvctQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-675-vY0zSiOWOe6kn0CqcftJkQ-1; Wed,
- 02 Apr 2025 17:41:31 -0400
-X-MC-Unique: vY0zSiOWOe6kn0CqcftJkQ-1
-X-Mimecast-MFC-AGG-ID: vY0zSiOWOe6kn0CqcftJkQ_1743630089
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687--R6tZeW9NKOMopszrX3KMw-1; Wed,
+ 02 Apr 2025 17:41:34 -0400
+X-MC-Unique: -R6tZeW9NKOMopszrX3KMw-1
+X-Mimecast-MFC-AGG-ID: -R6tZeW9NKOMopszrX3KMw_1743630092
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DC2DA1955DC5;
-	Wed,  2 Apr 2025 21:41:28 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2B2AC1800263;
+	Wed,  2 Apr 2025 21:41:32 +0000 (UTC)
 Received: from chopper.lyude.net (unknown [10.22.80.95])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9DC983000704;
-	Wed,  2 Apr 2025 21:41:25 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 35CCA3000704;
+	Wed,  2 Apr 2025 21:41:29 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	Andreas Hindborg <a.hindborg@kernel.org>,
@@ -57,9 +57,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH 3/6] rust: hrtimer: Add HrTimerClockBase
-Date: Wed,  2 Apr 2025 17:40:31 -0400
-Message-ID: <20250402214109.653341-4-lyude@redhat.com>
+Subject: [PATCH 4/6] rust: hrtimer: Add HrTimerClockBase::time()
+Date: Wed,  2 Apr 2025 17:40:32 -0400
+Message-ID: <20250402214109.653341-5-lyude@redhat.com>
 In-Reply-To: <20250402214109.653341-1-lyude@redhat.com>
 References: <20250402214109.653341-1-lyude@redhat.com>
 Precedence: bulk
@@ -71,66 +71,36 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-This adds a simple wrapper for the hrtimer_clock_base struct, which can be
-obtained from a HrTimerCallbackContext. We'll use this in the next commit to
-add a function to acquire the current time for the base clock driving a
-hrtimer.
+This adds a wrapper for the get_time() callback contained within a
+hrtimer_clock_base struct. We'll use this in the next commit in order to
+implement HrTimerCallbackContext::forward_now().
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/time/hrtimer.rs | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ rust/kernel/time/hrtimer.rs | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index c92b10524f892..f633550882247 100644
+index f633550882247..521ff1a8a5aa8 100644
 --- a/rust/kernel/time/hrtimer.rs
 +++ b/rust/kernel/time/hrtimer.rs
-@@ -165,6 +165,29 @@ pub(crate) unsafe fn raw_cancel(this: *const Self) -> bool {
+@@ -186,6 +186,16 @@ unsafe fn from_raw<'a>(ptr: *mut bindings::hrtimer_clock_base) -> &'a Self {
+         // - Our data layout is equivalent to said struct via our type invariants.
+         unsafe { &*ptr.cast() }
      }
++
++    /// Retrieve the current time from this [`HrTimerClockBase`].
++    fn time(&self) -> Ktime {
++        // SAFETY: This callback is initialized to a valid NonNull function for as long as this type
++        // is exposed to users.
++        let get_time_fn = unsafe { (*self.0.get()).get_time.unwrap_unchecked() };
++
++        // SAFETY: This FFI function has no special requirements
++        Ktime::from_raw(unsafe { get_time_fn() })
++    }
  }
  
-+/// The timer base for a specific clock.
-+///
-+/// # Invariants
-+///
-+/// The layout of this type is equivalent to that of `struct hrtimer_clock_base`.
-+#[repr(transparent)]
-+pub struct HrTimerClockBase(Opaque<bindings::hrtimer_clock_base>);
-+
-+impl HrTimerClockBase {
-+    /// Retrieve a reference to a [`HrTimerClockBase`] from `ptr`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` must point to a live `struct hrtimer_clock_base`.
-+    unsafe fn from_raw<'a>(ptr: *mut bindings::hrtimer_clock_base) -> &'a Self {
-+        // SAFETY:
-+        // - `ptr` is guaranteed to point to a live `struct hrtimer_clock_base` by our safety
-+        //   contract.
-+        // - Our data layout is equivalent to said struct via our type invariants.
-+        unsafe { &*ptr.cast() }
-+    }
-+}
-+
  /// Implemented by pointer types that point to structs that contain a [`HrTimer`].
- ///
- /// `Self` must be [`Sync`] because it is passed to timer callbacks in another
-@@ -506,6 +529,15 @@ pub(crate) fn raw_get_timer(&self) -> *mut bindings::hrtimer {
-         unsafe { HrTimer::raw_get(self.0.as_ptr()) }
-     }
- 
-+    /// Get the [`HrTimerClockBase`] for the [`HrTimer`] associated with this [`HrTimerCallbackContext`].
-+    pub fn clock_base(&self) -> &HrTimerClockBase {
-+        // SAFETY:
-+        // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`.
-+        // - `base` is initialized and points to a valid `hrtimer_clock_base` for as long as
-+        //   `HrTimer<T>` is exposed to users.
-+        unsafe { HrTimerClockBase::from_raw((*self.raw_get_timer()).base) }
-+    }
-+
-     /// Forward the timer expiry so it will expire in the future.
-     ///
-     /// Note that this does not requeue the timer, it simply updates its expiry value. It returns
 -- 
 2.48.1
 
