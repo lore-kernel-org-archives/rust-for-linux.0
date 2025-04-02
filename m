@@ -1,176 +1,123 @@
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195E0195
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 00:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FAB13AA27
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 05:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743552373; cv=none; b=acchpX+a+ThGJQe6xvLyG1mrM8Ts4EHG8TnQmLUHLVZZpWcG/jKziuSLO8ik8i5Iw+QX4sbqWXMkqkG7g/6JcXZa0lQW7/k3fqLHp/1Tx3QUVjANbi6mXJFwH+C1yj3mzjbUm2kGo9WJFXB73p+xeSUJ/vX1oTJOqvcGRitGzPU=
+	t=1743572331; cv=none; b=fRtz5fJfAGb6QuCDK13MXqzqwqHeMkzEF8eZbXshz3/LlirdKXd0TogSRNnVkFh8zotrxNmxWRA6vymq8LHkw9vLcTlbh0lcswoKjdhJYLr2Nix3Hr6Q19fa/O373j7e85bZYV+sZAQPq6qKE+Ic1YAVVMi0zr6OLa+fa8eAGRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743552373; c=relaxed/simple;
-	bh=SKvTKbz6ni8FnmJ1GP4IVeexdsrRnOKxcqNOXAHpVHk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NiayGDcly68Bn7/wJ4zLAMPbARCQ7FV8z8xHyXqDRMkv+4tGEm9kFIvJ5E2UFkEnS/1+/BquOnJW+7ijJtEvlA/FKfu5bRpPQynGz2A9oORn9RQrOJiZYkZJ25ihiR0mt9uUNRvMty6nBCrYXb70tt/8LgrDfTSWSHszn2sAPs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TDpZp3n0; arc=none smtp.client-ip=79.135.106.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1743572331; c=relaxed/simple;
+	bh=f34QjZVnu8zDvSB/1vNzylZB1VDSVA+UeoekNqo5kcA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dnJukJa7D0cMGXUGAXKld9EapPb4T5xvNkPueRFbRREAxsIS8jMu9JAWyMAaAPG3WsBdj8RT+Ftd2hJnwwO3O9X5mJWdcn0sPJgh1B+FCXdMRcQOSbdvkNEusU2SC5Hn7PAW/cS1MAg73RahbtbPeltOQv/1MYllCQPq3DMqsKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PkB1nfrW; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TDpZp3n0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=36zyj7lnbbclrifsrasst7ba2i.protonmail; t=1743552360; x=1743811560;
-	bh=GG1TKNw1ad56XFapM4VnVdkZu9HjKmQ/qsMjqEKVOoA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=TDpZp3n0Ds4RNhIfHGagrDTveMMpe6uFvDjgRfJW4QFU2AFnVNvahozjVSxIgaVCj
-	 lZKY2rApK5LUIHTR8OJaZVDUIhMi3MC3DOLvT+fFmEkzDdLAGyQnuX004HiW7mJrmt
-	 CF9Rk8hYubo4zj9vMn7NwiiLGInLknCqMiUWsBT7ruznXUAudQ4YZ80aA6J64V8M8B
-	 EPbLuHUJt/pXPreRUg+zb4nBqbydtQfbertYomZltWa1YNHjAfXAama51ey5UZ6tjZ
-	 8BmTdHfeTEzWQyp72D1Wx+TVP+W2gmU9W7OVO4OhrGRcdngCh1Y1hWw9AmmfP0EAhr
-	 24A0eUfyPf8wg==
-Date: Wed, 02 Apr 2025 00:05:56 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg KH <gregkh@linuxfoundation.org>, bhelgaas@google.com, rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] rust: pci: impl TryFrom<&Device> for &pci::Device
-Message-ID: <D8VPQ5XL5NJZ.26OGZ3YML4QN3@proton.me>
-In-Reply-To: <Z-vvcPfgyaRdd0xQ@pollux>
-References: <20250321214826.140946-1-dakr@kernel.org> <Z96MrGQvpVrFqWYJ@pollux> <Z-CG01QzSJjp46ad@pollux> <D8ON7WC8WMFG.2S2JRK6G9TOSL@proton.me> <Z-GNDE68vwhk0gaV@cassiopeiae> <D8OOFRRSLHP4.1B2FHQRGH3LKW@proton.me> <Z-Ggu_YZBPM2Kf8J@cassiopeiae> <D8OPMRYE0SO5.2JQD6ZIYXHP68@proton.me> <Z-vvcPfgyaRdd0xQ@pollux>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: eaab470bc2e61cf080048f1271cbbfb5ec48b355
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PkB1nfrW"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-301c4850194so8876070a91.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Apr 2025 22:38:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1743572329; x=1744177129; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zez2xuviDEokAGqGnmj+S14YixJPAJCgKo/4A9f+9EY=;
+        b=PkB1nfrW4kuzzuxCJJi/QXy7F4ZZ859zPt32fZyoDRUmuPNI7FGlemPOAhqgp36iX2
+         ckY/lomf9loPnEsTqzmw73mzDratpwBNIIqspzKX1n2Xhn0zmZrypO2HNzJttfCRNR8l
+         NUmY/gl+aempSc2BKFoByUkJaOnpcPRS+MUF2+YZmDLGFQUne8Yvvr9/BEwSl7IsHdf3
+         HOfMphI94TJd15n877mJPP4XsBi9hd8gf6QFiIJtRhNY93qyYGVB0dg2r8tmFDSvEExB
+         BVvna/6FJdaPuV8cgqTcfNr14YuTSDfm+fmgrb264Jj5m1pg3Zx+kR5cK37WMdLfKSk9
+         2Vjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743572329; x=1744177129;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zez2xuviDEokAGqGnmj+S14YixJPAJCgKo/4A9f+9EY=;
+        b=fPJH65S6NksvYUqiaeHxfQCq/t9b6DpBL22vsll21ES6Gm5KLCaM3NqMCXaAp4wk3t
+         zj8pYkdkG70+7Kh+oGzJXJmjpbXZQsz0RA2wBWhtSaQ6FbWb35zrVcfW30dwgG6iEXbz
+         HZYjgj4axGTUCOCFnFufvqO2fl0pZFTm7OT/xeB0SZB1hACcCk0CkA/DU0HkPSq8nlj5
+         uqjSSmn3j9bmoBDYjdgZRCB+eaJ/ZlgaS2sXMhm9U+NHsWPTmEBDaFa2XsFyHZoTQuC8
+         thlibfcUIU/n0dfHzbiGKispuV7jK89QN/XgZxuImz80ZJwT91VJJSLFvRCX65uZi+mE
+         +IYA==
+X-Forwarded-Encrypted: i=1; AJvYcCW4Ve1xfGryuet5wNLd65+OlZwijlqo2xWznh0+pl+7Ty39bP5tYVXCHn33o1ws58W1Lo7v5HUuaLJ6onrMzg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyUtpSxcT0v2xQXQkkXoutAL8dr5Hizvm95Vt2TY/jQ0d49BT8
+	XWtEGLrW8s2XUrmS+CeWiGVg40AlJ9zmoeByf65c4K0DgiZmSk0SD3++z9OHwZg=
+X-Gm-Gg: ASbGncsXx4IJLUwCqzXLPG91rve1jkHtYbDo9SyWu3B34KMP0uQGE3bk6mlOj0PHjL7
+	zHfAcmrVQWb85znH3TRPUCWIYe8kCADm1x2kLm+lpU23rY1GWzuD9v1G56Ue12M8Gmldgo60Dbv
+	nHDPVxwFpFA3Gy0jSi2c9SkTgwMfcqGOJy5wNadEoXZZulEKAZN8Xcq9V24ikTyI3Nq4S2khurR
+	vXnB08jRFvPyhQtCBX1h4TJ+0PqNFyftysbrH/fGIl3JxT623FjP7bHEQlKjNESbLzzekYGN6su
+	NrfJToaKKeKrnzj2AT1r7YNFLomyOFA6+mRqOXhjCn5WlA==
+X-Google-Smtp-Source: AGHT+IGH1hzGwQPu9MUSODpNVNiblGulmScpiDxx4Hqd+I2N6vWJRXpxsrODcivVP3CvpfnRyXSS2w==
+X-Received: by 2002:a17:90b:574b:b0:2ee:9b09:7d3d with SMTP id 98e67ed59e1d1-305320af3e0mr20394191a91.19.1743572329064;
+        Tue, 01 Apr 2025 22:38:49 -0700 (PDT)
+Received: from localhost ([122.172.83.32])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3056f83baefsm634769a91.11.2025.04.01.22.38.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Apr 2025 22:38:48 -0700 (PDT)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Cc: linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>,
+	rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Burak Emir <bqe@google.com>
+Subject: [PATCH V4 0/2] Rust: Add cpumask abstractions
+Date: Wed,  2 Apr 2025 11:08:41 +0530
+Message-Id: <cover.1743572195.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue Apr 1, 2025 at 3:51 PM CEST, Danilo Krummrich wrote:
-> On Mon, Mar 24, 2025 at 06:32:53PM +0000, Benno Lossin wrote:
->> On Mon Mar 24, 2025 at 7:13 PM CET, Danilo Krummrich wrote:
->> > On Mon, Mar 24, 2025 at 05:36:45PM +0000, Benno Lossin wrote:
->> >> On Mon Mar 24, 2025 at 5:49 PM CET, Danilo Krummrich wrote:
->> >> > On Mon, Mar 24, 2025 at 04:39:25PM +0000, Benno Lossin wrote:
->> >> >> On Sun Mar 23, 2025 at 11:10 PM CET, Danilo Krummrich wrote:
->> >> >> > On Sat, Mar 22, 2025 at 11:10:57AM +0100, Danilo Krummrich wrote=
-:
->> >> >> >> On Fri, Mar 21, 2025 at 08:25:07PM -0700, Greg KH wrote:
->> >> >> >> > Along these lines, if you can convince me that this is someth=
-ing that we
->> >> >> >> > really should be doing, in that we should always be checking =
-every time
->> >> >> >> > someone would want to call to_pci_dev(), that the return valu=
-e is
->> >> >> >> > checked, then why don't we also do this in C if it's going to=
- be
->> >> >> >> > something to assure people it is going to be correct?  I don'=
-t want to
->> >> >> >> > see the rust and C sides get "out of sync" here for things th=
-at can be
->> >> >> >> > kept in sync, as that reduces the mental load of all of us as=
- we travers
->> >> >> >> > across the boundry for the next 20+ years.
->> >> >> >>=20
->> >> >> >> I think in this case it is good when the C and Rust side get a =
-bit
->> >> >> >> "out of sync":
->> >> >> >
->> >> >> > A bit more clarification on this:
->> >> >> >
->> >> >> > What I want to say with this is, since we can cover a lot of the=
- common cases
->> >> >> > through abstractions and the type system, we're left with the no=
-t so common
->> >> >> > ones, where the "upcasts" are not made in the context of common =
-and well
->> >> >> > established patterns, but, for instance, depend on the semantics=
- of the driver;
->> >> >> > those should not be unsafe IMHO.
->> >> >>=20
->> >> >> I don't think that we should use `TryFrom` for stuff that should o=
-nly be
->> >> >> used seldomly. A function that we can document properly is a much =
-better
->> >> >> fit, since we can point users to the "correct" API.
->> >> >
->> >> > Most of the cases where drivers would do this conversion should be =
-covered by
->> >> > the abstraction to already provide that actual bus specific device,=
- rather than
->> >> > a generic one or some priv pointer, etc.
->> >> >
->> >> > So, the point is that the APIs we design won't leave drivers with a=
- reason to
->> >> > make this conversion in the first place. For the cases where they h=
-ave to
->> >> > (which should be rare), it's the right thing to do. There is not an=
- alternative
->> >> > API to point to.
->> >>=20
->> >> Yes, but for such a case, I wouldn't want to use `TryFrom`, since tha=
-t
->> >> trait to me is a sign of a canonical way to convert a value.
->> >
->> > Well, it is the canonical way to convert, it's just that by the design=
- of other
->> > abstractions drivers should very rarely get in the situation of needin=
-g it in
->> > the first place.
->>=20
->> I'd still prefer it though, since one can spot a
->>=20
->>     let dev =3D CustomDevice::checked_from(dev)?
->>=20
->> much better in review than the `try_from` conversion. It also prevents
->> one from giving it to a generic interface expecting the `TryFrom` trait.
->
-> (I plan to rebase this on my series introducing the Bound device context =
-[1].)
->
-> I thought about this for a while and I still think TryFrom is fine here.
+Hello,
 
-What reasoning do you have?
+This series adds initial cpumask Rust abstractions and adds a new maintenance
+entry for the same.
 
-> At some point I want to replace this implementation with a macro, since t=
-he code
-> is pretty similar for bus specific devices. I think that's a bit cleaner =
-with
-> TryFrom compared to with a custom method, since we'd need the bus specifi=
-c
-> device to call the macro from the generic impl, i.e.
->
-> =09impl<Ctx: DeviceContext> Device<Ctx>
->
-> rather than a specific one, which we can't control. We can control it for
-> TryFrom though.
+V3->V4:
+- Create separate entry for cpumask in MAINTAINERS.
 
-We could have our own trait for that. Also it's not as controllable as
-you think: anyone can implement `TryFrom<&device::Device> for &MyType`.
+V2->V3:
+- Improved comments, SAFETY, Invariants, and INVARIANT blocks.
+- Add examples.
+- Inline few methods.
 
-> However, I also do not really object to your proposal, hence I'm willing =
-to make
-> the change.
->
-> Do you want to make a proposal for the corresponding doc comment switchin=
-g to a
-> custom method?
+V1->V2:
+- Add Yury's Reviewed-by tag in 2/2.
 
-I think have too little context what `device::Device` and `pci::Device`
-are. But I can give it a try:
+- Implemented two different structures, Cpumask (corresponds to struct
+  cpumask) and CpumaskBox (corresponds to cpumask_var_t). Thanks Alice for
+  helping out.
 
-    /// Tries to converts a generic [`Device`](device::Device) into a [`pci=
-::Device`].
-    ///
-    /// Normally, one wouldn't need to call this function, because APIs sho=
-uld directly expose the
-    /// concrete device type.
+--
+Viresh
 
-Then I think another sentence about a valid use-case of this function
-would make a lot of sense, but I don't know any.
+Viresh Kumar (2):
+  rust: Add initial cpumask abstractions
+  MAINTAINERS: Add entry for Rust bitmap API
 
----
-Cheers,
-Benno
+ MAINTAINERS            |   6 +
+ rust/kernel/cpumask.rs | 301 +++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs     |   1 +
+ 3 files changed, 308 insertions(+)
+ create mode 100644 rust/kernel/cpumask.rs
+
+-- 
+2.31.1.272.g89b43f80a514
 
