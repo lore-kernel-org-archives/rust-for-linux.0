@@ -1,58 +1,58 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA64438DE9
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 16:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B2C17E01B
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 16:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743610008; cv=none; b=XSwV19cSMoC5bUEfdeHPk0WXl2bnPbdOBujAlhAsljRPsKmes5VkYV1BcHW3IkKJ41M6Xcl5tGIGvq5JWzC/tx+sjszwA8l26Y+g8KZZVKocIfKfNn5dTcqEyZQmleleVLd7LB130YYDt+EF6LJpdjszcostX7L8lilvgU3rCko=
+	t=1743610016; cv=none; b=qTfxSfdWiJ5ip7DcNhfiAN6Lcc/M9g3D+VHEDMi7wkv6WQRg2fe7vZPFLynwZ/IutU33yKyLI0Y58KxMJ3xNlAc6FXTNxvLhwpzsrKzdM4v83tlJK1Hbf1gPwffMGReys1xfddm1sHDKu5ZWIECIunuOi54P/h9uNLg18Bfl3h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743610008; c=relaxed/simple;
-	bh=EcYAJ3sm0OipCZGt70NZYjrd0f6pwL/eJ1O6BJzQFHg=;
+	s=arc-20240116; t=1743610016; c=relaxed/simple;
+	bh=R7n2ZyuyxqDRW6C1D6RMZpLxcak+oIHfoDE9s5HZN9c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kB2UO6pgdhnwKqO/KnNLfixlKidew3lcVzmw2oBRQloaj2IyAaxHVYJAuymUQ5xA6hRcG2Guze1XxorhYvuFxFMLBJ4qzsRzvXWKhV9/xfEPvapt9as1A/miB65Eantlg3qGT2ntoAOI6Hf+WfzWv3Civ0rzhlr5ATxtrENNG1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aEH9W7J4; arc=none smtp.client-ip=209.85.216.48
+	 To:Cc:Content-Type; b=e9a7HpiRywuQnSB6dGqzo2EnMLP+RMA9eQbpXQa6iIiFJhUNmAQ/QX5xjAliJq3E5AEgKOhCEqfuhaU3HhlCX1JsurVpGQ2qTb39bQhaiBOCi74RJ+PEBJIseq5vQCLQiS49WdsqhPiT4rLzj99TTCbuuL6TVlZFDau4Dv8/LTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CkTOqF9s; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aEH9W7J4"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-301001bc6a8so1627214a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 02 Apr 2025 09:06:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CkTOqF9s"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff62f9b6e4so1515928a91.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 02 Apr 2025 09:06:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743610006; x=1744214806; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743610014; x=1744214814; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EcYAJ3sm0OipCZGt70NZYjrd0f6pwL/eJ1O6BJzQFHg=;
-        b=aEH9W7J4hSHo+dTEqD1BNqXBVA85vvSMylpE5UuRDP4FVcR1LKzWjwhR9ZqUrpCzJq
-         zKKgEecoc/ySl+6Uxo9/1QUo6xiTkGXOAKOisQOZ7hs91pgEa8wAKhhLzhFz9LyUq5ct
-         Afj9tNFdftjMiqEqeKvY1cVEY7eJW9kO9pVxQ24/zU+iUVKvRELL87PkV3UGd7bZYvK7
-         uB9Vvx7UKhQh+XF+a5Kb6ztD1VpXdXLdtx5EmTuGigOXruWCXZSoFeF1TmR7fpD7FUm4
-         T8omTwjT2Jer8mXKZPLd7pkDoDo/rwbOoBGAlqbPdJ1nQThMimHZ1cc21feUZoLLCsZC
-         Vbtg==
+        bh=6RNaKaiCWSzL9DFd7Yzn5msZxLu0taqRiSDPKp80fxU=;
+        b=CkTOqF9snqRfkvxNHq8MGfJhUu3yATUf8z/aMinawq3lV/CsgcrUzmyLwP7n20MTQB
+         0sP8n0kFGp/mwSFOMVZR8ramY6h0eDNLVbm/FUPg/H22zWfS8c0+XAaXxGdMDyLyTqG6
+         LnPXWRj+Pw0EIBu8eE7bO5/Sc39iYT9znkUt2yGQ12VIyjapGLiz5e7xbFjFsl6zCgBp
+         yR8HnR+nalI+fqBySGLckncAeh/8Su1BtsxXbUm4uM6oPLpZJnRVTuLpNKgzDU79gH3R
+         Yv3rBhnLwCvSy5/xRY6Bfwao+44slFPxC6CPE9GecrxWi9Bc2pL8HVPh5AQiofhyo7+B
+         9kLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743610006; x=1744214806;
+        d=1e100.net; s=20230601; t=1743610014; x=1744214814;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EcYAJ3sm0OipCZGt70NZYjrd0f6pwL/eJ1O6BJzQFHg=;
-        b=rRWDn3Zdr7roMq60+bmfOUEd+BhWZ75zfpFOTgP0JC1YZKZ7RUEGk7N8OznTB4DPMR
-         crqdWOA4qMyeRu705rZ5zoTRX5sXWZRfDgoOyp+Re2Utoa+8gNqsTvOR5fODJ3ETRrUo
-         pjzwYHEra9ZKufZ6TlPBQTTAanXVbmDcHDl6ODL7wVdGS0qDbQyH8vog4jd6PNtwPh7/
-         N6fvBdYllsOHaOmxNzAk6DwBuhr8BuU0WFTM4dB5eTTREtK0Iyt+202Bbg2EWHhQdPTq
-         TifK/k7ssNfImklEpuBIDFUl2USr5ut2ua0c/+tFZ5/dzT7vIE8d2ftETDlF5+kPlFj2
-         ig1A==
-X-Forwarded-Encrypted: i=1; AJvYcCXQQMpKoLgCXDDYvSnj9nxUlK1eteylXYXgJrCIkhvgmtIcCs6swtQoBRVDgSnui/3KBfakdpUA4MtO5lw8Lw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyzLT7cJOmSPj48r84qt35PoGe33dZj/nm623lLmjJQsvsY1r9
-	9jfX0iVHQN3/NivRqAuP4XdqDG8oW8AYvd8mYK51mvHnJs5omqQSID8YFFawhepEzCj6bJHooFL
-	BjcJ/VJUc5nUcxUMIs73d2RFzLhjqm6qWO7M=
-X-Gm-Gg: ASbGncsOKkK14Bp5KxH5gWZay/+8kZlirPzfv6UM2sqYB7NdmeoZeLc+z+gYjRQY09z
-	G9CHiDqfwlYS2i22a9+03VJU/ggGSbXCnfFHon8gLGubKREiSku6bIiB6h2KMqo1z/4bK8cOio2
-	upH8sv3XOxRwV5H7/nOaXpzdctcQyHNu4+ShpG
-X-Google-Smtp-Source: AGHT+IHLYuQNJqL73TOMCXG0UVkiqHvSAV8OPpG/vM8Nm6UMGLAAVDibukuq58uPgS2dYYafMKr4T47wDNxD9iIOThI=
-X-Received: by 2002:a17:90b:33c2:b0:305:5f20:b28c with SMTP id
- 98e67ed59e1d1-30562e9d510mr3593622a91.5.1743610005932; Wed, 02 Apr 2025
- 09:06:45 -0700 (PDT)
+        bh=6RNaKaiCWSzL9DFd7Yzn5msZxLu0taqRiSDPKp80fxU=;
+        b=PRetJI4+7PbTJJif32RHBTneCPNm+E++Qprcmi59+KPLMJg8NAkTqmojKNkTR9OfRa
+         RE6albB9s6025UfqCSyU4zokT6yq173aLU1fzSgljyyRIIWl4r28JbyX/XTcJKUWVuWb
+         AsuWza5XIsU/DXDI+J2fMkPGsb3lt00HUha2XVBBX2IKx0O4eIzW7ZPvNm8oU8nvVZQM
+         OL1FRG4N2ul1IKwd5y4tyPHR6z/hH7wptOnuZ78msjFfsapLYGKK42q6BdSIzMJTPOQz
+         2fbvIHQKb3ctMnI1tb9wdaDANj1FCpaSdAEcjU6NYKZSB/QUaM0BuzCkc7SU6l/SiArK
+         jzRw==
+X-Forwarded-Encrypted: i=1; AJvYcCVYBBcgGwNPXzcBWFPgjYkHkyN2XX3WZsbC5M0GDkGMIqdS30WRbbn2aXzsiIhv6krGVY2VogcvoM6XEUGLIQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoblNoSeKzaZiY/59i5BTpcNt4/ixxOvcx8YUx+yBkbTsUG1oB
+	IWc12XCw4ff91FkI60R16lRDNAZyMKr1nxuFJw9Z1ovOnYvzKkjUOwM7Ie1W5hNjdCN4tj1hf1y
+	cHnkLehbbQ/Fxr6cegS9AHCPpFXM=
+X-Gm-Gg: ASbGncti59gyQnVkIDi+B8i+O2UsIpFrImhliRzGvJUTVu2ZlcXmcanM05ORAuyg8C4
+	zM4r90JZg7Lbn/rvJipls3jB3k1TNa8TgLNvPziQBH+YU/Gho80VZxTVhUxdm2qplPoEn3an5Sm
+	KmQoa7TAeGeiE5jZoTzMqEYP44xg==
+X-Google-Smtp-Source: AGHT+IHTEJll5mPZfL9mR38K2vRf6a2Kt2wjzmTWrkkvunLjbdGrApZfZexxI4Q7Z6c30SlerIDOwLn0LDAeTJc/2J8=
+X-Received: by 2002:a17:90b:3b81:b0:2ff:5759:549a with SMTP id
+ 98e67ed59e1d1-30562dc9aadmr3733609a91.1.1743610014205; Wed, 02 Apr 2025
+ 09:06:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,12 +61,12 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250402104759.1764282-1-igor.korotin.ref@yahoo.com>
  <20250402104759.1764282-1-igor.korotin@yahoo.com> <CANiq72mysmMph1zGAxPKDY_FixbRRa0kS3pSqj4Qhq6Yjqq2AA@mail.gmail.com>
- <cdcf14f6-76e2-4895-b85e-cef0439a30cc@yahoo.com>
-In-Reply-To: <cdcf14f6-76e2-4895-b85e-cef0439a30cc@yahoo.com>
+ <29f73af3-e097-4c7d-889c-394ae1d2d961@yahoo.com>
+In-Reply-To: <29f73af3-e097-4c7d-889c-394ae1d2d961@yahoo.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Apr 2025 18:06:31 +0200
-X-Gm-Features: AQ5f1Jp4R_RCmNPmBdPub3jnoyv2zTzes1PDxcsrOHSWKaD36yyG8-X1XGegWF8
-Message-ID: <CANiq72=7cUKx7eCgjiWRZd9tt==w3uqRT-O6rpuvZK5_hYg+VA@mail.gmail.com>
+Date: Wed, 2 Apr 2025 18:06:40 +0200
+X-Gm-Features: AQ5f1JqixEfx3yfO8j6l81-FE_1NZ86523rVqo2tB-oOH9uopayC9DKlz33Xf1A
+Message-ID: <CANiq72nfB1w57Vctzj1RyXaoBbWQAjgHot7GGJyg5cxBAEJexg@mail.gmail.com>
 Subject: Re: [PATCH v2] docs: rust: quick-start: update Ubuntu instructions
 To: Igor Korotin <igor.korotin@yahoo.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -77,42 +77,46 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 2, 2025 at 1:49=E2=80=AFPM Igor Korotin <igor.korotin@yahoo.com=
+On Wed, Apr 2, 2025 at 3:52=E2=80=AFPM Igor Korotin <igor.korotin@yahoo.com=
 > wrote:
 >
-> I checked what happens with other tools(For example rustdoc) if I define
-> only
-> `RUSTC=3Drustc-1.80`. Unsurprisingly `rustdoc` remains 1.75, which is
-> installed from `rustc` package, which in its turn is dependency for the
-> package `bindgen-0.65`. Though I see that this mix works fine, it seems
-> a little bit weird when you have one tool of version 1.80 another 1.75,
-> etc. Without a doubt one can define each tool explicitly using `RUSTC`,
-> `RUSTDOC`, etc. On the other hand defining `PATH` to
-> `/usr/lib/rust-1.80/bin/` automatically makes build to use rust-1.80
-> tools.
+> While re-writing my changes I found out that while packages rustc,
+> rustdoc and
+> rustfmt of version 1.80 in 22.04 and 24.04 at least create symbolic
+> links to
+> their tools in /usr/bin/, rust-1.80-clippy does not do it. So the
+> clippy-driver
+> is only accessible by its full path /usr/lib/rust-1.80/bin/clippy-driver.
+> I'm sure this quick-start.rst should be updated, because from my
+> experience I know that it is painful for newcomer to configure Rust for
+> kernel properly in Ubuntu 22.04/24.04. And to be honest, I see
+> `PATH=3D/usr/lib/rust-1.80/bin:$PATH` the easiest solution. Rust packages
+> in 22.04/24.04 are screwed. I checked 24.10/25.04 and these versions do
+> not have such problems at all, it's just enough to use `apt rustc
+> rustdoc rustfmt bindgen rust-clippy` to install rust 1.84 and bindgen
+> 0.71 and set `RUST_LIB_SRC` variable.
 
-Ah, I see -- what I meant is that it is not required to set `PATH`,
-i.e. one can use the approach of setting each variable explicitly
-instead (e.g. that is what I do). In fact, setting the variables is
-the "most general" solution, since it allows any name for the
-binaries.
+Yeah, it is a mess. I think `rustfmt` doesn't create it either in
+24.04 at least -- at least I have that one as an absolute path when I
+test it.
 
-That is also what I meant by "minimize global changes", i.e. instead
-of touching something like `PATH` (especially if done as an env var),
-we just touch those variables.
+There are also other issues even with 24.10's packages, e.g. the main
+`bindgen` package did not get backports for bugs -- see the bug
+reports listed in:
 
-But, yeah, I understand that you are trying to simplify by setting
-less variables, which is also good. That is why I mentioned that
-perhaps it is best to just show the two examples, i.e. one with
-`PATH`, and the other setting each variable. Then people can decide
-what they prefer, and they have also the most general solution in case
-something breaks with future packages etc.
+    https://github.com/Rust-for-Linux/linux/issues/1127
 
-But I don't want to force any particular approach -- whatever
-you/others think it is easiest for newcomers is probably the best.
+I also mentioned to the maintainers a couple other bits, e.g. the
+order of installation also matters:
 
-To be honest, I think Ubuntu's packages should not be used for normal
-development at this point.
+    https://bugs.launchpad.net/ubuntu/+source/rustc-1.80/+bug/2090791/comme=
+nts/3
+
+I am happy to link more bug reports there and/or open new ones.
+
+The whole situation is not great, and other distributions work just
+fine, so I am tempted to add a paragraph at the top recommending to
+use alternative ways of installing the toolchain for Ubuntu...
 
 Cheers,
 Miguel
