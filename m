@@ -1,43 +1,43 @@
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2981F03E0
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Apr 2025 23:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195E0195
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Apr 2025 00:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743551594; cv=none; b=HRBonY6+fpqrsq62TSILH7Xzt3ONjBNOkipOryEOFTh3LynLtYb1hwhjUg2XkNb6aBpi7G5A4ChzkJ0LA3p/EksZnUOdjSKYW6C0+1wPLeaU+r1VbzYb89oZna1/hSdV2Y8vxjtIwUfG3D3y/F32VmCLcNA54jpl2V7VrkVEw4Y=
+	t=1743552373; cv=none; b=acchpX+a+ThGJQe6xvLyG1mrM8Ts4EHG8TnQmLUHLVZZpWcG/jKziuSLO8ik8i5Iw+QX4sbqWXMkqkG7g/6JcXZa0lQW7/k3fqLHp/1Tx3QUVjANbi6mXJFwH+C1yj3mzjbUm2kGo9WJFXB73p+xeSUJ/vX1oTJOqvcGRitGzPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743551594; c=relaxed/simple;
-	bh=lMqJA5YO4EpuXajO/VUaIW9ecys+h1Mr7kvLiUfEwcI=;
+	s=arc-20240116; t=1743552373; c=relaxed/simple;
+	bh=SKvTKbz6ni8FnmJ1GP4IVeexdsrRnOKxcqNOXAHpVHk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tvXB4fJZgLo2SXw6n86XgsS0Movvd11b4YTCH9XRTSs+jGCbJ5CBBGCw73tT8TUnmbapklvYQetvP+GKT/GG8KBm3KooopBAryYbRUCmB9m73WFA5cewMPGhZuk9i+64YhbQPNTGCUGw+w93IH0pZtDSkdw8QiIjKKBaJPDPmgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=gVoh8Mom; arc=none smtp.client-ip=109.224.244.16
+	 MIME-Version:Content-Type; b=NiayGDcly68Bn7/wJ4zLAMPbARCQ7FV8z8xHyXqDRMkv+4tGEm9kFIvJ5E2UFkEnS/1+/BquOnJW+7ijJtEvlA/FKfu5bRpPQynGz2A9oORn9RQrOJiZYkZJ25ihiR0mt9uUNRvMty6nBCrYXb70tt/8LgrDfTSWSHszn2sAPs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TDpZp3n0; arc=none smtp.client-ip=79.135.106.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="gVoh8Mom"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TDpZp3n0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1743551588; x=1743810788;
-	bh=h0L6GsC79ouPc4RnXP7HsbTQ5eC7lCgOZCF9zKBs/N4=;
+	s=36zyj7lnbbclrifsrasst7ba2i.protonmail; t=1743552360; x=1743811560;
+	bh=GG1TKNw1ad56XFapM4VnVdkZu9HjKmQ/qsMjqEKVOoA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=gVoh8MomFoEwFWNT3aW3yg0vBbg+CuX0QZGsJnFgOJ6Mcj7VQm8tjEDDy7ahvcojs
-	 5wywmsXVJ8CeoE7IcXWjRauqrb4ew8Rny2rBcU9P/2Hr6lgtHBtlZHD/enqT/ykdBB
-	 Hz/Fy06Z/mLR/b+5OstaQZT8f2OuJ5NPF1S3d4mlVyT5iX1sGqtesHrC9RLYov089g
-	 XzrXAPliIFMjXCp475INC1sJa0yQemjThpyvWl8klT3i6ZzHz8hesyrpT8jFJEZYpn
-	 LIRs7XisAUMfunHTt17Mc8G2qExKUe1vfSKLLybsZYBrRj7OmzAf0vPHxqmj5dk7Rp
-	 m89kxvDQcvMTA==
-Date: Tue, 01 Apr 2025 23:53:05 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+	b=TDpZp3n0Ds4RNhIfHGagrDTveMMpe6uFvDjgRfJW4QFU2AFnVNvahozjVSxIgaVCj
+	 lZKY2rApK5LUIHTR8OJaZVDUIhMi3MC3DOLvT+fFmEkzDdLAGyQnuX004HiW7mJrmt
+	 CF9Rk8hYubo4zj9vMn7NwiiLGInLknCqMiUWsBT7ruznXUAudQ4YZ80aA6J64V8M8B
+	 EPbLuHUJt/pXPreRUg+zb4nBqbydtQfbertYomZltWa1YNHjAfXAama51ey5UZ6tjZ
+	 8BmTdHfeTEzWQyp72D1Wx+TVP+W2gmU9W7OVO4OhrGRcdngCh1Y1hWw9AmmfP0EAhr
+	 24A0eUfyPf8wg==
+Date: Wed, 02 Apr 2025 00:05:56 +0000
+To: Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH] rust: clean Rust 1.86.0 new `clippy::needless_continue` cases
-Message-ID: <D8VPGBN60E61.1Z48FQW6TL3A@proton.me>
-In-Reply-To: <20250401221205.52381-1-ojeda@kernel.org>
-References: <20250401221205.52381-1-ojeda@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, bhelgaas@google.com, rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] rust: pci: impl TryFrom<&Device> for &pci::Device
+Message-ID: <D8VPQ5XL5NJZ.26OGZ3YML4QN3@proton.me>
+In-Reply-To: <Z-vvcPfgyaRdd0xQ@pollux>
+References: <20250321214826.140946-1-dakr@kernel.org> <Z96MrGQvpVrFqWYJ@pollux> <Z-CG01QzSJjp46ad@pollux> <D8ON7WC8WMFG.2S2JRK6G9TOSL@proton.me> <Z-GNDE68vwhk0gaV@cassiopeiae> <D8OOFRRSLHP4.1B2FHQRGH3LKW@proton.me> <Z-Ggu_YZBPM2Kf8J@cassiopeiae> <D8OPMRYE0SO5.2JQD6ZIYXHP68@proton.me> <Z-vvcPfgyaRdd0xQ@pollux>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 46df26921875262ddb18c57a7d2b1ba67cd0b710
+X-Pm-Message-ID: eaab470bc2e61cf080048f1271cbbfb5ec48b355
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,54 +47,130 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed Apr 2, 2025 at 12:12 AM CEST, Miguel Ojeda wrote:
-> Starting with the upcoming Rust 1.86.0, Clippy's `needless_continue` lint
-> complains about the last statement of a loop [1], including cases like:
+On Tue Apr 1, 2025 at 3:51 PM CEST, Danilo Krummrich wrote:
+> On Mon, Mar 24, 2025 at 06:32:53PM +0000, Benno Lossin wrote:
+>> On Mon Mar 24, 2025 at 7:13 PM CET, Danilo Krummrich wrote:
+>> > On Mon, Mar 24, 2025 at 05:36:45PM +0000, Benno Lossin wrote:
+>> >> On Mon Mar 24, 2025 at 5:49 PM CET, Danilo Krummrich wrote:
+>> >> > On Mon, Mar 24, 2025 at 04:39:25PM +0000, Benno Lossin wrote:
+>> >> >> On Sun Mar 23, 2025 at 11:10 PM CET, Danilo Krummrich wrote:
+>> >> >> > On Sat, Mar 22, 2025 at 11:10:57AM +0100, Danilo Krummrich wrote=
+:
+>> >> >> >> On Fri, Mar 21, 2025 at 08:25:07PM -0700, Greg KH wrote:
+>> >> >> >> > Along these lines, if you can convince me that this is someth=
+ing that we
+>> >> >> >> > really should be doing, in that we should always be checking =
+every time
+>> >> >> >> > someone would want to call to_pci_dev(), that the return valu=
+e is
+>> >> >> >> > checked, then why don't we also do this in C if it's going to=
+ be
+>> >> >> >> > something to assure people it is going to be correct?  I don'=
+t want to
+>> >> >> >> > see the rust and C sides get "out of sync" here for things th=
+at can be
+>> >> >> >> > kept in sync, as that reduces the mental load of all of us as=
+ we travers
+>> >> >> >> > across the boundry for the next 20+ years.
+>> >> >> >>=20
+>> >> >> >> I think in this case it is good when the C and Rust side get a =
+bit
+>> >> >> >> "out of sync":
+>> >> >> >
+>> >> >> > A bit more clarification on this:
+>> >> >> >
+>> >> >> > What I want to say with this is, since we can cover a lot of the=
+ common cases
+>> >> >> > through abstractions and the type system, we're left with the no=
+t so common
+>> >> >> > ones, where the "upcasts" are not made in the context of common =
+and well
+>> >> >> > established patterns, but, for instance, depend on the semantics=
+ of the driver;
+>> >> >> > those should not be unsafe IMHO.
+>> >> >>=20
+>> >> >> I don't think that we should use `TryFrom` for stuff that should o=
+nly be
+>> >> >> used seldomly. A function that we can document properly is a much =
+better
+>> >> >> fit, since we can point users to the "correct" API.
+>> >> >
+>> >> > Most of the cases where drivers would do this conversion should be =
+covered by
+>> >> > the abstraction to already provide that actual bus specific device,=
+ rather than
+>> >> > a generic one or some priv pointer, etc.
+>> >> >
+>> >> > So, the point is that the APIs we design won't leave drivers with a=
+ reason to
+>> >> > make this conversion in the first place. For the cases where they h=
+ave to
+>> >> > (which should be rare), it's the right thing to do. There is not an=
+ alternative
+>> >> > API to point to.
+>> >>=20
+>> >> Yes, but for such a case, I wouldn't want to use `TryFrom`, since tha=
+t
+>> >> trait to me is a sign of a canonical way to convert a value.
+>> >
+>> > Well, it is the canonical way to convert, it's just that by the design=
+ of other
+>> > abstractions drivers should very rarely get in the situation of needin=
+g it in
+>> > the first place.
+>>=20
+>> I'd still prefer it though, since one can spot a
+>>=20
+>>     let dev =3D CustomDevice::checked_from(dev)?
+>>=20
+>> much better in review than the `try_from` conversion. It also prevents
+>> one from giving it to a generic interface expecting the `TryFrom` trait.
 >
->     while ... {
->         match ... {
->             ... if ... =3D> {
->                 ...
->                 return ...;
->             }
->             _ =3D> continue,
->         }
->     }
+> (I plan to rebase this on my series introducing the Bound device context =
+[1].)
 >
-> as well as nested `match`es in a loop.
->
-> Thus clean them up.
->
-> Link: https://github.com/rust-lang/rust-clippy/pull/13891 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> To be honest, I am not sure we want this.
->
-> The lint can find cases that should be simplified, and it has been a nice=
- lint
-> so far, but somehow I feel that using `continue` shows the intent better =
-when
-> it is alone in an arm like that, and I am not sure we want to force peopl=
-e to
-> try to find other ways to write the code either, in cases when that appli=
-es.
->
-> If others feel this reads worse, then I would be happy to disable the lin=
-t and
-> open an issue upstream to keep the cases that are more clear cut.
+> I thought about this for a while and I still think TryFrom is fine here.
 
-I'm not too sure about this change, if the loop is longer than one
-screen, it makes a lot of sense to have a `continue` instead of `()`,
-since one might not see that there is nothing after the `match`.
+What reasoning do you have?
 
-I also think that an explicit `continue` is nicer from a expressability
-standpoint. So I think we should keep them.
+> At some point I want to replace this implementation with a macro, since t=
+he code
+> is pretty similar for bus specific devices. I think that's a bit cleaner =
+with
+> TryFrom compared to with a custom method, since we'd need the bus specifi=
+c
+> device to call the macro from the generic impl, i.e.
+>
+> =09impl<Ctx: DeviceContext> Device<Ctx>
+>
+> rather than a specific one, which we can't control. We can control it for
+> TryFrom though.
+
+We could have our own trait for that. Also it's not as controllable as
+you think: anyone can implement `TryFrom<&device::Device> for &MyType`.
+
+> However, I also do not really object to your proposal, hence I'm willing =
+to make
+> the change.
+>
+> Do you want to make a proposal for the corresponding doc comment switchin=
+g to a
+> custom method?
+
+I think have too little context what `device::Device` and `pci::Device`
+are. But I can give it a try:
+
+    /// Tries to converts a generic [`Device`](device::Device) into a [`pci=
+::Device`].
+    ///
+    /// Normally, one wouldn't need to call this function, because APIs sho=
+uld directly expose the
+    /// concrete device type.
+
+Then I think another sentence about a valid use-case of this function
+would make a lot of sense, but I don't know any.
 
 ---
 Cheers,
 Benno
-
->  rust/macros/helpers.rs | 2 +-
->  rust/macros/kunit.rs   | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
 
