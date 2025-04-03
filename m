@@ -1,122 +1,171 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BDB24C07E;
-	Thu,  3 Apr 2025 12:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A05435942;
+	Thu,  3 Apr 2025 13:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743685075; cv=none; b=fWwwRcZmJnwhZiN4ejSzfyE2gbLRQ3YGgYthosqril01oNkPrzKE9rPHyU/Yh5XIel8fvzToOMpkUOEP4XHJzYR0IICab//L5AN3rrdu0wSAtHOFcQozz20ccQHTu1Fm2fD69rsJalifkHJVOM7gJSIp/Nwn+jEDSDcxMNBWN9c=
+	t=1743686949; cv=none; b=KXTZy/VyEQFA3MEu++R7jTyDPtAUTdEZu625M1+6E3CJdUOzcTBD7H++Jd0bsaXPSpfQYIZsiXChESB8DOT8ydx4f5TyvZ7Rd+WKIgf6JRAaUz8zSSvYwlm0Fe1uNBpWjf8l9lJJU1evCb7vH+dgGY3wSgCcjOuUShYkV24l9+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743685075; c=relaxed/simple;
-	bh=/1YxCcRTRvpxQ9KkKuxghPk2ylXH2ipD9xLYdo4JcEU=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=edWlphV4OuTR5YUnYdLd2lgp6Ml/xveG/9yyaNyEH3sDMVDas9NEUy7r+DsSjDPNGWlha7M8FLM/Zsk/PFiOspkiITU3wsAmLgXF0jvXAicJngx4UC4lAnQLt4AS64vquDl3lbPNt0bWxO6C1MqYuzj+MhAtz49bYn24wG+2j1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AvwLL3V1; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1743686949; c=relaxed/simple;
+	bh=nt4GNb62EasvK8nbge9TkirgD7IhLXNL3w9iTDtAjqc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QTrDbxPhge6tg4ITfbAHGAYrO/Ei9T2mks0mwNS0KYn/6QIrTX34E22Ei5Qn/uvU3eqFC92X06bNghiAbYg+43f1GxRfwC7ZHMRxPCuTFT7JhGCFAQafFqgqdz+INLqqKs5p9ytlHDx9RWNqKB8lDojbBoueiyKfyoMkGFsyRgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZcRsrZXn; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AvwLL3V1"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7396f13b750so912292b3a.1;
-        Thu, 03 Apr 2025 05:57:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743685073; x=1744289873; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xMvo80YrC/OUar0noVKvQwzuCcaGDRGPGFcmSwrZcwA=;
-        b=AvwLL3V1aQGnMZv3+csMYdrPTa0JoMc2a6yqDwIpIJhsnBrvtEM5S+7Iv8tQX+ZU+r
-         AzsdwR2xoVsZAwBo3jY7zlKCbhwOFGdKVrAejh45D7xDZDctuNbSKuwtljOBa/jD3MVt
-         j8gFd3Tl6qgA3e6v66jP4Wse2k3qfhqG6hRjUd6xxE6foeCXtNvcNLJRiaGd9i388pg8
-         Qj0dRiL3PbzbOtU2riNk5xtKIZ3O/EBT6OEcfp3c4h3cFeKHRnp43qejaMtnT8ot8+Vz
-         2WhGX2I/xsfmyvlJfFphB916ZHuMwJAwk6sSKSPJlBCgziAvXfmJwK9OMBLWmbQekpJa
-         Ir2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743685073; x=1744289873;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xMvo80YrC/OUar0noVKvQwzuCcaGDRGPGFcmSwrZcwA=;
-        b=OL6/KcHGZPyciwmNKEdrQl8V3v2ybKaM+grCZr+foM/lNZP4yO0UtOWJacZuZqT7bC
-         RKybe5Lsge1IXGlTTXjhWriySviHH6+zyevbckBHtuHdD4rGSLwJege2+//sgCDN62K6
-         Nw6umMcUJWBrkyExU2vQ2Alqojf1KRiDkCMUpza2aOWachNaBdZ4taRDsH+BG6IaBn3d
-         ig/w0R1ciF30KWRv3qsWMhSaJsy6yALZCOhGPYx6fleyeMOp7opYK0O47u2+szXmrpHQ
-         5/YwHdUDPGqrP1UDXeC++ecXsmNZyR4Sssdb3tUE21kXhAfk0V8p4PCSwqPjQHKTl8q2
-         9i1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUb3i/wfhz7ZVUSlhQ+cu18SeTxuDoWyaWpzPdcv+SiINCamE6HXPRZup+6ca1tQ7ifdyQn5GRE6h3OQvS9MvI=@vger.kernel.org, AJvYcCXIfunzFlLecWVxuWm5zfUuBmJTTciFfvaze8K70LE03ZtZ/E1GbxZO/LCiTIFcOxQeTRtoK8EyMbfpTl0=@vger.kernel.org, AJvYcCXj2GEGhnADq2lt+Hc2oxUSUr0l2TZdiNT3QoR+y/Bg29YxFa5ChrTAr2b/EraMuYEKqFhHn1uL@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpRf4YlWFulImolciz39qQsNCfLlKe1a6popDnrQRiWoSZdeOl
-	c1K4bPxTE7fez2mHewpEKJlohY4aGV7YRqKUGkx0g+VRG76d1JAW
-X-Gm-Gg: ASbGncvE3TkR/XUW2K8K9PzQC2tklGZLhhErFioydn2U5dSx11G/9hksYjqxbhJPHuI
-	Jg4ZFtaUeoJIDSuLHIAa+sW3nJC31gvWbTmDHFi6Qd7P5nNLPCpKRQapUf6XQhHiWyoQuEQxwxi
-	MPlzOb35ergTMXpj+J9adYu7a9bPTAZtPkJqtv8n1HQA6qgZkkPRUou/Mbdg2IJVzSImkOnqxgn
-	6CfqcHLNLD6q6SHd+uXerBXN1gXg1Ur9sr7fdFAXUljF2dgc2GQieP05e/DgiF4IDIwHYbgWNBD
-	5T8bFWOfhF1qjZtBpUxA7Zkf8sKwBlBr7V61iNEQxnARsaJXjMUHbSlUscIcsijvLT5CgY5SGvF
-	JjU5fTXM2wxrbJUOhLvqZVDkUJVM=
-X-Google-Smtp-Source: AGHT+IHiovceFK2chizolznq/Ml1WNiyNYVynJX9L1MmVpIhUck/y8sRKLzHQWYsF3XMiynXIRoDvg==
-X-Received: by 2002:a05:6a00:238a:b0:736:5822:74b4 with SMTP id d2e1a72fcca58-739c7965d2dmr7803994b3a.21.1743685073171;
-        Thu, 03 Apr 2025 05:57:53 -0700 (PDT)
-Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-739d97ee7absm1415045b3a.58.2025.04.03.05.57.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 05:57:52 -0700 (PDT)
-Date: Thu, 03 Apr 2025 21:57:45 +0900 (JST)
-Message-Id: <20250403.215745.2138534529135480572.fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org
-Cc: fujita.tomonori@gmail.com, boqun.feng@gmail.com, tglx@linutronix.de,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
- frederic@kernel.org, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- tgunders@redhat.com, me@kloenk.dev, david.laight.linux@gmail.com
-Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
- DELAY/SLEEP and TIMEKEEPING API
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <877c41v7kf.fsf@kernel.org>
-References: <RK_ErPB4YECyHEkLg8UNaclPYHIV40KuRFSNkYGroL8uT39vud-G3iRgR2a7c11Sb7mXgU6oeb_pukIeTOk9sQ==@protonmail.internalid>
-	<20250403.171809.1101736852312477056.fujita.tomonori@gmail.com>
-	<877c41v7kf.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZcRsrZXn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743686948; x=1775222948;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=nt4GNb62EasvK8nbge9TkirgD7IhLXNL3w9iTDtAjqc=;
+  b=ZcRsrZXnLM/wb8x7AqpnPhWoPVx218wJjP3rv2auVYHoT4mNe7VHLXuM
+   6gw9mp+AgygnY57lU3wzBUu1RacZ+WQ8xvtWu5Jx02TqxhwPgKXsm9pZT
+   7PCqJorZbj0Ad8EkieUky1t+RTMYOlwjQoWSgk3gSyLnRHo8HSyIu5nv9
+   evXWsyEp8L3hbXYC1BlMxSRNX9if2eCVX2l1nkmh+JEf6ht5BjvRALVWO
+   R6WZhetqt9JQUwtm49dELFkMXXa5UApJ8/Sp/Vpd/NhSOCXN4Bb8UXiEV
+   XzzBByCUmS0QOKYFI6JRsXmX9vUGGrpfR41F9D8BUPahlHINicCu4Naik
+   w==;
+X-CSE-ConnectionGUID: CcfFI1fpS5WDLdb1lRsZ6A==
+X-CSE-MsgGUID: fGBt7lfjTzOvtsGQz4vPcQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="44350164"
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; 
+   d="scan'208";a="44350164"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 06:29:07 -0700
+X-CSE-ConnectionGUID: /T2NBRLJR5yatbCth9BFWw==
+X-CSE-MsgGUID: uh/BkaH5REmuiPRhTanmIg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,184,1739865600"; 
+   d="scan'208";a="127856844"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 06:29:03 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1u0Kct-00000008oyq-1MUl;
+	Thu, 03 Apr 2025 16:28:59 +0300
+Date: Thu, 3 Apr 2025 16:28:59 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Rob Herring <robh@kernel.org>, Dirk Behme <dirk.behme@de.bosch.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 03/10] device property: Add
+ fwnode_property_read_int_array()
+Message-ID: <Z-6NG7fSfyKH-vW_@smile.fi.intel.com>
+References: <20250326171411.590681-1-remo@buenzli.dev>
+ <20250326171411.590681-4-remo@buenzli.dev>
+ <Z-UPJyD41LOMM3o2@smile.fi.intel.com>
+ <D8WA3WIHEQRN.3LQS84K8Z46OW@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D8WA3WIHEQRN.3LQS84K8Z46OW@buenzli.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, 03 Apr 2025 12:54:40 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Wed, Apr 02, 2025 at 06:04:13PM +0200, Remo Senekowitsch wrote:
+> On Thu Mar 27, 2025 at 9:41 AM CET, Andy Shevchenko wrote:
+> > On Wed, Mar 26, 2025 at 06:13:42PM +0100, Remo Senekowitsch wrote:
+> >> The rust bindings for reading device properties has a single
+> >> implementation supporting differing sizes of integers. The fwnode C API
+> >> already has a similar interface, but it is not exposed with the
+> >> fwnode_property_ API. Add the fwnode_property_read_int_array() wrapper.
 
->>>> You will need to fix something because patch 2-6 removes `Ktime` ;-)
->>>
->>> Yea, but `Instant` is almost a direct substitution, right? Anyway, Tomo
->>> can send a new spin and change all the uses of Ktime, or I can do it. It
->>> should be straight forward. Either way is fine with me.
->>
->> `Delta`? Not `Instant`.
-> 
-> It depends. Current hrtimer takes `Ktime` and supports
-> `HrTimerMode::Absolute` and `HrTimerMode::Relative`. With `Delta` and
-> `Instant` we should take `Instant` for `HrTimerMode::Absolute` and
-> `Delta` for `HrTimerMode::Relative`. The API needs to be modified a bit
-> to make that work though. Probably we need to make the start function
-> generic over the expiration type or something.
-> 
-> If you want to, you can fix that. If not, you can use `Instant` for the
-> relative case as well, and we shall interpret it as duration. Then I
-> will fix it up later. Your decision.
-> 
->> All Ktime in hrtimer are passed to hrtimer_start_range_ns(), right?
-> 
-> Yes, that is where they end up.
+...
 
-Ah, I found that __hrtimer_start_range_ns() handles ktime_t
-differently in HRTIMER_MODE_REL mode.
+> >> +EXPORT_SYMBOL_GPL(fwnode_property_read_int_array);
+> >
+> > I'm not sure about this. We have a lot of assumptions in the code that the
+> > arrays beneath are only represented by the selected number of integer types.
+> > This opens a Pandora's box, e.g., reading in u24, which is not supported by
+> > the upper layers..
+> >
+> >> +int fwnode_property_read_int_array(const struct fwnode_handle *fwnode, const char *propname,
+> >> +				   unsigned int elem_size, void *val, size_t nval);
+> 
+> Here's an alternative approach using a macro to map each integer type explicitly
+> to its corresponding read function. There are some additional changes that will
+> be necessary to make the rest work, but this is the gist of it.
 
-As you said, looks like the API needs to be updated and I think that
-it's best to leave that to you. I'll just use `Instant` for all cases.
+I don;'t know Rust to tell anything about this, but at least it feels much
+better approach.
+
+> +macro_rules! impl_property_for_int {
+> +    ($($int:ty: $f:ident),* $(,)?) => {
+> +        $(
+> +            impl<const N: usize> Property for [$int; N] {
+> +                fn read(fwnode: &FwNode, name: &CStr) -> Result<Self> {
+> +                    let mut val: [MaybeUninit<$int>; N] = [const { MaybeUninit::uninit() }; N];
+> +
+> +                    // SAFETY: `name` is non-null and null-terminated. `fwnode.as_raw` is valid
+> +                    // because `fwnode` is valid. `val.as_ptr` is valid because `val` is valid.
+> +                    let ret = unsafe {
+> +                        bindings::$f(
+> +                            fwnode.as_raw(),
+> +                            name.as_char_ptr(),
+> +                            val.as_mut_ptr().cast(),
+> +                            val.len(),
+> +                        )
+> +                    };
+> +                    to_result(ret)?;
+> +
+> +                    // SAFETY: `val` is always initialized when
+> +                    // fwnode_property_read_$t_array is successful.
+> +                    Ok(val.map(|v| unsafe { v.assume_init() }))
+> +                }
+> +            }
+> +            impl Property for $int {
+> +                fn read(fwnode: &FwNode, name: &CStr) -> Result<Self> {
+> +                    let val: [_; 1] = <[$int; 1] as Property>::read(fwnode, name)?;
+> +                    Ok(val[0])
+> +                }
+> +            }
+> +        )*
+> +    };
+> +}
+> +impl_property_for_int! {
+> +    u8: fwnode_property_read_u8_array,
+> +    u16: fwnode_property_read_u16_array,
+> +    u32: fwnode_property_read_u32_array,
+> +    u64: fwnode_property_read_u64_array,
+
+> +    i8: fwnode_property_read_u8_array,
+> +    i16: fwnode_property_read_u16_array,
+> +    i32: fwnode_property_read_u32_array,
+> +    i64: fwnode_property_read_u64_array,
+
+Dunno what these mean. Are they signed integers? Do you really need this kind
+of types to be supported? Properties usually unsigned and I never saw (but it
+doesn't mean they are not exist) the negative values there.  Does DT schema
+even allow this? Does DT validator complain or not on the negative values
+supplied in the DTS?
+
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
