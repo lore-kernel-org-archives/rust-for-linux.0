@@ -1,242 +1,177 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCA7A927;
-	Thu,  3 Apr 2025 00:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22971854;
+	Thu,  3 Apr 2025 03:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743641508; cv=none; b=kOUOvHmkC4cwEIATorpg+ETTcwAUS3KkStVfDl1bXhWcZ5xWepJdMC6K6O4UDimucR1npLpFjoN+yi0F2zZr6WVYfVVmdXMTCeXlvUbVhOvwO7ntY1x7qTmRm09ojO9x91enWmR/t7C1h8xwb0aASPb2az0u6fgIER56PFKwlIA=
+	t=1743649343; cv=none; b=dCQvZJV2yGcjdevYqcQuPYH7mhB6Q+62zg09jn6ZQarSlon0yUirVwZsSuT6tW6fQJsh44xdxsOu/u3XM2SjGEnOcvArOy5+wquSVtIokByoUk+NxXUdKjg25/FuKx9IUYaywTy+MOjFKou+SFWEtcKmL9v6NUElaYoVZAhLe5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743641508; c=relaxed/simple;
-	bh=iryGazCjZUiwGGmfpxfw4Lc6UsOo0wCjVhD7QeGn3Bc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pF0gJ2/DNofNKUXz/bLkiLeaPeQ0VNmV/94mUh411uYcSLIM1lwf4VyNbkumrqzq4B1Mw3ejZlBXDhHZItuJ0ewMqqgbYXpkvqyR05G42rnDIyX5R09pCBHVfVem4TY/SAiQ4YpruBK3nyE+7qhI63qFfnhAuCZk8dPkwFOoFBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SCAPpQXO; arc=none smtp.client-ip=209.85.160.175
+	s=arc-20240116; t=1743649343; c=relaxed/simple;
+	bh=zILCpXRlDPYQxTs40NDTFltG0eod5vNnKzxwVDYfyxI=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=iVFSIcZOPD0K44VcT2WXjyTo3AChMmPO8ml6NOM3+rNH0u/SaNx8l2jlJ2Ip2P6ELMxiSBEum8K75rM3UCSJ7DbPfOjNGNtNhgqXxkTNEMNksxasaPDpXyyP9cNlLKfPx2miF7G4jG0B9tGsWxLZhArZqb5/SarD2E1EuhDX9DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hbSQJC8h; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SCAPpQXO"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-47663aeff1bso3058011cf.0;
-        Wed, 02 Apr 2025 17:51:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hbSQJC8h"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ff6a98c638so499365a91.0;
+        Wed, 02 Apr 2025 20:02:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743641505; x=1744246305; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zx+eNO28JnJFh8ii5WpyLNGRFtml7E13XoXgMVF7PjI=;
-        b=SCAPpQXOyUK4aNZ4BOq3su3hGh3lNceDVgHHkU/Uk2f1sqMfHDIIRImPU/lK0XkXPP
-         wNgST/iYU8leMBN6fxQdAksIMdJCfxBXAtxKCdGGPTOZcwGinsQ/u6vmiRxHCJTlgwB1
-         wJ4Gdne1lnoP6qnQ31BZDmrY/zu7SFeNjhqqVU8HcqMcNeGQNhrTS8R6FF+PpHkaAoi9
-         8tt2hoinyuo1G/7h5IAB+JF4icN128gzlmzUtvNa9h3wD3UDvEA8rei9nAcT5oUYEibt
-         SwzlCx8dNKpik2DeemaXx80HOGYIH3dNAsl0rzAF1Qsf0Fyu+T3QyN+3Fndkrdn3Sdpt
-         3fSw==
+        d=gmail.com; s=20230601; t=1743649336; x=1744254136; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zILCpXRlDPYQxTs40NDTFltG0eod5vNnKzxwVDYfyxI=;
+        b=hbSQJC8h61rQ1HP//RlrWYF+UWQ3/pT32oBDKmsnU2WgoGb9m18PcrzgMUsXKm3DM4
+         AO+6KCZ10+iw8GjOaUCciYNDNiUjP2ErG83dKgORYXg9NACMHh5RHEZEocdgHr2n5YE6
+         UpsfZJ19Pvxk3fNYkKAHRwnvc68dhVxxSaiRUErQuCFGaaO9iprlPgR/XTKml0i5PkjG
+         aGc6HsnzGbQaXf8Z5qo83QnA2zpLjJw2qdim+UbX4pVbgiXEeiquTn69lAk3Sv78YkFm
+         9vBMYGHrMVBLykm2thR4TV3KQFWZb3+3z/RM4kdobGmBH1CYYoiUwyc3ycuJBh6SrjLZ
+         LQaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743641505; x=1744246305;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zx+eNO28JnJFh8ii5WpyLNGRFtml7E13XoXgMVF7PjI=;
-        b=Rns4arTUjGaRjYJbqrx3k+DqKECBxsuLLGrutB7Jc3R5mpOkLFu9BjsYA0H48yfbYn
-         WJBO3Lag3jawGtD3MbCsl7cfD2x7/Nz59N7Td6XotQKaV+d9zk/pZ0llJMdUhvawkQRg
-         8fdeuCocD9ruAHOGnunnsEg7k4xz6ynqHk5RDEPsdIKLvIbCA3vhGCNPsruPCZB/5TBV
-         MfiHSTIlr7iBQSTAoTCaOlXALBcNvxBFYy9Ep38DyrAHiV985hzOU6eyfoBLn0F+7n0U
-         YyWkKn/I0hTJkMM+Pirk7XPxRGstavLioNVxYx2DDNZQzZA5awtrYLJx0bygz7Xoeoa6
-         Gd2w==
-X-Forwarded-Encrypted: i=1; AJvYcCVYLT8B3u9b3bqA6/XK9qEw66RDmMWHxqtQpRh47cYvgz0RbYiCDE0KDrlAtfjJEcCbGZqqvhSg@vger.kernel.org, AJvYcCWskeBpa74p99gnqi27nMPZ5KbwLBnLKU7hkUSxvreDivUb7YLhFSasa6Sqz7pywOMjoS4T63yYDcH4f9U=@vger.kernel.org, AJvYcCX3tzgva2byb2OQfzFsqbQ8k1fSlVm50RucECSWNiIPkzZCZ7yMTmQ2IHbK2wxftpsEgowd2jmrcq9gnwsjvFA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPHmAPIBU8Rwh3cVxd0b/ZbykKcChC5MWT16EolUOvfX6YmsHt
-	vT43H8J2+xyCTFrTv3JKpicwRTrnw0Beghq7VsMAc6RgMAH2FxNN
-X-Gm-Gg: ASbGncu8WmG3dVgPK5HBwKIUTkSwONgO9sHbdtTHsMPz0xDC26zJaJEgatNplmS7hgK
-	VYDOnmvR3AXsxXhj2GljKm3oHM7I/vOKIPP0ikFRHPKTs4y0Xx7ATbi4CLW9R2p7F3IDIP1zveG
-	3u6YiStkCAZbkllPIW1snlE4xky0RrDi+F1zu7xdlSzk3hXva5H+cONioRfTVAUWiXu0Uf8rVHq
-	HAGH/BOJufCOy8ydcOxdBEfsToWjWP6LFMKlH/d0nakL2TX/vZTlkBx7zVnGDppWrY5vnf3J0I7
-	e/qAqPdwV6W68v4yvLqEyfRojS/FLs3ms9wasA69B5qpbkGpUgNN9uCmg7vcmNAmzuAM8BOB0tU
-	iJSQenVG/ETJAqq0ptCpKk+lqzm6sJG11Vjk=
-X-Google-Smtp-Source: AGHT+IHl6vHyV+61sC/9TgrnujKk9+yg+F0OivRtaPSvyTERsIxjVAR8UgjX7v/h/tMPnV4WQljzGQ==
-X-Received: by 2002:ac8:7dc4:0:b0:476:b56d:eb46 with SMTP id d75a77b69052e-47909f6f48bmr60270671cf.15.1743641504991;
-        Wed, 02 Apr 2025 17:51:44 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4791b071c4fsm1313341cf.26.2025.04.02.17.51.43
+        d=1e100.net; s=20230601; t=1743649336; x=1744254136;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zILCpXRlDPYQxTs40NDTFltG0eod5vNnKzxwVDYfyxI=;
+        b=IdoGT2/+zmYorczAyGc/Q/qhPeiXmar1j95C6fZnJ8MfOBnhOeE/ErW+VFLpAcD2kg
+         ntSBIUFMG6bLv52wqWVneET41oBtmsLI2eNsSFvVvYLGBX/TcqTEcBgVIlfv5xLPr4Qq
+         gCoo4IDX2dGCeRdaRQDEI2XYYKqejs6vO0+Jh6CmINfLA02KoZTmH0Di+3Pib0Eq9+Cw
+         KuQlETF6OZg/x+ED8XcRvVzS7RVDOXWWzUZE6MIaaqs8DIIXBhb59TlCHBSdHYu9AKvU
+         KrGCjMJWFeZWLMQci7gnfFHE2nr2hFTlioZQfC0GQoq82crSNbtjM6Qax6RUxz/E/qK9
+         waTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0gHGnjwekpfw5OJu6y/4AxSoatVVv84RzDqp7JMe1s7G1koXxN7y1BQijwKGEQivYT5QTECzm3smOZmg=@vger.kernel.org, AJvYcCUaENi7hTR91ZX67t9cz/I14IMNS1ZoD5gCjj4aqVrVtk4xk1tT9k+YykAtOqGvb/wj0iFDbvmQ@vger.kernel.org, AJvYcCX72OlxdTNDjJ5JqI/TMqLoU7ywMwvwBaWZDJUGNcXpf5+9yItDHBuvrLx1VVsljdDylVT3BxpuJ9B3FhZLXK8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm+GYLAV/EdwkilG7q4ogX44jcX6ug6S+KMNWPV1hFPbmylMgU
+	hsVwzua5G10PJgWDdGteitCBNzL2jFDlbeT3klof8sdurckPs94e
+X-Gm-Gg: ASbGncuR/wA3gD+HC+QNiP5OMA2miAEbdOl7i4Sq/8vv4j2FfJgP4qXQWK9yKPG8QsV
+	1OVlIS2bFZFN/v/7C5O1SLeAj1ZZmtmb2DtIbwV5Bvari2aPrrP5FmCPEEnm6UsXc+7sIUCU8y/
+	+6rgmEo72KOIfAwou5EkFV1dZAZ0J850A1Br0+hsL5c/zOdA+f5s1xH8MsI8YODjlYhxBoXRYvn
+	uts/moAf9EDP7ugesCBCIxu4opYpbDmB04YFx0Lq7gQ6TuLcomYql4V6bucW74mHR+qUcb9e7HQ
+	/5O83Evgo60mwldRO8T5OiwlrjMTUS7AG7DUAw4rJ9+39+/4yYLneMRG52JaingMuEb6VfVfKtG
+	dSqYTWg66pewh7xAr47P5ExSE3gqbmcaHRk73YA==
+X-Google-Smtp-Source: AGHT+IG/HM91gbF6Wvjl0nl9i1oxhE6UPJmUUlhTAMmRAyVHrzl3LIXw5FH2LjD03wY4SYeOLYUamA==
+X-Received: by 2002:a17:90b:534d:b0:2ee:df70:1ff3 with SMTP id 98e67ed59e1d1-3057c9da782mr2007175a91.0.1743649336064;
+        Wed, 02 Apr 2025 20:02:16 -0700 (PDT)
+Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3057ca8768fsm465466a91.27.2025.04.02.20.02.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Apr 2025 17:51:44 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9D233120006A;
-	Wed,  2 Apr 2025 20:51:43 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Wed, 02 Apr 2025 20:51:43 -0400
-X-ME-Sender: <xms:n9vtZwGIv1W-NRG7O72_olayTo7Fuqz7u6_w2ZOoK9yTZXSMgIpeXA>
-    <xme:n9vtZ5Xqnx1bqLa3pRymuSJmnltKSFNVWyfJ-SQaJ6bBZhyPkzb4lmobbhgR8BMB9
-    1AyCLUsythLm7Hdnw>
-X-ME-Received: <xmr:n9vtZ6IXlbi514jubk24p12hMBlsK4Umm4NzE6YegYRUw6aLZwDZNgh7>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukeejudehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedv
-    teehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtthho
-    pegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigse
-    hlihhnuhhtrhhonhhigidruggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehv
-    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuh
-    igsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpd
-    hrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohep
-    thhmghhrohhsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:n9vtZyEI8hT3qbBqN932Yi0iczrpy4remeEzNZJALBvwbRgsI-o8ow>
-    <xmx:n9vtZ2XgCrcG_lnChEzVQ5UFuKqDxVtZbgnIlCHOtlFhNX_8KLafgQ>
-    <xmx:n9vtZ1PlPqk6x3AntwbvLcHBXFxm9avAx0icBHtboMO5EgH1tM7gdA>
-    <xmx:n9vtZ93H8Wb3K8NuSFA34no8HNF0d-OAH2QQTsD5f3iDndTQXcLTAg>
-    <xmx:n9vtZ_Vz7_wc7icCGMnztOxic4PgFsso-8Sf6KCj-lBtoUfT0L3dD1y3>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 2 Apr 2025 20:51:42 -0400 (EDT)
-Date: Wed, 2 Apr 2025 17:51:41 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: a.hindborg@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
-	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, arnd@arndb.de,
-	jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
-	peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
-	david.laight.linux@gmail.com
+        Wed, 02 Apr 2025 20:02:15 -0700 (PDT)
+Date: Thu, 03 Apr 2025 12:02:00 +0900 (JST)
+Message-Id: <20250403.120200.1300877147444853564.fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, a.hindborg@kernel.org, tglx@linutronix.de,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ tgunders@redhat.com, me@kloenk.dev, david.laight.linux@gmail.com
 Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
  DELAY/SLEEP and TIMEKEEPING API
-Message-ID: <Z-3bnUucR5EX8XVu@Mac.home>
-References: <Z-qgo5gl6Qly-Wur@Mac.home>
- <20250402.231627.270393242231849699.fujita.tomonori@gmail.com>
- <Z-1l3mgsOi4y4N_c@boqun-archlinux>
- <20250403.080334.1462587538453396496.fujita.tomonori@gmail.com>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <Z-3bnUucR5EX8XVu@Mac.home>
+References: <Z-1l3mgsOi4y4N_c@boqun-archlinux>
+	<20250403.080334.1462587538453396496.fujita.tomonori@gmail.com>
+	<Z-3bnUucR5EX8XVu@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250403.080334.1462587538453396496.fujita.tomonori@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-7
+Content-Transfer-Encoding: base64
 
-On Thu, Apr 03, 2025 at 08:03:34AM +0900, FUJITA Tomonori wrote:
-> On Wed, 2 Apr 2025 09:29:18 -0700
-> Boqun Feng <boqun.feng@gmail.com> wrote:
-> 
-> > On Wed, Apr 02, 2025 at 11:16:27PM +0900, FUJITA Tomonori wrote:
-> >> On Mon, 31 Mar 2025 07:03:15 -0700
-> >> Boqun Feng <boqun.feng@gmail.com> wrote:
-> >> 
-> >> >> My recommendation would be to take all of `rust/kernel/time` under one
-> >> >> entry for now. I suggest the following, folding in the hrtimer entry as
-> >> >> well:
-> >> >> 
-> >> >> DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
-> >> >> M:	Andreas Hindborg <a.hindborg@kernel.org>
-> >> > 
-> >> > Given you're the one who would handle the patches, I think this make
-> >> > more sense.
-> >> > 
-> >> >> R:	Boqun Feng <boqun.feng@gmail.com>
-> >> >> R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
-> >> > 
-> >> > Tomo, does this look good to you?
-> >> 
-> >> Fine by me.
-> >> 
-> >> So a single entry for all the Rust time stuff, which isn't aligned
-> >> with C's MAINTAINERS entries. It's just for now?
-> >> 
-> > 
-> > Given Andreas is the one who's going to handle the PRs, and he will put
-> > all the things in one branch. I think it's fine even for long term, and
-> > we got all relevant reviewers covered. If the Rust timekeeping + hrtimer
-> > community expands in the future, we can also add more entries. We don't
-> > necessarily need to copy all maintainer structures from C ;-)
-> 
-> It seems I was mistaken. I had thought that the ideal goal was for the
-> same team to maintain both the C code and the corresponding Rust code.
-> 
-
-Yeah, that was the ideal goal, but Frederic said in the hrtimer series:
-
-	https://lore.kernel.org/rust-for-linux/Z8iLIyofy6KGOsq5@localhost.localdomain/
-
-, to me it's clear that hrtimer maintainers want hrtimer Rust patches to
-go to rust tree via Andreas, and given timekeeping maintainers are
-basically the same group of people, and Thomas explicitly asked to be
-added as reviewers:
-
-	https://lore.kernel.org/rust-for-linux/87o6xu15m1.ffs@tglx/
-
-It's a clear signal that timekeeping and hrtimer Rust patches are
-preferred to go to rust tree, and Andreas had nicely accepted to handle
-timekeeping and sleep/delay patches, so it makes sense to use one entry
-if he prefers. Hope this clarifies things.
-
-> 
-> >> >> I assume patch 1 will go through the sched/core tree, and then Miguel
-> >> >> can pick 7.
-> >> >> 
-> >> > 
-> >> > Patch 1 & 7 probably should go together, but we can decide it later.
-> >> 
-> >> Since nothing has moved forward for quite a while, maybe it's time to
-> >> drop patch 1.
-> > 
-> > No, I think we should keep it. Because otherwise we will use a macro
-> 
-> Yeah, I know. the first version of this uses a macro.
-> 
-> 
-> > version of read_poll_timeout(), which is strictly worse. I'm happy to
-> > collect patch #1 and the cpu_relax() patch of patch #7, and send an PR
-> > to tip. Could you split them a bit:
-> > 
-> > * Move the Rust might_sleep() in patch #7 to patch #1 and put it at
-> >   kernel::task, also if we EXPORT_SYMBOL(__might_sleep_precision), we
-> >   don't need the rust_helper for it.
-> > 
-> > * Have a separate containing the cpu_relax() bit.
-> > 
-> > * Also you may want to put #[inline] at cpu_relax() and might_resched().
-> > 
-> > and we can start from there. Sounds good?
-> 
-> I can do whatever but I don't think these matters. The problem is that
-
-Confused. I said I would do a PR, that means if no objection, the
-patches will get merged. Isn't this a way to move forward? Or you're
-against that I'm doing a PR?
-
-> we haven't received a response from the scheduler maintainers for a
-> long time. We don't even know if the implementation is actually an
-> issue.
-> 
-
-If there's an issue, I can fix it. After all, printk confirmed that
-".*s" format works for this case:
-
-	https://lore.kernel.org/rust-for-linux/ZyyAsjsz05AlkOBd@pathway.suse.cz/
-
-and Peter sort of confirmed he's not against the idea:
-
-	https://lore.kernel.org/rust-for-linux/20250201121613.GC8256@noisy.programming.kicks-ass.net/
-
-I don't see any major issue blocking this. But of course, I'm happy to
-resolve if there is one.
-
-
-Regards,
-Boqun
-
-> 
-> 
+T24gV2VkLCAyIEFwciAyMDI1IDE3OjUxOjQxIC0wNzAwDQpCb3F1biBGZW5nIDxib3F1bi5mZW5n
+QGdtYWlsLmNvbT4gd3JvdGU6DQoNCj4gT24gVGh1LCBBcHIgMDMsIDIwMjUgYXQgMDg6MDM6MzRB
+TSArMDkwMCwgRlVKSVRBIFRvbW9ub3JpIHdyb3RlOg0KPj4gT24gV2VkLCAyIEFwciAyMDI1IDA5
+OjI5OjE4IC0wNzAwDQo+PiBCb3F1biBGZW5nIDxib3F1bi5mZW5nQGdtYWlsLmNvbT4gd3JvdGU6
+DQo+PiANCj4+ID4gT24gV2VkLCBBcHIgMDIsIDIwMjUgYXQgMTE6MTY6MjdQTSArMDkwMCwgRlVK
+SVRBIFRvbW9ub3JpIHdyb3RlOg0KPj4gPj4gT24gTW9uLCAzMSBNYXIgMjAyNSAwNzowMzoxNSAt
+MDcwMA0KPj4gPj4gQm9xdW4gRmVuZyA8Ym9xdW4uZmVuZ0BnbWFpbC5jb20+IHdyb3RlOg0KPj4g
+Pj4gDQo+PiA+PiA+PiBNeSByZWNvbW1lbmRhdGlvbiB3b3VsZCBiZSB0byB0YWtlIGFsbCBvZiBg
+cnVzdC9rZXJuZWwvdGltZWAgdW5kZXIgb25lDQo+PiA+PiA+PiBlbnRyeSBmb3Igbm93LiBJIHN1
+Z2dlc3QgdGhlIGZvbGxvd2luZywgZm9sZGluZyBpbiB0aGUgaHJ0aW1lciBlbnRyeSBhcw0KPj4g
+Pj4gPj4gd2VsbDoNCj4+ID4+ID4+IA0KPj4gPj4gPj4gREVMQVksIFNMRUVQLCBUSU1FS0VFUElO
+RywgVElNRVJTIFtSVVNUXQ0KPj4gPj4gPj4gTToJQW5kcmVhcyBIaW5kYm9yZyA8YS5oaW5kYm9y
+Z0BrZXJuZWwub3JnPg0KPj4gPj4gPiANCj4+ID4+ID4gR2l2ZW4geW91J3JlIHRoZSBvbmUgd2hv
+IHdvdWxkIGhhbmRsZSB0aGUgcGF0Y2hlcywgSSB0aGluayB0aGlzIG1ha2UNCj4+ID4+ID4gbW9y
+ZSBzZW5zZS4NCj4+ID4+ID4gDQo+PiA+PiA+PiBSOglCb3F1biBGZW5nIDxib3F1bi5mZW5nQGdt
+YWlsLmNvbT4NCj4+ID4+ID4+IFI6CUZVSklUQSBUb21vbm9yaSA8ZnVqaXRhLnRvbW9ub3JpQGdt
+YWlsLmNvbT4NCj4+ID4+ID4gDQo+PiA+PiA+IFRvbW8sIGRvZXMgdGhpcyBsb29rIGdvb2QgdG8g
+eW91Pw0KPj4gPj4gDQo+PiA+PiBGaW5lIGJ5IG1lLg0KPj4gPj4gDQo+PiA+PiBTbyBhIHNpbmds
+ZSBlbnRyeSBmb3IgYWxsIHRoZSBSdXN0IHRpbWUgc3R1ZmYsIHdoaWNoIGlzbid0IGFsaWduZWQN
+Cj4+ID4+IHdpdGggQydzIE1BSU5UQUlORVJTIGVudHJpZXMuIEl0J3MganVzdCBmb3Igbm93Pw0K
+Pj4gPj4gDQo+PiA+IA0KPj4gPiBHaXZlbiBBbmRyZWFzIGlzIHRoZSBvbmUgd2hvJ3MgZ29pbmcg
+dG8gaGFuZGxlIHRoZSBQUnMsIGFuZCBoZSB3aWxsIHB1dA0KPj4gPiBhbGwgdGhlIHRoaW5ncyBp
+biBvbmUgYnJhbmNoLiBJIHRoaW5rIGl0J3MgZmluZSBldmVuIGZvciBsb25nIHRlcm0sIGFuZA0K
+Pj4gPiB3ZSBnb3QgYWxsIHJlbGV2YW50IHJldmlld2VycyBjb3ZlcmVkLiBJZiB0aGUgUnVzdCB0
+aW1la2VlcGluZyArIGhydGltZXINCj4+ID4gY29tbXVuaXR5IGV4cGFuZHMgaW4gdGhlIGZ1dHVy
+ZSwgd2UgY2FuIGFsc28gYWRkIG1vcmUgZW50cmllcy4gV2UgZG9uJ3QNCj4+ID4gbmVjZXNzYXJp
+bHkgbmVlZCB0byBjb3B5IGFsbCBtYWludGFpbmVyIHN0cnVjdHVyZXMgZnJvbSBDIDstKQ0KPj4g
+DQo+PiBJdCBzZWVtcyBJIHdhcyBtaXN0YWtlbi4gSSBoYWQgdGhvdWdodCB0aGF0IHRoZSBpZGVh
+bCBnb2FsIHdhcyBmb3IgdGhlDQo+PiBzYW1lIHRlYW0gdG8gbWFpbnRhaW4gYm90aCB0aGUgQyBj
+b2RlIGFuZCB0aGUgY29ycmVzcG9uZGluZyBSdXN0IGNvZGUuDQo+PiANCj4gDQo+IFllYWgsIHRo
+YXQgd2FzIHRoZSBpZGVhbCBnb2FsLCBidXQgRnJlZGVyaWMgc2FpZCBpbiB0aGUgaHJ0aW1lciBz
+ZXJpZXM6DQo+IA0KPiAJaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcnVzdC1mb3ItbGludXgvWjhp
+TEl5b2Z5NktHT3NxNUBsb2NhbGhvc3QubG9jYWxkb21haW4vDQo+IA0KPiAsIHRvIG1lIGl0J3Mg
+Y2xlYXIgdGhhdCBocnRpbWVyIG1haW50YWluZXJzIHdhbnQgaHJ0aW1lciBSdXN0IHBhdGNoZXMg
+dG8NCj4gZ28gdG8gcnVzdCB0cmVlIHZpYSBBbmRyZWFzLCBhbmQgZ2l2ZW4gdGltZWtlZXBpbmcg
+bWFpbnRhaW5lcnMgYXJlDQo+IGJhc2ljYWxseSB0aGUgc2FtZSBncm91cCBvZiBwZW9wbGUsIGFu
+ZCBUaG9tYXMgZXhwbGljaXRseSBhc2tlZCB0byBiZQ0KPiBhZGRlZCBhcyByZXZpZXdlcnM6DQo+
+IA0KPiAJaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcnVzdC1mb3ItbGludXgvODdvNnh1MTVtMS5m
+ZnNAdGdseC8NCj4gDQo+IEl0J3MgYSBjbGVhciBzaWduYWwgdGhhdCB0aW1la2VlcGluZyBhbmQg
+aHJ0aW1lciBSdXN0IHBhdGNoZXMgYXJlDQo+IHByZWZlcnJlZCB0byBnbyB0byBydXN0IHRyZWUs
+IGFuZCBBbmRyZWFzIGhhZCBuaWNlbHkgYWNjZXB0ZWQgdG8gaGFuZGxlDQo+IHRpbWVrZWVwaW5n
+IGFuZCBzbGVlcC9kZWxheSBwYXRjaGVzLCBzbyBpdCBtYWtlcyBzZW5zZSB0byB1c2Ugb25lIGVu
+dHJ5DQo+IGlmIGhlIHByZWZlcnMuIEhvcGUgdGhpcyBjbGFyaWZpZXMgdGhpbmdzLg0KDQpZZWFo
+LCBJIHNlZSB5b3VyIHBvaW50Lg0KDQo+PiA+PiA+PiBJIGFzc3VtZSBwYXRjaCAxIHdpbGwgZ28g
+dGhyb3VnaCB0aGUgc2NoZWQvY29yZSB0cmVlLCBhbmQgdGhlbiBNaWd1ZWwNCj4+ID4+ID4+IGNh
+biBwaWNrIDcuDQo+PiA+PiA+PiANCj4+ID4+ID4gDQo+PiA+PiA+IFBhdGNoIDEgJiA3IHByb2Jh
+Ymx5IHNob3VsZCBnbyB0b2dldGhlciwgYnV0IHdlIGNhbiBkZWNpZGUgaXQgbGF0ZXIuDQo+PiA+
+PiANCj4+ID4+IFNpbmNlIG5vdGhpbmcgaGFzIG1vdmVkIGZvcndhcmQgZm9yIHF1aXRlIGEgd2hp
+bGUsIG1heWJlIGl0J3MgdGltZSB0bw0KPj4gPj4gZHJvcCBwYXRjaCAxLg0KPj4gPiANCj4+ID4g
+Tm8sIEkgdGhpbmsgd2Ugc2hvdWxkIGtlZXAgaXQuIEJlY2F1c2Ugb3RoZXJ3aXNlIHdlIHdpbGwg
+dXNlIGEgbWFjcm8NCj4+IA0KPj4gWWVhaCwgSSBrbm93LiB0aGUgZmlyc3QgdmVyc2lvbiBvZiB0
+aGlzIHVzZXMgYSBtYWNyby4NCj4+IA0KPj4gDQo+PiA+IHZlcnNpb24gb2YgcmVhZF9wb2xsX3Rp
+bWVvdXQoKSwgd2hpY2ggaXMgc3RyaWN0bHkgd29yc2UuIEknbSBoYXBweSB0bw0KPj4gPiBjb2xs
+ZWN0IHBhdGNoICMxIGFuZCB0aGUgY3B1X3JlbGF4KCkgcGF0Y2ggb2YgcGF0Y2ggIzcsIGFuZCBz
+ZW5kIGFuIFBSDQo+PiA+IHRvIHRpcC4gQ291bGQgeW91IHNwbGl0IHRoZW0gYSBiaXQ6DQo+PiA+
+IA0KPj4gPiAqIE1vdmUgdGhlIFJ1c3QgbWlnaHRfc2xlZXAoKSBpbiBwYXRjaCAjNyB0byBwYXRj
+aCAjMSBhbmQgcHV0IGl0IGF0DQo+PiA+ICAga2VybmVsOjp0YXNrLCBhbHNvIGlmIHdlIEVYUE9S
+VF9TWU1CT0woX19taWdodF9zbGVlcF9wcmVjaXNpb24pLCB3ZQ0KPj4gPiAgIGRvbid0IG5lZWQg
+dGhlIHJ1c3RfaGVscGVyIGZvciBpdC4NCj4+ID4gDQo+PiA+ICogSGF2ZSBhIHNlcGFyYXRlIGNv
+bnRhaW5pbmcgdGhlIGNwdV9yZWxheCgpIGJpdC4NCj4+ID4gDQo+PiA+ICogQWxzbyB5b3UgbWF5
+IHdhbnQgdG8gcHV0ICNbaW5saW5lXSBhdCBjcHVfcmVsYXgoKSBhbmQgbWlnaHRfcmVzY2hlZCgp
+Lg0KPj4gPiANCj4+ID4gYW5kIHdlIGNhbiBzdGFydCBmcm9tIHRoZXJlLiBTb3VuZHMgZ29vZD8N
+Cj4+IA0KPj4gSSBjYW4gZG8gd2hhdGV2ZXIgYnV0IEkgZG9uJ3QgdGhpbmsgdGhlc2UgbWF0dGVy
+cy4gVGhlIHByb2JsZW0gaXMgdGhhdA0KPiANCj4gQ29uZnVzZWQuIEkgc2FpZCBJIHdvdWxkIGRv
+IGEgUFIsIHRoYXQgbWVhbnMgaWYgbm8gb2JqZWN0aW9uLCB0aGUNCj4gcGF0Y2hlcyB3aWxsIGdl
+dCBtZXJnZWQuIElzbid0IHRoaXMgYSB3YXkgdG8gbW92ZSBmb3J3YXJkPyBPciB5b3UncmUNCj4g
+YWdhaW5zdCB0aGF0IEknbSBkb2luZyBhIFBSPw0KDQpJIGRvbid0IG9iamVjdCB0byB5b3UgZG9p
+bmcgYSBQUi4NCg0KSSBtZWFudCB0aGF0IGl0J3MgdW5jbGVhciB3aGV0aGVyIHdlIGNhbiBtb3Zl
+IGZvcndhcmQgd2l0aCB0aGUNCmFwcHJvYWNoLCBhcyB3ZSBoYXZlbid0IHJlY2VpdmVkIG11Y2gg
+cmVzcG9uc2UgZnJvbSB0aGUgbWFpbnRhaW5lcnMNCmFuZCB3ZSBkb24ndCBrbm93IHdoYXQgdGhl
+IGJsb2NrZXJzIGFyZS4NCg0KPj4gd2UgaGF2ZW4ndCByZWNlaXZlZCBhIHJlc3BvbnNlIGZyb20g
+dGhlIHNjaGVkdWxlciBtYWludGFpbmVycyBmb3IgYQ0KPj4gbG9uZyB0aW1lLiBXZSBkb24ndCBl
+dmVuIGtub3cgaWYgdGhlIGltcGxlbWVudGF0aW9uIGlzIGFjdHVhbGx5IGFuDQo+PiBpc3N1ZS4N
+Cj4+IA0KPiANCj4gSWYgdGhlcmUncyBhbiBpc3N1ZSwgSSBjYW4gZml4IGl0LiBBZnRlciBhbGws
+IHByaW50ayBjb25maXJtZWQgdGhhdA0KPiAiLipzIiBmb3JtYXQgd29ya3MgZm9yIHRoaXMgY2Fz
+ZToNCj4gDQo+IAlodHRwczovL2xvcmUua2VybmVsLm9yZy9ydXN0LWZvci1saW51eC9aeXlBc2pz
+ejA1QWxrT0JkQHBhdGh3YXkuc3VzZS5jei8NCj4gDQo+IGFuZCBQZXRlciBzb3J0IG9mIGNvbmZp
+cm1lZCBoZSdzIG5vdCBhZ2FpbnN0IHRoZSBpZGVhOg0KPiANCj4gCWh0dHBzOi8vbG9yZS5rZXJu
+ZWwub3JnL3J1c3QtZm9yLWxpbnV4LzIwMjUwMjAxMTIxNjEzLkdDODI1NkBub2lzeS5wcm9ncmFt
+bWluZy5raWNrcy1hc3MubmV0Lw0KPiANCj4gSSBkb24ndCBzZWUgYW55IG1ham9yIGlzc3VlIGJs
+b2NraW5nIHRoaXMuIEJ1dCBvZiBjb3Vyc2UsIEknbSBoYXBweSB0bw0KPiByZXNvbHZlIGlmIHRo
+ZXJlIGlzIG9uZS4NCg0KSSBrbm93IGJ1dCB0aGlzIHBhdGNoIGFkZHMgYSB3b3JrYXJvdW5kIHRv
+IHRoZSBDIGNvZGUgZm9yIFJ1c3SicyBzYWtlLA0KSSB3b3VsZCB1bmRlcnN0YW5kIGlmIHRoZSBt
+YWludGFpbmVycyByZWplY3QgaXQgYW5kIHByZWZlciBoYXZpbmcgUnVzdA0Kd29yayBhcm91bmQg
+dGhlIGlzc3VlIGluc3RlYWQuDQoNCkFueXdheSwgbGV0J3MgdHJ5IG9uZSBtb3JlIHRpbWUuIEkn
+bGwgbW9kaWZ5IHRoZSBwYXRjaCAjMSBhcyB5b3UNCnN1Z2dlc3RlZCBhbmQgc2VuZCBhIG5ldyBw
+YXRjaHNldC4NCg0KDQpUaGFua3MhDQo=
