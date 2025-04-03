@@ -1,115 +1,108 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594ADDDA9
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Apr 2025 07:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20501854;
+	Thu,  3 Apr 2025 08:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743667048; cv=none; b=qXQj0FRZK3FTS7dUt3LivaLq11r2rBb1FY8l9LyfNxJ3R/mG+K6bZaWi9NaXMtaFYIPQ2nDcLqP0dw4MktOYVniMxIKgtmcs2vgiRF+7optnfIOVu9wsgd5JOzolWkPZErhw6mhvKQ+WEciGWxh1tXbO4snuqb4Sfsj8jM1eQl4=
+	t=1743668308; cv=none; b=P38asBp6Ecpg7T9ZcHTiFLh5Hw7a4w7OqBAHwS48sOGAyno8m1Bbi+4YMDWWqiV11EyoBefnBvCCQfqTHwkdVjYCYgoBe9MHPA+UH/4On1SRcECPybWZZZRAvQQJpHA+neXxstLeQSxtLsx/rh0o3BeDUzuOq8nETm1j1MNkl8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743667048; c=relaxed/simple;
-	bh=ulZEU20t4pOPgUUCyNOsy77myQk/DUqd6pbMJwMzPEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RmDsRj+dnQrxkejHoHKckfg+Dv4hFOWrSBgooEjQOjJ3Me2rTH9VwHlNdxTKmilAM/Yrz50BMuIo2doXfzB+N2mah9jDcnCOKK1pBJ7ZnLLKBWy/N3aNuCssH/uNinNsfJ6jZHMgvlO06dbSGvYYPLLkN5zzoySS6Rj3BG23/hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=yU4RjSHX; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1743668308; c=relaxed/simple;
+	bh=0I7n8T2Xw/5A+xGujo1SuJ10MG6MtVU4rlBZLisvIwc=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=WBKfLFdiObsPvFwM5nm5Lo5lXBkGvw7ByCVwtxlT93N61S5qF6wXbFftow6NxJLxkCcnv34G6wMPGIHGm9y4yIVPCpLWvjLhf7U5YQEYfWV8Sq9mTguMyUs4Py+BL0l6u+nU++0g/sBTyTHaxcP8ca0TL/IH19c6qK2Q/afpsDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E673gJFe; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yU4RjSHX"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2243803b776so9148635ad.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 03 Apr 2025 00:57:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E673gJFe"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22401f4d35aso6525155ad.2;
+        Thu, 03 Apr 2025 01:18:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1743667046; x=1744271846; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tm5EsSWIqrkwolxwqlfjsnkuKZMeruFnGvUj7zCv6z4=;
-        b=yU4RjSHXweA+JvTOPW26Q7hnUYQU/tcJMRK+Fo4sAf/2S3ZhnJVmWN4/p06fggOW24
-         YoPEDZl5guydcS73lhzgBYfx0r3SSm/7/BN76aeqa2TVJdG3FVXmWfeDrrvRcd63Hz33
-         w2Dpv2eGt2uH/mwP8/VuiLPoYzol10HUgSCw8giOObEEmwYf3NjDPV3G5TuBtzAeEG2O
-         8p3b7MoRoqh8JT5+1EWewmrjlwxvJnouLLIH0+bv5XWXa4MzsmUFc1TpJyy+/Eef/mIx
-         VYMqCQQQCXq5yi67s5qWfHiZONIRNGX6yZwhbRDXoaT19aSXoAGpuTCk72jlOhiClAsL
-         YQfQ==
+        d=gmail.com; s=20230601; t=1743668306; x=1744273106; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RoQiVDYJvAvzWCWcfK67WGk1iw1Tha7jczmy8QUPbMg=;
+        b=E673gJFeEMFp0YKO3CPohE6YVagnp+XCTPU3iCD4hYBdRMzfrfeNJY4uZMQEuN8R0w
+         Vv+pUfoDMGKpuJ77SvQKskXueJQbW5KvI/B7bPGMFC4DOFpnssrMIBkvT0XRH7WfNCip
+         Yd5qS4FfgCRandyKRLhsCMyCRCoyrfGeCtx/jfKqFkgQuAWI4izbPdzkEKttmabdPmfu
+         lvgCmYL9AliTwsuwEPe0N3tum3c+zJ1XBuQrjwSGCsbneWkffhzNFYsGSASD6fi1/sGZ
+         9elgxI/FceHcaTsXwjQqXDsWAuGEjhaj3V9Xjjy+3gV5kpsERPV8/FPSpWeLHJiMwMiF
+         mZjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743667046; x=1744271846;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tm5EsSWIqrkwolxwqlfjsnkuKZMeruFnGvUj7zCv6z4=;
-        b=gjhm/gdszMGGtfI0WB4ti/CeqIs9+0nuV7VJ1yhZO5uiIoRfdqXltzPmtZUamhvzri
-         I6xKso/VifiijXuDpNCfM8AN2j9x6wabpedFmPHDyvNAnxlXPqdHOYugIQyAxDeJ1MAR
-         RyNFaOdA87qU2ldsnYkU7OATNp7eFqBaWgzTb9dr/tzai/yhpK9vQVWsD79I4PlLCaoz
-         1EoUZULJJ/n5j4PMiRlvci24eWn4ZchqOPkG/Cq580zqkw7X+DIAPF8EB/KcNFXCHKQc
-         N7rtZA6KUPAryic5edEaHUjTgt7fMrn6ggpAwsRXMeijAfxWGk9GML0Oav2xRusZMMpx
-         vKUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWP0oBj3mwiu28rF0e08TCYsofj1b64eg7J6kTfJ+C3x5RbgbOSxe7lStkBL0Zg2G4dc6Zp32r58muuBZ/Hdw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ3986R6h+OpmZrG97+FxXECDW736wI4Q1q36TCOikW937eyP6
-	/BGcvKj/2ebGVNsDIO5+c4wah9G3dqUaDY0AagNqbOafH/KOubc5iQeVnfLG6i0=
-X-Gm-Gg: ASbGncvUithKCVUZW2xaPqj+5Namf3g6+z/S2D/vd28GQ48S6AHhBsOz2tHUeN8qsBc
-	ZGXnxR2ylcOdBPdAp9EHRJa6wmvS0oeh++At2CjuT/NesyuJObPFFLLTLC60opIOn697WOKS9Rc
-	dU/hHf0hJo76U5IR640Y5P40iBLXg0ddJP7vy4RCYhmjVDbGjr+iynghpU3G0YzuTiXIjrVxwEh
-	iEdwlLiVokMGIooxpQXoTI5ySJFtKGoeCCxmsheGWyr1dluSkNEQNaXHCNifYuBNgr5fM7AlvF3
-	swb9ePA7pZukIs9D3s3tbugq8F6EukPK5J7PUDa/vK26LRMjT93eLJg+
-X-Google-Smtp-Source: AGHT+IH5BDfNgjBBdIX8pcMqnlQusnwGrVgvzsavmh9KRX7XN8rfs1J8H3JDZgZq58QV0YHIxQCF7A==
-X-Received: by 2002:a17:902:ce8e:b0:224:1074:63a0 with SMTP id d9443c01a7336-2296c85f3c5mr80035605ad.34.1743667046548;
-        Thu, 03 Apr 2025 00:57:26 -0700 (PDT)
-Received: from localhost ([122.172.83.32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-739d97ee5bdsm837235b3a.49.2025.04.03.00.57.25
+        d=1e100.net; s=20230601; t=1743668306; x=1744273106;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RoQiVDYJvAvzWCWcfK67WGk1iw1Tha7jczmy8QUPbMg=;
+        b=My2/Tv/dKof8iZBDZEj84hHEuaJa234kyiFqZp/WNY0UpiNYqJDZmoukOTTzkvLrkT
+         B1hUR3oicSs9I1766KvrmcuHYeZG5lEN24hlyWKdm1d31mE1MsaVG6E6hreElck2LvWB
+         CCyIHnInAawu2/A2VyVmab3pCDXLJGb2nYtaAZZdub4VRescfCsr2L2TO0Unztrm+M1g
+         odUV7y3+fwFrIsrXBgfC78Bt66oPdz9EbSemGb2bnJQEzZi+XeZWXuA5u5GLfVn1DsSY
+         Nu3Iq0KD3/5tIFONJLt4TB7/nl8TuLNZHOAbcIVAYqhv74Gh+ZjjtReVB2uyZCrybA/8
+         wFxA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1+9r2oUCqtEGwPeBsqnyamHUJMovqVYLRnVV+5YlhNSl5pkW4eeAL1Qf0q8+5PkhmPuhE4UE2A7BXF+NSNkc=@vger.kernel.org, AJvYcCUrKsCrG3yrIzV5ttACWAWA3HU+aKPmSzGiPGFYJ/FZ4joV6UrKx7+iwdp9+3hrCb/SQmjYBCAB@vger.kernel.org, AJvYcCXE6jzXXROUWBYu1IsLlYi6jmpu0XciIm8LNQXSww28UfANCzorl5L3TikIulDR6DZjrBZSU+kb/e8cw0o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDnLRaHGk9QrFFe0S5v188+JE9NyTAKHPoKhmOj1oMQYfwcsnp
+	n8xJ3BgcrKzaIfX2AFABWsZuNQpqpPB+sIudkQB3dduY10OAreVc15es2YH9
+X-Gm-Gg: ASbGnctYUxpkQFbYxTnKHFqY/DWYVvqmBmG2QetVwQ7hDno5k+LugqmXkPVlnnwN9Rx
+	U8XwVUOZwp+wgDZbi8OPJOSS9HO7Lc7A1vOYCUZ6GBlqs2wBSSj87M0a7jd4Tww79S6Y+HNOjLn
+	HXh5SZVFPaIjTOoYukEO8ax3+iIUpKC2fnBgXj7LoIXNSANjb8og7xN91oVPeh8rX9S1yCwL7kR
+	C8S5T3jXVGQ4hGB1MPcKsg2bezpB8w1H+ygohR4rs4Vn8Vb/WPsH7/tvXwuV4xSW6I8ufT1Ow/t
+	lna/fHqq89TJNGLSvOnRikrAZj+Y/OBVI+aRoNGD9mFcih3uG6Mb4RxccuHDIPWrUdTLzKol+19
+	Lw/uSY8GBn9+4l2ejvTHo1CBLfL557xONWlCfxQ==
+X-Google-Smtp-Source: AGHT+IHM0dK/CpadJel6XcHmo4OhKC1pr6HOLwIlhR7w4LsvgQpg3fMZtfMeebUstJnEdbcKq9w+3w==
+X-Received: by 2002:a17:903:3b84:b0:227:e980:919d with SMTP id d9443c01a7336-2296c86863dmr64173195ad.47.1743668306104;
+        Thu, 03 Apr 2025 01:18:26 -0700 (PDT)
+Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-229785ada37sm8761335ad.32.2025.04.03.01.18.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Apr 2025 00:57:26 -0700 (PDT)
-Date: Thu, 3 Apr 2025 13:27:23 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
-	rust-for-linux@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Burak Emir <bqe@google.com>
-Subject: Re: [PATCH V4 2/2] MAINTAINERS: Add entry for Rust bitmap API
-Message-ID: <20250403075723.v34zssaombavrcmp@vireshk-i7>
-References: <cover.1743572195.git.viresh.kumar@linaro.org>
- <bf2d798034e5f2c6fd5fbc561a8bd19431e6a9cb.1743572195.git.viresh.kumar@linaro.org>
- <CANiq72nzrjh6S2bh0GQOKtjFqMcDzrBbtSVhaL-i1kja1zW3HA@mail.gmail.com>
- <Z-1RLYyTE7pxAyzk@thinkpad>
+        Thu, 03 Apr 2025 01:18:25 -0700 (PDT)
+Date: Thu, 03 Apr 2025 17:18:09 +0900 (JST)
+Message-Id: <20250403.171809.1101736852312477056.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: boqun.feng@gmail.com, fujita.tomonori@gmail.com, tglx@linutronix.de,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ tgunders@redhat.com, me@kloenk.dev, david.laight.linux@gmail.com
+Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
+ DELAY/SLEEP and TIMEKEEPING API
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <87ecyd3s09.fsf@kernel.org>
+References: <RGjlasf3jfs3sL9TWhGeAJxH0MNvvn0DDqGl9FVo2JNvwTDpUqrr_V515QzLaEp0T4B1m6PJ0z7Jpw1obiG58w==@protonmail.internalid>
+	<Z-qgo5gl6Qly-Wur@Mac.home>
+	<87ecyd3s09.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z-1RLYyTE7pxAyzk@thinkpad>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On 02-04-25, 11:01, Yury Norov wrote:
-> On Wed, Apr 02, 2025 at 01:39:22PM +0200, Miguel Ojeda wrote:
-> > On Wed, Apr 2, 2025 at 7:38 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> > >
-> > > Update the MAINTAINERS file to include the Rust abstractions for bitmap
-> > > API.
-> > >
-> > > Yury has indicated that he does not wish to maintain the Rust code but
-> > > would like to be listed as a reviewer.
-> > 
-> > Will patches go through the BITMAP API tree, then? i.e. you will
-> > maintain it by sending patches to Yury's tree, right? That is great,
-> > just wanted to confirm after all the discussions if I missed anything.
+On Mon, 31 Mar 2025 21:43:50 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-Right.
+>>> If that is acceptable to everyone, it is very likely that I can pick 2-6
+>>> for v6.16.
+>>>
+>>
+>> You will need to fix something because patch 2-6 removes `Ktime` ;-)
+> 
+> Yea, but `Instant` is almost a direct substitution, right? Anyway, Tomo
+> can send a new spin and change all the uses of Ktime, or I can do it. It
+> should be straight forward. Either way is fine with me.
 
-> I didn't plan to, but I can move the bindings if you find it
-> reasonable.
+`Delta`? Not `Instant`.
 
-Sounds good. Thanks.
+All Ktime in hrtimer are passed to hrtimer_start_range_ns(), right?
 
--- 
-viresh
+I'll send a new version shortly.
