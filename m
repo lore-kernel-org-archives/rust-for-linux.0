@@ -1,123 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E33133DB;
-	Thu,  3 Apr 2025 17:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380B62512D5;
+	Thu,  3 Apr 2025 17:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743700992; cv=none; b=Ls42wscHQLZ/4Jve439L0rj+wOzwacmkYIVmr9wTHsDg2m9oD3oBioXVdAYfemPSQ3AclqmkdgdmY5qlY+myNWHfrvB6TrPDJasauUqcoUeYMow6y8kEDeyzSJDCj/qPmHqgQgwaUJT6oOgf71Wox7D5Qv99sUGOf7Alje2jCzw=
+	t=1743701773; cv=none; b=CWI2ikNUgrRwLsRTZ0PZ2wqx40s48hXQO7JuS/SrGM2M2xHEyuJFZ/1/tzuxZSGCz0tTmLCyLEqvldcPGGOAVezIGj3ypd9G7fnFBlFhZdLDu9rFQK4loK6IOLBmoBOXDPJHigyZwtCAAA4Df2P0OaoHfZ7O3damPACqQC9nHGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743700992; c=relaxed/simple;
-	bh=ONT5hyP9dAVamP+G+ulFE46eRCan0impzfRCpp3f67I=;
+	s=arc-20240116; t=1743701773; c=relaxed/simple;
+	bh=wUGCmmOo2C1eoS77TbjLuyHor/JBQbJ1BdThFBZP1TE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KXJ+ke0sa0qAF+aDYaFW5L4Hb9oFFHQ7NVnni0s2EpCFvmkP5YAZDJRgrZWoq+RA7fOMZDUpTPBAp01JwOLAjxjGw+XqCPgbCOHIDi+hKXmwZ28F3JkDtfI9jYhXzQJcpPge2G4RTNC0JITu4F0wwPY3pfKyqRTx72oY5dFEsyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0TodopX; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=qC+SNwfu9S7m96/ve5RqnnoOcbFAw7c+ujiAi4oOZOsURd7fWfL7KJOjpmkRcs5TUrty9bAtleUVnHEIBbuSJmlcC7scEWqF6nwxq5hMshD9/NJDHdKneHZDZZa/BNhmVhej9uBPQ0d2nGyczVkExLv7la8Lco8eclmu2/MKTJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xd9Wcaj/; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0TodopX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2D1C4AF09;
-	Thu,  3 Apr 2025 17:23:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743700991;
-	bh=ONT5hyP9dAVamP+G+ulFE46eRCan0impzfRCpp3f67I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=f0TodopXamtJcPuXFkIFGmXEMFVjCtZ26awby3r6CbOcoRrVUdsKFM7fGkEDmUdEX
-	 BG/AKQulIqCH6NiNwsUCMTEvgBPaqHY8FT1+jXx2DZioFyQO+/BH3K+sHO/iUwiycq
-	 adqhmahQixU30j9r4Bry9W8s0+qYsOiBn/Q5iUrYiScw3FqZImVh5qCvddkzDtit/z
-	 ao98GbtNaNCEFYUisU9DLc8wgkNAm+Tgxx0FBGYfVIrPzsl38QsSAw43CGqR5UEgNc
-	 04Dxrb/7C5Mruv4jfLrlx3PiNSebwWV7bom1HzOil+g3XiO4r066zp6m5WbwlpnLcD
-	 roFnHogRGW7CQ==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-abec8b750ebso187781766b.0;
-        Thu, 03 Apr 2025 10:23:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU3PTxuEG5oSPvpCrlcb4Cbr0iETijQT9M64ymnquQ/4Ow90eTyhzBamP4fySLPvt0OJi29zs/7bTxk9V6xU2A=@vger.kernel.org, AJvYcCVV7+V5mhRfhfXsfPMLL56/NPQCZO7ydzonQhBve3mMwIVmxHhtyyRJSWZzJ9U+CCIitXvc+Or1kuER@vger.kernel.org, AJvYcCVZz5psvvP3rwOKfoOh8xHe4zbTOzzZ+Tt5oJCaMCMH3//EvV06XU3HEmLfgF4oXxnaun/I0+Tgs3MIEQ==@vger.kernel.org, AJvYcCWnvFjgFMTE4TlXRJ70n2FqcU1vEVkBM6fzbkiLAgVXCoSix8Gn6Y945yxo/jtTsGmqIOsGYO+0D+aH7nHX@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCPUOoJv5jxWEU9Up+rSYySuYmOWfeDRvfpK8buswn4C1h6chY
-	BMAw9L1rjp6VcOcGh+rVdxSsEi3H+Weo15T89bIA6WjzhtYzvlYjQErxIwU9LsHrhxu+HeGpj0E
-	sfuD3X8udP308kqO40FXzSBxxPQ==
-X-Google-Smtp-Source: AGHT+IGBcTXIQpTZHaJO2gzh+xeqhW5vsmM/rL+gIC9Bk/L2lfLs2jI8YNuoDA0HhaIYMlttzKS2dmFDu5RSdENUZSU=
-X-Received: by 2002:a17:907:d25:b0:ac3:b115:21b8 with SMTP id
- a640c23a62f3a-ac7d1b16d1bmr34388366b.47.1743700990242; Thu, 03 Apr 2025
- 10:23:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xd9Wcaj/"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ff7255b8c6so135250a91.0;
+        Thu, 03 Apr 2025 10:36:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743701771; x=1744306571; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wUGCmmOo2C1eoS77TbjLuyHor/JBQbJ1BdThFBZP1TE=;
+        b=Xd9Wcaj/A3hfh61Me/8wMGIThsiTNrkyAUP4XtTY/a+JKCb72Lz0waye4+XzIWLB6p
+         U73dr1g+X09iTvhVB4IZaLNWTHcgOxcbmiIhgRIi4U1FwkCAL6RIf8azW+eQoTwiR9tO
+         S+JRSvlNol7Rw/jA/vi/N+VCAOY5EF2nbjxRqrV7Z9E1uOPVKadxUAXBCByouO6C7X3z
+         ik1jPh0In2Qwreo+aJP/F7jbVuCbtEkejOZxS8lb9sdQihlPF/IK4KoR+3LowtsxCTW4
+         hQIxoZDuk4G5XMs1XGSTn1sNSXRs9b5j46M9gZd5mw/8naX6oeMi/mtbRMxgEsfYfHzJ
+         q/Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743701771; x=1744306571;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wUGCmmOo2C1eoS77TbjLuyHor/JBQbJ1BdThFBZP1TE=;
+        b=FvaLRo2ncdT0ygDi4Me0CRbfMzz/13JAlMwskvnGhpKJCHiotWojpzc0pwHcJgbcWp
+         azmbP8GNT9SynQe6JUlFnJkB122dt+EhueeMvajMZvDTe3A9PnsxQzpQKgqDv8AijZYG
+         NS91lb1jDJKU96eVaq3/aN8EAOBFkVeFEvBJjmPT9m9Ncvhf4p9QgO7BrHLWYZYefWvM
+         pPEcVEYpyd+D4esC1nmV3soGEXO5s2KEJmo3VqF+To/GAFFhwrflSK2MwD3kaC5CopZE
+         tTLe5myV+nXrKGBn+JcFmRkDYmZGrZQk7en0jFL+PQK4IhFLXooQ8aqHYhkuQJCFVeh6
+         xn2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUobvP62god33uWk1Xkpbdlxgb47Xcu3dVNx2UsAy1xwg9vFp7hKPxUGBEW783l5bysvIHfbzYGtZZNtes=@vger.kernel.org, AJvYcCXBul1iHCB7rx+P15IUtQTUjNlvHrZ1LrfJlkaIZEwLWqj4ExnLsRKIGl/wchRbBaZ9DBuZwePMBte8eWP1F6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7kj++5X3Q7SlVlzTzUUX1uqrMpyX3oK6YoXo6bwoXeDtRkhej
+	KacLjVLygKPEIb+iPnN51tLNAaMO1LX4qsHkklYGKlA4zIwlRkQaJwoLMMN05WJ8iCiwnhApu0N
+	vITVb5lMqKoZYrncWOoj93W+Wh0g=
+X-Gm-Gg: ASbGncs/qzY4aAUA3tQKgAGqFSGg/ojPlwGeiBpQCaGooJJS6q6acESTTppfuXWbvZN
+	Pm/sc/Ir2T4G8IoZjnDv/veyjKPkEpG5hYLoq//30VQ/ILOZHCgB4/4dtQY5/70LAcgpopEgJAE
+	p6XklYo5F6OI1ELurMd44sHYbUhg==
+X-Google-Smtp-Source: AGHT+IG7VQfKhUI3ewajC5k1DnE4SbEI7NRFqrdHZB62bG69IvTMR0HCLjZM0+G09K4O2LAyweHi9oVeWXxsvbbGPII=
+X-Received: by 2002:a17:90b:3890:b0:2ff:5540:bb48 with SMTP id
+ 98e67ed59e1d1-306a48bf3f7mr213677a91.8.1743701771512; Thu, 03 Apr 2025
+ 10:36:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250326171411.590681-1-remo@buenzli.dev> <20250326171411.590681-4-remo@buenzli.dev>
- <Z-UPJyD41LOMM3o2@smile.fi.intel.com> <D8WA3WIHEQRN.3LQS84K8Z46OW@buenzli.dev>
- <Z-6NG7fSfyKH-vW_@smile.fi.intel.com> <CAL_JsqLPZc1LB09auMOJp90hbhJin75Yaa09h12ziZZgExSsBg@mail.gmail.com>
- <D8X60PODTV0B.2ENFYEXH7EZP0@buenzli.dev>
-In-Reply-To: <D8X60PODTV0B.2ENFYEXH7EZP0@buenzli.dev>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 3 Apr 2025 12:22:59 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLtRuzpQH=LnV45FFN=Gr_U403H2qfoPQskrCOknnwoyA@mail.gmail.com>
-X-Gm-Features: ATxdqUFBJeZLouUdX7Kpe6dUgmjxFi1XjK6oFW_um6EtcJfr1DDYj3hJqn8yqqU
-Message-ID: <CAL_JsqLtRuzpQH=LnV45FFN=Gr_U403H2qfoPQskrCOknnwoyA@mail.gmail.com>
-Subject: Re: [PATCH 03/10] device property: Add fwnode_property_read_int_array()
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+References: <20250401221205.52381-1-ojeda@kernel.org> <D8VPGBN60E61.1Z48FQW6TL3A@proton.me>
+ <CANiq72mdvnHvWbVNQbiXSRxd1xrF+A=v0RdJO74xeY3HyhRmcg@mail.gmail.com>
+ <CAJ-ks9nAAcoJoFF+qNPbhsM32kOh9u+LGYUwFN_n9qqudB6YhA@mail.gmail.com>
+ <CANiq72k36Tvwbzkg6nRdxB8VNRHLf8QzLeCXZq7sEPewccsWNw@mail.gmail.com>
+ <CAJ-ks9nfEg=sdn_-q+xOc+k9mU0pdMuumwRb76LXzE3RcOtg6w@mail.gmail.com>
+ <CANiq72mERwbmXYq-pi=WUAZ_VYGcBVS7tzH4P5zSUVCMcL4-CQ@mail.gmail.com> <CAJ-ks9kJiCGAkzW9M6q-62kcyvwBea5Zt2EoeeY0T3aN7jK+ng@mail.gmail.com>
+In-Reply-To: <CAJ-ks9kJiCGAkzW9M6q-62kcyvwBea5Zt2EoeeY0T3aN7jK+ng@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 3 Apr 2025 19:35:59 +0200
+X-Gm-Features: ATxdqUHj2RySMUlzfIJcf0gmHpZ8mus-BT_w4kJiHspLhXKJ1gM7QUWT0uqBcBI
+Message-ID: <CANiq72=Mo71rrVSnPzg00EfiY+PCf9KCA-EXmaoNUCb2-adAyQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: clean Rust 1.86.0 new `clippy::needless_continue` cases
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 3, 2025 at 12:04=E2=80=AFPM Remo Senekowitsch <remo@buenzli.dev=
-> wrote:
+On Wed, Apr 2, 2025 at 11:09=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
 >
-> On Thu Apr 3, 2025 at 6:08 PM CEST, Rob Herring wrote:
-> > On Thu, Apr 3, 2025 at 8:29=E2=80=AFAM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> >>
-> >> On Wed, Apr 02, 2025 at 06:04:13PM +0200, Remo Senekowitsch wrote:
-> >> > On Thu Mar 27, 2025 at 9:41 AM CET, Andy Shevchenko wrote:
-> >> > > On Wed, Mar 26, 2025 at 06:13:42PM +0100, Remo Senekowitsch wrote:
-> >> > >> The rust bindings for reading device properties has a single
-> >> > >> implementation supporting differing sizes of integers. The fwnode=
- C API
-> >> > >> already has a similar interface, but it is not exposed with the
-> >> > >> fwnode_property_ API. Add the fwnode_property_read_int_array() wr=
-apper.
-> >>
-> >> ...
-> >>
-> >> > >> +EXPORT_SYMBOL_GPL(fwnode_property_read_int_array);
-> >> > >
-> >> > > I'm not sure about this. We have a lot of assumptions in the code =
-that the
-> >> > > arrays beneath are only represented by the selected number of inte=
-ger types.
-> >> > > This opens a Pandora's box, e.g., reading in u24, which is not sup=
-ported by
-> >> > > the upper layers..
-> >> > >
-> >> > >> +int fwnode_property_read_int_array(const struct fwnode_handle *f=
-wnode, const char *propname,
-> >> > >> +                             unsigned int elem_size, void *val, =
-size_t nval);
-> >> >
-> >> > Here's an alternative approach using a macro to map each integer typ=
-e explicitly
-> >> > to its corresponding read function. There are some additional change=
-s that will
-> >> > be necessary to make the rest work, but this is the gist of it.
-> >>
-> >> I don;'t know Rust to tell anything about this, but at least it feels =
-much
-> >> better approach.
-> >
-> > I know a little Rust and it is much worse. It is implementing the same
-> > code 8 times instead of 1 time just to work-around the C API.
+> My experience in industrial settings is that this happens very rarely.
+
+We enable lints from time to time -- this would be no different.
+
+> =F0=9F=91=8D
 >
-> I prepared a functioning version of the macro-based approach. I'll post
-> the patch for reference and discussion. We don't have to go with it.
+> I don't have any new information to inject into this debate. It's a
+> judgement call.
 
-Please wait for the discussion to finish.
+Thanks for the feedback, it was useful.
 
-Rob
+I submitted a new patch to disable it and sent the feedback upstream.
+
+Cheers,
+Miguel
