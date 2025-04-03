@@ -1,90 +1,116 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FFE746E;
-	Thu,  3 Apr 2025 11:25:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D18924BC14;
+	Thu,  3 Apr 2025 12:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743679516; cv=none; b=fvl70JA9rHeUiiqtAqrIQ2+wCe6JHhDPq5nUCoTT4Wmp9BGQJDDwLJVHPhyO9zJWLJH4jEmKiDqCGrImSLedrkhsIiI6z+R+n78aBITN8RufqjWxKIJKUDYUvNU2O5h0DQ+C7BIl7+Jr7vTg/kgL1otbBARzWCFiu7ukRiHrk1E=
+	t=1743683020; cv=none; b=iLJS77Atw839LRps8g/069KgaaPpZ4a96LBMxD8wmas8nafE3TYkHZAZyHZm38berR5rs3+Ih8dNspKHJyEjMimc0fZNP8iPXp4sGy5zawWHL3BLEjX+GtjFg0cdrr3wb5clr/Xby8MgAM6EMWfMW9yrnZyvMXkcJnZHxh7/OcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743679516; c=relaxed/simple;
-	bh=EuZ+j/p5Kjpkon5TC1fOuctt/+lyQadTgl93X/5cuxU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZMEAvXOf/bYgkDf9k9gk4KMyqVQ8H7wV8EADJMhE8mscIHpEdZZqbnwxre57eDDHtffbjwJqPeNvDFnKLpIABWkB/0+L3SRBc+fj8kd6lXvWP4Y1XIiSIhojt/+mg7ipqItvyTJhyDBySWvTM9/CwSEyklT8UixdyJtcadI8WOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n3AWHpfT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4LpooKsa; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1743683020; c=relaxed/simple;
+	bh=75jP0jjWRAn+w4GK8dONkj/SHDBrOsKdM4Zl9GE0ymM=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Xzz3NY79VAzbvI+aefdohYBbWQe1ZG0H5dkZAYFNkQVXHn2r7f4TR2d/QiXYKWlYKd0MA+06CV2eFMJ/EyyWkTjlKVKsTe5ykvOPcmKUqfh6wTOdDxtdthIvnxzxO6aZ6GqgSux9/qwxHNdAY1LYy8dilALqEeMcyw8ZmaLTE9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jyAqiKtu; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n3AWHpfT";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4LpooKsa"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743679512;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1CU08XZD9aPjBvEmJkWRSp3wodCdCDRuOTIfkOuRKfY=;
-	b=n3AWHpfTTeNmOK7ECLxCEqFtm/rX8Szwt6FAYUHmky9T4h3S4CzG2oHBwGmenORLgvMuQ6
-	YVd6/zf0GHxsDTypI1zF/iTu+WRHQnKxgylcMbZXPbfVybpTB3Nv4frt5e36aeX8MoGx2c
-	AqjhqPKNp0OVMGJrEAsy7YdfIoJEynIztuWAx6Tf9ZzUdSnle7iw9RFL0NT+nxCqgZVHjO
-	WGQX0KQVFoxrj8OHzSLyuR26LwpvOdoVRjaFK5cm2G4RLQKInOpq8577VhJEoI3FtQLYpL
-	k9i/SFcr0raLMzagBZV1I1C0T8AwC1oxzAT/m6lqaowK2P8do8667xeHOnr66g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743679512;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1CU08XZD9aPjBvEmJkWRSp3wodCdCDRuOTIfkOuRKfY=;
-	b=4LpooKsa4fho3VUxl0T760YjzVDkltIpk/yf3eEm+fCFUWwO7Vt2mPGw4yRYDhqCtB8TwW
-	gP6pjwft5ZwZwrAw==
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Andreas
- Hindborg <a.hindborg@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>, Frederic Weisbecker
- <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>
-Subject: Re: [PATCH 2/6] rust: hrtimer: Add HrTimerCallbackContext and
- ::forward()
-In-Reply-To: <20250402214109.653341-3-lyude@redhat.com>
-References: <20250402214109.653341-1-lyude@redhat.com>
- <20250402214109.653341-3-lyude@redhat.com>
-Date: Thu, 03 Apr 2025 13:25:11 +0200
-Message-ID: <87a58xwkq0.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jyAqiKtu"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-af5cdf4a2f8so639582a12.3;
+        Thu, 03 Apr 2025 05:23:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743683019; x=1744287819; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uWu7/YhckerqLoieu5Vj2zXv6+3iK41HvBe41obBUw4=;
+        b=jyAqiKtu2Nq9KUzyzazKO2AMKDORnCctGoB4YKRsR2I+r9nbF0KA50RA/oFzIvu9Gy
+         7wTXuGaEZuk52YKfhgH60l3ZAwqZlGhH5US4GVY7vsM8VzeE8pSdYdrzxFtYntc+PHCe
+         Xu4/Uuk489SYKEVZWly2eZLzvchKxvTowqhjiRexbGb+TOSW4voeGPLOgfWQQQYTHPbI
+         tLGxIsoTrJxGrfhnA7OgeGNJQLGQ7TmNGAMEhFRCiwVjvxVKRNl87nStZuHFc6/nXgXL
+         eTmN5Fz3qloAW7/8CBFh0Mw4Chzf+oK29liK+6cRc2aMUEWbYc7Vjbsmm0QjpSGIbbnV
+         GhEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743683019; x=1744287819;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uWu7/YhckerqLoieu5Vj2zXv6+3iK41HvBe41obBUw4=;
+        b=OedKsfUAYo9ggL8rVxRA1J7QsCVoUIWk0tUaPsDWIE1hWOf78R0fZoCeYYU1OaWjBN
+         4+ZEIw63ce4ugAnjFw4tqByDosctO/NPmug1Vi2ogZZ+qD9JEbfbdY3jLGbLLK9PQjvg
+         mHStMSV/3WXqCDwMFf96ZlQqqUBux4se6tMN0TL+Sr9lPax7ZiY/VrJQ6XtXEyleiMQS
+         VgAJLWy88YVesZ9VDUrOiH7KVnQHmzO+rTUesn9BGZ8X0/Go6W+ux/8f6s0GEOh5zs83
+         ERpughKZ5CpTqh+8f7GkrNXtktkMo8ZZ+60+zHofbTKIPvafnOE3MXD1O+h0jyzf7N8l
+         1j0w==
+X-Forwarded-Encrypted: i=1; AJvYcCVb2HhDvpyN8e81bCGL9dKkVi3by7jp8eFXlcbfMkupoeesxLZD4LhQp714g5bdIqEhjYQlvRCttG1f8bA9IcA=@vger.kernel.org, AJvYcCW6ofGz6cKbhACrOUdtfHkNV4Hg0anH/liKap86q++HUI1HMVKz+/DtMyZY5RMZrBIdwvVDA8Ow@vger.kernel.org, AJvYcCXJGFSRIjozeQ788QYF3/WXW06aqVtWm8LWBT2SuNC3jHP289A+/k2X77OHYaJtR4j/e0l4A0f9LEzMRWc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwHNG6LxDeXlwTh2p/q8oFhw7qZxZVSRgKhfiqP0DdbrcxhQBV
+	u2S+RFiMKlNxSlBejowEkYJRAsa6DnPhqIXEkcjZgIHCsP7mESfU
+X-Gm-Gg: ASbGncuxQooIH1KvbSfFgWwE8/ilAgRewf1AZEgEl6q2MhiqXq6zESCUOCDdfiwuKXN
+	G94EXyYa0ukIBK30RQgwbXRaOUuspcIm7uEEApd+2wC6ruN+MyGjcgk/o69R4FV6QpWDr0J7oHc
+	xsKPmUKrPudob1eLon6QwW9xHVFrcyorrv+KaoLtWjU2a1PX+tUZxUKxsz40hc8uJofEirGusX1
+	k3wmBOv/cstLOsFf01njtwwPeAZdN8bu8Tc2yDa9FPBqlPkrwTO0AMJnZLOTgeSycLU7JTnrNWu
+	05AXNCl+mtLB32pc6nb1xb/FpiAe62O++8DMB+jnthYlhv7i+LF6GQvQdLoFvDB/NuTO2iW5WFI
+	8H3Z+pWCdGa0oOg/LXzWfsAXN9G0=
+X-Google-Smtp-Source: AGHT+IHWLK7u10H6D/cVi4q6t3KxterddYAML60wsBpmngVZJjls9MS5MkrlB/PbbH20ExQsFasSFQ==
+X-Received: by 2002:a17:903:2a83:b0:223:fb3a:8631 with SMTP id d9443c01a7336-22993c1cc8emr33592245ad.24.1743683018706;
+        Thu, 03 Apr 2025 05:23:38 -0700 (PDT)
+Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-229785adaf9sm12964285ad.27.2025.04.03.05.23.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Apr 2025 05:23:38 -0700 (PDT)
+Date: Thu, 03 Apr 2025 21:23:27 +0900 (JST)
+Message-Id: <20250403.212327.2029028318504480690.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ daniel.almeida@collabora.com, boqun.feng@gmail.com, gary@garyguo.net,
+ me@kloenk.dev, rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
+ andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
+ jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com,
+ david.laight.linux@gmail.com
+Subject: Re: [PATCH v11 4/8] rust: time: Introduce Instant type
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <87cydtv85r.fsf@kernel.org>
+References: <pk-Wz6K7ID9UBJQ5yv7aHqGztuRNqPlZv0ACr8K6kOMOzdan60fYn3vqlQFrf4NwwY5cXXp0jnYlX1nKpdlaGA==@protonmail.internalid>
+	<20250403.134038.2188356790179825602.fujita.tomonori@gmail.com>
+	<87cydtv85r.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 02 2025 at 17:40, Lyude Paul wrote:
+On Thu, 03 Apr 2025 12:41:52 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-> With Linux's hrtimer API, certain functions require we either acquire
-> proper locking to call specific methods - or that we call said methods from
-> the context of the timer callback. hrtimer_forward() is one of these
-> functions, so we start by adding a new HrTimerCallbackContext type which
-> provides a way of calling these methods that is inaccessible outside of
-> hrtimer callbacks.
+>>> As Boqun mentioned, we should make this generic over `ClockId` when the
+>>> hrtimer patches land.
+>>
+>> Seems that I overlooked his mail. Can you give me a pointer?
+>>
+>> I assume that you want the Instance type to vary depending on the
+>> clock source.
+> 
+> Yea, basically it is only okay to subtract instants if they are derived
+> from the same clock source. Boqun suggested here [1] before hrtimer
+> patches landed I think.
+> 
+> At any rate, now we have `kernel::time::ClockId`. It is an enum though,
+> so I am not sure how to go about it in practice. But we would want
+> `Instant<RealTime> - Instant<BootTime>` to give a compiler error.
 
-Just for completeness:
+Understood, thanks!
 
-When hrtimer_forward() is invoked from non-callback context, then there
-is not necessarily a locking requirement. The caller has to make sure
-that the timer is neither armed, nor running the callback.
+If we need a compile error for this, I don't think that the enum
+works; I guess that we need a distinct type for each of RealTime,
+BootTime, and so on.
 
-     hrtimer_cancel();
-     hrtimer_forward();
-
-is a legitimate sequence, if there is no way that the timer is re-armed
-concurrently. That works just without locks.
-
-That said, I really like that callback context concept you are doing!
-
-Thanks,
-
-        tglx
-
+Once the current patchset is merged, I'll work on that.
