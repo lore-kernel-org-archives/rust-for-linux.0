@@ -1,57 +1,58 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242D92E3385;
-	Thu,  3 Apr 2025 10:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FFE746E;
+	Thu,  3 Apr 2025 11:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743677696; cv=none; b=pV0NbWrVFi3XtxnC+RQ9rzb2FYeJDdQ9Q2JZCQjs3qmGhxrSBtCUpQVk3OsLLMUriSoJT86zfUJavHdjp5fs5qCB/Srhq4PNQSMzi+PC+jMIfllpwxahPubblKGWUrJK7XqvQuLlPynFNPqIgKEjrVoNKbLwT1H9nDR1gfXfyJw=
+	t=1743679516; cv=none; b=fvl70JA9rHeUiiqtAqrIQ2+wCe6JHhDPq5nUCoTT4Wmp9BGQJDDwLJVHPhyO9zJWLJH4jEmKiDqCGrImSLedrkhsIiI6z+R+n78aBITN8RufqjWxKIJKUDYUvNU2O5h0DQ+C7BIl7+Jr7vTg/kgL1otbBARzWCFiu7ukRiHrk1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743677696; c=relaxed/simple;
-	bh=QvBZ5cyCcgLfkLnVqPUR4UnS84sKWcyrUwMg47MI12g=;
+	s=arc-20240116; t=1743679516; c=relaxed/simple;
+	bh=EuZ+j/p5Kjpkon5TC1fOuctt/+lyQadTgl93X/5cuxU=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fbiyGhQPx5rAVoiGMRsSy8T2RTOMyzs02vfLBofspyPeB5X/64b69c7KSNlwh6dt/zvRFiAAexgsEw54kLBT7bZ/cUywxDfubC3VSwSSxssqVXuWi0AVnJZgkldLPnpeYP7zBXPe0FP6TbNvjJXj5WitcDNer+NZRVU+2yKhyMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FxA0WqbV; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=ZMEAvXOf/bYgkDf9k9gk4KMyqVQ8H7wV8EADJMhE8mscIHpEdZZqbnwxre57eDDHtffbjwJqPeNvDFnKLpIABWkB/0+L3SRBc+fj8kd6lXvWP4Y1XIiSIhojt/+mg7ipqItvyTJhyDBySWvTM9/CwSEyklT8UixdyJtcadI8WOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n3AWHpfT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4LpooKsa; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FxA0WqbV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CB6C4CEE3;
-	Thu,  3 Apr 2025 10:54:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743677694;
-	bh=QvBZ5cyCcgLfkLnVqPUR4UnS84sKWcyrUwMg47MI12g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FxA0WqbVF19+zdRqfr6x5kfvdJ8YdjP5uyJ2p/z4+2NiyereeXESF4KB5CIT/cGuB
-	 vy96fQVrYb8WDNyGbxsJdY9Z7EuuES/q7zhfI+Yc5tnjm8X1oQV11oCGUzENisE1UH
-	 21tYkCZR5jKvNbubvUvnlFne3vi7PebKAezEvhyJcxjI2WCKrkBrOp6sstJqK/YHU7
-	 RUOFM/8J56RwjotFNqTAse1EpXvh+t+yR4rf562VwgPQJh+V8flTcU3ZkoZ7cveb0s
-	 3Omkr0evvEnoHJrnq/3b+V5R+9w22p41h/lc3DglBBa7/eVg2JlXKKsWOBzFxDXAZo
-	 6aGSBZjCuIDIw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-Cc: <boqun.feng@gmail.com>,  <tglx@linutronix.de>,
-  <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <netdev@vger.kernel.org>,  <andrew@lunn.ch>,  <hkallweit1@gmail.com>,
-  <tmgross@umich.edu>,  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,
-  <gary@garyguo.net>,  <bjorn3_gh@protonmail.com>,
-  <benno.lossin@proton.me>,  <a.hindborg@samsung.com>,
-  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
-  <frederic@kernel.org>,  <arnd@arndb.de>,  <jstultz@google.com>,
-  <sboyd@kernel.org>,  <mingo@redhat.com>,  <peterz@infradead.org>,
-  <juri.lelli@redhat.com>,  <vincent.guittot@linaro.org>,
-  <dietmar.eggemann@arm.com>,  <rostedt@goodmis.org>,
-  <bsegall@google.com>,  <mgorman@suse.de>,  <vschneid@redhat.com>,
-  <tgunders@redhat.com>,  <me@kloenk.dev>,  <david.laight.linux@gmail.com>
-Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
- DELAY/SLEEP and TIMEKEEPING API
-In-Reply-To: <20250403.171809.1101736852312477056.fujita.tomonori@gmail.com>
-	(FUJITA Tomonori's message of "Thu, 03 Apr 2025 17:18:09 +0900")
-References: <RGjlasf3jfs3sL9TWhGeAJxH0MNvvn0DDqGl9FVo2JNvwTDpUqrr_V515QzLaEp0T4B1m6PJ0z7Jpw1obiG58w==@protonmail.internalid>
-	<Z-qgo5gl6Qly-Wur@Mac.home> <87ecyd3s09.fsf@kernel.org>
-	<RK_ErPB4YECyHEkLg8UNaclPYHIV40KuRFSNkYGroL8uT39vud-G3iRgR2a7c11Sb7mXgU6oeb_pukIeTOk9sQ==@protonmail.internalid>
-	<20250403.171809.1101736852312477056.fujita.tomonori@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 03 Apr 2025 12:54:40 +0200
-Message-ID: <877c41v7kf.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n3AWHpfT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4LpooKsa"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1743679512;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1CU08XZD9aPjBvEmJkWRSp3wodCdCDRuOTIfkOuRKfY=;
+	b=n3AWHpfTTeNmOK7ECLxCEqFtm/rX8Szwt6FAYUHmky9T4h3S4CzG2oHBwGmenORLgvMuQ6
+	YVd6/zf0GHxsDTypI1zF/iTu+WRHQnKxgylcMbZXPbfVybpTB3Nv4frt5e36aeX8MoGx2c
+	AqjhqPKNp0OVMGJrEAsy7YdfIoJEynIztuWAx6Tf9ZzUdSnle7iw9RFL0NT+nxCqgZVHjO
+	WGQX0KQVFoxrj8OHzSLyuR26LwpvOdoVRjaFK5cm2G4RLQKInOpq8577VhJEoI3FtQLYpL
+	k9i/SFcr0raLMzagBZV1I1C0T8AwC1oxzAT/m6lqaowK2P8do8667xeHOnr66g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1743679512;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1CU08XZD9aPjBvEmJkWRSp3wodCdCDRuOTIfkOuRKfY=;
+	b=4LpooKsa4fho3VUxl0T760YjzVDkltIpk/yf3eEm+fCFUWwO7Vt2mPGw4yRYDhqCtB8TwW
+	gP6pjwft5ZwZwrAw==
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Andreas
+ Hindborg <a.hindborg@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Boqun Feng <boqun.feng@gmail.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary
+ Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>
+Subject: Re: [PATCH 2/6] rust: hrtimer: Add HrTimerCallbackContext and
+ ::forward()
+In-Reply-To: <20250402214109.653341-3-lyude@redhat.com>
+References: <20250402214109.653341-1-lyude@redhat.com>
+ <20250402214109.653341-3-lyude@redhat.com>
+Date: Thu, 03 Apr 2025 13:25:11 +0200
+Message-ID: <87a58xwkq0.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,44 +61,30 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+On Wed, Apr 02 2025 at 17:40, Lyude Paul wrote:
 
-> On Mon, 31 Mar 2025 21:43:50 +0200
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->
->>>> If that is acceptable to everyone, it is very likely that I can pick 2-6
->>>> for v6.16.
->>>>
->>>
->>> You will need to fix something because patch 2-6 removes `Ktime` ;-)
->>
->> Yea, but `Instant` is almost a direct substitution, right? Anyway, Tomo
->> can send a new spin and change all the uses of Ktime, or I can do it. It
->> should be straight forward. Either way is fine with me.
->
-> `Delta`? Not `Instant`.
+> With Linux's hrtimer API, certain functions require we either acquire
+> proper locking to call specific methods - or that we call said methods from
+> the context of the timer callback. hrtimer_forward() is one of these
+> functions, so we start by adding a new HrTimerCallbackContext type which
+> provides a way of calling these methods that is inaccessible outside of
+> hrtimer callbacks.
 
-It depends. Current hrtimer takes `Ktime` and supports
-`HrTimerMode::Absolute` and `HrTimerMode::Relative`. With `Delta` and
-`Instant` we should take `Instant` for `HrTimerMode::Absolute` and
-`Delta` for `HrTimerMode::Relative`. The API needs to be modified a bit
-to make that work though. Probably we need to make the start function
-generic over the expiration type or something.
+Just for completeness:
 
-If you want to, you can fix that. If not, you can use `Instant` for the
-relative case as well, and we shall interpret it as duration. Then I
-will fix it up later. Your decision.
+When hrtimer_forward() is invoked from non-callback context, then there
+is not necessarily a locking requirement. The caller has to make sure
+that the timer is neither armed, nor running the callback.
 
-> All Ktime in hrtimer are passed to hrtimer_start_range_ns(), right?
+     hrtimer_cancel();
+     hrtimer_forward();
 
-Yes, that is where they end up.
+is a legitimate sequence, if there is no way that the timer is re-armed
+concurrently. That works just without locks.
 
-> I'll send a new version shortly.
+That said, I really like that callback context concept you are doing!
 
-Great :)
+Thanks,
 
-
-Best regards,
-Andreas Hindborg
-
+        tglx
 
