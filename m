@@ -1,163 +1,242 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B8FBA42;
-	Wed,  2 Apr 2025 23:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCA7A927;
+	Thu,  3 Apr 2025 00:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743635035; cv=none; b=GQe9YWJz5FDLwr5vb/Pkl6vHi27GmMQ2wyPCyWx52JpAEPjXyleOB90+WECn0mxecjHc8eXtykxI/WCSOHvKOltg+ApPpS+oWK9n9mHVf7B+pbcK/uScLKDxZcy1U+QXNUxooz7e5CcE2RxjsQSvUVdtyMCZuNButkMin12Qebo=
+	t=1743641508; cv=none; b=kOUOvHmkC4cwEIATorpg+ETTcwAUS3KkStVfDl1bXhWcZ5xWepJdMC6K6O4UDimucR1npLpFjoN+yi0F2zZr6WVYfVVmdXMTCeXlvUbVhOvwO7ntY1x7qTmRm09ojO9x91enWmR/t7C1h8xwb0aASPb2az0u6fgIER56PFKwlIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743635035; c=relaxed/simple;
-	bh=e/05RUv8AFU4dIy1XvhGvLAyFV/EJL8Ki9qGalUyCzM=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=de8155amd0Pg/AeCJQftt5L5CNpT0CWA3I8n2ifxXg1fuIsjS0k0EOGasBSH6C+3eSo8Nu59j3asagMTBv+6em0R22zBnYSlPr/f3a/3GsHioR1kPLJn63TsncfbFx08PduhAonTLS1p/YTeMas92oTUYDT/H/2k3Atzl/Wr9Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MiptNRSY; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1743641508; c=relaxed/simple;
+	bh=iryGazCjZUiwGGmfpxfw4Lc6UsOo0wCjVhD7QeGn3Bc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pF0gJ2/DNofNKUXz/bLkiLeaPeQ0VNmV/94mUh411uYcSLIM1lwf4VyNbkumrqzq4B1Mw3ejZlBXDhHZItuJ0ewMqqgbYXpkvqyR05G42rnDIyX5R09pCBHVfVem4TY/SAiQ4YpruBK3nyE+7qhI63qFfnhAuCZk8dPkwFOoFBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SCAPpQXO; arc=none smtp.client-ip=209.85.160.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MiptNRSY"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7359aca7ef2so312425b3a.2;
-        Wed, 02 Apr 2025 16:03:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SCAPpQXO"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-47663aeff1bso3058011cf.0;
+        Wed, 02 Apr 2025 17:51:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743635033; x=1744239833; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FjqEkgGdsJS2o6GYEk8m8GjTaU9yqigmQiAw5VcYXfo=;
-        b=MiptNRSYZ9Oz554Z4NjEph93KuM3NK/tukGznzl4gCUtB5YmBByG/YzNT2EAWHO0/S
-         hDP1HjNCSyxTq4A3Hmrq+JzfOMJTGurLIS22Ht1guNDbztll7SKh3XDUpcPmZHDk9KHi
-         cXDxtPtWRR1Z6hHLAi6U4KOn6mJg/qjxT1LdOB65FqWsc6RGx6h/CSm2rkEhZbJWr3tK
-         vxbLgW6awt/HVx/hyMmtX4ZyiDVrQ/G37/bn1iBfoNq1iqgWjcbIWBkLmQpn9muVPO8W
-         XMgmkp+gpcGpum4dkYEfs57M87IyOGdBbMONaBBFZEiG86x916Yey34LxCZppbSdGH1+
-         kd5g==
+        d=gmail.com; s=20230601; t=1743641505; x=1744246305; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zx+eNO28JnJFh8ii5WpyLNGRFtml7E13XoXgMVF7PjI=;
+        b=SCAPpQXOyUK4aNZ4BOq3su3hGh3lNceDVgHHkU/Uk2f1sqMfHDIIRImPU/lK0XkXPP
+         wNgST/iYU8leMBN6fxQdAksIMdJCfxBXAtxKCdGGPTOZcwGinsQ/u6vmiRxHCJTlgwB1
+         wJ4Gdne1lnoP6qnQ31BZDmrY/zu7SFeNjhqqVU8HcqMcNeGQNhrTS8R6FF+PpHkaAoi9
+         8tt2hoinyuo1G/7h5IAB+JF4icN128gzlmzUtvNa9h3wD3UDvEA8rei9nAcT5oUYEibt
+         SwzlCx8dNKpik2DeemaXx80HOGYIH3dNAsl0rzAF1Qsf0Fyu+T3QyN+3Fndkrdn3Sdpt
+         3fSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743635033; x=1744239833;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FjqEkgGdsJS2o6GYEk8m8GjTaU9yqigmQiAw5VcYXfo=;
-        b=Xk8Sd8uI4BCYCk+SGjUTuVmK3bgScYkK49fMZmnQEGFS+tdJ2tSIpeQtA0Q/8vaeua
-         t/cMXxBNILzpqbVaR/v80hIzjpI16MJhNGZNzS2T6jkXuWbu79CnW7rmtU3XHa3BUYHr
-         WLbpQ6JJ9XopoveVvJiQqtXUK7JA9DY+PxNqw0TdK0yEqAgrx48jHfQo0OCJ6ifI6Nd8
-         bWFNpPmjgUWtSCQHxfhi/aaEExOjOgXiuAyEL906YrPGOw10USGu1EmIKDbQqkoVxIG/
-         SnZ7XBEkytjUfATK0/62dANLduRLPwegEYDKHdDl5AbtgVdApfQrVHNxz4ZvgzJM01/S
-         6g3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVMRL6Z+ItFwsR2Oe8lN6CHe5o8iM7IggD9KRKX7ZCTfuQMH3ImqQae0uyxQvXTV3RbQ+ojK4XXzsT6phw=@vger.kernel.org, AJvYcCWH/6ZhJisTZt5zE6j+BUTuPhsWiP2EiFXWiVbtzUQS3/G/t3BSGpRh2zERMyAg3RJkgHRj6++E@vger.kernel.org, AJvYcCWOjqMzHwAnw5DBFIN1pyrD5HswFP6ZdWA78TYHcmzsRShLRx5XFjWzJxFWR54brgTmEOscfQx/umlpm/EOSWw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNt2rY8p6HtEvuJmXFYeFzjs2afubKcxWrj5+boj5aLasizHVy
-	8/8TO7npv/WPAU88F2NoXU6AohzfJG0+CLfY4oYWpHGRTsmwQldBBxiMhUBu
-X-Gm-Gg: ASbGncu1VYGOWGUu1E5454M0Nd48Wd4os+nBtfXNKCsLKm96jy2rQOqdjXWiGkKxuBJ
-	9uvV6Z4w20opgBx1vaRNx+XclCdpuT2P+0BpcHTIpyKdhttvRjqq68TLnqYrgSy+d8ytkU5TqT2
-	sLQOpZw81r1popHOMbTti7y5zgfa6cVjD0T7802k8SsJY/gbIgimk+4qqE05CDjJ8AuCbvgLYgC
-	udoe/qiaOciG25JGWtD9KEtMG76SrdRRvZg4CjK20DwbtLkKuN0u6txmnwUgKNC1zegvrwqLXl1
-	Tz+IfpjJVckQ03iWw+jxPDyivGLoeM/Jxb7THkUYjKBPuSonyfKubAOb/tIe6K/JUGDdph3ycL2
-	OPHYU5euKbfKpnpP0JE/d1b7Mqxk=
-X-Google-Smtp-Source: AGHT+IHSc2S/uyQv9O6KgtwrCS7DVP9GlM5QpujLsHZ45HEvH7TRy9mH1ugW5RtLrE1HYBM9UiS+/w==
-X-Received: by 2002:a05:6a00:1397:b0:736:35d4:f03f with SMTP id d2e1a72fcca58-73980387936mr27344481b3a.6.1743635032445;
-        Wed, 02 Apr 2025 16:03:52 -0700 (PDT)
-Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-739d9ea097asm62228b3a.90.2025.04.02.16.03.45
+        d=1e100.net; s=20230601; t=1743641505; x=1744246305;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zx+eNO28JnJFh8ii5WpyLNGRFtml7E13XoXgMVF7PjI=;
+        b=Rns4arTUjGaRjYJbqrx3k+DqKECBxsuLLGrutB7Jc3R5mpOkLFu9BjsYA0H48yfbYn
+         WJBO3Lag3jawGtD3MbCsl7cfD2x7/Nz59N7Td6XotQKaV+d9zk/pZ0llJMdUhvawkQRg
+         8fdeuCocD9ruAHOGnunnsEg7k4xz6ynqHk5RDEPsdIKLvIbCA3vhGCNPsruPCZB/5TBV
+         MfiHSTIlr7iBQSTAoTCaOlXALBcNvxBFYy9Ep38DyrAHiV985hzOU6eyfoBLn0F+7n0U
+         YyWkKn/I0hTJkMM+Pirk7XPxRGstavLioNVxYx2DDNZQzZA5awtrYLJx0bygz7Xoeoa6
+         Gd2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVYLT8B3u9b3bqA6/XK9qEw66RDmMWHxqtQpRh47cYvgz0RbYiCDE0KDrlAtfjJEcCbGZqqvhSg@vger.kernel.org, AJvYcCWskeBpa74p99gnqi27nMPZ5KbwLBnLKU7hkUSxvreDivUb7YLhFSasa6Sqz7pywOMjoS4T63yYDcH4f9U=@vger.kernel.org, AJvYcCX3tzgva2byb2OQfzFsqbQ8k1fSlVm50RucECSWNiIPkzZCZ7yMTmQ2IHbK2wxftpsEgowd2jmrcq9gnwsjvFA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPHmAPIBU8Rwh3cVxd0b/ZbykKcChC5MWT16EolUOvfX6YmsHt
+	vT43H8J2+xyCTFrTv3JKpicwRTrnw0Beghq7VsMAc6RgMAH2FxNN
+X-Gm-Gg: ASbGncu8WmG3dVgPK5HBwKIUTkSwONgO9sHbdtTHsMPz0xDC26zJaJEgatNplmS7hgK
+	VYDOnmvR3AXsxXhj2GljKm3oHM7I/vOKIPP0ikFRHPKTs4y0Xx7ATbi4CLW9R2p7F3IDIP1zveG
+	3u6YiStkCAZbkllPIW1snlE4xky0RrDi+F1zu7xdlSzk3hXva5H+cONioRfTVAUWiXu0Uf8rVHq
+	HAGH/BOJufCOy8ydcOxdBEfsToWjWP6LFMKlH/d0nakL2TX/vZTlkBx7zVnGDppWrY5vnf3J0I7
+	e/qAqPdwV6W68v4yvLqEyfRojS/FLs3ms9wasA69B5qpbkGpUgNN9uCmg7vcmNAmzuAM8BOB0tU
+	iJSQenVG/ETJAqq0ptCpKk+lqzm6sJG11Vjk=
+X-Google-Smtp-Source: AGHT+IHl6vHyV+61sC/9TgrnujKk9+yg+F0OivRtaPSvyTERsIxjVAR8UgjX7v/h/tMPnV4WQljzGQ==
+X-Received: by 2002:ac8:7dc4:0:b0:476:b56d:eb46 with SMTP id d75a77b69052e-47909f6f48bmr60270671cf.15.1743641504991;
+        Wed, 02 Apr 2025 17:51:44 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4791b071c4fsm1313341cf.26.2025.04.02.17.51.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Apr 2025 16:03:52 -0700 (PDT)
-Date: Thu, 03 Apr 2025 08:03:34 +0900 (JST)
-Message-Id: <20250403.080334.1462587538453396496.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, a.hindborg@kernel.org, tglx@linutronix.de,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
- frederic@kernel.org, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- tgunders@redhat.com, me@kloenk.dev, david.laight.linux@gmail.com
+        Wed, 02 Apr 2025 17:51:44 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9D233120006A;
+	Wed,  2 Apr 2025 20:51:43 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Wed, 02 Apr 2025 20:51:43 -0400
+X-ME-Sender: <xms:n9vtZwGIv1W-NRG7O72_olayTo7Fuqz7u6_w2ZOoK9yTZXSMgIpeXA>
+    <xme:n9vtZ5Xqnx1bqLa3pRymuSJmnltKSFNVWyfJ-SQaJ6bBZhyPkzb4lmobbhgR8BMB9
+    1AyCLUsythLm7Hdnw>
+X-ME-Received: <xmr:n9vtZ6IXlbi514jubk24p12hMBlsK4Umm4NzE6YegYRUw6aLZwDZNgh7>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukeejudehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedv
+    teehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
+    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
+    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
+    nhgrmhgvpdhnsggprhgtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtthho
+    pegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigse
+    hlihhnuhhtrhhonhhigidruggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuh
+    igsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpd
+    hrtghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohep
+    thhmghhrohhsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:n9vtZyEI8hT3qbBqN932Yi0iczrpy4remeEzNZJALBvwbRgsI-o8ow>
+    <xmx:n9vtZ2XgCrcG_lnChEzVQ5UFuKqDxVtZbgnIlCHOtlFhNX_8KLafgQ>
+    <xmx:n9vtZ1PlPqk6x3AntwbvLcHBXFxm9avAx0icBHtboMO5EgH1tM7gdA>
+    <xmx:n9vtZ93H8Wb3K8NuSFA34no8HNF0d-OAH2QQTsD5f3iDndTQXcLTAg>
+    <xmx:n9vtZ_Vz7_wc7icCGMnztOxic4PgFsso-8Sf6KCj-lBtoUfT0L3dD1y3>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 2 Apr 2025 20:51:42 -0400 (EDT)
+Date: Wed, 2 Apr 2025 17:51:41 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: a.hindborg@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
+	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	anna-maria@linutronix.de, frederic@kernel.org, arnd@arndb.de,
+	jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+	peterz@infradead.org, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
+	david.laight.linux@gmail.com
 Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
  DELAY/SLEEP and TIMEKEEPING API
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <Z-1l3mgsOi4y4N_c@boqun-archlinux>
+Message-ID: <Z-3bnUucR5EX8XVu@Mac.home>
 References: <Z-qgo5gl6Qly-Wur@Mac.home>
-	<20250402.231627.270393242231849699.fujita.tomonori@gmail.com>
-	<Z-1l3mgsOi4y4N_c@boqun-archlinux>
+ <20250402.231627.270393242231849699.fujita.tomonori@gmail.com>
+ <Z-1l3mgsOi4y4N_c@boqun-archlinux>
+ <20250403.080334.1462587538453396496.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250403.080334.1462587538453396496.fujita.tomonori@gmail.com>
 
-On Wed, 2 Apr 2025 09:29:18 -0700
-Boqun Feng <boqun.feng@gmail.com> wrote:
-
-> On Wed, Apr 02, 2025 at 11:16:27PM +0900, FUJITA Tomonori wrote:
->> On Mon, 31 Mar 2025 07:03:15 -0700
->> Boqun Feng <boqun.feng@gmail.com> wrote:
->> 
->> >> My recommendation would be to take all of `rust/kernel/time` under one
->> >> entry for now. I suggest the following, folding in the hrtimer entry as
->> >> well:
->> >> 
->> >> DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
->> >> M:	Andreas Hindborg <a.hindborg@kernel.org>
->> > 
->> > Given you're the one who would handle the patches, I think this make
->> > more sense.
->> > 
->> >> R:	Boqun Feng <boqun.feng@gmail.com>
->> >> R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
->> > 
->> > Tomo, does this look good to you?
->> 
->> Fine by me.
->> 
->> So a single entry for all the Rust time stuff, which isn't aligned
->> with C's MAINTAINERS entries. It's just for now?
->> 
+On Thu, Apr 03, 2025 at 08:03:34AM +0900, FUJITA Tomonori wrote:
+> On Wed, 2 Apr 2025 09:29:18 -0700
+> Boqun Feng <boqun.feng@gmail.com> wrote:
 > 
-> Given Andreas is the one who's going to handle the PRs, and he will put
-> all the things in one branch. I think it's fine even for long term, and
-> we got all relevant reviewers covered. If the Rust timekeeping + hrtimer
-> community expands in the future, we can also add more entries. We don't
-> necessarily need to copy all maintainer structures from C ;-)
-
-It seems I was mistaken. I had thought that the ideal goal was for the
-same team to maintain both the C code and the corresponding Rust code.
-
-
->> >> I assume patch 1 will go through the sched/core tree, and then Miguel
->> >> can pick 7.
->> >> 
->> > 
->> > Patch 1 & 7 probably should go together, but we can decide it later.
->> 
->> Since nothing has moved forward for quite a while, maybe it's time to
->> drop patch 1.
+> > On Wed, Apr 02, 2025 at 11:16:27PM +0900, FUJITA Tomonori wrote:
+> >> On Mon, 31 Mar 2025 07:03:15 -0700
+> >> Boqun Feng <boqun.feng@gmail.com> wrote:
+> >> 
+> >> >> My recommendation would be to take all of `rust/kernel/time` under one
+> >> >> entry for now. I suggest the following, folding in the hrtimer entry as
+> >> >> well:
+> >> >> 
+> >> >> DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
+> >> >> M:	Andreas Hindborg <a.hindborg@kernel.org>
+> >> > 
+> >> > Given you're the one who would handle the patches, I think this make
+> >> > more sense.
+> >> > 
+> >> >> R:	Boqun Feng <boqun.feng@gmail.com>
+> >> >> R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
+> >> > 
+> >> > Tomo, does this look good to you?
+> >> 
+> >> Fine by me.
+> >> 
+> >> So a single entry for all the Rust time stuff, which isn't aligned
+> >> with C's MAINTAINERS entries. It's just for now?
+> >> 
+> > 
+> > Given Andreas is the one who's going to handle the PRs, and he will put
+> > all the things in one branch. I think it's fine even for long term, and
+> > we got all relevant reviewers covered. If the Rust timekeeping + hrtimer
+> > community expands in the future, we can also add more entries. We don't
+> > necessarily need to copy all maintainer structures from C ;-)
 > 
-> No, I think we should keep it. Because otherwise we will use a macro
-
-Yeah, I know. the first version of this uses a macro.
-
-
-> version of read_poll_timeout(), which is strictly worse. I'm happy to
-> collect patch #1 and the cpu_relax() patch of patch #7, and send an PR
-> to tip. Could you split them a bit:
+> It seems I was mistaken. I had thought that the ideal goal was for the
+> same team to maintain both the C code and the corresponding Rust code.
 > 
-> * Move the Rust might_sleep() in patch #7 to patch #1 and put it at
->   kernel::task, also if we EXPORT_SYMBOL(__might_sleep_precision), we
->   don't need the rust_helper for it.
+
+Yeah, that was the ideal goal, but Frederic said in the hrtimer series:
+
+	https://lore.kernel.org/rust-for-linux/Z8iLIyofy6KGOsq5@localhost.localdomain/
+
+, to me it's clear that hrtimer maintainers want hrtimer Rust patches to
+go to rust tree via Andreas, and given timekeeping maintainers are
+basically the same group of people, and Thomas explicitly asked to be
+added as reviewers:
+
+	https://lore.kernel.org/rust-for-linux/87o6xu15m1.ffs@tglx/
+
+It's a clear signal that timekeeping and hrtimer Rust patches are
+preferred to go to rust tree, and Andreas had nicely accepted to handle
+timekeeping and sleep/delay patches, so it makes sense to use one entry
+if he prefers. Hope this clarifies things.
+
 > 
-> * Have a separate containing the cpu_relax() bit.
+> >> >> I assume patch 1 will go through the sched/core tree, and then Miguel
+> >> >> can pick 7.
+> >> >> 
+> >> > 
+> >> > Patch 1 & 7 probably should go together, but we can decide it later.
+> >> 
+> >> Since nothing has moved forward for quite a while, maybe it's time to
+> >> drop patch 1.
+> > 
+> > No, I think we should keep it. Because otherwise we will use a macro
 > 
-> * Also you may want to put #[inline] at cpu_relax() and might_resched().
+> Yeah, I know. the first version of this uses a macro.
 > 
-> and we can start from there. Sounds good?
+> 
+> > version of read_poll_timeout(), which is strictly worse. I'm happy to
+> > collect patch #1 and the cpu_relax() patch of patch #7, and send an PR
+> > to tip. Could you split them a bit:
+> > 
+> > * Move the Rust might_sleep() in patch #7 to patch #1 and put it at
+> >   kernel::task, also if we EXPORT_SYMBOL(__might_sleep_precision), we
+> >   don't need the rust_helper for it.
+> > 
+> > * Have a separate containing the cpu_relax() bit.
+> > 
+> > * Also you may want to put #[inline] at cpu_relax() and might_resched().
+> > 
+> > and we can start from there. Sounds good?
+> 
+> I can do whatever but I don't think these matters. The problem is that
 
-I can do whatever but I don't think these matters. The problem is that
-we haven't received a response from the scheduler maintainers for a
-long time. We don't even know if the implementation is actually an
-issue.
+Confused. I said I would do a PR, that means if no objection, the
+patches will get merged. Isn't this a way to move forward? Or you're
+against that I'm doing a PR?
+
+> we haven't received a response from the scheduler maintainers for a
+> long time. We don't even know if the implementation is actually an
+> issue.
+> 
+
+If there's an issue, I can fix it. After all, printk confirmed that
+".*s" format works for this case:
+
+	https://lore.kernel.org/rust-for-linux/ZyyAsjsz05AlkOBd@pathway.suse.cz/
+
+and Peter sort of confirmed he's not against the idea:
+
+	https://lore.kernel.org/rust-for-linux/20250201121613.GC8256@noisy.programming.kicks-ass.net/
+
+I don't see any major issue blocking this. But of course, I'm happy to
+resolve if there is one.
 
 
+Regards,
+Boqun
 
+> 
+> 
