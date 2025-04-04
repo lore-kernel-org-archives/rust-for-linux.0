@@ -1,121 +1,74 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FCE27702;
-	Fri,  4 Apr 2025 16:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC74B220687;
+	Fri,  4 Apr 2025 19:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743784822; cv=none; b=O4jf5M1IRTzOPe6xts+t52cNkKAlHMsbLtG3x3QhgznK4LLSjiB3ZYiyyknD++BYCCOAY7GHK9A4SNkfqLFt7sCisFM+OsmxYqz3X+VIK3SXicjCk+G9SC9sybw0g8V6xevfYtpTwk/2j1b4jUvSQGv8NcQqx8p9qBrUK3HCE9E=
+	t=1743795612; cv=none; b=MQ3iOstVofRTaUZLoM3Ij3U4h99u1l82dv+KGI2KDA+egg7qqVa2B05iT/8hD4GuLhkrLpPM9dD67qaddUyS4Dv2OrpnUppNtWGHaqWzhM+yUhUccWJdUg4Gk4xewdNpbFvH5+N8UKiPnI4t5dXiouwYDpzWv/qhySROkws0i/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743784822; c=relaxed/simple;
-	bh=NliqGKQBavmQ/UAIAWusnksO/6ItanviREC+SdQ4Go8=;
+	s=arc-20240116; t=1743795612; c=relaxed/simple;
+	bh=K4+2653B+P3t09TRW4oWkeep7WQa3JA/0qhTEvnp/Kc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UYQizyF9ARuDDGBh8oB+a7iG5zvaXWi83Mh0TU28Xf7DqjzABh39ToslxvMaak1RFX350u3v2DPT964YzqfC10+dKk1r6JRPq65bU2tHRSwbQyMWaMQ78pXcMaxx4zC+VmyTDtHf5TisTjFG0Q+gZJtpHlCISIASRlJVFiSU1tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D00Qoscq; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=mXmnyTKpi+9FU6DA20YNqMzpOFMxBhL2d1cRgIqTPNaG+OQ9oOosAxWyIZEP7bi+bC8b4ubcfiAqQvA5CVQstIVqgC5SBEy97UZDsoWay9JcViD6cnFwnoIiAwsPI/DQGKSK3UV/T43pxXStdZvGaPhSoyC6n36Bi1w3DJpd5G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IS0MMpuL; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D00Qoscq"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6e8f8657f29so17794096d6.3;
-        Fri, 04 Apr 2025 09:40:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743784819; x=1744389619; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6n9DYF24dQ6uMZmwgty1y+VxRnz9JV9/BeuY5w4KpoY=;
-        b=D00QoscqB4tv2Uf10SsPmYV5HM3Y4rQnMajOx8bi2slOsr4sukJzW3zYTTnDcYTL93
-         iGs5okTL3e3gx6GeASZ/ADVoub/GBX8W5nht4T4uabEwt4KA6ISvcj04TZjWNOFgRKcx
-         hVqxtkqlgHixaRb40DcMeYyEtHcYK8NCc6ODkYxN4Nc3S6EiHqvosqrZv31JbkG4Mt7J
-         1EqvCGsdKcarZT8xJd4Yug7TZBhVJf8rJcF/R2tbVUndkqzhlgz8ugZ40yKAd/sf7TOc
-         FsU6da05iRxc1x8JpA5K37kQbof2jOMRGmu2/jFfO4Q8UX6N9pa1JKeBVZvBy3/ZWMiy
-         u+Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743784819; x=1744389619;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6n9DYF24dQ6uMZmwgty1y+VxRnz9JV9/BeuY5w4KpoY=;
-        b=LUiXkVJ2Tp/3kaYMDkcF0sZYGDI7fgjrnyo6JujxAECHqsDytobxzlJeUNWoKyIzPt
-         6rhI7s1lxSmllsXWvOdcuUDrchFIg3knDDkmKTV7MljnIvHsYH8meEjTJVRCqpYU+9VB
-         48dp0JZxmEHMURfQuSVoUSMqwtO8JHMPFNnO/24Gmts/0Pl1m9DrLtNEtaDLxwOKUB6H
-         egkoZoDNnMuk0ewqJUkTEQ5162h+7VRBBO4TQ9czlTHr+kBmNUd9pzopQ59+6BkP+uMq
-         DVoEY4X2eCeQzov+p5K5W141CR6y/GJHXK2+/bYHg+5f1mpS1tYatNxiHFca14vrOWAv
-         +Oyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUW/8zmF0+19PjyZovvcYev/AQ//bKU3VDor+gyvIiQZi9tHscrPTdGtTz0PZfHmjm3yQWot5yF@vger.kernel.org, AJvYcCVJ1lgHX8kfMqkqFzjU/y9MeeFG62J1h+r+yMmWKIbeU2oFwr77nHMcAAsGgPCSUc+u+pErGFbvpeJNuTYt71k=@vger.kernel.org, AJvYcCWMtV7jFKslReXidZgUxeeGE4tLT687l3okH3O8RVBupcstezhyOX/39hRuOrZtDg0qCbYWjLd23Xm49Bw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtiEVeUZU/HsNJoznYgeZhgbr7BtRaOnolP/VHWXN/YuoZWzT9
-	utddwIbakgnjd4/tm+ppazhW3ltq08Ex3prxwtGVe8gfQ4JyJ11F
-X-Gm-Gg: ASbGncu789ydKxyxYNrAaEBUIqLgwUVa3CSiCdjnDE77dXdHd0beKE3Yspk9lNSGlOx
-	s6ONWFqd495jL998quzV9MYEhh3L0wqnKAv8bmDXyY8j6H0/hkHDBULI2fEAgk92Idcqz/LswqB
-	jgFaqUjVC/SyFh1BYbcEReHElGig0+/VgJUWgeNJKfVpyDcq0lHYY3lw46JBQOoHXFaA2hlfWKi
-	C2EBVcCfM/cW800MFVY/4rAD8NDapDb+eQ+DOTFOrrCTRypH36mXN5BQRhG2CINqDnFspkgRDr1
-	CDF/LpzJz8hIWNhGoJZ9IN4xQVyN/Jtyju/HSXpE2qRFv861HkwSAAdNBzt7D4yK/khNeeVuCH3
-	te5KumBm25DaclvBJBaRHgqhWm22NRTqdqcw=
-X-Google-Smtp-Source: AGHT+IEOvKwJBp6J4+qpH0k5xktEEnNscPYWCzCN1PUWX48juY0yS7t3z19gndIog8r5yNGM/UsoDQ==
-X-Received: by 2002:a05:6214:d63:b0:6e8:f6d2:e074 with SMTP id 6a1803df08f44-6f01e7aad09mr67340936d6.28.1743784818708;
-        Fri, 04 Apr 2025 09:40:18 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ef0efc12besm23495456d6.16.2025.04.04.09.40.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Apr 2025 09:40:18 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1EF34120007C;
-	Fri,  4 Apr 2025 12:40:17 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 04 Apr 2025 12:40:17 -0400
-X-ME-Sender: <xms:cQvwZ87LTyCuZJkuQeRmsvxMlLGeiY1c0nWzN3xAxVhvtM9R0uRTSg>
-    <xme:cQvwZ9728kAnWKobnl0P9LrQio2VljoMLr8du4wNRonXO4N7qj0TptcfSebUPGASe
-    ocFCjLqLAIzCOVLWw>
-X-ME-Received: <xmr:cQvwZ7foRgGIIzaC6ZSYsCHG5bw-boxjAz5HMI0n7m_b6sbxsr7bcvAEcuo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduleduleehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
-    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepfeegpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhise
-    hgmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtth
-    hopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pegrnhgurhgvfieslhhunhhnrdgthhdprhgtphhtthhopehhkhgrlhhlfigvihhtudesgh
-    hmrghilhdrtghomhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:cQvwZxLs3L9k4yddAiGi-NXW7qFyw-N4lCdO__DOGIxjvvFDyZdu2Q>
-    <xmx:cQvwZwJ0BKYZZEq_UcgXJ7MG82KxpH_oKF5XJSEilVrK0lthK8lj5w>
-    <xmx:cQvwZyzN3d7fj5gZQBIm6wBf78WPhAyRWsUNjDo_LfTqkuTYlF-eIQ>
-    <xmx:cQvwZ0J18-m6tYEvXk8AoHB7CGG8b74Amo2P9RY3hKgSgd0fkliWSQ>
-    <xmx:cQvwZ_YFi7WzDwEHOMkKJgyIJrrG6CPMWH2O8L1NszZxTwL3L1yPpOMn>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 4 Apr 2025 12:40:16 -0400 (EDT)
-Date: Fri, 4 Apr 2025 09:40:06 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: a.hindborg@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org,
-	andrew@lunn.ch, hkallweit1@gmail.com, tmgross@umich.edu,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, arnd@arndb.de,
-	jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
-	peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
-	david.laight.linux@gmail.com
-Subject: Re: [PATCH v11 6/8] MAINTAINERS: rust: Add new sections for
- DELAY/SLEEP and TIMEKEEPING API
-Message-ID: <Z_ALZsnwN53ZPBrB@boqun-archlinux>
-References: <RK_ErPB4YECyHEkLg8UNaclPYHIV40KuRFSNkYGroL8uT39vud-G3iRgR2a7c11Sb7mXgU6oeb_pukIeTOk9sQ==@protonmail.internalid>
- <20250403.171809.1101736852312477056.fujita.tomonori@gmail.com>
- <877c41v7kf.fsf@kernel.org>
- <20250403.215745.2138534529135480572.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IS0MMpuL"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6FABA4316C;
+	Fri,  4 Apr 2025 19:39:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1743795600;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Iwl7UY6fxvS7ChMd2ABQVnw01XXrMbl4YZYI1uC6zG4=;
+	b=IS0MMpuLmnRjctOh14jil2pndAXYyuWW7AYD1g/MC83EJSJrGFZ3U0P2RcG5SClgCRvrIu
+	Qs/QM3OQxmhoSM/mvKgYdbluOgc4LxijlG0UmZ34qC9yKXkYsiu8ceMrrcFKarBZfXxLXU
+	5vlQ9wYF4XCUQH/1dD67RpDp5StT6WiwaPmjuxBxJxNJp35ZQks/xkDGWF3yW14GhKuWeR
+	Ght0w1KW/j928cQ5SPrQtbbUzn33S2v56cPOugqbhlA4l6dhgGT7biPtd/B9DSi7XCe5sM
+	Zm8jL9QHYZ+LQfa0maBaKrGEmFBgooRoJ8AAGKPqbEKnxWnIexvKn60ntQ1yeA==
+Date: Fri, 4 Apr 2025 21:39:53 +0200
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>, mcanal@igalia.com,
+	Alice Ryhl <aliceryhl@google.com>,
+	Maxime Ripard <mripard@kernel.org>, Simona Vetter <sima@ffwll.ch>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Asahi Lina <lina@asahilina.net>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC v3 02/33] rust: drm: Add traits for registering KMS devices
+Message-ID: <Z_A1gSIoMgpWXGor@2a02-8440-d108-69bb-05bc-5b53-7bd4-5db0.rev.sfr.net>
+Mail-Followup-To: Lyude Paul <lyude@redhat.com>,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>, mcanal@igalia.com,
+	Alice Ryhl <aliceryhl@google.com>,
+	Maxime Ripard <mripard@kernel.org>, Simona Vetter <sima@ffwll.ch>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Asahi Lina <lina@asahilina.net>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	open list <linux-kernel@vger.kernel.org>
+References: <20250305230406.567126-1-lyude@redhat.com>
+ <20250305230406.567126-3-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -124,59 +77,468 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250403.215745.2138534529135480572.fujita.tomonori@gmail.com>
+In-Reply-To: <20250305230406.567126-3-lyude@redhat.com>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduledvfeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefnohhuihhsucevhhgruhhvvghtuceolhhouhhishdrtghhrghuvhgvthessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeekkeevvefhteejtefhheeluddttdduuddvieegleegheekffffudefvdfftdetnecuffhomhgrihhnpegurhhmrdgurghtrgdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddvmeekgeegtdemugdutdekmeeilegssgemhegstgemhegsheefmeejsggugeemhegusgdtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeekgeegtdemugdutdekmeeilegssgemhegstgemhegsheefmeejsggugeemhegusgdtpdhhvghlohepvdgrtddvqdekgeegtddqugdutdekqdeilegssgdqtdehsggtqdehsgehfedqjegsugegqdehuggstddrrhgvvhdrshhfrhdrnhgvthdpmhgrihhlfhhrohhmpehlohhuihhsrdgthhgruhhvvghtsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvuddprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtt
+ hhopegurhhiqdguvghvvghlsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmtggrnhgrlhesihhgrghlihgrrdgtohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhimhgrsehffhiflhhlrdgthh
+X-GND-Sasl: louis.chauvet@bootlin.com
 
-On Thu, Apr 03, 2025 at 09:57:45PM +0900, FUJITA Tomonori wrote:
-> On Thu, 03 Apr 2025 12:54:40 +0200
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On 05/03/25 - 17:59, Lyude Paul wrote:
+> This commit adds some traits for registering DRM devices with KMS support,
+> implemented through the kernel::drm::kms::KmsDriver trait. Devices which
+> don't have KMS support can simply use PhantomData<Self>.
 > 
-> >>>> You will need to fix something because patch 2-6 removes `Ktime` ;-)
-> >>>
-> >>> Yea, but `Instant` is almost a direct substitution, right? Anyway, Tomo
-> >>> can send a new spin and change all the uses of Ktime, or I can do it. It
-> >>> should be straight forward. Either way is fine with me.
-> >>
-> >> `Delta`? Not `Instant`.
-> > 
-> > It depends. Current hrtimer takes `Ktime` and supports
-> > `HrTimerMode::Absolute` and `HrTimerMode::Relative`. With `Delta` and
-> > `Instant` we should take `Instant` for `HrTimerMode::Absolute` and
-> > `Delta` for `HrTimerMode::Relative`. The API needs to be modified a bit
-> > to make that work though. Probably we need to make the start function
-> > generic over the expiration type or something.
-> > 
-
-If we make `HrTimerMode` a trait:
-
-    pub trait HrTimerMode {
-        type Expires; /* either Delta or Instant */
-    }
-
-and `HrTimerPointer` generic over `HrTimerMode`:
-
-    pub trait HrTimerPointer<Mode: HrTimerMode> {
-        fn start(self, expires: Mode::Expires) -> HrTimerHandler<Mode>
-    }
-
-then we can disallow that a Relative timer accidentally uses an Instant
-or an Absolute timer accidentally uses an Delta. Of course a few other
-places need to be generic, but the end result looks pretty good to me.
-
-Regards,
-Boqun
-
-> > If you want to, you can fix that. If not, you can use `Instant` for the
-> > relative case as well, and we shall interpret it as duration. Then I
-> > will fix it up later. Your decision.
-> > 
-> >> All Ktime in hrtimer are passed to hrtimer_start_range_ns(), right?
-> > 
-> > Yes, that is where they end up.
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 > 
-> Ah, I found that __hrtimer_start_range_ns() handles ktime_t
-> differently in HRTIMER_MODE_REL mode.
+> ---
 > 
-> As you said, looks like the API needs to be updated and I think that
-> it's best to leave that to you. I'll just use `Instant` for all cases.
+> V3:
+> * Get rid of Kms, long live KmsDriver
+>   After Daniel pointed out that we should just make KmsDriver a supertrait
+>   of Driver, it immediately occurred to me that there's no actual need for
+>   Kms to be a separate trait at all. So, drop Kms entirely and move its
+>   requirements over to KmsDriver.
+> * Drop fbdev module entirely and move fbdev related setup into AllocImpl
+>   (Daniel)
+> * Rebase to use drm_client_setup()
+> 
+> TODO:
+> * Generate feature flags automatically, these shouldn't need to be
+>   specified by the user
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+>  rust/bindings/bindings_helper.h |   6 ++
+>  rust/kernel/drm/device.rs       |  10 +-
+>  rust/kernel/drm/drv.rs          |  56 ++++++++--
+>  rust/kernel/drm/gem/mod.rs      |   4 +
+>  rust/kernel/drm/gem/shmem.rs    |   4 +
+>  rust/kernel/drm/kms.rs          | 186 ++++++++++++++++++++++++++++++++
+>  rust/kernel/drm/mod.rs          |   1 +
+>  7 files changed, 258 insertions(+), 9 deletions(-)
+>  create mode 100644 rust/kernel/drm/kms.rs
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index ca857fb00b1a5..e1ed4f40c8e89 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -6,10 +6,16 @@
+>   * Sorted alphabetically.
+>   */
+>  
+> +#include <drm/drm_atomic.h>
+> +#include <drm/drm_atomic_helper.h>
+> +#include <drm/clients/drm_client_setup.h>
+>  #include <drm/drm_device.h>
+>  #include <drm/drm_drv.h>
+>  #include <drm/drm_file.h>
+> +#include <drm/drm_fbdev_dma.h>
+> +#include <drm/drm_fbdev_shmem.h>
+>  #include <drm/drm_gem.h>
+> +#include <drm/drm_gem_framebuffer_helper.h>
+>  #include <drm/drm_gem_shmem_helper.h>
+>  #include <drm/drm_ioctl.h>
+>  #include <kunit/test.h>
+> diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+> index 5b4db2dfe87f5..cf063de387329 100644
+> --- a/rust/kernel/drm/device.rs
+> +++ b/rust/kernel/drm/device.rs
+> @@ -5,8 +5,8 @@
+>  //! C header: [`include/linux/drm/drm_device.h`](srctree/include/linux/drm/drm_device.h)
+>  
+>  use crate::{
+> -    bindings, device, drm,
+> -    drm::drv::AllocImpl,
+> +    bindings, device,
+> +    drm::{self, drv::AllocImpl, kms::private::KmsImpl as KmsImplPrivate},
+>      error::code::*,
+>      error::from_err_ptr,
+>      error::Result,
+> @@ -73,7 +73,7 @@ impl<T: drm::drv::Driver> Device<T> {
+>          dumb_create: T::Object::ALLOC_OPS.dumb_create,
+>          dumb_map_offset: T::Object::ALLOC_OPS.dumb_map_offset,
+>          show_fdinfo: None,
+> -        fbdev_probe: None,
+> +        fbdev_probe: T::Object::ALLOC_OPS.fbdev_probe,
+>  
+>          major: T::INFO.major,
+>          minor: T::INFO.minor,
+> @@ -153,6 +153,10 @@ pub fn data(&self) -> <T::Data as ForeignOwnable>::Borrowed<'_> {
+>          // SAFETY: `Self::data` is always converted and set on device creation.
+>          unsafe { <T::Data as ForeignOwnable>::from_foreign(drm.raw_data()) };
+>      }
+> +
+> +    pub(crate) const fn has_kms() -> bool {
+> +        <T::Kms as KmsImplPrivate>::MODE_CONFIG_OPS.is_some()
+> +    }
+>  }
+>  
+>  // SAFETY: DRM device objects are always reference counted and the get/put functions
+> diff --git a/rust/kernel/drm/drv.rs b/rust/kernel/drm/drv.rs
+> index e42e266bdd0da..3e09e130730f6 100644
+> --- a/rust/kernel/drm/drv.rs
+> +++ b/rust/kernel/drm/drv.rs
+> @@ -6,14 +6,15 @@
+>  
+>  use crate::{
+>      alloc::flags::*,
+> -    bindings,
+> +    bindings, device,
+>      devres::Devres,
+> -    drm,
+> +    drm::{self, kms::private::KmsImpl as KmsImplPrivate},
+>      error::{Error, Result},
+>      private::Sealed,
+>      str::CStr,
+>      types::{ARef, ForeignOwnable},
+>  };
+> +use core::ptr::null;
+>  use macros::vtable;
+>  
+>  /// Driver use the GEM memory manager. This should be set for all modern drivers.
+> @@ -115,6 +116,12 @@ pub struct AllocOps {
+>              offset: *mut u64,
+>          ) -> core::ffi::c_int,
+>      >,
+> +    pub(crate) fbdev_probe: Option<
+> +        unsafe extern "C" fn(
+> +            fbdev_helper: *mut bindings::drm_fb_helper,
+> +            sizes: *mut bindings::drm_fb_helper_surface_size,
+> +        ) -> core::ffi::c_int,
+> +    >,
+>  }
+>  
+>  /// Trait for memory manager implementations. Implemented internally.
+> @@ -142,6 +149,14 @@ pub trait Driver {
+>      /// The type used to represent a DRM File (client)
+>      type File: drm::file::DriverFile;
+>  
+> +    /// The KMS implementation for this driver.
+> +    ///
+> +    /// Drivers that wish to support KMS should pass their implementation of `drm::kms::KmsDriver`
+> +    /// here. Drivers which do not have KMS support can simply pass `drm::kms::NoKms` here.
+> +    type Kms: drm::kms::KmsImpl<Driver = Self>
+> +    where
+> +        Self: Sized;
+> +
+>      /// Driver metadata
+>      const INFO: DriverInfo;
+>  
+> @@ -159,21 +174,44 @@ pub trait Driver {
+>  
+>  impl<T: Driver> Registration<T> {
+>      /// Creates a new [`Registration`] and registers it.
+> -    pub fn new(drm: ARef<drm::device::Device<T>>, flags: usize) -> Result<Self> {
+> +    pub fn new(dev: &device::Device, data: T::Data, flags: usize) -> Result<Self> {
+> +        let drm = drm::device::Device::<T>::new(dev, data)?;
+> +        let has_kms = drm::device::Device::<T>::has_kms();
+> +
+> +        let mode_config_info = if has_kms {
+> +            // SAFETY: We have yet to register this device
+> +            Some(unsafe { T::Kms::setup_kms(&drm)? })
+> +        } else {
+> +            None
+> +        };
+> +
+>          // SAFETY: Safe by the invariants of `drm::device::Device`.
+>          let ret = unsafe { bindings::drm_dev_register(drm.as_raw(), flags) };
+>          if ret < 0 {
+>              return Err(Error::from_errno(ret));
+>          }
+>  
+> +        #[cfg(CONFIG_DRM_CLIENT = "y")]
+> +        if has_kms {
+> +            if let Some(ref info) = mode_config_info {
+> +                if let Some(fourcc) = info.preferred_fourcc {
+> +                    // SAFETY: We just registered `drm` above, fulfilling the C API requirements
+> +                    unsafe { bindings::drm_client_setup_with_fourcc(drm.as_raw(), fourcc) }
+> +                } else {
+> +                    // SAFETY: We just registered `drm` above, fulfilling the C API requirements
+> +                    unsafe { bindings::drm_client_setup(drm.as_raw(), null()) }
+> +                }
+> +            }
+> +        }
+> +
+>          Ok(Self(drm))
+>      }
+>  
+>      /// Same as [`Registration::new`}, but transfers ownership of the [`Registration`] to `Devres`.
+> -    pub fn new_foreign_owned(drm: ARef<drm::device::Device<T>>, flags: usize) -> Result {
+> -        let reg = Registration::<T>::new(drm.clone(), flags)?;
+> +    pub fn new_foreign_owned(dev: &device::Device, data: T::Data, flags: usize) -> Result {
+
+Maybe a dumb question, is the change from ARef to & related to this patch? 
+It look likes it can be splitted in a separate patch to simplify the 
+review.
+
+> +        let reg = Registration::<T>::new(dev, data, flags)?;
+>  
+> -        Devres::new_foreign_owned(drm.as_ref(), reg, GFP_KERNEL)
+> +        Devres::new_foreign_owned(dev, reg, GFP_KERNEL)
+>      }
+>  
+>      /// Returns a reference to the `Device` instance for this registration.
+> @@ -195,5 +233,11 @@ fn drop(&mut self) {
+>          // SAFETY: Safe by the invariant of `ARef<drm::device::Device<T>>`. The existance of this
+>          // `Registration` also guarantees the this `drm::device::Device` is actually registered.
+>          unsafe { bindings::drm_dev_unregister(self.0.as_raw()) };
+> +
+> +        if drm::device::Device::<T>::has_kms() {
+> +            // SAFETY: We just checked above that KMS was setup for this device, so this is safe to
+> +            // call
+> +            unsafe { bindings::drm_atomic_helper_shutdown(self.0.as_raw()) }
+> +        }
+>      }
+>  }
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index 3fcab497cc2a5..605b0a22ac08b 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -300,6 +300,10 @@ impl<T: DriverObject> drv::AllocImpl for Object<T> {
+>          gem_prime_import_sg_table: None,
+>          dumb_create: None,
+>          dumb_map_offset: None,
+> +        #[cfg(CONFIG_DRM_FBDEV_EMULATION = "y")]
+> +        fbdev_probe: Some(bindings::drm_fbdev_dma_driver_fbdev_probe),
+> +        #[cfg(CONFIG_DRM_FBDEV_EMULATION = "n")]
+> +        fbdev_probe: None,
+>      };
+>  }
+>  
+> diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
+> index 92da0d7d59912..9c0162b268aa8 100644
+> --- a/rust/kernel/drm/gem/shmem.rs
+> +++ b/rust/kernel/drm/gem/shmem.rs
+> @@ -279,6 +279,10 @@ impl<T: DriverObject> drv::AllocImpl for Object<T> {
+>          gem_prime_import_sg_table: Some(bindings::drm_gem_shmem_prime_import_sg_table),
+>          dumb_create: Some(bindings::drm_gem_shmem_dumb_create),
+>          dumb_map_offset: None,
+> +        #[cfg(CONFIG_DRM_FBDEV_EMULATION = "y")]
+> +        fbdev_probe: Some(bindings::drm_fbdev_shmem_driver_fbdev_probe),
+> +        #[cfg(CONFIG_DRM_FBDEV_EMULATION = "n")]
+> +        fbdev_probe: None,
+>      };
+>  }
+>  
+> diff --git a/rust/kernel/drm/kms.rs b/rust/kernel/drm/kms.rs
+> new file mode 100644
+> index 0000000000000..78970c69f4cda
+> --- /dev/null
+> +++ b/rust/kernel/drm/kms.rs
+> @@ -0,0 +1,186 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +
+> +//! KMS driver abstractions for rust.
+> +
+> +use crate::{
+> +    device,
+> +    drm::{device::Device, drv::Driver},
+> +    error::to_result,
+> +    prelude::*,
+> +    types::*,
+> +};
+> +use bindings;
+> +use core::{marker::PhantomData, ops::Deref};
+> +
+> +/// The C vtable for a [`Device`].
+> +///
+> +/// This is created internally by DRM.
+> +pub struct ModeConfigOps {
+> +    pub(crate) kms_vtable: bindings::drm_mode_config_funcs,
+> +    pub(crate) kms_helper_vtable: bindings::drm_mode_config_helper_funcs,
+> +}
+> +
+> +/// A trait representing a type that can be used for setting up KMS, or a stub.
+> +///
+> +/// For drivers which don't have KMS support, the methods provided by this trait may be stubs. It is
+> +/// implemented internally by DRM.
+> +pub trait KmsImpl: private::KmsImpl {}
+> +
+> +pub(crate) mod private {
+> +    use super::*;
+> +
+> +    /// Private callback implemented internally by DRM for setting up KMS on a device, or stubbing
+> +    /// the KMS setup for devices which don't have KMS support.
+> +    #[allow(unreachable_pub)]
+> +    pub trait KmsImpl {
+> +        /// The parent driver for this KMS implementation
+> +        type Driver: Driver;
+> +
+> +        /// The optional KMS callback operations for this driver.
+> +        const MODE_CONFIG_OPS: Option<ModeConfigOps>;
+> +
+> +        /// The callback for setting up KMS on a device
+> +        ///
+> +        /// # Safety
+> +        ///
+> +        /// `drm` must be unregistered.
+> +        unsafe fn setup_kms(_drm: &Device<Self::Driver>) -> Result<ModeConfigInfo> {
+> +            build_error::build_error("This should never be reachable")
+> +        }
+
+It is probably a dumb question, but why do you need to add a body 
+with a build failure here? 
+The compiler already fails if there is no default implementation if the 
+setup_kms is not implemented by the trait implementations.
+
+> +    }
+> +}
+> +
+> +/// A [`Device`] with KMS initialized that has not been registered with userspace.
+> +///
+> +/// This type is identical to [`Device`], except that it is able to create new static KMS resources.
+> +/// It represents a KMS device that is not yet visible to userspace, and also contains miscellaneous
+> +/// state required during the initialization process of a [`Device`].
+> +pub struct UnregisteredKmsDevice<'a, T: Driver> {
+> +    drm: &'a Device<T>,
+> +}
+> +
+> +impl<'a, T: Driver> Deref for UnregisteredKmsDevice<'a, T> {
+> +    type Target = Device<T>;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        self.drm
+> +    }
+> +}
+> +
+> +impl<'a, T: Driver> UnregisteredKmsDevice<'a, T> {
+> +    /// Construct a new [`UnregisteredKmsDevice`].
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller promises that `drm` is an unregistered [`Device`].
+> +    pub(crate) unsafe fn new(drm: &'a Device<T>) -> Self {
+> +        Self { drm }
+> +    }
+> +}
+> +
+> +/// A trait which must be implemented by drivers that wish to support KMS
+> +///
+> +/// It should be implemented for the same type that implements [`Driver`]. Drivers which don't
+> +/// support KMS should use [`PhantomData<Self>`].
+> +///
+> +/// [`PhantomData<Self>`]: PhantomData
+> +#[vtable]
+> +pub trait KmsDriver: Driver {
+> +    /// Return a [`ModeConfigInfo`] structure for this [`device::Device`].
+> +    fn mode_config_info(
+> +        dev: &device::Device,
+> +        drm_data: <Self::Data as ForeignOwnable>::Borrowed<'_>,
+> +    ) -> Result<ModeConfigInfo>;
+> +
+> +    /// Create mode objects like [`crtc::Crtc`], [`plane::Plane`], etc. for this device
+> +    fn create_objects(drm: &UnregisteredKmsDevice<'_, Self>) -> Result
+> +    where
+> +        Self: Sized;
+> +}
+> +
+> +impl<T: KmsDriver> private::KmsImpl for T {
+> +    type Driver = Self;
+> +
+> +    const MODE_CONFIG_OPS: Option<ModeConfigOps> = Some(ModeConfigOps {
+> +        kms_vtable: bindings::drm_mode_config_funcs {
+> +            atomic_check: Some(bindings::drm_atomic_helper_check),
+> +            fb_create: Some(bindings::drm_gem_fb_create),
+> +            mode_valid: None,
+> +            atomic_commit: Some(bindings::drm_atomic_helper_commit),
+> +            get_format_info: None,
+> +            atomic_state_free: None,
+> +            atomic_state_alloc: None,
+> +            atomic_state_clear: None,
+> +        },
+> +
+> +        kms_helper_vtable: bindings::drm_mode_config_helper_funcs {
+> +            atomic_commit_setup: None,
+> +            atomic_commit_tail: None,
+> +        },
+> +    });
+> +
+> +    unsafe fn setup_kms(drm: &Device<Self::Driver>) -> Result<ModeConfigInfo> {
+> +        let mode_config_info = T::mode_config_info(drm.as_ref(), drm.data())?;
+> +
+> +        // SAFETY: `MODE_CONFIG_OPS` is always Some() in this implementation
+> +        let ops = unsafe { T::MODE_CONFIG_OPS.as_ref().unwrap_unchecked() };
+> +
+> +        // SAFETY:
+> +        // - This function can only be called before registration via our safety contract.
+> +        // - Before registration, we are the only ones with access to this device.
+> +        unsafe {
+> +            (*drm.as_raw()).mode_config = bindings::drm_mode_config {
+> +                funcs: &ops.kms_vtable,
+> +                helper_private: &ops.kms_helper_vtable,
+> +                min_width: mode_config_info.min_resolution.0,
+> +                min_height: mode_config_info.min_resolution.1,
+> +                max_width: mode_config_info.max_resolution.0,
+> +                max_height: mode_config_info.max_resolution.1,
+> +                cursor_width: mode_config_info.max_cursor.0,
+> +                cursor_height: mode_config_info.max_cursor.1,
+> +                preferred_depth: mode_config_info.preferred_depth,
+> +                ..Default::default()
+> +            };
+> +        }
+> +
+> +        // SAFETY: We just setup all of the required info this function needs in `drm_device`
+> +        to_result(unsafe { bindings::drmm_mode_config_init(drm.as_raw()) })?;
+> +
+> +        // SAFETY: `drm` is guaranteed to be unregistered via our safety contract.
+> +        let drm = unsafe { UnregisteredKmsDevice::new(drm) };
+> +
+> +        T::create_objects(&drm)?;
+> +
+> +        // TODO: Eventually add a hook to customize how state readback happens, for now just reset
+> +        // SAFETY: Since all static modesetting objects were created in `T::create_objects()`, and
+> +        // that is the only place they can be created, this fulfills the C API requirements.
+
+Why do you explain such strong requirements? From the c documentation of 
+drm_mode_config_reset, the only requirement is that drm_device is valid 
+and initialized.
+
+> +        unsafe { bindings::drm_mode_config_reset(drm.as_raw()) };
+> +
+> +        Ok(mode_config_info)
+> +    }
+> +}
+> +
+> +impl<T: KmsDriver> KmsImpl for T {}
+> +
+> +impl<T: Driver> private::KmsImpl for PhantomData<T> {
+> +    type Driver = T;
+> +
+> +    const MODE_CONFIG_OPS: Option<ModeConfigOps> = None;
+> +}
+> +
+> +impl<T: Driver> KmsImpl for PhantomData<T> {}
+> +
+> +/// Various device-wide information for a [`Device`] that is provided during initialization.
+> +#[derive(Copy, Clone)]
+> +pub struct ModeConfigInfo {
+> +    /// The minimum (w, h) resolution this driver can support
+> +    pub min_resolution: (i32, i32),
+> +    /// The maximum (w, h) resolution this driver can support
+> +    pub max_resolution: (i32, i32),
+> +    /// The maximum (w, h) cursor size this driver can support
+> +    pub max_cursor: (u32, u32),
+> +    /// The preferred depth for dumb ioctls
+> +    pub preferred_depth: u32,
+> +    /// An optional default fourcc format code to be preferred for clients.
+> +    pub preferred_fourcc: Option<u32>,
+> +}
+> diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
+> index 2c12dbd181997..049ae675cb9b1 100644
+> --- a/rust/kernel/drm/mod.rs
+> +++ b/rust/kernel/drm/mod.rs
+> @@ -8,3 +8,4 @@
+>  pub mod fourcc;
+>  pub mod gem;
+>  pub mod ioctl;
+> +pub mod kms;
+> -- 
+> 2.48.1
 > 
 > 
+
+-- 
+Louis Chauvet, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
