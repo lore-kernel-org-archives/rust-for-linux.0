@@ -1,100 +1,105 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dd44826.kasserver.com (dd44826.kasserver.com [85.13.151.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891FC2E62B6;
-	Fri,  4 Apr 2025 12:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA0C2E62B6
+	for <rust-for-linux@vger.kernel.org>; Fri,  4 Apr 2025 12:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.151.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743770949; cv=none; b=jpDgVUXsD6QzzOtrmdcXDPmvXq2GEYMU64Un73AF7u/vgReRw9PxuuMpg9UyXPhhmgyemrh3BhShqvtyOioRbeVyp2o7g8JSaqlSJs3pN//IqOzZAB29vY+25dA3UX1lq+TQVg9PkV/rEbrWf1xSXsfnAJW4ALBrAUhjcHtsXSE=
+	t=1743771202; cv=none; b=PFpeCKRjHV4exrnyBuA6Tf61SrlFYNA0B30CDhiMIsYMaYtFCxGTkqvGaA3kyrajeyPZLUgALM80ltnPZ9TyaE2Zi2KjrgPtifUy7vyfwCrimEWD49UnJBlvMRedBdIajRZLTmNQZkB49rK0kWR7vYOj9uEUbk2zNxJLhbaZ6WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743770949; c=relaxed/simple;
-	bh=CEYtds7W6FcLLrM6Q6AVfowOXuAzfO5skyhiJ0Y81MA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=H93CJfG7+F1IxsNXrgx+Jm47SktureHJSVHocCv83bsKK/7wNvHY+tDrYAoYWImDfJNYOjxjeQ0XKexj0PbCjxRwySsIYuOk0q/oHU5NF5fjobmnizV4wRm95P8dRqeOrKTq1KvhCEkumQ7XCWe/QmBcFbmXSyEOKoGWvv6YQpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
-Received: from smtp102.mailbox.org (unknown [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4ZTdhT5NWYz9tkP;
-	Fri,  4 Apr 2025 14:48:57 +0200 (CEST)
+	s=arc-20240116; t=1743771202; c=relaxed/simple;
+	bh=IQbIexx7U4n/w2Yb2vOmccv1WkdDsrdG/lcZeF/t8e0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=epI9DdU+FzY4bsPiX18DWUfhlwu8V+zuvuefqhxEk9+cOcKRp1JVrex5ojrhopxtk8WaiZ7uf2hb0z1iyYL9XU+G4kVdfkcpSm2z3ktbZxdMq45o1z9zhq/Dxe4+VCG3F7XTNecn5D8/VGML8FPzGGPMYyOlDOaZ1s/KRsJa8pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=o1oo11oo.de; spf=pass smtp.mailfrom=o1oo11oo.de; dkim=pass (2048-bit key) header.d=o1oo11oo.de header.i=@o1oo11oo.de header.b=bzK7EdgL; arc=none smtp.client-ip=85.13.151.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=o1oo11oo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o1oo11oo.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=o1oo11oo.de header.i=@o1oo11oo.de header.b="bzK7EdgL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o1oo11oo.de;
+	s=kas202503061048; t=1743771196;
+	bh=z47DcCXNanxmKsBCh2lCBaffxq1+E7ccllcSUaQDLJY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bzK7EdgL0nJ5kzbQCPHwd86Po9wW8VB4jaeOOddmvF3KjYvN2k3U6qkY7AVZtFIBg
+	 tLj+8Yvvw2b7/q7+h75SwpL1fEm9UiuMWQdTAM9VdvfC+7leI+VmvkS9gBQ9PDYXn9
+	 aBhRD32eArKBrE9MNxjqEX6lJyr61gi9afJ4/tSQtTHd1KmngUWOO8McqRTFZ+pApk
+	 wBjUtFvWh/zTmgM+H/97BAhP+3xj8JmzdOMW6p/O+Kw5ZWMShZ58mcNwznHPLCi7sw
+	 jFr3P6uH//MLI0filoPBhVxVSSXn6MXnzgh1pEJ/nB5whJwg1kpo7z84BFf9Pqrzu7
+	 1wmFufoDN5zNg==
+Received: from wl-r6-43.rz.tu-ilmenau.de (wl-r6-43.rz.tu-ilmenau.de [141.24.109.43])
+	by dd44826.kasserver.com (Postfix) with ESMTPSA id B1FD2B6E01C1;
+	Fri,  4 Apr 2025 14:53:15 +0200 (CEST)
+From: Lukas Fischer <kernel@o1oo11oo.de>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	Lukas Fischer <kernel@o1oo11oo.de>
+Subject: [PATCH] scripts: generate_rust_analyzer: Add ffi crate
+Date: Fri,  4 Apr 2025 14:51:51 +0200
+Message-ID: <20250404125150.85783-2-kernel@o1oo11oo.de>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 04 Apr 2025 14:48:53 +0200
-Message-Id: <D8XV7FTGG0EC.K6P4J4IMUJAO@buenzli.dev>
-To: "Rob Herring" <robh@kernel.org>
-Cc: "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>, "Daniel Scally"
- <djrscally@gmail.com>, "Heikki Krogerus" <heikki.krogerus@linux.intel.com>,
- "Sakari Ailus" <sakari.ailus@linux.intel.com>, "Dirk Behme"
- <dirk.behme@de.bosch.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Saravana Kannan"
- <saravanak@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 01/10] rust: Move property_present to property.rs
-From: "Remo Senekowitsch" <remo@buenzli.dev>
-References: <20250326171411.590681-1-remo@buenzli.dev>
- <20250326171411.590681-2-remo@buenzli.dev>
- <20250326205106.GB2787672-robh@kernel.org>
-In-Reply-To: <20250326205106.GB2787672-robh@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: +++
 
-On Wed Mar 26, 2025 at 9:51 PM CET, Rob Herring wrote:
-> On Wed, Mar 26, 2025 at 06:13:40PM +0100, Remo Senekowitsch wrote:
->>
->> +impl Device {
->> +    /// Obtain the fwnode corresponding to the device.
->> +    fn fwnode(&self) -> &FwNode {
->> +        // SAFETY: `self` is valid.
->> +        let fwnode_handle =3D unsafe { bindings::dev_fwnode(self.as_raw=
-()) };
->> +        if fwnode_handle.is_null() {
->> +            panic!("fwnode_handle cannot be null");
->
-> It's usually not a good idea to panic the kernel especially with=20
-> something a driver calls as that's probably recoverable.
->
-> Users/drivers testing fwnode_handle/of_node for NULL is pretty common.=20
-> Though often that's a legacy code path, so maybe not allowing NULL is=20
-> fine for now.
+Commit d072acda4862 ("rust: use custom FFI integer types") did not
+update rust-analyzer to include the new crate.
 
-Just to be clear on this, should I keep this as is, or return a result?
-In the latter case, all the duplicated methods on `Device` that just
-call `self.fwnode().same_method()` would have a result in their function
-signatur as well. That includes `property_present`, `read_property`
-and `children`.
+To enable rust-analyzer support for these custom ffi types, add the
+`ffi` crate as a dependency to the `bindings`, `uapi` and `kernel`
+crates, which all directly depend on it.
 
->> +        }
->> +        // SAFETY: `fwnode_handle` is valid. Its lifetime is tied to `&=
-self`. We
->> +        // return a reference instead of an `ARef<FwNode>` because `dev=
-_fwnode()`
->> +        // doesn't increment the refcount.
->> +        unsafe { &*fwnode_handle.cast() }
->> +    }
->> +
->> +    /// Checks if property is present or not.
->> +    pub fn property_present(&self, name: &CStr) -> bool {
->> +        self.fwnode().property_present(name)
->> +    }
->> +}
->
-> The C developer in me wants to put this after the FwNode stuff since=20
-> this uses it.
+Fixes: d072acda4862 ("rust: use custom FFI integer types")
+Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
+---
+ scripts/generate_rust_analyzer.py | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-Is that just a comment or a call to action? :-)
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index cd41bc906fbd..fe663dd0c43b 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -112,6 +112,12 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+         cfg=["kernel"],
+     )
+ 
++    append_crate(
++        "ffi",
++        srctree / "rust" / "ffi.rs",
++        ["core", "compiler_builtins"],
++    )
++
+     def append_crate_with_generated(
+         display_name,
+         deps,
+@@ -131,9 +137,9 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+             "exclude_dirs": [],
+         }
+ 
+-    append_crate_with_generated("bindings", ["core"])
+-    append_crate_with_generated("uapi", ["core"])
+-    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "bindings", "uapi"])
++    append_crate_with_generated("bindings", ["core", "ffi"])
++    append_crate_with_generated("uapi", ["core", "ffi"])
++    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
+ 
+     def is_root_crate(build_file, target):
+         try:
 
-Remo
+base-commit: a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
+-- 
+2.49.0
+
