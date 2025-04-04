@@ -1,105 +1,141 @@
-Received: from dd44826.kasserver.com (dd44826.kasserver.com [85.13.151.91])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA0C2E62B6
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Apr 2025 12:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.151.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48BA8635C
+	for <rust-for-linux@vger.kernel.org>; Fri,  4 Apr 2025 13:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743771202; cv=none; b=PFpeCKRjHV4exrnyBuA6Tf61SrlFYNA0B30CDhiMIsYMaYtFCxGTkqvGaA3kyrajeyPZLUgALM80ltnPZ9TyaE2Zi2KjrgPtifUy7vyfwCrimEWD49UnJBlvMRedBdIajRZLTmNQZkB49rK0kWR7vYOj9uEUbk2zNxJLhbaZ6WA=
+	t=1743773054; cv=none; b=rm+pdeoJtZi5JsJdlrbrBymsg0p1yojHMBxHomV40XDV5VOJQ4itJhH/1A9rj7TkwcKN4pBrQEDffjE05xbpoz0Rr5mwy2GEmEcagYo0hyD8ikvmoDas1c+WNJdM371VFY6PfYGkmgM/wy3Cv1ioMbn1lZLeOwRxY2n1ZjEggjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743771202; c=relaxed/simple;
-	bh=IQbIexx7U4n/w2Yb2vOmccv1WkdDsrdG/lcZeF/t8e0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=epI9DdU+FzY4bsPiX18DWUfhlwu8V+zuvuefqhxEk9+cOcKRp1JVrex5ojrhopxtk8WaiZ7uf2hb0z1iyYL9XU+G4kVdfkcpSm2z3ktbZxdMq45o1z9zhq/Dxe4+VCG3F7XTNecn5D8/VGML8FPzGGPMYyOlDOaZ1s/KRsJa8pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=o1oo11oo.de; spf=pass smtp.mailfrom=o1oo11oo.de; dkim=pass (2048-bit key) header.d=o1oo11oo.de header.i=@o1oo11oo.de header.b=bzK7EdgL; arc=none smtp.client-ip=85.13.151.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=o1oo11oo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o1oo11oo.de
+	s=arc-20240116; t=1743773054; c=relaxed/simple;
+	bh=WyHgvKKiWUk+AGHymqRmuDi3yJyYxQcDtPVVyyf+S0I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LXMdim8Fbztg/B3zEJtW9ARMrChjw3C5jeb9sizg9R5+PAErIVk/cuviZE5tow2rp0iogYZ2GMM0LSuLGyk3Lok7zQv6Io3ycZ+f+ttMjbV7weloruzT3D0xhC4xvO7GE0O0lCM7p7nk++To0AiiapcpY9tcLX2dfS7a5dNQG6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FqeER51a; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=o1oo11oo.de header.i=@o1oo11oo.de header.b="bzK7EdgL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o1oo11oo.de;
-	s=kas202503061048; t=1743771196;
-	bh=z47DcCXNanxmKsBCh2lCBaffxq1+E7ccllcSUaQDLJY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bzK7EdgL0nJ5kzbQCPHwd86Po9wW8VB4jaeOOddmvF3KjYvN2k3U6qkY7AVZtFIBg
-	 tLj+8Yvvw2b7/q7+h75SwpL1fEm9UiuMWQdTAM9VdvfC+7leI+VmvkS9gBQ9PDYXn9
-	 aBhRD32eArKBrE9MNxjqEX6lJyr61gi9afJ4/tSQtTHd1KmngUWOO8McqRTFZ+pApk
-	 wBjUtFvWh/zTmgM+H/97BAhP+3xj8JmzdOMW6p/O+Kw5ZWMShZ58mcNwznHPLCi7sw
-	 jFr3P6uH//MLI0filoPBhVxVSSXn6MXnzgh1pEJ/nB5whJwg1kpo7z84BFf9Pqrzu7
-	 1wmFufoDN5zNg==
-Received: from wl-r6-43.rz.tu-ilmenau.de (wl-r6-43.rz.tu-ilmenau.de [141.24.109.43])
-	by dd44826.kasserver.com (Postfix) with ESMTPSA id B1FD2B6E01C1;
-	Fri,  4 Apr 2025 14:53:15 +0200 (CEST)
-From: Lukas Fischer <kernel@o1oo11oo.de>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	Lukas Fischer <kernel@o1oo11oo.de>
-Subject: [PATCH] scripts: generate_rust_analyzer: Add ffi crate
-Date: Fri,  4 Apr 2025 14:51:51 +0200
-Message-ID: <20250404125150.85783-2-kernel@o1oo11oo.de>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FqeER51a"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-30ddad694c1so21428541fa.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 04 Apr 2025 06:24:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743773051; x=1744377851; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pDDgc58r2ic3bl4DEUTP1HKWP1q5RumnY5TvMBZc8G0=;
+        b=FqeER51aQvlu0F160PWAY4Tls/eezNtRSWmOzss/+bVBm2Bk2Tix/gR/4tSzIaIy5X
+         JDIY71/QBWx+wPSe19plaN8Vn4pnADU8ev0OJUbLS9Azru5JdhvMw0v5+8X2+QQvDJ7O
+         oHXOoSM9dko4U211YRtwf/1a2SY5V5MPmnbaA//e7CUK5eaxt4E3KKM9F3jYF8dFBjGM
+         z9g5nzaMusPaWibrv1bVz/k5vEYHKsYOdEVHMwu1IQvvXZNrtQVNYk8h8W8P+u5/QjWa
+         hd17mRqCInALcSILdSjRyVJ8pkVFRa3IMrgOYJFSxlwVZyGPPZ7HjoxrAcfxrVM2EUGc
+         rUOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743773051; x=1744377851;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pDDgc58r2ic3bl4DEUTP1HKWP1q5RumnY5TvMBZc8G0=;
+        b=s6TgqC9QcDs9EexoqGTcuI+oObI396D0DXvbkwm3MwcfpJ4YECuiZAWZ9KG0UdbSkm
+         60S5VjivicFX6Ibodw9dOOb3WrN/QewO469rBbq1PvNM/JfqUKbv0KFW8SSIjYfj6vZN
+         Zuj1ZViAtQOmgwg+AjXXRJ7jJffdA/6U8Rx+ZkZEgIfyslDy2Eg7M+5O2i430ME9hfZP
+         X7LoX/DOf3f94EE0V/v1zW184CbuQ+enlxX88c6HdGB+RKX1RVd6IX7G7ktPgyxTPpYQ
+         1LvB8LWMH7ASNLkBYHnHKPmnzoY2/1D21oCU/VHU57PxyIGOrcCpleqD3JK9HNSwpAWT
+         etqg==
+X-Forwarded-Encrypted: i=1; AJvYcCVbP41wgZ1GEuH9oTf3KgM9HuMcbNKv/Y4FdYREysVCNUMZHEwHnkaGG01c9b9e5x5TNB1xOGyM4UNNvkdzag==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF7AUCULSkNNM2o5nIlJWaFqAHR4q+Si2Uc7VD0XB5k/+qmL/U
+	M8kCNnF7qTLbuxpLcZel716HYSDWEd5ehf/icWyKIMr+eSi6y2ejUExf+FFjVNN8HbS1fKPDnAm
+	YEa5PDEUNHDScrPuJoiTG3yA/gUI=
+X-Gm-Gg: ASbGncum01SLVvaHrssLBBLRacv72Y5MpIGIJNcWhS7OXgPkIV17BEv4Mxp9hSskzFN
+	wrWRLyrfUDSB/Q1KZM+rTIMosTYcNqpKYtFt17gWNlHfSS0V2W721MjUMlzMmQJalt2O4KZxs18
+	XaKlQ9NU0R9ZVZ/AOutnh8XK0+IQck86SfxsURo8xANcN4REKNKU2v30neXLQ=
+X-Google-Smtp-Source: AGHT+IFI3Zw9s0kb1n/hEOp1OvJ9CTnxfAWezYwJM09TS+fCFGDLAMT1HEYpO51hkyFmqqkAeeGGvImAmauyFbRCgcY=
+X-Received: by 2002:a2e:bcc4:0:b0:30c:12b8:fb9e with SMTP id
+ 38308e7fff4ca-30f0c061ce6mr10013451fa.37.1743773050571; Fri, 04 Apr 2025
+ 06:24:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: +++
+References: <20250404125150.85783-2-kernel@o1oo11oo.de>
+In-Reply-To: <20250404125150.85783-2-kernel@o1oo11oo.de>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 4 Apr 2025 09:23:34 -0400
+X-Gm-Features: ATxdqUGyhuSLKvp60qfgxUIxJAiONiYJ9dZdXzz6hJtom1d19pI_04feupTkmfA
+Message-ID: <CAJ-ks9nKoUwSjfF4QWTXJGGFvLjcq4nDzgW+ybX89cr6j0hwgw@mail.gmail.com>
+Subject: Re: [PATCH] scripts: generate_rust_analyzer: Add ffi crate
+To: Lukas Fischer <kernel@o1oo11oo.de>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit d072acda4862 ("rust: use custom FFI integer types") did not
-update rust-analyzer to include the new crate.
+On Fri, Apr 4, 2025 at 8:53=E2=80=AFAM Lukas Fischer <kernel@o1oo11oo.de> w=
+rote:
+>
+> Commit d072acda4862 ("rust: use custom FFI integer types") did not
+> update rust-analyzer to include the new crate.
+>
+> To enable rust-analyzer support for these custom ffi types, add the
+> `ffi` crate as a dependency to the `bindings`, `uapi` and `kernel`
+> crates, which all directly depend on it.
+>
+> Fixes: d072acda4862 ("rust: use custom FFI integer types")
+> Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
 
-To enable rust-analyzer support for these custom ffi types, add the
-`ffi` crate as a dependency to the `bindings`, `uapi` and `kernel`
-crates, which all directly depend on it.
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
 
-Fixes: d072acda4862 ("rust: use custom FFI integer types")
-Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
----
- scripts/generate_rust_analyzer.py | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+> ---
+>  scripts/generate_rust_analyzer.py | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+>
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
+alyzer.py
+> index cd41bc906fbd..fe663dd0c43b 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -112,6 +112,12 @@ def generate_crates(srctree, objtree, sysroot_src, e=
+xternal_src, cfgs):
+>          cfg=3D["kernel"],
+>      )
+>
+> +    append_crate(
+> +        "ffi",
+> +        srctree / "rust" / "ffi.rs",
+> +        ["core", "compiler_builtins"],
+> +    )
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index cd41bc906fbd..fe663dd0c43b 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -112,6 +112,12 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-         cfg=["kernel"],
-     )
- 
-+    append_crate(
-+        "ffi",
-+        srctree / "rust" / "ffi.rs",
-+        ["core", "compiler_builtins"],
-+    )
-+
-     def append_crate_with_generated(
-         display_name,
-         deps,
-@@ -131,9 +137,9 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-             "exclude_dirs": [],
-         }
- 
--    append_crate_with_generated("bindings", ["core"])
--    append_crate_with_generated("uapi", ["core"])
--    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "bindings", "uapi"])
-+    append_crate_with_generated("bindings", ["core", "ffi"])
-+    append_crate_with_generated("uapi", ["core", "ffi"])
-+    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
- 
-     def is_root_crate(build_file, target):
-         try:
+The dependency on compiler_builtins looks weird to me, but it is that
+way in the Makefile. We might want to revisit that, though.
 
-base-commit: a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
--- 
-2.49.0
-
+> +
+>      def append_crate_with_generated(
+>          display_name,
+>          deps,
+> @@ -131,9 +137,9 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
+ternal_src, cfgs):
+>              "exclude_dirs": [],
+>          }
+>
+> -    append_crate_with_generated("bindings", ["core"])
+> -    append_crate_with_generated("uapi", ["core"])
+> -    append_crate_with_generated("kernel", ["core", "macros", "build_erro=
+r", "pin_init", "bindings", "uapi"])
+> +    append_crate_with_generated("bindings", ["core", "ffi"])
+> +    append_crate_with_generated("uapi", ["core", "ffi"])
+> +    append_crate_with_generated("kernel", ["core", "macros", "build_erro=
+r", "pin_init", "ffi", "bindings", "uapi"])
+>
+>      def is_root_crate(build_file, target):
+>          try:
+>
+> base-commit: a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
+> --
+> 2.49.0
+>
