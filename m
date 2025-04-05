@@ -1,129 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out203-205-221-164.mail.qq.com (out203-205-221-164.mail.qq.com [203.205.221.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5023FC3
-	for <rust-for-linux@vger.kernel.org>; Sat,  5 Apr 2025 07:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9C82E62C8;
+	Sat,  5 Apr 2025 08:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743838993; cv=none; b=FhVDeJJIOLwqmQQ/Nyds7N3I1vvN1CDfcRrpulPLGNJBw3Lx+DWIA7YiGG45+IMwU/2oewQncHdzU/bHH25cOVFhI/VKZOgWHp21YMgIgkjDECqIS81TUj77dIr7dxArZFRqFRzjCROm/u8YlrmlnRdqwYaVuhsvLjAJX4QMn0E=
+	t=1743841522; cv=none; b=P739hMviz9sbHXJSoktsngH0n1+bqQLm7m8DjHFOfJMo0q91Rg4yi9sZzaL0G3OiXo0rohSCvbMW6mc082QEpC+yqW2WSd/+bQJpAJEpncgSrEUN96nJrPfJ+ei6HMkN5nBSbLyQLBCo0sU7OzmSewqzCV19yKfsdv9V2pBWw/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743838993; c=relaxed/simple;
-	bh=PSIrRoMOfM/C9n64lSMKV4jatMvn57ENX923XsgExyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cY/20D64hpemRA67rDmFl1l7vKKhk0kd9flsOVyMOAopvwPR1hzZQNh+3k0acvyu1jrgKxkgf30pr0gezyLNQMTgXibQnV33ExZ0bvyHH2cHIGCsa3eraz7XkkiBmSz5v7ByyUIi8jiOZI4Et0OPZND9OwFmXL3AAens3vKusVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXMaWZSE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743841522; c=relaxed/simple;
+	bh=llE8Rzcu/JNRYYmp/9fQoWdonSDcPERxw5YGqXSnrCA=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=T8rLNsughvXyAZbuidVWBXOt0M9P1f+jKwK8kDvbsM46wHyenCHxdWD69yA0i40ii8gSy6B44WkIGM4qJAocPOr414jGoTmYBECT1I3Z1a7W8F2f5CvADCivJxvyodJYhIGkQIKBsJDi9hOVVSQd8788iRx54q7i3X28skjR1zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=FKkfryat; arc=none smtp.client-ip=203.205.221.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXMaWZSE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17D1C4CEE4;
-	Sat,  5 Apr 2025 07:43:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1743838992;
-	bh=PSIrRoMOfM/C9n64lSMKV4jatMvn57ENX923XsgExyg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JXMaWZSEXQ2cKzZ2yA6JlvcrBIzxBv/eF5OHVgGl4iFXUsYxMbht1XFOuMlA+NIJZ
-	 /EB5Spk8TR2NLCrRYjXpEd4LVoTADR2rZSegelIzW5uD3fLgfucP4LyGVQdevmHem9
-	 AxDElm4ERy1tYoMWj58VGcOgXarTM8cIGs3iH+4o=
-Date: Sat, 5 Apr 2025 08:41:44 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lukas Fischer <kernel@o1oo11oo.de>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] scripts: generate_rust_analyzer: Add ffi crate
-Message-ID: <2025040517-debug-playroom-f5da@gregkh>
-References: <20250404125150.85783-2-kernel@o1oo11oo.de>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="FKkfryat"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1743841514; bh=XXg2Rrz+TN74fpd+BVyAawjZrLAgf69cmfUiXVsCo0E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=FKkfryat5xbMfgnpHywgKiYBb8RoKM/zsbxicZNnjH9eFLPeuHZ8qEQlTZCb5YmKN
+	 jP7p3dLTVjskIuXLU2zISdR98CaLFMbpipss+wI/H6MDG0j1PrRjj/b0UWnKl7Q2tH
+	 va60oOLJmvW8htLujVNiFYyNPTGisF20Ossgthcg=
+Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020.. ([240e:3b1:d00c:11e1:5b19:9fa9:c22e:e549])
+	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
+	id 64C22ED4; Sat, 05 Apr 2025 16:25:12 +0800
+X-QQ-mid: xmsmtpt1743841512tjc3ou65o
+Message-ID: <tencent_6257D365DB7BACED49A32ED535ACE884CD09@qq.com>
+X-QQ-XMAILINFO: OaoBA5NOFC/jnAXZRXgve8m8GcT78yw/anjQJogBeqZYEwxtj7m7VEV06m4roA
+	 CrIJLroWrCFw6O2HK0VAf4V/l738OKnfLh/hMh/Hsys4NlwNj3AyJjN8IBoEu37jgZ7enrhn3Uc2
+	 MOfXnSyZX2QBvllppqEkbotXhVgQ+Pu13q/1JPmEmhmLJYbeGEzouUmGoF78Yik9voBi0OYYtoLP
+	 OqaiZWNUjGt/LGU36jWYCv2/ydAz2WkSTVE/el4PvSOvPzNOOR7mjIkGaeKjlM0ytxCa5q9s6aI5
+	 2+2cWeIJ0ALSg73huRvcm1q26GHgFxxt+Y3FQmKG108gpyWz1RXXc1DwHY1ePJA/D7LWNyy4mZIY
+	 acOuXoATjwEOrvNx2zEo9AjTY3yCYH+XY0qxbM8J7un5EOeSP7bcd5LARcvcqP1plFw1tnREuSR6
+	 Pg7Z88pKxzT8aEY9ysoEnC8sNyUDWB/ZcQLf0mPpOknDyg2whXyGbhdGwr9gzi8/g5TYnhaio5/T
+	 7kkXmRbsBTlCvx1U04MumHXco6/qZq3706l2jqc9uYfvno8LHcIKZ5DZn+1xhaTbdLhnQQ3m8uwD
+	 t5iwo8ar7SFuOW5HqE9y2k1dKQgo2ToBLV7nIBZnT4iC7p1vfkCncvxlK+Sc+MgCLwZ+ZnuEmgVn
+	 wi3BhfA3frPGkg2msmb2hJBosiA9DmDT5PNvaB8IWVmNl8Nm1UyLreXeJmbL4biXNdtNkOXQwfTk
+	 FNHrAnqTCwjSbGsApaCD849ioAbLuBnyo6KLxySAQzdZWhizz8rvZoTD6SOlQMeCyAmYv1v3Ifz9
+	 4VBLEUcJzfRmTu28kCSenWIYoBvdUlGQL1gJJSut8yBih2bHtUps4A6Mms3CCwfAODEo9ffFE39g
+	 WdpGjyzAuueCVBDSi94PS+9QSRB7gAxvzIB3eDOFBR3TPZrnPB3ptTdU/KvAfHTqC52rUbkTuQJe
+	 z37ny4TlNjdl//VHeN4WYaQD4uvX0q9FjR4g2gccPEfU8rpUwTkQ==
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+From: Guangbo Cui <2407018371@qq.com>
+To: lyude@redhat.com
+Cc: boqun.feng@gmail.com,
+	linux-kernel@vger.kernel.org,
+	longman@redhat.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	rust-for-linux@vger.kernel.org,
+	tglx@linutronix.de,
+	will@kernel.org,
+	2407018371@qq.com
+Subject: Re: [PATCH v9 9/9] locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+Date: Sat,  5 Apr 2025 16:25:11 +0800
+X-OQ-MSGID: <20250405082511.1683981-1-2407018371@qq.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250227221924.265259-10-lyude@redhat.com>
+References: <20250227221924.265259-10-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250404125150.85783-2-kernel@o1oo11oo.de>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 04, 2025 at 02:51:51PM +0200, Lukas Fischer wrote:
-> Commit d072acda4862 ("rust: use custom FFI integer types") did not
-> update rust-analyzer to include the new crate.
+>  include/linux/spinlock.h | 26 ++++++++++++--------------
+>  1 file changed, 12 insertions(+), 14 deletions(-)
 > 
-> To enable rust-analyzer support for these custom ffi types, add the
-> `ffi` crate as a dependency to the `bindings`, `uapi` and `kernel`
-> crates, which all directly depend on it.
-> 
-> Fixes: d072acda4862 ("rust: use custom FFI integer types")
-> Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
-> ---
->  scripts/generate_rust_analyzer.py | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-> index cd41bc906fbd..fe663dd0c43b 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -112,6 +112,12 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
->          cfg=["kernel"],
->      )
+> diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+> index 897114d60cfd4..764c9fd797d0e 100644
+> --- a/include/linux/spinlock.h
+> +++ b/include/linux/spinlock.h
+> @@ -605,18 +605,17 @@ DEFINE_LOCK_GUARD_1(raw_spinlock_nested, raw_spinlock_t,
+>  		      raw_spin_unlock(_T->lock))
 >  
-> +    append_crate(
-> +        "ffi",
-> +        srctree / "rust" / "ffi.rs",
-> +        ["core", "compiler_builtins"],
-> +    )
-> +
->      def append_crate_with_generated(
->          display_name,
->          deps,
-> @@ -131,9 +137,9 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
->              "exclude_dirs": [],
->          }
+>  DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
+> -		      raw_spin_lock_irq(_T->lock),
+> -		      raw_spin_unlock_irq(_T->lock))
+> +		      raw_spin_lock_irq_disable(_T->lock),
+> +		      raw_spin_unlock_irq_enable(_T->lock))
 >  
-> -    append_crate_with_generated("bindings", ["core"])
-> -    append_crate_with_generated("uapi", ["core"])
-> -    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "bindings", "uapi"])
-> +    append_crate_with_generated("bindings", ["core", "ffi"])
-> +    append_crate_with_generated("uapi", ["core", "ffi"])
-> +    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
+> -DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq(_T->lock))
+> +DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq_disable(_T->lock))
 >  
->      def is_root_crate(build_file, target):
->          try:
-> 
-> base-commit: a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
-> -- 
-> 2.49.0
-> 
-> 
+>  DEFINE_LOCK_GUARD_1(raw_spinlock_irqsave, raw_spinlock_t,
+> -		      raw_spin_lock_irqsave(_T->lock, _T->flags),
+> -		      raw_spin_unlock_irqrestore(_T->lock, _T->flags),
+> -		      unsigned long flags)
+> +		      raw_spin_lock_irq_disable(_T->lock),
+> +		      raw_spin_unlock_irq_enable(_T->lock))
+>  
+>  DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irqsave, _try,
+> -			   raw_spin_trylock_irqsave(_T->lock, _T->flags))
+> +			   raw_spin_trylock_irq_disable(_T->lock))
 
-Hi,
+It seems that the `raw_spin_trylock_irq_disable` function is missing from
+spinlock_rt.h, which will lead to a build failure when compiling with 
+PREEMPT_RT enabled.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Best regards,
+Guangbo Cui
 
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
