@@ -1,73 +1,73 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221BC61FF2;
-	Sat,  5 Apr 2025 18:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F1222EE5;
+	Sat,  5 Apr 2025 19:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743878306; cv=none; b=QpKMnhYapAJ5J2AHntQgq2ZTdv6Zl0T3cr1+oW9aKFZE7+8v9+aEZ4yxQmlRsviYk/8H3ECRLxYLdNXxnexsdq/L371jxiFam3s9cohh5tbo7FFxtO4YYcg8PruiXw7SGqAcTEqhBu9eJrY/OlQiW8KtxsCNPdOBJ2i6QrLhU+I=
+	t=1743882274; cv=none; b=XSij+olu3lHVsVnNUJNbsP27RX8f+g2fViUHN3v9Kpv9xofxJg3DDyxnVcYCWD8LnVXfpMcMxt69R2+fLyD07OqaFJt0en/6PMxLINFJOTSRcTuLInRr7wujFhk+02QMQQp1vozLvWlc3K9u5nNClMNFIIjjZYmVwRzJKM0QzKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743878306; c=relaxed/simple;
-	bh=QQtjJWBJxT1BnQT77IBqRVS4a9+nh2ksFHUk6+PWva0=;
+	s=arc-20240116; t=1743882274; c=relaxed/simple;
+	bh=bzP3k5AacEGTx5WxdA78qc51Qn7ADrLkcq/tTD05EFk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lQuqGKLVq+pnwhkhR+QX1O/A1lXn6j5b9NQVe3uA1OIPhkuJUcR95LTv3VIxMM6GXMdTO4FEBb04yoQo7Y6w6V1da7jSITsLUG1KiwTLYwEM4nWcEkYOQCOpbmpo36ofbp8wAipG9z5ephXqh2i5hwlr2LEw4P8caRvW+cFREEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T4Q6mSwL; arc=none smtp.client-ip=209.85.160.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=pn++0RrDZI6+JfwWIkmDasMZzCAhpoIbWSpRMM0QHzhRCDRuflRKF5EKwVw6QXYKaDmboxkmCBWtPHcphJ4rXfnPxyRMVibv+FYgGf895Wbjcuf8GoShZbvOZ/s1xr76Fa+/cEVtV3kV0ECX4Ileq5dzr7VDUWU7voYHcrP6CwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DnE5uPWG; arc=none smtp.client-ip=209.85.219.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T4Q6mSwL"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-47691d82bfbso61765221cf.0;
-        Sat, 05 Apr 2025 11:38:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DnE5uPWG"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6e8f254b875so31473066d6.1;
+        Sat, 05 Apr 2025 12:44:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743878304; x=1744483104; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1743882271; x=1744487071; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sl2M++fvRVUdrk0PUNelzDx+YAZUrNZAMRr7cMe/F+c=;
-        b=T4Q6mSwLVstC6MX5u/FyELjG5rBz7vibpsnIIxQwO4wl8ot1ZykGxss62UsqzVFmye
-         DoymGs7u9sxN0Yras6fAeNywz3NqBmrjv7iO5qagmz5qxzBVrHeC8ru1k2sGDJjkntuQ
-         Trq8oX5x/MTN7pYIYmJLZ/pLboB4vceMzqFvw92Gy7rtka+a1npEzRr5FmyO5ipzImb8
-         Jg5rtetg+NeqZ7lrcT6pV1oQV+jh0II6ClL4xtHC8hQcd9EnxuLJWWz197kF70Esi7It
-         cstwSQI8aBuuWc3w+Xs7L0NnIyQO+gFNgNvTqLGMOhV68xhXh+CWOYjkKI+WKmET+6B3
-         jgAA==
+        bh=rx5zILChtOMmy0WZ58xwLPc6ZOa7iYCxHlVSkPvgXD8=;
+        b=DnE5uPWGrAoHnMfyD2CgffVuPoTZ49o5DmyNTbSAiEWh/6YxWQfaQ8ZOhi1+00RKcj
+         Ig1saWtRpp66j4Nij+y8gjDQ5mJKRshdMNL+NyC5071/OmnmNc5ez9Paydl8c0J2oacy
+         4jkXu1cDYDYrXWIvCojCsQ/b+CR17ObU3dzOzMPmoFHQD12VskuxW0IS9nOIfwy9zXAY
+         61S3wmNEfcHk5ANh++9GP/m73C/4IINF0Q6m01CpN+CRKdIC8KpEPVswCsyjLCJdOIek
+         zezWO2fOCXCoazXRcYNxvj7kGAePGBQKxZvqQaf3piW6jcjqMSeA9ul8Le+BFFrda05d
+         3OUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743878304; x=1744483104;
+        d=1e100.net; s=20230601; t=1743882271; x=1744487071;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sl2M++fvRVUdrk0PUNelzDx+YAZUrNZAMRr7cMe/F+c=;
-        b=GhAmKiLzivCkdyO2lL/pDzME5+3kOJ7c4TgJ8S7GeYYcw8hYCxiK12V6MEhCurj84+
-         3HNjBD7ALSnzpNoaKYmMOR9W22jXgvzduwyGKCJOCQ6UodFBbmy6hHY/qCCw2yCnEeKk
-         rKdFPsX2VNX/zyw3fAqSKNL7s8MAoDcfPev5tg7kTPoYceWUZZKVaKNuXovXX2eBCSjU
-         7nnwQcoWtOiTh7uKkZxO99ldZR0T2W7/5bu9R1NFRDmTOxZU7FxROhaPq/MQGddmV0Pw
-         /LJ4PoECxP+EfGVod3+9+JcxXYktDVclr5w9Y+ECXDF3MXkqBD2w/XS+wP/IJTRfFw5K
-         oUeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVsPOZiWYptftCXtZ6ELd1g7Z5Un0YteKGPkCyhWP5rqQ9rL8TqM/XdqMI9PGevCr2qvIC4TJSbuk9b0/9d4jA=@vger.kernel.org, AJvYcCWYiMy2WPHdrPvHdnyFTWeG0s2/wn7xPzu4d7asYWFAvsjOAh1UkRxw4zFdGYZpgBq4+Gpn4aearjUlINs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTH08R7+dCQa+dtl6AK4HfVHKvtEn3gKmFe7iWe515rP5LdJ3a
-	tnuRKxm31ulp6jWF5GuftOLej/Waob1+2sr3pHzqF9XAZf23ymMBsf2+Vw==
-X-Gm-Gg: ASbGnctEwMhEinZgTjZKPTSUGaJ+RJoHxhUVS1mhrsf4GXFbZNboH7C9ZNwD4rzJdAY
-	btV9jKM24sbIWbuOCMNb+t8aq5F8UhFTPOqrYsIwi1gBx1Jc7Wl8fQEST4zDJHEwFh1qXTjBgu4
-	vrs/pIl5zGpRm/bkNx5bI9OZOrdyuySu/x+7viMU+JZIIrqRw0cPLKZ+MA7D42mYTh1CczsvICf
-	Lnj0I/E6jv/WMvbM++CpNGPYAvs6nqDM0cP0zsDct1VL7fEOoo56pFie7jjX9diWS5S8myjtjyw
-	1H/kdca/VjHvXuv/iyKItWsYPu7Sn85oNHTLAtZEDlUOfdmusdAYvbJagrdKxAyIuX7vo9zNsKQ
-	CZZVNNnyyXR8YQMmGG3/YCTIf6VS8fgl4d34=
-X-Google-Smtp-Source: AGHT+IGQ+VniDYYVVkdPFpff89YQ2tB+gwFWi/omtRKMHBspF0ohm6pDkZK+xQOPlmxVk+aP3+vg6A==
-X-Received: by 2002:a05:622a:f:b0:476:af21:9d4b with SMTP id d75a77b69052e-479249a7d83mr106849881cf.37.1743878303908;
-        Sat, 05 Apr 2025 11:38:23 -0700 (PDT)
+        bh=rx5zILChtOMmy0WZ58xwLPc6ZOa7iYCxHlVSkPvgXD8=;
+        b=aJ/SUUh89W237hR+jZCFRI5sXKAl5pur9kWw2BgYwFTBjVpMIW8IZ6+eUYge6HMhdd
+         arSecj5gwGLhvkiB+2H07N+tPuxYNFM5DCcRNGme3/6QO3GRL0b5lpOfhv0dDkW+Y7ej
+         7s3DG/YGOdlpTZcxXAb/w5ZDyPNBA/Rly+IceHAHG+yp05UBNcE9n97Mmx7+1ZZmijit
+         1oHLhAWhiJU2xn6R4oLYdHp35eJpzDfKWRz+Mi9paZouQnuL/zYd1JOuRzwHtJEzcO4e
+         Rt8jEijPLh9VHbyeDpgYt1l73ewfAlKDdNtRovbV1G81YdV99e+CklZklywx5QKynksp
+         BgwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUV6jAJgtTamweJD0hTOWBziYNzNEJHVIqvadP7dFbqd7F6TBeuVEGhsqwcmewPBZIleGH7lba9dntgA1U=@vger.kernel.org, AJvYcCW3VjdxfTRYxttNCy5XnzaUq3wQDnu2wzbQJtbwozdCX4A/ik6ymym3SC87HDlIS87+Rd+13od+NunqP+sx9aQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwF7YbQHuIHpCH15lR27244s59BRBIjcVaUEeUFwf32ND01Fphk
+	IAjagVOS7YZXa1M5fzUfVREel3VVKH5cW44Z3m0FHgForrVzHbBV
+X-Gm-Gg: ASbGncunSncbUT0QIWUICqBg7olIDkxrKFchG7h45WWWPh9esuVb5TjlQorNKLStJX6
+	+NL7WPzYdWezUz1tdbOCqJGyhhLBwEJL3DBhDVdF7cDDv5EAqlOXxjR7A4Z2phychJ8Qe0Mx3hf
+	0yik3nvEWRBO3q+FKooxEasAKZCj/76S+QHMmmX+FBRxt32b+bgLCh1Nwh8pCbhm1z6V8ZUI2d9
+	RQXNtdSq9zCDizWYkU/pfwptMQCyq4TCGTPIyN7hFMRLnLvf65ZhVTaPPHf+b8dgEUu0althGB1
+	NbFXDErLHQ22hrYVYGhyESxnix8qceq7TYz+RdtuhIiNnhpvkXtKsO7VnSRPtbELPBRbv9wCMPu
+	Ecpu5dAx//xqTijwtMIKv3FCecVKtjkXqpxE=
+X-Google-Smtp-Source: AGHT+IFaHgaHKCaTJfQp7FDfckg0vFLTdqZJduxcYBx30a6MlcEiZpu8iZYpUrx21p3k6WUugtRZ3g==
+X-Received: by 2002:a05:6214:1bcc:b0:6e8:f8a8:83f2 with SMTP id 6a1803df08f44-6f0b73f3587mr57851236d6.6.1743882271354;
+        Sat, 05 Apr 2025 12:44:31 -0700 (PDT)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4791b0883f1sm38734551cf.42.2025.04.05.11.38.22
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ef0f047a77sm37288226d6.53.2025.04.05.12.44.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Apr 2025 11:38:23 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A16D61200066;
-	Sat,  5 Apr 2025 14:38:22 -0400 (EDT)
+        Sat, 05 Apr 2025 12:44:30 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 218511200066;
+	Sat,  5 Apr 2025 15:44:30 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Sat, 05 Apr 2025 14:38:22 -0400
-X-ME-Sender: <xms:nnjxZ3JZbjHujoRlZv0Mt61KcDqmnzrSpK-a0XpheprrsH1QQr_LEQ>
-    <xme:nnjxZ7KdZskA6gb5kSB8SlR5st-aT9deU3lsgzbsCSo8860fr-M9asOOTMl6KtsDr
-    myBB05ZdIhQ10t4rg>
-X-ME-Received: <xmr:nnjxZ_to16WQ0ASLnim4FH_rwsByhzDCaQyCMWbByUK8pucedDAhan2IoS8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduleehuddtucetufdoteggodetrf
+  by phl-compute-03.internal (MEProxy); Sat, 05 Apr 2025 15:44:30 -0400
+X-ME-Sender: <xms:HojxZ6lLCOYFiPxSwM4JMtyuSrfW33yfCaz1ckJWFfi9vl5LcxxIww>
+    <xme:HojxZx0pRPu7a0EV6hoNT3s_2hwoG1Kn4FSxgr49OggF2bcvxH1l8Tgjj9VLiVTfe
+    CBG-PUl8ff8YaJssg>
+X-ME-Received: <xmr:HojxZ4rnET0lKf5LFM3H65f1R2mfR6HxU9aGtZyNx1mCZcPWGbpOwmtsrcY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduleehvdefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
     pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
     gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
@@ -76,40 +76,38 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduleehuddtucetufdote
     leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
     grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
     lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddvpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurd
-    horhhgpdhrtghpthhtoheprghnughrvgifjhgsrghllhgrnhgtvgesghhmrghilhdrtgho
-    mhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtg
-    hpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhg
-    rgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuoh
-    drnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtgho
-    mhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtph
-    htthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:nnjxZwahUNtqogiSdLHBOEOuCPYexHccb0rgEFG2r_X2WhZmKh7O8A>
-    <xmx:nnjxZ-a3y7P16u3NJjOyDxAhSsydpkevz1vl0pT6fH9sJbNV1JqjVw>
-    <xmx:nnjxZ0CN5BGhwNmTAFS2Gwnrby6bw6PbXdq7mEhjisBELbwZfOgyLA>
-    <xmx:nnjxZ8Y11R5GqgpTJZcqScLJXRZeN2D_RnGWDXTNroXOE9Us2f9UPA>
-    <xmx:nnjxZyqWUP7c6xGBnbwI9TJPxwupSYD71CJVKxvrtRVRTI9AX8D-L_xu>
+    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudehpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrtghouhhrsghothesnhhvihguihgrrd
+    gtohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopeho
+    jhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrse
+    hgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhr
+    tghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpth
+    htohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdr
+    hhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhh
+    hlsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:HojxZ-n9wHqrghfx16bEXMsrTvHXER7coaXHY0JdgCfjU4Ks-jz7AA>
+    <xmx:HojxZ402WwUjFkqAQ-U9oYKjYxRi3Br_sFpEL-YNzejsjiKQiWLs5w>
+    <xmx:HojxZ1uEu0tcPUXzfyk6W7aZt0JOWqTnMX-x5RIFrzd40nO-WYsgjw>
+    <xmx:HojxZ0WuQhh1_chOvcHJKzfMh-5F1cn4OqbpSN4Dye6ED_dEP3PK9w>
+    <xmx:HojxZz3-QsM6yWRR_4R3vsZK4QqZ7682z4sDQjA0VAFZN5HyVljGlbb9>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 5 Apr 2025 14:38:22 -0400 (EDT)
-Date: Sat, 5 Apr 2025 11:38:09 -0700
+ 5 Apr 2025 15:44:29 -0400 (EDT)
+Date: Sat, 5 Apr 2025 12:44:16 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Ballance <andrewjballance@gmail.com>, Liam.Howlett@oracle.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, akpm@linux-foundation.org,
-	gregkh@linuxfoundation.org, wedsonaf@gmail.com, brauner@kernel.org,
-	dingxiangfei2009@gmail.com, linux-kernel@vger.kernel.org,
-	maple-tree@lists.infradead.org, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 1/2] maple_tree: add __mtree_insert_range function
-Message-ID: <Z_F4kdnCHY-Xkzyg@boqun-archlinux>
-References: <20250405060154.1550858-1-andrewjballance@gmail.com>
- <20250405060154.1550858-2-andrewjballance@gmail.com>
- <Z_FKugtgoN0l6JNm@casper.infradead.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: alloc: implement `extend` for `Vec`
+Message-ID: <Z_GIELVB_HI_qeWX@boqun-archlinux>
+References: <20250405-vec_extend-v2-1-e4a85af43cb3@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -118,25 +116,181 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z_FKugtgoN0l6JNm@casper.infradead.org>
+In-Reply-To: <20250405-vec_extend-v2-1-e4a85af43cb3@nvidia.com>
 
-On Sat, Apr 05, 2025 at 04:22:34PM +0100, Matthew Wilcox wrote:
-> On Sat, Apr 05, 2025 at 01:01:53AM -0500, Andrew Ballance wrote:
-> > adds the __mtree_insert_range which is identical to mtree_insert_range
-> > but does not aquire ma_lock.
-> > This function is needed for the rust bindings for maple trees because
-> > the locking is handled on the rust side.
+Hi Alexandre,
+
+Thanks for the patch.
+
+On Sat, Apr 05, 2025 at 10:51:41PM +0900, Alexandre Courbot wrote:
+> KVec currently has `extend_with` and `extend_from_slice` methods, but no
+> way extend a vector from a regular iterator as provided by the `Extend`
+> trait.
 > 
-> No.
+> Due to the need to provide the GFP flags, `Extend` cannot be implemented
+> directly, so simply define a homonymous method that takes an extra
+> `flags` argument.
 > 
-> The support for external locking is a TEMPORARY HACK.  I've talked
-> before about why this is and don't feel like explaining it again.
+> The aforementioned `extend_with` and `extend_from_slice` can then be
+> reimplemented as direct invocations of this new method - maybe they can
+> eventually be removed.
+> 
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+> I was a bit surprised to find no equivalent of the `Extend` trait for
+> KVec, and while I anticipate to be told the reason for this, I also
+> didn't hit any hard wall trying to come with my own implementation so
+> here it is.
+> 
+> I expect the new `extend_with` and `extend_from_slice` to be optimized
+> into something close to their previous implementations, but am not sure
+> how I can simply verify that this is the case - any hint would be
+> appreciated!
+> ---
+> Changes in v2:
+> - Changed the diff algorithm to histogram for a more readable patch.
+> ---
+>  rust/kernel/alloc/kvec.rs | 89 +++++++++++++++++++++++++++++------------------
+>  1 file changed, 56 insertions(+), 33 deletions(-)
+> 
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index ae9d072741cedbb34bed0be0c20cc75472aa53be..e78cb5ee575ce01e44283f8b4905689fb1e96165 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -454,30 +454,64 @@ pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocEr
+>      }
+>  }
+>  
+> +impl<T, A: Allocator> Vec<T, A> {
+> +    /// Extends the vector by the elements of `iter`.
+> +    ///
+> +    /// This uses [`Iterator::size_hint`] to optimize reallocation of memory, but will work even
+> +    /// with imprecise implementations - albeit with potentially more memory reallocations.
+> +    ///
+> +    /// In the kernel most iterators are expected to have a precise `size_hint` implementation, so
+> +    /// this should nicely optimize out in most cases.
+> +    pub fn extend<I>(&mut self, iter: I, flags: Flags) -> Result<(), AllocError>
+> +    where
+> +        I: IntoIterator<Item = T>,
+> +    {
+> +        let mut iter = iter.into_iter();
+> +
+> +        loop {
+> +            let low_bound = match iter.size_hint() {
+> +                // No more items expected, we can return.
+> +                (0, Some(0)) => break,
+> +                // Possibly more items but not certain, tentatively add one.
+> +                (0, _) => 1,
+> +                // More items pending, reserve space for the lower bound.
+> +                (low_bound, _) => low_bound,
+> +            };
+> +
+> +            self.reserve(low_bound, flags)?;
+> +
 
-Does it mean that ideally maple trees should not support external
-locking, i.e. it should use its own locking?
+I want to point out this might cause a behavior change, previously
+extend_with() and extend_with_slice() do a "all-or-nothing" extension
+depending on memory allocation, i.e. if there is enough memory for all
+the new items, do the extension, otherwise do nothing. Your changes here
+make it that extension can fail in-between due to AllocError, that is,
+only part of the `iter` is added. Of course, in practice, both
+slice::Iter and iter::Take will just return the number of all the items
+as the low_bound of .size_hint(), but it's not guaranteed.
 
-(BTw, people usually add some documentation if they don't want to repeat
-themselves ;-))
+I don't see a direct correct-or-wrong answer for what behavior is
+desired, but if we are moving to a new behavior, we need to make sure
+updating the document of the extend*() function. Plus if failing
+in-between, should we return the `iter` so that users can continue do
+something about the `iter`?
+
+> +            // Number of items we effectively added.
+> +            let added_items = self
+> +                .spare_capacity_mut()
+> +                .into_iter()
+> +                // Take a mutable reference to the iterator so we can reuse it in the next
+> +                // iteration of the loop if needed.
+> +                .zip(&mut iter)
+> +                .fold(0, |count, (dst, src)| {
+> +                    dst.write(src);
+> +
+> +                    count + 1
+> +                });
+> +
+> +            // SAFETY:
+> +            // - `self.len() + added_items <= self.capacity()` due to the call to `reserve` above,
+> +            // - items `[self.len()..self.len() + added_items - 1]` are initialized.
+> +            unsafe { self.set_len(self.len() + added_items) };
+> +
+> +            // `size_hint` was incorrect and our iterator ended before its advertized low bound.
+> +            if added_items < low_bound {
+> +                break;
+> +            }
+> +        }
+> +
+> +        Ok(())
+> +    }
+> +}
+> +
+>  impl<T: Clone, A: Allocator> Vec<T, A> {
+>      /// Extend the vector by `n` clones of `value`.
+>      pub fn extend_with(&mut self, n: usize, value: T, flags: Flags) -> Result<(), AllocError> {
+> -        if n == 0 {
+> -            return Ok(());
+> -        }
+> -
+> -        self.reserve(n, flags)?;
+> -
+> -        let spare = self.spare_capacity_mut();
+> -
+> -        for item in spare.iter_mut().take(n - 1) {
+> -            item.write(value.clone());
+> -        }
+> -
+> -        // We can write the last element directly without cloning needlessly.
+> -        spare[n - 1].write(value);
+> -
+> -        // SAFETY:
+> -        // - `self.len() + n < self.capacity()` due to the call to reserve above,
+> -        // - the loop and the line above initialized the next `n` elements.
+> -        unsafe { self.set_len(self.len() + n) };
+> -
+> -        Ok(())
+> +        self.extend(core::iter::repeat(value).take(n), flags)
+
+Would this actually call T::clone() n times instead of n - 1 times?
 
 Regards,
 Boqun
+
+>      }
+>  
+>      /// Pushes clones of the elements of slice into the [`Vec`] instance.
+> @@ -496,18 +530,7 @@ pub fn extend_with(&mut self, n: usize, value: T, flags: Flags) -> Result<(), Al
+>      /// # Ok::<(), Error>(())
+>      /// ```
+>      pub fn extend_from_slice(&mut self, other: &[T], flags: Flags) -> Result<(), AllocError> {
+> -        self.reserve(other.len(), flags)?;
+> -        for (slot, item) in core::iter::zip(self.spare_capacity_mut(), other) {
+> -            slot.write(item.clone());
+> -        }
+> -
+> -        // SAFETY:
+> -        // - `other.len()` spare entries have just been initialized, so it is safe to increase
+> -        //   the length by the same number.
+> -        // - `self.len() + other.len() <= self.capacity()` is guaranteed by the preceding `reserve`
+> -        //   call.
+> -        unsafe { self.set_len(self.len() + other.len()) };
+> -        Ok(())
+> +        self.extend(other.into_iter().cloned(), flags)
+>      }
+>  
+>      /// Create a new `Vec<T, A>` and extend it by `n` clones of `value`.
+> 
+> ---
+> base-commit: a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
+> change-id: 20250405-vec_extend-4321251acc21
+> 
+> Best regards,
+> -- 
+> Alexandre Courbot <acourbot@nvidia.com>
+> 
