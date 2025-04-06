@@ -1,162 +1,125 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE7B145FE8;
-	Sun,  6 Apr 2025 11:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA401C27;
+	Sun,  6 Apr 2025 11:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743938946; cv=none; b=uNirSw4GI5tz+ce9Ces7pi874x4URBOTnloARIYoW7tQqNORO33mCFGfoUPKHDV0BL0a2Rv9OX73mcuIcbyk3q2BHMyYm9I2ETQhPgUkGH9deNYkYvuMzU9iAemvQKdMnn/qWoEjxKD/vkENMDEoSYQXDdnPNXMTzCvBavuMDN4=
+	t=1743939772; cv=none; b=Rq7ziq61fqlXoOH4NYLpt9kVZPS3QfIR1N95KnkR0rb18rX/STMLCSYy/J6pOr0SrtX+QeWnwzVkeqegC7IWCdD9ok439vhs2ANnUeZ8mrjMDU8yjb5vOa7JwdLSAsw6rAu127G/9djvhY2VMRUsa6rW9pDd9kZynpoyvnVHGZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743938946; c=relaxed/simple;
-	bh=SeXebZxEhQ15JpusxB3sN3Pr/PFpR6JwIs1E3MUTMKw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Mj3xw1/vQYsKVeZH7XHR8oxmskpG9cxCK4P+SVVGxIWA8pbanxNi95GdnfieRq4W6jacPxmTzukRCE6Urh3XTEj4JLqeJM2kvHNi46rYyqv+UErLS6UErpvU2+XRX3UeRpAzsnJNer5XY+02AA6+ULziPdJ0SSveAnY2xG3p6zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
-X-QQ-mid: bizesmtp89t1743938916t77954ce
-X-QQ-Originating-IP: v5OIOCLctsBUbeHm0hxz4BSjuEmz9FqwX4x2qU4Kq9s=
-Received: from localhost.localdomain ( [36.152.24.149])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 06 Apr 2025 19:28:35 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16350347360751056876
-EX-QQ-RecipientCnt: 4
-From: Xizhe Yin <xizheyin@smail.nju.edu.cn>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	xizheyin <xizheyin@smail.nju.edu.cn>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH] rust: convert raw URLs to Markdown autolinks in comments
-Date: Sun,  6 Apr 2025 19:26:05 +0800
-Message-ID: <07D9F73C7B35C74B+20250406112605.6152-1-xizheyin@smail.nju.edu.cn>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1743939772; c=relaxed/simple;
+	bh=obzEVyCvowXtHk1jUxYd1vnwIcYOWBlko+ODBM5lKc4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H+PuTHcTd13XQe3JHIkszz/YEOqm09sL5MVZoCJd0JIqvp0puUmulWIn8aA+qqYGciheUno5bGiKjWjLlTOIrtgCABqWBKx+wOcTmJKlO3EvR30rDhAhRACvCWXbQhvoTTQi9GzdPSrlWA2YdCRk/8FAlZUsQua883dOyfZ+Tdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mk0fAykA; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mk0fAykA"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ff5544af03so1027135a91.1;
+        Sun, 06 Apr 2025 04:42:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743939770; x=1744544570; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2CQcHyKdo7NqukG4kbe23C6EitoDV0EvE3RGNL0StOg=;
+        b=Mk0fAykAw/tishi7MgzCznmPYVHq0zh4QJVKVLaNAAisiDw65NScD0YGDJIw2FGq1o
+         GFtDgbnd5fFOO9ASnpIO05ZtePR3RnnH6pFOJM4SX8QI1ZIljFQJIpW3gTC9ZzHmzuwo
+         0EyhXP4zqHeg+doXvZK9kMjpRe+XMlV5WsH7eniydDc2sqCaUHnh5GnxiyGcR+u3x5ex
+         cx0YV7t8jnnaxdQ6JhITP1pa8a0ETmu+3msPeBeaofDtJygjk8dumPkn+lzwl1ujA+qd
+         i6LEX/qi8guo1X2qGYr63QVFY0rgS/swsq+9gLXkeliNHqU8VjaKr16JfWnjulfDb1ms
+         addg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743939770; x=1744544570;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2CQcHyKdo7NqukG4kbe23C6EitoDV0EvE3RGNL0StOg=;
+        b=oMVO4Iov2qYf2lS5AyaAD+5d1xBAGe659yEsOgMy98TsIsqNZeygFlKSR09LvtYM1V
+         xnokkFDF7gqCS0BSn5I+6wOHYnDD6hzG192DHIrZmGf66loabCkMO4KBRBxukaTQf3yQ
+         7bLOwxCtxWA5hHcLlDHlQK4n5AercbqkUSbZq3MkqOa3yUgXGorpMRmJuDRzjWWGKnL6
+         monnDkQQxDc4wZPkR2HWQ+xG52cdNOtRFlbUt+PkK3OvLABjoU+axtOUBV8uCFmKngBG
+         yFMHMddNsH+tak2sbrK6LqTooWbi7n3ABPz3M/mHIARorrkFQqpWWqQ8TUMBkAvOX9aC
+         3AKg==
+X-Forwarded-Encrypted: i=1; AJvYcCVQexS1mFW+5TGXH44tTwCPRwhy1cia4kSVaI168SFtrCNZgk4b2qjLfRUjkbpo6cfrQjVAtnruZlF3+tE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyTRX3gws/oIbgu/WNgnfDaagefIBuCJhQ/xNvjgDjGFRz7xFb
+	oZLtn9KKb+VYi2YvKPPwR2aqVPCblZ1g098XUCV7OTM/K//gCRVsgZTSZrFvX5VTmEChi9d0M4+
+	5Z5vS4Bg4wsbijreGgmAbVNRMQ9A=
+X-Gm-Gg: ASbGncttdDguUbvdkb3oW2OL33XTfjnwqznFxvCqjL+Cwwbh17u5s7q02dAt31OddEp
+	ENwVkISck8LZHj5vg7EBPE14CHeyOeYgHC/azugtFZnCND8I10gb16vcYHqm5KWWndVmO9BaHbm
+	RULg5Q5Dba+7la2n2Cz69Ss9rELg==
+X-Google-Smtp-Source: AGHT+IGbusvYvppjE3d+kCJR6enaryQVigrFFBAk1qzQdMM8bxxcfglN8lkQjYwuZxIZt1MxaP0O1xq7sRdthGXnR1E=
+X-Received: by 2002:a17:903:2f07:b0:223:397e:a55b with SMTP id
+ d9443c01a7336-22a8a065747mr48250385ad.4.1743939770057; Sun, 06 Apr 2025
+ 04:42:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: OYpbVsTx4C81TGrW4r/HTBiqiKQjdaOf16rxvmAsV6dGebVujdK2NTri
-	QxKqdlg/qPv8cImRJqfH16zqPkbh/N5vdvz09g9jc2gJVjwq4ykEDY9hXJ4+6b5NOTzMLEB
-	Erljoe7meI3x7/RAvJljVREiVOVc9jGr/CTLZWEhv27PCti7Ym2dB0qWRGu9eT66Wu5pjGm
-	iA4D8HDBPzc9q7otiai5S2omKS/O9uRWSiWcIGxDuQkEWLQ3BbpWjY/lgp1wUvXut6Mr/FN
-	sM/gVmRhQk4JxIEnk+yRgjXURjTKq2p+k9dnhY/78FSuvr5z5qOY5e5Axhit96CGMDEx36y
-	osQTbc6X511+meWC4ctPF8cr5i/f2WBLrvlUNMCcyLb58woOAFtXOWauDX2d5kW2zUiN9Jc
-	PjY1g+WXNrqNZXLQWg12wfkqjPHg15snc/Jc0wDaYd2XRcWEvCh4AubaWKiPtZ3opW2xAkA
-	wpHrEq8JNj+uhIE2QUdl9/M41hPUUvHk/BlkGT2w10VW+JsPnn1aZmiNXhkG+iPs7zuj32J
-	8m0bATMJLpoDyBJkeCtRt/8ZBoazZ6FhtyngheIUntWIM5qF1KToTuZJLENgDNwhOBASoxZ
-	FYdBKApwAmzu5iT+5nI4CVyGSkHwYSh1R84M3SyQCxvh/lH6qjUAVEPSTYfeHbv0SshWP53
-	AVV4zuIrAFkLD1rVMyGsAV5lxiageFrVTCRtqOtcLbnfO7LwkKEJgP2YXkOT7oZ9V0wpTdE
-	JbSoGA95G2QR8ARr1fLr7jWtWGa9Hf88b0c0OOnrNBmtECxQ8pLcQp6sJH1IbU0E8vzxDBq
-	EvvPviO/HLbPBCo5lWLrUoR6sasrMDNYDHTR59JCjXEPE+3Ub5eX9La842sHjs/uJiiANjN
-	r1wkUlb1nDQdgeB/bfhhbmIGQMxSbWyAdJ9Pv+kQZcJn9EhgntB8Zk8LgoG8/VNbEI1OZnH
-	ZGpurNrq7wJVzILJ7IW/UdgbQxO0wFTtRhTobuWIoMF1+eWzwMqvBBCvI
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-X-QQ-RECHKSPAM: 0
+References: <95E3B7B9ECBFB14C+20250406034811.32347-1-xizheyin@smail.nju.edu.cn>
+ <CANiq72m55Fi-XyFz=h7_3QNj+mA0N+E9Vo2_anLFyN1sr-FXMA@mail.gmail.com> <tencent_3DAE6B923FC67B543D90D970@qq.com>
+In-Reply-To: <tencent_3DAE6B923FC67B543D90D970@qq.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 6 Apr 2025 13:42:38 +0200
+X-Gm-Features: ATxdqUESt_7N6TJlvXmHSe3qN_0X-vLxHhE7nI9ofDpu1e-RxfsBzSBjAPXH5EY
+Message-ID: <CANiq72=c7yzLM4C-zctYFpUnFbQ2o4i5Uhp73xc4Td3-H_yDeQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: convert raw URLs to Markdown autolinks in comments
+To: =?UTF-8?B?5bC554aZ5ZaG?= <xizheyin@smail.nju.edu.cn>
+Cc: rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: xizheyin <xizheyin@smail.nju.edu.cn>
+On Sun, Apr 6, 2025 at 1:13=E2=80=AFPM =E5=B0=B9=E7=86=99=E5=96=86 <xizheyi=
+n@smail.nju.edu.cn> wrote:
+>
+> Thank you very much for the reminder, I will resend a new patch as reques=
+ted.
+> But it seems to me that this patch makes sense to a certain extent for th=
+e improvement of the raw links in the doc, which might make the document lo=
+ok better.
+> Do you think it's necessary to keep it, or do you have a better suggestio=
+n? :)
 
-Some comments in Rust files use raw URLs (http://example.com) rather
-than Markdown autolinks [text](URL). This inconsistency makes the
-documentation less uniform and harder to maintain.
+(Please do not send HTML -- it will not reach the mailing list)
 
-This patch converts all remaining raw URLs in Rust code comments to use
-the Markdown autolink format, maintaining consistency with the rest of
-the codebase which already uses this style.
+You're welcome!
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1153
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: xizheyin <xizheyin@smail.nju.edu.cn>
----
- rust/kernel/alloc/kbox.rs               | 2 +-
- rust/kernel/block/mq/gen_disk.rs        | 2 +-
- rust/kernel/std_vendor.rs               | 2 +-
- rust/kernel/sync/arc.rs                 | 2 +-
- rust/pin-init/examples/pthread_mutex.rs | 2 +-
- rust/pin-init/src/lib.rs                | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+Personally, I think it depends on the URL and the context -- let me
+give clarify below.
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index b77d32f3a58b..604d12c6f5bd 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -101,7 +101,7 @@
- pub type KVBox<T> = Box<T, super::allocator::KVmalloc>;
- 
- // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee:
--// https://doc.rust-lang.org/stable/std/option/index.html#representation).
-+// <https://doc.rust-lang.org/stable/std/option/index.html#representation>).
- unsafe impl<T, A: Allocator> ZeroableOption for Box<T, A> {}
- 
- // SAFETY: `Box` is `Send` if `T` is `Send` because the `Box` owns a `T`.
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index 14806e1997fd..cd54cd64ea88 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -129,7 +129,7 @@ pub fn build<T: Operations>(
-             get_unique_id: None,
-             // TODO: Set to THIS_MODULE. Waiting for const_refs_to_static feature to
-             // be merged (unstable in rustc 1.78 which is staged for linux 6.10)
--            // https://github.com/rust-lang/rust/issues/119618
-+            // <https://github.com/rust-lang/rust/issues/119618>
-             owner: core::ptr::null_mut(),
-             pr_ops: core::ptr::null_mut(),
-             free_disk: None,
-diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
-index 279bd353687a..abbab5050cc5 100644
---- a/rust/kernel/std_vendor.rs
-+++ b/rust/kernel/std_vendor.rs
-@@ -148,7 +148,7 @@ macro_rules! dbg {
-     };
-     ($val:expr $(,)?) => {
-         // Use of `match` here is intentional because it affects the lifetimes
--        // of temporaries - https://stackoverflow.com/a/48732525/1063961
-+        // of temporaries - <https://stackoverflow.com/a/48732525/1063961>
-         match $val {
-             tmp => {
-                 $crate::pr_info!("[{}:{}:{}] {} = {:#?}\n",
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 8484c814609a..350c380bb8d4 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -135,7 +135,7 @@ pub struct Arc<T: ?Sized> {
-     // meaningful with respect to dropck - but this may change in the future so this is left here
-     // out of an abundance of caution.
-     //
--    // See https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-drop-checking
-+    // See <https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-drop-checking>
-     // for more detail on the semantics of dropck in the presence of `PhantomData`.
-     _p: PhantomData<ArcInner<T>>,
- }
-diff --git a/rust/pin-init/examples/pthread_mutex.rs b/rust/pin-init/examples/pthread_mutex.rs
-index 9164298c44c0..5ac22f1880d2 100644
---- a/rust/pin-init/examples/pthread_mutex.rs
-+++ b/rust/pin-init/examples/pthread_mutex.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: Apache-2.0 OR MIT
- 
--// inspired by https://github.com/nbdd0121/pin-init/blob/trunk/examples/pthread_mutex.rs
-+// inspired by <https://github.com/nbdd0121/pin-init/blob/trunk/examples/pthread_mutex.rs>
- #![allow(clippy::undocumented_unsafe_blocks)]
- #![cfg_attr(feature = "alloc", feature(allocator_api))]
- #[cfg(not(windows))]
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 05c44514765e..0806c689f693 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -1447,7 +1447,7 @@ macro_rules! impl_zeroable {
-     {<T: ?Sized + Zeroable>} UnsafeCell<T>,
- 
-     // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee:
--    // https://doc.rust-lang.org/stable/std/option/index.html#representation).
-+    // <https://doc.rust-lang.org/stable/std/option/index.html#representation>).
-     Option<NonZeroU8>, Option<NonZeroU16>, Option<NonZeroU32>, Option<NonZeroU64>,
-     Option<NonZeroU128>, Option<NonZeroUsize>,
-     Option<NonZeroI8>, Option<NonZeroI16>, Option<NonZeroI32>, Option<NonZeroI64>,
--- 
-2.49.0
+The `[...](...)` notation is "heavier", i.e. makes it harder to read
+in plain-text form, which many people use in the kernel, i.e. they
+will not read the rendered form. That is why we typically move the
+links below and just use `[...]` instead if we really want to use a
+"title" rather than the raw URL.
 
+Moreover, if a raw URL already says what it is itself, then there is
+less reason to use a title. So, for instance, a URL like:
+
+    https://rust-for-linux.com/contributing
+
+already says everything it needs to say. However, a URL that uses e.g.
+opaque IDs into a database may not give you any information until you
+click on them.
+
+So, for both reasons, I think the following is not an improvement, in
+both plain-text and rendered forms:
+
+    -//! Reference: <https://docs.kernel.org/core-api/rbtree.html>
+    +//! Reference: [kernel documentation:
+Rbtree](https://docs.kernel.org/core-api/rbtree.html)
+
+By the way, the last changes, i.e.
+
+    -//! see <https://github.com/rust-lang/rust/blob/master/COPYRIGHT>.
+    +//! see [rust-lang/rust/blob/master/COPYRIGHT].
+
+wouldn't work anyway, or am I missing something? (Even if it did, we
+should avoid changing vendored files, by the way).
+
+Cheers,
+Miguel
