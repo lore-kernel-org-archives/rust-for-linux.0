@@ -1,180 +1,211 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.77.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075DC3209;
-	Sun,  6 Apr 2025 01:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CAF1EEE6;
+	Sun,  6 Apr 2025 03:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.77.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743903894; cv=none; b=lmmxGDZSMYijDfFY3k3PdmKYd/wVzRe/Wg/ZZUh5VON3vBMqk8g4k79M6DS70U+u7uH54g4Sjc4lBPHk5xtSe+LQ5cYCIQt0FpAHImetDbodkP06syzXDmYrwM3gcPZCfkr60/lsCsFp2e74sLIKBBUspnARByTZtZbzUzpLuzw=
+	t=1743911545; cv=none; b=IfHvFE7AWVfZVwRd+9Hk5U6sNKoqu1MifNffliIVOkH0/soo+bA+D6BtS0AqOcmG334mmvHonkOHc5MlQExJ0aTNa6YhBHnTNIg9A2BvpVnhnoY6JDKFngft4lgAIfxOYQl3VLN1ZyaP5Jr90xLQwXClFvGE2jdhsGJbVwbNQns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743903894; c=relaxed/simple;
-	bh=8RC7QwudAyzPGBGJQN7D8ZucYJPlh3FGVV7toCCmh28=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DHWEaQrEHmmizmicacgIetK9WRb2AAQDxexn5QBJ750WPxBJBOZSA19tsKcW6QmsV3PaFTFMXTivqqlKWbU1ySUtO/GOglS89lTdK0oG65TQHxWi+JPv8Fm2GSIam8MtEhVtV3in+r97pmMfVxB/NCqNW8N9kIq4Sy+h8nQZAUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YDPbLhHO; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YDPbLhHO"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6ecf0e07947so33115896d6.0;
-        Sat, 05 Apr 2025 18:44:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743903892; x=1744508692; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6QACGbmtqg43G4pECaXD+iso0W8xk8gg2NY7DQvW93E=;
-        b=YDPbLhHOFgSrGHo340dEKuLkyqne7ybqtjGO2Y5qjJ3hzcMBqL3hHiCNB8hiksGFQH
-         40scaSXnL7LsZdHN5NS3Ji5MmgSpUelt598DdhOr2Cole5jnF0XG/U3VH2hhd2HlPloU
-         hnR9xS1E80COf+8su4L+P3YRU9N2PhXubSHWQbndEjBLnVLXRKIrlv8hd685M3FeEDUr
-         e00u1lU2LNG2yutWsZrEaQ+1W56+N7rKumjxMrpHOfFizudNqP+ZlVN817YVKmILsOR/
-         aqAUuP8vU3zROQ+PB9ZrYVetO1YFIsZJH4Em7OoEYp5eBbHTB1/TYaym4YaJdG1fnAY3
-         WhjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743903892; x=1744508692;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6QACGbmtqg43G4pECaXD+iso0W8xk8gg2NY7DQvW93E=;
-        b=wYQXO7+A0fCz/2dGBiuVOXJWq8fnSQd1AwhnmaoVBymEsvU0eyzFGPZlVyZ0RrfA/0
-         YsJxDiKm2NlRs6gYZsV5FlKFD3/AE9gqleIvBNJSdC6N+LPDcKWZTgQsEppfm/51/ME2
-         d75wxTw6HBUlO5Me9aWWmTUyCJGLRpBC/KtLp7eOJLYgtYYzthoEOMq/UF+VADzwP2Jq
-         RYuKj6qJ0fxOiM/Sv+fGHONEuXJ+B+A+bU8IxJGodzXeWl9cvYRZRP7uXG6jfNxfOLgH
-         5RbdmzSZ7IBv6yso3LvIoElg0pUhcMzuvO9ph/2yOWoJjhRUJTP4A3WAnw1KTkazGPVR
-         QpjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVmTWkft8Elxhv83tJmS9C+fVPsWQQ/hqn6NuPq5nlWjr1ewXwVX0RfXa2cSsWrLhu6ZC/o5Kp4WDroeMI=@vger.kernel.org, AJvYcCX9bkPNZGRxwyu4+96cD1jkRcgDDMdzj/ZGYYweKP39mRLrq4GBOk782Xjm4ka0bETmix4CiIT2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxrao0wui7O8QY9/lwO3HM6iHfJbW7m4fYIzwVVfoNU8e6k9fdt
-	DAbRWOmWYqPpBBT8NkBb0WQnA1XPWBtGiq4mvnZTeoRujtyUhG64
-X-Gm-Gg: ASbGncuYe/fdIXLuxpLToxPZ36IIwtcvHEyag4AahcZ34JZ4QHr2hkgsiLx8scgy3LF
-	j1qZlIPxqQ3vRXx0okjaonbHxx3/ZbUZPmYtmRTh9sHQ98kd/kFTcmX4DTk63Vt+YarX3U+elrO
-	9HDAvKxLv1xoL1xeNcM7KL7CuyzlkPeuM8rtor3lFlzwpDhOrQBd6/u58NHqvpT3uzTFw7b1rj5
-	jNnlOBQMCUUoK5LzpVOawbTASniPJhiPohBJOeNtx8cvcIupg138kV4u46SIBHb5fBgUzGSIhax
-	9Z87bthl3y+fDNL6yCTx3VXuoSTmNnATN6ZgvX5S5HWPLGEe77hV4ryJEswxGhI0QatTribAi0V
-	kT3oA3csLqm5hgwnkNkNMu32eLuKZrr1i0Jk=
-X-Google-Smtp-Source: AGHT+IFfEFeLh+crN4i6bkp1VhALfpSSl6XUzLYqSSbmUR8EbBIu01VtE/Wd2jfQs5cWIZ19w33Vzg==
-X-Received: by 2002:a05:6214:dc6:b0:6e6:5b8e:7604 with SMTP id 6a1803df08f44-6eff55136d3mr149062256d6.12.1743903891778;
-        Sat, 05 Apr 2025 18:44:51 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ef0f14cf41sm41196026d6.105.2025.04.05.18.44.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Apr 2025 18:44:51 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5FB2E1200043;
-	Sat,  5 Apr 2025 21:44:50 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Sat, 05 Apr 2025 21:44:50 -0400
-X-ME-Sender: <xms:ktzxZ24UDty0S3Nw2Qtv3Rpqg4wFnnAdZKy2ALiug-KDBWg_Be-6pg>
-    <xme:ktzxZ_6it9nINOF12f3cMSApqRmD3EoYopTeZHIz7sLEOxVFsrRFqNYsGShVBOKv5
-    bxQVzO0D2X4k853BA>
-X-ME-Received: <xmr:ktzxZ1fyKC08q784YHtAS3qVHbcoqxvmHJ6ZJuDFj9R_FGv_e0vm9jyzm9Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduleehleejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeejteffieehudffvdejtddugeefvdeftdek
-    gfegtddutddtkeefleeihfekteefieenucffohhmrghinheprhhushhtqdhfohhrqdhlih
-    hnuhigrdgtohhmpdhgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecu
-    rfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrsh
-    honhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghn
-    gheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepfe
-    efpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhho
-    rhhisehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghl
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrh
-    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgifsehluhhnnhdrtghhpdhr
-    tghpthhtohephhhkrghllhifvghithdusehgmhgrihhlrdgtohhmpdhrtghpthhtohepth
-    hmghhrohhsshesuhhmihgthhdrvgguuhdprhgtphhtthhopehojhgvuggrsehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:ktzxZzLFQCO4FNOwGmwyrIcbDC6pCQCA_x2LLFsXLjNB0JMxUI4VTg>
-    <xmx:ktzxZ6KmGpaGhZGwxCI-B3XymUstD_e5ePOTMyRz5SLUEccCI8NMiA>
-    <xmx:ktzxZ0wbTXUXKRImnleC1SFahZ2CYH0urimP3A2QM4SvGgDXsfh3KQ>
-    <xmx:ktzxZ-J4CL350Izwtkfbf-EbHQWrSj3UH9SskoSs5yA-2bnsHFzQLA>
-    <xmx:ktzxZxZRP4624vTRS2qlLPtTUBJW50ZE22UJBgg2UjbQ29YA2Ryui7V8>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 5 Apr 2025 21:44:49 -0400 (EDT)
-Date: Sat, 5 Apr 2025 18:44:35 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
-	tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
-	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
-	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
-	david.laight.linux@gmail.com
-Subject: Re: [PATCH v12 5/5] MAINTAINERS: rust: Add a new section for all of
- the time stuff
-Message-ID: <Z_Hcg32LhKjqFkVG@boqun-archlinux>
-References: <20250406013445.124688-1-fujita.tomonori@gmail.com>
- <20250406013445.124688-6-fujita.tomonori@gmail.com>
+	s=arc-20240116; t=1743911545; c=relaxed/simple;
+	bh=rY8/OwWhSh4Wdmz1L/w3ngh8RvKLFRK1JgTiRPZ0OhU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BWm8W+OlUPsSIsUy9QbksnDikJcHHzO/VtimdonhF9tm76zNy0IoyAun7SaAdjRzXqqS8+Xsv1ryoRhX7XzhkgQxD/B76x7OtMEM3XKc9gkcsHekEAU6tj7RdReYiWT+kmqOsREsd4iTqEbYKkWvPbffqo1fy0Hc5NERHVzR1kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; arc=none smtp.client-ip=114.132.77.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
+X-QQ-mid: bizesmtpsz11t1743911437thz15z
+X-QQ-Originating-IP: Qlqy6PbPAX34c31erUbh4nfB0lOCsT12VJwmJiBOUfU=
+Received: from localhost.localdomain ( [36.152.24.133])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 06 Apr 2025 11:50:35 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 13127222276208916939
+EX-QQ-RecipientCnt: 4
+From: Xizhe Yin <xizheyin@smail.nju.edu.cn>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	xizheyin <xizheyin@smail.nju.edu.cn>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH] rust: convert raw URLs to Markdown autolinks in comments
+Date: Sun,  6 Apr 2025 11:48:11 +0800
+Message-ID: <95E3B7B9ECBFB14C+20250406034811.32347-1-xizheyin@smail.nju.edu.cn>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250406013445.124688-6-fujita.tomonori@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: NDtUtlvFer7vuL30EMS9WW//AhR2V8eVnM5LKYZgJsHOa4XSIg5er6NU
+	/VkH0wmhHjme8CUmsPGN3+tVuSIeGbuUxQrG7CrlljWB10z6Gt+abS50gWZsdgpJ7mLGskk
+	fAqskA8iAT/VVU5xnId8Q6Xvgg8rXU78O///FEvX/3PWE6I6IYKUUBCB1MP70wQFNn1KRoO
+	pPFCSQtLJlA3KFlO982mCwHROnVjmpt2GQd268Wc4iN51tguNBnGeq3ONeNQXvXatbjhiUU
+	vAzu7+U8idvrgn+oqznWTh6NMzrEOwEx/lGzx8uc6TtoSx8FQWvSamg0MauLnYS2Kh4t90m
+	h3XBeJTaBk/szjZMT7lZ5x4LvXPj8j7xjpZnSTIO4xcFnTd71OnHSIohHJ7drU71FS8dNdB
+	0gEvNeOQgjSQb67XOdsKsFzbe9p+J+C4mBMm6n3G70TPTJsOVeZEMMoRiz5y2RnmsmsvoBC
+	dfTLPPie5BTHAYTsc2xzrV/GihEi+290h/XyfNb2vVmJYeHrJHXeOI8qA4bsTXUfl7fKyyk
+	rBSBI5cIBKErU2i7lUBhAUoGA4wDpO5TxNkvg+W0LYa0wLSckeNxj713V/K6XghWV3CauK/
+	jIBZQYVfKdiRwiwhHVwqwSgqo6ZI8hHkR4/YBNgxLE9ZFBkPUGfCAOPJbkBHbYJ1jzsyaeB
+	bklO3V0N09NdYbFKfGSMeePARw044P/8R8j89EI1d64aHhGNhhEZuRyrKe0O1oH5+a28ka2
+	DzdYM9RaM6qwwfrqfMHc526Wpa6VRBkmGlaPQjcukIIiF63wGlyGZaFuW67EgfRWWowzmlP
+	1kcXk4zq+b/XD4XzQGaDHSp4UwLWTraAvVoD9rZUwALuvIP03k7mGqUnG1U1iihT9j5DGTn
+	nR7zSHk6dOqkaeu4NU433BLmWqp1UJRNrjUqQHGev3mHMoYNRXm7+eZPfZ+XX5MjTp8lw7t
+	NsPgwVAxtl+VJTm1d8L7lyfEhw+Sh9ob1DY3LJu2RhO5oCA==
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-RECHKSPAM: 0
 
-On Sun, Apr 06, 2025 at 10:34:45AM +0900, FUJITA Tomonori wrote:
-> Add a new section for all of the time stuff to MAINTAINERS file, with
-> the existing hrtimer entry fold.
-> 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: xizheyin <xizheyin@smail.nju.edu.cn>
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Some comments in Rust files use raw URLs (http://example.com) rather
+than Markdown autolinks [text](URL). This inconsistency makes the
+documentation less uniform and harder to maintain.
 
-> ---
->  MAINTAINERS | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d32ce85c5c66..fafb79c42ac3 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -10581,20 +10581,23 @@ F:	kernel/time/timer_list.c
->  F:	kernel/time/timer_migration.*
->  F:	tools/testing/selftests/timers/
->  
-> -HIGH-RESOLUTION TIMERS [RUST]
-> +DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
->  M:	Andreas Hindborg <a.hindborg@kernel.org>
->  R:	Boqun Feng <boqun.feng@gmail.com>
-> +R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
->  R:	Frederic Weisbecker <frederic@kernel.org>
->  R:	Lyude Paul <lyude@redhat.com>
->  R:	Thomas Gleixner <tglx@linutronix.de>
->  R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
-> +R:	John Stultz <jstultz@google.com>
-> +R:	Stephen Boyd <sboyd@kernel.org>
->  L:	rust-for-linux@vger.kernel.org
->  S:	Supported
->  W:	https://rust-for-linux.com
->  B:	https://github.com/Rust-for-Linux/linux/issues
-> -T:	git https://github.com/Rust-for-Linux/linux.git hrtimer-next
-> -F:	rust/kernel/time/hrtimer.rs
-> -F:	rust/kernel/time/hrtimer/
-> +T:	git https://github.com/Rust-for-Linux/linux.git rust-timekeeping-next
+This patch converts all remaining raw URLs in Rust code comments to use
+the Markdown autolink format, maintaining consistency with the rest of
+the codebase which already uses this style.
 
-@Andreas, this branch is currently missing, right?
+Link: Rust-for-Linux#1153
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Xizhe Yin <xizheyin@smail.nju.edu.cn>
+---
+ rust/kernel/alloc.rs               | 2 +-
+ rust/kernel/alloc/allocator.rs     | 2 +-
+ rust/kernel/cred.rs                | 2 +-
+ rust/kernel/kunit.rs               | 2 +-
+ rust/kernel/miscdevice.rs          | 2 +-
+ rust/kernel/print.rs               | 2 +-
+ rust/kernel/rbtree.rs              | 2 +-
+ rust/kernel/std_vendor.rs          | 4 ++--
+ rust/kernel/sync/arc/std_vendor.rs | 4 ++--
+ 9 files changed, 11 insertions(+), 11 deletions(-)
 
-Regards,
-Boqun
+diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+index fc9c9c41cd79..d2f067ed8986 100644
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -152,7 +152,7 @@ pub unsafe trait Allocator {
+     /// - aligned to `layout.align()`,
+     ///
+     /// Additionally, `Flags` are honored as documented in
+-    /// <https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
++    /// [kernel documentation: GFP flags](https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags).
+     fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
+         // SAFETY: Passing `None` to `realloc` is valid by its safety requirements and asks for a
+         // new memory allocation.
+diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+index aa2dfa9dca4c..2e05ae842b62 100644
+--- a/rust/kernel/alloc/allocator.rs
++++ b/rust/kernel/alloc/allocator.rs
+@@ -6,7 +6,7 @@
+ //! linked below. For instance, this includes the concept of "get free page" (GFP) flags and the
+ //! typical application of the different kernel allocators.
+ //!
+-//! Reference: <https://docs.kernel.org/core-api/memory-allocation.html>
++//! Reference: [kernel documentation: Memory Allocation](https://docs.kernel.org/core-api/memory-allocation.html)
+ 
+ use super::Flags;
+ use core::alloc::Layout;
+diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
+index 2599f01e8b28..589557e18d79 100644
+--- a/rust/kernel/cred.rs
++++ b/rust/kernel/cred.rs
+@@ -6,7 +6,7 @@
+ //!
+ //! C header: [`include/linux/cred.h`](srctree/include/linux/cred.h).
+ //!
+-//! Reference: <https://www.kernel.org/doc/html/latest/security/credentials.html>
++//! Reference: [kernel documentation: Credentials](https://www.kernel.org/doc/html/latest/security/credentials.html)
+ 
+ use crate::{
+     bindings,
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 1604fb6a5b1b..ec0d4889cc12 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -4,7 +4,7 @@
+ //!
+ //! C header: [`include/kunit/test.h`](srctree/include/kunit/test.h)
+ //!
+-//! Reference: <https://docs.kernel.org/dev-tools/kunit/index.html>
++//! Reference: [kernel documentation: KUnit](https://docs.kernel.org/dev-tools/kunit/index.html)
+ 
+ use core::{ffi::c_void, fmt};
+ 
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index fa9ecc42602a..3cbd0258475c 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -6,7 +6,7 @@
+ //!
+ //! C headers: [`include/linux/miscdevice.h`](srctree/include/linux/miscdevice.h).
+ //!
+-//! Reference: <https://www.kernel.org/doc/html/latest/driver-api/misc_devices.html>
++//! Reference: [kernel documentation: Miscdevices](https://www.kernel.org/doc/html/latest/driver-api/misc_devices.html)
+ 
+ use crate::{
+     bindings,
+diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+index cf4714242e14..896a2ef2652a 100644
+--- a/rust/kernel/print.rs
++++ b/rust/kernel/print.rs
+@@ -4,7 +4,7 @@
+ //!
+ //! C header: [`include/linux/printk.h`](srctree/include/linux/printk.h)
+ //!
+-//! Reference: <https://docs.kernel.org/core-api/printk-basics.html>
++//! Reference: [kernel documentation: Printk basics](https://docs.kernel.org/core-api/printk-basics.html)
+ 
+ use crate::{
+     ffi::{c_char, c_void},
+diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+index 5246b2c8a4ff..a9b10ae73dbf 100644
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -4,7 +4,7 @@
+ //!
+ //! C header: [`include/linux/rbtree.h`](srctree/include/linux/rbtree.h)
+ //!
+-//! Reference: <https://docs.kernel.org/core-api/rbtree.html>
++//! Reference: [kernel documentation: Rbtree](https://docs.kernel.org/core-api/rbtree.html)
+ 
+ use crate::{alloc::Flags, bindings, container_of, error::Result, prelude::*};
+ use core::{
+diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
+index 279bd353687a..ae2a56d7cdc7 100644
+--- a/rust/kernel/std_vendor.rs
++++ b/rust/kernel/std_vendor.rs
+@@ -3,9 +3,9 @@
+ //! Rust standard library vendored code.
+ //!
+ //! The contents of this file come from the Rust standard library, hosted in
+-//! the <https://github.com/rust-lang/rust> repository, licensed under
++//! the [rust-lang/rust](https://github.com/rust-lang/rust) repository, licensed under
+ //! "Apache-2.0 OR MIT" and adapted for kernel use. For copyright details,
+-//! see <https://github.com/rust-lang/rust/blob/master/COPYRIGHT>.
++//! see [rust-lang/rust/blob/master/COPYRIGHT].
+ 
+ /// [`std::dbg`], but using [`pr_info`] instead of [`eprintln`].
+ ///
+diff --git a/rust/kernel/sync/arc/std_vendor.rs b/rust/kernel/sync/arc/std_vendor.rs
+index 11b3f4ecca5f..a95002ee4add 100644
+--- a/rust/kernel/sync/arc/std_vendor.rs
++++ b/rust/kernel/sync/arc/std_vendor.rs
+@@ -3,9 +3,9 @@
+ //! Rust standard library vendored code.
+ //!
+ //! The contents of this file come from the Rust standard library, hosted in
+-//! the <https://github.com/rust-lang/rust> repository, licensed under
++//! the [rust-lang/rust](https://github.com/rust-lang/rust) repository, licensed under
+ //! "Apache-2.0 OR MIT" and adapted for kernel use. For copyright details,
+-//! see <https://github.com/rust-lang/rust/blob/master/COPYRIGHT>.
++//! see [rust-lang/rust/blob/master/COPYRIGHT].
+ 
+ use crate::sync::{arc::ArcInner, Arc};
+ use core::any::Any;
+-- 
+2.49.0
 
-> +F:	rust/kernel/time/
-> +F:	rust/kernel/time/time.rs
->  
->  HIGH-SPEED SCC DRIVER FOR AX.25
->  L:	linux-hams@vger.kernel.org
-> -- 
-> 2.43.0
-> 
-> 
