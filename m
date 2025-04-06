@@ -1,36 +1,92 @@
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.77.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CAF1EEE6;
-	Sun,  6 Apr 2025 03:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.77.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB50C2EF;
+	Sun,  6 Apr 2025 09:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743911545; cv=none; b=IfHvFE7AWVfZVwRd+9Hk5U6sNKoqu1MifNffliIVOkH0/soo+bA+D6BtS0AqOcmG334mmvHonkOHc5MlQExJ0aTNa6YhBHnTNIg9A2BvpVnhnoY6JDKFngft4lgAIfxOYQl3VLN1ZyaP5Jr90xLQwXClFvGE2jdhsGJbVwbNQns=
+	t=1743931872; cv=none; b=pllK2+LEKBDwe5QBC86DXtqgNh4ynU5m8s1b8zIdRX+OJM6c7Kxx+6zKm2YmehqKKe0/XqqiNebN69BZJUcfPCJ+khIEntiKiLVVuRXt4l4cIC4hKm8KX81trJp12HljfM3YikMO8trPODE79fWXzxcldER/MT/5SozPOIvJw9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743911545; c=relaxed/simple;
-	bh=rY8/OwWhSh4Wdmz1L/w3ngh8RvKLFRK1JgTiRPZ0OhU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BWm8W+OlUPsSIsUy9QbksnDikJcHHzO/VtimdonhF9tm76zNy0IoyAun7SaAdjRzXqqS8+Xsv1ryoRhX7XzhkgQxD/B76x7OtMEM3XKc9gkcsHekEAU6tj7RdReYiWT+kmqOsREsd4iTqEbYKkWvPbffqo1fy0Hc5NERHVzR1kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; arc=none smtp.client-ip=114.132.77.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
-X-QQ-mid: bizesmtpsz11t1743911437thz15z
-X-QQ-Originating-IP: Qlqy6PbPAX34c31erUbh4nfB0lOCsT12VJwmJiBOUfU=
-Received: from localhost.localdomain ( [36.152.24.133])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 06 Apr 2025 11:50:35 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 13127222276208916939
-EX-QQ-RecipientCnt: 4
-From: Xizhe Yin <xizheyin@smail.nju.edu.cn>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	xizheyin <xizheyin@smail.nju.edu.cn>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH] rust: convert raw URLs to Markdown autolinks in comments
-Date: Sun,  6 Apr 2025 11:48:11 +0800
-Message-ID: <95E3B7B9ECBFB14C+20250406034811.32347-1-xizheyin@smail.nju.edu.cn>
+	s=arc-20240116; t=1743931872; c=relaxed/simple;
+	bh=KNR9s/z37rrTB883Rr+3wXkXm+XAx8K2YsXKsd82FdU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Zxii+EqJyufFG8LH7K7CAMQNmZEnI7M7Uw7F9HAPctQZXPTQY1VrOIy8lMbifDZvyho9Bnc4Vi/tfYWNokgvNawlYsQ3eBrsY8FJauh6cDdIAfKst764KV37Alp2fMRNAbF1lE9hBG6lm0x8UUXIKV/3Wza1ihdgCTXoYBcgCfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=juzZYhUR; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="juzZYhUR"
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3f8df49e75fso966286b6e.1;
+        Sun, 06 Apr 2025 02:31:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743931867; x=1744536667; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fHmP/Qg/EJyJa26FRzbLoPkPrFVf0HVFbniEqKsAmzY=;
+        b=juzZYhURw6oj7S5y0DQ8d4Jn0FiFNcQbJOS3DMXLC7noC9t1ATI9Q/urXb2VyG066h
+         /GwcgffMC/dqhdmO2HlN8qnywKf6rtjzboqbaOAFpO2yzkZwEJOiMCn5D/UgVBb/gYbH
+         nVim2t5u7gcwpj/hx1pYtXYN5QEa8dz48kAl1O8qA5sn0KOKLC0EGVwJ/m9E4025hNKV
+         1ELrRrUYQxIEZOTUPcb5qEi3NUtvXHQVrxQQNzAgkN5xrt//sj0viSXLpGKQDaZ32GR1
+         SqpOwXtuzwb89G2dsikh3G8VeuXSoJ3emcrlrl68RTlEcl1wq2ENN8dSYAzHWMLv7ROs
+         uifg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743931867; x=1744536667;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fHmP/Qg/EJyJa26FRzbLoPkPrFVf0HVFbniEqKsAmzY=;
+        b=CTooW55URQ1MGleHzQ7PO/Tjz/TjEmryMvxZOCGRkZTPbgbrANwVXszHYXsc8tewVY
+         1BfClvRtcqhl3+j/NcJQ6KmHNqNTKO6eHvgr43yLtZiTDvxqocFwV27y7/DFqZij70HY
+         Sq/EzUm5ImsdPs1jLNIdpC1peM51VLrFibLwzIYCaQYgTWVYwjraOxayRLPOOE5NWkiy
+         FHPp7xLDTq9XdaRxwpZP+0AQnVr8ZE58IBSJoBPH7xOAM/q+dNUkdyGArs4JyTI9vriB
+         D9fY10C2CbTwBWvjFZ7/NpLkHFfzoP3TLqlgLPOAUUzFWgk/Zwd1O3g/9i9k6Dtj6Yue
+         vDmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUgrtYRTDdyQn8eR24r55k32UJuLtw3FiAYvPwOU2Vp3MXZYnLfXAVjyAAIzorshBQFGswQUgAEuI01Fa8=@vger.kernel.org, AJvYcCXUONfnhQs+dbEOpSrm65hLYgZveeD/iwUkCDbfvEyzWVFYuwfLw8d4Ma2u/MmEmn0iS67Z19hm3F4mgFLpC8c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHXDYn5HKtfgiiBv9UC/pNE+CWmOFMIYxhoGsHyF98aE47WK0M
+	N07P8ODhC63pdO4y4ZDDGr1KS2LDMQFJmIgIbe4u5kj/wEp52ifv
+X-Gm-Gg: ASbGnctN98/5xEFQNPos7iire7PQHtr1PjWLumruLtjlkLyh3cnVZBgqPYtHOaQDujQ
+	l0J/xes8CQZSQeMXdV+bVSi70GEX8IwIiQ/tCZNuvwRxx7FC4404N1TK//+S+/J+8/iUOCrFfiY
+	DrgcEH+0APAlUAVMXpXe9qwECDFjAJW4gDvqWcQ9ihvvR+JenTjXUrTAUDz9sbg3vUGRtBxMXfw
+	BH2TavW0ck6Vh0dLgaOjXvZsa01DNE8CNuu4/2a7yUOZkLZI+uo3CkuSBeo/DwIXhQUsu5TrM5N
+	oyO11avBftaVHts5lbp5iXXjbd3EaJogbf7HLHisf4WUIsUzenrqYJ2ov1bAkM0csSQU4t1mcJC
+	LsyTTqd9cJW9jTuQv
+X-Google-Smtp-Source: AGHT+IH3FJ5kGG0Wg/P7+DauHff2Q8I3DdhxiyMON9kl/B34ns20VCHv08p5xFw8uDaJF9ytGCKjqA==
+X-Received: by 2002:a05:6808:309c:b0:3f8:b73b:682f with SMTP id 5614622812f47-40045578aafmr4837432b6e.1.1743931867307;
+        Sun, 06 Apr 2025 02:31:07 -0700 (PDT)
+Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
+        by smtp.googlemail.com with ESMTPSA id 5614622812f47-400400809e9sm1344818b6e.36.2025.04.06.02.31.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Apr 2025 02:31:06 -0700 (PDT)
+From: Andrew Ballance <andrewjballance@gmail.com>
+To: willy@infradead.org
+Cc: Liam.Howlett@oracle.com,
+	a.hindborg@kernel.org,
+	akpm@linux-foundation.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	andrewjballance@gmail.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	brauner@kernel.org,
+	dakr@kernel.org,
+	dingxiangfei2009@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	maple-tree@lists.infradead.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	wedsonaf@gmail.com
+Subject: Re: [RFC PATCH 1/2] maple_tree: add __mtree_insert_range function
+Date: Sun,  6 Apr 2025 04:30:08 -0500
+Message-ID: <20250406093008.1655905-1-andrewjballance@gmail.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <Z_FKugtgoN0l6JNm@casper.infradead.org>
+References: <Z_FKugtgoN0l6JNm@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,174 +94,22 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NDtUtlvFer7vuL30EMS9WW//AhR2V8eVnM5LKYZgJsHOa4XSIg5er6NU
-	/VkH0wmhHjme8CUmsPGN3+tVuSIeGbuUxQrG7CrlljWB10z6Gt+abS50gWZsdgpJ7mLGskk
-	fAqskA8iAT/VVU5xnId8Q6Xvgg8rXU78O///FEvX/3PWE6I6IYKUUBCB1MP70wQFNn1KRoO
-	pPFCSQtLJlA3KFlO982mCwHROnVjmpt2GQd268Wc4iN51tguNBnGeq3ONeNQXvXatbjhiUU
-	vAzu7+U8idvrgn+oqznWTh6NMzrEOwEx/lGzx8uc6TtoSx8FQWvSamg0MauLnYS2Kh4t90m
-	h3XBeJTaBk/szjZMT7lZ5x4LvXPj8j7xjpZnSTIO4xcFnTd71OnHSIohHJ7drU71FS8dNdB
-	0gEvNeOQgjSQb67XOdsKsFzbe9p+J+C4mBMm6n3G70TPTJsOVeZEMMoRiz5y2RnmsmsvoBC
-	dfTLPPie5BTHAYTsc2xzrV/GihEi+290h/XyfNb2vVmJYeHrJHXeOI8qA4bsTXUfl7fKyyk
-	rBSBI5cIBKErU2i7lUBhAUoGA4wDpO5TxNkvg+W0LYa0wLSckeNxj713V/K6XghWV3CauK/
-	jIBZQYVfKdiRwiwhHVwqwSgqo6ZI8hHkR4/YBNgxLE9ZFBkPUGfCAOPJbkBHbYJ1jzsyaeB
-	bklO3V0N09NdYbFKfGSMeePARw044P/8R8j89EI1d64aHhGNhhEZuRyrKe0O1oH5+a28ka2
-	DzdYM9RaM6qwwfrqfMHc526Wpa6VRBkmGlaPQjcukIIiF63wGlyGZaFuW67EgfRWWowzmlP
-	1kcXk4zq+b/XD4XzQGaDHSp4UwLWTraAvVoD9rZUwALuvIP03k7mGqUnG1U1iihT9j5DGTn
-	nR7zSHk6dOqkaeu4NU433BLmWqp1UJRNrjUqQHGev3mHMoYNRXm7+eZPfZ+XX5MjTp8lw7t
-	NsPgwVAxtl+VJTm1d8L7lyfEhw+Sh9ob1DY3LJu2RhO5oCA==
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-X-QQ-RECHKSPAM: 0
 
-From: xizheyin <xizheyin@smail.nju.edu.cn>
+On Sat, Apr 05, 2025 at 04:22:34PM +0100, Matthew Wilcox wrote:
+> On Sat, Apr 05, 2025 at 01:01:53AM -0500, Andrew Ballance wrote:
+> > adds the __mtree_insert_range which is identical to mtree_insert_range
+> > but does not aquire ma_lock.
+> > This function is needed for the rust bindings for maple trees because
+> > the locking is handled on the rust side.
+> 
+> No.
+> 
+> The support for external locking is a TEMPORARY HACK.  I've talked
+> before about why this is and don't feel like explaining it again.
 
-Some comments in Rust files use raw URLs (http://example.com) rather
-than Markdown autolinks [text](URL). This inconsistency makes the
-documentation less uniform and harder to maintain.
+this does use the maple_tree's internal ma_lock. the locking is
+done on the rust side using bindings to mtree_lock(). it is done this
+way so that rust can track the lifetimes of any values from mtree_load.
 
-This patch converts all remaining raw URLs in Rust code comments to use
-the Markdown autolink format, maintaining consistency with the rest of
-the codebase which already uses this style.
-
-Link: Rust-for-Linux#1153
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Xizhe Yin <xizheyin@smail.nju.edu.cn>
----
- rust/kernel/alloc.rs               | 2 +-
- rust/kernel/alloc/allocator.rs     | 2 +-
- rust/kernel/cred.rs                | 2 +-
- rust/kernel/kunit.rs               | 2 +-
- rust/kernel/miscdevice.rs          | 2 +-
- rust/kernel/print.rs               | 2 +-
- rust/kernel/rbtree.rs              | 2 +-
- rust/kernel/std_vendor.rs          | 4 ++--
- rust/kernel/sync/arc/std_vendor.rs | 4 ++--
- 9 files changed, 11 insertions(+), 11 deletions(-)
-
-diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index fc9c9c41cd79..d2f067ed8986 100644
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -152,7 +152,7 @@ pub unsafe trait Allocator {
-     /// - aligned to `layout.align()`,
-     ///
-     /// Additionally, `Flags` are honored as documented in
--    /// <https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
-+    /// [kernel documentation: GFP flags](https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags).
-     fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
-         // SAFETY: Passing `None` to `realloc` is valid by its safety requirements and asks for a
-         // new memory allocation.
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index aa2dfa9dca4c..2e05ae842b62 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -6,7 +6,7 @@
- //! linked below. For instance, this includes the concept of "get free page" (GFP) flags and the
- //! typical application of the different kernel allocators.
- //!
--//! Reference: <https://docs.kernel.org/core-api/memory-allocation.html>
-+//! Reference: [kernel documentation: Memory Allocation](https://docs.kernel.org/core-api/memory-allocation.html)
- 
- use super::Flags;
- use core::alloc::Layout;
-diff --git a/rust/kernel/cred.rs b/rust/kernel/cred.rs
-index 2599f01e8b28..589557e18d79 100644
---- a/rust/kernel/cred.rs
-+++ b/rust/kernel/cred.rs
-@@ -6,7 +6,7 @@
- //!
- //! C header: [`include/linux/cred.h`](srctree/include/linux/cred.h).
- //!
--//! Reference: <https://www.kernel.org/doc/html/latest/security/credentials.html>
-+//! Reference: [kernel documentation: Credentials](https://www.kernel.org/doc/html/latest/security/credentials.html)
- 
- use crate::{
-     bindings,
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 1604fb6a5b1b..ec0d4889cc12 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -4,7 +4,7 @@
- //!
- //! C header: [`include/kunit/test.h`](srctree/include/kunit/test.h)
- //!
--//! Reference: <https://docs.kernel.org/dev-tools/kunit/index.html>
-+//! Reference: [kernel documentation: KUnit](https://docs.kernel.org/dev-tools/kunit/index.html)
- 
- use core::{ffi::c_void, fmt};
- 
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index fa9ecc42602a..3cbd0258475c 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -6,7 +6,7 @@
- //!
- //! C headers: [`include/linux/miscdevice.h`](srctree/include/linux/miscdevice.h).
- //!
--//! Reference: <https://www.kernel.org/doc/html/latest/driver-api/misc_devices.html>
-+//! Reference: [kernel documentation: Miscdevices](https://www.kernel.org/doc/html/latest/driver-api/misc_devices.html)
- 
- use crate::{
-     bindings,
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index cf4714242e14..896a2ef2652a 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -4,7 +4,7 @@
- //!
- //! C header: [`include/linux/printk.h`](srctree/include/linux/printk.h)
- //!
--//! Reference: <https://docs.kernel.org/core-api/printk-basics.html>
-+//! Reference: [kernel documentation: Printk basics](https://docs.kernel.org/core-api/printk-basics.html)
- 
- use crate::{
-     ffi::{c_char, c_void},
-diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-index 5246b2c8a4ff..a9b10ae73dbf 100644
---- a/rust/kernel/rbtree.rs
-+++ b/rust/kernel/rbtree.rs
-@@ -4,7 +4,7 @@
- //!
- //! C header: [`include/linux/rbtree.h`](srctree/include/linux/rbtree.h)
- //!
--//! Reference: <https://docs.kernel.org/core-api/rbtree.html>
-+//! Reference: [kernel documentation: Rbtree](https://docs.kernel.org/core-api/rbtree.html)
- 
- use crate::{alloc::Flags, bindings, container_of, error::Result, prelude::*};
- use core::{
-diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
-index 279bd353687a..ae2a56d7cdc7 100644
---- a/rust/kernel/std_vendor.rs
-+++ b/rust/kernel/std_vendor.rs
-@@ -3,9 +3,9 @@
- //! Rust standard library vendored code.
- //!
- //! The contents of this file come from the Rust standard library, hosted in
--//! the <https://github.com/rust-lang/rust> repository, licensed under
-+//! the [rust-lang/rust](https://github.com/rust-lang/rust) repository, licensed under
- //! "Apache-2.0 OR MIT" and adapted for kernel use. For copyright details,
--//! see <https://github.com/rust-lang/rust/blob/master/COPYRIGHT>.
-+//! see [rust-lang/rust/blob/master/COPYRIGHT].
- 
- /// [`std::dbg`], but using [`pr_info`] instead of [`eprintln`].
- ///
-diff --git a/rust/kernel/sync/arc/std_vendor.rs b/rust/kernel/sync/arc/std_vendor.rs
-index 11b3f4ecca5f..a95002ee4add 100644
---- a/rust/kernel/sync/arc/std_vendor.rs
-+++ b/rust/kernel/sync/arc/std_vendor.rs
-@@ -3,9 +3,9 @@
- //! Rust standard library vendored code.
- //!
- //! The contents of this file come from the Rust standard library, hosted in
--//! the <https://github.com/rust-lang/rust> repository, licensed under
-+//! the [rust-lang/rust](https://github.com/rust-lang/rust) repository, licensed under
- //! "Apache-2.0 OR MIT" and adapted for kernel use. For copyright details,
--//! see <https://github.com/rust-lang/rust/blob/master/COPYRIGHT>.
-+//! see [rust-lang/rust/blob/master/COPYRIGHT].
- 
- use crate::sync::{arc::ArcInner, Arc};
- use core::any::Any;
--- 
-2.49.0
-
+the easiest way to do this was to add code to the c side. 
+for the v2 I can make changes so that this does not touch the c side. 
