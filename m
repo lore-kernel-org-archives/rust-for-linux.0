@@ -1,113 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B1D17A2E5;
-	Sun,  6 Apr 2025 09:31:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E898F19C546;
+	Sun,  6 Apr 2025 10:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743931915; cv=none; b=liO/+SPiuwlNRuzCPnZTMPKlvG6BtmQxx9jz+JPWYbbGSlIxX5NBJJiPlrrOoxJHP0sPVg+7FqZYeRj3HvlJedQMcJMyPlwd0AbxDyhZi1WFK69dU0CCNDagJVdTSQ8RMj6DDHG8t3fTtHl3RLi84a+ZqMZYTXEGn1zBOZl1fHk=
+	t=1743935287; cv=none; b=lyJi3JGXeM4qD1SDcud1Jr1AM5DVCUofYBl13+BVy8OsBueyVQD5oyQgq1NeBd9mgig13uYtU2Vlnti9QxdzEXlgbfSEAsQ+90B222rv8+TPEgZCyGaGvvzquYd8R6FefYo1vGoNDS25qNELloE5n8M49hJfVFj9FC2joqvSwM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743931915; c=relaxed/simple;
-	bh=NupIctgv6eyPgDfdu7cJa5QG0aJbIdTwbFdNvq2g5u0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SLkt7zH1ekxsM7cMlseoK0mQZSDxwS75jpdUi17yhJiEEBsyqiRXC1wr75yx3wpXQTRMzgAuw9VU5uU/NaADESPmKQgcnSPLRoycUFMakR5f/jpjfDNa7jQqYXkn762Czp5WKnq2LHdntBXu6cOw4PtckE9kwzLVVYZLt6fWe4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MYiTGhJI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1743935287; c=relaxed/simple;
+	bh=Ds/EHRcbW1fQ9vSrhDuOvsxpy35gSYew1q56WWGx1J4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eljbB7xDMx5hfqcgxFUWgALCqUo4w5y1CQb/oW8BNB2FkGIDI0XxVjUVSNk5/XQtJb69O5tjdrces7YIXFsQPCXVYFYnnkEnWgmUu1aOTmCqEGnX0Q7lsbfqJ+hNPz5AK0sAPMtcRy3PQIfzwFjQzrRFaMNDpdjbZwyA01h6inU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQCW5BLI; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MYiTGhJI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388BAC4CEE3;
-	Sun,  6 Apr 2025 09:31:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743931914;
-	bh=NupIctgv6eyPgDfdu7cJa5QG0aJbIdTwbFdNvq2g5u0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MYiTGhJIT74BxQ+RClM9BfPnKX99vk/MwgKtw6jDV/paog20fiRVTU8BH/tdhMI3j
-	 6ar9sqamuYkSkuqoY+XXEPhwjHN5Bnxy1b4XhyzHnjTA9kxfqpFPrNACAJT5F+vHJo
-	 DQHScsbvizyq/rrZVW60RXmoJDDPEZkX1BmTPNXzywOpJOXwW82eGy5LyET18j71/Q
-	 oeLnNhwqUpRNNJv1WZyR3ajvJOZLqDjeQxj9jIXmgoQJVmon6M1vChX1/KqrSS7r0V
-	 Dw1Fk+Uulth7/4rQVz+cTgr+PuIzTcelO5aUzTapftfWFuf0w47eKnqi7/UWjNn1LN
-	 voOkCfyoa8hkA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  netdev@vger.kernel.org,  andrew@lunn.ch,  hkallweit1@gmail.com,
-  tmgross@umich.edu,  ojeda@kernel.org,  alex.gaynor@gmail.com,
-  gary@garyguo.net,  bjorn3_gh@protonmail.com,  benno.lossin@proton.me,
-  a.hindborg@samsung.com,  aliceryhl@google.com,  anna-maria@linutronix.de,
-  frederic@kernel.org,  tglx@linutronix.de,  arnd@arndb.de,
-  jstultz@google.com,  sboyd@kernel.org,  mingo@redhat.com,
-  peterz@infradead.org,  juri.lelli@redhat.com,
-  vincent.guittot@linaro.org,  dietmar.eggemann@arm.com,
-  rostedt@goodmis.org,  bsegall@google.com,  mgorman@suse.de,
-  vschneid@redhat.com,  tgunders@redhat.com,  me@kloenk.dev,
-  david.laight.linux@gmail.com
-Subject: Re: [PATCH v12 5/5] MAINTAINERS: rust: Add a new section for all of
- the time stuff
-In-Reply-To: <Z_Hcg32LhKjqFkVG@boqun-archlinux> (Boqun Feng's message of "Sat,
-	5 Apr 2025 18:44:35 -0700")
-References: <20250406013445.124688-1-fujita.tomonori@gmail.com>
-	<20250406013445.124688-6-fujita.tomonori@gmail.com>
-	<Z_Hcg32LhKjqFkVG@boqun-archlinux>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Sun, 06 Apr 2025 11:31:42 +0200
-Message-ID: <87v7rhtz41.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQCW5BLI"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ff67f44fcaso677816a91.3;
+        Sun, 06 Apr 2025 03:28:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743935285; x=1744540085; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fmqSW6TwffvBILaVrMbvieozlgt4lB+aem/Hd3IBsbE=;
+        b=QQCW5BLIMcGNjhWMT5N+cW/g/DUkPN2FUH7KM/AbNe8cEaRPQ7JpTZIYGPjqv51lKe
+         TT7sDsP/KDsBLzFzVwNHqC37yCzM8pvAeWQmqDXnVT8ZHMYv8kFoqWcMbQPqFtjz5May
+         JL97aKNDzF1EOqYfiyCJsU+WMKOwHB3haX8Qh6V+DsDjCQfG8UrSj0WYyUVHqD54CJtE
+         B9wukJtDsNQvTPdnem94+0ru954T3IZ0rgLjW1NjIH47tCuX4/upWt3mBm70NBUPisXl
+         c4uKK5Teak2i8xU476xU75rpKgWgDArVO1LOyZvL8LTEs7wOqOOC0daSmLCtdUmRLhL1
+         C0zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743935285; x=1744540085;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fmqSW6TwffvBILaVrMbvieozlgt4lB+aem/Hd3IBsbE=;
+        b=KYqkYseDCba+4UKR3fybZahfMs5IP8OzC4GR/EbLXXGF0cEYBLqGqX/xBwvAuYw4qo
+         5uE6akItdN/alJPbS1lpI+xWkWfJbeX/KjKRd755OXZUfj4r/BYxu9N807EXBaiRFooE
+         k+MdcBXLjUTdXgSvcfz4161PlTrp4zOuQKeK/r9SFvyll6XoO61ygumUkYW3bVOnq2Fn
+         7A3qaM4zq39biqJ/vn18Qa67L68L5gF+ZVSvP2har51TH+aV/p7Wo8hh5s6VKtS7wlqq
+         /3Pu8gvib4fcaC2oohvIHJkIe2jDmRjAoFwEd5U+Le2b4u0VAAb6qpMiy+v/SHE9Mlxl
+         yGVA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7ow1l2KqcQYz5l+W7py5gIXhLnP42UwUJlANwy54U6tL1IIpuvzZKyXiQt6kxRy2i/mpHtmi5AOF9/m4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcscIsibjfKgrXUAa5+wqto3g2oj7Rf9gj1pMue38wzqnnX67N
+	EpsT1FGavDGf8iVUExvU99kpmj5vPNIJ6eJA3ROzssOBxHTKlLAVf60mphkalJBRrGGmEgPtccW
+	uUOdYd8QjbaiFKcYnnQ2HsQbomnQ=
+X-Gm-Gg: ASbGnctpqHsbkGxVZB+QmEGQHQiODYtYsckUUrmK1qqSn5GWxLmA9E4Se/5TQxaoyo4
+	T0eUj44kX/aznWvtxzdkyjDpGuJu1bcXVDNlZKJ1M340s2FgunB3ejjxcfV92/Io6taJS/SAaVB
+	aLaIBra5rfb1SdMEIATrcL47huLg==
+X-Google-Smtp-Source: AGHT+IF7ARgNsZLghgpskglcRUiIaATRek2ORxtV326eeTWm9504H44zRqMPRhASvAbQow72w3FmMazxy4a+WSK1Z3I=
+X-Received: by 2002:a17:90b:534c:b0:306:b593:4551 with SMTP id
+ 98e67ed59e1d1-306b593465fmr1876804a91.6.1743935285091; Sun, 06 Apr 2025
+ 03:28:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <95E3B7B9ECBFB14C+20250406034811.32347-1-xizheyin@smail.nju.edu.cn>
+In-Reply-To: <95E3B7B9ECBFB14C+20250406034811.32347-1-xizheyin@smail.nju.edu.cn>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 6 Apr 2025 12:27:53 +0200
+X-Gm-Features: ATxdqUFUStzc7fYH5Ev4BuWuM2EroFK-dCYOU1KuZ67NUjxNEQCNC6LnJK4UDrg
+Message-ID: <CANiq72m55Fi-XyFz=h7_3QNj+mA0N+E9Vo2_anLFyN1sr-FXMA@mail.gmail.com>
+Subject: Re: [PATCH] rust: convert raw URLs to Markdown autolinks in comments
+To: Xizhe Yin <xizheyin@smail.nju.edu.cn>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Boqun Feng <boqun.feng@gmail.com> writes:
-
-> On Sun, Apr 06, 2025 at 10:34:45AM +0900, FUJITA Tomonori wrote:
->> Add a new section for all of the time stuff to MAINTAINERS file, with
->> the existing hrtimer entry fold.
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Sun, Apr 6, 2025 at 5:51=E2=80=AFAM Xizhe Yin <xizheyin@smail.nju.edu.cn=
+> wrote:
 >
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> From: xizheyin <xizheyin@smail.nju.edu.cn>
+
+This should ideally match your Signed-off-by.
+
+> Some comments in Rust files use raw URLs (http://example.com) rather
+> than Markdown autolinks [text](URL). This inconsistency makes the
+> documentation less uniform and harder to maintain.
 >
->> ---
->>  MAINTAINERS | 11 +++++++----
->>  1 file changed, 7 insertions(+), 4 deletions(-)
->> 
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index d32ce85c5c66..fafb79c42ac3 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -10581,20 +10581,23 @@ F:	kernel/time/timer_list.c
->>  F:	kernel/time/timer_migration.*
->>  F:	tools/testing/selftests/timers/
->>  
->> -HIGH-RESOLUTION TIMERS [RUST]
->> +DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
->>  M:	Andreas Hindborg <a.hindborg@kernel.org>
->>  R:	Boqun Feng <boqun.feng@gmail.com>
->> +R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
->>  R:	Frederic Weisbecker <frederic@kernel.org>
->>  R:	Lyude Paul <lyude@redhat.com>
->>  R:	Thomas Gleixner <tglx@linutronix.de>
->>  R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
->> +R:	John Stultz <jstultz@google.com>
->> +R:	Stephen Boyd <sboyd@kernel.org>
->>  L:	rust-for-linux@vger.kernel.org
->>  S:	Supported
->>  W:	https://rust-for-linux.com
->>  B:	https://github.com/Rust-for-Linux/linux/issues
->> -T:	git https://github.com/Rust-for-Linux/linux.git hrtimer-next
->> -F:	rust/kernel/time/hrtimer.rs
->> -F:	rust/kernel/time/hrtimer/
->> +T:	git https://github.com/Rust-for-Linux/linux.git rust-timekeeping-next
+> This patch converts all remaining raw URLs in Rust code comments to use
+> the Markdown autolink format, maintaining consistency with the rest of
+> the codebase which already uses this style.
 >
-> @Andreas, this branch is currently missing, right?
+> Link: Rust-for-Linux#1153
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 
-Yes, I'll ping Miguel to set it up when we are ready to go with this.
+I am really a newbie on the Markdown spec, but as far as I can tell,
+Markdown autolinks are the `<...>` ones:
 
+    https://spec.commonmark.org/0.31.2/#autolinks
 
-Best regards,
-Andreas Hindborg
+So what I was trying to suggest adding a few missing `<>` to a few raw
+URLs we have.
 
+By the way, the "Link" should be a full URL to the issue here :)
 
+Thanks  for the patch!
 
+Cheers,
+Miguel
