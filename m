@@ -1,119 +1,194 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.77.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D6C204C28;
-	Sun,  6 Apr 2025 12:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A457133987
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Apr 2025 12:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.77.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743940811; cv=none; b=IeENIf/yxbW2JBkJ75KmJwteaEwuLKKnXYjm5Z1179nBEEloa7jYn7sA970H0yovRDpZK7Vx8lhfTmUKusC7wvCBTswIMUIR0Hw9quuAykQA+ye+bFHaPleu3M0FJm+Z6D38beydd5WBfLPqh2tSDJidB63V4SjJ6Jp8eNfh0DM=
+	t=1743942046; cv=none; b=sMK0PMvqC1o4Mv+YVNxkaYedAHQi4dii5BMdNPLwz7h9nsWxeXSa8/wsIH7yp8j0uYnnXkfoQhVHjbPHeArnsdp4XgYn9vO+EZC8fl2JxmkPKQS+dPQK/AVoHytZty1ah+jk6L22HlzgN5uYcVA4PBOLvETuzQWGzx7LFAeHAL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743940811; c=relaxed/simple;
-	bh=e34UQPwgoaLbxbO0d1Z3Vpvdu/N7oezyi3BKw6TVUEI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BitKrtpxAlaKVaLuo4UHI/fPM5EeywvmBmcYgkEctsjertINQtqd5dtYQcnVgxP3vVSBAh9Y4QTB1kENXXtzRO1rZC7uuhvRCT5radFrN0f5W1M22KtvE/HivgI9mzWs7xhOJTVgBXXEBFah/q9Hb2XL+ySjf5PBz/YHd7wN/a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tq4plMZ9; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tq4plMZ9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743940809; x=1775476809;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=e34UQPwgoaLbxbO0d1Z3Vpvdu/N7oezyi3BKw6TVUEI=;
-  b=Tq4plMZ9da8okdLJQZWQBWpqnSyiMHyMCAQrOhmeacphrpb/zkeB0IVv
-   rqe+MgAuOQyBnzhk3Dyx33Sqc2o5YfqFN7EpbD0oMVEgpNOxIzZ2ighlK
-   J+ss27hy0B9zmk4QGv5IXfKTB8KB4CumzyoPSfcssN2W11769VsUJE113
-   DWTvhfP7RN/W+vkT+Gj4qZ833M5CWxNFPj9bzT5Vcej61YRnzaNMQk6B/
-   f5KCZGEbE6gTfXlf8q6fXXNflm/5+JNz6kAczBI7AT+gfjl5n0D7pVz+J
-   bBsraMS0PBcDpcp2oj1lA46+mbBUbO7NQt2T6YwNOI/Woe9FBmzCgUqHF
-   w==;
-X-CSE-ConnectionGUID: XaLraHhkSH2j2qzZkFdOUw==
-X-CSE-MsgGUID: /LzzVoUHRgi5PpqZYlh29A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11395"; a="70704211"
-X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
-   d="scan'208";a="70704211"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2025 05:00:08 -0700
-X-CSE-ConnectionGUID: Cr/JKSWvSwGOYAVHkQi2fg==
-X-CSE-MsgGUID: Hgfyj8b1RNaWDkouvkjcug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
-   d="scan'208";a="132842866"
-Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 06 Apr 2025 05:00:05 -0700
-Received: from kbuild by b207828170a5 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u1OfT-0002Zr-0L;
-	Sun, 06 Apr 2025 12:00:03 +0000
-Date: Sun, 6 Apr 2025 19:59:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alexandre Courbot <acourbot@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	s=arc-20240116; t=1743942046; c=relaxed/simple;
+	bh=ERPqbLDXIgdn1Eq1yt9xTuzCbHf8+EI9xioJFIzecHI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=usIC6iFOeL7jtaVKodZZUW1CzkiGpwbFHeBHZgzmCyFmdP+FOGBbkyKg7/LqWfCNBcTLruWeX/dilyClmxu3TP7khrcbIdehcukb7I3Qx9NEN6u2LhAbbs5PUah3b9Uohp4WSYTcpnGHHtx2rstIFeQn6FUz1YEWZDlHcb9vLbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; arc=none smtp.client-ip=114.132.77.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
+X-QQ-mid: bizesmtpsz12t1743942010twwjji
+X-QQ-Originating-IP: D7nIlaKgtyE6bgrxpWGoaQNL5Eir0hMjgU6k4W0pkh4=
+Received: from localhost.localdomain ( [153.3.21.167])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 06 Apr 2025 20:20:08 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 5633474999447589099
+EX-QQ-RecipientCnt: 12
+From: Xizhe Yin <xizheyin@smail.nju.edu.cn>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: oe-kbuild-all@lists.linux.dev, Joel Fernandes <joelagnelf@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexandre Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH v2] rust: alloc: implement `extend` for `Vec`
-Message-ID: <202504061937.dH9ikiZo-lkp@intel.com>
-References: <20250405-vec_extend-v2-1-e4a85af43cb3@nvidia.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	xizheyin <xizheyin@smail.nju.edu.cn>
+Subject: [PATCH v3 1/1] rust: convert raw URLs to Markdown autolinks in comments
+Date: Sun,  6 Apr 2025 20:16:56 +0800
+Message-ID: <2F653D0EC21DAB8D+20250406121656.31901-1-xizheyin@smail.nju.edu.cn>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250405-vec_extend-v2-1-e4a85af43cb3@nvidia.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: Nv1Zs1ssfOILrv4N4hj/hd+UP9IsM59NWwEIwyK0T7NUpQkZl5klrC4o
+	8bDBmxbENRsSF3cCXN8JiK9N4muxc6a5YmgWgN88jguL+IBwRyFIhCZ5BGWu0Nz+TiECBbc
+	jjXusQ5UrZOPV7bXkuTWiafjXhowyv68NLiyhzeh8D8NvMG6xGjRHeJFoYBlJFdjl7FhjEW
+	rFw+fBp0J9OiwImW+C2HFylmUQjlpwYWyU7UHvXNtSdHwjN5M2Smb9BLeNBJ2nCmXanGjZs
+	wQ69ICbBGRbWFW0Rl7Qv36qN2UTcEQyu34e7Mb6srvUJAdyJpshxkCmyJdpSf2XDC+h9ovL
+	tQOWrQbzQmBgt14J5TDD8FAYtoVfupnNYW5FmE7wtVNHyozdKaGcQhgJrZE5Kh7g8LT0Xld
+	5z18HspvEzIONeE/WOBPXABm+3Ey4hFdurepazfJXq8kGXrRhWOOh+YNC48+/9IuEJWQDVF
+	DDSAcmUyvyxDeGntV1FD5Hztuf7EvLS4iRz3O6VzP7Cwi1cdVhopnjf4U5A5iRnmbYcGPqL
+	fSJBmUJ/oimsNARlf2qClh05RogsFN+Hz8lI8CNbn6lHC7ULvZahOyaV5fxcy20kvts+DGl
+	Tf2ARglPZ95WsuMZTN2pcrJYKJvmycOqLsbpy37j5kQButCMPGMir75WjvD/1xLhgx0qmCr
+	uXkoCw6747wX25Pjx7Dv8Fuqrhv2WWMBmb+8pdkmZ6Ns2Eoy9ojhiK4OlbJOBNvycyhIN14
+	qIo1c8AmB8lnSWLr0qKCSNNmH9aA8eJD/hR7xIJ7KRCc9M58qLCygihPe/bQFZ6x1eYpTYs
+	42tBEHMz7qJpICr+ciMmUnOzz8StuMcWxUUt0IQP9IilJhDAgmkURk0h+NDqRsG6DXsT5bw
+	HjXTOJK/AhBwRVET1YShuik6mln7kCa6rWwp41dUDYhLYjTUcKShPmo7gi3y0iQz3oPKLL7
+	FsSKgFHBKNDF08lb+Wvs8JslsB/BWZJvLmSf+FuCpFcVkvkQpmub1Ah/xlQRIn4Vb0a9XOV
+	ysVbT7Og==
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-RECHKSPAM: 0
 
-Hi Alexandre,
+From: xizheyin <xizheyin@smail.nju.edu.cn>
 
-kernel test robot noticed the following build warnings:
+Some comments in Rust files use raw URLs (http://example.com) rather
+than Markdown autolinks <URL>. This inconsistency makes the
+documentation less uniform and harder to maintain.
 
-[auto build test WARNING on a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11]
+This patch converts all remaining raw URLs in Rust code comments to use
+the Markdown autolink format, maintaining consistency with the rest of
+the codebase which already uses this style.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alexandre-Courbot/rust-alloc-implement-extend-for-Vec/20250405-215300
-base:   a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
-patch link:    https://lore.kernel.org/r/20250405-vec_extend-v2-1-e4a85af43cb3%40nvidia.com
-patch subject: [PATCH v2] rust: alloc: implement `extend` for `Vec`
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250406/202504061937.dH9ikiZo-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250406/202504061937.dH9ikiZo-lkp@intel.com/reproduce)
+Link: https://github.com/Rust-for-Linux/linux/issues/1153
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: xizheyin <xizheyin@smail.nju.edu.cn>
+---
+ rust/kernel/alloc/kbox.rs               | 2 +-
+ rust/kernel/block/mq/gen_disk.rs        | 2 +-
+ rust/kernel/std_vendor.rs               | 2 +-
+ rust/kernel/sync/arc.rs                 | 2 +-
+ rust/pin-init/examples/pthread_mutex.rs | 2 +-
+ rust/pin-init/src/lib.rs                | 2 +-
+ scripts/generate_rust_target.rs         | 4 ++--
+ 7 files changed, 8 insertions(+), 8 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504061937.dH9ikiZo-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> warning: this `.into_iter()` call is equivalent to `.iter_mut()` and will not consume the `slice`
-   --> rust/kernel/alloc/kvec.rs:486:18
-   |
-   486 |                 .into_iter()
-   |                  ^^^^^^^^^ help: call directly: `iter_mut`
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#into_iter_on_ref
-   = note: `-W clippy::into-iter-on-ref` implied by `-W clippy::all`
-   = help: to override `-W clippy::all` add `#[allow(clippy::into_iter_on_ref)]`
---
->> warning: this `.into_iter()` call is equivalent to `.iter()` and will not consume the `slice`
-   --> rust/kernel/alloc/kvec.rs:533:27
-   |
-   533 |         self.extend(other.into_iter().cloned(), flags)
-   |                           ^^^^^^^^^ help: call directly: `iter`
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#into_iter_on_ref
-
+diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+index b77d32f3a58b..604d12c6f5bd 100644
+--- a/rust/kernel/alloc/kbox.rs
++++ b/rust/kernel/alloc/kbox.rs
+@@ -101,7 +101,7 @@
+ pub type KVBox<T> = Box<T, super::allocator::KVmalloc>;
+ 
+ // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee:
+-// https://doc.rust-lang.org/stable/std/option/index.html#representation).
++// <https://doc.rust-lang.org/stable/std/option/index.html#representation>).
+ unsafe impl<T, A: Allocator> ZeroableOption for Box<T, A> {}
+ 
+ // SAFETY: `Box` is `Send` if `T` is `Send` because the `Box` owns a `T`.
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 14806e1997fd..cd54cd64ea88 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -129,7 +129,7 @@ pub fn build<T: Operations>(
+             get_unique_id: None,
+             // TODO: Set to THIS_MODULE. Waiting for const_refs_to_static feature to
+             // be merged (unstable in rustc 1.78 which is staged for linux 6.10)
+-            // https://github.com/rust-lang/rust/issues/119618
++            // <https://github.com/rust-lang/rust/issues/119618>
+             owner: core::ptr::null_mut(),
+             pr_ops: core::ptr::null_mut(),
+             free_disk: None,
+diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
+index 279bd353687a..abbab5050cc5 100644
+--- a/rust/kernel/std_vendor.rs
++++ b/rust/kernel/std_vendor.rs
+@@ -148,7 +148,7 @@ macro_rules! dbg {
+     };
+     ($val:expr $(,)?) => {
+         // Use of `match` here is intentional because it affects the lifetimes
+-        // of temporaries - https://stackoverflow.com/a/48732525/1063961
++        // of temporaries - <https://stackoverflow.com/a/48732525/1063961>
+         match $val {
+             tmp => {
+                 $crate::pr_info!("[{}:{}:{}] {} = {:#?}\n",
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 8484c814609a..350c380bb8d4 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -135,7 +135,7 @@ pub struct Arc<T: ?Sized> {
+     // meaningful with respect to dropck - but this may change in the future so this is left here
+     // out of an abundance of caution.
+     //
+-    // See https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-drop-checking
++    // See <https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-drop-checking>
+     // for more detail on the semantics of dropck in the presence of `PhantomData`.
+     _p: PhantomData<ArcInner<T>>,
+ }
+diff --git a/rust/pin-init/examples/pthread_mutex.rs b/rust/pin-init/examples/pthread_mutex.rs
+index 9164298c44c0..5ac22f1880d2 100644
+--- a/rust/pin-init/examples/pthread_mutex.rs
++++ b/rust/pin-init/examples/pthread_mutex.rs
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: Apache-2.0 OR MIT
+ 
+-// inspired by https://github.com/nbdd0121/pin-init/blob/trunk/examples/pthread_mutex.rs
++// inspired by <https://github.com/nbdd0121/pin-init/blob/trunk/examples/pthread_mutex.rs>
+ #![allow(clippy::undocumented_unsafe_blocks)]
+ #![cfg_attr(feature = "alloc", feature(allocator_api))]
+ #[cfg(not(windows))]
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 05c44514765e..0806c689f693 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -1447,7 +1447,7 @@ macro_rules! impl_zeroable {
+     {<T: ?Sized + Zeroable>} UnsafeCell<T>,
+ 
+     // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee:
+-    // https://doc.rust-lang.org/stable/std/option/index.html#representation).
++    // <https://doc.rust-lang.org/stable/std/option/index.html#representation>).
+     Option<NonZeroU8>, Option<NonZeroU16>, Option<NonZeroU32>, Option<NonZeroU64>,
+     Option<NonZeroU128>, Option<NonZeroUsize>,
+     Option<NonZeroI8>, Option<NonZeroI16>, Option<NonZeroI32>, Option<NonZeroI64>,
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 4fd6b6ab3e32..03abfa693cbf 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -207,7 +207,7 @@ fn main() {
+             // target feature of the same name plus the other two target features in
+             // `clang/lib/Driver/ToolChains/Arch/X86.cpp`. These should be eventually enabled via
+             // `-Ctarget-feature` when `rustc` starts recognizing them (or via a new dedicated
+-            // flag); see https://github.com/rust-lang/rust/issues/116852.
++            // flag); see <https://github.com/rust-lang/rust/issues/116852>.
+             features += ",+retpoline-external-thunk";
+             features += ",+retpoline-indirect-branches";
+             features += ",+retpoline-indirect-calls";
+@@ -216,7 +216,7 @@ fn main() {
+             // The kernel uses `-mharden-sls=all`, which Clang maps to both these target features in
+             // `clang/lib/Driver/ToolChains/Arch/X86.cpp`. These should be eventually enabled via
+             // `-Ctarget-feature` when `rustc` starts recognizing them (or via a new dedicated
+-            // flag); see https://github.com/rust-lang/rust/issues/116851.
++            // flag); see <https://github.com/rust-lang/rust/issues/116851>.
+             features += ",+harden-sls-ijmp";
+             features += ",+harden-sls-ret";
+         }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.49.0
+
