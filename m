@@ -1,80 +1,119 @@
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.62.65])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E5D23AD;
-	Sun,  6 Apr 2025 11:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.62.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D6C204C28;
+	Sun,  6 Apr 2025 12:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743940603; cv=none; b=Bmco+UrR/3SzpJXhN65coNF7scv8l4wTRHpMWcjSG5UUXf18dZVmnz6Q965umgS2y3YCYVEbeG7mZsB4n4TnQe23d2gJOWghG3CH7nPCoqk5uEFz2ARrjJudyLaKavnglkkN990KFv3qWgdg1zV0tpFJK5HHtmLlsKBL1FypeAc=
+	t=1743940811; cv=none; b=IeENIf/yxbW2JBkJ75KmJwteaEwuLKKnXYjm5Z1179nBEEloa7jYn7sA970H0yovRDpZK7Vx8lhfTmUKusC7wvCBTswIMUIR0Hw9quuAykQA+ye+bFHaPleu3M0FJm+Z6D38beydd5WBfLPqh2tSDJidB63V4SjJ6Jp8eNfh0DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743940603; c=relaxed/simple;
-	bh=BxdzTW8ib3V+3KbWH6xF+U5AcyodTwlXgouajQjRFYI=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=scmjffmQqc1A2C4n18LYk7eVB4vbr0ikJsvvy1FJ/QZvmd5QIRxv4u5jm+ALhL9e6Af/Wz2/Ol7XN+TxkLzra1qiF4pcsbsHN8hzi3Yy2bweuZ3koq8ReKrxRZ4xc9hui9R/DtqDUz4fhvEmMTru01pxw1c7fxNz7JWmFUhSFuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; arc=none smtp.client-ip=114.132.62.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
-EX-QQ-RecipientCnt: 4
-X-QQ-GoodBg: 1
-X-BAN-DOWNLOAD: 1
-X-BAN-SHARE: 1
-X-QQ-SSF: 00400000000000F0
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-FEAT: D4aqtcRDiqSwD4GVK8+FEJnPlruXmtq4qU5krjXbf14=
-X-QQ-BUSINESS-ORIGIN: 2
-X-QQ-Originating-IP: g5/04QnXxyKpuFGe5poaA+oaNEJlsNa8O24RLm1E1Bs=
-X-QQ-STYLE: 
-X-QQ-mid: v4gz7a-0t1743940567t8733394
-From: "=?utf-8?B?5bC554aZ5ZaG?=" <xizheyin@smail.nju.edu.cn>
-To: "=?utf-8?B?TWlndWVsIE9qZWRh?=" <miguel.ojeda.sandonis@gmail.com>
-Cc: "=?utf-8?B?cnVzdC1mb3ItbGludXg=?=" <rust-for-linux@vger.kernel.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?TWlndWVsIE9qZWRh?=" <ojeda@kernel.org>
-Subject: Re: [PATCH] rust: convert raw URLs to Markdown autolinks in comments
+	s=arc-20240116; t=1743940811; c=relaxed/simple;
+	bh=e34UQPwgoaLbxbO0d1Z3Vpvdu/N7oezyi3BKw6TVUEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BitKrtpxAlaKVaLuo4UHI/fPM5EeywvmBmcYgkEctsjertINQtqd5dtYQcnVgxP3vVSBAh9Y4QTB1kENXXtzRO1rZC7uuhvRCT5radFrN0f5W1M22KtvE/HivgI9mzWs7xhOJTVgBXXEBFah/q9Hb2XL+ySjf5PBz/YHd7wN/a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tq4plMZ9; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tq4plMZ9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743940809; x=1775476809;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=e34UQPwgoaLbxbO0d1Z3Vpvdu/N7oezyi3BKw6TVUEI=;
+  b=Tq4plMZ9da8okdLJQZWQBWpqnSyiMHyMCAQrOhmeacphrpb/zkeB0IVv
+   rqe+MgAuOQyBnzhk3Dyx33Sqc2o5YfqFN7EpbD0oMVEgpNOxIzZ2ighlK
+   J+ss27hy0B9zmk4QGv5IXfKTB8KB4CumzyoPSfcssN2W11769VsUJE113
+   DWTvhfP7RN/W+vkT+Gj4qZ833M5CWxNFPj9bzT5Vcej61YRnzaNMQk6B/
+   f5KCZGEbE6gTfXlf8q6fXXNflm/5+JNz6kAczBI7AT+gfjl5n0D7pVz+J
+   bBsraMS0PBcDpcp2oj1lA46+mbBUbO7NQt2T6YwNOI/Woe9FBmzCgUqHF
+   w==;
+X-CSE-ConnectionGUID: XaLraHhkSH2j2qzZkFdOUw==
+X-CSE-MsgGUID: /LzzVoUHRgi5PpqZYlh29A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11395"; a="70704211"
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
+   d="scan'208";a="70704211"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2025 05:00:08 -0700
+X-CSE-ConnectionGUID: Cr/JKSWvSwGOYAVHkQi2fg==
+X-CSE-MsgGUID: Hgfyj8b1RNaWDkouvkjcug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
+   d="scan'208";a="132842866"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 06 Apr 2025 05:00:05 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u1OfT-0002Zr-0L;
+	Sun, 06 Apr 2025 12:00:03 +0000
+Date: Sun, 6 Apr 2025 19:59:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alexandre Courbot <acourbot@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Cc: oe-kbuild-all@lists.linux.dev, Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>
+Subject: Re: [PATCH v2] rust: alloc: implement `extend` for `Vec`
+Message-ID: <202504061937.dH9ikiZo-lkp@intel.com>
+References: <20250405-vec_extend-v2-1-e4a85af43cb3@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Sun, 6 Apr 2025 19:56:07 +0800
-X-Priority: 1
-Message-ID: <tencent_4FDA7C47625666C054E0F8D7@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <95E3B7B9ECBFB14C+20250406034811.32347-1-xizheyin@smail.nju.edu.cn>
-	<CANiq72m55Fi-XyFz=h7_3QNj+mA0N+E9Vo2_anLFyN1sr-FXMA@mail.gmail.com>
-	<tencent_3DAE6B923FC67B543D90D970@qq.com>
-	<CANiq72=c7yzLM4C-zctYFpUnFbQ2o4i5Uhp73xc4Td3-H_yDeQ@mail.gmail.com>
-In-Reply-To: <CANiq72=c7yzLM4C-zctYFpUnFbQ2o4i5Uhp73xc4Td3-H_yDeQ@mail.gmail.com>
-X-QQ-ReplyHash: 3557925258
-X-BIZMAIL-ID: 3044392774991309998
-X-QQ-SENDSIZE: 520
-Received: from qq.com (unknown [127.0.0.1])
-	by smtp.qq.com (ESMTP) with SMTP
-	id ; Sun, 06 Apr 2025 19:56:08 +0800 (CST)
-Feedback-ID: v:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MpO6L0LObisWYwfrzyo9jhYgQzsb451TfQm71Y6r4aQxtEMqRfA99HoY
-	cdKWfIKCiPeUzhFg7K/Zakdq5KoLEbrBNzoFomJlbAGUs+hLkN7jI/m+A76EeOwupsXNkrY
-	VZ1zCdgh97GbDaMk0vrGYE6HP+wIk90CughPm2X+uT7wCM4WFjubKuMoLl+XWbYWVOboo1d
-	YyKhIktWDRRFlLX1b/bOXNmCkyvxQ2ObIX1N3Vk+O/O6hEARTFMFMqSJagV53X3YwI+E7fa
-	XVKH+jj0Z29FgywgaYWWPoDNJRIHlYc843bRHaOfHCVyx8T1lmSfNapG2o4nKaT2pnaATl2
-	lo+KN9wBWo16kQNMyqKH/0LnmjQ8jlg5h7hAaTAWOXeeOXzc0UbzAhbAaWOQU93PcgYzhDI
-	PO7/1gxyXOd+eZsWDyQEtoG5SgRjsjbRVXjepGGNu0hToHOmQ1Oxc3KgKegEltkrHusnT6G
-	nT4M2kFCSx7P04+giYFKLrT6tVxgPAHRG/pqP83nbiYAyEOdq+sugGDBbm11sWhC7vCcghw
-	FImg/k9TV0Ngwe0SLzL2pwdGeJJPnDH4E/hO4fYLU49z8K97gR8mjEGuSVmBUKXpcBCMSkv
-	WTqu23U8hY1Tky9Cc2imTAdMcidQYYS/fB0mXNs9H0i0F77guM5gXseDwqZ3uIy7XUdQ98l
-	iJ1IEjq6Z24NGtl4MWoMByngdcT5YVlV38+pJjsWRuOhOQk2VocVfxsQMowmKALQ8LO73Ni
-	YdOoNjjVYFKFS5O+fjtxDRu8mGWjgiO69o0OQuXJfFU/rUAFeldCAFPENDT1DLgr/4O8nYS
-	M+dHNlE945LF6E4Gh9nsRYmNhnfCl4EMLBRzUOZZX+pnVjauKJlhXjqPT5CHYmAt6G16Y5w
-	fO6pse0d5SVWAg3aCvKYP9y0uYhFPOeOsb8UY8/K+YHkkuRvxifDr7FCs+G7K8/mTqwjOLM
-	DoFK0TMOC8PSDUMIYm1RcFKzyZJXYmz0pik8BdVbiFUhdBwOYJ/xSOq57
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250405-vec_extend-v2-1-e4a85af43cb3@nvidia.com>
 
-VGhhbmsgeW91IGZvciB0aGUgZGV0YWlsZWQgZXhwbGFuYXRpb24sIEkgY29tcGxldGVseSB1
-bmRlcnN0YW5kIGl0Lg0KSSBqdXN0IHNlbnQgYSBuZXcgcGF0Y2ggd2hpY2ggdXNlcyBhdXRv
-bGluayBpbiBjb21tZW50cy4gaWYgeW91IGhhdmUgdGltZSB5b3UgY2FuIHJldmlldyBpdC4N
-Cg0KQmVzdCB3aXNoZXMNCnhpemhl
+Hi Alexandre,
 
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Alexandre-Courbot/rust-alloc-implement-extend-for-Vec/20250405-215300
+base:   a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
+patch link:    https://lore.kernel.org/r/20250405-vec_extend-v2-1-e4a85af43cb3%40nvidia.com
+patch subject: [PATCH v2] rust: alloc: implement `extend` for `Vec`
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250406/202504061937.dH9ikiZo-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250406/202504061937.dH9ikiZo-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504061937.dH9ikiZo-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> warning: this `.into_iter()` call is equivalent to `.iter_mut()` and will not consume the `slice`
+   --> rust/kernel/alloc/kvec.rs:486:18
+   |
+   486 |                 .into_iter()
+   |                  ^^^^^^^^^ help: call directly: `iter_mut`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#into_iter_on_ref
+   = note: `-W clippy::into-iter-on-ref` implied by `-W clippy::all`
+   = help: to override `-W clippy::all` add `#[allow(clippy::into_iter_on_ref)]`
+--
+>> warning: this `.into_iter()` call is equivalent to `.iter()` and will not consume the `slice`
+   --> rust/kernel/alloc/kvec.rs:533:27
+   |
+   533 |         self.extend(other.into_iter().cloned(), flags)
+   |                           ^^^^^^^^^ help: call directly: `iter`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#into_iter_on_ref
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
