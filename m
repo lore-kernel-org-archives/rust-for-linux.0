@@ -1,106 +1,129 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E898F19C546;
-	Sun,  6 Apr 2025 10:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470A5EACD;
+	Sun,  6 Apr 2025 11:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743935287; cv=none; b=lyJi3JGXeM4qD1SDcud1Jr1AM5DVCUofYBl13+BVy8OsBueyVQD5oyQgq1NeBd9mgig13uYtU2Vlnti9QxdzEXlgbfSEAsQ+90B222rv8+TPEgZCyGaGvvzquYd8R6FefYo1vGoNDS25qNELloE5n8M49hJfVFj9FC2joqvSwM4=
+	t=1743937702; cv=none; b=H89sHnUSIBxQ54oyTE1JZpgZGK4gGvZrkncDnSqL4Mr0rI5Fj4UF/etFm40U71Iy57HBt9OmKaVXxDF25jZEHl4+PoHz7+1sSMc9VVLmloL+bRRnwjKbPzIWQKdYfI0/7sedkk64XyKyr917j4IxVY0Zk2WvR9Gxd2J2NZN9Ako=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743935287; c=relaxed/simple;
-	bh=Ds/EHRcbW1fQ9vSrhDuOvsxpy35gSYew1q56WWGx1J4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eljbB7xDMx5hfqcgxFUWgALCqUo4w5y1CQb/oW8BNB2FkGIDI0XxVjUVSNk5/XQtJb69O5tjdrces7YIXFsQPCXVYFYnnkEnWgmUu1aOTmCqEGnX0Q7lsbfqJ+hNPz5AK0sAPMtcRy3PQIfzwFjQzrRFaMNDpdjbZwyA01h6inU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQCW5BLI; arc=none smtp.client-ip=209.85.216.45
+	s=arc-20240116; t=1743937702; c=relaxed/simple;
+	bh=hWNh0A3W8u8N1g08xzyAM+5+gHdaPqHAGDJMaNk7T0Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TWxKv1a97AOq5dTGFxSm1v4iKoyGdrzF2V2QNo1uGqSkx3EhBwMn7UoBMboa+O7BtGhTMmRNOTUb3/+ycPuKpeHmLdVWc1a4lnk5Za6wt1vn2GfMH616YK/Si+xWlwYWxSqgzHVA4w/HiF2D3Tw3ONIw0EFInZBgIH3aK+glZ9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h/CCMi5s; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQCW5BLI"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ff67f44fcaso677816a91.3;
-        Sun, 06 Apr 2025 03:28:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h/CCMi5s"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2243803b776so47711105ad.0;
+        Sun, 06 Apr 2025 04:08:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743935285; x=1744540085; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fmqSW6TwffvBILaVrMbvieozlgt4lB+aem/Hd3IBsbE=;
-        b=QQCW5BLIMcGNjhWMT5N+cW/g/DUkPN2FUH7KM/AbNe8cEaRPQ7JpTZIYGPjqv51lKe
-         TT7sDsP/KDsBLzFzVwNHqC37yCzM8pvAeWQmqDXnVT8ZHMYv8kFoqWcMbQPqFtjz5May
-         JL97aKNDzF1EOqYfiyCJsU+WMKOwHB3haX8Qh6V+DsDjCQfG8UrSj0WYyUVHqD54CJtE
-         B9wukJtDsNQvTPdnem94+0ru954T3IZ0rgLjW1NjIH47tCuX4/upWt3mBm70NBUPisXl
-         c4uKK5Teak2i8xU476xU75rpKgWgDArVO1LOyZvL8LTEs7wOqOOC0daSmLCtdUmRLhL1
-         C0zg==
+        d=gmail.com; s=20230601; t=1743937700; x=1744542500; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9dnQwUYlFHrp/etLwYkyL8PEf5G7FcHtzONo+0MlGRs=;
+        b=h/CCMi5sfvqI1fPE9fiK60CEaNsg6TzrRNEJEWnpZamMjujGAIPBY08EXPv/DFfOAx
+         JZYwne0MuDI8quy+qb7f8j5uFajC0GOSg9wTRzVU+amBAMGl1O93CDLKBb1PZLpHbDK5
+         ddDMMvIRpRMPDWqdiUTCUIMAF2adQAQlSbPtL/z634uY+kh4+UdRLYO4dVk2yUbfQ6Ht
+         fqo5jzef43XiRk7r2wzs50nUjllvGSxOw4qdsgKsvzN4CizUUEpOPtvv7p+yEFyCN2fW
+         4Bgnw1jwUer0ncs+FeSxN+bduss2FXSmuwHDdtU3kJ4tqLVH6HDlysG+thI1ZnqlIsEo
+         HjvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743935285; x=1744540085;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fmqSW6TwffvBILaVrMbvieozlgt4lB+aem/Hd3IBsbE=;
-        b=KYqkYseDCba+4UKR3fybZahfMs5IP8OzC4GR/EbLXXGF0cEYBLqGqX/xBwvAuYw4qo
-         5uE6akItdN/alJPbS1lpI+xWkWfJbeX/KjKRd755OXZUfj4r/BYxu9N807EXBaiRFooE
-         k+MdcBXLjUTdXgSvcfz4161PlTrp4zOuQKeK/r9SFvyll6XoO61ygumUkYW3bVOnq2Fn
-         7A3qaM4zq39biqJ/vn18Qa67L68L5gF+ZVSvP2har51TH+aV/p7Wo8hh5s6VKtS7wlqq
-         /3Pu8gvib4fcaC2oohvIHJkIe2jDmRjAoFwEd5U+Le2b4u0VAAb6qpMiy+v/SHE9Mlxl
-         yGVA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7ow1l2KqcQYz5l+W7py5gIXhLnP42UwUJlANwy54U6tL1IIpuvzZKyXiQt6kxRy2i/mpHtmi5AOF9/m4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcscIsibjfKgrXUAa5+wqto3g2oj7Rf9gj1pMue38wzqnnX67N
-	EpsT1FGavDGf8iVUExvU99kpmj5vPNIJ6eJA3ROzssOBxHTKlLAVf60mphkalJBRrGGmEgPtccW
-	uUOdYd8QjbaiFKcYnnQ2HsQbomnQ=
-X-Gm-Gg: ASbGnctpqHsbkGxVZB+QmEGQHQiODYtYsckUUrmK1qqSn5GWxLmA9E4Se/5TQxaoyo4
-	T0eUj44kX/aznWvtxzdkyjDpGuJu1bcXVDNlZKJ1M340s2FgunB3ejjxcfV92/Io6taJS/SAaVB
-	aLaIBra5rfb1SdMEIATrcL47huLg==
-X-Google-Smtp-Source: AGHT+IF7ARgNsZLghgpskglcRUiIaATRek2ORxtV326eeTWm9504H44zRqMPRhASvAbQow72w3FmMazxy4a+WSK1Z3I=
-X-Received: by 2002:a17:90b:534c:b0:306:b593:4551 with SMTP id
- 98e67ed59e1d1-306b593465fmr1876804a91.6.1743935285091; Sun, 06 Apr 2025
- 03:28:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1743937700; x=1744542500;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9dnQwUYlFHrp/etLwYkyL8PEf5G7FcHtzONo+0MlGRs=;
+        b=fRx1gpN9kIrEqEl+VieBvGUzuK3vjRF2TAZrk9pagFxo6IJYiR+tJp7EtArlIxMOG2
+         shbEr16QN5qdKEAA5HNTn/I/8c2XVkJwvkURosGut9fzxI10D7G+Iy7UYs7YkvXbmxn2
+         fnibPvaKQVY3Oi28q+sfRUtuSPcQodgS++jAdfszmVNl1LBMriSdLiuvFDYt/WfObtI/
+         6u4p/VSJ6Xf9Rnd7SOa/Iyf9LZyOxO5YfutIi4b/ixWQe7T/2VvCLc2VSijFQNmqEWlo
+         Pm+49EjmoCkLItvS08Yb7QELQqaSSIOxbBnOIDun1/ZD4k41XH7PTOTXK4FEx0sW0ato
+         Yjiw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/T7QXe9x5JfRxWmHhB0hV/jP7w3hSbKOVRTjfs0/rhltY1/u+g6Zx5Dqs2zUnuQ4UV//pjLlR3zbNzRIvnA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEkKq/ANtOa6xPVaBPd3MnvYftYIdk4rZFsR6H0onOOR1XfANl
+	rWxlkBdl4oNzIWfxY5Aw+XtF4BdQGFoRqt20+yHbN05IiYo8BvC81wAgwmlP
+X-Gm-Gg: ASbGncu7vjKCP4a0OByMm5Lkf4lAF5m2DNnMf5DgDm3EMyy2NoWxJ7CIJwyZ31Z0j6C
+	v8mWqWmrH/EaJ3CFLgimmAzMG9Wbfpzd0EmOuczmug5blBDzW4AeesEvw4To8uGW9x48JrF4Wbp
+	M8M01xfuF1s0CPzOQ/tERQJ9Dljj9AqSsjlXyyMVemifI5AWQNZ2LPE8UCjIDV5c0VCK4iXFPln
+	GJI5P8QhnxwNjs3SXZ8enZTuKZlPJHmyt4gPW2SIZqFhs5Fhibfr/mEQC/GDA0vEmJ8P8bZh1Qb
+	nRBENtRs+MgeQUs6ozmUL+AO/NtWNtNr6niWRDG813SaRbNiqBWw4hWeamTJLdtLkgD+7VWubHe
+	oFqAMPwZDumrgbbOf+Tng5w==
+X-Google-Smtp-Source: AGHT+IGBkNHlZTkRBJ+cjT+zdbZJ0DTmQcTZki1gKDglGnid1ae8Jf8cHUn3Vis4oVu3IAcp/ojqmg==
+X-Received: by 2002:a17:902:e805:b0:223:501c:7581 with SMTP id d9443c01a7336-22a95511e49mr76521815ad.16.1743937700025;
+        Sun, 06 Apr 2025 04:08:20 -0700 (PDT)
+Received: from mew.. (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-229785adb04sm62080215ad.15.2025.04.06.04.08.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Apr 2025 04:08:19 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: boqun.feng@gmail.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	pmladek@suse.com
+Subject: [PATCH v1 0/2] add Rust version of might_sleep()
+Date: Sun,  6 Apr 2025 20:07:16 +0900
+Message-ID: <20250406110718.126146-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <95E3B7B9ECBFB14C+20250406034811.32347-1-xizheyin@smail.nju.edu.cn>
-In-Reply-To: <95E3B7B9ECBFB14C+20250406034811.32347-1-xizheyin@smail.nju.edu.cn>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 6 Apr 2025 12:27:53 +0200
-X-Gm-Features: ATxdqUFUStzc7fYH5Ev4BuWuM2EroFK-dCYOU1KuZ67NUjxNEQCNC6LnJK4UDrg
-Message-ID: <CANiq72m55Fi-XyFz=h7_3QNj+mA0N+E9Vo2_anLFyN1sr-FXMA@mail.gmail.com>
-Subject: Re: [PATCH] rust: convert raw URLs to Markdown autolinks in comments
-To: Xizhe Yin <xizheyin@smail.nju.edu.cn>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Apr 6, 2025 at 5:51=E2=80=AFAM Xizhe Yin <xizheyin@smail.nju.edu.cn=
-> wrote:
->
-> From: xizheyin <xizheyin@smail.nju.edu.cn>
+This patchset adds Rust version of might_sleep().
 
-This should ideally match your Signed-off-by.
+These patches were previously part of the IO polling patchset [1], but
+they were split out to make upstreaming easier.
 
-> Some comments in Rust files use raw URLs (http://example.com) rather
-> than Markdown autolinks [text](URL). This inconsistency makes the
-> documentation less uniform and harder to maintain.
->
-> This patch converts all remaining raw URLs in Rust code comments to use
-> the Markdown autolink format, maintaining consistency with the rest of
-> the codebase which already uses this style.
->
-> Link: Rust-for-Linux#1153
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+The first patch is for sched/core, which adds
+__might_sleep_precision(), rust friendly version of __might_sleep(),
+which takes a pointer to a string with the length instead of a
+null-terminated string. Rust's core::panic::Location::file(), which
+gives the file name of a caller, doesn't provide a null-terminated
+string. __might_sleep_precision() uses a precision specifier in the
+printk format, which specifies the length of a string; a string
+doesn't need to be a null-terminated. Providing a null-terminated
+string for better C interoperability is under discussion [2].
 
-I am really a newbie on the Markdown spec, but as far as I can tell,
-Markdown autolinks are the `<...>` ones:
+The second patch adds a Rust implementation of might_sleep(), on top
+of the changes in the first patch.
 
-    https://spec.commonmark.org/0.31.2/#autolinks
+[1]: https://lore.kernel.org/lkml/20250220070611.214262-1-fujita.tomonori@gmail.com/
+[2]: https://github.com/rust-lang/libs-team/issues/466
 
-So what I was trying to suggest adding a few missing `<>` to a few raw
-URLs we have.
+FUJITA Tomonori (2):
+  sched/core: Add __might_sleep_precision()
+  rust: task: add Rust version of might_sleep()
 
-By the way, the "Link" should be a full URL to the issue here :)
+ include/linux/kernel.h |  2 ++
+ kernel/sched/core.c    | 62 ++++++++++++++++++++++++++++--------------
+ rust/helpers/task.c    |  6 ++++
+ rust/kernel/task.rs    | 26 ++++++++++++++++++
+ 4 files changed, 75 insertions(+), 21 deletions(-)
 
-Thanks  for the patch!
 
-Cheers,
-Miguel
+base-commit: f4d2ef48250ad057e4f00087967b5ff366da9f39
+-- 
+2.43.0
+
