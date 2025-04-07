@@ -1,112 +1,127 @@
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C18421B191
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Apr 2025 20:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F001586C8
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Apr 2025 20:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744057120; cv=none; b=R+76KYzEHzkOYPD5c3GwlInC1AaDOSgQzWCN6Ja1Dru7GKKSSDCEAivyf9jsdOqj/mOPmWQFjGhkl/eDm0lSf/pcFPu/WifP8TrLXBOEd7AAAfCDqK1025JGa6QMCqbzBU5wNewipgqkQMFox227H6OyJ47eiD40CS8MeBlE34A=
+	t=1744059556; cv=none; b=TkA9wCiDr9w1NhibfOqT4nRO6ol81aGkPQakCOuFAgbGk7Gyq86rUBCTmfw5kw4rsrkm6rTgqQR2x+fSMmsjN9y5o03BTyRqJKm29Z9lOvdxAPE4jYhiFiuWImLXE0rf4uHQlp6LrusLZqiqLo4iymaZhAiI+NsIPs20THFbfHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744057120; c=relaxed/simple;
-	bh=uZLBs3qvTbVeszKw8/QGoedRECVolOOFtbOnrkgJMlE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AN8JJhCkKfcb8TxV83do9RQ9a/XLLB5toRAnm7P+OYaH+Oit8t/SY25UD59eXD7lCK+/tIZfwoU7meSqE/HFysKSQm8nFFrmy0zOiGhdpTfXiIUwQnsu3rWfcThn0LW6NppCbCuN8lApOBv2AuFdkZ+F5Bt15d3ZWM/Vml7uvk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Mu0LksBd; arc=none smtp.client-ip=79.135.106.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1744059556; c=relaxed/simple;
+	bh=CMKlKRBykhV2Vsudd9XNnE+CafQlS8pwi2IwK0ZZcyw=;
+	h=Message-ID:Date:From:To:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c7xA+BPYCBw4WrS+WLutoiILYmxLx7F6HvtPcav7HVsjT2hmU04sCoJtYzgj3fOrsEhABxss1rYrEsOspE9VI6eqKWs3bb8yVBQkPfX7ky/IOmzYAjzKti1jMeriiJQMW2e9Sp++KZSuTCsHGUVVuHsRZYjGSWsZ9/wJSKQY0EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kR3KiIoJ; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Mu0LksBd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1744057116; x=1744316316;
-	bh=3HOvpKhOizPU1F0RyIH+COEyqizo7qUni/3Vi+keVtE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=Mu0LksBdP/ebXf6N2ST5gbKOmr6rQDbeXH1EodCZWSCLclhONzK9swgiOTk/59iiZ
-	 Wk6aSgFR08Ao/yZZ80y1hYZzzELrTUDqICRYDDxNWsAS0u60oUEdSDx6qUFWHo5b3g
-	 W0fryrKeLDg8PTbfgpMkhsw0PMOELtjdyf2ZmfkB1VcE9357cYVJL4szRwtZbBeCEd
-	 0ZTHzslYyRbDppTyk+GzrcON0WyWJr1WULymfCPPV3CHinU6cdry4p5CsaKOGQRtpZ
-	 7h43cn+153d1VDr9pJ4m3bWwQss8qxpAtn1hCJBdZ08SdyOS40oMcZyVGUypbBnE6T
-	 tqHOVhbB2Mt9g==
-Date: Mon, 07 Apr 2025 20:18:29 +0000
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: stable@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] rust: pin-init: use Markdown autolinks in Rust comments
-Message-ID: <20250407201755.649153-3-benno.lossin@proton.me>
-In-Reply-To: <20250407201755.649153-1-benno.lossin@proton.me>
-References: <20250407201755.649153-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e81f0c728d6f7bed1ebd13a22ed203e5894549d3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kR3KiIoJ"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c5568355ffso407863985a.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Apr 2025 13:59:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744059553; x=1744664353; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:to
+         :from:date:feedback-id:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cGPI4lvBCZPUlbAQ0SkwF6AEjWpXsqREJxoTby7jB74=;
+        b=kR3KiIoJI5OZ0+kaY1i11FNZzc+NZHZXcOpE3pGYxnxRHqI7xdHye+0L/im6QBwtwO
+         eDb1bHw07lxWue5YebME6Vpoa59cTFGnFVD/0tjMDWK/5OZYTB9oU9BJ/zgEzCDbOgDg
+         eZDdeVrA2//1O8jtnyvGZza5G7ZhN9xp6LwNFFNkNEZsNlyfEqsSvhjwFIuLoAAMfOrW
+         WohBbyhscZc96khG+jbqB6u6++xikokfzEah8tMCER1kPUu+GpCzHhZik5oi2vz1tm3g
+         5JrrFXX4c/3rqSJoyI4gnCFbEsSxZQxM9FWefKKnd9K9teblrQPyeVOwWnlwmjsd5G2P
+         EhmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744059553; x=1744664353;
+        h=in-reply-to:content-disposition:mime-version:references:subject:to
+         :from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cGPI4lvBCZPUlbAQ0SkwF6AEjWpXsqREJxoTby7jB74=;
+        b=NNm9RloGdQaoBUm3jByLTTylatyZNaevKZ4X+E+lEL2ZGpBvYz6YIROFmoPYo6egZk
+         1bV2yD4EESIxDQR3ZPiz/tntj4DP+K4MyZjD22wookgx/5wm1TcG89BuWc6FT8Tu3qkH
+         QBgLqzbId7kN+88W4YirSia0kh9rCpTrXoQLXFnmitZGu2HQETmjnuiGJByLWb96yZr8
+         AhsBypNEtFj2UtdeaSZ3SWxBUGm2/9HXTST0n6K+NN5HTYprRShsV9JXQbWPtdillixR
+         aMvnF5gFn75zENKWExx5Y/tEClwyi7FGHExtKQj7rg3QtjzVXyP86HvguZNYgmiSw5t3
+         L9iw==
+X-Gm-Message-State: AOJu0Yw6F3N+MNUqds5Wk3FpJ/l+f5A8+gOWKPuwff62qJ+qAtLpyyV+
+	r1J+ry73wFSsshh8SCVMuhj6I9drMnPblOW13YFn+v9XJvRkoI2meT3jSw==
+X-Gm-Gg: ASbGncstqR0zY5Z+a55FwlyGtC4Tjr2HejFBFNWvDnrOHpTpzwPqidex8C5whbSeO5i
+	ytUjphQEIKJVoa2VNvq5GnRn3JEpt+ShYcbJqMIQ53l0fxEFhG+HLr7keB9xOfIEMl0OkU9Yc8m
+	BqnEglk0Rb5cNQJ/nZFwxgKROAQJQONTcyiWLOwWJfjzNDwo+BbkGwQA9dWeB6MWnngCaTyH7Iz
+	PPGlU95wHt8mRCA3lhczx7UW05vjfdO9lQr6P5owJN516Xvb8G3kR2Cgjp7LqswIdpGWEOXJet1
+	onRIyQiX1XXziVVvtN1CuLnIC7Y74E6HP6iCVvOFiL0kwafnRl4huLW7DvgGO8WEQYmE+h1ANy5
+	K4NtqCNNztzEugFB9cESA5eN/OjKqsx+mm8w=
+X-Google-Smtp-Source: AGHT+IGf3vj6gu8G7Ryrs1DLLAOdnLw8//jRJ5xB2Z+br9yeWpnJcYHqqtIZfYG6kqyKtKK+QUJEXg==
+X-Received: by 2002:a05:620a:2913:b0:7c5:562d:cd02 with SMTP id af79cd13be357-7c774e17046mr2146547985a.41.1744059553450;
+        Mon, 07 Apr 2025 13:59:13 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ef0f14d4basm62823056d6.108.2025.04.07.13.59.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Apr 2025 13:59:12 -0700 (PDT)
+Message-ID: <67f43ca0.0c0a0220.a75ba.35cb@mx.google.com>
+X-Google-Original-Message-ID: <Z_Q8nWpogpeSzJ0v@winterfell.>
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6F1D6120006D;
+	Mon,  7 Apr 2025 16:59:12 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Mon, 07 Apr 2025 16:59:12 -0400
+X-ME-Sender: <xms:oDz0Z67VDD3p96YGfbH2hlK9yAFaFF-Q8t8vsGYbLlMOBktCXGNTCQ>
+    <xme:oDz0Zz5rz668O9h5nM37YydTwFGyBenMeX3MJ26pnyi8SIJHTz5vLTU2SZ6MEjZ28
+    65HL8933OX99J2uEg>
+X-ME-Received: <xmr:oDz0Z5e1MmElJzgyCyMnwEAWsnLqzSvDpNUENc2C9lwlT0yc_vIgnHNCtPV-9Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdduvdduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhf
+    fvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceo
+    sghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrhhnpefhte
+    fftdelgffgheegfeffteeiuefhieejkeffgeevjeeffffhtddtkeeghedtheenucffohhm
+    rghinhepghhoohhglhgvrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvg
+    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghm
+    vg
+X-ME-Proxy: <xmx:oDz0Z3Jn1I_D0xoAwyzXvJ33zYMkDoWi2jhOWC0YNeFl9DEjSCskxA>
+    <xmx:oDz0Z-I7vIcnIkyYkp9LmX_ONsioqWKN4dBzzK2JLrM3hjonT1afSw>
+    <xmx:oDz0Z4wnMZrRjGFEwRPQSf9nK6DIDkdRmWlFjUb6cGQk_AXt3oAPCw>
+    <xmx:oDz0ZyIwIyD-BwB0yrgXcusu4b5398NM8XJR5CECq8tAzj34p1z9pA>
+    <xmx:oDz0Z1bXQjD45idRc9raLwUXigc1u-PUAmyEz4IDoAc8N9yo-F2xwL4s>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 7 Apr 2025 16:59:11 -0400 (EDT)
+Date: Mon, 7 Apr 2025 13:59:09 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: rust-for-linux <rust-for-linux@vger.kernel.org>
+Subject: Open Meeting at April 16
+References: <CANiq72mE=-LmMg=nrMdtF6i_JUscDU6GFZgNve9xtvUs76DnwA@mail.gmail.com>
+ <ZPyqLJ62B2GZg6BA@boqun-archlinux>
+ <ZUk14802ZWGpR2iM@boqun-archlinux>
+ <Za_9bJxeyW0pddKL@boqun-archlinux>
+ <ZgHBE8yRuZ5_8Bwi@boqun-archlinux>
+ <ZlX_KOjdd65k9Jkw@boqun-archlinux>
+ <ZqpWRo2M2SaTWU76@Boquns-Mac-mini.home>
+ <Z1ClkseCwaEXS6GE@boqun-archlinux>
+ <Z6IvhjRFU9R32jHV@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z6IvhjRFU9R32jHV@Mac.home>
 
-From: Miguel Ojeda <ojeda@kernel.org>
+Hi all,
 
-"Normal" comments in Rust (`//`) are also formatted in Markdown, like
-the documentation (`///` and `//!`), see
-Documentation/rust/coding-guidelines.rst
+The scheduled open meeting in this week has a conflict with Rust
+Project/Rust for Linux sync meeting, so let's schedule it to the next
+week. Please join us:
 
-Thus use Markdown autolinks for a couple links that were missing it.
+     https://meet.google.com/vii-meij-xpw
 
-It also helps to get proper linking in some software like kitty [1].
+at next Wednesday (April 16, 2025) 18:00 UTC. See you guys there.
 
-Suggested-by: Benno Lossin <benno.lossin@proton.me>
-Link: https://github.com/Rust-for-Linux/pin-init/pull/32#discussion_r202310=
-3712 [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/pin-init/pull/32/commits/dd230d61bf=
-0538281072fbff4bb71efc58f3420c
-Fixes: 84837cf6fa54 ("rust: pin-init: change examples to the user-space ver=
-sion")
-Cc: stable@vger.kernel.org
-[ Change case in title. Reworded commit message. - Benno ]
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
----
- rust/pin-init/examples/pthread_mutex.rs | 2 +-
- rust/pin-init/src/lib.rs                | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/rust/pin-init/examples/pthread_mutex.rs b/rust/pin-init/exampl=
-es/pthread_mutex.rs
-index 9164298c44c0..5ac22f1880d2 100644
---- a/rust/pin-init/examples/pthread_mutex.rs
-+++ b/rust/pin-init/examples/pthread_mutex.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: Apache-2.0 OR MIT
-=20
--// inspired by https://github.com/nbdd0121/pin-init/blob/trunk/examples/pt=
-hread_mutex.rs
-+// inspired by <https://github.com/nbdd0121/pin-init/blob/trunk/examples/p=
-thread_mutex.rs>
- #![allow(clippy::undocumented_unsafe_blocks)]
- #![cfg_attr(feature =3D "alloc", feature(allocator_api))]
- #[cfg(not(windows))]
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 05c44514765e..0806c689f693 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -1447,7 +1447,7 @@ macro_rules! impl_zeroable {
-     {<T: ?Sized + Zeroable>} UnsafeCell<T>,
-=20
-     // SAFETY: All zeros is equivalent to `None` (option layout optimizati=
-on guarantee:
--    // https://doc.rust-lang.org/stable/std/option/index.html#representati=
-on).
-+    // <https://doc.rust-lang.org/stable/std/option/index.html#representat=
-ion>).
-     Option<NonZeroU8>, Option<NonZeroU16>, Option<NonZeroU32>, Option<NonZ=
-eroU64>,
-     Option<NonZeroU128>, Option<NonZeroUsize>,
-     Option<NonZeroI8>, Option<NonZeroI16>, Option<NonZeroI32>, Option<NonZ=
-eroI64>,
---=20
-2.48.1
-
+Regards,
+Boqun
 
