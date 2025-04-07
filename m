@@ -1,149 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1434E158545;
-	Mon,  7 Apr 2025 11:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D9E14A4C6
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Apr 2025 11:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744023711; cv=none; b=DzEDC9uyqs4cfLME2+hNnCtZblg2e7ez12/Rb3OoO0dxza6fwjBtraxJmF2HTndbMps3cCKiWuLBeN8H17ToZ0QOqHNsWNTRGHqZyhyTFiH3vc4VYBOq2TytcSnwBVUtC+FwlflP1FhhMZXEREMLkyXwpRObdbrV4cvi87mzzLE=
+	t=1744024680; cv=none; b=kVOZJSysVz4Ec3EtvXY5df87pLKkUWIBkWyHaC3/vCPR1pfnVurXx7lA7J2MsxSzIXY/05UBA9a/x4NBtOUZLRtB0iG/A3FDy3a9yki1SacTFPgow/WFidh41DyP0XD+y/a+u8AKDk1sGs6GRNDOlN0webFFPd0+h+mGDTcD3Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744023711; c=relaxed/simple;
-	bh=oft2eAwFvA68we15ghBrsKaITtHdO9T8S2o+DBqkmNs=;
+	s=arc-20240116; t=1744024680; c=relaxed/simple;
+	bh=fqGG2shGnSKhb+dYOAxcAae/QMZPrk/xD8ikjkjdlVE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ammkn4IwxktlB/Qs2pcG+r7F9tYJv6DHhLZ0XMjW1yUsTyZZcS+PW79xgK08EDpD57310W7fRejRwJY5FzwA1ghx7q+Av32RwAEMZpXDKbLYSm9M13LfAA2/SkKxAv4jcTPxOT+9GttTV0zrE8+M53D9VGl0q/I/z8Nf3Ajkt8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nthXxtjc; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=SFxuadT+YXRZkvPJNv78TAVJrZvCjS3nO/gXGd1XxJi1aB8izqpf87bbtQPbZa9uf5BdWhKHZvxFWkKqZW2BkApI0OSrZRdam9JJhlN5WWIZaT4XJM3PaOS/JQIgBkx7F5h7m91NBNUbSiCtZ0jKFlhOKaYS7H6eEgowPztawMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VgMapjay; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QDVY9++H; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XUk4X2Y6; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=AjKRQdTH; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nthXxtjc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72D4C4CEDD;
-	Mon,  7 Apr 2025 11:01:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744023710;
-	bh=oft2eAwFvA68we15ghBrsKaITtHdO9T8S2o+DBqkmNs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nthXxtjcdEQOk1He84ndqK+RilNcVIx5JlkCx+tEyiTF+lfJgUZvQc6AcLuFc95SQ
-	 NsY4s/J430j96muoRXN3p2Um3fuf8rpQ82Izplic2GgaAHjjKKQb2nrxpQ5Per+fS+
-	 c4KlwIT6WvKC66lZDcnUEWjhpQ0RSRgAZ2qi2FqP5NVk6hpSpGASZqhGug/zqRsbJc
-	 MCTbH2yA35TmV6akoEU3koU/AhLsNGj1UCQkmbD2wFf2DtBsKiXZ6rsEEsUFW8FZf/
-	 iLwwU46CIB0LqA0vdd0moU5LD/15yX0VR9VLAKj4FJFxdqzjfMBPg0NVzbamF7/N0k
-	 K+O4TpZtlXQKA==
-Date: Mon, 7 Apr 2025 13:01:44 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: alloc: implement `extend` for `Vec`
-Message-ID: <Z_OwmEKHgsZlt2cs@pollux>
-References: <20250406-vec_extend-v3-1-ec5c5c0acf2a@nvidia.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VgMapjay";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QDVY9++H";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XUk4X2Y6";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="AjKRQdTH"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F2C261F38D;
+	Mon,  7 Apr 2025 11:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1744024677; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WwrEguwEyFbqWOdegyCfPEX+HK28mD3Cgo6l2mUTnM4=;
+	b=VgMapjayIL6vLNo7Ryd66t05Av82vFGrVtvupuOIkBgA3abJkMLN7kCWeez+dWwSXY5RNH
+	txEtnyK1S5A5FsGjUlHtv3D1Rc8v1yK1xoreJXb0PDnBeNxXSg/bUEVQVB0SA+hj+453/E
+	HAEiYs+mnGt+FNfVOZr2Koo9ZNJu0Vk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1744024677;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WwrEguwEyFbqWOdegyCfPEX+HK28mD3Cgo6l2mUTnM4=;
+	b=QDVY9++HSYzzKzaYZs9lQtuSbdgfv9Op7aly80GZCuKg84lUGYRHu+SVWNCx+KqC4OVZvP
+	wGhpvG5RC2px43Cw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1744024676; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WwrEguwEyFbqWOdegyCfPEX+HK28mD3Cgo6l2mUTnM4=;
+	b=XUk4X2Y6K1r5gxFbStBvzVFDsRwS/C7ssrfWQU2ysjHC1c1ZsXhsDUR72vRfUlUTy75Sd0
+	MBmcGstMZycsChrH6k8hadClwH5OOo7f7A+a/hklWUJK0hjMLfHR6VGwhPhUEHC9qBbkJ4
+	7/TyclSvYflhJT5TZcDhu/GFooLBQL4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1744024676;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WwrEguwEyFbqWOdegyCfPEX+HK28mD3Cgo6l2mUTnM4=;
+	b=AjKRQdTHwhkmlK5EIjPV0k31pr1sSKAq9u7FKUPFj9sn5oKUTerlno43O4Us+hiYPwni7x
+	/4tOQ9ylghNEg+Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D817613A4B;
+	Mon,  7 Apr 2025 11:17:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id aDRWMmS082e1ZwAAD6G6ig
+	(envelope-from <dwagner@suse.de>); Mon, 07 Apr 2025 11:17:56 +0000
+Date: Mon, 7 Apr 2025 13:17:56 +0200
+From: Daniel Wagner <dwagner@suse.de>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andreas Hindborg <nmi@metaspace.dk>, Daniel Wagner <wagi@kernel.org>, 
+	Boqun Feng <abstractionfbq@gmail.com>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Subject: Re: ABI stability and Rust
+Message-ID: <6c087691-471e-473b-8490-932a7ed341eb@flourine.local>
+References: <87iknmv1xs.fsf@metaspace.dk>
+ <CANiq72=20SyjyPCZ7maPMGc-vK1KPgX6iTjntPs+JKqVHqZhDA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250406-vec_extend-v3-1-ec5c5c0acf2a@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=20SyjyPCZ7maPMGc-vK1KPgX6iTjntPs+JKqVHqZhDA@mail.gmail.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[metaspace.dk,kernel.org,gmail.com,vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_COUNT_TWO(0.00)[2];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -2.80
+X-Spam-Flag: NO
 
-On Sun, Apr 06, 2025 at 10:01:55PM +0900, Alexandre Courbot wrote:
-> KVec currently has `extend_with` and `extend_from_slice` methods, but no
-> way extend a vector from a regular iterator as provided by the `Extend`
-> trait.
+Hi,
+
+On Wed, Apr 02, 2025 at 09:00:02PM +0200, Miguel Ojeda wrote:
+> On Wed, Apr 2, 2025 at 8:44 PM Andreas Hindborg <nmi@metaspace.dk> wrote:
+> >
+> > a) Ship a blessed toolchain for each kernel image you ship. Users
+> >    building out-of-tree modules must use this toolchain.
 > 
-> Due to the need to provide the GFP flags, `Extend` cannot be implemented
-> directly, so simply define a homonymous method that takes an extra
-> `flags` argument.
+> Indeed, this is the way at the moment.
+> 
+> > b) If users cannot use the blessed toolchain, they must link all rust
+> >    code into their module and ensure no rust symbols in vmlinux are called.
+> 
+> We currently don't support this. We could perhaps support it after
+> some other planned build system changes land, but I wouldn't recommend
+> planning anything based on it at the moment.
+> 
+> > Outside of those options, I don't think there are any other solutions. I
+> > would not hedge my bets on rustc getting ABI stability, ever.
+> 
+> There are some related efforts, like crABI, but yeah, I wouldn't
+> recommend assuming it will ever happen. If it does, and even if we can
+> use it for the kernel, it would be a long-term thing.
 
-This is the same approach I took with Vec::collect(); I think this is fine for
-now. One we attempt to implement more collections, we should implement our own
-Extend and FromIterator traits.
+Thanks for the feedback.
 
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index ae9d072741cedbb34bed0be0c20cc75472aa53be..b3c4227e232cca3b5c17930abc63810240b9c4da 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -454,30 +454,86 @@ pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocEr
->      }
->  }
->  
-> +impl<T, A: Allocator> Vec<T, A> {
+For the background: I showed Andreas what we discussed internally what
+is missing regarding enabling Rust in our downstream kernels. Besides
+the livepatching feature, the question was how deal with the ABI
+overtime.
 
-Please re-use the existing impl block above, i.e.
+I am not really involved in this topic so far. But I am sure it will
+help to move things forward.
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index b3c4227e232c..72659b017553 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -452,9 +452,7 @@ pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocEr
-
-         Ok(())
-     }
--}
-
--impl<T, A: Allocator> Vec<T, A> {
-     /// Extends the vector by the elements of `iter`.
-     ///
-     /// This uses [`Iterator::size_hint`] to optimize memory reallocations, but will work even with
-
-> +    /// Extends the vector by the elements of `iter`.
-> +    ///
-> +    /// This uses [`Iterator::size_hint`] to optimize memory reallocations, but will work even with
-> +    /// imprecise implementations - albeit in a non-optimal way.
-> +    ///
-> +    /// This method returns an error if a memory reallocation required to accommodate the new items
-> +    /// failed. In this case, callers must assume that some (but not all) elements of `iter` might
-> +    /// have been added to the vector.
-> +    ///
-> +    /// # Note on optimal behavior and correctness
-> +    ///
-> +    /// The efficiency of this method depends on how reliable the [`Iterator::size_hint`]
-> +    /// implementation of the `iter` is.
-> +    ///
-> +    /// It performs optimally with at most a single memory reallocation if the lower bound of
-> +    /// `size_hint` is the exact number of items actually yielded.
-> +    ///
-> +    /// If `size_hint` is more vague, there may be as many memory reallocations as necessary to
-> +    /// cover the whole iterator from the successive lower bounds returned by `size_hint`.
-> +    ///
-> +    /// If `size_hint` signals more items than actually yielded by the iterator, some unused memory
-> +    /// might be reserved.
-> +    ///
-> +    /// Finally, whenever `size_hint` returns `(0, Some(0))`, the method assumes that no more items
-> +    /// are yielded by the iterator and returns. This may result in some items not being added if
-> +    /// there were still some remaining.
-> +    ///
-> +    /// In the kernel most iterators are expected to have a precise and correct `size_hint`
-> +    /// implementation, so this should nicely optimize out for these cases.
-
-I agree, hence I think we should enforce to be provided with a guaranteed
-correct size hint and simplify the code. I think we should extend the signature.
-
-     pub fn extend<I>(&mut self, iter: I, flags: Flags) -> Result<(), AllocError>
-     where
-         I: IntoIterator<Item = T>,
-         I::IntoIter: ExactSizeIterator,
-
-And implement ExactSizeIterator for IntoIter.
-
-The only thing that bothers me a bit is that the documentation [1] of
-ExactSizeIterator sounds a bit ambiguous.
-
-It says: "When implementing an ExactSizeIterator, you must also implement
-Iterator. When doing so, the implementation of Iterator::size_hint *must*
-return the exact size of the iterator."
-
-But it also says: "Note that this trait is a safe trait and as such does not and
-cannot guarantee that the returned length is correct. This means that unsafe
-code must not rely on the correctness of Iterator::size_hint. The unstable and
-unsafe TrustedLen trait gives this additional guarantee."
-
-Acknowledging the latter, I think we should implement our own trait for this
-instead. Our own version of TrustedLen seems reasonable to me.
-
-[1] https://doc.rust-lang.org/std/iter/trait.ExactSizeIterator.html
+Thanks
+Daniel
