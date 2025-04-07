@@ -1,84 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C13D21ABC4;
-	Mon,  7 Apr 2025 18:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E909C254B09;
+	Mon,  7 Apr 2025 18:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744049225; cv=none; b=HkYhXqPa97x5fw9wbACpOaxP81wH/rvybM7u8cafvkQeJbq109mVRoSM5fUMdxUULSxH0CyhzcI20AaTWILCSbvdZhQ+tHObvUSV1YbbhwlyXXsD4U0PxijLAN6MKxb5WbwriUSn0hol+X0m03sEMChff2EMSgDsbJFFb8/bIek=
+	t=1744051050; cv=none; b=N+h0wpOa9pmm8cEv7/tcyqBaptWx6JpXSypCnRDSKLiA1uga7GFKH1HSXOX9cGyUwjcoIVVDJXDOytSrPawTy3DeinNMoHtrRQI8j3hcnteGQftLoEzRlhbH7e3IAujqoPTrX2rVhIbvwXEcrs9ErtQ1u0j+rZemi/Zf5UkaUc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744049225; c=relaxed/simple;
-	bh=uU12NXRlphx6MjKtaq+HPkahipo858GXs1r+8aLru/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=cwOkwNpaXllf727C6apFDQ13Jc9Lhqp1y+ksrUA8EKT+vtlEsUSU+iYOlh7PK3o+yuaWQAO2eHIhr+JcfSRo8X/Q3SvLCoeCI6ZoZe4nKCJWL/3qQgKqV6J6lKovD0DsS/xM5Rf4eezCborAAHm3oeVyPCNomVrZxnfZzQLAx2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qt6JdKbU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744051050; c=relaxed/simple;
+	bh=FGbSI/28Hz9KQ9YaHunwslOCD0Bk1Rfmixa+KYW1cyc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mRUR6EGGs2QYAi+w922fwvRWtvryLMgDLVh+udh2dd+6yfny2v5i4KzBrWRI7FZgQzLfmOfvJjedCaToN3g8OQfcSk/yPHVvVdzQX/ZaqgRrAaJP3VbqSgV+j3gum/zWdSUEQOii2XtbRa+WSCdFc6ADuoekHzgiDVcCoYAwlBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O44ibCw+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qt6JdKbU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B763EC4CEDD;
-	Mon,  7 Apr 2025 18:07:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O44ibCw+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0F8C4CEDD;
+	Mon,  7 Apr 2025 18:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744049224;
-	bh=uU12NXRlphx6MjKtaq+HPkahipo858GXs1r+8aLru/A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Qt6JdKbUN9BMlRu1LaTLHcEw3prd8n9gpaHA0dpAsCaIbQlncF5F6I4BCfNl/cqI8
-	 shcE+rDPu6OTpPVN2KMYCWjim3+xJhyNDDEOIln8p1601UD2hpCsvwdF0PMrWvG3s4
-	 sC4f68QGPTg8qv7VqBBuZ027gunXHey8qrDyYFaFZUypPzx+2UvPD+6AVNuWlD+jDO
-	 04DXeKC1OmPnPkg3zeNKiXJowFll6CrV50odhMt1m0+QftQ2iAKXpy5cHjzmL8ILey
-	 edV4N1yXEMqgad0V3Q2GxoA2v1E/E1szHL6ogTLYvwfVI1BpGjL9zZrmab3FIkthVX
-	 wsiDysrgVZmLQ==
-Date: Mon, 7 Apr 2025 13:07:03 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: bhelgaas@google.com, kw@linux.com, gregkh@linuxfoundation.org,
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: pci: add entry for Rust PCI code
-Message-ID: <20250407180703.GA189930@bhelgaas>
+	s=k20201202; t=1744051049;
+	bh=FGbSI/28Hz9KQ9YaHunwslOCD0Bk1Rfmixa+KYW1cyc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=O44ibCw+UBbtuFD9jYF8aBawVsYVga9zL9EdhjmfOJC/QFZgAnXZEf2822hlUWw+h
+	 eAaJkPBiU3KntFUG3h2ouJmq/zJA121+As53Va766IvbfYn4Wwi1mxHuemEBi17zzl
+	 Iqzm0Fh8G8dGmLt5zklBjbMI8TKv84b3ncZkvnwBD1cec+CdM3ML2DBAyZZxGssHKP
+	 8VnqZM0nOmeXEqhvKbuA6xyIRh4s4BTnhM2A9kJs/inebcaBKn6VRriKU4WzHzawPH
+	 LYfzWlUFGRkzEy5aqgYXGXaYn3Vko3+ltqq+Jfc0P39cOlomTfFJMAoeoYBF9cFDDx
+	 IyvI8+iDqccOg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Christian Schrrefl <chrisi.schrefl@gmail.com>
+Cc: naresh.kamboju@linaro.org,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Rudraksha Gupta <guptarud@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	anders.roxell@linaro.org,
+	arnd@arndb.de,
+	dan.carpenter@linaro.org,
+	laura.nao@collabora.com,
+	linux-kernel@vger.kernel.org,
+	lkft-triage@lists.linaro.org,
+	regressions@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	torvalds@linux-foundation.org
+Subject: Re: Build: arm rustgcc unknown argument '-mno-fdpic'
+Date: Mon,  7 Apr 2025 20:37:16 +0200
+Message-ID: <20250407183716.796891-1-ojeda@kernel.org>
+In-Reply-To: <CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com>
+References: <CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250407133059.164042-1-dakr@kernel.org>
 
-On Mon, Apr 07, 2025 at 03:29:50PM +0200, Danilo Krummrich wrote:
-> Bjorn, Krzysztof and I agreed that I will maintain the Rust PCI code.
-> Therefore, create a new entry in the MAINTAINERS file.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Mon, 07 Apr 2025 22:58:02 +0530 Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+>
+> Regressions on arm build with config rustgcc-lkftconfig-kselftest on the
+> Linux mainline and next failed with CONFIG_RUST=y enabled.
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Bad: next-20250327
+> Good: next-20250326
 
-> ---
->  MAINTAINERS | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 96b827049501..89f4bf7d9013 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -18686,6 +18686,16 @@ F:	include/asm-generic/pci*
->  F:	include/linux/of_pci.h
->  F:	include/linux/pci*
->  F:	include/uapi/linux/pci*
-> +
-> +PCI SUBSYSTEM [RUST]
-> +M:	Danilo Krummrich <dakr@kernel.org>
-> +R:	Bjorn Helgaas <bhelgaas@google.com>
-> +R:	Krzysztof Wilczyński <kw@linux.com>
-> +L:	linux-pci@vger.kernel.org
-> +S:	Maintained
-> +C:	irc://irc.oftc.net/linux-pci
-> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
-> +F:	rust/helpers/pci.c
->  F:	rust/kernel/pci.rs
->  F:	samples/rust/rust_driver_pci.rs
->  
-> 
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> -- 
-> 2.49.0
-> 
+> Unable to generate bindings: clang diagnosed error: error: unknown
+> argument: '-mno-fdpic'
+
+I assume this is the arm support, i.e. commit ccb8ce526807 ("ARM: 9441/1:
+rust: Enable Rust support for ARMv7").
+
+Clang does not seem to support `-mno-fdpic`, thus you probably need to add it to
+`bindgen_skip_c_flags` in `rust/Makefile` so that it gets skipped when the C
+compiler is GCC.
+
+If you do so, please double-check if the flag could potentially alter the ABI in
+a way that `bindgen` would generate the wrong bindings.
+
+I hope that helps!
+
+Cheers,
+Miguel
