@@ -1,139 +1,166 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.154.197.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4BC171C9;
-	Sun,  6 Apr 2025 21:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8505979FD
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Apr 2025 03:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.154.197.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743976134; cv=none; b=ayWzzxtF6J6XjVjXRLPEaWughYgi/6Flw7wf89THs3Ta/ptaoj1IlH921CEQ6euvpuq6VJxvmxtPpnnAjYAmog7OTf9wvGhGT4tO9i40kw9BSr/3N2E5WV7Gc8ZW8Xce6M61VQT8jWPXpvtbJLJN6E2J6XCxw5uxV8CD16OrVC0=
+	t=1743997093; cv=none; b=Lc7esmwMQa6zUjbAMX/XsZTmzjVzaCvi08f0Zi6uEwyaaFsDpuDpu+qBDpPYyCZXWYHMgeCxJ/R0BOYomljlJY+XXGElU6nFT3TszfKwk5MhXy1QnGM3dbuczmBlTpqHsQfbDrCEgQgFq8tP0zJ0WK1ljSFC9F+xqBcQPFq7lhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743976134; c=relaxed/simple;
-	bh=PRiUAHuapsHhA19g4WPSvr6Qs5u3n/NllBUUPCf8VJs=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=IZwcDnCSNDDZvgvkwRBeG2y1RgmvET5hR2R3+iMVXfhmauFyyyiqezQnacKQ+OXu0C6itmmTPnWfXiIU1SFW+UvEunEBBa9f4JQpYIllqg58MSzPZvcirc5Jz+QX2rnJRLYeH230KVNJebq3uS+nPdxY8G1Ztx+L/b1g19/XcZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lOt6/DUa; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lOt6/DUa"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6ed16ce246bso18188876d6.3;
-        Sun, 06 Apr 2025 14:48:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743976132; x=1744580932; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bNgkV292MAez/Ftrvz5rqrrsIqnUNqRnV30Y0Cya1t4=;
-        b=lOt6/DUao1AfpUUeLkwRoigudxWPWcFJh382JmyIkY30mwbiNVQPFqFMWqbUIxqgUK
-         0ms4W+sQIcRWOWj68D6G+AhEV8Q4e6sicpfV8C4k4ADZ/FNrqWIbVc9YYXHjMPBbxFNE
-         mDHRTzlsBXYyJL7zZNkCbgIjlCh2II9PV0/KwvwKfSzL/WVCf4/FFDrtmviewPTKTP81
-         qvkDyDkK8PZKcrqev0P1LC/JXOkwi9L+LxGXuUiXjfCYM+IwjcLOBmolNpSTaHTApRxn
-         UzWX2m4AKHXpia64vxQNzBSHGJoBBRAQpFesSj25zkV8vXczbAXVLP5ZKE8QETn2O+A1
-         rR4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743976132; x=1744580932;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bNgkV292MAez/Ftrvz5rqrrsIqnUNqRnV30Y0Cya1t4=;
-        b=NANrzMQQSQH1CaILCSHMi7lyqrDtbhFggXaL6LQst2rGsh7lJq9iW1U0WYjIlwVNDS
-         3H+DFUbReai0Z05Ctz4tAiU2B6q8ifZ8RxFpHs5dVqQPTVyW/2K2p5qOknw+42R4/XRI
-         plaUWZxfsi0vINHxGvezCVQgMMHT6xkUFfoeu4FiUrkng4hdAoyUZigMznLRCPFdgG0u
-         3BWQpY7rbg5x3yjjlSBACDucjBgAzExBbjhbyq+XCjmLDESkjINUUzIW/7Ude5jsKCaU
-         sCnEU2x54KHuIYkqS2BFKhaRR+1MQ/cH6vr+tvOUPr5Vcyo4YFpKzk5iY5JsBQy7X/Ok
-         wOnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVXMbr++W44nqx5rO+E6T/Lkt2fUDgDqRkWZM41ZUzDIBs3vYrln7u/+5BNKZO90xpzSl5yKoxxDHc=@vger.kernel.org, AJvYcCWNICzkpK57fGs/LVBlE/sHeR69Wy+gZ70txSd/2c05oKTUL/C4T827tEI5NWIiV23nUtJJL/AHQXplAnN6@vger.kernel.org, AJvYcCXA/C69gz4DjuSzjmj/iywj1z02P/n3CivHBsJawVoZE4FG/UJn7ICWPytdHjhPvRfxyOSvbNKN+vMiGIB2Ox4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3fXFG6LIrqSTmGcnPNPY9A6osEffYQ37t1rKjp0Amn4x22/eu
-	8Dhif/tt49wtkry7HHxW7HCtCIPLTkFdcBokkXaAdoUj7oY2GY/a
-X-Gm-Gg: ASbGncttCFPhJY8Xv+99P8LwIP+piZo62re2ACyg12bnzzntQgFd858lxCginQW2eIp
-	iC92Mg4BqgTtlNciTTUnK7cMr0NKqGr2/1mAKjySgitMzAIIZexgZV2ZhZEjnCFvQwEZgBfhdQl
-	5OBcKV4jvWjnff9FJqxZW3BiE/rzXEDrKr4NPC1Q9sMWpITnyueDZo/hZHUERhRnz10TiNbzsDT
-	zB3rrcegPbMQw2jAgNIWtfSFV4oyS9RjPu2o6jUOd31X+BDzGFUVdYRbwu9ueLVHWtG//xm05RC
-	45CFVnooxXZaweVgvQZ0NHUMaIRnLu6k4P5lPnWaMkrXmg==
-X-Google-Smtp-Source: AGHT+IEo/vvFQikPb5wxHN+5EYi3j68mWX6w5dxqxY4oIDDLekC3VENJPnI/ETKSgmdjhcKRZswhKQ==
-X-Received: by 2002:a05:6214:e86:b0:6e8:fa72:be51 with SMTP id 6a1803df08f44-6f05850ca4bmr173026176d6.19.1743976131657;
-        Sun, 06 Apr 2025 14:48:51 -0700 (PDT)
-Received: from [192.168.38.58] ([24.35.8.11])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c76e75b747sm510189385a.36.2025.04.06.14.48.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Apr 2025 14:48:51 -0700 (PDT)
-Message-ID: <10600492-5f89-4c1b-a8a4-0396af93f264@gmail.com>
-Date: Sun, 6 Apr 2025 17:48:49 -0400
+	s=arc-20240116; t=1743997093; c=relaxed/simple;
+	bh=V/Ykpw8P4yhQ9CwrRbWN/WMZO4guToTtAZx0SVR8X7Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MPmIZFA8ajHNol2fOY5AfbPdx9K1J3Nm5t09VdcWrKmkM5oVWI298hn43WjV4UDsfJ0TcEoKZb7bNtMgzC27O2Zi9V/38SNq4Dap6tkGbV+Ut1Kc62zTguc1JDbDHaFV+JS2tbyIpeNiJV66r8PIpPS5yrDykgUpyALtCLjFDf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; arc=none smtp.client-ip=43.154.197.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
+X-QQ-mid: bizesmtp79t1743997045t066abe5
+X-QQ-Originating-IP: xjiHviIIGRoWRLun/by444idXTq0bQGdh528PhfX9XI=
+Received: from localhost.localdomain ( [36.152.24.149])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 07 Apr 2025 11:37:23 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2314805540959903674
+EX-QQ-RecipientCnt: 12
+From: Xizhe Yin <xizheyin@smail.nju.edu.cn>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	xizheyin <xizheyin@smail.nju.edu.cn>
+Subject: [PATCH v4] rust: convert raw URLs to Markdown autolinks in comments
+Date: Mon,  7 Apr 2025 11:34:41 +0800
+Message-ID: <509F0B66E3C1575D+20250407033441.5567-1-xizheyin@smail.nju.edu.cn>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: chrisi.schrefl@gmail.com
-Cc: Jamie.Cunliffe@arm.com, a.hindborg@kernel.org, alex.gaynor@gmail.com,
- aliceryhl@google.com, andrew@lunn.ch, ardb@kernel.org,
- benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- corbet@lwn.net, gary@garyguo.net, guptarud@gmail.com,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux@armlinux.org.uk, ojeda@kernel.org,
- rust-for-linux@vger.kernel.org, stappers@stappers.nl, thesven73@gmail.com,
- tmgross@umich.edu
-References: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
-Subject: Re: [PATCH v3] arm: rust: Enable Rust support for ARMv7
-Content-Language: en-US
-From: Manish Shakya <msh.shakya@gmail.com>
-In-Reply-To: <20250123-rfl-arm32-v3-1-8f13623d42c5@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: N3geWPlRGZBxKNucMqvrBkeYnv7lpxsTBf4/NqpKggwd39w+G7kjUhjB
+	mJG58kQ3CP3AiGbDW7WU0Yo03NTHVSjDZ9k9/niWhtMSMS7fiu+Mf2R/LLs6op9dBk1D7Nk
+	U8gp+pjPVQ9G4GV7G6f5bNMlKnApSV4TnB7nocjCSqEGrsgmiTeDwFSrLZME9UIgZWK3a02
+	eKXunIbuQdvFTY43GqVfUkc4ji3IO6VhoOD0bQlBYUUjQjR/iVWwMt6TYvAnNKghhycIJyq
+	2STK8ftLtV5bYShsYyRjzeHk/cgj7CBBZjiTgMiXp+YdK8aCKJTFvHG61P1qhtV92TkUnux
+	S33E1b8vm6FuxYwFciqn8GL1LcyogrK65Kq7eS94F900U5f3IaEbZbWH6kWwv3BSzc0QkJj
+	L3VEWoG+p1izQI6wMVBa54xwtFRy+o0Vadak8cOSEMox+YZ/qIJTXQ72o4h2ftjOMmwVIje
+	To34o0XpqlY8C26jJCWyx30ve43DKWO8oRc1XQa04SEgf1pVPzIBOUiUvxZMnkdLT36DZwq
+	TeTeKaUMPV0tHiIqjt4c+5d/0LkoLOFewZTsspDA7m/KzMJ44ohXS5BBT/51Uovkl0ftXYq
+	XE563PJfcFUPNgacsL2GN5lGqdzak5563RKIh2c5hvoGWwd/F/CvFEoa+8YWQfA24YBwTAi
+	iVT0mffrNeCvm+BYmV59rBTEwqMdd+iCC3rauJTn2C1aTWdBnl1xH4polXNlx4cp5pCweXX
+	PovEqpqZP5lYnkzWnmQKbrGQA0z65a+DFvZE6n96FJBoJshP6aV+gv0q61A4Ijd8uGbKmSN
+	59cZHTNLh/5pr3He/GCqA0kUtIUD1GU7gwJMH6ZmJnb7E/uzo0MthW0jsw0crR0u3bNIRtG
+	14HIiKqO1ez8hFP6FBGL/2doYg835gUdr4SN2p84me4SP/4oLtDuQHmLsTWxFokxuZ4rvD+
+	UFbsxmUCFnR5Tx6JJy2pB7BJMsVrdV0UlhtA=
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+X-QQ-RECHKSPAM: 0
 
-I followed the Documentation/rust/testing.rs document to test more. It 
-seems that only the KUnit test is possible, while the other two tests 
-are not feasible in a cross-compilation setup. What other tests need to 
-be performed?
+From: xizheyin <xizheyin@smail.nju.edu.cn>
 
-The KUnit test passed.
+Some comments in Rust files use raw URLs (http://example.com) rather
+than Markdown autolinks <URL>. This inconsistency makes the
+documentation less uniform and harder to maintain.
 
-[    1.162374] # rust_doctests_kernel: pass:128 fail:0 skip:0 total:128
-[    1.162388] # Totals: pass:128 fail:0 skip:0 total:128
-[    1.162401] ok 1 rust_doctests_kernel
+This patch converts all remaining raw URLs in Rust code comments to use
+the Markdown autolink format, maintaining consistency with the rest of
+the codebase which already uses this style.
 
-Here is my current setup:
-# zcat /proc/config.gz | grep RUST
-CONFIG_RUSTC_VERSION=108600
-CONFIG_RUST_IS_AVAILABLE=y
-CONFIG_RUSTC_LLVM_VERSION=190107
-CONFIG_RUST=y
-CONFIG_RUSTC_VERSION_TEXT="rustc 1.86.0 (05f9846f8 2025-03-31)"
-CONFIG_HAVE_RUST=y
-# CONFIG_RUST_FW_LOADER_ABSTRACTIONS is not set
-CONFIG_TRUSTED_FOUNDATIONS=y
-# CONFIG_BLK_DEV_RUST_NULL is not set
-# CONFIG_TRUSTED_KEYS is not set
-CONFIG_SYSTEM_TRUSTED_KEYRING=y
-CONFIG_SYSTEM_TRUSTED_KEYS=""
-# CONFIG_SECONDARY_TRUSTED_KEYRING is not set
-CONFIG_SAMPLES_RUST=y
-CONFIG_SAMPLE_RUST_MINIMAL=y
-CONFIG_SAMPLE_RUST_PRINT=y
-CONFIG_SAMPLE_RUST_HOSTPROGS=y
-CONFIG_RUST_DEBUG_ASSERTIONS=y
-CONFIG_RUST_OVERFLOW_CHECKS=y
-# CONFIG_RUST_BUILD_ASSERT_ALLOW is not set
-CONFIG_RUST_KERNEL_DOCTESTS=y
+Link: https://github.com/Rust-for-Linux/linux/issues/1153
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: xizheyin <xizheyin@smail.nju.edu.cn>
+---
+ rust/kernel/alloc/kbox.rs        | 2 +-
+ rust/kernel/block/mq/gen_disk.rs | 2 +-
+ rust/kernel/std_vendor.rs        | 2 +-
+ rust/kernel/sync/arc.rs          | 2 +-
+ scripts/generate_rust_target.rs  | 4 ++--
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-# cat /proc/cpuinfo
-processor       : 0
-model name      : ARMv7 Processor rev 2 (v7l)
-BogoMIPS        : 298.84
-Features        : half thumb fastmult vfp edsp thumbee neon vfpv3 tls 
-vfpd32
-CPU implementer : 0x41
-CPU architecture: 7
-CPU variant     : 0x3
-CPU part        : 0xc08
-CPU revision    : 2
-
-Hardware        : Generic AM33XX (Flattened Device Tree)
-Revision        : 0000
-Serial          : 4014BBBK0948
-
-
-
+diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+index b77d32f3a58b..604d12c6f5bd 100644
+--- a/rust/kernel/alloc/kbox.rs
++++ b/rust/kernel/alloc/kbox.rs
+@@ -101,7 +101,7 @@
+ pub type KVBox<T> = Box<T, super::allocator::KVmalloc>;
+ 
+ // SAFETY: All zeros is equivalent to `None` (option layout optimization guarantee:
+-// https://doc.rust-lang.org/stable/std/option/index.html#representation).
++// <https://doc.rust-lang.org/stable/std/option/index.html#representation>).
+ unsafe impl<T, A: Allocator> ZeroableOption for Box<T, A> {}
+ 
+ // SAFETY: `Box` is `Send` if `T` is `Send` because the `Box` owns a `T`.
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 14806e1997fd..cd54cd64ea88 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -129,7 +129,7 @@ pub fn build<T: Operations>(
+             get_unique_id: None,
+             // TODO: Set to THIS_MODULE. Waiting for const_refs_to_static feature to
+             // be merged (unstable in rustc 1.78 which is staged for linux 6.10)
+-            // https://github.com/rust-lang/rust/issues/119618
++            // <https://github.com/rust-lang/rust/issues/119618>
+             owner: core::ptr::null_mut(),
+             pr_ops: core::ptr::null_mut(),
+             free_disk: None,
+diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
+index 279bd353687a..abbab5050cc5 100644
+--- a/rust/kernel/std_vendor.rs
++++ b/rust/kernel/std_vendor.rs
+@@ -148,7 +148,7 @@ macro_rules! dbg {
+     };
+     ($val:expr $(,)?) => {
+         // Use of `match` here is intentional because it affects the lifetimes
+-        // of temporaries - https://stackoverflow.com/a/48732525/1063961
++        // of temporaries - <https://stackoverflow.com/a/48732525/1063961>
+         match $val {
+             tmp => {
+                 $crate::pr_info!("[{}:{}:{}] {} = {:#?}\n",
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 8484c814609a..350c380bb8d4 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -135,7 +135,7 @@ pub struct Arc<T: ?Sized> {
+     // meaningful with respect to dropck - but this may change in the future so this is left here
+     // out of an abundance of caution.
+     //
+-    // See https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-drop-checking
++    // See <https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-drop-checking>
+     // for more detail on the semantics of dropck in the presence of `PhantomData`.
+     _p: PhantomData<ArcInner<T>>,
+ }
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 4fd6b6ab3e32..03abfa693cbf 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -207,7 +207,7 @@ fn main() {
+             // target feature of the same name plus the other two target features in
+             // `clang/lib/Driver/ToolChains/Arch/X86.cpp`. These should be eventually enabled via
+             // `-Ctarget-feature` when `rustc` starts recognizing them (or via a new dedicated
+-            // flag); see https://github.com/rust-lang/rust/issues/116852.
++            // flag); see <https://github.com/rust-lang/rust/issues/116852>.
+             features += ",+retpoline-external-thunk";
+             features += ",+retpoline-indirect-branches";
+             features += ",+retpoline-indirect-calls";
+@@ -216,7 +216,7 @@ fn main() {
+             // The kernel uses `-mharden-sls=all`, which Clang maps to both these target features in
+             // `clang/lib/Driver/ToolChains/Arch/X86.cpp`. These should be eventually enabled via
+             // `-Ctarget-feature` when `rustc` starts recognizing them (or via a new dedicated
+-            // flag); see https://github.com/rust-lang/rust/issues/116851.
++            // flag); see <https://github.com/rust-lang/rust/issues/116851>.
+             features += ",+harden-sls-ijmp";
+             features += ",+harden-sls-ret";
+         }
+-- 
+2.49.0
 
