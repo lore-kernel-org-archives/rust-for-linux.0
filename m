@@ -1,40 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274E921ABCA
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Apr 2025 20:18:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFBB224236
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Apr 2025 20:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744057102; cv=none; b=ZgAoUXa4EJm94RMvgAyRFiACwrub4HBUbQy1cL23D1pM67LgseDAXAggZhNymMN5j3T+1lMN2Ii4UyfwF3oqXWtkGv3lz9abwuRLNT3MHsbyHCP9XiCwSM28ReZP7ZPpJcGa+XKPeVmxyImCo2CHgFG6ESczMeRFtnYuWEbfbyw=
+	t=1744057116; cv=none; b=QMNCQxv/xjbBdVYuAPZZjHGrY/wNO/cyYfCsQLWEcYkcuP8TR+KH95fFWJp1kxp3qP279QEylofEw4uOlMi29d5JDn3l8wIzGQ4K/yGLuGhbXrxyY09MNemMvtJ+Z951C3J828tQKuYxL6sXLdnHwxNgiDyO7/xJx5JIOPcUcdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744057102; c=relaxed/simple;
-	bh=18hJKywTFEkM0gOZzQKcRfmrNbB9xsGCk04ZEokD2fU=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=XODFKZNGjngUNgnOnPYSnLgQgPDAjaSJpDDpw+Y2eghb+6HzrGtIUP5E48mzDFY/KEBm5nYQjyS9r3LUr1cWkUkf+mhkX0V2DoG+7U7n00w19xRircJqKmT8nS34/VqeYv7dHxmv2yisQjahuFybfov9eXl2B9evIhqnc1kCGKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=H8xqiT+i; arc=none smtp.client-ip=185.70.43.22
+	s=arc-20240116; t=1744057116; c=relaxed/simple;
+	bh=pokdKQsoUfnHlCVbA/BSywoVD9+PRKu7nsKM8bDuwE0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XrVdey5tbycmQlSAgulfChAySqCR9CKlRVfoT6IEh1Z3UJ8/Pz8jjM4wUg0EDDy32lzWZNHclfjj1rjsi10RqIHWTpOmlVSqSQksA6mWAoqRAXj64ZgIs1UQiCPI5fII+Wg72t5QqvaKErLyka0j4r4OLuWoisPLtegTzNrmYeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FlsLcZua; arc=none smtp.client-ip=79.135.106.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="H8xqiT+i"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FlsLcZua"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1744057096; x=1744316296;
-	bh=dUtZ53We/Jz5znXTcombtrTyjPQ+kKMwlcb2zgo8jnY=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=H8xqiT+if7FWxfY3u9FCj/BHDQy2zMNyINKUceyj8cOmhbAabkOQv2owAefjsbTy2
-	 /FDOOVqIs65t8eKE8PkDja/AJus7577tWqshXgsy8MBvotHX6kwkjflTUYz5k/MueX
-	 A+A8vQjmAP8f9NZCxjjDcRo0SdMmq9i2cO8AqmiPU7glXo42cHu8fwJZ7k6zZBeUNy
-	 WHFGG3uXcIoOIZe6j9gw1q6CqtVZ/bfam6QkqsYJsqmQGCYVi+2SdQlpcOyFrD/q5X
-	 eewUynecDr9jw++RONgc4KMKPxmhR4ARecK8BH6ICvE3u2UrVjF46v7Q1g1ORkb8al
-	 l2n9exCQH3S3Q==
-Date: Mon, 07 Apr 2025 20:18:11 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+	s=protonmail; t=1744057106; x=1744316306;
+	bh=snP7gjeU3YyTTNo+TLTC0FBLFD/vHl4orLCkPUeZL/E=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=FlsLcZuaGEuaWUe0PL5wi854eOh8FJJN2ySPbXr4wOCHLW6i7W1cGp9Bkd3PcywF7
+	 EwJh+0A/NRYRJsc0zqaCQVWB8obQIkosoaget0F76DGeHbIP8o5z7pLJ/ks/AUh8fs
+	 aC3CS8FRu2yzbS69DziJjFL3+DSgq2nV/uuUwkKaU9nYjEXKJtNXB2kRyaa9m3wnTc
+	 974DAEPNOOOKhujhsBBop1NUHfTZmVA4Q5tmqUk/u9kdFzCGChioT2Lqn9vMe3IlT2
+	 2Qsc+orVStcTQGLkzOJXGMu4Q6BkIQgz+qRDJHU6s604EiVd1fMlpaCMmSiZeA6j7C
+	 pHvKst7UjDHJQ==
+Date: Mon, 07 Apr 2025 20:18:21 +0000
+To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org
-Subject: [PATCH 0/2] pin-init fixes
-Message-ID: <20250407201755.649153-1-benno.lossin@proton.me>
+Cc: stable@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] rust: pin-init: alloc: restrict `impl ZeroableOption` for `Box` to `T: Sized`
+Message-ID: <20250407201755.649153-2-benno.lossin@proton.me>
+In-Reply-To: <20250407201755.649153-1-benno.lossin@proton.me>
+References: <20250407201755.649153-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 85f84d51ec3314d589970f4fd59cc6ef0bffc26f
+X-Pm-Message-ID: 47c13476485a5c2e470f2c3ccb770f4ab4d68301
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,36 +47,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Sync from the upstream repository [1]. This is the first time I used my
-sync script to port the patches, so if you see any issues, please let me
-know. You can find the commits in my repo [2].
+From: Miguel Ojeda <ojeda@kernel.org>
 
-Just two small patches fixing one issue that got overlooked, since it
-was fixed at the same time the series got merged. And the other fixes a
-markdown papercut that I found during review of the previous fix.
+Similar to what was done for `Zeroable<NonNull<T>>` in commit
+df27cef15360 ("rust: init: fix `Zeroable` implementation for
+`Option<NonNull<T>>` and `Option<KBox<T>>`"), the latest Rust
+documentation [1] says it guarantees that `transmute::<_,
+Option<T>>([0u8; size_of::<T>()])` is sound and produces
+`Option::<T>::None` only in some cases. In particular, it says:
 
-[1]: https://github.com/Rust-for-Linux/pin-init
-[2]: https://github.com/y86-dev/linux/tree/pin-init-sync
+    `Box<U>` (specifically, only `Box<U, Global>`) when `U: Sized`
 
-Github PRs included in this sync:
+Thus restrict the `impl` to `Sized`, and use similar wording as in that
+commit too.
 
-* alloc: restrict `impl ZeroableOption` for `Box` to `T: Sized`
-  https://github.com/Rust-for-Linux/pin-init/pull/32
-
+Link: https://doc.rust-lang.org/stable/std/option/index.html#representation=
+ [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/pin-init/pull/32/commits/a6007cf555=
+e5946bcbfafe93a6468c329078acd8
+Fixes: 9b2299af3b92 ("rust: pin-init: add `std` and `alloc` support from th=
+e user-space version")
+Cc: stable@vger.kernel.org
+[ Adjust mentioned commit to the one from the kernel. - Benno ]
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
+ rust/pin-init/src/alloc.rs | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Miguel Ojeda (2):
-  rust: pin-init: alloc: restrict `impl ZeroableOption` for `Box` to `T:
-    Sized`
-  rust: pin-init: use Markdown autolinks in Rust comments
-
- rust/pin-init/examples/pthread_mutex.rs | 2 +-
- rust/pin-init/src/alloc.rs              | 8 +++-----
- rust/pin-init/src/lib.rs                | 2 +-
- 3 files changed, 5 insertions(+), 7 deletions(-)
-
-
-base-commit: a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
+diff --git a/rust/pin-init/src/alloc.rs b/rust/pin-init/src/alloc.rs
+index e16baa3b434e..5017f57442d8 100644
+--- a/rust/pin-init/src/alloc.rs
++++ b/rust/pin-init/src/alloc.rs
+@@ -17,11 +17,9 @@
+=20
+ pub extern crate alloc;
+=20
+-// SAFETY: All zeros is equivalent to `None` (option layout optimization g=
+uarantee).
+-//
+-// In this case we are allowed to use `T: ?Sized`, since all zeros is the =
+`None` variant and there
+-// is no problem with a VTABLE pointer being null.
+-unsafe impl<T: ?Sized> ZeroableOption for Box<T> {}
++// SAFETY: All zeros is equivalent to `None` (option layout optimization g=
+uarantee:
++// <https://doc.rust-lang.org/stable/std/option/index.html#representation>=
+).
++unsafe impl<T> ZeroableOption for Box<T> {}
+=20
+ /// Smart pointer that can initialize memory in-place.
+ pub trait InPlaceInit<T>: Sized {
 --=20
 2.48.1
 
