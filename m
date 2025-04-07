@@ -1,110 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37F22356D4;
-	Mon,  7 Apr 2025 13:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B038822F19;
+	Mon,  7 Apr 2025 13:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744031518; cv=none; b=Sx/1fz7sjrToir2Kxmq4Lr+4YjpDTmb3OpqlU2NuJuUxw9RLJ54tcSQ6ndRztBuC/9E6kczZCBsYw0gB0sATiVtorbBzK3+Q+68dZ/xOltMfjk5p2C7gEZC/Mghu9QKCcGXwaJD7j5Sn4AngjjXppJzU+CBMINviU80ed1HjMog=
+	t=1744032664; cv=none; b=tvTWsRXJoXENajzt3C7/hg5rDqE/jPGjudjgI3BH//NlsUtLCJmR5QyXihu0kyjr2Jx0i0EQa+9Pv36UMdxG8vwX0kRSGixcrE2RqLvvcW2vIRw21DHokQ3kmh5iImiypO0/6uFGYgFLkF7cO7e4z4pffx4R0EWZoP7oWnJn3PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744031518; c=relaxed/simple;
-	bh=9RTE6GZFHtGCxccvwtzxwrgeH86aK7UcCNbpZ1d3o2M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=C0xi9Q1GE9ynWX65JfVEoEl6a32+QAsaOhfcJxZD130aIsdNuZuCfOCglNPxvy4yVO4GuRrTTE5DBwRygV39TiUvoO8s/pko2EhU4tEOGyTrueY9Fmd6HCLW1eYM48bbY4hErkzwbK+ovPak1CZ1zzPr31nfb36kLyp5DZ8fql4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/yiDtbP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744032664; c=relaxed/simple;
+	bh=RceCGBrs6VmZXJMqKmA7bk3a68nJVVrKnb1B0yYe2MU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uN/iquNQaukibqqXNwLUoAkn8AxJD+NmvTdr9X/KSSTWVb4fSkDvmfGNpFW5q8Qiniw54jGIaAGxHo6i7r/ytsZbv4SkNbiOwD0STA007d5iamxjbru0jQutb6eSbKN1Q3v4WUbaYk7XOPJ6d4beOunr47gqPBtL/uzauELAhM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KuTuJYHu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/yiDtbP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD75C4CEE7;
-	Mon,  7 Apr 2025 13:11:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KuTuJYHu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3690C4CEDD;
+	Mon,  7 Apr 2025 13:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744031517;
-	bh=9RTE6GZFHtGCxccvwtzxwrgeH86aK7UcCNbpZ1d3o2M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=A/yiDtbPopNu2zs1c2ynBpjI20TjuAIXeM3WvFq08r2EdCLHlisMvAJJTZur9LFq5
-	 Nfse6o7IODzaetg6vVPa5qarj6qenz+xX7zkqdOEtB/W0L1zz3CDQ40SRiYhL8FiyW
-	 O4OXw6zBP4XfG0wTKrClQBws9JUtL//XSxjIZBHRK81c/6qzYvmJRCIjdC0/sjztAG
-	 ZOGVyJne768UflKZVZI9FSxD+EoVC2bjc15aXW0KZwTjMgWY5D7rynFMLb+kH7d4R8
-	 SLV90h4mg+xgSroSfe24S4GV/LPrjHiPjeOztUV1bia4+ZoQk4pcOAOt+xtN6PFUIM
-	 ACshBt/r6/Ktg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  netdev@vger.kernel.org,  andrew@lunn.ch,  hkallweit1@gmail.com,
-  tmgross@umich.edu,  ojeda@kernel.org,  alex.gaynor@gmail.com,
-  gary@garyguo.net,  bjorn3_gh@protonmail.com,  benno.lossin@proton.me,
-  a.hindborg@samsung.com,  aliceryhl@google.com,  anna-maria@linutronix.de,
-  frederic@kernel.org,  tglx@linutronix.de,  arnd@arndb.de,
-  jstultz@google.com,  sboyd@kernel.org,  mingo@redhat.com,
-  peterz@infradead.org,  juri.lelli@redhat.com,
-  vincent.guittot@linaro.org,  dietmar.eggemann@arm.com,
-  rostedt@goodmis.org,  bsegall@google.com,  mgorman@suse.de,
-  vschneid@redhat.com,  tgunders@redhat.com,  me@kloenk.dev,
-  david.laight.linux@gmail.com
-Subject: Re: [PATCH v12 5/5] MAINTAINERS: rust: Add a new section for all of
- the time stuff
-In-Reply-To: <20250406013445.124688-6-fujita.tomonori@gmail.com> (FUJITA
-	Tomonori's message of "Sun, 6 Apr 2025 10:34:45 +0900")
-References: <20250406013445.124688-1-fujita.tomonori@gmail.com>
-	<20250406013445.124688-6-fujita.tomonori@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 07 Apr 2025 15:11:40 +0200
-Message-ID: <871pu4jeur.fsf@kernel.org>
+	s=k20201202; t=1744032664;
+	bh=RceCGBrs6VmZXJMqKmA7bk3a68nJVVrKnb1B0yYe2MU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KuTuJYHuHtP45Jaq9z+DpYTdj4PH0SBRj5O2d+65hpJaXlr+1/LEe4nH/93qKe9wj
+	 qT0mqgifveHn7hf4YPz4S0Z8JajFIPc56fBRoxV86Rrkw9iJ3mTjj4A2pHeuYb88S2
+	 eTbscQLjp88PdMqTzse5/rvcP7BKGyCm2lQx2C4G0Z2XCjyidhFS7gXODmyBjNzRAl
+	 T7rnX0ugO6axaJyVc0mr3ImLEgcy3xm/AH71Itp5XVB4ldwXRPDUJJgNBqidfEk5qG
+	 5nismG3E3lm2WORHY55b+tJE2nrvzEyB6NyJSv1sDyHGFujp89U9D7/Ba6nrKav2NP
+	 vkR4VFVLHXqpQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: bhelgaas@google.com,
+	kw@linux.com
+Cc: gregkh@linuxfoundation.org,
+	linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH] MAINTAINERS: pci: add entry for Rust PCI code
+Date: Mon,  7 Apr 2025 15:29:50 +0200
+Message-ID: <20250407133059.164042-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
+Bjorn, Krzysztof and I agreed that I will maintain the Rust PCI code.
+Therefore, create a new entry in the MAINTAINERS file.
 
-> Add a new section for all of the time stuff to MAINTAINERS file, with
-> the existing hrtimer entry fold.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  MAINTAINERS | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d32ce85c5c66..fafb79c42ac3 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -10581,20 +10581,23 @@ F:	kernel/time/timer_list.c
->  F:	kernel/time/timer_migration.*
->  F:	tools/testing/selftests/timers/
->  
-> -HIGH-RESOLUTION TIMERS [RUST]
-> +DELAY, SLEEP, TIMEKEEPING, TIMERS [RUST]
->  M:	Andreas Hindborg <a.hindborg@kernel.org>
->  R:	Boqun Feng <boqun.feng@gmail.com>
-> +R:	FUJITA Tomonori <fujita.tomonori@gmail.com>
->  R:	Frederic Weisbecker <frederic@kernel.org>
->  R:	Lyude Paul <lyude@redhat.com>
->  R:	Thomas Gleixner <tglx@linutronix.de>
->  R:	Anna-Maria Behnsen <anna-maria@linutronix.de>
-> +R:	John Stultz <jstultz@google.com>
-> +R:	Stephen Boyd <sboyd@kernel.org>
->  L:	rust-for-linux@vger.kernel.org
->  S:	Supported
->  W:	https://rust-for-linux.com
->  B:	https://github.com/Rust-for-Linux/linux/issues
-> -T:	git https://github.com/Rust-for-Linux/linux.git hrtimer-next
-> -F:	rust/kernel/time/hrtimer.rs
-> -F:	rust/kernel/time/hrtimer/
-> +T:	git https://github.com/Rust-for-Linux/linux.git rust-timekeeping-next
-> +F:	rust/kernel/time/
-> +F:	rust/kernel/time/time.rs
->  
->  HIGH-SPEED SCC DRIVER FOR AX.25
->  L:	linux-hams@vger.kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ MAINTAINERS | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 96b827049501..89f4bf7d9013 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18686,6 +18686,16 @@ F:	include/asm-generic/pci*
+ F:	include/linux/of_pci.h
+ F:	include/linux/pci*
+ F:	include/uapi/linux/pci*
++
++PCI SUBSYSTEM [RUST]
++M:	Danilo Krummrich <dakr@kernel.org>
++R:	Bjorn Helgaas <bhelgaas@google.com>
++R:	Krzysztof Wilczyński <kw@linux.com>
++L:	linux-pci@vger.kernel.org
++S:	Maintained
++C:	irc://irc.oftc.net/linux-pci
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
++F:	rust/helpers/pci.c
+ F:	rust/kernel/pci.rs
+ F:	samples/rust/rust_driver_pci.rs
+ 
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-
-Best regards,
-Andreas Hindborg
-
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+-- 
+2.49.0
 
