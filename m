@@ -1,123 +1,104 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07CA5265613;
-	Tue,  8 Apr 2025 10:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08A4266B52;
+	Tue,  8 Apr 2025 10:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744107758; cv=none; b=jnvlWaskIIFQHagd3RaEDCkObIG6z11vuVAXC9hGsSwj7OUuqzOftBrsNhDqQwwLbfuVcOkEbi3tdOP8nZq49Hq1ThYlZNWMn2RQ4d0vFAhdGHpNmB48fBF3iEOmuosqxbC7/GKWxUN3EBkekolBm+R9nIihbAs566HqmoCwZZc=
+	t=1744108557; cv=none; b=nNn8YWGzBrEfiSUdR9NyQws92UFD+Hg83pugvGaOcPb/TW/3DrHZhT78nQTidrKEGxdBOlLiUdI2ZpMCv1qp8M82BGXGC474AXYUeDyGrL62hBxFFOl/oATOxQoPUODIh+l/9bnZ6lnYiCyS5XQqHzpqQ+xd4BTWMeNKOYgsHsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744107758; c=relaxed/simple;
-	bh=V3cQ5bRoyMwcgM7mLF08yOBU/PTK+dNHItx39HNNQns=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ppwvv+jdv9ddqwU4DF9Kcq+3FL8XZGRZb+rQR35eiVfNwaKMxCH4aZjLZOje5n3IJqRK02LEH0d8lL7tn0BuHCWnrSsXoxLAgw3cwTjHnkpfYwGcsiSfG68sTNpKhsdohKQYDD5Hhj5sQ/Eml/uk2D899LLtUV7c9Sbye2U9S5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=gSIv1yaj; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1744108557; c=relaxed/simple;
+	bh=Hs5PawQM2WOdSP5JwOusufifAnZKTVHPO4QSUYxTA/E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QTZHiR2tQvtDd0wjUKwWsHpJriRPZs+If7Uy30JiXmBPU1aNm0ZB32c8GKYcZ/VUJ5TBS1ccmGp2MuSYMktjMdFdBjDHblOgrABzEyGC4LXGCBAMrsZRBRE5e8eRx+7THmdTNTUCbvPS0FvdTpJ6tM/nGyXfK+i6q1SiGEGkNus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AKT5vBtR; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="gSIv1yaj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1744107752; x=1744366952;
-	bh=mGzcFFy6lfiXZdQwtpUh1luUUzc8+vWLzuXWhLF2i4M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=gSIv1yajqn1FCHMN3ww3W6xb0qsK9Kye7biZNNF/adM0J0zvi1NifOcPF5brRCRnT
-	 2ZHC8IJjiaAQfl/mPBdzkTAfXD1iMWLzyDi2qVJT549W3dZq0P0YrcudoMfrCmyTrV
-	 rCA9+Mmk/T209IusZBYaCireEH8RkXbuMdSKzfaWhub7FAOXvzcle6PWNAC5cUpWWM
-	 fpVGLhMlHSO+NtXyphrRmTVCb6GgR99CLh9dqTzZovL0LNlN7pMDXX/wykzmDA/XCp
-	 oqIAILB8qVNw8eMDitrbwT3MILZaQVOeEOzCkaIp/k/reNdsVM27qoepWjf9+1yN6k
-	 e+MnvODu1EgCg==
-Date: Tue, 08 Apr 2025 10:22:29 +0000
-To: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: alloc: allow coercion from `Box<T>` to `Box<dyn U>` if T implements U
-Message-ID: <D916LG7Z9Q31.5RVNMYM38E2D@proton.me>
-In-Reply-To: <20250408-box_trait_objs-v1-1-58d8e78b0fb2@nvidia.com>
-References: <20250408-box_trait_objs-v1-1-58d8e78b0fb2@nvidia.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: c1194c8ce7c748279cd354ff1ab10801679547aa
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AKT5vBtR"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-af8cb6258bcso322943a12.3;
+        Tue, 08 Apr 2025 03:35:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744108555; x=1744713355; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iQlwjJ2p3uIQ1WJnPIDIqEOJSPAOfdW0m47XOoSjXlI=;
+        b=AKT5vBtRKLGFLhDRXbnTJkEJrWMNkSb3BjfnZ9eIlspennyV+O/jBisqJDOJio3/hR
+         Uvx7wsA+Imyzh2QWsOomtPlKi5mdwDy/MJ9v1T1HoRstwSI+N2AS7OPrve29A4G1irlj
+         EO7YLFo8H0aBMs3PO65K3EY8nn96zfyUsxqNki7NxovUueVza0QpTL6WZOHaCBnmkgdT
+         q6n8M5ROW1Aq4DF73lepquDrwAiAq7v2lgXgFYFRsi6Pxu9lpxyTV9B4zLS8PHMGckj7
+         z9EKQTAoyN1qVTEU8XO1WcANXJUePRrc6CuA1AUChUAg+ZrnCn3Doex2WpDwvpBHxBAP
+         XCIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744108555; x=1744713355;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iQlwjJ2p3uIQ1WJnPIDIqEOJSPAOfdW0m47XOoSjXlI=;
+        b=tl+ejDMDt8F7wVEcqupFdk6RSKc3cLv5HcYsRRGWx5NGeOptczqQAkDtQDx3RZ58hr
+         A8syBn/Mj4BNUdI6o0Dsnl9oASjETkrgiK9ZnBqSOr0iHHKI1i80gfBswT+MDyJghFIk
+         EBauLxRPtqIwc6zZfuHZ+4+X+cMC6KF8m3VsvjQrISEYm3a77HCX80nNtItTAr5SbvXb
+         C9OvZsFIXTgFtvv4dlGWWbBSgscFGwAtUbXWcDbw5MdWxXJ5x78NuSeEAwjfZNy+vWgg
+         3E6eMMqbTMx30wn5qy9xr10OIw2dLjnCGqXiuUpagbSx/DNP8Ip5DzU5r+zFevHAPusJ
+         ISrA==
+X-Forwarded-Encrypted: i=1; AJvYcCVElqR8EL0pB3Pl1rrcmHW4GaOwXaOqk3gMr5bEOvX70PFG6lb5m0ppNvQRcuc8hYGtc8ZhPQmlL/ggZyL3GIo=@vger.kernel.org, AJvYcCXRr/2QvH4Jlj451BUaZoshTbUUw4xu3bk0coRuJls23FRJmXjoj12HxnBO3q4dXF9ZJ6u80+mjMoYorPM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrmfcWLg+Hwy9B+bVLC4pgy//UA9ypb3zACiO5KidxEc6v3y6Z
+	eXmbR6Soownht4d/h534tUoBN/eWu1QAW+eXey6OGtwE9joSai6ZPTMRd/xSgszjAc+a5nz4jEl
+	eANns5ijqal/9uhW872KFdOLqyIc=
+X-Gm-Gg: ASbGncufEcu9iirFgZj/HzTmemqg0ybVm/Dc0aHqiKb2boN65/6J9k/xLl0eIL5K8GN
+	dwXbuV3Gv/kAYj8LPQnhELpVuSBU2L7sVbyXimANf/0jPmBEqhm3p1RHB/Y48Qt68m6uzEJm6mz
+	OUGgPIYu9lDXHGJN4F0Xn35XtP4WSnnJfN2jcf
+X-Google-Smtp-Source: AGHT+IHG0bNsfNxD/bffZ1WEADVVWD5Z4FZXXeo6nGPGofnX5l5qeHWJst+e/L0ClQBdKnDo45M/UccxZy7Vo6+22pw=
+X-Received: by 2002:a17:90a:d006:b0:306:b6ae:4d7a with SMTP id
+ 98e67ed59e1d1-306b6ae4e3bmr4961351a91.3.1744108555055; Tue, 08 Apr 2025
+ 03:35:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250408-box_trait_objs-v1-1-58d8e78b0fb2@nvidia.com> <D916LG7Z9Q31.5RVNMYM38E2D@proton.me>
+In-Reply-To: <D916LG7Z9Q31.5RVNMYM38E2D@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 8 Apr 2025 12:35:42 +0200
+X-Gm-Features: ATxdqUHL4PfNxPSYXiMHqmeMcyHw_IssZCc34uipmaO88JKUWSemU7j-HOIFMxc
+Message-ID: <CANiq72k9Lo-M5v338iWWSiwrnU+JwP+aEZeLiR291xc2c+ESOg@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: allow coercion from `Box<T>` to `Box<dyn U>`
+ if T implements U
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue Apr 8, 2025 at 7:18 AM CEST, Alexandre Courbot wrote:
-> This enables the creation of trait objects backed by a Box, similarly to
-> what can be done with the standard library.
+On Tue, Apr 8, 2025 at 12:22=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
-> From this discussion on Zulip [1].
->
-> Heavily inspired from the similar feature on `Arc`.
->
-> [1] https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topi=
-c/Trait.20objects.3F/with/510689662
-> ---
->  rust/kernel/alloc/kbox.rs | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index b77d32f3a58bab5ec73c612bdaaba0d79bfdff65..969b9f9fd3149685e1d1ecdf1=
-eed9c647c887397 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -32,6 +32,8 @@
->  ///
->  /// When dropping a [`Box`], the value is also dropped and the heap memo=
-ry is automatically freed.
->  ///
-> +/// [`Box`]es can also be used to store trait objects by coercing their =
-type.
-> +///
->  /// # Examples
->  ///
->  /// ```
-> @@ -62,7 +64,17 @@
->  /// `self.0` is always properly aligned and either points to memory allo=
-cated with `A` or, for
->  /// zero-sized types, is a dangling, well aligned pointer.
->  #[repr(transparent)]
-> -pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
-> +#[cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, derive(core::marker::CoerceP=
-ointee))]
-> +pub struct Box<#[pointee] T: ?Sized, A: Allocator>(NonNull<T>, PhantomDa=
-ta<A>);
-> +
-> +// This is to allow coercion from `Box<T>` to `Box<U>` if `T` can be con=
-verted to the
-> +// dynamically-sized type (DST) `U`.
-> +#[cfg(not(CONFIG_RUSTC_HAS_COERCE_POINTEE))]
-> +impl<T: ?Sized + core::marker::Unsize<U>, U: ?Sized> core::ops::CoerceUn=
-sized<Box<U>> for Box<T> {}
+> You forgot to add the `A: Allocator` generic here and in the impl below.
 
-You forgot to add the `A: Allocator` generic here and in the impl below.
+Yeah, for this sort of changes (ideally, all patches, really), please
+test with both the minimum supported version and the latest.
 
----
+For instance, there is another issue, `#[pointee]` is only applicable
+when you have the feature:
+
+    error: cannot find attribute `pointee` in this scope
+     --> rust/kernel/alloc/kbox.rs:66:18
+      |
+    66 | pub struct Box<#[pointee] T: ?Sized, A:
+Allocator>(NonNull<T>, PhantomData<A>);
+
+By the way, I would suggest taking the chance to move the sentence in
+the docs below to the "Examples section" and providing one.
+
+Thanks!
+
 Cheers,
-Benno
-
-> +
-> +// This is to allow `Box<U>` to be dispatched on when `Box<T>` can be co=
-erced into `Box<U>`.
-> +#[cfg(not(CONFIG_RUSTC_HAS_COERCE_POINTEE))]
-> +impl<T: ?Sized + core::marker::Unsize<U>, U: ?Sized> core::ops::Dispatch=
-FromDyn<Box<U>> for Box<T> {}
-> =20
->  /// Type alias for [`Box`] with a [`Kmalloc`] allocator.
->  ///
->
-> ---
-> base-commit: a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
-> change-id: 20250408-box_trait_objs-02a700401f0b
->
-> Best regards,
-
-
+Miguel
