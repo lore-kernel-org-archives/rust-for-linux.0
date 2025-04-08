@@ -1,93 +1,93 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8964421C19E;
-	Mon,  7 Apr 2025 23:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60CF35973;
+	Tue,  8 Apr 2025 00:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744067039; cv=none; b=ZreuOrKxCXhYz8wCMDWAGMTmVqUmB+ybWkUHwnQb/9b0tNntmOxBgWfvdJZhwRwMtgKA9mkbUusxgh0zgg+v2vmTbBf0WrkNi5zbXyOuun4vaIPoxfTxBtU3gTA9uzEd83vNe42ZBOnygUMBeLnPuygK/vScsVYFc0Cw+HlVggY=
+	t=1744073621; cv=none; b=WXpUd2tpEJRPDEruuYLoK7Kqw9tp8OnZfqESKBvwAWKfipAbWh2O+EnqZpdgIyjOoic8OTs+Ye7v2KoAMckUP9NiyOB3e238I5TvDfXXboCgpWYxuUkSi3CteU62/5f8epCfTWpVg5Ov5kaOZfktPij6wuX3YU3HNBIoWzXljOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744067039; c=relaxed/simple;
-	bh=O3Cf9PgyHCa15CTeS4JLKK7LTfvTs++ESgNxy36Bzzw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J4Afp/mCofVj84YhR9ajD8JwBYajAOpp3Ndc5JmkNjt7pW7VRMVA1MBI6Dfssw0pXloJzaKHw1bIZ1YfIn4rEJupfcdDLUUoeTn+jUuiTW4s1BAmdV8v9WizcnY6FobRY7f7qNSVecmGvTY9+C3XNN94TGKw109xZ2DIi728Rf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ixcNC0Rg; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744073621; c=relaxed/simple;
+	bh=2tioJx7A1oHG6jVTeIhvZwxr2imWJglUGKGr1y1xJkY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=sUymaJXMPvzPTCFuMBSUfIKBOFqGath93WAc5NdOGtCoOEUIR1Jq//GUkwBBGsBcVzSsBKO5OMfc4u/ug9rJpgqn6v0kgLILtAiJO+knvxKoGkHhyugYXesknA1EL4EK5fz0Yoj5GEM7wBPsHoFwmo4J3XpfXnthn4FfeR8qA9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O43cs2gO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ixcNC0Rg"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6eaf1b6ce9aso55934826d6.2;
-        Mon, 07 Apr 2025 16:03:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744067036; x=1744671836; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pB3YyC3lg92dsQDu2Vh7F7+riGLIxr8jqmJlW8qtJFw=;
-        b=ixcNC0Rgir+fCD6Wr3Z92jHw4KCvBtByQvfBVh8B1CAaEC/XY1MgQlMICZZtkjHA59
-         OPdzDEjApopVxZ2NaUHbpWmpAksZ1PyVCAiKEDkd04TFicgciV8jjxpYDlsDQLWIPnC4
-         dUprfzAGyUBcaC4VXU3kXItzfkW6Fuh+u3RciYlHbZ+NykB+ZeMLcXHZUAs7pK5b04ep
-         wiVzjr7qdhkdMs77zj+CUyyK+xeqHPL5SN5eU8UVT+LE8qWB04djpmVX+Up4PT58huuh
-         xyeTFPysO4zvQgMoya4ymB+n635ErwKNK7arueM9cVSd5vNx1HbvnLioKD49SGzIIUbh
-         9phg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744067036; x=1744671836;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pB3YyC3lg92dsQDu2Vh7F7+riGLIxr8jqmJlW8qtJFw=;
-        b=X2Ipsw4Blm2nU1TcSZRoQRkRIBglOzN+BhKTZmG/1CfYc1l9XKGwvSBrfps1VkSZTs
-         2nx/VEjtPw3fBhkgLu2zzwvx5eGaFcj0XvTZOJQWSa+N/Uqd3k1u7IUlCuB1Xufvi9L3
-         0K66mAVLgzSFw6nnaZCkcjtsCE5lp2n8s643wI1pUdXVQK4Jp14h/Frs8I9vE3ae+OBQ
-         p3BxKI3BZnJqvDQX9WoYyQlFIJCRKwi4dA/NbiqRW4L11Fe6xLLZSfGaZT0Ajlt2Dxpo
-         OU9CPxMB/PM2dLtTvz7oMTc8/h9tcjfOnHEA8dYedxuVceBfIQ0fCciVM8DrUUPtVRFq
-         qrdg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPNl5qPzxA2dgH8Zno01MrBXzeRyY03fuPrX1YvU+6DosJ2UjbbfL7PcsBP1z2EnAlMZLbse7SUppnhIM5@vger.kernel.org, AJvYcCUpEtzudeHw+j44NYaZ2kx98lrupf8mdV41+d/yrXGvzDLmIEOfjRGD4a8OCcexgbFdW5ojLQBtMNYSdoNWiwE=@vger.kernel.org, AJvYcCXWu5syQWNLVFXbsMC53PZIIHhbwc0cdF8XP1yYNZP1S1rekJ9YDSjM6FDn31WM1sv/1rr3DfexXRo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyfyg2yOmjIT0OceZafX4ZePGOUF49lCVeG2Pw0ALms+pIH6Lqn
-	CAl4zrYHWfhTH4XWPQgs9ryS0qMIxQnetM/rknNXfMAWcvG2LA01
-X-Gm-Gg: ASbGncszbOyU2GamyRgPQn9hgXO0h7n536PecDiBpNUS8S2BWmeNlxjTBcuPE3nUp+d
-	rh5fmp8TINzTvbliTUG2JqyjwEs6vuakp1ohlTNrQHwljBZZuhSnmUgehHzHjX8QQ4NY1uPBsIX
-	jVPFkqoJqDV+xTZslIs5FD95vFGSTdozCc4GuVoc9DJkC3CTpO1SgaEtgrS2rPkCnicIRabWbLS
-	fCL49ggY8Cb+9pDhuHR0ZBGHWntDu/+pI8aByVat/VER91fEIE0Acv36QD2S/WUFxj8eRPG7m8L
-	RQgiqA+5pmUit8BAHf3C3qoGNWgzofpm010jSAw6nIy21Q==
-X-Google-Smtp-Source: AGHT+IGRh6q4nlQ8y3Y9jq1CRRkrjO0aDfKO5qHIs+ZCmg9yhyOY7oHV+KQAoWlwYDMWk9ci68IKrQ==
-X-Received: by 2002:ad4:5e8c:0:b0:6e8:ebfa:42f9 with SMTP id 6a1803df08f44-6f0b7412fc3mr169437916d6.16.1744067036291;
-        Mon, 07 Apr 2025 16:03:56 -0700 (PDT)
-Received: from [192.168.38.58] ([24.35.8.11])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ef0f138d68sm64577546d6.75.2025.04.07.16.03.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Apr 2025 16:03:55 -0700 (PDT)
-Message-ID: <c62e514b-08ef-4887-bc8e-fc77bcf3b0fa@gmail.com>
-Date: Mon, 7 Apr 2025 19:03:54 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O43cs2gO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A932AC4CEDD;
+	Tue,  8 Apr 2025 00:53:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744073620;
+	bh=2tioJx7A1oHG6jVTeIhvZwxr2imWJglUGKGr1y1xJkY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=O43cs2gOdBdLaqG/dW+Ojdf2ozJ3BmEuyYFheOdItkMESfNLXpPSdMi7VgQgvHmBi
+	 yKRLWqj+dlAXBTPskDH0GEAYUCb8GS+4rX6K3aVeTmulZ4a7qOylBV474JyRCcIiTk
+	 /yIn7N19JpNawTYcoGmxiKu19kDAIbNbbXnTwmL0mIO2xRMO6SVAScaR/glUS+CGb5
+	 iVJYtYlLUpNwt3LI/0Yo/ZKxN/oAPf1cC97IYVTHqgdaX9k/MLl+GRGCZhBbUHah2e
+	 Jxf7RhYkAUhrwyscD7riE5/RX4RpVXQTePG7V1gnXMCrgLweXnbOSJkcSveJ8xqwpo
+	 eMrNCUrd9FNpA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	alex.gaynor@gmail.com,
+	linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 1/3] kbuild, rust: use -fremap-path-prefix to make paths relative
+Date: Mon,  7 Apr 2025 20:53:33 -0400
+Message-Id: <20250408005335.3334585-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] arm: rust: Enable Rust support for ARMv7
-To: Benno Lossin <benno.lossin@proton.me>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: chrisi.schrefl@gmail.com, Jamie.Cunliffe@arm.com, a.hindborg@kernel.org,
- alex.gaynor@gmail.com, aliceryhl@google.com, andrew@lunn.ch,
- ardb@kernel.org, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- corbet@lwn.net, gary@garyguo.net, guptarud@gmail.com,
- linus.walleij@linaro.org, linux-arm-kernel@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux@armlinux.org.uk, ojeda@kernel.org, rust-for-linux@vger.kernel.org,
- stappers@stappers.nl, thesven73@gmail.com, tmgross@umich.edu
-References: <D90J8JOGEBWI.4P0BAZG2R4G7@proton.me>
-Content-Language: en-US
-From: Manish Shakya <msh.shakya@gmail.com>
-In-Reply-To: <D90J8JOGEBWI.4P0BAZG2R4G7@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.1
+Content-Transfer-Encoding: 8bit
 
+From: Thomas Weißschuh <linux@weissschuh.net>
 
+[ Upstream commit dbdffaf50ff9cee3259a7cef8a7bd9e0f0ba9f13 ]
 
-On 4/7/25 12:04 PM, Benno Lossin wrote:
-> I suspect that most of the people sadly don't read the description.
->
-I must admit I didn't read the description. I was trying to get as much 
-as info. Since it was my first time building kernel with rust support.
+Remap source path prefixes in all output, including compiler
+diagnostics, debug information, macro expansions, etc.
+This removes a few absolute paths from the binary and also makes it
+possible to use core::panic::Location properly.
+
+Equivalent to the same configuration done for C sources in
+commit 1d3730f0012f ("kbuild: support -fmacro-prefix-map for external
+modules") and commit a73619a845d5 ("kbuild: use -fmacro-prefix-map to
+make __FILE__ a relative path").
+
+Link: https://doc.rust-lang.org/rustc/command-line-arguments.html#--remap-path-prefix-remap-source-names-in-output
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Tested-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Makefile b/Makefile
+index 8b6764d44a610..c4eeb97ab3df2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1068,6 +1068,7 @@ endif
+ # change __FILE__ to the relative path to the source directory
+ ifdef building_out_of_srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srcroot)/=)
++KBUILD_RUSTFLAGS += --remap-path-prefix=$(srcroot)/=
+ endif
+ 
+ # include additional Makefiles when needed
+-- 
+2.39.5
+
