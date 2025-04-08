@@ -1,198 +1,128 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA731C726D
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Apr 2025 13:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E45A1ADC83;
+	Tue,  8 Apr 2025 13:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744120555; cv=none; b=mVs7YH175LBHVzJcq6deOakM5s0VGfn3q5tjK0PPbeXRBmQvy/v6boKNsnwYEtlNuwj5j65TZVSoK3Ia1fDpvY8OWr8Xks5Yp8W3ndZRBnodCZdAB387LexoeoeIaRaIwlsIdTd6vizuNOUtZ0ugnmCM6xyB4zoXN53KR3IAkqI=
+	t=1744120740; cv=none; b=azYps+gM/nWtvgFM/zViJaXbT8ZP3EOQ7yTItTq/nPc0/gfkkm+qJB2Z3uOVYQoG1wkZgUTBqO6gJQgusl/qLQfaHTsBjsssyKfltLF70a6uvJtoZ1IlSQ1Q7gn/ANmGTYBtuGi5jAZmiBJp2T42unjxcBJV21a5xUfxa8J4KBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744120555; c=relaxed/simple;
-	bh=A6oBXcNkDqEcBwguJfqIOppUobE7Rt7ruRENVRB7a+o=;
+	s=arc-20240116; t=1744120740; c=relaxed/simple;
+	bh=nqRV9e4azt4cOTUpqzUrl9g3dIFNhs5erfq8eLDXEm0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y/ruwzgSvDpeQYWGppyQd1W+MtZMNWySYbdFof+weJ6o/dU6L9hblkui93cZoEoD938/KzspQOJlpvGLwLDfilB2Xmz3Bguoc1PLQUHh/afltbHNnEslEPeZuRP4U5dRQAa9PfCXnWVIUTSAivGgZ77OCCDha4Nr72yILuDDB+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3u3lANWR; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=Coq9TYCrYRG9tq3JJ/1mQWUw/iDxE5Qc/CGjovPllVK+JhzgOLGpvydwEVZA3Q/PERGgRfpGN/KM/DEJIvHEgmkahb38wmA/4dCyHt2OIWxArQISUw3HZz2CbkQ8RKDF5y6SAnUrwYxyjG4ZLB6P+zdLM1h1KbsWBEI2JPdzKxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lSpp0VBn; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3u3lANWR"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3913958ebf2so4959667f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 08 Apr 2025 06:55:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lSpp0VBn"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-301a6347494so882799a91.3;
+        Tue, 08 Apr 2025 06:58:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744120551; x=1744725351; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744120737; x=1744725537; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NKIKzdAk3P2Y6YQbz9/8N2BLD9HfzvL0US6679wvjAc=;
-        b=3u3lANWRG9CDM5B+Btj8eJdU1g69ucJyGj+bXKZ7aKsq8kPiO5FfTdkI6qAbBP/rFr
-         uFTXfYV9s7UR6hTnAXLgcGkb7srrNcZVDfH21oELCMlDyTNkPkXTsAB6xJCQ+X1PtGKM
-         ttO7C9biJYLT1Hw2CTSf3tI3mTAER9hPA9gHppl/9nkw/nOW7o4UfKxYp6IAo6goK6t2
-         ORZhaB7jKaZjmGpY9+Q1Vi63QnnIDsY36v8qpQLeIPoapZezF4xUD8zUdZ8opeFFS1yG
-         WliT33pkmC0B+e3u6TIFGg7x/KMvXiR0XlEIrqHMiCTU9eM95YOr6ycMun8chXwZ/Ry/
-         IkKg==
+        bh=mqozlFOZs3I+yiO6Du6yEZKYJaGOQca6xCGdVlT6bD4=;
+        b=lSpp0VBn3vwEK2xh7KxPtx8cywWaR/LjANpXXpOIKpErLlFG92RJwZ5HFZp0X1/wNV
+         6SktxOTIhO6rWHEui+/VAaDfBfa7r2+OEsvPf8l95qbyLlpegGHj2ywaO4zWT2d66P5H
+         Qxbgu/bggr3oeTjUGY5gMK7shL4WLtf8jnq09syR0ldwK42I0n8N6hrE4Yz0Dyrm0n+6
+         TBC8iOpkUfOoBPvqM6p5bKkECvP3BvLtMBz5mMMnoQF+VoTtyZoMyvpCcrDtwnho8YAV
+         hppmL+z/wbha5Q+5qR/egfQnvAfIOLp7rEkORPXqSHnMduXdsSoJ6ta1LUCqxT3QSzI/
+         frsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744120551; x=1744725351;
+        d=1e100.net; s=20230601; t=1744120737; x=1744725537;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NKIKzdAk3P2Y6YQbz9/8N2BLD9HfzvL0US6679wvjAc=;
-        b=rllXuNSlA0XIopPK6KaCXSl6lZwJOBKcZbWopfod2/ZV9LRVlp1bcdf7Nz1RRgLWZ0
-         cAiaUMs+JAp4WUjEeE5JC9dd+JHkwckBWu3viKdgeZfvfyxvO//nOc/vXM8Ke+0hj5MG
-         fIX9D8rvaKsy/Pzp757Gp8zIwwAnmYv+L2W5cPuJq87q6bFZ2Q4dtwadFlh0qFujbO8x
-         MH1g5TOuLx3ReiEymKFXVAGmYKFTXji8LzNkuc2ovx3Z3X+ejWOKIokJ2Q+9hZ/quR0f
-         tqKyGgbetEU9HT6g1ItKv6JDRPFh5fEBB2ZDbPd5zFuUcmIzgtjTbqDEK/cUVilZs+ob
-         EH2g==
-X-Forwarded-Encrypted: i=1; AJvYcCUPlT6B3vwkDB4E54hYVmFSWXti/1qRgP6gXbxGmyeIQwvNyk/ttbl10BYyTifTqiPpdXsIQqhZb1UraskRGA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxR40I9zO1ldHyDJyx7RRY5jPCcTXHP4yrQ+BQ0rMKHkMoGHqR
-	X60kGe4A95BDWrA7zUWqjaGCeJLI5l2DJjicRPCyfBjG8hxgdnUW0Jyo2L6QF+cbAWd7wrXLxr+
-	YZVdQ1NCCC9dBe2rSG7ywu4is7qmN1IB87LFF
-X-Gm-Gg: ASbGncvcVgKrQkNhm/OXU89jl48A2lmKM9VgG7Iyz3ur6L1Gh9ninMKhrMZNDAtGhnO
-	UJJNZBtu1c77bXVCrBB82i0uejVLx4JmWQNKSoHQ1VzcStw/j6oY+n2hYJzVEeMSzj8G/AMi186
-	Q+P+SZD6efrl+o/ukOsM7DWItqbD9V/l/LJLjQAZey0Q0YnmBAisWssrGx
-X-Google-Smtp-Source: AGHT+IGe1he6VcB1HjanCrhxVAfQjIesMa6esygphkYmjhBdMP180Rn3O9/cuFUiPeqzOl258PSQo96dNzHqinw3Rqo=
-X-Received: by 2002:a05:6000:1888:b0:39a:c80b:8288 with SMTP id
- ffacd0b85a97d-39d6fc83ac7mr10495756f8f.33.1744120551236; Tue, 08 Apr 2025
- 06:55:51 -0700 (PDT)
+        bh=mqozlFOZs3I+yiO6Du6yEZKYJaGOQca6xCGdVlT6bD4=;
+        b=eNPV3VAiIoNLGdD21hFLdH6JOKqlZe3gM0dBjHqFK/v+BERI2XJHxezYJZf6OULxRd
+         PRG9aWVo9+tMLY5PixlZNHjYWLSIuaxxA5UqcINuT/RrAmVQMRclF8GOHSP2LR+G1/Y/
+         hU34LDMkLrLHA3cvopJfmDbCZojjHNALoyO+hjr4UglHHHRMoa+9gx7j0rR/cE+Fcd5U
+         H6/opz4zTi1lpuf6pn4gzc8AeqdCiuVOmb5nLcCC6xhbaoe9N9YDOb030GwLaptSFrc4
+         UZA86Qws8Y59om+z5MaJoGfLYbrgJEqH/5/RfSXs+45W2fbXgOOk6y+IlInVyhkF8+tJ
+         dwBA==
+X-Forwarded-Encrypted: i=1; AJvYcCWB3/44hEtAD3z0B/9pa7dupTEBXPBWekOt5dAiOqKK8gWTDdwbemrotbIr3nsyGjq9WPjAS56lGqQrcVkOSOU=@vger.kernel.org, AJvYcCWDJvdfRd1Vhn90wGVZwCfAh0BqVOBfL2Lurb75MJtPcpD3KJr9raNZEOQS1VFzCRtKdA/u3hRlKrz0V20=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfkOSZOa9VNlNFmLZF7It4uMxs8iWXHVwndY7raYbjL+HmFyJB
+	Xq503FO+pare5mLDJUt39wN0XhVpJDpFwic0tFzw+7G907vY2IYJVj3y0Uj24FIAD3UZEyZArKW
+	F3rR52hCaf3rNWEmlI5iOjXQSJQk=
+X-Gm-Gg: ASbGnctta+BQ03YeBElOpcuC0Lc9HpgE2DvyjgGgVD0QClMg3XMcCEox8bwQcmFxjrq
+	y3luwoSwLOVDUHOX4MyeK48d61D1QY9CNDkrzAS8NS/lHl9sEeiQOokjKgKySyXF6Bd8OdxNGOI
+	mJc0XTh+UjUYgYLKHU0rPDbsZ8Gg==
+X-Google-Smtp-Source: AGHT+IHu9TJ9RuIlAMlfku6Ehl7CySmwT8+ED6PkGD1kOiaBXB834aPFTd0njc8rc6pp1gnWl3kJtBDGmwApo9Smh3E=
+X-Received: by 2002:a17:90b:1d8b:b0:2ee:acea:9ec4 with SMTP id
+ 98e67ed59e1d1-306a48ff28amr8367635a91.3.1744120737152; Tue, 08 Apr 2025
+ 06:58:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250305110814.272792-1-fujita.tomonori@gmail.com> <20250305110814.272792-5-fujita.tomonori@gmail.com>
-In-Reply-To: <20250305110814.272792-5-fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 8 Apr 2025 15:55:38 +0200
-X-Gm-Features: ATxdqUHiYJtkNt0G-spjemExiwLroDOvAjC-UywxGL0GYlMeas4Df-5aHcFmNEQ
-Message-ID: <CAH5fLgiDx5CQQMv=k=ejFYGM=ey1-dgQ44s1Ej1k2+mL7vnZaA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/4] rust: Add warn_on macro
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	x86@kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, peterz@infradead.org, hpa@zytor.com, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org, 
-	kernel@xen0n.name, tangyouling@loongson.cn, hejinyang@loongson.cn, 
-	yangtiezhu@loongson.cn, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu
+References: <20250408-box_trait_objs-v1-1-58d8e78b0fb2@nvidia.com>
+ <D916LG7Z9Q31.5RVNMYM38E2D@proton.me> <CANiq72k9Lo-M5v338iWWSiwrnU+JwP+aEZeLiR291xc2c+ESOg@mail.gmail.com>
+ <D91ACTUAWQTF.2AZ98BUA5ZKJ6@nvidia.com>
+In-Reply-To: <D91ACTUAWQTF.2AZ98BUA5ZKJ6@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 8 Apr 2025 15:58:44 +0200
+X-Gm-Features: ATxdqUGHIjHF3EckxIhFQF13LOWJp6gwb6VlJzlmImJ3vMLsWjYcukaJlL980R4
+Message-ID: <CANiq72=f+0KBT3iOQnWyJ_Va==j5iEYpNE7WLU=0aALbQ8-beg@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: allow coercion from `Box<T>` to `Box<dyn U>`
+ if T implements U
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Danilo Krummrich <dakr@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 5, 2025 at 12:10=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Tue, Apr 8, 2025 at 3:19=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
 >
-> Add warn_on macro, uses the BUG/WARN feature (lib/bug.c) via assembly
-> for x86_64/arm64/riscv.
->
-> The current Rust code simply wraps BUG() macro but doesn't provide the
-> proper debug information. The BUG/WARN feature can only be used from
-> assembly.
->
-> This uses the assembly code exported by the C side via ARCH_WARN_ASM
-> macro. To avoid duplicating the assembly code, this approach follows
-> the same strategy as the static branch code: it generates the assembly
-> code for Rust using the C preprocessor at compile time.
->
-> Similarly, ARCH_WARN_REACHABLE is also used at compile time to
-> generate the assembly code; objtool's reachable anotation code. It's
-> used for only architectures that use objtool.
->
-> For now, Loongarch just uses a wrapper for WARN macro.
->
-> UML doesn't use the assembly BUG/WARN feature; just wrapping generic
-> BUG/WARN functions implemented in C works.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Apologies for that, I had no idea how to build using a specific
+> toolchain and did the wrong thing, which is sending without proper
+> testing.
 
-Overall looks reasonable. A few nits below:
+No worries at all! It is completely normal :)
 
-> +#[macro_export]
-> +#[doc(hidden)]
-> +#[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH)))]
-> +#[cfg(CONFIG_DEBUG_BUGVERBOSE)]
-> +macro_rules! warn_flags {
-> +    ($flags:expr) =3D> {
-> +        const FLAGS: u32 =3D $crate::bindings::BUGFLAG_WARNING | $flags;
-> +        const _FILE: &[u8] =3D file!().as_bytes();
-> +        // Plus one for null-terminator.
-> +        static FILE: [u8; _FILE.len() + 1] =3D {
-> +            let mut bytes =3D [0; _FILE.len() + 1];
-> +            let mut i =3D 0;
-> +            while i < _FILE.len() {
-> +                bytes[i] =3D _FILE[i];
-> +                i +=3D 1;
-> +            }
-> +            bytes
-> +        };
-> +        // SAFETY: Just an FFI call.
-> +        unsafe {
-> +            $crate::asm!(concat!(
-> +                "/* {size} */",
-> +                include!(concat!(env!("OBJTREE"), "/rust/kernel/generate=
-d_arch_warn_asm.rs")),
-> +                include!(concat!(env!("OBJTREE"), "/rust/kernel/generate=
-d_arch_reachable_asm.rs")));
-> +            file =3D sym FILE,
-> +            line =3D const line!(),
-> +            flags =3D const FLAGS,
-> +            size =3D const ::core::mem::size_of::<$crate::bindings::bug_=
-entry>(),
+> I had some trouble finding how to 1) find out the minimum supported Rust
+> version, and 2) how to build using a specific toolchain.
 
-The indentation here is odd. Shouldn't the arguments be indented one more?
+For 1), the minimum versions for tools the Linux kernel uses is documented =
+at:
 
-> +            );
-> +        }
-> +    }
-> +}
-> +
-> +#[macro_export]
-> +#[doc(hidden)]
-> +#[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH)))]
-> +#[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
-> +macro_rules! warn_flags {
-> +    ($flags:expr) =3D> {
-> +        const FLAGS: u32 =3D $crate::bindings::BUGFLAG_WARNING | $flags;
-> +        // SAFETY: Just an FFI call.
-> +        unsafe {
-> +            $crate::asm!(
-> +            concat!(
-> +                "/* {size} */",
-> +                include!(concat!(env!("OBJTREE"), "/rust/kernel/generate=
-d_arch_warn_asm.rs")),
-> +                include!(concat!(env!("OBJTREE"), "/rust/kernel/generate=
-d_arch_reachable_asm.rs")));
-> +            flags =3D const FLAGS,
-> +            size =3D const ::core::mem::size_of::<$crate::bindings::bug_=
-entry>(),
+    https://docs.kernel.org/process/changes.html#current-minimal-requiremen=
+ts
 
-Same thing here.
+`min-tool-version.sh` is also fine, of course.
 
-> +            );
-> +        }
-> +    }
-> +}
-> +
-> +#[macro_export]
-> +#[doc(hidden)]
-> +#[cfg(all(CONFIG_BUG, CONFIG_UML))]
-> +macro_rules! warn_flags {
-> +    ($flags:expr) =3D> {
-> +        // SAFETY: Just an FFI call.
-> +        unsafe {
-> +            $crate::bindings::warn_slowpath_fmt(
-> +                $crate::c_str!(::core::file!()).as_ptr() as *const ::cor=
-e::ffi::c_uchar,
-> +                line!() as i32,
-> +                $flags as u32,
-> +                ::core::ptr::null() as *const ::core::ffi::c_uchar,
+For 2), similarly, it works like for other tools: either you override
+your binary in the `$PATH` (that is easy with Rust with the command
+you mention or simply with `rustup default X`), or you provide other
+binaries via e.g. `make RUSTC=3D...` like you would do with `make
+CC=3D...`.
 
-Why unsigned char? I think this should be ::kernel::ffi::c_char to
-utilize the custom integer type definitions in kernel rather than the
-faulty ones in core.
+> I can send a patch against the Coding Guidelines adding a section to
+> encourage testing against the minimum version and explain how to force a
+> specific Rust version if you can confirm this would be helpful (and that
+> min-tool-version.sh is the correct way to check the minimum supported
+> Rust version).
 
-(Maybe $crate rather than kernel)
+So that sort of thing is supposed to be documented in the "Submit
+Checklist Addendum" section of the "Maintainer Entry Profile" document
+(`P:` field in `MAINTAINERS`) of a given subsystem, and in particular
+for Rust is at:
 
-Alice
+    https://rust-for-linux.com/contributing#submit-checklist-addendum
+
+I agree that linking from the Coding Guidelines or perhaps the root of
+the Rust docs would probably help others to find it, since different
+people go to different places when starting, so please feel free to
+send a patch!
+
+Cheers,
+Miguel
