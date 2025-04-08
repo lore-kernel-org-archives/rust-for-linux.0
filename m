@@ -1,55 +1,55 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35AB265CD3
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Apr 2025 09:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D380266597
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Apr 2025 09:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744104255; cv=none; b=PQXARkt3tHatQiiZX4+ujgxgFeXeUpJHiGcSig1xMYH0e/A641ya8r37kgXxeyu0WdlajwpirbiNRgvyuTequBdKAKf3iLIhutuZ+4V31DZDawLorV5vkyZRARRYVU+gI1caIZjYxUmypbPp4u+Kf/luceBl4bYCytgiIoYtrkE=
+	t=1744104258; cv=none; b=d1S1yNhIcAog7UHkCi+GQvDV0ff4/PueF72kpRf5LkT7WgQABnifLbYsVgugarrFnUbnnaYieSkYdCbo+iwuix8B1/RbOzigl++GuSfk7zNbsqaVhN7j9xsPS5O4LdJnmFqre4LbiQSRKLll1evsqwJVxpOQ1o8YMQfobJkZpao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744104255; c=relaxed/simple;
-	bh=y7o7ZyQ2dPEky50Ue+6FuWOqrOt6CBr0m5lqB46eSLI=;
+	s=arc-20240116; t=1744104258; c=relaxed/simple;
+	bh=Sfgq//T2QbdbqoMqrWL7BQLUnjSkh+kpgtWBCSQivcU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iH+0VnlCE4nzKrn5W3kdWeKhSdMphdp5FWWs1y8YLT/ANRkIWtocnMdSeAoH5U8Tq1vPf1zkmaGb1WV8Z6aWZyI19sb6DWzMTk5oLCYFENf+l4HpGI7XdxErSyOcSw5lsr+zOVDmnV3M+JZGNN5bry3ARtIUA1kMyT+QFeS4BTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NPkzp5KJ; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=hrsYbuV9cCmn0yBK+0Pu5Ht6VN2M7o599oKpVK+OQQA3fv1gP0sWADQu0sA+7M79g4kikkPxeVMw5ef1b/x2BPBy7NhB9CtmXgDaZVWFqCoqeSaP9m6uoCeyvUjLxDHJSGKUILj0SLov0VSJGProa5c8epwjAtUzssbzAGBU9x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cx4HGTyc; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NPkzp5KJ"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cec217977so34189805e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 08 Apr 2025 02:24:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cx4HGTyc"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cf172ff63so30325945e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Apr 2025 02:24:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744104251; x=1744709051; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1744104253; x=1744709053; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NbS7MAhMYKAe1fvQnX5I031aFw3fZNHXs82c8Rh/ZM8=;
-        b=NPkzp5KJl1rteYHXmiPCKlp9XzTS6x4GJY+29RoOuYCMoaOwh8Jxti4hbLzunyriki
-         s+Hv2UcniMkGnYYSWfvwlQCBi3eyLAGcMg1UJ6Em+P39f78VHC7ow2GROTZs70AiIe5O
-         87hxX2JmUuXfDGCdBGxVe6Ps8kDMrW7FZ6nSVtZNzg9sCSTrxmf19wj4Sc7akV0xAokp
-         vLaKRmpLHInJAqJEjADEV5PXsjfvpPnBDuOgym4KWubVss1Z2skaBP7wlKZct2xR5VDC
-         RwqNhKjcgYu4bQpC6+aqXlt1aKeggZd+PqhUfLuyYFyo423Phl8hNy+TewH9lNhb3lQh
-         8s5w==
+        bh=BKgSHP0UtGt+oV0m7wKF/tLoW5odDMj8vC7ZBIsrjgA=;
+        b=cx4HGTycjH4KeEr0pMv7vXk2vfEVLqn+WWn+LNGQ/tIY4o6W5FZbPCg86+LIy/OZjc
+         aAFQ7FUmLwDvjjbFt7Cb/7vmGRE6XhFg32wOy6GM6KlNH7l9AAoY1Lexv5Zrs8FQdwSx
+         vDvQp8tMo8SJJA0CjQvtrvb2tUKbdlpX+SVezJlklIixHQTzU+oJRz68IXPCdvNHie8E
+         l0ipdVRyV0AEUb7D5lv3Tg7gp1yFp2S2/6zIJR8u74LDQvIkQ2rgPdZ7Kf+CiTUY37WQ
+         qDbPD56dUcCxI60YI/xEALRVKR1qo7wgYo5pAittjbXjwyBOQFqdrx7QG/D6e5jn+b3+
+         psLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744104251; x=1744709051;
+        d=1e100.net; s=20230601; t=1744104253; x=1744709053;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NbS7MAhMYKAe1fvQnX5I031aFw3fZNHXs82c8Rh/ZM8=;
-        b=QZaOUXg0PYoLA+CWVW9F/7Jw+VmliThgA1yS9CQX+PLl1EmX1WSXahFzPJ8YUGGB06
-         VUsXHg+HaEBdsmofEIdCHKU+kdBR32Sy7ppqQfyRiQ3gtWl3gzhzfFVA6vMPciPUBlX2
-         4RLACwEilNQjGT5xU+urZ0benR7aN9Oa/hqdLWfYeyR2LXDw6BkNEsryh0s8Bcw1FsS1
-         DWQKyGvnC+Q1I3gIWaxB46SYa0bcbVSyNxvQm9KjVwOMHkx/xWI6t88272/oauIr/Flb
-         Vi0oX/HyRVU3dEWh3gMdeaWcnc7iucujmZdyejSI1xvJaJP9Tl+Pv2bQQiM46uqRQ2y+
-         1row==
-X-Forwarded-Encrypted: i=1; AJvYcCU6X7JMImI63pN1OBdlq9YDPj48qRAbHRTrlYfahN3tsQJBfg+QTfhWbCF8b+TH59g0EcIQRv91Y8JI6vihcA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw35NfLL0IrhwCowVPvWN4VZiwTxOag0LpDEryCBW2cQ/lf9MVN
-	EJCCY+E7B2FZ2Uh6JbYZ7dvWL/sGPWq8M6E2j97cSfxW0+/Ji0Xlk9wc7xQyuCFNB9THgg8fU/T
-	+3JzLmnkgJW/jmw==
-X-Google-Smtp-Source: AGHT+IE4W/KsQEJrmEgz9IsoTLynGVEAhAHKzspx/nbrSFmIxb6oHbD2e0Mgj+efPoxDwU0BvGGyyufB1Mi07JA=
-X-Received: from wma7.prod.google.com ([2002:a05:600c:8907:b0:43d:4038:9229])
+        bh=BKgSHP0UtGt+oV0m7wKF/tLoW5odDMj8vC7ZBIsrjgA=;
+        b=JT86gsxjnxBddP/y9PexUrQ27AV/G6J2n1wD27QZDBbE1GzFmDuuffjnGdeQbTw7WW
+         b17ffm+aCpgEX4fUNXxw7MTwkPt3QCEsANNvvId/LgeF8mfdo6NrYdoehwQd10JLzlLd
+         7Pq9qAyKC0EHr2UOGjuoPClccMA349WFrB7DwGP6Q98gqVdNjYlCaxjCBB2XFJ3V5bEx
+         J7T90rHIRhAAp4NilDvGPL4wfrB7kgTlMC74xzFov6dBx+AqUSPZJRZ521upbkDM9dJL
+         1mOQ1QH9k6Rec+xwakxSv5ZqBUMX+iqEo/xUHS/wOED9Pp55fZeWYzcWlNEdp4sxYkKY
+         oZQw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8Vn7EviwIXrsJUWp+PrzFWNdZH1Qhrg5sjqSNGxHfUz51KkaYu4W1feQT9h7/PGErRc+OZIShAVbKOMZaQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzkyu0MMkgDWgvkxc5u66GuHYLEeYhI1saHx8W3zBHYdwrkw8p
+	dzvJintNNeIw/RuD2S2xqmzLW07oBbUnbTzKyyjgJHfjSC85KVqPfV3MTvKPOotPAHmEj4GctQu
+	Phr5hcweyMLWzYw==
+X-Google-Smtp-Source: AGHT+IGKxxFnPnuYQhaMn/C1VHYnvMuiIufsTL+sO+MIIaikeAKJnyM61wTXLBWoQ3PMLnGlIdAs32Q49e1duTw=
+X-Received: from wmbbg30.prod.google.com ([2002:a05:600c:3c9e:b0:43d:44cf:11f8])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a0a:b0:43c:f689:dd with SMTP id 5b1f17b1804b1-43ecf8d0a37mr135840695e9.19.1744104251264;
- Tue, 08 Apr 2025 02:24:11 -0700 (PDT)
-Date: Tue, 08 Apr 2025 09:22:43 +0000
+ 2002:a05:600c:3c8d:b0:43b:cc42:c54f with SMTP id 5b1f17b1804b1-43ecf85f20amr127759175e9.14.1744104253433;
+ Tue, 08 Apr 2025 02:24:13 -0700 (PDT)
+Date: Tue, 08 Apr 2025 09:22:44 +0000
 In-Reply-To: <20250408-vma-v16-0-d8b446e885d9@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250408-vma-v16-0-d8b446e885d9@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8695; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=y7o7ZyQ2dPEky50Ue+6FuWOqrOt6CBr0m5lqB46eSLI=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBn9OspqQy5WgY/Qd+8dWuqTUfQ3HnCwBb8dVD05
- EA6Kry80NiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ/TrKQAKCRAEWL7uWMY5
- RgG+D/4imuYCLk7UElHu8hBZPmO6nTzNlNaQKt0LiTcGYywxsrABM/WJ8sMq5nF56+zZSR06nuc
- 56Kmkc7+8F2O1qfjff8l3mHCzT0J9cf6wAYYALBXOkz5KvBs7hWsjNTdnJzWZn++ZEjrRbTdrvq
- yg+RSfCLjZlIhNX6Qd/XZpMrLipc6MkzjLWxzEujf6AnkG17xmf4E8Kg02holVGJXsTKo+qM766
- seqiZkbFJzPBajPN6woE0fyAqN8+JidK+UJmAYYNB/Xdfl4yGudLtE7gjgbrHNhlS1anVWwuFZC
- FdSApqsObE8OK9MNeI6RuiAjuro8QX9Qw/jocbWr0aBk1+Pn7TnOFobEil62TNdBYyA+8peUYAG
- jh93VskPs3P8of4BOr051oLK5kwcG25LOWkkStYuiYb3Emdi6ep3U/6tAcPb5MGnFCl5lBjr++/
- UDPMjSqUQdpDlqWBx7rNRwDmCe2sMGlf7qo5K8Oly0cNdX+wmfJZ7/sKVg9sVXfAmH5RoKej18i
- LgUdXmjLd8L1exfbJ5E35i+jFmbusUl3F1xK+8ontqpt4uMc17eaMyDYaBc4ao+gqBIk2U3Nzgj
- LLd9Y59W9MRwdX2jJf8mifll5w1o9piYo9LgxbM7KFZHEPIIHAOfsvTSGIK/N3PmMbd89l33pKn WLK3RhVfl1Zx/4g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4043; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Sfgq//T2QbdbqoMqrWL7BQLUnjSkh+kpgtWBCSQivcU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBn9Osphtn+zBbO8bZFvj7pkZhABnr8VbaFiFEa8
+ vSFFXvSY0CJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ/TrKQAKCRAEWL7uWMY5
+ RuB5D/9RA7H3cjo5/vuxD/VzZyAqYJY0YR+6BZctDljbIzIBs0tHYjQGyX3i9/lx7Z7I24HZgG3
+ GYQdZnhqBnxIJeK+aTd3+I6/0Kxt/6IQR6Q12dP9St1jrQR8QY0NbbDlJIpZsh4EnSERgXH4VR2
+ Iv/dWP2koycKPHA53sb047tk00stSC8FBUFUrjU+fXIPEprHdC2O05Nn5ARdWJUF/teV+/VTF6O
+ MjPU9y7a0TfFX9kS24LGjGguBGUuk04TbeSD3AJ4zI5ttYztwe4rDoy0G5JK0WAdqdOzGvUzjyA
+ AqLPw3Ciycje/cSkNmjIHN4NgE5iCyRh6m6L/7vT4aE+XlSlK/fFXROSRYWDwRSP/MQc0QPPXCm
+ NN3I1c3hL62W/8E3tveIBF+7V6kp8O8061h//5D2SScR/0OuE8ZVF+UvtYcgqS+ZHSWbog/rDqb
+ LvsWYiaW8W+F501INqaTk2CdldRz8wUlYQ2xCRWzFZTlkuXChlDP4Zf8Uhv25SGDKHNwfGiWyoC
+ cw7vMFfyvtUFsM0wxwdFhrB6PlXfugS1gsYCk4jrqO7Oq1WipRemsXxl5MPxVF9hjTQSISjPoT4
+ mlt0NTtEaoXDAUWMGbFJyHdFpelBc1wv8qCvZZmccvdR9ztCb6uhqJ185K2TK0waNVyj8MsR5Cz nJaPeEL8PTxVTAw==
 X-Mailer: b4 0.14.2
-Message-ID: <20250408-vma-v16-6-d8b446e885d9@google.com>
-Subject: [PATCH v16 6/9] mm: rust: add VmaNew for f_ops->mmap()
+Message-ID: <20250408-vma-v16-7-d8b446e885d9@google.com>
+Subject: [PATCH v16 7/9] rust: miscdevice: add mmap support
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
@@ -89,235 +89,98 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This type will be used when setting up a new vma in an f_ops->mmap()
-hook. Using a separate type from VmaRef allows us to have a separate set
-of operations that you are only able to use during the mmap() hook. For
-example, the VM_MIXEDMAP flag must not be changed after the initial
-setup that happens during the f_ops->mmap() hook.
+Add the ability to write a file_operations->mmap hook in Rust when using
+the miscdevice abstraction. The `vma` argument to the `mmap` hook uses
+the `VmaNew` type from the previous commit; this type provides the
+correct set of operations for a file_operations->mmap hook.
 
-To avoid setting invalid flag values, the methods for clearing
-VM_MAYWRITE and similar involve a check of VM_WRITE, and return an error
-if VM_WRITE is set. Trying to use `try_clear_maywrite` without checking
-the return value results in a compilation error because the `Result`
-type is marked #[must_use].
-
-For now, there's only a method for VM_MIXEDMAP and not VM_PFNMAP. When
-we add a VM_PFNMAP method, we will need some way to prevent you from
-setting both VM_MIXEDMAP and VM_PFNMAP on the same vma.
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Acked-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Acked-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Reviewed-by: Jann Horn <jannh@google.com>
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/mm/virt.rs | 186 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 185 insertions(+), 1 deletion(-)
+ rust/kernel/miscdevice.rs | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-index 3e2eabcc21450497a02ffa1ed1f31f3e7e7e1b6b..31803674aecc57408df7960def17cfdc2cebcd6c 100644
---- a/rust/kernel/mm/virt.rs
-+++ b/rust/kernel/mm/virt.rs
-@@ -16,7 +16,7 @@
- 
- use crate::{
-     bindings,
--    error::{to_result, Result},
-+    error::{code::EINVAL, to_result, Result},
-     mm::MmWithUser,
-     page::Page,
-     types::Opaque,
-@@ -198,6 +198,190 @@ pub fn vm_insert_page(&self, address: usize, page: &Page) -> Result {
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index fa9ecc42602a477328a25b5d357db90b59dc72ae..9d9771247c3865761c4387467de3f1d1a82691b7 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -14,6 +14,7 @@
+     error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
+     ffi::{c_int, c_long, c_uint, c_ulong},
+     fs::File,
++    mm::virt::VmaNew,
+     prelude::*,
+     seq_file::SeqFile,
+     str::CStr,
+@@ -119,6 +120,22 @@ fn release(device: Self::Ptr, _file: &File) {
+         drop(device);
      }
- }
  
-+/// A configuration object for setting up a VMA in an `f_ops->mmap()` hook.
-+///
-+/// The `f_ops->mmap()` hook is called when a new VMA is being created, and the hook is able to
-+/// configure the VMA in various ways to fit the driver that owns it. Using `VmaNew` indicates that
-+/// you are allowed to perform operations on the VMA that can only be performed before the VMA is
-+/// fully initialized.
-+///
-+/// # Invariants
-+///
-+/// For the duration of 'a, the referenced vma must be undergoing initialization in an
-+/// `f_ops->mmap()` hook.
-+pub struct VmaNew {
-+    vma: VmaRef,
-+}
-+
-+// Make all `VmaRef` methods available on `VmaNew`.
-+impl Deref for VmaNew {
-+    type Target = VmaRef;
-+
-+    #[inline]
-+    fn deref(&self) -> &VmaRef {
-+        &self.vma
-+    }
-+}
-+
-+impl VmaNew {
-+    /// Access a virtual memory area given a raw pointer.
++    /// Handle for mmap.
 +    ///
++    /// This function is invoked when a user space process invokes the `mmap` system call on
++    /// `file`. The function is a callback that is part of the VMA initializer. The kernel will do
++    /// initial setup of the VMA before calling this function. The function can then interact with
++    /// the VMA initialization by calling methods of `vma`. If the function does not return an
++    /// error, the kernel will complete initialization of the VMA according to the properties of
++    /// `vma`.
++    fn mmap(
++        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
++        _file: &File,
++        _vma: &VmaNew,
++    ) -> Result {
++        build_error!(VTABLE_DEFAULT_ERROR)
++    }
++
+     /// Handler for ioctls.
+     ///
+     /// The `cmd` argument is usually manipulated using the utilties in [`kernel::ioctl`].
+@@ -223,6 +240,33 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+         0
+     }
+ 
 +    /// # Safety
 +    ///
-+    /// Callers must ensure that `vma` is undergoing initial vma setup for the duration of 'a.
-+    #[inline]
-+    pub unsafe fn from_raw<'a>(vma: *mut bindings::vm_area_struct) -> &'a Self {
-+        // SAFETY: The caller ensures that the invariants are satisfied for the duration of 'a.
-+        unsafe { &*vma.cast() }
-+    }
++    /// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
++    /// `vma` must be a vma that is currently being mmap'ed with this file.
++    unsafe extern "C" fn mmap(
++        file: *mut bindings::file,
++        vma: *mut bindings::vm_area_struct,
++    ) -> c_int {
++        // SAFETY: The mmap call of a file can access the private data.
++        let private = unsafe { (*file).private_data };
++        // SAFETY: This is a Rust Miscdevice, so we call `into_foreign` in `open` and
++        // `from_foreign` in `release`, and `fops_mmap` is guaranteed to be called between those
++        // two operations.
++        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
++        // SAFETY: The caller provides a vma that is undergoing initial VMA setup.
++        let area = unsafe { VmaNew::from_raw(vma) };
++        // SAFETY:
++        // * The file is valid for the duration of this call.
++        // * There is no active fdget_pos region on the file on this thread.
++        let file = unsafe { File::from_raw_file(file) };
 +
-+    /// Internal method for updating the vma flags.
-+    ///
-+    /// # Safety
-+    ///
-+    /// This must not be used to set the flags to an invalid value.
-+    #[inline]
-+    unsafe fn update_flags(&self, set: vm_flags_t, unset: vm_flags_t) {
-+        let mut flags = self.flags();
-+        flags |= set;
-+        flags &= !unset;
-+
-+        // SAFETY: This is not a data race: the vma is undergoing initial setup, so it's not yet
-+        // shared. Additionally, `VmaNew` is `!Sync`, so it cannot be used to write in parallel.
-+        // The caller promises that this does not set the flags to an invalid value.
-+        unsafe { (*self.as_ptr()).__bindgen_anon_2.__vm_flags = flags };
-+    }
-+
-+    /// Set the `VM_MIXEDMAP` flag on this vma.
-+    ///
-+    /// This enables the vma to contain both `struct page` and pure PFN pages. Returns a reference
-+    /// that can be used to call `vm_insert_page` on the vma.
-+    #[inline]
-+    pub fn set_mixedmap(&self) -> &VmaMixedMap {
-+        // SAFETY: We don't yet provide a way to set VM_PFNMAP, so this cannot put the flags in an
-+        // invalid state.
-+        unsafe { self.update_flags(flags::MIXEDMAP, 0) };
-+
-+        // SAFETY: We just set `VM_MIXEDMAP` on the vma.
-+        unsafe { VmaMixedMap::from_raw(self.vma.as_ptr()) }
-+    }
-+
-+    /// Set the `VM_IO` flag on this vma.
-+    ///
-+    /// This is used for memory mapped IO and similar. The flag tells other parts of the kernel to
-+    /// avoid looking at the pages. For memory mapped IO this is useful as accesses to the pages
-+    /// could have side effects.
-+    #[inline]
-+    pub fn set_io(&self) {
-+        // SAFETY: Setting the VM_IO flag is always okay.
-+        unsafe { self.update_flags(flags::IO, 0) };
-+    }
-+
-+    /// Set the `VM_DONTEXPAND` flag on this vma.
-+    ///
-+    /// This prevents the vma from being expanded with `mremap()`.
-+    #[inline]
-+    pub fn set_dontexpand(&self) {
-+        // SAFETY: Setting the VM_DONTEXPAND flag is always okay.
-+        unsafe { self.update_flags(flags::DONTEXPAND, 0) };
-+    }
-+
-+    /// Set the `VM_DONTCOPY` flag on this vma.
-+    ///
-+    /// This prevents the vma from being copied on fork. This option is only permanent if `VM_IO`
-+    /// is set.
-+    #[inline]
-+    pub fn set_dontcopy(&self) {
-+        // SAFETY: Setting the VM_DONTCOPY flag is always okay.
-+        unsafe { self.update_flags(flags::DONTCOPY, 0) };
-+    }
-+
-+    /// Set the `VM_DONTDUMP` flag on this vma.
-+    ///
-+    /// This prevents the vma from being included in core dumps. This option is only permanent if
-+    /// `VM_IO` is set.
-+    #[inline]
-+    pub fn set_dontdump(&self) {
-+        // SAFETY: Setting the VM_DONTDUMP flag is always okay.
-+        unsafe { self.update_flags(flags::DONTDUMP, 0) };
-+    }
-+
-+    /// Returns whether `VM_READ` is set.
-+    ///
-+    /// This flag indicates whether userspace is mapping this vma as readable.
-+    #[inline]
-+    pub fn readable(&self) -> bool {
-+        (self.flags() & flags::READ) != 0
-+    }
-+
-+    /// Try to clear the `VM_MAYREAD` flag, failing if `VM_READ` is set.
-+    ///
-+    /// This flag indicates whether userspace is allowed to make this vma readable with
-+    /// `mprotect()`.
-+    ///
-+    /// Note that this operation is irreversible. Once `VM_MAYREAD` has been cleared, it can never
-+    /// be set again.
-+    #[inline]
-+    pub fn try_clear_mayread(&self) -> Result {
-+        if self.readable() {
-+            return Err(EINVAL);
++        match T::mmap(device, file, area) {
++            Ok(()) => 0,
++            Err(err) => err.to_errno(),
 +        }
-+        // SAFETY: Clearing `VM_MAYREAD` is okay when `VM_READ` is not set.
-+        unsafe { self.update_flags(0, flags::MAYREAD) };
-+        Ok(())
 +    }
 +
-+    /// Returns whether `VM_WRITE` is set.
-+    ///
-+    /// This flag indicates whether userspace is mapping this vma as writable.
-+    #[inline]
-+    pub fn writable(&self) -> bool {
-+        (self.flags() & flags::WRITE) != 0
-+    }
-+
-+    /// Try to clear the `VM_MAYWRITE` flag, failing if `VM_WRITE` is set.
-+    ///
-+    /// This flag indicates whether userspace is allowed to make this vma writable with
-+    /// `mprotect()`.
-+    ///
-+    /// Note that this operation is irreversible. Once `VM_MAYWRITE` has been cleared, it can never
-+    /// be set again.
-+    #[inline]
-+    pub fn try_clear_maywrite(&self) -> Result {
-+        if self.writable() {
-+            return Err(EINVAL);
-+        }
-+        // SAFETY: Clearing `VM_MAYWRITE` is okay when `VM_WRITE` is not set.
-+        unsafe { self.update_flags(0, flags::MAYWRITE) };
-+        Ok(())
-+    }
-+
-+    /// Returns whether `VM_EXEC` is set.
-+    ///
-+    /// This flag indicates whether userspace is mapping this vma as executable.
-+    #[inline]
-+    pub fn executable(&self) -> bool {
-+        (self.flags() & flags::EXEC) != 0
-+    }
-+
-+    /// Try to clear the `VM_MAYEXEC` flag, failing if `VM_EXEC` is set.
-+    ///
-+    /// This flag indicates whether userspace is allowed to make this vma executable with
-+    /// `mprotect()`.
-+    ///
-+    /// Note that this operation is irreversible. Once `VM_MAYEXEC` has been cleared, it can never
-+    /// be set again.
-+    #[inline]
-+    pub fn try_clear_mayexec(&self) -> Result {
-+        if self.executable() {
-+            return Err(EINVAL);
-+        }
-+        // SAFETY: Clearing `VM_MAYEXEC` is okay when `VM_EXEC` is not set.
-+        unsafe { self.update_flags(0, flags::MAYEXEC) };
-+        Ok(())
-+    }
-+}
-+
- /// The integer type used for vma flags.
- #[doc(inline)]
- pub use bindings::vm_flags_t;
+     /// # Safety
+     ///
+     /// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
+@@ -291,6 +335,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+     const VTABLE: bindings::file_operations = bindings::file_operations {
+         open: Some(Self::open),
+         release: Some(Self::release),
++        mmap: if T::HAS_MMAP { Some(Self::mmap) } else { None },
+         unlocked_ioctl: if T::HAS_IOCTL {
+             Some(Self::ioctl)
+         } else {
 
 -- 
 2.49.0.504.g3bcea36a83-goog
