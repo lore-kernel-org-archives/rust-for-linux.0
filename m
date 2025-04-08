@@ -1,223 +1,246 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2084.outbound.protection.outlook.com [40.107.93.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF1E1F94A;
-	Tue,  8 Apr 2025 05:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744089550; cv=fail; b=BVBudvay/SE3h5xvkGnKfyplxBapwhPh5ZdY4sxxqklEkMmYWIUh3O0SDMAWRer7jqnxwFu3dv5vqbYJ7x0iZ4sPHc2WZjUBv8sG2acIRF7YEB8NRfKyuJtoSADfb82EKFxpbG2MR1u6dgHDOY96te/7yA1GNvhI4n8WTZMA2G8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744089550; c=relaxed/simple;
-	bh=tFQ96XNqEWxrkxxQuByn6FEESEFiRLlGb5CCh+nDbx8=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=L+pur4kKrJJXw6TkcilS2bqf02w47cgKwhgCwumjlGNQJl4LHREnE1JAaHYEmfBeZqWLHlyUPtOfZJmyT84cxtWZao+7fzhzoxyTs8sp6DQy8edAuCybbThFOsqTKZtoKj2VT9yFoCyS85vDHzDfhykTIv9CJHvr9bKKv03jTSw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WI83u/t2; arc=fail smtp.client-ip=40.107.93.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327153FD4
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Apr 2025 09:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744104242; cv=none; b=DXwBximMlbRMJK5IOPycUMdWoOHJ+wNcTwKUbjhCy3Xt2YozBN9zp2xDNxQz9UmeUo4wVUuEGXAkRPZwNo+UUnNlWzwFjg6bR1Pmj1/KQaX2RhjsIuui7+fTloohqyf2vVsh0QZRrsRKqb9RzF6alRQhQThfoFJnrQ3nfoX5a4A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744104242; c=relaxed/simple;
+	bh=r4Hu3N2qKPWYSdMjMLUU4leSKcHEUEyG3mqTdjIjwD8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OsbmEEAle4rqtNRP4FpQ11jVrVzi7ekrKsXush9pQs7KnU96rP8FY5IXM0MBa6H+1UXhaxjN7U8llw+wBblrOSpYd/yb19L754mAKCz+qo+1rPKQ4igffTi6hdGHblgQDE0LL2rOzavud9t2Qf/RVfDvcSJNnecKkGJk/qrRcmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EptftRut; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WI83u/t2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iDXqO8rp/a9yOoQkJzSAVE3KUL0MQCxCyDYlCAUmVv7An72HF7yXtZbNxbBIVL4icnkGio4PSLg6rtRedaEpxSb4Y+mqyIxudnr/r/Tprg71YZJ8n0zAKkEnYc4JvCcXSWz4Dam/0p6EjyOWpeANQEXgM0vuHRejlHBkTwmvhh2dCqTGwkxjRPi1rc68VXx8IXyYGR11SY0Ig8sjLm935gnWuOHHKztUeKMTqArSaHO9fzYD0DWg96xWQ29kcHJx4BWGnthbLumr8a5E+izzEE6KaskTuKWr8PXca1PxSdCLZgASARvQP9vTMoMvAcsl33FqgQRXi0rXjRy+Y+sQ3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7fXoXpQY6j/SGNxx4CvPU7CDbnm2ADEKXh4D72LXcIA=;
- b=r0G2AFLn7OsSAQBUkVn2K07NGrHQw4FVo04uePNiywyQtrkSs/62XE8MCudNl4CWbTOdre315SOacedRLeu8ERsHdsZz6Wut5aL5BXBPUOrxSAJTljhXr7aOpLd52l4LF0ZXTS4W92VGP2iTlPGqPjVp2kVBSUCvRGKRRCwyYYwAPL1REDIpPjT++ROXl2WrxyxmpLDo+tLKRXAhHEd4N8NnUIkIRspfh6DXm7Pzxi8/cNanc8BlFAI8HxAlpyHnm8couz3DRJYxjy7UWMj6cmvBQmTW4s6LTwQcgc+zc3jvL16V11kxbC+aEcknomWHEbmJvjAzFhFxDaOQ2Jm+OQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7fXoXpQY6j/SGNxx4CvPU7CDbnm2ADEKXh4D72LXcIA=;
- b=WI83u/t20L+QeCkSQJicYDACkOWnnfF9QINOYmjalCLuw9f6MSzwenk7zRZS3E7WeCn54u2uE5bbFfYroeAeY8yJsNvsXb2BFf793+VaL/rr4TSw1Jxj1AoHIZIo88MXnstLKO6EC6NlcQ+yx3e6v/jZEAx9MnsFRi4UdKN9/9Bm0CeMA0XUuq6Fvxz3fB37POsmb7gV+evqFibJzZglrXppZX3p7a80NWzbsUV1iRQWAgKCGJ10ao/fULQGgfhrkDchdW8HR9AK2zn+AaoN5H+PElNhXbIRijt9pTXUZhikpOQJlwSQMIEBr0MHUbm8TwftA5X+KbY5T2bqI5D6rw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CH1PPF5A8F51299.namprd12.prod.outlook.com (2603:10b6:61f:fc00::60f) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.35; Tue, 8 Apr
- 2025 05:19:05 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%6]) with mapi id 15.20.8632.017; Tue, 8 Apr 2025
- 05:19:05 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Tue, 08 Apr 2025 14:18:55 +0900
-Subject: [PATCH] rust: alloc: allow coercion from `Box<T>` to `Box<dyn U>`
- if T implements U
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250408-box_trait_objs-v1-1-58d8e78b0fb2@nvidia.com>
-X-B4-Tracking: v=1; b=H4sIAL6x9GcC/x2MQQqAIBAAvyJ7TlilKPpKRGittR00VCKQ/p50H
- IaZAokiU4JRFIh0c+LgK6hGwHoYv5PkrTJo1B22OEgbniVHw3kJ9kwStemxCuXQQo2uSI6ffzj
- N7/sB9RjqyGAAAAA=
-X-Change-ID: 20250408-box_trait_objs-02a700401f0b
-To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: TYWPR01CA0026.jpnprd01.prod.outlook.com
- (2603:1096:400:aa::13) To MN2PR12MB3997.namprd12.prod.outlook.com
- (2603:10b6:208:161::11)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EptftRut"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf44b66f7so45364785e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Apr 2025 02:23:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744104238; x=1744709038; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EODn55UQ9S18QAKwAlJvt1H624Nxq9sbpLwSEPWET5s=;
+        b=EptftRutMCTUsm77PtxOdojcFepRdD1KNkn2FD8lPd5IdKcMSsGHD15hp+XRYNrhfl
+         KUL0pTdwuajKFY0GUvT6/CuYrwh1SwVYa2lbJ2HYCoE8zTZnKP27DurCGFag0bJyGRAU
+         i1ZFlWk2jKJyx57ZiVfVPlBWKuwiYtqe8IxyvM2TALgj6nuc4pXkGnbSVgzD5YFFmevd
+         GRvVyncHeyKLV3JPQidr6LRgdLGGZJWm3GDf9xQiy0dhy2Na5eZDxWPfGGHrgjmsLpN9
+         P2cyF/afgQndYlnzye39Pke3LdqzZAZxBKqoYmozeTqewA2L0Ja5um3Wx4p6ZjVEwDeo
+         ZjCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744104238; x=1744709038;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EODn55UQ9S18QAKwAlJvt1H624Nxq9sbpLwSEPWET5s=;
+        b=fO9ZGNxLm3q+CVswlQHV7LcE30FoHMlOR4arL+dyLeT0sdX+RPBtmw9BD2THN2S/Ld
+         MuiheJAQ3dnVs4ibKfLBPGpmPqL+xEu3krsTT7AGnKPs/4rYbPaNhx5e3ivY05eCNlt3
+         +tlHBq8tTrWpG0a2sljn8rptMcChwbbau57NwCNBl4Ev/I3GlXr7ibBw3DVzrVI8ZPgj
+         /nXdbreFY7M/4EGA4Pg6tTFWCBBWz+z5HHFmnRVtbeWKP21ov0ynEqt2KRN0XU+vLZxl
+         r959WX3OXI5S7yLTLPaGUE/QsGB8UBD+Myp06XPpFx3QWLm5GUEIe49Jo6BeIKEqJh0x
+         +SIA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgX04NzTzWQANNFZh/ZJ1WnYpom7srqf186Q5YpLAwZ++pTfQ6OVyHE4HOayd35mdfW2GBuQsaFuAIise9zg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUaiMh1fXRZISjpd2vWciAxemACH+5YzAiyjDNvjYyjWnVjTPO
+	Vv+QXK3CQHiTsDiLKhXpn67ZlmjWHI38TwFKrn0brgbb7H1fJSXt+7soaFdjw0oMCy+03gNKgVR
+	5OJmIk3GkNrufbQ==
+X-Google-Smtp-Source: AGHT+IHUaBFHW96Gs4xsEMUJyhcH24pQ1u14SHiLgmq/cKMRqCcwxgl8G1NgEJjpkTBcJE4+1Si9chMOdv4Rj6w=
+X-Received: from wmby23.prod.google.com ([2002:a05:600c:c057:b0:43c:fcbd:f2eb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:1a8a:b0:39c:119f:27c4 with SMTP id ffacd0b85a97d-39d6fc4f25fmr8511614f8f.30.1744104238380;
+ Tue, 08 Apr 2025 02:23:58 -0700 (PDT)
+Date: Tue, 08 Apr 2025 09:22:37 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH1PPF5A8F51299:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4477a76c-c642-49ff-3121-08dd765ce186
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|1800799024|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QXlZZGJuaHphTks2aEY1bVJYRWg0MjVwTWMwbE96NkRWcmZoTHFJYTRMTEZr?=
- =?utf-8?B?ZDZTSXRtb0twR1JuUkNiRnVmU1ltUmRUWVpqSUlpWWU0VWNjY3BQc2JuY3dN?=
- =?utf-8?B?VFhINW5jYnpHYzA2N1dWRHpBV2NRWEM0cEdubUNCYVcyVVErSEg5dldHRVdr?=
- =?utf-8?B?NjRheVppdFY0NmRTbUliMWgzZzNaWFF5TXRFbjVlZ3IyS0VvYjl6S3pnQzcv?=
- =?utf-8?B?Nll3RUFlbVpuY3VqYUNCMWdKSlo3UkxQNFA3R0hNQW8wbWVtdVZSV3ZGYkFt?=
- =?utf-8?B?NHdXUUdyZkpoVVVNYU5sdkMvdTNoUUcyd0hJbkR2RTNvaGdWOFVFSmNWZnFi?=
- =?utf-8?B?dTdFRlMrU2NkZ29qSTd0bWVZNXBTMGtCS1J0ZW1iS05WZlNYSURielRtNk9C?=
- =?utf-8?B?SlBBaituQWRaNkY0YUlGclFlZDM5aWErdjI1dDFlMHBkMnowUmsxdm9lVHBi?=
- =?utf-8?B?R3lJYk1CUWpIUFVXRmtyM2psRmVDK0NXeitBYStFKzJlVzlqVW94QVdibXZ1?=
- =?utf-8?B?T2w0ZnoraitUVW9EM3BEdXlSZVg4R1VWdmRBa20ra2ZmK0N4N3FLYVNPbnNN?=
- =?utf-8?B?T01zZWFUdmhONnZBKzZXeFMvU2hOTHA5TUtFM1BaRExuU1FnWVh5WFc5L0J2?=
- =?utf-8?B?Vkc4dEpjK1IwU0pRZm95bEowVUlCZU9FUXdleG5JdnNpNGlMY1dPZnZpbmZB?=
- =?utf-8?B?Vi9LTFEyYy9Yb2RZRlFtRnBLaHFPUnkvaWxiT2JFZ0h3ZmNydUNJOWtGMnR1?=
- =?utf-8?B?MmVKcXJMMUQ1NFNzdWxnZzQ5RkpnN0NSY1dKaHlicTVKTTkreS8yai9YTHA3?=
- =?utf-8?B?YVVYek0yZ09idDlEK09rZGtlTCtSVEU2ZE44Y2ozOWVxZzVmNDB0eHFoWm91?=
- =?utf-8?B?MXhucnl1bFdTbHRrWUJDTlM2MEZiQlhRTnQ0ZmNoYUozNnpSL2dteUpEU294?=
- =?utf-8?B?VytSbVVQYzAyajFkWE56R1hoVFdjYmRLbDg1TkpzNnQvVkpTbTkxL0tUSnox?=
- =?utf-8?B?NG9XVmJ1U0lUWXE5cFd6bXdPdTgveXRwaHhGV05wUVhvek5VRkpBaUg4N1dY?=
- =?utf-8?B?NzlSd2t1S2JydlBBQmViRUlCb2RMQjdsSzdxR2FDeGxTYXdlallvUVo5a3ky?=
- =?utf-8?B?TFIvZ0plS3JPRXo1c3lwSy9hYzJ0eHRhS1p0OTI1K0wxR3dXZ2d1Vk9BdlJn?=
- =?utf-8?B?dTdMbTlKbTJmUFZ5Z1ZTSVRjL25HQ3A5bHZwSGg2Z1JKWTNXYTRCTHJDTGlz?=
- =?utf-8?B?ZGJhMUZlMXhmNnFtckxtUHFGU1ViV0hXUEpLS2xxS2RHR1FnREh2VU9VWTRn?=
- =?utf-8?B?Mk84NWRDQjVWRlo3QWRrVDlMQkRvSTNHNUwxVjBPTWY5OTFteUI3dkVOVElO?=
- =?utf-8?B?amdJV3RrZkdEcWJjZWRnSzlEUnV4TG5TZG9kUS9SaEJDVlIrMlpUanMzOWU0?=
- =?utf-8?B?LzBVOVp0dUFjbkhqdi9yajFkbzc3TWNyaEluZ2xkL0paUkExbkRvenJxSDlk?=
- =?utf-8?B?Y0xSdzJqcWVnVE01eHk4MlJKQisrYVZkQXRndnFXRzhPblkxOHVHUEtKMVhZ?=
- =?utf-8?B?cm14TjFtVkh0c1NnREx6ZjRaaEdleG4yUll6WXFaU1g1N1lzNFZRVFhLUHF5?=
- =?utf-8?B?QnhiZUpocnZXV2ZSU0wyalUrUXhURnIxM0pYbytIekxFQUVITVUxWTJYVlRw?=
- =?utf-8?B?ZlBzQVJra3U0UDZVTWZITG1NbzFnS2Z4cUExbVk2Nk5QVWV2Y3o1TDBvNnNr?=
- =?utf-8?B?MFpMWC9aTmYvZzZJdDFwRTc3NDVzQldrMEQ4K0dzUHE5RFkzVlRDQ3IrdHRm?=
- =?utf-8?B?c0Z4dW5ydm1EeW9TeXNCMUU2OTZDdUM2eEVyV201NkJmZi9GTEU2YnhObVds?=
- =?utf-8?B?WkQzUXhGZ3V0N2xMWW0wcURKR042U2JnamkwS2wyMTJUbjVScm0rR0NEdW9Y?=
- =?utf-8?Q?Mt4iWpwFKI8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(1800799024)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?emtCYWxGcC9PbHJGRDN1d3pjWU8zWVNtd05VWXRDaUE4Z0thMENJMGs2eHFO?=
- =?utf-8?B?cVBZYUZySWF6M21aR3Exd1l6SGh1V3k0ai8xemxnaXpsQTU0bmVoNEppajhv?=
- =?utf-8?B?d1o0MU5pZE5xTm13Y0dIWnVtVFhLKzNTdVByZHUyb2VSMi93dWpUdlJiU3lY?=
- =?utf-8?B?Vll4cEkvMUQwdCs1T0VWUG9Oanp4dk9xWEIrUGIxNFMwK3R1RGZaTzNpNmFB?=
- =?utf-8?B?b1pQMkJwQnZnR0pTWU9leE5lV0E4WkNRek1IZ3IvdC8wb1lCUmp4ZGpnNXlI?=
- =?utf-8?B?VGF0ZElRTklqNEg4cms4eEJabWJnd3ZNalFhSWpNeENoaENYVHZLYUFqS3RE?=
- =?utf-8?B?elg5ZWczajRrWjJoUXdseTRvd2drSkxONm4weUdkbUpkdVJOTDRlMHZmcG5x?=
- =?utf-8?B?YWo5dktCdGZBdkRJOTJiTG0vM3ZlNjNwSUhwRU4rQzBEU09PTXp0WFRBazBB?=
- =?utf-8?B?cDZ3RFpoQXRCZGxmUjI1anFML1lScDN0QVRoZG14ODJCVm05dzZjMlZqTWF4?=
- =?utf-8?B?Q2lTNmhqK3drazBYM1ZDcnNJNlJRTXJjYXNUVXQ2ejl6cWNBM2diQ1NlTFox?=
- =?utf-8?B?Yng2RjIra0xpMmhGS1hGZWIyZjB4d3FHcHpVaEIzV0ZSS0R1aEorakRaTUo1?=
- =?utf-8?B?RitpdndPVnJzYjBDMlZuREZtWjBoWmU0NDBOajY4NDlpS3RIczkrV29tSDhW?=
- =?utf-8?B?M1pNNWh0emN0RWs4eTMyR1JYem1oVnpiNTJRb0xaMDhVdWNNendpQWdUZlFB?=
- =?utf-8?B?RDlORVQ5dkhmTE1pWE1CTTdtMmEzQkVGQU1oNkFXTzZmYXd2b2FrUFFpQ1Z0?=
- =?utf-8?B?U1RvSHd0STR5dS9uaDNWeHpnTTJGeWhYaTVGZCtxLzVyTWQwQXdLZlpJbzhN?=
- =?utf-8?B?d0RsMXA3NmhMY0VLMHF0UGw2eDVFS0ovanJ4bjJJK0FMNHlxeEx4YzN2UDI2?=
- =?utf-8?B?L2VVR05Oc3pHM1hlUEJqbFJRY2oyb2sybFo0RzRuT1llWFZOMjNna056R1pr?=
- =?utf-8?B?KzRnc2VqV2ZVUVJ4ZVF6RHhxK1BxZUJWS1ZBMTZqNmU4d0lpYUFQSkR5NTRM?=
- =?utf-8?B?d0VCaXE1M2Z5YTAwRXR3bDNyVlFLQTZyZXdQZ0g0aERiZDkyNHUrVVZCRWl0?=
- =?utf-8?B?emJjMlpyZHliR2VuRzcwdkhGY0NyTkVZamFHd1l4WWlvbzRUaSsrRVVKUVJ4?=
- =?utf-8?B?UHcwN0tJeVpjbnZKd0dvY0F1ZlhCeU5RdllUdmZDZGNHbG5JR2FUSllFb2JS?=
- =?utf-8?B?VS91ZEdCdTAyY3NZU1MxbVlpZnJYUjVyM2FWYlVNd2Zuak1iMDFNejRCSzZr?=
- =?utf-8?B?M0U3NDV6Q2NwSFNDRE9CbmRIWUJ4cEsyN2kwUVNBUnloRmZsOTRDa01CSjlZ?=
- =?utf-8?B?RVlNVEFsV1lvSlg3Sk9RV2htSmN1akRSdzcrVmNRSlVLK3NnZk50Zy9ML1Uz?=
- =?utf-8?B?aDVwbS8yZ2NJSzhjUC85SlRac202UzlmSFhHdUFEVVJ0QTNNbVZyZmUxK1Q1?=
- =?utf-8?B?Vlc4WG12Z3BaUFpJd1drL1l6Rzdzci83ekZHQzZvUkthZlFYSEE4ZkN1bTFz?=
- =?utf-8?B?dmdjUlNxc0lDaVMxZWNMU1lHOGtKWG5nN0Z5R3Z1WDdDMjRucXRxRFZYdElU?=
- =?utf-8?B?Zk5ocEhQUHU1VnE2MDVPUGpGSDlyU0IySjlRMjFMSFNMYndnRHdoYi85WUZu?=
- =?utf-8?B?eFRPUHE5SldnT1RUZHY4R0JjQ0JzdjNiMUtxaXh6SzN6MDA2b3VMcG1zQ1ls?=
- =?utf-8?B?MVJPdWY4SG85a3JnZjZSSm9BRlNJbVBJOW5QdTUzWVlMeVNkS2o2dlVlS2Mz?=
- =?utf-8?B?OXJpSnlNMS9DdmxOdjBEL3Vmc3R6QVgvOHROMFNVWHJZT1RQQmFSVkswS1NW?=
- =?utf-8?B?TG5obC9SQk9iUUp3QWdITkx4K2lNVkl2VVAwZ1hIUGQxOExIVjcwYmV6QWdr?=
- =?utf-8?B?UW9scTJ4OS9SWldPYWo5c3FVc1NUeDl0d1NNbm5RNGtFWlgzcVAzUkc5S0dq?=
- =?utf-8?B?SVVsZFF2ZVFtZ2trelc4bC9EWTNxNTNZYUw4RjNGa1diTDJqNGlwbkZ2TkJ4?=
- =?utf-8?B?M3dNeWpvZGdRMEF4eEZyb3hMaDNLTDlwR0ExaXFQd0ltOUZBYlV0ci9vZHEy?=
- =?utf-8?B?VGtyTjh5ZEhyV0tPcmRuNFZjY1paSWxETEI3cGE4ZEl5bTZHaUhsQkM0S25h?=
- =?utf-8?Q?eINJcAGplSlJ+0k2qHYw76Fcc2J5/cNcMa6ehwXZwGh8?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4477a76c-c642-49ff-3121-08dd765ce186
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3997.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2025 05:19:05.4019
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kZS9FnID4BJaWQGH+g+gtW5SN4QlJZq4gYmnf1hxx6qfk+lrOVG97TVe9B7kXQ2ds2QMFeC0fLiFitXcF+v9ug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF5A8F51299
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAN3q9GcC/2XSS07EMAwG4KugrgmynadZcQ/EIs+hElA0gyrQa
+ O6OhxZalFWVqJ9j+fd5ONXjWE/D/c15ONZ5PI3TmxzQ3d4M+Tm+Haoai1wMBGTAk1bza1QtACI
+ 3bknbQf58P9Y2fv6UeXyS8/N4+piOXz9VZ7ze/vczKlSaYrFRCoVaHw7TdHipd3l6Ha4FZtojv
+ yASFJOulsmXrGOH9IakwQVpQSW5jBliK5E7ZPaIFmQEAWMMHmyIRnfI7pFbkL0iAxga2FIpdcj
+ 9IQSEBTkFqgQGzck16/uX/B6ZBXlBgFVTC05ysB0KG0JaXwqCatJoyJboXN8e79E6CBbkkXxqu
+ RRr+pwQ9orXdKU9ZUprMokUJa2ebUuBhGtU8hXmnDNgKLTcDwP/1sLK3tiVkTDtLTDHCuj7vUC
+ 9MYLfFdTCKDEHciFqdj0zO4a/zAhLxNn4mAhbP3y0G9OwRibNgrLZGZQIOMD/Ji+XyzeabLZai gMAAA==
+X-Change-Id: 20240723-vma-f80119f9fb35
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6266; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=r4Hu3N2qKPWYSdMjMLUU4leSKcHEUEyG3mqTdjIjwD8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBn9Orrar5BK5Vo24GI4uDyp2BfqPQKp16/q6sP/
+ z5bXEzuWQOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ/Tq6wAKCRAEWL7uWMY5
+ RgavD/9JYzBjHS+Mn55+CIHd6R11q6PJ9iGaChY83cMM8tv0fulhJCkWA/xSNFSV5rPCPUmbPH3
+ oFEV6ftccSd8Se0v5QwtbYbBIzmD6om5FxjZhZpB/3/nqhOMtJsOljhY3Qn2ZaE1F9iLiK2jbY/
+ 1ZUBE8FS4khC5yEEmWQomuLET5rn3usxeyc3PtP7PsqNiofErTzCOBqees7TGDKDcu3cpLpXVK4
+ udt/JvRrFR3+xOdOozwT2Kzs+xVx8zX5/TRG/6PqjCcsnT04s0J7t0z48dl7xhYi9TEntrX1uit
+ LEXAHCGsdkB1S/F1jrS1fWbflOECzSL/+mpBwpj0RKvrLn0NBIIzp4cMmlkzODAFMcEiQEBDwEH
+ paqFGuPV4XXUzMb9I8ujcwxvML1Pqy/UMJbxlKPUMODD2/T0u9szhAx4DOEJRVOegkOMWPVed1M
+ ehLCkpQSEjecFUZ9QxaGMFxxhwMbnPurR+WT/thx3I9vli62mhhduwgwDeuqbOZLNuqyoJk2+jL
+ 1VVxPIhfpuHTum0GiDgZbdwZo84V0c43Lzdb66360Hav+TpQZlzkDEoOfH14faeEIFxXUe6M5QR
+ h3kATRj5Oq/N75H3uNR6BSUm85/YB08BwL0pX9a2p2GzZXJsG/xqzuUOAOqlvyEYJ+QUfok+Vq/ VnCfI0skGi2vGhg==
+X-Mailer: b4 0.14.2
+Message-ID: <20250408-vma-v16-0-d8b446e885d9@google.com>
+Subject: [PATCH v16 0/9] Rust support for mm_struct, vm_area_struct, and mmap
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	John Hubbard <jhubbard@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@Oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Jann Horn <jannh@google.com>, Suren Baghdasaryan <surenb@google.com>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Balbir Singh <balbirs@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
 
-This enables the creation of trait objects backed by a Box, similarly to
-what can be done with the standard library.
+This updates the vm_area_struct support to use the approach we discussed
+at LPC where there are several different Rust wrappers for
+vm_area_struct depending on the kind of access you have to the vma. Each
+case allows a different set of operations on the vma.
 
-Suggested-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+This includes an MM entry as proposed by Lorenzo:
+https://lore.kernel.org/all/33e64b12-aa07-4e78-933a-b07c37ff1d84@lucifer.local/
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-From this discussion on Zulip [1].
+Changes in v16:
+- Rebase on v6.15-rc1.
+- Fix conflicts in rust/kernel/miscdevice.rs.
+- Rephrase MAINTAINERS entry title to match style from
+  https://lore.kernel.org/all/20250326215541.1809379-1-rppt@kernel.org/
+- Don't provide mm abstractions on CONFIG_MMU=n. See first patch for more.
+- Link to v15: https://lore.kernel.org/r/20250304-vma-v15-0-5c641b31980a@google.com
 
-Heavily inspired from the similar feature on `Arc`.
+Changes in v15:
+- Add MAINTAINERS entry.
+- Pick up new Acked-by and Reviewed-by tags.
+- Link to v14: https://lore.kernel.org/r/20250213-vma-v14-0-b29c47ab21f5@google.com
 
-[1] https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/Trait.20objects.3F/with/510689662
+Changes in v14:
+- Rename VmArea* to Vma* as suggested by Liam.
+- Update a few comments in patch 02.
+- Link to v13: https://lore.kernel.org/r/20250203-vma-v13-0-2b998268a396@google.com
+
+Changes in v13:
+- Rebase on v6.14-rc1.
+- Remove casts that are now unnecessary due to improved Rust/C integer
+  type mappings.
+- Link to v12: https://lore.kernel.org/r/20250115-vma-v12-0-375099ae017a@google.com
+
+Changes in v12:
+- Add additional documentation to modules at the top of mm.rs and virt.rs.
+- Explain why the name Mm is used in commit message of patch 1.
+- Expand zap_page_range_single with docs suggested by Lorenzo.
+- Update safety comment in vm_insert_page
+- Mention that VmAreaMixedMap is identical to VmAreaRef except for VM_MIXEDMAP.
+- Update docs for as_mixedmap_vma.
+- Add additional docs for VmAreaNew struct.
+- Rename `get_read` -> `readable` and equivalent for write/exec.
+- Use mut pointers for `from_raw` for VMAs.
+- Update safety comment for fops_mmap.
+- Add additional docs for MiscDevice::mmap.
+- Don't introduce and immediately delete mmgrab_current.
+- Reduce active_pid_ns comment at Andreas's suggestion and link to get_pid_ns.
+- Fix documentation test in rust/kernel/task.rs.
+- Fix warning about unused variables in lock_vma_under_rcu when
+  CONFIG_PER_VMA_LOCK=n.
+- Fix minor typos.
+- Link to v11: https://lore.kernel.org/r/20241211-vma-v11-0-466640428fc3@google.com
+
+Changes in v11:
+- Add accessor for the vm_mm field of vm_area_struct.
+- Pass the file to MiscDevice::mmap for consistency with
+  https://lore.kernel.org/r/20241210-miscdevice-file-param-v3-1-b2a79b666dc5@google.com
+- Link to v10: https://lore.kernel.org/r/20241129-vma-v10-0-4dfff05ba927@google.com
+
+Changes in v10:
+- Update docs for `set_io`.
+- Check address in `zap_page_range_single`.
+- Completely redo the last patch.
+- Link to v9: https://lore.kernel.org/r/20241122-vma-v9-0-7127bfcdd54e@google.com
+
+Changes in v9:
+- Be more explicit about VmAreaNew being used with f_ops->mmap().
+- Point out that clearing VM_MAYWRITE is irreversible.
+- Use __vm_flags to set the flags.
+- Use as_ and into_ prefixes for conversions.
+- Update lock_vma_under_rcu docs and commit msg
+- Mention that VmAreaRef::end is exclusive.
+- Reword docs for zap_page_range_single.
+- Minor fixes to flag docs.
+- Add way to access current->mm without a refcount increment.
+- Link to v8: https://lore.kernel.org/r/20241120-vma-v8-0-eb31425da66b@google.com
+
+Changes in v8:
+- Split series into more commits to ease review.
+- Improve read locks based on Lorenzo's doc: either the mmap or vma lock
+  can be used.
+- Get rid of mmap write lock because it's possible to avoid the need for
+  it.
+- Do not allow invalid flag combinations on VmAreaNew.
+- Link to v7: https://lore.kernel.org/r/20241014-vma-v7-0-01e32f861195@google.com
+
+Changes in v7:
+- Make the mmap read/write lock guards respect strict owner semantics.
+- Link to v6: https://lore.kernel.org/r/20241010-vma-v6-0-d89039b6f573@google.com
+
+Changes in v6:
+- Introduce VmArea{Ref,Mut,New} distinction.
+- Add a second patchset for miscdevice.
+- Rebase on char-misc-next (currently on v6.12-rc2).
+- Link to v5: https://lore.kernel.org/r/20240806-vma-v5-1-04018f05de2b@google.com
+
+Changes in v5:
+- Rename VmArea::from_raw_vma to from_raw.
+- Use Pin for mutable VmArea references.
+- Go through `ARef::from` in `mmgrab_current`.
+- Link to v4: https://lore.kernel.org/r/20240802-vma-v4-1-091a87058a43@google.com
+
+Changes in v4:
+- Pull out ARef::into_raw into a separate patch.
+- Update invariants and struct documentation.
+- Rename from_raw_mm to from_raw.
+- Link to v3: https://lore.kernel.org/r/20240801-vma-v3-1-db6c1c0afda9@google.com
+
+Changes in v3:
+- Reorder entries in mm.rs.
+- Use ARef for mmput_async helper.
+- Clarify that VmArea requires you to hold the mmap read or write lock.
+- Link to v2: https://lore.kernel.org/r/20240727-vma-v2-1-ab3e5927dc3a@google.com
+
+Changes in v2:
+- mm.rs is redesigned from scratch making use of AsRef
+- Add notes about whether destructors may sleep
+- Rename Area to VmArea
+- Link to v1: https://lore.kernel.org/r/20240723-vma-v1-1-32ad5a0118ee@google.com
+
 ---
- rust/kernel/alloc/kbox.rs | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+Alice Ryhl (9):
+      mm: rust: add abstraction for struct mm_struct
+      mm: rust: add vm_area_struct methods that require read access
+      mm: rust: add vm_insert_page
+      mm: rust: add lock_vma_under_rcu
+      mm: rust: add mmput_async support
+      mm: rust: add VmaNew for f_ops->mmap()
+      rust: miscdevice: add mmap support
+      task: rust: rework how current is accessed
+      mm: rust: add MEMORY MANAGEMENT [RUST]
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index b77d32f3a58bab5ec73c612bdaaba0d79bfdff65..969b9f9fd3149685e1d1ecdf1eed9c647c887397 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -32,6 +32,8 @@
- ///
- /// When dropping a [`Box`], the value is also dropped and the heap memory is automatically freed.
- ///
-+/// [`Box`]es can also be used to store trait objects by coercing their type.
-+///
- /// # Examples
- ///
- /// ```
-@@ -62,7 +64,17 @@
- /// `self.0` is always properly aligned and either points to memory allocated with `A` or, for
- /// zero-sized types, is a dangling, well aligned pointer.
- #[repr(transparent)]
--pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
-+#[cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, derive(core::marker::CoercePointee))]
-+pub struct Box<#[pointee] T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
-+
-+// This is to allow coercion from `Box<T>` to `Box<U>` if `T` can be converted to the
-+// dynamically-sized type (DST) `U`.
-+#[cfg(not(CONFIG_RUSTC_HAS_COERCE_POINTEE))]
-+impl<T: ?Sized + core::marker::Unsize<U>, U: ?Sized> core::ops::CoerceUnsized<Box<U>> for Box<T> {}
-+
-+// This is to allow `Box<U>` to be dispatched on when `Box<T>` can be coerced into `Box<U>`.
-+#[cfg(not(CONFIG_RUSTC_HAS_COERCE_POINTEE))]
-+impl<T: ?Sized + core::marker::Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<Box<U>> for Box<T> {}
- 
- /// Type alias for [`Box`] with a [`Kmalloc`] allocator.
- ///
-
+ MAINTAINERS               |  13 ++
+ rust/helpers/helpers.c    |   1 +
+ rust/helpers/mm.c         |  50 +++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/miscdevice.rs |  45 +++++
+ rust/kernel/mm.rs         | 344 +++++++++++++++++++++++++++++++++
+ rust/kernel/mm/virt.rs    | 471 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/task.rs       | 247 ++++++++++++------------
+ 8 files changed, 1054 insertions(+), 118 deletions(-)
 ---
-base-commit: a2cc6ff5ec8f91bc463fd3b0c26b61166a07eb11
-change-id: 20250408-box_trait_objs-02a700401f0b
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20240723-vma-f80119f9fb35
 
 Best regards,
 -- 
-Alexandre Courbot <acourbot@nvidia.com>
+Alice Ryhl <aliceryhl@google.com>
 
