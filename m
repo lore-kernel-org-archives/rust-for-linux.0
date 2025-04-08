@@ -1,30 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60CF35973;
-	Tue,  8 Apr 2025 00:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1AC25B663;
+	Tue,  8 Apr 2025 00:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744073621; cv=none; b=WXpUd2tpEJRPDEruuYLoK7Kqw9tp8OnZfqESKBvwAWKfipAbWh2O+EnqZpdgIyjOoic8OTs+Ye7v2KoAMckUP9NiyOB3e238I5TvDfXXboCgpWYxuUkSi3CteU62/5f8epCfTWpVg5Ov5kaOZfktPij6wuX3YU3HNBIoWzXljOc=
+	t=1744073632; cv=none; b=k1TFkMRc4GBY05oFy9ekYwh3mBwRieOF7ITL/PeXAbOHOT8t3LGfO/dvhoOOg9MUheYye003y61mvjmjxoOwEISMuyD3ce/khmk/NU0qd+gTEynts0QT9TKryfmtZjYjKRUTCztNF3xrlYqSK8Gh1SpWffGy+cmzrMsbFP/Vq0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744073621; c=relaxed/simple;
-	bh=2tioJx7A1oHG6jVTeIhvZwxr2imWJglUGKGr1y1xJkY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=sUymaJXMPvzPTCFuMBSUfIKBOFqGath93WAc5NdOGtCoOEUIR1Jq//GUkwBBGsBcVzSsBKO5OMfc4u/ug9rJpgqn6v0kgLILtAiJO+knvxKoGkHhyugYXesknA1EL4EK5fz0Yoj5GEM7wBPsHoFwmo4J3XpfXnthn4FfeR8qA9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O43cs2gO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744073632; c=relaxed/simple;
+	bh=zNq4FkvWSaUd6BSfXs8OWjKhmTxTR9rqi0g6Pe3iLdA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=SbsZ9bJuD8ah47udlI1qWyOjxdZ7SazBNgTh6Yp6PThnhyLKRO5pibBTCGKQ4jaXNqAnKFld5N+IIR08QHKb/gEse7ZFJJGn6RkuBp6wrIrrRdJB3dNaF4e3uCq4NWMFqOMLjJxVdZDJX2+VaSkCLvWAERkqVT8SbHfcINfB3LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=loJvLlGj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O43cs2gO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A932AC4CEDD;
-	Tue,  8 Apr 2025 00:53:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="loJvLlGj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0067FC4CEDD;
+	Tue,  8 Apr 2025 00:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744073620;
-	bh=2tioJx7A1oHG6jVTeIhvZwxr2imWJglUGKGr1y1xJkY=;
+	s=k20201202; t=1744073632;
+	bh=zNq4FkvWSaUd6BSfXs8OWjKhmTxTR9rqi0g6Pe3iLdA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=O43cs2gOdBdLaqG/dW+Ojdf2ozJ3BmEuyYFheOdItkMESfNLXpPSdMi7VgQgvHmBi
-	 yKRLWqj+dlAXBTPskDH0GEAYUCb8GS+4rX6K3aVeTmulZ4a7qOylBV474JyRCcIiTk
-	 /yIn7N19JpNawTYcoGmxiKu19kDAIbNbbXnTwmL0mIO2xRMO6SVAScaR/glUS+CGb5
-	 iVJYtYlLUpNwt3LI/0Yo/ZKxN/oAPf1cC97IYVTHqgdaX9k/MLl+GRGCZhBbUHah2e
-	 Jxf7RhYkAUhrwyscD7riE5/RX4RpVXQTePG7V1gnXMCrgLweXnbOSJkcSveJ8xqwpo
-	 eMrNCUrd9FNpA==
+	b=loJvLlGjSXED5sBvoCk30HuAMLwkc7jMBt40k4H+TgixURMXbsUW5jwVSG6woEhzE
+	 QypmjSOfqqvNWpVfpYA3M9lXtBs3r+H0hDtc4JNB3KycPZyCobiBX2v2EWiWJplejV
+	 EoT4ulnwZtvEb52yAa1DWdk17sapD1x5uJiZdKXULInpJFmywkt4G20qAOCmEjMeb4
+	 fuJUasalNm87baFP3q30bM7+aKi/lzyB4Z5lgqG7+5TJWQxw/ID4s++1Xu3UohxIPX
+	 S4B3P5hgGxJkn85MRyXcuHSCrSNUwUyzPqKzauiADrrK8bGVxknNACIJNreOZDd3Qi
+	 jcyzX9+abor3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -36,9 +36,9 @@ Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	alex.gaynor@gmail.com,
 	linux-kbuild@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 1/3] kbuild, rust: use -fremap-path-prefix to make paths relative
-Date: Mon,  7 Apr 2025 20:53:33 -0400
-Message-Id: <20250408005335.3334585-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 1/3] kbuild, rust: use -fremap-path-prefix to make paths relative
+Date: Mon,  7 Apr 2025 20:53:45 -0400
+Message-Id: <20250408005347.3334681-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -49,7 +49,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.1
+X-stable-base: Linux 6.13.10
 Content-Transfer-Encoding: 8bit
 
 From: Thomas Weißschuh <linux@weissschuh.net>
@@ -77,10 +77,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/Makefile b/Makefile
-index 8b6764d44a610..c4eeb97ab3df2 100644
+index 21a34e8991ac6..9c1b66bf4bf6e 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -1068,6 +1068,7 @@ endif
+@@ -1067,6 +1067,7 @@ endif
  # change __FILE__ to the relative path to the source directory
  ifdef building_out_of_srctree
  KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srcroot)/=)
