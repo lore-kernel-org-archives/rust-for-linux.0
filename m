@@ -1,142 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CD6263C83;
-	Tue,  8 Apr 2025 12:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCB8143748;
+	Tue,  8 Apr 2025 13:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744116051; cv=none; b=ee2R5dzyOTdNPbQcXs4NELB3aNWANSiORJVM1iTds6tgtnqgu2Sm+x7VikahgE5zb7oruHreJu60obq73EqVU7nrUsAbqXOmL03DsEq9zM4Svul2WmZ1oDmqOSs8hWzRHhHJgZd08WuYcvlJG6LNgJKG6iSUHB4B8RNSNZb9xCQ=
+	t=1744117400; cv=none; b=ZDBNFv8eGc1nHAvYBtx/Nof+wp2lPa4oGOqFx9tQjPlDytBd/Juu/8nBTBIwkVjr/ZLpFBI4Ou2o+MSKzG0VEOLqpGS6hAHbWqi2o2NbL3yTutByWFIKp6PFvU3wiuW3kPrS12K2/Dc/Gvw2y2rsYhcjUk4d/E0df4Emz/OqEu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744116051; c=relaxed/simple;
-	bh=dHP0/udm20sXgQKDlru8Fc0+oci1llyIjyVrg4/zGdg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TrWvUI0o7RG9gBoGXMa0WyxkUxUHYvXWtpelOPBClVNvquegnyS3hje4zEKeos12PV1UmQ1H9zPPhbskYv1wXXgj/TxbiKzJm1/xDCy62RViwfoWlBD6AB+5BB0xyC/NBU9lxeZbLfd3nQOt803bErw49he+s+vXPiw2QULbU4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8fbRvfx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744117400; c=relaxed/simple;
+	bh=i5lzPszOX5TlxHXFgvYFZXXWKRvrNOTdCUU9Av4MGAs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JG78nKR8TFBwUdJIT0VoDouDhz4H1/npAqfU7S/eS5xzbn2wiV2FiK/3MKdFfcNDFvk+zRqlSPp+iX7F0nU/0KE1OYAjkBCHt0aZYmg1svV7NsykrPTkl/giwiu+OCKFu/eQ4od6LEjLI6DsD/1GPJI8MugCB8HLYB+/iT27zEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHDvtdyx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8fbRvfx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298D8C4CEE5;
-	Tue,  8 Apr 2025 12:40:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHDvtdyx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40CBC4CEE5;
+	Tue,  8 Apr 2025 13:03:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744116050;
-	bh=dHP0/udm20sXgQKDlru8Fc0+oci1llyIjyVrg4/zGdg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=c8fbRvfxjziB7Io+USquH5XEtqf7lDQk3JFK8aOt0z/9KBVBiuLgEZCN0YsT61ug7
-	 uTs04krMG0aSWDXCfrvKo91MUorTseZqJ+ExDUrfhIZCHnylsUn9r0DOUJ0svg4XbY
-	 dM/x/+0rqNSD1cfqOkdCVT+3JFNpmAF/8t5LiPpzRKFuAGD+WXBJg6sOKlZqRbqkhR
-	 RfHTub4Zufn/r1h9lSF/E3SkK1lOuWYwD2NQObsUvhYskaY80/yTCB+9/PmCE1R+j0
-	 gM5Z3akGSOdVfUvAU00JGybeD7Sr9G4OgoC9Rq0eF4pRkujZsl6FAq2wI9VIFoHoTA
-	 M8a3YYRZdAU1g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
-Cc: <ojeda@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Daniel
- Almeida" <daniel.almeida@collabora.com>,  "Robin Murphy"
- <robin.murphy@arm.com>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun
- Feng" <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron <bjorn3_gh@protonmail.com>,  "Benno Lossin"
- <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  <rust-for-linux@vger.kernel.org>,  "Marek
- Szyprowski" <m.szyprowski@samsung.com>,  <iommu@lists.linux.dev>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/3] rust: dma: add as_slice/write functions for
- CoherentAllocation
-In-Reply-To: <20250326201230.3193329-4-abdiel.janulgue@gmail.com> (Abdiel
-	Janulgue's message of "Wed, 26 Mar 2025 22:11:44 +0200")
-References: <20250326201230.3193329-1-abdiel.janulgue@gmail.com>
-	<Jv5VZvihK_dgh5j6Ml8T-c7Q8EICtgbgAMI_g_QT51H7--Za9Dbwvz4j1ouuseFxM26sKP0_J3h38ffbQq0Y_A==@protonmail.internalid>
-	<20250326201230.3193329-4-abdiel.janulgue@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 08 Apr 2025 14:39:29 +0200
-Message-ID: <87friihloe.fsf@kernel.org>
+	s=k20201202; t=1744117399;
+	bh=i5lzPszOX5TlxHXFgvYFZXXWKRvrNOTdCUU9Av4MGAs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kHDvtdyx6nWmdIeuZCRw0GMcXpvDP5IDGjxPaWA8E773uexYzPWiVyfV5VGQHoyEs
+	 b84VNWPZ+DQFLQ94CuLPVtNC27tAdhYbWm3Yi8jz4B+EnwQlrqdj+XmyrI9EohKzll
+	 rXnDl3sGgBiC1xAk9vUxtMgXuXMZ7f05a3I67N8FjgPxSBaGanCD5E5PzTu18VzIVp
+	 y10YEJu9zT+qCf1sfEeSsQQ1nU+HFIsygXX6eGdyk/MIaJifxWl4pYSNT18m/y4l3d
+	 MIFhC6SHoq+i2br+8UF4D2xN29bRo7TxtE2qso3p1NKuXuJ9GqBtsznxOX8zYkFbd6
+	 vzxWL/gdvW6RQ==
+Date: Tue, 8 Apr 2025 15:03:13 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: alloc: allow coercion from `Box<T>` to `Box<dyn
+ U>` if T implements U
+Message-ID: <Z_UekWa9F8w_tmuy@pollux>
+References: <20250408-box_trait_objs-v1-1-58d8e78b0fb2@nvidia.com>
+ <D916LG7Z9Q31.5RVNMYM38E2D@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D916LG7Z9Q31.5RVNMYM38E2D@proton.me>
 
-"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
+On Tue, Apr 08, 2025 at 10:22:29AM +0000, Benno Lossin wrote:
+> On Tue Apr 8, 2025 at 7:18 AM CEST, Alexandre Courbot wrote:
+> > This enables the creation of trait objects backed by a Box, similarly to
+> > what can be done with the standard library.
+> >
+> > Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> > ---
+> > From this discussion on Zulip [1].
+> >
+> > Heavily inspired from the similar feature on `Arc`.
+> >
+> > [1] https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/Trait.20objects.3F/with/510689662
+> > ---
+> >  rust/kernel/alloc/kbox.rs | 14 +++++++++++++-
+> >  1 file changed, 13 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> > index b77d32f3a58bab5ec73c612bdaaba0d79bfdff65..969b9f9fd3149685e1d1ecdf1eed9c647c887397 100644
+> > --- a/rust/kernel/alloc/kbox.rs
+> > +++ b/rust/kernel/alloc/kbox.rs
+> > @@ -32,6 +32,8 @@
+> >  ///
+> >  /// When dropping a [`Box`], the value is also dropped and the heap memory is automatically freed.
+> >  ///
+> > +/// [`Box`]es can also be used to store trait objects by coercing their type.
+> > +///
+> >  /// # Examples
+> >  ///
+> >  /// ```
+> > @@ -62,7 +64,17 @@
+> >  /// `self.0` is always properly aligned and either points to memory allocated with `A` or, for
+> >  /// zero-sized types, is a dangling, well aligned pointer.
+> >  #[repr(transparent)]
+> > -pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
+> > +#[cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, derive(core::marker::CoercePointee))]
+> > +pub struct Box<#[pointee] T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
+> > +
+> > +// This is to allow coercion from `Box<T>` to `Box<U>` if `T` can be converted to the
+> > +// dynamically-sized type (DST) `U`.
+> > +#[cfg(not(CONFIG_RUSTC_HAS_COERCE_POINTEE))]
+> > +impl<T: ?Sized + core::marker::Unsize<U>, U: ?Sized> core::ops::CoerceUnsized<Box<U>> for Box<T> {}
+> 
+> You forgot to add the `A: Allocator` generic here and in the impl below.
 
-> Add unsafe accessors for the region for reading or writing large
-> blocks of data.
->
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> ---
->  rust/kernel/dma.rs | 87 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 87 insertions(+)
->
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index 24a6f10370c4..24025ec602ff 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -218,6 +218,93 @@ pub fn dma_handle(&self) -> bindings::dma_addr_t {
->          self.dma_handle
->      }
->
-> +    /// Returns the data from the region starting from `offset` as a slice.
-> +    /// `offset` and `count` are in units of `T`, not the number of bytes.
-> +    ///
-> +    /// Due to the safety requirements of slice, the caller should consider that the region could
-> +    /// be modified by the device at anytime.
-
-The user does not need to consider this, because the safety requirements
-make sure this is not a problem. The user only needs to consider the
-safety requirements.
-
->> For ringbuffer type of r/w access or use-cases where
-> +    /// the pointer to the live data is needed, `start_ptr()` or `start_ptr_mut()` could be
-> +    /// used instead.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * Callers must ensure that no hardware operations that involve the buffer are currently
-> +    ///   taking place while the returned slice is live.
-> +    /// * Callers must ensure that this call does not race with a write to the same region while
-> +    ///   while the returned slice is live.
-> +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result<&[T]> {
-> +        let end = offset.checked_add(count).ok_or(EOVERFLOW)?;
-> +        if end >= self.count {
-> +            return Err(EINVAL);
-> +        }
-> +        // SAFETY:
-> +        // - The pointer is valid due to type invariant on `CoherentAllocation`,
-> +        // we've just checked that the range and index is within bounds. The immutability of the
-> +        // of data is also guaranteed by the safety requirements of the function.
-> +        // - `offset` can't overflow since it is smaller than `self.count` and we've checked
-> +        // that `self.count` won't overflow early in the constructor.
-> +        Ok(unsafe { core::slice::from_raw_parts(self.cpu_addr.add(offset), count) })
-> +    }
-> +
-> +    /// Performs the same functionality as [`CoherentAllocation::as_slice`], except that a mutable
-> +    /// slice is returned.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * Callers must ensure that no hardware operations that involve the buffer are currently
-> +    ///   taking place while the returned slice is live.
-> +    /// * Callers must ensure that this call does not race with a read or write to the same region
-> +    ///   while the returned slice is live.
-> +    pub unsafe fn as_slice_mut(&self, offset: usize, count: usize) -> Result<&mut [T]> {
-> +        let end = offset.checked_add(count).ok_or(EOVERFLOW)?;
-> +        if end >= self.count {
-> +            return Err(EINVAL);
-> +        }
-> +        // SAFETY:
-> +        // - The pointer is valid due to type invariant on `CoherentAllocation`,
-> +        // we've just checked that the range and index is within bounds. The immutability of the
-> +        // of data is also guaranteed by the safety requirements of the function.
-
-Formatting nit: could you indent the paragraph under the bullet:
-
-  - The pointer is valid due to type invariant on `CoherentAllocation`,
-    we've just checked that the range and index is within bounds. The immutability of the
-    of data is also guaranteed by the safety requirements of the function.
-
-
-
-Best regards,
-Andreas Hindborg
-
-
+Nit: Please use a where clause instead; I think it reads better and conforms
+with the style of the rest of the file.
