@@ -1,123 +1,210 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBB21E5710;
-	Wed,  9 Apr 2025 21:06:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1644D1E7C23
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Apr 2025 21:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744232774; cv=none; b=eFTXJlLJmpav7DMMAtmdveeFNQSR1nSbc7lKD4vvicdp40Y/tvDWQsHujXq64sNKveiNB4gLk7rv82D9TJzScbMSMeByFpT2WFYPkAz7XNrItNhjZsuohH9tWPFwB9HBBcyVv9udHzDCX64sdZdWxkDYvtCResgGfg2bb/WWGKE=
+	t=1744234185; cv=none; b=ktw1CQPvBUzw4vAFGTlf1drZX8dfTYZx+BkT6zOsxbZ9VAQyDOROsXv1do4eo/rLcG8ECQPBTc0DpgpLyxYu8SX2TcVy7qoJpbLiRNEWhkPditrgdsmsMc4SqVsdJwUxxn4BIIvONXm+vBTcEeOAf4Wjxpb+p6L8cR/rm4kiTfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744232774; c=relaxed/simple;
-	bh=pkDCmCK9naL6Vl+XyjNyUFQmEvtkQBSbpV648xlXr0I=;
+	s=arc-20240116; t=1744234185; c=relaxed/simple;
+	bh=k1P1sqTWFObfFfALTkWHdnrZWf+on0jx17RciXdqQEU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PqjpgTPxRqGyq9YG1rQFpS502PCkg3BsJJypu2TyoJDPu22/FfJOhn4mNde7XaAXMu4kQxqnCXLeBh1SkfcIHaZDRIELRQK5rfLJI0oi6ptGscquesBJzCzjOCYfLeDtrepRaf5W3gFcffdDKbIcIe3gkDMEGLF9g/2/j345x7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M9F1D6vH; arc=none smtp.client-ip=209.85.216.47
+	 To:Cc:Content-Type; b=iJyaKE6fIzQG8W4D0KaP0vn/sGqhXYK3I3I4vAZEpdKGuQXhS9Jwnq5N0gUb9qs9/ajl+T+P45P4CgmOcgMUn4BjrKGUf0DmVFvFOcz+woi6dnt7xFUxp2CKmKrUlb9IVIdwcNprZLJo1hmuRAiGzXcLS/hWq957L4ZfOusKiTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eKiPvu0R; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M9F1D6vH"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ff6b9a7f91so14972a91.3;
-        Wed, 09 Apr 2025 14:06:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eKiPvu0R"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ac2c663a3daso29772066b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Apr 2025 14:29:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744232771; x=1744837571; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=baX+5Zv78I8HcbkYxjdZe3p8ly9kiBXGfznkMkDjWzg=;
-        b=M9F1D6vHJYlVZqvEWz3qAfOD53AOqy6XgUOUGN4/ArRdsjcbRc9WW6Y9dhRslyNAo+
-         jjgqPAzQHuhWED4FycqiAzQCEXpWGPe2nwtT5ooaAxunlpZfbmk5b0qQEo5WaYF65uZc
-         Y85Jd8HRwVPYycvnXuoG5a8n5mSXQoyHR7CK15gDW0+fpg5u37ngotbIqcTvLs5Mh69Q
-         Uv08Sz/Y2EEm4XYA4XZ7JcPDzDunNjXM4t1PObH7Dv2h9epB2Ui1S/79GJuLG5QWWVUx
-         83yu0sa+NHG1NbleXy2kwICveU1YxDNyymMS15tTJlDTrNqWPL/7F/rWYEvBZtgQoMu2
-         NjKw==
+        d=gmail.com; s=20230601; t=1744234182; x=1744838982; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=koGM74J+N8JShynrhnHBSSHsTPgOKyKEVI65TwosR3w=;
+        b=eKiPvu0RwkroyIGy7jftUg8BhvW6JSTz4qet5XrF/4BgmQYB1nvkaYfXmxme6/bc+E
+         pQMVv9Y4xIKHm/2c3IVVkFIOMmTFF5A1R4XUhKNxkGmFwdA44jB4HwH0lKaOp2dqu6Jm
+         reh+sgbFAjRQbSZuNge3dnHxVq6tsZ0Bf7LyKFvCzYvsFzCDNnwt2abuJwMTdTvvHywv
+         AbrPs5RJSUTiCncWJ2xK3Og8MxQbfsjGXBzINDbERimkB/veVzP1sg8kqR95LNoktY3y
+         KXuj4r9643krvW/51FFRcljdEBAoJyS17ioiRHX8rTYEZ2mlazpB6ZaJEv8fYAXfdgX1
+         sPWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744232771; x=1744837571;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=baX+5Zv78I8HcbkYxjdZe3p8ly9kiBXGfznkMkDjWzg=;
-        b=bp8uuOL7Ih50XkzPzHdpM2Rw8nLZTt183DuUfObeXEocUI60phIIGsLQdKo6CQinv1
-         a7DAE6rqD6kyFxEtO0VnKI0NlbgkT+YXdAcsahnAnQzAFQ69OqK3ejuKv+xCDzVOX12O
-         qAOUp+DibdEU53eoWhSrqmdBgYO+4v/iv1zgoTJlAYDImQJ3YJjI42Q9SpHnDvWHtJ4f
-         JLVzokN+pGCrVVU+d/Hm2+hODW2W8BNjx4u1ihsX+YacbrdOSykQVSlzUQFGdmE0hFl2
-         NG3rO3VVdf9MqEWkUkqgBD6URRvXAnmDMD1g7wOF/V7Y0H+e1nitJf97U8PXekBmDvij
-         k1Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCWziqWBLjk3q37FSmfni4e6P+c1zjqtiFDizIl5HuJYG9JDADcAf4NE9TbVsrSDhO9orE5IupETc9L6Hx9d@vger.kernel.org, AJvYcCXfsnRP3o2T3tDESH9GD6ZXFtq3vIFg3/E1eFRp8Jf0N17Y6InuECtPAr5x+ld99ISEdj7hk6R82jp0Fe4=@vger.kernel.org, AJvYcCXu1pYED2iATFj0SHGN6LmL2RGvNMTKddipHgkPQUjco5rEdLeUbLfjzfpD8vlUaQ3ovLjNDtH4kTR8MqCg8mQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHIif63/HT2qsuizQ+phwhkViZNV/0po1D96C0S/b0z2ZMc+1T
-	zQrna2rmn4KS24+Yv2IAWSLiQcM433N6gxI5521JRdPnHZD8VMtLBROCvLRmPFHHkkIXQ0cIG6I
-	WxfCkkt20M5NqEGn42BKfxuQ4K5c=
-X-Gm-Gg: ASbGncuRcJgTavkO8P2mrMGyDZU6eYOefdnUmDldZuhxmAbeam5ErwG0ypjC/NT5Gw+
-	yFNTl7H3wk8cSyvntNIcsLNmLhmF9V0fd4UQQGGfGfzNQBwr+bKEQy0prwuvSbYhqlVwSUlwVYQ
-	X48RwPrak1RZR9gzIEVGeGEQ==
-X-Google-Smtp-Source: AGHT+IEcwDh/QwcSZtRQOzKah6xPPVYt/1iFh55+JUvOEm1cvdiPe9fW6FPzdzfP2biO4dCnvITs8MuazzC6KAo/zjk=
-X-Received: by 2002:a17:90b:1652:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-306dd581f05mr2145032a91.5.1744232770925; Wed, 09 Apr 2025
- 14:06:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744234182; x=1744838982;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=koGM74J+N8JShynrhnHBSSHsTPgOKyKEVI65TwosR3w=;
+        b=C93Pg3WNMb2ui+Q6uTQ14gVRblA2pB1/mBaxQzGQ5u7HNhzkKWLQYDg9H7sBFEQPUB
+         7yN8/ll/pbEN95j3MpkiibDFI/qOUqSbB/S5scx7Bmw5zXVwT/fskLdRpOLyRo0Eewr9
+         oC9Zf3cu7xxiUBlKWrUM5a3dd65RY7n8N2kpJlNWnS17gjoUeEIbVgjctB0QtK280KK6
+         MZTBcyZv0+bFuxXbwV6RGvo+OXbdqFdIvHWZDWGY0S5gnBWyhBiNMt1AiFJTmZ1oK4Dx
+         jUbwqzZ/hF8ceXilUKhD3ysxUAK9szN7136wm6cyU+pLlX1k1yqRfIRgVs2OmOCLYGzb
+         tlMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWiT0v80Gcpukmhv7kXOGteHrtPBlxpxYE1N77hPSqUnm9OFXA4nsjFZaH3S1IDbBwQOGRY2q9Z8SVHe0tgnQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxChg2LrMa+4+vZNA+V6Kvw3Y/pdcjJB3OpqPV4swmWgMrQXVMi
+	+0P6kzM3u0/+EH+dwEc24rZW2b70WVR7LeComzL9kOp/vVMhfJDrlQIndu4NgJ0ZG1YpNtK41oo
+	JCOL6m8UQBa7YV7DAi73MjugKlnY=
+X-Gm-Gg: ASbGncu6+lSjONzl2O5y80FXxshjyZtiELXNNrLdd2yYmGKzr4rWXhKKjlzlRNlgL8b
+	Ey4DfdvvgKUNRZI1HBIdtAks8ibLCmcd/99LoeXKATHjSUZU0+3joHKh9/hn+H6INxN8MJOJDQa
+	w8cel9dRezmwq8nl+3exsKAhuSt+PpPKI=
+X-Google-Smtp-Source: AGHT+IGFFZh9CR3JVR2kr7210edumrEN7ufj3tHQiSmNhz5qN+39RgQmEwEJ1jfeQuDKFqO6lrZPO1cA6shionAYv3g=
+X-Received: by 2002:a17:907:60d1:b0:ac6:b8de:1a74 with SMTP id
+ a640c23a62f3a-acabd195381mr19484966b.15.1744234182018; Wed, 09 Apr 2025
+ 14:29:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250319205141.3528424-1-gary@garyguo.net> <20250319205141.3528424-3-gary@garyguo.net>
- <CAH5fLgifMPxer5TcWUBUYKtGsPFryqPVwXT8-5qmmY6F3=nuBw@mail.gmail.com> <CANiq72nc-A2WZn4xgfKyqr3GbgenhXjZztHqnf=12xY16ggHkg@mail.gmail.com>
-In-Reply-To: <CANiq72nc-A2WZn4xgfKyqr3GbgenhXjZztHqnf=12xY16ggHkg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 9 Apr 2025 23:05:58 +0200
-X-Gm-Features: ATxdqUGFPJhGsGn_8xddyJe62tWSPbE-L2b1BLMkL1zCms_O0XOzjnRwcZGO-U4
-Message-ID: <CANiq72mMJLNq8PctLwXX=QM6EtoqV7EOgwv62W9tgkWv1A=quw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] kbuild: rust: provide an option to inline C
- helpers into Rust
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Andrew Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Tamir Duberstein <tamird@gmail.com>, Christian Brauner <brauner@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dirk Behme <dirk.behme@de.bosch.com>, Daniel Xu <dxu@dxuuu.xyz>, 
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	"Rob Herring (Arm)" <robh@kernel.org>, Matt Gilbride <mattgilbride@google.com>, 
-	Paul Moore <paul@paul-moore.com>, Kees Cook <kees@kernel.org>, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20250325235522.3992-1-dakr@kernel.org> <32e7da7e-de32-4bc6-a751-f604da36a63f@asahilina.net>
+ <Z_VXBZcBsk2k6eVN@cassiopeiae> <143206f6-cd97-4ef8-a4f3-f68d703903bf@asahilina.net>
+ <Z_V2ZxIZxI_HiHM5@cassiopeiae> <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
+In-Reply-To: <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
+From: Dave Airlie <airlied@gmail.com>
+Date: Thu, 10 Apr 2025 07:29:30 +1000
+X-Gm-Features: ATxdqUHdpRBr2tCbnMtfupehKqCWRVz9idzezedVWo9GJjW0jOJ9n8I1deM8TMg
+Message-ID: <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
+Subject: Re: [PATCH 0/8] DRM Rust abstractions
+To: Asahi Lina <lina@asahilina.net>
+Cc: Danilo Krummrich <dakr@kernel.org>, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com, acurrid@nvidia.com, 
+	daniel.almeida@collabora.com, j@jannau.net, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 9, 2025 at 10:41=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Wed, 9 Apr 2025 at 17:49, Asahi Lina <lina@asahilina.net> wrote:
 >
-> In addition, from what we discussed in the call, it would be nice to
-> have some performance numbers compared to not enabling it, as well as
-> compared to cross-language LTO.
 >
-> It would also help to know which users out there need/want to have this.
+>
+> On 4/9/25 4:17 AM, Danilo Krummrich wrote:
+> > On Wed, Apr 09, 2025 at 03:06:38AM +0900, Asahi Lina wrote:
+> >> On 4/9/25 2:04 AM, Danilo Krummrich wrote:
+> >>> On Wed, Apr 09, 2025 at 01:29:35AM +0900, Asahi Lina wrote:
+> >>>> On 3/26/25 8:54 AM, Danilo Krummrich wrote:
+> >>>
+> >>> You said "use it/submit it in any way".
+> >>
+> >> I thought keeping authorship is an implied part of kernel etiquette.
+> >> Usually when you submit code someone else wrote, you keep them as
+> >> primary author... I want you and others to use the code, that doesn't
+> >> mean I want you to put your name on it as if you wrote most of it.
+> >
+> > The broader context of the private mail was about you stepping back on kernel
+> > development. You did so with a few more details (which I'm not going to
+> > disclose), that made it clear to me that you don't want to be bothered with
+> > kernel development any more.
+> >
+> > In combination with you giving permission to "use it/submit it in any way", I
+> > thought it's better to just pick a safe path to not misrepresent you given all
+> > the changes I made.
+> >
+> > I do still credit you on all corresponding patches though.
+> >
+> >>>> I'm really tired of kernel politics and I don't want to spend more brain
+> >>>> cycles looking at all the other patches or having to argue (in fact I
+> >>>> usually don't look at patch emails at all recently), but I would
+> >>>> appreciate if you keep my authorship for files that I did largely author
+> >>>> myself. After everything I've been going through the past weeks (some of
+> >>>> the people on Cc know what that's about...) this feels like yet another
+> >>>> slap in the face.
+> >>>
+> >>> As mentioned, please diff the correct thing and then just tell me where you'd
+> >>> like to have primary authorship changed.
+> >>
+> >> I don't even know what tree this series is supposed to apply onto (tried
+> >> drm-misc next, torvalds/master, v6.15-rc1) so I'm just going to take
+> >> drm-misc/topic/rust-drm and assume that's what this series includes.
+> >>
+> >> $ diff -urN rust/kernel/drm/drv.rs ../uplinux/rust/kernel/drm/driver.rs
+> >> | grep '^+' | wc -l
+> >> 45
+> >>
+> >> So I'm diffing the correct thing now and the result is essentially
+> >> identical.
+> >>
+> >> Meanwhile, device.rs has many additions... but a big chunk of those is
+> >> code that was just moved from drv.rs (like drm_legacy_fields and the
+> >> code that uses it).
+> >
+> > Except drm_legacy_fields! and VTABLE (which is just trival boilerplate code)
+> > device.rs changed fundamentally, i.e. I switched the device abstraction to use
+> > the subclassing pattern.
+> >
+> > If you look further you will find that I really changed a lot of things.
+> >
+> > I have *nothing* to hide, here's the overall diff for all the changes I made:
+> >
+> >       [1] https://pastebin.com/FT4tNn5d
+> >
+> >>
+> >> Again, I don't have the spoons to make some deep analysis here, you
+> >> should know how much of the code you changed, added, or just moved
+> >> around. I'm not going to litigate this further. If you think splitting
+> >> up a commit into multiple commits and moving code around warrants taking
+> >> over primary authorship of a project I've been working on for years now,
+> >> so be it.
+> >
+> > You just said you "don't have the spoons to make some deep analysis here" and
+> > right below you acuse me of just "moving code around".
+> >
+> > Which means that you do so *without* evidence. And again, I have *nothing* to
+> > hide, see [1].
+> >
+> > Besides that I also told you that I'm fine to change primary authership, if you
+> > tell me where you think it would be appropriate (even though I do think my
+> > changes do justify how things are currently).
+> >
+> >> I'm just disappointed.
+> >
+> > That's where you are maneuvering *yourself* into.
+> >
+> > You could have easily just asked me to change things for patch #X, #Y and #Z.
+> >
+> > Instead you outright started with accusing me of things. I also feel like you
+> > intentionally try to misrepresent what I am doing and what my intentions are.
+> >
+> > I neither have the time, nor am I willing to deal with random drama like this.
+> >
+> > If you want something changed, just go ahead and tell me what, *without* more
+> > drama and without more accusing me of things.
+> >
+>
+> Alright, then please remove my authorship entirely from this series,
+> including Co-developed-by and signoff lines. I hereby release my code as
+> CC-0, which means you don't need the signoffs, it's yours now. The same
+> applies to any future code submitted that I originally authored as part
+> of the Asahi kernel git tree. That way we don't need to argue about any
+> of this.
+>
+> I thought asking for patches that I mostly authored to keep my Git
+> authorship would be an uncontroversial request (and not unreasonable to
+> ask you to figure out which those are, since you made the
+> changes/splits, and #3 clearly is one), but apparently even that gets
+> you flamed on Linux threads these days.
+>
+> I regret having been part of this community.
 
-A couple more points, if we end up landing this:
+Look, this isn't Crank or Speed, there is no need to keep the drama
+level above 50 to sort this out.
 
-  - We discussed that we may want this behind `EXPERT`.
+This also isn't exactly how best to relicense code, so I think we
+should abstain from doing anything to help promote more drama.
 
-  - We should probably mention in the config description that using an
-exact LLVM version is recommended even if matching just the major
-"should" work.
+The project will maintain authorship/signoffs on any patches that are
+clearly still authored by you, we will err on the side of caution and
+on rewritten patches which share some decent amount of history shall
+retain your authorship. In this case it does appear instead of putting
+in the 5 minutes of looking at Danilo's reasoning and supplied diff,
+and either saying "my bad, this is sufficiently new code and I don't
+feel I wrote it" or "I'd still prefer to retain authorship despite
+your changes", both of which Danilo indicated would be respected you
+somehow picked door number 3 which probably took more time and effort
+than either of the above options. Again no need to pick door number 3
+here, you can let the bus go below 50, it won't explode.
 
-    By the way, here is the link that we sometimes mentioned in the
-past: https://doc.rust-lang.org/rustc/linker-plugin-lto.html#toolchain-comp=
-atibility
-
-  - We may want to mention that one needs `llvm-link` and `llvm-as` in
-the config description.
-
-    It should not be a big deal, since they typically are available in
-the usual `llvm` package of distributions (e.g. Fedora and Ubuntu),
-and the kernel.org combined Rust+LLVM toolchains have them already
-since June thanks to Nathan.
-
-Cheers,
-Miguel
+Dave.
