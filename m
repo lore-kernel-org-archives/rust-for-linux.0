@@ -1,125 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA0BEEB3;
-	Wed,  9 Apr 2025 09:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464BD25D218
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Apr 2025 09:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744189629; cv=none; b=Oaolpbtqv+wPtQ/HdCyHP/PUrVWydILca5P6XUIJo8nIAy3eE1s4qdUSff4i3c+KLxT8OdvQVqkxtPbsxay3QneGrCOOX35ziZ9Gvq7LFwSHIX77XYPjZ8RiQrs1ABZldc418jFkVwKRsz9AR5fN1hirovq690+JVfY4Zv1VFsU=
+	t=1744191958; cv=none; b=gwbwdc2REpQamDoEPybqpBGt5TBOUX3AGsAXlqCjxHd90iRilyke+gUPGVg1pQ/UB88wcenArvWnx2AnflQN085yttCm8q2BSsCG0D1x8UFnl6a+4TsDQaT6Pfojz1/ht/O1AZ33ys0XR0q5dY3y7dFomajVd/loWAfHwornJxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744189629; c=relaxed/simple;
-	bh=x9nhbmOIlw56xbdOdESfx0hXwQDB+04i9Y6IFm4nco4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a8Z1T6ERZ76rjOiS0JyzoEbB8gzPDQNwxHG9lg0qAdaq1cecPH0cAGV01BqFHv9nbm6zG/chnCs4yicEDB283KBWL5eE0/B5RZY2o5UKRwPds3OPq9IaE7AebEpj8hHsXgVan+tjgsGOF8k9ulB4Wug+W4ufegk/yaJb+QASZrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rL+UUiYM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744191958; c=relaxed/simple;
+	bh=jbY8OFRGtCS3qGB2dY7IOuwbUBWjbDPtzPyd0O8E/WA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ixWZR2WaGsB/9PjRISn9k0uD7aPmPxP0zR1fOBSQsIL+6sfQ3URfrv1K93wV6Wt1TRvjeuVkBS/AqP3mawys69MWII+TKCeJL4Hl6BYL1P/qA4gTnSbQJAFOQeKrdIcINPRlzI6y7OdbTB/5uAOQ7+fUscL08orWbjD51SvEEn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r8aO4zvm; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rL+UUiYM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5009AC4CEE3;
-	Wed,  9 Apr 2025 09:07:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744189628;
-	bh=x9nhbmOIlw56xbdOdESfx0hXwQDB+04i9Y6IFm4nco4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rL+UUiYMQzU7f8gO0Ve5ujemkNeuOvwDeVU6QV74Gg2A0vS6gJSzBudbwzhn9FEDF
-	 KME4VqZQeMnVrY19XuRrgSUaHQCTxyYTdGWMLI+V1DNKvqv6w/xmycJV08ij3IJ8qq
-	 IuUQumScp0NlLQgyCpbEWd7dwmRTvRd1SA6dm6yZGOYH89W8iAVM7N5NYUYobcVVM8
-	 epLh2pOBqCqEnci1HJSL5kSIQThOBIR+J2hl65YKPTnEqsAPsz5eaq1YKCHfJAwXhu
-	 5+zitLv+k16QgS9aqsGs3/UvRz6MErrK0XQWxRFTrc+ZyfLs1XlcbCRQ8z+N9rQLng
-	 ZegmDBm8Drhng==
-Date: Wed, 9 Apr 2025 11:07:02 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, abdiel.janulgue@gmail.com,
-	daniel.almeida@collabora.com, robin.murphy@arm.com,
-	a.hindborg@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, aliceryhl@google.com, tmgross@umich.edu,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] rust: conditionally compile dma abstraction based on
- CONFIG_HAS_DMA
-Message-ID: <Z_Y4tuyyYIleFj_E@pollux>
-References: <20250409055501.136672-1-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r8aO4zvm"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-39c30f26e31so4627702f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Apr 2025 02:45:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744191954; x=1744796754; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jbY8OFRGtCS3qGB2dY7IOuwbUBWjbDPtzPyd0O8E/WA=;
+        b=r8aO4zvmzxwWaruksoc0zgn83lutnuIMskxjEAoafYbf/yG5XzD82W4K/ESlugpz2H
+         sfpgLEa5qdi0SdCzUyOcGodp3trJ3WpKd/kQ6aMXUcVxDqH1+D/FfTxm9lDxrPEOuaTf
+         yfysVF8uv87aI7CTTiSOodxdGdYzraoFnxm4hj2l43KNAEav2RT5EzBolLmdqB+uuodf
+         tCvg6EP5/3QpVPzVKQ/VVMNlG1f85K7IINkRxlfhE/SORvGdvm69UH2RUcf9zYJlejiy
+         EJv+FVXE0eMO2EJhQ1CZ2yzRZzIdoB10qvY5HfbKIe1WcmfHWx2I1zUSalsnGSTcliAw
+         /mWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744191954; x=1744796754;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jbY8OFRGtCS3qGB2dY7IOuwbUBWjbDPtzPyd0O8E/WA=;
+        b=YRfV+hFJ9Q1uF9uyrv3PXEmy0GjqHN8tbH7NUpJRgCmp8xgSPkv+y+KHj9gQRsDi1X
+         oNyKLtX0knV1mInJNs0PesvU6oPqupYfsmJfCnhHEwb1qtRjPmuxFSGiGd3EZV55zrQl
+         5hWFV9M2PTBXLB3s3dTW3XvpWkPqdu7aE3XiAfKXEQ/TxYd8DwzaqDqNNMzNjXFVfJFp
+         dhnRiG8zzhSLdOALMRie+eKj+dnod0AYOa57ahRPPbzCGbBgGfkfv6Je3UISpeHEKCwW
+         qvoDAyN456e8nbJbF6j/vLVGAqt3bkJ9/eG+43PAR27AeMlvTIT2cXErBkflmSA4d+hD
+         x4rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxe2WCj4GlIAKbDDjzFKfcjcGEKbislBv1NXvqZBvItLYcRqqAa7cHMNAQUF9cok6BaXoU/T03zwsqfGmVIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9q2V4MQVrH2Ds+SUwV1LXibDt1P5Q3+Qkz9ruzWXdifN+FPN2
+	Qm6IAq58BR5KmI4qQLQ+h/bOPgKKimBc5pZWU67u933Twg9Fd9mYDbPeiRpJsROC8sdkKZmldmd
+	+8WX8n2lHKQvYog==
+X-Google-Smtp-Source: AGHT+IFU5PtqYzywsfZTZnvn0+eGgwmBOUG2VhP8fojRJNHYDCxKaO4/6DkqMYUH/KrEpuJdW/spl9clwX6DMWQ=
+X-Received: from wrbdi7.prod.google.com ([2002:a05:6000:ac7:b0:39a:bed5:1512])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2ca:b0:39c:30cd:352c with SMTP id ffacd0b85a97d-39d88525afamr1619648f8f.8.1744191954414;
+ Wed, 09 Apr 2025 02:45:54 -0700 (PDT)
+Date: Wed, 9 Apr 2025 09:45:52 +0000
+In-Reply-To: <CAJ-ks9njZbqRFVXTFkG1ms2UxsHtym+gP6Od-Hz+=sj+VeTX3g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250409055501.136672-1-fujita.tomonori@gmail.com>
+Mime-Version: 1.0
+References: <20250307-no-offset-v1-0-0c728f63b69c@gmail.com>
+ <20250307-no-offset-v1-2-0c728f63b69c@gmail.com> <Z9gIvLY1uubS6OX-@google.com>
+ <CAJ-ks9njZbqRFVXTFkG1ms2UxsHtym+gP6Od-Hz+=sj+VeTX3g@mail.gmail.com>
+Message-ID: <Z_ZB0BZuugdjsBR3@google.com>
+Subject: Re: [PATCH 2/2] rust: workqueue: remove HasWork::OFFSET
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 09, 2025 at 02:55:01PM +0900, FUJITA Tomonori wrote:
-> Make dma abstraction conditional on CONFIG_HAS_DMA.
+On Mon, Mar 17, 2025 at 07:35:55AM -0400, Tamir Duberstein wrote:
+> On Mon, Mar 17, 2025 at 7:34=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > Overall looks good to me, but please CC the WORKQUEUE maintainers on th=
+e
+> > next version.
+>=20
+> Thanks! Does there need to be another version? No changes have been reque=
+sted.
 
-I'm not convinced that this is the correct fix. This would require drivers to
-depend on CONFIG_HAS_DMA if they want to use the DMA API. The C side does not do
-this either.
+Yes, it needs a new version to fix conflicts with commit 7b948a2af6b5
+("rust: pci: fix unrestricted &mut pci::Device") that landed in the
+merge window just now. More generally, a new version is also recommended
+if maintainers are missing in the CC list.
 
-Instead, for functions like dma_alloc_attrs(), there is an empty implementation
-if CONFIG_HAS_DMA is not set [1].
+As an FYI, I'm looking to do some additional work on the workqueue
+abstractions to support delayed work items for use by GPU drivers. Since
+I agree with this change, I'll base my work on top of your series.
 
-However, this definition is not picked up by bindgen. Hence, I think the actual
-fix would be to introduce the corresponding Rust helpers.
-
-[1] https://elixir.bootlin.com/linux/v6.13.7/source/include/linux/dma-mapping.h#L189
-
-> This fixes the following build error on UML:
-> 
-> error[E0425]: cannot find function `dma_alloc_attrs` in crate `bindings`
->      --> rust/kernel/dma.rs:171:23
->       |
-> 171   |               bindings::dma_alloc_attrs(
->       |                         ^^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_alloc_pages`
->       |
->      ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44568:5
->       |
-> 44568 | /     pub fn dma_alloc_pages(
-> 44569 | |         dev: *mut device,
-> 44570 | |         size: usize,
-> 44571 | |         dma_handle: *mut dma_addr_t,
-> 44572 | |         dir: dma_data_direction,
-> 44573 | |         gfp: gfp_t,
-> 44574 | |     ) -> *mut page;
->       | |___________________- similarly named function `dma_alloc_pages` defined here
-> 
-> error[E0425]: cannot find function `dma_free_attrs` in crate `bindings`
->      --> rust/kernel/dma.rs:293:23
->       |
-> 293   |               bindings::dma_free_attrs(
->       |                         ^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_free_pages`
->       |
->      ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44577:5
->       |
-> 44577 | /     pub fn dma_free_pages(
-> 44578 | |         dev: *mut device,
-> 44579 | |         size: usize,
-> 44580 | |         page: *mut page,
-> 44581 | |         dma_handle: dma_addr_t,
-> 44582 | |         dir: dma_data_direction,
-> 44583 | |     );
->       | |______- similarly named function `dma_free_pages` defined here
-> 
-> Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/kernel/lib.rs | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index de07aadd1ff5..9d743af69dc8 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -46,6 +46,7 @@
->  pub mod device;
->  pub mod device_id;
->  pub mod devres;
-> +#[cfg(CONFIG_HAS_DMA)]
->  pub mod dma;
->  pub mod driver;
->  pub mod error;
-> 
-> base-commit: c59026c0570a2a97ce2e7d5ae5e9c48fc841542b
-> -- 
-> 2.43.0
-> 
+Alice
