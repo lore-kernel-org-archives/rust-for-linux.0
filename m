@@ -1,58 +1,58 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D411D1DE884
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Apr 2025 20:17:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A12214A81;
+	Wed,  9 Apr 2025 20:41:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744229880; cv=none; b=X/RASXY714w5a4RoeUy2W+nS0IQsChCUwwNcHlpdxDe8ZYwCuwsOHIBx2AKEn20D5ulh30C+n4f7psYDAUxYA9bM0ZhGgbEFjJ8VonuCGZwNFLqbEa28RGDTmBa4RUV55/sb3Obk0TsUXJjSigI98mB/HQRKr35c9PucqybVzjo=
+	t=1744231289; cv=none; b=GHYhovihk524ZZcGN/m/fQR4XxS4sIA9O2Ky1xqekY70n2TaznIqRfPAReFRdy7MqtQjQEwc8V85TIrcZmmwKvpTnPmQPvnUFVXgUoXnCR9ekL3i9lpiczasp7uWQFahF1IhXLkQGcfIoK2op8FaKNDXISsy6c/ok7/vQgDMFdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744229880; c=relaxed/simple;
-	bh=DN0wpjoBwbm62a2PojPzy9eL4TkNTyJB5bl5qwh5q5Y=;
+	s=arc-20240116; t=1744231289; c=relaxed/simple;
+	bh=08M4Cu8f4/GZ76LZsMQ4KuG2gM4zTrxyaw5Ut0KXJPg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eX/dF8ARTZR12i3jTgVoEawym1oEkNAI7mYTPVwaS34SXBX0UwzgBH5KjnKmkiQMWL7kynwhsNf08L4RLeeMelSTAIKBesLvEXvziiGT1f6zFCUAha/nPDkClq+e6HpGkuXotj3BWRavPrXw3Loh8207yrc7GH2kHqA8OTxomX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mo86K5Mz; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=OCCveQIfNhQV0XGZij+YcS+moOa7E8gfQiTHZpDFXKuz1AS6XP+N+aQAIKumWWtXrZQPZ2OOQtf+J+1/p5Nl12uTw5jIq9crW41URV7yi6O/n74OefBAqYNW/ZeRjiEME7Ov4+aOl+qBaEf9P5gl2NQnWq3DtgnnG+z+4FNeg+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QIGnSedf; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mo86K5Mz"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-39c1ef4acf2so8509f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Apr 2025 13:17:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QIGnSedf"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-301a6347494so11041a91.3;
+        Wed, 09 Apr 2025 13:41:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744229877; x=1744834677; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744231287; x=1744836087; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1bgWloY6Z/GPjOoVRp8gFI5U+gR/p1lk09lOlKvqmyk=;
-        b=Mo86K5Mz2C2YZ/lCbp8AwSgUcxlfYpgkrNeQvpmRPm7PCzZSR8QwLZlDG4LSEEhF3A
-         Uh1qivzIEGo561f7DoPKplRlk3DG/m3mkS8NzE9BU1QJmSuZ47fajbkFN/Bn7TW+QRwS
-         scibgQoDNch7cgDHFS12ZdDsg3WHX6d0Jm94mdm7R8lZMHKnnp0QzzBZzApaG5C96CRf
-         tX/QaXNAbz4xO68+gGCIVlafgyy+qAZ3gU/qoSmFtzutrwYCgSgNKXBdvP39H1Jk/c0c
-         R8OF1+ROs2OCstR1WjgBL7NWUOyAxHTzt94/XLfb0FDOOUdSrT1gn0p+cE6aa9sUoV4h
-         z11g==
+        bh=08M4Cu8f4/GZ76LZsMQ4KuG2gM4zTrxyaw5Ut0KXJPg=;
+        b=QIGnSedfWhoIMesXhDOKtuiTXd/2HHVPSpdjzgy7QDJcP/WrNnJKdethyWLDuRAh7d
+         Uau3ifxdiADswgO8DPtpKwmVdvd7zxEPOJsAu/5JmYCJs6kzI90mc8fLkz/1/DFbH6eC
+         Hn0YBn7ewc+aWwFiUggqJCSkSCB6konVZUeKLe+w0Uf68wkIeA5mNHLG/1Y0i+LcQ/x7
+         KUMalexSoBrecFLjjDmqQvWjvu0qq6EJ22cTloGMXycutO6LYE2OGdUv/i95lAm4wMGP
+         K0KxE/4jDknr2NcUY2pW9qEnGTKFynBMcWrHfOWLw3Oo5vSg8PuUgwvuBBoMwkKN6zYl
+         YxkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744229877; x=1744834677;
+        d=1e100.net; s=20230601; t=1744231287; x=1744836087;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1bgWloY6Z/GPjOoVRp8gFI5U+gR/p1lk09lOlKvqmyk=;
-        b=CVzQPt39A0mVS5fe+elJfQf9Ip6JfLHqi/ITXU/quSUrJ0Ftbe/9a1rtJEvr8rtIl4
-         7JriHVsiJjmmFHFTbW9aUMjk1a2zbvM2eySkb18lS35v+7mnlXxyNnlUqW1FkEN5P8/C
-         JqhTJNIfiChAC6TTI6SGI9B3DIn7hbTgxhtEXMQrBDqkiCYPCS+16ouiBVkjAosOhj97
-         kdsscxB98IJq4x4DLgQxxqTLD+SA86vMvn7XEpWoCFuOBlykYRPC4vGzjnzokH50peDw
-         Lk1t8aBhaDlFjLbzCPgUpCdLeVORXtZgrXCZzCty3JnNEBjPwlPM/g5AUlLH5T96uO60
-         NNcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCViVikw4rCsWbl/8KkrBccAKfUWL9xpbZoSgbionY9cNKXY1LW9IeY1WTRBH8mlwyfx9k/K43oLOT0FJQi3ag==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyujpB/JxOyw9cLrUyFUGtvHeSPGhLwIet02HyCjeeX/UehwVNj
-	VQo3mGFPhEqPwhXeMnu/C/bxJm8llRFPhrntjhxDH4us1Fl83HvJoIMkXANcjuS3mWfZGI4kvNq
-	E1qkcVT5R6bWGv+ZlKVGI7cZ31fYwHzf18kwy
-X-Gm-Gg: ASbGncsh2BQVW+UXst0C8lCF37mrkMMowQma113PxeJ+2pfJpkgxpYR9kjWHFicf11R
-	QNygqyIjbjcjvlMQHUtJtAL/fIJW5yz1HY4CVfbohjlQiVqQt6amY7wzmE0pMolK9/tSaYi7omj
-	ktSv/AVzrX9tjcAuiobwF7/w4=
-X-Google-Smtp-Source: AGHT+IHF65zLg7feilUYDheUibZgFpivGomhAMQ9nvtXy1QRwJ0EXV2IXKYLDmuiA2LwoPriA5ZqZstTr5vam02ZaAA=
-X-Received: by 2002:a05:6000:2411:b0:391:2dea:c984 with SMTP id
- ffacd0b85a97d-39d8f463cd4mr86810f8f.11.1744229877002; Wed, 09 Apr 2025
- 13:17:57 -0700 (PDT)
+        bh=08M4Cu8f4/GZ76LZsMQ4KuG2gM4zTrxyaw5Ut0KXJPg=;
+        b=ILF+jhmHemlWA6Yv4cCMSJlZGcwRaM+VgV3bWfhXqtDdEtIXN7PqHONk5p2N6l0gdG
+         SkUD/0OP+5sH4ULyO+SDxJoBwV/0dKQvb5Pk0u2fVCm3rou8XdM1Z9e99GBTqGz2hQNc
+         cc3cQM2+PB7DefHYQEVe3yQvaG1wrk3oJ8/Rjj0XMhRnbZCHJZKg81Nf9pfn4PbqAIzh
+         88OCu6B9wOp8BwlRbueGzs5YSg+pADqjVESunugVsrGa9XF/7D14fsJcgD8tdFWAzCfD
+         kBLFxZMi359C3fipY5WA2gtBqUPQ+qD1bpnV3z2LLTw9yE7gjBmqpt9fIrRQIdw6/JbQ
+         aPDw==
+X-Forwarded-Encrypted: i=1; AJvYcCU6NzXHjOI+hr1UYbUlLkuDIcUiXr/PXi9DKgluZnLSi+yxlUsr2jqMk3885XuaSzvvt7PKM05UZwpZ/s+v@vger.kernel.org, AJvYcCUPgronXCNTFhG1fomJ67Jg0snEZw54GhVXjnTP4YtXercNP28ZcxzQcSbyVKrzrcn74cEehbon59NBv9H71as=@vger.kernel.org, AJvYcCVHdzz3Tu0suDJySpZVLgQrT0UKSmXn/iD1oCewop5419G2WU2XLZ1WxoYigcpO6dffTE40tmmue7Y8sXA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykO9AWGj91pgSOvVRAMw4WcCC35zQfZB6o9X4cj1jIq9LMJNIf
+	uhhjulg5liAIwugmBESoXWwadeNzo+pOHzMaH/Gl1OgjRdhvXvpgsf/YtKexwpuLX+NBg4THGf0
+	2Xh+cWnjS0nSnsMvEzdTJXJgBR+c=
+X-Gm-Gg: ASbGnctCCNpzloNRtq06tOJJ74M5n6e0poCunL9ydXd2/l+jkdJU6bMbtZSpE3vkONF
+	3G7oYj3/o64Z+1PmarBsOucsqa8WPhmeM2aStBOeBwU7Ti4HhriUNBCzFWafLyDl0iw/xhIZ6Xm
+	q8LO0fiyInZmNrmKW1id2S
+X-Google-Smtp-Source: AGHT+IFlUdAp7iMiSSgLlCglw5++ynmRK8YOdTyTyQRlrOIa5H/c9zmUX9o1zmMc1bgLsmOJg8/hInWZSh1WIL81/3w=
+X-Received: by 2002:a17:90b:4d05:b0:304:eacf:8bba with SMTP id
+ 98e67ed59e1d1-306dbc0d00fmr2047978a91.4.1744231286958; Wed, 09 Apr 2025
+ 13:41:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,16 +60,18 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250319205141.3528424-1-gary@garyguo.net> <20250319205141.3528424-3-gary@garyguo.net>
-In-Reply-To: <20250319205141.3528424-3-gary@garyguo.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 9 Apr 2025 22:17:44 +0200
-X-Gm-Features: ATxdqUGIImZWdIXFXkMtgq_6FpLUl4WUHaHz6zPbTJ9JLlSwvxfpfqMMQQdWOGU
-Message-ID: <CAH5fLgifMPxer5TcWUBUYKtGsPFryqPVwXT8-5qmmY6F3=nuBw@mail.gmail.com>
+ <CAH5fLgifMPxer5TcWUBUYKtGsPFryqPVwXT8-5qmmY6F3=nuBw@mail.gmail.com>
+In-Reply-To: <CAH5fLgifMPxer5TcWUBUYKtGsPFryqPVwXT8-5qmmY6F3=nuBw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 9 Apr 2025 22:41:14 +0200
+X-Gm-Features: ATxdqUF2RSyMHln2rE54PHHogZqs6zCAKePrIc8_VSy9IDLlXknSuaNOZ6Lvaxg
+Message-ID: <CANiq72nc-A2WZn4xgfKyqr3GbgenhXjZztHqnf=12xY16ggHkg@mail.gmail.com>
 Subject: Re: [PATCH v3 2/2] kbuild: rust: provide an option to inline C
  helpers into Rust
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
 	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
@@ -88,63 +90,23 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 19, 2025 at 9:53=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Wed, Apr 9, 2025 at 10:18=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> A new Kconfig option, `RUST_INLINE_HELPERS` is added to allow C helpers
-> (which were created to allow Rust to call into inline/macro C functions
-> without having to re-implement the logic in Rust) to be inlined into
-> Rust crates without performing global LTO.
+> Is this compatible with DEBUG_INFO_BTF? I'm concerned that we have the
+> same issue as in commit 5daa0c35a1f0 ("rust: Disallow BTF generation
+> with Rust + LTO").
 >
-> If the option is enabled, the following is performed:
-> * For helpers, instead of compiling them to an object file to be linked
->   into vmlinux, they're compiled to LLVM IR.
-> * The LLVM IR is patched to add `linkonce_odr` linkage. This linkage
->   means that functions are inlineable (effect of `_odr`), and the
->   symbols generated will have weak linkage if emitted into object file
->   (important since as later described, we might have multiple copies of
->   the same symbol) and it will may be discarded if it is not invoked or
->   all invocations are inlined.
-> * The LLVM IR is compiled to bitcode (This is step is not necessary, but
->   is a performance optimisation to prevent LLVM from always have to
->   reparse the same IR).
-> * When a Rust crate is compiled, instead of generating an object file, we
->   ask LLVM bitcode to be generated.
-> * llvm-link is invoked to combine the helper bitcode with the crate
->   bitcode. This step is similar to LTO, but this is much faster since it
->   only needs to inline the helpers.
-> * clang is invoked to turn the combined bitcode into a final object file.
->
-> Some caveats with the option:
-> * clang and Rust doesn't have the exact target string. Clang generates
->   `+cmov,+cx8,+fxsr` but Rust doesn't enable them (in fact, Rust will
->   complain if `-Ctarget-feature=3D+cmov,+cx8,+fxsr` is used). x86-64 alwa=
-ys
->   enable these features, so they are in fact the same target string, but
->   LLVM doesn't understand this and so inlining is inhibited. This is bypa=
-ssed
->   with `--ignore-tti-inline-compatible`.
-> * LLVM doesn't want to inline functions compiled with
->   `-fno-delete-null-pointer-checks` with code compiled without. So we
->   remove this flag when compiling helpers. This is okay since this is one=
- of
->   the hardening features that does not change the ABI, and we shouldn't h=
-ave
->   null pointer dereferences in these helpers.
->
-> The checks can also be bypassed with force inlining (`__always_inline`),
-> but doing so would also bypass inlining cost analysis.
->
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+> The commit message should either explain why we don't have the same
+> issue, or this patch should prevent configurations from enabling both.
 
-Is this compatible with DEBUG_INFO_BTF? I'm concerned that we have the
-same issue as in commit 5daa0c35a1f0 ("rust: Disallow BTF generation
-with Rust + LTO").
+In addition, from what we discussed in the call, it would be nice to
+have some performance numbers compared to not enabling it, as well as
+compared to cross-language LTO.
 
-The commit message should either explain why we don't have the same
-issue, or this patch should prevent configurations from enabling both.
+It would also help to know which users out there need/want to have this.
 
-Alice
+Thanks!
+
+Cheers,
+Miguel
