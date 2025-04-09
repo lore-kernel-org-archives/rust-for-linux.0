@@ -1,60 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1668C1DF99C;
-	Tue,  8 Apr 2025 22:03:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB0F1ACEDC;
+	Wed,  9 Apr 2025 05:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744149804; cv=none; b=ox1PxSrnzdiOqFh3w1yjU/bfSO0yM15aZXDZQJ76FjnuisKTPDS2Y88Jiit95lZuyArAcAKTS/iTcvcDWYb6shqGR6wLgFx8a1M30NQshv44x5sCK/Dsaxnc9AMOGDYrUI5DhadW0vAlMHRh68nVKCxMOTy98EM8Qg+3rim0R5o=
+	t=1744178161; cv=none; b=TfL7VYwhNXzpUcX39VJ+GiaRhxMzzQ5AmRT7Im2FPEr93pxaO2MpzjurlsPkqTqXCBlK7iLHV4YW+VZQlVAHYP9WMbi3zKQBVoJ64zx4ZwEBAi4ldxb7EiNMfXgPWIfjZGTsYH7VRS8SvmrGl9WhEi4sc9BO7AlGW2K+WB94EyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744149804; c=relaxed/simple;
-	bh=xOdajHCO7ZEy273vrF1Pnc6StW6I57Grl/gjkVjIkWQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YsH8KSh9oy5c+cgKNcp/R/uEoBkNegU2lQjZiWtozcheV/0JRh9uJrpjsTGKq45nXoPTKpHk1F6E2mys5Os3SaXThjFUQHHNaAddb+PiDi+BQcCRwxWOWv7MCTIKup5m5VTLOD78fpkvNeeN4OEbY4PoKBNrMpwRqfMkNxuFmxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D5RtukQr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744178161; c=relaxed/simple;
+	bh=4Wy3yCBq546yQOPfDeu6wg9Z3vjW6EJdFZNs9gXnivA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RSx/8kSZiTo3Se7q/ih1Ui9unIAiRVuSg6014Y2uOS0hfQNM/nluveRHzbECdO933SIgpOGCr/U7LLSep0KYriyiXDr1Z0itFpc1OwqWWgvSCXCOTLYoJQ4naj7wuMTvlPEQxVpbMNCoCx8Y5Ouzd6x2Ke7SEjOPI8HD0aS+sGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YsrSdiO2; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D5RtukQr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C24C4CEE7;
-	Tue,  8 Apr 2025 22:03:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744149803;
-	bh=xOdajHCO7ZEy273vrF1Pnc6StW6I57Grl/gjkVjIkWQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D5RtukQrS76KOBf7UmuXRFauX6hLjObdzmn0OWN9xK/NoMAcu8uhjxssvQNC5djne
-	 RlgRfMnbiUSHS+XP+kl3kJf/r3orZpQy7Y2m7HO1Wq1YiqfMzcClDR0AEVZZwjZBi/
-	 UITi47XD18B37q0mXbwxN3WG11OEpR5SUPLlz/QAx/1Y/JP0dQuoV3ee0W4NpNNN++
-	 pqdEn1r2HrZXhPFcplm6t9J1U2QMCvetgMKPIg5QKOeGS+nwIXc4ihjAsw79GYgmPk
-	 CTYEZ5QR/R/rJdcOiH1eqlbAdnoqFnZroXBW5RkUvlI2LhWSghfndTf+h8FpvY13K3
-	 0xIc2Rs8CA8HQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	kasan-dev@googlegroups.com,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Matthew Maurer <mmaurer@google.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] rust: kasan/kbuild: fix missing flags on first build
-Date: Wed,  9 Apr 2025 00:03:11 +0200
-Message-ID: <20250408220311.1033475-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YsrSdiO2"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7394945d37eso5387451b3a.3;
+        Tue, 08 Apr 2025 22:56:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744178159; x=1744782959; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SqmnRPjmyzZPHZJ1jZA1292cRIoN8NM+P95WGqViGh0=;
+        b=YsrSdiO2XbYsqz1Tu/YQv+JHIBj+Dif1TpjsUl36i+EBKaD8h4/ocKadijoofXVSgb
+         IxuOH4M39+HGD2W0KPBPMuneWT14+gxlc8I74+VsU41ekoNytF5lxM+Y8n1mmXUZKFD1
+         ojhUTq1+4r2a6gDf4UcX+g2GWICH8iSRVoOvri/e6cGnDNgcnKShGDgRVPY6Z3rfSM7s
+         lQ9w9/tB5dFLI+1Uu4IvJbSUGw17y5bT2ufipOUL0OktiXlNh31NVFdf4rwKXdtYgDFO
+         5eNtB9YtaZ1yLNlXILpHJWqG6ujnGFqckoxsTp46QBDVSlTqQEARnMBdVoqo1Qj7p1BK
+         WErQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744178159; x=1744782959;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SqmnRPjmyzZPHZJ1jZA1292cRIoN8NM+P95WGqViGh0=;
+        b=aGI3oUyN001ehQzAUpDpqp2lM2yE5JL2LvStvUUS/dSMVnNNv3X/wIHDzsLSOJS0Mr
+         BMBS7Y5fq6VHe90daGsayQnOyTlLhN/92MeejmGpq6Iw7G67Dkvcuash51Joher+lt4a
+         LwI0UcHlRyzy5c75IcBOD5b/V1eImhTQT4Meqfj5cz3kK93U0w9FEkrxLdi/5z+yQ1kC
+         ft1/6HQQEJXK8Gl0YVNFs6B5AGtfR3bTOxSqHz9kFeYpAvzRfbO2yMgiJa3/XzsPjPzr
+         jmFFLe0xaul3hxud15fAJdg34pcGqQGFdV2h51cMj4RPDR3hz4Q16tQPhJSaLkBECluP
+         CyhA==
+X-Forwarded-Encrypted: i=1; AJvYcCWL5oU3H1bBwsUje0PiaVJFABMADJQs4vlsIYb0yOABK/g7LU9MEfzDck56ZSKT2p6P2GUpjABV7SnNCQs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUDvxO5iHSnp6U+OVIpDebPkxPwAn+QoAVI5r1If6aXzTpR8ln
+	jkAVLfZoMIpZjI5+rIByoTm7VhRoIADNOQtfGuu1Y4mHkTzim3d6KjOi+2v9
+X-Gm-Gg: ASbGncuzzT7bKDEFEon4rVxxHWNWWspEVVlEcBRfR8J3Zx2WYDPy1SGveoUhKMpzhcI
+	TQcDRpubPZ7vEu8uB/cHm4snSUrReTjLHN3lctOvc7Tg7/7ORktxOcI+VUimSSGSA+vbTzpTWXE
+	w2ylj0AFQXY9oIWqTmYwTZjgiauPeeMgUOydQ6rTtdBSnm4zsEG00I37Yno1BQurFW9bYfhgozh
+	gFCXG7UATQSGAAZxhuJMHAfsIvtbW6B/+UKQUUTLYoaGnbyQ7yRN72LM96QBtIdr/guZD1cchS2
+	/rq2ni7VYORJ4JDqLrAXBsaqudeWS6eeeue90WItuoKhqBWN34JOTAzK6BuJN9j8dCayT1wz4OK
+	BpMnbKyoShPgywFSrXQ==
+X-Google-Smtp-Source: AGHT+IEQLsJG6Df0R8apZSHxgxtSkSKnFiZLBoP02n6T9NpPsQOO8yZL9qHYwtYytu9EdpeT8HhmmQ==
+X-Received: by 2002:a05:6a00:1482:b0:736:ff65:3fcc with SMTP id d2e1a72fcca58-73bafd31907mr1507936b3a.16.1744178159305;
+        Tue, 08 Apr 2025 22:55:59 -0700 (PDT)
+Received: from mew.. (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1e692d5sm412105b3a.163.2025.04.08.22.55.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 22:55:58 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: abdiel.janulgue@gmail.com,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	a.hindborg@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] rust: conditionally compile dma abstraction based on CONFIG_HAS_DMA
+Date: Wed,  9 Apr 2025 14:55:01 +0900
+Message-ID: <20250409055501.136672-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,86 +84,64 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If KASAN is enabled, and one runs in a clean repository e.g.:
+Make dma abstraction conditional on CONFIG_HAS_DMA.
 
-    make LLVM=1 prepare
-    make LLVM=1 prepare
+This fixes the following build error on UML:
 
-Then the Rust code gets rebuilt, which should not happen.
+error[E0425]: cannot find function `dma_alloc_attrs` in crate `bindings`
+     --> rust/kernel/dma.rs:171:23
+      |
+171   |               bindings::dma_alloc_attrs(
+      |                         ^^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_alloc_pages`
+      |
+     ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44568:5
+      |
+44568 | /     pub fn dma_alloc_pages(
+44569 | |         dev: *mut device,
+44570 | |         size: usize,
+44571 | |         dma_handle: *mut dma_addr_t,
+44572 | |         dir: dma_data_direction,
+44573 | |         gfp: gfp_t,
+44574 | |     ) -> *mut page;
+      | |___________________- similarly named function `dma_alloc_pages` defined here
 
-The reason is some of the LLVM KASAN `rustc` flags are added in the
-second run:
+error[E0425]: cannot find function `dma_free_attrs` in crate `bindings`
+     --> rust/kernel/dma.rs:293:23
+      |
+293   |               bindings::dma_free_attrs(
+      |                         ^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_free_pages`
+      |
+     ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44577:5
+      |
+44577 | /     pub fn dma_free_pages(
+44578 | |         dev: *mut device,
+44579 | |         size: usize,
+44580 | |         page: *mut page,
+44581 | |         dma_handle: dma_addr_t,
+44582 | |         dir: dma_data_direction,
+44583 | |     );
+      | |______- similarly named function `dma_free_pages` defined here
 
-    -Cllvm-args=-asan-instrumentation-with-call-threshold=10000
-    -Cllvm-args=-asan-stack=0
-    -Cllvm-args=-asan-globals=1
-    -Cllvm-args=-asan-kernel-mem-intrinsic-prefix=1
-
-Further runs do not rebuild Rust because the flags do not change anymore.
-
-Rebuilding like that in the second run is bad, even if this just happens
-with KASAN enabled, but missing flags in the first one is even worse.
-
-The root issue is that we pass, for some architectures and for the moment,
-a generated `target.json` file. That file is not ready by the time `rustc`
-gets called for the flag test, and thus the flag test fails just because
-the file is not available, e.g.:
-
-    $ ... --target=./scripts/target.json ... -Cllvm-args=...
-    error: target file "./scripts/target.json" does not exist
-
-There are a few approaches we could take here to solve this. For instance,
-we could ensure that every time that the config is rebuilt, we regenerate
-the file and recompute the flags. Or we could use the LLVM version to
-check for these flags, instead of testing the flag (which may have other
-advantages, such as allowing us to detect renames on the LLVM side).
-
-However, it may be easier than that: `rustc` is aware of the `-Cllvm-args`
-regardless of the `--target` (e.g. I checked that the list printed
-is the same, plus that I can check for these flags even if I pass
-a completely unrelated target), and thus we can just eliminate the
-dependency completely.
-
-Thus filter out the target.
-
-This does mean that `rustc-option` cannot be used to test a flag that
-requires the right target, but we don't have other users yet, it is a
-minimal change and we want to get rid of custom targets in the future.
-
-We could only filter in the case `target.json` is used, to make it work
-in more cases, but then it would be harder to notice that it may not
-work in a couple architectures.
-
-Cc: Matthew Maurer <mmaurer@google.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>
-Cc: stable@vger.kernel.org
-Fixes: e3117404b411 ("kbuild: rust: Enable KASAN support")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
-By the way, I noticed that we are not getting `asan-instrument-allocas` enabled
-in neither C nor Rust -- upstream LLVM renamed it in commit 8176ee9b5dda ("[asan]
-Rename asan-instrument-allocas -> asan-instrument-dynamic-allocas")). But it
-happened a very long time ago (9 years ago), and the addition in the kernel
-is fairly old too, in 342061ee4ef3 ("kasan: support alloca() poisoning").
-I assume it should either be renamed or removed? Happy to send a patch if so.
+ rust/kernel/lib.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
- scripts/Makefile.compiler | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index de07aadd1ff5..9d743af69dc8 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -46,6 +46,7 @@
+ pub mod device;
+ pub mod device_id;
+ pub mod devres;
++#[cfg(CONFIG_HAS_DMA)]
+ pub mod dma;
+ pub mod driver;
+ pub mod error;
 
-diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-index 8956587b8547..7ed7f92a7daa 100644
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -80,7 +80,7 @@ ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
- # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
- __rustc-option = $(call try-run,\
- 	echo '#![allow(missing_docs)]#![feature(no_core)]#![no_core]' | RUSTC_BOOTSTRAP=1\
--	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null,$(2)) $(3)\
-+	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
- 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
+base-commit: c59026c0570a2a97ce2e7d5ae5e9c48fc841542b
+-- 
+2.43.0
 
- # rustc-option
-
-base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
---
-2.49.0
