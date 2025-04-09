@@ -1,99 +1,123 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399C8266B47;
-	Wed,  9 Apr 2025 14:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D25266EF8;
+	Wed,  9 Apr 2025 14:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744210164; cv=none; b=kKMkOYRLc69UpPB6+IQZBp1dgfpF6Xwifb4KbVJKQBZgy1K8fKbdDw381wqNfBpAPlCbNDU0CmK5OwNiPRW4RgtaGlTHnn0ThiZkpk1UxVAdzXdGkdwddBcIBt73NMP2zmXcvWiPF6ap/DgoZVmB6Le4NwDhJfzSUJx6ALMO4cc=
+	t=1744210286; cv=none; b=oYUD1WQFXvsCaHoi8+04amRfk3/KzQFbMsWz7ZRRMveoE4yzyMeZhVXqqWR5+9eXgAhgV27qRRfaNHzWJOxP4pnEIJAA2h/5TkbcJnbOJTTOiAToL5XHyr8+L/95NJWtEdcYFJROSnF+DJ3qGbbI4ezJ1rO+qEL1ETCQdspnMOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744210164; c=relaxed/simple;
-	bh=xhjEV056H9FYdTOEcIjULpX+6vmWA46duA0byZ/I/c8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ma+h4C1xXLCjW5fZMsDu+6QZsezXvMBtBOIvxNZEDgGOrJHHgaLgUFakjeVYtmuoQax+vdjCgvChW5pKP4XMHVc7bm8tzsqjYprNuWAg0jylb7wRIC556gsM0H/aamFnhVjQSe2jpQXt3xxke9kXuNjrwlYugnV9X+S9jZ5ALRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ln3deWoU; arc=none smtp.client-ip=209.85.208.176
+	s=arc-20240116; t=1744210286; c=relaxed/simple;
+	bh=6ZNRTbRDkv0mz1ZutTn9+djhbORiCLYU4JDZTOzIs2Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cnICDE4JqauF/AyRqvHKh7XAnQCAVaZUU9xDO2T+hff6DdMCPEUAunzgEONQFYAbE7bw9bNplJEEbR5taySnfXGur23Eget4SQTAExvw8uySq7fH67GzxSknF+K0t0GHMMQ+F4BAY0VhnHpZYo04NkfBRs+fizHOon9YF8/Q1Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GglbDtyb; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ln3deWoU"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-307325f2436so69549131fa.0;
-        Wed, 09 Apr 2025 07:49:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GglbDtyb"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6e8f43c1fa0so81969676d6.3;
+        Wed, 09 Apr 2025 07:51:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744210160; x=1744814960; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xhjEV056H9FYdTOEcIjULpX+6vmWA46duA0byZ/I/c8=;
-        b=Ln3deWoUhwBq3UwRSKwVj1GS/gfo8sm0NCTgAkf5cwjDmbHNib9xFEvbIj1VP7hcx1
-         aktbvAu8SP9ZUv2cDlVKAN2o1Wr4mQiCo8iBQZUVo/nOiujvYwZmTttXwJCun/YPXOev
-         y/yx7t7Nte0+VzC9cs5JjpAeOiDFRQNpGH9JSpjgtaRWwJRyRrPFQMz3l7SwU7aKMlSS
-         D9+K7LZc2Onwc25Bc7jGfqb/Q66cXfOUnuncGjiYOgvj5IDTJghW29WZkFb9gCbkcIZt
-         2okcqdf/tvaJkn/JR54fVjWa/z1UtYJmfF1bMprFKVHvDr+mGCEF9zzOSelc9+cnr1I3
-         jH5g==
+        d=gmail.com; s=20230601; t=1744210284; x=1744815084; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HAzhb4wVbbjDuTOHS5YilxLef1hgz+nzXa5NJUtVfng=;
+        b=GglbDtybfJhEJXyNhNw6A21ERQcZmXRAx6XJbTcsv2usG+dJhvAkw2Pah+3VTfTvCA
+         xqwJ1ElSf6vFgAxvnbsgSbRkWmu5As8c9SQ3/RsqfC5NhbZ5WKBJf3r4WPrPGCAP0g6x
+         1PZvVKjbJf5z+/HCZreoHZ7NOYtz4o3gLHOMhh1OxqhjhqyViLhW8FupXgIKvxOjYBc5
+         KSkYxXa+8s3aE7AswPtVwbjY1dc15nZ8mg1U0juaoqGWW/ItHZuouYtdd0kSjjNK61Mh
+         Z6V+6vHkRBMbfUMbosPKYi1x6KSomzjWP59HL8EqSDklpeepMgKzlPhI2CQNEDiATbwP
+         k9+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744210160; x=1744814960;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xhjEV056H9FYdTOEcIjULpX+6vmWA46duA0byZ/I/c8=;
-        b=VDMD9zwQ3cSNKH1PNCOmQzWI95H0x8aoZ+OChaMW4YMbfO6H7g0SP204qNXf3Bq5c4
-         QOvXQrv9pX1OkRfeYKVRf050qp2pHgRwZGeeWfVrJUnWPWFh9hguaNSWPOgC1LsIl4/h
-         W6U0yRokxgKFwUc3DIuTQvqT1ebwc2uRmFzNyj3BtKiZkNqJlTMWTxzK0TKyDwVCssc9
-         C0XyANjrwsGpgZpEJ5eP4pJUG2w9Lh2AeTj83YAW0l3niXuOIEoRenhMAJHw2YV+3FWJ
-         HMRY4QrDrdupQ+6nqQRyOCNMnp1e4jpYpeD7axUTWcABkfG1ETxpRS0NVKe2sdFtMYQQ
-         enNw==
-X-Forwarded-Encrypted: i=1; AJvYcCXGPgRkCy3Dc1QbR+3KOIkjq+RfBEr2H5sEhOeaZicfeKbMCCO4rcs+B1CLQATJXdgnjXD6gyOAqhBlPps=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0J8oNbuzuzzcueeVHsWV8lE9vr+oRLMZM2QEcCHydPKw5IHGn
-	SDUVCc0VdlzMfCZTZM9LCqeFImUNsggNYwEE8S/mjVzBRljUjVg+r0KMx7Kx9NG5kBG39RxLiTr
-	JHXFQFy8jEia7npJSyjuzo+Ti+Nk=
-X-Gm-Gg: ASbGnctNJq7HTxQgc9bzDjHpWN6twxTyDiHA7h/psrk71kKOsxourcocp0ofhnE/Xoo
-	A82759JT/4xOh/OCrcwZr70qYYGr03SLcb50D7aeXnPD3nQoWl2kuzeBlrVi4MyiGIZp5Q+UsJu
-	o1hxpbkVzkbN+ZrFLTXR27WFE+m/NzTWuClSpweA==
-X-Google-Smtp-Source: AGHT+IE0OjJcLvewU6kRwfbIBnQJ6RvnEQwoJX/+dBHs52WJ/p2RPdESFV141biUeNxPOtMWMCMq/ccZek2tCqQK804=
-X-Received: by 2002:a2e:be9c:0:b0:308:fbd5:9d2d with SMTP id
- 38308e7fff4ca-30f438b6750mr10897051fa.37.1744210160026; Wed, 09 Apr 2025
- 07:49:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744210284; x=1744815084;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HAzhb4wVbbjDuTOHS5YilxLef1hgz+nzXa5NJUtVfng=;
+        b=f1h9aGzfGIKoRux0fgaSTa4I2u3jzzg5MVyjwybHtpmIlRE4iRuawvdsIZJtR7uVor
+         Hxzl9YVxrmAV8H1RFvkeZrHgRWj8l7x/2ymG/4D6JWyUZSnJneAg2mn2d4291fOXz0X/
+         qJMZ7YAKF0z70Ne1ZEPRca+Z2g6jEQIxD8CZTvoOiN2Gv8LTb3Iv2lniktcGssUPlvv8
+         bUjArjEjxpFvuzetLkwJyIQSBg2WZWtA2y83FUg+uPliD3rvSQThqURR/cEm/dRGorP/
+         MRQqSP3qbxGbsd1j5GX03FtzKRzBAnoVR89YWqxHBo7nXAIX5iUH8uV3AY2NoLz+As5T
+         65mg==
+X-Forwarded-Encrypted: i=1; AJvYcCU/9yiQak6MklIVhqrlyGtNzMX5IWPrK4VIy1IfSP44octOBxggC5zQSTH0svSvKhUlpsO+9azuIG7yyaY=@vger.kernel.org, AJvYcCUj7L8WZejmiAOx2Zoweb9BgeaVrnpP+hufwZccTtu3X4DkwAFjqUQGrhAv44airs8AzFwHQfQpuORQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQWY47If/XghRPpY9Vfyt6U00CmegCkenTJ9YqwkYsOAN9/TNG
+	LtSOWTa9N2bNb663juJvodD0bOw/86BBJBPg4cH4GtCPfnJ0Vub0
+X-Gm-Gg: ASbGncszuZ0GnNgU9zSsPvWxe342QEurljD8VBv0BTUni38XqPRJft9U55a/Lm4NErg
+	B2d7wkXedgXGDapuHMnYiWRQaZmFhDRqBnIaIEZOi5EfPPXQCLz+GHkEQra/JyRTvI80O40+oKF
+	WQ8KMm2ZF/9A8yA0g062roCj+4obfyOGWhahvTI7ZAeAc9nD0jRFDLpnwbJqPsE4E/f9DZ6zOCj
+	XPMMFa/b2F6jUuMG0lWjkK6QO/8YNj+gNqAjrU5yU4yaPT6PmMHRfUHVXqgy66ZLGPujS/w5Nmv
+	US4QZOVYtu/vuiTl0j0QImCpL2nc3DJKMH1S9zckcQ1QzcCwnTkE0BoElxNS/gfma3quQXeYfl0
+	44EidkwzEfm0h5xjoyYTJXiU48S7UPuifRNxxGUU5TdsK
+X-Google-Smtp-Source: AGHT+IEI+1r0BjFWD5KnBSWcO5feK0qnKlr7YAv2o0J1Sh4vSh1h6CmGIIsSKC8ij4Sx8U9bnfiM3Q==
+X-Received: by 2002:a05:6214:19e1:b0:6ed:19d1:212f with SMTP id 6a1803df08f44-6f0dd025089mr39184886d6.5.1744210283608;
+        Wed, 09 Apr 2025 07:51:23 -0700 (PDT)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2620:10d:c091:600::1:3298])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f0de95fa89sm8229876d6.6.2025.04.09.07.51.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Apr 2025 07:51:23 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Subject: [PATCH v2 0/4] rust: list: remove HasListLinks::OFFSET
+Date: Wed, 09 Apr 2025 10:51:17 -0400
+Message-Id: <20250409-list-no-offset-v2-0-0bab7e3c9fd8@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250409-container-of-mutness-v1-1-64f472b94534@gmail.com>
-In-Reply-To: <20250409-container-of-mutness-v1-1-64f472b94534@gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 9 Apr 2025 10:48:43 -0400
-X-Gm-Features: ATxdqUFC-VpChO_A1OyOXTVwtBpWe4runp8t2SxRqzsNxltH0wOFvEYcx4OFsy8
-Message-ID: <CAJ-ks9mVs6+S6pgz9JEUWTjLNKuRzm45fWP4b+2kbUEeDY4pYQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: retain pointer mut-ness in `container_of!`
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGWJ9mcC/3WPwW7DIBBEf8XiXCrAmGKf+h+VDwssCVIMLRCrV
+ eR/7ya59NLj7M6+nbmxhjVhY8twYxX31FLJJNTLwPwZ8gl5CqSZEmoSo9L8klrnufASY8POZ4P
+ RTN4pmCdGR58VY/p+AD9W0meyl/rz4O/yPv0XtUsuOMSg3Fv0Wit4P22QLq++bGw9nuyKX1fK2
+ J8PmIOGnPZb6ssgIKpoHEqnlZWjnZyR1jtrIMzaYMAg7Azesr/dqOo9jhYzcXKHlLFSIL5de8b
+ WuJPTGMDp0dqwUIH1OH4B6T0MDjQBAAA=
+X-Change-ID: 20250324-list-no-offset-96ef65cb2a95
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-pci@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
 
-On Wed, Apr 9, 2025 at 10:43=E2=80=AFAM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> Avoid casting the input pointer to `*const _`, allowing the output
-> pointer to be `*mut` if the input is `*mut`. This allows a number of
-> `*const` to `*mut` conversions to be removed at the cost of slightly
-> worse ergonomics when the macro is used with a reference rather than a
-> pointer; the only example of this was in the macro's own doctest.
->
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
-> This patch is extracted from 3 other series to reduce duplication.
+The bulk of this change occurs in the last commit, please its commit
+messages for details. The first commit exists in 2 other series but was
+picked into this series to allow using `container_of!` without the need
+to cast from `*const Self` to `*mut Self`.
 
-Oops, forgot to include
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+Changes in v2:
+- Change type parameter delimiter to `{}` for consistency. (Boqun Feng)
+- Rebase on v6.15-rc1.
+- Extract first commit to its own series as it is shared with other
+  series.
+- Link to v1: https://lore.kernel.org/r/20250324-list-no-offset-v1-0-afd2b7fc442a@gmail.com
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+Tamir Duberstein (4):
+      rust: list: simplify macro capture
+      rust: list: use consistent type parameter style
+      rust: list: use consistent self parameter name
+      rust: list: remove OFFSET constants
 
-from https://lore.kernel.org/all/87semhbncg.fsf@kernel.org/. I hope
-this is proper form!
+ rust/kernel/list.rs                    |  18 +++--
+ rust/kernel/list/impl_list_item_mod.rs | 128 +++++++++++++++------------------
+ 2 files changed, 67 insertions(+), 79 deletions(-)
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250324-list-no-offset-96ef65cb2a95
+prerequisite-change-id: 20250409-container-of-mutness-b153dab4388d:v1
+prerequisite-patch-id: 53d5889db599267f87642bb0ae3063c29bc24863
+
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
+
