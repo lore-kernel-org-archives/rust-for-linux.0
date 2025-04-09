@@ -1,176 +1,96 @@
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E9325A35B
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Apr 2025 07:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BAF193062;
+	Wed,  9 Apr 2025 07:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744184979; cv=none; b=o7D5KYlEuJLNEGxl02drTqG4mThAebGN2libgKNMXs6UqbuHwCDkBlMMHHVnNzSZx7P40o2FzfhuiCx6jymx6XjgitgAZ1EyfmGGxEn7Et7ER8itVWww5yV705+yD7WU5ZYMZItMBrBevCyVgpBbp6mMuqzgMPRkURpdcozy4/s=
+	t=1744184994; cv=none; b=Gvng/yRzpXijOg3UKQ5Fg7BF0KJSbqmwyQ2nJHQl1RHvccVOa9ri7R+sTg2UUc/MVtScvZbhm83ClVX8tzsXTtXhJYgGqOwqlzfhFdAE5/hN3+XGGXLQ9pqOTpxD/7+L1dTsCkYOXr+ZTl/Kp8RaUajjM5AxNpRvWNiWz9NIEzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744184979; c=relaxed/simple;
-	bh=43MQvtFQPt8BO/W3aJUIIkSB0/znhFmsSglFyGiPHsI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OUO8w1ItalcQ8ucqBRRY6qXgB5V0d/NpNSX4rpQ+N3HxaPF26WtpQAdBn/ZgPYQhpfe1ahCnD/+wY3tejRL4gh04ODZI4aHaR/B3zh9pf5I4RmATSN4yCfB42wdLIxQ4q0z3yykh7Tj2PQ25ijxzzL2cLXlTjp1RXpEUajXFSuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=nnXtEdNk; arc=none smtp.client-ip=212.63.210.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
+	s=arc-20240116; t=1744184994; c=relaxed/simple;
+	bh=e39jX18F+yRudrjwHDrwohALMBF6CNPKa8yNt+usdRc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=EzBQHPP37mUTsANFFQxZ9FhaAJaZA2OiUyFxKidD68GDPIXrywqtWupqqUvmmeBuztd3p8kQpxOzQbddyXqs5TKs4O/9ZASa7d568qNRjeQ5e+LCVSg98lgiEYwIC+HuOoKJ/bKNWnq5UHC8kNO9g4HdeOHYi8px4B9B/SlHfOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUkVqy0m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="nnXtEdNk"
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: lina@asahilina.net)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id 34E2342E67;
-	Wed,  9 Apr 2025 07:49:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-	s=default; t=1744184973;
-	bh=43MQvtFQPt8BO/W3aJUIIkSB0/znhFmsSglFyGiPHsI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nnXtEdNkkMT9pPQPcBZOLRTzKn4AhvliDpawSOzIvNe2V5hpbzepcUTxv+zlQsvnA
-	 cGyRN3FRZs5lgpQafOdnKO1YY5GQ9UTxxARlw6Lk31NVlSJgS0E89mtVsnWZkYOezR
-	 k0FuiM0wgJDKDT6fKD3D9rZ0rFLf6cElvSwfYxiD6nd+rf/rNDMwuXURwP8jzTYI3Y
-	 aI1MOFNgBp5zki4NsyaHov9HknVOXp0i3ygwbvhExdSvuB44jpLTqLR8o3NVnSJZlS
-	 apFm/Z5R8H4AK+fnhPS3blpsEO+IM2P4PSqX1kzTVouTmExcOwrgwZXeS5e6O60Xkx
-	 Soao5hrTwoC2g==
-Message-ID: <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
-Date: Wed, 9 Apr 2025 16:49:30 +0900
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUkVqy0m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BB1C4CEE3;
+	Wed,  9 Apr 2025 07:49:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744184993;
+	bh=e39jX18F+yRudrjwHDrwohALMBF6CNPKa8yNt+usdRc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=BUkVqy0mCr78KM+tQ741crVUGsUrKWQ5qKnPSdCJNO1TCK64j8tbim4gtq17dkjQ+
+	 hKpmiW0Z06gT1YO6Bv04f6dQ5nJE0fNc6863AbXuL3XE8EJV3S3EX3F3bUNcTEHG7y
+	 DXYGsU7jajHCh2ZmG9UFw8jXPidAd47UK3RQpIzQK58+1vXe48d+u/mR2wdR/CFQlV
+	 P085PuPiyEp/DKu4CBTCr8xhChcU5rhRGBuvXAB0Gje1irZMeNnLooUD8AWMGFg+Ut
+	 SONaeKZxvUqIi8e6G23afRVqrc+J2LYhz8h2yOOBFF6lkwsMyiFYHvAy2O6wTX/ejg
+	 89CnuAGjqx8xg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Lyude Paul" <lyude@redhat.com>
+Cc: <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  "Boqun Feng" <boqun.feng@gmail.com>,  "Frederic Weisbecker"
+ <frederic@kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,
+  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
+  "Trevor Gross" <tmgross@umich.edu>
+Subject: Re: [PATCH 2/6] rust: hrtimer: Add HrTimerCallbackContext and
+ ::forward()
+In-Reply-To: <0baafb97ec786c01c1d44270dd211537105922b6.camel@redhat.com>
+	(Lyude Paul's message of "Tue, 08 Apr 2025 17:55:54 -0400")
+References: <20250402214109.653341-1-lyude@redhat.com>
+	<AVQT2wHP9t48ZH5r3ywLh-pwv0IGUraoDxWO8KXcxL_y3mE-0YmWlQjLMvP6JBYxG3_1SYJL4Fxp1jc788HniA==@protonmail.internalid>
+	<20250402214109.653341-3-lyude@redhat.com> <87v7rej2n5.fsf@kernel.org>
+	<ofkrywngVbnZefTyPMlUmu-wcbxEbFB0MAOMAgFOsTMwFjfpEYJqQAFBP14MabYmHMaDBWkB1rBgSxGCJOyy_A==@protonmail.internalid>
+	<0baafb97ec786c01c1d44270dd211537105922b6.camel@redhat.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Wed, 09 Apr 2025 09:49:38 +0200
+Message-ID: <87lds993l9.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] DRM Rust abstractions
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
- acurrid@nvidia.com, daniel.almeida@collabora.com, j@jannau.net,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-References: <20250325235522.3992-1-dakr@kernel.org>
- <32e7da7e-de32-4bc6-a751-f604da36a63f@asahilina.net>
- <Z_VXBZcBsk2k6eVN@cassiopeiae>
- <143206f6-cd97-4ef8-a4f3-f68d703903bf@asahilina.net>
- <Z_V2ZxIZxI_HiHM5@cassiopeiae>
-Content-Language: en-US
-From: Asahi Lina <lina@asahilina.net>
-In-Reply-To: <Z_V2ZxIZxI_HiHM5@cassiopeiae>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
+"Lyude Paul" <lyude@redhat.com> writes:
 
-
-On 4/9/25 4:17 AM, Danilo Krummrich wrote:
-> On Wed, Apr 09, 2025 at 03:06:38AM +0900, Asahi Lina wrote:
->> On 4/9/25 2:04 AM, Danilo Krummrich wrote:
->>> On Wed, Apr 09, 2025 at 01:29:35AM +0900, Asahi Lina wrote:
->>>> On 3/26/25 8:54 AM, Danilo Krummrich wrote:
->>>
->>> You said "use it/submit it in any way".
+> On Tue, 2025-04-08 at 13:47 +0200, Andreas Hindborg wrote:
+>> "Lyude Paul" <lyude@redhat.com> writes:
 >>
->> I thought keeping authorship is an implied part of kernel etiquette.
->> Usually when you submit code someone else wrote, you keep them as
->> primary author... I want you and others to use the code, that doesn't
->> mean I want you to put your name on it as if you wrote most of it.
-> 
-> The broader context of the private mail was about you stepping back on kernel
-> development. You did so with a few more details (which I'm not going to
-> disclose), that made it clear to me that you don't want to be bothered with
-> kernel development any more.
-> 
-> In combination with you giving permission to "use it/submit it in any way", I
-> thought it's better to just pick a safe path to not misrepresent you given all
-> the changes I made.
-> 
-> I do still credit you on all corresponding patches though.
-> 
->>>> I'm really tired of kernel politics and I don't want to spend more brain
->>>> cycles looking at all the other patches or having to argue (in fact I
->>>> usually don't look at patch emails at all recently), but I would
->>>> appreciate if you keep my authorship for files that I did largely author
->>>> myself. After everything I've been going through the past weeks (some of
->>>> the people on Cc know what that's about...) this feels like yet another
->>>> slap in the face.
->>>
->>> As mentioned, please diff the correct thing and then just tell me where you'd
->>> like to have primary authorship changed.
+>> > With Linux's hrtimer API, certain functions require we either acquire
+>> > proper locking to call specific methods - or that we call said methods from
+>> > the context of the timer callback. hrtimer_forward() is one of these
+>> > functions, so we start by adding a new HrTimerCallbackContext type which
+>> > provides a way of calling these methods that is inaccessible outside of
+>> > hrtimer callbacks.
 >>
->> I don't even know what tree this series is supposed to apply onto (tried
->> drm-misc next, torvalds/master, v6.15-rc1) so I'm just going to take
->> drm-misc/topic/rust-drm and assume that's what this series includes.
->>
->> $ diff -urN rust/kernel/drm/drv.rs ../uplinux/rust/kernel/drm/driver.rs
->> | grep '^+' | wc -l
->> 45
->>
->> So I'm diffing the correct thing now and the result is essentially
->> identical.
->>
->> Meanwhile, device.rs has many additions... but a big chunk of those is
->> code that was just moved from drv.rs (like drm_legacy_fields and the
->> code that uses it).
-> 
-> Except drm_legacy_fields! and VTABLE (which is just trival boilerplate code)
-> device.rs changed fundamentally, i.e. I switched the device abstraction to use
-> the subclassing pattern.
-> 
-> If you look further you will find that I really changed a lot of things.
-> 
-> I have *nothing* to hide, here's the overall diff for all the changes I made:
-> 
-> 	[1] https://pastebin.com/FT4tNn5d
-> 
->>
->> Again, I don't have the spoons to make some deep analysis here, you
->> should know how much of the code you changed, added, or just moved
->> around. I'm not going to litigate this further. If you think splitting
->> up a commit into multiple commits and moving code around warrants taking
->> over primary authorship of a project I've been working on for years now,
->> so be it.
-> 
-> You just said you "don't have the spoons to make some deep analysis here" and
-> right below you acuse me of just "moving code around".
-> 
-> Which means that you do so *without* evidence. And again, I have *nothing* to
-> hide, see [1].
-> 
-> Besides that I also told you that I'm fine to change primary authership, if you
-> tell me where you think it would be appropriate (even though I do think my
-> changes do justify how things are currently).
-> 
->> I'm just disappointed.
-> 
-> That's where you are maneuvering *yourself* into.
-> 
-> You could have easily just asked me to change things for patch #X, #Y and #Z.
-> 
-> Instead you outright started with accusing me of things. I also feel like you
-> intentionally try to misrepresent what I am doing and what my intentions are.
-> 
-> I neither have the time, nor am I willing to deal with random drama like this.
-> 
-> If you want something changed, just go ahead and tell me what, *without* more
-> drama and without more accusing me of things.
-> 
+>> Based on tglx comment, we should be able to call this function if the
+>> timer is stopped and we have a unique ownership of the timer. Do you
+>> want to add that? If not, could you add a note about this somewhere?
+>
+>
+> Happy to! So, I think if we were to add a function for this I assume we would
+> want something like this?
+>
+> fn forward(&mut self, now: Instant, interval: Duration) -> u64 {
+>     self.cancel();
+>     /* Do actual forward stuff here */
+> }
+>
+> Of course with some documentation pointing out that this function will stop
+> the timer if required.
 
-Alright, then please remove my authorship entirely from this series,
-including Co-developed-by and signoff lines. I hereby release my code as
-CC-0, which means you don't need the signoffs, it's yours now. The same
-applies to any future code submitted that I originally authored as part
-of the Asahi kernel git tree. That way we don't need to argue about any
-of this.
+Yes, something like that. My first thought was to check if the timer was
+running and return `Err` if that is the case. But it might be more
+simple to just call `cancel`. What do you think?
 
-I thought asking for patches that I mostly authored to keep my Git
-authorship would be an uncontroversial request (and not unreasonable to
-ask you to figure out which those are, since you made the
-changes/splits, and #3 clearly is one), but apparently even that gets
-you flamed on Linux threads these days.
 
-I regret having been part of this community.
+Best regards,
+Andreas Hindborg
 
-~~ Lina
 
