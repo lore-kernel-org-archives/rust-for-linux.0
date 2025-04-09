@@ -1,96 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BAF193062;
-	Wed,  9 Apr 2025 07:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A12025A33C
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Apr 2025 08:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744184994; cv=none; b=Gvng/yRzpXijOg3UKQ5Fg7BF0KJSbqmwyQ2nJHQl1RHvccVOa9ri7R+sTg2UUc/MVtScvZbhm83ClVX8tzsXTtXhJYgGqOwqlzfhFdAE5/hN3+XGGXLQ9pqOTpxD/7+L1dTsCkYOXr+ZTl/Kp8RaUajjM5AxNpRvWNiWz9NIEzY=
+	t=1744188710; cv=none; b=cScZCn71SOBjnFi+CswC6zeRtoCMRZvTTWnV2hYNF8AR6dx0/oAYuAxs/SbQkX9mWBwYVMHglgFcZPcbI0U1qMtU05bNbwmK9tGfG1v8E9Bm0hrtglS4Z1VCOHKOF0avkrFej4WtqmSDCcOxP9dAj1AmlYc2dSdgyjAgSt+km/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744184994; c=relaxed/simple;
-	bh=e39jX18F+yRudrjwHDrwohALMBF6CNPKa8yNt+usdRc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EzBQHPP37mUTsANFFQxZ9FhaAJaZA2OiUyFxKidD68GDPIXrywqtWupqqUvmmeBuztd3p8kQpxOzQbddyXqs5TKs4O/9ZASa7d568qNRjeQ5e+LCVSg98lgiEYwIC+HuOoKJ/bKNWnq5UHC8kNO9g4HdeOHYi8px4B9B/SlHfOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUkVqy0m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744188710; c=relaxed/simple;
+	bh=ZdX4ylzskOvlzS/dy0Hz+BZ5yhPSDECThaJX99P04N8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GY5C3bCfWV/MmcsOpzUpzLvZHdQj3WYw9JvTlI9R2rIkYgNkI6OInRbr8bEviagsQIGhNOTPvyvNHbaCNOb65ugJKlSZtEXDouh671dxh4BMNhRFg9rcwHLS4SvkCuChgfR3VhzKLudNm2Ujpypmfb6hgkkAbDOtJ6SjVV4Hcgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UCaxguYr; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUkVqy0m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BB1C4CEE3;
-	Wed,  9 Apr 2025 07:49:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744184993;
-	bh=e39jX18F+yRudrjwHDrwohALMBF6CNPKa8yNt+usdRc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=BUkVqy0mCr78KM+tQ741crVUGsUrKWQ5qKnPSdCJNO1TCK64j8tbim4gtq17dkjQ+
-	 hKpmiW0Z06gT1YO6Bv04f6dQ5nJE0fNc6863AbXuL3XE8EJV3S3EX3F3bUNcTEHG7y
-	 DXYGsU7jajHCh2ZmG9UFw8jXPidAd47UK3RQpIzQK58+1vXe48d+u/mR2wdR/CFQlV
-	 P085PuPiyEp/DKu4CBTCr8xhChcU5rhRGBuvXAB0Gje1irZMeNnLooUD8AWMGFg+Ut
-	 SONaeKZxvUqIi8e6G23afRVqrc+J2LYhz8h2yOOBFF6lkwsMyiFYHvAy2O6wTX/ejg
-	 89CnuAGjqx8xg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Lyude Paul" <lyude@redhat.com>
-Cc: <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  "Boqun Feng" <boqun.feng@gmail.com>,  "Frederic Weisbecker"
- <frederic@kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,
-  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>
-Subject: Re: [PATCH 2/6] rust: hrtimer: Add HrTimerCallbackContext and
- ::forward()
-In-Reply-To: <0baafb97ec786c01c1d44270dd211537105922b6.camel@redhat.com>
-	(Lyude Paul's message of "Tue, 08 Apr 2025 17:55:54 -0400")
-References: <20250402214109.653341-1-lyude@redhat.com>
-	<AVQT2wHP9t48ZH5r3ywLh-pwv0IGUraoDxWO8KXcxL_y3mE-0YmWlQjLMvP6JBYxG3_1SYJL4Fxp1jc788HniA==@protonmail.internalid>
-	<20250402214109.653341-3-lyude@redhat.com> <87v7rej2n5.fsf@kernel.org>
-	<ofkrywngVbnZefTyPMlUmu-wcbxEbFB0MAOMAgFOsTMwFjfpEYJqQAFBP14MabYmHMaDBWkB1rBgSxGCJOyy_A==@protonmail.internalid>
-	<0baafb97ec786c01c1d44270dd211537105922b6.camel@redhat.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 09 Apr 2025 09:49:38 +0200
-Message-ID: <87lds993l9.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UCaxguYr"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cf327e9a2so54596385e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Apr 2025 01:51:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744188707; x=1744793507; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=W9EIcXKJmOaJtQk62oAIpx09pwCOcTfkyNYjV4byDb0=;
+        b=UCaxguYrNZtdhVJfn0EZBgznR4z/EiwhjffgxZJNqRiyl0f+9HY6LoepRSMvgzQ38a
+         oeESJrVnJ7+Cd6Yv+Bu45cTa89pFmiMiLb58+Uq+5kYtXg6AojMoieH0ZvF2ONwjkSu3
+         TY1P+AU5FtGmnzRitJgqWzLCo3gvF5jeUvR57+OpPgWl2tXkjDC4LkCVY4CtGjzfZ2zG
+         LspSlPHZ4zWpjxUWcnvxFR7xzc4Oz7CUGnL7jg10cGq/6tmt13Al9iz+SU/DMAIBDhLJ
+         N4IMjPQJor7/Qblj3OB9rymsUNWaGy6WLMQN3LhaviNsgwGiMB+lvy/bpDO4/00RdRIO
+         TfHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744188707; x=1744793507;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W9EIcXKJmOaJtQk62oAIpx09pwCOcTfkyNYjV4byDb0=;
+        b=ps88/n8oGf+jOENRe2tsUSUVOMOPVVRC350cY55iWar6NDOc50ZYL7i2GOgOrWvD6O
+         T+x4RDoltzgzNQ0nq/l9UglnpzJgXVrNZry7eM4jfs7G4taVHlScsUELQvQBglKwAQ6A
+         u+JWakYGtDQ097OSV0pU62w9gG41LfczTAGAbHxJe1gksQA2KWUe/cCrGtdDN+BhnDSJ
+         04EoxxdwVZdWz8leHe5xxOJuzdaCWXZ117EsS5tsZ2L7LAIWvCH2LzHBxf8VaWMC1sOJ
+         Egt0uy3WwUucTGgkdEqPQUgtbK/bmjA4Z+kwWH0WUIB5xCgDjc/X58WdrxZj4v+ZFyzY
+         R7Cg==
+X-Forwarded-Encrypted: i=1; AJvYcCW2WBRIi+0J1Lv+8BFHUeG+7CyS3cz+Vw+dmr5LKsHZIsQ8aCn/y2xffVj8Ljjcal4kdzaNAxeMwoUHKn8z/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyy08zXGPj5uP/eRibUCp/wT+Mm3lBuICbqe1pXeD7nzlzYL7SF
+	IrXICbpxc4JdFssPtvHI7CtE03CsBMTto8n39oD03tXgSO3I2KTJoEYrVcJzhqzDPEHDIoT3Dbj
+	C7Cz8+PqqOCbMFw==
+X-Google-Smtp-Source: AGHT+IFFC1oenasUlX25FhpPJr1NS865doQr/pWc7WJ9+kFbWFNqv3muUFiv4LensE/F5lJnwv2wYu4ZTJalJZ4=
+X-Received: from wmbg24.prod.google.com ([2002:a05:600c:a418:b0:43c:fce2:1db2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:5492:b0:43d:40b0:5b with SMTP id 5b1f17b1804b1-43f1ed4b96amr12837835e9.25.1744188706743;
+ Wed, 09 Apr 2025 01:51:46 -0700 (PDT)
+Date: Wed, 9 Apr 2025 08:51:44 +0000
+In-Reply-To: <20250406110718.126146-3-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20250406110718.126146-1-fujita.tomonori@gmail.com> <20250406110718.126146-3-fujita.tomonori@gmail.com>
+Message-ID: <Z_Y1IBcp_NNnks8R@google.com>
+Subject: Re: [PATCH v1 2/2] rust: task: add Rust version of might_sleep()
+From: Alice Ryhl <aliceryhl@google.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	boqun.feng@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@samsung.com, tmgross@umich.edu, dakr@kernel.org, mingo@redhat.com, 
+	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
+	mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com
+Content-Type: text/plain; charset="utf-8"
 
-"Lyude Paul" <lyude@redhat.com> writes:
+On Sun, Apr 06, 2025 at 08:07:18PM +0900, FUJITA Tomonori wrote:
+> Adds a helper function equivalent to the C's might_sleep(), which
+> serves as a debugging aid and a potential scheduling point.
+> 
+> Note that this function can only be used in a nonatomic context.
+> 
+> This will be used by Rust version of read_poll_timeout().
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/helpers/task.c |  6 ++++++
+>  rust/kernel/task.rs | 26 ++++++++++++++++++++++++++
+>  2 files changed, 32 insertions(+)
+> 
+> diff --git a/rust/helpers/task.c b/rust/helpers/task.c
+> index 31c33ea2dce6..2c85bbc2727e 100644
+> --- a/rust/helpers/task.c
+> +++ b/rust/helpers/task.c
+> @@ -1,7 +1,13 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+> +#include <linux/kernel.h>
+>  #include <linux/sched/task.h>
+>  
+> +void rust_helper_might_resched(void)
+> +{
+> +	might_resched();
+> +}
+> +
+>  struct task_struct *rust_helper_get_current(void)
+>  {
+>  	return current;
+> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+> index 9e6f6854948d..1f0156b38ab5 100644
+> --- a/rust/kernel/task.rs
+> +++ b/rust/kernel/task.rs
+> @@ -380,3 +380,29 @@ fn eq(&self, other: &Kuid) -> bool {
+>  }
+>  
+>  impl Eq for Kuid {}
+> +
+> +/// Annotation for functions that can sleep.
+> +///
+> +/// Equivalent to the C side [`might_sleep()`], this function serves as
+> +/// a debugging aid and a potential scheduling point.
+> +///
+> +/// This function can only be used in a nonatomic context.
+> +#[track_caller]
+> +#[inline]
+> +pub fn might_sleep() {
+> +    #[cfg(CONFIG_DEBUG_ATOMIC_SLEEP)]
+> +    {
+> +        let loc = core::panic::Location::caller();
+> +        // SAFETY: FFI call.
 
-> On Tue, 2025-04-08 at 13:47 +0200, Andreas Hindborg wrote:
->> "Lyude Paul" <lyude@redhat.com> writes:
->>
->> > With Linux's hrtimer API, certain functions require we either acquire
->> > proper locking to call specific methods - or that we call said methods from
->> > the context of the timer callback. hrtimer_forward() is one of these
->> > functions, so we start by adding a new HrTimerCallbackContext type which
->> > provides a way of calling these methods that is inaccessible outside of
->> > hrtimer callbacks.
->>
->> Based on tglx comment, we should be able to call this function if the
->> timer is stopped and we have a unique ownership of the timer. Do you
->> want to add that? If not, could you add a note about this somewhere?
->
->
-> Happy to! So, I think if we were to add a function for this I assume we would
-> want something like this?
->
-> fn forward(&mut self, now: Instant, interval: Duration) -> u64 {
->     self.cancel();
->     /* Do actual forward stuff here */
-> }
->
-> Of course with some documentation pointing out that this function will stop
-> the timer if required.
+Overall this looks okay to me, but this safety comment could be
+improved. This being an FFI call is not the reason *why* it is safe to
+make this call.
 
-Yes, something like that. My first thought was to check if the timer was
-running and return `Err` if that is the case. But it might be more
-simple to just call `cancel`. What do you think?
+// SAFETY: `file.as_ptr()` is valid for reading for `file.len()` bytes.
 
+And I might separate the file into a separate variable for clarity:
+let loc = core::panic::Location::caller();
+let file = loc.file();
 
-Best regards,
-Andreas Hindborg
+> +        unsafe {
+> +            crate::bindings::__might_sleep_precision(
+> +                loc.file().as_ptr().cast(),
+> +                loc.file().len() as i32,
+> +                loc.line() as i32,
+> +            )
+> +        }
+> +    }
+> +
+> +    // SAFETY: FFI call.
+> +    unsafe { crate::bindings::might_resched() }
 
+And here you can say
+// SAFETY: Always safe to call.
 
+Alice
