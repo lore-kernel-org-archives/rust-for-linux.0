@@ -1,69 +1,69 @@
 Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FAA218EBE
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Apr 2025 22:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72BC1E5B67
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Apr 2025 23:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744237955; cv=none; b=Vvshm6YjjwioBMTxHA1K6FZfnSESabkrezO83Sxb9CPuH9y6nRHhGdO5+O9BzRkEA6csw8HcCQc7jPulwPAyGgWHpwP5OJ0rpuqWyaiBTWPpXWQaG8pSYFyQfvhzSfeyinHpGHk5rBl590Fel2YevhruWCCCXxAmjd64/NYJf10=
+	t=1744239698; cv=none; b=SAgrxGZLap2nrTlnlMlP1uGbtzl5diUJi1BaaEvHiTCdxzLomO9A7YNUtPnBj7C3EkoIVTpIAdJWubvrILOWI4Y+PZ99pf5yE6nDbvXl3rSxGhcgMiujKhPC1jTI6XRYENEZjtsjQvrTq7X2mzlabCFtP92D0tyUvCzSbIkaUg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744237955; c=relaxed/simple;
-	bh=By8viJdoAUoJoi7XSd3M03yuIGRREsQtuwL88PTCdwY=;
+	s=arc-20240116; t=1744239698; c=relaxed/simple;
+	bh=v81+8plPVTjKx5V9Ug7IsA2Cb0cejEvOk+mV36fGfWw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FGs4a/X+YOol8mdjVrxXGehFa8KbxGozsUSOgasu6orPZ2c0LdETrFx5YgquR9uAU+8OrIyzB/RlTpLM8QBaPn/nnqOyLFWIntxbysSz4bF9teo0wYnUzMehw9RUtmByxMm9umD84cl5BgHFf/+nm11Lk4XEVGM7othRNVOlYHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tc1qAQXY; arc=none smtp.client-ip=209.85.208.52
+	 To:Cc:Content-Type; b=USGKp4xulPNhTWOd72dS0NWlPpXJg/761YIsqoG7UWh5OquCsIoVUwf1SeDb773FOWNQLkQeXNSrV6hzvkCwQaux7mkZ3E2rq4ZVOcAdAaW2kG0XEPo4owG86cSQrB+3T6OiZ61nbOclSCqttxTyqR7VutPDyRsLTGBE2DlTNWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T0EjrXCZ; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tc1qAQXY"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e5cbd8b19bso1516a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Apr 2025 15:32:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T0EjrXCZ"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e5cbd8b19bso1686a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Apr 2025 16:01:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744237952; x=1744842752; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1744239694; x=1744844494; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GMu1FH4a99+6xCgJv+Tb84Trq4JVQxXXa7kqUK3IbB0=;
-        b=tc1qAQXYDH9dtG0Lq3PAf39LIbi8AL15JVsy1Bfqfc1gOnT4OUu/DhTH2xSoadfJ2m
-         nWBc+vRBq9HqRfy26lVsQ6id6qgyQM2JWlQnzCc2wCEr+DRP7NbYh/Eqenh6Py+TCpkr
-         3uiInRAoESBmm/oAWDtkaYyG4uzzUgCD36bN4XnMcmYiWIq/gdjkeCvT68WEDaXs7Yvj
-         sVAilBhl50zNYc/CLEF67pN3Qp6XPPiInlYMVKDvO8Bt6t4Yfyo7ZkU0mKkUVZQtad7w
-         j5YCIer26BBK0mk770akmFQ5GqJt/q5swr/RNx5uT9Lz+XBUnjVtDmkm8FJrAgVAlE7b
-         /Qvw==
+        bh=8+n/DcrmRkQH4CJPswRtpQnfI+hbqMmOJl5kLBL3r+g=;
+        b=T0EjrXCZqAC70DJumZzQuwNefnW8kp5+NcXTFtpQgEEEZpfDJZlxPLI7nINn/BIHY1
+         D4Tihrx/CdXG+zdA1xzm6IoTGp1gab9cchda3Bh0pnNgXtpgeR3dBu/UE3w3Lunp45BO
+         0iRWduDURZAfMWR6p8zXwwBFyImU229o51tJLaHbcnizVg4BO+ZIdnFtMjZD2Y8hR9Kr
+         uB9T61Or4FDf9EeNC/eKGTbGKsg5/nuFmpvuUpvG95XPKEk7nKHtr2hlH5VeKhu9zP7m
+         Qt/G9j78cG1OnRNGi1JBbe/IYfBBs+1lCdj7Cv99gicnwHLDrMvzyCh/igL8XDmlFwHy
+         DV1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744237952; x=1744842752;
+        d=1e100.net; s=20230601; t=1744239694; x=1744844494;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GMu1FH4a99+6xCgJv+Tb84Trq4JVQxXXa7kqUK3IbB0=;
-        b=q1YYFLf9owFeMPrOMVAQTAEEx82JJYlQUKiJhoo7gdQUo2feU56AGdHa+eDqG4xNcm
-         W1Xqodxv4jeFO9+nW63/7rldcPBeyVq+86ZBbJXKi+nsLufo/ijL9KEcT5VnsIBGhBlz
-         hwGWXzWjG9jBZyQkLGmIdNHsocms634MWTrZR0rkjm7fPI3bhPl6ft3RpLblKpmuq2Ql
-         BrBSqFR9iha97lhvMmmwo+jCaDKENQQG2dAuDZ9AycRnj7dCrmEK+kflkEExdnuIkTCh
-         V7gAAYVAUo0g6uvFdhYdNYVRRQfrIrfqhgdKSmfE5pTIKCYA7y0FZXNczKMdmjFGIpvT
-         20cA==
-X-Gm-Message-State: AOJu0YzcJ3q/hH7I6A5Tr/RbmL3qZPU99bA4/b+c7i/IzktSSLe/RtQT
-	KUMqU6gJBFRbPTsly+G/ZTVZRyXdvsULHO65Xpqhzs5b0Lv49toEW9CwWAkvhLATSxtFhzl5W3w
-	6wj2VUpV7wE2du1cH9sKmK/iYIbTEjG8tQaA0
-X-Gm-Gg: ASbGncsMUlTMcRL3fSbnx/jyTfU7MyFY8SKBplWGN4hMeeuYFpXZnKuGX4oI4lYnBmi
-	j/0y4bBQcn8BPbRXpZZhtKxZcXMzw48Df0QXEK0PZCrFCmjTbBhiffvqUNiVh/br2+9h1rLNj1T
-	ju7qpe8YGiwTJB8im1+Au6Gub2mxWyv2EG2LPOUwhV9H0TrhKO48D7
-X-Google-Smtp-Source: AGHT+IENolhEXzO3rinX4oLrIHh82oHYmfpNxwGNuU8PEr5id+7uNdCOqNh7a5iRadgkh5271oXOm5pqZaF50y0gefE=
-X-Received: by 2002:aa7:dac6:0:b0:5e5:c024:ec29 with SMTP id
- 4fb4d7f45d1cf-5f328d6ccdbmr28589a12.0.1744237951690; Wed, 09 Apr 2025
- 15:32:31 -0700 (PDT)
+        bh=8+n/DcrmRkQH4CJPswRtpQnfI+hbqMmOJl5kLBL3r+g=;
+        b=ObXIvryt6cQUXMcbi9D2Ufz4npdL8Oc+ZSl1Cd6FhchfgtF5EdABPbvI+fI0R32Pqx
+         S34k5k0U41H7IjUMdwApfcfpNYatwanR5x+MgFZiT6W5r/YuAVgaFR0vpeNq4t4wp6Qj
+         jJLe9oDmHDdOKrFkNjF77Gn+E42V3yH65NutFVA1UKbebiTYgtpUSwMV8THGss6OrpL7
+         rKkJpasoDnSq18muHNjNqyg5h4mwlSiGCOwBrfpWee7O9lEecBUTIf6JcSa7e46tqa6z
+         X811ZI0fOY3Wi1nk0Qoz1r8VIVxu1x38U/qsOgDjJk99zULZv62HghUclI6ANAb6RLch
+         1P/Q==
+X-Gm-Message-State: AOJu0Yxa+CpyTGyuG79eGJUTGTcVbi0f7+ark8igd76wQF3eGx6ePLpS
+	5XQkkW4xOqJF6XYSM6tnEPRw/hFn6/RhM+2coQFEmmLG9KhDxAs8d2xK/acDVwFKweEFb1aor5n
+	uhd9oibL0ezdamGu+lGzmbdqgJRuEqY1yylO7
+X-Gm-Gg: ASbGncvshg6kev/42OY4UhYfpHzRTxR2YA56z4bTZM+7uVnFQdtXqpdKIK1mqXHHfyg
+	ydpGykrIei6hEPZ+EwcZqNZ33p7kvWWNt23x0bul145Rzv24mzST8XAz6K3G+VAn+ckEv9MDPiJ
+	fyGq9qNTMwC7kvxsJFaVpUnNji12oThbHQn1oMFyV0dWFOWpf3W+UA
+X-Google-Smtp-Source: AGHT+IHfsSjOVfqr810c4rTQSgLQSe24kipruDeYeNVLVqP34rXLnlaZt+6yBROx7ek6sX1EzP3g2J5yWn18aGaFPQM=
+X-Received: by 2002:aa7:d8c3:0:b0:5e5:7c1:43bd with SMTP id
+ 4fb4d7f45d1cf-5f32be85fd1mr3290a12.1.1744239693561; Wed, 09 Apr 2025 16:01:33
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250330234039.29814-1-christiansantoslima21@gmail.com>
-In-Reply-To: <20250330234039.29814-1-christiansantoslima21@gmail.com>
+References: <20250330234039.29814-1-christiansantoslima21@gmail.com> <CAGSQo00LhscUpQCpL9UwkzK5c1rD1QxutZTOenuZP1d-B==KBQ@mail.gmail.com>
+In-Reply-To: <CAGSQo00LhscUpQCpL9UwkzK5c1rD1QxutZTOenuZP1d-B==KBQ@mail.gmail.com>
 From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 9 Apr 2025 15:32:19 -0700
-X-Gm-Features: ATxdqUHRf-B9-YGZ1PElPo9dmH5T3f12ShZBn14fNGAx_Ks12v9UsYMLEah-Kjo
-Message-ID: <CAGSQo00LhscUpQCpL9UwkzK5c1rD1QxutZTOenuZP1d-B==KBQ@mail.gmail.com>
+Date: Wed, 9 Apr 2025 16:01:21 -0700
+X-Gm-Features: ATxdqUH9mG7uIn7HyOxluCgFnMYNCJktKh93c93-W2QUid8n-5Xp8ksDiugQ0TE
+Message-ID: <CAGSQo03teSsTa84Mx=4SFRAfa2=irBwgXXoh5eB_Q0RoixrF6Q@mail.gmail.com>
 Subject: Re: [PATCH v6] rust: transmute: Add methods for FromBytes trait
 To: "Christian S. Lima" <christiansantoslima21@gmail.com>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -76,199 +76,208 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 30, 2025 at 4:40=E2=80=AFPM Christian S. Lima
-<christiansantoslima21@gmail.com> wrote:
+On Wed, Apr 9, 2025 at 3:32=E2=80=AFPM Matthew Maurer <mmaurer@google.com> =
+wrote:
 >
-> Methods receive a slice and perform size check to add a valid way to make
-> conversion safe. An Option is used, in error case just return `None`.
+> On Sun, Mar 30, 2025 at 4:40=E2=80=AFPM Christian S. Lima
+> <christiansantoslima21@gmail.com> wrote:
+> >
+> > Methods receive a slice and perform size check to add a valid way to ma=
+ke
+> > conversion safe. An Option is used, in error case just return `None`.
+> >
+> > The conversion between slices `[T]` is separated from others, because I
+> > couldn't implement it in the same way as the other conversions.
+> >
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1119
+> > Signed-off-by: Christian S. Lima <christiansantoslima21@gmail.com>
+> > ---
+> > Changes in v2:
+> > - Rollback the implementation for the macro in the repository and imple=
+ment
+> >   methods in trait
+> > - Link to v2: https://lore.kernel.org/rust-for-linux/20241012193657.290=
+cc79c@eugeo/T/#t
+> >
+> > Changes in v3:
+> > - Fix grammar errors
+> > - Remove repeated tests
+> > - Fix alignment errors
+> > - Fix tests not building
+> > - Link to v3: https://lore.kernel.org/rust-for-linux/20241109055442.851=
+90-1-christiansantoslima21@gmail.com/
+> >
+> > Changes in v4:
+> > - Removed core::simd::ToBytes
+> > - Changed trait and methods to safe Add
+> > - Result<&Self, Error> in order to make safe methods
+> > - Link to v4: https://lore.kernel.org/rust-for-linux/20250314034910.134=
+463-1-christiansantoslima21@gmail.com/
+> >
+> > Changes in v5:
+> > - Changed from Result to Option
+> > - Removed commentaries
+> > - Returned trait impl to unsafe
+> > - Link to v5: https://lore.kernel.org/rust-for-linux/20250320014041.101=
+470-1-christiansantoslima21@gmail.com/
+> >
+> > Changes in v6:
+> > - Add endianess check to doc test and use match to check
+> > success case
+> > - Reformulated safety comments
+> > ---
+> >  rust/kernel/transmute.rs | 89 +++++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 83 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+> > index 1c7d43771a37..16dfa5c7d467 100644
+> > --- a/rust/kernel/transmute.rs
+> > +++ b/rust/kernel/transmute.rs
+> > @@ -9,29 +9,106 @@
+> >  ///
+> >  /// It's okay for the type to have padding, as initializing those byte=
+s has no effect.
+> >  ///
+> > +/// # Example
+> > +/// ```
+> > +/// let foo =3D &[1, 2, 3, 4];
+> > +///
+> > +/// let result =3D u32::from_bytes(foo);
+> > +///
+> > +/// #[cfg(target_endian =3D "little")]
+> > +/// match result {
+> > +///     Some(x) =3D> assert_eq!(*x, 0x4030201),
+> > +///     None =3D> unreachable!()
+> > +/// }
+> > +///
+> > +/// #[cfg(target_endian =3D "big")]
+> > +/// match result {
+> > +///     Some(x) =3D> assert_eq!(*x, 0x1020304),
+> > +///     None =3D> unreachable!()
+> > +/// }
+> > +/// ```
+> > +///
+> >  /// # Safety
+> >  ///
+> >  /// All bit-patterns must be valid for this type. This type must not h=
+ave interior mutability.
+> > -pub unsafe trait FromBytes {}
+> > +pub unsafe trait FromBytes {
+> > +    /// Converts a slice of bytes to a reference to `Self` when possib=
+le.
+> > +    fn from_bytes(bytes: &[u8]) -> Option<&Self>;
+> > +
+> > +    /// Converts a mutable slice of bytes to a reference to `Self` whe=
+n possible.
+> > +    fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut Self>
+> > +    where
+> > +        Self: AsBytes;
+> > +}
+> >
+> >  macro_rules! impl_frombytes {
+> >      ($($({$($generics:tt)*})? $t:ty, )*) =3D> {
+> >          // SAFETY: Safety comments written in the macro invocation.
+> > -        $(unsafe impl$($($generics)*)? FromBytes for $t {})*
+> > +        $(unsafe impl$($($generics)*)? FromBytes for $t {
+> > +            fn from_bytes(bytes: &[u8]) -> Option<&$t> {
 >
-> The conversion between slices `[T]` is separated from others, because I
-> couldn't implement it in the same way as the other conversions.
+> Consider factoring this out into a helper function, e.g.
+> ```
+> fn from_bytes_sized<T: FromBytes + Sized>(bytes: &[u8]) -> Option<&T> {
+> ```
+> which you can then call in here. If you were not trying to handle
+> `?Sized`, we could even put it in the trait default implementation.
 >
-> Link: https://github.com/Rust-for-Linux/linux/issues/1119
-> Signed-off-by: Christian S. Lima <christiansantoslima21@gmail.com>
-> ---
-> Changes in v2:
-> - Rollback the implementation for the macro in the repository and impleme=
-nt
->   methods in trait
-> - Link to v2: https://lore.kernel.org/rust-for-linux/20241012193657.290cc=
-79c@eugeo/T/#t
+> > +                if bytes.len() =3D=3D core::mem::size_of::<$t>() {
+> > +                    let slice_ptr =3D bytes.as_ptr().cast::<$t>();
 >
-> Changes in v3:
-> - Fix grammar errors
-> - Remove repeated tests
-> - Fix alignment errors
-> - Fix tests not building
-> - Link to v3: https://lore.kernel.org/rust-for-linux/20241109055442.85190=
--1-christiansantoslima21@gmail.com/
+> There's no alignment check, and so the resulting constructed reference
+> may be misaligned, which is UB. Same below.
 >
-> Changes in v4:
-> - Removed core::simd::ToBytes
-> - Changed trait and methods to safe Add
-> - Result<&Self, Error> in order to make safe methods
-> - Link to v4: https://lore.kernel.org/rust-for-linux/20250314034910.13446=
-3-1-christiansantoslima21@gmail.com/
->
-> Changes in v5:
-> - Changed from Result to Option
-> - Removed commentaries
-> - Returned trait impl to unsafe
-> - Link to v5: https://lore.kernel.org/rust-for-linux/20250320014041.10147=
-0-1-christiansantoslima21@gmail.com/
->
-> Changes in v6:
-> - Add endianess check to doc test and use match to check
-> success case
-> - Reformulated safety comments
-> ---
->  rust/kernel/transmute.rs | 89 +++++++++++++++++++++++++++++++++++++---
->  1 file changed, 83 insertions(+), 6 deletions(-)
->
-> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-> index 1c7d43771a37..16dfa5c7d467 100644
-> --- a/rust/kernel/transmute.rs
-> +++ b/rust/kernel/transmute.rs
-> @@ -9,29 +9,106 @@
->  ///
->  /// It's okay for the type to have padding, as initializing those bytes =
-has no effect.
->  ///
-> +/// # Example
-> +/// ```
-> +/// let foo =3D &[1, 2, 3, 4];
-> +///
-> +/// let result =3D u32::from_bytes(foo);
-> +///
-> +/// #[cfg(target_endian =3D "little")]
-> +/// match result {
-> +///     Some(x) =3D> assert_eq!(*x, 0x4030201),
-> +///     None =3D> unreachable!()
-> +/// }
-> +///
-> +/// #[cfg(target_endian =3D "big")]
-> +/// match result {
-> +///     Some(x) =3D> assert_eq!(*x, 0x1020304),
-> +///     None =3D> unreachable!()
-> +/// }
-> +/// ```
-> +///
->  /// # Safety
->  ///
->  /// All bit-patterns must be valid for this type. This type must not hav=
-e interior mutability.
-> -pub unsafe trait FromBytes {}
-> +pub unsafe trait FromBytes {
-> +    /// Converts a slice of bytes to a reference to `Self` when possible=
-.
-> +    fn from_bytes(bytes: &[u8]) -> Option<&Self>;
-> +
-> +    /// Converts a mutable slice of bytes to a reference to `Self` when =
-possible.
-> +    fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut Self>
-> +    where
-> +        Self: AsBytes;
-> +}
->
->  macro_rules! impl_frombytes {
->      ($($({$($generics:tt)*})? $t:ty, )*) =3D> {
->          // SAFETY: Safety comments written in the macro invocation.
-> -        $(unsafe impl$($($generics)*)? FromBytes for $t {})*
-> +        $(unsafe impl$($($generics)*)? FromBytes for $t {
-> +            fn from_bytes(bytes: &[u8]) -> Option<&$t> {
+> > +                    unsafe { Some(&*slice_ptr) }
+> > +                } else {
+> > +                    None
+> > +                }
+> > +            }
+> > +
+> > +            fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut $t>
 
-Consider factoring this out into a helper function, e.g.
-```
-fn from_bytes_sized<T: FromBytes + Sized>(bytes: &[u8]) -> Option<&T> {
-```
-which you can then call in here. If you were not trying to handle
-`?Sized`, we could even put it in the trait default implementation.
+Sorry, one last thing - could we consider `from_mut_bytes` instead of
+`from_bytes_mut` to match the current API of `zerocopy`?
 
-> +                if bytes.len() =3D=3D core::mem::size_of::<$t>() {
-> +                    let slice_ptr =3D bytes.as_ptr().cast::<$t>();
-
-There's no alignment check, and so the resulting constructed reference
-may be misaligned, which is UB. Same below.
-
-> +                    unsafe { Some(&*slice_ptr) }
-> +                } else {
-> +                    None
-> +                }
-> +            }
-> +
-> +            fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut $t>
-> +            where
-> +            Self: AsBytes,
-> +            {
-> +                if bytes.len() =3D=3D core::mem::size_of::<$t>() {
-> +                    let slice_ptr =3D bytes.as_mut_ptr().cast::<$t>();
-> +                    unsafe { Some(&mut *slice_ptr) }
-> +                } else {
-> +                    None
-> +                }
-> +            }
-> +        })*
->      };
->  }
->
->  impl_frombytes! {
->      // SAFETY: All bit patterns are acceptable values of the types below=
-.
-> +    // Checking the pointer size makes this operation safe and it's nece=
-ssary
-> +    // to dereference to get the value and return it as a reference to `=
-Self`.
->      u8, u16, u32, u64, usize,
->      i8, i16, i32, i64, isize,
-> -
-> -    // SAFETY: If all bit patterns are acceptable for individual values =
-in an array, then all bit
-> -    // patterns are also acceptable for arrays of that type.
-> -    {<T: FromBytes>} [T],
->      {<T: FromBytes, const N: usize>} [T; N],
->  }
->
-> +// SAFETY: If all bit patterns are acceptable for individual values in a=
-n array, then all bit
-> +// patterns are also acceptable for arrays of that type.
-> +unsafe impl<T: FromBytes> FromBytes for [T] {
-> +    fn from_bytes(bytes: &[u8]) -> Option<&Self> {
-> +        let slice_ptr =3D bytes.as_ptr().cast::<T>();
-> +        if bytes.len() % core::mem::size_of::<T>() =3D=3D 0 {
-> +            let slice_len =3D bytes.len() / core::mem::size_of::<T>();
-> +            // SAFETY: Since the code checks the size and can be divided=
- into blocks of size T
-> +            // the slice is valid because the size is multiple of T.
-> +            unsafe { Some(core::slice::from_raw_parts(slice_ptr, slice_l=
-en)) }
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +
-> +    fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut Self>
-> +    where
-> +        Self: AsBytes,
-> +    {
-> +        let slice_ptr =3D bytes.as_mut_ptr().cast::<T>();
-> +        if bytes.len() % core::mem::size_of::<T>() =3D=3D 0 {
-> +            let slice_len =3D bytes.len() / core::mem::size_of::<T>();
-> +            // SAFETY: Since the code checks the size and can be divided=
- into blocks of size T
-> +            // the slice is valid because the size is multiple of T.
-> +            unsafe { Some(core::slice::from_raw_parts_mut(slice_ptr, sli=
-ce_len)) }
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +}
-> +
->  /// Types that can be viewed as an immutable slice of initialized bytes.
->  ///
->  /// If a struct implements this trait, then it is okay to copy it byte-f=
-or-byte to userspace. This
-> --
-> 2.49.0
->
->
+> > +            where
+> > +            Self: AsBytes,
+> > +            {
+> > +                if bytes.len() =3D=3D core::mem::size_of::<$t>() {
+> > +                    let slice_ptr =3D bytes.as_mut_ptr().cast::<$t>();
+> > +                    unsafe { Some(&mut *slice_ptr) }
+> > +                } else {
+> > +                    None
+> > +                }
+> > +            }
+> > +        })*
+> >      };
+> >  }
+> >
+> >  impl_frombytes! {
+> >      // SAFETY: All bit patterns are acceptable values of the types bel=
+ow.
+> > +    // Checking the pointer size makes this operation safe and it's ne=
+cessary
+> > +    // to dereference to get the value and return it as a reference to=
+ `Self`.
+> >      u8, u16, u32, u64, usize,
+> >      i8, i16, i32, i64, isize,
+> > -
+> > -    // SAFETY: If all bit patterns are acceptable for individual value=
+s in an array, then all bit
+> > -    // patterns are also acceptable for arrays of that type.
+> > -    {<T: FromBytes>} [T],
+> >      {<T: FromBytes, const N: usize>} [T; N],
+> >  }
+> >
+> > +// SAFETY: If all bit patterns are acceptable for individual values in=
+ an array, then all bit
+> > +// patterns are also acceptable for arrays of that type.
+> > +unsafe impl<T: FromBytes> FromBytes for [T] {
+> > +    fn from_bytes(bytes: &[u8]) -> Option<&Self> {
+> > +        let slice_ptr =3D bytes.as_ptr().cast::<T>();
+> > +        if bytes.len() % core::mem::size_of::<T>() =3D=3D 0 {
+> > +            let slice_len =3D bytes.len() / core::mem::size_of::<T>();
+> > +            // SAFETY: Since the code checks the size and can be divid=
+ed into blocks of size T
+> > +            // the slice is valid because the size is multiple of T.
+> > +            unsafe { Some(core::slice::from_raw_parts(slice_ptr, slice=
+_len)) }
+> > +        } else {
+> > +            None
+> > +        }
+> > +    }
+> > +
+> > +    fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut Self>
+> > +    where
+> > +        Self: AsBytes,
+> > +    {
+> > +        let slice_ptr =3D bytes.as_mut_ptr().cast::<T>();
+> > +        if bytes.len() % core::mem::size_of::<T>() =3D=3D 0 {
+> > +            let slice_len =3D bytes.len() / core::mem::size_of::<T>();
+> > +            // SAFETY: Since the code checks the size and can be divid=
+ed into blocks of size T
+> > +            // the slice is valid because the size is multiple of T.
+> > +            unsafe { Some(core::slice::from_raw_parts_mut(slice_ptr, s=
+lice_len)) }
+> > +        } else {
+> > +            None
+> > +        }
+> > +    }
+> > +}
+> > +
+> >  /// Types that can be viewed as an immutable slice of initialized byte=
+s.
+> >  ///
+> >  /// If a struct implements this trait, then it is okay to copy it byte=
+-for-byte to userspace. This
+> > --
+> > 2.49.0
+> >
+> >
