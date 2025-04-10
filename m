@@ -1,154 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBF028134E
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 10:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE091BE251;
+	Thu, 10 Apr 2025 10:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744280635; cv=none; b=QGYFJXARh+SQWcSBCG0/GEk3Z+fZqok7V9oohmTxBsGIaz4spb0nfNrLywDw0Unmv1sjDVrRKicHRyVxO9yzHO3t1VkLmuy21yBkGDAjFmGFZkMlwd8m24vZNbh/uKBPNyFmYbxQHjhb1TxK8EetS0Ugugm5VXrM/YKaEr56iaA=
+	t=1744282085; cv=none; b=SWaoVw0Msonlhfv/nahIgiM/cl7Dg+U33ermiYk9Kd0xD2DBTRSFybsl6WY54B+Oin5C9v1n6LFvxGcu0HEHivRjvuojfMqETqvyeUALmmPdL/y1VJIR5vzqsV6g3QTfyxDPqLD6aHipPej5WrgudFBPXgYTVFyxlc7geRyx+gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744280635; c=relaxed/simple;
-	bh=Tp8fVFya2sDu1gbTPaE9ZzIfUzdt0ybqaGGQcQT5y/4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SKYzFR1elGGWI4wgOwdNtk7V8fOF4mKr03tqW/EjQYRCF/a/jWNAZbq9OKKnYmLwTpauf6iZloGGjlbVG7N67wxrrDo7oOJCIqCXSmdY7yCx4KdMfJ4nCnr3GIDWutKU9Ay/ukgp7JsouskQ5Bj2yrgNa40ooWQBOJtLScQuzd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jEMDGxLX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744282085; c=relaxed/simple;
+	bh=cGLWvchrfLR7zhi+J73CP0vruS4QypgLHhmrKJ1biEw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SzjEw6uU4BAMBYINsAnLuv51waZ4I75DN4IawuUSYwA+iT0ecGfitAy2X65LXAtFmFxjww44zX33Yp9lmmhRI9aKYj2S1Wkm5AGYU6dtQVisn/KCRgswajLWCms+GDWBRQk1brTKyNAroer16HTJwTxsfR54+gWgS7fJFeocgcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mwuNn/e4; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jEMDGxLX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEC5C4CEE3;
-	Thu, 10 Apr 2025 10:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744280633;
-	bh=Tp8fVFya2sDu1gbTPaE9ZzIfUzdt0ybqaGGQcQT5y/4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jEMDGxLXxhbiuPezMF4HpoTksgTgJL7LvLWseKpFBDdxX92oygkJZC9xXHh5SAIZL
-	 yW0JCjXX9TbWQOMAYyVt9Wi3CEfDzKQ6aW2/PlLWKm51ubMHO2RBx3+bXg8Tde1U4k
-	 LgNSn15btv+B2lC5AdgT5Iv286EPCnMbE3GPdUnhcH6hHD0JtjOZBgXZrGQg8KIt9/
-	 +qK2RPA2v0gq10eWFB91/h9+Q46JOIN5f7h22XqVGI4Ql6MNfEBo2TH4isuu2tvQ4v
-	 91iEGrwSj2oj1AzaSUqQgcUrFs7EEMx4wKYY/EMSEHT7+dthZki1pMWaFEAqbMhV3A
-	 DuIiGFl8vhpfg==
-Date: Thu, 10 Apr 2025 12:23:46 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Asahi Lina <lina@asahilina.net>
-Cc: Dave Airlie <airlied@gmail.com>, maarten.lankhorst@linux.intel.com,
-	simona@ffwll.ch, mripard@kernel.org, tzimmermann@suse.de,
-	lyude@redhat.com, acurrid@nvidia.com, daniel.almeida@collabora.com,
-	j@jannau.net, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 0/8] DRM Rust abstractions
-Message-ID: <Z_ecMl2QtAssfczJ@pollux>
-References: <20250325235522.3992-1-dakr@kernel.org>
- <32e7da7e-de32-4bc6-a751-f604da36a63f@asahilina.net>
- <Z_VXBZcBsk2k6eVN@cassiopeiae>
- <143206f6-cd97-4ef8-a4f3-f68d703903bf@asahilina.net>
- <Z_V2ZxIZxI_HiHM5@cassiopeiae>
- <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
- <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
- <34a4a130-98d1-4cc3-8dcf-b72b3ed36c10@asahilina.net>
- <43ec8aba-f279-422d-95d1-68daac7eaed9@asahilina.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mwuNn/e4"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-549946c5346so780759e87.2;
+        Thu, 10 Apr 2025 03:48:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744282081; x=1744886881; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dHWj7S6vcwSOKxDCquC2leHCOUIgqVrIQcFhFrWcmR0=;
+        b=mwuNn/e45kJrvfURhDLIN5YlC+KGqJmOTU+rpqGwrPUT70dppwAMpf91Hy9ZXedz3t
+         p3yOiagPx7m5n8Hlv9oXAnJ+f4Y4xZRlok5RY2q23uRNF6OJE+hJqtqEWHGWWK2dR12B
+         9eZ0SYRlW4p7V5kDujQ8yNP6FTOzSEEs1HBygbBdzEY29GtoNU4SdKlM1jyayLAyFoeI
+         02aasCC6HqivaGbrU+uhidU7DzO3xhBMYeOhiPC6tg5BWr1ep+HOuWNW5uoxjHxXfX7P
+         RsmZctYnZZV4yL2+iBZQ8ICRFkRzLd9Ej88+gGbo0cBrfjrNVlmjD4ZPrquhFVgOUE7t
+         8hdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744282081; x=1744886881;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dHWj7S6vcwSOKxDCquC2leHCOUIgqVrIQcFhFrWcmR0=;
+        b=oqSZHwiimzPrxgkXljZSWJSucqeQtUau0xoErt9U/5V8kzO0/hPyRxVCY9xUHHq3/u
+         DJAXhDW/ao6I4Pzmy6RRbztknd6bO0ZgXT9OSYrTbv3t+/curHFRu4O8jz95tUiqieoP
+         vHNi/p4tgV1YfInInevIF2HPgbbhUjBvzBwADGqLrIle6kPQzGq+Gl2U0S1ewKA+4CTB
+         bvejykxr2gKfZ7mCx7eGfVk52cjOGya8CC0JE5I6wpbW01kgltfYaKNd5/gQedF0+8sF
+         DHT36c8LY8ykycJ1K6s7a5TVoPvW8s1U8aghXSpzSjRpUZz/XVoPRQnxGLYVDgT2kw8o
+         XDlg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPuwlXJ8Ql+KnS6xMso+BMgSiCDsF5N+2GBKFc7WFVsFNxQdQYFOXMW+QBVEIAdBM8Ov296bjhVH9W/PI=@vger.kernel.org, AJvYcCWO7LKnKc+yanH7b+8vSWj+wswSlyXf5x7FhfP5QEXNZIUR7GRf5yCm5EavU5Rc6yNVJBKlum8bCyPho+pIz2c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCGpEekgFh/mkifsPalZFXH78lBSiCXIsDv8d1P1AlQ1wefOxf
+	6i8MI1ot+dcvY/jMb6ReWzswX4QTGdojFAW1m56AyuIvE4IV5p7/
+X-Gm-Gg: ASbGnctYLMFYWzIghzi3MWTNywwI6z70Ig0weyN2Nn2FGa/AnsY8+JRvfZwQttNq7+w
+	9gBK4NK53NMPlfhdQZP8lm2SelSmDRKak/IJINgR99l7aseky9om3yXgqOObi8CjWv8UdzeRlhM
+	oWpJjc6tC7w3RS2IiwG3TtPpT7cxLrQCZedqpL4zNvO3yJNbv8HAD+zuLeFG5gkHTMgGBa26sTr
+	KGivfuqEdjW6817W84Lgk8oK8taauR7sBQV5dft65HqgLgBHk697I8j/sCNtXF9DEo/jNreEPtk
+	MMcL+Wo7ePMqYP2H/nh42gjOy8ZU2UcsOI/hnD//MO0ntbQSBR2pNqsEgZeCcwCU4qKcjYsJp8Q
+	N1hKKzFmbuj7dhmmV8w==
+X-Google-Smtp-Source: AGHT+IHqX5l/kcuKqLCPF60f6BqiCxTYZ4htKWdJyJeyOLAxTlcGym2HuOu5+eqmF8ESjMtq8wYXwQ==
+X-Received: by 2002:a05:6512:4010:b0:549:4ab7:7221 with SMTP id 2adb3069b0e04-54cb688ae13mr701719e87.50.1744282081053;
+        Thu, 10 Apr 2025 03:48:01 -0700 (PDT)
+Received: from [192.168.1.146] (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d3d2387d9sm111307e87.92.2025.04.10.03.47.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Apr 2025 03:47:59 -0700 (PDT)
+Message-ID: <dbfad5a9-7e31-4674-b1e4-9d0ad55b64e4@gmail.com>
+Date: Thu, 10 Apr 2025 13:47:59 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <43ec8aba-f279-422d-95d1-68daac7eaed9@asahilina.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] rust: dma: add as_slice/write functions for
+ CoherentAllocation
+To: Alexandre Courbot <acourbot@nvidia.com>, a.hindborg@kernel.org,
+ benno.lossin@proton.me, rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
+References: <20250410085916.546511-1-abdiel.janulgue@gmail.com>
+ <20250410085916.546511-4-abdiel.janulgue@gmail.com>
+ <D92VBJWRTE2N.1O4IA5X7I1YFS@nvidia.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <D92VBJWRTE2N.1O4IA5X7I1YFS@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-(Adding Sima and dri-devel back in.)
 
-On Thu, Apr 10, 2025 at 04:12:13PM +0900, Asahi Lina wrote:
+
+On 10/04/2025 12:57, Alexandre Courbot wrote:
+> Hi Abdiel,
 > 
-> P.S. my analysis based on the pasted code (since everyone here and
-> everyone on Reddit is forcing me to do it) is that:
-
-First of all, you keep talking as if I would have been resisting to do any
-changes, even though I offered you to change things from the get-go.
-
-Instead of taking the offer, you decided to go with wild accusations, without
-even properly looking at things and understanding my intentions.
-
-Given that you stepped back from kernel development, making clear that you don't
-want to be bothered with it anymore (as you also repeated in this thread), I had
-to take a decision: Do I "keep" your primary authorship for commits that I
-(newly) create, commit messages I write and code that I substantially change, or
-do I account for this by changing primary authorship while still giving you
-credit.
-
-The decision I took is clearly reasonable and *nothing* about it is uncommon.
-
-I also want to point out that for patch "rust: drm: ioctl: Add DRM ioctl
-abstraction" I kept your primary authorship, since I took the patch "as is" with
-just very minor modifications.
-
-However, I understand that you prefer to have primary authorship, even if the
-code has been re-organized in new commits, moved, modified or rewritten.
-
-This really is *totally* fine for me, and I won't argue about it (even though
-one could).
-
-> The series adds around 978 lines of code. After merging some code that
-> was just moved around in the diff that Danilo posted, only 412 addition
-> lines remain in the diff. So more than 50% of the raw remaining code is
-> mine. If you exclude comments, Danilo only added 270 lines of actual
-> code (and whitespace). And of those, a good portion were just minor
-> changes and refactoring, not completely novel code (this also tracks
-> with the stat that to get to those 270 lines, 379 were removed, and much
-> of those probably pair up as minor refactorings and not outright novel
-> code).
+> On Thu Apr 10, 2025 at 5:58 PM JST, Abdiel Janulgue wrote:
+>> Add unsafe accessors for the region for reading or writing large
+>> blocks of data.
+>>
+>> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+>> ---
+>>   rust/kernel/dma.rs | 85 ++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 85 insertions(+)
+>>
+>> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+>> index a61da5eeb017..880f6f04ba86 100644
+>> --- a/rust/kernel/dma.rs
+>> +++ b/rust/kernel/dma.rs
+>> @@ -218,6 +218,91 @@ pub fn dma_handle(&self) -> bindings::dma_addr_t {
+>>           self.dma_handle
+>>       }
+>>   
+>> +    /// Returns the data from the region starting from `offset` as a slice.
+>> +    /// `offset` and `count` are in units of `T`, not the number of bytes.
+>> +    ///
+>> +    /// For ringbuffer type of r/w access or use-cases where the pointer to the live data is needed,
+>> +    /// [`CoherentAllocation::start_ptr`] or [`CoherentAllocation::start_ptr_mut`] could be used instead.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// * Callers must ensure that the device does not read/write to/from memory while the returned
+>> +    ///   slice is live.
+>> +    /// * Callers must ensure that this call does not race with a write to the same region while
+>> +    ///   while the returned slice is live.
+>> +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result<&[T]> {
+>> +        let end = offset.checked_add(count).ok_or(EOVERFLOW)?;
+>> +        if end >= self.count {
+>> +            return Err(EINVAL);
+>> +        }
 > 
-> In terms of actual code added an not just lines rearranged or further
-> commented, I probably wrote at least 75% of this series. And I'm sure
-> Danilo knows this, having done the refactoring/rearranging/modification
-> work to get here.
+> Not sure if you have overlooked my comment on the previous iteration or
+> if I completely missed the mark, but my understanding if that the bound
+> check should be `if end > self.count`. Also applies to the other methods
+> of this patch.
+> 
+Ah sorry about that, just missed that part! But will definitely do a 
+follow-up that includes this (with other changes if needed).
 
-I do not understand what you are trying to proof here and especially why.
+/Abdiel
 
-I also do *not* agree with the above; to me it looks like it does not account
-for the cases where code has been moved *and* modified.
-
-Here's the full list of changes for the diff [1].
-
-  - rewrite of drm::Device
-    - full rewrite of the abstraction using the subclassing pattern
-
-  - rework of drm::Registration
-    - this may seem like a trivial simplification (or move), but has
-      architectural implications to prevent use-after-free bugs
-      - some members (vtable) of drm::Registration need to be tied to the
-        lifetime of the drm::Device instead, *not* the drm::Registration
-    - introduce Devres
-
-  - rework of drm::File
-    - switch to the Opaque<T> type
-    - fix (mutable) references to struct drm_file (which in this context is UB)
-    - restructure and rename functions to align with common kernel schemes
-
-  - rework of the GEM object abstractions
-    - switch to the Opaque<T> type
-    - fix (mutable) references to struct drm_gem_object (which in this context is UB)
-    - drop all custom reference types in favor of AlwaysRefCounted
-    - a bunch of minor changes and simplifications (e.g. IntoGEMObject trait)
-
-  - MISC
-    - write and fix lots of safety and invariant comments
-    - remove necessity for and convert 'as' casts
-    - bunch of other minor changes
-
-The sum of the above is clearly *not* minor.
-
-I really don't agree with the fact that you keep accusing me of "stealing" your
-code, which I clearly did not. Trust me, I don't need that.
-
-> Danilo: If you do not take me up on the CC-0 offer, I expect you to put
-> my name as primary author of patches 3 through 7.
-
-I offered this from the get-go, hence I will do so.
-
-However, are you sure you really want primary authorship for "rust: drm: add
-device abstraction", given that drm::Device is a full rewrite?
-
-[1] https://pastebin.com/FT4tNn5d
