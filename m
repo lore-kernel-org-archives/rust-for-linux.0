@@ -1,283 +1,219 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72BC1E5B67
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Apr 2025 23:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E1417B4FF
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 04:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744239698; cv=none; b=SAgrxGZLap2nrTlnlMlP1uGbtzl5diUJi1BaaEvHiTCdxzLomO9A7YNUtPnBj7C3EkoIVTpIAdJWubvrILOWI4Y+PZ99pf5yE6nDbvXl3rSxGhcgMiujKhPC1jTI6XRYENEZjtsjQvrTq7X2mzlabCFtP92D0tyUvCzSbIkaUg8=
+	t=1744259632; cv=none; b=hshyMxk+IBGqSBHbhS4252cleMgXZy+HsUrQ79o7wSsmam3nZ5WiBR/0k07xthHqEF/hfRCbpmV/0S9X/rHv/EGZZQ7xqVn/1lS5EoPI741phuY0GnB0ldAYAmqlTRYSZU2GfCs58qUftc7yFlCIJdUSbQKjTz1yIe4nbQ5HQLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744239698; c=relaxed/simple;
-	bh=v81+8plPVTjKx5V9Ug7IsA2Cb0cejEvOk+mV36fGfWw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=USGKp4xulPNhTWOd72dS0NWlPpXJg/761YIsqoG7UWh5OquCsIoVUwf1SeDb773FOWNQLkQeXNSrV6hzvkCwQaux7mkZ3E2rq4ZVOcAdAaW2kG0XEPo4owG86cSQrB+3T6OiZ61nbOclSCqttxTyqR7VutPDyRsLTGBE2DlTNWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T0EjrXCZ; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1744259632; c=relaxed/simple;
+	bh=rSbnLzIW8DsBLfANS8Osl0h4VU+yGj6YenAE0fnf2DM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TJLqE/I6LVWg3jg3B0e5jvkqBLaV/dkW/8pBv0jvs8BSPUw97LX2CkNHuCXu8B9j1uz/eKbsl88qhhJvp8iTcAsw0qKIU7K1ZgLdxjXohpr4gs8Ex4k7dma2RLD3o6ZJx1XWV63KngqFTxYO3NDX4A0PuJmcQinQqTYlxx7oVx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=ukawLBP+; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T0EjrXCZ"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e5cbd8b19bso1686a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Apr 2025 16:01:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744239694; x=1744844494; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8+n/DcrmRkQH4CJPswRtpQnfI+hbqMmOJl5kLBL3r+g=;
-        b=T0EjrXCZqAC70DJumZzQuwNefnW8kp5+NcXTFtpQgEEEZpfDJZlxPLI7nINn/BIHY1
-         D4Tihrx/CdXG+zdA1xzm6IoTGp1gab9cchda3Bh0pnNgXtpgeR3dBu/UE3w3Lunp45BO
-         0iRWduDURZAfMWR6p8zXwwBFyImU229o51tJLaHbcnizVg4BO+ZIdnFtMjZD2Y8hR9Kr
-         uB9T61Or4FDf9EeNC/eKGTbGKsg5/nuFmpvuUpvG95XPKEk7nKHtr2hlH5VeKhu9zP7m
-         Qt/G9j78cG1OnRNGi1JBbe/IYfBBs+1lCdj7Cv99gicnwHLDrMvzyCh/igL8XDmlFwHy
-         DV1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744239694; x=1744844494;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8+n/DcrmRkQH4CJPswRtpQnfI+hbqMmOJl5kLBL3r+g=;
-        b=ObXIvryt6cQUXMcbi9D2Ufz4npdL8Oc+ZSl1Cd6FhchfgtF5EdABPbvI+fI0R32Pqx
-         S34k5k0U41H7IjUMdwApfcfpNYatwanR5x+MgFZiT6W5r/YuAVgaFR0vpeNq4t4wp6Qj
-         jJLe9oDmHDdOKrFkNjF77Gn+E42V3yH65NutFVA1UKbebiTYgtpUSwMV8THGss6OrpL7
-         rKkJpasoDnSq18muHNjNqyg5h4mwlSiGCOwBrfpWee7O9lEecBUTIf6JcSa7e46tqa6z
-         X811ZI0fOY3Wi1nk0Qoz1r8VIVxu1x38U/qsOgDjJk99zULZv62HghUclI6ANAb6RLch
-         1P/Q==
-X-Gm-Message-State: AOJu0Yxa+CpyTGyuG79eGJUTGTcVbi0f7+ark8igd76wQF3eGx6ePLpS
-	5XQkkW4xOqJF6XYSM6tnEPRw/hFn6/RhM+2coQFEmmLG9KhDxAs8d2xK/acDVwFKweEFb1aor5n
-	uhd9oibL0ezdamGu+lGzmbdqgJRuEqY1yylO7
-X-Gm-Gg: ASbGncvshg6kev/42OY4UhYfpHzRTxR2YA56z4bTZM+7uVnFQdtXqpdKIK1mqXHHfyg
-	ydpGykrIei6hEPZ+EwcZqNZ33p7kvWWNt23x0bul145Rzv24mzST8XAz6K3G+VAn+ckEv9MDPiJ
-	fyGq9qNTMwC7kvxsJFaVpUnNji12oThbHQn1oMFyV0dWFOWpf3W+UA
-X-Google-Smtp-Source: AGHT+IHfsSjOVfqr810c4rTQSgLQSe24kipruDeYeNVLVqP34rXLnlaZt+6yBROx7ek6sX1EzP3g2J5yWn18aGaFPQM=
-X-Received: by 2002:aa7:d8c3:0:b0:5e5:7c1:43bd with SMTP id
- 4fb4d7f45d1cf-5f32be85fd1mr3290a12.1.1744239693561; Wed, 09 Apr 2025 16:01:33
- -0700 (PDT)
+	dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="ukawLBP+"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 6683A4203E;
+	Thu, 10 Apr 2025 04:33:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1744259621;
+	bh=rSbnLzIW8DsBLfANS8Osl0h4VU+yGj6YenAE0fnf2DM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ukawLBP+rVQBSc0CZRK6xjeeVmcNw93B3dz/5Dt87lhBaftxc5SwNN+pLIDcw4sgs
+	 hXbKWyyr4l9DXo1Cd2B7nM2tcmavPoi/sHnkC5PGhugIqDzGFIiFPshAJ4PkZfEwXU
+	 ENFZsr2Q/43P4W8Rln0I0FfQG4vPoCC/+MRTnmP6j2fsFs5FF1/OFPmSCJ//x+uDHA
+	 oL7C8dIPSSfaPCznrgJT6yOY0wc8fbJfzLKmoIX04OMq5TslZ7tWgIivRyTCWJasRZ
+	 W7VqhvhS4li90xZXjxZVBQpMEkvc7TX6zmBl1Agf6LMGxkeWgPGoLBPs190/4hUWtb
+	 Lr4YOXEjGNFOg==
+Message-ID: <34a4a130-98d1-4cc3-8dcf-b72b3ed36c10@asahilina.net>
+Date: Thu, 10 Apr 2025 13:33:38 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250330234039.29814-1-christiansantoslima21@gmail.com> <CAGSQo00LhscUpQCpL9UwkzK5c1rD1QxutZTOenuZP1d-B==KBQ@mail.gmail.com>
-In-Reply-To: <CAGSQo00LhscUpQCpL9UwkzK5c1rD1QxutZTOenuZP1d-B==KBQ@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 9 Apr 2025 16:01:21 -0700
-X-Gm-Features: ATxdqUH9mG7uIn7HyOxluCgFnMYNCJktKh93c93-W2QUid8n-5Xp8ksDiugQ0TE
-Message-ID: <CAGSQo03teSsTa84Mx=4SFRAfa2=irBwgXXoh5eB_Q0RoixrF6Q@mail.gmail.com>
-Subject: Re: [PATCH v6] rust: transmute: Add methods for FromBytes trait
-To: "Christian S. Lima" <christiansantoslima21@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, ~lkcamp/patches@lists.sr.ht, richard120310@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] DRM Rust abstractions
+To: Dave Airlie <airlied@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
+ acurrid@nvidia.com, daniel.almeida@collabora.com, j@jannau.net,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org
+References: <20250325235522.3992-1-dakr@kernel.org>
+ <32e7da7e-de32-4bc6-a751-f604da36a63f@asahilina.net>
+ <Z_VXBZcBsk2k6eVN@cassiopeiae>
+ <143206f6-cd97-4ef8-a4f3-f68d703903bf@asahilina.net>
+ <Z_V2ZxIZxI_HiHM5@cassiopeiae>
+ <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
+ <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
+Content-Language: en-US
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 9, 2025 at 3:32=E2=80=AFPM Matthew Maurer <mmaurer@google.com> =
-wrote:
->
-> On Sun, Mar 30, 2025 at 4:40=E2=80=AFPM Christian S. Lima
-> <christiansantoslima21@gmail.com> wrote:
-> >
-> > Methods receive a slice and perform size check to add a valid way to ma=
-ke
-> > conversion safe. An Option is used, in error case just return `None`.
-> >
-> > The conversion between slices `[T]` is separated from others, because I
-> > couldn't implement it in the same way as the other conversions.
-> >
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1119
-> > Signed-off-by: Christian S. Lima <christiansantoslima21@gmail.com>
-> > ---
-> > Changes in v2:
-> > - Rollback the implementation for the macro in the repository and imple=
-ment
-> >   methods in trait
-> > - Link to v2: https://lore.kernel.org/rust-for-linux/20241012193657.290=
-cc79c@eugeo/T/#t
-> >
-> > Changes in v3:
-> > - Fix grammar errors
-> > - Remove repeated tests
-> > - Fix alignment errors
-> > - Fix tests not building
-> > - Link to v3: https://lore.kernel.org/rust-for-linux/20241109055442.851=
-90-1-christiansantoslima21@gmail.com/
-> >
-> > Changes in v4:
-> > - Removed core::simd::ToBytes
-> > - Changed trait and methods to safe Add
-> > - Result<&Self, Error> in order to make safe methods
-> > - Link to v4: https://lore.kernel.org/rust-for-linux/20250314034910.134=
-463-1-christiansantoslima21@gmail.com/
-> >
-> > Changes in v5:
-> > - Changed from Result to Option
-> > - Removed commentaries
-> > - Returned trait impl to unsafe
-> > - Link to v5: https://lore.kernel.org/rust-for-linux/20250320014041.101=
-470-1-christiansantoslima21@gmail.com/
-> >
-> > Changes in v6:
-> > - Add endianess check to doc test and use match to check
-> > success case
-> > - Reformulated safety comments
-> > ---
-> >  rust/kernel/transmute.rs | 89 +++++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 83 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-> > index 1c7d43771a37..16dfa5c7d467 100644
-> > --- a/rust/kernel/transmute.rs
-> > +++ b/rust/kernel/transmute.rs
-> > @@ -9,29 +9,106 @@
-> >  ///
-> >  /// It's okay for the type to have padding, as initializing those byte=
-s has no effect.
-> >  ///
-> > +/// # Example
-> > +/// ```
-> > +/// let foo =3D &[1, 2, 3, 4];
-> > +///
-> > +/// let result =3D u32::from_bytes(foo);
-> > +///
-> > +/// #[cfg(target_endian =3D "little")]
-> > +/// match result {
-> > +///     Some(x) =3D> assert_eq!(*x, 0x4030201),
-> > +///     None =3D> unreachable!()
-> > +/// }
-> > +///
-> > +/// #[cfg(target_endian =3D "big")]
-> > +/// match result {
-> > +///     Some(x) =3D> assert_eq!(*x, 0x1020304),
-> > +///     None =3D> unreachable!()
-> > +/// }
-> > +/// ```
-> > +///
-> >  /// # Safety
-> >  ///
-> >  /// All bit-patterns must be valid for this type. This type must not h=
-ave interior mutability.
-> > -pub unsafe trait FromBytes {}
-> > +pub unsafe trait FromBytes {
-> > +    /// Converts a slice of bytes to a reference to `Self` when possib=
-le.
-> > +    fn from_bytes(bytes: &[u8]) -> Option<&Self>;
-> > +
-> > +    /// Converts a mutable slice of bytes to a reference to `Self` whe=
-n possible.
-> > +    fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut Self>
-> > +    where
-> > +        Self: AsBytes;
-> > +}
-> >
-> >  macro_rules! impl_frombytes {
-> >      ($($({$($generics:tt)*})? $t:ty, )*) =3D> {
-> >          // SAFETY: Safety comments written in the macro invocation.
-> > -        $(unsafe impl$($($generics)*)? FromBytes for $t {})*
-> > +        $(unsafe impl$($($generics)*)? FromBytes for $t {
-> > +            fn from_bytes(bytes: &[u8]) -> Option<&$t> {
->
-> Consider factoring this out into a helper function, e.g.
-> ```
-> fn from_bytes_sized<T: FromBytes + Sized>(bytes: &[u8]) -> Option<&T> {
-> ```
-> which you can then call in here. If you were not trying to handle
-> `?Sized`, we could even put it in the trait default implementation.
->
-> > +                if bytes.len() =3D=3D core::mem::size_of::<$t>() {
-> > +                    let slice_ptr =3D bytes.as_ptr().cast::<$t>();
->
-> There's no alignment check, and so the resulting constructed reference
-> may be misaligned, which is UB. Same below.
->
-> > +                    unsafe { Some(&*slice_ptr) }
-> > +                } else {
-> > +                    None
-> > +                }
-> > +            }
-> > +
-> > +            fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut $t>
 
-Sorry, one last thing - could we consider `from_mut_bytes` instead of
-`from_bytes_mut` to match the current API of `zerocopy`?
 
-> > +            where
-> > +            Self: AsBytes,
-> > +            {
-> > +                if bytes.len() =3D=3D core::mem::size_of::<$t>() {
-> > +                    let slice_ptr =3D bytes.as_mut_ptr().cast::<$t>();
-> > +                    unsafe { Some(&mut *slice_ptr) }
-> > +                } else {
-> > +                    None
-> > +                }
-> > +            }
-> > +        })*
-> >      };
-> >  }
-> >
-> >  impl_frombytes! {
-> >      // SAFETY: All bit patterns are acceptable values of the types bel=
-ow.
-> > +    // Checking the pointer size makes this operation safe and it's ne=
-cessary
-> > +    // to dereference to get the value and return it as a reference to=
- `Self`.
-> >      u8, u16, u32, u64, usize,
-> >      i8, i16, i32, i64, isize,
-> > -
-> > -    // SAFETY: If all bit patterns are acceptable for individual value=
-s in an array, then all bit
-> > -    // patterns are also acceptable for arrays of that type.
-> > -    {<T: FromBytes>} [T],
-> >      {<T: FromBytes, const N: usize>} [T; N],
-> >  }
-> >
-> > +// SAFETY: If all bit patterns are acceptable for individual values in=
- an array, then all bit
-> > +// patterns are also acceptable for arrays of that type.
-> > +unsafe impl<T: FromBytes> FromBytes for [T] {
-> > +    fn from_bytes(bytes: &[u8]) -> Option<&Self> {
-> > +        let slice_ptr =3D bytes.as_ptr().cast::<T>();
-> > +        if bytes.len() % core::mem::size_of::<T>() =3D=3D 0 {
-> > +            let slice_len =3D bytes.len() / core::mem::size_of::<T>();
-> > +            // SAFETY: Since the code checks the size and can be divid=
-ed into blocks of size T
-> > +            // the slice is valid because the size is multiple of T.
-> > +            unsafe { Some(core::slice::from_raw_parts(slice_ptr, slice=
-_len)) }
-> > +        } else {
-> > +            None
-> > +        }
-> > +    }
-> > +
-> > +    fn from_bytes_mut(bytes: &mut [u8]) -> Option<&mut Self>
-> > +    where
-> > +        Self: AsBytes,
-> > +    {
-> > +        let slice_ptr =3D bytes.as_mut_ptr().cast::<T>();
-> > +        if bytes.len() % core::mem::size_of::<T>() =3D=3D 0 {
-> > +            let slice_len =3D bytes.len() / core::mem::size_of::<T>();
-> > +            // SAFETY: Since the code checks the size and can be divid=
-ed into blocks of size T
-> > +            // the slice is valid because the size is multiple of T.
-> > +            unsafe { Some(core::slice::from_raw_parts_mut(slice_ptr, s=
-lice_len)) }
-> > +        } else {
-> > +            None
-> > +        }
-> > +    }
-> > +}
-> > +
-> >  /// Types that can be viewed as an immutable slice of initialized byte=
-s.
-> >  ///
-> >  /// If a struct implements this trait, then it is okay to copy it byte=
--for-byte to userspace. This
-> > --
-> > 2.49.0
-> >
-> >
+On 4/10/25 6:29 AM, Dave Airlie wrote:
+> On Wed, 9 Apr 2025 at 17:49, Asahi Lina <lina@asahilina.net> wrote:
+>>
+>>
+>>
+>> On 4/9/25 4:17 AM, Danilo Krummrich wrote:
+>>> On Wed, Apr 09, 2025 at 03:06:38AM +0900, Asahi Lina wrote:
+>>>> On 4/9/25 2:04 AM, Danilo Krummrich wrote:
+>>>>> On Wed, Apr 09, 2025 at 01:29:35AM +0900, Asahi Lina wrote:
+>>>>>> On 3/26/25 8:54 AM, Danilo Krummrich wrote:
+>>>>>
+>>>>> You said "use it/submit it in any way".
+>>>>
+>>>> I thought keeping authorship is an implied part of kernel etiquette.
+>>>> Usually when you submit code someone else wrote, you keep them as
+>>>> primary author... I want you and others to use the code, that doesn't
+>>>> mean I want you to put your name on it as if you wrote most of it.
+>>>
+>>> The broader context of the private mail was about you stepping back on kernel
+>>> development. You did so with a few more details (which I'm not going to
+>>> disclose), that made it clear to me that you don't want to be bothered with
+>>> kernel development any more.
+>>>
+>>> In combination with you giving permission to "use it/submit it in any way", I
+>>> thought it's better to just pick a safe path to not misrepresent you given all
+>>> the changes I made.
+>>>
+>>> I do still credit you on all corresponding patches though.
+>>>
+>>>>>> I'm really tired of kernel politics and I don't want to spend more brain
+>>>>>> cycles looking at all the other patches or having to argue (in fact I
+>>>>>> usually don't look at patch emails at all recently), but I would
+>>>>>> appreciate if you keep my authorship for files that I did largely author
+>>>>>> myself. After everything I've been going through the past weeks (some of
+>>>>>> the people on Cc know what that's about...) this feels like yet another
+>>>>>> slap in the face.
+>>>>>
+>>>>> As mentioned, please diff the correct thing and then just tell me where you'd
+>>>>> like to have primary authorship changed.
+>>>>
+>>>> I don't even know what tree this series is supposed to apply onto (tried
+>>>> drm-misc next, torvalds/master, v6.15-rc1) so I'm just going to take
+>>>> drm-misc/topic/rust-drm and assume that's what this series includes.
+>>>>
+>>>> $ diff -urN rust/kernel/drm/drv.rs ../uplinux/rust/kernel/drm/driver.rs
+>>>> | grep '^+' | wc -l
+>>>> 45
+>>>>
+>>>> So I'm diffing the correct thing now and the result is essentially
+>>>> identical.
+>>>>
+>>>> Meanwhile, device.rs has many additions... but a big chunk of those is
+>>>> code that was just moved from drv.rs (like drm_legacy_fields and the
+>>>> code that uses it).
+>>>
+>>> Except drm_legacy_fields! and VTABLE (which is just trival boilerplate code)
+>>> device.rs changed fundamentally, i.e. I switched the device abstraction to use
+>>> the subclassing pattern.
+>>>
+>>> If you look further you will find that I really changed a lot of things.
+>>>
+>>> I have *nothing* to hide, here's the overall diff for all the changes I made:
+>>>
+>>>       [1] https://pastebin.com/FT4tNn5d
+>>>
+>>>>
+>>>> Again, I don't have the spoons to make some deep analysis here, you
+>>>> should know how much of the code you changed, added, or just moved
+>>>> around. I'm not going to litigate this further. If you think splitting
+>>>> up a commit into multiple commits and moving code around warrants taking
+>>>> over primary authorship of a project I've been working on for years now,
+>>>> so be it.
+>>>
+>>> You just said you "don't have the spoons to make some deep analysis here" and
+>>> right below you acuse me of just "moving code around".
+>>>
+>>> Which means that you do so *without* evidence. And again, I have *nothing* to
+>>> hide, see [1].
+>>>
+>>> Besides that I also told you that I'm fine to change primary authership, if you
+>>> tell me where you think it would be appropriate (even though I do think my
+>>> changes do justify how things are currently).
+>>>
+>>>> I'm just disappointed.
+>>>
+>>> That's where you are maneuvering *yourself* into.
+>>>
+>>> You could have easily just asked me to change things for patch #X, #Y and #Z.
+>>>
+>>> Instead you outright started with accusing me of things. I also feel like you
+>>> intentionally try to misrepresent what I am doing and what my intentions are.
+>>>
+>>> I neither have the time, nor am I willing to deal with random drama like this.
+>>>
+>>> If you want something changed, just go ahead and tell me what, *without* more
+>>> drama and without more accusing me of things.
+>>>
+>>
+>> Alright, then please remove my authorship entirely from this series,
+>> including Co-developed-by and signoff lines. I hereby release my code as
+>> CC-0, which means you don't need the signoffs, it's yours now. The same
+>> applies to any future code submitted that I originally authored as part
+>> of the Asahi kernel git tree. That way we don't need to argue about any
+>> of this.
+>>
+>> I thought asking for patches that I mostly authored to keep my Git
+>> authorship would be an uncontroversial request (and not unreasonable to
+>> ask you to figure out which those are, since you made the
+>> changes/splits, and #3 clearly is one), but apparently even that gets
+>> you flamed on Linux threads these days.
+>>
+>> I regret having been part of this community.
+> 
+> Look, this isn't Crank or Speed, there is no need to keep the drama
+> level above 50 to sort this out.
+> 
+> This also isn't exactly how best to relicense code, so I think we
+> should abstain from doing anything to help promote more drama.
+> 
+> The project will maintain authorship/signoffs on any patches that are
+> clearly still authored by you, we will err on the side of caution and
+> on rewritten patches which share some decent amount of history shall
+> retain your authorship. In this case it does appear instead of putting
+> in the 5 minutes of looking at Danilo's reasoning and supplied diff,
+> and either saying "my bad, this is sufficiently new code and I don't
+> feel I wrote it" or "I'd still prefer to retain authorship despite
+> your changes", both of which Danilo indicated would be respected you
+> somehow picked door number 3 which probably took more time and effort
+> than either of the above options. Again no need to pick door number 3
+> here, you can let the bus go below 50, it won't explode.
+> 
+> Dave.
+> 
+
+I wanted to keep this private, but apparently it is impossible for me to
+send two emails in reply to a Linux kernel thread without it ending up
+all over the news and the entire world speculating about why I am so upset.
+
+I would be a lot more willing to work with the kernel community if I
+hadn't been traumatized by a major Linux kernel maintainer having
+privately admitted to siding with an abuser and harasser who has
+attacked me relentlessly for over one year now, mocking me for it, using
+their arguments and wording against me, lying to their peers to cover up
+actions and collusion against me, and more.
+
+Now please, let me leave this community in peace. You all figure out
+what to do with my code and whether you care about proper attribution. I
+just want out.
+
+~~ Lina
+
