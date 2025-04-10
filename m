@@ -1,96 +1,241 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329711F0994;
-	Thu, 10 Apr 2025 06:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90231372
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 06:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744266119; cv=none; b=a8p4tqoSACTTR5K/nHft8YstiR+Fl79JaJLHC5MIdKyyjROnCN96jPR5p+/RJoerQZcIS1yE3NnbzBOZVkwpn55YJVMdnJ14wl3OleBz3V2tSyaCa7ewtbyjIYhp7t8dYep4Sx+zOJvcdsbcR5NYNlWPj/L6CjmTw6ZT0KIT84w=
+	t=1744267485; cv=none; b=Ze6an3caoTF4pW3bPZahiWpmrjWRj85gdqkkLNARF57sihx6tu9yzW3gmH2OOAtS33ajLiAZ0tYpUO1iRKfbX+PMG2RItoLMxNzyHNgGKbVxFOOdwZ8miJokJEm3/Ubl1jyz8u3neoT4lUVJ4q5ekmw1dRu5g/dd1BbwEZRrVXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744266119; c=relaxed/simple;
-	bh=5CJz9fYb95MeBui9R2eQsn2MgoafDeFGkPMgQL7ISac=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ki4X9gj5NIkcotzjRjWs5LA3HxZK2rQEsX3ngulsRf8JeQ2MCsytLD9QI1/Y4gohDLbMX9gDCPi9IWAycW3tIOqIq0UpnZaGCct47AhVEjnd3roEs53lfBDyLFOh8D3SOK6svSTxKWbcKYyRZgw8zddwdVtY3LwvddBbQpyKOyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=goyAkGZb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744267485; c=relaxed/simple;
+	bh=i43n1vZzqiYQVanVT6CGL9SBeuc4YIFZPpU9xvrlo/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OAnnYTRRNWGwClBUFl+SDFBg+vXLjFpbZhQ/94SiK75Jiu98IfYD5/1ZQ4tp0iaiD9tk7j575c0fXwBVyOTRxWPzQNfnvwEgcLdNitXOfwY9Ua/c2WmCj2CmPLxgbt8HDaeU10yKek5XNNXjvPtk98RDpc92Y7GKuRbmrtxuRJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=UTxZcoHz; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="goyAkGZb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C6AC4CEDD;
-	Thu, 10 Apr 2025 06:21:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744266118;
-	bh=5CJz9fYb95MeBui9R2eQsn2MgoafDeFGkPMgQL7ISac=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=goyAkGZbelh+r9vjwSDSOFxTd0o8RAvAfKKkR/GCsgPosE5EW8+nowJIur3HZk1A2
-	 kmUpCqivFnzHwr+R9Xn4FozqxEN2jOBrPkjMURUqw3xJR1cHlhIhPITsau/lvQU1fu
-	 HpDQEt+07dqGAD3T+zC7LnvLDfyuoC4XoxoaeHxZvmN4vRbDp3DkIAg4T6bLbd6xBV
-	 CSgkT7JpmmhAtchvGJV577WxLOO62D3Fh6yEBSuzG0ehe26Vm11e1WWgmqSmPJOgi9
-	 +tppDpHJ4HxaUbRNHVL89v1FxXxAhFS5Kz/Ob7VgOQyBWNbUD6U/2VD3qBxFcsjxo5
-	 sajX2qvB2x7mw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Lyude Paul" <lyude@redhat.com>
-Cc: <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  "Boqun Feng" <boqun.feng@gmail.com>,  "Frederic Weisbecker"
- <frederic@kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,
-  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>
-Subject: Re: [PATCH 2/6] rust: hrtimer: Add HrTimerCallbackContext and
- ::forward()
-In-Reply-To: <f4a220eced4a1b9df77055b8262612a65b15bd2a.camel@redhat.com>
-	(Lyude Paul's message of "Wed, 09 Apr 2025 13:15:13 -0400")
-References: <20250402214109.653341-1-lyude@redhat.com>
-	<AVQT2wHP9t48ZH5r3ywLh-pwv0IGUraoDxWO8KXcxL_y3mE-0YmWlQjLMvP6JBYxG3_1SYJL4Fxp1jc788HniA==@protonmail.internalid>
-	<20250402214109.653341-3-lyude@redhat.com> <87v7rej2n5.fsf@kernel.org>
-	<ofkrywngVbnZefTyPMlUmu-wcbxEbFB0MAOMAgFOsTMwFjfpEYJqQAFBP14MabYmHMaDBWkB1rBgSxGCJOyy_A==@protonmail.internalid>
-	<0baafb97ec786c01c1d44270dd211537105922b6.camel@redhat.com>
-	<87lds993l9.fsf@kernel.org>
-	<c1fe401de60546c5de23229ecf7dd639f71ff938.camel@redhat.com>
-	<C8RKDjsuiNTvDBJM5TX0QHCOJTd7SDxKeSPJozPYgvqWs9ue8gjMtJvqovi8cNfDOWAPfqLG8gynTCxCYzOiew==@protonmail.internalid>
-	<f4a220eced4a1b9df77055b8262612a65b15bd2a.camel@redhat.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 10 Apr 2025 08:21:49 +0200
-Message-ID: <878qo8bkoy.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="UTxZcoHz"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cebe06e9eso3145485e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Apr 2025 23:44:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1744267482; x=1744872282; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0chDNpqWEg6rX5jiiV+xs5nY/pUtnulH7M5PEDr5nxg=;
+        b=UTxZcoHzwaxWCXVVSRAhYSrkhwFKQwzlOAPIcDyo/tsw6QMIRs6rIAutB2yETkvxUQ
+         sBeYfF/x60JgLqSqzUN2QHKYyGyBzXtLv+83E7gjhFc4XFcdDgJaUXoBScM+SGmQ6NYX
+         8OfijC+/PIs7uHcwEqCWCKYao7fcipNqTb7Us=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744267482; x=1744872282;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0chDNpqWEg6rX5jiiV+xs5nY/pUtnulH7M5PEDr5nxg=;
+        b=GGq/jj110tpTcDNTe+VRnKqNDJtwVj5gMs2939BmrNo3oAUWKYFbxCPJ3R6J4+zJOn
+         ABOXogm6gcpcR0N4Q1B1rpzEmJXFIlLUx3cqO/l4kcY8NbkF/6CyFz2JdTSFZEXLEtPJ
+         /IgHigmSt8TWmP06ylnG8m6FH2FYu4T6ZMFXg+/cnTxQGs6UT15X7EjtXHfDS5MC9B4z
+         LXOpPbmSGqMqo+k6hIj/OuradUGVQfQU0NFL+RjJvwQ+Y3er7S466CimGuV6aL6Hopd8
+         6aqR4kiV+BtTOtgyymiV3N7nmo7Ok74zRuzuNn7PJ947MGV5stnoVbsCZ4TCPbbwseU/
+         tebQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWbo7WZZocfZ9aKzDpkRnhRF6ZmBGndfyVBm2eHfbX7QqkUgk4rUKgKKhQtdYmVE2dz+EkuPznsJycNud8AoA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3Z+Som1OlTYpkdv0EIyW3VIc8aje4rwmR7hgkw9ENwF6CWoTY
+	pW4JaTd0dNe1MagZz6XZB67ni4F2YEb4n/GujC+5/GGxGGw2klqb119ooIRgrdI=
+X-Gm-Gg: ASbGncsI3o3JkQ/+k8jm637m1cPvu9nW7mpVQQpFO3FciA6282YDzaQVTxzHTN2gDIV
+	cppiqBl8e5kXz7rMxX2z/09htaVXUcksHV1p4trv13fTCxVi/GCyqgFdEN2LkMKD/1Y1f8EYWmf
+	kz6OPOgwywhAvyJArVS3GnKqh3iH6LEM/e8haJkW7q+BdzEZjPhYcCtcpqQfxQXWgd448xF9jnP
+	UpmjO2ZKnllrzdAP35+pTtyhA48armzqAWZgXY604ZEf+R765Dkht8yJtsdzOwW3f1tKqhcGAWc
+	MfdGGOGy/DaoVqeaLXJIHa4w5gfSUWob7OT928fTy6o2P+lq63WR
+X-Google-Smtp-Source: AGHT+IEJgQqevPlSECoqBxW8CYtFMCdGsh21g1ElfCwZR2OH03SfuBiLuLrqmVXW04qTylyL3AfREw==
+X-Received: by 2002:a05:600c:4e14:b0:43c:f8fc:f69a with SMTP id 5b1f17b1804b1-43f2d7af23cmr16246325e9.4.1744267481677;
+        Wed, 09 Apr 2025 23:44:41 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f208e96dasm32222395e9.0.2025.04.09.23.44.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Apr 2025 23:44:41 -0700 (PDT)
+Date: Thu, 10 Apr 2025 08:44:38 +0200
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Dave Airlie <airlied@gmail.com>
+Cc: Asahi Lina <lina@asahilina.net>, Danilo Krummrich <dakr@kernel.org>,
+	simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
+	acurrid@nvidia.com, daniel.almeida@collabora.com, j@jannau.net,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/8] DRM Rust abstractions
+Message-ID: <Z_do1l7Clues20eD@phenom.ffwll.local>
+References: <20250325235522.3992-1-dakr@kernel.org>
+ <32e7da7e-de32-4bc6-a751-f604da36a63f@asahilina.net>
+ <Z_VXBZcBsk2k6eVN@cassiopeiae>
+ <143206f6-cd97-4ef8-a4f3-f68d703903bf@asahilina.net>
+ <Z_V2ZxIZxI_HiHM5@cassiopeiae>
+ <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
+ <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
+X-Operating-System: Linux phenom 6.12.17-amd64 
 
-"Lyude Paul" <lyude@redhat.com> writes:
+On Thu, Apr 10, 2025 at 07:29:30AM +1000, Dave Airlie wrote:
+> On Wed, 9 Apr 2025 at 17:49, Asahi Lina <lina@asahilina.net> wrote:
+> >
+> >
+> >
+> > On 4/9/25 4:17 AM, Danilo Krummrich wrote:
+> > > On Wed, Apr 09, 2025 at 03:06:38AM +0900, Asahi Lina wrote:
+> > >> On 4/9/25 2:04 AM, Danilo Krummrich wrote:
+> > >>> On Wed, Apr 09, 2025 at 01:29:35AM +0900, Asahi Lina wrote:
+> > >>>> On 3/26/25 8:54 AM, Danilo Krummrich wrote:
+> > >>>
+> > >>> You said "use it/submit it in any way".
+> > >>
+> > >> I thought keeping authorship is an implied part of kernel etiquette.
+> > >> Usually when you submit code someone else wrote, you keep them as
+> > >> primary author... I want you and others to use the code, that doesn't
+> > >> mean I want you to put your name on it as if you wrote most of it.
+> > >
+> > > The broader context of the private mail was about you stepping back on kernel
+> > > development. You did so with a few more details (which I'm not going to
+> > > disclose), that made it clear to me that you don't want to be bothered with
+> > > kernel development any more.
+> > >
+> > > In combination with you giving permission to "use it/submit it in any way", I
+> > > thought it's better to just pick a safe path to not misrepresent you given all
+> > > the changes I made.
+> > >
+> > > I do still credit you on all corresponding patches though.
+> > >
+> > >>>> I'm really tired of kernel politics and I don't want to spend more brain
+> > >>>> cycles looking at all the other patches or having to argue (in fact I
+> > >>>> usually don't look at patch emails at all recently), but I would
+> > >>>> appreciate if you keep my authorship for files that I did largely author
+> > >>>> myself. After everything I've been going through the past weeks (some of
+> > >>>> the people on Cc know what that's about...) this feels like yet another
+> > >>>> slap in the face.
+> > >>>
+> > >>> As mentioned, please diff the correct thing and then just tell me where you'd
+> > >>> like to have primary authorship changed.
+> > >>
+> > >> I don't even know what tree this series is supposed to apply onto (tried
+> > >> drm-misc next, torvalds/master, v6.15-rc1) so I'm just going to take
+> > >> drm-misc/topic/rust-drm and assume that's what this series includes.
+> > >>
+> > >> $ diff -urN rust/kernel/drm/drv.rs ../uplinux/rust/kernel/drm/driver.rs
+> > >> | grep '^+' | wc -l
+> > >> 45
+> > >>
+> > >> So I'm diffing the correct thing now and the result is essentially
+> > >> identical.
+> > >>
+> > >> Meanwhile, device.rs has many additions... but a big chunk of those is
+> > >> code that was just moved from drv.rs (like drm_legacy_fields and the
+> > >> code that uses it).
+> > >
+> > > Except drm_legacy_fields! and VTABLE (which is just trival boilerplate code)
+> > > device.rs changed fundamentally, i.e. I switched the device abstraction to use
+> > > the subclassing pattern.
+> > >
+> > > If you look further you will find that I really changed a lot of things.
+> > >
+> > > I have *nothing* to hide, here's the overall diff for all the changes I made:
+> > >
+> > >       [1] https://pastebin.com/FT4tNn5d
+> > >
+> > >>
+> > >> Again, I don't have the spoons to make some deep analysis here, you
+> > >> should know how much of the code you changed, added, or just moved
+> > >> around. I'm not going to litigate this further. If you think splitting
+> > >> up a commit into multiple commits and moving code around warrants taking
+> > >> over primary authorship of a project I've been working on for years now,
+> > >> so be it.
+> > >
+> > > You just said you "don't have the spoons to make some deep analysis here" and
+> > > right below you acuse me of just "moving code around".
+> > >
+> > > Which means that you do so *without* evidence. And again, I have *nothing* to
+> > > hide, see [1].
+> > >
+> > > Besides that I also told you that I'm fine to change primary authership, if you
+> > > tell me where you think it would be appropriate (even though I do think my
+> > > changes do justify how things are currently).
+> > >
+> > >> I'm just disappointed.
+> > >
+> > > That's where you are maneuvering *yourself* into.
+> > >
+> > > You could have easily just asked me to change things for patch #X, #Y and #Z.
+> > >
+> > > Instead you outright started with accusing me of things. I also feel like you
+> > > intentionally try to misrepresent what I am doing and what my intentions are.
+> > >
+> > > I neither have the time, nor am I willing to deal with random drama like this.
+> > >
+> > > If you want something changed, just go ahead and tell me what, *without* more
+> > > drama and without more accusing me of things.
+> > >
+> >
+> > Alright, then please remove my authorship entirely from this series,
+> > including Co-developed-by and signoff lines. I hereby release my code as
+> > CC-0, which means you don't need the signoffs, it's yours now. The same
+> > applies to any future code submitted that I originally authored as part
+> > of the Asahi kernel git tree. That way we don't need to argue about any
+> > of this.
+> >
+> > I thought asking for patches that I mostly authored to keep my Git
+> > authorship would be an uncontroversial request (and not unreasonable to
+> > ask you to figure out which those are, since you made the
+> > changes/splits, and #3 clearly is one), but apparently even that gets
+> > you flamed on Linux threads these days.
+> >
+> > I regret having been part of this community.
+> 
+> Look, this isn't Crank or Speed, there is no need to keep the drama
+> level above 50 to sort this out.
+> 
+> This also isn't exactly how best to relicense code, so I think we
+> should abstain from doing anything to help promote more drama.
+> 
+> The project will maintain authorship/signoffs on any patches that are
+> clearly still authored by you, we will err on the side of caution and
+> on rewritten patches which share some decent amount of history shall
+> retain your authorship. In this case it does appear instead of putting
+> in the 5 minutes of looking at Danilo's reasoning and supplied diff,
+> and either saying "my bad, this is sufficiently new code and I don't
+> feel I wrote it" or "I'd still prefer to retain authorship despite
+> your changes", both of which Danilo indicated would be respected you
+> somehow picked door number 3 which probably took more time and effort
+> than either of the above options. Again no need to pick door number 3
+> here, you can let the bus go below 50, it won't explode.
 
-> On Wed, 2025-04-09 at 12:58 -0400, Lyude Paul wrote:
->>
->> Pin<&'a T> is noticeably absent, because I'm not sure it could fulfill these
->> requirements. That being said - assuming we fulfill the unique ownership
->> requirement, I believe that for all the unique aforementioned types it
->> wouldn't be possible to take out a timer handle when they're in scope anyhow.
->> So we probably could skip the cancel() call?
->
-> Nope - realizing this doesn't solve the edge case of "what if someone tried
-> calling a contextless forward() from within the context of the timer callback
-> itself" since uniqueness doesn't actually mean the timer is cancelled. So I
-> think your suggestion of returning Err() if the timer is already running might
-> actually be the way to go here. I think we would still need to ensure
-> uniqueness though, since that can at least guarantee that the timer won't be
-> requeued between us checking it and before we manage to call
-> hrtimer_forward().
+To emphasis and maybe a bit more dry&serious, signed off by lines are not
+optional, because they signify agreement to the developer certificate of
+origin irrespective of the original license. Upstream has some patches
+without sob lines from all authors (well copyright holders to be strict,
+with companies there's often some internal authors that get dropped), but
+that is some very special case and needs real care.
 
-We should not be able to obtain a unique reference/pointer when the
-timer is armed. In this case the timer handle will somehow own the
-timer, either directly, by refcount, or by reference.
+On the topic itself there's a few different ways to do this, depending
+whether it's more co-authorship, a complete rewrite or just some small
+bugfixes on top of an existing patch. The important part is that all
+authors are acknowledged, and that we have sob lines from everyone.
+Ideally also with archive links, where that's not obvious, e.g. when patch
+titles changed or the entire series was rewritten or when the original
+patch never was submitted to a list tracked by lore.k.o.
 
-At any rate, you can add this to the current series, or you can submit
-it later as a separate series. I don't think we need to stall the
-current series till we figure this out. But it is good to keep it in mind.
+Unfortunately git doesn't allow multiple authors, so we cannot acknowledge
+them all exactly equally due to lacking tooling in the co-authored case.
+But that's what the Co-Authored-by or similar tags are meant for.
 
-
-Best regards,
-Andreas Hindborg
-
-
-
+Cheers, Sima
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
