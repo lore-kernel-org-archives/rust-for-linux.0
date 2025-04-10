@@ -1,102 +1,111 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FA9276021;
-	Thu, 10 Apr 2025 14:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF852857C7;
+	Thu, 10 Apr 2025 14:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744293969; cv=none; b=flYxx6x6Mg0dNiL6g3b2TTZPht052lf//QLdiHHc94wn5T6wabCSyxjf+jjmbUPCIPplIw7XPyNsbkTTI45udsfo2mbI9egu2b1sbisnJA/WrbF2lK0EbPu3aNsj6vWX7MsVHfIneMUApypo67L5YDonJE4Yij24u36el/9/zsE=
+	t=1744294139; cv=none; b=DS0isx1oA1MMWxph/t46GpivyFgkIwS7JZfjhRknCmpddmCKkhWEOAKc71IeA8eifAyBTh6yHrxTQnohBNmYPQD2iHBsNAjJRYe6B+CLvhs9FlQ9rY7ctxrGvGIEudgczhnsB7igYebZQell0kNIqivZnM0/jk2/07CV7e7qf5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744293969; c=relaxed/simple;
-	bh=tei3hsEoTD1xgaLQbNCRbSNtEgHNibOXE9Oyfe+Y11o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t2Teiky9tG0Lt9nQcVG9rZtwvutYSeym6BE1S66LQThgjWFq2XtiGO6nl2dSpENUeq8hC7jL7gnvS99IXZbeMsFmshyldS9bvRrzmUNlwYHVJniEjCbj7yOqDNFw8tpk3RMiSL6lS6CkGu4+lFYmYGgwSMupgQvPdhCb6/ZqDFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jGRkvC1H; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744294139; c=relaxed/simple;
+	bh=VTLvHKuTmbWi8p5/jt+YLvLtFZ+xMYkTT5BFHTA9bNM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gaXG07GjNxHGvacwW8TY2BWwMZi3d5wRPpHDBdQvYSFh2SkDSMNg8Th2vx6hZwVS9NVbG72YWOX1dmN9q0acMTTJ3yuTVh1/UvOLIhlc/r6WShUh/MU02Q/a9MLS9+/ZV5cb7ynEU0DPl74rSBO9dodJaT0IV5gjXMigv4qK5yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=VUfsNwVE; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jGRkvC1H"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-ad55376c2c8so60967a12.2;
-        Thu, 10 Apr 2025 07:06:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744293968; x=1744898768; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tei3hsEoTD1xgaLQbNCRbSNtEgHNibOXE9Oyfe+Y11o=;
-        b=jGRkvC1Ho1WvHiZy2mC6WyLup1TgnlpwUI20xzy2TA4htK5e1Da3b5pm3pSlqKZKNR
-         3vkk1CONtp5yqX/kZE9JiHWuMfc1DnD0qfP6XBAzT4iLPto2wwm5yeKZVlUYdb/u3SwK
-         NOe37jFc7q+Uj4mqsE+84X9JsVGyaH7aqzqg0XQjczZd/MRUhJs1KiWnzMULpyCEkqHu
-         y201kP1yZfF0+9E5RpsmjtY3ek792gqjf20G2Uqg6GR0sEiF8gtDa6MVSs94SzIe8Tiu
-         /vjxe88B5zflSPDchYB9oce0dkT9zg0E2QDK/8UUSlBAUps+xQdvN69GvNYPiFyYcxdb
-         LYgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744293968; x=1744898768;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tei3hsEoTD1xgaLQbNCRbSNtEgHNibOXE9Oyfe+Y11o=;
-        b=VqLJRoP17PKQMC3UhaX+dCz0LlKsNbqy+sGkEpf6zS5oAW8oJpmz7OGoSJvkPcXust
-         QI/J67qfp8Q8eAvn210wvGUjdizFbyxG6em7Prs8tnyfmAFe8d22bBOuaw/TPvWhDhUI
-         FZb965MACISnYnpUw1tWNNv3yncF+zmrrPvd5P3R6/TyYV7N/6dovkHl9zbvyrugKDLX
-         ERsGAmKBa1hm70RBO3RLzQxVoeZTDYPb3YxCV0IBO4jZUnqTSieqjTUgxL1ZE13D527n
-         1knxfcfpy7WlUgDN4/+R2OKnMeStay73iossB5hOrfzvI5zBDAWBN7iSiXSpcvtPW1cL
-         HSAw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdNwZ2ERewWIDm8U5Pd7bSvMF2omUZWltDYBxSXLCRCLGqYxXJ2Aq8ra673XUYSkH2O7PrwlDAPYd5PUs=@vger.kernel.org, AJvYcCXA3VFsJr04B7wneofNRdMbCSRgApgkSexsbg9QvAVA0+KZnd9v7Y3F8xUGiNJV6uGHjTpu1T7XnMCvQsMPYtY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywuk2Zk2bEadgeItTb0qBbEg7rSLxLce+TJIh4FgjGuMoZcvlOJ
-	f7836H+FHcCZSCcy7h6ibCbybOerEhoETSPtbxfhk06i6W4/cQudXaExgPNhW5htuwRtphUQs6K
-	CXIvYZB4QCXUo3qnNvvhzkgNMjpQ=
-X-Gm-Gg: ASbGncsr26uHzCVH6tIAsRFEKDJLqMpT/XmEfoKb8cKQp5PvoCeWg/7cFUri6RmAMfQ
-	tv/64+qcG9NX04qDH4XmRtiQit+Ql4Wzrj9Ldl81c25H+OzhU6dai/KIUrCvgDEAN7v8zGa3tKq
-	2BBHqYyLcSwuHQxY+mFlDuBg==
-X-Google-Smtp-Source: AGHT+IEtl0TOfCd3432K2syK7t6Hzi2+MbtCJCRDKAL3XnVMH0PyAgZBKTqu6Ecb8fXNNBq0SIIxQGFPWhbitcHHOkk=
-X-Received: by 2002:a17:90b:2d88:b0:306:e6ec:dc82 with SMTP id
- 98e67ed59e1d1-306e6ecdf7bmr2648630a91.6.1744293967421; Thu, 10 Apr 2025
- 07:06:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VUfsNwVE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=QxgtQ5JKfKOHEwtSfyG+Wonf2mElgCsFlIe7Wt1b7Xc=; b=VUfsNwVEayjni0UTOGtDBCi+hc
+	sL5R3AhZnLiqq+LJmQCgXLXVDMwm2L/+SSxlffDhKP3K0fJPaSROelzj92I3Pz9Xi8HLIXVgUph2A
+	pU8qnDJtVOuXTl11b8REdeHHKX7d7egwZJdLBfzy/u52tTTyrqX0u5MiL37thiztEcetW+6WpXnf4
+	sforPo937HDfCbWgQD+jbcoIm8tGONGaPb+BaigEY2qpNZEBQBPz7Q1JcwRPLZkYneZM/OJ9C40uf
+	Dux+3LzREw9fnJ2bj5AycmtieDToEPzdztoVQPASqthIwex3hkGTweYGAHoTcDu7dVDatp5aG5SNo
+	uaRAf6sw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u2saI-00000002yqV-35tA;
+	Thu, 10 Apr 2025 14:08:51 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id BEC143003FA; Thu, 10 Apr 2025 16:08:50 +0200 (CEST)
+Date: Thu, 10 Apr 2025 16:08:50 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	=?utf-8?B?UGF3ZcWC?= Anikiel <panikiel@google.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Kees Cook <kees@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Matthew Maurer <mmaurer@google.com>,
+	Ramon de C Valle <rcvalle@google.com>
+Subject: Re: [PATCH] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
+Message-ID: <20250410140850.GH9833@noisy.programming.kicks-ass.net>
+References: <20250410115420.366349-1-panikiel@google.com>
+ <20250410123602.GZ9833@noisy.programming.kicks-ass.net>
+ <20250410124526.GB9833@noisy.programming.kicks-ass.net>
+ <20250410130944.GA9003@noisy.programming.kicks-ass.net>
+ <CANiq72=k+tZ3ACEB5k9qwJ8ZYu-dXkA3=Lisg1b8ze-2D0STog@mail.gmail.com>
+ <20250410132649.GE9833@noisy.programming.kicks-ass.net>
+ <CANiq72=Q_Z8KfV+n4z9wWVJsZwVevag=Vh3URe71XkUuWuqEDg@mail.gmail.com>
+ <20250410133446.GF9833@noisy.programming.kicks-ass.net>
+ <CAH5fLghrcqSYwkqbC4SSp6oYCny0riMRGA6W+oqQ69aA=NwYWw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250410115420.366349-1-panikiel@google.com> <20250410123602.GZ9833@noisy.programming.kicks-ass.net>
- <20250410124526.GB9833@noisy.programming.kicks-ass.net> <20250410130944.GA9003@noisy.programming.kicks-ass.net>
- <CANiq72=k+tZ3ACEB5k9qwJ8ZYu-dXkA3=Lisg1b8ze-2D0STog@mail.gmail.com>
- <20250410132649.GE9833@noisy.programming.kicks-ass.net> <CANiq72=Q_Z8KfV+n4z9wWVJsZwVevag=Vh3URe71XkUuWuqEDg@mail.gmail.com>
- <20250410133446.GF9833@noisy.programming.kicks-ass.net> <CANiq72neZj+ESvkxwXAQFnznwYBiQAcpW4OqXg1ckhxZj3fd4Q@mail.gmail.com>
- <20250410135713.GG9833@noisy.programming.kicks-ass.net>
-In-Reply-To: <20250410135713.GG9833@noisy.programming.kicks-ass.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 10 Apr 2025 16:05:54 +0200
-X-Gm-Features: ATxdqUFrdVKSoXJ7d3U5-MA0fO_i74QGL5_3EkGijZJmtrZ967F7Z-qp8SLV0GI
-Message-ID: <CANiq72=uj3G8ibnzpuYzhY=7T5xrBBPoeuAX7X-iBKdN+crQUg@mail.gmail.com>
-Subject: Re: [PATCH] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: =?UTF-8?Q?Pawe=C5=82_Anikiel?= <panikiel@google.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, 
-	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLghrcqSYwkqbC4SSp6oYCny0riMRGA6W+oqQ69aA=NwYWw@mail.gmail.com>
 
-On Thu, Apr 10, 2025 at 3:57=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> Remove the offending Rust code? Afaict from this github issue, it is
-> just some formatting nonsense. Surely code can be adjusted to not use
-> that?
+On Thu, Apr 10, 2025 at 03:59:53PM +0200, Alice Ryhl wrote:
+> On Thu, Apr 10, 2025 at 3:34 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > On Thu, Apr 10, 2025 at 03:27:55PM +0200, Miguel Ojeda wrote:
+> > > On Thu, Apr 10, 2025 at 3:26 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> > > >
+> > > > New compiler can't build old core?
+> > >
+> > > No, that is not intended to work -- `core` is tied to the compiler.
+> >
+> > OMFG, you just gave me another reason to hate on this rust-bucket of a
+> > language :-/ What language can't even build an old version of its own
+> > runtime :-(
+> 
+> I don't think there's anything unreasonable about having a place to
+> put logic that depends on compiler internals.
 
-If you mean not using the formatting machinery from our side, then
-that is a major change -- we should just fix it upstream, really.
+Having compiler internals exposed to such an extend that programs can
+make use of them _is_ weird. It creates the whole problem of where to
+put it.
 
-If you mean fixing it upstream, definitely, but we should still
-prevent people from building an invalid kernel, i.e. when Alice's PR
-or similar lands upstream, then we can relax the `depends on` based on
-the Rust version (which is something we have done for other bits).
+C++ doesn't have anything like this afaik. Esp. if you disable rtti and
+exception muck, you get a very minimal runtime. And even if you don't,
+it certainly doesn't break every 6 weeks. ABIs and all that.
 
-Cheers,
-Miguel
+Maybe I've been living in C/C++ land for too long, but you either expose
+a full language feature and then everybody can use it, runtime,
+libraries and user code alike, or you don't.
+
+> > Anyway, given this core nonsense is now CFI unsound, it is no longer
+> > suitable to build the kernel. So either refrain from using part of the
+> > core that trips this, or get it fixed asap.
+> 
+> I submitted a PR that I believe should fix it:
+> https://github.com/rust-lang/rust/pull/139632
+
+Thanks!
