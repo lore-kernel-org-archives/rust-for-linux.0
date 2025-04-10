@@ -1,110 +1,185 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE39F20E6E1
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 09:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DE5256C68
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 09:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744276609; cv=none; b=MSpCJJoDuGkK+7OntvI4RCY+KsKN0KWZ9KNsSxx4FS4vIpismZ0k1arKIppJadtl5WCVLGXz/531nk7QSAlJDrcpxTgGhp3t5CEdnDz6RS+Ko8F7tQp7GVUPZscC50IKu5DoeO1j0DNkAEDmxr6IwcJZa5dfKUPpEET8KX7TmhE=
+	t=1744277008; cv=none; b=ITBjrhoNnzfOsWPKwpCa1kOrhu5+m9IPMgbO6oknA234b69wtFszFH3L+xa2EWvkGPd2mrcLSgffHKXBifc7/IDvNo2dOSx4SkvjVmX/qXQ19stLeYspFJLl8p0+UEskO9cvW7OLXlhZDwtl69diRNA7Z8IOPIvPpAJ7piL5BwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744276609; c=relaxed/simple;
-	bh=itSqP8ogBAobjCYHP+CFBbneh9aJwPMtMma1ImNEw+8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LpQFPNHuwcsVOZvnZfL+mV9dBHUgCH7eVt6KzSKBdjcM1gWni5y17At02hAa15AfXqiOc8GfvCK2v58ywldqGb8GZiLTKp3aaW3TYz0jJ3JD/uBw9/Y0EEm8flrahzx6j7gyZfgkehlhjIlsoVsrjSzbG5+S83mkN5YwDZytD1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DL7EBaC5; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1744277008; c=relaxed/simple;
+	bh=20mtcDz2xnfUIlIVVczqTnngVF6pXVBbEMrCDm76AyE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fv3e8Xxn4qUU1DmdxltnL/JssL2K+ztZo2tAgzRH749r/ASb1el/sQvNKOLphJyz3H+0X7bCiw4jRYLoIn1xqEW0yVZCbs+bevj1QsGnyKjft7yaOQH1BQDBm38EzSsK8okPe96Foeai/2eBcWCVPcH+ctA8gvGAEi1bJGP0Ntk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AhhqUi7s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DL7EBaC5"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d00017e9dso4472605e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 02:16:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744276605; x=1744881405; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yfvJMVFhf1+kAn7tCoC+aB8KULrWlIykltXkyJsg4r8=;
-        b=DL7EBaC5qkUVQcgyCv48Uo45zC7QclPvd+uf6LNgwtPRBOmezx8ek7ej9KTPM4aC91
-         fdXQDcggXpCQnYJT4wtoRnfmFWNb6gl6BV9dc9tK4vSG0x4j//bIDhYiT3W2HyBK+h9v
-         XksFJpUdf4oPIdRLYNB9WUbPurSh0nl8eAUKDAFIlEyARYHR/gpSZDKNE8DUoypJ8txI
-         YvPsxvocDazwe56b5RHpYiAzTi1iuYDpNPgmH1tek+wR1n7MM4GpdtvyeGTmRwPSstz6
-         upKN55JcTLG2he0PLvB01PmAr4JQ9W/+JsqENYHGf9KmnqkmlOtWy5CQyb9A2N/qzWMe
-         jVPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744276605; x=1744881405;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yfvJMVFhf1+kAn7tCoC+aB8KULrWlIykltXkyJsg4r8=;
-        b=R8NErapo8xRP7sFGduYY9tgNeCXdeQCLPkC+mpx2NS2n/JyRy6kpYOIeoeobf9exRf
-         93ZJkZKG4zA412oXv04q1ztoSt5KjipAT4Rq610iJnUPBr4ah76eSnWUN3JRz7v9WnhL
-         70grIhsrvMnLP/e8R4O4DMWgfWHucvl2jKAOhsdc2qhkHsSsAc8k4JiS3ekTXeBUoUtN
-         P1aBj9PavSMDMzR4z6iUOEj9tpLToel7PzbClOcbVvcPQxQhhCumlUUhY64jIygeZGCb
-         iUXSM9qqwePEovm/bzOuiwmHl4U8CIHR0de2fUr71izJ4dnu9I+AWZpI+kUFhU09h4k5
-         tCGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVtiPJr1FlY8JRacelN8YiGio6T2TOManxj0bYm0NHCK/SXzYg7sGA1LRXUj8DagXH+2gVHJr6UfWMHesXJUw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPncbrCUsTrUbFnz0Kjv5vkDO8JZhpOqjkhFdvn5NX3QK81r4S
-	7DswlN6okUAqmoxwJx32uh+kDoqM6VD8u68IP05Dh7AY4ZSZITWwiaRPWsLyDbNl9WeCnH/sUVE
-	c8zl/KI1HkANkbg==
-X-Google-Smtp-Source: AGHT+IETeoAaNtvfDFEMNKBYDouZZNCtt3iqFBqsbj3dZ6TE/CPvQOWwMIom6SUQsR7LhOwbohGA98ZZqIG3vlE=
-X-Received: from wmrn9.prod.google.com ([2002:a05:600c:5009:b0:43c:f8ae:4d6c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e51:b0:43d:209:21fd with SMTP id 5b1f17b1804b1-43f2d98b578mr24536995e9.30.1744276605380;
- Thu, 10 Apr 2025 02:16:45 -0700 (PDT)
-Date: Thu, 10 Apr 2025 09:16:43 +0000
-In-Reply-To: <20250409-no-offset-v2-2-dda8e141a909@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AhhqUi7s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C674C4CEDD;
+	Thu, 10 Apr 2025 09:23:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744277007;
+	bh=20mtcDz2xnfUIlIVVczqTnngVF6pXVBbEMrCDm76AyE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AhhqUi7skbVChgyksUoxOzi0NTkgfhDglXyCfix+jZrkjZ6EYlvJJX1VqA6pX5pdU
+	 ks/ZNDFLsA43iR8fqRYWLbqWM2+o4A1G2EaT2vU+vR8Tp9biHaWfnbh3Q7IizHt+JM
+	 GeDw0aLiQ+oT2FyCLDDzB3WQ8RXWwMIxC9cEzVm2kQX/Pbjc9Mfmo7iVL2cChJxNq/
+	 /9v0kXt/OhkXKVm4ujNHaONmafGMEetkTsqY6y+TTC07Zcs6LiyKsNdiBr6WI1D9BS
+	 6kF9fLDam2G5TjHDiC1KIv+G0gpc+LCGBTqwyUaXkA9OMFs6TOWWEUfhotDD7E6Suq
+	 0NGpCh1pDaPFQ==
+Date: Thu, 10 Apr 2025 11:23:24 +0200
+From: Maxime Ripard <mripard@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
+	tzimmermann@suse.de, lyude@redhat.com, acurrid@nvidia.com, lina@asahilina.net, 
+	daniel.almeida@collabora.com, j@jannau.net, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 5/8] rust: drm: add DRM driver registration
+Message-ID: <20250410-sensible-wondrous-marmoset-cb34f1@houat>
+References: <20250325235522.3992-1-dakr@kernel.org>
+ <20250325235522.3992-6-dakr@kernel.org>
+ <20250326-loyal-scrupulous-leech-59d44a@houat>
+ <Z-PbHiaMNqR0FPbY@pollux>
+ <20250328-impossible-locust-of-merriment-b625bd@houat>
+ <Z-a3JY4ytvqHWDWL@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250409-no-offset-v2-0-dda8e141a909@gmail.com> <20250409-no-offset-v2-2-dda8e141a909@gmail.com>
-Message-ID: <Z_eMe7y0ixrBrHaz@google.com>
-Subject: Re: [PATCH v2 2/2] rust: workqueue: remove HasWork::OFFSET
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7lmdbvax2rqizhdg"
+Content-Disposition: inline
+In-Reply-To: <Z-a3JY4ytvqHWDWL@pollux>
 
-On Wed, Apr 09, 2025 at 06:03:22AM -0400, Tamir Duberstein wrote:
-> Implement `HasWork::work_container_of` in `impl_has_work!`, narrowing
-> the interface of `HasWork` and replacing pointer arithmetic with
-> `container_of!`. Remove the provided implementation of
-> `HasWork::get_work_offset` without replacement; an implementation is
-> already generated in `impl_has_work!`. Remove the `Self: Sized` bound on
-> `HasWork::work_container_of` which was apparently necessary to access
-> `OFFSET` as `OFFSET` no longer exists.
-> 
-> A similar API change was discussed on the hrtimer series[1].
-> 
-> Link: https://lore.kernel.org/all/20250224-hrtimer-v3-v6-12-rc2-v9-1-5bd3bf0ce6cc@kernel.org/ [1]
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Tested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
->  rust/kernel/workqueue.rs | 45 ++++++++++++---------------------------------
->  1 file changed, 12 insertions(+), 33 deletions(-)
-> 
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index f98bd02b838f..1d640dbdc6ad 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -429,51 +429,23 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
->  ///
->  /// # Safety
->  ///
-> -/// The [`OFFSET`] constant must be the offset of a field in `Self` of type [`Work<T, ID>`]. The
-> -/// methods on this trait must have exactly the behavior that the definitions given below have.
-> +/// The methods on this trait must have exactly the behavior that the definitions given below have.
 
-This wording probably needs to be rephrased. You got rid of the
-definitions that sentence refers to.
+--7lmdbvax2rqizhdg
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 5/8] rust: drm: add DRM driver registration
+MIME-Version: 1.0
 
-Alice
+Hi Danilo,
+
+On Fri, Mar 28, 2025 at 03:50:13PM +0100, Danilo Krummrich wrote:
+> On Fri, Mar 28, 2025 at 03:28:04PM +0100, Maxime Ripard wrote:
+> > On Wed, Mar 26, 2025 at 11:46:54AM +0100, Danilo Krummrich wrote:
+> > > On Wed, Mar 26, 2025 at 10:24:43AM +0100, Maxime Ripard wrote:
+> > > > On Wed, Mar 26, 2025 at 12:54:32AM +0100, Danilo Krummrich wrote:
+> >=20
+> > > > drm_dev_unregister also have an hotplug-aware variant in
+> > > > drm_dev_unplug(). However, most devices are hotpluggable, even if o=
+nly
+> > > > through sysfs. So drm_dev_unplug() is generally a better option. Sh=
+ould
+> > > > we use it here, and / or should we provide multiple options still?
+> > > >=20
+> > > > Another thing worth mentioning I think is that drm_dev_unplug() wor=
+ks by
+> > > > setting a flag, and drivers are expected to check that their access=
+ to
+> > > > device-bound resources (so registers mapping, clocks, regulators, e=
+tc.)
+> > > > are still there through drm_dev_enter/drm_dev_exit. It's pretty fra=
+gile
+> > > > overall, so I wonder if it's something we could abstract away in Ru=
+st.
+> > >=20
+> > > DRM should not have to take care of the lifetime of device resources =
+of the
+> > > parent device. This is the responsibility of the driver core abstract=
+ions.
+> > >
+> > > At least for the device resources we directly give out to drivers, it=
+ has to be,
+> > > since otherwise it would mean that the driver core abstraction is uns=
+ound.
+> > > Drivers could otherwise extend the lifetime of device resources arbit=
+rarily.
+> >=20
+> > Sure.
+> >=20
+> > > For instance, I/O memory is only ever given out by bus abstractions e=
+mbedded in
+> > > a Devres container (e.g. Devres<pci::Bar>). Once the parent device is=
+ unbound
+> > > the pci::Bar within the Devres container won't be accessible any more=
+ and will
+> > > be dropped internally. So, that's nothing DRM has to take care of.
+> > >=20
+> > > However, there are cases where it's better to let subsystem abstracti=
+ons manage
+> > > the lifetime of device resources, (e.g. DMA mappings). The relevant t=
+hing is,
+> > > that we never hand out device resources to a driver in a way that the=
+ driver can
+> > > extend their lifetime arbitrarily.
+> >=20
+> > I was talking about the opposite though: when the driver is still around
+> > but the device (and its resources) aren't anymore.
+>=20
+> Well, that's what I was talking about too. :)
+>=20
+> > It makes total sense to tie the lifetime of the device resources to the
+> > device. However, the DRM device and driver will far outlive the device
+> > it was bound to so it needs to deal with that kind of degraded "the DRM
+> > driver can still be called by userspace, but it doesn't have a device
+> > anymore" scenario. That's what I was talking about.
+>=20
+> This scenario should be covered by the things I mentioned above. Let's ta=
+ke the
+> I/O memory example.
+>=20
+> If you call into the DRM driver from userspace when the underlying bus de=
+vice
+> has already been unbound, the DRM driver may still hold a Devres<pci::Bar>
+> instance.
+>=20
+> If the DRM driver then calls bar.try_access() (in order to subsequently c=
+all
+> writeX() or readX()) the try_access() call will fail, since the correspon=
+ding
+> PCI device has been unbound already.
+>=20
+> In other words the pci::Bar instance within the Devres container will be =
+dropped
+> (which includes unmapping the bar and releasing the resource region) when=
+ the
+> PCI device is unbound internally and the Devres container will restrict
+> subsequent accesses from drivers.
+>=20
+> It pretty much does the same thing as drm_dev_enter() / drm_dev_exit(), b=
+ut
+> additionally prevents access to the (meanwhile) invalid pointer to the de=
+vice
+> resource and ensures that the driver can't make device resources out-live=
+ device
+> unbind.
+>=20
+> As mentioned above, the Devres container is just one example of how we pr=
+event
+> such things; it depends on the exact scenario. In either case, I don't wa=
+nt the
+> driver itself to be responsible to setup the corresponding guards, that w=
+ould
+> make the corresponding abstractions unsound.
+
+Thanks for the explanation :) It makes total sense now.
+
+Maxime
+
+--7lmdbvax2rqizhdg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZ/eODAAKCRDj7w1vZxhR
+xYXTAQDrpexfgLeim+smhkcVzvKgCeqO+PcYyzBBjXDXUYZZCQEAwB7WZCyE256K
+coCh/3nkyklIKsccA8MiI0NpXa5y5QE=
+=5bgO
+-----END PGP SIGNATURE-----
+
+--7lmdbvax2rqizhdg--
