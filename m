@@ -1,129 +1,102 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A57284B21;
-	Thu, 10 Apr 2025 14:01:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FA9276021;
+	Thu, 10 Apr 2025 14:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744293719; cv=none; b=lGN68+HHP4rWqeqllfkzWCLgYBtivfCqKLsTO8idthZ1B3deOr8UEZvIMOh+96W0GQCY+p81SxRW9zWhxX42aeCfeAWkUV0PA3lkHsEu1W4h0OxE1JgZRwj2QRKfFMUMSPIsVkp2BABo1AsJIUldhUSKnz/4pPJGwNkQrjXfGq8=
+	t=1744293969; cv=none; b=flYxx6x6Mg0dNiL6g3b2TTZPht052lf//QLdiHHc94wn5T6wabCSyxjf+jjmbUPCIPplIw7XPyNsbkTTI45udsfo2mbI9egu2b1sbisnJA/WrbF2lK0EbPu3aNsj6vWX7MsVHfIneMUApypo67L5YDonJE4Yij24u36el/9/zsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744293719; c=relaxed/simple;
-	bh=sw3vK6z8fQjBuRgQszQR109R2Cqf5C0TdwJ61a/B8JQ=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=FASz1vNZSt5VfYa/eLmpmmvCQa5VzY/718T0VUdDtArmpXmp7sY6yytwYdS2HVnK8a7xRVsvDD49dGO+rKibCs2yEh5/W4+kj+EUF1PY1+qvOZoV0KYHozuFNebCd7GcJb5q9u1W63Fc8UemzlromG/vP9J3UKYvdXHWDj5N0NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eWLkeK9T; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1744293969; c=relaxed/simple;
+	bh=tei3hsEoTD1xgaLQbNCRbSNtEgHNibOXE9Oyfe+Y11o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t2Teiky9tG0Lt9nQcVG9rZtwvutYSeym6BE1S66LQThgjWFq2XtiGO6nl2dSpENUeq8hC7jL7gnvS99IXZbeMsFmshyldS9bvRrzmUNlwYHVJniEjCbj7yOqDNFw8tpk3RMiSL6lS6CkGu4+lFYmYGgwSMupgQvPdhCb6/ZqDFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jGRkvC1H; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eWLkeK9T"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso1047435b3a.2;
-        Thu, 10 Apr 2025 07:01:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jGRkvC1H"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-ad55376c2c8so60967a12.2;
+        Thu, 10 Apr 2025 07:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744293715; x=1744898515; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cWAOaB8U3KFCIOrhTxD2O2vP23GerEEFQhxVmQdK6Js=;
-        b=eWLkeK9T9a+y0qHsMHIHQj/fCUU9J0lRrOBLYMB/t2ofgN+Q/jJqYTGNImgyq03EaH
-         eAEMSgsEthf9Fdr8GFaW4VbS6Q59exlvlF+MV1/99+taNGTup2cgNhOYsv0jBdLQc/Hg
-         Ao75S+M6XplQwcmhsLeuZ9gsJb9bdExCCquSy9N4PUezKHubylU/sGqtR9cGfOVjj4TH
-         45LtlxQxVrHW7Rm4lfgmE2QhtbKtb0G32Bw9WgTbddAMv8mTmnmqCIssdCZ1rIAsYhzO
-         xTQTfYeyjs1tl1Cxrq20ZuwlKt1QCeRWJ6I5NSwakr/vy4ZZdHIpNDRxTslpKv4CnBet
-         bCbQ==
+        d=gmail.com; s=20230601; t=1744293968; x=1744898768; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tei3hsEoTD1xgaLQbNCRbSNtEgHNibOXE9Oyfe+Y11o=;
+        b=jGRkvC1Ho1WvHiZy2mC6WyLup1TgnlpwUI20xzy2TA4htK5e1Da3b5pm3pSlqKZKNR
+         3vkk1CONtp5yqX/kZE9JiHWuMfc1DnD0qfP6XBAzT4iLPto2wwm5yeKZVlUYdb/u3SwK
+         NOe37jFc7q+Uj4mqsE+84X9JsVGyaH7aqzqg0XQjczZd/MRUhJs1KiWnzMULpyCEkqHu
+         y201kP1yZfF0+9E5RpsmjtY3ek792gqjf20G2Uqg6GR0sEiF8gtDa6MVSs94SzIe8Tiu
+         /vjxe88B5zflSPDchYB9oce0dkT9zg0E2QDK/8UUSlBAUps+xQdvN69GvNYPiFyYcxdb
+         LYgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744293715; x=1744898515;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cWAOaB8U3KFCIOrhTxD2O2vP23GerEEFQhxVmQdK6Js=;
-        b=H+SNAePb6WmNPo/FRwzox9N52gBMZmkPpfzuTlAmgVLoiBKsoCWADUEdW7w+4dQYxr
-         g8e7yLqvbdUgmsrCZ+fgWvvUUZvkgKsOw5KwDywGt9IpCkn+WXaflyDnYknZu9w6PGEM
-         lz7XJnmTQqd621PeiFVSjZev6b1xqMGMXqxp4Clw/aCgdN3c+fkeGahHH4UUgp6NeJd+
-         bvQ9vK1DiaekUz1vTlx66dwOeDGjo7pzfmneBR3sKVI8beBqqrNUrYq0THDy/3wT3i8o
-         dZagndtfMZQ1/IE2M/iDVIVofUYHEHlSyeEPy08Z4nIVKLsL7mizKPFQKQZzX7iulqhz
-         CXwA==
-X-Forwarded-Encrypted: i=1; AJvYcCVenepheHRzG/kUkz31Qw2tObJaj9VtXuXGR8di/mTLNt4V9uTttbJM5oFcDnfLH4baqQ+dwtS/Izge1tI=@vger.kernel.org, AJvYcCXM14eRiE9HC62n+ws8gdWmZ8PW7kuuPKV7OmeaAAYA8BJ+vajcRc4Z99TUP2HwBezqiZa+D4ESmh2SZY5jWFE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLxCNFPOu44kVcQUOJg28a6wUA+LjGdSbhY7bWixOLiFV4JYAF
-	JxC6BzFyu5SXyrl05asptIi5DdAGyD8LQHklqK4+gNDnGrmcPYE8
-X-Gm-Gg: ASbGnctrUO+0b+0UM2olUa9K32JGaWLSmniBtMznS2Y3kU+zJrz9a/tevvhGNT2WeyG
-	wcIfVwaB/MzF0X9ZSwvwdUTF/kpWWNxryPE+tv6PJd5XwQoDMeWlt+L5pNBBu3Mt7gXthPpnVl7
-	8/l5GkHRIoSuOXn+t+tUc7TMT2fqqtCXISTgJjP9sPHgHgrHx0tA+4aNHuoa80UDW6Lp7o/CIM9
-	ruUHazg5XURN+fI3umZgRj2Gxzi/EcGxFCFi4SgY5RvF1Urt5IpqCKpG8Op5+qq+7AJMudF5J+Q
-	zDFxG/QZacRskU5Q5jIaia4VqiIBmG6T/Y2bwAGQi+iJuDDW5O01d9k5XFc3Ym/GXKw13/qa7Bu
-	6mntMq0ZRIhEaheJq0xX8Cko=
-X-Google-Smtp-Source: AGHT+IHBTE6t3tMPyBmMiDGR0D6P+It1/bo69iX0No3GsbY7YKBIFvGuQ1V6G4gotfqVUWbx+i87Xg==
-X-Received: by 2002:a05:6a00:8c9:b0:736:a973:748 with SMTP id d2e1a72fcca58-73bbf01e262mr3359584b3a.22.1744293714003;
-        Thu, 10 Apr 2025 07:01:54 -0700 (PDT)
-Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1e3824asm3362820b3a.103.2025.04.10.07.01.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 07:01:53 -0700 (PDT)
-Date: Thu, 10 Apr 2025 23:01:38 +0900 (JST)
-Message-Id: <20250410.230138.20974725432146108.fujita.tomonori@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, x86@kernel.org,
- linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
- hpa@zytor.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, catalin.marinas@arm.com, will@kernel.org,
- chenhuacai@kernel.org, kernel@xen0n.name, tangyouling@loongson.cn,
- hejinyang@loongson.cn, yangtiezhu@loongson.cn, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu
-Subject: Re: [PATCH v5 4/4] rust: Add warn_on macro
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <2025040954-prenatal-enamel-373f@gregkh>
-References: <20250409065802.136971-1-fujita.tomonori@gmail.com>
-	<20250409065802.136971-5-fujita.tomonori@gmail.com>
-	<2025040954-prenatal-enamel-373f@gregkh>
+        d=1e100.net; s=20230601; t=1744293968; x=1744898768;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tei3hsEoTD1xgaLQbNCRbSNtEgHNibOXE9Oyfe+Y11o=;
+        b=VqLJRoP17PKQMC3UhaX+dCz0LlKsNbqy+sGkEpf6zS5oAW8oJpmz7OGoSJvkPcXust
+         QI/J67qfp8Q8eAvn210wvGUjdizFbyxG6em7Prs8tnyfmAFe8d22bBOuaw/TPvWhDhUI
+         FZb965MACISnYnpUw1tWNNv3yncF+zmrrPvd5P3R6/TyYV7N/6dovkHl9zbvyrugKDLX
+         ERsGAmKBa1hm70RBO3RLzQxVoeZTDYPb3YxCV0IBO4jZUnqTSieqjTUgxL1ZE13D527n
+         1knxfcfpy7WlUgDN4/+R2OKnMeStay73iossB5hOrfzvI5zBDAWBN7iSiXSpcvtPW1cL
+         HSAw==
+X-Forwarded-Encrypted: i=1; AJvYcCWdNwZ2ERewWIDm8U5Pd7bSvMF2omUZWltDYBxSXLCRCLGqYxXJ2Aq8ra673XUYSkH2O7PrwlDAPYd5PUs=@vger.kernel.org, AJvYcCXA3VFsJr04B7wneofNRdMbCSRgApgkSexsbg9QvAVA0+KZnd9v7Y3F8xUGiNJV6uGHjTpu1T7XnMCvQsMPYtY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywuk2Zk2bEadgeItTb0qBbEg7rSLxLce+TJIh4FgjGuMoZcvlOJ
+	f7836H+FHcCZSCcy7h6ibCbybOerEhoETSPtbxfhk06i6W4/cQudXaExgPNhW5htuwRtphUQs6K
+	CXIvYZB4QCXUo3qnNvvhzkgNMjpQ=
+X-Gm-Gg: ASbGncsr26uHzCVH6tIAsRFEKDJLqMpT/XmEfoKb8cKQp5PvoCeWg/7cFUri6RmAMfQ
+	tv/64+qcG9NX04qDH4XmRtiQit+Ql4Wzrj9Ldl81c25H+OzhU6dai/KIUrCvgDEAN7v8zGa3tKq
+	2BBHqYyLcSwuHQxY+mFlDuBg==
+X-Google-Smtp-Source: AGHT+IEtl0TOfCd3432K2syK7t6Hzi2+MbtCJCRDKAL3XnVMH0PyAgZBKTqu6Ecb8fXNNBq0SIIxQGFPWhbitcHHOkk=
+X-Received: by 2002:a17:90b:2d88:b0:306:e6ec:dc82 with SMTP id
+ 98e67ed59e1d1-306e6ecdf7bmr2648630a91.6.1744293967421; Thu, 10 Apr 2025
+ 07:06:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20250410115420.366349-1-panikiel@google.com> <20250410123602.GZ9833@noisy.programming.kicks-ass.net>
+ <20250410124526.GB9833@noisy.programming.kicks-ass.net> <20250410130944.GA9003@noisy.programming.kicks-ass.net>
+ <CANiq72=k+tZ3ACEB5k9qwJ8ZYu-dXkA3=Lisg1b8ze-2D0STog@mail.gmail.com>
+ <20250410132649.GE9833@noisy.programming.kicks-ass.net> <CANiq72=Q_Z8KfV+n4z9wWVJsZwVevag=Vh3URe71XkUuWuqEDg@mail.gmail.com>
+ <20250410133446.GF9833@noisy.programming.kicks-ass.net> <CANiq72neZj+ESvkxwXAQFnznwYBiQAcpW4OqXg1ckhxZj3fd4Q@mail.gmail.com>
+ <20250410135713.GG9833@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250410135713.GG9833@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 10 Apr 2025 16:05:54 +0200
+X-Gm-Features: ATxdqUFrdVKSoXJ7d3U5-MA0fO_i74QGL5_3EkGijZJmtrZ967F7Z-qp8SLV0GI
+Message-ID: <CANiq72=uj3G8ibnzpuYzhY=7T5xrBBPoeuAX7X-iBKdN+crQUg@mail.gmail.com>
+Subject: Re: [PATCH] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: =?UTF-8?Q?Pawe=C5=82_Anikiel?= <panikiel@google.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 9 Apr 2025 09:38:53 +0200
-Greg KH <gregkh@linuxfoundation.org> wrote:
+On Thu, Apr 10, 2025 at 3:57=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> Remove the offending Rust code? Afaict from this github issue, it is
+> just some formatting nonsense. Surely code can be adjusted to not use
+> that?
 
-> On Wed, Apr 09, 2025 at 03:58:01PM +0900, FUJITA Tomonori wrote:
->> Add warn_on macro, uses the BUG/WARN feature (lib/bug.c) via assembly
->> for x86_64/arm64/riscv.
->> 
->> The current Rust code simply wraps BUG() macro but doesn't provide the
->> proper debug information. The BUG/WARN feature can only be used from
->> assembly.
->> 
->> This uses the assembly code exported by the C side via ARCH_WARN_ASM
->> macro. To avoid duplicating the assembly code, this approach follows
->> the same strategy as the static branch code: it generates the assembly
->> code for Rust using the C preprocessor at compile time.
->> 
->> Similarly, ARCH_WARN_REACHABLE is also used at compile time to
->> generate the assembly code; objtool's reachable anotation code. It's
->> used for only architectures that use objtool.
->> 
->> For now, Loongarch and arm32 just use a wrapper for WARN macro.
->> 
->> UML doesn't use the assembly BUG/WARN feature; just wrapping generic
->> BUG/WARN functions implemented in C works.
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> 
-> I don't object to this change, but I would STRONGLY recommend never
-> using this in any driver if at all possible.  Only use this if the
-> system is in such a state that the only way out is to reboot the kernel,
-> which is what both WARN() and BUG() will do.
+If you mean not using the formatting machinery from our side, then
+that is a major change -- we should just fix it upstream, really.
 
-Totally agree.
+If you mean fixing it upstream, definitely, but we should still
+prevent people from building an invalid kernel, i.e. when Alice's PR
+or similar lands upstream, then we can relax the `depends on` based on
+the Rust version (which is something we have done for other bits).
 
-As stated in the commit log, BUG() is already used in multiple
-locations within the Rust abstractions.
-
-I'm not trying to introduce BUG() or WARN() as new features. This
-patchset aims to improve the information provided by BUG() and WARN().
+Cheers,
+Miguel
