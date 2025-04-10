@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB98E20C472
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 23:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6DC20C472
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 23:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744329382; cv=none; b=qEaaMM9Jz50hlauz8B/HLmRIZ9TTkXFjm8ltIpadwGMPZUzJqTU18kDolZwFXGDUW3qE5S8ReMqc67IqWu3JjJ1DF9tFPaPGThU7tua6OYlmm5vw8rgCo0UAde4M1LsOBJB3Xj/YMAo6scOFLYEC648FpmwvcY359ficLTPNE7E=
+	t=1744329387; cv=none; b=QA7Fs0qhnjuFtcXdWHgFDT4mIKg2w2QPlIX2MNTB5CUgWIMf8nUgMk2PQBy4uSpMAe/q4wFy0RyoucepDEm67RJmG6oYGZr5A2YhWgWMKeHjw6l3+AfFH1GB7UAMo5IX1sWk0ydd64QeU87iXboY6yo+5mt7MZKSMgSCQtROEkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744329382; c=relaxed/simple;
-	bh=Mqd0cy3MzFHUqyKqC0ofvmH1BlmvsFX0fRh7r9KCePQ=;
+	s=arc-20240116; t=1744329387; c=relaxed/simple;
+	bh=5mOtfrZz6XTA8QNC/eMLpRA4sRn7l0G35uhPgGVBNR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CHpH51VkhZ+cvmXA0grSH6l2bWD+3D30AmCr3Y4nRHZunHilhYV7+Ndm1CzrsDmvbzqCaMQtS9dD79lZtHXmyGWFToHzrwXQG7X4H3cty9P/WuHJzVBH0UKiYL+aS6ddkmkd6kfaFsInm1LpLAz4ZFSCV8agDCcHvDLfJkvEom0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BfFlkekI; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=JLCxzDw8K77ZguhAJRYGr0+l5czQCg5rdzNU9ctZEV9fQho8Qqrws+iYzjqLSunkZznk5eKN4XpecK6vxuwWhZGZdMldBASD0CxPARXOjji+LxEN2jUaztwKa3jiiA6ZqEGgGmX6uDN6j8vijr6fjLwou3+P+D9YK0iFzz8D950=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rY0bDlhG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BfFlkekI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B69C4CEE7;
-	Thu, 10 Apr 2025 23:56:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rY0bDlhG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D3FC4CEE7;
+	Thu, 10 Apr 2025 23:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744329382;
-	bh=Mqd0cy3MzFHUqyKqC0ofvmH1BlmvsFX0fRh7r9KCePQ=;
+	s=k20201202; t=1744329387;
+	bh=5mOtfrZz6XTA8QNC/eMLpRA4sRn7l0G35uhPgGVBNR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BfFlkekIlbWOBMCemA/sYuG3x6aShsGCSVeuCG/xkmUd1/kS/WpaAAEg9a+03shdX
-	 eP4WREq89P8KrHjk/Zyiye0OYXopfOIDdgXZPA6x8IrGW7ysfXeI6Oc0jk4ulQjxjP
-	 kvJvnvGR1j6teFVLIqnFoZbaR4H5DMXxmB4/tA47Cl8NEpQ3zU8Drz8bRi5/A7Ha1E
-	 605FyMFBfVtyDFDgC3jSDUSV+WGeaRSUHdGlWnBoCfP0E8XgqKcrxHLMPS2y4G39tH
-	 XMPzF9eyFQV6i2HAGfgQlv3jLEmV9iGCKl7DTgfLZnrYuZSI/VG5hK0WiA1fC34X8t
-	 kmimAnaUOSEjA==
+	b=rY0bDlhGnWHSCvj5z4uZM8FSJ3JyDKARYR0roMCxrh3U0QrRn6G9PAHlsoimGYIog
+	 loXVxhGdFQpUuO2nxXJJtaukmpYW7Yt/lgKzQBcV9LUZFpS79Wmkg0jyx/FKjlMrtO
+	 z4ABiv/+fut8oS5U7ZE/MEvrzgbIWJhtlUGTKzWWCJ6agxWhOGMsJvlEp3+x3cAGIK
+	 nqaHGTIbge4hMxsa3qqOFEglGWUH/KvKmdyubqaxNJjYRQ2egA42Gwjkeai3jQwzph
+	 k1KgX8y+3LuasUSBImdSVwAg9nThFoo4ibz9dBWFU7k9Rac59c7ZureqSWfyDbebJv
+	 fi059c2+u7A6Q==
 From: Danilo Krummrich <dakr@kernel.org>
 To: airlied@gmail.com,
 	simona@ffwll.ch,
@@ -49,9 +49,9 @@ Cc: ojeda@kernel.org,
 	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v2 2/8] rust: drm: ioctl: Add DRM ioctl abstraction
-Date: Fri, 11 Apr 2025 01:55:21 +0200
-Message-ID: <20250410235546.43736-3-dakr@kernel.org>
+Subject: [PATCH v2 3/8] rust: drm: add driver abstractions
+Date: Fri, 11 Apr 2025 01:55:22 +0200
+Message-ID: <20250410235546.43736-4-dakr@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250410235546.43736-1-dakr@kernel.org>
 References: <20250410235546.43736-1-dakr@kernel.org>
@@ -61,249 +61,182 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Asahi Lina <lina@asahilina.net>
 
-DRM drivers need to be able to declare which driver-specific ioctls they
-support. Add an abstraction implementing the required types and a helper
-macro to generate the ioctl definition inside the DRM driver.
+Implement the DRM driver abstractions.
 
-Note that this macro is not usable until further bits of the abstraction
-are in place (but it will not fail to compile on its own, if not called).
+The `Driver` trait provides the interface to the actual driver to fill
+in the driver specific data, such as the `DriverInfo`, driver features
+and IOCTLs.
 
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Asahi Lina <lina@asahilina.net>
-[ Wrap raw_data in Opaque to avoid UB when creating a reference.
-    * original source archive: https://archive.is/LqHDQ
+[ Remove unnecessary DRM features, add #[expect(unused)] to avoid
+  warnings, add sealed trait.
+    * original source archive: https://archive.is/Pl9ys
 
   - Danilo ]
 Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
  rust/bindings/bindings_helper.h |   1 +
- rust/kernel/drm/ioctl.rs        | 161 ++++++++++++++++++++++++++++++++
- rust/kernel/drm/mod.rs          |   5 +
- rust/kernel/lib.rs              |   2 +
- rust/uapi/uapi_helper.h         |   1 +
- 5 files changed, 170 insertions(+)
- create mode 100644 rust/kernel/drm/ioctl.rs
- create mode 100644 rust/kernel/drm/mod.rs
+ rust/kernel/drm/driver.rs       | 116 ++++++++++++++++++++++++++++++++
+ rust/kernel/drm/mod.rs          |   8 +++
+ 3 files changed, 125 insertions(+)
+ create mode 100644 rust/kernel/drm/driver.rs
 
 diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index ab37e1d35c70..11b936735207 100644
+index 11b936735207..84921ffbefa7 100644
 --- a/rust/bindings/bindings_helper.h
 +++ b/rust/bindings/bindings_helper.h
 @@ -6,6 +6,7 @@
   * Sorted alphabetically.
   */
  
-+#include <drm/drm_ioctl.h>
++#include <drm/drm_drv.h>
+ #include <drm/drm_ioctl.h>
  #include <kunit/test.h>
  #include <linux/blk-mq.h>
- #include <linux/blk_types.h>
-diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
 new file mode 100644
-index 000000000000..9f503d9cdfed
+index 000000000000..26b72b2eaa63
 --- /dev/null
-+++ b/rust/kernel/drm/ioctl.rs
-@@ -0,0 +1,161 @@
++++ b/rust/kernel/drm/driver.rs
+@@ -0,0 +1,116 @@
 +// SPDX-License-Identifier: GPL-2.0 OR MIT
 +
-+//! DRM IOCTL definitions.
++//! DRM driver core.
 +//!
-+//! C header: [`include/linux/drm/drm_ioctl.h`](srctree/include/linux/drm/drm_ioctl.h)
++//! C header: [`include/linux/drm/drm_drv.h`](srctree/include/linux/drm/drm_drv.h)
 +
-+use crate::ioctl;
++use crate::{bindings, drm, str::CStr};
++use macros::vtable;
 +
-+const BASE: u32 = uapi::DRM_IOCTL_BASE as u32;
++/// Driver use the GEM memory manager. This should be set for all modern drivers.
++pub const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
 +
-+/// Construct a DRM ioctl number with no argument.
-+#[allow(non_snake_case)]
-+#[inline(always)]
-+pub const fn IO(nr: u32) -> u32 {
-+    ioctl::_IO(BASE, nr)
++/// Information data for a DRM Driver.
++pub struct DriverInfo {
++    /// Driver major version.
++    pub major: i32,
++    /// Driver minor version.
++    pub minor: i32,
++    /// Driver patchlevel version.
++    pub patchlevel: i32,
++    /// Driver name.
++    pub name: &'static CStr,
++    /// Driver description.
++    pub desc: &'static CStr,
 +}
 +
-+/// Construct a DRM ioctl number with a read-only argument.
-+#[allow(non_snake_case)]
-+#[inline(always)]
-+pub const fn IOR<T>(nr: u32) -> u32 {
-+    ioctl::_IOR::<T>(BASE, nr)
++/// Internal memory management operation set, normally created by memory managers (e.g. GEM).
++///
++/// See `kernel::drm::gem` and `kernel::drm::gem::shmem`.
++pub struct AllocOps {
++    #[expect(unused)]
++    pub(crate) gem_create_object: Option<
++        unsafe extern "C" fn(
++            dev: *mut bindings::drm_device,
++            size: usize,
++        ) -> *mut bindings::drm_gem_object,
++    >,
++    #[expect(unused)]
++    pub(crate) prime_handle_to_fd: Option<
++        unsafe extern "C" fn(
++            dev: *mut bindings::drm_device,
++            file_priv: *mut bindings::drm_file,
++            handle: u32,
++            flags: u32,
++            prime_fd: *mut core::ffi::c_int,
++        ) -> core::ffi::c_int,
++    >,
++    #[expect(unused)]
++    pub(crate) prime_fd_to_handle: Option<
++        unsafe extern "C" fn(
++            dev: *mut bindings::drm_device,
++            file_priv: *mut bindings::drm_file,
++            prime_fd: core::ffi::c_int,
++            handle: *mut u32,
++        ) -> core::ffi::c_int,
++    >,
++    #[expect(unused)]
++    pub(crate) gem_prime_import: Option<
++        unsafe extern "C" fn(
++            dev: *mut bindings::drm_device,
++            dma_buf: *mut bindings::dma_buf,
++        ) -> *mut bindings::drm_gem_object,
++    >,
++    #[expect(unused)]
++    pub(crate) gem_prime_import_sg_table: Option<
++        unsafe extern "C" fn(
++            dev: *mut bindings::drm_device,
++            attach: *mut bindings::dma_buf_attachment,
++            sgt: *mut bindings::sg_table,
++        ) -> *mut bindings::drm_gem_object,
++    >,
++    #[expect(unused)]
++    pub(crate) dumb_create: Option<
++        unsafe extern "C" fn(
++            file_priv: *mut bindings::drm_file,
++            dev: *mut bindings::drm_device,
++            args: *mut bindings::drm_mode_create_dumb,
++        ) -> core::ffi::c_int,
++    >,
++    #[expect(unused)]
++    pub(crate) dumb_map_offset: Option<
++        unsafe extern "C" fn(
++            file_priv: *mut bindings::drm_file,
++            dev: *mut bindings::drm_device,
++            handle: u32,
++            offset: *mut u64,
++        ) -> core::ffi::c_int,
++    >,
 +}
 +
-+/// Construct a DRM ioctl number with a write-only argument.
-+#[allow(non_snake_case)]
-+#[inline(always)]
-+pub const fn IOW<T>(nr: u32) -> u32 {
-+    ioctl::_IOW::<T>(BASE, nr)
++/// Trait for memory manager implementations. Implemented internally.
++pub trait AllocImpl: super::private::Sealed {
++    /// The C callback operations for this memory manager.
++    const ALLOC_OPS: AllocOps;
 +}
 +
-+/// Construct a DRM ioctl number with a read-write argument.
-+#[allow(non_snake_case)]
-+#[inline(always)]
-+pub const fn IOWR<T>(nr: u32) -> u32 {
-+    ioctl::_IOWR::<T>(BASE, nr)
-+}
++/// The DRM `Driver` trait.
++///
++/// This trait must be implemented by drivers in order to create a `struct drm_device` and `struct
++/// drm_driver` to be registered in the DRM subsystem.
++#[vtable]
++pub trait Driver {
++    /// Context data associated with the DRM driver
++    type Data: Sync + Send;
 +
-+/// Descriptor type for DRM ioctls. Use the `declare_drm_ioctls!{}` macro to construct them.
-+pub type DrmIoctlDescriptor = bindings::drm_ioctl_desc;
++    /// The type used to manage memory for this driver.
++    ///
++    /// Should be either `drm::gem::Object<T>` or `drm::gem::shmem::Object<T>`.
++    type Object: AllocImpl;
 +
-+/// This is for ioctl which are used for rendering, and require that the file descriptor is either
-+/// for a render node, or if it’s a legacy/primary node, then it must be authenticated.
-+pub const AUTH: u32 = bindings::drm_ioctl_flags_DRM_AUTH;
++    /// Driver metadata
++    const INFO: DriverInfo;
 +
-+/// This must be set for any ioctl which can change the modeset or display state. Userspace must
-+/// call the ioctl through a primary node, while it is the active master.
-+///
-+/// Note that read-only modeset ioctl can also be called by unauthenticated clients, or when a
-+/// master is not the currently active one.
-+pub const MASTER: u32 = bindings::drm_ioctl_flags_DRM_MASTER;
-+
-+/// Anything that could potentially wreak a master file descriptor needs to have this flag set.
-+///
-+/// Current that’s only for the SETMASTER and DROPMASTER ioctl, which e.g. logind can call to
-+/// force a non-behaving master (display compositor) into compliance.
-+///
-+/// This is equivalent to callers with the SYSADMIN capability.
-+pub const ROOT_ONLY: u32 = bindings::drm_ioctl_flags_DRM_ROOT_ONLY;
-+
-+/// This is used for all ioctl needed for rendering only, for drivers which support render nodes.
-+/// This should be all new render drivers, and hence it should be always set for any ioctl with
-+/// `AUTH` set. Note though that read-only query ioctl might have this set, but have not set
-+/// DRM_AUTH because they do not require authentication.
-+pub const RENDER_ALLOW: u32 = bindings::drm_ioctl_flags_DRM_RENDER_ALLOW;
-+
-+/// Internal structures used by the `declare_drm_ioctls!{}` macro. Do not use directly.
-+#[doc(hidden)]
-+pub mod internal {
-+    pub use bindings::drm_device;
-+    pub use bindings::drm_file;
-+    pub use bindings::drm_ioctl_desc;
-+}
-+
-+/// Declare the DRM ioctls for a driver.
-+///
-+/// Each entry in the list should have the form:
-+///
-+/// `(ioctl_number, argument_type, flags, user_callback),`
-+///
-+/// `argument_type` is the type name within the `bindings` crate.
-+/// `user_callback` should have the following prototype:
-+///
-+/// ```ignore
-+/// fn foo(device: &kernel::drm::Device<Self>,
-+///        data: &mut bindings::argument_type,
-+///        file: &kernel::drm::File<Self::File>,
-+/// )
-+/// ```
-+/// where `Self` is the drm::drv::Driver implementation these ioctls are being declared within.
-+///
-+/// # Examples
-+///
-+/// ```ignore
-+/// kernel::declare_drm_ioctls! {
-+///     (FOO_GET_PARAM, drm_foo_get_param, ioctl::RENDER_ALLOW, my_get_param_handler),
-+/// }
-+/// ```
-+///
-+#[macro_export]
-+macro_rules! declare_drm_ioctls {
-+    ( $(($cmd:ident, $struct:ident, $flags:expr, $func:expr)),* $(,)? ) => {
-+        const IOCTLS: &'static [$crate::drm::ioctl::DrmIoctlDescriptor] = {
-+            use $crate::uapi::*;
-+            const _:() = {
-+                let i: u32 = $crate::uapi::DRM_COMMAND_BASE;
-+                // Assert that all the IOCTLs are in the right order and there are no gaps,
-+                // and that the size of the specified type is correct.
-+                $(
-+                    let cmd: u32 = $crate::macros::concat_idents!(DRM_IOCTL_, $cmd);
-+                    ::core::assert!(i == $crate::ioctl::_IOC_NR(cmd));
-+                    ::core::assert!(core::mem::size_of::<$crate::uapi::$struct>() ==
-+                                    $crate::ioctl::_IOC_SIZE(cmd));
-+                    let i: u32 = i + 1;
-+                )*
-+            };
-+
-+            let ioctls = &[$(
-+                $crate::drm::ioctl::internal::drm_ioctl_desc {
-+                    cmd: $crate::macros::concat_idents!(DRM_IOCTL_, $cmd) as u32,
-+                    func: {
-+                        #[allow(non_snake_case)]
-+                        unsafe extern "C" fn $cmd(
-+                                raw_dev: *mut $crate::drm::ioctl::internal::drm_device,
-+                                raw_data: *mut ::core::ffi::c_void,
-+                                raw_file: *mut $crate::drm::ioctl::internal::drm_file,
-+                        ) -> core::ffi::c_int {
-+                            // SAFETY:
-+                            // - The DRM core ensures the device lives while callbacks are being
-+                            //   called.
-+                            // - The DRM device must have been registered when we're called through
-+                            //   an IOCTL.
-+                            //
-+                            // FIXME: Currently there is nothing enforcing that the types of the
-+                            // dev/file match the current driver these ioctls are being declared
-+                            // for, and it's not clear how to enforce this within the type system.
-+                            let dev = $crate::drm::device::Device::as_ref(raw_dev);
-+                            // SAFETY: This is just the ioctl argument, which hopefully has the
-+                            // right type (we've done our best checking the size).
-+                            let data = unsafe {
-+                                &*(raw_data as *const $crate::types::Opaque<$crate::uapi::$struct>)
-+                            };
-+                            // SAFETY: This is just the DRM file structure
-+                            let file = unsafe { $crate::drm::File::as_ref(raw_file) };
-+
-+                            match $func(dev, data, file) {
-+                                Err(e) => e.to_errno(),
-+                                Ok(i) => i.try_into()
-+                                            .unwrap_or($crate::error::code::ERANGE.to_errno()),
-+                            }
-+                        }
-+                        Some($cmd)
-+                    },
-+                    flags: $flags,
-+                    name: $crate::c_str!(::core::stringify!($cmd)).as_char_ptr(),
-+                }
-+            ),*];
-+            ioctls
-+        };
-+    };
++    /// IOCTL list. See `kernel::drm::ioctl::declare_drm_ioctls!{}`.
++    const IOCTLS: &'static [drm::ioctl::DrmIoctlDescriptor];
 +}
 diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-new file mode 100644
-index 000000000000..9ec6d7cbcaf3
---- /dev/null
+index 9ec6d7cbcaf3..2e3f9a8a9353 100644
+--- a/rust/kernel/drm/mod.rs
 +++ b/rust/kernel/drm/mod.rs
-@@ -0,0 +1,5 @@
-+// SPDX-License-Identifier: GPL-2.0 OR MIT
-+
-+//! DRM subsystem abstractions.
-+
-+pub mod ioctl;
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index de07aadd1ff5..158b7eff12ed 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -48,6 +48,8 @@
- pub mod devres;
- pub mod dma;
- pub mod driver;
-+#[cfg(CONFIG_DRM = "y")]
-+pub mod drm;
- pub mod error;
- pub mod faux;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
-diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
-index 76d3f103e764..19587e55e604 100644
---- a/rust/uapi/uapi_helper.h
-+++ b/rust/uapi/uapi_helper.h
-@@ -7,6 +7,7 @@
-  */
+@@ -2,4 +2,12 @@
  
- #include <uapi/asm-generic/ioctl.h>
-+#include <uapi/drm/drm.h>
- #include <uapi/linux/mdio.h>
- #include <uapi/linux/mii.h>
- #include <uapi/linux/ethtool.h>
+ //! DRM subsystem abstractions.
+ 
++pub mod driver;
+ pub mod ioctl;
++
++pub use self::driver::Driver;
++pub use self::driver::DriverInfo;
++
++pub(crate) mod private {
++    pub trait Sealed {}
++}
 -- 
 2.49.0
 
