@@ -1,247 +1,128 @@
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4E82054EF
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 07:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FEF1D61BB;
+	Thu, 10 Apr 2025 07:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744269141; cv=none; b=Oz3daIDc3De/GEVR3yph4AxTPzMw6nrBE3VKg3R8KvNTNizl2fXKnL76ghI9j3fVwBkEWw82CUAZ+jD6cGBXRC86ChEEgCsN/hZNDnJ66DF0TKa7m8PxTt76x161G4YFfDJJaJ891iwx0yfMkWIil1Wj+ETQX4LB4QVZhnVP1Fg=
+	t=1744270231; cv=none; b=e86nee5k5MNDbbmSbG33NQZmzLBF9so6/TEpctkixLhKCSHjV/zUJxf5Oe3IOWsxOs7kmb8qlZOnlxqVVyAAySs5McDTCrF16a86VMlInitqAChDJUAK0PSg1wYAUnRPcHobDPTJBehkM+mK5KNQ1pld4gjJqFT0EE9glkBsfP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744269141; c=relaxed/simple;
-	bh=A0fatj+M1zOIsMnCl7oy4zS6v/YQ8BRCrnVYAjIXyfI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WxG+DDCf30iikcOe889Qq4NAG2pCBk6xFgZxaBYV9Huh8zoWk2GizgBQN/DDJUDC8dqwWrRtAx6y+ifs2/0793EsoKqUav5E/fRp3+WSYScSRnAgxHtauaD6VCaCDc+Htd2wLZD+Uh9en4ZShU9Vn3P5hUrrqsbGQ8ki+eer1rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=XTp9tvRB; arc=none smtp.client-ip=212.63.210.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="XTp9tvRB"
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: lina@asahilina.net)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id 9C72742755;
-	Thu, 10 Apr 2025 07:12:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-	s=default; t=1744269136;
-	bh=A0fatj+M1zOIsMnCl7oy4zS6v/YQ8BRCrnVYAjIXyfI=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=XTp9tvRBxV8d3G2JulrQkctSRqEBw1BjnMWXb1Hwvs0EQWgowgIsNoscKl4dhaGeO
-	 2s+XafM7E3Q2pTwtv9XZvxDqxsy4Mp3RmuT2wPOZ8OT3ad4rLac2YSFTjKPmJASJWs
-	 SE7eHSLbWhbwFwc599oVta9autYRbckFYsbN/OBoHkafId/k0rH5Ku8sHnlwJY5Yr+
-	 41uowX1v8L6jV7PVbyX1VC2kWB6B+KXrzQXHlZkwWHLMCcw/h9nCRdQCKugRL/mB+4
-	 t62mdzI0/VDZrO1k9A3w/LjPZn7pHobxVsrWHrjlSI5cSiF3vOaAIH2xU8yga/M3eo
-	 VbFLBapbaEcxw==
-Message-ID: <43ec8aba-f279-422d-95d1-68daac7eaed9@asahilina.net>
-Date: Thu, 10 Apr 2025 16:12:13 +0900
+	s=arc-20240116; t=1744270231; c=relaxed/simple;
+	bh=iFW+QfyIwEbGD+j1q5thV7kMOb3+F5ptBk/zfUifQ5I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KWTVwvClIiXeHKz2izooH1o6mI4lU0e2Je90DmNhn7XpOQG9i6j/hiuGVw+/At8PKTzg7BcJn7FAHt9sgLNQkCpAYyf6TKaoZ83RLMpZV9Whxn4EhKXIQqK3Km+BmMHZYkSRx/2OFCwZN7knfJ/SMCJo7SbWKGRM7fQ1+qM0ERU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-523fa0df55dso1537482e0c.1;
+        Thu, 10 Apr 2025 00:30:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744270228; x=1744875028;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9o1fBfdX3QCvvMjGP9Bb3+iIudc9m8AmMEftLcu43No=;
+        b=BiC0slc7q6cMyUMFEiBHhvs/68vibZA2bTv7SvDgR+pg02qOQzu+LFkm49W8HNHoPz
+         oKS0qoyIlnNEYyceOA+UIY04anMh4X0ZD7w9LfNeJOyyPCpF9m8ZffmW143JiqhbSQEM
+         whvbx1ZuXn/ZUAk1VE662a+A+vvXGRQUAkjng8e9hoM6NztJPGyq7bKsXMQjqiUVU3SC
+         FanLMVZg8sXqAJE/6Eq0zCDzP9ekFTecGcA4hrPiTnn0kxAfFDM6t8n7lg4c3temX2ZJ
+         jAHweZcCyBZTaz9clz6h3HbgmkK99DbxXt/upxdp0msvqpjoDtEZUeHmPWlvRRwMlVVZ
+         v+Xg==
+X-Forwarded-Encrypted: i=1; AJvYcCVSiUg+vBC6J4Uuj8QqNQ9euW0fr+aBNVAawI9I54UehftYMlFN4HG9uo0Egx5ZfiIRz6XXe/JZfMghLTu0GUI=@vger.kernel.org, AJvYcCX8fvHIxgJlQPeY+71uppnTYy+WJ85lG6abE9Coc7nGiPZY2acRHSrF1rEhKF5qb/dNwtJqPQp/O2DSBJ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmGCH4Ilr8BVIvUFxzrObj+7N6wsM0cW+38+VGozvSqYpEws1M
+	lsMVegiejN/uVox0MkkKDbCyVx+2aLbUk2SK1FSinM/laoZRn/zMNvdC061IEgg=
+X-Gm-Gg: ASbGncvgF35mXmj57ZSZregf56TGxoVp63dJ6A3CLVpAnjUx/v1IMTKnn6gK9PQHfvt
+	1HI7lieTNCVFuiuJJ9FHWSZFcBETTaXYlUsgWx3oeeYGdUw+KbJ2DEyTLkARNkVReSz1hWxPQuT
+	M2dY+YR5ut0URr35mO8TAcSCgPZwhocIkuXQVadhtf7rKFNXtNFRtE7e0PX/fPvOgfuw8yO7l05
+	Dscp0/c5zoIzQLxtMeTowXZwH/xnzwPY6RUGrKrnQCwohynGpcE5/yIzgnK24AhM97WODfsImZe
+	ZgTmsDzdeBA93wiSqM/VN6r2RNwhIECswqFAcO0IroEqvo5b03/vcZ4EAcy9c20IoUInaleGcxX
+	CTGWldyJzNj1rKA==
+X-Google-Smtp-Source: AGHT+IEU3c+ZXC9asy7zunAQLhEms0N8OOIiZxDv5KYjW91SpzndoqVlpeU34scyZLcCXrM9e8Hpow==
+X-Received: by 2002:a05:6102:5548:b0:4b2:9eee:666e with SMTP id ada2fe7eead31-4c9d4246c31mr840038137.4.1744270227911;
+        Thu, 10 Apr 2025 00:30:27 -0700 (PDT)
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com. [209.85.222.51])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4c9c98afd43sm487261137.20.2025.04.10.00.30.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Apr 2025 00:30:27 -0700 (PDT)
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-86dc3482b3dso1581657241.0;
+        Thu, 10 Apr 2025 00:30:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUDyzqS+SZVzpGKdc4WgLTHbdKFIs1PrY3SnwOjywJBvL9FbNgGuXYoLMt4YXKQbrc4tFwnI8HvDxaWNbQ=@vger.kernel.org, AJvYcCVfJHB1GPx78fqB6w9z2wWNrszqOt/qJCqwSOkEFtbTXSgljuW13MK8giagBaj+ABbFzQbImL1dWc+t/gb0YaM=@vger.kernel.org
+X-Received: by 2002:a67:f5c7:0:b0:4c3:b75:16e6 with SMTP id
+ ada2fe7eead31-4c9d3fc4c38mr837750137.10.1744270227560; Thu, 10 Apr 2025
+ 00:30:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] DRM Rust abstractions
-From: Asahi Lina <lina@asahilina.net>
-To: Dave Airlie <airlied@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
- acurrid@nvidia.com, daniel.almeida@collabora.com, j@jannau.net,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- rust-for-linux@vger.kernel.org
-References: <20250325235522.3992-1-dakr@kernel.org>
- <32e7da7e-de32-4bc6-a751-f604da36a63f@asahilina.net>
- <Z_VXBZcBsk2k6eVN@cassiopeiae>
- <143206f6-cd97-4ef8-a4f3-f68d703903bf@asahilina.net>
- <Z_V2ZxIZxI_HiHM5@cassiopeiae>
- <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
- <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
- <34a4a130-98d1-4cc3-8dcf-b72b3ed36c10@asahilina.net>
-Content-Language: en-US
-In-Reply-To: <34a4a130-98d1-4cc3-8dcf-b72b3ed36c10@asahilina.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250409061129.136788-1-fujita.tomonori@gmail.com>
+ <CANiq72mbci8kxEx5jrq=HVc6WKuJqq8NCLzNsjH1wFcJNoHm+w@mail.gmail.com>
+ <CAMuHMdWtgSjxeGYJVNzeWPOCd9nUWeKQnCtFQaROQ1o=r_-QwQ@mail.gmail.com> <ab0490cc-ce86-4492-a088-fd2ae03f1475@app.fastmail.com>
+In-Reply-To: <ab0490cc-ce86-4492-a088-fd2ae03f1475@app.fastmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 10 Apr 2025 09:30:15 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXk+MfwPtm_whA2nWde0t_Ft=n=4xCO9hqAm-yuS+He5w@mail.gmail.com>
+X-Gm-Features: ATxdqUEn3DKP5E0KW6CdNHS_yejpIaRbcErnLPFBtAL1D8Oqr0CTfb75MAhqP40
+Message-ID: <CAMuHMdXk+MfwPtm_whA2nWde0t_Ft=n=4xCO9hqAm-yuS+He5w@mail.gmail.com>
+Subject: Re: [PATCH v1] um: fix incompatible argument type in iounmap()
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>, 
+	Stephen Bates <sbates@raithlin.com>, Danilo Krummrich <dakr@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Arnd,
 
+On Wed, 9 Apr 2025 at 21:07, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Wed, Apr 9, 2025, at 19:07, Geert Uytterhoeven wrote:
+> > On Wed, 9 Apr 2025 at 16:48, Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
+> >> On Wed, Apr 9, 2025 at 8:16=E2=80=AFAM FUJITA Tomonori
+> >> <fujita.tomonori@gmail.com> wrote:
+> >> >
+> >> > Align iounmap() signature with other architectures.
+> >>
+> >> Most indeed have `volatile`, but nios2 and m68k don't -- Cc'ing them
+> >> just in case.
+> >
+> > Indeed. Apparently the volatile keyword has not always been there...
+> > Why does iounmap() need the volatile keyword?
+> > Why does pci_iounmap() not have the volatile keyword?
+>
+> In the old days, a lot of drivers marked MMIO pointers
+> as 'volatile void *' rather than 'void __iomem *', so iounmap()
+> and the readl() family of accessors need to be compatible
+> with that type to avoid a warning.
+>
+> By the time we introduced pci_iomap()/pci_iounmap(), this was
+> no longer common, so they never needed it.
 
-On 4/10/25 1:33 PM, Asahi Lina wrote:
-> 
-> 
-> On 4/10/25 6:29 AM, Dave Airlie wrote:
->> On Wed, 9 Apr 2025 at 17:49, Asahi Lina <lina@asahilina.net> wrote:
->>>
->>>
->>>
->>> On 4/9/25 4:17 AM, Danilo Krummrich wrote:
->>>> On Wed, Apr 09, 2025 at 03:06:38AM +0900, Asahi Lina wrote:
->>>>> On 4/9/25 2:04 AM, Danilo Krummrich wrote:
->>>>>> On Wed, Apr 09, 2025 at 01:29:35AM +0900, Asahi Lina wrote:
->>>>>>> On 3/26/25 8:54 AM, Danilo Krummrich wrote:
->>>>>>
->>>>>> You said "use it/submit it in any way".
->>>>>
->>>>> I thought keeping authorship is an implied part of kernel etiquette.
->>>>> Usually when you submit code someone else wrote, you keep them as
->>>>> primary author... I want you and others to use the code, that doesn't
->>>>> mean I want you to put your name on it as if you wrote most of it.
->>>>
->>>> The broader context of the private mail was about you stepping back on kernel
->>>> development. You did so with a few more details (which I'm not going to
->>>> disclose), that made it clear to me that you don't want to be bothered with
->>>> kernel development any more.
->>>>
->>>> In combination with you giving permission to "use it/submit it in any way", I
->>>> thought it's better to just pick a safe path to not misrepresent you given all
->>>> the changes I made.
->>>>
->>>> I do still credit you on all corresponding patches though.
->>>>
->>>>>>> I'm really tired of kernel politics and I don't want to spend more brain
->>>>>>> cycles looking at all the other patches or having to argue (in fact I
->>>>>>> usually don't look at patch emails at all recently), but I would
->>>>>>> appreciate if you keep my authorship for files that I did largely author
->>>>>>> myself. After everything I've been going through the past weeks (some of
->>>>>>> the people on Cc know what that's about...) this feels like yet another
->>>>>>> slap in the face.
->>>>>>
->>>>>> As mentioned, please diff the correct thing and then just tell me where you'd
->>>>>> like to have primary authorship changed.
->>>>>
->>>>> I don't even know what tree this series is supposed to apply onto (tried
->>>>> drm-misc next, torvalds/master, v6.15-rc1) so I'm just going to take
->>>>> drm-misc/topic/rust-drm and assume that's what this series includes.
->>>>>
->>>>> $ diff -urN rust/kernel/drm/drv.rs ../uplinux/rust/kernel/drm/driver.rs
->>>>> | grep '^+' | wc -l
->>>>> 45
->>>>>
->>>>> So I'm diffing the correct thing now and the result is essentially
->>>>> identical.
->>>>>
->>>>> Meanwhile, device.rs has many additions... but a big chunk of those is
->>>>> code that was just moved from drv.rs (like drm_legacy_fields and the
->>>>> code that uses it).
->>>>
->>>> Except drm_legacy_fields! and VTABLE (which is just trival boilerplate code)
->>>> device.rs changed fundamentally, i.e. I switched the device abstraction to use
->>>> the subclassing pattern.
->>>>
->>>> If you look further you will find that I really changed a lot of things.
->>>>
->>>> I have *nothing* to hide, here's the overall diff for all the changes I made:
->>>>
->>>>       [1] https://pastebin.com/FT4tNn5d
->>>>
->>>>>
->>>>> Again, I don't have the spoons to make some deep analysis here, you
->>>>> should know how much of the code you changed, added, or just moved
->>>>> around. I'm not going to litigate this further. If you think splitting
->>>>> up a commit into multiple commits and moving code around warrants taking
->>>>> over primary authorship of a project I've been working on for years now,
->>>>> so be it.
->>>>
->>>> You just said you "don't have the spoons to make some deep analysis here" and
->>>> right below you acuse me of just "moving code around".
->>>>
->>>> Which means that you do so *without* evidence. And again, I have *nothing* to
->>>> hide, see [1].
->>>>
->>>> Besides that I also told you that I'm fine to change primary authership, if you
->>>> tell me where you think it would be appropriate (even though I do think my
->>>> changes do justify how things are currently).
->>>>
->>>>> I'm just disappointed.
->>>>
->>>> That's where you are maneuvering *yourself* into.
->>>>
->>>> You could have easily just asked me to change things for patch #X, #Y and #Z.
->>>>
->>>> Instead you outright started with accusing me of things. I also feel like you
->>>> intentionally try to misrepresent what I am doing and what my intentions are.
->>>>
->>>> I neither have the time, nor am I willing to deal with random drama like this.
->>>>
->>>> If you want something changed, just go ahead and tell me what, *without* more
->>>> drama and without more accusing me of things.
->>>>
->>>
->>> Alright, then please remove my authorship entirely from this series,
->>> including Co-developed-by and signoff lines. I hereby release my code as
->>> CC-0, which means you don't need the signoffs, it's yours now. The same
->>> applies to any future code submitted that I originally authored as part
->>> of the Asahi kernel git tree. That way we don't need to argue about any
->>> of this.
->>>
->>> I thought asking for patches that I mostly authored to keep my Git
->>> authorship would be an uncontroversial request (and not unreasonable to
->>> ask you to figure out which those are, since you made the
->>> changes/splits, and #3 clearly is one), but apparently even that gets
->>> you flamed on Linux threads these days.
->>>
->>> I regret having been part of this community.
->>
->> Look, this isn't Crank or Speed, there is no need to keep the drama
->> level above 50 to sort this out.
->>
->> This also isn't exactly how best to relicense code, so I think we
->> should abstain from doing anything to help promote more drama.
->>
->> The project will maintain authorship/signoffs on any patches that are
->> clearly still authored by you, we will err on the side of caution and
->> on rewritten patches which share some decent amount of history shall
->> retain your authorship. In this case it does appear instead of putting
->> in the 5 minutes of looking at Danilo's reasoning and supplied diff,
->> and either saying "my bad, this is sufficiently new code and I don't
->> feel I wrote it" or "I'd still prefer to retain authorship despite
->> your changes", both of which Danilo indicated would be respected you
->> somehow picked door number 3 which probably took more time and effort
->> than either of the above options. Again no need to pick door number 3
->> here, you can let the bus go below 50, it won't explode.
->>
->> Dave.
->>
-> 
-> I wanted to keep this private, but apparently it is impossible for me to
-> send two emails in reply to a Linux kernel thread without it ending up
-> all over the news and the entire world speculating about why I am so upset.
-> 
-> I would be a lot more willing to work with the kernel community if I
-> hadn't been traumatized by a major Linux kernel maintainer having
-> privately admitted to siding with an abuser and harasser who has
-> attacked me relentlessly for over one year now, mocking me for it, using
-> their arguments and wording against me, lying to their peers to cover up
-> actions and collusion against me, and more.
-> 
-> Now please, let me leave this community in peace. You all figure out
-> what to do with my code and whether you care about proper attribution. I
-> just want out.
-> 
-> ~~ Lina
-> 
+IC.
 
-P.S. my analysis based on the pasted code (since everyone here and
-everyone on Reddit is forcing me to do it) is that:
+> In theory we could go through all the old drivers and
+> also remove the 'volatile' markers from struct members that
+> store __iomem pointers, but there is no practical benefit to
+> that.
 
-The series adds around 978 lines of code. After merging some code that
-was just moved around in the diff that Danilo posted, only 412 addition
-lines remain in the diff. So more than 50% of the raw remaining code is
-mine. If you exclude comments, Danilo only added 270 lines of actual
-code (and whitespace). And of those, a good portion were just minor
-changes and refactoring, not completely novel code (this also tracks
-with the stat that to get to those 270 lines, 379 were removed, and much
-of those probably pair up as minor refactorings and not outright novel
-code).
+Most drivers must have been fixed already, as m68k allmodconfig
+does not complain.  Still, I guess I should update m68k to match the
+others, right? (FTR, that also builds fine)
 
-In terms of actual code added an not just lines rearranged or further
-commented, I probably wrote at least 75% of this series. And I'm sure
-Danilo knows this, having done the refactoring/rearranging/modification
-work to get here.
+Gr{oetje,eeting}s,
 
-Danilo: If you do not take me up on the CC-0 offer, I expect you to put
-my name as primary author of patches 3 through 7.
+                        Geert
 
-~~ Lina
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
