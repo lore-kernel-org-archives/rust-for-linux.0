@@ -1,102 +1,107 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C31283CB2;
-	Thu, 10 Apr 2025 12:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243FD20A5EE;
+	Thu, 10 Apr 2025 12:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744289824; cv=none; b=u0DeDVOPlHoQOSCBuLoDSshD5Yr9jOej2yRa5bXxGE9dItGJLbhtxRewmU4vdmpUybF1PSV4wZSvak+1QZN3DRB5x93AawCxL2+Hr+0FTFWrYB8stVfYWtxPkWKrkp+a5QtuAHWhXNuwKVdBoBZO9FaihHojlKwx6FDSOf/NyNg=
+	t=1744289975; cv=none; b=iTjyZJIYoOYTThNSn+Nq9GcJhpKzzkCE8d4sKuOmhOHpc0xmheZjdXd+j8m66/V8AomLKfsHSsJTBq1PeUi3iVTJbriBstIKO2jD6lt9u0fcjRLn+uoDuVmdFgwrJhHedhEh90kiX0tXoup5x4oyoUtB0M6XRriP7P/gH6lqJsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744289824; c=relaxed/simple;
-	bh=EZ4z/28EfxfO3oxZfrJLQlmuqBAgYz/OgMCvp3sNkQo=;
+	s=arc-20240116; t=1744289975; c=relaxed/simple;
+	bh=TThZnr8GGUqTJIDx+ebwAzbp14J0GMkL8SxOdBHkw64=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=TOyOWDrT5n0wNkylBX0rLtbjzkLZdqjISVKgj7q0ylfsk/D15LZM53NloKcXXkXEXHQSqBrnTDMCk+seJMnOBU5JfxTgwOv0Aqq0BKcY8Fg2WKmbPBPRXK3Zlfk9Wbu/MU8Y7mATGEwcudyOG8USQ/l+n+cN/qzwtd1Xp/hPkQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lqRKLv36; arc=none smtp.client-ip=209.85.214.174
+	 Mime-Version:Content-Type; b=kYmqNcMHWDsgrDRxxNtYsKegmymY60zgg9IiopKfT/QLy2vEa+JirA8TWSSmC7l5h4MN06OIVImvH6R5p3CyMXlnDCgfj+6DURKhfpFI3mxVbifPCCcJDH4Ne+s1IJ7nQjcNnjW3cox+QAZiuXZ66R6THf02XR/fmixKLrqWFMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GLBHAiez; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lqRKLv36"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2255003f4c6so7642095ad.0;
-        Thu, 10 Apr 2025 05:57:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GLBHAiez"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-736a72220edso709060b3a.3;
+        Thu, 10 Apr 2025 05:59:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744289822; x=1744894622; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744289972; x=1744894772; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EZ4z/28EfxfO3oxZfrJLQlmuqBAgYz/OgMCvp3sNkQo=;
-        b=lqRKLv36QwKFFQ9L31TGZ7TiGE+AwSZvc0jjY5bkuhBXJRlN6GdEJ26qdGGLGXvaA+
-         ZkW4PL8tXbHH5fndqGkQbf2X7isru56xomDSL2pAHTCgY34a8wvzxgER6wV0QBbDZT8V
-         CMOnkHHO531uoe1KpxfrmQTrMu2K2KOmec0KYS3AK7DhZeohIkcWck4bsjTd0MUsxKKV
-         9CRZ+FaFnPbUimFt7xl3WIXBD0wZ/fNOi/g3mJ2Cvd/1VCxzlqZ7ZfL4FKV8Nb77V77M
-         otcNvm7RPrZ488Or7M8alOyB+EyStk2o4yxhOt5aCdRIdAQPflac53ubKmi0I+mwCGyv
-         NbBg==
+        bh=LozqbR9IL9/g0fmUUEgIf2uGoH8VzwQtTCEA4Ars4OQ=;
+        b=GLBHAiezkJYKTxz0eDOw6oxEchaLOB3UvlrEu4lFSyP7hqFa6r5Aw6fOQFz15DYery
+         bggGpWYfK4JLyqC8NCYy5jVAaL7+DVhZwo0GZ/0Wn7t6RwYhGn7DRhxvIIBpL1qJDXlq
+         F0Zc1QsAxQOOtMHGeW98tfPjhTe+Mrfs9qF88l9DVvUaw8q5Fcfkj7txaLGYZu9Ud9TG
+         YEPMsERCFZTOZT8/y5x3LeqjeuXKF+D8AybeFPpLmkpP0LYNsMJwG4W8CdmwrrlOBcS9
+         8SGCrDvf12LqqsfoUqfz3e7FWw3hJZLrVc2F/RRdlZmQFy5azFKxXimFzHKezzmN1gpI
+         ln1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744289822; x=1744894622;
+        d=1e100.net; s=20230601; t=1744289972; x=1744894772;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=EZ4z/28EfxfO3oxZfrJLQlmuqBAgYz/OgMCvp3sNkQo=;
-        b=GGtk7xj2MMT9LCpVH7Tg8ix7fHH53u1iEKFPWz4cVf65GOR72v2jwRjdMHLE1bd/L1
-         jLGuI8gZK6eiMuOVj8nXGQ9hpfU+cwmOZLDpqMVvP2ZPYvZNlObrIryLYIW3p7etVz5w
-         dIPjRj0u+IC1YahZQL8TcvweMSz76G76b35UBgBc9uBZOallSf6PH7L8/C8f26OffHSe
-         MpkwNWdom+bZ4SX4rewyxowSh/gGy1yFwkLggjfaavO4iot28UUVtE0omS4GLvWZAN+W
-         CRhh6sWQHid2UV6oWii2sxm/dmfdCdOedUuMbOibTD5fYjPiGfHTXh5JKQs2uwpBWjXK
-         1Taw==
-X-Forwarded-Encrypted: i=1; AJvYcCWoB4V6tUxtLOY2Jidel9t6IlXGqb+nSFoLJRnSlMUPGh+/0+IaxDSGdBo4FInFZuxW2+IrPEc3kOx+/oh+9bg=@vger.kernel.org, AJvYcCXjTS0zzo3kB0O/luGMO4ui9c3FAnqyWTJi+JgWj0yD0HOT6rkHrDZq1kI7PO5r4wPW5Qji45ALtW94gO8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkBtedCjtrjullexaIgmII5FNi2j5zDyAkj/FraHHZKnHvWiyi
-	oJETcQy0zbNRkQKH4ea+AHgPz1PyjQRayMyYdw3+oLojbMmrHgF0xyQggJNk
-X-Gm-Gg: ASbGncuipwoj26yG7bJdus0IXcfoYkpoREsdIbpaTy39PtFV0vCUqQ1adTEb0wLZ/R9
-	JnWUdpoZmBvUXN+/+fPs0zTAanabRCLtHm+yptUXdXAQccgS+1WYpwCxIuDK9kNwMbkc8XwpUmE
-	N+wrcpDslslXufRQ4NrS/CrR8y6MjI4TFaJSNcXmpanjJS4f0WoCkMnY77qcOvvNG59xFiDSIqf
-	5jzeGD5ecTRlklwXiAyooLyuMnC4PyqbDhlecAi6AwxS3MbG7R4JcI0AJs4ZlB1xP1ILYWqRr4a
-	cFerCYvs2KjUg59zzMGT69gxkcT2Mk0yrTylJSVxatkHxsCaVjNJl2WWYG+Ax3sMKn4ZYPUOIBU
-	10Zp2JLOll2TPDqdplcZVA+I=
-X-Google-Smtp-Source: AGHT+IGCRmoxS1zS4tW8gFl5fzI7gwL+BsMOXnOBUlG6VzNXgSR1hewla7A4SswFBn81JMiNi/32hw==
-X-Received: by 2002:a17:903:1a68:b0:223:517c:bfa1 with SMTP id d9443c01a7336-22b42c28921mr46105425ad.38.1744289821807;
-        Thu, 10 Apr 2025 05:57:01 -0700 (PDT)
+        bh=LozqbR9IL9/g0fmUUEgIf2uGoH8VzwQtTCEA4Ars4OQ=;
+        b=m7PCieF+qqemxv/F/e+PnVXnRXajqNLkmnOYobOMQ5F1iorqZwO27S8dJlJTR1OeUw
+         9QV1BX3sGMuFDQEXjNbREZ+K3qf4/bpztK8EnvKFg5jkXfLo36TO8WCMUdi7HwPUXLnY
+         T+3P9OuZ2jNj1Mm/fMMdp+wtXkIg03VO0jxCauegzxC7oGOYzn9wRTMqjLT8FglvPvKU
+         u+e7TSG+QknwZlR3CcFrNNqwRA3TTjGzQol4pbRPHh2c/lxbuMXV/RwvcVkfNiFXqwqY
+         uZT6OD98OxBB2xCpHl9gDGWXchyrOjlDe+uUcuHagzTZQh7rF5v0muAzPmLzovowb1ZI
+         lEnw==
+X-Forwarded-Encrypted: i=1; AJvYcCU5FvaE9R6A3lMptayoJnSnYDUCopkTK63wIUvbitFO+i7XB56xjljENYrjFT+TzsKzzOSgyXJ/36cYzjVEUbw=@vger.kernel.org, AJvYcCUHZ4KzJe0gj3fW7cbXDdLCVkZSfjFxg4FAZdR3Y98OD8/Fx6aFpWHGC6z0+VIdZSbKuC1Zp/yvuEahVqc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPZylyhK0PY2tHm3VDhinVfH3LfewSD/MLy1nFHWKTEqQ0SPG0
+	WrCfgl3qpk+0lE+9mSc63Dqg8P3rh5m+Gg0A8aOq7UVaKw95kObM
+X-Gm-Gg: ASbGncuHOXPS0cn6m+opCKsroo2xM3xBjQPiH/QG0v2WazbrFUFBtYXSTXPQ0/pb6Rm
+	Ow0vE3tXbjMoScD0b8op4wgnH5iXNGgGl8gyyAY/6hNRZC5QNkmv7sOHT8l5IDMzCyX+vo+T3Bv
+	vcriyWwTd1KIvAX8so5kVO16ZljNTnazSTp1q/5l2MAz0nf2tB2DJPxwsiSdteHQ3g8lGqysBJh
+	lE3559sLLxP/IBhdkcMgxFSY8/bt1Wk9M2owMrj9okMS+b6rzhy5pKH+/dzytFw1k8Iz1UVmnex
+	ydduWgjkELg7U6BPKFArgw6Mdomfkp8mcdxeX9XiIO5bMAoqW012iw5b3AtxXk+xltIXoc5n+kx
+	qjW1uJmQL4DoWUaQYxuqWlzA=
+X-Google-Smtp-Source: AGHT+IGJPHjVd49AP1vnkkXdoNhLmWRlnN8bBMrIsSb98QO4pJ0ywmGWDK5XHRmFIFMfKdgm058ksw==
+X-Received: by 2002:a05:6a00:39a2:b0:736:6d4d:ffa6 with SMTP id d2e1a72fcca58-73bbef81e0bmr3330939b3a.15.1744289972311;
+        Thu, 10 Apr 2025 05:59:32 -0700 (PDT)
 Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7c95ca4sm29407145ad.124.2025.04.10.05.56.58
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1d68baasm3149041b3a.73.2025.04.10.05.59.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 05:57:01 -0700 (PDT)
-Date: Thu, 10 Apr 2025 21:56:50 +0900 (JST)
-Message-Id: <20250410.215650.1951840861716787929.fujita.tomonori@gmail.com>
+        Thu, 10 Apr 2025 05:59:32 -0700 (PDT)
+Date: Thu, 10 Apr 2025 21:59:26 +0900 (JST)
+Message-Id: <20250410.215926.1864188340028703395.fujita.tomonori@gmail.com>
 To: dakr@kernel.org
-Cc: geert@linux-m68k.org, miguel.ojeda.sandonis@gmail.com,
- fujita.tomonori@gmail.com, richard@nod.at,
- anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
- linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, logang@deltatee.com, sbates@raithlin.com,
- dinguyen@kernel.org, arnd@arndb.de
-Subject: Re: [PATCH v1] um: fix incompatible argument type in iounmap()
+Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+ abdiel.janulgue@gmail.com, daniel.almeida@collabora.com,
+ robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com,
+ tmgross@umich.edu, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] rust: conditionally compile dma abstraction based
+ on CONFIG_HAS_DMA
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <Z_auq9XEUxMwKVoN@cassiopeiae>
-References: <CANiq72mbci8kxEx5jrq=HVc6WKuJqq8NCLzNsjH1wFcJNoHm+w@mail.gmail.com>
-	<CAMuHMdWtgSjxeGYJVNzeWPOCd9nUWeKQnCtFQaROQ1o=r_-QwQ@mail.gmail.com>
-	<Z_auq9XEUxMwKVoN@cassiopeiae>
+In-Reply-To: <Z_Y4tuyyYIleFj_E@pollux>
+References: <20250409055501.136672-1-fujita.tomonori@gmail.com>
+	<Z_Y4tuyyYIleFj_E@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-T24gV2VkLCA5IEFwciAyMDI1IDE5OjMwOjE5ICswMjAwDQpEYW5pbG8gS3J1bW1yaWNoIDxkYWty
-QGtlcm5lbC5vcmc+IHdyb3RlOg0KDQo+PiBPbiBXZWQsIDkgQXByIDIwMjUgYXQgMTY6NDgsIE1p
-Z3VlbCBPamVkYQ0KPj4gPG1pZ3VlbC5vamVkYS5zYW5kb25pc0BnbWFpbC5jb20+IHdyb3RlOg0K
-Pj4gPiBPbiBXZWQsIEFwciA5LCAyMDI1IGF0IDg6MTbigK9BTSBGVUpJVEEgVG9tb25vcmkNCj4+
-ID4gPGZ1aml0YS50b21vbm9yaUBnbWFpbC5jb20+IHdyb3RlOg0KPj4gPiA+DQo+PiA+ID4gQWxp
-Z24gaW91bm1hcCgpIHNpZ25hdHVyZSB3aXRoIG90aGVyIGFyY2hpdGVjdHVyZXMuDQo+PiA+DQo+
-PiA+IE1vc3QgaW5kZWVkIGhhdmUgYHZvbGF0aWxlYCwgYnV0IG5pb3MyIGFuZCBtNjhrIGRvbid0
-IC0tIENjJ2luZyB0aGVtDQo+PiA+IGp1c3QgaW4gY2FzZS4NCj4+IA0KPj4gSW5kZWVkLiBBcHBh
-cmVudGx5IHRoZSB2b2xhdGlsZSBrZXl3b3JkIGhhcyBub3QgYWx3YXlzIGJlZW4gdGhlcmUuLi4N
-Cj4+IFdoeSBkb2VzIGlvdW5tYXAoKSBuZWVkIHRoZSB2b2xhdGlsZSBrZXl3b3JkPw0KPj4gV2h5
-IGRvZXMgcGNpX2lvdW5tYXAoKSBub3QgaGF2ZSB0aGUgdm9sYXRpbGUga2V5d29yZD8NCj4gDQo+
-IEkgdGhpbmsgbm9uZSBvZiB0aGUgZnVuY3Rpb25zIHdpdGhpbiBydXN0L2hlbHBlcnMvaW8uYyBu
-ZWVkIHZvbGF0aWxlLCBzaW5jZSB0aGV5DQo+IGp1c3QgZGVmZXIgdG8gdGhlIGNvcnJlc3BvbmRp
-bmcgQyBmdW5jdGlvbiAvIG1hY3JvLg0KDQpZZWFoLCBhbGwgdm9sYXRpbGUgaW4gdGhlIGZpbGUg
-c2hvdWxkIGJlIHNhZmUgdG8gcmVtb3ZlLiBJJ2xsIGdvIHdpdGgNCnRoYXQgYXBwcm9hY2ggZm9y
-IHRoZSBuZXh0IHZlcnNpb24uDQoNCkkgdGhpbmsgaXQgd291bGQgYmUgbmljZSB0byBoYXZlIHRo
-ZSBzYW1lIGZ1bmN0aW9uIHNpZ25hdHVyZSBhY3Jvc3MNCmFsbCBhcmNoaXRlY3R1cmVzLCBidXQg
-dGhhdCdzIGEgc2VwYXJhdGUgdG9waWMuDQoNClRoYW5rcywNCg==
+On Wed, 9 Apr 2025 11:07:02 +0200
+Danilo Krummrich <dakr@kernel.org> wrote:
+
+> On Wed, Apr 09, 2025 at 02:55:01PM +0900, FUJITA Tomonori wrote:
+>> Make dma abstraction conditional on CONFIG_HAS_DMA.
+> 
+> I'm not convinced that this is the correct fix. This would require drivers to
+> depend on CONFIG_HAS_DMA if they want to use the DMA API. The C side does not do
+> this either.
+>
+> Instead, for functions like dma_alloc_attrs(), there is an empty implementation
+> if CONFIG_HAS_DMA is not set [1].
+
+Good point.
+
+> However, this definition is not picked up by bindgen. Hence, I think the actual
+> fix would be to introduce the corresponding Rust helpers.
+> 
+> [1] https://elixir.bootlin.com/linux/v6.13.7/source/include/linux/dma-mapping.h#L189
+
+I'll go with that approach for the next version.
+
+Thanks,
