@@ -1,243 +1,139 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602D11EF37A;
-	Thu, 10 Apr 2025 15:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B0E1A3BD7;
+	Thu, 10 Apr 2025 18:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744299966; cv=none; b=k/x/5k9GNRHyRU8n+a2kUZbGi4hxGHmN+DgKo2M1ezApsvau0/+wmfVvNo+OAa1CVCnNizdsdtwqSps7UoAkIXcpyR9wOcO6oZwUXd/DFYiarIRWNxf49vpFYImEtLqD3wPwqIvFDhk542+IIEuTdbN++V9crgnikZDwXV0xwC0=
+	t=1744308079; cv=none; b=adJKFspQ+SpjhAHQGbB+nMpyvTx1hjxpDFjJxCTLHUJQ20fWXXoOccA3SWLZNIr/a8vKSDBP7YE2Hykb0OaSZTz03/NfWnlY+Rk7Ss8fro5nlXve5DTfOB8pnbWeoka+ULbes+2eBRlYIuhse3jEKGCHSM9yR4O5K/C6WGh4efw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744299966; c=relaxed/simple;
-	bh=mBWPzY/oLlYlxt7dU7C0mAUnfYylWWSdNqiv95dvA6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mJLQ7Fmnj93VRibazoJVOVJDcLcHCi1k6FMcif2fhHo7BFQLXhV9jnCzbn8iNH6ifvp96RKjtaxp9VCltGrRj2U7jUWe0bBY28/bsbBHHLTMDceJYoef/d7vVIowaY3Pu/vfSPDG6MCKkbvEtqa/V9eCYCM3Kkzl9DcofjH+lns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LkUsOMU7; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1744308079; c=relaxed/simple;
+	bh=N+vhPm8xte9yeggzzG+H9AHlZsgrUF4oVUvy+QxaKW8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Wb9gB/0PC6IFGbPlN0/fzQu3hAmV6sPdbJkCJ4lBhVmQf2x1hjPXn+2ZS8kRfZ1k1vhGZOQRFQVqmaZF9gsIPcVzrPGYbwAG3r/FibYb+UZheJyVaOOQUyEaJFFitSNatj53O+HdiK4p8tdMGyg8fiemau2Ey/NqmToqL1WJrew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=COvqrPdL; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LkUsOMU7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pFkrBvG2mx6ZEqS42jE/fH2ceu93D90WMLv65S7BVO8=; b=LkUsOMU7ZWY+tIv+8a1CPZDDY8
-	cGEbYoC9abcvy9O59WWyA7P4SW1tznFe9Oac4TTqyongaPq1nsITGmh9lJhrfdVBdr2t9k6nhD4UW
-	V83vZ8EnZoIHbGQJqOS5alfOpmKCSUevQLwxsjWB0YVd8/0VOimeE5/hBwTlP+P9fhUR8mfzwk/XE
-	bdTNAvD5FnxxYZGFmTZIun7WO2dXqGlOWW695AKLt0tCsgNciYgOJyFb6SrKk/k1LTqNsaj9ybMoK
-	Ty9lJlqV+o63/YlRznMFuJ8mU8bbwx8PIXlBbccMbWlwzqzX8utZg+PbJE36u+EqMyuZA4nIvvVXh
-	s+tQAhFA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1u2u6H-000000035Qr-0ciZ;
-	Thu, 10 Apr 2025 15:45:57 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id F25F03003FA; Thu, 10 Apr 2025 17:45:56 +0200 (CEST)
-Date: Thu, 10 Apr 2025 17:45:56 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: =?utf-8?B?UGF3ZcWC?= Anikiel <panikiel@google.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: [PATCH] objtool: Detect __nocfi calls
-Message-ID: <20250410154556.GB9003@noisy.programming.kicks-ass.net>
-References: <20250410115420.366349-1-panikiel@google.com>
- <20250410123602.GZ9833@noisy.programming.kicks-ass.net>
- <20250410124526.GB9833@noisy.programming.kicks-ass.net>
- <CAM5zL5okN67bsTs6ZodcJd45zQ_BP+ruUwOkPMY97Snma0ugzQ@mail.gmail.com>
- <20250410132522.GD9833@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="COvqrPdL"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-301a6347494so168012a91.3;
+        Thu, 10 Apr 2025 11:01:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744308077; x=1744912877; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N+vhPm8xte9yeggzzG+H9AHlZsgrUF4oVUvy+QxaKW8=;
+        b=COvqrPdLSzpQgKp+k7jN2r6Llif7ISalMya2PaQGK4qXu/p+bCgiRUAtjY2t59Q8Dv
+         SqhZKR/1QtrTMiqV+RltPib8QRGyvnBgks74TqV/GwIbke2/B0BEeSdmnBAFqSU1TDNV
+         m85Q5ElW7dXftvC9kulmVPN+K9scub/isBHN0aGWS72y1LqSh414qUYTYcFp5NZlMcwU
+         G38cdggvFrBxh3JGdfyJ/8tl0iwasftNJJi6pzk4vpHb1iMAVgDNbyld78llFtYHTSAl
+         wdVHNTo55FZMbar+N7cJOP9pFn7uYqjOPYSjjUhntoVm04ZZ5Ly9UmDKFmo9ginGgLgB
+         gi5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744308077; x=1744912877;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N+vhPm8xte9yeggzzG+H9AHlZsgrUF4oVUvy+QxaKW8=;
+        b=w63NI/Rp6RAKj/GPhSSjC6nez22wNI2ZRCWsKw/ls90XqAQAxqjXKvmQRAmBFzErn4
+         L3L0SfiufVKoX1J7X6Oc0Cv2YfYNhkqpf2VbEBcdfUcwh2NtcIkoreU0VwT7sBTkOGQO
+         9bUq58zYuS5zW1btnakOu9iPGekSuK7n2VZu0VgOutyEkZ6nNtDEKhLJGNXckjAPjSG3
+         WAVtcKMIKjVVzmKAaiOJIoo+LtZAlBAw3MyCiKZw2+WRQzwd8IkWMR8JS0+nPqRcJsos
+         Y+bTnCoJ+YvpLTmnZq9iUpN/m5RWvebyBCHiXM2jMeUGOpK71Cb2JO7uoV2Xxhdv1X8j
+         TWxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQmxZ3/g1WMzuPBGUxPi0D7oa6jjbppu2BPSpSuy9NKs0lmPWJvxF59ewCzAnxQKP4AalGXd23MQI4OTfCji0=@vger.kernel.org, AJvYcCV4UBa/aSbcJ6/msXWzR8ArEgtveznSohI5jqENEZ4eN3Vn5GsYOYJsmcBcH8OcxmOqkDTvM6d8Z24oI7k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysUoqltkpXlskioRYT8KggoWd47tliSUd8I0zOYySpmIv+UWry
+	mEAdP3qnjbKBpsS6TN5Csb+E3l4MmvQ99KVk5hKB0lwILmla2rzxX+L7prJwtGnb/S2dcvayZE1
+	7P79wtHaZdKbfwlSdxn+rrWtB+bQH1MSrXAI=
+X-Gm-Gg: ASbGncuSV8O5HkVVTPIE+25vMn0E0nxRdXvmhOVKCoEi+pvNLQKZnbnBlRrBaOW3pay
+	eN4zvAGTlPLlPdyvZJdFVlPfvhfbTI5cILa2rYY5WJ8btoR8ookoZX+voVPsyCLs2MdeCFSMfNN
+	16caz+H4xUt7FmJ8N2uQfeiMXX3oPgUy+i
+X-Google-Smtp-Source: AGHT+IEiBPAnKByRED0OTMJvlH3bps6wKzTDzK/IbVCTFG55PZTv9PCNHw7CZ61yUjEbnkV8wcYR79umSxB8Hwqo7P8=
+X-Received: by 2002:a17:90b:3512:b0:2ff:5759:549a with SMTP id
+ 98e67ed59e1d1-306dbb66b4bmr4264364a91.1.1744308076591; Thu, 10 Apr 2025
+ 11:01:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250410132522.GD9833@noisy.programming.kicks-ass.net>
+References: <20250410123602.GZ9833@noisy.programming.kicks-ass.net>
+ <20250410124526.GB9833@noisy.programming.kicks-ass.net> <20250410130944.GA9003@noisy.programming.kicks-ass.net>
+ <CANiq72=k+tZ3ACEB5k9qwJ8ZYu-dXkA3=Lisg1b8ze-2D0STog@mail.gmail.com>
+ <20250410132649.GE9833@noisy.programming.kicks-ass.net> <CANiq72=Q_Z8KfV+n4z9wWVJsZwVevag=Vh3URe71XkUuWuqEDg@mail.gmail.com>
+ <20250410133446.GF9833@noisy.programming.kicks-ass.net> <CAH5fLghrcqSYwkqbC4SSp6oYCny0riMRGA6W+oqQ69aA=NwYWw@mail.gmail.com>
+ <20250410140850.GH9833@noisy.programming.kicks-ass.net> <CANiq72kS8kfCcaqtG0KUN4Ywh6i4PHaFOg12jF+Y7CAb5SJLbA@mail.gmail.com>
+ <20250410151446.GJ9833@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250410151446.GJ9833@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 10 Apr 2025 20:01:04 +0200
+X-Gm-Features: ATxdqUFnoPjbSS4cZwhGyRDU33M_xG_03_73M1jIf2b6SiWodaDXeqD4w6LceX8
+Message-ID: <CANiq72kVJkR=EufaZwtjgs+_Vqet3oNNBi9U9LAu_92U6BOuoA@mail.gmail.com>
+Subject: Re: [PATCH] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, =?UTF-8?Q?Pawe=C5=82_Anikiel?= <panikiel@google.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, 
+	Ramon de C Valle <rcvalle@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 10, 2025 at 03:25:22PM +0200, Peter Zijlstra wrote:
+On Thu, Apr 10, 2025 at 5:14=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> Ignoring MSVC, which is a horrible joke of a compiler (or did Sutter
+> finally cluebat that team into building a sane compiler?), there are
+> definitely cross compiler STL implementations around.
 
-> I should get objtool to warn about those. They undermine the point of
-> CFI.
+Definitely, there are, e.g. libc++ and libstdc++, but my point was
+that it doesn't happen by accident, i.e. it requires effort (perhaps
+even on both sides).
 
----
-Subject: objtool: Detect __nocfi calls
+[ As for MSVC, last time I used it (2020?), it was way better compared
+to the VC++6 times -- at least they started to try to be conforming,
+e.g. all the work behind `/permissive-`, including the two-phase name
+lookup I mentioned. They also improved a bunch of thing for C to be
+able to build projects out there. ]
 
-Detect and WARN about no_sanitize(kcfi) indirect calls.
+> Again, with the exception of MSVC, Boost builds on most C++ compilers
+> and is the staging ground for many new library features.
 
-Apparently there were a few in some Rust 'core' that got included in the
-kernel and things went *bang*.
+Hmm... I am not sure what you mean -- Boost works with MSVC, and Boost
+tries to use standard C++. Even if it may rely on hacks or compiler
+extensions at points, Boost does not need to implement e.g. a magic
+`std::launder`, and I hope they don't use builtins etc.
 
-This is not a supported form for kernel code. So detect and warn about
-it.
+> And the old STL (although STL really is far more a library than runtime,
+> it being fully optional) will most certainly build on a new compiler
+> from the same family.
 
-Adds an annotation for the two cases where we have to live with them:
+[ To clarify, by "STL" above I was referring to the Microsoft's STL
+project (i.e. they call it STL, but it is the full C++ standard
+library). ]
 
- - EFI stubs;
- - kexec handover.
+The pure "STL" stuff, i.e. containers and algorithms and such, yeah,
+that may not require any magic. Some Rust `core` types and functions
+can also be reimplemented in normal Rust too.
 
-Notably, EFI calls fully disable IBT, as such using runtime EFI services
-is a significant security issue. If you can exploit the kexec handover,
-you get to keep it.
+> And I know Linus hates on C++ something mighty, but in this parallel
+> universe where he doesn't, I would still recommend the kernel to not use
+> STL and instead build its own libraries (or borrow some nice pieces here
+> and there).
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
-diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index cc73f9708464..67ba0db92272 100644
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -442,6 +442,7 @@ void __nocfi machine_kexec(struct kimage *image)
- 
- 	__ftrace_enabled_restore(save_ftrace_enabled);
- }
-+ANNOTATE_NOCFI_SYM(machine_kexec);
- 
- /* arch-dependent functionality related to kexec file-based syscall */
- 
-diff --git a/arch/x86/platform/efi/efi_stub_64.S b/arch/x86/platform/efi/efi_stub_64.S
-index 2206b8bc47b8..2bee139ae1ee 100644
---- a/arch/x86/platform/efi/efi_stub_64.S
-+++ b/arch/x86/platform/efi/efi_stub_64.S
-@@ -11,6 +11,7 @@
- #include <asm/nospec-branch.h>
- 
- SYM_FUNC_START(__efi_call)
-+	ANNOTATE_NOCFI
- 	pushq %rbp
- 	movq %rsp, %rbp
- 	and $~0xf, %rsp
-diff --git a/include/linux/objtool.h b/include/linux/objtool.h
-index 366ad004d794..518daea19699 100644
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -185,6 +185,8 @@
-  */
- #define ANNOTATE_REACHABLE(label)	__ASM_ANNOTATE(label, ANNOTYPE_REACHABLE)
- 
-+#define ANNOTATE_NOCFI_SYM(sym)		asm(__ASM_ANNOTATE(sym, ANNOTYPE_NOCFI))
-+
- #else
- #define ANNOTATE_NOENDBR		ANNOTATE type=ANNOTYPE_NOENDBR
- #define ANNOTATE_RETPOLINE_SAFE		ANNOTATE type=ANNOTYPE_RETPOLINE_SAFE
-@@ -194,6 +196,7 @@
- #define ANNOTATE_INTRA_FUNCTION_CALL	ANNOTATE type=ANNOTYPE_INTRA_FUNCTION_CALL
- #define ANNOTATE_UNRET_BEGIN		ANNOTATE type=ANNOTYPE_UNRET_BEGIN
- #define ANNOTATE_REACHABLE		ANNOTATE type=ANNOTYPE_REACHABLE
-+#define ANNOTATE_NOCFI			ANNOTATE type=ANNOTYPE_NOCFI
- #endif
- 
- #if defined(CONFIG_NOINSTR_VALIDATION) && \
-diff --git a/include/linux/objtool_types.h b/include/linux/objtool_types.h
-index df5d9fa84dba..aceac94632c8 100644
---- a/include/linux/objtool_types.h
-+++ b/include/linux/objtool_types.h
-@@ -65,5 +65,6 @@ struct unwind_hint {
- #define ANNOTYPE_IGNORE_ALTS		6
- #define ANNOTYPE_INTRA_FUNCTION_CALL	7
- #define ANNOTYPE_REACHABLE		8
-+#define ANNOTYPE_NOCFI			9
- 
- #endif /* _LINUX_OBJTOOL_TYPES_H */
-diff --git a/tools/include/linux/objtool_types.h b/tools/include/linux/objtool_types.h
-index df5d9fa84dba..aceac94632c8 100644
---- a/tools/include/linux/objtool_types.h
-+++ b/tools/include/linux/objtool_types.h
-@@ -65,5 +65,6 @@ struct unwind_hint {
- #define ANNOTYPE_IGNORE_ALTS		6
- #define ANNOTYPE_INTRA_FUNCTION_CALL	7
- #define ANNOTYPE_REACHABLE		8
-+#define ANNOTYPE_NOCFI			9
- 
- #endif /* _LINUX_OBJTOOL_TYPES_H */
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 4a1f6c3169b3..868601760953 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1382,6 +1382,26 @@ static int add_call_dest(struct objtool_file *file, struct instruction *insn,
- 
- static int add_retpoline_call(struct objtool_file *file, struct instruction *insn)
- {
-+	struct symbol *sym = insn->sym;
-+
-+	/*
-+	 * kCFI call sites look like:
-+	 *
-+	 *     movl $(-0x12345678), %r10d
-+	 *     addl -4(%r11), %r10d
-+	 *     jz 1f
-+	 *     ud2
-+	 *  1: cs call __x86_indirect_thunk_r11
-+	 *
-+	 * Verify all indirect calls are kCFI adorned by checking for the UD2.
-+	 * Notably, doing __nocfi calls to regular (cfi) functions is broken.
-+	 */
-+	if (opts.cfi && sym && sym->type == STT_FUNC && !sym->nocfi) {
-+		struct instruction *prev = prev_insn_same_sym(file, insn);
-+		if (!prev || prev->type != INSN_BUG)
-+			WARN_INSN(insn, "no-cfi indirect call!");
-+	}
-+
- 	/*
- 	 * Retpoline calls/jumps are really dynamic calls/jumps in disguise,
- 	 * so convert them accordingly.
-@@ -2334,6 +2354,8 @@ static int read_annotate(struct objtool_file *file,
- 
- static int __annotate_early(struct objtool_file *file, int type, struct instruction *insn)
- {
-+	struct symbol *sym;
-+
- 	switch (type) {
- 
- 	/* Must be before add_special_section_alts() */
-@@ -2348,6 +2370,19 @@ static int __annotate_early(struct objtool_file *file, int type, struct instruct
- 		insn->noendbr = 1;
- 		break;
- 
-+	/*
-+	 * Must be before add_{jump,call}_destination(), specifically any
-+	 * add_retpoline_call().
-+	 */
-+	case ANNOTYPE_NOCFI:
-+		sym = insn->sym;
-+		if (!sym) {
-+			WARN_INSN(insn, "dodgy NOCFI annotation");
-+			break;
-+		}
-+		insn->sym->nocfi = 1;
-+		break;
-+
- 	default:
- 		break;
- 	}
-@@ -2428,6 +2463,10 @@ static int __annotate_late(struct objtool_file *file, int type, struct instructi
- 		insn->dead_end = false;
- 		break;
- 
-+	case ANNOTYPE_NOCFI:
-+		/* early */
-+		break;
-+
- 	default:
- 		ERROR_INSN(insn, "Unknown annotation type: %d", type);
- 		return -1;
-diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index c7c4e87ebe88..f60604d30793 100644
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -70,6 +70,7 @@ struct symbol {
- 	u8 local_label       : 1;
- 	u8 frame_pointer     : 1;
- 	u8 ignore	     : 1;
-+	u8 nocfi             : 1;
- 	struct list_head pv_target;
- 	struct reloc *relocs;
- };
+Yeah, we take that approach when needed; e.g. nowadays we don't use
+`alloc`, which is another part of the Rust standard library that
+contains things like the equivalent to `std::vector`, and we also have
+our own equivalents of `core` types sometimes, e.g. our `CStr`.
+
+And, yeah, I agree it would be ideal to be able to reuse/customize
+some parts more.
+
+Cheers,
+Miguel
