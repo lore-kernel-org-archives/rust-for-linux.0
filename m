@@ -1,96 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0624F1E0E15;
-	Thu, 10 Apr 2025 19:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD55204849;
+	Thu, 10 Apr 2025 19:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744312147; cv=none; b=VSwDJlvBN97rbLOLkS/m3sZwMqkME2Oa2/sRbEVZaA/dg4HzXpG+MhJl2z/jPiS0k/PNeLhHpuJBha97OMYBM112E/MoSbJIQNo5cziNPMyYSHBsyxxVrJGDTXgZNdWevHlH1gStC6BLW3O8tmV1eKtZkxeHA5SrYPu81YVVaPI=
+	t=1744313569; cv=none; b=Mb4UUKrkRTQn1/3DHh1vWjgzrXhiQeQlvUG69BGiEKxxh3ZZnZ6n3mTUA0F5LVseXRkttjTL61EQs5VhXhPphbee5CTSV6+vn5/VxjBxsjr9HOujbKD6EB+jhRQQ7q1EO/NMP5wqXvURZ9xYg/qe5IXlDoPHMN9jJDweZ/3v+vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744312147; c=relaxed/simple;
-	bh=R8R0Z54+GbH3qN8RFeqF3pH51Bc/uXCZ7As2PQCIyIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jLRGGB01Bq6UDJZ8XS6p9dWqpzYD7yG+HMpcZTnd3UvnFw6rHem4W0Lgjngu5Io4of+4qFMFwuQY6Su2FiPH1wiR9Clz+nNAc4qAaLWl4nkPB1T/o9Na5622polsEs7/XiJ92swvOmx9oVRHksGY138UJbfxwzns46mW3cKK7gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tBLVpZ/f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744313569; c=relaxed/simple;
+	bh=SeQf4Ekar68aJz2lLkiDfxXINl+MdYF4NtdTyGq0ndI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ckMyc0affVHKdBRB8DsRzdITFRyJXmEdsvkKA1KdcH3q9N5LnCEZEG/NRNFTAu6Yqm3Wf/MNhTClDS58ax0w32XDn/rumNlMDlsGciHbpxJnKOC5LsAJ+dJkBXf8pVw8fZCEfZkFNDDrDDPgwvCh+2hqVkWAtY45cl5+Dlf/GSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gaz1yM+V; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tBLVpZ/f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D50C4CEDD;
-	Thu, 10 Apr 2025 19:09:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744312146;
-	bh=R8R0Z54+GbH3qN8RFeqF3pH51Bc/uXCZ7As2PQCIyIU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tBLVpZ/flLnefJCS8lc+kZRekbRtyw6ig6n/PkImpbL7p65sDZlfL1MAhYju5KYCr
-	 irb33yPBjALnu+s789iBq1wolPk+l+KruuTd1W9aq6VcasRiFGvSdPSEs/TuoEKmN0
-	 /ATiZ5i/6dLWj/zQz+EM8f6Os4aOCTImS2bmiZZwft05VNRpAG4dPey2CT5aV6ickG
-	 VKJCfWDnsJDKTWqcJr6d5yK3R98c9o9TId3hQLcrinJ1wfQpJwxk1hWpZJRx/ZRlcL
-	 8gicvTWz88wxrAI3Ckxp46hPift34P8Hh6LUEno5wkZnBq5QnWt165ICd9yXvBLD5+
-	 ZwvR60tU3cauw==
-Date: Thu, 10 Apr 2025 12:09:02 -0700
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: =?utf-8?B?UGF3ZcWC?= Anikiel <panikiel@google.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Ingo Molnar <mingo@redhat.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] objtool: Detect __nocfi calls
-Message-ID: <x5ltxw6z45gty6hylw2flde5w7qnmztg5mzaq7ffh4tl5ssm6r@h2xnxzqvnljb>
-References: <20250410115420.366349-1-panikiel@google.com>
- <20250410123602.GZ9833@noisy.programming.kicks-ass.net>
- <20250410124526.GB9833@noisy.programming.kicks-ass.net>
- <CAM5zL5okN67bsTs6ZodcJd45zQ_BP+ruUwOkPMY97Snma0ugzQ@mail.gmail.com>
- <20250410132522.GD9833@noisy.programming.kicks-ass.net>
- <20250410154556.GB9003@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gaz1yM+V"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ff5544af03so316273a91.1;
+        Thu, 10 Apr 2025 12:32:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744313567; x=1744918367; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LeqY15aAyimA99ymII4lyCTC8S630lknHY0ZYFJUm3U=;
+        b=gaz1yM+V1aqjbfm+H3uQI/gKAFKWk9b1xYb+G6VfpGaFluCRrDtcg0cO9T+beSoajK
+         cSnkmkUdr+JQsTTa5if98Qn9MFfOAUSH4u4pPDw5ioOWsFFBNPXvHYdIMHtUc8VhTO/y
+         IiVqIkPsE1qr0obs0lAPRmrnOMYjiwip46VBo0GOmJDygmle3h/4UHGxGvi2N9fnhcwO
+         SoaxDDms2VQ/RFwfi8tCzEhKSTkuuf153T+8Abe4xcfvNNeft50IdYeQf26mRovVH0j2
+         waLoNJKtBrPg/qxdCoKS/qNoJVbqby8VfwMaFz7CP3bQV+pzyVk3y9FHA3cRkSmou9o1
+         uIWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744313567; x=1744918367;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LeqY15aAyimA99ymII4lyCTC8S630lknHY0ZYFJUm3U=;
+        b=aaHMdL0ZrXl2su9yVGJvlQV3eqY9bD+D7aceWNnhqsJIGSWSvsj7WRztjPjKUbgew8
+         yFSIKOJ6Y0MB1nixPrKSwwkacBKEiCA4yylTFNi0sOrut8IuCZ3VCSPvAP/QPdNbxGEg
+         Q3KKsJW8ugEtbExCKfNkOj1WskGRVLM0bfYjbcAalS/vnSjxZ/MbBFGS9v0Uv/YXY4hx
+         gXgBmZ5zzTu2Ky4vMh+nSWKboLFO+LBXrfz9ClIGPHzuAQ9l/dNYMJ4K6zgQwWoIhe0o
+         xBMiUpf39g1Ds8xI+7L3434Y6TkDt5Vyt+Rqm1sfbyFrP6n/PguM0k+SwhGRVATHLzqA
+         qlkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUknisilyyJ55ortMjXiq0dHVTyEZaxWsVc0e8mC/q8g5pz0L0KzZ1hUAuclVfeZ4/dPFHiwOYf6zy13mSVHXU=@vger.kernel.org, AJvYcCXWT8wFUz7KHuLteLPFdvoaOH+IUyWtQ29NtgM2kT01IKTqhoCYwwcFPCO9N2unx1W5saF7BuCAuGqF6sk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyclB5XbLJe+kQSC5XMzfsV0Ep56isBVnvFP75FR/Z4IPAwJ/8B
+	vdjs+mRCUdS4/CJ4u7nO1lfQJCOMlnPj4LdlQY3TXKkLyS/AM7MWe2/NRFxSQZLYtjBaaoqFsc1
+	/6yPLYtj7vfkxlxt7aAHX4ZUlsKc=
+X-Gm-Gg: ASbGncvbgjX02seX8YlmgNT4qp1PEPB0F19+q3oROxfkvLZ8rhbKZWsUHVnWC++UgXK
+	mxMYR3PKQkcf5hIMGtw7AgpqfZ/adMoR5D3qk10hgXUojoNf+6M4xMoiBKTww0Q79yfHQONHBvR
+	EYA6z3KHcP0gkC64H9YB4+VQ==
+X-Google-Smtp-Source: AGHT+IFnU2ZUwuiyWhkRsLS0PT1QXn5dmyassrZ3+vhu10jNVWGMQL5v0QKXhkDgDM1HqwH+gsFMEOlwmMINJxdFRIY=
+X-Received: by 2002:a17:90b:3ece:b0:2fa:6055:17e7 with SMTP id
+ 98e67ed59e1d1-3082378c79bmr81605a91.8.1744313567288; Thu, 10 Apr 2025
+ 12:32:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20250410115420.366349-1-panikiel@google.com> <20250410123602.GZ9833@noisy.programming.kicks-ass.net>
+ <20250410124526.GB9833@noisy.programming.kicks-ass.net> <CAM5zL5okN67bsTs6ZodcJd45zQ_BP+ruUwOkPMY97Snma0ugzQ@mail.gmail.com>
+ <20250410132522.GD9833@noisy.programming.kicks-ass.net> <20250410154556.GB9003@noisy.programming.kicks-ass.net>
 In-Reply-To: <20250410154556.GB9003@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 10 Apr 2025 21:32:35 +0200
+X-Gm-Features: ATxdqUHMXzgP8f9dLLQH8Z9Yxc2FXsl6vpG4FakDn0KsQ3tBiBxX5Hm0rcmcEro
+Message-ID: <CANiq72=gBYbyGG9Ty_QmA4nadG9COM+hZpvxVq5t5bBvtwva4Q@mail.gmail.com>
+Subject: Re: [PATCH] objtool: Detect __nocfi calls
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: =?UTF-8?Q?Pawe=C5=82_Anikiel?= <panikiel@google.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Josh Poimboeuf <jpoimboe@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 10, 2025 at 05:45:56PM +0200, Peter Zijlstra wrote:
-> On Thu, Apr 10, 2025 at 03:25:22PM +0200, Peter Zijlstra wrote:
-> 
-> > I should get objtool to warn about those. They undermine the point of
-> > CFI.
-> 
-> ---
-> Subject: objtool: Detect __nocfi calls
+On Thu, Apr 10, 2025 at 5:46=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> Detect and WARN about no_sanitize(kcfi) indirect calls.
+>
+> Apparently there were a few in some Rust 'core' that got included in the
+> kernel and things went *bang*.
+>
+> This is not a supported form for kernel code. So detect and warn about
+> it.
 
-"Warn on indirect calls in __nocfi functions" ?
+That was quick!
 
->  static int add_retpoline_call(struct objtool_file *file, struct instruction *insn)
->  {
-> +	struct symbol *sym = insn->sym;
-> +
-> +	/*
-> +	 * kCFI call sites look like:
-> +	 *
-> +	 *     movl $(-0x12345678), %r10d
-> +	 *     addl -4(%r11), %r10d
-> +	 *     jz 1f
-> +	 *     ud2
-> +	 *  1: cs call __x86_indirect_thunk_r11
-> +	 *
-> +	 * Verify all indirect calls are kCFI adorned by checking for the UD2.
-> +	 * Notably, doing __nocfi calls to regular (cfi) functions is broken.
-> +	 */
-> +	if (opts.cfi && sym && sym->type == STT_FUNC && !sym->nocfi) {
-> +		struct instruction *prev = prev_insn_same_sym(file, insn);
-> +		if (!prev || prev->type != INSN_BUG)
-> +			WARN_INSN(insn, "no-cfi indirect call!");
+It seems to work -- I got:
 
-Since this can break things pretty badly at runtime, this should
-actually fail the build on CONFIG_OBJTOOL_WERROR.
+      LD      vmlinux.o
+    vmlinux.o: warning: objtool:
+_RNvNtCs8DPF7ip8WBQ_4core3fmt5write+0x170: no-cfi indirect call!
 
-The warning counts aren't plumbed in this early, so can this check be
-done later?  validate_retpoline() or validate_call()?
-
--- 
-Josh
+Cheers,
+Miguel
