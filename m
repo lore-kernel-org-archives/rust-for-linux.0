@@ -1,108 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FF82857DB;
-	Thu, 10 Apr 2025 11:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36DD204594;
+	Thu, 10 Apr 2025 12:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744286099; cv=none; b=ejnFrkwRLDTZ0PsDznODMaE575YdGBbHd5/GTqe8wcF2czsAmnDDH67+TI+bK1Fo21f+3sIo9o95vxFceX7UXH+ElsnwHrSrkE0CPzNOsev9Ryc6Kh/zWW7EgSqlwr62hifanifsIrNQzHLqQS1s9/QCnmX6F7Jld/Rh8EyChSw=
+	t=1744288462; cv=none; b=H+5c9bQfZLZfUWEnQTaaAijLYOuHTFA4+/HldgMaL3OI2TV3foKERQd1mlZ+H+4AcgvepDxhDfSB8RpUH0t1kH9IOH2HjVTzCcuPKUZ9L3JhVYvUV11pJdH1BhXXzC949mfaDnCau8nIPsD+3Sa4xlIowPp7gSsE0QZqQoUgB38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744286099; c=relaxed/simple;
-	bh=+rbqJBTcp/aKWEpqPhVv9PGK+VJrhFGyn4aSeHbatDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2o/8HhX6SBZnpfwLnel3T7UrT5mS79lVXlsPERDhTxugnItO3I7Wle9gwE+QRYR6NAJ8bwK4q9tkK2JWKo+JdAC5CIEOhwbLOU9xw9CPPcR7UV1SWXwp91DFSAoFxnKCdKV5kMmpOkiepPABFrprwAL8SVBus74UygrTNJ4Id0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YSC1aJFm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744288462; c=relaxed/simple;
+	bh=aYnz96tviR6JkjQrvqHBO9WzzIuRSa6ZnA54LbzQIXI=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=sQgWKx00lZwrAHY8Ejn0H8hx+3N1S/+tyLZv0nbyGJxyqurre+Oiyg8WJwkTYBWOPfRCvWPkcMqx7TQBNRRIieSsgjsi+C6FnEQTyw7OglOsT7Gd1H3wXHbIDvxOvpgli79MijjwFUM3ljgwnmEJV/XymkizRj5y0Q7LiRvnaSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gD0IiSgG; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YSC1aJFm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EBEC4CEDD;
-	Thu, 10 Apr 2025 11:54:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744286099;
-	bh=+rbqJBTcp/aKWEpqPhVv9PGK+VJrhFGyn4aSeHbatDA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YSC1aJFm4RiRfDJvOIVHnOkHYr5jrgjyKy0cRY36uWXhHa5/HDxjoo5XKisnwertT
-	 lLyNM39sdMH+dBe/gxSd5R2QRipzwX+ZOFNBXT4qI6RdiNoEpTsCXQXNJvQPla4jFq
-	 FZ8P2YY5ky7/01dTcRuqoikYiP5mPhccu9MuDklD8tqeB9kPXO73Gqdzio6FaHOPb9
-	 ocnD5ls1FlOZQwP2MrMpD8yxHSrM26YtPBaVjIYdhEXkmeOtwWOiAZnPVAmwx0nulN
-	 DKlWm+TIDTRd+IvHZWdUy7X8kTJvJdYTT3OJKhI8bB/HZ2iWbDOrCAUivEVh3+x9MO
-	 iDz7IFrGV3W/Q==
-Date: Thu, 10 Apr 2025 13:54:53 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: a.hindborg@kernel.org, benno.lossin@proton.me,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v2 2/3] rust: dma: convert the read/write macros to
- return Result
-Message-ID: <Z_exjZ9xEntlL9FC@pollux>
-References: <20250410085916.546511-1-abdiel.janulgue@gmail.com>
- <20250410085916.546511-3-abdiel.janulgue@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gD0IiSgG"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-736c277331eso1750751b3a.1;
+        Thu, 10 Apr 2025 05:34:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744288460; x=1744893260; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CYYB8xWXXp3NrY8EvpLd9vo2DOULWKf7nlbTH+Fs28E=;
+        b=gD0IiSgG0fx+2p8Agr0OL6E9soVb352FEEt2gE1zJxpM8TUiVPxSACRMz2sJDwojva
+         IUR9qpegUJWk2tgFnpnpG6LbUtDItpMbcjjZGtnxjwnILN2iQmuLjgW3YK/EleC6LLcQ
+         8nSqprwVzBkRVoCiaRjT5IpavzN7FPpMUPp5jKRMtWcD87SGXN7+zbPKFTzDWukLTsgU
+         RVewoRY6kAnxYhJyfDOmG0Tfmd+U0eI2hJ81H9KDJS+GvwNgxcw7tgKHGlfEupFdIMQf
+         OzPDtLRGM3aDZrdVt35/4BVfkmDB6YDxftvw1yh41lDn73ztW9XSMoIJLGNsiUHaE5Df
+         n30Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744288460; x=1744893260;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CYYB8xWXXp3NrY8EvpLd9vo2DOULWKf7nlbTH+Fs28E=;
+        b=tPT0IQDILhEY5NLuZr4GTL0flp7458xy/41k7mIaraz0ntn0Ldy6B5+Q53zMQpxZi4
+         1WBUkyVE8mw6O//Xn+QuWKOmYELKn9ECH+ryerSBqpgzSEodfI9ZEF/tPZ8WC8ztbN8p
+         Ks6xLA1mu3UikELfeizv2G4LSS2kfPw9R7Mev8bNJxOBPla+nDSsot5uZ9kPyLkHPsYo
+         LO0XczFxiKRLYsnK9SqDwpWfcnNn9qWoXYU3Jsyi7rpp5q/duxS7QLfJS9+MAp2nrUZ3
+         QzeWEFiS2U1gMCMtMPide2qFlfQl9tuYHzjzbtVmpxjAwOBbmtMTFHLnAw24d1bQeemd
+         ugxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULLZyDe3brA1gTuWPBbpaLRRp2yuNF7RL71IJdCAyXAqBlzexSML5c1Kwj6aRmRkrQkvjwVzXtMw/nVH0=@vger.kernel.org, AJvYcCVTYiWahOMOngEv8toejlkfMLJcaypa5rT3nm7hIjmqwJtL/Zh5HOuurCMg2sCrJqRy/DOYgVvjasYSNOOq4d0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUMVZzcQsmvq2TD23JSkZapY9WH0z/7W5i4bEw6MPY4BSz/Ksa
+	dyMqVKBp7xoR+zvKyQsaH90RnwFABlBHD5d3TKPJdIcVLkw3I+t3
+X-Gm-Gg: ASbGncsQe0tcS9ktW3JYKN91uYxLu/zl/SH0PHxnF/0EZ1odpJy/fMXQm2cBmHLgJy1
+	HHxgn26j/ZctX5YVWZaOLOFx/aelCbd2yEnSae3XRHoEvYiLqz1LWTJqdWmW4qSgy4CVBZ3a1ed
+	pFrGE+RmJ81I2TDLFn72nt+OcBlLami6AHqtrVlM4+Huu7GoUf6pjXIYGIpIDrVi/I6/Y/b43Q0
+	0tC7NYPMUBlAb2e5qfxCqKTMq88nTZN916cFb6IKyOysLvQPIF4Xehe2oLjRQu5Rr05yWFX2VZP
+	KS9ykXdVzWVIC7UAIQaOs3ybxx3mUZq6BU+EaKFpAy53qwv74E6uLCN4aU1CJYoYwSdHHUbQA7x
+	iKW4r4dsNudKYSH8xbLqV4u0=
+X-Google-Smtp-Source: AGHT+IGl2utS2unvYHRMdT2RP9ueZqQhdCzDP3jwZyYMjQoG9MrpSlL23CvVNg2kZbwezJItYp/l0w==
+X-Received: by 2002:a05:6a00:1487:b0:732:1ce5:4a4c with SMTP id d2e1a72fcca58-73bbf869048mr3236065b3a.1.1744288459852;
+        Thu, 10 Apr 2025 05:34:19 -0700 (PDT)
+Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bb1e69ae9sm3206479b3a.173.2025.04.10.05.34.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Apr 2025 05:34:19 -0700 (PDT)
+Date: Thu, 10 Apr 2025 21:34:02 +0900 (JST)
+Message-Id: <20250410.213402.1373597003035091247.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, x86@kernel.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, peterz@infradead.org,
+ hpa@zytor.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, catalin.marinas@arm.com, will@kernel.org,
+ chenhuacai@kernel.org, kernel@xen0n.name, tangyouling@loongson.cn,
+ hejinyang@loongson.cn, yangtiezhu@loongson.cn, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
+ tmgross@umich.edu
+Subject: Re: [PATCH v5 4/4] rust: Add warn_on macro
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <Z_d1xAAptnfzqg1l@google.com>
+References: <20250409065802.136971-1-fujita.tomonori@gmail.com>
+	<20250409065802.136971-5-fujita.tomonori@gmail.com>
+	<Z_d1xAAptnfzqg1l@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250410085916.546511-3-abdiel.janulgue@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 10, 2025 at 11:58:17AM +0300, Abdiel Janulgue wrote:
-> diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
-> index 874c2c964afa..1e610545e100 100644
-> --- a/samples/rust/rust_dma.rs
-> +++ b/samples/rust/rust_dma.rs
-> @@ -54,13 +54,9 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self
->          let ca: CoherentAllocation<MyStruct> =
->              CoherentAllocation::alloc_coherent(pdev.as_ref(), TEST_VALUES.len(), GFP_KERNEL)?;
->  
-> -        || -> Result {
-> -            for (i, value) in TEST_VALUES.into_iter().enumerate() {
-> -                kernel::dma_write!(ca[i] = MyStruct::new(value.0, value.1));
-> -            }
-> -
-> -            Ok(())
-> -        }()?;
-> +        for (i, value) in TEST_VALUES.into_iter().enumerate() {
-> +            kernel::dma_write!(ca[i] = MyStruct::new(value.0, value.1))?;
-> +        }
->  
->          let drvdata = KBox::new(
->              Self {
-> @@ -78,13 +74,14 @@ impl Drop for DmaSampleDriver {
->      fn drop(&mut self) {
->          dev_info!(self.pdev.as_ref(), "Unload DMA test driver.\n");
->  
-> -        let _ = || -> Result {
-> -            for (i, value) in TEST_VALUES.into_iter().enumerate() {
-> -                assert_eq!(kernel::dma_read!(self.ca[i].h), value.0);
-> -                assert_eq!(kernel::dma_read!(self.ca[i].b), value.1);
-> -            }
-> -            Ok(())
-> -        }();
-> +        for (i, value) in TEST_VALUES.into_iter().enumerate() {
-> +            let val0 = kernel::dma_read!(self.ca[i].h);
-> +            let val1 = kernel::dma_read!(self.ca[i].b);
-> +            assert!(val0.is_ok());
-> +            assert!(val1.is_ok());
-> +            assert_eq!(val0.unwrap(), value.0);
-> +            assert_eq!(val1.unwrap(), value.1);
+On Thu, 10 Apr 2025 07:39:48 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-Maybe use if-let to avoid the unwrap?
+>> diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+>> new file mode 100644
+>> index 000000000000..761f0c49ae04
+>> --- /dev/null
+>> +++ b/rust/kernel/bug.rs
+>> @@ -0,0 +1,114 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +// Copyright (C) 2024, 2025 FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> +
+>> +//! Support for BUG and WARN functionality.
+>> +//!
+>> +//! C header: [`include/asm-generic/bug.h`](srctree/include/asm-generic/bug.h)
+>> +
+>> +#[macro_export]
+>> +#[doc(hidden)]
+>> +#[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
+>> +#[cfg(CONFIG_DEBUG_BUGVERBOSE)]
+>> +macro_rules! warn_flags {
+>> +    ($flags:expr) => {
+>> +        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+>> +        const _FILE: &[u8] = file!().as_bytes();
+>> +        // Plus one for null-terminator.
+>> +        static FILE: [u8; _FILE.len() + 1] = {
+>> +            let mut bytes = [0; _FILE.len() + 1];
+>> +            let mut i = 0;
+>> +            while i < _FILE.len() {
+>> +                bytes[i] = _FILE[i];
+>> +                i += 1;
+>> +            }
+>> +            bytes
+>> +        };
+>> +        // SAFETY: Just an FFI call.
+> 
+> Safety comments could be improved. This being an FFI call is not the
+> reason why it's okay. Furthermore, it's not an FFI call.
+> 
+> Otherwise, this series LGTM.
 
-	if let Ok(val0) = val0 {
-	   assert_eq!(val0, value.0);
-	}
+SAFETY: It's always safe to embed metadata such as the source file
+name, line number, and flags into the .bug_table ELF section.
 
-I know it's a bit pointless, since we know it must be ok, but the educational
-message of the example should be to check and not to unwrap, so maybe that's
-better.
+Looks good?
