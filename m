@@ -1,81 +1,57 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFEC1DED40;
-	Thu, 10 Apr 2025 23:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BDB20C472
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 23:56:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744328635; cv=none; b=Yl26zNoBpGP9YI04KNmlEhb8aYdXWpSpEm7WwbgrmS+n0jgsRWeWj1Gt90mwPWJ37nEKqi+hR652f64x2aIv/8fmqwfs2hpGIVVkuFvOVCHFxwayZE4/Hywl6rntbsnpUXpt0Ioe/6ag8gUoAHFJeBygSQh3pTwz2JdsBfNMrCA=
+	t=1744329374; cv=none; b=msA2DI7u4h5xBkaL7WJRgvZWMTD9tytn4bH/inCgcZGRXXQ5grXu2EyllBviED2VoaBlHPraXoFnw7svSzJzZ+OxUwIPhMNpzXaTuBdR7DkwjRa+3ELGZWXmL2pOiiH4huF9HxYe3lsktWqLM9LKGkBj/On2vvczrZIcvCjsS84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744328635; c=relaxed/simple;
-	bh=p666x0nC/judlLYcmnXL7beImPA94XeZkw17BkcrsrQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OreQMCUmYax/H1Qyb14KHfkD8XjW2SXjeyx1TF+dpUouuEwqItspNDVwSlh+GYUEJad1ab868HLTKxqs0ekujoXuLXzVcVjzGUbulmePBw5i2/4ndYNuFeVi/0rMojFz5EWiT+gZHrHrBRLFNUv1JUPN4ptgedcukWWhQ1i1nqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ITrULVAy; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744329374; c=relaxed/simple;
+	bh=ypD3tbVfNfiKCDvd6kLsFR1P1XnGv4zvSm/5cC9ekJw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PksFjKjlQHBU2ahN0rGGDIydCMVFLmsX/+O0ikZa6qB/bIUkBJL5Ohl1i5kEyoEwlIVqpX5PxxSF9q/5gD/REvutjvAUY68tkMeN+Tu4rykNRnOuAH2Ed+RCnxznvpFijSavOoB2+bT8M4eLrdSNOEgW8nzJWPzEgQnTDHgVAEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dYoDcK7Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITrULVAy"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-739b3fe7ce8so1331143b3a.0;
-        Thu, 10 Apr 2025 16:43:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744328633; x=1744933433; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mkXOG9SHSYydAOpZRLIeujo9akAQSNGPAXLGkx9I9X4=;
-        b=ITrULVAyoXQSAzxnB26Hua+6VLXpCVCQVXk+8hZn9K5bB5Ed33+L/030VurGKt3ZtB
-         RaV8XNltt0RZ2GMfnpWpHrOj8YQ6CkFSDpXmk45lrNVXUdm2GJVqpprULkl8FCA/FDIV
-         eCIeuVCVXT8kKHOOP/ZSrkquCBlec/5aCi8b+s4czXYSGRqXUVCpirQ4AW+x7PmYgHhA
-         XneKmBSFD1sUMW4m4OPhBDMSCUzoO2h/mgonQjiEwE/5sjAsyWHZQ+2RgwDppyHA6q9/
-         RhlDFW1ekQI6oC8f4gWOAP3T9OFilEUsbxFTUk3AVVw/QLLW5hsd73Wl19HsNVcxu4Dj
-         JR3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744328633; x=1744933433;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mkXOG9SHSYydAOpZRLIeujo9akAQSNGPAXLGkx9I9X4=;
-        b=v2iBkmq5vYi1pLrKGcMnC27legecEPoKx0C6gvs87Ie7QrNiiT4dxq3VYc2AQ3+liF
-         dfmr7sjcxMwOXKpGU6d/krg9/Q4IZc6tSac0k/L7THf52OFQfEALcbVc8sxtx96BGcmR
-         rlLXfBJg08wi6GIRiSpNmUTJEXmBBYlX/BnoglmBje1rPB/qAqASeGwEm8deqeyS/7WD
-         Vf9fx2N8jP9k8Rhhs2vrEP5kvtxvXo8WyNK4Y1vKrC2T6A99WLoOwDCGdGz/JBBlnvJj
-         w06vLAJAIscRFjbRrQy4t5Ea3d7hkTGKRJJhQphaXvaOmY7imm8NW5A/LTDEUVgns8zZ
-         2bmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWdRfI3mK1cReBDH855pxx6xiFoUrgLmzJfmVGRjRU1ZQ8cEQNurC1Y096+cIJUXYGgOPLeS5z6ZswYAfY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqXr7wT7unBFr3btLhffmfvCvX36aMBabdtU7+xd10jzj3VUNM
-	woFrNxyaev5/z5wppGyMO+WU5K7TyxbJc5lU5ZqQkVTHE8C8vUs4TYXQwxYk
-X-Gm-Gg: ASbGncvdKfJup35ojuphaCKCAjAgesmTIGYZDdTnU6aa1nsqMqbNpk75gEF4fXEer4Z
-	Y5KBvxeXkIQo3AOJr4sLHWGhrkzsWEi3PDc3hz4w2Zd1TeS17ajVtiD2vq7sxn3fxt9y2+jkLEM
-	FdnoPlP1gyg+DDNPsgaVCGHB0fwGF6GocezNTPEP1FCdTYphakSRRpQ+f0XYJyCLtFqqRi6eiyC
-	oliCLh3QPguJYXLYv7bIr38kkCHLp2OC7k9Q5mes1M3Ul9YV8itU5u1663CTRkFRWFpHN9Yfgs0
-	amnkNBpjzOfx2HFxqRwTAzkUmBVNC1KCWPSCf9yxkFkrP8Eaqlva+7oJUknzVallCQBHFqmYKho
-	9NAegeZQ6Jgw0SeaMvA==
-X-Google-Smtp-Source: AGHT+IEvxZfT0oBD09UnAPGUiwY4IMkEr5SLqOudKTaL2C+U7GzKJx3GLjFfHx9Qdt2ZsECrPXu8+Q==
-X-Received: by 2002:a05:6a20:d70f:b0:1f3:418c:6281 with SMTP id adf61e73a8af0-20179787761mr1116092637.4.1744328633153;
-        Thu, 10 Apr 2025 16:43:53 -0700 (PDT)
-Received: from mew.. (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd21c3943sm165813b3a.37.2025.04.10.16.43.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 16:43:52 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: abdiel.janulgue@gmail.com,
-	dakr@kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dYoDcK7Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C26C4CEDD;
+	Thu, 10 Apr 2025 23:56:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744329373;
+	bh=ypD3tbVfNfiKCDvd6kLsFR1P1XnGv4zvSm/5cC9ekJw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dYoDcK7ZQ4Iel6blYUQ1dqHUBz0P5YDChT5uH28/rfRIPnpzQx0zAnRkXrwgDdni6
+	 +ATqu46FyIzPBdo54NiGGT4QYyt8LNaKPKquTbuMc3Y8nb3rVsN7Z6k8qMLHLAXi9e
+	 VD1DdmdVynOUqEQWPJZCjMCCLZ31u6PCSfAvx9aNlqV0A7XPeNkf+f9XooBAILxLXl
+	 slr7WCdkiCstKd9ATBvgEwwyZ4AcMsWK62hQOu7GfOt5z5WWhmtisxvHiAtXuk79j1
+	 nATSsuZ71FNEaa8FInSU8Cd3Da/XRxyy4fsnrEYXVQJzDT0rDrlaZl9/d9vnIzX+Uw
+	 r7qb8UI1N+2SA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: airlied@gmail.com,
+	simona@ffwll.ch,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	lyude@redhat.com,
+	lina@asahilina.net,
 	daniel.almeida@collabora.com,
-	robin.murphy@arm.com,
-	a.hindborg@kernel.org,
-	ojeda@kernel.org,
+	j@jannau.net,
+	alyssa@rosenzweig.io
+Cc: ojeda@kernel.org,
 	alex.gaynor@gmail.com,
 	boqun.feng@gmail.com,
 	gary@garyguo.net,
 	bjorn3_gh@protonmail.com,
 	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rust: helpers: Add dma_alloc_attrs() and dma_free_attrs()
-Date: Fri, 11 Apr 2025 08:43:32 +0900
-Message-ID: <20250410234332.153242-1-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 0/8] DRM Rust abstractions
+Date: Fri, 11 Apr 2025 01:55:19 +0200
+Message-ID: <20250410235546.43736-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -84,98 +60,109 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add dma_alloc_attrs() and dma_free_attrs() helpers to fix a build
-error when CONFIG_HAS_DMA is not enabled.
+This is the series for the initial DRM Rust abstractions, including DRM device /
+driver, IOCTL, File and GEM object abstractions.
 
-Note that when CONFIG_HAS_DMA is enabled, dma_alloc_attrs() and
-dma_free_attrs() are included in both bindings_generated.rs and
-bindings_helpers_generated.rs. The former takes precedence so behavior
-remains unchanged in that case.
+Compared to the original work from Lina, the patches in this series contain the
+following modifications.
 
-This fixes the following build error on UML:
+  - "rust: drm: ioctl: Add DRM ioctl abstraction"
+      * wrap IOCTL data in Opaque<T> to avoid UB when creating a reference
+      * original source archive: https://archive.is/LqHDQ
 
-error[E0425]: cannot find function `dma_alloc_attrs` in crate `bindings`
-     --> rust/kernel/dma.rs:171:23
-      |
-171   |               bindings::dma_alloc_attrs(
-      |                         ^^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_alloc_pages`
-      |
-     ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44568:5
-      |
-44568 | /     pub fn dma_alloc_pages(
-44569 | |         dev: *mut device,
-44570 | |         size: usize,
-44571 | |         dma_handle: *mut dma_addr_t,
-44572 | |         dir: dma_data_direction,
-44573 | |         gfp: gfp_t,
-44574 | |     ) -> *mut page;
-      | |___________________- similarly named function `dma_alloc_pages` defined here
+  - "rust: drm: add driver abstractions" (newly created)
+      * Remove unnecessary DRM features
+      * add #[expect(unused)] to avoid warnings
+      * add sealed trait
+      * original source archive: https://archive.is/Pl9ys
 
-error[E0425]: cannot find function `dma_free_attrs` in crate `bindings`
-     --> rust/kernel/dma.rs:293:23
-      |
-293   |               bindings::dma_free_attrs(
-      |                         ^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_free_pages`
-      |
-     ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44577:5
-      |
-44577 | /     pub fn dma_free_pages(
-44578 | |         dev: *mut device,
-44579 | |         size: usize,
-44580 | |         page: *mut page,
-44581 | |         dma_handle: dma_addr_t,
-44582 | |         dir: dma_data_direction,
-44583 | |     );
-      | |______- similarly named function `dma_free_pages` defined here
+  - "rust: drm: add device abstraction" (newly created)
+      * full rewrite of the drm::Device abstraction using the subclassing
+        pattern
+      * original source archive: http://archive.today/5NxBo
 
-Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-v2:
-- add helpers for dma_(alloc|free)_attrs() instead of conditionally compile
-v1: https://lore.kernel.org/lkml/20250409055501.136672-1-fujita.tomonori@gmail.com/
----
- rust/helpers/dma.c     | 16 ++++++++++++++++
- rust/helpers/helpers.c |  1 +
- 2 files changed, 17 insertions(+)
- create mode 100644 rust/helpers/dma.c
+  - "rust: drm: add DRM driver registration" (newly created)
+      * move VTABLE to drm::Device to prevent use-after-free bugs; VTABLE
+        needs to be bound to the lifetime of drm::Device, not the
+        drm::Registration
+      * combine new() and register() to get rid of the registered boolean
+      * remove file_operations
+      * move struct drm_device creation to drm::Device
+      * introduce Devres
+      * original source archive: https://archive.is/Pl9ys
 
-diff --git a/rust/helpers/dma.c b/rust/helpers/dma.c
-new file mode 100644
-index 000000000000..df8b8a77355a
---- /dev/null
-+++ b/rust/helpers/dma.c
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/dma-mapping.h>
-+
-+void *rust_helper_dma_alloc_attrs(struct device *dev, size_t size,
-+				  dma_addr_t *dma_handle, gfp_t flag,
-+				  unsigned long attrs)
-+{
-+	return dma_alloc_attrs(dev, size, dma_handle, flag, attrs);
-+}
-+
-+void rust_helper_dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
-+				dma_addr_t dma_handle, unsigned long attrs)
-+{
-+	dma_free_attrs(dev, size, cpu_addr, dma_handle, attrs);
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index e1c21eba9b15..1e7c84df7252 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -14,6 +14,7 @@
- #include "cpumask.c"
- #include "cred.c"
- #include "device.c"
-+#include "dma.c"
- #include "err.c"
- #include "fs.c"
- #include "io.c"
+  - "rust: drm: file: Add File abstraction"
+      * switch to the Opaque<T> type
+      * fix (mutable) references to struct drm_file (which in this
+        context is UB)
+      * restructure and rename functions to align with common kernel
+        schemes
+      * write and fix safety and invariant comments
+      * remove necessity for and convert 'as' casts
+      * original source archive: https://archive.is/GH8oy
 
-base-commit: c59026c0570a2a97ce2e7d5ae5e9c48fc841542b
+  - "rust: drm: gem: Add GEM object abstraction"
+       * switch to the Opaque<T> type
+       * fix (mutable) references to struct drm_gem_object (which in this
+         context is UB)
+       * drop all custom reference types in favor of AlwaysRefCounted
+       * bunch of minor changes and simplifications (e.g. IntoGEMObject
+         trait)
+       * write and fix safety and invariant comments
+       * remove necessity for and convert 'as' casts
+       * original source archive: https://archive.is/dD5SL
+
+A full diff between this series and the original work can be found in [1].
+
+This patch series is also available in [2]; an example usage from nova-drm can
+be found in [3].
+
+[1] https://pastebin.com/qLBCfgTc
+[2] https://gitlab.freedesktop.org/drm/misc/kernel/-/tree/topic/rust-drm
+[3] https://gitlab.freedesktop.org/drm/nova/-/tree/staging/nova-drm
+
+Changes in v2:
+  - IOCTL: wrap data in Opaque<T> to avoid UB when creating a reference
+  - driver: remove unnecessary FEATURE flags
+  - driver: remove date field
+  - MAINTAINERS: add files to both DRM and DRM MISC
+  - change primary authorship of most patches
+
+Asahi Lina (6):
+  rust: drm: ioctl: Add DRM ioctl abstraction
+  rust: drm: add driver abstractions
+  rust: drm: add device abstraction
+  rust: drm: add DRM driver registration
+  rust: drm: file: Add File abstraction
+  rust: drm: gem: Add GEM object abstraction
+
+Danilo Krummrich (2):
+  drm: drv: implement __drm_dev_alloc()
+  MAINTAINERS: add DRM Rust source files to DRM DRIVERS
+
+ MAINTAINERS                     |   2 +
+ drivers/gpu/drm/drm_drv.c       |  58 ++++--
+ include/drm/drm_drv.h           |   5 +
+ rust/bindings/bindings_helper.h |   6 +
+ rust/helpers/drm.c              |  19 ++
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/drm/device.rs       | 195 +++++++++++++++++++
+ rust/kernel/drm/driver.rs       | 170 +++++++++++++++++
+ rust/kernel/drm/file.rs         |  99 ++++++++++
+ rust/kernel/drm/gem/mod.rs      | 321 ++++++++++++++++++++++++++++++++
+ rust/kernel/drm/ioctl.rs        | 161 ++++++++++++++++
+ rust/kernel/drm/mod.rs          |  19 ++
+ rust/kernel/lib.rs              |   2 +
+ rust/uapi/uapi_helper.h         |   1 +
+ 14 files changed, 1043 insertions(+), 16 deletions(-)
+ create mode 100644 rust/helpers/drm.c
+ create mode 100644 rust/kernel/drm/device.rs
+ create mode 100644 rust/kernel/drm/driver.rs
+ create mode 100644 rust/kernel/drm/file.rs
+ create mode 100644 rust/kernel/drm/gem/mod.rs
+ create mode 100644 rust/kernel/drm/ioctl.rs
+ create mode 100644 rust/kernel/drm/mod.rs
+
 -- 
-2.43.0
+2.49.0
 
