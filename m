@@ -1,219 +1,154 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2041.outbound.protection.outlook.com [40.107.223.41])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C49926A0D4;
-	Thu, 10 Apr 2025 09:57:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744279063; cv=fail; b=F1Zh06JeQk0uv6oPS+pe24oypFZA6fVy/tI1sTCZwhfxLGATltEKlGEVO6JeZkyEdktNoUA6BvJ/oh7YD5W2lpLtq6o5XR6bcqKZuj3Eiivt0rEWTjjaNE1CUi4wzObpiq5JE7DD0o96USNx70h1wi03iuyKcyp5GJgqkAjgCi0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744279063; c=relaxed/simple;
-	bh=RC4fKvg0wqzr0ElNGRJpeHRykIGkejswTSvAToC2Kg4=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=KEAziFX1RmEk8+F9fz72S6xHsWXu9LsTO6nrI2XPhKthaNX9vnfLfrvtq9BQ/bFe3FRoiFQYcGaPiKXG3GMsqWneN6rJM6xU4yOAn3oWIbmMWfKvQFGPsmnVlFSwW2G/NL5W5oHqa6a0XSwKeSKYVXsHmiqr4L4SdDzbUuDuzWY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HmnEeKGQ; arc=fail smtp.client-ip=40.107.223.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBF028134E
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Apr 2025 10:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744280635; cv=none; b=QGYFJXARh+SQWcSBCG0/GEk3Z+fZqok7V9oohmTxBsGIaz4spb0nfNrLywDw0Unmv1sjDVrRKicHRyVxO9yzHO3t1VkLmuy21yBkGDAjFmGFZkMlwd8m24vZNbh/uKBPNyFmYbxQHjhb1TxK8EetS0Ugugm5VXrM/YKaEr56iaA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744280635; c=relaxed/simple;
+	bh=Tp8fVFya2sDu1gbTPaE9ZzIfUzdt0ybqaGGQcQT5y/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SKYzFR1elGGWI4wgOwdNtk7V8fOF4mKr03tqW/EjQYRCF/a/jWNAZbq9OKKnYmLwTpauf6iZloGGjlbVG7N67wxrrDo7oOJCIqCXSmdY7yCx4KdMfJ4nCnr3GIDWutKU9Ay/ukgp7JsouskQ5Bj2yrgNa40ooWQBOJtLScQuzd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jEMDGxLX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HmnEeKGQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DtUSbMFDFqf6hWNSjycfwSiFG4BXKPdlFw2Q0bmb/pUwm//6lhrLj54voUR2Wj1RtL6CUFYcWMmBf62CcgZSJUie0LSMfQSWfa5aFToZg2Ddvw9H6UUM5r5LeCVbwplLAwUY5LnGKlbFEDNLIWEi/6CaYuYflA546+wyAruFKTw8GBWBYJjQ1k1EsHiEKY7Mm0hrExrssfFjsoxPx2V9xoDwB4mBZglJ7U+aOxxGpQjEZ/Rqyf1XaPvdtVkQ7W4/9Bgklzw+dvFYXkQmMQjtMHXqQmJGFcI0DR747OxMa8Hw9n8OeE3rhz4h6xxIruCAP0jVVFBBNiDq4r1Jtg53tA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gbFcv/QaDqVoy3tDTncfTvJXBaEAXQPjAxTEzSI62/4=;
- b=e3B1I+2gDLMP22IoJotmTu4hW/R7UwbCTZPElfQxty3eoMn6DyzKVysjf0xTtoCJV6rpyhN+DyibyIIPqIAw1SokTWnYKn/zh7GRxEJ8bM6dhiC1Um7nNB07GOrKVVoUdWtyKNhW6xI4vBzLY7xDlgYu/x0qEkF2HVhRnAvw/VFsfo7UqQZyzzAAV5rSl7WqufmfhPF0SUw9k8ZKgIrr7C0361/85jvGz8U3Y+xJnpVVkrM07vN4sB5voRXDFdwJW4NOjyEwWRAaaLr2Et51M6QogiHzxaaKE8qLefseFcal9dhrMSuRaA3AuaaYEKd8HospH2Y7iC8Jo6c7Mgojzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gbFcv/QaDqVoy3tDTncfTvJXBaEAXQPjAxTEzSI62/4=;
- b=HmnEeKGQSn2Uuev3yxGp20Pp3j6WeQInmtqEModFTCDfID2M3fjdnT0Gv0tv9vf8riAXDMRcjMMO+hSi7qhx0jVpSfZSfCVAfsORWkrOw2YBbMm7uL9GR3TjdNSzHdveBkLutsu5lFUoywCA3NFZC8b85/lvKouxDHV+fkZ1KOworx36MCgM2JBCGzukAZoRb2KpVgbNPZmNs2Hc8XHQ2Xg8YFhkHyYksWDQ3esSN+0aa4MprrPbFXqdTGRhEYFQUlm73WBWGA/vuo3SxVrz0mVhF/XxDDBpJ0Vq1+67M+/R+hcQ/xLv/uYnKhEr6TV0/mHj6jbUYayqO3W8k4H+NA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by BL4PR12MB9534.namprd12.prod.outlook.com (2603:10b6:208:58f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.22; Thu, 10 Apr
- 2025 09:57:39 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%6]) with mapi id 15.20.8632.021; Thu, 10 Apr 2025
- 09:57:39 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Apr 2025 18:57:35 +0900
-Message-Id: <D92VBJWRTE2N.1O4IA5X7I1YFS@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Valentin
- Obst" <kernel@valentinobst.de>, "open list" <linux-kernel@vger.kernel.org>,
- "Christoph Hellwig" <hch@lst.de>, "Marek Szyprowski"
- <m.szyprowski@samsung.com>, "Robin Murphy" <robin.murphy@arm.com>,
- <airlied@redhat.com>, "open list:DMA MAPPING HELPERS"
- <iommu@lists.linux.dev>
-Subject: Re: [PATCH v2 3/3] rust: dma: add as_slice/write functions for
- CoherentAllocation
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, <a.hindborg@kernel.org>,
- <benno.lossin@proton.me>, <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250410085916.546511-1-abdiel.janulgue@gmail.com>
- <20250410085916.546511-4-abdiel.janulgue@gmail.com>
-In-Reply-To: <20250410085916.546511-4-abdiel.janulgue@gmail.com>
-X-ClientProxiedBy: TYCPR01CA0167.jpnprd01.prod.outlook.com
- (2603:1096:400:2b2::7) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jEMDGxLX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEC5C4CEE3;
+	Thu, 10 Apr 2025 10:23:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744280633;
+	bh=Tp8fVFya2sDu1gbTPaE9ZzIfUzdt0ybqaGGQcQT5y/4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jEMDGxLXxhbiuPezMF4HpoTksgTgJL7LvLWseKpFBDdxX92oygkJZC9xXHh5SAIZL
+	 yW0JCjXX9TbWQOMAYyVt9Wi3CEfDzKQ6aW2/PlLWKm51ubMHO2RBx3+bXg8Tde1U4k
+	 LgNSn15btv+B2lC5AdgT5Iv286EPCnMbE3GPdUnhcH6hHD0JtjOZBgXZrGQg8KIt9/
+	 +qK2RPA2v0gq10eWFB91/h9+Q46JOIN5f7h22XqVGI4Ql6MNfEBo2TH4isuu2tvQ4v
+	 91iEGrwSj2oj1AzaSUqQgcUrFs7EEMx4wKYY/EMSEHT7+dthZki1pMWaFEAqbMhV3A
+	 DuIiGFl8vhpfg==
+Date: Thu, 10 Apr 2025 12:23:46 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Asahi Lina <lina@asahilina.net>
+Cc: Dave Airlie <airlied@gmail.com>, maarten.lankhorst@linux.intel.com,
+	simona@ffwll.ch, mripard@kernel.org, tzimmermann@suse.de,
+	lyude@redhat.com, acurrid@nvidia.com, daniel.almeida@collabora.com,
+	j@jannau.net, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 0/8] DRM Rust abstractions
+Message-ID: <Z_ecMl2QtAssfczJ@pollux>
+References: <20250325235522.3992-1-dakr@kernel.org>
+ <32e7da7e-de32-4bc6-a751-f604da36a63f@asahilina.net>
+ <Z_VXBZcBsk2k6eVN@cassiopeiae>
+ <143206f6-cd97-4ef8-a4f3-f68d703903bf@asahilina.net>
+ <Z_V2ZxIZxI_HiHM5@cassiopeiae>
+ <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
+ <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
+ <34a4a130-98d1-4cc3-8dcf-b72b3ed36c10@asahilina.net>
+ <43ec8aba-f279-422d-95d1-68daac7eaed9@asahilina.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BL4PR12MB9534:EE_
-X-MS-Office365-Filtering-Correlation-Id: de4226c0-c57b-4439-2c77-08dd78162088
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|10070799003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bStKU1h5QTVvdHNRQjNzU0ZJNWNSYnRGbzdiUmtPK0k5VEVkNk1ycVZLTmRs?=
- =?utf-8?B?akJPeTExcWVjREdQNCszYmhlMjF1TEZnTHI4Skk5MFNWZnoxWWYwWU1KSElj?=
- =?utf-8?B?b2xpVXRvQnR5Z25BWmVZcXI1ZVJ4eWhORXNyVXZZSWR5dFpZNWMxckJzbE5o?=
- =?utf-8?B?bTluQk0ycW1COGhvKzJqVmRlRFpKQlVaZ2xSQkt4c0o1cHNjT3BMbytPRWVv?=
- =?utf-8?B?aDdOcjQ1czhrTS9zdlpaTFJtd2FnenkyNm9DYU5BU1M5MDgwVEk5bG9rcjN3?=
- =?utf-8?B?TGNRR3czWFQrYzVvc1RWN0lqOEd0Y2R6L25YTFRGOWQ2RVZEKzgzUVA2eVpT?=
- =?utf-8?B?YVkzSUpsb1BXQ2JhOW1KalQ5N2hTNCtsUll0bzlDU3k5b3NScDhmQUd0allY?=
- =?utf-8?B?ejVWa2ZTdGx6SXhmdjM2VXJOVVB5K3RLRzNQNWVnT1laS3RJUjBVRTMxSGM4?=
- =?utf-8?B?WnJIenNYblk3SVVFUkRvSWU3eWVWWHh6QkIvY1dlQWlNWnlUVHF0ek1DeEFQ?=
- =?utf-8?B?bUhhUHM4UExmVTgyRDljdHE2OXN2T2o5cWljdWFUdWRtV3QvRTdzUmJITG1C?=
- =?utf-8?B?VmI3blB6TXhseW0rZWVTVzRqTE85L05LeXYzb001dVZ2QnFnNEQyYU5XYTg1?=
- =?utf-8?B?Y0cyeUlMeS9kRWVUcTYydk82NnZQQWxYYXdTWnluamhCa1I5N1N0aTFIMnZP?=
- =?utf-8?B?WlJNcFc1STd2OEo0NldlNTlVNnRXdTBBRkNwSjYycThWM2tueWVmT1ZOcnVI?=
- =?utf-8?B?NEEwYmI4MkVZeTBheFhabVdtMmZBOG9GYmF2Sm04UGpPKzZhd29mbk1ETWpH?=
- =?utf-8?B?RHgwOVZHS056VXBzNHVFUHUyYWoxYkhTRlRlMDhPSEw5RlUvMzhDOTdjcE00?=
- =?utf-8?B?YnZLQ0NNSTlMZUh0ZFo0dUNoSFpKKzFSVERxVzV2UjY5d09SdGFQNitzMkJC?=
- =?utf-8?B?RURiYnNXSHY1aDZER0QrbzNNZWtZNkdmT2wzTmtsZUNjajJQMldpWHBMc1Z0?=
- =?utf-8?B?angvWXNKeTJvUEFlODBCenhxL2NnVUZKWDNUWC96cGVscW12Q3E1RW1vOU9D?=
- =?utf-8?B?bFBnb3NoQ1ZaeGtTcFpyRzVHYWJtK2RvMU5XNU9YUjZoakx2UUo3cE9RMU95?=
- =?utf-8?B?em5rOERva28xSGMzT0pXL3F5aGVmcGMya21PVFBXamlnTkxITjBvQklVcGl1?=
- =?utf-8?B?UDFOY3BmMGNycUFMMURRSWtSQWJZRDVHYzBaVHB5RTFxdHNXdm1OZE9zcGlE?=
- =?utf-8?B?YW9ONVJPNzV2Rzh4aHBrSmxJTUtNaUJFRVF0bGM2TGJEc3lyTUg0WGg4S1lt?=
- =?utf-8?B?UnNxbFhvZnM2bnRIVFNweGY3dVp4TVo5cDF3b0lCdkI2OTIzNGd5ZGVZVGdK?=
- =?utf-8?B?WVlZVUdMZWUzWXF2OENSaHI3cjB3TUREeUdSRWtMejFUSXZFaDdRQ2FyN2JP?=
- =?utf-8?B?L0wwMnY1bURBNlVZSmc1bDI5dGlrZ05DNEtGTmJUZU5Ya0c1cy9PUkZQVGdP?=
- =?utf-8?B?aXl2dTZwUVorM2FmVU1rbWdtanVoT2kxaFN6RVhpK1g3QTNjZ3hjM3A1VWli?=
- =?utf-8?B?bUVnTWNzWXpqRnRmZ3l2QmYvVjhFMlVydE5yK3lHbWF3eGlIb2FBcTJWc3lX?=
- =?utf-8?B?VkFZWUx4SXUvQVBZWXNEZUJxM0FWTjdJRVN4NjNLejZXVnlMakdqZ2U2a3d1?=
- =?utf-8?B?SmlqTHNjWFFYMHRIcWNMSUxSSW1zNVNBS1BmL2l4NkxBRFJmbVpUc2FhdDIz?=
- =?utf-8?B?KzFodVFoYlpRb0tna1doSmp1R3BpRlZjTkMwRzB1UVlQSExHRlFuRzdoY2Zz?=
- =?utf-8?B?Qzc1WmdJd2JHZk96azF4M1htM1gwWFZNYy9lNGUzL0pkSkppcEpTbzRyemE5?=
- =?utf-8?Q?qIfCoEoqwi8fW?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(10070799003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K2ZHb2ltaGNUQ1JzTy9WS1Q0TXFBSWdUVi9HQmZ3dVpKaER6K0o2MW1VSnR6?=
- =?utf-8?B?b1I1L0Q0cTRlOW94OWFNd3pwMEJ3RU4wMElYMzR5amY4b0ROWVA3QlRUeWlR?=
- =?utf-8?B?SmppbGNZcHVGd2g1V1grbFV0TVRXeHI0Ri9iVk5hOUtTWC9XN0lYQ3JFMm1G?=
- =?utf-8?B?TFBKL21nVTNCdWFmTkxIWVpFbWNISU45MU5scStrMHlKbGxUcWZibElucUFO?=
- =?utf-8?B?azI3ZVVVY1IvbEJ4MVN6QnpmQitHNHNNNm9Kalpjd09lcmpuVkNMbS8rZEk4?=
- =?utf-8?B?VTVmTTR5VHF2d04reXZzL1REdS9MV2w5Z1F4SnlIVmJ0SHJ4MGpiSW9SMXlS?=
- =?utf-8?B?eWNNMnhXYktjQmNkOHhuSjVzU2JBYlZwYlcrME5iNHZpY1pNMFhhVGpIaEQ4?=
- =?utf-8?B?UHd2bUlSdEo5OEhVbm1RcjNNcWErQm1Xc1lwczNiVmhaUVNvaWFGVC9rdmxB?=
- =?utf-8?B?dVV2ZkFMNHh2NEhaRk53eE9iby8rVHZDUFpRdUxvVDNWeXVianZBV0ZSTzk2?=
- =?utf-8?B?dExUcDJucHhNcWdjVk5VL3ZsYi82RitxY0R1UExwaWpmcFZKa2podEdtVFpB?=
- =?utf-8?B?WnA0ZW9TejkyaE9hYlR3UlpBOEpUNFZScitTRWFiYmR0Wkx5eXFGaHNiZUZZ?=
- =?utf-8?B?SXVnUGtGbFpienZRbndMWGd3UkhseERheGdTWnh3cDN1ZktUeFJXZnlsNU5K?=
- =?utf-8?B?UmhKdTVHRzhzdVY2QTlNZFg4QmJUZ1dmZndGWXNTbnl4SWNia2ZiUGs4Q1FP?=
- =?utf-8?B?K1NZS2tPaVNJVmdqT05rNHU4aXRlc25mekhjdE5va2Nrd1VFUldXMTR5UXNw?=
- =?utf-8?B?SmtMZklzMnVhN1VFT3NnNnpXeVBrdFpkZnljMXhuOUs5Q2llRTkyZ05rc201?=
- =?utf-8?B?TnJpajVlVGlhRFJ0RGoxV1ZTSmhxZWZYV25yS0VNQnh2b0srUks3cVNnUUZN?=
- =?utf-8?B?dTliU0t6L1FJekhmR1lWdDZMSFBHaVl5SUNuRDQyY3R3aVB2akdMaSsrTjVh?=
- =?utf-8?B?c3N2bDB1eHRnWEdTTHc2M0lmTStsR0Ewam4rOVU3dXBlMUpVZUF1dkd0TnRu?=
- =?utf-8?B?NlNxdG9XaE1qeEd3SXdiK0EyZmVxNTZCbzlVVVRUaGdUMisrSmVuY3JTNWsy?=
- =?utf-8?B?VXgwNFRyOEtTaW9PcUc4M2VlQUhWUDNzV1pDanNmZzZyMUZZUWdlNUFVRWpS?=
- =?utf-8?B?dTFXYnpBUXozUEVLM3JYWjFQSTFwOXgxWnp2NFBGZko1ek9ZNitHMGJFSlRT?=
- =?utf-8?B?ak1xNkNTdi9kSVA3ZFBVQVFNcVNmTjBqVFFtQmw3RzBJd29Vck45aHhKdUNx?=
- =?utf-8?B?K0h6bkxid21FbUJmaFo1Zjg4c2x6bVR2c0NZU2J3SXdySUlIOUFFcUJPZUJo?=
- =?utf-8?B?QmVObFkrUmROTlBXU3h2bW96VGRGeWc5UDM5cUQzbCtkRXEyTFZaOWtxeTJP?=
- =?utf-8?B?Um9odnloRk5ZOFhXZGxXNVZIbnVWWDNRVm9UYTZ2cldnRUs3VjgvRmg2bFdW?=
- =?utf-8?B?RHVSVitlZG9BWkZuNkM3YWpWblZueUtRT0RXZjluRGsyM2hsVkpFelJ4VTVm?=
- =?utf-8?B?dk1LVWZVSFBvd2hxaE90Y3JkbG9pV01xODdQMUEvVmE2UGdSOWgxV293Z294?=
- =?utf-8?B?b21xNGRLNXZNSHZWc2h3M2ltaXRDN0hLSnFkNlE4K2JBekpPK0FQbHU5cEFn?=
- =?utf-8?B?RTBTVFRiczBFcXkwNStYdC96NHJvV2pRciszdC9teDJHMk8rd0VuNTNOM08v?=
- =?utf-8?B?SG9SYXlMb1VyY0x5TS9WMDQ4RktoNVdnWE1JSWhDcnZYMEZZMTVTaERGL0pG?=
- =?utf-8?B?OUVDWUcybFhtN3FmSHpBS3k3QUk5YllLNEQxa0RSSlNwUU51ODlhTFBNUEpC?=
- =?utf-8?B?RDJldUYwcEJnWjhSUWsrYlFEZC92SlVYUTJNTklhTFo3YUtHUWVvMXNaVk01?=
- =?utf-8?B?Z2tLZnBTMlhBUTU5aUVWeFN1QzhNNGViakMxbUQ3UDVLMVpXOGVQOGhkajNG?=
- =?utf-8?B?VHlwbzhzNlZCa2N1VURMWmpGQzdWMWxmdi9SV3RQNEVLTnZjdFNUb29qdjQr?=
- =?utf-8?B?NnlCNitrYktLTHRUVFJkOXlKSUpCdHVRRkxGMEhGK1ZtM08zUTFRT2l0NTdH?=
- =?utf-8?B?MDdRVjRrZk1YTWNuWHNpWHg0OTcrc1Z3Nk9RdlRQbTZxZHVJdWVhVGVvM1cv?=
- =?utf-8?Q?Dw9MqtFNbIO1zttbem1v2fNh7jtzUnaeeHEb0P43I3m7?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: de4226c0-c57b-4439-2c77-08dd78162088
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 09:57:39.1112
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bJ7V/flySZ8+9SXREqF+vOgwSt6zjT2iMPsutIcQ6Sku71Kk6quT7fiPmD2GCOwX9ab+Rp0ZPmRkzqx2erFTfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9534
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <43ec8aba-f279-422d-95d1-68daac7eaed9@asahilina.net>
 
-Hi Abdiel,
+(Adding Sima and dri-devel back in.)
 
-On Thu Apr 10, 2025 at 5:58 PM JST, Abdiel Janulgue wrote:
-> Add unsafe accessors for the region for reading or writing large
-> blocks of data.
->
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> ---
->  rust/kernel/dma.rs | 85 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 85 insertions(+)
->
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index a61da5eeb017..880f6f04ba86 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -218,6 +218,91 @@ pub fn dma_handle(&self) -> bindings::dma_addr_t {
->          self.dma_handle
->      }
-> =20
-> +    /// Returns the data from the region starting from `offset` as a sli=
-ce.
-> +    /// `offset` and `count` are in units of `T`, not the number of byte=
-s.
-> +    ///
-> +    /// For ringbuffer type of r/w access or use-cases where the pointer=
- to the live data is needed,
-> +    /// [`CoherentAllocation::start_ptr`] or [`CoherentAllocation::start=
-_ptr_mut`] could be used instead.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * Callers must ensure that the device does not read/write to/fro=
-m memory while the returned
-> +    ///   slice is live.
-> +    /// * Callers must ensure that this call does not race with a write =
-to the same region while
-> +    ///   while the returned slice is live.
-> +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result=
-<&[T]> {
-> +        let end =3D offset.checked_add(count).ok_or(EOVERFLOW)?;
-> +        if end >=3D self.count {
-> +            return Err(EINVAL);
-> +        }
+On Thu, Apr 10, 2025 at 04:12:13PM +0900, Asahi Lina wrote:
+> 
+> P.S. my analysis based on the pasted code (since everyone here and
+> everyone on Reddit is forcing me to do it) is that:
 
-Not sure if you have overlooked my comment on the previous iteration or
-if I completely missed the mark, but my understanding if that the bound
-check should be `if end > self.count`. Also applies to the other methods
-of this patch.
+First of all, you keep talking as if I would have been resisting to do any
+changes, even though I offered you to change things from the get-go.
 
+Instead of taking the offer, you decided to go with wild accusations, without
+even properly looking at things and understanding my intentions.
+
+Given that you stepped back from kernel development, making clear that you don't
+want to be bothered with it anymore (as you also repeated in this thread), I had
+to take a decision: Do I "keep" your primary authorship for commits that I
+(newly) create, commit messages I write and code that I substantially change, or
+do I account for this by changing primary authorship while still giving you
+credit.
+
+The decision I took is clearly reasonable and *nothing* about it is uncommon.
+
+I also want to point out that for patch "rust: drm: ioctl: Add DRM ioctl
+abstraction" I kept your primary authorship, since I took the patch "as is" with
+just very minor modifications.
+
+However, I understand that you prefer to have primary authorship, even if the
+code has been re-organized in new commits, moved, modified or rewritten.
+
+This really is *totally* fine for me, and I won't argue about it (even though
+one could).
+
+> The series adds around 978 lines of code. After merging some code that
+> was just moved around in the diff that Danilo posted, only 412 addition
+> lines remain in the diff. So more than 50% of the raw remaining code is
+> mine. If you exclude comments, Danilo only added 270 lines of actual
+> code (and whitespace). And of those, a good portion were just minor
+> changes and refactoring, not completely novel code (this also tracks
+> with the stat that to get to those 270 lines, 379 were removed, and much
+> of those probably pair up as minor refactorings and not outright novel
+> code).
+> 
+> In terms of actual code added an not just lines rearranged or further
+> commented, I probably wrote at least 75% of this series. And I'm sure
+> Danilo knows this, having done the refactoring/rearranging/modification
+> work to get here.
+
+I do not understand what you are trying to proof here and especially why.
+
+I also do *not* agree with the above; to me it looks like it does not account
+for the cases where code has been moved *and* modified.
+
+Here's the full list of changes for the diff [1].
+
+  - rewrite of drm::Device
+    - full rewrite of the abstraction using the subclassing pattern
+
+  - rework of drm::Registration
+    - this may seem like a trivial simplification (or move), but has
+      architectural implications to prevent use-after-free bugs
+      - some members (vtable) of drm::Registration need to be tied to the
+        lifetime of the drm::Device instead, *not* the drm::Registration
+    - introduce Devres
+
+  - rework of drm::File
+    - switch to the Opaque<T> type
+    - fix (mutable) references to struct drm_file (which in this context is UB)
+    - restructure and rename functions to align with common kernel schemes
+
+  - rework of the GEM object abstractions
+    - switch to the Opaque<T> type
+    - fix (mutable) references to struct drm_gem_object (which in this context is UB)
+    - drop all custom reference types in favor of AlwaysRefCounted
+    - a bunch of minor changes and simplifications (e.g. IntoGEMObject trait)
+
+  - MISC
+    - write and fix lots of safety and invariant comments
+    - remove necessity for and convert 'as' casts
+    - bunch of other minor changes
+
+The sum of the above is clearly *not* minor.
+
+I really don't agree with the fact that you keep accusing me of "stealing" your
+code, which I clearly did not. Trust me, I don't need that.
+
+> Danilo: If you do not take me up on the CC-0 offer, I expect you to put
+> my name as primary author of patches 3 through 7.
+
+I offered this from the get-go, hence I will do so.
+
+However, are you sure you really want primary authorship for "rust: drm: add
+device abstraction", given that drm::Device is a full rewrite?
+
+[1] https://pastebin.com/FT4tNn5d
