@@ -1,144 +1,93 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CCB1519A1;
-	Thu, 10 Apr 2025 13:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009B6207DF3;
+	Thu, 10 Apr 2025 13:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744292865; cv=none; b=LdTv5KEQcrLd4QnDZAG0PSkUDMNXwO2ikglNGhUYebtaYSPzNv7ivT+E8w77X9ea+r5h0AXfIxdlhr/3pQP96QlOUE3H+cY9DbI5o7QDgdCkuq9wElKjKqZAvfk2KuDOW0KSW7mOey7NPOQqJ5sZIXc0YFuwpeaL4Hk66SmYaCQ=
+	t=1744293018; cv=none; b=UPAU9zw1dxTOFMkGVl1lLJD5U2EJ2/RrzlCEIAOLpuuQ/m99WDwWlNTvrsTR+lQoxtKH0q7ivU5TuI0//EF54UvGbzN0oouVzlk4JvIYrKRjDdVmvNXErvWgDMDUHl10KuFLK5VTmfd/xRHzK8EMKpaUae5lRC3AsjeWxHp2T5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744292865; c=relaxed/simple;
-	bh=B8eP9Hns9fzoseZHZS5omu5nHeDHk+QA/EBW6wjSZbQ=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=peubC6fhfob1QGKk+LF+jvO/+MyvYNge2cgP1R6CZz5eG+e2mVTtXzt0v1ElWsidtRh25Mv2AHxLi2XXPzzUYBjZmFoHMGGGa/JR0qPmkdsSROu5dVBQ6dXmbsuTN28NsRXOdMmVWuTlcM+7PUAAHGGG/9ctbk/Zf6lAuGGr21s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oo4loiUu; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1744293018; c=relaxed/simple;
+	bh=zwV2qQXJjHxkJFIhnMLFQeBBY4moAoK+kSI5WmrSHaE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mWWIOva/K42af2cuJ3wQZ9Sd6/LVA9XOC7dqxNuFCKR7Uw2hc+vknK2RrRanep1kroDamJyreenUPEWH+bwbi9PLGYM1Maw7DZUZ4MdEdKLKYlHpsEYCv+1f0liLeLQ7xou+CI3pEu+80OraHLaqyE+ASryP4h/OBZuvQ94IHGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LGmyx2wj; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oo4loiUu"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-306b78ae2d1so786727a91.3;
-        Thu, 10 Apr 2025 06:47:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LGmyx2wj"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3032a9c7cfeso126012a91.1;
+        Thu, 10 Apr 2025 06:50:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744292862; x=1744897662; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wTWNdzXB6EXtES+qhh3ul9FC9I/MOcomdwM+IhVWquA=;
-        b=Oo4loiUuUCYnnfuwfnc7BCPVNU0Svf+cC8buLd/NRhqSVrmsb5sBFJZYGNFoB9Lphr
-         c7R5xVtTBxtSXBGwA/wp31Pg369QAI+udT4Mwet8aYxTTOyui211vFo2ZsAaa+dj4aW5
-         pq2GOaUoFTXQ6kw1UhZEEwgVxZwOBjClJG73dkhECZTaKUZ9/+vwRCNWZZcS1dC6my0a
-         Z4srG5P7CLuEdRA23htoU52iAp1IMlGyyqUmFSwjhfWymM8jSngesVRdSe4+rNsMZOZv
-         k5ueVccSqTMF3kk9v9+GuZPy+l48f2zb7BoDSPURANkrV3T0FOXyO0jVmtWvTwLp3kY2
-         GjDA==
+        d=gmail.com; s=20230601; t=1744293014; x=1744897814; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zwV2qQXJjHxkJFIhnMLFQeBBY4moAoK+kSI5WmrSHaE=;
+        b=LGmyx2wjzLqdQt5jVItW8FKwKK3o1ka/ftam0Ai4DfLFS06JEDPYSjmsAlBartd/cT
+         8tk9x3Pv/TxETrBRI45oUL3oHe4vra1rwBm3IQMIjP/YrAX5BtSuUF6XWRlTtO3vJuQC
+         Q65V02yCqZm2xkTjlxA1Q+41wKOjSv6CtCVdDIkR+R5OEoqVooM6G580Gra9z6RjulFU
+         rWmE5HrIyPnBG9AabE1VGQj3YACWcafaKzyfznkfQPUaEPNvO/ET8hr9xIsoWBrF09k+
+         41CMEU0rpPQy7X+YZIoGeTRys1F5BBS8g511UQ11RhOlrOyXwyBZEoiDphKCIzsLHS66
+         GZ+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744292862; x=1744897662;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wTWNdzXB6EXtES+qhh3ul9FC9I/MOcomdwM+IhVWquA=;
-        b=KtaKWzmTWWrYD05JUGpMtDK8gcifAOj7hYvWBOjmdAceJbT4E+uAx6GXgXJCdBpm8N
-         scLH02KoZTjoUjGI2s5R0iaY2NynJ17tnD1q/QTaQrbaYKTeILaAS26fu+5CIazRAsoY
-         b0zPt+TyndiruewZo9SgWUhTDXklde44DY/QUa6mLeAcZSTnk1GtlCEd8Gv/yLidZj+0
-         377v+jrN6eX6ViII08iecEt/9/dRr8xEyRtspQJInjKRGiP6MjjVBwd3pizHTvg0umXc
-         HImoAzkz1GZ80DUI7dbT6ereVV8gIuSSRMsdOZmoj3EVfucZEWEgWPFNtamKQNiIymiX
-         Vhwg==
-X-Forwarded-Encrypted: i=1; AJvYcCUAshz5xQWsb1neDrWgmc0l417MGy8J4SzpVj4nzoQH75eY3SzeicZCbX5apogInP68qhhl7EI1lWNGgaY5vgQ=@vger.kernel.org, AJvYcCUogRJXzSkVds1nd5uoUwqNVrd5IJ+I9sU3RA9x4SN+A76uW9nhRd/rzqCO2BrGEOUW/YE/16ckAJUmmyA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoeWj8fi758J/VCtSPBT3H31YhBkLwomkgHREM46/3zLW9B6nW
-	ExTWkE0TqfUAsLPuBs+5LEh8CTlBz4fyiQackf8MQZ/F1hsIpG8b
-X-Gm-Gg: ASbGncsbHb87D6UAdWmu2eQLmQPEy0q6EU+Oxe+HcQ8zADLtNgfqEYig5+4zyGt30dE
-	oy/o3u2vD683+CM1A3woPXFXTjyAVn5E+l94InlNLl5Gl+k4kSt7RqO5JwWp9RqVb7R4PQwdJr8
-	sCA0HgHpfbk81s017TMJyh6MpQ0pemJT9Bo31RET9wvDVIsPEC1Rdj/Gb/5PFVaRUzOUouB6zSm
-	z9oWdP4L99Q403MNoPZxNyq/HNC9PgF6KDND8wskDZED7bhnJ7+el8LCtLjYI9zXJiH0d3BxBqp
-	MowlBXJdzSeGAyIUWk1NzoWZ7CjPP2w2d7lEoumsG2NeIl49PTgIsWYijlntmIurgc7shkfXUP+
-	k575Pj6p6LdrzcuuAj42vPuM=
-X-Google-Smtp-Source: AGHT+IGSeOa7k+Tn7DNVUea9Xi4b+WqhH4fDjHADHuQUu23dS+AjkhYJjO3wHWxruQi+IrKs2vIxtw==
-X-Received: by 2002:a17:90a:c105:b0:2ee:aa28:79aa with SMTP id 98e67ed59e1d1-30718b67f03mr4218603a91.6.1744292861612;
-        Thu, 10 Apr 2025 06:47:41 -0700 (PDT)
-Received: from localhost (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306df2fae27sm3478281a91.31.2025.04.10.06.47.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Apr 2025 06:47:41 -0700 (PDT)
-Date: Thu, 10 Apr 2025 22:47:24 +0900 (JST)
-Message-Id: <20250410.224724.1795885541320306236.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com
-Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, boqun.feng@gmail.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, tmgross@umich.edu,
- dakr@kernel.org, mingo@redhat.com, peterz@infradead.org,
- juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com
-Subject: Re: [PATCH v1 2/2] rust: task: add Rust version of might_sleep()
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <Z_Y1IBcp_NNnks8R@google.com>
-References: <20250406110718.126146-1-fujita.tomonori@gmail.com>
-	<20250406110718.126146-3-fujita.tomonori@gmail.com>
-	<Z_Y1IBcp_NNnks8R@google.com>
+        d=1e100.net; s=20230601; t=1744293014; x=1744897814;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zwV2qQXJjHxkJFIhnMLFQeBBY4moAoK+kSI5WmrSHaE=;
+        b=mSZCkMBDrdnja6Y40UkxwOlg07G8StLiZi6/UkWZmYwcbhxgCsvTMAdppnLRsgVz7v
+         KiFnbDhqQmLLRsdYQahuAwk6BdqVfJc8206XcNM8Ho87e/k+GrZthJJhB0i+eEpI7gzI
+         r4h/2w8P5cxaVLtgIBspob9m5roh3+fGSEiucjXGdOrkp7eseA3QUqbbluNLE1eDDoV8
+         6uDhkxKBs96S2w3z0xQ02yZ3lpTVK6wW/mbDVu1Xs3Yd8j/MLWDsuIcClwlFXn5PVV1P
+         qDNjaob4HVU1xSf3MN9E+FMY5tMt3Ziima3ZF4+fRdKYTBT3mph+AmZtaZrEpnkOWory
+         ZW6A==
+X-Forwarded-Encrypted: i=1; AJvYcCUzFmBfRE65UhdNv+zltDkYC5gA9TmGw75kHYZ7UnY33+CT4z4p4uVXcqYZtoXBffHO/6Kq+fDqTaZptzc=@vger.kernel.org, AJvYcCX7Ul/NmL3Yzr+bfYfMCKkk/kHWRQZT+jIZK0UWziMlGgITEipSEGnhuMfjrkYJaUym2ghuoF3gc5NFmu9oydY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzc4gqpxxyxs307stJvF/8436ZLunco0kmlHSBMQoPaFJOmdi5k
+	TuTbOhaPSSClbNmG6EyMTBH9L0hqkWoVTSsxo4YGhd56tQlGU2o0QIveKXeXUqu1FIcU5rY6X2m
+	wXb8RVEMWoZMWiXupBDsFO7vfA2Ry0CY0whQ=
+X-Gm-Gg: ASbGncvWTwS2LcyA/zT90gu+9pgjNRMTcEWtMYZM76VTCwp792G90TNTjrVenWA1N9B
+	KxtNXRkR2zssaNDggy54XMELaLkq3Q71xLMUd1CPVbqBthba+ygJXYE3hmpgBtVnND5zWQeT+ZZ
+	ranDF66RtaqMnrZmU9EiT3T4foshn1h96l
+X-Google-Smtp-Source: AGHT+IE2Lpid90g7ZXP2Zho49ZJ3xbPPS6yWp+z2f1GT4PRub4JUfwtl77dhekYw/8xPpHLYaVQiZPfy1TV0RTy4iPM=
+X-Received: by 2002:a17:90b:180d:b0:2ee:f59a:94d3 with SMTP id
+ 98e67ed59e1d1-306dd172cd6mr3248581a91.0.1744293014074; Thu, 10 Apr 2025
+ 06:50:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20250410115420.366349-1-panikiel@google.com> <20250410123602.GZ9833@noisy.programming.kicks-ass.net>
+ <20250410124526.GB9833@noisy.programming.kicks-ass.net> <CAM5zL5okN67bsTs6ZodcJd45zQ_BP+ruUwOkPMY97Snma0ugzQ@mail.gmail.com>
+In-Reply-To: <CAM5zL5okN67bsTs6ZodcJd45zQ_BP+ruUwOkPMY97Snma0ugzQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 10 Apr 2025 15:50:01 +0200
+X-Gm-Features: ATxdqUGFFHWZoOnydaIXJ6c9x3IP_fjbQ2ieyxYuYfnxvzP5drgKjBqP4mBmyNo
+Message-ID: <CANiq72=3=bQJXvSDEUJYyEjn_qYMxFSc5N+zvpvrdx7Toi3KTQ@mail.gmail.com>
+Subject: Re: [PATCH] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
+To: =?UTF-8?Q?Pawe=C5=82_Anikiel?= <panikiel@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Kees Cook <kees@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Ramon de C Valle <rcvalle@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 9 Apr 2025 08:51:44 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Thu, Apr 10, 2025 at 3:13=E2=80=AFPM Pawe=C5=82 Anikiel <panikiel@google=
+.com> wrote:
+>
+> I'll let the rust maintainers answer this one.
+>
+> This is a known issue, but it doesn't seem to have high priority:
+> https://github.com/rust-lang/rust/issues/115199
 
->> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
->> index 9e6f6854948d..1f0156b38ab5 100644
->> --- a/rust/kernel/task.rs
->> +++ b/rust/kernel/task.rs
->> @@ -380,3 +380,29 @@ fn eq(&self, other: &Kuid) -> bool {
->>  }
->>  
->>  impl Eq for Kuid {}
->> +
->> +/// Annotation for functions that can sleep.
->> +///
->> +/// Equivalent to the C side [`might_sleep()`], this function serves as
->> +/// a debugging aid and a potential scheduling point.
->> +///
->> +/// This function can only be used in a nonatomic context.
->> +#[track_caller]
->> +#[inline]
->> +pub fn might_sleep() {
->> +    #[cfg(CONFIG_DEBUG_ATOMIC_SLEEP)]
->> +    {
->> +        let loc = core::panic::Location::caller();
->> +        // SAFETY: FFI call.
-> 
-> Overall this looks okay to me, but this safety comment could be
-> improved. This being an FFI call is not the reason *why* it is safe to
-> make this call.
+Cc'ing Ramon who opened the issue -- do you know if there has been any
+recent movement on it?
 
-Undertood.
-
-> // SAFETY: `file.as_ptr()` is valid for reading for `file.len()` bytes.
-> 
-> And I might separate the file into a separate variable for clarity:
-> let loc = core::panic::Location::caller();
-> let file = loc.file();
-
-Fixed.
-
->> +        unsafe {
->> +            crate::bindings::__might_sleep_precision(
->> +                loc.file().as_ptr().cast(),
->> +                loc.file().len() as i32,
->> +                loc.line() as i32,
->> +            )
->> +        }
->> +    }
->> +
->> +    // SAFETY: FFI call.
->> +    unsafe { crate::bindings::might_resched() }
-> 
-> And here you can say
-> // SAFETY: Always safe to call.
-
-Fixed.
-
-Thanks a lot!
+Cheers,
+Miguel
