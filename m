@@ -1,125 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9671E231F;
-	Thu, 10 Apr 2025 23:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFEC1DED40;
+	Thu, 10 Apr 2025 23:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744327739; cv=none; b=cnut0sVoyjEKAVJ1QT2LvsdBCEQlGTougXa6WfBn2CJwGtZkk9J/MSQAc2qa7u35Z0Pvkz/ThL+aE3+/iGxGdKM6TtkOhoT7fL18EbrDIkk+e/Vw5ZlY1hchykM8NvPxesjYqJCPd7e8hDsSGT6M0St0HPtmjjCfGwXl8W83sOQ=
+	t=1744328635; cv=none; b=Yl26zNoBpGP9YI04KNmlEhb8aYdXWpSpEm7WwbgrmS+n0jgsRWeWj1Gt90mwPWJ37nEKqi+hR652f64x2aIv/8fmqwfs2hpGIVVkuFvOVCHFxwayZE4/Hywl6rntbsnpUXpt0Ioe/6ag8gUoAHFJeBygSQh3pTwz2JdsBfNMrCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744327739; c=relaxed/simple;
-	bh=QR5wAxwNs/0pUlpoV2G8ubqvhwn+jxCykH9UePuSiOA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M1MNEkAUq1nHFF9qJ3XTOfJKrIU/JfldqQlFHuTZAfw6yOl0W8duhrb9TlnQ4wHAvXFIMzK81g2NPU7r3i4kcr+bZBdp+AYMfHqMiMEITJl91YL8oakt0K9REsWteKiZO6bn6SGdKoyhTn94AasbqG31TYBWRBrgSxkSPILp9xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Amt3Xp1Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744328635; c=relaxed/simple;
+	bh=p666x0nC/judlLYcmnXL7beImPA94XeZkw17BkcrsrQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OreQMCUmYax/H1Qyb14KHfkD8XjW2SXjeyx1TF+dpUouuEwqItspNDVwSlh+GYUEJad1ab868HLTKxqs0ekujoXuLXzVcVjzGUbulmePBw5i2/4ndYNuFeVi/0rMojFz5EWiT+gZHrHrBRLFNUv1JUPN4ptgedcukWWhQ1i1nqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ITrULVAy; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Amt3Xp1Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D28EC4CEDD;
-	Thu, 10 Apr 2025 23:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744327739;
-	bh=QR5wAxwNs/0pUlpoV2G8ubqvhwn+jxCykH9UePuSiOA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Amt3Xp1QAg4PYzlL02RcZ39wf9i++eqNZTs04vFd1c2whx+m/Rpe4qDFQ9xYLWQ5E
-	 W9xmi9SOfdseb+sCHVMXCtT+HeaKPMkS8mS/63UlCwzY4qVvf+TjsbI8d76kIrh3MV
-	 qUzjoHLCLtmxesyzQLAR3lKJRTsKeOTBIdkf0t5wFSsCtGBn8s//O9+wfWhHgswkPQ
-	 frFPJz3lK7h7cQi9jv1qkOh/KmIigH+oawXZKZmliAn+ZSQ38O4Pqe7ca2Rv7DusTY
-	 t5hkGXQzbbv0EDuXn9GRfIuY2ww3ppAI40Ql3Y1W0/6UMUQr/Guw4RTLp/wZ/sN+bI
-	 uaADJ3sBAngLQ==
-Date: Fri, 11 Apr 2025 01:28:52 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, a.hindborg@kernel.org,
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v2 2/3] rust: dma: convert the read/write macros to
- return Result
-Message-ID: <Z_hUNCwXrZKI4D4o@cassiopeiae>
-References: <D93BX5NEOSC8.3NOVI9GMDJEXD@proton.me>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITrULVAy"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-739b3fe7ce8so1331143b3a.0;
+        Thu, 10 Apr 2025 16:43:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744328633; x=1744933433; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mkXOG9SHSYydAOpZRLIeujo9akAQSNGPAXLGkx9I9X4=;
+        b=ITrULVAyoXQSAzxnB26Hua+6VLXpCVCQVXk+8hZn9K5bB5Ed33+L/030VurGKt3ZtB
+         RaV8XNltt0RZ2GMfnpWpHrOj8YQ6CkFSDpXmk45lrNVXUdm2GJVqpprULkl8FCA/FDIV
+         eCIeuVCVXT8kKHOOP/ZSrkquCBlec/5aCi8b+s4czXYSGRqXUVCpirQ4AW+x7PmYgHhA
+         XneKmBSFD1sUMW4m4OPhBDMSCUzoO2h/mgonQjiEwE/5sjAsyWHZQ+2RgwDppyHA6q9/
+         RhlDFW1ekQI6oC8f4gWOAP3T9OFilEUsbxFTUk3AVVw/QLLW5hsd73Wl19HsNVcxu4Dj
+         JR3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744328633; x=1744933433;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mkXOG9SHSYydAOpZRLIeujo9akAQSNGPAXLGkx9I9X4=;
+        b=v2iBkmq5vYi1pLrKGcMnC27legecEPoKx0C6gvs87Ie7QrNiiT4dxq3VYc2AQ3+liF
+         dfmr7sjcxMwOXKpGU6d/krg9/Q4IZc6tSac0k/L7THf52OFQfEALcbVc8sxtx96BGcmR
+         rlLXfBJg08wi6GIRiSpNmUTJEXmBBYlX/BnoglmBje1rPB/qAqASeGwEm8deqeyS/7WD
+         Vf9fx2N8jP9k8Rhhs2vrEP5kvtxvXo8WyNK4Y1vKrC2T6A99WLoOwDCGdGz/JBBlnvJj
+         w06vLAJAIscRFjbRrQy4t5Ea3d7hkTGKRJJhQphaXvaOmY7imm8NW5A/LTDEUVgns8zZ
+         2bmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdRfI3mK1cReBDH855pxx6xiFoUrgLmzJfmVGRjRU1ZQ8cEQNurC1Y096+cIJUXYGgOPLeS5z6ZswYAfY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqXr7wT7unBFr3btLhffmfvCvX36aMBabdtU7+xd10jzj3VUNM
+	woFrNxyaev5/z5wppGyMO+WU5K7TyxbJc5lU5ZqQkVTHE8C8vUs4TYXQwxYk
+X-Gm-Gg: ASbGncvdKfJup35ojuphaCKCAjAgesmTIGYZDdTnU6aa1nsqMqbNpk75gEF4fXEer4Z
+	Y5KBvxeXkIQo3AOJr4sLHWGhrkzsWEi3PDc3hz4w2Zd1TeS17ajVtiD2vq7sxn3fxt9y2+jkLEM
+	FdnoPlP1gyg+DDNPsgaVCGHB0fwGF6GocezNTPEP1FCdTYphakSRRpQ+f0XYJyCLtFqqRi6eiyC
+	oliCLh3QPguJYXLYv7bIr38kkCHLp2OC7k9Q5mes1M3Ul9YV8itU5u1663CTRkFRWFpHN9Yfgs0
+	amnkNBpjzOfx2HFxqRwTAzkUmBVNC1KCWPSCf9yxkFkrP8Eaqlva+7oJUknzVallCQBHFqmYKho
+	9NAegeZQ6Jgw0SeaMvA==
+X-Google-Smtp-Source: AGHT+IEvxZfT0oBD09UnAPGUiwY4IMkEr5SLqOudKTaL2C+U7GzKJx3GLjFfHx9Qdt2ZsECrPXu8+Q==
+X-Received: by 2002:a05:6a20:d70f:b0:1f3:418c:6281 with SMTP id adf61e73a8af0-20179787761mr1116092637.4.1744328633153;
+        Thu, 10 Apr 2025 16:43:53 -0700 (PDT)
+Received: from mew.. (p4204131-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.160.176.131])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd21c3943sm165813b3a.37.2025.04.10.16.43.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Apr 2025 16:43:52 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: abdiel.janulgue@gmail.com,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	a.hindborg@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] rust: helpers: Add dma_alloc_attrs() and dma_free_attrs()
+Date: Fri, 11 Apr 2025 08:43:32 +0900
+Message-ID: <20250410234332.153242-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D93BX5NEOSC8.3NOVI9GMDJEXD@proton.me>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Apr 10, 2025 at 10:58:10PM +0000, Benno Lossin wrote:
-> On Thu Apr 10, 2025 at 5:34 PM CEST, Danilo Krummrich wrote:
-> > On Thu, Apr 10, 2025 at 03:11:01PM +0000, Benno Lossin wrote:
-> >> On Thu Apr 10, 2025 at 1:54 PM CEST, Danilo Krummrich wrote:
-> >> > On Thu, Apr 10, 2025 at 11:58:17AM +0300, Abdiel Janulgue wrote:
-> >> >> @@ -78,13 +74,14 @@ impl Drop for DmaSampleDriver {
-> >> >>      fn drop(&mut self) {
-> >> >>          dev_info!(self.pdev.as_ref(), "Unload DMA test driver.\n");
-> >> >>  
-> >> >> -        let _ = || -> Result {
-> >> >> -            for (i, value) in TEST_VALUES.into_iter().enumerate() {
-> >> >> -                assert_eq!(kernel::dma_read!(self.ca[i].h), value.0);
-> >> >> -                assert_eq!(kernel::dma_read!(self.ca[i].b), value.1);
-> >> >> -            }
-> >> >> -            Ok(())
-> >> >> -        }();
-> >> >> +        for (i, value) in TEST_VALUES.into_iter().enumerate() {
-> >> >> +            let val0 = kernel::dma_read!(self.ca[i].h);
-> >> >> +            let val1 = kernel::dma_read!(self.ca[i].b);
-> >> >> +            assert!(val0.is_ok());
-> >> >> +            assert!(val1.is_ok());
-> >> >> +            assert_eq!(val0.unwrap(), value.0);
-> >> >> +            assert_eq!(val1.unwrap(), value.1);
-> >> >
-> >> > Maybe use if-let to avoid the unwrap?
-> >> >
-> >> > 	if let Ok(val0) = val0 {
-> >> > 	   assert_eq!(val0, value.0);
-> >> > 	}
-> >> >
-> >> > I know it's a bit pointless, since we know it must be ok, but the educational
-> >> > message of the example should be to check and not to unwrap, so maybe that's
-> >> > better.
-> >> 
-> >> The if-let will silently ignore any errors, so I don't think that it's
-> >> fit for example code either.
-> >
-> > Yes, but we still have the assert!() before, so the full sequence would be:
-> >
-> > 	assert!(val0.is_ok());
-> >
-> > 	if let Ok(val0) = val0 {
-> > 	   assert_eq!(val0, value.0);
-> > 	}
-> 
-> Ah right, missed that.
-> 
-> > The intention would be to avoid patterns that shouldn't be used in "real" code;
-> > assert!() should be obvious not to use for real code.
-> 
-> Yeah, I'm not sure if this is that valuable. I think having "real code"
-> is better, but I don't have any idea what to do in this case.
-> 
-> Why does this sample do the validation in the `drop` method in the first
-> place?
+Add dma_alloc_attrs() and dma_free_attrs() helpers to fix a build
+error when CONFIG_HAS_DMA is not enabled.
 
-I assume there is no specific reason, maybe Abdiel wanted to have a bit more
-lifecycle for the allocation than just probe().
+Note that when CONFIG_HAS_DMA is enabled, dma_alloc_attrs() and
+dma_free_attrs() are included in both bindings_generated.rs and
+bindings_helpers_generated.rs. The former takes precedence so behavior
+remains unchanged in that case.
 
-I guess we could just move it to probe(). Alternatively we can also keep it in a
-closure or function and only assert! once for the returned Result.
+This fixes the following build error on UML:
 
-> I guess the same code on the C side would do this in `remove` or
-> whatever the equivalent thing is there, but would there be the option to
-> report an error? Or is `remove` an infallible operation? In that case
-> `assert!` probably is still the best option.
+error[E0425]: cannot find function `dma_alloc_attrs` in crate `bindings`
+     --> rust/kernel/dma.rs:171:23
+      |
+171   |               bindings::dma_alloc_attrs(
+      |                         ^^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_alloc_pages`
+      |
+     ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44568:5
+      |
+44568 | /     pub fn dma_alloc_pages(
+44569 | |         dev: *mut device,
+44570 | |         size: usize,
+44571 | |         dma_handle: *mut dma_addr_t,
+44572 | |         dir: dma_data_direction,
+44573 | |         gfp: gfp_t,
+44574 | |     ) -> *mut page;
+      | |___________________- similarly named function `dma_alloc_pages` defined here
 
-remove() is and has to be infallible, yes.
+error[E0425]: cannot find function `dma_free_attrs` in crate `bindings`
+     --> rust/kernel/dma.rs:293:23
+      |
+293   |               bindings::dma_free_attrs(
+      |                         ^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_free_pages`
+      |
+     ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44577:5
+      |
+44577 | /     pub fn dma_free_pages(
+44578 | |         dev: *mut device,
+44579 | |         size: usize,
+44580 | |         page: *mut page,
+44581 | |         dma_handle: dma_addr_t,
+44582 | |         dir: dma_data_direction,
+44583 | |     );
+      | |______- similarly named function `dma_free_pages` defined here
+
+Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+v2:
+- add helpers for dma_(alloc|free)_attrs() instead of conditionally compile
+v1: https://lore.kernel.org/lkml/20250409055501.136672-1-fujita.tomonori@gmail.com/
+---
+ rust/helpers/dma.c     | 16 ++++++++++++++++
+ rust/helpers/helpers.c |  1 +
+ 2 files changed, 17 insertions(+)
+ create mode 100644 rust/helpers/dma.c
+
+diff --git a/rust/helpers/dma.c b/rust/helpers/dma.c
+new file mode 100644
+index 000000000000..df8b8a77355a
+--- /dev/null
++++ b/rust/helpers/dma.c
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/dma-mapping.h>
++
++void *rust_helper_dma_alloc_attrs(struct device *dev, size_t size,
++				  dma_addr_t *dma_handle, gfp_t flag,
++				  unsigned long attrs)
++{
++	return dma_alloc_attrs(dev, size, dma_handle, flag, attrs);
++}
++
++void rust_helper_dma_free_attrs(struct device *dev, size_t size, void *cpu_addr,
++				dma_addr_t dma_handle, unsigned long attrs)
++{
++	dma_free_attrs(dev, size, cpu_addr, dma_handle, attrs);
++}
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index e1c21eba9b15..1e7c84df7252 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -14,6 +14,7 @@
+ #include "cpumask.c"
+ #include "cred.c"
+ #include "device.c"
++#include "dma.c"
+ #include "err.c"
+ #include "fs.c"
+ #include "io.c"
+
+base-commit: c59026c0570a2a97ce2e7d5ae5e9c48fc841542b
+-- 
+2.43.0
+
