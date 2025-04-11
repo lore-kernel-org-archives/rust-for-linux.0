@@ -1,144 +1,61 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BE317BA1;
-	Fri, 11 Apr 2025 13:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400AA29CE1;
+	Fri, 11 Apr 2025 13:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744376972; cv=none; b=bj5SReW2tmMrNw7a1iUFkN6F/IAGWVVRb8PdWpfTLm7hjTtwfMtKNHNvDQjwNoRsxqakbI1Kcg5Rb8I6E5LU8yJxih5w2+JCeyaqIoNxqxRWi7S0/zl/ujhEML/3VhX0YbOAzCKqGo3dbKxvQkKyxznOon3qQLXsqQbHVk2xKLY=
+	t=1744377041; cv=none; b=LlvWrnz6lf6RaQcNQtcfSvvqvhg3OZ5PnHEV216nGx/Ge6lLyZzMgPzwIv65zttNpDi8Ux+/zeid0N2pr/eAmt2NfSaPy54kIvgJUpspZgmD8FALRyerHqOKlOpCET2O+2eeOt30BHNY954Dl7aq86Jii+G7Sk4W2kjjHT+ExP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744376972; c=relaxed/simple;
-	bh=CgXWwFIG1rzbeLp9R8d/hJo6ANfBEUMnCUfNgzUlU3I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gSwOP0QxHWQPFziULJrI43DYcjRYCvmsDli2ZxhKefFOfKK+7T+56j4m/AaokZMUtrN5Tg8x8opbe3nhbZoLjJ/fqawtr4gD9l41eCF0s3XVEaveRRYZ5X1H00QEIBARqj2e5r6CFSuXNvDzdbIKFpKnR4trsz0YwRGcFgZZ6Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gwJiaAqy; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744377041; c=relaxed/simple;
+	bh=DB4OyooWv2U0Drv2u+vexH72qbl8XchQ7K+SQOk+Vk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TQVSGs0UVZlVOa6/jTXxQhSik3Bp8/LUTFroxFMTg2xbgzSAVaT2Tu0MhSxQ5Ods1RCQHRmISkHRqBDYO3b9wxwxGsFR9cFihH0Twjx8/jNLt15OSuKB8THjAQkID+hUQsMtrO+zQZV9kvxAp9o9vrF70QoRytYIdDJllXAwBGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M60hDIa5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gwJiaAqy"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30db1bd3bebso18202221fa.2;
-        Fri, 11 Apr 2025 06:09:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744376968; x=1744981768; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zuLCjM7isZBiWAGYzmF65fCZGLZ6vMHE3L8TUytQU3M=;
-        b=gwJiaAqyVmAwoUcgNrmuASEwHU17dZys8Q+JbbGPRZ0J/QDRVp53IiPOFAezjlfwxi
-         e1XTHOBVNtT4gC3qn8FEaprIgANXSX2igznBIEGp8DrWtOxNTDOG3eVTcZsLv7pxPiOn
-         MXRuL6IrjJ74nBCTO0ajbiUU9r7l77l1BXzirKy7fRBwL9yc6e0JTO1W5Pzdfr96oxZV
-         ye1eRDIZHsvdvvRg5aUb/IaAtLSHVI+OtFU7rlexRNGRC0bhH/qnKPV+2ys7b5SVcN/8
-         Vrt4g3+lK3Yl8os55FOpoQT4VVrrGMJfvhUsGWyXqCSH8e4r3UGxyufjInGxfZpRjjD8
-         fXkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744376968; x=1744981768;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zuLCjM7isZBiWAGYzmF65fCZGLZ6vMHE3L8TUytQU3M=;
-        b=mh9WOCgSyrGipl7IHDPCdbKzGreadItbBHL+fLgpjH/eTj0dzBSGwSW2LjOT8T8St/
-         IgtyMIAL7Cm5C4knBZgJ5eqqNk7VmA4l2Pyzxbnsy8rfYKDPitDpNtW2WJIyzcIn5deL
-         DPeAn1baddMBe8W0ziCZD544bNCwYhCck3bFkqJ2iGW47isNbLsUjbnauRkYUhqhsSFj
-         3lwj6UbKxpU3bnjt4mUCkI/BUq9lSeSCrljGWJWl3H6OqYj0wl0uXSvYWL9Dtn4BSIaf
-         XaVaS/C1NYudhrnTcSxeMsR2IVzV5WGwgw3owv95MzTxbDvGmqiBegpH4ls3vUmOnEyE
-         9jPw==
-X-Forwarded-Encrypted: i=1; AJvYcCWPeXkDglgFKuiX0tNqsKp2yCbEZYashpcDFUM7wEzeDiM4o5IkEGnZ3sk67e3WjrpDPz0G34QMRwY/Jhk=@vger.kernel.org, AJvYcCX1S3m9fNk8V9PuUq7UenpYkxqKIbc/qv90L9xGfTD63efmWp0UTyHpE8sxVoE9t/7nkpkPmrybbKnijmgc/0s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYGLDaHusBjdGv7xk/aPjx+qLM1cEtnhvJGK5Fyfsg1joTwv7b
-	pBWGupoKWT/55/Gon45qqMDeC1jarJXIj0j4Y+pKAut2If4RkWJpgDd9X1hT1qaeTbqzcrcfneF
-	5OrwYOl/Q6tuqMQs3l3UQvVhmL4o=
-X-Gm-Gg: ASbGncv/Vo5ssm2MnSjUC9ag0Yih5rnCFv/q/Ec/o9B/Qq5sn3z4i2U16tzr1/WVXR/
-	DYGMFhU9TNzHkuHxBEyibSAOHzcmNKZ14fo1u4ra6uajYyNcK5lemAXEhZm3TumtYfoxj9ssaXr
-	cT5Ww1ukL0/teD4CGyR9gSKQdz7ZEyIbONTYllswGgZjcEPrlVfrpj14imQ/zUXCxUYA==
-X-Google-Smtp-Source: AGHT+IFFMH84ro4JijeQOA3E8kL52gqwCL5KW48kWNmyG/cUtLHNV8xMuQFwiv8kUxi+X3wZySSOl9TPJBEAC0iTniw=
-X-Received: by 2002:a2e:bc1c:0:b0:30d:e104:a942 with SMTP id
- 38308e7fff4ca-31049aaf9d7mr7492851fa.38.1744376967856; Fri, 11 Apr 2025
- 06:09:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M60hDIa5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C53C4CEE2;
+	Fri, 11 Apr 2025 13:10:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744377040;
+	bh=DB4OyooWv2U0Drv2u+vexH72qbl8XchQ7K+SQOk+Vk4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M60hDIa5EUPHNA1l5RO883omURZWC4NxR7HUDAUikHRQfvsTzc/Dzfs+tXLQHucjq
+	 H56rx4tpCXcQSZ+PmVYS4VgKXrBQSyXFIQ6QsF6mvQgTKDjF73hpKOoOGISofKx/fp
+	 REeOfBW4WUhCfWmVUB77U5GZtjZT51BjpfIqF6iuO8rqX7wIKCDNx1zePrj+I7zB2k
+	 1nRTAZBwtEpcOKjFOJ3O50/bWKS1/iT49cxTcJFAvMfDm5IVjHWFAkdIStMX3IYafE
+	 iFfOs56vxVysRUXG/rvqiVcE8W7XexgBa/t7srwUU0GxMjDB4SqM56e6YJoOoT4oSm
+	 IoF4a4X9C2JmA==
+Date: Fri, 11 Apr 2025 15:10:35 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: alloc: allow coercion from `Box<T>` to `Box<dyn
+ U>` if T implements U
+Message-ID: <Z_kUyx8ytlac1d__@cassiopeiae>
+References: <20250411-box_trait_objs-v2-1-c5f31b8db847@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250409-container-of-mutness-v1-1-64f472b94534@gmail.com>
- <Z_jakOS8mciIpxy0@google.com> <CAJ-ks9kEMwpDoys=RJGfWvyLdRco_Lm1984KSmju7mio5_5_WA@mail.gmail.com>
- <D93TAL6PHO34.2WCMTNVGUY522@proton.me> <CAH5fLgh6gmqGBhPMi2SKn7mCmMWfOSiS0WP5wBuGPYh9ZTAiww@mail.gmail.com>
-In-Reply-To: <CAH5fLgh6gmqGBhPMi2SKn7mCmMWfOSiS0WP5wBuGPYh9ZTAiww@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 11 Apr 2025 09:08:49 -0400
-X-Gm-Features: ATxdqUEH8pJZdWWYxl3eFvEljOvRQsfpUkzaSL8kmaPLuCBZvm8GDaS6Gdepqk4
-Message-ID: <CAJ-ks9k_0Ly1nG5jDYQZL=GQ26FVajekCaMQ9C3MOK9VknZssg@mail.gmail.com>
-Subject: Re: [PATCH] rust: retain pointer mut-ness in `container_of!`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250411-box_trait_objs-v2-1-c5f31b8db847@nvidia.com>
 
-On Fri, Apr 11, 2025 at 8:38=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> On Fri, Apr 11, 2025 at 2:35=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
-> >
-> > On Fri Apr 11, 2025 at 2:25 PM CEST, Tamir Duberstein wrote:
-> > > On Fri, Apr 11, 2025 at 5:02=E2=80=AFAM Alice Ryhl <aliceryhl@google.=
-com> wrote:
-> > >> On Wed, Apr 09, 2025 at 10:43:16AM -0400, Tamir Duberstein wrote:
-> > >> > @@ -199,9 +199,8 @@ fn panic(info: &core::panic::PanicInfo<'_>) ->=
- ! {
-> > >> >  #[macro_export]
-> > >> >  macro_rules! container_of {
-> > >> >      ($ptr:expr, $type:ty, $($f:tt)*) =3D> {{
-> > >> > -        let ptr =3D $ptr as *const _ as *const u8;
-> > >> >          let offset: usize =3D ::core::mem::offset_of!($type, $($f=
-)*);
-> > >> > -        ptr.sub(offset) as *const $type
-> > >> > +        $ptr.byte_sub(offset).cast::<$type>()
-> > >> >      }}
-> > >> >  }
-> > >>
-> > >> This implementation does not check the type of `ptr`. Would we not w=
-ant
-> > >> it to have the type of the field?
-> > >
-> > > I might be missing it but ISTM that the current implementation doesn'=
-t
-> > > check that either.
-> > >
-> > > It's not obvious to me how you'd implement such a check; given `$ptr`
-> > > and `$f`, how do you get your hands on the type of `$ptr->$($f)*`?
-> >
-> > I don't think it's possible with current rust, but maybe with field
-> > projection (:
-> >
-> >     ($ptr:expr, $type:ty, $($f:tt)*) =3D> {{
-> >         // do not run this code, only use it for type-checking:
-> >         let _ =3D || {
-> >             let mut ptr =3D $ptr;
-> >             ptr =3D $ptr.cast::<<field_of!($t, $($f)*) as Field>::Type>=
-();
-> >         };
-> >         let offset: usize =3D ::core::mem::offset_of!($type, $($f)*);
-> >         $ptr.byte_sub(offset).cast::<$type>()
-> >     }}
->
-> You can definitely implement the check with current Rust. You use
-> addr_of! to create a raw pointer with the type of the field, and
-> trigger a type error if `ptr` doesn't have the same type as that other
-> pointer. Something along these lines would do it:
->
-> let mut ptr =3D $ptr;
-> let offset: usize =3D ::core::mem::offset_of!($type, $($f)*);
-> let container =3D ptr.byte_sub(offset).cast::<$type>();
-> if false {
->     ptr =3D ::core::ptr::addr_of!((*container).$($f)*).cast_mut();
-> }
-> container
+On Fri, Apr 11, 2025 at 09:07:26PM +0900, Alexandre Courbot wrote:
+> This enables the creation of trait objects backed by a Box, similarly to
+> what can be done with the standard library.
+> 
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-It's a nice idea. Wouldn't it require `$ptr` to be `*mut _` and not
-work with `*const _`? In any case, I hope we agree that this can be
-done separately.
+I assume you have a specific use-case in nova-core for this? For this cycle, can
+you get away without having this in nova-core?
