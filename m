@@ -1,111 +1,125 @@
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EE020468C
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 06:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CA31F03C4
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 07:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744354459; cv=none; b=TLZ400+vWDTJWfaWJmAYagbm01I1VJlq95Fw5qS7F7wjttfCqYiaIGU03Zn1RBoV5DJMy+YYCL7gRJVNEEEVnJpnTUS0JPbBrojJBa5767QIi0rthmltOoFZfHqBIyLVUAJQGwgNGv1lU6KvF2rQaWrjc0EbtYRb5EiCiOrJclM=
+	t=1744355387; cv=none; b=LPMEyw4SC56RGbbD50lhxKiLbPjPS6E6E5w0rX14e+5lQLK6SD0jCbPbZZDLr06EMWK03swUmjkYTJkrf477gcejT+zA0RCLg+JpRytsPMHaKzWx90auLixDwgpzWO5ULYzVNvt8cYnoQM4WCYHgbEEh1fW1qINdJAdptXhCbNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744354459; c=relaxed/simple;
-	bh=ORvObUBDvUZptnQ7XIrGeR4mDqIP57xKuS6cgRYJshI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZDJ3tN5Rr/kjFeKyj/0l2SN3JnZkVfZbis4Ic1q01LyV4jVmTMkkzwa+2AGlSYjk7ydJlsd21SxljqPfyfmbw17y/SNZwxS3DXeJyk0SO8Q/vpMA7lUrWUciNLlqHJw4r2W52R0u034lBpxTDmTJvpDFVjmiZPQTk5Yn/0wJ3WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=qIzyLriz; arc=none smtp.client-ip=212.63.210.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
+	s=arc-20240116; t=1744355387; c=relaxed/simple;
+	bh=2HKkKC82etiMsqe1ATwTtzyBnGYDYBFXiV6zeDl4Fys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n7ExCuhyxSUi2IY4SByx5POXNKZda5O/yEvD9YT7/OPs6jSa8oIYGD8J63k7KiKeaJA+INSB8GfWegepN5+5/ZBDkCi4tF2diCNzID45g9T8Vq4VdlixhYb66XfgjPbdxXAIPvfMwAfKrau/ApBwBj2TmeJYSHQtCwm2OOK7RUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=n9xMDIBd; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="qIzyLriz"
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: lina@asahilina.net)
-	by mail.marcansoft.com (Postfix) with ESMTPSA id 8516C41A36;
-	Fri, 11 Apr 2025 06:54:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
-	s=default; t=1744354444;
-	bh=ORvObUBDvUZptnQ7XIrGeR4mDqIP57xKuS6cgRYJshI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=qIzyLrizaTZhtC/G8bDSXffhMbKyim1wIPe5LB8GSRO9A7w+tXWcPwanYGfuSfSpV
-	 xIvgh1euLie4zr9bgA5mmc4vm1oayCFJBScHj+REHveXAP/WtQmBRggpFcs9r92WtE
-	 THr1/v8Lp31Qgqy0sgXiHBkkSta7UxTaFa6vE7KuAE0RrNHf9iwc6fwTQh/MjRhxRY
-	 tMZvxrx+nacrKhkRb4ypuB3pmHFAJBwioix/IVWXzANRXSRY99BsI6Mves1J0EiYiU
-	 wELK9WExvAsS3jaOAJXAeAOPIjfbIiKRfR6MIICBpQfUil5QhEc483ga2b/i7Q6OfS
-	 Zb7cFkpLhLwQg==
-Message-ID: <664d0f25-ac38-420f-bdf1-21ed7add726d@asahilina.net>
-Date: Fri, 11 Apr 2025 15:53:59 +0900
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="n9xMDIBd"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22580c9ee0aso17629835ad.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 00:09:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744355385; x=1744960185; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SsaZNHdeANXtSEjMxf+DUvyz9Eisyu48b8JNmNeFVJQ=;
+        b=n9xMDIBd9w69awd+45JOJMBrruaUOV93mNs/5WEnq/vQcIT3OsRurowehVFGSez8ZR
+         CRb73DMes08+Z7yTPV5MaoeGoLiakUEhfjol1XCt5OCZ9dTpBexoPOKy18O+ChkzODY+
+         sHpS61CFZElGq5MWFbnv5cIzX1GCBTZ4qvHKVCy5CiDUfiD+U19uqdVH2RnNi346s6ew
+         h2i9V8UMMf9349e66iR0ZEGdpdjOHEmXj/7ZQZkeyljxqo2PQ3b6X1YI7W53kqzWH52a
+         /lVb92Zij+eIj8x/Mp1nwR/qMxR77XeuhpVqNSE6J99po16+ffI4W4rwVX/75HscTn+O
+         cs9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744355385; x=1744960185;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SsaZNHdeANXtSEjMxf+DUvyz9Eisyu48b8JNmNeFVJQ=;
+        b=Wh29/aZouu2rj/bInJO/TwLnxfnMbHb3jCwV0KolT3Gp9B+NwPXtB6Xf8MK3t0qitU
+         7bJ3jr/LUTbXfXJ/uX0cg1fzwVTJEMCRlVFc/4JA6v77qe89u2uPMvaKW6SAraZsNHa6
+         spKQm6kLvinAVTZCYFlhUsw66XWoYfX4YyAc0Z+XrpnoXY8/riBamGGkKApvhAydHztj
+         3XHKrrvv6tIXOPmxx1xSNBEgKTTHwdH+RQoSmGO9O7Euug42TUXU7NPPIpY7SuFqufFB
+         nxvftYlIMpgkP4b7mDeWv7X4IJO6Q5CZqXtnwF6dBqCr+6kSice3PkhkXTto3eF4IdU6
+         2ihQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXE++eQxb6bOfxUSC01bB/Hz/e+b2k6NrkBPlVbKMLV3wWCqqJiYBZOs8Nzn9c8pdEP7v5QjIv9/M9XiOlljQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx68x11LZgSOqeAOoFpKiyPP8KdzgUnpWddIGe/68X2GOcYn2j4
+	EfA47wyS+0RKEAMijB3oTdEd2g7yQUevpjhJs79n8HEpupYKmyOISMB2RBVMxeY=
+X-Gm-Gg: ASbGncsA3VRHWb1qvarpllVGG6qxEOYmq2Dnx6Byo0vagqSHAZI+7XR5KvaeIygXyp1
+	OZTvsuxWMapqo7mp4hLi80O2iHwnwxpXPZ3idm8U01dGRb27wavvbdObnyFqYAS5IaNnclacgch
+	BD0VJQAOLWGaGqCpwBDcQAhhUs94a6U/MOeKxOdmAbaS9tRtBkro1Thlgc9rFhfgGtweetSHN64
+	Ln/qB1ggivGoX0RXzsJyiUpFYqT8iN0zWCEqH/paJ8MkDo16+8Zmdkd+S8J4P8Xu7BUk9Te0MFq
+	giIkRNnSor7V+ndlZQnpQhdxa92ISc2MbiEPoEoZS9+4ydRP7iJO
+X-Google-Smtp-Source: AGHT+IHQQmLLJrkqWF9B7mkZc3DCkY3lsb5cw00cICBBOVuQHLOx7UsWGycFoczOYNtiuWWk6Tj2Mg==
+X-Received: by 2002:a17:903:22c4:b0:224:a74:28d2 with SMTP id d9443c01a7336-22bea4c6cbcmr24391065ad.26.1744355384775;
+        Fri, 11 Apr 2025 00:09:44 -0700 (PDT)
+Received: from localhost ([122.172.83.32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7ccb569sm42002035ad.225.2025.04.11.00.09.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 00:09:43 -0700 (PDT)
+Date: Fri, 11 Apr 2025 12:39:41 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Burak Emir <bqe@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+	rust-for-linux@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH V4 1/2] rust: Add initial cpumask abstractions
+Message-ID: <20250411070941.6xbz4lrwkejr3aqf@vireshk-i7>
+References: <cover.1743572195.git.viresh.kumar@linaro.org>
+ <35f4223be4a51139348fed82420481b370d7b1db.1743572195.git.viresh.kumar@linaro.org>
+ <Z-1b_FkYUJEIj-YW@thinkpad>
+ <CACQBu=WMu_CmzERJAHmjiuQ-NZe6DK2kAkvP0cnFN-Y+QhRwvg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] DRM Rust abstractions
-To: Dave Airlie <airlied@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, maarten.lankhorst@linux.intel.com,
- simona@ffwll.ch, mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
- acurrid@nvidia.com, daniel.almeida@collabora.com, j@jannau.net,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20250325235522.3992-1-dakr@kernel.org>
- <32e7da7e-de32-4bc6-a751-f604da36a63f@asahilina.net>
- <Z_VXBZcBsk2k6eVN@cassiopeiae>
- <143206f6-cd97-4ef8-a4f3-f68d703903bf@asahilina.net>
- <Z_V2ZxIZxI_HiHM5@cassiopeiae>
- <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
- <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
- <34a4a130-98d1-4cc3-8dcf-b72b3ed36c10@asahilina.net>
- <43ec8aba-f279-422d-95d1-68daac7eaed9@asahilina.net>
- <Z_ecMl2QtAssfczJ@pollux>
- <88270028-7541-4184-a118-96c182109804@asahilina.net>
- <CAPM=9tyXAdaota38cgeQc86teEebe9XOnBTZ+aDBZpzEBApD9A@mail.gmail.com>
-Content-Language: en-US
-From: Asahi Lina <lina@asahilina.net>
-In-Reply-To: <CAPM=9tyXAdaota38cgeQc86teEebe9XOnBTZ+aDBZpzEBApD9A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACQBu=WMu_CmzERJAHmjiuQ-NZe6DK2kAkvP0cnFN-Y+QhRwvg@mail.gmail.com>
 
-On 4/11/25 9:43 AM, Dave Airlie wrote:
->>
->>> However, I understand that you prefer to have primary authorship, even if the
->>> code has been re-organized in new commits, moved, modified or rewritten.
->>
->> Correct.
+On 02-04-25, 18:00, Burak Emir wrote:
+> On Wed, Apr 2, 2025 at 5:47 PM Yury Norov <yury.norov@gmail.com> wrote:
+> > On Wed, Apr 02, 2025 at 11:08:42AM +0530, Viresh Kumar wrote:
+> > > +    pub fn set(&mut self, cpu: u32) {
+> > > +        // SAFETY: By the type invariant, `self.as_raw` is a valid argument to `cpumask_set_cpus`.
+> > > +        unsafe { bindings::cpumask_set_cpu(cpu, self.as_raw()) };
+> > > +    }
+> >
+> > Alright, this is an atomic operation. For bitmaps in rust, Burak and
+> > Alice decided to switch naming, so 'set()' in C becomes 'set_atomic()'
+> > in rust, and correspondingly, '__set()' becomes 'set()'.
+> >
+> > I think it's maybe OK to switch naming for a different language. But
+> > guys, can you please be consistent once you made a decision?
+> >
+> > Burak, Alice, please comment.
 > 
-> For anyone working in this area that is intending to upstream anything
-> from asahi, I think if code is rewritten completely it's probably not
-> consistent to keep the primary author. Copyright doesn't cover ideas,
-> it covers the code.
+> I really like the explicit naming convention that includes "atomic" if
+> an operation is atomic.
+> It seems also consistent with std library.
+> 
+> > Regardless, without looking at the end code I can't judge if you need
+> > atomic or non-atomic ops. Can you link the project that actually uses
+> > this API? Better if you just prepend that series with this 2 patches
+> > and move them together.
+> 
+> The type &mut self gives it away: the Rust type system enforces
+> exclusive access here due to aliasing rules.
+> So a non-atomic operation is sufficient here.
 
-I think you're conflating two unrelated things here. Copyright has
-nothing to do with who is the primary Git author. As far as copyright is
-concerned, Danilo could submit everything as-is. Since I'm still
-mentioned as co-developer, there is no copyright issue. The primary
-author story is about FOSS etiquette, not a legal argument.
+I should leave it as is then, right ? Don't rename to set_atomic() ?
 
-If you "rewrite" (as in not directly copying and pasting the original)
-code while closely referencing the original and retaining some/much of
-the substance, that is still covered by copyright. This is why the
-clean-room process exists for reverse engineering, and why the Asahi
-project has rules that it does not accept code from people who have
-exposed themselves to Apple code or disassembly in most cases, and why
-both Asahi and Nouveau rely on black-box register and memory tracing for
-reverse engineering GPUs.
-
-If you rewrite code from scratch without referencing the original at all
-and without retaining any of the substance of the original, then of
-course, that is not a derivative work, and the author of the original
-would not have to be mentioned as author at all. This is how projects
-like Wine reimplement the Windows API.
-
-In this case, Danilo "rewrote" (I would say refactored) the Device
-abstraction. We can decide who gets to be primary author, but I don't
-think any lawyer would advise him to completely remove my attribution
-entirely, implying there is nothing left copyright by me.
-
-~~ Lina
-
+-- 
+viresh
