@@ -1,218 +1,388 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2044.outbound.protection.outlook.com [40.107.212.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0C1278E5E;
-	Fri, 11 Apr 2025 12:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744372870; cv=fail; b=uJ77wXsrTj49vhw+wFvs6OjMGSY9p0duC8Q28M6ZMarUKM0aBeMiixowEDOyIRv4NFIth26lA+esClQqy8HBBBl88Y+fTTPC8Nthbn8XHaCghEcQeXLKzDurR3M7pkLW/9B3v51nFHe5F1FedM60cTrkAanNQGnJ0ikFWKCgL3Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744372870; c=relaxed/simple;
-	bh=COGeni00jhuqSv3+RX5GrYvMBUWUaLLyvv/clyYh75g=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=GjRivUDHCXXWPjFjEXztx+DfBOOLRFrY5E5yCQatAyv5j8hkKOj/UhLZKm3G1zV+PZ/wlFSzL2xZdDBsvprS730BDQNrcmepHgk6MTJWpgR8K1bEd9oY4SjC2a2IdWmTyNTGah1XORzV0Q8BQQs6+/Mmy36WvTA+dIwAdiYBFlo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=W7R5tdEb; arc=fail smtp.client-ip=40.107.212.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5A2208A9;
+	Fri, 11 Apr 2025 12:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744373171; cv=none; b=MLC1VZGlJhLJHWAT9RA4JJX2iZZArKZsEINLezrPq+x1D8QXiI0ESBQjkZSuutKn/+5PaoeE0EbQ+7ynjvr2DUOGX8yJMu9cSMkGwPiYhsMcppds7QAANk3lRXFnIjiX+hl6yzMQF0TultSj4BRR8NQhzpDiOrKjyVFtWrXugX0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744373171; c=relaxed/simple;
+	bh=AIXABDllIelhOsY1BKFmLuSOXhZ4hK/N6InVrQSsN5Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tqkJQLEWf9zf0IET5AK9ho69/t9d+hoUz2CRiZA8WE+6+xiICNzgZiGt1litXpT1ijru4pN/bHPvncI7rGXvwgSEpBQihuB6XvnOgiZc+5g+2kp2xINxdqUxiRP4y/Fq4PTXfNozQlCMIHvZV0RKReRwCt7ag8oaujFCxeWyYNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kohwZS/j; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="W7R5tdEb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PHH0hrt091KsE/MUinnxG762hdaBTIf9sIxPOnXUokwP7Yh25SjZbgCuJtQppYkkEJKFAPLZIHT7NCDlHFguM30mkUWvoiBUrwCnEhaIUcuz9+YuOfTN2c9ASnI/r5qZcCZq/0yxUeXhOyFNc2YbFuRlbrEfU8xVzDs6X16wsglBDv4zfiB6tf0HVgz+PLVMh0JYHbnNe6/6lqg9lhDBJ1xNLOkMn4lcKtzZDbi25ie/s97lOLnVoYiKRa9BRQyaSBEofrY/gy6VFbe3ojNOTbKbBT9jPzLpbBrLydXlmmef42EF5qJXN4mI7aI/3jpqZfIFhXB1z+Xev+AD5fH66w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/794+LX6/NLQYL7CJyfREG6NiVQph0Tg8kfH4Nqg3ZI=;
- b=XnxAu12HzPYLTgc+3aiVIaHg23jwK4qJn9Z/kHt1taX7rTSuVipgk3byegZOHbERRxeNIz45ZT0ogkBw9++84VuP7t92KLPGZwYgPQSNXH5r2diAgRt2jV6HCBVZSDOtzCQ3hqdVeh0FsxPTT9mwNxZu4vRMAPglJHr4mwYXprdomHbPFXTLt/dQKBPpoIQA/jRodOztnr2gU1hVQ2uGmDnH1I/d0DEKQW6lLCEnnn8+63bAMN0g6vCOTMAXqDtqbPlOmD2Qn/WjPQeE6Y5kTeKqLxfjDZmd/PuYbctugHQ1jmIuFkeWZoI7NdxI5h4M49rG77SyeTQCqeAWb/m+OA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/794+LX6/NLQYL7CJyfREG6NiVQph0Tg8kfH4Nqg3ZI=;
- b=W7R5tdEbs5o2tOiepkTBFY9qm7h1F2PJOJLSV6EdnupQ4WwvptyVbtdheobqWPxwi/9W0dHLkzgQjyfRx5IKgWnt/vkwt722PQwoaj5dRk+m6/R9X/h1TkDqc/VopIRLnMOlnf78gt2/ZEeAzgsL/SXvjsLZGzqR4IwmJPbcltRN/fn6SCUCNJ1RRGjljSkma8zZjsQT/nuJctumjgQyynrG6iZ9cQa6SIynAEBkdWmWbJJk18HFMszHd2em/pCFinGgyAH1ynJ6lQ0IxP2sMHt64WuTxJ1uZrTEvW0APYwpJirQIrbh1yiBTu2/fj9KdVyNzUohQcNEusPQChXWIg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA3PR12MB7877.namprd12.prod.outlook.com (2603:10b6:806:31b::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.22; Fri, 11 Apr
- 2025 12:01:04 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%6]) with mapi id 15.20.8632.025; Fri, 11 Apr 2025
- 12:01:04 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Apr 2025 21:01:00 +0900
-Message-Id: <D93SKL66QJ1Q.282HRTXO8Q726@nvidia.com>
-Cc: "Benno Lossin" <benno.lossin@proton.me>, "Danilo Krummrich"
- <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: alloc: allow coercion from `Box<T>` to `Box<dyn
- U>` if T implements U
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250408-box_trait_objs-v1-1-58d8e78b0fb2@nvidia.com>
- <D916LG7Z9Q31.5RVNMYM38E2D@proton.me>
- <CANiq72k9Lo-M5v338iWWSiwrnU+JwP+aEZeLiR291xc2c+ESOg@mail.gmail.com>
- <D91ACTUAWQTF.2AZ98BUA5ZKJ6@nvidia.com>
- <CANiq72=f+0KBT3iOQnWyJ_Va==j5iEYpNE7WLU=0aALbQ8-beg@mail.gmail.com>
-In-Reply-To: <CANiq72=f+0KBT3iOQnWyJ_Va==j5iEYpNE7WLU=0aALbQ8-beg@mail.gmail.com>
-X-ClientProxiedBy: TYWP286CA0022.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:262::8) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kohwZS/j"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-301c4850194so1506883a91.2;
+        Fri, 11 Apr 2025 05:06:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744373168; x=1744977968; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WyKAP6DEXcekkjlEcgRNMfVdpQ80rYUvb1CCgwJK8SU=;
+        b=kohwZS/jIiBLwGYQQme8uc9AX+QDlYcIf1tqFx26Ejjv1Otrh1zp6skW7YZtK1xGSy
+         SaqV647djEkbKwdSqDaI6qdwHIaZEA9lHsLmPT3X+ZNZQrwB4gDOJ5g3AsABM0z0m7x/
+         6ngEATjWAyhn+Tg5pCo8ceq1dUvSG1E7flLS2lfGIp1kltzPdypC5YejPwUpLvjgRpHv
+         MciaA2rL/tFZkGBoBgg/1ffFamiS6XCz8LfC7YBXrVInAz4ru5+XU9YQRM1DTS79M8vO
+         NKtNM7GfxHmoWqDVhHUG02KPt/C3yLneMwzcBuURO/FaMCUvMo6Ouajm2hyXV7XWRVof
+         +U1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744373168; x=1744977968;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WyKAP6DEXcekkjlEcgRNMfVdpQ80rYUvb1CCgwJK8SU=;
+        b=sCpV4GR6LdSACOYE7TWD2T3QZGZ5h6/aB7tu264bg7xxjCkjKY/r76Jn8krZIKhfwe
+         0ATEH+2MgKPQ4JtNUFf86bJ3F+9w5OLz3g1sgU421ZfH6NPr6xMbE661+ov0IW9sya1x
+         Cui+tqJ5fsdS3/oFHmaCb20Tn9SkNcKTRm1ArvvAttvLoO8ropeORGUgKwgOU62qKtKM
+         zKcwRo3M9zHZ1Ika/j5oM/4fV4GgY1kYFj3aIoO9r1TFA/v4oMRCEuWvVp5lqAz+H676
+         cXLOwfmIUZ7Nf8YGsnaC/CDdicFXhb/ij4AS/blWDv1XZeTblP2Bv2Cpy4eJQ4lUYZpp
+         kO0w==
+X-Forwarded-Encrypted: i=1; AJvYcCUS5jJoValDd1IBnphXVrdSY2zG/psTYf0o6cDE9HAYsKpE7U3JuzeavSJFczidkU+AIKYG2S6wAPhFjLE=@vger.kernel.org, AJvYcCX+gmghByrfbc58idIHaEn3p1xnznp1/QWw2jJDCSgKfmpGXUGqW3teSpZlWzglEQwcbZ8k9ZCL1H03VU3lunI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAuWvi7We6j31lJBfZAXmHyjAYTbl1aGZAvaU6W7mGC8TQ2WdV
+	6nVzvj44laMZIwgfYQO9ugzu4iy++frbD5OP9S5LBvBlF2/qT0gC
+X-Gm-Gg: ASbGncs8ycpR8/Gb2n1IuOYPep/HFIgtJfOachgTWDcElkmCSmJM4QRfWxCAiexadWY
+	uq4KyLdkOYCXcaTK8TwmJxLV0Risd5VoLlo8wekrFUcc2JrASubS34e7AlbQE87vrzB7Nvt8sQe
+	rzNWNFbGu8124rf1eVTHikEvYoea7uDRgvj9ep0zoYUweOa5OW7Fd82PK/L2R9WrkHGgjo0ESYN
+	DkTLnGvOesj+G1ivMc0UX1UXPhphgroii9+PrKHIgJLIzAAmq5rjSYciXS75vM/Nj2xiPQ+wR28
+	87uE+lNLox1tn/YXkTKc+YZ8cNzpCarpJot4FqlqHDDQt0ed
+X-Google-Smtp-Source: AGHT+IH3ntoNzsbwpt98IjUOPrT38m21FKHV8+iVlp9d6b2z6vAs3Tw9e9f6pfklWNC4L6k0vaxkDQ==
+X-Received: by 2002:a17:90b:1f89:b0:2ff:702f:7172 with SMTP id 98e67ed59e1d1-308237c1421mr3498931a91.33.1744373168405;
+        Fri, 11 Apr 2025 05:06:08 -0700 (PDT)
+Received: from fedora.local ([2804:d57:4e50:a700:f33d:65d1:e22e:109b])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-306dd12b5eesm5520714a91.29.2025.04.11.05.06.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Apr 2025 05:06:08 -0700 (PDT)
+From: Filipe Xavier <felipeaggger@gmail.com>
+Date: Fri, 11 Apr 2025 09:05:41 -0300
+Subject: [PATCH v3] rust: add new macro for common bitmap operations
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA3PR12MB7877:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3834cb62-5c71-43c0-c2d9-08dd78f08820
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cWRzcVRPMi9VanZjV0NFUU1UV3Z3YU9IanJmYk9oOE1HSFhrMHU0SjN0TEc2?=
- =?utf-8?B?WDZxSDJLOHo3R09iSURJdUZONXdYS2VWNURKajgyNjFqOE9VcFd2aUljNEo2?=
- =?utf-8?B?Vzd4aWJiWWdlT2s0SGFpa1JoVDlORS9IN1ZQdTJFU2trc0w3VFBKelNLQlNz?=
- =?utf-8?B?bzdNMHowRzZreDBPMjcya0JwSzNDdGs1MmRPMFBLS3FPVUM3TDNtdllqVjRU?=
- =?utf-8?B?UkEvajVyVTRyT3lMNkVMMDVjN2xZUkFZYU9XeVFCWDh5bG9SVG91ZUMrYXVy?=
- =?utf-8?B?MlkvVitpb0szYko3bE5xS2toN1lOZDNraStjQ1hxd3p6WkVrNHdjRGdmaHY2?=
- =?utf-8?B?U1JvUkRVSjBVRlhLckRNUG5wd0twSUFacjBQaHRiYWNuUlRHcXdJZkg4VzB0?=
- =?utf-8?B?Y21NS0tGaU1ITWxBRnZIdklDZko5N3pvVnlsa1JZMkdWYjluWE95WEVXdVQz?=
- =?utf-8?B?ZWFOeFRMQkJHY3pCNHRiQlE4NXpyZE4zWGZ2VFFWTUtLT2VKQnJJajQvUm9x?=
- =?utf-8?B?c1YvOFNIeTgvN0MwNmIxTzU0NWllRStBUks1emVjclNKdUQvZXBqQTB2bzBl?=
- =?utf-8?B?NzFPVFJrVW1TcGFZaW81V3BBa0UwRFVwMHRaOCtFcG1udnRqVmtGYUd4SXlZ?=
- =?utf-8?B?cFh0RGNpUHhTa0VLbVFtS2xBQlJIWkNMc2FCRUE0TU1OZ2U4SU05Q3JlSXBN?=
- =?utf-8?B?QmRoM2xxQlUvL0tTdDJTR1dDV2NQTUExSUZDbHhiS21sSDV0QUk4RTJQekQ1?=
- =?utf-8?B?cDdJMThnNDN5UGhGZDAzYk9PUW81aTU2ZkVhdjFaUVhCYWRrQ0d1eGV2akNR?=
- =?utf-8?B?cFV4MUNjVmd4WkZ6RlFFNk1sSVNlL1owNDhydklLUlBJNU5XTHBjL1h0TWpx?=
- =?utf-8?B?RWlnZGladkw4d3hncXppOUVSZUYvY2swdFBiVWpmRXhKbTlxNDZXa2J0RjJQ?=
- =?utf-8?B?MVBBRlV4T3BUUjhwbElvMHM0eExiUVFYNlgzamQ0RWJvME9lM0d6Y3B6c3ZM?=
- =?utf-8?B?aVhldm5ZdkRWZUhaaXNoMDkwY0pCWmZxdzV4WkFlREtrR3RRek1Ddk1FOVRS?=
- =?utf-8?B?dE8wc3JjejlheEFNN1dDaE1qUXZtbXpBT2tLMkp6Q2hRVGxMbGVaMFpzbW1z?=
- =?utf-8?B?bE5TWGxGdkdzdUFTbmFyV05wZVdpcHMzcGpmZ2hUdmtHTU8zVFdZM0h2a3NY?=
- =?utf-8?B?a1BNUmw3dVFUYUdUS3JFY2NIcW80d0MyY2U3cy9rTHFRM25UVGpwUGNxQ0VL?=
- =?utf-8?B?VWl1WEltOXB2NThlQ1IzaSt3THJGbnQxdkY5SDRXcVdFUkJSYWRvdGRkUTlB?=
- =?utf-8?B?bUdBM2RqZjNrRkRTT0JPaUNNdkhLQWdkakthR2w3NktuY1V5OGlSVFMvbk8z?=
- =?utf-8?B?cTN0bUJ5YzJNMk9JVk0ybklzVnBOejlickNxSjRmU0ZnbjFsd1dIS1h4aHdB?=
- =?utf-8?B?WmRwM1d4UlhkREF1eFI3K21DOW9abEpZL3pTMm1JUU1BMWE3SXdNQVRUbDhx?=
- =?utf-8?B?THlYR0h0YmFleCtvcElNeEJHTWY2eTBqanNqWUY2OVBQejlCSnF6Tm9LWU1Z?=
- =?utf-8?B?Q1BJUEdSRndwQkZOZ1lvWVpzeXhYeFEzOFJ2NjJaV0pxcGJ4NGR0WUFZVDNJ?=
- =?utf-8?B?aitNbm8ralp6MEZhWnVyc1lnZEI3TTRWRGF5ZHV3Y01YL0lwYlJhbHIwVFpJ?=
- =?utf-8?B?ZTIzamdkQm1TOTc4eVhPUkY0Y3l4ZVhPb2lmbkR0ZzRRNjZjR2doWCt5RjJk?=
- =?utf-8?B?dFZnQUxJVmdaNTB5ZytFZmVDU01KK09YbCttd2FuMVhPaXEvNFlVQTBmU3Ay?=
- =?utf-8?B?OE5CM0pvbkVwWFNhRmxEZWlVcDNhcGQrUXYvc1RnQm1YUUlwOFB2dVY4NTZS?=
- =?utf-8?B?S0R2MWpuUnZWc1VzTFhIM21kdzcwWjBXbE01bjVyN3N1ck5PT00wYTR1MUNX?=
- =?utf-8?Q?dKJH3G1i8cQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dHpjS2ZXQW1pWURZQXQ4V08vU05TMEIwY0NBaUNHZWtRWFppZThsRk5UMmJp?=
- =?utf-8?B?WDdqRzNGQ1ZQcHpsMlh0NFRDWHJ3YWNJWkZlSmRsdG5abk4yUFhjQW9IQldY?=
- =?utf-8?B?UGNGUmNhUjZaUjVSa2FPc0x4K2JZSmdJNEFQcDREaHo5TmhMNENKY21tQ2E5?=
- =?utf-8?B?QkkrRGphK1VrWHNzaEtGdEtmemZRNXVZcWxrQy9paTFiVExJbm1uaWQ2aFds?=
- =?utf-8?B?OEpkOUZFWk9hL2lnRDNvYlBpMitHd2RvS3hBZWVPV0laOGdWLzNXNFFIMEZ0?=
- =?utf-8?B?YW5rbWFQR21DRjRBMjQyRDB5c0VmL0pxV2wrMjVJdnFMVEUwY2UrK3ZIazh0?=
- =?utf-8?B?NXM5WVNjT1hlVFovMk05TDNhNkRuTTNkcFhGeXJUMDVQSVZ2eHF1a1hpeGZN?=
- =?utf-8?B?blZNbTFXMUh3ODcrU1JiVW81eUJDVXlOdE5FOUlRMmNMUytlWDlKTDhqbDEr?=
- =?utf-8?B?SEp1L29pdmtwTHNnZ2FaK2pHMHF6NHl2QloxZURXaTdwcnNKUkRJaEVGM1dL?=
- =?utf-8?B?VTBWOUYranB0SDN1OWRSd3RBL0FKdjgvckhmS2hNUXZ4a3RuaVJyZVhsbGli?=
- =?utf-8?B?Ui8wMzZsL29FejVJZTdqckgxR1ZyMFNLMllRTTlOVHI1WE5BaUNyelhicFll?=
- =?utf-8?B?d0hWSk5qV2VrVDVHM3Q0cjhRZEZUUXE3QkREQ2FBSkExNk1rdDNlUnVsYi96?=
- =?utf-8?B?eExiUnpqSGpNdjdWZUF6ZkZJWEpqMmN1ZDJ5bUN0ajhsb3E3d3crTVZzVWhU?=
- =?utf-8?B?TktiU25rU1Q4Mld4eHB1UTRIbjlNNnJNMWI3N3VkblFJaGQ1S1E0WmZ5dDhl?=
- =?utf-8?B?QkhIOHFFUHJjYkszWWZ0WkQwaXJzNGRRenNlY09xL1VXYjhRQVhyc0xScW9m?=
- =?utf-8?B?VmFmV25rbWFXVDFZVkRIZk5KUksrT0FWVFphVjZhTmRxWVE4SnJXeFVuVlM4?=
- =?utf-8?B?YlFQbU05TW1hdHkwZEJYMGdNT2hRSk42QmpzVVM1YS9jazBRMzJENzhGMWlZ?=
- =?utf-8?B?SHRyRFpJN3VFL2FmN3ErOFpObWdzVHBWcTJmeHVORHFmNUlVMzU1VmlBalds?=
- =?utf-8?B?eW5adDJTK1R6MmZ0MlRQZ010bVZXLzFsR1pySmhvK0dyU0dSOVNxK1BzQysx?=
- =?utf-8?B?cHlHcmJLMTVzb2M1cE4xZ1FLbVQzNTlaNmlqVmlXL2RGbG5IV284U3psSDJR?=
- =?utf-8?B?Y2ZRRTFpNVpZWEtSRWd3SnkyZEhJR3dVOWlMdEFwdVBrcWgySEtON0d3cW5y?=
- =?utf-8?B?MWFQaG9QZmxlakVydnh5bGRMeFlpL3dpZ3RZcmlNOTdITTdmYVJKU0poWkVj?=
- =?utf-8?B?dGVNZk9PZkNZSGZ6aUhYSUxvcGFWdW9MZUI4VDlieGtRZHlQcUNaZk5SUVdi?=
- =?utf-8?B?eTU4akd6MURlNFdlN05VVzlEb1lkVnUzUFJuNWJkWEJZVHkrWlRSSmYxdWJR?=
- =?utf-8?B?eGdobHpOOXozKzh1andPTkNnZFhOUkR0dWpRVlEzcE5FN3NsZFp1SWJRWmY2?=
- =?utf-8?B?YlpNelRVTCsybVJCUmRNNTVZbTUxU0NpdkJoWFovbExBOVBWU1dQMjkzNnJD?=
- =?utf-8?B?cnJqUzUxVjlMR01PVkE4MS9BSDhwQ2o1TXFrcEJ3Z1FtbTcxU3JSV0xtcXla?=
- =?utf-8?B?ZVB0R2hxNXkzb2NLS20rQ2FNaWxvWUVodTdTdmYxWlR0aVRVaEV0RXJmQ1NO?=
- =?utf-8?B?VmsxczBiTjQwKzFZcjJXWER2WW1KZHNyeWdvRTErVFRSUkZBeEk2UnAzKytr?=
- =?utf-8?B?VjRGMDhjRjBFY0tWZXNsRFdXL2thZzVkelJMQWlVaGhkcVh3SG8zZFZzTkRN?=
- =?utf-8?B?RlNKd0E5c2dkYmJxdnkrdG1laCtHNEVWNEdkcDlMZEZjbStnamFMZCtDeHRr?=
- =?utf-8?B?SkxMUlJ0NkVVNUZOQk1BMGdudWdoL1cwcHVxOEFMbWMrMGJ5YlBIS3VPekd5?=
- =?utf-8?B?YmY5d2Zqc1pqWGVrbDI2Um1DSGNxMzE0Q05FUGVZd2dIWlFEclBYaVRFZkx5?=
- =?utf-8?B?M3QvbUc5TElML0IwbHJKd2FUWnNiNmdsemNiTEdnamVlaVBsYURnOGt2anJ3?=
- =?utf-8?B?eUJ2d0VkN2VTYllMbmFNYmgzTVBmT084UnpkN2F3MUVEajR5cy9uZkZWNU5C?=
- =?utf-8?B?UVFVZmNYMld6THdqTEsvWitrT0IzYXoxdlhxNFRDTDBXcFFBVlQzWnlncEhQ?=
- =?utf-8?Q?kfcCGWNdVrotUzJj2V/cdRVUjNVg6DJ8BMbIfT+r7HVa?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3834cb62-5c71-43c0-c2d9-08dd78f08820
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 12:01:03.9294
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OmppNzmfCXXe8F1lbhx/LPFCpUplWcqH6Jh1wNgVI4ItbTMa2QvnGFfDsFizJtYgMbqxWqpGco2+B6/Nm3xeew==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7877
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250411-feat-add-bitmask-macro-v3-1-187bd3e4a03e@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAJQF+WcC/4XNzQ6CMAzA8VchOzszugHRk+9hPHQfQKNzZiOLh
+ vDuDk5cjOnp36S/ziy5SC6xczWz6DIlCs8S8lAxM+JzcJxsaQYCGiGF4r3DiaO1XNPkMd25RxM
+ DbxUoXRtZdw5YOX5F19N7g6+30iOlKcTP9ifX6/YvmWtexoAFbbTqWn0ZPNLjaIJnK5lhx0Dzk
+ 4HCWKkdaov2JPo9syzLF6uPBAkDAQAA
+X-Change-ID: 20250304-feat-add-bitmask-macro-6424b1c317e2
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org, 
+ felipe_life@live.com, linux-kernel@vger.kernel.org, 
+ Filipe Xavier <felipeaggger@gmail.com>, Lyude Paul <lyude@redhat.com>
+X-Mailer: b4 0.14.2
 
-On Tue Apr 8, 2025 at 10:58 PM JST, Miguel Ojeda wrote:
-> On Tue, Apr 8, 2025 at 3:19=E2=80=AFPM Alexandre Courbot <acourbot@nvidia=
-.com> wrote:
->>
->> Apologies for that, I had no idea how to build using a specific
->> toolchain and did the wrong thing, which is sending without proper
->> testing.
->
-> No worries at all! It is completely normal :)
->
->> I had some trouble finding how to 1) find out the minimum supported Rust
->> version, and 2) how to build using a specific toolchain.
->
-> For 1), the minimum versions for tools the Linux kernel uses is documente=
-d at:
->
->     https://docs.kernel.org/process/changes.html#current-minimal-requirem=
-ents
->
-> `min-tool-version.sh` is also fine, of course.
->
-> For 2), similarly, it works like for other tools: either you override
-> your binary in the `$PATH` (that is easy with Rust with the command
-> you mention or simply with `rustup default X`), or you provide other
-> binaries via e.g. `make RUSTC=3D...` like you would do with `make
-> CC=3D...`.
->
->> I can send a patch against the Coding Guidelines adding a section to
->> encourage testing against the minimum version and explain how to force a
->> specific Rust version if you can confirm this would be helpful (and that
->> min-tool-version.sh is the correct way to check the minimum supported
->> Rust version).
->
-> So that sort of thing is supposed to be documented in the "Submit
-> Checklist Addendum" section of the "Maintainer Entry Profile" document
-> (`P:` field in `MAINTAINERS`) of a given subsystem, and in particular
-> for Rust is at:
->
->     https://rust-for-linux.com/contributing#submit-checklist-addendum
->
-> I agree that linking from the Coding Guidelines or perhaps the root of
-> the Rust docs would probably help others to find it, since different
-> people go to different places when starting, so please feel free to
-> send a patch!
+We have seen a proliferation of mod_whatever::foo::Flags
+being defined with essentially the same implementation
+for BitAnd, BitOr, contains and etc.
 
-Mmm upon reading this section again I agree it contains the needed
-information (even mentions `min-tool-version.sh`!) and can be found at
-the expected place, so I indeed don't see what more could be added to
-it. Thanks for the pointer and sorry again for overlooking!
+This macro aims to bring a solution for this,
+allowing to generate these methods for user-defined structs.
+With some use cases in KMS and upcoming GPU drivers.
+
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/We.20really.20need.20a.20common.20.60Flags.60.20type
+Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
+Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+Suggested-by: Lyude Paul <lyude@redhat.com>
+---
+Changes in v3:
+- New Feat: added support to declare flags inside macro use.
+- Minor fixes: used absolute paths to refer to items, fix rustdoc and fix example cases.
+- Link to v2: https://lore.kernel.org/r/20250325-feat-add-bitmask-macro-v2-1-d3beabdad90f@gmail.com
+
+Changes in v2:
+- rename: change macro and file name to impl_flags.
+- negation sign: change char for negation to `!`. 
+- transpose docs: add support to transpose user provided docs.
+- visibility: add support to use user defined visibility.
+- operations: add new operations for flag, 
+to support use between bit and bitmap, eg: flag & flags.
+- code style: small fixes to remove warnings.
+- Link to v1: https://lore.kernel.org/r/20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com
+---
+ rust/kernel/impl_flags.rs | 231 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/prelude.rs    |   1 +
+ 3 files changed, 233 insertions(+)
+
+diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..992988d26bc82e8461987206cc3ae9335f9387c8
+--- /dev/null
++++ b/rust/kernel/impl_flags.rs
+@@ -0,0 +1,231 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! impl_flags utilities for working with flags.
++
++/// Declares a impl_flags type with its corresponding flag type.
++///
++/// This macro generates:
++/// - Implementations of common bitmap op. ([`::core::ops::BitOr`], [`::core::ops::BitAnd`], etc.).
++/// - Utility methods such as `.contains()` to check flags.
++///
++/// # Examples
++///
++/// Defining and using impl_flags:
++///
++/// ```
++/// impl_flags!(
++///     /// Represents multiple permissions.
++///     #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
++///     pub Permissions,
++///     /// Represents a single permission.
++///     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
++///     pub Permission {
++///         const READ = 1 << 0,
++///         const WRITE = 1 << 1,
++///         const EXECUTE = 1 << 2,
++///         },
++///     u32
++/// );
++///
++///
++/// // Combine multiple permissions using operation OR (`|`).
++/// let read_write: Permissions = Permission::READ | Permission::WRITE;
++///
++/// assert!(read_write.contains(Permission::READ));
++/// assert!(read_write.contains(Permission::WRITE));
++/// assert!(!read_write.contains(Permission::EXECUTE));
++///
++/// // Removing a permission with operation AND (`&`).
++/// let read_only: Permissions = read_write & Permission::READ;
++/// assert!(read_only.contains(Permission::READ));
++/// assert!(!read_only.contains(Permission::WRITE));
++///
++/// // Toggling permissions with XOR (`^`).
++/// let toggled: Permissions = read_only ^ Permission::READ;
++/// assert!(!toggled.contains(Permission::READ));
++///
++/// // Inverting permissions with negation (`!`).
++/// let negated = !read_only;
++/// assert!(negated.contains(Permission::WRITE));
++/// ```
++#[macro_export]
++macro_rules! impl_flags {
++    (
++        $(#[$outer_flags:meta])*
++        $vis_flags:vis $flags:ident,
++
++        $(#[$outer_flag:meta])*
++        $vis_flag:vis $flag:ident {
++            $(
++                $(#[$inner_flag:meta])*
++                $kw:ident $name:ident = $value:expr
++            ),* $(,)?
++        },
++        $ty:ty
++    ) => {
++        $(#[$outer_flags])*
++        #[repr(transparent)]
++        $vis_flags struct $flags($ty);
++
++        $(#[$outer_flag])*
++        $vis_flag struct $flag($ty);
++
++        impl ::core::convert::From<$flag> for $flags {
++            #[inline]
++            fn from(value: $flag) -> Self {
++                Self(value.0)
++            }
++        }
++
++        impl ::core::convert::From<$flags> for $ty {
++            #[inline]
++            fn from(value: $flags) -> Self {
++                value.0
++            }
++        }
++
++        impl ::core::ops::BitOr for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitor(self, rhs: Self) -> Self::Output {
++                Self(self.0 | rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitOrAssign for $flags {
++            #[inline]
++            fn bitor_assign(&mut self, rhs: Self) {
++                *self = *self | rhs;
++            }
++        }
++
++        impl ::core::ops::BitAnd for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitand(self, rhs: Self) -> Self::Output {
++                Self(self.0 & rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitAndAssign for $flags {
++            #[inline]
++            fn bitand_assign(&mut self, rhs: Self) {
++                *self = *self & rhs;
++            }
++        }
++
++        impl ::core::ops::BitOr<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitor(self, rhs: $flag) -> Self::Output {
++                self | Self::from(rhs)
++            }
++        }
++
++        impl ::core::ops::BitOrAssign<$flag> for $flags {
++            #[inline]
++            fn bitor_assign(&mut self, rhs: $flag) {
++                *self = *self | rhs;
++            }
++        }
++
++        impl ::core::ops::BitAnd<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitand(self, rhs: $flag) -> Self::Output {
++                self & Self::from(rhs)
++            }
++        }
++
++        impl ::core::ops::BitAndAssign<$flag> for $flags {
++            #[inline]
++            fn bitand_assign(&mut self, rhs: $flag) {
++                *self = *self & rhs;
++            }
++        }
++
++        impl ::core::ops::BitXor for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitxor(self, rhs: Self) -> Self::Output {
++                Self(self.0 ^ rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitXorAssign for $flags {
++            #[inline]
++            fn bitxor_assign(&mut self, rhs: Self) {
++                *self = *self ^ rhs;
++            }
++        }
++
++        impl ::core::ops::Not for $flags {
++            type Output = Self;
++            #[inline]
++            fn not(self) -> Self::Output {
++                Self(!self.0)
++            }
++        }
++
++        impl ::core::ops::BitOr for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitor(self, rhs: Self) -> Self::Output {
++                $flags(self.0 | rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitAnd for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitand(self, rhs: Self) -> Self::Output {
++                $flags(self.0 & rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitXor for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitxor(self, rhs: Self) -> Self::Output {
++                $flags(self.0 ^ rhs.0)
++            }
++        }
++
++        impl ::core::ops::Not for $flag {
++            type Output = $flags;
++            #[inline]
++            fn not(self) -> Self::Output {
++                $flags(!self.0)
++            }
++        }
++
++        impl ::core::ops::BitXor<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitxor(self, rhs: $flag) -> Self::Output {
++                self ^ Self::from(rhs)
++            }
++        }
++
++        impl $flag {
++            $(
++                $(#[$inner_flag])*
++                pub $kw $name: Self = Self($value);
++            )*
++        }
++
++        impl $flags {
++            /// Returns an empty instance of `type` where no flags are set.
++            #[inline]
++            pub const fn empty() -> Self {
++                Self(0)
++            }
++
++            /// Checks if a specific flag is set.
++            #[inline]
++            pub fn contains(self, flag: $flag) -> bool {
++                (self.0 & flag.0) == flag.0
++            }
++        }
++    };
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 496ed32b0911a9fdbce5d26738b9cf7ef910b269..7653485a456ae5aa51becbf04153ea54a7067d9e 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -49,6 +49,7 @@
+ #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+ pub mod firmware;
+ pub mod fs;
++pub mod impl_flags;
+ pub mod init;
+ pub mod io;
+ pub mod ioctl;
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index dde2e0649790ca24e6c347b29465ea0a1c3e503b..0f691dd2df71d821265fae01555ba50e6a76f372 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -25,6 +25,7 @@
+ #[doc(no_inline)]
+ pub use super::dbg;
+ pub use super::fmt;
++pub use super::impl_flags;
+ pub use super::{dev_alert, dev_crit, dev_dbg, dev_emerg, dev_err, dev_info, dev_notice, dev_warn};
+ pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
+ 
+
+---
+base-commit: beeb78d46249cab8b2b8359a2ce8fa5376b5ad2d
+change-id: 20250304-feat-add-bitmask-macro-6424b1c317e2
+
+Best regards,
+-- 
+Filipe Xavier <felipeaggger@gmail.com>
+
