@@ -1,84 +1,102 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442D11D86F7
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 09:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB1329899B;
+	Fri, 11 Apr 2025 09:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744362711; cv=none; b=auboNGsOIdakDxw5Rulaav3DGoiqxFwSp0fMQbKgF2pEECxuuUhFYFPZeAAG2XT/uFmLceWIVK6Z8Fza7tzzTNTnx7g0SNvxww5utxe4O3GJ3HtOm6Id3XV+XPQ2kqoz6oPEvmCeSY2J1udR2Zr5fjnQXhYTVwl22k7RLsqMINs=
+	t=1744365070; cv=none; b=QzakRo2dMLm3A8O8/lOcUhsooRJLzMGzuaUYcucIaGGz0so9G3DQ7S2NOuK/W+CzG7A6jHv/4nF5Z82OMp98RXZrzqG6MVUtISOoL8daESkndvjcufEE1Ubl37wd2fzfh9z6vE6ztz9GETE6eyuDyNcx3OtZHuY3i8lISCqOznQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744362711; c=relaxed/simple;
-	bh=gAZvl/DaOljYQvLbZyj1Aqor4TLX1CMBfFj4+/m1Sks=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Xou7akU/LrK62Sl5eoukDuUyTfhf6BIJtnXO+MJBjMezvC41qcO1Eq/unsmtjThgXe4sEynk6o/RWDRrbE4g+7V2znrBBsDPRbamhYI3F5M5O+ulZG7Z7YF9Psz08vzdxou/Vc/pSVAHeQ85/PJTJd3Vs7S2LUEqbGsMJMROIck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wJzEPBFa; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1744365070; c=relaxed/simple;
+	bh=wvnOv5eAEw+Z3zqhOidw9lT9fYZueQvCHXPEEptv4JY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rO0Y487ANdPzeEgPYclClikkoEmr4KeJD4dsTSwwfgKLTlup8FdAKRhYfKp58fg9a8eoHMUPVPQTSedW5/YXXxfQJVGOWxQJKnrE9vL4o/sW1Y19fzrXsvB9SgJ1m+nycy2ea62R+uAO02lPS9G8x70Qv45ZysThgTp67UFiIvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FrOTsqMo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wJzEPBFa"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-39abdadb0f0so884636f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 02:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744362708; x=1744967508; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wtHjRHXFVscsRp8RZd9/bk5n+pzbeXXVGPWrgj5RJKk=;
-        b=wJzEPBFalVvn+0R4xEo5IVttssP/2COSMEORHKeV/lZCypZW4kGiQnTo460Sukqgg/
-         zRD4enU/FSe6iDj1srJ914C0gZKuE/kaoSK8jV3YpOmrq4rUr6r3pDXNvAW2TF4XLePN
-         +PgkOepO4f/R4/qbOHUdj/pZ9SCVblv0KqGp3yv/j7bNJVpGeYJ6TmXBMQeSjDfteA5W
-         5+rKnMUwz2ZoSNkJ+kCJXlUfS6z47WII8AK8tTGQRvLNmD3wrlyhQ7v3gwhjmrDI6jRN
-         oX0RmKJyS/EkUTU/zgCQ81trAJ1UabzCaJZnvCIygsUe5eGCQZa9LdVCGxjOzzplFqdN
-         0PZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744362708; x=1744967508;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wtHjRHXFVscsRp8RZd9/bk5n+pzbeXXVGPWrgj5RJKk=;
-        b=QeDJaEWMAS3+/bcJ9pQiSwY216Ym33TybjcUobORm/akWMvvJHr1kkKSICaaUCJu1t
-         STNsBMPYNB5BSrfeQt3Ps/LhifGCvf1LpfID2Sfo7RhXYFqElb5tYdu0/Mch9fiNFdft
-         LmDLrlt0HV6rTADyy5fcy3JUx5SmA1XhfgLZAhpEH78r6pDICPBmLoAjwpJ6uEjeCOKx
-         ftPHbQoci3ICYiq7AegJ+TqbQsYMkxqPm6bE+qE+xfc4OWwzimfjU0Bb+DT4YqRlhZIz
-         BKdzOtTsPsAUqw+46GAbIDvIV3CBAbBlav9/fpS/w7NoCDnQoBl/zESPZdQm+vL+7SBO
-         s+ag==
-X-Forwarded-Encrypted: i=1; AJvYcCXywTu6BuElRG7E/T0MsvUEQ1ePNj91DU3BgTdfq3b+YKSEAWQuJMRuAN6Ryr4TvG4MnORPsahAwYLVgGP0yQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTLVqjV1Y5W4JCVPUk7Pt8ZmEkp3Fwhlb3AlYejkt1PC9WZR4h
-	YLZsJdf+ETtgI4fkBRGNrYmbtAvCKoMrpdY2QraOH1Aa1uZXS18wiwhaX4HFdcNooOqg8vF++tV
-	PMxqVq1AdHCCccA==
-X-Google-Smtp-Source: AGHT+IFmPqT5nyuRDbyNRE7tkIsN0LjnBOLCerUako+DE9rPENWe6gVZ3/VyaRuq0Z31vztid24ppGEI8txFJR4=
-X-Received: from wmbg3.prod.google.com ([2002:a05:600c:a403:b0:43e:fada:96ef])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:40c9:b0:391:4bfd:6d5 with SMTP id ffacd0b85a97d-39eaaecaedemr1421448f8f.52.1744362708680;
- Fri, 11 Apr 2025 02:11:48 -0700 (PDT)
-Date: Fri, 11 Apr 2025 09:11:46 +0000
-In-Reply-To: <20250410225623.152616-3-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FrOTsqMo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6E5C4CEE8;
+	Fri, 11 Apr 2025 09:51:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744365069;
+	bh=wvnOv5eAEw+Z3zqhOidw9lT9fYZueQvCHXPEEptv4JY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FrOTsqMoWVB0W7bYpwbgh3rg8QTVkfPBDvaMOVqo2yUZ8n5xATjjs1zIvtbTZmPbF
+	 Z7rc+isvY5+p0nMaLsd54Yk043AjDX0VjvQN3Dt11S4XUxzv2oftyrzMXtG7LMHJQW
+	 k1VVu3hRLyt+DXMqXw84Tjny2IewyajrdCQTsT4GGY3MZKsz3Qa4uYMh82SELDmL1w
+	 bPkF9bc56cKGIt/HooHSDpKmiRUP0LlvGx5rXvUp9UQ8kwAjzOdc+5o334tZASaqTO
+	 pqWTl6z7QXxgQYixjGLpnlVYb4DoH/4qK/zufS+w2/nyzz7oESniaL3xXrFSNIHC5j
+	 rmxowx41BbIDg==
+Date: Fri, 11 Apr 2025 11:51:03 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, abdiel.janulgue@gmail.com,
+	daniel.almeida@collabora.com, robin.murphy@arm.com,
+	a.hindborg@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: helpers: Add dma_alloc_attrs() and
+ dma_free_attrs()
+Message-ID: <Z_jmBz6FBoYMMGyi@cassiopeiae>
+References: <20250410234332.153242-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250410225623.152616-1-fujita.tomonori@gmail.com> <20250410225623.152616-3-fujita.tomonori@gmail.com>
-Message-ID: <Z_jc0nFyQpGui9xo@google.com>
-Subject: Re: [PATCH v2 2/2] rust: task: add Rust version of might_sleep()
-From: Alice Ryhl <aliceryhl@google.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	boqun.feng@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@samsung.com, tmgross@umich.edu, dakr@kernel.org, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410234332.153242-1-fujita.tomonori@gmail.com>
 
-On Fri, Apr 11, 2025 at 07:56:23AM +0900, FUJITA Tomonori wrote:
-> Adds a helper function equivalent to the C's might_sleep(), which
-> serves as a debugging aid and a potential scheduling point.
+On Fri, Apr 11, 2025 at 08:43:32AM +0900, FUJITA Tomonori wrote:
+> Add dma_alloc_attrs() and dma_free_attrs() helpers to fix a build
+> error when CONFIG_HAS_DMA is not enabled.
 > 
-> Note that this function can only be used in a nonatomic context.
+> Note that when CONFIG_HAS_DMA is enabled, dma_alloc_attrs() and
+> dma_free_attrs() are included in both bindings_generated.rs and
+> bindings_helpers_generated.rs. The former takes precedence so behavior
+> remains unchanged in that case.
 > 
-> This will be used by Rust version of read_poll_timeout().
+> This fixes the following build error on UML:
 > 
+> error[E0425]: cannot find function `dma_alloc_attrs` in crate `bindings`
+>      --> rust/kernel/dma.rs:171:23
+>       |
+> 171   |               bindings::dma_alloc_attrs(
+>       |                         ^^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_alloc_pages`
+>       |
+>      ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44568:5
+>       |
+> 44568 | /     pub fn dma_alloc_pages(
+> 44569 | |         dev: *mut device,
+> 44570 | |         size: usize,
+> 44571 | |         dma_handle: *mut dma_addr_t,
+> 44572 | |         dir: dma_data_direction,
+> 44573 | |         gfp: gfp_t,
+> 44574 | |     ) -> *mut page;
+>       | |___________________- similarly named function `dma_alloc_pages` defined here
+> 
+> error[E0425]: cannot find function `dma_free_attrs` in crate `bindings`
+>      --> rust/kernel/dma.rs:293:23
+>       |
+> 293   |               bindings::dma_free_attrs(
+>       |                         ^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_free_pages`
+>       |
+>      ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44577:5
+>       |
+> 44577 | /     pub fn dma_free_pages(
+> 44578 | |         dev: *mut device,
+> 44579 | |         size: usize,
+> 44580 | |         page: *mut page,
+> 44581 | |         dma_handle: dma_addr_t,
+> 44582 | |         dir: dma_data_direction,
+> 44583 | |     );
+>       | |______- similarly named function `dma_free_pages` defined here
+> 
+> Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
 > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Please add the new file to the corresponding MAINTAINERS entry. Whith that,
+
+	Acked-by: Danilo Krummrich <dakr@kernel.org>
