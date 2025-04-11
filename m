@@ -1,84 +1,82 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D32A238C09
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 10:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C478D238C24
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 10:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744369142; cv=none; b=N21+vhFtb3zhVWioAuTGnTQac+qapbx577kOwehiYWN0ZWCXrLPSsa4vNQLGBMR+wN02SbBUiXbyKPThifY03jvtg3oKC1pKIhiVjsQxc+gPCLfivSY2TUuzmIpR+wVAiT8luHdQeiJHiOQrvdPsEUeIlixX6iV5MJXM4W1BvgE=
+	t=1744369145; cv=none; b=iFoc0H+aIECIkKJ6ydzXNp9UsGqpUsFNFtJnVwMdGUYKpV3BjglKUgi3LupwjnY1zX/5eQfqhNw/DJlRNi64IbaGdVZK8ys1knvSc+n4Ge9WzmuVHkZVBddI9V97bZ3XkK9du64EsEg7lmvVqm1kuXr69/Qj1DXIw0O3hrmRRqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744369142; c=relaxed/simple;
-	bh=iXxif58jOKd68UuNb1nH/Aphfy+h+IDwjXQAeloxi0s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FOVLgfChFdS0sru3VVs8IMYJgrum/qiRi+CnSfOPiHUnpM0YlMDKYIiUVg/iaVhaox1o/6yuTgnyPSg99ypQB+9x0ZIt3SUvsxQ0lbk8gvzqaB9YnZV/I113ZwFL8O2x1aSz0E8MesBztM1CeKo7KH0R8OHIo8x+MCkep9ILwBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rVihUGyP; arc=none smtp.client-ip=209.85.215.174
+	s=arc-20240116; t=1744369145; c=relaxed/simple;
+	bh=yS8zzoAb1gzolyqRZtRGFelUspFvZ1+mTbeqhW4yRic=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aLuy7npchiUQ6WPRQaQe1bEC1XkzNeO7cNMK9/DT9shlThFCYRv5G+K59UiEUkYlzQ0B8vpC8g1cwTutBo0asYnRwfY+jqXq1kUSlFs3zk4HdC1mWoFX+AbShn7euSrEfo4XvlTruPCq88CfoivpJfFbrll0UtxWcYxmXPclA78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s4fL1QbZ; arc=none smtp.client-ip=209.85.210.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rVihUGyP"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-af50f56b862so1325302a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 03:59:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s4fL1QbZ"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-739525d4e12so1679276b3a.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 03:59:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744369140; x=1744973940; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Uep56qqpHOxiVc7zmrD76SN7umWcmEL5ASRqQX2jJpY=;
-        b=rVihUGyPdrA6gWKBVgcMau7rjSawN8kn5IJpCRrDaZUSYvSFmqpolCK8ONKxWdWzS3
-         w+lnAmqWWUKAidg+ODSpCPDV+txc6V5pJM0kVwrqdH8l8NvcQIrGxmXAXYJ65my/gKKa
-         WgH/HWCt1zThJe1kj5IRJ4LmCAUmaVyLDBGBbQzUqVlOLTfWadX8I6v8mjUakVXKwwEj
-         zRjLMs0kiGNZMQRnSoA2Un9QI0AX5BTUKlSX3/7h8II8CuTfb669wgun7tpE5o4pTSeL
-         PNhhTTZzwiDuH8XXKmbbPGcTZsDs+3AXHpZXaADQNoJFdk3jerTCTqsrZJ1ZA76g+pAi
-         Ymdw==
+        d=linaro.org; s=google; t=1744369143; x=1744973943; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P5QmLNWlEhMlbaeU7vUP5c8vKPIyuKJozs3WjW7NYUo=;
+        b=s4fL1QbZ88rgE2W4qUliW4BBCp0K5GqKT2wjxutfN7g3pvg0G90uCcFWg7kF2M3KK4
+         gbtQ9RjfrrGq+pomf5cYrAVSimECQdsT/SqA20GQSrDEQRUCfd1yZg3lPfm19cARug06
+         m1Sg9hRV3eZyMIT4QOjlIir4OoZtWstb60/KjKcp3QL4UCk2ErJ30SWrrcJwAY5on+Fd
+         iIaVakybeOZrF3bps/shhUUl5WZFYq5c/U/P+OkF+7UcFmJGG+VNezjpKieRhlukOCzY
+         eMl/EtLbXfOC5wG6fotO3H5jDFtePU8nCeN9Hqrqu/Xg38EXOOK4JvgL7vUSFvKOwOz5
+         te1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744369140; x=1744973940;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Uep56qqpHOxiVc7zmrD76SN7umWcmEL5ASRqQX2jJpY=;
-        b=Hfgc29CHWOCas3HibAoDSTtfaNf6S44X3aDCd6rqSvnCkeUHX6Y5v/j8FIDzLHsS/e
-         eC7RzRhdvAaLNkiYDHNkHqSdFdH/gkkNAnQIbWpqkC6fUxFusHdhSj8BT5B6SM1lEeTt
-         +S8eXa7cHckC00Spvo6F+4QwsWc+5c1j6vyvv7uTB5KVrLkrf/MSEmygjLQcJNfiTHK+
-         8nDeYaqMZp29cCqYTNvgZBdG/cuwW4XTH5ye0XOJgGLgdkhFK8HS8SNs2kxLBHUXHQRB
-         vchqno5ZJZycizaRKV9j2WxJXtGVxjMqat7XigchwB1NUkZvRLuuLWwJz0eAzn3qH1ip
-         kWTA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4tmrvOsoh56cxQC3kjz6j5WkKaXpxCLw0RnXPIgrJ7Q5F33n6TEqA2kMFs6D1r3Hprp/WM6cHBNPMoxeedg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvDc5pZTQ37rXy6OwaX9gM+kb45E/+Kg/1ErQIwhKaM2IFqDBe
-	dg3mbrMUJiPX+v+GIPnvO7rXKqA3hnyBMPfVW32HvQ7IsleBaaIcU1j3rQDUj+M=
-X-Gm-Gg: ASbGnctAktzD9S0W8iSu0/Zi0xdskOWnfjHIVIK31S7UCynayxUawT1zmuwZH1L2nsj
-	Rma6RUl3e8mfRt3tN8vvIKLOex/B2sH/7NleYTd0z7AL0jYCbG7jDV8qi7qd91yB6qWNWQD1TEO
-	U/4Of2wdHT3BlNzMd91a//YD6gzJ83EV9OgAKpkXf2LMZlA8R3HczVEIW4nTnKqIui8yUbjTinX
-	kPxI1u2pBfOQEZxOrsmY1XJtu0C7C98EWag9SNg2hmoGoXjEbN/JCzahpCB2sZMovwAXVKQO+yj
-	FCUhd127bS3+AZjGrJHqPNFfTSHU2jZ1IkfStvU84A==
-X-Google-Smtp-Source: AGHT+IEHJEE1W6bkCyi36vC/D7igePx9OaO80JYKfuHw3vOda2wbiFANJs+ZIss/8NG3B9oBQ4vOCg==
-X-Received: by 2002:a17:903:2345:b0:224:2384:5b40 with SMTP id d9443c01a7336-22bea4c3b41mr42138095ad.24.1744369139678;
-        Fri, 11 Apr 2025 03:58:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744369143; x=1744973943;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P5QmLNWlEhMlbaeU7vUP5c8vKPIyuKJozs3WjW7NYUo=;
+        b=lUFz9T+uLutVazL9Db5ESu8NDQAbZp0CyW2a8jp4dOXzBY6MJ3rvrNs79RjVcTJ43c
+         U50wgv31xlNUUn/DpAGpdDdPcg8t7n5VSHQv4wbG47YdNzQOr+NF6m+OigtC/Bgr0PLY
+         /thrrj//d0O/j1v5SisE1fY8HSt06hBa8RurvU4kxzqWov40JkxtS1FDFz2fJuS6hk74
+         ICCWAa32Dcfqr3pkozmsqkuSAVCF13qclHwxKi4rF+9deqXL6Vso/WuRCYWtdnTKvK0S
+         BRPAdJVrg6qgnS8SFDBNXvP6pOdEk6eDXrFbGFCxwyKto/4j/ZMSEAKWFHFVnEnNTRVv
+         bKQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUsuxzouZP7OaNttQiA7jGCANgqjrhOpq1XfKzcXYN2Anv7HS1jAti9lw2kdigPaKgZBq59+rvcTJ6xUAuweQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyfg/l0FsXavHOs/xf3+iNnejAIc3YMVAxj2Op2qWOmIltAlCnl
+	nbyRQQSZhKrR4BG762uXCzRYbK1UokH0Mqm8R2J9OgfywX1epWgh/SoVRHHFZjU=
+X-Gm-Gg: ASbGncszKoVgDq0iqIiE0h/ZwUjQ6C/Gw5A8Swemkd0LLx8wAC5f/prvZ+1i5aIDg2n
+	Bcj61gZ+fmoC7uifnhHnYs1FR93OnDDjhUIAA46iYiXMUOKVVZoYgXtFYsf5RMhXXZ0wmoanuf6
+	jBN5tq4G+UGBdoVq77eC+JGroUlKsRFM8cR40mPGzPBEbeWKLPxlEGQ2QzPINPwVAXcJEDj2ABv
+	PtKEYu4gpDd2E81FjPP8avmCbMT45bmBqFs7YTk5sjdhkV+vX5atCQABhC4q+z5ewPgRZnithYi
+	jV7XJ5Sr7h9+RTrfWFNU56DC/6gKbWa3gE3Q9nZbmA==
+X-Google-Smtp-Source: AGHT+IE2OjzWyw13U8ckU/PhF26xnq5qyW/KpQps6B6mpDc5lX3qxmzsxgHjgW2+oCee8Ta27wiyxQ==
+X-Received: by 2002:a05:6a00:1486:b0:736:5e28:cfba with SMTP id d2e1a72fcca58-73bd126b973mr3107562b3a.18.1744369143132;
+        Fri, 11 Apr 2025 03:59:03 -0700 (PDT)
 Received: from localhost ([122.172.83.32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7b8c6b3sm46168835ad.77.2025.04.11.03.58.58
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd2334376sm1179973b3a.165.2025.04.11.03.59.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Apr 2025 03:58:59 -0700 (PDT)
+        Fri, 11 Apr 2025 03:59:02 -0700 (PDT)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Danilo Krummrich <dakr@redhat.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Michael Turquette <mturquette@baylibre.com>,
+	Yury Norov <yury.norov@gmail.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Yury Norov <yury.norov@gmail.com>
-Cc: linux-pm@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
 	rust-for-linux@vger.kernel.org,
 	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
 	Erik Schilling <erik.schilling@linaro.org>,
@@ -89,13 +87,14 @@ Cc: linux-pm@vger.kernel.org,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	Russell King <linux@armlinux.org.uk>,
 	linux-clk@vger.kernel.org,
-	Anisse Astier <anisse@astier.eu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
+	Michael Turquette <mturquette@baylibre.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH V9 00/17] Rust abstractions for clk, cpumask, cpufreq, OPP
-Date: Fri, 11 Apr 2025 16:24:59 +0530
-Message-Id: <cover.1744366571.git.viresh.kumar@linaro.org>
+Subject: [PATCH V9 01/17] rust: cpumask: Use non-atomic helpers
+Date: Fri, 11 Apr 2025 16:25:00 +0530
+Message-Id: <b092bbcc23529663b1a8b381efb85566453185e1.1744366571.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
+In-Reply-To: <cover.1744366571.git.viresh.kumar@linaro.org>
+References: <cover.1744366571.git.viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -104,174 +103,37 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+The cpumask Rust abstractions don't need the atomic variants of helpers
+for now. Use the non-atomic helpers instead.
 
-This series introduces initial Rust abstractions for a few subsystems: clk,
-cpumask, cpufreq and Operating Performance Points (OPP).
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ rust/helpers/cpumask.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-After the previous version (V8) was posted, patches for clk and cpumask
-abstractions were sent separately for thorough review. Now that most of the
-reviews are done for them, I am sending them with client code (cpufreq/opp)
-again. Yury also suggested the same earlier.
-
-The abstractions cover most of the interfaces exposed by cpufreq and OPP
-subsystems. It also includes minimal abstractions for the clk and cpumask
-frameworks, which are required by the cpufreq / OPP abstractions.
-
-Additionally, a sample `rcpufreq-dt` driver is included. This is a
-duplicate of the existing `cpufreq-dt` driver, which is a
-platform-agnostic, device-tree based cpufreq driver commonly used on ARM
-platforms.
-
-The implementation has been tested using QEMU, ensuring that frequency
-transitions, various configurations, and driver binding/unbinding work as
-expected. However, performance measurements have not been conducted yet.
-
-For those interested in testing these patches, they can be found at:
-
-git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git rust/cpufreq-dt
-
-Based on 6.15-rc1.
-
-V8->V9:
-- clk (changes since V4):
-  - V4: https://lore.kernel.org/all/cover.1742276963.git.viresh.kumar@linaro.org/
-  - Add more methods in Hertz (as_khz/mhz/ghz).
-  - Reword a comment.
-
-- cpumask (changes since V4):
-  - V4: https://lore.kernel.org/all/cover.1743572195.git.viresh.kumar@linaro.org/
-  - Add support for cpumask_{test_cpu|empty|full} and switch to using non-atomic
-    helpers for set/clear.
-  - s/CpumaskBox/CpumaskVar/
-  - s/set_all/setall/
-  - Improved examples, comments and commit logs.
-
-- cpufreq/opp:
-  - V8: https://lore.kernel.org/all/cover.1738832118.git.viresh.kumar@linaro.org/
-  - Based on review comments received for clk/cpumask, a lot of changes were
-    made to cpufreq/opp bindings in code, comments, examples, etc..
-  - `attr` fields were dropped from cpufreq support, not required anymore
-    because of latest changes in cpufreq core.
-  - Use Hertz/MicroVolt/MicroWatt as units.
-  - Lots of other cleanups.
-  - Dropped Reviewed-by from Manos (there were too many changes).
-
-V7->V8:
-- Updated cpumask bindings to work with !CONFIG_CPUMASK_OFFSTACK case.
-- Dropped few patches (property_present() and opp helpers), as they are already
-  merged.
-- from_cpu() is marked unsafe.
-- Included a patch by Anisse Astier, to solve a long standing issue with this
-  series.
-- Dropped: "DO-NOT_MERGE: cpufreq: Rename cpufreq-dt platdev."
-- Updated MAINTAINERS for new files.
-- Other minor changes / cleanups.
-
-V6->V7:
-- from_cpu() is moved to cpu.rs and doesn't return ARef anymore, but just a
-  reference.
-- Dropped cpufreq_table_len() and related validation in cpufreq core.
-- Solved the issue with BIT() macro differently, using an enum now.
-- Few patches are broken into smaller / independent patches.
-- Improved Commit logs and SAFETY comments at few places.
-- Removed print message from cpufreq driver.
-- Rebased over linux-next/master.
-- Few other minor changes.
-
-V5->V6:
-- Rebase over latest rust/dev branch, which changed few interfaces that the
-  patches were using.
-- Included all other patches, which weren't included until now to focus only on
-  core APIs.
-- Other minor cleanups, additions.
-
-V4->V5:
-- Rename Registration::register() as new().
-- Provide a new API: Registration::new_foreign_owned() and use it for
-  rcpufreq_dt driver.
-- Update MAINTAINERS file.
-
-V3->V4:
-- Fix bugs with freeing of OPP structure. Dropped the Drop routine and fixed
-  reference counting.
-- Registration object of the cpufreq core is modified a bit to remove the
-  registered field, and few other cleanups.
-- Use Devres for instead of platform data.
-- Improve SAFETY comments.
-
-V2->V3:
-- Rebased on latest rust-device changes, which removed `Data` and so few changes
-  were required to make it work.
-- use srctree links (Alice Ryhl).
-- Various changes the OPP creation APIs, new APIs: from_raw_opp() and
-  from_raw_opp_owned() (Alice Ryhl).
-- Inline as_raw() helpers (Alice Ryhl).
-- Add new interface (`OPP::Token`) for dynamically created OPPs.
-- Add Reviewed-by tag from Manos.
-- Modified/simplified cpufreq registration structure / method a bit.
-
-V1->V2:
-- Create and use separate bindings for OF, clk, cpumask, etc (not included in
-  this patchset but pushed to the above branch). This helped removing direct
-  calls from the driver.
-- Fix wrong usage of Pinning + Vec.
-- Use Token for OPP Config.
-- Use Opaque, transparent and Aref for few structures.
-- Broken down into smaller patches to make it easy for reviewers.
-- Based over staging/rust-device.
-
---
-Viresh
-
-Anisse Astier (1):
-  rust: macros: enable use of hyphens in module names
-
-Viresh Kumar (16):
-  rust: cpumask: Use non-atomic helpers
-  rust: cpumask: Add few more helpers
-  rust: cpumask: Add initial abstractions
-  MAINTAINERS: Add entry for Rust cpumask API
-  rust: clk: Add helpers for Rust code
-  rust: clk: Add initial abstractions
-  cpufreq: Use enum for cpufreq flags that use BIT()
-  rust: cpu: Add from_cpu()
-  rust: opp: Add initial abstractions for OPP framework
-  rust: opp: Add abstractions for the OPP table
-  rust: opp: Add abstractions for the configuration options
-  rust: cpufreq: Add initial abstractions for cpufreq framework
-  rust: cpufreq: Extend abstractions for policy and driver ops
-  rust: cpufreq: Extend abstractions for driver registration
-  rust: opp: Extend OPP abstractions with cpufreq support
-  cpufreq: Add Rust-based cpufreq-dt driver
-
- MAINTAINERS                     |   11 +
- drivers/cpufreq/Kconfig         |   12 +
- drivers/cpufreq/Makefile        |    1 +
- drivers/cpufreq/rcpufreq_dt.rs  |  236 ++++++
- include/linux/cpufreq.h         |   96 +--
- rust/bindings/bindings_helper.h |    4 +
- rust/helpers/clk.c              |   66 ++
- rust/helpers/cpufreq.c          |   10 +
- rust/helpers/cpumask.c          |   23 +-
- rust/helpers/helpers.c          |    2 +
- rust/kernel/clk.rs              |  319 ++++++++
- rust/kernel/cpu.rs              |   31 +
- rust/kernel/cpufreq.rs          | 1320 +++++++++++++++++++++++++++++++
- rust/kernel/cpumask.rs          |  328 ++++++++
- rust/kernel/lib.rs              |    8 +
- rust/kernel/opp.rs              | 1151 +++++++++++++++++++++++++++
- rust/macros/module.rs           |   20 +-
- 17 files changed, 3581 insertions(+), 57 deletions(-)
- create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
- create mode 100644 rust/helpers/clk.c
- create mode 100644 rust/helpers/cpufreq.c
- create mode 100644 rust/kernel/clk.rs
- create mode 100644 rust/kernel/cpu.rs
- create mode 100644 rust/kernel/cpufreq.rs
- create mode 100644 rust/kernel/cpumask.rs
- create mode 100644 rust/kernel/opp.rs
-
+diff --git a/rust/helpers/cpumask.c b/rust/helpers/cpumask.c
+index 2d380a86c34a..ae964cddbd41 100644
+--- a/rust/helpers/cpumask.c
++++ b/rust/helpers/cpumask.c
+@@ -2,14 +2,14 @@
+ 
+ #include <linux/cpumask.h>
+ 
+-void rust_helper_cpumask_set_cpu(unsigned int cpu, struct cpumask *dstp)
++void rust_helper___cpumask_set_cpu(unsigned int cpu, struct cpumask *dstp)
+ {
+-	cpumask_set_cpu(cpu, dstp);
++	__cpumask_set_cpu(cpu, dstp);
+ }
+ 
+-void rust_helper_cpumask_clear_cpu(int cpu, struct cpumask *dstp)
++void rust_helper___cpumask_clear_cpu(int cpu, struct cpumask *dstp)
+ {
+-	cpumask_clear_cpu(cpu, dstp);
++	__cpumask_clear_cpu(cpu, dstp);
+ }
+ 
+ void rust_helper_cpumask_setall(struct cpumask *dstp)
 -- 
 2.31.1.272.g89b43f80a514
 
