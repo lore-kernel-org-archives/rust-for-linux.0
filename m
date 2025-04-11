@@ -1,125 +1,187 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CA31F03C4
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 07:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C962853F4;
+	Fri, 11 Apr 2025 07:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744355387; cv=none; b=LPMEyw4SC56RGbbD50lhxKiLbPjPS6E6E5w0rX14e+5lQLK6SD0jCbPbZZDLr06EMWK03swUmjkYTJkrf477gcejT+zA0RCLg+JpRytsPMHaKzWx90auLixDwgpzWO5ULYzVNvt8cYnoQM4WCYHgbEEh1fW1qINdJAdptXhCbNE=
+	t=1744355696; cv=none; b=JYNigUq+LTwTso43z8F65nr95uLn+psXTDP8mLIXg3kxEMYsetMtjsHSxdoAAubCmMEJRCjR3ExD3M0RUrOnZo0HuIfOeYpTKDTb1SPhVNvvOpKw4HifnoGVQV1zLY5i8cJEKhurdwVDyl8HD6HNdTb1RcdncBDShHODjlGxFig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744355387; c=relaxed/simple;
-	bh=2HKkKC82etiMsqe1ATwTtzyBnGYDYBFXiV6zeDl4Fys=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n7ExCuhyxSUi2IY4SByx5POXNKZda5O/yEvD9YT7/OPs6jSa8oIYGD8J63k7KiKeaJA+INSB8GfWegepN5+5/ZBDkCi4tF2diCNzID45g9T8Vq4VdlixhYb66XfgjPbdxXAIPvfMwAfKrau/ApBwBj2TmeJYSHQtCwm2OOK7RUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=n9xMDIBd; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1744355696; c=relaxed/simple;
+	bh=tpS0UlAr4w1LsBHuXYb1fiiOH8hIvS0JrS2AM6UhpwM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HI963IQ7HIqSl9m+0UMX0sLo13dIqXwpPBY3mLaJ/ErR2wDTUyK4Wda/enam2eQjQKhUyAnEMIrN/MSjUFoJOQ8+HjrV/TxBEi6TmVbqc2lBA7Mf7OVe6okWZVDYUT6y+NlEAHL40JYW6A/+FIXR2plsZB37HKgQ5x1OSG5R1Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U8vPazfe; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="n9xMDIBd"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22580c9ee0aso17629835ad.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 00:09:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U8vPazfe"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-acacb8743a7so141050266b.1;
+        Fri, 11 Apr 2025 00:14:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744355385; x=1744960185; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=SsaZNHdeANXtSEjMxf+DUvyz9Eisyu48b8JNmNeFVJQ=;
-        b=n9xMDIBd9w69awd+45JOJMBrruaUOV93mNs/5WEnq/vQcIT3OsRurowehVFGSez8ZR
-         CRb73DMes08+Z7yTPV5MaoeGoLiakUEhfjol1XCt5OCZ9dTpBexoPOKy18O+ChkzODY+
-         sHpS61CFZElGq5MWFbnv5cIzX1GCBTZ4qvHKVCy5CiDUfiD+U19uqdVH2RnNi346s6ew
-         h2i9V8UMMf9349e66iR0ZEGdpdjOHEmXj/7ZQZkeyljxqo2PQ3b6X1YI7W53kqzWH52a
-         /lVb92Zij+eIj8x/Mp1nwR/qMxR77XeuhpVqNSE6J99po16+ffI4W4rwVX/75HscTn+O
-         cs9Q==
+        d=gmail.com; s=20230601; t=1744355693; x=1744960493; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9Hq5nxbhmh17ZZ8eYIzyyvh2Q6aoKe7PhPVOM2wk4Eo=;
+        b=U8vPazfeoMV+wEsU+oL66wKqFPtP/u1D8q/EUxC7/SK8e3Vz2u+pUGnf1P83ReaKC8
+         hrG/JP/lTC94n9/w45Uv5eNs2f6Jx04nWGO0/bev6en267NVmmEfaulY3vuOIseUl5pj
+         mY4YGB57V3Pad3NeaTJ89poXwBhaJb117/bfI70bFrra6Kk8ijd8kTt8DePfIEfgZaDI
+         Ps3r5m/huYnuJVm/YYLVHND28HIU1Utk9mxY+BE1xlRgCJP6PkcKjcaT4wGQtmZs4AKT
+         9jnZAp0eiVRFuyGzq/hxxV30ZUwYKa7aFGRFDZm23QjMHASYqKzggfDSElG5tRCPuJLD
+         RRQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744355385; x=1744960185;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SsaZNHdeANXtSEjMxf+DUvyz9Eisyu48b8JNmNeFVJQ=;
-        b=Wh29/aZouu2rj/bInJO/TwLnxfnMbHb3jCwV0KolT3Gp9B+NwPXtB6Xf8MK3t0qitU
-         7bJ3jr/LUTbXfXJ/uX0cg1fzwVTJEMCRlVFc/4JA6v77qe89u2uPMvaKW6SAraZsNHa6
-         spKQm6kLvinAVTZCYFlhUsw66XWoYfX4YyAc0Z+XrpnoXY8/riBamGGkKApvhAydHztj
-         3XHKrrvv6tIXOPmxx1xSNBEgKTTHwdH+RQoSmGO9O7Euug42TUXU7NPPIpY7SuFqufFB
-         nxvftYlIMpgkP4b7mDeWv7X4IJO6Q5CZqXtnwF6dBqCr+6kSice3PkhkXTto3eF4IdU6
-         2ihQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXE++eQxb6bOfxUSC01bB/Hz/e+b2k6NrkBPlVbKMLV3wWCqqJiYBZOs8Nzn9c8pdEP7v5QjIv9/M9XiOlljQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx68x11LZgSOqeAOoFpKiyPP8KdzgUnpWddIGe/68X2GOcYn2j4
-	EfA47wyS+0RKEAMijB3oTdEd2g7yQUevpjhJs79n8HEpupYKmyOISMB2RBVMxeY=
-X-Gm-Gg: ASbGncsA3VRHWb1qvarpllVGG6qxEOYmq2Dnx6Byo0vagqSHAZI+7XR5KvaeIygXyp1
-	OZTvsuxWMapqo7mp4hLi80O2iHwnwxpXPZ3idm8U01dGRb27wavvbdObnyFqYAS5IaNnclacgch
-	BD0VJQAOLWGaGqCpwBDcQAhhUs94a6U/MOeKxOdmAbaS9tRtBkro1Thlgc9rFhfgGtweetSHN64
-	Ln/qB1ggivGoX0RXzsJyiUpFYqT8iN0zWCEqH/paJ8MkDo16+8Zmdkd+S8J4P8Xu7BUk9Te0MFq
-	giIkRNnSor7V+ndlZQnpQhdxa92ISc2MbiEPoEoZS9+4ydRP7iJO
-X-Google-Smtp-Source: AGHT+IHQQmLLJrkqWF9B7mkZc3DCkY3lsb5cw00cICBBOVuQHLOx7UsWGycFoczOYNtiuWWk6Tj2Mg==
-X-Received: by 2002:a17:903:22c4:b0:224:a74:28d2 with SMTP id d9443c01a7336-22bea4c6cbcmr24391065ad.26.1744355384775;
-        Fri, 11 Apr 2025 00:09:44 -0700 (PDT)
-Received: from localhost ([122.172.83.32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7ccb569sm42002035ad.225.2025.04.11.00.09.43
+        d=1e100.net; s=20230601; t=1744355693; x=1744960493;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9Hq5nxbhmh17ZZ8eYIzyyvh2Q6aoKe7PhPVOM2wk4Eo=;
+        b=EyIvDDIBxnepHPqNE2gOFmtc0cTeX7eBYupJKr0xzHYHLbknFgTUeVWSn6/k6Y3ySw
+         4HG6qePffWH7bpOsqafgk51CkkJfyHNvJRcib21NHWpsPJkrm72HhvmV/gT/lYfMgSca
+         8vJu/uwoH6fQLStjZTPo8Iwpt3KwZguedPKB3zSoEePOvgSurZFLMDaxuX909G50oJgw
+         iJuEr5oYxjsFc7N56PTTMmBXMIhzkSaxh6MbXjGpSN9/j2bU0gzME+t7Gdjz+t76RK1y
+         zvtAj+7K8v4KAte5pKTLHAmKbY9vC6x7r3uct07wTNPr6hZcaENCAkWscSt1+u552eKd
+         uY2g==
+X-Forwarded-Encrypted: i=1; AJvYcCVevoPHvjozPcGHolAQbyiIvJ1gNanTfERXGVc5xzXjbXEvN+vsO+Z7w8y+hUIi8qyB4fFLxUo1@vger.kernel.org, AJvYcCXyOvsG2LzU3GTMnYQ+7/Tt7m5sNsKb1qqONZ1HkdPVSP7KN+6V0eMdIXfsADfMxdoNku/kTSiD7HkdA9GE8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJZAKr2C/PyTPqxmhC0k3uGTBm2O3bopA3zFGV2Z8sBPeZil7R
+	3JRVRM3m5u8ztp9Cr35NtXPVfQ5QalAPLfUdgjej5+EzObzXpk7d
+X-Gm-Gg: ASbGncvE3Md8UV7rbSflXZ+KrkHGdFmc2pcRiVEHI0/X8CHv/Z8HvRoeB320NnRPGBr
+	1LaRJwnAHi90PAfd0KG+vIisqIYfSm3JCsCsfKQwMbuKtNjt78P6tNSfrWjzLgq62+njncwepX4
+	7S6cyIIqy5XHJEei8HHoCoBcW1vq6NGv+oFgBVvi9/o9MYpWVFG7alJsB2CgxS+4e+XdHOxNw15
+	LmL11Y0paPc+TvF5gqFv9inlaocpStW71D1Ec0uRWHwdfPAYTdaZEk+3jZ0sF4DXQ/uBQTlbBTW
+	IEDDRmMrG90RCJqgyP2yPGQ9oxRJR1nEndwvVk7tBCE89nWzqtT2
+X-Google-Smtp-Source: AGHT+IE8mGpY5sxmCCDsK+kIl318ye2lnYZ63ltBewZtDKuUvd1gjqFGWJqESIxbKkKzXidqQZX5Nw==
+X-Received: by 2002:a17:907:6e9e:b0:ac7:b494:8c0c with SMTP id a640c23a62f3a-acabc24974cmr381517466b.16.1744355692427;
+        Fri, 11 Apr 2025 00:14:52 -0700 (PDT)
+Received: from [10.27.99.142] ([193.170.124.198])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-acaa1999d96sm395178666b.0.2025.04.11.00.14.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Apr 2025 00:09:43 -0700 (PDT)
-Date: Fri, 11 Apr 2025 12:39:41 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Burak Emir <bqe@google.com>
-Cc: Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
-	rust-for-linux@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: Re: [PATCH V4 1/2] rust: Add initial cpumask abstractions
-Message-ID: <20250411070941.6xbz4lrwkejr3aqf@vireshk-i7>
-References: <cover.1743572195.git.viresh.kumar@linaro.org>
- <35f4223be4a51139348fed82420481b370d7b1db.1743572195.git.viresh.kumar@linaro.org>
- <Z-1b_FkYUJEIj-YW@thinkpad>
- <CACQBu=WMu_CmzERJAHmjiuQ-NZe6DK2kAkvP0cnFN-Y+QhRwvg@mail.gmail.com>
+        Fri, 11 Apr 2025 00:14:52 -0700 (PDT)
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+Date: Fri, 11 Apr 2025 09:14:48 +0200
+Subject: [PATCH] rust: fix building firmware abstraction on 32bit arm
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACQBu=WMu_CmzERJAHmjiuQ-NZe6DK2kAkvP0cnFN-Y+QhRwvg@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAGfB+GcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDEwML3aLS4pL4xKLc+LTMivi08vjEpOKSxOQSoDZdk2TjRAvLFHPTVCN
+ LJaABBUWpQEVgw6Nja2sBwYNPFGwAAAA=
+X-Change-ID: 20250408-rust_arm_fix_fw_abstaction-4c3a89d75e29
+To: Luis Chamberlain <mcgrof@kernel.org>, 
+ Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ stable@vger.kernel.org, Christian Schrefl <chrisi.schrefl@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1744355691; l=3313;
+ i=chrisi.schrefl@gmail.com; s=20250119; h=from:subject:message-id;
+ bh=tpS0UlAr4w1LsBHuXYb1fiiOH8hIvS0JrS2AM6UhpwM=;
+ b=2D05eOYdLxxiSrURCt3/1oKKRXE4zYpAX/wJcncEymVElybR/gatP9W5q9/2IbwuIY6tk/sJU
+ 1Kej50cBWz4AiLE/Q9lDrIF2hcuRWeVpmzqWkfj5zOLq7gT3bG5knPn
+X-Developer-Key: i=chrisi.schrefl@gmail.com; a=ed25519;
+ pk=EIyitYCrzxWlybrqoGqiL2jyvO7Vp9X40n0dQ6HE4oU=
 
-On 02-04-25, 18:00, Burak Emir wrote:
-> On Wed, Apr 2, 2025 at 5:47 PM Yury Norov <yury.norov@gmail.com> wrote:
-> > On Wed, Apr 02, 2025 at 11:08:42AM +0530, Viresh Kumar wrote:
-> > > +    pub fn set(&mut self, cpu: u32) {
-> > > +        // SAFETY: By the type invariant, `self.as_raw` is a valid argument to `cpumask_set_cpus`.
-> > > +        unsafe { bindings::cpumask_set_cpu(cpu, self.as_raw()) };
-> > > +    }
-> >
-> > Alright, this is an atomic operation. For bitmaps in rust, Burak and
-> > Alice decided to switch naming, so 'set()' in C becomes 'set_atomic()'
-> > in rust, and correspondingly, '__set()' becomes 'set()'.
-> >
-> > I think it's maybe OK to switch naming for a different language. But
-> > guys, can you please be consistent once you made a decision?
-> >
-> > Burak, Alice, please comment.
-> 
-> I really like the explicit naming convention that includes "atomic" if
-> an operation is atomic.
-> It seems also consistent with std library.
-> 
-> > Regardless, without looking at the end code I can't judge if you need
-> > atomic or non-atomic ops. Can you link the project that actually uses
-> > this API? Better if you just prepend that series with this 2 patches
-> > and move them together.
-> 
-> The type &mut self gives it away: the Rust type system enforces
-> exclusive access here due to aliasing rules.
-> So a non-atomic operation is sufficient here.
+When trying to build the rust firmware abstractions on 32 bit arm the
+following build error occures:
 
-I should leave it as is then, right ? Don't rename to set_atomic() ?
+```
+error[E0308]: mismatched types
+  --> rust/kernel/firmware.rs:20:14
+   |
+20 |         Self(bindings::request_firmware)
+   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+   |         |
+   |         arguments to this function are incorrect
+   |
+   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
+note: tuple struct defined here
+  --> rust/kernel/firmware.rs:14:8
+   |
+14 | struct FwFunc(
+   |        ^^^^^^
 
+error[E0308]: mismatched types
+  --> rust/kernel/firmware.rs:24:14
+   |
+24 |         Self(bindings::firmware_request_nowarn)
+   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+   |         |
+   |         arguments to this function are incorrect
+   |
+   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
+note: tuple struct defined here
+  --> rust/kernel/firmware.rs:14:8
+   |
+14 | struct FwFunc(
+   |        ^^^^^^
+
+error[E0308]: mismatched types
+  --> rust/kernel/firmware.rs:64:45
+   |
+64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+   |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
+   |                            |
+   |                            arguments to this function are incorrect
+   |
+   = note: expected raw pointer `*const i8`
+              found raw pointer `*const u8`
+
+error: aborting due to 3 previous errors
+```
+
+To fix this error the char pointer type in `FwFunc` is converted to
+`ffi::c_char`.
+
+Fixes: de6582833db0 ("rust: add firmware abstractions")
+Cc: stable@vger.kernel.org # Backport only to 6.15 needed
+
+Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+---
+ rust/kernel/firmware.rs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index f04b058b09b2d2397e26344d0e055b3aa5061432..1d6284316f2a4652ef3f76272670e5e29b0ff924 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -5,14 +5,18 @@
+ //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+ 
+ use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+-use core::ptr::NonNull;
++use core::{ffi, ptr::NonNull};
+ 
+ /// # Invariants
+ ///
+ /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+ /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
+ struct FwFunc(
+-    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
++    unsafe extern "C" fn(
++        *mut *const bindings::firmware,
++        *const ffi::c_char,
++        *mut bindings::device,
++    ) -> i32,
+ );
+ 
+ impl FwFunc {
+
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250408-rust_arm_fix_fw_abstaction-4c3a89d75e29
+
+Best regards,
 -- 
-viresh
+Christian Schrefl <chrisi.schrefl@gmail.com>
+
