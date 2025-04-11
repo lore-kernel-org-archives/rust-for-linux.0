@@ -1,129 +1,282 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9D578F45;
-	Fri, 11 Apr 2025 15:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1A01F584C
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 15:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744384833; cv=none; b=qw9PVmuPt/Nq6AB5SCmTf3gn0bdOLDATemUw8WUhXonJV1uv7IvJoi86d+yp15PagzRA1a1hdjVDSRYKBZxeRoG8zQRH320DnAIlJc2Z9yHZdkAsxOMYn8lzW2nqfGgPnGDzABlLxop8oUASz1ieCndiDHyTlmqz2PGki0h+RA4=
+	t=1744385695; cv=none; b=Aggqhpffv+qLxZF20vCJhnBavBNRbCKpct/5BeTDzpEAsFNRJPCfupNKdrknBCkUjg5l3O+r3Z8h9YbD7xk9b0tGRErF/1sceCVT8X2RokSuxegfm425Ij+m4YXmYShDCk3yuAjIqHgwKTSXxozU3rJm/HdgwBQGlbRXuUgm+RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744384833; c=relaxed/simple;
-	bh=LaqJr2LZX1gmKZMoGldQeuMsPwSCH3VwWbOMCb7vK5Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M+5IhiDEC/wRQwxD/6PByqoX7EsSUVFIIfA44B/rLocvLFsOdOatOnJjsHvBDt5yE8o1oKMPsUSak+Io4N62EYrKwj2foKTc8go9lDxMZqqz5XY/EV8QCNXCN2uQjTpTPGqkCyp99G4rpNrNlmtkAFUCCMqXdhmIzMYzA7QJNoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DwqZEpEn; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744385695; c=relaxed/simple;
+	bh=QgAD9HMAXwARtw7ZhLdS69yGcm8TcyMIwFNG5/gF6Eg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SPjlymmIO4zPPSchLhh2lIRCVdyMYEWVe7/+IsDLesAutqBePIfouo28lYHeLAiQnHKuqUuql2G3ixplGwiLkUQJlahWmXDdI7hZJLKJXWZtyAYbrr+Uaz+rCFo3lkH5qxBT1x8YiQpQxKMjCfZ9/Y4uJWuXsdGKCvBtQrjQ8BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ubHwGkIZ; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DwqZEpEn"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22622ddcc35so28499335ad.2;
-        Fri, 11 Apr 2025 08:20:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ubHwGkIZ"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-39135d31ca4so1248705f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 08:34:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744384831; x=1744989631; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TozylxmD7FxlSrGmF1xw1E/SWXgnLpz0ZrqGEf5l6NY=;
-        b=DwqZEpEnMWDBQ4Q2Inygm6bymCmuHEGhRBBgu0Edii9TiA7A43UPdHYOk6wzrc8sVx
-         IVHIAVhFHIzgfY16EKaQM6szgRQuiE6a7SiJ4OcXuNyITguaPkUCmL6BuxmDGhd9k09g
-         m+4CjDzAq3SSg7B3a64IJZd6nnlyckx3DFynPHS3UOzkX/o/X1uSpN2Y0gc5IStwy7XZ
-         JFZMH7e+LYIwRcUmHOP1vfJK7sGbK87Uog+YvlM0RrdA2rQt/MkEqEB1gKzY6DMqEq3i
-         bTlU/q5MqM0oU1PfvNEcautSrWqKPqVqYJa5B6DdUj5YE8YrCb9g8yEHYzvDm9a2ud9Y
-         LADw==
+        d=google.com; s=20230601; t=1744385692; x=1744990492; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=u4VkktuBuel++xM+h8VL0/WF71SZD4PePpFrBdBEO8Y=;
+        b=ubHwGkIZ1tGu9sYIug2bp5TtkyAnWGKzF1ugHd9v3CYYBxvxJ27GfVQk9T5NeNPXL0
+         W7RnIPoQZDOPlMysvqedCtygAESNhADMuqUarS9fNKnUpXm1p6YtGrgDTI4zLAtbOSGA
+         8/pH3FOpXm1pSk0yhv/OrhJnw01o/URl5J4tpVlr5TGtA5a9wISoDHJSXuDJdg/zxEEn
+         cncMbqTwnGcdCfCYPEr0ZAdx4+IESxckMM6ZQBpngcPiHisxf1oPsy9Jq0ZMTogRSFBC
+         NNZNaC8tv6eyDYx6pYkTPLX8p7spo2kmHIY5hamGR8tEPXemOkjZxJkg1THVvKpzDkOM
+         b6Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744384831; x=1744989631;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TozylxmD7FxlSrGmF1xw1E/SWXgnLpz0ZrqGEf5l6NY=;
-        b=oZBlT2jkURJKVQOCnEiLBPsJX9ffFY5TXhYXZMzVOsjq/a+KtDNGyBb2P00wGt7NVl
-         tr/rpjBo1pCPKX9HLi5GlhKf/zVXpp1kF4yVrpVg+7gSiCU85/8pIngo7HlAMSfk2JFu
-         JZacdPJTWqjjZCOVU94AWcmOv9TpzCwgELlSW6NvJ48dCXZSA2+ipouywVE8sOoJzbov
-         ULmhmKYPLUTyIu8x+1VGS1mBG8Izd4vD6fcnIiuoI5CCZ7yjIuaM18FtYxL4opHMWGSr
-         ABARArmKgJIG/ePR2f8MjDKJuTHjZcQa/GOuzQNIQRoqVNisQl+JdTYdZEkkUo5HcwYm
-         2S4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUmJ5hYABdwCrXDrDYiTg5U8jqlWD/zvcD299qTib3poTGZUOiCXVWH1jdZhQtnxCtMW/MU+EOz9Tw=@vger.kernel.org, AJvYcCW+FXwJzjOKfLP6TMZChbOyoVQQNCs6XejzUNbqT6530x7coRtD/UTqjlFMV9aDf5YYqWu0wxl4I+uGjmM3@vger.kernel.org, AJvYcCW6uMUzDII44DfwPAdRsQagMLbUWGYJLxpHQ2xkfHWc7LKQpOH8gQIv3DlSa6sAJc97L3+b649saIhKksuuyq8=@vger.kernel.org, AJvYcCXWQFS57BoydU3hVmJnG7wDAHmRaPm6JwnV8HjC2auMBdv1lk+YgB5/U4JcPmH7BA+J8Yr6/PFRqmY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHI43EYZtYpk0N+s2DiUzY1X/TRXOjq6IMyuInevkVtfdOWuVD
-	LegGcalqwnH5J5k66ABSh+MUKUbk0QzcWngJiFJE2CGm3/lx4Vxm
-X-Gm-Gg: ASbGncsG0Uh9Nt4xh2Tl5vndY2NHUarKlDvb5EmagDjBt+VnI+FYaBtrpFze1eXfrud
-	zhlf4ymMo1qKCGeIICXRT0tNyaXBFFHq4UusXkzFfbTxHc/FXuIf0aQUeRsLnZsfFrEgnrbaSvF
-	Fwi01t6aiZqVdlveoKg8PZx2KiPbR1tzMn0KiubW8l+G6PcOBj4jnefDMg2yf4bDYJWyoB9QSa3
-	RHs9u/L0BnHGPXlV/+WuoeLKhfEfkZcyB2o8x6aLz9DeUTJjmnkX108B4BSThrJNEC82UAbi9iH
-	U5g2YBSYD3Yo1QBZkvlIWr3pHAwSnnQcXRmx+Ckq
-X-Google-Smtp-Source: AGHT+IHMyC/UR/UB3BGcCMn9fQ6p0UWutNTt1pWz3fG+YVjGta2wmyB6MBlUVCnjdbo5w5A04dTEqw==
-X-Received: by 2002:a17:903:1a05:b0:224:256e:5e3f with SMTP id d9443c01a7336-22bea4bd566mr51266385ad.25.1744384830680;
-        Fri, 11 Apr 2025 08:20:30 -0700 (PDT)
-Received: from localhost ([216.228.127.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd21949e5sm1648408b3a.4.2025.04.11.08.20.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Apr 2025 08:20:29 -0700 (PDT)
-Date: Fri, 11 Apr 2025 11:20:27 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Burak Emir <bqe@google.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
-	Michael Turquette <mturquette@baylibre.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V9 01/17] rust: cpumask: Use non-atomic helpers
-Message-ID: <Z_kzO0b43s4x162Y@yury>
-References: <cover.1744366571.git.viresh.kumar@linaro.org>
- <b092bbcc23529663b1a8b381efb85566453185e1.1744366571.git.viresh.kumar@linaro.org>
+        d=1e100.net; s=20230601; t=1744385692; x=1744990492;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u4VkktuBuel++xM+h8VL0/WF71SZD4PePpFrBdBEO8Y=;
+        b=BPyZejm9uoWHY3BrYFce6HYUL9vaYfjolIQIuwTagkJv4UBT5ioBiFgf7Ks/IsHQYE
+         vcMJI9v3mif5Z9CYGdnXFJ07Hw1dzy7w8uU5TkxIYKWyakgjao+lhJqGqQ4GYUmuXZ+X
+         oEj/+fUaFDoCYXQ9k3FToR+srlOdb5Kbu56Rpj3MU5hb+UNCRSuqeIyU7kqeCHWHMouW
+         wwkopyrSozfoeyO3pAhkLbf7ebAo72vH9bhvUH45ZfEHx0xlosQu84FrviW52DXhugWf
+         AV0IToAZyD6wP8SxCR58b+l3rMsu/BUTx7pX+KwFLrzkbBmujmXGJCH08hJhFmiFRoan
+         1ZsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXPwwjLvya6U7Fzev4sVI70Dyru/TATqw2DJkVOr6A+Ia2z/aqet/6A9Q1zoOSNtk2Rdxeb1z4/DYpZy4+tig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFlXgTtsxijR7bSf4BueO+dQ2roQA0ynZTPcjmfryDIWdry0L4
+	zM68PaHLophEs6hT1+dtBqkIux6I8wGUowR+Q3MXctY/+zYpitDtJsAQBsdZSN+XkwasM1HrEt+
+	1CX2PVXXvS7H7aQ==
+X-Google-Smtp-Source: AGHT+IGaGTyCjhYfHXDYYrhPGT0Gf+5CF736EXUzVp/09nAwD1r8MPrJaZDtsY12SjT/zDakwt7RFJPy1WhSrVg=
+X-Received: from wmbfj8.prod.google.com ([2002:a05:600c:c88:b0:43c:ec26:c3a3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:598e:0:b0:38d:df15:2770 with SMTP id ffacd0b85a97d-39d8f21d531mr6305056f8f.0.1744385691754;
+ Fri, 11 Apr 2025 08:34:51 -0700 (PDT)
+Date: Fri, 11 Apr 2025 15:34:24 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b092bbcc23529663b1a8b381efb85566453185e1.1744366571.git.viresh.kumar@linaro.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAH82+WcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDE0ND3eSi1MSSVN3y/KLswtLU0lTdFANTY0NTi2TzRJMkJaC2gqLUtMw KsJHRsbW1AC/Vg3ZiAAAA
+X-Change-Id: 20250411-create-workqueue-d053158c7a4b
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6809; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=QgAD9HMAXwARtw7ZhLdS69yGcm8TcyMIwFNG5/gF6Eg=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBn+TaFUEY6DxqwhiH1EZCxZ6RKx8VGPBDEGSsxX
+ 1f35NRkF1CJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ/k2hQAKCRAEWL7uWMY5
+ RjhgD/9wtJ4frzudd8SvI9+YHbVrY+UTKhu3hHIgt3PVe2PyTrHEs79nyIwLcLwxg2YNHi/rphL
+ GKEexyOUEKq86Mw/cksCBGlcS9dhAyGkQczjhL0/Urm3uFmty3iE6IhGwU10XMGxBzICGXaeq8v
+ PwBQ3Y60tgM+NV0C+Xfe20iBwd0bwbR07xFdFdwQ76EqeQDLxXORYba0XDopHiLqbicFoCXIPgK
+ xSLgyeB4gQu7xVRQOI2/thsJI0AjZcsD1WvF+AjU4kZqI4oH9OvO286Yq6oJH4EU8dc6VPwYql6
+ UIFMFTDj+xN3mjFw1Q9PzFD0ZPp7zymisuyTAnT+9bTlSXcKCnYHv9rqfaaVkdWW0XErCLYljj5
+ XRnUsRkhSQX1geIAKzEKhnmj2xRhWdpNGOHL19XWvXrSdAhmrJQ1MxpANrGw2gkRFCIG9bexzXS
+ +jNy45zVVrRsIV0Efd6w24vVwxmpJGZW+qn4JZAByP8ffByQvOLZOwOrcmPiUk+ZpjcPVas6469
+ 8Zsb4RNXdFHvAChw0VVGpUsr8xroNZnIX7Bn0H1rUBjlzy3BcvxOyJdganmSXidflIUlgBHexrw
+ ob2SrA+bEJO2ebEE3BAqhqDHZi1VPISx1Y3f6eH0kXqkEGw2f9MMBddHogBp+JV3XFo8Eim8uZ8 w+jMJtw5RNG6ToQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com>
+Subject: [PATCH] workqueue: rust: add creation of workqueues
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Apr 11, 2025 at 04:25:00PM +0530, Viresh Kumar wrote:
-> The cpumask Rust abstractions don't need the atomic variants of helpers
-> for now. Use the non-atomic helpers instead.
-> 
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->  rust/helpers/cpumask.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/rust/helpers/cpumask.c b/rust/helpers/cpumask.c
-> index 2d380a86c34a..ae964cddbd41 100644
-> --- a/rust/helpers/cpumask.c
-> +++ b/rust/helpers/cpumask.c
-> @@ -2,14 +2,14 @@
->  
->  #include <linux/cpumask.h>
->  
-> -void rust_helper_cpumask_set_cpu(unsigned int cpu, struct cpumask *dstp)
-> +void rust_helper___cpumask_set_cpu(unsigned int cpu, struct cpumask *dstp)
->  {
-> -	cpumask_set_cpu(cpu, dstp);
-> +	__cpumask_set_cpu(cpu, dstp);
->  }
->  
-> -void rust_helper_cpumask_clear_cpu(int cpu, struct cpumask *dstp)
-> +void rust_helper___cpumask_clear_cpu(int cpu, struct cpumask *dstp)
->  {
-> -	cpumask_clear_cpu(cpu, dstp);
-> +	__cpumask_clear_cpu(cpu, dstp);
->  }
+Creating workqueues is needed by various GPU drivers. Not only does it
+give you better control over execution, it also allows devices to ensure
+that all tasks have exited before the device is unbound (or similar) by
+running the workqueue destructor.
 
-Please just add non-atomic helpers after atomic ones.
+This patch is being developed in parallel with the new Owned type [1].
+The OwnedQueue struct becomes redundant once [1] lands; at that point it
+can be replaced with Owned<Queue>, and constructors can be moved to the
+Queue type.
+
+A wrapper type WqFlags is provided for workqueue flags. Since we only
+provide the | operator for this wrapper type, this makes it impossible
+to pass internal workqueue flags to the workqueue constructor. It has
+the consequence that we need a separate constant for the no-flags case,
+as the constructor does not accept a literal 0. I named this constant
+"BOUND" to signify the opposite of UNBOUND.
+
+Link: https://lore.kernel.org/rust-for-linux/20250325-unique-ref-v9-0-e91618c1de26@pm.me/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+This patch is based on top of:
+https://lore.kernel.org/all/20250411-workqueue-delay-v1-1-26b9427b1054@google.com/
+---
+ rust/kernel/workqueue.rs | 141 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 140 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index c30fe0185e7a6a89943a5ba9f5b36a5bca3edb85..eaee42e289c4d00c447727c42e9048298560122a 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -194,7 +194,7 @@
+     time::Jiffies,
+     types::Opaque,
+ };
+-use core::marker::PhantomData;
++use core::{marker::PhantomData, ops::Deref, ptr::NonNull};
+ 
+ /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
+ #[macro_export]
+@@ -346,6 +346,145 @@ pub fn try_spawn<T: 'static + Send + FnOnce()>(
+     }
+ }
+ 
++/// Workqueue flags.
++///
++/// For details, please refer to `Documentation/core-api/workqueue.rst`.
++///
++/// # Invariants
++///
++/// Must contain a valid combination of workqueue flags that may be used with `alloc_workqueue`.
++#[repr(transparent)]
++#[derive(Copy, Clone)]
++pub struct WqFlags(bindings::wq_flags);
++
++impl WqFlags {
++    /// Bound to a cpu.
++    pub const BOUND: WqFlags = WqFlags(0);
++    /// Execute in bottom half (softirq) context.
++    pub const BH: WqFlags = WqFlags(bindings::wq_flags_WQ_BH);
++    /// Not bound to a cpu.
++    pub const UNBOUND: WqFlags = WqFlags(bindings::wq_flags_WQ_UNBOUND);
++    /// Freeze during suspend.
++    pub const FREEZABLE: WqFlags = WqFlags(bindings::wq_flags_WQ_FREEZABLE);
++    /// May be used for memory reclaim.
++    pub const MEM_RECLAIM: WqFlags = WqFlags(bindings::wq_flags_WQ_MEM_RECLAIM);
++    /// High priority.
++    pub const HIGHPRI: WqFlags = WqFlags(bindings::wq_flags_WQ_HIGHPRI);
++    /// Cpu intensive workqueue.
++    pub const CPU_INTENSIVE: WqFlags = WqFlags(bindings::wq_flags_WQ_CPU_INTENSIVE);
++    /// Visible in sysfs.
++    pub const SYSFS: WqFlags = WqFlags(bindings::wq_flags_WQ_SYSFS);
++    /// Power-efficient workqueue.
++    pub const POWER_EFFICIENT: WqFlags = WqFlags(bindings::wq_flags_WQ_POWER_EFFICIENT);
++}
++
++impl core::ops::BitOr for WqFlags {
++    type Output = WqFlags;
++    fn bitor(self, rhs: WqFlags) -> WqFlags {
++        WqFlags(self.0 | rhs.0)
++    }
++}
++
++/// An owned kernel work queue.
++///
++/// # Invariants
++///
++/// `queue` points at a valid workqueue that is owned by this `OwnedQueue`.
++pub struct OwnedQueue {
++    queue: NonNull<Queue>,
++}
++
++impl OwnedQueue {
++    /// Allocates a new workqueue.
++    ///
++    /// The provided name is used verbatim as the workqueue name.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::c_str;
++    /// use kernel::workqueue::{OwnedQueue, WqFlags};
++    ///
++    /// let wq = OwnedQueue::new(c_str!("my-wq"), WqFlags::UNBOUND, 0)?;
++    /// wq.try_spawn(
++    ///     GFP_KERNEL,
++    ///     || pr_warn!("Printing from my-wq"),
++    /// )?;
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    pub fn new(name: &CStr, flags: WqFlags, max_active: usize) -> Result<OwnedQueue, AllocError> {
++        // SAFETY:
++        // * "%s\0" is compatible with passing the name as a c-string.
++        // * the flags argument does not include internal flags.
++        let ptr = unsafe {
++            bindings::alloc_workqueue(
++                b"%s\0".as_ptr(),
++                flags.0,
++                i32::try_from(max_active).unwrap_or(i32::MAX),
++                name.as_char_ptr(),
++            )
++        };
++
++        Ok(OwnedQueue {
++            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
++        })
++    }
++
++    /// Allocates a new workqueue.
++    ///
++    /// # Examples
++    ///
++    /// This example shows how to pass a Rust string formatter to the workqueue name, creating
++    /// workqueues with names such as `my-wq-1` and `my-wq-2`.
++    ///
++    /// ```
++    /// use kernel::alloc::AllocError;
++    /// use kernel::workqueue::{OwnedQueue, WqFlags};
++    ///
++    /// fn my_wq(num: u32) -> Result<OwnedQueue, AllocError> {
++    ///     OwnedQueue::new_fmt(format_args!("my-wq-{num}"), WqFlags::UNBOUND, 0)
++    /// }
++    /// ```
++    #[inline]
++    pub fn new_fmt(
++        name: core::fmt::Arguments<'_>,
++        flags: WqFlags,
++        max_active: usize,
++    ) -> Result<OwnedQueue, AllocError> {
++        // SAFETY:
++        // * "%pA\0" is compatible with passing an `Arguments` pointer.
++        // * the flags argument does not include internal flags.
++        let ptr = unsafe {
++            bindings::alloc_workqueue(
++                b"%pA\0".as_ptr(),
++                flags.0,
++                i32::try_from(max_active).unwrap_or(i32::MAX),
++                (&name) as *const _ as *const crate::ffi::c_void,
++            )
++        };
++
++        Ok(OwnedQueue {
++            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
++        })
++    }
++}
++
++impl Deref for OwnedQueue {
++    type Target = Queue;
++    fn deref(&self) -> &Queue {
++        // SAFETY: By the type invariants, this pointer references a valid queue.
++        unsafe { &*self.queue.as_ptr() }
++    }
++}
++
++impl Drop for OwnedQueue {
++    fn drop(&mut self) {
++        // SAFETY: The `OwnedQueue` is being destroyed, so we can destroy the workqueue it owns.
++        unsafe { bindings::destroy_workqueue(self.queue.as_ptr().cast()) }
++    }
++}
++
+ /// A helper type used in [`try_spawn`].
+ ///
+ /// [`try_spawn`]: Queue::try_spawn
+
+---
+base-commit: d11cfa069ac43b6e38f2f603a18e742ef048122a
+change-id: 20250411-create-workqueue-d053158c7a4b
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
