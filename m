@@ -1,43 +1,43 @@
 Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749D2221FDC
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 12:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9703D221FDB;
+	Fri, 11 Apr 2025 12:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744375402; cv=none; b=WkLa/3Z1wjBkGho59nvTIyKIBQV1MwVQEVR6b+R0/8ruakC8cvtAykY6Hcxdf7V6uI413V0FB3rmp3HsH72/0apwiknWyYQXt3ZyQNQeuoiCeG+JlUoYLNiPXufLLZrjD9UTuyLEVkCir/UArohuU9CJldncAm2NulD06U4xtf4=
+	t=1744375559; cv=none; b=gGWnRupOklcTOTWr75N+uVu0udd9FlJGrDdq5l+MXwF+lM+4HFa9zm7Cx1uhHBxe146Q8zkwxDuoKV+UFP3QyHQS6aqSy0XLikpxogrUt1sd50peNSibFQhbOW5G1vF48EWml7R0KbjuT2JMMCWnAeBd0GBzpVTHiic4WrdeET0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744375402; c=relaxed/simple;
-	bh=P1zQf8kAKobzVBeJEcS0MCw8raw2jLMB9XWrZOaVBi4=;
+	s=arc-20240116; t=1744375559; c=relaxed/simple;
+	bh=/HNd+QkoMbeAX0KHP75tvcfQbMwYgYkOOj6Tg9PEK+U=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OSotddyU+VD+eXZb6uGw2wZIfsXE45MlYQXJWI6KKzOTHaQ7rRZj1mh7bdZIuzOyhHw5UbsHP6kn2+3YlgfjrPhuMFaAWtRnCFHKJaD3Iu26KXQRyZ3Flnx7Bmkc1eZcjPQnhc/OS/egwonrxfilk1lCG8tMSYAtdDElmX7fsSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FxlUfy/2; arc=none smtp.client-ip=109.224.244.18
+	 MIME-Version:Content-Type; b=uAV+Ke0CPEKG6gz8sWeB7dEec+3JbZtk9ExsEGUJuptMyolNk7UkPyvFMOvbdqKFfugF7gzC78YkoxrZ+GoKUIUZdm20SvBiXKV5Id9XqRid0vd8S8+BhAd3MiVWvjHeLeEeuXVsZMPeMssnhGs2YvhlwDnipiO/nE/daTE23Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Hoonq1a5; arc=none smtp.client-ip=109.224.244.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FxlUfy/2"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Hoonq1a5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=etr4v4u6ufcdhk2pjn7vwmgjpi.protonmail; t=1744375397; x=1744634597;
-	bh=KeHFjHClHGzraiUMbSQaXzvSScQGZcUsAN1CBTNnBdA=;
+	s=protonmail; t=1744375555; x=1744634755;
+	bh=Fh+FKGX+Y9fOCN69/ljiuvLedUjPMaCkLNhQDgz4a2U=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=FxlUfy/2nPfpf6Y4zF2GtsmWY0wtobZnfgGhh8/U18Zltf1/JvZrjiYa/Qd/nOsrX
-	 qBEZTPqJnA4sKAZTLNX3gF//e8pGbhDdZaHniWGCLt+svmaBYjMsSuIsQ8ehYQgaaO
-	 7RBPVxrTPaPy2SnTCp2HM/eHICUyLL0lvcDJtwfCZtpM5X/Dn/5Bf/6yW6fJ9iv5js
-	 lX9yRs5MUtLh/f10o874iTso3Q+/VumzqXaW+rlhQOmmHphRlk+PaXQIweVnOUDV5j
-	 k+osjz3KrhWI7M2tYKj6uTMxkX5JyC3d/Sqjfo54fp2TKOZWEU6U6QIt3YJhlgRJHc
-	 Ajx1aLvNj1oJQ==
-Date: Fri, 11 Apr 2025 12:43:11 +0000
-To: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+	b=Hoonq1a5EgdoisHqgZgwpPaHOb4t1YHkLKLOG+hVYxDrw79mkLxLaf69CU2sTIsR+
+	 64E1af/4QFDDQsiRuEwY9sll1WMlATWiYtRnJzHX32ZF2nO4EJhpKoNydG6EFhpB8J
+	 ieDLCPnzumwClJHOpzHY2Wa1tUx0fV3ktDaeQZS4CiBUCyQbh79p9GKlcIcOtIeay4
+	 0yREd0qIU49xsbyljc/nGPYQwh/3DJUDFDRYtjDg7JPID7mtZqklUasrV+fFKSU9H9
+	 plROzvJBg8axrIIYL6puLihDMpkqFAOxLk2xTW+wf9BhfRcnZElGrJgAXRCRnngBu2
+	 /w3nBJ5Vtvi2w==
+Date: Fri, 11 Apr 2025 12:45:51 +0000
+To: Christian Schrefl <chrisi.schrefl@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: alloc: allow coercion from `Box<T>` to `Box<dyn U>` if T implements U
-Message-ID: <D93TGVDQS6B6.1V6CKR5QSEWF6@proton.me>
-In-Reply-To: <20250411-box_trait_objs-v2-1-c5f31b8db847@nvidia.com>
-References: <20250411-box_trait_objs-v2-1-c5f31b8db847@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
+Message-ID: <D93TIWHR8EZM.25205EFWBLJLM@proton.me>
+In-Reply-To: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 01337d7214de44fd2dce290a24dcd8de785da503
+X-Pm-Message-ID: 3b63c182f67726b2715a931202f2c16430149f9c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,54 +47,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri Apr 11, 2025 at 2:07 PM CEST, Alexandre Courbot wrote:
-> This enables the creation of trait objects backed by a Box, similarly to
-> what can be done with the standard library.
->
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+On Fri Apr 11, 2025 at 9:14 AM CEST, Christian Schrefl wrote:
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> index f04b058b09b2d2397e26344d0e055b3aa5061432..1d6284316f2a4652ef3f76272=
+670e5e29b0ff924 100644
+> --- a/rust/kernel/firmware.rs
+> +++ b/rust/kernel/firmware.rs
+> @@ -5,14 +5,18 @@
+>  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmwar=
+e.h)
+> =20
+>  use crate::{bindings, device::Device, error::Error, error::Result, str::=
+CStr};
+> -use core::ptr::NonNull;
+> +use core::{ffi, ptr::NonNull};
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-> ---
-> From this discussion on Zulip [1].
->
-> Heavily inspired from the similar feature on `Arc`.
->
-> [1] https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topi=
-c/Trait.20objects.3F/with/510689662
-> ---
-> Changes in v2:
-> - Use where clauses to improve readability.
-> - Fix build with rustc 1.78.
-> - Link to v1: https://lore.kernel.org/r/20250408-box_trait_objs-v1-1-58d8=
-e78b0fb2@nvidia.com
-> ---
->  rust/kernel/alloc/kbox.rs | 30 +++++++++++++++++++++++++++++-
->  1 file changed, 29 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index b77d32f3a58bab5ec73c612bdaaba0d79bfdff65..b9a905cd4bd285782b0db284b=
-6771aec03e0c10b 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -32,6 +32,8 @@
->  ///
->  /// When dropping a [`Box`], the value is also dropped and the heap memo=
-ry is automatically freed.
->  ///
-> +/// [`Box`]es can also be used to store trait objects by coercing their =
-type.
-> +///
->  /// # Examples
-
-I agree with Miguel, you could move the added line above down here and
-also provide a simple example.
+Ah I overlooked this, you should be using `kernel::ffi` (or
+`crate::ffi`) instead of `core`. (for `c_char` it doesn't matter, but we
+shouldn't be using `core::ffi`, since we have our own mappings).
 
 ---
 Cheers,
 Benno
-
->  ///
->  /// ```
 
