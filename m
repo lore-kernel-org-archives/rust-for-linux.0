@@ -1,112 +1,111 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC88D1EE014;
-	Fri, 11 Apr 2025 06:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EE020468C
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 06:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744353992; cv=none; b=ujDAa6MwidzJYWMHhhV+InzYvNX18nlphvKnFbTqQVQVjLk3espXj/6Xwtsbtcvh9TkARCosBRIaX5QtOVFxOAGHuB5TF5AKdP5Ps/V/357CJUZCh3saK8ZrVOUFgmJVjvn9cGi6V3gxa4QmYHeSGsZ7w/o7zqOqvfl+3cmYXnI=
+	t=1744354459; cv=none; b=TLZ400+vWDTJWfaWJmAYagbm01I1VJlq95Fw5qS7F7wjttfCqYiaIGU03Zn1RBoV5DJMy+YYCL7gRJVNEEEVnJpnTUS0JPbBrojJBa5767QIi0rthmltOoFZfHqBIyLVUAJQGwgNGv1lU6KvF2rQaWrjc0EbtYRb5EiCiOrJclM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744353992; c=relaxed/simple;
-	bh=X99zMb8EHsqKwuNsevCCfb1/FfYIhdYUZap6fWSWkXg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k/oX+WObM7mEZSmGyj1k7MRY6NYlvKOkfUisKcOIhk6MeUD1vQgdkKimiGFzvvhgReWWlrkPkYjF7nbef7UDoamXiKBsf7+b6v38y+treXFPgAakD2JL8N8GW51PG6LRmeF4eoX0epw6P2windtRB7d/smxwSHS7nzL4Modk2as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BpzxXODS; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1744354459; c=relaxed/simple;
+	bh=ORvObUBDvUZptnQ7XIrGeR4mDqIP57xKuS6cgRYJshI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZDJ3tN5Rr/kjFeKyj/0l2SN3JnZkVfZbis4Ic1q01LyV4jVmTMkkzwa+2AGlSYjk7ydJlsd21SxljqPfyfmbw17y/SNZwxS3DXeJyk0SO8Q/vpMA7lUrWUciNLlqHJw4r2W52R0u034lBpxTDmTJvpDFVjmiZPQTk5Yn/0wJ3WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=qIzyLriz; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BpzxXODS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0nJo3BILZ4XgRosm/WTpceSuJ2fcE75v1DMC4YJQMT0=; b=BpzxXODSBiDPAgXFqLpvH4PbT6
-	gWUGafMd1O+KMTLbgNpJqH6XTI2SjXI/BrfbFj/iZnybY4PqC1hyfenTKsSuCltkH34GAv8+AD3IJ
-	4VkhX4sxJMDBVakYnQlk0lqMnarBka3nZldATxyTgln/Zwr5qQoE/EtLDALML0KgC2kt/FAAc6qLb
-	WoPtVqn+3JvJC3hgYp1DTiTEAwa9Td3YrZ0rhgPpVIPbEZjar8vO7jP0+Z3ARFYSWvxTkf/h8HY63
-	umQ21fTmG4LUJacSHG7IIIZiooJ9JY19bUPFmCDbadXyR/3APeEvpcDfYzCTE1yIPfIlE3aXWgE0e
-	y9rC2CpQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u389g-00000008x8q-11ie;
-	Fri, 11 Apr 2025 06:46:24 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id CF6F33003C4; Fri, 11 Apr 2025 08:46:23 +0200 (CEST)
-Date: Fri, 11 Apr 2025 08:46:23 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: =?utf-8?B?UGF3ZcWC?= Anikiel <panikiel@google.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Kees Cook <kees@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] objtool: Detect __nocfi calls
-Message-ID: <20250411064623.GL9833@noisy.programming.kicks-ass.net>
-References: <20250410115420.366349-1-panikiel@google.com>
- <20250410123602.GZ9833@noisy.programming.kicks-ass.net>
- <20250410124526.GB9833@noisy.programming.kicks-ass.net>
- <CAM5zL5okN67bsTs6ZodcJd45zQ_BP+ruUwOkPMY97Snma0ugzQ@mail.gmail.com>
- <20250410132522.GD9833@noisy.programming.kicks-ass.net>
- <20250410154556.GB9003@noisy.programming.kicks-ass.net>
- <x5ltxw6z45gty6hylw2flde5w7qnmztg5mzaq7ffh4tl5ssm6r@h2xnxzqvnljb>
+	dkim=temperror (0-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="qIzyLriz"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id 8516C41A36;
+	Fri, 11 Apr 2025 06:54:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1744354444;
+	bh=ORvObUBDvUZptnQ7XIrGeR4mDqIP57xKuS6cgRYJshI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=qIzyLrizaTZhtC/G8bDSXffhMbKyim1wIPe5LB8GSRO9A7w+tXWcPwanYGfuSfSpV
+	 xIvgh1euLie4zr9bgA5mmc4vm1oayCFJBScHj+REHveXAP/WtQmBRggpFcs9r92WtE
+	 THr1/v8Lp31Qgqy0sgXiHBkkSta7UxTaFa6vE7KuAE0RrNHf9iwc6fwTQh/MjRhxRY
+	 tMZvxrx+nacrKhkRb4ypuB3pmHFAJBwioix/IVWXzANRXSRY99BsI6Mves1J0EiYiU
+	 wELK9WExvAsS3jaOAJXAeAOPIjfbIiKRfR6MIICBpQfUil5QhEc483ga2b/i7Q6OfS
+	 Zb7cFkpLhLwQg==
+Message-ID: <664d0f25-ac38-420f-bdf1-21ed7add726d@asahilina.net>
+Date: Fri, 11 Apr 2025 15:53:59 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <x5ltxw6z45gty6hylw2flde5w7qnmztg5mzaq7ffh4tl5ssm6r@h2xnxzqvnljb>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] DRM Rust abstractions
+To: Dave Airlie <airlied@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, maarten.lankhorst@linux.intel.com,
+ simona@ffwll.ch, mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
+ acurrid@nvidia.com, daniel.almeida@collabora.com, j@jannau.net,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20250325235522.3992-1-dakr@kernel.org>
+ <32e7da7e-de32-4bc6-a751-f604da36a63f@asahilina.net>
+ <Z_VXBZcBsk2k6eVN@cassiopeiae>
+ <143206f6-cd97-4ef8-a4f3-f68d703903bf@asahilina.net>
+ <Z_V2ZxIZxI_HiHM5@cassiopeiae>
+ <ebbb4d4e-4778-434b-82d7-188f8f6152ff@asahilina.net>
+ <CAPM=9ty5dNQOJUj=wtubGYGt5Kt3QeQAQ9rjM2P0dwjBUFspMw@mail.gmail.com>
+ <34a4a130-98d1-4cc3-8dcf-b72b3ed36c10@asahilina.net>
+ <43ec8aba-f279-422d-95d1-68daac7eaed9@asahilina.net>
+ <Z_ecMl2QtAssfczJ@pollux>
+ <88270028-7541-4184-a118-96c182109804@asahilina.net>
+ <CAPM=9tyXAdaota38cgeQc86teEebe9XOnBTZ+aDBZpzEBApD9A@mail.gmail.com>
+Content-Language: en-US
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <CAPM=9tyXAdaota38cgeQc86teEebe9XOnBTZ+aDBZpzEBApD9A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 10, 2025 at 12:09:02PM -0700, Josh Poimboeuf wrote:
-> On Thu, Apr 10, 2025 at 05:45:56PM +0200, Peter Zijlstra wrote:
-> > On Thu, Apr 10, 2025 at 03:25:22PM +0200, Peter Zijlstra wrote:
-> > 
-> > > I should get objtool to warn about those. They undermine the point of
-> > > CFI.
-> > 
-> > ---
-> > Subject: objtool: Detect __nocfi calls
+On 4/11/25 9:43 AM, Dave Airlie wrote:
+>>
+>>> However, I understand that you prefer to have primary authorship, even if the
+>>> code has been re-organized in new commits, moved, modified or rewritten.
+>>
+>> Correct.
 > 
-> "Warn on indirect calls in __nocfi functions" ?
+> For anyone working in this area that is intending to upstream anything
+> from asahi, I think if code is rewritten completely it's probably not
+> consistent to keep the primary author. Copyright doesn't cover ideas,
+> it covers the code.
 
-Yeah, I suppose that's more accurate.
+I think you're conflating two unrelated things here. Copyright has
+nothing to do with who is the primary Git author. As far as copyright is
+concerned, Danilo could submit everything as-is. Since I'm still
+mentioned as co-developer, there is no copyright issue. The primary
+author story is about FOSS etiquette, not a legal argument.
 
-> >  static int add_retpoline_call(struct objtool_file *file, struct instruction *insn)
-> >  {
-> > +	struct symbol *sym = insn->sym;
-> > +
-> > +	/*
-> > +	 * kCFI call sites look like:
-> > +	 *
-> > +	 *     movl $(-0x12345678), %r10d
-> > +	 *     addl -4(%r11), %r10d
-> > +	 *     jz 1f
-> > +	 *     ud2
-> > +	 *  1: cs call __x86_indirect_thunk_r11
-> > +	 *
-> > +	 * Verify all indirect calls are kCFI adorned by checking for the UD2.
-> > +	 * Notably, doing __nocfi calls to regular (cfi) functions is broken.
-> > +	 */
-> > +	if (opts.cfi && sym && sym->type == STT_FUNC && !sym->nocfi) {
-> > +		struct instruction *prev = prev_insn_same_sym(file, insn);
-> > +		if (!prev || prev->type != INSN_BUG)
-> > +			WARN_INSN(insn, "no-cfi indirect call!");
-> 
-> Since this can break things pretty badly at runtime, this should
-> actually fail the build on CONFIG_OBJTOOL_WERROR.
+If you "rewrite" (as in not directly copying and pasting the original)
+code while closely referencing the original and retaining some/much of
+the substance, that is still covered by copyright. This is why the
+clean-room process exists for reverse engineering, and why the Asahi
+project has rules that it does not accept code from people who have
+exposed themselves to Apple code or disassembly in most cases, and why
+both Asahi and Nouveau rely on black-box register and memory tracing for
+reverse engineering GPUs.
 
-Oh right, I still got to adjust to the new world order here :-)
+If you rewrite code from scratch without referencing the original at all
+and without retaining any of the substance of the original, then of
+course, that is not a derivative work, and the author of the original
+would not have to be mentioned as author at all. This is how projects
+like Wine reimplement the Windows API.
 
-> The warning counts aren't plumbed in this early, so can this check be
-> done later?  validate_retpoline() or validate_call()?
+In this case, Danilo "rewrote" (I would say refactored) the Device
+abstraction. We can decide who gets to be primary author, but I don't
+think any lawyer would advise him to completely remove my attribution
+entirely, implying there is nothing left copyright by me.
 
-Hmm, let me have a poke around, see what can be done.
+~~ Lina
+
