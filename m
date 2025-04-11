@@ -1,154 +1,152 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A8B2111;
-	Fri, 11 Apr 2025 10:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B531A17D2;
+	Fri, 11 Apr 2025 10:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744367214; cv=none; b=XxYT7ThvxQSeDjwcDlpmyeNyYw/Xe07tpzMGuNnUWMBE79v1VGfmGSq2uI/YCqn476prJWlxe3hjWPEL/zXr4AUddrf7JCNCBNfM4GLRZTufq/3fEGC3Td9N1sVOe0WSRykZrHOh2VMmKyqjJNvuyoPa/gmp8whvp6b1a2bIA/A=
+	t=1744367718; cv=none; b=E2xmDdNHrsrWYdrelgtugji0OGzj0sv6uWzJVw+IahMVMrxZLx/K2sAp/05uwm55EfGfM9L8prDBL1nhFRXhByQP7eGRq+OH+vCCcXI/rAtwn3iE7+fU+QSZ0quUl2boHcoY41/zH2Wmb/QDjnSj/H8vnC/RkWisCuJoUeWDWS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744367214; c=relaxed/simple;
-	bh=O4KqdYjRC64H8ToIuxhL6xWWnBNvLP/zVgr8FU/xhpY=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=ocrMvknkPrSc8+7N99KFRqaSwWntJnWQE394PjTs1Cp7nYzRaDDrBEZHL2PqWa/HrH9QIn1zq7ug+70bCMuUSvSOIh2gfR8jsmrPxGlXnsp3KpehVX10AM68aeFky1vM8Y6R+8YJM1gCMliIc03uZw9fOT/C7FK59tpmEdVSVGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZUJcqXaG; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744367718; c=relaxed/simple;
+	bh=ZzgqBVvUJRx01Xdr3ZUB0nMTq1IDHwQSF+NS92g+sto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lKLtWNF7CQ2dCgUV35j5Nb3EN3BISHVCBWzDv/XqdWf6kRCjxpQITK0WHUKMQsIAgPwUsdr/QMP9u6LBQ9iIUha4WD5Ev8eFRTV1wguxlV7gvNBi/sPUIWd3VAke841D49Vn+8lpfGIdeRNbv4u1Ls0ixZ45NFllx35GkWArg44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M2CEKUpf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZUJcqXaG"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso2402998b3a.2;
-        Fri, 11 Apr 2025 03:26:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744367212; x=1744972012; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZjuoOar/qHDJlB0wKmDqj4coUEnm9uYJr4sa2p38wPo=;
-        b=ZUJcqXaGYlkliE9q13Mu8qTAVxeCJ82NYpxI4Ew6wFW/Jiv8G9VjZSCxXBraKjEMex
-         6BJWyI9EAlVmtYZaylVxjCsJtxlTzXwlXnHREivZW0i0KkrqOA1YWFMJnOLwVnxGrqXb
-         26P0YyY8ruyUyGeMMa4cEm2CZ0lRe4m9zBmKq8oXislisGN/T3xAwTdkUlyQoEVQDr7/
-         R6uVJzvnAFFO4l/6gSEvuxKNUKHr6QwrEpOT5rUTplobljxawCts7e59TLJlQiEgnRGP
-         4nUVSOTnkMVi2iLmxH9lmeCP093WunqoSesoDIOphogOmtPq7gyB2FfCZN4DGarbLRI9
-         vA6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744367212; x=1744972012;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZjuoOar/qHDJlB0wKmDqj4coUEnm9uYJr4sa2p38wPo=;
-        b=LnpT+a5sfL6fmeDpHCRUGLVjZN8cBQbd7R4+zGegBnp6rch8ih1uw8ox8v2FRW/Mby
-         fa1ivJaTFqiqn8ArZa0SYrWshowrxMHtDhnuwZIFH+vW6AAlH7O4gehHeMAx1JMjxlzJ
-         DGCOSYxNFUVzvgi10YCGAv7p3Bohcf/FsrGZccsSWOq79sBjQr/CrtwoZyJK3FZrN07X
-         tLbEm7T2Voak6AixnWaQd/Fglg/U/dF6I5gKSvAByBAmJBz8z8hxdqEkZhTNB3Xd2bQi
-         FuNFFZrwH+0/gYeF0YPh2raCfg1ltQgui+wrSSR6ffAXrwsnKoJAUkXP8vBjJbdiotzj
-         bnig==
-X-Forwarded-Encrypted: i=1; AJvYcCUMeknluhcyprsuqyNCJayRhw6J96dIDWeSR928qjVAISIR5GjvfnxDzgDhnF+wWqaJQLkd4McW6lIov4Y=@vger.kernel.org, AJvYcCWsEqnaTr1zuRAji4DO0W2c0S9LkvlXxZvV25+wkvGYzDI3kCyvfjcoVfktahe3aPvKm8fAC8Kus05+bZIR5AQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaBqqWlj1Y2waPbES6g7uzG9luk1Yuy8N/JlrlHXfuMW68ZrEy
-	L/F5/536drpVMy0U86l5b528M9ehjstcVPaPYj1WuxpKFooivsQ+
-X-Gm-Gg: ASbGncsZhU4rCaxYtR0k9oNDv6i58Hg2WNakQyEQBDa4wcDww0DqGXeRgkhbWESAuAq
-	I6gc9JXJC0HDfU22sam5pRfLOIjoWBauKDo6qySDHyRMlWrJPZg8bqevQFlFo9bQcy7jMawD1xJ
-	sX68sDfrPeCJ24uf5ARemKXW1a4r6rD4xmf5LEtQgmxDuVedshdp8XZIC9RhbrdcRjfvFjI6AQv
-	p0JSNGc0xJrWuebsZN0TtP3n6PchU7XMmcEn6B6P+dS9KqxMwF02aS2nyLTOIeSfrttTLoJplqa
-	o5dpVGLqPiMBEC3O+Hogs6b0uqySx+l3TwC0JBadL7524RlGRcyjgpq0XffWXAXqkrDTT19UxW6
-	MU8mih9D/QXTt8TRCv/j5rQk=
-X-Google-Smtp-Source: AGHT+IEWwDnbyVwPFqOVnCdkN/psx+fU+RkZ4Yv6uyoCWCO9dzSq7uhsjoNHIVZn8mcG7IiTkxxcWQ==
-X-Received: by 2002:a05:6a00:4f90:b0:736:34ff:be8 with SMTP id d2e1a72fcca58-73bd1261635mr3426662b3a.19.1744367212470;
-        Fri, 11 Apr 2025 03:26:52 -0700 (PDT)
-Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd21c62ecsm1170202b3a.62.2025.04.11.03.26.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Apr 2025 03:26:51 -0700 (PDT)
-Date: Fri, 11 Apr 2025 19:26:47 +0900 (JST)
-Message-Id: <20250411.192647.1837707035806943183.fujita.tomonori@gmail.com>
-To: dakr@kernel.org
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- abdiel.janulgue@gmail.com, daniel.almeida@collabora.com,
- robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, aliceryhl@google.com,
- tmgross@umich.edu, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: helpers: Add dma_alloc_attrs() and
- dma_free_attrs()
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <Z_jmBz6FBoYMMGyi@cassiopeiae>
-References: <20250410234332.153242-1-fujita.tomonori@gmail.com>
-	<Z_jmBz6FBoYMMGyi@cassiopeiae>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M2CEKUpf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3ECC4CEE2;
+	Fri, 11 Apr 2025 10:35:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744367716;
+	bh=ZzgqBVvUJRx01Xdr3ZUB0nMTq1IDHwQSF+NS92g+sto=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M2CEKUpfHqqDerKDhIYJp2apcdLnhC17OX9lzAT0gqybRu8mnxS4/2j400RoTWHqZ
+	 MW4opsgFLHwG5t8qbVvdDm2HI4ODPreciwiieWudZ28LdRCnamyB/B1o7JVQrdnplJ
+	 NTe2vWrHcZrqccNFgG7yE+C9M2kYstoD5Ag8ivFLCjdTGiB9LT/XH9KiX2gvFLR8JB
+	 vT7293e8orUWPGoB+8ZowaN/RmIf4wIfifcou+2Dgq5n8AdPiMQ98SjFQSqborUQQC
+	 n+T9o5k9u3Xtd5OhebnmyFYfaaX01pZKaSrR7OU3PH8xuo1S9Ug4yLlHPpP+/csAec
+	 xu1O2TmaAooHg==
+Date: Fri, 11 Apr 2025 12:35:10 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
+Message-ID: <Z_jwXsQae9DjLWha@pollux>
+References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
 
-On Fri, 11 Apr 2025 11:51:03 +0200
-Danilo Krummrich <dakr@kernel.org> wrote:
-
-> On Fri, Apr 11, 2025 at 08:43:32AM +0900, FUJITA Tomonori wrote:
->> Add dma_alloc_attrs() and dma_free_attrs() helpers to fix a build
->> error when CONFIG_HAS_DMA is not enabled.
->> 
->> Note that when CONFIG_HAS_DMA is enabled, dma_alloc_attrs() and
->> dma_free_attrs() are included in both bindings_generated.rs and
->> bindings_helpers_generated.rs. The former takes precedence so behavior
->> remains unchanged in that case.
->> 
->> This fixes the following build error on UML:
->> 
->> error[E0425]: cannot find function `dma_alloc_attrs` in crate `bindings`
->>      --> rust/kernel/dma.rs:171:23
->>       |
->> 171   |               bindings::dma_alloc_attrs(
->>       |                         ^^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_alloc_pages`
->>       |
->>      ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44568:5
->>       |
->> 44568 | /     pub fn dma_alloc_pages(
->> 44569 | |         dev: *mut device,
->> 44570 | |         size: usize,
->> 44571 | |         dma_handle: *mut dma_addr_t,
->> 44572 | |         dir: dma_data_direction,
->> 44573 | |         gfp: gfp_t,
->> 44574 | |     ) -> *mut page;
->>       | |___________________- similarly named function `dma_alloc_pages` defined here
->> 
->> error[E0425]: cannot find function `dma_free_attrs` in crate `bindings`
->>      --> rust/kernel/dma.rs:293:23
->>       |
->> 293   |               bindings::dma_free_attrs(
->>       |                         ^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_free_pages`
->>       |
->>      ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44577:5
->>       |
->> 44577 | /     pub fn dma_free_pages(
->> 44578 | |         dev: *mut device,
->> 44579 | |         size: usize,
->> 44580 | |         page: *mut page,
->> 44581 | |         dma_handle: dma_addr_t,
->> 44582 | |         dir: dma_data_direction,
->> 44583 | |     );
->>       | |______- similarly named function `dma_free_pages` defined here
->> 
->> Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Fri, Apr 11, 2025 at 09:14:48AM +0200, Christian Schrefl wrote:
+> When trying to build the rust firmware abstractions on 32 bit arm the
+> following build error occures:
 > 
-> Please add the new file to the corresponding MAINTAINERS entry. Whith that,
+> ```
+> error[E0308]: mismatched types
+>   --> rust/kernel/firmware.rs:20:14
+>    |
+> 20 |         Self(bindings::request_firmware)
+>    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+>    |         |
+>    |         arguments to this function are incorrect
+>    |
+>    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+>                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
+
+This looks like you have local changes in your tree, running in this error. I
+get the exact same errors when I apply the following diff:
+
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index f04b058b09b2..a67047e3aa6b 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -12,7 +12,7 @@
+ /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+ /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
+ struct FwFunc(
+-    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
++    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32,
+ );
+
+> note: tuple struct defined here
+>   --> rust/kernel/firmware.rs:14:8
+>    |
+> 14 | struct FwFunc(
+>    |        ^^^^^^
 > 
-> 	Acked-by: Danilo Krummrich <dakr@kernel.org>
+> error[E0308]: mismatched types
+>   --> rust/kernel/firmware.rs:24:14
+>    |
+> 24 |         Self(bindings::firmware_request_nowarn)
+>    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+>    |         |
+>    |         arguments to this function are incorrect
+>    |
+>    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+>                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
+> note: tuple struct defined here
+>   --> rust/kernel/firmware.rs:14:8
+>    |
+> 14 | struct FwFunc(
+>    |        ^^^^^^
+> 
+> error[E0308]: mismatched types
+>   --> rust/kernel/firmware.rs:64:45
+>    |
+> 64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+>    |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
+>    |                            |
+>    |                            arguments to this function are incorrect
+>    |
+>    = note: expected raw pointer `*const i8`
+>               found raw pointer `*const u8`
+> 
+> error: aborting due to 3 previous errors
+> ```
 
-I'll include the following changes in the next version.
+I did a test build with multi_v7_defconfig and I can't reproduce this issue.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 96b827049501..bec614ef35d9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7020,6 +7020,7 @@ L:	rust-for-linux@vger.kernel.org
- S:	Supported
- W:	https://rust-for-linux.com
- T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
-+F:	rust/helpers/dma.c
- F:	rust/kernel/dma.rs
- F:	samples/rust/rust_dma.rs
- 
+I think the kernel does always use -funsigned-char, as also documented in commit
+1bae8729e50a ("rust: map `long` to `isize` and `char` to `u8`")?
 
+> 
+> To fix this error the char pointer type in `FwFunc` is converted to
+> `ffi::c_char`.
+> 
+> Fixes: de6582833db0 ("rust: add firmware abstractions")
+> Cc: stable@vger.kernel.org # Backport only to 6.15 needed
+> 
+> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+> ---
+>  rust/kernel/firmware.rs | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> index f04b058b09b2d2397e26344d0e055b3aa5061432..1d6284316f2a4652ef3f76272670e5e29b0ff924 100644
+> --- a/rust/kernel/firmware.rs
+> +++ b/rust/kernel/firmware.rs
+> @@ -5,14 +5,18 @@
+>  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+>  
+>  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+> -use core::ptr::NonNull;
+> +use core::{ffi, ptr::NonNull};
+
+The change itself seems to be fine anyways, but I think we should use crate::ffi
+instead.
