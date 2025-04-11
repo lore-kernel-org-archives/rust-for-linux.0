@@ -1,402 +1,515 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899DD21146C
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 11:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30111EC014
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 11:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744369205; cv=none; b=cU4HblkD4Km/8D08EM9Wrw0lzURcWuWiWtq5MNxIPyqzcEn0arIf5HsqpQGVj69QYtALscyVHtBARh3e0FbC6kKRhpTiTC/xu/xFldElNU4z6rG97MDH0w+nticKGqRi9KlV8BoJNcsihdn/TL1bn+lrTrIdp2FrQJJ2En1Y2B8=
+	t=1744369995; cv=none; b=FZHNZSfSqNgp/9UWut5toMSQMC+687/FWoauCAdxdU/4WkpTXlrNafdl8VVF3l9sSd2OCY3VLGTJNv3CIAVbztN/Nb7a9kZj5zA56QTd1QE2Io3RjZAIsJztTlClOy/MP4xvSvdy+elHZLa+bQ35RlM7BXvT0NuAEsKg6g47sdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744369205; c=relaxed/simple;
-	bh=pWo35UcpFfXt0lltVDkHvDrvwug3xEzrt77oiEiP7XI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C50pe8qqRof3nCAcDUU2HOIZV8R6nWiW3J7YHZg4bLEQJyR/IhT34M4PLOpFit2g4N7yvK6nyxqj8OO6oZwXBiExOiT6AROGpFprfYq36A/ZL89V6ILAa4+9l43QazeqzOrRAgupkIETTCJxbWwEOYbSh+3zRn8Uv5HTSLUPznI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xmb9Upzf; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1744369995; c=relaxed/simple;
+	bh=kwpUyFBVHVH3mQxD9NLWZ/XLO4s1HY+OwXvL71zm4S8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=P1S7SIM46YnlAor2wFn/FGlqwhzCAh1rGXx+3MpxRfLqmpDESTFmKifdeFZm9Ukpi+YZrmICbDOGwgI3yTF/zF64Tlk9Nqz89uXCgYy19nrLYkjLv23YSuJbIxbAveaUDR3XGUOYWy8Ov8UFTRklhwhCmb/xkekfuSToTVSQDtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SMFbIUAI; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xmb9Upzf"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-227a8cdd241so21743925ad.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 04:00:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SMFbIUAI"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3912d9848a7so1515317f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 11 Apr 2025 04:13:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744369203; x=1744974003; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4mNVvyernaxT52HQcm+4cNUWaUzVLRpgc/yTn2bSQaE=;
-        b=xmb9UpzfcIDoUm86ZJ00J+nBYQkL0d42SvqYHpzbnt3ceJMZK+vlEsuPKVJc4yBUdA
-         Wx5SnU1XCHqEKvdq+7ZTLEP2JMZcVUtdBjygJQFlP2HAKz1MEhAZmeJKT+eyO5KWKhmZ
-         B+3QT8PgNgCTPy4I1rnQHkO2+Vdy9hxgjhItDmRwBeRqP8oYz9LGSIPEDtxSmwOtIsHi
-         FXKncbaHFGkUoelPnAe+4CFzLvLZ2jMLzU94UG739x08TfQFMXUGlpg3jW00txnFra3f
-         8K+XVRBP3STBMxq+PuiEWE9ifBPLQpuOc9jZQtfgdpqvBIRQWEiCnbvhFKDYUHLJOfnV
-         QPhQ==
+        d=google.com; s=20230601; t=1744369991; x=1744974791; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0Lgm5mtopZUHh+OvHoZAMmyFy7ehYLsEEI4FINFuLZo=;
+        b=SMFbIUAIeyf4GR5CUmsmXjA4MvFYLPbT0QkSVCNYslzXW3IZ2I4qG/Ayc9qL20gadw
+         S+ZnGlcbh+SwJc7w5QTYT6DhUO5TEenz/oJ+OdvqOM0OZPjFsaGham0m/G/T/sL02DCI
+         wGpztMjoBuDEXBccLyxPo1fFBMgxhHwl3UJXgBcvM//TOHBcS6yvg6x+C2mpjQi2IOVB
+         8NIMSrLlgaNg1eQbIDvT8J4wowd3xY3CFqaT2M6PuxhR5KvCU9ctXYrn7mi+zM/0VRn3
+         oITBzhBVg35g71bAfXYSokDxYf/K9MSLBiG78C8e14eU0o7jS+MsYanX2I+1/Xj1dI2c
+         V5dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744369203; x=1744974003;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4mNVvyernaxT52HQcm+4cNUWaUzVLRpgc/yTn2bSQaE=;
-        b=AQSBitMxA4B1OT4mpbVKzQZJfjjw03mdh3Z+pXhf/yPB1ZJ5Jfz21gGU+xI0lFqDHt
-         mUR3gClBQLK495MjXGNSAlLNvdzzQ+gSB07HwL4jo7ZlPB+JFm24dI2H0QYcjusVNt2w
-         yXGY5pfhSkb5EaPJQdBQZRIJ52OnhikN1Q4SwWwM0JdPGr+pmFICrUXgs+awY4IdPjHG
-         LOdT7+0mkctmG+OWJdAEUtas5AYhkX0jOxWdzHRmAsQPoYX/1QGZx5D2bEoiOR5AdYjL
-         MCH5SOlUwftJELAPXCBvl0OxLcEhXmc00MXC0pzY5gP0+B2S7T1fZ9DCKPA8XdRChhP+
-         MkjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXV/j0NaxhOainakThO5f6+ugMsRoMQCgd5MtnwJ9wSqaM+7dj6vvhEpZ+naVVP6spzWgo16LuDsuPfzz5uQw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaVh99+qfWNC6ez1tc1c+RlxzRfh4y2RRbRo/znY/kVfD/MOcV
-	MNz75UeFJ+/zGb7nfPdJAcJMEMfOvTHaj9fGP94jNPPj65BDwrRadT9gOiys3Hd0igSQCN9ET2D
-	A
-X-Gm-Gg: ASbGnctqoDSGfhaUCbQFRa/I/XqV1GfqECZYhFu/rX3H6AaL3pOrZDVciDLvRqOStGc
-	LndWtJzzr+fDlXVLz46odouyzOXJ9BuQnG3HDqxSEP4Rx5a8R09uTuhJn3A/2sXD0gUOJRYj9M4
-	w4JKATaok/HE59gDLkw98P+W4vEGz4CzoJkIbPXtk6qVEoorLc+nATVox7ZBGttJeVBhz1aq2Qg
-	5lvQm2zLFWq6AEZes4wQMEFSVEpvOsXEDpsI3Iu1ecpFWxM0My8bXdBmW9GgDo/gh27HroWHygU
-	QJqQrI6RykYbm9fQsswC1W5MLr0Lj8Xa5WBst++gaQ==
-X-Google-Smtp-Source: AGHT+IHE8HlOfRWkUJ6bGufM5iixKyxjSNZZ9SqxCniqwDGeJ+fDGcaMFZXytSiHOOkDy5nU5HRnVw==
-X-Received: by 2002:a17:903:2a8f:b0:21f:1bd:efd4 with SMTP id d9443c01a7336-22bea4ab8bemr35593525ad.19.1744369202779;
-        Fri, 11 Apr 2025 04:00:02 -0700 (PDT)
-Received: from localhost ([122.172.83.32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7cafdaasm46053495ad.165.2025.04.11.04.00.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Apr 2025 04:00:02 -0700 (PDT)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>,
-	Burak Emir <bqe@google.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-clk@vger.kernel.org,
-	Michael Turquette <mturquette@baylibre.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V9 17/17] cpufreq: Add Rust-based cpufreq-dt driver
-Date: Fri, 11 Apr 2025 16:25:16 +0530
-Message-Id: <0bb160bbbc11d7b9249e064cdaec48dfc4380d90.1744366572.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1744366571.git.viresh.kumar@linaro.org>
-References: <cover.1744366571.git.viresh.kumar@linaro.org>
+        d=1e100.net; s=20230601; t=1744369991; x=1744974791;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0Lgm5mtopZUHh+OvHoZAMmyFy7ehYLsEEI4FINFuLZo=;
+        b=EzoTl4rXxulwzVmtMqn0QULQdr5ZISU4aMweCzMoelmstGIAZuROEpNydPWFZaX1hk
+         lHmxI8I5Q47nDyd+J/iAitFtqJLScpzlLiqE/ImiEomR72oiJeXZmHU4eiUtKjaFLpGP
+         OsOQzGndx/zy2Kf14Oh2LqHHmGJAFlLz9an3XPRkfFhtKIoWGjrAaUPvAlhgha8R9RU4
+         5f/qdcgJS0dwGfHCfTllCsK/9gmSJGblD9j7fjl5Mbd77ceGqLlGthVms9KsI9Tt7mfv
+         eSzUSCdwCTLODeZDCL5Cuun8cFMIf/HygkRlVmOi0JRiSqK103xOvt7htkWZFaPUIU1C
+         SFwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVdoKJ9CgkesSFoFkbUB7hIaKYYXI1f0vuFpamke4Zl64Z+YrQhqG0EcSsJFhevbw6upWIn2lrrR+JIojPQPw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjpmKjLJjU2xMTn+qKlMFTzh+N4Ac6Vna5in9Hag13hK+kNBik
+	fYfX9PNuL9QhFVSNshNmPIbHs009JCI55lL/d3R3S2u12OM5WuQTvaqZLpHGpZ42De3obGjA6qq
+	ZqqtPfsgu41kdpw==
+X-Google-Smtp-Source: AGHT+IEQo4gAyDD2xbDwEMYsMK8u+Qz1i4+DqmeCawqaDo8A81K37NC/brxRf02MMOwTZYuzLsnbYhVPnqZaVm4=
+X-Received: from wmcn14.prod.google.com ([2002:a05:600c:c0ce:b0:43d:1dd4:37f2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:4021:b0:391:386d:5971 with SMTP id ffacd0b85a97d-39d8f46abe3mr5856622f8f.14.1744369991198;
+ Fri, 11 Apr 2025 04:13:11 -0700 (PDT)
+Date: Fri, 11 Apr 2025 11:12:29 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAB35+GcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDEwNL3fL8ouzC0tTSVN2U1JzESl0Tg9Qkg+QU82SzFAMloK6CotS0zAq widGxtbUAuCkyFGEAAAA=
+X-Change-Id: 20250409-workqueue-delay-40eb0cd7c6d0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16937; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=kwpUyFBVHVH3mQxD9NLWZ/XLO4s1HY+OwXvL71zm4S8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBn+Pk8kY+0PwfFYJQKNbsabsVG6nOG5H+VhYiRB
+ LAChRf5mouJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ/j5PAAKCRAEWL7uWMY5
+ RrIqD/912mVGz5m9SzywZXfG8JL7ByP7cUyoQt84jBvqLxVFm+s+7QMSWZfd8j5maIDXfkU+qYj
+ 1uB+zVC99jt9Qu5Y2f0/dBummDMbIZ2H4gyax7G2gyNkWWLqqTV0ya7Ca73KSwFvLIRcxn+uVwg
+ 8da1vIgVioRFLiomQS5bSG3fjtuI1XhnmYDe47AbKGjsTdqPAmeq8gcASR01Nae/VNbQaVetbu2
+ MzcHHOTdwpgifREpeGoKQ7NMueaHHmSuzAekcK8vBgPCbgzUJC2NaILq77vqX8g9SONRQXgANjB
+ IGnGjBeKGp70juCd9O67G2ITkhG6l38D+eN5YeJhFtXNjn6FWakuzA7afmGUg0cHnRQ2VQ9foOC
+ RH9KIvgzYPzJvAftb4dP+aqJIRzcygaH6Nv8tNZrK7ncjncvl6UYMe6sIwVPzQBESMRrBXz2JKc
+ QprU1cCwH1f/LBOe/e137CCnHeHw9aoRUQXR2VOIVvI0eUmjqWZAdiy1lbVpwOVVq5C38YHB0x7
+ bqZpG7DC1uWFw1eWPgJ5Yy9EdYg6d/Imfe+N03LaK5Urw8+zzWxk8TgEpntUAeLfvIWIIdCk1rT
+ NAeTHqaBUD3kovDqCNwWIk+mGeBJiXdiy7D+J9rHUutDDQeWSNWd512uV6kKNOLv9R0cfcizQGn pMtlGvV7t5x9z0w==
+X-Mailer: b4 0.14.2
+Message-ID: <20250411-workqueue-delay-v1-1-26b9427b1054@google.com>
+Subject: [PATCH] workqueue: rust: add delayed work items
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Introduce a Rust-based implementation of the cpufreq-dt driver, covering
-most of the functionality provided by the existing C version. Some
-features, such as retrieving platform data from `cpufreq-dt-platdev.c`,
-are still pending.
+This patch is being sent for use in the various Rust GPU drivers that
+are under development. It provides the additional feature of work items
+that are executed after a delay.
 
-The driver has been tested with QEMU, and frequency scaling works as
-expected.
+The design of the existing workqueue is rather extensible, as most of
+the logic is reused for delayed work items even though a different work
+item type is required. The new logic consists of:
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+* A new DelayedWork struct that wraps struct delayed_work.
+* A new impl_has_delayed_work! macro that provides adjusted versions of
+  the container_of logic, that is suitable with delayed work items.
+* A `enqueue_delayed` method that can enqueue a delayed work item.
+
+This patch does *not* rely on the fact that `struct delayed_work`
+contains `struct work_struct` at offset zero. It will continue to work
+even if the layout is changed to hold the `work` field at a different
+offset.
+
+Please see the example introduced at the top of the file for example
+usage of delayed work items.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/cpufreq/Kconfig        |  12 ++
- drivers/cpufreq/Makefile       |   1 +
- drivers/cpufreq/rcpufreq_dt.rs | 236 +++++++++++++++++++++++++++++++++
- 3 files changed, 249 insertions(+)
- create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+This series depends on:
+https://lore.kernel.org/all/20250409-no-offset-v2-0-dda8e141a909@gmail.com/
+---
+ rust/kernel/workqueue.rs | 327 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 324 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-index d64b07ec48e5..78702a08364f 100644
---- a/drivers/cpufreq/Kconfig
-+++ b/drivers/cpufreq/Kconfig
-@@ -217,6 +217,18 @@ config CPUFREQ_DT
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 1d640dbdc6ad1eb20ffffbc0fe60a093b5096ba6..c30fe0185e7a6a89943a5ba9f5b36a5bca3edb85 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -131,10 +131,69 @@
+ //! # print_2_later(MyStruct::new(41, 42).unwrap());
+ //! ```
+ //!
++//! This example shows how you can schedule delayed work items:
++//!
++//! ```
++//! use kernel::sync::Arc;
++//! use kernel::workqueue::{self, impl_has_delayed_work, new_delayed_work, DelayedWork, WorkItem};
++//!
++//! #[pin_data]
++//! struct MyStruct {
++//!     value: i32,
++//!     #[pin]
++//!     work: DelayedWork<MyStruct>,
++//! }
++//!
++//! impl_has_delayed_work! {
++//!     impl HasDelayedWork<Self> for MyStruct { self.work }
++//! }
++//!
++//! impl MyStruct {
++//!     fn new(value: i32) -> Result<Arc<Self>> {
++//!         Arc::pin_init(
++//!             pin_init!(MyStruct {
++//!                 value,
++//!                 work <- new_delayed_work!("MyStruct::work"),
++//!             }),
++//!             GFP_KERNEL,
++//!         )
++//!     }
++//! }
++//!
++//! impl WorkItem for MyStruct {
++//!     type Pointer = Arc<MyStruct>;
++//!
++//!     fn run(this: Arc<MyStruct>) {
++//!         pr_info!("The value is: {}\n", this.value);
++//!     }
++//! }
++//!
++//! /// This method will enqueue the struct for execution on the system workqueue, where its value
++//! /// will be printed 42 jiffies later.
++//! fn print_later(val: Arc<MyStruct>) {
++//!     let _ = workqueue::system().enqueue_delayed(val, 42);
++//! }
++//!
++//! /// It is also possible to use the ordinary `enqueue` method together with `DelayedWork`. This
++//! /// is equivalent to calling `enqueue_delayed` with a delay of zero.
++//! fn print_now(val: Arc<MyStruct>) {
++//!     let _ = workqueue::system().enqueue(val);
++//! }
++//! # print_later(MyStruct::new(42).unwrap());
++//! # print_now(MyStruct::new(42).unwrap());
++//! ```
++//!
+ //! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
  
- 	  If in doubt, say N.
- 
-+config CPUFREQ_DT_RUST
-+	tristate "Rust based Generic DT based cpufreq driver"
-+	depends on HAVE_CLK && OF && RUST
-+	select CPUFREQ_DT_PLATDEV
-+	select PM_OPP
-+	help
-+	  This adds a Rust based generic DT based cpufreq driver for frequency
-+	  management.  It supports both uniprocessor (UP) and symmetric
-+	  multiprocessor (SMP) systems.
-+
-+	  If in doubt, say N.
-+
- config CPUFREQ_VIRT
- 	tristate "Virtual cpufreq driver"
- 	depends on GENERIC_ARCH_TOPOLOGY
-diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
-index 22ab45209f9b..d38526b8e063 100644
---- a/drivers/cpufreq/Makefile
-+++ b/drivers/cpufreq/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_CPU_FREQ_GOV_COMMON)		+= cpufreq_governor.o
- obj-$(CONFIG_CPU_FREQ_GOV_ATTR_SET)	+= cpufreq_governor_attr_set.o
- 
- obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
-+obj-$(CONFIG_CPUFREQ_DT_RUST)		+= rcpufreq_dt.o
- obj-$(CONFIG_CPUFREQ_DT_PLATDEV)	+= cpufreq-dt-platdev.o
- obj-$(CONFIG_CPUFREQ_VIRT)		+= virtual-cpufreq.o
- 
-diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-new file mode 100644
-index 000000000000..751be33c0218
---- /dev/null
-+++ b/drivers/cpufreq/rcpufreq_dt.rs
-@@ -0,0 +1,236 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust based implementation of the cpufreq-dt driver.
-+
-+use kernel::{
-+    c_str,
-+    clk::Clk,
-+    cpu, cpufreq,
-+    cpumask::CpumaskVar,
-+    device::{Core, Device},
-+    error::code::*,
-+    fmt,
-+    macros::vtable,
-+    module_platform_driver, of, opp, platform,
+-use crate::alloc::{AllocError, Flags};
+-use crate::{prelude::*, sync::Arc, sync::LockClassKey, types::Opaque};
++use crate::{
++    alloc::{AllocError, Flags},
++    container_of,
 +    prelude::*,
-+    str::CString,
 +    sync::Arc,
++    sync::LockClassKey,
++    time::Jiffies,
++    types::Opaque,
 +};
-+
-+// Finds exact supply name from the OF node.
-+fn find_supply_name_exact(dev: &Device, name: &str) -> Option<CString> {
-+    let prop_name = CString::try_from_fmt(fmt!("{}-supply", name)).ok()?;
-+    dev.property_present(&prop_name)
-+        .then(|| CString::try_from_fmt(fmt!("{name}")).ok())
-+        .flatten()
+ use core::marker::PhantomData;
+ 
+ /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
+@@ -146,6 +205,33 @@ macro_rules! new_work {
+ }
+ pub use new_work;
+ 
++/// Creates a [`DelayedWork`] initialiser with the given name and a newly-created lock class.
++#[macro_export]
++macro_rules! new_delayed_work {
++    () => {
++        $crate::workqueue::DelayedWork::new(
++            $crate::c_str!(::core::concat!(::core::file!(), ":", ::core::line!())),
++            $crate::static_lock_class!(),
++            $crate::c_str!(::core::concat!(
++                ::core::file!(),
++                ":",
++                ::core::line!(),
++                "_timer"
++            )),
++            $crate::static_lock_class!(),
++        )
++    };
++    ($name:literal) => {
++        $crate::workqueue::DelayedWork::new(
++            $crate::c_str!($name),
++            $crate::static_lock_class!(),
++            $crate::c_str!(::core::concat!($name, "_timer")),
++            $crate::static_lock_class!(),
++        )
++    };
 +}
++pub use new_delayed_work;
 +
-+// Finds supply name for the CPU from DT.
-+fn find_supply_names(dev: &Device, cpu: u32) -> Option<KVec<CString>> {
-+    // Try "cpu0" for older DTs, fallback to "cpu".
-+    let name = (cpu == 0)
-+        .then(|| find_supply_name_exact(dev, "cpu0"))
-+        .flatten()
-+        .or_else(|| find_supply_name_exact(dev, "cpu"))?;
+ /// A kernel work queue.
+ ///
+ /// Wraps the kernel's C `struct workqueue_struct`.
+@@ -206,6 +292,42 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
+         }
+     }
+ 
++    /// Enqueues a delayed work item.
++    ///
++    /// This may fail if the work item is already enqueued in a workqueue.
++    ///
++    /// The work item will be submitted using `WORK_CPU_UNBOUND`.
++    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::EnqueueOutput
++    where
++        W: RawDelayedWorkItem<ID> + Send + 'static,
++    {
++        let queue_ptr = self.0.get();
 +
-+    let mut list = KVec::with_capacity(1, GFP_KERNEL).ok()?;
-+    list.push(name, GFP_KERNEL).ok()?;
-+
-+    Some(list)
-+}
-+
-+// Represents the cpufreq dt device.
-+struct CPUFreqDTDevice {
-+    opp_table: opp::Table,
-+    freq_table: opp::FreqTable,
-+    #[allow(dead_code)]
-+    mask: CpumaskVar,
-+    #[allow(dead_code)]
-+    token: Option<opp::ConfigToken>,
-+    #[allow(dead_code)]
-+    clk: Clk,
-+}
-+
-+#[derive(Default)]
-+struct CPUFreqDTDriver;
-+
-+#[vtable]
-+impl opp::ConfigOps for CPUFreqDTDriver {}
-+
-+#[vtable]
-+impl cpufreq::Driver for CPUFreqDTDriver {
-+    type Data = ();
-+    type PData = Arc<CPUFreqDTDevice>;
-+
-+    fn init(policy: &mut cpufreq::Policy) -> Result<Self::PData> {
-+        let cpu = policy.cpu();
-+        // SAFETY: The CPU device is only used during init; it won't get hot-unplugged. The cpufreq
-+        // core  registers with CPU notifiers and the cpufreq core/driver won't use the CPU device,
-+        // once the CPU is hot-unplugged.
-+        let dev = unsafe { cpu::from_cpu(cpu)? };
-+        let mut mask = CpumaskVar::new(GFP_KERNEL)?;
-+
-+        mask.set(cpu);
-+
-+        let token = find_supply_names(dev, cpu)
-+            .map(|names| {
-+                opp::Config::<Self>::new()
-+                    .set_regulator_names(names)?
-+                    .set(dev)
++        // SAFETY: We only return `false` if the `work_struct` is already in a workqueue. The other
++        // `__enqueue` requirements are not relevant since `W` is `Send` and static.
++        //
++        // The call to `bindings::queue_delayed_work_on` will dereference the provided raw pointer,
++        // which is ok because `__enqueue` guarantees that the pointer is valid for the duration of
++        // this closure, and the safety requirements of `RawDelayedWorkItem` expands this
++        // requirement to apply to the entire `delayed_work`.
++        //
++        // Furthermore, if the C workqueue code accesses the pointer after this call to
++        // `__enqueue`, then the work item was successfully enqueued, and
++        // `bindings::queue_delayed_work_on` will have returned true. In this case, `__enqueue`
++        // promises that the raw pointer will stay valid until we call the function pointer in the
++        // `work_struct`, so the access is ok.
++        unsafe {
++            w.__enqueue(move |work_ptr| {
++                bindings::queue_delayed_work_on(
++                    bindings::wq_misc_consts_WORK_CPU_UNBOUND as _,
++                    queue_ptr,
++                    container_of!(work_ptr, bindings::delayed_work, work),
++                    delay,
++                )
 +            })
-+            .transpose()?;
++        }
++    }
 +
-+        // Get OPP-sharing information from "operating-points-v2" bindings.
-+        let fallback = match opp::Table::of_sharing_cpus(dev, &mut mask) {
-+            Ok(()) => false,
-+            Err(e) if e == ENOENT => {
-+                // "operating-points-v2" not supported. If the platform hasn't
-+                // set sharing CPUs, fallback to all CPUs share the `Policy`
-+                // for backward compatibility.
-+                opp::Table::sharing_cpus(dev, &mut mask).is_err()
-+            }
-+            Err(e) => return Err(e),
-+        };
+     /// Tries to spawn the given function or closure as a work item.
+     ///
+     /// This method can fail because it allocates memory to store the work item.
+@@ -298,6 +420,16 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
+         F: FnOnce(*mut bindings::work_struct) -> bool;
+ }
+ 
++/// A raw delayed work item.
++///
++/// # Safety
++///
++/// If the `__enqueue` method in the `RawWorkItem` implementation calls the closure, then the
++/// provided pointer must point at the `work` field of a valid `delayed_work`, and the guarantees
++/// that `__enqueue` provides about accessing the `work_struct` must also apply to the rest of the
++/// `delayed_work` struct.
++pub unsafe trait RawDelayedWorkItem<const ID: u64>: RawWorkItem<ID> {}
 +
-+        // Initialize OPP tables for all policy cpus.
-+        //
-+        // For platforms not using "operating-points-v2" bindings, we do this
-+        // before updating policy cpus. Otherwise, we will end up creating
-+        // duplicate OPPs for the CPUs.
-+        //
-+        // OPPs might be populated at runtime, don't fail for error here unless
-+        // it is -EPROBE_DEFER.
-+        let mut opp_table = match opp::Table::from_of_cpumask(dev, &mut mask) {
-+            Ok(table) => table,
-+            Err(e) => {
-+                if e == EPROBE_DEFER {
-+                    return Err(e);
+ /// Defines the method that should be called directly when a work item is executed.
+ ///
+ /// This trait is implemented by `Pin<KBox<T>>` and [`Arc<T>`], and is mainly intended to be
+@@ -407,7 +539,7 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
+     }
+ }
+ 
+-/// Declares that a type has a [`Work<T, ID>`] field.
++/// Declares that a type contains a [`Work<T, ID>`].
+ ///
+ /// The intended way of using this trait is via the [`impl_has_work!`] macro. You can use the macro
+ /// like this:
+@@ -501,6 +633,175 @@ unsafe fn work_container_of(
+     impl{T} HasWork<Self> for ClosureWork<T> { self.work }
+ }
+ 
++/// Links for a delayed work item.
++///
++/// This struct contains a function pointer to the [`run`] function from the [`WorkItemPointer`]
++/// trait, and defines the linked list pointers necessary to enqueue a work item in a workqueue in
++/// a delayed manner.
++///
++/// Wraps the kernel's C `struct delayed_work`.
++///
++/// This is a helper type used to associate a `delayed_work` with the [`WorkItem`] that uses it.
++///
++/// [`run`]: WorkItemPointer::run
++#[pin_data]
++#[repr(transparent)]
++pub struct DelayedWork<T: ?Sized, const ID: u64 = 0> {
++    #[pin]
++    dwork: Opaque<bindings::delayed_work>,
++    _inner: PhantomData<T>,
++}
++
++// SAFETY: Kernel work items are usable from any thread.
++//
++// We do not need to constrain `T` since the work item does not actually contain a `T`.
++unsafe impl<T: ?Sized, const ID: u64> Send for DelayedWork<T, ID> {}
++// SAFETY: Kernel work items are usable from any thread.
++//
++// We do not need to constrain `T` since the work item does not actually contain a `T`.
++unsafe impl<T: ?Sized, const ID: u64> Sync for DelayedWork<T, ID> {}
++
++impl<T: ?Sized, const ID: u64> DelayedWork<T, ID> {
++    /// Creates a new instance of [`DelayedWork`].
++    #[inline]
++    pub fn new(
++        work_name: &'static CStr,
++        work_key: Pin<&'static LockClassKey>,
++        timer_name: &'static CStr,
++        timer_key: Pin<&'static LockClassKey>,
++    ) -> impl PinInit<Self>
++    where
++        T: WorkItem<ID>,
++    {
++        pin_init!(Self {
++            dwork <- Opaque::ffi_init(|slot: *mut bindings::delayed_work| {
++                // SAFETY: The `WorkItemPointer` implementation promises that `run` can be used as
++                // the work item function.
++                unsafe {
++                    bindings::init_work_with_key(
++                        core::ptr::addr_of_mut!((*slot).work),
++                        Some(T::Pointer::run),
++                        false,
++                        work_name.as_char_ptr(),
++                        work_key.as_ptr(),
++                    )
 +                }
 +
-+                // The table is added dynamically ?
-+                opp::Table::from_dev(dev)?
++                // SAFETY: The `delayed_work_timer_fn` function pointer can be used here because
++                // the timer is embedded in a `struct delayed_work`, and only ever scheduled via
++                // the core workqueue code, and configured to run in irqsafe context.
++                unsafe {
++                    bindings::init_timer_key(
++                        core::ptr::addr_of_mut!((*slot).timer),
++                        Some(bindings::delayed_work_timer_fn),
++                        bindings::TIMER_IRQSAFE,
++                        timer_name.as_char_ptr(),
++                        timer_key.as_ptr(),
++                    )
++                }
++            }),
++            _inner: PhantomData,
++        })
++    }
++
++    /// Get a pointer to the inner `delayed_work`.
++    ///
++    /// # Safety
++    ///
++    /// The provided pointer must not be dangling and must be properly aligned. (But the memory
++    /// need not be initialized.)
++    #[inline]
++    pub unsafe fn raw_as_work(ptr: *const Self) -> *mut Work<T, ID> {
++        // SAFETY: The caller promises that the pointer is aligned and not dangling.
++        let dw: *mut bindings::delayed_work =
++            unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).dwork)) };
++        // SAFETY: The caller promises that the pointer is aligned and not dangling.
++        let wrk: *mut bindings::work_struct = unsafe { core::ptr::addr_of_mut!((*dw).work) };
++        // CAST: Work and work_struct have compatible layouts.
++        wrk.cast()
++    }
++}
++
++/// Declares that a type contains a [`DelayedWork<T, ID>`].
++///
++/// # Safety
++///
++/// The `HasWork<T, ID>` implementation must return a `work_struct` that is stored in the `work`
++/// field of a `delayed_work` with the same access rules as the `work_struct`.
++pub unsafe trait HasDelayedWork<T, const ID: u64 = 0>: HasWork<T, ID> {}
++
++/// Used to safely implement the [`HasDelayedWork<T, ID>`] trait.
++///
++/// This macro also implements the [`HasWork`] trait, so you do not need to use [`impl_has_work!`]
++/// when using this macro.
++///
++/// # Examples
++///
++/// ```
++/// use kernel::sync::Arc;
++/// use kernel::workqueue::{self, impl_has_delayed_work, DelayedWork};
++///
++/// struct MyStruct<'a, T, const N: usize> {
++///     work_field: DelayedWork<MyStruct<'a, T, N>, 17>,
++///     f: fn(&'a [T; N]),
++/// }
++///
++/// impl_has_delayed_work! {
++///     impl{'a, T, const N: usize} HasDelayedWork<MyStruct<'a, T, N>, 17>
++///     for MyStruct<'a, T, N> { self.work_field }
++/// }
++/// ```
++#[macro_export]
++macro_rules! impl_has_delayed_work {
++    ($(impl$({$($generics:tt)*})?
++       HasDelayedWork<$work_type:ty $(, $id:tt)?>
++       for $self:ty
++       { self.$field:ident }
++    )*) => {$(
++        // SAFETY: The implementation of `raw_get_work` only compiles if the field has the right
++        // type.
++        unsafe impl$(<$($generics)+>)?
++            $crate::workqueue::HasDelayedWork<$work_type $(, $id)?> for $self {}
++
++        // SAFETY: The implementation of `raw_get_work` only compiles if the field has the right
++        // type.
++        unsafe impl$(<$($generics)+>)? $crate::workqueue::HasWork<$work_type $(, $id)?> for $self {
++            #[inline]
++            unsafe fn raw_get_work(
++                ptr: *mut Self
++            ) -> *mut $crate::workqueue::Work<$work_type $(, $id)?> {
++                // SAFETY: The caller promises that the pointer is not dangling.
++                let ptr: *mut $crate::workqueue::DelayedWork<$work_type $(, $id)?> = unsafe {
++                    ::core::ptr::addr_of_mut!((*ptr).$field)
++                };
++
++                // SAFETY: The caller promises that the pointer is not dangling.
++                unsafe { $crate::workqueue::DelayedWork::raw_as_work(ptr) }
 +            }
-+        };
 +
-+        // The OPP table must be initialized, statically or dynamically, by this point.
-+        opp_table.opp_count()?;
++            #[inline]
++            unsafe fn work_container_of(
++                ptr: *mut $crate::workqueue::Work<$work_type $(, $id)?>,
++            ) -> *mut Self {
++                // SAFETY: The caller promises that the pointer points at a field of the right type
++                // in the right kind of struct.
++                let ptr = unsafe { $crate::workqueue::Work::raw_get(ptr) };
 +
-+        // Set sharing cpus for fallback scenario.
-+        if fallback {
-+            mask.setall();
-+            opp_table.set_sharing_cpus(&mut mask)?;
++                // SAFETY: The caller promises that the pointer points at a field of the right type
++                // in the right kind of struct.
++                let delayed_work = unsafe {
++                    $crate::container_of!(ptr, $crate::bindings::delayed_work, work)
++                };
++
++                // SAFETY: The caller promises that the pointer points at a field of the right type
++                // in the right kind of struct.
++                unsafe { $crate::container_of!(delayed_work, Self, $field) }
++            }
 +        }
++    )*};
++}
++pub use impl_has_delayed_work;
 +
-+        let mut transition_latency = opp_table.max_transition_latency_ns() as u32;
-+        if transition_latency == 0 {
-+            transition_latency = cpufreq::ETERNAL_LATENCY_NS;
-+        }
-+
-+        policy
-+            .set_dvfs_possible_from_any_cpu(true)
-+            .set_suspend_freq(opp_table.suspend_freq())
-+            .set_transition_latency_ns(transition_latency);
-+
-+        let freq_table = opp_table.cpufreq_table()?;
-+        // SAFETY: The `freq_table` is not dropped while it is getting used by the C code.
-+        unsafe { policy.set_freq_table(&freq_table) };
-+
-+        // SAFETY: The returned `clk` is not dropped while it is getting used by the C code.
-+        let clk = unsafe { policy.set_clk(dev, None)? };
-+
-+        mask.copy(policy.cpus());
-+
-+        Ok(Arc::new(
-+            CPUFreqDTDevice {
-+                opp_table,
-+                freq_table,
-+                mask,
-+                token,
-+                clk,
-+            },
-+            GFP_KERNEL,
-+        )?)
-+    }
-+
-+    fn exit(_policy: &mut cpufreq::Policy, _data: Option<Self::PData>) -> Result<()> {
-+        Ok(())
-+    }
-+
-+    fn online(_policy: &mut cpufreq::Policy) -> Result<()> {
-+        // We did light-weight tear down earlier, nothing to do here.
-+        Ok(())
-+    }
-+
-+    fn offline(_policy: &mut cpufreq::Policy) -> Result<()> {
-+        // Preserve policy->data and don't free resources on light-weight
-+        // tear down.
-+        Ok(())
-+    }
-+
-+    fn suspend(policy: &mut cpufreq::Policy) -> Result<()> {
-+        policy.generic_suspend()
-+    }
-+
-+    fn verify(data: &mut cpufreq::PolicyData) -> Result<()> {
-+        data.generic_verify()
-+    }
-+
-+    fn target_index(policy: &mut cpufreq::Policy, index: u32) -> Result<()> {
-+        let Some(data) = policy.data::<Self::PData>() else {
-+            return Err(ENOENT);
-+        };
-+
-+        // SAFETY: `index` is guaranteed to be valid by the C API.
-+        let freq = unsafe { data.freq_table.freq(index.try_into()?)? };
-+        data.opp_table.set_rate(freq)
-+    }
-+
-+    fn get(policy: &mut cpufreq::Policy) -> Result<u32> {
-+        policy.generic_get()
-+    }
-+
-+    fn set_boost(_policy: &mut cpufreq::Policy, _state: i32) -> Result<()> {
-+        Ok(())
-+    }
-+
-+    fn register_em(policy: &mut cpufreq::Policy) {
-+        policy.register_em_opp()
-+    }
+ // SAFETY: The `__enqueue` implementation in RawWorkItem uses a `work_struct` initialized with the
+ // `run` method of this trait as the function pointer because:
+ //   - `__enqueue` gets the `work_struct` from the `Work` field, using `T::raw_get_work`.
+@@ -562,6 +863,16 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
+     }
+ }
+ 
++// SAFETY: By the safety requirements of `HasDelayedWork`, the `work_struct` returned by methods in
++// `HasWork` provides a `work_struct` that is the `work` field of a `delayed_work`, and the rest of
++// the `delayed_work` has the same access rules as its `work` field.
++unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Arc<T>
++where
++    T: WorkItem<ID, Pointer = Self>,
++    T: HasDelayedWork<T, ID>,
++{
 +}
 +
-+kernel::of_device_table!(
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <CPUFreqDTDriver as platform::Driver>::IdInfo,
-+    [(of::DeviceId::new(c_str!("operating-points-v2")), ())]
-+);
-+
-+impl platform::Driver for CPUFreqDTDriver {
-+    type IdInfo = ();
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe(
-+        pdev: &platform::Device<Core>,
-+        _id_info: Option<&Self::IdInfo>,
-+    ) -> Result<Pin<KBox<Self>>> {
-+        cpufreq::Registration::<CPUFreqDTDriver>::new_foreign_owned(
-+            pdev.as_ref(),
-+            c_str!("cpufreq-dt"),
-+            (),
-+            cpufreq::flags::NEED_INITIAL_FREQ_CHECK | cpufreq::flags::IS_COOLING_DEV,
-+            true,
-+        )?;
-+
-+        let drvdata = KBox::new(Self {}, GFP_KERNEL)?;
-+
-+        Ok(drvdata.into())
-+    }
+ // SAFETY: TODO.
+ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
+ where
+@@ -612,6 +923,16 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
+     }
+ }
+ 
++// SAFETY: By the safety requirements of `HasDelayedWork`, the `work_struct` returned by methods in
++// `HasWork` provides a `work_struct` that is the `work` field of a `delayed_work`, and the rest of
++// the `delayed_work` has the same access rules as its `work` field.
++unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Pin<KBox<T>>
++where
++    T: WorkItem<ID, Pointer = Self>,
++    T: HasDelayedWork<T, ID>,
++{
 +}
 +
-+module_platform_driver! {
-+    type: CPUFreqDTDriver,
-+    name: "cpufreq-dt",
-+    author: "Viresh Kumar <viresh.kumar@linaro.org>",
-+    description: "Generic CPUFreq DT driver",
-+    license: "GPL v2",
-+}
+ /// Returns the system work queue (`system_wq`).
+ ///
+ /// It is the one used by `schedule[_delayed]_work[_on]()`. Multi-CPU multi-threaded. There are
+
+---
+base-commit: d63de17e2c9c73ad2b475e88935d7c044bdca409
+change-id: 20250409-workqueue-delay-40eb0cd7c6d0
+
+Best regards,
 -- 
-2.31.1.272.g89b43f80a514
+Alice Ryhl <aliceryhl@google.com>
 
