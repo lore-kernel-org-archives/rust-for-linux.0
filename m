@@ -1,197 +1,147 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3321D86FB;
-	Fri, 11 Apr 2025 13:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0AE2367B7;
+	Fri, 11 Apr 2025 13:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744379255; cv=none; b=LCCcSme3YEKEHZEEuOell03NWePotRCGwbF1paNqqaTru3DoeMxB6srHQmHXDWr3s3YJGWdq7cuqXKECINn/T02hyLHTtzm3K00BwPuTszQj6SgWlkXugkVJXwIjAJbc7vy2jdSrqo5+NkILQoGtBW+JJezLg+aRs1XvnoySevs=
+	t=1744379829; cv=none; b=ARvE/hLdnrqd/cMoZ7lS/mWVqAqZ7UDMKpLNPZh7S8qztYfPWCeVGN5+di5AhqemHhzHyEtVhWh+lWTctzJViuJD4DB1/N7Aj1TG5qWsWn7D9mQM88QsgRcwb49Fji6PlHW8jlOxvmUtzs3/QowZbk4tYIg79xrtVX1vSQMjTMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744379255; c=relaxed/simple;
-	bh=PogR4W7dnXucGICz/AQVDV9oEY2yJBO7er+MO0ZqtZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q7lUtwzkZuNGYqAEgdGTCaMzvp8sZQOzH++jTXBXG1Fe1uMemrIOlFiTZ+DANO6vr069j9TMqXg9efRBXoKhwwqOvoHn7y1vOlRPE9eGqSJV5NJR3DY0cNhpw4Frv30vZZGcRVhGGJ1gJBJkC269I2riobJtZ2HM4WqYzy10EPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMBmv6AV; arc=none smtp.client-ip=209.85.218.48
+	s=arc-20240116; t=1744379829; c=relaxed/simple;
+	bh=EHr3sP17GP2rT9bubWQ05YlLLA63mOf++HaX/JCjz2g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ypim+9o9m8NWm5DFw+FE/J91TEyZcjLGbXSvX8RJ14nseVwLCpDlZDMvTddTtPm1RZ/Rkdoi9NCRx3sK3Ocwx1+uZn0FkYMgrA54rLL6R4SdWXQ/G1YC7EclPG+EY4pJZYBdC5TwfIAK8J2GrGC7qq7AthaKJNqa7JDl3sLtRuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C6regj8R; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMBmv6AV"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ac73723b2d5so398504966b.3;
-        Fri, 11 Apr 2025 06:47:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C6regj8R"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30bf5d7d107so16535431fa.2;
+        Fri, 11 Apr 2025 06:57:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744379251; x=1744984051; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=o5n+QohqvB7s/Sb0490fMM5HBbQ3f/3RmRNA2L8Qxnk=;
-        b=GMBmv6AVOiSBEgESelZmu++MVZbL5kUoCDdyyRvNQ0Dzbv/jLQwDjBXLsiCu5IECtK
-         XXibYP8hA5DirBsrFWJNArwFSevmDx7u1WqkCnJEsGf7JJN7scmleNyZtzkBqxwuWDgg
-         +QXhnCbEuNbUbxXxV7Qrsss0NCGdvMMKX33uHNXmeZD3Q/j6Lz5kQrEXqjFDRJ68igQQ
-         i7tJDlYsn6JjKAGIgPoi+MK/on09uzfvoS52QHz8ZQIpB6QSd8DaG+RRgcnlQwaiGxhH
-         Hl8ZQO2x8VzzIvDXDeUhjhDoHdIrKT+IjI8jAxL70hz97iG/Klij0/X+YCeNb9QkrB3T
-         RQ+w==
+        d=gmail.com; s=20230601; t=1744379826; x=1744984626; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V0ok80ZSRCyKju0uCz08exJzHvXoR6NaXt2Z+ekMppI=;
+        b=C6regj8R4uVoeTHievhfWvAjCjWRjhryRf3yN1MpDN22vyGH6gGPgK7/WlF/D+1Xrf
+         A0xoYa57wUehuQtpEPpBN7uwPIc2TIieq90FbQC5yFlkCvfIzLifqXR6Tfc8Wb3ieA7Y
+         lPEzT7yP4tczaBXjGowvrU0yZ1MtmIole+iJGyjny+EhOjDbCMaanuuBGqqZd4k874dP
+         pSpVd3jvMXwKzk8aOmjYNN1FUUWHJ2OBYuLGIBUQIK/lqJt/ZHhSoSMK9Pu5ksLby+Wz
+         COXWPxLZmxBfqyH8AGS3zrhYxn1qqFKqRfYXDIaaHjR/8PKsmJ1yBxICeteKAsRMBph2
+         wkJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744379251; x=1744984051;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o5n+QohqvB7s/Sb0490fMM5HBbQ3f/3RmRNA2L8Qxnk=;
-        b=Os0ASRDiBRiaXDqlELQIvZorv1oceH7ZjIL+G0vm5u39PuxU3oRVgiTHVz43Kz1ZQR
-         /wB+N3f3vMP0+pQwo2xeamhc6260qtWW4P8lkGy0lTOV/2OkHIxYNxLi3o4R3QjP88Fr
-         EA5TeNQF9FwCQCCkbI1Y0e0s27LuafD2PwNOAdO9PZF9+yjfw1hEGMSjywTwRSb3wFuH
-         9KPxah+8q9GN4PehVH0+zmK/TAnYhqMQOezrJ4rNV+TDyWvbdtd17TzYDQypz/jNdckI
-         ZSH6AE2EC48yLtkZf8Tv5qwUtfUFbIniZSBLmC56mWMciRURfrd3udCTcd9eknP/P++v
-         iDug==
-X-Forwarded-Encrypted: i=1; AJvYcCUvBwxvt6GSJtTBEptaIvFGyuzyWdFpcEK1wdsFmQrSuvtxuGYnbJpjoM+kBs2t+bveZciQCpnW@vger.kernel.org, AJvYcCWveBehoOAivrkAJnF2FvWKk6uoDO6ziKVYyaKSHns3FNi6n3CjjkPqBdxKq0aaZMl/ArAk3/Vea1XUBZU=@vger.kernel.org, AJvYcCX6+ECqfcW5sQX3ZafsCLR54o25qCHN3xUfQD9pwAc6yvykyxHAG1p9dkqR9yS6SpIRvcV7QTVcRhy2MDq/ApY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrxmNYYjiHSgFAWIrP5RbWNF9bR+Dpss5Bx8UnhnRP0N8lceWl
-	Fx/EHocTrLLOFec5/MNqOOlagtpJBRC/hTIaJjC0Xcg7DarVHs5a
-X-Gm-Gg: ASbGnct8tqzxBR1+dFROPtf9Z6zl6k/e2CDAYmf38GpMy4tv0Nl+EGLT87XtojyCmXZ
-	vgr4spDJRkS09h9Y1KvYnXt5YL7Zv++DxVrdPIWvEsZMVKXgiODmJoOF9/tRIFNdMRMt/olaqLp
-	P/iMncKaXrmwv4kRcOAQN6eOFi/UW4lPS8crn5SfUGJ/fPQOF+HZ3KVWC7YtD0gN2okh44CeWoT
-	bgLk4IGUSyDTyEHyN6zZbZuusjR/Kk1XyvA0b2FiGDBiNsUqtYV60M4BfKdI7ZnUveWA/HlRRSV
-	H452fOYuhfOzYNZtBCEYUZdknNW1MnOKNvj9mrmmoOYieMSTOPF/Cks+8hhz99xA348Q8QWxwK1
-	tD/d7UDwoTioJDh2KF1I=
-X-Google-Smtp-Source: AGHT+IHxm8659RzD3xWh3EuM0iDPlgOx6OC9RUxPjuJSZXQ8ecMHseGUJ7xwZNzC+27SLQe8FZ4ZQA==
-X-Received: by 2002:a17:907:c22:b0:ac7:e5c4:1187 with SMTP id a640c23a62f3a-acad343c76fmr227896466b.11.1744379251125;
-        Fri, 11 Apr 2025 06:47:31 -0700 (PDT)
-Received: from ?IPV6:2001:4bc9:801:666a:43aa:5aff:fcd4:ae38? ([2001:4bc9:801:666a:43aa:5aff:fcd4:ae38])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acaa1be87e1sm451142866b.53.2025.04.11.06.47.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Apr 2025 06:47:30 -0700 (PDT)
-Message-ID: <99070274-4891-411a-89e1-420ca4d5d0fb@gmail.com>
-Date: Fri, 11 Apr 2025 15:47:28 +0200
+        d=1e100.net; s=20230601; t=1744379826; x=1744984626;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V0ok80ZSRCyKju0uCz08exJzHvXoR6NaXt2Z+ekMppI=;
+        b=qQbE6P1q6taYH4hCn8G7MAmPu/W+Oq1tl/WhAiFuA8HcXD7GvQwpnD/KpgHnjMAwi5
+         HR67onIYkYKiWPxrokdM3Rk44B2+Ha9zMXW/ugWsC6GBf2WM6EhYKLlvshMN1mh/0SgA
+         lqIfhue5BwHOVlSbuooPYSBgI1qRY2eSL94dQ1pRJpIRmhSneOHcKHjyz3X6c4em6gR5
+         EKoHFj9nIvtlxL+Ux4oRcd0Ogs996kZHdlz4ZU3N/xJJOWNKiSdpYQU7KYORX3ZQSH/D
+         YzwY6zTpRTuH92wcQO+P4VWLoRxKGS0ShZW+IOsybDMoesIHvcWEXP3mobEMgYEYFztG
+         6arg==
+X-Forwarded-Encrypted: i=1; AJvYcCVpPesI9DhzGUxmyESV7z5zK/u0zG5BOxGIFDqrsjVXeFi90OMmKoXCa3DzjU9cW1YPffWSTei2jM3dawY=@vger.kernel.org, AJvYcCW9yvjCsJXTRF/JdAQPbnK3dN+dzHFSj1aBP0knxbfVNKF0PJVvOretImM6sWSPS6J6i034IdGXhjkiCJP6DgE=@vger.kernel.org, AJvYcCXqah9Uiwmtd09lfRWs+kIhnp4XvQMAtljVhTgdpohG0+/ARWnhu3vo4oTnDxqzgjJTUsUkwI4wtUp3@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4VftjNGRqoeBe45VM+Hc5qaW3v41U4nW0XB9WpC9IJw/HRCtJ
+	684J79lrCmdiBLQL1Q2msKgl5FHSYm/AyPG41tzMTv0COKULNR1TMC5HiYvCCLgLzTlVpAIplHS
+	OpyeWRhVeU6ls08cSJrubwn+mtk8=
+X-Gm-Gg: ASbGncu5sWROkGkBgaa2z2rq6KZRME7IQPFyi2wIFc7zC6aATOe2n8ynAg8d3Zl8UJJ
+	LyRUK4pbfmthMN3xVjv38XjOfvmzFHjo7jCznLa3UsYAQ1p1/UwX7e1Yv921YoGvMAhdX1g6YdJ
+	JLja6TOS+7a5jyXxL1I8VpYIggnv4j3vtdDDqSWYJq7BP+zGuL+Yi6DBcZd9fu/lCNqA==
+X-Google-Smtp-Source: AGHT+IGBOEIfPQcBcLGNI8B8t2buG2qyCkl07e+bDZ36eFeM5osRdU689Rog2YK5/bwFMtkYKvRRli/CrIyQ9ywcGXg=
+X-Received: by 2002:a05:651c:1448:b0:30c:5190:b264 with SMTP id
+ 38308e7fff4ca-310499fb271mr10915891fa.20.1744379825590; Fri, 11 Apr 2025
+ 06:57:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Russ Weight
- <russ.weight@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
- <Z_jwXsQae9DjLWha@pollux>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <Z_jwXsQae9DjLWha@pollux>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250409-no-offset-v2-0-dda8e141a909@gmail.com>
+ <20250409-no-offset-v2-2-dda8e141a909@gmail.com> <Z_eMe7y0ixrBrHaz@google.com>
+ <CAJ-ks9kms_jFEAHX9MnW1pUOyTeuFuyWwXk-A+qhCPQQNfJdAw@mail.gmail.com> <Z_jcjEtKZRpRi9Yn@google.com>
+In-Reply-To: <Z_jcjEtKZRpRi9Yn@google.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 11 Apr 2025 09:56:28 -0400
+X-Gm-Features: ATxdqUEDaQovMhot23oFo1TVInzFS-l1gpC5B1ahhOMK6wGAFHaYLD4oU7r3LQQ
+Message-ID: <CAJ-ks9ka0sASqBdhFSv6Ftbd7p1KCBuy6v-2jNd98gDpyAgQGA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] rust: workqueue: remove HasWork::OFFSET
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11.04.25 12:35 PM, Danilo Krummrich wrote:
-> On Fri, Apr 11, 2025 at 09:14:48AM +0200, Christian Schrefl wrote:
->> When trying to build the rust firmware abstractions on 32 bit arm the
->> following build error occures:
->>
->> ```
->> error[E0308]: mismatched types
->>   --> rust/kernel/firmware.rs:20:14
->>    |
->> 20 |         Self(bindings::request_firmware)
->>    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
->>    |         |
->>    |         arguments to this function are incorrect
->>    |
->>    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
->>                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
-> 
-> This looks like you have local changes in your tree, running in this error. I
-> get the exact same errors when I apply the following diff:
-> 
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index f04b058b09b2..a67047e3aa6b 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -12,7 +12,7 @@
->  /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
->  /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
->  struct FwFunc(
-> -    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
-> +    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32,
->  );
-> 
->> note: tuple struct defined here
->>   --> rust/kernel/firmware.rs:14:8
->>    |
->> 14 | struct FwFunc(
->>    |        ^^^^^^
->>
->> error[E0308]: mismatched types
->>   --> rust/kernel/firmware.rs:24:14
->>    |
->> 24 |         Self(bindings::firmware_request_nowarn)
->>    |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
->>    |         |
->>    |         arguments to this function are incorrect
->>    |
->>    = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
->>                  found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
->> note: tuple struct defined here
->>   --> rust/kernel/firmware.rs:14:8
->>    |
->> 14 | struct FwFunc(
->>    |        ^^^^^^
->>
->> error[E0308]: mismatched types
->>   --> rust/kernel/firmware.rs:64:45
->>    |
->> 64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
->>    |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
->>    |                            |
->>    |                            arguments to this function are incorrect
->>    |
->>    = note: expected raw pointer `*const i8`
->>               found raw pointer `*const u8`
->>
->> error: aborting due to 3 previous errors
->> ```
-> 
-> I did a test build with multi_v7_defconfig and I can't reproduce this issue.
-> 
-Interesting, I've it seems this is only an issue on 6.13 with my arm patches applied.
+On Fri, Apr 11, 2025 at 5:10=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> On Thu, Apr 10, 2025 at 10:15:53AM -0400, Tamir Duberstein wrote:
+> > On Thu, Apr 10, 2025 at 5:16=E2=80=AFAM Alice Ryhl <aliceryhl@google.co=
+m> wrote:
+> > >
+> > > On Wed, Apr 09, 2025 at 06:03:22AM -0400, Tamir Duberstein wrote:
+> > > > Implement `HasWork::work_container_of` in `impl_has_work!`, narrowi=
+ng
+> > > > the interface of `HasWork` and replacing pointer arithmetic with
+> > > > `container_of!`. Remove the provided implementation of
+> > > > `HasWork::get_work_offset` without replacement; an implementation i=
+s
+> > > > already generated in `impl_has_work!`. Remove the `Self: Sized` bou=
+nd on
+> > > > `HasWork::work_container_of` which was apparently necessary to acce=
+ss
+> > > > `OFFSET` as `OFFSET` no longer exists.
+> > > >
+> > > > A similar API change was discussed on the hrtimer series[1].
+> > > >
+> > > > Link: https://lore.kernel.org/all/20250224-hrtimer-v3-v6-12-rc2-v9-=
+1-5bd3bf0ce6cc@kernel.org/ [1]
+> > > > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> > > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > > > Tested-by: Alice Ryhl <aliceryhl@google.com>
+> > > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> > > > ---
+> > > >  rust/kernel/workqueue.rs | 45 ++++++++++++------------------------=
+---------
+> > > >  1 file changed, 12 insertions(+), 33 deletions(-)
+> > > >
+> > > > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> > > > index f98bd02b838f..1d640dbdc6ad 100644
+> > > > --- a/rust/kernel/workqueue.rs
+> > > > +++ b/rust/kernel/workqueue.rs
+> > > > @@ -429,51 +429,23 @@ pub unsafe fn raw_get(ptr: *const Self) -> *m=
+ut bindings::work_struct {
+> > > >  ///
+> > > >  /// # Safety
+> > > >  ///
+> > > > -/// The [`OFFSET`] constant must be the offset of a field in `Self=
+` of type [`Work<T, ID>`]. The
+> > > > -/// methods on this trait must have exactly the behavior that the =
+definitions given below have.
+> > > > +/// The methods on this trait must have exactly the behavior that =
+the definitions given below have.
+> > >
+> > > This wording probably needs to be rephrased. You got rid of the
+> > > definitions that sentence refers to.
+> >
+> > I don't follow. What definitions was it referring to? I interpreted it
+> > as having referred to all the items: constants *and* methods.
+>
+> I meant for it to refer to the default implementations of the methods.
+>
+> > Could you propose an alternate phrasing?
+>
+> I guess the requirements are something along the lines of raw_get_work
+> must return a value pointer, and it must roundtrip with
+> raw_container_of.
 
-It seems that it works on v6.14 and v6.15-rc1 but the error occurs on ffd294d346d1 (tag: v6.13)
-with my 32-bit arm patches applied.
-
-> I think the kernel does always use -funsigned-char, as also documented in commit
-> 1bae8729e50a ("rust: map `long` to `isize` and `char` to `u8`")?
-> 
->>
->> To fix this error the char pointer type in `FwFunc` is converted to
->> `ffi::c_char`.
->>
->> Fixes: de6582833db0 ("rust: add firmware abstractions")
->> Cc: stable@vger.kernel.org # Backport only to 6.15 needed
->>
->> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
->> ---
->>  rust/kernel/firmware.rs | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
->> index f04b058b09b2d2397e26344d0e055b3aa5061432..1d6284316f2a4652ef3f76272670e5e29b0ff924 100644
->> --- a/rust/kernel/firmware.rs
->> +++ b/rust/kernel/firmware.rs
->> @@ -5,14 +5,18 @@
->>  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
->>  
->>  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
->> -use core::ptr::NonNull;
->> +use core::{ffi, ptr::NonNull};
-> 
-> The change itself seems to be fine anyways, but I think we should use crate::ffi
-> instead.
-Right, I just did what RA recommended without thinking about it much.
-
-I guess this patch isn't really needed. Should I still send a V2 using `crate::ffi`?
-
-Cheers,
-Christian
-
+What is a value pointer?
