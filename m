@@ -1,91 +1,73 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BA61E89C;
-	Fri, 11 Apr 2025 14:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A23A1E89C;
+	Fri, 11 Apr 2025 14:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744381099; cv=none; b=jPnnC8UlfeyCtru1TM8vNaq4H5OdCr3952/3KLDD+47aVKlbv9oRrqXCYnMtAf72NYAP4gZVMyv0+uYlvPC++4/uLK5CVJ9CyZc91fYGUi+CPCDN3WXaxTJvydMLt+Q1Yagm0Of10MeyzwxJt004egzLg5eGCRKiIlO2XHKnrzI=
+	t=1744381372; cv=none; b=jfCE9NjRFQNNKJqmk5q+4JOOlRkziqQ7nI/8BokaLAOw/HozjZaGj2XAwXMLnjyV5zxc8M5X80IXgfWV5SzyPH0gjiwi+/cWal+DW1aGVUKaojZD9ix+0pedOlUW0ma3jqBwHlOm54B7Q4DxGvcH+n1qBe/wpmbJtXlZO2Q+1cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744381099; c=relaxed/simple;
-	bh=fuLmkbGQ9AE0lEuqX0lr8BR1lAWRQLYNrT8LVsLS2dU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G7Hbi79bylOkxijV2TXWgasbV3IT+iZT6414GehX65efxPqn/3bDdkEvRMqr3xMborii0oElMYZVDZ9+lOVIBos9ioxsUEIAiFTJEw7l8i8GArZZ3OvgYRvLfpOJUAL51KqHb3LDigVnlLgwFWJ77g06SyqdzpX95x6B0YSugiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZD75URx5; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744381372; c=relaxed/simple;
+	bh=8T1NSpNTYOEUEkOy7euD+86xiKnkU6Yse89529ibSg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c2r9xre2Tp0F+oyAmUI3Aw8C28fp9k+MdS58/MRbsON6MyPlIWsRyL+lKNLSJiJ9s2gLNTQ4t7k+tjg7x63eW+bhhHn20JqRrbBTBa0E3uuc2y3FUQsy6a0PM2KVrlwSwC9HXbm0x7UfiezgI3YMBSAtSwojBsrSc+wVwaXXvJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1plTs9U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZD75URx5"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-301a8b7398cso313334a91.1;
-        Fri, 11 Apr 2025 07:18:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744381097; x=1744985897; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fuLmkbGQ9AE0lEuqX0lr8BR1lAWRQLYNrT8LVsLS2dU=;
-        b=ZD75URx5A8K/1xGGQJDhuYKRSYTVmXPSBnUvjkLG5GHVbMpU/diSwtGkv2HIz8fXQv
-         XZofO74aDGJ8lMLCwWHMhGr0OsVItPHDGRYCn4W+sGtS3oFMDX1HGsiGYuuneYfsEdtE
-         Emx3WCUhTK4eZHjKihPvlVw7YqrECWj6Mv9m1EvUIsfdKqdExUam7sOyWsonJ53fcQDg
-         yYQI4eT1IbD9y3qpxctyI1WluKUtlGE/GtP2rOUDiitrJGkIVHo/CpI+LRthaaXCBSxC
-         uQK0kCnw/Jy/KynKPOExlvO/HPrDrsBCIwE9c4tjoZy15g0qi7jiheekRU5zJYOs+EIR
-         oAwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744381097; x=1744985897;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fuLmkbGQ9AE0lEuqX0lr8BR1lAWRQLYNrT8LVsLS2dU=;
-        b=Ddxm0i0euVZhciVIl91yYf7cAsoTrhUWZNOJlFkWggS4+RJyLw8y+ycXXFK4V58AIl
-         XMPs6tpMaKUOcpVtdkB7V4GIFuhuzsljrf7DMVXeObqeidlWeqf+u2dZI+0mxviOtsPg
-         lLuV9exxcoZLt/my0dr6NSLhT7jzUm341dPjMW5gIe13wwUL0pAum4qhsipV6Me/qm1v
-         r9oCWRXFOr0Pc02GD1cMH3uOr5tOrixt3u8BNUKkBUDaMx6Zg0F2TLlsoEvjqc7BwYdN
-         owkdDCist5jLBb1/nLolkBahi0cdJHKi4/2syFx4mpFjAiEOsM9yqWu71NPWSRpwJcRC
-         JZKw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/Aep6PQkMN3YyaqKCz04jKSvKW4J8LQm8bOYKF4rddt+RiCql1MEV5y0D9EXUW3cqwg+HzUMjktt8oZyNvK4=@vger.kernel.org, AJvYcCVv/yKK/FqWSm2lrAKpCUW//6FiVTC4QsQdb869l2ojDWSDKL5K1U4R09UWQ7NS7eGRrWB0OARt@vger.kernel.org, AJvYcCXPnE0g5xA6C9vgXmrxTM9VDl8Ls4agvGWknm+jaSTZi3zCIcERm+M+tH2xcFvyTO6Ish0N/5mwOjHH+qM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynmkI9GBEtp/MPY2iznxfif295JfuW3m2OZTD/jVWW96KbQ5As
-	dT3ha4UhfI4lcyc4VjNBoDhTp8L3ylkDWdiXwVqMFWe/7q0+lnZiYLQmvtaGIdf2uiu6V09DlO6
-	rNDR1EXAul25XZONnhFhfKe1hSTk=
-X-Gm-Gg: ASbGnct6fReGZ674R9PoGbBZGFQOS78XsUxqOrn3W3qFAu4gRPgdbj2fBz7VnJio9iL
-	O57z+MBavklaX6m8UdU/EnPvbI8a7gCan6MpDcgvnJcfe9pcPuC6WI/8Idbb46Gkwaa1NJeCSH0
-	QLPhtXsmtWXg31W747awwqUw==
-X-Google-Smtp-Source: AGHT+IGn2B8Sk/8cQPoHh8yzlKy3DAGcSM68xE89Bdl+hrr2Ja7Epy8cWbpV8fXFQV3WDb4HuYV3tkpZ7TgbxMiCmL4=
-X-Received: by 2002:a17:90b:3912:b0:2ff:5759:549a with SMTP id
- 98e67ed59e1d1-30823624fa5mr1618122a91.1.1744381097389; Fri, 11 Apr 2025
- 07:18:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1plTs9U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709DFC4CEE2;
+	Fri, 11 Apr 2025 14:22:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744381371;
+	bh=8T1NSpNTYOEUEkOy7euD+86xiKnkU6Yse89529ibSg0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k1plTs9UFVR22p1gZdKbpKmUhelhMgA4lWgOqRSd28LecPd6hNkgE81F14863mzg/
+	 A2Kl416Y3hubTwsM0zNPZmaEF49G1pNXW7HOEcGviBEeugkwh7D46m6Jl9Zp2UKtmX
+	 Kl79MUv1dcgQHjAVg7yS9o6JSJTO/4s7wJN820sE8u3K3K/IpJ4F5sSkNuSUu0mFvO
+	 rnv1Z0FDmbXWDY+fWxB2MCU7wwcGd/9IKnGIBoNo3ATKkWvK6SuUG4n6amjc1wTCjs
+	 NN6VhJH/P4hqZFFnLj8Prow/6EF3EZTQ6MrNeBW1ERiahZXKXIWYebOgruhBgxGNBH
+	 4GMaWzOv0fBBw==
+Date: Fri, 11 Apr 2025 16:22:46 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: alloc: allow coercion from `Box<T>` to `Box<dyn
+ U>` if T implements U
+Message-ID: <Z_kltpjo9bn4ah-l@cassiopeiae>
+References: <20250411-box_trait_objs-v2-1-c5f31b8db847@nvidia.com>
+ <Z_kUyx8ytlac1d__@cassiopeiae>
+ <D93UDYZH7A8F.1FG8EIW013NKJ@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
- <D93TIWHR8EZM.25205EFWBLJLM@proton.me> <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
-In-Reply-To: <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 11 Apr 2025 16:18:03 +0200
-X-Gm-Features: ATxdqUEiLtXgDKUXmiwfmi4EnlT6ig8SgUDhLxUqtMdesasU2J2pJNPsiK-qjQY
-Message-ID: <CANiq72=+mYOd-v6W+oZ1hpqRXWn1qdKOuLwTgoafwNViWABj_A@mail.gmail.com>
-Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D93UDYZH7A8F.1FG8EIW013NKJ@nvidia.com>
 
-On Fri, Apr 11, 2025 at 4:15=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> In 6.6, C `char` changed to unsigned, but `core::ffi::c_char` is
-> signed (in x86_64 at least).
+On Fri, Apr 11, 2025 at 10:26:23PM +0900, Alexandre Courbot wrote:
+> On Fri Apr 11, 2025 at 10:10 PM JST, Danilo Krummrich wrote:
+> > On Fri, Apr 11, 2025 at 09:07:26PM +0900, Alexandre Courbot wrote:
+> >> This enables the creation of trait objects backed by a Box, similarly to
+> >> what can be done with the standard library.
+> >> 
+> >> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> >> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> >
+> > I assume you have a specific use-case in nova-core for this? For this cycle, can
+> > you get away without having this in nova-core?
+> 
+> That's correct, and our next nova-core iteration will likely depend on
+> this to provide some basic HAL. If this cannot make it for this cycle, I
+> guess I can always use Arc temporarily.
 
-By 6.6, I meant since 6.6.y LTS (since that is the one I remember due
-to backports), the actual change happened earlier but after 6.1.y LTS.
-
-Cheers,
-Miguel
+I'd prefer to take this through the alloc tree (for this cycle), but this also
+means you can't use it until the next cycle in nova. I assume that's just a
+minor inconvinience?
