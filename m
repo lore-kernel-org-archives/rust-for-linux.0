@@ -1,109 +1,98 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBED19DF5B;
-	Sun, 13 Apr 2025 15:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0A31B87F2;
+	Sun, 13 Apr 2025 15:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744557160; cv=none; b=i3HY33QjccvTLIH554oLZm8TfHYKFB+kG2zekpv0mVTop1uuQag9Ig0U7SR9YIX2zDRts7zNud2SKlg7reIj9m3QdLPfbtltKQ29g16M/vwugec+D+eqo929ZhsPE8cV4cVJmairSwSFfcLvvQsDcHhJJAzSofnmj/uqae+xBY0=
+	t=1744557742; cv=none; b=E/ko89owpmwTPrYwcB+oLlLyGi63ncb8CO6JnES4u+ngievztKjeCogVEQKLFAYn9yy4E8DOXwsH7/SXMz6ly5PJ4wiOsRqKyQK5VORP0QrYts8S8Bgvjej1TWA5FCHWAv3EByPQjDorekExtlqrAeTUz35mJY6nlEfBilCIKqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744557160; c=relaxed/simple;
-	bh=XefX3ZhXcT6t6VYUiUzs8lT/NUA3wO9bD/H9AC6ueTM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eHo0/Ja5Btbaoj88DdNzZQ9Pj9A7b6EXom6EW7/vAH4qbQPiTMy4bhCnOwAsnnMat25kTAVwJUawTJUg2dQ8dPThBcQXT+QbpxD7MHEJptsUFwjoWvjxeuKkS4ytWVKyOIMiX3lEvav277X4ZwNEDC7TuQqocX4ADaYgcQp8rwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H2+i+G08; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1744557742; c=relaxed/simple;
+	bh=p29f/d2ZwO1V6CtmbkFXj4jH6WQCqOk0DFQqugs2SBA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gWEwKIc9d22Yr1EKgS68xhh6dEdf+i3ZSuBLlmpt5+fg6FV08ES5PF1vNVXOx+rMm8otvVj84EYigsbcftFXoUVOaSv+iu0jSfqTp3g2B6VPF0vmaEYyM2fboavqBl7OOxE6gDEG9d4MR6fHEXTO3+WnllvF4gmwAqxdTC+4JeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NrFLSlvq; arc=none smtp.client-ip=209.85.216.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H2+i+G08"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43cebe06e9eso26565055e9.3;
-        Sun, 13 Apr 2025 08:12:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NrFLSlvq"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-301a6347494so677805a91.3;
+        Sun, 13 Apr 2025 08:22:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744557147; x=1745161947; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YPnIJoZ8+elFFVZr4aSmeME78biJPyFsR8gxdEab+5A=;
-        b=H2+i+G08BAnltCBqAkFauDeLVVsT0dzFjRiHbsT9rU1p66IzP5qNnnLc13odwsPhDQ
-         yVFu907cEgeyOY952t5X7M4cWlIubu4ktXHGmSAZ15Kh7X3gj19KABBAAuEL3Bteyxh3
-         WeqF+qpft8+6I7hZXOfRa5gH7UmfUP2Y5gns3k34GZkHH26/nMjcB3h/3opLMoQjRQEJ
-         TsJejWSOs1scp0Uhq9ntoxif8KU1E05aLVzVxTWR3qNbgAgS+WKVGohmi/He0QoAsgad
-         wiypti2EQCSFL663yHqQTAG0wpMmDz+w5u7isim6y/mQULWbYCBoaBpyrxETx/+ezce6
-         6kbg==
+        d=gmail.com; s=20230601; t=1744557739; x=1745162539; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=61dKwWrOnrryuz6mIEKH1vAWluHJxwfCHHzktKnA8PM=;
+        b=NrFLSlvq8Dr0xf67OMXW+uZ1aD0Ni6wgrw9gI4nFdAp3GEhAr2Tx13AoTfkos6a6V0
+         YCdJWwWPoqReAAZXQo1BJJ3KHMuXfeMh9GI4BxLUj3D1BogySXYZHAzuiH7zpJWonqO9
+         QrqCJfgM3aV3yrTpnGh4EbGz4FNDOIh8sqhTYzWGOqShSzHofDwfnh5fHegwgeoZkXF8
+         oWuiOVAANXyoHLahv9ZO/bAZQpnA6b1nwAXnY6SoUXDi0T3dnA7mEKQL5gvNMi3cbJHs
+         Knz0iIzYdrr22TEWUd3SNUnAKstE4kNhGqh+rmm3EIsWDhkIbAXqYbGgeEIErUx7DhIA
+         iinw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744557147; x=1745161947;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YPnIJoZ8+elFFVZr4aSmeME78biJPyFsR8gxdEab+5A=;
-        b=wWYUKOLC9F8LdujAEjwt6Vu0yJwzriTyGIwfAyWeWcBMSXC2ywFVhERdaREoTqqLFm
-         ufC89FGEedO2tWY/vVGU5ZdQhvVlzb8IZKWgJkEDhpiQ4AiDGGzwkXLUz9mLXH7MUBjz
-         8/6pgVAQH+1GVMM7ghB/0OCnekdTA4lz+A0uIdTSQMu+RF/8lFeh7shS9RpkXl6SG1O0
-         BeABiI0eo8P7X01EN6iiVbm8UOtuEftLkPAToumlHE/S/jsx2nR2OIO9yCnj10r/iPK/
-         jui8itS63fFgoXpuYXPaqIqQnN8zAZH9ZaOGpEPvulTNWgpY+pd3LxpTQtdWNQfddI+q
-         faQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1QBPMGURc8haB7KHo/0TZbCjUscO5fSqihIUknKvW6JxMVTI7YuGZwcqQhWEWe2wuEjKHXWBYBmRM0Qs=@vger.kernel.org, AJvYcCW4x9HYplSTGw8sUjds/G2hHAvj/W1wCdUb+UNFeD0Wsb6RfOjuyV72z+c+5IT4gl4YJsofEHcM52siBAv3A7k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaHlXfzbQS59VqDDHMdXsKX8CnQuSKSGKNMMTw63ZubCDIgfg5
-	J98ffa1eA9GyloioYWtNGVwi3uUblQ+HmXl7WmfV0LdGZqq8XVsK
-X-Gm-Gg: ASbGncvBVm44bQri8GwPbCzptcCbVcM+c0RqEhbZHJhrwHTJIHK29OR9OyGh+QJqkcT
-	u3b+aqA3JgolE8gQu7/ZqV5C/RZA8dzzodH3vFGE7OuJXWmqvFsrvxyykZlzNFGMS+Fj/5hmV8V
-	F9uEj5TQvUKi570J9Ydds+wqCi+jtmtaGW/NLM44+OswJX3qtpTHEUQXOncIwZ85OiDT78cz3GA
-	Z7AnH0i9GF+QaJ5totY4oQmFcAmLKa0lGJeJ/yhWR14l0SraS3NsxPJ02vveVz27YtBMCiPvOLH
-	pZBT74AuYJkyzHCiDd9coP0JiIVgFwB/oKgZ8yLQztvWipwaP1KKRw==
-X-Google-Smtp-Source: AGHT+IFDateLENhRah1veZqKxHNb7QuhiRGbYxs4AN7UB7WEcNnZaRVPAnS3Cwvgo/hUbSSl3lnWtQ==
-X-Received: by 2002:a05:600c:22c6:b0:43c:fded:9654 with SMTP id 5b1f17b1804b1-43f457d1e26mr31761005e9.19.1744557146673;
-        Sun, 13 Apr 2025 08:12:26 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:99c5::1ad1? ([2001:871:22a:99c5::1ad1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43f233c8224sm145843495e9.22.2025.04.13.08.12.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Apr 2025 08:12:26 -0700 (PDT)
-Message-ID: <d4147269-6a7f-4fb7-9199-54f53be61139@gmail.com>
-Date: Sun, 13 Apr 2025 17:12:24 +0200
+        d=1e100.net; s=20230601; t=1744557739; x=1745162539;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=61dKwWrOnrryuz6mIEKH1vAWluHJxwfCHHzktKnA8PM=;
+        b=JAU46HOJeAGRf00tr3QGfi0a10SXTkFyp67dnCXV6ZPcTnOV9082dEpyey6RFIHl61
+         gKYbSMLNDwyRKAgmoVzGaH+rmYfzXGMVdV41FhWKrcE4ODloowXV9YcmD2mQ8DZLvgKq
+         xbmnBmS2HfiRTsiR2mMzrX+CrwKH1VDTaSDoc1lUMi8WQYMMPDgdcKauU9NXZXjLrE5I
+         iHqdyLlc8zdS0Uz6luyRVdh543REL3AI6/ZCc7wqMolQBsCJ8UtlxlXRlxE7i4crCg+K
+         5XpwT6Y4wOZmWpz2OAxQQCwbiFD6SFkhmw177pkKuSFjllMJG4MmKgyBRDyzTmAnslgj
+         Prng==
+X-Forwarded-Encrypted: i=1; AJvYcCWV+ThQYkmVKuvdP47GoquYDEpTs02MCRZ2HQ/CEGtU8HQrd5GQVOLZnf4fECs3lgdi1XUfnm1NcpdDXqy/WNo=@vger.kernel.org, AJvYcCXvH9/iVN8fqpL09gvyQPPD7xnHEhD8bWbAH2fz4QF5zgozweqPQ6ja8NoStgc9gOz0QBAHEsDPuL3HbBQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPRv7JxbFmJRb9wKncgFPbNbOzuPMsCKOp8bAtMk4cylL6Ypyy
+	gdngLkj7e11tndncvjrGRVMRZU22QjFvADpC/Rnmyk41Jv39pswMawB0JTdye1X1OyjM3hiLFQB
+	emUq6E+iMgvMQ2LKVEEPzzOGn+Cw=
+X-Gm-Gg: ASbGncvPFo78XwmAubw+908RzR71jco62vKa66tC2OsniAh/z4koXyhYXUdMOfpL/nr
+	35912XjYwx+9TbaZxWdj1WDu7yFru7sC+Khvv05x2s8udPRUz9wyRsWSRsdrOQviO+x/qrof3My
+	g0g8BfPcpGSa19MprGtpuIdA==
+X-Google-Smtp-Source: AGHT+IHvzVfyuJfuNJxwTCOWEJZtAsGw3V7viQldcIWk0IRZ5zIy7kiE413OLyZMzHBPCjTGWDYkgkeruUcjV2gv6lM=
+X-Received: by 2002:a17:90b:33c3:b0:304:eacf:8bba with SMTP id
+ 98e67ed59e1d1-30823775bfbmr5210335a91.4.1744557739557; Sun, 13 Apr 2025
+ 08:22:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: Use `ffi::c_char` type in firmware abstraction
- `FwFunc`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Russ Weight <russ.weight@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 References: <20250412-rust_arm_fix_fw_abstaction-v2-1-8e6fdf093d71@gmail.com>
  <Z_p-UoycGk3BceXm@pollux> <c04d3ec9-46f8-4ccd-b0ed-52a1adea11b7@gmail.com>
- <CANiq72mpKQM8v1=qhACWGYo1c0jtOymnACDxXiRgjEs2-+X2=g@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <CANiq72mpKQM8v1=qhACWGYo1c0jtOymnACDxXiRgjEs2-+X2=g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ <CANiq72mpKQM8v1=qhACWGYo1c0jtOymnACDxXiRgjEs2-+X2=g@mail.gmail.com> <d4147269-6a7f-4fb7-9199-54f53be61139@gmail.com>
+In-Reply-To: <d4147269-6a7f-4fb7-9199-54f53be61139@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 13 Apr 2025 17:22:06 +0200
+X-Gm-Features: ATxdqUHNZ_9tuDNS1wlzYN05khNIGHxxHrij-7T24dLZlKtixuvPQCy3z1-AOMk
+Message-ID: <CANiq72np_UkQS_Lv9O7CJAuLvJ2jdzEy+M1A+AeHFJpmjAq7gw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: Use `ffi::c_char` type in firmware abstraction `FwFunc`
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 13.04.25 5:07 PM, Miguel Ojeda wrote:
-> On Sun, Apr 13, 2025 at 10:55 AM Christian Schrefl
-> <chrisi.schrefl@gmail.com> wrote:
->>
->> This causes problems on v6.13 when building for 32 bit arm (with my
->> patches), since back then `*const u8` was used in the function argument
-> 
-> In v6.13, the function argument used `i8` -- if it were `u8`, you
-> wouldn't have had an issue, no?
-Yes I've sent a new version of this section in the thread with Danilo.
+On Sun, Apr 13, 2025 at 5:12=E2=80=AFPM Christian Schrefl
+<chrisi.schrefl@gmail.com> wrote:
+>
+> Yes I've sent a new version of this section in the thread with Danilo.
+>
+> I'll send it out as V3 soon.
 
-I'll send it out as V3 soon.
+Hmm... the version I quoted is the new one, no?
 
-> 
-> Nowadays, in 6.13.y, everything is `u8`, so you shouldn't have a build
-> error with your patches.
-> 
-> Cheers,
-> Miguel
+    https://lore.kernel.org/rust-for-linux/c04d3ec9-46f8-4ccd-b0ed-52a1adea=
+11b7@gmail.com/
 
+Or do you mean some other thread?
+
+Cheers,
+Miguel
