@@ -1,94 +1,90 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48AD17B425;
-	Sun, 13 Apr 2025 20:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACA754764;
+	Sun, 13 Apr 2025 20:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744575676; cv=none; b=ensRfr5boQhjyDCZIGZSEASW87v9pWIaIuliK3lyVcewPSP0Yu7P9266o+5LoVdIdhGQYzeS7lHOMxd5hE3jdJ0wRa1VAF8pOguNVmAisshkaZvRvlDxpE8MbrrymbyfHmzcLcu7evcB363YregMl9S4dLA7YdlR+FXooskn35g=
+	t=1744576273; cv=none; b=BoAUPSpMvoqbVzay2UoT3ZrB68bY1xylWGara8+UEU1WmfzTlxwZY1YjypbBeFbOAeAesIpb1up9eJUAJvCk3jSldeUJI7KYjNx5h98FCTFupdMeOBeeXDZzXOVrh+dcvH8jnqWZP9u5KjQt1yIYIMGI3gQbZaacrFYziEwhbtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744575676; c=relaxed/simple;
-	bh=wQojJBXzJlTHOpAXpbc1jTR7Ss/PzQRN0e82ejpEgU0=;
+	s=arc-20240116; t=1744576273; c=relaxed/simple;
+	bh=YT2Jb+AAFkRdGd/FrferoBT3XKbn0EcNCPTzC3UwvUU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YXb50Ojn2JYmZVV0ncGj5KgHa6XZXpiuQSNPAT7vlmEOPOGhMhUprok85kzoS+h1PjNyqRSncc6W9rUR3PCdFXo3ywQvhPoiclYH1KqiBEmSVV+Kaa2uI1vgG/ifVfvPkanMHlnbQgn2omwwOUc/Gk3xWICdfARd3XJOYzalVUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ekQqTnwm; arc=none smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=RhitJlJNRq2/Q7uXRUduAk+CovyJnF6byAae1H6xqHZMla+mre57JlFoGUJXJplzOGIxGMsENDEDmOz1GmQEnGsIbcjKqs94GzKf06C/vSNOa0QjsiOrV4bVZZ8y7bieVMBuWFRtnkRSC78+xB7tB4H2uBpSg61pnok2QVT7gVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nD8N1BTB; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ekQqTnwm"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so726353a91.2;
-        Sun, 13 Apr 2025 13:21:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nD8N1BTB"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ff53b26af2so674933a91.0;
+        Sun, 13 Apr 2025 13:31:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744575674; x=1745180474; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744576271; x=1745181071; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wQojJBXzJlTHOpAXpbc1jTR7Ss/PzQRN0e82ejpEgU0=;
-        b=ekQqTnwmb6Lx2PteEuv1VdEm68LkAVBjnJiecDktQxwp0dHDe8T9Mdgw50CZ6pydOJ
-         fTuLrScVjkSNq4uuk/yvku9WeHewDVmkNDMZon8Upzjdk698Qf5cAVqYsgrO72D7JGXp
-         Rz52RDe6nlcgKD/A8+krInQzSVYG5CzsGpKNOylK21M7CnzL/aWkVGd91T7FXv+3FR0o
-         Nyt41V00VuBSlNBKyYlqqFXGnrZLCIGF1++pHxl93uIUypk64L7p9fbNS3SZKto6sY1a
-         nkQ8Xs85lsL47DBIWxEllTWUxGNyaAw1menunFL6hqTLa7T0KBNWGy0DfXBI/gjhT1MI
-         2PAg==
+        bh=YT2Jb+AAFkRdGd/FrferoBT3XKbn0EcNCPTzC3UwvUU=;
+        b=nD8N1BTBsphsBlcQkILhqOsUcQia0/b8UgM4f3x375HEGt46HYVQPdNF8fAYp49XF+
+         iZ9aC1JjCqi1bIXMwUdOQPoQsPBBGtVSo7jxuI0gs6psxnOSOf6lvzCR8eHgVg1K5+rl
+         2FkboKFBu7oHP3if26TsvRObRDxx1AZuys9Ut9AOJwwvOiEMFJ7i0Usn/oRho8M/HSoa
+         Wt42f1a9huQsYZKaCW3brDluDMoBpNh2C8TS3IKo8wrFlFMZsGgDex+HHj/+kzgNnm62
+         UY+HqgEvBO3vg0G+iDTXmV5NH3UbBgw4zvoHuiL87R9MW9MvSN1AFD8PzI/8bCnyowNl
+         wEEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744575674; x=1745180474;
+        d=1e100.net; s=20230601; t=1744576271; x=1745181071;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wQojJBXzJlTHOpAXpbc1jTR7Ss/PzQRN0e82ejpEgU0=;
-        b=V1J52f2RBPpYE/5gdWfKM+wLn7HS1xWkcBDQqMgd+if8OyoR+Z3Na5q0SZ/4HbNDKx
-         SUM6DPqo9BbLn+GbP3ucc3orfS9l/DvDsukbjEN4cqYm8FTxz+9zyqe1ybe43Mi7VJBc
-         kdHVbNe451FzvUcAlSr1Hw90rZMmvq/jKRJC91apXQo2ES45itAsx9OWnJvGGUe4aEel
-         S7ZoyvXZ15Vt/YRYdEhZfxv4IpBT8YoZBgmkOfvjGWkFIF0i3hlOVeSQNZvtqkCkEn8m
-         OKz24AasAdgJhrTU4Kbw6NCw8ZuvvAgBb3A+aJh3b33HiU672p1jQbqw1uLlUjlx904D
-         Kfag==
-X-Forwarded-Encrypted: i=1; AJvYcCUbmfQBrK6VxOyAvhO9CAdjOTb/tKZAWSIUgaJuf6VSvqsrXOo1oj4HbK2E5FiGvJGsE/qhDUsyz3DHHPM=@vger.kernel.org, AJvYcCW1P1zMy9Pj+q7ZLXoL3UEsivWxvii52ujG8hqJa79ghv2Ju+/qTaX0JID/v9P0IHfxGGM8NO6n@vger.kernel.org, AJvYcCWJC5aRPsO8h2GHjLxaHuFbH/LOCP0oJdLAaWluiBbD7hGiiX+n1ioAyze5PUhkWSBJp5yNQpUHT1y5RB13F/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDKeSgRcqhBW1qLCwPZ0RlqRptU4hC/dZFfet/R0SSLveOxxiU
-	NS425Ps0l4WrexVeZEsn+w3rcCMXu5Rr/AkTMcDhYhNtwoVi8UQHpxwxV+j/73d8ZVtjVrjycKU
-	u6jnJzjHf/Rw5EjDKXSCvRjVsluw=
-X-Gm-Gg: ASbGncsYneCjgEu5GcYjogJ+aYbfE7kZNkKH0jfvPJqG52UVZFazDzeNrrTQKr5ACy4
-	MrTBBPRW19VZzbpYdRQelvjj3OM+IFU8yJKBqBDLaOwa+FzTKQG52v1YMEtDoN7CMWHGdKG6nj/
-	evs4iGwr9LkQ0KQjelDJwlUHvVk91aT/Cu
-X-Google-Smtp-Source: AGHT+IHgC/aFHrf625tyae7K7J2fuI+kFnrOeyX1zk71aY4lL5CN1XCHDAVntE6UxNra5dZY9rZcYCPgabyfDINUTnM=
-X-Received: by 2002:a17:90b:390e:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-308273f3592mr4946965a91.5.1744575673973; Sun, 13 Apr 2025
- 13:21:13 -0700 (PDT)
+        bh=YT2Jb+AAFkRdGd/FrferoBT3XKbn0EcNCPTzC3UwvUU=;
+        b=VuEsRQrz6yQRQe9xUqzqgHDIpBFycpVVWejQXMzJ8M5WREMqgSD7AApoLe8Y/l2mdr
+         vED1ZFtiPwb+ULP/plYhC2jIcHgvQdFjTm/UOX2IGFBHTxFIZcpUnF429+JM2G6nrr7a
+         uifU5MssHsSoxrka9VHFiWI8+OMq+uf5BG+IPL0AceJ7fNlLNCsMnKti3g+TatniQ399
+         2zNWQE1CdsmttwAG3dyCpT6VrTwtGfpG8SfLiBSDXB72dQkbiaD/4XaDiGvb+5Uzvlvr
+         Gwz8EkCr9PfiqOo4EehIn0kqnntuCIoPaSzIkHjjt/hw4WzjoYmWMcyU2ohQu/L0rcXm
+         gLQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZHO7I/8VHUOFyIUi8gYWMbY9cqacZIpSLsWsu576wnDXra3GSNUr6JL3wWBszJ7XMBhqOzYBJAQzbvAw=@vger.kernel.org, AJvYcCWz296mdYlcUUowLtanVlmKuW7LqHxmtqkeo3me0tqVCCBmnOuXe+/8WfUCW1jSl1nn6iNTBny/xO+RBiCSzh4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx18HQ1t6P9xvLNWbrDbbuoAUhz1hNInKx8NKjp9UH5rX0Lr6BY
+	BhRoX1BMpQOVkXVHNk7LwgL7nzGAvTCFGTHEOdvq8n7z9NLQgLrQKgIoZPlVhM3shLbbANseUzm
+	Y/m1bbmCh87fKgqg30XWJ8g4WD2s=
+X-Gm-Gg: ASbGncsAsgy0oHzaJGAvt2lmFwIcXeiLtV/rQzEeF4vGhg7twafunsGS/vfx3sv069K
+	PldpwEyU22MXanq32gsKvViavPUfZUyi8NQ9Z1LB9OTD24Qc0zmM2Ovy10OLOEyRKOnrHB7o23z
+	wgUAr0zKucI1K41Yci0C2sfQ==
+X-Google-Smtp-Source: AGHT+IF/F6cOktmDCDF8TObfqU9ewu/SWARhJ60H2L0Hf/8/j2n5eUpU92+PD5aEuvktlLwjgqKPdxwRh4ggyhNdosw=
+X-Received: by 2002:a17:90b:1e51:b0:2ff:7970:d2bd with SMTP id
+ 98e67ed59e1d1-30823681347mr5848130a91.5.1744576270985; Sun, 13 Apr 2025
+ 13:31:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
-In-Reply-To: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
+References: <20250412-b4-container-of-type-check-v2-1-f3cc9934c160@gmail.com>
+In-Reply-To: <20250412-b4-container-of-type-check-v2-1-f3cc9934c160@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 13 Apr 2025 22:21:01 +0200
-X-Gm-Features: ATxdqUEbJUZabY5ly0oKwSmSo00qbXw56zoRY0ep3Vfv-E42xwj8kfluLC02Tl8
-Message-ID: <CANiq72kJ+tv-P6+Yq7Bg+J73q93m+EKV_4E-GR=sdY5KRgCs6w@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: Use `ffi::c_char` type in firmware abstraction `FwFunc`
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Sun, 13 Apr 2025 22:30:58 +0200
+X-Gm-Features: ATxdqUGvaQIDRki065Ejr6gu0CMzwc_X90fh-wsW_PiCfEUxa5-r3icChbEWcQ4
+Message-ID: <CANiq72kAYp0Z3VNS=JgApceCXx1OVXMNJJYcm8OnZdToz0zufQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: check type of `$ptr` in `container_of!`
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 13, 2025 at 9:27=E2=80=AFPM Christian Schrefl
-<chrisi.schrefl@gmail.com> wrote:
+On Sat, Apr 12, 2025 at 8:16=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
 >
-> The `FwFunc` struct contains an function with a char pointer argument,
-> for which a `*const u8` pointer was used. This is not really the
-> "proper" type for this, so use a `*const kernel::ffi::c_char` pointer
-> instead.
+> ; diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
 
-If I don't take it:
-
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+I am curious, what is the reason for the `;` notation? If is it to
+avoid issues with the `diff` marker, then I think indenting with 4
+spaces as usual would work.
 
 Thanks!
 
