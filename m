@@ -1,95 +1,120 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249761B4232;
-	Sun, 13 Apr 2025 15:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6FD1A0711;
+	Sun, 13 Apr 2025 17:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744559052; cv=none; b=UTlFHBPuOAqQDfmvqDDULFYUgvZn+K9CRo9O5tKosY3sPUEEas/mYVhiIeCStJxoVmOw8yCr8DlyFeUHc4HHwhwVEheZ9Qone5k5QRRwmacwrZc/bhCu7h4TL6DwH4LM6YRMiXg4FfTQjAaK4yU8yuMLy6wxVgb0YQ7Q8L7PzQM=
+	t=1744565886; cv=none; b=fEVLNwTOx5W3lahdobzWasEy1NtrHA91rBlAHbSCeWdorYPfgv+klVj+vULePS96BKFqgtzYDqAue87pG2zlYZdMLhpJo+64Znpliffrt+nM7fZa9nZjTSC5Nozy5uvh5c5zR+kIEvk/ezX4FGtSKr8ZwnkZES/r0z7iKkaLJsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744559052; c=relaxed/simple;
-	bh=dKGcm9+VOTlNT0szeJkGwNqWqdg07bPvzWyv98pkRg8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EBA6YS/HOn/KBkvREAaJJiH5ZEXMzKYHcldOBrLcx/FCqak9mc2l/fpwCJFoP7LIyFarfxa8PcC/fUi1wmHWDReXobMzehi+ge622CXgk2vxLc/iuxtPmuiNvx9yK3XeWOU9yDkczPwpnW8oPTKncicTW5TqJXUULnu7kS/Uz7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TtpMgEbM; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744565886; c=relaxed/simple;
+	bh=B/4wpZfymQa2EZNIHKUkhiU9jz14uKnVoG+hwSh5Npc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gBlqXt3eaPwDpjsUESQCh1fDjkWd2q3Txk3peo0C2iTwTvRqlGJp/LvT+q+m21X/5AzhiuQ6goiKNkGZOriqEc5qTGGA5Ix0l2fwNBJvcNtGXGKFewu4y6D2S9ndByvhWbtTJBZtZ8NgPdfH9AZ4ScoT1r2RivJ7PGL6adxWhmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bl5y12IT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TtpMgEbM"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-301a6347494so680959a91.3;
-        Sun, 13 Apr 2025 08:44:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744559050; x=1745163850; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dKGcm9+VOTlNT0szeJkGwNqWqdg07bPvzWyv98pkRg8=;
-        b=TtpMgEbMJAjWnWInXWGETefEDaJv0jj930BQp0wEWN298vuix6Ui9Fzr6VnKdA249M
-         VbKjp+my5du2Qkaf+nB4yeH+3JIPOywx9GyqkzGQT7dxvwTOijEo+4cXXH77VNjZxG/n
-         dIAa96mLrGI0Ymwg68cgE5bwMNXCav3h+lL2wPoxA6e7kdR4EnnVTEkqFvYjW3mOZ/G+
-         zYXVFBm899jSBawUBnxTvAk8fXeP1FCPjr70bQyFP2SFJ+X2Aao7WjXlpTLkcjO3VOHh
-         4FLhMsnQxVbI6El/cLJkAJRAhh6NtWfUDXdG5y5V4gyDCWNk3eA5KU50Cx+WUoAvCpOk
-         EZRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744559050; x=1745163850;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dKGcm9+VOTlNT0szeJkGwNqWqdg07bPvzWyv98pkRg8=;
-        b=PWv4NCz8vctsXXgFeIeXAdatjBDUCmD/gFReVyk34bfeovO9hPz1R9umKyMjakYR9o
-         +Ut05auu2SHdFwY/4lCzjPLfamZBzgz3LIaYk0EZ2NUCin/lYI0Yx5gqYLwDdbv/9IrE
-         7uYyYZv0an4mS5PR781Lb5oAT421c3xoObABGLMn7qvdNhtkqSj9SoTxU5mSjC7buN9t
-         6h3JYieEfEL0Xl+ku/nTasIMGuVTuJtVAmYFfhPW17XHTEA8MNNBDPFBo0i2F8MATBIN
-         57/uVOdYlp4PAbbip3HdEAl9XytZv35bb7TZecGfYgqOnGajhduHNhefz1xMthhS8tmE
-         SMwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUq07rQCaf/HmNNp7A8RvurCGaeYxkfvJKGval9a8ehsAeJbQZJBSolvICCX5JuleWDbt387e3JMDe2Xt5Qu7w=@vger.kernel.org, AJvYcCWvfn25T14+uvkDadSTPpKWdJ+eP8PbEv9szC2mEfjJRwRAuTigL/0Ku2960bPrpmbls+HRzn/phoWTLtY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl2trye/XtcGnxcD2lXkZY6AJQPsYJmXCWUq+xpS3HS5i/Mqpj
-	cVfeBclOaFXelSPi7UY0nI0HAS9beu/xPAC0JQnXuAplzjlcflHkeASpLIFUPozMW+/jsQxMlBR
-	YivWv86JuYgH471gQBLCao0FMPJw=
-X-Gm-Gg: ASbGncthcc5jXxC54fyCtx2E5JjalCVTxoxCTwCgrfmwbtEM+OLC1tH6A3oAELfwX5m
-	XaDIG6hnFUMjNu+mGpB/4tYDxy1mlw/1ht+P7SobGtp2AO19jEbMuEk0oK2OrJFk5S863ELcOpU
-	EIPEODpvRWANHZ4hFMJUC4GQ==
-X-Google-Smtp-Source: AGHT+IFisTIVZQ7RKon9gvA2HuBL7trcYspVwgVbvqE9nCsrg0Fzdnga7r4sSa1SJ1j19Q7TF9lbFbI+GLtHOTyvUG0=
-X-Received: by 2002:a17:90b:1e51:b0:2ee:acea:9ec4 with SMTP id
- 98e67ed59e1d1-30823775b41mr5139487a91.3.1744559050084; Sun, 13 Apr 2025
- 08:44:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bl5y12IT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB80FC4CEDD;
+	Sun, 13 Apr 2025 17:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744565885;
+	bh=B/4wpZfymQa2EZNIHKUkhiU9jz14uKnVoG+hwSh5Npc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bl5y12IT4LGGcBXw7WS1SBz5KtTvBnocG0ZNdwiLbs1JHf2dMPwdTwx91oYc1u0/X
+	 XenTCVf0bshSRGr89mVypR8joX6Lowz4pjIAfZTwhAncKOkuBKlXPJrk1tEobKQngz
+	 TmYX5ohAtzo7jYhYdQZN6hMyfc6ibSdf+WU2O5AUr1wIXr5FKEvjHWtyNJOmpugrV2
+	 5w5anKe+T3jJSIZrOomOdJcXzirYg9SEU1mmSnV4jbCU0RlHYLhi7ESlG0TiO4HWNW
+	 Vs1R4FOvFo0xeSBXcLz/PhEgFsk78IX/GnsJ4OJSMSa901do5T9ADn1RcN8sBto3Pg
+	 XjIUSCSqM1sHw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	abdiel.janulgue@gmail.com
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 0/9] Implement "Bound" device context
+Date: Sun, 13 Apr 2025 19:36:55 +0200
+Message-ID: <20250413173758.12068-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250412-rust_arm_fix_fw_abstaction-v2-1-8e6fdf093d71@gmail.com>
- <Z_p-UoycGk3BceXm@pollux> <c04d3ec9-46f8-4ccd-b0ed-52a1adea11b7@gmail.com>
- <CANiq72mpKQM8v1=qhACWGYo1c0jtOymnACDxXiRgjEs2-+X2=g@mail.gmail.com> <8de46681-18b9-4ab2-a8c4-df6315c2125e@gmail.com>
-In-Reply-To: <8de46681-18b9-4ab2-a8c4-df6315c2125e@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 13 Apr 2025 17:43:58 +0200
-X-Gm-Features: ATxdqUER78uV26S-aBGFI4R4a_d51gxVEDkWXrxWw6cidI-ZOTWd8VK_PQPd_Rg
-Message-ID: <CANiq72nP5dUREBfBE-gM_nF65qDH6y3PkeW9UtaodLPrVs1hXg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: Use `ffi::c_char` type in firmware abstraction `FwFunc`
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Apr 13, 2025 at 5:32=E2=80=AFPM Christian Schrefl
-<chrisi.schrefl@gmail.com> wrote:
->
-> Sorry for the confusion, Thunderbird showed this as a response to the
-> original patch mail, so I thought you were referring to that.
+Currently, we do not ensure that APIs that require a bound device instance can
+only be called with a bound device.
 
-No worries! Lore shows it as replying to the right message, so I
-assume it is Thunderbird-related, yeah.
+Examples of such APIs are Devres, dma::CoherentAllocation and
+pci::Device::iomap_region().
 
-Thanks!
+This patch series introduces the "Bound" device context such that we can ensure
+to only ever pass a bound device to APIs that require this precondition.
 
-Cheers,
-Miguel
+In order to get there, we need some prerequisites:
+
+(1) Implement macros to consistently derive Deref implementations for the
+    different device contexts. For instance, Device<Core> can be dereferenced to
+    Device<Bound>, since all device references we get from "core" bus callbacks
+    are guaranteed to be from a bound device. Device<Bound> can always be
+    dereferenced to Device (i.e. Device<Normal>), since the "Normal" device
+    context has no specific requirements.
+
+(2) Implement device context support for the generic Device type. Some APIs such
+    as Devres and dma::CoherentAllocation work with generic devices.
+
+(3) Preserve device context generics in bus specific device' AsRef
+    implementation, such that we can derive the device context when converting
+    from a bus specific device reference to a generic device reference.
+
+With this, Devres::new(), for instance, can take a &Device<Bound> argument and
+hence ensure that it can't be called with a Device reference that is not
+guaranteed to be bound to a driver.
+
+A branch containing the patches can be found in [1].
+
+[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/device-bound
+
+Changes in v2:
+  - add a safety requirement for impl_device_context_deref! (thanks to Benno for
+    working this out)
+
+Danilo Krummrich (9):
+  rust: device: implement impl_device_context_deref!
+  rust: device: implement impl_device_context_into_aref!
+  rust: device: implement device context for Device
+  rust: platform: preserve device context in AsRef
+  rust: pci: preserve device context in AsRef
+  rust: device: implement Bound device context
+  rust: pci: move iomap_region() to impl Device<Bound>
+  rust: devres: require a bound device
+  rust: dma: require a bound device
+
+ rust/kernel/device.rs   | 90 ++++++++++++++++++++++++++++++++++++++++-
+ rust/kernel/devres.rs   | 17 ++++----
+ rust/kernel/dma.rs      | 14 +++----
+ rust/kernel/pci.rs      | 33 +++++----------
+ rust/kernel/platform.rs | 32 ++++-----------
+ 5 files changed, 121 insertions(+), 65 deletions(-)
+
+
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+-- 
+2.49.0
+
