@@ -1,68 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE252BE7B8;
-	Mon, 14 Apr 2025 12:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534AE2D3A6A;
+	Mon, 14 Apr 2025 13:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744634507; cv=none; b=G3lKqpiVD97tjfDLNjzE1rwPFF3EpEaiB/a6wiqKdO1798iEfYGU9P7G3E664Sb1m3RYQ+4UJ70Y+DpKNlqMyJ8uBBeepGz9e36Q/WgAfS104I7Mo+iUf98CD3ntlbtzboE2IsEkCKU3t8HKI3Z9Lzr5ZLk+e0Aeh8BOfeOP/xg=
+	t=1744636781; cv=none; b=ptyZG1niZ2q2QvDb6TOW2EiPWnR4ubj+uKLrC4Tt7vunESLbA5RrkFkQ7mW9lPxws8VHHoNPh27PplcuSezUkhAUoPyHzzG9tOJ8bfbnFJex0Okn87T/D8jWmUaozdF7Fle86CtzciYu/Q2YhFWxoP50DvV1Ac1c2AsFUUs8Gmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744634507; c=relaxed/simple;
-	bh=3BlNmQpMp82xJdAZ0Bho2rJ8qJsNAxUz1OgSOw9idJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KwWALlSlk4nZL1jnYizfCxSQyQZsmD/YngeikZiOL0V+AMWrVZGBhQ96ECFWOyrAqjWfBWOm8Qw0RFla9Nhncr4oOhm7Vv2qFnNXeAJv+MrpRgdpnexlL14HsBYr5dbJrRPKS6l5cYaHPkzK/iz7F754wDyX8Oq1BrT3irD5dY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EKHWmdSy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744636781; c=relaxed/simple;
+	bh=EEXwuf59DHtynm8vxjNdzN53Ey4jfuogKcj5C2UyHNQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FdATTjSwUXLaqJ6GFnGfAz9hNv5Vc1NnDmMAreV1dnh2Sc50206jqag5sfqyH+FkYd53FYUnT1XjISWOLbbp2KlYeMWoJ9Dl2bKzmt3cD5ysIpuvEXkypt+kRIzPl64tNZhsxjI8r04DecUtiSDIVUncjCckyZo4T+OlfytJF0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EiA+4pOt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EKHWmdSy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4082C4CEE2;
-	Mon, 14 Apr 2025 12:41:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EiA+4pOt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08773C4CEE9;
+	Mon, 14 Apr 2025 13:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744634506;
-	bh=3BlNmQpMp82xJdAZ0Bho2rJ8qJsNAxUz1OgSOw9idJE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EKHWmdSyJPedYFPNxldVA2LFgAkClYqz35karquJkKls9Qicneob6E3Pxfl6Oa5oE
-	 Tg8CdWKsVnxCoiiA8994/hHfLGB1frgaaPr5fkTJnf8pIogEmq4v7Srb80rwFUmlBM
-	 TqSqWp1o3fCHP487pbfILQxw0iqWTwjLnWwx/+z0NlHK2yyy7lszo4dBsuiG2B7JrM
-	 +Z8QDyXNXN9ALILXlxZyNCGqmMTesHOyRfy6KM/ngHyIZCKgz7k1VMHwhApNf9fyno
-	 G8JsK0v2JC3N11qrF6EaSkEMNApyij81rz5Yaz8SzqtUO4AdXrri9DCWQ16YAPqw7i
-	 P5MjfMBm5yFsA==
-Date: Mon, 14 Apr 2025 14:41:41 +0200
+	s=k20201202; t=1744636780;
+	bh=EEXwuf59DHtynm8vxjNdzN53Ey4jfuogKcj5C2UyHNQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EiA+4pOtHsLA6ILBkedyYzPrxQIr+p8JMN+vM4kDAHlfiCOgAGKejRwlnk4oO4aR3
+	 XqKknws15CzpfXqoBefqbs/LIftibZsle4KNr6jCcfb5MTssC1Uqit11kTWorisd6p
+	 g28EY72jPZwnxt/hK09i7V/gdVIFytRVPhcDUMIlsyQF0ScvM/QUPmUXaR0WEzeVnI
+	 ukSK6lVnUO71yIbd/abuKq+oNTyxNJJT93zOHnAwNm895EvWlTNLDt+GoFhZQicax7
+	 CZ88reTD3Vjh1IxVu3/3yBTO+k4Yip1UhEreBOcmO4/bZYCIdu7pSSt//rcMDX93pH
+	 0Bu1d4dGuD71w==
 From: Danilo Krummrich <dakr@kernel.org>
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] rust: Use `ffi::c_char` type in firmware abstraction
- `FwFunc`
-Message-ID: <Z_0ChQQkMtHoTo1C@cassiopeiae>
-References: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	david.m.ertman@intel.com,
+	ira.weiny@intel.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	airlied@gmail.com,
+	acourbot@nvidia.com,
+	jhubbard@nvidia.com
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v4 0/5] Auxiliary bus Rust abstractions
+Date: Mon, 14 Apr 2025 15:18:03 +0200
+Message-ID: <20250414131934.28418-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Apr 13, 2025 at 09:26:56PM +0200, Christian Schrefl wrote:
-> The `FwFunc` struct contains an function with a char pointer argument,
-> for which a `*const u8` pointer was used. This is not really the
-> "proper" type for this, so use a `*const kernel::ffi::c_char` pointer
-> instead.
+This series adds Rust abstractions for the auxiliary bus.
 
-With the following changes, applied to driver-core-linus, thanks!
+It implements the required abstractions to write auxiliary drivers and create
+auxiliary device registrations. A driver sample illustrates how the
+corresponding abstractions work.
 
-  * add firmware prefix to commit subject
+The auxiliary abstractions are required for the Nova driver project, in order to
+connect nova-core with the nova-drm driver.
 
-- Danilo
+A branch containing the patches can be found in [1].
+
+[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/auxiliary
+
+Changes in v4:
+  - drop TryFrom<&Device> for &auxiliary::Device for now; we likely don't need
+    it anytime soon
+  - sample: rename PciDriver to ParentDriver; add connect() to ParentDriver
+  - rebase onto https://lore.kernel.org/rust-for-linux/20250413173758.12068-1-dakr@kernel.org/
+
+Changes in v3:
+  - export auxiliary_bus_type
+  - implement impl TryFrom<&Device> for &auxiliary::Device
+  - implement Send + Sync for Registration and Device
+
+Changes in v2:
+  - implement bus device soundness improvements from [2]
+
+Danilo Krummrich (5):
+  rust: types: add `Opaque::zeroed`
+  rust: device: implement Device::parent()
+  rust: auxiliary: add auxiliary device / driver abstractions
+  rust: auxiliary: add auxiliary registration
+  samples: rust: add Rust auxiliary driver sample
+
+ MAINTAINERS                           |   3 +
+ rust/bindings/bindings_helper.h       |   1 +
+ rust/helpers/auxiliary.c              |  23 ++
+ rust/helpers/helpers.c                |   1 +
+ rust/kernel/auxiliary.rs              | 360 ++++++++++++++++++++++++++
+ rust/kernel/device.rs                 |  18 ++
+ rust/kernel/lib.rs                    |   2 +
+ rust/kernel/types.rs                  |   8 +
+ samples/rust/Kconfig                  |  12 +
+ samples/rust/Makefile                 |   1 +
+ samples/rust/rust_driver_auxiliary.rs | 122 +++++++++
+ 11 files changed, 551 insertions(+)
+ create mode 100644 rust/helpers/auxiliary.c
+ create mode 100644 rust/kernel/auxiliary.rs
+ create mode 100644 samples/rust/rust_driver_auxiliary.rs
+
+-- 
+2.49.0
+
