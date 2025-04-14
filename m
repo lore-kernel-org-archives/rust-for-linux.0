@@ -1,112 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0EA1F236B;
-	Mon, 14 Apr 2025 17:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1384423D285;
+	Mon, 14 Apr 2025 17:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744650785; cv=none; b=MCR4ZS/ePrGmAQVD8VfW78kACNOYa5sYM47tWehz4+0QCiFtz7BiUXgyKSFpMllAAsMj2k7iM1V/rrKGMg9lknPY8T7U0vs+R1OhiviZT6QKv31XHYwG/vX2WWOIOfgo5hVeb/2KsXUcoxJCGvZtM7B4/IcsEaU2ulc0SVaH1+4=
+	t=1744651424; cv=none; b=NvtF/ieF2vNZjZyVmKg7S6YxnfLFDVqAEX2Hn12OLXCxHj2bzQY9qjOek9cu0U5gKJcDRBnaaatrH6PpAc3j62xmjuBvgp4kiYpZTTKLLbehfv+++5S3krAZMFXC5ADeFXJEmEnnPKR6RV8zf6J7D1a2wyCfDPHtYY6B6hhKqoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744650785; c=relaxed/simple;
-	bh=ylkQokXT4qhYAlggPHU4HculS2KKVxH752KsAb9kliU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tKQoyr/Fyd3ESF7KC36N5cTB52M8dADzf8TTQDkkEPS3xN70FPpGdLLX30HP8k9LOX5Wjh9AMxBq3bhM8Zbk7W+1UOM03tNyc3WILe3/V8muY4zRVMOglc8ENkySOTKZQAHwBngNvWGPgoRw1L8ZrPrGIJQzGHwnoRmBwY5ubVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1ijFpYf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744651424; c=relaxed/simple;
+	bh=GPTmCec+ZNuZRCM/kaKGVD8ffsbiT/xRq/puE0O1Dm0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C73SGBmCwR6NjiLjpaklcEpp/AivRp/zwxVVM2+iyRe5z+zapM723FNPSMsF2dlcZVKLrs3MdlwVDMazsChyliGPRuVTtQ1IBPKHtqcUKTLMIPN7qWQZM6VrIa0oeaekxk1ORUF/QRcEOckq0dIsQq7H528Ji/KLB8OyyU/grBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eK09fqo6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1ijFpYf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94C6C4CEE2;
-	Mon, 14 Apr 2025 17:13:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eK09fqo6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458C0C4CEE2;
+	Mon, 14 Apr 2025 17:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744650785;
-	bh=ylkQokXT4qhYAlggPHU4HculS2KKVxH752KsAb9kliU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=R1ijFpYfQGhA6bq6WujhrBCMnc8WkmPCNhW+TkcHzBFk/1bU2Sjt9oBjqlpy0Lgyx
-	 +ys5PyBw1DFaFUCBTS3sMFGYyFmA3U2smH8WWtU4IpS62PRUt/p0jslfUJdkdJzJad
-	 VH4Fm5Z6PXzJOM0E/STafPiIBsNHKip2IaA2fcWe9kfIlQjG0RZ+o72JXR0bqd1U8S
-	 7cWd2GQVoldAYCXWbLfMygg/v6mBoJGmiYPE5eXnWqpWSl6Tll7bhFuLUUUI2PGZFC
-	 rJEtGU2RVsEOKk5JVdvgssbKaWfxl+TKzdVF/jw9wCtCZ9BfPrjFgji30Nj2dFt4sj
-	 rCYyn4nbLhmfA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	linux-kbuild@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	s=k20201202; t=1744651423;
+	bh=GPTmCec+ZNuZRCM/kaKGVD8ffsbiT/xRq/puE0O1Dm0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eK09fqo6Tst8TjcXpz2D1a2TMRdcjSZcXkpRtG+qVGFTMUWiL1VRiUNzvuD4U+xX1
+	 YbA3FRJRclAlPHccWt4t1GRhlPiNvBsiAKg6OUIzh663Vpoi6PP9zmeXhgR5ASOgg5
+	 ei8iNwuUuJVbRH2KyQhz2mdzNbligi8n6lu2R8+ZJuiY80DsNcDxY7g/mw9SkZk2KZ
+	 ofGzlgfWxYRf0Vv920pyYWYafLhgtYuiFkJjEmwkzyClZIn2MUJYRt8BPT7dEmI3jZ
+	 /NfhN7mAeW2PSg8P8zMnvOXUMjFaFUbgFLuHihKjfrUBbwZDfxBShCL7/InTNfb1MZ
+	 KThyK3y6SeMTg==
+Date: Mon, 14 Apr 2025 07:23:42 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] rust: kbuild: use `pound` to support GNU Make < 4.3
-Date: Mon, 14 Apr 2025 19:12:41 +0200
-Message-ID: <20250414171241.2126137-1-ojeda@kernel.org>
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] workqueue: rust: add creation of workqueues
+Message-ID: <Z_1EnkPiBKakGYtM@slm.duckdns.org>
+References: <20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com>
 
-GNU Make 4.3 changed the behavior of `#` inside commands in commit
-c6966b323811 ("[SV 20513] Un-escaped # are not comments in function
-invocations"):
+Hello,
 
-    * WARNING: Backward-incompatibility!
-      Number signs (#) appearing inside a macro reference or function invocation
-      no longer introduce comments and should not be escaped with backslashes:
-      thus a call such as:
-        foo := $(shell echo '#')
-      is legal.  Previously the number sign needed to be escaped, for example:
-        foo := $(shell echo '\#')
-      Now this latter will resolve to "\#".  If you want to write makefiles
-      portable to both versions, assign the number sign to a variable:
-        H := \#
-        foo := $(shell echo '$H')
-      This was claimed to be fixed in 3.81, but wasn't, for some reason.
-      To detect this change search for 'nocomment' in the .FEATURES variable.
+On Fri, Apr 11, 2025 at 03:34:24PM +0000, Alice Ryhl wrote:
+> Creating workqueues is needed by various GPU drivers. Not only does it
+> give you better control over execution, it also allows devices to ensure
+> that all tasks have exited before the device is unbound (or similar) by
+> running the workqueue destructor.
+> 
+> This patch is being developed in parallel with the new Owned type [1].
+> The OwnedQueue struct becomes redundant once [1] lands; at that point it
+> can be replaced with Owned<Queue>, and constructors can be moved to the
+> Queue type.
+> 
+> A wrapper type WqFlags is provided for workqueue flags. Since we only
+> provide the | operator for this wrapper type, this makes it impossible
+> to pass internal workqueue flags to the workqueue constructor. It has
+> the consequence that we need a separate constant for the no-flags case,
+> as the constructor does not accept a literal 0. I named this constant
+> "BOUND" to signify the opposite of UNBOUND.
 
-Unlike other commits in the kernel about this issue, such as commit
-633174a7046e ("lib/raid6/test/Makefile: Use $(pound) instead of \#
-for Make 4.3"), that fixed the issue for newer GNU Makes, in our case
-it was the opposite, i.e. we need to fix it for the older ones: someone
-building with e.g. 4.2.1 gets the following error:
+Maybe name it NONE or DUMMY? Doesn't affect this patch but [UN]BOUND are a
+bit confusing and as a part of the effort to reduce unnecessary usage of
+cpu-bound workqueues, there's a plan to flip the default and use PERCPU for
+the cpu-bound workqueues.
 
-    scripts/Makefile.compiler:81: *** unterminated call to function 'call': missing ')'.  Stop.
+Thanks.
 
-Thus use the existing variable to fix it.
-
-Reported-by: moyi geek
-Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565/topic/x/near/512001985
-Cc: stable@vger.kernel.org
-Fixes: e72a076c620f ("kbuild: fix issues with rustc-option")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- scripts/Makefile.compiler | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-index 7ed7f92a7daa..f4fcc1eaaeae 100644
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -79,7 +79,7 @@ ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
- # Usage: MY_RUSTFLAGS += $(call __rustc-option,$(RUSTC),$(MY_RUSTFLAGS),-Cinstrument-coverage,-Zinstrument-coverage)
- # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
- __rustc-option = $(call try-run,\
--	echo '#![allow(missing_docs)]#![feature(no_core)]#![no_core]' | RUSTC_BOOTSTRAP=1\
-+	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
- 	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
- 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
- 
-
-base-commit: a3cd5f507b72c0532c3345b6913557efab34f405
 -- 
-2.49.0
-
+tejun
