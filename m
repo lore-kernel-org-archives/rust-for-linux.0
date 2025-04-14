@@ -1,141 +1,97 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202612D0A39
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 14:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA6027585D
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 14:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744639563; cv=none; b=jS7tDuNlziwale5Pry+ZnW+OjxHLhbkbeoYtRt6PAy4axKlCB+exei2YlYsCsIQuggma0FdzhaTbuZklkwd+IrDRXz8A1yYzAptKvRgSxwbmYRFtmcm0gJaNu14QxMOhrLyULKi5L8whkwAS9ttD8EqFRXw8hgZBs2wQSkX6l6c=
+	t=1744639672; cv=none; b=o3PBhFW7xXd4vUt09gjC6ebMhhVaNL8BsUbp96QtlPd4ImSpEX2f0OSTStESFxu0LfnnQO6+gJB7q/6DI7xA3raFaCnKhBT4mbbkpAl7TjzejSyQPW/55AY38kPbMHipxby8SaCAlwaR4R/tQtiSGc/PK4N3MeXItw0Q4VZrzuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744639563; c=relaxed/simple;
-	bh=1Tpyq5xBZ9bBoXA1okFnsjXuvR0LvRO7JEf1SqZG1A0=;
+	s=arc-20240116; t=1744639672; c=relaxed/simple;
+	bh=AYWkkj9NyBWLE+vHeCXHgbQh4tX6WsCz2DwqzolPXQc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Qjl7YDCSJl8GOKvS6I1SIP5W4YI+tBtJvlU0XpSmusgqCuLxGt7FuleDj4/QI/99zofvgSMtTQUPkIxJ165gemzoqIuEQb1/4uSEUeJ3Gon7HpBj+td5nj8Oko7OzDuMxlR/joU/jtAMJWQo0JTWhctZ9WB6gaaaZuNcc9kOueg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CP0V714z; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=PCCwM3EndDMNbeIQmLqSFp1BpkkpeEyYZpxQvGnExjp86+Tha7r+dQ+opZwgXrBxJNUsQB+qoUpe+m8wyzhsW5pUiBEOQwv6A5L4aXgQnqGacs5utLhaHUM8qv3QB4uHUoXMdfMLROOAc8fwHQgJbdAz2zELUE9+ho2kL9tLUZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ipXhlbOv; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CP0V714z"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3912a0439afso1800518f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 07:06:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ipXhlbOv"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43f405810b4so14737035e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 07:07:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744639560; x=1745244360; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pquPnA1PEeiSIlwvjcbZGrtyLxq30mwUO7DzjIyEInU=;
-        b=CP0V714zVRvI6BPoFKJv/511uVdtY2KKjP4J5SRbnEKmAbGQGsEaCJhVwlg3DsMa+m
-         6se662E0q3EkwI8bI3zQx8ljO+zgXKMb4BT/3nynxDTC6qxDCjxc7XWfeZo80ny/WGDt
-         +FJxDxAa53aQxF+hf1IBrCB7bBnzEQbT2Su06hXDjNIrLnBI5FG+mkHFxUM9PDnfPe12
-         EwwJbxnAxXuzxINt8s1diavKHShPAVa6ASO9XtWGZvbpoLIp41KqbqqCz5nTOLxTeoWH
-         ToKtDrzLDczrBn1ZyzD6Y/y3ntjH7TJdGcM00nNBKYTy/54lScYYlCgkY8fyVDpWWmJi
-         9SkQ==
+        d=google.com; s=20230601; t=1744639668; x=1745244468; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=99k4XkFNDnG3EsiHLB6vmh114esekQLkfPzps9wZH3s=;
+        b=ipXhlbOvvW8tOfQXgeqpXiKHRjCloi8PAp1SHqDO+YFdqx47gk/va9gz0DkJ87mLUd
+         wkR9SeecTd6le3K+82/apQZwRTbCNGEVPTcZeo4Vk2zFA9brhS5zwnWLk/NzTsX9NKL3
+         ZHHL8HEl4LGe20gK48B8imfXxRM3nm7TIXcWl5rpink1UPPGW0DEsOD2OXlQ3NXlsbSs
+         f1wZSGnkJsM2GkAXeDaHHBT318wkNL25QzZmQVw+JR5Eu8dnPRVL+CtoxBzXZ5fsIntK
+         pfuHdJX6i6bBKP7WcaoOhDO7Klysz8L3lNZwBGAePSABkc+7PikVzhKsx6kA/bI0ZWL4
+         j65Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744639560; x=1745244360;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pquPnA1PEeiSIlwvjcbZGrtyLxq30mwUO7DzjIyEInU=;
-        b=akV+RSQsBQGZmo7LeU1+GYi7ZD0ejWEUaXjPcFvfdKMt2fua5ODwlDbHmDPZMKc6ab
-         faqs4CbeNtj3QbEsunHmEegRhzCj6HYjFcHnCuNtQm2TiCWkfQMVwBjRW+nEvQtPyptQ
-         ejm3iRzOlPTgWl1Gvpr4EWOAgu4nt23ImP9ZLf/h0mkxnhxUfFv2HDef7w+Yl9BmUUw0
-         Tt49IXc1P8SzWTUHGJulgcEQS9dcvKh8Fi5tqunU5RS6JyEbu8dl/IBsw1kar8spnt6m
-         TLkQUSFzf8cpWywxGfaYvAPyiMx9X9B6dyMw/ABZ4y3HM/dlPM+ikI2Zmct8lq7Etnor
-         zvtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/Q/UPVGYUwACw+ISmVhjt3u/RP002GPMILCmkMYrUN2CO6FyP/qHPJoKt6XWR2nwpJKgtfRzp6ISnJs5Hbg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzD6KustLep7GNNo3Z3QiVZF2P8Dkft2eojlOvSYEltHzet6ws5
-	olSW7Vb5MYQRJ5KANk722CoFyHa4Jz7R+6Xscy30vXG8KXyNrA5smb7/9dzHAbfGw6GXDH29UDu
-	P/f0Y/9l46uoY1A==
-X-Google-Smtp-Source: AGHT+IGQbHeuxbBbZFXwHsYpF9g2N88M1bkKFXroszwDXJntxCkbevVk0P6QDHTRfo+/ugItOAMd6LUWJaI08es=
-X-Received: from wmbev15.prod.google.com ([2002:a05:600c:800f:b0:43d:7e5:30f0])
+        d=1e100.net; s=20230601; t=1744639668; x=1745244468;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=99k4XkFNDnG3EsiHLB6vmh114esekQLkfPzps9wZH3s=;
+        b=E02we3/y4htJW+Qsz1PQsBvCZ0BBI9lAELQ5X2rxwvnWshJ8d+U4yM0N/zj86c4cmg
+         ApbX/I8q7JWOGEjmiAgLy8+VYb8qEXXyBKDuA/0dHZ82w3mGrstdyxYymtVFW9vTF6dA
+         0rUzxNkcyaTCu2kNL3eOHMXzH48jYgC4vPuE7Qj+K7/LpBxGyXpWCKgWjKjmKUK5Oofv
+         fJYbWJQ3AOM/Bt/loBIYMOQ7sACgRr0feHsu9dRRL9l4rLd8S8PbWZyQMtDIGGLOGEqt
+         eLIhpIbaFOMHn4SFUv4E/FHds8VOFXM4mJCk2E5JDZO1D6ozB6GQWecSu4ZenHCGMgF5
+         EWsw==
+X-Forwarded-Encrypted: i=1; AJvYcCWoLjVr4X9hJioRc/azmnNAxsAjtkuZC+NVJ2VXDydw5spLOGD0WsI0eVTuTYF1ZV6vHlo7CweUnakfmWaBmQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy20g04uT0H9AU1VqX1CXgPoa1mYQUQA6lr7gdoZ0iEwnBV83JA
+	Ye7iJbwK/102lavDgL1K8pS5pf5mHa4Sat43bm5GnVOci3AAUq9ZjFeCSlZfq28VikC66sgeDFy
+	VrPxGK6um+KUaZA==
+X-Google-Smtp-Source: AGHT+IEN9Rftc6XcCDbvh31R9vqfEr61DrJmd3at5EtnCIlCs+9Wd11hNl1/CdDZ62/r1z3umTWHKnoW1ogWl8g=
+X-Received: from wmbgz6.prod.google.com ([2002:a05:600c:8886:b0:43c:f517:ac4e])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2483:b0:39a:d32c:fb5e with SMTP id ffacd0b85a97d-39ea51f577emr9570064f8f.21.1744639560478;
- Mon, 14 Apr 2025 07:06:00 -0700 (PDT)
-Date: Mon, 14 Apr 2025 14:05:58 +0000
-In-Reply-To: <D94KNIHTJOWU.1EHA7217LSC4S@proton.me>
+ 2002:a05:600c:1f94:b0:43b:ca39:6c7d with SMTP id 5b1f17b1804b1-43f3a925899mr111059205e9.3.1744639668562;
+ Mon, 14 Apr 2025 07:07:48 -0700 (PDT)
+Date: Mon, 14 Apr 2025 14:07:46 +0000
+In-Reply-To: <20250413002338.1741593-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
- <D93TIWHR8EZM.25205EFWBLJLM@proton.me> <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
- <D94KNIHTJOWU.1EHA7217LSC4S@proton.me>
-Message-ID: <Z_0WRohxxMYqKxM5@google.com>
-Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
+References: <20250413002338.1741593-1-ojeda@kernel.org>
+Message-ID: <Z_0WsnalDXDEmPdk@google.com>
+Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
 From: Alice Ryhl <aliceryhl@google.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Christian Schrefl <chrisi.schrefl@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Apr 12, 2025 at 10:01:22AM +0000, Benno Lossin wrote:
-> On Fri Apr 11, 2025 at 4:15 PM CEST, Miguel Ojeda wrote:
-> > On Fri, Apr 11, 2025 at 2:46=E2=80=AFPM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
-> >>
-> >> Ah I overlooked this, you should be using `kernel::ffi` (or
-> >> `crate::ffi`) instead of `core`. (for `c_char` it doesn't matter, but =
-we
-> >> shouldn't be using `core::ffi`, since we have our own mappings).
-> >
-> > In 6.6, C `char` changed to unsigned, but `core::ffi::c_char` is
-> > signed (in x86_64 at least).
-> >
-> > We should just never use `core::ffi` (except in `rust/ffi.rs`, of
-> > course) -- I think we should just add the C types to the prelude
-> > (which we discussed in the past) so that it is easy to avoid the
-> > mistake (something like the patch attached as the end result, but
-> > tested and across a kernel cycle or two) and mention it in the Coding
-> > Guidelines. Thoughts?
->=20
-> Yeah sounds like a good idea.
->=20
-> > I tried to use Clippy's `disallowed-types` too:
-> >
-> >     disallowed-types =3D [
-> >         { path =3D "core::ffi::c_void", reason =3D "the `kernel::ffi`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_char", reason =3D "the `kernel::ffi`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_schar", reason =3D "the `kernel::ffi`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_uchar", reason =3D "the `kernel::ffi`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_short", reason =3D "the `kernel::ffi`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_ushort", reason =3D "the `kernel::ffi`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_int", reason =3D "the `kernel::ffi` ty=
-pes
-> > should be used instead" },
-> >         { path =3D "core::ffi::c_uint", reason =3D "the `kernel::ffi`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_long", reason =3D "the `kernel::ffi`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_ulong", reason =3D "the `kernel::ffi`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_longlong", reason =3D "the `kernel::ff=
-i`
-> > types should be used instead" },
-> >         { path =3D "core::ffi::c_ulonglong", reason =3D "the `kernel::f=
-fi`
-> > types should be used instead" },
-> >     ]
-> >
-> > But it goes across aliases.
->=20
-> We could make the types in `ffi` be transparent newtypes. But not sure
-> if that could interfere with kCFI or other stuff.
+On Sun, Apr 13, 2025 at 02:23:38AM +0200, Miguel Ojeda wrote:
+> Starting with Rust 1.86.0 (see upstream commit b151b513ba2b ("Insert null
+> checks for pointer dereferences when debug assertions are enabled") [1]),
+> under some kernel configurations with `CONFIG_RUST_DEBUG_ASSERTIONS=y`,
+> one may trigger a new `objtool` warning:
+> 
+>     rust/kernel.o: warning: objtool: _R..._6kernel9workqueue6system()
+>     falls through to next function _R...9workqueue14system_highpri()
+> 
+> due to a call to the `noreturn` symbol:
+> 
+>     core::panicking::panic_null_pointer_dereference
+> 
+> Thus add it to the list so that `objtool` knows it is actually `noreturn`.
+> 
+> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+> for more details.
+> 
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+> Fixes: 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+> Link: https://github.com/rust-lang/rust/commit/b151b513ba2b65c7506ec1a80f2712bbd09154d1 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Transparent newtypes for all integers would be super inconvenient.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
