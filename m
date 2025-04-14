@@ -1,84 +1,145 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from e2i427.smtp2go.com (e2i427.smtp2go.com [103.2.141.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6940E1A23AC
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 20:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8510D1D79A0
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 20:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744661065; cv=none; b=I5JE+FSgWmKhnJ1yoiz6gARK2SiXkz3SfhH99mWME2v8ROQ54Rh/T3OVFcgIWuayJ3oRVqzF5xlHyhwr8EwFW7UTX0TBYmuW44A3dqlJDyClTPhs1wGsfaYY+cpfh94BVACjuAl2fDONlHf+hclE9/dLDdhdwRu83IPwEzViPeo=
+	t=1744661983; cv=none; b=Ix0iQlB5ldS/z8mfPsb5Yy5qAF4ahk1/96RvU7Wh8rHZHv7NnHdvytfTKFH3z6z8XbDX8g88oxrohSr/034A26E7w/VjxUHNvpUxAKq4mfjOZvHNF8J2L0S1mxl2HQqmgabJ23Pfa7nz9puRhvnSfSzkHvpnHrNwXOzOo7ggyms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744661065; c=relaxed/simple;
-	bh=zMHnsHq/OTZKiV4PYYiWLQwRz7k4SvVkH85VQAVMhEk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BavhJV1Ww4MGvcfIHJ4vbyM+1EeVlwgXVSQl+VpZ9e1tbO0g2kDm+z1IBSbYXMZcTPAFkXUlLVuj1AUrLBuA9ytzgLP3JfRxlaZkt+AnlnH7bRjMMeNKz/BijjQ9pvmCe9qmTtiFfJHIoyrvg0ln1UV69gduxTmcTRKkSEny11Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gqehwUJ3; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744661983; c=relaxed/simple;
+	bh=XleZMG7I0hBKpWBBZ30vgWlJ3X7D9YnR4f8NvVxN7ZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MERq5e/gsqG/3GO2qBpgQamTrwsBX5IuAyh9cSUEiTfR40GqN7HOCbpXavNtoezj4+LQBNm4aoFg/9Rfd038JKx8baPp09TmCCUzHkK0ibpHS9zqtrVXkiRuELWk+7FGzUXs8cteBJ5aVmHjaKIg68Ja0MRUBe1Ef+PLnNNA1w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu; spf=pass smtp.mailfrom=em1174286.fjasle.eu; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=qfr8sosy reason="unknown key version"; dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=dOn/lDVv; dkim=pass (1024-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=SgW9pEy3; arc=none smtp.client-ip=103.2.141.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1174286.fjasle.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gqehwUJ3"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so877674a91.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 13:04:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744661060; x=1745265860; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zMHnsHq/OTZKiV4PYYiWLQwRz7k4SvVkH85VQAVMhEk=;
-        b=gqehwUJ3cVtV2UGVnKVZEO+9ls2EzEMaK5sgEaDjz6N9Q+UNKOEt1+uvOlEOIDqvm5
-         6pg5mkZvCaN2YEWa7oR07kaNt6sfy373hb79A02dHJUNkL9d27/SiZ370zcfwU63kIWk
-         OEjHlu0Sw18sW4OgYEBg+I200wJ24FvKlOHflGnvN+JRW3XLzSNEh12AA7IH2Eqgfq8B
-         bOnibstDmuqRoVjJvTAoWHkdLcpK73cqY7LdQMGm980BjxE1tg8qd9nOHh9emR0At/0W
-         sxNSgU2mnslBlI6klGMQD8afxW+R6kpsynnWqiOYSFfK3wyuLo7fAeO0IkfSy5b8Uxjs
-         BMdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744661060; x=1745265860;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zMHnsHq/OTZKiV4PYYiWLQwRz7k4SvVkH85VQAVMhEk=;
-        b=qN2cc0whmvwG/4b+iqSwoYnTBDsPsswfWUj44UIPLYL5aXIUlM1cRvsE3+BOX/BA/C
-         g5z5JSxcuzK5Ed6iNX/H6mgvOiElrGjcg3jjqyFhL3x35SB5LfALnuESLxfqzReGkqIO
-         ft+C3YtVb9Ggk+EFJkBUHpY79IjtzpHdqKjxtq/RmG+CxXaViSTuMhs0W8v36nb59oTZ
-         pCT37oyv5tKjVWBEli30XtXVkVQZlNGMjG/tR06uVXrK0Xt3+jlYWYVlhosGASN966jn
-         eA2GSDJf0y5uGIOnkzKiOUOO9NKdP9plyjnlkg2fCCgL0TlauUtmuN8YfslCGaDjDNVw
-         Hvrw==
-X-Forwarded-Encrypted: i=1; AJvYcCWYJCnfJogY87/2EJHQJM5h0BZKQgcAMzcU042adLTXlwGJVi0B5kYGSi/5av/tWxyHJNHqJfXvB50H4kr8zw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDXJk7UTfoCSxTLS4+KmiU8gnIpc2+rd9LI4BUkTFiYl9/RJ5v
-	t+tD7kkgjcDrpoCvundCnDjgfMz9LKxple2k6GZCJRZjud60mkPXySWC4GuGvk08UXsuXB1GOHH
-	5QaSURQgsSzWUVdO8OT3+8ulTrSI=
-X-Gm-Gg: ASbGncubXYkyerPZ9QdOMvVSonRVsLKCohcM28kS/joVNZH5NbAXdoH/9DVUkdm2JsA
-	2+qH9J+uJtlMB5AMuuWKI7Ggjr0oB3Io1uBw04bFfTMQUa3JWOFUIoA3YNOnV731uZ+q9S8+Qqn
-	1TbLPtpSzazhxwnN0+/mOZHQ==
-X-Google-Smtp-Source: AGHT+IEIsC+csnI6Weh2OROunc3WgcgEHXLp5SfVQnPJhalUb5ZDeDIp3PEVZXXpGRp6IE4jLRwQHMQHJQ/2aNQrYNg=
-X-Received: by 2002:a17:90b:17c4:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-3084e7660a7mr588747a91.5.1744661059013; Mon, 14 Apr 2025
- 13:04:19 -0700 (PDT)
+	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="qfr8sosy";
+	dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="dOn/lDVv";
+	dkim=pass (1024-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="SgW9pEy3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=smtpservice.net; s=mp6320.a1-4.dyn; x=1744662879; h=Feedback-ID:
+	X-Smtpcorp-Track:Message-ID:Subject:To:From:Date:Reply-To:Sender:
+	List-Unsubscribe:List-Unsubscribe-Post;
+	bh=DBHs10rDRwWakJ+0FNRVX8rLj2BxosVKCp/U+3H5D8k=; b=qfr8sosyy5gXko/+os9dPlpukl
+	KA9w7zjhzEtmioH81AwLQiBC0FN+RBeizR4bkj38GkUcLPRvsKOtYJ6A9uSC2yN6q2IyLERBpeou9
+	vfL/CAjzqbCZUSmhRdS3pbwMIzfjjFtNDXclKU0Cumi735q8HENIo8A3EPT76MeLJiK6vzhN3n701
+	78ZIzxRb9P2+v8RADOeImG8NE39WcNnnpYf+9EzgXjBA1LHpTrbjfa/p1IqK4PfDa4B2ay2CbvzxR
+	SiNxAvPNsxBhjr9CA/T0XwfBuLj4Z3wrqHOfjXBrWx+LB2fgZvn/4G+qARGen94O+/w/X6sGiso0q
+	A1O6RieQ==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fjasle.eu;
+ i=@fjasle.eu; q=dns/txt; s=s1174286; t=1744661979; h=from : subject :
+ to : message-id : date;
+ bh=DBHs10rDRwWakJ+0FNRVX8rLj2BxosVKCp/U+3H5D8k=;
+ b=dOn/lDVvOb6HD+6pS/+LxQDL06insXaTCWtjCLAYd/If13fE9GTrbz5K7wt5Wb8y8n3mW
+ TexEKFWZtVtWtPP7r9XmYfDMKixbEHwH6QguhcGKFDJm0bMS5U6xHnPbPiWaCXEOh3MB82N
+ OP3bPptm3xKS5BqDVFaCiRnelnN3/C0AlGAcfilAWK9JYpy8ObwQ/NowL9JgMM3XKkZVA4s
+ catXUhRgjKe95RobVUxT4xZlUYZ8+sPk9sbITOfKVN0ss7QvjySkUWaU4JRth+NI2KpD6xq
+ tZ+gvVhrKH37Hv56mQ3FSEhDHlD24kfrQi15r8ARpf/oNPtTY3DZXw+7MsOA==
+Received: from [10.172.233.58] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.94.2-S2G) (envelope-from <nicolas@fjasle.eu>)
+ id 1u4QFI-TRjwtI-IS; Mon, 14 Apr 2025 20:17:32 +0000
+Received: from [10.85.249.164] (helo=leknes.fjasle.eu)
+ by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.97.1-S2G) (envelope-from <nicolas@fjasle.eu>)
+ id 1u4QFH-FnQW0hPuS5z-lIjL; Mon, 14 Apr 2025 20:17:32 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
+ t=1744661848; bh=XleZMG7I0hBKpWBBZ30vgWlJ3X7D9YnR4f8NvVxN7ZQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=SgW9pEy3RvEhKOAWcSympA8YWxTr9kdBVMh8OHIPWoLR2eXOIXdcilDMCyUHvC6uC
+ mFBwyCLvJfZi2HP3NNPNmFFD9umMjBxCOonKwrwTO1wTyArzylURFLDHqlrUSB3izX
+ bVBTVt0qWj3/rJBV+nksjCukEGxSSd+DFjaiCo8Q=
+Received: by leknes.fjasle.eu (Postfix, from userid 1000)
+ id 546994973C; Mon, 14 Apr 2025 22:17:28 +0200 (CEST)
+Date: Mon, 14 Apr 2025 22:17:28 +0200
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] rust: kbuild: use `pound` to support GNU Make < 4.3
+Message-ID: <Z_1tWOkpW_d_OlOW@fjasle.eu>
+References: <20250414171241.2126137-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com>
-In-Reply-To: <CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Apr 2025 22:04:05 +0200
-X-Gm-Features: ATxdqUGhP1sZvMYgYKWAALlWFoszwfZM_Wql-C1K7rgS--G_42gWwTfE1HErvmc
-Message-ID: <CANiq72k0BY04QgxWUTsgDTZJmwHurtK4XKmdWrBA1qN5jKZqpw@mail.gmail.com>
-Subject: Re: `u64` by `u64` div/mod in DRM QR for arm32
-To: Jocelyn Falempe <jfalempe@redhat.com>, Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
-	dri-devel <dri-devel@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250414171241.2126137-1-ojeda@kernel.org>
+X-Smtpcorp-Track: _q0jqmaDVS6f._9JxQdYrifu3.dPCGigacz5J
+Feedback-ID: 1174286m:1174286a9YXZ7r:1174286s7UJPYc9yz
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
 
-On Mon, Apr 14, 2025 at 8:14=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Mon, Apr 14, 2025 at 07:12:41PM +0200 Miguel Ojeda wrote:
+>GNU Make 4.3 changed the behavior of `#` inside commands in commit
+>c6966b323811 ("[SV 20513] Un-escaped # are not comments in function
+>invocations"):
 >
-> operator with some support from upstream Rust. Or do you have
+>    * WARNING: Backward-incompatibility!
+>      Number signs (#) appearing inside a macro reference or function invocation
+>      no longer introduce comments and should not be escaped with backslashes:
+>      thus a call such as:
+>        foo := $(shell echo '#')
+>      is legal.  Previously the number sign needed to be escaped, for example:
+>        foo := $(shell echo '\#')
+>      Now this latter will resolve to "\#".  If you want to write makefiles
+>      portable to both versions, assign the number sign to a variable:
+>        H := \#
+>        foo := $(shell echo '$H')
+>      This was claimed to be fixed in 3.81, but wasn't, for some reason.
+>      To detect this change search for 'nocomment' in the .FEATURES variable.
+>
+>Unlike other commits in the kernel about this issue, such as commit
+>633174a7046e ("lib/raid6/test/Makefile: Use $(pound) instead of \#
+>for Make 4.3"), that fixed the issue for newer GNU Makes, in our case
+>it was the opposite, i.e. we need to fix it for the older ones: someone
+>building with e.g. 4.2.1 gets the following error:
+>
+>    scripts/Makefile.compiler:81: *** unterminated call to function 'call': missing ')'.  Stop.
+>
+>Thus use the existing variable to fix it.
+>
+>Reported-by: moyi geek
+>Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565/topic/x/near/512001985
+>Cc: stable@vger.kernel.org
+>Fixes: e72a076c620f ("kbuild: fix issues with rustc-option")
+>Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+>---
+> scripts/Makefile.compiler | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+>index 7ed7f92a7daa..f4fcc1eaaeae 100644
+>--- a/scripts/Makefile.compiler
+>+++ b/scripts/Makefile.compiler
+>@@ -79,7 +79,7 @@ ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
+> # Usage: MY_RUSTFLAGS += $(call __rustc-option,$(RUSTC),$(MY_RUSTFLAGS),-Cinstrument-coverage,-Zinstrument-coverage)
+> # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
+> __rustc-option = $(call try-run,\
+>-	echo '#![allow(missing_docs)]#![feature(no_core)]#![no_core]' | RUSTC_BOOTSTRAP=1\
+>+	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
+> 	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
+> 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
+>
+>
+>base-commit: a3cd5f507b72c0532c3345b6913557efab34f405
+>-- 
+>2.49.0
+>
 
-Or, probably something that makes more sense: just forbidding its use.
-
-Cheers,
-Miguel
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
