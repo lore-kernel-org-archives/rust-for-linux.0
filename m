@@ -1,99 +1,71 @@
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03B01AB6C8;
-	Mon, 14 Apr 2025 19:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4BC1CEAB2
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 20:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744660471; cv=none; b=VDOMHQ1kCK4BZaneUUZbYl9LYiL1MwqurIK2ukEcx7aizbD/78H8DIYyQ9kwrSrmKhCVGKBL3UCYA8SouRqbs90nfhIUx5VWs2T11SrezqCACmasJf5yiaMDo//hfPRoMLJ9tKi8gC6Wf3omcLNgh6LMcAwboAU2LcOWiZgc1fg=
+	t=1744660805; cv=none; b=iriEpbyluiSoBblGoZn4fbnMAUi2cXfnF2X6KHmEGoLJ9gUDMfxqO42uz1hAS4YCQiB/TMhX2L8knxpsDHh/lpwdx7Xul80UrCyv9JiRqr1psb14F+o1RN65EFRwMixgoh5xAHcXA4hTMlG+v43NDGruv0J+sOk0okWXTbss36c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744660471; c=relaxed/simple;
-	bh=CxrzOdauKcJzylYycFdb5aTQJMO7dQSkIMQUDaHu5WI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZEJk6bQvfCi8yzQni90q5FnqPD3ZjIPeDvT5Cl2h1hWCs5YqoPd0TdEVnpnNy343DTHuYgw7My2YmqKRvJljgjWMdiZ735A0SpISQXbSMAqs6K1M6kUrKCLL2LaJZAfisWinwB2eCJQDEGhWoxwF8dyBFugCT0A4u/S/ZrA76tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NmLgokjX; arc=none smtp.client-ip=209.85.222.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744660805; c=relaxed/simple;
+	bh=Y/Jm9ZEns2zxe5f3Lk583va4Erhy6PWnpTIGcZUIWEw=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=L60zF2Cf6tnZERI8bKl0ZAjI1+qGJEob+VThwd3O5hfSVYE1+E2UB/aP5IEpzXj1oE2CklGdZB8RYcYTE4FX/WQeI1DO9Q3SlDdjBQe1xVtG2aReC2Fc8OMqZ3vjojvw6xMdp/gpHgKpt227O6SyKd9O86RD7DHrLfI5fFsuyl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=jIPHc6pQ; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NmLgokjX"
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-86d587c61a1so316622241.1;
-        Mon, 14 Apr 2025 12:54:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744660469; x=1745265269; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vf8bLHJirhvO7YYgxMlohhejQ87qoxU1Rt/xBOc/3Rk=;
-        b=NmLgokjXo6ZrfeFoIvA/g0DEFuCTdabi0poOpHmeQWngeycPMMPsk5xxFRkom1O/QB
-         gC19jdiLttXyrzZ4rCormlLnfvAkpi/z79NiMx1zdwvgA+Elci7aUImwuPCBW41+RIUP
-         nMgv8VHfFN/DyHT+1D8Ldph0KVIhKB+JyCiTTQkuWMCWRamN9mLPUbbSYkYAQFM0RF4g
-         rHyKH32fQmLOHcGRy2UgmaM1IQN5qM443WM4SQ8/0CoMey6+rkDgd1X72BTFpMx5uGPQ
-         AnQFCaMslxlLT4itwR8fTjKlutjRcXVNjZc8vC7Qti+WIimJLNASeCzk1dDbPuAsl1eY
-         3JxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744660469; x=1745265269;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vf8bLHJirhvO7YYgxMlohhejQ87qoxU1Rt/xBOc/3Rk=;
-        b=V4SePl4VA4HY1m/RC0jFwbR3+EMyXxs41vz2tx8X3P2h/9yuF1PiZqsFCElEXKAjWZ
-         4mMa4XahdRvG68C+Uhec3A8wGrWxSWhRHJIZS5bhsIzSfYsJrvLQBqbBWCetj/iAKxTm
-         3SsA5jxUqn45P6EvErPyLoMAsRjK7JRRueiFnrDgjp0oQxqP6C7k6uVlL4qHAHGpAMC1
-         mP97zYqsK4sKIpCmX4BJrmJb+VmB4xwTm6ThUrj8WsmO+9NZAtX14oum7M9L+EQ9UaHo
-         M1Chkso+rM7QG4RsRrFdIC0tZ5HYCBOIPqackOm6LmyBA38SdbINsZELpmx6NYtnTx/S
-         CDhw==
-X-Forwarded-Encrypted: i=1; AJvYcCV/OwKW2UbWcJP9VAwwk065TMp+J4Tkd8skEpFc3kmGcmaq4O8gAjkcohOjGZje4t5EcQ2ByizYbUBhuZo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm0PdNmDBpSZPRnKtWJLg7BeG/cpVH0Y59QXNK2oLrUrcdnIJh
-	zIQDnn3phVrJJL8AsNudgcQy1YILcZ/dtynEQIsxrmWOKuBe6pfNYJdbRPtPuQwPSwqFYJpSWvY
-	fOE4IaFnYz0vJm7vF93SQEse96DU=
-X-Gm-Gg: ASbGncsQ2cEIG+gpS31QqDiJXy+eQL+xYXGZn1IBdIF7/aGYmf9SNTBDV3KRKgci5KA
-	ZMzuDgLMHcW7MjsVMJ/RFHFBmJloRvMNw67z7twqUVa/sD5dkir7KGp7aEb1lzYThcXyyJOXyx3
-	7U+ZFJiyUnrWj20lx1SYMsefw=
-X-Google-Smtp-Source: AGHT+IG+rcBkfFGyIORnfx+Z25W8pCuFSYmg1heCo89UDl+qU5fME0z1Plbldd/tzQBclX7mUx7buEYI4lVMes8GR1M=
-X-Received: by 2002:a05:6102:330c:b0:4b9:ba6d:86c1 with SMTP id
- ada2fe7eead31-4cb421a1c09mr259410137.1.1744660468576; Mon, 14 Apr 2025
- 12:54:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="jIPHc6pQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1744660800; x=1744920000;
+	bh=c37fIjSt06t/yaP31uV2jwfi/EiEm1ZAMXCt+3KggLU=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=jIPHc6pQ+sDD+FhTQwnNeOuygroEIE//MGY4/7nQsdOKJUiCbgHGu/zlmBKLdvlxz
+	 OvRIit3N+2jpwQSVl2683BlR0H0fn4TgvtM/KzYx02umZhP2C0XniqUNuzs3exd7J3
+	 e8IMASvhOwTk0oQX4kr+EDjqmt8T14IAqXZ0IhliDEOxYfyfWj4iQgc0XziPyruyvl
+	 IuICbnmyUvYxQl/hJewAY7vsR058kXSx5fSjNa1a4nNUo0OXXHytpyHI96D618wJHO
+	 t3gBpSDgyuc5zqgO5scjGeNW3HHRFiJG1iFUcVXZnGSeAE2Z5874p2RVuKoDqIT/1R
+	 ZpS0nx/VsrtaQ==
+Date: Mon, 14 Apr 2025 19:59:52 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org
+Subject: [PATCH 0/3] pin-init: fix issues found with new CI
+Message-ID: <20250414195928.129040-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: ad73ea3a3966e1b723ece407f6c41b14e0fd7afb
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250330234039.29814-1-christiansantoslima21@gmail.com> <CAGSQo00LhscUpQCpL9UwkzK5c1rD1QxutZTOenuZP1d-B==KBQ@mail.gmail.com>
-In-Reply-To: <CAGSQo00LhscUpQCpL9UwkzK5c1rD1QxutZTOenuZP1d-B==KBQ@mail.gmail.com>
-From: Christian <christiansantoslima21@gmail.com>
-Date: Mon, 14 Apr 2025 16:54:16 -0300
-X-Gm-Features: ATxdqUETynL24PLb2kftlHO6o8K6jgkaoQiCI4jIj-l-gwO_VifHmhtA35larpU
-Message-ID: <CABm2a9eEaKWEtzVkc=ErRCXA3MCMG9S+9+ZU0111S7gcfimf+Q@mail.gmail.com>
-Subject: Re: [PATCH v6] rust: transmute: Add methods for FromBytes trait
-To: Matthew Maurer <mmaurer@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, ~lkcamp/patches@lists.sr.ht, richard120310@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> Consider factoring this out into a helper function, e.g.
-> ```
-> fn from_bytes_sized<T: FromBytes + Sized>(bytes: &[u8]) -> Option<&T> {
-> ```
-> which you can then call in here. If you were not trying to handle
-> `?Sized`, we could even put it in the trait default implementation.
+I changed the CI upstream [1] and found a couple of smaller issues. I
+again used my automatic sync script for this patch series, so if
+anything (even small things) looks off let me know!
 
-What do you think about
-```
-fn from_bytes(bytes: &[u8]) -> Option<&Self>
-where:
-     Self: Sized
-```
-for the default implementation?
+[1]: https://github.com/Rust-for-Linux/pin-init/pull/33
 
-> > +                if bytes.len() == core::mem::size_of::<$t>() {
-> > +                    let slice_ptr = bytes.as_ptr().cast::<$t>();
->
-> There's no alignment check, and so the resulting constructed reference
-> may be misaligned, which is UB. Same below.
+Benno Lossin (3):
+  rust: pin-init: internal: skip rustfmt formatting of kernel-only
+    module
+  rust: pin-init: examples: conditionally enable `feature(lint_reasons)`
+  rust: pin-init: examples: use `allow` instead of `expect`
 
-I see, I didn't think about it. Good catch and thanks for the tip!
+ rust/pin-init/examples/linked_list.rs   | 1 +
+ rust/pin-init/examples/mutex.rs         | 1 +
+ rust/pin-init/examples/pthread_mutex.rs | 4 +++-
+ rust/pin-init/examples/static_init.rs   | 1 +
+ rust/pin-init/internal/src/lib.rs       | 1 +
+ 5 files changed, 7 insertions(+), 1 deletion(-)
+
+
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+--=20
+2.48.1
+
+
