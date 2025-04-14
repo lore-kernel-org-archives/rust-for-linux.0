@@ -1,91 +1,100 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33CE155C82;
-	Mon, 14 Apr 2025 20:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5CD2DFA4E;
+	Mon, 14 Apr 2025 21:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744662189; cv=none; b=dNy0Vv3RAQxK0o6K4WzrF2Sdn69Qb4b9XFu4ryCnOHIUeuqpJWhi1gCBFtSr1lzpIbkWxZZMLweNRyt/5HXJ5VLT1jAJjPBJzhNB3lMbmH9M9NiTWY5cfxDN1Ntlo7rpP7zDvSPgBgr+qWXgvTx2sn+QxYtKzxo+sY66rL5kuPo=
+	t=1744665592; cv=none; b=qTkS2WHhRB+WXZwPvD4An8asIwhq/c8yi5CXo+6BvgjMCL8fMUUO5K3jzVIji+VvHTh28iYQuUFmY2AjFVQUe4ba9+h9d+M8brPSm3DnftTrqVEdh6BYsURjO+kQBJeq/6A9edVIBQXasvgTpb1+9OWiRGEX6yuXxey79ukRJNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744662189; c=relaxed/simple;
-	bh=pgwH9G9Z5XgUOKl+P79Q5KZCCe2yrjR8tSQ/gnwaIgI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cwXEVG3+VOoI8HBuArsE2HrKXdTWYk/Z1QjabqoJGZ7elZd7ECvUpM9skM4fB9my5fdbii++lagXtiCmaccQoBhcc0MWO38vNmvTEksZf62mjL8qBK2u+PUFUqGq7Q2056gQr2Qd5RJaZcTJxzYJLmBKDcDv4ICOTG+OOpbh6tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FuVRJ46s; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744665592; c=relaxed/simple;
+	bh=H93VNNIXfbQLimUNFSJa77wmOJ7vkVnE/zIgwACvebQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JvMJgjiibXl7UOa779bvmms+kSnScDU5n4XDSpHzwrwCz5e30WT9mKyyfWNLjQXfdr+b5fHupN6+rXApxJeAidoZ6yPixNx9Wfmt55oXq/BDPXq2r9hBQcTfSqMIfk7ouYUO5f0uaZfZKbrfqpS+qcwQVabYFR0vGzSeLJeJLpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TpDtmXx3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FuVRJ46s"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-af50aa04e07so394005a12.1;
-        Mon, 14 Apr 2025 13:23:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744662187; x=1745266987; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pgwH9G9Z5XgUOKl+P79Q5KZCCe2yrjR8tSQ/gnwaIgI=;
-        b=FuVRJ46skIff1rtH3B02ikEm9DCEwPZw8EpKjCkG8j6iJFV9sbE8QDtjtuYQVIkrbI
-         1bXtuAMchsHibEzuGfjNEzCXs/8LcLlAPO+xBrsbDtNhvMaz4rQxA1dVb2pCjuRXjZud
-         d3s/YqX6VQMlgJ9Yef42iT6aybAb+UO/spT6JdFPvM37eUieKSvyFdkLuJLDnern5jBz
-         Ga7aJ3XOwQadsAZpwR4CWWKHbiohDZGGjfYKfDq6UWbLUngBM+JrcxlKroPqFkboOW1k
-         NBF5MKmubpbUnXhfp3+TvS6KKUWYGKuPcJ1w+6C4MpPVKf5I3DPB7vg43n4tvKeQbshd
-         rKnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744662187; x=1745266987;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pgwH9G9Z5XgUOKl+P79Q5KZCCe2yrjR8tSQ/gnwaIgI=;
-        b=Z8dJaa4xc0//U7K6qLxAvCZ/aprlPanycbPo/AXJ9Bb/pgMHH2Jr9aSQZbY007RRcr
-         lCMyr6ibzox6yH+/y5NCCCeWsADc7SnV9zofl79CQ7vDY8JmemXu7SItP+Q4bXGtdMnG
-         QEM4DQScusw0Wx8tQvkkrDbmjkkQIwFaZw/FrqPoZPuVjEpANu1SrwEchQyHDRS862z1
-         LCoMgjeRuJGUF18U4stKZ+wcNwWbrsRKyyQB0n8HihmUpKWn61Ezl1E+Zvh5iPfFPsNg
-         bTqPdcUCr2oSHNxxXwTqenu+ijKx8DBoms4oeSwtTlboXLoXd8hJlGnakcgBWk7CMbdy
-         rQTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLhfmWHTjkkl8s7OpP6Gp8kAb6Wy0Q08xGw1wj9Oh7RhMhM25oj/Vgyojw4++EHPTangkk6bWFHHsVhf8=@vger.kernel.org, AJvYcCVMe+NemWrxmwxHEUc0Hs3trNkB79YBl6phznUPCV6hZ/uhRH6eOJPQkBBTxJa/C94ADb8HoeDYujYHrUeCTlc=@vger.kernel.org, AJvYcCX/Ks4HJpNynh5GitVAs/HUUY/1UJ4jICNAzSEhPcf1kKLcBIA0nmubf1u9PEk70tQJqWa13iDOmHBUpwDD@vger.kernel.org, AJvYcCX90yFSbYFNXYeeNZ2Hz0PZ+liEBDkuYuU/A0URKZtkdN5hvdJUmNriQld7l3SZ/lSGstap6lhe@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt3RyIEAFSj80DWJo7I5oIirrLtwi0g+X9odKGTtcYHSUzaBDq
-	D3CdLUbF7LYi91CvRr/xOSuNX5TyH2Q19jywjg9xF4dvWM9UbJLUs074XPCBtiTkoy3AIpkFHFW
-	/eLbqYDZBAMumLP0A13QzcQClIIo=
-X-Gm-Gg: ASbGnctGCaKqgU9NyLusIFbxEh27Ym6szj54b7uHvlYr7Y4/djnCmn9sP4xmiuvzAj9
-	1ZVfWY0f9SYtT8MAuDytFmoo3dx+5kIc8+mukTOhQw0sINp2bFf015hJxwx/SLCJvScGW4qfV+S
-	ZJoJ762fiCmmt1TjKrA+sUmss1X+R+Zuq0
-X-Google-Smtp-Source: AGHT+IE8lDVhXfx4QpCOlSPx0TEX0rr/XZDgXqRTo1W6pH6GeNLdFPig1QevSP2mJMRR4WS0tWFlOT00RW9nujyQbbo=
-X-Received: by 2002:a17:90b:1651:b0:2ff:5540:bb48 with SMTP id
- 98e67ed59e1d1-308237e291fmr7719166a91.8.1744662186769; Mon, 14 Apr 2025
- 13:23:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TpDtmXx3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9FDC4CEE2;
+	Mon, 14 Apr 2025 21:19:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744665592;
+	bh=H93VNNIXfbQLimUNFSJa77wmOJ7vkVnE/zIgwACvebQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TpDtmXx379/yjgEyW6s4SjU5AVRj4ESJXMaGDUI8xeQOxIK0tRVEDoRDFiADj7sVk
+	 eAt2FmNvU657mJVfBBft+s3UXMbSnh98u2vyOpSRgUnGckjGboabfVb9J6I0YwaYQB
+	 pCmoJG21uaE1j3zvqK01z/QG7L/gJlcEIlcwKt29HhGDNtjYoQrgrkvhJW9GjVkp/8
+	 Qt0D8oVOaHnhChBd1wRR2d50ngS4mdmZqjpCYijL6Lk6XbyHfj9ijT4H1dKlTOecgI
+	 BgIzzwFMerrdUZP5nMPl0faMp4/NB3dU3ll15P+F4JB8ucpWo1By/1BBEmCdDBmbtT
+	 V2C6Vs1P7nDRA==
+Date: Mon, 14 Apr 2025 23:19:46 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, abdiel.janulgue@gmail.com,
+	daniel.almeida@collabora.com, robin.murphy@arm.com,
+	a.hindborg@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: helpers: Add dma_alloc_attrs() and
+ dma_free_attrs()
+Message-ID: <Z_178hskzPrEbDXe@cassiopeiae>
+References: <20250412000507.157000-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250414171241.2126137-1-ojeda@kernel.org>
-In-Reply-To: <20250414171241.2126137-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Apr 2025 22:22:54 +0200
-X-Gm-Features: ATxdqUG7GLyRN3-AU_RPemLfMtwDRsoWtduWsQR0UuCp1mItMnHU5tGCPliq59U
-Message-ID: <CANiq72kkXVLg8qaDmQj26Gi0jPZvqTad=qry5p5LnaOFnnWUkA@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: use `pound` to support GNU Make < 4.3
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250412000507.157000-1-fujita.tomonori@gmail.com>
 
-On Mon, Apr 14, 2025 at 7:13=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Reported-by: moyi geek
+On Sat, Apr 12, 2025 at 09:05:06AM +0900, FUJITA Tomonori wrote:
+> Add dma_alloc_attrs() and dma_free_attrs() helpers to fix a build
+> error when CONFIG_HAS_DMA is not enabled.
+> 
+> Note that when CONFIG_HAS_DMA is enabled, dma_alloc_attrs() and
+> dma_free_attrs() are included in both bindings_generated.rs and
+> bindings_helpers_generated.rs. The former takes precedence so behavior
+> remains unchanged in that case.
+> 
+> This fixes the following build error on UML:
+> 
+> error[E0425]: cannot find function `dma_alloc_attrs` in crate `bindings`
+>      --> rust/kernel/dma.rs:171:23
+>       |
+> 171   |               bindings::dma_alloc_attrs(
+>       |                         ^^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_alloc_pages`
+>       |
+>      ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44568:5
+>       |
+> 44568 | /     pub fn dma_alloc_pages(
+> 44569 | |         dev: *mut device,
+> 44570 | |         size: usize,
+> 44571 | |         dma_handle: *mut dma_addr_t,
+> 44572 | |         dir: dma_data_direction,
+> 44573 | |         gfp: gfp_t,
+> 44574 | |     ) -> *mut page;
+>       | |___________________- similarly named function `dma_alloc_pages` defined here
+> 
+> error[E0425]: cannot find function `dma_free_attrs` in crate `bindings`
+>      --> rust/kernel/dma.rs:293:23
+>       |
+> 293   |               bindings::dma_free_attrs(
+>       |                         ^^^^^^^^^^^^^^ help: a function with a similar name exists: `dma_free_pages`
+>       |
+>      ::: /home/fujita/build/um/rust/bindings/bindings_generated.rs:44577:5
+>       |
+> 44577 | /     pub fn dma_free_pages(
+> 44578 | |         dev: *mut device,
+> 44579 | |         size: usize,
+> 44580 | |         page: *mut page,
+> 44581 | |         dma_handle: dma_addr_t,
+> 44582 | |         dir: dma_data_direction,
+> 44583 | |     );
+>       | |______- similarly named function `dma_free_pages` defined here
+> 
+> Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-moyi told me it is OK to add the email from Zulip, so:
-
-Reported-by: moyi geek <1441339168@qq.com>
-
-Cheers,
-Miguel
+Acked-by: Danilo Krummrich <dakr@kernel.org>
