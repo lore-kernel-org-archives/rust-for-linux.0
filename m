@@ -1,232 +1,104 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B5E25E804;
-	Mon, 14 Apr 2025 15:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8101247299;
+	Mon, 14 Apr 2025 15:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744644806; cv=none; b=b5WGKOI0uiufU8jOEJ1/SOyOLEEjxpyiJfM0fzj7Tt4+3vyt8QOD/iKIiqFGkcuxLUVsdChZymXNUD1FmJ3/LhTyFNaFhn6SrF3IGQH5YLR034JUDhPh5DSJVkyr0O2gPZ1YVrIapfh57fIFkZOUZSBJoixIdhpwx9hBrt1qwgQ=
+	t=1744645114; cv=none; b=atg/6bmF9/1/zoJYqnvdxI8OOfyAeFB0ocgrpEmd8uNl+36P6ZBWDN4n8ACsStfbhyZ0+hBf5NomI9PbJHPAgjbv8aF8xQZy4UxFO9jrGPsmCQVLfhJsPvFvn9JqaaQwpZmhdLBEvatRAVvH2Dkuf2DgJC5bjXcHRK1UbkRQRHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744644806; c=relaxed/simple;
-	bh=/5e3b4eP8pS4/WvG/ZgIGg0AVs+8eFE99KZLo+hs5uQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V47KCh1TZCYg2A6MZSbqbY92y1RJgHdR7k/0DYs221RH9q4jk9pgLKoZbs6zYYgbGPJdlzupPCR9v1Q1AF5311eKzStjva4eqspKGgW/M8liWPhwKIcbP4HT3jlJH0VfKetpKcNXB3MEDlPkyS1Wh/ocAz+B/cPB2+tnIgEENx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4Zbrjz1Bc2z9t9v;
-	Mon, 14 Apr 2025 17:26:47 +0200 (CEST)
-From: Remo Senekowitsch <remo@buenzli.dev>
-To: Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Remo Senekowitsch <remo@buenzli.dev>
-Cc: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 1/5] rust: Move property_present to separate file
-Date: Mon, 14 Apr 2025 17:26:26 +0200
-Message-ID: <20250414152630.1691179-2-remo@buenzli.dev>
-In-Reply-To: <20250414152630.1691179-1-remo@buenzli.dev>
-References: <20250326171411.590681-1-remo@buenzli.dev>
- <20250414152630.1691179-1-remo@buenzli.dev>
+	s=arc-20240116; t=1744645114; c=relaxed/simple;
+	bh=RuecTKg0iaNM2FTHixYTxLi4zj7VKfj4amF92wuExCg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rz9PZr8/38+cuqTWrkCpNKuxniPpe1V87TI00NZPs/IfU1A2vEockmDe6mhZN0t8/26WynqITgMLaqpJ/lxMdRLZjHIQ7VKRJBumzLORyhe6Q9RX0PNizvkUKM56t8NccJM5FOsdcKrfvcDe9T6UCP8wqyv5aR5Hf3Fk4oCe5DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mOkodUOk; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mOkodUOk"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b07698318ebso122644a12.2;
+        Mon, 14 Apr 2025 08:38:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744645112; x=1745249912; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7hTVE72PCT4HpQ9Apgj1j1o70imaRSlg41FJYH8UsUw=;
+        b=mOkodUOkYFh91YD9qDudqktn+oBiGjWvUybCk0XRA/WWQ4Ai33PY/WLuWn4AKOVQmO
+         ua2Hzy8PEV2IRs9qDS2f1g15+ee3N7ZfKmSDsqKRdnrCpLtFaqxaP5KZgjGD3JUJzNX0
+         RDGd8wEQvUCe8KWfoFDG0OvniPeqokiWDNCC0eyYjilVmy3RTLXEkpdZoofWFVyQ29Qk
+         ZnGVUjMysMruvXtHr5Qb07oBZ+ZToZ7LX9qOuf2o3f+l+WBmKrXYN9+4b0XEExWxt5As
+         wU8ayOoEUORnzCXO7+rNCQI8ME2H/9u8J3zS/y9BsGh5X421TD7FKanhCqet3CCMbZdn
+         /sww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744645112; x=1745249912;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7hTVE72PCT4HpQ9Apgj1j1o70imaRSlg41FJYH8UsUw=;
+        b=LLrXOYx8N0by2DCNQoeGShgw9KOdIDUmPHpzFLQrjOKth0Aji+Nstai3Kergsy/5Qd
+         IO8Ndel+4fikDJar2FifPXzhH/itPteKoBTHm9vmH5SuOCqOA3C0zGmXks4UsHQKVnG0
+         oioc674dtBS7b4VaqAaMJV1ljfW1vEJ8rucIECKO3/IrrkEwYUV/ly3EhtG72afjLJUw
+         ZA1nrEETGa7m7njzWMT5TSLjO/dAP/PrKsDMldMlJoVBLfz7YCIQBjxGF9UpWbr93pYF
+         ZaJFCilEYQfm3uT112Ncqd4NhD2UP2Lv8cEeHKXqOSS68WzrAOD7z+2/HONdqTlnHN84
+         SoTA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9iTC6g9fJdhgHf5Mos0SEnyR2D3SI9wZSFjwn2OsHR5jRrP2hWV+S6ViYcWYbF+2KUOqu+WbKiBiOBTiU@vger.kernel.org, AJvYcCWvhKlJTGKfoVF9mRBHFODW8KBIbTPH3MuUADt5W8+TzZ9SOyEDotar52fTjNRUvrUb3NLjXJN7J+k+@vger.kernel.org, AJvYcCWzvFfAsmHeFYn5pkdRpaje2QqTVa3V07CkQ5YcLRsB8mMabCsy0y7A5rlj5rPgEP5dhZLjbuwg857TGRFtlt8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkQsR2vNcHgL2Bjfa8bvKE21BjR05TRx1lwTHL9gZpB0Rq9e50
+	fAuNePaafKDX+gEV53V+HPw03k+Youq/M10oILdd8lHwOjWwhWtUDakha6emgN3tgUloSSkw/Xz
+	CCXzMmYz3zlQQ91gsoV0qz7ZnDJA=
+X-Gm-Gg: ASbGncsOH9qmggji9+k+26Y8dk19a7fVvY6G3zV0yVCmoKDaITf20mrk095b8zoEJpa
+	XiolzHgyXwU3xzd0fRpPAxyRyWTNFMuWvXvfKL4/7oeXFN7lqOpV1/2Ciia3d2mLeDTxEvGTEp0
+	eFSsdZY8Fgf6SrYXLh7lqAkg==
+X-Google-Smtp-Source: AGHT+IEl7wHf0Sakgfm/WJeSfZvJ7q2i4J1DoJtq8lyP7HES/L27EXmyf/TNfYuKtRGxT9VdHhTRtMrGWU2WyCxoBIg=
+X-Received: by 2002:a17:90b:1c8c:b0:306:e6ec:dc82 with SMTP id
+ 98e67ed59e1d1-3084e76898dmr133828a91.6.1744645111895; Mon, 14 Apr 2025
+ 08:38:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4Zbrjz1Bc2z9t9v
+References: <20250326171411.590681-1-remo@buenzli.dev> <20250414152630.1691179-1-remo@buenzli.dev>
+In-Reply-To: <20250414152630.1691179-1-remo@buenzli.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 14 Apr 2025 17:38:18 +0200
+X-Gm-Features: ATxdqUHT3bhfx4obPIev5V4LNaD5n_eUigTkiTFuP1PQG7JIim9RVDEyLqHrD9g
+Message-ID: <CANiq72mJubnGyqSk3sqKVa7g9HvnJvmRg=gJ2kaBtbMMVWWC8g@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] More Rust bindings for device property reads
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Not all property-related APIs can be exposed directly on a device.
-For example, iterating over child nodes of a device will yield
-fwnode_handle. Thus, in order to access properties on these child nodes,
-duplicate the APIs on a fwnode as they are in C.
+On Mon, Apr 14, 2025 at 5:26=E2=80=AFPM Remo Senekowitsch <remo@buenzli.dev=
+> wrote:
+>
+> changes in v2:
 
-Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
----
- MAINTAINERS             |  1 +
- rust/helpers/helpers.c  |  1 +
- rust/helpers/property.c |  8 +++++
- rust/kernel/device.rs   |  7 ----
- rust/kernel/lib.rs      |  1 +
- rust/kernel/property.rs | 75 +++++++++++++++++++++++++++++++++++++++++
- 6 files changed, 86 insertions(+), 7 deletions(-)
- create mode 100644 rust/helpers/property.c
- create mode 100644 rust/kernel/property.rs
+If possible (no need to resend, it is just a suggestion), please
+submit new versions (especially multi-patch ones) in a new thread,
+otherwise in some clients (including lore.kernel.org) it gets harder
+to read.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c8d9e8187..a34471662 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7117,6 +7117,7 @@ F:	rust/kernel/device_id.rs
- F:	rust/kernel/devres.rs
- F:	rust/kernel/driver.rs
- F:	rust/kernel/platform.rs
-+F:	rust/kernel/property.rs
- F:	samples/rust/rust_driver_platform.rs
- 
- DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 0640b7e11..b4eec5bf2 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -23,6 +23,7 @@
- #include "platform.c"
- #include "pci.c"
- #include "pid_namespace.c"
-+#include "property.c"
- #include "rbtree.c"
- #include "rcu.c"
- #include "refcount.c"
-diff --git a/rust/helpers/property.c b/rust/helpers/property.c
-new file mode 100644
-index 000000000..08f68e2da
---- /dev/null
-+++ b/rust/helpers/property.c
-@@ -0,0 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/property.h>
-+
-+void rust_helper_fwnode_handle_put(struct fwnode_handle *fwnode)
-+{
-+	fwnode_handle_put(fwnode);
-+}
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index db2d9658b..d5e6a19ff 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -6,7 +6,6 @@
- 
- use crate::{
-     bindings,
--    str::CStr,
-     types::{ARef, Opaque},
- };
- use core::{fmt, ptr};
-@@ -181,12 +180,6 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Arguments<'_>) {
-             )
-         };
-     }
--
--    /// Checks if property is present or not.
--    pub fn property_present(&self, name: &CStr) -> bool {
--        // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
--        unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
--    }
- }
- 
- // SAFETY: Instances of `Device` are always reference-counted.
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 496ed32b0..ca233fd20 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -67,6 +67,7 @@
- pub mod platform;
- pub mod prelude;
- pub mod print;
-+pub mod property;
- pub mod rbtree;
- pub mod revocable;
- pub mod security;
-diff --git a/rust/kernel/property.rs b/rust/kernel/property.rs
-new file mode 100644
-index 000000000..f6e6c980d
---- /dev/null
-+++ b/rust/kernel/property.rs
-@@ -0,0 +1,75 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Unified device property interface.
-+//!
-+//! C header: [`include/linux/property.h`](srctree/include/linux/property.h)
-+
-+use core::ptr;
-+
-+use crate::{bindings, device::Device, str::CStr, types::Opaque};
-+
-+impl Device {
-+    /// Obtain the fwnode corresponding to the device.
-+    fn fwnode(&self) -> &FwNode {
-+        // SAFETY: `self` is valid.
-+        let fwnode_handle = unsafe { bindings::__dev_fwnode(self.as_raw()) };
-+        if fwnode_handle.is_null() {
-+            panic!("fwnode_handle cannot be null");
-+        }
-+        // SAFETY: `fwnode_handle` is valid. Its lifetime is tied to `&self`. We
-+        // return a reference instead of an `ARef<FwNode>` because `dev_fwnode()`
-+        // doesn't increment the refcount. It is safe to cast from a
-+        // `struct fwnode_handle*` to a `*const FwNode` because `FwNode` is
-+        // defined as a `#[repr(transparent)]` wrapper around `fwnode_handle`.
-+        unsafe { &*fwnode_handle.cast() }
-+    }
-+
-+    /// Checks if property is present or not.
-+    pub fn property_present(&self, name: &CStr) -> bool {
-+        self.fwnode().property_present(name)
-+    }
-+}
-+
-+/// A reference-counted fwnode_handle.
-+///
-+/// This structure represents the Rust abstraction for a
-+/// C `struct fwnode_handle`. This implementation abstracts the usage of an
-+/// already existing C `struct fwnode_handle` within Rust code that we get
-+/// passed from the C side.
-+///
-+/// # Invariants
-+///
-+/// A `FwNode` instance represents a valid `struct fwnode_handle` created by the
-+/// C portion of the kernel.
-+///
-+/// Instances of this type are always reference-counted, that is, a call to
-+/// `fwnode_handle_get` ensures that the allocation remains valid at least until
-+/// the matching call to `fwnode_handle_put`.
-+#[repr(transparent)]
-+pub struct FwNode(Opaque<bindings::fwnode_handle>);
-+
-+impl FwNode {
-+    /// Obtain the raw `struct fwnode_handle *`.
-+    pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
-+        self.0.get()
-+    }
-+
-+    /// Checks if property is present or not.
-+    pub fn property_present(&self, name: &CStr) -> bool {
-+        // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
-+        unsafe { bindings::fwnode_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
-+    }
-+}
-+
-+// SAFETY: Instances of `FwNode` are always reference-counted.
-+unsafe impl crate::types::AlwaysRefCounted for FwNode {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-+        unsafe { bindings::fwnode_handle_get(self.as_raw()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-+        unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
-+    }
-+}
--- 
-2.49.0
+> Link: https://www.kernel.org/doc/html/latest/process/submitting-patches.h=
+tml#the-canonical-patch-format [2]
 
+By the way, since I am here: to link to docs, nowadays there is
+docs.kernel.org which is nicer/shorter:
+
+    https://docs.kernel.org/process/submitting-patches.html#the-canonical-p=
+atch-format
+
+I hope that helps!
+
+Cheers,
+Miguel
