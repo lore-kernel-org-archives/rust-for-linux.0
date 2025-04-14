@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612B21D618A
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 20:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC9F1E9B06;
+	Mon, 14 Apr 2025 20:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744660814; cv=none; b=IQvrbds+2nHAZrMONBaQFb3CmoAIRxOMgrKnkF433eCQ6ihe6RF4/BnOLe2ijb1K5MxIFjOoVMrIp/+6w3shlY4XQy8IcCbbsuglGCJMLxzDAG3n2YwHu2yez7NsUGZU1FiXis8C/9oxkuKwsZVGPaVQPr0IBA8rnPT/FUXHn5M=
+	t=1744660837; cv=none; b=B5dv1HEEZPc49Yv6tQyGNTX21IfOobr6SLJ7SES3+l4kSCr4ZGXmAx0oaW86ceo6bTdUdqDsERSfYz8HLBIY0NYAsg+lCjHNvVHkjVVdPM9/+vnj1Pgw8X7LE2JzkBGv4sQOTHUKr9d0Noa4CQJvOxf2ZRZFQPkzOEaBQxqIBX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744660814; c=relaxed/simple;
-	bh=onkGD7IMGYYTDQ1k9EeiYgsn35bofu/HwOQD6cSvNlQ=;
+	s=arc-20240116; t=1744660837; c=relaxed/simple;
+	bh=TWJ0okZW+8/GK3f4fqiOFElTdvZJl4UY9KYhobizbVs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Chj/q971jJLub7rogEnmMhGjZvDGaehg1O68110gNRdu9D0WJ4YqoeRNNLxWznXeQGvLw7vumf0xDMHlHS0R4/mXBaEwNZ4PZop4XLWq3yxM3A7rup7KltPqXYHHwz/1ERAnIZKhIdBQ047lunXteHi8DtVNe2p4V5lrfVC0tG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mTZbbvq5; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=SINQJyynpW1q+gkiXtPV2AmEuqW1o7mgnnMATbdMYl9YPXet7xQRunOMCNhjOSKa/FywvtyFvhT7jG//51i+PMby+3cuQrH8QssBel2p89Xcl8VKRFJ+h3maiyZGgDdfhBBHCf+GP+7NMH4QQERI0gAw5sXPMCyLjFrm3y5aLlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=j1gEZYUc; arc=none smtp.client-ip=79.135.106.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mTZbbvq5"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="j1gEZYUc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1744660810; x=1744920010;
-	bh=1rLZ1Gjo2Q6wANcQPpDmCfAuAi8w2svdSSCbs+ToqpE=;
+	s=protonmail; t=1744660827; x=1744920027;
+	bh=zdtxYtqOEBxCKBn2U8h77Y7hXVQ5/IOFpb5ARHsBxT4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=mTZbbvq5/fjWisurh/tWftCph+iFfW+F2Zbfski/3fZLRTsoPgDxklkWPTmR8X7tF
-	 Kqk+5e8Q6yomyKMdbHtq5Fl7fpkTtv6e0WhxBhJUThSRzgPT/FCESh3CUBQ9AYgbQ2
-	 0xxYJHCMHk6nEe/R2re+yIxn7K8qSYe7bQWfUJ0LfXEqJI0rp1sPAS22Cy4Uc3GxXi
-	 muy03U0TWjyIfy6/HhoEghPDP3kaeWCXno+MxDH3Uz8zcvJQTj3wvy12Rsb17NRNjr
-	 KPiBEfyygmNyxbkwiEwgPAYi0LGiFYpldxcE9CHQSjFM+oWuWqnzjjQECwaOQA3/fE
-	 R6Y2Up7msnHDw==
-Date: Mon, 14 Apr 2025 20:00:03 +0000
+	b=j1gEZYUcGNfLJw8kPfqcTnWKmNKhKyKNW5rwBoPRyaXuC/NbC7tcKxeBVo/J5W0Os
+	 s4vchkdra+QT3/qfBedFLQGHqSEonT3iee2joc0s8P20CvIfh5PO+e6W4HEDJhr4P3
+	 tjNtG5iKZWqSyIiVOeUOUIcvXQ8GNlKLEs4szrHjaXiltncZoaO7PpvxV+n0WMjIPm
+	 uXQF1STuO/BB7UEmxKQu3MSgL4ddu94EcJnmdRX8o/GF6zq2Pd5+hvRjspsx1gSYWD
+	 +c1vE0U5mEiwqAsRgsSC7479cirwUrPqsCCLPEFOYty9bCe3gby+snjqoCo0WKnwaB
+	 1zt+LzAmqQdpw==
+Date: Mon, 14 Apr 2025 20:00:20 +0000
 To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] rust: pin-init: internal: skip rustfmt formatting of kernel-only module
-Message-ID: <20250414195928.129040-2-benno.lossin@proton.me>
+Subject: [PATCH 2/3] rust: pin-init: examples: conditionally enable `feature(lint_reasons)`
+Message-ID: <20250414195928.129040-3-benno.lossin@proton.me>
 In-Reply-To: <20250414195928.129040-1-benno.lossin@proton.me>
 References: <20250414195928.129040-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3121d4f810d1bc5aa2915236284e3cc2c00020a5
+X-Pm-Message-ID: 124e4f129cbc0e3b05ca4734ec9e8509fcbb28f0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,43 +47,74 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-The `quote` module only is available in the kernel and thus running
-`cargo fmt` or `rustfmt internal/src/lib.rs` in the user-space
-repository [1] results in:
+`lint_reasons` is unstable in Rust 1.80 and earlier, enable it
+conditionally in the examples to allow compiling them with older
+compilers.
 
-    error: couldn't read `~/pin-init/internal/src/../../../macros/quote.rs`=
-: No such file or directory (os error 2)
-      --> ~/pin-init/internal/src/lib.rs:25:1
-       |
-    25 | mod quote;
-       | ^^^^^^^^^^
-
-    Error writing files: failed to resolve mod `quote`: ~/pin-init/internal=
-/src/../../../macros/quote.rs does not exist
-
-Thus mark it with `rustfmt::skip` when compiling without kernel support.
-
-Link: https://github.com/Rust-for-Linux/pin-init [1]
-Link: https://github.com/Rust-for-Linux/pin-init/pull/33/commits/a6caf1945e=
-51da38761aab4dffa56e63e2baa218
+Link: https://github.com/Rust-for-Linux/pin-init/pull/33/commits/ec494fe686=
+b0a97d5b59b5be5a42d3858038ea6a
 Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
- rust/pin-init/internal/src/lib.rs | 1 +
- 1 file changed, 1 insertion(+)
+ rust/pin-init/examples/linked_list.rs   | 1 +
+ rust/pin-init/examples/mutex.rs         | 1 +
+ rust/pin-init/examples/pthread_mutex.rs | 2 ++
+ rust/pin-init/examples/static_init.rs   | 1 +
+ 4 files changed, 5 insertions(+)
 
-diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src=
-/lib.rs
-index babe5e878550..56aa9ecc1e1a 100644
---- a/rust/pin-init/internal/src/lib.rs
-+++ b/rust/pin-init/internal/src/lib.rs
-@@ -22,6 +22,7 @@
- #[cfg(kernel)]
- #[path =3D "../../../macros/quote.rs"]
- #[macro_use]
-+#[cfg_attr(not(kernel), rustfmt::skip)]
- mod quote;
- #[cfg(not(kernel))]
- #[macro_use]
+diff --git a/rust/pin-init/examples/linked_list.rs b/rust/pin-init/examples=
+/linked_list.rs
+index 6d7eb0a0ec0d..0bbc7b8d83a1 100644
+--- a/rust/pin-init/examples/linked_list.rs
++++ b/rust/pin-init/examples/linked_list.rs
+@@ -2,6 +2,7 @@
+=20
+ #![allow(clippy::undocumented_unsafe_blocks)]
+ #![cfg_attr(feature =3D "alloc", feature(allocator_api))]
++#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
+=20
+ use core::{
+     cell::Cell,
+diff --git a/rust/pin-init/examples/mutex.rs b/rust/pin-init/examples/mutex=
+.rs
+index 073bb79341d1..3e3630780c96 100644
+--- a/rust/pin-init/examples/mutex.rs
++++ b/rust/pin-init/examples/mutex.rs
+@@ -2,6 +2,7 @@
+=20
+ #![allow(clippy::undocumented_unsafe_blocks)]
+ #![cfg_attr(feature =3D "alloc", feature(allocator_api))]
++#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
+ #![allow(clippy::missing_safety_doc)]
+=20
+ use core::{
+diff --git a/rust/pin-init/examples/pthread_mutex.rs b/rust/pin-init/exampl=
+es/pthread_mutex.rs
+index 9164298c44c0..f020dd266506 100644
+--- a/rust/pin-init/examples/pthread_mutex.rs
++++ b/rust/pin-init/examples/pthread_mutex.rs
+@@ -3,6 +3,8 @@
+ // inspired by https://github.com/nbdd0121/pin-init/blob/trunk/examples/pt=
+hread_mutex.rs
+ #![allow(clippy::undocumented_unsafe_blocks)]
+ #![cfg_attr(feature =3D "alloc", feature(allocator_api))]
++#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
++
+ #[cfg(not(windows))]
+ mod pthread_mtx {
+     #[cfg(feature =3D "alloc")]
+diff --git a/rust/pin-init/examples/static_init.rs b/rust/pin-init/examples=
+/static_init.rs
+index 3487d761aa26..48531413ab94 100644
+--- a/rust/pin-init/examples/static_init.rs
++++ b/rust/pin-init/examples/static_init.rs
+@@ -2,6 +2,7 @@
+=20
+ #![allow(clippy::undocumented_unsafe_blocks)]
+ #![cfg_attr(feature =3D "alloc", feature(allocator_api))]
++#![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
+=20
+ use core::{
+     cell::{Cell, UnsafeCell},
 --=20
 2.48.1
 
