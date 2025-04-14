@@ -1,104 +1,103 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8101247299;
-	Mon, 14 Apr 2025 15:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75C43FC2;
+	Mon, 14 Apr 2025 16:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744645114; cv=none; b=atg/6bmF9/1/zoJYqnvdxI8OOfyAeFB0ocgrpEmd8uNl+36P6ZBWDN4n8ACsStfbhyZ0+hBf5NomI9PbJHPAgjbv8aF8xQZy4UxFO9jrGPsmCQVLfhJsPvFvn9JqaaQwpZmhdLBEvatRAVvH2Dkuf2DgJC5bjXcHRK1UbkRQRHs=
+	t=1744646432; cv=none; b=Ma18wL75UNNVr0w3Jmwfa0nmV89u5XNcIqNguK5TD0QpD0KOFdspsrWNEyIZnQm+UjsnBnSumkz0NYOTlZH9Vaef2f+iohtcpaqY4ljp3wCRvoeElb5YyvgMlB0eGko3dGXpDCgAX5W40Rl6KdhWnyRkvGpJyVv4J9F8jtuHZfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744645114; c=relaxed/simple;
-	bh=RuecTKg0iaNM2FTHixYTxLi4zj7VKfj4amF92wuExCg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rz9PZr8/38+cuqTWrkCpNKuxniPpe1V87TI00NZPs/IfU1A2vEockmDe6mhZN0t8/26WynqITgMLaqpJ/lxMdRLZjHIQ7VKRJBumzLORyhe6Q9RX0PNizvkUKM56t8NccJM5FOsdcKrfvcDe9T6UCP8wqyv5aR5Hf3Fk4oCe5DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mOkodUOk; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744646432; c=relaxed/simple;
+	bh=lnJMQohROrGG0E+k95G2QQrt0142N0BCbZ+hQ7mfYqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dIE8kl339lvT4FmfdVLJ48LO1q1hPSc/awFB0HsuUrC36oM4ASU86g6KIc0KmUeB5by2GBwgPjCTuPJy9jQSzt/kaCluVHOA4kEsiDOcgUDi1fzSFPLEymfR55r2jl98cDomYCwFYkTXeqb3K02LE87AfvgB87GcttSyYCj8YOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJ0+ytki; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mOkodUOk"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b07698318ebso122644a12.2;
-        Mon, 14 Apr 2025 08:38:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744645112; x=1745249912; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7hTVE72PCT4HpQ9Apgj1j1o70imaRSlg41FJYH8UsUw=;
-        b=mOkodUOkYFh91YD9qDudqktn+oBiGjWvUybCk0XRA/WWQ4Ai33PY/WLuWn4AKOVQmO
-         ua2Hzy8PEV2IRs9qDS2f1g15+ee3N7ZfKmSDsqKRdnrCpLtFaqxaP5KZgjGD3JUJzNX0
-         RDGd8wEQvUCe8KWfoFDG0OvniPeqokiWDNCC0eyYjilVmy3RTLXEkpdZoofWFVyQ29Qk
-         ZnGVUjMysMruvXtHr5Qb07oBZ+ZToZ7LX9qOuf2o3f+l+WBmKrXYN9+4b0XEExWxt5As
-         wU8ayOoEUORnzCXO7+rNCQI8ME2H/9u8J3zS/y9BsGh5X421TD7FKanhCqet3CCMbZdn
-         /sww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744645112; x=1745249912;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7hTVE72PCT4HpQ9Apgj1j1o70imaRSlg41FJYH8UsUw=;
-        b=LLrXOYx8N0by2DCNQoeGShgw9KOdIDUmPHpzFLQrjOKth0Aji+Nstai3Kergsy/5Qd
-         IO8Ndel+4fikDJar2FifPXzhH/itPteKoBTHm9vmH5SuOCqOA3C0zGmXks4UsHQKVnG0
-         oioc674dtBS7b4VaqAaMJV1ljfW1vEJ8rucIECKO3/IrrkEwYUV/ly3EhtG72afjLJUw
-         ZA1nrEETGa7m7njzWMT5TSLjO/dAP/PrKsDMldMlJoVBLfz7YCIQBjxGF9UpWbr93pYF
-         ZaJFCilEYQfm3uT112Ncqd4NhD2UP2Lv8cEeHKXqOSS68WzrAOD7z+2/HONdqTlnHN84
-         SoTA==
-X-Forwarded-Encrypted: i=1; AJvYcCU9iTC6g9fJdhgHf5Mos0SEnyR2D3SI9wZSFjwn2OsHR5jRrP2hWV+S6ViYcWYbF+2KUOqu+WbKiBiOBTiU@vger.kernel.org, AJvYcCWvhKlJTGKfoVF9mRBHFODW8KBIbTPH3MuUADt5W8+TzZ9SOyEDotar52fTjNRUvrUb3NLjXJN7J+k+@vger.kernel.org, AJvYcCWzvFfAsmHeFYn5pkdRpaje2QqTVa3V07CkQ5YcLRsB8mMabCsy0y7A5rlj5rPgEP5dhZLjbuwg857TGRFtlt8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkQsR2vNcHgL2Bjfa8bvKE21BjR05TRx1lwTHL9gZpB0Rq9e50
-	fAuNePaafKDX+gEV53V+HPw03k+Youq/M10oILdd8lHwOjWwhWtUDakha6emgN3tgUloSSkw/Xz
-	CCXzMmYz3zlQQ91gsoV0qz7ZnDJA=
-X-Gm-Gg: ASbGncsOH9qmggji9+k+26Y8dk19a7fVvY6G3zV0yVCmoKDaITf20mrk095b8zoEJpa
-	XiolzHgyXwU3xzd0fRpPAxyRyWTNFMuWvXvfKL4/7oeXFN7lqOpV1/2Ciia3d2mLeDTxEvGTEp0
-	eFSsdZY8Fgf6SrYXLh7lqAkg==
-X-Google-Smtp-Source: AGHT+IEl7wHf0Sakgfm/WJeSfZvJ7q2i4J1DoJtq8lyP7HES/L27EXmyf/TNfYuKtRGxT9VdHhTRtMrGWU2WyCxoBIg=
-X-Received: by 2002:a17:90b:1c8c:b0:306:e6ec:dc82 with SMTP id
- 98e67ed59e1d1-3084e76898dmr133828a91.6.1744645111895; Mon, 14 Apr 2025
- 08:38:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJ0+ytki"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21CAC4CEE2;
+	Mon, 14 Apr 2025 16:00:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744646432;
+	bh=lnJMQohROrGG0E+k95G2QQrt0142N0BCbZ+hQ7mfYqs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rJ0+ytkibDwS7N3hAZnpfAFyc79oD7Twbe80+2/BmrUBbnAXz54q5ElxDuY6B5268
+	 QUDUvszCSy2ueghTdODPW10V+pkKdp7GA1Py0hPh9W57aDIhUnJxIQAwgz6I4aeaPa
+	 7spRv6skLsKa3beMibKXjgeT7ai0t/4yFhe7gbVQjqCFIwfXTylQkKkenZLMT8NFUi
+	 lLw/uH/VD+Z+SzclmVnva6Bq+a1jWeF4hUKnpGqKpzhKrcaHGFEQvHk+BNy/c0G/SU
+	 35XfVXE1H3DFNp2N6x5wTgKAgzM4a1ezUrvzLkBQE9lipXAsXMOPjxtNwHdlceE620
+	 GAQAtlq6HR+pw==
+Date: Mon, 14 Apr 2025 18:00:25 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] rust: Move property_present to separate file
+Message-ID: <Z_0xGRsI74PsAL_E@cassiopeiae>
+References: <20250326171411.590681-1-remo@buenzli.dev>
+ <20250414152630.1691179-1-remo@buenzli.dev>
+ <20250414152630.1691179-2-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250326171411.590681-1-remo@buenzli.dev> <20250414152630.1691179-1-remo@buenzli.dev>
-In-Reply-To: <20250414152630.1691179-1-remo@buenzli.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Apr 2025 17:38:18 +0200
-X-Gm-Features: ATxdqUHT3bhfx4obPIev5V4LNaD5n_eUigTkiTFuP1PQG7JIim9RVDEyLqHrD9g
-Message-ID: <CANiq72mJubnGyqSk3sqKVa7g9HvnJvmRg=gJ2kaBtbMMVWWC8g@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] More Rust bindings for device property reads
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250414152630.1691179-2-remo@buenzli.dev>
 
-On Mon, Apr 14, 2025 at 5:26=E2=80=AFPM Remo Senekowitsch <remo@buenzli.dev=
-> wrote:
->
-> changes in v2:
+On Mon, Apr 14, 2025 at 05:26:26PM +0200, Remo Senekowitsch wrote:
+> Not all property-related APIs can be exposed directly on a device.
+> For example, iterating over child nodes of a device will yield
+> fwnode_handle. Thus, in order to access properties on these child nodes,
+> duplicate the APIs on a fwnode as they are in C.
 
-If possible (no need to resend, it is just a suggestion), please
-submit new versions (especially multi-patch ones) in a new thread,
-otherwise in some clients (including lore.kernel.org) it gets harder
-to read.
+What do you mean with "duplicate the APIs"?
 
-> Link: https://www.kernel.org/doc/html/latest/process/submitting-patches.h=
-tml#the-canonical-patch-format [2]
+Also, this patch does three separate things.
 
-By the way, since I am here: to link to docs, nowadays there is
-docs.kernel.org which is nicer/shorter:
+  (1) move property_present() to separate file
+  (2) implement FwNode abstraction
+  (3) implement Device::fwnode()
 
-    https://docs.kernel.org/process/submitting-patches.html#the-canonical-p=
-atch-format
+I'd rather keep property_present() in device.rs and also move fwnode() into
+device.rs, even though in C it's in property.c. impl Device blocks should be in
+device.rs.
 
-I hope that helps!
+Hence, please split this in two patches, one for (2) and one for (3).
 
-Cheers,
-Miguel
+> +++ b/rust/kernel/property.rs
+> @@ -0,0 +1,75 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Unified device property interface.
+> +//!
+> +//! C header: [`include/linux/property.h`](srctree/include/linux/property.h)
+> +
+> +use core::ptr;
+> +
+> +use crate::{bindings, device::Device, str::CStr, types::Opaque};
+> +
+> +impl Device {
+> +    /// Obtain the fwnode corresponding to the device.
+> +    fn fwnode(&self) -> &FwNode {
+> +        // SAFETY: `self` is valid.
+> +        let fwnode_handle = unsafe { bindings::__dev_fwnode(self.as_raw()) };
+> +        if fwnode_handle.is_null() {
+> +            panic!("fwnode_handle cannot be null");
+
+Please don't use panic!() unless you hit an error condition that is impossible
+to handle.
+
+If __dev_fwnode() can ever return NULL, make this function return
+Option<&FwNode> instead.
