@@ -1,97 +1,112 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773B844C77;
-	Mon, 14 Apr 2025 15:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A625E2DFA59;
+	Mon, 14 Apr 2025 15:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744643321; cv=none; b=QYDsNh/4AQYoZZCEMMYfP5O57yjbZTX6NQi9VtxbsETHwTNgKoPKpq22Yy5PmgNmMjJRmAPWHAB7bopdvIHQ34V4YgDzcmB0cM20jCJ5xc/yjCiwf5vBYMH6xAAUzDgKQyiJRC62H3EYjPdKDX/crJQK0d/Ofc063Lyd5hUbfbI=
+	t=1744644416; cv=none; b=YXu5u+dTvrUV02Z9Lcxqu9k+eXreL84ak1reHjtkRGkZpfsZ+TCcQn42pUtcUM9MqcL5ebgzqPJSp/bCXbRXudcJ5wXGc2ruAy/Od3+eyx2cfJsrb2A4afkWpRwdWwXEiVuwmB1jA6o4RtRrDEkrXIGgULamcXG77/dO4nfTKVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744643321; c=relaxed/simple;
-	bh=DK4Qu0qldN+pzv3ZrtGi5/PL9yAuBfEn1jbExHHQuoI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZLym3XuETicsYQO3Izc2zJT2z0kjldwaZvWw77Q+Iky5dJRnyAfhb0u3XqqKbkzMZfGqbcILpFMLHxS7/LyFeKSSARviv83bfYvbtcab5nU4BAjelJhQI/Fr+HeLim+Dl0RHMqSAybBD7nh7+o1MiRcHTVahSZFBTMwbKPFfhRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XsNBtTCo; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XsNBtTCo"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ff6b9a7f91so782632a91.3;
-        Mon, 14 Apr 2025 08:08:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744643320; x=1745248120; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DK4Qu0qldN+pzv3ZrtGi5/PL9yAuBfEn1jbExHHQuoI=;
-        b=XsNBtTCobxxpHg3gxMNH59EaDjByQJLkX7vcxz88dfYJ+xhHCqA3XZGRNIAWx47bBS
-         v4IBRLC42OtO0DhjCorpj/vAXaN6nOTf7YlU8g7OqurVo4ug+uQmfdoSMzzyYYD+IAKd
-         VIZiJzgDdloiiEADELETnE58Ys1w8wu7aDRjltoz0yCIPbZGZAIfTRkWBpxOKbyTnsWg
-         pzSo/EyCW9r3LxZh1hSGNYq1DIQO7UAyNAtpV45ppHxHO+UxmfPQQlml70b99jp0Wo59
-         U/BBApiGRr2z3xzoHjHmUI/JYtODrr7cAOGl0mfoIBx8oFBYi5s/9+u7Sz6c6HVoRJbc
-         1BUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744643320; x=1745248120;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DK4Qu0qldN+pzv3ZrtGi5/PL9yAuBfEn1jbExHHQuoI=;
-        b=Wdn3UuxOfPJh7mv5Y+nGv4c4wJW948AzTPywhGDglpzzLrOH0YJFcX9m05HPyJnNC8
-         sAAlcVx/3mFFkbFQ6JyLELUVG0mmz/c7jPqZazPTY1HTfjwMOhz7hmcIzGvw81m7d1s3
-         UJze7bjbv1EyMFJ9r8V1mjIQ021vOpnLODZubcjJ0fUvBTS9pwxx1kAlTZ7J1a15sMVr
-         SKi6XO7srIEwgYWCpf7EbwFb0IurVn1OSW0y/YSIbaK1NMgWHcCcg/csbus6ufY0Ndw0
-         L8I4nBPZ6yv42lMuY9KASZ98I/hgT2f1QopuOn3inoNuooSwk+bXKyPlAUuvV5cfTFof
-         PODQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUwImfnndvjQqwaf8zEpH7runshI5XGa7lf1ATKlacTnErc+sYoZiuXVUkjiAUKcw3ZA+yRd/L5@vger.kernel.org, AJvYcCUxpv2z2RnTKLCRbiooMg6op+1UcwnYfgtoPK6P3We/ASyhLgHnWutTXCkZYLZcIagQFd6ooLvGUhjx5SI=@vger.kernel.org, AJvYcCVkdmuk3yKPjSUqBIakne8jDioHvDdZm1wKkqy40XI/tTYNJiQct/HotJwz81/vabIcDwpU53k968uTDXU/IgI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7SD/JHC1GLFhCCB8ri3IQ0o/f9WOsgf8t7oTaV88YtpUNb75a
-	TXWLkLYJVgx5Rs/0mTVRTOUkS2LhFpxVVC4EsfVFTD/eFeDjTNqHc/g32Z8UYLNfwwqVTb3DC2Q
-	jHF4nE/aSXRcowVHXgvpeDertkFc=
-X-Gm-Gg: ASbGncs2HaZBSEAE2ac7xdEFRJyDI10z8drS48RcrMyIiSWcptzcfgZzByTlO/9DmOn
-	A3WfKFOH9V1/2mprqU5d5Asp/SncavAFjtYD13cN87a6lebufjBepb+QvuhLWzw7srZH+Pp1By1
-	GF5RNfpEPAsFxq6MIOtvapBQ==
-X-Google-Smtp-Source: AGHT+IF/3Sug4cH71Iy1yUd34jEFWmX1uxiWoMXWWYEYLAEU8PckJu1uG0PfMyeFYO7FJKOwZzJ7L3pUGCudlaYn1Cw=
-X-Received: by 2002:a17:90b:384b:b0:306:b6ae:4d7a with SMTP id
- 98e67ed59e1d1-3084e75753emr84387a91.3.1744643319470; Mon, 14 Apr 2025
- 08:08:39 -0700 (PDT)
+	s=arc-20240116; t=1744644416; c=relaxed/simple;
+	bh=ASyripazulCpCEuuh7uV7MNd8L4zaWucOvX9GAjK9Zk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TgHvAjwipzEWQoYhHySkFWhYuVYF9Ui+iIghU5HRJCSQWOiSdKMXq9vq1Md3CF3fav64HrNI+hQiU2ph/cBI7O0sKRSzfTLCbPPz97iVI00ZDrhQdjKEKwfsDmfX1VCZlwrQGl0CNhTvqmsbdQgC22JZiJAb3L2A+mbVULGIfCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4Zbrjw5QPwz9t9r;
+	Mon, 14 Apr 2025 17:26:44 +0200 (CEST)
+From: Remo Senekowitsch <remo@buenzli.dev>
+To: Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Remo Senekowitsch <remo@buenzli.dev>
+Cc: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 0/5] More Rust bindings for device property reads
+Date: Mon, 14 Apr 2025 17:26:25 +0200
+Message-ID: <20250414152630.1691179-1-remo@buenzli.dev>
+In-Reply-To: <20250326171411.590681-1-remo@buenzli.dev>
+References: <20250326171411.590681-1-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250413002338.1741593-1-ojeda@kernel.org>
-In-Reply-To: <20250413002338.1741593-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Apr 2025 17:08:27 +0200
-X-Gm-Features: ATxdqUH6rGk6r6-lQ_KWE9TQvnHIiYAFIJPEWNi0sSuE_uUs1uqjOst-DwFVQ_g
-Message-ID: <CANiq72=W_JOV+WLWFpkqt=cbqOiOKkxbsa4wvyuW82O80srMoQ@mail.gmail.com>
-Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4Zbrjw5QPwz9t9r
 
-On Sun, Apr 13, 2025 at 2:26=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Thus add it to the list so that `objtool` knows it is actually `noreturn`=
-.
+This adds more Rust bindings for reading device properties, based on
+Rob Herring's work. I'm working on a driver[1] that uses these, but the
+driver has more dependencies than this.
 
-Applied to `rust-fixes` -- thanks everyone! I applied it early to
-start to get testing -- tags still welcomed for a day or so.
+Rob Herring and Dirk Behme did several review iterations over on Zulip
+already[1], I'm thankful for their great input.
 
-I changed the title a bit (adding "for Rust 1.86.0") to avoid
-confusion with a previous patch (and future ones), since a bot already
-got confused.
+This is my second-ever patch series. I read through the documentation
+for sending patches[2] carefully, trying to apply everything to the best
+of my understanding. Please point out any specifics if I got something
+wrong.
 
-If `objtool` prefers to apply this instead, please let me know and I
-will drop it!
+Best regards,
+Remo
 
-Cheers,
-Miguel
+changes in v2:
+- Add property.rs to maintainers file
+- Add and improve lots of safety comments
+- Use `__dev_fwnode` istead of `dev_fwnode` to express the intent better
+- Make `get_child_by_name` not return a `PropertyGuard`
+- Squash the patch with the generic read method
+- Squash the PropertyGuard patch
+- Remove `arrayvec`, abstract over `fwnode_reference_args` instead
+- Log the full fwnode path in case of a missing property
+- Remove integer trait and export of fwnode_property_read_int_array
+  These are not needed now that a macro is used to associate each
+  integer type with its corresponding `read_*_array` function.
+- Replace `impl Property for bool` with a standalone function
+  `property_read_bool` with an infallible function signature
+- Extract parsing of properties into separate function in sample
+  platform driver
+
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/DS90UB954.20driver.20done.2C.20ready.20to.20upstream.3F/with/507874342 [1]
+Link: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#the-canonical-patch-format [2]
+
+Remo Senekowitsch (5):
+  rust: Move property_present to separate file
+  rust: Add bindings for reading device properties
+  rust: property: Add child accessor and iterator
+  rust: property: Add property_get_reference_args
+  samples: rust: platform: Add property read examples
+
+ MAINTAINERS                                  |   1 +
+ drivers/of/unittest-data/tests-platform.dtsi |   3 +
+ rust/helpers/helpers.c                       |   1 +
+ rust/helpers/property.c                      |   8 +
+ rust/kernel/device.rs                        |   7 -
+ rust/kernel/lib.rs                           |   1 +
+ rust/kernel/property.rs                      | 608 +++++++++++++++++++
+ samples/rust/rust_driver_platform.rs         |  69 ++-
+ 8 files changed, 688 insertions(+), 10 deletions(-)
+ create mode 100644 rust/helpers/property.c
+ create mode 100644 rust/kernel/property.rs
+
+-- 
+2.49.0
+
