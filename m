@@ -1,256 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1972E338C;
-	Mon, 14 Apr 2025 13:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121A623D298;
+	Mon, 14 Apr 2025 13:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744636801; cv=none; b=jpgJnaV3c0JNA+ahY0YEdl5z6FFJRPfthc7VsUY7ueBOeZYu+cZLueiWoHaSktBMMR7gPk2bx9hEdYgd/Gx0kAq7CzjOGRjiKst3oWtlao5b7vzRB1dMpd9KQRec10J7yJidwjsWhewsDVwml8Zlb322ntvIeH56UUlJqMAzaQk=
+	t=1744636981; cv=none; b=sUo2Q9L2gAW+qn+a05Gc/V6L0dx9qaY5rHpbJUWb8BGA6/uqC/KrxOjINf/tI5HsJYOlrk8lV2llqgL7RqKzLY+7F5kX7xif7lAKWbhakH0sB/zrDYLXYC7d1Z22/FpwtAyiomCl4XSiXujGWw9bQf8W4eUgh/agEUfxtAw/i/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744636801; c=relaxed/simple;
-	bh=aLWqfMc3LxAnj7N11OD12sfVIcutCmvYMivUM9e+DKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvhTzAPEHse21Vb7eL+sThNSwkyFVr3CH+P1qRQrgFl5mzNRtcG6x6gfGPseGxmbXONwhgQqcBT2FtEQlXQKOT+kAnV7aQtyrnZ+K/baD/g5+d1ahIyH0P5sbNlhAoGcVXn7PPjp2ffgJJbQGm6pHWNiIlhcvAYkhTF2rIc3py8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I9wlSznv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744636981; c=relaxed/simple;
+	bh=YqZznskXltnYKmBVLbbwElNix3jQOvyAnCNlCgTo76Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ii1moUu7p7pjvVgIE4KanJE+rUwVSPNTOm1n57cXphJ0ySNZPzA/Q7RlpilVEMKxrgbzIqCeG+EIykoGJylWv5ece2rh6eQqzX/lpQn4QajxXDN4i1AgtpxE3TvneJ2Xn++qcE7eTyR2i1jD2SJyhV/9HBR8qjxDbFGlgKz5vsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FUBvirNX; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I9wlSznv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CCAC4CEE2;
-	Mon, 14 Apr 2025 13:19:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744636801;
-	bh=aLWqfMc3LxAnj7N11OD12sfVIcutCmvYMivUM9e+DKY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9wlSznvqT6nfjJ8DmvqwLKbGW1cO8YlnfjbFTvr1Q3BbMbBPVRIAWUF/AWdpVAoW
-	 ZhszPDJhXuxxVIc9CUx+f2lo6TCSBKfi7Lkymbprvq3n4pGsZuVV0JHXkWUy4aDT5N
-	 eErxiW/Vow74UENyzOUEuXI5dx/ml1R2K3DrZtofKybtukh3UKnUesqEebQzTTJ+pn
-	 5UumgFY4HRdZgCTRojGHxoS1nKcyqTFObaNGgmrZkpmzFpY+zh943FKjWbPy8Hnc8R
-	 PtJ6VGy8wi4Y4YS14GlgL0rWstT776SP15stHlWLtT1ZSpZnqyqxBK7jI6AxD0mYGm
-	 0V3s4qNCAtYCg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	david.m.ertman@intel.com,
-	ira.weiny@intel.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	airlied@gmail.com,
-	acourbot@nvidia.com,
-	jhubbard@nvidia.com
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v4 5/5] samples: rust: add Rust auxiliary driver sample
-Date: Mon, 14 Apr 2025 15:18:08 +0200
-Message-ID: <20250414131934.28418-6-dakr@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250414131934.28418-1-dakr@kernel.org>
-References: <20250414131934.28418-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FUBvirNX"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so813032a91.2;
+        Mon, 14 Apr 2025 06:22:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744636979; x=1745241779; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Df4ZlcRCkKHa57BJ2xndOrkK/FrGdY+gTPtYXvqZp/Y=;
+        b=FUBvirNXlyYNsQQ720KK9CNBXci40wAVWAPRaBmLf4osj6B4EOB0HubByzLc8vbcTI
+         AbXNRNGZlXBiKzSkKCVn/ChOXOGN0U3I6xYZR8CHLwd0JjnltyGXK9R54MwtTizVwahD
+         VYZmhC3aW6ilhU3PD/wIJ1K3E03t+IdvTuD1Olgrmi9/fS45VnUFmEqNMWl5iusRPPgT
+         wU4nv4FG0dYULSGD7Fm0U2Lzqp3pz8NAsOBkjf9F6zxmMqaEqk0krZvWDxoXp+OQUlxI
+         uqMJVOibsDw2sCKOrMOythQ4Q7lbmflgE3YUuvKtY3UQyrgIOXBw3/PVA0D657PNmDg4
+         EfYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744636979; x=1745241779;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Df4ZlcRCkKHa57BJ2xndOrkK/FrGdY+gTPtYXvqZp/Y=;
+        b=kqi83jEJHaVMJU46Kr5odwdhDJsgMzfNM5Ic9HFctpY9hFpXkCJb6OHCvlg0Q7dPkJ
+         fwBH1K3YaHpFt226KluW96uAG+5QOizaxdRjSoLfeEj18cOtEqjO90SvN56UV1zbYQVn
+         70AXMoWIsAzbzHqBOo6gMU0Z5tX7sn1Gdl9J8Ldcr+KddtLGv282FaKAxmQD892+PmFF
+         7CFo+Mqw++61SKENmO8FquywHzfvdciRuUpI1WmWLdUfvBOiD3LcWEs6M7YU96WACjwz
+         kEPHudE+G2/Z5v1drTPbQ+U8kivAgdKxag8cm8JSlFj3sIUHTdj7anofRL87KHbPQNJb
+         XihA==
+X-Forwarded-Encrypted: i=1; AJvYcCUmtMlhoE3tFZwTEaoQu2QZ1rLXPZJzcdfD9uMT22jCCCt3bAT1LBgDa4YBYLrtEGq8WXG4szJdy+K1t50=@vger.kernel.org, AJvYcCWEgnC5sM69+xVYQnUN4KH4n/4E4tV6Adg/FU0ODXc2+t0l5Wk0N5x2+GAZR58htUk/On+leniuSGeV+JD6bZk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxucz0pVaKoZKaqIl4gtOb+kfY923tbYEeMx5EwF0HRLu+hjEEo
+	8ozaVjrZXVotPrin6zXkb37Biq16gAV9piLkelBNKh4mt9BXlZitcgqt7LymAG1AqgFHO8PoKYy
+	TPNiXJuBM1CuBon6rFMzcLRtcjh8=
+X-Gm-Gg: ASbGncsXiMW5SNCSTzVBbdfYBSqYfrQOmmNZkglNBeSjXfbj1YPgRJIci5imsc5EjlF
+	rxbhftOZWwzTxSS5jlvHE31jKz+GtsM6Wnb5X1NH4C0nqmefbdBwKeueHPx7HEHipe5ZrE7aFbn
+	rr293zqVJYyxzhhx6prqoRNw==
+X-Google-Smtp-Source: AGHT+IH3zMwiQZZF0MrooAxLxss2WjlELR7XDWfoKS8xT5Swj4kCI9USG4kreGACDD6msII1YqtOpACzPgTOIcNg6iQ=
+X-Received: by 2002:a17:90b:1b0a:b0:306:e6ec:dc82 with SMTP id
+ 98e67ed59e1d1-308273f3c3amr5931863a91.6.1744636979074; Mon, 14 Apr 2025
+ 06:22:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250413005650.1745894-1-ojeda@kernel.org> <CAH5fLgiF0kZdOYaQi18_LTNx6Onq-5PBomA=bwS0m0z+C0wtvg@mail.gmail.com>
+In-Reply-To: <CAH5fLgiF0kZdOYaQi18_LTNx6Onq-5PBomA=bwS0m0z+C0wtvg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 14 Apr 2025 15:22:44 +0200
+X-Gm-Features: ATxdqUGEpSrfVFnwvmwXXDxiUjWRT_U8CHO5cnUITp-hEVmYDeKZxvObhfYQwF0
+Message-ID: <CANiq72ngfTJ5PTYaJOOQ2NedERrLYzA62hL8Fgw5C4QkuZ2R-Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: add C FFI types to the prelude
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a sample Rust auxiliary driver based on a PCI driver for QEMU's
-"pci-testdev" device.
+On Mon, Apr 14, 2025 at 10:47=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> I wonder if it would make more sense to rephrase this section to first
+> say that rfl has type aliases for the C integer types called c_int and
+> so on, then mention that they are available in the prelude, and then
+> at the end of the section have a note that we don't use the type
+> aliases from core::ffi. I think focusing on how to use C integer
+> types, rather than technical details about how they are defined, is
+> more relevant for a reader who is just looking for coding guidelines.
 
-The PCI driver only registers an auxiliary device, in order to make the
-corresponding auxiliary driver probe.
+Hmm... I see what you mean. In other places in the document, we start
+comparing with userspace Rust in order to establish a bit of context.
+But, more importantly, in this particular guideline I think it is
+quite important to say "do not use the usual ones", because they are
+actually different types, i.e. it is not just a style thing.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- MAINTAINERS                           |   1 +
- samples/rust/Kconfig                  |  12 +++
- samples/rust/Makefile                 |   1 +
- samples/rust/rust_driver_auxiliary.rs | 122 ++++++++++++++++++++++++++
- 4 files changed, 136 insertions(+)
- create mode 100644 samples/rust/rust_driver_auxiliary.rs
+I have thought a couple times about perhaps changing the overall style
+of the document to have a 1-liner short summary on each guideline --
+some books do something like that consistently. And perhaps an
+example, before a longer description. So something like the following,
+which is closer to what you are suggesting:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a7bc29ca37d4..23c6ca105471 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7246,6 +7246,7 @@ F:	rust/kernel/devres.rs
- F:	rust/kernel/driver.rs
- F:	rust/kernel/faux.rs
- F:	rust/kernel/platform.rs
-+F:	samples/rust/rust_driver_auxiliary.rs
- F:	samples/rust/rust_driver_platform.rs
- F:	samples/rust/rust_driver_faux.rs
- 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index cad52b7120b5..43cb72d72631 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -82,6 +82,18 @@ config SAMPLE_RUST_DRIVER_FAUX
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_AUXILIARY
-+	tristate "Auxiliary Driver"
-+	depends on AUXILIARY_BUS
-+	depends on PCI
-+	help
-+	  This option builds the Rust auxiliary driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_auxiliary.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_HOSTPROGS
- 	bool "Host programs"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index c6a2479f7d9c..6a466afd2a21 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_SAMPLE_RUST_DMA)			+= rust_dma.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
- 
- rust_print-y := rust_print_main.o rust_print_events.o
- 
-diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_driver_auxiliary.rs
-new file mode 100644
-index 000000000000..8373c9a2337b
---- /dev/null
-+++ b/samples/rust/rust_driver_auxiliary.rs
-@@ -0,0 +1,122 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust auxiliary driver sample (based on a PCI driver for QEMU's `pci-testdev`).
-+//!
-+//! To make this driver probe, QEMU must be run with `-device pci-testdev`.
-+
-+use kernel::{
-+    auxiliary, bindings, c_str, device::Core, driver, error::Error, pci, prelude::*, str::CStr,
-+    InPlaceModule,
-+};
-+
-+use pin_init::PinInit;
-+
-+const MODULE_NAME: &CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
-+const AUXILIARY_NAME: &CStr = c_str!("auxiliary");
-+
-+struct AuxiliaryDriver;
-+
-+kernel::auxiliary_device_table!(
-+    AUX_TABLE,
-+    MODULE_AUX_TABLE,
-+    <AuxiliaryDriver as auxiliary::Driver>::IdInfo,
-+    [(auxiliary::DeviceId::new(MODULE_NAME, AUXILIARY_NAME), ())]
-+);
-+
-+impl auxiliary::Driver for AuxiliaryDriver {
-+    type IdInfo = ();
-+
-+    const ID_TABLE: auxiliary::IdTable<Self::IdInfo> = &AUX_TABLE;
-+
-+    fn probe(adev: &auxiliary::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
-+        dev_info!(
-+            adev.as_ref(),
-+            "Probing auxiliary driver for auxiliary device with id={}\n",
-+            adev.id()
-+        );
-+
-+        ParentDriver::connect(adev)?;
-+
-+        let this = KBox::new(Self, GFP_KERNEL)?;
-+
-+        Ok(this.into())
-+    }
-+}
-+
-+struct ParentDriver {
-+    _reg: [auxiliary::Registration; 2],
-+}
-+
-+kernel::pci_device_table!(
-+    PCI_TABLE,
-+    MODULE_PCI_TABLE,
-+    <ParentDriver as pci::Driver>::IdInfo,
-+    [(
-+        pci::DeviceId::from_id(bindings::PCI_VENDOR_ID_REDHAT, 0x5),
-+        ()
-+    )]
-+);
-+
-+impl pci::Driver for ParentDriver {
-+    type IdInfo = ();
-+
-+    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
-+
-+    fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
-+        let this = KBox::new(
-+            Self {
-+                _reg: [
-+                    auxiliary::Registration::new(pdev.as_ref(), AUXILIARY_NAME, 0, MODULE_NAME)?,
-+                    auxiliary::Registration::new(pdev.as_ref(), AUXILIARY_NAME, 1, MODULE_NAME)?,
-+                ],
-+            },
-+            GFP_KERNEL,
-+        )?;
-+
-+        Ok(this.into())
-+    }
-+}
-+
-+impl ParentDriver {
-+    fn connect(adev: &auxiliary::Device) -> Result<()> {
-+        if let Some(parent) = adev.parent() {
-+            // Validate that we're the parent of the given auxiliary device.
-+            let pdev: &pci::Device = parent.try_into()?;
-+
-+            dev_info!(
-+                adev.as_ref(),
-+                "Connect auxiliary {} with parent: VendorID={:#x}, DeviceID={:#x}\n",
-+                adev.id(),
-+                pdev.vendor_id(),
-+                pdev.device_id()
-+            );
-+        }
-+
-+        Ok(())
-+    }
-+}
-+
-+#[pin_data]
-+struct SampleModule {
-+    #[pin]
-+    _pci_driver: driver::Registration<pci::Adapter<ParentDriver>>,
-+    #[pin]
-+    _aux_driver: driver::Registration<auxiliary::Adapter<AuxiliaryDriver>>,
-+}
-+
-+impl InPlaceModule for SampleModule {
-+    fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, Error> {
-+        try_pin_init!(Self {
-+            _pci_driver <- driver::Registration::new(MODULE_NAME, module),
-+            _aux_driver <- driver::Registration::new(MODULE_NAME, module),
-+        })
-+    }
-+}
-+
-+module! {
-+    type: SampleModule,
-+    name: "rust_driver_auxiliary",
-+    author: "Danilo Krummrich",
-+    description: "Rust auxiliary driver",
-+    license: "GPL v2",
-+}
--- 
-2.49.0
+    To refer to C types, use the FFI types (aliases) available from
+the `kernel` prelude, e.g. ``c_int``.
 
+    For instance:
+
+        ...
+
+    Refer to them with a single segment path: e.g. ``c_char`` instead
+of ``ffi::c_char`` or ``kernel::ffi::c_char``.
+
+    Do not use the `core::ffi::*` types -- they are different and some
+do not map to the correct C type.
+
+But even with this style, I think it is important putting the last
+sentence in the "1-liner summary". Otherwise, someone may skip the
+guideline thinking "oh, OK, it is just a style thing about using just
+small paths, I will fix it later", without realizing they are actually
+different sets of types unless they read the entire section, no?
+
+Thanks!
+
+Cheers,
+Miguel
