@@ -1,82 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC011624E9;
-	Mon, 14 Apr 2025 18:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645CF28A1DE
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 18:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744653936; cv=none; b=jyFEISe8Pfxfivu9MhEmoE9KxHLFLvP/W5BtPtcjvuz/JvJRXUo8NEGu0bsZg0fDPvlVoEroIDV3xdpER0VH4aElVgvTP1uWaylaNh+z+o/noKgdih3Rm/ovEPDm9AUdBd6UGAZ7Mz+8Xu3jkpH2Rz4DhHYqNn48QJcBCrNRLdU=
+	t=1744654458; cv=none; b=sOkfPMdypJYBnfWZNxd3Ynn9B2+9ZBFoOsuQNClJRyAZKaRqMgt/wQHG9J1WEni9i1D4sLZa2XPMxkyuMfmbVS34XIapZ/zg5LtwJiIKASghNi6FIYP5srm/3YBGXVeOcgLm31UIjRphLXKuqUsup1Op4N8jHZ8g133X4RUUXbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744653936; c=relaxed/simple;
-	bh=neZaO5r4sLtwQFB3OZqm9RjpLToPpDz7VMGozqpxoTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cyFesGYiRbhVLh5Itvj9OZl6lppD823hir3gLomqE/O9Y9TQMlyEobOlKR+huEMyx6O29VfdnjfX/nnLg2TdSrHt58W7cys95aDcaFehPu+2UF9s52IGu/dIeLAv0g2TLZs+hxJo3twi2CZeeuMzXl/xis7RFaqOcMED0fyurhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7C0zIh1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744654458; c=relaxed/simple;
+	bh=mwLKJdRv9zL222DCMB2y/4hmefKIUj1UNBhjEFLkfnU=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=NzN9POU/mzraam2JHTbYdHqEUZ9LD2XN96Sib5SDPYrtakdLDXIkLgX56MJCtimoxZGZiWT+esUVll+O4YjtxhRyT8OUQ1+elKyWDwaBzq1xK869r819HcuWEKhzbCQlA/iubbrnGT9aNLrUA4vT8S9Qq+5up5yrQ4M+3KBzKkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gv/y/B/k; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7C0zIh1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06EAC4CEE2;
-	Mon, 14 Apr 2025 18:05:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744653935;
-	bh=neZaO5r4sLtwQFB3OZqm9RjpLToPpDz7VMGozqpxoTk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N7C0zIh1D7B8QdeQs+3TssGqZ6pvSYUAOjG0vnmh7dOwYyi55QLpHQRyWmwMqWsp7
-	 OdMhTDwo3xCV5YLOW4pVQSOXBnQiKY2yGdHWz08cjVIvXzCT1eJnkVW9vPqOHIxfp4
-	 IDWgCQWwbhqOEkoTRIgjWz7iNoTl4qXR1BC1ELNNwVyNf6oiXNJgT057zZywle1LKS
-	 Fg8LNlsSl3qEVXlewfkhKkPfdoQLR7Wb88AbQzG+NBpMQ3EPxDxBC/b+bpD+bkXeOp
-	 zHmWgAHeYclcx9KUYWmyCtWwTu12pfpj72SA/tpvb3Ge6/63dbK4Y7IcZU5voYQABp
-	 3Fi11dg21jKGg==
-Date: Mon, 14 Apr 2025 20:05:29 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] rust: Add bindings for reading device properties
-Message-ID: <Z_1OaYt22_GJRX0b@cassiopeiae>
-References: <20250326171411.590681-1-remo@buenzli.dev>
- <20250414152630.1691179-1-remo@buenzli.dev>
- <20250414152630.1691179-3-remo@buenzli.dev>
- <Z_1Jfs5DXD2vuzLj@cassiopeiae>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gv/y/B/k"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7366d0f3231so628031b3a.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 11:14:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744654456; x=1745259256; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3Zo2/Q4jXx4tQJgnkuvoBWk5YY5nVuzk5xKWf9FHsoI=;
+        b=gv/y/B/kGh5qaGHvJGI8sI2Z8ilGgLcfZOSJSdGPXpsE105WGVJ+gvThDlpxMN/1bk
+         MUAHlhscF2yBbHmvALpUNDiAxHCKNiYa7kEAZMHNz7kfUORyUs0YYpCepE5b3pZCUbRW
+         +VtPuo7gHLk/fTZLmw71eCdw0duID+gX2xxprHE7ORY4dq+uzmK2qRkfxXfII0Xr/130
+         gBzwXbp2Ju6Wx2WUtLcNBCV7bUi3Y6Jsyh9YX90CwTn9CLL0MsHfvaoCUBp//s0aFRIp
+         W3iU+KqcgElfuH9FxOAGNzwKzQxizQZIA4Gw95+cpxfoKbZCRGDEapsRzkrmxXrcxutq
+         gL/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744654456; x=1745259256;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3Zo2/Q4jXx4tQJgnkuvoBWk5YY5nVuzk5xKWf9FHsoI=;
+        b=KjGg98QCGvYuDi7GIyaoV4B7zBje0bGRwW1gQDusbw8TcPHzBSJJHTgOEOzzxw7VtW
+         xmzfG3lC3OBafR30ulknDfMildZswgSGYwqj7AntYDgUyAb03+wdeWxSlg4RRX3TcvCc
+         x0IwXzDjANbFV49J1Qx11vgrNPyMFGIuXBBsa730SDBUlcHfarpZH2PG8kthgxPktRnl
+         FODyVl7kQnnGTwWP+OOQYL3gfovSzO3KhE9/m3W6E9c3AibwkoOvHIb397ow3TXZwGc7
+         yb0xTEHLct375t3wM5kVZIjY6y03q5t48jsNabgPY4L/2BGLMZBJ9Tx2XZ922g8L30mn
+         mSpA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGFWv7l616Rgpndv8As+u5DqB0gbkajm09aHBd+acs3INVzJO7ZoxGYQxQR+tBi96HLEEE5DjR7ofCKNS+4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyJRmz8UjHxNuuyfmeeiZkcyH2J6xgxDbot37AGfjyhdwMTgVt
+	gFJygKYHx7J0fnV2Zj4RDagbqhlJeBWUiWR6hnASH0PMtvZrq7HB/feQLT6XvFmU2ARZyep//8D
+	XwjNFV1HXFgyFRPhewaqql4/qJM6VK+SbIz4=
+X-Gm-Gg: ASbGnct++jLAb2sK9wdHCwRePamsU9JaXxSOgYiy04EWd3vLJfMFRUAfL+rqOa21Tc4
+	H/IGEG0QuwNbpu7vdHPDiuCbtIMaCBp7N+P95f6NSUpaHyMi1CUfRneLKlyGX0+AhYPAw8mU+mk
+	urConG3dB3njbg8vqbRM/NYA==
+X-Google-Smtp-Source: AGHT+IEkXTvk5+VQsfOHU41Nt1ayqw8E86sP2+R4MnwHDGO5t2/updHhtIrmagcb2TLk839XbaUBZCLWooev7OOZdng=
+X-Received: by 2002:a17:90b:4c4b:b0:301:ba2b:3bc6 with SMTP id
+ 98e67ed59e1d1-3084e777d31mr460558a91.7.1744654456437; Mon, 14 Apr 2025
+ 11:14:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z_1Jfs5DXD2vuzLj@cassiopeiae>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 14 Apr 2025 20:14:04 +0200
+X-Gm-Features: ATxdqUEQM3cWjHtvsETO9v7OduJ-ylsXDY8NGs7BGU0wFttRYdVgU1MA1pnQNM4
+Message-ID: <CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com>
+Subject: `u64` by `u64` div/mod in DRM QR for arm32
+To: Jocelyn Falempe <jfalempe@redhat.com>, Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
+	dri-devel <dri-devel@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Apr 14, 2025 at 07:44:36PM +0200, Danilo Krummrich wrote:
-> On Mon, Apr 14, 2025 at 05:26:27PM +0200, Remo Senekowitsch wrote:
-> > The device property API is a firmware agnostic API for reading
-> > properties from firmware (DT/ACPI) devices nodes and swnodes.
-> > 
-> > While the C API takes a pointer to a caller allocated variable/buffer,
-> > the rust API is designed to return a value and can be used in struct
-> > initialization. Rust generics are also utilized to support different
-> > types of properties where appropriate.
-> > 
-> > The PropertyGuard is a way to force users to specify whether a property
-> > is supposed to be required or not. This allows us to move error
-> > logging of missing required properties into core, preventing a lot of
-> > boilerplate in drivers.
-> 
-> The patch adds a lot of thing, i.e.
->   * implement PropertyInt
+Hi Jocelyn, Christian,
 
-I meant the Property trait and all its impls of course. :)
+I started build-testing arm 32-bit within my other usual routine
+tests, and I hit:
 
->   * implement PropertyGuard
->   * extend FwNode by a lot of functions
->   * extend Device by some property functions
+    ld.lld: error: undefined symbol: __aeabi_uldivmod
+    >>> referenced by drm_panic_qr.rs:417 (drivers/gpu/drm/drm_panic_qr.rs:417)
+    >>> drivers/gpu/drm/drm_panic_qr.o:(<drm_panic_qr::SegmentIterator
+as core::iter::traits::iterator::Iterator>::next) in archive vmlinux.a
+
+which comes from both these `u64` by `u64`:
+
+    let out = (self.carry / pow) as u16;
+    self.carry = self.carry % pow;
+
+Christian: I guess we can offer a set of `div64` functions using the C
+ones, at least for the time being, and eventually wire the actual
+operator with some support from upstream Rust. Or do you have
+something else in mind? (i.e. I think you have been discussing
+intrinsics lately)
+
+Thanks!
+
+Cheers,
+Miguel
