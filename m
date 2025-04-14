@@ -1,94 +1,72 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645CF28A1DE
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 18:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F261A317A;
+	Mon, 14 Apr 2025 18:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744654458; cv=none; b=sOkfPMdypJYBnfWZNxd3Ynn9B2+9ZBFoOsuQNClJRyAZKaRqMgt/wQHG9J1WEni9i1D4sLZa2XPMxkyuMfmbVS34XIapZ/zg5LtwJiIKASghNi6FIYP5srm/3YBGXVeOcgLm31UIjRphLXKuqUsup1Op4N8jHZ8g133X4RUUXbA=
+	t=1744654548; cv=none; b=MVBFIBY4OqL6oRF/ErbSLzKQOYVNfFoicIHN7O0/kxywlqx21Pt7z1sTFKeZm3iUTH6aUYgIXCAEbcBwS62ZJjgPHK7toFbsvFoqXwY2fOJAsijloTRkmGPRUmuhR3ZBFjcUt+8xnO5mxSQNF7DqHBfDtpbGRURsB+DxKqOYIrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744654458; c=relaxed/simple;
-	bh=mwLKJdRv9zL222DCMB2y/4hmefKIUj1UNBhjEFLkfnU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=NzN9POU/mzraam2JHTbYdHqEUZ9LD2XN96Sib5SDPYrtakdLDXIkLgX56MJCtimoxZGZiWT+esUVll+O4YjtxhRyT8OUQ1+elKyWDwaBzq1xK869r819HcuWEKhzbCQlA/iubbrnGT9aNLrUA4vT8S9Qq+5up5yrQ4M+3KBzKkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gv/y/B/k; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744654548; c=relaxed/simple;
+	bh=sTIZFHQ8cwk5U54rJCA9J1tk6XzV+o5T1Gix++ZMau0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SWpMyM7xfPD1rCIZY772PbDm8nQ85IbwOe6jlcRfKNBRhGhzaw2jHLK8Ft2mSU2ppHm2KvV5eVah7ygIUWp+IYuPFpAno1WsXyK4Soo+p0G0SpI+56z5fLFPIAzxcplXFXY5G7GhppTf2bZcVIUfDcXgDl8M/RTrgsmw7aDMagg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7Y+mFLj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gv/y/B/k"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7366d0f3231so628031b3a.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 11:14:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744654456; x=1745259256; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3Zo2/Q4jXx4tQJgnkuvoBWk5YY5nVuzk5xKWf9FHsoI=;
-        b=gv/y/B/kGh5qaGHvJGI8sI2Z8ilGgLcfZOSJSdGPXpsE105WGVJ+gvThDlpxMN/1bk
-         MUAHlhscF2yBbHmvALpUNDiAxHCKNiYa7kEAZMHNz7kfUORyUs0YYpCepE5b3pZCUbRW
-         +VtPuo7gHLk/fTZLmw71eCdw0duID+gX2xxprHE7ORY4dq+uzmK2qRkfxXfII0Xr/130
-         gBzwXbp2Ju6Wx2WUtLcNBCV7bUi3Y6Jsyh9YX90CwTn9CLL0MsHfvaoCUBp//s0aFRIp
-         W3iU+KqcgElfuH9FxOAGNzwKzQxizQZIA4Gw95+cpxfoKbZCRGDEapsRzkrmxXrcxutq
-         gL/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744654456; x=1745259256;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3Zo2/Q4jXx4tQJgnkuvoBWk5YY5nVuzk5xKWf9FHsoI=;
-        b=KjGg98QCGvYuDi7GIyaoV4B7zBje0bGRwW1gQDusbw8TcPHzBSJJHTgOEOzzxw7VtW
-         xmzfG3lC3OBafR30ulknDfMildZswgSGYwqj7AntYDgUyAb03+wdeWxSlg4RRX3TcvCc
-         x0IwXzDjANbFV49J1Qx11vgrNPyMFGIuXBBsa730SDBUlcHfarpZH2PG8kthgxPktRnl
-         FODyVl7kQnnGTwWP+OOQYL3gfovSzO3KhE9/m3W6E9c3AibwkoOvHIb397ow3TXZwGc7
-         yb0xTEHLct375t3wM5kVZIjY6y03q5t48jsNabgPY4L/2BGLMZBJ9Tx2XZ922g8L30mn
-         mSpA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGFWv7l616Rgpndv8As+u5DqB0gbkajm09aHBd+acs3INVzJO7ZoxGYQxQR+tBi96HLEEE5DjR7ofCKNS+4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyJRmz8UjHxNuuyfmeeiZkcyH2J6xgxDbot37AGfjyhdwMTgVt
-	gFJygKYHx7J0fnV2Zj4RDagbqhlJeBWUiWR6hnASH0PMtvZrq7HB/feQLT6XvFmU2ARZyep//8D
-	XwjNFV1HXFgyFRPhewaqql4/qJM6VK+SbIz4=
-X-Gm-Gg: ASbGnct++jLAb2sK9wdHCwRePamsU9JaXxSOgYiy04EWd3vLJfMFRUAfL+rqOa21Tc4
-	H/IGEG0QuwNbpu7vdHPDiuCbtIMaCBp7N+P95f6NSUpaHyMi1CUfRneLKlyGX0+AhYPAw8mU+mk
-	urConG3dB3njbg8vqbRM/NYA==
-X-Google-Smtp-Source: AGHT+IEkXTvk5+VQsfOHU41Nt1ayqw8E86sP2+R4MnwHDGO5t2/updHhtIrmagcb2TLk839XbaUBZCLWooev7OOZdng=
-X-Received: by 2002:a17:90b:4c4b:b0:301:ba2b:3bc6 with SMTP id
- 98e67ed59e1d1-3084e777d31mr460558a91.7.1744654456437; Mon, 14 Apr 2025
- 11:14:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n7Y+mFLj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7764EC4CEE2;
+	Mon, 14 Apr 2025 18:15:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744654547;
+	bh=sTIZFHQ8cwk5U54rJCA9J1tk6XzV+o5T1Gix++ZMau0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n7Y+mFLjlqIAKApI9YiWmC+CdqN2UQFLOuVeR6KDU47hC6Hm/F6pLn5BbfSY0TqCO
+	 mjucJ7hLnSsUuc7hmw/5eB614XaVXM1p2p/KafkGT67qVVlAURl7YFNtevqZtc3Qlp
+	 TAuJjc9Z0qcy1aQzpLjxHirLNXi+UKo0KM41Ny50VNwsUZk9hZ/Z6vVoXBtY2rgU6+
+	 ZM2q6xVeW5aKsde3F/iqQPW8QsnhUTGCqtKlDzK1IX9XuIAWi15ECf6LeIhlqDsW64
+	 exPCf8cP3VI+VMrphNnYgdTlaSxV3BAbB/FtNtc5Sx56AQsxd6ZnCps6dK97Dd1mLf
+	 PSZo0oO9MrrSQ==
+Date: Mon, 14 Apr 2025 20:15:41 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] workqueue: rust: add creation of workqueues
+Message-ID: <Z_1QzTdV8mHJYdQ6@cassiopeiae>
+References: <20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Apr 2025 20:14:04 +0200
-X-Gm-Features: ATxdqUEQM3cWjHtvsETO9v7OduJ-ylsXDY8NGs7BGU0wFttRYdVgU1MA1pnQNM4
-Message-ID: <CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com>
-Subject: `u64` by `u64` div/mod in DRM QR for arm32
-To: Jocelyn Falempe <jfalempe@redhat.com>, Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
-	dri-devel <dri-devel@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com>
 
-Hi Jocelyn, Christian,
+On Fri, Apr 11, 2025 at 03:34:24PM +0000, Alice Ryhl wrote:
+> 
+> +/// An owned kernel work queue.
 
-I started build-testing arm 32-bit within my other usual routine
-tests, and I hit:
+I'd suggest to document that dropping an OwnedQueue will wait for pending work.
 
-    ld.lld: error: undefined symbol: __aeabi_uldivmod
-    >>> referenced by drm_panic_qr.rs:417 (drivers/gpu/drm/drm_panic_qr.rs:417)
-    >>> drivers/gpu/drm/drm_panic_qr.o:(<drm_panic_qr::SegmentIterator
-as core::iter::traits::iterator::Iterator>::next) in archive vmlinux.a
+Additionally, given that you're about to implement delayed work as well, we
+should also mention that destroy_workqueue() currently does not cover waiting
+for delayed work *before* it is scheduled and hence may cause WARN() splats or
+even UAF bugs.
 
-which comes from both these `u64` by `u64`:
-
-    let out = (self.carry / pow) as u16;
-    self.carry = self.carry % pow;
-
-Christian: I guess we can offer a set of `div64` functions using the C
-ones, at least for the time being, and eventually wire the actual
-operator with some support from upstream Rust. Or do you have
-something else in mind? (i.e. I think you have been discussing
-intrinsics lately)
-
-Thanks!
-
-Cheers,
-Miguel
+> +///
+> +/// # Invariants
+> +///
+> +/// `queue` points at a valid workqueue that is owned by this `OwnedQueue`.
+> +pub struct OwnedQueue {
+> +    queue: NonNull<Queue>,
+> +}
