@@ -1,107 +1,58 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80271253944;
-	Mon, 14 Apr 2025 13:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FA827F727
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 14:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744639050; cv=none; b=IykhfkeVQgETmsFPPy4NkQUuQ2nfZ78++RKJX/B/smdGysrPstGA5d+t00TM5zVNpbYRgBzpVvSqVekk2EBOqD0qnMMZP3PRjOajuQBZ5IFfBtdbIVHLMg7zJrlcAX6dos1e/BLc23N8xBVoBoVyuhcmpiKBXhQIaf5tIJ9ZfDM=
+	t=1744639232; cv=none; b=aH6S8qLprfU4Owk02IhU2BzZLOtSwZmkRQNkib2Hlj/HHAeeEqsB5rt3q+YE+J6jra1F02Kui6xBjkhnQDPeUxZ3op1WLfELhGZH74B4hlcSMAfFRtvjAVynBAI+RmY5aJH4oYzuqD9c6kFCzmxwNCvf1obbf9IPGQU2CsgQ4x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744639050; c=relaxed/simple;
-	bh=hTlTaCDBRhyHzmopgK5kw6clJ6mHQsQ12QV+6Tg8yo0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tiylCViTbi6k/YhAJNJWwjYOYeKHpmG648SYSlOYODDsc4nZwZwjNTiW03bSlMMA3HQGkjB3bcqEYMxPiIVxaiXh76b2Ltz8P0ZGPgogAw5TBaAmQHl3A97IWA4Q/aWaK9PSZFwzExzaBgtFAs/R3miZqjwBJwJCZMdFL2LxN6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kRkvUR23; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744639232; c=relaxed/simple;
+	bh=7FqzQMbtN46MspgzRLzfkBpN56u2tDVXmIle8ZV/dB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oK/hv/zKporDNrjYbfdg9OU74Tdqi62VcJAxyl3DN6gXB6KdKZewbvCl1R5dVJwnD7BDaNLZNrgC0btc3AHaFDh1lbhsXE/GwaghCiUovWK127N5SNbjIGbvxuJZBjisgauyCoHlS7i25U2/Zu3Q+eLGMyY5Tw7LzyXChMbvRmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=C1/nq6Wy; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosenzweig.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kRkvUR23"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-301b4f97cc1so831008a91.2;
-        Mon, 14 Apr 2025 06:57:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744639048; x=1745243848; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rdp5GE+wRgIg6x0EI1T25NTSyefLWkNucm+NzZ5qOjI=;
-        b=kRkvUR23m9KGLMccC/g0EpsyGx/A/y5fiIcG0pVcjjVyIJ+mCIaKuSUWVaPW6K79ky
-         DJkDZSLZ9kUaXPtVKXk03Qb/Wltmzw+H4owPYFpObdb5MBM05JpFfDG790ojdmL2OHhw
-         MuT6jca3T0VAdZsULrVORcP0/pJtpvDfvioB1rSKz/f/XFF/i2pRH4ibgQUxFJLbauPW
-         uvo5OhlRM/Dmq2IZcQlkvlW0kIE4lFOAUtzSbhUOznt0qNwsKRAKHt6Cmyd6G968rBEn
-         If4r8NUlLngg84WfKR5OvBMcLhbiID7s9Lvk2ibIwcjXSGgcD8JLGiQgHtVhesaYiwYt
-         ixEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744639048; x=1745243848;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rdp5GE+wRgIg6x0EI1T25NTSyefLWkNucm+NzZ5qOjI=;
-        b=fNmjz31uvNA9kj61ppnpphDQB0at4yzkaYrQOeV7A2BA499T6OjUxIlc8mVAHFu5Sn
-         OIQTFrrnPFnFyvb08r5FQBPjUl4cwji3ARTY8DJM6va240y+15A7jORtNK8WM0ZMK3VP
-         E+Uq6jlL/Pajh1yPM+uFpwawVYR4pkr6S/nYf0lVODDzHGGO3ETrLI0YXTCIZkxXeUWL
-         naV1bPw9L3UToYx4w1Mz+wdUFb547anB/1FdeHZ9CuBdhRUAMKaHC9+z6WY5UW0nSxRV
-         h8Hk6zd3JP/HZqqJ6jtwK9ysH4RAJYA71CX3E0rUXmQPkyZJj93PxaBA+ufVmmRi7fqS
-         6oTg==
-X-Forwarded-Encrypted: i=1; AJvYcCW94Z4LJcWbnDzRFvyhAJVqQopeUg/N5/NQea49Qu7CZSM7s/zOfetteoyzNsMsEbk9EwTSkgBHhd2ly89Ihko=@vger.kernel.org, AJvYcCXCuv0LXUh1O0aYs6xIFD9SFbhRDGVKmvwhWFrHQ66pEEfgmY5fBoK7KLrsD65zdo33Lk+4KCqcYI2M4CM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9zr4X9enwgS+GMYCIhrLC4IC49Bq5EDAVh1VGc+hww4m7RvAk
-	TqtuChwbaeNnH5ldSgextipT8PD+pj89K8g3NRE3ATwLtM8ngMNSF+POLxjCad8WJ/l+yQ6JW4P
-	qEpLDmKSpbmPz/ITW5UzrX4GbeGs=
-X-Gm-Gg: ASbGnct63o/pZw+ZNtYY3EZDK/7BvV+BFjvhYdUoejhvEgRPMhTdioPuI2ZHhhOK29P
-	0TvRNQ3sdFjAZf/Jf45o29SelpRWVH7IvctCiGgyuD7geWyBFRf1sBH7sx0p/QMqk0uVhZt+28Q
-	IBcbrGbypCo3LhDi8piTGzegv6l21A2dO4
-X-Google-Smtp-Source: AGHT+IEVpoU3m5TH8u0Yx+as9zfghejN+kqpF/0oNJiPS14RnhoQJbXfc1/tsIyAFRuuQGix5HLpGdabVAYveXcdUSE=
-X-Received: by 2002:a17:90b:1e51:b0:2ee:acea:9ec4 with SMTP id
- 98e67ed59e1d1-30823775b41mr6815248a91.3.1744639047552; Mon, 14 Apr 2025
- 06:57:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="C1/nq6Wy"
+Date: Mon, 14 Apr 2025 10:00:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
+	s=key1; t=1744639228;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7FqzQMbtN46MspgzRLzfkBpN56u2tDVXmIle8ZV/dB4=;
+	b=C1/nq6WyDyt7TNMgH7KSTbefu6FL6JN7S7c5drm+oll+tMtCDzPKK1inAS5C4q/j05WNkh
+	+Z1RSIobxa7PQto8emmyCTikM8pCNo3BfL3SzGo+PtwH9GhqV3cJTVMACImvylU8XCCZx4
+	oJKl/DbL4B1EboM13r4ozhkjOYvk1z34UUcJ1tRiwqHYZozTydi7Gtdr/yGUW19v8zfIp1
+	Ou7BY+04/4z4XmaYVrF4pzFekk+CWk0IwoIYdCkyoFANBTDpMOaKQIZuN2n4iAr2OusFgX
+	RcAIuSBJiS3vyXS8AJHAOo/Ho1KycbL6xE7qK6rQvXHZL8qVnlmGJm7vWUzPZg==
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
+	lina@asahilina.net, daniel.almeida@collabora.com, j@jannau.net,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 3/8] rust: drm: add driver abstractions
+Message-ID: <Z_0U9vrSpj_sPtG8@blossom>
+References: <20250410235546.43736-1-dakr@kernel.org>
+ <20250410235546.43736-4-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250412-b4-container-of-type-check-v2-1-f3cc9934c160@gmail.com>
- <CANiq72kAYp0Z3VNS=JgApceCXx1OVXMNJJYcm8OnZdToz0zufQ@mail.gmail.com> <CAJ-ks9mrRYkEGJ38tTkDXg0RkSP7K8=wtWBa8y6S3dxDh7ei9A@mail.gmail.com>
-In-Reply-To: <CAJ-ks9mrRYkEGJ38tTkDXg0RkSP7K8=wtWBa8y6S3dxDh7ei9A@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Apr 2025 15:57:14 +0200
-X-Gm-Features: ATxdqUGjEWmcmzAJOJBbzuklrLCZAbXoARRQjRjY57C0Mc0Tj7eW8J4SMbg0McA
-Message-ID: <CANiq72mWVRoiXisOSmwb6Dj4BSe-s1s+BTpRoU7Le9DVcvmsjQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: check type of `$ptr` in `container_of!`
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410235546.43736-4-dakr@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, Apr 14, 2025 at 3:27=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> `b4 prep --check` complains:
->   =E2=97=8F checkpatch.pl: :207: ERROR: Avoid using diff content in the c=
-ommit
-> message - patch(1) might not work
->
-> What do you suggest?
+Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
 
-(It is `checkpatch.pl` the one that complains, no?)
 
-I don't think it really matters, since `git am` is OK with it. So
-unless you are sending the patch to a subsystem that still uses
-`patch` or `quilt` or similar, and those are quite rare nowadays, I
-wouldn't worry.
-
-But if you care and want to be extra nice, then I would suggest doing
-what others do, i.e. checking the Git log. That tells me to use `>` or
-`:`, since they seem to be common. I don't see `;`.
-
-I would also recommend patching `patch`... :)
-
-Thanks for clarifying!
-
-Cheers,
-Miguel
