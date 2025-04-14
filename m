@@ -1,39 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C04019E967;
-	Mon, 14 Apr 2025 12:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE252BE7B8;
+	Mon, 14 Apr 2025 12:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744634387; cv=none; b=o37/DSLXy7OvyJNHt03ETm0aBvMTzRAm+ngSoTj9dG3lDJbRe0zeMQJn+n3+Dlj9CdELvDon5tNPkvdDNCBU61NkNLFJYxPESaxdvZJ389szyz+pfYy49e3i/jrLT/phnNAE4FOZymhYdvShGx/6E2f4F6MB4fH6EupQr3gP73w=
+	t=1744634507; cv=none; b=G3lKqpiVD97tjfDLNjzE1rwPFF3EpEaiB/a6wiqKdO1798iEfYGU9P7G3E664Sb1m3RYQ+4UJ70Y+DpKNlqMyJ8uBBeepGz9e36Q/WgAfS104I7Mo+iUf98CD3ntlbtzboE2IsEkCKU3t8HKI3Z9Lzr5ZLk+e0Aeh8BOfeOP/xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744634387; c=relaxed/simple;
-	bh=uCeUO5KN6//X5xHT59j/AmVgCSsEI4H5IxgpAbiz/Xw=;
+	s=arc-20240116; t=1744634507; c=relaxed/simple;
+	bh=3BlNmQpMp82xJdAZ0Bho2rJ8qJsNAxUz1OgSOw9idJE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C4moVV5vNSY6QKjXCNhDIueWM0VWySVntlSEtBQQsGAQBOuOA8KjnOEb/NYTRAwvw8XO5Homyqat5EqnxvzuukILflpKVPERF2KuKxYDqtm1zkJ9B3Pa+NbOYGCwUXJyNjfNGLP1U3tIqj8cOFyEcvTPJhgcmUBAjA82IVpYDcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A8z8iQ5J; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=KwWALlSlk4nZL1jnYizfCxSQyQZsmD/YngeikZiOL0V+AMWrVZGBhQ96ECFWOyrAqjWfBWOm8Qw0RFla9Nhncr4oOhm7Vv2qFnNXeAJv+MrpRgdpnexlL14HsBYr5dbJrRPKS6l5cYaHPkzK/iz7F754wDyX8Oq1BrT3irD5dY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EKHWmdSy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A8z8iQ5J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57336C4CEE9;
-	Mon, 14 Apr 2025 12:39:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EKHWmdSy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4082C4CEE2;
+	Mon, 14 Apr 2025 12:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744634386;
-	bh=uCeUO5KN6//X5xHT59j/AmVgCSsEI4H5IxgpAbiz/Xw=;
+	s=k20201202; t=1744634506;
+	bh=3BlNmQpMp82xJdAZ0Bho2rJ8qJsNAxUz1OgSOw9idJE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A8z8iQ5JDtUhthvsOGYesKDtTctTXns9XdVrBlbbrlsBBAuJ6CpCwTM4GrB7KJ2Uy
-	 4/V3zJb+5sFiCMF1AJ7CQJsC9RCWGNyrTIDL4iWdAd65vB0kYjmkSYP7u8zMIKtmLl
-	 eGDU8WNv3qgmGPR0lKsphKRo/AQbRxQPP09+Xsmt2Ll2Zx5nH78SkLzynbpfR6SX3k
-	 Axo7XLLTT49PAnMI495QzJdpxyVQF1jEmX7fXVi1arFVEVHf/K8ALu2MwzfidFZDeb
-	 Hn2dfSoDmBW7dTkWwKosPuUSP+S8Y3Y7OD6NmyARNBz4lJy5zIC8Oqs+CntXKxsBAI
-	 HPH4kvZuEuUJw==
-Date: Mon, 14 Apr 2025 14:39:42 +0200
+	b=EKHWmdSyJPedYFPNxldVA2LFgAkClYqz35karquJkKls9Qicneob6E3Pxfl6Oa5oE
+	 Tg8CdWKsVnxCoiiA8994/hHfLGB1frgaaPr5fkTJnf8pIogEmq4v7Srb80rwFUmlBM
+	 TqSqWp1o3fCHP487pbfILQxw0iqWTwjLnWwx/+z0NlHK2yyy7lszo4dBsuiG2B7JrM
+	 +Z8QDyXNXN9ALILXlxZyNCGqmMTesHOyRfy6KM/ngHyIZCKgz7k1VMHwhApNf9fyno
+	 G8JsK0v2JC3N11qrF6EaSkEMNApyij81rz5Yaz8SzqtUO4AdXrri9DCWQ16YAPqw7i
+	 P5MjfMBm5yFsA==
+Date: Mon, 14 Apr 2025 14:41:41 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: bhelgaas@google.com, kw@linux.com, kwilczynski@kernel.org
-Cc: gregkh@linuxfoundation.org, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: pci: add entry for Rust PCI code
-Message-ID: <Z_0CDioBSwQGYmvH@cassiopeiae>
-References: <20250407133059.164042-1-dakr@kernel.org>
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] rust: Use `ffi::c_char` type in firmware abstraction
+ `FwFunc`
+Message-ID: <Z_0ChQQkMtHoTo1C@cassiopeiae>
+References: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,16 +53,16 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250407133059.164042-1-dakr@kernel.org>
+In-Reply-To: <20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com>
 
-On Mon, Apr 07, 2025 at 03:29:50PM +0200, Danilo Krummrich wrote:
-> Bjorn, Krzysztof and I agreed that I will maintain the Rust PCI code.
-> Therefore, create a new entry in the MAINTAINERS file.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Sun, Apr 13, 2025 at 09:26:56PM +0200, Christian Schrefl wrote:
+> The `FwFunc` struct contains an function with a char pointer argument,
+> for which a `*const u8` pointer was used. This is not really the
+> "proper" type for this, so use a `*const kernel::ffi::c_char` pointer
+> instead.
 
-With the following changes, applied to driver-core-linus, thanks.
+With the following changes, applied to driver-core-linus, thanks!
 
-  * adjust Krzysztof's email address to his kernel.org address
+  * add firmware prefix to commit subject
 
 - Danilo
