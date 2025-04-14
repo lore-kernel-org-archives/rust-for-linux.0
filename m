@@ -1,97 +1,192 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E404D288C90;
-	Mon, 14 Apr 2025 13:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E34F27A92F
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 13:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744637244; cv=none; b=pEOMYGga2riwNWd1phBaHI3G8OI9waFTh6gdbdwJnfPcbB0S4ZX0293FUfYqVvz2RFli212J/qyg3AkdSCK5bHptO3ZhywjGWR9OnMb88aVdJDKfZ0JLn1FcgXQPdIgPSRVpk12KrxW0jlH/d5+59S7NgfaBuvHf9Q2e6IFbLuE=
+	t=1744637275; cv=none; b=luAKqM8c7olYKRFRUNlNHeDwutHZ36srbPTxPP7UNcWZYnrr1l8/uJU5fGNGMNTgLwTSRQa7+ciXGv0qjLreKL2/rXGX1/yAM4aXNA0hTeCi6t47U9FJmhhqwyXVPZmLtYAH1NkOOwNrw+VDuCeo5SKUGH94pRnoG9DcwLRFW8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744637244; c=relaxed/simple;
-	bh=LZJSiNjAH6Oa2ChLaKL004LkS+w5IQsL9RmW7A+KpbQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bm2e1HajBwpl99aPTkAcsf38gOTjLWVwRXm69/blLeV5VnDLFFkln4mKlT6HRhugmSAjC5qnGbAg/3Gl/aurtCNYLAOkPj9HsuGwPWM4AAtzomRTjBLhep/oJXMnbj/UtACBxaqsT0XbNLm06fjOxe/6vxujrIkQ5do9saKN37g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bq7dejzX; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744637275; c=relaxed/simple;
+	bh=bRZNgQ8BiEY6/t6euDls9kF8gFqemyGTjfvx3hF6028=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OMvPLZt6Fa5KMDDCfSUVPtt8MRF+XKFtNFlC6maHxjOs6Fa241drPmb2xa5sjMy+3aoTuAN9sWj2g4Tgar8bDMQGIdcyR5AFWaBBdaANTr3gqF3cdn79A+ZKa8QrmHyOw8eSoX2EVUF8Pb8xPMI4+wFIM4XdElMAR4rakMJ73Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=0B/BIb8f; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosenzweig.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bq7dejzX"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-30bfc8faef9so41071491fa.1;
-        Mon, 14 Apr 2025 06:27:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744637241; x=1745242041; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l2GarGfA59cCcsifpfMtHE+6H6aD/cbRRsW+VrYAjg8=;
-        b=bq7dejzXw+8dcRpC6N9q4KFFtG+6tZ4ds4sztHbCGsz+SLS64okhU6G7ml4AffXkg7
-         GMXa8qqpbyKWAbvGHITmngokDapbt6paLVp/MmwIwDy7Z1AX1vM8cqslX5LxgvMUuO7p
-         DFtKPUQNgVt9RLjfBDjyDaMsKUVrfT0doHavbouVTZhjUQknXz0jX2+St+5yCnLDNWVX
-         R3oTG7vEqDzEBp7xFlijh5JjOAj5k1MnJqj9R61XNBu4BkpbNh5YrRNqhLp2aZ28DpQF
-         5pEjXmu1lrxe50LfvuTXX3DFx95fdgaQRbj5H4Dsr0lXr5SHRRuCDKZvkzPVLnFwsnrP
-         mVjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744637241; x=1745242041;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l2GarGfA59cCcsifpfMtHE+6H6aD/cbRRsW+VrYAjg8=;
-        b=O7UfSrJxLtIdPtKuzHVTyElR9RN8HtexDzRLifrzJuM6dxKPxh/xFOAa3BPUsWLdMG
-         ffaOMbckeBJcy3KuFEKs4tT6WDXLDaQDercJ3XhNEtjRyVHG00aTyc248/C/wrYpe1Vg
-         D5h/Mw/tTCbJBriCWrPc00zwBOS98BHbMyrc4TNDZlqqxoyQJ4guQfxM8VO3UDcX1KnU
-         9sTjxpq8OWBPI2blnYLUsBQuVx4BMNZ7EgcBSz5KNf8ENga+vDeG7E+1aj8euCt01e/b
-         XZO9+yWyl/G08fxlIabBANBqlLK8utadLTnLvdwOjpLkENMy+P+fEpnBmrz2oc9rZ3hU
-         we1A==
-X-Forwarded-Encrypted: i=1; AJvYcCV9sqNrQaVuZG9ADwU4GCQ2gZ+jL5hBTPGVQzt1fKy9xQk6GOyp6fG0AINyedsW4lGH0j3UQXcNvhz3EBk=@vger.kernel.org, AJvYcCWufq3VKAnExedBNo9XL54ARl7x8bfGuM5BlKJBVfESIZbvVhAUCg+r8eCmDgvUNUQAj4B+VumMGnkPiUeZCNc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0pIWiHeN6rOE91IuBFF1xKXGc9Xt8Vy5KW4L5KRNdSVq7AhgR
-	O1dNKC66Cfo1S2v0vMusRzv5O/VAi25uKesnaBnrCQAiY5PTZbpN1RKuirYFaTRpa/Q9v5VDX+d
-	6SEu4/UEQF7057ypjWTUjtcYoHBs=
-X-Gm-Gg: ASbGncsa481g21BAdns35y/QgDwdW5gaDMAREBXDGprpvYKvyvENcwG500uBIBWcVx9
-	WYcWgJ2N+xKk+mvO+tOCNRxBLwwiYhc8WMixqFkON2Zc8daK4cMNsCowWRvNTS2n0+674ZGqCAA
-	EMZtFSilAOP9uAjSbPUCsOgDCO3tYqoR1cT3yO6Q==
-X-Google-Smtp-Source: AGHT+IElIOolL+iZP0f+Y+BgM95sfaRXz/LuHBUI5ARm+sVv9guruT7fCZ1Q66x3Pby6JWYAylZ00wRHOlSdxvFNl7I=
-X-Received: by 2002:a2e:b88d:0:b0:30b:a8c2:cbd3 with SMTP id
- 38308e7fff4ca-31049a80428mr46066281fa.28.1744637240405; Mon, 14 Apr 2025
- 06:27:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="0B/BIb8f"
+Date: Mon, 14 Apr 2025 09:27:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
+	s=key1; t=1744637269;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k1C5c64+p1nlRmCwVxuXDjyKl+SEqJCNd/ze97PWy/U=;
+	b=0B/BIb8f5qUt/LbiP0iShpoR3FU4ZHSAwxZPIVoLPYjNQQETr8ZxY1gAYDUfwulLT2JQSD
+	1kKygRQ218lQKl5O41sVq17IzGGli19+3nC3uaJUiQXeLvGUk5NZl/76VoyZO2FOJUBeDO
+	alHcJ5IS+WysIMpHRe379gEAL/yPJLUHdEvPdGujbOCGLEAT2aVkzJALNqyeu7VXxwx67z
+	0FkC6GUpsx+YdPp+t/2hi3JLzxspXeP7R8sPD8vSHPWQyqhyUzjrSHYd+xStEgmSW5u58W
+	c50jAZd9ZzTiprkACqzGlq5JimbJ9aJBBoWNmg0vn6BnqPJc4uRAzc6Pl0oLpQ==
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
+	lina@asahilina.net, daniel.almeida@collabora.com, j@jannau.net,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/8] drm: drv: implement __drm_dev_alloc()
+Message-ID: <Z_0NTwPsHoPFdEXF@blossom>
+References: <20250410235546.43736-1-dakr@kernel.org>
+ <20250410235546.43736-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250412-b4-container-of-type-check-v2-1-f3cc9934c160@gmail.com> <CANiq72kAYp0Z3VNS=JgApceCXx1OVXMNJJYcm8OnZdToz0zufQ@mail.gmail.com>
-In-Reply-To: <CANiq72kAYp0Z3VNS=JgApceCXx1OVXMNJJYcm8OnZdToz0zufQ@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 14 Apr 2025 09:26:43 -0400
-X-Gm-Features: ATxdqUGOesfZN0UEIar63QO9dKjiC7ZbO0odb_mk10rtxaJFzrOTVMNPZXADc4s
-Message-ID: <CAJ-ks9mrRYkEGJ38tTkDXg0RkSP7K8=wtWBa8y6S3dxDh7ei9A@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: check type of `$ptr` in `container_of!`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250410235546.43736-2-dakr@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-On Sun, Apr 13, 2025 at 4:31=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Sat, Apr 12, 2025 at 8:16=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
-> >
-> > ; diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
->
-> I am curious, what is the reason for the `;` notation? If is it to
-> avoid issues with the `diff` marker, then I think indenting with 4
-> spaces as usual would work.
+Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
 
-`b4 prep --check` complains:
-  =E2=97=8F checkpatch.pl: :207: ERROR: Avoid using diff content in the com=
-mit
-message - patch(1) might not work
-
-What do you suggest?
+Le Fri , Apr 11, 2025 at 01:55:20AM +0200, Danilo Krummrich a écrit :
+> In the Rust DRM device abstraction we need to allocate a struct
+> drm_device.
+> 
+> Currently, there are two options, the deprecated drm_dev_alloc() (which
+> does not support subclassing) and devm_drm_dev_alloc(). The latter
+> supports subclassing, but also manages the initial reference through
+> devres for the parent device.
+> 
+> In Rust we want to conform with the subclassing pattern, but do not want
+> to get the initial reference managed for us, since Rust has its own,
+> idiomatic ways to properly deal with it.
+> 
+> There are two options to achieve this.
+> 
+>   1) Allocate the memory ourselves with a KBox.
+>   2) Implement __drm_dev_alloc(), which supports subclassing, but is
+>      unmanged.
+> 
+> While (1) would be possible, it would be cumbersome, since it would
+> require exporting drm_dev_init() and drmm_add_final_kfree().
+> 
+> Hence, go with option (2) and implement __drm_dev_alloc().
+> 
+> Reviewed-by: Maxime Ripard <mripard@kernel.org>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  drivers/gpu/drm/drm_drv.c | 58 ++++++++++++++++++++++++++++-----------
+>  include/drm/drm_drv.h     |  5 ++++
+>  2 files changed, 47 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
+> index 17fc5dc708f4..ebb648f1c7a9 100644
+> --- a/drivers/gpu/drm/drm_drv.c
+> +++ b/drivers/gpu/drm/drm_drv.c
+> @@ -808,36 +808,62 @@ void *__devm_drm_dev_alloc(struct device *parent,
+>  EXPORT_SYMBOL(__devm_drm_dev_alloc);
+>  
+>  /**
+> - * drm_dev_alloc - Allocate new DRM device
+> - * @driver: DRM driver to allocate device for
+> + * __drm_dev_alloc - Allocation of a &drm_device instance
+>   * @parent: Parent device object
+> + * @driver: DRM driver
+> + * @size: the size of the struct which contains struct drm_device
+> + * @offset: the offset of the &drm_device within the container.
+>   *
+> - * This is the deprecated version of devm_drm_dev_alloc(), which does not support
+> - * subclassing through embedding the struct &drm_device in a driver private
+> - * structure, and which does not support automatic cleanup through devres.
+> + * This should *NOT* be by any drivers, but is a dedicated interface for the
+> + * corresponding Rust abstraction.
+>   *
+> - * RETURNS:
+> - * Pointer to new DRM device, or ERR_PTR on failure.
+> + * This is the same as devm_drm_dev_alloc(), but without the corresponding
+> + * resource management through the parent device, but not the same as
+> + * drm_dev_alloc(), since the latter is the deprecated version, which does not
+> + * support subclassing.
+> + *
+> + * Returns: A pointer to new DRM device, or an ERR_PTR on failure.
+>   */
+> -struct drm_device *drm_dev_alloc(const struct drm_driver *driver,
+> -				 struct device *parent)
+> +void *__drm_dev_alloc(struct device *parent,
+> +		      const struct drm_driver *driver,
+> +		      size_t size, size_t offset)
+>  {
+> -	struct drm_device *dev;
+> +	void *container;
+> +	struct drm_device *drm;
+>  	int ret;
+>  
+> -	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+> -	if (!dev)
+> +	container = kzalloc(size, GFP_KERNEL);
+> +	if (!container)
+>  		return ERR_PTR(-ENOMEM);
+>  
+> -	ret = drm_dev_init(dev, driver, parent);
+> +	drm = container + offset;
+> +	ret = drm_dev_init(drm, driver, parent);
+>  	if (ret) {
+> -		kfree(dev);
+> +		kfree(container);
+>  		return ERR_PTR(ret);
+>  	}
+> +	drmm_add_final_kfree(drm, container);
+>  
+> -	drmm_add_final_kfree(dev, dev);
+> +	return container;
+> +}
+> +EXPORT_SYMBOL(__drm_dev_alloc);
+>  
+> -	return dev;
+> +/**
+> + * drm_dev_alloc - Allocate new DRM device
+> + * @driver: DRM driver to allocate device for
+> + * @parent: Parent device object
+> + *
+> + * This is the deprecated version of devm_drm_dev_alloc(), which does not support
+> + * subclassing through embedding the struct &drm_device in a driver private
+> + * structure, and which does not support automatic cleanup through devres.
+> + *
+> + * RETURNS:
+> + * Pointer to new DRM device, or ERR_PTR on failure.
+> + */
+> +struct drm_device *drm_dev_alloc(const struct drm_driver *driver,
+> +				 struct device *parent)
+> +{
+> +	return __drm_dev_alloc(parent, driver, sizeof(struct drm_device), 0);
+>  }
+>  EXPORT_SYMBOL(drm_dev_alloc);
+>  
+> diff --git a/include/drm/drm_drv.h b/include/drm/drm_drv.h
+> index a43d707b5f36..63b51942d606 100644
+> --- a/include/drm/drm_drv.h
+> +++ b/include/drm/drm_drv.h
+> @@ -473,6 +473,11 @@ drmm_cgroup_register_region(struct drm_device *dev,
+>  
+>  struct drm_device *drm_dev_alloc(const struct drm_driver *driver,
+>  				 struct device *parent);
+> +
+> +void *__drm_dev_alloc(struct device *parent,
+> +		      const struct drm_driver *driver,
+> +		      size_t size, size_t offset);
+> +
+>  int drm_dev_register(struct drm_device *dev, unsigned long flags);
+>  void drm_dev_unregister(struct drm_device *dev);
+>  
+> -- 
+> 2.49.0
+> 
