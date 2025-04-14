@@ -1,100 +1,88 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFE028B4E9;
-	Mon, 14 Apr 2025 17:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA474274FD8;
+	Mon, 14 Apr 2025 17:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744652711; cv=none; b=LBaHrUHfuPzLjnNh5y6CIep1ujtm8Xb1vxKJh/5X0JeXY8slfEyEtqnzhLzlgXdObP9QK9/6MiNKaKoWEN3YU8K0wYjXcbz3UgB2Kw0dN7/EDolc7mpEohGeuqWQTdoPMhNfmi9dp9OjwB71HDDD1LO04ZkJXT9Y/+MGqLLro4s=
+	t=1744652841; cv=none; b=ExLs2iLjlndzByt5su8ZT/xRoY1ontGn+Xua3OJelsXuBK8JqXWUaHTJDiK3eL92NuC8n1ev5aHcP276nEUsY1wunmwr1Ii9znVMYo0Cm+8rEZ+hp7xMuYaGklvZARX012u17H5mE3kZjldpBwL0HhN8cIoxwCLx/HmropsQ2Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744652711; c=relaxed/simple;
-	bh=M2AKqkaCjSql4LURtrMJTH44kcFM1m5wnz0bivArmL8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fBZbZzt26hJGMbmA6Y28kTmsBvFpaDt1pjG1haiKnGQUA+ITM1UzokWjm8tKeqadG0K4GlUjNz3kp8zApyaPWjtLKpTJjAHLnHeriyXa2tfqO3D2BtxHDcGKiu4vCAOfQWKynsrrbotqLs2i5cs5ucSa0pgSxUBpplu1EwE1hjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pqa9N0Nr; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744652841; c=relaxed/simple;
+	bh=n52F+k3/sJAswTnbsTZnWYDe6nfThXy3jd0ISfC88Ek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cS49kB7XXNaD/zpERDx0TyKwYUtnHijU16WZXViGXfsTCYo2WGqpTAcRbU4NJECQ6wr5Zwp0qeHsQr+HNgjxNoTW1qqSGs3lIP4d8sMe+7A5kXpZsfPduKgXaOXVGdYUeocuvv27j2q2xhibdJuc37p7n0IEdHSMMjmH1rYZ+cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9Kyrger; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pqa9N0Nr"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-548409cd2a8so6058638e87.3;
-        Mon, 14 Apr 2025 10:45:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744652708; x=1745257508; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M2AKqkaCjSql4LURtrMJTH44kcFM1m5wnz0bivArmL8=;
-        b=Pqa9N0Nru50Cb+Z2g6AZZ/QM+kG3C6R8T9KuPKTb7VG9HLoDP5LO3gJemmrDof965y
-         jbhw4d5K0BwsZa/0vvbJiqsPLlzGzAu038+dePqkY/+VI/te8uTnBm3QVkgu6gNo4NYl
-         be5YatTi9cYNiMCV49qkAV6Fj0xeL4IwVdT+wq9VFFdTYPQe92xw2+azJwOQ2jY7SMO+
-         LFOSs/+GljJW9hZzU8cWD9Oq2y+iTi8AT8cxkF1ElfbeMUdCvVNM6doUUNj+jpz0FB59
-         0Tr4xAQC/X6D4qc287CmqRYHGSfXsUOVpWuWWltvfgxK3l7eWJtx8VgzfSFFbcJB9p+B
-         tYAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744652708; x=1745257508;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M2AKqkaCjSql4LURtrMJTH44kcFM1m5wnz0bivArmL8=;
-        b=r4nbAgqQo1/TFLWdIszV9LaEgmpUoUj2joxndULZGlHkBFD8YBc/fGNTecR1WYBTyJ
-         m0gTdL/fAVco5KkrLsNO08M8NMe0ghjFrxSDtvgP0jyNPChcgWBEp1sZotES4RV8ZM3/
-         QBVJmz6PdBS6knOXZfmBHP6qdMU+U4Q5iM5pzjtSIizva1FGW1fPbjhbJI7ZAlpuU+hV
-         x4RYeNbiEK8OUkhBVkIsteLN/M/O9U6zXPasvpos3IdNbL+PIn782ta0g7Pv9clJcnzo
-         TNFDcs2FL1Iikz8cIQizO2eOF9puYfleYszFZyVU8p+2P1iX1I2C3NcnDRyP4GU/A+I6
-         iNSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWfrI/hC5vIBz61vD69/QNi4ubT9TK1mZHMJKLi32xSpQgeAKS2zfVxurtT7TloEI90jkr3ZcUHzl+r@vger.kernel.org, AJvYcCXE4nJ/rmPHkVnqmWj7bMS3tYZLxIotO5pQrp6dpgtjUYOnLrqhROyPbH3gnA2Y2rtVMxn4sfdATDKWhe/2vqM=@vger.kernel.org, AJvYcCXw1vBlxPuBKZEqayq8Y3HgUUUDPMssUZcI+TmG+wRIZtCGf1X8pUzdYpSdFy8aIDocHDpoQcshTGG6Ozg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywv/WtyJA7VON+Rd4Ew38KMWi3bNTggMqCur9ltsDesji/o7MZQ
-	9ALF/QEDoyB92VdeQMeCeVORUMg8oJpDgUAdMONI3B+LQ+Cv4QOjb3XwiMBtU2ZbdBdKqO+F0jm
-	s/UbG0zaVSWO4plRLBYcETUJSiM8=
-X-Gm-Gg: ASbGncuMNW3A3qS850tW8AVK8107AI1dlmxrtvgX9nmwP4F9y6Zq5RwbiwDJnyLuhnw
-	JlRCPsD411aOtPuXxefu0o5ok4TEKMxqV2HoULBXbKcpaDt+4TBYCm0iUm3cjMzKvIjfghSnLIJ
-	3LkQSfiQNb84t9/bP938keoY3V40P7CXe8Vlr4SQ==
-X-Google-Smtp-Source: AGHT+IFlAX/ZVd2XkgfST9Qg2yZrfo/F9AQfOqBP+2TavGwjIcjNWxwASHKuF7mQUp9tETKQ9kI1BZJ5ZI1mBxMqQ2E=
-X-Received: by 2002:a05:6512:b82:b0:549:38d5:8858 with SMTP id
- 2adb3069b0e04-54d45298faamr3916877e87.20.1744652707674; Mon, 14 Apr 2025
- 10:45:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9Kyrger"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFDFC4CEE2;
+	Mon, 14 Apr 2025 17:47:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744652840;
+	bh=n52F+k3/sJAswTnbsTZnWYDe6nfThXy3jd0ISfC88Ek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=l9KyrgerRz6+gBiMIpCsSo1fLFiB3LvVA1NAP58tT/VKiJj3ZVIp0AzhilveQwBrU
+	 8xyrEKfxiyFSV+KCY+xWlGM97DwZOHLCyriSUbHuECTgUJqzOXznVbbMkepKG9CDAF
+	 RkIewoRm+ZQ3lVaOSumqmBiS/SonkriSOT4ey4akSjonH8VlZ4LcQwfunFzBWntqym
+	 gyvrkrmDuKCG/seitQBA2bcW78sTkur7ozWpQpRldAqzsyyVCj/DfScRKA5shcoDbk
+	 dMH15Bh1ovqdezJx1vgN05joCHhGqJ5jCKFTuG613f1A8Qzcaf4HzAJwiAfAhSpxjy
+	 nVmrme4ipzwAw==
+Date: Mon, 14 Apr 2025 07:47:19 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] workqueue: rust: add delayed work items
+Message-ID: <Z_1KJ98k7WL5qWfS@slm.duckdns.org>
+References: <20250411-workqueue-delay-v1-1-26b9427b1054@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250411-no-offset-v3-1-c0b174640ec3@gmail.com>
- <CAH5fLgg6_U4OAnDXy1eM98ur=MZonnDq3tk2o=KAf+YXNPtBbQ@mail.gmail.com>
- <Z_1E2z-l1xG--BSc@slm.duckdns.org> <CANiq72keUDCzhwW9E0aw-QV4ST7k3zqit1Ea=2yj2VdKS1ujWw@mail.gmail.com>
- <Z_1H6KkIt0YnkeLB@slm.duckdns.org>
-In-Reply-To: <Z_1H6KkIt0YnkeLB@slm.duckdns.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 14 Apr 2025 13:44:31 -0400
-X-Gm-Features: ATxdqUG4UJH8DhoXgzxBjaf74NSn7cpZwQ9hhh65DHGFNp7n00u-q5jkDU5JVzc
-Message-ID: <CAJ-ks9k2FEfL4SWw3ThhhozAeHB=Ue9-_1pxb9XVPRR2E1Z+SQ@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: workqueue: remove HasWork::OFFSET
-To: Tejun Heo <tj@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250411-workqueue-delay-v1-1-26b9427b1054@google.com>
 
-On Mon, Apr 14, 2025 at 1:37=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
->
-> On Mon, Apr 14, 2025 at 07:34:51PM +0200, Miguel Ojeda wrote:
-> > On Mon, Apr 14, 2025 at 7:24=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote=
-:
-> > >
-> > > Acked-by: Tejun Heo <tj@kernel.org>
-> > >
-> > > Please let me know how you want it routed.
-> >
-> > If you would like to take it, then that would be nice. Otherwise, I
-> > can also take it.
->
-> Alright, applied to wq/for-6.16.
+On Fri, Apr 11, 2025 at 11:12:29AM +0000, Alice Ryhl wrote:
+> This patch is being sent for use in the various Rust GPU drivers that
+> are under development. It provides the additional feature of work items
+> that are executed after a delay.
+> 
+> The design of the existing workqueue is rather extensible, as most of
+> the logic is reused for delayed work items even though a different work
+> item type is required. The new logic consists of:
+> 
+> * A new DelayedWork struct that wraps struct delayed_work.
+> * A new impl_has_delayed_work! macro that provides adjusted versions of
+>   the container_of logic, that is suitable with delayed work items.
+> * A `enqueue_delayed` method that can enqueue a delayed work item.
+> 
+> This patch does *not* rely on the fact that `struct delayed_work`
+> contains `struct work_struct` at offset zero. It will continue to work
+> even if the layout is changed to hold the `work` field at a different
+> offset.
+> 
+> Please see the example introduced at the top of the file for example
+> usage of delayed work items.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Looks like you took it without the prerequisite patch.
+FWIW, looks fine to me on the first glance. Please let me know how you want
+to route it. If you want it to be through the wq tree, please let me know
+what to do about the dependencies (I just applied the "remove
+HasWork::OFFSET" patch to wq/for-6.16 but don't have the other one).
+
+Thanks.
+
+-- 
+tejun
