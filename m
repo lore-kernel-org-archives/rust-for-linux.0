@@ -1,101 +1,107 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4C828937B
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 13:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80271253944;
+	Mon, 14 Apr 2025 13:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744638919; cv=none; b=KGWZpCsrECa/aN2XgVDrMXa5Qy1YWk8pycy+cSahtEQwP/K7PA+kIibbUcWFZPe3WoGVgWjDp4nyHx5X7QmFJpuKZartSg4qidRXow7hcMvyadrXOsYUsATA3wKuBWfKg5S6zU2IGBJLNs7IH0MxtbkC+B0G4HnCatS0M3y1PlM=
+	t=1744639050; cv=none; b=IykhfkeVQgETmsFPPy4NkQUuQ2nfZ78++RKJX/B/smdGysrPstGA5d+t00TM5zVNpbYRgBzpVvSqVekk2EBOqD0qnMMZP3PRjOajuQBZ5IFfBtdbIVHLMg7zJrlcAX6dos1e/BLc23N8xBVoBoVyuhcmpiKBXhQIaf5tIJ9ZfDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744638919; c=relaxed/simple;
-	bh=pojWnocpsroxcE/0P6xgtWHEuGyxbIHoIa33XvYDLqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tFFZiNRq8ZclHe0CeH5w92wybxk166eViJPzpuo0MuVPFLKr/rOJYpfm+fF+dKWkXDt0B2Bso0TACCv17QckEyVJDarz+31ejf36RTMflIkag55i8C/1JLiZFkgffZ2yZd0YE9AuBVIqOIxH5H2h5eI7opH2wOz5eYd4DEa6f98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io; spf=pass smtp.mailfrom=rosenzweig.io; dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b=Rn3zdGMO; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosenzweig.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosenzweig.io
+	s=arc-20240116; t=1744639050; c=relaxed/simple;
+	bh=hTlTaCDBRhyHzmopgK5kw6clJ6mHQsQ12QV+6Tg8yo0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tiylCViTbi6k/YhAJNJWwjYOYeKHpmG648SYSlOYODDsc4nZwZwjNTiW03bSlMMA3HQGkjB3bcqEYMxPiIVxaiXh76b2Ltz8P0ZGPgogAw5TBaAmQHl3A97IWA4Q/aWaK9PSZFwzExzaBgtFAs/R3miZqjwBJwJCZMdFL2LxN6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kRkvUR23; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rosenzweig.io header.i=@rosenzweig.io header.b="Rn3zdGMO"
-Date: Mon, 14 Apr 2025 09:54:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosenzweig.io;
-	s=key1; t=1744638912;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F/MdT/GT22lhEdP4LBdu35R2s9GJelO01gNuCCRQDT4=;
-	b=Rn3zdGMOJ2Aq03sA0vAX3WocF09ITQjWxjHVhumGNPfeH4iPJ4hgq9jBrCfq1WkAza+4JT
-	iMUIHPlrqTFLeHT9ZoAHyzSp6YO299mtSrXTZGiz/3FlI+VZr60+Xkte/0sKFdfwWn7QFG
-	9aGM2mOH+0HjDPfsUZkJ/9ieQ9jlAxHB5gFi/qmqrCm1rnsjJ8ODQ0xShwg59N1dMQwqzm
-	2mG5VYKHDriupJbobqzyYB335jbp5gu0BHFCY2Ur2HaiFZFyABx/ipitsi0a7M6Y/+JzXl
-	YexETBaB0/i+Rgwu3TZRMiiTjr6SF242bZJqbTgc5JW5jrwE1UCyBEynU8Ky3w==
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
-	lina@asahilina.net, daniel.almeida@collabora.com, j@jannau.net,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/8] rust: drm: ioctl: Add DRM ioctl abstraction
-Message-ID: <Z_0Ts6Tj6NeaDBo0@blossom>
-References: <20250410235546.43736-1-dakr@kernel.org>
- <20250410235546.43736-3-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kRkvUR23"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-301b4f97cc1so831008a91.2;
+        Mon, 14 Apr 2025 06:57:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744639048; x=1745243848; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rdp5GE+wRgIg6x0EI1T25NTSyefLWkNucm+NzZ5qOjI=;
+        b=kRkvUR23m9KGLMccC/g0EpsyGx/A/y5fiIcG0pVcjjVyIJ+mCIaKuSUWVaPW6K79ky
+         DJkDZSLZ9kUaXPtVKXk03Qb/Wltmzw+H4owPYFpObdb5MBM05JpFfDG790ojdmL2OHhw
+         MuT6jca3T0VAdZsULrVORcP0/pJtpvDfvioB1rSKz/f/XFF/i2pRH4ibgQUxFJLbauPW
+         uvo5OhlRM/Dmq2IZcQlkvlW0kIE4lFOAUtzSbhUOznt0qNwsKRAKHt6Cmyd6G968rBEn
+         If4r8NUlLngg84WfKR5OvBMcLhbiID7s9Lvk2ibIwcjXSGgcD8JLGiQgHtVhesaYiwYt
+         ixEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744639048; x=1745243848;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rdp5GE+wRgIg6x0EI1T25NTSyefLWkNucm+NzZ5qOjI=;
+        b=fNmjz31uvNA9kj61ppnpphDQB0at4yzkaYrQOeV7A2BA499T6OjUxIlc8mVAHFu5Sn
+         OIQTFrrnPFnFyvb08r5FQBPjUl4cwji3ARTY8DJM6va240y+15A7jORtNK8WM0ZMK3VP
+         E+Uq6jlL/Pajh1yPM+uFpwawVYR4pkr6S/nYf0lVODDzHGGO3ETrLI0YXTCIZkxXeUWL
+         naV1bPw9L3UToYx4w1Mz+wdUFb547anB/1FdeHZ9CuBdhRUAMKaHC9+z6WY5UW0nSxRV
+         h8Hk6zd3JP/HZqqJ6jtwK9ysH4RAJYA71CX3E0rUXmQPkyZJj93PxaBA+ufVmmRi7fqS
+         6oTg==
+X-Forwarded-Encrypted: i=1; AJvYcCW94Z4LJcWbnDzRFvyhAJVqQopeUg/N5/NQea49Qu7CZSM7s/zOfetteoyzNsMsEbk9EwTSkgBHhd2ly89Ihko=@vger.kernel.org, AJvYcCXCuv0LXUh1O0aYs6xIFD9SFbhRDGVKmvwhWFrHQ66pEEfgmY5fBoK7KLrsD65zdo33Lk+4KCqcYI2M4CM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9zr4X9enwgS+GMYCIhrLC4IC49Bq5EDAVh1VGc+hww4m7RvAk
+	TqtuChwbaeNnH5ldSgextipT8PD+pj89K8g3NRE3ATwLtM8ngMNSF+POLxjCad8WJ/l+yQ6JW4P
+	qEpLDmKSpbmPz/ITW5UzrX4GbeGs=
+X-Gm-Gg: ASbGnct63o/pZw+ZNtYY3EZDK/7BvV+BFjvhYdUoejhvEgRPMhTdioPuI2ZHhhOK29P
+	0TvRNQ3sdFjAZf/Jf45o29SelpRWVH7IvctCiGgyuD7geWyBFRf1sBH7sx0p/QMqk0uVhZt+28Q
+	IBcbrGbypCo3LhDi8piTGzegv6l21A2dO4
+X-Google-Smtp-Source: AGHT+IEVpoU3m5TH8u0Yx+as9zfghejN+kqpF/0oNJiPS14RnhoQJbXfc1/tsIyAFRuuQGix5HLpGdabVAYveXcdUSE=
+X-Received: by 2002:a17:90b:1e51:b0:2ee:acea:9ec4 with SMTP id
+ 98e67ed59e1d1-30823775b41mr6815248a91.3.1744639047552; Mon, 14 Apr 2025
+ 06:57:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250410235546.43736-3-dakr@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+References: <20250412-b4-container-of-type-check-v2-1-f3cc9934c160@gmail.com>
+ <CANiq72kAYp0Z3VNS=JgApceCXx1OVXMNJJYcm8OnZdToz0zufQ@mail.gmail.com> <CAJ-ks9mrRYkEGJ38tTkDXg0RkSP7K8=wtWBa8y6S3dxDh7ei9A@mail.gmail.com>
+In-Reply-To: <CAJ-ks9mrRYkEGJ38tTkDXg0RkSP7K8=wtWBa8y6S3dxDh7ei9A@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 14 Apr 2025 15:57:14 +0200
+X-Gm-Features: ATxdqUGjEWmcmzAJOJBbzuklrLCZAbXoARRQjRjY57C0Mc0Tj7eW8J4SMbg0McA
+Message-ID: <CANiq72mWVRoiXisOSmwb6Dj4BSe-s1s+BTpRoU7Le9DVcvmsjQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: check type of `$ptr` in `container_of!`
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-+/// `user_callback` should have the following prototype:
-+///
-+/// ```ignore
-+/// fn foo(device: &kernel::drm::Device<Self>,
-+///        data: &mut bindings::argument_type,
-+///        file: &kernel::drm::File<Self::File>,
-+/// )
+On Mon, Apr 14, 2025 at 3:27=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> `b4 prep --check` complains:
+>   =E2=97=8F checkpatch.pl: :207: ERROR: Avoid using diff content in the c=
+ommit
+> message - patch(1) might not work
+>
+> What do you suggest?
 
-Needs to be `-> Result<u32>`, please update
+(It is `checkpatch.pl` the one that complains, no?)
 
-> +                            // SAFETY: This is just the ioctl argument, which hopefully has the
-> +                            // right type (we've done our best checking the size).
+I don't think it really matters, since `git am` is OK with it. So
+unless you are sending the patch to a subsystem that still uses
+`patch` or `quilt` or similar, and those are quite rare nowadays, I
+wouldn't worry.
 
-"hopefully" in a SAFETY comment raises eyebrows!
+But if you care and want to be extra nice, then I would suggest doing
+what others do, i.e. checking the Git log. That tells me to use `>` or
+`:`, since they seem to be common. I don't see `;`.
 
-The argument has the right type /by definition/ once we know the ioctl
-name and the size. If userspace passes the wrong type, that's not our
-problem - we're still doing the right cast from the perspective of the
-kernel. It's up to the driver to reject bogus values.
+I would also recommend patching `patch`... :)
 
-Maybe something like
+Thanks for clarifying!
 
-    SAFETY: The ioctl argument has size _IOC_SIZE(cmd), which we
-    asserted above matches the size of this type, and all bit patterns of
-    UAPI structs must be valid.
-
-This also documents the actual safety invariant we're relying on (that
-all bit patterns must be valid... which is "obvious" for correct uapis
-but not true for eg repr(Rust)!)
-
-> +                                Ok(i) => i.try_into()
-> +                                            .unwrap_or($crate::error::code::ERANGE.to_errno()),
-
-It would be great if we could statically guarantee that the types will
-fit to avoid this error path (i.e. static assert that the handler
-returns Result<u32> and sizeof(u32) <= sizeof(ffi:c_int)). But I don't
-know how to do that in Rust so no action required unless you have a
-better idea ;)
-
----
-
-Anyway, with those two comments updated, this patch is
-
-    Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-
-Thanks!
+Cheers,
+Miguel
