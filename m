@@ -1,115 +1,141 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D13A2820CC;
-	Mon, 14 Apr 2025 14:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202612D0A39
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 14:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744639501; cv=none; b=ro+X3OP6/oTZT/4GxEHM2bcSGF644axo48pujXFzV8FzgSfAY/OUjAYH9ox8dF2r3cuDadv9jmwc6+aToA05wEHA7e+KMJB6vHWMOFNH910NpNHtwzU7kk0cq2NzeGhSh7Vj/EeXxx2hBHiO+WEXYMLpmXMgyBBVxZuO/Nl8d+g=
+	t=1744639563; cv=none; b=jS7tDuNlziwale5Pry+ZnW+OjxHLhbkbeoYtRt6PAy4axKlCB+exei2YlYsCsIQuggma0FdzhaTbuZklkwd+IrDRXz8A1yYzAptKvRgSxwbmYRFtmcm0gJaNu14QxMOhrLyULKi5L8whkwAS9ttD8EqFRXw8hgZBs2wQSkX6l6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744639501; c=relaxed/simple;
-	bh=xcdfEB5chZKoeptFY4xJ0U1KQgjZ1oaFIrUheA6D+Uk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SpncJqoNdZhVHW5/bh4MKrgxndf+x4J47rwBdwh5XdA+A0PaHeS21yFRKByvey5dP/LV/Jdf3NDE/i8a8B2kaUiVFPQfHfd4PmUGfGo51F09VTuCaGHOYpVt45k7XU/J1/fbY28cJSDmvNzO3AGFpo2Bl+mhxzUjj4DDD+h/jbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ws8v15nd; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744639563; c=relaxed/simple;
+	bh=1Tpyq5xBZ9bBoXA1okFnsjXuvR0LvRO7JEf1SqZG1A0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Qjl7YDCSJl8GOKvS6I1SIP5W4YI+tBtJvlU0XpSmusgqCuLxGt7FuleDj4/QI/99zofvgSMtTQUPkIxJ165gemzoqIuEQb1/4uSEUeJ3Gon7HpBj+td5nj8Oko7OzDuMxlR/joU/jtAMJWQo0JTWhctZ9WB6gaaaZuNcc9kOueg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CP0V714z; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ws8v15nd"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30f30200b51so43506941fa.3;
-        Mon, 14 Apr 2025 07:04:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CP0V714z"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3912a0439afso1800518f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 07:06:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744639497; x=1745244297; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3c3TpHIM4RMmyecfazoCsNtCiwNPm1S/fai+tCg7ySs=;
-        b=Ws8v15ndMTJBf6Ri53E3p6/NTqMceApFcGeffDIaqzC4tnTM5KSce+ELIfLUvZnwi7
-         si/qHctYJ+ZXLeriGyUzVYxxr+z8rD6YMhwnr33W+L/HFsp6ungaJ0r+pwb88C47AdQM
-         UDg/JRPRoq7u1i+PJiJo+mtCznRgPb9z630Ywy1spJAyhHWCSMMUVrrF3+NAxFcJBFd4
-         UwNogcFIsrWXoATOSzmy3sU/+cPelINXzfFwI+i97kUdsETvRAiWkI2Axsdp5axJo9y5
-         40OGCeyQOD0PsORVTBk+dB1CLinFEJeCdzashaROvFiwJObAWWdy56OUiP6OhbHG4plN
-         be0g==
+        d=google.com; s=20230601; t=1744639560; x=1745244360; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pquPnA1PEeiSIlwvjcbZGrtyLxq30mwUO7DzjIyEInU=;
+        b=CP0V714zVRvI6BPoFKJv/511uVdtY2KKjP4J5SRbnEKmAbGQGsEaCJhVwlg3DsMa+m
+         6se662E0q3EkwI8bI3zQx8ljO+zgXKMb4BT/3nynxDTC6qxDCjxc7XWfeZo80ny/WGDt
+         +FJxDxAa53aQxF+hf1IBrCB7bBnzEQbT2Su06hXDjNIrLnBI5FG+mkHFxUM9PDnfPe12
+         EwwJbxnAxXuzxINt8s1diavKHShPAVa6ASO9XtWGZvbpoLIp41KqbqqCz5nTOLxTeoWH
+         ToKtDrzLDczrBn1ZyzD6Y/y3ntjH7TJdGcM00nNBKYTy/54lScYYlCgkY8fyVDpWWmJi
+         9SkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744639497; x=1745244297;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3c3TpHIM4RMmyecfazoCsNtCiwNPm1S/fai+tCg7ySs=;
-        b=BcgzDd3mHBZCn7BilfBaCHLQIQtGj74TjYvMRAQY0RkR4HN0y0aEZ/l5UleSupg1AZ
-         6uGI2rr7t9YNmMiXQ82wZ5lyWDLMY1ymPK5MwkMczY7BtRDhOWiqCkqpytWKvXhhz4uj
-         ZGDOm/zKVbD/HHjufCqFVjMyPgC6LyFsutXQpNqPntkudVZUHwsMpuoRVYemDTP2mGlR
-         IlyKpnG3n0jqJ7h/9kUrf6/KF/ilW4n3aKGoiEWz+njY7JMd9X991/zI0CdI1xMduaJv
-         38L3Ci/z69rD/b6m6Ml0owIuRE2WNR3Bn2bnE8bY/9071MHfntkVlr5WB6+bVLw3+Jep
-         Iu1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW4YVVJWRcRIVrDEiJvF8WtNDzP5zZcFuVO6RZ3K+PJgBTcnjEC1VbDJpJnGlR6GvJIqciOoWXYQmQzGGI=@vger.kernel.org, AJvYcCWc2TMxfq71+7JEREQb1lKDUpOVZtO39veZe8uiNZggmlzlxOZh4rzX52HBVMGdmMLG7UQ7Y+AeqF3gJF8W3Cw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0nlyqq9d+h+lXsHmM6NdjoVDrkIAXDkngxvDg/UxLxDwxyH+f
-	Xe2ETuFmM23h8UcIU9WM+5OVLx1fH2bpJJGk/+JO6u5rFhPjqEa67lDs1Hwbr2GZgjX2E6j4kZt
-	S6GFZtNuMoU3y6lvJzXJLjhB4JOg=
-X-Gm-Gg: ASbGncsSiauk+i82WzmQw40TcMvFe7L4ZwEPJxBnv0RQx7X1QttpLzPemPZfEiYBfKw
-	PlLb0yByH8AhZ1SaJaQq289q9qNmeV0RNLU/lYlL4DNTOypEJY/VCfBbaSj6RHLvAh+mbNIARBH
-	F/mU1SJdlgP8mSvGgjbIRnWzbXNb2NVhWidmsbjg==
-X-Google-Smtp-Source: AGHT+IETlytKJr8LYJQ63o0Q44kILG+njvce1c1TbmYW+W2MPLIL3bpNPCFeGE8YQZp4KTNevlybSTufY1jcL6sKLR0=
-X-Received: by 2002:a2e:be8f:0:b0:30b:d17b:26aa with SMTP id
- 38308e7fff4ca-310499b58d7mr38578641fa.2.1744639497017; Mon, 14 Apr 2025
- 07:04:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744639560; x=1745244360;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pquPnA1PEeiSIlwvjcbZGrtyLxq30mwUO7DzjIyEInU=;
+        b=akV+RSQsBQGZmo7LeU1+GYi7ZD0ejWEUaXjPcFvfdKMt2fua5ODwlDbHmDPZMKc6ab
+         faqs4CbeNtj3QbEsunHmEegRhzCj6HYjFcHnCuNtQm2TiCWkfQMVwBjRW+nEvQtPyptQ
+         ejm3iRzOlPTgWl1Gvpr4EWOAgu4nt23ImP9ZLf/h0mkxnhxUfFv2HDef7w+Yl9BmUUw0
+         Tt49IXc1P8SzWTUHGJulgcEQS9dcvKh8Fi5tqunU5RS6JyEbu8dl/IBsw1kar8spnt6m
+         TLkQUSFzf8cpWywxGfaYvAPyiMx9X9B6dyMw/ABZ4y3HM/dlPM+ikI2Zmct8lq7Etnor
+         zvtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/Q/UPVGYUwACw+ISmVhjt3u/RP002GPMILCmkMYrUN2CO6FyP/qHPJoKt6XWR2nwpJKgtfRzp6ISnJs5Hbg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzD6KustLep7GNNo3Z3QiVZF2P8Dkft2eojlOvSYEltHzet6ws5
+	olSW7Vb5MYQRJ5KANk722CoFyHa4Jz7R+6Xscy30vXG8KXyNrA5smb7/9dzHAbfGw6GXDH29UDu
+	P/f0Y/9l46uoY1A==
+X-Google-Smtp-Source: AGHT+IGQbHeuxbBbZFXwHsYpF9g2N88M1bkKFXroszwDXJntxCkbevVk0P6QDHTRfo+/ugItOAMd6LUWJaI08es=
+X-Received: from wmbev15.prod.google.com ([2002:a05:600c:800f:b0:43d:7e5:30f0])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2483:b0:39a:d32c:fb5e with SMTP id ffacd0b85a97d-39ea51f577emr9570064f8f.21.1744639560478;
+ Mon, 14 Apr 2025 07:06:00 -0700 (PDT)
+Date: Mon, 14 Apr 2025 14:05:58 +0000
+In-Reply-To: <D94KNIHTJOWU.1EHA7217LSC4S@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250412-b4-container-of-type-check-v2-1-f3cc9934c160@gmail.com>
- <CANiq72kAYp0Z3VNS=JgApceCXx1OVXMNJJYcm8OnZdToz0zufQ@mail.gmail.com>
- <CAJ-ks9mrRYkEGJ38tTkDXg0RkSP7K8=wtWBa8y6S3dxDh7ei9A@mail.gmail.com> <CANiq72mWVRoiXisOSmwb6Dj4BSe-s1s+BTpRoU7Le9DVcvmsjQ@mail.gmail.com>
-In-Reply-To: <CANiq72mWVRoiXisOSmwb6Dj4BSe-s1s+BTpRoU7Le9DVcvmsjQ@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 14 Apr 2025 10:04:20 -0400
-X-Gm-Features: ATxdqUEUWgKttekZwuWxx3UUZYix0046kudWQ8DvLWfwIt7tA90VAkkMFv6CNaA
-Message-ID: <CAJ-ks9m72Wrv_=Sf+zsfkKTbz8AdeY-evRwhNqdvAQusV00bLQ@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: check type of `$ptr` in `container_of!`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20250411-rust_arm_fix_fw_abstaction-v1-1-0a9e598451c6@gmail.com>
+ <D93TIWHR8EZM.25205EFWBLJLM@proton.me> <CANiq72kc4gzfieD-FjuWfELRDXXD2vLgPv4wqk3nt4pjdPQ=qg@mail.gmail.com>
+ <D94KNIHTJOWU.1EHA7217LSC4S@proton.me>
+Message-ID: <Z_0WRohxxMYqKxM5@google.com>
+Subject: Re: [PATCH] rust: fix building firmware abstraction on 32bit arm
+From: Alice Ryhl <aliceryhl@google.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 14, 2025 at 9:57=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Mon, Apr 14, 2025 at 3:27=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
+On Sat, Apr 12, 2025 at 10:01:22AM +0000, Benno Lossin wrote:
+> On Fri Apr 11, 2025 at 4:15 PM CEST, Miguel Ojeda wrote:
+> > On Fri, Apr 11, 2025 at 2:46=E2=80=AFPM Benno Lossin <benno.lossin@prot=
+on.me> wrote:
+> >>
+> >> Ah I overlooked this, you should be using `kernel::ffi` (or
+> >> `crate::ffi`) instead of `core`. (for `c_char` it doesn't matter, but =
+we
+> >> shouldn't be using `core::ffi`, since we have our own mappings).
 > >
-> > `b4 prep --check` complains:
-> >   =E2=97=8F checkpatch.pl: :207: ERROR: Avoid using diff content in the=
- commit
-> > message - patch(1) might not work
+> > In 6.6, C `char` changed to unsigned, but `core::ffi::c_char` is
+> > signed (in x86_64 at least).
 > >
-> > What do you suggest?
->
-> (It is `checkpatch.pl` the one that complains, no?)
+> > We should just never use `core::ffi` (except in `rust/ffi.rs`, of
+> > course) -- I think we should just add the C types to the prelude
+> > (which we discussed in the past) so that it is easy to avoid the
+> > mistake (something like the patch attached as the end result, but
+> > tested and across a kernel cycle or two) and mention it in the Coding
+> > Guidelines. Thoughts?
+>=20
+> Yeah sounds like a good idea.
+>=20
+> > I tried to use Clippy's `disallowed-types` too:
+> >
+> >     disallowed-types =3D [
+> >         { path =3D "core::ffi::c_void", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_char", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_schar", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_uchar", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_short", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_ushort", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_int", reason =3D "the `kernel::ffi` ty=
+pes
+> > should be used instead" },
+> >         { path =3D "core::ffi::c_uint", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_long", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_ulong", reason =3D "the `kernel::ffi`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_longlong", reason =3D "the `kernel::ff=
+i`
+> > types should be used instead" },
+> >         { path =3D "core::ffi::c_ulonglong", reason =3D "the `kernel::f=
+fi`
+> > types should be used instead" },
+> >     ]
+> >
+> > But it goes across aliases.
+>=20
+> We could make the types in `ffi` be transparent newtypes. But not sure
+> if that could interfere with kCFI or other stuff.
 
-Yes, of course, I just mentioned b4 because that is how I invoke it -
-better to over-communicate :)
->
-> I don't think it really matters, since `git am` is OK with it. So
-> unless you are sending the patch to a subsystem that still uses
-> `patch` or `quilt` or similar, and those are quite rare nowadays, I
-> wouldn't worry.
->
-> But if you care and want to be extra nice, then I would suggest doing
-> what others do, i.e. checking the Git log. That tells me to use `>` or
-> `:`, since they seem to be common. I don't see `;`.
+Transparent newtypes for all integers would be super inconvenient.
 
-Will use `>` on respin since I need to fix up that comment anyhow.
-
-> I would also recommend patching `patch`... :)
->
-> Thanks for clarifying!
-
-Thanks!
+Alice
