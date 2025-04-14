@@ -1,131 +1,109 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CEC1B3929;
-	Mon, 14 Apr 2025 16:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9341A289340;
+	Mon, 14 Apr 2025 16:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744648871; cv=none; b=eLoBknulMujPHl9frZFQr5GmeeO/rVr2AhJq3CtNC6dYx1B9IYmS2u72VyD28lYTJPQNPevUgoig8UKlz7YsgHPvefUFR/mEti/uf4X8DrBCTK2ZY7XdNoiTrxjvhgbgUT/n+AnDgAkk10S9464DVRg4jHvTdTgXpsTdU6byC0I=
+	t=1744649108; cv=none; b=FFQ3htaeNQHHIwjaJbTsZ3VjCeIJTxgn7lLj9ydyjJfDBsHZZH9moP4BENE9T3eFfde/J33WYkgzc1GDbGN6hLfh7jSL1Pi90nXBjPWEe+ydgxCXCKeNsqM1K3Pfp3jnsG/Rg9h5zeIklHpP3GrE41e9WRID20yKpa1UxNn/QoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744648871; c=relaxed/simple;
-	bh=5fKJs1w6oEvdNZJCvRG/59lOM3jjKtcfEX8F33cKXlU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=gc2CM3xrAR0Oz4VKd9U6gEJgVjBdSzSUedyPBqVfM50XrHtuED3vw4QwiDTpeg+Peg78V8QhEWqLDMIG4RPFxiXPaPFwbyjIk2algv58paZc3RW8pPySKjuSeKxXScLdr1wdYJ/8lmSgPCQMxgGdbskFbXcVEZk0/6INetSbK5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4ZbtMZ3NPTz9tLk;
-	Mon, 14 Apr 2025 18:40:58 +0200 (CEST)
+	s=arc-20240116; t=1744649108; c=relaxed/simple;
+	bh=CyRmz6WDnLlgE/Au89ERUZt3OIYiAJnvydjXIw1skME=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pXElyqOi5TuT/y+RS3oHFnsar2eyvGbjLjkxSgcGlsPg6OFe5mid7D0GNpUNM2mnyu85kGhWwXpQZnOx/1Z6NqBaaeRxnxrj5D8o7bvLT1Yil8fL/w7Z5UFjaSYlinDzyPRLZK9fz6hbYCcPX3fs3ftlKUn62onWWpTZFZbDFzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dLjjFtT0; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dLjjFtT0"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so849775a91.2;
+        Mon, 14 Apr 2025 09:45:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744649106; x=1745253906; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CyRmz6WDnLlgE/Au89ERUZt3OIYiAJnvydjXIw1skME=;
+        b=dLjjFtT0BqdIHXpMLrPbFKTTx3/APgx/zgrgg5/9xtD5PIkJMf1BPhQNMEiXSJHqYN
+         iZN3U437zC/AO2BSiNQyIQ3htV5kJ03zQWVgqBT2XLu8nJEGRWs0YbDm5+HV5M9C1T+3
+         XYY4RGL3nxF8QTXuNKstAc9eGviX5GPWAE56q1iBV/INDsQIIUuFRuhjQ4+HRQzK/dTw
+         nL14V3+uVgQmZSvEdH1oaXS1+Dz3I0ZcoWh6ZEYNZRrmY+OxOWcEQpiEVFnd/InKPqnK
+         /x+BVtqVpWuDT4L1R88437lh0rce+PSSV0xVWV9J5fJtxu2sktx6TLUkDW6bvI4wwG4U
+         wrBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744649106; x=1745253906;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CyRmz6WDnLlgE/Au89ERUZt3OIYiAJnvydjXIw1skME=;
+        b=JpKYw6v54FDajcIr0ZBboILak/UHF1ndXnOBaKS+cHoEVJe+0ffTFqVvHfCCLKhYIZ
+         D4bLGiUW14LjFk2CNR+opTm8DGoC7GnjffFFbxxd//+v3O1p0i47mnWr3oyYAGHu1/sI
+         baDztz77BDgn915e7RswRjoo9eJFAtIgKIqk9SgHV18+80uOjlXKW9Cxsjkp8IfTrCjG
+         DQdAZyvlKjCyamshHu7Tpe7hy3SQP880ief5xrJBLCjRaG6oYOZOpi+vaLyhwR0Jd4kR
+         VafPs0fCRZfmMECbYUtTEo0SiZxPCbSq+/mm6Iy6s5YJ20VVWUDQ5C3N2wea32DIZG9r
+         3xrg==
+X-Forwarded-Encrypted: i=1; AJvYcCURNjv5HPvK39/Sfvyqe4KwcbY1Cj+ADVqgTju/QngjqdXyoH6GkjMH60VZCl5R/0qxfDvG48KusQqFakwUir0=@vger.kernel.org, AJvYcCUu4XVHs7tsBXLiXVaKSldpiRjgWmijLMMrMtPtsQ09L+Jw5W8xomybvsUWieMoRBpCGHU4cXMIGSzj@vger.kernel.org, AJvYcCVHXWLd9+ytwY2AN/Kn01PyLnA1zp2ck0tQjNBZXIBjf/BzLgSTqPRJ9BgQde9ZUyWbYUTyx1ah2HXnRazu@vger.kernel.org
+X-Gm-Message-State: AOJu0YznnfYAyIC9S1rfZLihsm7Lr6uXyQDSv+XaCR7yWy48aU7v53gY
+	4bhdmu5dKkTDCk9aIiKEXUCra4v/k37fDXlNJq06DDusk3a+lpy6mQN0glQBsnuaFYWtPf5jDmG
+	ssWvy+flKysIt28HQaTwsw67YC4w=
+X-Gm-Gg: ASbGncvrYwJXD43KVazbt7VkvUUfcnmtxbboMILaV6NhbAjYxUI8bB2I3Kys453NfcC
+	/GDOs58wclEeA5MSq393ZAjxdKrv8U/LE4h9TeRnTILG1pgAe404WVFamt+RBCS+iSmCQL6+8rq
+	+XuRjP782KFbOnxsi1gu/80QcWTeevFBop
+X-Google-Smtp-Source: AGHT+IFFO/6s6YgrPEO3OnxOg96c+7vd2ZcP2QQOQbeI5zAqmfo8OAJafhVQhOHi2OQPh5zM8jjw1Stv0z3LdLO72T4=
+X-Received: by 2002:a17:90b:1a88:b0:2fe:b2ea:30f0 with SMTP id
+ 98e67ed59e1d1-3084e75a57emr284165a91.4.1744649105757; Mon, 14 Apr 2025
+ 09:45:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250326171411.590681-1-remo@buenzli.dev> <20250414152630.1691179-1-remo@buenzli.dev>
+ <CANiq72mJubnGyqSk3sqKVa7g9HvnJvmRg=gJ2kaBtbMMVWWC8g@mail.gmail.com> <D96HP1UV49SY.1U1BFA14P8XHE@buenzli.dev>
+In-Reply-To: <D96HP1UV49SY.1U1BFA14P8XHE@buenzli.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 14 Apr 2025 18:44:53 +0200
+X-Gm-Features: ATxdqUErYkDDBOGFPEFB-nfL3C3C2TIMbtTywdzeB3ydwzNNRQdwTBq8nO3zs6g
+Message-ID: <CANiq72=ru+M0W2Gw5bYD4zMD-mkMU0He-tAX4Tna9g-ddbC-0Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] More Rust bindings for device property reads
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Apr 2025 18:40:54 +0200
-Message-Id: <D96IEJBTKCGK.J44WDQUEHXVV@buenzli.dev>
-Cc: "Rob Herring" <robh@kernel.org>, "Saravana Kannan"
- <saravanak@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 1/5] rust: Move property_present to separate file
-From: "Remo Senekowitsch" <remo@buenzli.dev>
-To: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250326171411.590681-1-remo@buenzli.dev>
- <20250414152630.1691179-1-remo@buenzli.dev>
- <20250414152630.1691179-2-remo@buenzli.dev> <Z_0xGRsI74PsAL_E@cassiopeiae>
-In-Reply-To: <Z_0xGRsI74PsAL_E@cassiopeiae>
 
-On Mon Apr 14, 2025 at 6:00 PM CEST, Danilo Krummrich wrote:
-> On Mon, Apr 14, 2025 at 05:26:26PM +0200, Remo Senekowitsch wrote:
->> Not all property-related APIs can be exposed directly on a device.
->> For example, iterating over child nodes of a device will yield
->> fwnode_handle. Thus, in order to access properties on these child nodes,
->> duplicate the APIs on a fwnode as they are in C.
+On Mon, Apr 14, 2025 at 6:07=E2=80=AFPM Remo Senekowitsch <remo@buenzli.dev=
+> wrote:
 >
-> What do you mean with "duplicate the APIs"?
+> Junio Hamano recently wrote on the Git mailing list[1] that he wants
+> his contributors to do this, so the original message-ID can be used as
+> a "patch set ID". A quick glace at the archive[2] confirms that people
+> work this way. I assumed the kernel community would appreciate this
+> as well.
 
-The property related methods on `Device` and `FwNode` are mostly
-the same. Same names, same function signatures. The methods on
-`Device` simply call `self.fwnode()` and then the same method on
-`FwNode`. I was asked to do this so driver authors don't have to write
-`dev.fwnode().read_propert()` etc. every time they want to do something
-on the device itself. This is the case here for `property_present` as
-well as the methods added in the following patches.
+I see, thanks for the reference!
 
-> Also, this patch does three separate things.
->
->   (1) move property_present() to separate file
->   (2) implement FwNode abstraction
->   (3) implement Device::fwnode()
->
-> I'd rather keep property_present() in device.rs and also move fwnode() in=
-to
-> device.rs, even though in C it's in property.c. impl Device blocks should=
- be in
-> device.rs.
+I don't think it is a good idea for long series, given how some
+clients render things, e.g. GMail just shows the new version in a
+single linear thread and it gets really confusing.
 
-I was asked to move it by Rob Herring on Zulip[1]. Dirk Behme also
-agreed with it[2]. I have no strong opinion on this, hopefully you can
-come to an agreement. Whatever it is, I'll happily implement it.
+Even in a nested/tree render, like Lore's option, it is harder to see
+and/or compare the versions, in my opinion. Perhaps Lore could be
+improved here (e.g. offering (auto-)folding of versions) -- most of
+the time we only care about the last version (and perhaps last - 1)
+anyway.
 
->> +++ b/rust/kernel/property.rs
->> @@ -0,0 +1,75 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Unified device property interface.
->> +//!
->> +//! C header: [`include/linux/property.h`](srctree/include/linux/proper=
-ty.h)
->> +
->> +use core::ptr;
->> +
->> +use crate::{bindings, device::Device, str::CStr, types::Opaque};
->> +
->> +impl Device {
->> +    /// Obtain the fwnode corresponding to the device.
->> +    fn fwnode(&self) -> &FwNode {
->> +        // SAFETY: `self` is valid.
->> +        let fwnode_handle =3D unsafe { bindings::__dev_fwnode(self.as_r=
-aw()) };
->> +        if fwnode_handle.is_null() {
->> +            panic!("fwnode_handle cannot be null");
->
-> Please don't use panic!() unless you hit an error condition that is impos=
-sible
-> to handle.
->
-> If __dev_fwnode() can ever return NULL, make this function return
-> Option<&FwNode> instead.
+I think `b4` behavior of subject+author works OK, but an explicit
+change-id would be nice. Reusing the Message-ID for that would only
+really work well if we could control the UI for everyone, I think.
 
-Rob Herring mentioned this in the previous thread already:
-
-> Users/drivers testing fwnode_handle/of_node for NULL is pretty common.
-> Though often that's a legacy code path, so maybe not allowing NULL is
-> fine for now.
-
-I asked a follow-up question about how to proceed but got no reply[3].
-
-Best regards,
-Remo
-
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/t=
-opic/DS90UB954.20driver.20done.2C.20ready.20to.20upstream.3F/near/495807346=
- [1]
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/t=
-opic/DS90UB954.20driver.20done.2C.20ready.20to.20upstream.3F/near/495945200=
- [2]
-Link: https://lore.kernel.org/rust-for-linux/D96HP1UV49SY.1U1BFA14P8XHE@bue=
-nzli.dev/T/#mc7967352b7bd1be812806939150511c1a5018bb1 [3]
+Cheers,
+Miguel
