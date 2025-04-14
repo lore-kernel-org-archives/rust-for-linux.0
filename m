@@ -1,154 +1,230 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD091270EB1
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 11:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D261714B3
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 11:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744629746; cv=none; b=Est+pb4pY+kxmZ0vi40m9jVSZKzDZLhDszPYLanxmsu1t6nfgDaj0Lv2KY1UiRlzqaT6gMf/I4CuuuTJBk69enWFIazCm4rDSmPOCZ/FLoIy12utPVmw0RMVz/j008N8rpfx7jQqNVL5/XCn7ujmax55cwl3AtIq0NXUFnkj8l4=
+	t=1744630189; cv=none; b=TWcrKpxVucEXEyvNivgb70o2xPuSe3WyWghrrlc5XXut2TlI+1eioaC2GWpIm6KHqqt9hNfXwSZSYvT/CmgBuEECFVsquSPBwfmf5UYjBGaicPvOrgRfjFki/4yWOXhrTpyOUKgt1GjMExR3sraTQvckFROeg03SSIBj+D5xnpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744629746; c=relaxed/simple;
-	bh=5Fvjkjfat+nJk7Vy80tDWnDp5NpzHStADTmDQuN5aCE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rm/spGjGL65dPF36wtmxrCyNYfJmbMZQ9olDpMWXUojr/Xho9iCTbRQmlmp++1bXOtbPQLwHBlDCqx+ZLrskeWeXOybwI6uIMBgM+3fmTW6CaeeiefEnnWYTzvgb6AlqjfUq4gI4IHU1S34w+XM7hYz4CzlCcwHG4nPafZlA0a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y2HKJHlj; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1744630189; c=relaxed/simple;
+	bh=OId65vYG4iChVP7s+ep0NmfGVOgkQkETuAsaQF/JGAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uR9pvxBL98BnddoYDt4G+hFO5tienB5FbfttYO1+Rd17/o1vhn+Kni8i8EEsL7Edm1UB0dU39BqL+G4C3/PwZs3OEC/tndfi4/zt65zrZiMiSAt9fGKdDznnql8jiRy5OfU35F5O7ZVMUISV42QEbz2uptfB9bct8U8hRae3CSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aLSMqNTm; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y2HKJHlj"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-39c1efc4577so2124038f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 04:22:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aLSMqNTm"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-224171d6826so57572505ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Apr 2025 04:29:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744629743; x=1745234543; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rft3EAUTLyhnp7+tWC0d5mWYcohYnVvJHm8W23d6BUU=;
-        b=Y2HKJHljzyuuReTwKUy2YuPklO26NnXFOTtF9/+RRuF97SdY6XPya+/i57cfiMk5bu
-         +O3d203lG9935JLqdiDpLarbsbUPK5VCk+wTXmCu6XinJY68OaAPkn/0Xb8OdSGzbuwi
-         seE6p0hsuampbw/LRr2aTeiZ3ecG4M2lfxlW6ojWtU/ZBVvcPBVH5SrlRVqDHG0s3Z9K
-         MxS87kQLv5O+LqEI+SeRoRvk6yhNp/FamMuONeqTdAs6Y8FjVsUr2GeMmvLPfB9OmYXn
-         8qUwi6giR72ciKOWdnl2KqFCSuPow5oZ94Yma74GJwNcnslz57b71O70M03/uvQs6VMh
-         FE/w==
+        d=linaro.org; s=google; t=1744630187; x=1745234987; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=O6+sNIyO8JzbVU9H6WY1PZualMiTtrIWYxB95T2aKKg=;
+        b=aLSMqNTmz41GrHp26HLeqezmtfrsjDxmMQIcAABezKLFe96hlbVkNUl92pj1yPyYWe
+         wxfKyNvI1P/ID5roBtHIHz9J7NuZZIQe9tI/7eT+D1is04Qu32vMhJrrKKbonBSQ9/hR
+         AbC2YEdSj6zu+u6QPwmoAMKQbtOzGzOyFlCJydosAOvG46/1nIn4usbvNopkI0c4dExI
+         GdL2uO1SRXCXsNxsvhwqBckjxjrdiM8zNaGxpCylg1h7DnzOWRPcs2cLikwHKb07mVf5
+         9HGyw6SB9nusv23J1JDE2ZqbSANGOCnTLGiLwQuGLIBT5UcICZ74BrnjPLf1uybLVUKT
+         sE0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744629743; x=1745234543;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rft3EAUTLyhnp7+tWC0d5mWYcohYnVvJHm8W23d6BUU=;
-        b=cyms2ByForZEzcjgtQ+dY399KTVEevsi8vehkdi1aPBCRxUYodshIipr6fPKlC9Hqd
-         oC87ZkRyrjE3mNOHO9GzH9Pn4e6Y7v7uK04ATUfOHGTgW09EuQhhgGmvMJ3S8qX6o01q
-         nmL5pJd6gkC0GwsURIF0LnBqpt0oer9wtOy57DsJjo86lfegOBRGBgPSTZMgScmccGNw
-         gDcaV8cuwcFYW96BcI9IGHE5H7FHKW08EiJEmCbMXw/VXLxFEwpNVaUr+om4GTZN7d8g
-         i/V4Na7aqkrnYpsiIXcrF3Rsluokq4IhwH68sPDRrHCIQSF8FGJApCCI1Go7Ymv1qzLV
-         4eMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWnaiKrf1etaZ0/QDljE0rS+UIe+bRMIfsR6T+pYRi23pe+LkNMPKOeqiVzRzIZcxZUAUou2+jPbuP/bScGOg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsF7p94/WktIeS4tCAizKGuzII2VcIisxRBTt85+X/O3onoiCg
-	Zth8rhGv72jfABWuQwMaSO0YlhV9gFbrLuGwQpNCP4LoMsE/638yBYDp9BL5r1EasYrir5zX8og
-	mva2s8BWO25ltFnbAB+ObSv7etNQCxVjD4j+1
-X-Gm-Gg: ASbGnctAGXBwqm3rBxRXHbn3ylSmXLp5vQ2mChnzydUyEBmyDqbF6rOc65t498ymt8D
-	NkbbCVqdMH8gMMNYX3SgFNMNLl7cXJhydUhkfAruF4BFXMscol6B1icI/tSeQ5ofjxn1s3WEBDo
-	PZHAMFSK4Q48BOF/ftD0XP+r3BZu9DsjPwFu8FCCWj2CG34XpY36Q=
-X-Google-Smtp-Source: AGHT+IEZZBt3UNC3+TSE5+/gmDD+2unhz/9dXO7/xHNdpPGb0TNqsh6CfuUuMhd+ZdyeJAI6BZseyvWSCutQpwcC5zk=
-X-Received: by 2002:a05:6000:2405:b0:39c:1257:feb9 with SMTP id
- ffacd0b85a97d-39eaaed586amr8788733f8f.57.1744629742684; Mon, 14 Apr 2025
- 04:22:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744630187; x=1745234987;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O6+sNIyO8JzbVU9H6WY1PZualMiTtrIWYxB95T2aKKg=;
+        b=DCyWakiolKWyAyhw/EJma2vlnbplss1pLQx4wKdeNSu9DOQq+1ii2BSIWx7Pne+stg
+         YrtP79++AZ/p2Z1DdfHJhsl83qQCgtFg+Q0RMtTokBg6zBmWGtHyJv3+3YPF/34wvly2
+         aop027LCilUJ3qSNXctfrFsuNquowEDTmmaf9I9IXEd+L84V5Cy2f6ZilNoyN5XqiI+a
+         ttvBvqA1UL1RtXoGE0c6dbhCeTZDlUui2oSA5x5D3UhUu2+ImPkBm54cZaerSlMOdTE8
+         AFwUL5KjzGNGyUqfpJkwAWoG/wfgPPre2j0kSVnUq10XilOgzakAFkaR+JF4QxHPuiRt
+         g/JA==
+X-Forwarded-Encrypted: i=1; AJvYcCX51QijgSFaKfq+HYN26Hh9yklFF/+Lv3kfjhaIrO90Mbz6vnIkbQHdDzJ9k2Qfc8SQElt2OMgX03iJuBKd/A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyh2GrhnwoEG3D22MKxTiiIEu5B0FpdkRL+QuUOvuZlPo7a7Mto
+	3sMOBt56iP9tFTQYTqX7HQGDIA62gz1cPAQjUgbeG4CUNsQfMjnaY3fuwXMhsQ4=
+X-Gm-Gg: ASbGncs8HzflfdjUnkOIwYsRlE3MNBGNgH+LT5jemxNiSI4nrSpao7/N3aPwJSeaPJw
+	Rt2odGM/NutdaQA/8QycdRKEA9x749DRH2zqNGMT5EO3NywmC3565WPRDg32kSykbb7QaHFfdRg
+	7/eI3gOMwe0fxICfgNe9bmUNCjUDRMd9aS8Eg1X5y7/TFkahaRnq+hRHH5GmuvQqEbcfghuaDPT
+	LdxaQjTQQckR1HvCVTPf0OzaElHaxonmSdGbxm1ba0xDnlP6AOkbB2yM7YWNFhgTsoIZrm/dGzq
+	4BQNlfGkOaZaPS3KuqgRZLvv+2OmRaSQ0p9iqObqtA==
+X-Google-Smtp-Source: AGHT+IE2yePppLq/70OKRdNpVINOxCz29KaYhLiwBomV/BOoxtq3utngiXMthhUwoFkXpZSNMWS9Gg==
+X-Received: by 2002:a17:903:1d1:b0:21f:f3d:d533 with SMTP id d9443c01a7336-22bea4a17fdmr134579745ad.2.1744630186633;
+        Mon, 14 Apr 2025 04:29:46 -0700 (PDT)
+Received: from localhost ([122.172.83.32])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22ac7b628desm96556265ad.20.2025.04.14.04.29.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Apr 2025 04:29:46 -0700 (PDT)
+Date: Mon, 14 Apr 2025 16:59:43 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Yury Norov <yury.norov@gmail.com>, Danilo Krummrich <dakr@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	Burak Emir <bqe@google.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
+	Michael Turquette <mturquette@baylibre.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V9 03/17] rust: cpumask: Add initial abstractions
+Message-ID: <20250414112943.r2h3a54r2jm4iana@vireshk-i7>
+References: <cover.1744366571.git.viresh.kumar@linaro.org>
+ <9a004e3dff5321dae3b96df2817799daa699ce01.1744366571.git.viresh.kumar@linaro.org>
+ <Z_k7HtIZaSWeJvM4@yury>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250408220311.1033475-1-ojeda@kernel.org>
-In-Reply-To: <20250408220311.1033475-1-ojeda@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 14 Apr 2025 13:22:10 +0200
-X-Gm-Features: ATxdqUF9via54VPG5nlOhtSrUPwWIS_mfTXT8g_wST2xwdZg_Zg47Lq68Zxptiw
-Message-ID: <CAH5fLgjb3Wxbkzvvy9H6QUYVpxXvkse1rnDmmR3nVHjp6zEx9A@mail.gmail.com>
-Subject: Re: [PATCH] rust: kasan/kbuild: fix missing flags on first build
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	kasan-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z_k7HtIZaSWeJvM4@yury>
 
-On Wed, Apr 9, 2025 at 12:03=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> If KASAN is enabled, and one runs in a clean repository e.g.:
->
->     make LLVM=3D1 prepare
->     make LLVM=3D1 prepare
->
-> Then the Rust code gets rebuilt, which should not happen.
->
-> The reason is some of the LLVM KASAN `rustc` flags are added in the
-> second run:
->
->     -Cllvm-args=3D-asan-instrumentation-with-call-threshold=3D10000
->     -Cllvm-args=3D-asan-stack=3D0
->     -Cllvm-args=3D-asan-globals=3D1
->     -Cllvm-args=3D-asan-kernel-mem-intrinsic-prefix=3D1
->
-> Further runs do not rebuild Rust because the flags do not change anymore.
->
-> Rebuilding like that in the second run is bad, even if this just happens
-> with KASAN enabled, but missing flags in the first one is even worse.
->
-> The root issue is that we pass, for some architectures and for the moment=
-,
-> a generated `target.json` file. That file is not ready by the time `rustc=
-`
-> gets called for the flag test, and thus the flag test fails just because
-> the file is not available, e.g.:
->
->     $ ... --target=3D./scripts/target.json ... -Cllvm-args=3D...
->     error: target file "./scripts/target.json" does not exist
->
-> There are a few approaches we could take here to solve this. For instance=
-,
-> we could ensure that every time that the config is rebuilt, we regenerate
-> the file and recompute the flags. Or we could use the LLVM version to
-> check for these flags, instead of testing the flag (which may have other
-> advantages, such as allowing us to detect renames on the LLVM side).
->
-> However, it may be easier than that: `rustc` is aware of the `-Cllvm-args=
-`
-> regardless of the `--target` (e.g. I checked that the list printed
-> is the same, plus that I can check for these flags even if I pass
-> a completely unrelated target), and thus we can just eliminate the
-> dependency completely.
->
-> Thus filter out the target.
->
-> This does mean that `rustc-option` cannot be used to test a flag that
-> requires the right target, but we don't have other users yet, it is a
-> minimal change and we want to get rid of custom targets in the future.
->
-> We could only filter in the case `target.json` is used, to make it work
-> in more cases, but then it would be harder to notice that it may not
-> work in a couple architectures.
->
-> Cc: Matthew Maurer <mmaurer@google.com>
-> Cc: Sami Tolvanen <samitolvanen@google.com>
-> Cc: stable@vger.kernel.org
-> Fixes: e3117404b411 ("kbuild: rust: Enable KASAN support")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On 11-04-25, 11:54, Yury Norov wrote:
+> On Fri, Apr 11, 2025 at 04:25:02PM +0530, Viresh Kumar wrote:
+> > +    unsafe fn new_uninit(_flags: Flags) -> Result<Self, AllocError> {
+> > +        Ok(Self {
+> > +            #[cfg(CONFIG_CPUMASK_OFFSTACK)]
+> > +            ptr: {
+> > +                let mut ptr: *mut bindings::cpumask = ptr::null_mut();
+> > +
+> > +                // SAFETY: Depending on the value of `_flags`, this call may sleep. Other than
+> > +                // that, it is always safe to call this method.
+> 
+> I'm not sure I understand this sentence. What's wrong with safety when
+> the alloc() function sleeps? Even if something is wrong. If you really
+> want to protect your users, you'd introduce new_sync() version that
+> returns error if user provides sleeping flags.
 
-I've boot-tested Android's KASAN configuration with this patch, and it
-continues to work. It also passes Android CI [1].
+I borrowed this SAFETY comment from similar allocation done in
+page.rs, I think we can skip it though. Here is the delta so far:
 
-Tested-by: Alice Ryhl <aliceryhl@google.com>
+@@ -27,8 +27,8 @@
+ ///
+ /// A [`Cpumask`] instance always corresponds to a valid C `struct cpumask`.
+ ///
+-/// The callers must ensure that the `struct cpumask` is valid for access and remains valid for the
+-/// lifetime of the returned reference.
++/// The callers must ensure that the `struct cpumask` is valid for access and
++/// remains valid for the lifetime of the returned reference.
+ ///
+ /// ## Examples
+ ///
+@@ -86,7 +86,9 @@ pub fn as_raw(&self) -> *mut bindings::cpumask {
+ 
+     /// Set `cpu` in the cpumask.
+     ///
+-    /// Equivalent to the kernel's `__cpumask_set_cpu` API.
++    /// ATTENTION: Contrary to C, this Rust `set()` method is non-atomic.
++    /// This mismatches kernel naming convention and corresponds to the C
++    /// function `__cpumask_set_cpu()`.
+     #[inline]
+     pub fn set(&mut self, cpu: u32) {
+         // SAFETY: By the type invariant, `self.as_raw` is a valid argument to `__cpumask_set_cpu`.
+@@ -95,7 +97,9 @@ pub fn set(&mut self, cpu: u32) {
+ 
+     /// Clear `cpu` in the cpumask.
+     ///
+-    /// Equivalent to the kernel's `__cpumask_clear_cpu` API.
++    /// ATTENTION: Contrary to C, this Rust `clear()` method is non-atomic.
++    /// This mismatches kernel naming convention and corresponds to the C
++    /// function `__cpumask_clear_cpu()`.
+     #[inline]
+     pub fn clear(&mut self, cpu: i32) {
+         // SAFETY: By the type invariant, `self.as_raw` is a valid argument to
+@@ -198,15 +202,14 @@ pub struct CpumaskVar {
+ }
+ 
+ impl CpumaskVar {
+-    /// Creates an initialized instance of the [`CpumaskVar`].
+-    pub fn new(_flags: Flags) -> Result<Self, AllocError> {
++    /// Creates a zero-initialized instance of the [`CpumaskVar`].
++    pub fn new_zero(_flags: Flags) -> Result<Self, AllocError> {
+         Ok(Self {
+             #[cfg(CONFIG_CPUMASK_OFFSTACK)]
+             ptr: {
+                 let mut ptr: *mut bindings::cpumask = ptr::null_mut();
+ 
+-                // SAFETY: Depending on the value of `_flags`, this call may sleep. Other than
+-                // that, it is always safe to call this method.
++                // SAFETY: It is safe to call this method as the reference to `ptr` is valid.
+                 //
+                 // INVARIANT: The associated memory is freed when the `CpumaskVar` goes out of
+                 // scope.
+@@ -222,20 +225,19 @@ pub fn new(_flags: Flags) -> Result<Self, AllocError> {
+         })
+     }
+ 
+-    /// Creates an uninitialized instance of the [`CpumaskVar`].
++    /// Creates an instance of the [`CpumaskVar`].
+     ///
+     /// # Safety
+     ///
+     /// The caller must ensure that the returned [`CpumaskVar`] is properly initialized before
+     /// getting used.
+-    unsafe fn new_uninit(_flags: Flags) -> Result<Self, AllocError> {
++    unsafe fn new(_flags: Flags) -> Result<Self, AllocError> {
+         Ok(Self {
+             #[cfg(CONFIG_CPUMASK_OFFSTACK)]
+             ptr: {
+                 let mut ptr: *mut bindings::cpumask = ptr::null_mut();
+ 
+-                // SAFETY: Depending on the value of `_flags`, this call may sleep. Other than
+-                // that, it is always safe to call this method.
++                // SAFETY: It is safe to call this method as the reference to `ptr` is valid.
+                 //
+                 // INVARIANT: The associated memory is freed when the `CpumaskVar` goes out of
+                 // scope.
 
-Alice
+> > +    /// Creates a mutable reference to an existing `struct cpumask_var_t` pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The caller must ensure that `ptr` is valid for writing and remains valid for the lifetime
+> > +    /// of the returned reference.
+> > +    pub unsafe fn from_raw_mut<'a>(ptr: *mut bindings::cpumask_var_t) -> &'a mut Self {
+> 
+> The 'from' (wrt cpumasks) has a special meaning: search for a cpu
+> starting from a given one. This 'from_raw' may confuse readers. Have
+> you any other name for it in mind?
 
-[1]: http://r.android.com/3584874
+'from_raw' is widely used in Rust for similar methods, though I do
+understand your concerns.
+
+Danilo / Miguel, what do you suggest I rename these to ?
+
+> > +        // SAFETY: Guaranteed by the safety requirements of the function.
+> > +        //
+> > +        // INVARIANT: The caller ensures that `ptr` is valid for writing and remains valid for the
+> > +        // lifetime of the returned reference.
+> > +        unsafe { &mut *ptr.cast() }
+> > +    }
+> > +    /// Clones cpumask.
+> > +    pub fn try_clone(cpumask: &Cpumask) -> Result<Self> {
+> 
+> Just clone(), I think.
+
+The method 'clone()' is already used by the 'Clone' trait [1], and
+that's what I wanted to use initially. But 'clone' doesn't return a
+'Result'.
+
+-- 
+viresh
+
+[1] https://doc.rust-lang.org/std/clone/trait.Clone.html
