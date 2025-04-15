@@ -1,42 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E1028E61D;
-	Tue, 15 Apr 2025 12:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9F5297A6C;
+	Tue, 15 Apr 2025 13:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744721690; cv=none; b=TRlT8qV1e/BobZSxg5mDS7AMwpOGRIDz5bsp1omCuQpu8etL4jwmBbPBKu0xLmF7BErO7xkbwnjASDzOLJj+CM+hCY9jjO8iS1kBCB0L1ddhDqR1ibcMDnX67cLdVKkBSQoinpdNF9WxvSouNRsL2HHfysT43B96iKIkLFfq7FI=
+	t=1744722682; cv=none; b=tJ1f86Zmw9kM7uKyBhXg7Gl169XJqJ2tHJPx3YZZhX+MP3bVDU/2WSdUdtsXI3bMxFwjbE/ajFhQcBTEvIQ2Zr7nGUg/r938WB1d84G0tJjT+naQ6e8T29G5HgrRRqYgNKeK3ECWPKy7ABvx+PS5T2x1r9xLzIRP11UsdeDPhM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744721690; c=relaxed/simple;
-	bh=HGrWIoTsXW23ORzr/01CwyVyKKEln9uQb75WdrtkNT8=;
+	s=arc-20240116; t=1744722682; c=relaxed/simple;
+	bh=v8TJgpASVjg0/9Rhs8onAf+pfIazFy/KYb3K3LTKVuQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GMJPnL1OJ5X+uZxwjdEmB8fqTqveXiust8mTHzbOKmREgokUe1jQEJA+64xKFGv51H5EW1y95tAiO6Abih/Kz5E61cMrIostf0PkFmSpcErvc7sc+BAuXpTBYI4fOQdYqgWvMAsus4dBROnTWTD6ps55al8Jdm7xPnon/vdk9PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGP4skOa; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=kETiJwwZLnY5b77PuftUZm3WoCk1tX414RtJX42WGcbmqc0hLR24m/QOQU6G1MKM7GFja5TQBt03xeBMfYYwotTVds7k3u68ewjiOfkhXiekrT9wsbYrYKBmzHLiT1Ii+liKm95Rr3fdU2WJnU03LKYlrLDVzO7N0q1iBcv6qI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/1IqjfD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGP4skOa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBB3C4CEDD;
-	Tue, 15 Apr 2025 12:54:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744721690;
-	bh=HGrWIoTsXW23ORzr/01CwyVyKKEln9uQb75WdrtkNT8=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/1IqjfD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC3AC4CEEB;
+	Tue, 15 Apr 2025 13:11:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744722681;
+	bh=v8TJgpASVjg0/9Rhs8onAf+pfIazFy/KYb3K3LTKVuQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qGP4skOaMlQOOeM4WLFVsMspOjB2XNKAx//NWPkWC52NG4cO/lCaaFppmHdF6Czs6
-	 kWvcQzJeqVCgR+GiLXZlgrk+BkAsboTHRKJjQjsWYj/acSsAy3Rx0VwGwk7ztAcUWt
-	 U25NloIAAxaV52Wz8Aka0/asrLVQ78DmFPC7DwSQ=
-Date: Tue, 15 Apr 2025 14:54:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rafael@kernel.org, david.m.ertman@intel.com, ira.weiny@intel.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	airlied@gmail.com, acourbot@nvidia.com, jhubbard@nvidia.com,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 0/5] Auxiliary bus Rust abstractions
-Message-ID: <2025041543-resident-disarray-a983@gregkh>
-References: <20250414131934.28418-1-dakr@kernel.org>
- <2025041559-regulator-mutt-e8ed@gregkh>
- <Z_5UTvuMpYhRN24T@cassiopeiae>
+	b=A/1IqjfDL3pIuDcquYN5U7ufCXvWXd9EZEOEKEBKiZgsDrK+Fi05L9aXCH/kAAiWj
+	 zHce/bcue0MxFpSpuau5p+Q+WWpDErApmXu/UI2/pQWGYRaW7b8SPqUYnzb4yLcHw4
+	 Wue5SNv8efD0tsQJx7pz/V3YZ3oO+I6Poj+IeesFpRU5O/RWHy/rW6wckRtyvWsWrX
+	 2CVETuP2Z7hBt1N0FWFrpzc8V+ZjqOp9El/O23pKMzSAA02MVJwd5xWeXXJTWo9rh0
+	 j5zF1f8Cyup7xcxQoAjJsPqnwOZewz+KXjfxGEFbgrksqgnsXGMxBTYqlUyplAD4q6
+	 Ebi3cszaPg1dA==
+Date: Tue, 15 Apr 2025 15:11:15 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Cc: Remo Senekowitsch <remo@buenzli.dev>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] rust: Add bindings for reading device properties
+Message-ID: <Z_5a87L9hYz0Pbc8@cassiopeiae>
+References: <20250326171411.590681-1-remo@buenzli.dev>
+ <20250414152630.1691179-1-remo@buenzli.dev>
+ <20250414152630.1691179-3-remo@buenzli.dev>
+ <Z_1Jfs5DXD2vuzLj@cassiopeiae>
+ <D96RNFS3N8L2.33MSG7T019UQM@buenzli.dev>
+ <Z_4rVyUjK1dlnTsT@pollux>
+ <D9760KMM0PSB.HONQ7MUG8OTN@buenzli.dev>
+ <CAL_Jsq+wGopPRcdp6t0h2cu03vrxxP3=msNmpju4nqq9XENmng@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,28 +60,16 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z_5UTvuMpYhRN24T@cassiopeiae>
+In-Reply-To: <CAL_Jsq+wGopPRcdp6t0h2cu03vrxxP3=msNmpju4nqq9XENmng@mail.gmail.com>
 
-On Tue, Apr 15, 2025 at 02:42:54PM +0200, Danilo Krummrich wrote:
-> On Tue, Apr 15, 2025 at 01:38:29PM +0200, Greg KH wrote:
-> > On Mon, Apr 14, 2025 at 03:18:03PM +0200, Danilo Krummrich wrote:
-> > > This series adds Rust abstractions for the auxiliary bus.
-> > > 
-> > > It implements the required abstractions to write auxiliary drivers and create
-> > > auxiliary device registrations. A driver sample illustrates how the
-> > > corresponding abstractions work.
-> > > 
-> > > The auxiliary abstractions are required for the Nova driver project, in order to
-> > > connect nova-core with the nova-drm driver.
-> > > 
-> > > A branch containing the patches can be found in [1].
-> > > 
-> > > [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/auxiliary
-> > 
-> > Looks good to me, want to take this through a gpu tree so you can build
-> > on top of it, or do you want it in the driver-core.git tree?
+On Tue, Apr 15, 2025 at 07:46:19AM -0500, Rob Herring wrote:
 > 
-> Yes, I'd like to take this one through the nova tree.
-> 
+> A reasonable split here is possibly splitting the fwnode and the
+> Device versions of the API. In any case, I think we've discussed this
+> enough and I don't care to discuss it more, so whatever reasonable
+> split you come up with is fine with me.
 
-Please do!
++1
+
+Let's wait for some more feedback on the Property trait impl for primitives,
+CString, etc. before moving on.
