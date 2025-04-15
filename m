@@ -1,90 +1,108 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC06D1CF5C0
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 09:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C2E2741B8
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 09:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744707701; cv=none; b=ca8u8yrijfxVcPAgWqfyh0cEilf6ptwLrRKuL0NZtyQajNf8WfRW8yUzqEFxFU/iVGYBeR0HN13wv8ytGmdz0gR71El/P+joLnZOGLehJBUGw5qR4Kx1GqaIl6321r9a/BMt+fZcvfkHp4Y+sFPnpz7kETSp0BwW0xNL3xL00/I=
+	t=1744707921; cv=none; b=uIYVO4sRdPYC7iihmI32DlVloDz+e9fAFGbmcV+2XS74pXVEjs7nMEu2bof6Tsr7GRIDSLfdzSVs4RDsAAL08ZcyUl8gUJM5K6iWcopcheNOt16KjcbP5oG8ESBIZIyJeqSLEBY7sozLD44FS/Gmf9FSOXcP+C8XSxLMzO2v98c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744707701; c=relaxed/simple;
-	bh=fQ7T/qUhM3lDIvKK1VLf3X6MBV4DNYEWZWyZsblYqH8=;
+	s=arc-20240116; t=1744707921; c=relaxed/simple;
+	bh=h2DEK8fnN2Gh/YmAl5zHBzGdGpaDN5Or8Mju5hKUKd8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i3NEf864Mov7+g5N5dHirWTfiEDw/cXrDBwn+0GhKzw67ar+BHTvodBoBsol1bIaspJ041ebTAmbHxFh+lZ9GIkU0IJRDbTw5CvUtFry7GycCXABjOVaLxibIijfQiaOPUVZfXggKUhzfy4+gRyZMm5ou8jTiMhmk4D31FYqBRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rKgWT49b; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=XTP92Bd2fQJrFgvvYMAoJDqutdK1LNfoCdLxSBNK1brgHu+joB75qEDwUMMXSpRD7ggiC6qF9DdH81JCYyyD8vK3zVzvy5SjsFIDmXqEyY23cnC7ubY8FuUtLkgk/1y6xmjDIqQZ/aU8TKiolHS3do0ginuQaMOZpVnZztolfZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gGkt+i89; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rKgWT49b"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43efa869b19so36658805e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 02:01:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gGkt+i89"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3912b54611dso3050045f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 02:05:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744707698; x=1745312498; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1744707918; x=1745312718; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ATQ2WAeqp0anILpiDAuFRK6bq5Jh77B0cEqGlrXYkoY=;
-        b=rKgWT49bM4AyxpnOnD5JudJ4pidZxOQ1PLF1AfmqMXTzHEgkwMt3xe9Tj8rX5o2i+P
-         3/OmbWsjbHNmzuaDZrKQDc7XjRB8ko9EGf/ibgyR3Z7R6XrpGrnRLDfpHEg9vl07+o0l
-         JSkJ25skgVoUBGVTwJeJMhQEwWlgnLnamyU81D86AAIXfM1nlwMOoOdr3m2NM6p5mOzs
-         5WYO2a5+w2deGOsibBJxYRvGuss164TIKzyNKJVqgBUDSTxgifd/UpSXki8/DfXAGuOK
-         /ESPhX3uA+ub1yFot50p/GQkxiDWN2MKoHNMMKcStiY02p+mBTfRJQuuSvLJWZFT2lWa
-         L7sA==
+        bh=559hWc8vvPPLU6Zg7XW7jcJSKjSV/Q+pFH2bIUlCWes=;
+        b=gGkt+i89tLVsYLELj7dd+/fm6VkN/cfF5ZSFHN1rt6Yd9q/EtybUku9ex2k4loEohB
+         bNhl+eqaZLs8k7uruuk9mIFe31zT5Xd0sxSwUhx6Eld1euBmQM9UXd4KoJLI42vw5liq
+         QEdIPA4+eYZV/vbKVLLFg1iAAycm0W3lvcciUmE77Sq8NkY0VdsHowi20IVuYq6YrlRP
+         /4jpj4o7OfDsJBAuvU7ySzYlPxTsJyYuZyisPGPjOJ8y4oJk/k3di3BSlTNN7Psjj2Sp
+         pipGXAZgJ/1lxSR5DjlWYCe/VQPnfGFfy7S7L+7P+6maODIRRhb0Oba8F+tmz7otS7nG
+         DrcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744707698; x=1745312498;
+        d=1e100.net; s=20230601; t=1744707918; x=1745312718;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ATQ2WAeqp0anILpiDAuFRK6bq5Jh77B0cEqGlrXYkoY=;
-        b=V/yXccbawoQiKvHJULQblZtVfPSIJbmYYK9zyz1UjMmYyskvzfpyceUpsN2XBnyMOr
-         1CtFhgX1Hi7oLbbW0XbFWAZa3LLqHuUm8NwcdvN4NVwITEhl67Ky52OdO+js5Gnxt7qy
-         h/cehSLef937JjvW1E5gJbjOitS1qdim1PywlsdU0tYbBy6BGsVcbQeBqoXinUu1tmLE
-         BkWO1R1HtOBScGkbkaSLB6CjDvhSWXoIk2jH0IJ3cp1FaMIsDV9Ir8Rigf4dpGCgnfnx
-         NSxulEcrWvfS22zg1YdkmSrSjVVKrRik/0NPC1m6m0RQsJxU6r+fpbmJO2XMiWfF7UFH
-         ZRPA==
-X-Forwarded-Encrypted: i=1; AJvYcCUcntU0I+XZ7sTu3Utim6JwT2wl44drWuKdhe7I30qo2L2FFPKOCi4vIMEKITZh3DIpR0Nc8qeAvXtqdDkO+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywo3VzGKDaav4MitM4VbdrvXE31WEjCZh67RgnUoKRY+cpm8pzQ
-	ahRNWCQ5ygTa0splpFkeKpzvivVicyd8ftNkdvE317+CtPT3ZZqag+twAi9SPI05ks8dW1NnEcY
-	jWvZGRFyx+AMpIA==
-X-Google-Smtp-Source: AGHT+IFmFs/nlsx2QPkRnmhjLHp1bf+lNep9itSd3yUo4cUQIyVWVraBimHdDf8+ne/yfkGfhA9ATJZ9DuVeWog=
-X-Received: from wmbgz6.prod.google.com ([2002:a05:600c:8886:b0:43c:f517:ac4e])
+        bh=559hWc8vvPPLU6Zg7XW7jcJSKjSV/Q+pFH2bIUlCWes=;
+        b=u3G26c/n4UUEtrckKzCSoXvW6gOvTiGLMZ6FMQGaB7LgQZMQ/5tKrd4GPd4d+qetwc
+         sSSWoJVJ6Sa6sDW9m4jU9aqOQmFJ7UOW32wXBqtHRxpqfVTIkQCpLM7yy5E+RZimF/p4
+         kIbs0nwbkE8PvgRPi27OEdaIr20SN/bhTOtqg6YGd50EiStCojPnh+hKwe62x6pMe8Pw
+         CJFk6zTMwD5VfAVL42QOsclelx78JjnePxEXa2wBx/PS6LXwsUIwFOYp+2yZPQDOSkmr
+         IKKciTIT4qvRtc9NJ8pmd0ShN28gAcyKAq/9fKH7s9FRD8PcToEaqWyXT+3Cop9033dU
+         gAHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWEwwQw2f20XvcGJ519ZAoXnrG9JLuMiCXgb4NfHbhcbVY6T5hmIzOsorc/emOXjvE4vwcuIRg19YCw2tec8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQap19umfUcE3MWXCii1ksaxOIvjS+rSlPZtfTIfsTW/7K4z+G
+	HVeDC+fLmTbuaffytz0zS8yblTXE3mnH+3eO/cAPUrnIcVBCpwtPgN0z2N3QofzFUDcyntyVDZs
+	0hc2EQ+LAwsUuEA==
+X-Google-Smtp-Source: AGHT+IGaGphQUOfUzKJDXEiqvP3cldS/F/M+YoDjFINgZTcUVSnk0ewAEd4RsQKkgrKbPZ+Kg1iebePbw3cBLIs=
+X-Received: from wmbev15.prod.google.com ([2002:a05:600c:800f:b0:43d:7e5:30f0])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1389:b0:43c:f75a:eb54 with SMTP id 5b1f17b1804b1-43f3a93d3e0mr126794805e9.13.1744707698153;
- Tue, 15 Apr 2025 02:01:38 -0700 (PDT)
-Date: Tue, 15 Apr 2025 09:01:35 +0000
-In-Reply-To: <Z_1QzTdV8mHJYdQ6@cassiopeiae>
+ 2002:a05:6000:1843:b0:391:3d12:9afa with SMTP id ffacd0b85a97d-39ea5201eddmr13259999f8f.21.1744707918651;
+ Tue, 15 Apr 2025 02:05:18 -0700 (PDT)
+Date: Tue, 15 Apr 2025 09:05:16 +0000
+In-Reply-To: <Z_1EnkPiBKakGYtM@slm.duckdns.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com> <Z_1QzTdV8mHJYdQ6@cassiopeiae>
-Message-ID: <Z_4gb8ZAlbfhobgW@google.com>
+References: <20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com> <Z_1EnkPiBKakGYtM@slm.duckdns.org>
+Message-ID: <Z_4hTBFdodhXkArL@google.com>
 Subject: Re: [PATCH] workqueue: rust: add creation of workqueues
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>
+To: Tejun Heo <tj@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Apr 14, 2025 at 08:15:41PM +0200, Danilo Krummrich wrote:
+On Mon, Apr 14, 2025 at 07:23:42AM -1000, Tejun Heo wrote:
+> Hello,
+> 
 > On Fri, Apr 11, 2025 at 03:34:24PM +0000, Alice Ryhl wrote:
+> > Creating workqueues is needed by various GPU drivers. Not only does it
+> > give you better control over execution, it also allows devices to ensure
+> > that all tasks have exited before the device is unbound (or similar) by
+> > running the workqueue destructor.
 > > 
-> > +/// An owned kernel work queue.
+> > This patch is being developed in parallel with the new Owned type [1].
+> > The OwnedQueue struct becomes redundant once [1] lands; at that point it
+> > can be replaced with Owned<Queue>, and constructors can be moved to the
+> > Queue type.
+> > 
+> > A wrapper type WqFlags is provided for workqueue flags. Since we only
+> > provide the | operator for this wrapper type, this makes it impossible
+> > to pass internal workqueue flags to the workqueue constructor. It has
+> > the consequence that we need a separate constant for the no-flags case,
+> > as the constructor does not accept a literal 0. I named this constant
+> > "BOUND" to signify the opposite of UNBOUND.
 > 
-> I'd suggest to document that dropping an OwnedQueue will wait for pending work.
-> 
-> Additionally, given that you're about to implement delayed work as well, we
-> should also mention that destroy_workqueue() currently does not cover waiting
-> for delayed work *before* it is scheduled and hence may cause WARN() splats or
-> even UAF bugs.
+> Maybe name it NONE or DUMMY? Doesn't affect this patch but [UN]BOUND are a
+> bit confusing and as a part of the effort to reduce unnecessary usage of
+> cpu-bound workqueues, there's a plan to flip the default and use PERCPU for
+> the cpu-bound workqueues.
 
-Ah, that's a problem :(
+Happy with whatever you think is best, but what about naming the
+constant PERCPU, then? In fact, by adjusting how I declare the flags in
+Rust, it is possible to *force* the user to include exactly one of
+PERCPU, UNBOUND, or BH in the flags argument.
 
-Can we make destroy_workqueue() wait for delayed items too? And/or have
-a variant of it that does so? I'm not sure what is best to do here...
+Of course, also happy to continue with NONE and adjust it when you flip
+the default value.
 
 Alice
