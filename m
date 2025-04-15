@@ -1,67 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D975827A936;
-	Tue, 15 Apr 2025 11:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E26728BABB
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 11:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744717113; cv=none; b=ftlIIvAsP+zT5I4gRTAoxXcsqQW+kSZnTF//aXyosIeBDeEKUiWOzl37HHJzHC3ZYhZa5AUa3jQJjxxBXEUodhvlYRQsd72AZ7KS1ymC8zv0KeZwrkZhIgfLlSiLMDCjZvAqzEJGxQ2iNK6l8lgvln9zne8wvwWpGahETqnRrRo=
+	t=1744717258; cv=none; b=cuHHuzRrtSXdkbS5+EtGOuhak5MfWkLohY2Wo96Rql+xGIdJtae0fhg2/XPzxw3WzOhghQyKCYVGJk7tvzIUsQ26yPqHf3gRC9XCzvQuVyZmFr/3CYXTzo/GOSPeWDkN5tXsKkXjHyVMzux0YieTPlqo9c+4wsd/XITAE819lxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744717113; c=relaxed/simple;
-	bh=kPQvr1LgSycPwkM2qthickUuMnXmIg7fIdTJtU4UCH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IlR6LeE2WNi0RILAfeg5WQODjAChvC5rsyoFKxlr4JsLruuCzI+7Drdm5UyG6kPnNJPk21WR2eGxmBmBKR3S8gKvC28HAvap756SsM0HHsxIa+91uL+/Scjf3rBepR0srUBT/NmcubBodQbyjI2jcJrHueWuWuFP3AJPkGW+oDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3UWi2P3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744717258; c=relaxed/simple;
+	bh=ZJ7OpKdka1F7ZBFYQVrdJ8oxYihNjUeS07C9hmUDydA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uYiA9PMZwLZRhe15O+ICfBY+CioXxiIV6de7AV1RKtf7gt8ymMItNmwlpu/UtsJbICkSrpxEc+YSH32OGtoNBRWjoPLx2FH8j7pwdYN5oLu6lfYeNyCI9fg4NkBtCb5wG3xK7SPSX1R7JtWVnTJpUcKqAsFIRdJcKbCyoicr3qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Kc3Jsi0K; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3UWi2P3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C597AC4CEDD;
-	Tue, 15 Apr 2025 11:38:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744717112;
-	bh=kPQvr1LgSycPwkM2qthickUuMnXmIg7fIdTJtU4UCH4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D3UWi2P3Fc7BIzQzAHuG7AGyOYLMeTu9zyv7P4HTNY95UCzsnw1+2tBq8++XE4187
-	 OUb7wxDsD2zXIOYC66co0kFvYINitlefkHRUbVyAS/bGz+9NUYFoE9jS1GZbuNiTmt
-	 9FP2uF4iMb/291ywcWnYX2UCO5C34OFACkb7+U80=
-Date: Tue, 15 Apr 2025 13:38:29 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rafael@kernel.org, david.m.ertman@intel.com, ira.weiny@intel.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	airlied@gmail.com, acourbot@nvidia.com, jhubbard@nvidia.com,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 0/5] Auxiliary bus Rust abstractions
-Message-ID: <2025041559-regulator-mutt-e8ed@gregkh>
-References: <20250414131934.28418-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Kc3Jsi0K"
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-86d5e3ddb66so1939763241.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 04:40:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744717256; x=1745322056; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/5wyWC2vD7HP03u0+k9/k2OZ1y4kWaoLC9/4tNgnhE0=;
+        b=Kc3Jsi0KY160f4uj0Ayy+TunoD8RNWiDrQx7ttcx31mqGQssgTu6jmqcf3zV1MWFz8
+         BjJJSWg+ane+n/TKKX6bnrpaE8y56DaNb7kkdlnwM1y7izNeAWvpHXFSPoHtcFD2dLp4
+         z3sRybuMfP3aqK2BpeDBpAZMdEB0czvgfuvpkqdvbqVap5uJCYHa5W3WkTbdFdzuVfjs
+         XtoYq+ZiN+vkSyrGGCZDo9O5/vFkZMtL1yL/X+txQ5j/LLyZgisBO2BR+fJB1m8Ze9Sm
+         z8bGxqJy7il7DKapMYdtzdmu+BqMVS/OZYrT+pulhgo73NrATMSHoxZ+9NpXeEMRAqsK
+         k//w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744717256; x=1745322056;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/5wyWC2vD7HP03u0+k9/k2OZ1y4kWaoLC9/4tNgnhE0=;
+        b=n0U74jOULsAeIDdBx/v7guPW+YS+u6+x8T2pXJJI5TO0JqpNGoutu8Kbw6axpzXX56
+         t/uespCdF/UKZ612eRy7V2+3vSfljrRF2JnMtMaG9bDBg330vwvYfQgXlnAjttT3y8JU
+         FqMJ53AyzkcHi0zMtKBr8+dmFLESsMd7MIqF6k9dCKHCCmv1dwvqazI5eS8QlFrt50LE
+         3NDnwazzisQEkwmH0iL7ZUL/n0KMqYEWPfcpSY1bdFqXQSgtXCaV7A6lnHMGGdn9oSJA
+         XE+Ebw/RWFRK4lj9m6JEg61NCmkTa8VJ3tF0pflEzQzH/cMxFW02DK+G0H6RNWT/u/al
+         9/2A==
+X-Forwarded-Encrypted: i=1; AJvYcCX9yxNLTwN/GJ3VjBjKwzfC4pb2ctQ9T9sJ3wJjUHfbQ+lmymAkZw9v8etVNH+giYeLN3eRNAthKfE7tKQPQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWVWQ2r+pS845GUAkva+7EON6aU1a3VhffyHnsv4OJySVxn6/6
+	o9OoJgk2HYmMRfJWyR7K+hiJ9ShXNp/GvsqvyttkxEPuJqEXCQpNNOvRJca9DY8p7OGIcQdm7oL
+	SoCutUaOnWIw94ydJj1/BwXbzQqbqEHjiMgGVLA==
+X-Gm-Gg: ASbGnct3mSBixGWkrIOu+2ty54XPFvGx1p6i5MbofnJxKPVjh/WYthJ1BhBvjS8Sr+D
+	n47xh+DDXf9gnP49IZba94TIklNxrYF+53SJMC8dd2wk8rjxrrRZ7ECXYA0AEuIWunkAUwP3jdv
+	NiUvvbQFXMX/sSgDDuq+GmItjtovm/U8+t9ZROVd498JHhEoGCKzt5mT0=
+X-Google-Smtp-Source: AGHT+IE+NNVE88iDUwAaQ7r8ENal9D9/Spnw5Z3aSwELhPsIBbz/10RGMoWuKFkC1AOSsqEBVzUhDU6ew73aGrw3MS8=
+X-Received: by 2002:a05:6102:dce:b0:4bb:eb4a:f9ef with SMTP id
+ ada2fe7eead31-4c9e4eb963emr10663742137.4.1744717255872; Tue, 15 Apr 2025
+ 04:40:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250414131934.28418-1-dakr@kernel.org>
+References: <CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com>
+ <20250407183716.796891-1-ojeda@kernel.org>
+In-Reply-To: <20250407183716.796891-1-ojeda@kernel.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 15 Apr 2025 17:10:44 +0530
+X-Gm-Features: ATxdqUHRgjnjW4n6eMFjqJplHcq4SMBMewSYmPqnuxbGTAXBMTStlZNMQ3l7DSk
+Message-ID: <CA+G9fYt4otQK4pHv8pJBW9e28yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com>
+Subject: Re: Build: arm rustgcc unknown argument '-mno-fdpic'
+To: Miguel Ojeda <ojeda@kernel.org>, Christian Schrrefl <chrisi.schrefl@gmail.com>
+Cc: Russell King <rmk+kernel@armlinux.org.uk>, Rudraksha Gupta <guptarud@gmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Ard Biesheuvel <ardb@kernel.org>, anders.roxell@linaro.org, 
+	arnd@arndb.de, dan.carpenter@linaro.org, laura.nao@collabora.com, 
+	linux-kernel@vger.kernel.org, lkft-triage@lists.linaro.org, 
+	regressions@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Apr 14, 2025 at 03:18:03PM +0200, Danilo Krummrich wrote:
-> This series adds Rust abstractions for the auxiliary bus.
-> 
-> It implements the required abstractions to write auxiliary drivers and create
-> auxiliary device registrations. A driver sample illustrates how the
-> corresponding abstractions work.
-> 
-> The auxiliary abstractions are required for the Nova driver project, in order to
-> connect nova-core with the nova-drm driver.
-> 
-> A branch containing the patches can be found in [1].
-> 
-> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/auxiliary
+Hey Christian, Miguel,
 
-Looks good to me, want to take this through a gpu tree so you can build
-on top of it, or do you want it in the driver-core.git tree?
+On Tue, 8 Apr 2025 at 00:07, Miguel Ojeda <ojeda@kernel.org> wrote:
+>
+> On Mon, 07 Apr 2025 22:58:02 +0530 Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> >
+> > Regressions on arm build with config rustgcc-lkftconfig-kselftest on the
+> > Linux mainline and next failed with CONFIG_RUST=y enabled.
+>
+> > Bad: next-20250327
+> > Good: next-20250326
+>
+> > Unable to generate bindings: clang diagnosed error: error: unknown
+> > argument: '-mno-fdpic'
+>
+> I assume this is the arm support, i.e. commit ccb8ce526807 ("ARM: 9441/1:
+> rust: Enable Rust support for ARMv7").
+>
+> Clang does not seem to support `-mno-fdpic`, thus you probably need to add it to
+> `bindgen_skip_c_flags` in `rust/Makefile` so that it gets skipped when the C
+> compiler is GCC.
+>
+> If you do so, please double-check if the flag could potentially alter the ABI in
+> a way that `bindgen` would generate the wrong bindings.
 
-thanks,
+I tested this idea and it works but I don't know enough about
+rust to double-check if the flag could potentially alter the
+ABI in a way that `bindgen` would generate the wrong bindings.
 
-greg k-h
+diff --git a/rust/Makefile b/rust/Makefile
+index 3aca903a7d08..f207ba0ed466 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -273,7 +273,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387
+-mpreferred-stack-boundary=% \
+  -fzero-call-used-regs=% -fno-stack-clash-protection \
+  -fno-inline-functions-called-once -fsanitize=bounds-strict \
+  -fstrict-flex-arrays=% -fmin-function-alignment=% \
+- -fzero-init-padding-bits=% \
++ -fzero-init-padding-bits=% -mno-fdpic \
+  --param=% --param asan-%
+
+ # Derived from `scripts/Makefile.clang`.
+
+- Naresh
+
+>
+> I hope that helps!
+>
+> Cheers,
+> Miguel
