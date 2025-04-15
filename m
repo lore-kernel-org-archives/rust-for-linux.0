@@ -1,128 +1,81 @@
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E26728BABB
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 11:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CFF294A1F
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 11:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744717258; cv=none; b=cuHHuzRrtSXdkbS5+EtGOuhak5MfWkLohY2Wo96Rql+xGIdJtae0fhg2/XPzxw3WzOhghQyKCYVGJk7tvzIUsQ26yPqHf3gRC9XCzvQuVyZmFr/3CYXTzo/GOSPeWDkN5tXsKkXjHyVMzux0YieTPlqo9c+4wsd/XITAE819lxQ=
+	t=1744718371; cv=none; b=FlPE1IHyJQk8rCjVBOVe5zDF54mq6qIEonZpZNHf2/6lK7xs1JyMo99IubIFmcVs1WhHb/ayURZqG4JCDQ3QOr5Zlw8av2y943qE+Mc6xGSPb5Vj7lPhH8JO3zDd07+vWisP+2l0s/JMuXq6nZzkZDwWDmXc3TsIGZGpq2yxLd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744717258; c=relaxed/simple;
-	bh=ZJ7OpKdka1F7ZBFYQVrdJ8oxYihNjUeS07C9hmUDydA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uYiA9PMZwLZRhe15O+ICfBY+CioXxiIV6de7AV1RKtf7gt8ymMItNmwlpu/UtsJbICkSrpxEc+YSH32OGtoNBRWjoPLx2FH8j7pwdYN5oLu6lfYeNyCI9fg4NkBtCb5wG3xK7SPSX1R7JtWVnTJpUcKqAsFIRdJcKbCyoicr3qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Kc3Jsi0K; arc=none smtp.client-ip=209.85.222.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1744718371; c=relaxed/simple;
+	bh=FMSG06KEVo+koXmWuIGMQok0HUEroVse8yAMUNW7ZLg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=DGZfFEC4cLF8zBPDgirQs9G6if+nWWJTeihG+41B6cSnlSN+bATremJF3IqNuLCFhryWCrRSkehTz1zXxfxj3XLkoqVfInCVwO5WMvAIgRx8QIRYj9roVYTgm8oqoC/qBpDQWR1+TVzPSBLCHl0WQGk1yHDOkZ4vUimEbwEgSAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wn+o7SJV; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Kc3Jsi0K"
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-86d5e3ddb66so1939763241.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 04:40:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wn+o7SJV"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ceb011ea5so32261425e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 04:59:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744717256; x=1745322056; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/5wyWC2vD7HP03u0+k9/k2OZ1y4kWaoLC9/4tNgnhE0=;
-        b=Kc3Jsi0KY160f4uj0Ayy+TunoD8RNWiDrQx7ttcx31mqGQssgTu6jmqcf3zV1MWFz8
-         BjJJSWg+ane+n/TKKX6bnrpaE8y56DaNb7kkdlnwM1y7izNeAWvpHXFSPoHtcFD2dLp4
-         z3sRybuMfP3aqK2BpeDBpAZMdEB0czvgfuvpkqdvbqVap5uJCYHa5W3WkTbdFdzuVfjs
-         XtoYq+ZiN+vkSyrGGCZDo9O5/vFkZMtL1yL/X+txQ5j/LLyZgisBO2BR+fJB1m8Ze9Sm
-         z8bGxqJy7il7DKapMYdtzdmu+BqMVS/OZYrT+pulhgo73NrATMSHoxZ+9NpXeEMRAqsK
-         k//w==
+        d=google.com; s=20230601; t=1744718368; x=1745323168; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=y66lC9dIVeqDJRX23BfVXuj8CesR6Dn4+I8tFp3SC1U=;
+        b=wn+o7SJVl/7fp7JWj5jWAaWkaK21/1DUjyPMuWjwejYJw9QXgLtk+l+ikQ+vDjjWZ2
+         1m2Y20e9OAf/lT/B8r4XNRfJC2EiUWZ/wV9+M9wYdREGJ/RCnpm3DRoHt9dUppJRAap+
+         iyC9NZDc1RUK2SDGyqgqlMJj7IuU4/wv222teVueBj6zEQmkiaW7dpCze3tmYmy222e7
+         3Q7l/McDslj3vbau5oEOiGuAHg+R690qVgUPTPJX3v2//LaMM0wv+hILkDiHua59zJCv
+         G539liQbKSDFQYWxvNw8jQmvhsnfjq9gNIXOmYcIa5PiGmUkwNfY9EsRDO8H3Ghzdilu
+         8dAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744717256; x=1745322056;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/5wyWC2vD7HP03u0+k9/k2OZ1y4kWaoLC9/4tNgnhE0=;
-        b=n0U74jOULsAeIDdBx/v7guPW+YS+u6+x8T2pXJJI5TO0JqpNGoutu8Kbw6axpzXX56
-         t/uespCdF/UKZ612eRy7V2+3vSfljrRF2JnMtMaG9bDBg330vwvYfQgXlnAjttT3y8JU
-         FqMJ53AyzkcHi0zMtKBr8+dmFLESsMd7MIqF6k9dCKHCCmv1dwvqazI5eS8QlFrt50LE
-         3NDnwazzisQEkwmH0iL7ZUL/n0KMqYEWPfcpSY1bdFqXQSgtXCaV7A6lnHMGGdn9oSJA
-         XE+Ebw/RWFRK4lj9m6JEg61NCmkTa8VJ3tF0pflEzQzH/cMxFW02DK+G0H6RNWT/u/al
-         9/2A==
-X-Forwarded-Encrypted: i=1; AJvYcCX9yxNLTwN/GJ3VjBjKwzfC4pb2ctQ9T9sJ3wJjUHfbQ+lmymAkZw9v8etVNH+giYeLN3eRNAthKfE7tKQPQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWVWQ2r+pS845GUAkva+7EON6aU1a3VhffyHnsv4OJySVxn6/6
-	o9OoJgk2HYmMRfJWyR7K+hiJ9ShXNp/GvsqvyttkxEPuJqEXCQpNNOvRJca9DY8p7OGIcQdm7oL
-	SoCutUaOnWIw94ydJj1/BwXbzQqbqEHjiMgGVLA==
-X-Gm-Gg: ASbGnct3mSBixGWkrIOu+2ty54XPFvGx1p6i5MbofnJxKPVjh/WYthJ1BhBvjS8Sr+D
-	n47xh+DDXf9gnP49IZba94TIklNxrYF+53SJMC8dd2wk8rjxrrRZ7ECXYA0AEuIWunkAUwP3jdv
-	NiUvvbQFXMX/sSgDDuq+GmItjtovm/U8+t9ZROVd498JHhEoGCKzt5mT0=
-X-Google-Smtp-Source: AGHT+IE+NNVE88iDUwAaQ7r8ENal9D9/Spnw5Z3aSwELhPsIBbz/10RGMoWuKFkC1AOSsqEBVzUhDU6ew73aGrw3MS8=
-X-Received: by 2002:a05:6102:dce:b0:4bb:eb4a:f9ef with SMTP id
- ada2fe7eead31-4c9e4eb963emr10663742137.4.1744717255872; Tue, 15 Apr 2025
- 04:40:55 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744718368; x=1745323168;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y66lC9dIVeqDJRX23BfVXuj8CesR6Dn4+I8tFp3SC1U=;
+        b=AQ3FUN+0WvUAMH3VczuVvnMjT6AnAP88U9dN0q/GAhftIXKFlbLbXPxQ14uFwcWHvI
+         poAOULSqm/plCDBe4SsKUL8+Xt9kuibZcZR6kmk5saL9/wAUurse51BtxQxvUaDW1UwW
+         gidoYsL7L1Q6ektV9nVzLhBh+wVlw/TmHpPJn5XtWTotEY83t2310cH5AYh4OnJQQYzv
+         TGJNLtWTpD7givSNCx8saGJyvj2TYjEa9/J1K6mJT87UR/1t5Tua1Pq40CWWhRwlHI/5
+         DmslFfthWeqRGs7B3c/CuG4SmzYgCBX51ABCFFFKuT61H7Kb8ZeU+b2ZdMc0nv29CybV
+         /05g==
+X-Forwarded-Encrypted: i=1; AJvYcCWTYjYIy71Oe9AmG3FOyYfMmv9jDX1Imhdvb6QedfYWyb73r2hWUoSB2eJqkJApspp2q2stwVole2q3bAevtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzlwbmgFpqUgMJQnhGICAHMrgVU0szrlIxuwbo+XKPiC/kKHy7
+	vPtTv+GYcKrcQ/i0aB4AMbmuykFmC7CJCGAi2IgI/PBnvsJ2xv0QTUQrRpuM2NEXIRe9DrkkaEK
+	00Aq1MsfVGLBygw==
+X-Google-Smtp-Source: AGHT+IHF+9ejIcZoyxgFM8mOx/KOSSkb5ADmw40mDzTvjtIz80LUo4ak6qdjUO/1m9JZIVulEce9AHfMOOqBNJg=
+X-Received: from wmbay5.prod.google.com ([2002:a05:600c:1e05:b0:43c:ef1f:48d8])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3baa:b0:43c:efed:732c with SMTP id 5b1f17b1804b1-43f3a9b0285mr124000165e9.28.1744718367848;
+ Tue, 15 Apr 2025 04:59:27 -0700 (PDT)
+Date: Tue, 15 Apr 2025 11:59:25 +0000
+In-Reply-To: <20250414131934.28418-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com>
- <20250407183716.796891-1-ojeda@kernel.org>
-In-Reply-To: <20250407183716.796891-1-ojeda@kernel.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 15 Apr 2025 17:10:44 +0530
-X-Gm-Features: ATxdqUHRgjnjW4n6eMFjqJplHcq4SMBMewSYmPqnuxbGTAXBMTStlZNMQ3l7DSk
-Message-ID: <CA+G9fYt4otQK4pHv8pJBW9e28yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com>
-Subject: Re: Build: arm rustgcc unknown argument '-mno-fdpic'
-To: Miguel Ojeda <ojeda@kernel.org>, Christian Schrrefl <chrisi.schrefl@gmail.com>
-Cc: Russell King <rmk+kernel@armlinux.org.uk>, Rudraksha Gupta <guptarud@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Ard Biesheuvel <ardb@kernel.org>, anders.roxell@linaro.org, 
-	arnd@arndb.de, dan.carpenter@linaro.org, laura.nao@collabora.com, 
-	linux-kernel@vger.kernel.org, lkft-triage@lists.linaro.org, 
-	regressions@lists.linux.dev, rust-for-linux@vger.kernel.org, 
-	torvalds@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20250414131934.28418-1-dakr@kernel.org> <20250414131934.28418-2-dakr@kernel.org>
+Message-ID: <Z_5KHVHh-Zs9HSlq@google.com>
+Subject: Re: [PATCH v4 1/5] rust: types: add `Opaque::zeroed`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, david.m.ertman@intel.com, 
+	ira.weiny@intel.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu, 
+	airlied@gmail.com, acourbot@nvidia.com, jhubbard@nvidia.com, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-Hey Christian, Miguel,
+On Mon, Apr 14, 2025 at 03:18:04PM +0200, Danilo Krummrich wrote:
+> Analogous to `Opaque::uninit` add `Opaque::zeroed`, which sets the
+> corresponding memory to zero. In contrast to `Opaque::uninit`, the
+> corresponding value, depending on its type, may be initialized.
+> 
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-On Tue, 8 Apr 2025 at 00:07, Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> On Mon, 07 Apr 2025 22:58:02 +0530 Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> >
-> > Regressions on arm build with config rustgcc-lkftconfig-kselftest on the
-> > Linux mainline and next failed with CONFIG_RUST=y enabled.
->
-> > Bad: next-20250327
-> > Good: next-20250326
->
-> > Unable to generate bindings: clang diagnosed error: error: unknown
-> > argument: '-mno-fdpic'
->
-> I assume this is the arm support, i.e. commit ccb8ce526807 ("ARM: 9441/1:
-> rust: Enable Rust support for ARMv7").
->
-> Clang does not seem to support `-mno-fdpic`, thus you probably need to add it to
-> `bindgen_skip_c_flags` in `rust/Makefile` so that it gets skipped when the C
-> compiler is GCC.
->
-> If you do so, please double-check if the flag could potentially alter the ABI in
-> a way that `bindgen` would generate the wrong bindings.
-
-I tested this idea and it works but I don't know enough about
-rust to double-check if the flag could potentially alter the
-ABI in a way that `bindgen` would generate the wrong bindings.
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 3aca903a7d08..f207ba0ed466 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -273,7 +273,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387
--mpreferred-stack-boundary=% \
-  -fzero-call-used-regs=% -fno-stack-clash-protection \
-  -fno-inline-functions-called-once -fsanitize=bounds-strict \
-  -fstrict-flex-arrays=% -fmin-function-alignment=% \
-- -fzero-init-padding-bits=% \
-+ -fzero-init-padding-bits=% -mno-fdpic \
-  --param=% --param asan-%
-
- # Derived from `scripts/Makefile.clang`.
-
-- Naresh
-
->
-> I hope that helps!
->
-> Cheers,
-> Miguel
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
