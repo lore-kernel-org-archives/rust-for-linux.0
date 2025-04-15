@@ -1,201 +1,70 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007442951B4
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 12:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E655B292911;
+	Tue, 15 Apr 2025 12:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744719081; cv=none; b=cNz7wUtxWKtmKWZayy7Sreaey117lYPxufd2U3t/yiyIxuMZjDeJSqSR4SEsL62XecJ5LEutIn8fxWrlPBLsUiFigjEPRiKLHiv0tiZhekKBZoEtn3nUtDyGkys8aZxubnw3CAJG0BvXsG5vL/vuoUFFtqG2ru/FB8WeEiqxMQg=
+	t=1744720982; cv=none; b=S2dTdc9LCtMBPy3LnbEXnEie1FRnDcd0jfKnbhMxOqLmNw6S4krUdcTRuTlZ/yOmnn9ZhAhsv7jjjHPyky15uxD5Zi5fV+AwmHPM667LkBbhquNNpKxrtMaAQNdxtB7v5w9n7FUBKAQNchNanR0VBuhFUhCsuWhUkaM1UMwksqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744719081; c=relaxed/simple;
-	bh=npxmSflEeXX301XFSjqGTkkUcKvkacPYYcvrPCcyNqU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LEIXdwMmFX8xyhBeaoqtp2q97Dzqzp1iTXhGmXjcKMpXEoFNkQOkrskQ1Ywn6I6Fq5QMWdYbwMUOrxYA2Y7YWmOqAWZdghvDZGsDSKfnkoBoHq4A2CTQy8XdXrx9G/eQa79KbdVym7h86y4pDzUwizC7890Jbh09UyLNjcZgM+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VT9rX9lH; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1744720982; c=relaxed/simple;
+	bh=fCa6LFz7pmMqmxuGDVYZ+Em0r89FCnzEM1WDIkSnQa8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mnPmnwdaeFheqOlrmXVWDzbEGUefTKfVmz2eg7I7tB96kTesLD7QKbx3TpIFMbyEuqBszWQcMQKQr/ziNZVDgfuTRL2opzRW0a4L8FOgdqfByPS4DHtyvuA5l95g9oi1K+0PS1cCLLyqx1x8BZk6M8zKucbg5QbxW7ZAYhJNjbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g40yS1Ds; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VT9rX9lH"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ced8c2eb7so43702605e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 05:11:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1744719078; x=1745323878; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0cs6tEZrhI32qLDnd2XZ2OWDLqbjW7yrnTUhiyZvTeU=;
-        b=VT9rX9lHO0NQCrNy4qvBo/RLrHBysb/HQUADFJwP8sfNtdyzXOoAtr0VV5I2bJr1Ch
-         dYxZnpY5F+bJX2nvaajVgDUlD1WdO/fkdRUxC2LcbFB0ZyE9POWrseER5Q2kdG/hjg5i
-         QRB9iwGomUQO8ikNTTXJynBVuYxsfQ85yMKqob9d+pp72XtVTajvqukVtqSyU48zHHm0
-         gh/cTVAraWr5Ct0HnBSoOTngQ9Bj0sd13K2fecYoR/3dVIMIBe19/rJGsVNiVBzVGuqi
-         Zv7wUAV8F8uZ4G1i2p5VEUCQgYxFYs1234BvthFtjjLBWkreNtDzDPhmbk/amfPCOdad
-         TjgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744719078; x=1745323878;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0cs6tEZrhI32qLDnd2XZ2OWDLqbjW7yrnTUhiyZvTeU=;
-        b=J3vN7qelbO2VMoFNRKlHJfeU5YDVRsOAT4VDkgHOaOeQLZScb4LxpnFA4/7OF6vlY6
-         x58yKZivnb6yMPB8kCKbZQjuY9fNZuakAnnLIbwF0pTb0ISxL1hxvfLFWD6C1cDK+DWC
-         29+s2fW+1NIzUu1YRngil7GWpqn9XaH+ctJNrB2InDzK2ueq9blGqw91jzn2PXMcDMnP
-         tdJt2aBeQW75bHX13D5oRy/UXBoLmJmTusTBLrUNw79hN2FTpf3RQsRJTRzLVHpe5clK
-         J/gqHl5A5Jan5HPg0S+TcLyojfntprDmcfwWYB9xKxWaKJ5ldvWoEThc4XPLAX2gnrPT
-         Ha7A==
-X-Forwarded-Encrypted: i=1; AJvYcCXkRCJqGxnw/pt7AZDSsubREH3bhPBDQ6PWWIXKNyQOdBA7QGjzDdCd3G85hrVNkMzpB6ryEq1xtD362DWSEA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ+8kpPN1kqnK2YGO8av+roU5oEcCm5pO7PAcRS0NYVhfwBysi
-	acATrtNp5Ux6NxbZzBaFbvFGezmg4L6QPGt5QrZ/E0abDMGjfhMexxyVjzw685PfJ/hYPIxHcc3
-	9cR6bulCouxfXlw==
-X-Google-Smtp-Source: AGHT+IFc11qpJSN9kx0m1/6vKedUiT6jLGM7Ajcb3HQxOcVN/cw7nvtJL3Ae8R08b66w5B8KI4622dqhHAESa1k=
-X-Received: from wmbh17.prod.google.com ([2002:a05:600c:a111:b0:43d:1c11:4e5d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3c82:b0:43c:ebc4:36a5 with SMTP id 5b1f17b1804b1-43f3a933b99mr135834825e9.7.1744719078418;
- Tue, 15 Apr 2025 05:11:18 -0700 (PDT)
-Date: Tue, 15 Apr 2025 12:11:16 +0000
-In-Reply-To: <20250414131934.28418-5-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g40yS1Ds"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A432CC4CEDD;
+	Tue, 15 Apr 2025 12:42:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744720981;
+	bh=fCa6LFz7pmMqmxuGDVYZ+Em0r89FCnzEM1WDIkSnQa8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g40yS1Ds+w32o5gKi0VdoEL4DYZvPhjxhEAyDVcxuTwW4fCSppgm7B293f+c5P5/5
+	 UKfJSJX8sgSfHQaUtEfelxkjzY46fDijeQecV1TljYzpWVy3T5o+2jUPQwHa6Ev8UQ
+	 kSqPKIwN3SKTQnAiqgnL6J8Ql7ndxVOiAyhjZ6V94FMxB4dfrqcgv8KoZIq3GdJ5lS
+	 YsVXQgYCvT+fW78gGoXHUVY3VkDXate+yLucGpl0eNp9curljw4lhwnLWnEQDS+gcz
+	 KbWeY32GEReiTSavtwM6Qm2kFnRUlbF2RRh7YGnWp9hLaZrpsBt3KcQcubg/qliKxk
+	 R3wBKX/UK3UJg==
+Date: Tue, 15 Apr 2025 14:42:54 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rafael@kernel.org, david.m.ertman@intel.com, ira.weiny@intel.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	airlied@gmail.com, acourbot@nvidia.com, jhubbard@nvidia.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 0/5] Auxiliary bus Rust abstractions
+Message-ID: <Z_5UTvuMpYhRN24T@cassiopeiae>
+References: <20250414131934.28418-1-dakr@kernel.org>
+ <2025041559-regulator-mutt-e8ed@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250414131934.28418-1-dakr@kernel.org> <20250414131934.28418-5-dakr@kernel.org>
-Message-ID: <Z_5M5Auqj2KK-rPz@google.com>
-Subject: Re: [PATCH v4 4/5] rust: auxiliary: add auxiliary registration
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, david.m.ertman@intel.com, 
-	ira.weiny@intel.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu, 
-	airlied@gmail.com, acourbot@nvidia.com, jhubbard@nvidia.com, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025041559-regulator-mutt-e8ed@gregkh>
 
-On Mon, Apr 14, 2025 at 03:18:07PM +0200, Danilo Krummrich wrote:
-> Implement the `auxiliary::Registration` type, which provides an API to
-> create and register new auxiliary devices in the system.
+On Tue, Apr 15, 2025 at 01:38:29PM +0200, Greg KH wrote:
+> On Mon, Apr 14, 2025 at 03:18:03PM +0200, Danilo Krummrich wrote:
+> > This series adds Rust abstractions for the auxiliary bus.
+> > 
+> > It implements the required abstractions to write auxiliary drivers and create
+> > auxiliary device registrations. A driver sample illustrates how the
+> > corresponding abstractions work.
+> > 
+> > The auxiliary abstractions are required for the Nova driver project, in order to
+> > connect nova-core with the nova-drm driver.
+> > 
+> > A branch containing the patches can be found in [1].
+> > 
+> > [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/auxiliary
 > 
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/auxiliary.rs | 88 +++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 87 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
-> index 75423737032a..b40d663b42eb 100644
-> --- a/rust/kernel/auxiliary.rs
-> +++ b/rust/kernel/auxiliary.rs
-> @@ -5,7 +5,7 @@
->  //! C header: [`include/linux/auxiliary_bus.h`](srctree/include/linux/auxiliary_bus.h)
->  
->  use crate::{
-> -    bindings, device,
-> +    bindings, container_of, device,
->      device_id::RawDeviceId,
->      driver,
->      error::{to_result, Result},
-> @@ -230,6 +230,18 @@ pub fn parent(&self) -> Option<&device::Device> {
->      }
->  }
->  
-> +impl Device {
-> +    extern "C" fn release(dev: *mut bindings::device) {
-> +        // SAFETY: By the type invariant `self.0.as_raw` is a pointer to the `struct device`
-> +        // embedded in `struct auxiliary_device`.
-> +        let adev = unsafe { container_of!(dev, bindings::auxiliary_device, dev) }.cast_mut();
+> Looks good to me, want to take this through a gpu tree so you can build
+> on top of it, or do you want it in the driver-core.git tree?
 
-FYI, Tamir's patch makes this cast_mut() unnecessary.
-
-> +        // SAFETY: `adev` points to the memory that has been allocated in `Registration::new`, via
-> +        // `KBox::new(Opaque::<bindings::auxiliary_device>::zeroed(), GFP_KERNEL)`.
-> +        let _ = unsafe { KBox::<Opaque<bindings::auxiliary_device>>::from_raw(adev.cast()) };
-> +    }
-> +}
-> +
->  // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
->  // argument.
->  kernel::impl_device_context_deref!(unsafe { Device });
-> @@ -272,3 +284,77 @@ unsafe impl Send for Device {}
->  // SAFETY: `Device` can be shared among threads because all methods of `Device`
->  // (i.e. `Device<Normal>) are thread safe.
->  unsafe impl Sync for Device {}
-> +
-> +/// The registration of an auxiliary device.
-> +///
-> +/// This type represents the registration of a [`struct auxiliary_device`]. When an instance of this
-> +/// type is dropped, its respective auxiliary device will be unregistered from the system.
-> +///
-> +/// # Invariants
-> +///
-> +/// `self.0` always holds a valid pointer to an initialized and registered
-> +/// [`struct auxiliary_device`].
-> +pub struct Registration(NonNull<bindings::auxiliary_device>);
-> +
-> +impl Registration {
-> +    /// Create and register a new auxiliary device.
-> +    pub fn new(parent: &device::Device, name: &CStr, id: u32, modname: &CStr) -> Result<Self> {
-> +        let boxed = KBox::new(Opaque::<bindings::auxiliary_device>::zeroed(), GFP_KERNEL)?;
-> +        let adev = boxed.get();
-> +
-> +        // SAFETY: It's safe to set the fields of `struct auxiliary_device` on initialization.
-> +        unsafe {
-> +            (*adev).dev.parent = parent.as_raw();
-> +            (*adev).dev.release = Some(Device::release);
-> +            (*adev).name = name.as_char_ptr();
-> +            (*adev).id = id;
-> +        }
-> +
-> +        // SAFETY: `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`,
-> +        // which has not been initialized yet.
-> +        unsafe { bindings::auxiliary_device_init(adev) };
-> +
-> +        // Now that `adev` is initialized, leak the `Box`; the corresponding memory will be freed
-> +        // by `Device::release` when the last reference to the `struct auxiliary_device` is dropped.
-> +        let _ = KBox::into_raw(boxed);
-> +
-> +        // SAFETY:
-> +        // - `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`, which has
-> +        //   been initialialized,
-> +        // - `modname.as_char_ptr()` is a NULL terminated string.
-> +        let ret = unsafe { bindings::__auxiliary_device_add(adev, modname.as_char_ptr()) };
-> +        if ret != 0 {
-> +            // SAFETY: `adev` is guaranteed to be a valid pointer to a `struct auxiliary_device`,
-> +            // which has been initialialized.
-> +            unsafe { bindings::auxiliary_device_uninit(adev) };
-
-Does this error-path actually free the box?
-
-Alice
-
-> +            return Err(Error::from_errno(ret));
-> +        }
-> +
-> +        // SAFETY: `adev` is guaranteed to be non-null, since the `KBox` was allocated successfully.
-> +        //
-> +        // INVARIANT: The device will remain registered until `auxiliary_device_delete()` is called,
-> +        // which happens in `Self::drop()`.
-> +        Ok(Self(unsafe { NonNull::new_unchecked(adev) }))
-> +    }
-> +}
-> +
-> +impl Drop for Registration {
-> +    fn drop(&mut self) {
-> +        // SAFETY: By the type invariant of `Self`, `self.0.as_ptr()` is a valid registered
-> +        // `struct auxiliary_device`.
-> +        unsafe { bindings::auxiliary_device_delete(self.0.as_ptr()) };
-> +
-> +        // This drops the reference we acquired through `auxiliary_device_init()`.
-> +        //
-> +        // SAFETY: By the type invariant of `Self`, `self.0.as_ptr()` is a valid registered
-> +        // `struct auxiliary_device`.
-> +        unsafe { bindings::auxiliary_device_uninit(self.0.as_ptr()) };
-> +    }
-> +}
-> +
-> +// SAFETY: A `Registration` of a `struct auxiliary_device` can be released from any thread.
-> +unsafe impl Send for Registration {}
-> +
-> +// SAFETY: `Registration` does not expose any methods or fields that need synchronization.
-> +unsafe impl Sync for Registration {}
-> -- 
-> 2.49.0
-> 
+Yes, I'd like to take this one through the nova tree.
