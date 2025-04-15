@@ -1,58 +1,136 @@
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EBA2512F0
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 20:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F5A253348
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 20:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744748275; cv=none; b=BcKiF7/yMC6hv76SJulTZ3K3XOTAZ1qd7KAUeqLENUvN6kgh4qAIB2F9ip/5RDsi9u0VlijIC3dti5G+gB5hD77htOxPY6A2mZKTsv1Trl+MTWf7GAobXeZCmIox7L2yEZd9DdTKtN3HKspAr+wFWRsq7MYwgQ5H/V3vbaDgp7o=
+	t=1744748289; cv=none; b=NmCcRRI/CfDPtHrRj/Qt/XP+LtweAIfBQu4CADbQuiLGLe1omL5t9JYnljdc5TsEJcoDU4a7yt5PdjdeiU0TVHSd5UHau/UduTwZatrDD0dz7Ht0mUP/MfWRq3eC9AlKw01xAWg7wbk+FNAhparLyGsQqGJZ6Vel6ar6WFqdYF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744748275; c=relaxed/simple;
-	bh=DOUOOaOFEnV0VmZG0/f7k7aME0imtDVPbBeCHzEz5EI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IDjjYDvrGIyfnxbELKDDsJ8tpySty/aRoTfn6h0aGB8Tg3zdgwdEWB4B5c90clHFQD4TMIPA6xphMpv2qWfY5t48Pfv+2Ov6YMhiqwTmdN8gywiYEK9/KM5Ig/aXBOMKbqOZguFzRIrjWtwJKe+sWA+9yw4LNdzM1ZtAzQThlyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu; spf=pass smtp.mailfrom=ozlu.eu; dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b=cxDBR3wO; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ozlu.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlu.eu
+	s=arc-20240116; t=1744748289; c=relaxed/simple;
+	bh=FP1FoUwUzOb0EuId7zPJ6/XrjkXt/QC/ppUHzdxy544=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IQEecxoWWxfs4OrBCIOWdGxhJHKUU430obrFqegGO0Cj+SroAcQvcuC1IgVezXFGnvNSTofByjL34GAZLLoMh0p9CudEpR25uJi1n4IbT+gd99EAJnnTE1XihoMtWVS7WMA5GpO0nS6oDFQH7yfeh2e/NFsLT5TJGQ8pum9QyA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U1p0ahRO; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlu.eu header.i=@ozlu.eu header.b="cxDBR3wO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlu.eu;
-	s=protonmail; t=1744748263; x=1745007463;
-	bh=DOUOOaOFEnV0VmZG0/f7k7aME0imtDVPbBeCHzEz5EI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=cxDBR3wOSZ/rL4ue2UYZv97YMkaacMZgsmjE1qFjkYRIbxMYQ6L11jwj47NsBQ2dq
-	 8tJEJgt7WvnExxhQqTYS9uvSEvZwljT5/YyzOFdQRDl9MD+GeqOy9g4gNnv2KNL/Ph
-	 vYKBIG7qLNJnFDYijoble4zCYKx++bhWwzRod+6+yb6Hugy1bJTPUMA5Vrbbd8r09G
-	 0XvC56VLHN6GYY2rMj6+7U+euElwCY6kpnSh5shaMulxnv9MXx0ZBMCsuZL1CezKnM
-	 V4eZ63gFLTD+ibyTKrrQz/S9A5NYqon+GoQpj+kkhS6+r/DCdZET1pNgB7wiHB1Cbh
-	 WUGVsoKrjJF3g==
-Date: Tue, 15 Apr 2025 20:17:39 +0000
-To: miguel.ojeda.sandonis@gmail.com
-From: Altan Ozlu <altan@ozlu.eu>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, altan@ozlu.eu, benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, gary@garyguo.net, ojeda@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Subject: Re: [PATCH v4] rust: static_assert: add optional message
-Message-ID: <1bbd399d-00c6-413a-8509-0325b3902615@ozlu.eu>
-In-Reply-To: <CANiq72k5MtUaGpCaMOgj-N-0Th-PqWpBKfdHYsS_6ps8g_U9xg@mail.gmail.com>
-References: <20250326202520.1176162-2-altan@ozlu.eu> <7f1708d3-be21-47cb-91b1-68434fc65853@ozlu.eu> <CANiq72k5MtUaGpCaMOgj-N-0Th-PqWpBKfdHYsS_6ps8g_U9xg@mail.gmail.com>
-Feedback-ID: 127873954:user:proton
-X-Pm-Message-ID: aee6c5fcc789f712b0caf32d136c86cb0be0174b
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U1p0ahRO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744748285;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+zbNO9DdlGnJdtWrarPxZhGqIU9VsFB36g+B/ftd/RY=;
+	b=U1p0ahROFDw8tN7cAFlik5tsPcaDk+twuXRJAztNI0r7oOKkZ/2IIAO5adhbCRuX/4v7S4
+	RyUIh1dzqp4Z54CVbagVeidqXHU+JIp6RlxXKSujJQe6N+yaKaXDLYtDI9QMdCwTCmff2c
+	pEEYEpWl0jRGfQ/YqQHSy+bgPBG+UFw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-418-fsLLwmjLP6uXpvyTvsNQVg-1; Tue,
+ 15 Apr 2025 16:18:00 -0400
+X-MC-Unique: fsLLwmjLP6uXpvyTvsNQVg-1
+X-Mimecast-MFC-AGG-ID: fsLLwmjLP6uXpvyTvsNQVg_1744748278
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 25A2E1800361;
+	Tue, 15 Apr 2025 20:17:58 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.88.101])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F26051955BC0;
+	Tue, 15 Apr 2025 20:17:53 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	linux-kernel@vger.kernel.org
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	John Stultz <jstultz@google.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v3] rust: hrtimer: Add forward_now() to HrTimer and HrTimerCallbackContext
+Date: Tue, 15 Apr 2025 16:17:46 -0400
+Message-ID: <20250415201747.417825-1-lyude@redhat.com>
+In-Reply-To: <20250415195020.413478-8-lyude@redhat.com>
+References: <20250415195020.413478-8-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
->=20
-> If you mean applying it, I have not picked any patch for the next cycle y=
-et.
+Using the HrTimerClockBase::time() function, we can now add an equivalent
+to hrtimer_forward_now() to both HrTimer and HrTimerCallbackContext.
 
-Yes I meant applying, I didn't knew about it. Thanks, have a nice day!
---=20
-Kind regards,
-Altan
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+
+---
+V2:
+* Change from Ktime to Delta
+* Make sure that forward_now() takes a mutable reference to the timer
+  struct
+* Reword this to point out that we're adding forward_now() to both callback
+  context and mutable timer reference
+* Rename interval to duration
+V3:
+* Fix rust documentation for HrTimerCallbackContext (forgot to update both
+  forward_now() declarations)
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
+ rust/kernel/time/hrtimer.rs | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+index 4da1e72e016d1..ec7800ac20616 100644
+--- a/rust/kernel/time/hrtimer.rs
++++ b/rust/kernel/time/hrtimer.rs
+@@ -217,6 +217,14 @@ pub fn forward(&mut self, now: Instant, duration: Delta) -> u64 {
+         //   timer callback context - fulfilling the requirements of the C API.
+         unsafe { Self::raw_forward(self, now, duration) }
+     }
++
++    /// Forward the time expiry so it expires at `duration` after the current time.
++    ///
++    /// This is a variant of [`forward`](Self::forward) that uses a duration after the current time
++    /// of the [`HrTimerClockBase`] for this [`HrTimerCallbackContext`].
++    pub fn forward_now(&mut self, duration: Delta) -> u64 {
++        self.forward(self.clock_base().time(), duration)
++    }
+ }
+ 
+ /// The timer base for a specific clock.
+@@ -612,6 +620,14 @@ pub fn forward(&mut self, now: Instant, duration: Delta) -> u64 {
+         // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`
+         unsafe { HrTimer::<T>::raw_forward(self.0.as_ptr(), now, duration) }
+     }
++
++    /// Forward the timer expiry so it expires at `duration` after the current time.
++    ///
++    /// This is a variant of [`HrTimerCallbackContext::forward()`] that uses an interval after the
++    /// current time of the [`HrTimerClockBase`] for this [`HrTimerCallbackContext`].
++    pub fn forward_now(&mut self, duration: Delta) -> u64 {
++        self.forward(self.clock_base().time(), duration)
++    }
+ }
+ 
+ /// Use to implement the [`HasHrTimer<T>`] trait.
+-- 
+2.48.1
 
