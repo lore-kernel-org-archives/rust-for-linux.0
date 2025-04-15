@@ -1,136 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F5A253348
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 20:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256632550CE;
+	Tue, 15 Apr 2025 20:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744748289; cv=none; b=NmCcRRI/CfDPtHrRj/Qt/XP+LtweAIfBQu4CADbQuiLGLe1omL5t9JYnljdc5TsEJcoDU4a7yt5PdjdeiU0TVHSd5UHau/UduTwZatrDD0dz7Ht0mUP/MfWRq3eC9AlKw01xAWg7wbk+FNAhparLyGsQqGJZ6Vel6ar6WFqdYF4=
+	t=1744749814; cv=none; b=mEY4sjQq/mWL/d+sauvP+y85GFjtj5yBUrH/UG3To7741tTIWP7kdOgWSS5408EfXWWWF5kqJsG1a7itwJKBMzsgaIiZwZKOwM/rD6IUOIJms12qt+9LvJHqxYmd2XgBdLSK1serm7/HbcU3wBt85rsTWfMzqR43XD4HIP686as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744748289; c=relaxed/simple;
-	bh=FP1FoUwUzOb0EuId7zPJ6/XrjkXt/QC/ppUHzdxy544=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IQEecxoWWxfs4OrBCIOWdGxhJHKUU430obrFqegGO0Cj+SroAcQvcuC1IgVezXFGnvNSTofByjL34GAZLLoMh0p9CudEpR25uJi1n4IbT+gd99EAJnnTE1XihoMtWVS7WMA5GpO0nS6oDFQH7yfeh2e/NFsLT5TJGQ8pum9QyA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U1p0ahRO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744749814; c=relaxed/simple;
+	bh=Jnw815GHILnPLJZ3XhDQCBIeNl7fmB7rRpC9IhbMbpM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=KDqWgCQX7iOmiEquRtRJtIyRE+7cMf8OxilfB9l01y1nfIg5gtWOKg8rd3BTVbxyQVae5iNj8tOjujyF4b1ILJjKgoe7IMNgAUV+w+8rhzslbtE0IgTrT8qzThiSwmpIm2Q3Ld4kMUGga1EgDHD9Uk0EZXjEkla4YZ4wLN01aEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YORvVi7J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U1p0ahRO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744748285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+zbNO9DdlGnJdtWrarPxZhGqIU9VsFB36g+B/ftd/RY=;
-	b=U1p0ahROFDw8tN7cAFlik5tsPcaDk+twuXRJAztNI0r7oOKkZ/2IIAO5adhbCRuX/4v7S4
-	RyUIh1dzqp4Z54CVbagVeidqXHU+JIp6RlxXKSujJQe6N+yaKaXDLYtDI9QMdCwTCmff2c
-	pEEYEpWl0jRGfQ/YqQHSy+bgPBG+UFw=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-418-fsLLwmjLP6uXpvyTvsNQVg-1; Tue,
- 15 Apr 2025 16:18:00 -0400
-X-MC-Unique: fsLLwmjLP6uXpvyTvsNQVg-1
-X-Mimecast-MFC-AGG-ID: fsLLwmjLP6uXpvyTvsNQVg_1744748278
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 25A2E1800361;
-	Tue, 15 Apr 2025 20:17:58 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.88.101])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F26051955BC0;
-	Tue, 15 Apr 2025 20:17:53 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	Andreas Hindborg <a.hindborg@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YORvVi7J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1D3C4CEEB;
+	Tue, 15 Apr 2025 20:43:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744749813;
+	bh=Jnw815GHILnPLJZ3XhDQCBIeNl7fmB7rRpC9IhbMbpM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=YORvVi7Jh0eW2RhfCHGfSde8oGxKf9rlj3Skf+qQuLd/CYu/+Na9AtKDwmpdS+3PU
+	 O3wBt9x9VPCr2KJzAOurbd+6BmAF8m84YREfgrvZb7GU6rlaQWHlV/uwHmx+/AmLH/
+	 ecwmthgn3Y/MsYaT8wZuI9n2Qz46aQTnDRMQgA130i3cFN+ze/12LoDonJAGEBbQN6
+	 OFEWYF95tl9T8NCO3DgFIPtXupE0ax7X4NpBNLfF1iEmsSeMEuOgTy0yjio6/2IV4i
+	 R+c/Jn65P3wFMiIwXK+ZtzJYvFB6/nhg/fUXYue4L6K4SgWFe/q4X1wKFYx8+ky07W
+	 ce3zWBxP4OoUw==
+Date: Tue, 15 Apr 2025 15:43:31 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: bhelgaas@google.com, kwilczynski@kernel.org, gregkh@linuxfoundation.org,
+	rafael@kernel.org, abdiel.janulgue@gmail.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	daniel.almeida@collabora.com, robin.murphy@arm.com,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v3] rust: hrtimer: Add forward_now() to HrTimer and HrTimerCallbackContext
-Date: Tue, 15 Apr 2025 16:17:46 -0400
-Message-ID: <20250415201747.417825-1-lyude@redhat.com>
-In-Reply-To: <20250415195020.413478-8-lyude@redhat.com>
-References: <20250415195020.413478-8-lyude@redhat.com>
+Subject: Re: [PATCH v2 7/9] rust: pci: move iomap_region() to impl
+ Device<Bound>
+Message-ID: <20250415204331.GA34889@bhelgaas>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250413173758.12068-8-dakr@kernel.org>
 
-Using the HrTimerClockBase::time() function, we can now add an equivalent
-to hrtimer_forward_now() to both HrTimer and HrTimerCallbackContext.
+On Sun, Apr 13, 2025 at 07:37:02PM +0200, Danilo Krummrich wrote:
+> Require the Bound device context to be able to call iomap_region() and
+> iomap_region_sized(). Creating I/O mapping requires the device to be
+> bound.
+> 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/pci.rs | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 1234b0c4a403..3664d35b8e79 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -390,7 +390,9 @@ pub fn resource_len(&self, bar: u32) -> Result<bindings::resource_size_t> {
+>          // - by its type invariant `self.as_raw` is always a valid pointer to a `struct pci_dev`.
+>          Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.try_into()?) })
+>      }
+> +}
+>  
+> +impl Device<device::Bound> {
+>      /// Mapps an entire PCI-BAR after performing a region-request on it. I/O operation bound checks
+>      /// can be performed on compile time for offsets (plus the requested type size) < SIZE.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+You didn't add these typos here, but
 
----
-V2:
-* Change from Ktime to Delta
-* Make sure that forward_now() takes a mutable reference to the timer
-  struct
-* Reword this to point out that we're adding forward_now() to both callback
-  context and mutable timer reference
-* Rename interval to duration
-V3:
-* Fix rust documentation for HrTimerCallbackContext (forgot to update both
-  forward_now() declarations)
+s/Mapps/Maps/
+s/on compile time/at compile time/
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/time/hrtimer.rs | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 4da1e72e016d1..ec7800ac20616 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -217,6 +217,14 @@ pub fn forward(&mut self, now: Instant, duration: Delta) -> u64 {
-         //   timer callback context - fulfilling the requirements of the C API.
-         unsafe { Self::raw_forward(self, now, duration) }
-     }
-+
-+    /// Forward the time expiry so it expires at `duration` after the current time.
-+    ///
-+    /// This is a variant of [`forward`](Self::forward) that uses a duration after the current time
-+    /// of the [`HrTimerClockBase`] for this [`HrTimerCallbackContext`].
-+    pub fn forward_now(&mut self, duration: Delta) -> u64 {
-+        self.forward(self.clock_base().time(), duration)
-+    }
- }
- 
- /// The timer base for a specific clock.
-@@ -612,6 +620,14 @@ pub fn forward(&mut self, now: Instant, duration: Delta) -> u64 {
-         // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`
-         unsafe { HrTimer::<T>::raw_forward(self.0.as_ptr(), now, duration) }
-     }
-+
-+    /// Forward the timer expiry so it expires at `duration` after the current time.
-+    ///
-+    /// This is a variant of [`HrTimerCallbackContext::forward()`] that uses an interval after the
-+    /// current time of the [`HrTimerClockBase`] for this [`HrTimerCallbackContext`].
-+    pub fn forward_now(&mut self, duration: Delta) -> u64 {
-+        self.forward(self.clock_base().time(), duration)
-+    }
- }
- 
- /// Use to implement the [`HasHrTimer<T>`] trait.
--- 
-2.48.1
-
+>      pub fn iomap_region_sized<const SIZE: usize>(
+> -- 
+> 2.49.0
+> 
