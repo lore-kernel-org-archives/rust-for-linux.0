@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8953C252910
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 19:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C211250C09
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 19:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744746672; cv=none; b=sBq/rseE02Fl+9JLqRk0WHm9/BiXITtrp9sFbPwIINr3SJmLhocIgiqdYYR9yr4FOtzjdGKATkZ9BEpFN5raF7DexXHTtFQPxJgNNIA/2n0ttlWOBXyaQzturv5vZORFZrFCC4Q2WdrCul4LP1Hp/MQ8fMXleFEBquC/okxh4T8=
+	t=1744746683; cv=none; b=T9bEGKXHgkeKm58IjaKrrVCKPFC4Qk8NaghuwcB3SCPEtVVnzoy8JJdH8pcJkILDz+FmF7siS6aLpkQzETbgvUctH9BUog4PIqcIDB9ZiRkrmsUN/TqUaO/6GS8UCTfC0TjfMhq4MkSJeB2pFwIxssZPG5Rc2Ih3jWWrutKLGgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744746672; c=relaxed/simple;
-	bh=9+ZKX7BMpPCcKPmHdR+Ydn+RWm+AObN4sCEuLcun7UU=;
+	s=arc-20240116; t=1744746683; c=relaxed/simple;
+	bh=eQ+r648TrWpuEgvULfWc7sb7QOPoBlGuqKdN3eqAVsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVsPZYHnk3EySzn4KbilIp1PtCfYp5qT9qRCs5GJqQYFM6u34JW43A6DU5UitvtX1bruVk77h3q8xEVuRK0t9AM0fC2VETu62xWpKc1a7gTt1k+qvvxynp3/vfWD8yRCjrxwFYCywdnu4hJeNbnSUzg4gpxBnICKFt01Ils0h48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bCvyzkwk; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=mkrol9uYihtJoaG17o1FgN30pEAsPrYMpoWr6JeMts6OUXva454dsAofC3TsJuMwkOXUZU3FutBFuPHnqjuQ+kQJdmaBCdSy5wN3PJwQQqDUop2eRMmUfYE7/a+yG9Idv8wvBm67P0ZrUa+Up7jobLl5ppacdZyy1jVZLUBHH4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Im1u0Yib; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bCvyzkwk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Im1u0Yib"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744746668;
+	s=mimecast20190719; t=1744746679;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/GUTMQLXiEZ1s45es323+Zi8DveURJQBpjAPFJ/wdxY=;
-	b=bCvyzkwk/NvM3/zeQewYJgEbmzHyN7KjVkw4Rz7eekWegEv4hgCeL4emkiarfFndRxo36Y
-	2Yak0G5lalOrmIhp/fwtLqjqf5IRCVCx2eIRkxjjt5XNqA91hde6SCUM46EP4/SqBOwuSV
-	UYbm/YO9gDRAok5YARXTCc1qBrxFBNc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=6lTDNYrXkRzbCWl+8hVKAKf9CSfOeUD8xTgHV59ocoE=;
+	b=Im1u0YibVqjQmD9zlw5gDjI+s5Q2BNp2CvRCSqB50xuNfhbjfBZkgRqrYrJXaezQe6FsZ7
+	FYvohw8hDcf27ZlG1dQXU7zUXILgAsGt01GI4XG/PCfyC/qz22O86R7DBSmEtoakupMcEN
+	bcJzFV7XyNB+6uI7OYr8LnnrnppO1oc=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-31-AcTJ1EYZN4632VSEKBAGPQ-1; Tue,
- 15 Apr 2025 15:51:03 -0400
-X-MC-Unique: AcTJ1EYZN4632VSEKBAGPQ-1
-X-Mimecast-MFC-AGG-ID: AcTJ1EYZN4632VSEKBAGPQ_1744746661
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-226-2N7zl2tZMw-0O1P2LZCdTw-1; Tue,
+ 15 Apr 2025 15:51:14 -0400
+X-MC-Unique: 2N7zl2tZMw-0O1P2LZCdTw-1
+X-Mimecast-MFC-AGG-ID: 2N7zl2tZMw-0O1P2LZCdTw_1744746668
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6700D180AF65;
-	Tue, 15 Apr 2025 19:51:01 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 69BB31956059;
+	Tue, 15 Apr 2025 19:51:08 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.88.101])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4FBFB19560AD;
-	Tue, 15 Apr 2025 19:50:58 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4AFDF1955BEF;
+	Tue, 15 Apr 2025 19:51:05 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	Andreas Hindborg <a.hindborg@kernel.org>,
@@ -61,9 +61,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v2 6/8] rust: hrtimer: Add HrTimerClockBase::time()
-Date: Tue, 15 Apr 2025 15:48:27 -0400
-Message-ID: <20250415195020.413478-7-lyude@redhat.com>
+Subject: [PATCH v2 8/8] rust: hrtimer: Add HrTimer::expires()
+Date: Tue, 15 Apr 2025 15:48:29 -0400
+Message-ID: <20250415195020.413478-9-lyude@redhat.com>
 In-Reply-To: <20250415195020.413478-1-lyude@redhat.com>
 References: <20250415195020.413478-1-lyude@redhat.com>
 Precedence: bulk
@@ -75,56 +75,67 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-This adds a wrapper for the get_time() callback contained within a
-hrtimer_clock_base struct. We'll use this in the next commit in order to
-implement HrTimerCallbackContext::forward_now().
+This adds the ability to read the expiry time of the given timer.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 ---
 V2:
 * Convert from Ktime to Instant
-* Don't forget to make HrTimerClockBase::time() pub
+* Use read_volatile instead of read and add a FIXME
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/time.rs         |  1 -
- rust/kernel/time/hrtimer.rs | 10 ++++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ rust/kernel/time/hrtimer.rs | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 545963140f180..a9a29dd80fc28 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -84,7 +84,6 @@ pub(crate) fn as_nanos(self) -> i64 {
-         self.inner
-     }
- 
--    #[expect(unused)]
-     #[inline]
-     pub(crate) fn from_nanos(nanos: i64) -> Self {
-         Self {
 diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index a56c66104f692..4da1e72e016d1 100644
+index c84dcdacb4882..b8a74c15e6609 100644
 --- a/rust/kernel/time/hrtimer.rs
 +++ b/rust/kernel/time/hrtimer.rs
-@@ -241,6 +241,16 @@ unsafe fn from_raw<'a>(ptr: *mut bindings::hrtimer_clock_base) -> &'a Self {
-         // - Our data layout is equivalent to said struct via our type invariants.
-         unsafe { &*ptr.cast() }
+@@ -73,7 +73,10 @@
+     time::{Delta, Instant},
+     types::Opaque,
+ };
+-use core::{marker::PhantomData, ptr::NonNull};
++use core::{
++    marker::PhantomData,
++    ptr::{addr_of, NonNull},
++};
+ use pin_init::PinInit;
+ 
+ /// A timer backed by a C `struct hrtimer`.
+@@ -136,7 +139,7 @@ unsafe fn raw_get(this: *const Self) -> *mut bindings::hrtimer {
+         // SAFETY: The field projection to `timer` does not go out of bounds,
+         // because the caller of this function promises that `this` points to an
+         // allocation of at least the size of `Self`.
+-        unsafe { Opaque::raw_get(core::ptr::addr_of!((*this).timer)) }
++        unsafe { Opaque::raw_get(addr_of!((*this).timer)) }
+     }
+ 
+     /// Cancel an initialized and potentially running timer.
+@@ -225,6 +228,21 @@ pub fn forward(&mut self, now: Instant, duration: Delta) -> u64 {
+     pub fn forward_now(&mut self, duration: Delta) -> u64 {
+         self.forward(self.clock_base().time(), duration)
      }
 +
-+    /// Retrieve the current time from this [`HrTimerClockBase`].
-+    pub fn time(&self) -> Instant {
-+        // SAFETY: This callback is initialized to a valid NonNull function for as long as this type
-+        // is exposed to users.
-+        let get_time_fn = unsafe { (*self.0.get()).get_time.unwrap_unchecked() };
++    /// Return the time expiry for this [`HrTimer`].
++    ///
++    /// This value should only be used as a snapshot, as the actual expiry time could change after
++    /// this function is called.
++    pub fn expires(&self) -> Instant {
++        // SAFETY: `self` is an immutable reference and thus always points to a valid `HrTimer`.
++        let c_timer_ptr = unsafe { HrTimer::raw_get(self) };
 +
-+        // SAFETY: This FFI function has no special requirements
-+        Instant::from_nanos(unsafe { get_time_fn() })
++        // SAFETY: There's no actual locking here, a racy read is fine and expected.
++        Instant::from_nanos(unsafe {
++            // FIXME: read_volatile
++            core::ptr::read_volatile(addr_of!((*c_timer_ptr).node.expires))
++        })
 +    }
  }
  
- /// Implemented by pointer types that point to structs that contain a [`HrTimer`].
+ /// The timer base for a specific clock.
 -- 
 2.48.1
 
