@@ -1,139 +1,112 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089672973A2;
-	Tue, 15 Apr 2025 15:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E518EAC7;
+	Tue, 15 Apr 2025 16:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744731548; cv=none; b=p1xPS+cFurwr/a3Js27HmeVbXxBRYoOnBxN8GzG2JpNbFVBznwZ1IIoyT0P9bHJMwM6ex/Lgm/Nzr9AfeX2nGGKuuFtNpr04JUCs5RStOqXU72fGEeHPp+f7yV/3EjMt8Dxle714lkF0EWe3noRr2eg1sSgCwjkKWGegtoh5mUA=
+	t=1744734518; cv=none; b=dg9G66X1U6jrbaBEwwJCgVbFKiOu84yXqrgEUWRHh4rFgj6Klvqk/iVbO3zSJk7AkuWNGO0MVJjXszs0JR4YtLsAtcuXhX4Pj31yMukzLUWtZEl0tKk8l98wHxpJDOThumzM2mPO2SdQfeePV/ZVxUEhuz87HhHlYn818S+ta4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744731548; c=relaxed/simple;
-	bh=dDWZGTWArKLiIUijlIgxDuLMl/Hhc0MZKDfBUpLSrtk=;
+	s=arc-20240116; t=1744734518; c=relaxed/simple;
+	bh=16k+D1kzWNJPkhaotffNzTSM5A9nH61MwSAOOqgRjo0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mLm3frx1eZU04RvtvEQe8ALoYpdZEYQDWW4qFXHfpbEdhHOGtRwgSmxFOYUVr0rKK/0vvTnfbFqNEFkJqAezI/GCcTBN3Dp8GrtfaXdHIAHWO6G4AxyqZKYUwdjFWupO8n2hmuWuWGbpFixIVkwZKH9aXrKWlFSo2BaPMXj9yBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FQeDZ3/A; arc=none smtp.client-ip=209.85.214.173
+	 To:Cc:Content-Type; b=kc5D7o3lNjhiXCFE9mS4aoCsNkAJdeqf8MSETtFUGgBzQcAEgXBonVYc4GOAUe0Ugd7nHAGGOzAhIAiLXyXwj512jXu6wgSMKYpU8DNzU9lMZVIgXwIkXyRd9VVZYQLsmUGLGLaHRnIEHD4epuKCtaes/ybu2FC+JcwqcdfD7Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JvcWM2h8; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FQeDZ3/A"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-227e29b6c55so6015725ad.1;
-        Tue, 15 Apr 2025 08:39:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JvcWM2h8"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2ff6ce72844so1034887a91.2;
+        Tue, 15 Apr 2025 09:28:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744731546; x=1745336346; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744734515; x=1745339315; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=l9Hgf71bbKZfJ9ujOKELACCuf2RGtWUNokQop0Z+buA=;
-        b=FQeDZ3/Ao0jwAsPykzjtJPzb56ILteJ/xtOpB1NLSQE8XDUloOZtaFLuSuY9seoDmC
-         mk8tY6fgkfYrYHRLPui79kfqMCS7qxnFl2q9ikd0TjBkP7pIuFC1q2uYNsD9FKSvD36Q
-         oNYh6DALFTUWtTVybQm+ZklMuhe8SNJ0mWQjmtEdXAoGu2SWfm9tos9S3A1/ilIOQmX8
-         RV1xKQnk6VhF9VttcbkjJW8ni1bg4Zm/1RtHSUmgz5vH1nwOv0eEk/pXS9XpHTsPBtpg
-         s1Xtx5Msd8h97nfs+LqCVSZQ5DxmAr79nbgNOkFOtz95kKjPXBHXuhHwPFBkaWdCVzSq
-         7nqw==
+        bh=GhGX2Gld5nEWaX//R4Z1bBeTvGhalt1zlNsb95NKu50=;
+        b=JvcWM2h8RY5v6XpIxNWYbvYVjhqT4kjxpQX6cuNTK7Nfuqhzp2thrHZ7QxvC5PULHZ
+         SQJJ2jLgqMkNjnBxYdeZX6vt/SSmsWSCB6SVvr4w+tDWQG7k6CIiLoZfwXnkOSgGuIZf
+         vRSCX+W8J+yOUU6NekAuE0vL79pVXs0XHA1hy6GNUksai98HhVG8Cmc3FOWQoom2WqAn
+         CNV6xsV3vRzm5EEt2YDQRwZ71OkkEJebK/RtNmAfjnlZO/2s5zcaT3cgO62oxl63pibj
+         s19r/2lXuHMPTX5k+/E2KRW2qXbweuwp3bzKwcfOHibaU1t8lRID7qboz86cKiRgbMlO
+         RNuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744731546; x=1745336346;
+        d=1e100.net; s=20230601; t=1744734515; x=1745339315;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=l9Hgf71bbKZfJ9ujOKELACCuf2RGtWUNokQop0Z+buA=;
-        b=rwypa2PqKhCnyykZ9OZjmtYRAzwxSYb6oyFEEIUfEozVWCfxMTilSISW1gl3fGPoEJ
-         8nbOW2YMBFkluI0f/kvmv11uKsL3qmRVTD682cR/3dyfTtruJ5wWzrxFbE2HWUZX/cm3
-         6aQd27z3DUP9PliCSg6d2d9S3jJenjBwYhN/ILzslMzcDcGMfCMzANiQtv0AOorJd2z7
-         CIS8qXZES2JkRWBzPOOD8e+i/CADQYrxSkCo6QHQnryJP2v8srRYAAQbVlOb1g/J8xpQ
-         x0ywYcLnusdgL/yPF9aExVd13VG3VCEzUhCIUvS8ZNZqGud6i95k+2l1oBxV5rJycwKA
-         jouA==
-X-Forwarded-Encrypted: i=1; AJvYcCVh2JrPz9CO1uW2S+aWaUUPNKzyA0uNLAPkEk/FZW+SGTTTsWwTeOWJNgHIzG2Apob6BmnsgLN0PJaBmF0=@vger.kernel.org, AJvYcCWBI10Zn5CA1Xma94GYq6r0RRgvR/RragAx0T4pOVWiXv2mXMbfHE578HS+wAeJ8PUYdIXSzNcDazNyTjmm014=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhzzrqDzACBXln2Yse4G1fbFl67CbbQTycNFuLN8MbMb7Vk1U0
-	WADQUACWWm27Xn9QlncDpjeoD8xcMbLooDQ/V89P1GU97ss+Su6zyKdvSeENW1edcTqiV3Po9ze
-	HTdkJ9GeP3QofD/3sBv18FuOg60LySkjoYT0=
-X-Gm-Gg: ASbGncsR3ksl/Ci+KGhs7wcSwjgkSMPZWXCiFExZeVPgn64ZiZIXliIKJOAQ3XHxh22
-	X5VgQCGOSEyoHE04pyvN+rsP6eZ5ildOQhKCx8UwGn831OlbbDhUY1i1uD1D/KdP309EeS9KQAB
-	pZUVZz8B7/1gIddKZNB741xg==
-X-Google-Smtp-Source: AGHT+IGpan7ylJ+lGUJcAR9q3eXLCXTE+QbOlu5CF4icAGO8qCXWu4gBBhuVLjtf/D8BJT4SfUQVRqxMcusLpCW3mi8=
-X-Received: by 2002:a17:903:3c65:b0:21f:1365:8bcf with SMTP id
- d9443c01a7336-22bea4f1830mr102714135ad.10.1744731546102; Tue, 15 Apr 2025
- 08:39:06 -0700 (PDT)
+        bh=GhGX2Gld5nEWaX//R4Z1bBeTvGhalt1zlNsb95NKu50=;
+        b=BUA1MHPE8IYd+Rp+3IrZT96Iutv6gG8LMK4cWt1WS/Y//2n6QXuKbwAobxxf9XVC74
+         M/47IzTCXWr2P7nWRIVJ+qAw6VQrSAbkNyeccRv70craU/OP9zz0uaDGa+7aLB4+8MZ/
+         eQK6J3VxBU5h0scjzxPIY5q9eJd8dmD+J56KfLQNqEqk39GXg2hCFBdUa9UkC73b0ucv
+         h89jQlJGHmZ2Z5LDYGYvbK9Gi8vK/PASSdHPd304vP0JF7bYe6Pt8LEpS2GRa1DNw1YE
+         zh7bDua4IsrZ8jDBxL50glPQeJZxKj2YxOSb96XkJ+6MVdmcxledQe5blfiGUD4bx50x
+         W3ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWc3ytzlpy5MfDpq1wph3ZvluR/GfymGa651iMoKwa1gHVmDtOxjQhQVvggHp99N637ViimkeEmYxZ6rAk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIOZqQ7B0dopohRCKp6ky+jJN3JASWoW3LUrWoDXEOTaF3GxnB
+	Re+LNbRk2GJfPbyyZrX9EpRW538MSd4WtgTSw6JRZ0Mo2f3927aKJyhPGf47OiMZy+/E6fx2W6X
+	5z6WGVv045muruNfsOZ1bmbjuW14=
+X-Gm-Gg: ASbGncsYFk07IFAFR7Da9UPjrkvHBWl4tpQS+t7KmsgemZofKbePHm0bVFYYJdgtOQp
+	FR31/aq4XeozyfGYrwJvJrwk1wRBW3QURSNFlpELOx41wL10HoWRDojx/Z2W9DarSuouqE/xpjC
+	jSGQbZJHKBIXIFXiw83Z0RadKlVlsF6TaB
+X-Google-Smtp-Source: AGHT+IH7DuWw2+Ji1/JVUUE6uHhtXC92IfxsebFP/13Uv3c8VTSL84EUu6WlHqcTmwxo8LeGFx2QSi+jDgjGVV/VHOE=
+X-Received: by 2002:a17:90b:384b:b0:306:b6ae:4d7a with SMTP id
+ 98e67ed59e1d1-3084e75753emr2484613a91.3.1744734515441; Tue, 15 Apr 2025
+ 09:28:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com>
- <20250407183716.796891-1-ojeda@kernel.org> <CA+G9fYt4otQK4pHv8pJBW9e28yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com>
-In-Reply-To: <CA+G9fYt4otQK4pHv8pJBW9e28yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com>
+References: <20250412005341.157150-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20250412005341.157150-1-fujita.tomonori@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 15 Apr 2025 17:38:54 +0200
-X-Gm-Features: ATxdqUELU5btSgHGptRAiOx15wUhRNJ8mFAscobppbwbL3KXHSRC65REzivTL5I
-Message-ID: <CANiq72napRCGp3Z-xZJaA9zcgREe3Xy5efW8VW=NEZ13DAy+Xw@mail.gmail.com>
-Subject: Re: Build: arm rustgcc unknown argument '-mno-fdpic'
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Christian Schrrefl <chrisi.schrefl@gmail.com>, 
-	Russell King <rmk+kernel@armlinux.org.uk>, Rudraksha Gupta <guptarud@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Ard Biesheuvel <ardb@kernel.org>, anders.roxell@linaro.org, 
-	arnd@arndb.de, dan.carpenter@linaro.org, laura.nao@collabora.com, 
-	linux-kernel@vger.kernel.org, lkft-triage@lists.linaro.org, 
-	regressions@lists.linux.dev, rust-for-linux@vger.kernel.org, 
-	torvalds@linux-foundation.org, Ben Wolsieffer <ben.wolsieffer@hefring.com>, 
-	Nick Clifton <nickc@redhat.com>, Richard Earnshaw <richard.earnshaw@arm.com>, 
-	Ramana Radhakrishnan <ramanara@nvidia.com>
+Date: Tue, 15 Apr 2025 18:28:23 +0200
+X-Gm-Features: ATxdqUE4hmSdsGSuyUlL13WPDkdl-YxIKEIGL8veqbyYbS6fb8zNgY_VAJuTw28
+Message-ID: <CANiq72=Grg+T-c0+TxcyubHj4kvHPQKiVm3AZp5DgeUVXsitEQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: helpers: Remove volatile qualifier from io helpers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-um@lists.infradead.org, richard@nod.at, anton.ivanov@cambridgegreys.com, 
+	johannes@sipsolutions.net, geert@linux-m68k.org, logang@deltatee.com, 
+	sbates@raithlin.com, dakr@kernel.org, dinguyen@kernel.org, arnd@arndb.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 15, 2025 at 1:40=E2=80=AFPM Naresh Kamboju
-<naresh.kamboju@linaro.org> wrote:
+On Sat, Apr 12, 2025 at 2:54=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> On Tue, 8 Apr 2025 at 00:07, Miguel Ojeda <ojeda@kernel.org> wrote:
-> >
-> > On Mon, 07 Apr 2025 22:58:02 +0530 Naresh Kamboju <naresh.kamboju@linar=
-o.org> wrote:
-> > >
-> > > Regressions on arm build with config rustgcc-lkftconfig-kselftest on =
-the
-> > > Linux mainline and next failed with CONFIG_RUST=3Dy enabled.
-> >
-> > > Bad: next-20250327
-> > > Good: next-20250326
-> >
-> > > Unable to generate bindings: clang diagnosed error: error: unknown
-> > > argument: '-mno-fdpic'
-> >
-> > I assume this is the arm support, i.e. commit ccb8ce526807 ("ARM: 9441/=
-1:
-> > rust: Enable Rust support for ARMv7").
-> >
-> > Clang does not seem to support `-mno-fdpic`, thus you probably need to =
-add it to
-> > `bindgen_skip_c_flags` in `rust/Makefile` so that it gets skipped when =
-the C
-> > compiler is GCC.
-> >
-> > If you do so, please double-check if the flag could potentially alter t=
-he ABI in
-> > a way that `bindgen` would generate the wrong bindings.
+> Remove the `volatile` qualifier used with __iomem in helper functions
+> in io.c. These helper functions are just wrappers around the
+> corresponding accessors so they are unnecessary.
 >
-> I tested this idea and it works but I don't know enough about
-> rust to double-check if the flag could potentially alter the
-> ABI in a way that `bindgen` would generate the wrong bindings.
+> This fixes the following UML build error with CONFIG_RUST enabled:
+>
+> In file included from /home/fujita/git/linux-rust/rust/helpers/helpers.c:=
+19:
+> /home/fujita/git/linux-rust/rust/helpers/io.c:12:10: error: passing 'vola=
+tile void *' to parameter of type 'void *' discards qualifiers [-Werror,-Wi=
+ncompatible-pointer-types-discards-qualifiers]
+>    12 |         iounmap(addr);
+>       |                 ^~~~
+> /home/fujita/git/linux-rust/arch/um/include/asm/io.h:19:42: note: passing=
+ argument to parameter 'addr' here
+>    19 | static inline void iounmap(void __iomem *addr)
+>       |                                          ^
+> 1 error generated.
+>
+> Fixes: ce30d94e6855 ("rust: add `io::{Io, IoRaw}` base types")
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Yeah, it would be nice to have someone knowledgeable about the
-arch/GCC/flag confirm or not -- I don't think Rust knowledge is
-needed, i.e. it is mostly about how GCC behaves with/without the flag
-and vs. Clang (since `bindgen` uses libclang to parse code).
+I don't particularly like having different signatures than the other
+side (since we could e.g. eventually have a check that they match
+etc.), but given v1 it seems they could also be eventually gone from
+the C side anyway.
 
-The original commit adding it to arm (and similar ones for sh and xtensa) s=
-ays:
+Cc: stable, I assume, too?
 
-    When building with an arm-*-uclinuxfdpiceabi toolchain, the FDPIC ABI i=
-s
-    enabled by default but should not be used to build the kernel.
-
-So it sounds like it is only an issue for particular toolchains/targets any=
-way?
-
-Cc'ing Ben who introduced it, and the arm port GCC maintainers in case
-they may be able to tell us more -- thanks in advance, and sorry for
-any potential noise!
+Thanks!
 
 Cheers,
 Miguel
