@@ -1,132 +1,90 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A83218589;
-	Tue, 15 Apr 2025 06:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC06D1CF5C0
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 09:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744697258; cv=none; b=VRmXr2sg2LJZuifLeHc3lv6Xck0xADWQOGsMCGCrr/8Zu+XOaaHe2oQVJ1X/Pl5gE2vGSZDXl4ZoIx2TmVg277KJGp+IDRVOedS1PRdTNS3Z7SItlC9pEyG/viTnlWQFC0FIXuRFHXjj7HaFMsbPcfgrmj8jD1UW8Gu4aYMv7no=
+	t=1744707701; cv=none; b=ca8u8yrijfxVcPAgWqfyh0cEilf6ptwLrRKuL0NZtyQajNf8WfRW8yUzqEFxFU/iVGYBeR0HN13wv8ytGmdz0gR71El/P+joLnZOGLehJBUGw5qR4Kx1GqaIl6321r9a/BMt+fZcvfkHp4Y+sFPnpz7kETSp0BwW0xNL3xL00/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744697258; c=relaxed/simple;
-	bh=s8wdev5wTYvKT07jw9RP07WeWwlhi1DEXyalqo7RjWY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jLSwnt4KTw+srMy71EjgydUQJRx46VHalu+6XCWrLJbYmg0o+LzUoWAsmR8PrEPU7g8jERhOP9J/GLWu7ci0LIFXWFyKHgMB6tarZwwirmve4aiugAEgHwMvIiw8dBt3CKydVWWnOfkZD3dWCYmYhIMeEQtXV7uyf9GY5PRAEKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=OzRKYkxv; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1744707701; c=relaxed/simple;
+	bh=fQ7T/qUhM3lDIvKK1VLf3X6MBV4DNYEWZWyZsblYqH8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=i3NEf864Mov7+g5N5dHirWTfiEDw/cXrDBwn+0GhKzw67ar+BHTvodBoBsol1bIaspJ041ebTAmbHxFh+lZ9GIkU0IJRDbTw5CvUtFry7GycCXABjOVaLxibIijfQiaOPUVZfXggKUhzfy4+gRyZMm5ou8jTiMhmk4D31FYqBRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rKgWT49b; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="OzRKYkxv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1744697254; x=1744956454;
-	bh=UG0lLR2VMki/BGIRLd9ZkUd6VWGBVyK8ubdXDpa0Hz0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=OzRKYkxvnSR1QeB+vImZwHPUUk7Ldg8wUc4+86tyQ1i3GSU9hW7/MyoD3KmqwrX9O
-	 e1GvyqYzbWaofwaODI/VKF+1bOSUNVBRFRGbTQojHUJpidfoqWEQkBB4pN9lKqwwd/
-	 P9xzPtbbta0GoXJgO4OaaSE9/PmLa/uEx9rLN7s+OUSROf01xiEhF9NYJThT7CcUjP
-	 ZBFnl7iZ2gcFrp/SjcrNK/mZyY+k0RfrOUV96WCzVo1jM8RJttjtSCLtd7vjaaH/1u
-	 F0MFAgPB57XDkKmoyHknWyQxDbVh1rtJYt592HdMxYHcaUjx9NmyHnXijlqf6v73P4
-	 LKe5a1QSsuJ1A==
-Date: Tue, 15 Apr 2025 06:07:30 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 3/5] rust: Add missing SAFETY documentation for ARef example
-Message-ID: <Z_33ntAgpRU_541N@mango>
-In-Reply-To: <87a58pd6t4.fsf@kernel.org>
-References: <20250325-unique-ref-v9-0-e91618c1de26@pm.me> <BilXj9TIYuQxgQ8GYVKxO0m88NUME1b-jtwrV9ZX3W9GXO-QJGFpb9rChJZarPa4e2AAvgJTm_DINEIW1JINlA==@protonmail.internalid> <20250325-unique-ref-v9-3-e91618c1de26@pm.me> <87a58pd6t4.fsf@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 2ed9ed16ac0cceb4acbba1044782c4b878a0f66b
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rKgWT49b"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43efa869b19so36658805e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 02:01:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744707698; x=1745312498; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ATQ2WAeqp0anILpiDAuFRK6bq5Jh77B0cEqGlrXYkoY=;
+        b=rKgWT49bM4AyxpnOnD5JudJ4pidZxOQ1PLF1AfmqMXTzHEgkwMt3xe9Tj8rX5o2i+P
+         3/OmbWsjbHNmzuaDZrKQDc7XjRB8ko9EGf/ibgyR3Z7R6XrpGrnRLDfpHEg9vl07+o0l
+         JSkJ25skgVoUBGVTwJeJMhQEwWlgnLnamyU81D86AAIXfM1nlwMOoOdr3m2NM6p5mOzs
+         5WYO2a5+w2deGOsibBJxYRvGuss164TIKzyNKJVqgBUDSTxgifd/UpSXki8/DfXAGuOK
+         /ESPhX3uA+ub1yFot50p/GQkxiDWN2MKoHNMMKcStiY02p+mBTfRJQuuSvLJWZFT2lWa
+         L7sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744707698; x=1745312498;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ATQ2WAeqp0anILpiDAuFRK6bq5Jh77B0cEqGlrXYkoY=;
+        b=V/yXccbawoQiKvHJULQblZtVfPSIJbmYYK9zyz1UjMmYyskvzfpyceUpsN2XBnyMOr
+         1CtFhgX1Hi7oLbbW0XbFWAZa3LLqHuUm8NwcdvN4NVwITEhl67Ky52OdO+js5Gnxt7qy
+         h/cehSLef937JjvW1E5gJbjOitS1qdim1PywlsdU0tYbBy6BGsVcbQeBqoXinUu1tmLE
+         BkWO1R1HtOBScGkbkaSLB6CjDvhSWXoIk2jH0IJ3cp1FaMIsDV9Ir8Rigf4dpGCgnfnx
+         NSxulEcrWvfS22zg1YdkmSrSjVVKrRik/0NPC1m6m0RQsJxU6r+fpbmJO2XMiWfF7UFH
+         ZRPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUcntU0I+XZ7sTu3Utim6JwT2wl44drWuKdhe7I30qo2L2FFPKOCi4vIMEKITZh3DIpR0Nc8qeAvXtqdDkO+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywo3VzGKDaav4MitM4VbdrvXE31WEjCZh67RgnUoKRY+cpm8pzQ
+	ahRNWCQ5ygTa0splpFkeKpzvivVicyd8ftNkdvE317+CtPT3ZZqag+twAi9SPI05ks8dW1NnEcY
+	jWvZGRFyx+AMpIA==
+X-Google-Smtp-Source: AGHT+IFmFs/nlsx2QPkRnmhjLHp1bf+lNep9itSd3yUo4cUQIyVWVraBimHdDf8+ne/yfkGfhA9ATJZ9DuVeWog=
+X-Received: from wmbgz6.prod.google.com ([2002:a05:600c:8886:b0:43c:f517:ac4e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1389:b0:43c:f75a:eb54 with SMTP id 5b1f17b1804b1-43f3a93d3e0mr126794805e9.13.1744707698153;
+ Tue, 15 Apr 2025 02:01:38 -0700 (PDT)
+Date: Tue, 15 Apr 2025 09:01:35 +0000
+In-Reply-To: <Z_1QzTdV8mHJYdQ6@cassiopeiae>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com> <Z_1QzTdV8mHJYdQ6@cassiopeiae>
+Message-ID: <Z_4gb8ZAlbfhobgW@google.com>
+Subject: Re: [PATCH] workqueue: rust: add creation of workqueues
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On 250409 1126, Andreas Hindborg wrote:
-> "Oliver Mangold" <oliver.mangold@pm.me> writes:
->=20
-> > SAFETY comment in rustdoc example was just 'TODO'. Fixed.
-> >
-> > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> > ---
-> >  rust/kernel/types.rs | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> > index c8b78bcad259132808cc38c56b9f2bd525a0b755..db29f7c725e631c11099fa9=
-122901ec2b3f4a039 100644
-> > --- a/rust/kernel/types.rs
-> > +++ b/rust/kernel/types.rs
-> > @@ -492,7 +492,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-> >      ///
-> >      /// struct Empty {}
-> >      ///
-> > -    /// # // SAFETY: TODO.
-> > +    /// // SAFETY: We do not free anything.
->=20
-> How about:
->=20
->   This implementation will never free the underlying object, so the
->   object is kept alive longer than the safety requirement specifies.
+On Mon, Apr 14, 2025 at 08:15:41PM +0200, Danilo Krummrich wrote:
+> On Fri, Apr 11, 2025 at 03:34:24PM +0000, Alice Ryhl wrote:
+> > 
+> > +/// An owned kernel work queue.
+> 
+> I'd suggest to document that dropping an OwnedQueue will wait for pending work.
+> 
+> Additionally, given that you're about to implement delayed work as well, we
+> should also mention that destroy_workqueue() currently does not cover waiting
+> for delayed work *before* it is scheduled and hence may cause WARN() splats or
+> even UAF bugs.
 
-Yes, was rather sloppy wording. Thanks, I will use your version.
+Ah, that's a problem :(
 
-> >      /// unsafe impl RefCounted for Empty {
-> >      ///     fn inc_ref(&self) {}
-> >      ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
-> > @@ -500,7 +500,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-> >      ///
-> >      /// let mut data =3D Empty {};
-> >      /// let ptr =3D NonNull::<Empty>::new(&mut data).unwrap();
-> > -    /// # // SAFETY: TODO.
-> > +    /// // SAFETY: We keep `data` around longer than the `ARef`.
->=20
-> This is not sufficient. The safety requirement is:
->=20
->   Callers must ensure that the reference count was incremented at least o=
-nce, and that they
->   are properly relinquishing one increment. That is, if there is only one=
- increment, callers
->   must not use the underlying object anymore -- it is only safe to do so =
-via the newly
->   created [`ARef`].
->=20
-> How about:
->=20
->   The `RefCounted` implementation for `Empty` does not count references
->   and never frees the underlying object. Thus we can act as having a
->   refcount on the object that we pass to the newly created `ARef`.
->=20
-> I think this example actually exposes a soundness hole. When the
-> underlying object is allocated on the stack, the safety requirements are
-> not sufficient to ensure the lifetime of the object. We could safely
-> return `data_ref` and have the underlying object go away. We should add
-> to the safety requirement of `ARef::from_raw`:
->=20
->   `ptr` must be valid while the refcount is positive.
+Can we make destroy_workqueue() wait for delayed items too? And/or have
+a variant of it that does so? I'm not sure what is best to do here...
 
-Wouldn't this already be covered by the below in the doc for
-AlwaysRefCounted?
-
-    Implementers must ensure that increments to the reference count keep
-    the object alive in memory at least until matching decrements are
-    performed."
-
-OTOH, it also says this (which would be violated):
-
-    Implementers must also ensure that all instances are reference-counted.
-    (Otherwise they won=E2=80=99t be able to honour the requirement that
-    AlwaysRefCounted::inc_ref keep the object alive.)"
-
-Should I change the example to one with an actual reference count?
-Not sure, would make it more complex and less readable, of course.
-
-Best regards,
-
-Oliver
-
+Alice
