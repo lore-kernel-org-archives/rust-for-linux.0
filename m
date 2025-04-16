@@ -1,246 +1,84 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F491A5BB5
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 13:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B959192D8E
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 13:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744809512; cv=none; b=pp5JFwPIDDmuOSpTWZbeXgGbC16eREIhXbjW7F/Mmboa5wcGv1RQBg3nah09rSQi8orxgvJvFLMQJ1blDiDOeyi2ECTymau6G+T0k0BqRkr6qVs2lOUWB4730uYeQRPs7nxeEIm8qnoIFYTkI+4p+gIqqjezJlPwyXeqSpm6+fw=
+	t=1744810140; cv=none; b=OyPe1z5us4n53npeGpXotCr7KOitpkNRwSOSGy6IW3exY2fjomIgIzMEUNNSQT6sxzcmuFlL6Nl4lVkrKFwe5tV2Y66l3u7OodBirD7T7A3+Qj1nuKWJ+PBLS/e997xFo9hFLeFZjb+qdTDoE+KffEvPy75Q0Jo6++/aKzJLjpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744809512; c=relaxed/simple;
-	bh=40MZITXjlno7tjCb4AHyz9gkWr5g4kZZoOXV6Xt6QLI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uGD5CU3Reu5+V0WYoRx9HPY5c8gx81C+DWEyaSwzVm/xLRtp6S75foY921b/0TUknE3+wvMTm4edzcPmpdV24LhKxhS+f9zDWrb9oJLyvRyQ2X6CHbQop5xNOvoIn6QZllEJ4SD3O1/v75s/yLB2UIt5jGgXvCHsnn17E3zOq4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ws0CLdWG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1744810140; c=relaxed/simple;
+	bh=ZVJBGbbDNJ4zOnp9Im0juKuDL3UdrCHlHhesvSkdjwA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=WY/vz+GRzZ3dcJIRGzvB2UUYdSoDSWuUzNH9/6uvXCJiGEDd+3Hn1/Q04HNojEus/Owu1pGMDTf/e/2XbxdlX4PnYQbJmIVCSYdTQUhzbpT51Mo8iqFOJY7TBjUhHx0+VPpfteuDKsxIC3mUowYGE3m/6KsYc0PwJNtpOdlvgrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DBQOtUYH; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ws0CLdWG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744809509;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KYYwLTuVZAD8yB0aza7qR8SAg9Lr+TNGrhR+c2xdSYI=;
-	b=Ws0CLdWGrUyJkbB0xg5i3ZslKsr4a0Xjfc9vSGXrmKV5rXueEgFSnZcJ57NB4HrgsTPthH
-	acTrq2jovv7XJrMb1oRyS0qR77FdWEciS/WhdxZcQ6DC5XLvKOOTpzN7peoyAC98vd42cj
-	jmOdFjRPErN6v9ZJvLKoTNLvq1uq+LM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-nvkQ3o0JNjOkLv1ZmZ4cAg-1; Wed, 16 Apr 2025 09:18:28 -0400
-X-MC-Unique: nvkQ3o0JNjOkLv1ZmZ4cAg-1
-X-Mimecast-MFC-AGG-ID: nvkQ3o0JNjOkLv1ZmZ4cAg_1744809507
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43cf5196c25so41242485e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 06:18:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DBQOtUYH"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43941ad86d4so32605945e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 06:28:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744810137; x=1745414937; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=u81oNAdu49vrXOlbtVMx6BBHkvoR1t20Iu3dXwAhN/A=;
+        b=DBQOtUYH5V5yK+TvOL/yhmBeoj3qzyJi6ORz0NuNNB7OK0uvdwU8/BD74p082lTox2
+         tF+KdAnDDuRMF3+I61bUz/vIVRGCKjzZ495HAWLip829NtQ28sFKgdy0oQskPF4ytoPD
+         NyGtGAaaSveIxh1LvMtmwJb3tykdifBDSxfJoI8X3WdKQLERnZeUFWvpiw8k5z4WXqhq
+         hkw2SJ6NE4MzLkLrWvPuc/6qDS/5VOZQPiSBG1t27936xccJW1u1HORldAs98pdB95/I
+         p7MfWpZekPwxle+ZPMeUHFRobcDGdGJ47xyXwAvzzlGiyqmJ2IMlqd4/U36fyCpwk+n4
+         7sDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744809507; x=1745414307;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KYYwLTuVZAD8yB0aza7qR8SAg9Lr+TNGrhR+c2xdSYI=;
-        b=X25JxivtGNUJiftrqnPKNR5+qkVa7/uu/N0x5f+BTTm0MZEzak3TitSmglz3QQAwa4
-         A78DLSfJq2dmihCBbZHCdbtMSOJhh0JYnh58DftTILVNcVm5p0hC4SR74DL58gpwtwSy
-         0BntwKLFpW4cOCIPx9QnOK+DrMjz/MMojYk6b54DJ5NkrW1ySU5n8wVFBqinwwpChlmE
-         xe8UdduOamb6HtTQpirqi106ZO/8RqPkc2MGFS6QXlnuSdeHlO/TmbxsLASVWu7NHuud
-         PDjNKXD/T6NoIj9CkKNQNcvlIz9aMMI5UU+BV+G5FT93Pya0vFtQas5RXtWJOZewYuoO
-         lELA==
-X-Forwarded-Encrypted: i=1; AJvYcCVn2w4/QTFjUQpOdAjo9cLFH+kN0bpMIr9Ph5YtxtgLDuYyD3pf3JMAfsIxe5kl/t1chHEH/QDnILovQXhhuA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0KKdeQc16VSYU5U7gwRi+JDml85HHc/A2ngWcnB+9xOohtGGv
-	1X29NP/NIJyvuGZbRB5ubpY0rBn3kgYKfN5HxuPoaIZxYv12ASh/eMPeOHK+1dtA9f+kcGiQSmG
-	2GGp1U9hLXt9fmA5cWQHrzbKDC7AxmCQ1EdBJbrxcWhqN3DT22qyYbXXGtA+w8Rik
-X-Gm-Gg: ASbGncsR8IsU/voRCzuFxijHDW5Qd7krcdqXjw7cUhEINrVAi3clxE4s19OdEfZHNmh
-	JsNDR9vTJuIysy5oH8Jw/6MFVdZjCvP3yKl3w/mpydbEFe7zUhyhYhLuPoDOSNnY3dxmntbx4nt
-	w3lrIP4qeMZFEeexVpsiSBnUBag+o/ZBEmFSK11+gnqED5hBklE/g0O4xCz/5Ot78p23jRXcpE8
-	6YfqjkAyivOT6BGdvoNwLXJf6YouIKpwQgV0QgP/dSDN2GCO6T43wJmCPj9b4akf/DG3IMvaFW5
-	AOqmCsFooxKqZn4lt5GTo3IjutZ+PZebXD2u/H7KmIJpnVaQ4jw=
-X-Received: by 2002:a05:600c:1d2a:b0:43d:36c:f24 with SMTP id 5b1f17b1804b1-4405d61ca24mr19761435e9.13.1744809506785;
-        Wed, 16 Apr 2025 06:18:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGwLxrssU1ldVAsWqYITreGih0SWn1/lrOXhFExpzdKQmsh4xxqB+dzhCbmzH3Ij6WFE80fmA==
-X-Received: by 2002:a05:600c:1d2a:b0:43d:36c:f24 with SMTP id 5b1f17b1804b1-4405d61ca24mr19760785e9.13.1744809506096;
-        Wed, 16 Apr 2025 06:18:26 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4405b4c8378sm21587785e9.6.2025.04.16.06.18.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Apr 2025 06:18:25 -0700 (PDT)
-Message-ID: <7e54be7d-9c67-45ad-819c-fba6d2da16fc@redhat.com>
-Date: Wed, 16 Apr 2025 15:18:24 +0200
+        d=1e100.net; s=20230601; t=1744810137; x=1745414937;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u81oNAdu49vrXOlbtVMx6BBHkvoR1t20Iu3dXwAhN/A=;
+        b=Kx9NjcI2fzzOS+O0qsNSgN8U+ZNAc7D2v4GvvNCdebsShf1vpoeThg2vkCuQwc9U3D
+         DIfhavfjkxzH+vXMvKSQm0LNzjLUbB2iG8nOdY5P3LuO/p1wutc+clGpqGxPDTZo9DAb
+         QLcwn1DLiS7uPg0p+I6hXAEyqDipfTFz08jwhqZXnrdUnLdbcrcoSPfv7FKXYnMjM2o6
+         eu6UQOrS7c8vQEzspklVM+G4wJ92hck+fHBhR/ihEqk+gQUT8zJmN+8g8u2B6RdKulFH
+         of+m/EQAfcTVSSUtm0DJH+U0OKlfp8JZpgzIYD+mNrumzFXIqtpovEMDCeRONQbRd1KX
+         oNOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXxmdwC7Qz4bOmTJlvVrjZrfnpsaAy1vuhfDaJ7YapsUnzBqNp3VtQmUL2cBIiEVhPSodhXBvE6ZYqY71Xruw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoX1PI2vPD/PfPKdFWzXGlvG2BDQ3a/uIzYlP6K/+Uw5h4awUZ
+	N19qcTB9twZQryjWJkFX+SOk1SUMsVDta8M7c3weJHiQzHv5HFggZ1UtpfXWr1UXu8R4EyomdYn
+	ENLg7/fiu2YHSzA==
+X-Google-Smtp-Source: AGHT+IG9tHRn4kQG7O4PYIe6bQiZU/BwZMZlgMYNzuNvEr4SHrv8sdo9mrdCS3klZTLkNKvguqHeCRRXkHnjB4s=
+X-Received: from wmbfl14.prod.google.com ([2002:a05:600c:b8e:b0:440:602a:960f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:21c4:b0:39c:1410:6c20 with SMTP id ffacd0b85a97d-39ee5b8bd00mr1589935f8f.45.1744810137500;
+ Wed, 16 Apr 2025 06:28:57 -0700 (PDT)
+Date: Wed, 16 Apr 2025 13:28:55 +0000
+In-Reply-To: <20250407-vec-set-len-v3-0-c5da0d03216e@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/panic: use `///` for private items too
-To: Miguel Ojeda <ojeda@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Alex Gaynor <alex.gaynor@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev
-References: <20250416122106.2554208-1-ojeda@kernel.org>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20250416122106.2554208-1-ojeda@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 993a6twg-Dd60LNv2V9AZGGKL0YwrEHSbBc9jRQk7tc_1744809507
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250407-vec-set-len-v3-0-c5da0d03216e@gmail.com>
+Message-ID: <Z_-wlwaiJNsSZbCC@google.com>
+Subject: Re: [PATCH v3 0/4] rust: alloc: split `Vec::set_len` into `Vec::{inc,dec}_len`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On 16/04/2025 14:21, Miguel Ojeda wrote:
-> `///` should still be used for private items [1]. Some of the items in
-> this file do so already, so do it for a few other clear candidates in
-> the file.
+On Mon, Apr 07, 2025 at 10:52:30AM -0400, Tamir Duberstein wrote:
+> This series is the product of a discussion[0] on the safety requirements
+> of `set_len`.
+> 
+> Link: https://lore.kernel.org/all/20250315154436.65065-1-dakr@kernel.org/ [0]
+> Link: https://lore.kernel.org/all/20250316111644.154602-2-andrewjballance@gmail.com/ [1]
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Thanks, it looks good to me.
-As it's only comments, I think it's not worth to mark it as a fix, and 
-to backport it to older releases.
+I'm still wondering if the divergence from upstream alloc is worth it...
+but the code is okay.
 
-I plan to push it to drm-misc-next tomorrow.
-
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-
-
-Best regards,
-
--- 
-
-Jocelyn
-
-> 
-> Link: https://lore.kernel.org/rust-for-linux/20250416112454.2503872-1-ojeda@kernel.org/ [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> Not sure if you would consider it a fix, but please feel free to add Fixes: etc.
-> if so. Thanks!
-> 
->   drivers/gpu/drm/drm_panic_qr.rs | 29 +++++++++++++++--------------
->   1 file changed, 15 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-> index f2a99681b998..642e3240a014 100644
-> --- a/drivers/gpu/drm/drm_panic_qr.rs
-> +++ b/drivers/gpu/drm/drm_panic_qr.rs
-> @@ -315,7 +315,7 @@ fn get_header(&self) -> (u16, usize) {
->           }
->       }
-> 
-> -    // Returns the size of the length field in bits, depending on QR Version.
-> +    /// Returns the size of the length field in bits, depending on QR Version.
->       fn length_bits_count(&self, version: Version) -> usize {
->           let Version(v) = version;
->           match self {
-> @@ -331,7 +331,7 @@ fn length_bits_count(&self, version: Version) -> usize {
->           }
->       }
-> 
-> -    // Number of characters in the segment.
-> +    /// Number of characters in the segment.
->       fn character_count(&self) -> usize {
->           match self {
->               Segment::Binary(data) => data.len(),
-> @@ -569,8 +569,8 @@ struct EncodedMsgIterator<'a> {
->   impl Iterator for EncodedMsgIterator<'_> {
->       type Item = u8;
-> 
-> -    // Send the bytes in interleaved mode, first byte of first block of group1,
-> -    // then first byte of second block of group1, ...
-> +    /// Send the bytes in interleaved mode, first byte of first block of group1,
-> +    /// then first byte of second block of group1, ...
->       fn next(&mut self) -> Option<Self::Item> {
->           let em = self.em;
->           let blocks = em.g1_blocks + em.g2_blocks;
-> @@ -638,7 +638,7 @@ fn clear(&mut self) {
->           self.data.fill(0);
->       }
-> 
-> -    // Set pixel to light color.
-> +    /// Set pixel to light color.
->       fn set(&mut self, x: u8, y: u8) {
->           let off = y as usize * self.stride as usize + x as usize / 8;
->           let mut v = self.data[off];
-> @@ -646,13 +646,13 @@ fn set(&mut self, x: u8, y: u8) {
->           self.data[off] = v;
->       }
-> 
-> -    // Invert a module color.
-> +    /// Invert a module color.
->       fn xor(&mut self, x: u8, y: u8) {
->           let off = y as usize * self.stride as usize + x as usize / 8;
->           self.data[off] ^= 0x80 >> (x % 8);
->       }
-> 
-> -    // Draw a light square at (x, y) top left corner.
-> +    /// Draw a light square at (x, y) top left corner.
->       fn draw_square(&mut self, x: u8, y: u8, size: u8) {
->           for k in 0..size {
->               self.set(x + k, y);
-> @@ -784,7 +784,7 @@ fn is_version_info(&self, x: u8, y: u8) -> bool {
->           vinfo != 0 && ((x >= pos && x < pos + 3 && y < 6) || (y >= pos && y < pos + 3 && x < 6))
->       }
-> 
-> -    // Returns true if the module is reserved (Not usable for data and EC).
-> +    /// Returns true if the module is reserved (Not usable for data and EC).
->       fn is_reserved(&self, x: u8, y: u8) -> bool {
->           self.is_alignment(x, y)
->               || self.is_finder(x, y)
-> @@ -793,13 +793,14 @@ fn is_reserved(&self, x: u8, y: u8) -> bool {
->               || self.is_version_info(x, y)
->       }
-> 
-> -    // Last module to draw, at bottom left corner.
-> +    /// Last module to draw, at bottom left corner.
->       fn is_last(&self, x: u8, y: u8) -> bool {
->           x == 0 && y == self.width - 1
->       }
-> 
-> -    // Move to the next module according to QR code order.
-> -    // From bottom right corner, to bottom left corner.
-> +    /// Move to the next module according to QR code order.
-> +    ///
-> +    /// From bottom right corner, to bottom left corner.
->       fn next(&self, x: u8, y: u8) -> (u8, u8) {
->           let x_adj = if x <= 6 { x + 1 } else { x };
->           let column_type = (self.width - x_adj) % 4;
-> @@ -812,7 +813,7 @@ fn next(&self, x: u8, y: u8) -> (u8, u8) {
->           }
->       }
-> 
-> -    // Find next module that can hold data.
-> +    /// Find next module that can hold data.
->       fn next_available(&self, x: u8, y: u8) -> (u8, u8) {
->           let (mut x, mut y) = self.next(x, y);
->           while self.is_reserved(x, y) && !self.is_last(x, y) {
-> @@ -841,7 +842,7 @@ fn draw_data(&mut self, data: impl Iterator<Item = u8>) {
->           }
->       }
-> 
-> -    // Apply checkerboard mask to all non-reserved modules.
-> +    /// Apply checkerboard mask to all non-reserved modules.
->       fn apply_mask(&mut self) {
->           for x in 0..self.width {
->               for y in 0..self.width {
-> @@ -852,7 +853,7 @@ fn apply_mask(&mut self) {
->           }
->       }
-> 
-> -    // Draw the QR code with the provided data iterator.
-> +    /// Draw the QR code with the provided data iterator.
->       fn draw_all(&mut self, data: impl Iterator<Item = u8>) {
->           // First clear the table, as it may have already some data.
->           self.clear();
-> 
-> base-commit: 8ffd015db85fea3e15a77027fda6c02ced4d2444
-> --
-> 2.49.0
-> 
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
