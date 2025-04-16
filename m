@@ -1,69 +1,67 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C14236450
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 09:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659C1233719
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 10:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744797588; cv=none; b=f8US1UCheoSLhFisvq1uKQgNzFyg3zemM2aTUJ98te3nG/HecyXgFxbLow8E1sRD64hAL8+wBKLkaopuZIlqpdqR6b1ddApVu6PpIscMA6oZDG9kKn29R90k1x//u2L/dxagwfCgM19XW4g0qaN4bD2+U161JbLZ+ly+CjDlTvI=
+	t=1744798650; cv=none; b=sAleWGv6/CdFgQjXPU71iHP0KKH2KQiS9rNcwQcGvPmjjasi/MEFX1tazrt4AnMoKISB4gNXQHSNISNh8iCDNfMRx8lVXtnt0VmjsaABhFB3xv5eEvueM546VPmbUpKbO3RB5fUWU4U6R7h4Nz+yoRXc20k83kOUUP8YEDVQmyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744797588; c=relaxed/simple;
-	bh=/KqlifPlITcri+NQjH9NT/zBN4DYYrCOXYlB0R4bEE4=;
+	s=arc-20240116; t=1744798650; c=relaxed/simple;
+	bh=XmWerUv6DAZOzlCQim89TVXi8/uwr6MnEEJG0S01SjY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MlaiEUYFazPg9GLFoXPqNNdSKgQ7+FGE8YG3blMusCWsoHDKaHlqYEy50N8kbGL9unP05dAShy/rfft5NQC9BLNpYGhGRX/owE7DoGXw+sebQ8RA/RS6kSC/I+bPV0+YOByUtRoH4FlcGra8iGviLX3DyZvZSrDQJdvcgHIkPdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ohdYXI03; arc=none smtp.client-ip=209.85.214.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=m06PVQMj3WFfxlxq/hKUI1fqUr/z9keE3rzwm1hU4ViHIUyjw26T20tqhpiBJdT96qlTNoHGytaVVcCsZErU5RLOAQWdZvG2k30317nB/UFWSsvzSFWveoN/zNVNQjsenJnK/JIqNhKimAirq7l4j3Qs5cTIw6lxQ0JG3M63g8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vTJ+KGHR; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ohdYXI03"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-224100e9a5cso74854055ad.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 02:59:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vTJ+KGHR"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-227cf12df27so4746725ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 03:17:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744797586; x=1745402386; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1744798649; x=1745403449; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JEYp1SEbpoVNrf3LCVsspSC8TThhLaOuKiPfCmCBrCE=;
-        b=ohdYXI03XDnmwCDoBfeuwXBEDDAL95kC40N+9cJUZwQcjuM33qX74PA70LK+tMDQay
-         BN9q3GprWzmrAN/zlj4PDEKYXKs/Slkb8B4Jw1rn4cq+uW2tS1qQi4tnkpke7qc1T9P9
-         yjOQ9P5YwYJvDn420WWWxiEWWcpo+CsalPwxt5rBmaauOX5qYH6d3kp6iOPbRrP3FbsK
-         x8YJtjlpjdJvtScB76T9tx8BZ/4hpG2Uav7VzwWriyv1L3kNVKzZ+BOnEr0SdykJsL6r
-         4JUPRRFlFP+mdJyMmIM51uWSNH6o9Y+XKCQOkvF91zypXsm0Q4u4gsLdzgzg5xScez/2
-         AFUg==
+        bh=2/ANKiJhFvihbg1XVir8LGKcyLP9qIkWBCOvxZUsgt0=;
+        b=vTJ+KGHRkCySfO0ivP/SlYnPokydPCGY/eut3rWHB3qhHZQsBQ3Zr/85IqxjG0fCLA
+         JQykRWn/X20NH2Va3JBg1PxemICdXYREKOchjPPa7EWNoZ34zWI/sweftkzUkcTH4vc/
+         jJu58OopEC5eBgvl6nx869lR6VjhFmY/7RLBD9p4rNXInkpoFffpq0FTydSNq28HrEQz
+         pWja/9ABDBIj8bPrvAs/HDJOTtZhG25YbZD5MOqu+kEWGC5n5pCH8Dni+MzSIyVFXSys
+         iz85jnKKJDDYHpUHlumOwxK/GaKNtAbTF7HrcB5EcaXim7VowZiGlUVN/bEm52nRZ4WN
+         zYSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744797586; x=1745402386;
+        d=1e100.net; s=20230601; t=1744798649; x=1745403449;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JEYp1SEbpoVNrf3LCVsspSC8TThhLaOuKiPfCmCBrCE=;
-        b=SIVEz3nONV/y+OHAUpIV9EEn0bfdOCAt5QVh/CcSF8ezVPnQMpe4qHB3WCxDkljC/Z
-         v/05qpn/H0cbzn3TJbqbGb9srYTjh0msfGIsfQPbnDd7y6MWwrMsM3wcCNhsW1sJGjZx
-         3iRiXcyTTCZXzaqWTAq/tv4fNI7AYxFDSyy3ScqsEbGHqIq/a817QNqlI3YpQCcGGF1X
-         6r+vYXCwojBJgvDUfZrrHtqvIVsrZRL2YaqT7LwRPUzrC0K2U1NpyCpn7i1Kx9Dyerw5
-         fu2PWeT5gBwQ3wm0zR4jGb8x2HzqJgNz5L8tI9QkP4HZcT+ydeBnVAdeU4y18OFjM+gT
-         onAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUIjeTKmbfTHrf14JeihJ9FdPtWygm54Kd1NP4Sg9RpxAQK0TDrmkMJpAKhZAOVzBLbl3In0lxPCpvqyanKuw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu2ugzlk9tIpedp8QUf9MtmrsEE8AdjPvaUUI57lVHMYGLCuaP
-	cXWGkDYaiPEoLrZ/oKHSw3TSVseblvHA0q0fQkYbnbvZhtqqSNfCvwDX6MgB7VY=
-X-Gm-Gg: ASbGncutz7vi7/76AMeqMSlcF8bSVykk6UMAvJN53mIFuJztVX99kmDaZLblJW9Gre4
-	P89CqgR7nIfuyzfOWBV9YeGsffm9HKkYHy82j9rsCJapJqizH9/O8TW83KTyqMAcCU1wmXQwkcs
-	uEt6Pf7dMH/MQpOxvaY4LG46nVaNVtVDzCq+rE50joVuG6uZLH/sEYkatEHL8+loVTVUguikb/+
-	69l7SHPwc+Lha+SnPteZWPu2q8uHctwRCGuK0NyG5ndVn/swjjwW5WABHXqr1m/R9vsB+vlWrWm
-	ZYn46IVIxJM23fFmssym6a9CFA4YcWeCzWalbhTAmQ==
-X-Google-Smtp-Source: AGHT+IFlrDH8XoDOr95CMioGMAxmNZhKw0qCNMj4btmrvguVmdoyuIky5agyncMrdkwVuUZ7fBvXGQ==
-X-Received: by 2002:a17:902:e806:b0:220:e63c:5b13 with SMTP id d9443c01a7336-22c35982038mr16198835ad.46.1744797585891;
-        Wed, 16 Apr 2025 02:59:45 -0700 (PDT)
+        bh=2/ANKiJhFvihbg1XVir8LGKcyLP9qIkWBCOvxZUsgt0=;
+        b=KXdkjy1iGe6WgwfsAdDTGvofkZxsc7PPPS8tYMB2VROBGMx7sNPvxYJYngEHF3BI3O
+         I3Cbxu4diZxWsyOmN8F3IxUyblcdge/i7VaRdOFKj0hA/7nvfn+AtUypgkjQkTcjRIhe
+         btnaQVJZt2yBMUANIdCgBu1RawHNqToarSAAH1VsC/yxc4ee7u7QOaKnmhYhxvkIs6GF
+         0/JcLrabc+88j9CD4RcuTBTkw0XGi7q/lSAATWk2cgxrwQT7+0auEWS6pOWJrjWDU6A0
+         bV3OKFfKrY+2YUJdn/uwyA/hIB6JlKO1W7zDYfH0q4gp9FPpGeE1MptI1/8fgxSZgWyy
+         2iqw==
+X-Forwarded-Encrypted: i=1; AJvYcCV0wLL+4nS1oCwkEOnxC2ksTieHaHxnUOBQ5abdmOnA/YY88mYT53i/TkVYXdn3ngF/V6u9QUfkn/byqED70g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2HUwZTT0+JgJSoMiaGE0SVORrL0ssVbkg8DsE0yYt6a7JMM/C
+	IzwENc2VQ0xqqL+dLQOpDuf3gU0h20udBgHfNgWRDp/npz4B0wNjCFWfX+U60lo=
+X-Gm-Gg: ASbGncu8TuUqEB4p0h8Kqgcz+tPAXCa7udV9sDt56fspVAUxo4d4tKw7myT9Fs1wq1m
+	KcgC92aNXVmdCGuLckk9e8ckYZvvddbEo9yvWuoVgjVmKI56eEcbV/J70rTHUEh8rDzy7iEoDr+
+	KvgiQ3mrEpgel+WubjTcQ5Km2LThASxzH26uTrmFaIEwG7Xs4KLwrSqBVYUyrN6gAQuAfDxYeqn
+	vOMxskoCzgeuEvh3LokTP/rUc4iCLLaKZ9o+ieVYJxG2DteFKR96KyBVb7XX+0NBY1KVC1Xk3f0
+	CZvl1uz0HWrDneapL50GhNZjwPK7fjoq5Q3pD45UIA==
+X-Google-Smtp-Source: AGHT+IEP5v+tXDBmTd5U0jC7DaGa/ExzfUSWGNIY5nfSg4zcC01NVkg6iyoz+YcRUATQclmDewMobQ==
+X-Received: by 2002:a17:903:2448:b0:215:a2f4:d4ab with SMTP id d9443c01a7336-22c35d25e43mr16092715ad.7.1744798648728;
+        Wed, 16 Apr 2025 03:17:28 -0700 (PDT)
 Received: from localhost ([122.172.83.32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33ef0fbasm9958505ad.19.2025.04.16.02.59.44
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33fc4b96sm10195445ad.174.2025.04.16.03.17.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Apr 2025 02:59:45 -0700 (PDT)
-Date: Wed, 16 Apr 2025 15:29:43 +0530
+        Wed, 16 Apr 2025 03:17:28 -0700 (PDT)
+Date: Wed, 16 Apr 2025 15:47:26 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
@@ -72,6 +70,7 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
 	rust-for-linux@vger.kernel.org,
 	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
 	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -81,12 +80,12 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
 	Michael Turquette <mturquette@baylibre.com>,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V10 14/15] rust: opp: Extend OPP abstractions with
- cpufreq support
-Message-ID: <20250416095943.f3jxy55bamekscst@vireshk-i7>
+Subject: Re: [PATCH V10 13/15] rust: cpufreq: Extend abstractions for driver
+ registration
+Message-ID: <20250416101726.g5jm6wnbbsmuskxl@vireshk-i7>
 References: <cover.1744783509.git.viresh.kumar@linaro.org>
- <a940d1b1a02d99fdc80ba8d0526c35a776854cb3.1744783509.git.viresh.kumar@linaro.org>
- <Z_9v24SghlIhT62r@pollux>
+ <8d04ef19d7a16610dbf0dfb5c9a611c6e1e3e318.1744783509.git.viresh.kumar@linaro.org>
+ <Z_9ysHFmvZvaoe8H@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -95,152 +94,18 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z_9v24SghlIhT62r@pollux>
+In-Reply-To: <Z_9ysHFmvZvaoe8H@pollux>
 
-On 16-04-25, 10:52, Danilo Krummrich wrote:
-> This config is needed quite often, it probably makes sense to move this code in
-> its own Rust module, i.e.:
+On 16-04-25, 11:04, Danilo Krummrich wrote:
+> You need to justify why drv is a valid pointer to be passed to
+> cpufreq_register_driver(), i.e. something like
 > 
-> 	#[cfg(CONFIG_CPU_FREQ)]
-> 	pub mod freq;
+> 	// SAFETY:
+> 	// - `drv` comes from Self::VTABLE and hence is a valid pointer to a `struct cpufreq_driver`,
+> 	// - `cpufreq_register_driver()` never attempts to modify the data `drv` points to
 
-Like this ?
-
-diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-index 734be8b6d0ef..f4cabe859c43 100644
---- a/rust/kernel/opp.rs
-+++ b/rust/kernel/opp.rs
-@@ -20,10 +20,67 @@
- };
-
- #[cfg(CONFIG_CPU_FREQ)]
--use crate::cpufreq;
-+// Frequency table implementation.
-+mod freq {
-+    use crate::cpufreq;
-+    use core::ops::Deref;
-+    use super::*;
-+
-+    /// OPP frequency table.
-+    ///
-+    /// A [`cpufreq::Table`] created from [`Table`].
-+    pub struct FreqTable {
-+        dev: ARef<Device>,
-+        ptr: *mut bindings::cpufreq_frequency_table,
-+    }
-+
-+    impl FreqTable {
-+        /// Creates a new instance of [`FreqTable`] from [`Table`].
-+        pub(crate) fn new(table: &Table) -> Result<Self> {
-+            let mut ptr: *mut bindings::cpufreq_frequency_table = ptr::null_mut();
-+
-+            // SAFETY: The requirements are satisfied by the existence of [`Device`] and its safety
-+            // requirements.
-+            to_result(unsafe {
-+                bindings::dev_pm_opp_init_cpufreq_table(table.dev.as_raw(), &mut ptr)
-+            })?;
-+
-+            Ok(Self {
-+                dev: table.dev.clone(),
-+                ptr,
-+            })
-+        }
-+
-+        // Returns a reference to the underlying [`cpufreq::Table`].
-+        #[inline]
-+        fn table(&self) -> &cpufreq::Table {
-+            // SAFETY: The `ptr` is guaranteed by the C code to be valid.
-+            unsafe { cpufreq::Table::from_raw(self.ptr) }
-+        }
-+    }
-+
-+    impl Deref for FreqTable {
-+        type Target = cpufreq::Table;
-+
-+        #[inline]
-+        fn deref(&self) -> &Self::Target {
-+            self.table()
-+        }
-+    }
-+
-+    impl Drop for FreqTable {
-+        fn drop(&mut self) {
-+            // SAFETY: The pointer was created via `dev_pm_opp_init_cpufreq_table`, and is only
-+            // freed here.
-+            unsafe {
-+                bindings::dev_pm_opp_free_cpufreq_table(self.dev.as_raw(), &mut self.as_raw())
-+            };
-+        }
-+    }
-+}
-
- #[cfg(CONFIG_CPU_FREQ)]
--use core::ops::Deref;
-+pub use freq::FreqTable;
-
- use core::{marker::PhantomData, ptr};
-
-@@ -502,60 +559,6 @@ extern "C" fn config_regulators(
-     }
- }
-
--/// OPP frequency table.
--///
--/// A [`cpufreq::Table`] created from [`Table`].
--#[cfg(CONFIG_CPU_FREQ)]
--pub struct FreqTable {
--    dev: ARef<Device>,
--    ptr: *mut bindings::cpufreq_frequency_table,
--}
--
--#[cfg(CONFIG_CPU_FREQ)]
--impl FreqTable {
--    /// Creates a new instance of [`FreqTable`] from [`Table`].
--    fn new(table: &Table) -> Result<Self> {
--        let mut ptr: *mut bindings::cpufreq_frequency_table = ptr::null_mut();
--
--        // SAFETY: The requirements are satisfied by the existence of [`Device`] and its safety
--        // requirements.
--        to_result(unsafe {
--            bindings::dev_pm_opp_init_cpufreq_table(table.dev.as_raw(), &mut ptr)
--        })?;
--
--        Ok(Self {
--            dev: table.dev.clone(),
--            ptr,
--        })
--    }
--
--    // Returns a reference to the underlying [`cpufreq::Table`].
--    #[inline]
--    fn table(&self) -> &cpufreq::Table {
--        // SAFETY: The `ptr` is guaranteed by the C code to be valid.
--        unsafe { cpufreq::Table::from_raw(self.ptr) }
--    }
--}
--
--#[cfg(CONFIG_CPU_FREQ)]
--impl Deref for FreqTable {
--    type Target = cpufreq::Table;
--
--    #[inline]
--    fn deref(&self) -> &Self::Target {
--        self.table()
--    }
--}
--
--#[cfg(CONFIG_CPU_FREQ)]
--impl Drop for FreqTable {
--    fn drop(&mut self) {
--        // SAFETY: The pointer was created via `dev_pm_opp_init_cpufreq_table`, and is only freed
--        // here.
--        unsafe { bindings::dev_pm_opp_free_cpufreq_table(self.dev.as_raw(), &mut self.as_raw()) };
--    }
--}
--
- /// A reference-counted OPP table.
- ///
- /// Rust abstraction for the C `struct opp_table`.
+The cpufreq core can try to change the data pointed by `drv`. For now
+it updates the `cpufreq_driver->boost_enabled` flag.
 
 -- 
 viresh
