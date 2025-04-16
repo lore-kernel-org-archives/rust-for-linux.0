@@ -1,417 +1,279 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C598115B543;
-	Wed, 16 Apr 2025 03:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C381F4611
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 06:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744775202; cv=none; b=jREjUbHTz0MDeFTb2YJEEJrVeNbe98sIZGfQtmu33LSmtzKv5PankblML3oUe/KGHdtfJ2zhrZLhiHaR29BY06k174azoefpRfEjtUqEgEBxvScmpkzNTcIPoZF4nL35P0hi09K7ijcHgiC9SgRS7qMAALRWRjIz2VEXbWC8Gok=
+	t=1744785595; cv=none; b=GlEhofv0MBo/esE0PLJVYu8dSwM6/RjntR3U9elsK4Fb2SNHaLAgjsCB3c2ZWi50sg00HZFAKSl3hBJGEEx0lS0frR3G1q7wqQ+GIBWaMfhjr2k9xs7SnxMK9rBafGyvDUyIfo7gS5xBV3FzzZCKxnGHgKCg2MySnQQlbC8QjII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744775202; c=relaxed/simple;
-	bh=qfQGAx7ujA6mv9BqGg4+7VgDxR7WOgloe6QYeVhu6gw=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=CiT8vo+Nh1R1py4NgnVoqo0/FsinG/fbY6bAHQJdTsUA1macWlDif+h6z6oN3ALeUPrhL/yuGLRRuUkCC9G1zSX1NxawiV0uCBxkCcf5TFNCvv1o7obUnD53Pe8BdrZ7jzGZftcRIBkxH6iPHoeW38j4s9LDPx6Bo9Cp4tSxvbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eqk+mUIY; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744785595; c=relaxed/simple;
+	bh=HI4pbslruePNiTAbh5gqsZgdMGgDRqUxwM+XevrO+Pg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FUsxuU0VZDCKbUz3xWXtcwKbwJELS/IzniccCQwWfiVJzGQsB6LVOmy6ioMu6b4iuDmBYKhIwEi8ozxHbz1o74gy9zAW791SXAK06sP8OWTlPAL+ZS5HfyGmNE0hf9GX5V+SPBUpD1IvGv3+4rabFAmjVUKLvJzVP9ACAdFoYzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OaA54IXz; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eqk+mUIY"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22401f4d35aso72799285ad.2;
-        Tue, 15 Apr 2025 20:46:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OaA54IXz"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ff694d2d4dso5863132a91.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Apr 2025 23:39:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744775200; x=1745380000; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EC5cRJ3DrdY8cRnwQGP/NwhxQE3eh7uMlEYNYdFTgqk=;
-        b=Eqk+mUIYUvpFxCi9sbGLk1YHfvRXe1fetIiijqKC/tN99o656PRrHgMINiFcuHrwyq
-         FpMlowHHE9aGreRFvFXCfq5ImxBOYNFy9c0IKXXwF11/Ug5eEWiH0OeWbxT8EExyMoT6
-         rtGpGPOhl0s+Ee/jfCqAr0RBAT3NbaO9urohQA5Aq+kG+1s/9j2fKL+shcgKVRkVd5RG
-         xj9CY/dVG2y0Iueoq9kqrBu3VMY74sE4kJmLrCP7SA2/+fOgwdUDj1ThJ21Q8/UYT/4k
-         Y2bgF1iLNelx96Scz5GSOCHne8fpw+h99iN7tCzI/IZBnVBVSSb6am/TwdpW9YboL+hD
-         220A==
+        d=linaro.org; s=google; t=1744785592; x=1745390392; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ylu6AhIoWiuJhO+ekGRtzlalkAr5ceAZvwt6SfVp77o=;
+        b=OaA54IXzn1r9R9dsr2qMTb69KT1LX2fdcnv9gy7cFJOn0h/tagWI24oKzMyEbnRqlM
+         sep7Jd9hy9zsBPdS2mqArwLgdBYLR1FvBgceSfSGCXu07vLs7zSOnjk9ypE6B2W1m0A9
+         rTqvjN8ZwUNXPpe6xilDF03TNhIqu0xUGh6TefVYhY/Chki+mjBzbJsjWKdj/r8HFGSe
+         lHcSTkGV7rAwFILJyvWB+E1tagdT8nQ06ad08nvIYO/L1KBHciQbX+a0L4nR7+e6eJUv
+         VAl4U8CvllwzP6TBlmkjWeCdv/xDOjyYvSEuYP6uxyyeR+TTgSIfHb7SlQpZwn4zjiBS
+         9/aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744775200; x=1745380000;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EC5cRJ3DrdY8cRnwQGP/NwhxQE3eh7uMlEYNYdFTgqk=;
-        b=Yja/fmm7v5M1y65DCuU4/F/I7T4Vur9Hexu/c1YVbFt8GkYQBmeAu/sMSs/fdc2roS
-         1cEzTRr51/94+6Xo0qw44/J2cAB4Jr0Tubikskf7Ug1DbVzXAou0WDrXJ0wljEzfELy3
-         SIRg3kzbW/tciFmaWFqqtdN3dXYh2eCGJlmnM0w1MUfR76l793GIZunyCkpb8ixt4VV4
-         nc4dHjVdCTd2SKPkAAbcPaO0T1TrAIor6Tku6+LC6voGzaKfJ9U3VWh/Odb0ktSU6tMI
-         iA6KhRLxL0vE9ZtkERJDHcN+fwusigoji6XbW+/QzEh1jvHPt5JbN8EKIfoBHShuxOmu
-         DAvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUl0oV65L+80JrWnw2Pc7ITFGP0l+1ZCNkQGoP6OxotbL3kXtvgNunl2lM7HOAoBa73hBlYhrWb@vger.kernel.org, AJvYcCXVCuFoupPi3ijsEVN3BhZyRAHp78YZQ50ieTYcjtI+8s2uEb5aaFMSr+62nLOkn5F5jBf6kCQBUUMty1k=@vger.kernel.org, AJvYcCXr9QnOkM3kBYq12qJ4rOIjbWKdkjwB4PEYB2b5kn+Zr5aAoUbHCeOI4o7iUUaVnTJDFE+D0YVehmSe16A7TaU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlPrmF9TU+fL7ntAMpi2JyKW0j5DV1vjDyWxuAwushkl4gqRje
-	yTwfnDtQRMPC+kwxgtkMqppj5EtzekW3sk/gQaAufwzhC3qU/ZZB
-X-Gm-Gg: ASbGncs0wcudXggRO7sVRco6et0OmUoGL6jC3XGGPzKHsALQio1b10CgU+/o7yCtXMu
-	m3Rdb47t0DQENRUgMPnxy5FmwxD/jdPWR6DGbFtrHk/uPWO/Gf4LcBAQ7NdUFlRTHqvmPn9R7SI
-	scigZ9ZB6M4+SxOnLKcYQv3iQJnC+mm4slB1wPrgQNi+U/stkJULY3a5Wfn5AxcLMhIxbUqk2Au
-	TUbNAzXJTwk9+w3sqHDAyRYkb56p0Vv7YpBOxctLKFiZMQsmcbR33uy96i7ftCHNEoYvFTy/HDK
-	ut4590o7Gdy+eLydknpOpSJRAVkcNIwRxjRMrhuQLQglaCX5BGB3zIocAeJk2lLAVt1SvhU7mg/
-	ojkmVsmgvij72mPENhiVRsiEew0aKICP+4Q==
-X-Google-Smtp-Source: AGHT+IGjrqlAd6Wb+ZXgS3zMNNwprjxMJ2s0Miw+SsiZpvGfwsIOpcwqiCXlp4hEzohHhkL8iDmH8A==
-X-Received: by 2002:a17:902:d2ca:b0:224:1eaa:5de1 with SMTP id d9443c01a7336-22c358d9cecmr4645315ad.18.1744775199732;
-        Tue, 15 Apr 2025 20:46:39 -0700 (PDT)
-Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd23332a3sm9347267b3a.161.2025.04.15.20.46.33
+        d=1e100.net; s=20230601; t=1744785592; x=1745390392;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ylu6AhIoWiuJhO+ekGRtzlalkAr5ceAZvwt6SfVp77o=;
+        b=lyeMhrMvL8/yNq5/Ce+77dyvVMIhfSG+B84bpiQjG83VP5dQB6WiBOxh3fDrsCIQ6y
+         CqKF1Opyw1ZjczQJj0vm2TOicTR/LwKjV+PgLhORqZXH3+9eXpO0y5zakvt94SNf9i4P
+         YgRHd46MIhqbi7fr3uORkOX0RGo6vkiz92RVYgG0HHPa9G6XpilhCC00gj8V51OQmqvI
+         9n3XcIHDZCkrO/qux0IuUrnSVJQH+OE27UMSH3mzcHMsz0v+E8VlgVYNejYmRNg5BTA8
+         MT9ZQ8SD8WWmatqdWZiV+QO/t6LCkUbTtV4hYGXMWoL5Nlqcxd8Jjlar1ML1ALs1KgI0
+         Uu3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVA6CBKKgcIld/CU8OPDUPU7nWqCCoq7lgGOS/Jjwc8n86LsaUscBuV7G1ZPklzB9Vh2J6RHlL1/V1Pp6D3/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGZmvN7tIR6/ou4pBKGUgQzNh/fHJG8oCV4CuQzYqZqg5N9KJV
+	/ED8xKMYSz+NlmViJlBxXpk2424027o9XspauK2vfTWNB4a1G3GkLjHQTeDJCbE=
+X-Gm-Gg: ASbGncuIPXBLLh5eSd9BM+MppqCCiGVhI56I0cOlTxJek/i9yE2kgnedaX8ga0W6fnV
+	layy7srQJ1pzv9jviWZgroxqXrq5P+9DBYOyNsmY2gkcBbvSNEO4Q+klzyI8My5k1uTEQQEE/si
+	pYkcIhBngEyUiJ95iav+0VLAZ4UiGRnpumSanCdB3/J5o7i7oFbtpbVb1I1DGnhw0SUxxt7nVa6
+	nOs+M5eV/+guklrQiBXvCrqdOdP3U1p7qldifjXLWtDQajxjgbeF79c5nM86P0v0f+wsQ24blnn
+	qEojffKBLUoOy1bHexD7ml+T9FxR49/Fmw27paBOyA==
+X-Google-Smtp-Source: AGHT+IFgWqv8VMoJN8BwxdKq91EbTInLCJldWjcRgfV4RZstK6Vh3XF5u8IeYaIAR54psCJCGXCoDA==
+X-Received: by 2002:a17:90b:3c0c:b0:2fe:7fea:ca34 with SMTP id 98e67ed59e1d1-308641725d2mr817134a91.32.1744785591746;
+        Tue, 15 Apr 2025 23:39:51 -0700 (PDT)
+Received: from localhost ([122.172.83.32])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-308612130c2sm757580a91.29.2025.04.15.23.39.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Apr 2025 20:46:39 -0700 (PDT)
-Date: Wed, 16 Apr 2025 12:46:24 +0900 (JST)
-Message-Id: <20250416.124624.303652240226377083.fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org, boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- gary@garyguo.net, me@kloenk.dev, daniel.almeida@collabora.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, anna-maria@linutronix.de,
- frederic@kernel.org, tglx@linutronix.de, arnd@arndb.de,
- jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com,
- david.laight.linux@gmail.com
-Subject: Re: [PATCH v13 3/5] rust: time: Introduce Instant type
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <67fe9efe.d40a0220.aa401.b05f@mx.google.com>
-References: <87lds3cjgx.fsf@kernel.org>
-	<20250414.205954.2258973048785103265.fujita.tomonori@gmail.com>
-	<67fe9efe.d40a0220.aa401.b05f@mx.google.com>
+        Tue, 15 Apr 2025 23:39:51 -0700 (PDT)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Trevor Gross <tmgross@umich.edu>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Yury Norov <yury.norov@gmail.com>
+Cc: linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Burak Emir <bqe@google.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-clk@vger.kernel.org,
+	Anisse Astier <anisse@astier.eu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V10 00/15] Rust abstractions for clk, cpumask, cpufreq, OPP
+Date: Wed, 16 Apr 2025 12:09:17 +0530
+Message-Id: <cover.1744783509.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue, 15 Apr 2025 11:01:30 -0700
-Boqun Feng <boqun.feng@gmail.com> wrote:
+Hello,
 
-> On Mon, Apr 14, 2025 at 08:59:54PM +0900, FUJITA Tomonori wrote:
->> On Mon, 14 Apr 2025 09:04:14 +0200
->> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->> 
->> > "Boqun Feng" <boqun.feng@gmail.com> writes:
->> > 
->> >> On Sun, Apr 13, 2025 at 07:43:08PM +0900, FUJITA Tomonori wrote:
->> >>> Introduce a type representing a specific point in time. We could use
->> >>> the Ktime type but C's ktime_t is used for both timestamp and
->> >>> timedelta. To avoid confusion, introduce a new Instant type for
->> >>> timestamp.
->> >>>
->> >>> Rename Ktime to Instant and modify their methods for timestamp.
->> >>>
->> >>> Implement the subtraction operator for Instant:
->> >>>
->> >>> Delta = Instant A - Instant B
->> >>>
->> >>> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
->> >>
->> >> I probably need to drop my Reviewed-by because of something below:
->> >>
->> >>> Reviewed-by: Gary Guo <gary@garyguo.net>
->> >>> Reviewed-by: Fiona Behrens <me@kloenk.dev>
->> >>> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
->> >>> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
->> >>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> >>> ---
->> >> [...]
->> >>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->> >>> index ce53f8579d18..27243eaaf8ed 100644
->> >>> --- a/rust/kernel/time/hrtimer.rs
->> >>> +++ b/rust/kernel/time/hrtimer.rs
->> >>> @@ -68,7 +68,7 @@
->> >>>  //! `start` operation.
->> >>>
->> >>>  use super::ClockId;
->> >>> -use crate::{prelude::*, time::Ktime, types::Opaque};
->> >>> +use crate::{prelude::*, time::Instant, types::Opaque};
->> >>>  use core::marker::PhantomData;
->> >>>  use pin_init::PinInit;
->> >>>
->> >>> @@ -189,7 +189,7 @@ pub trait HrTimerPointer: Sync + Sized {
->> >>>
->> >>>      /// Start the timer with expiry after `expires` time units. If the timer was
->> >>>      /// already running, it is restarted with the new expiry time.
->> >>> -    fn start(self, expires: Ktime) -> Self::TimerHandle;
->> >>> +    fn start(self, expires: Instant) -> Self::TimerHandle;
->> >>
->> >> We should be able to use what I suggested:
->> >>
->> >> 	https://lore.kernel.org/rust-for-linux/Z_ALZsnwN53ZPBrB@boqun-archlinux/
->> >>
->> >> to make different timer modes (rel or abs) choose different expire type.
->> >>
->> >> I don't think we can merge this patch as it is, unfortunately, because
->> >> it doesn't make sense for a relative timer to take an Instant as expires
->> >> value.
->> > 
->> > I told Tomo he could use `Instant` in this location and either he or I
->> > would fix it up later [1].
->> > 
-> 
-> I saw that, however, I don't think we can put `Instant` as the parameter
-> for HrTimerPointer::start() because we don't yet know how long would the
-> fix-it-up-later take. And it would confuse users if they need a put an
-> Instant for relative time.
-> 
->> > I don't want to block the series on this since the new API is not worse
->> > than the old one where Ktime is overloaded for both uses.
-> 
-> How about we keep Ktime? That is HrTimerPointer::start() still uses
-> Ktime, until we totally finish the refactoring as Tomo show below?
-> `Ktime` is much better here because it at least matches C API behavior,
-> we can remove `Ktime` once the dust is settled. Thoughts?
+This series introduces initial Rust abstractions for a few subsystems: clk,
+cpumask, cpufreq and Operating Performance Points (OPP).
 
-Either is fine with me. I'll leave it to Andreas' judgment.
+The abstractions cover most of the interfaces exposed by cpufreq and OPP
+subsystems. It also includes minimal abstractions for the clk and cpumask
+frameworks, which are required by the cpufreq / OPP abstractions.
 
-Andreas, if you like Boqun's approach, I'll replace the third patch
-with the following one and send v14.
+Additionally, a sample `rcpufreq-dt` driver is included. This is a
+duplicate of the existing `cpufreq-dt` driver, which is a
+platform-agnostic, device-tree based cpufreq driver commonly used on ARM
+platforms.
 
-I added Ktime struct to hrtimer.rs so the well-reviewed changes to
-time.rs remain unchanged.
+The implementation has been tested using QEMU, ensuring that frequency
+transitions, various configurations, and driver binding/unbinding work as
+expected. However, performance measurements have not been conducted yet.
 
----
-rust: time: Introduce Instant type
+For those interested in testing these patches, they can be found at:
 
-Introduce a type representing a specific point in time. We could use
-the Ktime type but C's ktime_t is used for both timestamp and
-timedelta. To avoid confusion, introduce a new Instant type for
-timestamp.
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git rust/cpufreq-dt
 
-Rename Ktime to Instant and modify their methods for timestamp.
+Based on 6.15-rc1.
 
-Implement the subtraction operator for Instant:
+V9->V10:
+- Don't remove atomic cpumask bindings from rust/helpers/cpumask.c
+- Rename from_raw/from_raw_mut to as_ref/as_mut_ref (cpumask).
+- Improved comments for non-atomic methods (cpumask).
+- s/new/new_zero/ and s/new_uninit/new/ (cpumask).
+- Avoid using explicit casts `as *const` or `as *mut`.
+- Renamed `cpumask_box` to `cpumask_var` and `cpus`.
+- Add local types in Rust for cpufreq flags that use BIT().
+- Add const initializer for cpufreq::Registration and simplify new().
+- Improved few safety comments.
 
-Delta = Instant A - Instant B
+V8->V9:
+- clk (changes since V4):
+  - V4: https://lore.kernel.org/all/cover.1742276963.git.viresh.kumar@linaro.org/
+  - Add more methods in Hertz (as_khz/mhz/ghz).
+  - Reword a comment.
 
-Note that hrtimer still uses the Ktime type for now. It will be
-replaced with Instant and Delta types later.
+- cpumask (changes since V4):
+  - V4: https://lore.kernel.org/all/cover.1743572195.git.viresh.kumar@linaro.org/
+  - Add support for cpumask_{test_cpu|empty|full} and switch to using non-atomic
+    helpers for set/clear.
+  - s/CpumaskBox/CpumaskVar/
+  - s/set_all/setall/
+  - Improved examples, comments and commit logs.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/time.rs                 | 77 +++++++++++++++--------------
- rust/kernel/time/hrtimer.rs         | 17 ++++++-
- rust/kernel/time/hrtimer/arc.rs     |  2 +-
- rust/kernel/time/hrtimer/pin.rs     |  2 +-
- rust/kernel/time/hrtimer/pin_mut.rs |  4 +-
- rust/kernel/time/hrtimer/tbox.rs    |  2 +-
- 6 files changed, 60 insertions(+), 44 deletions(-)
+- cpufreq/opp:
+  - V8: https://lore.kernel.org/all/cover.1738832118.git.viresh.kumar@linaro.org/
+  - Based on review comments received for clk/cpumask, a lot of changes were
+    made to cpufreq/opp bindings in code, comments, examples, etc..
+  - `attr` fields were dropped from cpufreq support, not required anymore
+    because of latest changes in cpufreq core.
+  - Use Hertz/MicroVolt/MicroWatt as units.
+  - Lots of other cleanups.
+  - Dropped Reviewed-by from Manos (there were too many changes).
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index e00b9a853e6a..a8089a98da9e 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -5,6 +5,22 @@
- //! This module contains the kernel APIs related to time and timers that
- //! have been ported or wrapped for usage by Rust code in the kernel.
- //!
-+//! There are two types in this module:
-+//!
-+//! - The [`Instant`] type represents a specific point in time.
-+//! - The [`Delta`] type represents a span of time.
-+//!
-+//! Note that the C side uses `ktime_t` type to represent both. However, timestamp
-+//! and timedelta are different. To avoid confusion, we use two different types.
-+//!
-+//! A [`Instant`] object can be created by calling the [`Instant::now()`] function.
-+//! It represents a point in time at which the object was created.
-+//! By calling the [`Instant::elapsed()`] method, a [`Delta`] object representing
-+//! the elapsed time can be created. The [`Delta`] object can also be created
-+//! by subtracting two [`Instant`] objects.
-+//!
-+//! A [`Delta`] type supports methods to retrieve the duration in various units.
-+//!
- //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
- //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
- 
-@@ -33,59 +49,44 @@ pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
-     unsafe { bindings::__msecs_to_jiffies(msecs) }
- }
- 
--/// A Rust wrapper around a `ktime_t`.
-+/// A specific point in time.
-+///
-+/// # Invariants
-+///
-+/// The `inner` value is in the range from 0 to `KTIME_MAX`.
- #[repr(transparent)]
- #[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord)]
--pub struct Ktime {
-+pub struct Instant {
-     inner: bindings::ktime_t,
- }
- 
--impl Ktime {
--    /// Create a `Ktime` from a raw `ktime_t`.
--    #[inline]
--    pub fn from_raw(inner: bindings::ktime_t) -> Self {
--        Self { inner }
--    }
--
-+impl Instant {
-     /// Get the current time using `CLOCK_MONOTONIC`.
-     #[inline]
--    pub fn ktime_get() -> Self {
--        // SAFETY: It is always safe to call `ktime_get` outside of NMI context.
--        Self::from_raw(unsafe { bindings::ktime_get() })
--    }
--
--    /// Divide the number of nanoseconds by a compile-time constant.
--    #[inline]
--    fn divns_constant<const DIV: i64>(self) -> i64 {
--        self.to_ns() / DIV
--    }
--
--    /// Returns the number of nanoseconds.
--    #[inline]
--    pub fn to_ns(self) -> i64 {
--        self.inner
-+    pub fn now() -> Self {
-+        // INVARIANT: The `ktime_get()` function returns a value in the range
-+        // from 0 to `KTIME_MAX`.
-+        Self {
-+            // SAFETY: It is always safe to call `ktime_get()` outside of NMI context.
-+            inner: unsafe { bindings::ktime_get() },
-+        }
-     }
- 
--    /// Returns the number of milliseconds.
-+    /// Return the amount of time elapsed since the [`Instant`].
-     #[inline]
--    pub fn to_ms(self) -> i64 {
--        self.divns_constant::<NSEC_PER_MSEC>()
-+    pub fn elapsed(&self) -> Delta {
-+        Self::now() - *self
-     }
- }
- 
--/// Returns the number of milliseconds between two ktimes.
--#[inline]
--pub fn ktime_ms_delta(later: Ktime, earlier: Ktime) -> i64 {
--    (later - earlier).to_ms()
--}
--
--impl core::ops::Sub for Ktime {
--    type Output = Ktime;
-+impl core::ops::Sub for Instant {
-+    type Output = Delta;
- 
-+    // By the type invariant, it never overflows.
-     #[inline]
--    fn sub(self, other: Ktime) -> Ktime {
--        Self {
--            inner: self.inner - other.inner,
-+    fn sub(self, other: Instant) -> Delta {
-+        Delta {
-+            nanos: self.inner - other.inner,
-         }
-     }
- }
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index ce53f8579d18..f46b41d3c31e 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -68,10 +68,25 @@
- //! `start` operation.
- 
- use super::ClockId;
--use crate::{prelude::*, time::Ktime, types::Opaque};
-+use crate::{prelude::*, types::Opaque};
- use core::marker::PhantomData;
- use pin_init::PinInit;
- 
-+/// A Rust wrapper around a `ktime_t`.
-+#[repr(transparent)]
-+#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord)]
-+pub struct Ktime {
-+    inner: bindings::ktime_t,
-+}
-+
-+impl Ktime {
-+    /// Returns the number of nanoseconds.
-+    #[inline]
-+    pub fn to_ns(self) -> i64 {
-+        self.inner
-+    }
-+}
-+
- /// A timer backed by a C `struct hrtimer`.
- ///
- /// # Invariants
-diff --git a/rust/kernel/time/hrtimer/arc.rs b/rust/kernel/time/hrtimer/arc.rs
-index 4a984d85b4a1..ccf1e66e5b2d 100644
---- a/rust/kernel/time/hrtimer/arc.rs
-+++ b/rust/kernel/time/hrtimer/arc.rs
-@@ -5,10 +5,10 @@
- use super::HrTimerCallback;
- use super::HrTimerHandle;
- use super::HrTimerPointer;
-+use super::Ktime;
- use super::RawHrTimerCallback;
- use crate::sync::Arc;
- use crate::sync::ArcBorrow;
--use crate::time::Ktime;
- 
- /// A handle for an `Arc<HasHrTimer<T>>` returned by a call to
- /// [`HrTimerPointer::start`].
-diff --git a/rust/kernel/time/hrtimer/pin.rs b/rust/kernel/time/hrtimer/pin.rs
-index f760db265c7b..293ca9cf058c 100644
---- a/rust/kernel/time/hrtimer/pin.rs
-+++ b/rust/kernel/time/hrtimer/pin.rs
-@@ -4,9 +4,9 @@
- use super::HrTimer;
- use super::HrTimerCallback;
- use super::HrTimerHandle;
-+use super::Ktime;
- use super::RawHrTimerCallback;
- use super::UnsafeHrTimerPointer;
--use crate::time::Ktime;
- use core::pin::Pin;
- 
- /// A handle for a `Pin<&HasHrTimer>`. When the handle exists, the timer might be
-diff --git a/rust/kernel/time/hrtimer/pin_mut.rs b/rust/kernel/time/hrtimer/pin_mut.rs
-index 90c0351d62e4..6033572d35ad 100644
---- a/rust/kernel/time/hrtimer/pin_mut.rs
-+++ b/rust/kernel/time/hrtimer/pin_mut.rs
-@@ -1,9 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- use super::{
--    HasHrTimer, HrTimer, HrTimerCallback, HrTimerHandle, RawHrTimerCallback, UnsafeHrTimerPointer,
-+    HasHrTimer, HrTimer, HrTimerCallback, HrTimerHandle, Ktime, RawHrTimerCallback,
-+    UnsafeHrTimerPointer,
- };
--use crate::time::Ktime;
- use core::{marker::PhantomData, pin::Pin, ptr::NonNull};
- 
- /// A handle for a `Pin<&mut HasHrTimer>`. When the handle exists, the timer might
-diff --git a/rust/kernel/time/hrtimer/tbox.rs b/rust/kernel/time/hrtimer/tbox.rs
-index 2071cae07234..29526a5da203 100644
---- a/rust/kernel/time/hrtimer/tbox.rs
-+++ b/rust/kernel/time/hrtimer/tbox.rs
-@@ -5,9 +5,9 @@
- use super::HrTimerCallback;
- use super::HrTimerHandle;
- use super::HrTimerPointer;
-+use super::Ktime;
- use super::RawHrTimerCallback;
- use crate::prelude::*;
--use crate::time::Ktime;
- use core::ptr::NonNull;
- 
- /// A handle for a [`Box<HasHrTimer<T>>`] returned by a call to
+V7->V8:
+- Updated cpumask bindings to work with !CONFIG_CPUMASK_OFFSTACK case.
+- Dropped few patches (property_present() and opp helpers), as they are already
+  merged.
+- from_cpu() is marked unsafe.
+- Included a patch by Anisse Astier, to solve a long standing issue with this
+  series.
+- Dropped: "DO-NOT_MERGE: cpufreq: Rename cpufreq-dt platdev."
+- Updated MAINTAINERS for new files.
+- Other minor changes / cleanups.
+
+V6->V7:
+- from_cpu() is moved to cpu.rs and doesn't return ARef anymore, but just a
+  reference.
+- Dropped cpufreq_table_len() and related validation in cpufreq core.
+- Solved the issue with BIT() macro differently, using an enum now.
+- Few patches are broken into smaller / independent patches.
+- Improved Commit logs and SAFETY comments at few places.
+- Removed print message from cpufreq driver.
+- Rebased over linux-next/master.
+- Few other minor changes.
+
+V5->V6:
+- Rebase over latest rust/dev branch, which changed few interfaces that the
+  patches were using.
+- Included all other patches, which weren't included until now to focus only on
+  core APIs.
+- Other minor cleanups, additions.
+
+V4->V5:
+- Rename Registration::register() as new().
+- Provide a new API: Registration::new_foreign_owned() and use it for
+  rcpufreq_dt driver.
+- Update MAINTAINERS file.
+
+V3->V4:
+- Fix bugs with freeing of OPP structure. Dropped the Drop routine and fixed
+  reference counting.
+- Registration object of the cpufreq core is modified a bit to remove the
+  registered field, and few other cleanups.
+- Use Devres for instead of platform data.
+- Improve SAFETY comments.
+
+V2->V3:
+- Rebased on latest rust-device changes, which removed `Data` and so few changes
+  were required to make it work.
+- use srctree links (Alice Ryhl).
+- Various changes the OPP creation APIs, new APIs: from_raw_opp() and
+  from_raw_opp_owned() (Alice Ryhl).
+- Inline as_raw() helpers (Alice Ryhl).
+- Add new interface (`OPP::Token`) for dynamically created OPPs.
+- Add Reviewed-by tag from Manos.
+- Modified/simplified cpufreq registration structure / method a bit.
+
+V1->V2:
+- Create and use separate bindings for OF, clk, cpumask, etc (not included in
+  this patchset but pushed to the above branch). This helped removing direct
+  calls from the driver.
+- Fix wrong usage of Pinning + Vec.
+- Use Token for OPP Config.
+- Use Opaque, transparent and Aref for few structures.
+- Broken down into smaller patches to make it easy for reviewers.
+- Based over staging/rust-device.
+
+--
+Viresh
+
+Anisse Astier (1):
+  rust: macros: enable use of hyphens in module names
+
+Viresh Kumar (14):
+  rust: cpumask: Add few more helpers
+  rust: cpumask: Add initial abstractions
+  MAINTAINERS: Add entry for Rust cpumask API
+  rust: clk: Add helpers for Rust code
+  rust: clk: Add initial abstractions
+  rust: cpu: Add from_cpu()
+  rust: opp: Add initial abstractions for OPP framework
+  rust: opp: Add abstractions for the OPP table
+  rust: opp: Add abstractions for the configuration options
+  rust: cpufreq: Add initial abstractions for cpufreq framework
+  rust: cpufreq: Extend abstractions for policy and driver ops
+  rust: cpufreq: Extend abstractions for driver registration
+  rust: opp: Extend OPP abstractions with cpufreq support
+  cpufreq: Add Rust-based cpufreq-dt driver
+
+ MAINTAINERS                     |   11 +
+ drivers/cpufreq/Kconfig         |   12 +
+ drivers/cpufreq/Makefile        |    1 +
+ drivers/cpufreq/rcpufreq_dt.rs  |  233 ++++++
+ rust/bindings/bindings_helper.h |    4 +
+ rust/helpers/clk.c              |   66 ++
+ rust/helpers/cpufreq.c          |   10 +
+ rust/helpers/cpumask.c          |   25 +
+ rust/helpers/helpers.c          |    2 +
+ rust/kernel/clk.rs              |  318 ++++++++
+ rust/kernel/cpu.rs              |   30 +
+ rust/kernel/cpufreq.rs          | 1277 +++++++++++++++++++++++++++++++
+ rust/kernel/cpumask.rs          |  330 ++++++++
+ rust/kernel/lib.rs              |    8 +
+ rust/kernel/opp.rs              | 1140 +++++++++++++++++++++++++++
+ rust/macros/module.rs           |   20 +-
+ 16 files changed, 3479 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+ create mode 100644 rust/helpers/clk.c
+ create mode 100644 rust/helpers/cpufreq.c
+ create mode 100644 rust/kernel/clk.rs
+ create mode 100644 rust/kernel/cpu.rs
+ create mode 100644 rust/kernel/cpufreq.rs
+ create mode 100644 rust/kernel/cpumask.rs
+ create mode 100644 rust/kernel/opp.rs
+
 -- 
-2.43.0
-
-
+2.31.1.272.g89b43f80a514
 
