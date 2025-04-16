@@ -1,141 +1,357 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020103.outbound.protection.outlook.com [52.101.195.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4119A21ABCB
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 18:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744826797; cv=none; b=IytJQpEXPIFWB+wSMEpSkKqeefRCJNCFOyq/H/AM5teWRblQcjq190Vj9OB/xoCodgibswZG5zB8us8KQkl1rUOv17WWb2xZrRFfItRuqsvxXefsth2Bcf5Hp4Ko2ZLn9ZD73kEizakS3S6MYpERI4ODbVMoDFYU/suljl3tbcc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744826797; c=relaxed/simple;
-	bh=/1pNMMV8yCIS11pdB+iT0Ev7icNKnIUvh9pqMmV/HCA=;
-	h=Message-ID:Date:From:To:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TUZhD7u6xzob/qMGIVnK0Lt+AREiNmnx2SFcBqxGiYW8ONs4cam4cOxaPEt+Ep2JmitWE7P0BDD24yHnn8F9kjUer76yxLcaUbBToWMuMxgh5tYw+OTudxmMfhE2hBXq+hZEBy/3DMnPktQy82BPJ2C4c48jkJkfFKfmMaPXhJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hUly77QH; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A651C221D90;
+	Wed, 16 Apr 2025 18:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.103
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744828126; cv=fail; b=CwTBIUIRHGAEaEX4zSg7z6qIH7eRmONZz7AYv120THOlUxB77UT403tINAE7gAgcvkFjUNqaiWutP5Q22KqR6278WfF+r3U6WV9QIlvggTJXvsQ8PmpT8bPNSLDrOeLrOG6pUM+824/3UlkznyFdeBC/klmkBT5ddskKqrw5Fc0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744828126; c=relaxed/simple;
+	bh=5XgOheKBWARkWZf5zzB6rOb3Gv1QQoKglsPDhdx/CQI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jSRU9wCaY1ebuzi/V46ZowC4giG9bVTh+bnkC0hyt3i9nmNml5RiPCZfrtzmYHAVIuq6vvKHNQPB6GhzJnTaHyyX/Xw7PW+/IzzgeDGs+iWC4BCPM3heNDM99tQNZrEPX6xorVA/hZ2v0qgDTBAzAw4tD1924gUr4or64dXokUI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=mGH9HVFo; arc=fail smtp.client-ip=52.101.195.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hUly77QH"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-47692b9d059so88433451cf.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 11:06:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744826795; x=1745431595; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:to
-         :from:date:feedback-id:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bD1x83He2MSLD9eTJ3evZIJZAR0U11CDX9W2e7CZ09M=;
-        b=hUly77QHBuNRuIvVyXTfZivKyUAHGR3XE8RlunC5XkEAW5YSlLGN/Znkmi7vOnVWmq
-         PWzwJBhmINZZL9zjmdA81B4LH4Ms9hgYzJVs03DX1OS08LpQN0GswxxHmcc+GSS7CuFd
-         chX5BKj3fmq3UbtSdj6RsEUfHXQXSMUi+uBj0Ht8Iz57IIR253nGZA27NK1TgZSeODaj
-         pafDS6oKzPCQ1QaCZeDrj8DyAAqoVT0OLQWiwqfrCJczEtyv6iXUQPBudMn6Dev+R/Iz
-         e72G1zKP0tVrMLvMxr9hgVGSBB7095wefbvQIqFHKkdXkcdCvur3B16y2Ux/5/yBWvua
-         SEkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744826795; x=1745431595;
-        h=in-reply-to:content-disposition:mime-version:references:subject:to
-         :from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bD1x83He2MSLD9eTJ3evZIJZAR0U11CDX9W2e7CZ09M=;
-        b=A4D5e3lKddrZtkICPhzjbh29rBkD8jJh/uw9rdL/32Ofihrisq2VlFQ+cS0HXne1ux
-         jclZlod9OZbyNGOm/HpyZgqAFV7f0j3hwgGzl3X9O0YJzxFKEse9qgCPxcLhXyZ4/2CG
-         kY799NsaQ5jwMCPUHPRD4IobvZJDnnJCLb4ISr1IFl3Z4q/oO0T23QvzvOXQe0sH12EJ
-         FEqrFAfuOPkSSFjEW8UiZ764qEg+xfBazJIv728Z0ZsvnmB4XvSgGZ3LL2Y5wzfxE8Tn
-         RvqDhvOB4o+aSt71OyoWI0HGS2NrtmB830W1DKEik5LDzFu85E3us0IVy91LLpMrW4ix
-         Uctg==
-X-Gm-Message-State: AOJu0Ywibydi7KPtuOJEQ4qG0at+G7D7lCGMNXdb255pyHHPeeuvza73
-	VQcNuLYK8+gWTC6I02z0kUV//f2pXZmh7oVSUXHnggJ1xYfKN51W
-X-Gm-Gg: ASbGnctPD63UEdq3NCHuHMMr489Z8BHBkm0oeZ2wJ0iCCbA0SouVYIR/WuOU9UVu88v
-	HIHhIAFXuPs0z2snuWfcp/J0BgV3MSkJYJRPqXlswjqjPPO/kJQkDGbmaHQLdQ6p1zNnBsEnqvA
-	RQ0VkGMJ1QEc3SXONYjnIROxFQcBX6ErrbmLQZIaogGOY05Zs940WPi7lZ60Rcf8C3GG+IjBR6w
-	F8hIs6w6YZGkdFemuOpfACuSugjd5yQoJKYBR8AIGsKVb8Rb+22Fwo7vlMT16VQNu+DBD8WRci1
-	Tsihc4maPuNZ68bhCq/ZqjJ5GCdv+9PW3B5noGfaiY9qRUgUDQE+XFmhKuHDLTu7U1VR+PceJjr
-	lMK4Lb0kMlmRJIkh1ATmADsNA1Q/h10A=
-X-Google-Smtp-Source: AGHT+IGGbhLMWc6DQoFMqjWZotESMpP12VxuN3KKf6uKSyPqlU+QJHj1rUyjkxIOhT7mEUt1EOap2g==
-X-Received: by 2002:a05:622a:18aa:b0:476:6d30:8af6 with SMTP id d75a77b69052e-47ad81178e0mr34841781cf.42.1744826794763;
-        Wed, 16 Apr 2025 11:06:34 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4796eb2c07fsm114241621cf.44.2025.04.16.11.06.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Apr 2025 11:06:34 -0700 (PDT)
-Message-ID: <67fff1aa.c80a0220.b0808.c742@mx.google.com>
-X-Google-Original-Message-ID: <Z__xqEuwYRp83tn5@winterfell.>
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E9E961200043;
-	Wed, 16 Apr 2025 14:06:33 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Wed, 16 Apr 2025 14:06:33 -0400
-X-ME-Sender: <xms:qfH_Z6Mt12yCR4E_LP8SVo0w1SosHjSSGwIPfDc0cSUaSTlk_k1gvg>
-    <xme:qfH_Z4_82F4SORh0LL6l1NQDY6L-HLwNSm3o6SptTsbSXx5fzUkavkxqxSxHETM8T
-    G6NTlL27GzHE1w6QA>
-X-ME-Received: <xmr:qfH_ZxRbgCJgvhAWPFhNxXaO99gKBk-2SF5pcngZdtEYbBiFsiBIfR4V90zYLg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdejtdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhf
-    fvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceo
-    sghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrhhnpefhte
-    fftdelgffgheegfeffteeiuefhieejkeffgeevjeeffffhtddtkeeghedtheenucffohhm
-    rghinhepghhoohhglhgvrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghm
-    vg
-X-ME-Proxy: <xmx:qfH_Z6srzpWjOL9Iz2n4SiNT0usMwBMKokyKLOrxocJ-eoH2kL7xSQ>
-    <xmx:qfH_Zyf-68uSnlRqqHfxOKYO6W8tmpdFevC1y3btS-jjf5rqPRNA_A>
-    <xmx:qfH_Z-3crHiqmnVtNtKcFEZ0qgrG2V6LgVjDpm3AHplNX4rYWFPIqg>
-    <xmx:qfH_Z2-QMFPNLgkTozgeqnW4-Hj12OfOxChEuezuIhnvE6mqCqeb-w>
-    <xmx:qfH_Zx8Gdn6qXa3_tS9IPY5kvjLXl803kGghMNQq0KmNdkt-uNk4zMpA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Apr 2025 14:06:33 -0400 (EDT)
-Date: Wed, 16 Apr 2025 11:06:32 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Re: Open Meeting at April 16
-References: <CANiq72mE=-LmMg=nrMdtF6i_JUscDU6GFZgNve9xtvUs76DnwA@mail.gmail.com>
- <ZPyqLJ62B2GZg6BA@boqun-archlinux>
- <ZUk14802ZWGpR2iM@boqun-archlinux>
- <Za_9bJxeyW0pddKL@boqun-archlinux>
- <ZgHBE8yRuZ5_8Bwi@boqun-archlinux>
- <ZlX_KOjdd65k9Jkw@boqun-archlinux>
- <ZqpWRo2M2SaTWU76@Boquns-Mac-mini.home>
- <Z1ClkseCwaEXS6GE@boqun-archlinux>
- <Z6IvhjRFU9R32jHV@Mac.home>
- <67f43ca0.0c0a0220.a75ba.35cb@mx.google.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="mGH9HVFo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J9EN0Gv5KjC2envaUePUW9oe3Wbfli8RK7FsWbeTTa2zDk/icq6OWnFevASEWQU5JvfY2oy7Q5KYHdQN+cDDALZciZIDae3ZQuEU0VfW6k13v4YeiMVlaD6YbA09oO19cTJoFAC6E6L92Kn6SGEVC6lXsEdWgDyv8DDLTwJ2hDQLohXTX3Zb+sER8CdzsNIjWJIUQuXGvbg954l93UeQfFvi6aFS3mvKTVFaFDP83emblDAY/flV8/TFROo7/+Z9wsJh+kUizpvpyREeQV9kYTe7wlu0DqFvPQqUWNpsBlijqpYsyWJ+WSg0uEg9trUBqD6acxXy9CYXSRByZF7P7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3HvRPEKm/i4u4wGh29txAzMa1DsfWy8LqyzebOyHYas=;
+ b=OgZgJKRXFosRPyFFIPz2dkIjfsCX8P6Ik9Hl4mIaI9pSvSK9e0/23NLGNSpisuDaQfSf2e8pbeZTbwMTAIz46GVtdppSC8qR1DL9EHJwHbdfRNQEzsvr91QYprjUoH+aFydBbudx8OQJRkRzyoyAcf11yBzKknCNvAq8sV87tbO65NORnLkLtJoN9YQLyC0l9DQTt7FTkA/C9Mw/XGq8ymSjq9ikzaSJK6XVNvjDlqyLjaw6zdl33nbOvtI4pEa5ieSL7DFiRWB/Q23Q51DNPeuSM2/7bTSb9n/7JJAPT5G0yxGQP/aEc25aUOXR1JqugLhULUfGHFYAOYa7w+Ex1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3HvRPEKm/i4u4wGh29txAzMa1DsfWy8LqyzebOyHYas=;
+ b=mGH9HVFovyzNGM6QxE3I1W9PU0TxYxqOV8zd3PrZ7uqYuLJypASLntxYOMy9ChPDo2vWQgk6FHUTaYidq7OtTI3hzQ9PZAVLDJxOREevogHyeJTUGLOSSQS/ihbK5SgZDdHxD8QEnsYymhfNiGqs7I0zsMHLr720K0Lix7p9hgE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWLP265MB3474.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:f2::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.22; Wed, 16 Apr
+ 2025 18:28:39 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.8655.022; Wed, 16 Apr 2025
+ 18:28:39 +0000
+Date: Wed, 16 Apr 2025 19:28:37 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Remo Senekowitsch <remo@buenzli.dev>, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] rust: Add bindings for reading device properties
+Message-ID: <20250416192837.1632d5a3@eugeo>
+In-Reply-To: <Z_4rVyUjK1dlnTsT@pollux>
+References: <20250326171411.590681-1-remo@buenzli.dev>
+	<20250414152630.1691179-1-remo@buenzli.dev>
+	<20250414152630.1691179-3-remo@buenzli.dev>
+	<Z_1Jfs5DXD2vuzLj@cassiopeiae>
+	<D96RNFS3N8L2.33MSG7T019UQM@buenzli.dev>
+	<Z_4rVyUjK1dlnTsT@pollux>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0368.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18e::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67f43ca0.0c0a0220.a75ba.35cb@mx.google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB3474:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53e40636-fdff-460a-4d70-08dd7d148206
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?35nYRS1uD4ZGioLIq8To2F+FEBDFAYFP4ldCKfBN+TsvEyKB0XoRO/+DI/oi?=
+ =?us-ascii?Q?Slrl3mocs3Jv9AHbPlophEJxk78PUZgQ3G22lI3tw7juGeCvEXCGiBEFbFOR?=
+ =?us-ascii?Q?IKHreu/t/XZwZLFtmLZSrtCf39fmXgdRHdnFVWo1+bWmqYqTs22RrFxp4q9n?=
+ =?us-ascii?Q?ZuYF407bH0AyyYrVy4YaqLTxu7xks20a349y/VQXqq22ftnWvcqpqVJvCS3Y?=
+ =?us-ascii?Q?jXvKy4SXb5rcQJGrHFnmXD5Mn9zY2p9eKFi3IF6l9DSwcCxKNawWCyUTuj7Z?=
+ =?us-ascii?Q?3CXGQeAi1KeAdGWiVe3iQYuQrlJ7G+3UtBXwgiCnZIbyjXpQkXiVTzUlAvb/?=
+ =?us-ascii?Q?ncZZNlkRCbiYHbI/3r33e3BeIyiByKVsqtA7Uz+oa5YbLelIiRHM714UyrFe?=
+ =?us-ascii?Q?DKmsEoshNtGNy1DclMRg7RoM6q5U+243gf1gp6K6PBoYyUkPX8UEwliv7IMl?=
+ =?us-ascii?Q?fKuIANQfOLzHIccNJnIMNaCzAyYtGy5For9RAUhqx9JwNrx7PT25nEL38wUp?=
+ =?us-ascii?Q?tuvhpIsRQ/iwlE5K8VKJ3WZKt8UgVoM3EnVLP8ms2zMQsYeFxipRWaUAWWAG?=
+ =?us-ascii?Q?tQHSUav9KH8F2uWuc4bwLj60TtfqgcNonCAyTS7KYfIXAWfmmSffGM1TqNqC?=
+ =?us-ascii?Q?4ofxf66EGGOs+EuJuxHRNUw7+4e3UevR6CJIhwwLKaTsajxff/yP9vhLEg9J?=
+ =?us-ascii?Q?4YNoP+Abm56eMsU8RGeq+6z7mqcj3lab27ANtpanKgrV5mnoJtQS8z4RtE8H?=
+ =?us-ascii?Q?CJoMm1z+0B4Hd/6UkPOY3gj3UfRtHO2JvKzoDMv4OHe1f65P9jB2XagtBQh3?=
+ =?us-ascii?Q?hgXBbrIxak67nKfLmw8rP1Uzbbcdzijkn69gIKt09u8spxpV6XYSwNChZIHR?=
+ =?us-ascii?Q?uKXQjM5MRDldO11FlWpUf7kGOtzhNISUKAZZUa+Y94iXeWd+dCWRCSq+PbZw?=
+ =?us-ascii?Q?VdmS57lO/qW8skb9DBfGqYsHbAxLbTfDe13VK5eEtSiaDqg9E65RZUiphHnE?=
+ =?us-ascii?Q?K+IHN7bAsDpXrSrFYoXUUk5fMKux8V3Ev/q8gGfonQJWtT3r6U3c+KFNq08L?=
+ =?us-ascii?Q?+4i8g4cnxJmjtmISeNeX1RWswAaA1rSthv0tsuNCaw1Oh/ikuuDYZeb3CiNG?=
+ =?us-ascii?Q?WoAP23GlgcAp20SEsqKzjV4Z5Gb2j8BuPCybWk+Yne10NLGbBwZrmsvkTAYW?=
+ =?us-ascii?Q?hQXH592h/N2ydlvurTfwxR7MoNeaga6YPG2PE0pVIMXiESAfYmJoZ/yRfm6v?=
+ =?us-ascii?Q?Hmiola5NML5rl0wknZjMu4QN129EJOoX4WufAE/EVbkg+imXSQkbP8YjtfGm?=
+ =?us-ascii?Q?FtDkiprXg/ZZ64pGI/UPF5mSCikdjNtYpz+//vgPCA/lXC/epSilm4GuEiZq?=
+ =?us-ascii?Q?/xMkNNg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jf40Wj5vd7j0m+kFHpX3XhTA8WBaI11gLaC78sJMxJ3kbAQOZ/6WCIvPSx5/?=
+ =?us-ascii?Q?jXIC+hnrtKkfOo/1vxnmpkovHFcZf1mkUUvsZW/XwOFYgLjvf3Sb/Sve3I+w?=
+ =?us-ascii?Q?sQM90YjLGB1TyYimWwiI0dqexQcQkFMpwZnX0GUtu2ithUAdQ8fBQmEI4YCe?=
+ =?us-ascii?Q?4lL6pUP0Gg8BDRyWtX5gSueF1GOAyjbtp+FBVp1gZxbYR3QaGcvDgdjXiuqr?=
+ =?us-ascii?Q?Gk0vWfV/r41UWZHG7JBhNtjQPcnpnxdKqia01fASP4dGlyfKGncs3mRuI86v?=
+ =?us-ascii?Q?NBzJz2aWmbo47xugG237ILlYbxfMnyNWnpd7q3bkoyTBBlZiTgPPStgtRqG9?=
+ =?us-ascii?Q?wOmU9GXjSYpBmqD97csepRTtUiq1KtLoTBxooiuZZISIN25FM2x8am34nnv5?=
+ =?us-ascii?Q?3UpDRNem3gg/TWq5rVGEgr0ftqMbeRVBUfs+tR2+pwSBaDe0ilK8MLKf/bWk?=
+ =?us-ascii?Q?Gx91q9LBLAXeJ2RAzKIkQAFT2r70tOMEdnmr75gTf23PReCsrAUOivoVKwub?=
+ =?us-ascii?Q?8FqxNYeFVDKDEE64lr2xcVpNeg61K5TLBwRqVGnNMCs+5nBSzk5TauOi62F0?=
+ =?us-ascii?Q?eUdtLAi/EFoe7YWFiReSXkgOH0+JF3cIsxzEpAp+ArcVlNvlQLbXE+weJVNi?=
+ =?us-ascii?Q?PiCfXE7/AQtSViHjqueDVUtiLpdp9b9BALRHM9VZMbnTWWSHlx4qWTdRLkqE?=
+ =?us-ascii?Q?LFYb03cY71PLCd1AeueoBUYuXrITlj9/2dgOiR5RAC5TvOiDFGUmfB8Za6Dv?=
+ =?us-ascii?Q?v7FxPkWz2iVq5bPzCjzxOu2m3DqWHGFvYxSNKvZGvf9K4F0TGDPLjNzPGR/c?=
+ =?us-ascii?Q?EvHb+lhPP0fKMJg182apAQSX5GTiYC2basDPdrqckHFiEzpu50lWrP+W4Vo4?=
+ =?us-ascii?Q?60L+1VKUreS6WSrHNxKh/9IAyrQTjxabidzAgqUzOj4Apl7MdT4l3Ck5xkY6?=
+ =?us-ascii?Q?UEYFEXAvyDeLdxO1QEo3P8QB8AmQZ9CX89OINAz5KR9BiY7FFuj5U3D/yMmK?=
+ =?us-ascii?Q?wvYEh9ubNghIB26XS96ohpgTmR7ksu78GDfB+JsJG4NKqPS+BeEpx66DVG0a?=
+ =?us-ascii?Q?g61N8bML4liLQ/1evjKE54Aw3deIapadtBWNE1RrIMg3j7DJycChY3LUDWzN?=
+ =?us-ascii?Q?IJDui/+/oRbM+0pAIXTYha83PwBNtxovk91ca3jMTXUwJUap6MiohBZUCfXL?=
+ =?us-ascii?Q?fCedgE8DELwyn8hWuIpyHZ7BCMk0+cFpvD4U5KKjQ9sBucgyNMUMUfDEmEaQ?=
+ =?us-ascii?Q?32BSuBaLM/gYnYS8LbE8q/JqNPm7opYdtlBCFafBg7JgoL+ctUzJuOG2VjZs?=
+ =?us-ascii?Q?wXnBQQAhiw1aaOhVNkCZEZ85exhpahnirWJ66Cf2dfPXWG8UnXI9P+dDU8eX?=
+ =?us-ascii?Q?piwc2ArS3zhYHdMAX+SYa0fheQ12iaZLgGB3XK/lRvwU/IG4knIAEFv8LqJg?=
+ =?us-ascii?Q?pGSJTV3MobxTPPCuply9Ns1WEuzyFIaqCrXWIQAwcv11/VN3KKXRM9hl09m9?=
+ =?us-ascii?Q?IJsAa2KTgEFD6288tbGc/T7V8hRZgQYvBFKx36DZr08METCz5BJKeGTnu/v3?=
+ =?us-ascii?Q?mUw/1NVl0visgBXEJP/osB2pECQEkfD5OyNcDETjfbTCUq8lyvkQ+FO4SI3f?=
+ =?us-ascii?Q?/cdgAOcgkFmLYQznOsECSbRmXLgRd059fCtRh9V8dovr?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53e40636-fdff-460a-4d70-08dd7d148206
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2025 18:28:39.2251
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CRl+YhEs3nOhWtUYT1vws8dqWZRdbWHhOsx74n269aM1jWPgRgmEHfchSKCe2szuOpTXvQNsnGe+G20jEfSkqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB3474
 
-On Mon, Apr 07, 2025 at 01:59:09PM -0700, Boqun Feng wrote:
-> Hi all,
-> 
-> The scheduled open meeting in this week has a conflict with Rust
-> Project/Rust for Linux sync meeting, so let's schedule it to the next
-> week. Please join us:
-> 
->      https://meet.google.com/vii-meij-xpw
-> 
+On Tue, 15 Apr 2025 11:48:07 +0200
+Danilo Krummrich <dakr@kernel.org> wrote:
 
-Ah, seems we are having a technical issue, and the link above won't
-work, so sorry about that. If you can see this email, please join via:
-
-	https://meet.google.com/cik-xrih-wij
-
-Thanks!
-
-Regards,
-Boqun
-
-> at next Wednesday (April 16, 2025) 18:00 UTC. See you guys there.
+> On Tue, Apr 15, 2025 at 01:55:42AM +0200, Remo Senekowitsch wrote:
+> > On Mon Apr 14, 2025 at 7:44 PM CEST, Danilo Krummrich wrote:  
+> > > On Mon, Apr 14, 2025 at 05:26:27PM +0200, Remo Senekowitsch wrote:  
+> > >> The device property API is a firmware agnostic API for reading
+> > >> properties from firmware (DT/ACPI) devices nodes and swnodes.
+> > >> 
+> > >> While the C API takes a pointer to a caller allocated variable/buffer,
+> > >> the rust API is designed to return a value and can be used in struct
+> > >> initialization. Rust generics are also utilized to support different
+> > >> types of properties where appropriate.
+> > >> 
+> > >> The PropertyGuard is a way to force users to specify whether a property
+> > >> is supposed to be required or not. This allows us to move error
+> > >> logging of missing required properties into core, preventing a lot of
+> > >> boilerplate in drivers.  
+> > >
+> > > The patch adds a lot of thing, i.e.
+> > >   * implement PropertyInt
+> > >   * implement PropertyGuard
+> > >   * extend FwNode by a lot of functions
+> > >   * extend Device by some property functions
+> > >
+> > > I see that from v1 a lot of things have been squashed, likely because there are
+> > > a few circular dependencies. Is there really no reasonable way to break this
+> > > down a bit?  
+> > 
+> > I was explicitly asked to do this in the previous thread[1].  
 > 
-> Regards,
-> Boqun
+> I'm well aware that you were asked to do so and that one reason was that
+> subsequent patches started deleting code that was added in previous ones
+> (hence my suspicion of circular dependencies and that splitting up things might
+> not be super trivial).
 > 
+> > I'm happy
+> > to invest time into organizing files and commits exactly the way people
+> > want, but squashing and splitting the same commits back and forth
+> > between subsequent patch series is a waste of my time.  
 > 
+> I don't think you were asked to go back and forth, but whether you see a
+> reasonable way to break things down a bit, where "reasonable" means without
+> deleting code that was just added.
+> 
+> > Do reviewers not typically read the review comments of others as well?  
+> 
+> I think mostly they do, but maintainers and reviewers are rather busy people.
+> So, I don't think you can expect everyone to follow every thread, especially
+> when they get lengthy.
+> 
+> > What can I do to avoid this situation and make progress instead of
+> > running in circles?  
+> 
+> I suggest to investigate whether it can be split it up in a reasonable way and
+> subsequently answer the question.
+> 
+> With your contribution you attempt to add a rather large portion of pretty core
+> code. This isn't an easy task and quite some discussion is totally expected;
+> please don't get frustrated, the series goes pretty well. :)
+> 
+> > 
+> > Link: https://lore.kernel.org/rust-for-linux/20250326171411.590681-1-remo@buenzli.dev/T/#m68b99b283a2e62726ee039bb2394d0741b31e330 [1]
+> >   
+> > >> +    /// helper used to display name or path of a fwnode
+> > >> +    ///
+> > >> +    /// # Safety
+> > >> +    ///
+> > >> +    /// Callers must provide a valid format string for a fwnode.
+> > >> +    unsafe fn fmt(&self, f: &mut core::fmt::Formatter<'_>, fmt_str: &CStr) -> core::fmt::Result {
+> > >> +        let mut buf = [0; 256];
+> > >> +        // SAFETY: `buf` is valid and `buf.len()` is its length. `self.as_raw()` is
+> > >> +        // valid because `self` is valid.
+> > >> +        let written = unsafe {
+> > >> +            bindings::scnprintf(buf.as_mut_ptr(), buf.len(), fmt_str.as_ptr(), self.as_raw())
+> > >> +        };  
+> > >
+> > > Why do we need this? Can't we use write! right away?  
+> > 
+> > I don't know how, can you be more specific? I'm not too familiar with
+> > how these formatting specifiers work under the hood, but on the face of
+> > it, Rust and C seem very different.  
+> 
+> See below.
+> 
+> >   
+> > >> +        // SAFETY: `written` is smaller or equal to `buf.len()`.
+> > >> +        let b: &[u8] = unsafe { core::slice::from_raw_parts(buf.as_ptr(), written as usize) };
+> > >> +        write!(f, "{}", BStr::from_bytes(b))
+> > >> +    }
+> > >> +
+> > >> +    /// Returns an object that implements [`Display`](core::fmt::Display) for
+> > >> +    /// printing the name of a node.
+> > >> +    pub fn display_name(&self) -> impl core::fmt::Display + use<'_> {
+> > >> +        struct FwNodeDisplayName<'a>(&'a FwNode);
+> > >> +
+> > >> +        impl core::fmt::Display for FwNodeDisplayName<'_> {
+> > >> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+> > >> +                // SAFETY: "%pfwP" is a valid format string for fwnode
+> > >> +                unsafe { self.0.fmt(f, c_str!("%pfwP")) }  
+> 
+> I think this could just use write!() and fwnode_get_name(), right?
+> 
+> > >> +            }
+> > >> +        }
+> > >> +
+> > >> +        FwNodeDisplayName(self)
+> > >> +    }
+> > >> +
+> > >> +    /// Returns an object that implements [`Display`](core::fmt::Display) for
+> > >> +    /// printing the full path of a node.
+> > >> +    pub fn display_path(&self) -> impl core::fmt::Display + use<'_> {
+> > >> +        struct FwNodeDisplayPath<'a>(&'a FwNode);
+> > >> +
+> > >> +        impl core::fmt::Display for FwNodeDisplayPath<'_> {
+> > >> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+> > >> +                // SAFETY: "%pfwf" is a valid format string for fwnode
+> > >> +                unsafe { self.0.fmt(f, c_str!("%pfwf")) }  
+> 
+> This one is indeed a bit more tricky, because it comes from
+> fwnode_full_name_string() in lib/vsprintf.c.
+> 
+> Maybe it would be better to replicate the loop within fwnode_full_name_string()
+> and call write! from there.
+> 
+> > >> +            }
+> > >> +        }
+> > >> +
+> > >> +        FwNodeDisplayPath(self)
+> > >> +    }
+> > >>  }
+> > >>  
+> > >>  // SAFETY: Instances of `FwNode` are always reference-counted.
+> > >> @@ -73,3 +257,200 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+> > >>          unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
+> > >>      }
+> > >>  }
+> > >> +
+> > >> +/// Implemented for several types that can be read as properties.
+> > >> +///
+> > >> +/// Informally, this is implemented for strings, integers and arrays of
+> > >> +/// integers. It's used to make [`FwNode::property_read`] generic over the
+> > >> +/// type of property being read. There are also two dedicated methods to read
+> > >> +/// other types, because they require more specialized function signatures:
+> > >> +/// - [`property_read_bool`](Device::property_read_bool)
+> > >> +/// - [`property_read_array_vec`](Device::property_read_array_vec)
+> > >> +pub trait Property: Sized {
+> > >> +    /// Used to make [`FwNode::property_read`] generic.
+> > >> +    fn read(fwnode: &FwNode, name: &CStr) -> Result<Self>;
+> > >> +}
+> > >> +
+> > >> +impl Property for CString {
+> > >> +    fn read(fwnode: &FwNode, name: &CStr) -> Result<Self> {
+> > >> +        let mut str: *mut u8 = ptr::null_mut();
+> > >> +        let pstr: *mut _ = &mut str;
+> > >> +
+> > >> +        // SAFETY: `name` is non-null and null-terminated. `fwnode.as_raw` is
+> > >> +        // valid because `fwnode` is valid.
+> > >> +        let ret = unsafe {
+> > >> +            bindings::fwnode_property_read_string(fwnode.as_raw(), name.as_char_ptr(), pstr.cast())
+> > >> +        };
+> > >> +        to_result(ret)?;
+> > >> +
+> > >> +        // SAFETY: `pstr` contains a non-null ptr on success
+> > >> +        let str = unsafe { CStr::from_char_ptr(*pstr) };
+> > >> +        Ok(str.try_into()?)
+> > >> +    }
+> > >> +}  
+> > >
+> > > I think it would be pretty weird to have a function CString::read() that takes a
+> > > FwNode argument, no? Same for all the other types below.
+> > >
+> > > I assume you do this for
+> > >
+> > > 	pub fn property_read<'fwnode, 'name, T: Property>(
+> > > 	   &'fwnode self,
+> > > 	   name: &'name CStr,
+> > > 	)
+> > >
+> > > but given that you have to do the separate impls anyways, is there so much value
+> > > having the generic variant? You could still generate all the
+> > > property_read_{int}() variants with a macro.
+> > >
+> > > If you really want a generic property_read(), I think you should create new
+> > > types instead and implement the Property trait for them instead.  
+> > 
+> > Yeah, that would be workable. On the other hand, it's not unusual in
+> > Rust to implement traits on foreign types, right? If the problem is
+> > the non-descriptive name "read" then we can change it to something more
+> > verbose. Maybe `CStr::read_from_fwnode_property` or something. It's not
+> > meant to be used directly, a verbose name wouldn't cause any damage.  
+> 
+> Yeah, if we keep this approach, I'd prefer a more descriptive name.
+> 
+> However, I'd like to hear some more opinions from other members of the Rust team
+> on this one.
+
+I think the trait approach is what people quite typically use. The
+additional functions are usually not an issue, as they won't be
+available if you don't import the trait. Using names like
+`read_from_fwnode_property` would be remove any concern for me.
+
+Best,
+Gary
