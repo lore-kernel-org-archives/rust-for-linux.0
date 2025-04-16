@@ -1,94 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B6F207643;
-	Wed, 16 Apr 2025 10:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A2E22FF5F;
+	Wed, 16 Apr 2025 11:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744801168; cv=none; b=FFx+2YVqM4eTRNFXSkWa+P3ac/hUEz7Ct5PvWu6Lg4zEePu1wvzvz3RgpDrEQ7Jv9dJWmWDtBgBX2I/gq5/TVYPhM7VHKqPfeNPmnULqMZkpNBufIrz6dVOuwkWnQ0f4CdDQJkUC5IHf7ueVmCwhWp64GS1aJGKSmYIUoTR5j3w=
+	t=1744802711; cv=none; b=KQ8u2cf1Kp6q4Nw+9n78qy+mzCS3E0nuqnYBDuR/l7iWT0aN0MmhhLRPawMyg87mikSRbc7jFuSEh6f6VqcTGrwKUSkZWn8kobWUFWCdkazW2JXMjvOzrTjs5/lDOFbLEZete4fXR1NhQVfjhPOmH8UkWFoM5RIR8c1srtN9kzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744801168; c=relaxed/simple;
-	bh=uMHGiZr/NxEIl4Dgh6kI7RFnOoEF1YTOBJysxCM4848=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ar2/SjxTJASTvANrUB9s7qd+Yr03QOevTXTfN/HOYVRvce9gewHi1rKi8YYfT1C8dfTN2xnZ1l4kH+6X7LWEb4/LU+2e5zTlE/sX9IVqeN0wd4fZpjoO09eP/yPrGCLvZJKw0HNLATgkybYqlctz2VB3yXYWHEzDZCWMhGvBr/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNbPAASA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1744802711; c=relaxed/simple;
+	bh=4zl+NTSe5fsPwYoKWjImnIMJcXW9wXRvHApi2vuDsSA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o2b4+00WpSry0jvwcWwNscBp1tUJF1m9ZcH9Y6SyQRYRNlMdXv+AzA1k1hgcOt/QwekDVWPG5QYNHvkAtG5nEfOaNzisuCozxHKRBvilUJVWvqu1ewHeMt5i05xFnLKPoNZ/vifMj4ugSS+31Rnl1NAke/ICQ/pwnsc6i/0z58Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NHqzac6/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNbPAASA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A935C4CEE2;
-	Wed, 16 Apr 2025 10:59:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NHqzac6/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375D8C4CEE2;
+	Wed, 16 Apr 2025 11:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744801167;
-	bh=uMHGiZr/NxEIl4Dgh6kI7RFnOoEF1YTOBJysxCM4848=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UNbPAASAdV4gXY/qLJKWOIhLqBd/aIHlj9hlvyjZm1qooedQRcuiFBLiGKWuuXa0E
-	 qlPl5ThPLK3jzUT0esH99LT3Mz41Igeviw1emQOl83eIpCFblyUKs2UE0HNlfrdIbp
-	 YQctoRcHp8hDxk+O1ZuM9LcHOiNJsWVWCvC5bOR9b10cyO+Vw7CcW7J+PWLsOy604B
-	 IXoBfMCa1HfnE/AxemfOE2pOI+pCrET/AYBYlwBeZnanoXwUcb8dTye8L1RjOLhhJT
-	 wUff6iyUrrMV1CmBZTvq0JKbiT7BptMpKWgfyuv2yEI9n/FPUUT/WO5ItsnQwjapvG
-	 fvxiRDA+7341g==
-Date: Wed, 16 Apr 2025 12:59:19 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	s=k20201202; t=1744802710;
+	bh=4zl+NTSe5fsPwYoKWjImnIMJcXW9wXRvHApi2vuDsSA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NHqzac6/YHElitNytgcMBg28UkNA4x63gmqLfQ1UEACK7bFRSgCGUK/zCjMi+2tPK
+	 /AyJa7bN5D1fpZZYb03qmartqYIEQoAWLy+pQ21e0ebPuNyd/oTzdM5iLJ9bi+T6FT
+	 HR5bRnTanvgMVF/za2a020GRZeq6jIxojv4l/0AwEyKQRJHFXEypAl07v+WVA2lpjo
+	 ZoD4NZhMeU+98g/bBwWfS8jqf+QrHe8dbXw28tPNoADvtzKTC6UJ3SRUXiue3uATlN
+	 wkFqRI6HIToj4Oa91tjruoCXGVj9PspUE1ckN2KTrthmFb8D917uWecZfHOXqOBUV0
+	 wVSF2Ek5nUXAA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
 	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
-	Michael Turquette <mturquette@baylibre.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V10 13/15] rust: cpufreq: Extend abstractions for driver
- registration
-Message-ID: <Z_-Nh_dDifS1lvOD@pollux>
-References: <cover.1744783509.git.viresh.kumar@linaro.org>
- <8d04ef19d7a16610dbf0dfb5c9a611c6e1e3e318.1744783509.git.viresh.kumar@linaro.org>
- <Z_9ysHFmvZvaoe8H@pollux>
- <20250416101726.g5jm6wnbbsmuskxl@vireshk-i7>
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH] docs: rust: explain that `///` vs. `//` applies to private items too
+Date: Wed, 16 Apr 2025 13:24:54 +0200
+Message-ID: <20250416112454.2503872-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250416101726.g5jm6wnbbsmuskxl@vireshk-i7>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 16, 2025 at 03:47:26PM +0530, Viresh Kumar wrote:
-> On 16-04-25, 11:04, Danilo Krummrich wrote:
-> > You need to justify why drv is a valid pointer to be passed to
-> > cpufreq_register_driver(), i.e. something like
-> > 
-> > 	// SAFETY:
-> > 	// - `drv` comes from Self::VTABLE and hence is a valid pointer to a `struct cpufreq_driver`,
-> > 	// - `cpufreq_register_driver()` never attempts to modify the data `drv` points to
-> 
-> The cpufreq core can try to change the data pointed by `drv`. For now
-> it updates the `cpufreq_driver->boost_enabled` flag.
+Sometimes kernel developers use `//` for documenting private items,
+since those do not get rendered at the moment.
 
-VTABLE is const and hence ends up in the read-only section of the binary.
+That is reasonable, but the intention behind `///` (and `//!`) vs. `//`
+is to convey the distinction between documentation and other kinds of
+comments, such as implementation details or TODOs.
 
-I assumed that struct cpufreq_driver (like most driver structures) is const.
-Actually, I think it should be.
+It also increases consistency with the public items and thus e.g. allows
+to change visibility of an item with less changed involved.
 
-Anyways, that doesn't help for now. Unfortunately, I think you actually need to
-dynamically allocate it. There's no need to revert everything though. You can
-just allocate a new KBox from VTABLE, i.e.
+It is not just useful for human readers, but also tooling. For instance,
+we may want to eventually generate documentation for private items
+(perhaps as a toggle in the HTML UI). On top of that, `rustdoc` lints
+as usual for those, too, so we may want to do it even if we do not use
+the result.
 
-	let vtable = KBox::new(Self::VTABLE, GFP_KERNEL)?;
+Thus document this explicitly.
 
-This makes it easy for you to remove the dynamic allocation once (or if) cpufreq
-is ever reworked to allow a static const struct cpufreq_driver.
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://lore.kernel.org/rust-for-linux/CANiq72n_C7exSOMe5yf-7jKKnhSCv+a9QcD=OE2B_Q2UFBL3Xg@mail.gmail.com/
+Link: https://github.com/Rust-for-Linux/linux/issues/1157
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ Documentation/rust/coding-guidelines.rst | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/Documentation/rust/coding-guidelines.rst b/Documentation/rust/coding-guidelines.rst
+index 27f2a7bb5a4a..6c6c51b4cf46 100644
+--- a/Documentation/rust/coding-guidelines.rst
++++ b/Documentation/rust/coding-guidelines.rst
+@@ -85,6 +85,18 @@ written after the documentation, e.g.:
+ 	    // ...
+ 	}
+ 
++This applies to both public and private items. This increases consistency with
++public items, allows changes to visibility with less changes involved and will
++allow us to potentially generate the documentation for private items as well.
++In other words, if documentation is written for a private item, then ``///``
++should still be used. For instance:
++
++.. code-block:: rust
++
++	/// My private function.
++	// TODO: ...
++	fn f() {}
++
+ One special kind of comments are the ``// SAFETY:`` comments. These must appear
+ before every ``unsafe`` block, and they explain why the code inside the block is
+ correct/sound, i.e. why it cannot trigger undefined behavior in any case, e.g.:
+
+base-commit: c1b4071ec3a6a594df6c49bf8f04a60a88072525
+-- 
+2.49.0
+
