@@ -1,58 +1,58 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E0B2505AB;
-	Thu, 17 Apr 2025 13:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD3917A2E3;
+	Thu, 17 Apr 2025 13:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744895498; cv=none; b=YqVHwosIBzkHkNlzY7rqDBYPVVx+0jf2PGSl2ZdMgqygoJuHRYvq0zfzTz/9iYN0z+S5iAg0o6laRhvnts7dpdKIUuRILYLy1a1kQecFwtwIqXdc/1qdAiLKS2sXE8E8G88gc6TOgzeMUq8hSaIEElhv1+vRF4DW8WgjMBrXuak=
+	t=1744895683; cv=none; b=pwYV6GR2A2CTPqzX3jycgxIzdxsCoTOWfTjIKPUbAD5Ixg68tvhQ0mzRkdxD+KM67OWubrBMjIY44nt2DQLwsC7FRXDq/tgPhp6X0PGzpzcqv19XmAzBHP2yLnY0xQNkTd64HsHF6NpQRz8s3tLXEBEB63AgB3OCFcdUwyX1o5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744895498; c=relaxed/simple;
-	bh=4X9JnTAI/GyE+WrCD7M6AjmXRhXcs2xkjTMKl1cCXp0=;
+	s=arc-20240116; t=1744895683; c=relaxed/simple;
+	bh=W03qAi1C++nKzfnUBzX9aW8BaW2uTNHpM/QzqSC0X0s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LzpkK+TTsXHepqQswXuAo0jBYlikobmv4vR/U3eGbExokpGQXDsbVbU/TlE53SWgSLF2d4GVmUnrXTLkzHA4GEHlpLSuEUHFgmTbBoV5GdSAEV85e2ifwvtg5YtjoN3CXB8laDuLDal2pGOFbmI455z0TXn2fN1YKSkmJJPVafY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hxt2vYSz; arc=none smtp.client-ip=209.85.167.53
+	 To:Cc:Content-Type; b=M7sshoXJ6jvjgQMdFRDmCSDPwpbrWJoF0eSkMi8kbxzv5g7OODizQ9l9+28/2XLxtFzSfR/6UJhQL9IoqIrQmSSE3CNoW9BXUX+hOSXQuKXiz8a99XXLjiRzJpF8xC2NcdOA6TX3wjt2Bv3iLR5LSLmcmpk05cJt68vjGprzsRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QGiWY8+0; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hxt2vYSz"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-54d3ee30af1so826807e87.0;
-        Thu, 17 Apr 2025 06:11:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QGiWY8+0"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30bfb6ab47cso6944441fa.3;
+        Thu, 17 Apr 2025 06:14:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744895494; x=1745500294; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1744895679; x=1745500479; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3QF7Dp6X8ieBc3pZxGWeUvA6FvMy1W80zY/wPJwvozk=;
-        b=hxt2vYSzQ+wNhDv4WDDmn0isEFFH3uYdW5EZXjlsycWzDXo4+Go3LKLfN30yGE2JwO
-         OW5r51z/ms7kwZgNA82u6Qw/AnPquBGU2+llFahET0OO2tzfdAPyRqydL0Se2qtGG/y/
-         X8RDa8wnAmY+3nMb9lQEnOWU/jfWKMoydvnXf18Q59YpidHdenTLRkAvoQePJEXohxGK
-         QZt9NF8rScU5fNn1btpEdH0C11MdZpfCpdnsnb0wC15L/UJg1Wrof3laAzUwsJW2d6MT
-         pr6bAMry5TP/S9mmmhaT3T7bfWtuOkjxGZ4DxdMEIn8TNikgWog++AGE7Q40n4U/r253
-         t+mg==
+        bh=vYrMJu0FPWzC8DJ68HX/qi+NoN6jBeruHW1u5HRV9ok=;
+        b=QGiWY8+0TJmrjCmInSnpOQJBfmX+8ORm3mndw2O/6uQId1z7vStyDBhXP7qsGOiHlk
+         zcZ6OqOP+JaPn5kU6sj3gT0gxsjw5mg+9vdxKmDgTZjm7hOfmmeBXTcu/9aubyOSlG1C
+         PecrfDfkg9x3pygDulr9rVXi+wj2CKfLYBEJWoFVzaDM8sIqgnuM77iUFlbOiF7qZAC1
+         RVITOVQMTsoIV/F15tV4/8lhdc3LrzH+RpIhq0DNHiIMyrygoeih4XaXMBr6LPHEC7mF
+         Ea474lZRzHDdyuudWEZjaSt7IklN0ps6GZUN7gFHLoOsUQKCwT3Ug9V/4l4H1xeet2L9
+         jbYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744895494; x=1745500294;
+        d=1e100.net; s=20230601; t=1744895679; x=1745500479;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3QF7Dp6X8ieBc3pZxGWeUvA6FvMy1W80zY/wPJwvozk=;
-        b=myRNtnr+f9/QU3UwJM3MRxMubL4gVE8yaUu6og0P0ijKbYW2LI7olPhfGda0YdZBsf
-         9ju84tGBvnvUmkfgQeULUO4SgJ4QgE8rvVTs4GoMOR2JZkel4T2aj2putPmTBBP0Y7+u
-         ym25bmSXCX5hhKnP3stzs+MCls0HA0GV2LNvExpCTUNNT4ZbJ6OuauZwGr0h34fijO/Q
-         HJWOdAwBk4Mm98vS6kVwo0zHrZyzheFFkgNshCCBWJc14Jo38FW2sxgqj/jWE+xIM3aN
-         bWq5n9sxR/5Il0dXC8X9uF67wxlgGFxoB1xnGhcV+We8SGLHc4lL7ozncTec8UyRT/Do
-         VCJw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8xmmTCPFXf/OIJFIiw/loawEX3w5Z6i0Km1UioFz8ZmNW8JyZW3k7t7YlCOUO0737LEQV0rsRokLfiCEu1CY=@vger.kernel.org, AJvYcCXO2ViMrW3+9caI5KeL2VbNU+oXeVSUlefszX1yTCFvW3RBjcUaaUVYtpoATY14BSf1Dz5RKy33xwN69yw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLstFYYiAqAYYCvuhK+omlc2N8U+uZIPf0wVuUMRK9+jNdLozW
-	+Y1c2hTVOXI/KqIRvobHUr/l2rn+sKBkbbcM9KJdbD2rb/AQpoQF6dzQUWWQqV6UlVZD9KiWkL9
-	G57PMrAIQly8DIcGNi0PpSsVk/Sk=
-X-Gm-Gg: ASbGncvqvaf0pc/XvOAoOTzp89AB/SaOvxZH0PlSSYyFdkHEMhnHQvNhMrLNQEQsluU
-	hwRELYJEvxxnhD74UVbyoMDgbnJKmkALluO0yEzWfXiQTmm0EB9ZzXBKDpZdgsjs2Kw+I32bGs5
-	OpFrxnOeFWWeR6pIbhEa6XH56nwSEmOLCv/D/tlwDlTO0PcHzQ2mc6cu9L
-X-Google-Smtp-Source: AGHT+IEg6Tkrt1z6mWpBuG1QD4aL1yJp/PzIKF1/VJG0fE68oTzHjJ3oeY5SoSpP+mhBqI5tcZoSkoS8cb/nWFlunjE=
-X-Received: by 2002:a05:6512:1193:b0:545:c33:4099 with SMTP id
- 2adb3069b0e04-54d64aa9ed7mr1710095e87.27.1744895493833; Thu, 17 Apr 2025
- 06:11:33 -0700 (PDT)
+        bh=vYrMJu0FPWzC8DJ68HX/qi+NoN6jBeruHW1u5HRV9ok=;
+        b=L+29fiXu7cZ7ynqWxJvvJaGWpsbz8YcMyk6lAIMZ4MN5tXzzJoDh0xGTDsA1hSDCtt
+         aLXtlL2Pjg2B8TedbSVpPjV2r19BKHsdkBHTDUc1cQhcpm1HaFH/1pXqScG0lER8xtez
+         ujiUEZZFVBEjtOKjmdWm4rfaSbwqlghpOh4a/2yjjdnSOdYSHbal+saSs6uxUEDKGMqd
+         LCe3qntpELGDfm0aPCEVyk6qWkpsDC3Eqzpk+znh4FoeaEJvPaTRUkQWlXAZGpwx26/W
+         iojJco2u7iutezhfZKCp2oSPysn9mKgeGeStRjuJKRSSE163qHQSV+h476K0qmZ7WBIN
+         iAqw==
+X-Forwarded-Encrypted: i=1; AJvYcCWX0YZpmOI78Dj9+5dQKPdFIOgyda6ptdNg4Jy4j0qhSK4j0cojbKjoYl0PLCBzEZlI4iC+fMYJ1wrfSo4=@vger.kernel.org, AJvYcCXp1PaV/W3/xqiOMdSzEBOHN0tGfssrJR019WYR4R5josGm8CsyTOHll9g1XHjC3m8MlWotMgZM/oEoXON0FjA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLRQjiqWoRUuOamlX3FHporKYAVV97a/ryD+M+V9C88ekAOu/l
+	ePcbK70U7WxMpr5on0SdGZNuTK/AISxwihrnlxXm44SQymqfO084bjNIoU9qYZ6eF47rOqj1tRp
+	Xmfl4qpn9NmNX4ex1bRA6S71ySEE=
+X-Gm-Gg: ASbGnctkkWZ8xCwaENRr4NBQl4XIXUA5iN2vEkcCRSs5asNxH0S204OnSQm8kM5gvT4
+	ioadnEQB4g8Uxbo18WSoQayQ79blnQkH23yd61C5WjqvrW74DSneyN/OR0Z2fn4mLtGBRFkA5ey
+	BbtBZrhV64D8HVrhfdnC/8WtyyS23y66dKRGYMV6Gak2yFtxIA07gTjdwp
+X-Google-Smtp-Source: AGHT+IEXwCF48fNKIUx7Gqqebry8C2sFPXHPU7jx0rxt+VwKd/nnnLZHThmvSMldjtr5Q2XhKHcogNYOaBSLEhzk0Oo=
+X-Received: by 2002:a05:651c:512:b0:308:e54d:61b1 with SMTP id
+ 38308e7fff4ca-3107f73b104mr21481591fa.34.1744895678579; Thu, 17 Apr 2025
+ 06:14:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,13 +60,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250325-rust-analyzer-host-v5-0-385e7f1e1e23@gmail.com>
- <20250325-rust-analyzer-host-v5-12-385e7f1e1e23@gmail.com> <CALNs47sy7fcQoOaxQ0moyRt5TJOi4VWc8AxXHzPgouccPP4N7A@mail.gmail.com>
-In-Reply-To: <CALNs47sy7fcQoOaxQ0moyRt5TJOi4VWc8AxXHzPgouccPP4N7A@mail.gmail.com>
+ <20250325-rust-analyzer-host-v5-13-385e7f1e1e23@gmail.com> <CALNs47vcB9A7Q66Xvh+_dQKkn5PE6BSw0VpO1S_2KQQ_p5AVSg@mail.gmail.com>
+In-Reply-To: <CALNs47vcB9A7Q66Xvh+_dQKkn5PE6BSw0VpO1S_2KQQ_p5AVSg@mail.gmail.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 17 Apr 2025 09:10:56 -0400
-X-Gm-Features: ATxdqUGnslD3r8L4WdZKdM9anUhMGWAuu47yyWNybS59lcox0wWee6_SW9lupwY
-Message-ID: <CAJ-ks9m=JZKrsSkuk8mefiAU5EroNMMkyKN5pkqNN1TYJSySFw@mail.gmail.com>
-Subject: Re: [PATCH v5 12/13] scripts: generate_rust_analyzer.py: define scripts
+Date: Thu, 17 Apr 2025 09:14:02 -0400
+X-Gm-Features: ATxdqUGR8UZOskGlGIFMVBRL68ka2ZZ1O-4cACFG5AUAgWHZ4HvJh2j_oKz1Z-w
+Message-ID: <CAJ-ks9nZCi+LHw1-RPpeFEqTe8DRPnj0c7+rc_vFDVPWak0KEA@mail.gmail.com>
+Subject: Re: [PATCH v5 13/13] scripts: generate_rust_analyzer.py: use `cfg_groups`
 To: Trevor Gross <tmgross@umich.edu>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -80,51 +80,50 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 17, 2025 at 3:25=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
+On Thu, Apr 17, 2025 at 3:29=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
 ote:
 >
 > On Tue, Mar 25, 2025 at 3:07=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
 m> wrote:
 > >
-> > Generate rust-project.json entries for scripts written in Rust. This is
-> > possible now that we have a definition for `std` built for the host.
+> > Declare common `cfg`s just once to reduce the size of rust-analyzer.jso=
+n
+> > from 30619 to 2624 lines.
 > >
-> > Use `str::rstrip` for consistency.
-> >
+> > Link: https://github.com/rust-lang/rust-analyzer/commit/2607c09fddef36d=
+a0d6f0a84625db5e20a5ebde3
 > > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 > > Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > Reviewed-by: Fiona Behrens <me@kloenk.dev>
 > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > > ---
-> >  scripts/generate_rust_analyzer.py | 16 +++++++++++++++-
-> >  1 file changed, 15 insertions(+), 1 deletion(-)
+> >  scripts/generate_rust_analyzer.py | 19 ++++++++++---------
+> >  1 file changed, 10 insertions(+), 9 deletions(-)
 >
-> > +    with open(scripts / "Makefile") as f:
-> > +        makefile =3D f.read()
+> > @@ -76,6 +70,7 @@ def generate_crates(
+> >              "root_module": str(root_module),
+> >              "is_workspace_member": is_workspace_member,
+> >              "deps": deps,
+> > +            "cfg_groups": cfg_groups if is_workspace_member else [],
 >
-> Since we are using pathlib, this can be `makefile =3D (scripts /
-> "Makefile").open().read()`
+> Does r-a just expect cfg_groups for workspace members or is there
+> logic here? Maybe worth a comment.
 
-I assume you mean `makefile =3D (scripts / "Makefile").read_text()`;
-`.open().read()` would leak a file descriptor.
+r-a doesn't have opinions, but our configs apply only to our crates as
+opposed to sysroot crates. That's not entirely true for core, but the
+configs we apply there are narrow, whereas our workspace crates get
+all of KConfig, which is huge.
 
->
-> > +    for path in scripts.glob("*.rs"):
-> > +        name =3D path.name.rstrip(".rs")
->
-> `stem` should provide the file name without extension, so
->
->     name =3D path.stem
->
-> > @@ -267,7 +281,7 @@ def generate_crates(
-> >      for folder in extra_dirs:
-> >          for path in folder.rglob("*.rs"):
-> >              logging.info("Checking %s", path)
-> > -            name =3D path.name.replace(".rs", "")
-> > +            name =3D path.name.rstrip(".rs")
->
-> The above applies here too.
->
-> A couple of optional nits if you resend but nothing to block on:
->
+I'll add a comment.
+
 > Reviewed-by: Trevor Gross <tmgross@umich.edu>
+
+Thanks for the reviews! I need to rebase on rust-fixes which picked up
+the ffi crate anyway, so I picked up your suggestions:
+- generators instead of `map`.
+- `Pathlib.path.stem`.
+- `Pathlib.path.read_text`.
+- Add a comment about cfg_groups.
+
+Cheers.
+
+Tamir
