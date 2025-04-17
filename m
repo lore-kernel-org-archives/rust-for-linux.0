@@ -1,113 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D35D41C63
-	for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 20:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2C441C63;
+	Thu, 17 Apr 2025 20:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744921914; cv=none; b=lm8AvPTxhxSOHiECtt4SF/UFn6kzn/j1zzyIAIG354uVZVK1/AJqBmYqXLiG2hzknUKjcwBfbiJRstdgMjLHwooxIcG7hhj8x5kCWeoCNFdZtQett9Phsc4qb/MGTaq2aEKJi7+ncxF/IjoXJR8CCcykY76UeksqaxSNRyBxxKk=
+	t=1744922178; cv=none; b=d9aU1n/62eWVP1IW9wLihA2Tr5AKgHvitxGhWBiyDPvK2GVgoUUTQyj5wOzOf8zbAs3dH2zqIR03/I0MsZY0nATj8jDDc7Rgl2CWd66DkddykQfHA0za7++UigNoLtFwuXDCsP6VqdchUgOtrY+W4coQmDzfBfWmuXJz4Tp9F8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744921914; c=relaxed/simple;
-	bh=/Pf9q9FrAgEfkl3TjCu8o/rJ7TAc4S1Kvgr/sn22Vy4=;
+	s=arc-20240116; t=1744922178; c=relaxed/simple;
+	bh=TJBw7hzRm0pclI2UfUvquj4FkU2UVt08LL8fo8kchb8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z0He3wOPpv3scyPWCgo4NjtI3YE6B/HxWQ/boktgN2zuYUPEJjV9fiDTg1MPHfGjHlTQ/adsBEQMcSEiYER02LTu/M3QjinTVc5DUXzTgTanQJEoyo6auhAJ/84grDwR7ELljZyRM6ORVh1EoY/WdCzxTdc2B34BB39CC2RWK2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VilTy9rD; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=psjMxRcRr5WERbOnq2KD3TMITwD5Tgy+iBnFlG0ENHftkoERNz++vzbqe8RpduJbVkazn7kKrzJqgwjlnHsXyiMalXWzcVTcHkSwQLheA4Rn+Blt3Tb7QQwJinQ1dC3ARqxl3BzBj457H5kWFVlxeSWheIHWeZW6Sb5xHhMvj5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MtZjWXCb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VilTy9rD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35DDC4CEE4;
-	Thu, 17 Apr 2025 20:31:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MtZjWXCb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45480C4CEE4;
+	Thu, 17 Apr 2025 20:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744921913;
-	bh=/Pf9q9FrAgEfkl3TjCu8o/rJ7TAc4S1Kvgr/sn22Vy4=;
+	s=k20201202; t=1744922177;
+	bh=TJBw7hzRm0pclI2UfUvquj4FkU2UVt08LL8fo8kchb8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VilTy9rDBzfBNfcfbd7MPK0w0+aWxqJFxPwpkNnPJnL9uB4cdvkgeGAyiW5TeFHgQ
-	 XkhcGXPlNOhj0xl7vq7RiRSe+lGdV7c1ZF/sYUenFkKvypSBhs7g3/DEcucwUFTCmy
-	 aHebVBuSsf638tp2OXkDYwxHJVKIxOfP41lqB10WtK319crM9U7C1s8SBNEpDQ3PaY
-	 1DtQ3KjK4tK2+W77+N0R0F92coLR15vIe1DxC+6DgQnb09xCVRUQQXUC8a2BmYBjyR
-	 zy3pHg/aDE6stKwNQq68FNW4DlQ3QpGsxd54TxEdk7McEgzr9Yk8aXN9h6ps16pEdz
-	 /i7ZrKc2NMa3g==
-Date: Thu, 17 Apr 2025 22:31:46 +0200
+	b=MtZjWXCbR8CkAy7jhwWK7Aphg3G1rHrRwej1d3PuexsNhI53vevjI3fgeqJrh8qmC
+	 nIRuevWIFDvuCgO9dLuDvIOZSY/p+l4a6bM/ec6bulBQFB0SbObz+6C+69URG8UDm/
+	 jmiKPo1QNzFUZ+Y1p9utalE/5MA2izYwZJZCuf5l+93Deqmr8rEw9XF+kXnkvNwI8R
+	 ardH22spwg/boEfr++UtTnQ+ILkqeI8q54xx0Xr/e4ej1F7tl9GwKavpNN0oJ7PvN6
+	 PpKoaOL8Qyxfosv1j0orHNUpJ8sV7TETCWeXtDVtSxSw0gTdNT3YdQJh5xt7gzp6zL
+	 OX3hSFNn5MnYg==
+Date: Thu, 17 Apr 2025 22:36:11 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, lina@asahilina.net,
-	daniel.almeida@collabora.com, j@jannau.net, alyssa@rosenzweig.io,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 7/8] rust: drm: gem: Add GEM object abstraction
-Message-ID: <aAFlMmZxa8V-SFn7@cassiopeiae>
-References: <20250410235546.43736-1-dakr@kernel.org>
- <20250410235546.43736-8-dakr@kernel.org>
- <1ea450fdef728a5c783738c0770ea38ba6db39f2.camel@redhat.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tejun Heo <tj@kernel.org>, phasta@kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] workqueue: rust: add creation of workqueues
+Message-ID: <aAFmO0FhHrzG_F8H@cassiopeiae>
+References: <20250411-create-workqueue-v1-1-f7dbe7f1e05f@google.com>
+ <Z_1QzTdV8mHJYdQ6@cassiopeiae>
+ <Z_4gb8ZAlbfhobgW@google.com>
+ <Z_45kDv_wAHIBNpI@cassiopeiae>
+ <Z_-f7Bgjw35iXkui@google.com>
+ <CAH5fLgiKxDpWg=dDsTJsrB6Kmkw32GZ9WPO-SrpWm4TZDxGVtg@mail.gmail.com>
+ <aAALmSjLyWqrcQ45@slm.duckdns.org>
+ <59c1e09a5c47a60e26c5fb10c3305356328a98a6.camel@mailbox.org>
+ <aACtqnC7okO7eZEg@slm.duckdns.org>
+ <CAH5fLgg3RrsWy-ArWb9502st3O=DsmPsBsXoZ5M_nS7oWggJuA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1ea450fdef728a5c783738c0770ea38ba6db39f2.camel@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgg3RrsWy-ArWb9502st3O=DsmPsBsXoZ5M_nS7oWggJuA@mail.gmail.com>
 
-On Thu, Apr 17, 2025 at 02:42:24PM -0400, Lyude Paul wrote:
-> On Fri, 2025-04-11 at 01:55 +0200, Danilo Krummrich wrote:
-> > +/// A base GEM object.
-> > +///
-> > +/// Invariants
-> > +///
-> > +/// `self.dev` is always a valid pointer to a `struct drm_device`.
-> > +#[repr(C)]
-> > +#[pin_data]
-> > +pub struct Object<T: DriverObject + Send + Sync> {
-> > +    obj: Opaque<bindings::drm_gem_object>,
-> > +    dev: ptr::NonNull<bindings::drm_device>,
+On Thu, Apr 17, 2025 at 10:26:04PM +0200, Alice Ryhl wrote:
+> On Thu, Apr 17, 2025 at 9:28 AM Tejun Heo <tj@kernel.org> wrote:
+> >
+> > On Thu, Apr 17, 2025 at 09:22:40AM +0200, Philipp Stanner wrote:
+> > > I assume you, ultimately, mean that the list of delayed_work's would be
+> > > accessible through workqueue_struct, correct?
+> > >
+> > > And then destroy_workqueue() could loop over all of them with
+> > > cancel_delayed_work_sync()?
+> >
+> > Yeap, I was thinking flush_delayed_work() but maybe
+> > cancel_delayed_work_sync() is better.
 > 
-> Not a huge deal but why don't we just use NonNull<device::Device<T::Driver>>
-> here?
+> But doesn't that have a cleanup problem? If the work item owns an
+> allocation or a refcount that's cleared by the work item's run
+> function, then using cancel_delayed_work_sync() will fail to clean
+> that up. Whereas flush_delayed_work() avoids this problem.
 
-Yeah, we could indeed also use NonNull<drm::Device<T::Driver>> instead, but I
-think it doesn't really make a difference.
+I also think it may be a bit unexpected to users if pending "normal" work "will
+be done first", but delayed work is canceled instead.
 
-We only need it in Object::dev(), and the unsafe call would change from
-
-	unsafe { drm::Device::as_ref(self.dev.as_ptr()) }
-
-to
-	unsafe { &*self.dev.as_ptr() }
-
-I'm fine either way.
-
-> > +// SAFETY: Instances of `Object<T>` are always reference-counted.
-> > +unsafe impl<T: DriverObject> crate::types::AlwaysRefCounted for Object<T> {
-> > +    fn inc_ref(&self) {
-> > +        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-> > +        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
-> > +    }
-> > +
-> > +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-> > +        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
-> > +        let obj = unsafe { obj.as_ref() };
-> > +
-> > +        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-> > +        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
-> > +    }
-> > +}
-> 
-> So - as far as I can tell pretty much every gem object is going to be using
-> the same object_get/object_put() functions - so instead of implementing
-> AlwaysRefCounted for Object<T> why not handle this the other way around?
-> 
-> unsafe impl<T: IntoGEMObject> AlwaysRefCounted for T {
->   /* ... */
-> }
-> 
-> That way you can also make IntoGEMObject a super-trait of AlwaysRefCounted, so
-> the AlwaysRefCounted trait bound will be implied instead of having to specify
-> it manually all over the place.
-
-That is a great idea!
-
-Since the current implementation should be correct, do you want to implement
-this improvement in a subsequent patch? :)
+That sounds like a good source for wrong use. :(
