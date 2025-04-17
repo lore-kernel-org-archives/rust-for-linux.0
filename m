@@ -1,72 +1,71 @@
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666FE1F63F9
-	for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 07:18:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063051F63F9
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 07:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744874302; cv=none; b=adrajD5b76Ttfk53qQQi+Xgn1zr+JIdwMLCnHjN8g3tIj9BsOEsjHknsRQCj47iScgOzjXUY2gy2HwmjGCWHhwsSm2m4ihvqgmNs0ULikFh4GSy8xolQTij0WSS7fUtnEytLb5xy4IvDjEseJwvTDx9WkuGuj+ezOkMdxXBIbF4=
+	t=1744874362; cv=none; b=sh805T+c+pWSYIgu8QBqBxqTEOev5h96IsC7QSygfKBOhs+gJJILFY+KD3x/CwqLQrvQaCmbMbAy3bDyqIKFrLVhYxfPoYs1MHnLta6/nxfSQTUg5Er9pWkbuHxdvs7Be7jhDbElB7Mv/MPisrpJOrDErJWtbuJli/kmI8tORn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744874302; c=relaxed/simple;
-	bh=0DochLUCf3EDF7cSTVV6DMLXVEm5zzzHpzA9U27hY1A=;
+	s=arc-20240116; t=1744874362; c=relaxed/simple;
+	bh=U4/vaUKN2Te2h7fsu377GWSWFLADA2axs/lRNpRR5No=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZwF8Apud+v0hKAnDZZdkNPjiY6GkmW4AulLtkCc+P5leTdoTW8dH1/SPLBi+gCvS3P1hRMRkiwkQEkAsP3hjEeQNHP+pnu5M90idxbX0YIv05TqRRG0/mYsmuhdpgV57jmKDwmK3/r6wNkHl7TTvNyFyz///12CviqubvBtRRcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=O1wqDDsT; arc=none smtp.client-ip=209.85.219.178
+	 To:Cc:Content-Type; b=i374MxzXtQEZ81so3r0SspUi7w25AHHiFknSN3qSB6OzNpWcdK16PgAkjNv2xDqVVtO/SrsGXsIVOMIkjDQi6wUG9aP04mZiEK54/61lQYk5ZfhBHEq4T3jI6JyTtjEo40opl0bObbLAFG2avTYQUbbBUnwdhZQucKTP+Kwj1J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=ZD2y/sTu; arc=none smtp.client-ip=209.85.128.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="O1wqDDsT"
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e694601f624so346605276.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 00:18:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="ZD2y/sTu"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6ef60e500d7so3537587b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 00:19:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1744874298; x=1745479098; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1744874360; x=1745479160; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YUQCFU9BiF8vetueo+nRCArBfTU3iwTIfqg8rvm4bK0=;
-        b=O1wqDDsTxEG1ZtFZTpk40YN7uefJezQodg0PesQ+WyoFpXqEPQL/oHBSj7bbTKlhcW
-         2ZMXZ0CGjDTNLwtTfYafvXBfQIlyCiI8cG/Lf/UVGsGcFL+WfMN6xOM/EgdSvgC9F08G
-         H+33Gt8HwoXgASHQdOV4wStZ+vKLIx8FHPcEaI+JSlIEwv6LYlDJSawaNXuWBTJX3qtv
-         wji2lOodfEg9fBULiJiLmjXbZrAUeSVbl6mirWXFi4rFO6+JEWILCAIKsLEe3r2PANvx
-         E5yflPq0LxCMMPyZ/66w8vlazfky2zDu/wul8qQ3pgwmLUu8It/DRl4Sb+mWthJVfxa3
-         1CKA==
+        bh=Uw/gFd53a9BS00FfUSh4cAYjNxPAgA33lFveIhVyB4I=;
+        b=ZD2y/sTuw1kXhGA8GgQXI7ZB7MCmGWc2BEnNvdho7r9nxiY4+eTdJkHHr4vouoILQ6
+         KCXJYGHFhUNgKMvhxOzdoYvJIIePSOVQ1hvb/VRYWkteweOiA2e67KALUMju3sZs3hON
+         7vWMqP/hU3mOk8znKB9yof1wSQgcGNVDcnzPqQ6niQ3ovICfgVSFlX7n+RYMuTdjUH5M
+         eTLqqXwyHcMkaDlyYXF7m+R2uryRzoQVV80fCI+pZYLvpZIDoIHu0xx7LLLRKKn0qIPZ
+         CNaPzI8RmLYvUT0FmrWBqIozIt6DrvNmjdeFyte0vgBgieGtXyEpArG34P5F83KPULC8
+         M4cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744874298; x=1745479098;
+        d=1e100.net; s=20230601; t=1744874360; x=1745479160;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YUQCFU9BiF8vetueo+nRCArBfTU3iwTIfqg8rvm4bK0=;
-        b=asCaiOYeyaf1t6S43uiQXdF83a52dUvOXW+jDcjzpARRDdHodQA/IJDagRLbH1JUTt
-         LqtrtUPgnqo2ecyfbCFiy0Zg8ggxPV/fspISIQFvCzXIFp/8b1PvcGS8MDvvHUtbKAk3
-         UgmQ1UD84ZltbIcxF3UTCz6imn6Rvf7IU1Zw7eE2nKSPexOA9WQS4Jk5qiLnSHFnsN79
-         CwTy+fZo2EeeiDXM8DQBRGjVCiJeTN/n96zUvycMPR9rrCvESuVCkiGgWIlQlo6Qhcfg
-         ouOENciaB+/OWyQYyugVbDC0n9YvsWDxUa43wRgbyR1a0uqn4FAoAGvpU3Z5fpKZj38A
-         d7CQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIeY+xEs4bn645KSTpP87otdBcQJbSPqRnalux/FiRskaUIShsaeJvkN4VeYCGi6OKdjC35oSIbdiM+Vv9HA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YynExJKRVe2WKhs1Qnaue3f/LoMUIDDtcuv7slVlN2Bd7gtjG9/
-	VKI5XLMESRmHIoJGTzrD60A0KsGR4rDUa+t2K7PdSrPEGj/sU37FLzaJ5Fg75VoylHPatDpuwsN
-	8jx1dcM57FL3snkaeXyXYJ8ZKF2H/QGvelVBxCg==
-X-Gm-Gg: ASbGncudSJmZcCEEGYaG8v28yXV+ULlGlDYIB6IxYHqSrXGZWFsCn+KaWCvR/ujSvXE
-	hTTVQRa0aIUKKmE1gqvYYmjoU+rEO2EslyOUFsrYhF/MMRI8Jx/k6m8quGBi5PrWAMdipJru2vw
-	dySaatQ8tNpay63jVxmN6XFg==
-X-Google-Smtp-Source: AGHT+IGaRFAKYv6R6SEVyGNxAv1QL/bCYgREU98ZKY9w9ker+ywwW2nKBVuxpvK4JbL0+FnvZaF13fw0p6r25aR8Gf0=
+        bh=Uw/gFd53a9BS00FfUSh4cAYjNxPAgA33lFveIhVyB4I=;
+        b=rbF+HhSYv8ezR2R6puqleTOVN+LgfYCS21SqzbMDmb/fQmkHkgLmN9ps2hRcCPadYS
+         0S1RT2pbyWkqocA9eMtvJLX9py2ovW/0Ibk1/OizNjEtLakKpiNrratkrs23h2uwG1hl
+         854DDwh0ZH5xJ2qlvs2MVag+1UHvFZsZzo0FVoFjr5X1SfEz8lTOSVRTxUCUKB2mFi6c
+         av7/icj7kdgj5G0qkhXBE1EsI4nR1XRu3mcvaA1cnoEF8vWqpWZK94Vc/cANvSCigam8
+         sr5RWiZShHedm1SHbf1aWDft6OQ7D3vGg1+Vs5sfdNJoXpXKuDkLukJWqay0Jlbgg1JA
+         JIWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXc3jIQ2fWEqp8/9JyxpreEPkfBJdDgU2t6kd9Md2lSbNcLkRk6HVHuQtTNcwTiEPpEhGc/SG727zu1bOnoSQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwOlzLQMP8ssAmKfx8bhRF6zxXu4etEU1oY9jD21cWCMU0ghNI
+	/in56PjFNJTRM6JDc8uvqg88LWFH2Rcbof07nuk/32SSGTd4ny3MsaKR2JXipdxTBjfweb+rqxM
+	0cNRfFjWJ9LsJcfRRihyeVzFuIBhS/eEws5oVqQ==
+X-Gm-Gg: ASbGncsOpPCXSG+E4ONmhtKN0uzTJjgsoRt+B4ddAYbGCyZ24MRKeSS/HeyyzVgk/ok
+	X8YImeO+B/kypY5Udl2ajJQpimmhgv6DboinRyjj6utPbCFnp5MYFmTwBCs2Vwn4yIt+P18ALhP
+	gd+Xfr3meT5MdHaW9nF0BJuQ==
+X-Google-Smtp-Source: AGHT+IEXB6D89bWHNnoXFbnwrhIOjGGlhII4xSrRflgd9ac9ibMg9LchRCS2RzJyKlWy86S3cu4WFYghsKhj3BzJt+s=
 X-Received: by 2002:a05:6902:2b92:b0:e5d:c11c:3494 with SMTP id
- 3f1490d57ef6-e7275f1774cmr5303370276.30.1744874298195; Thu, 17 Apr 2025
- 00:18:18 -0700 (PDT)
+ 3f1490d57ef6-e7275f1774cmr5305566276.30.1744874360020; Thu, 17 Apr 2025
+ 00:19:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250325-rust-analyzer-host-v5-0-385e7f1e1e23@gmail.com> <20250325-rust-analyzer-host-v5-9-385e7f1e1e23@gmail.com>
-In-Reply-To: <20250325-rust-analyzer-host-v5-9-385e7f1e1e23@gmail.com>
+References: <20250325-rust-analyzer-host-v5-0-385e7f1e1e23@gmail.com> <20250325-rust-analyzer-host-v5-10-385e7f1e1e23@gmail.com>
+In-Reply-To: <20250325-rust-analyzer-host-v5-10-385e7f1e1e23@gmail.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Thu, 17 Apr 2025 02:18:06 -0500
-X-Gm-Features: ATxdqUGFtOVoje6Xk484QFU_fNuQjZwpW6TyxCH4gHbPmHRWQgY9WnmaXXPUd8I
-Message-ID: <CALNs47s_uj9gcvUUjnRVQtYF8mhYERHozhAhs0u_LdmiFr5QQw@mail.gmail.com>
-Subject: Re: [PATCH v5 09/13] scripts: generate_rust_analyzer.py: identify
- crates explicitly
+Date: Thu, 17 Apr 2025 02:19:08 -0500
+X-Gm-Features: ATxdqUFTdUlY5hT2E0MA0TIp6LfUHIWhb6GFzQWkdokya3jjzXX_XuCczpM3MSI
+Message-ID: <CALNs47tQi2UoFNiU7hTa-fPGwoQ0HN_SJG4HJ-rjoes9XE7-kw@mail.gmail.com>
+Subject: Re: [PATCH v5 10/13] scripts: generate_rust_analyzer.py: define host crates
 To: Tamir Duberstein <tamird@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -83,17 +82,21 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Mar 25, 2025 at 3:07=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
  wrote:
 >
-> Use the return of `append_crate` to declare dependency on that crate.
-> This allows multiple crates with the same display_name be defined, which
-> we'll use to define host crates separately from target crates.
+> Define host crates used by the `macros` crate separately from target
+> crates, now that we can uniquely identify crates with the same name.
 >
+> This avoids rust-analyzer thinking the host `core` crate has our target
+> configs applied to it.
+>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://lore.kernel.org/all/CANiq72mw83RmLYeFFoJW6mUUygoyiA_f1ievSC=
+2pmBESsQew+w@mail.gmail.com/
 > Reviewed-by: Fiona Behrens <me@kloenk.dev>
 > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 > Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > ---
->  scripts/generate_rust_analyzer.py | 82 +++++++++++++++++++--------------=
-------
->  1 file changed, 40 insertions(+), 42 deletions(-)
+>  scripts/generate_rust_analyzer.py | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
