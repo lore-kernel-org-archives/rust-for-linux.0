@@ -1,71 +1,71 @@
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9153021516D
-	for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 06:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8809C215178
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 06:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744872682; cv=none; b=qw7/FJC8WKpxlI7tVDsNR/aJ5LBzeo3KZXohsrMxTh9+diThPw+hV/TYtXQVjG9QHQq5xnldmo+GoSsglfa9xcMw6DBcCocTYVADTHHYcCdO+aef5UCmK1gdYRCbIXWWfHizOyUQ9GWw/JP3VwAhmx+FOWRsr9Al0fpaCgYGlQg=
+	t=1744872714; cv=none; b=rfPlkcM6wpaEkpb9X+M4K10j+Alk8UifL+1b1Ee1IpZtFER/mtfq96pgO3jXHL6Ks3f/HtLEyOD7oGVd6zKVeDKzSLSNIIYjdaF/oPJpxpD+eMt3rfL6Cn3eqeEJo2fel8owYSEFOWwAviEzzI4msdq/ZOegXu6vKX9XIZqIduA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744872682; c=relaxed/simple;
-	bh=i/t021y5rnafhiKzThWKY9qu+LyN04jZTBkU1mkLjqc=;
+	s=arc-20240116; t=1744872714; c=relaxed/simple;
+	bh=Pf4Ipk91d7H1AfijgJfbT2PavHXksGVHQh4TrEedAYA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JUOvu1ELM4kWOGety7c2lkmHlhrD/SqCsLrAAgfvnhz48RSorKI4lUQ7FeKN+mBzrtGnPKwyw5CL8bigCCwXAwD2Si4z56jn0z6khuukTG9hn8w0+ntwWe6+27VQFa6v9emTBvXvKcf3tagprKCfNNzqqrFERqOvmbYzL8h7+8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=OZHeMBDH; arc=none smtp.client-ip=209.85.219.175
+	 To:Cc:Content-Type; b=dTguE7yMNkoGyq6MZfEe4LIpCtTCuRfK83AQR0wsaGaQLf7B3wwYPXnrZXoIpqdAcPxG3UDmQ5IuQh2aAnou/NS1H3Em/pE75J1KyY2DtqsZAN+OBwUe+GbV0dzMKJobfMfx9gMrUnTSlZ1Mz0HdZ7pb6BTPK2QbBkdULDyGmXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=AEuWlUmf; arc=none smtp.client-ip=209.85.128.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="OZHeMBDH"
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e717c3dab43so393686276.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 23:51:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="AEuWlUmf"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7043db8491dso4070777b3.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Apr 2025 23:51:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1744872679; x=1745477479; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1744872711; x=1745477511; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=k0dQX2mPar2RyrgErhNkBZUjjc8nTe6WFVqdkQhDyfk=;
-        b=OZHeMBDHbTckrURrzDb/aI8B1Ch0T5znLe4Q8mHpISuAo3kYuN/csylyq6wOE23NhW
-         5lc311337eX/yqbUuG1WmFRFCZ+9bFUMmCePYvhEmPKJTc97TFtPGUEhR0eK3Sod9Ra+
-         03got1XLBX9kmiM2HS6kg+W4emkcwGKfYXgd5V+gxG8+9jyEcQBvoTGq3bL2bYD3ja38
-         2HXKke7FOFg6yjV6k019dm1BPP402DIdw+sYUeyQ2PVlpbz9SOM2AS9XRUHRKJmPJze4
-         IDIEDEIVghJHCeVdkoXBmlHUVG5G6hnaPZfIPiFU4azX81FJ3TwEzQ3lG3gDBXb3Sy3d
-         aXBA==
+        bh=jFyIxYl8CM7pfniK7v4uSLsOvO7ZcL+Q50oIJUmy4Zg=;
+        b=AEuWlUmfOq6G2prBgyytwtMml93/blvtqlqp3gMyi6jrlKLQQ44pZsfBjH8FOerPMN
+         J5g03FeynJiTI7vq1ZmSchrkSGkyM9OKPI7Prbs44pBFeFsWi2sFpiLGGcB9AXlllqS9
+         OKEW86gvFnTWQ9bavxowoNPAxTabfBeKByKHZQoX3mPflFQ0H902g/0YsG7cF/MnjLmx
+         5qYTzBf/A60aSV4FQJDLIsPlbnJNn5g/M+/PSAHyojgHE62ft7q2b8i2BWSPZ4900SeI
+         2DkZ/FOdvuhZsElycvYa42oLC4VmXkINQyXQVqQi240lhaYxbErCd9F/J98E4nE3lkNo
+         Sp2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744872679; x=1745477479;
+        d=1e100.net; s=20230601; t=1744872711; x=1745477511;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=k0dQX2mPar2RyrgErhNkBZUjjc8nTe6WFVqdkQhDyfk=;
-        b=dbirPm8IB63SrMpQDbBpaEgGDT8v8o5hlUh2+xt47Mq2nS342mCBC3VO73vFkGO3oE
-         9oM/WnjpgqxVv6Ac8TzJtjqsT4Eq1ppLJ6/6z2HepAHfeZbBbKyRyDuLkoHgXGwCBG6G
-         o4kwAhGDbkd82TUk1IG1OxzuPzYfqF5/uLiO/NQuInGNze/DzAzdKRM1/71lDpFcwJW7
-         SU9xeo9Dc7tyF6aLKbLuZaqDFGUtgqMjzhD61bIQK7kstTORJDZ890s2EPq5UvZfjkrb
-         r1crwZyGQSK4nMv7ntEIfyz3V8BPz5CpnMUtBcAou3P4Lm6N9teNuMiSGdk1SwC2C3dO
-         lyhg==
-X-Forwarded-Encrypted: i=1; AJvYcCVxzKcc9aiknsbvCVVKXLEkiwvkVFQ3Gy+MYwyNzsGnZVnBIRvGHtp7HFWbdw8hLIZu+02WRW+LIO9RvpVPMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+P9EsuaCRSAp/vWux0UywrbwrEeLzLu7DF0zf+VDuFnMu6wLh
-	n3MPhY68fA0vzSQjBf6H9aWJ/YNIhg7HJwB2Ml67mtMVtmfpsQU82F1OBIU/rbcc20pksmHXS+G
-	TNu80QodVCvuWvnIHfuzu9eukO8xXKkYXNoS4Qg==
-X-Gm-Gg: ASbGncsCMapStb/Pgb99v8Ryuqqe51WrgP+r1BaIYbEpuE9pwdg1BPb2ZpTVZhvozaX
-	2OzSwruVvZi8gcfLa+u5Dp3UPPad0X8Cf7i7bOGYEhnWhYkvYzcOr5HcMNHo7tTaXeocNCCyiB4
-	ffr/uupN4NYAmqLAbLaePWxWNbj5qhOfkd
-X-Google-Smtp-Source: AGHT+IF+aP2t8dB20YzvJrlhjH9T3tfezTcwCslLtc9JqLcly3TwpgJoR/i+BwaPOl1rir/bf/4qgdz5/H8nmPoyPdc=
-X-Received: by 2002:a05:6902:2b0b:b0:e60:9f50:5d0 with SMTP id
- 3f1490d57ef6-e72759a758bmr6352438276.29.1744872679616; Wed, 16 Apr 2025
- 23:51:19 -0700 (PDT)
+        bh=jFyIxYl8CM7pfniK7v4uSLsOvO7ZcL+Q50oIJUmy4Zg=;
+        b=V1ZmDO6ISDTmwnZAyypgwsVmBM6suDv16efr0UsZh9sQbq7/wpf1M3z4XWYAFB8kRC
+         eEslrXBhOUOjSrpfexmqCSwmNfuvyZg4uKQwTRtVwsT5sYPL8OPO+P/PMq1XWGn+xlrI
+         JBCTf57SJmh/DQAJZUU/G939+W7aUu4Yfso28FtUXnRMMMe5u9UD+nRA64EFQWGnviIK
+         1ng32M4jiYskbkOO1Wfr3UxrZzykAHe3zUsKmDn1qj+ZxHg7aJS7LeiHBW1/zqtIaHQu
+         SdehxE7AObMUzs5UWIhZ3FM2M3uUGNDN+ENccb0Ho/n5FGa5bzIHPDKvQOX56MckpIyH
+         satA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJYHOuMnSTugBYEnPljmPL2wBQyGoPsQys2CK52GIwJmOThJOlTAm67AXtTWHzLeRulXAO6CuWKEEDHwXT7Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw07pr+04mExZHEpdPdHNhzHpqkWX30AZi4zvjVTDsoya65xiFd
+	LtCbLx6wmvEe0JvlGUM24FYruUD17jOrMOiupBwNCVZVboRPgXRDTw3AZPOy6cc07LLsyXGeUik
+	7f+wV+5Q7b4auuy0yqMC7g23n4V2vc5pVqxj/0w==
+X-Gm-Gg: ASbGnctSPAtYhTuFs4P5V0qq4imGKUPnAHz0CjZkmI0v12anBL1KY1I2t3xQkyix+CR
+	Gl9QPR00rHi2gRyCTyMOqpXRYytcKbzXg2GkYLImVX1ib0t4N/lMGrungybBHFz9A+eLTI42rna
+	vtF4Kq7Pd3NgaJB9E32PR3l7DNxcIN9GC+
+X-Google-Smtp-Source: AGHT+IEXcYcn3MZe5ob/F8f8GnPNfJ6UNuPjHwNzwJKDDOiGQCsvgdgGNqoqugzFPNQP+DjNeO4rcBRTLYtY2Pf+0/Q=
+X-Received: by 2002:a05:6902:2387:b0:e72:6ada:d0bb with SMTP id
+ 3f1490d57ef6-e727574caadmr5702510276.4.1744872711599; Wed, 16 Apr 2025
+ 23:51:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250325-rust-analyzer-host-v5-0-385e7f1e1e23@gmail.com> <20250325-rust-analyzer-host-v5-2-385e7f1e1e23@gmail.com>
-In-Reply-To: <20250325-rust-analyzer-host-v5-2-385e7f1e1e23@gmail.com>
+References: <20250325-rust-analyzer-host-v5-0-385e7f1e1e23@gmail.com> <20250325-rust-analyzer-host-v5-3-385e7f1e1e23@gmail.com>
+In-Reply-To: <20250325-rust-analyzer-host-v5-3-385e7f1e1e23@gmail.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Thu, 17 Apr 2025 01:51:06 -0500
-X-Gm-Features: ATxdqUHRk0yMnnGqWhQx2nF9Qnhveopzva01QwJpmDY5q-CY8v1AeF6E-hbxr-I
-Message-ID: <CALNs47sG5m3VJS5FfQaxXku5o_LbtFcVResL4=inP7ndARnnbg@mail.gmail.com>
-Subject: Re: [PATCH v5 02/13] scripts: generate_rust_analyzer.py: use double quotes
+Date: Thu, 17 Apr 2025 01:51:40 -0500
+X-Gm-Features: ATxdqUHAuJi-CdQp0i6jq1Sq1031o_Pg7xduY8yp9CfsQlRjMYhWFR6hWQP69yI
+Message-ID: <CALNs47uXFvGL-k872oqwP3_rv8se3qNPeaZBOjOSMmXFFcYAoA@mail.gmail.com>
+Subject: Re: [PATCH v5 03/13] scripts: generate_rust_analyzer.py: add trailing comma
 To: Tamir Duberstein <tamird@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -82,7 +82,12 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Mar 25, 2025 at 3:06=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
  wrote:
 >
-> Replace inconsistent use of single quotes with double quotes.
+> Add missing trailing comma on multi-line function call as suggested by
+> PEP-8:
+>
+> > The pattern is to put each value (etc.) on a line by itself, always
+> > adding a trailing comma, and add the close parenthesis/bracket/brace
+> > on the next line.
 >
 > This change was made by a code formatting tool.
 >
@@ -91,7 +96,7 @@ On Tue, Mar 25, 2025 at 3:06=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
 > Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > ---
->  scripts/generate_rust_analyzer.py | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  scripts/generate_rust_analyzer.py | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Trevor Gross <tmgross@umich.edu>
