@@ -1,67 +1,67 @@
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646F21E2848
-	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 01:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FA81DF72E
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 01:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744940529; cv=none; b=pR0j3ezl+hf3lydCAzWReMGf89N2QTcDQbB3FtG8BGIFSMFkwwWwLWKiJbvxJnJwnTMxizDSe1X1wanjwAxLyf+a5GkudNgPkZ49/QPADxvCBjoe2RC1Pmh0+VvUhUyFALukGOBW3LiXt8pxvbP+gtYIifZHplUG5Jxcz/+fLSg=
+	t=1744940538; cv=none; b=IIxMUkLRNBEVFdxK4wOzcRUNYDZCTG3craXfe5tksKBDIMprRPSqDbqSv18MM2k9FOX8E2k/y/1WCz8M/ZlxZS0MItjmOnhisBrlMCESiLWCfbiqD99yygarg01D30//1p5OK+4/cH6C62Q+T+TbdNrQ+nL0Z3RdslSmbLTHry0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744940529; c=relaxed/simple;
-	bh=lWyRs8EwRP9eKktqaEVV7KkDApnFrboXBIw2L8sIYQM=;
+	s=arc-20240116; t=1744940538; c=relaxed/simple;
+	bh=AsXerO6M3JJeGimaY8r23ZEYRge1XS9d6tD5VYo6WLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBA+g1vBVnG/Be9EKWpuldJaZkfZSE+RD0EgDP6ejRviph5dLQ7IRKDLJZ3WkDB6he9/7fY8Akq0nCijOdWdji6Xd7T5oE4W5nTrHmfDnLo/d0JIcAqtWwX4BYoJCcUt9aFf6E24hWZwLzr/o4mD6I+D3rS3CrqyECs2xINSa7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=JXryRGpR; arc=none smtp.client-ip=209.85.128.177
+	 MIME-Version; b=TrnbsjCx/P/jwEyik3GGLe6hDBGA+c1TisT+Ub7dXKd6RAVi0PHOjLoEjTWBSk6waWc3UbHpzl1z+r3IPiQ9dJtBxnLynB9BH12IOUlxOuWl2ALSGjWNAhXuv74SzyjtxCIcj3GA6wcT/fnIQdltG+bqsBRBbzCfrG/XbQNsvVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=tZHOk7Pz; arc=none smtp.client-ip=209.85.128.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="JXryRGpR"
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7054f0e933cso12537957b3.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 18:42:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="tZHOk7Pz"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-700b17551cdso11837147b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 18:42:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1744940527; x=1745545327; darn=vger.kernel.org;
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1744940535; x=1745545335; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TB1A7cvc79BaS5ylmvvIDJWYgvPRJC5rldZ4aqKNUrc=;
-        b=JXryRGpRZwTZ0nASTeT4LAFvS863myXPM1IMrw4rtKYAPQQ3awSzGP9xhI5wrAY6bO
-         C6FA4QAdsrbAFoJTHEu9sGE000bZy5s7yj347UdQjmaKQntVUMd7/rsxN4Sjf2eYlK3S
-         j8pegQZhkUm1Fb5OLVmcPu0DsasWbybIKDXSdp6VdwXC57kGAnG5HObvtJR0L6GAYUZV
-         udkezFrGEqLZoLup85diRXbZb+mrHzPgNqyDnPf8AZjaMS/JRxmehpp/WKRk90Ow95m2
-         kXu/DwVftIy5XvZ89qkIJuv7wovD6TIeEqXJ502iZXTJFHPaA674m2IB1SNmumP/WDt+
-         bFKw==
+        bh=3KVr9YoaGaQgWb5xariEP7OGZvSaNc2U9G9atBahdE8=;
+        b=tZHOk7PzZ5hFQbMPVsYyOaQUAZ3JAJ1orsikVgKRG9OEAyR4jScQ7Yr4ElW5hRnL21
+         OmFOuol0VAqCdbX+Jh/8qGV1MR8S4q+xt5Bb46XcVYPolCbXYZEoXPr3vcyJzXci5ZKt
+         XaYILBnoIimuWv1t21Cql7K6U6bLLLYpePG6ZIGqIPqaAE7KdCmTUs0aNWhyR+hGBD+h
+         ibiSxKauIUoACs7eJ2BAOTUm+wvSY2mfS/pElIV6o2q7HOFO7QlrBy99M+4U4YvZODG9
+         bhn/m5/jbQ+CPBlhcKGIg4lFz2j4Oz3ITZujljPXixUGDSnnZJ/d8tvBySuCI5rPzrhM
+         3/wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744940527; x=1745545327;
+        d=1e100.net; s=20230601; t=1744940535; x=1745545335;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TB1A7cvc79BaS5ylmvvIDJWYgvPRJC5rldZ4aqKNUrc=;
-        b=YNwBIZEX0YlIJPlj55Rh5NAuQXSvjRSTbRHvA4fAaVJuN1sbTQemOfQj2/33tmUsVS
-         M9GAyBRODDigfGhKXNc7tR6zlWl/cATb6oLHddDjle+gZ/KKZECsQ1CNqsmKgFro1oAM
-         H5NfQDLHtAPL4zb/OH0KGCW2pKyNFK0xHZc0+OhpDGQDoyNbZjXq1c0Ju/aFIJK02tBI
-         ufVQjrhjk88HOGiXH6BUw0JxnCOR7TA4yN972qeBESPcCMNoV0+z6T0vykfCEhNj9fiU
-         qIEsp4SP9OikNg3MVZGYby4uNJR4mjaaD2RVsqCzGS/xddXMYdxIwe3a2hKAtLOofq+M
-         hgpw==
-X-Forwarded-Encrypted: i=1; AJvYcCWMFgSIQY23ODECn5rIrhq+QDQ6wkHk1sr/Q3J+UK4HI9Zdi1PHeGpXbhhyJKgd70PpnLlx17JQZLBXo8WUOw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjWiduLyCF6wojgAQMSzhknis7woA0vedPd984U8EImu43/lBe
-	1m3EocVr/Qiwd+icbCU5ys+HhbyxQjoM7qu4giN7l6EFJhBUHvzL7hWN2gF3fvo=
-X-Gm-Gg: ASbGncu7tAPS2dpN8c9mBkL4vk06ZE6SAgsPtLSn7FmixPHh34n6bfrdFg12YAI8mvf
-	/TN7kR9OYQRQk2f7ndi11K3yaQpGuiWAycz++pzQEm0XzHRGQXD7vqcq91od8SB855aLKSfjCBc
-	mLgMQfsB5Ne/+rpge5ROwXfPBVLOSmpAp/TTv+C81CaXcqEpvfORaJpord1pJNUe+QkjnErUZoH
-	2BTUlsn8nJfnXYpCQ7ttpYIMO7jZB9+F42EGiX53Q5iviIqx8CV7yzyVtlTSYY+BoEcqAaa8DPg
-	rzPtOKBv1v/YOR0h8d8bWGMtzyz01h2KRZp3LjpDV3davNXgjxpGvHiYn4DDZZEdswsr+3Row29
-	AwEkFiePG+JYF79yxqX5YIkaicpNzbSh9biDSGeqyNoU8uoM=
-X-Google-Smtp-Source: AGHT+IEaodFbCrH95m8gcG0KxdEwL1rgFoYJnXev+SHNVhhr9Pyu1iRSnvHrOJp3DTWsZlFfG6QnRQ==
-X-Received: by 2002:a05:690c:a99:b0:6f6:ca9a:e9da with SMTP id 00721157ae682-706ccc88d57mr13984697b3.4.1744940527326;
-        Thu, 17 Apr 2025 18:42:07 -0700 (PDT)
+        bh=3KVr9YoaGaQgWb5xariEP7OGZvSaNc2U9G9atBahdE8=;
+        b=QZraU3lT3if/u6iJAcQPVNLBWRYWSb3/63b1ApQGLAV4nKXeIeerXZjpISFhiMsnym
+         p46mDhm6qgcj6cSA8XuLpvup7QPnCw6G8I4NWX4GnHgQeNLYFtl9MlnHkIfmu1qaQtPs
+         tUNL4Q5W8mz3JDwsRnnz1waC7Y8gAU8gn3nnxu7n14wK5cXt4DyAwzT/5jbd0jhq7yUC
+         Lnhlahjg2h+xysLtSH/Vr16SoZjMHUzQHSE13SPmECGxYiJUPw42tvDQFBvnI49SlDlF
+         91A0GqvqP0SmujUcL6Qm6xJe1kTwwQ746YT8p9aWJmDnvv1M/HrGHm5t3BJR8tExdd71
+         jQEA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1M+OnkuWYLMEsmtCuWw0F9zOUt/V3LI+MCz73H86ljp5Ld++xPcIWCOck34m0CVEwNd+Xg1Drj4AdtsqBQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoBB7M4lsbvu+IH+jmGJ0VAGjsMqqQ0kzqkSZVrc+PEF+CWoop
+	1dSiGb3EuTO/u61i30CjkxPpV67+0oHwOzvm/BL7E5wPehhBuqC1FqKb1F87O24=
+X-Gm-Gg: ASbGncs1oh/gRlQ0a23GGaC4B7tkZ6LUDdggTWJSHjg2P4yO8N46H+pWP25+aOJrMMP
+	Agk3pQ3HXHYp56CQEcJuoGfUEbSxpPuotiMK4gpGjdQnmBnVh/5idVpSUZMxk/vkhstjfF6BVuY
+	mSnGbZB9b5/gvcCKdDLZ8dAR4rx5k0dKyPQVmaZaZANsuWmTZqiXTUg4/mlUaDVVHBe9QTXNeGs
+	zQwIC6joLCHKUsjBSlywPPcUNX5nlwdmZvzRKhxyZHFT6i92x37EWb5gw2U7lNsqrC++8wCBwEX
+	2v/C2F1kmgNnd6FyOV//umJpLZl6wnX+oqgbWXydFsJObmWXJNRjs4lHBS8Iou7AqtvOcJqaonL
+	KZSOim3Hyihb1QFaoV9bTtY0SLMqa6N1zFA4V
+X-Google-Smtp-Source: AGHT+IE/O6gWkQMozzU/sZ0vQ7iAMIJZ80Gw3gnlvoeuFzX09jFzx3stefvWq4XPYCQQb119QbF5Vg==
+X-Received: by 2002:a05:690c:670b:b0:6fb:9c08:4980 with SMTP id 00721157ae682-706cce0e007mr15660347b3.27.1744940535286;
+        Thu, 17 Apr 2025 18:42:15 -0700 (PDT)
 Received: from Machine.localdomain (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-706ca44fd13sm2804597b3.20.2025.04.17.18.42.06
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-706ca44fd13sm2804597b3.20.2025.04.17.18.42.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 18:42:07 -0700 (PDT)
+        Thu, 17 Apr 2025 18:42:14 -0700 (PDT)
 From: Antonio Hickey <contact@antoniohickey.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
+To: Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -70,13 +70,16 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
 Cc: Antonio Hickey <contact@antoniohickey.com>,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 04/18] rust: faux: refactor to use `&raw mut`
-Date: Thu, 17 Apr 2025 21:41:25 -0400
-Message-ID: <20250418014143.888022-5-contact@antoniohickey.com>
+Subject: [PATCH v6 05/18] rust: kunit: refactor to use `&raw [const|mut]`
+Date: Thu, 17 Apr 2025 21:41:26 -0400
+Message-ID: <20250418014143.888022-6-contact@antoniohickey.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250418014143.888022-1-contact@antoniohickey.com>
 References: <20250418014143.888022-1-contact@antoniohickey.com>
@@ -88,42 +91,54 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replacing all occurrences of `addr_of_mut!(place)`
-with `&raw mut place`.
+Replacing all occurrences of `addr_of!(place)` and `addr_of_mut!(place)`
+with `&raw const place` and `&raw mut place` respectively.
 
 This will allow us to reduce macro complexity, and improve consistency
-with existing reference syntax as `&raw mut` is similar to `&mut`
-making it fit more naturally with other existing code.
+with existing reference syntax as `&raw const`, `&raw mut` are similar
+to `&`, `&mut` making it fit more naturally with other existing code.
 
 Suggested-by: Benno Lossin <benno.lossin@proton.me>
 Link: https://github.com/Rust-for-Linux/linux/issues/1148
 Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 ---
- rust/kernel/faux.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/kernel/kunit.rs | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
-index 8a50fcd4c9bb..064b4f60af4e 100644
---- a/rust/kernel/faux.rs
-+++ b/rust/kernel/faux.rs
-@@ -7,7 +7,7 @@
- //! C header: [`include/linux/device/faux.h`]
- 
- use crate::{bindings, device, error::code::*, prelude::*};
--use core::ptr::{addr_of_mut, null, null_mut, NonNull};
-+use core::ptr::{null, null_mut, NonNull};
- 
- /// The registration of a faux device.
- ///
-@@ -54,7 +54,7 @@ impl AsRef<device::Device> for Registration {
-     fn as_ref(&self) -> &device::Device {
-         // SAFETY: The underlying `device` in `faux_device` is guaranteed by the C API to be
-         // a valid initialized `device`.
--        unsafe { device::Device::as_ref(addr_of_mut!((*self.as_raw()).dev)) }
-+        unsafe { device::Device::as_ref(&raw mut (*self.as_raw()).dev) }
-     }
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 1604fb6a5b1b..9f8165b15a37 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -130,9 +130,9 @@ unsafe impl Sync for UnaryAssert {}
+             unsafe {
+                 $crate::bindings::__kunit_do_failed_assertion(
+                     kunit_test,
+-                    core::ptr::addr_of!(LOCATION.0),
++                    &raw const LOCATION.0,
+                     $crate::bindings::kunit_assert_type_KUNIT_ASSERTION,
+-                    core::ptr::addr_of!(ASSERTION.0.assert),
++                    &raw const ASSERTION.0.assert,
+                     Some($crate::bindings::kunit_unary_assert_format),
+                     core::ptr::null(),
+                 );
+@@ -261,7 +261,7 @@ macro_rules! kunit_unsafe_test_suite {
+                     // (as documented) must be valid for the lifetime of
+                     // the suite (i.e., static).
+                     test_cases: unsafe {
+-                        ::core::ptr::addr_of_mut!($test_cases)
++                        (&raw mut $test_cases)
+                             .cast::<::kernel::bindings::kunit_case>()
+                     },
+                     suite_init: None,
+@@ -283,7 +283,7 @@ macro_rules! kunit_unsafe_test_suite {
+             #[cfg_attr(not(target_os = "macos"), link_section = ".kunit_test_suites")]
+             static mut KUNIT_TEST_SUITE_ENTRY: *const ::kernel::bindings::kunit_suite =
+                 // SAFETY: `KUNIT_TEST_SUITE` is static.
+-                unsafe { ::core::ptr::addr_of_mut!(KUNIT_TEST_SUITE) };
++                unsafe { &raw mut KUNIT_TEST_SUITE };
+         };
+     };
  }
- 
 -- 
 2.48.1
 
