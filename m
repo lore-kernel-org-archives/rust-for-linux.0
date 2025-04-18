@@ -1,66 +1,68 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803B71E0B9C
-	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 01:42:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646F21E2848
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 01:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744940527; cv=none; b=HkKBhUsaimqDa85VFWbam3p44bSA7ESGP0o8c1rG+IzQ3rZv8SfSqUQDDNHM4Dq1VOJ6Ry+SBV9sMf5n39YzxxkBSi+5v33S1yjQMj2xrXMuSwz7eBjr2rlxff8HTn024otcxQhDOazH3exfi6P7nPp3cxc+nPIgTUzg+KMWLmI=
+	t=1744940529; cv=none; b=pR0j3ezl+hf3lydCAzWReMGf89N2QTcDQbB3FtG8BGIFSMFkwwWwLWKiJbvxJnJwnTMxizDSe1X1wanjwAxLyf+a5GkudNgPkZ49/QPADxvCBjoe2RC1Pmh0+VvUhUyFALukGOBW3LiXt8pxvbP+gtYIifZHplUG5Jxcz/+fLSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744940527; c=relaxed/simple;
-	bh=iKnr6e8N56z9qXm9fEUldRgB1x8EQ77GX5xNtNprJqM=;
+	s=arc-20240116; t=1744940529; c=relaxed/simple;
+	bh=lWyRs8EwRP9eKktqaEVV7KkDApnFrboXBIw2L8sIYQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7cgTk5wsJ9jLvBf8uO4D+scaCRklsLpuJTabISRHvla3fk2hTbVZF32IJcg17L2arV/sbOrpJ5VcozvreGPpxUSx4c3cqzP8ybGmcXtSd0fi6BPNVlXO/Z/x2TF9WbgQ9zKGdjV2fi0sGKegiu20XfZ0pDSIxaGA2KC3jh/U1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=nnou6hUo; arc=none smtp.client-ip=209.85.128.181
+	 MIME-Version; b=SBA+g1vBVnG/Be9EKWpuldJaZkfZSE+RD0EgDP6ejRviph5dLQ7IRKDLJZ3WkDB6he9/7fY8Akq0nCijOdWdji6Xd7T5oE4W5nTrHmfDnLo/d0JIcAqtWwX4BYoJCcUt9aFf6E24hWZwLzr/o4mD6I+D3rS3CrqyECs2xINSa7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=JXryRGpR; arc=none smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="nnou6hUo"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-706cb438672so4577417b3.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 18:42:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="JXryRGpR"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7054f0e933cso12537957b3.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 18:42:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1744940524; x=1745545324; darn=vger.kernel.org;
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1744940527; x=1745545327; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SQWNy7W2o4yDQUOqT2/+qBcYzZtm3FQaQ3Z5pYP4aMw=;
-        b=nnou6hUo0BzPOEUjTPP2e19bu3/uqAoX/73GSHa6FiBnvEGQH8gx5Px9Po/ZEhwo0S
-         g9tdy/o1xHoR10RexTkKSpZqki2gWdZyqmltMhk/zBSBgPKqYFw1uXOlCrW/mDX1fa7k
-         gucW/NyJvWyoU8JV5FBNQpnzjhVN4bciA40bWP8aRpCr/At8SV+7tL4AlBVQgs4Q+lKD
-         3y19Gm+9VKvelms8ltHtt/yPNr0jOQDVk70jmD6NLouKpyp9phPiqQ8jMLg9FiOcuKpN
-         vBype8p8r9Eeb4AeI9H42j4OW/5uPAaP5hqPrpgFqSUlfDMJ3lhSNU/2uui8Yak1BRMT
-         4AWg==
+        bh=TB1A7cvc79BaS5ylmvvIDJWYgvPRJC5rldZ4aqKNUrc=;
+        b=JXryRGpRZwTZ0nASTeT4LAFvS863myXPM1IMrw4rtKYAPQQ3awSzGP9xhI5wrAY6bO
+         C6FA4QAdsrbAFoJTHEu9sGE000bZy5s7yj347UdQjmaKQntVUMd7/rsxN4Sjf2eYlK3S
+         j8pegQZhkUm1Fb5OLVmcPu0DsasWbybIKDXSdp6VdwXC57kGAnG5HObvtJR0L6GAYUZV
+         udkezFrGEqLZoLup85diRXbZb+mrHzPgNqyDnPf8AZjaMS/JRxmehpp/WKRk90Ow95m2
+         kXu/DwVftIy5XvZ89qkIJuv7wovD6TIeEqXJ502iZXTJFHPaA674m2IB1SNmumP/WDt+
+         bFKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744940524; x=1745545324;
+        d=1e100.net; s=20230601; t=1744940527; x=1745545327;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SQWNy7W2o4yDQUOqT2/+qBcYzZtm3FQaQ3Z5pYP4aMw=;
-        b=qQALGHCkcD5oVuCpWVSSQ+qI2Q1bY5fymjtvZrqa8I9QmdyybR+cTBoOjZOY869Nmy
-         IVK2NFUvH/VBqay3t6mhnhNLk9iI2eIAtRG5UOmE/Uxfhvjo8qxL/x30SJUZQ9wrSwEM
-         33WAhyu+nCUo4J+3lgOthFRH5KmuVmX9JCpdDEq2/Yh0+g7r9rwgwks2qGW5EXfHMOLo
-         a9memkw76iXsHQMFNfoeawywKJh10X0S3k90bNcDYV4I2K6sfkm5JObkaMEA7HuNZFgW
-         EluIWS54nU1xfOOE/pJilDQ/oe2XaKnbhaLf9bcnQ1Xt+KXE6mionK8yMi1jpyMnzSOa
-         j4mg==
-X-Forwarded-Encrypted: i=1; AJvYcCUR5AePoRaGKHj4nt/H2oQHYHTOBcIXg9ULFoWXpP2auSpBQhCOgm4GavQ8Q8/kQ6alf8Yfn0/mMKb7/a5P7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBSVT41gjKy2fBTIQ1ON1tKqNKGgRvOKEEpT/34/ecGvEG3VDB
-	YUqZ0bGFY9ZsFK/1ASBfsT77O3egaJIqXlYpLF2y23R/dl7Ys6v5QjKyLm3f1UZqaLJTq3TqaaW
-	p
-X-Gm-Gg: ASbGnctGYYGtdR724iRBLgf6HvbLMbFrZTdc1MD2mi/Q91LwacJBeXE9G8Eivo8eGAF
-	dFj6sJMmfUeJyaq7PWSwtck1/8OGoRr6TGHsmbS4rIZubyf+rgfHXxMJhlPQDP8JzZQ1Y2Y+WHt
-	+s/P5vPDu3qJiVDuzBN8uJ/yTsV4zdnDecfJZuDHxrJ3gYy1KbLekvuYb9C0/X79PZnargMceRL
-	PEoxD06BOEYrQ7U6/lEQWIKAyzPxUBQeSyyraimClA8+vnrbzzg1+fYv1UnsQKYAjfPrHzD0h6r
-	4szyqGFfOu+BuMtSrIKbkxxxPtbYEWWuo4o5WZGUpHqRxP6kKzV3v9cKWJ2fDNTINKlweQsBh52
-	sRnk9XgH7yPWFg1EuKkzfnnhNnB3M0adSPROcUKYAfDKjTQE=
-X-Google-Smtp-Source: AGHT+IF9KFMNEu6jpa97QayMti4TKcnPXsAq4MGAEYM4wdITHEEiEhaIFY7qZGhVB1Nqbo+5GqNr4Q==
-X-Received: by 2002:a05:690c:d07:b0:6f9:447d:d1a2 with SMTP id 00721157ae682-706ccdc6e66mr14828297b3.29.1744940524334;
-        Thu, 17 Apr 2025 18:42:04 -0700 (PDT)
+        bh=TB1A7cvc79BaS5ylmvvIDJWYgvPRJC5rldZ4aqKNUrc=;
+        b=YNwBIZEX0YlIJPlj55Rh5NAuQXSvjRSTbRHvA4fAaVJuN1sbTQemOfQj2/33tmUsVS
+         M9GAyBRODDigfGhKXNc7tR6zlWl/cATb6oLHddDjle+gZ/KKZECsQ1CNqsmKgFro1oAM
+         H5NfQDLHtAPL4zb/OH0KGCW2pKyNFK0xHZc0+OhpDGQDoyNbZjXq1c0Ju/aFIJK02tBI
+         ufVQjrhjk88HOGiXH6BUw0JxnCOR7TA4yN972qeBESPcCMNoV0+z6T0vykfCEhNj9fiU
+         qIEsp4SP9OikNg3MVZGYby4uNJR4mjaaD2RVsqCzGS/xddXMYdxIwe3a2hKAtLOofq+M
+         hgpw==
+X-Forwarded-Encrypted: i=1; AJvYcCWMFgSIQY23ODECn5rIrhq+QDQ6wkHk1sr/Q3J+UK4HI9Zdi1PHeGpXbhhyJKgd70PpnLlx17JQZLBXo8WUOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjWiduLyCF6wojgAQMSzhknis7woA0vedPd984U8EImu43/lBe
+	1m3EocVr/Qiwd+icbCU5ys+HhbyxQjoM7qu4giN7l6EFJhBUHvzL7hWN2gF3fvo=
+X-Gm-Gg: ASbGncu7tAPS2dpN8c9mBkL4vk06ZE6SAgsPtLSn7FmixPHh34n6bfrdFg12YAI8mvf
+	/TN7kR9OYQRQk2f7ndi11K3yaQpGuiWAycz++pzQEm0XzHRGQXD7vqcq91od8SB855aLKSfjCBc
+	mLgMQfsB5Ne/+rpge5ROwXfPBVLOSmpAp/TTv+C81CaXcqEpvfORaJpord1pJNUe+QkjnErUZoH
+	2BTUlsn8nJfnXYpCQ7ttpYIMO7jZB9+F42EGiX53Q5iviIqx8CV7yzyVtlTSYY+BoEcqAaa8DPg
+	rzPtOKBv1v/YOR0h8d8bWGMtzyz01h2KRZp3LjpDV3davNXgjxpGvHiYn4DDZZEdswsr+3Row29
+	AwEkFiePG+JYF79yxqX5YIkaicpNzbSh9biDSGeqyNoU8uoM=
+X-Google-Smtp-Source: AGHT+IEaodFbCrH95m8gcG0KxdEwL1rgFoYJnXev+SHNVhhr9Pyu1iRSnvHrOJp3DTWsZlFfG6QnRQ==
+X-Received: by 2002:a05:690c:a99:b0:6f6:ca9a:e9da with SMTP id 00721157ae682-706ccc88d57mr13984697b3.4.1744940527326;
+        Thu, 17 Apr 2025 18:42:07 -0700 (PDT)
 Received: from Machine.localdomain (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-706ca44fd13sm2804597b3.20.2025.04.17.18.42.03
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-706ca44fd13sm2804597b3.20.2025.04.17.18.42.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 18:42:03 -0700 (PDT)
+        Thu, 17 Apr 2025 18:42:07 -0700 (PDT)
 From: Antonio Hickey <contact@antoniohickey.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
@@ -68,14 +70,13 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
+	Trevor Gross <tmgross@umich.edu>
 Cc: Antonio Hickey <contact@antoniohickey.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 03/18] rust: task: remove use of `addr_of!` macro
-Date: Thu, 17 Apr 2025 21:41:24 -0400
-Message-ID: <20250418014143.888022-4-contact@antoniohickey.com>
+Subject: [PATCH v6 04/18] rust: faux: refactor to use `&raw mut`
+Date: Thu, 17 Apr 2025 21:41:25 -0400
+Message-ID: <20250418014143.888022-5-contact@antoniohickey.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250418014143.888022-1-contact@antoniohickey.com>
 References: <20250418014143.888022-1-contact@antoniohickey.com>
@@ -87,43 +88,42 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The use of `addr_of!` here is unnecessary since its immediately
-dereferenced. The main benefit of `addr_of!` is to avoid intermediate
-field loads without immediate dereferencing, so there's no benefit in
-using it here.
+Replacing all occurrences of `addr_of_mut!(place)`
+with `&raw mut place`.
 
-We can achieve the same behavior by directly accessing the
-`group_leader` and `pid` fields, which is more idiomatic.
+This will allow us to reduce macro complexity, and improve consistency
+with existing reference syntax as `&raw mut` is similar to `&mut`
+making it fit more naturally with other existing code.
 
 Suggested-by: Benno Lossin <benno.lossin@proton.me>
 Link: https://github.com/Rust-for-Linux/linux/issues/1148
 Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 ---
- rust/kernel/task.rs | 4 ++--
+ rust/kernel/faux.rs | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 9e6f6854948d..554b42c609af 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -259,7 +259,7 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
-     pub fn group_leader(&self) -> &Task {
-         // SAFETY: The group leader of a task never changes after initialization, so reading this
-         // field is not a data race.
--        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
-+        let ptr = unsafe { (*self.as_ptr()).group_leader };
+diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+index 8a50fcd4c9bb..064b4f60af4e 100644
+--- a/rust/kernel/faux.rs
++++ b/rust/kernel/faux.rs
+@@ -7,7 +7,7 @@
+ //! C header: [`include/linux/device/faux.h`]
  
-         // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
-         // and given that a task has a reference to its group leader, we know it must be valid for
-@@ -271,7 +271,7 @@ pub fn group_leader(&self) -> &Task {
-     pub fn pid(&self) -> Pid {
-         // SAFETY: The pid of a task never changes after initialization, so reading this field is
-         // not a data race.
--        unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
-+        unsafe { (*self.as_ptr()).pid }
+ use crate::{bindings, device, error::code::*, prelude::*};
+-use core::ptr::{addr_of_mut, null, null_mut, NonNull};
++use core::ptr::{null, null_mut, NonNull};
+ 
+ /// The registration of a faux device.
+ ///
+@@ -54,7 +54,7 @@ impl AsRef<device::Device> for Registration {
+     fn as_ref(&self) -> &device::Device {
+         // SAFETY: The underlying `device` in `faux_device` is guaranteed by the C API to be
+         // a valid initialized `device`.
+-        unsafe { device::Device::as_ref(addr_of_mut!((*self.as_raw()).dev)) }
++        unsafe { device::Device::as_ref(&raw mut (*self.as_raw()).dev) }
      }
+ }
  
-     /// Returns the UID of the given task.
 -- 
 2.48.1
 
