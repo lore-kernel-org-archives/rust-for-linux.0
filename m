@@ -1,105 +1,149 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF591C5F2C;
-	Fri, 18 Apr 2025 18:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E5F204C0C
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 19:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745001180; cv=none; b=boDnlNv+Yi5QbEuOVIes93DBzsLnInucxe/hF6QJ9a+ljmb3g6lM6uoWpOV9UmoGDgUNFZdOat3jD1u0QgHfmAmXvxzCa4I+HkoaDGLh24UUNPic1XVIt4sbiOp2tgJje0KFH76wp2i8N7vv69xHtyZTLMYDFXSgukmpiUp3Heg=
+	t=1745005489; cv=none; b=axcrSpXDZqS74dO/9vNW74N47oEx5/jiyi1yKchAohG8AZeDQofiI48dM3qzwo5rnJt6JeNuWKqtsmrBUoLTpd58QvbYqrYyBEYkaYwa3OsTjSYqJ0FTNKkOqahtZ4KV4bs3KiIC9NTrVFCPz4uZNvi/ehqfxeqIY0XK9yb8bzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745001180; c=relaxed/simple;
-	bh=ou5tcv9JxiL2u1j3f5J7z0CBvUbEeh6Xv6UWW41q/Ts=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PIKGvnzxPoBsNSjHGV7G/i5tIHPHR6XzM0SRVp8mU2ReJjuX74SQDJE/fVYLmQU8vUswxRfxZO9ekltSaDgzF4IhHnKpiLMnzD4ZzyAz7uGnmeBp4Ug8Oe5BFCzhmYcbptKDMBG5W3rQ089BBi5FVewIBDIO0qZ8nftemLsRoak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DTkfKw4e; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745005489; c=relaxed/simple;
+	bh=VmITldUAVN4yeDbRisnT/KKRuBjKNTaek+ixSS4e5/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MTgQ4DmrEvNEIuk0yqv9rB4dZscVHqpNVNe8Q3vnDx31JVpTCFzTuwbKeUWXdD4EsvdjLBTYLPw5MtyPGU5hRxLzUzbnln6Srd9ZbxhJpDNFBNG25iG8U5QzwIYzPSBSRsnhvLfbY0glS9zR+c/MuVxwqTFgcqNDw3i3kg2QZEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hefring.com; spf=none smtp.mailfrom=hefring.com; dkim=pass (2048-bit key) header.d=hefring-com.20230601.gappssmtp.com header.i=@hefring-com.20230601.gappssmtp.com header.b=ZMnnfyMp; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hefring.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hefring.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DTkfKw4e"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-227e29b6c55so3339165ad.1;
-        Fri, 18 Apr 2025 11:32:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=hefring-com.20230601.gappssmtp.com header.i=@hefring-com.20230601.gappssmtp.com header.b="ZMnnfyMp"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7c5e39d1db2so112696685a.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 12:44:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745001179; x=1745605979; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HFANXjtKTfEx9kV/YD0moYxXkPIgDxsA41WYPtohNLk=;
-        b=DTkfKw4etkWpNh+RFUp8WY1PgivSEv9PZw17qp44dcaCOl3v7OYsw2IPxNSuD7N2k+
-         eWGOXbUuIfoYl9XNNNmKnxQrbqmTPXrOK7lnf0rj40wSQjandtGCbllalR1idb5xZbFR
-         YkwW5YQDYzdTcAcd/RaF++/VlPVZVtWmx78DZW2Cpp4DBCe6PTPDcY48KN3DDg6qmM12
-         4iayocZ2eJFMo0DOl78m97Mm8F1g6lv3qa73/Fp3cMVqUjWWUfSXaL1AkTp8avv8MJzM
-         2tpaWNbLwSx+RFg4K6446CdmdXcJVSMYYCfCYsUgI+fZRQNnEhH8ya0ui9R3uaX0rhL6
-         bg+w==
+        d=hefring-com.20230601.gappssmtp.com; s=20230601; t=1745005486; x=1745610286; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SLauaaAIMDgGRmgJvUInjJwX+d3UVwdMW/GukaI+OmY=;
+        b=ZMnnfyMp+VyxkgEwIIqKCYfnMlOgzYMfgd0BiXmhy54bzSUN1C61DZVI5Msptbs3MZ
+         XU6tnoQW2EfNMMmPuHFfS+07mabg30BH2bHFAc8UMUZ1+fI6jMQqMUsiJA3rjw6AEWHW
+         RDtF3Yr5LANc1Qyr4sGHc+qf/BkmI4QlyhjMl8YaGPVR7Z3IBHlTMradDqSgdctvMJRS
+         Ii+hmyCreHwhGC0TOVxY6oKcVFF7+7Wa6f+/d6vK7WCOPwLnezvOxCyvz40SeQBQcUV8
+         SM9FVM3Mv1jJT3cF5kcHAaDmrokkVJmt/ajoqab8zXkNcGOVEMfGW5p5nbxRzt/zCxAl
+         4BUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745001179; x=1745605979;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HFANXjtKTfEx9kV/YD0moYxXkPIgDxsA41WYPtohNLk=;
-        b=DfD7NCvQCl4XBQzpuyMYsjh7WQgIPnik++OqFFv+dDbteWxE81kEZFWZ9Qf9KyPMlI
-         yw9R1WqxrPTgD9juQsx8fxdib6B+iyG3xT03HZzzo/+341U6KRxBDXQAV9ka/MfshVZk
-         mmu/HQN7OlBlt7oaaHrhKy9nkBNJ/E+T0SBx98aHocGTnWeHZfAy/ufjuu8wyuj2hrfW
-         +hTDkIMtVPyPM0Zbpf/yrarWDr5pRXHMrbYC4uuPKofr0zPOFjZHQAu/p9MiV7UUdbsQ
-         14ff+8oBgrFe4UQXuC4gOz/IzbN6ddrK8tG8Z2oIu1KRGNfUFoAve5QbGE1qPmPeAhFL
-         mdzg==
-X-Forwarded-Encrypted: i=1; AJvYcCVCv31lp3b3yhOT0tHEzABNB3MZh1FML4CtPe/9knpAOxzsVRzo5wuC4XIgjNRxF/2JPLT5W62OsfYQCe7oy0U=@vger.kernel.org, AJvYcCVFMqCYaN+nQe8rfjF8W3CSMV9C1t+parxQ6h4FccePISEDj4cR8pjng8zO7y4AcJqdVq5o@vger.kernel.org, AJvYcCVdg0h/ox9pTpMpVSs294Jrs/vkl7u8Lwz6+GE3dppBU7jis/r91GJoqFRs2XGdJTWx+ud1J9QEGlwpxu2wiLbh@vger.kernel.org, AJvYcCWdEP0lb1EiHWqMeam0t9glxtbC/KJGMZig4sc4SiwtdoMqs1eziVHT4KTBda6uw7qIeP/oqm8tFYZFNe8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLrgXMqFevOaeqoJg3hkL6mPY5eglY7jH/WqP18RE5tdpANI0q
-	Hwp7qDYTU/3DQELJYspcosEEPFHoCyJnpUc/RHvypz4y/8bFIyFqxITx6/SkVNUUov7b91IIMpp
-	Wkl7FOgZLtlE5Tb+6vUpIzZEPI/Q=
-X-Gm-Gg: ASbGncu1tjehtdweVcFwppYC6Qmkuyexnk5H135pjuJEUWDgHv+ImTcE1RqZcJ4NRgO
-	usb9xkRg6cM/2j6gAv9/l2vRek0RgX16G5mtNjA1Cpif4ypwb1B7R96QF6zW1KfH12JX+XWJpmY
-	8xhHbH4/rt7f1wPmDQmBKQSA==
-X-Google-Smtp-Source: AGHT+IFADhdep+T0QJPWyAyGB7omOjzqUUQUGaXKFwOncpJL98lO4epAjyTx4Uxd27a0AOpj/taau4IzgTr9RsgnsRg=
-X-Received: by 2002:a17:90b:1b44:b0:2fe:7f51:d2ec with SMTP id
- 98e67ed59e1d1-3087ba5cf08mr1856703a91.0.1745001178768; Fri, 18 Apr 2025
- 11:32:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745005486; x=1745610286;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SLauaaAIMDgGRmgJvUInjJwX+d3UVwdMW/GukaI+OmY=;
+        b=TzRyUATzN3O0LFWPcaEgfgUMfAW4LN4CFRyuaWxTmGG8EVgPYbumNA4tUfP0COCuAV
+         ZynUgj5r/Nf3+xz2et67DoAlPVuEKudfMQQC98qHEXb7tuz4Z4pxp6ZjwuOYWFliqKBO
+         ol2TbZC5PybCBWSjsRXjBa11wcWlwXU1b/OtSyp8+cJtTgHonB2y0gWnXUv51omHXwwj
+         kPDIzgQ7N9/Oa+Svak6Q0Y8A4eEYkatxULGP5rfhLY9g7ODgGIcgTplUNT7ehQ4FfW17
+         Bvz/JogtlI6r+GOi/2TufeeHOfJCaIH8eX+3oD6sm1ahZqTrXTLHkORv3AFJLrRw8sfX
+         FrKA==
+X-Forwarded-Encrypted: i=1; AJvYcCX8NN08ll/UVsRl4r8r5HQXM+AbjHLPH0frGMj6PrnE/0Vo90kvqN4TcP6NXIFz7VlKUomVvjsLORz9hah4iw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YynEHxTlTTRRwjeLvyRR3Xs4FA+TBfZqg5TevlpmluUIwz0i9r3
+	otJA3YuB/Vh21V1zEz6H2LDDdk8MXFh7ckbAl7U0bu3HBoH/zrMHbFYKz8QRSHs=
+X-Gm-Gg: ASbGncsbkI9AoS1hMrHy5wGiZpLgJBop4T+aMrERkb0TPAFTU6aLflti/SO6CYW2E8F
+	d7gIqhaamZ3v6SsyKwKlqFRLhKjRieJYqrPGu9hEAh3+NZIfs3GOYcY0fjsI7tgh8V/cmvindhj
+	xYBzYWwTfkJOKJ4uGUeG+4Im7/5DJmNlc+dV/VEA87uHW10Y68yZtYwNHe96zM3nCByDgRpWv6i
+	JFy3Ie87gYredq5Up8vGWnh582PMtK6DO8Spf8RGsBpCyFPXwOqU7R3LjuL9OUTm5NOulyvJ4E5
+	mwZEb26N/lRQ9P+hHcHpl347pkZEYLumUqqg/K3xnzKxzbtJ/HgJQzTWxQ==
+X-Google-Smtp-Source: AGHT+IHi1qEGGO/9pcvHTp0Xydqxo04Oz9IXipqF7+K166+yoLclI0eNGI7rSM4ss05GvLdt3ykMpw==
+X-Received: by 2002:a05:620a:1923:b0:7c9:23c7:a92b with SMTP id af79cd13be357-7c927f55148mr672289585a.8.1745005486577;
+        Fri, 18 Apr 2025 12:44:46 -0700 (PDT)
+Received: from dell-precision-5540 ([50.212.55.90])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925ac131asm138758985a.56.2025.04.18.12.44.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Apr 2025 12:44:46 -0700 (PDT)
+Date: Fri, 18 Apr 2025 15:44:43 -0400
+From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Christian Schrrefl <chrisi.schrefl@gmail.com>,
+	Russell King <rmk+kernel@armlinux.org.uk>,
+	Rudraksha Gupta <guptarud@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>, Ard Biesheuvel <ardb@kernel.org>,
+	anders.roxell@linaro.org, arnd@arndb.de, dan.carpenter@linaro.org,
+	laura.nao@collabora.com, linux-kernel@vger.kernel.org,
+	lkft-triage@lists.linaro.org, regressions@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, torvalds@linux-foundation.org,
+	Nick Clifton <nickc@redhat.com>,
+	Richard Earnshaw <richard.earnshaw@arm.com>,
+	Ramana Radhakrishnan <ramanara@nvidia.com>
+Subject: Re: Build: arm rustgcc unknown argument '-mno-fdpic'
+Message-ID: <aAKrq2InExQk7f_k@dell-precision-5540>
+References: <CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com>
+ <20250407183716.796891-1-ojeda@kernel.org>
+ <CA+G9fYt4otQK4pHv8pJBW9e28yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com>
+ <CANiq72napRCGp3Z-xZJaA9zcgREe3Xy5efW8VW=NEZ13DAy+Xw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250418161005.2425391-1-joelagnelf@nvidia.com>
- <20250418161005.2425391-13-joelagnelf@nvidia.com> <CANiq72nCfBdsfKzP72DWxLBh+Eueack9sS-E97wtsr0UtkAnUA@mail.gmail.com>
- <42da7c8e-08ff-4b04-ab58-6c0c2e287eb3@paulmck-laptop>
-In-Reply-To: <42da7c8e-08ff-4b04-ab58-6c0c2e287eb3@paulmck-laptop>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 18 Apr 2025 20:32:46 +0200
-X-Gm-Features: ATxdqUE11d5kf2E85BZuTAmKAI_UEsrp_SwqW-Oi0y3Ijarw0S_IvhRNYkCwLgs
-Message-ID: <CANiq72nE2cH93W2qZrzAxfbz3hjsw4Xy0YYNwOUQ74SeGiirgw@mail.gmail.com>
-Subject: Re: [PATCH 12/14] torture: Add testing of RCU's Rust bindings to torture.sh
-To: paulmck@kernel.org
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
-	Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Shuah Khan <shuah@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, rcu@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72napRCGp3Z-xZJaA9zcgREe3Xy5efW8VW=NEZ13DAy+Xw@mail.gmail.com>
 
-On Fri, Apr 18, 2025 at 8:04=E2=80=AFPM Paul E. McKenney <paulmck@kernel.or=
-g> wrote:
->
-> Suppose we fired up a guest OS and captured the console output.  Is there
-> a way to make that guest OS shut down automatically at the end of the
-> test and to extract the test results?
+On Tue, Apr 15, 2025 at 05:38:54PM +0200, Miguel Ojeda wrote:
+> On Tue, Apr 15, 2025 at 1:40 PM Naresh Kamboju
+> <naresh.kamboju@linaro.org> wrote:
+> >
+> > On Tue, 8 Apr 2025 at 00:07, Miguel Ojeda <ojeda@kernel.org> wrote:
+> > >
+> > > On Mon, 07 Apr 2025 22:58:02 +0530 Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > > >
+> > > > Regressions on arm build with config rustgcc-lkftconfig-kselftest on the
+> > > > Linux mainline and next failed with CONFIG_RUST=y enabled.
+> > >
+> > > > Bad: next-20250327
+> > > > Good: next-20250326
+> > >
+> > > > Unable to generate bindings: clang diagnosed error: error: unknown
+> > > > argument: '-mno-fdpic'
+> > >
+> > > I assume this is the arm support, i.e. commit ccb8ce526807 ("ARM: 9441/1:
+> > > rust: Enable Rust support for ARMv7").
+> > >
+> > > Clang does not seem to support `-mno-fdpic`, thus you probably need to add it to
+> > > `bindgen_skip_c_flags` in `rust/Makefile` so that it gets skipped when the C
+> > > compiler is GCC.
+> > >
+> > > If you do so, please double-check if the flag could potentially alter the ABI in
+> > > a way that `bindgen` would generate the wrong bindings.
+> >
+> > I tested this idea and it works but I don't know enough about
+> > rust to double-check if the flag could potentially alter the
+> > ABI in a way that `bindgen` would generate the wrong bindings.
+> 
+> Yeah, it would be nice to have someone knowledgeable about the
+> arch/GCC/flag confirm or not -- I don't think Rust knowledge is
+> needed, i.e. it is mostly about how GCC behaves with/without the flag
+> and vs. Clang (since `bindgen` uses libclang to parse code).
+> 
+> The original commit adding it to arm (and similar ones for sh and xtensa) says:
+> 
+>     When building with an arm-*-uclinuxfdpiceabi toolchain, the FDPIC ABI is
+>     enabled by default but should not be used to build the kernel.
+> 
+> So it sounds like it is only an issue for particular toolchains/targets anyway?
+> 
+> Cc'ing Ben who introduced it, and the arm port GCC maintainers in case
+> they may be able to tell us more -- thanks in advance, and sorry for
+> any potential noise!
 
-Ah, sorry, I thought you were already doing something like that, i.e.
-that perhaps you could reuse some kernel build you already had and
-avoiding a full rebuild/`mrproper`. The KUnit Python script uses QEMU
-and parses the results; e.g. you could look for the results lines
-like:
+FDPIC is only relevant with no-MMU targets, and then only for userspace.
+When configured for the arm-*-uclinuxfdpiceabi target, GCC enables FDPIC
+by default to facilitate compiling userspace programs. FDPIC is never
+used for the kernel, and we pass -mno-fdpic when building the kernel to
+override the default and make sure FDPIC is disabled.
 
-    # Totals: pass:133 fail:0 skip:0 total:133
-    ok 2 rust_doctests_kernel
+Therefore, it is perfectly safe to omit that flag for kernel builds with
+Clang.
 
-Cheers,
-Miguel
+Ben
