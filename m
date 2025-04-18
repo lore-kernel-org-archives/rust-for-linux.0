@@ -1,214 +1,191 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D982CCC0;
-	Fri, 18 Apr 2025 16:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682572101BD
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 16:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744995005; cv=none; b=AMebPMYyOQpvol+QKsgjI5TquNyyjO8a52Rp2jWXCrlvy3CAqmrUITMksVqmT2kPuBQ7MlBIJoTWA6pgf1rpi70+cb7igu33SMjWwadkWh9gRdMDdNqGwQXTnOgLR869cEdDkHXICNmZYhPgyn+yjxLAO9tqj7HWzgpmU56oFnM=
+	t=1744995082; cv=none; b=TpucO5LeW5K64CgcDnurZtNOi9Wg5NtsgJZoKc4fOBAhL+C1qZP9XOy6N+vq58HBYET0mxI0rMAijwMrq0z+tf246e386mNfUsGesmXbWjpNVIvbs+9mzGqgPgzlnKqPELiWY9qcwyt52HTylei+oK4WUa8L9aXAmFjoKTPJxdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744995005; c=relaxed/simple;
-	bh=4SPvBV/MDlxiR5aX8tf3sSjbLn91cuUdLEqO9PVmDQk=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KGR59Nl5nJCmndkJT8jLFhj0bZGIUxJFxpfEznU0gkQ4hFAapOb6tkMbQPeXovQm1k9pkNlo+CK+yW6H046uI64pBz/E6pE+ILrcm+OsehbMKtQs55yDFRc6dAmQLNlCnQMKGgHw428FZoPQPKpHANF+6ewD7ZOk5oqRVDB5/Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lrrrf0MS; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1744995082; c=relaxed/simple;
+	bh=W4azDtolEx2FB6Ye1wNRzhR79fC/vn4DDoTpF1ATYc4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=mZzmPVK4vWKXdQYxEI9sQR8odUUkZNevpNhv5IV9tcNX/En5VDghEkQP+PTRm/88DmK4K5if3xCbypoQcVgRVcV2XXhmUJEErlRwfec1DNgI39cX1qMKfQEXuW6H/P952ot7NUBs90y4wWgIVGq1daWFHFopBM91dj2/8hGiGNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D9Rr7Ysy; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lrrrf0MS"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7c5e39d1db2so106419285a.3;
-        Fri, 18 Apr 2025 09:50:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744995002; x=1745599802; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wqsq8yPJja9MfMcD3tAjoUAZlgKfMc3FNlCDKzyz/mQ=;
-        b=lrrrf0MSCUXxj/r/YYaM1WogRuDOimZmPrWclmn8ZFQJvmeyewiIfT7eHJ9zgO7Hmq
-         ZHN28gufvNIPoESOKuvJCgb4TjFHsdOhk9MJAdNPSM2HrNCpjhEdu0KsYdDtG7Wgvrkf
-         4jOA/eE9J2D5FiTVYl6P27rJfdhYW7h0GZzsKhe5mYL8eEsULn+h0luMu61sPKUttKcO
-         tegNKf63mP80s4RRiyB1SBb56kBYC2IpmGxv8134vjRCVLVc3bNNZ3p/7eAWTMqkNQEP
-         xZ7qxaXLcEKdwXi6GruI7lTDKPG0OIQelCtA2xJoEhDk0pLmDigBVqTfGZsSBvetm5f1
-         KqRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744995002; x=1745599802;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wqsq8yPJja9MfMcD3tAjoUAZlgKfMc3FNlCDKzyz/mQ=;
-        b=K7N4+5Vt4wRCfmSPtFkoNPs63xxQY0YkS71Tdr9PhaIyEZ0OlXgLI5T9RxUk4pF4Xc
-         C07SEYuHT4x/glucZoWVswVFon80iIZatlyZupVHr1sOKWCvfoQdgIWCwVVaaWZ7HPA/
-         WOGkGX0Zhiusbfad6NIULHtyAxvqB88NES7IzRNjEiLCv+kfD2TXUQRAW5kY9YbvT4RS
-         wu/ad4b2G4eVpiccRrVqAzu86vLdFL1aIB2bLkMMxZVm7qCh25I3SYnHsBHqIa3yHa7n
-         12NAvAUnlTfLWEZ4BuBEa0So26IM1YD8YkYl1V+KuvKsHEr/L1BXG7BBpi8tCsUimJfX
-         Adkw==
-X-Forwarded-Encrypted: i=1; AJvYcCW2og31Z+WeCdSo8wfv3D5vgJ83JOxt8cwP4kJPknMIsbD4RkZngXdD+Eje38/cU3+FCF79lj3wkJe/IF+ygjQI@vger.kernel.org, AJvYcCW3y2XAb0ivOt7Uqgmu/+fHIhm7iYd6rdUMmD7V5FCJAOKBRdGteZvgoNY42fcWhKIFj/NInU5SeY/gnEes@vger.kernel.org, AJvYcCWDJZI4EZyJLAj473r0JLjitMAr6oihTMUyqWndGMwPr22J3eRUitNgI/+IjehofMDmRfrLJnbu2mJK7y8gR7c=@vger.kernel.org, AJvYcCWLgF/OAO37VKGEyB3dQDYXLZuDbgRZVVvDtdqmsbUbZEqxL99ZEMENvWFEXBPq9sOHnLA1LQEBInWqrtei@vger.kernel.org, AJvYcCWNr1q5lbQj75hg2WkpZewcoU9fkILDCcEsDSVOZi/L8q8X8ll6pqmuiSBvcppaa8yl0gPgEM8GPfKU@vger.kernel.org, AJvYcCXOBnvcn67falgpbTxxH7KDvacVAc3L+qJcP60NodFIiBg9dwVUKg882cwgIMQt5onqmbV2POzq9Qz7df8=@vger.kernel.org, AJvYcCXQbeL0QffPNJ+Inpel/2qRIIZHpaozwD8iSprQE0NdcsS0rYz6tLEPUpQi18wHbeABKUXw31w/@vger.kernel.org, AJvYcCXRoASaZD/WPF7wEjZvDLSHhzlUBwEwkx4wNJ5T5NiSA2hjZmj1pcVfe9V0VQtD3f/B+VMjJAsIilJE@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy02AA3biaQOt3ajCn3eXkdhSK1D79qeNRR61vK98Sm6ndSPea+
-	lsw968H3Y9HU1naP6VsI020AI8Ap6JVud0ekCgBtoxgN6kH9Mmne
-X-Gm-Gg: ASbGncvejsFRtG7wuaE1/WrnJswWacjnAwgXLmAIx9zf8bS726ppbk2bt9bGT59K41m
-	XTmRGGi+4t2l91gCD0/BVLB4zRLra3jyXv4o/c1Syc0sWVMV55ZOmVd02UY3sQFVOrAgDodPQ1e
-	dAGXQQUv8yVMFsUZxwYm8vZm93ISjvHtiiw5Baw9rfXh5nPmJ/IOUja2Bh9wT843nvPionC9ot4
-	oZqOMqrrIARgCCHCMUK4KKqlolaN6Q1zrFpS/KhTMnLHQalYaUOU4Tyl+oRp+fx3ZYgZE54G4bP
-	wk6E8cy9sCz+S8H7dZOUAAWiSIKQiorDwDiyy1Jtcls1Qz82dC5LeQPGYP21/2owvi2yfyZaXMS
-	mNNfgjyetk66qCq6fLedGb7t0xUBJCsAuAffSPI/jyw==
-X-Google-Smtp-Source: AGHT+IGjqTF4f9smmVkb3wgWaIXUFVJ5bhyDcAmk4QFxgPcVtKxPUq6oNVaI94PfU1W5J6bp6Dym2A==
-X-Received: by 2002:a05:620a:4112:b0:7c5:9b93:8f64 with SMTP id af79cd13be357-7c92800f4ccmr542294585a.37.1744995001792;
-        Fri, 18 Apr 2025 09:50:01 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925ac5018sm124259085a.52.2025.04.18.09.50.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 09:50:01 -0700 (PDT)
-Message-ID: <680282b9.050a0220.3b746a.5cf9@mx.google.com>
-X-Google-Original-Message-ID: <aAKCtQe8o73FA8db@winterfell.>
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 0E13C1200043;
-	Fri, 18 Apr 2025 12:50:00 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 18 Apr 2025 12:50:00 -0400
-X-ME-Sender: <xms:t4ICaPrgLkWEbH6GWhTGPaFLVQbWrWOHlfTfkbUonj_YAvDMD-KU1Q>
-    <xme:t4ICaJqChA3dlMw71yhy8csoqqK5Y4iLQ0Z62MWQRL5LWGE5fFQMMMJHqxl4-Vp_7
-    SP1XzVYBXxDcpDtJg>
-X-ME-Received: <xmr:t4ICaMNPGrgxWdPMVCQLF2Mu2gBYuu6YOb47AYWzWqRWmLPK1aR1dgLJ-C0K0Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvfedvieejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnegoufhushhpvggtthffohhmrghinhculdegledmnecujfgu
-    rhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhf
-    gvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgv
-    rhhnpeekjefgudefhfeigffghfdtheeggfdtuddvkeejleffheeufeffteetvefgfeeuje
-    enucffohhmrghinhepghhithhhuhgsrdhiohenucevlhhushhtvghrufhiiigvpedtnecu
-    rfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrsh
-    honhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghn
-    gheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepge
-    ejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtrghmihhrugesghhmrghilhdr
-    tghomhdprhgtphhtthhopehmrghsrghhihhrohihsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurges
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilh
-    drtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthho
-    pegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvg
-    hnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggs
-    ohhrgheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:t4ICaC6UhO1CZnKjR6Ik-hzIl3GtGbvNVc1I-IDE4qls3LYxm5xgUQ>
-    <xmx:t4ICaO4vQPmAJgA9EQ9e4E1UXeaGRebhXTNU3grxc_kkgAjUxFqXfg>
-    <xmx:t4ICaKjYst-8W_IjfguRa7uGthyObF8qia3gL-YVcCE_LCjZovMezA>
-    <xmx:t4ICaA7BSsupuce3_SqR3OsmGrEA4G9TNiV4jY5WZn2qvcS_4fm5JQ>
-    <xmx:uIICaNKT393DPp0R4GPwnosQuFP000EMpmjxlybcE0RtxwLUKggyEoYo>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 18 Apr 2025 12:49:59 -0400 (EDT)
-Date: Fri, 18 Apr 2025 09:49:57 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D9Rr7Ysy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744995078;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=9Jc22vPjDGeO+zr+AJ2vzRyryOfSK27EryZ/lo0anPI=;
+	b=D9Rr7YsyLKuqHkhubzE5OmnCcoYiNyKSN0jOLAd5N9YE0hCJjvl9GUTcTppq+MVm6NbcdV
+	HPsoZ0TjW3XbJnlTVn1WKtsHs/TLWsyOG9+4bt4q8AjD/7jXQQiF7jxFAuRMtnWGDZrxOc
+	Y14LLYkJoHiSvt+Ga1FiGWKrjlLZgBo=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-562-J4wB9MzXMvi_sdC6eLbTQw-1; Fri,
+ 18 Apr 2025 12:51:12 -0400
+X-MC-Unique: J4wB9MzXMvi_sdC6eLbTQw-1
+X-Mimecast-MFC-AGG-ID: J4wB9MzXMvi_sdC6eLbTQw_1744995070
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DE98B1800370;
+	Fri, 18 Apr 2025 16:51:09 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.45.226.83])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AA7701800D9E;
+	Fri, 18 Apr 2025 16:51:03 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Russell King <linux@armlinux.org.uk>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Linux ARM <linux-arm-kernel@lists.infradead.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Frederic Weisbecker <frederic@kernel.org>,	Lyude Paul <lyude@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com, linux-pci@vger.kernel.org,
-	linux-block@vger.kernel.org, devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v10 2/6] rust: enable `clippy::ptr_cast_constness` lint
-References: <20250418-ptr-as-ptr-v10-0-3d63d27907aa@gmail.com>
- <20250418-ptr-as-ptr-v10-2-3d63d27907aa@gmail.com>
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH] drm/panic: Use a decimal fifo to avoid u64 by u64 divide
+Date: Fri, 18 Apr 2025 18:48:16 +0200
+Message-ID: <20250418165059.560503-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250418-ptr-as-ptr-v10-2-3d63d27907aa@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 9YjTgRM1ImQ_EbnupbSsPjzsXmXQnq0IY9IHGczKwwc_1744995070
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 
-On Fri, Apr 18, 2025 at 11:37:18AM -0400, Tamir Duberstein wrote:
-> In Rust 1.72.0, Clippy introduced the `ptr_cast_constness` lint [1]:
-> 
-> > Though `as` casts between raw pointers are not terrible,
-> > `pointer::cast_mut` and `pointer::cast_const` are safer because they
-> > cannot accidentally cast the pointer to another type.
-> 
-> There are only 2 affected sites:
-> - `*mut T as *const U as *mut U` becomes `(*mut T).cast()`
-> - `&self as *const Self as *mut Self` becomes
->   `core::ptr::from_ref(self).cast_mut()`.
-> 
-> Apply these changes and enable the lint -- no functional change
-> intended.
-> 
-> Link: https://rust-lang.github.io/rust-clippy/master/index.html#ptr_cast_constness [1]
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+On 32bits ARM, u64/u64 is not supported [1], so change the algorithm
+to use a simple fifo with decimal digits as u8 instead.
+This is slower but should compile on all architecture.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/dri-devel/CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com/ [1]
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+---
+ drivers/gpu/drm/drm_panic_qr.rs | 71 ++++++++++++++++++++++-----------
+ 1 file changed, 48 insertions(+), 23 deletions(-)
 
-Regards,
-Boqun
+diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+index 6025a705530e..dd55b1cb764d 100644
+--- a/drivers/gpu/drm/drm_panic_qr.rs
++++ b/drivers/gpu/drm/drm_panic_qr.rs
+@@ -366,8 +366,48 @@ fn iter(&self) -> SegmentIterator<'_> {
+         SegmentIterator {
+             segment: self,
+             offset: 0,
+-            carry: 0,
+-            carry_len: 0,
++            decfifo: Default::default(),
++        }
++    }
++}
++
++/// Max fifo size is 17 (max push) + 2 (max remaining)
++const MAX_FIFO_SIZE: usize = 19;
++
++/// A simple Decimal digit FIFO
++#[derive(Default)]
++struct DecFifo {
++    decimals: [u8; MAX_FIFO_SIZE],
++    len: usize,
++}
++
++impl DecFifo {
++    fn push(&mut self, data: u64, len: usize) {
++        let mut chunk = data;
++        for i in (0..self.len).rev() {
++            self.decimals[i + len] = self.decimals[i];
++        }
++        for i in 0..len {
++            self.decimals[i] = (chunk % 10) as u8;
++            chunk /= 10;
++        }
++        self.len += len;
++    }
++
++    /// Pop 3 decimal digits from the FIFO
++    fn pop3(&mut self) -> Option<(u16, usize)> {
++        if self.len == 0 {
++            None
++        } else {
++            let poplen = 3.min(self.len);
++            self.len -= poplen;
++            let mut out = 0;
++            let mut exp = 1;
++            for i in 0..poplen {
++                out += self.decimals[self.len + i] as u16 * exp;
++                exp *= 10;
++            }
++            Some((out, NUM_CHARS_BITS[poplen]))
+         }
+     }
+ }
+@@ -375,8 +415,7 @@ fn iter(&self) -> SegmentIterator<'_> {
+ struct SegmentIterator<'a> {
+     segment: &'a Segment<'a>,
+     offset: usize,
+-    carry: u64,
+-    carry_len: usize,
++    decfifo: DecFifo,
+ }
+ 
+ impl Iterator for SegmentIterator<'_> {
+@@ -394,31 +433,17 @@ fn next(&mut self) -> Option<Self::Item> {
+                 }
+             }
+             Segment::Numeric(data) => {
+-                if self.carry_len < 3 && self.offset < data.len() {
+-                    // If there are less than 3 decimal digits in the carry,
+-                    // take the next 7 bytes of input, and add them to the carry.
++                if self.decfifo.len < 3 && self.offset < data.len() {
++                    // If there are less than 3 decimal digits in the fifo,
++                    // take the next 7 bytes of input, and push them to the fifo.
+                     let mut buf = [0u8; 8];
+                     let len = 7.min(data.len() - self.offset);
+                     buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
+                     let chunk = u64::from_le_bytes(buf);
+-                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as u32);
+-                    self.carry = chunk + self.carry * pow;
++                    self.decfifo.push(chunk, BYTES_TO_DIGITS[len]);
+                     self.offset += len;
+-                    self.carry_len += BYTES_TO_DIGITS[len];
+-                }
+-                match self.carry_len {
+-                    0 => None,
+-                    len => {
+-                        // take the next 3 decimal digits of the carry
+-                        // and return 10bits of numeric data.
+-                        let out_len = 3.min(len);
+-                        self.carry_len -= out_len;
+-                        let pow = u64::pow(10, self.carry_len as u32);
+-                        let out = (self.carry / pow) as u16;
+-                        self.carry %= pow;
+-                        Some((out, NUM_CHARS_BITS[out_len]))
+-                    }
+                 }
++                self.decfifo.pop3()
+             }
+         }
+     }
 
-> ---
->  Makefile                        | 1 +
->  rust/kernel/block/mq/request.rs | 4 ++--
->  2 files changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 5d2931344490..7b85b2a8d371 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -481,6 +481,7 @@ export rust_common_flags := --edition=2021 \
->  			    -Aclippy::needless_lifetimes \
->  			    -Wclippy::no_mangle_with_rust_abi \
->  			    -Wclippy::ptr_as_ptr \
-> +			    -Wclippy::ptr_cast_constness \
->  			    -Wclippy::undocumented_unsafe_blocks \
->  			    -Wclippy::unnecessary_safety_comment \
->  			    -Wclippy::unnecessary_safety_doc \
-> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-> index 4a5b7ec914ef..af5c9ac94f36 100644
-> --- a/rust/kernel/block/mq/request.rs
-> +++ b/rust/kernel/block/mq/request.rs
-> @@ -69,7 +69,7 @@ pub(crate) unsafe fn aref_from_raw(ptr: *mut bindings::request) -> ARef<Self> {
->          // INVARIANT: By the safety requirements of this function, invariants are upheld.
->          // SAFETY: By the safety requirement of this function, we own a
->          // reference count that we can pass to `ARef`.
-> -        unsafe { ARef::from_raw(NonNull::new_unchecked(ptr as *const Self as *mut Self)) }
-> +        unsafe { ARef::from_raw(NonNull::new_unchecked(ptr.cast())) }
->      }
->  
->      /// Notify the block layer that a request is going to be processed now.
-> @@ -155,7 +155,7 @@ pub(crate) fn wrapper_ref(&self) -> &RequestDataWrapper {
->          // the private data associated with this request is initialized and
->          // valid. The existence of `&self` guarantees that the private data is
->          // valid as a shared reference.
-> -        unsafe { Self::wrapper_ptr(self as *const Self as *mut Self).as_ref() }
-> +        unsafe { Self::wrapper_ptr(core::ptr::from_ref(self).cast_mut()).as_ref() }
->      }
->  }
->  
-> 
-> -- 
-> 2.49.0
-> 
+base-commit: 74757ad1c105c8fc00b4cac0b7918fe3262cdb18
+-- 
+2.49.0
+
