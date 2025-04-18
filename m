@@ -1,94 +1,105 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C77513B2A4
-	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 18:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF591C5F2C;
+	Fri, 18 Apr 2025 18:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745000347; cv=none; b=tS/OTxBqYVXUXauFpCnqEOy5N/ClN3KS6uX9tf7vUa46V4vgYbz5YtNFvpW+B3b9c/kxTb1qY6BbGhRfRamFytXpuE0IRORvzK1NxKK/b3wnwdvT+O6M2gVIc+Gh4cGfad0rt8wCNZLIfA5jOcig6qkqoyK++AZFCde4NM73Xlc=
+	t=1745001180; cv=none; b=boDnlNv+Yi5QbEuOVIes93DBzsLnInucxe/hF6QJ9a+ljmb3g6lM6uoWpOV9UmoGDgUNFZdOat3jD1u0QgHfmAmXvxzCa4I+HkoaDGLh24UUNPic1XVIt4sbiOp2tgJje0KFH76wp2i8N7vv69xHtyZTLMYDFXSgukmpiUp3Heg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745000347; c=relaxed/simple;
-	bh=d22YnNj2bvvH91hnPGqpeN3Ca1vvKu4PX7YmTnLd3BI=;
+	s=arc-20240116; t=1745001180; c=relaxed/simple;
+	bh=ou5tcv9JxiL2u1j3f5J7z0CBvUbEeh6Xv6UWW41q/Ts=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RufstPkaBKO0o7MvBsovjg9hpRtuuC2oa4rF/pLVgdTvwg/ARe4/SJf7HUksPlViqoTlq1mBA3Dwb5A5jDS9vYsI2fc757xX6P2Hs99SSYQpdJ1STXkF6KcJC9AP3r726bU+O5jwuaUTm+bD0XW8Wry4Jt5vnsU05qdvw7yBXiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bk5lgV5X; arc=none smtp.client-ip=209.85.210.171
+	 To:Cc:Content-Type; b=PIKGvnzxPoBsNSjHGV7G/i5tIHPHR6XzM0SRVp8mU2ReJjuX74SQDJE/fVYLmQU8vUswxRfxZO9ekltSaDgzF4IhHnKpiLMnzD4ZzyAz7uGnmeBp4Ug8Oe5BFCzhmYcbptKDMBG5W3rQ089BBi5FVewIBDIO0qZ8nftemLsRoak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DTkfKw4e; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bk5lgV5X"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7373aa99e2cso166555b3a.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 11:19:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DTkfKw4e"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-227e29b6c55so3339165ad.1;
+        Fri, 18 Apr 2025 11:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745000346; x=1745605146; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745001179; x=1745605979; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d22YnNj2bvvH91hnPGqpeN3Ca1vvKu4PX7YmTnLd3BI=;
-        b=bk5lgV5XiNm5bgInoqKyNkZWFSElqGW5NgyY2KIxGVdPmq4CjIh8Ec/mQCU7WvLvTj
-         Ujvr3PGM08ZsDB3iyX3SBqrjr8JHHiRMMaXyTIUZLon5wh0oa/BnYc3vz2aFdHSIpwsF
-         2ClYTxBmEpM1e5As5F+eLAHu6/fbzSTnxnJSfVmwyoFM/BXcwu3Fn8SKuMQT3LOzkeCP
-         jV1IcU1HtOvoRN0dUZOn8dRFbi5KqMp/9yS5gZs60PaL5EiX4JHzOO0mISDuhcm1dW9G
-         zKxpn1KX3Gz1oN5cCITIL1JwE5aS3PzUJI9zkEq1k/GTMt46WsobNqeF74z9geLROZxi
-         3Tmg==
+        bh=HFANXjtKTfEx9kV/YD0moYxXkPIgDxsA41WYPtohNLk=;
+        b=DTkfKw4etkWpNh+RFUp8WY1PgivSEv9PZw17qp44dcaCOl3v7OYsw2IPxNSuD7N2k+
+         eWGOXbUuIfoYl9XNNNmKnxQrbqmTPXrOK7lnf0rj40wSQjandtGCbllalR1idb5xZbFR
+         YkwW5YQDYzdTcAcd/RaF++/VlPVZVtWmx78DZW2Cpp4DBCe6PTPDcY48KN3DDg6qmM12
+         4iayocZ2eJFMo0DOl78m97Mm8F1g6lv3qa73/Fp3cMVqUjWWUfSXaL1AkTp8avv8MJzM
+         2tpaWNbLwSx+RFg4K6446CdmdXcJVSMYYCfCYsUgI+fZRQNnEhH8ya0ui9R3uaX0rhL6
+         bg+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745000346; x=1745605146;
+        d=1e100.net; s=20230601; t=1745001179; x=1745605979;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=d22YnNj2bvvH91hnPGqpeN3Ca1vvKu4PX7YmTnLd3BI=;
-        b=FA3zGNw9hH8CW/uoqj0lYaLd6W1Z3rptLnoJ8rY5IZENHJ2UmidsruiETpfit3zcFY
-         HRINlUflC4+j7KaJrFq3WFpMD3vnqqphxRwZOAKDk2ReWML/QAh9BBYd42qmZ4YaTsk+
-         fM5bQC6Dg6gyP5x9KJDRoeMm9FDeXEht+fR4YTp3rOPudEaASdkdz4chr+NKYW2ZH3JM
-         QQhL68q+n2sc+sgd3hcJDIOHKHWQkt0IZur+3PSAymh+tnv6rtraatzr75sg/Sz8d2AD
-         3STcLpuWNuaQhd3hZ6leZFttHpoIEqM5qzuqV1vvqKB8DiCHowSiBBZSiYmelN3yf7ty
-         CQ2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUL7pJj535jON9a848nWER5093W7tkj0KSh36WMS0k+Ep066s+clSv3D73ZjEm/aq24wVU7RCJiHfBg2G17qg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY929LT4cbkhIaFAxETL2AuKToeYfhAW/g9ImutUAao5efdv+L
-	PUI2SWzavg632TnB4hoKebc6oirYL0pO00krCCNUR12sKISQAQM+zA2SoQEmUzOJ17bT8E48kdC
-	mIBFHKXaQF9edpaWLDXejHNlp+Lo=
-X-Gm-Gg: ASbGnct3EPtFDJwJl230KcXMSo4sCxjuVYNo6YOEpT8PPaR2fwq83c8LUDhx60qJL23
-	M8N70zl6mZPH4AEPXW8Qf/cLShoNWP7nK9qYrqgtCw9+PdWcNnFJdHK+j96AlSEKL3u56zfc3LT
-	qzmzUYZJsfmJKN8ZE1q82dgQ==
-X-Google-Smtp-Source: AGHT+IFV4p50Y316WvC6L326TQ06DuzofFaE8ATLtfwiWvN0aeHQqLZuaNb8xpXTzoUb4z2FpJVX3YSLno6jad/7bKA=
-X-Received: by 2002:a17:90b:3b8d:b0:2ee:acea:9ec4 with SMTP id
- 98e67ed59e1d1-3087bbad9edmr2033817a91.3.1745000345670; Fri, 18 Apr 2025
- 11:19:05 -0700 (PDT)
+        bh=HFANXjtKTfEx9kV/YD0moYxXkPIgDxsA41WYPtohNLk=;
+        b=DfD7NCvQCl4XBQzpuyMYsjh7WQgIPnik++OqFFv+dDbteWxE81kEZFWZ9Qf9KyPMlI
+         yw9R1WqxrPTgD9juQsx8fxdib6B+iyG3xT03HZzzo/+341U6KRxBDXQAV9ka/MfshVZk
+         mmu/HQN7OlBlt7oaaHrhKy9nkBNJ/E+T0SBx98aHocGTnWeHZfAy/ufjuu8wyuj2hrfW
+         +hTDkIMtVPyPM0Zbpf/yrarWDr5pRXHMrbYC4uuPKofr0zPOFjZHQAu/p9MiV7UUdbsQ
+         14ff+8oBgrFe4UQXuC4gOz/IzbN6ddrK8tG8Z2oIu1KRGNfUFoAve5QbGE1qPmPeAhFL
+         mdzg==
+X-Forwarded-Encrypted: i=1; AJvYcCVCv31lp3b3yhOT0tHEzABNB3MZh1FML4CtPe/9knpAOxzsVRzo5wuC4XIgjNRxF/2JPLT5W62OsfYQCe7oy0U=@vger.kernel.org, AJvYcCVFMqCYaN+nQe8rfjF8W3CSMV9C1t+parxQ6h4FccePISEDj4cR8pjng8zO7y4AcJqdVq5o@vger.kernel.org, AJvYcCVdg0h/ox9pTpMpVSs294Jrs/vkl7u8Lwz6+GE3dppBU7jis/r91GJoqFRs2XGdJTWx+ud1J9QEGlwpxu2wiLbh@vger.kernel.org, AJvYcCWdEP0lb1EiHWqMeam0t9glxtbC/KJGMZig4sc4SiwtdoMqs1eziVHT4KTBda6uw7qIeP/oqm8tFYZFNe8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLrgXMqFevOaeqoJg3hkL6mPY5eglY7jH/WqP18RE5tdpANI0q
+	Hwp7qDYTU/3DQELJYspcosEEPFHoCyJnpUc/RHvypz4y/8bFIyFqxITx6/SkVNUUov7b91IIMpp
+	Wkl7FOgZLtlE5Tb+6vUpIzZEPI/Q=
+X-Gm-Gg: ASbGncu1tjehtdweVcFwppYC6Qmkuyexnk5H135pjuJEUWDgHv+ImTcE1RqZcJ4NRgO
+	usb9xkRg6cM/2j6gAv9/l2vRek0RgX16G5mtNjA1Cpif4ypwb1B7R96QF6zW1KfH12JX+XWJpmY
+	8xhHbH4/rt7f1wPmDQmBKQSA==
+X-Google-Smtp-Source: AGHT+IFADhdep+T0QJPWyAyGB7omOjzqUUQUGaXKFwOncpJL98lO4epAjyTx4Uxd27a0AOpj/taau4IzgTr9RsgnsRg=
+X-Received: by 2002:a17:90b:1b44:b0:2fe:7f51:d2ec with SMTP id
+ 98e67ed59e1d1-3087ba5cf08mr1856703a91.0.1745001178768; Fri, 18 Apr 2025
+ 11:32:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250418165059.560503-1-jfalempe@redhat.com>
-In-Reply-To: <20250418165059.560503-1-jfalempe@redhat.com>
+References: <20250418161005.2425391-1-joelagnelf@nvidia.com>
+ <20250418161005.2425391-13-joelagnelf@nvidia.com> <CANiq72nCfBdsfKzP72DWxLBh+Eueack9sS-E97wtsr0UtkAnUA@mail.gmail.com>
+ <42da7c8e-08ff-4b04-ab58-6c0c2e287eb3@paulmck-laptop>
+In-Reply-To: <42da7c8e-08ff-4b04-ab58-6c0c2e287eb3@paulmck-laptop>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 18 Apr 2025 20:18:52 +0200
-X-Gm-Features: ATxdqUFNvn4gbPVQIz8Iq_5t6yfACtcQqcpNAlWXdLLoUUoWOhcu7yBY9nNqBOM
-Message-ID: <CANiq72neXsmmYQXQOYxndFWkyp1NKa=x3skekZZJOVE-wMZeuQ@mail.gmail.com>
-Subject: Re: [PATCH] drm/panic: Use a decimal fifo to avoid u64 by u64 divide
-To: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Russell King <linux@armlinux.org.uk>, 
-	Paolo Bonzini <pbonzini@redhat.com>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Javier Martinez Canillas <javierm@redhat.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org
+Date: Fri, 18 Apr 2025 20:32:46 +0200
+X-Gm-Features: ATxdqUE11d5kf2E85BZuTAmKAI_UEsrp_SwqW-Oi0y3Ijarw0S_IvhRNYkCwLgs
+Message-ID: <CANiq72nE2cH93W2qZrzAxfbz3hjsw4Xy0YYNwOUQ74SeGiirgw@mail.gmail.com>
+Subject: Re: [PATCH 12/14] torture: Add testing of RCU's Rust bindings to torture.sh
+To: paulmck@kernel.org
+Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
+	Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Shuah Khan <shuah@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, rcu@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 18, 2025 at 6:51=E2=80=AFPM Jocelyn Falempe <jfalempe@redhat.co=
-m> wrote:
+On Fri, Apr 18, 2025 at 8:04=E2=80=AFPM Paul E. McKenney <paulmck@kernel.or=
+g> wrote:
 >
-> Link: https://lore.kernel.org/dri-devel/CANiq72ke45eOwckMhWHvmwxc03dxr4rn=
-xxKvx+HvWdBLopZfrQ@mail.gmail.com/ [1]
+> Suppose we fired up a guest OS and captured the console output.  Is there
+> a way to make that guest OS shut down automatically at the end of the
+> test and to extract the test results?
 
-Thanks for fixing that -- some tags for your consideration:
+Ah, sorry, I thought you were already doing something like that, i.e.
+that perhaps you could reuse some kernel build you already had and
+avoiding a full rebuild/`mrproper`. The KUnit Python script uses QEMU
+and parses the results; e.g. you could look for the results lines
+like:
 
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/dri-devel/CANiq72ke45eOwckMhWHvmwxc03dxr4rn=
-xxKvx+HvWdBLopZfrQ@mail.gmail.com/
-Fixes: ccb8ce526807 ("ARM: 9441/1: rust: Enable Rust support for ARMv7")
+    # Totals: pass:133 fail:0 skip:0 total:133
+    ok 2 rust_doctests_kernel
 
 Cheers,
 Miguel
