@@ -1,71 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4C7209F2A
-	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 21:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8732715442A
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 21:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745010910; cv=none; b=rOclvRTPqKIYf4YoVeTlsRnxC1WB9fzcNl3y45k/86ePeadlEFrgBq9NhQV3ynqoeTnnE9f8fyuqRxBiv/DRkngV+3x5Jqa78zZqsvggSYT0J+agFX/UPMqbkUc5j1Qd0+il3viPoRkYPNE6gLXA79g5MZKARzv6/8VbUVps7UY=
+	t=1745010995; cv=none; b=Rvl5f4k65shXBPjqUN+sjoD+XQ6YPtI7jumM8mRhkiq5Ia2NVuMql8B/xOToLOS5xk3QYHdf5xGoHWPgM3CMv/+6+I8XQgqHaiyZgztPr5CkgfLDQnIbZ7E23F9T8Yq+Rc8jcae1nXfpHL7KfKsDHaxOsT8RO7y5s4L5X08XMTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745010910; c=relaxed/simple;
-	bh=zZfpWO+7RLkW7b9GqNX4vdeiFzJtcHDL2dQccuT71zI=;
+	s=arc-20240116; t=1745010995; c=relaxed/simple;
+	bh=U5QTt4X4Nx1xlMv0giNGsblXO2z73Bk8dC2zoq3omF0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KntyS+fRxXa5hCT+emBSjKshtZNumQ7Jm+VdwbdQC6+jk7/N47ZqdCnZ23sGvWrFSuLfAjVSjOsNX8NwoXIAEsRxQACoKHWurdDSuuIVVrFQ7jgXxQJ0gdYHRgKaV1ayHWpW2lMP1CgQxUgpC8U746oDLf4A6CuIwXtIMukB6dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VI9TnThV; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=R0W/6+GjlzUyDqeb34NHFeKx/SQYIhebIj49NptjQfvcfnVZgDTH0aOK76uROXSMGenhnVURkV14JdGwtmdP2AtdKLzZpUhNeLF+j6tuaoOTkfK4uzvg7zDCm2RGKeaS/mzmtMpFKMyuUdTIRByzS4fuGiY3IH2NV+N2pF0ZJ/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CFtD4JNy; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VI9TnThV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CFtD4JNy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745010907;
+	s=mimecast20190719; t=1745010992;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RSJh8pcbSBmPXCvurlzv6x5YSz513HsVl3WOLp6ZQcY=;
-	b=VI9TnThVHsqiTNY8NSsT/YfTXOupmiJnzYtvVhWmesASoYpN0XOWxlw4scGcmJysNqIQVN
-	tWZdrX2pd4YZ2hOtMURVO79NfKE9HTLCUPliRGW8X1r1qC0272XreWurNBKvSmBXJ2bnwY
-	9eWT93+8Pk7QcEK95nvCyMba81R7tbw=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Xk22euViEvIz0VM2jR9SFw/cmcsOCxO90bF0qLzaV+k=;
+	b=CFtD4JNyrggKhk300LVUem2hwFnEYr6mJPDyA496vontMcl8h/NNX4PCgXbzA2MvJ6Lfnd
+	5XNZVTZWT/msMGyr2zphbsoqNCU7uy4wuub4LdHhjkSNnBnJk8yfzs9m0IL6tqjZX64hxB
+	aZCnmGYHuGT9hzfjOs6dVhcUSUHF9Pc=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-weCNBKM5PmiCxxslmh1Eig-1; Fri, 18 Apr 2025 17:15:05 -0400
-X-MC-Unique: weCNBKM5PmiCxxslmh1Eig-1
-X-Mimecast-MFC-AGG-ID: weCNBKM5PmiCxxslmh1Eig_1745010905
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6ed16cc6e39so40859836d6.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 14:15:05 -0700 (PDT)
+ us-mta-100-MnYiZO_8N4ykIIqeNyWHEw-1; Fri, 18 Apr 2025 17:16:31 -0400
+X-MC-Unique: MnYiZO_8N4ykIIqeNyWHEw-1
+X-Mimecast-MFC-AGG-ID: MnYiZO_8N4ykIIqeNyWHEw_1745010991
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c5c77aff55so55812985a.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 14:16:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745010905; x=1745615705;
+        d=1e100.net; s=20230601; t=1745010990; x=1745615790;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RSJh8pcbSBmPXCvurlzv6x5YSz513HsVl3WOLp6ZQcY=;
-        b=duI5GAbhbAKoipUFKhVLqFavy4VKsSrybyuM2dXu97ThS3cInFVczD6k4vCQvorecd
-         G76oSfPCwIg+nWcRT2t3sylNB1Mq/71A+NXIrm+R11IapSch2VIwp3kGLulL3lNSjunH
-         +SCpyRNDqIUYlwgvw00OqI9OMDwHiOOdHe+iIL345Hu/xtkx+vGFTMRcZuRVViT5lABB
-         Tkzmqt/eRoQ+D2x2bmWPX8/3wreHCjxQSWdO6RIen5NDcVqc+FuZOEsXhvUk4DiHZvuX
-         Fj/9gw6qbncp48KmCv7ncMedy/3qeR7gpy6/mhsiVn81Z05QVnKoqIIcS/X3hKTuhcSY
-         3vOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHeL62OjyZB/FP3yCYqRU5LV3fU9eSFBRgCdnwFDIw8+xgZfnMKRuedBC38wy7vWqmTZVKUGGv2wICWBQuTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNaV2P99zjjfKJ+gfhO7TGPLoAm66XC7Bx6dn9FV2edD/xlsCs
-	8nk+zrrVZVzcZnjndVOIDHqQRns8cx+0l2+vs9jdjHNEAxTfEdJ6RXALw3fEaYrtYjOnzq1tb+g
-	ab0NFR+urr+AcvpKFrdqWX1suisDLrudsbRY23w5nJUTgmAJnUXEgucy4MV+0vQrF
-X-Gm-Gg: ASbGncuBLZeSPGl6qbmU1jGjK5euF8vPNGdkUkmUVHpIq1XxLQ+PRcbx0C0fb0uIHxP
-	cxYi7dqR52Z0IScQltmacZIv4PBtF/7MRnhqnYTFmaWCrkByY6nRybBJRo+tgCIHKE3C0rPG8yV
-	E3sV1bcdlzswu+f4Ok8LFVzW4Qu7XfgVcqtwehE4kKKQzZblzKy7GUlky9BdAj95mSz2mtsuBNJ
-	QdZ4p2diaZZfQC8N5wuJbzsRh//aATH20IjymmS0X3o9i8zAt9hZwnju4bEzdHcwRnbxdvM/Mj/
-	sZzC4TlQAvVKAmAelw==
-X-Received: by 2002:a05:6214:1d23:b0:6e8:86d3:be73 with SMTP id 6a1803df08f44-6f2c46719a9mr69122316d6.37.1745010905446;
-        Fri, 18 Apr 2025 14:15:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDkQhKW5NlWzYu36liej6xLerOrx09k6zWlKl0jQt7Z37VNEQPeON2TgTDgoFBf+PMKqLDMg==
-X-Received: by 2002:a05:6214:1d23:b0:6e8:86d3:be73 with SMTP id 6a1803df08f44-6f2c46719a9mr69121886d6.37.1745010905138;
-        Fri, 18 Apr 2025 14:15:05 -0700 (PDT)
+        bh=Xk22euViEvIz0VM2jR9SFw/cmcsOCxO90bF0qLzaV+k=;
+        b=emir72f4fs3aEUmKWeRTyP0ha5r9CpUW5wkHY57fypyLZW5VyJU76VWt++i4dXtuxj
+         jdMoNjdQEXF8H4ZAWtq9DbYygdg/KLnRQ8EDIeFYyZjEAvQOYvBJCimPpJ+oBVVX3O0T
+         Q3fsTvwzxat7Nw1zjquK2PUT49tXeo19PrrNaoF87XrPJzEO2Np7LKTp2cp5pXjqg6vM
+         aIwJQPzyLq/XfRgFrYndNrhN/ZXxrTxO0zB0J/Tb/6G8O7/zNhOfRHzTZsXdbHsmAtUv
+         h3hb3N+Pxj9+spDaRfHBc7iXt8NAVFjYPnIiBq73lofonQaKrgVn7CTLCTkVs/40bHdC
+         7zpw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCBiyQYduFH54s7zT+6FOoMrnnWUJpO7/KUy/h5+NV9JYDtocN24PBQLBSb8dXOMRdzvpbtQhOYTefsctaDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo1JDUilhmi/1tJXko1jR5boo3uirqBH8TKr7wZjgG1bzh9h3z
+	BzqKMvegpeLJUouLfg53v4V+rYmrhtjbcMW3hlxk3cJ7XfMN9kIMi5QeMlHTWVvuuEttCkcKISG
+	C9UqW+y3CBp4i4U2mA0LZOnYMCZO1xG2oU5kDTIzYAgHBIEkFo+kSGGE2k/d/2j6y
+X-Gm-Gg: ASbGncv9gb6Bg7ZxBWhpBgmgys4ya+C2BozhHsX/H8m1v23RmEAiDVGSnAbyduezv94
+	neSykNvGZ5jZL12JdcPXa1PrXs8h4gKLc8eGbDzNitU8iXTfDu6jX1t5EopPkpB7f9kWC0I+5+I
+	K8Gvb0ZqaLsX8GwwtbKdCptTg577uWNPzy3hxvAJL2iIxpxhcD3Z2mPwDNutdREyiPxcdPYo0LZ
+	sW9hemwwFdJhI9lua6VQ0VC+JiMA8R8Ga8do8sWmB8R8m6UwQSVEeuFsJXx5JKBJm8bxPk7Uw+v
+	dbdLAM6n1BLdhlTuDQ==
+X-Received: by 2002:a05:620a:254e:b0:7c5:a423:f5b0 with SMTP id af79cd13be357-7c927f67be2mr627118585a.7.1745010990619;
+        Fri, 18 Apr 2025 14:16:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGttEdCRl/Jftlxgg0tctPtPZvwrm+GKV8uLzocgx6G3m4i1VaLkM+fh0mX4im74kxture+A==
+X-Received: by 2002:a05:620a:254e:b0:7c5:a423:f5b0 with SMTP id af79cd13be357-7c927f67be2mr627115285a.7.1745010990219;
+        Fri, 18 Apr 2025 14:16:30 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2b0edd4sm14550746d6.37.2025.04.18.14.15.03
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925b6dd84sm144372685a.106.2025.04.18.14.16.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 14:15:04 -0700 (PDT)
-Message-ID: <02568498f621846c64c024d9f01943fdadc08124.camel@redhat.com>
-Subject: Re: [PATCH v2 6/8] rust: drm: file: Add File abstraction
+        Fri, 18 Apr 2025 14:16:29 -0700 (PDT)
+Message-ID: <dc63bdc4bff8f084714e2c8ff30e4c0d435e85b7.camel@redhat.com>
+Subject: Re: [PATCH v2 0/8] DRM Rust abstractions
 From: Lyude Paul <lyude@redhat.com>
 To: Danilo Krummrich <dakr@kernel.org>, airlied@gmail.com, simona@ffwll.ch, 
 	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
@@ -75,10 +75,9 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
 	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
 	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Date: Fri, 18 Apr 2025 17:15:03 -0400
-In-Reply-To: <20250410235546.43736-7-dakr@kernel.org>
+Date: Fri, 18 Apr 2025 17:16:27 -0400
+In-Reply-To: <20250410235546.43736-1-dakr@kernel.org>
 References: <20250410235546.43736-1-dakr@kernel.org>
-	 <20250410235546.43736-7-dakr@kernel.org>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -88,25 +87,128 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LVNTtaTpcScMD9n0P-jR9KoLvC7YVSR8519YJmRzhKs_1745010905
+X-Mimecast-MFC-PROC-ID: Vkr-KskbTF0rkxT_7RbalyzikkAz4ZzxqYpvH_5kbWA_1745010991
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+Left a few tiny comments to address before pushing upstream, mostly just st=
+yle
+stuff.
+
+With those addressed, for the whole series:
+
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+
 On Fri, 2025-04-11 at 01:55 +0200, Danilo Krummrich wrote:
-> +
-> +    /// The open callback of a `struct drm_file`.
-> +    pub(crate) extern "C" fn open_callback(
-> +        raw_dev: *mut bindings::drm_device,
-> +        raw_file: *mut bindings::drm_file,
-> +    ) -> core::ffi::c_int {
-> +        // SAFETY: A callback from `struct drm_driver::open` guarantees =
-that
-> +        // - `raw_dev` is valid pointer to a `sturct drm_device`,
-
-sturct :3
-
-
+> This is the series for the initial DRM Rust abstractions, including DRM d=
+evice /
+> driver, IOCTL, File and GEM object abstractions.
+>=20
+> Compared to the original work from Lina, the patches in this series conta=
+in the
+> following modifications.
+>=20
+>   - "rust: drm: ioctl: Add DRM ioctl abstraction"
+>       * wrap IOCTL data in Opaque<T> to avoid UB when creating a referenc=
+e
+>       * original source archive: https://archive.is/LqHDQ
+>=20
+>   - "rust: drm: add driver abstractions" (newly created)
+>       * Remove unnecessary DRM features
+>       * add #[expect(unused)] to avoid warnings
+>       * add sealed trait
+>       * original source archive: https://archive.is/Pl9ys
+>=20
+>   - "rust: drm: add device abstraction" (newly created)
+>       * full rewrite of the drm::Device abstraction using the subclassing
+>         pattern
+>       * original source archive: http://archive.today/5NxBo
+>=20
+>   - "rust: drm: add DRM driver registration" (newly created)
+>       * move VTABLE to drm::Device to prevent use-after-free bugs; VTABLE
+>         needs to be bound to the lifetime of drm::Device, not the
+>         drm::Registration
+>       * combine new() and register() to get rid of the registered boolean
+>       * remove file_operations
+>       * move struct drm_device creation to drm::Device
+>       * introduce Devres
+>       * original source archive: https://archive.is/Pl9ys
+>=20
+>   - "rust: drm: file: Add File abstraction"
+>       * switch to the Opaque<T> type
+>       * fix (mutable) references to struct drm_file (which in this
+>         context is UB)
+>       * restructure and rename functions to align with common kernel
+>         schemes
+>       * write and fix safety and invariant comments
+>       * remove necessity for and convert 'as' casts
+>       * original source archive: https://archive.is/GH8oy
+>=20
+>   - "rust: drm: gem: Add GEM object abstraction"
+>        * switch to the Opaque<T> type
+>        * fix (mutable) references to struct drm_gem_object (which in this
+>          context is UB)
+>        * drop all custom reference types in favor of AlwaysRefCounted
+>        * bunch of minor changes and simplifications (e.g. IntoGEMObject
+>          trait)
+>        * write and fix safety and invariant comments
+>        * remove necessity for and convert 'as' casts
+>        * original source archive: https://archive.is/dD5SL
+>=20
+> A full diff between this series and the original work can be found in [1]=
+.
+>=20
+> This patch series is also available in [2]; an example usage from nova-dr=
+m can
+> be found in [3].
+>=20
+> [1] https://pastebin.com/qLBCfgTc
+> [2] https://gitlab.freedesktop.org/drm/misc/kernel/-/tree/topic/rust-drm
+> [3] https://gitlab.freedesktop.org/drm/nova/-/tree/staging/nova-drm
+>=20
+> Changes in v2:
+>   - IOCTL: wrap data in Opaque<T> to avoid UB when creating a reference
+>   - driver: remove unnecessary FEATURE flags
+>   - driver: remove date field
+>   - MAINTAINERS: add files to both DRM and DRM MISC
+>   - change primary authorship of most patches
+>=20
+> Asahi Lina (6):
+>   rust: drm: ioctl: Add DRM ioctl abstraction
+>   rust: drm: add driver abstractions
+>   rust: drm: add device abstraction
+>   rust: drm: add DRM driver registration
+>   rust: drm: file: Add File abstraction
+>   rust: drm: gem: Add GEM object abstraction
+>=20
+> Danilo Krummrich (2):
+>   drm: drv: implement __drm_dev_alloc()
+>   MAINTAINERS: add DRM Rust source files to DRM DRIVERS
+>=20
+>  MAINTAINERS                     |   2 +
+>  drivers/gpu/drm/drm_drv.c       |  58 ++++--
+>  include/drm/drm_drv.h           |   5 +
+>  rust/bindings/bindings_helper.h |   6 +
+>  rust/helpers/drm.c              |  19 ++
+>  rust/helpers/helpers.c          |   1 +
+>  rust/kernel/drm/device.rs       | 195 +++++++++++++++++++
+>  rust/kernel/drm/driver.rs       | 170 +++++++++++++++++
+>  rust/kernel/drm/file.rs         |  99 ++++++++++
+>  rust/kernel/drm/gem/mod.rs      | 321 ++++++++++++++++++++++++++++++++
+>  rust/kernel/drm/ioctl.rs        | 161 ++++++++++++++++
+>  rust/kernel/drm/mod.rs          |  19 ++
+>  rust/kernel/lib.rs              |   2 +
+>  rust/uapi/uapi_helper.h         |   1 +
+>  14 files changed, 1043 insertions(+), 16 deletions(-)
+>  create mode 100644 rust/helpers/drm.c
+>  create mode 100644 rust/kernel/drm/device.rs
+>  create mode 100644 rust/kernel/drm/driver.rs
+>  create mode 100644 rust/kernel/drm/file.rs
+>  create mode 100644 rust/kernel/drm/gem/mod.rs
+>  create mode 100644 rust/kernel/drm/ioctl.rs
+>  create mode 100644 rust/kernel/drm/mod.rs
+>=20
 
 --=20
 Cheers,
