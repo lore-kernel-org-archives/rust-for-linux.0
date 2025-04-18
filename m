@@ -1,63 +1,63 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8471EF091
-	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 01:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104BC1F8AD3
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 01:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744940544; cv=none; b=jn2vUAO01sId3iNnvwI3QBr3maey5wUISR4sfAmzm7u2iC7LFh1rq+SvgW6ZkS2jgoQXMx2xpbYNvcDCJ81bv/mneAQCqfXE2IgmrZwywBQoJ8JY/eSH4vZf9oH19xqhFF1RicmqJmztW94HHiDAU7oBSL0cUPOZcb1wHBuDKTs=
+	t=1744940547; cv=none; b=h8UTgBeXpRcK0FWFSpKyta/azrFZxmPDCEKr8G9m+Tg49r/HEnxo1Vua1THjSGWxrnfYLU/tTkAOfgMR8cxmjnLx3OFL4g4Cnk04n5FgINqEZ4iYaFwUSFPl1gn+K/na2gJQfGx3N6IaQ/Hlhu0I5CZg4hGHPh1fTYuD0IhXTNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744940544; c=relaxed/simple;
-	bh=tMcIRwiOND2LkFh2ta+lL6MRxkp883Z5u7gsfs1JO5A=;
+	s=arc-20240116; t=1744940547; c=relaxed/simple;
+	bh=ixPIHyOir8cPjkZjuNzSYJZCzjhxKzBneRBShXgOp7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVjzgRRkyGrC0T4uAQF0bX+mskj9Dd+3lxWpijQddHDSfLM2hLcTt6lMSnkLZQD/Z7TOyFVr0P/8aduK+8ayhHpXuvMn8g9XaG/to5wOqX7s+pC4O5p1re7UoIZDnFxTkhsdCuz8EZNnEd/goiVj9ExGsN0u/ziOaycfEDMZWN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=Rv9a8fo0; arc=none smtp.client-ip=209.85.219.177
+	 MIME-Version; b=e5mkq9ob4+iQBJl5l4RvcoGpt9xWMhfAffrAgK8yxRB3DpdAVreKQ0QptjDLhC/YrjfiAVT7YiHGJEq3MlhwcmS8pRqQTdmY1ERYji0lmnh/z0PduSuepqR7bsXay2yAr7VcG/LSerC1B8/G7WKoh7vsz6FdtV1lgpUONagouGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=lFfyUE45; arc=none smtp.client-ip=209.85.128.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="Rv9a8fo0"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e637edaa652so1199670276.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 18:42:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="lFfyUE45"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6ff1e375a47so12312647b3.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 18:42:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1744940542; x=1745545342; darn=vger.kernel.org;
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1744940544; x=1745545344; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FhrJCHjOUAPpl8pOKLpx97O3fapOOv9377RmQCvweOo=;
-        b=Rv9a8fo08tVACpRDd331s7f4rx32nZXqWJozG7lnl5bvwJYOZGn/6Z7eENfCA9a4Sl
-         TIQ0PDPWBfdVbAzqvpMdTKH2SHQ5+d4rhaEoCxuI9k1TmSUIOCZ5FcocZpZ7Xv7EYqO7
-         u+p1oxBrabrycG30JQjFxCre4t1uwYR1vxC05ZRA4MrKw1u9SFr5tGlOzfyyVTmtqc7c
-         anaLvbCH/8pOODLTc4Xbhdz1mvMCPFmoiTZq08v6H/jNs0AdSTI9qLP9P6iFxTvPUXmQ
-         oJd+IMNCCZlqySZTBW6MFkPwD6Wbl2nWPZXOUunJIWkcXpIiLPziC0gb0mxolwENtCdf
-         ADQg==
+        bh=mwxScseOQw1FlOZC8ZbLSlfG5B8Iqept6klH4FSUhoA=;
+        b=lFfyUE45HqFgqwImf5FQWOUX9q38b9SGO142kRSgfq6sO5TF3K6oWPLyVIigKbNeHL
+         0pOQFQ/E359NJ5/obfKtvxKCaB4fHKBijZFJgL0z5WwPBE1Huov7DwyUB5IM05T3WCUr
+         6Hh1An52e/2+pCplVvZI97bHoFXbPgGe9wiKIKc9ZjtQuca4t9z7Z3Oc0vT3VXM6Rwda
+         ayayQ9rPTZrBNhYuhLQsP09s6nEREcxardSO8lBkGo/eY8vJhcyCiA1zXjNcxMxPAA5q
+         AqOD/Qyw+H2zDBxs6fV4ocNQO2DZAy207OaQgsGNScbqq32JrG8UvzbEulthNQF743EZ
+         k9oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744940542; x=1745545342;
+        d=1e100.net; s=20230601; t=1744940544; x=1745545344;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FhrJCHjOUAPpl8pOKLpx97O3fapOOv9377RmQCvweOo=;
-        b=PgdTxawYXJih4orNs+1+q94gFvhVsgppCw+v50q3qZKowZDMqZGOVmJUjObFP8oBd0
-         ot3RC1B9AJsjaGG9/o+p+kFpbDOwI2une2t1eXf4K55Ebx8C2BIdKMVCDepNBqXXFCuP
-         IcJZU/kz/alsk8nG7zvTiy0mRdMZs5Z49S/FyKxHaFTJCcknZy10erP5Xy4MfYdISt9D
-         4mCUtn/mQCh7Hdz7Zw6nGIwod1Dkhi4BU2wCXHHnhIEdyEjnRXhLvs+oOzUwUhcAKlXW
-         HeczVy3HiQSO1QmzcDnu/9Zv+Tvcks70axlS/wlSoIHjAkJd8aWSUS6nPVGkPmGcnjSA
-         gcHw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+Za4MjbRMYFs3iTSBNcyF9s4LF7MfVEr/Sy4RgyR76UWiPx+/Ro6zf9HXsCpnesGhzG/I6ew2M1rR9wspcA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3In9hc4pvbeqbtJYQOG59epAb30J9GSWixwBn85FyDfEt5eJu
-	FbOP+P014rh5AZuEXceC3n2OA/esxuHGYDLMqE28G5xJgNdhxPw3HHaYl5mzl74=
-X-Gm-Gg: ASbGncvJsjrkx4W+qb+gYjKi+iKyDNfyq88tftXJDNL0s3F6QTAiYm2YIAugQe93OOa
-	JZXLDatPWWT61wWMSW0Zd+x33m21IUGpLm0+9MRy1UGdd3zPaxqj96y6anHn4zkdUxnKbQq5lRe
-	eUETsiPKN3HpDfsQ27DXpbSHeKY2dhVR02OmhTn6kn/GEMYkbIUNO/e/30oafwV5wR+gcqVnSjL
-	jWC1Emo2aLT+vrA6+VdX23X3azyup3qyhzokGX7Pt3lzsQS2Ni1fWU0G9TDu6u9+wqCLjt48GyW
-	NJ5bWuO5hqkXTNq0GAvdH4sV7u2XdNq/G/28zNMwPPcQbZVFH4cOeM1hlHZlMypFJpPbBiVlzCI
-	ZfRKiqED5sQHOf+nhsbBbwu5RhyMCgGnQOQ1f
-X-Google-Smtp-Source: AGHT+IFJ7xF+dYjlJXmNKGmA+1knxcpHOEgB8ON1tlYplySG+tkiaUTxJnupU3OtBJxR+cTdYbbaqA==
-X-Received: by 2002:a05:6902:1b09:b0:e60:8a06:1ddd with SMTP id 3f1490d57ef6-e7297e9a9afmr1489461276.36.1744940542126;
-        Thu, 17 Apr 2025 18:42:22 -0700 (PDT)
+        bh=mwxScseOQw1FlOZC8ZbLSlfG5B8Iqept6klH4FSUhoA=;
+        b=xAeXfqplU+mengTQvMm2XZQCQ3dHjUSfvIIm3FK9c5YWZQHj/SBa1pzPTO+owCmSxH
+         aE6xGe76Ik7p6YKSxLmbp/dvamLPFnGt93j64I3xGup5kgEOgOzr7U+iI//lPup/E5/e
+         +5AcCVhZl5Ca5vU5zwimYvYwpnpYXBQJZ8Jx6OvBhOiMeeN0pEAjC0mHnDNju4AYy/cz
+         FVeBGijYFMR8/h61+qFT7YcqNIVAF98GwqaW2kWEhmu/TIqVE1WyNOmJJV0dwxBvvyTR
+         tMB9ehducPuqo10yNiCkC+FmX8nx1KCscDT4nukDFkAI8yaAR2HuAUFJYAhh79kUoZWe
+         p54g==
+X-Forwarded-Encrypted: i=1; AJvYcCWRCmfpaYpC11ejiwYhduVUTkkB5hVFSjEMekHWGjzLwMwg5SBbzguYlx9HQ4GLqOGEp8ft12+Gz4CulrrFkw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOhjRo4EaQgiJMVO8z5WMYUpSewAnyxbeg7emBi+W4jfXf0/EQ
+	GYg6W4/VZKFmQZYqqtfxkTKruABaCldHWWrNaFEWDtRTtTjBj1z2QvxIlLevoI4=
+X-Gm-Gg: ASbGnctuslHFluDpzUoBiJ48clSymujJSj4/OoeldqpShFzSS93fu5YGBp1Y0/G8R8I
+	ucUVo46N4J9Xzs79NrHOszZYq/nVhwGxwcS0KF/9Ed8jYIU5wrnszqnYdLsXsv155qq53/HmeDx
+	Uw+xdZU1Ji/GQS3Kc75KdXpRgKNQPk3RtCFjMuYkrCvkem3OfAGf2Ef4ZZi5dFsgM/iAmh8nC0y
+	Pud5gmvYNgcZwLVQauDXjvX5GCIVQ8wCjnnTVcmPx3QIZd9/y/UMSOrKYY3HjTj+CbULuZClsyK
+	iwG/3j6fJeaFgb7zJQCR2ZLDJNoR4amYCpj9TVUJ1yOfQ3lGs3wxUD0+YIvoKGx83HGMhTzK1Jj
+	rVU8XIAaDMFGKDU9D8EFGb2u6La3WkSz5oYxv
+X-Google-Smtp-Source: AGHT+IHwJejReAjzu7zp5ph/fNbSSOSO8a6C6bk5Grburt5rknFWefJSbxGkwUM9NLgxy5QvPNkyGg==
+X-Received: by 2002:a05:690c:9b0a:b0:702:5689:356e with SMTP id 00721157ae682-706cccfcef6mr16287377b3.12.1744940543891;
+        Thu, 17 Apr 2025 18:42:23 -0700 (PDT)
 Received: from Machine.localdomain (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-706ca44fd13sm2804597b3.20.2025.04.17.18.42.21
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-706ca44fd13sm2804597b3.20.2025.04.17.18.42.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 18:42:21 -0700 (PDT)
+        Thu, 17 Apr 2025 18:42:23 -0700 (PDT)
 From: Antonio Hickey <contact@antoniohickey.com>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -72,9 +72,9 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 Cc: Antonio Hickey <contact@antoniohickey.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 07/18] rust: workqueue: replace `raw_get` with pointer cast
-Date: Thu, 17 Apr 2025 21:41:28 -0400
-Message-ID: <20250418014143.888022-8-contact@antoniohickey.com>
+Subject: [PATCH v6 08/18] rust: rbtree: refactor to use `&raw mut`
+Date: Thu, 17 Apr 2025 21:41:29 -0400
+Message-ID: <20250418014143.888022-9-contact@antoniohickey.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250418014143.888022-1-contact@antoniohickey.com>
 References: <20250418014143.888022-1-contact@antoniohickey.com>
@@ -86,36 +86,123 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Now that `Work` is initialized via `pin-init`, the `work` field
-is always used. This allows us to replace the use of unsafe
-`Opaque::raw_get` with direct pointer casting.
+Replacing all occurrences of `addr_of_mut!(place)`
+with `&raw mut place`.
 
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/all/20250316061429.817126-1-contact@antoniohickey.com/T/#mc7a4757e8c132f84228b728c7d123d73841501d6
+This will allow us to reduce macro complexity, and improve consistency
+with existing reference syntax as `&raw mut` is similar to `&mut`
+making it fit more naturally with other existing code.
+
+Suggested-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://github.com/Rust-for-Linux/linux/issues/1148
 Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
 ---
- rust/kernel/workqueue.rs | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ rust/kernel/rbtree.rs | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 3a8e05ac6bd5..c5f09b0682bb 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -399,12 +399,8 @@ pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit
-     /// need not be initialized.)
-     #[inline]
-     pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
--        // SAFETY: The caller promises that the pointer is aligned and not dangling.
--        //
--        // A pointer cast would also be ok due to `#[repr(transparent)]`. We use
--        // `&raw const (*ptr).work` so that the compiler does not complain that the
--        // `work` field is unused.
--        unsafe { Opaque::raw_get(&raw const (*ptr).work) }
-+        // CAST: `Work` is transparent to `bindings::work_struct`.
-+        ptr.cast_mut().cast()
+diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+index 5246b2c8a4ff..04dbbeb8318d 100644
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -11,7 +11,7 @@
+     cmp::{Ord, Ordering},
+     marker::PhantomData,
+     mem::MaybeUninit,
+-    ptr::{addr_of_mut, from_mut, NonNull},
++    ptr::{from_mut, NonNull},
+ };
+ 
+ /// A red-black tree with owned nodes.
+@@ -238,7 +238,7 @@ pub fn values_mut(&mut self) -> impl Iterator<Item = &'_ mut V> {
+ 
+     /// Returns a cursor over the tree nodes, starting with the smallest key.
+     pub fn cursor_front(&mut self) -> Option<Cursor<'_, K, V>> {
+-        let root = addr_of_mut!(self.root);
++        let root = &raw mut self.root;
+         // SAFETY: `self.root` is always a valid root node
+         let current = unsafe { bindings::rb_first(root) };
+         NonNull::new(current).map(|current| {
+@@ -253,7 +253,7 @@ pub fn cursor_front(&mut self) -> Option<Cursor<'_, K, V>> {
+ 
+     /// Returns a cursor over the tree nodes, starting with the largest key.
+     pub fn cursor_back(&mut self) -> Option<Cursor<'_, K, V>> {
+-        let root = addr_of_mut!(self.root);
++        let root = &raw mut self.root;
+         // SAFETY: `self.root` is always a valid root node
+         let current = unsafe { bindings::rb_last(root) };
+         NonNull::new(current).map(|current| {
+@@ -459,7 +459,7 @@ pub fn cursor_lower_bound(&mut self, key: &K) -> Option<Cursor<'_, K, V>>
+         let best = best_match?;
+ 
+         // SAFETY: `best` is a non-null node so it is valid by the type invariants.
+-        let links = unsafe { addr_of_mut!((*best.as_ptr()).links) };
++        let links = unsafe { &raw mut (*best.as_ptr()).links };
+ 
+         NonNull::new(links).map(|current| {
+             // INVARIANT:
+@@ -767,7 +767,7 @@ pub fn remove_current(self) -> (Option<Self>, RBTreeNode<K, V>) {
+         let node = RBTreeNode { node };
+         // SAFETY: The reference to the tree used to create the cursor outlives the cursor, so
+         // the tree cannot change. By the tree invariant, all nodes are valid.
+-        unsafe { bindings::rb_erase(&mut (*this).links, addr_of_mut!(self.tree.root)) };
++        unsafe { bindings::rb_erase(&mut (*this).links, &raw mut self.tree.root) };
+ 
+         let current = match (prev, next) {
+             (_, Some(next)) => next,
+@@ -803,7 +803,7 @@ fn remove_neighbor(&mut self, direction: Direction) -> Option<RBTreeNode<K, V>>
+             let neighbor = neighbor.as_ptr();
+             // SAFETY: The reference to the tree used to create the cursor outlives the cursor, so
+             // the tree cannot change. By the tree invariant, all nodes are valid.
+-            unsafe { bindings::rb_erase(neighbor, addr_of_mut!(self.tree.root)) };
++            unsafe { bindings::rb_erase(neighbor, &raw mut self.tree.root) };
+             // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
+             // point to the links field of `Node<K, V>` objects.
+             let this = unsafe { container_of!(neighbor, Node<K, V>, links) }.cast_mut();
+@@ -918,7 +918,7 @@ unsafe fn to_key_value_raw<'b>(node: NonNull<bindings::rb_node>) -> (&'b K, *mut
+         let k = unsafe { &(*this).key };
+         // SAFETY: The passed `node` is the current node or a non-null neighbor,
+         // thus `this` is valid by the type invariants.
+-        let v = unsafe { addr_of_mut!((*this).value) };
++        let v = unsafe { &raw mut (*this).value };
+         (k, v)
+     }
+ }
+@@ -1027,7 +1027,7 @@ fn next(&mut self) -> Option<Self::Item> {
+         self.next = unsafe { bindings::rb_next(self.next) };
+ 
+         // SAFETY: By the same reasoning above, it is safe to dereference the node.
+-        Some(unsafe { (addr_of_mut!((*cur).key), addr_of_mut!((*cur).value)) })
++        Some(unsafe { (&raw mut (*cur).key, &raw mut (*cur).value) })
      }
  }
  
+@@ -1170,7 +1170,7 @@ fn insert(self, node: RBTreeNode<K, V>) -> &'a mut V {
+ 
+         // SAFETY: `node` is valid at least until we call `KBox::from_raw`, which only happens when
+         // the node is removed or replaced.
+-        let node_links = unsafe { addr_of_mut!((*node).links) };
++        let node_links = unsafe { &raw mut (*node).links };
+ 
+         // INVARIANT: We are linking in a new node, which is valid. It remains valid because we
+         // "forgot" it with `KBox::into_raw`.
+@@ -1178,7 +1178,7 @@ fn insert(self, node: RBTreeNode<K, V>) -> &'a mut V {
+         unsafe { bindings::rb_link_node(node_links, self.parent, self.child_field_of_parent) };
+ 
+         // SAFETY: All pointers are valid. `node` has just been inserted into the tree.
+-        unsafe { bindings::rb_insert_color(node_links, addr_of_mut!((*self.rbtree).root)) };
++        unsafe { bindings::rb_insert_color(node_links, &raw mut (*self.rbtree).root) };
+ 
+         // SAFETY: The node is valid until we remove it from the tree.
+         unsafe { &mut (*node).value }
+@@ -1261,7 +1261,7 @@ fn replace(self, node: RBTreeNode<K, V>) -> RBTreeNode<K, V> {
+ 
+         // SAFETY: `node` is valid at least until we call `KBox::from_raw`, which only happens when
+         // the node is removed or replaced.
+-        let new_node_links = unsafe { addr_of_mut!((*node).links) };
++        let new_node_links = unsafe { &raw mut (*node).links };
+ 
+         // SAFETY: This updates the pointers so that `new_node_links` is in the tree where
+         // `self.node_links` used to be.
 -- 
 2.48.1
 
