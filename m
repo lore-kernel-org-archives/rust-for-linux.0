@@ -1,71 +1,71 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FD32868B
-	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 21:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D941D5AC6
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 21:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745010389; cv=none; b=Krm9LXDLVUOW51fjJF+dx2OitTSxFaZXjrNRnECxukLX61Ttri/kiK/rSUtbwtXGBzhNClx17M5EW1lkGyv69NIaRXCNTTX7XvXPhtykv1kQ0JpfmsAiOu83DccZqbuHQX28FXoATaGlWV+z83u/twxFEH0toCz/Ye61gt/R4fY=
+	t=1745010735; cv=none; b=s+Zngqa/igfhLRFRP3s05V5w34AiA9Wrvv7j3ZiJrJaKdYaRKQq/sdJo6ZDLx51jFqQ2dBKQ6RIbwvm/oXGc7p/SDqlFnIDLSIVa58S21WLomun/zj52cVeQTEzU3M8NoBmyblO26QCbkWxbD2+KXd3FVRilYi0L5tKYioovV/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745010389; c=relaxed/simple;
-	bh=Em66VR9A3ehgc3qkW+HgRf/+RVhhW1ikdA8LPzsJQck=;
+	s=arc-20240116; t=1745010735; c=relaxed/simple;
+	bh=hW5QhdSqSips28vxaoWCi/Xn0ap1ERgzwVowyvN0yMQ=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cYlVm7SzpYZlwFDisdjrpU4qxY1Jeeyzi0R6u+QxxCsz18TM3Api0K50G2wz8ld2TOStsnAjZvbd0CSKt3SExgjX0TTPWdCTEBxWAZE6UmNn5Nsg4k/UtfyCnxWOxgcALh8s4vF7LbJEEP9b1r9YhDwGC3RW8MI54kJ8qOmFPyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=StXS3euy; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=cBR7kJvAqYrT5AUfjVxl8xZI4WQszYUALblsJZJ30zhKWfWNeiRaHPrDaFDIHjPLhaHTdRqOO8clw7M3JbaDuWemB4PV35WVVdxtHaFEQgMv+ay0cIOs6yYndJwBH1y5Z+YirL7oTnA+oaFINSQm0nBe5kPllUCvNJ3ENiaXCxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UPuE1gzc; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="StXS3euy"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UPuE1gzc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745010386;
+	s=mimecast20190719; t=1745010732;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/8Fz3eVgyQer6DnblEskJgt+TLOIomHwhB1rLMLwnzg=;
-	b=StXS3euy73Prc4AfeFYerPTinV48S7H4phZxLtW3Z+wBPxxysyCI+xSaX3eiKlhlQlPuCq
-	j7Cbp4sSWiyvfHPwA6vikiYwUFDjS47jPuo4oZ9Pr5nFKi3c7T1sx6Br7EOUe0lypAoj/G
-	ch/6FptlcuBcqz82Bln11DT3/jobfO8=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=thLmySe12WpSXBtJAvCXgnLWp7OS+WUD68LFhWYj3hw=;
+	b=UPuE1gzcK23gqNTScD3eui3Rtar/9kALxbP/P9xvprRO4G1o9y5hqVFVR2jNhpuosFDVX5
+	l7L6s2COIw6L++iG7IrOtFUCj89iljPbwbN3rBb4KMw446hhr/ybSpsPV3ujh0AZJLqe1H
+	NRQGOBiIwYawKgv+kRCx/ffVwqQ++HI=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-3-EUC4tKUyPtiok3FiFRZxrg-1; Fri, 18 Apr 2025 17:06:25 -0400
-X-MC-Unique: EUC4tKUyPtiok3FiFRZxrg-1
-X-Mimecast-MFC-AGG-ID: EUC4tKUyPtiok3FiFRZxrg_1745010384
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6e8ec18a29aso23477306d6.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 14:06:25 -0700 (PDT)
+ us-mta-439-tV_2NxVRP0OTZnwpQm--cg-1; Fri, 18 Apr 2025 17:12:10 -0400
+X-MC-Unique: tV_2NxVRP0OTZnwpQm--cg-1
+X-Mimecast-MFC-AGG-ID: tV_2NxVRP0OTZnwpQm--cg_1745010730
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7c5c77aff78so687431685a.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 14:12:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745010384; x=1745615184;
+        d=1e100.net; s=20230601; t=1745010730; x=1745615530;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/8Fz3eVgyQer6DnblEskJgt+TLOIomHwhB1rLMLwnzg=;
-        b=rcIFbHi7ijyZ2VZEqmp4euVCpE8R7nztOLJPke2ptQ7BnH/c52FBcDAHF3osOM2nQV
-         9Zw3QSYkklQ0IN6orFJcIeiBAhUFwMIql+sucksBQHBRzx0cvQ3BI/btvpH6KSO1XXeP
-         YyZFxxWdFKRWDFLyQvYvbadCcLSUCtG+cosZjraqOx5CuIt9PMZvf7rhaqpcURnrufTm
-         Ms+uA2s0nYjvYXkQ5k/vE9g0mjZUTEUAoG71IGLbj08JaTouGfmquZz4Es94ZVlVEOOH
-         hEWkUhsuvdL/X+es6jl+X3x6SBeqppKR+tUoliDPSK74oaTgdr240kBgj11JCyv4J+xK
-         D0Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCWi1ow0yrOPfyiYDSQO/plv3OMTZPe2r5XvbNy/DoYVXC3AM+ror5/95UEJrSVnG/AnXds5ePuSjQ9hxTvCNQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YytzjlB8zDTQbyGaTQh58OGR+8sBw98k2MCqrKiA0V67UbsOfJ4
-	hZ8WRbljqNhO/+92o7r5mMBMGKIXJYraj2XNihWk5qGhfYe2Alk0IEsGVLw1WuqA63n65txSc+z
-	+wGaNqaoIQIxw3oKWoEy02HsKeF9XG0ub9bhkqczomEcaDNFdgXDLXMiRXjcB+oMd
-X-Gm-Gg: ASbGncuTR0iNimqTe35lGRD+61BOCfpYfGA5jPbLMRx9al5V8Q40+BS1WxZ0rbqmayw
-	xYKlXz6c90Bkp+4JAr4EUhELBChhjsa9DVyqcgyn9yI1b4Ec+cUQ3XNOE6b+fgKiwaIhRbWQS6y
-	O5MQCv94rDRqsgiuoIZfkORbgYZsBOS27e6iba5hur6BjvTsiJwVLt2ifaTDIHuzsXVp8KkulgA
-	VUCNnN3Abpm8o6SMZ49FZ5fsBELc//bsOIetMnM6esi9fl50HkFZhFnkC6Y2jNpsuVNoe5F7sXr
-	AeadNYa+jBJUjRthDw==
-X-Received: by 2002:a05:6214:21ef:b0:6e6:684f:7f78 with SMTP id 6a1803df08f44-6f2c450c0d2mr64964786d6.3.1745010384559;
-        Fri, 18 Apr 2025 14:06:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQASiq4OnnJjcy9dYQPVcBs5qmlnklB0KLXpT13KTuYp470qpX4Ze7hlPAuRxIIxLmRmma9Q==
-X-Received: by 2002:a05:6214:21ef:b0:6e6:684f:7f78 with SMTP id 6a1803df08f44-6f2c450c0d2mr64964526d6.3.1745010384208;
-        Fri, 18 Apr 2025 14:06:24 -0700 (PDT)
+        bh=thLmySe12WpSXBtJAvCXgnLWp7OS+WUD68LFhWYj3hw=;
+        b=UdU9F2tYkziHRoJPfMZhzfoRF+CMihp61DTpFYpog5KgpEOXO8JH+8a5KkhS2V7G95
+         zNtyANW2v6SQk+/HODE4hk0WDX8xLQ99LjPrpbJkzqaC++x7W1ZPwLCrQ1dIyzbx/POA
+         uzGbf8JPyazFX7eCJyJ+n0EpFaxiii2DkZizJXkx6z9bNwzfK0+ZxhgKmgvqWL6jUKPE
+         Ym/bdJUKO0x8Le9RJXVUuTO/z43xG3C52N2Wd74hiKARJ13mQK/1+G9BcZr8ZKlCXaBM
+         LtoFdH7EjbevPrtyjUmD7EvHtsAIuxjD3kKMA4eNQZhkbnKsJskALX3J/NN+lcfEXxGL
+         RjOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdWgbA2RX67sjKIhnolnvLqIu0P1GaqP64ragF1ZUTBx6zWPH8ASD1WUWChgLzUfabEMqz0iXsvnmhqwIrQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwerNBS2R4hu93zagT/kZoDNGHejGmpNG/ov0hpKX8GOpQy7xw0
+	PXLUofL4uqUy/8FAVQCE5XK9Q5ENpOItCaNsG1PxZeJ5D5vTQhp0rX0FG8kXIr0JudFKDmt2np8
+	V2YJNFuggyh+CmI1G1fjbGlmY3SfRZTBt30s1/AgVXjYJi24o4UAg+N6AmY3jFW06
+X-Gm-Gg: ASbGncuUr8FO+W7i0HmHDLiusS4SpS/Asn2E7x9/ZJhulVEvp9fro2/WZD3Tc4Ig3BB
+	aXXiEe2J3Fga7ThK2t7wl2T6+7ImS7US29trx11KDNkIT+oAyv7XZFpXr86HqN+yNkqwpmJa+0G
+	zjmr8n/Y8YgVrMzGww3rNRO2UE1IpJzvXzUv36ZNKQ8uuhXHy8aYRwkW4GBFMplDJ6CIDIiKI1L
+	mqZMKDTB7c/pdUFd7sv5Z+NmO//xAtOn1RtJ1pVJCrtUykxLHIlUiA2XEx3QoX3xKRTt4f3AJUx
+	S/0wY8Bl34cczkVDwQ==
+X-Received: by 2002:a05:620a:bc8:b0:7c7:b59d:a6f2 with SMTP id af79cd13be357-7c927f59337mr604487685a.10.1745010730274;
+        Fri, 18 Apr 2025 14:12:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGEi4zrf9J92r/gufo/PdQzlj7vsQxunkmFxA2yNIgYP/uTYSZKGHKL2Y0MvT90U656UE+7cg==
+X-Received: by 2002:a05:620a:bc8:b0:7c7:b59d:a6f2 with SMTP id af79cd13be357-7c927f59337mr604484085a.10.1745010729895;
+        Fri, 18 Apr 2025 14:12:09 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2af11d7sm14470786d6.6.2025.04.18.14.06.22
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925b699f2sm144243985a.92.2025.04.18.14.12.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 14:06:23 -0700 (PDT)
-Message-ID: <552c0f4f7c4fd25df538e670aae657efc7006ec0.camel@redhat.com>
-Subject: Re: [PATCH v2 3/8] rust: drm: add driver abstractions
+        Fri, 18 Apr 2025 14:12:09 -0700 (PDT)
+Message-ID: <e6ef13ab4aacff4ea2a0d9dce62ee612ef48893b.camel@redhat.com>
+Subject: Re: [PATCH v2 5/8] rust: drm: add DRM driver registration
 From: Lyude Paul <lyude@redhat.com>
 To: Danilo Krummrich <dakr@kernel.org>, airlied@gmail.com, simona@ffwll.ch, 
 	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
@@ -75,10 +75,10 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
 	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
 	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Date: Fri, 18 Apr 2025 17:06:21 -0400
-In-Reply-To: <20250410235546.43736-4-dakr@kernel.org>
+Date: Fri, 18 Apr 2025 17:12:07 -0400
+In-Reply-To: <20250410235546.43736-6-dakr@kernel.org>
 References: <20250410235546.43736-1-dakr@kernel.org>
-	 <20250410235546.43736-4-dakr@kernel.org>
+	 <20250410235546.43736-6-dakr@kernel.org>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -88,7 +88,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -bd_E4Gc-U3pKm1A0i7r6RXjcDst9kRAGuOgOsbiWwc_1745010384
+X-Mimecast-MFC-PROC-ID: QDlimBzd7sHKZRSeCDFjM8u8k6uMr1zqQTX1lzxkrsg_1745010730
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -96,195 +96,148 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, 2025-04-11 at 01:55 +0200, Danilo Krummrich wrote:
 > From: Asahi Lina <lina@asahilina.net>
 >=20
-> Implement the DRM driver abstractions.
+> Implement the DRM driver `Registration`.
 >=20
-> The `Driver` trait provides the interface to the actual driver to fill
-> in the driver specific data, such as the `DriverInfo`, driver features
-> and IOCTLs.
+> The `Registration` structure is responsible to register and unregister a
+> DRM driver. It makes use of the `Devres` container in order to allow the
+> `Registration` to be owned by devres, such that it is automatically
+> dropped (and the DRM driver unregistered) once the parent device is
+> unbound.
 >=20
-> Reviewed-by: Maxime Ripard <mripard@kernel.org>
 > Signed-off-by: Asahi Lina <lina@asahilina.net>
-> [ Remove unnecessary DRM features, add #[expect(unused)] to avoid
->   warnings, add sealed trait.
+> [ Rework of drm::Registration
+>     * move VTABLE to drm::Device to prevent use-after-free bugs; VTABLE
+>       needs to be bound to the lifetime of drm::Device, not the
+>       drm::Registration
+>     * combine new() and register() to get rid of the registered boolean
+>     * remove file_operations
+>     * move struct drm_device creation to drm::Device
+>     * introduce Devres
 >     * original source archive: https://archive.is/Pl9ys
 >=20
 >   - Danilo ]
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/drm/driver.rs       | 116 ++++++++++++++++++++++++++++++++
->  rust/kernel/drm/mod.rs          |   8 +++
->  3 files changed, 125 insertions(+)
->  create mode 100644 rust/kernel/drm/driver.rs
+>  rust/kernel/drm/driver.rs | 60 ++++++++++++++++++++++++++++++++++++++-
+>  rust/kernel/drm/mod.rs    |  1 +
+>  2 files changed, 60 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 11b936735207..84921ffbefa7 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -6,6 +6,7 @@
->   * Sorted alphabetically.
->   */
-> =20
-> +#include <drm/drm_drv.h>
->  #include <drm/drm_ioctl.h>
->  #include <kunit/test.h>
->  #include <linux/blk-mq.h>
 > diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-> new file mode 100644
-> index 000000000000..26b72b2eaa63
-> --- /dev/null
+> index 6d09d1933d3e..96bb287eada2 100644
+> --- a/rust/kernel/drm/driver.rs
 > +++ b/rust/kernel/drm/driver.rs
-> @@ -0,0 +1,116 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR MIT
-> +
-> +//! DRM driver core.
-> +//!
-> +//! C header: [`include/linux/drm/drm_drv.h`](srctree/include/linux/drm/=
+> @@ -4,7 +4,15 @@
+>  //!
+>  //! C header: [`include/linux/drm/drm_drv.h`](srctree/include/linux/drm/=
 drm_drv.h)
-> +
-> +use crate::{bindings, drm, str::CStr};
-> +use macros::vtable;
-> +
-> +/// Driver use the GEM memory manager. This should be set for all modern=
+> =20
+> -use crate::{bindings, drm, str::CStr};
+> +use crate::{
+> +    bindings, device,
+> +    devres::Devres,
+> +    drm,
+> +    error::{Error, Result},
+> +    prelude::*,
+> +    str::CStr,
+> +    types::ARef,
+> +};
+>  use macros::vtable;
+> =20
+>  /// Driver use the GEM memory manager. This should be set for all modern=
  drivers.
-
-Probably shouldn't be pub like i mentioned before, but we can fix this late=
-r
-on
-
-> +pub const FEAT_GEM: u32 =3D bindings::drm_driver_feature_DRIVER_GEM;
+> @@ -107,3 +115,53 @@ pub trait Driver {
+>      /// IOCTL list. See `kernel::drm::ioctl::declare_drm_ioctls!{}`.
+>      const IOCTLS: &'static [drm::ioctl::DrmIoctlDescriptor];
+>  }
 > +
-> +/// Information data for a DRM Driver.
-> +pub struct DriverInfo {
-> +    /// Driver major version.
-> +    pub major: i32,
-> +    /// Driver minor version.
-> +    pub minor: i32,
-> +    /// Driver patchlevel version.
-> +    pub patchlevel: i32,
-> +    /// Driver name.
-> +    pub name: &'static CStr,
-> +    /// Driver description.
-> +    pub desc: &'static CStr,
-> +}
-> +
-> +/// Internal memory management operation set, normally created by memory=
- managers (e.g. GEM).
+> +/// The registration type of a `drm::Device`.
 > +///
-> +/// See `kernel::drm::gem` and `kernel::drm::gem::shmem`.
+> +/// Once the `Registration` structure is dropped, the device is unregist=
+ered.
+> +pub struct Registration<T: Driver>(ARef<drm::Device<T>>);
+> +
+> +impl<T: Driver> Registration<T> {
+> +    /// Creates a new [`Registration`] and registers it.
+> +    pub fn new(drm: &drm::Device<T>, flags: usize) -> Result<Self> {
 
-Don't forget to drop the shmem references for the time being=E2=80=A6
+We should probably review whether we want `flags` here at some point
 
-> +pub struct AllocOps {
-> +    #[expect(unused)]
-> +    pub(crate) gem_create_object: Option<
-> +        unsafe extern "C" fn(
-> +            dev: *mut bindings::drm_device,
-> +            size: usize,
-> +        ) -> *mut bindings::drm_gem_object,
-> +    >,
-> +    #[expect(unused)]
-> +    pub(crate) prime_handle_to_fd: Option<
-> +        unsafe extern "C" fn(
-> +            dev: *mut bindings::drm_device,
-> +            file_priv: *mut bindings::drm_file,
-> +            handle: u32,
-> +            flags: u32,
-> +            prime_fd: *mut core::ffi::c_int,
-> +        ) -> core::ffi::c_int,
-> +    >,
-> +    #[expect(unused)]
-> +    pub(crate) prime_fd_to_handle: Option<
-> +        unsafe extern "C" fn(
-> +            dev: *mut bindings::drm_device,
-> +            file_priv: *mut bindings::drm_file,
-> +            prime_fd: core::ffi::c_int,
-> +            handle: *mut u32,
-> +        ) -> core::ffi::c_int,
-> +    >,
-> +    #[expect(unused)]
-> +    pub(crate) gem_prime_import: Option<
-> +        unsafe extern "C" fn(
-> +            dev: *mut bindings::drm_device,
-> +            dma_buf: *mut bindings::dma_buf,
-> +        ) -> *mut bindings::drm_gem_object,
-> +    >,
-> +    #[expect(unused)]
-> +    pub(crate) gem_prime_import_sg_table: Option<
-> +        unsafe extern "C" fn(
-> +            dev: *mut bindings::drm_device,
-> +            attach: *mut bindings::dma_buf_attachment,
-> +            sgt: *mut bindings::sg_table,
-> +        ) -> *mut bindings::drm_gem_object,
-> +    >,
-> +    #[expect(unused)]
-> +    pub(crate) dumb_create: Option<
-> +        unsafe extern "C" fn(
-> +            file_priv: *mut bindings::drm_file,
-> +            dev: *mut bindings::drm_device,
-> +            args: *mut bindings::drm_mode_create_dumb,
-> +        ) -> core::ffi::c_int,
-> +    >,
-> +    #[expect(unused)]
-> +    pub(crate) dumb_map_offset: Option<
-> +        unsafe extern "C" fn(
-> +            file_priv: *mut bindings::drm_file,
-> +            dev: *mut bindings::drm_device,
-> +            handle: u32,
-> +            offset: *mut u64,
-> +        ) -> core::ffi::c_int,
-> +    >,
+> +        // SAFETY: Safe by the invariants of `drm::Device`.
+> +        let ret =3D unsafe { bindings::drm_dev_register(drm.as_raw(), fl=
+ags) };
+> +        if ret < 0 {
+> +            return Err(Error::from_errno(ret));
+> +        }
+> +
+> +        Ok(Self(drm.into()))
+
+This could just be:
+
+        // SAFETY: Safe by the invariants of `drm::Device`.
+        to_result(unsafe { bindings::drm_dev_register(drm.as_raw(), flags) =
+})?;
+
+        Ok(Self(drm.into()))
+
+
+> +    }
+> +
+> +    /// Same as [`Registration::new`}, but transfers ownership of the [`=
+Registration`] to
+> +    /// [`Devres`].
+> +    pub fn new_foreign_owned(drm: &drm::Device<T>, dev: &device::Device,=
+ flags: usize) -> Result {
+> +        if drm.as_ref().as_raw() !=3D dev.as_raw() {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let reg =3D Registration::<T>::new(drm, flags)?;
+> +        Devres::new_foreign_owned(dev, reg, GFP_KERNEL)
+> +    }
+> +
+> +    /// Returns a reference to the `Device` instance for this registrati=
+on.
+> +    pub fn device(&self) -> &drm::Device<T> {
+> +        &self.0
+> +    }
 > +}
 > +
-> +/// Trait for memory manager implementations. Implemented internally.
-> +pub trait AllocImpl: super::private::Sealed {
-> +    /// The C callback operations for this memory manager.
-> +    const ALLOC_OPS: AllocOps;
-> +}
+> +// SAFETY: `Registration` doesn't offer any methods or access to fields =
+when shared between
+> +// threads, hence it's safe to share it.
+> +unsafe impl<T: Driver> Sync for Registration<T> {}
 > +
-> +/// The DRM `Driver` trait.
-> +///
-> +/// This trait must be implemented by drivers in order to create a `stru=
-ct drm_device` and `struct
-> +/// drm_driver` to be registered in the DRM subsystem.
-> +#[vtable]
-> +pub trait Driver {
-> +    /// Context data associated with the DRM driver
-> +    type Data: Sync + Send;
+> +// SAFETY: Registration with and unregistration from the DRM subsystem c=
+an happen from any thread.
+> +unsafe impl<T: Driver> Send for Registration<T> {}
 > +
-> +    /// The type used to manage memory for this driver.
-> +    ///
-> +    /// Should be either `drm::gem::Object<T>` or `drm::gem::shmem::Obje=
-ct<T>`.
+> +impl<T: Driver> Drop for Registration<T> {
+> +    /// Removes the registration from the kernel if it has completed suc=
+cessfully before.
 
-=E2=80=A6same here
+Probably want to drop this comment, since it is impossible for the
+registration to have not completed successfully by this point
 
-> +    type Object: AllocImpl;
-> +
-> +    /// Driver metadata
-> +    const INFO: DriverInfo;
-> +
-> +    /// IOCTL list. See `kernel::drm::ioctl::declare_drm_ioctls!{}`.
-> +    const IOCTLS: &'static [drm::ioctl::DrmIoctlDescriptor];
+> +    fn drop(&mut self) {
+> +        // SAFETY: Safe by the invariant of `ARef<drm::Device<T>>`. The =
+existence of this
+> +        // `Registration` also guarantees the this `drm::Device` is actu=
+ally registered.
+> +        unsafe { bindings::drm_dev_unregister(self.0.as_raw()) };
+> +    }
 > +}
 > diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-> index 9ec6d7cbcaf3..2e3f9a8a9353 100644
+> index 967854a2083e..2d88e70ba607 100644
 > --- a/rust/kernel/drm/mod.rs
 > +++ b/rust/kernel/drm/mod.rs
-> @@ -2,4 +2,12 @@
+> @@ -9,6 +9,7 @@
+>  pub use self::device::Device;
+>  pub use self::driver::Driver;
+>  pub use self::driver::DriverInfo;
+> +pub use self::driver::Registration;
 > =20
->  //! DRM subsystem abstractions.
-> =20
-> +pub mod driver;
->  pub mod ioctl;
-> +
-> +pub use self::driver::Driver;
-> +pub use self::driver::DriverInfo;
-> +
-> +pub(crate) mod private {
-> +    pub trait Sealed {}
-> +}
+>  pub(crate) mod private {
+>      pub trait Sealed {}
 
 --=20
 Cheers,
