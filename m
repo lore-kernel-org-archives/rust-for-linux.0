@@ -1,78 +1,83 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02072B676
-	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 01:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD267B676
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Apr 2025 01:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744940519; cv=none; b=BPlWFfvs2MDo3zEfwtTmlFbVBmPvgHg8sB1VEEaph2BokpWnFQZVNGsF3UOMdmBpioVvsuYj1simVXzBG3jGLgf2vFusS4A7xLINGJkzB1ilzIS+/3wUBHslhFq9OO2xwGrlfOJWMLmv571sBFGD+iZFsVWB4i3J6Gc2kFOdAcs=
+	t=1744940522; cv=none; b=p2cB94Jx1vFDZtcZBWdjMQYbLzhAA0E8fN9gQDsyVb+qVj8FzIe3aYhHQxjCn18hhCzYAnO58PHOpGWAiiFlhNVFV/N7sBdslcXsoBnl1WqbAxucQncP3RFxsFsCIOcZ1SMyMbaG4ZcRMJl/XWnxqDqHeK0AUqeralfW/ZCi6i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744940519; c=relaxed/simple;
-	bh=RJT7J8FK66LPT/CdKBBSsl4rrPcxtr7qVlW9KxjD/cE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LzhpmGWrwakT3KAtwwsk/DoIVJ2OMJfeuP/Si6/kkyCV2ZdJ//I0aW4o/Un8w5Pe3/uXxkMrAziUA2pYiuQRacCrf/cJ/NOH94K+cnY4DpNkjkGbMa0ASuPBgpN7PGFvBPGxZ3RSEbucCyq9fxTIyyE9+KpGeFdxKdZmYpUuAt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=hZFPUa0t; arc=none smtp.client-ip=209.85.128.175
+	s=arc-20240116; t=1744940522; c=relaxed/simple;
+	bh=kom6gDwOvQlLWIY64LaKg/88QJeZpSqlKMB0/S7dG0Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IA6365dOEoJxUDTcAqwi0XCToPOo7sqQzgHdNXE63QLasDczSXJVvagwvibLq/ZOCcWRhqg7Wli/t2jkEfETHuuVLGJ09SJeRE59PxF+V/Rlt5w88KmOoyUSL/DGT+24T7350QPzvKCSHeeqvi+FpH5rdTxqO8u5n1iKQ2UpkTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=O3/7knAw; arc=none smtp.client-ip=209.85.128.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="hZFPUa0t"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6ff37565232so12531687b3.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 18:41:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="O3/7knAw"
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-707561e5fdcso1197777b3.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 17 Apr 2025 18:42:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1744940517; x=1745545317; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1PFJY7+yYNDyZcYodvTWOUSsk6LfuMYVTL95kmRuQi4=;
-        b=hZFPUa0tOBruRSKRprwUcZDuH/vJ8GmZkYs0FhaTYq9aC4AaqImAxh6GGcDcVQ+p1u
-         Tpp0d4ksSveCvejPVRTCkMCrSfNhfjVPpU/7swxV7kIbt34n95cBVKmSHaJdlQ5K80Xz
-         7nPm0voU4pu5dccJzc6hDM5iTMoSw7Lc71XR9NCVTbarVIKrPpxe8T0JyGH1fS9Z5pj2
-         J1zUQue8r0Ef9uP+LEiR7zZ6zx9YPYnq5m6Z1m8hKWp2d1V+8FTa1e3kvAy3xTb+6yp+
-         wVIidZSOSyMIhelF6VFEb1dVrHM9dMKxtRhHWTZ24csCMAuSTgYDVOi7X8KYZaxORbHd
-         WREQ==
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1744940519; x=1745545319; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8vZX6b4dOJQJVisyqBob3mx0+uYLldeHEIPiM/4owQ0=;
+        b=O3/7knAweN67wPM4h5vOM9kmaVScSrD/GDJVfuqRJ/GfSzPFRbgbwoLVS6TO3u22I3
+         sAX7JbbcQb7PMdv7dbWLZuF1uoJNLTkCkGDENR3p/qa+//24xzUA71r2m0U3ghWZpgii
+         tVAvgKVUUuQylQ1vCXCjHFcw/38VblmJovoCatcZk3RGpIhnoSvMHEwjaUeZZ+DXT1qN
+         L358GdaQHHBqOS4xQCUBus3g4w/8/hZpUfQPw+5mnB8/pkdfI0SwQZDAVwQlZes0cinN
+         O+n2vqfAPoLrJO1ouep19XuQPO/+85V3TZErPNpfz8A/agaMfYcEducpF0308sbbkKpK
+         7Xvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744940517; x=1745545317;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1PFJY7+yYNDyZcYodvTWOUSsk6LfuMYVTL95kmRuQi4=;
-        b=tZBdaRgVZyxbg4//ey5MiQnTn4vefRzaX1EsoLGjo51ZiS9VasxoQai+WRosBGbIgY
-         EzrZ4axGC/kgcbRWNgEs2AZt8kl3eNEP21XWbnU1LpOwZVaulNtDOaD0ycLTOsnm0Imx
-         eH6uZVFCJ9Tl1UsJnT9DKXA6P9HWaK8PTul8iUeb2fDTEPewapZEd0j3GF5RZTO7z93k
-         y8rabXaHpX+gv8LRadmPa7Lkxe9nbyW8Fu8OIweCz5+DlCcJCN9RFEeth25igseB9u1F
-         RfnaPh7n2d54oz6n5DuCqYIHjomQXMgr9WozXPG4qAslnHILmgOxLhC4K0HuOk1gVuNe
-         hLHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVTlLCwoGFFoYheVZvlXsPwOrPu/W6hH8EZ9wmwnSedVN2P5iQoQGokWc/9m4itwFFpi/xCTdEoDcdX1l/YxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHWiHYejgTIlu3vNMLuIQ1jZ2uv0qU/UbdsNrUqHCfAmwPGiRK
-	ghzNILQTQv7TBaVbw77/B6tWhK3CKpykpVpGuphWwNxK0KHbZ7g3k1UXP3UqS0k=
-X-Gm-Gg: ASbGncvm+tn2TU4KjnAlM+AoE75Q34AWHgyrdJ4c+LOScJmiqebu6OxT6a2O3G4JHmj
-	6Tug38w53gkpZEEU3eelPkeDkZ3Ii47QMN0cEZtXKk93kld2l8///URFOQkNXYgvcLdQR8CzbRu
-	0IH1+y8al8L7A68EKSYdQ9wu/guqJY6S1fgHXWrlSlpQfe9oK4fQZtbCR3S28nQLlusjfpF93yM
-	4XlyPD6klbwCHi2rSYexGNXeHcZjcQEZ0a1gjBYJa/dB1gDOtsq3QSrUS0zMrEQXuKlg7AGO88w
-	8FRzzh9bhQ3n4D+Sw+Tpf17QXwDs2f4r57Uri9Rg1H8naUGkvcOcJSHvK3sT/prpsA5Ozth/9M1
-	4zTaz8xjPbKTWZTrri7ZX/IaPrqzl1oXwSCat
-X-Google-Smtp-Source: AGHT+IFyJy29QrvXIXMI57LyhS7SLD9X4rPVDH+pPLlzHqrD+qgI6VNuxn7+sHPH7jMa6E0o1Uq8OA==
-X-Received: by 2002:a05:690c:6801:b0:6fd:33a5:59a with SMTP id 00721157ae682-706ccd1a5ccmr17595247b3.18.1744940516821;
-        Thu, 17 Apr 2025 18:41:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1744940519; x=1745545319;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8vZX6b4dOJQJVisyqBob3mx0+uYLldeHEIPiM/4owQ0=;
+        b=aBt3aON87pmRjwUo1b73McFzkLqlQ/QlYWhwMyK6x1BWmbiy72EVhDb2uNYkYPrQmo
+         zQY5vvobIoEdyPuI4E/jyMbOVKhwyxdscqpRv6F4XlXA62XUEAa9gv2btGFO/3lCt/qS
+         g8eFhfmHtdVAa/ITqMXtKDHBhaGS6kWgHkoMFyaAMLZyDZNvUrscUvV8wpqqh64y1XG0
+         +f4KmTM0OaD4/3ruAbyOlq18wH6n2pp5Dh6q2GDPhZxgV+A5zUPEm1AOI7trB1qEOi6g
+         mV7MRQB4RdrSXvZXo0JP/sE7nOS2Qa5QmnCFz1IhdwtsxuAl9IaBGHCXbBrOb6vRaNG2
+         d15w==
+X-Forwarded-Encrypted: i=1; AJvYcCU597YlbT90jNhVchbJEytv3zZ5M/fjbPtT/KAqUw0E4tewUveLRQ2GHjZduxPF1UgKRXBLoLPxW0oCwxfYuA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDH9GMfkkIzWjSizygK0DXQUV2Zq5Ip8ZmKm7uy4+baCn2LTNW
+	iCzrlQCjz6RHMELRb39W8xFC1T0atM3+hGJpOKi8psFy4yqfD6VcPCF5iYd9qXc=
+X-Gm-Gg: ASbGncv08A2/wDO9mmP55noI2wwNXgXUscvQeRRYJQX+Xmt+Q9LLFo5WPlRWgY0kFW6
+	1DiwKKYGPE+6hw2AxhMsJ7APB2GSiOeC4gM1brtGlT+TDHavpJwby1ch/kGZKrB+kqkotKdVxqR
+	e5catGU6FSKkqTGK3eP5OmReGG0gVQl9Dzl7EXkSM5ASYjlKdEQDtKm5VZ2w21HPtyg8BwqeVPx
+	sjMc6uVkgtfztxAS9RRgh26fw/mnD3OyqLQvJ6uh2GFWX5u8R1HOsUxAPQqLuRd1jOaCZVejVD3
+	yqYTYZ4fcOeaH2auQYNtd/66kmBbiYfpvo9INMa6nZ/6X4K19u+abPs1MwYd1ZxSNSBQn2IQ8mg
+	Hig11nM7W/WM4tSNhQLXD53qFjaaFPRQAs7tdsv51R+NmyT4=
+X-Google-Smtp-Source: AGHT+IHKWD99S0F6KCgIeVvybd53+ijSAXdB3OgMVFyeT/tM2oA/5o0gqeKoz8LgS6Bcx3tB8BsaLg==
+X-Received: by 2002:a05:690c:3685:b0:6ff:1fac:c502 with SMTP id 00721157ae682-706ccce2277mr16272657b3.6.1744940519476;
+        Thu, 17 Apr 2025 18:41:59 -0700 (PDT)
 Received: from Machine.localdomain (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-706ca44fd13sm2804597b3.20.2025.04.17.18.41.55
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-706ca44fd13sm2804597b3.20.2025.04.17.18.41.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 18:41:56 -0700 (PDT)
+        Thu, 17 Apr 2025 18:41:59 -0700 (PDT)
 From: Antonio Hickey <contact@antoniohickey.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
+To: Benno Lossin <benno.lossin@proton.me>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
 Cc: Antonio Hickey <contact@antoniohickey.com>,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v6 00/18] refactor to utilize `&raw [const|mut]`
-Date: Thu, 17 Apr 2025 21:41:21 -0400
-Message-ID: <20250418014143.888022-1-contact@antoniohickey.com>
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 01/18] rust: init: refactor to use `&raw mut`
+Date: Thu, 17 Apr 2025 21:41:22 -0400
+Message-ID: <20250418014143.888022-2-contact@antoniohickey.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250418014143.888022-1-contact@antoniohickey.com>
+References: <20250418014143.888022-1-contact@antoniohickey.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,96 +86,99 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch set enables the `raw_ref_op` feature, which became stable 
-in Rust 1.82.
+Replacing all occurrences of `addr_of_mut!(place)`
+with `&raw mut place`.
 
-It then replaces all occurences of `addr_of!(place)` and
-`addr_of_mut!(place)` with `&raw const place` and `&raw mut place`.
-
-Finally it adds the previous macros `addr_of!` and `addr_of_mut!` to
-the disallowed macros in `.clippy.toml`.
-
-Changes in v6:
-- Rebased onto rust-next to refactor new occurences of `addr_of[_mut]!`
-  and handle the 2 patches from the v5 patchset that were merged.
-- Link to v5: https://lore.kernel.org/all/20250320020740.1631171-1-contact@antoniohickey.com/
-
-Changes in v5:
-- Fix doctest errors when compiling on the minimum Rust version (1.78)
-  due to not having the `raw_ref_op` feature enabled for doctests.
-- Reword commit messages to more accurately describe the changes.
-- Replace unsafe call to `Opaque::raw_get` with pointer casting
-  in workqueue.
-- Fix clippy disallowed macros message for `core::ptr::addr_of`
-- Link to v4: https://lore.kernel.org/all/20250316061429.817126-1-contact@antoniohickey.com/
-
-Changes in v4:
-- Fix comment typo.
-- Fix clippy issues.
-- Add more context and link for disallowed macros with clippy.
-- Separate the patch replacing of `addr_of[_mut]!` macros with
-  `&raw [const|mut]` into smaller patches for each section.
-  (PATCH v3 2/3 -> PATCH v4 2/16 through 15/16)
-- Fix email typo.
-- Link to v3: https://lore.kernel.org/all/0100019597091f92-cb55b6cd-4d06-4d14-8d9c-1a1314949a00-000000@email.amazonses.com/
-
-Changes in v3:
-- Re ordered the patches, so that the patch adding the `addr_of[_mut]!`
-  macros to the disallowed macros in clippy is applied after replacing
-  all the instances of `addr_of_[_mut]` with `&raw [const|mut]`.
-  (moved PATCH v2 2/3 -> PATCH v3 3/3 and PATCH v2 3/3 -> PATCH v3 2/3)
-- Link to v2: https://lore.kernel.org/all/0100019592c224ba-0cf38e16-2aa2-459d-99cd-09a463d616d4-000000@email.amazonses.com/
-
-Changes in v2:   
-- Fix `&raw place` should be `&raw const place`
-- Fix email typo
-- Link to v1: https://lore.kernel.org/all/010001958dfeacb5-9039aaab-6114-494a-9f1d-f13982091169-000000@email.amazonses.com/
+This will allow us to reduce macro complexity, and improve consistency
+with existing reference syntax as `&raw mut` is similar to `&mut`
+making it fit more naturally with other existing code.
 
 Suggested-by: Benno Lossin <benno.lossin@proton.me>
 Link: https://github.com/Rust-for-Linux/linux/issues/1148
 Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+---
+ rust/kernel/init.rs         |  4 ++--
+ rust/pin-init/src/macros.rs | 12 ++++++------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-
-
-Antonio Hickey (18):
-  rust: init: refactor to use `&raw mut`
-  rust: list: refactor to use `&raw [const|mut]`
-  rust: task: remove use of `addr_of!` macro
-  rust: faux: refactor to use `&raw mut`
-  rust: kunit: refactor to use `&raw [const|mut]`
-  rust: workqueue: refactor to use `&raw [const|mut]`
-  rust: workqueue: replace `raw_get` with pointer cast
-  rust: rbtree: refactor to use `&raw mut`
-  rust: net: phy: refactor to use `&raw mut`
-  rust: sync: arc: refactor to use `&raw const`
-  rust: jump_label: refactor to use `&raw const`
-  rust: fs: file: refactor to use `&raw const`
-  rust: time: hrtimer: refactor to use `&raw const`
-  rust: pci: refactor to use `&raw mut`
-  rust: platform: refactor to use `&raw mut`
-  rust: dma: refactor to use `&raw [const|mut]`
-  rust: pin-init: refactor to use `&raw mut`
-  rust: clippy: disallow `addr_of[_mut]!` macros
-
- .clippy.toml                           |  4 ++++
- rust/kernel/dma.rs                     |  4 ++--
- rust/kernel/faux.rs                    |  4 ++--
- rust/kernel/fs/file.rs                 |  2 +-
- rust/kernel/init.rs                    |  4 ++--
- rust/kernel/jump_label.rs              |  4 ++--
- rust/kernel/kunit.rs                   |  8 ++++----
- rust/kernel/list.rs                    |  2 +-
- rust/kernel/list/impl_list_item_mod.rs |  6 +++---
- rust/kernel/net/phy.rs                 |  4 ++--
- rust/kernel/pci.rs                     |  8 ++------
- rust/kernel/platform.rs                |  8 ++------
- rust/kernel/rbtree.rs                  | 22 ++++++++++----------
- rust/kernel/sync/arc.rs                |  4 ++--
- rust/kernel/task.rs                    |  4 ++--
- rust/kernel/time/hrtimer.rs            |  4 ++--
- rust/kernel/workqueue.rs               |  9 +++------
- rust/pin-init/README.md                |  3 +--
- rust/pin-init/src/lib.rs               |  7 +++----
- rust/pin-init/src/macros.rs            | 28 +++++++++++++-------------
- 20 files changed, 65 insertions(+), 74 deletions(-)
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 8d228c237954..5646b1079776 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -69,7 +69,7 @@
+ //! ```rust,ignore
+ //! # #![allow(unreachable_pub, clippy::disallowed_names)]
+ //! use kernel::{prelude::*, types::Opaque};
+-//! use core::{ptr::addr_of_mut, marker::PhantomPinned, pin::Pin};
++//! use core::{marker::PhantomPinned, pin::Pin};
+ //! # mod bindings {
+ //! #     #![allow(non_camel_case_types)]
+ //! #     pub struct foo;
+@@ -105,7 +105,7 @@
+ //!         unsafe {
+ //!             pin_init::pin_init_from_closure(move |slot: *mut Self| {
+ //!                 // `slot` contains uninit memory, avoid creating a reference.
+-//!                 let foo = addr_of_mut!((*slot).foo);
++//!                 let foo = &raw mut (*slot).foo;
+ //!
+ //!                 // Initialize the `foo`
+ //!                 bindings::init_foo(Opaque::raw_get(foo));
+diff --git a/rust/pin-init/src/macros.rs b/rust/pin-init/src/macros.rs
+index 361623324d5c..28a91a1e1218 100644
+--- a/rust/pin-init/src/macros.rs
++++ b/rust/pin-init/src/macros.rs
+@@ -244,7 +244,7 @@
+ //!                     struct __InitOk;
+ //!                     // This is the expansion of `t,`, which is syntactic sugar for `t: t,`.
+ //!                     {
+-//!                         unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).t), t) };
++//!                         unsafe { ::core::ptr::write(&raw mut (*slot).t, t) };
+ //!                     }
+ //!                     // Since initialization could fail later (not in this case, since the
+ //!                     // error type is `Infallible`) we will need to drop this field if there
+@@ -258,7 +258,7 @@
+ //!                     // of the `unsafe` block, so we bind it here.
+ //!                     {
+ //!                         let x = 0;
+-//!                         unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).x), x) };
++//!                         unsafe { ::core::ptr::write(&raw mut (*slot).x, x) };
+ //!                     }
+ //!                     // We again create a `DropGuard`.
+ //!                     let __x_guard = unsafe {
+@@ -459,13 +459,13 @@
+ //!         {
+ //!             struct __InitOk;
+ //!             {
+-//!                 unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).a), a) };
++//!                 unsafe { ::core::ptr::write(&raw mut (*slot).a, a) };
+ //!             }
+ //!             let __a_guard = unsafe {
+ //!                 ::pin_init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).a))
+ //!             };
+ //!             let init = Bar::new(36);
+-//!             unsafe { data.b(::core::addr_of_mut!((*slot).b), b)? };
++//!             unsafe { data.b(&raw mut (*slot).b, b)? };
+ //!             let __b_guard = unsafe {
+ //!                 ::pin_init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).b))
+ //!             };
+@@ -1215,7 +1215,7 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+         // SAFETY: `slot` is valid, because we are inside of an initializer closure, we
+         // return when an error/panic occurs.
+         // We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.
+-        unsafe { $data.$field(::core::ptr::addr_of_mut!((*$slot).$field), init)? };
++        unsafe { $data.$field(&raw mut (*$slot).$field, init)? };
+         // Create the drop guard:
+         //
+         // We rely on macro hygiene to make it impossible for users to access this local variable.
+@@ -1277,7 +1277,7 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+             // Initialize the field.
+             //
+             // SAFETY: The memory at `slot` is uninitialized.
+-            unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
++            unsafe { ::core::ptr::write(&raw mut (*$slot).$field, $field) };
+         }
+         // Create the drop guard:
+         //
+-- 
+2.48.1
 
