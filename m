@@ -1,157 +1,122 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DEAC2ED;
-	Mon, 21 Apr 2025 18:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866ED1E7C32
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 19:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745260984; cv=none; b=AyUA1sX1J4aQzKzEgt+4nRTuFgaul//jDqWMbQvuxrN0KJGNClV7gn+zHdfPJ9R3PlQS0d+W7imCr1Fy6dpK/oOiHdxX8BPoWuxLhayciFO78V1/q1VOVSlUG7GWuQwu5GF7h9H0On0JGBC4W/7s3RqL8LzoXeF+jpLSx8DxtMM=
+	t=1745262586; cv=none; b=iw7vCcHJ+6sZ8LXVp/iEN03ThhdwxiMJ6XCwUjUlIxxmxyOtJHYJxEdmAm1ZdLtJjdtpVbH+WF0Ezc5lEceyKZUjaHH861ymOE028Mwdl2L+NN3YBHrKlqwJqhbkx/zDsGAqMd6ygK5u/Karm/VR/rLd7+emVkNWq714ra7sZAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745260984; c=relaxed/simple;
-	bh=12pNAYV5E3uTGRq/iVL3og6PyUEcWmekCJ/kjMC72F0=;
+	s=arc-20240116; t=1745262586; c=relaxed/simple;
+	bh=Ipy/IlMQR5m3AbiVrZjXOxC3psCUPUEnpm0aP+lGnG8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=acEgsRxPD8adcyv9ofSdoU0XF/3sjm2z57cVtuJTjDazynwOg+VrMQJr5DLM632C/OWFYwqKy/DC0qMM+KgI/2v1z7aoE9oiwRzUnkwfwmelyTQ3iqvDND1RQesGsTkIMIpWSPq5HRoRIaFzK+zRDybGSefNH/oyOtTmjq2dPnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S/Cq1IqI; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Y1l9C2+801/lBRXUGI0GQaAYrgFeAOaysaq5TYXEYN9FL/d6H92gEZCxUeAKNX2RIPoesNjAxaLhuOJaofsurIkAyBOQI3+wwsUsmw9ZdDm5wLoG5vH5t9ccLyVTOftEnNyeXcQg7BhhULUf4KxFojf7FT4cUgC3DofNKe0iJUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=BpnKfwOS; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S/Cq1IqI"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3105ef2a06cso39397611fa.2;
-        Mon, 21 Apr 2025 11:43:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="BpnKfwOS"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6ff4faf858cso29676677b3.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 12:09:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745260981; x=1745865781; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1745262580; x=1745867380; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ghDrkF0tVAgm9hBQXnH82rKOM2q62qgv1XyqF65d5cg=;
-        b=S/Cq1IqILYmErmAGdyF1ljXZ1B0RigXB5fcG0yt9ZMZtsCr4BuWyfhzseiDjAymd5b
-         E842WVbJQ7zmugjpTh3VLsxL/SH2+D+3tidOqo0715goxACYU8yksq7FFd/xYZ7zHXxn
-         D7590tdFoHxqiC8KL7GZorNFP/nokTPJkN73DM7cxJptvCfM1/GITD898/iEYLLpszhB
-         gjPIHN4NKAUUGqMLmeQJV3B6GG5PUmPVT8W/H/c8beTCF+NPgdAuyTCbA4i9VHZDlywE
-         A+wCBHovKlNAN8fdbFIVZCzyd2d6BkK12Vc4nul9GMpdTCq0h/hGZPx9Jc9nnEFpWHJg
-         q6Xw==
+        bh=T08XUeirEjZZ3rFusZ9ui4pbr1iJ6mTBH3F3K3ayArk=;
+        b=BpnKfwOSnnHbDHm+0NyompQdo/e9PAF3GvurdUWJGmI5kBBrZh/wT6hOujzhiMb3vr
+         iRDuL7pYUCkdHo5Y8EHMKmwh0Ezl4qa19P2Upv2noI1RAMbxSPlflvry2GDNMVgk7lzK
+         vxHGssoYph8Ndq7i1+a6TPC7xHEO3ViAHfEzobYPv6yU1UVpQUaU2aw7IwmC0uAaCPeS
+         L9dEyDFiPAfDL0vzKIDN1c0SQbSNbfsDkUgCC2O9nBWEywlO2PdQbgkxdttAc4g20TxQ
+         jh7+rkxWlj6ljoA5xJliSG0APSThR9PFQq1Fe4zefqNkXEzoLLoVBn2M7iLj/cnXeWIH
+         WhMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745260981; x=1745865781;
+        d=1e100.net; s=20230601; t=1745262580; x=1745867380;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ghDrkF0tVAgm9hBQXnH82rKOM2q62qgv1XyqF65d5cg=;
-        b=AgvnfEfFkIxAiMDluziHnYJJWPhlzkRUvQPPcrqzLG8oKuOEYRZXOZN67vSn47FKUR
-         80MkFCI8LlpPys59ow+tPJVdzcsvMK120YhKFHEApGbiM46GWGVbXm+IvubG/vl350Es
-         8Q4V29geN1OWwqv6fO+2IxFY+LiCaU9io8wqxqDeEZ6Jt6urdkL77LDcfQXWKX8KhkPz
-         MPktb1OzsC/4GPKTjB5j+m80UvN1lhV5iy4uX95RtPS8q9JN1O9Gzu9VDe/osMD9KUtU
-         QdIz8K1ue7wekyTPhTZZQIrMmx42GCV+Y64iiNOvQw3ny6lVWP9Uzs+xJT9dhTkBEfKb
-         os8g==
-X-Forwarded-Encrypted: i=1; AJvYcCUv1lr//byM8ISlglbrPbflslEqOivL+CoaCLXjBz7wtLaansIPschgEvatuwlWgNR90n6fhi3lGL0YGhk=@vger.kernel.org, AJvYcCVWhP9COo99Ek6AwS5eIwx5RgdwTSv34w7onHO19rOu6HCHBnv/NT8Vi2BQPbe2ARQeI142W2sEaWm9N79Eblk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC5YtFwJZfek7kHt3CX7edj//DkqzBmcjJmu6kaqnUNp41rpXI
-	SlXaS91l4p+ZmYzcWpPY+HEHa7MEgDrl3tKKN2FP0zI0JUJSKod5WtQZVCJJc1HqXDes3rBgPmY
-	p9geezBmll2lzrnT8WrX5MAiu0WI=
-X-Gm-Gg: ASbGnctAIgvm2HrYaHBib4i4tveJ+TsJYM2ItqY32r3DjOG99ICE0dWQcsLJ65WvslV
-	jQt5dbkSjYGseF98Hu7z/+Mi+lbJl/Lv36+uq/WjkQ+hnLVvwo1CEHx66jh6ao2LwpA1BTRCm17
-	CnRcPWMBuEkn+gUePsrhBsbYx5v2bq4lcJuoJQbw==
-X-Google-Smtp-Source: AGHT+IGK/M7zfu/tJBOd1Os5RtFN0XD2brN0dqT6KIGGp3Et9fsK1pUoZoHkRnpk1/qt5Wz5GWW2/yq0EbZpPPlG15Q=
-X-Received: by 2002:a05:651c:150d:b0:30b:f775:bae5 with SMTP id
- 38308e7fff4ca-310904c7c9fmr41380531fa.6.1745260980699; Mon, 21 Apr 2025
- 11:43:00 -0700 (PDT)
+        bh=T08XUeirEjZZ3rFusZ9ui4pbr1iJ6mTBH3F3K3ayArk=;
+        b=JgFOiv4fOjVBFoU9bAtr+HEhyjgJkl4PP05wz0n+/r7bjZpj6x0JissSZLf5wuniIb
+         TdmbzTqVP08j/xaMl5U2FDzqMHRCMit3vKOz7ihWiBFbQR8wr90YZ+gkr/ObFrxJK+Dt
+         gHJ+STAkYNyikNmhCMXlvSpDrGhFhjlmtbPK5pU0MY0Z+aJK0GuOVSB91cg/YoOSfogC
+         wpj28Hmm16cGUx0213F41t32iv6qKP1meZ+2UtALP7pfNWo4sVGNIHf2xKuS1qDl37eO
+         kMPkr+TOn2GpfO8dshR9t3zNRTd29xlVnU159jcZLw+qsZf3G7Nkyjjn3BZvIJbT+BsS
+         7fZg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0UkVUkBDzx4dWrJaNLX/BaJsNcAjmL1wUWmw3zVg2KwEVfCxla7q1S3jxFS0QeixqRt7x8UZr8P52EAbI5w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVKCAHVnImt4ZLx3NlgcLG/QSPaN+Oze4vNXFmeRVFF/UkWH3O
+	/ihRcjpcxN9Y5bPrrJzR/zVWUJkqMGMZy4fVXjd9otGfPVr2zAUsORrr5grtoeDJN+Iz7cR5UwZ
+	AkeWX+vybchiAs3c16R1ivCFepug/MKg+hbfe
+X-Gm-Gg: ASbGnctjQ/S2tLuQ3t80DeO0qbk7TWzLIPEh4YZLWxGG9ppfZHQMALq6D4Aw7TVVdOB
+	UI6xkoe4Bx1DuDa8GdRMyLVxuBBZtAzv6vVOjguS0POs4+jX77fkwbdHhuXfayPquvlI1hWAS3J
+	KvEjzOF+zHUKPpnUNGJzNIyw==
+X-Google-Smtp-Source: AGHT+IEq81DQWkZ97JRyt5xETBtFSorBaF92Ou9Zo82I6G2+i+i8EcwH+xtm9xonVfTXTIJqZpTYrjxiZqHXvvmgyoI=
+X-Received: by 2002:a05:690c:3588:b0:703:ac44:d367 with SMTP id
+ 00721157ae682-706cccc0c45mr179795477b3.6.1745262580700; Mon, 21 Apr 2025
+ 12:09:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250421134909.464405-1-benno.lossin@proton.me> <20250421134909.464405-2-benno.lossin@proton.me>
-In-Reply-To: <20250421134909.464405-2-benno.lossin@proton.me>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 21 Apr 2025 14:42:24 -0400
-X-Gm-Features: ATxdqUEYWX-95trk7CtalZxQC6bawj_76d_ckxO0puOdXJptw1PENUHZDAqVj5o
-Message-ID: <CAJ-ks9m0=TRiq_6p_11xj3GjXJnPgrHYp9UByZt1HEHXyTorEg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] rust: transmute: add `cast_slice[_mut]` functions
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Aliet Exposito Garcia <aliet.exposito@gmail.com>, 
-	Fiona Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20250416213206.26060-2-kernel@o1oo11oo.de>
+In-Reply-To: <20250416213206.26060-2-kernel@o1oo11oo.de>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 21 Apr 2025 15:09:29 -0400
+X-Gm-Features: ATxdqUEYOsA9flEG-c70fcJwePHBgE2dUMSRCtlm3hgaQYBOzeZmlB1-mNQVx4c
+Message-ID: <CAHC9VhS=jWEZqb3MqCtUAJhY9ci8d_N4H6CqWsYU0YmEG=8_yA@mail.gmail.com>
+Subject: Re: [RFC PATCH] lsm: Add Rust bindings with example LSM
+To: Lukas Fischer <kernel@o1oo11oo.de>
+Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 21, 2025 at 9:50=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
+On Wed, Apr 16, 2025 at 5:36=E2=80=AFPM Lukas Fischer <kernel@o1oo11oo.de> =
+wrote:
 >
-> Add functions to make casting slices only one `unsafe` block.
+> These are the bare necessities to implement an LSM in Rust. They are in
+> an early WIP state intended to gather feedback, mainly for the use of
+> unsafe.
 >
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> The LSM is implemented in security/rust_lsm/lsm.rs and uses the bindings
+> to the C side directly to set itself up. This is of course not
+> production ready, but enough to set up a minimal example of an LSM.
+>
+> The `lsm_info` struct technically needs to be aligned to
+> `size_of::<kernel::ffi::c_ulong>()`, but Rust does not allow this in
+> combination with `repr(transparent)`. So far this works, but it seems
+> brittle.
+>
+> To limit the scope of the implementation, the example and bindings only
+> cover the `file_permission` hook.
+>
+> Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
 > ---
->  rust/kernel/transmute.rs | 41 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 41 insertions(+)
->
-> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-> index 1c7d43771a37..242623bbb565 100644
-> --- a/rust/kernel/transmute.rs
-> +++ b/rust/kernel/transmute.rs
-> @@ -2,6 +2,8 @@
->
->  //! Traits for transmuting types.
->
-> +use core::slice;
-> +
->  /// Types for which any bit pattern is valid.
->  ///
->  /// Not all types are valid for all values. For example, a `bool` must b=
-e either zero or one, so
-> @@ -69,3 +71,42 @@ macro_rules! impl_asbytes {
->      {<T: AsBytes>} [T],
->      {<T: AsBytes, const N: usize>} [T; N],
->  }
-> +
-> +/// Casts the type of a slice to another.
-> +///
-> +/// # Examples
-> +///
-> +/// ```rust
-> +/// # use kernel::transmute::cast_slice;
-> +/// #[repr(transparent)]
-> +/// #[derive(Debug)]
-> +/// struct Container<T>(T);
-> +///
-> +/// let array =3D [0u32; 42];
-> +/// let slice =3D &array;
-> +/// // SAFETY: `Container<T>` transparently wraps a `T`.
-> +/// let container_slice =3D unsafe { cast_slice(slice) };
-> +/// pr_info!("{container_slice}");
-> +/// ```
+> As part of my master's thesis, I am developing a Rust-based LSM. These
+> are the bindings I have created for that, so that I can register and
+> implement an LSM in Rust.
 
-How can this example compile? The type of `container_slice` can't
-possibly be known.
+Thanks for sharing this Lukas.  My Rust knowledge is still far too
+basic to offer any constructive review of the Rust code, but I'm happy
+to see some effort being put into looking at what would be required to
+support a LSM written in Rust.
 
-> +///
-> +/// # Safety
-> +/// - `T` and `U` must have the same layout.
-> +pub unsafe fn cast_slice<T, U>(slice: &[T]) -> &[U] {
-> +    // CAST: by the safety requirements, `T` and `U` have the same layou=
-t.
-> +    let ptr =3D slice.as_ptr().cast::<U>();
-> +    // SAFETY: `ptr` and `len` come from the same slice reference.
-> +    unsafe { slice::from_raw_parts(ptr, slice.len()) }
-> +}
-> +
-> +/// Casts the type of a slice to another.
-> +///
-> +/// Also see [`cast_slice`].
-> +///
-> +/// # Safety
-> +/// - `T` and `U` must have the same layout.
-> +pub unsafe fn cast_slice_mut<T, U>(slice: &mut [T]) -> &mut [U] {
-> +    // CAST: by the safety requirements, `T` and `U` have the same layou=
-t.
-> +    let ptr =3D slice.as_mut_ptr().cast::<U>();
-> +    // SAFETY: `ptr` and `len` come from the same slice reference.
-> +    unsafe { slice::from_raw_parts_mut(ptr, slice.len()) }
-> +}
+It isn't clear to me if this is simply an exercise in seeing what
+Rust/C interfaces would be needed to implement a Rust based LSM, or if
+you ultimately have a LSM you would like to submit upstream and this
+is the necessary groundwork so you can implement it in Rust.  Unless
+it is the latter, I'm not sure this is something that is a candidate
+for merging into the upstream Linux kernel as we don't merge "demo"
+type LSMs.  If you are intending to develop a proper LSM, we do have
+some guidelines that may help explain what is expected:
 
-With the example fixed (or if I'm mistaken and it does compile):
+* https://github.com/LinuxSecurityModule/kernel/blob/main/README.md
 
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+--=20
+paul-moore.com
