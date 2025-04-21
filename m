@@ -1,43 +1,43 @@
-Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5D4212B04
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 21:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B421EF363
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 21:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745270088; cv=none; b=RAbbvJUCxvj0FotjB/+e9+c5PiuzmoRXS9ObCHjsDUckixgIbGaJRR8Y0V0qxA/b6BDbv3hoAt/xWm8poWxW+kXRQnNu2AXxovBbl/J8X4+DXugp6PMJJmFGnA/F9Ecr+7r+FHyTEibwfxdlPLCkDZoWofbEIbSxGT3UckqCBd4=
+	t=1745270633; cv=none; b=sj89EbikKPLLxG7+ne0prUiawJqN/R+ebxVA/LEWfiBadW8gzf5G6K1Fex9eWz3CFDl5DJFcoVuXTG4oIrRkntzqLSjRbVej9whJbSTvXMh4p4Tg0LDCzndjqRkoVtev6ajww7wfMPuKbRQkqL4PslHCUr93WdD50n+QdhthnlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745270088; c=relaxed/simple;
-	bh=rKiSOswciZT5JVD5KxRXam48ocNJGCeTffyVKRmox9I=;
+	s=arc-20240116; t=1745270633; c=relaxed/simple;
+	bh=iHeTs5nXx3hTKme+zGF2ot2q40w0ixmu4t2pD5839pQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cTy+x5EyjXA4ToGgTL3mTvIUT2oSWSxdv6ThqYgxsp3o9TSe3Ko90wMv8NbSTZoPnOeh7rQN26jJHcPNYg5AP6gyj0HCxel7MyE1ReQ9tm6AESxv50gSGtDR7XcqBSk4pXN/m4W+mPr9/HhVljHnNaIejq6+oagAOuxswfoVULw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mmP2BFJX; arc=none smtp.client-ip=79.135.106.30
+	 MIME-Version:Content-Type; b=e9d2rAW/ASNya+UlMPA5MiNLg5TnL5W+oeBGv1QtgMtg1FaZdwSKxZm2KPCuv+EnZAaI8bRhnwcTjtvPOnr5OatNuKWtWlL60x5alD4kfkK43YQjxzPj4NQsbGUCVOeYIYKa1NJWrUDS/YIF1/TIBKzqEqcuohU/qNxinMj2S00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=dbiNi2zo; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mmP2BFJX"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dbiNi2zo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1745270084; x=1745529284;
-	bh=rKiSOswciZT5JVD5KxRXam48ocNJGCeTffyVKRmox9I=;
+	s=6tiwfbzhmzcg7loqctjiltp2oe.protonmail; t=1745270629; x=1745529829;
+	bh=r8CRCxPCHdU58HTLnMLakplVEEKpqmsVjC+J31WwUIM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=mmP2BFJX4CpaKf8ZpjLw5O3JgGFcZnfuHgcpGQ5l6BXSKiLZ4LylWnhaul0MXJC/0
-	 N3TEO//OnBg2RTRes5lcD8jtxeURKqJGRVfapKV5R+vVQGU/28hpW3kpz73PR25ocq
-	 Jpy68CB/v5Keurqfyq63aH67dg1VzvIv2UIcKFOYIwJWToZOjRDfqimj9AwZL18+AN
-	 UObtZPypYH2QQCYsFR3PUTw8/9hCFNrehpVofOFAh2ihC5V2G8K8Af0HfxkQ3NvvC8
-	 uk4b2zo8KWKoy6joKlj6yQ7PfhlYuFsXF3aoc/OjgzgTlQKCLPLkYe2JZ+ZJaVpdwf
-	 1Qg52pzrRzhbw==
-Date: Mon, 21 Apr 2025 21:14:40 +0000
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+	b=dbiNi2zoPKss9eceOr71d2rElOsumCZcJrB6GlcBM8aq0hAE8VKwZZxVTKYfmQLfS
+	 i+FIJ3RDB4QEWiSY8WvTLiVooGAIBm/Zl3qq4FNtMRQRC7HnpKrlq853o2iiTy6bJ6
+	 ZHEVi9IhI3HrVsf5bCWVYZVe9zpmQ/xLCmzD3pMqFwNyoOGtdEXKUZKRb+aT/RWOdq
+	 fp7ccY7KW9j/N1tF8CVeTeGvLMxayen7UbjESNvePeqirO5vEaDNgoE574bv/6Myts
+	 ltV6BGY0U49dZ9dE4OIvKZzUeabH665e9FvgGfTAewdzXIiCkQT0OlpM+7YFDFAUJB
+	 Me3cYWNh5RD8A==
+Date: Mon, 21 Apr 2025 21:23:43 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: pin-init: synchronize README.md
-Message-ID: <D9CMLWU0PGBX.1OVU2KXRCO9C5@proton.me>
-In-Reply-To: <20250416225002.25253-1-benno.lossin@proton.me>
-References: <20250416225002.25253-1-benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/3] pin-init: fix issues found with new CI
+Message-ID: <D9CMSTK8576Z.3BM2AXWOX81L5@proton.me>
+In-Reply-To: <20250414195928.129040-1-benno.lossin@proton.me>
+References: <20250414195928.129040-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: b0c49c9f1ec00623192ea1176484e5f6da64f0a5
+X-Pm-Message-ID: 03829fefc90fff1fd710adfaec3436cd56182a1d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,15 +47,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu Apr 17, 2025 at 12:50 AM CEST, Benno Lossin wrote:
-> The upstream version of the `README.md` differs by this change, so
-> synchronize it.
+On Mon Apr 14, 2025 at 9:59 PM CEST, Benno Lossin wrote:
+> I changed the CI upstream [1] and found a couple of smaller issues. I
+> again used my automatic sync script for this patch series, so if
+> anything (even small things) looks off let me know!
 >
-> The reason that this wasn't in the original sync patch is that this was
-> a late change that I didn't port back to the kernel repo, since it was
-> generated by `cargo rdme`.
+> [1]: https://github.com/Rust-for-Linux/pin-init/pull/33
 >
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> Benno Lossin (3):
+>   rust: pin-init: internal: skip rustfmt formatting of kernel-only
+>     module
+>   rust: pin-init: examples: conditionally enable `feature(lint_reasons)`
+>   rust: pin-init: examples: use `allow` instead of `expect`
+>
+>  rust/pin-init/examples/linked_list.rs   | 1 +
+>  rust/pin-init/examples/mutex.rs         | 1 +
+>  rust/pin-init/examples/pthread_mutex.rs | 4 +++-
+>  rust/pin-init/examples/static_init.rs   | 1 +
+>  rust/pin-init/internal/src/lib.rs       | 1 +
+>  5 files changed, 7 insertions(+), 1 deletion(-)
+>
+>
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
 
 Applied to pin-init-next -- thanks!
 
