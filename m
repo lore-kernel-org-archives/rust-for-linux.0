@@ -1,122 +1,83 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866ED1E7C32
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 19:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF7A1EF090
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 19:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745262586; cv=none; b=iw7vCcHJ+6sZ8LXVp/iEN03ThhdwxiMJ6XCwUjUlIxxmxyOtJHYJxEdmAm1ZdLtJjdtpVbH+WF0Ezc5lEceyKZUjaHH861ymOE028Mwdl2L+NN3YBHrKlqwJqhbkx/zDsGAqMd6ygK5u/Karm/VR/rLd7+emVkNWq714ra7sZAU=
+	t=1745263196; cv=none; b=Dd+FBCLvTzQiZFmrO0hsH3GMPYQMbzpzSgTW5qzFuhz0JmN8O1Ai3ncjlmgwcvTENPRoRRTfW+ckt3MBXWZzVc2y4PJcf//kYfxCIDyiL4VbEJ6wrLQIHkA2Z/n22QXQqFyoJprJOZyVnSfTLt555xdHVjlrIpZwaHmWKKGxkY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745262586; c=relaxed/simple;
-	bh=Ipy/IlMQR5m3AbiVrZjXOxC3psCUPUEnpm0aP+lGnG8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y1l9C2+801/lBRXUGI0GQaAYrgFeAOaysaq5TYXEYN9FL/d6H92gEZCxUeAKNX2RIPoesNjAxaLhuOJaofsurIkAyBOQI3+wwsUsmw9ZdDm5wLoG5vH5t9ccLyVTOftEnNyeXcQg7BhhULUf4KxFojf7FT4cUgC3DofNKe0iJUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=BpnKfwOS; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	s=arc-20240116; t=1745263196; c=relaxed/simple;
+	bh=ApKe8oF63tfK+c15d5fHPDIKWOvpdK7Vl2AMmjb8w7g=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AZ3ip4W1yWn5Ezxw/PZ89LYgR6VmCYyLc8WteA8BebGG2Ni05EBfemJwp0OK9pTmPzZmuhKZ9L349wVLMRAIwPY6UGSc7SBHgAizwI5Z5qKKgPMDrPsRjFs178efbvEFab3aTPWgGpj0QX1y5vlGFSihAuQXmBY8sbI/CKI/Nlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=D4xovFiR; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="BpnKfwOS"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6ff4faf858cso29676677b3.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 12:09:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1745262580; x=1745867380; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T08XUeirEjZZ3rFusZ9ui4pbr1iJ6mTBH3F3K3ayArk=;
-        b=BpnKfwOSnnHbDHm+0NyompQdo/e9PAF3GvurdUWJGmI5kBBrZh/wT6hOujzhiMb3vr
-         iRDuL7pYUCkdHo5Y8EHMKmwh0Ezl4qa19P2Upv2noI1RAMbxSPlflvry2GDNMVgk7lzK
-         vxHGssoYph8Ndq7i1+a6TPC7xHEO3ViAHfEzobYPv6yU1UVpQUaU2aw7IwmC0uAaCPeS
-         L9dEyDFiPAfDL0vzKIDN1c0SQbSNbfsDkUgCC2O9nBWEywlO2PdQbgkxdttAc4g20TxQ
-         jh7+rkxWlj6ljoA5xJliSG0APSThR9PFQq1Fe4zefqNkXEzoLLoVBn2M7iLj/cnXeWIH
-         WhMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745262580; x=1745867380;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T08XUeirEjZZ3rFusZ9ui4pbr1iJ6mTBH3F3K3ayArk=;
-        b=JgFOiv4fOjVBFoU9bAtr+HEhyjgJkl4PP05wz0n+/r7bjZpj6x0JissSZLf5wuniIb
-         TdmbzTqVP08j/xaMl5U2FDzqMHRCMit3vKOz7ihWiBFbQR8wr90YZ+gkr/ObFrxJK+Dt
-         gHJ+STAkYNyikNmhCMXlvSpDrGhFhjlmtbPK5pU0MY0Z+aJK0GuOVSB91cg/YoOSfogC
-         wpj28Hmm16cGUx0213F41t32iv6qKP1meZ+2UtALP7pfNWo4sVGNIHf2xKuS1qDl37eO
-         kMPkr+TOn2GpfO8dshR9t3zNRTd29xlVnU159jcZLw+qsZf3G7Nkyjjn3BZvIJbT+BsS
-         7fZg==
-X-Forwarded-Encrypted: i=1; AJvYcCX0UkVUkBDzx4dWrJaNLX/BaJsNcAjmL1wUWmw3zVg2KwEVfCxla7q1S3jxFS0QeixqRt7x8UZr8P52EAbI5w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVKCAHVnImt4ZLx3NlgcLG/QSPaN+Oze4vNXFmeRVFF/UkWH3O
-	/ihRcjpcxN9Y5bPrrJzR/zVWUJkqMGMZy4fVXjd9otGfPVr2zAUsORrr5grtoeDJN+Iz7cR5UwZ
-	AkeWX+vybchiAs3c16R1ivCFepug/MKg+hbfe
-X-Gm-Gg: ASbGnctjQ/S2tLuQ3t80DeO0qbk7TWzLIPEh4YZLWxGG9ppfZHQMALq6D4Aw7TVVdOB
-	UI6xkoe4Bx1DuDa8GdRMyLVxuBBZtAzv6vVOjguS0POs4+jX77fkwbdHhuXfayPquvlI1hWAS3J
-	KvEjzOF+zHUKPpnUNGJzNIyw==
-X-Google-Smtp-Source: AGHT+IEq81DQWkZ97JRyt5xETBtFSorBaF92Ou9Zo82I6G2+i+i8EcwH+xtm9xonVfTXTIJqZpTYrjxiZqHXvvmgyoI=
-X-Received: by 2002:a05:690c:3588:b0:703:ac44:d367 with SMTP id
- 00721157ae682-706cccc0c45mr179795477b3.6.1745262580700; Mon, 21 Apr 2025
- 12:09:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="D4xovFiR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=apuvx3gjunbhfe7eymzvlodfcq.protonmail; t=1745263186; x=1745522386;
+	bh=7IwTzBLsSrUW2fbp1K3bxI74sXuik0hnfJ9jYv/jsOs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=D4xovFiRO49jojevhNUmb8TKSUdkABQXMv/6BBAr8Bx9ochbXls9+UCJTEQQV+dst
+	 j8ZIYDdgs/kEsYebJO+xkwobQk7RjrMibJTrc/R7vFqh1MsuEv1lJVad493ve6trHl
+	 uw4u/u1To1mUuc/eGf6MOfABSBqLHTQBWpdWwJNOS5VX2Y/XPTZTAlTtPtNluYZgj4
+	 PzbkOAp1uqRKijC3mU+CurpLHJBUqmJOKITbI0xvKgpHRRFMNoGTfXLQk9G4oZ0W85
+	 GcUD+vmuTUPcbdkgjWacHirMhheCQylIUUhGVyA3GAUXlQ7NLPeUX6UZ45x2FrO2oM
+	 31EnTq0CRQVmQ==
+Date: Mon, 21 Apr 2025 19:19:39 +0000
+To: Simona Vetter <simona.vetter@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] Untrusted Data API
+Message-ID: <D9CK5T6VBEG3.EQ8VXEH1DXDY@proton.me>
+In-Reply-To: <20250421134909.464405-1-benno.lossin@proton.me>
+References: <20250421134909.464405-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 7311ebc7d6e764ba3af09d71907f15ae12c9ff7a
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250416213206.26060-2-kernel@o1oo11oo.de>
-In-Reply-To: <20250416213206.26060-2-kernel@o1oo11oo.de>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 21 Apr 2025 15:09:29 -0400
-X-Gm-Features: ATxdqUEYOsA9flEG-c70fcJwePHBgE2dUMSRCtlm3hgaQYBOzeZmlB1-mNQVx4c
-Message-ID: <CAHC9VhS=jWEZqb3MqCtUAJhY9ci8d_N4H6CqWsYU0YmEG=8_yA@mail.gmail.com>
-Subject: Re: [RFC PATCH] lsm: Add Rust bindings with example LSM
-To: Lukas Fischer <kernel@o1oo11oo.de>
-Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 16, 2025 at 5:36=E2=80=AFPM Lukas Fischer <kernel@o1oo11oo.de> =
-wrote:
+On Mon Apr 21, 2025 at 3:49 PM CEST, Benno Lossin wrote:
+> Sorry for taking so long with this, I didn't find enough time to work on
+> this and when I did, I spent a lot of time on trying to get the
+> interface into a satisfying state. But I always found something that I
+> didn't like or something that didn't fit correctly. I blame my lack of
+> knowledge about "all the ways of reading bytes in the kernel" together
+> with "how should reading bytes in the kernel look like in Rust" for
+> that. I think it's best I leave the ivory tower behind and just
+> implement the part that I'm confident about (it's not a lot :) and then
+> just roll with the use-cases from there. I should've decided to do that
+> much earlier.
 >
-> These are the bare necessities to implement an LSM in Rust. They are in
-> an early WIP state intended to gather feedback, mainly for the use of
-> unsafe.
+> I did manage to create a very basic validation API that I *think* is on
+> the correct path, but I still marked it as an RFC just to be sure.
 >
-> The LSM is implemented in security/rust_lsm/lsm.rs and uses the bindings
-> to the C side directly to set itself up. This is of course not
-> production ready, but enough to set up a minimal example of an LSM.
+> We can & should merge the first two patches, as they allow new APIs to
+> already use `Untrusted` where possible. (some APIs might of course need
+> to wait for the validation API)
 >
-> The `lsm_info` struct technically needs to be aligned to
-> `size_of::<kernel::ffi::c_ulong>()`, but Rust does not allow this in
-> combination with `repr(transparent)`. So far this works, but it seems
-> brittle.
->
-> To limit the scope of the implementation, the example and bindings only
-> cover the `file_permission` hook.
->
-> Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
-> ---
-> As part of my master's thesis, I am developing a Rust-based LSM. These
-> are the bindings I have created for that, so that I can register and
-> implement an LSM in Rust.
+> The first use case is Alice's `struct iov_iter` series [1]. It simply
+> reads untrusted data and then writes it back into userspace without
+> looking at it. The RFC patch introducing that can either become a normal
+> patch or be folded into Alice's series.
 
-Thanks for sharing this Lukas.  My Rust knowledge is still far too
-basic to offer any constructive review of the Rust code, but I'm happy
-to see some effort being put into looking at what would be required to
-support a LSM written in Rust.
+Seems like I forgot to change the last two commits to be RFC commits,
+sorry. To be clear, these two commits are meant to be RFCs:
 
-It isn't clear to me if this is simply an exercise in seeing what
-Rust/C interfaces would be needed to implement a Rust based LSM, or if
-you ultimately have a LSM you would like to submit upstream and this
-is the necessary groundwork so you can implement it in Rust.  Unless
-it is the latter, I'm not sure this is something that is a candidate
-for merging into the upstream Linux kernel as we don't merge "demo"
-type LSMs.  If you are intending to develop a proper LSM, we do have
-some guidelines that may help explain what is expected:
+   rust: validate: add `Validate` trait
+   rust: iov: use untrusted data API
 
-* https://github.com/LinuxSecurityModule/kernel/blob/main/README.md
+---
+Cheers,
+Benno
 
---=20
-paul-moore.com
