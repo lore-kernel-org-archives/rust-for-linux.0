@@ -1,40 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7276126560F
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 13:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F732264A74
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 13:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243378; cv=none; b=jz0abQpMTtM2fBLZ4/SFsNhVrJh8n9a8hmoSi+lxhmbi2u5/eaotPiYoySvC+6TTzJR/vPCwv1pOD9OP6fKGO7qLUaH2zb3q5Ndy/h7spGAFZMXzo15VXQUM+8kVp8yUquBQBbApu7tGzr0DB+JJG6lJJMlmsQGeIMa5OXACipE=
+	t=1745243384; cv=none; b=ec2cbe0E6IO2ylD38NG5uswfOIdAd5DoG1bPSnVmoQx1VPO8p9r3lbDb+ucWP6cG944unDrQz2qXNs6uT8OQI45RwYy2PKq7qYlwSoZPcb4lqpZaksDvEtuBlvZJI8tgzjpEFHh7fFtBxi7rsR9wmtZHjjysFbMWoXpEqQJq+kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243378; c=relaxed/simple;
-	bh=5K0a5wfo67rqsVXuRMWXqi7Z6gh6ILPYLJyx2spmZKg=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=WE+RhbOcFZN8Fq725YC1Yg6tV8ncKhNsQbN7kjAfvMcDmOA3wP4bYBRhrAxVn45zheHUDwO6kMGEVuxy2Seelem2ydfAJCTInCphcFjtLq7u27GuB7aWKAiRq7ItAmyxB4G2QVjULJoI6ZEp653LMjcEZ27yb9IKSyCxJ0hxYVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=JIrhClzV; arc=none smtp.client-ip=185.70.43.22
+	s=arc-20240116; t=1745243384; c=relaxed/simple;
+	bh=Ao5wNhKv03EPHv0aTteNWmI4WvjIiW9XUFZYal1nH/8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oe6yd4fzQVbt9JLGSPgCX7F68pCLX97nK9hZ3Ma8XgzoTxcGvMFP3IWuyMNZGIrp/W5TeQbXB+XaUtZU5dPww3ocyWs1Q6FLBZmQ/n10nMT7QzT65w3PeWLUxLHyddRoWWssS7XbwR4NZvoP0YowcnRUqGuT5inoc59ZBDC5HWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QQdBUYhG; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="JIrhClzV"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QQdBUYhG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1745243367; x=1745502567;
-	bh=NClquE+GW0dnTJr9uDod7+2bhoGW0XLrK7k6KVjKbKo=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
-	 List-Unsubscribe:List-Unsubscribe-Post;
-	b=JIrhClzVHLzQZ6gkn1XCmPn98y3iFQOqGbdR5zCrANQ5i98MlkR3MSKnWHBzQVZos
-	 uKND6viL0+BIDKt9G9klTplg7Bmn5ua1Is10BtomUlj6OqE88UpWGoevvYhosEvPli
-	 qiDTExpbHM1yXYOa+AB53iG2J0IALXyYi9IVhBKGWx7B2un0OtSBBUs3qYSSnNFzKv
-	 0b4vsqRcWqI5N/fF/51hlZorneO2S26g/8zJSkk9jonRyTHYVkQhU2pXJn+jN9hvn5
-	 D8S8dFMidyxpEH7spRlMleAq8V53MVWZQ6wTri/LIl6e/Eh8tXgUU+CzZtJtRCCL42
-	 ORcyKCfAjKoDA==
-Date: Mon, 21 Apr 2025 13:49:19 +0000
-To: Simona Vetter <simona.vetter@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+	s=protonmail; t=1745243375; x=1745502575;
+	bh=iieEZG1MGOqcpOcsMb508ZZimJzCm0BTdu+irT5HjF8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=QQdBUYhGs3oPe+Jt+YdDiKEmTRbDGwXiuVVj77VM79pE09oAq3xmrHXDQs6qzalpd
+	 gbVuBgx3kfXaLv5c2IfAI6umfDP3LEvF73Wxc15xsjN6/KUMuJpl9vFtC4Wohtvq7F
+	 qr3ttw2/olWtfNJlSKckYx5+KYUnvDcS9gJIOCXL7PKQrB7inyCVvIEnVioEGOQYpL
+	 6NU8H4LqVjRNkVAlvtiy1Mb1FDzVXJKYYnDOC2cEteqUboRP7KJQplkTzpHyuUP+GU
+	 UcHl86rWfnT9GeWtlbXQtdjQX1Cco2Aa0q2w1a3SuIQgUaLngGcZUT4kiGyVXcPGhc
+	 OoM61E2eKQ5PQ==
+Date: Mon, 21 Apr 2025 13:49:30 +0000
+To: Simona Vetter <simona.vetter@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Aliet Exposito Garcia <aliet.exposito@gmail.com>, Fiona Behrens <me@kloenk.dev>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 0/4] Untrusted Data API
-Message-ID: <20250421134909.464405-1-benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/4] rust: transmute: add `cast_slice[_mut]` functions
+Message-ID: <20250421134909.464405-2-benno.lossin@proton.me>
+In-Reply-To: <20250421134909.464405-1-benno.lossin@proton.me>
+References: <20250421134909.464405-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d731d0d74e9118658609e84baab830ea62cd2451
+X-Pm-Message-ID: 39bf4a4fab2beb80b6346e71ebdc4e1e485cef0a
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,57 +47,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Sorry for taking so long with this, I didn't find enough time to work on
-this and when I did, I spent a lot of time on trying to get the
-interface into a satisfying state. But I always found something that I
-didn't like or something that didn't fit correctly. I blame my lack of
-knowledge about "all the ways of reading bytes in the kernel" together
-with "how should reading bytes in the kernel look like in Rust" for
-that. I think it's best I leave the ivory tower behind and just
-implement the part that I'm confident about (it's not a lot :) and then
-just roll with the use-cases from there. I should've decided to do that
-much earlier.
+Add functions to make casting slices only one `unsafe` block.
 
-I did manage to create a very basic validation API that I *think* is on
-the correct path, but I still marked it as an RFC just to be sure.
-
-We can & should merge the first two patches, as they allow new APIs to
-already use `Untrusted` where possible. (some APIs might of course need
-to wait for the validation API)
-
-The first use case is Alice's `struct iov_iter` series [1]. It simply
-reads untrusted data and then writes it back into userspace without
-looking at it. The RFC patch introducing that can either become a normal
-patch or be folded into Alice's series.
-
-@Sima: Since you also were pretty enthusiastic about this patch series,
-would you mind giving me some pointers to branches/patch series that
-have your use-cases for this API? That way I hope to have a better time
-designing the validation part.
-
-[1]: https://lore.kernel.org/all/20250311-iov-iter-v1-0-f6c9134ea824@google=
-.com
-
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
-Cheers,
-Benno
+ rust/kernel/transmute.rs | 41 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-Benno Lossin (4):
-  rust: transmute: add `cast_slice[_mut]` functions
-  rust: create basic untrusted data API
-  rust: validate: add `Validate` trait
-  rust: iov: use untrusted data API
-
- rust/kernel/iov.rs               |  25 ++--
- rust/kernel/lib.rs               |   1 +
- rust/kernel/transmute.rs         |  41 +++++++
- rust/kernel/validate.rs          | 201 +++++++++++++++++++++++++++++++
- samples/rust/rust_misc_device.rs |   5 +-
- 5 files changed, 263 insertions(+), 10 deletions(-)
- create mode 100644 rust/kernel/validate.rs
-
-
-base-commit: 80e54e84911a923c40d7bee33a34c1b4be148d7a
+diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+index 1c7d43771a37..242623bbb565 100644
+--- a/rust/kernel/transmute.rs
++++ b/rust/kernel/transmute.rs
+@@ -2,6 +2,8 @@
+=20
+ //! Traits for transmuting types.
+=20
++use core::slice;
++
+ /// Types for which any bit pattern is valid.
+ ///
+ /// Not all types are valid for all values. For example, a `bool` must be =
+either zero or one, so
+@@ -69,3 +71,42 @@ macro_rules! impl_asbytes {
+     {<T: AsBytes>} [T],
+     {<T: AsBytes, const N: usize>} [T; N],
+ }
++
++/// Casts the type of a slice to another.
++///
++/// # Examples
++///
++/// ```rust
++/// # use kernel::transmute::cast_slice;
++/// #[repr(transparent)]
++/// #[derive(Debug)]
++/// struct Container<T>(T);
++///
++/// let array =3D [0u32; 42];
++/// let slice =3D &array;
++/// // SAFETY: `Container<T>` transparently wraps a `T`.
++/// let container_slice =3D unsafe { cast_slice(slice) };
++/// pr_info!("{container_slice}");
++/// ```
++///
++/// # Safety
++/// - `T` and `U` must have the same layout.
++pub unsafe fn cast_slice<T, U>(slice: &[T]) -> &[U] {
++    // CAST: by the safety requirements, `T` and `U` have the same layout.
++    let ptr =3D slice.as_ptr().cast::<U>();
++    // SAFETY: `ptr` and `len` come from the same slice reference.
++    unsafe { slice::from_raw_parts(ptr, slice.len()) }
++}
++
++/// Casts the type of a slice to another.
++///
++/// Also see [`cast_slice`].
++///
++/// # Safety
++/// - `T` and `U` must have the same layout.
++pub unsafe fn cast_slice_mut<T, U>(slice: &mut [T]) -> &mut [U] {
++    // CAST: by the safety requirements, `T` and `U` have the same layout.
++    let ptr =3D slice.as_mut_ptr().cast::<U>();
++    // SAFETY: `ptr` and `len` come from the same slice reference.
++    unsafe { slice::from_raw_parts_mut(ptr, slice.len()) }
++}
 --=20
 2.48.1
 
