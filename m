@@ -1,43 +1,43 @@
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460D51DF984
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 22:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063C6224AFB
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 22:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745273917; cv=none; b=Q5s2ENoe9ugCQ8Etzk/y/W+N3A7tn6wATCVY0ws5YldlYS1C4P7g0NgIWYYfBuGZcsFYkudNxjC+kKRX+7UtbhF+pVPket01T4J4vo+lBecwqjiBkHHWJyYdwQVxQbDKTDHc0Pf3LTEdwg1bmgJsAgOMCFHX0iCuw4CsWAhB9VE=
+	t=1745273920; cv=none; b=Qmj76KocFyMeWGnxCxF/b8puSoP1QWIGbTubjZXPYnWPK/gxIKp1xezZL/y5rj8mWFjmr9436fS2nITJlCJEQR9+zNRxJWdJ2uVWws0LCI4HWGqng8Xy867uYoH+qcf+0LYpUXuGCt6J4ZwgKVeYHo53/LhUsfAH9eWZP+VmbA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745273917; c=relaxed/simple;
-	bh=5R/oBOoWSaSiOsfivYaq++8IRBo9a30lbWZgmDUFS48=;
+	s=arc-20240116; t=1745273920; c=relaxed/simple;
+	bh=AnLdPTvgp2orHhK7rWJUN9hxRduqvn5Rqu4Oa2c5Wus=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fJ+3MtxxBSVk6SLXVEfDA0VH6pxS4b5C/EJddXuzi8Ps+VYVjMsnc/8S3C3Zd9gNSZHpEkutVkA8qKQY9PEjW2O7i2zRg3fOEgfflMry/9+t0EKRpI8yGz1gK/gAjNLeJSAAAtnIhaNNQjvKL63z6KWjgGjVo2UtWJS9ed0Cg28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nMOtciHU; arc=none smtp.client-ip=109.224.244.16
+	 MIME-Version:Content-Type; b=UiyOAynqY71rVpiE8l84Cl0idNGg24y0EV+hQNrqpLEwDa0e4U1K2Gfc8jLzKnqQrVQZ5k+FdXTHdacTSCI042fGKQy9aD/SAu5R7Ipz/dsbYDSTbZW0dij0w5ugjhX9B2GHmF6CX2MAfarFDWGgLQpxuVf2IeZzmX16PQRJZHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bq2Gg3EU; arc=none smtp.client-ip=79.135.106.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nMOtciHU"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bq2Gg3EU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=vx5sru3p6bhslo26a666ja2ma4.protonmail; t=1745273913; x=1745533113;
-	bh=nnQKNISKhWgt+1NrdjkJr6X9JzCC/znmVW6lmjlesjU=;
+	s=protonmail; t=1745273916; x=1745533116;
+	bh=mueWKD1P2UKooNTZqBTBY3yKdZp1/00n7RyzSvrxqEk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=nMOtciHUvSkYtHliQbHxkfEIRcGC04zmrqJt1Smc5kwq4AH0zPYPffQJ0s094EkMn
-	 zZlEnMqKwpjDIEhc2XKbCGgs15vNTHQvUh8M1sX31kztpCTaacavy0nM/843tx6szr
-	 3PbbXxNAAmNdf35pkybzw0A70kKtDr+IcJDCTo/u/zU7P7JknzymUogVxE7z/S7Wwj
-	 qXmW2iti8dss/1JukrZt8aPPZ3lL+T0FwMqUqZnN9pGWZkZudLHmkLrKdE7UxZOC9w
-	 5UVDjz5Rc15MPPvvSVPbSLI6RW+jTEqz/oJZkgU74mHctptkBN/ofdxos58eWHzd8A
-	 TxKkZzaVKRCQA==
-Date: Mon, 21 Apr 2025 22:18:23 +0000
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, Christian Schrefl <chrisi.schrefl@gmail.com>
+	b=bq2Gg3EU7BkK+GdJt+11TYNRhtuTYAxQsGrPlSKzxQUYIA1T2skAM5qfxNdCOEpvo
+	 kNfZevvNZg7zgY/HEH6PrWkmOa/LP0ZYUr3euKM7qPOb8ZTrSTeic51JLE1IYt5/ry
+	 8AfLweSFtK7iPI5KFmMXZtB1J5OsCtODJFtoqY/kT4fDj8rJmL76YxQLSZ39j0RzVK
+	 l7vedbO/UbcaVVnAwvzNY6v2JuLBsmhxDz0DxlH+iMBJ8mbTMBB+x2HkZWjNzFUKPJ
+	 1ov31FU6mYc1Q0AdJKV1y0VfROiDAtXkh7SyyG4r8JQCLxlPXmIck+OAzoqM+GDQ2v
+	 6qAVY6waM1xZg==
+Date: Mon, 21 Apr 2025 22:18:33 +0000
+To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, Alban Kurti <kurti@invicto.ai>, Michael Vetter <jubalh@iodoru.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 5/8] rust: pin-init: Update the structural pinning link in readme.
-Message-ID: <20250421221728.528089-6-benno.lossin@proton.me>
+Subject: [PATCH 6/8] rust: pin-init: allow `pub` fields in `derive(Zeroable)`
+Message-ID: <20250421221728.528089-7-benno.lossin@proton.me>
 In-Reply-To: <20250421221728.528089-1-benno.lossin@proton.me>
 References: <20250421221728.528089-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 4b4bd5c528cc5cbcf03bc0053bba67dec3b06bf1
+X-Pm-Message-ID: bdb47e7f214ab31586c066848632a8e3facb5073
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,56 +47,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
+Add support for parsing `pub`, `pub(crate)` and `pub(super)` to the
+derive macro `Zeroable`.
 
-The previous link anchor was broken in rust 1.77, because the
-documentation was refactored in upstream rust.
-Change the link to refer to the new section in the rust documentation.
-
-Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-Link: https://github.com/Rust-for-Linux/pin-init/pull/37/commits/a146142fe1=
-8cafa52f8c6da306ca2729d789cfbf
-[ Fixed commit authorship. - Benno ]
+Link: https://github.com/Rust-for-Linux/pin-init/pull/42/commits/e8311e52ca=
+57273e7ed6d099144384971677a0ba
 Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
- rust/pin-init/README.md  | 2 +-
- rust/pin-init/src/lib.rs | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ rust/pin-init/src/macros.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/pin-init/README.md b/rust/pin-init/README.md
-index 1a03b200d4ce..2d0cda961d45 100644
---- a/rust/pin-init/README.md
-+++ b/rust/pin-init/README.md
-@@ -222,7 +222,7 @@ the `kernel` crate. The [`sync`] module is a good start=
-ing point.
-=20
- [`sync`]: https://rust.docs.kernel.org/kernel/sync/index.html
- [pinning]: https://doc.rust-lang.org/std/pin/index.html
--[structurally pinned fields]: https://doc.rust-lang.org/std/pin/index.html=
-#pinning-is-structural-for-field
-+[structurally pinned fields]: https://doc.rust-lang.org/std/pin/index.html=
-#projections-and-structural-pinning
- [stack]: https://docs.rs/pin-init/latest/pin_init/macro.stack_pin_init.htm=
-l
- [`impl PinInit<Foo>`]: https://docs.rs/pin-init/latest/pin_init/trait.PinI=
-nit.html
- [`impl PinInit<T, E>`]: https://docs.rs/pin-init/latest/pin_init/trait.Pin=
-Init.html
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 1521500a46b1..774f8ca033bc 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -247,7 +247,7 @@
- //! [`sync`]: https://rust.docs.kernel.org/kernel/sync/index.html
- //! [pinning]: https://doc.rust-lang.org/std/pin/index.html
- //! [structurally pinned fields]:
--//!     https://doc.rust-lang.org/std/pin/index.html#pinning-is-structural=
--for-field
-+//!     https://doc.rust-lang.org/std/pin/index.html#projections-and-struc=
-tural-pinning
- //! [stack]: crate::stack_pin_init
- #![cfg_attr(
-     kernel,
+diff --git a/rust/pin-init/src/macros.rs b/rust/pin-init/src/macros.rs
+index 361623324d5c..e4054fe3ed3d 100644
+--- a/rust/pin-init/src/macros.rs
++++ b/rust/pin-init/src/macros.rs
+@@ -1393,7 +1393,7 @@ macro_rules! __derive_zeroable {
+         @body({
+             $(
+                 $(#[$($field_attr:tt)*])*
+-                $field:ident : $field_ty:ty
++                $field_vis:vis $field:ident : $field_ty:ty
+             ),* $(,)?
+         }),
+     ) =3D> {
 --=20
 2.48.1
 
