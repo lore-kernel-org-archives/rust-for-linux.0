@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F732264A74
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 13:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F5E265607;
+	Mon, 21 Apr 2025 13:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243384; cv=none; b=ec2cbe0E6IO2ylD38NG5uswfOIdAd5DoG1bPSnVmoQx1VPO8p9r3lbDb+ucWP6cG944unDrQz2qXNs6uT8OQI45RwYy2PKq7qYlwSoZPcb4lqpZaksDvEtuBlvZJI8tgzjpEFHh7fFtBxi7rsR9wmtZHjjysFbMWoXpEqQJq+kE=
+	t=1745243394; cv=none; b=DlsppDKBuVY0LWgFkv8fplgKdNrW3ZXHyi8Mk9NeV6JBto2e46G8NmIL1wdtRaz+cIzQxyaUk4ETsc9JbPMgO60ImARJY337h9L6c+AB8w64QatqGvP1F13l1L3X7WkeDfao92ehX13HUxadu0USWYn0NhI/e2SVpN37ASfrt9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243384; c=relaxed/simple;
-	bh=Ao5wNhKv03EPHv0aTteNWmI4WvjIiW9XUFZYal1nH/8=;
+	s=arc-20240116; t=1745243394; c=relaxed/simple;
+	bh=BUbl0Hso8+VvNoN3zVfpKWS+jOtyoM0JFJCCM5jfl9k=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oe6yd4fzQVbt9JLGSPgCX7F68pCLX97nK9hZ3Ma8XgzoTxcGvMFP3IWuyMNZGIrp/W5TeQbXB+XaUtZU5dPww3ocyWs1Q6FLBZmQ/n10nMT7QzT65w3PeWLUxLHyddRoWWssS7XbwR4NZvoP0YowcnRUqGuT5inoc59ZBDC5HWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QQdBUYhG; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=rn8AEKTN1iiegu8Gy5Qro3m36qg1mKDkXaBES93vhOqhRUybihgctXvynj4YqssK0ckBYoS7XtAd0n3R/5vQ2yCxMXYcXtoJV/YQmIOIppIcnjg04nmHxDD4B8b4QivnPFRf8NFwbXqWExlab117RqAQgOfjMqKYH4hbN52GNC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TBmHWivq; arc=none smtp.client-ip=79.135.106.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QQdBUYhG"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TBmHWivq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1745243375; x=1745502575;
-	bh=iieEZG1MGOqcpOcsMb508ZZimJzCm0BTdu+irT5HjF8=;
+	s=protonmail; t=1745243384; x=1745502584;
+	bh=64g4C6aut2iGTL5A6yDHBX2R2hNml2bmojv2EBq3Bmw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=QQdBUYhGs3oPe+Jt+YdDiKEmTRbDGwXiuVVj77VM79pE09oAq3xmrHXDQs6qzalpd
-	 gbVuBgx3kfXaLv5c2IfAI6umfDP3LEvF73Wxc15xsjN6/KUMuJpl9vFtC4Wohtvq7F
-	 qr3ttw2/olWtfNJlSKckYx5+KYUnvDcS9gJIOCXL7PKQrB7inyCVvIEnVioEGOQYpL
-	 6NU8H4LqVjRNkVAlvtiy1Mb1FDzVXJKYYnDOC2cEteqUboRP7KJQplkTzpHyuUP+GU
-	 UcHl86rWfnT9GeWtlbXQtdjQX1Cco2Aa0q2w1a3SuIQgUaLngGcZUT4kiGyVXcPGhc
-	 OoM61E2eKQ5PQ==
-Date: Mon, 21 Apr 2025 13:49:30 +0000
-To: Simona Vetter <simona.vetter@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Aliet Exposito Garcia <aliet.exposito@gmail.com>, Fiona Behrens <me@kloenk.dev>
+	b=TBmHWivq/frKLReEFixToJ+LK7QJjtgjTibzRV9rPiK9lRaWRGZiX4ZBJGX0BnHI2
+	 2h3BesdQXIsh5w/jDW6pn9lPBfcUCPxnxn6OQU5J/3ehKDH7pIjqXhSqM/7juibtgD
+	 Xpfhzb52O6BLil2UpvW96wT2mnxt0q72TrlMXFPIyu9OJ9O3xTjcerAxMtuxMDdm+f
+	 N/iRIZYk1h3fiqKWe5fIJJioncix61moQJulLH0yIQYjLCcvd+67yG4BLBwrOAjhdJ
+	 oDDM2FOsRKwDKriO5aEDLqhnrZSMJsOWR1aW/V585DrdPMfTkvk/nsWelHJWyRcQA/
+	 h/fgMkEHyZ2YQ==
+Date: Mon, 21 Apr 2025 13:49:41 +0000
+To: Simona Vetter <simona.vetter@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Xiangfei Ding <dingxiangfei2009@gmail.com>, Yutaro Ohno <yutaro.ono.418@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/4] rust: transmute: add `cast_slice[_mut]` functions
-Message-ID: <20250421134909.464405-2-benno.lossin@proton.me>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: [PATCH v3 2/4] rust: create basic untrusted data API
+Message-ID: <20250421134909.464405-3-benno.lossin@proton.me>
 In-Reply-To: <20250421134909.464405-1-benno.lossin@proton.me>
 References: <20250421134909.464405-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 39bf4a4fab2beb80b6346e71ebdc4e1e485cef0a
+X-Pm-Message-ID: 6dc438543a5ab2a0361c5bd07c1e950f71d473c8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,69 +47,209 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Add functions to make casting slices only one `unsafe` block.
+When the kernel receives external data (e.g. from userspace), it usually
+is a very bad idea to directly use the data for logic decision in the
+kernel. For this reason, such data should be explicitly marked and
+validated before making decision based on its value.
+
+The `Untrusted<T>` wrapper type marks a value of type `T` as untrusted.
+The particular meaning of "untrusted" highly depends on the type `T`.
+For example `T =3D u8` ensures that the value of the byte cannot be
+retrieved. However, `T =3D [u8]` still allows to access the length of the
+slice. Similarly, `T =3D KVec<U>` allows modifications.
 
 Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 ---
- rust/kernel/transmute.rs | 41 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
 
-diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-index 1c7d43771a37..242623bbb565 100644
---- a/rust/kernel/transmute.rs
-+++ b/rust/kernel/transmute.rs
-@@ -2,6 +2,8 @@
+Thanks a lot to Gary who suggested to add the `Deref for
+Untrusted<[T]>`, it allows implicit conversions at the right places and
+hopefully makes the whole API have a lot less friction.
+
+---
+ rust/kernel/lib.rs      |   1 +
+ rust/kernel/validate.rs | 142 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 143 insertions(+)
+ create mode 100644 rust/kernel/validate.rs
+
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index de9d6e797953..b2da57bd2c02 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -85,6 +85,7 @@
+ pub mod transmute;
+ pub mod types;
+ pub mod uaccess;
++pub mod validate;
+ pub mod workqueue;
 =20
- //! Traits for transmuting types.
-=20
-+use core::slice;
+ #[doc(hidden)]
+diff --git a/rust/kernel/validate.rs b/rust/kernel/validate.rs
+new file mode 100644
+index 000000000000..8b33716be0c7
+--- /dev/null
++++ b/rust/kernel/validate.rs
+@@ -0,0 +1,142 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- /// Types for which any bit pattern is valid.
- ///
- /// Not all types are valid for all values. For example, a `bool` must be =
-either zero or one, so
-@@ -69,3 +71,42 @@ macro_rules! impl_asbytes {
-     {<T: AsBytes>} [T],
-     {<T: AsBytes, const N: usize>} [T; N],
- }
++//! Untrusted data API.
++//!
++//! # Overview
++//!
++//! Untrusted data is marked using the [`Untrusted<T>`] type. See [Rationa=
+le](#rationale) for the
++//! reasons to mark untrusted data throughout the kernel. It is a totally =
+opaque wrapper, it is not
++//! possible to read the data inside.
++//!
++//! APIs that write back into userspace usually allow writing untrusted by=
+tes directly, allowing
++//! direct copying of untrusted user data back into userspace without vali=
+dation.
++//!
++//! # Rationale
++//!
++//! When reading data from an untrusted source, it must be validated befor=
+e it can be used for
++//! **logic**. For example, this is a very bad idea:
++//!
++//! ```
++//! # fn read_bytes_from_network() -> Box<[u8]> {
++//! #     Box::new([1, 0], kernel::alloc::flags::GFP_KERNEL).unwrap()
++//! # }
++//! let bytes: Box<[u8]> =3D read_bytes_from_network();
++//! let data_index =3D bytes[0];
++//! let data =3D bytes[usize::from(data_index)];
++//! ```
++//!
++//! While this will not lead to a memory violation (because the array inde=
+x checks the bounds), it
++//! might result in a kernel panic. For this reason, all untrusted data mu=
+st be wrapped in
++//! [`Untrusted<T>`]. This type only allows validating the data or passing=
+ it along, since copying
++//! data from userspace back into userspace is allowed for untrusted data.
 +
-+/// Casts the type of a slice to another.
++use core::ops::{Deref, DerefMut};
++
++use crate::{
++    alloc::{Allocator, Vec},
++    transmute::{cast_slice, cast_slice_mut},
++};
++
++/// Untrusted data of type `T`.
 +///
-+/// # Examples
++/// Data coming from userspace is considered untrusted and should be marke=
+d by this type.
 +///
-+/// ```rust
-+/// # use kernel::transmute::cast_slice;
-+/// #[repr(transparent)]
-+/// #[derive(Debug)]
-+/// struct Container<T>(T);
++/// The particular meaning of [`Untrusted<T>`] depends heavily on the type=
+ `T`. For example,
++/// `&Untrusted<[u8]>` is a reference to an untrusted slice. But the lengt=
+h is not considered
++/// untrusted, as it would otherwise violate normal Rust rules. For this r=
+eason, one can easily
++/// convert that reference to `&[Untrusted<u8>]`. Another such example is =
+`Untrusted<KVec<T>>`, it
++/// derefs to `KVec<Untrusted<T>>`. Raw bytes however do not behave in thi=
+s way, `Untrusted<u8>` is
++/// totally opaque.
 +///
-+/// let array =3D [0u32; 42];
-+/// let slice =3D &array;
-+/// // SAFETY: `Container<T>` transparently wraps a `T`.
-+/// let container_slice =3D unsafe { cast_slice(slice) };
-+/// pr_info!("{container_slice}");
++/// # Usage in API Design
++///
++/// The exact location where to put [`Untrusted`] depends on the kind of A=
+PI. When asking for an
++/// untrusted input value, or buffer to write to, always move the [`Untrus=
+ted`] wrapper as far
++/// inwards as possible:
++///
++/// ```
++/// // use this
++/// pub fn read_from_userspace(buf: &mut [Untrusted<u8>]) { todo!() }
++///
++/// // and not this
++/// pub fn read_from_userspace(buf: &mut Untrusted<[u8]>) { todo!() }
 +/// ```
 +///
-+/// # Safety
-+/// - `T` and `U` must have the same layout.
-+pub unsafe fn cast_slice<T, U>(slice: &[T]) -> &[U] {
-+    // CAST: by the safety requirements, `T` and `U` have the same layout.
-+    let ptr =3D slice.as_ptr().cast::<U>();
-+    // SAFETY: `ptr` and `len` come from the same slice reference.
-+    unsafe { slice::from_raw_parts(ptr, slice.len()) }
++/// The reason for this is that `&mut Untrusted<[u8]>` can beconverted int=
+o `&mut [Untrusted<u8>]`
++/// very easily, but the converse is not possible.
++///
++/// For the same reason, when returning untrusted data by-value, one shoul=
+d move the [`Untrusted`]
++/// wrapper as far outward as possible:
++///
++/// ```
++/// // use this
++/// pub fn read_all_from_userspace() -> Untrusted<KVec<u8>> { todo!() }
++///
++/// // and not this
++/// pub fn read_all_from_userspace() -> KVec<Untrusted<u8>> { todo!() }
++/// ```
++///
++/// Here too the reason is that `KVec<Untrusted<u8>>` is more restrictive =
+compared to
++/// `Untrusted<KVec<u8>>`.
++#[repr(transparent)]
++pub struct Untrusted<T: ?Sized>(T);
++
++impl<T: ?Sized> Untrusted<T> {
++    /// Marks the given value as untrusted.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::validate::Untrusted;
++    ///
++    /// # mod bindings { pub(crate) unsafe fn read_foo_info() -> [u8; 4] {=
+ todo!() } };
++    /// fn read_foo_info() -> Untrusted<[u8; 4]> {
++    ///     // SAFETY: just an FFI call without preconditions.
++    ///     Untrusted::new(unsafe { bindings::read_foo_info() })
++    /// }
++    /// ```
++    pub fn new(value: T) -> Self
++    where
++        T: Sized,
++    {
++        Self(value)
++    }
 +}
 +
-+/// Casts the type of a slice to another.
-+///
-+/// Also see [`cast_slice`].
-+///
-+/// # Safety
-+/// - `T` and `U` must have the same layout.
-+pub unsafe fn cast_slice_mut<T, U>(slice: &mut [T]) -> &mut [U] {
-+    // CAST: by the safety requirements, `T` and `U` have the same layout.
-+    let ptr =3D slice.as_mut_ptr().cast::<U>();
-+    // SAFETY: `ptr` and `len` come from the same slice reference.
-+    unsafe { slice::from_raw_parts_mut(ptr, slice.len()) }
++impl<T> Deref for Untrusted<[T]> {
++    type Target =3D [Untrusted<T>];
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: `Untrusted<T>` transparently wraps `T`.
++        unsafe { cast_slice(&self.0) }
++    }
++}
++
++impl<T> DerefMut for Untrusted<[T]> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        // SAFETY: `Untrusted<T>` transparently wraps `T`.
++        unsafe { cast_slice_mut(&mut self.0) }
++    }
++}
++
++impl<T, A: Allocator> Deref for Untrusted<Vec<T, A>> {
++    type Target =3D Vec<Untrusted<T>, A>;
++
++    fn deref(&self) -> &Self::Target {
++        let ptr: *const Untrusted<Vec<T, A>> =3D self;
++        // CAST: `Untrusted<T>` transparently wraps `T`.
++        let ptr: *const Vec<Untrusted<T>, A> =3D ptr.cast();
++        // SAFETY: `ptr` is derived from the reference `self`.
++        unsafe { &*ptr }
++    }
++}
++
++impl<T, A: Allocator> DerefMut for Untrusted<Vec<T, A>> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        let ptr: *mut Untrusted<Vec<T, A>> =3D self;
++        // CAST: `Untrusted<T>` transparently wraps `T`.
++        let ptr: *mut Vec<Untrusted<T>, A> =3D ptr.cast();
++        // SAFETY: `ptr` is derived from the reference `self`.
++        unsafe { &mut *ptr }
++    }
 +}
 --=20
 2.48.1
