@@ -1,186 +1,157 @@
-Received: from out203-205-221-210.mail.qq.com (out203-205-221-210.mail.qq.com [203.205.221.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D243117C77
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Apr 2025 16:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DEAC2ED;
+	Mon, 21 Apr 2025 18:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745254045; cv=none; b=RdVfFguG2TzKgF0P64AD3uKX12B/r3d2jgGh6IrJEgAWXZ8hsWz1G3VuQgvAIB2XPsT8/67cU7YvsUGrDDDyryIFbgwGvPwyUa7WD3flMHfh56o7GSA095poeaItr55PB1q9nzZgHZ71ecFgeQm50mbPYyOwIBLwXDfAsn3LnlI=
+	t=1745260984; cv=none; b=AyUA1sX1J4aQzKzEgt+4nRTuFgaul//jDqWMbQvuxrN0KJGNClV7gn+zHdfPJ9R3PlQS0d+W7imCr1Fy6dpK/oOiHdxX8BPoWuxLhayciFO78V1/q1VOVSlUG7GWuQwu5GF7h9H0On0JGBC4W/7s3RqL8LzoXeF+jpLSx8DxtMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745254045; c=relaxed/simple;
-	bh=zQ0EGh/F12wna3NvvINOFg8KOFnSaliwDsC8vZaldpg=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=M2CMu+G9NXsKybmLqTe5zgsTIhBpypPL6wTByygF/OWVyB+GR0dTERp3MLk5mxkUTMzbcM0nllsxdNaNbGGSbqwjqbWLE8MFkHDxM7Js6svDXNtFbrgVSnwOwvUrA3qC9AGhSG7zMFHlCPqk7/gPH4dJXcxzM/wroRgfGhsi5Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=MT7IGPsT; arc=none smtp.client-ip=203.205.221.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1745260984; c=relaxed/simple;
+	bh=12pNAYV5E3uTGRq/iVL3og6PyUEcWmekCJ/kjMC72F0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=acEgsRxPD8adcyv9ofSdoU0XF/3sjm2z57cVtuJTjDazynwOg+VrMQJr5DLM632C/OWFYwqKy/DC0qMM+KgI/2v1z7aoE9oiwRzUnkwfwmelyTQ3iqvDND1RQesGsTkIMIpWSPq5HRoRIaFzK+zRDybGSefNH/oyOtTmjq2dPnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S/Cq1IqI; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="MT7IGPsT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1745254038; bh=dUdLgnEveokE4y01P7eq6jBsYcwFEiE6grPLxuZ/jDg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MT7IGPsT7r/wW8tfcjfT8U2L6kEFAB2AVF0FehbwD7ALtPpaNUC9I2nkNJqjndhfE
-	 lrmXRvrHEnyr6xeBX06Ybia/tqOU1DAp7XVfBktvx0YGlosDCqGNTfMJOVWRejp70E
-	 uPtpDU9HEaiz6zWpkTiFSH1zdnuAtxoDvVWwRmUs=
-Received: from jckeep-Lenovo-XiaoXinAir-14IIL-2020.. ([240e:3b1:d003:cf1:7732:da7c:bd29:219d])
-	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
-	id BD01B88F; Tue, 22 Apr 2025 00:47:16 +0800
-X-QQ-mid: xmsmtpt1745254036t94odr9h3
-Message-ID: <tencent_D04FE925ED0AD6F0A4C297CA1A1A74FDE608@qq.com>
-X-QQ-XMAILINFO: NKv2G1wnhDBnnvGgBqycrvnoYnY0GdGeelSXNyyebH1PgO5rYgYR/KLlnYIpNI
-	 2trnWrhJtDH0B7NADdOzyClcEaWrwvvy+HWUNaAnD+FVRH6zx2euyemAbOwNUNEWJqEYVnFdJUqU
-	 PPQosVSbMhjRdahIx4QzzyU5HzQdEtwTR9tnkwSq1ILn0sRxQTyigjEuV7YGgjChkWUqS8Evhfg6
-	 /yzOm/6qZ8Qb2wMyHf74oRIoFt8MYqru0kGIM9G6DlzutK699TICba0kNm3iWgSVbcq3td68dmN6
-	 ZzEoq2bzqBdV5KYQLtM/CCD4Bxaih1idXBJJMLmdmciH+xVhMb2X4fv43lnMKw8Y552apIIn3XCY
-	 Agtv4eu0lhR7R7m8uzapjq3UENwYqAAwifgxXIb7lrVHwjo8rJIT9ILzQeqrfewix3GsBAK5J4r8
-	 XMY8KGKZ2JqI10w7yAd1IhR3kIPp9V/NX/Ft0XhzEqZ4v1snD4jrlcDyMJAJzVk3RfN5JKeDWKfu
-	 7i4nwQAKa4Shfi6aVwLZDhKO0ZlYwmOuPrAXKYC3dTHk4qUKhrsCuN8wDikY+S65+L3P4rzDvocm
-	 oqy71QQVHIJk276lY3/R8CzGPQfTCOH/WALhUEVoNBvU31iSKuKRqU3sjq/njb+Ko3kMLcytN4cT
-	 6LiB+Ml5avHDg6GQhGnuEGKK1iRLbU6NWRNJ640rVNPLD4tRpa6toZxl67aA3ilawn0ItFUNJIh1
-	 kZHYgGzGRdokrHSZu/PoEEOQT9H/qTm94h0cXj4oueFQ+nh4LWrINGR8ONNH2CCHzfo4ziWtvdq5
-	 KjatrhXMmDYeFsZunpE43PhcmUWw0F9TiC1LZ3jX/rEeB+/EgmaocBnV687WvRD0J88E8pZg5afg
-	 9pRIVVt0Wx9tkxfmB+FAPG3tFJduA0Q8UAfPFBXYynLWCJucdK3f1ruZ6Fj3IIRgl9U90nx3InHe
-	 CXtDsALHyIEZR28EmE+KZfc4w/TFDl/0nC2RV+I4DH8E4hwnFX8bmtePdnkCs/
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-From: Guangbo Cui <2407018371@qq.com>
-To: benno.lossin@proton.me
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	simona.vetter@ffwll.ch,
-	tmgross@umich.edu
-Subject: Re: [PATCH v3 3/4] rust: validate: add `Validate` trait
-Date: Tue, 22 Apr 2025 00:47:15 +0800
-X-OQ-MSGID: <20250421164715.427350-1-2407018371@qq.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250421134909.464405-4-benno.lossin@proton.me>
-References: <20250421134909.464405-4-benno.lossin@proton.me>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S/Cq1IqI"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3105ef2a06cso39397611fa.2;
+        Mon, 21 Apr 2025 11:43:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745260981; x=1745865781; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ghDrkF0tVAgm9hBQXnH82rKOM2q62qgv1XyqF65d5cg=;
+        b=S/Cq1IqILYmErmAGdyF1ljXZ1B0RigXB5fcG0yt9ZMZtsCr4BuWyfhzseiDjAymd5b
+         E842WVbJQ7zmugjpTh3VLsxL/SH2+D+3tidOqo0715goxACYU8yksq7FFd/xYZ7zHXxn
+         D7590tdFoHxqiC8KL7GZorNFP/nokTPJkN73DM7cxJptvCfM1/GITD898/iEYLLpszhB
+         gjPIHN4NKAUUGqMLmeQJV3B6GG5PUmPVT8W/H/c8beTCF+NPgdAuyTCbA4i9VHZDlywE
+         A+wCBHovKlNAN8fdbFIVZCzyd2d6BkK12Vc4nul9GMpdTCq0h/hGZPx9Jc9nnEFpWHJg
+         q6Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745260981; x=1745865781;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ghDrkF0tVAgm9hBQXnH82rKOM2q62qgv1XyqF65d5cg=;
+        b=AgvnfEfFkIxAiMDluziHnYJJWPhlzkRUvQPPcrqzLG8oKuOEYRZXOZN67vSn47FKUR
+         80MkFCI8LlpPys59ow+tPJVdzcsvMK120YhKFHEApGbiM46GWGVbXm+IvubG/vl350Es
+         8Q4V29geN1OWwqv6fO+2IxFY+LiCaU9io8wqxqDeEZ6Jt6urdkL77LDcfQXWKX8KhkPz
+         MPktb1OzsC/4GPKTjB5j+m80UvN1lhV5iy4uX95RtPS8q9JN1O9Gzu9VDe/osMD9KUtU
+         QdIz8K1ue7wekyTPhTZZQIrMmx42GCV+Y64iiNOvQw3ny6lVWP9Uzs+xJT9dhTkBEfKb
+         os8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUv1lr//byM8ISlglbrPbflslEqOivL+CoaCLXjBz7wtLaansIPschgEvatuwlWgNR90n6fhi3lGL0YGhk=@vger.kernel.org, AJvYcCVWhP9COo99Ek6AwS5eIwx5RgdwTSv34w7onHO19rOu6HCHBnv/NT8Vi2BQPbe2ARQeI142W2sEaWm9N79Eblk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyC5YtFwJZfek7kHt3CX7edj//DkqzBmcjJmu6kaqnUNp41rpXI
+	SlXaS91l4p+ZmYzcWpPY+HEHa7MEgDrl3tKKN2FP0zI0JUJSKod5WtQZVCJJc1HqXDes3rBgPmY
+	p9geezBmll2lzrnT8WrX5MAiu0WI=
+X-Gm-Gg: ASbGnctAIgvm2HrYaHBib4i4tveJ+TsJYM2ItqY32r3DjOG99ICE0dWQcsLJ65WvslV
+	jQt5dbkSjYGseF98Hu7z/+Mi+lbJl/Lv36+uq/WjkQ+hnLVvwo1CEHx66jh6ao2LwpA1BTRCm17
+	CnRcPWMBuEkn+gUePsrhBsbYx5v2bq4lcJuoJQbw==
+X-Google-Smtp-Source: AGHT+IGK/M7zfu/tJBOd1Os5RtFN0XD2brN0dqT6KIGGp3Et9fsK1pUoZoHkRnpk1/qt5Wz5GWW2/yq0EbZpPPlG15Q=
+X-Received: by 2002:a05:651c:150d:b0:30b:f775:bae5 with SMTP id
+ 38308e7fff4ca-310904c7c9fmr41380531fa.6.1745260980699; Mon, 21 Apr 2025
+ 11:43:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250421134909.464405-1-benno.lossin@proton.me> <20250421134909.464405-2-benno.lossin@proton.me>
+In-Reply-To: <20250421134909.464405-2-benno.lossin@proton.me>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 21 Apr 2025 14:42:24 -0400
+X-Gm-Features: ATxdqUEYWX-95trk7CtalZxQC6bawj_76d_ckxO0puOdXJptw1PENUHZDAqVj5o
+Message-ID: <CAJ-ks9m0=TRiq_6p_11xj3GjXJnPgrHYp9UByZt1HEHXyTorEg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] rust: transmute: add `cast_slice[_mut]` functions
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Aliet Exposito Garcia <aliet.exposito@gmail.com>, 
+	Fiona Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Really cool patch! I got a few thoughts below.
-
-> Introduce the `Validate<Input>` trait and functions to validate
-> `Untrusted<T>` using said trait. This allows one to access the inner
-> value of `Untrusted<T>` via `validate{,_ref,_mut}` functions which
-> subsequently delegate the validation to user-implemented `Validate`
-> trait.
-> 
-> The `Validate` trait is the only entry point for validation code, making
-> it easy to spot where data is being validated.
-> 
-> The reason for restricting the types that can be inputs to
-> `Validate::validate` is to be able to have the `validate...` functions
-> on `Untrusted`. This is also the reason for the suggestions in the
-> `Usage in API Design` section in the commit that introduced
-> `Untrusted<T>`.
-> 
+On Mon, Apr 21, 2025 at 9:50=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> Add functions to make casting slices only one `unsafe` block.
+>
 > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 > ---
->  rust/kernel/validate.rs | 61 ++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 60 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/validate.rs b/rust/kernel/validate.rs
-> index 8b33716be0c7..eecac39365db 100644
-> --- a/rust/kernel/validate.rs
-> +++ b/rust/kernel/validate.rs
-> @@ -11,6 +11,9 @@
->  //! APIs that write back into userspace usually allow writing untrusted bytes directly, allowing
->  //! direct copying of untrusted user data back into userspace without validation.
->  //!
-> +//! The only way to access untrusted data is to [`Validate::validate`] it. This is facilitated by
-> +//! the [`Validate`] trait.
-> +//!
->  //! # Rationale
->  //!
->  //! When reading data from an untrusted source, it must be validated before it can be used for
-> @@ -46,7 +49,7 @@
->  /// untrusted, as it would otherwise violate normal Rust rules. For this reason, one can easily
->  /// convert that reference to `&[Untrusted<u8>]`. Another such example is `Untrusted<KVec<T>>`, it
->  /// derefs to `KVec<Untrusted<T>>`. Raw bytes however do not behave in this way, `Untrusted<u8>` is
-> -/// totally opaque.
-> +/// totally opaque and one can only access its value by calling [`Untrusted::validate()`].
+>  rust/kernel/transmute.rs | 41 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 41 insertions(+)
+>
+> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+> index 1c7d43771a37..242623bbb565 100644
+> --- a/rust/kernel/transmute.rs
+> +++ b/rust/kernel/transmute.rs
+> @@ -2,6 +2,8 @@
+>
+>  //! Traits for transmuting types.
+>
+> +use core::slice;
+> +
+>  /// Types for which any bit pattern is valid.
 >  ///
->  /// # Usage in API Design
->  ///
-> @@ -101,6 +104,30 @@ pub fn new(value: T) -> Self
->      {
->          Self(value)
->      }
-> +
-> +    /// Validate the underlying untrusted data.
-> +    ///
-> +    /// See the [`Validate`] trait for more information.
-> +    pub fn validate<V: Validate<Self>>(self) -> Result<V, V::Err>
-> +    where
-> +        T: Sized,
-> +    {
-> +        V::validate(self.0)
-> +    }
-> +
-> +    /// Validate the underlying untrusted data.
-> +    ///
-> +    /// See the [`Validate`] trait for more information.
-> +    pub fn validate_ref<'a, V: Validate<&'a Self>>(&'a self) -> Result<V, V::Err> {
-> +        V::validate(&self.0)
-> +    }
-> +
-> +    /// Validate the underlying untrusted data.
-> +    ///
-> +    /// See the [`Validate`] trait for more information.
-> +    pub fn validate_mut<'a, V: Validate<&'a mut Self>>(&'a mut self) -> Result<V, V::Err> {
-> +        V::validate(&mut self.0)
-> +    }
+>  /// Not all types are valid for all values. For example, a `bool` must b=
+e either zero or one, so
+> @@ -69,3 +71,42 @@ macro_rules! impl_asbytes {
+>      {<T: AsBytes>} [T],
+>      {<T: AsBytes, const N: usize>} [T; N],
 >  }
-
-The `validate_ref` and `validate_mut` functions should just call `V::validate(self)`
-directly, since self is an Untrusted<T>, and you already implemented ValidateInput for it.
-Calling `V::validate(&self.0)` would cause a type mismatch error.
-
-> +/// Marks valid input for the [`Validate`] trait.
-> +pub trait ValidateInput: private::Sealed {}
 > +
-> +impl<T: ?Sized> ValidateInput for Untrusted<T> {}
-> +
-> +impl<'a, T: ?Sized> ValidateInput for &'a Untrusted<T> {}
-> +
-> +impl<'a, T: ?Sized> ValidateInput for &'a mut Untrusted<T> {}
-> +
-> +mod private {
-> +    use super::Untrusted;
-> +
-> +    pub trait Sealed {}
-> +
-> +    impl<T: ?Sized> Sealed for Untrusted<T> {}
-> +    impl<'a, T: ?Sized> Sealed for &'a Untrusted<T> {}
-> +    impl<'a, T: ?Sized> Sealed for &'a mut Untrusted<T> {}
-> +}
-> +
-> +/// Validate [`Untrusted`] data.
+> +/// Casts the type of a slice to another.
 > +///
-> +/// Care must be taken when implementing this trait, as unprotected access to unvalidated data is
-> +/// given to the [`Validate::validate`] function. The implementer must ensure that the data is only
-> +/// used for logic after successful validation.
-> +pub trait Validate<Input: ValidateInput>: Sized {
-> +    /// Validation error.
-> +    type Err;
+> +/// # Examples
+> +///
+> +/// ```rust
+> +/// # use kernel::transmute::cast_slice;
+> +/// #[repr(transparent)]
+> +/// #[derive(Debug)]
+> +/// struct Container<T>(T);
+> +///
+> +/// let array =3D [0u32; 42];
+> +/// let slice =3D &array;
+> +/// // SAFETY: `Container<T>` transparently wraps a `T`.
+> +/// let container_slice =3D unsafe { cast_slice(slice) };
+> +/// pr_info!("{container_slice}");
+> +/// ```
+
+How can this example compile? The type of `container_slice` can't
+possibly be known.
+
+> +///
+> +/// # Safety
+> +/// - `T` and `U` must have the same layout.
+> +pub unsafe fn cast_slice<T, U>(slice: &[T]) -> &[U] {
+> +    // CAST: by the safety requirements, `T` and `U` have the same layou=
+t.
+> +    let ptr =3D slice.as_ptr().cast::<U>();
+> +    // SAFETY: `ptr` and `len` come from the same slice reference.
+> +    unsafe { slice::from_raw_parts(ptr, slice.len()) }
+> +}
 > +
-> +    /// Validate the raw input.
-> +    fn validate(raw: Input) -> Result<Self, Self::Err>;
+> +/// Casts the type of a slice to another.
+> +///
+> +/// Also see [`cast_slice`].
+> +///
+> +/// # Safety
+> +/// - `T` and `U` must have the same layout.
+> +pub unsafe fn cast_slice_mut<T, U>(slice: &mut [T]) -> &mut [U] {
+> +    // CAST: by the safety requirements, `T` and `U` have the same layou=
+t.
+> +    let ptr =3D slice.as_mut_ptr().cast::<U>();
+> +    // SAFETY: `ptr` and `len` come from the same slice reference.
+> +    unsafe { slice::from_raw_parts_mut(ptr, slice.len()) }
 > +}
 
-Best regards,
-Guangbo Cui
+With the example fixed (or if I'm mistaken and it does compile):
 
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
