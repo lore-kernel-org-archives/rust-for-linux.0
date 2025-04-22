@@ -1,124 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D5A28E5EF;
-	Tue, 22 Apr 2025 14:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204B0EEBB;
+	Tue, 22 Apr 2025 15:15:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745333194; cv=none; b=Np8iaMhsnZ+v1PFE6nuv4QJ2FnkyYhyzA/jLQgiMkMiNxjqmHgcVgvAKozStoTVwRNxnRK1r4BL2lXYkfccNwFoXkcfv1nwKmKrHuc41MzmB9N1l7zdhvzCxlxJoys+iqhOIMIcTbXET2XoALY/69l5subcC7GdoINpvZ8inkD8=
+	t=1745334931; cv=none; b=OFt6RvxrgBAK1d1uH5ZuXbFMb7Pu1NRlLjSDGhtbqX82u9aRc8u4+oFCrW6oK4x5sdZI7bsjOqmaue8Rk6MdbD48UEK02BZ4ZmuBFJ9wiLUpWUl9wSUUF5Ri3IbcYwzki3c5l374K0uugZngZkqJV7ZOV6kxfQ/SIagb2UZOzbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745333194; c=relaxed/simple;
-	bh=JgGqmEvB2i0l21vTcFZrdqY+M7OFwFjriQNygbR07Vo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TAtBghVuAhTi9MEChERbhQbtI4sdqroUB7QsNhFWIpYW7n58K+9koW7NUtvksEYUr+FG3Wle2mlY+91LMrZOeY92iCYxZNLgr0pz3h8zyK99YnzRH2FOHKqIEtLwFQ9AuSOn+8GNEMK7Qjw/5AZ7lh9pFv13a/BboFjOrMQl5Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pdO2A0wN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745334931; c=relaxed/simple;
+	bh=zZKF9nOH8sEPJErHTOsvwYFx9dUfb3L1BJmkI6VuiUo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NQsLCmduvc+NTPoXud6xxbT3R6pkkO68nC2hEx3SnQz9w4JWDCgjHAtHxxf8Jzs71jbbgl5k11KiX+Xb+/Wz98N0WXbXr2Jnw0iQPqn1DrafS+kqIWm9MGXMi1vBDdimz7CFARG+2fKbzaw4POGZ2Qm+5GwKMBO7dD1WfCFN0pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z1seoP+A; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pdO2A0wN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32060C4CEE9;
-	Tue, 22 Apr 2025 14:46:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745333193;
-	bh=JgGqmEvB2i0l21vTcFZrdqY+M7OFwFjriQNygbR07Vo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pdO2A0wN1ZV8jA9qx0DrlTiJxaOVS4zcZW4dGeGCosQ19JsMt7rtnaEjwiKCgeS7i
-	 vZ2eW3ddFv0JWSH+RZahh3K6EFnlEpQbzI8FJFrAXoLM9Bb86WuUUBGi2w+EpA6zkY
-	 QhVcXfdEz6r7kuzVWIqxmA6ECVrjGpWs7PpkS1tblZRgd2BMjM9IkfeJFcZS/ZyFd+
-	 n8TlTi4qGz8cuGZWZpIh204QCPbKlf91YWxvaNixQcDjQs6ytwI24ic/qhJFLvmHBm
-	 RxVgBc1efGnlG8ZFaM43Ad+E9ITsOcws6ErqccMuctgqdh/vUqvZqUb3ULL04347mM
-	 FCaZiVsM+Ex7w==
-Date: Tue, 22 Apr 2025 16:46:26 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 12/16] gpu: nova-core: firmware: add ucode descriptor
- used by FWSEC-FRTS
-Message-ID: <aAerwsnx5VRQr_bM@cassiopeiae>
-References: <20250420-nova-frts-v1-0-ecd1cca23963@nvidia.com>
- <20250420-nova-frts-v1-12-ecd1cca23963@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z1seoP+A"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-af8cb6258bcso239816a12.3;
+        Tue, 22 Apr 2025 08:15:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745334929; x=1745939729; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zZKF9nOH8sEPJErHTOsvwYFx9dUfb3L1BJmkI6VuiUo=;
+        b=Z1seoP+AZVnbXBhyUfCB5LcGeR/jQwabr+dVjCbLXVgwwBtYX3fHEbWVrxb+z/VIor
+         /1KXQkom5I1Mqmzupqc7HjQr5Sg7ISLOO+YTkUboHFAatku/Li1/+XUEHh0cw4iev5I7
+         PS9yMJGIa7HF4+A8WxdaQipy/OtcpWE2HmytJSID++6qHYjDRqjX+W9nX2Dzw7e21H7v
+         3iokcj/DJ2ezKxBY2zidC+eHC20IgmAdc4Xh8hOG1VMgw15VYU6ILbHkBKt1IcMQC19r
+         tQEHi0rH8dQQ3Maa0OGycOcan6FwnNSIOqo/DJH7aS7PjMSkTdaJ5flA7THRVlM0aBx1
+         J9+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745334929; x=1745939729;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zZKF9nOH8sEPJErHTOsvwYFx9dUfb3L1BJmkI6VuiUo=;
+        b=r+DCZHJixW1FxhfWCpLsiremgsGnIf3NWJptAqcVdt6CktPMODu92KveFQjcc8wzjO
+         SAmRzk9bSimYGFSrcT5U/3p3dKi9I/NRy0AgQMKuFQdtk4hPM92Nv6z2dBf67YYGR9d7
+         pZvXaqEoPXM5rVUR2RRFeE446szAtvwV0KVF7Q460F3COq0oSr1bNTnl/hGjRtHw+6/I
+         l8v4BGTiRAVmBs0FE0/LGMMyZLf/yuyf6J72FpRnzC8gDkZ1lC3hxon45+t4/2+mBH2a
+         8f72ZRYP4tuktIwrqKPgHRm1JD47PR3TYXHkFytOvTkaJRxrVHF31Z6H9mYDrwKNCUcn
+         3WeA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8WoPXH7Ly5lHdsjLzD3BjhUdiLkXNiSIvRIxY/JvSpFo+kPMoDiCJXGeOSx+rCYre1tAgg4IRnBjCtrCb@vger.kernel.org, AJvYcCUbk6jUOADrQWGooGnCdGaowN/f52dCs0sm8u6u1dSIRnffBuxI+uq9YUVa3RcLtaBqgZw1IJ3xMirIZjE3CjTV@vger.kernel.org, AJvYcCUevxR7Ij5CySBz9r95QYMaQxRCQDeF5ld0jnxwO0Gb059dwTQk8Cn/E3roybov1VKMYHWFpPMDfU1A6bA=@vger.kernel.org, AJvYcCVtqx1wSdGvEaZrAQK+R1ZeaCxsQQUfli3Nm09aldhyTQ44ATI2X1In8HbC3by/CTtbc83gOvBiS/sD@vger.kernel.org, AJvYcCVymSz5SKJXWKsHsTdJlNS0fxYADwqvkKAwaFqOVw5tUrmrgekxF6XIgEouKytlrqOC+sKuBZhNvubBfBhuskA=@vger.kernel.org, AJvYcCWKgGM6Z007qiWPCPjpzMN9VDbE4tSoMbsc4msQgiWQ6uKcT9f8nosUyH2nCI9ENcJgBevrpsv1JTBz@vger.kernel.org, AJvYcCWOH0OKf/VsJ4z6o3vufLSv+qRFC2UNL8/pJJ5M+GDc6WX8caXYytMb1Ttz09eopP5Cj9BIFBmpfXHUytwM@vger.kernel.org, AJvYcCXViCqsSfu1rijaOTBgaKmZqlGH3yjGiWUFadRzCF49g1UON8ESzM/xf9yTPUlY0XlAC/6sZfuH@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+lng6FjWA2ZOhYq7FnlJ1f2Wzgyb7voiCOODwmVWV8sfO/IWw
+	+U7z30+fE1/GJCEkxtIyLznKS1+hWB7534AHVH8tzP1MxwLGQHoJ5W66iJwSQB7ucIdrgAaD4I9
+	nKpNTY8NCBb26hMK3TkB8qP2ECYo=
+X-Gm-Gg: ASbGncuxu90GAftl1muSeiY+m6S59aO7p3e9MnfY78sEvaDHab+uDTTo/7OTRAApnHM
+	pOHa4/BkMN3vMVoP/x/Nhl/OVgfrbHLTjsgIKW9VvUV+I6LtuO7D4Krv1grES0TJDd3JnZ1G/2U
+	F3pgHvzQaBWQGayHsoN6prGQ==
+X-Google-Smtp-Source: AGHT+IEuT6KxYsdhSw5cCeMrUaqYdXW9YE/wChmli/G+cfCYNzLRiA7m7gmwaKew+OoBnqvuuEbFo8HJGHR2tvaOM7M=
+X-Received: by 2002:a17:90b:3501:b0:2ff:7970:d2b6 with SMTP id
+ 98e67ed59e1d1-3087bde06ddmr9204562a91.5.1745334929331; Tue, 22 Apr 2025
+ 08:15:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250420-nova-frts-v1-12-ecd1cca23963@nvidia.com>
+References: <20250416-ptr-as-ptr-v9-0-18ec29b1b1f3@gmail.com>
+ <20250416-ptr-as-ptr-v9-4-18ec29b1b1f3@gmail.com> <68014084.0c0a0220.394e75.122c@mx.google.com>
+ <CAJ-ks9muaNU9v2LZ5=cmfXV6R5AO+joNOoPP=+hs-GJN=APfKQ@mail.gmail.com>
+ <680160b8.050a0220.223d09.180f@mx.google.com> <CAJ-ks9=TXjk8W18ZMG4mx0JpYvXr4nwnUJqjCnqvW9zu2Y1xjA@mail.gmail.com>
+ <aAJrOV88S-4Qb5o0@Mac.home>
+In-Reply-To: <aAJrOV88S-4Qb5o0@Mac.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 22 Apr 2025 17:15:16 +0200
+X-Gm-Features: ATxdqUEzkXpfnBhiY7k29QsDY3HizJvfa3BhU5YB5Skka6eAvbENy4JVzwfqVy4
+Message-ID: <CANiq72meaJr5noasX+4p7r5BM1H4tCa33eLrsta00Vpk-cF7VQ@mail.gmail.com>
+Subject: Re: [PATCH v9 4/6] rust: enable `clippy::as_underscore` lint
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, 
+	linux-block@vger.kernel.org, devicetree@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 20, 2025 at 09:19:44PM +0900, Alexandre Courbot wrote:
-> FWSEC-FRTS is the first firmware we need to run on the GSP falcon in
-> order to initiate the GSP boot process. Introduce the structure that
-> describes it.
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  drivers/gpu/nova-core/firmware.rs | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
-> 
-> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-> index 9bad7a86382af7917b3dce7bf3087d0002bd5971..4ef5ba934b9d255635aa9a902e1d3a732d6e5568 100644
-> --- a/drivers/gpu/nova-core/firmware.rs
-> +++ b/drivers/gpu/nova-core/firmware.rs
-> @@ -43,6 +43,34 @@ pub(crate) fn new(
->      }
->  }
->  
-> +/// Structure used to describe some firmwares, notable fwsec-frts.
-> +#[allow(dead_code)]
+On Fri, Apr 18, 2025 at 5:09=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> I'm leaning towards to 2 and then 3, because using `as` can sometimes
+> surprise you when you change the type. Thoughts?
 
-Please use 'expect'.
+Having explicit functions sounds good to me, and would also help
+migrating later easily to anything else (because all cases are
+explicitly tagged and easy to grep for).
 
-> +#[repr(C)]
-> +#[derive(Debug, Clone)]
-> +pub(crate) struct FalconUCodeDescV3 {
-
-Can we get some more documentation on the fields please? :)
-
-> +    pub(crate) hdr: u32,
-> +    pub(crate) stored_size: u32,
-> +    pub(crate) pkc_data_offset: u32,
-> +    pub(crate) interface_offset: u32,
-> +    pub(crate) imem_phys_base: u32,
-> +    pub(crate) imem_load_size: u32,
-> +    pub(crate) imem_virt_base: u32,
-> +    pub(crate) dmem_phys_base: u32,
-> +    pub(crate) dmem_load_size: u32,
-> +    pub(crate) engine_id_mask: u16,
-> +    pub(crate) ucode_id: u8,
-> +    pub(crate) signature_count: u8,
-> +    pub(crate) signature_versions: u16,
-> +    _reserved: u16,
-> +}
-> +
-> +#[allow(dead_code)]
-> +impl FalconUCodeDescV3 {
-> +    pub(crate) fn size(&self) -> usize {
-> +        ((self.hdr & 0xffff0000) >> 16) as usize
-
-What's this magic number?
-
-> +    }
-> +}
-> +
->  pub(crate) struct ModInfoBuilder<const N: usize>(firmware::ModInfoBuilder<N>);
->  
->  impl<const N: usize> ModInfoBuilder<N> {
-> 
-> -- 
-> 2.49.0
-> 
+Cheers,
+Miguel
