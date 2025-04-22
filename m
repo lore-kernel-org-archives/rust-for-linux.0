@@ -1,114 +1,114 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496E62853FA;
-	Tue, 22 Apr 2025 14:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4A1284B5B;
+	Tue, 22 Apr 2025 14:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745331959; cv=none; b=AoZSFj2czS8mNN924VPfbJ+UnbAM1ClVeBW/DIB4aWZ1wYc/ILk7YfCytwVXHHc+2vnezh+3AybE6rOLVanvypuUjVtXf//4rG/de8bzx0QJWDuEm3KalZTFgu1mWHiNMVCIBBVyFCwWziCB2S2IDtVizGcGPFXu39SNMitUBVQ=
+	t=1745332212; cv=none; b=SccXn9ofAvOy2eJKUNy80kGGI6/Her3UF4tuIK583Ai6M0vFeZxNFML5RGQYD13i5Q+ijSum4G3G8arYX+W3UsEM4tZZAGA16ks8HoLljudi00ypOe57vnHGIh9Wl7uj3RYj0mh6Iw1uLL4Vmvt9CpRMCbphG9Eo5p4qcMn49qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745331959; c=relaxed/simple;
-	bh=tjtbHzwoboY5NTxcDNdJTdRaGicnX4Nne3QqBjODEsU=;
+	s=arc-20240116; t=1745332212; c=relaxed/simple;
+	bh=+y7IJ6oJ81inUlTVXWqiJFTsfRtk6YoOvQpBIitN+iE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RgvUGwjcajjsL3d35Bz0Tk6a/x1dNfiIgyHciUmQfSsYSKpg58WDTzspS+VlQAyQ4Y1Lz9lFH7Pjfc12VxTyotctd4HZOQ/K+p5LCV98d9eX8UNw+KrJCaPNfPYOk9GkIImRF97F42ZJEiwZctVP/lX/MJJ/RAh0eUKTxazWNJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FpES/phS; arc=none smtp.client-ip=209.85.219.50
+	 Content-Type:Content-Disposition:In-Reply-To; b=bLpb3s7zUo7M3LRXlH2wRo/swvUJkGoX062wcji98QjY+57lPrYdFiNl7BfJAjCBVL7vNMVJYvi2UIIK/QnT2U6MkhBaZx96N8fdnGHIiOX9NTNbpkRmyIrAhIKMM5caM9fIW4XBrnEQcflUaoqFw7XVHk6u9b1+EeCwbmBK8M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YgiE5/0z; arc=none smtp.client-ip=209.85.219.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FpES/phS"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6e8f7019422so51903426d6.1;
-        Tue, 22 Apr 2025 07:25:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YgiE5/0z"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6e8f05acc13so67850786d6.2;
+        Tue, 22 Apr 2025 07:30:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745331955; x=1745936755; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745332209; x=1745937009; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/AA5KErGXnyWxPr67XnMS/Iu/vkfGkM2cePR5H4DX4I=;
-        b=FpES/phSttPCum4bfeTXmtVzccO8KM5qy8lXE/SWYERidmD8wJL9Dpg8Smu1jkAH1e
-         xwQrOxuYrpyWe5WXwybby5PFrLkufBbcZSKB0K7EKmBtt8V4RpElEHdPPKUGgyeM4spX
-         8BtF2aY+/ds+DtU3VnENTx4S1YQ8xIS7YrQpum5MUTf6NmKzqrdN2Ji95MCwJrz3rXZj
-         Z8LZtTT4yUH1BIhz2vCxfdGD+xr/R4BJop5MeQiSjK+30ymrAyTwziE1O0hVeIa7B4fY
-         4Nf6lQsjDzCQjhk/vMepC+qcaUaupN24qIY4C5SgglMAeBJHb+hVlA9ggw3iQdqKV1lU
-         eZmw==
+        bh=gkFPhMrpuv3o2hS9nuXgf57BGd6VBgXtGJLjxIp9TVM=;
+        b=YgiE5/0zYZL3aJr/YSkTUML1o6fP+8g0Hpm5YLmXSmSadWoNDzlrrn++3XP1JdvDsM
+         5qRh/c5ytHhLJQDixxeRCcG6BK2NjaO0HS9OCBhRwsWOhjNobSr4nY+3/T6SqgldhyYK
+         eIszFK7g9i6EQ67ySm+FbQadfoN3VB10vPiebKwcRah/rnSOktAigHR+vcD/JtuOBmg8
+         wDE1QtIXGztJkJztmTKcC7IvYutVJ1f+M/jgOd62I0lJOUFRmKHGRZJuyu2KdtRjvHXd
+         tKN36i0LXeQ6crB4wXNo/6g0cyJSxXp3v7qf5hwkimeGDw4w2KT/dxQIHjodIH1dAZuj
+         HUbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745331955; x=1745936755;
+        d=1e100.net; s=20230601; t=1745332209; x=1745937009;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/AA5KErGXnyWxPr67XnMS/Iu/vkfGkM2cePR5H4DX4I=;
-        b=FOOG+76HIDTtgWi3nV+UU9nQ42b3grkoLl4z5kAFoyywYqszgkelh0J7RZYyP+JSz5
-         rnIH0GF1fUn3MRLavMlHZvGDasNIEqsE+AgEdxuFCB2XhAPQvUBy5yQ3y6dwZeAk9Z51
-         CQpCyoTRNn2i+iQKdlaNffzR4XqoYaslh1i46AGVXXbURrMKvXlxhga7y1fuy/KVcvQK
-         Xmi1wD9rbph7MHBh7LIsH9EAqp9jiwPXO2yp38qsjqP9m+Ky0xv5l5N5eDLW67+SZ2JL
-         E9MxjeZxQhl9y738oUyDid2eoLSY0lsplA5pd9dMcB9+02hWvFRNu9wtThZQs3gM9mZu
-         ffyw==
-X-Forwarded-Encrypted: i=1; AJvYcCWzv83q896f2g+LwXlxAiaz4ORKDbNejzJ4/PXuLRkhWPt4Uj0UgW4NhRVSGbCdBchVjph1JWiw+KObcaz/4cA=@vger.kernel.org, AJvYcCXRl2wL/W9+8YOZ4JECDsTpUzV23SjxvfMf9UKswCxVggEuX9cvgBpxm/ff0GmB6+0I8kXbBco5pf/p2OA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiJOjj6d9JTrHRqVFb2yUtz0DDB7RJcBFh1QInr7XvHMbqDpBk
-	RkSd4qg6eQByMlycaervxBbkZcuUwryxnt4KLcAme3avSvgegrN7
-X-Gm-Gg: ASbGnctGoNWrTLn5xObrtjmUnSWB6s0JAdQTIH4ajv8UnNHwvKTyouNXJOCBv9K1fyj
-	NX0VGD21QVWgpWmyQdpcHbZFbAoIcIAl3dtk1fFNZUh+pLt30F9xedx/kfedEcaHvrxLrptv7BD
-	PuENx8iLTozxCsrqQzvM83TKC0tpjPNgJebolPJ8ZMXKV2/YUfSGz4jrj4kq3hGUe4hi0Ei/qOv
-	2nh0AB0r/K2zL4H2Kv8b0koc9U13r/jEnv7ghEHH2/62h8no8isZhGbf9OT5vRXyYC2dVQwnp/G
-	GfM9d5wu9ioKmgyRE7YS9gDf3E+QcT8qOYJeM78g1vdPTvMLH4fnwJtpaqvDECd24MA+eW65uMB
-	L9GmHk6jvPwL3yVE+P8jMATGVxotJHPM=
-X-Google-Smtp-Source: AGHT+IEAUoX6oEASeQSpF+Thmrw4GKI/Ho/FyOqrb7X2iQhszzbErfs9CuDJ/hJKgwKf7hqNNI5v9w==
-X-Received: by 2002:a05:6214:23c6:b0:6ea:d393:962f with SMTP id 6a1803df08f44-6f2c453aa96mr257641586d6.16.1745331954714;
-        Tue, 22 Apr 2025 07:25:54 -0700 (PDT)
+        bh=gkFPhMrpuv3o2hS9nuXgf57BGd6VBgXtGJLjxIp9TVM=;
+        b=dfzS7JbkAqGWlnFjtWSXbqxtRihiBaRgD9rQ8v7jgI3u9a5Ub9VWzYj45+KLVmUltV
+         huOLyuRwCJgrwH5WfwKpCBMDsoUedlJngOKQAHMLFVOs7hchP6ScNFCKy93Dgqvu7pRy
+         XGunDu2796YwiLSqwdhjw0/cehzxUmwJheTR6rwzZGiORLR9na+jlLPshsI1hurQI8eZ
+         k5eQW/EKtudKkUK64oVoSaYqYqlC0QLQ2oTL+Jtq+kMpSvd3A7BCUFuqmTn8ZayfotKO
+         kv8B6y9Gy8IjNP3swJ15GCZ9SzH74pPJ2AfbJA5hv48r8Or46pVsGSBs6WjqrAIRTXAm
+         Ns2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV1bkfu5+kCmp273lAILsyO0cKDCcnHq1QPvpfNgEfzdiZzYIsvRcFYCKi5yqc1+S0zdt2bctoSW6zACHTAoA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNb04A+YOmAQW4dxmEn9lQAQMgvlSJzQIjqbBo7dJbbd4wEwOr
+	spSU99sTt/ESHeYHl0SA+0nOC09KH97t+KbD5kI0vbc/SvU/UECT
+X-Gm-Gg: ASbGncvdKVLGfyRqeWkcXnx2v2IMG3lM9LI6bOsQF6IU225rqWF/7VrJ6mJABxxyntH
+	chsZ0V53IGvifVA92gQWHjlPnRgUjyKj2FjZW4N4k779BCsz4OFbKEXm8la7fpMK7aD0/fvzcAB
+	IDNczj5Zxw7+BWFCUHLrIs93N2X7hFLfhMt3cT+4dTtLQaWbJZQYFZpruJOcWTx2O8j38uTsYxH
+	6FmgDYW/EeyVr2exIQjcFLWezU9vEHllM993iD7g4S0LTKIPIUHF1MASDDGl3vrXLOWZOw1tsAL
+	ZuG6BRE8zpTrlLr0ID1FbxJohj8FxnqCf/9Tp7xRQ/5oPYE3aalazjNtocyw9QMYo3jpQeqEtgr
+	HQXMFSytYMnuTKzy69yJwtELfbFeIrn7+6woi4StFqQ==
+X-Google-Smtp-Source: AGHT+IFeKuOCzqrVCylUiW+uyw+dYVv8u7uEQTSWqxoE9i0ERqh1jHT4cVXCN/moN4fKJWWK1NjTOw==
+X-Received: by 2002:a05:6214:daa:b0:6ea:d033:2855 with SMTP id 6a1803df08f44-6f2c4562e1bmr274050766d6.26.1745332208952;
+        Tue, 22 Apr 2025 07:30:08 -0700 (PDT)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2b0cb46sm58736436d6.27.2025.04.22.07.25.53
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2c21c32sm58444886d6.110.2025.04.22.07.30.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 07:25:54 -0700 (PDT)
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A246A120006A;
-	Tue, 22 Apr 2025 10:25:53 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 22 Apr 2025 10:25:53 -0400
-X-ME-Sender: <xms:8aYHaDlej0Uw2eqzN0UnK9fSFXHdKDzWG6ikLl84v_YyTrhLuvS1Qg>
-    <xme:8aYHaG1wNP-lCbgArHwaIJ3UVq-Kp9Q3yyA0s9ieXjVaj_-hjz8-NF7tJ962epzhK
-    xqPRsPatrUIztMQAg>
-X-ME-Received: <xmr:8aYHaJokMuilYxBdqaq6DWYchKyJPv3lZ9RZCJ4ebxOGj5JNEVk8hT9O>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeefleeiucetufdoteggodetrf
+        Tue, 22 Apr 2025 07:30:08 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 041381200066;
+	Tue, 22 Apr 2025 10:30:08 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Tue, 22 Apr 2025 10:30:08 -0400
+X-ME-Sender: <xms:76cHaDMpA5sIxYf0RIXX2tjKia38zYdq-N6WyIlCtAj_TgPjISXhAQ>
+    <xme:76cHaN94VlQCsMniT-usLup25lr3p3b_8HEASMNkajZH6tzj2nFgwSl4eSAYzZJjW
+    xcSXydRphzv8oigog>
+X-ME-Received: <xmr:76cHaCQpXmCscN8_QY9wT6m7ElLkeJgIpnoN6wVb0Vyxlht9KCpbR9dw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeefleejucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
     pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
     gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
     vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeetgedujeejudehveekteetfeefhfffheet
-    gfeugfetffekieetiedtudehgfffgfenucffohhmrghinhepghhithhhuhgsrdgtohhmpd
-    hkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeffleejleehveelteeltedugffhhedvkefg
+    vdehfeeiffeihfeigfdvtdeuhfdtteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpd
+    hgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
     ihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqd
     eiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhl
-    rdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddtpdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehkuhhnfihurdgthhgrnheslhhinhhugidruggvvhdp
-    rhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgi
-    drghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihg
-    uhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
-    gtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhr
-    tghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    grlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehtmhhgrhhoshhs
-    sehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:8aYHaLldF3ltUZZuTxR_22T7pdycDxzWHF2DyL__IH7yq4olLVqXzQ>
-    <xmx:8aYHaB3i9p1EQLPO0qRRiIdvMGK1UrrQkyzCEctUmhtqJ6T9U54pNQ>
-    <xmx:8aYHaKvw5ipu8GAVskGnKrUYguurDO4tHDcE4N32Ffm6rCoGUuYm3Q>
-    <xmx:8aYHaFWsz1oM7kEGnPmBGHV7UyzVI0bd-HbYlk_9aJuXu1Z56Fd4Kw>
-    <xmx:8aYHaA2LTdyXIWYK7a_1NrGixuj-p2RO3VV37DEU2QGnE_x-kBXuxS8a>
+    rdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdefpdhmohguvgepsh
+    hmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhl
+    rdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehg
+    rghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprh
+    hothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhr
+    ohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrghesshgrmhhsuhhnghdrtg
+    homh
+X-ME-Proxy: <xmx:76cHaHtIIQukvMG4Qvz-GiPrmxfThcF_PaC75IkrlySHx-zzQIrWOQ>
+    <xmx:76cHaLci8ls9VLcKQjXL_oR6CmXcjuwbYwUFBC0jArEkGLul_0fFdQ>
+    <xmx:76cHaD3O4-RPopVdGjVFe6D8_KDQPdeaSBdyuX1p1VH2jtmlghaeYQ>
+    <xmx:76cHaH8vI5mT-d1FLt0g2_gMp64Q2P_vMpSMeyDECgkeewxqpTbN0g>
+    <xmx:76cHaO8fbMTUZpaomcAOzodT3a4sxN6fUrke8IVOG-3O4RqUCJ-jSvWI>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 22 Apr 2025 10:25:53 -0400 (EDT)
-Date: Tue, 22 Apr 2025 07:25:52 -0700
+ 22 Apr 2025 10:30:06 -0400 (EDT)
+Date: Tue, 22 Apr 2025 07:30:05 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Kunwu Chan <kunwu.chan@linux.dev>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
 	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
-	morbo@google.com, justinstitt@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev, Kunwu Chan <kunwu.chan@hotmail.com>,
-	Grace Deng <Grace.Deng006@gmail.com>
-Subject: Re: [PATCH v2] rust: sync: optimize rust symbol generation for
- CondVar
-Message-ID: <aAem8H4WhLBTf3xv@Mac.home>
-References: <20250324061835.1693125-1-kunwu.chan@linux.dev>
+	a.hindborg@samsung.com, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, mingo@redhat.com, peterz@infradead.org,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com
+Subject: Re: [PATCH v2 0/2] add Rust version of might_sleep()
+Message-ID: <aAen7fQYciq2azi9@Mac.home>
+References: <20250410225623.152616-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -117,79 +117,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250324061835.1693125-1-kunwu.chan@linux.dev>
+In-Reply-To: <20250410225623.152616-1-fujita.tomonori@gmail.com>
 
-On Mon, Mar 24, 2025 at 02:18:34PM +0800, Kunwu Chan wrote:
-> From: Kunwu Chan <kunwu.chan@hotmail.com>
+On Fri, Apr 11, 2025 at 07:56:21AM +0900, FUJITA Tomonori wrote:
+> This patchset adds Rust version of might_sleep().
 > 
-> When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-> with ARCH=arm64, the following symbols are generated:
+> These patches were previously part of the IO polling patchset [1], but
+> they were split out to make upstreaming easier.
 > 
-> $nm vmlinux | grep ' _R'.*CondVar | rustfilt
-> ... T <kernel::sync::condvar::CondVar>::notify_all
-> ... T <kernel::sync::condvar::CondVar>::notify_one
-> ... T <kernel::sync::condvar::CondVar>::notify_sync
-> ... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-> ... T <kernel::sync::condvar::CondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-> ... T <kernel::sync::poll::PollCondVar>::new::{closure#0}::{closure#0}::panic_cold_explicit
-> ... T <kernel::sync::poll::PollCondVar as core::ops::drop::Drop>::drop
+> The first patch is for sched/core, which adds
+> __might_sleep_precision(), rust friendly version of __might_sleep(),
+> which takes a pointer to a string with the length instead of a
+> null-terminated string. Rust's core::panic::Location::file(), which
+> gives the file name of a caller, doesn't provide a null-terminated
+> string. __might_sleep_precision() uses a precision specifier in the
+> printk format, which specifies the length of a string; a string
+> doesn't need to be a null-terminated. Providing a null-terminated
+> string for better C interoperability is under discussion [2].
 > 
-> These notify_* symbols are trivial wrappers around the C functions
-> __wake_up and __wake_up_sync. It doesn't make sense to go through
-> a trivial wrapper for these functions, so mark them inline.
+> The second patch adds a Rust implementation of might_sleep(), on top
+> of the changes in the first patch.
 > 
-> Link: https://github.com/Rust-for-Linux/linux/issues/1145
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-> Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-> Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> [1]: https://lore.kernel.org/lkml/20250220070611.214262-1-fujita.tomonori@gmail.com/
+> [2]: https://github.com/rust-lang/libs-team/issues/466
+> 
+> v2:
+> - improve SAFETY comment
+> v1: https://lore.kernel.org/lkml/20250406110718.126146-1-fujita.tomonori@gmail.com/
 > 
 
-I'm taking this via tip with the version as it is (i.e. no #[inline] for
-notify()), but will reorder the tags. Thanks!
+@scheduler, if there is no objection, I'm going to take these two into a
+pull request to tip soon. Thanks!
 
 Regards,
 Boqun
 
-> ---
-> Changes in v2:
-> - Remove '#[inline]' for notify()
-> - Reword commit msg
-> - v1 link: https://lore.kernel.org/rust-for-linux/01c67d96-6477-4851-81ae-0cbee3b9e893@linux.dev
-> ---
->  rust/kernel/sync/condvar.rs | 3 +++
->  1 file changed, 3 insertions(+)
+> FUJITA Tomonori (2):
+>   sched/core: Add __might_sleep_precision()
+>   rust: task: add Rust version of might_sleep()
 > 
-> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-> index caebf03f553b..c6ec64295c9f 100644
-> --- a/rust/kernel/sync/condvar.rs
-> +++ b/rust/kernel/sync/condvar.rs
-> @@ -216,6 +216,7 @@ fn notify(&self, count: c_int) {
->      /// This method behaves like `notify_one`, except that it hints to the scheduler that the
->      /// current thread is about to go to sleep, so it should schedule the target thread on the same
->      /// CPU.
-> +    #[inline]
->      pub fn notify_sync(&self) {
->          // SAFETY: `wait_queue_head` points to valid memory.
->          unsafe { bindings::__wake_up_sync(self.wait_queue_head.get(), TASK_NORMAL) };
-> @@ -225,6 +226,7 @@ pub fn notify_sync(&self) {
->      ///
->      /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
->      /// completely (as opposed to automatically waking up the next waiter).
-> +    #[inline]
->      pub fn notify_one(&self) {
->          self.notify(1);
->      }
-> @@ -233,6 +235,7 @@ pub fn notify_one(&self) {
->      ///
->      /// This is not 'sticky' in the sense that if no thread is waiting, the notification is lost
->      /// completely (as opposed to automatically waking up the next waiter).
-> +    #[inline]
->      pub fn notify_all(&self) {
->          self.notify(0);
->      }
+>  include/linux/kernel.h |  2 ++
+>  kernel/sched/core.c    | 62 ++++++++++++++++++++++++++++--------------
+>  rust/helpers/task.c    |  6 ++++
+>  rust/kernel/task.rs    | 28 +++++++++++++++++++
+>  4 files changed, 77 insertions(+), 21 deletions(-)
+> 
+> 
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
 > -- 
 > 2.43.0
 > 
