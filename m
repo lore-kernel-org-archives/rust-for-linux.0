@@ -1,205 +1,151 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6EF12BCF72;
-	Tue, 22 Apr 2025 21:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88630254B17
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 21:56:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745357399; cv=none; b=W0A2JRyBVKBxithJ0+g9oPHUbGsaC6z22HNswgj8dCGiRputHs32IOH7ufU7PEuFqh1X6OpGFsaIUa2Un/GW8UzHBTAOFb57J9W4lfsAXHWYEf7KMFjURJVn2Yf4XU1ZSnQ+jxIzo4GEUKfULcstBHugMngc0TtNz2p9TJT9ub0=
+	t=1745358987; cv=none; b=iNpM4cAH23vBVmm5m/eUQG9WvS8UB4n+WVKcqJczczT6JkwSgKGPyaGvvUBOIlEPHnAzbiP61qz8/CILvchI4b5QI5Pj20ksDTz0zHRmJiX3ILRvysXJRxr7/9JUDDml7rluX7U4qLT4a5rJyspDM60ppzcIC56Y+rUMOJlF3eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745357399; c=relaxed/simple;
-	bh=wi1Vil8SnJaYMa9h0eFuXCHbGVeBFLu5MRGCP/dmpIc=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gE0kxwd0sAMFg1sxPyWx1wi0g8A3nfZgpS2Ry5OheN8uDoUqRDFOri/n/hruoXUcGzOhl4BbwUavHQSogtQxuLr4vE8phKkgJ/Fr7U90XCiuV0xRlzQYOv3tQlQF3g8584G+BAS+jMBsjxb15OY3PivYZ8heYtyol/D0un254Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mMMQRaBF; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745358987; c=relaxed/simple;
+	bh=PSveMKmbKopaLafFWPkHXgelq8Ze54eOl2JeyhQIcN8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RoPYIbo5o8wcheM62W6za+vz54nIP4npMYDDc7ntHMv6xYw4ayjWCww2YL4UJpBZo+umpEFygjBmnCnqau8ZZwpLMFFE9LLPE3xkMamZbIlGnjSBDIBkmeBYJrMikFhmkVDu5zlNH9cjlFFFuw/tKdBWl0BeElHvJ3q3oa7/6Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=f2R/zFu2; arc=none smtp.client-ip=79.135.106.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mMMQRaBF"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c922169051so238927685a.0;
-        Tue, 22 Apr 2025 14:29:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745357396; x=1745962196; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kfCCpV5yGpw+yXlwBosH+v8yoeaVUArIv11TpYTddyA=;
-        b=mMMQRaBFtszj/GN/KPyVb5GRWfN2+RmH9uF9kf9xamok/IecAljJWnKL3zEdz7pbJX
-         GW9XBqKShyIld2n1oexh92z8cBK3u/nbXmmr4n//namWly7ckci0WmM2lY9wflvM13ff
-         Xxj6eIdOZXa03sRMGWQ6XTk8JADG8+0KPhcHy6NYkmS1Ots2UsKz+D63hcw9hets/upW
-         wbh6upcyR1RW69WtxXXXLuV58P2rDRz2aaTh+EwdDD1JalXfxUcsVP9AarJUkW33jj33
-         00mD05yBxH1uDcf7SxLULbnLblp/RAKEIhbwUmvZjYOqYAZsu+7Eb8r8suJ8dTrHOrzZ
-         A1Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745357396; x=1745962196;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kfCCpV5yGpw+yXlwBosH+v8yoeaVUArIv11TpYTddyA=;
-        b=evIdcpOzCsBKQ/chBqaIgP3ycFbrkWA/+icWmaoFXrEaJZIPB8itV4MLhZNy2tbtNa
-         IQ5/gOrl3MxcyvVr0pFQ9bvlJmtkeYJXqKh01/XzF1GLWuXIBqtF/glUhHFUEvx6srSC
-         0kUFFhzhF6tEL47WqZKznEVMLKC2Cwtz27OEZcnHsuyutyTSY5LtsVJTzBDkcMiSXg8b
-         hqAmKiGQ7FbePZwrXRmC++geVRDeWsozMiVku09f6nmuiZ6ptn7kJZ3IGTnUOpxtm+PW
-         0eC2gpRjUf6ptgsLR4dmL/KKWHFwyHHgbrKDegWUbQO5ObNUsnIwJGB0449cmhnLvyls
-         ixLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWTdF3VZOSrfwOBZuUus58PNaeFlasXjYs+ZHIIJYomZm5NDLGjTEk4j4RLzcByuh23OsfpAZDKQplVJd0=@vger.kernel.org, AJvYcCX2R1ewGheziMnzOw+Fi+7guz1m1qGsoE13T0Wb2LB2Km5fQU+SbUgWrREP9ze4RJEaCJB4qyf2dDN3RpkJbyg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAvZ6MzWSEbg1d/YneWqkY6F62mqzQdeYtO0dZQaiTWBoM4v4a
-	/BIXjL1GCoTIyYgJMyJ9LjHB1TTUOmlGCkSv7ewdP+Ex9B90siKL
-X-Gm-Gg: ASbGncuN972oKQgLWtcSi0raqO4h76QK1ONRezU3ENhLzZulsCYi+Iw6W9fE5iD74s4
-	nCZ4GqBu2sfzH5s8Cn8ychcADGKiIlHP0o5CDA6G+TefN+ZUWmhxRQFs7PcRUK8pt2X5BjjgSet
-	RmtoKegtAZdFfb3qVaVG86HAEy5khYfjhW94soBeGk7F+2SwS9Y0abSQLCb6jSGrzm0HateVdyR
-	cE85pCPU+xyZSDryFA9cTD4xHnfDY9AHQaq0mJfrhOX1BZbwTPowjjZ4w7EVvqQuZqdtCai8TdQ
-	QMSDleBGtLXssGfqJI9r2Yrobfs3vyY66e6rfCQNJVKEXmwxgvQs1CY1x3bPixruVP3dJ2eStg8
-	kreZca7My0xWhsMscLZikZCQBVnlJho832cMX5OO5Mw==
-X-Google-Smtp-Source: AGHT+IGyTHIaOoMU3SJhWrAULCjm/h9QlttGGRb4sE9gkC38/e0cK5gFrKqdBgNaw7tXCm8JIvP2hQ==
-X-Received: by 2002:ad4:5f8f:0:b0:6e8:fe60:fdeb with SMTP id 6a1803df08f44-6f2c4553c77mr255271916d6.17.1745357396385;
-        Tue, 22 Apr 2025 14:29:56 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2c21c61sm62073476d6.109.2025.04.22.14.29.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 14:29:55 -0700 (PDT)
-Message-ID: <68080a53.050a0220.c2cd7.6290@mx.google.com>
-X-Google-Original-Message-ID: <aAgKUTDiiH8xaUk0@winterfell.>
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id A20F81200079;
-	Tue, 22 Apr 2025 17:29:55 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 22 Apr 2025 17:29:55 -0400
-X-ME-Sender: <xms:UwoIaMOp2IkE8Ar4S6hnJstcxpoF3qBUhmC1exkmku2_miJEW7W9HA>
-    <xme:UwoIaC-Wfzt44nYK_3EQM1ehzFD8sZAQ7ugD8OZ2La_PIaYPzg1MJbzA30aid4__a
-    y53CmR_7E_th2mf-g>
-X-ME-Received: <xmr:UwoIaDSE9SK53gRi7Z9oyW-Iw1q7MKCPo3q2nXjmA31YOUefzCBFt6C7sNsb9Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeegkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
-    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepiedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrd
-    gtohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehm
-    mhgruhhrvghrsehgohhoghhlvgdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlh
-    hinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhk
-    vghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnse
-    hfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:UwoIaEtuI7RZ_X0FGQ2Wz6YkoC8onkbp1pixLiAWHFnBAQpKI6Yqsw>
-    <xmx:UwoIaEcclXvbIz35_ZATHx-1wzKYvzwl_n_0Gja7kQLUk6ppl8tpEw>
-    <xmx:UwoIaI1wP7oyqxumF5YkSIuFKKl25Fu2WMMJ8COIUCH9VNVUSQyYeA>
-    <xmx:UwoIaI8ru8a8X8-ZmRdHJQ1tWkg_hbZ2RlOsP58baz32K9PQQg19TQ>
-    <xmx:UwoIaL_SWPmQ2xrNpOq6SEWq6uNeyVxmEiwtrD-_newXoBHKDB38_C7v>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 22 Apr 2025 17:29:55 -0400 (EDT)
-Date: Tue, 22 Apr 2025 14:29:53 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/7] rust: alloc: add Vec::push_within_capacity
-References: <20250422-vec-methods-v3-0-deff5eea568a@google.com>
- <20250422-vec-methods-v3-3-deff5eea568a@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="f2R/zFu2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1745358977; x=1745618177;
+	bh=a0907KZjEiONY1HJ3I1Ta5IA8lDb/VDC/Rn3TFRG7mU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=f2R/zFu2NQrxPnXaejAkzAzrjcIZoCzXm7inz9/jGDZYDhffsRb9DbxE+eP6/jEhG
+	 U4B5TS+3KEuMdCLn857yRp8L+X5SQQ++PSophicUcD3HL5NRfc7If9f8p90OxfjIwW
+	 22yhG91gS7ZP+4NWJL2neSrwsqI66/LzkJtchplaWtflqkuz+rP7HdpLmsUDt3aNaq
+	 yRbxmtmVgdw2b6dj8fj5b/kr+r11NI4F/FJqDioRVb3iSGuxTtpUP9I9aMDbBVfj1t
+	 0TfUj+YBEOa4n/ivFWESPllkXZIv2+rwA9U3Cy5VZgKVPAxcrKnEYOU+F2xPZinfZQ
+	 WYPE62uyceUCA==
+Date: Tue, 22 Apr 2025 21:56:11 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, Alban Kurti <kurti@invicto.ai>, Michael Vetter <jubalh@iodoru.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/8] rust: pin-init: allow `pub` fields in `derive(Zeroable)`
+Message-ID: <D9DI48C2NC3E.1NX1YBNTYAZ7L@proton.me>
+In-Reply-To: <68080615.c80a0220.29b7e9.5b75@mx.google.com>
+References: <20250421221728.528089-1-benno.lossin@proton.me> <20250421221728.528089-7-benno.lossin@proton.me> <aAchUjDJsukcCgKM@Mac.home> <D9D0ZHG5ZKGL.30GLJKI6X8TG7@proton.me> <aAekPSsKnQWJSBhQ@Mac.home> <D9D8YDFLD98E.D8DZEIIW4EN5@proton.me> <68080615.c80a0220.29b7e9.5b75@mx.google.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 5ba363816758db3c18a41606b5622302309df0e8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250422-vec-methods-v3-3-deff5eea568a@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 22, 2025 at 09:52:18AM +0000, Alice Ryhl wrote:
-> This introduces a new method called `push_within_capacity` for appending
-> to a vector without attempting to allocate if the capacity is full. Rust
-> Binder will use this in various places to safely push to a vector while
-> holding a spinlock.
-> 
-> The implementation is moved to a push_within_capacity_unchecked method.
-> This is preferred over having push() call push_within_capacity()
-> followed by an unwrap_unchecked() for simpler unsafe.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/alloc/kvec.rs | 41 ++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 38 insertions(+), 3 deletions(-)
-> 
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index ebca0cfd31c67f3ce13c4825d7039e34bb54f4d4..a005a295262cb1e8b7c118125ffa07ae252e257c 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -307,17 +307,52 @@ pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] {
->      /// ```
->      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
->          self.reserve(1, flags)?;
-> +        // SAFETY: The call to `reserve` was successful, so the capacity is at least one greater
-> +        // than the length.
-> +        unsafe { self.push_within_capacity_unchecked(v) };
-> +        Ok(())
-> +    }
-> +
-> +    /// Appends an element to the back of the [`Vec`] instance without reallocating.
-> +    ///
-> +    /// Fails if the vector does not have capacity for the new element.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let mut v = KVec::with_capacity(10, GFP_KERNEL);
+On Tue Apr 22, 2025 at 11:11 PM CEST, Boqun Feng wrote:
+> On Tue, Apr 22, 2025 at 02:45:22PM +0000, Benno Lossin wrote:
+>> On Tue Apr 22, 2025 at 4:14 PM CEST, Boqun Feng wrote:
+>> > On Tue, Apr 22, 2025 at 08:30:40AM +0000, Benno Lossin wrote:
+>> >> On Tue Apr 22, 2025 at 6:55 AM CEST, Boqun Feng wrote:
+>> >> > On Mon, Apr 21, 2025 at 10:18:33PM +0000, Benno Lossin wrote:
+>> >> >> Add support for parsing `pub`, `pub(crate)` and `pub(super)` to th=
+e
+>> >> >> derive macro `Zeroable`.
+>> >> >>=20
+>> >> >> Link: https://github.com/Rust-for-Linux/pin-init/pull/42/commits/e=
+8311e52ca57273e7ed6d099144384971677a0ba
+>> >> >> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>> >> >
+>> >> > Kindly request tests/examples for this patch and the following one
+>> >> > (patch #7) ;-)
+>> >>=20
+>> >> If you send a patch, I'll take it :)
+>> >>=20
+>> >
+>> > First, I'm happy to help improve pin-init, *if* I fully understand the
+>> > changes and have the cycle ;-)
+>> >
+>> > However, here we are at the review process, so I need these examples t=
+o
+>> > close the gaps between the implementation and the usage to provide any
+>> > meaningful review. There's no example/test in the commit log, the kern=
+el
+>> > code and (I've checked) the GitHub repo. Although I fully trust you, b=
+ut
+>> > there is no second source that could help me verify the changes easily=
+.
+>>=20
+>> Maybe this is just a case of me being too familiar with the code, but
+>> the change in this commit and #7 are very trivial. I'm not too sure what
+>> I should use as an example because of this. I could do something like:
+>>=20
+>>     #[derive(Zeroable)]
+>>     pub struct Foo {
+>>         pub a: usize,
+>>         b: u64,
+>>     }
+>>=20
+>>     #[derive(Zeroable)]
+>>     pub union Bar {
+>>         pub a: u64,
+>>         pub b: i64,
+>>     }
+>>=20
+>> But I don't see a lot of value in adding those either as doc-tests or as
+>> examples. Rust users normally expect that derive macros can handle any
+>
+> Since there is no user using them so far, I think these examples can
+> serve as regression tests, that is, if someone accidentally breaks
+> something to make them not working, we will immediately know.
 
-Should be:
+That's fair.
 
-    /// let mut v = KVec::with_capacity(10, GFP_KERNEL)?;
+>> kind of visibility for fields (there are exceptions of course, but they
+>> don't apply to `Zeroable`).
+>>=20
+>> The union case is a bit different in that not all derive macros support
+>> them, so I agree that the docs should reflect that better. I can add a
+>> patch when I find the time, as I'm stretched pretty thin (hence I
+>> suggested you submit a patch :)
+>>=20
+>
+> Maybe you can open issues and see if others could help?
 
-, right? I.e. a question mark is missing.
+Done: https://github.com/Rust-for-Linux/pin-init/issues/47
 
-The rest looks good to me.
+>> > In this case, it may be special, because you're in fact syncing an
+>> > external repo with the kernel part, i.e. the development is done, so i=
+f
+>> > we trust the external repo and of course, if no obvious error is
+>> > founded during review (from the people who can review), we should merg=
+e
+>> > it in. If that's the case, this patchset is more of an "FYI" instead o=
+f
+>> > a development process IMO. Is this the case here?
+>>=20
+>> I'm not 100% sure on the workflow for pin-init. Ideally all changes made
+>> to the pin-init repo can be ported 1:1 into the kernel. There are of
+>> course smaller things such as commit references in commit messages that
+>> need to be adjusted. But aside from such smaller administrative things,
+>> the idea with the sync was to only have one singular version. If you
+>
+> I think this is fine and matches my previous understanding. I just
+> wanted to be clear that normally if an example/test is requested for a
+> patch from a reviewer, the usual response is not "hey, why don't you
+> contribute one?" Of course the request has to been reasonble. In other
+> words, we are doing a special workflow here.
 
-Regards,
-Boqun
+Maybe I should have also initially stated that I'm a bit short on time.
+For the visibility thing, it felt to me a bit like can you please add an
+example for the function `fn add(a: u8, b: u8) -> u8 { a + b }`. ie too
+trivial. I'll add more tests when I have time :)
 
-> +    /// for i in 0..10 {
-> +    ///     v.push_within_capacity(i).unwrap();
-> +    /// }
-> +    ///
-> +    /// assert!(v.push_within_capacity(10).is_err());
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn push_within_capacity(&mut self, v: T) -> Result<(), T> {
-> +        if self.len() < self.capacity() {
-> +            // SAFETY: The length is less than the capacity.
-> +            unsafe { self.push_within_capacity_unchecked(v) };
-> +            Ok(())
-> +        } else {
-> +            Err(v)
-> +        }
-> +    }
->  
-> +    /// Appends an element to the back of the [`Vec`] instance without reallocating.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The length must be less than the capacity.
-> +    pub unsafe fn push_within_capacity_unchecked(&mut self, v: T) {
->          let spare = self.spare_capacity_mut();
->  
->          // SAFETY: The call to `reserve` was successful so the spare capacity is at least 1.
->          unsafe { spare.get_unchecked_mut(0) }.write(v);
->  
->          // SAFETY: We just initialised the first spare entry, so it is safe to increase the length
-> -        // by 1. We also know that the new length is <= capacity because of the previous call to
-> -        // `reserve` above.
-> +        // by 1. We also know that the new length is <= capacity because the caller guarantees that
-> +        // the length is less than the capacity at the beginning of this function.
->          unsafe { self.inc_len(1) };
-> -        Ok(())
->      }
->  
->      /// Removes the last element from a vector and returns it, or `None` if it is empty.
-> 
-> -- 
-> 2.49.0.805.g082f7c87e0-goog
-> 
-> 
+---
+Cheers,
+Benno
+
