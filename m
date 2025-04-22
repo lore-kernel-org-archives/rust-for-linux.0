@@ -1,465 +1,225 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F0615098F
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 19:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB1425C813;
+	Tue, 22 Apr 2025 21:11:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745350660; cv=none; b=F+Pud89OX0W8WDHHZHbzWqO/CXEH+eUngLGeMviRS8LOljb6CQE7TxMa+aRy2+9YtZY5V/jaU+bi3+L8po1+2JgFIxCy+ROo0ywIQudofcasaciwbu4GyLL40E1iV8rctEGRhwgmJkUfUCLk64EuAkg4DU/TSqFLt8yerfgRU4o=
+	t=1745356313; cv=none; b=sJGItdBMNKTFZqcOwLvQIn3rNbhUKdtgwJAxAf2jXgvD4Ds9FXzkIOJvkFM/OdtEagsUcUKEMA9w/H5y9Lyb68xWwvQuhDIW0q8KmfssZubHE4AHN3W335heM6lQEMg2CFNPnJ0HddAREJrPha9PwGf2HMLTZqyXPaaz6zuzin8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745350660; c=relaxed/simple;
-	bh=uBCeJWuQg9yGebhCe0IxKmCUgXiu992oDMVtc4BuF4Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=V9mi8Spx/G1T91XZ7U5ilSCIAVNjG2zxsRQHLvfSYATsp5kSiYdfeivF2m+VpIpgpeAztiBOrpSYBboB5sN7Qj66vRVTQmyCaMC78QGsT4J8QJRG1OplSB1QNZhnkkYEGSQImqQAH6mkuN98k1lTB1YdBiSqrYTkbMes8b9BtB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e0Vv84h+; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1745356313; c=relaxed/simple;
+	bh=CFd9VjwjftMmd2VkU+6DhwAiWYoZPRh758C3870gwj8=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CyH2Twcu2qPW20dM/nCCXPBCce9zLP7COB4b7+pUD7yKJIPK+3e4P1Ld6dICitDaRomRg/iZaguS9SMtZrsziOv4/yR9/Dkd1/kcj6FhAoI09wHuQJaHBkSsYoc7+Ay6rQ1mHmKuZ0M5/GkmJ6G0/UB3l4ciV/p309x0M6yIhdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aZYg8UQF; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e0Vv84h+"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43f405810b4so30894265e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 12:37:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aZYg8UQF"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4775ccf3e56so3816871cf.0;
+        Tue, 22 Apr 2025 14:11:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745350657; x=1745955457; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7RnXmCgq1tfF7gO4aZ9Pyvr8hfNnZsXUOnMOuRw52u0=;
-        b=e0Vv84h+7F5H+eqUtqxS0cVCPV8M9BljtL+XicJEVI9sM3QgMLy7MCX6Lx53ZGbDne
-         PRtcqLvvLvTuxrHVoymv2F0em7yqO/k/gvAoy5WmqddybLXgB+4vQxpQDZQPWpVXysZW
-         tV7WIA2xFZ5Ru3wlG+EvmNn/7DSYPdp6f0SZYAaf36j3wMHofJGXe8H+2jgGyqwe+MSq
-         O3Y1IXxECeUm6+2EWkYrUUAt4+KOY0/EzMamLusbhx6U5qh8w8gp4yLUj5s4ww1aU0o/
-         Vkqhg0LU9eULfEBUkv89F37GNT4IhrpxZePmrv4izzs2sgitYpg8IUmjjCKY60kPo0c5
-         Wkgg==
+        d=gmail.com; s=20230601; t=1745356310; x=1745961110; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/PgZ7AYND5WhQoEi2XZI2rh/gTmv5RWWjYeDKi9UXao=;
+        b=aZYg8UQFlHqAbQ8Je6KRdEQ/DjnANqy2ltGAWr8ffqfYHrZrg12lEDwkuxJuQlAdeu
+         MjXru/1OrnWQdMOzJOPs5cPILm+RVwlb+IMIAj4pF4/D+PrJbc1ZBAHF4UJtKmUzn1g/
+         deNNE3OpFZNz9gx+m2VSVzY0gprp8rUX43hpFOebuhoGip1OnfrYRZCnmLZsWjpwNnfH
+         IIWdPLRLu7VYmFjeHNfMk0prFzOSbJWgUMmWNQfYxDQW5oOidBvUGAjtg/o3QSwDJuiX
+         h0fj7Jhky1zqVarduSI5uSgBSmz309aKrZ7KZf/MwW2rXKzvb/X67viMAzYDqAojkYVq
+         dSHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745350657; x=1745955457;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7RnXmCgq1tfF7gO4aZ9Pyvr8hfNnZsXUOnMOuRw52u0=;
-        b=XlahWUXum9uPI246NzaXaVy1eRPD9eLq/JvGNQtaJrUIp+6+7GfD4852qukzmyswXr
-         eak40gYRY8Lh44vJy2h+KC6bZ7Aq4uO3GeJ/3K/x1gAKqB31IZt1keN7Dg6MG/2Vo/a0
-         MjlwarNY70BfFrjtbdXkHb4hg6hzPp7nW1PH6+aZDoYM3oFGSauHxlRduWGwIP5iMCt2
-         soZN3bNc+11iNhDKbYYwZB0MJn0+sGVfEbeWAO33WBqvDUZKpVpy0Z5JvVNHoQWw25de
-         vPhscnQXZUPDZdk4XUD20D+rEcmk5yeMND4dh6mNBY22OQZYdhZOtcjX237EuPvovpml
-         32nw==
-X-Gm-Message-State: AOJu0Yzi4GD+Z4tV1aFotlsMvKmEvIsU18z463I+sHXRAXrTgy0eNB/O
-	a7f24nhB6tlEsZxtB6bgUve6Vb2B3V3BlukcZQtM4INNJOt9p/VCk3wLtCVzJcVUFl/rYcMipkz
-	gyxFt0DhG7D+EOQ==
-X-Google-Smtp-Source: AGHT+IG0m74NCBDfAN7J6NSQg6v19UWsx/JNfQ/I5HGYwAl4oODqZClIjiOs1/zp+FPH6wx5SmSmHSDNXpZgkW8=
-X-Received: from wmbfo18.prod.google.com ([2002:a05:600c:6912:b0:440:59df:376a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f8f:b0:440:54ef:dfdc with SMTP id 5b1f17b1804b1-4406ab9342dmr139491455e9.8.1745350656856;
- Tue, 22 Apr 2025 12:37:36 -0700 (PDT)
-Date: Tue, 22 Apr 2025 19:37:34 +0000
-In-Reply-To: <CAGudoHEN2NBYjFs28g2Oxe7LsP1A=guPUEbgAJTUiae6bBG6JA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1745356310; x=1745961110;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/PgZ7AYND5WhQoEi2XZI2rh/gTmv5RWWjYeDKi9UXao=;
+        b=bTosIU3wurkfNOHzb8fC3eFSQSFnpr0bKvmfKQ8KPED3HRmvylz94++/QLu1xBE/SF
+         csUC9C4vyjBxxpCy+41Q2KioqiILoXMwgEY9++lhtAyUVwRLNXb4DXVdteUFJgcCJgtT
+         KDIuNQX6569r9pQnpzpVcANl/JIccZn6uKdLLxwu6fjH9EXtkNW0SfA7PAQ+j0XtZA6d
+         ltZC7oIxmZVemgvXrAOUqZZ+nf3LKa3oQd6pFDcbkA9NgNiVYcCw1n8iP2Hgz+0w1Lju
+         Tu4Tu6+RyZQXoKqWohFBnVjKkf1kuDESolp7l8b8gwe7wtVwOaZ1x6KJe2PtYNH1UtNq
+         Nu5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUvdVYojUt5d1QxufIua2GNSRsHjV0zYxOR8Vjvj+ieOrYfnoPYVD2P3X4UDnGPzNTlyyWnJBOkhGqIf7D0WkM=@vger.kernel.org, AJvYcCVOawLO5bsIfZh/9ZaAMl0+R/F4TyQoyZYM1kF4G25CrJTMs8bTt97LQmzbQtp5DzrKJGwKz/FSQe+GT+g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx26Xrx85dGmVDMH5T3XimTqu0N8GEG8bowA7a9Ieb4n6iL4076
+	hM3TRoT8/7ltHbrF4W3PD2MzPRNnGL7ZIUs6C8Q64E3Bir2fpZ4X
+X-Gm-Gg: ASbGnctzY0lQrNP9QKW45Y8YISwUmAl+dGz2pQJ3qKmBt/Tgj+pKy29SnugzSoftyl1
+	r0Xe4ob1aoQRkOig1XwndTiJd8Fsj3PkWEHfuk6Aa0f9Z6mQFZ+WGG8eLUnHp0mbIkbyte1nEHs
+	D7macALFnUwG3CH3U8n3Wer7amqv1ZmYNDL/TiSyWqnoqg5UpHnrxqCID2sfnPIij2snglyMivv
+	lyadTJm4ppiv+AKKrsaKTha0lz/sVDgqFaWxShfaHLzRRkTR3NnWKGASUZ8953e20wSYZW76JHv
+	k+5ZHoJj7sUoW+U13SfgB1+eXm8Q/YyP9GAURy2Pllh8l2oordP17fUHRK6GSxAwdbvlww2vi6V
+	Ynh1tUWh+CbS0y/O43K5Rd14XF35b6/M=
+X-Google-Smtp-Source: AGHT+IF9aYnsP2suDMAEkPYuXKb3S/ROW0/1U/0AfLx7J0QHP6ZO2Y0WwOoyF9mMNfRZWc9UV5TyxQ==
+X-Received: by 2002:ac8:57c9:0:b0:477:51c:d853 with SMTP id d75a77b69052e-47d1ffc1e60mr7524531cf.9.1745356310215;
+        Tue, 22 Apr 2025 14:11:50 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47ae9c3b2b5sm60117471cf.30.2025.04.22.14.11.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 14:11:49 -0700 (PDT)
+Message-ID: <68080615.c80a0220.29b7e9.5b75@mx.google.com>
+X-Google-Original-Message-ID: <aAgGEl6k0cagWLBQ@winterfell.>
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 136871200069;
+	Tue, 22 Apr 2025 17:11:49 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Tue, 22 Apr 2025 17:11:49 -0400
+X-ME-Sender: <xms:FAYIaIUl6jmUDcqWdZgjFP3VrPnI2-k0ne2mR3jJfjhfMfqYxnNZ3g>
+    <xme:FAYIaMmT-TrifyF-xbk135q9Xs-lExdbNqbyfuzPHRkR8zRMTfwfYJrYWPUjU_d_G
+    wrPfOGOUcFS-FTfZg>
+X-ME-Received: <xmr:FAYIaMbattlly5KzD2FC7wDm3lnbhc-HJf_0ykMGvILGwabOSyGJRaEGWio>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeegjeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefftdeihfeigedtvdeuueffieetvedtgeej
+    uefhhffgudfgfeeggfeftdeigeehvdenucffohhmrghinhepghhithhhuhgsrdgtohhmne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
+    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
+    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
+    nhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtohepohhj
+    vggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesgh
+    hmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgt
+    phhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtth
+    hopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgt
+    vghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmih
+    gthhdrvgguuhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:FAYIaHV21KLSwsSfUZ7zVk_Q2fOfSKzZju6Btp3OXi2klnulu5EyLg>
+    <xmx:FAYIaClSAx3xURh8hmCu1PTx_48NXi0vYSy_4cwLlQ3lOS3zL5MT1w>
+    <xmx:FAYIaMdt7SI5eq23uQy7t0N9wdesMzpUCO6YWYIQj1BFfZZqjtrjrQ>
+    <xmx:FAYIaEEZyme2V5_CWRBDhYMR68eFqqIlRNbKJtRca6SwcCBKaf9y6g>
+    <xmx:FQYIaInzWXI_3UUtsJlIKsrYrUWmwF3xQdoGuspYxGzxk4rcxv6bGSox>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 22 Apr 2025 17:11:48 -0400 (EDT)
+Date: Tue, 22 Apr 2025 14:11:46 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>,
+	Alban Kurti <kurti@invicto.ai>, Michael Vetter <jubalh@iodoru.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/8] rust: pin-init: allow `pub` fields in
+ `derive(Zeroable)`
+References: <20250421221728.528089-1-benno.lossin@proton.me>
+ <20250421221728.528089-7-benno.lossin@proton.me>
+ <aAchUjDJsukcCgKM@Mac.home>
+ <D9D0ZHG5ZKGL.30GLJKI6X8TG7@proton.me>
+ <aAekPSsKnQWJSBhQ@Mac.home>
+ <D9D8YDFLD98E.D8DZEIIW4EN5@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CAGudoHEN2NBYjFs28g2Oxe7LsP1A=guPUEbgAJTUiae6bBG6JA@mail.gmail.com>
-Message-ID: <aAfv_pgxUHJSEaBy@google.com>
-Subject: Re: looking for an informed write up on how to handle serious
- multicore issues in rust
-From: Alice Ryhl <aliceryhl@google.com>
-To: Mateusz Guzik <mjguzik@gmail.com>
-Cc: rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D9D8YDFLD98E.D8DZEIIW4EN5@proton.me>
 
-On Tue, Apr 22, 2025 at 04:44:20PM +0200, Mateusz Guzik wrote:
-> If one was to write C code to handle this *with* safety belts, it
-> would be a lot of hand-rolled asserts and even then there is some
-> possibility of a screw up.
+On Tue, Apr 22, 2025 at 02:45:22PM +0000, Benno Lossin wrote:
+> On Tue Apr 22, 2025 at 4:14 PM CEST, Boqun Feng wrote:
+> > On Tue, Apr 22, 2025 at 08:30:40AM +0000, Benno Lossin wrote:
+> >> On Tue Apr 22, 2025 at 6:55 AM CEST, Boqun Feng wrote:
+> >> > On Mon, Apr 21, 2025 at 10:18:33PM +0000, Benno Lossin wrote:
+> >> >> Add support for parsing `pub`, `pub(crate)` and `pub(super)` to the
+> >> >> derive macro `Zeroable`.
+> >> >> 
+> >> >> Link: https://github.com/Rust-for-Linux/pin-init/pull/42/commits/e8311e52ca57273e7ed6d099144384971677a0ba
+> >> >> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> >> >
+> >> > Kindly request tests/examples for this patch and the following one
+> >> > (patch #7) ;-)
+> >> 
+> >> If you send a patch, I'll take it :)
+> >> 
+> >
+> > First, I'm happy to help improve pin-init, *if* I fully understand the
+> > changes and have the cycle ;-)
+> >
+> > However, here we are at the review process, so I need these examples to
+> > close the gaps between the implementation and the usage to provide any
+> > meaningful review. There's no example/test in the commit log, the kernel
+> > code and (I've checked) the GitHub repo. Although I fully trust you, but
+> > there is no second source that could help me verify the changes easily.
 > 
-> Note in this case the ->name_safe_to_read array might *change* as it
-> is being used to compare in name_equal(). False positive/negative
-> mismatch is handled with the sequence counter.
+> Maybe this is just a case of me being too familiar with the code, but
+> the change in this commit and #7 are very trivial. I'm not too sure what
+> I should use as an example because of this. I could do something like:
 > 
-> So I would like a code sample in Rust which handles the above in a
-> safe and performance-friendly manner. Of course preferably code trying
-> to misuse the struct would fail to compile, but a debug-only runtime
-> check would do just fine.
+>     #[derive(Zeroable)]
+>     pub struct Foo {
+>         pub a: usize,
+>         b: u64,
+>     }
 > 
-> Most notably:
-> - the code issuing name check + key read *must* validate the sequence
-> counter before returning
-> - need_the_lock_to_access_in_any_way must not be accessible without
-> the lock (duh)
-> - no writes to the read-mostly area without the lock held, except for
-> the atomic var
+>     #[derive(Zeroable)]
+>     pub union Bar {
+>         pub a: u64,
+>         pub b: i64,
+>     }
 > 
-> So how do you do this in Rust? I did not cover enough, I can write
-> self-contained fully-fledged C example.
+> But I don't see a lot of value in adding those either as doc-tests or as
+> examples. Rust users normally expect that derive macros can handle any
+
+Since there is no user using them so far, I think these examples can
+serve as regression tests, that is, if someone accidentally breaks
+something to make them not working, we will immediately know.
+
+> kind of visibility for fields (there are exceptions of course, but they
+> don't apply to `Zeroable`).
 > 
-> -- 
-> Mateusz Guzik <mjguzik gmail.com>
-
-There isn't a single canonical implementation of seqlocks in Rust that I
-can point you to, and we don't have one in the kernel. But we can go
-through how we can design one. I'll start with a pretty bare bones API
-and expand it.
-
-To start with, I'm going to assume that we have a Seqnum implementation.
-
-pub struct Seqnum { ... }
-
-impl Seqnum {
-    pub fn begin(&self) -> usize;
-    pub fn retry(&self, num: usize) -> bool;
-    pub fn write_begin(&self);
-    pub fn write_end(&self);
-}
-
-I will not get in to how you implement these. You can use the same
-implementation as C. I understand that the kernel implements them with
-inline assembly, which we could replicate. Or we could do a number of
-other things. Regardless, this is enough to get us a working but
-bare-bones implementation:
-
-#[repr(C)]
-struct Meh {
-    seq: Seqnum,
-    safe_to_read: AtomicUsize,
-    name_safe_to_read: [AtomicU8; NAME_SIZE],
-    modifiable_without_the_lock: AtomicI32,
-    // some other fields ...
-    _cache: Cachealign, /* type with size 0 and alignment 64 */
-    lock: SpinLock<MehInner>,
-}
-
-struct MehInner {
-    needs_the_lock: usize,
-}
-
-fn name_equal<const LEN: usize>(name: &[AtomicU8; LEN], cmp: &CStr) -> bool {
-    // Left as an excercise for the reader.
-    //
-    // Probably you just call the C implementation of strncmp, and this
-    // function is probably defined in `kernel`.
-}
-fn name_copy<const LEN: usize>(dst: &[AtomicU8; LEN], src: &CStr) -> bool {
-    // Ditto.
-}
-
-impl Meh {
-    fn name_to_key(&self, name: &CStr) -> Option<usize> {
-        let seq = self.seq.begin();
-        if name_equal(&self.name_safe_to_read, name) {
-            let key = self.safe_to_read.load(Relaxed);
-            if !self.seq.retry(seq) {
-                return key;
-            }
-        }
-
-        let _guard = self.lock.lock();
-        if name_equal(&self.name_safe_to_read, name) {
-            Some(self.safe_to_read.load(Relaxed))
-        } else {
-            None
-        }
-    }
-
-    fn store_name_key(&self, name: &CStr, key: usize) {
-        assert!(name.len_with_nul() < NAME_SIZE);
-        let _guard = self.lock.lock();
-        self.seq.write_begin();
-        name_copy(&self.name_safe_to_read, name);
-        self.safe_to_read.write(key, Relaxed);
-        self.seq.write_end();
-    }
-}
-
-Your first reaction is probably "ATOMICS!?". But hold your horses for a
-moment.
-
-The reason we can't use the ordinary `usize` type is because we need to
-*disallow* you from performing ordinary unsynchronized reads; similar to
-how you used READ_ONCE instead of just reading the field normally. I
-used atomics in this example to achieve that, but it is true that
-atomics are stronger and more expensive than what we need. We might
-replace AtomicUsize with a new type called SharedUsize (naming TBD!)
-that has `load` and `store` methods which are weaker than the relaxed
-atomic ops. For example, even relaxed loads on AtomicUsize have
-additional costs associated with them because they're guaranteed to
-avoid tearing.
-
-But I digress. The point is that we need a special version of usize like
-AtomicUsize that allows us to annotate that these loads and stores are
-not normal loads and stores because other threads may also touch the
-values in parallel. It has to be a separate type from usize to prevent
-you from performing ordinary unsynchronized reads.
-
-
-Let's get back to the example. The bigger problem is that there is no
-enforcement of correct use at all. After all, we're just using atomics,
-and any combination of reads and writes from different threads is safe
-no matter what, so the compiler doesn't care.
-
-To start with improving the API, we can wrap Seqnum in a Seqlock type.
-It could look like this:
-
-pub struct SeqLock<T> {
-    seqnum: Seqnum,
-    value: T,
-}
-
-impl<T> SeqLock<T> {
-    pub fn try_read<U>(&self, f: impl FnOnce(&T) -> U) -> Option<U> {
-        let seq = self.seqnum.begin();
-        let ret = f(&self.value);
-        if self.seqnum.retry(seq) {
-            None
-        } else {
-            Some(ret)
-        }
-    }
-
-    pub fn assume_no_writers(&self) -> &T {
-        &self.value
-    }
-
-    pub fn write(&self) -> WriteGuard<'_, T> {
-        self.seqnum.write_begin();
-        WriteGuard(self)
-    }
-}
-
-struct WriteGuard<'a, T>(&'a SeqLock<T>);
-impl<T> Drop for WriteGuard<'_, T> {
-    fn drop(&mut self) {
-        self.0.seqnum.write_end();
-    }
-}
-impl<T> Deref for WriteGuard<'_, T> {
-    type Target = T;
-    fn deref(&self) -> &T { &self.0.value }
-}
-
-This API is still not fool-proof - we're missing the part where it knows
-about the spinlock, but at the very least you have to explicitly
-annotate each access with a call to `try_read`, `assume_no_writers`, or
-`write`. This is how you might use it:
-
-#[repr(C)]
-struct Meh {
-    seq: SeqLock<MehSeq>,
-    modifiable_without_the_lock: AtomicI32,
-    // some other fields ...
-    _cache: Cachealign, /* type with size 0 and alignment 64 */
-    lock: SpinLock<MehInner>,
-}
-
-struct MehSeq {
-    safe_to_read: SharedUsize,
-    name_safe_to_read: [SharedU8; NAME_SIZE],
-}
-
-struct MehInner {
-    needs_the_lock: usize,
-}
-
-impl Meh {
-    fn name_to_key(&self, name: &CStr) -> Option<usize> {
-        let ret = self.seq.try_read(|inner| {
-            if name_equal(&inner.name_safe_to_read, name) {
-                Some(inner.safe_to_read.load());
-            } else {
-                None
-            }
-        });
-
-        if let Some(ret) = ret {
-            return ret;
-        }
-
-        let _guard = self.lock.lock();
-        let inner = self.seq.assume_no_writers();
-        if name_equal(&inner.name_safe_to_read, name) {
-            Some(inner.safe_to_read.load())
-        } else {
-            None
-        }
-    }
-
-    fn store_name_key(&self, name: &CStr, key: usize) {
-        assert!(name.len_with_nul() < NAME_SIZE);
-        let _guard = self.lock.lock();
-        let inner = self.seq.write();
-        name_copy(&inner.name_safe_to_read, name);
-        inner.safe_to_read.store(key);
-
-        // destructor of inner ends the seqlock write region
-    }
-}
-
-Notice how the fields protected by the seqlock are moved into a new
-sub-struct similar to MehInner.
-
-The `try_read` method is also interesting. It throws away your return
-value if you need to retry to discourage you from using invalid values.
-
-Anyway. There's still another big issue with the design: when you use
-try_read or assume_no_writers, it still lets you write to the data.
-After all, we're using atomics which we can write to at any time.
-
-There are many ways to improve the API to prevent such writes. I'll
-share one here: If you have write access, then that means that you have
-a WriteGuard object. So we can have you pass a reference to it:
-
-impl SharedUsize {
-    pub fn load(&self) -> usize;
-    pub fn store<T>(&self, value: usize, proof: &WriteGuard<'_, T>);
-}
-
-This way, readers can't call `store` because they don't have a
-WriteGuard. The writer becomes:
-
-    fn store_name_key(&self, name: &CStr, key: usize) {
-        assert!(name.len_with_nul() < NAME_SIZE);
-        let _guard = self.lock.lock();
-        let inner = self.seq.write();
-        name_copy(&inner.name_safe_to_read, name, &inner);
-        inner.safe_to_read.store(key, &inner);
-
-        // destructor of inner ends the seqlock write region
-    }
-
-This isn't the only way to solve this problem - there are others. Not
-all of them are fool-proof - including this one. For example, I could
-get a WriteGuard from one SeqLock and use it with a SharedUsize stored
-in *another* SeqLock to bypass it. Other solutions *are* fool-proof and
-don't have this bypass. Some of the other Rust folks are probably happy
-to tell you about field projections which is an upcoming language
-feature that lets you do this (and other things such as rcu) in a
-fool-proof way with much more convenient syntax.
-
-Anyway, since the reads and writes are just atomics, Rust the language
-doesn't care too much if there's a bypass. It's mostly something that we
-might care about as API designers.
-
-
-
-Ok, let's return to another problem in the design, which is that it's
-not tied together with the spinlock. This means that you could call
-write() or assume_no_writers() without holding it.
-
-The most direct way of solving this is to make a single abstraction that
-wraps the entire thing.
-
-#[repr(C)]
-pub struct SeqLock2<T, U, V> {
-    seq: Seqnum,
-    seq_data: T,
-    extra_data: U,
-    _cache: Cachealign,
-    lock: SpinLock<V>,
-}
-
-impl<T, U, V> SeqLock2<T, U, V> {
-    pub fn try_read<R>(&self, f: impl FnOnce(&T) -> R) -> Option<R> {
-        let seq = self.seqnum.begin();
-        let ret = f(&self.value);
-        if self.seqnum.retry(seq) {
-            None
-        } else {
-            Some(ret)
-        }
-    }
-
-    pub fn extra_data(&self) -> &U {
-        &self.extra_data
-    }
-
-    pub fn read_with_lock(&self) -> ReadWithLockGuard<'_, T, U, V> {
-        ReadWithLockGuard {
-            seq: self,
-            guard: self.lock.lock(),
-        }
-    }
-
-    pub fn read_retry<R>(&self, mut f: impl FnMut(&T) -> R) -> R {
-        if let Some(ret) = self.try_read(&mut f) {
-            return ret;
-        }
-
-        f(self.read_with_lock().seq_data())
-    }
-
-    pub fn write(&self) -> WriteGuard<'a, T, U, V> {
-        let guard = self.lock.lock();
-        self.seqnum.write_begin();
-        WriteGuard {
-            seq: self,
-            guard,
-        }
-    }
-}
-
-pub struct ReadWithLockGuard<'a, T, U, V> {
-    seq: &'a SeqLock2<T, U, V>,
-    guard: SpinLockGuard<'a, V>,
-}
-impl<'a, T, U, V> ReadWithLockGuard<'a, T, U, V> {
-    pub fn seq_data(&self) -> &T {
-        &self.seq.seq_data
-    }
-    pub fn lock_data(&self) -> &T {
-        /* we hold the lock, so we also get to use the lock data */
-        &self.guard
-    }
-}
-// Ditto for WriteGuard.
-
-By using a combined type like the above, we enforce that the spinlock
-and the seqlock are used together and make it pretty hard to get that
-wrong. The example becomes:
-
-#[repr(C)]
-struct Meh {
-    seq: SeqLock2<MehSeq, AtomicI32, MehInner>,
-}
-
-struct MehSeq {
-    safe_to_read: SharedUsize,
-    name_safe_to_read: [SharedU8; NAME_SIZE],
-}
-
-struct MehInner {
-    needs_the_lock: usize,
-}
-
-impl Meh {
-    fn name_to_key(&self, name: &CStr) -> Option<usize> {
-        self.seq.read_retry(|inner| {
-            if name_equal(&inner.name_safe_to_read, name) {
-                Some(inner.safe_to_read.load());
-            } else {
-                None
-            }
-        })
-    }
-
-    fn store_name_key(&self, name: &CStr, key: usize) {
-        assert!(name.len_with_nul() < NAME_SIZE);
-
-        let guard = self.seq.write();
-        let inner = guard.seq_data();
-        name_copy(&inner.name_safe_to_read, name);
-        inner.safe_to_read.store(key);
-    }
-}
-
-This API is rather nice because it lets us avoid repeating the logic in
-name_to_key. The seqlock provides the retry functionality for us.
-
-Of course it also has the disadvantage that the layout is rather more
-fixed than the C version. The layout used here is probably what you want
-in many cases, but the more things you enforce in the API, the more
-inflexible it becomes and the fewer cases it will support. This is a
-trade-off in API design.
-
-Another way to tie the seqlock with the spinlock could be to do the same
-as LockedBy: https://rust.docs.kernel.org/kernel/sync/struct.LockedBy.html
-
-Anyway, this email has become long enough. I'll stop it here.
-
-Alice
+> The union case is a bit different in that not all derive macros support
+> them, so I agree that the docs should reflect that better. I can add a
+> patch when I find the time, as I'm stretched pretty thin (hence I
+> suggested you submit a patch :)
+> 
+
+Maybe you can open issues and see if others could help?
+
+> > In this case, it may be special, because you're in fact syncing an
+> > external repo with the kernel part, i.e. the development is done, so if
+> > we trust the external repo and of course, if no obvious error is
+> > founded during review (from the people who can review), we should merge
+> > it in. If that's the case, this patchset is more of an "FYI" instead of
+> > a development process IMO. Is this the case here?
+> 
+> I'm not 100% sure on the workflow for pin-init. Ideally all changes made
+> to the pin-init repo can be ported 1:1 into the kernel. There are of
+> course smaller things such as commit references in commit messages that
+> need to be adjusted. But aside from such smaller administrative things,
+> the idea with the sync was to only have one singular version. If you
+
+I think this is fine and matches my previous understanding. I just
+wanted to be clear that normally if an example/test is requested for a
+patch from a reviewer, the usual response is not "hey, why don't you
+contribute one?" Of course the request has to been reasonble. In other
+words, we are doing a special workflow here.
+
+> want to spend the time looking at the pin-init PRs then feel free to do
+> so :)
+> 
+> Since I port the history from the repo and not do one single commit with
+> "sync with version v... of pin-init", I do think that kernel review can
+> indeed change things in the upstream repository, but I'm not sure by
+> which means it should do so. I want to avoid to rewrite history
+> upstream, so there it has to be a new patch.
+> 
+
+A new patch seems good to me.
+
+Regards,
+Boqun
+
+> ---
+> Cheers,
+> Benno
+> 
+> 
