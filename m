@@ -1,62 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF0E28F939;
-	Tue, 22 Apr 2025 15:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C01254673;
+	Tue, 22 Apr 2025 15:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745336257; cv=none; b=Tuzp2Z1YqD+dkdLOnbE8HLP+zYCjagS3cuYOWM/C5ZFt6mtis+Wszzht/lAT+7UjTSYrvm+CileCccPtuVitX4URK8i1HxZ4ookDsoHglp4yZa/wV68cqXfUbZGynwEH3I0+b3B01ruhP/kCC4wS//IaiinoOkIHWoJyRG4XQWQ=
+	t=1745336549; cv=none; b=f3zNpItgERw5rdTHD4+QZ1VRT4HdCKiTwtsoQvzDSyA5M/vNxOF+FeQ577BNCbNVvJLtpOrbh96Nxcoj235sBRFx3M18M84PWTciQIJuUqN1L0EytpQdWzvkmmdeIuQSf+kOzStmxTc3ngMG4kS38b3IM0GZ1Pun6RgvLxi4qXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745336257; c=relaxed/simple;
-	bh=Jw42RzPTFH1JXQNle4D+HMuCHvBjjQsEcqF8GaNCQ+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fbPcCY/s+EVhRSP6/VjSqHj1cn6I8fOvIp+PV9PNEleY1dE/A8zoW8VJcbs4rc4zOdcB10rWTV1KrcpvilrYS9MrgPK1HMt5rAXvwDecl4SDjieDxvOjJ8arkt0WOT5RR1syp+iNTwT7WAWzFMYCbUOmqd/ArBkRNcaTn3fGGqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=elv0NarH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745336549; c=relaxed/simple;
+	bh=UjmE7mMRVfetjzx8FX9GEDrQFOSFL9/M99AxaPe/WFE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ObXPwh0MP5D7QpjVMYRbUyESo0r8ROK4wO+CWhbT77BwS8IGtp2kBNSpw8BZO6lmVEpKvcrJN0uyKD1vxPWPev7frZAOwpzVXkSKE2PCHDY2h5sHVzCnC0ThouhDKo+5U5KYIPGcsKwhcNp4rRIyMclJHIjZOwFT9pRgalZG3MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MWfY4YTC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="elv0NarH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3D4C4CEE9;
-	Tue, 22 Apr 2025 15:37:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MWfY4YTC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D7AC4CEE9;
+	Tue, 22 Apr 2025 15:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745336256;
-	bh=Jw42RzPTFH1JXQNle4D+HMuCHvBjjQsEcqF8GaNCQ+Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=elv0NarH2n/lq8UrYUtfHAlnPf/1/3aBSPh+fAApFr3vHAJBaMeEaCOxedR7X/eHA
-	 0O1Hp2gsWiNi6sOI1WpYiBrepayRN645FUwnridGqWldpYqc/VpUTyaUrQf4iPZiC9
-	 ivQwg2KLIEre4q0vhgfCQUu0UZhLoay4HDly3YasZfChJn1OE9wqYECrxfwqsgPYsg
-	 msT8SMAXytrt1XFbsu27m02zH3kGZKGMaHLbeJvAsiA/BUCqZdcVwj8uWi2unO4cli
-	 z37W7wGYgvugjyC1gt88O381NfaoHOxNdokEKSS8oxH4C6S43dzWJMrS+ccrJIdcGg
-	 Mns5sDlNhK4Uw==
-Date: Tue, 22 Apr 2025 17:37:31 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: alloc: allow coercion from `Box<T>` to `Box<dyn
- U>` if T implements U
-Message-ID: <aAe3u_HHQUOmH0KS@cassiopeiae>
-References: <20250412-box_trait_objs-v3-1-f67ced62d520@nvidia.com>
+	s=k20201202; t=1745336548;
+	bh=UjmE7mMRVfetjzx8FX9GEDrQFOSFL9/M99AxaPe/WFE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MWfY4YTCRapUqCdkB62dVPD6RevemNrraWnJYH65Xf7r+M38bYA8JIPmLHkCzOfmG
+	 nid7XWERxxlCWW+V4CZ9JcXQhU34Ydy33/ccYqR0ypw1/WnVzBH7xIKCjCyMsBlIHu
+	 xGLquvKZY89rnOg1ORTEByi87QdzFYaBh0zT+Zj8xBkpkgv0nDnZrREX3vd+41nQQO
+	 xZ8MfZAC5V9Ryql6HBOo8NhIImhmLjqZxYhr7Epi3Qgi8pwMYJ2IIOCAsbtS1ncv09
+	 FgKcFWNYm+qWL/qzwTrL9bOECh4VJtUEd4xHR2YxLbrr3B8LRmUEWpoEl2m5y2/EVz
+	 Kw/BHraf9u++Q==
+Message-ID: <7320995f-cd6d-4e65-b144-bd20151f9e5e@kernel.org>
+Date: Tue, 22 Apr 2025 17:42:24 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250412-box_trait_objs-v3-1-f67ced62d520@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] rust: alloc: split `Vec::set_len` into
+ `Vec::{inc,dec}_len`
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tamir Duberstein <tamird@gmail.com>,
+ Andrew Ballance <andrewjballance@gmail.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250407-vec-set-len-v3-0-c5da0d03216e@gmail.com>
+ <Z_-wlwaiJNsSZbCC@google.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <Z_-wlwaiJNsSZbCC@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Apr 12, 2025 at 03:29:13PM +0900, Alexandre Courbot wrote:
-> This enables the creation of trait objects backed by a Box, similarly to
-> what can be done with the standard library.
+On 4/16/25 3:28 PM, Alice Ryhl wrote:
+> On Mon, Apr 07, 2025 at 10:52:30AM -0400, Tamir Duberstein wrote:
+>> This series is the product of a discussion[0] on the safety requirements
+>> of `set_len`.
+>>
+>> Link: https://lore.kernel.org/all/20250315154436.65065-1-dakr@kernel.org/ [0]
+>> Link: https://lore.kernel.org/all/20250316111644.154602-2-andrewjballance@gmail.com/ [1]
+>> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > 
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> I'm still wondering if the divergence from upstream alloc is worth it...
+> but the code is okay.
+> 
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-Applied to alloc-next, thanks!
+Does this still apply to patch 1 in v4 [1]?
+
+[1] 
+https://lore.kernel.org/rust-for-linux/20250416-vec-set-len-v4-1-112b222604cd@gmail.com/
