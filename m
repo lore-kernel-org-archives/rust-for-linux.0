@@ -1,131 +1,151 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCA214BFA2
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 16:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745339305; cv=none; b=F//immp/LhjkZs6zIw25oI0ceXxe2+tiMbbo3dxVduZAYE7fzKhPMAa8oH8jxhVXaHphDYNwEdstuzF7/Vuh6T3W7Dgaxi3WA821aVXpfvSVakB0kn3UYBFLZ5A3Rt9EQOZ91fIIhzzIME1caFedSmeicghrgHFWaqgM/Aqd0jg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745339305; c=relaxed/simple;
-	bh=j+iWAa0suooh/9BbheNTpR15KyC7Wrafy4/wZyt0F8w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mZtWOYbm7n5ZlPhin7nG7abopvrJSoKBoIu2oFO+dGHXvCWnL81jy+btUqZhJCNg28sdMfbn0WXu6PLZ+0Awy7E6DuVPKhw+3ODvCnymVQeXaMnf3HHKmNVdcuWgcG6VPYc5TDu2w/FTJIXnfAZgUE+CEO6M9GC2HkfKsEQhDoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=gOmHCpRH; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5167293B71;
+	Tue, 22 Apr 2025 16:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745340179; cv=pass; b=EO+vgZWP6xOmdPrpWPggtIdZOQofPT65FY75ObobxT+IujMxHDQSEMkUjig6ZZ2dfm1GSB8TJGiCvPCREWFa3WVfSm7amNYY9PbVNKj+nw5hUDJf2G3x+PgvTG5HmiyQPsPjAStz6qa3NHfHoacwJmpcEA4slWqoul9W5U9Dytw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745340179; c=relaxed/simple;
+	bh=J5ouDC0Gsmx0WlcN6oLSy44vs3al9Pki25fBSKjq8Kw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UNSUbD8p/YLw1oRIpwnHAL4ohZvlwAmIoirRjWESxYQmADkcdH4xNtp9yzfYO7+yYgRvxXI8/wVGDTNfPqtPBU/K1XPCDsjSvSl+7uisZLjL2C1eDER1znyrVkoVcpk1bHMd1Gjwm5K2TcNr1gtg+q3RiP1N1m+Nt0Ia3wQQNtc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Qv1F9bnt; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="gOmHCpRH"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e589c258663so4456371276.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 09:28:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1745339302; x=1745944102; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EQ/h+SRKg3HKK8qDeGxWSA4UTfkR8SBnHYf8ziXdKBc=;
-        b=gOmHCpRHyfwMjWGfVsBTu+W5AOcjKiVXVkKzWE0yS9nwwqCiXnUami/1nRwoUELhPD
-         Rv4LStcEtWNyIhMjSP/OVcN2xVH04PH94WYY5AlOtcK17zU8OW3ghM5z0g82LgS3SMiR
-         Rfn77PJkuatFRUy90V2HUhiwzt7M1fNuxKYNgba/rNqztu/6DKZZsiYqS1LjTKhHWotY
-         de3JCT5+S++6HJ4recCKxQ5C2NPuZ6dSi3MidLzYxJHA1Mj9tMKkasGLWH9ek7eyxW1J
-         ZYcCAz56IVvuPhGt1lkZSbahlybyBgSaJume5Cj3xB6N7b45KgNARDxCxI+W6xeBushM
-         NqJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745339302; x=1745944102;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EQ/h+SRKg3HKK8qDeGxWSA4UTfkR8SBnHYf8ziXdKBc=;
-        b=qxQP7B7b7VtO07uwc3sfYaZiJdFDQbS2qCw3ZbQHVRMJ2RkZRqzSRpANaSGUYytNND
-         jwb/q4CTaOtxeceZbPCEd6LlXy/71CzcML5G2OU0ZRJoYmEoIGox3uq5nOefL7a44LLn
-         QO5VTwXGNri/4YWUzT+4DEL0D9WqjcTNdMKDkLKfVnKQ4+s5bTXRZhbv6FwDr0OQB9FI
-         twlBpux5TEK6dxgLefzzEESBRZYxCmZncDQ8D/Nc7nj6ZQBmxlS2D+OMgt6EVHdE+IBU
-         0djWe0AZBmTIrJ6VVnSKDbB37i+JBqEg9WcAci7Zks0ppwgH8PbR2JN+JXCTmAYH8k5o
-         /OgA==
-X-Forwarded-Encrypted: i=1; AJvYcCUO7p7pMoJcE+/IUSRICk9UQqwm2lDbM6xrBGfTq/ZuKsmkYqBL6XO6ATuT5nrZ4bBHJA0uzgProty8Jx6QjQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZE8vcfwwFhcJgV8KJzYJrE5vKMg3VUBEL2T0Df8eWTJV10g67
-	AW7Klh4S+kb1qYFQuJewuQyziTU+PRcuHPpmhMoaE+EgydsDXTqrwGSM4wM2e+OaAi3CHB5NTHd
-	bkdciQykivik5pOx30SY5wPXh8iPYN8OhhphwIrrd2Je0Zl4=
-X-Gm-Gg: ASbGnctkHhOs9LLqecksVwCfT5R0G2bHvUWSARyjeCNCkE6pbeMNAyXSuYfBunRXrtQ
-	fo0QXGUMKVmmaTxjHANv7AseaVCt/bCJlMvJ2eh+5V3zWAJlUhfsjta68nMqCpeD67KgDrpseAW
-	woZ1Wvv1hX+mREPREy0cXX0Q==
-X-Google-Smtp-Source: AGHT+IFQDSL/ncnLOWK5LRznb2NXOaof3/0NlcAW1YBboG+fEljKszmHQmxJ1eEYy42tv3YqfQtVf9ZlPwKPijpnNCE=
-X-Received: by 2002:a05:690c:4443:b0:6fe:bf9d:5de6 with SMTP id
- 00721157ae682-706ccb04f2emr232424337b3.0.1745339302344; Tue, 22 Apr 2025
- 09:28:22 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Qv1F9bnt"
+ARC-Seal: i=1; a=rsa-sha256; t=1745340124; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=maHts2vpcW2tjJ8ka3XxMyy8VNz1eLmM0ImKB1vvNnhymMiYRqbghXqWc8NXFznyFMhcYuhWkZXHWVxkHIV2MCaliC0v4vlmBMz2xDzAU1oy/Umj5PaElqq4VaYbpf9C4FNgTVPFsOt4DWzaFMAaLODIwivN/4FVTjRfZYrQKV4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1745340124; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=vChu2eP17VcCVjPNfN1+BoXsYLLiBUzHEokfxyhGBSc=; 
+	b=V50ibU7/H5e83ZajSS2oDH9KfjXC92N5Etc8GONIoJI/19KTEzWAyR5bvV09CUOVzAbPRqxlCJHz0IhqClbSHEgxRPvejBKihovvBAOiSfCXM8KQ7GjGtzuqoFXe5sgU7spW/WSnCdp1yaT+EUn3sb8F5gSdrFFtfiAwkTaBD7A=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1745340124;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=vChu2eP17VcCVjPNfN1+BoXsYLLiBUzHEokfxyhGBSc=;
+	b=Qv1F9bntY7HRo2c+vHFeKcO1hjBLG9cAQkU4+6RQhLuTrlkFx/DYTWv2vULH7TEV
+	bJc3mQgTs72xUFHA49vOyzi17HnAzSFrmoIS/VEsgyLmUCBcj1kv1Yw9wLZ9RYHSgGU
+	9HLpAmz1xj+D5S7X9EW3witPwwYCN8oqS/5j86Oo=
+Received: by mx.zohomail.com with SMTPS id 1745340121608854.5907869786862;
+	Tue, 22 Apr 2025 09:42:01 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH v2 0/2] Add a Rust GPUVM abstraction
+Date: Tue, 22 Apr 2025 13:41:51 -0300
+Message-Id: <20250422-gpuvm-v2-0-44d4fc25e411@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250416213206.26060-2-kernel@o1oo11oo.de> <CAHC9VhS=jWEZqb3MqCtUAJhY9ci8d_N4H6CqWsYU0YmEG=8_yA@mail.gmail.com>
- <c1eb852b-f8aa-4ab0-9579-19eb0d383cb9@o1oo11oo.de>
-In-Reply-To: <c1eb852b-f8aa-4ab0-9579-19eb0d383cb9@o1oo11oo.de>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 22 Apr 2025 12:28:11 -0400
-X-Gm-Features: ATxdqUHPzGOFeKXTqUOAMaQToBxYYiJZ5vV_2qPozFgBaVAUE1O_hbEaQPAua4U
-Message-ID: <CAHC9VhQ2NWr3-zQ8mnQEOV9KzY6A_Vd7AR8uzp5ZZ-FLhkG=yQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] lsm: Add Rust bindings with example LSM
-To: Lukas Fischer <kernel@o1oo11oo.de>
-Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM/GB2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDI1MDYyMD3fSC0rJcXSPLFONUA3MjszRjEyWg2oKi1LTMCrA50bG1tQCiH0C
+ pVwAAAA==
+X-Change-ID: 20250320-gpuvm-29d3e0726f34
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Sumit Semwal <sumit.semwal@linaro.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, Lyude Paul <lyude@redhat.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, Asahi Lina <lina@asahilina.net>, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-On Tue, Apr 22, 2025 at 7:22=E2=80=AFAM Lukas Fischer <kernel@o1oo11oo.de> =
-wrote:
-> On 21.04.25 21:09, Paul Moore wrote:
-> > Thanks for sharing this Lukas.  My Rust knowledge is still far too
-> > basic to offer any constructive review of the Rust code, but I'm happy
-> > to see some effort being put into looking at what would be required to
-> > support a LSM written in Rust.
->
-> Hi Paul,
->
-> that's alright, I was mainly asking the Rust for Linux contributors for f=
-eedback
-> on that, but I wanted to keep you in the loop as well.
->
-> > It isn't clear to me if this is simply an exercise in seeing what
-> > Rust/C interfaces would be needed to implement a Rust based LSM, or if
-> > you ultimately have a LSM you would like to submit upstream and this
-> > is the necessary groundwork so you can implement it in Rust.  Unless
-> > it is the latter, I'm not sure this is something that is a candidate
-> > for merging into the upstream Linux kernel as we don't merge "demo"
-> > type LSMs.  If you are intending to develop a proper LSM, we do have
-> > some guidelines that may help explain what is expected:
-> >
-> > * https://github.com/LinuxSecurityModule/kernel/blob/main/README.md
-> thanks for the feedback, I guess I was missing some context in the initia=
-l mail.
-> The LSM I'm using it for in my thesis is more of a research testbed (or "=
-demo"),
-> so I never intended to upstream that. Since I still needed to create bind=
-ings to
-> implement that in Rust, I figured I would post them to the lists to get s=
-ome
-> feedback and to get things started in case someone wants to implement an =
-actual
-> upstreamed LSM in Rust in the future. This is why I marked this "RFC PATC=
-H", it
-> is not intended for upstreaming, only for feedback.
->
-> If there is interest in it, I might polish the bindings after the thesis,=
- so
-> that they can be properly used for an actual LSM. In the state they are
-> currently in they do allow writing an LSM in Rust, but not in a way a saf=
-e Rust
-> abstraction should.
+Changes from v1:
+- Added more people to cc.
+- Used Benno's suggestion to remove the #[allow] (thanks, Benno, that is
+  indeed better!)
+- Added markdown as applicable in the docs/comments (please let me know
+  whether I missed any)
+- Changed the order between docs and attributes to match the rest of the
+  code in the Rust crate.
+- Did *not* remove the # Arguments section from a few functions yet, let's
+  push this dicussion down the line, Miguel.
+- Changed the placement of OpRemap, i.e.: it was not next to its impl block by
+  mistake.
+- Misc doc fixes, i.e. missing periods, missing ///, lines that would
+  not render properly on the browser, etc (thanks, Miguel)
+- Removed spurious clang-format change from patch 1.
+- Added a return statement for find_bo/obtain_bo (thanks, Charalampos!)
 
-Thanks for the background, that's helpful.  If anything changes and
-you decide that you do want to implement a proper LSM in Rust and
-propose it for upstream inclusion please let me know.
+Changes from v0:
+  This version changes how `LockedGpuVm` operates. The previous code assumed
+that the interval tree would be protected if all the associated GEM's resvs
+were locked, but this is completely unrelated. In fact, this initial version
+only aims to support the core VA range management feature of GPUVM, and not any
+of the "convenience" functions like "exec_lock()" and friends, so this function
+was removed accordingly.
+  
+  LockedGpuVm is now produced by a call to GpuVm::lock(). This takes a generic
+guard type to signal that the driver-specific locks have been acquired in order
+to protect the VMs tree, and hence its view of the address space. This approach
+is somewhat similar to CondVar, but also incurs in the same pitfall: it is up
+to the caller to give meaning to the guard by ensuring that it actually
+protects against concurrent access to the VM. Maybe this is a good candidate to
+the upcoming "Pitfall" docs section?
 
---=20
-paul-moore.com
+  Note that LockedGpuVm::obj was removed. I'm not really sure why this field
+was there in the first place, but callers should indicate the object through
+the sm_map() and sm_unmap() APIs instead.
+
+  I am not sure why GpuVm::inner uses UnsafeCell, though. I did not touch this
+so that we can first discuss whether UnsafeCell is really needed.
+
+  The docs were also updated. Care was taken to reuse the C documentation as
+much as possible.
+
+  Itemized changes: 
+
+- Rebased on top of nova-drm
+  - Use `srctree` in the docs
+  - Add docs as appropriate and remove #[allow(missing_docs)]
+  - Remove `impl DriverGpuVa for ()`. Drivers can to that themselves, if they want.
+  - Added #[inline] to getters, as Rust cannot inline across crates otherwise (unless this changed recently?)
+  - Exposed `drm_gpuva_op_unmap::keep`.
+  - Removed `pub(super)` from unsafe fns meant to be called from the C code. 
+  - Added "# Safety" blocks to the above.
+  - Removed `exec_lock_gem_object()`.
+  - Removed `exec_lock()`
+  - Removed `LockedGpuVm::vm_exec`. This initial version does not support `exec` calls at all.
+  - By the same token, removed `LockedGpuVm::drop()`
+  - Removed `LockedGpuVm::obj`. This object has to be passed explicitly.
+
+---
+Asahi Lina (2):
+      rust: helpers: Add bindings/wrappers for dma_resv
+      rust: drm: Add GPUVM abstraction
+
+ rust/bindings/bindings_helper.h |   2 +
+ rust/helpers/dma-resv.c         |  13 +
+ rust/helpers/drm_gpuvm.c        |  29 ++
+ rust/helpers/helpers.c          |   2 +
+ rust/kernel/drm/gpuvm.rs        | 807 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/drm/mod.rs          |   2 +
+ 6 files changed, 855 insertions(+)
+---
+base-commit: e7de41cc4b01dd5500a0c2533c64bdb3f5360567
+change-id: 20250320-gpuvm-29d3e0726f34
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
