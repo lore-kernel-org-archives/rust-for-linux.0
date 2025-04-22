@@ -1,122 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FD520E703
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 13:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF72D280A58
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 13:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745327697; cv=none; b=sjuOZK+z0ENFgGWaxmAb8diPGNTSTVQRPflH9W+y+2DnjZ5PfjFUtkMsS/PGCQkDnn8Yf+7YoB0obtBtk92aAqSEJGAB/rJpYOctbtpX3LKTLP+JVfaiiHGki6nCDQo0aQe8/BOwD4zqWsvgtVEeOiTkuio/NnvYk/9eLtGXKzs=
+	t=1745328140; cv=none; b=ovZr8cqSAHOwbHvB0md1soXaCnZ559cERFbv0R8LktmFoEOjOM/x95XjRXl5wSayuNp+oZZnhAmlzQqjByuIfylwEuV3VLQzizj+Jz5CtYBNG7K3Ic+qOYKQHvPRhT8yJkWjx06u45HHdvy905mLuKJ93ff9ggz07lOFNYBAtrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745327697; c=relaxed/simple;
-	bh=NMJzP+t1S5uMz/babukNL9QhkxTu9C91nbFxaiYC7ug=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=au5WSOoCfholL/D+s+o2d/XYL3s6b7OrYTNtJrbTbsSbLD1c9YTZFz9bU6QE8Gar3tbhCCQM2srzWaaifNiyG1N80NxzkPA+Yt6xV+8pKRjd0RhUnNd4M4ggpywRTIBZwQE9Q+kQDmlYkh7cTyhzdt9AFXnID3RQ3EgWL6KMFMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdIyHKu2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745328140; c=relaxed/simple;
+	bh=iBeERhynzVtABJ17zsJg2c4wme0BjEpBgTwXNfdYvBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LdMUK6QVsyoWgM9fS38s3mKxzRChLW85WkmLdpE31PBrS68vmIRM3yHFbcXJ+5QusP+djMCk4uMU8MI63hyAB/WIplePGw1FHbgUQq1Zd+NDmKImK3v1YSDgnPPdHhLgLqjzEZFcSChYq+COR57StovHB9NgR9ThoMTkf2Y7aSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dkcpLLjr; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdIyHKu2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D334C4CEE9;
-	Tue, 22 Apr 2025 13:14:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745327697;
-	bh=NMJzP+t1S5uMz/babukNL9QhkxTu9C91nbFxaiYC7ug=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KdIyHKu2eCZ80hTDe0oTs79ckHHX1AqOyLMhHgpuqOnQo3xfkx9VtvMMMbXnRaZ4s
-	 /VIQQ25zYun3Lliu7whFcyYd5iEeMA+/HU6jO625qNjCE7Buz5n5QVaWYcbO6JT3gq
-	 GIO2QGLDSRc8mTckOVOvwbnRB6XR4XGj8z2d/NsWQSIlHav/2xHGmG8fckj/H7aVe8
-	 AMzX+PTjQr+8uRLYDzW78lgnZ+ei53E9n7UW18evnM6xPAeX9wmZyda9xKsUy/pz2C
-	 FFW6FxiDZhnvw8UxSwKZdLGSQ2gK7DSyLnDOVX7vTTbtRVMOOkhWnGrP1PGNgBrxS6
-	 YYVaVKBFID/GQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-Cc: <rust-for-linux@vger.kernel.org>,  <boqun.feng@gmail.com>,
-  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,  <gary@garyguo.net>,
-  <bjorn3_gh@protonmail.com>,  <benno.lossin@proton.me>,
-  <aliceryhl@google.com>,  <tmgross@umich.edu>,  <dakr@kernel.org>,
-  <frederic@kernel.org>,  <lyude@redhat.com>,  <tglx@linutronix.de>,
-  <anna-maria@linutronix.de>,  <jstultz@google.com>,  <sboyd@kernel.org>
-Subject: Re: [PATCH v1 3/3] rust: time: add ktime_get() to ClockSource trait
-In-Reply-To: <20250413105629.162349-4-fujita.tomonori@gmail.com> (FUJITA
-	Tomonori's message of "Sun, 13 Apr 2025 19:56:28 +0900")
-References: <20250413105629.162349-1-fujita.tomonori@gmail.com>
-	<j6TQ_TOATaKV1cgs9cQAor4mPf5w-aBkthx9JS9bySKdK05B52gu-27p2SRf_vmJQ0THVPMU3IhsbPWDvQH_jg==@protonmail.internalid>
-	<20250413105629.162349-4-fujita.tomonori@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Tue, 22 Apr 2025 15:14:46 +0200
-Message-ID: <87ecxk9w3d.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dkcpLLjr"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-acb2faa9f55so609754866b.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 06:22:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1745328135; x=1745932935; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N3XNp6FOG0YBB40BSQ5b9F0xQ6kk+DLGoBOj2lK3UkU=;
+        b=dkcpLLjrEpCHq1nKnXuvvnE7Ty4INfDd501NyXXelhCX068hkJZUQFJ2WtGlJxJYwb
+         2UJj0GgcisWHxN74+x+RBnf7Lj9iYg5CVEMq7BgG7Hmja/RTtO79Y9yxRjiDqfgOHTXa
+         Ise0dlanH071NWrvuKch+JiakrzjohIzbzBdjyxMxwERMGz+R0DO+zg3V74FjSX58qJs
+         Hs5onzICDyTxD08TCTQycBc5Lxpnq/538QXDGfTYnb89zuSI6YnLHlhxQZKWLYHNVZgp
+         AyxzcjIKOlBHAR4hQ9ZgdcaKXxb9E118KROawqpHJzJ7fTeDG3mdqWOzp+d3pm/WGuT5
+         1FgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745328135; x=1745932935;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N3XNp6FOG0YBB40BSQ5b9F0xQ6kk+DLGoBOj2lK3UkU=;
+        b=H6XRucOJF8dzwwnoGS7zGTpMbDgcXV8z2HF6FFRUbdnYU7zcMbspqys9HINp4Lz+Fx
+         lZt5vGlL3gIZR4RISC9ySn6BAkdRgG7XiNnNgmwjLga/z6xmXVLWtnxn+bIWW3TTOu/f
+         R3WEN8h+UVfvPPsOrNjwfvc1d/8Oz982qqLvRubbtV4lLqfYDdUaZeXrTRSMmbubpm97
+         patMJoZwwdK7zECOq2OpCyAq0YdZDg2Mp/4LZ/3tAF8l+LbdpNgstulwXOeuI6iLQ48M
+         1dXUeIQU8N6ylzZHVERHFEqfajVNlSw85duRPMjB+PiZLdfbtBh0oaKgGqjS9ZaAgd0M
+         dX0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXPdYMWbKz9V1AQMN18XnScye/AlPQqQqzCZKsvysfbYkWW2ttxBly9m1SZYGNq5/agIh0gXXwXS+dow9QNMw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm6jqvFq4AofzAIoDbAlwTCH4OJeB6h+nrSS8PmpcyD/+M7fUj
+	beX45ByPSXRzIg2EaGJde+A24saaiZjNQH/CKl14J3k9Smw1MUa7kH5IrqBgtpU=
+X-Gm-Gg: ASbGncsDZlu+kG56U5z/6t6IDPEfiIktCsqVJ8IKTlbtas9oqYyiBjklq+1OZXSJfsA
+	HHHmgQmmEW1cVuBTARywz4U4+CYlw0O4crzdsxF0bs6TlpbxW5zHbFYc03ooaatFh5QMWwG15S3
+	qyIkWlYdKRu0mXHgcDk1bNqGcrXKc0fyKoMis9GuHsUIPkx1h76TGWRH47oGgsWI0hz/zfkuDap
+	a0GsiIXcRIVVwve0UXiydFlsnps3NaCuojZo826Xcp6lqIsiJrd12oVUMKNIIt9hxjG2qdVB05/
+	Hc0+dPC+EUmahNAeDjtxBMJ/pKDoYzprw2nsx1sdFNk=
+X-Google-Smtp-Source: AGHT+IFaXpflFI86k8u3dSw6HVkF/uY8OBEaZ5S2zW87LgBRnFduZGRJWQUonbqQbt0m5a26poCJnA==
+X-Received: by 2002:a17:907:9727:b0:acb:5f9a:7303 with SMTP id a640c23a62f3a-acb74bcc517mr1311357066b.35.1745328135152;
+        Tue, 22 Apr 2025 06:22:15 -0700 (PDT)
+Received: from [10.100.51.48] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ec0b6fbsm668648166b.19.2025.04.22.06.22.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Apr 2025 06:22:14 -0700 (PDT)
+Message-ID: <7f707d8e-f2e4-49cc-8d7e-e8c4c4193cec@suse.com>
+Date: Tue, 22 Apr 2025 15:22:13 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 0/3] rust: extend `module!` macro with integer
+ parameter support
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ Luis Chamberlain <mcgrof@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye <ark.email@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
+ <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>,
+ Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
+References: <20250321-module-params-v3-v9-0-28b905f2e345@kernel.org>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20250321-module-params-v3-v9-0-28b905f2e345@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
-
-> Introduce the ktime_get() associated function to the ClockSource
-> trait, allowing each clock source to specify how it retrieves the
-> current time. This enables Instant::now() to be implemented
-> generically using the type-level ClockSource abstraction.
->
-> This change enhances the type safety and extensibility of timekeeping
-> by statically associating time retrieval mechanisms with their
-> respective clock types. It also reduces the reliance on hardcoded
-> clock logic within Instant.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On 3/21/25 10:17, Andreas Hindborg wrote:
+> Extend the `module!` macro with support module parameters. Also add some string
+> to integer parsing functions and updates `BStr` with a method to strip a string
+> prefix.
+> 
+> Based on code by Adam Bratschi-Kaye lifted from the original `rust` branch [1].
+> 
+> Link: https://github.com/Rust-for-Linux/linux/tree/bc22545f38d74473cfef3e9fd65432733435b79f [1]
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+[...]
 > ---
->  rust/helpers/time.c | 16 ++++++++++++++++
->  rust/kernel/time.rs | 32 ++++++++++++++++++++++++++++----
->  2 files changed, 44 insertions(+), 4 deletions(-)
->
-> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
-> index 7ae64ad8141d..613475c529d4 100644
-> --- a/rust/helpers/time.c
-> +++ b/rust/helpers/time.c
-> @@ -1,8 +1,24 @@
->  // SPDX-License-Identifier: GPL-2.0
->
->  #include <linux/delay.h>
-> +#include <linux/timekeeping.h>
->
->  void rust_helper_fsleep(unsigned long usecs)
->  {
->  	fsleep(usecs);
->  }
-> +
-> +ktime_t rust_helper_ktime_get_real(void)
-> +{
-> +	return ktime_get_with_offset(TK_OFFS_REAL);
-> +}
-> +
-> +ktime_t rust_helper_ktime_get_boottime(void)
-> +{
-> +	return ktime_get_with_offset(TK_OFFS_BOOT);
-> +}
-> +
-> +ktime_t rust_helper_ktime_get_clocktai(void)
-> +{
-> +	return ktime_get_with_offset(TK_OFFS_TAI);
-> +}
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index db9a783631ec..4b9b61eed628 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -63,6 +63,11 @@ pub trait ClockSource {
->      ///
->      /// This constant corresponds to the C side `clockid_t` value.
->      const ID: bindings::clockid_t;
-> +
-> +    /// Get the current time fro the clock source.
+> Andreas Hindborg (3):
+>       rust: str: add radix prefixed integer parsing functions
+>       rust: add parameter support to the `module!` macro
+>       modules: add rust modules files to MAINTAINERS
+> 
+>  MAINTAINERS                  |   2 +
+>  rust/kernel/lib.rs           |   1 +
+>  rust/kernel/module_param.rs  | 221 +++++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/str.rs           | 170 +++++++++++++++++++++++++++++++++
+>  rust/macros/helpers.rs       |  25 +++++
+>  rust/macros/lib.rs           |  31 ++++++
+>  rust/macros/module.rs        | 195 ++++++++++++++++++++++++++++++++++----
+>  samples/rust/rust_minimal.rs |  10 ++
+>  8 files changed, 635 insertions(+), 20 deletions(-)
 
-Typo fro -> from.
+I'd like to pick these remaining patches on modules-next around rc5/6,
+so they can sit on linux-next for a bit before going into 6.16-rc1. It
+is a new code with no users so I don't expect much fallout, but still.
 
+Could you please post an updated series that includes the cleanup from
+Miguel?
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+-- 
+Thanks,
+Petr
