@@ -1,64 +1,64 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19C028540E
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 12:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A254728A1E0
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 12:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745325215; cv=none; b=k2AvKB7JEcWkExAxgFsEgW8ur/w96FTS0CvUmlZdu7w/J73CbelEfFc69B83k1l/b1NbrvN4OMnvsWuZYK0oaX+TUSbeF+2QBs+dqt9QkzGDy0pfNH8AaYQ24WMkBKqh1GnBEbqJXR5k/wBBK2IsZsJ/xw9t7YpJ0K3s37KiQvU=
+	t=1745325224; cv=none; b=UoHR9FZ0NM23AEnRsoQppjDHCZMExfYy2jw1gHWw10CJCbSodX8NmJl7/G9NsFHo5CS5vzvPiHkArSPlTyiipX+jALdP04UL7WNQkPXPDDCCI8dEciOhrXzdUvMEZXrVSrstiPyzNGeaKvF0Sxn6y3of+tN1T2QPjhVAxa61Q3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745325215; c=relaxed/simple;
-	bh=2hKOBtEymVC7pOph+6w0vAePMoaCk9hfLbuLPBo2rQY=;
+	s=arc-20240116; t=1745325224; c=relaxed/simple;
+	bh=/9yWr4VyyEEe4/M0GRL7z9tF1e9qb+Lnb8mwvJ2P5Pk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QAEHubEGwwGRsQ5IEObNs75Mj/+GXWc2MvL7XOIVPJ+MSx/1DFhywhfKk7PF3KOF30FOMsGQPnyzeBQ7JT6GvVMCCw1WwPI7MlLOkaO9oKyvctZU1pD8bj4/PNq8uEQ2M9grjsKGVChybJHVDwyTtxejeJdZhmio46rUp0bHohM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=HJf/CMuC; arc=none smtp.client-ip=209.85.215.181
+	 In-Reply-To:To:Cc; b=n1rdDEme0cbzxMSg15dpXfU3ybrP/a9z5GpMJUc64k9Ld/dSWlwN+JCSP4/c/iUSp+SU/0vSGi1ek0tv7TkoOMwuE7tIq4R7SaD7DDaPZ2XvbGLxCezy+LPHrhCe7MijRVKWxcuOA8zCfWNyKB2C4wsMV/hj7R3tPAuUxybyOdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=XUDMePRR; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="HJf/CMuC"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-af5139ad9a2so3144297a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 05:33:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="XUDMePRR"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-af59c920d32so3420719a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 05:33:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1745325213; x=1745930013; darn=vger.kernel.org;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1745325221; x=1745930021; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=m1q04zJc7THaG84fNo5KZ+mZOArXNwFTM+IwGvnWiCY=;
-        b=HJf/CMuCZVSnMSfLAtezt9an1lhZyJdbcp5qKTNmczHj+4d3tIVmbFQ7XC5/n1U3Zt
-         waITk9nRez6l44HxDCNF4XyPyMlKf2NCMYK1WmN9oZrr8++7/AIqgKyaLYg3jBRTghKE
-         PoYoY+OeWMEgmy6OCju2is649Bs3ux//ngwdvQfa5fsKmKrAO3TaZcBiDDSFud7RRRh6
-         wXWDNMjZJuEjdKTGpGKo1q5T8KmglAgbbt35d5pos0hdIWI0Dpu4Nf6F1UpieNVvfJnP
-         ZRYdmuMcXOiyZloZ8OwlNYj1cFWZDmv3tJfaUlMIuEKcGLlz8SfSN0yjNE+2YRzzfMPz
-         G8rQ==
+        bh=u26R6OPpO9Ptto2bJTGXyxlaV262RvFifNUIYuW77gA=;
+        b=XUDMePRRwau6hbXp2DRrqU0H80nbAERLpL9U41YiV6qEHRBkoRybdeYEgx/Qe97W/5
+         kIFrkYY1znVsixHCClQDjbmHFScc6kQpNBiZQrpl4SvjvzUosXdaaLVkHkR+y6fBhMbN
+         NmsqF7pxqdyMt7ivV32Do8fiXMGbN6nW0B87yzfFU81W2kEljZ2M9eJRcaMZLAgM4oD4
+         Z9YmUL8oN6Q9+4fwL2BQsm94IcvoTsuPav1xYdc6m/Qhwc2ayUtoBj/7rxERNPB+d8XK
+         X7QiHgad+jA5yPPqn++8LjTUqmUKJRg/ZcZR8yS+JyHYRKT2Ddnt8f2G5OLdJIqje6+o
+         5pUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745325213; x=1745930013;
+        d=1e100.net; s=20230601; t=1745325221; x=1745930021;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=m1q04zJc7THaG84fNo5KZ+mZOArXNwFTM+IwGvnWiCY=;
-        b=IrnCuounh3ru+xHHCjcG38qAl73ucg/fYz+gfwuB/tZmCBz2U9mCsPA5zEoF8autDI
-         u15iNCwbuq/UgTSoVdRaz+sSNU7Z6z159Zg5FTgtgxY+mG/2AKQq4Sd3+j/IRBhdw8az
-         iJSc5e+5JUuMQnE1dRDbTljWpoaykznacimVz8I8DBUqdN7Z94dUkrY8mGdRbpbBA9gr
-         mHlEfKrk0g2E/vMpoysPZl2+2GjDWzQuEAFvobeP8kr4E+Jid3hrWHsq4xxbEm8VsLo0
-         bMJ9WfEXq4HcbBU662SBMuR7WyHGDLoVfs7oD7jlF2WNu1QwXfoatyl+9zs9b9+l4gQM
-         zlUg==
-X-Gm-Message-State: AOJu0Yw9TULg0UUV25VXSBocSnNY7znt51yS086zZ75yKg1NBr38ERs5
-	5hU7Kolx4O/vQD0I/jmbeigvrUIDugE1DxYkwLRYJgPjghIR83jFMP+3rXSttA==
-X-Gm-Gg: ASbGncuS/Q3V8DSpv2gdfvMgauN7RF/Wm+NSO71qlg275664JQVD1WhciitsAtVATDs
-	QIT3wv53gx8TOe1C5mZY0HfiPflYluQ91z6SGiRX1mjWAZlLli98JNE0+FAVEY91YooQZxSc3VH
-	Yd0QSnYHlVP8NUutIaqbT+eoZV9khTlB1dthYKsYLrGjmJRw3laoq1bd7R4rnvVihds1pNLDscq
-	aFKIbAS0UrkygLxLXs+nh7EM8iRZoEwH7cu8Rp2nnRTU0zDzXbBEEE0H4SuQ1JG+amLrTcyVE/G
-	dbH8Vd9HzEerO2WHYW9jBJHVVzRkZvfwNVBM4KThmCdNMdo=
-X-Google-Smtp-Source: AGHT+IGu20M9Qhs1tQam3F0PU5r1lALwuixKsqUJEPY5jrVNGdDK0vNQAd2J3a3n3Jgdr5/F8PvPTg==
-X-Received: by 2002:a17:90b:2dc6:b0:2ef:114d:7bf8 with SMTP id 98e67ed59e1d1-3087bb39b13mr19934311a91.6.1745325212943;
-        Tue, 22 Apr 2025 05:33:32 -0700 (PDT)
+        bh=u26R6OPpO9Ptto2bJTGXyxlaV262RvFifNUIYuW77gA=;
+        b=A9aY1E5K+HxsfWf+Y0mkBXudyXfXuKIk228Fqr9IJpDGVIgZ8TFfsleEc2AMlo48o8
+         1sHcXbs4ZmrLXJcuHk4/2MzRxQpZkqgoTz4G562lb5iX33CDCs0d8XJfjWeFe1A1PIhP
+         RnrdD1YZ/5uEgqARoZ/6NmJQHSC4hqpCreJgl2Ek6Y9syDF4zcVyrlhpTBR7hKY7wAwf
+         ym+G8r7u0G6b5JAOu/t+hcwE5tJGePOUipC7w7EOiqpk/LqbLR8WtB+LC55iyI10Fa60
+         T6ZJkvrPD0Wm9HQj4XWR1M9p0EqWWzL4ohR8LeXOS3TkAJHHUQVoQzFVkrhQpIt0w+Fr
+         kIZQ==
+X-Gm-Message-State: AOJu0Yy3t6Jt73h7yanDEsmDmLB4ENpTY0etGT/GwZrCjHGs1F2bkH2J
+	JjP5UPF9gpQ6Up6gdDiDKscc2/Vtc9m16plrqIeAtaycOzu4BFp4YK9A+AJCiQ==
+X-Gm-Gg: ASbGnctg3cXg2+gfOgJsMJpEYcan8Um5ZOOQNeNUjLHKI0RmF9Xh85fnZlOAIeK5XIR
+	k913htD052D/D+ezqtIeMLTXTeHDd1c5ncyjdjMli0vyGT95sC07LpVYjyB/n6030HTgd+17Y/+
+	lX65nSaVDndoMZL9tu5aT/khyKDqvLvjxWChhw8i9PrdazxnGFyy3OCs6eebiCbxGVoirE0NfSL
+	cuw5KZq9f0AWIcMq7yGzsmh+Q0iZJanPitwyee7f6kyy3/4yd6AzmaFDca/tfgeS9HtNZr3hbf3
+	hJSmjka0eW6ZoHYHs8RDkz/m0cwMjkER5CUbjJrcN9V6Ay8=
+X-Google-Smtp-Source: AGHT+IFvDd9T69BUDT328lJpIDvCDubF8fDxhHEgU/5Y0HSLsI63u546lW0N0LUSJcs29JlcJhJ4yA==
+X-Received: by 2002:a17:90b:2b87:b0:2fa:228d:5b03 with SMTP id 98e67ed59e1d1-3087bb66561mr18646220a91.19.1745325221022;
+        Tue, 22 Apr 2025 05:33:41 -0700 (PDT)
 Received: from [172.16.116.85] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3087df05025sm8484220a91.13.2025.04.22.05.33.25
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3087df05025sm8484220a91.13.2025.04.22.05.33.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 05:33:32 -0700 (PDT)
+        Tue, 22 Apr 2025 05:33:40 -0700 (PDT)
 From: Ayush Singh <ayush@beagleboard.org>
-Date: Tue, 22 Apr 2025 18:02:09 +0530
-Subject: [PATCH 1/2] rust: kernel: of: Add DeviceNode abstraction
+Date: Tue, 22 Apr 2025 18:02:10 +0530
+Subject: [PATCH 2/2] rust: kernel: of: Add overlay id abstraction
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250422-rust-overlay-abs-v1-1-85779c1b853d@beagleboard.org>
+Message-Id: <20250422-rust-overlay-abs-v1-2-85779c1b853d@beagleboard.org>
 References: <20250422-rust-overlay-abs-v1-0-85779c1b853d@beagleboard.org>
 In-Reply-To: <20250422-rust-overlay-abs-v1-0-85779c1b853d@beagleboard.org>
 To: Jason Kridner <jkridner@beagleboard.org>, 
@@ -86,100 +86,67 @@ To: Jason Kridner <jkridner@beagleboard.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  devicetree@vger.kernel.org, Ayush Singh <ayush@beagleboard.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3126; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=2hKOBtEymVC7pOph+6w0vAePMoaCk9hfLbuLPBo2rQY=;
- b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBoB4yIWeZ6wvm2A43M+0O/4rYHRi7DvyqaA9MO0
- 1OUzFZf6XaJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCaAeMiAAKCRAFzvXHieVa
- dIZ9EACsOK1pnoJSbxFxKDgZCFjFpYrqyfORf2yAfTi6eFK9xMJGEnqdn0NGwNVYqghYJJmeMd/
- WQTjUOTQunjo4ToQcQj+xMPXl3H2ox2UnuMVgX/eQVAeK+B961EjCGbmOg/GLvkkkn1JWf/TFXN
- TenPUCLh91mPXzlklNxcfRsV588gzbhOEc6bw03SiVol5fhwduKSsYPtkXBJhK3pPZl76Bf7HP8
- JX0Xp/zewx6l+5hJmPTbu8SaZmLf/9X/kRaBLOVE1rqnyFqAEGJrV5Jaz7InN/zucISTo+miTP5
- e+Esl+f+xsZnzK7S+WQqcSMCxayq2bmuGqQLwRevLYtaiLaU7fdY1PCZmv5/LQlIxXAPjG/ff5w
- xRDPJv9cKRisoEzZ5Xqumdr7t3yDrlLydlD+HTKdqn0jEKCmL0g8g5SryrIPZmIhaX2IuhGjPia
- /1wMfYxfvecCO/BTVxeGRwSSQu+3KRWbqiqPmVHj8bDxJ6HjyEdM8KChiIqt5J6D8TIgBGLLtD0
- Irqjdjji8ZR3JF0QIBPD0mWSzIgHw9FC7pUjAiq05Q6pDFuUMOsjiCgJrpELGG/ca5K8w8jdTW/
- qD5u+AJ8iyRp7w+9+mvdleYKaCQ0lZi60mchjQnj6K1pEYic+V4OTtl9ifDrCW6ov5/uTv+MaP6
- ob2R7iiP78bnf5w==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1368; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=/9yWr4VyyEEe4/M0GRL7z9tF1e9qb+Lnb8mwvJ2P5Pk=;
+ b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBoB4yIwAGNB+SDnon22g0SDNe6UGP4QO7zgqflx
+ mIGzfE0+LyJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCaAeMiAAKCRAFzvXHieVa
+ dAtwEACrLPZNxfutVOjabHDh4MFYxyKWCDyQ+EKjWeTyzYHUoGw1isI9YJCjoPGDDL0aRw+rjah
+ XWhzpQoVr1ttEYP/81Tma/JhowNJObfA/0JrTvL5Uj7A4709Nf3Fvrm9E8hSHe7n9EC2d8l4CYH
+ YiP13Z1TPZ9LhkVnrr94BTcxLHDeLn0X25q0GqI0jbkZkkHJjYz1vZL9X8QUFRYNwBZkMPOnGYh
+ mLv1ZLDNMjOfNAVWL1Fv75VsEHRnJV+l/+NPbT+3mK6ByKdfwOvusIIsUWq/WVWOBWC4INB4D7L
+ jaG21kcGMdvjc1G8dovf11tEB+CNdNN5oZihDU3i6mwWHt4T4uVFTtnroZur2deBe75V/AAEvY1
+ U0OL87i3J2HqWZcEoHBd72c5kdDFlwpfl/N75Q/tSKENWklpNt1DSzXahtUJgAiMsZ4BBuMmlpP
+ ifSqdPIcDKuYG+Cat3CMA0fGxFzrA79GUAUh1T49fERjGZg1lcEDBtuycudwzwwvCnVEWpd8QiM
+ WMD8jGIdAyeJ+NJDg4nDPNn7ClLcbIkQAE6+IJp2yv4RxfAadYczEVyugal90RmnemM99dq8D0/
+ BJ6mssrg+sACgD9zjSnKeGWXapLrCx6Uz0e07yIJkHfm+geIad03YWMwlD0Plfqbgah6p3et+fQ
+ xnKep5NwyFwMv8w==
 X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
  fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Allow getting struct device_node from struct device. This is required
-when applying devicetree overlays using the `of_overlay_fdt_apply`.
+Allow applying devicetree overlays from Rust.
 
-This structure is never read/constructed from Rust side.
+The overlay is removed on Drop.
 
 Signed-off-by: Ayush Singh <ayush@beagleboard.org>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/device.rs           |  5 +++++
- rust/kernel/of.rs               | 24 +++++++++++++++++++++++-
- 3 files changed, 29 insertions(+), 1 deletion(-)
+ rust/kernel/of.rs | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index ab37e1d35c70d52e69b754bf855bc19911d156d8..95ccd7772006f17c126acc70776b7a19f5768683 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -23,6 +23,7 @@
- #include <linux/jump_label.h>
- #include <linux/mdio.h>
- #include <linux/miscdevice.h>
-+#include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/pci.h>
- #include <linux/phy.h>
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 21b343a1dc4d2b4ba75c3886ba954be53ada88c2..77ef5addb76f67e952ccf7fadcda59ad72975670 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -187,6 +187,11 @@ pub fn property_present(&self, name: &CStr) -> bool {
-         // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
-         unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
-     }
-+
-+    /// Get refernce to the device_node property
-+    pub fn device_node(&self) -> &kernel::of::DeviceNode {
-+        unsafe { kernel::of::DeviceNode::as_ref((*self.as_raw()).of_node) }
-+    }
- }
- 
- // SAFETY: Instances of `Device` are always reference-counted.
 diff --git a/rust/kernel/of.rs b/rust/kernel/of.rs
-index 04f2d8ef29cb953907ae26b5b2ebce926b6feef2..db4ec26ff7de024f5e513a2223cfd841f57b1434 100644
+index db4ec26ff7de024f5e513a2223cfd841f57b1434..76dbb118d2dc21d1174e0a1ca8f8610d1d176119 100644
 --- a/rust/kernel/of.rs
 +++ b/rust/kernel/of.rs
-@@ -2,7 +2,7 @@
- 
- //! Device Tree / Open Firmware abstractions.
- 
--use crate::{bindings, device_id::RawDeviceId, prelude::*};
-+use crate::{bindings, device_id::RawDeviceId, prelude::*, types::Opaque};
- 
- /// IdTable type for OF drivers.
- pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
-@@ -58,3 +58,25 @@ macro_rules! of_device_table {
-         $crate::module_device_table!("of", $module_table_name, $table_name);
-     };
+@@ -80,3 +80,32 @@ pub fn as_raw(&self) -> *mut bindings::device_node {
+         self.0.get()
+     }
  }
 +
-+/// Devicetree device node
-+#[repr(transparent)]
-+pub struct DeviceNode(Opaque<bindings::device_node>);
++/// Devicetree overlay present in livetree.
++///
++/// The overlay is removed on Drop
++pub struct OvcsId(kernel::ffi::c_int);
 +
-+impl DeviceNode {
-+    /// Convert a raw C `struct device_node` pointer to a `&'a DeviceNode`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that `ptr` is valid, non-null. for the duration of this function call
-+    /// and the entire duration when the returned reference exists.
-+    pub unsafe fn as_ref<'a>(ptr: *mut bindings::device_node) -> &'a Self {
-+        // SAFETY: Guaranteed by the safety requirements of the function.
-+        unsafe { &*ptr.cast() }
++impl OvcsId {
++    /// Create and apply an overlay changeset to the live tree.
++    pub fn of_overlay_fdt_apply(overlay: &[u8], base: &DeviceNode) -> Result<Self> {
++        let mut ovcs_id: kernel::ffi::c_int = 0;
++
++        crate::error::to_result(unsafe {
++            bindings::of_overlay_fdt_apply(
++                overlay.as_ptr().cast(),
++                overlay.len().try_into().unwrap(),
++                &mut ovcs_id,
++                base.as_raw(),
++            )
++        })?;
++
++        Ok(Self(ovcs_id))
 +    }
++}
 +
-+    /// Obtain the raw `struct device_node *`.
-+    pub fn as_raw(&self) -> *mut bindings::device_node {
-+        self.0.get()
++impl Drop for OvcsId {
++    fn drop(&mut self) {
++        unsafe { bindings::of_overlay_remove(&mut self.0) };
 +    }
 +}
 
