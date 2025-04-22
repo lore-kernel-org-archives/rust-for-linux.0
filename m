@@ -1,82 +1,95 @@
-Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dd44826.kasserver.com (dd44826.kasserver.com [85.13.151.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A4B2777E1
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 11:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9F725F96F;
+	Tue, 22 Apr 2025 11:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.151.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745320895; cv=none; b=QajAFXkvsuXLykL9OqupkSRd6zZbEldHlW01yj0KWlMSRrFOWXz6X4UbVWmpZhJClkVs1mprIEiPSUZ1YMqXJlNK/OZ7TT1ivODX8fzu6ry/3DtPaJwTiHLwpUCKNcoVuptKZQPl6I3d4v/8OrdIDWrCWh4xtQWjdpUw6pJkBSc=
+	t=1745320942; cv=none; b=spi6TwDPehnTlp8EiZOsb2t2RCcyWydrV2VhQkmqDwxxgeC77x06evv5072iFMbMihXKOT/tlvATdOQNoD69uXzZ3Rrs9/yQQimAC83AD8TvBE7dEdeuW4qo7cpoTkxEirHoSo3uMNyEqji7j1lXUYcG4RqnLtP8qeE2gX0UXPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745320895; c=relaxed/simple;
-	bh=A1WBS2ArbcM4mlKZIrV6S7/gv9XcNRksqQmJ3gWkmK8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o2T0K+m7tv+wBQdEAdKbIrOvLK/KCNxRoIGGE++3xDpg67hdqy2VrB2duGtJLkfCyuWfDjHcKvBUXk7eWu6EyBMfmxSKtQRNwz/beo0iCFGoJo8Hcn2AaNfUFYXLqXCP5PShtipq++uWQWf7QcZBMaD6BXYhaPlcn5xlvpBm+Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=F7rvbYW1; arc=none smtp.client-ip=79.135.106.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1745320942; c=relaxed/simple;
+	bh=GLcpMPy7md/nAw3qC1GMlS20q+b2Xd+N/J4eoHnOFFg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qleeXDd4EFyYmKvcSTGrSDfxUn4FYKjcEflJnnarmV4NxQK+z9Zc96mWye2rFt8meWILIGLoDjV97+dLFBV2QhCfYoU+SYzA73mKDIeC6F5/aVWhqPlVz6yNyFe/Bj2QcKRZVMqDsY5MvGFbc2vPPsAxhR/GqLnhTSJLqcQL4eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=o1oo11oo.de; spf=pass smtp.mailfrom=o1oo11oo.de; dkim=pass (2048-bit key) header.d=o1oo11oo.de header.i=@o1oo11oo.de header.b=B1BxVoGc; arc=none smtp.client-ip=85.13.151.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=o1oo11oo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o1oo11oo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="F7rvbYW1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1745320891; x=1745580091;
-	bh=koDqDhzrpOrfQ3ZFK3sNuNKKWYvOUisTZDxVWQODIIs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=F7rvbYW18YiCaHo0dvPGTruj8GRxHPeyZTX1rpzf1MsuiLlL2qdLObWX7C1pKVUJr
-	 DwXNN2z9ku1pryX/lehsUO1PeBZVQckJGyuIEvEBC7I/saxeT2YxJ/7wqkxyYJnjVc
-	 WAkU2BmiM7z6dag8d7EwlkIXUiJNyChF2a7MgEPToMYkJrpArsDVKkwUnBUPmi9taG
-	 vv/2Hypy8m7EoJP/q8BLvtLLVDJ1jHHn4Q0/qo94FOTH1EjFm3wQ6jQU2uBX4i2C+B
-	 ywaQ60WnuoUb3my8/Q5wvLgEJQFFLHnr2tCKDNQ41hdWVsk1ALakYWqlF08mr2GRiR
-	 QFaoGb60wgDWg==
-Date: Tue, 22 Apr 2025 11:21:25 +0000
-To: Christian Schrefl <chrisi.schrefl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/8] rust: pin-init: Implement `Wrapper` for `UnsafePinned` behind feature flag.
-Message-ID: <D9D4M8XF14X9.1YUVFH9EW0IMX@proton.me>
-In-Reply-To: <4df4e3a0-9caa-4253-bf65-66c238bf0291@gmail.com>
-References: <20250421221728.528089-1-benno.lossin@proton.me> <20250421221728.528089-4-benno.lossin@proton.me> <4df4e3a0-9caa-4253-bf65-66c238bf0291@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 33f605292d9a927cceb5cd8455337a1280f52e39
+	dkim=pass (2048-bit key) header.d=o1oo11oo.de header.i=@o1oo11oo.de header.b="B1BxVoGc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o1oo11oo.de;
+	s=kas202503061048; t=1745320928;
+	bh=ycqs7QdKcMOuNbzmqf4ft41vq1eZBegNFxvwwMj7CAM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=B1BxVoGc+hAHvsdJiIiv606xD3SyiQ1Df9bLXhuMMPwJ8jR6xJr7DWq3zlsX3WzJd
+	 fGXcVw9w2H9nFlClZfAtwRv1oEvsHWCu/Fywls8IS8geyiymDFhkYTCs4x5nup33HN
+	 nqULL0uOrpkrjEIy57P0+HF+aLE2LBWuCKn2S1xwZUbAfWXRc9iOpgolUGzjLZyrDG
+	 q2/+b72/7qTpkR14qkwlC4lZ4lJhbwB60h2uHQd6vw2Eemg27LMsIt4ZhMwd3rCrr1
+	 ZHQDIyJQf1nfc7uSh9CdsauuWQL5a11uH6M7LQ+3IJnfi6Ma5+koWuN4k+8+CMwKrh
+	 FDCaQfecImGEQ==
+Received: from [141.24.109.69] (wl-r6-69.rz.tu-ilmenau.de [141.24.109.69])
+	by dd44826.kasserver.com (Postfix) with ESMTPSA id CA877B6E01A9;
+	Tue, 22 Apr 2025 13:22:07 +0200 (CEST)
+Message-ID: <c1eb852b-f8aa-4ab0-9579-19eb0d383cb9@o1oo11oo.de>
+Date: Tue, 22 Apr 2025 13:22:06 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] lsm: Add Rust bindings with example LSM
+To: Paul Moore <paul@paul-moore.com>
+Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20250416213206.26060-2-kernel@o1oo11oo.de>
+ <CAHC9VhS=jWEZqb3MqCtUAJhY9ci8d_N4H6CqWsYU0YmEG=8_yA@mail.gmail.com>
+From: Lukas Fischer <kernel@o1oo11oo.de>
+In-Reply-To: <CAHC9VhS=jWEZqb3MqCtUAJhY9ci8d_N4H6CqWsYU0YmEG=8_yA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Bar: /
 
-On Tue Apr 22, 2025 at 11:42 AM CEST, Christian Schrefl wrote:
-> On 22.04.25 12:18 AM, Benno Lossin wrote:
->> @@ -1557,3 +1561,11 @@ fn pin_init<E>(value_init: impl PinInit<T, E>) ->=
- impl PinInit<Self, E> {
->>          unsafe { cast_pin_init(value_init) }
->>      }
->>  }
->> +
->> +#[cfg(all(feature =3D "unsafe-pinned", CONFIG_RUSTC_HAS_UNSAFE_PINNED))=
-]
->> +impl<T> Wrapper<T> for core::pin::UnsafePinned<T> {
->> +    fn pin_init<E>(init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
->> +        // SAFETY: `UnsafePinned<T>` has a compatible layout to `T`.
->> +        unsafe { cast_pin_init(init) }
->> +    }
->> +}
->
-> I've realized that for us to use `UnsafePinned` in `Opaque` internally=20
-> we need to have a `T: ?Sized` for this implementation. `cast_pin_init`
-> won't work for that since we can't cast pointers between different DSTs.
-> We could add something similar that uses a closure to convert a
-> `*mut T` to `*mut U`.
+On 21.04.25 21:09, Paul Moore wrote:
+> Thanks for sharing this Lukas.  My Rust knowledge is still far too
+> basic to offer any constructive review of the Rust code, but I'm happy
+> to see some effort being put into looking at what would be required to
+> support a LSM written in Rust.
 
-I don't follow, which types do you need to wrap in `Opaque` that are not
-sized?
+Hi Paul,
 
-Since `Opaque` uses `MaybeUninit` under the hood, it cannot support
-`!Sized` types anyways, so I'm a bit confused.
+that's alright, I was mainly asking the Rust for Linux contributors for feedback
+on that, but I wanted to keep you in the loop as well.
 
----
-Cheers,
-Benno
+> It isn't clear to me if this is simply an exercise in seeing what
+> Rust/C interfaces would be needed to implement a Rust based LSM, or if
+> you ultimately have a LSM you would like to submit upstream and this
+> is the necessary groundwork so you can implement it in Rust.  Unless
+> it is the latter, I'm not sure this is something that is a candidate
+> for merging into the upstream Linux kernel as we don't merge "demo"
+> type LSMs.  If you are intending to develop a proper LSM, we do have
+> some guidelines that may help explain what is expected:
+> 
+> * https://github.com/LinuxSecurityModule/kernel/blob/main/README.md
+thanks for the feedback, I guess I was missing some context in the initial mail.
+The LSM I'm using it for in my thesis is more of a research testbed (or "demo"),
+so I never intended to upstream that. Since I still needed to create bindings to
+implement that in Rust, I figured I would post them to the lists to get some
+feedback and to get things started in case someone wants to implement an actual
+upstreamed LSM in Rust in the future. This is why I marked this "RFC PATCH", it
+is not intended for upstreaming, only for feedback.
 
+If there is interest in it, I might polish the bindings after the thesis, so
+that they can be properly used for an actual LSM. In the state they are
+currently in they do allow writing an LSM in Rust, but not in a way a safe Rust
+abstraction should.
+
+Thanks,
+Lukas
