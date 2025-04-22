@@ -1,144 +1,83 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D2318E3F;
-	Tue, 22 Apr 2025 09:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BC61F12EF
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 09:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745314971; cv=none; b=SAp+qSm9AXStbWTfcLWlMsZPJBd4PmJ9CwFR3jfI0B/0rYiSFKleDVworXs1QaqcRFgFs9oq6ldiDPv7asQW1q2mfQq5kOeJCrgq9hkgcNSGyP8oj/189F+O0sijtNwKk66fAPQhE01XbgmutkGcD6MJddi1dwQ2gKmaj3QfdvU=
+	t=1745315333; cv=none; b=bhztfFi4/jpjzSDwoLlIp4sxYWbTV9t1HoFy0PZKtiiZSsgqvzi7Cfq0XLtvJl+qZdZjL5sKMBbEJVGtc8SOYX6OqLlTw2C1JrmayncqdxVrdKVEMhKWF8X/6Q6uKBTsabnjK9UOLmkjAlJVsk8rQrJD8xKbSxvQuUWG2wuh85U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745314971; c=relaxed/simple;
-	bh=giw+6MyCHdZywR7m7dt+mCd3GwwU6C9flGDnJylbZgQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iZOirkUb5GEr8RZ+58lMMxysqc1qj0DfqwdFcuq4vwh0EfCxIPO/377miuCHBx2WdkK+hfLn+pDIeQeV3+tums2AfxL8CkJSY+JiRZbur8YyokRne0vB0T/GNuLh4x88B7ASQ9eHYI9HUP3S4RSDiFYTOrtt61BdxHn2hlP6yjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WqGzwEP2; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745315333; c=relaxed/simple;
+	bh=WVQDv1v4dOOQG6+a+SR4K8DVpKda75Ekqgvdi556yzM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gYBMJUQ6EHTQj4pjjXC5r5/2Pncryy+Teas39TIW9n4BgbZgwlckynkuEphICyVv0NXeqcZ2SSTdxQLTxmQbSZ2NrK9Hm8ABzyvetf2RFCA2cMU+n4v0CfwhnuBJok7SskyK9hGWYuDNLjnOPZc/JdFT8onZqx1Snq8ctzowyZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LAQdd6ia; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WqGzwEP2"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5f624291db6so6519809a12.3;
-        Tue, 22 Apr 2025 02:42:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LAQdd6ia"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cfebc343dso41522935e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 02:48:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745314968; x=1745919768; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lAvTvLUdqqAzLw2gZ7OvfhTJtrVrtFonRS0q6nbLx3Y=;
-        b=WqGzwEP2dYcF3ojcLbeg/xGIiWDpSeWqq9uyDNLU40jGjecEhOHQuBmEMWgXGM8str
-         ZP+38xlifBt/T5hZS3Hr5cytnm9AlontowUnE1d6VqgWsG09CnfWmQS4+PYY3Fqf4jgM
-         b4JlEO6/fF4xzQr20AIGl1VgAd51ME9z6Xev9IN1ofRxUlJz+Sy+a2cXJH5TdBCIQSNj
-         RPVsyYxVpYk+seubtlSUtCuw1XzhkcrJs6wp8sgZh4R9L7TpUe82DKljv66tYdBKp/iF
-         2jbSWZDfqdxda/itc++eWF+ehIbrCTLcI1Bsu+gFO7c0w+COvUykPo5H9yndjMK/BEED
-         jfcQ==
+        d=google.com; s=20230601; t=1745315330; x=1745920130; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WVQDv1v4dOOQG6+a+SR4K8DVpKda75Ekqgvdi556yzM=;
+        b=LAQdd6iauLwtGptgU3EaXluyARpqNNwEx0oriBBfFPUMlx+FETr1u9iUGn0FyvSRu0
+         7a7nVV52rLycwCipIfCy3TjnJGjxdWmr9BJrHdNTRuR7slyRVTb6lV2lu0qGkWqaC4ut
+         Kq5yamyH9LhgzSnZVd3VedBFQ1IWImF5HH6/a8suBiPqtOkz0LbcSzUmDjouzPw5VeiI
+         /z5Mu2XLOzHwDtaf91fiyQdjgon6xj5Y29VIDy6vhg57Gv8xWGYkEukhTkj6l7p1VLfU
+         sJtXvLwQceKsDlKB71W+sO1b5ybu+41b4VzC+HQ5oJvEk9UgsmpUxXuXvT6OXfS4vweA
+         HWrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745314968; x=1745919768;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lAvTvLUdqqAzLw2gZ7OvfhTJtrVrtFonRS0q6nbLx3Y=;
-        b=QmGuac7HO+Mn8MQSs6Aqlud0NwoLP7XLt7p6Pqf7YCdoKy5uKmvK8idSy1OUnHMI5b
-         QysbQ2Rr3//jru9SFYUFU/sNdaR08OEnrIcIGkKQ/Uejkjgxnoa2jGwgPUPm36fs9e2l
-         /wk/TWGTLpUzAatkP+sm3Ju9CAgJs0X8Sqil70MKfOETXr6zz7IlqqZHxTy0CVFhngrF
-         o5yfdiftVzl8gf72aN9NsS4zuzblvCsUKBcc6JDYEo3vRojI4fnOTheVx9Z95/01XigB
-         qUaziyzPb+mkLmf4JzYXPtyBQyckf4rnUzGCtyeiReyCSyP3OZyK/cDADewx2WTk6k69
-         o31g==
-X-Forwarded-Encrypted: i=1; AJvYcCVpzs6fjPVHjk4aNZRs/lzaB8r42UbrpoPTeuZhqe9d3sn3mjpRl3DIdOrxMHxuAOiRvZWqQ08/FmOP1XA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzA/ZGcWITIiht5uFC5uXUrUX0gcOfWZ5KPQlkZi3I2/oSV7tsy
-	lHOQ62+0TQkFHCYsoueAhYIbSPS1s2UCQHpgfihtwwZC67cO0iOV
-X-Gm-Gg: ASbGnctc6ETjWW3eA0Nv820KryiCgG/IQQMJrZpm2QmcbokLDCdgprrIuHaWqcMP8DI
-	1B4nLA6MJJ36xrR4Vnjguw+LyQI4kDw4ru9AOhpXRlbpJcdQM0iaWCuAQTaUdRtKxf2bek9R8gS
-	Icqnss4ano4hft+kcrW16Vk4kLCPwJst72SJuapk2UmtDkBiTg1Le0+UbSAsY5gZIdUuP/1NOVY
-	C361zNM3QfTC8yE4WkihCRRMtFjRRiKZIOAKCqLoY58ONabkuHenXJwOUacVmz6g7gN9+S/u+2I
-	tsArJ6mu24TUFJkMLsRAkT30gsvcO4hzZO3LSKVHPvK40UieUA==
-X-Google-Smtp-Source: AGHT+IFIv5+jMt/XPmELxbgBkCZmK6cAirZd2wKtsSxBKUaXdoLdYEJaLL0Bymq+RgHXuuAvSh6r6A==
-X-Received: by 2002:a17:906:174e:b0:acb:9769:364c with SMTP id a640c23a62f3a-acb97695797mr694684066b.21.1745314968088;
-        Tue, 22 Apr 2025 02:42:48 -0700 (PDT)
-Received: from [10.5.1.156] ([193.170.134.247])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace36192e83sm11085566b.17.2025.04.22.02.42.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Apr 2025 02:42:47 -0700 (PDT)
-Message-ID: <4df4e3a0-9caa-4253-bf65-66c238bf0291@gmail.com>
-Date: Tue, 22 Apr 2025 11:42:46 +0200
+        d=1e100.net; s=20230601; t=1745315330; x=1745920130;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WVQDv1v4dOOQG6+a+SR4K8DVpKda75Ekqgvdi556yzM=;
+        b=NTNxJpeRJupwk3zCmyVA1UL8CRecOwlH8dVnX654sadof7fBiDle6nTi96FGTPv8pV
+         jHlplEaXzFOu4XYkvaNWzpg0nwTFdMuyyuvRp7bx0lxi7DVN0b51vZsSddfUK/CiesUb
+         inMlhOR+SXb32+DHunjDob6F6LqlL5esdkxP7DZ63kJtX9sPH1D0IDSZ57+WZwn9JX/6
+         mKNUFwNjlWiIpIWDznqT+64sRa8BuQdjJS3055VBL1lZn85MSXwmi2xRWWoHXZLf20NY
+         9nx/C8w07c8Z3/6L+x8sx7Br8igaZ/jSABVc0eaGfF0fPDsVZ6rbLKGyxKme1m0+dQ3o
+         cQ/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXn3tB/zz0uTmayNWEETgmtGldsIcVUxP1LhB8o4Zhs3btM++2W4/+RtuaSmtwWu1JgTm1NDJGlis8jRZXd0g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJn6I2rDs8pkE1AmJgRA++JDGNmt7t0LRAJgC6PkVRCpv9tcZq
+	7oXcheAp1DY3/WY4LjWcAIsUM5vAXehCe6uqZLfepogzqRCg3IjEZLp18FlQM4h/hHXnfQcfu+t
+	kRmuvQ3IpPuE7oLFZfnqCcvTzBZyPQU0rvlAm
+X-Gm-Gg: ASbGncvj3rTgud2MxbkF9ChiWqBvP3YwfNoF149qPRigkBkwPlmtY1Xk/GSHrNOXGAc
+	3/MLIWQAdc0JFXPZ7eHHTZ0W6vO2+vbnqLWP65+P7E6+CJNR6GKgHB0Pc0iw6E4qknANzof8W9G
+	PgApE7cbUY4zM+BjWQsJa+Y/zm4NVji4N+Be28O+ZWAbh+eqXNcGYI
+X-Google-Smtp-Source: AGHT+IEgzaZFAKrzkmmSeUf1lXEalL9tzKY7I1llBJA0Efnayt0Uc3PwpU5QMYlM6qieyM/pL0GWbg3KPU1y1RnS3Ro=
+X-Received: by 2002:a05:600c:4706:b0:43c:e9f7:d6a3 with SMTP id
+ 5b1f17b1804b1-4406ab97d53mr125391395e9.13.1745315329911; Tue, 22 Apr 2025
+ 02:48:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] rust: pin-init: Implement `Wrapper` for
- `UnsafePinned` behind feature flag.
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250421221728.528089-1-benno.lossin@proton.me>
- <20250421221728.528089-4-benno.lossin@proton.me>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20250421221728.528089-4-benno.lossin@proton.me>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250320-vec-methods-v1-0-7dff5cf25fe8@google.com>
+ <20250320-vec-methods-v1-5-7dff5cf25fe8@google.com> <CAJ-ks9k=SxS_zAATadm8SZkfcY2OciYNaty3=WEs2iv5nFJRyA@mail.gmail.com>
+In-Reply-To: <CAJ-ks9k=SxS_zAATadm8SZkfcY2OciYNaty3=WEs2iv5nFJRyA@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 22 Apr 2025 11:48:38 +0200
+X-Gm-Features: ATxdqUGsZpxo4hTBeVYFDjAT0FzOV2AQ03SSUmYtR0Xpk0I7nXbuFoofvKRGnJ4
+Message-ID: <CAH5fLggaw7itWuUCHG8KBE4epTdWy3y+wtVyUk9AffM+DOTOyA@mail.gmail.com>
+Subject: Re: [PATCH 5/5] rust: alloc: add Vec::retain
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 22.04.25 12:18 AM, Benno Lossin wrote:
-> From: Christian Schrefl <chrisi.schrefl@gmail.com>
-> 
-> Add the `unsafe-pinned` feature which gates the `Wrapper`
-> implementation of the `core::pin::UnsafePinned` struct.
-> 
-> For now this is just a cargo feature, but once `core::pin::UnsafePinned`
-> is stable a config flag can be added to allow the usage of this
-> implementation in the linux kernel.
-> 
-> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-> Link: https://github.com/Rust-for-Linux/pin-init/pull/37/commits/99cb1934425357e780ea5b0628f66633123847b8
-> [ Fixed commit authorship. - Benno ]
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> ---
->  rust/pin-init/src/lib.rs | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-> index 467ccc8bd616..745cf534d239 100644
-> --- a/rust/pin-init/src/lib.rs
-> +++ b/rust/pin-init/src/lib.rs
-> @@ -269,6 +269,10 @@
->  #![forbid(missing_docs, unsafe_op_in_unsafe_fn)]
->  #![cfg_attr(not(feature = "std"), no_std)]
->  #![cfg_attr(feature = "alloc", feature(allocator_api))]
-> +#![cfg_attr(
-> +    all(feature = "unsafe-pinned", CONFIG_RUSTC_HAS_UNSAFE_PINNED),
-> +    feature(unsafe_pinned)
-> +)]
->  
->  use core::{
->      cell::UnsafeCell,
-> @@ -1557,3 +1561,11 @@ fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
->          unsafe { cast_pin_init(value_init) }
->      }
->  }
-> +
-> +#[cfg(all(feature = "unsafe-pinned", CONFIG_RUSTC_HAS_UNSAFE_PINNED))]
-> +impl<T> Wrapper<T> for core::pin::UnsafePinned<T> {
-> +    fn pin_init<E>(init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
-> +        // SAFETY: `UnsafePinned<T>` has a compatible layout to `T`.
-> +        unsafe { cast_pin_init(init) }
-> +    }
-> +}
+On Fri, Mar 21, 2025 at 4:25=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+> Now that we have kunit in rust-next, should we make this into a test?
 
-I've realized that for us to use `UnsafePinned` in `Opaque` internally 
-we need to have a `T: ?Sized` for this implementation. `cast_pin_init`
-won't work for that since we can't cast pointers between different DSTs.
-We could add something similar that uses a closure to convert a
-`*mut T` to `*mut U`.
+Unfortunately, the test uses the Vec::retain from upstream alloc,
+which we can't call from a kunit test.
 
-That won't really be relevant until we actually use 
-`core::pin::UnsafePinned` however.
-
-Should I do another PR to extend this to `T: ?Sized`?
-
-Cheers
-Christian
+Alice
