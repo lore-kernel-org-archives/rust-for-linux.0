@@ -1,93 +1,124 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BA828A3EA;
-	Tue, 22 Apr 2025 14:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279A828A1E0;
+	Tue, 22 Apr 2025 14:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745332319; cv=none; b=WGq8REySCgpjaG9yAdu1wEEYbr7riRcqZ95C5C2vip4yBi94ZP5kKMxOo3rkH3hRW/7wDDXN9VdwMZeL7so5pBTKKcsK9mmjpi4NeQR/ZWP+67F0tHnj8PP+xeOc2sQvf44mJv7ncjMZHIBd499Vskpl5mmGNYPmm/LAQblkYUQ=
+	t=1745332671; cv=none; b=WxiSGXEK9pN5i6fE3JX3/DxGPQuDGHWiDwfPpwlDqIXIJdurwg1HKMLnN0+Xe2ajcUGTlMXMQcylqG0AntSj3hRbsE40axRfDb/GmIBnlqvF8VooUkhFsMlgoQthfSyIA8knto23Kxx2IDkoTVqMNwwVZf4dbDPT+USqtRNDMdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745332319; c=relaxed/simple;
-	bh=cp9iCaG6IjleZ8rnxrFEXQOpQGvM5fPYLk4VgnpoCss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tM7VgD3LQJpOB+b3fEDbPs8hVvUpdT7YlR41YkrXQtpekTpZhaTYZKUPqpvTK6jhHJjcnsn+1XZ7ospTmfpkv3EXBaXjHfd8+jKB9U3/2axzlMTgyrUAEih90Xt772gp8zCJLlo54JIGgQofvV8oXZymWLUa7vduynME0NIMZbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=djk61YA3; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="djk61YA3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=i4gjMlBtZTrVVK5rL4/69M/87+0lVpEAYA66vnBwBVA=; b=djk61YA3uNxsIPYl4YCBuNs6Ve
-	dBTA48m1zawlQcz9ZZoQ4W4s9NkiUElMVURgvqobwIfD5A9uyLT69Fx7STvHps3JY3f3y90XmHnY5
-	Xwqc5cs7ATMyIwNFCdEVe2JpO8IWCHpAW8bhs32PixZINu9E77+6JytB6+tK/xZNIvSd9ha91PbZf
-	IPMxbo/6UMUxz6DRblcgoPhHDGMFcjphCFmZe5pgBgur0fD5YU0yN9W9HZcZQjhZz9VvQUwsNf3tS
-	r1sh6T5wayWnEHVRK4ne+vfm1be+Ok3jhvW3CVu2vz3FEFbSplh2o5g0a2G5gISknEL11UE9MsM/A
-	TSMbQUDg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u7Ef4-0000000BF5b-2N8w;
-	Tue, 22 Apr 2025 14:31:46 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 243C53003C4; Tue, 22 Apr 2025 16:31:46 +0200 (CEST)
-Date: Tue, 22 Apr 2025 16:31:45 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, mingo@redhat.com, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, pmladek@suse.com
-Subject: Re: [PATCH v2 0/2] add Rust version of might_sleep()
-Message-ID: <20250422143145.GC15651@noisy.programming.kicks-ass.net>
-References: <20250410225623.152616-1-fujita.tomonori@gmail.com>
- <aAen7fQYciq2azi9@Mac.home>
+	s=arc-20240116; t=1745332671; c=relaxed/simple;
+	bh=jF59aou5iKEjumEl+yWFS1HVfmxA+SlpjANlPt1s+cg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tUQE3i+LQAueg8NjEg6wXjde0jF2eG6ooUgn8qZMgR7i6WKvWXAIyvrNvIAcEGK7lrsz6ezfa/hrvhCnUI/aX+CNM7evptBAacwYMR4xOQ1J6gGJzfNQnqqhWm4L5lMD9h5H6d+hsWXFS2my0FGWHZXlqSUCIS7w+5IggWTKw0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
+Received: from [IPV6:2a01:e0a:3e8:c0d0:c864:fba8:3048:a3c2] (unknown [IPv6:2a01:e0a:3e8:c0d0:c864:fba8:3048:a3c2])
+	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id 1550A54ED0;
+	Tue, 22 Apr 2025 14:37:47 +0000 (UTC)
+Authentication-Results: Plesk;
+        spf=pass (sender IP is 2a01:e0a:3e8:c0d0:c864:fba8:3048:a3c2) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=[IPV6:2a01:e0a:3e8:c0d0:c864:fba8:3048:a3c2]
+Received-SPF: pass (Plesk: connection is authenticated)
+Message-ID: <06dde2dd-5d88-49d4-9e46-72a2e12ab1c2@arnaud-lcm.com>
+Date: Tue, 22 Apr 2025 16:37:46 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aAen7fQYciq2azi9@Mac.home>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] checkpatch.pl: warn about // comments on private
+ Rust items
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
+ Dwaipayan Ray <dwaipayanray1@gmail.com>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ llvm@lists.linux.dev, skhan@linuxfoundation.org
+References: <20250422125633.30413-1-contact@arnaud-lcm.com>
+ <20250422125824.30525-1-contact@arnaud-lcm.com>
+ <CANiq72n41Oj4K-yZCWbNXJQEEjTqjXHYgrkffAg_mUg8dKLWQg@mail.gmail.com>
+Content-Language: en-US
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
+In-Reply-To: 
+ <CANiq72n41Oj4K-yZCWbNXJQEEjTqjXHYgrkffAg_mUg8dKLWQg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: <174533266790.14176.16102449170099582736@Plesk>
+X-PPP-Vhost: arnaud-lcm.com
 
-On Tue, Apr 22, 2025 at 07:30:05AM -0700, Boqun Feng wrote:
-> On Fri, Apr 11, 2025 at 07:56:21AM +0900, FUJITA Tomonori wrote:
-> > This patchset adds Rust version of might_sleep().
-> > 
-> > These patches were previously part of the IO polling patchset [1], but
-> > they were split out to make upstreaming easier.
-> > 
-> > The first patch is for sched/core, which adds
-> > __might_sleep_precision(), rust friendly version of __might_sleep(),
-> > which takes a pointer to a string with the length instead of a
-> > null-terminated string. Rust's core::panic::Location::file(), which
-> > gives the file name of a caller, doesn't provide a null-terminated
-> > string. __might_sleep_precision() uses a precision specifier in the
-> > printk format, which specifies the length of a string; a string
-> > doesn't need to be a null-terminated. Providing a null-terminated
-> > string for better C interoperability is under discussion [2].
-> > 
-> > The second patch adds a Rust implementation of might_sleep(), on top
-> > of the changes in the first patch.
-> > 
-> > [1]: https://lore.kernel.org/lkml/20250220070611.214262-1-fujita.tomonori@gmail.com/
-> > [2]: https://github.com/rust-lang/libs-team/issues/466
-> > 
-> > v2:
-> > - improve SAFETY comment
-> > v1: https://lore.kernel.org/lkml/20250406110718.126146-1-fujita.tomonori@gmail.com/
-> > 
-> 
-> @scheduler, if there is no objection, I'm going to take these two into a
-> pull request to tip soon. Thanks!
 
-Yeah, go ahead. I still think Rust should be fixed, but sure, we can
-live with this until that time.
+On 22/04/2025 15:46, Miguel Ojeda wrote:
+> On Tue, Apr 22, 2025 at 2:58 PM Arnaud Lecomte <contact@arnaud-lcm.com> wrote:
+>> The detection uses multiple heuristics to identify likely doc comments:
+>>    - Comments containing markdown
+> Markdown is required in both documentation and comments, so I don't
+> think we can use some of those, e.g. inline code spans (i.e.
+> backticks) are common (and actually expected) in comments. Something
+> like a title (i.e. `#`) or intra-doc links are uncommon, though.
+
+Let's then maybe reduce the score of this heuristic and remove intra-doc 
+links and titles detection. After reviewing, it indeed doesn't really 
+make sense.
+
+>>    - Comments starting with an imperative tone
+> Some people document using the third-person, e.g. some functions say
+> "Returns ..." like you have below. (It is not easy to enforce
+> kernel-wide a single style here, thus so far we don't.)
+>
+> (Looking briefly at the code) Ah, I think you are covering both, good.
+
+As mentioned earlier, we can reduce the score of any heuristic which 
+could lead to any important false positive.
+In my opinion, as long as the heuristic is relevant, we always have the 
+possibility to diminish the score associated with the heuristic, hence 
+preventing unnecessary false positives.
+
+>>    - Comments with references: @see, @link, ...
+> Do you mean Markdown references? Or javadoc-like ones?
+>
+> (Looking again at the code...) I think you are referring to actually
+> strings like `@see`. Hmm... I don't think we have those -- the only
+> `@` I would expect in a comment are thinks like emails or the
+> `rustdoc` syntax to disambiguate the "kind" of item, e.g.
+> `type@NotThreadSafe`. I do see a `@maxlen` somewhere, but that should
+> have been an inline code span, and anyway it is not a `@see` or
+> `@link`. But I may be confused here?
+>
+I think that you are definitely more experienced with what's done 
+commonly in rust code. Let's maybe change this heuristic definition with 
+@ related to types or some other annotation. Do you have some example I 
+could have a look to come in the next version with a relevant list of @  
+we can encounter.
+>> Comments are only flagged if they:
+>>   - Appear above private items
+>>   - Don't contain obvious non-doc patterns (TODO, FIXME)
+>>   - Score sufficiently on heuristics
+> Nice work! I wasn't expecting something with actual weighted scoring,
+> but if the maintainers are OK with something as involved as that, then
+> I guess it is fine. We may need to tweak the scoring in the future,
+> but it may be a good experiment.
+
+I think it is a nice approach due to the granularity it offers. This 
+will drastically reduce the number of false positives.
+
+> Thanks!
+>
+> Cheers,
+> Miguel
+
+
+Thanks for your feedbacks,
+
+Arnaud
+
