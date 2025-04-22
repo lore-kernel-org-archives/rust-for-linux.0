@@ -1,83 +1,130 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BC61F12EF
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 09:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DE61F03C5
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 09:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745315333; cv=none; b=bhztfFi4/jpjzSDwoLlIp4sxYWbTV9t1HoFy0PZKtiiZSsgqvzi7Cfq0XLtvJl+qZdZjL5sKMBbEJVGtc8SOYX6OqLlTw2C1JrmayncqdxVrdKVEMhKWF8X/6Q6uKBTsabnjK9UOLmkjAlJVsk8rQrJD8xKbSxvQuUWG2wuh85U=
+	t=1745315558; cv=none; b=YHvwIcsMwukyn0vUX+HVN3tYVDCgvlhSqJSxZe8GyI1d+gpBKg9EwLRx3df7RGAZV7m6q6mlFc8kPpI2U/kkMc6q3RETeJ3VPBMfwuOY8/Gt7eJ2qQp4DyDIPHR6W+aVJL4ppWAN7HxUuA4F6wCo7OKzok9NjbiDY6bgleD/HoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745315333; c=relaxed/simple;
-	bh=WVQDv1v4dOOQG6+a+SR4K8DVpKda75Ekqgvdi556yzM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gYBMJUQ6EHTQj4pjjXC5r5/2Pncryy+Teas39TIW9n4BgbZgwlckynkuEphICyVv0NXeqcZ2SSTdxQLTxmQbSZ2NrK9Hm8ABzyvetf2RFCA2cMU+n4v0CfwhnuBJok7SskyK9hGWYuDNLjnOPZc/JdFT8onZqx1Snq8ctzowyZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LAQdd6ia; arc=none smtp.client-ip=209.85.128.53
+	s=arc-20240116; t=1745315558; c=relaxed/simple;
+	bh=Rewe3XViB/QkMyD9af8Ut/nMVqYDKYqeV+faE3RMbOA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=YH3VQBiS/SQj73bvN+zdlYuZtDfbyhSJPE8s9Myihohr2w20XteAaKHrPSXDBlB8P44dgIpHBz2aMRawi/5ngzBxBpMUEyzoaVrPA/fXpHwOVRL8ZdKhiSuxuSrH7YVApsb1ufigt9GujtRPj8e2lPjKbZt3Nq7EOtMrQ8jK8LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xg/kbBy7; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LAQdd6ia"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cfebc343dso41522935e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 02:48:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xg/kbBy7"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d5ca7c86aso27485795e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 02:52:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745315330; x=1745920130; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WVQDv1v4dOOQG6+a+SR4K8DVpKda75Ekqgvdi556yzM=;
-        b=LAQdd6iauLwtGptgU3EaXluyARpqNNwEx0oriBBfFPUMlx+FETr1u9iUGn0FyvSRu0
-         7a7nVV52rLycwCipIfCy3TjnJGjxdWmr9BJrHdNTRuR7slyRVTb6lV2lu0qGkWqaC4ut
-         Kq5yamyH9LhgzSnZVd3VedBFQ1IWImF5HH6/a8suBiPqtOkz0LbcSzUmDjouzPw5VeiI
-         /z5Mu2XLOzHwDtaf91fiyQdjgon6xj5Y29VIDy6vhg57Gv8xWGYkEukhTkj6l7p1VLfU
-         sJtXvLwQceKsDlKB71W+sO1b5ybu+41b4VzC+HQ5oJvEk9UgsmpUxXuXvT6OXfS4vweA
-         HWrA==
+        d=google.com; s=20230601; t=1745315555; x=1745920355; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pZUGG5Du0vITtGfdUSROTg1jYJDzZcyCl3pmhvrIvIM=;
+        b=Xg/kbBy7eoPF6UgxbdElZBkMtGIHJ98n5zwgiXBDvZMC6qAKBWZHFUnZVIQbiilsmX
+         cQLo3i9EGWVoaXH1SjoCXjpxrZ707bFKbbkpJdi7m+zclioZFrYrJXAubJhMx/1pq/+Q
+         Cx42wleNoBZR2WV5f6uAtQ8RsqkAVClalrcToPmbTXz5BlhH7QnQ2E+KqbR8P3ExPoPT
+         rr+fvieYO1YslGflWoXP+39IMwz9MFhLb0vOJ7Y81PNRmfE2WeNm/zQo3ycNjmPRRSmt
+         CWm9w8wdeN4lLXJOl7aOfxwgaK0ZaKJZQyUYvy0zsHl19ztxZ41W8rkAQ39HfczSVBE0
+         95Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745315330; x=1745920130;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WVQDv1v4dOOQG6+a+SR4K8DVpKda75Ekqgvdi556yzM=;
-        b=NTNxJpeRJupwk3zCmyVA1UL8CRecOwlH8dVnX654sadof7fBiDle6nTi96FGTPv8pV
-         jHlplEaXzFOu4XYkvaNWzpg0nwTFdMuyyuvRp7bx0lxi7DVN0b51vZsSddfUK/CiesUb
-         inMlhOR+SXb32+DHunjDob6F6LqlL5esdkxP7DZ63kJtX9sPH1D0IDSZ57+WZwn9JX/6
-         mKNUFwNjlWiIpIWDznqT+64sRa8BuQdjJS3055VBL1lZn85MSXwmi2xRWWoHXZLf20NY
-         9nx/C8w07c8Z3/6L+x8sx7Br8igaZ/jSABVc0eaGfF0fPDsVZ6rbLKGyxKme1m0+dQ3o
-         cQ/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXn3tB/zz0uTmayNWEETgmtGldsIcVUxP1LhB8o4Zhs3btM++2W4/+RtuaSmtwWu1JgTm1NDJGlis8jRZXd0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJn6I2rDs8pkE1AmJgRA++JDGNmt7t0LRAJgC6PkVRCpv9tcZq
-	7oXcheAp1DY3/WY4LjWcAIsUM5vAXehCe6uqZLfepogzqRCg3IjEZLp18FlQM4h/hHXnfQcfu+t
-	kRmuvQ3IpPuE7oLFZfnqCcvTzBZyPQU0rvlAm
-X-Gm-Gg: ASbGncvj3rTgud2MxbkF9ChiWqBvP3YwfNoF149qPRigkBkwPlmtY1Xk/GSHrNOXGAc
-	3/MLIWQAdc0JFXPZ7eHHTZ0W6vO2+vbnqLWP65+P7E6+CJNR6GKgHB0Pc0iw6E4qknANzof8W9G
-	PgApE7cbUY4zM+BjWQsJa+Y/zm4NVji4N+Be28O+ZWAbh+eqXNcGYI
-X-Google-Smtp-Source: AGHT+IEgzaZFAKrzkmmSeUf1lXEalL9tzKY7I1llBJA0Efnayt0Uc3PwpU5QMYlM6qieyM/pL0GWbg3KPU1y1RnS3Ro=
-X-Received: by 2002:a05:600c:4706:b0:43c:e9f7:d6a3 with SMTP id
- 5b1f17b1804b1-4406ab97d53mr125391395e9.13.1745315329911; Tue, 22 Apr 2025
- 02:48:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745315555; x=1745920355;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pZUGG5Du0vITtGfdUSROTg1jYJDzZcyCl3pmhvrIvIM=;
+        b=Bpeq6lTpMQFX8ey9/J1BaNbef7rB7k4eK9RrM7HUMVt+B57nAvNrAK+mcMXXjdrsKj
+         lnsWNn4CMrNWQAvJA3neXdJt1YPMuMfFj0xDo/L5xLmpS9HeezYayicgEDrLwfHvFNDO
+         5j67Tz2DK0NYzqpXrfslbz7q7UUi26oTLZGy4nGWMHgVoztlRFKCv6Vb0uUEvpMO8oeF
+         cckHpLg3CFDxiqZg3X1Bm9sALvopDkwqKKGNjEC9Yii98C9qoYtIri8+gjTnofIBlISP
+         mjbCQr7aM0yPReRdadLRMWezxvBJcF5RU8YtadZ1ITZghKGS+i3xShN2GK40tjMOKxz8
+         Ev+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVb+u0vWurLDZCcdq3CkjHfpriyrdTJzQ5gkE+zIXE5l8EJaTMrxZAcSliSU+/Nua9A8pv8xTVBF0KfGPz8+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzV5OD1IFRp3gGtFBu4V8DZJVUww9p9YcSLEAckl1KiX298SNTb
+	ZsgFgxerkM+ITakBVGvM/mTtFme9X8MSZ9JLHArcEwJi5TIT1zWZVP6HamrRYEeTH6WPxLOEzLF
+	D7PRrPntSaNc2xg==
+X-Google-Smtp-Source: AGHT+IF7rPGCUG35yrlKbfuD7XCFGfGNRFOEC9fiEZqezL8UJPbVupbTHCtOyqtaEcViH6huePbYdR5pb2rC98c=
+X-Received: from wmqi4.prod.google.com ([2002:a05:600c:3544:b0:43c:fcfd:1ce5])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4e52:b0:43c:e6d1:efe7 with SMTP id 5b1f17b1804b1-4408efbaebemr3357905e9.26.1745315554833;
+ Tue, 22 Apr 2025 02:52:34 -0700 (PDT)
+Date: Tue, 22 Apr 2025 09:52:15 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250320-vec-methods-v1-0-7dff5cf25fe8@google.com>
- <20250320-vec-methods-v1-5-7dff5cf25fe8@google.com> <CAJ-ks9k=SxS_zAATadm8SZkfcY2OciYNaty3=WEs2iv5nFJRyA@mail.gmail.com>
-In-Reply-To: <CAJ-ks9k=SxS_zAATadm8SZkfcY2OciYNaty3=WEs2iv5nFJRyA@mail.gmail.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIANBmB2gC/23MSwrCMBSF4a2UOzaSR1OrI/chDmJy8wDbSFKCU
+ rp3044sODwHvn+GjClghkszQ8IScohjHeLQgPZqdEiCqRs45ZIKTklBTQacfDSZKGNVy1BKwRh
+ U8Upow3ur3e51+5CnmD5bvLD1/d8pjFByMtZKbbm02F9djO6JRx0HWEOF/2K2x7zizpx1r9pOt Pqxw8uyfAFWR07m5AAAAA==
+X-Change-Id: 20250320-vec-methods-adfa41e55311
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1639; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Rewe3XViB/QkMyD9af8Ut/nMVqYDKYqeV+faE3RMbOA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoB2bXjivAC+hJGYr0fbMwz03aFPH9W3gbQgAfx
+ IMHKiQc4SSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaAdm1wAKCRAEWL7uWMY5
+ RpsqEACm3KSFn0U5qkFH1+pVU2zeWkhlYg2JFcWw0J6NtPwzkQ9fv8p3/+WOnREiTEmN+17cBU/
+ K6YWQ4JvXUSJH4d8waPnwy9Ijzoy2pr1jt5aOEorXP681uDG4SSCOewnW7b6HpdDClNlPpQhkY/
+ qP+WUD4KRn0fNzWiqn7OoUus/cPAlBAXnc+SDXdbn8IGujgSBc5dEtKkc0w/IS6tkUIx0ixidWT
+ FL6+Pn5F8axPG22r4/TbMotphksm8L0vzT7Rp0ONC0EU7Y+BD/yqOAJMDA5oSmH83gzfpzHgplk
+ lB17x3S3144bRbp0lmE6yNt2xHfhWnnPElWLARnvcZB0n2bSI/YyNJCP+e2La9TH13biKgO9H9f
+ kKhc0kRlmlqnFHvaBsI2iJIRA0rdLNw7P1MLiMwh8x24+kvri6vl1xwN7R7y0O20i7YV+2kNrou
+ MxGgJ4svIL/G2xWsW4F/eCxie+wkQONIbNz8584QJYKg2+W9LansRwN14oRLwBDrv5k2DKb0aYZ
+ A3LK/s0UCW8p+lD27NuC2UFU5J641FU6a5jBxPzMwn0OSr28JjSZSbJ8b67QQF2wEst2W97Z9ZB
+ v60Hw3RmniTCGdC6cwwaSvKOx/xMWQiwTVETcnL9E2w8zOVPyGpg0rVT77dsiGFOlZrHJunVZ8/ /ZahLKoqGD/ndgw==
+X-Mailer: b4 0.14.2
+Message-ID: <20250422-vec-methods-v3-0-deff5eea568a@google.com>
+Subject: [PATCH v3 0/7] Additional methods for Vec
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 22 Apr 2025 11:48:38 +0200
-X-Gm-Features: ATxdqUGsZpxo4hTBeVYFDjAT0FzOV2AQ03SSUmYtR0Xpk0I7nXbuFoofvKRGnJ4
-Message-ID: <CAH5fLggaw7itWuUCHG8KBE4epTdWy3y+wtVyUk9AffM+DOTOyA@mail.gmail.com>
-Subject: Re: [PATCH 5/5] rust: alloc: add Vec::retain
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Tamir Duberstein <tamird@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Mar 21, 2025 at 4:25=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
-> Now that we have kunit in rust-next, should we make this into a test?
+This adds various Vec methods. Some of them are needed by Rust Binder,
+and others are needed in other places. Each commit explains where it is
+needed.
 
-Unfortunately, the test uses the Vec::retain from upstream alloc,
-which we can't call from a kunit test.
+This series is based on top of alloc-next and rust: alloc: split
+`Vec::set_len` into `Vec::{inc,dec}_len`
+https://lore.kernel.org/rust-for-linux/20250416-vec-set-len-v4-0-112b222604cd@gmail.com/
 
-Alice
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- Rebase on split `Vec::set_len` into `Vec::{inc,dec}_len`.
+- Various modifications to work with inc/dec_len instead of set_len,
+  with some Reviewed-by's dropped due to this.
+- Move push_within_capacity impl into an unchecked variant.
+- Link to v2: https://lore.kernel.org/r/20250321-vec-methods-v2-0-6d9c8a4634cb@google.com
+
+Changes in v2:
+- Add two more methods that I needed.
+- Introduce some uses of set_len.
+- Add example to retain.
+- Simplify pop.
+- Adjust 11 to 10 in push_within_capacity example.
+- Link to v1: https://lore.kernel.org/r/20250320-vec-methods-v1-0-7dff5cf25fe8@google.com
+
+---
+Alice Ryhl (7):
+      rust: alloc: add Vec::clear
+      rust: alloc: add Vec::pop
+      rust: alloc: add Vec::push_within_capacity
+      rust: alloc: add Vec::drain_all
+      rust: alloc: add Vec::retain
+      rust: alloc: add Vec::remove
+      rust: alloc: add Vec::insert_within_capacity
+
+ rust/kernel/alloc/kvec.rs | 241 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 239 insertions(+), 2 deletions(-)
+---
+base-commit: 1569d07593b986b690eec0bd85a632b6712f4c2e
+change-id: 20250320-vec-methods-adfa41e55311
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
