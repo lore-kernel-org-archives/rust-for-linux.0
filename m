@@ -1,66 +1,68 @@
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29912475E8
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 07:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEBD33F7;
+	Tue, 22 Apr 2025 08:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745308583; cv=none; b=IciuCwAiqWlShNUTG54qR6iOBrxSRMIx+n8fyo8HxW+iOoYD87fb/LhHOiAAsGU+s+n3GAsiWLQ78B+rvLiV5Bc8clFBCNhnqo9bEfpjL14N76mWerqEDOdQuJERB6i0bCbauQFfQ/gyuk/Wsww/OqSigEBuaQx+3Yc3p0uiboo=
+	t=1745308891; cv=none; b=BW+M/lBJZLPJN0ZnBikWuKobSSK6pRL/AOrnsq61OIgkZ/OHui9ihOVJZKyBhi1l42YPan3NNBmxycTuPGrLb2PPiXEzlw5NQVwkET8xnoZ3TPFLzWEC8FlCepcGczw+0FXLCxQfqAOKa4mAWl1q7knMabhirKujuGyDElGHnkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745308583; c=relaxed/simple;
-	bh=8qU0WnLj7NnW8yFcl51Njv9nHN6akiHDOKwsqWe3AbY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CiQuJIoN2R95S4Lr8aava4u6Sh+eLrIrt1hArwfWnNSmyzNAvOdkKfqItI6GfDLa6/3aYzpByt3/8b8NfevHIDHsBv9EJFvtBruNszCYetH0r3U1XpWqWmpSuI9LMlmgTE/C5kADTKSg6ZbsoiUKSg57QuHnKkYZpITjJABcWsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=JAsQokKT; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1745308891; c=relaxed/simple;
+	bh=V/82unvtAxABgycm+y7kaJ+iuM4jIynRbg8g2O3qJX0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=e9BAQn5y2oDkABFQDzXJOMwxe31u4qZfhpcNThVQl4Cg31HaHIwKBnHcyUnIqAne0O6qyFz8GiEcIIohN+mznpG2EOf2j12MKG7ZYf1Q3VeNv3045azZBvK1WTFQm/NIXXJyhSFx1PKLbNEQgJFvDJGhkZlu7rNi/1FO3VzeCOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9HgzIVZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="JAsQokKT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=gfslac7ddjhgpnmkgpfnzmywvm.protonmail; t=1745308578; x=1745567778;
-	bh=8qU0WnLj7NnW8yFcl51Njv9nHN6akiHDOKwsqWe3AbY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=JAsQokKT3/t+D0Sni9ANzIzVHuqb3v3BpSqda2Vq5M810e42/r5UJAqH3NN4okZg/
-	 0MYOorE0ydh3KkKxa4h3TeGrX/GCYBoSFWMiB8i2+eDnc1TUgySE0ZhB0JdVGEqolI
-	 He5uM8HnNvqvoxMA635igfFavH05bA7vZ4RotVqbBt6/0HNwoT5CUz32Vh0ielPB1y
-	 ggtLBj2M3obvNzhs2+Al8lPgmgAPwgOuaqUCR5D8MHJ8vY20J0RFDCbFNzGY+Vd2Ts
-	 zkDkANAXdVQL/C65DDRDlFvL5+RFUuCddLhyCbsATYatHWe4q3OL2SniPLQsVNxZ+i
-	 jVzk8m5ypkadw==
-Date: Tue, 22 Apr 2025 07:56:11 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, Christian Schrefl <chrisi.schrefl@gmail.com>, Alban Kurti <kurti@invicto.ai>, Michael Vetter <jubalh@iodoru.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/8] rust: pin-init: add `MaybeZeroable` derive macro
-Message-ID: <D9D091TSBCKA.2C3REET71ZWTC@proton.me>
-In-Reply-To: <aAcg86QfvlA0zAh4@Mac.home>
-References: <20250421221728.528089-1-benno.lossin@proton.me> <20250421221728.528089-9-benno.lossin@proton.me> <aAcg86QfvlA0zAh4@Mac.home>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: b7a9b1c7029c8302dd647590a8bbd75d648ba201
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9HgzIVZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C437C4CEE9;
+	Tue, 22 Apr 2025 08:01:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745308890;
+	bh=V/82unvtAxABgycm+y7kaJ+iuM4jIynRbg8g2O3qJX0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=D9HgzIVZFMRMC5jYYSGuBhwGezKPcaubMYQmrbAhxuMQT15dwqEXTT+D2cgZ4dwxi
+	 g3+YvqW+ErRynrnL9CaEwXNdkpA/0oNxywvcrqQaGCoM3pyOsTeRy/vzMZLhU/A5xJ
+	 rxi3Rs8uWTq7kKaNO3V4n9Vc5y6ae2ydf2xPVJs34mdpLvNNBCRlL8g+sK14Yjc+LP
+	 z3fCw7XrdwU+IEpsL0WMcpeZc2EhEa0C24/VYq79WRW7QeAeruCAwjGiMqPzc55kRx
+	 +A5WJak/9hLd/KRuZfkKQH4d2V/ulHofAQ0+6wQZfwrFVBDfxhRiXlIZ9h+/vlXFVX
+	 KeoHpYR5xYXUg==
+Message-ID: <aee8924a-d533-4d19-8064-9831e3616013@kernel.org>
+Date: Tue, 22 Apr 2025 10:01:24 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/2] rust/revocable: add try_access_with() convenience
+ method
+From: Danilo Krummrich <dakr@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20250411-try_with-v4-0-f470ac79e2e2@nvidia.com>
+ <Z_kV7U0IcebUfGps@cassiopeiae>
+Content-Language: en-US
+In-Reply-To: <Z_kV7U0IcebUfGps@cassiopeiae>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue Apr 22, 2025 at 6:54 AM CEST, Boqun Feng wrote:
-> On Mon, Apr 21, 2025 at 10:18:52PM +0000, Benno Lossin wrote:
->> This derive macro implements `Zeroable` for structs & unions precisely
->> if all fields also implement `Zeroable` and does nothing otherwise. The
->> plain `Zeroable` derive macro instead errors when it cannot derive
->> `Zeroable` safely. The `MaybeZeroable` derive macro is useful in cases
->> where manual checking is infeasible such as with the bindings crate.
->>=20
->
-> Hmm... seems we need a customized auto trait? How hard would that be?
+On 4/11/25 3:15 PM, Danilo Krummrich wrote:
+> On Fri, Apr 11, 2025 at 09:09:37PM +0900, Alexandre Courbot wrote:
+>> This is a feature I found useful to have while writing Nova driver code
+>> that accessed registers alongside other operations. I would find myself
+>> quite confused about whether the guard was held or dropped at a given
+>> point of the code, and it felt like walking through a minefield; this
+>> pattern makes things safer and easier to read according to my experience
+>> writing nova-core code.
+> 
+> Any concerns taking this through the nova tree?
 
-Very hard. AFAIK Rust folks are trying to remove them.
-
----
-Cheers,
-Benno
-
+@Miguel: Can I get an ACK for taking it through the nova tree?
