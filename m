@@ -1,128 +1,130 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF72D280A58
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 13:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84D227CCF2;
+	Tue, 22 Apr 2025 13:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745328140; cv=none; b=ovZr8cqSAHOwbHvB0md1soXaCnZ559cERFbv0R8LktmFoEOjOM/x95XjRXl5wSayuNp+oZZnhAmlzQqjByuIfylwEuV3VLQzizj+Jz5CtYBNG7K3Ic+qOYKQHvPRhT8yJkWjx06u45HHdvy905mLuKJ93ff9ggz07lOFNYBAtrY=
+	t=1745329592; cv=none; b=pgCQAVdO7HeRl8ONYE/pySPwO5RtAlJNWLotxkoD1Bu/EqMZnCEPfJ+Baz/wk5CC7NKPdRweVbABxX/rU8ZSDM3Rg4gb0k8WxLqpBTsSn+/ypCK/sIMQ7OjGBWQbSZKmvBegf9oSqNr+ZvD6c7Tce/DGwx5pRkW6u+s5ufW3srk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745328140; c=relaxed/simple;
-	bh=iBeERhynzVtABJ17zsJg2c4wme0BjEpBgTwXNfdYvBg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LdMUK6QVsyoWgM9fS38s3mKxzRChLW85WkmLdpE31PBrS68vmIRM3yHFbcXJ+5QusP+djMCk4uMU8MI63hyAB/WIplePGw1FHbgUQq1Zd+NDmKImK3v1YSDgnPPdHhLgLqjzEZFcSChYq+COR57StovHB9NgR9ThoMTkf2Y7aSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dkcpLLjr; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1745329592; c=relaxed/simple;
+	bh=dMecEbaMU5nXf1Rjydxt+TbhsUOIhNDz3YslKq53vwc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KgLZzyJBCAdVbzZj1WuOxe+g57KgGLOGVw9yW68dHTpuMPgvvM7lU6Gs33e7Gi402z2n9DJeFMU0MCymJabxh/9aGW5iZl6/to93llbATTEI9shuwe/ibrNAD744bqiq9X83LrvbRWh5s7tMtMZF0VQzI3xdUbI7m5M/RegJ57o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UwGrTKmR; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dkcpLLjr"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-acb2faa9f55so609754866b.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Apr 2025 06:22:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UwGrTKmR"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3032a9c7cfeso654335a91.1;
+        Tue, 22 Apr 2025 06:46:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1745328135; x=1745932935; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=N3XNp6FOG0YBB40BSQ5b9F0xQ6kk+DLGoBOj2lK3UkU=;
-        b=dkcpLLjrEpCHq1nKnXuvvnE7Ty4INfDd501NyXXelhCX068hkJZUQFJ2WtGlJxJYwb
-         2UJj0GgcisWHxN74+x+RBnf7Lj9iYg5CVEMq7BgG7Hmja/RTtO79Y9yxRjiDqfgOHTXa
-         Ise0dlanH071NWrvuKch+JiakrzjohIzbzBdjyxMxwERMGz+R0DO+zg3V74FjSX58qJs
-         Hs5onzICDyTxD08TCTQycBc5Lxpnq/538QXDGfTYnb89zuSI6YnLHlhxQZKWLYHNVZgp
-         AyxzcjIKOlBHAR4hQ9ZgdcaKXxb9E118KROawqpHJzJ7fTeDG3mdqWOzp+d3pm/WGuT5
-         1FgQ==
+        d=gmail.com; s=20230601; t=1745329590; x=1745934390; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=awwFbDm7jflKQEqDpnbX53KjJNqGVg4jeRSb+a5lprA=;
+        b=UwGrTKmR2KdzMawTLDvMblMG8HGHXp6zJ4agURsC0fRq677VStowZlbY2Eci0dcSAO
+         3QkNpRbilqMRz6+2w3Ql7HXZDyfzfo3vtX4J3Qan2PAPXupuYd9JOjQIBaJStU81quIH
+         ZsrKmewdz1XG+tiVKGNr1AsRBH2OwL5UnUDdFZII7sAn5FzDyizrPaqMcLJQT8aggubF
+         DiBnubJojWC+dKnGPwFofiUk1Xqc+m3d9eGVmK/ybBla4KCMQcdytsnxCfp1JObw4UTg
+         04nOFBVBux7PM4lTg9se4/Qw5lJCVcNv5+oFRgXLCgQ/b4tTflQLxPSIqb19+heq59Ph
+         DpOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745328135; x=1745932935;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N3XNp6FOG0YBB40BSQ5b9F0xQ6kk+DLGoBOj2lK3UkU=;
-        b=H6XRucOJF8dzwwnoGS7zGTpMbDgcXV8z2HF6FFRUbdnYU7zcMbspqys9HINp4Lz+Fx
-         lZt5vGlL3gIZR4RISC9ySn6BAkdRgG7XiNnNgmwjLga/z6xmXVLWtnxn+bIWW3TTOu/f
-         R3WEN8h+UVfvPPsOrNjwfvc1d/8Oz982qqLvRubbtV4lLqfYDdUaZeXrTRSMmbubpm97
-         patMJoZwwdK7zECOq2OpCyAq0YdZDg2Mp/4LZ/3tAF8l+LbdpNgstulwXOeuI6iLQ48M
-         1dXUeIQU8N6ylzZHVERHFEqfajVNlSw85duRPMjB+PiZLdfbtBh0oaKgGqjS9ZaAgd0M
-         dX0g==
-X-Forwarded-Encrypted: i=1; AJvYcCXPdYMWbKz9V1AQMN18XnScye/AlPQqQqzCZKsvysfbYkWW2ttxBly9m1SZYGNq5/agIh0gXXwXS+dow9QNMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm6jqvFq4AofzAIoDbAlwTCH4OJeB6h+nrSS8PmpcyD/+M7fUj
-	beX45ByPSXRzIg2EaGJde+A24saaiZjNQH/CKl14J3k9Smw1MUa7kH5IrqBgtpU=
-X-Gm-Gg: ASbGncsDZlu+kG56U5z/6t6IDPEfiIktCsqVJ8IKTlbtas9oqYyiBjklq+1OZXSJfsA
-	HHHmgQmmEW1cVuBTARywz4U4+CYlw0O4crzdsxF0bs6TlpbxW5zHbFYc03ooaatFh5QMWwG15S3
-	qyIkWlYdKRu0mXHgcDk1bNqGcrXKc0fyKoMis9GuHsUIPkx1h76TGWRH47oGgsWI0hz/zfkuDap
-	a0GsiIXcRIVVwve0UXiydFlsnps3NaCuojZo826Xcp6lqIsiJrd12oVUMKNIIt9hxjG2qdVB05/
-	Hc0+dPC+EUmahNAeDjtxBMJ/pKDoYzprw2nsx1sdFNk=
-X-Google-Smtp-Source: AGHT+IFaXpflFI86k8u3dSw6HVkF/uY8OBEaZ5S2zW87LgBRnFduZGRJWQUonbqQbt0m5a26poCJnA==
-X-Received: by 2002:a17:907:9727:b0:acb:5f9a:7303 with SMTP id a640c23a62f3a-acb74bcc517mr1311357066b.35.1745328135152;
-        Tue, 22 Apr 2025 06:22:15 -0700 (PDT)
-Received: from [10.100.51.48] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ec0b6fbsm668648166b.19.2025.04.22.06.22.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Apr 2025 06:22:14 -0700 (PDT)
-Message-ID: <7f707d8e-f2e4-49cc-8d7e-e8c4c4193cec@suse.com>
-Date: Tue, 22 Apr 2025 15:22:13 +0200
+        d=1e100.net; s=20230601; t=1745329590; x=1745934390;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=awwFbDm7jflKQEqDpnbX53KjJNqGVg4jeRSb+a5lprA=;
+        b=XLtRhE3GBDwehjHF6YXas4p5pK76xyMsDWjB5pmVPIfADSeXBr0GJYnybPrUcX+QNZ
+         Qo5kACuTD+9Z3BIc5PfvX63Je5VtdaHjvcqXTArSTf7ZqSoVDyf0q6I49O312ZOr6na/
+         s9sKkZbcy6t3FnNFiUDL+w0ShiJpWTWSHAv3VOjyXD9IbLNn6J+COwsChlj43NlVUtjx
+         YQNks+SDMKdn5YR/4nrmZFSEw7jngC84T/4f8VJ86iWTCyN3g7vpkONey9M8V37UBjyg
+         url+eKixxqwIDdDRe7ct+cvu8gLWZI8kK8KhsONg7GEAJpsYNEIiHUWgCGgLfr9BY8tb
+         qpBA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8uPBOTca0phVXB9e1VizowUddcBUlRglPS/p4mxoTse4lrSg+8K8EJZlFm653FJdo5tCmU4/lO8F4u2RSvPc=@vger.kernel.org, AJvYcCWB/Z9X+3Bylo0ykIky7nXQzSr8gMZSmBRJMqkLEIH6ZShpyawSehmwL5OFzJNIM44dH4udcfp7Xr4oqwQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvnTkfQ9Sfa0Biz/3fH41VvstCNUPRZQ8mt5ATBHER4p1yRJAE
+	xVVeErIxuGnTMDIIC+acZ6T49merZkIHVZ4xmugkVi2l5oBRUbiJLDXDhGBs1THYa+Zlfr374ZC
+	Z8Q9Da9F90LkwaO6an7tfrsiCsAg6qcstJXA=
+X-Gm-Gg: ASbGncsyECG+dFBHG9Gye3LgHV5SsBH+JW4CaVvRAcUvI3NXUDFxpacm0KMvDSskoaO
+	5/jbuhk9pa6kXTL12Whk/6RJzprAG4ywVJknhXr/jzJvtHAxJj3iw1pQ9NadAFcN/DTpIaSo1k+
+	dViWhrPy8Nt7VouNrV9WdNbQ==
+X-Google-Smtp-Source: AGHT+IEvD/7Oi1OXNnSpSvib9zBGTiZYtSa6KmXETml5Sc3wcLno9P6YnLmXGVY+d+60He3bpYpfTe9GXBlxik21cGA=
+X-Received: by 2002:a17:90b:1c91:b0:2ee:f59a:94d3 with SMTP id
+ 98e67ed59e1d1-3087ba5ccbamr8017716a91.0.1745329589855; Tue, 22 Apr 2025
+ 06:46:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/3] rust: extend `module!` macro with integer
- parameter support
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
- Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- Luis Chamberlain <mcgrof@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye <ark.email@gmail.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Petr Pavlu <petr.pavlu@suse.com>,
- Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
- <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>,
- Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>,
- Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
-References: <20250321-module-params-v3-v9-0-28b905f2e345@kernel.org>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20250321-module-params-v3-v9-0-28b905f2e345@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250422125633.30413-1-contact@arnaud-lcm.com> <20250422125824.30525-1-contact@arnaud-lcm.com>
+In-Reply-To: <20250422125824.30525-1-contact@arnaud-lcm.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 22 Apr 2025 15:46:16 +0200
+X-Gm-Features: ATxdqUFOX-8ZK9wTG68OV2QHGuhfwdNTtWKDYoDi6eyZlmEfBl_bLh2iur-YQGs
+Message-ID: <CANiq72n41Oj4K-yZCWbNXJQEEjTqjXHYgrkffAg_mUg8dKLWQg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] checkpatch.pl: warn about // comments on private
+ Rust items
+To: Arnaud Lecomte <contact@arnaud-lcm.com>
+Cc: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
+	Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	skhan@linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/21/25 10:17, Andreas Hindborg wrote:
-> Extend the `module!` macro with support module parameters. Also add some string
-> to integer parsing functions and updates `BStr` with a method to strip a string
-> prefix.
-> 
-> Based on code by Adam Bratschi-Kaye lifted from the original `rust` branch [1].
-> 
-> Link: https://github.com/Rust-for-Linux/linux/tree/bc22545f38d74473cfef3e9fd65432733435b79f [1]
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-[...]
-> ---
-> Andreas Hindborg (3):
->       rust: str: add radix prefixed integer parsing functions
->       rust: add parameter support to the `module!` macro
->       modules: add rust modules files to MAINTAINERS
-> 
->  MAINTAINERS                  |   2 +
->  rust/kernel/lib.rs           |   1 +
->  rust/kernel/module_param.rs  | 221 +++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/str.rs           | 170 +++++++++++++++++++++++++++++++++
->  rust/macros/helpers.rs       |  25 +++++
->  rust/macros/lib.rs           |  31 ++++++
->  rust/macros/module.rs        | 195 ++++++++++++++++++++++++++++++++++----
->  samples/rust/rust_minimal.rs |  10 ++
->  8 files changed, 635 insertions(+), 20 deletions(-)
+On Tue, Apr 22, 2025 at 2:58=E2=80=AFPM Arnaud Lecomte <contact@arnaud-lcm.=
+com> wrote:
+>
+> The detection uses multiple heuristics to identify likely doc comments:
+>   - Comments containing markdown
 
-I'd like to pick these remaining patches on modules-next around rc5/6,
-so they can sit on linux-next for a bit before going into 6.16-rc1. It
-is a new code with no users so I don't expect much fallout, but still.
+Markdown is required in both documentation and comments, so I don't
+think we can use some of those, e.g. inline code spans (i.e.
+backticks) are common (and actually expected) in comments. Something
+like a title (i.e. `#`) or intra-doc links are uncommon, though.
 
-Could you please post an updated series that includes the cleanup from
-Miguel?
+>   - Comments starting with an imperative tone
 
--- 
-Thanks,
-Petr
+Some people document using the third-person, e.g. some functions say
+"Returns ..." like you have below. (It is not easy to enforce
+kernel-wide a single style here, thus so far we don't.)
+
+(Looking briefly at the code) Ah, I think you are covering both, good.
+
+>   - Comments with references: @see, @link, ...
+
+Do you mean Markdown references? Or javadoc-like ones?
+
+(Looking again at the code...) I think you are referring to actually
+strings like `@see`. Hmm... I don't think we have those -- the only
+`@` I would expect in a comment are thinks like emails or the
+`rustdoc` syntax to disambiguate the "kind" of item, e.g.
+`type@NotThreadSafe`. I do see a `@maxlen` somewhere, but that should
+have been an inline code span, and anyway it is not a `@see` or
+`@link`. But I may be confused here?
+
+> Comments are only flagged if they:
+>  - Appear above private items
+>  - Don't contain obvious non-doc patterns (TODO, FIXME)
+>  - Score sufficiently on heuristics
+
+Nice work! I wasn't expecting something with actual weighted scoring,
+but if the maintainers are OK with something as involved as that, then
+I guess it is fine. We may need to tweak the scoring in the future,
+but it may be a good experiment.
+
+Thanks!
+
+Cheers,
+Miguel
