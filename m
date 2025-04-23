@@ -1,90 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A943F26FA4C;
-	Wed, 23 Apr 2025 08:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6452701B3
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 08:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745397396; cv=none; b=Hz3MxzgNeficRSB1e7RKspeEvvtZtt8bAI+jc8tGu2iUc9l+Ptn6MxG0KGLgrPoWOvlm/b5LPwCkvIfdSZnEQvO1bQGKp1VriFPP9rWAHVoxdLtr1UxivZSmZhjeOCsk9aJKe86BOaEuQCIBtJzzYGUjXW0gP1tHB8NAXHiCXMI=
+	t=1745398286; cv=none; b=jZIaC3oDonfYsBTWqQ02IPyGpMCVZnB1db2N88e3uNOVWqapG7eIUje4tz5FlW67mrb9vO+mG1J61SL48MzCrZ0h8FE95UUcFu3fkxSdDeOgGJqKHooNCj/LWcSbbM7D2is/hOWHNDOO+IaXWvdObUqcgd8P1OMyi90F1Zq+rew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745397396; c=relaxed/simple;
-	bh=8NyeEl5sGV5OeARNT+FJtFkxcpDYsjMyBUmmpLZFRO8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=p6BbJg3ND4gtL97iZaya5+QO5WOeHRqxTViBqkHzi7raB6wegmDt/vQKuvMQLRn5BE2/ziEbDEt7rrU1wpUn9NinUvGawTWrO+Sl0e0E3NaC+Ki+5ZwOHfM0FSSQWXo3dw6sgyfRGkcVo6llrpaALct1MX+y9EbPoDhDuo9Z2pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dtt5CYBt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745398286; c=relaxed/simple;
+	bh=CtT8v2MCiRX7gRBV9QcapypO93sJVqsOiDaKUDm39r8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oP+JsNefhQGL/FNoczn31BuypaQJwFmM5HQv2maUSBRXzNDH56KbdiF3JZQW2hV76LdzWlhmXqA3Eq3f7MPF+swNIkkDjdi9mirDLDSKuvo0pB7exmmIOREA98nmzT0Qg7C2KekhTuEzFcsYjQYmYp1FnmItOY9/ucZf4Da5Eys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HmbJ4o/1; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dtt5CYBt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1EFC4CEE2;
-	Wed, 23 Apr 2025 08:36:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745397396;
-	bh=8NyeEl5sGV5OeARNT+FJtFkxcpDYsjMyBUmmpLZFRO8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Dtt5CYBteqwwFc8n/QuUf9IsXI6dx68XhigRzYmiOYv1r5rDkCQh0OucM2MmgUiVn
-	 u58Z30vwSinXZnDU2OMP/WxTbHjLYzpCjT6+lsA1Vqo515vTMkBJr2VMv1p8rh5skN
-	 MHCKL1rzR9pOkwh/ePaC+g9/Jjd9C1ADC/YLjTGHDilBEVjDFDRWoECqnnOpxcL2jg
-	 qrG6q9pPa6c6fb12wb7e0LptKx8ON25gay8l+iMRNHzUnykv7RGrFdVzcOKM3Yq/Z6
-	 1f7m/y4vpZBZC+jgQa2NWFHQsxZRKid4uFUduye8ELSR7tqZUsVbkrAtOW+c0Sbox1
-	 lnhlz0svhPvzQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,  Boqun
- Feng <boqun.feng@gmail.com>,  FUJITA Tomonori <fujita.tomonori@gmail.com>,
-  Frederic Weisbecker <frederic@kernel.org>,  Thomas Gleixner
- <tglx@linutronix.de>,  Anna-Maria Behnsen <anna-maria@linutronix.de>,
-  John Stultz <jstultz@google.com>,  Stephen Boyd <sboyd@kernel.org>,
-  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  Benno Lossin <benno.lossin@proton.me>,  Alice Ryhl
- <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Danilo
- Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/8] rust: hrtimer: Document the return value for
- HrTimerHandle::cancel()
-In-Reply-To: <20250415195020.413478-2-lyude@redhat.com> (Lyude Paul's message
-	of "Tue, 15 Apr 2025 15:48:22 -0400")
-References: <20250415195020.413478-1-lyude@redhat.com>
-	<20250415195020.413478-2-lyude@redhat.com>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Wed, 23 Apr 2025 10:36:14 +0200
-Message-ID: <87r01jmg01.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HmbJ4o/1"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cfda30a3cso32796685e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 01:51:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745398283; x=1746003083; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rhz5SyKyofpP0CiXoRasSItvHci8jlntDPliqMYHfdY=;
+        b=HmbJ4o/12WpIrqe2f2v2/o4IdUWrTuKjhvsjMwKw/ZzmOCGpqdKJlrmG5Y/ymsw+I5
+         RQPu05Aye8TBeLvrlvFKhJIqeT4DitbE8J5SAI8cdzrt+IR6TqMa7j+IiZrRstIqj1/+
+         p39sPVI4vqrR6GdtBKzDqq0Ao2Vaq2GMaEa7G8Zn7tEzQ8R04+bjBcCwd+9Zu/qBeZQg
+         J97U0EasfyrAMQXKhmfzfeJ6Yo03KqAZ82lYzdKhJXmQadcF/0Eg7D/EqltlpbYbeJbc
+         Apci8Tui0NlxTDhGgdiX6rET8ig+bONrlYw9kKBTeOMe9VRwUGq6xawg/JvY6RtmdA+p
+         5zHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745398283; x=1746003083;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rhz5SyKyofpP0CiXoRasSItvHci8jlntDPliqMYHfdY=;
+        b=rYl6srkPjsU2dofr6GuQfhYlKdHyh8pL6xuXNC873ILhewNvjd/uF08V44u/SzSfJ9
+         zFFSXbF/iNnaQDZvmFeHqHoAxL0NmBcic2rGpEjnYJOtjtkYPs2V/g/tzmj8/5C2+TeI
+         JGoDMW/4eRurLm11bNpo2soE/FT7nbWDP6hSByQvL0aIw0TeQxgHHlRu79jdy1hCBVGA
+         UOcqWyjLy9E9NXzUpGhzzHedJIQH+PCOftGzkWRHZH+63z6jw/CvAasv8VdjDXNxxWqp
+         tV35s75rsjrxkVOcCdduvKvE/GRxRMX1WGMB4IyHGtw74isRqQWb8c/HAGIDkOxPNXA8
+         fC4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUjEz5g31eNrnYG2PY90STxlbKGD8qXnEDVj7txADgxNQQmHy/xNzrlAL10OQYv8mFwomawtVRLBy2QM6TuRg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD8EFI5tPBlA12YeYcrmyJdjUIeufd3UNzhNNiyC//pQzVCmZx
+	qhP1UksJtIYotQrFZge5cG2pWGYZT1Q1bulukmwSPkJrkYXLEbzJFdRbmtmovMBegMZG3bZ4KOY
+	BsuuwIocBxqccvg==
+X-Google-Smtp-Source: AGHT+IHLWGDxm5kfoTW6nhDE7tQXPqggvtNweBYRe67ksxGdQ/RsembKAvwXxH4kRSHpcOnYsczAWFl5vntTJPg=
+X-Received: from wmqa6.prod.google.com ([2002:a05:600c:3486:b0:43b:d6ca:6dd3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f49:b0:43d:8ea:8d80 with SMTP id 5b1f17b1804b1-4406ab81eb2mr160106685e9.5.1745398283005;
+ Wed, 23 Apr 2025 01:51:23 -0700 (PDT)
+Date: Wed, 23 Apr 2025 08:51:21 +0000
+In-Reply-To: <D9DM3AR3FUAF.6JSNSB9WAJ4T@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20250406-vec_extend-v3-1-ec5c5c0acf2a@nvidia.com>
+ <Z_OwmEKHgsZlt2cs@pollux> <D91AOKOTDXWC.7R5K5DI87QU4@nvidia.com>
+ <D9C61DDI99JX.31T59XPQGYBB1@nvidia.com> <aAfL-e6qA9oBce5t@cassiopeiae> <D9DM3AR3FUAF.6JSNSB9WAJ4T@nvidia.com>
+Message-ID: <aAiqCXB9sJe_v6Yc@google.com>
+Subject: Re: [PATCH v3] rust: alloc: implement `extend` for `Vec`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-Lyude Paul <lyude@redhat.com> writes:
+On Wed, Apr 23, 2025 at 10:02:58AM +0900, Alexandre Courbot wrote:
+> The problem I see is that if you try and do something like:
+> 
+>   vec.extend((0..10).into_iter().skip(2));
+> 
+> with the standard library, then the use of `skip` will remove the
+> `TrustedLen` implementation from the resulting iterator and
+> `extend_desugared` will be called instead of `extend_trusted`, which
+> could add some unwanted (and unexpected) overhead.
+> 
+> If we want an implementation of `extend` as simple as "confidently
+> increase the length of the vector and copy the new items into it, once",
+> then we need a trait that can be implemented on both shrinking and
+> extending adapters. Anything else and we might trick the caller into a
+> code path less efficient than expected (i.e. my original version, which
+> generates more core even for the obvious cases that are `extend_with`
+> and `extend_from_slice`). Or if we rely on `TrustedLen` solely in the
+> kernel, then `extend` could not be called at all with this particular
+> iterator.
+> 
+> There is also the fact that `TrustedLen` is behind a nightly feature,
+> which I guess is another obstacle for using it.
 
-> Just a drive-by fix I noticed: we don't actually document what the return
-> value from cancel() does, so do that.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  rust/kernel/time/hrtimer.rs | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index 27243eaaf8ed7..bfe0e25f5abd0 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -304,6 +304,8 @@ pub unsafe trait HrTimerHandle {
->      /// Note that the timer might be started by a concurrent start operation. If
->      /// so, the timer might not be in the **stopped** state when this function
->      /// returns.
-> +    ///
-> +    /// Returns whether or not the timer was running.
+The stdlib alloc crate relies on specialization to speed up methods
+related to iterators. We can't use specialization, so losing these
+optimizations is simply a cost of not using the upstream alloc library
+that we have to accept.
 
-How about:
-
-  Returns true if the timer was running.
-
-?
-
-
-Best regards,
-Andreas Hindborg
-
-
+Alice
