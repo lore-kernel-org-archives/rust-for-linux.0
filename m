@@ -1,71 +1,71 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D64284685;
-	Wed, 23 Apr 2025 15:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085AB280CF6;
+	Wed, 23 Apr 2025 15:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422750; cv=none; b=nKOSPjD/5ggEwXJLUU9v3EVmCkGs5L0Nju8a5eOU2r++TyZdLBv+43fhrRO6iZopFD1pCY6Uvm0hgKoFtRdyCWDnknh3hkfwcfLwkkr0OPL87XNOsK/RjheZ/HqepNlnpWG7IhPoqiyzKGWMMmWKVNoNgTBgiy6vVx9E5bQUGRI=
+	t=1745423012; cv=none; b=tRtfubv3k1izwXNHGhDNPa8frXP18NZG7h7kaOuzETdChn+6M+ICUeTzw2B66hcDG0wPs7SijC+PYGKzKwAATpBYyU5LQWa+sFKN6nSgOavfdqrmjH9SL4+l6m7ll8aFk7EQiGdqeRprSREmAVG4IPuOlcGWdkdnU3kAjnGMoTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422750; c=relaxed/simple;
-	bh=aLWLGHASdIvWAs2AKS4uxhlZjTrDzIENEUz3FT77U8s=;
+	s=arc-20240116; t=1745423012; c=relaxed/simple;
+	bh=PX4ME2w3S+dcCpP/2hTIRBjPlH5zpMlsR+JMuyfS+lk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kwrQiBruvrYByrYD9EP45Dq56ZmYyOTTc2lwaNXhYi/H3K/0hl7RmXuMejD6PvlyNvY8Wf1WTs1BEoBx9GqRIQl+5FA41vhuaKzpkCgbTVucOqIgrR8YVdxoJ8Y4b3U2uvdwsA+Ks5TjN3mXQHl2oxUhX5V12AoOr8muEgUtBXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ekQhzARo; arc=none smtp.client-ip=209.85.208.175
+	 To:Cc:Content-Type; b=hynYAMStkcJELfbgQf+1JeNfBgtqbu8u2gcAARfzVKIeZX38zNA5V4pN0UVtAjgCvHNLx269or3WycVg1WWrr7e3KfkZ4fdxWsV+L4Ni5dyayrmZJO7Hnei4d1yCjoHdYbvtjCUK8JXewjinKgPHDo7GFSc0jnzZ2ePXESQ0wks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IalKwVI+; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ekQhzARo"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3106217268dso405781fa.1;
-        Wed, 23 Apr 2025 08:39:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IalKwVI+"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-310447fe59aso753931fa.0;
+        Wed, 23 Apr 2025 08:43:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745422747; x=1746027547; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745423009; x=1746027809; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qj/rpTDCGzjajFcuOznqZseSs8yVW83bcJ88dS6enYQ=;
-        b=ekQhzARoBIE5TqSLnMQLhMF6D7cuwfr3sq/MGMV/B7h+ywV5beP76/gm05MJ3jI+5p
-         z/EZPBKkfU2dIJFcuDpJn+PZu1uUhcXdW97itOmkvhlZjUaYNPf0nnT6H9exawB3mh6a
-         ssbncOmRjXiPdgBG8ylzmH0xeXSIPRzt91/PurKCpsoRikl+GJpJKCGbPgEWnlZWJx2Q
-         /fEiepTfcOlBUSrKvPqlKIeoL4O1VZ3qFJc4+d1+6ZpRe6I0NbFsUBkCWgt/SuP2LNcg
-         Zju+8+gmrU5lknTApMdAMfVEK+rVn802sy1GcDkeDiBS42/FaME0ID5utHp00+0HHAl7
-         LWeg==
+        bh=PX4ME2w3S+dcCpP/2hTIRBjPlH5zpMlsR+JMuyfS+lk=;
+        b=IalKwVI+7ZDYMUYQDZcPw60APh0jMN3FTNiYsj3zJYXM/ozpG8MjWXbf20gmcAWWjP
+         lyQdFeEtp1A1Ylo04GDeItz/Gdk2/7XbGlWNZaFBPDXRSelOIBXbDGJKJKtXtKaGPd3Z
+         KD49GAnsL8IxMiYW+tjltnneU9vE+mCv+NS9XJXueD6LZBIaIQTq21HzXg5m43rCX2hZ
+         iIiq7f/kqqlhRo4RA/D7L4mDlC90LnYIq++LoNA60cZSyS1WMM08CvtvY89HyDXxoVJx
+         LHlCIHDT4blQKzpr3rbef+JX89pPFYlM//ICHKUSuYxEVmMOUYiQZTRbmVHdBAO+Bo95
+         BFSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745422747; x=1746027547;
+        d=1e100.net; s=20230601; t=1745423009; x=1746027809;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Qj/rpTDCGzjajFcuOznqZseSs8yVW83bcJ88dS6enYQ=;
-        b=JuqhCcQ3+aH0pCp916zY2zQ7nMybCh0awFezJXOifU3QTzs6GKlFfZQMi+ptB9SaeS
-         3AmQm/FC5dCVyT9VLr15sApRCpxi+lxx52H78LFkJ2FpjGt6/3G+kVX+3uf3rY3ra+bt
-         +au7qfrRlg8MZUgchTNBE6PPYaPRjSFtYv2kFsuUaBuZypDgMiuINaHxULa/+gpjfM0P
-         1oLHOxf/rr2UzhVaeMfpMooCCB1BIW3jLvS3FLsvwYX0OTiX07BK8lnB9rRNxGDc+ZgH
-         jnJV4ZaHMuFPisF/ncvX9Vf/0vmDcw6L3iIhWFpaWF/AYVZmBYgOWU0hokUpWKf0ag0Y
-         jSVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSt8hgaAc1ms39/78O4fK8XkuZaYIh7TQgM9A9BqJvmR9j3A3U6lq75LZieMOyqQ+4Na/JHUM+fLFSiF0=@vger.kernel.org, AJvYcCWYfqtMZG8ONw0xSsdw4v5Y6PiWigsanjn2C3CF2UH9MiseZrW4V8n7FMBCJk4l/yjvL8Je1oMiuCEJV7EtFCM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUqkDhgmVdWAXT1nn/C9YtmsxA/b7C7Fc8eqM90ffZs8WuTyIc
-	/uTDsMMAk4O9tJ/yU7U2pJRJYd+6JDakCuc+v0rBNr2Ks3QsEJpCzv7a/Sq4VK/USXUMYtutaoB
-	d62NQpub6PYFe+///YG3YWpr5JMQ=
-X-Gm-Gg: ASbGncuCbBei1zVwQmAvaSoBZlB48JAvSgXGC4k8Xuy0l0XpskZLNPDQCaxzcf9W8hM
-	NPyRFf1WT8yU1uId907OBC1fjuyFt2Bt/W0P0B0+xWqTZhf4FulzPIQtSn576+06/RQV2FomIEK
-	z01m5j70GQ9yrnALRfCc5UqKx7eYWaoskg7EH8Kg==
-X-Google-Smtp-Source: AGHT+IErTYD9FmiTU04dScC6WH5JBnJKk2+xJBs+4iYQrHVDYocNYDbve58f7lhlHHFbzIrwogO1DTuhgKl8AkuRRcI=
-X-Received: by 2002:a05:651c:1a0a:b0:30d:e104:9ad4 with SMTP id
- 38308e7fff4ca-31090578015mr52371301fa.41.1745422746277; Wed, 23 Apr 2025
- 08:39:06 -0700 (PDT)
+        bh=PX4ME2w3S+dcCpP/2hTIRBjPlH5zpMlsR+JMuyfS+lk=;
+        b=kx67eZu5ky0kMYnk8hwUXT/UKSQBemURN7Xe8RDwc49qXe63WRrsYRjJtWvuPhFDSS
+         YS5+nm+zABnX0XCwQ0xhSfsUsfCcFl0kie9VpHveecOSgLRxO8uPy80ZpIV2uiS7zkVr
+         olb7A9sY6M8gXQatR7UWcR39fV4EUzd7pVlkETol4dGOcIY750gaazlPE22zEq+En04m
+         DItae69d6DPpizkWP7foi7ybswhUQJvRXZ31yvQ+Ud7pdnmQGkB5JPp6h2Pl13iyg9wX
+         EFF/rknhzsvQGR+auARaWscZ+U4d28TENjiObqJzMYT0yt2Bo28/DMWxHe02jhu7GIFg
+         XYFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/r6lZFL6lNKvqpI41t/yfnDRbDiR9xkkhUy9/klXgoXiN86JL0E3pXSv7ut18y8bdQuk/Ei/LD6D4iP0=@vger.kernel.org, AJvYcCU86yyNXTpgNfKttTtt1BpQ8T6s0B56a1NldogAd55ljcUD7SSgP1E0sp4hkWgaFpkqVeZ68maSEz/1SwOV2dE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzolfRfPml86aaJvH3jBPKg4woDvH9vLretFCpIXEoBK01pKUO8
+	6vG8lxjhzMWU9nPDBDzLl99aRfr3r+0Nguj9Ob6cElljQ5pY+Ajrc38yqgeX68ARNxNrAHvsPQc
+	K/+QYjFhvVVClWXuuy4+zKu52GOhNMTVQ
+X-Gm-Gg: ASbGncuAdRoV69ErYlXQtiwyw0NHOfejfQ1eHE0yGaWKULOHDolDtjxhLCjHk/NlRD8
+	YdYVPJg9FLpuInkwPjEJ2YcRRiWAw9bPyJJafAmwP+3MbltETGZMA5mahh/OulOflmPbjDCnWx5
+	jM4OMB8cO7Ms2MeKUJoGj/RFoM85xWVjZ4GKOkRBU15ap6OG+b
+X-Google-Smtp-Source: AGHT+IH7SoBnssRznhZ1kxAqRGpnQ9BaX4uHJv5FWrFIjk1fqpZx8teMonpZRSxauUBNqGEQhiD16FmTA3ygoDWTJbw=
+X-Received: by 2002:a2e:be21:0:b0:30b:f0fd:fd19 with SMTP id
+ 38308e7fff4ca-310904ede00mr60603761fa.16.1745423008767; Wed, 23 Apr 2025
+ 08:43:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250422-vec-methods-v3-0-deff5eea568a@google.com> <20250422-vec-methods-v3-3-deff5eea568a@google.com>
-In-Reply-To: <20250422-vec-methods-v3-3-deff5eea568a@google.com>
+References: <20250422-vec-methods-v3-0-deff5eea568a@google.com> <20250422-vec-methods-v3-2-deff5eea568a@google.com>
+In-Reply-To: <20250422-vec-methods-v3-2-deff5eea568a@google.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 23 Apr 2025 11:38:28 -0400
-X-Gm-Features: ATxdqUFiwujpGMdZdZ1giwLuKCi0Tc-D6TTwU-UiYOcKmywexj8MpadUnkae0fU
-Message-ID: <CAJ-ks9mg7U0YV805YEY_ViB0i3f_afHcR1xFEe9dhZeQz=rFDQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/7] rust: alloc: add Vec::push_within_capacity
+Date: Wed, 23 Apr 2025 11:42:52 -0400
+X-Gm-Features: ATxdqUGHO53nvjmgJpnYa-3-3FIBOPtmp-9r0P_QNszRBVJYYkhQ801N4EG_e_c
+Message-ID: <CAJ-ks9n5qzUBinofbWsrR7CH6zjqtB6QCs85L0JTzYw7JGcxbg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/7] rust: alloc: add Vec::pop
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
@@ -75,101 +75,10 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Apr 22, 2025 at 5:53=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> This introduces a new method called `push_within_capacity` for appending
-> to a vector without attempting to allocate if the capacity is full. Rust
-> Binder will use this in various places to safely push to a vector while
-> holding a spinlock.
->
-> The implementation is moved to a push_within_capacity_unchecked method.
-> This is preferred over having push() call push_within_capacity()
-> followed by an unwrap_unchecked() for simpler unsafe.
+> This introduces a basic method that our custom Vec is missing. I expect
+> that it will be used in many places, but at the time of writing, Rust
+> Binder has six calls to Vec::pop.
 >
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/alloc/kvec.rs | 41 ++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 38 insertions(+), 3 deletions(-)
->
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index ebca0cfd31c67f3ce13c4825d7039e34bb54f4d4..a005a295262cb1e8b7c118125=
-ffa07ae252e257c 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -307,17 +307,52 @@ pub fn spare_capacity_mut(&mut self) -> &mut [Maybe=
-Uninit<T>] {
->      /// ```
->      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError>=
- {
->          self.reserve(1, flags)?;
-> +        // SAFETY: The call to `reserve` was successful, so the capacity=
- is at least one greater
-> +        // than the length.
-> +        unsafe { self.push_within_capacity_unchecked(v) };
-> +        Ok(())
-> +    }
-> +
-> +    /// Appends an element to the back of the [`Vec`] instance without r=
-eallocating.
-> +    ///
-> +    /// Fails if the vector does not have capacity for the new element.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let mut v =3D KVec::with_capacity(10, GFP_KERNEL);
-> +    /// for i in 0..10 {
-> +    ///     v.push_within_capacity(i).unwrap();
-> +    /// }
-> +    ///
-> +    /// assert!(v.push_within_capacity(10).is_err());
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn push_within_capacity(&mut self, v: T) -> Result<(), T> {
-> +        if self.len() < self.capacity() {
-> +            // SAFETY: The length is less than the capacity.
-> +            unsafe { self.push_within_capacity_unchecked(v) };
-> +            Ok(())
-> +        } else {
-> +            Err(v)
-> +        }
-> +    }
->
-> +    /// Appends an element to the back of the [`Vec`] instance without r=
-eallocating.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The length must be less than the capacity.
-> +    pub unsafe fn push_within_capacity_unchecked(&mut self, v: T) {
 
-Did you intend for this to be pub? The commit message doesn't
-obviously indicate it.
-
->          let spare =3D self.spare_capacity_mut();
->
->          // SAFETY: The call to `reserve` was successful so the spare cap=
-acity is at least 1.
-
-What call to reserve?
-
->          unsafe { spare.get_unchecked_mut(0) }.write(v);
->
->          // SAFETY: We just initialised the first spare entry, so it is s=
-afe to increase the length
-> -        // by 1. We also know that the new length is <=3D capacity becau=
-se of the previous call to
-> -        // `reserve` above.
-> +        // by 1. We also know that the new length is <=3D capacity becau=
-se the caller guarantees that
-> +        // the length is less than the capacity at the beginning of this=
- function.
->          unsafe { self.inc_len(1) };
-> -        Ok(())
->      }
->
->      /// Removes the last element from a vector and returns it, or `None`=
- if it is empty.
->
-> --
-> 2.49.0.805.g082f7c87e0-goog
->
->
+Could this be written in terms of `remove`?
