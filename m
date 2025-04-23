@@ -1,243 +1,218 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7152857C3;
-	Wed, 23 Apr 2025 18:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EA8291170;
+	Wed, 23 Apr 2025 19:41:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745431256; cv=none; b=JCmxP8OpPHc2xZaqAPzS0PCZb2xq1RsMz3DsYOHugsEZ2+HM1Q4fEgGm7IryBLGcUOs41qgqBx0GMZkGJX+zlJmryVfEZ3ZQ+KbThyl9IMZVeZyKoNCykQb3k1+RRsAtclgXk5xQdGKHPmVZGWkP3kjfgT77xMNpVco1ldcMGs8=
+	t=1745437294; cv=none; b=RR1POMMnz5wxIZ4JFMObqERDP/cchcWBUaWdkM9zRgFzbs9X48+Hal6oMfBjmQALwLGWVHVrD6xwe1c1Dps2LH5W6hSkbG+hrKfy4JdYc2CaAgIEHm7voShLShc5oq2eMpHnJW1hJRcX2QTZHwNrlWiz/a0SWoCcvHyC7IOZES0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745431256; c=relaxed/simple;
-	bh=ymexwNvJ1/EAinG/zi1NtDKwBKuHLKjeKvgbmvFz2Gc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RTsf5Gtqk6foIlawog0Ls3+0KS11tD+GRnyP1/c6fpCMZ9PRbkyWHQ/8/q8qpEWd2Qc5YjKd3jVXLXe/JsK2Du+KxSOK48GYWMpW/vggliU7eCaSFSBUUD4fTD+gTffp77cDhUokfLe+L+3AlMiA+VwZKabcBpmQkEDDG5NyaYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xez8iLjQ; arc=none smtp.client-ip=209.85.215.174
+	s=arc-20240116; t=1745437294; c=relaxed/simple;
+	bh=gz0UTPi1bcomJR/H3DIjAyZl+dlC3YhO+kGBOC4UWDA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CeqhB90tcEUrRnBiVLzpE1GP/aXy1VnGeSR3qGM9TlRuox+fhXITj2HMUH1k3nKDsE03re19Sm1kn9R/rGnmDHfTLeAA2aVtnIW9f7pDJEDa5bhuf5LMA+jFY5d6qPyI2IULpzdi94YZI0IUWMeECTNQOXlu9C8iQkQpP19gspQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gcqMR1sU; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xez8iLjQ"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-ae727e87c26so42157a12.0;
-        Wed, 23 Apr 2025 11:00:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gcqMR1sU"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3085f827538so342780a91.0;
+        Wed, 23 Apr 2025 12:41:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745431254; x=1746036054; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MLj0AEIP5k5BWoEmE/2OL2Yiflz2gSexDM70Wk9dzEs=;
-        b=Xez8iLjQLRCbPccv0ByMZE2CA6dnIxdEOgxP23TZqpD/eeCZUmaRxwLP7JK4ki3Lkn
-         rC169UbGb24E3tNy8r77WxxQgHXh7wkPOrB0UpWldKsT+RNASDvBhS9OYtrWjt3GDj+z
-         VDetTKhhoPdKgpyYs7cW1atBloX0nYg3n6QiBld1pO7tL/UXBOQPPqUODCwEebAJ0c0I
-         oi8IUKTa74Rs+STb8hfU6bbfTmRFCxG0roxNUCe8Y3wZoMtyODhMgaA87lGAW+H2FC3a
-         qptuieEoYs8f+4nbCHb/iujQErHiyP4fKz/itM9xfDtR7SYrNRqEOZy3clHQ9fv1V7Yy
-         QMUQ==
+        d=gmail.com; s=20230601; t=1745437291; x=1746042091; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xKJHASye17MFM8qC1IGdA4juHz1iYrFYpUpJMos7xP8=;
+        b=gcqMR1sUAr+CxmSS8UYRs19S2DiWzBaskP4GJ4W/LXTm2U2N2iSlqkkAJiJ/PlnJyB
+         W3rSUW32O69snjirM8C5gqLg9hxLIvnf84JFec9YWUJJ7zux7IADmLNTpLTTIJKyOQCT
+         g/ve4pI7HpC0gE+7rf4Nb6u/TeWfG/ApKr+R18kjxbZzLWYwNkwA21XrtSQl5gblJ8Um
+         fGc1bELm3gnE4mz0F30qbbtm8RDR/DuC0LEew5BIHyzjfQs07/ci7PRG8lhTwQyo70RO
+         a+4ZojWQNekr+PJcoDAOvpIXI+r59whcT2NFwZmaFWv+NNiUzlNgllBjgf0JlIA9U7eA
+         kMOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745431254; x=1746036054;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MLj0AEIP5k5BWoEmE/2OL2Yiflz2gSexDM70Wk9dzEs=;
-        b=lPjDivJub+Z77kOA3Jfs6Cjbu5C3YW3ALAslwLhIElQLxBeGxB59g/O3O1l4gEPCRr
-         KopLSo0sGJBO+ssFUtXIZjbylwhmfPBjdLKXU/J6Sdk9gRbPssYGO6bpU9zDxBwejY+N
-         JsjITB5BAcwkPUOWBvTmZgAU/xF5NGtnk6D2BeuYsSf8gN3k9B2krueD6yaxBJpeauJj
-         wIb+39h4cckcoBGRiJKdHNG4ztW4hWlJKQq/fBMqmv7TCeIhLlqPYMJVeFCGoqjmNO+f
-         wFTbIGZi7ApBT6sR2bVYMQNneTSQ8M+lbYFTqXPy6l3apbMhyZjvQTATlxxkdtdzwjAk
-         2VhA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+ACVdZHttg5IWekOW/dXXh1OE6II63RJzBca800LK/o+guGdiq2GvWYaAfwrXSGGVIkXHznUM76n9z+sj6tY=@vger.kernel.org, AJvYcCUGGMBKNym1iTLxEmKXmVa3n5PhOcckIs5aemzPj8z7lNMmK13InR/qo5e93VAgoTeJ0rR4bcRmEf9tYxQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAO2q0xKawDgRNIpFWeDrjp0X+oRt+DbX3bStFerQh7zTYnmIi
-	IhjzdOGtMAPHVLgW7XHADdIRMYU3KAE7ySDMeLT9rp+abmstlzsa
-X-Gm-Gg: ASbGncv90o2cjO5hhwVLiO2JFghup8XYpH9PNePRkQnMX7lh3n5qJy8xPRxJv+opwyS
-	BiIYMFeo8Gjpru9gITwz+y7/SnSuj+Dxhacw/UuXJ78ldcemDZaPfzeJG5GZUU9twgIP+pJEfpQ
-	fACH03JbSjHtrzpTK2foptS+wStZuqySeg3a4ylySU3pJdL4Y4GwJ+9cHUxI8uZeB3PpcyWbrGy
-	btt2Ex5ZIWTWY6Wbu7Krn1ZCpuxDsYs4ySElgaqTzEFIerfMELvXy5Nn8VHu1SKEPKhD2j0C0Zf
-	RtUh536MWyV9LGVLXiP61J8mVt59wr8wRFI65+Y+
-X-Google-Smtp-Source: AGHT+IHne5acboLuvanhFQL98mmgnliemT4z2ybbzLQqONo8VXb37P9fRV4939IghiKNvKqM3y+5Og==
-X-Received: by 2002:a17:90b:3c92:b0:2fe:68a5:d84b with SMTP id 98e67ed59e1d1-309ec759774mr113963a91.1.1745431253607;
-        Wed, 23 Apr 2025 11:00:53 -0700 (PDT)
-Received: from localhost ([216.228.127.130])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309dfa0d74dsm1959115a91.20.2025.04.23.11.00.52
+        d=1e100.net; s=20230601; t=1745437291; x=1746042091;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xKJHASye17MFM8qC1IGdA4juHz1iYrFYpUpJMos7xP8=;
+        b=TZBzC+RqL+629OxZy2iBg+k5ymRjgJX1lL5z+13MRcT3eZhtRgOHHDa95YRwpIceEo
+         IZUlJZNRKJMbah1FDFXg4Fy1fD6AR+W1964dA6fln4BAFLuucXsh9QLi7PrDh1G9dU38
+         ELDS4hB1BMrzFsfu9K1JEFuDtBQF3DLFi/PaiQcUGssCv5J43DQxbXtXgqolADiMN/DR
+         /tXd/RlBD8TDk3MlOu4UKXwIEOVyYEAqx+McPXM4b97Andsj/qc8CIE+Dlew0dLMeVOs
+         YlVlhMutNPC81OrDh0FlNf9I79k9aBVmXvZ14oJ6N/lnwkFNaG3phR1881G+a5iRumXY
+         yK3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUCK5krVVKqqY+slVcMxmK38xaHJyfkIupcQGXYp5IrxjHFMvOA5QZJIwyBuDJvtOuX1hHEJJg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKuGszMQllFXJqFeL92xMCxZrdi5MPErF+X+48E7WLlKHcSNYJ
+	G1RHVlWfkipJH7xW3uHD1NwX6YEnesq2VP6J+jkQcXvwNF5YdYki+j8Bfsg8
+X-Gm-Gg: ASbGncsyPIcjLiu/OrcCzQhse0EjcMI8ngmeqZXiJEtGmd+o9PUmkoErLYp7JlhZcUe
+	JYm1ppmJEYo6gyeMflGHF6UwClkaXC9pYFxopy15R/R1cou8yiTiJJBkhpmEg6FxS84ZjfgXtRq
+	qTENLMFI13IgAjONAA4wLVD7aDnNYfo9ayfT9DrPrGbsisUsiXtHhkXZyrbaCTQTOFlQyMX0A3Q
+	w9bczfo1Wx1PZEURSqe2f5v9CebO+tyZUU14400OW1LHwiNSYlJXjbA9Xcx6SHX4KT90ksa0OWR
+	D+Wj8xCNnsDMPJmi8ZSrZqKbZo5NOhuN14uQ7TphmdNdPdgU0mQt1NjGMGZkm5U7dgJrTCE3Bb1
+	sbjKHen+l1d4vGed+UQ==
+X-Google-Smtp-Source: AGHT+IGvU7L8rXtlOKJZ4PzXC0+9UMN0pAOvi0Kb8qDu8H6XSLavkF5K8Ta09kiMwI4/YnwX2PsFZQ==
+X-Received: by 2002:a17:90b:2f4f:b0:2ff:6a5f:9b39 with SMTP id 98e67ed59e1d1-309ed286434mr94763a91.18.1745437290579;
+        Wed, 23 Apr 2025 12:41:30 -0700 (PDT)
+Received: from mew.. (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309df9ef918sm2056475a91.7.2025.04.23.12.41.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 11:00:52 -0700 (PDT)
-Date: Wed, 23 Apr 2025 14:00:50 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Burak Emir <bqe@google.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/5] rust: adds Bitmap API, ID pool and bindings
-Message-ID: <aAkq0kQl5WFaW0xM@yury>
-References: <20250423134344.3888205-2-bqe@google.com>
- <aAkKoQQH0t9KtIxD@yury>
- <CAH5fLggFUM=eJR2u06QsLMxXP+cJwm881ip+rze_sM=tXpA9og@mail.gmail.com>
- <aAkVu8Uf3J8F25fY@Mac.home>
- <aAkfOe5ZDUgIawyU@yury>
- <aAkkngAzL5Roh_3p@yury>
- <680928d5.050a0220.2b8494.c4d2@mx.google.com>
+        Wed, 23 Apr 2025 12:41:30 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	tmgross@umich.edu,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	frederic@kernel.org,
+	tglx@linutronix.de,
+	arnd@arndb.de,
+	jstultz@google.com,
+	sboyd@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com,
+	rostedt@goodmis.org,
+	bsegall@google.com,
+	mgorman@suse.de,
+	vschneid@redhat.com,
+	tgunders@redhat.com,
+	me@kloenk.dev,
+	david.laight.linux@gmail.com,
+	boqun.feng@gmail.com
+Subject: [PATCH v15 0/6] rust: Add IO polling
+Date: Thu, 24 Apr 2025 04:28:50 +0900
+Message-ID: <20250423192857.199712-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <680928d5.050a0220.2b8494.c4d2@mx.google.com>
 
-On Wed, Apr 23, 2025 at 10:52:19AM -0700, Boqun Feng wrote:
-> On Wed, Apr 23, 2025 at 01:34:22PM -0400, Yury Norov wrote:
-> > On Wed, Apr 23, 2025 at 01:11:24PM -0400, Yury Norov wrote:
-> > > On Wed, Apr 23, 2025 at 09:30:51AM -0700, Boqun Feng wrote:
-> > > > On Wed, Apr 23, 2025 at 06:19:18PM +0200, Alice Ryhl wrote:
-> > > > > On Wed, Apr 23, 2025 at 5:43 PM Yury Norov <yury.norov@gmail.com> wrote:
-> > > > > >
-> > > > > > I received it twice - with timestamps 1:36 and 1:43. Assuming they are
-> > > > > > identical, and ignoring the former.
-> > > > > >
-> > > > > > On Wed, Apr 23, 2025 at 01:43:32PM +0000, Burak Emir wrote:
-> > > > > > > This series adds a Rust bitmap API for porting the approach from
-> > > > > > > commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
-> > > > > > > to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
-> > > > > > >
-> > > > > > > The Rust bitmap API provides a safe abstraction to underlying bitmap
-> > > > > > > and bitops operations. For now, only includes method necessary for
-> > > > > > > dbitmap.h, more can be added later. We perform bounds checks for
-> > > > > > > hardening, violations are programmer errors that result in panics.
-> > > > > > >
-> > > > > > > We include set_bit_atomic and clear_bit_atomic operations. One has
-> > > > > > > to avoid races with non-atomic operations, which is ensure by the
-> > > > > > > Rust type system: either callers have shared references &bitmap in
-> > > > > > > which case the mutations are atomic operations. Or there is a
-> > > > > > > exclusive reference &mut bitmap, in which case there is no concurrent
-> > > > > > > access.
-> > > > > >
-> > > > > > It's not about shared references only. One can take a mutable
-> > > > > > reference, and still may have a race:
-> > > > > >
-> > > > > > CPU1                            CPU2
-> > > > > >
-> > > > > > take mut ref
-> > > > > > bitmap.set() // non-atomic
-> > > > > > put mut ref
-> > > > > >                                 take mut ref
-> > > > > >                                 bitmap.test() // read as 0
-> > > > > > data propagated to memory
-> > > > > >                                 bitmap.test() // read as 1
-> > > > > >
-> > > > > > To make this scenario impossible, either put or take mut ref
-> > > > > > should imply global cache flush, because bitmap array is not
-> > > > > > an internal data for the Bitmap class (only the pointer is).
-> > > > > >
-> > > > > > I already asked you to point me to the specification that states that
-> > > > > > taking mutable reference implies flushing all the caches to the point
-> > > > > > of coherency, but you didn't share it. And I doubt that compiler does
-> > > > > > it, for the performance considerations.
-> > > > > 
-> > > > > The flushing of caches and so on *is* implied. It doesn't happen every
-> > > > > time you take a mutable reference, but for you to be able to take a
-> > > > > mut ref on CPU2 after releasing it on CPU1, there must be a flush
-> > > > > somewhere in between.
-> > > > > 
-> > > > 
-> > > > Yeah, and it's not just "flushing of caches", it's making CPU1's memory
-> > > > operations on the object pointed by "mut ref" observable to CPU2. If
-> > > > CPU1 and CPU2 sync with the a lock, then lock guarantees that, and if
-> > > > CPU1 and CPU2 sync with a store-release+load-acquire, the
-> > > > RELEASE-ACQUIRE ordering guarantees that as well.
-> > > 
-> > > Not sure what you mean. Atomic set_bit() and clear() bit are often
-> > > implemented in asm, and there's no acquire-release semantic.
-> > 
-> > Sorry, hit 'send' preliminary.
-> > 
-> > > > Yeah, and it's not just "flushing of caches", it's making CPU1's memory
-> > > > operations on the object pointed by "mut ref" observable to CPU2. If
-> > > > CPU1 and CPU2 sync with the a lock, then lock guarantees that, 
-> > 
-> > The problem here is that the object pointed by the 'mut ref' is the
-> > rust class Bitmap. The class itself allocates an array, which is used
-> > as an actual storage. The Rust class and C array will likely not share
-> > cache lines.
-> > 
-> > The pointer is returned from a C call bitmap_zalloc(), so I don't
-> > think it's possible for Rust compiler to realize that the number
-> > stored in Bitmap is a pointer to data of certain size, and that it
-> > should be flushed at "mut ref" put... That's why I guessed a global
-> > flush.
-> > 
-> 
-> You don't do the flush in the C code either, right? You would rely on
-> some existing synchronization between threads to make sure CPU2 observes
-> the memory effect of CPU1 (if that's what you want).
-> 
-> > Yeah, would be great to understand how this all works.
-> > 
-> > As a side question: in regular C spinlocks, can you point me to the
-> > place where the caches get flushed when a lock moves from CPU1 to
-> > CPU2? I spent some time looking at the code, but found nothing myself.
-> > Or this implemented in a different way?
-> 
-> Oh I see, the simple answer would be "the fact that cache flushing is
-> done is implied", now let's take a simple example:
-> 
-> 	CPU 1			CPU 2
-> 	=====			=====
-> 	spin_lock();
-> 	x = 1;
-> 	spin_unlock();
-> 
-> 				spin_lock();
-> 				r1 = x;		// r1 == 1
-> 				spin_unlock();
-> 
-> that is, if CPU 2 gets the lock later than CPU 1, r1 is guaranteed to be
-> 1, right? Now let's open the box, with a trivial spinlock implementation:
-> 
-> 	CPU 1			CPU 2
-> 	=====			=====
-> 	spin_lock();
-> 	x = 1;
-> 	spin_unlock():
-> 	  smp_store_release(lock, 0);
-> 
-> 				spin_lock():
-> 				  while (cmpxchg_acquire(lock, 0, 1) != 0) { }
-> 				  
-> 				r1 = x;		// r1 == 1
-> 				spin_unlock();
-> 
-> now, for CPU2 to acquire the lock, the cmpxchg_acquire() has to succeed,
-> that means a few things:
-> 
-> 1. 	CPU2 observes the lock value to be 0, i.e CPU2 observes the
-> 	store of CPU1 on the lock.
-> 
-> 2.	Since the smp_store_release() on CPU1, and the cmpxchg_acquire()
-> 	on CPU2, it's guaranteed that CPU2 has observed the memory
-> 	effect before the smp_store_release() on CPU1. And this is the
-> 	"implied" part. In the real hardware cache protocal, what the
-> 	smp_store_release() does is basically "flush/invalidate the
-> 	cache and issue the store", therefore since CPU2 observes the
-> 	store part of the smp_store_release(), it's implied that the
-> 	cache flush/invalidate is observed by CPU2 already. Of course
-> 	the actual hardware cache protocal is more complicated, but this
-> 	is the gist of it.
-> 
-> Based on 1 & 2, normally a programer won't need to reason about where
-> the cache flush is actually issued, but rather the synchronization built
-> vi the shared variables (in this case, it's the "lock").
-> 
-> Hope this could help.
+Add two new types, Instant and Delta, which represent a specific point
+in time and a span of time, respectively, with Rust version of
+fsleep().
 
-Yeah, that helped a lot. Thank you!
+I dropped patches related with read_poll_timeout() in this version,
+which we haven't reached agreement on yet. There are other potential
+uses for the Instant and Delta types, so it's better to upstream them
+first. Note that I haven't changed the subject to avoid confusion.
 
-So, if this Rust mutable reference is implemented similarly to a
-regular spinlock, I've no more questions.
+Unlike the old rust time branch, this adds a wrapper for fsleep()
+instead of msleep(). fsleep() automatically chooses the best sleep
+method based on a duration.
 
-Thanks again for the explanation.
+v15
+- fix the comment and commit message on Ktime
+v14: https://lore.kernel.org/lkml/20250422135336.194579-1-fujita.tomonori@gmail.com/
+- rebased on timekeeping-next
+- add Ktime type temporarily to hrtimer
+v13: https://lore.kernel.org/lkml/20250413104310.162045-1-fujita.tomonori@gmail.com/
+- fix typo in MAINTAINERS file
+v12: https://lore.kernel.org/lkml/20250406013445.124688-1-fujita.tomonori@gmail.com/
+- drop #1, #6, and #7 patches, which we haven't reached agreement on yet
+- adjust hrtimer code to use Instance for the removal of Ktime
+v11: https://lore.kernel.org/lkml/20250220070611.214262-1-fujita.tomonori@gmail.com/
+- use file_len arg name in __might_resched_precision() instead of len for clarity
+- remove unnecessary strlen in __might_resched(); just use a large value for the precision
+- add more doc and example for read_poll_timeout()
+- fix read_poll_timeout() to call __might_sleep() only with CONFIG_DEBUG_ATOMIC_SLEEP enabled
+- call might_sleep() instead of __might_sleep() in read_poll_timeout() to match the C version
+- Add new sections for the abstractions in MAINTAINERS instead of adding rust files to the existing sections
+v10: https://lore.kernel.org/lkml/20250207132623.168854-1-fujita.tomonori@gmail.com/
+- rebased on rust-next
+- use Option type for timeout argument for read_poll_timeout()
+- remove obsoleted comment on read_poll_timeout()
+v9: https://lore.kernel.org/lkml/20250125101854.112261-1-fujita.tomonori@gmail.com/
+- make the might_sleep() changes into as a separate patch
+- add as_millis() method to Delta for Binder driver
+- make Delta's as_*() methods const (useful in some use cases)
+- add Delta::ZERO const; used in fsleep()
+- fix typos
+- use intra-doc links
+- place the #[inline] marker before the documentation
+- remove Instant's from_raw() method
+- add Invariants to Instant type
+- improve Delta's methods documents
+- fix fsleep() SAFETY comment
+- improve fsleep() documents
+- lift T:Copy restriction in read_poll_timeout()
+- use MutFn for Cond in read_poll_timeout() instead of Fn
+- fix might_sleep() call in read_poll_timeout()
+- simplify read_poll_timeout() logic
+v8: https://lore.kernel.org/lkml/20250116044100.80679-1-fujita.tomonori@gmail.com/
+- fix compile warnings
+v7: https://lore.kernel.org/lkml/20241220061853.2782878-1-fujita.tomonori@gmail.com/
+- rebased on rust-next
+- use crate::ffi instead of core::ffi
+v6: https://lore.kernel.org/lkml/20241114070234.116329-1-fujita.tomonori@gmail.com/
+- use super::Delta in delay.rs
+- improve the comments
+- add Delta's is_negative() method
+- rename processor.rs to cpu.rs for cpu_relax()
+- add __might_sleep_precision() taking pointer to a string with the length
+- implement read_poll_timeout as normal function instead of macro
+v5: https://lore.kernel.org/lkml/20241101010121.69221-1-fujita.tomonori@gmail.com/
+- set the range of Delta for fsleep function
+- update comments
+v4: https://lore.kernel.org/lkml/20241025033118.44452-1-fujita.tomonori@gmail.com/
+- rebase on the tip tree's timers/core
+- add Instant instead of using Ktime
+- remove unused basic methods
+- add Delta as_micros_ceil method
+- use const fn for Delta from_* methods
+- add more comments based on the feedback
+- add a safe wrapper for cpu_relax()
+- add __might_sleep() macro
+v3: https://lore.kernel.org/lkml/20241016035214.2229-1-fujita.tomonori@gmail.com/
+- Update time::Delta methods (use i64 for everything)
+- Fix read_poll_timeout to show the proper debug info (file and line)
+- Move fsleep to rust/kernel/time/delay.rs
+- Round up delta for fsleep
+- Access directly ktime_t instead of using ktime APIs
+- Add Eq and Ord with PartialEq and PartialOrd
+v2: https://lore.kernel.org/lkml/20241005122531.20298-1-fujita.tomonori@gmail.com/
+- Introduce time::Delta instead of core::time::Duration
+- Add some trait to Ktime for calculating timeout
+- Use read_poll_timeout in QT2025 driver instead of using fsleep directly
+v1: https://lore.kernel.org/netdev/20241001112512.4861-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (6):
+  rust: hrtimer: Add Ktime temporarily
+  rust: time: Add PartialEq/Eq/PartialOrd/Ord trait to Ktime
+  rust: time: Introduce Delta type
+  rust: time: Introduce Instant type
+  rust: time: Add wrapper for fsleep() function
+  MAINTAINERS: rust: Add a new section for all of the time stuff
+
+ MAINTAINERS                         |  11 +-
+ rust/helpers/helpers.c              |   1 +
+ rust/helpers/time.c                 |   8 ++
+ rust/kernel/time.rs                 | 168 +++++++++++++++++++++-------
+ rust/kernel/time/delay.rs           |  49 ++++++++
+ rust/kernel/time/hrtimer.rs         |  18 ++-
+ rust/kernel/time/hrtimer/arc.rs     |   2 +-
+ rust/kernel/time/hrtimer/pin.rs     |   2 +-
+ rust/kernel/time/hrtimer/pin_mut.rs |   4 +-
+ rust/kernel/time/hrtimer/tbox.rs    |   2 +-
+ 10 files changed, 216 insertions(+), 49 deletions(-)
+ create mode 100644 rust/helpers/time.c
+ create mode 100644 rust/kernel/time/delay.rs
+
+
+base-commit: 8ffd015db85fea3e15a77027fda6c02ced4d2444
+-- 
+2.43.0
+
