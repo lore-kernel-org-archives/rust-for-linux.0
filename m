@@ -1,65 +1,67 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A40CEEAB;
-	Wed, 23 Apr 2025 16:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D002857C4;
+	Wed, 23 Apr 2025 17:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745427399; cv=none; b=LsB6niCLRKJRBiN14o1g8zB7o+KC0ypDij1NT1Vzp3/rOrjOiUJ13ziq67oqY8DkZUVTGXwIVv6gfDliqlMxiOT2x67Y2wmKrFR1OhOWYqSNYNlbjWdvS0pEZJX6daH8Yks35VFhKAt1DyxoZEaSNF/OymD+btPIMjoOk0qheag=
+	t=1745428085; cv=none; b=jQS9G29qvI07BtbNSBv79cUdASsn6f1w3IU4iPuKcBifb4GTLD9pvOzRXHj7fooaG4ERVjmuo7oMVu2BIQtsE+2VmoJT0lWHba7sAqe6zj4SIAquUdGSkXILISkQ4KmZ/oHYcKfQIE5tnpRT/c+HeRo8qbtB1vNH0w0x67sdDUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745427399; c=relaxed/simple;
-	bh=hW7Pk9hidnmZtQDNgmt/o9awtQ9RkrTmjYfXAKrfR4U=;
+	s=arc-20240116; t=1745428085; c=relaxed/simple;
+	bh=faNWnwKoeLaA2ABcfsygKSEnvEwF7jphC7igym4tapw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OBseU2o4zdsjIsu7W1DYRhZT0Hsaul6q2YF0tjvAasrJygKpC7atx5UofqEU+AWTlqLb5u7kUvf2pHUnFnKI7jJiOOS0fpW6EuuhWGl4P2XIb8kCbzjzyKTcK6dlyGV4cZY3EFRjE0tCBIwOyRLehT2GmYmM736asqeGaMRePtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PAFBRest; arc=none smtp.client-ip=209.85.216.44
+	 Content-Type:Content-Disposition:In-Reply-To; b=e2hPg5Gfn992iGbvlIGnV+OR9SZvzVD9jcl0mvogUl3k3NCMCWsB7oHgS4XJ6ntMTOCH1EIaP8mElUlOUSwVdXqFOzJFoVRMY10ODGdAeV0CXHVdCVEk1gsBwhXjtK3efZDE5r/HDBJlq8sawJV/6DnEjpCxLQxZotjkXjudNWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KSSkHA89; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PAFBRest"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-30549dacd53so85666a91.1;
-        Wed, 23 Apr 2025 09:56:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KSSkHA89"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-30155bbbed9so108148a91.1;
+        Wed, 23 Apr 2025 10:08:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745427397; x=1746032197; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gFR+gOpkUdQbM5Rh+p84V4szSqyZ4YTz2YuAgB5+XD4=;
-        b=PAFBRestu9t3LNOmJ/Fj/ZRinDNUY9vLnYIcAYWbLBAhP5GpiufbsP5jibyxvG2wYK
-         CXzb4WUoXV9jsqQnicLBlfczmG0hRd/i/U/pQWT5oRCQK+vniZHAOvV6da6Q0luUO/QK
-         QByvnB5ewOSqzmqGPWS1C/oGetG9A8jhVhDyY/7IcyNaJ003j0Zvz3bX0L29QEFnKMOV
-         62maqVzimY3ChV/hRGP4nwsfV4EL1DXoXjMVPXvrQ65n+QBaFum7u6Mwl5ntg0j10qpM
-         irxE7YQzcS8QZZFaTQHqh1czR2Dn5uoCRkh6M1cx5eJxyioYe4JmbFuyCez1XLxBPDgS
-         eZJg==
+        d=gmail.com; s=20230601; t=1745428083; x=1746032883; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=xZvTiXawzSgHj7FI2kLZHKNyxWg1hv6pUgC8nbUE2kI=;
+        b=KSSkHA89JPIgh56assoCAa5KHGiHkyJOm5maFIfLaxYu+LOWBgSgUtG4mBXgL4l+Lx
+         AWO8Fv/kjcPJn1NqLS3AgzdwirMOfZmTPUdDTHje06ir65fuYm44FPiJgKd1BYAAzenu
+         4Dq4Xb8QYOh4ti2j4VbfH+8sBVVESZFnhL4iRoalqwZhFaloTyyNrZpE2DcywCzUR2tp
+         vUiOeapczYTjYH/FsMsv8VUfZh0wE+b3UjKmFL196VxADlhbraGb2at5r9LZoFqbus2m
+         D0YkXmRj3S26yRgZ7ebQO1BnN9C02oNX0Jy8bG+J7sQcsk2MsejMI2DK+IKTlslABEwV
+         6laQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745427397; x=1746032197;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gFR+gOpkUdQbM5Rh+p84V4szSqyZ4YTz2YuAgB5+XD4=;
-        b=fpde4euCop9UQCsnAI/Sx0Vdrva60IHEyUZi/x8AtMS5cQHoQOKO+w0j2+jnPZiD/2
-         kx7SrO93D4I7f188gwlXUXCPSNqClDK04XLLIXhidLXrgWoLlZYDlsum05A+Xe1c3WjI
-         JMu3c46d1MhwywL2Hx4MYH0/UyIoxnw6CrEA/PVAyyorx9NFQzabu85R+wAvG0VOWkT6
-         /w/axq0cLCxcXNsDakxvpozvE8Loj6C7JcB2rfFDN09we+lpThTvGgRfB18x42Vq6hx/
-         Y5VYqLx9Kj79OClhvGYL1GX7LXFtfPWh9z0z70B9qF2m1XxzqNJS6naF9RjmpJEyYk+q
-         Y1ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgE0dHBu0eDG768k3RPr5ZHjUYNXG6VWQa9ay8paoQjwlc6fznwc3Q6u6hx3f7UQN6jHafYLXK/pVKSkNB+1Q=@vger.kernel.org, AJvYcCW1bcaKqAgQu1nhWA4QBZE8Xmt90PelqCChfuC4E9t8SKDc5F7LcK42jnF+tqkGOg3M3cPlYDRDv981HkY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwdDiHLWHjko6h3dIxpjjL1Li6z0xM5fVxMUI7J7ora/1fHvcQ
-	EdSMCidu8Mjc+TEojzVDiVYk2MaT3I5tNLKVPXyeOzdOa4R8Mb5gabZcjX1+
-X-Gm-Gg: ASbGncuSPy2YB95qCO42O3mDY3JDYG/BPVUD0ordsktfhTTy/2s/cY5Lfk7becaevbA
-	+4PYpz0LgfO+KRUzuCvDCcXsrceBdXkf/bK2YLaPGheBfqAL2ggedGdZHNXZgnET5zZWK9XD+Bh
-	w9v/Os0lgx5OYIuGmgAaiuYxP34IYykRUbxOrQe1alg1BRuYhlLc0mewoUST+uf7CUTna2wKOjh
-	gzUlHst+RhPc8cNLGnVswMqy5bL+iX9OvWMQw4SE8CeiO46auvYOfjUTJ7WDcUVYEJ7JholAkjf
-	qg6Gnvk5iQdPk3K0Iz79ye2dggkh1D/ltB3W6UjGa5vKxUIdIlQ=
-X-Google-Smtp-Source: AGHT+IGOzI/P+2LneiNF1O16tla7Q/MbcQEZMA6Hku4ZstXoTDMAFNtlVy+fvZGtP4CDretd8agBiQ==
-X-Received: by 2002:a17:90b:55d0:b0:2e2:c2b0:d03e with SMTP id 98e67ed59e1d1-309df0b1fb2mr4983708a91.5.1745427397302;
-        Wed, 23 Apr 2025 09:56:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745428083; x=1746032883;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xZvTiXawzSgHj7FI2kLZHKNyxWg1hv6pUgC8nbUE2kI=;
+        b=va3bxxpTonTfpnm661Tx4wNH11Ws3h5/YJ4tLAIN2iIEuANLF6OjhOXQ4u1Ycjmeta
+         h6m9S08eYPVk8mDnsdJnQirYfZlgDtm8P4OxksY2/NBBHBvkIlQm9SKRQkVenhATiWdu
+         dJACOrbr3L8hPOx8ze4lsFeyi0m/Lm7lY6zOU85K1Sa9UbXoxdDKll3/pnQqi3mFJAVW
+         wC+qECb2b4NOHOkMIl5Ik9tSnxDSMu2Uof9z+Fk60Ih90uO+YOJerg/HEn6EV4inl4mU
+         pu6sntmNo6Fh4y7IUZ23hci4n5ZEHvL+ysm08xvpDs1DmLDzEyhmgptegOtTvRQWNc5s
+         Lm9w==
+X-Forwarded-Encrypted: i=1; AJvYcCVPfLxKEymFd7Zj5F0iJq+eQaQJPmgbIVoKrGbnPANBqPg7gjOR0OMQfGEFapNb4r3Eni8QElGlaU3Hq9PzguA=@vger.kernel.org, AJvYcCX7B3s8pF/earPDK30NtI9buG1Ys3af4JxYPr8sJLYBoBLr9RmGgkjI7hyrLRRYK0FJSeRfjGbTIDvCTi8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUTvhDSGPJEvtFQcHVoSigO3U784A8HD1K0fH4xDcf9vV4WiLX
+	yrq0+9BEI/Y5iS2sAtghvVH5C+Vg/YQrhMFI9+csrI1vvIWLuywP
+X-Gm-Gg: ASbGncu6rCM4Eb4qFwLzAPYUUEMPCa20MnFG81Zhynz3TvzBWdmhlJbKzdyty3j7bbH
+	8ai8Q18r95JHa5rq5h8YGTcottpSehHo6t2z/eoY7l/QEXcKV4hKg6JGE9I3u4ALNBsAUYOlWGa
+	zKQ/NsN5vjFC1XIW8gpSLiMxvTDXr94rWQKFKOB9nqJ1wbzok1PEibKuccHTgivTxIfEznOd0R3
+	I5A5CCM5J5PwyZV46IyCVHlbG2qpxnhSsAKxe2Sdwn9p0Owc4HST988NP7QlH5caLrITsWZsZ86
+	bfnFzvRKT3PudPTzTqnNZNVGKH+9qDANbsWPHGcm
+X-Google-Smtp-Source: AGHT+IE9XANxAuRr5sxcraq4Cd8R9CtQ6OvmmnZ6j88xJckJY1fCT3SVw1prM7YKA3TgyacJlTMnog==
+X-Received: by 2002:a17:90b:1cc5:b0:2fe:85f0:e115 with SMTP id 98e67ed59e1d1-3087bb9f463mr22874428a91.26.1745428082747;
+        Wed, 23 Apr 2025 10:08:02 -0700 (PDT)
 Received: from localhost ([216.228.127.130])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309dfa0ac07sm1865161a91.15.2025.04.23.09.56.36
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309dfa0ac5esm1898902a91.19.2025.04.23.10.08.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 09:56:36 -0700 (PDT)
-Date: Wed, 23 Apr 2025 12:56:35 -0400
+        Wed, 23 Apr 2025 10:08:02 -0700 (PDT)
+Date: Wed, 23 Apr 2025 13:08:00 -0400
 From: Yury Norov <yury.norov@gmail.com>
-To: Burak Emir <bqe@google.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Burak Emir <bqe@google.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -67,45 +69,76 @@ Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
-Message-ID: <aAkbw0jEp_IGzvgB@yury>
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 0/5] rust: adds Bitmap API, ID pool and bindings
+Message-ID: <aAkecEetYCFsq9XJ@yury>
 References: <20250423134344.3888205-2-bqe@google.com>
- <20250423134344.3888205-6-bqe@google.com>
+ <aAkKoQQH0t9KtIxD@yury>
+ <CAH5fLggFUM=eJR2u06QsLMxXP+cJwm881ip+rze_sM=tXpA9og@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250423134344.3888205-6-bqe@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLggFUM=eJR2u06QsLMxXP+cJwm881ip+rze_sM=tXpA9og@mail.gmail.com>
 
-Thanks!
+On Wed, Apr 23, 2025 at 06:19:18PM +0200, Alice Ryhl wrote:
+> On Wed, Apr 23, 2025 at 5:43 PM Yury Norov <yury.norov@gmail.com> wrote:
+> >
+> > I received it twice - with timestamps 1:36 and 1:43. Assuming they are
+> > identical, and ignoring the former.
+> >
+> > On Wed, Apr 23, 2025 at 01:43:32PM +0000, Burak Emir wrote:
+> > > This series adds a Rust bitmap API for porting the approach from
+> > > commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
+> > > to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
+> > >
+> > > The Rust bitmap API provides a safe abstraction to underlying bitmap
+> > > and bitops operations. For now, only includes method necessary for
+> > > dbitmap.h, more can be added later. We perform bounds checks for
+> > > hardening, violations are programmer errors that result in panics.
+> > >
+> > > We include set_bit_atomic and clear_bit_atomic operations. One has
+> > > to avoid races with non-atomic operations, which is ensure by the
+> > > Rust type system: either callers have shared references &bitmap in
+> > > which case the mutations are atomic operations. Or there is a
+> > > exclusive reference &mut bitmap, in which case there is no concurrent
+> > > access.
+> >
+> > It's not about shared references only. One can take a mutable
+> > reference, and still may have a race:
+> >
+> > CPU1                            CPU2
+> >
+> > take mut ref
+> > bitmap.set() // non-atomic
+> > put mut ref
+> >                                 take mut ref
+> >                                 bitmap.test() // read as 0
+> > data propagated to memory
+> >                                 bitmap.test() // read as 1
+> >
+> > To make this scenario impossible, either put or take mut ref
+> > should imply global cache flush, because bitmap array is not
+> > an internal data for the Bitmap class (only the pointer is).
+> >
+> > I already asked you to point me to the specification that states that
+> > taking mutable reference implies flushing all the caches to the point
+> > of coherency, but you didn't share it. And I doubt that compiler does
+> > it, for the performance considerations.
+> 
+> The flushing of caches and so on *is* implied. It doesn't happen every
+> time you take a mutable reference, but for you to be able to take a
+> mut ref on CPU2 after releasing it on CPU1, there must be a flush
+> somewhere in between.
 
-On Wed, Apr 23, 2025 at 01:43:36PM +0000, Burak Emir wrote:
-> Microbenchmark protected by a config FIND_BIT_BENCHMARK_RUST,
-> following `find_bit_benchmark.c` but testing the Rust Bitmap API.
-
-So? Can you show your numbers?
-
-Can you print the existing C test output back to back with the new one?
-Can you also ask 0-day folks to enable your test in their rust config?
+OK, that makes sense.
  
-> We add a fill_random() method protected by the config in order to
-> maintain the abstraction.
-> 
-> Minor fix to the documentation of the corresponding C config
-> FIND_BIT_BENCHMARK, it was mentioning the wrong module name.
+> I can try to find docs for it ...
 
-Indeed. Can you make it a separate patch, please?
-  
-Thanks,
-Yury
-
-> 
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Suggested-by: Yury Norov <yury.norov@gmail.com>
-> Signed-off-by: Burak Emir <bqe@google.com>
+Yes please, that would help a lot.
