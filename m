@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FFD3C1F;
-	Wed, 23 Apr 2025 12:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBDBC8DC;
+	Wed, 23 Apr 2025 12:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745411061; cv=none; b=VOS/xYY/joPurBqPjqSspwMCrlF8X/+ZER54zu/DYrT2Y5jcPOke9dVFAjkFKSz8hbMUX+lQFQNyTrpIlB+OjnsQOhym1VymbunF9yEk170I7gj0vL0biU2+ypQ2Y80hUOQk5noVWjhz08TZl7i8BOdZSyv/7xH5nWLgHcAn4yM=
+	t=1745411292; cv=none; b=Vri90ZAxa88XBm2bndwqRdsOdI+v1SheB2AXLUzQDA8lKy0EZvWRR13VskqP9PcJlOnmqHEini/ulFC5mBp3AONTfCfXxjNbJmdQL7fecH90A7VPH0k5h8aFobVN7W0FDbX3zlXUCwAPYYvHlCmtIUl2PgoTH0nH3PrFvyi7pdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745411061; c=relaxed/simple;
-	bh=TZtTB377HTVmvNYYpv+aypNwFzVqY1qeiZzkRtzEG2A=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=b3jMfkqIi4YA8PUnjY/xjQ5ZMQxxV4U8rgwJ3lHoypHDnHrlziYGh9fnwC47iEwYPuqN7ovwqTi9zZ1Duzi1QkpW6TG3KcLRGJ0UNuz1+Q5VCYM8QaaJ+mYtZ6RvPvGmEEwiDamRJ6TXAhzsfCYnOaFDw7FRA+PMNMsPLGECD0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bLXUgFnW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745411292; c=relaxed/simple;
+	bh=xHsLXj71Byc8m2RCajqHL6L01TY4neYM2Qlt7KikSAo=;
+	h=From:To:Cc:Subject:In-Reply-To:Message-ID:References:Date:
+	 MIME-Version:Content-Type; b=RH2UpZKkhQGYepgLun2d4RteEVkUMg1F7/FD4fiZTY8mVb7ULAzO+pz6y8/yHktuIkuQ/aX4JZmo3q7SWGcfOsh8dHMSGVUl0gnQ3Kg0R4hKZiHCpqsoS5UW5jSlJ41fbO8KKX6BTERaP6VFsP8adySlb0z3Qo+AOEi9z3O7XEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fuKbCEWo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bLXUgFnW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A5AC4CEEB;
-	Wed, 23 Apr 2025 12:24:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fuKbCEWo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4674C4CEE2;
+	Wed, 23 Apr 2025 12:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745411061;
-	bh=TZtTB377HTVmvNYYpv+aypNwFzVqY1qeiZzkRtzEG2A=;
+	s=k20201202; t=1745411291;
+	bh=xHsLXj71Byc8m2RCajqHL6L01TY4neYM2Qlt7KikSAo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=bLXUgFnWDRYjl1Y+yWUmB+jRy7NmMWBAfVvzkCLFjQnuOaVa0+hO9EyLmE0yXS//e
-	 Vx6W0E2m6YwSmjM2PI0Z7y4444fhQdjyKuFMRx6Hi+tJv6LiO7GZPRl/4cG01KWLe6
-	 J6MVleKbtisruGHzaxpC/ZNJ4yD5/ONXPOPFqLb0ApTEoldESwaR1wjnpWy1P59FKd
-	 HUjD2QUzlLHoe1IokJnHIUaYkLGW1QiWmhSpo29x8Iqqi2ykeKLrcFph9YUYcJ5by3
-	 MEjpm8TWmuInuEfCncdF5qQVFJnB4s8m1SaEsqajcWHvrbNthJptPqGWHDI/H2EGR2
-	 WxfJwTngPVWnA==
+	b=fuKbCEWomHoN2UCmBgc3ofGUoTr6RHBfDViv8i9PqQq7kPX/CaTaOz4MD9MRsCOYr
+	 IPhj6n4/rOKdffDFA4JbN6Rx7K0kIh/Fk+S523K8HjFlKTrsExX7LxYgp/3CIoQJ/e
+	 sYeUIxPUTWiMPnuypBexOCZWDI+aML/TgK5ynXJpzJ/knW+lmS/Jrdda225biHg1Ez
+	 Ph8i8HlAVgqCrQq2eTZAs++1PuY8UY7AVEgabf0ZIVOuwQdZOptX+N1j44yDgcFAGu
+	 /tJGKa4kdO6HTnAMkTENNlHoHVj7B5uX34u+9EwegQGsDow3OpLLGT4OCVhIx3VmTV
+	 jRtdxhM143PNQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Lyude Paul <lyude@redhat.com>
 Cc: rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,  Boqun
@@ -34,20 +34,20 @@ Cc: rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,  Boqun
  <tglx@linutronix.de>,  Anna-Maria Behnsen <anna-maria@linutronix.de>,
   John Stultz <jstultz@google.com>,  Stephen Boyd <sboyd@kernel.org>,
   Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+  Gary Guo <gary@garyguo.net>,  =?us-ascii?Q?=3D=3Futf-8=3FQ=3FBj=3DC3=3DB?=
+ =?us-ascii?Q?6rn=3F=3D?= Roy Baron
  <bjorn3_gh@protonmail.com>,
   Benno Lossin <benno.lossin@proton.me>,  Alice Ryhl
  <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Danilo
  Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v2 3/8] rust: hrtimer: Add HrTimerCallbackContext and
- ::forward()
-In-Reply-To: <20250415195020.413478-4-lyude@redhat.com> (Lyude Paul's message
-	of "Tue, 15 Apr 2025 15:48:24 -0400")
+Subject: Re: [PATCH v2 4/8] rust: hrtimer: Add HrTimerClockBase
+In-Reply-To: <20250415195020.413478-5-lyude@redhat.com> (Lyude Paul's message
+	of "Tue, 15 Apr 2025 15:48:25 -0400")
+Message-ID: <87y0vrkqrc.fsf@kernel.org>
 References: <20250415195020.413478-1-lyude@redhat.com>
-	<20250415195020.413478-4-lyude@redhat.com>
+	<20250415195020.413478-5-lyude@redhat.com>
 User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Wed, 23 Apr 2025 14:24:10 +0200
-Message-ID: <874iyfm5g5.fsf@kernel.org>
+Date: Wed, 23 Apr 2025 14:27:57 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,119 +58,69 @@ Content-Type: text/plain
 
 Lyude Paul <lyude@redhat.com> writes:
 
-> With Linux's hrtimer API, there's a number of methods that can only be
-> called in two situations:
->
-> * When we have exclusive access to the hrtimer and it is not currently
->   active
-> * When we're within the context of an hrtimer callback context
->
-> This commit handles the second situation and implements hrtimer_forward()
-> support in the context of a timer callback. We do this by introducing a
-> HrTimerCallbackContext type which is provided to users during the
-> RawHrTimerCallback::run() callback, and then add a forward() function to
-> the type.
+> This adds a simple wrapper for the hrtimer_clock_base struct, which can be
+> obtained from a HrTimerCallbackContext. We'll use this in the next commit to
+> add a function to acquire the current time for the base clock driving a
+> hrtimer.
 >
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 >
 > ---
->
 > V2:
-> * Improve SAFETY comments for HrTimerCallbackContext uses (I forgot to
->   mention that we're within RawHrTimerCallback::run()
-> * Split forward into forward() and raw_forward() since we're going to have
->   two contexts that we can call forward() from now.
-> * Clarify contexts in which certain hrtimer methods can be called.
-> * Make sure that we use a mutable reference for forward() here - just in
->   case :).
-> * Rename interval to duration
+> * Convert safety comment to invariant comment in from_raw()
+> - Add raw_clock_base() and implement clock_base() on HrTimer<T> as well
 >
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
->  rust/kernel/time/hrtimer.rs         | 51 +++++++++++++++++++++++++++--
->  rust/kernel/time/hrtimer/arc.rs     |  9 ++++-
->  rust/kernel/time/hrtimer/pin.rs     |  9 ++++-
->  rust/kernel/time/hrtimer/pin_mut.rs | 11 +++++--
->  rust/kernel/time/hrtimer/tbox.rs    |  9 ++++-
->  5 files changed, 82 insertions(+), 7 deletions(-)
+>  rust/kernel/time/hrtimer.rs | 50 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 50 insertions(+)
 >
 > diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index aadae8666f7ea..507fff67f8ab2 100644
+> index 507fff67f8ab2..a56c66104f692 100644
 > --- a/rust/kernel/time/hrtimer.rs
 > +++ b/rust/kernel/time/hrtimer.rs
-> @@ -73,7 +73,7 @@
->      time::{Delta, Instant},
->      types::Opaque,
->  };
-> -use core::marker::PhantomData;
-> +use core::{marker::PhantomData, ptr::NonNull};
->  use pin_init::PinInit;
->  
->  /// A timer backed by a C `struct hrtimer`.
-> @@ -314,7 +314,10 @@ pub trait HrTimerCallback {
->      type Pointer<'a>: RawHrTimerCallback;
->  
->      /// Called by the timer logic when the timer fires.
-> -    fn run(this: <Self::Pointer<'_> as RawHrTimerCallback>::CallbackTarget<'_>) -> HrTimerRestart
-> +    fn run<T>(
-> +        this: <Self::Pointer<'_> as RawHrTimerCallback>::CallbackTarget<'_>,
-> +        ctx: HrTimerCallbackContext<'_, T>,
-> +    ) -> HrTimerRestart
->      where
->          Self: Sized;
->  }
-> @@ -507,6 +510,50 @@ fn into_c(self) -> bindings::hrtimer_mode {
+> @@ -183,6 +183,25 @@ unsafe fn raw_forward(self_ptr: *mut Self, now: Instant, interval: Delta) -> u64
+>          }
 >      }
->  }
 >  
-> +/// Privileged smart-pointer for a [`HrTimer`] callback context.
-> +///
-> +/// Many [`HrTimer`] methods can only be called in two situations:
-> +///
-> +/// * When the caller has exclusive access to the `HrTimer` and the `HrTimer` is guaranteed not to
-> +///   be running.
-> +/// * From within the context of an `HrTimer`'s callback method.
-> +///
-> +/// This type provides access to said methods from within a timer callback context.
-> +///
-> +/// # Invariants
-> +///
-> +/// * The existence of this type means the caller is currently within the callback for an
-> +///   [`HrTimer`].
-> +/// * `self.0` always points to a live instance of [`HrTimer<T>`].
-> +pub struct HrTimerCallbackContext<'a, T>(NonNull<HrTimer<T>>, PhantomData<&'a ()>);
-> +
-> +impl<'a, T> HrTimerCallbackContext<'a, T> {
-> +    /// Create a new [`HrTimerCallbackContext`].
+> +    /// Retrieve the [`HrTimerClockBase`] for a given timer pointer.
 > +    ///
 > +    /// # Safety
 > +    ///
-> +    /// This function relies on the caller being within the context of a timer callback, so it must
-> +    /// not be used anywhere except for within implementations of [`RawHrTimerCallback::run`]. The
-> +    /// caller promises that `timer` points to a valid initialized instance of
-> +    /// [`bindings::hrtimer`].
-> +    pub(crate) unsafe fn from_raw(timer: *mut HrTimer<T>) -> Self {
-> +        // SAFETY: The caller guarantees `timer` is a valid pointer to an initialized
-> +        // `bindings::hrtimer`
-> +        Self(unsafe { NonNull::new_unchecked(timer) }, PhantomData)
+> +    /// `self_ptr` must point to a valid `Self`.
+> +    unsafe fn raw_clock_base<'a>(self_ptr: *const Self) -> &'a HrTimerClockBase {
+> +        // SAFETY:
+> +        // - By our safety contract, `self_ptr` always points to a valid `HrTimer<T>`.
+> +        // - `base` is initialized and points to a valid `hrtimer_clock_base` for as long as
+> +        //   `HrTimer<T>` is exposed to users.
+> +        unsafe { HrTimerClockBase::from_raw((*Self::raw_get(self_ptr)).base) }
 > +    }
 > +
-> +    /// Forward the timer expiry so it expires at `duration` after `now`.
-> +    ///
-> +    /// Note that this does not requeue the timer, it simply updates its expiry value. It returns
-> +    /// the number of overruns that have occurred as a result of the expiry change.
-> +    pub fn forward(&mut self, now: Instant, duration: Delta) -> u64 {
-> +        // SAFETY:
-> +        // - We are guaranteed to be within the context of a timer callback by our type invariants
-> +        // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`
-> +        unsafe { HrTimer::<T>::raw_forward(self.0.as_ptr(), now, duration) }
+> +    /// Retrieve the [`HrTimerClockBase`] for this [`HrTimer`].
+> +    pub fn clock_base(&self) -> &HrTimerClockBase {
+> +        // SAFETY: `self` is an immutable reference and thus always points to a valid `HrTimer`
+> +        unsafe { Self::raw_clock_base(self) }
+> +    }
+> +
+>      /// Forward the timer expiry so it expires at `duration` after `now`.
+>      ///
+>      /// This is mainly useful for timer types that can start off providing a mutable reference (e.g.
+> @@ -200,6 +219,30 @@ pub fn forward(&mut self, now: Instant, duration: Delta) -> u64 {
+>      }
+>  }
+>  
+> +/// The timer base for a specific clock.
+> +///
 
-Safety comment do not match requirements for `raw_forward`. We should
-require that either we are in timer context, or the timer is stopped and
-we have exclusive access.
+Please elaborate what a clock base is and what the use of this structure
+is.
+
+Is it the timer base for a specific clock, or the clock base for a
+specific timer?
 
 
 Best regards,
 Andreas Hindborg
+
 
 
