@@ -1,153 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEFE280CC8;
-	Wed, 23 Apr 2025 15:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D64284685;
+	Wed, 23 Apr 2025 15:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420586; cv=none; b=ilmSy5KJuV5nHu0cP/zqik5ob3W9sYFqJF1hvwM/tlHi+NG5wuktUTLQil/H+XWOC/MvGrvuiBImoXXyUWtY8Q6ZzW6iRSBZBLhZg4VS9fU/Po27+xzwOrPoj9DpV8hFF+C10EdI00RO9xsJZxCNoN/kffeC780/Ksr4+tCYmcA=
+	t=1745422750; cv=none; b=nKOSPjD/5ggEwXJLUU9v3EVmCkGs5L0Nju8a5eOU2r++TyZdLBv+43fhrRO6iZopFD1pCY6Uvm0hgKoFtRdyCWDnknh3hkfwcfLwkkr0OPL87XNOsK/RjheZ/HqepNlnpWG7IhPoqiyzKGWMMmWKVNoNgTBgiy6vVx9E5bQUGRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420586; c=relaxed/simple;
-	bh=gz5NPn6ncGhKoKG7PwCxbRreNA35vwbFRsi4H4w0xJ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IbQznlIHUUlOEj1JUz9raxEtrBaM2ww0eJFzSXr/rW5AHx4hr7t76ULzoZpnYxZn/oM1VNBddtSQ5GpD2nLn3tpSY94R5PEKguK29x7VEe2Qq1y96eV2FsOuyyH6LocDvHxI7Z2AO7hnXzWMAyk4e0epxX9E+L9btK9gafYGMFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rs5ps9jj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745422750; c=relaxed/simple;
+	bh=aLWLGHASdIvWAs2AKS4uxhlZjTrDzIENEUz3FT77U8s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kwrQiBruvrYByrYD9EP45Dq56ZmYyOTTc2lwaNXhYi/H3K/0hl7RmXuMejD6PvlyNvY8Wf1WTs1BEoBx9GqRIQl+5FA41vhuaKzpkCgbTVucOqIgrR8YVdxoJ8Y4b3U2uvdwsA+Ks5TjN3mXQHl2oxUhX5V12AoOr8muEgUtBXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ekQhzARo; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rs5ps9jj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE447C4CEE2;
-	Wed, 23 Apr 2025 15:03:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745420586;
-	bh=gz5NPn6ncGhKoKG7PwCxbRreNA35vwbFRsi4H4w0xJ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rs5ps9jjqKqL/4uyBfL+df57g0sl4VdfJoO/9kkFxCOMQJgyE/Dr9++jaScNT4tzV
-	 d7S5naC18jgE9OTQ/orroVkWBH6p9paUB5FS1i1Mrxtq4iCPEcRoyy63wU3EqBbJfG
-	 6RgFkztGZSeCUZoLHP+1ixBzOX3ccN0bJ2DtUpXz3GTMTK+LUtnAIE/EjfJE3pd/dq
-	 qGvuKmcWMCCjEf+QDqB0UiQCX4EtZ9Ivj1g8lBQben2VgI2BJdn4vodC5EGr3QiR8g
-	 7CSA82mnHzQKjf0yYx0YasFMMHKUKfTNH+e7mBaSyHdGTZQ+Ju+kvty33dx1j+PCLB
-	 yRVfZ94Gy74WA==
-Date: Wed, 23 Apr 2025 17:02:58 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 13/16] gpu: nova-core: Add support for VBIOS ucode
- extraction for boot
-Message-ID: <aAkBIvfTkKVNbdnm@pollux>
-References: <20250420-nova-frts-v1-0-ecd1cca23963@nvidia.com>
- <20250420-nova-frts-v1-13-ecd1cca23963@nvidia.com>
- <aAjz2CYTsAhidiEU@pollux>
- <88937e2b-6950-4c9d-8f02-50f9b12c7376@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ekQhzARo"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3106217268dso405781fa.1;
+        Wed, 23 Apr 2025 08:39:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745422747; x=1746027547; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qj/rpTDCGzjajFcuOznqZseSs8yVW83bcJ88dS6enYQ=;
+        b=ekQhzARoBIE5TqSLnMQLhMF6D7cuwfr3sq/MGMV/B7h+ywV5beP76/gm05MJ3jI+5p
+         z/EZPBKkfU2dIJFcuDpJn+PZu1uUhcXdW97itOmkvhlZjUaYNPf0nnT6H9exawB3mh6a
+         ssbncOmRjXiPdgBG8ylzmH0xeXSIPRzt91/PurKCpsoRikl+GJpJKCGbPgEWnlZWJx2Q
+         /fEiepTfcOlBUSrKvPqlKIeoL4O1VZ3qFJc4+d1+6ZpRe6I0NbFsUBkCWgt/SuP2LNcg
+         Zju+8+gmrU5lknTApMdAMfVEK+rVn802sy1GcDkeDiBS42/FaME0ID5utHp00+0HHAl7
+         LWeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745422747; x=1746027547;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qj/rpTDCGzjajFcuOznqZseSs8yVW83bcJ88dS6enYQ=;
+        b=JuqhCcQ3+aH0pCp916zY2zQ7nMybCh0awFezJXOifU3QTzs6GKlFfZQMi+ptB9SaeS
+         3AmQm/FC5dCVyT9VLr15sApRCpxi+lxx52H78LFkJ2FpjGt6/3G+kVX+3uf3rY3ra+bt
+         +au7qfrRlg8MZUgchTNBE6PPYaPRjSFtYv2kFsuUaBuZypDgMiuINaHxULa/+gpjfM0P
+         1oLHOxf/rr2UzhVaeMfpMooCCB1BIW3jLvS3FLsvwYX0OTiX07BK8lnB9rRNxGDc+ZgH
+         jnJV4ZaHMuFPisF/ncvX9Vf/0vmDcw6L3iIhWFpaWF/AYVZmBYgOWU0hokUpWKf0ag0Y
+         jSVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVSt8hgaAc1ms39/78O4fK8XkuZaYIh7TQgM9A9BqJvmR9j3A3U6lq75LZieMOyqQ+4Na/JHUM+fLFSiF0=@vger.kernel.org, AJvYcCWYfqtMZG8ONw0xSsdw4v5Y6PiWigsanjn2C3CF2UH9MiseZrW4V8n7FMBCJk4l/yjvL8Je1oMiuCEJV7EtFCM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUqkDhgmVdWAXT1nn/C9YtmsxA/b7C7Fc8eqM90ffZs8WuTyIc
+	/uTDsMMAk4O9tJ/yU7U2pJRJYd+6JDakCuc+v0rBNr2Ks3QsEJpCzv7a/Sq4VK/USXUMYtutaoB
+	d62NQpub6PYFe+///YG3YWpr5JMQ=
+X-Gm-Gg: ASbGncuCbBei1zVwQmAvaSoBZlB48JAvSgXGC4k8Xuy0l0XpskZLNPDQCaxzcf9W8hM
+	NPyRFf1WT8yU1uId907OBC1fjuyFt2Bt/W0P0B0+xWqTZhf4FulzPIQtSn576+06/RQV2FomIEK
+	z01m5j70GQ9yrnALRfCc5UqKx7eYWaoskg7EH8Kg==
+X-Google-Smtp-Source: AGHT+IErTYD9FmiTU04dScC6WH5JBnJKk2+xJBs+4iYQrHVDYocNYDbve58f7lhlHHFbzIrwogO1DTuhgKl8AkuRRcI=
+X-Received: by 2002:a05:651c:1a0a:b0:30d:e104:9ad4 with SMTP id
+ 38308e7fff4ca-31090578015mr52371301fa.41.1745422746277; Wed, 23 Apr 2025
+ 08:39:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <88937e2b-6950-4c9d-8f02-50f9b12c7376@nvidia.com>
+References: <20250422-vec-methods-v3-0-deff5eea568a@google.com> <20250422-vec-methods-v3-3-deff5eea568a@google.com>
+In-Reply-To: <20250422-vec-methods-v3-3-deff5eea568a@google.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 23 Apr 2025 11:38:28 -0400
+X-Gm-Features: ATxdqUFiwujpGMdZdZ1giwLuKCi0Tc-D6TTwU-UiYOcKmywexj8MpadUnkae0fU
+Message-ID: <CAJ-ks9mg7U0YV805YEY_ViB0i3f_afHcR1xFEe9dhZeQz=rFDQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/7] rust: alloc: add Vec::push_within_capacity
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 23, 2025 at 10:52:42AM -0400, Joel Fernandes wrote:
-> Hello, Danilo,
-> Thanks for all the feedback. Due to the volume of feedback, I will respond
-> incrementally in multiple emails so we can discuss as we go - hope that's Ok but
-> let me know if that is annoying.
-
-That's perfectly fine, whatever works best for you. :)
-
-> On 4/23/2025 10:06 AM, Danilo Krummrich wrote:
-> 
-> >> +impl Vbios {
-> >> +    /// Read bytes from the ROM at the current end of the data vector
-> >> +    fn read_more(bar0: &Devres<Bar0>, data: &mut KVec<u8>, len: usize) -> Result {
-> >> +        let current_len = data.len();
-> >> +        let start = ROM_OFFSET + current_len;
-> >> +
-> >> +        // Ensure length is a multiple of 4 for 32-bit reads
-> >> +        if len % core::mem::size_of::<u32>() != 0 {
-> >> +            pr_err!("VBIOS read length {} is not a multiple of 4\n", len);
-> > 
-> > Please don't use any of the pr_*() print macros within a driver, use the dev_*()
-> > ones instead.
-> 
-> Ok I'll switch to this. One slight complication is I've to retrieve the 'dev'
-> from the Bar0 and pass that along, but that should be doable.
-
-You can also pass the pci::Device reference to VBios::probe() directly.
-
-> 
-> > 
-> >> +            return Err(EINVAL);
-> >> +        }
-> >> +
-> >> +        // Allocate and zero-initialize the required memory
-> > 
-> > That's obvious from the code, if you feel this needs a comment, better explain
-> > what we need it for, why zero-initialize, etc.
-> 
-> Sure, actually the extends_with() is a performance optimization as we want to do
-> only a single allocation and then fill in the allocated data. It has nothing to
-> do with 0-initializing per-se. I will adjust the comment, but:
-> 
-> This code...
-> 
-> >> +        data.extend_with(len, 0, GFP_KERNEL)?;
-> >> +        with_bar!(?bar0, |bar0_ref| {
-> >> +            let dst = &mut data[current_len..current_len + len];
-> >> +            for (idx, chunk) in dst
-> >> +                .chunks_exact_mut(core::mem::size_of::<u32>())
-> >> +                .enumerate()
-> >> +            {
-> >> +                let addr = start + (idx * core::mem::size_of::<u32>());
-> >> +                // Convert the u32 to a 4 byte array. We use the .to_ne_bytes()
-> >> +                // method out of convenience to convert the 32-bit integer as it
-> >> +                // is in memory into a byte array without any endianness
-> >> +                // conversion or byte-swapping.
-> >> +                chunk.copy_from_slice(&bar0_ref.try_read32(addr)?.to_ne_bytes());
-> >> +            }
-> >> +            Ok(())
-> >> +        })?;
-> >> +
-> >> +        Ok(())
-> >> +    }
-> ..actually initially was:
-> 
-> +        with_bar!(self.bar0, |bar0| {
-> +            // Get current length
-> +            let current_len = self.data.len();
+On Tue, Apr 22, 2025 at 5:53=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> This introduces a new method called `push_within_capacity` for appending
+> to a vector without attempting to allocate if the capacity is full. Rust
+> Binder will use this in various places to safely push to a vector while
+> holding a spinlock.
+>
+> The implementation is moved to a push_within_capacity_unchecked method.
+> This is preferred over having push() call push_within_capacity()
+> followed by an unwrap_unchecked() for simpler unsafe.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/alloc/kvec.rs | 41 ++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 38 insertions(+), 3 deletions(-)
+>
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index ebca0cfd31c67f3ce13c4825d7039e34bb54f4d4..a005a295262cb1e8b7c118125=
+ffa07ae252e257c 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -307,17 +307,52 @@ pub fn spare_capacity_mut(&mut self) -> &mut [Maybe=
+Uninit<T>] {
+>      /// ```
+>      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError>=
+ {
+>          self.reserve(1, flags)?;
+> +        // SAFETY: The call to `reserve` was successful, so the capacity=
+ is at least one greater
+> +        // than the length.
+> +        unsafe { self.push_within_capacity_unchecked(v) };
+> +        Ok(())
+> +    }
 > +
-> +            // Read ROM data bytes push directly to vector
-> +            for i in 0..bytes as usize {
-> +                // Read byte from the VBIOS ROM and push it to the data vector
-> +                let rom_addr = ROM_OFFSET + current_len + i;
-> +                let byte = bar0.try_readb(rom_addr)?;
-> +                self.data.push(byte, GFP_KERNEL)?;
-> 
-> Where this bit could result in a lot of allocation.
-> 
-> There was an unsafe() way of not having to do this but we settled with
-> extends_with().
-> 
-> Thoughts?
+> +    /// Appends an element to the back of the [`Vec`] instance without r=
+eallocating.
+> +    ///
+> +    /// Fails if the vector does not have capacity for the new element.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v =3D KVec::with_capacity(10, GFP_KERNEL);
+> +    /// for i in 0..10 {
+> +    ///     v.push_within_capacity(i).unwrap();
+> +    /// }
+> +    ///
+> +    /// assert!(v.push_within_capacity(10).is_err());
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn push_within_capacity(&mut self, v: T) -> Result<(), T> {
+> +        if self.len() < self.capacity() {
+> +            // SAFETY: The length is less than the capacity.
+> +            unsafe { self.push_within_capacity_unchecked(v) };
+> +            Ok(())
+> +        } else {
+> +            Err(v)
+> +        }
+> +    }
+>
+> +    /// Appends an element to the back of the [`Vec`] instance without r=
+eallocating.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The length must be less than the capacity.
+> +    pub unsafe fn push_within_capacity_unchecked(&mut self, v: T) {
 
-If I understand you correctly, you just want to make sure that subsequent push()
-calls don't re-allocate? If so, you can just use reserve() [1] and keep the
-subsequent push() calls.
+Did you intend for this to be pub? The commit message doesn't
+obviously indicate it.
 
-[1] https://rust.docs.kernel.org/kernel/alloc/kvec/struct.Vec.html#method.reserve
+>          let spare =3D self.spare_capacity_mut();
+>
+>          // SAFETY: The call to `reserve` was successful so the spare cap=
+acity is at least 1.
+
+What call to reserve?
+
+>          unsafe { spare.get_unchecked_mut(0) }.write(v);
+>
+>          // SAFETY: We just initialised the first spare entry, so it is s=
+afe to increase the length
+> -        // by 1. We also know that the new length is <=3D capacity becau=
+se of the previous call to
+> -        // `reserve` above.
+> +        // by 1. We also know that the new length is <=3D capacity becau=
+se the caller guarantees that
+> +        // the length is less than the capacity at the beginning of this=
+ function.
+>          unsafe { self.inc_len(1) };
+> -        Ok(())
+>      }
+>
+>      /// Removes the last element from a vector and returns it, or `None`=
+ if it is empty.
+>
+> --
+> 2.49.0.805.g082f7c87e0-goog
+>
+>
