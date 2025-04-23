@@ -1,99 +1,145 @@
-Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CD0269826;
-	Wed, 23 Apr 2025 11:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25C91C84D9
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 12:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745408016; cv=none; b=uELW/dNX+aWaQF2D/u8N6NpacsuTPIIOR3c7j99T9modKmI2TJi0fVfH1YATkd/gKQEsJIOp7lG4cEnSTscJ5kK9x5NBwZ++Zp23N7d6/bUpK1WRBm6vZuo0ot5coHVV/tNrmFPWu6kiZPyJWUxbDJUf9BtgaDVx+dBXcU++xNw=
+	t=1745409668; cv=none; b=Ivtq+C/uNdZCTdB6FaJaV6qN+n+Tigui50HWS1iZN92SNAuTy9nqH39Sd6ggSMEDzrAWEJ+dc431hBwb8nONLjAIdFFQ/oE/jIC0Lp95YTeo1d7d3ZoYe3n1CJYMvSXHQemXZFg/nzztFqX+9ldls2b5qFABep3Na/mWZVogpyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745408016; c=relaxed/simple;
-	bh=Silleq7gutm/szIl71jZSkSzc7i3W7sTu6tXKNr5uKk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X/1XRrQYPzhVb7zv86NyZKQKRqmpIIt/xlfKbd81yKU9mpyAAGbVjHpEc9b2jpfrPtXXX9BY43qWiewsEYmlszZIIMU0YcatynHzjAB07NkgvaRfB2FNX6B+QOh47oXtVMBuKO6SyZqGu7nEI+dvUufqT1eo7ddTvYZig/6sxfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
-Received: from [IPV6:2a01:e0a:3e8:c0d0:d851:318b:70da:57a7] (unknown [IPv6:2a01:e0a:3e8:c0d0:d851:318b:70da:57a7])
-	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id 2694532A4DA;
-	Wed, 23 Apr 2025 11:33:31 +0000 (UTC)
-Authentication-Results: Plesk;
-        spf=pass (sender IP is 2a01:e0a:3e8:c0d0:d851:318b:70da:57a7) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=[IPV6:2a01:e0a:3e8:c0d0:d851:318b:70da:57a7]
-Received-SPF: pass (Plesk: connection is authenticated)
-Message-ID: <32293daf-a6ce-49cc-b41d-1001037444da@arnaud-lcm.com>
-Date: Wed, 23 Apr 2025 13:33:30 +0200
+	s=arc-20240116; t=1745409668; c=relaxed/simple;
+	bh=hxhs2KUniZpzTm392vVGlXp0MApW9RLKujRwgFDxO4s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KviHUesKFmSSVYxFJJROoAMO8B+MVi/jQVfWUX3LPJ4aIKHSwsRRJI+zZ2txq4MVpHhRBqsXttvJMBO/h5yBVexUx2ejS401C9q3x9ExWJR86BBIwhP0cAOMPeoZUlmoE1MYsYwoMKH99clEbFPk87dFZXdiCpZMq7t7BH0wyCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kL3TB5E5; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kL3TB5E5"
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6041e84715eso4810370eaf.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 05:01:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745409666; x=1746014466; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ljPySLmCIyaDmpmK4mqQYBe7mtVNq+JITC0VWQEJ4rg=;
+        b=kL3TB5E5SGEGNrVNJd2hgvQvZYDckJKaMLlmQfOLYTTvhOu60/BVVX2eP5H0DMp/zl
+         x9LlV3wyXR34VpAqnC+YIEoPtckJ/+5PUJVAL+oSHYW/IvOaKF8nKiFwXopJujl0iuyS
+         whUJUKopfxccQj9Hi6ieGgeuFco7Y4Fi8Hn/En1AunIe6eQZZ7Ir/PjHQsQlAH7XJIb6
+         vzmDSXuI3LOY0LHyDqFIfoEjFkh/9OTIIis58Aea86IduSidjRkAWvwmlEDB7dIpuup5
+         xpQSOBlK2ziKWQO0yV5ejLYl43JIWVBEYAxh42vp8aHTMVnu5AEllQOVw+Mxf5CFnznz
+         KXzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745409666; x=1746014466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ljPySLmCIyaDmpmK4mqQYBe7mtVNq+JITC0VWQEJ4rg=;
+        b=Xp2loUPgPaMTRR3wcT6Z/yxJigEzAqGze4W03a5qrvG6U34j7HKtV5dK4AV6KHdeKv
+         KWfMTzkEk/h9I2wK4k3MgPwd42cuQS4/JdqEvu3DJIt5jzHnu4V78uKFeu/rykdR2k/v
+         Aq4w4jzFxSVZmK3zsKCOn2yCjxLEyy6k3h6AP80V+psiRJRsFGKWY56NCREOzRgsxNOC
+         AAuPoi1gE3h5PW1ExZoJHA1T5zUGZTWkQvnVlSvikf94zhqlwIRd859L8XxES0QtAwQS
+         kdiBpmxae321d5KF2mxsKIZT9ydJsBgirazzJdl2CAzl7ImDe8/Y09DOAquwkeB+uUsL
+         wv/A==
+X-Forwarded-Encrypted: i=1; AJvYcCU+SB0mDeR5QdyrFiU0XRUWEBSXWy/er9DyAkS0T2gEADx2Qg2l6usnEx15M4mWlBV9ixts4idlnSZuu2Tcyw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJ/b+/F8eOxi214kBRBlW48LPn8L/eaZvHl7Q2OqKaBZmPLMUj
+	pOxcr8wEEpiVHjF26s9FSEDLQfDeGmYUdniXetTLmF9y3nypPWqoaD5YcdHFGrzRr7FR4F0PS2l
+	PKWhu10QigimxDLzvONFkm/DEnMay5T6HuPCm
+X-Gm-Gg: ASbGncue3fKEzlAj49rltiA5cU0mPWIdjx4eBmk7nVjapov5eEvBN4cnN5m6y2/sbtS
+	/XIVxGJSd2kUEeW+iCv0f+drgaKtGfspveZHoxczjV4ydJAxUY29Qluq0Xa5uoH10TdX/9IGTxm
+	nazoEJm+hpPzNCdPdU9auO0mTFOgpYYY6Nljt8NuRp9t9OtU/MKVXh
+X-Google-Smtp-Source: AGHT+IEICUZ6rIOt0VtEfuUiCSPVFrcDz/xsGuPmI4E/ktXozNO6fxNk5SFEZA5wiNy2AEhnJ4EDTcCM112plD6Sqwk=
+X-Received: by 2002:a4a:ec44:0:b0:601:cdab:15b5 with SMTP id
+ 006d021491bc7-606004d8aacmr10698191eaf.2.1745409664237; Wed, 23 Apr 2025
+ 05:01:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] checkpatch.pl: warn about // comments on private
- Rust items
+References: <20250327161617.117748-1-bqe@google.com> <Z-rFPhrNTB8t5xTF@thinkpad>
+ <CANiq72kSVHsgZGULhy+t4XyD2xGAKdiyKshC1VgKjTFoHUbMNg@mail.gmail.com>
+In-Reply-To: <CANiq72kSVHsgZGULhy+t4XyD2xGAKdiyKshC1VgKjTFoHUbMNg@mail.gmail.com>
+From: Burak Emir <bqe@google.com>
+Date: Wed, 23 Apr 2025 14:00:52 +0200
+X-Gm-Features: ATxdqUE76yazRjG4CXiNAyJEU1c522phlZ3cjUnLxo46ATiEfE0-3T2IJ3hPCRo
+Message-ID: <CACQBu=V+OrsgBTv3hhWgFhGCBOXC=ytDwcS5v=j8uKcrDaXb6Q@mail.gmail.com>
+Subject: Re: [PATCH v6 0/4] rust: adds Bitmap API, ID pool and bindings
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
- Dwaipayan Ray <dwaipayanray1@gmail.com>,
- Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- llvm@lists.linux.dev, skhan@linuxfoundation.org
-References: <20250422125633.30413-1-contact@arnaud-lcm.com>
- <20250422125824.30525-1-contact@arnaud-lcm.com>
- <CANiq72n41Oj4K-yZCWbNXJQEEjTqjXHYgrkffAg_mUg8dKLWQg@mail.gmail.com>
- <06dde2dd-5d88-49d4-9e46-72a2e12ab1c2@arnaud-lcm.com>
- <CANiq72=UOOyf-esnRUCR0_gxFptdpNOymCz02vgesdNL7zTvHg@mail.gmail.com>
-Content-Language: en-US
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
-In-Reply-To: 
- <CANiq72=UOOyf-esnRUCR0_gxFptdpNOymCz02vgesdNL7zTvHg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <174540801176.10535.4552947519128350548@Plesk>
-X-PPP-Vhost: arnaud-lcm.com
+Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 22/04/2025 17:32, Miguel Ojeda wrote:
+On Mon, Mar 31, 2025 at 8:52=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Mon, Mar 31, 2025 at 6:39=E2=80=AFPM Yury Norov <yury.norov@gmail.com>=
+ wrote:
+> >
+> > I didn't find any discussions related to the bit_set in kernel context.
+> > Is it possible to use it in kernel? If not, can you mention that in com=
+mit
+>
+> In principle, from a very quick look, yes, it supports `no_std` and
+> should be very easy to vendor since they don't have dependencies (i.e.
+> `bit_set` and `bit_vec`).
+>
+> > message? If yes, I think you should consider to use internal language
+> > tools.
+>
+> Hmm... if by "internal language tools" you mean a normal library (like
+> that one you mention), then yeah, they can be considered.
+>
+> In general, we have been prudent about using third-party libraries so
+> far, but it is possible if it is the right choice -- please see:
+>
+>     https://rust-for-linux.com/third-party-crates#suitability-of-a-crate
+>
+> So if everyone agrees that or another library would be the best fit
+> than mimicking or using the C side (performance-wise,
+> maintainability-wise, etc.), then I am happy to integrate it.
+>
 
-> On Tue, Apr 22, 2025 at 4:37 PM Arnaud Lecomte <contact@arnaud-lcm.com> wrote:
->> As mentioned earlier, we can reduce the score of any heuristic which
->> could lead to any important false positive.
->> In my opinion, as long as the heuristic is relevant, we always have the
->> possibility to diminish the score associated with the heuristic, hence
->> preventing unnecessary false positives.
-> Definitely (my comment above for this one was just a note, i.e. there
-> may be nothing to change -- I just thought the commit message referred
-> to just checking "Return" and not "Returns", since it said
-> "imperative").
+IMHO, we should strive to avoid parallel implementations of basic data
+structures.
+
+This little patch series was started to replace a self-contained C
+code with Rust implementation. It may not representative for all Rust
+code, but building an abstraction over C code will make porting a lot
+easier to write and review.
+
+Now, one can argue that Rust abstractions could use alternative
+implementations instead of binding the C code underneath. This opens
+the door to subtle differences in performance or correctness (e.g. the
+case with atomics and inner mutability).
+
+> > I encourage you to implement the tests as normal kernel tests - in
+> > source files that may be enabled in config. I can't insist on that,
+> > and will not block the series because of lack of benchmarks and
+> > tests written in a traditional way.
+> >
+> > But to me, scattered wrongly formatted commented-out in-place way of
+> > writing tests is something fundamentally wrong. Not mentioning that
+> > it bloats source files, making them harder to read.
 >
->> I think that you are definitely more experienced with what's done
->> commonly in rust code. Let's maybe change this heuristic definition with
->> @ related to types or some other annotation. Do you have some example I
->> could have a look to come in the next version with a relevant list of @
->> we can encounter.
-> What does "references" mean in that heuristic? If you mean external
-> links to some URL, then we typically use Markdown for those. The
-> inline ones like `<https://...>`happen in both comments and docs. The
-> `[...]: https://...` ones are way less common in comments I think (I
-> can't find one).
-We should then remove it. I'll wait for other reviewers for their 
-feedback and then send a new version of the patch serie. Thanks :)
-> As for `@`, if you mean the actual character, I grepped for it in Rust
-> files with the /.*@ regex and found just ~13 matches, and all were the
-> emails and disambiguators I mentioned. So I don't think we really use
-> it for "references" (assuming I understand what that means).
+> I don't think documentation makes things harder to read; quite the
+> opposite -- if the docs are good.
 >
-> I guess you already looked in some `rust/kernel/` files -- some of
-> those are really the best examples of how docs and comments should
-> generally be written.
-> Thanks!
+> But, yeah, if it is an actual test that is not suitable as an example,
+> then it should be a separate test (whether as a `#[test]` one, if that
+> works already for this use case, or as a sample module otherwise).
 >
-> Cheers,
-> Miguel
->
+
+Now that I figured out how to do it, I'll add the separate kunit test
+that exercise code paths which are not helpful in documentation.
+
+Thanks,
+Burak
