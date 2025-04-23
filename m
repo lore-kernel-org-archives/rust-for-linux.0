@@ -1,104 +1,120 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6452701B3
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 08:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F161DFD8F
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 08:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745398286; cv=none; b=jZIaC3oDonfYsBTWqQ02IPyGpMCVZnB1db2N88e3uNOVWqapG7eIUje4tz5FlW67mrb9vO+mG1J61SL48MzCrZ0h8FE95UUcFu3fkxSdDeOgGJqKHooNCj/LWcSbbM7D2is/hOWHNDOO+IaXWvdObUqcgd8P1OMyi90F1Zq+rew=
+	t=1745398539; cv=none; b=NOU3GpHsybZMO2Cod8DNhs+wabeEzMkKKKV0/CH4WjEzhns8sDDitsUH2ZnZ/6uGOg1kMdeKFAuTZTALlYwrHfUZIk0GMpvig6x9XUBcBbvzJ1cZxR3HsnWLGHRufF70BZr8Q8j7XGJAyTHWgPQh97MCPoe8xqgg32Uh0uln1P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745398286; c=relaxed/simple;
-	bh=CtT8v2MCiRX7gRBV9QcapypO93sJVqsOiDaKUDm39r8=;
+	s=arc-20240116; t=1745398539; c=relaxed/simple;
+	bh=JM4EG3DbC8o+kLfP96/N8eGtrMofAULCfcav7gqViBY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oP+JsNefhQGL/FNoczn31BuypaQJwFmM5HQv2maUSBRXzNDH56KbdiF3JZQW2hV76LdzWlhmXqA3Eq3f7MPF+swNIkkDjdi9mirDLDSKuvo0pB7exmmIOREA98nmzT0Qg7C2KekhTuEzFcsYjQYmYp1FnmItOY9/ucZf4Da5Eys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HmbJ4o/1; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=RJNsOmov00SROZvSO1FNQTi8tt43mJa3waDL8zBGDTJxqmLqJrcyD2A3A15jdR6NowPeJeaD18bfzvykuv682IBbg3ZKVjeA22TZ+jFP4yGwMewyFa9FrRXUulExQFX+zmkbjplwkAXOqQ6MlTzyurOFTDYqPaMq2KMv3Eeku78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OnAVW6yD; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HmbJ4o/1"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cfda30a3cso32796685e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 01:51:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OnAVW6yD"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43d733063cdso44478495e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 01:55:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745398283; x=1746003083; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1745398536; x=1746003336; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rhz5SyKyofpP0CiXoRasSItvHci8jlntDPliqMYHfdY=;
-        b=HmbJ4o/12WpIrqe2f2v2/o4IdUWrTuKjhvsjMwKw/ZzmOCGpqdKJlrmG5Y/ymsw+I5
-         RQPu05Aye8TBeLvrlvFKhJIqeT4DitbE8J5SAI8cdzrt+IR6TqMa7j+IiZrRstIqj1/+
-         p39sPVI4vqrR6GdtBKzDqq0Ao2Vaq2GMaEa7G8Zn7tEzQ8R04+bjBcCwd+9Zu/qBeZQg
-         J97U0EasfyrAMQXKhmfzfeJ6Yo03KqAZ82lYzdKhJXmQadcF/0Eg7D/EqltlpbYbeJbc
-         Apci8Tui0NlxTDhGgdiX6rET8ig+bONrlYw9kKBTeOMe9VRwUGq6xawg/JvY6RtmdA+p
-         5zHg==
+        bh=OaKVzVOJgOSKOkuhk/ngmT/zkmJ5Y9OFTfOrz7bXPoY=;
+        b=OnAVW6yDkYHTDe9OnY3PkzWPOs2TwGQtEGl4Xn88y6udgCGpzooiX69nFNu8Y8l3Zj
+         h7bYhO7t3rbbV2Pp9QdiPrP7guh3bss3f+14d3eAtjFM4qnfaeFZH60D9i1yCxiGPer5
+         p0ov9t8x/0UjL0TJBRObvg1lokn0El15sSwMMOqGrSWCwOUtL7V+4qyStsKSKu8WrvoP
+         JcGWLDqXn9FxcyOn0cgbY+AUL3aZ/r8je/TCcm8pIFoptlWSrvMmW5uIBUIYdGLKoqUa
+         tull0jyZt09tvop9zVqYGiAhVLmTGB5gya137Bn9+J/cnSGlMrCX2/O5CzauDPO52xRR
+         eZzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745398283; x=1746003083;
+        d=1e100.net; s=20230601; t=1745398536; x=1746003336;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rhz5SyKyofpP0CiXoRasSItvHci8jlntDPliqMYHfdY=;
-        b=rYl6srkPjsU2dofr6GuQfhYlKdHyh8pL6xuXNC873ILhewNvjd/uF08V44u/SzSfJ9
-         zFFSXbF/iNnaQDZvmFeHqHoAxL0NmBcic2rGpEjnYJOtjtkYPs2V/g/tzmj8/5C2+TeI
-         JGoDMW/4eRurLm11bNpo2soE/FT7nbWDP6hSByQvL0aIw0TeQxgHHlRu79jdy1hCBVGA
-         UOcqWyjLy9E9NXzUpGhzzHedJIQH+PCOftGzkWRHZH+63z6jw/CvAasv8VdjDXNxxWqp
-         tV35s75rsjrxkVOcCdduvKvE/GRxRMX1WGMB4IyHGtw74isRqQWb8c/HAGIDkOxPNXA8
-         fC4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUjEz5g31eNrnYG2PY90STxlbKGD8qXnEDVj7txADgxNQQmHy/xNzrlAL10OQYv8mFwomawtVRLBy2QM6TuRg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyD8EFI5tPBlA12YeYcrmyJdjUIeufd3UNzhNNiyC//pQzVCmZx
-	qhP1UksJtIYotQrFZge5cG2pWGYZT1Q1bulukmwSPkJrkYXLEbzJFdRbmtmovMBegMZG3bZ4KOY
-	BsuuwIocBxqccvg==
-X-Google-Smtp-Source: AGHT+IHLWGDxm5kfoTW6nhDE7tQXPqggvtNweBYRe67ksxGdQ/RsembKAvwXxH4kRSHpcOnYsczAWFl5vntTJPg=
-X-Received: from wmqa6.prod.google.com ([2002:a05:600c:3486:b0:43b:d6ca:6dd3])
+        bh=OaKVzVOJgOSKOkuhk/ngmT/zkmJ5Y9OFTfOrz7bXPoY=;
+        b=cfaETp+TeLw/aW7GDzfKfVVIk9r1yjzwm+xcqXizwG/Hs/dZAMU9mPwZaxqWQAhymG
+         AMwaYLSPf2TYlZjLG0wKZXbR83E4RB4FPHbbtS4wSwHxLXAjLCQjQXyy7tx7RRgxYqQW
+         aDoAYiuEwcjZbyqwM2TI3aFO5/RRNfwhMkh4k4RgGB2qYWlwmr0bXJNS16cZ53JXEevv
+         4ddZsT0PVFVPAgidPvlDlpklcYUmL4K05bk12x+4v5DmFD5lFuNRfb1yBpA1yzu8LQdm
+         b+OLHDkI3/xPQyiijEyzjUeBS7g5GrRTtYYqwibv6bcvi35kjyb87rq+KYfN201ErXR5
+         jZQg==
+X-Forwarded-Encrypted: i=1; AJvYcCUK6oNtMAsovSeJI1Mpflwkl6iUYMq5P3kwG4jvAQFKVEktuVvuMNOnCMoItnw4wrb/tVr0IYc5HVPnbKSfuQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YypFxXx5zEdgtO4SUrbOD+pzuDdvOJ1PdkSX9pnz9Mr4dqbJ5Lt
+	agObDrITx1Sxg/j0UJ+rqHNZzOGWs2Rm5VYDiKOhu9sTWXsj/qrFzmLK7J2cafXDSJiRXLpqerC
+	lSaFXxs58cMt2Fg==
+X-Google-Smtp-Source: AGHT+IFchQbxy+8MVQTjIQqNWsxg6egaeHXm1u76QC4qBxCuS48lqBAj021IovR8qHS/3rQkqOqbffo+RHfbE4o=
+X-Received: from wmbep21.prod.google.com ([2002:a05:600c:8415:b0:43d:1873:dbaf])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f49:b0:43d:8ea:8d80 with SMTP id 5b1f17b1804b1-4406ab81eb2mr160106685e9.5.1745398283005;
- Wed, 23 Apr 2025 01:51:23 -0700 (PDT)
-Date: Wed, 23 Apr 2025 08:51:21 +0000
-In-Reply-To: <D9DM3AR3FUAF.6JSNSB9WAJ4T@nvidia.com>
+ 2002:a05:600c:1c8f:b0:43c:f332:7038 with SMTP id 5b1f17b1804b1-4406ac1fe30mr124784795e9.21.1745398536504;
+ Wed, 23 Apr 2025 01:55:36 -0700 (PDT)
+Date: Wed, 23 Apr 2025 08:55:34 +0000
+In-Reply-To: <68080a53.050a0220.c2cd7.6290@mx.google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250406-vec_extend-v3-1-ec5c5c0acf2a@nvidia.com>
- <Z_OwmEKHgsZlt2cs@pollux> <D91AOKOTDXWC.7R5K5DI87QU4@nvidia.com>
- <D9C61DDI99JX.31T59XPQGYBB1@nvidia.com> <aAfL-e6qA9oBce5t@cassiopeiae> <D9DM3AR3FUAF.6JSNSB9WAJ4T@nvidia.com>
-Message-ID: <aAiqCXB9sJe_v6Yc@google.com>
-Subject: Re: [PATCH v3] rust: alloc: implement `extend` for `Vec`
+References: <20250422-vec-methods-v3-0-deff5eea568a@google.com>
+ <20250422-vec-methods-v3-3-deff5eea568a@google.com> <68080a53.050a0220.c2cd7.6290@mx.google.com>
+Message-ID: <aAirBuiNdraU4ty3@google.com>
+Subject: Re: [PATCH v3 3/7] rust: alloc: add Vec::push_within_capacity
 From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Apr 23, 2025 at 10:02:58AM +0900, Alexandre Courbot wrote:
-> The problem I see is that if you try and do something like:
+On Tue, Apr 22, 2025 at 02:29:53PM -0700, Boqun Feng wrote:
+> On Tue, Apr 22, 2025 at 09:52:18AM +0000, Alice Ryhl wrote:
+> > This introduces a new method called `push_within_capacity` for appending
+> > to a vector without attempting to allocate if the capacity is full. Rust
+> > Binder will use this in various places to safely push to a vector while
+> > holding a spinlock.
+> > 
+> > The implementation is moved to a push_within_capacity_unchecked method.
+> > This is preferred over having push() call push_within_capacity()
+> > followed by an unwrap_unchecked() for simpler unsafe.
+> > 
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/alloc/kvec.rs | 41 ++++++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 38 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > index ebca0cfd31c67f3ce13c4825d7039e34bb54f4d4..a005a295262cb1e8b7c118125ffa07ae252e257c 100644
+> > --- a/rust/kernel/alloc/kvec.rs
+> > +++ b/rust/kernel/alloc/kvec.rs
+> > @@ -307,17 +307,52 @@ pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] {
+> >      /// ```
+> >      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+> >          self.reserve(1, flags)?;
+> > +        // SAFETY: The call to `reserve` was successful, so the capacity is at least one greater
+> > +        // than the length.
+> > +        unsafe { self.push_within_capacity_unchecked(v) };
+> > +        Ok(())
+> > +    }
+> > +
+> > +    /// Appends an element to the back of the [`Vec`] instance without reallocating.
+> > +    ///
+> > +    /// Fails if the vector does not have capacity for the new element.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// let mut v = KVec::with_capacity(10, GFP_KERNEL);
 > 
->   vec.extend((0..10).into_iter().skip(2));
+> Should be:
 > 
-> with the standard library, then the use of `skip` will remove the
-> `TrustedLen` implementation from the resulting iterator and
-> `extend_desugared` will be called instead of `extend_trusted`, which
-> could add some unwanted (and unexpected) overhead.
+>     /// let mut v = KVec::with_capacity(10, GFP_KERNEL)?;
 > 
-> If we want an implementation of `extend` as simple as "confidently
-> increase the length of the vector and copy the new items into it, once",
-> then we need a trait that can be implemented on both shrinking and
-> extending adapters. Anything else and we might trick the caller into a
-> code path less efficient than expected (i.e. my original version, which
-> generates more core even for the obvious cases that are `extend_with`
-> and `extend_from_slice`). Or if we rely on `TrustedLen` solely in the
-> kernel, then `extend` could not be called at all with this particular
-> iterator.
+> , right? I.e. a question mark is missing.
 > 
-> There is also the fact that `TrustedLen` is behind a nightly feature,
-> which I guess is another obstacle for using it.
+> The rest looks good to me.
 
-The stdlib alloc crate relies on specialization to speed up methods
-related to iterators. We can't use specialization, so losing these
-optimizations is simply a cost of not using the upstream alloc library
-that we have to accept.
+Will be fixed in the next version. Let me know if you want me to add
+your Reviewed-by tag with this fixed?
 
 Alice
