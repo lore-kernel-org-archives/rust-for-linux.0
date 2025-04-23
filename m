@@ -1,62 +1,62 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6B9288C8C;
-	Wed, 23 Apr 2025 16:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A40CEEAB;
+	Wed, 23 Apr 2025 16:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745426803; cv=none; b=gKrR7MvR8ieSn614BF1H76qPP6jqQFmdKZfzJJKpNgQpARaxSf+TI7cydZIq/eeDN1prYxQRfUJKcrkRB+cC45bUBS/HC9z0puOKqJm5h61x9op/3+F67LiemkOFMWWmQGXns1ALfaPgOev0qxARO59kpG4EPvEVR12W6OTmn/k=
+	t=1745427399; cv=none; b=LsB6niCLRKJRBiN14o1g8zB7o+KC0ypDij1NT1Vzp3/rOrjOiUJ13ziq67oqY8DkZUVTGXwIVv6gfDliqlMxiOT2x67Y2wmKrFR1OhOWYqSNYNlbjWdvS0pEZJX6daH8Yks35VFhKAt1DyxoZEaSNF/OymD+btPIMjoOk0qheag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745426803; c=relaxed/simple;
-	bh=wiFJ793Wnu9Lov6l//YMxINYe6XWlbwpVqBwV5uHa9s=;
+	s=arc-20240116; t=1745427399; c=relaxed/simple;
+	bh=hW7Pk9hidnmZtQDNgmt/o9awtQ9RkrTmjYfXAKrfR4U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GUh2rGFpDPRrt2yVySP70hkFnm33o8vMGskomb/Q0wdzuMd7sAhSiorJkHq+LDcmObv7kConHN4DA+v4c0wM5lvQha3T60QL1QUlssWf1hfUBY/m8kvMeJRxhClcg2EmmbBCM3i5AQjFOQTjfQ6NmP/+BsmBun5WCAoT200+iEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dfDkJGUW; arc=none smtp.client-ip=209.85.210.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=OBseU2o4zdsjIsu7W1DYRhZT0Hsaul6q2YF0tjvAasrJygKpC7atx5UofqEU+AWTlqLb5u7kUvf2pHUnFnKI7jJiOOS0fpW6EuuhWGl4P2XIb8kCbzjzyKTcK6dlyGV4cZY3EFRjE0tCBIwOyRLehT2GmYmM736asqeGaMRePtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PAFBRest; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dfDkJGUW"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7376dd56f8fso8129203b3a.2;
-        Wed, 23 Apr 2025 09:46:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PAFBRest"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-30549dacd53so85666a91.1;
+        Wed, 23 Apr 2025 09:56:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745426801; x=1746031601; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745427397; x=1746032197; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WVT+rsq7u5oPOFTHY3CgYIi+sPXsVCdah/RCqBk3XIU=;
-        b=dfDkJGUW7InkOWg8YwhD/xlFoZ1dPztlal/4M92eLI8QzngELu3iFS0RQ3GY6zLaxz
-         XtQKGOBKVf3yAyiKkE6bXVMl76lzxJywbHssbNkz2s6Zy/QpZUhgaIzYL+l1ug3UmKDT
-         YVE/X0GwMkC1dIsoytLwM0QGADK6Hz3t+mDVigP+gD/Y2dhSazIrCSvH2UErgxJsp47D
-         EmFGrxqAj3sZLkq/w7Y9B/Kt7aNefYC+Iz9cJgdzW+5dywDc+gOMGK+F6xTlrRBn4M6q
-         BjF3vpPIkmBsT8fE4VS0nSJGCdVL3MYlAJUgfAk9rni1wpXOgWEA3/7d+DAWBaAcuBUg
-         nmew==
+        bh=gFR+gOpkUdQbM5Rh+p84V4szSqyZ4YTz2YuAgB5+XD4=;
+        b=PAFBRestu9t3LNOmJ/Fj/ZRinDNUY9vLnYIcAYWbLBAhP5GpiufbsP5jibyxvG2wYK
+         CXzb4WUoXV9jsqQnicLBlfczmG0hRd/i/U/pQWT5oRCQK+vniZHAOvV6da6Q0luUO/QK
+         QByvnB5ewOSqzmqGPWS1C/oGetG9A8jhVhDyY/7IcyNaJ003j0Zvz3bX0L29QEFnKMOV
+         62maqVzimY3ChV/hRGP4nwsfV4EL1DXoXjMVPXvrQ65n+QBaFum7u6Mwl5ntg0j10qpM
+         irxE7YQzcS8QZZFaTQHqh1czR2Dn5uoCRkh6M1cx5eJxyioYe4JmbFuyCez1XLxBPDgS
+         eZJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745426801; x=1746031601;
+        d=1e100.net; s=20230601; t=1745427397; x=1746032197;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WVT+rsq7u5oPOFTHY3CgYIi+sPXsVCdah/RCqBk3XIU=;
-        b=A5e4ELSAFTFH9B03jUJvtZ9aTQif4IpTfgH5M9pm5RjxDoO4k7bGvOjQ2GRJLfXXTE
-         ynSGF0rYvyfRMACBvzAJpoNZ+ik7gMmD3csPE/IR3SVJT35DVZ04CBHzKLTQOxsbV/ff
-         SmsPLoFRddU9nhTJ3/O153InXrFI2qztRdNsEuGN27UAV15TKsj2YHzxFenOCzadFovy
-         27HAAaEKP4UAQvEuQYPPGxQVe1i/goM8FckU+gPc5mjJodn/AaQhf1ixlm8c/BFz0R9u
-         OrawlUpJF0nxSGxlQgXgJqOVgY6PTbF7UaxvGDVh5imASBCViBz1ZJIL4fOjZiPSxXa+
-         lgNA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQQ95B7PFpGXtHpuN0L9vtiTVgwhL6cQF7fdzhe82A6BZIC4xutbmUZn1jO0jBLIoi5PFs0DexMjqk3d4=@vger.kernel.org, AJvYcCWINTb6yr4Q7Zjc5cbIXMdn8yIEbo0n54cbUvAJAid/tOhweVrXVedPFUIy+f69uYaAO5t6h93eFOcERoTTKlY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvbUH662uIPkaPGvLNszbUvkqzTgysl9R83vQaey5Ts1pMq3EJ
-	AcMMtpIwAOMp2gHl730RF+Bp7dsU7QLyy++rkGqjiQrkKfTEQT1K
-X-Gm-Gg: ASbGncs9ERl4bOsQVW2t6aJMwSrL2CLDt1rE13hP1Kox7s6vVWrbVtJQo4CnyLp0dyZ
-	i4HW4tQTI/dh1hIEjAu63P/PzkUU7sGBPm4sD7dUI8miGuMsv2dl/z057PYv80EO0pBiExkxLI0
-	xeGbFEV2nxlJpJnyNLUzobw/ZiiOY9UNi+mi7rJQSOEalLd3yCw5qs5/UvHSVmgPI4QkuG9teoU
-	YlfSh9lfRm52etG9lBi6uJMs7wgL85ES9vCaK3I5qZw+dZVBdC7mb7p1NbO4h1w2jco6mnur9YP
-	jt0ItlRNkWk2lkkhsn3ggMRU1V/kSQ3GPwpReTUQ
-X-Google-Smtp-Source: AGHT+IFjVnlLUmCgSZW8+dFj8PsA2OEylU3Ah1LfifaIsIAM53X2HSa9pVU0mAFegu5Cf/0i7dwv2Q==
-X-Received: by 2002:a05:6a21:392:b0:1ee:d687:c39b with SMTP id adf61e73a8af0-204410572cemr275442637.7.1745426800967;
-        Wed, 23 Apr 2025 09:46:40 -0700 (PDT)
+        bh=gFR+gOpkUdQbM5Rh+p84V4szSqyZ4YTz2YuAgB5+XD4=;
+        b=fpde4euCop9UQCsnAI/Sx0Vdrva60IHEyUZi/x8AtMS5cQHoQOKO+w0j2+jnPZiD/2
+         kx7SrO93D4I7f188gwlXUXCPSNqClDK04XLLIXhidLXrgWoLlZYDlsum05A+Xe1c3WjI
+         JMu3c46d1MhwywL2Hx4MYH0/UyIoxnw6CrEA/PVAyyorx9NFQzabu85R+wAvG0VOWkT6
+         /w/axq0cLCxcXNsDakxvpozvE8Loj6C7JcB2rfFDN09we+lpThTvGgRfB18x42Vq6hx/
+         Y5VYqLx9Kj79OClhvGYL1GX7LXFtfPWh9z0z70B9qF2m1XxzqNJS6naF9RjmpJEyYk+q
+         Y1ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgE0dHBu0eDG768k3RPr5ZHjUYNXG6VWQa9ay8paoQjwlc6fznwc3Q6u6hx3f7UQN6jHafYLXK/pVKSkNB+1Q=@vger.kernel.org, AJvYcCW1bcaKqAgQu1nhWA4QBZE8Xmt90PelqCChfuC4E9t8SKDc5F7LcK42jnF+tqkGOg3M3cPlYDRDv981HkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwdDiHLWHjko6h3dIxpjjL1Li6z0xM5fVxMUI7J7ora/1fHvcQ
+	EdSMCidu8Mjc+TEojzVDiVYk2MaT3I5tNLKVPXyeOzdOa4R8Mb5gabZcjX1+
+X-Gm-Gg: ASbGncuSPy2YB95qCO42O3mDY3JDYG/BPVUD0ordsktfhTTy/2s/cY5Lfk7becaevbA
+	+4PYpz0LgfO+KRUzuCvDCcXsrceBdXkf/bK2YLaPGheBfqAL2ggedGdZHNXZgnET5zZWK9XD+Bh
+	w9v/Os0lgx5OYIuGmgAaiuYxP34IYykRUbxOrQe1alg1BRuYhlLc0mewoUST+uf7CUTna2wKOjh
+	gzUlHst+RhPc8cNLGnVswMqy5bL+iX9OvWMQw4SE8CeiO46auvYOfjUTJ7WDcUVYEJ7JholAkjf
+	qg6Gnvk5iQdPk3K0Iz79ye2dggkh1D/ltB3W6UjGa5vKxUIdIlQ=
+X-Google-Smtp-Source: AGHT+IGOzI/P+2LneiNF1O16tla7Q/MbcQEZMA6Hku4ZstXoTDMAFNtlVy+fvZGtP4CDretd8agBiQ==
+X-Received: by 2002:a17:90b:55d0:b0:2e2:c2b0:d03e with SMTP id 98e67ed59e1d1-309df0b1fb2mr4983708a91.5.1745427397302;
+        Wed, 23 Apr 2025 09:56:37 -0700 (PDT)
 Received: from localhost ([216.228.127.130])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73dbf8bed02sm10762449b3a.29.2025.04.23.09.46.39
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309dfa0ac07sm1865161a91.15.2025.04.23.09.56.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 09:46:40 -0700 (PDT)
-Date: Wed, 23 Apr 2025 12:46:38 -0400
+        Wed, 23 Apr 2025 09:56:36 -0700 (PDT)
+Date: Wed, 23 Apr 2025 12:56:35 -0400
 From: Yury Norov <yury.norov@gmail.com>
 To: Burak Emir <bqe@google.com>
 Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
@@ -69,10 +69,10 @@ Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 3/5] rust: add bitmap API.
-Message-ID: <aAkZZd8QRXKejVV0@yury>
+Subject: Re: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
+Message-ID: <aAkbw0jEp_IGzvgB@yury>
 References: <20250423134344.3888205-2-bqe@google.com>
- <20250423134344.3888205-5-bqe@google.com>
+ <20250423134344.3888205-6-bqe@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,176 +81,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250423134344.3888205-5-bqe@google.com>
+In-Reply-To: <20250423134344.3888205-6-bqe@google.com>
 
-On Wed, Apr 23, 2025 at 01:43:35PM +0000, Burak Emir wrote:
+Thanks!
+
+On Wed, Apr 23, 2025 at 01:43:36PM +0000, Burak Emir wrote:
+> Microbenchmark protected by a config FIND_BIT_BENCHMARK_RUST,
+> following `find_bit_benchmark.c` but testing the Rust Bitmap API.
+
+So? Can you show your numbers?
+
+Can you print the existing C test output back to back with the new one?
+Can you also ask 0-day folks to enable your test in their rust config?
+ 
+> We add a fill_random() method protected by the config in order to
+> maintain the abstraction.
 > 
-> Provides an abstraction for C bitmap API and bitops operations.
-> We follow the C Bitmap API closely in naming and semantics, with
-> a few differences that take advantage of Rust language facilities
-> and idioms:
-> 
->   * not all operations are exposed yet, to avoid dead code. This commit
->     includes enough to implement an Android Binder data structure that
->     was introduced in commit 15d9da3f818c ("binder: use bitmap for
->     faster descriptor lookup"), namely drivers/android/dbitmap.h. This
->     is part of upstreaming the Android Binder driver.
-> 
->   * API uses Option types where appropriate
-> 
->   * bound checks are used to treat out-of-bounds access as bug
->     (hardening). The C operations treat out-of-bounds parameters
->     as a default case e.g. "not found" which is safe (avoids UB) but
->     may hide bugs.
+> Minor fix to the documentation of the corresponding C config
+> FIND_BIT_BENCHMARK, it was mentioning the wrong module name.
 
-Few paragraphs later you say:
+Indeed. Can you make it a separate patch, please?
+  
+Thanks,
+Yury
 
-> It enables Rust
-> code to be a lot more similar and predictable with respect to C code
-
-If you want to make Rust similar to C (which is good), you need to
-make all that Panic'ing stuff configurable, right?
-
-This is what I suggested originally, and this is the right way to go,
-to me.
-
-There was a long discussion few years ago regarding BUG_ON()s in the
-kernel, and the bottomline for it is simple: the kernel has many nice
-isolating and self-debugging features that help to resolve (hopefully)
-non-fatal errors like out-of-bond access, so we should let it try.
-
-Just halting the kernel helps little, particularly it prevents from
-collecting syslogs and other debugging info. You can check git history
-and see how many BUG()s were demoted to WARN()s, or simply dropped.
-
-So, this is again my suggestion: it's OK to have a hardening feature,
-but the panic should be configurable for the reasons:
- - robustness;
- - compatibility;
- - debugability.
-
-To me, this should end up with something like:
-
-  fn bitmap_assert(bool, msg) 
-  {
-  #if CONFIG_RUST_HARDENING_PANIC && CONFIG_RUST_BITMAP_HARDENING
-        assert(bool, msg)
-  #elif CONFIG_RUST_BITMAP_HARDENING
-        if (!bool)
-                pr_err(msg)
-  #else
-        // do nothing; for the best performance.
-  #endif
-  }
-
-This doesn't look difficult anyhow right? But if you find it
-impractical, you can just replace the panic with printing an error.
-
-After all, this # Panic simply breaks your own coding rules:
-
-  Please note that panicking should be very rare and used only with a good
-  reason. In almost all cases, a fallible approach should be used, typically
-  returning a ``Result``.
-
->   * better naming convention to distinguish non-atomic from atomic
->     operations: {set,clear}_bit vs {set,clear}_bit_atomic.
->     The Rust type system ensures that all non-atomic operations
->     require a &mut reference which amounts to exclusive access.
->     Using the atomic variants only makes sense when multiple threads
->     have a shared reference &bitmap which amounts to the interior
->     mutability pattern.
-> 
->   * optimized to represent the bitmap inline if it would take the space
->     of a pointer. This saves allocations which is relevant in the
->     Binder use case.
-> 
-> The underlying C bitmap is *not* exposed. This would lose all static
-> guarantees.
-> 
-> An alternative route of vendoring an existing Rust bitmap package was
-> considered but suboptimal overall. Reusing the C implementation is
-> preferable for a basic data structure like bitmaps. It enables Rust
-> code to be a lot more similar and predictable with respect to C code
-> that uses the same data structures and enables the use of code that
-> has been tried-and-tested in the kernel.
-> 
-> We use the `usize` type for sizes and indices into the bitmap,
-> because Rust generally always uses that type for indices and lengths
-> and it will be more convenient if the API accepts that type. This means
-> that we need to perform some casts to/from u32 and usize, since the C
-> headers use unsigned int instead of size_t/unsigned long for these
-> numbers in some places.
-> 
-> Adds new MAINTAINERS section BITMAP API [RUST].
 > 
 > Suggested-by: Alice Ryhl <aliceryhl@google.com>
 > Suggested-by: Yury Norov <yury.norov@gmail.com>
 > Signed-off-by: Burak Emir <bqe@google.com>
-> ---
->  MAINTAINERS           |   7 +
->  rust/kernel/bitmap.rs | 396 ++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs    |   1 +
->  3 files changed, 404 insertions(+)
->  create mode 100644 rust/kernel/bitmap.rs
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 1f162f64eded..7d107dc91390 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4135,6 +4135,13 @@ S:	Maintained
->  F:	rust/helpers/bitmap.c
->  F:	rust/helpers/cpumask.c
->  
-> +BITMAP API [RUST]
-> +M:	Alice Ryhl <aliceryhl@google.com>
-> +M:	Burak Emir <bqe@google.com>
-> +R:	Yury Norov <yury.norov@gmail.com>
-> +S:	Maintained
-> +F:	rust/kernel/bitmap.rs
-> +
->  BITOPS API
->  M:	Yury Norov <yury.norov@gmail.com>
->  R:	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-> new file mode 100644
-> index 000000000000..79ddbef2b028
-> --- /dev/null
-> +++ b/rust/kernel/bitmap.rs
-> @@ -0,0 +1,396 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2025 Google LLC.
-> +
-> +//! Rust API for bitmap.
-> +//!
-> +//! C headers: [`include/linux/bitmap.h`](srctree/include/linux/bitmap.h).
-> +
-> +use crate::alloc::{AllocError, Flags};
-> +use crate::bindings;
-> +use core::ptr::NonNull;
-> +
-> +/// Holds either a pointer to array of `unsigned long` or a small bitmap.
-> +#[repr(C)]
-> +union BitmapRepr {
-> +    bitmap: usize,
-> +    ptr: NonNull<usize>,
-> +}
-> +
-> +    pub fn last_bit(&self) -> Option<usize> {
-
-[...]
-
-> +        // SAFETY: access is within bounds.
-> +        let index = unsafe { bindings::_find_last_bit(self.as_ptr(), self.nbits) };
-> +        if index == self.nbits {
-
-Here and everywhere, can you please:
-
-        if index >= self.nbits {
-
-I know that bitmap documentation says that index would be exactly
-nbits, but really it was a bad decision. If one day I'll find a safe
-way to relax this to >=, your code will stay untouched.
-
-Thanks,
-Yury
