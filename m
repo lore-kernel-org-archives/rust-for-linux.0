@@ -1,58 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B051624E9
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 13:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF5A156F45
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 15:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745503161; cv=none; b=p2Z6Ksx/X3aXF8aNBWDhAddZDg28tCfxBcdmsPgVzdMuHoG8AYxwOnm0mVO60LuOZhpvOe0G5Z6rf6hGHK0Qd2goqfpx6EAXn0URe9VFtyMCt1aZy/IIbBLzlwQA1BSOvfyHE5n1KZ529dvwtfFhqRHSXLMlAJ2jm4ngdES29oI=
+	t=1745507911; cv=none; b=XegQqyDqBAyh/k6AvW76JWMMnP2nprCMyWIyLrJdBtmC0cj9vH9y9bQMnZ4ciE0UaPRYvJje7iCmkSosfcgXOvZ8f1qH6Lf2l/d62VliKPTAfyKCPkQhsRa8LKdNza/+Wju6OXGJvTBVjQYm57oiGrUgYA4HSc4588ti3kxBfhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745503161; c=relaxed/simple;
-	bh=AhueexCdZ3Pnze7a50gF2kNn9MUioyCZjLhbZqAGLEI=;
-	h=Message-ID:Date:MIME-Version:Subject:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DEh6mNrDp0LIK1JtWHgpDY8oqbcJbfspdRnfOI+QLN5OuAGVfrqRMAWMQ5Uc0yN6bFiMCZF3G2w0OQjg1h9+BbLLUQF6eauhZD2NbNlfLFcox4piDv7IfBWy5raLjNpKkwq479o60dDlTrOe2C++WF2vfoCKjw9hdgTN5mrnmEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/xsMUwl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745507911; c=relaxed/simple;
+	bh=9BNIxnc9r804rmE7+FXrComHgep37vSfqHSO0rVjenE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=EwoTDIIY1O3tOTv8dQjd+zYSQoPjKwo4PA+D32p216Wd/yrqXg835cAsB305d6xtJg4gdFrLj8aBAYVqRGesrwTz9xZO2nD3Hye5d0ZIJiqkt4WIvIdPT7u44qKK8lpCND8lPJ4KItSL+t6abjeOAhMKqefFOyD3wHlS/ETwaPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0W0/oTRz; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/xsMUwl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175A3C4CEE3;
-	Thu, 24 Apr 2025 13:59:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745503160;
-	bh=AhueexCdZ3Pnze7a50gF2kNn9MUioyCZjLhbZqAGLEI=;
-	h=Date:Subject:Cc:References:From:In-Reply-To:From;
-	b=C/xsMUwlJPq8xM76WrJpbBduJIdrXNtcyvGMe4Rcpz9UrmMM0hKlYdGXOAoozWpBk
-	 gqxmgy8nF40dtloMQQtjDQuMv3Rk6e+TlUylIWwMnq8+HP4iHLCsRffntZuT/YtPW/
-	 /lL9E8Kym15UcgbceYFMpPn2ui0XsSzjFfI4GkEZtTvHOcpzHhpRyQ1j6R060wwPgO
-	 moOGnHGDxtIvOQASzAO1XdD6og8ZagXc5QkXVqmtFz43wOXtH7OAGzHldJwBF10j6u
-	 aT5x6qOZqZJyHjtuKi1in/TedaigGpm0qMR2hBiCFlvMACoKoT8T6G2tZMgk54GZaR
-	 k7IknCfeCAxPA==
-Message-ID: <21445861-fcf1-4ae3-8c18-d3842712bb5f@kernel.org>
-Date: Thu, 24 Apr 2025 15:59:15 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0W0/oTRz"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43941ad86d4so5433555e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 08:18:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745507908; x=1746112708; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cfA5KJ+Q12EFPpKOtsI5SxxVVjHn+/t0FQnzxOZ5ksc=;
+        b=0W0/oTRzQVbau4AbZlDZ19TifVo7XetwHL5h3BmpiFoB0q14/X3NwKklSPMGjQ4zib
+         7F2B5PDVU8epHDOrTRZMjYMySzw/6lC6ohqEwWb/3A7AwnRnCL3UUMUB/oA54QLAA1uJ
+         Ym9Vc6tzYdwaoyb/2OVr/UAmgIeqPUWP1pndEZ5feFsxq6F+jgllB3CAP+t3biyp/F/k
+         xIatNNZEQY9OMf+cGi0e9+vmn06RGs4kf0RLXCFETewtzth90o+VsLpy7npdCbszZaQN
+         GRpC8ZR5zUc4ygZdg5Qc1ZhqWqdE80b6mps+45QWDkXCFRnIdcE8jDfZnM6246LjrSSs
+         shtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745507908; x=1746112708;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cfA5KJ+Q12EFPpKOtsI5SxxVVjHn+/t0FQnzxOZ5ksc=;
+        b=jtZ3X/6FbxAbi1ZCc9FiZL/uoOQ1pxJ2TxOLKsCld6IMPU4xyz8M1Li20B4Ji+E7tZ
+         ezsIC8987YXTDarqMqM3ne1zYvYcqV2c4H1AUApHwfCWOySfeAG6/aCPruVv2G2ZaR7k
+         mtTQ0OZ0oJ0ho1QF4LjFWo/AtDs315LN+gr4NWqFdkZ3pZykuaDQ4n72AMEjnAXBX5Qf
+         Rc4wGXd7o3QtNrqhXeFtkbLX9Qsl/lnGL0mV5cvneA1c7KnS/pJgT5ozNOo8OnGYpGP/
+         rv6yGLwQTeRcH8Qqlrl8yVlqDb3c5UPUneZp88fWj8g8pxomlj4H5r/TjJkl1L58/pgp
+         lWdA==
+X-Forwarded-Encrypted: i=1; AJvYcCWpm8yTE0xPmP6HLSrbUqSVHcTdPCwKIvwyr1EAdqPp/4KL0yqin3VWP/H+6Ma8Zy8VriHMdacy+lkbx8/qNg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtZM18SAi2TmSimeF2EX4kVD/xp8y3PAk8tFWoYaczzWW+B003
+	rpP7hQy0OhmL/reKwXvXqsuI0KU/Qdx1SCE+h7N6tVwctHwuFT+3ru4T3ph9Pd1In1EZWkvPNqR
+	7VbZMYgeuLSrBZg==
+X-Google-Smtp-Source: AGHT+IFYlRdWdDBWEytA3wAsf7mafXhWXPvUDFxyzQdqN7Sx421ZAojDUsD1snyQx+fuZBzGtNoo+knrTEpnQPE=
+X-Received: from wmsp1.prod.google.com ([2002:a05:600c:1d81:b0:43c:f5f7:f76a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3482:b0:43d:94:2d1e with SMTP id 5b1f17b1804b1-4409bd23196mr37607955e9.13.1745507907748;
+ Thu, 24 Apr 2025 08:18:27 -0700 (PDT)
+Date: Thu, 24 Apr 2025 15:17:48 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] DRM Rust abstractions
-Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, lyude@redhat.com,
- lina@asahilina.net, daniel.almeida@collabora.com, j@jannau.net,
- alyssa@rosenzweig.io, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org
-References: <20250410235546.43736-1-dakr@kernel.org>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20250410235546.43736-1-dakr@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIABtWCmgC/x3MMQ6AIAxA0auYzjZBog5exTgoFO0gkKJGY7i7x
+ PEP77+QSJgSDNULQhcnDr5EU1dgttmvhGxLg1a6U61uMR3iTXzQSdjxLBobp63qF2WsJSguCjm +/+c45fwBd4u50WMAAAA=
+X-Change-Id: 20250424-strncpy-from-user-1f2d06b0cdde
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2100; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=9BNIxnc9r804rmE7+FXrComHgep37vSfqHSO0rVjenE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoClY8RSQvWwEQndvmFwi89glgqILwEhoVJ15aK
+ lPvvfLhCO+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaApWPAAKCRAEWL7uWMY5
+ Rp8CD/9tbXhInLSabFWUztQR3lTNjgICrtdrNs8ftT/5o1QwiqRAXwe+2l6q+rZ+MdGyBIErAF0
+ zoYJ4F+KhawbAH5je3edyYmeyMRtiKGuhTA6Sb8F3BLWGtKd/7VIa1yA0fN3jnHCnJ3v9/9AMn4
+ 0glbkXdhjSrmkFlzuLU7WpmioBBrQ4kqNsKH0ChZNjpbOyQsMDFP7ddc9946nics9IOVQQJKW6y
+ +9WyHYv3bQsb3Y7qP8VHsbh7UATHKmmnmugN5CvN8nygEXFBxsvOj2C/HW4BzqVOwKlyfDzh+Ox
+ Rq5wzXNx4Wq9rDb4K7rAFH/+6+nSXDmdkk8vDnU2sc//hhvPMBWAjVLVX/n65FfB8RHiE27ftoR
+ fY7DNC5FwUAd4pA/rJNYLjwUdBxbQ3HBtB62r1kBcXCsOv+dDga5G99P1ydDjwPrJ6bn5Xxw45L
+ Jbwn1i8zX+nVbT/TI0kc/skSqiAikiN/QnaltMqHktjePIoIZdy7XpiBeRZv5Rt+OMTj0aWX6Aj
+ vGzaTYDf6VGrwwrSnKF9PFnYyP94TfTNFpa9GXrEG0kli0kaKrNg+zvBnu73Wt/puU1pQ/8CB9G
+ umW+ioYL8CfXPyX2xGv7pZ4rc6R90LBVhRccZbYOc6FVCXuz2kF/Ci/OQRfiZIs2o2Q8xa3l0bF 6kWUsHPzoa7/X9Q==
+X-Mailer: b4 0.14.2
+Message-ID: <20250424-strncpy-from-user-v1-1-f983fe21685a@google.com>
+Subject: [PATCH] uaccess: rust: add strncpy_from_user
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 4/11/25 1:55 AM, Danilo Krummrich wrote:
-> This is the series for the initial DRM Rust abstractions, including DRM device /
-> driver, IOCTL, File and GEM object abstractions.
+This is needed for ioctls that operate on a user-provided string.
 
-With the changes requested by Alyssa and Lyude, applied to nova-next, thanks!
+It is somewhat unfortunate that strncpy_from_user does not nul-terminate
+the string when the end of `buf` is reached. This implies that we can't
+return a &CStr from the function, since the buffer may not always be
+nul-terminated.
+
+That said, we could add more convenient helpers on top that add a NUL
+byte in that case.
+
+This method isn't defined on UserSliceReader because it complicates the
+semantics. The UserSliceReader type also has its own maximum length, so
+we would have to limit the read by that length too.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/uaccess.rs | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+index 80a9782b1c6e98ed6eae308ade8551afa7adc188..1bd82045e81ea887008e30241bd6de27f096b639 100644
+--- a/rust/kernel/uaccess.rs
++++ b/rust/kernel/uaccess.rs
+@@ -369,3 +369,30 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
+         Ok(())
+     }
+ }
++
++/// Reads a nul-terminated string into `buf` and returns the length.
++///
++/// Fails with [`EFAULT`] if the read happens on a bad address. If the end of `buf` is reached,
++/// then the buffer will not be nul-terminated.
++#[inline]
++pub fn strncpy_from_user(ptr: UserPtr, buf: &mut [u8]) -> Result<usize> {
++    // CAST: Slice lengths are guaranteed to be `<= isize::MAX`.
++    let len = buf.len() as isize;
++
++    // SAFETY: `buf` is valid for writing `buf.len()` bytes.
++    let res = unsafe {
++        bindings::strncpy_from_user(
++            buf.as_mut_ptr(),
++            ptr as *const u8,
++            len,
++        )
++    };
++
++    if res < 0 {
++        Err(Error::from_errno(res as i32))
++    } else {
++        #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
++        assert!(res <= len);
++        Ok(res as usize)
++    }
++}
+
+---
+base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
+change-id: 20250424-strncpy-from-user-1f2d06b0cdde
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
