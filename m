@@ -1,163 +1,81 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D4A433B1
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 11:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896411DEFC8
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 12:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745495626; cv=none; b=KMT05Doyxrt2UwNea+3zWs2vs/+38v6lFp19u64ikz6mY+nJ2qPtlFwschKZMPXNP8Lc0i2+j0PGKmzz9Hd9/O52k9jdaVHdYrwXMDDIrM4j4wROxUXeMkN7SL7Otp8smlbjQKN0G1EEtD7POQhMzN5KU5+5CE7Ap1kC0dVEhjk=
+	t=1745498555; cv=none; b=rlX1rblxWZFfCwMd6vQiX3H7FQzttgpBXf/0EGOenhVg6x8jy7xil7sNeO5cuuFP1kdrc4oWZ+s3Cqch8pphfxZyBWfdzc8UKqOfTxINR8PfXU2l2za0Wp2rI9mjQlVk3e3aehGtm9LgBOPZMF8vfr0RjteKKm3pbnimdJixdPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745495626; c=relaxed/simple;
-	bh=rCIB3s1YMCAjZ2yHxxGRAupIU11mjpbmp0sA7XGhhSU=;
+	s=arc-20240116; t=1745498555; c=relaxed/simple;
+	bh=bMUPawVVEjbF79zo+i8e/G9oQm/E1z7PfhxO6IAIp3Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=g28Jo1BJAMHOMeHYsA4VOej2W04lBtJcHctoV5JDkxcYQYjk6nSLZP0pVJf1ME/6ktIK0y9gdt3vIxQEs8SCuBJN68tvB9XkEr98zkj1bZ5sZ0F/S+AfKHOQvxhwlQ3YiqFI6beF02Ds88MNfMxd7iev0iVN4FEnYzwgkuCj0ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dxkC/T0N; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=FdGL8LgsHZ5N8Qa3Kr+9TRjMEIhWixD8pAqNeN2QSPBFmSwqHsLrdjW7Bemf40GbmuLaUU2x4D65w6lfodq8Tija75+ZdzFLgFo+Aae0hV15F17Gsk1Zy2s6KGcC4xd9fTpxcvSiQvo+QIunVC4Jp8oZbEJhe4tbcN8RVa8zbhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aAQEiS4/; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dxkC/T0N"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cfda30a3cso5011175e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 04:53:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aAQEiS4/"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43941ad86d4so4060375e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 05:42:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745495623; x=1746100423; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1745498552; x=1746103352; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7r7+1msfSNKtwI+7TAuSvOOZwjo66YqGQOnUawD+nm4=;
-        b=dxkC/T0NxZhMX+3mkOIvZTHweEWrJZp/qraW4xPy4wX7gcyufdwBxijzmAUjIFGQYD
-         d0uUv4pVfgVW9bebySGMIf0Ou2bgTxli3ThQPRqjSCn3L6LEf0dzokmkxNlLwwonMiHb
-         4QxGqTpycXwYEuoyCNFpoWxkb8XAW0H9guTGipa90gWgrhV2I2pDkkB22t33SgwD1rSp
-         vIlPyY3TdSYOWW+sNEoDo0beB/H864SlpYCBX2iOVGym5HSbMKVqyLGmz6jg4Zff+H7V
-         7FAkPJW16H30HuEITTCheNJjMwkMGsO5xATa+3uG7y6/0iPWQa0EdpPZJsTyqT7ZDOxX
-         oExg==
+        bh=pkiVBLuG8XqT3hphgZF0hV/7DodmP7PFwnCD2xq7o9k=;
+        b=aAQEiS4/66WQ/Gk8iEyEn6+lOn87aapjBmnCoDnkd2DsrknR/ULvUHEukMWnVorbbf
+         gZtYJCDaf756HlFqVspMYAhyUYS5ICedzQvB7EZLBSEp/bFaT4i4jCG5fn7fydR8EVZj
+         3p9DRxSBScf9DKmVokyPyOj/amkcI1c1NLvDCF268vgKo31r6rz/Bs5G7u/+WI/yRHHZ
+         zavXdP595tkdB4vF3qSyOsE1MSEqUQqdVFYhZocjbgwX4QSJs406Yg74cmAbHoQFoLsP
+         c4gcYqoWwqaLRzC9GaI6HYF2IfQ+q0fvkNrkgxrSloqWnQHs+7kDUKE81njrRH9ef2+H
+         /tgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745495623; x=1746100423;
+        d=1e100.net; s=20230601; t=1745498552; x=1746103352;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7r7+1msfSNKtwI+7TAuSvOOZwjo66YqGQOnUawD+nm4=;
-        b=tiCpkDTjDDcoulWaKv/SmLggbq5zKZatvAVBsi+x57BgNz+IYi3lTxX+JdbF190lLL
-         UODtccDUaVTW7Cyyb+yF1EvDmLDLqc1RbqJVyBjB44czMRXZD7EAW9i7Y0E0j/6Gdt5y
-         i91z8EYrV0+WeK5y5s3AI6NtBlsfdCgBl+gO52vrua+PgfTycoWt5k02rqKkJEa2mBgA
-         OacWTULVAOV7NCc43VZ4/XYxYd+qyG2o337Uyv6XQxLvj5LjeVr3EiT1lUgDnvPaJn02
-         AHETj7t36wZFvks8RnVLRaTYVOUHLE9oUTcBTs/xlzD1G1ttIsn2jhsXcQfXPvP/8T+T
-         MJUw==
-X-Forwarded-Encrypted: i=1; AJvYcCVgNI5SGqCoBqnV0sbVsHXdxslbJM9VrKQ+FXA37g4rINy/CHO/JBh116r/II6glJl4agwM2GiIJk6cVGfGfw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYQlDdEkSUfYY3aR9QptjWEHyR6sc5o+bY74WL6KxAzUf8Ez3y
-	fnil/QwyQZb2Oy36xBCd7KDur9SyP2JJw+9QUsVXQFPqkAmRzk/6t3mM/sTFq7jvoEuoRkRzQSQ
-	Q8QgZ3PNH8xcTXg==
-X-Google-Smtp-Source: AGHT+IFfglV76zUc9U0P4XV3F76n+fUoIUnMtt/qjmVfgTe265a7D4yiy8/xlJBe4DvMyGg4z4bTuwcjwvuy+M0=
-X-Received: from wmrn37.prod.google.com ([2002:a05:600c:5025:b0:43b:c7e5:66e0])
+        bh=pkiVBLuG8XqT3hphgZF0hV/7DodmP7PFwnCD2xq7o9k=;
+        b=cPBcPukIGcJfvpB4qZ4APS5NnNHy5k+XP/JBDywGyUm//+3dn+LsDWdjwjOLixXxFD
+         rs05KfvjkzAWbbh0jncZU44siDUHep/5V4Vx/GQURPg69RLlAtaW8bp7w1MP/IgJcni7
+         aBG1X+U5rJ5H4zG1+fr48dUljwtG/ghSersuzMVoVxvcOd68C2bw5SrDfybPVxzElnci
+         boBBQV1imG+BAwL7t9f1zyP/4M6bPi302R4xv22R2c3E1yhPbm3a1Xg6bDI5ewVtVE3a
+         wZMjLp9mWv/zWsZBbvdbGqXUsfa/abrHgea99av2FUPFDfNK6j9kFqzTtzpF/IIRGrom
+         TlSg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9q3b6igM79OO8bj4tK4vXOMvMasVRTmxkJF9AXjdFQnl468PMTBN7pKM+REf2V5ZuuEgN5STuGJSb9IoUEA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo5Gw/Y/H/jC3BdHRqU4GAbeQvy0SR/uJQo3WEPwP1aXaLBcsH
+	+YKuxnldbToT/wilFblCuj0do4nB2OIwAqNxZLgwaUoau3tbuXd0hB2shIKg/epFfde81cUtVVI
+	1+9NcAMIeM3D6MA==
+X-Google-Smtp-Source: AGHT+IHUeUoQ0ejG3/JHvwn7Rj1k7fCZD7HnZJ6v+sIjXJoqZ3Sw032FWqzu554ZEj2HUTDpr+mjqYHNg+k+EDY=
+X-Received: from wmbdz10.prod.google.com ([2002:a05:600c:670a:b0:43c:f60a:4c59])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3d0c:b0:43d:224:86b5 with SMTP id 5b1f17b1804b1-4409bcfb42cmr23146005e9.4.1745495622833;
- Thu, 24 Apr 2025 04:53:42 -0700 (PDT)
-Date: Thu, 24 Apr 2025 11:53:40 +0000
-In-Reply-To: <20250423-b4-container-of-type-check-v3-1-7994c56cf359@gmail.com>
+ 2002:a05:600c:3b09:b0:43c:eea9:f438 with SMTP id 5b1f17b1804b1-4409bd2f657mr21512285e9.15.1745498551878;
+ Thu, 24 Apr 2025 05:42:31 -0700 (PDT)
+Date: Thu, 24 Apr 2025 12:42:29 +0000
+In-Reply-To: <20250423134344.3888205-6-bqe@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250423-b4-container-of-type-check-v3-1-7994c56cf359@gmail.com>
-Message-ID: <aAomRMzyu3EX5Xal@google.com>
-Subject: Re: [PATCH v3] rust: check type of `$ptr` in `container_of!`
+References: <20250423134344.3888205-2-bqe@google.com> <20250423134344.3888205-6-bqe@google.com>
+Message-ID: <aAoxtUXWq4fdnt8F@google.com>
+Subject: Re: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
 From: Alice Ryhl <aliceryhl@google.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+To: Burak Emir <bqe@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Apr 23, 2025 at 01:40:10PM -0400, Tamir Duberstein wrote:
-> Add a compile-time check that `*$ptr` is of the type of `$type->$($f)*`.
-> Rename those placeholders for clarity.
-> 
-> Given the incorrect usage:
-> 
-> > diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-> > index 8d978c896747..6a7089149878 100644
-> > --- a/rust/kernel/rbtree.rs
-> > +++ b/rust/kernel/rbtree.rs
-> > @@ -329,7 +329,7 @@ fn raw_entry(&mut self, key: &K) -> RawEntry<'_, K, V> {
-> >          while !(*child_field_of_parent).is_null() {
-> >              let curr = *child_field_of_parent;
-> >              // SAFETY: All links fields we create are in a `Node<K, V>`.
-> > -            let node = unsafe { container_of!(curr, Node<K, V>, links) };
-> > +            let node = unsafe { container_of!(curr, Node<K, V>, key) };
-> >
-> >              // SAFETY: `node` is a non-null node so it is valid by the type invariants.
-> >              match key.cmp(unsafe { &(*node).key }) {
-> 
-> this patch produces the compilation error:
-> 
-> > error[E0308]: mismatched types
-> >    --> rust/kernel/lib.rs:207:25
-> >     |
-> > 207 |             [field_ptr, container_field_ptr]; // typeof(`$field_ptr`) == typeof(`$Container.$($fields)*`)
-> >     |                         ^^^^^^^^^^^^^^^^^^^ expected `*mut rb_node`, found `*mut K`
-> >     |
-> >    ::: rust/kernel/rbtree.rs:270:6
-> >     |
-> > 270 | impl<K, V> RBTree<K, V>
-> >     |      - found this type parameter
-> > ...
-> > 332 |             let node = unsafe { container_of!(curr, Node<K, V>, key) };
-> >     |                                 ------------------------------------ in this macro invocation
-> >     |
-> >     = note: expected raw pointer `*mut bindings::rb_node`
-> >                found raw pointer `*mut K`
-> >     = note: this error originates in the macro `container_of` (in Nightly builds, run with -Z macro-backtrace for more info)
-> >
-> > error: aborting due to 1 previous error
-> 
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://lore.kernel.org/all/CAH5fLgh6gmqGBhPMi2SKn7mCmMWfOSiS0WP5wBuGPYh9ZTAiww@mail.gmail.com/
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+On Wed, Apr 23, 2025 at 01:43:36PM +0000, Burak Emir wrote:
+> +    loop {
+> +        cnt += 1;
+> +        if let Some(index) = bitmap.next_bit(i) {
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
->  rust/kernel/lib.rs | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 1df11156302a..d14ed86efb68 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -198,9 +198,15 @@ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
->  /// ```
->  #[macro_export]
->  macro_rules! container_of {
-> -    ($ptr:expr, $type:ty, $($f:tt)*) => {{
-> -        let offset: usize = ::core::mem::offset_of!($type, $($f)*);
-> -        $ptr.byte_sub(offset).cast::<$type>()
-> +    ($field_ptr:expr, $Container:ty, $($fields:tt)*) => {{
-
-It's rather unusual to use an uppercase C in the name of this parameter.
+You can use a while let loop here ;)
 
 Alice
-
-> +        let offset: usize = ::core::mem::offset_of!($Container, $($fields)*);
-> +        let field_ptr = $field_ptr;
-> +        let container_ptr = field_ptr.byte_sub(offset).cast::<$Container>();
-> +        if false {
-> +            let container_field_ptr = ::core::ptr::addr_of!((*container_ptr).$($fields)*).cast_mut();
-> +            [field_ptr, container_field_ptr]; // typeof(`$field_ptr`) == typeof(`$Container.$($fields)*`)
-> +        }
-> +        container_ptr
->      }}
->  }
->  
-> 
-> ---
-> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-> change-id: 20250411-b4-container-of-type-check-06af1c204f59
-> prerequisite-change-id: 20250409-container-of-mutness-b153dab4388d:v1
-> prerequisite-patch-id: 53d5889db599267f87642bb0ae3063c29bc24863
-> 
-> Best regards,
-> -- 
-> Tamir Duberstein <tamird@gmail.com>
-> 
