@@ -1,111 +1,163 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579391DD0F2
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 11:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D4A433B1
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 11:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745495451; cv=none; b=ZotEYswtIcelRlRcNb6+r6ddX6KwDIfxRtUNW2x5T/woS1IlfFKQOnazYxNGJvxpZzDV+ylYQg+iYA9Qb5CvmehVy7qmpEqbqBZRZrijd5Lrr1TS1LDuf0XuJjruVmgdQ8Yl4tjffFK7tE/QxAjp9KxoUjA8TJPUZechpIG9hi4=
+	t=1745495626; cv=none; b=KMT05Doyxrt2UwNea+3zWs2vs/+38v6lFp19u64ikz6mY+nJ2qPtlFwschKZMPXNP8Lc0i2+j0PGKmzz9Hd9/O52k9jdaVHdYrwXMDDIrM4j4wROxUXeMkN7SL7Otp8smlbjQKN0G1EEtD7POQhMzN5KU5+5CE7Ap1kC0dVEhjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745495451; c=relaxed/simple;
-	bh=WgwTiED1fBpIzvfOQn7EkYxVe+MFtEl84pNZpKpzUI4=;
+	s=arc-20240116; t=1745495626; c=relaxed/simple;
+	bh=rCIB3s1YMCAjZ2yHxxGRAupIU11mjpbmp0sA7XGhhSU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=baaPlDguyXg/pSRkTg78fpyXzc0umKt5f06TvN9HvBHO8yfCQYVL11pW1nhD6xmE0O0VUp/E8ezTLhsoyopmzKyikgt0mg7UhZFbdkxCKty782nV1P9+0+4mTasWaKyRvRnr45JRczoiZNqZvoi/+4v48bxGJ+XRgooqiwNWDNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N/0+2Wfg; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=g28Jo1BJAMHOMeHYsA4VOej2W04lBtJcHctoV5JDkxcYQYjk6nSLZP0pVJf1ME/6ktIK0y9gdt3vIxQEs8SCuBJN68tvB9XkEr98zkj1bZ5sZ0F/S+AfKHOQvxhwlQ3YiqFI6beF02Ds88MNfMxd7iev0iVN4FEnYzwgkuCj0ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dxkC/T0N; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N/0+2Wfg"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-39130f02631so324475f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 04:50:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dxkC/T0N"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cfda30a3cso5011175e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 04:53:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745495447; x=1746100247; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1745495623; x=1746100423; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PmGDbzBuoGsyvxYtKjfZh7IglzQtL8j26vfWqlh7BfE=;
-        b=N/0+2WfgUNaOL7xaIEg+GCggTvyuPqzpMh9BfyX9Y9WDux3PdZgu8szchaCGe1/iFB
-         NbEjFrG7DyB5Gtg6neXR7qvxd9N2CiDch3JBJAcJBNR05BHt1MH30zu8hGS7LtNW6Xa7
-         YvYvo3fEdCiOE46wLH3z3t+lbbUDcBJRHMAuc+i5Eu1zRLAs2e/fMPOGg3AdhwCAUBbe
-         1y9TibCgkkOdTZSxhetWQ4fyDBvSzJjGxapbKKk45zQ2T41/nL6kk4KGmRY3epoHBvYI
-         JRu5vRVlTD8R5tcs6nuLEFagd/Rr1sCE70//IdnmjAxVyhSKcLEFhSxnAEbZL1A84jyn
-         0Zfg==
+        bh=7r7+1msfSNKtwI+7TAuSvOOZwjo66YqGQOnUawD+nm4=;
+        b=dxkC/T0NxZhMX+3mkOIvZTHweEWrJZp/qraW4xPy4wX7gcyufdwBxijzmAUjIFGQYD
+         d0uUv4pVfgVW9bebySGMIf0Ou2bgTxli3ThQPRqjSCn3L6LEf0dzokmkxNlLwwonMiHb
+         4QxGqTpycXwYEuoyCNFpoWxkb8XAW0H9guTGipa90gWgrhV2I2pDkkB22t33SgwD1rSp
+         vIlPyY3TdSYOWW+sNEoDo0beB/H864SlpYCBX2iOVGym5HSbMKVqyLGmz6jg4Zff+H7V
+         7FAkPJW16H30HuEITTCheNJjMwkMGsO5xATa+3uG7y6/0iPWQa0EdpPZJsTyqT7ZDOxX
+         oExg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745495447; x=1746100247;
+        d=1e100.net; s=20230601; t=1745495623; x=1746100423;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PmGDbzBuoGsyvxYtKjfZh7IglzQtL8j26vfWqlh7BfE=;
-        b=cz+xigHOjaNieOWwowUnIwCUN4cvWbFmbteMJUsv5z8iElT/RhqAX28GX1zsi7X2ue
-         Vb1tBpu8fdSJ/mx7dYoS7Lld4O33Ajjgqb/kq38OXvXr+MuXKwFKvKEqh8e4KnQgceeH
-         HtpPBs7kCPKh+vKvUy7pKHCgQiwKgguDa8zS2oWAsLEKYN7rHSkrfCjeKIKOLM4RJkvK
-         Z4uIrPCiNOaGd0n+iO+xfRXcfmDW7vDnLHRW1ASK61hLiIRu4dHlBygnrSP/2LORIYNd
-         N1vLz9RSqLVmCWcjmGkDjUIShu9wOBsnx4wv4IeAPm2tq9kSkrKtbIU11Zi/q5IqrfNz
-         2iVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWfwWiGPYWXD2apnMA0nDMjBY1PY1aHJFMY1/I9Ju31b4uYyQ84GJxCy9X/aDMM59blTtl1kb1oFwm6weUAhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3wcwPh2fZvPad2pMO3pFihkUtoZQNKmAsYdcniG1GVpCaPzHs
-	k48PmrG3TnoFO3DptYGyjI7FjWDse4iw6zVo6YiU51IFiFklgN3jxfDJwaldPbj6QaX4iHOu2yu
-	t+e/1rcKAkKiXWA==
-X-Google-Smtp-Source: AGHT+IF+sylCddVFrJ9NxbevsWbbJTao6YayugEZT5VczAprArHNYn5HkNpyHxOXwMSiRv+eiT98bvuIw7uSFQ0=
-X-Received: from wmqe15.prod.google.com ([2002:a05:600c:4e4f:b0:43d:1cde:6da0])
+        bh=7r7+1msfSNKtwI+7TAuSvOOZwjo66YqGQOnUawD+nm4=;
+        b=tiCpkDTjDDcoulWaKv/SmLggbq5zKZatvAVBsi+x57BgNz+IYi3lTxX+JdbF190lLL
+         UODtccDUaVTW7Cyyb+yF1EvDmLDLqc1RbqJVyBjB44czMRXZD7EAW9i7Y0E0j/6Gdt5y
+         i91z8EYrV0+WeK5y5s3AI6NtBlsfdCgBl+gO52vrua+PgfTycoWt5k02rqKkJEa2mBgA
+         OacWTULVAOV7NCc43VZ4/XYxYd+qyG2o337Uyv6XQxLvj5LjeVr3EiT1lUgDnvPaJn02
+         AHETj7t36wZFvks8RnVLRaTYVOUHLE9oUTcBTs/xlzD1G1ttIsn2jhsXcQfXPvP/8T+T
+         MJUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVgNI5SGqCoBqnV0sbVsHXdxslbJM9VrKQ+FXA37g4rINy/CHO/JBh116r/II6glJl4agwM2GiIJk6cVGfGfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYQlDdEkSUfYY3aR9QptjWEHyR6sc5o+bY74WL6KxAzUf8Ez3y
+	fnil/QwyQZb2Oy36xBCd7KDur9SyP2JJw+9QUsVXQFPqkAmRzk/6t3mM/sTFq7jvoEuoRkRzQSQ
+	Q8QgZ3PNH8xcTXg==
+X-Google-Smtp-Source: AGHT+IFfglV76zUc9U0P4XV3F76n+fUoIUnMtt/qjmVfgTe265a7D4yiy8/xlJBe4DvMyGg4z4bTuwcjwvuy+M0=
+X-Received: from wmrn37.prod.google.com ([2002:a05:600c:5025:b0:43b:c7e5:66e0])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:248a:b0:391:ab2:9e80 with SMTP id ffacd0b85a97d-3a06cf61389mr1957844f8f.24.1745495447723;
- Thu, 24 Apr 2025 04:50:47 -0700 (PDT)
-Date: Thu, 24 Apr 2025 11:50:45 +0000
-In-Reply-To: <aAkPXBHNDugnXrhc@Mac.home>
+ 2002:a05:600c:3d0c:b0:43d:224:86b5 with SMTP id 5b1f17b1804b1-4409bcfb42cmr23146005e9.4.1745495622833;
+ Thu, 24 Apr 2025 04:53:42 -0700 (PDT)
+Date: Thu, 24 Apr 2025 11:53:40 +0000
+In-Reply-To: <20250423-b4-container-of-type-check-v3-1-7994c56cf359@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250406-vec_extend-v3-1-ec5c5c0acf2a@nvidia.com>
- <Z_OwmEKHgsZlt2cs@pollux> <D91AOKOTDXWC.7R5K5DI87QU4@nvidia.com>
- <D9C61DDI99JX.31T59XPQGYBB1@nvidia.com> <aAfL-e6qA9oBce5t@cassiopeiae>
- <D9DM3AR3FUAF.6JSNSB9WAJ4T@nvidia.com> <aAiqCXB9sJe_v6Yc@google.com>
- <D9DX39CF2RB7.IM219BZLVMCY@nvidia.com> <aAkPXBHNDugnXrhc@Mac.home>
-Message-ID: <aAollRd0-SnirG2a@google.com>
-Subject: Re: [PATCH v3] rust: alloc: implement `extend` for `Vec`
+References: <20250423-b4-container-of-type-check-v3-1-7994c56cf359@gmail.com>
+Message-ID: <aAomRMzyu3EX5Xal@google.com>
+Subject: Re: [PATCH v3] rust: check type of `$ptr` in `container_of!`
 From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Apr 23, 2025 at 09:03:40AM -0700, Boqun Feng wrote:
-> On Wed, Apr 23, 2025 at 06:40:07PM +0900, Alexandre Courbot wrote:
-> > On Wed Apr 23, 2025 at 5:51 PM JST, Alice Ryhl wrote:
-> > > On Wed, Apr 23, 2025 at 10:02:58AM +0900, Alexandre Courbot wrote:
-> > > The stdlib alloc crate relies on specialization to speed up methods
-> > > related to iterators. We can't use specialization, so losing these
-> > > optimizations is simply a cost of not using the upstream alloc library
-> > > that we have to accept.
-> > 
-> > Yeah I was surprised to see
-> > 
-> >   impl<T, I, A: Allocator> SpecExtend<T, I> for Vec<T, A>
-> >   where
-> >       I: Iterator<Item = T>
-> > 
-> > and
-> > 
-> >   impl<T, I, A: Allocator> SpecExtend<T, I> for Vec<T, A>
-> >   where
-> >       I: TrustedLen<Item = T>
-> > 
-> > in the standard library, which clearly looks like an overlap. Didn't
-> > know it was relying on a non-standard feature.
-> > 
-> > That's going to limit what we can do in the kernel, but nonetheless if
-> > we can support only the cases that can be optimized I think we would
-> > have our bases covered.
+On Wed, Apr 23, 2025 at 01:40:10PM -0400, Tamir Duberstein wrote:
+> Add a compile-time check that `*$ptr` is of the type of `$type->$($f)*`.
+> Rename those placeholders for clarity.
 > 
-> I think if it's a critical path and we really need the performance, we
-> can use a non-standard/non-stable feature or get that stabilized.
+> Given the incorrect usage:
+> 
+> > diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+> > index 8d978c896747..6a7089149878 100644
+> > --- a/rust/kernel/rbtree.rs
+> > +++ b/rust/kernel/rbtree.rs
+> > @@ -329,7 +329,7 @@ fn raw_entry(&mut self, key: &K) -> RawEntry<'_, K, V> {
+> >          while !(*child_field_of_parent).is_null() {
+> >              let curr = *child_field_of_parent;
+> >              // SAFETY: All links fields we create are in a `Node<K, V>`.
+> > -            let node = unsafe { container_of!(curr, Node<K, V>, links) };
+> > +            let node = unsafe { container_of!(curr, Node<K, V>, key) };
+> >
+> >              // SAFETY: `node` is a non-null node so it is valid by the type invariants.
+> >              match key.cmp(unsafe { &(*node).key }) {
+> 
+> this patch produces the compilation error:
+> 
+> > error[E0308]: mismatched types
+> >    --> rust/kernel/lib.rs:207:25
+> >     |
+> > 207 |             [field_ptr, container_field_ptr]; // typeof(`$field_ptr`) == typeof(`$Container.$($fields)*`)
+> >     |                         ^^^^^^^^^^^^^^^^^^^ expected `*mut rb_node`, found `*mut K`
+> >     |
+> >    ::: rust/kernel/rbtree.rs:270:6
+> >     |
+> > 270 | impl<K, V> RBTree<K, V>
+> >     |      - found this type parameter
+> > ...
+> > 332 |             let node = unsafe { container_of!(curr, Node<K, V>, key) };
+> >     |                                 ------------------------------------ in this macro invocation
+> >     |
+> >     = note: expected raw pointer `*mut bindings::rb_node`
+> >                found raw pointer `*mut K`
+> >     = note: this error originates in the macro `container_of` (in Nightly builds, run with -Z macro-backtrace for more info)
+> >
+> > error: aborting due to 1 previous error
+> 
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://lore.kernel.org/all/CAH5fLgh6gmqGBhPMi2SKn7mCmMWfOSiS0WP5wBuGPYh9ZTAiww@mail.gmail.com/
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-We should not expect that we can just stabilize even a minimum form of
-specialization. It's a very non-trivial feature.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+>  rust/kernel/lib.rs | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 1df11156302a..d14ed86efb68 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -198,9 +198,15 @@ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
+>  /// ```
+>  #[macro_export]
+>  macro_rules! container_of {
+> -    ($ptr:expr, $type:ty, $($f:tt)*) => {{
+> -        let offset: usize = ::core::mem::offset_of!($type, $($f)*);
+> -        $ptr.byte_sub(offset).cast::<$type>()
+> +    ($field_ptr:expr, $Container:ty, $($fields:tt)*) => {{
+
+It's rather unusual to use an uppercase C in the name of this parameter.
 
 Alice
+
+> +        let offset: usize = ::core::mem::offset_of!($Container, $($fields)*);
+> +        let field_ptr = $field_ptr;
+> +        let container_ptr = field_ptr.byte_sub(offset).cast::<$Container>();
+> +        if false {
+> +            let container_field_ptr = ::core::ptr::addr_of!((*container_ptr).$($fields)*).cast_mut();
+> +            [field_ptr, container_field_ptr]; // typeof(`$field_ptr`) == typeof(`$Container.$($fields)*`)
+> +        }
+> +        container_ptr
+>      }}
+>  }
+>  
+> 
+> ---
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+> change-id: 20250411-b4-container-of-type-check-06af1c204f59
+> prerequisite-change-id: 20250409-container-of-mutness-b153dab4388d:v1
+> prerequisite-patch-id: 53d5889db599267f87642bb0ae3063c29bc24863
+> 
+> Best regards,
+> -- 
+> Tamir Duberstein <tamird@gmail.com>
+> 
