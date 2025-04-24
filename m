@@ -1,117 +1,162 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8469518FC89
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 13:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF95C186294;
+	Thu, 24 Apr 2025 13:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745501981; cv=none; b=iPnbIC/6iQaE8hwwjUsiYxMoEv/oTOyx7Js89I3VTPsHu6DDeGNelxlIiq3tE6kvZALMO4RDLppA46fJkn6plttH9jgr/EyJvNtmM3oVEGX1Giw9NWQoyE0Gu6H4FBR1hfag9MaqVvgLA1XeMjDA8uXi+lZ79UKCKrLRvAZbMto=
+	t=1745502512; cv=none; b=F5WDIbnXVjaDjOfuEUpgK1FbCStHYuTilVZicHkJBVvTj1v8u2aR+O7d2oah+K5DizcaXy5B9Ni5JOGEFWHZIT1ayn/1Nz4dyQQY4U5DwsRNzgLqJ2j4LItJV3Ra2URie78Yw4AVdjQ+cG+W2zkTJRd+uhRhwyW6TdrVcMdEIQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745501981; c=relaxed/simple;
-	bh=tup9ty6E85TqqyX4LCy5mGsqmAz3JKnWrm9yplFxREs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QsKF/P0n78fkFvslJTpaDdOcTf3dSnaOA/LPl6bJneg8/BSlANxty/zNGVx0pdaaUKlBCd0A2N9tWzS4dYuOLPP+jciP1C0ewU+wG677YfxVxFTDuTstGXKQTfP7gWnj2LfqlddWea9TkSdGEB7nZNNXzYHCjWME7gYJCs5Eq2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hefring.com; spf=none smtp.mailfrom=hefring.com; dkim=pass (2048-bit key) header.d=hefring-com.20230601.gappssmtp.com header.i=@hefring-com.20230601.gappssmtp.com header.b=RkcTqaFL; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hefring.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hefring.com
+	s=arc-20240116; t=1745502512; c=relaxed/simple;
+	bh=qvIve6pwWQ5C2gYqgC67Nyk4ECh/prYFjYyaen8N8ME=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qnZG+MBTnbc3HtM/nwn8lJf0oOtthEwltCYdenNa7hSTZxgPzW8N66Lzcd0PM6NAz7GjSI1sJaYL3Ffl4LYXfuMsnedMRKYUe1CekZAK8qIRBsZUFpfn/aI3JxWqzpyy6y20KKvGVC+zYnkxn2RD5+oVFMAja4tmeN2a2zTqx9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=foryxtg2; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hefring-com.20230601.gappssmtp.com header.i=@hefring-com.20230601.gappssmtp.com header.b="RkcTqaFL"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7c5ba363f1aso147006485a.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 06:39:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="foryxtg2"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-30bfd4d4c63so9757051fa.2;
+        Thu, 24 Apr 2025 06:48:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hefring-com.20230601.gappssmtp.com; s=20230601; t=1745501978; x=1746106778; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YWMfkI1WRY3cYf9FnHsr+03ZRcmNsaavRSb0tETeg20=;
-        b=RkcTqaFLlKfIMClVvKHUFRqYE1s6UAF1PYLqIRcpssd0Q0dPvphfiK2UinAGdEQ5kj
-         iVtGK29SfsS1M7J+Yyje5dYe7Oz0KhImyfnCIAyREkY+90AqQPjDwNLdSNWPyTIRiN17
-         xiKmrJCDGwJmpvr43edyppNT0HC03S9Uvif3T8nLgzKKxua7PCV2uGCfLwGSlBw+zbaC
-         ZaRncUTqGAIeFkZdSbpy1Tj8H9JcNGYAuRRRho1jcuDofkeOy2CgpepaYDncUmE/AvIY
-         Uum1mdEMvX5c1p7ZlVzNvsO/2cmElIxsOsV9fOeuWOsso3945xE16uY4TEytIzM3dfWi
-         7C2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745501978; x=1746106778;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1745502509; x=1746107309; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YWMfkI1WRY3cYf9FnHsr+03ZRcmNsaavRSb0tETeg20=;
-        b=lx95SKxXgDqNqmAo0OXeMTc5QkrdK4YyUZTe3p17Yy+J/OyDVoF3aq90ersn/No7Ml
-         CF5RXAPOS33xlbCF/ZC3eka9grlJwpSP2zCulQeTJBoDrZVFX34QcR21nJJGZ7W1aNV8
-         TYaFL2sJbrzRS1Zlbrfxf/khS7Vi6K4g/W1haVK5tUiBLWF/I0NtLL/9BrEPdTRBu0br
-         pqlRPt9jPQ22xBs+1mCmwFhPgTrQF/eUYCQveiYF2zBnteuCsR3h+Zq+Paw/2NRg6ldk
-         gPCO1DJRzcQftmMum2i8XzbnAq0UYWSADru8NS9RxkdtfsVVEqsh3yDzw67MBd/jmODP
-         JOsA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMVE+mQdSu7vgKBDDmqvC+2ijL4mR/bMZ31R7Ug2eyQM9H4gU/A/9ghKq8xiW1vQsF1rEakdYGrIxpg2cB5g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5Ro7Sc7ZDpy10+bAihTuzylSti3yVIrsR9JiBEhU6JvQ7jedh
-	GwFIO0P8axIh/g7pk3KCx11gnnCDw0JVDIYtbkDj41ePo8EtHpHRrD2pAGI/X2U=
-X-Gm-Gg: ASbGncvt90yvpUw+da4E2WToiygFuUPjvKlz6Ucdd3Q2cdLdASHOkbaZdK8HitlJU0P
-	YOFBfFNtjVtwG6TO0isDGzipoUvcqx0QBJKsiHOAWAmS0sLqTQH/W1Zb9q3tEnAtOAjexgbLLH4
-	oBSBVuadBmPrE6k2laujSGQZX1okkPSKLABWaQGIU3IsZL5Tri6XGR9Y6xO2sFMbLaLZzfsJ30v
-	n1Ph7U6rkak286z9Xv+e79AoMERE1+qZfGaFjP/2sm1EJBWmI+L/0H6OxIQ5/9YmnvKyqGj++fR
-	arqGBu92XB873STFQEnzPutdsX8P1ZFp72vpjuCtBfluwpKFhCCWbu9UJw==
-X-Google-Smtp-Source: AGHT+IGBbcE518ngciGGF0+eLjyFAC+mlK6EuUeB14SDh6Nm7kNgxryaWfeo2bDtyypKwASpBUSZdQ==
-X-Received: by 2002:a05:620a:1a07:b0:7c5:4c6d:7fa9 with SMTP id af79cd13be357-7c956f4aadcmr432561485a.49.1745501978313;
-        Thu, 24 Apr 2025 06:39:38 -0700 (PDT)
-Received: from dell-precision-5540 ([50.212.55.90])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c9589cc670sm89847585a.0.2025.04.24.06.39.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 06:39:37 -0700 (PDT)
-Date: Thu, 24 Apr 2025 09:39:35 -0400
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Christian Schrrefl <chrisi.schrefl@gmail.com>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Rudraksha Gupta <guptarud@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Ard Biesheuvel <ardb@kernel.org>,
-	anders.roxell@linaro.org, arnd@arndb.de, dan.carpenter@linaro.org,
-	laura.nao@collabora.com, linux-kernel@vger.kernel.org,
-	lkft-triage@lists.linaro.org, regressions@lists.linux.dev,
-	rust-for-linux@vger.kernel.org, torvalds@linux-foundation.org,
-	Nick Clifton <nickc@redhat.com>,
-	Richard Earnshaw <richard.earnshaw@arm.com>,
-	Ramana Radhakrishnan <ramanara@nvidia.com>
-Subject: Re: Build: arm rustgcc unknown argument '-mno-fdpic'
-Message-ID: <aAo_F_UP1Gd4jHlZ@dell-precision-5540>
-References: <CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJXYu7wWK51w38QUQ@mail.gmail.com>
- <20250407183716.796891-1-ojeda@kernel.org>
- <CA+G9fYt4otQK4pHv8pJBW9e28yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com>
- <CANiq72napRCGp3Z-xZJaA9zcgREe3Xy5efW8VW=NEZ13DAy+Xw@mail.gmail.com>
- <aAKrq2InExQk7f_k@dell-precision-5540>
- <CANiq72nPtr1FE_SBU_+wHVptfjnoSGaxjP4LWMzVbOF0M6LvnA@mail.gmail.com>
+        bh=0RwzVTwG8nmHSDimraa9LWFea9Cdtru6px1wsv7MBh4=;
+        b=foryxtg2kpRKFvTGfnNZojtHm2DZ4BqHY/NAYRtORxOaCJ8rjSC3taa4yCNBlAXMb8
+         Lwx62tXS+pA2VFaFr//HfPxs5uZc+biDs4KqMnLvAXEf5qSvb08prIMXoZdwzmLuNHW3
+         SE0fIAGLw3uCJ1ageNUZRX3RcVWPn39izyqnMTfAuTtJfDR/rr0RmT2/yMVoJu2asBgy
+         KphtCQMomuc8rCDEwq/e4agQFLblnbqxFaibLxrumzRg3iD+6o3HToqafcRWXqjTyczt
+         cN5/GELn4y4Hrim7vRR75dzjc83Vj4rp0G3/ZMsPBbXgv2n1L91JmKHk4uTfJGYkvNYa
+         7roA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745502509; x=1746107309;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0RwzVTwG8nmHSDimraa9LWFea9Cdtru6px1wsv7MBh4=;
+        b=plaeue5v77OcJ1vHgp7Cbjk18cFpM2rwRZ8K8u75fXbQ5nfLveZ3qiZYwkQ8FwMlwx
+         7kD0WAilX6QgZ32upnFNhcjbNyJlP2PRUKNH1AN5v7kWko9Yjyum+YloGnzVajXq5Q10
+         NCWmxhMPtlD3TWaTkMeYqK4G85zpQc7z8RyA+af2gADObQQBDQ7Vbt8oXtSpVDlBFVZn
+         QxHmnGBxKrDP3NvUDICVl6u7b5/vOyGohjQf7t9Va0I+qG2SzLWMbaX22n7HxUJyE4NX
+         mfZdhHU2YN2Igjxef585glzSMbVR2xuwTMoC2qY4EgMIeNyjwzmFrfGHuq3MdN1l64s/
+         86qg==
+X-Forwarded-Encrypted: i=1; AJvYcCULZIwzR2NNacGqwQaYluoVh7aKssw7T/YgZMPgwvOGlcyFLIGeERYWan2gT8H/512YvNSpUxoOPDLoxJE=@vger.kernel.org, AJvYcCWTtbcruru/gc3Qg/ShoYPaO4G1kpIjL/UJ0TFxk3izt5hHkHF+i7RmC+F2tfyuFyvuvwQKIcXIG32eKaceNR4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNAkE4R+okomvjHGRB+M5tWcY+p/S62A18O57IOobOnNfvp2lT
+	qJYujUhEpKdZjkgl9FPthkmop/yi1bK3nftDssnUMdw+bsPpkX5HKiOh81p11VkK1Iwei8I2ECW
+	AJunPcAM27kHo0uLrDdMlP5ddDLs=
+X-Gm-Gg: ASbGnctsGaN1Gb/cMVfPYrz+W74jsB8BIdq3Twm0IoU8OGF3fDzfu7byd7DxJynlH7j
+	Hfv10zEAiCvULRTIsj5Lf/Uh2LArJWNEc9Hww9wQ/1G6Fg+p7MVr9kBSx8d7FCr6nWKObF1532r
+	QoUJWKBzAT6eWVA+UPzrW+vcJ0ltXNb20e7pQz6g==
+X-Google-Smtp-Source: AGHT+IGfYtqtqnEQUmVVtVkr9ACHBDu7yCTF+ZijzmAOFXGQaNxtgq89CZsSs5L3NcdakGMOgFAKoAOhJbpVJkpsElg=
+X-Received: by 2002:a2e:a588:0:b0:30c:177c:9e64 with SMTP id
+ 38308e7fff4ca-3179ffc89aemr9631721fa.35.1745502508531; Thu, 24 Apr 2025
+ 06:48:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72nPtr1FE_SBU_+wHVptfjnoSGaxjP4LWMzVbOF0M6LvnA@mail.gmail.com>
+References: <20250423-b4-container-of-type-check-v3-1-7994c56cf359@gmail.com> <aAomRMzyu3EX5Xal@google.com>
+In-Reply-To: <aAomRMzyu3EX5Xal@google.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Thu, 24 Apr 2025 09:47:52 -0400
+X-Gm-Features: ATxdqUEyShDrMfzYO0ZcV0Cacwz0kfxfITOaTr0jwTwMEZmEjiAEwXlZ4uo-zMg
+Message-ID: <CAJ-ks9nMqjj85rK6LsSnTPqsTHmMUDJsQxqJ7n2+r4oSZqBibA@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: check type of `$ptr` in `container_of!`
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Apr 19, 2025 at 12:30:01AM +0200, Miguel Ojeda wrote:
-> Thanks a lot for the details!
-> 
-> To clarify, this is for GCC kernel builds: skipping the flag is done
-> for libclang under GCC builds (because `bindgen` always uses libclang,
-> and `bindgen` is used by Rust to understand C headers).
-> 
-> So GCC will get the flag for the C side of the kernel builds, but
-> libclang will not get the flag because Clang doesn't recognize it.
-> Thus, if Clang vs. GCC differ in how they compute the layout of some
-> type, then we would have an issue "mixing" them.
-> 
-> As you can imagine, GCC kernel builds with Rust enabled are a hack due
-> to that, and it would be ideal to get `bindgen` to somehow be able to
-> understand C headers as GCC does:
-> 
->     https://github.com/rust-lang/rust-bindgen/issues/1949
+On Thu, Apr 24, 2025 at 7:53=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> On Wed, Apr 23, 2025 at 01:40:10PM -0400, Tamir Duberstein wrote:
+> > Add a compile-time check that `*$ptr` is of the type of `$type->$($f)*`=
+.
+> > Rename those placeholders for clarity.
+> >
+> > Given the incorrect usage:
+> >
+> > > diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+> > > index 8d978c896747..6a7089149878 100644
+> > > --- a/rust/kernel/rbtree.rs
+> > > +++ b/rust/kernel/rbtree.rs
+> > > @@ -329,7 +329,7 @@ fn raw_entry(&mut self, key: &K) -> RawEntry<'_, =
+K, V> {
+> > >          while !(*child_field_of_parent).is_null() {
+> > >              let curr =3D *child_field_of_parent;
+> > >              // SAFETY: All links fields we create are in a `Node<K, =
+V>`.
+> > > -            let node =3D unsafe { container_of!(curr, Node<K, V>, li=
+nks) };
+> > > +            let node =3D unsafe { container_of!(curr, Node<K, V>, ke=
+y) };
+> > >
+> > >              // SAFETY: `node` is a non-null node so it is valid by t=
+he type invariants.
+> > >              match key.cmp(unsafe { &(*node).key }) {
+> >
+> > this patch produces the compilation error:
+> >
+> > > error[E0308]: mismatched types
+> > >    --> rust/kernel/lib.rs:207:25
+> > >     |
+> > > 207 |             [field_ptr, container_field_ptr]; // typeof(`$field=
+_ptr`) =3D=3D typeof(`$Container.$($fields)*`)
+> > >     |                         ^^^^^^^^^^^^^^^^^^^ expected `*mut rb_n=
+ode`, found `*mut K`
+> > >     |
+> > >    ::: rust/kernel/rbtree.rs:270:6
+> > >     |
+> > > 270 | impl<K, V> RBTree<K, V>
+> > >     |      - found this type parameter
+> > > ...
+> > > 332 |             let node =3D unsafe { container_of!(curr, Node<K, V=
+>, key) };
+> > >     |                                 -------------------------------=
+----- in this macro invocation
+> > >     |
+> > >     =3D note: expected raw pointer `*mut bindings::rb_node`
+> > >                found raw pointer `*mut K`
+> > >     =3D note: this error originates in the macro `container_of` (in N=
+ightly builds, run with -Z macro-backtrace for more info)
+> > >
+> > > error: aborting due to 1 previous error
+> >
+> > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> > Link: https://lore.kernel.org/all/CAH5fLgh6gmqGBhPMi2SKn7mCmMWfOSiS0WP5=
+wBuGPYh9ZTAiww@mail.gmail.com/
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>
+> >  rust/kernel/lib.rs | 12 +++++++++---
+> >  1 file changed, 9 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 1df11156302a..d14ed86efb68 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -198,9 +198,15 @@ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
+> >  /// ```
+> >  #[macro_export]
+> >  macro_rules! container_of {
+> > -    ($ptr:expr, $type:ty, $($f:tt)*) =3D> {{
+> > -        let offset: usize =3D ::core::mem::offset_of!($type, $($f)*);
+> > -        $ptr.byte_sub(offset).cast::<$type>()
+> > +    ($field_ptr:expr, $Container:ty, $($fields:tt)*) =3D> {{
+>
+> It's rather unusual to use an uppercase C in the name of this parameter.
 
--mno-fdpic disables a GCC feature that we don't want for kernel builds.
-clang does not support this feature, so it always behaves as though
--mno-fdpic is passed. Therefore, it should be fine to mix the two, at
-least as far as FDPIC is concerned.
-
-Ben
-
+I took the parameter name from `offset_of`:
+https://doc.rust-lang.org/stable/std/mem/macro.offset_of.html.
