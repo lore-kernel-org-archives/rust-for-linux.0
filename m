@@ -1,65 +1,66 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4EF207A22
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 07:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0EB20B1F4
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 07:20:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745479247; cv=none; b=IBgzt4oW9o3OdRtJk+2FI8BBeYFDXi3SlB1BrAi9M1o1sLQBYgeqpoMtHm7ers+PGkREJZE/ri3lHcH27j+eTeIvaR0XSR9CE0UB6ck+bm0E5EFGKYYAYnUA+s8kA4riKxIRffbWYkF/aUJ5Po0GitsmiAK8PjkOKa88+6S3LpU=
+	t=1745479250; cv=none; b=tZsN02NT+AjFYa5duWhecdv48FvexDsM8Kbx9UEHvUTFmiONk1JveerjfQDraXD0UZYXy9cZ2vmcCH8/LKqAJrpHTsmhCXA1tioFyiyYXRPLXzcum011fqb+CT+zRflAsJygho0tAyfc9GgIMPTlVDJIAbN80UKXKgYCAW8f7hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745479247; c=relaxed/simple;
-	bh=R7oEwbD3/y5k7o3aqwxIBGjnZGUlgVxW90n9VyI9wfs=;
+	s=arc-20240116; t=1745479250; c=relaxed/simple;
+	bh=v0FhAahB+duYIk/hRzzymYIP6H63IhRuqMQn8myLUBo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lJTwrPO317FcLuusIlMLT+/GqNG8IxYQJlF+UlMuUgOr99MofHi5iQwkhj8jo58nQ1bqP1jNmeBec15eJuDGEPlV1mfjk6m8jGxPfs2DtN2DbbV0sDfqoyeYeAnuoL3Ax8Z+ME8JPNMu2kAbxZQHdoCaPrj91UcOcmKYEIRHKGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=hC0kaWUU; arc=none smtp.client-ip=209.85.215.175
+	 In-Reply-To:To:Cc; b=UjuUVtGYa65YwJInsrIsQYeq1Onm8kaKbAmbOy0PX0mdKeEh16Hh6k6udqtQceVzBlaQQfer1ee3AOS5siZMXGP1epRJczCkSdJVlpwXosFiCQOa/Pk/vucaQyF2QRX14KWiYg6m7UzkXvq7pVmnE9/4EGVGh/149usnDuNcQ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=nbOHAEA9; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="hC0kaWUU"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7fd581c2bf4so527200a12.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 00:20:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="nbOHAEA9"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-227b828de00so6963545ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 00:20:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1745479244; x=1746084044; darn=vger.kernel.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1745479248; x=1746084048; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qwh9x6lD2MO9lJ//kvPDhOJNTq6ZrmIfW44uUh8vro0=;
-        b=hC0kaWUUvw8UhWRSNIv3VogUZl5cUyWKZmn6QViXD2eyqwp4Ov5EEJHafUNWpcedgQ
-         bOPoxvR07fIIgDTC7B+pi8+EuSx2ZeioOjg/6N7XZ4hX3qO5MgIA/5zZzONP1LzjxtBz
-         zIKnwNx4kPgpDLM19/uy14ebsFN4Fu6h3BV68Zns6GSZwQP9Dboz3fuJ/EBwcO5SAsme
-         5ijwjAzBdb5fjt7uVw4XqZd4RrQbiWs6FwHOn2w2eylm1WZXQPpahAQIFD/5JcZ6EEEy
-         RP1DmzM5dRhopw2j6ZjPw+yhQJINjT9e3GG9nDHDrBAhLcxQ2Sp3ZLNk0glcB9qCX02X
-         icGQ==
+        bh=6ylYFmVRjBQGzrdqcn0JjhMraiDjYmLqBMrzaQkDTLs=;
+        b=nbOHAEA9kkVtcPzENpnOz33i8q1/SegniPIQzU+Ufn1Fpui+DtmjOysVTgCeYPdhBx
+         3gdzkjlIxOwo923bG539rY1GhStgMGqr4SQCDpF088c2nTUffyuub6zreme9KF7rWq38
+         eBdd2F8lPnXw9fmTF8M2rdv1tgfn55SQEpJLT5w9lEs3+bph7ymts3gITcvA8eMGga0/
+         lpTbYCaA2AIU7RaIJPn7h590oxgC7Uczh6IrCNSmidSARNPRzZ5UZrLh58Rh4TF2a7Sw
+         +PkEDRa1fONdHbk7gNy4jIJgyVCmcM6CzQ42cEdZt2lLdmDQhwWU+7YhV7cn7fhD6FMb
+         kv/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745479244; x=1746084044;
+        d=1e100.net; s=20230601; t=1745479248; x=1746084048;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qwh9x6lD2MO9lJ//kvPDhOJNTq6ZrmIfW44uUh8vro0=;
-        b=dYzqZVH43uTC3QfyMN0gVkFmo/lvYe4gHJG+CCZTxgzXit8PsKLhZjQrS8nTEO1LDS
-         DT1ySDammta2mnc3eeWbB3UekaWZ9at4PcQNqXz6K9k4FCwrj1iJVhcdM/Vz+KD4jcGE
-         AFhqyGcl5xCb+x2TE2iyLNe2HUOQ2eaHOd+a1BlrrongOS/PVMF13fWvs/zNnS3dbn0H
-         IH3VMWZ29bF8XHT5QR5KRSZtHM73UuAkTDRqvzIfwHOItQTLQ1O0DVE2gCt5ahQ/KeZm
-         Ei+nwLij2Xjp4JIOgkKLDHZEjHGEYJcumrdym/wIgWV/Sf/9zeQfQ0hxSekvPPT8sV0E
-         8RFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXjulvz8tO6XcMvbYy4YAlXKoy6kbQRMjdQHHkCi/mzVBxd3iVNxreahFn95Ehtr4YadheBSJS5lCiwMr9nJg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzevz06EqkrXNDNR6TVmeAlY1EJfVN+kbyADUYPS90fEOEzieXQ
-	+DL0AA0oElgYo2ZH8TOSmbwvww26dqlMjfRGoTVjVUDNZmFu76qRk22/2PiB684=
-X-Gm-Gg: ASbGncs312xzRDRMu0GEhtd7Hz9Otb0ERA6hLN4Gyxmco/bp0pthN4Dd1G3/i+p8Pkj
-	I5G54Mer6s7UkmhAKmmX9PJhoXj0psaqISrZ9ICyZwJP54KVgvk+uR68yPUZLi/5fWKU5d1KrNW
-	/0Tsm3AE7ioFYgXQcSITFCpfI/5mFneDM1vAMlAf3HYQ1m6dLaN8KbuARMad++5faoygq5UZ6Uu
-	7r6wet1kzNJsiWWF0rTkzEz6ftxoym8yXWopmYQl8DbIoxmbil8Hre5/D7rxBqZgs3SjjoOihdZ
-	TU4LvaOnNnozrwDeMJwtuVQQX/D/iL2wod+UGkur/5F4EwZJjSQ=
-X-Google-Smtp-Source: AGHT+IEC5A9t3KljY5+oPEDMiuLjjOrgYWWUXALnuXXsSvtsWmrcbar9Dh97NMWpjDuX0nmNsvCGcA==
-X-Received: by 2002:a17:90b:6c3:b0:2f9:c144:9d13 with SMTP id 98e67ed59e1d1-309ed31aeeemr2671578a91.24.1745479244474;
-        Thu, 24 Apr 2025 00:20:44 -0700 (PDT)
+        bh=6ylYFmVRjBQGzrdqcn0JjhMraiDjYmLqBMrzaQkDTLs=;
+        b=gb44MX9MpC7U3XhwOCnPg4H/RIUonymLFNy83nQ7eS3/2CqhylUkUKPajDeOq+wXaa
+         cpaonUAMyQvrwCNSal2kVAwhtI7NcdjgcX5Rxr5cMfwMY6lyUk3xjl+yRnAOYNvaKFFv
+         ijplvRADVlYKDB9VwCrtWSQ+vyPK0MTVsIcnpZVjdSyJjhvfhxmA69/W4ZkYXDpHs6Bn
+         RSaOuDeVnb8yo8unDiMsLHKoWt0VV42NNujtvi2IAUexmGiIy3+AtjOmfPVhO1eC9JKk
+         qCUTKzy4Nv8hMdM2Ak0w2QNC1SHuy+8EzMIXEtKCiUqcznJEqRnThlwVbMgD8r6n2Wl5
+         QXcw==
+X-Forwarded-Encrypted: i=1; AJvYcCWqczzDaDlgnawT0w4cDskdOpTN8hMYgbYq01/6DjZaTIpS8T+2xXzepTqbmHrxEdIfXqYuV5cvDRl6M1LrsA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0KtRjjyLVRg0KaLjlLpkpU1dGRHaR19aAsfmKG1E246KQn79C
+	K1gReo1vnErDkzpj/BHSHEif7i2SYhYFFu2OObKxP/jwHAMRQH3v9VV98nypqp4=
+X-Gm-Gg: ASbGncu/dlpViID9j+mhh/4QBGAf6kcNPRV/11kW1BeuMq3JIhtVegm18vD/BSXTMXu
+	SEFYuMtrEygEgC2A/R23Y4N1tM65mHW6NqLG06aFlAAwnE/9DsOZV9VIjgeH8J8vtGBzh5e1qup
+	HvkJ+hK+D25d2WxpztQL1FyKB+m0AT4YGRU3CkpivyaDDqEgWUmRxd9y39Y2g5YPTo1S1o5nHyu
+	jZAtpBALIDgAU/ZYe/Klg8T6/bCt+KeTAKjmbQJ7Lv+awxd12HMxXLiFALRrt0rZBsnF/XXXVW0
+	lSCeGcpytseEjsHCnZ7PNTKSI3mktHXsSZJg0DiYJF38LhXC9GlXsGH6QtCj0w==
+X-Google-Smtp-Source: AGHT+IGjkr4vqGGtTUfWepy4/KRfgzZh10ROLBoP0JZSEZsJlQI5sONvd9/5VHsjRNPTvbU04z+xfg==
+X-Received: by 2002:a17:902:f608:b0:223:3396:15e8 with SMTP id d9443c01a7336-22db3c0ec76mr25062265ad.22.1745479247872;
+        Thu, 24 Apr 2025 00:20:47 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db52163d6sm6240765ad.214.2025.04.24.00.20.41
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db52163d6sm6240765ad.214.2025.04.24.00.20.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 00:20:44 -0700 (PDT)
+        Thu, 24 Apr 2025 00:20:47 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
-Date: Thu, 24 Apr 2025 00:20:22 -0700
-Subject: [PATCH v13 07/28] riscv mm: manufacture shadow stack pte
+Date: Thu, 24 Apr 2025 00:20:23 -0700
+Subject: [PATCH v13 08/28] riscv mmu: teach pte_mkwrite to manufacture
+ shadow stack PTEs
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,7 +69,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250424-v5_user_cfi_series-v13-7-971437de586a@rivosinc.com>
+Message-Id: <20250424-v5_user_cfi_series-v13-8-971437de586a@rivosinc.com>
 References: <20250424-v5_user_cfi_series-v13-0-971437de586a@rivosinc.com>
 In-Reply-To: <20250424-v5_user_cfi_series-v13-0-971437de586a@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -105,44 +106,71 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
 
-This patch implements creating shadow stack pte (on riscv). Creating
-shadow stack PTE on riscv means that clearing RWX and then setting W=1.
+pte_mkwrite creates PTEs with WRITE encodings for underlying arch.
+Underlying arch can have two types of writeable mappings. One that can be
+written using regular store instructions. Another one that can only be
+written using specialized store instructions (like shadow stack stores).
+pte_mkwrite can select write PTE encoding based on VMA range (i.e.
+VM_SHADOW_STACK)
 
 Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Reviewed-by: Zong Li <zong.li@sifive.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- arch/riscv/include/asm/pgtable.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/riscv/include/asm/pgtable.h |  7 +++++++
+ arch/riscv/mm/pgtable.c          | 17 +++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
 diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 8c528cd7347a..ede43185ffdf 100644
+index ede43185ffdf..ccd2fa34afb8 100644
 --- a/arch/riscv/include/asm/pgtable.h
 +++ b/arch/riscv/include/asm/pgtable.h
-@@ -421,6 +421,11 @@ static inline pte_t pte_mkwrite_novma(pte_t pte)
- 	return __pte(pte_val(pte) | _PAGE_WRITE);
- }
+@@ -416,6 +416,10 @@ static inline pte_t pte_wrprotect(pte_t pte)
  
-+static inline pte_t pte_mkwrite_shstk(pte_t pte)
-+{
-+	return __pte((pte_val(pte) & ~(_PAGE_LEAF)) | _PAGE_WRITE);
-+}
+ /* static inline pte_t pte_mkread(pte_t pte) */
+ 
++struct vm_area_struct;
++pte_t pte_mkwrite(pte_t pte, struct vm_area_struct *vma);
++#define pte_mkwrite pte_mkwrite
 +
- /* static inline pte_t pte_mkexec(pte_t pte) */
- 
- static inline pte_t pte_mkdirty(pte_t pte)
-@@ -749,6 +754,11 @@ static inline pmd_t pmd_mkwrite_novma(pmd_t pmd)
- 	return pte_pmd(pte_mkwrite_novma(pmd_pte(pmd)));
- }
- 
-+static inline pmd_t pmd_mkwrite_shstk(pmd_t pte)
-+{
-+	return __pmd((pmd_val(pte) & ~(_PAGE_LEAF)) | _PAGE_WRITE);
-+}
-+
- static inline pmd_t pmd_wrprotect(pmd_t pmd)
+ static inline pte_t pte_mkwrite_novma(pte_t pte)
  {
- 	return pte_pmd(pte_wrprotect(pmd_pte(pmd)));
+ 	return __pte(pte_val(pte) | _PAGE_WRITE);
+@@ -749,6 +753,9 @@ static inline pmd_t pmd_mkyoung(pmd_t pmd)
+ 	return pte_pmd(pte_mkyoung(pmd_pte(pmd)));
+ }
+ 
++pmd_t pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma);
++#define pmd_mkwrite pmd_mkwrite
++
+ static inline pmd_t pmd_mkwrite_novma(pmd_t pmd)
+ {
+ 	return pte_pmd(pte_mkwrite_novma(pmd_pte(pmd)));
+diff --git a/arch/riscv/mm/pgtable.c b/arch/riscv/mm/pgtable.c
+index 4ae67324f992..be5d38546bb3 100644
+--- a/arch/riscv/mm/pgtable.c
++++ b/arch/riscv/mm/pgtable.c
+@@ -155,3 +155,20 @@ pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
+ 	return pmd;
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
++
++pte_t pte_mkwrite(pte_t pte, struct vm_area_struct *vma)
++{
++	if (vma->vm_flags & VM_SHADOW_STACK)
++		return pte_mkwrite_shstk(pte);
++
++	return pte_mkwrite_novma(pte);
++}
++
++pmd_t pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
++{
++	if (vma->vm_flags & VM_SHADOW_STACK)
++		return pmd_mkwrite_shstk(pmd);
++
++	return pmd_mkwrite_novma(pmd);
++}
++
 
 -- 
 2.43.0
