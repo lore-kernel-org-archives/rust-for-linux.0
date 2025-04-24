@@ -1,66 +1,66 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFE6226CEB
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 07:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8B2228CB5
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 07:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745479297; cv=none; b=DH+fnY0Kp1M3hkp8PkBAMzJFUQXne+jCGlQHBimzztKWNNyTJCQCbaldArhONfbViq+ZlxckvBzU15yUZRqtrBb/SGYW0pMPH+cvthpFIVWwiE2AElC6Op2oaEBtLMs3NhAEEKJeBEvGdaBJrLtf7GxK1n4pEUmfluKA3+phRoM=
+	t=1745479300; cv=none; b=H0pa7/Nm82U7PYF1GumSws99/H5YFHrUUBGWp+cpISZpLydgIskrqdjyA7A5JR781jBhh0a66Q9nVoADNjX4EstzvhI86DcjK5ykwk0uP6gO51vGtCa/knrnM3rxHB1IttI5QKgR2o2MJhbCd32OhdPmAu8sHyypjjh5ydXyJ8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745479297; c=relaxed/simple;
-	bh=6HOI0xNMHwgDoMQzl6o5vZZloZ1zXIW22VEUT/hXJeM=;
+	s=arc-20240116; t=1745479300; c=relaxed/simple;
+	bh=MwtlwJBNUHFndna04P1tlZjfQuYyDCB9oWGnKPvf18Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WObzi0JpwriQBYl/d5ZwPubDPZtlJKmwt7d+1e/lAgJiS8pMamH0RVhIcT0A+L86fT0RtD/N2BkL4VDvDqfeUxDYImI1AAnJYRwvnscr7QzgT9hQCsqjN41egQ4/pMUrt81n60ed2luuUrDseeFc2g6qOt0U6qH6F+SatffA0J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=tRJeT4J3; arc=none smtp.client-ip=209.85.214.174
+	 In-Reply-To:To:Cc; b=CTnWNyAU3bvpLSBNRGsbdJeTj0ZdWwCXeZ6jOJRv+VmDwfoRaIkkzCTLOm4uuszeQhRwwIPqfFApGmDzNVFWtcB9ftMIkrgYzCvM8EY8qfepie8IMtX+6LNbhchDRWvP214JTMwXPPKaSM/oU7GjD+IYUEnUhn474Toc6L0Sv1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=n6JlNIZM; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="tRJeT4J3"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2254e0b4b79so10700115ad.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 00:21:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="n6JlNIZM"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-223fd89d036so7730085ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 00:21:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1745479295; x=1746084095; darn=vger.kernel.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1745479298; x=1746084098; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=56/SgN8tPGcoGAXYBKRxyrEfzuX2/hNCTBzPLMLGwJ8=;
-        b=tRJeT4J3I1YukuSAIml/5cC8ba0rsNy33myF2eZ+Y4BWQE+P2VwRSYdyTvtkoVhllC
-         msGNIP0zsFAm1we3Ti9x3WOewdz5TWiY6ORl+oOd1o0HkLOm2/er/Szu/m6Un62rhVQv
-         0VJW1GiPpFNd7mMeh9g2dH8V4/kGABGaOUJxlTwcIxj3xYHECqreiB1fKkSTj3XErggZ
-         j1J1YUU1tkg2vzfwFEFy6+S6Vw1I9qQi8IZ3Bllv9EMBfuBcyKtXbx8KWxMIpPLRB9sd
-         rHUbZci5Vh68e16g1Z5kCEQUqZ79sQUyeXpQJNXWP47OL3XePDgyf4CLCLW9ylMHhBcg
-         JYMA==
+        bh=cFz+/4buGG21gqDMlIHIpI2LyTeJMnqyc0qHyBDGzIU=;
+        b=n6JlNIZMFkBAQsFPTPLa5Yv/BnVlaEtPh25DsHByIMDVdNPNen5hp0R6MqAkZH4WWU
+         nPCffgCi9lkyDn25HLe6Wdnu4633O8M1m8tzJ//yGoewzKEVttMr6XZD076KWt+017vl
+         0/DFujBzTC6k6nYZfHqgbeqTvo+7PrM2Co6MbU0fJmr/6lkTFAf1oLO47zrwMl+aNyZs
+         G5RFyDpQw+t7X8y6/yZr+HN2yellrIU5TCGcGbh2b2lauMtDjFJrkTjBGrWWbmWslLwL
+         6aFiG5AJ7cDX2d+Zd/cLB1vkyU2NXEF34cKrpVxvNHCEqqBE2TEQkJx+cCh5fTkTiF2t
+         7d3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745479295; x=1746084095;
+        d=1e100.net; s=20230601; t=1745479298; x=1746084098;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=56/SgN8tPGcoGAXYBKRxyrEfzuX2/hNCTBzPLMLGwJ8=;
-        b=Y266bZoAfjg1KxJHqbaAi0vFFd4pmV1SJgmhQVLxN1G7h//+jHCqKvTIIdXQ6MhSMo
-         2FqIkhUWxvJ/fVHOejeSaZmXF4hlLYTOs3eXKXqalBQf5CGamYfZmHZ0wzhHH9+FZQZV
-         Eta6kIvs4JF6N1nker2iaO1J0lWX9V1x+i+6geQW07gQqAXOl+Vupf3kWQ+Cyt7vOJly
-         gKzJsDBZKT2AzoNNohweCaRLzgDgkZLpbHb3VPfGkxmb7UUdPdgs9pSKc5ms78D+5Vxe
-         RwGREclRAUQ9x60d+r7w84hkcK/1fcYJhiYY6rxDQbNxCZymv4YbbIWb+t3QH46V6noH
-         25QQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0KRromIN8MEcDxpzxUeSYVtdQh7K2TTGBKwU5cRcWYdGkksSkW6DyrmQkgndjkhYih1YaJEakjQbYbVivoQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTdHyy9We9U2hTce8wEzwk34S9gA8lvY33buo2YLoesf+PSw6F
-	ZJbvurFrfZb97iyW4kkarlT905AB/R/HarNH0TDSeZofMTmPBD2GKks+yMedw8Q=
-X-Gm-Gg: ASbGncuXAiFGmvr123WsTzdtKFPZq6HAQERUYZJvTSOifsJM2Uq995Dr7F+ZperRZhj
-	wSgBZUZFice5/9c/IHpQa1PRgQLQNVZQ+t6N+Ti1yGOO6D+oxh+zuj3BDt7hnTjTbzlZfJvi4ga
-	xrH8xq/WeVlyAZuiOwuJfPp8z2zuTuEToczgpMbmy1EVcOrzW7rLYDKNcOhG9NgAke6EY4FJfsT
-	hjXzTtPbBHc1sNENMcjWEwOH+xjdYKdJsqW5g5/mymZnTmOckjZ9kRPn0vVHpfjDhX9Ie0c2+lA
-	Kj7aCF4b8gTRGBX4qfa9f2028MnoAWld1Vmy8u8b6rPgkUT2Mls=
-X-Google-Smtp-Source: AGHT+IES6ugcFiGiBeYn0Bu9yj72YjguM/2DnNhh5dwYD/ciftAfP8S7Lu2JJFwp+N1aQgpYEtpBuA==
-X-Received: by 2002:a17:903:24a:b0:223:668d:eba9 with SMTP id d9443c01a7336-22db3bb6f7dmr25356505ad.10.1745479294876;
-        Thu, 24 Apr 2025 00:21:34 -0700 (PDT)
+        bh=cFz+/4buGG21gqDMlIHIpI2LyTeJMnqyc0qHyBDGzIU=;
+        b=W9YalEmgDvVVoyaUSfGpnrrqI8I5kZQtCWu2vV1VHB5qTs2zrif6aPxBod6fji5NeM
+         Y3MiMxEOwrW9/qj8woDJGh15fWHnP9Bso0grPvEP/6fM9v/l955Hrg8G057LAuYa9mA2
+         ZMA4kT6drYTwujKr5c0hPauVOcwsSkBIbKq4uwecoSv7WWPIKEkZzBk2UN+uwBsGLgTp
+         fTGkxwpewUjDWxuyYVywzf4P93a3S5vii1PAoB2lxgNybomalpQeyJahXICQH3YaxMTQ
+         Fd6UVC19wnO2c6nGLDykc3XKW9yO4NFk+9Zi/8NrzjHzN7Byu8uwHB77FlP5YWkwvQyK
+         pWwA==
+X-Forwarded-Encrypted: i=1; AJvYcCXLdF2nf+ma3KYYe5bkExxIHVWNqfNWdFs4Yjz69Z3lHUP8ZFuQ145s0PEGViWUNVk9k3v/u5GB2a2LRs/Sjg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrVpFO0CH4R5g7AkkoFymRiPnjxSN6Hr32m62WCfdYKuBQ0uFa
+	lbLdnbMe3LZy3BRGylLVCryxVnuxlRohOFGL+PLMEW/jdWzwX7pYdVVu5J6UFI0=
+X-Gm-Gg: ASbGncta8cVSadbVE1Ntsu3bM8EfNFGQc1R7n+mwJ4zg7LAMI+mj+25QjylBwLBz29g
+	qetJI1/dFil+x/e5gS4DB7UxAZM8aQn/9u6YOW+o2uOmguRr9tqGqPPeY4bd2L0RxvyVdOBQi8j
+	DhuRYk1HS7214Sgbg0U3F9PzMd0LI1EUDdjshJVkCrtrqZ3bg0mool/AG/yFBF0R4CzaJPA5zmP
+	P8T6UPh4M7FvEQ6ElUfDWziaBCthdQkvL0CNFGUzv3YWbbO8mWWh6yOAfwzddW6DAiMFz4ALY9b
+	OhUOw5pImiztiYmRc+KLzDLYNUQg4Hdy3wehmotdccFtO1nbO58=
+X-Google-Smtp-Source: AGHT+IEO8Xd4tVdyUa9PjnzD8nPNNIzaFyukV8ZkIipYXkGmr/TGbVqh3iRHaB96zvxslBoo9AWYIQ==
+X-Received: by 2002:a17:902:e74c:b0:22d:b240:34c9 with SMTP id d9443c01a7336-22db3dc845cmr26466965ad.53.1745479298272;
+        Thu, 24 Apr 2025 00:21:38 -0700 (PDT)
 Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db52163d6sm6240765ad.214.2025.04.24.00.21.31
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db52163d6sm6240765ad.214.2025.04.24.00.21.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 00:21:34 -0700 (PDT)
+        Thu, 24 Apr 2025 00:21:37 -0700 (PDT)
 From: Deepak Gupta <debug@rivosinc.com>
-Date: Thu, 24 Apr 2025 00:20:37 -0700
-Subject: [PATCH v13 22/28] riscv: Add Firmware Feature SBI extensions
- definitions
+Date: Thu, 24 Apr 2025 00:20:38 -0700
+Subject: [PATCH v13 23/28] riscv: enable kernel access to shadow stack
+ memory via FWFT sbi call
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,8 +68,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250424-v5_user_cfi_series-v13-22-971437de586a@rivosinc.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250424-v5_user_cfi_series-v13-23-971437de586a@rivosinc.com>
 References: <20250424-v5_user_cfi_series-v13-0-971437de586a@rivosinc.com>
 In-Reply-To: <20250424-v5_user_cfi_series-v13-0-971437de586a@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -103,63 +103,87 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
  alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
  rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Zong Li <zong.li@sifive.com>
+ Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
 
-From: Clément Léger <cleger@rivosinc.com>
+Kernel will have to perform shadow stack operations on user shadow stack.
+Like during signal delivery and sigreturn, shadow stack token must be
+created and validated respectively. Thus shadow stack access for kernel
+must be enabled.
 
-Add necessary SBI definitions to use the FWFT extension.
+In future when kernel shadow stacks are enabled for linux kernel, it must
+be enabled as early as possible for better coverage and prevent imbalance
+between regular stack and shadow stack. After `relocate_enable_mmu` has
+been done, this is as early as possible it can enabled.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
 Reviewed-by: Zong Li <zong.li@sifive.com>
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- arch/riscv/include/asm/sbi.h | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/riscv/kernel/asm-offsets.c |  4 ++++
+ arch/riscv/kernel/head.S        | 23 +++++++++++++++++++++++
+ 2 files changed, 27 insertions(+)
 
-diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
-index 3d250824178b..23bfb254e3f4 100644
---- a/arch/riscv/include/asm/sbi.h
-+++ b/arch/riscv/include/asm/sbi.h
-@@ -35,6 +35,7 @@ enum sbi_ext_id {
- 	SBI_EXT_DBCN = 0x4442434E,
- 	SBI_EXT_STA = 0x535441,
- 	SBI_EXT_NACL = 0x4E41434C,
-+	SBI_EXT_FWFT = 0x46574654,
+diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
+index 0c188aaf3925..21f99d5757b6 100644
+--- a/arch/riscv/kernel/asm-offsets.c
++++ b/arch/riscv/kernel/asm-offsets.c
+@@ -515,4 +515,8 @@ void asm_offsets(void)
+ 	DEFINE(FREGS_A6,	    offsetof(struct __arch_ftrace_regs, a6));
+ 	DEFINE(FREGS_A7,	    offsetof(struct __arch_ftrace_regs, a7));
+ #endif
++	DEFINE(SBI_EXT_FWFT, SBI_EXT_FWFT);
++	DEFINE(SBI_EXT_FWFT_SET, SBI_EXT_FWFT_SET);
++	DEFINE(SBI_FWFT_SHADOW_STACK, SBI_FWFT_SHADOW_STACK);
++	DEFINE(SBI_FWFT_SET_FLAG_LOCK, SBI_FWFT_SET_FLAG_LOCK);
+ }
+diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
+index 356d5397b2a2..d47876eca637 100644
+--- a/arch/riscv/kernel/head.S
++++ b/arch/riscv/kernel/head.S
+@@ -15,6 +15,7 @@
+ #include <asm/image.h>
+ #include <asm/scs.h>
+ #include <asm/xip_fixup.h>
++#include <asm/usercfi.h>
+ #include "efi-header.S"
  
- 	/* Experimentals extensions must lie within this range */
- 	SBI_EXT_EXPERIMENTAL_START = 0x08000000,
-@@ -401,6 +402,31 @@ enum sbi_ext_nacl_feature {
+ __HEAD
+@@ -164,6 +165,17 @@ secondary_start_sbi:
+ 	call relocate_enable_mmu
+ #endif
+ 	call .Lsetup_trap_vector
++	li a7, SBI_EXT_FWFT
++	li a6, SBI_EXT_FWFT_SET
++	li a0, SBI_FWFT_SHADOW_STACK
++	li a1, 1 /* enable supervisor to access shadow stack access */
++	li a2, SBI_FWFT_SET_FLAG_LOCK
++	ecall
++	beqz a0, 1f
++	la a1, riscv_nousercfi
++	li a0, CMDLINE_DISABLE_RISCV_USERCFI_BCFI
++	REG_S a0, (a1)
++1:
+ 	scs_load_current
+ 	call smp_callin
+ #endif /* CONFIG_SMP */
+@@ -320,6 +332,17 @@ SYM_CODE_START(_start_kernel)
+ 	la tp, init_task
+ 	la sp, init_thread_union + THREAD_SIZE
+ 	addi sp, sp, -PT_SIZE_ON_STACK
++	li a7, SBI_EXT_FWFT
++	li a6, SBI_EXT_FWFT_SET
++	li a0, SBI_FWFT_SHADOW_STACK
++	li a1, 1 /* enable supervisor to access shadow stack access */
++	li a2, SBI_FWFT_SET_FLAG_LOCK
++	ecall
++	beqz a0, 1f
++	la a1, riscv_nousercfi
++	li a0, CMDLINE_DISABLE_RISCV_USERCFI_BCFI
++	REG_S a0, (a1)
++1:
+ 	scs_load_current
  
- #define SBI_NACL_SHMEM_SRET_X(__i)		((__riscv_xlen / 8) * (__i))
- #define SBI_NACL_SHMEM_SRET_X_LAST		31
-+/* SBI function IDs for FW feature extension */
-+#define SBI_EXT_FWFT_SET		0x0
-+#define SBI_EXT_FWFT_GET		0x1
-+
-+enum sbi_fwft_feature_t {
-+	SBI_FWFT_MISALIGNED_EXC_DELEG		= 0x0,
-+	SBI_FWFT_LANDING_PAD			= 0x1,
-+	SBI_FWFT_SHADOW_STACK			= 0x2,
-+	SBI_FWFT_DOUBLE_TRAP			= 0x3,
-+	SBI_FWFT_PTE_AD_HW_UPDATING		= 0x4,
-+	SBI_FWFT_LOCAL_RESERVED_START		= 0x5,
-+	SBI_FWFT_LOCAL_RESERVED_END		= 0x3fffffff,
-+	SBI_FWFT_LOCAL_PLATFORM_START		= 0x40000000,
-+	SBI_FWFT_LOCAL_PLATFORM_END		= 0x7fffffff,
-+
-+	SBI_FWFT_GLOBAL_RESERVED_START		= 0x80000000,
-+	SBI_FWFT_GLOBAL_RESERVED_END		= 0xbfffffff,
-+	SBI_FWFT_GLOBAL_PLATFORM_START		= 0xc0000000,
-+	SBI_FWFT_GLOBAL_PLATFORM_END		= 0xffffffff,
-+};
-+
-+#define SBI_FWFT_GLOBAL_FEATURE_BIT		(1 << 31)
-+#define SBI_FWFT_PLATFORM_FEATURE_BIT		(1 << 30)
-+
-+#define SBI_FWFT_SET_FLAG_LOCK			(1 << 0)
- 
- /* SBI spec version fields */
- #define SBI_SPEC_VERSION_DEFAULT	0x1
+ #ifdef CONFIG_KASAN
 
 -- 
 2.43.0
