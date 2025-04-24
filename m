@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811B3CA52;
-	Thu, 24 Apr 2025 20:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C201F4614;
+	Thu, 24 Apr 2025 20:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745524918; cv=none; b=c7tqeP3PwGSjYPj1D+5/0v2elRZkUmIRpVMmeKKgSVuRJ6Ucb0njyLhIT+1JUFKeSO26HsaWmpxlNXW+Y3kBVVjR+BMXWl028N9T8JqdU+vcjoLAfUOV5AnFh8+dupXG3JTvXlQvtruOEkIMpcb5wBs5lq/HRsj3sL5HA1q1MBU=
+	t=1745525339; cv=none; b=PfhkHtzb5XPurkehApWSam9/r0SYvKVaCU7Oz1JUkmmPgp11crXG3pXuobeyPzFw2VJnxV+ojaFs0tgv4aRNM/XJHLdto9549SsRAq1ZXZe1ZDw+fzJhCdFl8ilt9NmrUj8sl4QzoLmTq7QGaIsGupfbvSERqX67+WEbkCoKTKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745524918; c=relaxed/simple;
-	bh=I/5AaiyphNo34zBMZtPrQNZj2QmmzY/W/pdD16xNRKw=;
+	s=arc-20240116; t=1745525339; c=relaxed/simple;
+	bh=r/J+71axIcbcBnTDMTPbPhfWreusoyG9PFW3KMwW3d0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JTNDeZ8eb/ZPavU2HJ3xE94X4bhGUwWmAN8jMap+caDIVSfaBtukcV/NStACl+/4o/ulHjZKJce5T3BSAuqtOHpHMkPOfx5n85FfsrzWfOKFBn7+qbQDCpdCYvHNbDoRgWUZGMzjVxhOAEbL7RYSQqQOdJlj+esX+ww03u/PrbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFhgNJNN; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QB279C+LTYK53crn7VUzHsWPS9lb+y1kDV7lwco0FP9L1LMJTXAwEJQjYDPT73aL7IeNeUeuiXXaw+9fTOvQ7wSULD6feEKZiupfrg2VncRlJqhFcpV55MOKFgcf3i0o5zuEwW68BS0VH2Qt5R9oODiZqUQU4Fa9KqaR9SXHK7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISS9edEF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFhgNJNN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31FF0C4CEE4;
-	Thu, 24 Apr 2025 20:01:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISS9edEF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20AA7C4CEE3;
+	Thu, 24 Apr 2025 20:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745524917;
-	bh=I/5AaiyphNo34zBMZtPrQNZj2QmmzY/W/pdD16xNRKw=;
+	s=k20201202; t=1745525338;
+	bh=r/J+71axIcbcBnTDMTPbPhfWreusoyG9PFW3KMwW3d0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hFhgNJNNQ7/AIdB/0axBMufc5VbeI+w2xVQZjZen3f366YV5eXVjFXaTPPIRsKOH0
-	 9XpZcTt1JyTYqK+fa72eCBZ3U/9sjWsMeSJ3fZ1/dXn6Urm5GahQiwvoMRWg6xEl9c
-	 sE3Hy1GtowGSOW/tOl0tpEw17bN6nt4JW1VP7M5wvmb8/RRwJ6iN56jWnEv/7cm8sx
-	 B0GVXYPOXSK2mEwXrlseH3NV6LGU9Jk3Y0Qa81aSv0sEYe+3fBDpvKpmOZXhC8fY4d
-	 V4u6EXlQfsJ51QTNSbKajOTRNzMN7V0MR99+BSe3Uhg+bXGuG7b/K8cNayWrSLgcCA
-	 mu5HU1xIkM9aQ==
-Date: Thu, 24 Apr 2025 22:01:50 +0200
+	b=ISS9edEF3u5Xby+MOrLIfGta/xXgvj8DjuWHfzBXrFZ9ZBVbkAwIkoDv9x14/vlmd
+	 hzy7BUxXKcII6wkglUSqd21SGKks8ao2Mb/0m5uGpwG+WWvYJL4XwU43191f7cCpJX
+	 zy0BhwhgLd7MBL5szOCwB0f9KYZB+tcTH1/At/LklVOkX6MC3pKizBD69oeN3VTsMR
+	 ku0O6Rzq6WoT1dSlZeSQRjA10kpghiyV2qSGBzVH87+Dy5b1c41PQgsNkCSjCQUTeA
+	 j1gGwCwlYLhhucBavtvJ+AQVSrgVaTuEEAoJBlBgoftI+s7Reib0R0jbd5rHQcx3BT
+	 9fCHoitRYzsyA==
+Date: Thu, 24 Apr 2025 22:08:51 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Joel Fernandes <joelagnelf@nvidia.com>
 Cc: Alexandre Courbot <acourbot@nvidia.com>,
@@ -48,13 +48,11 @@ Cc: Alexandre Courbot <acourbot@nvidia.com>,
 	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Subject: Re: [PATCH 13/16] gpu: nova-core: Add support for VBIOS ucode
  extraction for boot
-Message-ID: <aAqYrkqshxHZtz3h@pollux>
+Message-ID: <aAqaU-nX0YRKIGyl@pollux>
 References: <20250420-nova-frts-v1-0-ecd1cca23963@nvidia.com>
  <20250420-nova-frts-v1-13-ecd1cca23963@nvidia.com>
  <aAjz2CYTsAhidiEU@pollux>
- <88937e2b-6950-4c9d-8f02-50f9b12c7376@nvidia.com>
- <aAkBIvfTkKVNbdnm@pollux>
- <20250424191900.GA174004@joelnvbox>
+ <7f3aa4b3-a24a-41c6-b75e-61e0e6e11ee3@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,87 +61,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250424191900.GA174004@joelnvbox>
+In-Reply-To: <7f3aa4b3-a24a-41c6-b75e-61e0e6e11ee3@nvidia.com>
 
-On Thu, Apr 24, 2025 at 03:19:00PM -0400, Joel Fernandes wrote:
-> On Wed, Apr 23, 2025 at 05:02:58PM +0200, Danilo Krummrich wrote:
+On Thu, Apr 24, 2025 at 02:54:42PM -0400, Joel Fernandes wrote:
 > 
-> [..]
 > 
-> > > >> +        data.extend_with(len, 0, GFP_KERNEL)?;
-> > > >> +        with_bar!(?bar0, |bar0_ref| {
-> > > >> +            let dst = &mut data[current_len..current_len + len];
-> > > >> +            for (idx, chunk) in dst
-> > > >> +                .chunks_exact_mut(core::mem::size_of::<u32>())
-> > > >> +                .enumerate()
-> > > >> +            {
-> > > >> +                let addr = start + (idx * core::mem::size_of::<u32>());
-> > > >> +                // Convert the u32 to a 4 byte array. We use the .to_ne_bytes()
-> > > >> +                // method out of convenience to convert the 32-bit integer as it
-> > > >> +                // is in memory into a byte array without any endianness
-> > > >> +                // conversion or byte-swapping.
-> > > >> +                chunk.copy_from_slice(&bar0_ref.try_read32(addr)?.to_ne_bytes());
-> > > >> +            }
-> > > >> +            Ok(())
-> > > >> +        })?;
-> > > >> +
-> > > >> +        Ok(())
-> > > >> +    }
-> > > ..actually initially was:
-> > > 
-> > > +        with_bar!(self.bar0, |bar0| {
-> > > +            // Get current length
-> > > +            let current_len = self.data.len();
-> > > +
-> > > +            // Read ROM data bytes push directly to vector
-> > > +            for i in 0..bytes as usize {
-> > > +                // Read byte from the VBIOS ROM and push it to the data vector
-> > > +                let rom_addr = ROM_OFFSET + current_len + i;
-> > > +                let byte = bar0.try_readb(rom_addr)?;
-> > > +                self.data.push(byte, GFP_KERNEL)?;
-> > > 
-> > > Where this bit could result in a lot of allocation.
-> > > 
-> > > There was an unsafe() way of not having to do this but we settled with
-> > > extends_with().
-> > > 
-> > > Thoughts?
+> On 4/23/2025 10:06 AM, Danilo Krummrich wrote:
+> [...]
+> >> +
+> >> +    /// Probe for VBIOS extraction
+> >> +    /// Once the VBIOS object is built, bar0 is not read for vbios purposes anymore.
+> >> +    pub(crate) fn probe(bar0: &Devres<Bar0>) -> Result<Self> {
 > > 
-> > If I understand you correctly, you just want to make sure that subsequent push()
-> > calls don't re-allocate? If so, you can just use reserve() [1] and keep the
-> > subsequent push() calls.
+> > Let's not call it probe(), what about VBios::parse(), or simply VBios::new()?
 > > 
-> > [1] https://rust.docs.kernel.org/kernel/alloc/kvec/struct.Vec.html#method.reserve
 > 
+> Yes, new() is better. I changed it.
 > 
+> >> +        // VBIOS data vector: As BIOS images are scanned, they are added to this vector
+> >> +        // for reference or copying into other data structures. It is the entire
+> >> +        // scanned contents of the VBIOS which progressively extends. It is used
+> >> +        // so that we do not re-read any contents that are already read as we use
+> >> +        // the cumulative length read so far, and re-read any gaps as we extend
+> >> +        // the length
+> >> +        let mut data = KVec::new();
+> >> +
+> >> +        // Loop through all the BiosImage and extract relevant ones and relevant data from them
+> >> +        let mut cur_offset = 0;
+> > 
+> > I suggest to create a new type that contains data and offset and implement
+> > read_bios_image_at_offset() and friends as methods of this type. I think this
+> > would turn out much cleaner.
+> I moved it into struct Vbios {} itself instead of introducing a new type. Is
+> that Ok?
 > 
-> Ok that does turn out to be cleaner! I replaced it with the following and it works.
-> 
-> Let me know if it looks good now? Here's a preview:
-> 
-> -        data.extend_with(len, 0, GFP_KERNEL)?;
-> +        data.reserve(len, GFP_KERNEL)?;
-> +
->          with_bar_res!(bar0, |bar0_ref| {
-> -            let dst = &mut data[current_len..current_len + len];
-> -            for (idx, chunk) in dst
-> -                .chunks_exact_mut(core::mem::size_of::<u32>())
-> -                .enumerate()
-> -            {
-> -                let addr = start + (idx * core::mem::size_of::<u32>());
-> -                // Convert the u32 to a 4 byte array. We use the .to_ne_bytes()
-> -                // method out of convenience to convert the 32-bit integer as it
-> -                // is in memory into a byte array without any endianness
-> -                // conversion or byte-swapping.
-> -                chunk.copy_from_slice(&bar0_ref.try_read32(addr)?.to_ne_bytes());
-> +            // Read ROM data bytes and push directly to vector
-> +            for i in 0..len {
-> +                // Read 32-bit word from the VBIOS ROM
-> +                let rom_addr = start + i * core::mem::size_of::<u32>();
-> +                let word = bar0_ref.try_read32(rom_addr)?;
-> +
-> +                // Convert the u32 to a 4 byte array and push each byte
-> +                word.to_ne_bytes().iter().try_for_each(|&b| data.push(b, GFP_KERNEL))?;
->              }
+> I agree it is cleaner. Please see below link for this particular refactor
+> (moving data) and let me know if it looks Ok to you: http://bit.ly/4lHfDKZ
 
-Looks good to me, thanks!
+I still think a new type would be better, the Option<KVec<u8>> that is only used
+for the construction of the actual type instance is a bit weird. It's basically
+two types in one, which is also why you need two options -- better separate
+them.
