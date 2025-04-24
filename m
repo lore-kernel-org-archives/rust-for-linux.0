@@ -1,117 +1,171 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D696328A1C9;
-	Thu, 24 Apr 2025 16:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD07F288CB0
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 16:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745512748; cv=none; b=KB1nf0deMOGM3MOIA0pGhqk4JG8Dvelb3kjlGiN5QBONOVr7qAwFl7sJw3C1hj681TZuvUhwB6/Fdwy0ydwfQbyN2qNpEXae00/c9qaPgzsnrPppBbpKMBLJeJyCc/JyuYQcnTAuhKCuHmmIJ+0Bcv5LN/z3uwUrZ2uFLTiabgM=
+	t=1745512918; cv=none; b=IsyUic9stGaVTxXzfkEO8ZVvFEdkqnZnkzHg4HEYJA0XQ2e0vut/ezkvKkgOuhdMNW1sRSwNrlPlsSq+prtH8DopDqMPXmMIS2T8c2fXIwsNnGlcAMwym9apJg8PRVicdLVPuOyevU4S2zvnADg82xwjhMKeP7SewjHghXl5a8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745512748; c=relaxed/simple;
-	bh=F1o0DwoIj/AYQ3Qw2PMHZxsp+slRKsK7vQj4ZqueOck=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e8hWX2IRvU8V0mC1VhL2JfVI6huiO4xxAJSePjhY0lM0mGvlry/c1lU60oHqzV8jtiEDkd2XIVt5IbPhNnaElXwhVBL2vD3TFyF8ilxCsbdM1wwmM1yK/2yrNztAoJOTTTqlSecmElBGOdUXihr6huTI1ImHoRZzbCErnOplSd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YdKk8p5u; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745512918; c=relaxed/simple;
+	bh=vye0Q+xd1G2Olnf5Qkr8nib/GWDRlQm+UGeZYjZUyDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SWh9f1sLEWmVYofcoUrXNhEB3do+pJOY0+3BHNDdhsZZAASxcLS5l+1NEvt3om8+LYAlvwNq1tNBaKgTREcu5Rf8fzcKH7vWf5ugqhLwkggZYvJF7J0vL2TPaYkqBEKhE2bpEPmyfIVTEgEXfGtWat/MUvhhMX5m1C5inieDe1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=vt7T0uzd; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YdKk8p5u"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-22403c99457so2665945ad.3;
-        Thu, 24 Apr 2025 09:39:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="vt7T0uzd"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-af579e46b5dso876174a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 09:41:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745512745; x=1746117545; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bt3wozjtVwbbCl/hvwfmWbF8sOCwYQJ/mqcu7tbtpKE=;
-        b=YdKk8p5uBWy3n5Ljc4sc/hEgtc0th2+ix3AGrKD6xCUIZDbgCvZQpmdAE0+Esi1Hha
-         aix9SiK4IC9E013jKo13p3X6CzK5vG4g+u81ZUNutI556hjPNS9SNa/R69it4rrPUrWZ
-         AHHGnIwV3P4YEUYovg9ph2czQ9+QXg7n7AIl5IhWsC1Rqsfr/9e5ZzBOmK2SwPQbpO9C
-         kK3LsYI8uruJrxUGYINuh7E03OE+F70KGd2KK/edbWb+Iyl1bF6bxB41khX+lVvDUvGw
-         V0OVoq35ewyryA25zUTP95j5Jj4+g0kuyoE+EWdrFaTjG1Q40MzBnncx+JQhwtz/XgX9
-         9hDg==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1745512916; x=1746117716; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=k6m4QSCkOjvBeG8/Kperh6wZuRGbtha7PIChY6FuIlM=;
+        b=vt7T0uzd3xCze3Zzyzjt6oEBKu5b2AaMF+bEL0x1WfJmo4ncPEEJHxQG9zfcis/Kwx
+         xahjvt8L0fz/GsUWvTYMadKC40Y3zgw5Vj/Bg/B+E9IfGRpYntx5JPA6qXHyXJywlCbw
+         biLB7vMtyYOyIxwfNlsW2xGWIxIU7Mq8SCI1F/1SnDyWqTzKzLDLl3U6wnksQ8jZfj77
+         3YYI4PhAenG/mAaDMYSsi4PkpMu/k1Hi7XbYXadK3K3CXlDrvFtQjLVaFQ/APbqalqcZ
+         uGCMIyBp0jytuhdm4FN+sbkfo2YPgMosChYFZjXIJ7F2OiHQNGi0YRlu1TUMK5rxwd2g
+         fGkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745512745; x=1746117545;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bt3wozjtVwbbCl/hvwfmWbF8sOCwYQJ/mqcu7tbtpKE=;
-        b=C+ToKbCOeQ9+ttsDXYT/XUO0JxnH90CSQOgz3RCflwEEK1cbj/E8bEnY3/FiXjo3wG
-         mD7Xa2DCEUGgXjoByyP8YkyGOCjUZC0Zmi4NeAUsfJpE2PIPBKd09HRWfDej9m1wxTsy
-         yC7Dmom8xWa3Io1LgYop9EQsDrEF0OJ9djgJwH58FyfXywJefW7bYE/xN/UUM8nd/S4t
-         1DOSHEqkn/3wXT0kGZvfAY3cJnjXpXqN4eCuW8i/seLKxRGAQuGAmUAU5xhe0DGBSrvW
-         qwtEZqWn6sdqj2Awz3XBdyqCzHLCw4vVFKBkMYRugdYUxZKrL+B/lLCNq2gnfj+UQuQe
-         JbcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVh6sCY6vXImPADUt1SoipOQ/2Xp7ZFsCcmpM4b0nnAa1Ym/2oWHQPDENy9GdXZCX60h6+FyEnCzmLnul0W7CY=@vger.kernel.org, AJvYcCViG0s/RrwUG67hMizPxlTGOuHI8qTuz/klFd8C1tJ7glBnowMs72psP8ALpN/dSjZjZViVDgEhdk3DvTo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAqnGFVi3zlyI77dVuh5TjmUp93sCOXviQHjg4ASUJSAtl1Pej
-	0BTaBpv8C2LHlbtBIs8bnynm8Bf/8wmrDlKymBl3cyadibLCM1MpYLQJl/0Oe6SL5rOwI3UQlaL
-	DOVo98J0w+qqsTMJ3/w6790mIT50=
-X-Gm-Gg: ASbGncttBAqFsvTpxSp8BSwLYJINrZ/HXK2W7bVDtu7IeLQNpuqrf8x/Un52CPi2hUK
-	NS8vaU4DegIeTXZg4MsJWVUvOLVpvv1F83MTDunsnQngXzra9DD3YSTzYi4JAUUE8isvob/z15y
-	hfPOZnR+z1dgiXNWMqYmtKrg==
-X-Google-Smtp-Source: AGHT+IHs2V78OVdwLGzToMUKP5CWdt1VwzDnIY/3AMtzu1X8L62mGCF0iWUvgxxx5GYUmOxYhoENkJutQHul2gt0IlM=
-X-Received: by 2002:a17:903:32d1:b0:224:13a2:ab9a with SMTP id
- d9443c01a7336-22db3c15e86mr17965205ad.7.1745512745092; Thu, 24 Apr 2025
- 09:39:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745512916; x=1746117716;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k6m4QSCkOjvBeG8/Kperh6wZuRGbtha7PIChY6FuIlM=;
+        b=N9oFVPm33x/2hqUpHYSC/SgH66vuGHtkS3g3DvTQqx4nRuM12ay15qrLoyyqq5/w0D
+         hVW3dDQMXbEfaMx8HaEkEMwgF7erABogRYNw29CEskcKY+w/XcuzeTbsZl5ghnnI74rc
+         tEReR3sHe8wfa8DBQPZahLJorXMhkdJ2KXOILPHsFPUqeiIGSjBAkSLj3xGu6DDknOzR
+         UfXzWpCI4LhuFD8nmVuwA1NpQtCSyZJqmi4EIL/YxswOm7aRS1GhDW/5rmxf6ud8QS2w
+         GecdW3tuoB/mn4YyHzGZ2JIh63iwe+LeU/l1bsljLWDtrHi8T6NJ1d0Ggmpikju7Ml8I
+         cT0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXhlW4ZmAnrgTp1mrHFPW2iSbYlTw9S8+577DqXy58enNTPt9kJiVGmaXRPYVMcFMNjZ6GuOCG+gXwIezNung==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwB6a95WVlpqweeOT9/KznMHzxKPTQRmHAGvBjCsJxZE7zh3Id2
+	hmQzg6vLFcU5ZEFI9tDYjPkn3xLVBAKr4T1OwPjyRA9P14EkvX2p5OEVzWTFfbg=
+X-Gm-Gg: ASbGnct2EFbmCRxK11KDz17Lw1cYkNzNi9tX0/hdVLCYhvbgais69gDuP8CnS8Tdlz5
+	Gc9ENtau2lt34qhOYJRMvqLfEAqL/e+yXgZVoaWIeSeZsXxLJ2erYrfsOSD+T4e5uHv0kGb7WEu
+	np56w7/r5dlOj4g4wTcU2qvuDiFSrhE0Sx9hUNEJ5COjCpoW3i9OmpK4WYGh1yMGywd8JqNozUZ
+	74rt7soqh3Znm/XbKqAH0jbTNGxbVwlTPKzuNl6Ftp2p3y3UgNyhBTJVsWsvVTMqJBAfCF5xElt
+	nKlxGjARDYTGTxqI93Z6pUkH0OmNUwspUm0dxkQiYtCXm8V6Z9E=
+X-Google-Smtp-Source: AGHT+IGxyp+KENwVEkLGrt7S8pn2vlKD8bBJVWEd1Iv8ULUIPojD/9R2kqNR1Mge6+txkrxVbJHCXA==
+X-Received: by 2002:a05:6a21:6d8e:b0:1f5:8072:d7f3 with SMTP id adf61e73a8af0-20444fc0e44mr4794400637.30.1745512916109;
+        Thu, 24 Apr 2025 09:41:56 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b15f76f48b2sm1462741a12.8.2025.04.24.09.41.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Apr 2025 09:41:55 -0700 (PDT)
+Date: Thu, 24 Apr 2025 09:41:51 -0700
+From: Deepak Gupta <debug@rivosinc.com>
+To: Miquel =?iso-8859-1?Q?Sabat=E9_Sol=E0?= <mikisabate@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	alistair.francis@wdc.com, richard.henderson@linaro.org,
+	jim.shu@sifive.com, andybnac@gmail.com, kito.cheng@sifive.com,
+	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com,
+	cleger@rivosinc.com, alexghiti@rivosinc.com,
+	samitolvanen@google.com, broonie@kernel.org,
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+	Zong Li <zong.li@sifive.com>
+Subject: Re: [PATCH v13 20/28] riscv/hwprobe: zicfilp / zicfiss enumeration
+ in hwprobe
+Message-ID: <aAppz5o2i4SQKU2z@debug.ba.rivosinc.com>
+References: <20250424-v5_user_cfi_series-v13-0-971437de586a@rivosinc.com>
+ <20250424-v5_user_cfi_series-v13-20-971437de586a@rivosinc.com>
+ <680a0cd4.050a0220.296475.3867@mx.google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250424-strncpy-from-user-v1-1-f983fe21685a@google.com>
-In-Reply-To: <20250424-strncpy-from-user-v1-1-f983fe21685a@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 24 Apr 2025 18:38:52 +0200
-X-Gm-Features: ATxdqUFV7nNES7Xs7hgJcvef5UCDv0JU-UD8dBJaT9y-LWpj3w2lxcYcitC2k4I
-Message-ID: <CANiq72=VbcYroRz1EcbzHqFHwaHLewK+DvK756ropM16pDdMuw@mail.gmail.com>
-Subject: Re: [PATCH] uaccess: rust: add strncpy_from_user
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <680a0cd4.050a0220.296475.3867@mx.google.com>
 
-On Thu, Apr 24, 2025 at 5:18=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Thu, Apr 24, 2025 at 12:05:04PM +0200, Miquel Sabaté Solà wrote:
+>On dj., d’abr. 24 2025, Deepak Gupta wrote:
 >
-> +    if res < 0 {
-> +        Err(Error::from_errno(res as i32))
-> +    } else {
-> +        #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
-> +        assert!(res <=3D len);
-> +        Ok(res as usize)
-> +    }
+>Hello,
+>
+>> Adding enumeration of zicfilp and zicfiss extensions in hwprobe syscall.
+>>
+>> Reviewed-by: Zong Li <zong.li@sifive.com>
+>> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+>> ---
+>>  arch/riscv/include/uapi/asm/hwprobe.h | 2 ++
+>>  arch/riscv/kernel/sys_hwprobe.c       | 2 ++
+>>  2 files changed, 4 insertions(+)
+>>
+>> diff --git a/arch/riscv/include/uapi/asm/hwprobe.h b/arch/riscv/include/uapi/asm/hwprobe.h
+>> index c3c1cc951cb9..c1b537b50158 100644
+>> --- a/arch/riscv/include/uapi/asm/hwprobe.h
+>> +++ b/arch/riscv/include/uapi/asm/hwprobe.h
+>> @@ -73,6 +73,8 @@ struct riscv_hwprobe {
+>>  #define		RISCV_HWPROBE_EXT_ZCMOP		(1ULL << 47)
+>>  #define		RISCV_HWPROBE_EXT_ZAWRS		(1ULL << 48)
+>>  #define		RISCV_HWPROBE_EXT_SUPM		(1ULL << 49)
+>> +#define		RISCV_HWPROBE_EXT_ZICFILP	(1ULL << 50)
+>> +#define		RISCV_HWPROBE_EXT_ZICFISS	(1ULL << 51)
+>
+>Notice that, as it stands in Linux v6.15-rc, this will conflict with the
+>values for Zicntr and Zihpm. See 4458b8f68dc7 ("riscv: hwprobe: export
+>Zicntr and Zihpm extensions"). I'd say that you should update these
+>values.
 
-What about:
+Got it. Noted for next version.
 
-    if res < 0 {
-        return Err(...);
-    }
+>
+>>  #define RISCV_HWPROBE_KEY_CPUPERF_0	5
+>>  #define		RISCV_HWPROBE_MISALIGNED_UNKNOWN	(0 << 0)
+>>  #define		RISCV_HWPROBE_MISALIGNED_EMULATED	(1 << 0)
+>> diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
+>> index bcd3b816306c..d802ff707913 100644
+>> --- a/arch/riscv/kernel/sys_hwprobe.c
+>> +++ b/arch/riscv/kernel/sys_hwprobe.c
+>> @@ -108,6 +108,8 @@ static void hwprobe_isa_ext0(struct riscv_hwprobe *pair,
+>>  		EXT_KEY(ZCB);
+>>  		EXT_KEY(ZCMOP);
+>>  		EXT_KEY(ZICBOZ);
+>> +		EXT_KEY(ZICFILP);
+>> +		EXT_KEY(ZICFISS);
+>>  		EXT_KEY(ZICOND);
+>>  		EXT_KEY(ZIHINTNTL);
+>>  		EXT_KEY(ZIHINTPAUSE);
+>
+>Greetings,
+>Miquel
 
-    overflow_assert!(res <=3D len);
-    Ok(res as usize)
 
-That follows a bit better what is usually done on the C side, in using
-early returns (especially for error paths) and in avoiding local
-`#ifdef`s.
-
-Of course, we can leave this `overflow_assert!` to a different patch
-later on with this code as an example use case, or a good first issue
-etc. It also allows to document it etc. Happy to send it or create the
-issue.
-
-(I wrote that instead of `assert_overflow!` because it follows the
-`{static,debug}_assert!` patterns, i.e. it changes more the "kind" of
-assert rather than asserting a particular thing, like `_eq!` or
-`_same_type!`).
-
-Thanks!
-
-Cheers,
-Miguel
