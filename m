@@ -1,62 +1,62 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FC6157A55
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 06:01:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D6F1F3BBF
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Apr 2025 06:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745474519; cv=none; b=RZuhT3u7nAhnFEC2xLYZcD/sfreyWaVlnO8T59jt/qJz6fatuIWSrId7DiEnEdGxzxgD1ytLDML2SLIkz/48KdQG767vEdN46zwrdXmJlB7VuWUI/w9ATOKntu/nE9n6Q+hBV91Q2DFXGzhiPlQgKNAtxqhLUIxZ86RImkxG/FA=
+	t=1745476155; cv=none; b=CCOTmVjznGIXLFTRPseWARyldOI4IAf+XHHmOPHWVoBZUrhNJkzoCpFrpeu0mj0ivfTBkAuJLobjSyWGTgky+kucpO6XAxW3+nD2mq4+owJy4Ax0SkBs/n5cJv71LcSwwyYosBWHcknTR1JXDt3uuyjdHm8NKnTdSDeRZB1Zm/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745474519; c=relaxed/simple;
-	bh=Z6mlm1vaiSd8DkRsHlERytRx9CV4SLqbuOmSjuJ/xNw=;
+	s=arc-20240116; t=1745476155; c=relaxed/simple;
+	bh=VzNBfcDTVF6ejyO5VLYxI2spzN4W68Bo1JJlXy3O86o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h4obXSq+l2akL6pUc+wN4pKKtLZD4PzDK9udzRa1H0w2Cc0YyLSP2/FSWBVsdyMOUOu12atcRcmvng5TiZ0b9Nm5oFabbe74OaaB20ew/rQoQJ7FPbReh701GDdjck2m3R1DL7qiG3nRw8yYtVnbkfcID2/3TPYdGymhQZUv614=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YvVTv8SI; arc=none smtp.client-ip=209.85.210.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZFUsqcU+hMxccAtYoBxXVK2N+gpRKhm9wzypsLrgWvScisAfJ5HxUc/AId9zNS+ZBy8L3fUC5hpvrHFHBS7Qq+luBiovFrG/0DPo/ZmOuifDlMAIM8WA/EvBW/YRckDsdCj5VyjTbfVU9WMDdzsAgTn+0Zv+MdB186UhiUzcNQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hxPM+mhx; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YvVTv8SI"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-739b3fe7ce8so556649b3a.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 23:01:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hxPM+mhx"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22da3b26532so6293465ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Apr 2025 23:29:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745474516; x=1746079316; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1745476153; x=1746080953; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ItVzBTSerAAYDc2jtmllBIZUTwNzEBk5YDQRurUUd5o=;
-        b=YvVTv8SIm/1ziikgPqOLmgvOOGO1SmfsO0yH2y9W/MobGSKdWIRQvTjyBckrmZaZBA
-         23jVRF+rlKM7WIg7fTHeNaG7NlPKOZJ1lprvcz10MrSoyvoSN0nCmoB3Tt00w4kDJN4r
-         Yf04VxktpC4gnVRqRHgeD/GHDTydV0DYk1ZWE3LkpMilt6JCiB7SUB9oBfG0dz2q2lsL
-         7QbKgv9Cccz1PRngy7P5ozQQ59RB2k+4iVqcM54OxW9UEbN6Lz8BaS5j7dmhc9uwe2Bx
-         ky0gTyM4LjyRLfOYEvso4OiQnGc3vyj+oqJuOWgMWv0VUcF6pApnKSGMn/PnxBScYUE+
-         E5IQ==
+        bh=prlT14wP1pGTt4ARZ3fH6f2MCxYwQQ9VDBvp9E5OskU=;
+        b=hxPM+mhx3XkalLJEerW2xTB7vY+sMv6DcvKmOyiQV8q1BBdn3WIZ0M7Jp8FVEHF/Mb
+         sYGyswUSFMEMLgask5auSKrRRI+DQZlXdvco3jzJv7jomMYcb5XagCPl00MHLugwAlMz
+         q3lHIBAbGCo/868bZ+AaAxNcJaq9HcOuOn9UlRV0HFVtWw8PwdcRqCfPVGOv6q4o31jr
+         xQmCIASFhNhV0RVnZZ3JKgGZDw9R6jiOm3ItxvHEQfd8URmY2KrQaNceakgbu9X38Q4k
+         2tYzRjJluIDpBt26i5Gixx+Xatyd2lIojtM+rJoY/+b/mhUk8llJYvYdiOamnl4TT19E
+         VwCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745474516; x=1746079316;
+        d=1e100.net; s=20230601; t=1745476153; x=1746080953;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ItVzBTSerAAYDc2jtmllBIZUTwNzEBk5YDQRurUUd5o=;
-        b=wG3/RSoAQw5N2DBKuxXm8pTee9WJWcbQunSLn1oiiRKKFQQiElAxO1taVUIiGrIeFS
-         GjeOBWjldYs1nMJ2xqB1IyxTkatXW9T3TcCLDaL3FYFl/M+6G2dPLUGY1to7g2iLyeud
-         zfNAvS4H75Koy0NKTn76iiN6I1UweNyr4I2/ytsEdD/AKcwm5v5N5GqkZIRKYe0QUIS0
-         Xor6VCh4VKHxnmHNN5U1Shh2gAxxRZnIdocT5pQcRAP6yUzTnAde19p88l7wSPpQRbaX
-         ucdi6R4Y1WtLK4InDudousf3j7eWpfXIAbvO18fE3pS8seoHezPnh3ojIWPyjjCZzWxI
-         PFZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJCPKTVogkldiPzdqejkqTEVfHa2hlke3gi6dMyZRO+qCNmn5b/9AJUeCfi1SAypkVNedm+n2lkPdJSNGT7w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9Uizruzh3i/cg86H49sPhHO8Ts5DFlpX1WKrbi6xESyQdulMn
-	VN/FiSIe0ERCzqM6fqCDk13IoJrY/m6Vh0JPNkmZ03WUMCwdxcfndaMjwgMsGZw=
-X-Gm-Gg: ASbGncvWB8/dEb2mWWl90gqG0YAss2Lue2JM1NKkmd6AdBpzFFti5+FcBdQZSSeyb5q
-	IEwlJ3ctBWFOqC2KKJj09sTQv0rq3ibCs9arzwesgG6Zivu8pNDSX1suahDO1Ax1/WR5bCZQD/D
-	OqjHb/hwcNj/Hg7wl8wqjLVyvtxPI+wlrktaDEkiYxvprCrLaee75hrVOgEG8xijmve5N6ZE7FM
-	LJgdAQwN0sdryhSHADBTBRSrJOAJTl9TaZAm2hLqKIjXbVZ+g+S8EHfKXgpbtss5yYcHOfKsrrQ
-	2bvocByTr4DtsXL1wGrTdBykbrv4sgw7EaNo/0fqDg==
-X-Google-Smtp-Source: AGHT+IHpb+KQKs+bCW6EMMLRqMG+2nRuFK3vtw1oUdYl0ZcihCBk4ttWoQ5lM8jVKKGTONgQMih/FQ==
-X-Received: by 2002:a05:6a00:ac86:b0:73c:3060:d53 with SMTP id d2e1a72fcca58-73e24ac977amr1991976b3a.18.1745474515750;
-        Wed, 23 Apr 2025 23:01:55 -0700 (PDT)
+        bh=prlT14wP1pGTt4ARZ3fH6f2MCxYwQQ9VDBvp9E5OskU=;
+        b=UgjOgy+7Jy5Is7bsGsp77qHGuNRN9A3o6outB/7Qij8ZfF44t0L7rv5JM0KNeWwQ/S
+         4cAfrhKQ5u8+59jJBxAEEYxWvWMqgPdYCBzIXqVN16ir8WwbnJQoOabYsS4zf+Aa5IBi
+         vei+7ea6QuziYk3UhCFcu77Omqtj66UyAWiQiOO7puNaioz/G82Fg/3NbnbCsaXw/CC9
+         ghq9prYL+7eHPTFaFWGRRMGrNL0ECU/geKq64d4Ha3CrfyVgwAfv7/0/t6DQuCCuTCQk
+         2Ua/VTm39OSH9Tl8PyB4xge9kbmtQTRQxaRjEqklhzAGsah7BsqY9eZLGA2gJutnmQz2
+         mZjw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+34txQZrw2QFiN5eS67gzuJ1OrnkPb39d/1TeNpPWwEy73X2O05QnqSYh2G/v6bdykV4qzlIXYaodlZFm5w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHBPVmInhkBi9VCugXK+WWvyrJjf8RYfAcIhWQkCrTpSJTc+m6
+	EyxeL9vlQ7Nx6OabdCPiUCY+1wrrm2khXTzUhoPfU2SWY1f+aAeF0yvIomKlItY=
+X-Gm-Gg: ASbGnctv4+JhQWFr83dQNOKJ2UQLvTffKlVQcCqBG9Tj6YBnix3l6banpmPNBO75Wh5
+	79X0liIccwyV3EgIL0vMlrxa0B/UT24lLnMZLLt6b1Nf7jb/p+V1AbDl+1L072UtqQBXll7XhL5
+	X/b34MeRXtowg4EpWlDxsOCFu5ub4I98nGK0+cHxgU8mJFVvKmHkgpPlVtqjjUuZHYlaCrsM4ah
+	k2+4OKQsjNDO6t43+R+7LrtBosBjYGcf3VgNxXzUGZXG+DlZ4dduO7Gvz4hR0xLq1S6DMgxtMTP
+	ll6xy8DOfRqE+uhmTrpvQWccteQTHDes0zcvQ0f67Q==
+X-Google-Smtp-Source: AGHT+IEzqMdZbqFLHMFvtB332RXvrr8S6rMpD3KuOB1cS9hqVDk7lUxe6pCjWGcu6CgYu10Wj15uvg==
+X-Received: by 2002:a17:902:e883:b0:226:38ff:1d6a with SMTP id d9443c01a7336-22db3baf373mr16890825ad.7.1745476152853;
+        Wed, 23 Apr 2025 23:29:12 -0700 (PDT)
 Received: from localhost ([122.172.83.32])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e259412b2sm603446b3a.66.2025.04.23.23.01.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4d76c22sm5346605ad.24.2025.04.23.23.29.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 23:01:55 -0700 (PDT)
-Date: Thu, 24 Apr 2025 11:31:52 +0530
+        Wed, 23 Apr 2025 23:29:12 -0700 (PDT)
+Date: Thu, 24 Apr 2025 11:59:10 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -82,10 +82,10 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH V11 13/15] rust: cpufreq: Extend abstractions for driver
  registration
-Message-ID: <20250424060152.gsrdz3fonnnpn4oz@vireshk-i7>
+Message-ID: <20250424062910.6zk7amxq4gjxtw66@vireshk-i7>
 References: <cover.1745218975.git.viresh.kumar@linaro.org>
  <a14f6927488b5c7d15930c37a3069f46a5c888a2.1745218976.git.viresh.kumar@linaro.org>
- <975c8346-dddc-44ef-ab24-71cadfbce23a@kernel.org>
+ <6fc3e178-60f9-4b0f-9c56-6d983e4d1eed@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -94,34 +94,26 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <975c8346-dddc-44ef-ab24-71cadfbce23a@kernel.org>
+In-Reply-To: <6fc3e178-60f9-4b0f-9c56-6d983e4d1eed@kernel.org>
 
-On 23-04-25, 14:05, Danilo Krummrich wrote:
+On 23-04-25, 14:08, Danilo Krummrich wrote:
 > On 4/21/25 9:22 AM, Viresh Kumar wrote:
-> > +    /// Registers a CPU frequency driver with the cpufreq core.
-> > +    pub fn new() -> Result<Self> {
-> > +        // We can't use `&Self::VTABLE` directly because the cpufreq core modifies some fields in
-> > +        // the C `struct cpufreq_driver`, which requires a mutable reference.
-> > +        let mut drv = KBox::new(UnsafeCell::new(Self::VTABLE), GFP_KERNEL)?;
+> >
+> > +    /// Same as [`Registration::new`], but does not return a [`Registration`] instance.
+> > +    ///
+> > +    /// Instead the [`Registration`] is owned by [`Devres`] and will be revoked / dropped, once the
+> > +    /// device is detached.
+> > +    pub fn new_foreign_owned(dev: &Device) -> Result<()> {
+> > +        Devres::new_foreign_owned(dev, Self::new()?, GFP_KERNEL)
+> > +    }
 > 
-> Maybe add a comment that it would be desired to make a struct cpufreq_driver
-> capable of being declared as static const in the future.
-
-Is it really the case ? I am not sure if that's how the C code sees
-these structures.
-
-Most of the driver structures (platform, etc) contain `struct
-device_driver`, which is mostly modified from the bus layer when the
-driver is registered, and so it can't be a `const`. Apart from that
-too, the drivers many sometimes carry flags.
-
-File operations (with just callbacks) can be `const` though.
-
-> Either way,
+> Btw. if you take it for v6.16-rc1, expect a conflict with [1].
 > 
-> 	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git/commit/?h=driver-core-next&id=f720efda2db5e609b32100c25d9cf383f082d945
 
-Thanks a lot Danilo.
+Thanks for pointing this out. I believe this branch is immutable and
+so I can rebase over f720efda and send my pull request after yours is
+merged ?
 
 -- 
 viresh
