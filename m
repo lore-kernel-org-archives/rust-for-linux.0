@@ -1,174 +1,109 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A9D250C0F;
-	Thu, 24 Apr 2025 10:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A131E9B32;
+	Thu, 24 Apr 2025 10:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745491140; cv=none; b=A2h0qSfK0WihoVisTs9Z6BC/9QG0BZShaeYGVC/SPShalf4k2M8wwJ2C7UII+1bu7cN6YMTcrPgFNabIuVi/mRWTtpZ6qx3ye3TLvdJxeDEn51Wy5FxbbsyKkMyiyRV0LzMzZ6DvLjSV82FxuqR9sN/a0U0TLHxlrSz6Ic539FY=
+	t=1745491291; cv=none; b=ikaLszrJrMGyaVE9mMiUEQhjWAoZCU8O8+rtIlxnbBS245ThK5wRx5CYDF1mYAXlOfEDW+gYKiTjXPXNx6UiRyB/tfq7MxLgB/1G3ynqC2NXNt/90v3vgUBiGptbelT6EmLI7rf+oG0aDrrqLoyxLzBGW/gcRHpPWalkVLtGhHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745491140; c=relaxed/simple;
-	bh=vb/Y1WPcRIFzcKKh8eXsMqlHpcEVUquwhPRSt3dwe+k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=V8ODttzcKy3d04lvJxTSSx7mGeJI7ueKoPY9aP6VkCeguLjuDcnsvho3JRx4z+coS1OwXCCizGvKLPCB9kBii+mUlnwo1vv9WJ/QAY2pLm5K15JUG1FB5B6ILy8yBFezMDkaw/8qXr8/Mgk2FS+BoEj5D+PrX44AZlfvnzvAg+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YFmocueR; arc=none smtp.client-ip=209.85.219.47
+	s=arc-20240116; t=1745491291; c=relaxed/simple;
+	bh=N8UDuFHOEh0XzlBT1eZgpa0OPW9H6oATlwJO+txihuI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DWDhnnwfghCXWjqm0sCWD+smuEp4m1DJvxUo9EviY8ibdq4XZFNRR8xsSWAYV2Uv0i7rmawWnnH9BQWlfEjCCh/N/x20zPKSq+wBHSNYWipMFu0sGHXP9AsHG9P0Hp4aw5fy0xBhmAh82+ztXCAcQrReSNqC8LGRirp4gFrbjDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H1oARq36; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YFmocueR"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6f2b05f87bcso9068556d6.3;
-        Thu, 24 Apr 2025 03:38:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1oARq36"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30db3f3c907so9147101fa.1;
+        Thu, 24 Apr 2025 03:41:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745491138; x=1746095938; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y/YKXEJoV+1VeboMX3tB+oSLUb3sYIKbV0Cc5xFdHfM=;
-        b=YFmocueRQJo6ZGAnj8Q2meXTl41eYTSJTDfceLs98eGyMpuE3rT6u87QciRDVmL22y
-         BOuoAor9+Bvv7hOYCz2LPZQLZS4w5URRKhTatX5ziI6c9bwboJvjKr0C8ixRNYdV88UX
-         0cvwFC2StzmL92Y/LrqNXzFYi7dppwD1Xlo/AvDMU909Q+HPhAK67ATRl8l13EBAzSUX
-         e/kKgbT2ecpCiTadi7SACRT9//YNhFp6FKeLiPw4dat3N2iG7Ci0Vcl0LCLlI/nq/LVg
-         R9nWrY5VM9gMnlNvHQrClo7vdr8PIdwF7SAHBn+bGEPgwwRyQJxE/en4n2wjfA8pgzMQ
-         HnGw==
+        d=gmail.com; s=20230601; t=1745491288; x=1746096088; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N8UDuFHOEh0XzlBT1eZgpa0OPW9H6oATlwJO+txihuI=;
+        b=H1oARq36SUS1+ow2BoYitBNZ67Ih3gxOC06HQ8euHkCeyDE+eLD/Tq3AotbpL/a7Xg
+         thbAbtwZ6fShaxUyUpLyaCv6Y/w4sgwZS3waS/sjff+wV/3G4/9mpv3U6qO7zVAVd9mr
+         6FEW9NW37wq65lUatWZ6eIP0qb8TKCMDxC2mNrLG0NZdJPwUpLLS75nzaslIeYsR+VwU
+         dp3ZyjlXg1KgKMvdKzmgRciJAsS/8nmTb7zmPV9AaKmwQ8Bx2bzdav49sKfTlJ01/1BL
+         T58eAKB1eVbudBf0LlLs1fyf4R2FC/nXU2jfpcAs7O5NOZuet+PhMGEy1H5a9QFpGNaB
+         wtqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745491138; x=1746095938;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1745491288; x=1746096088;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=y/YKXEJoV+1VeboMX3tB+oSLUb3sYIKbV0Cc5xFdHfM=;
-        b=jFmcmugzh4w/dvLpA9mPXVzzmWN57lUjKECt9l+ync+EQ2K6BbN7mLCeISqAzoFTMm
-         hO36ZFbxNWreQYNe6/9udplKL2L0/yzWSdrIeGghODaZY5wkDilLPdJx2aSxNt5BQWmr
-         7zxYjx5Ec9aYF64Mn5mmyzKH8HiH0MvcRN3Rk1ID8lU8bOH7lJk7mFpdmrAdjEeCDjTW
-         a9AYNxSyqQc2qZHSR07fkbQjWlQ4FfUQgU12EFiK0f029dX5yDaOwr08rLT/5NNrLY3r
-         Sjt9q6OerefUggEehVBPS00ulRWAwEkAcRCIQc3VjVFfif4Sfas9jQGa6JWe2+T6ETkR
-         +o6g==
-X-Forwarded-Encrypted: i=1; AJvYcCVMFW98WaHhDbRwLlnmZmDo4+PpiOvIWZvrE5nlrb0LWXdnXmcBQZLFMUYw4+s0VrJDlmlOwAnUAFDjPpo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6Rly1UpTkI71he86lkQnNdMc0s/JmBhNoVuS8ExeD3LYI5z4l
-	ZbcrcAe5lRFiIPZ60x1r+v+Le2TvzyqJ8RuJHKVBCMG0ixpIQf+R
-X-Gm-Gg: ASbGncuZe4u1EWSmwdnc+MUbE8OWemgTZEXTkEGwhp2WbAvsRqz424bsDS0D6/IM7u9
-	71+yFYIFhgfvb7FFceerdkWslM7nw61nD/7SeYjTQ+YBzL0WztvQPdBcZMv+sp1rZtJJPndByzF
-	+x/lehanS+Ujs7LD4YgrujgMpLzOvKvob+KLaA8BnnUr+DZImcyOxb9HZolv4/BXkYBEVvMSFAd
-	aSSLDu0XPwt/vjKPXxYcIVW70Y6QP07+37fOBFScLpLd1cUbQlKypaO94ukGNb13mEnZoLgQxPy
-	5Wg4rC42NqW/DN9+vRnDjaDtaA38icPAkzNBKEP5FJlGzL+b5814XR2pSG28fDvtb/NZ
-X-Google-Smtp-Source: AGHT+IFyr1lR5Aaxnk8b2UR/CjVLWvciuCLKxWmzZ7BJI+Cd4BqXHMgauLrlX0jQboQfIcYAn09e6A==
-X-Received: by 2002:ad4:5ec6:0:b0:6ed:cea:f63c with SMTP id 6a1803df08f44-6f4bfbc77f3mr34552286d6.6.1745491137794;
-        Thu, 24 Apr 2025 03:38:57 -0700 (PDT)
-Received: from [192.168.1.159] ([2600:4041:5be7:7c00:4047:3830:186a:1bb1])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f4c0a73b63sm7839096d6.70.2025.04.24.03.38.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 03:38:57 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 24 Apr 2025 06:38:41 -0400
-Subject: [PATCH v6 13/13] scripts: generate_rust_analyzer.py: use
- `cfg_groups`
+        bh=N8UDuFHOEh0XzlBT1eZgpa0OPW9H6oATlwJO+txihuI=;
+        b=VtrHRt5Tw4AhRrnEeQk2NqsW4QgejcfoBuYtfarrfA6CjuMNRCn0IWyD60hoZ9/nmy
+         vgcQTTIRkeVokDjYAi568RfmZZMSJ7m1aq7mCkX8AvimcDLBcsyjQK026BIAbYd/uTwS
+         ude5kKm8jvOAqmeiXh1K2YvTLlqkrffCGrqx/RsW3PmMDQSAm2yg0YZZ1xDe113kDqUz
+         N1NmPG8BBUrgaZreCP9+OlSz9l5CNunlkrR7bQo6nNutly7Ui2KyGYFgfcujaZmKWTzy
+         Fo2bNz4oNMwWuhuy6+l+rN9TafgZsk64hOtbUfT4S8jii2Pcg0IAWrli5gJgQl/gIeFP
+         KoxA==
+X-Forwarded-Encrypted: i=1; AJvYcCWw4PCqN9W/2v5capM6GmfD4u5LyvkZkzOyuBm66CTEX+2/jGtS92Bv3PMKMpEmtUAPeUkMJwahJm3hpy8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsDyi+s795+BnbHiePywVlTZyVit1wKTsRN9cEQFnAql2Zl1ou
+	pwHNmgGMp/R5Fp19pJjNT5SZQKV5OzSISzCHaPSZPm0174QkT0ZnDbTVWsUFnyVjGULEHTpi9tZ
+	q4uw+cFE7RI5DccUha9woMgOWnAs=
+X-Gm-Gg: ASbGncsydYW0kqj9T4GFZJK4tcBIlZh4eRMkBJVl9CxJITmeRtiILxDohBJCRNPzfo0
+	VZWLEEEzzwjJSY5mgRs0y9g+eeHIB3Yeuqd5kw3OV6dj5IJGTQUOy9L949WGRTCSJ6jSLyNJ4kZ
+	sEAvPUHzqM189Fdz3MUPJ/mCrPAhgNBBU9aL7AzTYBW7hFln56NUWQsINW1Nt4FyEiK7M=
+X-Google-Smtp-Source: AGHT+IHCQm69ACOCi6XQWBLDmVIq0B3Y7P+pOzf0ce1qFtYSxrOjbr6mMggv0a9jwDNVzblaaX5akoJowTeUEt3dkYQ=
+X-Received: by 2002:a2e:bd16:0:b0:30b:cceb:1e71 with SMTP id
+ 38308e7fff4ca-3179e5e7e78mr7250851fa.9.1745491287881; Thu, 24 Apr 2025
+ 03:41:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250424-rust-analyzer-host-v6-13-40e67fe5c38a@gmail.com>
-References: <20250424-rust-analyzer-host-v6-0-40e67fe5c38a@gmail.com>
-In-Reply-To: <20250424-rust-analyzer-host-v6-0-40e67fe5c38a@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Boris-Chengbiao Zhou <bobo1239@web.de>, Kees Cook <kees@kernel.org>, 
- Fiona Behrens <me@kloenk.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Lukas Wirth <lukas.wirth@ferrous-systems.com>, 
- Tamir Duberstein <tamird@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.15-dev
+References: <20250408-rust-remove-compiler-builtins-deps-v1-1-4fda4f187190@gmail.com>
+In-Reply-To: <20250408-rust-remove-compiler-builtins-deps-v1-1-4fda4f187190@gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Thu, 24 Apr 2025 06:40:52 -0400
+X-Gm-Features: ATxdqUF6Dpx4LSF9v5DB4Ydr_rK2CEFA3gkF09xNTMeSeySgU5slu4-4LmC4ci0
+Message-ID: <CAJ-ks9m+5WSCbe=Lt=HXYeuV9pWtRx-rOhi8V57=A7Y-4U7LZA@mail.gmail.com>
+Subject: Re: [PATCH] rust: remove spurious compiler_builtins dependents
+To: Miguel Ojeda <ojeda@kernel.org>, Lukas Fischer <kernel@o1oo11oo.de>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Declare common `cfg`s just once to reduce the size of rust-analyzer.json
-from 30619 to 2624 lines.
+On Tue, Apr 8, 2025 at 2:52=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
+>
+> The dependency on `compiler_builtins.o` was first added in commit
+> 2f7ab1267dc9 ("Kbuild: add Rust support") to `alloc` which matches the
+> standard library[0] but was copied to other targets in:
+> - commit ecaa6ddff2fd ("rust: add `build_error` crate")
+> - commit d072acda4862 ("rust: use custom FFI integer types")
+> - commit 4e1746656839 ("rust: uapi: Add UAPI crate")
+> - commit d7659acca7a3 ("rust: add pin-init crate build infrastructure")
+>
+> The alloc crate was removed in commit 392e34b6bc22 ("kbuild: rust:
+> remove the `alloc` crate and `GlobalAlloc`"). As fas as I can tell none
+> of the other dependencies are required; it is only required that
+> compiler_builtins be linked into the rust-enabled kernel. In the
+> standard library, compiler_builtins is a dependency of std[1].
+>
+> Remove these dependency edges. Add a dependency edge from
+> `compiler_builtins` to `core` to `scripts/generate_rust_analyzer.py` to
+> match `rust/Makefile`. This has been incorrect since commit 8c4555ccc55c
+> ("scripts: add `generate_rust_analyzer.py`")
+>
+> Link: https://github.com/rust-lang/rust/blob/f820b75feef00654924c9351a2fa=
+ca8d34818339/library/alloc/Cargo.toml#L19 [0]
+> Link: https://github.com/rust-lang/rust/blob/f820b75feef00654924c9351a2fa=
+ca8d34818339/library/std/Cargo.toml#L21 [1]
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General=
+/topic/rust-analyzer.20improvements/near/510200959
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Link: https://github.com/rust-lang/rust-analyzer/commit/2607c09fddef36da0d6f0a84625db5e20a5ebde3
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
- scripts/generate_rust_analyzer.py | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
-
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 5f04e3785854..aa79b56ff6f4 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -29,6 +29,7 @@ class Crate(TypedDict):
-     root_module: str
-     is_workspace_member: bool
-     deps: List[Dependency]
-+    cfg_groups: List[str]
-     cfg: List[str]
-     edition: Literal["2021"]
-     env: Dict[str, str]
-@@ -51,15 +52,8 @@ def generate_crates(
-     sysroot_src: pathlib.Path,
-     external_src: pathlib.Path,
-     crates_cfgs: DefaultDict[str, List[str]],
-+    cfg_groups: List[str],
- ) -> List[Crate]:
--    # Generate the configuration list.
--    cfg = []
--    with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
--        for line in fd:
--            line = line.replace("--cfg=", "")
--            line = line.replace("\n", "")
--            cfg.append(line)
--
-     # Now fill the crates list.
-     crates: List[Crate] = []
- 
-@@ -76,6 +70,9 @@ def generate_crates(
-             "root_module": str(root_module),
-             "is_workspace_member": is_workspace_member,
-             "deps": deps,
-+            # `cfg_groups` contain the configs generated by the kernel build system; upstream
-+            # (sysroot) crates are not aware of them.
-+            "cfg_groups": cfg_groups if is_workspace_member else [],
-             "cfg": cfg,
-             "edition": "2021",
-             "env": {
-@@ -298,7 +295,7 @@ def generate_crates(
-                 name,
-                 path,
-                 deps=[core, kernel],
--                cfg=cfg,
-+                cfg=[],
-             )
- 
-     return crates
-@@ -338,6 +335,10 @@ def main() -> None:
-         for crate, _, vals in (cfg.partition("=") for cfg in args.cfgs)
-     }
- 
-+    # Generate the configuration list.
-+    with open(args.objtree / "include" / "generated" / "rustc_cfg") as fd:
-+        cfg_groups = {"rustc_cfg": [line.lstrip("--cfg=").rstrip("\n") for line in fd]}
-+
-     rust_project = {
-         "crates": generate_crates(
-             args.srctree,
-@@ -345,8 +346,10 @@ def main() -> None:
-             args.sysroot_src,
-             args.exttree,
-             defaultdict(list, crates_cfg),
-+            list(cfg_groups.keys()),
-         ),
-         "sysroot": str(args.sysroot),
-+        "cfg_groups": cfg_groups,
-     }
- 
-     json.dump(rust_project, sys.stdout, sort_keys=True, indent=4)
-
--- 
-2.49.0
-
+@Miguel do you have opinions on this?
