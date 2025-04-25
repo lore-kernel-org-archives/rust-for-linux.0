@@ -1,257 +1,219 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2042.outbound.protection.outlook.com [40.107.93.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0572701D7;
-	Fri, 25 Apr 2025 13:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745588567; cv=fail; b=hYitPo95+CZnKEWww5Kevr8Dn3JCukbuzB/5dircicmjnmQD6XFOaavAYk9Red8mRPrNxB8yjNtsIdRevKTii6aRDNUcBYXkpXKNEXAcSD5wKIEyrawZhLt5XVG0E8Xgn0et8V/tQEN6tmIrOmvmHmWFjlRL1AGE5p7PcOO8N2E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745588567; c=relaxed/simple;
-	bh=D2lbipY7SQYln1K2mR/0yiWGtt3XixfnnygwAcsA9rI=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=r783BMsG0+kvSuw5outLUPwScY2rtAYPPchHHsT7R5rNEJVeWNyxYk9n+/Bv8wvUV4eKe1OItJzvWdHa+dBdzzJUnR/oYwoiEeX0o4GHIy1lNSmOVZob1cMd7uMDWXgIon5LzxKDwJosoXpVvKy/pnKGh3Zh5ALPb+Q6lZDEqKU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ixIyuEax; arc=fail smtp.client-ip=40.107.93.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D13D3D3B3;
+	Fri, 25 Apr 2025 13:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745588741; cv=none; b=PD1VEVBAAppOpFa+zHA6PaSZbqfC2DAr4JdIV2pygl6wbMKb1QYHQ1wsCj90vLijVUSH3fVk0xnYjV2BqAls9A42adEqRGfDffE1AxO/7LapiV2ymx5qCmRlADd1UL/YKVDp0HAyNk7XHWDURNBShGAqBM+AnSzJmfKy6BdXjqA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745588741; c=relaxed/simple;
+	bh=Xc9fSgC/x63luwJw9PkD7G8J0O769hdT2MY51GbN7+Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZHtFlARcQifqqLjZ6ouBQZC+xlWey83y0ckMSil+xi0x8D3JNo2bJUY9UTprSCOjPcrRxcq1Gvrec0VQa09EJzGOyfzt/QDwdyIvd5aG6Hjtl4yMWvcOkDIFSMXZRhIO4useodDATpj8rMIKXdBmbZRCxn78Ylg2cN38WiEctFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kkKLkh5D; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ixIyuEax"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UulVeGNq7nSubGi7Kx9REUegOJGpDlBGE0yBIUoYkkeXCACc2H0b6UyyJBdATKmAkyHllc5MEecsHZe9HyD4/RmWm8jlzqAk8Q8mayWhhiIAYaQR6m9EpIirLma2Ky7izNHE8/v3mTjPa5hQTjuSQxkWGBtC3SQy19sbaNh1RQXks7kw6znUUB3SVBWzAF9SiQrfdM3t6jwl255qbc6KzRFs39gCAxbEOuqM4rekZ1Fd1+CV2FffTUBN+gVCx8rR7fJDBaOUAGz1i2/+FUVFXmnhx4exVnDMvXQyZwcIEaWkvrd7Z3kAjA0N+wyeEeUrJDkjhz91M7P56XBVPk719A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J3oz69+hglxSJeYlzyXeEsg9BIqvaPX8+MQuaU3RcZQ=;
- b=l/ytJoDldZ/VS1qUA3sFtrDii4whnTI08JnkbDEHwOg/Pyoqx+kfE0K7+2W8K+D9FvhEUbbu60h6OswJ2fQ9YmAipRzzJuWt1SevPTKBVWStO6m3w5xE6tDGudo2dlMaTvKQ7dR23mPxV6bfhyiukl5V2EhjHXzpOdFFafMvIff9yoz4Bo3GCN2ZwKYGpiloIFMssICtv5t0YdtiZI4A7rGtinHdHJpqDMyI/UWNIEQKtEeodPX5yuKWFcbHUJkxRa/K4u93tuxcjxjfiFPnohp6j+NVpYdmgVMwi1PTk6MVzyRksoAI4DFhNQrObtKnrucSM8arIMUP7NQRv+8wOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J3oz69+hglxSJeYlzyXeEsg9BIqvaPX8+MQuaU3RcZQ=;
- b=ixIyuEaxZ5jeMXw/Y54Q6jHimi5MmRcXzOgyq02x6mQE1S9giI9Io7FzANet7C9WGvhjVV4yyLNX4M+wuCZKvBYsF/PRzpcTUolBxoLSs5ed2LAI7XpZRwWIsU7Oio3Aw5GhqsAx9iiS100NF6LytW7s5K5t9OvVPlCun6qnhhVKAMNPvaGGHTjNwoqalU/QtTSexv88auG+lH3iAjZaQKFPVI8g3tnc/f0rC5BYuJ3eMz+R4VDs3SZGkv8jfJ2wqyG6xuY3FYA6ImGkCYLAlGHuVNF207AnO9G2y5H9+wZtodQaXCxwVp0DX71Gm22gU4XAJUH1ucUq3rZWJOQmdQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MW4PR12MB7240.namprd12.prod.outlook.com (2603:10b6:303:226::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.27; Fri, 25 Apr
- 2025 13:42:42 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8678.025; Fri, 25 Apr 2025
- 13:42:42 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 25 Apr 2025 22:42:38 +0900
-Message-Id: <D9FRI153JFV3.2GQMZK8FCEV3C@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Valentin Obst"
- <kernel@valentinobst.de>, "open list" <linux-kernel@vger.kernel.org>,
- "Marek Szyprowski" <m.szyprowski@samsung.com>, "Robin Murphy"
- <robin.murphy@arm.com>, <airlied@redhat.com>, "open list:DMA MAPPING
- HELPERS" <iommu@lists.linux.dev>
-Subject: Re: [PATCH v3 3/3] rust: dma: add as_slice/write functions for
- CoherentAllocation
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250425073726.1027068-1-abdiel.janulgue@gmail.com>
- <20250425073726.1027068-4-abdiel.janulgue@gmail.com>
-In-Reply-To: <20250425073726.1027068-4-abdiel.janulgue@gmail.com>
-X-ClientProxiedBy: TYCPR01CA0069.jpnprd01.prod.outlook.com
- (2603:1096:405:2::33) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kkKLkh5D"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6f0cfbe2042so29186816d6.1;
+        Fri, 25 Apr 2025 06:45:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745588738; x=1746193538; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=l5G44hVuiM6JlHEQ/mK9/lttnkQLILl+1HFvgq32kWg=;
+        b=kkKLkh5DZcRX7vT62JSV0LvrQHLHuvmaVWgvrAWFH5DqZbKlx2GYKZriFo3EFo8C/f
+         3HFfg9wbp96s3+22kTULbprnlvZdy2FhPXm5V4eJx/J1yHDSMlC+r2Tp+3r1iRWN797o
+         URgx5XcXbgxH5NjA0D1ewvFpYaxNdwGmQEneCswxvX0Tn5oC24K+/dNtaZSDISrpF1Lv
+         rtQC4nwWGfDIhw+79smszV5mUHa/Uk+V8a88sT04Xy1MN6kYSv3JALZ+zo/GeIgzYhAa
+         VXY2qtjKL3Z+MiQRHEE0cxcTPaOy0cpUwh4zFG4yu/iTLqfy7yUd2ljsnUgsqPcUfuFJ
+         6UIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745588738; x=1746193538;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l5G44hVuiM6JlHEQ/mK9/lttnkQLILl+1HFvgq32kWg=;
+        b=dNpMi26Vj1lpEJlD27l0JVoANXbqrQZ6/0KDPNu2bvgO06nrt0k5VeYfYgUAvjd9m3
+         yQrrwDWCB5VTBIKYzon3aqWDVToU3BhYSwZHz9nRmPu0LA2n2afgZCzSs1T3A6G5d8kA
+         Jajb/1Pn2JTdQckDVm9fTHGcbnR66FnirshOIlH2+dErCQdDJYJP0T9M/M95ltsXqJiW
+         hki0qZ82Mj688R9Ma8dipKjMjtTG1jwD3oHb7YbhcCVyvcd8rhVWZnehbgWErIKqPvOu
+         Q1UT+nf82laUrlO+ftLp491LAkRb6xv1QhrzXZDldu/0duLqUa8q9uTXR75o7L4aT+f3
+         Ctxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUpmJXgSgrQ9ucVXzC32qAfewkxY/FEyUX3u1q0EFUeUDaHPAT3p94xlGd8Kdv3wcLwoMyePgMzd5KLk1I=@vger.kernel.org, AJvYcCWZuctfhFK4U6v2q15ih8N9ydR9GC6Sw9z9qs1JBjoI9EbUTd6vwsm0LZy2Pu5NAGMfpgmwnTg75noiBZGnZlA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcDdZREUrP4/fP1Dt9a7Lkwsj5tW26tqNku2ZC5utJ+V+9ETjI
+	ynMrqtFbEbHbTYesjmuvsyHflvlsPfyQzb9+CJHmDu/9LreKlsQ/
+X-Gm-Gg: ASbGncvUbV5E2EjLPwULTjlnz0TexzCr/GGulXVjy1qOX/Bi83NoQHryfbGFxlsu8LF
+	uc8IFWQb/FkUOTDd8Ra/Fyj8OOdFweXZOSSrru7qJJQu5oHmFwQr4lMVMrhopvAO4aeJhLmzepU
+	1rLHb4nG5J/3b9K6Hxo+0Z3JFBFE+83NYyh6VVjROfoFffKALpWzbaqqmx+5lEAF8qH097yGR/b
+	7xC+/rChl4iUHPPSLK006wb3uLv21nm2SNALe0TGf3ennvnphf23sO3z5lKuGFMAD0mfRwe34PB
+	4mRkb9vA2L5LTVt+t3zEkTMLuMNExYzSE48mBzPcvgnWX6ucn5Hzlu0qEOr6KIFnQnWl2CcvkUh
+	kcyDKqU8zWJI7G+cTP7HVJHBhqYTlZRs=
+X-Google-Smtp-Source: AGHT+IHI90SpqY067YOP5MW1hIugdpRbv0RADVHf7V4ZPh9td3Ak7LLNbD1ABY0OqAXwuAk0zltSZg==
+X-Received: by 2002:a05:6214:ca2:b0:6f4:c939:a3f5 with SMTP id 6a1803df08f44-6f4cc38cae8mr31950566d6.17.1745588738400;
+        Fri, 25 Apr 2025 06:45:38 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f4c08eeeeesm22201636d6.4.2025.04.25.06.45.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Apr 2025 06:45:38 -0700 (PDT)
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7F0F91200069;
+	Fri, 25 Apr 2025 09:45:37 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 25 Apr 2025 09:45:37 -0400
+X-ME-Sender: <xms:AZILaKltm_ZARbXTkfO0TZCXqFwcWuu6andkQ8h4WJXHDQyV7hkPBg>
+    <xme:AZILaB2jdZKaazdBAOhc_4jA6ZyOuKqUppjYWi_I7WcLXRnhVsLgqYwX1muIsf8ju
+    uyPUIRjEM7OOp9PEA>
+X-ME-Received: <xmr:AZILaIrZvoi65P-KJHQwsxAtokfrO3aZiRLm_8JRs1E9PX01VhZoeaZj>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvhedvgeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
+    tdejnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
+    hilhdrtghomheqnecuggftrfgrthhtvghrnhepueduvdfgheekkeeitdetgfffjeduhefh
+    gefgfeehheeijeektedtgfekheektddtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrgh
+    dpghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
+    rghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthi
+    dqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghi
+    lhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpe
+    hsmhhtphhouhhtpdhrtghpthhtohepsghqvgesghhoohhglhgvrdgtohhmpdhrtghpthht
+    ohephihurhihrdhnohhrohhvsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugi
+    esrhgrshhmuhhsvhhilhhlvghmohgvshdrughkpdhrtghpthhtohepvhhirhgvshhhrdhk
+    uhhmrghrsehlihhnrghrohdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhr
+    tghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnh
+    efpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhho
+    shhsihhnsehprhhothhonhdrmhgv
+X-ME-Proxy: <xmx:AZILaOkH0CzJuf_pGL6JitIeMHjpihd5uWjg7eaHJh_29YTyMU16Ig>
+    <xmx:AZILaI14vpD-v3cloqpD47YaN_RxZg2QKNo5SHH5CvUXZqMr09QeoQ>
+    <xmx:AZILaFueSqrvP-iz9o7NsVn0xi3kQRYMZVQewFAliOTMGK9SxJM9VQ>
+    <xmx:AZILaEXAjOQEDt68h-tiJuybN4YvPSUzqCfL3zQSRqTuJ3yIGrA7FA>
+    <xmx:AZILaD2o-OKk48ZvqTIaxNW11bV1C5G90qJUqiKfm24LmTKKsFVtXJRa>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 25 Apr 2025 09:45:35 -0400 (EDT)
+Date: Fri, 25 Apr 2025 06:45:35 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Burak Emir <bqe@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Rong Xu <xur@google.com>
+Subject: Re: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
+Message-ID: <aAuR_0om4FI5Pb_F@Mac.home>
+References: <20250423134344.3888205-2-bqe@google.com>
+ <20250423134344.3888205-6-bqe@google.com>
+ <aAkbw0jEp_IGzvgB@yury>
+ <CACQBu=XaOohewMnLj9PvgR5rYBxzYSXf2OAjCzUY=GFTJ9L=+Q@mail.gmail.com>
+ <680a6b54.d40a0220.27afd9.5e84@mx.google.com>
+ <680abbce.050a0220.144721.78ac@mx.google.com>
+ <CACQBu=VEATxHmFvt0TKbb+Hx5jeEGO8SL733=0m8LNnX6S+ZKw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW4PR12MB7240:EE_
-X-MS-Office365-Filtering-Correlation-Id: 33136813-9168-44c4-e28d-08dd83ff0cf3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MzEyNTJNOUhHK3h0Qk9jZll0RVcyYlQ3Q3FOS1U2Y1FENEp2M0dxRDZCcFM5?=
- =?utf-8?B?bHJjWFkzZ2xyVWFuOFRvdjVwbzFsaDVxNjVUVytGTkJkRVVyVGM3UWpwdG03?=
- =?utf-8?B?NnppaTdXWHlQS01vS2JkTzF0c1F5cmtEZ1FsVTVTNU1SUHBZU0RDSUZjdVdI?=
- =?utf-8?B?QTNzK0UzY1Z1anViUzU1MVVJbkVoTHBzdldQblYrVGR6aS92d3N2NU5zNlZM?=
- =?utf-8?B?QzRXMjlOZGc3enRuYTJpaVoyUHdReFlmRVp3S1Uyb1daZTdNWCtJeGFmRHNp?=
- =?utf-8?B?eG5WbU10ZGlmUy9tcTJ5ME5OWWRlaUZ5V0hQbWt3a0NieEQ0QmpVUTNHOCtt?=
- =?utf-8?B?c2JMQmJvd1A4YXZENFpxcHAwZXZMb2xoT2ZQclZncndRdFpwUldvTU52LzIz?=
- =?utf-8?B?RWRSaTB0Nk03ZEJKRHFOVm5BTnVhWnREcSszOERHNlFQQnVLVThnWWZWWksr?=
- =?utf-8?B?Z2ZKbzRYRHdlVHpPQmdHNGRUR1NQY0wwVHJDZFo2aCtuczVZcERXUEZxU3ha?=
- =?utf-8?B?bldoeENOZ0ZCMW9ZcDdyaEVIT0x4UkhISE12SDk3Uk9WbXFIZXZEODZJS1ND?=
- =?utf-8?B?bmJ1MkdmOTBQYUMwRTBCQmRHWUdmN0JYMkp5ZGgvSHBlQnBkUERRZE9IcXRY?=
- =?utf-8?B?NmNKQlZaM2FaazZKWWUrK09QaFpHbG9zNVF2M2RyaUVCTjJ4cVVld2Fna3lz?=
- =?utf-8?B?ZFNKTjUrY0JJUjJlcHpSMXZ0THArNXMxUmx6QS9HSFNUYlhxcnNVdXF0NFQy?=
- =?utf-8?B?aEdDY2RsdTErUHpITW9lNUJ5TjZuSWVUeUtqNVNxbENQK3p5WUtXTEtKbmZH?=
- =?utf-8?B?OVpSUDREdjk3THNuSytBc2hXSHFXSmk5RS9jdFZvelBkdVhYQUNpc1p0Ykh6?=
- =?utf-8?B?SnhWd1dLWWlhOVdsVjFDK0IyVXJTRjRDa1E1K0hST0h1aW11VFZ3KytmY0FH?=
- =?utf-8?B?elI4a2RzTDgvL2xOTDNSUXlwd2IxTlhQTkFTNUFFU2QyaFNXUDU3N0JnY1Nh?=
- =?utf-8?B?V0tETXVwWUpzY2RxRTl1WFBpaWxTekQzYlY4dEh3QWkyVW9tOElTZzV1UXpn?=
- =?utf-8?B?Um96b0I2T0NJK2F6TVNEZG12SGJ3UUhXVDZrbjViYlFINSttZFhjU29JaWtG?=
- =?utf-8?B?TXNkelhEME50bjByMTJFeG5pR040Z0FUWnIvbW5ZTitBM1BSUzEyWUxhOE1U?=
- =?utf-8?B?SEJwdXFzdlptU05xVStEL1pLZmVVQUoxdlYvWW8zV2tPR1VGU21wK3FYZWN0?=
- =?utf-8?B?SWt0RnZzZlFES05LSlpmUEVHZTRKSTlXS3pGcnFHUXo4b1hJNjdyYUo3WE1J?=
- =?utf-8?B?SGQxNUduWHVGZnNpd1VQQndvVExpS0ZKN2I1VmFXbzNjSUcvNjM0VkpzcFph?=
- =?utf-8?B?V1VhNHFIbWJzelUwWkowZHdoWjJ2a01BMEFoQ01UU21JcFBjWnJqQWJTSlFY?=
- =?utf-8?B?Yy9udmRIQ2JMS2ZjdzRRbjdoUkxSSURhNUMySlhWRnUyNXRzT2lPdS8vd1Bi?=
- =?utf-8?B?Y0d4NUpQQjdaTjJOYzVSVEk3dUNJN3Iya2RoZ2xHajZMWU45OElKYzJGVHBi?=
- =?utf-8?B?ZDZweTBKd3AxQzN1WHZnVTl2N0xDazhzTjRXeng3bXVGa3MyVEZCU2I3MmRn?=
- =?utf-8?B?U2h3cjZ1c2lBT0V5MjBSRzFSSTVBcWw3cTRYcmp4bkttQzZnZmxIQ2lBRnkv?=
- =?utf-8?B?RFRrS3dQMkMxZmlCbjZxdE5wWnNGNjRQczJYQnl3TGNSUWdMNmt6eXExc0Zk?=
- =?utf-8?B?U3Y5a2cwL2ZYOXNxd0JaUDdzVFRabHJ6Q3c5N2JRZ1RwdmNjUGxOUFoycGdv?=
- =?utf-8?B?eEVmdlBFSjhybDdWeENGUG1PemR5dUhiUnNESzkwcmVOSlZiNnRwMG5nSlVL?=
- =?utf-8?B?QzBvN0hzQndUaGM0cmF1ZEJoU1hOV1lQUWJXZjAvVWNxaXo4TCt0L0VKWFls?=
- =?utf-8?Q?mJHPLmos+QE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?akJWcnpZaE1ZaHVLaWl6bHJpY2srRi8rc0lDYlpzQ25nSWtrSHArd3I4ODlM?=
- =?utf-8?B?QWxMSHp2WmI3eTZ5ck5rNHl2dTRwbGpFc293dlRtR1JpNEo1d0NtM2hRMzg1?=
- =?utf-8?B?bU1QNGtuUGRhM1AvNVBRMGxOTDVZRzRscUh2QVMwL0lndlNQTEFvbFZ3M3Er?=
- =?utf-8?B?cHViUmxGUnFWUEtmSmt6T3JqUldMMk9FbWtuVEU0OWc0SG9MZy85YThIaUk0?=
- =?utf-8?B?U2EycmRzWFhESEVJQUs4cmkwYWVGU20vR0ZmRWtsWWExeitUc0pEYnpmZG15?=
- =?utf-8?B?bXFVUE9kNjBxeVh0NlZaVGRXNnFveUFZZ2xVUHZNSjErNHIxVURXczRTaDBT?=
- =?utf-8?B?Y3pmcTFwSkJPeE9wMTdDRURObFZNTWMzeWx6SlA2NjZ3NDFoTkVJd0hQNTVi?=
- =?utf-8?B?N2phd3FLQjJLNTdrVWREZGdlTWh3TnNLOTZDQkVSSG5EclR5elVJd2tsSEdH?=
- =?utf-8?B?eTZLR3dXUFpsY2toL2dOVmpOVzViTkR6cm5YdFdlQkEyOW9Xcy9kbUNzUmpP?=
- =?utf-8?B?NUZFbE5URHVqUGdxMTBMR3ZxVjBONlJ6MGMxb1RWbStQcU9lMWt5b2VBNGdx?=
- =?utf-8?B?QU1vNGdlMnRUNjEwNjdBREhrRkYrK3YxbDZsVms4OHpuRDNxbkVLeW5WbkVt?=
- =?utf-8?B?dFRHakJwL1kxVWdJbTZROXRxYkJKajFscys0STRyaUJaOEN6M1NMbkRFTDM5?=
- =?utf-8?B?dUNRQXk2a0RVcU0wUkMwM29TeWVSb3BaSWYxb0dxVGVNNjZuNk53OUt4Y2Y4?=
- =?utf-8?B?dUxMMGRPcEZSSnZKL3ZIMzRMUWdwMTZ1aUxFY1JydDZTYnRpbGdTSWc3NmRY?=
- =?utf-8?B?SGJhYWtjMTlyR25YUVpSWlhrY0UxUE1KNkRrVlBVRFRQUFB6Y1RGbVdWSnA4?=
- =?utf-8?B?Y2VvaVJCaGFSYytCMWtNa2NrcTQ3SGM3MWxnN21QVkEvYVJwdCtpR052M2l5?=
- =?utf-8?B?ZnVPd2xUZk02MU1TaUtGVWtYTTdLYktYZnBDdU9IeVhrSDRwQ3pwSjN6NitN?=
- =?utf-8?B?QXlyUGhUNW1HeUM0eW8rQkhJM3RKVmw3ZmJhTnhaV01GZFNpSjlTZEZDVDlJ?=
- =?utf-8?B?RGlEL1YyZVNXclRtWVNaZ0M1VFJYQkVaQzdQT3RxQXRielBwOVJqaFBmYXZZ?=
- =?utf-8?B?MWJZeGJOQlRodW1CV3UzSFY5RTFKRFAvaGw0cUdUVUwwNXo2akdJSDQ3a01y?=
- =?utf-8?B?cG1PZDlhUFdIMzAzd1k1TkJURzFiaEJCL25VS0ljWkJReUYwNWpiSWNjWUl1?=
- =?utf-8?B?SjBZdCtyMHZXbjJVTGtTckpPZ0daUTA0VGlkZUc4N1VucVJTb3VOSWxsZmRZ?=
- =?utf-8?B?VXlFVG9UU2ZrbG1KRXNLYzR4R2puOExMaGlrcE5uc0xjWHVRUUJEdFQya3Nq?=
- =?utf-8?B?bGw1ZkVOM1M3bXdMUFhHclR5bitWOC9pSUJIaG5qRXJVVnpMeWFaWVZYWFpz?=
- =?utf-8?B?VFE3Z0NYZHMzSHplN0tudy9sNEY5d1lWTFJBaFpSNEY4bTZXZzZXQWw0US95?=
- =?utf-8?B?dHVaZ1pGc0ZKSlZBbHpLRnI3WkcyYmtsUUR1R2JUaVVIbXIyVGNkb2krd2hq?=
- =?utf-8?B?a29MQkFNQXNaeloyUWR2RHNBRFd0akdCQk5NUHFyWXNqZmVVcHRybWhPTzFF?=
- =?utf-8?B?MGYyT01JcHF0OHVCOWpGRUxGNWlsbG90ZFVQM1RGQUF1R1F3RXh5UGZlbjZX?=
- =?utf-8?B?Y1lIaGkyT3A1eE5WR21lRG1xT0k2N2Ird0RLOGtGdC9XZTNCajNNbzJqZ0hQ?=
- =?utf-8?B?dVYyYUhwbTBPNDBaN0kya3ZLMEdHdWNVdkNPL3FWVHF0cEl1MEptaXBxY2Ns?=
- =?utf-8?B?TGNYejBrKzVPZFoyWmV5cTFYb2pORGFvUkF3Ym1QMUhFb0pRdEJjcGkzaXh4?=
- =?utf-8?B?L2pScmE5Y0E4NVdVK0hIOC9wRFNQeEdSWk80SSt4SFk5dEM0T3k3M2dHNXo1?=
- =?utf-8?B?bHBQdGxkand0Mm1RQW8yZXRYTXFRZ3lveE5SZVFtNFJReStFRkN6T2hTSi9h?=
- =?utf-8?B?VXN5VTc5Um8xWFdZVXlPRjBjNEQzejJiZlBtV29jbUpIcmo4QmdOcmlBdlIv?=
- =?utf-8?B?cVNucFRRVDU4cUlqU3JiTVl4STYvVWE5RmhNZ1VyaTB0RjMvS1F2WXBaMElh?=
- =?utf-8?B?dVlmUGhUeGJsd3NUKzRmTy9QYWhCVXJmaHE3S0ZqaW5tYVlmVWQ4c0k4cXl1?=
- =?utf-8?Q?KlJS+sHo9ZeXud0g9OcjPyIQ+dw9Zz4KAGLsr7KN1xMJ?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33136813-9168-44c4-e28d-08dd83ff0cf3
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2025 13:42:42.0983
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b0c7U+JCswrcScopLxu6sCXQmB2n391o+nYRyjFraYgjxhIvCUcREWp4ep6UmT/6nFXyxK3CaDeroYHhfVWDLA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7240
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACQBu=VEATxHmFvt0TKbb+Hx5jeEGO8SL733=0m8LNnX6S+ZKw@mail.gmail.com>
 
-Hi Abdiel,
+On Fri, Apr 25, 2025 at 02:20:13PM +0200, Burak Emir wrote:
+> On Fri, Apr 25, 2025 at 12:31 AM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > On Thu, Apr 24, 2025 at 09:48:17AM -0700, Boqun Feng wrote:
+> > > On Thu, Apr 24, 2025 at 06:45:33PM +0200, Burak Emir wrote:
+> > > > On Wed, Apr 23, 2025 at 6:56 PM Yury Norov <yury.norov@gmail.com> wrote:
+> > > > > So? Can you show your numbers?
+> > > >
+> > > > For now, I only have numbers that may not be very interesting:
+> > > >
+> > > > - for find_next_bit,  find_next_zero_bit and find_next_zero_bit (sparse):
+> > > >   22 ns/iteration in C, 32 ns/iteration in Rust.
+> > > >
+> > > > - for sparse find_next_bit (sparse):
+> > > >   60 ns/iteration in C, 70 ns/iteration in Rust.
+> > > >
+> > > > This is a VM running nested in a VM. More importantly: the C helper
+> > > > method is not inlined.
+> > > > So we are likely measuring the overhead (plus the extra bounds checking).
+> > > >
+> > > > I would like to get cross-language inlining to work with thinLTO to
+> > > > have a more realistic comparison.
+> > > > However, that is not something that works out of the box.
+> > > > I am looking at Gary Guo's patch for this:
+> > > > https://lore.kernel.org/all/20250319205141.3528424-1-gary@garyguo.net/
+> > > > Currently, I get duplicate symbol errors.
+> > > >
+> > >
+> > > You will need to add __rust_helper attribute for the new rust helpers
+> > > introduce in your patches. See Gary's patch #2 for example.
+> > >
+> >
+> > Here you go ;-)
+> >
+> >         https://github.com/fbq/linux/tree/rust-inline-bitmap
+> >
+> > I rebased on the top of rust-next and applied your patches onto it. The
+> > last one is the necessary bits that enables helper inlining for the new
+> > APIs in your patch. There is also a "TMP" patch in-between, otherwise
+> > INLINE_HELPERS won't work, we need to dig more of it. But anyway, it
+> > works on my machine (TM):
+> >
+> > (on x86, in your test function)
+> >
+> > 000000000028b090 <_RNvNtNtCs3KHxpmQFgFb_6kernel6bitmap5tests40kunit_rust_wrapper_bitmap_set_clear_find>:
+> >   ...
+> >   28b0dd: 48 0f ba 2b 11                btsq    $0x11, (%rbx)
+> >
+> > ^ this is the "b.set_bit(17);" in bitmap_set_clear_find() test.
+> 
+> Thanks Boqun! I had the same state and got things to build now with
+> CONFIG_LTO_NONE.
+> Your work helped me narrow down the possibilities.
+> 
 
-On Fri Apr 25, 2025 at 4:35 PM JST, Abdiel Janulgue wrote:
-> Add unsafe accessors for the region for reading or writing large
-> blocks of data.
->
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-> ---
->  rust/kernel/dma.rs | 85 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 85 insertions(+)
->
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index a61da5eeb017..e01bb7e7c440 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -218,6 +218,91 @@ pub fn dma_handle(&self) -> bindings::dma_addr_t {
->          self.dma_handle
->      }
-> =20
-> +    /// Returns the data from the region starting from `offset` as a sli=
-ce.
-> +    /// `offset` and `count` are in units of `T`, not the number of byte=
-s.
-> +    ///
-> +    /// For ringbuffer type of r/w access or use-cases where the pointer=
- to the live data is needed,
-> +    /// [`CoherentAllocation::start_ptr`] or [`CoherentAllocation::start=
-_ptr_mut`] could be used instead.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * Callers must ensure that the device does not read/write to/fro=
-m memory while the returned
-> +    ///   slice is live.
-> +    /// * Callers must ensure that this call does not race with a write =
-to the same region while
-> +    ///   while the returned slice is live.
+Great! Is performance number any different?
 
-"while" is repeated twice in the second bullet point.
+> Gary's helper-inlining patch in combination of CONFIG_CLANG_LTO_THIN
+> and CONFIG_FIND_BIT_BENCHMARK_RUST=y gives "duplicate symbol" build
+> errors.
+> 
+> It does not eve matter here - because  _find_next_bit C functions are
+> not helpers.
+> 
 
-> +    pub unsafe fn as_slice(&self, offset: usize, count: usize) -> Result=
-<&[T]> {
-> +        let end =3D offset.checked_add(count).ok_or(EOVERFLOW)?;
-> +        if end > self.count {
-> +            return Err(EINVAL);
-> +        }
+Yes, I noticed that, but in theory we should have the same performance
+as C because C also make the call-jump to _find_next_bit() instead of
+inlining it.
 
-Since `end` is not subsequently used, how about reworking this to avoid
-declaring it as a variable that is visible for the whole method:
+> For cross-language inlining, we would need to change the build system
+> similar to Gary's helper-inlining series, but for *all* object files.
+> That is what "-flto" does for clang, and "-Clinker-plugin-lto" would
+> do for rustc.
+> Instead of the hack of emitting a .bc file, we need all .o files to
+> contain LLVM bitcode, regardless of whether they come from clang or
+> rustc.
+> 
 
-    offset.checked_add(count)
-      .ok_or(EOVERFLOW)
-      .and_then(|end| if end > self.count { Err(EINVAL) } else { Ok(()) })?=
-;
+There are cases where we don't want a full LTO, and so having an option
+to get rid of unnecessary calls to the helpers instead of a full LTO is
+reasonable IMO. But of course, no reason not to make cross-language
+inlining work under LTO.
 
-Or maybe better, move this into a private helper method:
+Regards,
+Boqun
 
-    fn validate_range(&self, offset: usize, count: usize) -> Result<()>
-
-that you can call from all three methods requiring it instead of
-duplicating the same code snippet (in that case, you can declare `end`
-if you prefer this style as it will be useful for the entirety of the
-method).
-
-> +        // SAFETY:
-> +        // - The pointer is valid due to type invariant on `CoherentAllo=
-cation`,
-> +        //   we've just checked that the range and index is within bound=
-s. The immutability of the
-> +        //   of data is also guaranteed by the safety requirements of th=
-e function.
-
-"of the of data" sounds like a typo.
-
-> +        // - `offset` can't overflow since it is smaller than `self.coun=
-t` and we've checked
-> +        //   that `self.count` won't overflow early in the constructor.
-
-IIUC you rather need to state that `offset + count` (not just `offset`)
-is smaller than `self.count`?
-
-Same comments apply to `as_slice_mut` and `write`.
-
-Cheers,
-Alex.
-
+> Thanks,
+> Burak
