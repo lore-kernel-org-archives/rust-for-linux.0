@@ -1,69 +1,69 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AA621B1AB
-	for <rust-for-linux@vger.kernel.org>; Fri, 25 Apr 2025 20:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B126B225775
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Apr 2025 21:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745612122; cv=none; b=Kre9UJJE9Lzk9NLd96Gws3c8i86i5BTqWpynDX4X7/2pmojGKCPYuN+eGwQDIB6DSdfU4R8858sL6OHuk6ec2JzWpX+/y9CzEYRUa+LoZwsUZgAWxJebjRcATR/YJKMaIAoq0v8klIL7PSb3kEM+KEU2NzVObwur+kZlv/ilILU=
+	t=1745615211; cv=none; b=QixsJ4TfFUDcGgCh+++QDiPC0BLdhlGx6NwDuTuex8JE1mx3Lq70tju9uMnzfC/GEDKm4DoXUyjVShiutb84susjjsrhK1YVkwF2TIL4SajOdds0RnV7NUhwnqAeH+KxBMhjE4aFnR6mJ+9JcdbuYseT4SbQltPnyfjMxebiVt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745612122; c=relaxed/simple;
-	bh=LlOeYq8Xd/TQPSZoIgWPg/gL0MZSRTK0Gpz9EUpklWA=;
+	s=arc-20240116; t=1745615211; c=relaxed/simple;
+	bh=tcbDlYo51Xe42OpvRATS4a7Nsoglwcjsz89V7wERj90=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RUji6r9AerH8Yq4Iot66tBjqFnAjre4IUQ7fo8sKTxUJnhAnoZ9k/SIHcCyvAAYbhy5LDSBaeg6xMArWz5RQpd9mLA1WkseY9DHtKtJi+7PpdGBIuIKEmGDeQ4m3blRmrANBgYV1SjPa35BSzUwN01Eqasec1V/fzZVv3N9yWlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VQwYDy6M; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=gsiNGisquOSevWsjjAacTtxdxY3G38ZUYZWqlvBGYovKdfEH3SgnlBObuzQASAhYtAoy3vb+7jYdS7JKKQooE/xRaoTZo0agWM4hYBTvlPlWDULIAeoOntgB+vf5cj0zn5MseO276C1VIXWxmLcoS3c4AjyBWu506COTkJ/vLrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C7ceNfnc; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VQwYDy6M"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C7ceNfnc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745612119;
+	s=mimecast20190719; t=1745615208;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kZdei7qpx12HDDBOEN0SXi678AKZOIYnqG7SpKXHrw8=;
-	b=VQwYDy6MkwE3NvsccsBgr5vCZcYVV1VF/iTHu1c2wCNua4caMReHGkNdwPlIbN97Xklcn8
-	GQcVY4Gd5UoJkMAc9EoG4z1u7AmNodAWvmadGJR8CYsD/qExX4p4iGe/TFOShyqYZxbEmc
-	t148y/FZBAZQAgb4GAZhsGyOYaOimwE=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=tcbDlYo51Xe42OpvRATS4a7Nsoglwcjsz89V7wERj90=;
+	b=C7ceNfnc/f57lwXxnQd+UO79Sm/L3jmcmV0tIxzzwUusd/vsfxg6stuvKUwVekCah+Jlya
+	hCXQLjOg1Of1L6l/zZZJ4/HVsExeKJA8VqXcfOJNYVWfTE0izMYXR7R5fwzNsrL+g9ACsr
+	U0+3d4uR1I0c7UwxDjA+baKf8IgxOCg=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-387-pX2VYKrUNDK8_pbCptSO5Q-1; Fri, 25 Apr 2025 16:15:17 -0400
-X-MC-Unique: pX2VYKrUNDK8_pbCptSO5Q-1
-X-Mimecast-MFC-AGG-ID: pX2VYKrUNDK8_pbCptSO5Q_1745612117
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-6e8f4367446so29705246d6.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 25 Apr 2025 13:15:17 -0700 (PDT)
+ us-mta-609-DotMWSFnN2Wi-epZutEZTw-1; Fri, 25 Apr 2025 17:06:39 -0400
+X-MC-Unique: DotMWSFnN2Wi-epZutEZTw-1
+X-Mimecast-MFC-AGG-ID: DotMWSFnN2Wi-epZutEZTw_1745615198
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7c09f73873fso379380785a.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 25 Apr 2025 14:06:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745612117; x=1746216917;
+        d=1e100.net; s=20230601; t=1745615198; x=1746219998;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kZdei7qpx12HDDBOEN0SXi678AKZOIYnqG7SpKXHrw8=;
-        b=N/KJtWVb04yqICANw88o2Wz9y3lu8Tmquzl8aRl9pN/3gfKSc8czohaDVcxM0uZlI8
-         vR4iOv9kHP4ntodAbRYGhkhT+7TVn+JA26CaB0p3OamKcWQlH7/OCOZWQx+RHVU2NaLj
-         IQU2pt4hNOBpvtGcip/ybAKMFcIOk/J0wF7hcwjRogDXi1X7WFTU8ggsW+5iNYp3hUE/
-         aTzmyZAoe9XDBQzDKQYv2+y3CHzd4+zY1ScY0t1vVnYGbyXMhjD6KXKPIm2Kyl3MSbkw
-         TxrnfNGnWoyARYbMbLqNpwTd86dM5dyPgLjrjicVCWrwZ+SvVauAeLv0AHdr3CMZ0lVl
-         2j1Q==
-X-Gm-Message-State: AOJu0YwL/YjdsUQncTKktIBWxs2pmVdJYx/H0hAbWpcJtb6eutnhQ97P
-	RmOy9X38i6yUZp4MrRhoJC0/mU9coNyBAVv0MdEGiWpzzW9Mhf4PZtE1hcUoPygovy3KiOa3Xru
-	G3LUCIdmgwJV8csDBSMZGg7cZ5XkuJo57ys0uFRAUz4Mer+hKg1n/48o1w2ohYFYl
-X-Gm-Gg: ASbGnctz48ym/PkyArh0CLw/yJRgxVt18ef2tPIFwXnWRt0EIHJl42erXHxRmQBq2FI
-	+HUYlYRma/5NLbethKV+hdFhqyKoHTY6C9ltJTi896idlDYcaupLxgHc0s1qbqh1S6lZUfonqN0
-	Aw3n8ilRtzJQyfCXRE8vozfiu3SHUSxM6FYqTIjUZlMiUsOKfCrEt9tKVeHQs/PUPqFYZMyYUfw
-	a/d3qvLzUj2Zdp+DedYOVFmtYjUD7X0/u6djiL9ohhf4i6t39a37Yw6G9bk4WYhGTC57fv/0i2h
-	FqYmOVoNAUnB7wZsmA==
-X-Received: by 2002:ad4:4ea6:0:b0:6f2:ba1f:8db9 with SMTP id 6a1803df08f44-6f4cba2f1d2mr73999126d6.36.1745612117409;
-        Fri, 25 Apr 2025 13:15:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHeJNsFOqDXWuYByi0+3BgTJ+UrS1zWsYdsfikil9TmNafEGcZF8M1pGFOMHWaa9eUcZ7YVOA==
-X-Received: by 2002:ad4:4ea6:0:b0:6f2:ba1f:8db9 with SMTP id 6a1803df08f44-6f4cba2f1d2mr73998356d6.36.1745612116998;
-        Fri, 25 Apr 2025 13:15:16 -0700 (PDT)
+        bh=tcbDlYo51Xe42OpvRATS4a7Nsoglwcjsz89V7wERj90=;
+        b=KtK2jzrdAiKPK+l5I9PMsbpIqKLN4nVLvJTJatVRXbYPD2nUHi5qd0YEM0iJlwpkHR
+         c0l3yFbIRkk36kS8X0SGINAkuMvrzg/bO6OaCTgyVZ7d1/6As4d8UB805E1wLrlsdFu2
+         6/TtSUdW5UHPOBnYuDmexDpXLaGmUDHdWGvRx20XBM6bIgq90g8FmAgW8LSFPF6jilhX
+         HtAzgwzuT2HBKEYOn9T4vy4W0uVXeH3zKbodnwZEAOIhSNFnQ6WSR2Cq1s+djE0yXnW5
+         B3wWmj97UMcXMwzAjAZz0cCUXQd8hvgJJRNG3czCY+MF+3JNlIufWRuwyvRfcYRvo8sR
+         nBmA==
+X-Gm-Message-State: AOJu0YxgEvOvgP+ZcwEd1R2TwF6mVauUFLG03n74uw8P3505cWvhUaeh
+	+BbPwuc6fLdG7n1vAh8TRd8uftXES08F/xI7iOJKqJTE4y30ddqpEgPG1hNOhTtRCTKWalx9s7q
+	2R+c3/JPt5gY1OjuDgp4B5zTpv5Lu0zO28QPq0ye4PIZgCSoauJf9SGN0rXQzy1Mf
+X-Gm-Gg: ASbGnctz9j0pb0+KfCsKf/YVUEPYI7SQziCrG5cApRLLhc9NFtzATuSFS1NIY12YlDL
+	FWBSbXHgB25NMj8b0DdmNAP/af15pgUOMwgCKXw57Xt6nxvILyvaWy7uap/RNJzfL3+pBZDbsoG
+	VtXS2hMRZdgUCaBwZwgbcONoVS7UDiPaDbJD6NLJhuqGOdLkTkJmxtayG11QyGEEIephQ1zqJD/
+	1rVMtXiM/ModcYRpCVCF0k7a2YRVmUnN2LtGxRj+wU2BGfE3qwKOTsbojBRXNDKG5AHsiyz9Z/8
+	l2+n2ovq7qDFV9SjXg==
+X-Received: by 2002:a05:620a:4802:b0:7c5:ee3e:54b6 with SMTP id af79cd13be357-7c9619fabd2mr642352085a.55.1745615198534;
+        Fri, 25 Apr 2025 14:06:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtj3ZdE+jUQqWT/oMLobnuveuKGaAC6yQ1b8d3yD9nAOxoIZxvIQ8pFbiTz/Eem/ax1Bl+nw==
+X-Received: by 2002:a05:620a:4802:b0:7c5:ee3e:54b6 with SMTP id af79cd13be357-7c9619fabd2mr642346885a.55.1745615198086;
+        Fri, 25 Apr 2025 14:06:38 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c4c:a000::bb3? ([2600:4040:5c4c:a000::bb3])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f4c08ef23dsm25971706d6.14.2025.04.25.13.15.15
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c958e7c035sm264900185a.78.2025.04.25.14.06.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 13:15:15 -0700 (PDT)
-Message-ID: <f7d854d557423be6411ccb7c641aa2ab4c579345.camel@redhat.com>
+        Fri, 25 Apr 2025 14:06:37 -0700 (PDT)
+Message-ID: <4b35d95762198caa308be918e47ab569623c62eb.camel@redhat.com>
 Subject: Re: [PATCH v2 2/8] rust: hrtimer: Add HrTimer::raw_forward() and
  forward()
 From: Lyude Paul <lyude@redhat.com>
@@ -78,10 +78,10 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Boqun Feng
  <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice
  Ryhl	 <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
  Krummrich	 <dakr@kernel.org>
-Date: Fri, 25 Apr 2025 16:15:14 -0400
-In-Reply-To: <87frhzm5y5.fsf@kernel.org>
+Date: Fri, 25 Apr 2025 17:06:36 -0400
+In-Reply-To: <87ikmvkpcb.fsf@kernel.org>
 References: <20250415195020.413478-1-lyude@redhat.com>
-		<20250415195020.413478-3-lyude@redhat.com> <87frhzm5y5.fsf@kernel.org>
+		<20250415195020.413478-3-lyude@redhat.com> <87ikmvkpcb.fsf@kernel.org>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -91,52 +91,131 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: UAphdYRf2E2KcQ2kzMZZhSF3KqPr6A_RuY2GNfC04Xk_1745612117
+X-Mimecast-MFC-PROC-ID: YfM8sTdRM6HZoDyinefOcjCyRfZyheghpMod2qdpdBM_1745615198
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2025-04-23 at 14:13 +0200, Andreas Hindborg wrote:
-> Lyude Paul <lyude@redhat.com> writes:
-> >=20
-> > +};
-> >  use core::marker::PhantomData;
-> >  use pin_init::PinInit;
-> > =20
-> > @@ -164,6 +168,36 @@ pub(crate) unsafe fn raw_cancel(this: *const Self)=
- -> bool {
-> >          // handled on the C side.
-> >          unsafe { bindings::hrtimer_cancel(c_timer_ptr) !=3D 0 }
-> >      }
+On Wed, 2025-04-23 at 14:57 +0200, Andreas Hindborg wrote:
 > > +
-> > +    /// Forward the timer expiry for a given timer pointer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// `self_ptr` must point to a valid `Self`.
+> > +=C2=A0=C2=A0=C2=A0 /// Forward the timer expiry so it expires at `dura=
+tion` after `now`.
+> > +=C2=A0=C2=A0=C2=A0 ///
+> > +=C2=A0=C2=A0=C2=A0 /// This is mainly useful for timer types that can =
+start off providing a mutable reference (e.g.
+> > +=C2=A0=C2=A0=C2=A0 /// `Pin<Box<=E2=80=A6>>`) before the timer is star=
+ted.
+> > +=C2=A0=C2=A0=C2=A0 ///
+> > +=C2=A0=C2=A0=C2=A0 /// Note that this does not requeue the timer, it s=
+imply updates its expiry value. It returns
+> > +=C2=A0=C2=A0=C2=A0 /// the number of overruns that have occurred as a =
+result of the expiry change.
 >=20
-> I don't think safety requirements are tight enough. We must also have
-> exclusive ownership of the pointee of `self_ptr`.
+> Looking at C `hrtimer_forward`, I don't think the description is
+> correct:
+>=20
+> =C2=A0=C2=A0=C2=A0 u64 hrtimer_forward(struct hrtimer *timer, ktime_t now=
+, ktime_t interval)
+> =C2=A0=C2=A0=C2=A0 {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u64 orun =3D 1;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ktime_t delta;
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 delta =3D ktime_sub(now, hrtimer_get_expir=
+es(timer));
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (delta < 0)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (WARN_ON(timer->state & HRTIMER_STATE_E=
+NQUEUED))
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (interval < hrtimer_resolution)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 interval =3D hrtimer_resolutio=
+n;
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (unlikely(delta >=3D interval)) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 s64 incr =3D ktime_to_ns(inter=
+val);
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 orun =3D ktime_divns(delta, in=
+cr);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hrtimer_add_expires_ns(timer, =
+incr * orun);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (hrtimer_get_expires_tv64(t=
+imer) > now)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return orun;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * This (and the ktime_add() be=
+low) is the
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * correction for exact:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 orun++;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hrtimer_add_expires(timer, interval);
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return orun;
+> =C2=A0=C2=A0=C2=A0 }
+>=20
+> As I read the code:
+>=20
+> =C2=A0 If the timer expires 2s after `now` and `interval` is 6s, then the=
+ new expiry
+> =C2=A0 time is moved 6s forward. Not to 6s after `now`. Return value will=
+ be 0.
+>=20
+> =C2=A0 If the timer expires 3s after `now` and `interval` is 2s, then the
+> =C2=A0 expiry time is moved 2s forward and the return value is 1.
+>=20
+> =C2=A0 If the timer expires 4s after `now` and `interval` is 2s, then the
+> =C2=A0 expiry time is moved 4s forward and the return value is 2.
+>=20
+> =C2=A0 If the timer expires 5s after `now` and `interval` is 2s, then the
+> =C2=A0 expiry time is moved 4s forward and the return value is 2.
+>=20
+> Can you capture this behavior in the docs?
 
-Are we sure "exclusive ownership" is the right term here? We /technically/ =
-can
-be considered to have unique access over the time expiry since we allow rac=
-y
-reads of it, and we only allow writes in situations where the timer access =
+Perhaps I will understand this at some point after sending this email, but =
+as
+I'm writing this I have to admit I'm very confused. This is the first time
+I've actually looked directly at the hrtimer_forward() source and I have to
+say this is 100% not what I expected the term "overrun" to mean. Honestly,
+enough so I'm kind of wondering if overrun is even the right word for the C
+documentation to be using here.
+
+To make sure I'm understanding this right, an overrun is not "how many time=
+s
+we would have executed the timer between now and the new execution time" (e=
+.g.
+"how many times did our new expiration value overrun the previous expiry
+interval"). Instead it's actually "if the timer's next execution time is
+greater than the previous expiry time then the timer will be forwarded by
+`interval`, but if the timer's execution time is shorter than the previous
+expiry time then the new execution time will be determined by figuring out =
+if
+the timer were to execute at `interval` what the closest expiry time at tha=
+t
+interval to the previous expiry time would be". Which, I'm afraid to admit
+doesn't actually make any sense to me and makes me feel like "overrun" is
+entirely the wrong word to be used here.
+
+I'm having a little trouble understanding how I'd really describe this in t=
+he
+documentation because I'm also having a lot of trouble understanding why th=
 is
-exclusive and the timer isn't started - or from the timer callback itself w=
-hen
-the timer is started. But we don't have the guarantee of unique access to
-`Self`, and both context and context-less forward() make use of raw_forward=
-()
-since otherwise I wouldn't have really added a raw_ variant in the first
-place.
+behavior is the way it is and why someone would want it to work like this.
+Should this be something like "Forward the timer to the closest expiry time=
+ to
+the current expiry time that can be reached if the timer were to execute at
+the given interval"?. Or should I maybe just copy the C documentation as cl=
+ose
+as possible and just leave this strange behavior as an exercise for the
+reader?
 
 >=20
 >=20
 > Best regards,
 > Andreas Hindborg
->=20
 >=20
 >=20
 
