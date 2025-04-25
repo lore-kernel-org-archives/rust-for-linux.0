@@ -1,163 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5664928EC;
-	Fri, 25 Apr 2025 14:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7CC25E44D;
+	Fri, 25 Apr 2025 15:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745592347; cv=none; b=Y2aHLToh61MKT3b+A/maSIMT/f3xSuZX0TmPXaTXRyBdCWHo4+SnB0xKBpyZksI7/Vj4dAlqp7AetfxMpBX1oZjSC1mXTEDKrnUI+VSiZAMx+MpJWjLmiIjNJj/Tx7FOIPmgQ/Zy04JG+eppH5bjdA9w/bJsTbcOgbb+lsnOYYs=
+	t=1745593322; cv=none; b=po5v0AMSWgZwNmam/szuH0dHRJK4pGL/ZcrETRu3bE268vSWmZf/d0UXXI5aAw2usZg63JnEs8qdXoU0Dkz3ugc4PMPwvu2Qf6YE1O/vNveQDEJ/BiRP7E8YEDvXd/B2SrYrmBwpW8MwsC6eXNltsOB+8qHDSroe7nqgoYaoqj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745592347; c=relaxed/simple;
-	bh=Tbpyg/unb2pDILYaNqFu8shfhDo5HYaKrcdkDyYp/Bk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iUZ9dJXAmS1TsyqVPp8ClhOZlaygDjzTS0WgO20dN1J9TccoAVRCFQpfRdWfpEqLfEu/nJDAYiCy4BSvTo0Rqf+cH4mYApHhBx0+5RnTXvzuiCbMke7rE55qQTXWRDV9Tm4WlGeQvqCa7DfnKRUeQIEpCeH99s6Jb8ocXsdWvQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0X+q4DxY; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0X+q4DxY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF05C4CEE4;
-	Fri, 25 Apr 2025 14:45:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745592346;
-	bh=Tbpyg/unb2pDILYaNqFu8shfhDo5HYaKrcdkDyYp/Bk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0X+q4DxYRxO/eY/9MTaJR30+8g/1Ewc/wVZYK++zmXSQ69X8Q0+KhR3CMsBodAYew
-	 13HAilLCDObffmfhPjil+xScGrNcGrup+M7IO/5Fgjs/Iavi/722TcwvlCqtQtyzYC
-	 2CKPqgc9LNZOWJCJiIgn0lyJwKIt3ICbh3CG6Gdg=
-Date: Fri, 25 Apr 2025 16:45:44 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
+	s=arc-20240116; t=1745593322; c=relaxed/simple;
+	bh=TATDdWHubxkqnktZL0woFYkT0+jsr8JhaVnmyrpNueQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gaAFOqT/THsowV8LiIxMuqAZkrEiK8bPIuBE1BZkZ8nuqBKXPJUPZeTBFD+rEF56Yq7uOMa2Kxuc4dQP9YFYIGWP3w8N58sCJaXD3tRNEDSVV26l/azVAxU1EI8fF+8O4h2cjSZ4omFhFbf5REAE+8QEIWoUIruPSi1VWQJpmuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4ZkbfB0qCVz9svM;
+	Fri, 25 Apr 2025 17:01:54 +0200 (CEST)
+From: Remo Senekowitsch <remo@buenzli.dev>
+To: Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] uaccess: rust: add strncpy_from_user
-Message-ID: <2025042538-sitter-flame-9a50@gregkh>
-References: <20250424-strncpy-from-user-v1-1-f983fe21685a@google.com>
- <680a5f5d.050a0220.2035d2.545b@mx.google.com>
- <aAtZQkre4KRU2kr1@google.com>
- <aAuQjSzatuNoDDXL@Mac.home>
- <2025042509-french-washbowl-5cde@gregkh>
- <aAudvTvdhLwBv9gG@Mac.home>
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Remo Senekowitsch <remo@buenzli.dev>
+Cc: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v3 0/7] More Rust bindings for device property reads
+Date: Fri, 25 Apr 2025 17:01:23 +0200
+Message-ID: <20250425150130.13917-1-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aAudvTvdhLwBv9gG@Mac.home>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4ZkbfB0qCVz9svM
 
-On Fri, Apr 25, 2025 at 07:35:41AM -0700, Boqun Feng wrote:
-> On Fri, Apr 25, 2025 at 03:52:16PM +0200, Greg Kroah-Hartman wrote:
-> > On Fri, Apr 25, 2025 at 06:39:25AM -0700, Boqun Feng wrote:
-> > > On Fri, Apr 25, 2025 at 09:43:30AM +0000, Alice Ryhl wrote:
-> > > > On Thu, Apr 24, 2025 at 08:57:13AM -0700, Boqun Feng wrote:
-> > > > > On Thu, Apr 24, 2025 at 03:17:48PM +0000, Alice Ryhl wrote:
-> > > > > > This is needed for ioctls that operate on a user-provided string.
-> > > > > > 
-> > > > > > It is somewhat unfortunate that strncpy_from_user does not nul-terminate
-> > > > > > the string when the end of `buf` is reached. This implies that we can't
-> > > > > > return a &CStr from the function, since the buffer may not always be
-> > > > > > nul-terminated.
-> > > > > > 
-> > > > > > That said, we could add more convenient helpers on top that add a NUL
-> > > > > > byte in that case.
-> > > > > > 
-> > > > > > This method isn't defined on UserSliceReader because it complicates the
-> > > > > > semantics. The UserSliceReader type also has its own maximum length, so
-> > > > > > we would have to limit the read by that length too.
-> > > > > > 
-> > > > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > > > > ---
-> > > > > >  rust/kernel/uaccess.rs | 27 +++++++++++++++++++++++++++
-> > > > > >  1 file changed, 27 insertions(+)
-> > > > > > 
-> > > > > > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> > > > > > index 80a9782b1c6e98ed6eae308ade8551afa7adc188..1bd82045e81ea887008e30241bd6de27f096b639 100644
-> > > > > > --- a/rust/kernel/uaccess.rs
-> > > > > > +++ b/rust/kernel/uaccess.rs
-> > > > > > @@ -369,3 +369,30 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
-> > > > > >          Ok(())
-> > > > > >      }
-> > > > > >  }
-> > > > > > +
-> > > > > > +/// Reads a nul-terminated string into `buf` and returns the length.
-> > > > > > +///
-> > > > > > +/// Fails with [`EFAULT`] if the read happens on a bad address. If the end of `buf` is reached,
-> > > > > > +/// then the buffer will not be nul-terminated.
-> > > > > > +#[inline]
-> > > > > > +pub fn strncpy_from_user(ptr: UserPtr, buf: &mut [u8]) -> Result<usize> {
-> > > > > 
-> > > > > Sorry maybe there is an email I'm missing, but could you provide more
-> > > > > context of the usage?
-> > > > > 
-> > > > > First the function name is a bit weird, because the 'n' in "strncpy"
-> > > > > means the parameters should have an 'n' (i.e. length) in it, but there
-> > > > > is none in the Rust version.
-> > > > 
-> > > > There is a length! It's the length of `buf`. It's pretty normal that C
-> > > > methods with a pointer and length become a Rust method with a slice.
-> > > > 
-> > > 
-> > > That's exactly the point, no need to reuse a name from C if we have
-> > > something better.
-> > 
-> > Up to point, us kernel developers are used to the C names, so keep it
-> > close if at all possible, ESPECIALLY for just links/wrappers of C
-> > functions like this one is.
-> > 
-> 
-> Well, see my other suggestion about always putting a NUL at the end.
-> Then it's going to be a different function than what strncpy() does.
+This adds more Rust bindings for reading device properties, based on
+Rob Herring's work. I'm working on a driver[1] that uses these, but the
+driver has more dependencies than this.
 
-Ah, I missed that, and yes, we should do that.
+Best regards,
+Remo
 
-> And I also asked for the usage there, because IMO, there's no point of
-> replicating a strncpy() in Rust, we should design a better API, rather
-> than mimic what C does.
+changes in v3:
+* (started testing myself with Rust 1.78 and doctests enabled)
+* Fix doctest and platform driver sample.
+* Move property.rs to device/property.rs (a submodule of device).
+* Make `Device::fwnode` fallible, avoiding a panic.
+* Remove the duplicated property reading methods on Device. Now that
+  `Device::fwnode` is fallible, these methods would have confusingly
+  different signatures than the ones on `FwNode`. It will be clearer for
+  users to explicitly convert from `&Device` to `&FwNode` first,
+  handling that error case separately, and then reading properties on
+  `FwNode`.
+* Split off separate commits for:
+  - printing fwnode name and path
+  - adding PropertyGuard
+* Do not access `fwnode_handle.dev` in PropertyGuard for
+  device-associated logging, fwnode_handle doesn't own a reference to
+  the device.
+* Rename some extension trait methods to be more descriptive:
+  - Property::read => read_from_fwnode_property
+  - PropertyInt::read_array => read_array_from_fwnode_property
+  These methods are not meant to be used directly and won't be
+  accessible unless their traits are in scope. (And there is no reason
+  for API users to pull them into scope.) Nevertheless, this reduces the
+  risk of confusion caused by non-descriptive methods like "read" being
+  attached to primitive types.
+* Implement fwnode printing logic in Rust directly instead of calling
+  scnprintf.
+* Improve some safety comments.
 
-Fair enough.  But as this is going to be getting into the "let's make
-string copies correct", please add Kees Cook to the discussion as he's
-doing a lot of work here on the C side of this.
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/DS90UB954.20driver.20done.2C.20ready.20to.20upstream.3F/with/507874342 [1]
 
-> > You need to specify a max length, otherwise that's just going to confuse
-> > us all.  strncpy_from_user() is the function we are used to using for
-> > copying up to N number of bytes from userspace where a 0 termination
-> > stops the copy if N isn't reached.  So I vote highly for the original
-> > name here please.
-> > 
-> 
-> Have you read the Rust the function signature? There is no parameter for
-> the max length, the max length is implied in the `buf` slice. Plus we
-> should really consider what the usage is, for example, wouldn't it be
-> ideal that we provide a buffer that has an extra byte so that the
-> copy result is always NUL terminated? I randomly checked a few users of
-> C strncpy_from_user() (alloc_name() in mm/memfd.c, mtrr_write() in
-> arch/x86/kernel/cpu/mtrr/if.c), they all do the same: providing the
-> extra byte (i.e. buf size is > n). So it seems preferable to me that we
-> provide a function doing that instead of just replicating
-> strncpy_from_user() semantics here.
-> 
-> (You're the one that keeps telling us to focus on usages, and I think
-> that's a good perspective ;-))
+Remo Senekowitsch (7):
+  rust: property: Move property_present to separate file
+  rust: property: Enable printing fwnode name and path
+  rust: property: Introduce PropertyGuard
+  rust: property: Add bindings for reading device properties
+  rust: property: Add child accessor and iterator
+  rust: property: Add property_get_reference_args
+  samples: rust: platform: Add property read examples
 
-Ok, fair enough, I had missed the "always put a NULL at the end" which
-is a good idea.  And yeah, "implying" the size by the size of the buffer
-passed in makes sense in one way, the function signature then does look
-odd, I missed that.
+ MAINTAINERS                                  |   3 +-
+ drivers/of/unittest-data/tests-platform.dtsi |   3 +
+ rust/helpers/helpers.c                       |   1 +
+ rust/helpers/property.c                      |   8 +
+ rust/kernel/{device.rs => device/mod.rs}     |   9 +-
+ rust/kernel/device/property.rs               | 578 +++++++++++++++++++
+ samples/rust/rust_driver_platform.rs         |  72 ++-
+ 7 files changed, 663 insertions(+), 11 deletions(-)
+ create mode 100644 rust/helpers/property.c
+ rename rust/kernel/{device.rs => device/mod.rs} (97%)
+ create mode 100644 rust/kernel/device/property.rs
 
-So yes, a better name might be good, but again, let's try to sync with
-the C side where we can.  We now have C string functions that have an
-"implicit" length already in them that is discovered by the compiler at
-build time, so following their model is good.
+-- 
+2.49.0
 
-thanks,
-
-greg k-h
