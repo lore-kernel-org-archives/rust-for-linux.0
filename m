@@ -1,145 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CEF327A10E;
-	Fri, 25 Apr 2025 15:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566B715B543
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Apr 2025 16:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745596118; cv=none; b=iiEHw6w/GWs8Q3S5STkBr2MPWEbAQAdbA3oDyeqpenLn7WUpG9mulWFvipCu53S8qmK9fDOHJM6Wwl8V9LUf0GqnEkAmng84z8ynpkORbdBNfjinspRHs0qA35Uwc0sDyoB6khsXFOxjGfZGRIwjQZSlznWQBgMRJ9VEwZ2hmhs=
+	t=1745597893; cv=none; b=hdtvLnh85AxDV+3nBqykjJ4cIBQ7ANanOy2lBpdQdOu6NNfOAzTvoNyLlKBOmvjogUgLNBwoHjrZXZ66eEdNLkbDqLvdBZBEtqKDxOSHfKzSukXpvvyO5xLBL4sshuHYACnDxGbHZYSBaKKx2H2miHeqZ22nLJBaSLS2oeta744=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745596118; c=relaxed/simple;
-	bh=gbP/LTJ4bOaqyh9iK33lI3eC1HyFQnqEr9G9WVBueew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gpx41sezLDWUxUDomzCk5N3JiTR/+xcAuewse5aNOP2bBzAiAx1CMsgFAE+xouVnLaZw0Qj80iEvsP1Oq9f8Dxniv5QSTBzj62hVLA6Fxm3UXfs5NF+5SqWNRblVO5DiASeBcGf2miERdy3Ro20HSy2yAcyrrxah2tXoCaU0A6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccOKCHgS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745597893; c=relaxed/simple;
+	bh=hhEdWx0TaqieccjRrUOTOXqth7/WBsIJFh/aXA9jJWk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nDaW9roFiIPsaSD6pEq5YMDU+xhYdRvVsEqkB2tdBP8xaldTxvBcDugqjzpYaHzovxJY3SqrumVyKjRlSSArsePmrkwAjjdZ+VkzPsfFruwuipAAW1dPa6oZVB74Kcw9YiiNpXpExSc+Gu+awT/kQEvHhNELKNEayWzwWm6Ga80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ee0J3nS5; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccOKCHgS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32522C4CEE4;
-	Fri, 25 Apr 2025 15:48:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745596117;
-	bh=gbP/LTJ4bOaqyh9iK33lI3eC1HyFQnqEr9G9WVBueew=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ccOKCHgStsMm/dwByxT8FVp1XCET4mKAtX35WQ+CVQv1LA0HVQ67um2ecEMtd+Nxg
-	 c6jighDrmifLWcB11WhELXLSBcL8CGMf54GVmQCTDKwa3Ysuuj38z6rSUok8jINF/t
-	 YjIZCDBilL1dNBu/WEin8MmJhNqLKHn+ujcXvKMuvXtmTm3VexxDOkiPWe1XZbcJUA
-	 0c4QLBeSfb/poMKMUfaEWMmcJLp/DsAQ75Qilr5Mi8eoEH6BOpxvfFXq+PGTGCmiq9
-	 dh9+IU+vosIbN8xK17vxzgQkpIjvsytz7qo7cMk6iQQ2cYiWfg5JA68GLhXZIL0kAu
-	 BeNRDGiRW0+0Q==
-Date: Fri, 25 Apr 2025 17:48:31 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 2/7] rust: property: Enable printing fwnode name and
- path
-Message-ID: <aAuuz8BfATawK5oL@pollux>
-References: <20250425150130.13917-1-remo@buenzli.dev>
- <20250425150130.13917-3-remo@buenzli.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ee0J3nS5"
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-60402c94319so1461233eaf.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 25 Apr 2025 09:18:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745597891; x=1746202691; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Q4Av4wmnoBep6EgOglIhCSztC30QmirhqKqHb5xtew=;
+        b=ee0J3nS5cq6Ftn596kPmvG3npKT0Cku0YYZCxNydeUTeB6v9qC9WybdOUqnhDNl08y
+         AjvD/r6hAmjeplAn213d6OgDtI92Nm2Z+GOIjpmFgNBRVvj5eW5B8eNGMpkZLQuVxVkI
+         3vNTGr3LI1NKVGiOkyBE3R4SkSFu9Vmuo+GYZh7FNRhAAz1dYc8v/kasXgSj+rpdeIki
+         f8BT8pNljbahCOcLhui749lJyBuPLGv5PrKrFwBW3axNJeSZxcUOeBIUktXYSyXEYnyQ
+         fUpQDhzc5y/d9o07OeL3Jnda8nazEu+waXxtdeGZnriELqd5Af+uoFvgNBCDG4tQSTdB
+         unTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745597891; x=1746202691;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8Q4Av4wmnoBep6EgOglIhCSztC30QmirhqKqHb5xtew=;
+        b=LkIJp24BDCmvyEG5aDjptieg3Yu8uNPZ8pKN805cNi/cgUwb3XZmGJ3IrNerjNAtjA
+         0+8rkHcMANP4yReaGNrgkUVV3auBjYN1Qi2Vs3Y/INXx7z6QYwwv0dfhAwiF/kl0Xmlr
+         46bsdGHRxi6Pe4QjefMCBmMwrOaodhj0pPMhaO2yx9PWOoNBcSATlCChhmMYfliJTM8p
+         4ijF3j9+ywNFqFx4CYqntOjSHUC8imJbVSQn7n+nT8Z23qJ8clU8OY9YOTi4e7y/58ZK
+         MVFWNVQA1eBhWgwcfNEbQGYGxEmGzy9qvCZtgmmKKKnIrrkwMbkusEcC0ptLxiWC/+NK
+         q6Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCUCEFI9Xyfqez/7apLE/SQeB3tSS5A0Zcmn0l5Jb3IqyRbE0fmtj93WxrwZyESAIFhjOYNVDtjWO9jWWzTaFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXcrIWfTIAW5GDNL9iw4aIHJ3in8gqwAgL3KmOa3eqW6mWYpf6
+	ODmWwZTs7ZOI1RFCneBw+qyF4zJLK6P9zdw/2GjimWa7iIRl4FtUutXRXAelDdWfNUbpRNSU7/4
+	TewK0I9CaMBVyKVydUjgLUFMTGylKU4xiOx4a
+X-Gm-Gg: ASbGncuevoRwaEsF9C3MZSoiH+Zg/XJnh+o9qNKYYWGZeR7v9AHJbbxQlu0cJOa7ziq
+	TcS/bi3rFyBQF3nQiQbkdSoX91sVB1m0AAlekvZ/SqN8KirlzocyHGR85DAh2Xhi81H/T4J8v2W
+	HYKlr6ouMCFGsEZ1FMDRz06p4LbcmnOztNUZss2nbt5tC5klCBHOoX
+X-Google-Smtp-Source: AGHT+IGqWRa/7c2KqEjb5hiyHawUo4fzpKV/pkm6d4gqjAOjZbh6IUkmqCktNNCRdOlKFw7jutwgYNKijcI5os884Ys=
+X-Received: by 2002:a05:6820:2718:b0:603:f191:a93c with SMTP id
+ 006d021491bc7-60652bb5ceamr1904747eaf.6.1745597891207; Fri, 25 Apr 2025
+ 09:18:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250425150130.13917-3-remo@buenzli.dev>
+References: <20250423134344.3888205-2-bqe@google.com> <20250423134344.3888205-6-bqe@google.com>
+ <aAkbw0jEp_IGzvgB@yury> <CACQBu=XaOohewMnLj9PvgR5rYBxzYSXf2OAjCzUY=GFTJ9L=+Q@mail.gmail.com>
+ <680a6b54.d40a0220.27afd9.5e84@mx.google.com> <680abbce.050a0220.144721.78ac@mx.google.com>
+ <CACQBu=VEATxHmFvt0TKbb+Hx5jeEGO8SL733=0m8LNnX6S+ZKw@mail.gmail.com> <aAuR_0om4FI5Pb_F@Mac.home>
+In-Reply-To: <aAuR_0om4FI5Pb_F@Mac.home>
+From: Burak Emir <bqe@google.com>
+Date: Fri, 25 Apr 2025 18:17:59 +0200
+X-Gm-Features: ATxdqUHNtjY6ZnBKg3jtnOR2VaCVgobpi0rSgzf58d01Twx5mD5WIYm92bZEv1U
+Message-ID: <CACQBu=VkFT5yDuDz098L+S+tGvtGHMvm4FaZ6p3sr9VCp88jww@mail.gmail.com>
+Subject: Re: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Rong Xu <xur@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 25, 2025 at 05:01:25PM +0200, Remo Senekowitsch wrote:
-> Add two new public methods `display_name` and `display_path` to
-> `FwNode`. They can be used by driver authors for logging purposes. In
-> addition, they will be used by core property abstractions for automatic
-> logging, for example when a driver attempts to read a required but
-> missing property.
-> 
-> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> ---
->  rust/kernel/device/property.rs | 78 ++++++++++++++++++++++++++++++++++
->  1 file changed, 78 insertions(+)
-> 
-> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-> index d89715f7d..28850aa3b 100644
-> --- a/rust/kernel/device/property.rs
-> +++ b/rust/kernel/device/property.rs
-> @@ -49,6 +49,84 @@ pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
->          self.0.get()
->      }
->  
-> +    /// Returns an object that implements [`Display`](core::fmt::Display) for
-> +    /// printing the name of a node.
-> +    pub fn display_name(&self) -> impl core::fmt::Display + '_ {
-> +        struct FwNodeDisplayName<'a>(&'a FwNode);
-> +
-> +        impl core::fmt::Display for FwNodeDisplayName<'_> {
-> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-> +                // SAFETY: self is valid by its type invariant
-> +                let name = unsafe { bindings::fwnode_get_name(self.0.as_raw()) };
-> +                if name.is_null() {
-> +                    return Ok(());
-> +                }
-> +                // SAFETY: fwnode_get_name returns null or a valid C string and
-> +                // name is not null
-> +                let name = unsafe { CStr::from_char_ptr(name) };
-> +                write!(f, "{name}")
-> +            }
-> +        }
-> +
-> +        FwNodeDisplayName(self)
-> +    }
-> +
-> +    /// Returns an object that implements [`Display`](core::fmt::Display) for
-> +    /// printing the full path of a node.
-> +    pub fn display_path(&self) -> impl core::fmt::Display + '_ {
-> +        struct FwNodeDisplayPath<'a>(&'a FwNode);
-> +
-> +        impl core::fmt::Display for FwNodeDisplayPath<'_> {
-> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-> +                // The logic here is the same as the one in lib/vsprintf.c
-> +                // (fwnode_full_name_string).
-> +
-> +                let num_parents = unsafe { bindings::fwnode_count_parents(self.0.as_raw()) };
-> +
-> +                for depth in (0..=num_parents).rev() {
-> +                    let fwnode = if depth == 0 {
-> +                        self.0.as_raw()
-> +                    } else {
-> +                        // SAFETY: `self.0.as_raw()` is valid
-> +                        unsafe { bindings::fwnode_get_nth_parent(self.0.as_raw(), depth) }
-> +                    };
-> +
-> +                    // SAFETY: fwnode is valid, it is either `self.0.as_raw()` or
-> +                    // the return value of `bindings::fwnode_get_nth_parent` which
-> +                    // returns a valid pointer to a fwnode_handle if the provided
-> +                    // depth is within the valid range, which we know to be true.
-> +                    let prefix = unsafe { bindings::fwnode_get_name_prefix(fwnode) };
-> +                    if !prefix.is_null() {
-> +                        // SAFETY: fwnode_get_name_prefix returns null or a
-> +                        // valid C string
-> +                        let prefix = unsafe { CStr::from_char_ptr(prefix) };
-> +                        write!(f, "{prefix}")?;
-> +                    }
-> +                    // SAFETY: fwnode is valid for the reasons stated above
-> +                    let name = unsafe { bindings::fwnode_get_name(fwnode) };
-> +                    if !name.is_null() {
-> +                        // SAFETY: fwnode_get_name returns null or a valid
-> +                        // C string
-> +                        let name = unsafe { CStr::from_char_ptr(name) };
-> +                        write!(f, "{name}")?;
-> +                    }
+On Fri, Apr 25, 2025 at 3:45=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Fri, Apr 25, 2025 at 02:20:13PM +0200, Burak Emir wrote:
+> > On Fri, Apr 25, 2025 at 12:31=E2=80=AFAM Boqun Feng <boqun.feng@gmail.c=
+om> wrote:
+> > >
+> > > On Thu, Apr 24, 2025 at 09:48:17AM -0700, Boqun Feng wrote:
+> > > > On Thu, Apr 24, 2025 at 06:45:33PM +0200, Burak Emir wrote:
+> > > > > On Wed, Apr 23, 2025 at 6:56=E2=80=AFPM Yury Norov <yury.norov@gm=
+ail.com> wrote:
+> > > > > > So? Can you show your numbers?
+> > > > >
+> > > > > For now, I only have numbers that may not be very interesting:
+> > > > >
+> > > > > - for find_next_bit,  find_next_zero_bit and find_next_zero_bit (=
+sparse):
+> > > > >   22 ns/iteration in C, 32 ns/iteration in Rust.
+> > > > >
+> > > > > - for sparse find_next_bit (sparse):
+> > > > >   60 ns/iteration in C, 70 ns/iteration in Rust.
+> > > > >
+> > > > > This is a VM running nested in a VM. More importantly: the C help=
+er
+> > > > > method is not inlined.
+> > > > > So we are likely measuring the overhead (plus the extra bounds ch=
+ecking).
 
-I think you should be able to just call
+Alice and I discussed that it may be better to do away with the extra
+bounds check.
+Micro benchmark, for the upcoming v8 that has the bounds check removed
+(and the test changed to >=3D, as requested):
 
-	FwNodeDisplayName(self).fmt(f)?
+[] Start testing find_bit() with random-filled bitmap
+[] find_next_bit:                 3598165 ns, 164282 iterations
+[] find_next_zero_bit:            3626186 ns, 163399 iterations
+[] Start testing find_bit() with sparse bitmap
+[] find_next_bit:                   40865 ns,    656 iterations
+[] find_next_zero_bit:            7100039 ns, 327025 iterations
+[] find_bit_benchmark_rust_module: Start testing find_bit() Rust with
+random-filled bitmap
+[] find_bit_benchmark_rust_module: next_bit:
+4572086 ns, 164112 iterations
+[] find_bit_benchmark_rust_module: next_zero_bit:
+4582930 ns, 163569 iterations
+[] find_bit_benchmark_rust_module: Start testing find_bit() Rust with
+sparse bitmap
+[] find_bit_benchmark_rust_module: next_bit:
+42622 ns,    655 iterations
+[] find_bit_benchmark_rust_module: next_zero_bit:
+8835122 ns, 327026 iterations
 
-for this part, which saves you the duplicated code.
+cheers,
+Burak
