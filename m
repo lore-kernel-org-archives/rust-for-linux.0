@@ -1,138 +1,138 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674B72512C5;
-	Sat, 26 Apr 2025 08:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FFC1B4F0F;
+	Sat, 26 Apr 2025 10:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745656784; cv=none; b=cJl5I6z4On/J4590zYjk+2U+jtvBn/Bws/duES3rWqIFf9veB5NAWXmlzx9Gentt4fPQzupllgRotHJahi0eBcSnMCFcLDeFiDw2jAUrsXtxUNyoAUdENepDEtgj5QZetXamG3B/ZTJDyc0OTB/gDnYCsSFsU6FuEMEDALQjgMo=
+	t=1745662542; cv=none; b=TihR8Zngmbbg5wVzYMS2Bxn267HYHYwfOHfMXuISueq0DlG+oGh8Zk3Fus3+3ds+6u13l/9BjT/xD2RBaIohQWEUoxMBLI+gPP27Jk4Y68XxtkcVoLeY3he4ndiXMlCeL4yN/klTxvLH09y/2Rg5v+XepsMvn4LxXknHKwrbrAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745656784; c=relaxed/simple;
-	bh=FjTz9k9z8B3i+6P0L0WCxyeklDmy3oWdigl+FK+4ji4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lBOXsgEaXjfjvVIZ1DTpyMYfbp+9QI7aj+vt7e7kvySKmArQBGBPwLw8toABUg3PGxGTDESVVwPSuKzCYmlVmHgBoITczUcGWtZNFgF0omAr869U/xu7+Tu9feS7Qm1/4VA7Qwqxq/WUhwL+KLYlDjk8rKad91IjAbGvNkXsGBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KlQQZjFF; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1745662542; c=relaxed/simple;
+	bh=hry7/PUHiav3tgWqoqsQqrRYhZ9+bBE+V2R9v/Y/I14=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=taUxgcJP2xVKHx3In2BTVVIxvA+4F/aRPt8gOdJbESXBhWKPe6M6t9xsuI1g3gE/R6gmQQCeBnZXe1g0XDUlbVdkRYIXTHWc+z20lL+gMMQgUmRIHYyBFPLLQH+dIrtGpNJRqdrA9MNhw59R/aY7HkvBmilmKXcPtje3R5RgIZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUhQtHjy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KlQQZjFF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1745656771; x=1745915971;
-	bh=stIFv+urxFL09xLfZ26/cn1HEO1SFUWtH16yfcmux88=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=KlQQZjFF8vTWxL5nXISj5VewLSjhQexb1lN+xS4EoKLHyTPHwjRN52MRQrH3CXWhY
-	 +9XQmxMqWc6hxlCb+ngSGSneAmuoYyVRxgBoeUNtcdGpMo7h8FyfiAYk4lVqqX2xuN
-	 QyZxrb+Hd8gMcPXjK/5ZtQP2H8/cCy92/JhYnDbQlHPQp888R//i2HvHczKRzVzinH
-	 X9++AFL71DNxvlYgWWXk8q/B0W98OPjEuj4I0SwCTGpmYtbyQB2FoyAU+N/0Zg1q9P
-	 NI7FtKa1aE8zHY3i5drIDi/+vN6m8Y92WeUVhF8e/hnr98ijSB9PZM9U0eovbmp3px
-	 jU92Q6Q517Xsw==
-Date: Sat, 26 Apr 2025 08:39:28 +0000
-To: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, Christian Schrefl <chrisi.schrefl@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] rust: pin-init: improve documentation for `Zeroable` derive macros
-Message-ID: <20250426083901.13289-2-benno.lossin@proton.me>
-In-Reply-To: <20250426083901.13289-1-benno.lossin@proton.me>
-References: <20250426083901.13289-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 74d98f4754a9d359f3c36427129df1fdf94bc890
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FUhQtHjy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E224C4CEE2;
+	Sat, 26 Apr 2025 10:15:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745662542;
+	bh=hry7/PUHiav3tgWqoqsQqrRYhZ9+bBE+V2R9v/Y/I14=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FUhQtHjyxIUc2biG2aheOhyo3/N/rd5wvpNcK8N3vj80Yo0+S1b4dklyKAGGe90W0
+	 PE1SZpuT79hZbd/xuFEI/8ZvEmPAKCkJOcmT/xIvon89nHso4PASyabQ1w/+DDb8u4
+	 UfwcNZyReTcfm6CZo1Hb/VFaTFTwin7b6JGq79q2xX3dZI2BE7dLuHXGfU5SnDAMMR
+	 fyAw1s+y4uZsSxJVydTRoRwK6yVkzHYpQmT7blO67m/Y3VkuTg8baAL1Aw3VfW4IAA
+	 g43G5ytHuAyPawDhCwSxbveQsiwqPtE7eyZWp+1xNc4hnNmHU965ajEaJIKLIDFfyN
+	 yH/98CwxFOdRA==
+Date: Sat, 26 Apr 2025 12:15:35 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: Remo Senekowitsch <remo@buenzli.dev>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 3/7] rust: property: Introduce PropertyGuard
+Message-ID: <aAyyR5LyhmGVNQpm@pollux>
+References: <20250425150130.13917-1-remo@buenzli.dev>
+ <20250425150130.13917-4-remo@buenzli.dev>
+ <aAuryiI0lY4qYyIt@pollux>
+ <81a65d89-b3e1-4a52-b385-6c8544c76dd2@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81a65d89-b3e1-4a52-b385-6c8544c76dd2@gmail.com>
 
-Specify that both `MaybeZeroable` and `Zeroable` work on `union`s. Add a
-doc example for a union. Also include an example with visibility on the
-field.
+On Sat, Apr 26, 2025 at 08:19:09AM +0200, Dirk Behme wrote:
+> On 25.04.25 17:35, Danilo Krummrich wrote:
+> > On Fri, Apr 25, 2025 at 05:01:26PM +0200, Remo Senekowitsch wrote:
+> >> This abstraction is a way to force users to specify whether a property
+> >> is supposed to be required or not. This allows us to move error
+> >> logging of missing required properties into core, preventing a lot of
+> >> boilerplate in drivers.
+> >>
+> >> It will be used by upcoming methods for reading device properties.
+> >>
+> >> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+> >> ---
+> >>  rust/kernel/device/property.rs | 57 ++++++++++++++++++++++++++++++++++
+> >>  1 file changed, 57 insertions(+)
+> >>
+> >> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
+> >> index 28850aa3b..de31a1f56 100644
+> >> --- a/rust/kernel/device/property.rs
+> >> +++ b/rust/kernel/device/property.rs
+> >> @@ -146,3 +146,60 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+> >>          unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
+> >>      }
+> >>  }
+> >> +
+> >> +/// A helper for reading device properties.
+> >> +///
+> >> +/// Use [`Self::required`] if a missing property is considered a bug and
+> >> +/// [`Self::optional`] otherwise.
+> >> +///
+> >> +/// For convenience, [`Self::or`] and [`Self::or_default`] are provided.
+> >> +pub struct PropertyGuard<'fwnode, 'name, T> {
+> >> +    /// The result of reading the property.
+> >> +    inner: Result<T>,
+> >> +    /// The fwnode of the property, used for logging in the "required" case.
+> >> +    fwnode: &'fwnode FwNode,
+> >> +    /// The name of the property, used for logging in the "required" case.
+> >> +    name: &'name CStr,
+> >> +}
+> >> +
+> >> +impl<T> PropertyGuard<'_, '_, T> {
+> >> +    /// Access the property, indicating it is required.
+> >> +    ///
+> >> +    /// If the property is not present, the error is automatically logged. If a
+> >> +    /// missing property is not an error, use [`Self::optional`] instead.
+> >> +    pub fn required(self) -> Result<T> {
+> >> +        if self.inner.is_err() {
+> >> +            pr_err!(
+> >> +                "{}: property '{}' is missing\n",
+> >> +                self.fwnode.display_path(),
+> >> +                self.name
+> >> +            );
+> > 
+> > Hm, we can't use the device pointer of the fwnode_handle, since it is not
+> > guaranteed to be valid, hence the pr_*() print...
+> > 
+> > Anyways, I'm not sure we need to print here at all. If a driver wants to print
+> > that it is unhappy about a missing required property it can do so by itself, I
+> > think.
+> 
+> Hmm, the driver said by using 'required' that it *is* required. So a
+> missing property is definitely an error here. Else it would have used
+> 'optional'. Which doesn't print in case the property is missing.
+> 
+> If I remember correctly having 'required' and 'optional' is the result
+> of some discussion on Zulip. And one conclusion of that discussion was
+> to move checking & printing the error out of the individual drivers
+> into a central place to avoid this error checking & printing in each
+> and every driver. I think the idea is that the drivers just have to do
+> ...required()?; and that's it, then.
 
-Link: https://github.com/Rust-for-Linux/pin-init/pull/48/commits/ab0985a0e0=
-8df06c60a32ca5888f74adcc2c1cf3
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
----
-Also see the compile-fail & macro expansion tests added by this commit
-(not included in the kernel, since the test files are only upstream):
+Yes, I get the idea.
 
-    https://github.com/Rust-for-Linux/pin-init/pull/48/commits/278070d12b41=
-f0fca1b0d6dff6c5f38f3cf46044
----
- rust/pin-init/src/lib.rs | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+If it'd be possible to use dev_err!() instead I wouldn't object in this specific
+case. But this code is used by drivers from probe(), hence printing the error
+without saying for which device it did occur is a bit pointless.
 
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index b5a295effd9c..9ab34036e6bc 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -395,9 +395,10 @@
- /// ```
- pub use ::pin_init_internal::pinned_drop;
-=20
--/// Derives the [`Zeroable`] trait for the given struct.
-+/// Derives the [`Zeroable`] trait for the given `struct` or `union`.
- ///
--/// This can only be used for structs where every field implements the [`Z=
-eroable`] trait.
-+/// This can only be used for `struct`s/`union`s where every field impleme=
-nts the [`Zeroable`]
-+/// trait.
- ///
- /// # Examples
- ///
-@@ -406,14 +407,25 @@
- ///
- /// #[derive(Zeroable)]
- /// pub struct DriverData {
--///     id: i64,
-+///     pub(crate) id: i64,
- ///     buf_ptr: *mut u8,
- ///     len: usize,
- /// }
- /// ```
-+///
-+/// ```
-+/// use pin_init::Zeroable;
-+///
-+/// #[derive(Zeroable)]
-+/// pub union SignCast {
-+///     signed: i64,
-+///     unsigned: u64,
-+/// }
-+/// ```
- pub use ::pin_init_internal::Zeroable;
-=20
--/// Derives the [`Zeroable`] trait for the given struct if all fields impl=
-ement [`Zeroable`].
-+/// Derives the [`Zeroable`] trait for the given `struct` or `union` if al=
-l fields implement
-+/// [`Zeroable`].
- ///
- /// Contrary to the derive macro named [`macro@Zeroable`], this one silent=
-ly fails when a field
- /// doesn't implement [`Zeroable`].
-@@ -426,7 +438,7 @@
- /// // implmements `Zeroable`
- /// #[derive(MaybeZeroable)]
- /// pub struct DriverData {
--///     id: i64,
-+///     pub(crate) id: i64,
- ///     buf_ptr: *mut u8,
- ///     len: usize,
- /// }
-@@ -434,7 +446,7 @@
- /// // does not implmement `Zeroable`
- /// #[derive(MaybeZeroable)]
- /// pub struct DriverData2 {
--///     id: i64,
-+///     pub(crate) id: i64,
- ///     buf_ptr: *mut u8,
- ///     len: usize,
- ///     // this field doesn't implement `Zeroable`
---=20
-2.48.1
-
-
+Drivers can still decide to properly print the error if the returned Result
+indicates one.
