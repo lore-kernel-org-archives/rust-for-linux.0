@@ -1,57 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894B12C181;
-	Sun, 27 Apr 2025 15:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC3E4A11;
+	Sun, 27 Apr 2025 17:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745769495; cv=none; b=hhhYIEyyDm1aqdE0rFP9TxgfrH9k9Jk0alQ6apkgUzWeUV3jN8Z4npNHyQE69l/S2bVaP+ToSwsUTS8gCc3VEZ0Vs7wOgMRQELqLUFMhn9Ch2o2QJ310803IbR3UTtsm36pzZUUsDP+sMBAEbPTmK3LYA7yZ8LObesgJzxGmyng=
+	t=1745773570; cv=none; b=IYWF4j2dIOd7O7OPyYtHlej41m4zimQJK0w9dCl5H+z68sU5OM8daFrz4SBGfljmXlbLMSh/kfzezVzYXdd6z7k++ksALBY5Klct1V6H4PuF1CuoR+AHVqZpr3J5Qfr80F1zEOJBHgQS4t6lT+h/NCNDyoMCm0+YjCctU5+1750=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745769495; c=relaxed/simple;
-	bh=PRcF1wx9W5kCOh9rkrBrJyrDP1Inw4iSiEPZHDryyUw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=pM8iJhtr/Lu4MLYZI3M5N14PW6Tm3W+YZSHdr4HFVNYe6HkGLaXpDvBlB2IVphKTz54HlslwtCShmv3fpseAFLqxvMsmj39OibRMxasXuR1/sLED4FnVKYMb570KS4skC72LtHwEEzVo3GngJK8dDBMfSuD5TTi4MNljorB6ob4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DT8MhAFT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745773570; c=relaxed/simple;
+	bh=pV3PHwKTgo/fGQ48R/1Ltm/Nj4C+sb4O1tTESuwOiAc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Vadeap2KL2RBiaYzNa7XJT2hlT3co/iBIoQIsSD7yAnq/N88jH22nP3AJldFAG31l5ee9RKXK8bji6zUeJULY3HozKywBJIqJ8nGYY+ARQh17VgAQUVHiGMdJrIotT9qumHvQ3c4lWdWl49cjM/F46GJ7HjR4t+QG5sNiB/JjWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iPamqrLl; arc=none smtp.client-ip=109.224.244.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DT8MhAFT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2663DC4CEE3;
-	Sun, 27 Apr 2025 15:58:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745769494;
-	bh=PRcF1wx9W5kCOh9rkrBrJyrDP1Inw4iSiEPZHDryyUw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=DT8MhAFTNrm48nKrXN8HHesLD1DU12mg2OE/tHkb3ZIpGqRsjOpmnjgJqZFBE469c
-	 VZ63rjSTHy1gmvXgKibXEtBbblXi3he39+zozM6LGGh/4VVyy/2QeNj6fEj2JKIH1j
-	 Sx63ze/pSAwkz/qT8tEcCmMx5Qp3vsnG6te+OvBS4psCuyfoYX97jEAWGA8k0TESXo
-	 QKsj4qY0nB7GLknOzxAnHpHFX6JxfegqnJHRw50tMtlm7mohWOFm1bW7BHzZF9L9ns
-	 6gX5QK9v+7k0t5CZIHHdPWEEHUFAIlJx2G+RjtYfqcsYDvn9XVErfMKTCOEzSXzD2q
-	 3ZMPB+BGHoUsg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Matthew Wilcox"
- <willy@infradead.org>,  "Bjorn Helgaas" <bhelgaas@google.com>,  "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"
- <rafael@kernel.org>,  "FUJITA Tomonori" <fujita.tomonori@gmail.com>,  "Rob
- Herring (Arm)" <robh@kernel.org>,  "Tamir Duberstein" <tamird@gmail.com>,
-  =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>,  "Asahi Lina"
- <lina@asahilina.net>,
-  <rust-for-linux@vger.kernel.org>,  <linux-fsdevel@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v19 0/3] rust: xarray: Add a minimal abstraction for XArray
-In-Reply-To: <aA5Bp3Psj7yWg9wu@pollux> (Danilo Krummrich's message of "Sun, 27
-	Apr 2025 16:39:35 +0200")
-References: <20250423-rust-xarray-bindings-v19-0-83cdcf11c114@gmail.com>
-	<174569693396.840230.8180149993897629324.b4-ty@kernel.org>
-	<-4ES_myfpiIqBRA27qXi1g19UfFVV7HMTi9wB6PA5Zs-yv3UgTg3Rnq5nnUiNWz9b1cnux0LNB7K_0t-49B7Pg==@protonmail.internalid>
-	<aA5Bp3Psj7yWg9wu@pollux>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Sun, 27 Apr 2025 17:57:58 +0200
-Message-ID: <87ldrl4mwp.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iPamqrLl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1745773563; x=1746032763;
+	bh=qB13Ncw+xj0Xhb42A0Q5J/hEAGY7+ItgOBIwOjJoDts=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=iPamqrLltQnvWKw1wYt7gNziIujISKhVa5O8/pJZQThqswbfqbnAYUgJ2K4Xkpwxt
+	 7gIVccK/mPq/SJO1buD7OZDD/Q+6wwmmm45jdmzaViTGerDXWVxYpMuNo/INwTINUc
+	 p2Nm+PET+yhlX12J5ZTKziBiH1tmYUNay34RY1SWH5n8j0ROyorkTrriHCqCrWMTGr
+	 sH4WCsOsCvEf3/g518oeFMhXAEPP9zJ7ou7iNxcNysSja00bFFWaGF4hKb2nUu14K+
+	 f7QDzNAT7knhprGI00KtepQyRuLBefHzMZtGsDvqK9P2+7SmJWOZvZHiDotTI2k7B4
+	 94jk3YyO6j2lA==
+Date: Sun, 27 Apr 2025 17:05:57 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, kwilczynski@kernel.org, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com, joelagnelf@nvidia.com, ttabi@nvidia.com, acourbot@nvidia.com, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] samples: rust: pci: take advantage of Devres::access_with()
+Message-ID: <D9HL2RIII0LY.PV0IXOUW5PMV@proton.me>
+In-Reply-To: <aA4E1itCT7RczSD6@pollux>
+References: <20250426133254.61383-1-dakr@kernel.org> <20250426133254.61383-4-dakr@kernel.org> <D9GUSVZY3ZT7.O3RTG4N0ZIK0@proton.me> <aA1PjHrG4yT7XpCI@pollux> <D9HAO06XMT9X.1NL63T3GBQG7B@proton.me> <aA4E1itCT7RczSD6@pollux>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 8dc340c71d4785a8f66db291154fd8eb935f9f5b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,38 +47,98 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-"Danilo Krummrich" <dakr@kernel.org> writes:
-
-> On Sat, Apr 26, 2025 at 09:48:53PM +0200, Andreas Hindborg wrote:
->>
->> On Wed, 23 Apr 2025 09:54:36 -0400, Tamir Duberstein wrote:
->> > This is a reimagining relative to earlier versions[0] by Asahi Lina and
->> > Ma=C3=ADra Canal.
->> >
->> > It is needed to support rust-binder, though this version only provides
->> > enough machinery to support rnull.
->> >
->> >
->> > [...]
->>
->> Applied, thanks!
->>
->> [1/3] rust: types: add `ForeignOwnable::PointedTo`
->>       commit: a68f46e837473de56e2c101bc0df19078a0cfeaf
->> [2/3] rust: xarray: Add an abstraction for XArray
->>       commit: dea08321b98ed6b4e06680886f60160d30254a6d
->> [3/3] MAINTAINERS: add entry for Rust XArray API
->>       commit: 1061e78014e80982814083ec8375c455848abdb4
->
-> I assume this went into xarray-next? If so, you probably want to adjust t=
+On Sun Apr 27, 2025 at 12:20 PM CEST, Danilo Krummrich wrote:
+> On Sun, Apr 27, 2025 at 08:56:29AM +0000, Benno Lossin wrote:
+>> On Sat Apr 26, 2025 at 11:26 PM CEST, Danilo Krummrich wrote:
+>> > On Sat, Apr 26, 2025 at 08:30:39PM +0000, Benno Lossin wrote:
+>> >> On Sat Apr 26, 2025 at 3:30 PM CEST, Danilo Krummrich wrote:
+>> >> > For the I/O operations executed from the probe() method, take advan=
+tage
+>> >> > of Devres::access_with(), avoiding the atomic check and RCU read lo=
+ck
+>> >> > required otherwise entirely.
+>> >> >
+>> >> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>> >> > ---
+>> >> >  samples/rust/rust_driver_pci.rs | 12 ++++++------
+>> >> >  1 file changed, 6 insertions(+), 6 deletions(-)
+>> >> >
+>> >> > diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_dr=
+iver_pci.rs
+>> >> > index 9ce3a7323a16..3e1569e5096e 100644
+>> >> > --- a/samples/rust/rust_driver_pci.rs
+>> >> > +++ b/samples/rust/rust_driver_pci.rs
+>> >> > @@ -83,12 +83,12 @@ fn probe(pdev: &pci::Device<Core>, info: &Self:=
+:IdInfo) -> Result<Pin<KBox<Self>
+>> >> >              GFP_KERNEL,
+>> >> >          )?;
+>> >> > =20
+>> >> > -        let res =3D drvdata
+>> >> > -            .bar
+>> >> > -            .try_access_with(|b| Self::testdev(info, b))
+>> >> > -            .ok_or(ENXIO)??;
+>> >> > -
+>> >> > -        dev_info!(pdev.as_ref(), "pci-testdev data-match count: {}=
+\n", res);
+>> >> > +        let bar =3D drvdata.bar.access_with(pdev.as_ref())?;
+>> >>=20
+>> >> Since this code might inspire other code, I don't think that we shoul=
+d
+>> >> return `EINVAL` here (bubbled up from `access_with`). Not sure what t=
 he
-> MAINTAINERS entry accordingly.
+>> >> correct thing here would be though...
+>> >
+>> > I can't think of any other error code that would match better, EINVAL =
+seems to
+>> > be the correct thing. Maybe one could argue for ENODEV, but I still th=
+ink EINVAL
+>> > fits better.
+>>=20
+>> The previous iteration of the sample used the ENXIO error code.
+>
+> Yes, because the cause of error for try_access_with() failing would have =
+been
+> that the device was unbound already, hence a different error code.
 
-Yes, thanks for catching that. I'm very much in the learning phase
-still.
+Ah I see.
 
+>> In this sample it should be impossible to trigger the error path. But
+>> others might copy the code into a context where that is not the case and
+>> then might have a horrible time debugging where the `EINVAL` came from.
+>
+> I think it should always pretty unlikely design wise to supply a non-matc=
+hing
+> device.
+>
+>> I don't know if our answer to that should be "improve debugging errors
+>> in general" or "improve the error handling in this case". I have no
+>> idea how the former could look like, maybe something around
+>> `#[track_caller]` and noting the lines where an error was created? For
+>> the latter case, we could do:
+>>=20
+>>     let bar =3D match drvdata.bar.access_with(pdev.as_ref()) {
+>>         Ok(bar) =3D> bar,
+>>         Err(_) =3D> {
+>>             // `bar` was just created using the `pdev` above, so this sh=
+ould never happen.
+>>             return Err(ENXIO);
+>
+> If the caller really put in a non-matching device we can't say for sure t=
+hat the
+> cause is ENXIO, the only thing we know is that the code author confused d=
+evice
+> instances, so I think EINVAL is still the correct thing to return.
+>
+> The problem that it might be difficult to figure out the source of the er=
+ror
+> code has always been present in the kernel, and while I'm not saying we
+> shouldn't aim for improving this, I don't think this patch is quite the p=
+lace
+> for this.
 
-Best regards,
-Andreas Hindborg
+Agreed.
 
+---
+Cheers,
+Benno
 
