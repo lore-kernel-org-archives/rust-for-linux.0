@@ -1,425 +1,178 @@
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2059.outbound.protection.outlook.com [40.107.100.59])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABA62AD04;
-	Mon, 28 Apr 2025 14:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745850457; cv=fail; b=HsqDqJpIzZFGGIwqAacnHYGLPTaKFBAZ+OhfyortZuDQr1ZVpxLFK/dJ2xi1C2BVufnzwU3YqJp0CGaVwI3hkUv3qqCK0HwYHjDtUB0SVcO6SCIjPUbqgktmUJ/s/DmgtmertbCzVWVUFmMnwazEM3Liz/o5vSJFXDR9H0GGpGk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745850457; c=relaxed/simple;
-	bh=Udi0blE4pinB51i0VR69UxfL5LanNX03a05tjw91njE=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=VIuX1htFr/THT8L3sla9qp6xlNasrDDnHTEhfDeazSG5X61TsAa5uxu5Fv9DZzLmMg3RHwYkNMSC6ykKKJ/5BD8T2kAN+J2SSGMLlOAF0cVVkXgAN9C1T/6ZbpvGQe15Jz4cT3HL7dg8oVeONoCQkZIF9CzMrhofrD2CcDeoKqc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=grqfAkXS; arc=fail smtp.client-ip=40.107.100.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55692797B3;
+	Mon, 28 Apr 2025 16:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745856584; cv=none; b=s6IziCGMLRthl+nqwXwIHM9tBt6l2aV1jGt42csHbA74otxdStiNpKEqLNeF60d6KjnXiU7zOJFy1CUJ8rragHx/m9PFtqtJlNNTWdBsa+bm0yis30/Eg/RkJ/oXJGPBXA6su3qIClyBG+gGabrhRbW8C/HRsaPgPaoJP9/8E7Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745856584; c=relaxed/simple;
+	bh=hNqslVR56TkvXlExRTcejZeXm/ru+xojW4YnA2ZCYI4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lEvku2Q203a1n/lfq8nUUV0w0U3FqK5TY8DV38En22tevR9lXa8nI2ESWsH+y0PUmDopRK9hibwuWAkg4fQfeXdPZYrZA667u+ljW/zzUP2j2EZ4DnIUMggYxdljSHSEIiT8TA8105hKOpbuzic3K0INGztBZQGFpsqSkF56EjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z3weBaoa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="grqfAkXS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vswjsf+3Dt7xEkZJAIkrPZYi83hOnhhx3wHUdfY3GZfiJtZtKylSIUhuy2pm3AVN+nUz3c3y7QqzdoHPx1R1CJNEOS6lWgyP2xFLzAZGWLL9y5TQr+cfli+ScdRj2oQzy2m+TwWJAohvWVHhHW+W0mdJNC6xu2vTOOI+5vuAQN55R1BRRyzfp1fgQqf/sD4sXQ7dAYH1uD4oatPAwH5QcrIKhnyCgtbOBbfXj5cY6tFVA7qcoal15TO9i+b2bxDBdFRw3iGu0nZQcH72CldsxEEPAKuv6Rb+Jc76/FoWQJY0/I2w5fKrW2ekXtWLzaPDtT+SFrSrts5lne8fGu7ewA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZPVZc4KehBSw2gCQfabwlDq/MSJWxQp6TL5ZN942Z40=;
- b=TZmrsVzpKSvQB0eGfzh/iH0sXJga9LFWBkTf9mXs+zupsTOimMRRv1xhw8U70bQZyb03RMEP16GsjOuGvRoI8BPzDDRRAFRCHfdOhYVE2Z8jrAkaRgygebm+OGg2SZvMTx8C0cf7QiOLepuXzFZH/sYH3kDsnCjZi2VLj5lfI36k9+pP8Lz1j0Pf1KX5S8P/OunNNvt5UTJlP4g6OwGAniPtSIT2RZbaYQQMenBm5X7oi075E8rlhHwJJWpjFP/d7qye39AEwvloKNpfpl1Xa2/Tnv9AFofszmVGTUTYDRydLXjiVktjXjRodgPLFWh0Mb1FyepgtIorSMx5K7L+Nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZPVZc4KehBSw2gCQfabwlDq/MSJWxQp6TL5ZN942Z40=;
- b=grqfAkXSrrAev3Fr51cwBuOrCT7OirVZ+5t3VVakXVR5PoHD2Xd8RecZi4l21PeBy0ZYmX+b2s3kbcKNTJCUUJGFQXutcpc4UtOlHuE2pPlWgySfGTaQbJ47Xj9sFpnST2sKNrY1cFAK82e+naOtU5/J9W7+eDq36/m/WV3nGSPE6YU2grbTixm+4K4OHPJnqhuAGtk9OrjBZPxtmFPWAb5wcnIOfJ3QeJiJcmRaNCsHsmtXKI14JH58Z1LdiMTEZVpWcupOeWT17sj/Bbftti9NKMVOkuLh8Vu9gQnxd2H0xLGgdR/XmVJBE8pWthKZ7+qOso3x82vHicI04a9Juw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MN0PR12MB5835.namprd12.prod.outlook.com (2603:10b6:208:37a::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.30; Mon, 28 Apr
- 2025 14:27:30 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8678.028; Mon, 28 Apr 2025
- 14:27:30 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Apr 2025 23:27:26 +0900
-Message-Id: <D9ICBZ1DGGVU.2AKUD3X883TMB@nvidia.com>
-Subject: Re: [PATCH 06/16] gpu: nova-core: define registers layout using
- helper macro
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
- <corbet@lwn.net>, "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs"
- <bskeggs@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250420-nova-frts-v1-0-ecd1cca23963@nvidia.com>
- <20250420-nova-frts-v1-6-ecd1cca23963@nvidia.com>
- <aAdvdczmQYBAS7vs@cassiopeiae>
-In-Reply-To: <aAdvdczmQYBAS7vs@cassiopeiae>
-X-ClientProxiedBy: TYCP286CA0340.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:38e::20) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z3weBaoa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AF8C4CEE4;
+	Mon, 28 Apr 2025 16:09:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745856583;
+	bh=hNqslVR56TkvXlExRTcejZeXm/ru+xojW4YnA2ZCYI4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z3weBaoaY6w0u7fnw/ke3GIImsbGRVldWRgwrzQtFk0ei07j2l1y1yhjvQipKZ/bT
+	 2cD2o9cpF47G5LNMoruUVRLUPWrqaPuQ0SbcMQRB0b3Z5SnMejEV1mpf+MIebuyycA
+	 2gFLIWmAGmKrudDuM6g50tROEEdbt/JgtUiqLkmQuLZLKQdQMrdLWjks9PINhT337f
+	 P1xTWTf7+iImPUiKsxtaFo/0umVuTfN1sQh/qDo5MF6RQrtGjtJuTju7nJ/qrQ7VJg
+	 +VC1ywvV7YvcjgI7zRPpx01RmCUEEQB9kriP2OgylCkrcutZuLQNFPjMaOyg57IKGK
+	 MFtNxOAVPPVag==
+Date: Mon, 28 Apr 2025 18:09:36 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Dirk Behme <dirk.behme@gmail.com>, Remo Senekowitsch <remo@buenzli.dev>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 3/7] rust: property: Introduce PropertyGuard
+Message-ID: <aA-oQAol8rAU7vzg@cassiopeiae>
+References: <20250425150130.13917-1-remo@buenzli.dev>
+ <20250425150130.13917-4-remo@buenzli.dev>
+ <aAuryiI0lY4qYyIt@pollux>
+ <81a65d89-b3e1-4a52-b385-6c8544c76dd2@gmail.com>
+ <aAyyR5LyhmGVNQpm@pollux>
+ <0756503c-02e7-477a-9e89-e7d4881c8ce6@gmail.com>
+ <aA4ht5sUic39mnHj@pollux>
+ <ee888c8f-4802-48a1-bd08-b454b782fff4@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN0PR12MB5835:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8bf375fe-729c-49bb-007f-08dd8660ce55
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UThOZ2NWV2hxRDJmTHM4bjF1UXJnSzAxcElnS0habjJCUDN5N1NkeDZ0RmQ3?=
- =?utf-8?B?K0xDTi9yWVJ3WHk2V0hvYlVGSWdtME4zVUQ2dFJkbEZ0STU2ZXRMODQweTY2?=
- =?utf-8?B?bVcycHRua1lkVUw0clVMWVNvYjZHY084MitkRm5SbHBqYjFnZzBuQm1aZ1Ez?=
- =?utf-8?B?Vkg5Rk5nUTh6cjRlb3orcjBUbG90bnJVcGZLcHFmL2VRM2RFWmlIUGNpeVpV?=
- =?utf-8?B?d05vUVR6elRKODRyL09lZXY5bmRFUjdPTi9INWU5RXpVbTVFcndFTkxienhT?=
- =?utf-8?B?M29CVGdPeU9PK3NNTmFwTDVYWEt4Z04zczIxRUZYZmhHQVhIV2lFTDBpSGtw?=
- =?utf-8?B?ZnQxRFpqWGVvY3YvYm1EVGlSc3lSeFRwTkpWeHJCMGh3Q3Z1cnZwaDB5ZVh1?=
- =?utf-8?B?QjhqbnhMZlh4SVU0dnlXcHlydjlsZUpmSWFmR2dtaExLRVVDSHJUWWgvaEtl?=
- =?utf-8?B?TS9ZREwwbUUzVXFMT1lFZnhrMGZyR0NOVEY2dHBKeDF6bmJ3K3Zaa3ZEcFlu?=
- =?utf-8?B?UEhvNjR0bDZjdzBFazZLU1VuYkE5bmhlUnVGUTd0T3VJZzN0UWZDWDYyWkVL?=
- =?utf-8?B?WWNWM3R4WDAvZktIVC9oWUZUWUw2dlo2a1Z5dE5USGFnT1c4TjhWWVJJeGVJ?=
- =?utf-8?B?aEFiT25UUjJVVlpkRzRaUUo3WjZKL0hlYmxJRGtIa3QvMjlDcDd2Q1kzbjFy?=
- =?utf-8?B?NVU3NEVZZVZPa1g4N21xVGZSdlI0TWprWDh4Q0x2NGlhU2dyS3JHREh2S1dN?=
- =?utf-8?B?aitWVERhbmJIR2pMcnJ3STdLbkZGS0hoZXBQaXZveDhtbmluMkpJOXMyQURp?=
- =?utf-8?B?R1lmVENCRG95ZzFmNzI3L1EvWGlYSmtMdndwcEZxMXNDdWVsaTQ1Wnk0eWph?=
- =?utf-8?B?KzhhZVFuU28xUHo2NlNpeXZKOW5xZXZucERWWlhyMWpHYUpVZ1RvOTBHaFhw?=
- =?utf-8?B?U2JVYVpWaHNZaTM1LzgzeXcxQjNObVp0Q0VZb1ZKRFJvQmZ6NS9VRG0xa3NX?=
- =?utf-8?B?YUV0UHYwTkt5RzVBSFdxMnJSUlhEWFN0TGpUdUFtN1dnZDBlUUpvQWdjdkJo?=
- =?utf-8?B?aWxXUHVrSEdzMUx4bWw2M2pSQnZnUGlsR0xiL1pVT24yMFYxYzF1cVdVL2Zx?=
- =?utf-8?B?MXVHeDM2dnM1aHloTWRzcUgrK2UyVTQzSlFQdVZYSXVpYkZNUWlNTnVFeTlL?=
- =?utf-8?B?ZzQzN2QrNWYzUms5d2ZzeTErVjBpbGl4SDVjRHplbCtaaWc2M2wrZDBGVGlB?=
- =?utf-8?B?cUNscUV6WG5wMC9qNWlLRFRzQmdkRzFNMUFZUVpVdVpaMi9HVUFDYUI0NFRL?=
- =?utf-8?B?NVJUdFBkMUhTYlJyc0FtRWtPdVRhMGQ1bDd4d0tGZFI5M1k1MC9iOGF0WUVk?=
- =?utf-8?B?NVFNNlFGRzRqNmhGWmRualZodS9SSG1YT2Z4R3BEdm1tWktWUGVqR2dmYkxo?=
- =?utf-8?B?YVhHSnNibU05SWkyamlFUXBvaFg5SDFWS3pwU0F1RWNjamhDbUpiMUNaY1FP?=
- =?utf-8?B?dXBjdkhvaXdxK1piVnE2aE9aemh6bk1SaFhVY2hvSWw5YnVDdnBiUEhuUERu?=
- =?utf-8?B?ZWJ2RGhFbXpoVE1mVGt0bXlKcXYzMGtSUzdFMlRBSk95ZVlRalp4Zlp2S1Bi?=
- =?utf-8?B?eGlHVWtlSHB2T0pFWEpib2I2aUZFdHhPM1NsVEhqb25lZDdwMjJDSzFJNi9n?=
- =?utf-8?B?WkdmNmxQeW5QcytSMEgxdW9pK3Q2bDQ3U0pvRDk2eEpIQzhMWmdnWFJNZG1F?=
- =?utf-8?B?b0l1WjluVVZWOXRjMGI5Y0xDbWVmZHRFNFBUUnZVL0lhTkJlMUNNaDNMdnRM?=
- =?utf-8?B?Wlg0TmJuclQ5bkdUYXdWd1VORytYbWltR1hia3NLTkFlWFhkTFVyNk1KTVc3?=
- =?utf-8?B?QVRRVm1HT2cvLzUxNm1seTE3NkdHTElGWnhOSkk0cEZxMVVUMDZncjZ6WTg2?=
- =?utf-8?Q?bPdYuAg1vDk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WnFOYUVUdFFZalpUVGtjTDl6T2VrUjN2TFdJRElGMjlwd0NTU0FFQ2kzbEdZ?=
- =?utf-8?B?V1liY1g5aFBQVThuSXJmZThpc2ZBWHVianVoR1VTNnBZcXIvcWpjajRDMVll?=
- =?utf-8?B?U2psbzhFd1FCdUp3NWZGWkI4QjNRS0w1ZmppUTY0Qm5ONUk5cGNRN0UrbVVo?=
- =?utf-8?B?eG5QNitlY01Wc2RqanBwQzltUW1hSUp3WXQ2QmlXRExyUElPWE1XQzRtVVVr?=
- =?utf-8?B?SVc1OW1NUlcrUFBDNVRvb2lUNDZXSEhkeEVvVXJnbGh3cVR5NktXc0lSRjZK?=
- =?utf-8?B?a0V1RTFIbTNSOGdYYlpqdFJCUVF6bGFFeVJoUDBqQ1BjNjFkM3d4RnZCS0cv?=
- =?utf-8?B?YlJIZVgrb1VCWWxaK28xZ2dIR1VPOENYUDZQWERRTyt4NGVOTEc1UXFHbXMx?=
- =?utf-8?B?SlFjS2VrS21SQjV3NGlKam5iR05PaENiaGQ4OUtJNDAvUm1XQ3d6eEQ4ZC84?=
- =?utf-8?B?UXpsN2FONFJHS0l2SUE1UDl6K0s2ZlNYekZRcndFM2s2Z25GeGp4SnhKY3gx?=
- =?utf-8?B?cmV5SnNyZ3o3bWhCbEpBbm5ORXVQc0p0UUVETE9NV21jcGJLOEoydVhTZnpK?=
- =?utf-8?B?Z2J2NUxJbENjN091MmYra0xWVkxiWmZqNTRMTitOcEJ4a2RQdmhYMU1vQXJr?=
- =?utf-8?B?SEpFR3JNVDByQWlnTjRWSlliRFA2R1V6Q1p1ZXFBWmdibUh3WW9ucDNkSUdl?=
- =?utf-8?B?NXhGaFhvUmt4TS8xUHNDaEJIYmZGR2Qwek04U0ZibXE4b2VhQkdCTG9aOWJp?=
- =?utf-8?B?UjE0TVF1OHlpT0h2RFdqL3U0dENBUXdQWWNJemUya2Y1b1VIYlZHT2ZNNElq?=
- =?utf-8?B?dWJKc2VNdkdla1Y1L1pyQjFiUy9jMTZ3aXk2WVlpa1cycXlpSFdxVFJra3FH?=
- =?utf-8?B?Q2lrL2NpQ01NVGJDaU9jNGE3c0NCT3hkb3FpekxaNlhVRWVteGZ6MXFRcEVl?=
- =?utf-8?B?NmlpZk5HWDBQekZ1dnRpVllRY28wZ0ZpaWd5MkUyK2RBeG43RFRzYU5PMHAr?=
- =?utf-8?B?MnR2dVo5MTlXSERMUDFnSDZMcnNYM3NIRE5yNm5LeDkra2crOEwvYjgyMkF5?=
- =?utf-8?B?Qkt0WDJiUWlBL0N2cms5Vmp5OW5OQ1R3MjFtd1prYWUrZmlvaVl6VUdJZFcz?=
- =?utf-8?B?RWRPM0d4RnowVlBCQzhnU2JjSTRqeElnbHFMNm55czhKZU1JK2dqcGpaanUz?=
- =?utf-8?B?MHRkVTVnb25ReEp0bkpod2NQRnhIK1VtOGdNdFJVZkRQRGMzNFprOUliNDIr?=
- =?utf-8?B?RTRyNFdBWWhWckNUNmp5bTJKQzdwRktqNHk1cThMU3BGYVdYODc5bVJtNjZD?=
- =?utf-8?B?a1M3UHBTM1ErZVFVc3pBTnNIOTl6MFpDU1N6NXV4UTl4MlFmbXNyK2RMWUhW?=
- =?utf-8?B?K2QzRE5PenJMcHgvbzBrNVlkckR2dW5ONlZ4ZWxVbktROFpTZzdzbEQxK1Mw?=
- =?utf-8?B?OTRIQ05kV1JxbFBvVndKaDJFa1BiaC9lMTdCUngzQnJzRHBzK0g1Wk55blV3?=
- =?utf-8?B?aUZjVk1UMlpIS1RVQnJ1VnovSDNycEVTSnRFcTJ5L2syblRjMFBxektEajVW?=
- =?utf-8?B?d21ISXQyT1pKL2NEWm1JaU5kdXBvRk9xdHcvTm9YWGgwajNUUkJURHhqWFJv?=
- =?utf-8?B?MmpVS2V5RzdTbTEzbC8rUEZuWkpwUWJ6MlI1K2tCWVJpTHI4NzFiSjdxKysr?=
- =?utf-8?B?Wll0b3ROZDU0eHAwNnpqbGwxeHV3YytkMW5zQWVoTE9hL0IrZDVGUlduY0tq?=
- =?utf-8?B?OXpGWi96UjRXUGVuaUk3MkF0WmtFcyt3VTBoNEV2blI3S20vV2NuL2dVQkR3?=
- =?utf-8?B?NnhnbTZWU2xEVW9wZzRkaTFCdVp6cGxNZVlzU2tnejBYWnl4dUh1MFVmMEJa?=
- =?utf-8?B?cGJNNU5zWFhGZmtiUURBeEt1TkNnSkdtZGw5MHdlMDlBTWxmMkp4R3FHMFR6?=
- =?utf-8?B?aFhZVG5xbWdDOWxCTW4zTG5zY25mODRXQk9FYzB5MmQ5aHRNU2F2dnhEclZt?=
- =?utf-8?B?WDNUaURtblVvdDlYZDZEQ0tXUms3amFEQ3NOQ3NKYk55RXhsS2VRRDN5blMv?=
- =?utf-8?B?QWc5dkhtQzBxc3ZWd25VcVdLcjlhb3NPdWhtTGx3VkRGMTgwaFdzbWR4dTFF?=
- =?utf-8?B?eXNXK2sydVBRNGU0YWJ3TTFOOERyS0d6TGYxczgyMVYrZ09FcDg1clJrRU45?=
- =?utf-8?Q?yq1PpqsrKy0daQ8+phCnviRehwIYlMXEjrW3piX5eh/k?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8bf375fe-729c-49bb-007f-08dd8660ce55
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 14:27:29.9034
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oznL7NMnACOZ/eoS20Wy9qwkSn97A6RGO4DjHYRfD1lKgiC3b507/EILKZZI+zVUXjcZktm0BRV5w0TvAPb2dQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5835
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ee888c8f-4802-48a1-bd08-b454b782fff4@de.bosch.com>
 
-Hi Danilo,
+On Mon, Apr 28, 2025 at 07:03:07AM +0200, Dirk Behme wrote:
+> On 27/04/2025 14:23, Danilo Krummrich wrote:
+> > On Sun, Apr 27, 2025 at 08:11:58AM +0200, Dirk Behme wrote:
+> >> On 26.04.25 12:15, Danilo Krummrich wrote:
+> >>> On Sat, Apr 26, 2025 at 08:19:09AM +0200, Dirk Behme wrote:
+> >>>> On 25.04.25 17:35, Danilo Krummrich wrote:
+> >>>>> On Fri, Apr 25, 2025 at 05:01:26PM +0200, Remo Senekowitsch wrote:
+> >>>>>> +impl<T> PropertyGuard<'_, '_, T> {
+> >>>>>> +    /// Access the property, indicating it is required.
+> >>>>>> +    ///
+> >>>>>> +    /// If the property is not present, the error is automatically logged. If a
+> >>>>>> +    /// missing property is not an error, use [`Self::optional`] instead.
+> >>>>>> +    pub fn required(self) -> Result<T> {
+> >>>>>> +        if self.inner.is_err() {
+> >>>>>> +            pr_err!(
+> >>>>>> +                "{}: property '{}' is missing\n",
+> >>>>>> +                self.fwnode.display_path(),
+> >>>>>> +                self.name
+> >>>>>> +            );
+> >>>>>
+> >>>>> Hm, we can't use the device pointer of the fwnode_handle, since it is not
+> >>>>> guaranteed to be valid, hence the pr_*() print...
+> >>>>>
+> >>>>> Anyways, I'm not sure we need to print here at all. If a driver wants to print
+> >>>>> that it is unhappy about a missing required property it can do so by itself, I
+> >>>>> think.
+> >>>>
+> >>>> Hmm, the driver said by using 'required' that it *is* required. So a
+> >>>> missing property is definitely an error here. Else it would have used
+> >>>> 'optional'. Which doesn't print in case the property is missing.
+> >>>>
+> >>>> If I remember correctly having 'required' and 'optional' is the result
+> >>>> of some discussion on Zulip. And one conclusion of that discussion was
+> >>>> to move checking & printing the error out of the individual drivers
+> >>>> into a central place to avoid this error checking & printing in each
+> >>>> and every driver. I think the idea is that the drivers just have to do
+> >>>> ...required()?; and that's it, then.
+> >>>
+> >>> Yes, I get the idea.
+> >>>
+> >>> If it'd be possible to use dev_err!() instead I wouldn't object in this specific
+> >>> case. But this code is used by drivers from probe(), hence printing the error
+> >>> without saying for which device it did occur is a bit pointless.
+> >>
+> >> Thinking a little about this, yes, we don't know the device here. But:
+> >> Does the device matter here?
+> > 
+> > If the above fails it means that for a (specific) device a driver expects that
+> > a specific property of some firmware node is present. So, yes, I think it does
+> > matter.
+> > 
+> >> There is nothing wrong with the (unknown)
+> >> device, no? What is wrong here is the firmware (node). It misses
+> >> something.
+> > 
+> > How do we know the firmware node is wrong? Maybe the driver has wrong
+> > expectations for this device?
+> > 
+> >> And this is exactly what the message tells: "There is an
+> >> error due to the missing node 'name' in 'path', please fix it". That
+> >> should be sufficient to identify the firmware/device tree description
+> >> and fix it.
+> > 
+> > I think we can't always fix them, even if they're wrong. How do we fix ACPI
+> > firmware nodes for instance?
+> 
+> So the argument here is that the device (driver) is expecting something
+> to be "required" is wrong and might need to be fixed. Not the firmware.
+> Yes, ok, that is a valid argument. I have a device tree background and
+> there in 99% of the cases the device tree needs a fix ;)
+> 
+> But let me ask the other way around, then: What will it hurt or break if
+> we keep the pr_err() like Remo did? Even knowing that its not perfect?
+> But knowing that it will give at least a note that something is wrong
+> with at least a starting point for searching what needs to be fixed. I
+> mean even if we don't get the device, we will get the affected node we
+> can search for which device uses it as "required".
+> 
+> Could we somehow agree that in 90% of the cases this should be catched
+> at device (driver) development time, already?
 
-On Tue Apr 22, 2025 at 7:29 PM JST, Danilo Krummrich wrote:
-> On Sun, Apr 20, 2025 at 09:19:38PM +0900, Alexandre Courbot wrote:
->> Add the register!() macro, which defines a given register's layout and
->> provide bit-field accessors with a way to convert them to a given type.
->> This macro will allow us to make clear definitions of the registers and
->> manipulate their fields safely.
->>=20
->> The long-term goal is to eventually move it to the kernel crate so it
->> can be used my other drivers as well, but it was agreed to first land it
->> into nova-core and make it mature there.
->>=20
->> To illustrate its usage, use it to define the layout for the Boot0
->> register and use its accessors through the use of the convenience
->> with_bar!() macro, which uses Revocable::try_access() and converts its
->
-> s/try_access/try_access_with/
+I don't see why *catching* such errors needs pr_err() in core code; without it
+you still get a Result as return value that you need to handle in some way.
 
-Fixed, thanks.
+> And therefore it should be
+> beneficial if we don't require each and every driver to be "bloated"
+> with checking this individually?
 
->
->> returned Option into the proper error as needed.
->
-> Using try_access_with() / with_bar! should be a separate patch.
+I guess you mean "bloated with *printing* this individually", rather than
+"checking".
 
-Agreed - done.
+This is where we disagree: I think it is "bloating" the core kernel instead if
+we start adding error prints to core code, where a proper error code is
+propagated up to the driver.
 
->> +register!(Boot0@0x00000000, "Basic revision information about the GPU";
->> +    3:0     minor_rev =3D> as u8, "minor revision of the chip";
->> +    7:4     major_rev =3D> as u8, "major revision of the chip";
->> +    28:20   chipset =3D> try_into Chipset, "chipset model"
->
-> Should we preserve the information that this is the combination of two re=
-gister
-> fields?
+I did say that I would agree to a certain extend with this specific one if we
+could print it properly, since it is designed to leave no doubt that returning
+an error code from required() is fatal for the driver. But I'm not even sure
+about this anymore.
 
-I've tried to reproduce what the current code did, but indeed according
-to OpenRM these are two different fields, `architecture` and
-`implementation`.
+I still haven't read a reason why this one is so crucial to print from core
+code, while for other things that are always fatal (e.g. request_irq()) we
+don't.
 
-There's also more: `architecture` is a split field, with its MSB at a
-different index from the rest. Right now the MSB is always 0 but the
-lower bits are dangerously close to overflowing.
+However, if you really think we need a common helper that prints something in
+the error case, maybe we can add an *additional* helper
 
-Thankfully, the macro doesn't prevent from extending its definition with
-an extra impl block, so I've done just that to provide the correct
-architecture as well as the `chipset` pseudo-field that will be the one
-we use in the code anyway.
+	pub fn required_by(self, dev: &Device) -> Result<T>
 
->
->> +);
->> diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-cor=
-e/regs/macros.rs
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..fa9bd6b932048113de997658=
-b112885666e694c9
->> --- /dev/null
->> +++ b/drivers/gpu/nova-core/regs/macros.rs
->> @@ -0,0 +1,297 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Types and macros to define register layout and accessors.
->> +//!
->> +//! A single register typically includes several fields, which are acce=
-ssed through a combination
->> +//! of bit-shift and mask operations that introduce a class of potentia=
-l mistakes, notably because
->> +//! not all possible field values are necessarily valid.
->> +//!
->> +//! The macros in this module allow to define, using an intruitive and =
-readable syntax, a dedicated
->> +//! type for each register with its own field accessors that can return=
- an error is a field's value
->> +//! is invalid. They also provide a builder type allowing to construct =
-a register value to be
->> +//! written by combining valid values for its fields.
->> +
->> +/// Helper macro for the `register` macro.
->> +///
->> +/// Defines the wrapper `$name` type, as well as its relevant implement=
-ations (`Debug`, `BitOr`,
->> +/// and conversion to regular `u32`).
->> +macro_rules! __reg_def_common {
->> +    ($name:ident $(, $type_comment:expr)?) =3D> {
->> +        $(
->> +        #[doc=3D$type_comment]
->> +        )?
->> +        #[repr(transparent)]
->> +        #[derive(Clone, Copy, Default)]
->> +        pub(crate) struct $name(u32);
->> +
->> +        // TODO: should we display the raw hex value, then the value of=
- all its fields?
->
-> To me it seems useful to have both.
+and document that it is the same as required(), with an additional error print
+in case of failure for the given device.
 
-Agreed. However this macro has changed A LOT since this first revision,
-and I have used TT bundling to make the rules a bit shorter. This makes
-the details of the fields inaccessible from the rule that generates the
-Debug implementation...
-
-I'll probably try to rework that later, or when we move the macro into
-the kernel crate - meanwhile, I hope we can be excused with just the hex
-value.
-
->
->> +        impl ::core::fmt::Debug for $name {
->> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fm=
-t::Result {
->> +                f.debug_tuple(stringify!($name))
->> +                    .field(&format_args!("0x{0:x}", &self.0))
->> +                    .finish()
->> +            }
->> +        }
->> +
->> +        impl core::ops::BitOr for $name {
->> +            type Output =3D Self;
->> +
->> +            fn bitor(self, rhs: Self) -> Self::Output {
->> +                Self(self.0 | rhs.0)
->> +            }
->> +        }
->> +
->> +        impl From<$name> for u32 {
->
-> Here and in a few more cases below: This needs the full path; also rememb=
-er to
-> use absolute paths everwhere.
-
-Indeed, thanks for the reminder. I hope I got them all.
-
->> +            const MASK: u32 =3D ((((1 << $hi) - 1) << 1) + 1) - ((1 << =
-$lo) - 1);
->> +            const SHIFT: u32 =3D MASK.trailing_zeros();
->> +            let field =3D (self.0 & MASK) >> SHIFT;
->> +
->> +            $( field as $as_type )?
->> +            $(
->> +            // TODO: it would be nice to throw a compile-time error if =
-$hi !=3D $lo as this means we
->> +            // are considering more than one bit but returning a bool..=
-.
->
-> Would the following work?
->
-> 	const _: () =3D {
-> 	   build_assert!($hi !=3D $lo);
-> 	   ()
-> 	};
-
-It does! I can even provide a useful error message. Added this check as
-well as the one making sure that $hi >=3D $lo.
-
->> +macro_rules! register {
->> +    // Create a register at a fixed offset of the MMIO space.
->> +    (
->> +        $name:ident@$offset:expr $(, $type_comment:expr)?
->
-> Can we use this as doc-comment?
-
-Oops, I forgot to propagate it somehow. This is fixed.
-
->
->> +        $(; $hi:tt:$lo:tt $field:ident
->> +            $(=3D> as $as_type:ty)?
->> +            $(=3D> as_bit $bit_type:ty)?
->> +            $(=3D> into $type:ty)?
->> +            $(=3D> try_into $try_type:ty)?
->> +        $(, $field_comment:expr)?)* $(;)?
->> +    ) =3D> {
->> +        __reg_def_common!($name);
->> +
->> +        #[allow(dead_code)]
->> +        impl $name {
->> +            #[inline]
->> +            pub(crate) fn read<const SIZE: usize, T: Deref<Target=3DIo<=
-SIZE>>>(bar: &T) -> Self {
->
-> Not necessarily a PCI bar, could be any I/O type.
-
-Indeed, renamed to `io`.
-
->
->> +                Self(bar.read32($offset))
->> +            }
->> +
->> +            #[inline]
->> +            pub(crate) fn write<const SIZE: usize, T: Deref<Target=3DIo=
-<SIZE>>>(self, bar: &T) {
->> +                bar.write32(self.0, $offset)
->> +            }
->> +
->> +            #[inline]
->> +            pub(crate) fn alter<const SIZE: usize, T: Deref<Target=3DIo=
-<SIZE>>, F: FnOnce(Self) -> Self>(bar: &T, f: F) {
->> +                let reg =3D f(Self::read(bar));
->> +                reg.write(bar);
->> +            }
->> +        }
->> +
->> +        __reg_def_getters!($name; $( $hi:$lo $field $(=3D> as $as_type)=
-? $(=3D> as_bit $bit_type)? $(=3D> into $type)? $(=3D> try_into $try_type)?=
- $(, $field_comment)? );*);
->> +
->> +        __reg_def_setters!($name; $( $hi:$lo $field $(=3D> as $as_type)=
-? $(=3D> as_bit $bit_type)? $(=3D> into $type)? $(=3D> try_into $try_type)?=
- $(, $field_comment)? );*);
->> +    };
->> +
->> +    // Create a register at a relative offset from a base address.
->> +    (
->> +        $name:ident@+$offset:expr $(, $type_comment:expr)?
->> +        $(; $hi:tt:$lo:tt $field:ident
->> +            $(=3D> as $as_type:ty)?
->> +            $(=3D> as_bit $bit_type:ty)?
->> +            $(=3D> into $type:ty)?
->> +            $(=3D> try_into $try_type:ty)?
->> +        $(, $field_comment:expr)?)* $(;)?
->> +    ) =3D> {
->
-> I assume this is for cases where we have multiple instances of the same
-> controller, engine, etc. I think it would be good to add a small example =
-for
-> this one too.
-
-I'll add one.
-
-You probably won't recognize this macro in its next revision. I've
-finally read the little book of Rust macros and hopefully it is looking
-a bit better - the definition of register fields notable should feel
-more natural. All in all I think it is definitely better, but that
-doesn't necessarily means it will be easier to review. ^_^;
-
-One note, as agreed on Zulip I will rename all the register names to
-capital snake case and disable the `camel_case_types` lint on the `regs`
-module, so we use the exact same names as OpenRM. I will also make sure
-that the names of the fields match (but will keep the accessors in
-non-capital snake case).
-
-In parallel I am also prototyping another design based on ZST constants.
-If it works it would allow a few more things like register arrays, a
-more natural way to perform I/O, and would remove the naming convention
-issues since registers would be accessed by constants which should be
-named in capital snake-case anyway. My hope is that this version will be
-the one we can use in the kernel crate, but I don't think it will be
-ready before a couple of cycles at least (if it works at all), so in the
-meantime let's keep refining this one.
-
-Cheers,
-Alex.
+- Danilo
