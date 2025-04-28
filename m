@@ -1,105 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770E71D514E;
-	Mon, 28 Apr 2025 07:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144351FF603
+	for <rust-for-linux@vger.kernel.org>; Mon, 28 Apr 2025 09:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745824487; cv=none; b=AQWXw5NSVU0iZDO6Yc60XPvcBle8AJCA+F1BDUi4hNod1rso2e/yu3B4M9Wh8Olt085L3dKoQuEGNgI9SedTOSJgzvXx+kdwECxqG9coYvhRwyEKTVZZK/i8PeUpaVzQgBOo7wR0HOJ2RSBaTNVRbjA1NGCRWTap8JMDUhQoPdA=
+	t=1745832978; cv=none; b=bpX1Cai5FY/ixAofmXMvptoqvrTgh3c6l4O4CeJtH8ldL4QU9PC41LCIPzg7eEMYaV4oxmRysbk3zZcrTOisyKHoiWOFi7TtrV8PZJ1Q9bm0ytcQYg9bdqMRrMSgo+UZsRVyQ2YFY5jjHVZcp3GsA+NL+BRAH/FqIeN5jlj9aY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745824487; c=relaxed/simple;
-	bh=Bzv1ncWrZjgkqy6XnIMS5/4bommgSxaGXnH8i64OXYk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bP/aklkV8up0/Oyijshjn9AAFdeooIeMlc8peeX95bLNMwQn0OScrP9iFHHWZsdvSbGFovHCk1imPNPUgY47QLeK8LrE9Ea+kamHnLL0Q3avaOlbnWrrmvAJXzcGyEj91OdCNhnWkUBRh/H6VF7j7eK8TJ1yaZgtzVn4tyk79tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r4NQSVEk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745832978; c=relaxed/simple;
+	bh=QrE7fbdPli9SKQ7LSp5vAGsR4n+1mUUek8BtKoV1gOk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oFvFDz/hYQzcHn/ZRqdNzY6Xsh6xzxYfFIaCGm7ZXHbPJLuPZw/ttaLIS9vwMKAMlCQfWpw79N+nKeF+lQdYSH8JZ6j7/2g7e5xmnWG5ZvQ4FiZVFWuYqsopZs5AafYIj05wA6UmV+4Wb0vJijtI9vzdl+PX7g8D6FwtZDFkxwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TFMB2ye5; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r4NQSVEk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601B2C4CEE4;
-	Mon, 28 Apr 2025 07:14:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745824487;
-	bh=Bzv1ncWrZjgkqy6XnIMS5/4bommgSxaGXnH8i64OXYk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=r4NQSVEksO3YmPYu/shJOPfU0zsD1qENe6qf71KvNgY9PINe/DYhnHzd81bPUYYmH
-	 LMfg0cQCDnryLskd8OeY94gUhJqtsiiZQJqtDEYSeUG7fbE5v7mM/EeAcWoseTpKsA
-	 ycShJ8XzJlX6DzBa0WzVrOAiJnCzm55qflEb/GhDw5Whs5Fd4BJw9aNxmGvHTx3UC0
-	 n1EW6ZG7eQyixX0ZXcr9pFxjrWLf5rs3i+BO1HeulRu5MWmIWiZW7cs+Kb7Ru7TSSI
-	 3o21mvezkCIsddByZVdCHKabnV1bd40qQvAQsngTBgFqU+iuOZVVo7MYZMD96s4bLW
-	 KB9dKnazS4csg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Matthew Wilcox"
- <willy@infradead.org>,  "Bjorn Helgaas" <bhelgaas@google.com>,  "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki"
- <rafael@kernel.org>,  "FUJITA Tomonori" <fujita.tomonori@gmail.com>,  "Rob
- Herring (Arm)" <robh@kernel.org>,  "Tamir Duberstein" <tamird@gmail.com>,
-  =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>,  "Asahi Lina"
- <lina@asahilina.net>,
-  <rust-for-linux@vger.kernel.org>,  <linux-fsdevel@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v19 0/3] rust: xarray: Add a minimal abstraction for XArray
-In-Reply-To: <87ldrl4mwp.fsf@kernel.org> (Andreas Hindborg's message of "Sun,
-	27 Apr 2025 17:57:58 +0200")
-References: <20250423-rust-xarray-bindings-v19-0-83cdcf11c114@gmail.com>
-	<174569693396.840230.8180149993897629324.b4-ty@kernel.org>
-	<-4ES_myfpiIqBRA27qXi1g19UfFVV7HMTi9wB6PA5Zs-yv3UgTg3Rnq5nnUiNWz9b1cnux0LNB7K_0t-49B7Pg==@protonmail.internalid>
-	<aA5Bp3Psj7yWg9wu@pollux> <87ldrl4mwp.fsf@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Mon, 28 Apr 2025 09:14:34 +0200
-Message-ID: <87cycw4v1h.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TFMB2ye5"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-5f62d10ee03so3949424a12.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 28 Apr 2025 02:36:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745832975; x=1746437775; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PWAe0DpMWspoRIXx1Yu+oQIZJ2WPSmFvo5OnlJZNZxU=;
+        b=TFMB2ye5bLr8WrqT0xjY9+gyVrrxwCalsI7mg0kWTbqvn6PdvMH+Xw+uKxOJKRX05x
+         FEjsyoB1p4u0mEZ9Wal/DRrxWobKNuadqwGGWWAoJ3P+dhBZyOvcZf8Zo1//U++dRton
+         vIBIWTNDoX+zJR6v4hOLw/2+xEc+UsdgFFeDu3H5SPuzfv70zod9pjY03OOSN+KSP3ho
+         TZTIorV2Pg6gV+zVWpCps4WkI3UEXm1NwvdC0e9UnnGi6d5lENDKHojNabkjpHDvEwSB
+         KbyJpKUZlrY/d3nLTn9Glq6ZkKAWhdsUka3Vu/bLU0x5Ns2Z/rBW48A5W1J1KYyPrzhA
+         B1dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745832975; x=1746437775;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PWAe0DpMWspoRIXx1Yu+oQIZJ2WPSmFvo5OnlJZNZxU=;
+        b=pOEL6wCMkmt5FVXa3aoqz0TTCEJXWGg1XNfDD8Tmtwzub/quy5w7xjvvfVZnxvIm9M
+         caWQy9v00t3Mfv8NwJwLCEn8X+HDY7Q9wHeAzE08WrgpsY4PyxjEdaOjnyfDZBR8QLox
+         NDTkf/R6tppcqHwljP0U3afEgSR92NKzvD3pNuKjVjqNLW/7Jo80Eajx/aNGEsksFPzk
+         +rVceHEanZX0QnxARSme9odFsWg3dbcLm/PKPMspkKGRM6ZpNBuud2XfBZJ5Cw4vIy36
+         pEuOobwlTbj+J5ulSSCmfZLA/HCTx07JR5CNv+SFeiCXew70o2oWlyRL0pMEQGN19yST
+         VbPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3QLaTzYCOm+fPgo6ZKcU1baJei2GVoXR8vK6bI1EGOB6r3BcLu+/DtbIVduE7JIbme/+Fe7eJW+PAwhSpyg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXOFBqySNDrFrgLRkOhnGvfdIVysyMB80zBQf72VjQm/KrNpEn
+	2CscC0EoZfATtJIZxsSaabSEp/dJ+pmBsKTBrIwpFgs5a8h4jPNJBM68vBDTE++1etfdaLn1Ezp
+	Lr9SuKixke5Qwng==
+X-Google-Smtp-Source: AGHT+IHplcktsjFpEkx0kJSke323IXxxZpJrFWNgrknRo91sDGgdD3KjeRRPvWTtUdIpYScMC0mHYrCnSy+GAeo=
+X-Received: from edbet9.prod.google.com ([2002:a05:6402:3789:b0:5f7:ebf1:2da])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:2749:b0:5f8:30c2:8652 with SMTP id 4fb4d7f45d1cf-5f830c28831mr78672a12.7.1745832975374;
+ Mon, 28 Apr 2025 02:36:15 -0700 (PDT)
+Date: Mon, 28 Apr 2025 09:36:12 +0000
+In-Reply-To: <CACQBu=VkFT5yDuDz098L+S+tGvtGHMvm4FaZ6p3sr9VCp88jww@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
+References: <20250423134344.3888205-2-bqe@google.com> <20250423134344.3888205-6-bqe@google.com>
+ <aAkbw0jEp_IGzvgB@yury> <CACQBu=XaOohewMnLj9PvgR5rYBxzYSXf2OAjCzUY=GFTJ9L=+Q@mail.gmail.com>
+ <680a6b54.d40a0220.27afd9.5e84@mx.google.com> <680abbce.050a0220.144721.78ac@mx.google.com>
+ <CACQBu=VEATxHmFvt0TKbb+Hx5jeEGO8SL733=0m8LNnX6S+ZKw@mail.gmail.com>
+ <aAuR_0om4FI5Pb_F@Mac.home> <CACQBu=VkFT5yDuDz098L+S+tGvtGHMvm4FaZ6p3sr9VCp88jww@mail.gmail.com>
+Message-ID: <aA9MDH8RjOH9hQ2E@google.com>
+Subject: Re: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
+From: Alice Ryhl <aliceryhl@google.com>
+To: Burak Emir <bqe@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Rong Xu <xur@google.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+On Fri, Apr 25, 2025 at 06:17:59PM +0200, Burak Emir wrote:
+> On Fri, Apr 25, 2025 at 3:45=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com>=
+ wrote:
+> >
+> > On Fri, Apr 25, 2025 at 02:20:13PM +0200, Burak Emir wrote:
+> > > On Fri, Apr 25, 2025 at 12:31=E2=80=AFAM Boqun Feng <boqun.feng@gmail=
+.com> wrote:
+> > > >
+> > > > On Thu, Apr 24, 2025 at 09:48:17AM -0700, Boqun Feng wrote:
+> > > > > On Thu, Apr 24, 2025 at 06:45:33PM +0200, Burak Emir wrote:
+> > > > > > On Wed, Apr 23, 2025 at 6:56=E2=80=AFPM Yury Norov <yury.norov@=
+gmail.com> wrote:
+> > > > > > > So? Can you show your numbers?
+> > > > > >
+> > > > > > For now, I only have numbers that may not be very interesting:
+> > > > > >
+> > > > > > - for find_next_bit,  find_next_zero_bit and find_next_zero_bit=
+ (sparse):
+> > > > > >   22 ns/iteration in C, 32 ns/iteration in Rust.
+> > > > > >
+> > > > > > - for sparse find_next_bit (sparse):
+> > > > > >   60 ns/iteration in C, 70 ns/iteration in Rust.
+> > > > > >
+> > > > > > This is a VM running nested in a VM. More importantly: the C he=
+lper
+> > > > > > method is not inlined.
+> > > > > > So we are likely measuring the overhead (plus the extra bounds =
+checking).
+>=20
+> Alice and I discussed that it may be better to do away with the extra
+> bounds check.
+> Micro benchmark, for the upcoming v8 that has the bounds check removed
+> (and the test changed to >=3D, as requested):
+>=20
+> [] Start testing find_bit() with random-filled bitmap
+> [] find_next_bit:                 3598165 ns, 164282 iterations
+> [] find_next_zero_bit:            3626186 ns, 163399 iterations
+> [] Start testing find_bit() with sparse bitmap
+> [] find_next_bit:                   40865 ns,    656 iterations
+> [] find_next_zero_bit:            7100039 ns, 327025 iterations
+> [] find_bit_benchmark_rust_module: Start testing find_bit() Rust with
+> random-filled bitmap
+> [] find_bit_benchmark_rust_module: next_bit:
+> 4572086 ns, 164112 iterations
+> [] find_bit_benchmark_rust_module: next_zero_bit:
+> 4582930 ns, 163569 iterations
+> [] find_bit_benchmark_rust_module: Start testing find_bit() Rust with
+> sparse bitmap
+> [] find_bit_benchmark_rust_module: next_bit:
+> 42622 ns,    655 iterations
+> [] find_bit_benchmark_rust_module: next_zero_bit:
+> 8835122 ns, 327026 iterations
 
-> "Danilo Krummrich" <dakr@kernel.org> writes:
->
->> On Sat, Apr 26, 2025 at 09:48:53PM +0200, Andreas Hindborg wrote:
->>>
->>> On Wed, 23 Apr 2025 09:54:36 -0400, Tamir Duberstein wrote:
->>> > This is a reimagining relative to earlier versions[0] by Asahi Lina a=
-nd
->>> > Ma=C3=ADra Canal.
->>> >
->>> > It is needed to support rust-binder, though this version only provides
->>> > enough machinery to support rnull.
->>> >
->>> >
->>> > [...]
->>>
->>> Applied, thanks!
->>>
->>> [1/3] rust: types: add `ForeignOwnable::PointedTo`
->>>       commit: a68f46e837473de56e2c101bc0df19078a0cfeaf
->>> [2/3] rust: xarray: Add an abstraction for XArray
->>>       commit: dea08321b98ed6b4e06680886f60160d30254a6d
->>> [3/3] MAINTAINERS: add entry for Rust XArray API
->>>       commit: 1061e78014e80982814083ec8375c455848abdb4
->>
->> I assume this went into xarray-next? If so, you probably want to adjust =
-the
->> MAINTAINERS entry accordingly.
->
-> Yes, thanks for catching that. I'm very much in the learning phase
-> still.
->
+By the way, if you add assert_eq!(bitmap.len(), BITMAP_LEN) before the
+loop you may get the bounds checks optimized out.
 
-I changed the branch to `xarray-rust` on my side.
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+Alice
