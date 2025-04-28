@@ -1,108 +1,113 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F034526A0F8;
-	Mon, 28 Apr 2025 13:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57DB156677;
+	Mon, 28 Apr 2025 14:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745846505; cv=none; b=GrPnw4WCHcWcBjF/wM0clT9sE8pEYyCAR+QF4ncf6JMO03FWmbUDkk3NIdUXT2LCrfzHQFcKwCoozvkWhFffc1KPVyMto4K4A7+DziBeA11UEIOz1ejVcczA31KaZyrqJe8Cb2xaDXIh1eAMA6JYbxP/Dtzpdc6MmnjFWYKv3GY=
+	t=1745848905; cv=none; b=YGf7/t7NpyQeVe7MfJffZdSy4+G81nSS2nB6jWCFd615oCNFzEJRJbVspbik9F+rAkKKhlC40SiSIbAZA0c4FgPC9h6JVBG04Z+ctqsB+xvROkg8yD2lvrA4itjxv3tPKgdahsnJ+jcUlpZLCH7gg/MmWa6X8bkO7zljK7afBHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745846505; c=relaxed/simple;
-	bh=Iwk/V72KJjPlUhVkDR+gh/HtiPiCbHuuonOziHgeuWI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ChWe12pt+tXskSIjcbzow4r7tRM/eOC1/noGfE8jyHpHmnA70iB2btOhSqkRmbDXf3m/N6vhMSsn0NSORcqNAo0gAvuawzcFkK6G3CAI2VLbXxUgDj2vOmZm1jI0t2OBpW5V/VX/ruYpl/v1J6d+veQMPSYE8SN9uoe0qgvOQnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V3p4zbn7; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745848905; c=relaxed/simple;
+	bh=AkNxV8lGLsUolM5DerUPl2T/JNmeZR9jvv0aQqgBJHY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S4shXLr1vucd61KPInBuoawvLCzybKAIX6+rjWWhKDLWF1cboA/KXwDTiTAH2nVZQhs2ilg9bWOdS2n9n5ve6kohYwjjzDKb3yehCTlQkalpy48YaSITDpQojb2TjUlFQ3J8aGuJMfs0FAT32V762cPItcI6zCb2+PbES9S2nhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HBqxa9MH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V3p4zbn7"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-736c062b1f5so3940816b3a.0;
-        Mon, 28 Apr 2025 06:21:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745846503; x=1746451303; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Uo+OVR5gNb3M4bxwFw5fjMkuNkzRB/QXTwOVVFcFS1k=;
-        b=V3p4zbn7ntmbif3dwG0ZdpJR/0hWlxW6NmI53C6kRYAhFUjsAUM6rVKSgLfbzoAtzS
-         uOqf5nw+1smmnJtZYxXd5V0V61T/jBJun4NP1v5zxDA4orrSamfZGMRHXDG9fV+7uJkV
-         2cH+yn6mLVIfM4zHmVYucWC+eFJubYOsh5rgrfL7a8h3FkoIkpoHTuI7xnQphImgFlHU
-         FyAmx35L9wOen8LNWOa4J+KjsXp9lT9XQI68+AWd2Mp6x9MZi0E66wyEBMtdwt07gSXt
-         z+B9zRglKGHvObjPrbQ66L3XG6UKhxXDF+imVOVPDrkjsQ25PfdlC0NuPkjel1m6c9E5
-         +Wag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745846503; x=1746451303;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uo+OVR5gNb3M4bxwFw5fjMkuNkzRB/QXTwOVVFcFS1k=;
-        b=QlwNoFlwmkvWSBUDVbEchb54mlTQ7PVhIS0F9ITUzCDmeoGoWqeJbrxjW1ys+sr6oF
-         zfbw4szuJOXUSDhOAZ9YnUB4kMeyCHP3S8eQntBB6BOILzXgeNT3FBI5cOtRjduK94/l
-         9y9F/OIKAY0sB2Cymq9VugLyXUal/25Y/hrC5/VbGSrbsZSUsFC6qPFkE++1j4TibXWp
-         7q0QQP3X7kJWQOhqBXGdxAEhfDEz1Z9MeoRF/coRMYCkIW4oMAixB48ozEvcmFbOQEYN
-         RU4qjZ9YydTJWXp0KkTnXIexBe5mbxCWPsjmqYp34tlvlLC0OfKvloYyZvMsVTTJtwwC
-         mX9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVf6fwINthys9BlTGN5d7DzUSZEOy/upqpd3JrfI6C/uOCB96EJno5ZmFMl3IJZCKNZIxyZCo5fIkM4QRw8d6o=@vger.kernel.org, AJvYcCX61rxpOED8GXksE0VfbNSHw+RqCzVfsL1/Rc0WV2V07K09lpYql9o8qdMTTdPy03Z4ATUOYvngCa6uz4k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYnJCgHy3GNr6yEi0mGJencBKUKw85e9TWCNQle0TG6LbpTFkW
-	XcWHxDXyjVlpNHL5h47iyyXFLbeqpDkygoLnE2LpMY+AZL3zrEBB
-X-Gm-Gg: ASbGncu1JvGhAtQKKuGoervldvdMXT7ymGathuwVHF3f70tx8gDQFo6aCl0B2GwOIN8
-	SpqeqR0WRfz8BjJP1vAmnVD00As6RcRhtUVnBGb1dxnL9CBXv+U7oc+OkX0YqpQTqzDVzBIW3Fz
-	DVdT9qac7cThKSSxe75uKiyKDDAiWIg5NX/Zqg4XhPrz3EXIkoAtNAxBsxuqiw/A8WymQhxH3vf
-	XVtk7Uqt82r77OvpzlsVjfRUeD9nybCq+qDWNZj+20wyRKv7TCKV3akJhAuFZXVS3FTlbuZA67O
-	DONJXPP2+pXkvWCPYXCY3YZKJ5dz0k2SmbC/oi77
-X-Google-Smtp-Source: AGHT+IFAnL1TYjzsmT0s1ApIsmTStAceBR5fCU2o/evdSc2z6KesSKaISIoJmuvDfVUbIR6LuK4Gaw==
-X-Received: by 2002:a05:6a00:4fca:b0:72f:590f:2859 with SMTP id d2e1a72fcca58-73fd73c847fmr15118376b3a.13.1745846503023;
-        Mon, 28 Apr 2025 06:21:43 -0700 (PDT)
-Received: from localhost ([216.228.127.130])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73e25a6ab48sm8206675b3a.91.2025.04.28.06.21.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 06:21:42 -0700 (PDT)
-Date: Mon, 28 Apr 2025 09:21:40 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Burak Emir <bqe@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Rong Xu <xur@google.com>
-Subject: Re: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
-Message-ID: <aA-A5ERYLP7r5zK7@yury>
-References: <20250423134344.3888205-2-bqe@google.com>
- <20250423134344.3888205-6-bqe@google.com>
- <aAkbw0jEp_IGzvgB@yury>
- <CACQBu=XaOohewMnLj9PvgR5rYBxzYSXf2OAjCzUY=GFTJ9L=+Q@mail.gmail.com>
- <680a6b54.d40a0220.27afd9.5e84@mx.google.com>
- <680abbce.050a0220.144721.78ac@mx.google.com>
- <CACQBu=VEATxHmFvt0TKbb+Hx5jeEGO8SL733=0m8LNnX6S+ZKw@mail.gmail.com>
- <aAuR_0om4FI5Pb_F@Mac.home>
- <CACQBu=VkFT5yDuDz098L+S+tGvtGHMvm4FaZ6p3sr9VCp88jww@mail.gmail.com>
- <aA9MDH8RjOH9hQ2E@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HBqxa9MH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F35C4CEE4;
+	Mon, 28 Apr 2025 14:01:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745848905;
+	bh=AkNxV8lGLsUolM5DerUPl2T/JNmeZR9jvv0aQqgBJHY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HBqxa9MHWKYwKc7sX3vr4SN4S52q/tJiJt6AwMSGlCmdqVrdBgiRMyopuu7yHfVG6
+	 OKQpAm/E+QU4GSeH/Hm3+0ViV0wrXOvcZDO8QS7azUa8d7KzwWBNTT88Uw7DPTNU+K
+	 CLAkBw0vwa8BQz+7w8Ut/X6hTAEjM1DxnAvpL2r0d0WrZOVffvEZYdwRN+e46TZFlK
+	 lVMvrPk0FBE+6glYDVzvum9Ug16ulFlnKHwAIaJXgLmpZcXhInhlLtu+ECBUcuLVxP
+	 QyYstHQEXKehfmMlSboO4wbH/t2CLW73sBxOARi16RPumBakCFlEw1lIJWYpwKyMRL
+	 jrHNA5VhFOdlg==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	zhiw@nvidia.com,
+	cjia@nvidia.com,
+	jhubbard@nvidia.com,
+	bskeggs@nvidia.com,
+	acurrid@nvidia.com,
+	joelagnelf@nvidia.com,
+	ttabi@nvidia.com,
+	acourbot@nvidia.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Cc: linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 0/3] Devres optimization with bound devices
+Date: Mon, 28 Apr 2025 16:00:26 +0200
+Message-ID: <20250428140137.468709-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aA9MDH8RjOH9hQ2E@google.com>
+Content-Transfer-Encoding: 8bit
 
-> By the way, if you add assert_eq!(bitmap.len(), BITMAP_LEN) before the
-> loop you may get the bounds checks optimized out.
+This patch series implements a direct accessor for the data stored within
+a Devres container for cases where we can prove that we own a reference
+to a Device<Bound> (i.e. a bound device) of the same device that was used
+to create the corresponding Devres container.
 
-That sounds cheating, isn't?
+Usually, when accessing the data stored within a Devres container, it is
+not clear whether the data has been revoked already due to the device
+being unbound and, hence, we have to try whether the access is possible
+and subsequently keep holding the RCU read lock for the duration of the
+access.
 
-I think nobody will reject this series because of +15% in performance
-test, neither +25%, or whatever reasonable number.
+However, when we can prove that we hold a reference to Device<Bound>
+matching the device the Devres container has been created with, we can
+guarantee that the device is not unbound for the duration of the
+lifetime of the Device<Bound> reference and, hence, it is not possible
+for the data within the Devres container to be revoked.
 
-Let's just measure fair numbers and deliver clear maintainable code. 
-There's a single user for bitmaps in rust so far, and it's you. So
-you're to call if performance is bad for you, not me. I just want
-to make sure that your numbers are withing the sane boundaries.
+Therefore, in this case, we can bypass the atomic check and the RCU read
+lock, which is a great optimization and simplification for drivers.
 
-Thanks,
-Yury
+The patches of this series are also available in [1].
+
+[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/devres
+
+Changes in v2:
+  - Revocable::access(): remvoe explicit lifetimes; don't refer to 'a in
+    the safety requirement
+  - Devres::access()
+    - rename Devres::access_with() to Devres::access()
+    - add missing '```' at the end of the example
+    - remove 's lifetime
+    - add # Errors section
+
+Danilo Krummrich (3):
+  rust: revocable: implement Revocable::access()
+  rust: devres: implement Devres::access_with()
+  samples: rust: pci: take advantage of Devres::access_with()
+
+ rust/kernel/devres.rs           | 38 +++++++++++++++++++++++++++++++++
+ rust/kernel/revocable.rs        | 12 +++++++++++
+ samples/rust/rust_driver_pci.rs | 12 +++++------
+ 3 files changed, 56 insertions(+), 6 deletions(-)
+
+
+base-commit: 3be746ebc1e6e32f499a65afe405df9030153a63
+-- 
+2.49.0
+
