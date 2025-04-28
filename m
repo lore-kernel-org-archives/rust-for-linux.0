@@ -1,175 +1,425 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2059.outbound.protection.outlook.com [40.107.100.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD261527B4
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Apr 2025 14:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745850173; cv=none; b=sUdXA6pTjx4CYvh6Upu+rQBbk7f/cNbtfmJ+t/ZIrBq/OWh5wJfKH2zovXGLQVK7xmy4fH7nQ9PI6J6PTUT618n+tCCl91KI85mHC6WgUsRtyQ6Flt1UPzG9ZRlooVCExo6G6SXVaXSd18FVa3dq1EWNVxSTydOdITAjEbe1gig=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745850173; c=relaxed/simple;
-	bh=hZEdc0bpwJBdYluEz9kgtxHO3SQNNIVXhxeoIhEyHBY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JxKxNcpX0QvR9wX7uSkOWG4UFJSnWVBx4YlJSzSZPy+S4/kcuYn4TMmnI8eRIGhIPg8E1H015iUq+zN85tmtYhhzOeOt2FgsxAaJCAtZg1fvzpxlCCPxHRHp/Jb5jIVeyZm/H8PRGFjQZbbEYdTeLTg+RHLt43LrrkPKdD4wOas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=slVRI8F9; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABA62AD04;
+	Mon, 28 Apr 2025 14:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745850457; cv=fail; b=HsqDqJpIzZFGGIwqAacnHYGLPTaKFBAZ+OhfyortZuDQr1ZVpxLFK/dJ2xi1C2BVufnzwU3YqJp0CGaVwI3hkUv3qqCK0HwYHjDtUB0SVcO6SCIjPUbqgktmUJ/s/DmgtmertbCzVWVUFmMnwazEM3Liz/o5vSJFXDR9H0GGpGk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745850457; c=relaxed/simple;
+	bh=Udi0blE4pinB51i0VR69UxfL5LanNX03a05tjw91njE=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=VIuX1htFr/THT8L3sla9qp6xlNasrDDnHTEhfDeazSG5X61TsAa5uxu5Fv9DZzLmMg3RHwYkNMSC6ykKKJ/5BD8T2kAN+J2SSGMLlOAF0cVVkXgAN9C1T/6ZbpvGQe15Jz4cT3HL7dg8oVeONoCQkZIF9CzMrhofrD2CcDeoKqc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=grqfAkXS; arc=fail smtp.client-ip=40.107.100.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="slVRI8F9"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-af5085f7861so3573018a12.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 28 Apr 2025 07:22:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1745850171; x=1746454971; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=k1VLQpwt/b6cSsAE8AUGeAK7cqEZniw2aJSi1QifTAo=;
-        b=slVRI8F9y2Beinolo+2xYjslmN7m0uhtXJ3CrUhoGZ8YMrFPZdITw2JpR/7KUzZbxA
-         1MNoGTKRtGlRLFmQq7FkxjszdnKxsAVgALpBbeAihOpNEnSC4IxoJXgwgEX8aBDm8zWK
-         SbDZBEawzVYkfF9u9fTNpoCqDNfaiGa9GezOBSqdU72yJaqXtarvI4ATRvx0o9gCYMA7
-         s9PKDGNJU2UkdSKwdA8AKlqcLMfKw00c2/M9Cj4MaoAx58sszQA+Js7MOO0fb49L4QMX
-         zAm7MvueEmLPh3LzwcPQDeyBEQTFLDNnsKyzGTa+JVMN+INyyKaDAjIrY9IzjbtRq9jK
-         24Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745850171; x=1746454971;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k1VLQpwt/b6cSsAE8AUGeAK7cqEZniw2aJSi1QifTAo=;
-        b=wCSvN3MnPn0OUkchFIZC2rVqlmHHNpUYvOVwra5qO7gA0ODmUCISmZFMc7eY2PtH+q
-         1RFYJ4XLU/MNLR+jAQciAiXOnc3s1ivoyqbMo809leQdCGF54OuvH/OXilTjGQSmbjGs
-         epGFrPAT8Nf+gb/Kyv/kKgwrocFwg+7lXM7Tk+H1KCBie+OAwEEEmsJwRnAfm05eTEne
-         0ieuqomMweubAg8jJU/TPDWEzzCrkuhwYhxF7/BtPPO62+SfZ9RVpq0BfE/twQ5AmKe2
-         vVkVLrFyw2GB7ngHGPYylD2NE1ClphyLw98v65tUCFbHyQDJsO6fNLhv4uJj5V9cOe0r
-         mMmg==
-X-Gm-Message-State: AOJu0Yw56naLn9qx1UZYlFkzgMlVBLKGtDTPkhGPUBGlGT2r/svRyaVv
-	dh+LbtVpA1X7YhAT969Jk74EGZM+JXvXApbL4PT6kKkh3MdwTJMttw57+SLmcw==
-X-Gm-Gg: ASbGncu/HeZAJqIDgOOtsPmHTDYp85kn7Qf4VUXhm3ytN9XO7FR4fooR0DAkY/VFYK9
-	ZNX+X63LYzVYmfiSGnHG9FSf66SVcZQHXa9cTLTCzJy8GGnUs5GeqndVh4PqBA8rSu6R740iKSy
-	gboLLP6boq7X3UWaUYunLizFHsDW/WkeLISPq8x4lSMVElPjxS68SkfN+nXGKzkiorEZMnjN9/W
-	jmv/wzqJP7k7Thm61xZ/1tgNzazB04b/5DH5JVhNx0svvSVj4Bgzau7Jy6N0kRcmF+zpMQMDC7L
-	vqr14WKSOF7AA8uwvlWg4kL+lEyVs7ps7Xx47GaiLrZ1Kdc=
-X-Google-Smtp-Source: AGHT+IFhDRZasLWzYreSoVHtE29Eoz0rL8n8l2unUGWLW4ysgVhFNqHQroyMVilFT/a4TTGY4GdyZw==
-X-Received: by 2002:a05:6a21:3942:b0:1f5:8e94:2e83 with SMTP id adf61e73a8af0-2046a402b0emr13340137637.8.1745850171204;
-        Mon, 28 Apr 2025 07:22:51 -0700 (PDT)
-Received: from [172.16.116.85] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b15f76f45b1sm7294859a12.1.2025.04.28.07.22.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 07:22:50 -0700 (PDT)
-From: Ayush Singh <ayush@beagleboard.org>
-Date: Mon, 28 Apr 2025 19:52:29 +0530
-Subject: [PATCH] rust: kernel: device: Add of_platform_populate/depopulate
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="grqfAkXS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vswjsf+3Dt7xEkZJAIkrPZYi83hOnhhx3wHUdfY3GZfiJtZtKylSIUhuy2pm3AVN+nUz3c3y7QqzdoHPx1R1CJNEOS6lWgyP2xFLzAZGWLL9y5TQr+cfli+ScdRj2oQzy2m+TwWJAohvWVHhHW+W0mdJNC6xu2vTOOI+5vuAQN55R1BRRyzfp1fgQqf/sD4sXQ7dAYH1uD4oatPAwH5QcrIKhnyCgtbOBbfXj5cY6tFVA7qcoal15TO9i+b2bxDBdFRw3iGu0nZQcH72CldsxEEPAKuv6Rb+Jc76/FoWQJY0/I2w5fKrW2ekXtWLzaPDtT+SFrSrts5lne8fGu7ewA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZPVZc4KehBSw2gCQfabwlDq/MSJWxQp6TL5ZN942Z40=;
+ b=TZmrsVzpKSvQB0eGfzh/iH0sXJga9LFWBkTf9mXs+zupsTOimMRRv1xhw8U70bQZyb03RMEP16GsjOuGvRoI8BPzDDRRAFRCHfdOhYVE2Z8jrAkaRgygebm+OGg2SZvMTx8C0cf7QiOLepuXzFZH/sYH3kDsnCjZi2VLj5lfI36k9+pP8Lz1j0Pf1KX5S8P/OunNNvt5UTJlP4g6OwGAniPtSIT2RZbaYQQMenBm5X7oi075E8rlhHwJJWpjFP/d7qye39AEwvloKNpfpl1Xa2/Tnv9AFofszmVGTUTYDRydLXjiVktjXjRodgPLFWh0Mb1FyepgtIorSMx5K7L+Nw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZPVZc4KehBSw2gCQfabwlDq/MSJWxQp6TL5ZN942Z40=;
+ b=grqfAkXSrrAev3Fr51cwBuOrCT7OirVZ+5t3VVakXVR5PoHD2Xd8RecZi4l21PeBy0ZYmX+b2s3kbcKNTJCUUJGFQXutcpc4UtOlHuE2pPlWgySfGTaQbJ47Xj9sFpnST2sKNrY1cFAK82e+naOtU5/J9W7+eDq36/m/WV3nGSPE6YU2grbTixm+4K4OHPJnqhuAGtk9OrjBZPxtmFPWAb5wcnIOfJ3QeJiJcmRaNCsHsmtXKI14JH58Z1LdiMTEZVpWcupOeWT17sj/Bbftti9NKMVOkuLh8Vu9gQnxd2H0xLGgdR/XmVJBE8pWthKZ7+qOso3x82vHicI04a9Juw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN0PR12MB5835.namprd12.prod.outlook.com (2603:10b6:208:37a::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.30; Mon, 28 Apr
+ 2025 14:27:30 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8678.028; Mon, 28 Apr 2025
+ 14:27:30 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Apr 2025 23:27:26 +0900
+Message-Id: <D9ICBZ1DGGVU.2AKUD3X883TMB@nvidia.com>
+Subject: Re: [PATCH 06/16] gpu: nova-core: define registers layout using
+ helper macro
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
+ <corbet@lwn.net>, "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs"
+ <bskeggs@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250420-nova-frts-v1-0-ecd1cca23963@nvidia.com>
+ <20250420-nova-frts-v1-6-ecd1cca23963@nvidia.com>
+ <aAdvdczmQYBAS7vs@cassiopeiae>
+In-Reply-To: <aAdvdczmQYBAS7vs@cassiopeiae>
+X-ClientProxiedBy: TYCP286CA0340.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:38e::20) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250428-rust-of-populate-v1-1-1d33777427c4@beagleboard.org>
-X-B4-Tracking: v=1; b=H4sIACSPD2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDEyML3aLS4hLd/DTdgvyC0pzEklTdJKM0SzNDcwtjExNDJaC2gqLUtMw
- KsJHRsbW1AG/5dUJiAAAA
-X-Change-ID: 20250428-rust-of-populate-b2f961783441
-To: Jason Kridner <jkridner@beagleboard.org>, 
- Deepak Khatri <lorforlinux@beagleboard.org>, 
- Robert Nelson <robertcnelson@beagleboard.org>, Dhruva Gole <d-gole@ti.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Ayush Singh <ayush@beagleboard.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2578; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=hZEdc0bpwJBdYluEz9kgtxHO3SQNNIVXhxeoIhEyHBY=;
- b=owEBbQKS/ZANAwAKAQXO9ceJ5Vp0AcsmYgBoD48r/9QXO1GQ26m1PVIh4wMiOl0GiUzNErDjd
- 1JLRf4dKUaJAjMEAAEKAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCaA+PKwAKCRAFzvXHieVa
- dKFvD/0cneVTvkFhFrmGWokLYNi5Ku9sTRvwELaqEiTh+ADmyIvHxTq1fUWq0iK74amHKsUSGzX
- 0Uo/Z7HVIEt7nFdcKN9iIsUUcIf2u62GJBSK7GB7mI7nKAJaqzP86TeU7MvnhaWhY4YHJ4swOWT
- ycJ3EEsRQy8udKMn8hpq0qcgN+hBipnZISxyyT0Rg16fOXNYUA3G7gABp+NqwXhAH3/7HzLn78A
- Bs6wrNC3tRMSV3lnjlMdXDlVZBqPmKgsbHUXwN/bFcAaoAehreXJt7s3a/xJkG4P5j/44kFl7JK
- TX+R26iYVBZgegXgdHdL5LLg3WbMRfCRx8y3lMLhll1Uk+/fx6X+oI85PPhoj5KtHfCjsGL2w+Z
- 0rxen4xj373HB+AVfTRDICmAOYPihCuI4H4Ls45eicOvosh0PTZIz5EvnzpwPvJ8Cu4blx+xv23
- p4m++tzJ5aqB7Yul9x54AZ6snPZ6KDtuK63RUkPboHRQ0E4LwB/i2ky7vPssn8mO95uGJV0KisV
- q6DUD9HF8Zo7Ss2/ZK1BFcCMe8Qii8AT1MgTFBPxsA40hwGYtlK1w+3pugSjqCUF6WXX1Rkqq3T
- 9nPKLqs9HPtIC62HpKpdfQgkLqo+DU7EnpAouwRs0JTbx3n47q76VsiB6MSDb0S3PDmHIl92b3D
- 7izHlHjHJXOA9MQ==
-X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
- fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN0PR12MB5835:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8bf375fe-729c-49bb-007f-08dd8660ce55
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UThOZ2NWV2hxRDJmTHM4bjF1UXJnSzAxcElnS0habjJCUDN5N1NkeDZ0RmQ3?=
+ =?utf-8?B?K0xDTi9yWVJ3WHk2V0hvYlVGSWdtME4zVUQ2dFJkbEZ0STU2ZXRMODQweTY2?=
+ =?utf-8?B?bVcycHRua1lkVUw0clVMWVNvYjZHY084MitkRm5SbHBqYjFnZzBuQm1aZ1Ez?=
+ =?utf-8?B?Vkg5Rk5nUTh6cjRlb3orcjBUbG90bnJVcGZLcHFmL2VRM2RFWmlIUGNpeVpV?=
+ =?utf-8?B?d05vUVR6elRKODRyL09lZXY5bmRFUjdPTi9INWU5RXpVbTVFcndFTkxienhT?=
+ =?utf-8?B?M29CVGdPeU9PK3NNTmFwTDVYWEt4Z04zczIxRUZYZmhHQVhIV2lFTDBpSGtw?=
+ =?utf-8?B?ZnQxRFpqWGVvY3YvYm1EVGlSc3lSeFRwTkpWeHJCMGh3Q3Z1cnZwaDB5ZVh1?=
+ =?utf-8?B?QjhqbnhMZlh4SVU0dnlXcHlydjlsZUpmSWFmR2dtaExLRVVDSHJUWWgvaEtl?=
+ =?utf-8?B?TS9ZREwwbUUzVXFMT1lFZnhrMGZyR0NOVEY2dHBKeDF6bmJ3K3Zaa3ZEcFlu?=
+ =?utf-8?B?UEhvNjR0bDZjdzBFazZLU1VuYkE5bmhlUnVGUTd0T3VJZzN0UWZDWDYyWkVL?=
+ =?utf-8?B?WWNWM3R4WDAvZktIVC9oWUZUWUw2dlo2a1Z5dE5USGFnT1c4TjhWWVJJeGVJ?=
+ =?utf-8?B?aEFiT25UUjJVVlpkRzRaUUo3WjZKL0hlYmxJRGtIa3QvMjlDcDd2Q1kzbjFy?=
+ =?utf-8?B?NVU3NEVZZVZPa1g4N21xVGZSdlI0TWprWDh4Q0x2NGlhU2dyS3JHREh2S1dN?=
+ =?utf-8?B?aitWVERhbmJIR2pMcnJ3STdLbkZGS0hoZXBQaXZveDhtbmluMkpJOXMyQURp?=
+ =?utf-8?B?R1lmVENCRG95ZzFmNzI3L1EvWGlYSmtMdndwcEZxMXNDdWVsaTQ1Wnk0eWph?=
+ =?utf-8?B?KzhhZVFuU28xUHo2NlNpeXZKOW5xZXZucERWWlhyMWpHYUpVZ1RvOTBHaFhw?=
+ =?utf-8?B?U2JVYVpWaHNZaTM1LzgzeXcxQjNObVp0Q0VZb1ZKRFJvQmZ6NS9VRG0xa3NX?=
+ =?utf-8?B?YUV0UHYwTkt5RzVBSFdxMnJSUlhEWFN0TGpUdUFtN1dnZDBlUUpvQWdjdkJo?=
+ =?utf-8?B?aWxXUHVrSEdzMUx4bWw2M2pSQnZnUGlsR0xiL1pVT24yMFYxYzF1cVdVL2Zx?=
+ =?utf-8?B?MXVHeDM2dnM1aHloTWRzcUgrK2UyVTQzSlFQdVZYSXVpYkZNUWlNTnVFeTlL?=
+ =?utf-8?B?ZzQzN2QrNWYzUms5d2ZzeTErVjBpbGl4SDVjRHplbCtaaWc2M2wrZDBGVGlB?=
+ =?utf-8?B?cUNscUV6WG5wMC9qNWlLRFRzQmdkRzFNMUFZUVpVdVpaMi9HVUFDYUI0NFRL?=
+ =?utf-8?B?NVJUdFBkMUhTYlJyc0FtRWtPdVRhMGQ1bDd4d0tGZFI5M1k1MC9iOGF0WUVk?=
+ =?utf-8?B?NVFNNlFGRzRqNmhGWmRualZodS9SSG1YT2Z4R3BEdm1tWktWUGVqR2dmYkxo?=
+ =?utf-8?B?YVhHSnNibU05SWkyamlFUXBvaFg5SDFWS3pwU0F1RWNjamhDbUpiMUNaY1FP?=
+ =?utf-8?B?dXBjdkhvaXdxK1piVnE2aE9aemh6bk1SaFhVY2hvSWw5YnVDdnBiUEhuUERu?=
+ =?utf-8?B?ZWJ2RGhFbXpoVE1mVGt0bXlKcXYzMGtSUzdFMlRBSk95ZVlRalp4Zlp2S1Bi?=
+ =?utf-8?B?eGlHVWtlSHB2T0pFWEpib2I2aUZFdHhPM1NsVEhqb25lZDdwMjJDSzFJNi9n?=
+ =?utf-8?B?WkdmNmxQeW5QcytSMEgxdW9pK3Q2bDQ3U0pvRDk2eEpIQzhMWmdnWFJNZG1F?=
+ =?utf-8?B?b0l1WjluVVZWOXRjMGI5Y0xDbWVmZHRFNFBUUnZVL0lhTkJlMUNNaDNMdnRM?=
+ =?utf-8?B?Wlg0TmJuclQ5bkdUYXdWd1VORytYbWltR1hia3NLTkFlWFhkTFVyNk1KTVc3?=
+ =?utf-8?B?QVRRVm1HT2cvLzUxNm1seTE3NkdHTElGWnhOSkk0cEZxMVVUMDZncjZ6WTg2?=
+ =?utf-8?Q?bPdYuAg1vDk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WnFOYUVUdFFZalpUVGtjTDl6T2VrUjN2TFdJRElGMjlwd0NTU0FFQ2kzbEdZ?=
+ =?utf-8?B?V1liY1g5aFBQVThuSXJmZThpc2ZBWHVianVoR1VTNnBZcXIvcWpjajRDMVll?=
+ =?utf-8?B?U2psbzhFd1FCdUp3NWZGWkI4QjNRS0w1ZmppUTY0Qm5ONUk5cGNRN0UrbVVo?=
+ =?utf-8?B?eG5QNitlY01Wc2RqanBwQzltUW1hSUp3WXQ2QmlXRExyUElPWE1XQzRtVVVr?=
+ =?utf-8?B?SVc1OW1NUlcrUFBDNVRvb2lUNDZXSEhkeEVvVXJnbGh3cVR5NktXc0lSRjZK?=
+ =?utf-8?B?a0V1RTFIbTNSOGdYYlpqdFJCUVF6bGFFeVJoUDBqQ1BjNjFkM3d4RnZCS0cv?=
+ =?utf-8?B?YlJIZVgrb1VCWWxaK28xZ2dIR1VPOENYUDZQWERRTyt4NGVOTEc1UXFHbXMx?=
+ =?utf-8?B?SlFjS2VrS21SQjV3NGlKam5iR05PaENiaGQ4OUtJNDAvUm1XQ3d6eEQ4ZC84?=
+ =?utf-8?B?UXpsN2FONFJHS0l2SUE1UDl6K0s2ZlNYekZRcndFM2s2Z25GeGp4SnhKY3gx?=
+ =?utf-8?B?cmV5SnNyZ3o3bWhCbEpBbm5ORXVQc0p0UUVETE9NV21jcGJLOEoydVhTZnpK?=
+ =?utf-8?B?Z2J2NUxJbENjN091MmYra0xWVkxiWmZqNTRMTitOcEJ4a2RQdmhYMU1vQXJr?=
+ =?utf-8?B?SEpFR3JNVDByQWlnTjRWSlliRFA2R1V6Q1p1ZXFBWmdibUh3WW9ucDNkSUdl?=
+ =?utf-8?B?NXhGaFhvUmt4TS8xUHNDaEJIYmZGR2Qwek04U0ZibXE4b2VhQkdCTG9aOWJp?=
+ =?utf-8?B?UjE0TVF1OHlpT0h2RFdqL3U0dENBUXdQWWNJemUya2Y1b1VIYlZHT2ZNNElq?=
+ =?utf-8?B?dWJKc2VNdkdla1Y1L1pyQjFiUy9jMTZ3aXk2WVlpa1cycXlpSFdxVFJra3FH?=
+ =?utf-8?B?Q2lrL2NpQ01NVGJDaU9jNGE3c0NCT3hkb3FpekxaNlhVRWVteGZ6MXFRcEVl?=
+ =?utf-8?B?NmlpZk5HWDBQekZ1dnRpVllRY28wZ0ZpaWd5MkUyK2RBeG43RFRzYU5PMHAr?=
+ =?utf-8?B?MnR2dVo5MTlXSERMUDFnSDZMcnNYM3NIRE5yNm5LeDkra2crOEwvYjgyMkF5?=
+ =?utf-8?B?Qkt0WDJiUWlBL0N2cms5Vmp5OW5OQ1R3MjFtd1prYWUrZmlvaVl6VUdJZFcz?=
+ =?utf-8?B?RWRPM0d4RnowVlBCQzhnU2JjSTRqeElnbHFMNm55czhKZU1JK2dqcGpaanUz?=
+ =?utf-8?B?MHRkVTVnb25ReEp0bkpod2NQRnhIK1VtOGdNdFJVZkRQRGMzNFprOUliNDIr?=
+ =?utf-8?B?RTRyNFdBWWhWckNUNmp5bTJKQzdwRktqNHk1cThMU3BGYVdYODc5bVJtNjZD?=
+ =?utf-8?B?a1M3UHBTM1ErZVFVc3pBTnNIOTl6MFpDU1N6NXV4UTl4MlFmbXNyK2RMWUhW?=
+ =?utf-8?B?K2QzRE5PenJMcHgvbzBrNVlkckR2dW5ONlZ4ZWxVbktROFpTZzdzbEQxK1Mw?=
+ =?utf-8?B?OTRIQ05kV1JxbFBvVndKaDJFa1BiaC9lMTdCUngzQnJzRHBzK0g1Wk55blV3?=
+ =?utf-8?B?aUZjVk1UMlpIS1RVQnJ1VnovSDNycEVTSnRFcTJ5L2syblRjMFBxektEajVW?=
+ =?utf-8?B?d21ISXQyT1pKL2NEWm1JaU5kdXBvRk9xdHcvTm9YWGgwajNUUkJURHhqWFJv?=
+ =?utf-8?B?MmpVS2V5RzdTbTEzbC8rUEZuWkpwUWJ6MlI1K2tCWVJpTHI4NzFiSjdxKysr?=
+ =?utf-8?B?Wll0b3ROZDU0eHAwNnpqbGwxeHV3YytkMW5zQWVoTE9hL0IrZDVGUlduY0tq?=
+ =?utf-8?B?OXpGWi96UjRXUGVuaUk3MkF0WmtFcyt3VTBoNEV2blI3S20vV2NuL2dVQkR3?=
+ =?utf-8?B?NnhnbTZWU2xEVW9wZzRkaTFCdVp6cGxNZVlzU2tnejBYWnl4dUh1MFVmMEJa?=
+ =?utf-8?B?cGJNNU5zWFhGZmtiUURBeEt1TkNnSkdtZGw5MHdlMDlBTWxmMkp4R3FHMFR6?=
+ =?utf-8?B?aFhZVG5xbWdDOWxCTW4zTG5zY25mODRXQk9FYzB5MmQ5aHRNU2F2dnhEclZt?=
+ =?utf-8?B?WDNUaURtblVvdDlYZDZEQ0tXUms3amFEQ3NOQ3NKYk55RXhsS2VRRDN5blMv?=
+ =?utf-8?B?QWc5dkhtQzBxc3ZWd25VcVdLcjlhb3NPdWhtTGx3VkRGMTgwaFdzbWR4dTFF?=
+ =?utf-8?B?eXNXK2sydVBRNGU0YWJ3TTFOOERyS0d6TGYxczgyMVYrZ09FcDg1clJrRU45?=
+ =?utf-8?Q?yq1PpqsrKy0daQ8+phCnviRehwIYlMXEjrW3piX5eh/k?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bf375fe-729c-49bb-007f-08dd8660ce55
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 14:27:29.9034
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oznL7NMnACOZ/eoS20Wy9qwkSn97A6RGO4DjHYRfD1lKgiC3b507/EILKZZI+zVUXjcZktm0BRV5w0TvAPb2dQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5835
 
-Add abstractions for managed of_platform_populate and
-of_platform_depopulate.
+Hi Danilo,
 
-Signed-off-by: Ayush Singh <ayush@beagleboard.org>
----
-Allow calling platform_populate/depopulate from Rust code.
+On Tue Apr 22, 2025 at 7:29 PM JST, Danilo Krummrich wrote:
+> On Sun, Apr 20, 2025 at 09:19:38PM +0900, Alexandre Courbot wrote:
+>> Add the register!() macro, which defines a given register's layout and
+>> provide bit-field accessors with a way to convert them to a given type.
+>> This macro will allow us to make clear definitions of the registers and
+>> manipulate their fields safely.
+>>=20
+>> The long-term goal is to eventually move it to the kernel crate so it
+>> can be used my other drivers as well, but it was agreed to first land it
+>> into nova-core and make it mature there.
+>>=20
+>> To illustrate its usage, use it to define the layout for the Boot0
+>> register and use its accessors through the use of the convenience
+>> with_bar!() macro, which uses Revocable::try_access() and converts its
+>
+> s/try_access/try_access_with/
 
-To see how the bindings look in usage, see my working tree [0] for a
-connector driver  I am working on.
+Fixed, thanks.
 
-Open Questions
-***************
+>
+>> returned Option into the proper error as needed.
+>
+> Using try_access_with() / with_bar! should be a separate patch.
 
-1. Function names
+Agreed - done.
 
-The rust implementations are based on devm_* versions of these
-functions, i.e of_platform_depopulate() is called when the device is
-unbound. Since in case of Rust, these are methods on the Device struct,
-I am not sure if the `devm_` prefix is required.
+>> +register!(Boot0@0x00000000, "Basic revision information about the GPU";
+>> +    3:0     minor_rev =3D> as u8, "minor revision of the chip";
+>> +    7:4     major_rev =3D> as u8, "major revision of the chip";
+>> +    28:20   chipset =3D> try_into Chipset, "chipset model"
+>
+> Should we preserve the information that this is the combination of two re=
+gister
+> fields?
 
-2. Maybe should be functions instead of methods?
+I've tried to reproduce what the current code did, but indeed according
+to OpenRM these are two different fields, `architecture` and
+`implementation`.
 
-Not sure what the policy is regarding this.
+There's also more: `architecture` is a split field, with its MSB at a
+different index from the rest. Right now the MSB is always 0 but the
+lower bits are dangerously close to overflowing.
 
-[0]: https://github.com/Ayush1325/linux/commits/b4/beagle-cape/
----
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/device.rs           | 10 ++++++++++
- 2 files changed, 11 insertions(+)
+Thankfully, the macro doesn't prevent from extending its definition with
+an extra impl block, so I've done just that to provide the correct
+architecture as well as the `chipset` pseudo-field that will be the one
+we use in the code anyway.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 8a2add69e5d66d1c2ebed9d2c950380e61c48842..51ec0754960377e5fc6bc0703487bf2086eff0e6 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -25,6 +25,7 @@
- #include <linux/mdio.h>
- #include <linux/miscdevice.h>
- #include <linux/of_device.h>
-+#include <linux/of_platform.h>
- #include <linux/pci.h>
- #include <linux/phy.h>
- #include <linux/pid_namespace.h>
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 40c1f549b0bae9fd9aa3f41539ccb69896c2560d..7186fe9658ff2a143a43bd6b3500c9a6d6ef9630 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -207,6 +207,16 @@ pub fn property_present(&self, name: &CStr) -> bool {
-         // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
-         unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
-     }
-+
-+    /// Populate platform_devices from device tree data
-+    pub fn of_platform_populate(&self) -> crate::error::Result<()> {
-+        crate::error::to_result(unsafe { bindings::devm_of_platform_populate(self.as_raw()) })
-+    }
-+
-+    /// Remove devices populated from device tree
-+    pub fn of_platform_depopulate(&self) {
-+        unsafe { bindings::devm_of_platform_depopulate(self.as_raw()) }
-+    }
- }
- 
- // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
+>
+>> +);
+>> diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-cor=
+e/regs/macros.rs
+>> new file mode 100644
+>> index 0000000000000000000000000000000000000000..fa9bd6b932048113de997658=
+b112885666e694c9
+>> --- /dev/null
+>> +++ b/drivers/gpu/nova-core/regs/macros.rs
+>> @@ -0,0 +1,297 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Types and macros to define register layout and accessors.
+>> +//!
+>> +//! A single register typically includes several fields, which are acce=
+ssed through a combination
+>> +//! of bit-shift and mask operations that introduce a class of potentia=
+l mistakes, notably because
+>> +//! not all possible field values are necessarily valid.
+>> +//!
+>> +//! The macros in this module allow to define, using an intruitive and =
+readable syntax, a dedicated
+>> +//! type for each register with its own field accessors that can return=
+ an error is a field's value
+>> +//! is invalid. They also provide a builder type allowing to construct =
+a register value to be
+>> +//! written by combining valid values for its fields.
+>> +
+>> +/// Helper macro for the `register` macro.
+>> +///
+>> +/// Defines the wrapper `$name` type, as well as its relevant implement=
+ations (`Debug`, `BitOr`,
+>> +/// and conversion to regular `u32`).
+>> +macro_rules! __reg_def_common {
+>> +    ($name:ident $(, $type_comment:expr)?) =3D> {
+>> +        $(
+>> +        #[doc=3D$type_comment]
+>> +        )?
+>> +        #[repr(transparent)]
+>> +        #[derive(Clone, Copy, Default)]
+>> +        pub(crate) struct $name(u32);
+>> +
+>> +        // TODO: should we display the raw hex value, then the value of=
+ all its fields?
+>
+> To me it seems useful to have both.
 
----
-base-commit: 33035b665157558254b3c21c3f049fd728e72368
-change-id: 20250428-rust-of-populate-b2f961783441
+Agreed. However this macro has changed A LOT since this first revision,
+and I have used TT bundling to make the rules a bit shorter. This makes
+the details of the fields inaccessible from the rule that generates the
+Debug implementation...
 
-Best regards,
--- 
-Ayush Singh <ayush@beagleboard.org>
+I'll probably try to rework that later, or when we move the macro into
+the kernel crate - meanwhile, I hope we can be excused with just the hex
+value.
 
+>
+>> +        impl ::core::fmt::Debug for $name {
+>> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fm=
+t::Result {
+>> +                f.debug_tuple(stringify!($name))
+>> +                    .field(&format_args!("0x{0:x}", &self.0))
+>> +                    .finish()
+>> +            }
+>> +        }
+>> +
+>> +        impl core::ops::BitOr for $name {
+>> +            type Output =3D Self;
+>> +
+>> +            fn bitor(self, rhs: Self) -> Self::Output {
+>> +                Self(self.0 | rhs.0)
+>> +            }
+>> +        }
+>> +
+>> +        impl From<$name> for u32 {
+>
+> Here and in a few more cases below: This needs the full path; also rememb=
+er to
+> use absolute paths everwhere.
+
+Indeed, thanks for the reminder. I hope I got them all.
+
+>> +            const MASK: u32 =3D ((((1 << $hi) - 1) << 1) + 1) - ((1 << =
+$lo) - 1);
+>> +            const SHIFT: u32 =3D MASK.trailing_zeros();
+>> +            let field =3D (self.0 & MASK) >> SHIFT;
+>> +
+>> +            $( field as $as_type )?
+>> +            $(
+>> +            // TODO: it would be nice to throw a compile-time error if =
+$hi !=3D $lo as this means we
+>> +            // are considering more than one bit but returning a bool..=
+.
+>
+> Would the following work?
+>
+> 	const _: () =3D {
+> 	   build_assert!($hi !=3D $lo);
+> 	   ()
+> 	};
+
+It does! I can even provide a useful error message. Added this check as
+well as the one making sure that $hi >=3D $lo.
+
+>> +macro_rules! register {
+>> +    // Create a register at a fixed offset of the MMIO space.
+>> +    (
+>> +        $name:ident@$offset:expr $(, $type_comment:expr)?
+>
+> Can we use this as doc-comment?
+
+Oops, I forgot to propagate it somehow. This is fixed.
+
+>
+>> +        $(; $hi:tt:$lo:tt $field:ident
+>> +            $(=3D> as $as_type:ty)?
+>> +            $(=3D> as_bit $bit_type:ty)?
+>> +            $(=3D> into $type:ty)?
+>> +            $(=3D> try_into $try_type:ty)?
+>> +        $(, $field_comment:expr)?)* $(;)?
+>> +    ) =3D> {
+>> +        __reg_def_common!($name);
+>> +
+>> +        #[allow(dead_code)]
+>> +        impl $name {
+>> +            #[inline]
+>> +            pub(crate) fn read<const SIZE: usize, T: Deref<Target=3DIo<=
+SIZE>>>(bar: &T) -> Self {
+>
+> Not necessarily a PCI bar, could be any I/O type.
+
+Indeed, renamed to `io`.
+
+>
+>> +                Self(bar.read32($offset))
+>> +            }
+>> +
+>> +            #[inline]
+>> +            pub(crate) fn write<const SIZE: usize, T: Deref<Target=3DIo=
+<SIZE>>>(self, bar: &T) {
+>> +                bar.write32(self.0, $offset)
+>> +            }
+>> +
+>> +            #[inline]
+>> +            pub(crate) fn alter<const SIZE: usize, T: Deref<Target=3DIo=
+<SIZE>>, F: FnOnce(Self) -> Self>(bar: &T, f: F) {
+>> +                let reg =3D f(Self::read(bar));
+>> +                reg.write(bar);
+>> +            }
+>> +        }
+>> +
+>> +        __reg_def_getters!($name; $( $hi:$lo $field $(=3D> as $as_type)=
+? $(=3D> as_bit $bit_type)? $(=3D> into $type)? $(=3D> try_into $try_type)?=
+ $(, $field_comment)? );*);
+>> +
+>> +        __reg_def_setters!($name; $( $hi:$lo $field $(=3D> as $as_type)=
+? $(=3D> as_bit $bit_type)? $(=3D> into $type)? $(=3D> try_into $try_type)?=
+ $(, $field_comment)? );*);
+>> +    };
+>> +
+>> +    // Create a register at a relative offset from a base address.
+>> +    (
+>> +        $name:ident@+$offset:expr $(, $type_comment:expr)?
+>> +        $(; $hi:tt:$lo:tt $field:ident
+>> +            $(=3D> as $as_type:ty)?
+>> +            $(=3D> as_bit $bit_type:ty)?
+>> +            $(=3D> into $type:ty)?
+>> +            $(=3D> try_into $try_type:ty)?
+>> +        $(, $field_comment:expr)?)* $(;)?
+>> +    ) =3D> {
+>
+> I assume this is for cases where we have multiple instances of the same
+> controller, engine, etc. I think it would be good to add a small example =
+for
+> this one too.
+
+I'll add one.
+
+You probably won't recognize this macro in its next revision. I've
+finally read the little book of Rust macros and hopefully it is looking
+a bit better - the definition of register fields notable should feel
+more natural. All in all I think it is definitely better, but that
+doesn't necessarily means it will be easier to review. ^_^;
+
+One note, as agreed on Zulip I will rename all the register names to
+capital snake case and disable the `camel_case_types` lint on the `regs`
+module, so we use the exact same names as OpenRM. I will also make sure
+that the names of the fields match (but will keep the accessors in
+non-capital snake case).
+
+In parallel I am also prototyping another design based on ZST constants.
+If it works it would allow a few more things like register arrays, a
+more natural way to perform I/O, and would remove the naming convention
+issues since registers would be accessed by constants which should be
+named in capital snake-case anyway. My hope is that this version will be
+the one we can use in the kernel crate, but I don't think it will be
+ready before a couple of cycles at least (if it works at all), so in the
+meantime let's keep refining this one.
+
+Cheers,
+Alex.
