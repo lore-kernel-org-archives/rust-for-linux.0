@@ -1,47 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B8F1C5F14;
-	Mon, 28 Apr 2025 16:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEE527A911;
+	Mon, 28 Apr 2025 17:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745859447; cv=none; b=lEON2X9c/hl3O/uVeKFLE/wjgMHBt5T79efH9+XaXIvHCtFgLhVPuNyYpJX3dfsL9LEGyDoRXfvu6vN+632G2ftY8mFkHbHuvBZ1aUHSInSzYinRq4QRI/jnEMkgZufME3feAdZF3EGI5k/jHD68+RRzmb6Eb4SCZMEWOmhrDmU=
+	t=1745861963; cv=none; b=XJjkqA7mDsleLo8pGNXAoQRhagmvxywO6TUN7AW83ozC7ARTjby/5biF+JqJY4PpUYlMbBaxyfOvYLK2O+EMET3hjQfUkuOtezdoegWT0wAeg5khcJw9wI0AW2EPgOi0zOJWRNW2ldHZmx/ZFjSuvrQKBQzGhpFEpf1vbIDqo1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745859447; c=relaxed/simple;
-	bh=wPE11EiQsJSjvy1z6vnGpurxWJ0BYq1at4VNRv/ng1U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rvVt2+mKFP4IMIxV86dIaDfYcJhZpvFcR31LQWS0DDH1q3iCBaJvaoP21fB9AtEk60i4O/DVJz4OEI4oYmQCpG2OQZC8xH+VhfjpLRj+1mcjeHjjWXCytfENeG0GUc//mG6MBtumn4iKcvFhPVLvDrA/rffDw0LNGElrOFqwT5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKwG7OtT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745861963; c=relaxed/simple;
+	bh=fQMNSjnB4gVshimuVVYOR1fmCiWCDutclLSx2h4MeLc=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=smszF5hnSWEYuP7DzwUxLb+jvHVdwvoAPxKrXLjq3y4uIxz1jpmzesCMjfI6nZ9ng6xRENdnoHcuCi6kv7ta/dPnEQusE5/J58M3ZzQNbmVgh+FsfzUhiGNOL54ocvpsrJm9jty5w3D9f91y5ksBmQGcqC3o9YKWq7N0qEpbw+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IkH1lf/X; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKwG7OtT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD1CC4CEE4;
-	Mon, 28 Apr 2025 16:57:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745859447;
-	bh=wPE11EiQsJSjvy1z6vnGpurxWJ0BYq1at4VNRv/ng1U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oKwG7OtTsOd809Si2aOdp5mSlorANtsp80EBZh7FBL1+25QYbsV/P8hZ/fLOFNBSx
-	 UCq18PDjomiYRJrF91jslAPyfzxFdTLeNmQBefAhYSCtZD6oBoyrBxobGW7K8AX6dK
-	 Yj2IsQU0gWJjNvZX3omES3/NwdMcID7Yd+JuxCqQ=
-Date: Mon, 28 Apr 2025 18:57:24 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: Jason Kridner <jkridner@beagleboard.org>,
-	Deepak Khatri <lorforlinux@beagleboard.org>,
-	Robert Nelson <robertcnelson@beagleboard.org>,
-	Dhruva Gole <d-gole@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: kernel: device: Add of_platform_populate/depopulate
-Message-ID: <2025042824-sliver-slip-b585@gregkh>
-References: <20250428-rust-of-populate-v1-1-1d33777427c4@beagleboard.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IkH1lf/X"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c08fc20194so1174305185a.2;
+        Mon, 28 Apr 2025 10:39:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745861961; x=1746466761; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IDDLCOEVMpC0X/vw5gShRSSSgzF0jyB8R6+odx3QnJs=;
+        b=IkH1lf/XzAp+1laraHickaotwFBDJJU1TZaDN2urkIE7gL+Cz9DNKGPtQAONqj+3eD
+         2RiuVZyJix86JZRxq/kf5zipV9L6EwAARR27ewdjFiJ7/5wasjYLyk9RmgpRwXxurL7Z
+         3xOcX3puXhcMfB5qJZP35ihCTKkTdkE3/YdTRMdvrJ+7wT58xuHYvI2yBT6hJ2RiarX0
+         AbZu77HpZQOFJREJvwpfDQFv+5CzhWWi6cYdAqaiWDjXMhdD7pYnUR6kj1p7LjRimhVA
+         uHhKA6fO8+mbl1W+jtVQ+rsiU8LIA/ruF6C01p2B08zW6gwBh86It6W8HcrYR5Mo4XXa
+         hyMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745861961; x=1746466761;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IDDLCOEVMpC0X/vw5gShRSSSgzF0jyB8R6+odx3QnJs=;
+        b=sYDM2BMzBu0Cp6LIcbOUgVxfKWBTUxnY7dBOI3enbs5nIOb4i7y1ofFzTzlZQKLK7p
+         MB+PfXOXqztyJ8UHoiZkepMykPyLPEwS1esjlkaBM9vD5UJg3eftklE7DIossgC826iM
+         UZFXMcHVG5WYMsQWlNFdo4recn82RusSjp2QpBdBSPtRv/QxyOk4CA/adfZApViQMMAj
+         sZl9Etgodw9LWequHZpiZmiQpMYfvMgYOie6739sFdg7ZfBTM94yammsJ7Oe4sigCKsS
+         8KYV5zIbYDcY+IBtlzSdLeZqeoqZlq6ZexnbH3f76XZspWHowvxOT2T1htluS6XQz5+o
+         Divg==
+X-Forwarded-Encrypted: i=1; AJvYcCUl0gmLnU3PiXy1BTlEuUSfmMoNZ9tGFxgBeV1CCC6C/GibR/lhnUbffmt0+KVyJuvKm79fvcr76a+8@vger.kernel.org, AJvYcCWim7TI8xvI1Pbd8x3Yhd9qx2PUmUeoVOKkgxGS7FYjtu4vGJpC35l2BSnfIeMsLQEWXHcmEgy4LEaGDBKekRk=@vger.kernel.org, AJvYcCXmKh9FFtJ2/H5ox0meODEauP5k2bXJTgXrKfm3vPKY4B8+rvm+jquv1xTbUj0JFRAHvQmPIEiPqO2wEsU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbAR1hSET0T2fFTOWtH3gYuc6/OtA8Nx3CH3+5ZYjlLp6QtRvD
+	k1zzNQt3Dq8iVzvRwfJ+hj+IgNzEyVhfl1QvGDIYOFSHToryl+9q
+X-Gm-Gg: ASbGnctIXx6gkEK9K2PJJLgBuQ9wulVl6fO2VSunEJKSj20n7c7PtfM77SPIhEd+z+/
+	FXHZ24SxslS5UhkiM7JOgjpyYJCilPNU0Cv2vsB/YYGDhS/K2GuAFBI1KqCm/UDjum1TdE5Ubqd
+	GM1riivnOx0mygi6w5pCloGcHucNeWTdhakdEcVENsFeWrCCF4Kqhrry/winqeqqPEj8G188o1i
+	Sz/WCIWn4WfVdTE24dEhTUAEUm2r1f/DEBik5Z7OqO3fiZDSNnvsflKfvFX6vmFpeCG6ZLgRtau
+	By8JefcXWwb1FmJuq8R6upZrjbMbL/ltlnjMq9Y7lNA3Clz9HB0TayBjKXnjw9YiLLlIyGnJ7Rm
+	xQ8Vr3ODDcm3ahFM2DUZcDHOmtyDcJEE=
+X-Google-Smtp-Source: AGHT+IH8kUVfdao2rGXfuoDXWWd+N2vEWt284kqBnLyotdB5n1Qqi+nNZclc699xuoD5NGd26yVfmA==
+X-Received: by 2002:a05:620a:1a22:b0:7c5:4f6f:3d13 with SMTP id af79cd13be357-7c9668bfd98mr1472535385a.42.1745861960497;
+        Mon, 28 Apr 2025 10:39:20 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c958ce3cf6sm647137585a.64.2025.04.28.10.39.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Apr 2025 10:39:20 -0700 (PDT)
+Message-ID: <680fbd48.050a0220.398eb0.7d07@mx.google.com>
+X-Google-Original-Message-ID: <aA-9RTcNkmsui4cG@winterfell.>
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1B2541200079;
+	Mon, 28 Apr 2025 13:39:19 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 28 Apr 2025 13:39:19 -0400
+X-ME-Sender: <xms:Rr0PaFQ5nGvbTV3pc3MjKAUTmfSu1BWWuBRdWVWFeA2oBZlsx7LkNQ>
+    <xme:Rr0PaOz8ayYSoM4e2kF-qy7kb7JU3DceaKtadvJUbphE384YT07fC2gH6V3i9PfUi
+    XJQ8WqWSWcJcw5R3w>
+X-ME-Received: <xmr:Rr0PaK0QJyptFHZex5-3aOOoy8ypuPN1G0jhxm7SmaKRLe27AOohJffYvEo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieduheejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedv
+    teehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
+    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
+    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
+    nhgrmhgvpdhnsggprhgtphhtthhopedvhedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhi
+    nhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdp
+    rhgtphhtthhopehkfihilhgtiiihnhhskhhisehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopeiihhhifiesnhhvihguihgrrdgtohhmpdhrtghpthhtoheptghjihgrsehnvhhiughi
+    rgdrtghomhdprhgtphhtthhopehjhhhusggsrghrugesnhhvihguihgrrdgtohhmpdhrtg
+    hpthhtohepsghskhgvghhgshesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:R70PaNDz_LW0h2wuoWmqE7U-CpV10pVudlDlSwLihi0-bD9gqrJXFg>
+    <xmx:R70PaOhzxB84pJLlzFYewW5qa44AEW4yf_sZTiu7bx_C8CgXK8nS0g>
+    <xmx:R70PaBpmjpFPnNXMIXreU7sVnOqUn9hSparyilg2eDghC_f-0teTbQ>
+    <xmx:R70PaJhm8gdWKE7YnxDg6g4xxmiTYpfxGO69BUr-vN_I9XxuhVYMWw>
+    <xmx:R70PaJQLM5dX9cL2ndiyBe_Dha-fNEW0m70566vG9fKbbnAVtwuCagT4>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 28 Apr 2025 13:39:18 -0400 (EDT)
+Date: Mon, 28 Apr 2025 10:39:17 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	kwilczynski@kernel.org, zhiw@nvidia.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com,
+	joelagnelf@nvidia.com, ttabi@nvidia.com, acourbot@nvidia.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] Devres optimization with bound devices
+References: <20250428140137.468709-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,77 +117,63 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250428-rust-of-populate-v1-1-1d33777427c4@beagleboard.org>
+In-Reply-To: <20250428140137.468709-1-dakr@kernel.org>
 
-On Mon, Apr 28, 2025 at 07:52:29PM +0530, Ayush Singh wrote:
-> Add abstractions for managed of_platform_populate and
-> of_platform_depopulate.
+On Mon, Apr 28, 2025 at 04:00:26PM +0200, Danilo Krummrich wrote:
+> This patch series implements a direct accessor for the data stored within
+> a Devres container for cases where we can prove that we own a reference
+> to a Device<Bound> (i.e. a bound device) of the same device that was used
+> to create the corresponding Devres container.
 > 
-> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> ---
-> Allow calling platform_populate/depopulate from Rust code.
+> Usually, when accessing the data stored within a Devres container, it is
+> not clear whether the data has been revoked already due to the device
+> being unbound and, hence, we have to try whether the access is possible
+> and subsequently keep holding the RCU read lock for the duration of the
+> access.
 > 
-> To see how the bindings look in usage, see my working tree [0] for a
-> connector driver  I am working on.
+> However, when we can prove that we hold a reference to Device<Bound>
+> matching the device the Devres container has been created with, we can
+> guarantee that the device is not unbound for the duration of the
+> lifetime of the Device<Bound> reference and, hence, it is not possible
+> for the data within the Devres container to be revoked.
 > 
-> Open Questions
-> ***************
+> Therefore, in this case, we can bypass the atomic check and the RCU read
+> lock, which is a great optimization and simplification for drivers.
 > 
-> 1. Function names
-> 
-> The rust implementations are based on devm_* versions of these
-> functions, i.e of_platform_depopulate() is called when the device is
-> unbound. Since in case of Rust, these are methods on the Device struct,
-> I am not sure if the `devm_` prefix is required.
-> 
-> 2. Maybe should be functions instead of methods?
-> 
-> Not sure what the policy is regarding this.
-> 
-> [0]: https://github.com/Ayush1325/linux/commits/b4/beagle-cape/
-> ---
->  rust/bindings/bindings_helper.h |  1 +
->  rust/kernel/device.rs           | 10 ++++++++++
->  2 files changed, 11 insertions(+)
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 8a2add69e5d66d1c2ebed9d2c950380e61c48842..51ec0754960377e5fc6bc0703487bf2086eff0e6 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -25,6 +25,7 @@
->  #include <linux/mdio.h>
->  #include <linux/miscdevice.h>
->  #include <linux/of_device.h>
-> +#include <linux/of_platform.h>
->  #include <linux/pci.h>
->  #include <linux/phy.h>
->  #include <linux/pid_namespace.h>
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index 40c1f549b0bae9fd9aa3f41539ccb69896c2560d..7186fe9658ff2a143a43bd6b3500c9a6d6ef9630 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -207,6 +207,16 @@ pub fn property_present(&self, name: &CStr) -> bool {
->          // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
->          unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
->      }
-> +
-> +    /// Populate platform_devices from device tree data
-> +    pub fn of_platform_populate(&self) -> crate::error::Result<()> {
-> +        crate::error::to_result(unsafe { bindings::devm_of_platform_populate(self.as_raw()) })
 
-Don't you have to document the unsafe stuff here?
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
 
-> +    }
-> +
-> +    /// Remove devices populated from device tree
-> +    pub fn of_platform_depopulate(&self) {
-> +        unsafe { bindings::devm_of_platform_depopulate(self.as_raw()) }
+You would need to, however, change the titles for patch #2 and #3
+because there is no `Devres::access_with()` any more.
 
-Same here?
+Regards,
+Boqun
 
-And I'm going to think that not using devm_ as part of the rust binding
-name is going to do nothing but cause people confusion over time...
-
-thanks,
-
-greg k-h
+> The patches of this series are also available in [1].
+> 
+> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/devres
+> 
+> Changes in v2:
+>   - Revocable::access(): remvoe explicit lifetimes; don't refer to 'a in
+>     the safety requirement
+>   - Devres::access()
+>     - rename Devres::access_with() to Devres::access()
+>     - add missing '```' at the end of the example
+>     - remove 's lifetime
+>     - add # Errors section
+> 
+> Danilo Krummrich (3):
+>   rust: revocable: implement Revocable::access()
+>   rust: devres: implement Devres::access_with()
+>   samples: rust: pci: take advantage of Devres::access_with()
+> 
+>  rust/kernel/devres.rs           | 38 +++++++++++++++++++++++++++++++++
+>  rust/kernel/revocable.rs        | 12 +++++++++++
+>  samples/rust/rust_driver_pci.rs | 12 +++++------
+>  3 files changed, 56 insertions(+), 6 deletions(-)
+> 
+> 
+> base-commit: 3be746ebc1e6e32f499a65afe405df9030153a63
+> -- 
+> 2.49.0
+> 
