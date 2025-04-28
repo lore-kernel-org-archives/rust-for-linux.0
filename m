@@ -1,50 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11B61BBBFD;
-	Mon, 28 Apr 2025 18:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BFC1C54A2;
+	Mon, 28 Apr 2025 18:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745865574; cv=none; b=YhxmJbA4ZsQIwYxLBoCsTajTPpIiAi1qJh0NMk4bKVYYvZdLhx6AZBtWRnadjp0KV0/U6ObtBiI0omBrYFWfzAgLYUHwL6BXFJMUutb/bmVqly42u/V/ItjzWM3DD10dAtkP1zmf3ShvRMwPmLcF34scUU1EVdjtbUWuUwFo624=
+	t=1745865681; cv=none; b=t8L6i8aaiCh//a1n8oVtC8TmOU6LGrP8D9+CZOBor9FVyQmWNiuYAYZx4crNtEy8DZ0sTH3zxXFnaEK+gI0v0MGqEI7C+S970O3IarBnSWDx6QASU2eynBBCgnR3hhnv0JVQRjmn0RT0+ib+d1hJ7PWxEeJ+3kQXNJ2tkWA8srU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745865574; c=relaxed/simple;
-	bh=+GntzX7snpb3B1krCu6ijRajRoUoSqjhzmxdnCjdGVA=;
+	s=arc-20240116; t=1745865681; c=relaxed/simple;
+	bh=nWe2acnllWHIKhVKOoh1bAz75wVDtkbHDF4RfotxbKw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N466VGZ86k3AE9Dyj+tnI8799zrzU4XCgt9mrkNknpAUmUN6EMzaGQL4/Wx3Tkwyt1xkM1fkOCb2Xeh6BgghEurFNoKLVy/2eBJWI62Ea2EyIf3famq7h+o+0MXtt+uIq4Gjd7VXQ9FR374Lvc4YAGt2MO5/nRRu3q1aaKsAkU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZibGdfa; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tugk7PmH5n1VlEzA/RltUe1wl8kFRQntYsSl/OUkYRqC6v8t09of/aaKBfPwz+10oSGs6n3w3Wvz5Yud8VE7dN8CB78U6Ol/SPMqqAdrfbxlxP7CHeF21OFA0LQsRuHlggK5z0bFbJy5RoP5twxjUKg9Sc+hWOT/E8oAmJ8Z/zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpSB3HhO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZibGdfa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F264DC4CEE4;
-	Mon, 28 Apr 2025 18:39:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpSB3HhO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7D8C4CEE4;
+	Mon, 28 Apr 2025 18:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745865574;
-	bh=+GntzX7snpb3B1krCu6ijRajRoUoSqjhzmxdnCjdGVA=;
+	s=k20201202; t=1745865680;
+	bh=nWe2acnllWHIKhVKOoh1bAz75wVDtkbHDF4RfotxbKw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hZibGdfaBaYjKj/JT7l/bvE6YUWtHgeDPuzyFxLAk+ntVlGIlIwxP4E0fNNV3dCRg
-	 KY7FpVfXaqXu+26ws2Zyl62LUGIzkeS5kVE+IrwAWMQdHpIJbS81zPlCA5r1xJuA+I
-	 rV8cBW6/uXE92RPO6EJCAT6BTZ11g+rMUmsNcOSCUuGVG7fUht6TuwTNeCyYzV37JA
-	 B7ghQa5E6lgfVZJrQCr5z+WvCLuVBWdyHN2cNi79buESSYOT103ObccirdEvbVX+EM
-	 5dTBX7Ah2IO5PfFszPka/PzOwt9jY+3ZgbcazqQOAf9hpc7/2BbySg3OcMIAQkyZwy
-	 eQC8EcrpFEAJQ==
-Date: Mon, 28 Apr 2025 20:39:28 +0200
+	b=EpSB3HhOxGqAewwSrBlHYZcLHaEJxK2bgPioZh98OPHCVEneNuxYyUdwLf3zkWoOa
+	 0ApNCWTiw/fbl4t7opWq2okDod4aTMorL0t2daQhXvRf/UBQMxO95ygaelqdbsNksF
+	 TKj15IpAiowv244dAdyzKvhkeFI/zw+rOnKCQ8dWbWrFjngXZGD/6o2GSNvOy7Qq90
+	 QdyfdeKZQD6WW950+AjgmNONFkQMyfcufQWkwgWfbxmyECmYAFfBXh7cS8REAU2iAv
+	 ncgH84/IfRzAGOfxJ4AkcA1Y3Zmouu0tw6zXNikEDxsSgFXaGpWuKuwdWOk5ABF2HK
+	 rMGjDKXRkZVEA==
+Date: Mon, 28 Apr 2025 20:41:13 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: Jason Kridner <jkridner@beagleboard.org>,
-	Deepak Khatri <lorforlinux@beagleboard.org>,
-	Robert Nelson <robertcnelson@beagleboard.org>,
-	Dhruva Gole <d-gole@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: kernel: device: Add of_platform_populate/depopulate
-Message-ID: <aA_LYKhbQ0iKM7n2@cassiopeiae>
-References: <20250428-rust-of-populate-v1-1-1d33777427c4@beagleboard.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	kwilczynski@kernel.org, zhiw@nvidia.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com,
+	joelagnelf@nvidia.com, ttabi@nvidia.com, acourbot@nvidia.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] Devres optimization with bound devices
+Message-ID: <aA_LyY2UEfCwJhfb@cassiopeiae>
+References: <20250428140137.468709-1-dakr@kernel.org>
+ <680fbd48.050a0220.398eb0.7d07@mx.google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,52 +50,35 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250428-rust-of-populate-v1-1-1d33777427c4@beagleboard.org>
+In-Reply-To: <680fbd48.050a0220.398eb0.7d07@mx.google.com>
 
-On Mon, Apr 28, 2025 at 07:52:29PM +0530, Ayush Singh wrote:
-> Open Questions
-> ***************
+On Mon, Apr 28, 2025 at 10:39:17AM -0700, Boqun Feng wrote:
+> On Mon, Apr 28, 2025 at 04:00:26PM +0200, Danilo Krummrich wrote:
+> > This patch series implements a direct accessor for the data stored within
+> > a Devres container for cases where we can prove that we own a reference
+> > to a Device<Bound> (i.e. a bound device) of the same device that was used
+> > to create the corresponding Devres container.
+> > 
+> > Usually, when accessing the data stored within a Devres container, it is
+> > not clear whether the data has been revoked already due to the device
+> > being unbound and, hence, we have to try whether the access is possible
+> > and subsequently keep holding the RCU read lock for the duration of the
+> > access.
+> > 
+> > However, when we can prove that we hold a reference to Device<Bound>
+> > matching the device the Devres container has been created with, we can
+> > guarantee that the device is not unbound for the duration of the
+> > lifetime of the Device<Bound> reference and, hence, it is not possible
+> > for the data within the Devres container to be revoked.
+> > 
+> > Therefore, in this case, we can bypass the atomic check and the RCU read
+> > lock, which is a great optimization and simplification for drivers.
+> > 
 > 
-> 1. Function names
+> Acked-by: Boqun Feng <boqun.feng@gmail.com>
 > 
-> The rust implementations are based on devm_* versions of these
-> functions, i.e of_platform_depopulate() is called when the device is
-> unbound. Since in case of Rust, these are methods on the Device struct,
-> I am not sure if the `devm_` prefix is required.
+> You would need to, however, change the titles for patch #2 and #3
+> because there is no `Devres::access_with()` any more.
 
-Please add the 'devm' prefix.
-
-> 2. Maybe should be functions instead of methods?
-
-Making those methods is the correct thing.
-
-> +    /// Populate platform_devices from device tree data
-> +    pub fn of_platform_populate(&self) -> crate::error::Result<()> {
-> +        crate::error::to_result(unsafe { bindings::devm_of_platform_populate(self.as_raw()) })
-
-As Greg mentioned, please add the missing safety comments. Additionally, I
-suggest to import to_result().
-
-Please also make sure to go through [1].
-
-> +    }
-> +
-> +    /// Remove devices populated from device tree
-> +    pub fn of_platform_depopulate(&self) {
-> +        unsafe { bindings::devm_of_platform_depopulate(self.as_raw()) }
-> +    }
->  }
-
-Please move both of those methods into
-
-	impl Device<Bound> {
-
-which ensures that those methods can only be called for a bound device, which is
-required by devres.
-
-The impl block does not exist for Device yet, so you have to create it with your
-patch.
-
-- Danilo
-
-[1] https://rust-for-linux.com/contributing#submit-checklist-addendum
+Thanks, good catch! Unless we need a v3 for something else, I'll fix it when I
+apply the series.
