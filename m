@@ -1,92 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68B4216E2B;
-	Tue, 29 Apr 2025 14:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CF82192E3
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 14:44:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745937472; cv=none; b=eNftz78ahuVo6xmg9BYdV/596gPsm9nht/O+TefSlTtueXFK47FArQk42N5P07U1L5Du3X7eIDJtewDylk4Ptseee8x+wZnzWPHS0L3V1myWGmNZJinDWqc41PfQdPGHSb9RP1fQ+RhMMAGKW/oLRthXykKhbq9rAzfsaE+S1+w=
+	t=1745937880; cv=none; b=HORgCpoQQgyQC8c4Ak677RFfnnS8yhKNkiKMe3b9hkOyLRrZWkD7/5guzk3kCkGOXLw4geg+y7lWXJbx0WdEN1bmVI83iXlMVyCo56s8souwhvJOnTP56ej7Ib96T33nxPcKkDf21g6IeA8bZr+BCy0RrwYmnTEH5lsnoiNqu6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745937472; c=relaxed/simple;
-	bh=nVd8qF6yGUMGXXiUlR6CdwvZIu05Rfbpb3ez4qo0FPQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ljmiYdjmmt33Ly4AQhlr/uRmI0bR6YdN86AVocuhLOmvqyrHVOvNZxmavVMdQNMnPUvGe6Cm/AGY1v36hx3RlUYXkfuxBMm/Z5ROkxxpzaFzp2yj0xXXNgRXBHO6yECPFqbjLz1FpiU7RJ2ghR7DJKOy4eiSWTUA/93FxcLNxyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arqTb0Vm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745937880; c=relaxed/simple;
+	bh=BSx1hA9BCKf7vfVk9B/GGutgZvKoS5kqDfF56cj3Tmk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=FZoevivsSpATePw6Cj8rBPQ1uF+aEHGTNDH+2g2QtKn3uCZq/4nC5hgJsHoYWrvqL2gbjyoQXhS4cTD9+E7UwVQdfli9nTMVe3hNsfXT/yuAA0xGou562CM+nllkBFyFCf2kVk2GujxVFxApSZvuREDegoEcQg7vPIEw/XF3ERw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WSo1oPwh; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arqTb0Vm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ED2C4CEE3;
-	Tue, 29 Apr 2025 14:37:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745937472;
-	bh=nVd8qF6yGUMGXXiUlR6CdwvZIu05Rfbpb3ez4qo0FPQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=arqTb0VmVe4kYSqEOdXDmPjiuCngQMkK8fgA1AEi6jsd21U9E4lNuLZdCPVUcU7sz
-	 aAoQvaLpIPBYInFrSOa6MULulzKmwaKO/4MRaLLJt1qFfY9Gjf1nO8yw+evNXlJf+x
-	 bI/FNbkX+GJ1L7FFgenePoULpIHqn0rUIUBBoVeM=
-Date: Tue, 29 Apr 2025 16:37:49 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Ayush Singh <ayush@beagleboard.org>,
-	Jason Kridner <jkridner@beagleboard.org>,
-	Deepak Khatri <lorforlinux@beagleboard.org>,
-	Robert Nelson <robertcnelson@beagleboard.org>,
-	Dhruva Gole <d-gole@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: kernel: device: Add
- devm_of_platform_populate/depopulate
-Message-ID: <2025042904-trade-leverage-0f98@gregkh>
-References: <20250429-rust-of-populate-v2-1-0ad329d121c5@beagleboard.org>
- <aBDi2LE3O1rIsGqn@pollux>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WSo1oPwh"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cf172ff63so25200445e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 07:44:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745937877; x=1746542677; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nSYMO1K17AprWEG8CRL1vYqzgtCWcYCl8QaC6FEscPg=;
+        b=WSo1oPwh3pJZ077FEeQVi1bUPFs9uHrmqx/wotjOVw0jttmtFR62fReQDdRd9fuikZ
+         9PJs0u7zzNPpjsHnBr7B5a7x4kF49rKc0Ik9xH3RKlkZyZjzJIxE1e7QDY3KYvxXTNpp
+         F5UNW+zs1N8mmTH7VIvz7H9pef0Q28NSgrv3ccG3Ck3XtyYjUaQQBpqRge19G95RFG6P
+         O/6cXjHW53WD6MfCCE38TVoN7bVMHVczsCNLkakAHHiuEPB9GRrbcegI9UT4HsPoaZ4f
+         WDCOHmRYNiL8WGV2M6nCd+hw2ZiMQfxJdYfxaNUDLLcMYEzQupEXKh1qV65b+XEdOtVt
+         HnVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745937877; x=1746542677;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nSYMO1K17AprWEG8CRL1vYqzgtCWcYCl8QaC6FEscPg=;
+        b=iEoTmJbr2+EMvtUly4F7is5xz5+/qniCHD/tGaDiOKx9HmSNKUgg+6K8g7Y+UwrtVk
+         2GXWTwrosPrcgBCjpvky9I0a5+9hENVTJ8GWVDJiMEDRbsJE8JbjsUAn0uVK5RfJZVJP
+         vjMfZcv+uyAhpiMRU0V1MLThRgE17AG7HJ7rl0UipfIEAX9s2+FTjrXDUzt96kNd7GeF
+         3jgRx3Ka7SPG4Ryut2Yp5hXI0KZP4eSM6t0YNOiWHXe1nNW2zG3wcU54OUeIYr9QSEyw
+         Qi7fur6EcbKQTQ0uiB5S+eNKH4df8fzqYzB+wY8sumhf769vadSQulVMuhG/GAZ5GiOY
+         Nz0g==
+X-Forwarded-Encrypted: i=1; AJvYcCW7uw82DZSSL+KHzWco0jvFPTFsquQGtYc4EpO/MTlTmXX4s06HmwhV7r92iwNt8moHx+exuPPfpaDtus+/xg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJyIT9dwtmcY+sefWrmoem40PrtP43bQ5glzqfufjvh1CpAsyM
+	+Z57v+82ghkEdc9fS1YkIKoE0udkg1eafx/CJnezzE40wB3/GLmVCJiiCumSp7OfGuFRzKHyOD6
+	whekgm1NzYXo0+w==
+X-Google-Smtp-Source: AGHT+IGUXD8q4xktHbDiXYsgcqqkN2g/gcNCrPce1cVp7Q6SNy7YD/Odb79MRIkuNYorecnUkSE139kq34SH7+A=
+X-Received: from wmbev18.prod.google.com ([2002:a05:600c:8012:b0:43c:f8ae:4d6c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f0f:b0:43b:ca39:6c75 with SMTP id 5b1f17b1804b1-441ac8f6276mr34684325e9.16.1745937877255;
+ Tue, 29 Apr 2025 07:44:37 -0700 (PDT)
+Date: Tue, 29 Apr 2025 14:44:20 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBDi2LE3O1rIsGqn@pollux>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAMTlEGgC/23NQQ7CIBCF4as0rMXAALW68h7GBcLQkthioCGap
+ neXdqONLt8k3z8TSRg9JnKqJhIx++TDUIbcVcR0emiRels2AQaKCWA0o6E9jl2wiWrrtOSolOC
+ cFPGI6PxzrV2uZXc+jSG+1njmy/V/J3PK6ME6p4wD5bA5tyG0d9yb0JMllOEb8y2Ggmt7NI2Wt ZDm9oPFB0uALRYFWyyfEbWqG73B8zy/AbKU6UchAQAA
+X-Change-Id: 20250320-vec-methods-adfa41e55311
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1961; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=BSx1hA9BCKf7vfVk9B/GGutgZvKoS5kqDfF56cj3Tmk=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoEOXNhKOeT0n3lFq9lcCLWwTL9pWkOr5C9d2nO
+ 6+qeVs5khCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaBDlzQAKCRAEWL7uWMY5
+ RijGEACl5vwfekuS/4CiPcIR31y68TzH92n4aAiWYEO5Rd0fDIY+FPF6tsyCk+Cz5zfJbVpM13A
+ /Ccgsqg991bR1vgUQtiwI52IVL7YbSXpMCtNZPV9OnC9oyRt5Dj00sy2pVO0q4tHioiohmoVZ1/
+ trqzdooFOppepNCVBROTtB5icSh3cu+F1iryTUdd/1wUmBN5wwqbue94nXcpCMY5BfBPwjlI/bE
+ O71IrbGnn68DRyUKPc+Dqba6Z5vdWkQSdq6MCzzjjhySfpqK3ysqH5Q7R/6Z4+YJLqzS1ymqZMk
+ p9Fxx7H5rlHzk1y5NFIsdn5JIvvn97xUAY6Tc2y4wjLZmSESECwP4nxqMGE4jTc0+dxrZH2ZTRJ
+ L9ShQGCGITTFRCS+kij3Q6QJaWxT6HyY3cYO2w05/a21m7+zg2XLvye3QB4r8HRikhgGNlSh7Ie
+ TEH9LVvXa1KSQh9FHB/sTzeaMoqEE/Vian8IisClWWrzCZTcxQL0X4VmvdJvFFqzC6xYFrTc2ig
+ ESnA+CGofu0l6wfM0yJuVumkgON6FD4kjfgKT3KmLHVhEjcGhqhwOOE5BWKUr+3KMmme5JArx6G
+ TpMMaEWWMBi00xhjqmedfls2TIDFmbjcp8teKbcydg9JgaF2+TzOtgULU3K7fBcthIovvcXbH9q 5ltLjWAm4L4f1AQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
+Subject: [PATCH v4 0/7] Additional methods for Vec
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Tamir Duberstein <tamird@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Apr 29, 2025 at 04:31:52PM +0200, Danilo Krummrich wrote:
-> On Tue, Apr 29, 2025 at 05:09:26PM +0530, Ayush Singh wrote:
-> > +    /// Remove devices populated from device tree
-> > +    pub fn devm_of_platform_depopulate(&self) {
-> > +        // SAFETY: self is valid bound Device reference
-> > +        unsafe { bindings::devm_of_platform_depopulate(self.as_raw()) }
-> > +    }
-> > +}
-> 
-> One additional question regarding devm_of_platform_depopulate(). This function
-> is only used once throughout the whole kernel (in [1]), and at a first glance
-> the usage there seems unnecessary.
-> 
-> In your upcoming driver you call devm_of_platform_depopulate() from a fallible
-> path [2].
-> 
-> So, I think we should change devm_of_platform_depopulate() to return an error
-> instead of WARN(ret).
-> 
-> If [1] needs it for some subtle reason I don't see, then I think we can still
-> call it from there as
-> 
-> 	WARN(devm_of_platform_depopulate())
-> 
-> [1] https://elixir.bootlin.com/linux/v6.15-rc4/source/drivers/soc/ti/pruss.c#L558
-> [2] https://github.com/Ayush1325/linux/commit/cdb1322b7166532445c54b601ad0a252866e574d#diff-7b9e3179e36732d5f3a681034d70c2fda4ff57745c79ad4a656f328c91e54b77R71
+This adds various Vec methods. Some of them are needed by Rust Binder,
+and others are needed in other places. Each commit explains where it is
+needed.
 
-Ugh, no, we should just delete this function entirely if only one driver
-is using it.  That implies it's not really needed at all.
+This series is based on top of alloc-next and rust: alloc: split
+`Vec::set_len` into `Vec::{inc,dec}_len`
+https://lore.kernel.org/rust-for-linux/20250416-vec-set-len-v4-0-112b222604cd@gmail.com/
 
-And we should NEVER have a WARN() call, that's just an excuse to reboot
-the box and assign a CVE...
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v4:
+- Add missing ? in some doc tests.
+- Fix safety comment in Vec::push_within_capacity.
+- Add panics section to Vec::remove docs.
+- Move self.dec_len(1) to end of Vec::remove.
+- Add kunit test for Vec::retain.
+- Link to v3: https://lore.kernel.org/r/20250422-vec-methods-v3-0-deff5eea568a@google.com
 
-thanks,
+Changes in v3:
+- Rebase on split `Vec::set_len` into `Vec::{inc,dec}_len`.
+- Various modifications to work with inc/dec_len instead of set_len,
+  with some Reviewed-by's dropped due to this.
+- Move push_within_capacity impl into an unchecked variant.
+- Link to v2: https://lore.kernel.org/r/20250321-vec-methods-v2-0-6d9c8a4634cb@google.com
 
-greg k-h
+Changes in v2:
+- Add two more methods that I needed.
+- Introduce some uses of set_len.
+- Add example to retain.
+- Simplify pop.
+- Adjust 11 to 10 in push_within_capacity example.
+- Link to v1: https://lore.kernel.org/r/20250320-vec-methods-v1-0-7dff5cf25fe8@google.com
+
+---
+Alice Ryhl (7):
+      rust: alloc: add Vec::clear
+      rust: alloc: add Vec::pop
+      rust: alloc: add Vec::push_within_capacity
+      rust: alloc: add Vec::drain_all
+      rust: alloc: add Vec::retain
+      rust: alloc: add Vec::remove
+      rust: alloc: add Vec::insert_within_capacity
+
+ rust/kernel/alloc/kvec.rs | 299 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 296 insertions(+), 3 deletions(-)
+---
+base-commit: 88d5d6a38d5161228fbfe017eb94d777d5e8a0e4
+change-id: 20250320-vec-methods-adfa41e55311
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
