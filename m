@@ -1,83 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8768214234;
-	Tue, 29 Apr 2025 21:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361E61E9B21
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 23:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745963559; cv=none; b=FY5LGCRvXao19URFkwUeQL27AprZUnPARB3h1r3oXycAteEmsznt3Kha0jdW4+rMtIfSHQCDmlgT90TbcAL+w49a47HtJTWjusYpdHln1ZWMCxQdwgCNJ5FTtVdlLCtGmUrfQMjtxEqe0bxOoDWMkEQFjC9FwmnmGSEES1Ht3zM=
+	t=1745968559; cv=none; b=JsxHcPgXK79JnbFpec7ZuHVnIgveHnJ27aK9t8WNz9mufStn1L7wp5GYMJGKsKimGCXZflB2YW+ptrYICfPEyxQQahvtfdQRVzVwZOkYc3oWdGePTqbiL1K99h2ONieCPpU434ubxykGmGnQeSvnT1EI6ptzMlPPw4rpe3OQmr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745963559; c=relaxed/simple;
-	bh=FxQBQd6WDeShNQc4GAnsjZILLoOhNVV6GGXUuNB48TA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bahsGFDavzJqBOql2Fevi712H+onZxpdR0GSPuQrRGhbeMuXgmWSWYF2zwjY/KsiF6ux8X1AIPTsUJ+JRyd0vEOZ6oTIFDU1Uz+QYW8ju3+pkmJAMIGKkQE1hw+oI7TGwnhA0X58BD3q2MuRKu9ZpjFhbTipP/BG1ZOiN3yOH3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hGx2QGDJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745968559; c=relaxed/simple;
+	bh=Q/SqXSGrDUVNXO13SByCVzX5f60aYdl/C/Qfm4Pd+HY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qw91J3tWBLSXA0z17GlRX4OX1C/3H7dpN4CvWac/gEQ7BjNaiTOHbwo3pHUX/oxTSvV/3eWjkQD/6/OQp8dxyJh4pGhfT9Sa3cHK4r/kHLNuU95vh5NPMGTwqZW7WPKSp+CliK61OFm6pCFCRIuYbErYlIygdNJzvkOq1rxqDUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e6GBQBJO; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hGx2QGDJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DDEC4CEE3;
-	Tue, 29 Apr 2025 21:52:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745963558;
-	bh=FxQBQd6WDeShNQc4GAnsjZILLoOhNVV6GGXUuNB48TA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hGx2QGDJwL+PvhXo17zBJDJyiRi3mjSN7SiA02EODNe8GYgDAEY7enJJj2WR0HHUb
-	 FaKIlw46EQoLPyHNXWAYCNrWh8MHT5cl37UqXpsewnAV62VMI95TplgHKtiM9cuuG3
-	 /5cL/hccPuBYPz8z5BOLhvU/W+0caqdhGGnZ7oO3eLfwNs5ZfR4RkAiOenyNOSCBCT
-	 Gab0mXBlGJIgtYRBTCRJnhdIJDMG3Ry84muksN4Wayh/CIX0YQ3ahGoWWcFpaFRgPQ
-	 4nYPyBryStCGLFGbqVztkpMt630ds4C0AUyFKf5kGf/rU0NxEfJyVzt0gnLdjGUPmA
-	 bKnnwR27lVr2A==
-Date: Tue, 29 Apr 2025 23:52:32 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: Re: [PATCH v2] rust: device: allow `Device<DeviceContext>::parent()`
-Message-ID: <aBFKII5I7R2piEcA@pollux>
-References: <20250429210629.513521-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e6GBQBJO"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-7377139d8b1so4505949b3a.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 16:15:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745968557; x=1746573357; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AvHasbdrqHnRr2bFcoCGhq8YWp707coUbqqX9FvGybc=;
+        b=e6GBQBJO3KjZe7wMnCy8ru0Idlkbs39bk+5ywGVt1zq+T8fiwWSA6bKw7WepQQLH5B
+         NRgbX0q5RXw7t2LQWEIOQ3/X/Z1hACEvcwixaFQkifwjQGSaYAbDTYlF3BiGHY8VPMiA
+         mxdtab3PSzFfOF1WsYiNFxI87qoKCv8anMtEVqv/ss/WNLeGROIgyoQT3Czt2ap19i8v
+         +yidXGzg36Oz28eJNZKc0XNc41xpebvVwboO5LiWKmnNpD329CNjTLF5aShUzqI5yGnd
+         KyMxCfKyUhjZKKx6QsR9rLhW5ZCe0B851zNbeoFOL+qI49KKPgqDR8xSt2HPBrPyDvio
+         Gttw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745968557; x=1746573357;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AvHasbdrqHnRr2bFcoCGhq8YWp707coUbqqX9FvGybc=;
+        b=VMqVmhUxD9R7AhGDv45nEcvEWn6+EorssyIc8t3yBMI2RJ480vaeA20XnUmlL6S6XN
+         c1dqri7ENTRz4QfeXqDMhIQZP8m6z/gT1VUvrjP2rfWUUW6VCo8b/femRtmkgjSNOGUH
+         MMRGZUJXXviJ7nbEoJ2Ja/IoQp5EPe4MivUi/sfmcW7dtCxWdEkglRrFttK92B4dhZ/Y
+         f6ft60AFXtLJkIywSKD6PR8tGfL9JOkQTCyICGeDHRuV2AToVTXRwGP9PoRQI1J4fSvB
+         uTDFFzCPx5jCUPdKzIK7vj20wJbLHYfL4WWC1cZmG/NQMcO3NFyqOkTle/cr85TBup2f
+         8UIg==
+X-Forwarded-Encrypted: i=1; AJvYcCWNQeB3wAwEzpGOz1gdCgMV9aW2XCSdJqyJ9kvOAfB6VZw0JUdSK4dfXP3hYfbuzQALwwCqRlCmq55OAA10IA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOmb77T+umn5QsenObYUj9xscToWSC+zbGKZddzgRXVOWrY3DW
+	ya+Zn8XJHd/ih81bVDQZ131XurtQGBzs4JHA8+dnswo31vfh78W69n8UT/S9NMx7gJy85Vb6fIE
+	yIAR+oQ==
+X-Google-Smtp-Source: AGHT+IHq+w2cCbO/M9HoH8b8h4DsTEAjLlYCp3EEJURNXFTxgJl5mq24l5c6RY3b/U6TDHJGOvIe9FGvZhRF
+X-Received: from pgg19.prod.google.com ([2002:a05:6a02:4d93:b0:b0b:2032:ef98])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:8cc9:b0:1f3:1d13:96b3
+ with SMTP id adf61e73a8af0-20a87644941mr940076637.5.1745968557335; Tue, 29
+ Apr 2025 16:15:57 -0700 (PDT)
+Date: Tue, 29 Apr 2025 23:15:54 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429210629.513521-1-ojeda@kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAKpdEWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDEyML3ZTUpNL0tGLdotLiEl3j5BTTZEvz1CTzFEMloJaCotS0zAqwcdG xtbUAgYl0Y14AAAA=
+X-Change-Id: 20250428-debugfs-rust-3cd5c97eb7d1
+X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1745968555; l=1626;
+ i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
+ bh=Q/SqXSGrDUVNXO13SByCVzX5f60aYdl/C/Qfm4Pd+HY=; b=LY/oTLNRim6nOlJZ9YVR66AfhzN3K27e8w+SOfhDoVN57g2W2k0JAWaDs7xt9VZZ8Gx6iWYgm
+ eXUCXY4cNDHCto5eEebOOOAmtrrIBJYEF9hx7FFoONf9k8JRzk8lK8D
+X-Mailer: b4 0.14.2
+Message-ID: <20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com>
+Subject: [PATCH 0/8] rust: DebugFS Bindings
+From: Matthew Maurer <mmaurer@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Apr 29, 2025 at 11:06:29PM +0200, Miguel Ojeda wrote:
-> When `CONFIG_AUXILIARY_BUS` is disabled, `parent()` is still dead code:
-> 
->     error: method `parent` is never used
->       --> rust/kernel/device.rs:71:19
->        |
->     64 | impl<Ctx: DeviceContext> Device<Ctx> {
->        | ------------------------------------ method in this implementation
->     ...
->     71 |     pub(crate) fn parent(&self) -> Option<&Self> {
->        |                   ^^^^^^
->        |
->        = note: `-D dead-code` implied by `-D warnings`
->        = help: to override `-D warnings` add `#[allow(dead_code)]`
-> 
-> Thus reintroduce the `expect`, but now as a conditional one. Do so as
-> `dead_code` since that is narrower.
-> 
-> An `allow` would also be possible, but Danilo wants to catch new users
-> in the future [1].
-> 
-> Link: https://lore.kernel.org/rust-for-linux/aBE8qQrpXOfru_K3@pollux/ [1]
-> Fixes: ce735e73dd59 ("rust: auxiliary: add auxiliary device / driver abstractions")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This series provides safe DebugFS bindings for Rust, with a sample
+driver using them.
 
-Applied to nova-next, thanks!
+The primary intended way to use these bindings is to attach a data
+object to a DebugFS directory handle, and use the contents of that
+attached object to serve what's inside the directory. Through a
+combination of pinning and equivariance, we can ensure that the pointers
+in the attached object will remain valid until after the DebugFS
+directory is made inaccessible.
 
-[ Adjust commit subject to "rust: device: conditionally expect
-  `dead_code` for `parent()`". - Danilo ]
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
+Matthew Maurer (8):
+      rust: debugfs: Bind DebugFS directory creation
+      rust: debugfs: Bind file creation for long-lived Display
+      rust: debugfs: Add scoped builder interface
+      rust: debugfs: Allow subdir creation in builder interface
+      rust: debugfs: Support format hooks
+      rust: debugfs: Implement display_file in terms of fmt_file
+      rust: debugfs: Helper macro for common case implementations
+      rust: samples: Add debugfs sample
+
+ MAINTAINERS                     |   2 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/dcache.c           |  12 +
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/debugfs.rs          | 514 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ samples/rust/Kconfig            |  11 +
+ samples/rust/Makefile           |   1 +
+ samples/rust/rust_debugfs.rs    | 120 ++++++++++
+ 9 files changed, 663 insertions(+)
+---
+base-commit: b6a7783d306baf3150ac54cd5124f6e85dd375b0
+change-id: 20250428-debugfs-rust-3cd5c97eb7d1
+
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
+
