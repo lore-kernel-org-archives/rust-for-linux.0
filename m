@@ -1,131 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0DD1E231E;
-	Tue, 29 Apr 2025 10:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE9120FAB1
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 10:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745921486; cv=none; b=hxchHv+GzEvrkyYcGgZt2rQcEA+56Erlh2RapuGUkzU3/wE1liHKAAyGmWoq+jj5jPbhhYhpGtC+6jHyAOqme4hrrPNbWU3YATBpvwgcszfHm5cYrTEWx6cuN47UzEykNSv5evCQVSADWNWfUbLwq5VMZ8qyauVx1hBjogIjnyI=
+	t=1745922655; cv=none; b=T5LShQo5YYduXycs+cdo1XOR3O+gvdBoSNvkOUVvzo4iTAlKux0m0byQbePbuXM8Y8mTxOoXafVf3J62Nr48NwXYDe7Wdc2Jf2q3EXmECVQXoxg60IaCUZKofGcOcnAuYr0Qc+URm1KTcgtXAxMH2W+vAdF+daDfR2zXDTuF8Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745921486; c=relaxed/simple;
-	bh=F9cFJP6/J4g3ZosI4Pf+TVkYrl5kDfDEveUQILIdukM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E0CUrIV+oaiHN9EAyeEyLuyhpjtgGpELM8Lbpto1+hcnZUCKTFQRP391VqMTY4x6yw7Ao/LOLZmi8kmAKOU+Un79n4G15OyPo//YHy0hhUTanTd+Mvwk5nuqcgdmIU4Kf4T8XKVz9tAu6f+Ft6vp2SiTDcanfp56C47emNzzU9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tJP/3G8n; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745922655; c=relaxed/simple;
+	bh=04voz7/BTZUb5byXuw1Puz41gaRYXd2u6G7MthIyJKo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CY2ZxWiRscUAZCqO5tTo5ymXFij83GkvosPZ2OJJZF3qILrOYBZy2/rHYvs51UnOMi9DIFX/0HVri3KTx6ChAVWRiALcQME6KniBPtZ2tcLR3x6eqQRxD+d4Kv0oyNNCdVZz8Iob46bmfsCkXXGhq7NKGThuagRcnIglFF4k6pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OMaD7Voz; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJP/3G8n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA74C4CEE3;
-	Tue, 29 Apr 2025 10:11:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745921485;
-	bh=F9cFJP6/J4g3ZosI4Pf+TVkYrl5kDfDEveUQILIdukM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tJP/3G8nUCmuTgqikedCBIAxRVrloE1PxOQ6fSnOV5m0iT+dF7hMvMMlmbMA+3wnw
-	 wLN5SkfOERSunHzSWtGBOnGslvyzSoXXkDKKRDN20IRIGd8PDTGCGgazt9Nv2+Rqoy
-	 rciTFmnyLDC3Vr4lNiKz6y7wCbB3dOl40UbUtTLe/lOc18d8TYQhQtv6O5Rz+Wm0NY
-	 /PbNGRrNJLKQDxCbiP22OCdHi+ioFkdsE3ngV80qAaOwf3fYoxH+NUk0d7uMdVU1A7
-	 07fRKdDYlFguN5ev7s/eu7PNfQdULIXvLXd0IK91fq9hHUbso0gUWLDpkB2grpvV8q
-	 LRuJuYUrLzSjQ==
-Date: Tue, 29 Apr 2025 12:11:20 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] uaccess: rust: add strncpy_from_user
-Message-ID: <aBClyLz4y7a15WMg@pollux>
-References: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
- <20250429-strncpy-from-user-v2-1-7e6facac0bf0@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OMaD7Voz"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ac28e66c0e1so675119566b.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 03:30:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745922652; x=1746527452; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WiBauZO2ElGRG8B3vbx0E57UweONyPLJm2l7Gk1dbO4=;
+        b=OMaD7VozvpMa4bkMVEieUrp5t3Ku1QDn9QTLxKgp+aiZwbOUoQe9VrgQQwsjM2SyrP
+         KSIo/qKYU9aSwegcncIM6FWe9SsSs0Xa0Pqjd3MIE7JIivLMZYK5Pb1rNn+vbTeoRX5A
+         iDvTrl7ICn0aKvdDbxC+4P3/PKbTD4wVp7Qh6i1C2iHlfdqGfbAcjcmsx5teBYKmxWPN
+         WbhjTOW5wu88XNR2em8t6vJHWB0aUTLEJBunir1g2XwOb/pkz9xPBk0YVs+GLr+hf28N
+         7c1rY4r4yHgtnI8xOfn84M0ZsOu2s6duICPq+IZ0rFmjSLMwm6ZOD5p0PamjR0Bzf9if
+         W2Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745922652; x=1746527452;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WiBauZO2ElGRG8B3vbx0E57UweONyPLJm2l7Gk1dbO4=;
+        b=Iv4n02vwf4kktXcIJJOAXyRGh5sKDU5ocVsXplYPZOnkMadjFTx4NIVoe0IbuqIdjk
+         9kBk8WdoOELgIxIX/iTHvdY1bbwfemX4j6GUiDbClnH7tb7/FRCWBx99CKGpFN03dRiA
+         4bOAip4ElnbLi8EENNcSOMCyaJ+i0yHtnGbW0VWNmRHq8Ni7B64Q8X6OW5AQKI7J7/Bs
+         K2qbR8/IDAPFnu6QcFNMYlrwLvM3yCfRVpGhtCCvUkBOfjihCVlUqAFDNM18h5Zpyow4
+         gI13O2RmBr1mpq56SFJZXVcW8KrFe2ouSg3vzsjPWI2Lm2e9uV3QQRnzMf2WruDYzyir
+         YOng==
+X-Forwarded-Encrypted: i=1; AJvYcCWH0Ki5WrEDOkESrEZa8kdI/FeiOHx5LgZsl4XCoHIRjTPLuEGKlvqMiMB3DnH7KEwfiK0bWWkn1Dag6ijceA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSLgvLRmjYpe9GdPSssy22gQMvvF5dNpW07z8Ft2jNGXvnxXuV
+	J6akGbMcw/atCHWzBGL8qlRFcj+MjuTc/5+ozkZ2s9GZ2m+CeM18a7dE45VXvsNUiCIURGVaxMZ
+	wkDnVxykeXTRAnk//MKyH1gEFVNXNpdYNhY0kmiu3esSS9XPiooIT
+X-Gm-Gg: ASbGncvqsUpOurf7Vs/QBvkmgQaa/8GgpaWai5ao/UiQmloLj2Eid2znOBW9ghvU8O3
+	q587h0cBfCMnQ/FYvTat3QHO3bEUPTcBUyhyesiy8p3eBjI5W1MVhrfFrylbOK3tQkX16WxEBjq
+	mnsuKHy3RZe9L0hOfZduM9MRxnwUUzYA70+U1RQmwJI5VKEI+cQWnJ
+X-Google-Smtp-Source: AGHT+IFmHKm9kqNhujcVpdgOw96B4rLpnKryxzvvMQ8LDiaaEUClLTQnJ9pgBvY5KlSnoISbcndqYP37rgcSfo6LGIU=
+X-Received: by 2002:a05:600c:3547:b0:43c:fe15:41c9 with SMTP id
+ 5b1f17b1804b1-441ac853dc1mr23585585e9.9.1745922640597; Tue, 29 Apr 2025
+ 03:30:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429-strncpy-from-user-v2-1-7e6facac0bf0@google.com>
+References: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
+ <20250429-strncpy-from-user-v2-1-7e6facac0bf0@google.com> <aBClyLz4y7a15WMg@pollux>
+In-Reply-To: <aBClyLz4y7a15WMg@pollux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 29 Apr 2025 12:30:26 +0200
+X-Gm-Features: ATxdqUFa3J0LW17Z4A1KkrE2MYyUXXKuptQZ7VbxgSdoPeqBASznqKjNgJpcxCM
+Message-ID: <CAH5fLgj_wW=8XgdnceHGv=VL19X_c3es7w_-QDqgK7+PoEcdZw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] uaccess: rust: add strncpy_from_user
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 29, 2025 at 09:02:22AM +0000, Alice Ryhl wrote:
-> This patch adds a direct wrapper around the C function of the same name.
-> It's not really intended for direct use by Rust code since
-> strncpy_from_user has a somewhat unfortunate API where it only
-> nul-terminates the buffer if there's space for the nul-terminator. This
-> means that a direct Rust wrapper around it could not return a &CStr
-> since the buffer may not be a cstring. However, we still add the method
-> to build more convenient APIs on top of it, which will happen in
-> subsequent patches.
+On Tue, Apr 29, 2025 at 12:11=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
+>
+> On Tue, Apr 29, 2025 at 09:02:22AM +0000, Alice Ryhl wrote:
+> > This patch adds a direct wrapper around the C function of the same name=
+.
+> > It's not really intended for direct use by Rust code since
+> > strncpy_from_user has a somewhat unfortunate API where it only
+> > nul-terminates the buffer if there's space for the nul-terminator. This
+> > means that a direct Rust wrapper around it could not return a &CStr
+> > since the buffer may not be a cstring. However, we still add the method
+> > to build more convenient APIs on top of it, which will happen in
+> > subsequent patches.
+>
+> If we can't think of a use-case to be built upon outside of
+> rust/kernel/uaccess.rs, I'd make it private. We can still make it public =
+should
+> we find a use-case later on. If we have one already, it's fine of course.
+>
+> With that,
+>
+>         Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 
-If we can't think of a use-case to be built upon outside of
-rust/kernel/uaccess.rs, I'd make it private. We can still make it public should
-we find a use-case later on. If we have one already, it's fine of course.
+Ok, I can drop the pub.
 
-With that,
-
-	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/uaccess.rs | 34 +++++++++++++++++++++++++++++++++-
->  1 file changed, 33 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> index 80a9782b1c6e98ed6eae308ade8551afa7adc188..acb703f074a30e60d42a222dd26aed80d8bdb76a 100644
-> --- a/rust/kernel/uaccess.rs
-> +++ b/rust/kernel/uaccess.rs
-> @@ -8,7 +8,7 @@
->      alloc::{Allocator, Flags},
->      bindings,
->      error::Result,
-> -    ffi::c_void,
-> +    ffi::{c_char, c_void},
->      prelude::*,
->      transmute::{AsBytes, FromBytes},
->  };
-> @@ -369,3 +369,35 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
->          Ok(())
->      }
->  }
-> +
-> +/// Reads a nul-terminated string into `buf` and returns the length.
-> +///
-> +/// This reads from userspace until a NUL byte is encountered, or until `buf.len()` bytes have been
-> +/// read. Fails with [`EFAULT`] if a read happens on a bad address. When the end of the buffer is
-> +/// encountered, no NUL byte is added, so the string is *not* guaranteed to be NUL-terminated when
-> +/// `Ok(buf.len())` is returned.
-> +///
-> +/// # Guarantees
-> +///
-> +/// When this function returns `Ok(len)`, it is guaranteed that the first `len` of `buf` bytes are
-> +/// initialized and non-zero. Furthermore, if `len < buf.len()`, then `buf[len]` is a NUL byte.
-> +/// Unsafe code may rely on these guarantees.
-> +#[inline]
-> +pub fn raw_strncpy_from_user(ptr: UserPtr, buf: &mut [MaybeUninit<u8>]) -> Result<usize> {
-> +    // CAST: Slice lengths are guaranteed to be `<= isize::MAX`.
-> +    let len = buf.len() as isize;
-> +
-> +    // SAFETY: `buf` is valid for writing `buf.len()` bytes.
-> +    let res = unsafe {
-> +        bindings::strncpy_from_user(buf.as_mut_ptr().cast::<c_char>(), ptr as *const c_char, len)
-> +    };
-> +
-> +    if res < 0 {
-> +        return Err(Error::from_errno(res as i32));
-> +    }
-> +
-> +    #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
-> +    assert!(res <= len);
-> +
-> +    Ok(res as usize)
-> +}
-> 
-> -- 
-> 2.49.0.901.g37484f566f-goog
-> 
+Alice
