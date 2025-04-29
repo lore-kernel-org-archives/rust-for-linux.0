@@ -1,158 +1,143 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288BC224222
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 19:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7608021ABC6;
+	Tue, 29 Apr 2025 19:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745954963; cv=none; b=SqNRnFFx6lJvsSxdFeKrUWgtuCeknjQlJ2AQv0aOBSaZnzr4UHBu/Ku5smbuZ2O5bDcjfNijn212wt5vMOKnxop5FBHo/VtZYue5ENnSjC0ux2gn1rJDGtqMrwzzf469jbh9+QWfKo3UJX4vzihmFkX//Fx0Q0UJYnLOTMo+U2E=
+	t=1745955198; cv=none; b=Fi22UWItiRzGZAQSUNHQgAhvQGAsSVYqKZUjZa9lU+Gvhgzd1FYRhuab4IsCrcO+ScIjdsp4O22XNfvmtOe7OdF3kcQQp7jOJ73ptyC2qAbbcScDHpki/JBup+UmCzYBrlc/65RvbScSatbSXB+/sZDvW2bfqRn72/zR9Zm4oKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745954963; c=relaxed/simple;
-	bh=kHc/cytx5Adj+8CqLo2UyKgU1kEEXeemLFRGfdkhqgQ=;
+	s=arc-20240116; t=1745955198; c=relaxed/simple;
+	bh=t/TaDhTEiYr8JZ9az+xPIoer1kKQ0EqLa+WBBbutaGU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XxqoyyDOdEOdDi6effOA1I5NNPUnLrPhGg1TkGTV8iAwytYnkhdVdfB1fYc4eAD4eDStwPMhbuR8zp5/Y1XAVyXB/ncNwpaSlSWRQ49qqihRlW6+e08RrbPkQhRbSUncyuONONU98n12StkVly3oEP+R9Df17Hj+1V078/Vjsmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uqmWrgk/; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=Iqr/4DSGWAbeLkj7h7dGniwxuLzpg3DSCQiGF1v6NblbE74bhaXtNKsWz3QBzzJSpT+b5iWhcvjLLf1uX0d2tXSq7+Zl8y7stF/lMzwLo5lyM0ff9/wjWcwgbJH+DmJo2DQH8yh/MDukZlAgN7kAwh7wLIAdgK/VN/yZ8uPkeyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JInmPKz9; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uqmWrgk/"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-39ac56756f6so6479661f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 12:29:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JInmPKz9"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ff67f44fcaso510783a91.3;
+        Tue, 29 Apr 2025 12:33:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745954960; x=1746559760; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745955197; x=1746559997; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XqMZCaPyPBAIN/Fd3CxJHtlGXvSegu6boDxVIZP3NUQ=;
-        b=uqmWrgk/J11SZEksWiK3JPCe1Fzdzgk2pMiYt2UFN8fmxESWsTA2cPGYdXJxWIr8X5
-         F25g4narJfrZNN9Ekauo42pA957PHPuGrz5Tcj7KxbAsNBoguuW22tiZJ5fPWmg+LcTS
-         Ug+87pKTVmaL+vZR79wfjAMDFFErP1JfeCKaZ0MBNg0Ixb4wovtKA0HrfEr38fBVmkgR
-         s7sKjWxglXIWPaC+7kZxEo5FCLnCs/mbEDQEq1AEb3T1l0AZfDqbur8GhlCzKQRpA+EG
-         xaWL3mfTncti2+L+cxMGYYaDNHP5uoz8GgAgPW+xOcgjcuDIV0a/HCDRvLyjwK3nEsiF
-         xVQQ==
+        bh=N+6R87BCw+XZw8t56W3vKaa9E85JmDHuUT63nFr7qjY=;
+        b=JInmPKz9DDPU/Tl7tY7inxgquEZA0TO6okGYlsAN/MgafpJWsiS3P4uBBXVkmQUfKU
+         C0ktAoFRurADbh2jxFkvQt4GdBnann+OeyENrPqOcEab+j0izN1akUN/6MPPAOkSTz2H
+         D5vhRwRRE0mdrcYcwRacivTqCmsEHjXnCU19sOmnWUrPN2+yGovmCDacKCON3DYOZ39T
+         N9SQ3CMH0GfglI8xgKs/hpNXsNyayHp5pTX9ugZ/CLvFxfsDlkPYm35AXSrS4DQF+rty
+         9YP6f/7XAzqrYSLO4/c/CmhkLn4eA4M1xcB4DCr24kqUmbjuiE9uwbFmNWCgJ+lX+OLP
+         K6vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745954960; x=1746559760;
+        d=1e100.net; s=20230601; t=1745955197; x=1746559997;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XqMZCaPyPBAIN/Fd3CxJHtlGXvSegu6boDxVIZP3NUQ=;
-        b=BINTc09Ybzu04TnU0P9YywJvTgc7xvN1sDOYwziaYoAdDtT1t5bb262UganBwzKz1e
-         jaj0I8JVBrfpOEOTmYZrBvtT1RTRNv0fS9W3oijjf+YFBkzoYIb60UQ2vJy/bgOGYD4G
-         euGeoEyaS5ytD9fBAcepFCO/0/ko4mol2RPpIpWvt5n8OOccfDv0HWullIozslemqFuT
-         5roNFLuunOvmMxMq9GtaEGOp/40exW/8RjN/wRKJd3yMyKyASBs0QXxJEJJ1uIN4MVGG
-         0uFQuP42/X6zCtxU8IafAox2xrllP8Xer0b6JhUJk/Wh6EWgiXoQdo55Y9of/SoEOG8W
-         omeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOvdBQW52lbJeIMEnbr62EbzEwbQLxWqNBVyTxSlSAHFtDXXCvY6iGTd0VFHSj2lN3jtSCPWXO5oIutO28wQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQNm/2xMtOqt+fbotKkT3OdwsHUEU0tlYzD3nWEzrsIsJzhC3d
-	otpagRD/56j57UhWetHl50k34EpxiMcecuTF3KtADHPeLyBsRN7wKwKo9T5Bp01smlH/HHqigwv
-	JNj2AcnLJNTh2R9+0YJA3FmJW4/Wjm8pjd/Km
-X-Gm-Gg: ASbGncsPYNHMMWCoL0B+XK7Q2Bb4wgqwFkEyZgoo2Cw6NoOMaLy2k6C5uj4CoydOkcn
-	X6uWEx4stjyL3x9SugbwsyzskGWB1XcaRRc5CPZRDAmJyC+SQoUD1T9TP64x3L9feV6zC7omXRS
-	yhuqx1+LWWZw4jXf7gwZDO8axCM7l4acnMDA==
-X-Google-Smtp-Source: AGHT+IH1OnVehQWv94v0BQMbp7CUXSGalAv8VO+ObtTwx1jiibBMzs9kXVSL8iuRc7gDhDYnjG8EJirxKA4k1bx6gxI=
-X-Received: by 2002:a05:6000:400b:b0:3a0:8a37:fb8e with SMTP id
- ffacd0b85a97d-3a08f77c285mr484722f8f.27.1745954960258; Tue, 29 Apr 2025
- 12:29:20 -0700 (PDT)
+        bh=N+6R87BCw+XZw8t56W3vKaa9E85JmDHuUT63nFr7qjY=;
+        b=Hyo7nPS8J+7zY3mjiEv1U7ZENtjrOsjkMDiEiH7BYHlFr/CQmwxWFFfGuAEn4rogeg
+         3FbgZK53hwuQqmblQBbOt9MJOaYL10UToA4WmquxfSuH69A3HyBAbwQOEEOG3FysNtz8
+         sLzTuyLUIBSi3PUNR/qSLD/biGRVncDXJvgz/6xsJPw5/ydLT76BeRg6/KYfhCvV6mtP
+         lVsHQD9gZXmpkaNugTMY+qeGgrpYhqQE0N8wOXNor93po7cYO2axoAvkIM7vULXyFXF9
+         8qb//vSBkGFrT4tl3Bbt9gah4Pz2af1pGb1qKe38rr2yHdTy//vRucIgYoine3vsUZ06
+         2KEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVavlhX7bjQWAzOVlwFFuVd3gBxG4F8zYUfjNPoF762GPsXQ4jJwo6cuZCYH/ep/CUJgHV1CrUzL1s7fatbIAwSEw==@vger.kernel.org, AJvYcCVmCJRi4YA1xfIsvzQa8Cd8Pr+gB0gTXSwNKgNUM7HzN0UvwB1pumjq5wsroBez+alSIFOqvA5u6m53XkI=@vger.kernel.org, AJvYcCXGd6rdWvnFWDIGiNaPPfN54uBFRIsTfQUkMiYCvpUSuP+9JotzOwlnMRGpqTVE2sRno3UaO6DeipNk7VJC/aA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx80DRi5eLd7GZvXMgJ1RSJS6XVgiEfhK9/yGijU991IPKpWKzn
+	/BKu3FxRAghP7fZOyovSqgpD5ZstwqxEb10PpAZ775goxsgVCJE4gu6O2hvSwSdCtTIli4SOUNU
+	CbypEic8fB2YIMzdqw2XdAII5Sk8=
+X-Gm-Gg: ASbGncvDBIxL2HszPCw3hy2it3GheEf2D03FX3ungCu7vMiKLfmVPXt2fPKgEQBDO3R
+	qpzHrKWgX0vHSZCMoYsjrywjLJlaMFN+gHSLjzIQWpvY+wVUNu/4wvzM3DVlZTzQ6bjMxKiSZOx
+	yUmVuP+jF/Nfuv3OGtUFT4Nw==
+X-Google-Smtp-Source: AGHT+IGQqF75KnMv+4bVCZkAaU+P9VRF9V2GaCglJcEOLFkIoEF/9gIcBxqPqDF/usHsH68nxd+NNiRHshS5SL0h1Xo=
+X-Received: by 2002:a17:90b:3b91:b0:2ff:6bcf:5411 with SMTP id
+ 98e67ed59e1d1-30a332d60e6mr187967a91.1.1745955196640; Tue, 29 Apr 2025
+ 12:33:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
- <20250429-strncpy-from-user-v2-2-7e6facac0bf0@google.com> <68111422.050a0220.e6713.25af@mx.google.com>
-In-Reply-To: <68111422.050a0220.e6713.25af@mx.google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 29 Apr 2025 21:29:07 +0200
-X-Gm-Features: ATxdqUHzG5OYUybCnGZV1DFce1JDL7NLUDOej9-nRXITvFXjwy1VlvSzbSi_LLY
-Message-ID: <CAH5fLggj-Mfhd3311aKUt9go_+FeAuXdPxditW26QL5VtLD3iQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] uaccess: rust: add UserSliceReader::strcpy_into_buf
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20250429185839.1807005-1-irogers@google.com> <20250429185839.1807005-2-irogers@google.com>
+In-Reply-To: <20250429185839.1807005-2-irogers@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 29 Apr 2025 21:33:03 +0200
+X-Gm-Features: ATxdqUF8JMzltITilMhWL094El5ZtueGDzQXtv_0-w06j1KIuKQGPrNQhTePM5Q
+Message-ID: <CANiq72kDkPgXS2SasysSa0MXX68kkkhYbSpvK9KAYxFbEKpLig@mail.gmail.com>
+Subject: Re: [PATCH v1 1/6] perf demangle-rust: Add rustc-demangle C demangler
+To: Ian Rogers <irogers@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, James Clark <james.clark@linaro.org>, 
+	Howard Chu <howardchu95@gmail.com>, Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, 
+	Ravi Bangoria <ravi.bangoria@amd.com>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, 
+	Stephen Brennan <stephen.s.brennan@oracle.com>, linux-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev, Daniel Xu <dxu@dxuuu.xyz>, 
+	Ariel Ben-Yehuda <ariel.byd@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 29, 2025 at 8:02=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Tue, Apr 29, 2025 at 8:59=E2=80=AFPM Ian Rogers <irogers@google.com> wro=
+te:
 >
-> On Tue, Apr 29, 2025 at 09:02:23AM +0000, Alice Ryhl wrote:
-> > This patch adds a more convenient method for reading C strings from
-> > userspace. Logic is added to NUL-terminate the buffer when necessary so
-> > that a &CStr can be returned.
-> >
-> > Note that we treat attempts to read past `self.length` as a fault, so
-> > this returns EFAULT if that limit is exceeded before `buf.len()` is
-> > reached.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/kernel/uaccess.rs | 35 +++++++++++++++++++++++++++++++++++
-> >  1 file changed, 35 insertions(+)
-> >
-> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> > index acb703f074a30e60d42a222dd26aed80d8bdb76a..7cec1b62bd8b816f523c8be=
-12cb29905740789fc 100644
-> > --- a/rust/kernel/uaccess.rs
-> > +++ b/rust/kernel/uaccess.rs
-> > @@ -293,6 +293,41 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut =
-Vec<u8, A>, flags: Flags) -> R
-> >          unsafe { buf.set_len(buf.len() + len) };
-> >          Ok(())
-> >      }
-> > +
-> > +    /// Read a NUL-terminated string from userspace and append it to `=
-dst`.
+> Imported at 80e40f5 from:
+
+I would suggest using the usual commit reference format:
+
+    commit 80e40f57d99f ("add comment about finding latest version of code"=
+)
+
+> The files are renamed as perf supports multiple demanglers and so
+> demangle as a name would be overloaded.
 >
-> s/`dst`/`buf`
->
-> ?
+> The work here was done by github.com/arielb1 and I am merely importing
+> it as discussed in the rust-lang issue.
 
-Hm, append is also wrong. Thanks.
+Cc: Ariel Ben-Yehuda <ariel.byd@gmail.com>
 
-> > +
-> > +        // We never read more than `self.length` bytes.
-> > +        if dst.len() > self.length {
-> > +            dst =3D &mut dst[..self.length];
-> > +        }
-> > +
-> > +        let mut len =3D raw_strncpy_from_user(self.ptr, dst)?;
-> > +        if len < dst.len() {
-> > +            // Add one to include the NUL-terminator.
-> > +            len +=3D 1;
-> > +        } else if len < buf.len() {
-> > +            // We hit the `self.length` limit before `buf.len()`.
-> > +            return Err(EFAULT);
-> > +        } else {
-> > +            // SAFETY: Due to the check at the beginning, the buffer i=
-s not empty.
-> > +            unsafe { *buf.last_mut().unwrap_unchecked() =3D 0 };
-> > +        }
-> > +        self.skip(len)?;
-> > +
->
-> So if the UserSlice content is "abcdefg" (not tailing NUL), and the buf
-> size is 4, after a strcpy_into_buf(), the return would be a CStr "abc"
-> (with a tailing NUL), and the UserSlice would move 4 bytes and become
-> "edg" (not tailing NUL), is this a desired behavior?
->
-> Alternatively, we can make `dst` always 1 byte less then `buf`, so that
-> in the above case, UserSlice will only move 3 bytes and become "defg",
-> and the return CStr is still "abc" (with a tailing NUL).
+> +// SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-Maybe we just have this method consume the UserSliceReader and avoid
-thinking about what happens if you use it afterwards.
+Hmm... The documentation is unclear, but I don't think parenthesis are
+needed (the docs have examples without them and for this particular
+pair we do not use them elsewhere).
 
-> The current behavior makes me feel like we can lose some information,
-> for example, if the user-kernel protocol is that "a userslice that
-> contains 4 64-byte strings which don't have a tailing NUL", we cannot do
-> 4 strcpy_into_buf() to get them, right? But of course, the scenario is
-> completely made up, just food for thoughts.
+> +// Code for demangling Rust symbols. This code is mostly
+> +// a line-by-line translation of the Rust code in `rustc-demangle`.
+> +
+> +// you can find the latest version of this code in https://github.com/ru=
+st-lang/rustc-demangle
 
-But then you should probably just read the [u8;64] type four times?
+Ideally, above this, i.e. before the original file starts, we could
+have something like we have for other vendored code, e.g. what we
+wrote elsewhere for some code from the standard library:
 
-Alice
+    //! The contents of this file come from the Rust standard library, host=
+ed in
+    //! the <https://github.com/rust-lang/rust> repository, licensed under
+    //! "Apache-2.0 OR MIT" and adapted for kernel use. For copyright detai=
+ls,
+    //! see <https://github.com/rust-lang/rust/blob/master/COPYRIGHT>.
+
+(And then below the actual file)
+
+It wouldn't hurt to mention also something like we did for `alloc`:
+
+    Please note that these files should be kept as close as possible to
+    upstream.
+
+I hope that helps!
+
+Cheers,
+Miguel
