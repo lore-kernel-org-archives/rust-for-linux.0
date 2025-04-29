@@ -1,88 +1,112 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B156A13AC1;
-	Mon, 28 Apr 2025 21:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E140274647
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 07:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745877035; cv=none; b=VHMEKUbGLu8VYe6gvvSQugko+kjbSMX8r2TXSoKXLehHTcRhkpMBA9vpjtNifrU4WN9yb0oalDto/xbwZ9Y3a39uhRzUbFchTE+Cg8hdkAJLbrGLLdF8ku9GHaaXGa61ORZFfxHmSSp5sz0eoi4WcJzfJVyZd/R5FZ6KxdF9zYo=
+	t=1745912008; cv=none; b=QnkLwCbbq9+lqceQuKhix1OjHHWjOX8iKhoUCRZ9Hxy5w+I8inTWYhtCB7yX7TiqN00kCa7bc4zcpEfRSIF3wg3gRC7STuYL3cLPs3cBTGuPO0/S4UuqFfipJwch8djlfbWsksi4iOOybJKkKXFApkjpDzocr1tUhXpmU1x7aPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745877035; c=relaxed/simple;
-	bh=xkgKJ+mM+v2G3RDM01Ni5V44BfStJdd9Ju2IygrNch8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=ZIa/HQBdG+D+zg/WzvjFEW/E/kKuxRXZbinzXsg6vl12IHWUBTRlZ1rzL42D0sk5106L1G7YIzV5iNejKs6lZxZsj6TYWqJSNP3DU8f918QE9+Jv7b3QeAzZEJL7l+WGU9LW68cltv4JD1Sf6az9TY10IIMuIKIcFaH9Z+p8W84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4ZmcZ80Q70z9tDb;
-	Mon, 28 Apr 2025 23:50:24 +0200 (CEST)
+	s=arc-20240116; t=1745912008; c=relaxed/simple;
+	bh=VxOgjQAyjmbmlzGYZ9KQPKGUWG0d7eiHgBvTdyWsskM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MFYj0SCQi4vSLfQ5ww2zYACjTq4mzbnb84yg6RW0GmKKWGKztuTMAoddhx4kbcyXBxnJVAUrm0VWvhCMCg5BPcF9v+c9RJsAAstw22fVuAB96g3T3igKrKDNqi4xzVeOTfRobYtVKW4dEfGLNJE4IWKFx/fDtMloAlElLT+dDQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ggxje4NR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ggxje4NR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745912005;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P+72HNtfhPv8IsRO4PpBbClmzVtCdsJ1REbN19xYrgg=;
+	b=ggxje4NRTKfkAUI0QIWOfWiOjaUkugR9C76Zj33BO3vVjdsWVdbhAP/XxGDVsHZ/oKscc9
+	ydoDU3SsaZMrGfPBB60cI7lfnR8A9TnJLNfeLj0Et9pV76s984eV3+XmS0yxEbjVDsw2eK
+	iIArgYXBy1B4vZVO/nr910ixW+0N4nI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-498-fXBXY5wZP96M0wcEjKJHVA-1; Tue, 29 Apr 2025 03:33:22 -0400
+X-MC-Unique: fXBXY5wZP96M0wcEjKJHVA-1
+X-Mimecast-MFC-AGG-ID: fXBXY5wZP96M0wcEjKJHVA_1745912001
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43ced8c2eb7so39438855e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 00:33:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745912001; x=1746516801;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P+72HNtfhPv8IsRO4PpBbClmzVtCdsJ1REbN19xYrgg=;
+        b=PEIY87BzNVirtZth/L5fJFMRNMI3ZaLjQYr48m2lR95bCForVo9hf/mhIWrDRPyiPR
+         ZtMtcrJC8modz07WmLg8H/pgiK5ZFCw6ixbrY8COlBClp2i7NTUvXK/+m1cZljX0EyJa
+         xlzgt0EfGo42jyMrw8KS/6cYnxgj5FJsG9Qd38Pbih9uy3HMA45Sa5IuPfT8RosfPw3a
+         Bq/xJCyN1ECZ4OKFJvl4VwuIUd8I62Dm/Idbew1b7I37Grv2OmH1lm5KKtG4GpKlRmT1
+         nfkkQ56K671MAFXVIifqOY/iV1FWvmITMCXcAfy5CZQFfDmfIU6EVtmqaW2LomK+UqJQ
+         CGYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXxyaiuHbfYkvtpB+LN2MxNaIabxNHrc7rbZZqmq9oilkA2K69LQTgrUQ1bZyOqGj+k367x4t9zvS12PdsLOA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdIDevpZD+BBFSfkkaLAfI6Q7wTOSWVJNK7LziYJGexsQxMSz4
+	9s4pL8PNT8HFIeDtPcqJW5MnUSLBw16z/eokmRyGedjbqvTF9E0/KEn4dtf8hdJuA6tz4faWhcU
+	sSc9JYgXsewI2vosy+JqQtmWbU3pUZxdQNBkuFrOvZM15GaZQ2yPT53th7a3xU5GH
+X-Gm-Gg: ASbGnctCZx+wn9V+IqwOHJii8ULgM9F70LhRSPJ6RSLCchNpv06zqLmPfmCNwsadVkQ
+	EY2X7oiI2H1UpYWOplM2BDWZKri8SebCdgASM3KX1F5IbfFWlQUzeqdT8JXmqV6LLq/A4pGyD3H
+	/HBLDhF2jSf2n+HNHQuA2qvfdRM2y/Eki37QE22MZcsxudkZpWG2vr9hrI4WQiaW24ZjEPd/yaQ
+	qmMpOipkUevjpe6l1tdvYrroIcWh5h/vmzx+3qgOMGVwMUDbAGe+CxLLU9SWp/qGCRsXfqqcRMM
+	21RfeZz0+2VsXTEjrGoF15T5J0SLo3QNmvxb4xeACEPLY46urwinh1hLkKLA0JADYohRXw==
+X-Received: by 2002:a05:600c:19cc:b0:43d:9f2:6274 with SMTP id 5b1f17b1804b1-441ac85786bmr19965635e9.14.1745912001301;
+        Tue, 29 Apr 2025 00:33:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHQHljw4FTOErNPchc4gpA5RoNY02F91HquBdjkOTWdJUR7gI95jnweHCcRLzTuNXQSYwqi6w==
+X-Received: by 2002:a05:600c:19cc:b0:43d:9f2:6274 with SMTP id 5b1f17b1804b1-441ac85786bmr19965335e9.14.1745912000916;
+        Tue, 29 Apr 2025 00:33:20 -0700 (PDT)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073c8ca72sm12866525f8f.4.2025.04.29.00.33.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Apr 2025 00:33:18 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Jocelyn Falempe <jfalempe@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Christian Schrefl <chrisi.schrefl@gmail.com>, Arnd Bergmann
+ <arnd@arndb.de>, Russell King <linux@armlinux.org.uk>, Paolo Bonzini
+ <pbonzini@redhat.com>, rust-for-linux <rust-for-linux@vger.kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Thomas Zimmermann
+ <tzimmermann@suse.de>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: Re: [PATCH] drm/panic: Use a decimal fifo to avoid u64 by u64 divide
+In-Reply-To: <20250418165059.560503-1-jfalempe@redhat.com>
+References: <20250418165059.560503-1-jfalempe@redhat.com>
+Date: Tue, 29 Apr 2025 09:33:17 +0200
+Message-ID: <8734dr1kxu.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Apr 2025 23:50:19 +0200
-Message-Id: <D9ILR2IG980H.34N8WNWKWJJO3@buenzli.dev>
-From: "Remo Senekowitsch" <remo@buenzli.dev>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Rob Herring" <robh@kernel.org>
-Cc: "Dirk Behme" <dirk.behme@de.bosch.com>, "Dirk Behme"
- <dirk.behme@gmail.com>, "Saravana Kannan" <saravanak@google.com>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 3/7] rust: property: Introduce PropertyGuard
-References: <20250425150130.13917-1-remo@buenzli.dev>
- <20250425150130.13917-4-remo@buenzli.dev> <aAuryiI0lY4qYyIt@pollux>
- <81a65d89-b3e1-4a52-b385-6c8544c76dd2@gmail.com> <aAyyR5LyhmGVNQpm@pollux>
- <0756503c-02e7-477a-9e89-e7d4881c8ce6@gmail.com> <aA4ht5sUic39mnHj@pollux>
- <ee888c8f-4802-48a1-bd08-b454b782fff4@de.bosch.com>
- <aA-oQAol8rAU7vzg@cassiopeiae> <20250428204840.GB1572343-robh@kernel.org>
- <aA_xUWQt6-UCdlGM@cassiopeiae>
-In-Reply-To: <aA_xUWQt6-UCdlGM@cassiopeiae>
-X-Rspamd-Queue-Id: 4ZmcZ80Q70z9tDb
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: pnKJwpK_BIaqAXfdjF47KAnSOb2sXpCF03cLpnv9Egs_1745912001
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 
-On Mon Apr 28, 2025 at 11:21 PM CEST, Danilo Krummrich wrote:
-> On Mon, Apr 28, 2025 at 03:48:40PM -0500, Rob Herring wrote:
->>=20
->> One thing that's really hard to debug in C drivers is where an=20
->> error came from. You can for example turn on initcall_debug and see that=
-=20
->> a driver probe returned an error. It's virtually impossible to tell=20
->> where that originated from. The only way to tell is with prints. That is=
-=20
->> probably the root of why probe has so many error prints. I think we can=
-=20
->> do a lot better with rust given Result can hold more than just an int.=
-=20
->
-> This I fully agree with, not sure if the solution is to put more stuff in=
-to the
-> Result type though. However, there are things like #[track_caller] (also
-> recently mentioned by Benno), which might be a good candidate for improvi=
-ng this
-> situation.
->
-> As mentioned, for now let's go with
->
-> 	pub fn required_by(self, dev: &Device) -> Result<T>
->
-> additional to required() for this purpose to get a proper dev_err() print=
-.
+Jocelyn Falempe <jfalempe@redhat.com> writes:
 
-Could it make sense to _replace_ `required` with `required_by` ?
-Otherwise `required` sits a little awkwardly between `optional` and
-`required_by`. I can't think of a situation where `required` would be
-preferred.
+Hello Jocelyn,
+
+> On 32bits ARM, u64/u64 is not supported [1], so change the algorithm
+> to use a simple fifo with decimal digits as u8 instead.
+> This is slower but should compile on all architecture.
+>
+> Link: https://lore.kernel.org/dri-devel/CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com/ [1]
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+> ---
+
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+
+-- 
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
