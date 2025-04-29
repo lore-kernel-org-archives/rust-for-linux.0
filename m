@@ -1,180 +1,216 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB698227BA2;
-	Tue, 29 Apr 2025 16:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1D5242D94
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 16:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745942618; cv=none; b=dg5cmIGdBiH52KrOFuXoAvFOpp2Mre1g/08aJA+NoSr/nPsCHruNJQkCDyQ/Y4wfanYFdOYp20P67KzSiVZ8buV3M1WdBULln2SWtuQhlC0/j0COWx18IATBgv+pOR5DyqNDZkyHLAyj+P1/rqNFSM/uyDIAMMCuFG/VEhotyaM=
+	t=1745942845; cv=none; b=bBXJ5hIhxiF/g745l910MVRALN95kpEkJ9NI9EGtAWYRTjB33vrkAFmhXr4Hi3HdvBST8dpZ9v0smEEaglCHs8PkhMexQsU5hYg2h+U1nrYmciZ184sczcfT1If8ck1RoS5WdBy3GWwuP/ENId0ceQf/83FnXPD25KEW5Hc8kR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745942618; c=relaxed/simple;
-	bh=YdSkEEiFZncAhrc22+PytLmETOgRYaylmTOMtuIRgl8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=chsjIe2sXqYWblLhOruBTNJR3Q2q5Eb/vVDL9mFtayUOWJXQEeV2hlAAYYoIF/44RJtJABUHU8/L84R73TzjRFbo/BU7rzMKTUlv6iPig2+sRfbrdVMYLnaE8jjXyl41i6JpmtYPJ1zY4zJFt7i/cwuDbUQx0eQXJg5k/xojEFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TQBjbLQ2; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745942845; c=relaxed/simple;
+	bh=TSFZloEttw3ZUTFT0vTim52fWwqIpP85dAKVbWAvxeM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qisEdoHOAnpNF1cNT6+uLqLg1Pb/50PNV2PsjN0PzC58CrcKAEO9ivx2m9BPiLTud2OO0ntDO5npzFmRatKJTLnQqQtBB31paxlFPcpWifdrNpFJgVCJNAmACgKjp91ccp/pSSy3hHDPNbtoKT5bZcNsv7S/1Zc0qdnvnDDapz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=et33YyJC; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TQBjbLQ2"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6f2b04a6169so68231086d6.1;
-        Tue, 29 Apr 2025 09:03:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="et33YyJC"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-227c7e57da2so53256305ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 09:07:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745942615; x=1746547415; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:references:in-reply-to:message-id
-         :cc:to:from:date:mime-version:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tZqALT9s58kVrCiMKZIE6HXnZIGBvMdRsf7s/8Crr9g=;
-        b=TQBjbLQ2AFpbLic7HCZNmic1ImvfWeA4VEjIHPiIr/1uImCcunzF+l7tkSrpJ6sfqe
-         DAzYKTy9fzM0rFXrDtuKYfeL+mzOMhnlZKG5TiOpJLteXxzx80Qcyee7Z5SNiJWs7ILS
-         0OKCo4cfTwp88VZRsdLQH+ZTychonwMpxMhdMdFmSmN/KkyTZyZsvIpBvkJGCEjnQrga
-         pdTlUL82XQuSAUXi81JC2WogVRS1inO/kRfiB6/GOplA+sd+x31/Dsd5pQtmsu4N3Kv3
-         3nMxWRNOw1xUUwK+tGPsk8c77Ci/Kiv+6hxyGqlP3UzJCNQdcMzjF7cOsn3O12kZvCxE
-         SHcQ==
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1745942843; x=1746547643; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mC1UTKJ/aE2XaZGs9eJzOr2ci5VlY8Jj7KmPztDqUEE=;
+        b=et33YyJCfXzaYxM6LmrmvX7A3/a55PHhBlajvgwqvXzc2XPSLmIbkxLDJmdP1kLizU
+         7pkCqQTddIovA6HMpnKI2XCFthmx1RvIei01XWa7O/64IW2y5OfuO5hBSD/0cMqD0AEk
+         rPIJ8BwJmDIYKulePDCICPx9VsWosawe5uitCFJDjXUbqH8QOHR7GTABtgb29RXmwjWE
+         ueV+FHh0e3d2nnVktQf1mtGC6olbOgilagFQ5riv7IHJ8tQYSIkf75tDS4pVyhq5Y+zk
+         e9r9dL4dprMpi+1o1Q+V4TbpldgbrsHUfYsQZydx9xmO2ZugLsiiWbrO+VTA4CdC34AV
+         rp/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745942615; x=1746547415;
-        h=content-transfer-encoding:subject:references:in-reply-to:message-id
-         :cc:to:from:date:mime-version:feedback-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tZqALT9s58kVrCiMKZIE6HXnZIGBvMdRsf7s/8Crr9g=;
-        b=lN/GYold+/F4cRRsLpeOm+EIHwhzJhI2/d+zu44iLvgTX5urwFugwa6M00/T+bMUar
-         22CggyRhnasYspCJfTbQhCHY2mN50CxkstJVEcoke3wWtMuJQW0sdDcy0Eh+8XI5e+4j
-         3f7mQqCJQLwkzzjEwFaICZ0zWGek0FmLu2eS7iS+uwj/9veGTiLoW+/SDJlidlB5wDUq
-         sqXaVQ5bwfw9cKZAk8RIaE+7eRuM+1fyih7ONuI5xrwNBK7OQcBvwvRLOWsZk4mmgT3q
-         lGEXdx3Mws961/Tfr9GShS4pttH170FPpEzLl09Oy7qEt3Xjk/kBM2icyDVEc/G5uVbd
-         gX/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVdEfyWftBn2bHdlWXJ8eLKmfgpvqcl2EvBs8xAYeEdPexBzGse/YkRiEMmyhMyrhOzokZPIzW7@vger.kernel.org, AJvYcCVxGVVhtOt5aTlhGBSCFK1f7EAfbe5MSYQNo5+L5iNW8aH2wRs/v4qKn3VhkFKh+AOpPUv+2mLfztgqQtw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+mpRrJHJjt/YXIz7j0de0CHxtB2iQYn42OTec4s4ooVAWRWLA
-	glqIYDt+yXx9SnIv1cfMV+DHBliNvWV5W4p+RMNehCONsSyCCubB
-X-Gm-Gg: ASbGncvd+cMZwryOxiYi3LrBYtrACeU/T8CtvJDRxBprDSMSZMf2vZfU+3I6/dZO1Te
-	18WDUFeHRHTnGYFRARNIaS8hMiS4NYKLPiq1DESCUFBnZCv+QA+HOoeRaYsCdqbhNWCeSyJgnwq
-	woHV26gB2wWRnxt0ddPaARIjIkqMpRz6sYK0ikamqSB8PqHm2ar5GGPMtkumSuWX3o+X2TPQhb5
-	ra3YXitgex0D8netinh5TGB4qkdkcf8NSbfA06z5WZOA1huODibr22y3tGBRv/bNTdUjYp3j5vc
-	L4Q6n912vgFvC+vBPJcZoQnkiuIhuxvzAtH1FA98YeBGrYvjQ15D2MYnNhGD3agm2vXTxewSbdQ
-	f4+JviJ6PEXDo5HAiwRTqK5FNc7JcH18=
-X-Google-Smtp-Source: AGHT+IF7JT3P39Y8Lbf9+t55VGljtWVy576+gkRsH8+tkLSB4QFI0Ow6bJbm6D+aNwlLetlihslbNA==
-X-Received: by 2002:ad4:5148:0:b0:6f4:f162:ce24 with SMTP id 6a1803df08f44-6f4f162ceb5mr44549006d6.44.1745942615437;
-        Tue, 29 Apr 2025 09:03:35 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f4c0aaea52sm73498716d6.105.2025.04.29.09.03.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 09:03:35 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DBD891200043;
-	Tue, 29 Apr 2025 12:03:33 -0400 (EDT)
-Received: from phl-imap-16 ([10.202.2.88])
-  by phl-compute-01.internal (MEProxy); Tue, 29 Apr 2025 12:03:33 -0400
-X-ME-Sender: <xms:VfgQaHVHvgYDg_SAzsbh6JBQzLuOUUglF-JJIqG_H4FRhQIKLThhBg>
-    <xme:VfgQaPmmCXGev7A8g27WORst5jAh8xNDbEn-gjW24hX55b7cWaCWUgThAAKTm6ZDn
-    xaHp4binDsR4xn4_Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieegvdehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedfuehoqhhunhcuhfgvnhhgfdcuoegsohhquhhnrdhfvghnghesgh
-    hmrghilhdrtghomheqnecuggftrfgrthhtvghrnhephedufeelfffghefgveejteekvedt
-    leegfedtkedvieekgfffleelkeefhfefhfejnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
-    ohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnh
-    hgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeef
-    ledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepughivghtmhgrrhdrvghgghgvmh
-    grnhhnsegrrhhmrdgtohhmpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdho
-    rhhgrdhukhdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtghpthhtohepug
-    grnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohep
-    ghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoheprghlvgigrdhgrgihnhhorh
-    esghhmrghilhdrtghomhdprhgtphhtthhopegthhhrihhsihdrshgthhhrvghflhesghhm
-    rghilhdrtghomhdprhgtphhtthhopegurghvihgurdhlrghighhhthdrlhhinhhugiesgh
-    hmrghilhdrtghomhdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgr
-    ihhlrdgtohhm
-X-ME-Proxy: <xmx:VfgQaDYmDKDMNIrwRfUDMoZ51GADRpmeprMHpf6hAksJnkfhpd1q0w>
-    <xmx:VfgQaCU1LGJ0x6kzNU7m8TGOsHHWPQLeoRJ35JwpaZik6j6ODrYOaQ>
-    <xmx:VfgQaBmj8dRwMW50HMMG611HdxGbj0THbo4iJiv_zGoKGSGnmpCHSA>
-    <xmx:VfgQaPeDXU3VUA_IHO8-QyNYmtdJAN5hM8nS_Lk9n19uTknsqaR0AA>
-    <xmx:VfgQaLGrskHNLlSANi_DsNMgo0JOBlDWuTbw_XggrA-8X__FGtuX-2NH>
-Feedback-ID: iad51458e:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id B37372CC0075; Tue, 29 Apr 2025 12:03:33 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+        d=1e100.net; s=20230601; t=1745942843; x=1746547643;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mC1UTKJ/aE2XaZGs9eJzOr2ci5VlY8Jj7KmPztDqUEE=;
+        b=nlDr32e9UYw9s3jEGOEGl6oQPrkQK9LfWvkWhPlkeYBhqxLZqZpIFaqEltChCVdi0s
+         JW1AftY2tMLcH4omXMiEJCF0ACAUcAb3Y98FSN0fKHURx7H8CQRvquwA7JSpeZ8dkvFG
+         gS6aB08iiDRlm6Cw5tNlXvqceo9QD1Pl1IHoiny1/aZoj+dJYedmvZHTgHQNu/Jyjzs3
+         0XRk/IKpNIxSTH+iETpS1ey7OL2xYH5B52R9QfY6IJtUk720xeb/NWdaXYsxZi7Ir4uv
+         ZguAR9c71xgrqYsyXtPlffWz4RLYbkL1TTyzFeQ4Kziu4Gu0XWf7y2cUOvGEI905Xkz0
+         fJ8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWJOfOuXf1lY0dZf0VSC1FiwwO3PpCQDrYMuB/872W9EcR0bW7n17x7N7uaIifGbzdXacWB/ooyutCTVtKtdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YydzjFUwPrILJvmbpsLhnYpe53gTBDtaAodNMlcLxY8XaJ9erJr
+	Vtw+6f6TODHHm6+QE5oJH89ZRElF8PSS4RojBLc96Y5SoP5D3xp4bOKAO13dXg==
+X-Gm-Gg: ASbGnctH7Uau+F36oRaTAmP2tNUCFwGf4HrAg6upQInuYArXk60jzvo1rD+iXId94xQ
+	+/TLujtwHTbj1uu6Fp+o0YjcdbvDXUY0MwjmlzJqC3uYd6xEyCmhN3mpWsHmnfGVP3PGeLUIDsW
+	51PE+jehRWtpXibPVwP1VTwGCoeLqk8rEYxAc3PdkUU0UdA6t28djmex7kArtpoGCQAcW68yyMq
+	/9naMBLkxbv/3dmfkm/Yq6icxRvrFDQLmvlGU/tY/XI3RT8lJc//cKdIGWcPvJjYcxu5wN3xQIX
+	ksviPs9rfRNoCC5fO37tMOJudDsiiy3lAIqW4CRMnigRrTY=
+X-Google-Smtp-Source: AGHT+IHBM02KliheEDBQ/YbfFg9HkicKZ2Zh7waBOreEcgIMAIiWV3OXrKykhYTDFVeLIkUeSEyRFw==
+X-Received: by 2002:a17:903:228a:b0:223:4d5e:789d with SMTP id d9443c01a7336-22dc6a0013dmr210547165ad.19.1745942842801;
+        Tue, 29 Apr 2025 09:07:22 -0700 (PDT)
+Received: from [172.16.116.85] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db50e7aadsm104528495ad.138.2025.04.29.09.07.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Apr 2025 09:07:22 -0700 (PDT)
+Message-ID: <1fda026e-9ec5-46f6-84e8-4111263350ff@beagleboard.org>
+Date: Tue, 29 Apr 2025 21:37:04 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T32d91d43ea38c8d5
-Date: Tue, 29 Apr 2025 09:03:13 -0700
-From: "Boqun Feng" <boqun.feng@gmail.com>
-To: "Arnd Bergmann" <arnd@arndb.de>,
- "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- "Andreas Hindborg" <a.hindborg@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, "Gary Guo" <gary@garyguo.net>,
- "Alice Ryhl" <aliceryhl@google.com>, me@kloenk.dev,
- daniel.almeida@collabora.com, linux-kernel@vger.kernel.org,
- Netdev <netdev@vger.kernel.org>, "Andrew Lunn" <andrew@lunn.ch>,
- "Heiner Kallweit" <hkallweit1@gmail.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: kernel: device: Add
+ devm_of_platform_populate/depopulate
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>
+Cc: Jason Kridner <jkridner@beagleboard.org>,
+ Deepak Khatri <lorforlinux@beagleboard.org>,
+ Robert Nelson <robertcnelson@beagleboard.org>, Dhruva Gole <d-gole@ti.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@samsung.com>,
- "Anna-Maria Gleixner" <anna-maria@linutronix.de>,
- "Frederic Weisbecker" <frederic@kernel.org>,
- "Thomas Gleixner" <tglx@linutronix.de>,
- "John Stultz" <jstultz@google.com>, "Stephen Boyd" <sboyd@kernel.org>,
- "Ingo Molnar" <mingo@redhat.com>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Juri Lelli" <juri.lelli@redhat.com>,
- "Vincent Guittot" <vincent.guittot@linaro.org>,
- "Dietmar Eggemann" <dietmar.eggemann@arm.com>,
- rostedt <rostedt@goodmis.org>, "Benjamin Segall" <bsegall@google.com>,
- "Mel Gorman" <mgorman@suse.de>,
- "Valentin Schneider" <vschneid@redhat.com>, tgunders@redhat.com,
- david.laight.linux@gmail.com, "Paolo Bonzini" <pbonzini@redhat.com>,
- "Jocelyn Falempe" <jfalempe@redhat.com>,
- "Russell King" <linux@armlinux.org.uk>,
- "Christian Schrefl" <chrisi.schrefl@gmail.com>,
- "Linus Walleij" <linus.walleij@linaro.org>
-Message-Id: <de778f47-9bc6-4f4b-bb4f-828305ad4217@app.fastmail.com>
-In-Reply-To: <5c18acfc-7893-4731-9292-dc69a7acdff2@app.fastmail.com>
-References: 
- <6qQX4d2uzNlS_1BySS6jrsBgbZtaF9rsbHDza0bdk8rdArVf_YmGDTnaoo6eeNiU4U_tAg1-RkEOm2Wtcj7fhg==@protonmail.internalid>
- <20250423192857.199712-6-fujita.tomonori@gmail.com>
- <871ptc40ds.fsf@kernel.org>
- <20250429.221733.2034231929519765445.fujita.tomonori@gmail.com>
- <5c18acfc-7893-4731-9292-dc69a7acdff2@app.fastmail.com>
-Subject: Re: [PATCH v15 5/6] rust: time: Add wrapper for fsleep() function
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250429-rust-of-populate-v2-1-0ad329d121c5@beagleboard.org>
+ <aBDi2LE3O1rIsGqn@pollux> <2025042904-trade-leverage-0f98@gregkh>
+ <aBDl5oRIRpwbPrC1@pollux> <2025042945-aviator-subzero-0263@gregkh>
+Content-Language: en-US
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <2025042945-aviator-subzero-0263@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+On 4/29/25 20:27, Greg Kroah-Hartman wrote:
 
-
-On Tue, Apr 29, 2025, at 8:51 AM, Arnd Bergmann wrote:
-> On Tue, Apr 29, 2025, at 15:17, FUJITA Tomonori wrote:
->> On Mon, 28 Apr 2025 20:16:47 +0200 Andreas Hindborg <a.hindborg@kernel.org> wrote:
->>      /// Return the number of milliseconds in the [`Delta`].
->>      #[inline]
->> -    pub const fn as_millis(self) -> i64 {
->> -        self.as_nanos() / NSEC_PER_MSEC
->> +    pub fn as_millis(self) -> i64 {
->> +        math64::div64_s64(self.as_nanos(), NSEC_PER_MSEC)
->>      }
->>  }
+> On Tue, Apr 29, 2025 at 04:44:54PM +0200, Danilo Krummrich wrote:
+>> On Tue, Apr 29, 2025 at 04:37:49PM +0200, Greg Kroah-Hartman wrote:
+>>> On Tue, Apr 29, 2025 at 04:31:52PM +0200, Danilo Krummrich wrote:
+>>>> On Tue, Apr 29, 2025 at 05:09:26PM +0530, Ayush Singh wrote:
+>>>>> +    /// Remove devices populated from device tree
+>>>>> +    pub fn devm_of_platform_depopulate(&self) {
+>>>>> +        // SAFETY: self is valid bound Device reference
+>>>>> +        unsafe { bindings::devm_of_platform_depopulate(self.as_raw()) }
+>>>>> +    }
+>>>>> +}
+>>>> One additional question regarding devm_of_platform_depopulate(). This function
+>>>> is only used once throughout the whole kernel (in [1]), and at a first glance
+>>>> the usage there seems unnecessary.
+>>>>
+>>>> In your upcoming driver you call devm_of_platform_depopulate() from a fallible
+>>>> path [2].
+>>>>
+>>>> So, I think we should change devm_of_platform_depopulate() to return an error
+>>>> instead of WARN(ret).
+>>>>
+>>>> If [1] needs it for some subtle reason I don't see, then I think we can still
+>>>> call it from there as
+>>>>
+>>>> 	WARN(devm_of_platform_depopulate())
+>>>>
+>>>> [1] https://elixir.bootlin.com/linux/v6.15-rc4/source/drivers/soc/ti/pruss.c#L558
+>>>> [2] https://github.com/Ayush1325/linux/commit/cdb1322b7166532445c54b601ad0a252866e574d#diff-7b9e3179e36732d5f3a681034d70c2fda4ff57745c79ad4a656f328c91e54b77R71
+>>> Ugh, no, we should just delete this function entirely if only one driver
+>>> is using it.  That implies it's not really needed at all.
+>> Ayush's driver calls {de}populate() from a sysfs store path [2]; not sure what
+>> it's doing semantically or if this is a valid use-case though.
+> That's going to be rough, and full of tricky corner-cases and probably
+> shouldn't be doing that at all :)
 >
-> I think simply calling ktime_to_ms()/ktime_to_us() should result
-> in reasonably efficient code, since the C version is able to
-> convert the constant divisor into a multiply/shift operation.
+> So let's hold off on this entirely until we see a real user that can
+> actually pass review.  Trying to do system configuration like this in
+> sysfs is a much larger discussion than just adding rust bindings.
 >
-
-Well, before we jump into this, I would like to understand why
-this is not optimized with multiply/shift operations on arm in
-Rust code. Ideally all the dividing constants cases should not
-need to call a C function.
-
-Regards,
-Boqun
-
-> div64_s64() itself is never optimized for constant arguments since
-> the C version is not inline, if any driver needs those, this is
-> better done open-coded so hopefully it gets caught in review
-> when this is called in a fast path.
+> (hint, configfs is for system configuration, not sysfs...)
 >
->        Arnd
+> Anyway, worst case, you just "open code" the single function call that
+> this one binding was trying to "wrap".  which is what I think the
+> in-kernel user should be doing now.
+>
+> thanks,
+>
+> greg k-h
+
+
+Well, I don't really want to convert this discussion to addon board 
+connector setup discussions. So I will try to keep things as short as 
+possible here while linking to all the other discussions for the same.
+
+For starters, what the driver does is as follows:
+
+1. Provide 3 sysfs entries:
+
+     - New cape: Can write the name of the cape (I have not settled on 
+the naming convention yet). This name is then used to load appropriate 
+overlay from `/lib/firmware/` and populate all the devices. The overlay 
+is applied to the connector node. Only one cape overlay can be used at a 
+time.
+
+     - Current cape: Just a ro entry to get the name of any active cape.
+
+     - Delete cape: Remove cape overlay and registered devices.
+
+It's a very basic driver, where I am trying to experiment with the 
+following patches ([2], [3], [4]) to be able to provide a better picture 
+of things, and get a read on what more needs to be added to devicetree 
+spec and/or other infra to make connector setups possible, and provide a 
+proof of concept that might move the needle a bit more than the past 
+year has.
+
+
+I do not think this should use configfs, but maybe I am wrong.
+
+
+`of_platform_populate` is used to discover the devices that are added by 
+the overlay. Without this function, I am not sure how a setup which is 
+supposed to only modify the devicetree in a particular node is supposed 
+to work.
+
+
+The reason why local devicetree overlay is being used instead of 
+modifying the local tree is the discussion here regarding how global 
+tree modification is a security problem and any approach using it will 
+be difficult to upstream [0]. That is one of the reasons for not 
+pursuing the approach described here [1].
+
+
+I am okay with maintaining the patches for Rust side out of tree, 
+because well, at this point, it's a much smaller list than the number of 
+out of tree patches I need to have for the C side to be able to show a 
+semi complete connector setup anyway. And nothing is going to be merged 
+until a so called perfect solution is found. But just want to list out 
+why I at least do not want the C side of 
+`of_platform_populate/depopulate` to not disappear.
+
+
+Of course, feel free to list out any better alternatives than having to 
+use `of_platform_populate/depopulate`, which can be used for this purpose.
+
+
+Best Regards,
+
+Ayush Singh
+
+
+[0]: 
+https://lore.kernel.org/all/9c326bb7-e09a-4c21-944f-006b3fad1870@beagleboard.org/
+
+[1]: https://lore.kernel.org/lkml/20240702164403.29067-1-afd@ti.com/
+
+[2]: 
+https://lore.kernel.org/devicetree-spec/20250415122453.68e4c50f@bootlin.com/T/#m591e737b48ebe96aafa39d87652e07eef99dff90
+
+[3]: 
+https://lore.kernel.org/all/20241209151830.95723-1-herve.codina@bootlin.com/
+
+[4]: 
+https://lore.kernel.org/devicetree-spec/20250401081041.114333-1-herve.codina@bootlin.com/T/#t
+
