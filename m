@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C843C264609
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 21:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AE226D4F9
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 21:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745963309; cv=none; b=eWbBzFft7ZtR+N1NCR1gyul2nLrEBg9w88shNNLKvmm8FGEfIuekecLXLBY2UeeQwT2H+G4/20eRXxrTDN72uj9MkASWmuiyLTPCtA/1qh8J9Ry8o7p9gJp/c9lcDGf+5rZcC11vG4QZnjT8Gs5LEMMzfOBRMgD3Dsp3GbgH2aU=
+	t=1745963311; cv=none; b=I0m29SNt3a9Fge5PQtsKrlb/9DYqxaf2JxAXhsR1Qrxe8srCKPTeVH1AQW3sWPbT/aRnjyKK9K+PET3ulb3KWLtkgjXC1/mAPjy/U5cv4HaaX7KSmYOkJCGGh5jVQseYbR1NqG91K9054oBvOGBvo6w70ZeONpug8pt6wH1zSsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745963309; c=relaxed/simple;
-	bh=VVGfYvtNB+DqgQn8Dz0h8wpBYiXA/auxzT7EcUd/bLI=;
+	s=arc-20240116; t=1745963311; c=relaxed/simple;
+	bh=SZLfsXPRDLV4F+4hb6ap0CmSiJ6OyHg1dcvc8VeYBF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5obEcmiknotUoirI4BBBDppnt7kWMwBEN6P1Mc5Uvt07CGK+0WdkVJ+hNrIPnnEyM07DO+/L0Oekmmlaq2Wmrc7M/lYO5TPHJpEBFN8PaDcEqdjtSizZWO/fSe0fVLtp1d8kyRSYOxS4pBnnFt4MvwrTvuDlfT6Ex/5YigBigA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jGK/MaXJ; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=oAyRKdVXu1RXcwWKBm5Y02UxTCJCTRFutzWi/HCs1LM/GxkvzQ2VtG0/IEB0BQnBTTnxeOopB44UGnWf2FMazGa+zGuY32LNQCrWAN2w6wHXQgzjezhcSX0nYQ8bxKoGikNo0KahYyYxk6PbbJv9U8rx3AlNb/H7dm+N9e86O/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ep+Mxrsy; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jGK/MaXJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ep+Mxrsy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745963306;
+	s=mimecast20190719; t=1745963308;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mwV+qgsVrBGX1S4J98iXiHKoHWOuHRCS7QjqtlcZ2iU=;
-	b=jGK/MaXJWfg68Ya6aad2NKW8D+nlzh0rPRVhGFOYxtMR0NvVLXI5ZwaeawLMxS4EpAwdS9
-	fkEpHB1MVNexlwl9A5j48bT11wI0V1k3KhQI0kJdkIKQbeTXvbHRU/YbU4EtI569hfDaPU
-	ANje1acnGjS4GHJW7ZY8zgi+yS7pleo=
+	bh=IznTkOaPFCfAvRQt1OhWZrGExipCFPEqSVkrVHQdx+Y=;
+	b=ep+MxrsyEiU2bKiC1cb8b0LetWd8AQGgG2IPkgQQLX/7lln5hgRdafS46ZqrpN702yUpZU
+	ib1rESGAJQS3sDECI/MvXFswT46k6xm24oo25x3XHiPCa+iH6a+/sxuAnFOLZ7IrxIfFDB
+	0QdxGrjE/14kha4UREU8nMzIO26clcQ=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-oag8ADNhP-OVvQTBsXqM5A-1; Tue,
- 29 Apr 2025 17:48:25 -0400
-X-MC-Unique: oag8ADNhP-OVvQTBsXqM5A-1
-X-Mimecast-MFC-AGG-ID: oag8ADNhP-OVvQTBsXqM5A_1745963303
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-b2L_gP_UPuyXyBuQ_6Cl5w-1; Tue,
+ 29 Apr 2025 17:48:23 -0400
+X-MC-Unique: b2L_gP_UPuyXyBuQ_6Cl5w-1
+X-Mimecast-MFC-AGG-ID: b2L_gP_UPuyXyBuQ_6Cl5w_1745963300
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D19BA1800374;
-	Tue, 29 Apr 2025 21:48:22 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D0EAF180048E;
+	Tue, 29 Apr 2025 21:48:19 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.88.132])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 322C819560AF;
-	Tue, 29 Apr 2025 21:48:20 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6C7E619560A3;
+	Tue, 29 Apr 2025 21:48:16 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	Andreas Hindborg <a.hindborg@kernel.org>,
@@ -60,10 +60,11 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v4 4/7] rust: time: Add Instant::from_nanos()
-Date: Tue, 29 Apr 2025 17:44:40 -0400
-Message-ID: <20250429214752.1637859-5-lyude@redhat.com>
+	Danilo Krummrich <dakr@kernel.org>,
+	Fiona Behrens <me@kloenk.dev>
+Subject: [PATCH v4 3/7] rust: hrtimer: Add HrTimerCallbackContext and ::forward()
+Date: Tue, 29 Apr 2025 17:44:39 -0400
+Message-ID: <20250429214752.1637859-4-lyude@redhat.com>
 In-Reply-To: <20250429214752.1637859-1-lyude@redhat.com>
 References: <20250429214752.1637859-1-lyude@redhat.com>
 Precedence: bulk
@@ -75,46 +76,237 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-For implementing Rust bindings which can return a point in time.
+With Linux's hrtimer API, there's a number of methods that can only be
+called in two situations:
+
+* When we have exclusive access to the hrtimer and it is not currently
+  active
+* When we're within the context of an hrtimer callback context
+
+This commit handles the second situation and implements hrtimer_forward()
+support in the context of a timer callback. We do this by introducing a
+HrTimerCallbackContext type which is provided to users during the
+RawHrTimerCallback::run() callback, and then add a forward() function to
+the type.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 ---
-V4:
-* Turn from_nanos() into an unsafe function in order to ensure that we
-  uphold the invariants of Instant
+V2:
+* Improve SAFETY comments for HrTimerCallbackContext uses (I forgot to
+  mention that we're within RawHrTimerCallback::run()
+* Split forward into forward() and raw_forward() since we're going to have
+  two contexts that we can call forward() from now.
+* Clarify contexts in which certain hrtimer methods can be called.
+* Make sure that we use a mutable reference for forward() here - just in
+  case :).
+* Rename interval to duration
+V3:
+* Rename duration -back- to interval (now that I actually have read
+  hrtimer_forward's source, interval does make more sense than duration
+  considering the fact we return the number of overruns that occurred
+  according to the given interval).
+* Rewrite documentation a bit (re: Andreas)
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/time.rs | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ rust/kernel/time/hrtimer.rs         | 59 ++++++++++++++++++++++++++++-
+ rust/kernel/time/hrtimer/arc.rs     |  9 ++++-
+ rust/kernel/time/hrtimer/pin.rs     |  9 ++++-
+ rust/kernel/time/hrtimer/pin_mut.rs | 11 +++++-
+ rust/kernel/time/hrtimer/tbox.rs    |  9 ++++-
+ 5 files changed, 90 insertions(+), 7 deletions(-)
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 8d6aa88724ad8..6dcb65ed954db 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -83,6 +83,21 @@ pub fn elapsed(&self) -> Delta {
-     pub(crate) fn as_nanos(self) -> i64 {
-         self.inner
+diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+index 76caf9fae8170..b0304b2cf2da9 100644
+--- a/rust/kernel/time/hrtimer.rs
++++ b/rust/kernel/time/hrtimer.rs
+@@ -73,7 +73,7 @@
+     time::{Delta, Instant},
+     types::Opaque,
+ };
+-use core::marker::PhantomData;
++use core::{marker::PhantomData, ptr::NonNull};
+ use pin_init::PinInit;
+ 
+ /// A timer backed by a C `struct hrtimer`.
+@@ -322,7 +322,10 @@ pub trait HrTimerCallback {
+     type Pointer<'a>: RawHrTimerCallback;
+ 
+     /// Called by the timer logic when the timer fires.
+-    fn run(this: <Self::Pointer<'_> as RawHrTimerCallback>::CallbackTarget<'_>) -> HrTimerRestart
++    fn run<T>(
++        this: <Self::Pointer<'_> as RawHrTimerCallback>::CallbackTarget<'_>,
++        ctx: HrTimerCallbackContext<'_, T>,
++    ) -> HrTimerRestart
+     where
+         Self: Sized;
+ }
+@@ -515,6 +518,58 @@ fn into_c(self) -> bindings::hrtimer_mode {
      }
+ }
+ 
++/// Privileged smart-pointer for a [`HrTimer`] callback context.
++///
++/// Many [`HrTimer`] methods can only be called in two situations:
++///
++/// * When the caller has exclusive access to the `HrTimer` and the `HrTimer` is guaranteed not to
++///   be running.
++/// * From within the context of an `HrTimer`'s callback method.
++///
++/// This type provides access to said methods from within a timer callback context.
++///
++/// # Invariants
++///
++/// * The existence of this type means the caller is currently within the callback for an
++///   [`HrTimer`].
++/// * `self.0` always points to a live instance of [`HrTimer<T>`].
++pub struct HrTimerCallbackContext<'a, T>(NonNull<HrTimer<T>>, PhantomData<&'a ()>);
 +
-+    /// Create an `Instant` from a time duration specified in nano seconds.
++impl<'a, T> HrTimerCallbackContext<'a, T> {
++    /// Create a new [`HrTimerCallbackContext`].
 +    ///
 +    /// # Safety
 +    ///
-+    /// The caller promises that `nanos` is in the range from 0 to `KTIME_MAX`.
-+    #[expect(unused)]
-+    #[inline]
-+    pub(crate) unsafe fn from_nanos(nanos: i64) -> Self {
-+        // INVARIANT: Our safety contract ensures that `nanos` is in the range from 0 to
-+        // `KTIME_MAX`.
-+        Self {
-+            inner: nanos as bindings::ktime_t,
-+        }
++    /// This function relies on the caller being within the context of a timer callback, so it must
++    /// not be used anywhere except for within implementations of [`RawHrTimerCallback::run`]. The
++    /// caller promises that `timer` points to a valid initialized instance of
++    /// [`bindings::hrtimer`].
++    pub(crate) unsafe fn from_raw(timer: *mut HrTimer<T>) -> Self {
++        // SAFETY: The caller guarantees `timer` is a valid pointer to an initialized
++        // `bindings::hrtimer`
++        Self(unsafe { NonNull::new_unchecked(timer) }, PhantomData)
 +    }
- }
++
++    /// Conditionally forward the timer.
++    ///
++    /// If the timer expires after `now`, this function does nothing and returns 0. If the timer
++    /// expired at or before `now`, this function forwards the timer by `interval` until the timer
++    /// expires after `now` and then returns the number of times the timer was forwarded by
++    /// `interval`.
++    ///
++    /// This function is mainly useful for timer types which can provide exclusive access to the
++    /// timer when the timer is not running. For forwarding the timer when you have exclusive access
++    /// to the timer, see [`HrTimer::forward()`].
++    ///
++    /// Returns the number of overruns that occurred as a result of the timer expiry change.
++    pub fn forward(&mut self, now: Instant, interval: Delta) -> u64 {
++        // SAFETY:
++        // - We are guaranteed to be within the context of a timer callback by our type invariants
++        // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`
++        unsafe { HrTimer::<T>::raw_forward(self.0.as_ptr(), now, interval) }
++    }
++}
++
+ /// Use to implement the [`HasHrTimer<T>`] trait.
+ ///
+ /// See [`module`] documentation for an example.
+diff --git a/rust/kernel/time/hrtimer/arc.rs b/rust/kernel/time/hrtimer/arc.rs
+index acc70a0ea1be5..f30efd2d1094d 100644
+--- a/rust/kernel/time/hrtimer/arc.rs
++++ b/rust/kernel/time/hrtimer/arc.rs
+@@ -3,6 +3,7 @@
+ use super::HasHrTimer;
+ use super::HrTimer;
+ use super::HrTimerCallback;
++use super::HrTimerCallbackContext;
+ use super::HrTimerHandle;
+ use super::HrTimerPointer;
+ use super::RawHrTimerCallback;
+@@ -95,6 +96,12 @@ impl<T> RawHrTimerCallback for Arc<T>
+         //    allocation from other `Arc` clones.
+         let receiver = unsafe { ArcBorrow::from_raw(data_ptr) };
  
- impl core::ops::Sub for Instant {
+-        T::run(receiver).into_c()
++        // SAFETY:
++        // - By C API contract `timer_ptr` is the pointer that we passed when queuing the timer, so
++        //   it is a valid pointer to a `HrTimer<T>` embedded in a `T`.
++        // - We are within `RawHrTimerCallback::run`
++        let context = unsafe { HrTimerCallbackContext::from_raw(timer_ptr) };
++
++        T::run(receiver, context).into_c()
+     }
+ }
+diff --git a/rust/kernel/time/hrtimer/pin.rs b/rust/kernel/time/hrtimer/pin.rs
+index dba22d11a95f5..c694a96fcd9d5 100644
+--- a/rust/kernel/time/hrtimer/pin.rs
++++ b/rust/kernel/time/hrtimer/pin.rs
+@@ -3,6 +3,7 @@
+ use super::HasHrTimer;
+ use super::HrTimer;
+ use super::HrTimerCallback;
++use super::HrTimerCallbackContext;
+ use super::HrTimerHandle;
+ use super::RawHrTimerCallback;
+ use super::UnsafeHrTimerPointer;
+@@ -99,6 +100,12 @@ impl<'a, T> RawHrTimerCallback for Pin<&'a T>
+         // here.
+         let receiver_pin = unsafe { Pin::new_unchecked(receiver_ref) };
+ 
+-        T::run(receiver_pin).into_c()
++        // SAFETY:
++        // - By C API contract `timer_ptr` is the pointer that we passed when queuing the timer, so
++        //   it is a valid pointer to a `HrTimer<T>` embedded in a `T`.
++        // - We are within `RawHrTimerCallback::run`
++        let context = unsafe { HrTimerCallbackContext::from_raw(timer_ptr) };
++
++        T::run(receiver_pin, context).into_c()
+     }
+ }
+diff --git a/rust/kernel/time/hrtimer/pin_mut.rs b/rust/kernel/time/hrtimer/pin_mut.rs
+index aeff8e102e1dc..82242c79ee433 100644
+--- a/rust/kernel/time/hrtimer/pin_mut.rs
++++ b/rust/kernel/time/hrtimer/pin_mut.rs
+@@ -1,7 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ use super::{
+-    HasHrTimer, HrTimer, HrTimerCallback, HrTimerHandle, RawHrTimerCallback, UnsafeHrTimerPointer,
++    HasHrTimer, HrTimer, HrTimerCallback, HrTimerCallbackContext, HrTimerHandle,
++    RawHrTimerCallback, UnsafeHrTimerPointer,
+ };
+ use crate::time::Instant;
+ use core::{marker::PhantomData, pin::Pin, ptr::NonNull};
+@@ -103,6 +104,12 @@ impl<'a, T> RawHrTimerCallback for Pin<&'a mut T>
+         // here.
+         let receiver_pin = unsafe { Pin::new_unchecked(receiver_ref) };
+ 
+-        T::run(receiver_pin).into_c()
++        // SAFETY:
++        // - By C API contract `timer_ptr` is the pointer that we passed when queuing the timer, so
++        //   it is a valid pointer to a `HrTimer<T>` embedded in a `T`.
++        // - We are within `RawHrTimerCallback::run`
++        let context = unsafe { HrTimerCallbackContext::from_raw(timer_ptr) };
++
++        T::run(receiver_pin, context).into_c()
+     }
+ }
+diff --git a/rust/kernel/time/hrtimer/tbox.rs b/rust/kernel/time/hrtimer/tbox.rs
+index 3df4e359e9bb0..c5c952721cee2 100644
+--- a/rust/kernel/time/hrtimer/tbox.rs
++++ b/rust/kernel/time/hrtimer/tbox.rs
+@@ -3,6 +3,7 @@
+ use super::HasHrTimer;
+ use super::HrTimer;
+ use super::HrTimerCallback;
++use super::HrTimerCallbackContext;
+ use super::HrTimerHandle;
+ use super::HrTimerPointer;
+ use super::RawHrTimerCallback;
+@@ -115,6 +116,12 @@ impl<T, A> RawHrTimerCallback for Pin<Box<T, A>>
+         //   `data_ptr` exist.
+         let data_mut_ref = unsafe { Pin::new_unchecked(&mut *data_ptr) };
+ 
+-        T::run(data_mut_ref).into_c()
++        // SAFETY:
++        // - By C API contract `timer_ptr` is the pointer that we passed when queuing the timer, so
++        //   it is a valid pointer to a `HrTimer<T>` embedded in a `T`.
++        // - We are within `RawHrTimerCallback::run`
++        let context = unsafe { HrTimerCallbackContext::from_raw(timer_ptr) };
++
++        T::run(data_mut_ref, context).into_c()
+     }
+ }
 -- 
 2.48.1
 
