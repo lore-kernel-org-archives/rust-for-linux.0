@@ -1,133 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4523220FA90;
-	Tue, 29 Apr 2025 11:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D510520F066;
+	Tue, 29 Apr 2025 12:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745927303; cv=none; b=XaJSpDd8/UFtocQxvzMf2m63xwcdsp7IgFpfPXdUVibzixh0jGzLOXrmVKhb6Bj4jAHuqKksI2L3rQ7oKEhbwZoUsEDv8iESVWKb17dznqlQBfQHWf8i9n5Wx7MW5vLkc8VpjLnwzNsuQq5/G8CaJOH77iG5Z2oay0huIL8IfFc=
+	t=1745928666; cv=none; b=jHlWfzU4RIHADbFAn0xANc8y4cFjS64HJl8nQyPgE+iqpqGqvmf8im5GK9pgTyFUpIE7z7BLZWCsy6RZBKGXJcHEL0aNalnphZRZJX5LLVf67HomseLAzXmJD6qP8jUc2/K9P2IdsdF+9sTsAaqTy50MxSZqvbHCzgEYc1qkloY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745927303; c=relaxed/simple;
-	bh=hKUuenFGzyF7zeueP+/edIvonBxaoupKBWpbHEDxBDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ftFAwJMTlo9XOQEjIl80IGg1mSwSWalO24etbicpNU8fRbW/wmy+K2boh47wBTfgcSjZ4+lxN5TTnmJ5MDbNy22Z20taN8gDVKI2S+7yt+LGiK+v/aO8XgntGeo0C2QREfNpjhdLJ9W/WMvp2A2RO7j0SJOqfJ4Jwbaht1uCUvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAE5gbOK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745928666; c=relaxed/simple;
+	bh=yNEyqYG3GckGSFFv6aBQ4pUR10hoGY2aFo1t828Mwi8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IE8+IUySAmbKoA2wpjMlkH5PyWTiFUQXCOB+vV4PP9cMkD++sxpV18v6eSaaDPj2tzkHG3U2x5uYHPvW0YTi1Oa9YU8LmD79cX2YpbSS5y6B6G9zygF31RONQg50vCQBk7pQ2LjoiTIBNmUExMY3lIAhwcEwXy37quDhdU/inBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gL83D+qR; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAE5gbOK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F006C4CEE3;
-	Tue, 29 Apr 2025 11:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745927302;
-	bh=hKUuenFGzyF7zeueP+/edIvonBxaoupKBWpbHEDxBDw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rAE5gbOKQM2AzyJKVFfSWnYRLU2/oI78mWnjkFx2vmXF0m9snxMRDPvo3mHaiaSA/
-	 BdyRn36v/xqp0ZQVeS0VWO7JIpqQ1b+m5zxQZLDSjCj0LbfeGlwirZcHhYmZrtuZwr
-	 eNySqoFbuUq6r47jLx6R8HKXvAlnnV8aGUQDMCak=
-Date: Tue, 29 Apr 2025 13:48:19 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <kernel@dakr.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] uaccess: rust: add
- UserSliceReader::strcpy_into_buf
-Message-ID: <2025042946-accustom-bankroll-d934@gregkh>
-References: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
- <20250429-strncpy-from-user-v2-2-7e6facac0bf0@google.com>
- <2025042919-varsity-registrar-fb45@gregkh>
- <4b54a2385923b1312606dbb5b651e163@dakr.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gL83D+qR"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-225887c7265so11087065ad.0;
+        Tue, 29 Apr 2025 05:11:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745928664; x=1746533464; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=20qeUKkaMbvWbqATJAd/aBKlKoQKEizD0yoS5BHg7sc=;
+        b=gL83D+qRW++SeL3lPMA6LQ5XlcABHOkWidrzfB2AS1a3q9+j5+DdMEuwcr6E+AO5N2
+         AzM3fQtHY2ySi4G9Z52AEeaNZhDutSa4FjJvM2jng9QDD/fCLaK4sR2j/NEBsCi60kkU
+         i1ihTO/bTTrFED41bvowrFWdcgoJGlHZrYixjhfxdNLpBd0FRhO6K1hc/5zZ+j1qQoRT
+         GgS1AwnUlfM2g0LPdw1aqs5MQtqH9F2Ph1CnHYIk17CkT+Am4Ikim4uXQvY3QvpxK0r3
+         PI5VBG36ovsNxgNmMlxEiW6lFk9DCxoZRLDJB7m4DlJuej380fomhDBGXsdr5avSZWC5
+         xXAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745928664; x=1746533464;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=20qeUKkaMbvWbqATJAd/aBKlKoQKEizD0yoS5BHg7sc=;
+        b=CTEtsteT28Kc86z5g0INQH76RqUgWW0G8QJRjzbN2DPWIjWS7VzYdhSjW0NFbqPsNy
+         FeX3Xp+Uu8ZJWGD97SH69axjioE1JkC+r3N7IVyhayW73R9EDfWSZPpkH41q9oygKFqL
+         kn7kVYwV/HXCkcMgJk2n+rqY4jKTTKE0djcG2BjxY2Pso9pu1Q/gmqWxjoWFNilAaIwH
+         ciKN0SzFEIsp6XRuRdkAY3YAU89uguq/GP+QuZC2L9l7XrDls/XdIPep+QXOf3CRpafu
+         TgSV7oFrBrp2fUR3Z9vqwBGlcfO3ZZxNIZCIry7x7JNlZmoLpwr/bxEk4/KpXZJjSwKJ
+         XTBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUE4Dbbfnfx9wYnmervN7kJ/8HFcD2cFY7+pgbalrKE9TvC17vF3IYc+SQ0kHOriAvO4p6egD9pneOAMbY=@vger.kernel.org, AJvYcCVLm+sjteRQI4mvRWqem2BV/gqSv20fMp4XNGGapRX3VV6kbg7LdvhY//v8WkCBRsIUL53neL5o0iRGMxCLvnA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxf/HeCB7xTEFy5Y7mZWjdfUjd2jGN3YmwVDAX/D0yjRWZGbzoW
+	mVZ4AGzPckRSpVfEER4B6y8Hy5MI2zUKjTbI62jHcRHcv2t2wQ8+j+oElLS0O/yVwow88Ci2t1/
+	J/1grAVf6mSJ5yX6RU0fO7HZNSm0=
+X-Gm-Gg: ASbGncs/go273TW/EqwNnTfrrFgD84K4/R0Z7vb+odzDQxT2ZR3Lid9Hz8jZ8V4QpN8
+	qyw5O9wuoWsjsFeiju/+OhC2By/XsrximLFcD2uuD+Q/pDsTmBGPiUPYeJ2XRG91ex3Fp8Hb8m8
+	QTVFEZDOVEHCvPsuUpuyjHXg==
+X-Google-Smtp-Source: AGHT+IFnZkMiz7gm785M26PmoO1U++D0GLVdIxG/BJXcTd15QPowgI2xJoKOCOrCVFa6pMFdGyp9GSVgsdVND+88ARw=
+X-Received: by 2002:a17:903:2a88:b0:223:28a8:610b with SMTP id
+ d9443c01a7336-22dbf740e51mr84157215ad.14.1745928663902; Tue, 29 Apr 2025
+ 05:11:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4b54a2385923b1312606dbb5b651e163@dakr.org>
+References: <20250429-rust-of-populate-v2-1-0ad329d121c5@beagleboard.org>
+In-Reply-To: <20250429-rust-of-populate-v2-1-0ad329d121c5@beagleboard.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 29 Apr 2025 14:10:51 +0200
+X-Gm-Features: ATxdqUFSP3hAwaq7OiNlYETkDcEGRBn-sNeCxUzPcMDK7fwPyqS4nAob7jv1aw0
+Message-ID: <CANiq72nkPW3oG8bzxV_=dqNFTDAiMr+viRE9ttG8P1d3Ug7vzg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: kernel: device: Add devm_of_platform_populate/depopulate
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: Jason Kridner <jkridner@beagleboard.org>, Deepak Khatri <lorforlinux@beagleboard.org>, 
+	Robert Nelson <robertcnelson@beagleboard.org>, Dhruva Gole <d-gole@ti.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 29, 2025 at 01:38:26PM +0200, Danilo Krummrich wrote:
-> On 2025-04-29 13:09, Greg Kroah-Hartman wrote:
-> > On Tue, Apr 29, 2025 at 09:02:23AM +0000, Alice Ryhl wrote:
-> > > This patch adds a more convenient method for reading C strings from
-> > > userspace. Logic is added to NUL-terminate the buffer when necessary
-> > > so
-> > > that a &CStr can be returned.
-> > > 
-> > > Note that we treat attempts to read past `self.length` as a fault, so
-> > > this returns EFAULT if that limit is exceeded before `buf.len()` is
-> > > reached.
-> > > 
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > ---
-> > >  rust/kernel/uaccess.rs | 35 +++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 35 insertions(+)
-> > > 
-> > > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> > > index acb703f074a30e60d42a222dd26aed80d8bdb76a..7cec1b62bd8b816f523c8be12cb29905740789fc
-> > > 100644
-> > > --- a/rust/kernel/uaccess.rs
-> > > +++ b/rust/kernel/uaccess.rs
-> > > @@ -293,6 +293,41 @@ pub fn read_all<A: Allocator>(mut self, buf:
-> > > &mut Vec<u8, A>, flags: Flags) -> R
-> > >          unsafe { buf.set_len(buf.len() + len) };
-> > >          Ok(())
-> > >      }
-> > > +
-> > > +    /// Read a NUL-terminated string from userspace and append it
-> > > to `dst`.
-> > > +    ///
-> > > +    /// Fails with [`EFAULT`] if the read happens on a bad address.
-> > 
-> > Also returns this error:
-> > 
-> > > +    pub fn strcpy_into_buf<'buf>(&mut self, buf: &'buf mut [u8]) ->
-> > > Result<&'buf CStr> {
-> > > +        if buf.is_empty() {
-> > > +            return Err(EINVAL);
-> > 
-> > if the buffer is of 0 length.  Don't know if you want to document that
-> > or not.
-> > 
-> > > +        }
-> > > +
-> > > +        // SAFETY: The types are compatible and `strncpy_from_user`
-> > > doesn't write uninitialized
-> > > +        // bytes to `buf`.
-> > > +        let mut dst = unsafe { &mut *(buf as *mut [u8] as *mut
-> > > [MaybeUninit<u8>]) };
-> > > +
-> > > +        // We never read more than `self.length` bytes.
-> > > +        if dst.len() > self.length {
-> > > +            dst = &mut dst[..self.length];
-> > > +        }
-> > > +
-> > > +        let mut len = raw_strncpy_from_user(self.ptr, dst)?;
-> > > +        if len < dst.len() {
-> > > +            // Add one to include the NUL-terminator.
-> > > +            len += 1;
-> > > +        } else if len < buf.len() {
-> > > +            // We hit the `self.length` limit before `buf.len()`.
-> > > +            return Err(EFAULT);
-> > 
-> > How can this happen?
-> 
-> See my reply here (if I did not get it wrong):
-> 
-> https://lore.kernel.org/rust-for-linux/aBCrqJe4two4I45G@pollux/
+On Tue, Apr 29, 2025 at 1:41=E2=80=AFPM Ayush Singh <ayush@beagleboard.org>=
+ wrote:
+>
+> +    /// Populate platform_devices from device tree data
+> +    pub fn devm_of_platform_populate(&self) -> crate::error::Result<()> =
+{
+> +        // SAFETY: self is valid bound Device reference
 
-Ah, I should have read ahead :)
+If you import the prelude, then you could use just `Result`. Also,
+please try to follow the style of the rest of the code, e.g. use
+Markdown in both comments and documentation and finish sentences with
+a period.
 
-I agree, some comments here would be good.  We want everyone to be able
-to easily read and understand this code, off-by-one errors are rough.
+Thanks!
 
-thanks,
-
-greg k-h
+Cheers,
+Miguel
