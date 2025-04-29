@@ -1,336 +1,237 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2052.outbound.protection.outlook.com [40.107.96.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E55D8BEE;
-	Tue, 29 Apr 2025 13:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745932435; cv=fail; b=vDkN21iovlh7ojAIMVF3jiBRlNRAKFZTYIvFZU4EfQbWqI4WUMsNtTd0Lfrz/Hke39LznfeMIJnXCwJ1RpJEBC6rIatJ+wENGl+5b8R3MS0bRk6qKY6UPbdgf3hsctxvnRcO+9sMBj1jJJEe4RgYn77GTugm/pYP06cXqDY+oiE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745932435; c=relaxed/simple;
-	bh=Euty7irHG8qRK0OSgpqPIm8dR7DZ4CLgf70DY1KzRcs=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=MYtQ0nuOiXkSZcgH4TkFNFK7ATbMhUs2Tu+yhPqWt/oJhlpfADI1Hrzyxy8ewakujo88dya2hjXWkB5bsJiTEkae0VhFwO9L3X5NrdhI8Qet3N7hpqeAnix1lWM5/J+GwBkoH90LYxdmJyssZOjJFL4Y6p72vs2vDJUclIf8JxA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IFQcD+xC; arc=fail smtp.client-ip=40.107.96.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3472B2C2ABC;
+	Tue, 29 Apr 2025 13:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745932675; cv=none; b=Vp4MMXgTlLm6/sELn5NGqJKPAlEWWHHh2fb1p3J5eCPs0mWFJA379rn4RcZ+Ov9C+nvUuVZgxRUoQXEoDJHp+9NMpO/8kabT4+MetRCbYi78q51KFqyBysXZHtm9pqmYM7K+s8r1PI7VC3LQm+mY2PM1/ld/B92HypQRlZny9EU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745932675; c=relaxed/simple;
+	bh=13u4nULt1pp3rMM9Q+ih5iWZwsTcc4n3mmfV8mtcU1c=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=e0NaVtPhjEhuC67wi9bVN1HYU7juuEPAGtFroKvvhghodvpootvaRaUKxjdNsgdiueRr7UXyiIHsLGOUv2n+DZ+4Ec6eNGVD5d0ghGiwQxn5CMI9tnn/Q54wVuhW3JUNwMUWhDUKl+oLbCE99HyuRjJIerR5uSZlAhKjG+j3gqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j47b98Xv; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IFQcD+xC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ueJ4MBj6KCrxtq/cmh7KQTasMYBQhQHxYd9AZjnIs5qkGmw5VHOM/ORtCp0XaYIr4h7vbB7u4P14qyW/OMJWI2uePrqh/aW13JOskdgsSdZsqaH2s0+BruiayanE8B1lojxvHiuNljH4F0DbOMBhmr2O63QCoG7V7rVsBapoOdXqc+/k+XOpYa2BdWBkxuPqHOJKNwQgIIuh5ZFrn+4m3WsCeftIkXEGejbcBeFmVXPXDzRLTQS6NnXyg0uYkTPrlIbV8DtiKRyh6Dhs15PZlNQ6x+2EeqIV0XgBenjr7PfnrFI36BuNQYw4Tqswv9jD0ddMW3JGnkBzuP4ENBuonw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lGWsefombxzvVMmj8h1+ZaOoh2+uxgYZfDinYnwy4J0=;
- b=g07WjAOrLzlln+cQLH32M/NAqdYYl/CPBgdonGmpb+V0fP6taXD4e4ZpS1G6tSPFuqW16voXvXiczIfdnmIFBpmqaErSvWuwca033yERa62VrPRsvsDBhgX+gr1dg5RHclO+1CCme/daaqpwrIDe0fleBhJ1kKqM24JgO/I/CSuOw08lhxLUik1LazyTUXs78w3Epi/r9SopVs05SU8NwWllQHeWMfjlwvJLFVykLuIYIMsC4+k9SvI8caSVMJbrKacJsIh1Aw84b3Qn3GwEW947nj3JfpUhSExAjepki7NlIZiGpAmZjlDRks5TYXAMXWDQIwemxWQWRZwjMo/iEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lGWsefombxzvVMmj8h1+ZaOoh2+uxgYZfDinYnwy4J0=;
- b=IFQcD+xC4NcqbFvfy6xEWrQqpJkNXj60MqW0fQJgi+DfOytjnlZSj4OcXS49p0vRAN0CoT/V1dWOQGCYHpa4FhnUMQd5zeEKpmW1lNT5zRix8xVFRGnlzC3b34uZ3YcTXQ6b0jRFdQFebKF+naENpOGjFtFMj/6hz4SHQhv2LsufufYiudFcLULWEJxDhcPA+dVNfsN/yqe8/wS69lCDL86/lj5TI9hE7gZLf6yDds/nYbz4h5tLk13QuzJhGi7YSgY5VB7Ud+MNYjR5OuvRQwgFJBhLMgb5KajIL+5JvDpIhsLTFT5wheaGpgpNUQiZm/hKKr+G03dYON9fV44jmQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DS7PR12MB5888.namprd12.prod.outlook.com (2603:10b6:8:7b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Tue, 29 Apr
- 2025 13:13:49 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8699.012; Tue, 29 Apr 2025
- 13:13:49 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 29 Apr 2025 22:13:45 +0900
-Message-Id: <D9J5E3SL1F8V.3GN8AOA7NCQTN@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
- <corbet@lwn.net>, "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs"
- <bskeggs@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH 10/16] gpu: nova-core: add basic timer device
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250420-nova-frts-v1-0-ecd1cca23963@nvidia.com>
- <20250420-nova-frts-v1-10-ecd1cca23963@nvidia.com>
- <aAeGdRvlm5EVJOw3@cassiopeiae>
-In-Reply-To: <aAeGdRvlm5EVJOw3@cassiopeiae>
-X-ClientProxiedBy: OS7PR01CA0029.jpnprd01.prod.outlook.com
- (2603:1096:604:24f::6) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j47b98Xv"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-301cda78d48so7478426a91.0;
+        Tue, 29 Apr 2025 06:17:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745932673; x=1746537473; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6fFyGhsYuAsCKMmGCS1jhd9ZOFAOyHJ81xtQ8hlgOHo=;
+        b=j47b98XvD2VXbioZRaNM/hQachrh/+V+t+ZqX0iR37IsZm401mSH+h5hdFcNEhgQdL
+         URvDhcU/irpZwDJYDd2iGhhQ+93U46tGoT+CTpLp0WhLNoHBZVVCcy/5EowKkyg2iUB1
+         CwgOiEEjzpqIX+5S9fC69p0QBj+OitrqNNfAjXftZS0bLnv4ax7tb1WRgmhapK3PqA0m
+         L3csS0B1iPrR0EjzucX8AH/VoxSFogsLhMRVu/yYYPLlN6NjdUbmM1UO1m8qcpUb38qC
+         ZhNgsVd/3qYNXKK1y8RbJqY3YPrQRBXqhlAta+oPgjBot+8zMSARPrj7zt1EY5q5AmJw
+         r+6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745932673; x=1746537473;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6fFyGhsYuAsCKMmGCS1jhd9ZOFAOyHJ81xtQ8hlgOHo=;
+        b=NUFTn72R0KRRL5pvMlchE7XQXwn5/acPiqcHKhhVmIlyVkjF54WpMiFWagWtfF1yYg
+         Te7r6EyYoCcJGBhma/EKapdRmVUhTMaJjIQwHndz8kMpaSUZ0SEliRbFn4NzsPSU7Ozb
+         9v9iANcUDRd4Wq7SyFY7gWCdf7RsJ/CRWdtgz2ywQgfTSZuMQd/6hP5647+Ze74VAUeW
+         lmb1ubsRFE0HXRSely34mG0BPppJT0+0KU1YbNtiqixrFwyo1jf7CNUr8ZmyBppsa7Da
+         XHdrxh0mNwbCLsl1o6awSLf747npeup8L0fy3/OtUrKvYlG0CJu4mBeb0hKreGbqvuz4
+         GCsA==
+X-Forwarded-Encrypted: i=1; AJvYcCVr0m5X8UEY26UnAsZEC4XoD4VrBb6Rp6HLVzBFBirR1Q1hCjKi+2qfpyFu2T2cvdb5ifBUcGkO@vger.kernel.org, AJvYcCXHoYoCyKlqhKIX2uXCahNY24eVId7/+c6Uvlyvr05oBD9iLyMl82hWxwKeNRQDrES3yOf5j1FD+O+HBzA=@vger.kernel.org, AJvYcCXbgWx1j5MtPArSo9fbWxLHOxoMs28xtfID7LYWQWzbQWS4nFyJc0a7IX7MnpESplXMTMK9lRAKzBBMjaKm3RA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUzYrmXu1m8ponS69fsqMBr2zl22fYfMkmyTL2Td7vVhr7GWyq
+	YtU3zDfB1UCPZt9ay2HVsGnScnsfETdYSN3HORXPJRei2yGusAPQ
+X-Gm-Gg: ASbGnct8A+Krk5YLWg9A+F0PNh7Y402mg808BYejiHGvWqwUvlEGFps7cC9GSf8vEal
+	K/SP4nqNJ7TwEYFmdy8LmJJJOY81uX6LWCEbbpE+Cf3sR3EylSj+BADiUPG13kU8OBRhofK7KSw
+	bQwWim+1DwWHwuY/b/BvDXxidFFk49nSvTYKwjTktT/75sP/UEyf3T3dgpP+EzLypJsH6/fqH0t
+	UoiDiZiIZHXg7G1ZCO9wzFBPqr2So8O6n+graRs2PubMIFOtAcjpuN4dQMaFU60bjqNma3Q7hsy
+	+OUObpQpKMkg1eBhtSzhBSyGUHKZh0ycH812v3YJxCwfCrapQu2pU6o1uMswhZYkFsATvRdVjZI
+	GUzIivOY62dEK0b3t0dte0i8=
+X-Google-Smtp-Source: AGHT+IEbS4hdKtSzuo6oEZXKv47QnIuQs8efH07eWwnFKokvGzRUKI31iJKMmkahZfUtYQNLwUrycg==
+X-Received: by 2002:a17:90a:d644:b0:2fc:3264:3657 with SMTP id 98e67ed59e1d1-30a214bcad9mr6765939a91.0.1745932673157;
+        Tue, 29 Apr 2025 06:17:53 -0700 (PDT)
+Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309f78486e5sm9293315a91.40.2025.04.29.06.17.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Apr 2025 06:17:52 -0700 (PDT)
+Date: Tue, 29 Apr 2025 22:17:33 +0900 (JST)
+Message-Id: <20250429.221733.2034231929519765445.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+ gary@garyguo.net, aliceryhl@google.com, me@kloenk.dev,
+ daniel.almeida@collabora.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
+ anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+ arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com,
+ david.laight.linux@gmail.com, boqun.feng@gmail.com, pbonzini@redhat.com,
+ jfalempe@redhat.com, linux@armlinux.org.uk, chrisi.schrefl@gmail.com,
+ arnd@arndb.de, linus.walleij@linaro.org
+Subject: Re: [PATCH v15 5/6] rust: time: Add wrapper for fsleep() function
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <871ptc40ds.fsf@kernel.org>
+References: <6qQX4d2uzNlS_1BySS6jrsBgbZtaF9rsbHDza0bdk8rdArVf_YmGDTnaoo6eeNiU4U_tAg1-RkEOm2Wtcj7fhg==@protonmail.internalid>
+	<20250423192857.199712-6-fujita.tomonori@gmail.com>
+	<871ptc40ds.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS7PR12MB5888:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86a11d72-cc86-4725-d560-08dd871fae45
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|7416014|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?elAwbWxVc05FK1VUaVp2bE0xV20reDk3VFp1ZGhVUHZabERxbkdvYWd6VnFG?=
- =?utf-8?B?Zm5qbHgwVnFoanBET29sVHk3eFpaV2JvY2VaVFdUV05CdmdWSHJOMTJRZmx2?=
- =?utf-8?B?TDRoMzRRdjlDdVVKL0E4VkpBZkZISnR1dmVad3NHMUd0bzN1WjdHQzU1QWtl?=
- =?utf-8?B?T3FXc095QmFYaGt5R2p3cTUvTjhXcVJnOXcyb2xsNkRTNHdjd0x0dWNVaElt?=
- =?utf-8?B?dnRUSytaZ2g1S2cvRzU4b0REanNDZVJzUzBOMXJzTkM2ZllrMWUrM2J4MU1P?=
- =?utf-8?B?bXU5cURJWFZIdXMrcVlrcUhCMnBRVndFYVlOVmNTZzQrQmR2VHRPSW1iRWgr?=
- =?utf-8?B?eEJBbDdaZS9qUExtZnVjMERmeE0wQzlBYlJKQlNzSmhJVjVpUE5NME9WcHBh?=
- =?utf-8?B?eXkvTkpCRkFzOXRPVHlQcFZnUmpOcE1acExXbnc0d0xyYXNMdHU2UitRNWI5?=
- =?utf-8?B?cHlqbUxsQmpLR0tWbnJuWWFubXR6bE0vOUsxVHo4MVJxcW1qb1dkWC9KS2Zp?=
- =?utf-8?B?a2VNVDFRWDVZVUxOWlFzZU9PYmNFYlNFRlJjTGtQYXZCZDdXMGR3U0xMSUo0?=
- =?utf-8?B?anNSanA3ZTlkNm12aVhHSnlaaFh0Rm5VMWJkdEkvaFRtMVNaMG5ZYzVKcG5w?=
- =?utf-8?B?cDMyNnhtY2JjYndVSmJVMGhHY2lVNGtVV3laQ1dxdnV4RHpNZ2MvejA5WitZ?=
- =?utf-8?B?aVZIZnNIMXJ0Q3cwK3c1TmNQNW5BVzdyRTZDL3RncFVkQm9BKzY5QkNOY3Rw?=
- =?utf-8?B?NVdJMGdlVWxvdTlQc0xsWE5uZmZsMWR2VmRmdGZJdFcrUWN2aDZyeG5JR3JF?=
- =?utf-8?B?QkRzWGp3Z0hmOXdJSnZkaXNSbktNMGJReDJ2SDhZak5qQi94SDNOeVdrb1FJ?=
- =?utf-8?B?aVF5NWh0TklvaThIajB5cFVLcG9rcU5VOUx6UkxsT25zcGFaekNGTzZ0aC9v?=
- =?utf-8?B?am95eW55TUkvam5oWmpPLzRVVU9ZYnhKOGIwRGNRb051TFpSdjdCeDBsUXZx?=
- =?utf-8?B?ODcrd3NqYVZMSDNGdXJrN1AyQmhZVFlHL1RndUZ0bGxXeVVacnN5OTlaL3BJ?=
- =?utf-8?B?eFRJSCtrbHRTeVQvRkRtZlFocS94K3VkTFlEL3dNQ05KNzlORnFHaEtvNUNo?=
- =?utf-8?B?Zk5IQjhpME9Id1dsUTlaRm44OXlqNlZ5cFFDbHY3c2pPc3RZbEVpM004cXhK?=
- =?utf-8?B?eml5YXViWnZ6MVZKUEZOL1gvNG1hdUVFcFE0enlibTRGakt3MWRVQ09ZNmdQ?=
- =?utf-8?B?K3o2REg2VFY2MWoyT0lyTHpNcEEvaEx0cG9OSkNGaEk3cUR3ZFNxWUozQzZC?=
- =?utf-8?B?R2NTRUFDeEZCMGFwQlljQVloWm81SG82R0dIU0JEcXExNy9IVVh5dytqRTFJ?=
- =?utf-8?B?WnJTZXBUNVNqaXRLQW1rNFNIeVVhWVprNVhRWmxhLzkzODc3YUFtNzJyTXZo?=
- =?utf-8?B?QWpIT0ltYjVQY2ZtRzUvbnl4TWp1WGtRaG01Rm92YmVOVHFBTmVrU1V4aXpE?=
- =?utf-8?B?VGdrYi9IaHUvQVRFNXVmSXQrd295YytORzlrNzU4Q1FNR1dXOWNwMW54WjBv?=
- =?utf-8?B?bExSRW9qckdwb0FUbTE1YVgrRjU4a2F6YzMwaE1UVis4c1ZiUFpsTUI3eC90?=
- =?utf-8?B?aUdrYVVqclhHZTRzcWNkUHRpbko2aHk0WE1hQ2prYjdXSzc0bG1rMEkvRE1M?=
- =?utf-8?B?RDVzK3VHUUplUVF3M2ZLNU82c0tNVU51S3BGOTJZMitqbkR2RlVCRmdlRFhL?=
- =?utf-8?B?cHRtUHh2R2ovUkhKYUFZRW1mMmdPSDJkUW9PZ0dZdnRTamI2MkJvTEVCYkc5?=
- =?utf-8?B?V04wMzlYbUxLUEp4a0cvUG1uOWVYVVBvL2dyNmwvdlFBTjVIa3FxNTYvbVBB?=
- =?utf-8?B?M1lnRlBUVXVNMkw0YkRCM0c4OXlKdW4xc0lKM3Jnb2N0RjY5ci94cDRiSzVZ?=
- =?utf-8?Q?DQpGWLMp6Pg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UzlEK29XU3FTVXVraWlHVlZSSDVkSGNadzMyL2RDaVhBZlN6a1VLV3JYbzNV?=
- =?utf-8?B?dUhKMEsvY0lOK29iUGxQUThpS0RyY2k2UzZ0UGQwTnNUdkZORDA2T25sR3Vr?=
- =?utf-8?B?MndxL2tNNjVMaUxFazd3RUF4M0g0RUoyYkpZTFI1THB2bkZDc21tOHpjNG5n?=
- =?utf-8?B?YlZBRXhXcmRIWkl2RWttUVZYVTQyNGlYNU5Ub2VyOS9nMDRzVjNhMnltamhL?=
- =?utf-8?B?bklMNFZGUy9Oejc4NnZDNGMrQklXNmtoaXFmUDNjdVNiM080MndpODZvK0hX?=
- =?utf-8?B?dGp0RXdReFdMMVF2OUhNSlBLbWVVaURieEd1bDh5Q1pnWGVjK2RlTitHaXZV?=
- =?utf-8?B?anhDK1V2RXp3b1VacGFTbklxakZNRVFEb3hLeFh0b2dnb0t4SFFqbGMvaXhl?=
- =?utf-8?B?S3VwT280andtNDdMMnBrVGk5NjFkMjRYaVdxNXhua1lmYXBQZm9HbS9qZStI?=
- =?utf-8?B?VkU0SGlUcFhVelcrYnZxQThkU3FtUlhSbG1ranRBUXZURmc4VU5BWTJyZkFL?=
- =?utf-8?B?TnBORmM3R0lpeHBSSUk3TmJGZ0grVG5KK0gwM2ova0pjbUlrTUV3K0l5OEZD?=
- =?utf-8?B?MEJvd2NxMkgzTXNKRDNiNlVZcDlZaytkc0NpRURQRnE1aGN6SE5xVU05bW9n?=
- =?utf-8?B?RUdydEJ1RGZQZWtpNTdyTGRMN3dPQVNWVTJpUGt2OHR2UkdrWEk1TVM3bG41?=
- =?utf-8?B?cmd0b0VHbEhsSE9mNkZlcGZMTEhCT3BMaWFmMmZGS1dWMWlKTTkyMVFTQUN1?=
- =?utf-8?B?a2oyRWpWd1BDRnNweEpEcjViQUtSakJkNVQvY011a1QvTFJxYXRuL01KaGhh?=
- =?utf-8?B?cHpwUUV0N3NCYjdFUXFwN3dSSUlTWDlDZEdwZmx1ejUwSW45bnRQTWNJVGE5?=
- =?utf-8?B?YUdyQ21kWnB1TVNRSXFlR09qOFRMZU1Wd0RXaDd1WkI3c0pvYlR5Q1JVMFBO?=
- =?utf-8?B?YjNqaTYyeHpoWXl3eVhuNGppMlVZWFVHNWMyZ2thTU1WTEdyL2V3N0phc0Zi?=
- =?utf-8?B?akN1RlVJT3ZiRzBtUklOSHovWTNWQ0xRWmQvTjZBZ1VsMWtLQWRSdElzZnUx?=
- =?utf-8?B?Q2UwL3B5N0R1bTNqVzRLdE9KYmsxK3VuNTBtdEZvUFFWd2VBT2hXdWJEdnY1?=
- =?utf-8?B?M3BJUDh6eFBQZy90U3plb3NjclJ0NHNkd3VrdGpXekRFS1dWRjFJeDNnL0tQ?=
- =?utf-8?B?Unc1cG1XUXdtR2lmTnRXb25RcDV3L1hTS0puR2c2QmJVMTlwOVhQY0RoL2JT?=
- =?utf-8?B?ZmZVcWtNODRvem1PR0lkSzM2L0I3OWVGRVE4VGpic3hVZlBmYTdiaTc5TFFl?=
- =?utf-8?B?ZzlRV0ZWVFZpSmtyUkdNbGdGTS9KdmMxM3h1Z2hCUVdNaFpOWnhtTXVnTFVS?=
- =?utf-8?B?QXVjS0FkKzdxSWVXVXF1Y0FCOTlXUWF1LzNmUXMzOStNaFhjai9JMWF2MUJs?=
- =?utf-8?B?VVI0d1RkcmdpZEUwRE5MSzdLNSt5bWxjeTVqWEJON1NqNThPUUgwWWdJZXls?=
- =?utf-8?B?M3h4dElCOUp1NENza01VT096NWs1L2hxOG56MHgyNEUwWU8zK1dmQWI5WjVK?=
- =?utf-8?B?Sm5wUk9qLzd6ckM0M0w3QUpZNGRjR1ljQ1JKWlVpSzVZR1VsWXpoeDFvRTlM?=
- =?utf-8?B?MGxud3FidFFWQ3VldVoycm8wSmdpQVRYYzVOR2haVmVibzUxNVFzR3hObXdU?=
- =?utf-8?B?Q25qQjF3T01YWUVQYUtoUnBWN2F6Q1EwMGZ0OGZFUjd3Z1prNTJCY0lMZ2hv?=
- =?utf-8?B?VWkrTGU2SHBESnAyY0hqWnVGTkZ4eHNjdE5YaTNSSXAzSXhoaW83N2gzZWcw?=
- =?utf-8?B?QmNoUGJDWXlSUkRGSC9HZTJBczhZTVBrVXZmNFVxNkpRc2xPbllNSHBVL1Zv?=
- =?utf-8?B?NDBiQ2haOElXUmFSZmJzaVcveHdkSytYd1IxdTFyQ1VERkZFbSs2eDhySnVj?=
- =?utf-8?B?TDU1TEtKTkxhS0VHNncvV0d4M2FFWEtrZkpZcTV3c1JaVitzKzB1MFJzaHJR?=
- =?utf-8?B?S2NMV1VPUGtFd0VaWWFVU3BYUGVVMmhjM3lwamplYW5ERHlRbk9iY25DOEp1?=
- =?utf-8?B?N3J5aXRVWW1ERGs3d2JVSUJsWnc0dnJWZzRqZmFVbTRSZ2lqOSt1NUVsMGxR?=
- =?utf-8?B?ZXl5Qm9NTXFuc0NUWmR0MWZISGgvYUlVRVYveEZTeUR0UFNWcElBNGMvVDVE?=
- =?utf-8?Q?09OZz2T+qyq3U6MeGazdnIBoNiqLaxSMd0F79oyAlKZP?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86a11d72-cc86-4725-d560-08dd871fae45
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2025 13:13:49.5895
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rtELZn8YQ4ZJcJZBrhLv8v48RFl9DpYs/aQ0vF6mpjGGVKFJS18V1tvXH4ijZQF2LpKSN2pTzq77QV9bJBG4/w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5888
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Tue Apr 22, 2025 at 9:07 PM JST, Danilo Krummrich wrote:
-> On Sun, Apr 20, 2025 at 09:19:42PM +0900, Alexandre Courbot wrote:
->> Add a timer that works with GPU time and provides the ability to wait on
->> a condition with a specific timeout.
->
-> What can this timer do for us, what and HrTimer can't do for us?
+On Mon, 28 Apr 2025 20:16:47 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-It is local to the GPU, and the source of truth for all GPU-related
-operations. Some pushbuffer commands can return timestamps that will
-come from this timer and the driver must thus use it as well in
-driver-related operations to make sure both are on the same table.
+> Hi Tomonori,
+> 
+> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+> 
+>> Add a wrapper for fsleep(), flexible sleep functions in
+>> include/linux/delay.h which typically deals with hardware delays.
+>>
+>> The kernel supports several sleep functions to handle various lengths
+>> of delay. This adds fsleep(), automatically chooses the best sleep
+>> method based on a duration.
+>>
+>> sleep functions including fsleep() belongs to TIMERS, not
+>> TIMEKEEPING. They are maintained separately. rust/kernel/time.rs is an
+>> abstraction for TIMEKEEPING. To make Rust abstractions match the C
+>> side, add rust/kernel/time/delay.rs for this wrapper.
+>>
+>> fsleep() can only be used in a nonatomic context. This requirement is
+>> not checked by these abstractions, but it is intended that klint [1]
+>> or a similar tool will be used to check it in the future.
+> 
+> I get an error when building this patch for arm32:
+> 
+>   + kernel-make -j 96 O=/home/aeh/src/linux-rust/test-build-arm-1.78.0 vmlinux modules
+>   ld.lld: error: undefined symbol: __aeabi_uldivmod
+>   >>> referenced by kernel.df165ca450b1fd1-cgu.0
+>   >>>               rust/kernel.o:(kernel::time::delay::fsleep) in archive vmlinux.a
+>   >>> did you mean: __aeabi_uidivmod
+>   >>> defined in: vmlinux.a(arch/arm/lib/lib1funcs.o)
+> 
+> Looks like a division function of some sort is not defined. Can you
+> reproduce?
 
->
->>=20
->> The `Duration` Rust type is used to keep track is differences between
->> timestamps ; this will be replaced by the equivalent kernel type once it
->> lands.
->
-> Fine for me -- can you please add a corresponding TODO and add it to your=
- list
-> of follow-up patches?
+Ah, 64-bit integer division on 32-bit architectures.
 
-Sure.
+I think that the DRM QR driver has the same problem:
 
->
->> diff --git a/drivers/gpu/nova-core/timer.rs b/drivers/gpu/nova-core/time=
-r.rs
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..8987352f4192bc9b4b2fc0fb=
-5f2e8e62ff27be68
->> --- /dev/null
->> +++ b/drivers/gpu/nova-core/timer.rs
->> @@ -0,0 +1,133 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Nova Core Timer subdevice
->> +
->> +// To be removed when all code is used.
->> +#![allow(dead_code)]
->
-> Please prefer 'expect'.
+https://lore.kernel.org/rust-for-linux/CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com/
 
-Ack.
+It appears that there is still no consensus on how to resolve it. CC
+the participants in the above thread.
 
->
->> +
->> +use core::fmt::Display;
->> +use core::ops::{Add, Sub};
->> +use core::time::Duration;
->> +
->> +use kernel::devres::Devres;
->> +use kernel::num::U64Ext;
->> +use kernel::prelude::*;
->> +
->> +use crate::driver::Bar0;
->> +use crate::regs;
->> +
->> +/// A timestamp with nanosecond granularity obtained from the GPU timer=
-.
->> +///
->> +/// A timestamp can also be substracted to another in order to obtain a=
- [`Duration`].
->> +#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
->> +pub(crate) struct Timestamp(u64);
->> +
->> +impl Display for Timestamp {
->> +    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Resul=
-t {
->> +        write!(f, "{}", self.0)
->> +    }
->> +}
->> +
->> +impl Add<Duration> for Timestamp {
->> +    type Output =3D Self;
->> +
->> +    fn add(mut self, rhs: Duration) -> Self::Output {
->> +        let mut nanos =3D rhs.as_nanos();
->> +        while nanos > u64::MAX as u128 {
->> +            self.0 =3D self.0.wrapping_add(nanos as u64);
->> +            nanos -=3D u64::MAX as u128;
->> +        }
->> +
->> +        Timestamp(self.0.wrapping_add(nanos as u64))
->> +    }
->> +}
->> +
->> +impl Sub for Timestamp {
->> +    type Output =3D Duration;
->> +
->> +    fn sub(self, rhs: Self) -> Self::Output {
->> +        Duration::from_nanos(self.0.wrapping_sub(rhs.0))
->> +    }
->> +}
->> +
->> +pub(crate) struct Timer {}
->> +
->> +impl Timer {
->> +    pub(crate) fn new() -> Self {
->> +        Self {}
->> +    }
->> +
->> +    /// Read the current timer timestamp.
->> +    pub(crate) fn read(&self, bar: &Bar0) -> Timestamp {
->> +        loop {
->> +            let hi =3D regs::PtimerTime1::read(bar);
->> +            let lo =3D regs::PtimerTime0::read(bar);
->> +
->> +            if hi.hi() =3D=3D regs::PtimerTime1::read(bar).hi() {
->> +                return Timestamp(u64::from_u32s(hi.hi(), lo.lo()));
->> +            }
->
-> So, if hi did not change since we've read both hi and lo, we can trust bo=
-th
-> values. Probably worth to add a brief comment.
->
-> Additionally, we may want to add that if we get unlucky, it takes around =
-4s to
-> get unlucky again, even though that's rather obvious.
+I think that we can drop this patch and better to focus on Instant and
+Delta types in this merge window.
 
-Added a comment. The odds of being unlucky are infinitesimal and the
-consequences (an extra pass of this loop) inconsequential, thankfully.
+With the patch below, this issue could be resolved like the C side,
+but I'm not sure whether we can reach a consensus quickly.
 
->
->> +        }
->> +    }
->> +
->> +    #[allow(dead_code)]
->> +    pub(crate) fn time(bar: &Bar0, time: u64) {
->> +        regs::PtimerTime1::default()
->> +            .set_hi(time.upper_32_bits())
->> +            .write(bar);
->> +        regs::PtimerTime0::default()
->> +            .set_lo(time.lower_32_bits())
->> +            .write(bar);
->> +    }
->> +
->> +    /// Wait until `cond` is true or `timeout` elapsed, based on GPU ti=
-me.
->> +    ///
->> +    /// When `cond` evaluates to `Some`, its return value is returned.
->> +    ///
->> +    /// `Err(ETIMEDOUT)` is returned if `timeout` has been reached with=
-out `cond` evaluating to
->> +    /// `Some`, or if the timer device is stuck for some reason.
->> +    pub(crate) fn wait_on<R, F: Fn() -> Option<R>>(
->> +        &self,
->> +        bar: &Devres<Bar0>,
->> +        timeout: Duration,
->> +        cond: F,
->> +    ) -> Result<R> {
->> +        // Number of consecutive time reads after which we consider the=
- timer frozen if it hasn't
->> +        // moved forward.
->> +        const MAX_STALLED_READS: usize =3D 16;
->
-> Huh! Can't we trust the timer hardware? Probably one reason more to use H=
-rTimer?
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 48143cdd26b3..c44d45960eb1 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -19,6 +19,7 @@
+ #include "io.c"
+ #include "jump_label.c"
+ #include "kunit.c"
++#include "math64.c"
+ #include "mutex.c"
+ #include "page.c"
+ #include "platform.c"
+diff --git a/rust/helpers/math64.c b/rust/helpers/math64.c
+new file mode 100644
+index 000000000000..f94708cf8fcb
+--- /dev/null
++++ b/rust/helpers/math64.c
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/math64.h>
++
++s64 rust_helper_div64_s64(s64 dividend, s64 divisor)
++{
++	return div64_s64(dividend, divisor);
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index de07aadd1ff5..d272e0b0b05d 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -60,6 +60,7 @@
+ #[cfg(CONFIG_KUNIT)]
+ pub mod kunit;
+ pub mod list;
++pub mod math64;
+ pub mod miscdevice;
+ #[cfg(CONFIG_NET)]
+ pub mod net;
+diff --git a/rust/kernel/math64.rs b/rust/kernel/math64.rs
+new file mode 100644
+index 000000000000..523e47911859
+--- /dev/null
++++ b/rust/kernel/math64.rs
+@@ -0,0 +1,12 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! 64-bit integer arithmetic helpers.
++//!
++//! C header: [`include/linux/math64.h`](srctree/include/linux/math64.h)
++
++/// Divide a signed 64-bit integer by another signed 64-bit integer.
++#[inline]
++pub fn div64_s64(dividend: i64, divisor: i64) -> i64 {
++    // SAFETY: Calling `div64_s64()` is safe as long as `divisor` is non-zero.
++    unsafe { bindings::div64_s64(dividend, divisor) }
++}
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+index 863385905029..7b5255893929 100644
+--- a/rust/kernel/time.rs
++++ b/rust/kernel/time.rs
+@@ -24,6 +24,8 @@
+ //! C header: [`include/linux/jiffies.h`](srctree/include/linux/jiffies.h).
+ //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
+ 
++use crate::math64;
++
+ pub mod delay;
+ pub mod hrtimer;
+ 
+@@ -229,13 +231,16 @@ pub const fn as_nanos(self) -> i64 {
+     /// Return the smallest number of microseconds greater than or equal
+     /// to the value in the [`Delta`].
+     #[inline]
+-    pub const fn as_micros_ceil(self) -> i64 {
+-        self.as_nanos().saturating_add(NSEC_PER_USEC - 1) / NSEC_PER_USEC
++    pub fn as_micros_ceil(self) -> i64 {
++        math64::div64_s64(
++            self.as_nanos().saturating_add(NSEC_PER_USEC - 1),
++            NSEC_PER_USEC,
++        )
+     }
+ 
+     /// Return the number of milliseconds in the [`Delta`].
+     #[inline]
+-    pub const fn as_millis(self) -> i64 {
+-        self.as_nanos() / NSEC_PER_MSEC
++    pub fn as_millis(self) -> i64 {
++        math64::div64_s64(self.as_nanos(), NSEC_PER_MSEC)
+     }
+ }
 
-No, to be clear I don't expect this to ever happen in real life, but I
-also don't want to leave a loop without an exit condition.
-
-OpenRM and Nouveau are both using it so I believe it can be trusted. :)
+base-commit: da37ddd3f607897d039d82e6621671c3f7baa886
+-- 
+2.43.0
 
