@@ -1,37 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F6C220689;
-	Tue, 29 Apr 2025 15:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE03122157B;
+	Tue, 29 Apr 2025 15:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745940610; cv=none; b=stnCasp5bYsh0PitDYJfgU9EIZ7+m9/oHJSRm4YUU4Q5ZERZd1hMHvj6c6Hr4QA/FmHSVIfDS5mc1nViVZxEuGTjzsc/7+guxSAcT5DcyPVMaNSAiQ2OsDSugR1ImkRRUqAGHDS6Uqkzh5aAXNDwsyhhrM/joBXCvdBdcSdzeaY=
+	t=1745941845; cv=none; b=VfVZAPQvgD49vVcRkW9/MYtw0AkUuaC9/FAOoWld7JzJBjizWHuDlgKlimJXCkX3vby5AOwdz4q8F3LNStFVtuS8/iQ+7remqsWjBCZcJ70cij2N0AFvh9kebXwjHNphnKpenLLfO21y/BTvo6mekbIqidcnFxYGjJSe/MxNjTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745940610; c=relaxed/simple;
-	bh=1gAxZsLYT0B/a+8HVLv1AyOIvhLrMv/i/lc2Dhynh1k=;
+	s=arc-20240116; t=1745941845; c=relaxed/simple;
+	bh=jHZ8EeTe+TGi307GjaraxiWDdfXMhKwny28FuPPyazI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NK9Aa2FB80Gx1mltWUOaTuV7iP3YVHvdlQRLkABfoxrovDs602aN3Ybm+Xq3I97dvMfCK4UdxZsPsNVZcNrwMmnQ0D3urAW0Y0oSFNxsiFAd0saP64DJ7JV/FIHvJVCbUOF8wBCG7+C50UGZDzSh8BsYAtnVsjcDHVyqPbrnUTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQTTifOs; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=eOOBG+MMFnuYjm0pLYTIeyv4um6UxDRHmuO+1tV8h29LoXNMBMqYuB/lEdp6skzO4OCJJ4CXG4OPQyE8SjB3XN+Sy6HShYOuHHlQ/mqsCIeTJRJ2jILAvDE2Dh7k7npqECvcEDmHzlXOj5clE5vYkOrkLJx3wU8TBwoougi1BkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqY7zQAE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQTTifOs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3DAC4CEE3;
-	Tue, 29 Apr 2025 15:30:08 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqY7zQAE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95A19C4CEE3;
+	Tue, 29 Apr 2025 15:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745940609;
-	bh=1gAxZsLYT0B/a+8HVLv1AyOIvhLrMv/i/lc2Dhynh1k=;
+	s=korg; t=1745941845;
+	bh=jHZ8EeTe+TGi307GjaraxiWDdfXMhKwny28FuPPyazI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kQTTifOsH5l/F4Wwq7ZgaBx+eV2r4QLHzIxHfmNMalfqtC/c/Ul/v8x2CmSf8Ds3l
-	 ZtM2n+zNqoakkcLpLmK+Ns7JZUwNysqJnA/eGQDoAJHznqNSwsApoPmDx9mPdnRWfo
-	 lCBvxssNktqae2PeCqRPzX21hT3KCr0QWC0yh/OA=
-Date: Tue, 29 Apr 2025 17:30:06 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
+	b=HqY7zQAEzYZlQpMuxmnguoDZfBMI9Wi7CTvR0vyHigPiBzbyHajVzZitlgLpbu4Av
+	 rAuNwbz5ZnnoNhV6QNi7dkWOX1/CFARe6HiiDcdRcD7xwpFsJeCtDf/xnhDxHoKZT6
+	 I69C11JIZWMUIKv54ZaLJZckwrH6485Uar/O86RQ=
+Date: Tue, 29 Apr 2025 17:50:42 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 7/7] rust: alloc: add Vec::insert_within_capacity
-Message-ID: <2025042925-kindly-squash-fa6f@gregkh>
-References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
- <20250429-vec-methods-v4-7-dad4436ff82d@google.com>
+Cc: Danilo Krummrich <kernel@dakr.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] uaccess: rust: add
+ UserSliceReader::strcpy_into_buf
+Message-ID: <2025042937-chemo-uprising-8524@gregkh>
+References: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
+ <20250429-strncpy-from-user-v2-2-7e6facac0bf0@google.com>
+ <2025042919-varsity-registrar-fb45@gregkh>
+ <4b54a2385923b1312606dbb5b651e163@dakr.org>
+ <2025042946-accustom-bankroll-d934@gregkh>
+ <aBDs9aMQSCLIqD96@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,33 +53,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250429-vec-methods-v4-7-dad4436ff82d@google.com>
+In-Reply-To: <aBDs9aMQSCLIqD96@google.com>
 
-On Tue, Apr 29, 2025 at 02:44:27PM +0000, Alice Ryhl wrote:
-> This adds a variant of Vec::insert that does not allocate memory. This
-> makes it safe to use this function while holding a spinlock. Rust Binder
-> uses it for the range allocator fast path.
+On Tue, Apr 29, 2025 at 03:15:01PM +0000, Alice Ryhl wrote:
+> On Tue, Apr 29, 2025 at 01:48:19PM +0200, Greg Kroah-Hartman wrote:
+> > On Tue, Apr 29, 2025 at 01:38:26PM +0200, Danilo Krummrich wrote:
+> > > On 2025-04-29 13:09, Greg Kroah-Hartman wrote:
+> > > > On Tue, Apr 29, 2025 at 09:02:23AM +0000, Alice Ryhl wrote:
+> > > > > +        let mut len = raw_strncpy_from_user(self.ptr, dst)?;
+> > > > > +        if len < dst.len() {
+> > > > > +            // Add one to include the NUL-terminator.
+> > > > > +            len += 1;
+> > > > > +        } else if len < buf.len() {
+> > > > > +            // We hit the `self.length` limit before `buf.len()`.
+> > > > > +            return Err(EFAULT);
+> > > > 
+> > > > How can this happen?
+> > > 
+> > > See my reply here (if I did not get it wrong):
+> > > 
+> > > https://lore.kernel.org/rust-for-linux/aBCrqJe4two4I45G@pollux/
+> > 
+> > Ah, I should have read ahead :)
+> > 
+> > I agree, some comments here would be good.  We want everyone to be able
+> > to easily read and understand this code, off-by-one errors are rough.
 > 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/alloc/kvec.rs | 39 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 39 insertions(+)
+> I will add this comment:
 > 
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index 0682108951675cbee05faa130e5a9ce72fc343ba..998afdcde47bec94b2c9d990ba3afbb3488ea99e 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -355,6 +355,45 @@ pub unsafe fn push_within_capacity_unchecked(&mut self, v: T) {
->          unsafe { self.inc_len(1) };
->      }
->  
-> +    /// Inserts an element at the given index in the [`Vec`] instance.
-> +    ///
-> +    /// Fails if the vector does not have capacity for the new element. Panics if the index is out
-> +    /// of bounds.
+> if len < dst.len() {
+>     // Add one to include the NUL-terminator.
+>     len += 1;
+> } else if len < buf.len() {
+>     // This implies that len == dst.len() < buf.len().
+>     //
+>     // This means that we could not fill the entire buffer, but we had
+>     // to stop reading because we hit the `self.length` limit of this
+>     // `UserSliceReader`. Since we did not fill the buffer, we treat
+>     // this case as if we tried to read past the `self.length` limit and
+>     // received a page fault, which is consistent with other
+>     // `UserSliceReader` methods that also return page faults when you
+>     // exceed `self.length`.
+>     return Err(EFAULT);
 
-Why panic and why not just return an error instead?
-
-thanks,
-
-greg k-h
+Looks great, thanks!
