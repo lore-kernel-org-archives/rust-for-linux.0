@@ -1,101 +1,102 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B942528F1;
-	Tue, 29 Apr 2025 17:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597D724E00F;
+	Tue, 29 Apr 2025 18:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947858; cv=none; b=FVunb8ms+gAz/IqCE4NSD+av1abxqWb01ujTnzlgbVc17xMg5+dcRRA0ZbTDfDMl+kYOt997qsIoO9C2+tPNVZ8phld1PEq0FWnBSxsnqMSV2DkhLCQf1H64OORmOWDZddZM4BJHMRd7piaauR2X2oMeVnp1JBKSMB5vWLZjNqM=
+	t=1745949734; cv=none; b=lB5Hh6Hfob1ISMV3ZHFSeuF76UR8bCoOFShCxdkvjwVBgJ4kO41T0dL9wITviapMZ6PFzqlHRBeqgQGOfp5YIt4s5oQHmtHvEKPoM8FDDTP2FUczeJDUzL8TxavHC5cPAT1gSgLFJj4/o7sRj55nYun6vkNbWqiZu2939Buta/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947858; c=relaxed/simple;
-	bh=00vgP1bIqqH7MWVKeLE4cJSbUGKxLK6u0es2ZYE1AP8=;
+	s=arc-20240116; t=1745949734; c=relaxed/simple;
+	bh=7EoE+5qHZHjuIU2WgkibPv8h8qe6HPfLc6xThsuQ66c=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jwqB9h966Dhz1QQDnseGZbwQUbBMv5TK7OSYOAMCOVI5cQYc2HpaJFdHhtRcUZ0YPxYvbf8XcA9S8EY88Nir/sI7+gVDI2IvxxppyTLcV6Qx0DvPqmN5qXED5n1sNYLMitmXvSem3hErQTIDSLxAoD8sWO+sYbnr/N+NFutOXsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J7m3PP1S; arc=none smtp.client-ip=209.85.160.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=lBOlQTOLrJk6FFD9y6EtRaWgxgNKd2TdPgDafoBc7TE0kcm8MGFfcq8RHm31MXkll/oqK0SmKMyltJka8a1g7ilft77T2se1GOTAGcOOPl+jgJUwPGPzDr5lp5a0zGZjCnGqp5EKymBvzdPI8D3CiPDSfapuakxTxvZrYk/RL38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SdE28doU; arc=none smtp.client-ip=209.85.222.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J7m3PP1S"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4769bbc21b0so74832111cf.2;
-        Tue, 29 Apr 2025 10:30:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SdE28doU"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c96759d9dfso666501285a.3;
+        Tue, 29 Apr 2025 11:02:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745947855; x=1746552655; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745949731; x=1746554531; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:subject:cc
          :to:from:date:feedback-id:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7z5AXajw/C8WpnuJpNsbplfFcQIgdAvW2fQjEHy070c=;
-        b=J7m3PP1SWfLE/mXlhAal+FeEVxAcPMu0JA5roMjHJ6BEyNXFQQ8WwIN0Ljcpv2nx3C
-         kaueovktgu9Z9WK22fmixfr4kJ/gYls8t8zVJ6GUwFJ4ObhF2tUg2//MOg240/Xo2YeW
-         fFmQpZ4cp20ce/q1rxstveGL5b39aGUe75dyMwCd8Xuh+08RDX8Gil9eTeA860GGXOHW
-         6jrRU8KeKkDaac3jzsW/Ifr1ZGQvWvJgrY8dLb7+prSAWFdEQsZOVDRkOhH83y8EXcaX
-         mxcRGk2lY4yHBL2GghXYNDnsdZMNqmk4wfDfygINYP1+Xq0SMTpx3kYQlEuwDCn/TX/z
-         WK7Q==
+        bh=OQ2m2Mpo2Qbg7aupiiU5r+J7EKIYM9l5AFA14fJeIrs=;
+        b=SdE28doUAgLrhSaqPUiIPI8K9dRgMR/grt8oONqxVCvYZUFue1vo4v3wbs36/DdizE
+         EJ1/HiOOhwtZW/YK4saE8ySZGM0Z5b6CLQoiCbTUwGFyIECCo9VtFgdRXMlpWCrFLoeW
+         CdzUJZRqMlLj6jZadPMM3ZjFT4+jZCgUQ7m0NZ07gT5N9PvzhbjRxPb/tDU7DtRumn2y
+         Km2LhVpB7SwVWigOr4oERxLYzdkDKUxK8SwKF/uSWIQ1HKjEwl1wZHVZScvP3Ojxsx+D
+         bS3FWA3gHzeo25Qs8q0eRDsOPAeViJqvpLFwaRHcxs2jYAs1e9BqlyKleiz/0WER6pzP
+         s9bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745947855; x=1746552655;
+        d=1e100.net; s=20230601; t=1745949731; x=1746554531;
         h=in-reply-to:content-disposition:mime-version:references:subject:cc
          :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7z5AXajw/C8WpnuJpNsbplfFcQIgdAvW2fQjEHy070c=;
-        b=mHChjU/B8UVz62wB1iqCimUrI70MkP7uvVckIlwJ0MdjPc/72xrlAev92zLTWKPhoq
-         1/sUw7Ow40MfYZum/OcWWE6nsIvjHDIfdKJx/1mernQa175MmwOlKLS66KdRFrT+Qe5m
-         yY4O/Q1cNNTQ4ZNQvhlvfgaJELVSjS6BOHhb4PvtSFGYWhwyzMDe9yOkaIhyRVDexJVj
-         E9L1TWuhC/fptoLCMpN747nMWNjhPogj2KPnbF6xUhpdEz2jqvxODprrFgp+JzhcK6ox
-         2w2BDBRqshOMAfq7l+ZNJj+4ExRMs2v+FC1G2ztYWZcx+ZMZnezNwfoigTTnW+Qdwa/M
-         4qsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWqEdKUbhU3eDhdkM/TbRhokxyGv/5ScPp70vFgTDrp4ht79cVJDcjnMwQqf0I2x52eb0DTDTfhuFyxkn4=@vger.kernel.org, AJvYcCX8w9BXDQNZL+LDz4WyD2SCPlcQTSHRzAn8WhPOnFMnQXsTGNp8ZuOAwG4vfkny24wI2ILuhwTT88a6Trq2X4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7d8+zWksSboGXc5RIg1kZ2oted1KT127cY3eEhBwGZKzYu9IS
-	msJunwh8GdiDxchg2XbjbAY/TFDHU5B8f8ZflKIHoq3MeJe4/BXP
-X-Gm-Gg: ASbGnctCr+GMSR/CYS7WXJiRJy60qyJGD8mwZDTFSFyop38att23gzGK3XI1scDTHOi
-	e6sV0bU6FqLMUdt/X31hFeXB+uU4giOFe2P//lNk5aX408MMzNVu7tbHRl8cSugiD9ztjTRw476
-	0bmJMhuZq4amdjqQYd4GdnECAEXy79MMJpuc1r2HfPAQFwvtvIsJdzy3iThkveevFX2+NmWNapE
-	acTQRWwWGaHdPVnJifgE21iqnT1OkDNiW5pyESURYV/DZq6Z3jvZepk8mifscQJ5/Kqw261h47V
-	SclrTn7dSuGWpz2sI4GYq4/Ne22lu918L3wGJs4+htvF6ABI9aCB9nHY7iRwp3PDOJ/DLpLR1ge
-	5TYnapp6D4BIlWivab7ZG/tV1sFhtokE=
-X-Google-Smtp-Source: AGHT+IGf67ViGZrKsVY6rR4rx2xO7httPR4JY2IVPzHT4tsxHaAqO8z0fOTJyQQzIfRqmAM2UQGg1Q==
-X-Received: by 2002:a05:622a:5590:b0:476:7018:9ae4 with SMTP id d75a77b69052e-4886bccf0f2mr55269061cf.16.1745947855278;
-        Tue, 29 Apr 2025 10:30:55 -0700 (PDT)
+        bh=OQ2m2Mpo2Qbg7aupiiU5r+J7EKIYM9l5AFA14fJeIrs=;
+        b=FooBwZzmpGETl9TR/Z8a7Vn5mFTSquyiOt6Gei5oQ4I8jM55L6eNF4btUqBzm8VGRd
+         tB/JKb7iSQBHKYtrkOwEaj1kP3H0UPHvQconsXjgvCdvC5z80HN0LgM+TtKvY9WgRGTb
+         2X2bhurf2yTs9fzAQxISP6fQY0E9hNXYtXS4jifaNAYhCBd7zuJmDgyvlJrT5juwVhpX
+         ZTTXIIV0Fs5Jo/d4MMshkp7TmCntYnoS7m7VIE/dktXhMfwb9lJWQrISmOZ/T8VoSmuV
+         GGpqqaycY1+XDGtIiOBY7oMIsvyllSgQJdn/i5gfkWBsSaNu8uxdJkgXz9aoXvzf5SVE
+         gLjg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMBBtHmJiMWqnxSMS6EPLi6utIiDSly/O1fRidzpM5N5OPHNlWBkcTJdMNbzEJ9fgxw+0iyA4VsqO0qiMi1l4=@vger.kernel.org, AJvYcCXXDz2L6D78dBQWHY+NPzVZzduYYYAYnB0s4ibiZer6yCR54es2oUcYwk7KRf936s+cagzXTEy7wxxdHQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmN2oiwnT6bGQt+bVNX+dbF5oVu1ctArFFadQLQf5su2v2hyPh
+	ocrfDOomlRP/MifMzdRzd8n+argSXX5ehlUGxl0YIfuk/qP3x1hI8+X0xA==
+X-Gm-Gg: ASbGncvvClbkuTnc1mUdCyOQPxkHheHRPrOLoO3R3Z7bJUgkW2mc/N+V5jDk4H8j5BS
+	sP/Tx7/OzWFXI4VTZPiPZ+Joyocrr3Jb6UUSTopTEjJEBHoehFRub0/tYQldbG58+6amhjdTp1E
+	fzl0RMKIF/0Fh8I3m1h9CcZNsk1ogBjXk4mORHM64dt7srcTt1YlJgt8MWJG7z001HfgICynbaG
+	ijD1oCnRBVVxXw77X9xyc+RyvORCdodSuiit+RkTMbLKPivQPy2zAyqFEHQrSiVyHS4lK8NnBOi
+	2o8A4b35nt4t3rqOM6KGDzyJGlv1AJMzHmjm2qJbw98SklpijeungcUVkTaLvnxM+VEN59Y9RAG
+	dNEmS36PBIXBsWxVioFDgtgyI7pu0uUU=
+X-Google-Smtp-Source: AGHT+IETZmS/F3AI4hdVKhB0lODqFFWH7teyi9Rm99K3XMGj5EUHbEdUzD13Iw2/JGNl35toen2T8w==
+X-Received: by 2002:a05:620a:371d:b0:7c5:658a:e584 with SMTP id af79cd13be357-7cac768aeb7mr3619185a.53.1745949730997;
+        Tue, 29 Apr 2025 11:02:10 -0700 (PDT)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47e9eaf20e4sm82027391cf.3.2025.04.29.10.30.54
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c958c94943sm765276285a.4.2025.04.29.11.02.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 10:30:54 -0700 (PDT)
-Message-ID: <68110cce.c80a0220.3b03fb.43d0@mx.google.com>
-X-Google-Original-Message-ID: <aBEMy-OwfEIS0H6K@winterfell.>
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6B8031200043;
-	Tue, 29 Apr 2025 13:30:54 -0400 (EDT)
+        Tue, 29 Apr 2025 11:02:10 -0700 (PDT)
+Message-ID: <68111422.050a0220.e6713.25af@mx.google.com>
+X-Google-Original-Message-ID: <aBEUH-6b_ZBzHOxl@winterfell.>
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3E24C120006A;
+	Tue, 29 Apr 2025 14:02:10 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Tue, 29 Apr 2025 13:30:54 -0400
-X-ME-Sender: <xms:zgwRaHjA24QJlpTX_AmDwbBXaLSVucATMJz9F6ZepArLLFuBirBwsA>
-    <xme:zgwRaEDfEsfu6d5qXGBFoDGiC82xAe6ViS0m4vXm9WkgRQSgIFtt_Obsg2JeWxmwr
-    k4iz3uYsYD1BlMPzg>
-X-ME-Received: <xmr:zgwRaHHm_P0LASICd9-DlE5OGkumhmXSpBTadB4_pi5N4QWTYsLO-BQQ4KI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieeggedvucetufdoteggodetrf
+  by phl-compute-04.internal (MEProxy); Tue, 29 Apr 2025 14:02:10 -0400
+X-ME-Sender: <xms:IhQRaNbKJIpz_Fq28TttvExphRL2QbfHBV6hTZRYsBkCEHA4n0lKoA>
+    <xme:IhQRaEa9JLm5Bk1bTLQYEqkI2NTIHFc0JHp4d0s92lvn_Ioiuhje3xyQ_X1HGnt9u
+    dym-X-EH4onucfUHA>
+X-ME-Received: <xmr:IhQRaP_Smf6XpIU_PRMnzVEPEWDRAl4RHZVVBbu4MOZIkyNaZVornAapdfY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieeggeekucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
     pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
     gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
     vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
-    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudegpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvg
-    drtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepvh
-    hirhhoseiivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehgrhgvghhk
-    hheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehgrghrhiesgh
-    grrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhm
-    rghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrd
-    hmvgdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:zgwRaEQQxw4mIzNMJVaWVmP2ZUazeZAcStAbY97ZpuwRvM1uI-s9Jg>
-    <xmx:zgwRaEzJUlanODTTolKbhNQXAF3CRziHZ0nKDPJpVgQGqmaO8PUT2g>
-    <xmx:zgwRaK6ZEB3j7c20riFl6Jh6Rps3YcDMFtlO2YkchTK4iq_F7735mA>
-    <xmx:zgwRaJxUKU1L957fFoPqBC52PghXmQJk_wPYFj8uesXusSr9lQupdw>
-    <xmx:zgwRaEj7HU0rGI1Z9gCSupLo6By95enMo34hy0FSHqcN7PAykK9mA_CH>
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedv
+    teehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
+    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
+    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
+    nhgrmhgvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhjvggu
+    rgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunh
+    gurghtihhonhdrohhrghdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidr
+    ohhrghdruhhkpdhrtghpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhioh
+    hnrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthht
+    ohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsg
+    gvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgu
+    sghorhhgsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:IhQRaLpcB4UKDJFVl64QOUnr6X11qMQf1xTcy4dgZ-AfFARSEuXfdA>
+    <xmx:IhQRaIpbLUV-mxH4bxHkjiyRsnKdiNMLfMHCbzMUKbuAuure2wDjwQ>
+    <xmx:IhQRaBSSrMQCMrml56ujLqqyckDExYoswaEsgyMen-8cFDKzwYj2nw>
+    <xmx:IhQRaAq8xT3O6UyEw0lsR9QjSveMNVLnyuH_p0bfPPA2l27vSqPjIw>
+    <xmx:IhQRaB7ZCgIKNZ_7FaQFSdGUICocF-mbYZ9dJ9eD8ROMNwIxZ1Y5-xVY>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 29 Apr 2025 13:30:53 -0400 (EDT)
-Date: Tue, 29 Apr 2025 10:30:51 -0700
+ 29 Apr 2025 14:02:09 -0400 (EDT)
+Date: Tue, 29 Apr 2025 11:02:07 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>,
@@ -109,9 +110,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] uaccess: rust: add strncpy_from_user
+Subject: Re: [PATCH v2 2/2] uaccess: rust: add
+ UserSliceReader::strcpy_into_buf
 References: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
- <20250429-strncpy-from-user-v2-1-7e6facac0bf0@google.com>
+ <20250429-strncpy-from-user-v2-2-7e6facac0bf0@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -120,84 +122,101 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250429-strncpy-from-user-v2-1-7e6facac0bf0@google.com>
+In-Reply-To: <20250429-strncpy-from-user-v2-2-7e6facac0bf0@google.com>
 
-On Tue, Apr 29, 2025 at 09:02:22AM +0000, Alice Ryhl wrote:
-> This patch adds a direct wrapper around the C function of the same name.
-> It's not really intended for direct use by Rust code since
-> strncpy_from_user has a somewhat unfortunate API where it only
-> nul-terminates the buffer if there's space for the nul-terminator. This
-> means that a direct Rust wrapper around it could not return a &CStr
-> since the buffer may not be a cstring. However, we still add the method
-> to build more convenient APIs on top of it, which will happen in
-> subsequent patches.
+On Tue, Apr 29, 2025 at 09:02:23AM +0000, Alice Ryhl wrote:
+> This patch adds a more convenient method for reading C strings from
+> userspace. Logic is added to NUL-terminate the buffer when necessary so
+> that a &CStr can be returned.
+> 
+> Note that we treat attempts to read past `self.length` as a fault, so
+> this returns EFAULT if that limit is exceeded before `buf.len()` is
+> reached.
 > 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/kernel/uaccess.rs | 34 +++++++++++++++++++++++++++++++++-
->  1 file changed, 33 insertions(+), 1 deletion(-)
+>  rust/kernel/uaccess.rs | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
 > 
 > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> index 80a9782b1c6e98ed6eae308ade8551afa7adc188..acb703f074a30e60d42a222dd26aed80d8bdb76a 100644
+> index acb703f074a30e60d42a222dd26aed80d8bdb76a..7cec1b62bd8b816f523c8be12cb29905740789fc 100644
 > --- a/rust/kernel/uaccess.rs
 > +++ b/rust/kernel/uaccess.rs
-> @@ -8,7 +8,7 @@
->      alloc::{Allocator, Flags},
->      bindings,
->      error::Result,
-> -    ffi::c_void,
-> +    ffi::{c_char, c_void},
->      prelude::*,
->      transmute::{AsBytes, FromBytes},
->  };
-> @@ -369,3 +369,35 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
+> @@ -293,6 +293,41 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut Vec<u8, A>, flags: Flags) -> R
+>          unsafe { buf.set_len(buf.len() + len) };
 >          Ok(())
 >      }
->  }
 > +
-> +/// Reads a nul-terminated string into `buf` and returns the length.
-> +///
-> +/// This reads from userspace until a NUL byte is encountered, or until `buf.len()` bytes have been
-> +/// read. Fails with [`EFAULT`] if a read happens on a bad address. When the end of the buffer is
-> +/// encountered, no NUL byte is added, so the string is *not* guaranteed to be NUL-terminated when
-> +/// `Ok(buf.len())` is returned.
-> +///
-> +/// # Guarantees
-> +///
-> +/// When this function returns `Ok(len)`, it is guaranteed that the first `len` of `buf` bytes are
-> +/// initialized and non-zero. Furthermore, if `len < buf.len()`, then `buf[len]` is a NUL byte.
-> +/// Unsafe code may rely on these guarantees.
-> +#[inline]
-> +pub fn raw_strncpy_from_user(ptr: UserPtr, buf: &mut [MaybeUninit<u8>]) -> Result<usize> {
-> +    // CAST: Slice lengths are guaranteed to be `<= isize::MAX`.
-> +    let len = buf.len() as isize;
+> +    /// Read a NUL-terminated string from userspace and append it to `dst`.
+
+s/`dst`/`buf`
+
+?
+
+> +    ///
+> +    /// Fails with [`EFAULT`] if the read happens on a bad address.
+> +    pub fn strcpy_into_buf<'buf>(&mut self, buf: &'buf mut [u8]) -> Result<&'buf CStr> {
+> +        if buf.is_empty() {
+> +            return Err(EINVAL);
+> +        }
 > +
-> +    // SAFETY: `buf` is valid for writing `buf.len()` bytes.
-> +    let res = unsafe {
-> +        bindings::strncpy_from_user(buf.as_mut_ptr().cast::<c_char>(), ptr as *const c_char, len)
-> +    };
+> +        // SAFETY: The types are compatible and `strncpy_from_user` doesn't write uninitialized
+> +        // bytes to `buf`.
+> +        let mut dst = unsafe { &mut *(buf as *mut [u8] as *mut [MaybeUninit<u8>]) };
+
+maybe:
+
+	let mut dst = unsafe { &mut *(ptr::from_mut(buf).cast() };
+
+? To align with:
+
+	https://lore.kernel.org/rust-for-linux/20250418-ptr-as-ptr-v10-0-3d63d27907aa@gmail.com/	
+
 > +
-> +    if res < 0 {
-> +        return Err(Error::from_errno(res as i32));
-> +    }
+> +        // We never read more than `self.length` bytes.
+> +        if dst.len() > self.length {
+> +            dst = &mut dst[..self.length];
+> +        }
+> +
+> +        let mut len = raw_strncpy_from_user(self.ptr, dst)?;
+> +        if len < dst.len() {
+> +            // Add one to include the NUL-terminator.
+> +            len += 1;
+> +        } else if len < buf.len() {
+> +            // We hit the `self.length` limit before `buf.len()`.
+> +            return Err(EFAULT);
+> +        } else {
+> +            // SAFETY: Due to the check at the beginning, the buffer is not empty.
+> +            unsafe { *buf.last_mut().unwrap_unchecked() = 0 };
+> +        }
+> +        self.skip(len)?;
 > +
 
-Nit: this can be a
+So if the UserSlice content is "abcdefg" (not tailing NUL), and the buf
+size is 4, after a strcpy_into_buf(), the return would be a CStr "abc"
+(with a tailing NUL), and the UserSlice would move 4 bytes and become
+"edg" (not tailing NUL), is this a desired behavior?
 
-	let copy_len = kernel::error::to_result(res)?;
+Alternatively, we can make `dst` always 1 byte less then `buf`, so that
+in the above case, UserSlice will only move 3 bytes and become "defg",
+and the return CStr is still "abc" (with a tailing NUL).
 
-Other than that,
-
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+The current behavior makes me feel like we can lose some information,
+for example, if the user-kernel protocol is that "a userslice that
+contains 4 64-byte strings which don't have a tailing NUL", we cannot do
+4 strcpy_into_buf() to get them, right? But of course, the scenario is
+completely made up, just food for thoughts.
 
 Regards,
 Boqun
 
-> +    #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
-> +    assert!(res <= len);
-> +
-> +    Ok(res as usize)
-> +}
+> +        // SAFETY: `raw_strncpy_from_user` guarantees that this range of bytes represents a
+> +        // NUL-terminated string with the only NUL byte being at the end.
+> +        Ok(unsafe { CStr::from_bytes_with_nul_unchecked(&buf[..len]) })
+> +    }
+>  }
+>  
+>  /// A writer for [`UserSlice`].
 > 
 > -- 
 > 2.49.0.901.g37484f566f-goog
