@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41658211A3C;
-	Tue, 29 Apr 2025 11:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4C42C1793;
+	Tue, 29 Apr 2025 11:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745924688; cv=none; b=Dvvc9yIvCq8OgOd8RxFbhjml5Jdpg7z18eAnELB2xrBk3Y824f5kv3oIsTcYXgkJh3Kg1hhr00BKRYrDTZVJx+LPfzZrY42z+U56dKXinynmWYuorGO5XKneKP5SIDw6qeVgPA+rnvY1uB24PrSbmOU7JP8gC0XSFBS/jthz6wY=
+	t=1745924962; cv=none; b=XEaUCJ9P6VqoliQifFkQOYGtGmBCNwxXcTiCiw3P6tiGmp/7Rt7pzK3WpoO2Po9IQsbCYvQgrHzOgTYhlbM/u+eDrPHk8AHyLtzygDoIrFhk/eLTBe49XQO/+7adwPYtI2hqatu+kCpJd+KoEp5yrH/U8Km8g1+zIjsg+zd2fKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745924688; c=relaxed/simple;
-	bh=/Vk5qZ7Z9YA0GlYke/ahJ6SBeDSFVY93udsKSOdevuE=;
+	s=arc-20240116; t=1745924962; c=relaxed/simple;
+	bh=ZXz2yD+d82VC43nSuY5nImDpV2JGQJKNMs4bpCo0zTU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RWe1q+akviXwCPbvthZ/1fuWJRw1uzf66ImXZnAtB8w7wUSObZPBgB/5kmUky5tDONvuVGsvwB2wNEeOuPKyrKqGQ3SMF/pK42rJKCZfrpggtJL18Erk0mj443uO5t2pZz1EpFxt7NAkKCW20Cy86sYvlO9pWEJS5IcFFAqJpMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzh7sy6R; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=rGOveMVU+kxQxAvH38j3BfC63KSsMWYEzxCDXrpYj7QhNkCnuI8CcyH8dWlM8AtyGWvMvlqSwAW2LB8yuydN2nWgY+9ae/O2IugyzBjXBM+M13XWXvnnaB11c1XriIPTyZnkqn1ul67rd1o31UpXvpSey1syAhnbrkQAakw+vOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPpCB6J8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzh7sy6R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057CAC4CEE3;
-	Tue, 29 Apr 2025 11:04:47 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPpCB6J8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEF0C4CEE3;
+	Tue, 29 Apr 2025 11:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745924687;
-	bh=/Vk5qZ7Z9YA0GlYke/ahJ6SBeDSFVY93udsKSOdevuE=;
+	s=korg; t=1745924961;
+	bh=ZXz2yD+d82VC43nSuY5nImDpV2JGQJKNMs4bpCo0zTU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dzh7sy6RWGDTOj9K+WajtMfvA+7sphfWkxyW8ddBiFHiVSX+l5s6jfS0OwriC29tX
-	 +5+9JJNVxure+z5XWgY6w4hUlqk/3jotr4y6lOlRAJQSOEoKBju5LK8BRd8GR0p4LO
-	 lO1CbNQwhqeubojFBM3vcP2+jkB5v5KN1EKUKbwc=
-Date: Tue, 29 Apr 2025 13:04:44 +0200
+	b=vPpCB6J8Did6SL6ieVRERHWiMQVou2FditYC4SOcc+YlGE6WGBmjz+eOJaWTGMSXe
+	 aufbHjwU2vdQxeoDYbflnRVYny9LrndOQ3GZNv52+wh/48GhF4cd8cyWrevVsH1GMK
+	 0fXO+AxzZYKH4ICDygZ4OoXnWrj7+2S+H3B79SpM=
+Date: Tue, 29 Apr 2025 13:09:18 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>,
@@ -36,10 +36,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] uaccess: rust: add strncpy_from_user
-Message-ID: <2025042918-outer-roamer-ab80@gregkh>
+Subject: Re: [PATCH v2 2/2] uaccess: rust: add
+ UserSliceReader::strcpy_into_buf
+Message-ID: <2025042919-varsity-registrar-fb45@gregkh>
 References: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
- <20250429-strncpy-from-user-v2-1-7e6facac0bf0@google.com>
+ <20250429-strncpy-from-user-v2-2-7e6facac0bf0@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,76 +49,69 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250429-strncpy-from-user-v2-1-7e6facac0bf0@google.com>
+In-Reply-To: <20250429-strncpy-from-user-v2-2-7e6facac0bf0@google.com>
 
-On Tue, Apr 29, 2025 at 09:02:22AM +0000, Alice Ryhl wrote:
-> This patch adds a direct wrapper around the C function of the same name.
-> It's not really intended for direct use by Rust code since
-> strncpy_from_user has a somewhat unfortunate API where it only
-> nul-terminates the buffer if there's space for the nul-terminator. This
-> means that a direct Rust wrapper around it could not return a &CStr
-> since the buffer may not be a cstring. However, we still add the method
-> to build more convenient APIs on top of it, which will happen in
-> subsequent patches.
+On Tue, Apr 29, 2025 at 09:02:23AM +0000, Alice Ryhl wrote:
+> This patch adds a more convenient method for reading C strings from
+> userspace. Logic is added to NUL-terminate the buffer when necessary so
+> that a &CStr can be returned.
+> 
+> Note that we treat attempts to read past `self.length` as a fault, so
+> this returns EFAULT if that limit is exceeded before `buf.len()` is
+> reached.
 > 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/kernel/uaccess.rs | 34 +++++++++++++++++++++++++++++++++-
->  1 file changed, 33 insertions(+), 1 deletion(-)
+>  rust/kernel/uaccess.rs | 35 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 35 insertions(+)
 > 
 > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> index 80a9782b1c6e98ed6eae308ade8551afa7adc188..acb703f074a30e60d42a222dd26aed80d8bdb76a 100644
+> index acb703f074a30e60d42a222dd26aed80d8bdb76a..7cec1b62bd8b816f523c8be12cb29905740789fc 100644
 > --- a/rust/kernel/uaccess.rs
 > +++ b/rust/kernel/uaccess.rs
-> @@ -8,7 +8,7 @@
->      alloc::{Allocator, Flags},
->      bindings,
->      error::Result,
-> -    ffi::c_void,
-> +    ffi::{c_char, c_void},
->      prelude::*,
->      transmute::{AsBytes, FromBytes},
->  };
-> @@ -369,3 +369,35 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
+> @@ -293,6 +293,41 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut Vec<u8, A>, flags: Flags) -> R
+>          unsafe { buf.set_len(buf.len() + len) };
 >          Ok(())
 >      }
->  }
 > +
-> +/// Reads a nul-terminated string into `buf` and returns the length.
-> +///
-> +/// This reads from userspace until a NUL byte is encountered, or until `buf.len()` bytes have been
-> +/// read. Fails with [`EFAULT`] if a read happens on a bad address. When the end of the buffer is
-> +/// encountered, no NUL byte is added, so the string is *not* guaranteed to be NUL-terminated when
-> +/// `Ok(buf.len())` is returned.
+> +    /// Read a NUL-terminated string from userspace and append it to `dst`.
+> +    ///
+> +    /// Fails with [`EFAULT`] if the read happens on a bad address.
 
-I don't know if it matters, but this can fill up the buffer a bit and
-still fail, to quote from the strncpy_from_user() documentation:
+Also returns this error:
 
-	 If access to userspace fails, returns -EFAULT (some data may have been copied).
+> +    pub fn strcpy_into_buf<'buf>(&mut self, buf: &'buf mut [u8]) -> Result<&'buf CStr> {
+> +        if buf.is_empty() {
+> +            return Err(EINVAL);
 
-> +///
-> +/// # Guarantees
-> +///
-> +/// When this function returns `Ok(len)`, it is guaranteed that the first `len` of `buf` bytes are
-> +/// initialized and non-zero. Furthermore, if `len < buf.len()`, then `buf[len]` is a NUL byte.
-> +/// Unsafe code may rely on these guarantees.
-> +#[inline]
-> +pub fn raw_strncpy_from_user(ptr: UserPtr, buf: &mut [MaybeUninit<u8>]) -> Result<usize> {
-> +    // CAST: Slice lengths are guaranteed to be `<= isize::MAX`.
-> +    let len = buf.len() as isize;
+if the buffer is of 0 length.  Don't know if you want to document that
+or not.
+
+> +        }
 > +
-> +    // SAFETY: `buf` is valid for writing `buf.len()` bytes.
-> +    let res = unsafe {
-> +        bindings::strncpy_from_user(buf.as_mut_ptr().cast::<c_char>(), ptr as *const c_char, len)
-> +    };
+> +        // SAFETY: The types are compatible and `strncpy_from_user` doesn't write uninitialized
+> +        // bytes to `buf`.
+> +        let mut dst = unsafe { &mut *(buf as *mut [u8] as *mut [MaybeUninit<u8>]) };
 > +
-> +    if res < 0 {
-> +        return Err(Error::from_errno(res as i32));
+> +        // We never read more than `self.length` bytes.
+> +        if dst.len() > self.length {
+> +            dst = &mut dst[..self.length];
+> +        }
+> +
+> +        let mut len = raw_strncpy_from_user(self.ptr, dst)?;
+> +        if len < dst.len() {
+> +            // Add one to include the NUL-terminator.
+> +            len += 1;
+> +        } else if len < buf.len() {
+> +            // We hit the `self.length` limit before `buf.len()`.
+> +            return Err(EFAULT);
 
-Nit, this can just be returning EFAULT, but I guess it's safest just to
-mirror what was passed back.
+How can this happen?  And if it does, why is that a memory fault?
+Doesn't this just mean that we read smaller than our overall size of our
+buffer?  Or am I misreading this completely?
 
-I would say to just leave it as "pub" for now, but that's not a big
-deal.
+Maybe a self-test would be good to exercise all of this :)
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+thanks,
+
+greg k-h
