@@ -1,84 +1,72 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AF1221295
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 15:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F6C220689;
+	Tue, 29 Apr 2025 15:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745939905; cv=none; b=ULglE6RO/Cfp77n3qk7vFM1k0n/KTmMr1d0kO1CYQNppI4iIAPhTBvzYcnoAhSqCWxJ2yC0sHe+Zl/Htlx/PSBDeS8sU04ljBtab2WrM4lHY/qG+S7S/8Gp3X1jijEivZAYqhfuJ6brfRymZqPGJrP4ldhD0sNp/yTDgzAGlbUM=
+	t=1745940610; cv=none; b=stnCasp5bYsh0PitDYJfgU9EIZ7+m9/oHJSRm4YUU4Q5ZERZd1hMHvj6c6Hr4QA/FmHSVIfDS5mc1nViVZxEuGTjzsc/7+guxSAcT5DcyPVMaNSAiQ2OsDSugR1ImkRRUqAGHDS6Uqkzh5aAXNDwsyhhrM/joBXCvdBdcSdzeaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745939905; c=relaxed/simple;
-	bh=/PCu2WNCG8+pXYZ1IyFXr8HBm165qrsZ3+TmCh3ue8Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Qq8HisnhVK1YlngzDaUaFmmHNZomija1rvV0B71OFxMsX44nMyWPDNEPz0v/gI0cbup3KuWynlfg/Nr61Y4jN3EJkK6+JiGYthjM6MNV1ocl8jYE/+Gc5CTY72XQvnG5G9VP9XPOV14eHwn9gkSyJjvwxENmwci4SRopYzHyS2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dHK5M8QG; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1745940610; c=relaxed/simple;
+	bh=1gAxZsLYT0B/a+8HVLv1AyOIvhLrMv/i/lc2Dhynh1k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NK9Aa2FB80Gx1mltWUOaTuV7iP3YVHvdlQRLkABfoxrovDs602aN3Ybm+Xq3I97dvMfCK4UdxZsPsNVZcNrwMmnQ0D3urAW0Y0oSFNxsiFAd0saP64DJ7JV/FIHvJVCbUOF8wBCG7+C50UGZDzSh8BsYAtnVsjcDHVyqPbrnUTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQTTifOs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dHK5M8QG"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cf44b66f7so36322795e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 08:18:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745939901; x=1746544701; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JPDHd5nmuz8UCmPYQ1xuDtBVeP5aG1Pr6OYzhTl7aQs=;
-        b=dHK5M8QGUqYFw4jzSTWfl9ZAo9/5iTD7xurWOfS8tL/PwpVn7BHLcNNcAiiI+Q0CG6
-         Y1vr2MO0hO1cLMHeduVDJAQf1PfMtDI1/UEWFzbe629Ke8tr9quN9RdRi6a+tH4F1VYe
-         Rg3y5Ssp9Sq7/vW57KUwubgbfGy5HfL/R1bUBHmRjCqPqBD2IAlL9AMEDK5eT8ParzsP
-         IqVVCtamIihFfWUr+If5D0+F0fyZ3Ay8mYXeu3nDv4o8Wrz8gEP0ijWMncXCgLJE87ts
-         e0zxs8Nnn8msOSKAZe9dpV+BKpfqcheixMAwkrrowNwtGXaToQm/lbhm/cPuy9XBsRxA
-         8BHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745939901; x=1746544701;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JPDHd5nmuz8UCmPYQ1xuDtBVeP5aG1Pr6OYzhTl7aQs=;
-        b=hspaPTdM4TqK+IkctDQltFEBmRndeAXkrZlhK1+tuklnK/yNtXV8cy6iFjXkhl0XA7
-         QXEPiD9T60yiBrtYUoD2zKuPmHZk1ZKqn4et95ISvE2ZabA/J6knrOUG2BKV5Il/MBtl
-         XaShqcTkaOPCXg+Qjb9T5HB1TL+LtmQO87Hdcv4WmYrxgowJLcbMZW3dTfzF7NL9bY8u
-         v4PS97Kc6lvewF6X9t9ULpztcHBtff+74IH0WMoXUS9JS+8EY4i+9+sDHmmg7rVrTc5J
-         oJrYw5Wi9jCO0aRX6AJdJXon7VANqxp92Lke6eD6XTMOdPtq3u/pzYNEIQzUkEnEE0G6
-         OdYg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9PwmINCZXKIN7Nv4FivdlqU7yZvcgnKFssP2+TQUM/lrOybwTf6gjXJ+W5Il8P48eH4XUXgVFxfpnXVM6lQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUW4uVokxNX27yfYyiCWEi+KnJvqo9rGASHLfCiG+zXdnYzjOR
-	qh/6HemqKgdKHUt0zTu0nQ73ZOVXKDd6u7UwvBPRDWUe/714WM5znWVf55jDoyp5+4tNyO+4hOl
-	QQEEVwdr35g2hKg==
-X-Google-Smtp-Source: AGHT+IH0OQ3Fn2PmiC3/SXJZlwPP2g+GPNm02BRczf+LepVg4s9KBAT779yrqPUW/iEFczZ49lueIXx+4oUVZKk=
-X-Received: from wmbgw25.prod.google.com ([2002:a05:600c:8519:b0:440:59df:376a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a016:b0:43d:42b:e186 with SMTP id 5b1f17b1804b1-441ad3b43a7mr28023995e9.8.1745939901572;
- Tue, 29 Apr 2025 08:18:21 -0700 (PDT)
-Date: Tue, 29 Apr 2025 15:18:19 +0000
-In-Reply-To: <20250429151445.438977-1-ojeda@kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQTTifOs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3DAC4CEE3;
+	Tue, 29 Apr 2025 15:30:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745940609;
+	bh=1gAxZsLYT0B/a+8HVLv1AyOIvhLrMv/i/lc2Dhynh1k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kQTTifOsH5l/F4Wwq7ZgaBx+eV2r4QLHzIxHfmNMalfqtC/c/Ul/v8x2CmSf8Ds3l
+	 ZtM2n+zNqoakkcLpLmK+Ns7JZUwNysqJnA/eGQDoAJHznqNSwsApoPmDx9mPdnRWfo
+	 lCBvxssNktqae2PeCqRPzX21hT3KCr0QWC0yh/OA=
+Date: Tue, 29 Apr 2025 17:30:06 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 7/7] rust: alloc: add Vec::insert_within_capacity
+Message-ID: <2025042925-kindly-squash-fa6f@gregkh>
+References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
+ <20250429-vec-methods-v4-7-dad4436ff82d@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250429151445.438977-1-ojeda@kernel.org>
-Message-ID: <aBDtu0oAlRYNa5l3@google.com>
-Subject: Re: [PATCH] rust: uaccess: take advantage of the prelude and
- `Result`'s defaults
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250429-vec-methods-v4-7-dad4436ff82d@google.com>
 
-On Tue, Apr 29, 2025 at 05:14:45PM +0200, Miguel Ojeda wrote:
-> The `kernel` prelude brings `Result` and the error codes; and the prelude
-> itself is already available in the examples automatically.
+On Tue, Apr 29, 2025 at 02:44:27PM +0000, Alice Ryhl wrote:
+> This adds a variant of Vec::insert that does not allocate memory. This
+> makes it safe to use this function while holding a spinlock. Rust Binder
+> uses it for the range allocator fast path.
 > 
-> In addition, `Result` already defaults to `T = ()`.
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/alloc/kvec.rs | 39 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
 > 
-> Thus simplify.
-> 
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index 0682108951675cbee05faa130e5a9ce72fc343ba..998afdcde47bec94b2c9d990ba3afbb3488ea99e 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -355,6 +355,45 @@ pub unsafe fn push_within_capacity_unchecked(&mut self, v: T) {
+>          unsafe { self.inc_len(1) };
+>      }
+>  
+> +    /// Inserts an element at the given index in the [`Vec`] instance.
+> +    ///
+> +    /// Fails if the vector does not have capacity for the new element. Panics if the index is out
+> +    /// of bounds.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Why panic and why not just return an error instead?
+
+thanks,
+
+greg k-h
