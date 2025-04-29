@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44929257452
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7636C26FD90
 	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 21:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745963316; cv=none; b=Mu37pzP0pwBilnpYHPBo7ViO/Awi+X+uJC3mPuIl9PtyQLyGIhx3kRdxh5xvnXmE3H2hpsAGYxv3ORUDWrnu1UvvzZZ3cotUgopNZOjZjNtlSUyuXIQtw0tWHPUOTovjesY+1OVwCwaYT4454WgJJTlafkBTjyznT4CKTqzS69c=
+	t=1745963317; cv=none; b=nbu9Ey7lSUimUC9xvVJhPon7Vtt0UndBYyFgyQJM6fOWZxzL0K4U4OywVhtr65V7kbZSBkcytGsAWx8JCuKdMfpikc3OzqTpYD66eOAPSBImvsstxXQfcHtKFn1Ch6kB8ebnTzTL6dX52ZTC8x8LwqCiWC/F3Dk8njZu3Lw+NEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745963316; c=relaxed/simple;
-	bh=EEi47JhKU4scdAOtuIqQPebfCQhZyRg+10HsI94IKe8=;
+	s=arc-20240116; t=1745963317; c=relaxed/simple;
+	bh=boKpxPdq27k+oAkg/UOCG61wHmXN1RDEa6N4ZOXYkiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QI3XL3KqwyJ64D/7gLn5uJxaEa9Dh6PAat83i+9SjxTzdfD5/hdwsM/2i3ABunxCl5l/1n2w8i54erh23UDgA2uyvqpa7mN93PQxnvX+W3rSFkQedBJlUuGWHRWotULdtOyrByqly7j56GKCHb/ccdlnQUxQOip7JfWtzMa7paI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O3PfSCxc; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=cN3AEoi7vosGGoPx4NwDaG0svC6F4aA0hFi8N171sQA+ScQTL3hRBe4NfGZu/0LJ/yr858c8liXDEhrZCMuXUXnP3/tgcOGUSLIf7Vl5Q3sxjZGxw7nafc8l7mZXIJYuXLDszacyShsieaT+VsEVx0ck8DnWSvw2C+iYOSugM/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f6fQmczu; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O3PfSCxc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f6fQmczu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1745963314;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kNsJKZYf8Jen4eNtgKuwwIYr6+X3oK52kaO2gEfl+Gg=;
-	b=O3PfSCxcDmQKtFBCdR1mmN9cGfQXe05y4mplLLUzLu+7v4zeu78AAAfg+z29wGDqKFNBNF
-	XITGGKoyy7FyGlCeTh0/32NhixC5ggtkeVrIuqrYFjngbktMBheJZ4pnXRPyDg0oouz5sS
-	l7HwCQGIMwxu+laN7emNpGLsZ9Mrvog=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+	bh=MjTGTxy+2mRzzCLysTJFKthKDEummASAP6ilEo9uHW4=;
+	b=f6fQmczuIxguWWE+9F7O0pCoYzSNzIieHwn9tAqgIoS3B/Dql9pDHLGry2YOykeU5M1wYB
+	h6de21gKbNUPawvHZncYxVa0edpYOFDJBNvFfr3ZWgbRkbbjB8PhQhtqRCPtGGHwT2BS/5
+	p2CixOlzqy3VekoBIFGvtcl+mDKUQJ4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-193-p6GeKYtnOtO5McjA0fF90A-1; Tue,
- 29 Apr 2025 17:48:31 -0400
-X-MC-Unique: p6GeKYtnOtO5McjA0fF90A-1
-X-Mimecast-MFC-AGG-ID: p6GeKYtnOtO5McjA0fF90A_1745963308
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-425-o_h5bBUeMHKJ2lHmDLkK6w-1; Tue,
+ 29 Apr 2025 17:48:28 -0400
+X-MC-Unique: o_h5bBUeMHKJ2lHmDLkK6w-1
+X-Mimecast-MFC-AGG-ID: o_h5bBUeMHKJ2lHmDLkK6w_1745963305
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C2573180087B;
-	Tue, 29 Apr 2025 21:48:28 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA1F81800370;
+	Tue, 29 Apr 2025 21:48:25 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.88.132])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 22CDF19560A3;
-	Tue, 29 Apr 2025 21:48:26 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3EE8119560A3;
+	Tue, 29 Apr 2025 21:48:23 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	Andreas Hindborg <a.hindborg@kernel.org>,
@@ -61,9 +61,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v4 6/7] rust: hrtimer: Add forward_now() to HrTimer and HrTimerCallbackContext
-Date: Tue, 29 Apr 2025 17:44:42 -0400
-Message-ID: <20250429214752.1637859-7-lyude@redhat.com>
+Subject: [PATCH v4 5/7] rust: hrtimer: Add HrTimer::raw_cb_time()
+Date: Tue, 29 Apr 2025 17:44:41 -0400
+Message-ID: <20250429214752.1637859-6-lyude@redhat.com>
 In-Reply-To: <20250429214752.1637859-1-lyude@redhat.com>
 References: <20250429214752.1637859-1-lyude@redhat.com>
 Precedence: bulk
@@ -75,84 +75,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Using the HrTimer::raw_time_cb() function, we can now add an equivalent to
-hrtimer_forward_now() to both HrTimer and HrTimerCallbackContext.
+This is a simple private unsafe wrapper for retrieving the current time
+according to the hrtimer_clock_base struct for a given timer. This will be
+used for implementing functions such as forward_now(), which rely on
+retrieving the current time from the hrtimer's clock base.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 ---
 V2:
-* Change from Ktime to Delta
-* Make sure that forward_now() takes a mutable reference to the timer
-  struct
-* Reword this to point out that we're adding forward_now() to both callback
-  context and mutable timer reference
-* Rename interval to duration
+- Convert safety comment to invariant comment in from_raw()
+- Add raw_clock_base() and implement clock_base() on HrTimer<T> as well
 
 V4:
-* Fix rust documentation for HrTimerCallbackContext (forgot to update both
-  forward_now() declarations)
-* Use Pin<&mut Self> for context-less forward.
+- Drop HrTimerClockBase entirely, reword commit as this is now about adding
+  raw_cb_time()
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/time/hrtimer.rs | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ rust/kernel/time.rs         |  1 -
+ rust/kernel/time/hrtimer.rs | 24 ++++++++++++++++++++++++
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+index 6dcb65ed954db..ce6a991ce7583 100644
+--- a/rust/kernel/time.rs
++++ b/rust/kernel/time.rs
+@@ -89,7 +89,6 @@ pub(crate) fn as_nanos(self) -> i64 {
+     /// # Safety
+     ///
+     /// The caller promises that `nanos` is in the range from 0 to `KTIME_MAX`.
+-    #[expect(unused)]
+     #[inline]
+     pub(crate) unsafe fn from_nanos(nanos: i64) -> Self {
+         // INVARIANT: Our safety contract ensures that `nanos` is in the range from 0 to
 diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 80270e14daafd..0d93866d7b20a 100644
+index b0304b2cf2da9..80270e14daafd 100644
 --- a/rust/kernel/time/hrtimer.rs
 +++ b/rust/kernel/time/hrtimer.rs
-@@ -194,7 +194,6 @@ unsafe fn raw_forward(self_ptr: *mut Self, now: Instant, interval: Delta) -> u64
-     /// - The caller must ensure that the `hrtimer_clock_base` cannot possibly change in the context
-     ///   this function is being called in. This means either exclusive access to `self_ptr` is
-     ///   required, or we must be from within the timer callback context of `self_ptr`.
--    #[expect(unused)]
-     unsafe fn raw_cb_time(self_ptr: *const Self) -> Instant {
-         // SAFETY: We're guaranteed `self_ptr` points to a valid `Self` by our safety contract.
-         let clock_base = unsafe { (*Self::raw_get(self_ptr)).base };
-@@ -230,6 +229,18 @@ pub fn forward(self: Pin<&mut Self>, now: Instant, interval: Delta) -> u64 {
-         //   exclusive access to it - fulfilling the requirements of the C API.
-         unsafe { Self::raw_forward(self.get_unchecked_mut(), now, interval) }
+@@ -186,6 +186,30 @@ unsafe fn raw_forward(self_ptr: *mut Self, now: Instant, interval: Delta) -> u64
+         }
      }
-+
-+    /// Conditionally forward the timer.
-+    ///
-+    /// This is a variant of [`forward()`](Self::forward) that uses an interval after the current
-+    /// time of the base clock for the [`HrTimer`].
-+    pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64 {
-+        // SAFETY: `self` is a mutable reference, guaranteeing it is both a valid pointer to Self
-+        // and that we also have exclusive access to `self`.
-+        let now = unsafe { Self::raw_cb_time(&*self.as_ref()) };
-+
-+        self.forward(now, interval)
-+    }
- }
  
- /// Implemented by pointer types that point to structs that contain a [`HrTimer`].
-@@ -592,6 +603,22 @@ pub fn forward(&mut self, now: Instant, interval: Delta) -> u64 {
-         // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`
-         unsafe { HrTimer::<T>::raw_forward(self.0.as_ptr(), now, interval) }
-     }
-+
-+    /// Conditionally forward the timer.
++    /// Retrieve the current time according to the `struct hrtimer_clock_base` for `self_ptr`.
 +    ///
-+    /// This is a variant of [`HrTimerCallbackContext::forward()`] that uses an interval after the
-+    /// current time of the base clock for the [`HrTimer`].
-+    pub fn forward_now(&mut self, duration: Delta) -> u64 {
-+        self.forward(
-+            // SAFETY:
-+            // - We're guaranteed `self.0` points to a valid `HrTimer<T>` instance by type
-+            //   invariants.
-+            // - We're guaranteed to be within the context of the timer callback by our type
-+            //   invariants.
-+            unsafe { HrTimer::<T>::raw_cb_time(self.0.as_ptr()) },
-+            duration,
-+        )
++    /// # Safety
++    ///
++    /// - `self_ptr` must point to a valid `Self`.
++    /// - The caller must ensure that the `hrtimer_clock_base` cannot possibly change in the context
++    ///   this function is being called in. This means either exclusive access to `self_ptr` is
++    ///   required, or we must be from within the timer callback context of `self_ptr`.
++    #[expect(unused)]
++    unsafe fn raw_cb_time(self_ptr: *const Self) -> Instant {
++        // SAFETY: We're guaranteed `self_ptr` points to a valid `Self` by our safety contract.
++        let clock_base = unsafe { (*Self::raw_get(self_ptr)).base };
++
++        // SAFETY: The C API guarantees that `get_time` is initialized to a valid function pointer
++        // for as long as we expose hrtimers to users.
++        let get_time_fn = unsafe { (*clock_base).get_time.unwrap_unchecked() };
++
++        // SAFETY:
++        // - get_time_fn() returns a ktime_t, so we're guaranteed its return value is between `0`
++        //   and `KTIME_MAX`.
++        // - get_time_fn() itself has no special requirements.
++        unsafe { Instant::from_nanos(get_time_fn()) }
 +    }
- }
- 
- /// Use to implement the [`HasHrTimer<T>`] trait.
++
+     /// Conditionally forward the timer.
+     ///
+     /// If the timer expires after `now`, this function does nothing and returns 0. If the timer
 -- 
 2.48.1
 
