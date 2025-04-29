@@ -1,156 +1,122 @@
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A1A20C488;
-	Tue, 29 Apr 2025 18:34:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED06E2512E0
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 18:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745951655; cv=none; b=H91cbdiG22wMfeLfhT0QzB+3zQs3jkSsYd0j6eH7zaII+qneu4AcHHPdhPvU1Ev9DN0bu8t1gOKrRzsgdmnnZLmVsMvPQMew6SuDccF+6XaUB8HuFAoHaVRKzUl7MihjAvdmd2vge+iZhqvwbB8yqNcIv7MKahFDiygullwM9pg=
+	t=1745953151; cv=none; b=Ad0QAO6rsInewAOriYIpdnZLadQKb5eMysQGbeKmO9DQiNpo8dv47zPLeHlbXV+EXvqxCIW+6V4SxEnvmG5ZJtu/wRslDGswLQaKQXTYFMdyGbhVEX+MwXrbVm6qEQaKj7JcU/q1AKDeCgZTaXi9S6Z4eygwuVOy8GyDy0CvQMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745951655; c=relaxed/simple;
-	bh=9crp416ZN4gjAOtJJD/F1uQjJEV0g1SLQ8TDby6Ko0g=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=FaVvTPShDk/s13JZRFyLWOam7uIclOOH18ZEVJdabGH2OVNo5AKiv8XJzRhdXHicB2B05u4bqWaTa2CwawH8nQo84/KuZBsFXvTQHSQSuLDq3brHYdJsPVgGTvl36fiTi51RNc+ZXXVxO9fRHjeqR9dQcQ5r7qjcCydgiIGyixc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ojTqJkGk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=L5a3pCnT; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1745953151; c=relaxed/simple;
+	bh=JKuR2HnO4uDM9v+Z7llC/3uiDFowURfwK74QDWYhdv8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Content-Type; b=Fq6uyzSULurIRlHyJNnDMTqjLceP5NC6vaKnPalLNlMwga6LYdqjvvIX8L0SgaK6iF6Ri2Wy3uKcSCbh3oIzhlzfGuLD7br/9DOz+n+5780LYaHwIlQNoY1210vole4KazR4FCQXPZFKoZKmUZ3A4jywDeeI9YhxPgxxvOVxQmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fKvPCf+g; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ojTqJkGk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="L5a3pCnT"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id B4C4B2540197;
-	Tue, 29 Apr 2025 14:34:10 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-05.internal (MEProxy); Tue, 29 Apr 2025 14:34:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1745951650;
-	 x=1746038050; bh=uiFqvtF8fHyhEpYWit3h1uAl9bL8bBQ5SX+JFo37p6U=; b=
-	ojTqJkGkiH3Jnm6gBya4iyo7ch/Mar/myvNdO3yChpaIwCWV31BIHQ8H+EZtjwfR
-	z/v+1KfLiS/ZGDj7WfKmszXP2OtQIbnGGaLyWqFKXJrKem2FK8ab0QzU2Un5LBiu
-	a5R/HoqldYzNIvEJkjY/iCYwgNmPjxb0xNaEtlgMpgVnEytmxY6ti37eiFa5wDda
-	2PnvHLXdEW+SFqsKeUwUjtTkd+C54VsRZw1p4iYBTsF6tFF6LydkgJBTnDy+n+IK
-	yKVrVuC25MH5ZJ8N9IzgtSL7OefdNRrePoIt0pbIDTAy24FXs4RJAiWJhmiMhKTv
-	NPFLZEjDswf2NA3l4Cu9yA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1745951650; x=
-	1746038050; bh=uiFqvtF8fHyhEpYWit3h1uAl9bL8bBQ5SX+JFo37p6U=; b=L
-	5a3pCnT021PA9+CQFGSamfrBzgutATzrmljPevqCUv5e9zi9BPhoL490ivLcpNpR
-	1kWBj4Qod9ZFRX7KKg+bsBodJC+1tJMpf6+kceMHMtfetADXbfM2vl+LNWPy6K+S
-	EvV5c1AFfsvbRXlAFXCZEUDi3VaKqFhefAmBpVLyD5ktFz4eNtfLmFOn9jNY50Cx
-	e2znhv8TtM5JUT5Ms4dd2uWe5d/COydG5c1vp8z0+BSj3kwWZn03Isl5hASVomL5
-	s68y5S9lIJFdoJQBte0spk9WMhKV5IuAIRsDVKC5D3/YkjinKh2iqDbBu35vjmFK
-	rPAD3gnvB89f9yRv36g8Q==
-X-ME-Sender: <xms:oBsRaGPD3xL67tIYCec6JGAk8F79QCKq12OIw4ksnFD4ZNhK4WYwTg>
-    <xme:oBsRaE8_C1RMC28cJON3ELXsfpAdISauvSRyPl6yChxAcmaolJasBYio0YCaKbfFH
-    7lJl1UJ2gpLMNv-ZXk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieegheeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhepfefhheetffduvdfgieeghfejtedvkeetkeej
-    feekkeelffejteevvdeghffhiefhnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
-    rghrnhgusgdruggvpdhnsggprhgtphhtthhopeefledpmhhouggvpehsmhhtphhouhhtpd
-    hrtghpthhtohepughivghtmhgrrhdrvghgghgvmhgrnhhnsegrrhhmrdgtohhmpdhrtghp
-    thhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegurg
-    hnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehg
-    rghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegrlhgvgidrghgrhihnohhrse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgt
-    ohhmpdhrtghpthhtoheptghhrhhishhirdhstghhrhgvfhhlsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtohepuggrvhhiugdrlhgrihhghhhtrdhlihhnuhigsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:oBsRaNRG37mhhEndxz3GzPDr24h0PqMCVL9pfyhf9HNs_MlwJHmUSA>
-    <xmx:oBsRaGsMBya5nUyqELCVubK_HTCA_qFwKh1cnekHG3qZMJP1h8juKw>
-    <xmx:oBsRaOcvEP_DJKM3FzZGzXz6A9VQhbHZUwReLeXx9AZQKXkvMcLRpg>
-    <xmx:oBsRaK2LyCBwd-YZw-9uTWaVeAEAGYqOpHmzZnRc4XmWXPrYq37YMQ>
-    <xmx:ohsRaJ-NLNGtRUh9Tckxp8R9CXIQ_xIZY6UZsIlsXQXG0bSJTvdXGaiB>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 289532220073; Tue, 29 Apr 2025 14:34:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fKvPCf+g"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-30872785c3cso9396257a91.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 11:59:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745953148; x=1746557948; darn=vger.kernel.org;
+        h=to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eXJ8J07H9GMYt3devST83hdUmEga5s87LMXmrPwfkrE=;
+        b=fKvPCf+gaZVDQfkmynEvFIEYEHR1BSCpdweSDhXd4Cc1QeEPCdRymYsL3XDIH2oVlB
+         uY/ioN9kcoweilekVxVGCBng8e5r3SrJaQqmyaiDwXQxI9/OS/E+IM0HXBavsegwx5ZI
+         c4MyEHMZHlgt5b9qJeeaL08/4cB0uGS7QjprLWSpIDdpOfNcxcNy6L14HQB6g8Fqt9AY
+         +i45UJYFiECbxmQYKMurxKuhDPq41CWhZnforu/KDoUr2Gy1v6OO5APHsFXQyP4WCZ57
+         xKnRUrLPDnfGjBRhxJzPaYs5xXPzQhXkRAWbYLUoJ8LRPjwOMazBEBCAfHGIGSPLDn4K
+         p4UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745953148; x=1746557948;
+        h=to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eXJ8J07H9GMYt3devST83hdUmEga5s87LMXmrPwfkrE=;
+        b=YpUjfLFaAdxxud7R+O6/MnJujbLkt3ZIfTnug38zVmz+vzIHYceU3EtaQ0EEDLjKMF
+         zEalVxZR+QjR6XSKv2wNusdiDhfuCWwq7FECy5B7bQ0Vm4a6rRJfXLyGS1WHGsiLjNBm
+         PhbpM41DqBEibEbIFw9xtLomKwFWpfIaZ0Zf3jnfd+m1YBeChfbEqf3e9+nRQ6njT0DS
+         DhpuwTyIDejnOy5pv1hR0kovb4aVzOxKdwANRojVM3LlToiCGiKskV4i1m5g93Uu5Dqs
+         roSe9bBPRwpyKqjN99SLMOsUHHhs6caSEXRSTo/ARFw27EQ/gijUc6ZBvCvz0Bng4ehg
+         S0QA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2sQbLX9aL5W9aSWCnc1Vy9Lq7/qjnWvA6c7lPEf6In4YIgZ3AvnX2sh1aZajJmb4ksXvg2pJmxaCqHRO1cA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM0jScPxnLyh84lEehlrsbqbrkpZYf0etCieOLQscP0gLhBQCV
+	NY67uhkB4ErkDzHOtMC/sNPLSYdRC5sEN5TkYXNij6pe6vEONjCkB38N7LyemQNAIe/rrkk06/7
+	OTLwhBg==
+X-Google-Smtp-Source: AGHT+IEwoN0N6+nJ6vqr/dgRzJLp6ISNYWD1HN7A2s+gg7YV9C0xR0d2OaoIaTgW058JKbZw1oATFTbdIpRF
+X-Received: from pjbsm11.prod.google.com ([2002:a17:90b:2e4b:b0:301:2a0f:b03d])
+ (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1346:b0:301:1c11:aa74
+ with SMTP id 98e67ed59e1d1-30a333530c8mr307400a91.28.1745953148279; Tue, 29
+ Apr 2025 11:59:08 -0700 (PDT)
+Date: Tue, 29 Apr 2025 11:58:32 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-ThreadId: T252c7cf41b12c3c8
-Date: Tue, 29 Apr 2025 20:33:47 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- "Andreas Hindborg" <a.hindborg@kernel.org>,
- rust-for-linux@vger.kernel.org, "Gary Guo" <gary@garyguo.net>,
- "Alice Ryhl" <aliceryhl@google.com>, me@kloenk.dev,
- daniel.almeida@collabora.com, linux-kernel@vger.kernel.org,
- Netdev <netdev@vger.kernel.org>, "Andrew Lunn" <andrew@lunn.ch>,
- "Heiner Kallweit" <hkallweit1@gmail.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@samsung.com>,
- "Anna-Maria Gleixner" <anna-maria@linutronix.de>,
- "Frederic Weisbecker" <frederic@kernel.org>,
- "Thomas Gleixner" <tglx@linutronix.de>,
- "John Stultz" <jstultz@google.com>, "Stephen Boyd" <sboyd@kernel.org>,
- "Ingo Molnar" <mingo@redhat.com>,
- "Peter Zijlstra" <peterz@infradead.org>,
- "Juri Lelli" <juri.lelli@redhat.com>,
- "Vincent Guittot" <vincent.guittot@linaro.org>,
- "Dietmar Eggemann" <dietmar.eggemann@arm.com>,
- "Steven Rostedt" <rostedt@goodmis.org>,
- "Benjamin Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>,
- "Valentin Schneider" <vschneid@redhat.com>, tgunders@redhat.com,
- david.laight.linux@gmail.com, "Paolo Bonzini" <pbonzini@redhat.com>,
- "Jocelyn Falempe" <jfalempe@redhat.com>,
- "Russell King" <linux@armlinux.org.uk>,
- "Christian Schrefl" <chrisi.schrefl@gmail.com>,
- "Linus Walleij" <linus.walleij@linaro.org>
-Message-Id: <2d89292f-b02c-47b1-9299-92c5f4ba4c9d@app.fastmail.com>
-In-Reply-To: <6811092a.050a0220.27f104.5603@mx.google.com>
-References: 
- <6qQX4d2uzNlS_1BySS6jrsBgbZtaF9rsbHDza0bdk8rdArVf_YmGDTnaoo6eeNiU4U_tAg1-RkEOm2Wtcj7fhg==@protonmail.internalid>
- <20250423192857.199712-6-fujita.tomonori@gmail.com>
- <871ptc40ds.fsf@kernel.org>
- <20250429.221733.2034231929519765445.fujita.tomonori@gmail.com>
- <5c18acfc-7893-4731-9292-dc69a7acdff2@app.fastmail.com>
- <de778f47-9bc6-4f4b-bb4f-828305ad4217@app.fastmail.com>
- <1b9e8761-b71f-4015-bf7d-29072b02f2ac@app.fastmail.com>
- <6811092a.050a0220.27f104.5603@mx.google.com>
-Subject: Re: [PATCH v15 5/6] rust: time: Add wrapper for fsleep() function
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.901.g37484f566f-goog
+Message-ID: <20250429185839.1807005-1-irogers@google.com>
+Subject: [PATCH v1 0/6] Use rustc-demangle for Rust demangling
+From: Ian Rogers <irogers@google.com>
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	James Clark <james.clark@linaro.org>, Howard Chu <howardchu95@gmail.com>, 
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, Ravi Bangoria <ravi.bangoria@amd.com>, 
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Stephen Brennan <stephen.s.brennan@oracle.com>, 
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	Daniel Xu <dxu@dxuuu.xyz>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Apr 29, 2025, at 19:15, Boqun Feng wrote:
-> On Tue, Apr 29, 2025 at 06:11:02PM +0200, Arnd Bergmann wrote:
->> On Tue, Apr 29, 2025, at 18:03, Boqun Feng wrote:
->
-> Would it make sense if we rely on compiler optimization when it's
-> avaiable (for x86_64, arm64, riscv, etc), and only call ktime_to_ms() if
-> not? The downside of calling ktime_to_ms() are:
->
-> * it's a call function, and cannot be inlined with LTO or INLINE_HELPER:
->
-> 	https://lore.kernel.org/all/20250319205141.3528424-1-gary@garyguo.net/
->
-> * it doesn't provide the overflow checking even if
->   CONFIG_RUST_OVERFLOW_CHECKS=y
->
-> Thoughts?
+Discussion of improved Rust demangling started with:
+https://lore.kernel.org/lkml/jgxfnphfo3nzlfipnuuzdlfc4ehbr2tnh2evz3mdhynd6wvrsu@fcz6vrvepybb/
+that led to implementing a Rust v0 demangler:
+https://lore.kernel.org/lkml/20250129193037.573431-1-irogers@google.com/
+Discussion on that patch series led to the rust-lang issue:
+https://github.com/rust-lang/rust/issues/60705
+where the pre-existing Rust C demangler, authored by
+github.com/arielb1, was mentioned. There wasn't progress on that issue
+and so I've pulled that work into perf as discussed on the issue.
 
-The function call overhead is tiny compared to replacing a 64-bit
-division with a constant mult/shift.
+Ian Rogers (6):
+  perf demangle-rust: Add rustc-demangle C demangler
+  perf symbol-elf: Integrate rust-v0 demangling
+  perf demangle-rust: Remove previous legacy rust decoder
+  perf test demangle-rust: Add Rust demangling test
+  perf test demangle-java: Switch to using dso__demangle_sym
+  perf test demangle-ocaml: Switch to using dso__demangle_sym
 
-What is the possible overflow that can happen here? For a constant
-division at least there is no chance of divide-by-zero. Do you mean
-truncating to 32 bit?
+ tools/perf/tests/Build                   |    1 +
+ tools/perf/tests/builtin-test.c          |    1 +
+ tools/perf/tests/demangle-java-test.c    |   17 +-
+ tools/perf/tests/demangle-ocaml-test.c   |    7 +-
+ tools/perf/tests/demangle-rust-v0-test.c |   74 +
+ tools/perf/tests/tests.h                 |    1 +
+ tools/perf/util/Build                    |    5 +-
+ tools/perf/util/demangle-rust-v0.c       | 2035 ++++++++++++++++++++++
+ tools/perf/util/demangle-rust-v0.h       |   81 +
+ tools/perf/util/demangle-rust.c          |  269 ---
+ tools/perf/util/demangle-rust.h          |    8 -
+ tools/perf/util/symbol-elf.c             |   49 +-
+ 12 files changed, 2243 insertions(+), 305 deletions(-)
+ create mode 100644 tools/perf/tests/demangle-rust-v0-test.c
+ create mode 100644 tools/perf/util/demangle-rust-v0.c
+ create mode 100644 tools/perf/util/demangle-rust-v0.h
+ delete mode 100644 tools/perf/util/demangle-rust.c
+ delete mode 100644 tools/perf/util/demangle-rust.h
 
-     Arnd
+-- 
+2.49.0.901.g37484f566f-goog
+
