@@ -1,98 +1,115 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E42222CF
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 08:09:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3684727F74D
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 08:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745914182; cv=none; b=gy5MI9A1Pzg8qQA98wYXeiklp27/guSRPuNDzsG6y0Z6sG1ZjlovfRyx8RteazTM/6GygQsLoSWqnPeUCGNnR+806eAGt3N/Dy8mXyhUwQLGGzm4EphUXmoZRzQcs0LuXMqGb11v6HC04i8YWrsP+f5shwVSy3mrHgfcI0BL5fM=
+	t=1745914826; cv=none; b=CBAGs0Ajgx5jFFjZe1Xx0YdyNwVEAVV5GoRXhaqQ+KJALsEdzhT0OQ+w+DtuNBjgiGIqCDw2piwBVdm5pnG6vRsaIbGcFJS5GyBLOLMdGjLD9avqf1fSrRRsoYbh+jvgVXx2rNzEuBa9TbZvuU8dh7NpJmR20tOGe9S9m0kye6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745914182; c=relaxed/simple;
-	bh=7VZwQqCG0GmrXu7ZorMUhbmxOdH1h8tMkLewjmBRvX0=;
+	s=arc-20240116; t=1745914826; c=relaxed/simple;
+	bh=nQ1gfZSZ41nlJ0M6vvLq9mHDYT2X2OnDFOpCrTsmA90=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pNN2UGfBN28CZ6qQSR31zq9uH78TcECkmcU0vJIQxBm4nJuwstXS5CB6nvcLmTU8d+GKW3ZBcse0BEUnlQHTSTu7etrKP69lFMQ4d136vjgNIfe2BB06UMetHj3bsbbMVLbv4DbS7nKWO5mDfZmFDDKpeg1eIqUzup17PbK9NNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RtRmJwqf; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=jE5CzUHtFS8rKQyxit9rH811suI1zBYZjcBoOhmqqnXyoMhAAFerTNIM4xSvosNdFmxinEWF3Zap1I994VvF7i35biFFC+/NhwHNRFujlpvE/h+/9FVJ3E4EmYh2UyCwsY8DmpJKKNNnXt6jEm7n//F0OsIKqdjDIpXxAcq4EA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DsMG7Oot; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RtRmJwqf"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cec217977so28124365e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 01:09:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DsMG7Oot"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43e9a3d2977so41381955e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 01:20:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745914179; x=1746518979; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1745914823; x=1746519623; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nto1T/+0mRSZ8od51AhqtN3vVPNmwGq3ZP7h3UYYZ+c=;
-        b=RtRmJwqfO9gIVIV/qmAwMvKi9DpS5g+sNSjrSXKfvGAJeZTe7gUv3LU/Uow1nhv8Vx
-         FCx3Q+AKlZbug3fcBebME9AKHHh7o0ba52V4NayB8LUhpVEUb9u9uzHj3NfknvBVIHMR
-         lHdkN5kvceeNlguAWk1qdQ6RYIc3f9hYurQr5YySxaTJkOGjxdwHaaSvULbGGMHnPjia
-         rl5DKTC2OerPIQ7He5pPh68sdVn+dtK9Zo2Y1hr8tkavbdpwSt+VJvct0gDFNwo1409S
-         G/mdPpbR/hbZKrmFXR9Hm1x1vIBTha4u5fOogVj0kBJ6JjqzGLucOSe1Z6QbYHCvDV9P
-         NeLg==
+        bh=0BOccj3PCksp/Vwp89goJmYUfnm0Q5YL3z/5OuMVQD8=;
+        b=DsMG7OoteubbO9ri0dMXzGszDhJG58EKrlkDTJMnGWapxrJK1yOqwaFuD5eIOX+sr4
+         tIctPy+P66KCQQ9s13k812ayJwNmqQindiOjDEAR+SHp/UkUOcyD179LP02sNm99/kTX
+         LUZaIgaYvJJ8xEpu5IOqfJqtCGkZkfVxeDJ8+oXtya40206u3viLCxpV/uho8pSOGTJE
+         h1YpBplDBfV5E2s8N2KX4VmF6T1nH+ZTI82HC502icoFXDnaxSSRp5MRn4wGLoYe+15R
+         FOhs4QoTSow+uK8ePhcMtZfp0wvat2U+fG3rGlnUEqWUKpiVyMlnrjIlMCn3JwSBt1ig
+         MxJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745914179; x=1746518979;
+        d=1e100.net; s=20230601; t=1745914823; x=1746519623;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nto1T/+0mRSZ8od51AhqtN3vVPNmwGq3ZP7h3UYYZ+c=;
-        b=F22aoWfujoY6EaGKi22pOoDcZmn+ii12RQP/K83vQxiBdJr7nWdDHFAtC1k5c6I/WH
-         VgdL2Yn+IS4ZZJlP+ipLYFghpUbp6nUxRk6pTrWX1aD8Ykda8KPKe1fNlp/QAUp7XA14
-         U07l7Nt7ou3nXCeLyTvyttogZbqPJMk3tjxjfOaNRRvwjK4DinBGQ/30UmeEotrZIyH4
-         zjgpLbCj4TOk8W6n2TrE430Z+ZyQPhnLQsYFbL7f24FWQTYpLWGi99pS2PP1z4WHQHJH
-         qYBQp1lPe4GGd+OqUNNAtGGNVauLs5hq2rhHEAlczax10yqo5lEQp52WWO3/II5pyWNO
-         Hlfg==
-X-Forwarded-Encrypted: i=1; AJvYcCWjYsZUeS69NtdoYblHUryn2J2/J85zh4DTACvuRZY8eF5IMEtoeKvUndAH+RA6KU3wEMcNokozGlgzqrvdvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0QYIhgel+wH5jXm5xgQzde0E0UtIi+UkxbA0qJ0/z/mQ/75G1
-	cM3yM85cv6My1ffnvmvr8MkIlSeNUAKvGeX9HIupWcjUQEggvuQhvGBSY9V8rM5WnRS4TmSMy2u
-	k+EPDEBQg+4ZvlA==
-X-Google-Smtp-Source: AGHT+IFXrgBkFElYd0tijwJi0z0pCe4jvrxzX42Si29dbC7sbSQWeA7o9FzD+QEPV95aSxi+jD6mw2A92+z5q1g=
-X-Received: from wmbji1.prod.google.com ([2002:a05:600c:a341:b0:43c:eb09:3790])
+        bh=0BOccj3PCksp/Vwp89goJmYUfnm0Q5YL3z/5OuMVQD8=;
+        b=AYy+Om83Av4mQTX1LHespWh8GaclHgFwaGL99TtzxKwsx7EtTR3+uNyRtX4R62CafL
+         NInu25TOoQIWFGNsebgtCqRkzDdpvEp4IeVILtMGwir15JxfDcwDiqHgRS7Rg0e507h9
+         cesPP5bekePIZ2XYISNlMEX5MtkieokV+lTW9n8HNV3X2z4tgd8jZPBj1aieCfwO3eHm
+         tOXnozUcJ/UyDB0hY8pdxqmCz1+oK59mXFVoRL3BbeUVvsVhwpO4L1EEc9Im7fjJb7w4
+         vKpT9lxWs9k8pqnfOLSacP5o1lV8yaC0dxiutSIcwiGuSsfgzuyDL1n2qo2jS1skfSUe
+         XJ+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXmJ5V503pPkGU9xEgl+L0qpXy+WoBrEytvrlmEeWxn1Jc7pteMAH8RLdNoK0pCTpNbTErbDWlD+FO5gIjlrQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx84ZBRvjYC/JbfXwKnFEdI4FqTr/FfPwA4Y4OwktQc33Q4m57D
+	4a/SjTlcLH+74oY3ce1xkmOPOP+p4yRafNbC2onxv1fdlitKFiRGA9r/K8tvM8SgrE2ys8IN0Er
+	+D2yUZZNuhHbpkQ==
+X-Google-Smtp-Source: AGHT+IEg3cbEUt12CbwOJGG4vlAHfjAoOc4ALfnfU1wCdf0iUwyAKU/n0FvnLq2iqgqEdTv2PV5be+ZluwRYT8E=
+X-Received: from wmco6.prod.google.com ([2002:a05:600c:a306:b0:43c:f6b3:fa10])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d06:b0:43d:10c:2f60 with SMTP id 5b1f17b1804b1-440ab845ea3mr78069915e9.24.1745914179395;
- Tue, 29 Apr 2025 01:09:39 -0700 (PDT)
-Date: Tue, 29 Apr 2025 08:09:37 +0000
-In-Reply-To: <aA-A5ERYLP7r5zK7@yury>
+ 2002:a05:600c:4f0e:b0:441:ac58:eb31 with SMTP id 5b1f17b1804b1-441ac88a96bmr13618685e9.20.1745914823610;
+ Tue, 29 Apr 2025 01:20:23 -0700 (PDT)
+Date: Tue, 29 Apr 2025 08:20:21 +0000
+In-Reply-To: <509c3fb5-310a-43ab-ab84-75207e0c577e@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250423134344.3888205-6-bqe@google.com> <aAkbw0jEp_IGzvgB@yury>
- <CACQBu=XaOohewMnLj9PvgR5rYBxzYSXf2OAjCzUY=GFTJ9L=+Q@mail.gmail.com>
- <680a6b54.d40a0220.27afd9.5e84@mx.google.com> <680abbce.050a0220.144721.78ac@mx.google.com>
- <CACQBu=VEATxHmFvt0TKbb+Hx5jeEGO8SL733=0m8LNnX6S+ZKw@mail.gmail.com>
- <aAuR_0om4FI5Pb_F@Mac.home> <CACQBu=VkFT5yDuDz098L+S+tGvtGHMvm4FaZ6p3sr9VCp88jww@mail.gmail.com>
- <aA9MDH8RjOH9hQ2E@google.com> <aA-A5ERYLP7r5zK7@yury>
-Message-ID: <aBCJQQWnQ-TRMECr@google.com>
-Subject: Re: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
+References: <20250423-b4-container-of-type-check-v3-1-7994c56cf359@gmail.com>
+ <34457c78-fdcd-4f1b-a349-4ca9bcc2febc@nvidia.com> <aA9M8_K0MQfWg52t@google.com>
+ <509c3fb5-310a-43ab-ab84-75207e0c577e@nvidia.com>
+Message-ID: <aBCLxR36AQ7oZYn4@google.com>
+Subject: Re: [PATCH v3] rust: check type of `$ptr` in `container_of!`
 From: Alice Ryhl <aliceryhl@google.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Rong Xu <xur@google.com>
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Apr 28, 2025 at 09:21:40AM -0400, Yury Norov wrote:
-> > By the way, if you add assert_eq!(bitmap.len(), BITMAP_LEN) before the
-> > loop you may get the bounds checks optimized out.
+On Mon, Apr 28, 2025 at 12:54:19PM -0700, John Hubbard wrote:
+> On 4/28/25 2:40 AM, Alice Ryhl wrote:
+> > On Sun, Apr 27, 2025 at 03:59:48PM -0700, John Hubbard wrote:
+> >> On 4/23/25 10:40 AM, Tamir Duberstein wrote:
+> >> ...
+> >>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> >>> index 1df11156302a..d14ed86efb68 100644
+> >>> --- a/rust/kernel/lib.rs
+> >>> +++ b/rust/kernel/lib.rs
+> >>> @@ -198,9 +198,15 @@ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
+> >>>   /// ```
+> >>>   #[macro_export]
+> >>>   macro_rules! container_of {
+> >>> -    ($ptr:expr, $type:ty, $($f:tt)*) => {{
+> >>> -        let offset: usize = ::core::mem::offset_of!($type, $($f)*);
+> >>> -        $ptr.byte_sub(offset).cast::<$type>()
+> >>> +    ($field_ptr:expr, $Container:ty, $($fields:tt)*) => {{
+> >>> +        let offset: usize = ::core::mem::offset_of!($Container, $($fields)*);
+> >>> +        let field_ptr = $field_ptr;
+> >>> +        let container_ptr = field_ptr.byte_sub(offset).cast::<$Container>();
+> >>> +        if false {
+> >>
+> >> This jumped out at me. It's something that I'd like to recommend NOT
+> >> doing, here or anywhere else, because:
+> >>
+> >>     a) Anything of the form "if false" will get removed by any compiler
+> >>        worthy of the name, especially in kernel builds.
+> > 
+> > The `if false` branch is used to trigger a compilation failure when the
+> > macro is used incorrectly. The intent is that the compiler should
+> > optimize it out. I don't think there's anything wrong with that pattern.
 > 
-> That sounds cheating, isn't?
-> 
-> I think nobody will reject this series because of +15% in performance
-> test, neither +25%, or whatever reasonable number.
-> 
-> Let's just measure fair numbers and deliver clear maintainable code. 
-> There's a single user for bitmaps in rust so far, and it's you. So
-> you're to call if performance is bad for you, not me. I just want
-> to make sure that your numbers are withing the sane boundaries.
+> OK...probably best to either encapsulate that, or at least comment
+> it. I'm accustomed to seeing that pattern in cases where people
+> expected the code to *not* get optimized out, so it triggers me. :)
 
-Right, well, in Binder's case the relevant performance comparison is a
-single call to the bitmap's next_zero_bit vs following a sorted linked
-list to find the first index that isn't used by an element in the list,
-so I'm pretty confident that the bitmap will win no matter what.
+Okay ... why exactly would people do that? I can't imagine what purpose
+that would serve.
 
 Alice
