@@ -1,55 +1,55 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CC629DB92
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 09:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B0A29E069
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 09:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745917381; cv=none; b=JBqtOqQNNUINB1ZiXwDAAwwRIEGXReMOx5kMlhVsQovARSxwkrJDYOYOZtk9pVzEwen87H2JPHHgi80Rb9ckjON3zQXjg7MBTRSvGtwRs7136eUtHnJ/vPyEz5t2V+IghkE597refvvLSxzWWsSkOYQY32QmynaveALuPiozVAQ=
+	t=1745917384; cv=none; b=qgiLUvxESCpP4zrAIV0CiEw9rkoYN8XurobRAYC4asjJTaq2mJv7l1W97vmuPPOmzFtFe9rzlPYCUzAQsWjGdT5q2pIl7vtu2R1nVN98TLxWNEU9wuAieaoj8FO9Ehv9YJ9hH1XAzTHAO1zYbQDdd4zMsJJxaq75GF1Ui2d6Iag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745917381; c=relaxed/simple;
-	bh=dyDefe82hIBiNbyWx3qTCr9+uQypdm3oJ5qQzsDuAU4=;
+	s=arc-20240116; t=1745917384; c=relaxed/simple;
+	bh=6dDQdHoWys4jvlnRlSaPjlbjbNaUQ7EdwgPIpGTuWoQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ailJLSe/jzt424hFhhgRh3RRRgG3lIOrTPpvbezVo170WrpnM+QXLOJ3YQJ2iiA7U9iuaIOy2USvbch0wu4Y1l2K0jpFkoYAikJnXFaqfMhlxL7klmYVaudXyF8sBp6SJycF7JV02LDkStSG4+91IxY4K5TWBgX+o6t4T1HA6uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yo3Q2CYM; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=QZVYqXvDFbZYGZ+DjrcX7WcGtIchxYjyZFGWruywoLPTf9mmtd26RpGILUl3GmrAV/w1h5jnKqx0lzq2LBV/LwRYK1XGvPhbmPLsuh7eVAAAayanhEZPF1WIvhV8Xa5ZJQqdh9SiBbKJMzonjFNun2DE9daZ1rYxdzYUJdNX6Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Zhv+lE0q; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yo3Q2CYM"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43ce8f82e66so29808425e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 02:02:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Zhv+lE0q"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cfda30a3cso28811375e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 02:03:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745917378; x=1746522178; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1745917380; x=1746522180; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RHjZ3Nei53ppvuUDW2u8OKVXVo6iIJEmbG6DHXYQHVU=;
-        b=yo3Q2CYMu4J7eNfQrQVq427OQtHf7WnVOni6Ex/mfoCZAUf2pmTzIegBOR767ApUlD
-         g0pztHQY14g0raGXkk0jcFoHjch5ZT2FcXE2Qmm3Q7sLt9vvgxi1+foLEJCkSOdJZPin
-         92Ban29lHh/oIokzhlJVgtNKMpfvU/CFtEVm5i58+XLLACfSdxFUk07AxwO5iyxg8w7k
-         eEiPo8VBZYZAMLrNhSzp0pnhB9Jb6RlVzRVbGHB2gHCv3sQn9xuEuKkeln9inBOzc3Gx
-         Sj/tyBdIgKzH8A8gBiBZugWJz6k1en8/cRqbcXlUQfhgV3DlMspR0+BI/uJXThFnKCT/
-         rGRA==
+        bh=YMIrxa+bzzGfc2aH+47H0//4QoWYsC3XdDwsFlrFppY=;
+        b=Zhv+lE0qJMq/cz1biUjnGOtswCBn/v+DtwVJ5NLgsMZ5856HyCkMu4nj4qqeMoI/Gw
+         4n5bRiTbhxqgqOSIfQZqxNm2bIrW2VeQRdQppM29UqkwWDaYzLJ50o5Wk81AxWKISJw9
+         87DNptIpb7HM4meuZ4NiAvI/ZW/LI2yA4YG3gNKA1YbXn+Gcb56di46R429hYIFusY2N
+         gAl0RoDoQ4BrHvmRUBWY8wcixZmQ56FH8HR0XEancn6pK++xLSRfzirx5yt3xBSZHdk9
+         N3WZMJ3aa8NnNR3CQZs1zb3CloyBDX1UOAzhMyRXKw9yGcbmn4bJBQMsdnGuhCHAF197
+         bjQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745917378; x=1746522178;
+        d=1e100.net; s=20230601; t=1745917380; x=1746522180;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RHjZ3Nei53ppvuUDW2u8OKVXVo6iIJEmbG6DHXYQHVU=;
-        b=XdfPtg25BjI0cuTllgyOcP2KYxNM46a8aEge7q0OE6fAZgztteLCDIUcxLCveyX/Xp
-         OyYU6B/tWt0wCzaJdHx6EIQgasplXd9J0CGN4PqgfQ4zm8LEZUn30Qdn0gD1sqd1WlIB
-         arLnwvXsWtQAhwVwSgD0/6hHnp3cXJoc66TLFfj13I+ZuQW+h569JiisbMbrR1AW4W/H
-         CgxPbRACCZ1PhjV73rHQqHQG4nccHQgG2/p3wk3NPny11tP9h1gz5em9H75HhJVr3CbG
-         4qUHeAcCIWavVq8+LnfuoAhKooH3pC1bRcKQhbFVf5w1sEzsQMvMUBWaO+IPCq/y6zQ2
-         zGqg==
-X-Forwarded-Encrypted: i=1; AJvYcCVp/cKeH//EaFwceXXgs/ocryi1rqWpHfcrnJaGbTbtWBhpXIM/ynMKOS7XdY+il1PNEC9WPgyMs1CyVRfWvA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbgPfq7w1/u/jgXKQFvFarNyx4vwR7nUIoU60RTrgcM3/Cxrs9
-	P+VXsIvkt33zqLUARaA33h4HP4IXQ4xcO4bWY+wmx2S2BfrD1X7/6+GTLyt2EVdoH0QyGW4tlY2
-	yI5nLS1wm7Lfd4g==
-X-Google-Smtp-Source: AGHT+IEkjtpE5gxA6o16lXjwWSJPR7W07Pw5Y0350PxaC15Po3Bojdz9zW3meUNOq/JU0Rh79sbZAA70WS24L8U=
-X-Received: from wmkg20.prod.google.com ([2002:a7b:c4d4:0:b0:43c:fd99:1b7e])
+        bh=YMIrxa+bzzGfc2aH+47H0//4QoWYsC3XdDwsFlrFppY=;
+        b=VlR6erwJi2NxKzp5q2zleppMSbcU0+lEEDtewGYqbR2tzt76kZ6JmZ14N0IXjpjGku
+         Z+H1zPx9mJu2vHC5WCSn2HnNGxBZIo8ZOHTHUj3hRUNbnS6wmlGBjta/L9o/sq+zmnkd
+         w37kpAIeXhwnK63W3Jw9n6p30V2Uh4oIXmdkCrypXZr2g+gK5ZYkBL+QRg+95NTFNHHA
+         p+D4Qq/Wanu2XC/9zKBIllogOs8vrti85WZqzGQbNElDwBQx9AJ+G3CYMYt0GjFQ43Mi
+         gsyGnw+nelt//9OxKZVY8+yxAHQnk2zepabWUX01/GlajWkSk30sdP3qBAg3sdl+UAb4
+         q0RQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV41Z7sT6zuiNfBMJZmzykx8mlVDXHm814xZKpgnqJ0bS19UX8g8tfmQ1b0KFcnNMwF1hUy4Zn+7QIn5MygDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8RSAUxmSd7kLBQbNUBsKq/DqPwU0ddKC7krRYGoLqZnT5nsPE
+	amHZrfM2b3nrAdnkZMzojB6kwi3pCkK95SVhKuIQHKX032TA0TrQTKloRHe9sr50mBNz1T60gGv
+	zsqQ/Ajz24R5o/A==
+X-Google-Smtp-Source: AGHT+IHZHgwkdKYhyKx00Xotc0ef1WOrWEHLKolZi0Ha05ra9w6JqvTuqEHROU4DnQQqb5xWG243OCmlzVaETms=
+X-Received: from wmbe5.prod.google.com ([2002:a05:600c:5905:b0:43c:ef1f:48d3])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f07:b0:43d:160:cd97 with SMTP id 5b1f17b1804b1-441ac88dfa2mr21472625e9.25.1745917378670;
- Tue, 29 Apr 2025 02:02:58 -0700 (PDT)
-Date: Tue, 29 Apr 2025 09:02:22 +0000
+ 2002:a05:600c:4509:b0:43d:8ea:8d80 with SMTP id 5b1f17b1804b1-440ab77d021mr94109665e9.5.1745917380783;
+ Tue, 29 Apr 2025 02:03:00 -0700 (PDT)
+Date: Tue, 29 Apr 2025 09:02:23 +0000
 In-Reply-To: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2525; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=dyDefe82hIBiNbyWx3qTCr9+uQypdm3oJ5qQzsDuAU4=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoEJW9gcmweZUewzLgUOsj7vu7zX56pzg3nly+D
- hcWOO7qkiGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaBCVvQAKCRAEWL7uWMY5
- RkqcD/9WQOiOz5ufQpxUtUeOPa4TW0o2JhY1hBZT5j6mD+88vVBxLJ6+R/KosaAyiRAYGKNXAuN
- 5Jk/wdXw4ZQB4F4W3JJXMfeCP57OhsjervIhZ+NrVnnTDjwjHahB+H6Lji8KAYn/P7UxeXGDknU
- JG6guq47iDWbpVkZo0N5HpabWWdm+y1uDA4RIeya6xXOlJp0cL7SncK6BFkZgEvnzNk08o5OxLg
- Lpb0smNLJPnIYcTUFhCe8/L4WKx/5IbrDMi0pIjfZfV0WvkgjYyFDNrK6sz3waXZYDSAHUSsSHO
- vyoZECgOk3uemqj+WqWXuwyQ+xCVAxRvlBFAetGtofbC0ERrO2n0IJ0/2lL1Xeqx5Zn4FGqSZjg
- KpIu4iARUO2fNSa1bu7h0KCr1Tp7Icczo9v2xCAnD7GmNyNBwYrPCKUZ+7WqHWjxxNa7ubA5EdQ
- xSpHH35zns5j+j2J9itmnlRVz2LSwffwe4+TGQ5FtJePdbB9iNlRGpTAEFy1fsfPMIFdaAzzZQQ
- 1olKPkn/M3gBKLuaWkx6ViKV2deK2yUqj8xC9NKgrAeUkbZ7QLcDH+9OwDP+1g/c6JM9pAVDCuP
- bDH21xLmz4JIeqxqS3Iior2zIyuzt2odcTulncKS3KZHWMeJNMQ4IoAn5GK2iF5Z8qconm0A2g5 zRgrAIs9fPWsbVg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2442; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=6dDQdHoWys4jvlnRlSaPjlbjbNaUQ7EdwgPIpGTuWoQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoEJW9Hd0FBIirTtTg3dCpLiBlHXMgI3HgvvA44
+ xhoQUuuKRWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaBCVvQAKCRAEWL7uWMY5
+ RockD/47bJ4yfhwzZwfpNWSWHktdnujCpkP0h4Bv4IENfnqg1Warlu9Z4ghwBA/iIBTwYJlAyI+
+ d/TrVUW0t8GlniaiSe6NAgFSIMHvtO2WQNcJ6hDOypUTVZGGAVzd1byKYqxrscWn+rc5KbMVpvx
+ 9sq1Iw7b6PIA5BT1EseR5u+s2xtiI8NmFZibhXu0U9HtOtwUd023M5D94KggGL67bbYK4wIucXI
+ 2v9uIlXkbE+TePSVm7+B3jlUkdSb2SmGbubkoOBfhC8DQlVXW4QgQVArpYHA87qnZPXZzHqUXQq
+ xACyUCOBrf8cZcPFNyc4T+1hWVJRma984P/0776ov1fd3JfHXWVmQrDHbUu6PoTNJZtKpudrRWy
+ SjKUCm3YiNoupWU6G7iAVOA7fNEyXqhGcyyhL56/PQfPDs26CyLJal4C+lWBfL6IhasTthDyWGp
+ fIfVUZM6H1Q4Zdq2zXvvTsib/YeF0UNSNdJ880lH1KZXEmo55EypbS66TeVbYoW4nY7ar6j0klb
+ 0ga+vrQXI1hhgYHuF3p2Fp1uQKSeqXXcAGmluVvHaOkSDqCF5LOC77cQCF/+trgrdHxo0wPKNLO
+ Lfhw7sENF7P0ipvY898iRnycZP/YaCOIdwZm2UVekZQvjrr+WHnKVUvU3t0ZzAwD7ZR24owhs/d DumSlkeY3zaMEMg==
 X-Mailer: b4 0.14.2
-Message-ID: <20250429-strncpy-from-user-v2-1-7e6facac0bf0@google.com>
-Subject: [PATCH v2 1/2] uaccess: rust: add strncpy_from_user
+Message-ID: <20250429-strncpy-from-user-v2-2-7e6facac0bf0@google.com>
+Subject: [PATCH v2 2/2] uaccess: rust: add UserSliceReader::strcpy_into_buf
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
 	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -85,69 +85,65 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This patch adds a direct wrapper around the C function of the same name.
-It's not really intended for direct use by Rust code since
-strncpy_from_user has a somewhat unfortunate API where it only
-nul-terminates the buffer if there's space for the nul-terminator. This
-means that a direct Rust wrapper around it could not return a &CStr
-since the buffer may not be a cstring. However, we still add the method
-to build more convenient APIs on top of it, which will happen in
-subsequent patches.
+This patch adds a more convenient method for reading C strings from
+userspace. Logic is added to NUL-terminate the buffer when necessary so
+that a &CStr can be returned.
+
+Note that we treat attempts to read past `self.length` as a fault, so
+this returns EFAULT if that limit is exceeded before `buf.len()` is
+reached.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/uaccess.rs | 34 +++++++++++++++++++++++++++++++++-
- 1 file changed, 33 insertions(+), 1 deletion(-)
+ rust/kernel/uaccess.rs | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
 diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-index 80a9782b1c6e98ed6eae308ade8551afa7adc188..acb703f074a30e60d42a222dd26aed80d8bdb76a 100644
+index acb703f074a30e60d42a222dd26aed80d8bdb76a..7cec1b62bd8b816f523c8be12cb29905740789fc 100644
 --- a/rust/kernel/uaccess.rs
 +++ b/rust/kernel/uaccess.rs
-@@ -8,7 +8,7 @@
-     alloc::{Allocator, Flags},
-     bindings,
-     error::Result,
--    ffi::c_void,
-+    ffi::{c_char, c_void},
-     prelude::*,
-     transmute::{AsBytes, FromBytes},
- };
-@@ -369,3 +369,35 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
+@@ -293,6 +293,41 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut Vec<u8, A>, flags: Flags) -> R
+         unsafe { buf.set_len(buf.len() + len) };
          Ok(())
      }
- }
 +
-+/// Reads a nul-terminated string into `buf` and returns the length.
-+///
-+/// This reads from userspace until a NUL byte is encountered, or until `buf.len()` bytes have been
-+/// read. Fails with [`EFAULT`] if a read happens on a bad address. When the end of the buffer is
-+/// encountered, no NUL byte is added, so the string is *not* guaranteed to be NUL-terminated when
-+/// `Ok(buf.len())` is returned.
-+///
-+/// # Guarantees
-+///
-+/// When this function returns `Ok(len)`, it is guaranteed that the first `len` of `buf` bytes are
-+/// initialized and non-zero. Furthermore, if `len < buf.len()`, then `buf[len]` is a NUL byte.
-+/// Unsafe code may rely on these guarantees.
-+#[inline]
-+pub fn raw_strncpy_from_user(ptr: UserPtr, buf: &mut [MaybeUninit<u8>]) -> Result<usize> {
-+    // CAST: Slice lengths are guaranteed to be `<= isize::MAX`.
-+    let len = buf.len() as isize;
++    /// Read a NUL-terminated string from userspace and append it to `dst`.
++    ///
++    /// Fails with [`EFAULT`] if the read happens on a bad address.
++    pub fn strcpy_into_buf<'buf>(&mut self, buf: &'buf mut [u8]) -> Result<&'buf CStr> {
++        if buf.is_empty() {
++            return Err(EINVAL);
++        }
 +
-+    // SAFETY: `buf` is valid for writing `buf.len()` bytes.
-+    let res = unsafe {
-+        bindings::strncpy_from_user(buf.as_mut_ptr().cast::<c_char>(), ptr as *const c_char, len)
-+    };
++        // SAFETY: The types are compatible and `strncpy_from_user` doesn't write uninitialized
++        // bytes to `buf`.
++        let mut dst = unsafe { &mut *(buf as *mut [u8] as *mut [MaybeUninit<u8>]) };
 +
-+    if res < 0 {
-+        return Err(Error::from_errno(res as i32));
++        // We never read more than `self.length` bytes.
++        if dst.len() > self.length {
++            dst = &mut dst[..self.length];
++        }
++
++        let mut len = raw_strncpy_from_user(self.ptr, dst)?;
++        if len < dst.len() {
++            // Add one to include the NUL-terminator.
++            len += 1;
++        } else if len < buf.len() {
++            // We hit the `self.length` limit before `buf.len()`.
++            return Err(EFAULT);
++        } else {
++            // SAFETY: Due to the check at the beginning, the buffer is not empty.
++            unsafe { *buf.last_mut().unwrap_unchecked() = 0 };
++        }
++        self.skip(len)?;
++
++        // SAFETY: `raw_strncpy_from_user` guarantees that this range of bytes represents a
++        // NUL-terminated string with the only NUL byte being at the end.
++        Ok(unsafe { CStr::from_bytes_with_nul_unchecked(&buf[..len]) })
 +    }
-+
-+    #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
-+    assert!(res <= len);
-+
-+    Ok(res as usize)
-+}
+ }
+ 
+ /// A writer for [`UserSlice`].
 
 -- 
 2.49.0.901.g37484f566f-goog
