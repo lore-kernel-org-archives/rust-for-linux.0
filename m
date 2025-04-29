@@ -1,98 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78DA28C5DC;
-	Tue, 29 Apr 2025 08:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B761D29116B
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 09:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745916625; cv=none; b=m4KOZdLDzL3WJ1mZxoyNrzOnRPlafydnQ2vUaZWMJ9LGhRJMTl1vLu31HAxHFiIEDoC6SVOJTR3u83Tq3h1KeSM50h/biWOBgUvCab1E5pTZuphxHrV09ig4ffRuWqYOxVO05P67mfiCCSdd4AHIKPrHKExCM1CQFAttbIhFvVU=
+	t=1745917379; cv=none; b=e/J3fbgmQB8A6N97al2AYjfrhsld0lIn93+V9ga42G3cFetgRtiox9uC5NsbJr2J6JRtykDi1KDtJOoD84QalZD+8t8RtRKTwTNd+XIPQeCZGQdqN0410x1CFh4iWVf58Qm9nRswEoTx7JBjospFPJO8vPJDZz2fhDlEQtRAyb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745916625; c=relaxed/simple;
-	bh=Ml/13q0vC95SyVzhWSFXBnPjXdnRbqMxvb9SdPD+jS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LoZwphIPmc4OVoNpp1KH2Mlgk9XrsGmlMtUs9/m0HA0H0KkBCP51xUEfYfbIST2IXiNeXYQjruxaJwNIQG23HdDGqT43I8AyIDwJmShjAhc4YLijdpeScLnKG9lmvWL4/kXwkOt0xYP5mfO7yxxbuxS9SyIRD41ZAQvXS1yAiBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtZWEZj6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1745917379; c=relaxed/simple;
+	bh=HRoiZv1+AvWN1cftOgRkKmMryexssKHd2QZI31HjnNo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=AJ+tkFh0hJZaI11kU95FaiNyurbfeP4AipQ57Vm2P2pek2QquJ9U3ax8xdNzT23R/rZhrrE0ks8V5gCV9Mx5+8V34kvlfvg94OhKQypqnEPq0NPHCSYCfvbgad1k96WLsV3CqndL40/O1cLYvr8Aquvuwhofi+mHeHaeCYY6av0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sogISGKs; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtZWEZj6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73009C4CEE3;
-	Tue, 29 Apr 2025 08:50:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745916625;
-	bh=Ml/13q0vC95SyVzhWSFXBnPjXdnRbqMxvb9SdPD+jS0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YtZWEZj6zIU8Jbq5ysBhy3/KTtuWI44HUn+4eAGzkqrPdwNZxU8E2kzHDW/4NxkeZ
-	 4VNDlXFEOzZVaj5PGu0xGc7pChvECFgnoEBTlflGnCONJgDVTzpi2XvzRnaWtJCo/H
-	 BDrobDQ8VgELEIH51GNKXyIwjgqSPZzHQh3n5wMhDQ0NjNOOf2WDZn8zbBBmSKPpO8
-	 iO4PwsReqwe0png7H7HRjuFbNz/5M9qzCTFmhDSPSgKfCNXxRPYHABBwLYSiH7SrJw
-	 0oPxrxvTlhtZ3DvLCuKa4eIOU1U9oPVfyZUuXnrityvWZBcLtbQdOIPg6I5PwYpt1Z
-	 eKQD9kryqH+NQ==
-Date: Tue, 29 Apr 2025 10:50:18 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Rob Herring <robh@kernel.org>, Dirk Behme <dirk.behme@de.bosch.com>,
-	Dirk Behme <dirk.behme@gmail.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 3/7] rust: property: Introduce PropertyGuard
-Message-ID: <aBCSymzemg_6Fy2h@pollux>
-References: <aAuryiI0lY4qYyIt@pollux>
- <81a65d89-b3e1-4a52-b385-6c8544c76dd2@gmail.com>
- <aAyyR5LyhmGVNQpm@pollux>
- <0756503c-02e7-477a-9e89-e7d4881c8ce6@gmail.com>
- <aA4ht5sUic39mnHj@pollux>
- <ee888c8f-4802-48a1-bd08-b454b782fff4@de.bosch.com>
- <aA-oQAol8rAU7vzg@cassiopeiae>
- <20250428204840.GB1572343-robh@kernel.org>
- <aA_xUWQt6-UCdlGM@cassiopeiae>
- <D9ILR2IG980H.34N8WNWKWJJO3@buenzli.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sogISGKs"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cf5196c25so30859805e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 02:02:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745917376; x=1746522176; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=T7ZncPTDU6rGjAymPxyi/H+YVSlLIlXgf5320AUACWY=;
+        b=sogISGKsrMP3rM6k9sShr4hm2c6oWSNJ4j/W4+dTlW+n6LgRxJp4jQgq7iBm1T8Y1h
+         JoDOTzkxNOV9gDVBNULIoLv2ew+ioQ7CwLdmgcIL7ph8ISBqmuyJwNVSBFi5Z5grHACw
+         7xvM2vlKbJa74SNwXtuhcly15w3cspeGvVqk53xZBXHYtVd2TRgjkPTBKcVOWvgQhYHf
+         KKjd6I7uhiLCRA9YiJNsktn8LlrIWfothHFCQlH1YLlWX7dK8nzfs6ZZiF6Qm3tiKSi4
+         Ir6mEAmY8FA68wKNs48ZfMHEzaLx9JuA+NjdOr9sazN6ixG0HZ/hWeqqXSvswROb2j6l
+         AF3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745917376; x=1746522176;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T7ZncPTDU6rGjAymPxyi/H+YVSlLIlXgf5320AUACWY=;
+        b=AThOBoSYCuXx6vstJef3xMS6RJmtMHkpSYI59iF+SrXFL963apcqCKdmWkXruA4MPl
+         xlLtt8pom1e5LQwsuB1oKpft6vTQDoRtq0Avw6HBMqBgGka6Fz25wXI71WyzGA3OadrF
+         LhnxJVP8n7hF+AiRygqqFHpNksRQahVxeJdfzDVp7MFw51Iczww6jhj0/brll0DzwzNE
+         a8qbPzeX/Qx/5Rv0yWDuQKk7fbMTS9Cz2BzPCnG0fKCOO3Ru3jnpp0Xh33YMZJZMMIeB
+         y5h/jvVAD+aSER5L/W9du6biY8jHyySU/818beVjcDzdREyrvSjCc2mO14w+uxscdNdR
+         TBlg==
+X-Forwarded-Encrypted: i=1; AJvYcCWyNcBCMcwhMEkDmzF55C9Lf9o9aU9IG4MJxi/MofRhG8qNc+AktzKXyM2O6nAez+XdBEwGIdSF57PXVI5Gtg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRbrjqN2gXdjfjo3Q7Q7wqA6VqcjybprDndpUyTmI4TwhQGU08
+	DJ6eHgWeXWEhs+irVZsNQGOaT+IjpP15xdAHYcTV/hEWCqIP4HEHe7B7q3hUEeIxuzBlntB//nF
+	cbOsRa6g6uIQi4A==
+X-Google-Smtp-Source: AGHT+IHv1zfxovl47q1QWqZ72EG7uO/LnNgfzHzDj7h1HqVSnMn+iKzw289YE7xV/fElvgiBNWuw6BMxSX2OQcE=
+X-Received: from wmbbi26.prod.google.com ([2002:a05:600c:3d9a:b0:43c:fcfd:1ce5])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600d:109:b0:43d:db5:7af8 with SMTP id 5b1f17b1804b1-441acd1dbacmr11681895e9.21.1745917376113;
+ Tue, 29 Apr 2025 02:02:56 -0700 (PDT)
+Date: Tue, 29 Apr 2025 09:02:21 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D9ILR2IG980H.34N8WNWKWJJO3@buenzli.dev>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAJ2VEGgC/32NQQ6CMBBFr0Jm7Zi2AkFX3sOwwHZamgglU2wkp
+ He3cgCX7yfv/R0isacIt2oHpuSjD3MBdapAj8PsCL0pDEqoRtSqxrjyrJcNLYcJ38VGaZUR7VN oYwiKtzBZ/zmaj77w6OMaeDsukvyt/2pJokR77S6WlGy7Zri7ENyLzjpM0Oecv/qViWCzAAAA
+X-Change-Id: 20250424-strncpy-from-user-1f2d06b0cdde
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1216; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=HRoiZv1+AvWN1cftOgRkKmMryexssKHd2QZI31HjnNo=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoEJWjNVurOgL/TbOxrTSkHoo8h09pT855aIlGP
+ zed8otHSneJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaBCVowAKCRAEWL7uWMY5
+ Rm5UD/9E1fo537h/ISDw9qGfdVOTzxwZaWziUhKZPx5CkSjMpgiJK4myYe68YJkMUBURVvzdeYp
+ uIp7gqWuEP33hgLezRLq48hdRzM2WhAR7DD7DTXrcaiCLbEMe/AghSZhmXD9RtOqSxIwV/gAO1s
+ 5n0I974CHXeZkiGjpGWu7pSe+NH5+XACqzSu6sLY66ALqs1WVY/Jg8cTMcYLivX5J7QX4IotExw
+ STsobhkuA9/D+OfwWB6MYArW5Mni+ULju2KmE2Mxszp9oyyiNIkWmVGCmHl0mJVGluaxMLpKB9u
+ 6l2LjdQQN0YX2pP2l7CtrUgx+yR/pbRacRV+/64KmghSVxL6NF/+xY01nzFiAywqBYpzheXPdLu
+ 2UmrlwEgxIDbCf/vvXjim7YT9fZo9Udd8/SkbX0mNYxzAQBGZKdRKxgs8JokCpFu9YI/EcTUVs4
+ Esy7Q/GGmhM27vTToTUgGMl/s722tjJxxAKElJtAtRPiTJ4dRQkSAxflK5JvYQdqrODFP3ffLBD
+ IKKKqwCynb7plbkGj74f12hhiEyHHE8qDoFa3p4VWxH+7CkQAeLA4zBodZnz0JaswcWbrpzpO7O
+ +gm/zECr+dmsE4aAN/GJqYWxkTWgDAtacDp7fGFYvFoDFdwgrLQNRCod0d817udWJ4WFL2z5Yib NOqJLRu33edgEjA==
+X-Mailer: b4 0.14.2
+Message-ID: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
+Subject: [PATCH v2 0/2] strncpy_from_user for Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Apr 28, 2025 at 11:50:19PM +0200, Remo Senekowitsch wrote:
-> On Mon Apr 28, 2025 at 11:21 PM CEST, Danilo Krummrich wrote:
-> > On Mon, Apr 28, 2025 at 03:48:40PM -0500, Rob Herring wrote:
-> >> 
-> >> One thing that's really hard to debug in C drivers is where an 
-> >> error came from. You can for example turn on initcall_debug and see that 
-> >> a driver probe returned an error. It's virtually impossible to tell 
-> >> where that originated from. The only way to tell is with prints. That is 
-> >> probably the root of why probe has so many error prints. I think we can 
-> >> do a lot better with rust given Result can hold more than just an int. 
-> >
-> > This I fully agree with, not sure if the solution is to put more stuff into the
-> > Result type though. However, there are things like #[track_caller] (also
-> > recently mentioned by Benno), which might be a good candidate for improving this
-> > situation.
-> >
-> > As mentioned, for now let's go with
-> >
-> > 	pub fn required_by(self, dev: &Device) -> Result<T>
-> >
-> > additional to required() for this purpose to get a proper dev_err() print.
-> 
-> Could it make sense to _replace_ `required` with `required_by` ?
-> Otherwise `required` sits a little awkwardly between `optional` and
-> `required_by`. I can't think of a situation where `required` would be
-> preferred.
+There is currently no easy way to read NUL-terminated strings from
+userspace. Trying to use the ordinary read function on an array of the
+maximum length doesn't work because it could fail with EFAULT when the C
+string is shorter than the maximum length. In this case,
+strncpy_from_user is better because it doesn't return EFAULT even if it
+encounters a page fault on bytes that are after the NUL-terminator but
+before the maximum length.
 
-Fine with me; required() also seems not useful to implement required_by().
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Rename the raw wrapper around strncpy_from_user to raw_strncpy_from_user.
+- Add a more convenient helper on top that adds the missing
+  NUL-terminator when necessary.
+- Link to v1: https://lore.kernel.org/r/20250424-strncpy-from-user-v1-1-f983fe21685a@google.com
 
-However, I think we should revisit those generic error prints once we tackled
-the issue of ergonomics in finding the source of an error in general.
+---
+Alice Ryhl (2):
+      uaccess: rust: add strncpy_from_user
+      uaccess: rust: add UserSliceReader::strcpy_into_buf
+
+ rust/kernel/uaccess.rs | 69 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 68 insertions(+), 1 deletion(-)
+---
+base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
+change-id: 20250424-strncpy-from-user-1f2d06b0cdde
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
