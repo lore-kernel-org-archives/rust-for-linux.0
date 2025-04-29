@@ -1,216 +1,159 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1D5242D94
-	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 16:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0442B244675;
+	Tue, 29 Apr 2025 16:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745942845; cv=none; b=bBXJ5hIhxiF/g745l910MVRALN95kpEkJ9NI9EGtAWYRTjB33vrkAFmhXr4Hi3HdvBST8dpZ9v0smEEaglCHs8PkhMexQsU5hYg2h+U1nrYmciZ184sczcfT1If8ck1RoS5WdBy3GWwuP/ENId0ceQf/83FnXPD25KEW5Hc8kR8=
+	t=1745943087; cv=none; b=IxEq9HAncYOO2VjjnhFkj/nhiZmDrRkPUxh0lLr7Ri5Ml9v8uARavrt5f800YqkamZV74M/FwV+BzvaWxPPy+2PPb/p9eHPIsGxiSWWOuBN/pWxSH3S+QULh2iFejNpQDvakMxlM+7PzkLqlruTbfL0/RFppvIA5Aox73R/sDJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745942845; c=relaxed/simple;
-	bh=TSFZloEttw3ZUTFT0vTim52fWwqIpP85dAKVbWAvxeM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qisEdoHOAnpNF1cNT6+uLqLg1Pb/50PNV2PsjN0PzC58CrcKAEO9ivx2m9BPiLTud2OO0ntDO5npzFmRatKJTLnQqQtBB31paxlFPcpWifdrNpFJgVCJNAmACgKjp91ccp/pSSy3hHDPNbtoKT5bZcNsv7S/1Zc0qdnvnDDapz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=et33YyJC; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1745943087; c=relaxed/simple;
+	bh=aI4FF+Sfq4fMUsrJompbg1DSOfAVfkZ8HgqsklKZbKQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=ellhlbYyKRTGYE3qhbVrO5SfMUbdgpVemoXpFToy5qjOt4BMH67jzK3yt0IC2oCbeOKRAUsw1PRxBwEsHxcGoGHUKxvP0IT1wpimiKUQyOH+vBoldxAmAl1kBxQbjqgFX/p43lcHXLzXoqBQdqqEwAEbVkNuLZTmFuFKPA7eRnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=hrjeGXfJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=idUuX08I; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="et33YyJC"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-227c7e57da2so53256305ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 09:07:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1745942843; x=1746547643; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mC1UTKJ/aE2XaZGs9eJzOr2ci5VlY8Jj7KmPztDqUEE=;
-        b=et33YyJCfXzaYxM6LmrmvX7A3/a55PHhBlajvgwqvXzc2XPSLmIbkxLDJmdP1kLizU
-         7pkCqQTddIovA6HMpnKI2XCFthmx1RvIei01XWa7O/64IW2y5OfuO5hBSD/0cMqD0AEk
-         rPIJ8BwJmDIYKulePDCICPx9VsWosawe5uitCFJDjXUbqH8QOHR7GTABtgb29RXmwjWE
-         ueV+FHh0e3d2nnVktQf1mtGC6olbOgilagFQ5riv7IHJ8tQYSIkf75tDS4pVyhq5Y+zk
-         e9r9dL4dprMpi+1o1Q+V4TbpldgbrsHUfYsQZydx9xmO2ZugLsiiWbrO+VTA4CdC34AV
-         rp/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745942843; x=1746547643;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mC1UTKJ/aE2XaZGs9eJzOr2ci5VlY8Jj7KmPztDqUEE=;
-        b=nlDr32e9UYw9s3jEGOEGl6oQPrkQK9LfWvkWhPlkeYBhqxLZqZpIFaqEltChCVdi0s
-         JW1AftY2tMLcH4omXMiEJCF0ACAUcAb3Y98FSN0fKHURx7H8CQRvquwA7JSpeZ8dkvFG
-         gS6aB08iiDRlm6Cw5tNlXvqceo9QD1Pl1IHoiny1/aZoj+dJYedmvZHTgHQNu/Jyjzs3
-         0XRk/IKpNIxSTH+iETpS1ey7OL2xYH5B52R9QfY6IJtUk720xeb/NWdaXYsxZi7Ir4uv
-         ZguAR9c71xgrqYsyXtPlffWz4RLYbkL1TTyzFeQ4Kziu4Gu0XWf7y2cUOvGEI905Xkz0
-         fJ8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWJOfOuXf1lY0dZf0VSC1FiwwO3PpCQDrYMuB/872W9EcR0bW7n17x7N7uaIifGbzdXacWB/ooyutCTVtKtdA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydzjFUwPrILJvmbpsLhnYpe53gTBDtaAodNMlcLxY8XaJ9erJr
-	Vtw+6f6TODHHm6+QE5oJH89ZRElF8PSS4RojBLc96Y5SoP5D3xp4bOKAO13dXg==
-X-Gm-Gg: ASbGnctH7Uau+F36oRaTAmP2tNUCFwGf4HrAg6upQInuYArXk60jzvo1rD+iXId94xQ
-	+/TLujtwHTbj1uu6Fp+o0YjcdbvDXUY0MwjmlzJqC3uYd6xEyCmhN3mpWsHmnfGVP3PGeLUIDsW
-	51PE+jehRWtpXibPVwP1VTwGCoeLqk8rEYxAc3PdkUU0UdA6t28djmex7kArtpoGCQAcW68yyMq
-	/9naMBLkxbv/3dmfkm/Yq6icxRvrFDQLmvlGU/tY/XI3RT8lJc//cKdIGWcPvJjYcxu5wN3xQIX
-	ksviPs9rfRNoCC5fO37tMOJudDsiiy3lAIqW4CRMnigRrTY=
-X-Google-Smtp-Source: AGHT+IHBM02KliheEDBQ/YbfFg9HkicKZ2Zh7waBOreEcgIMAIiWV3OXrKykhYTDFVeLIkUeSEyRFw==
-X-Received: by 2002:a17:903:228a:b0:223:4d5e:789d with SMTP id d9443c01a7336-22dc6a0013dmr210547165ad.19.1745942842801;
-        Tue, 29 Apr 2025 09:07:22 -0700 (PDT)
-Received: from [172.16.116.85] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db50e7aadsm104528495ad.138.2025.04.29.09.07.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Apr 2025 09:07:22 -0700 (PDT)
-Message-ID: <1fda026e-9ec5-46f6-84e8-4111263350ff@beagleboard.org>
-Date: Tue, 29 Apr 2025 21:37:04 +0530
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="hrjeGXfJ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="idUuX08I"
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 22D191140146;
+	Tue, 29 Apr 2025 12:11:24 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Tue, 29 Apr 2025 12:11:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1745943084;
+	 x=1746029484; bh=YXrpQhriJ7deAXwAidsiUMu//ETuSEsyn6WCKxZHkNE=; b=
+	hrjeGXfJwhk0k2W6dDDP4JmwbST5ryB4yzGnimysf634OcVcIWcZgGkHpAZC15zm
+	t1wzTRzAsNgy4rPg+mokyiD4nGEkH+yJkbOJgCD/uU8IpZmVF7ixXPm4YBaeQGp4
+	/pudEe+WZWfG5FC3wYUh+f4b/dTLjngbvKnSx23qbHvTxM9sO4+Y7yOStUZxZWmT
+	QbVLVh/DaA4VIoGx2/kpm2KX3Pz0Tb+fyI4gPQSgnAxOidgbw9f0R1q2Sc5z7BvV
+	16D+sXugtSrP4zgE4+VDpkaPY46hm+WsidH2AI3FLV3HDWTMdL/Wc0IWK8kozrI9
+	dNxDslaJAKIG6M6gaP//XA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1745943084; x=
+	1746029484; bh=YXrpQhriJ7deAXwAidsiUMu//ETuSEsyn6WCKxZHkNE=; b=i
+	dUuX08IxNX52gLCgHsNztTAaORMjrOcmT/JBLfhfudb1R/Uka/ecLK266ymqO0ek
+	sONweXY0NiylkPOhrrIVxfaQyK6ib0+YKQqCqydd18kduF/pzazTBsE9Euc35Zvm
+	Ak/1dVFXJSukgeIi2gznz1Iy+mpyJRIz1j4fe6xugB1QAlVQT02Tf30Z5jf+1dC6
+	rCjnMq3N0feGsCBAu5n+CVwSkNgBuNjejyx7KrBo9QZwlO7zgBauSrWqviaZ8uQe
+	IUc6U2RuA8LC4M3oi5IZglJT18nPCH/m09IfIgksoZ8imtlH7Q7rgleZqu5mgItW
+	AtYEx7fTAk+pYZ04H88sQ==
+X-ME-Sender: <xms:KvoQaEXRHwiwjYVCvrxkzMwkJ-qb1AIiZpuTwk2QFcNDK3FiqTT9oA>
+    <xme:KvoQaIk0IhVHwXHutfHti_pCgrvdqNXX4Ilv62CE1kC4CZyWS_5KkTqQWG-9cPZX0
+    koK_03LYWAIJV7hlpU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieegvdeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
+    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
+    feelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguihgvthhmrghrrdgvghhgvg
+    hmrghnnhesrghrmhdrtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidr
+    ohhrghdruhhkpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsg
+    horhgrrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghp
+    thhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegsoh
+    hquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopegthhhrihhsihdrshgt
+    hhhrvghflhesghhmrghilhdrtghomhdprhgtphhtthhopegurghvihgurdhlrghighhhth
+    drlhhinhhugiesghhmrghilhdrtghomhdprhgtphhtthhopehfuhhjihhtrgdrthhomhho
+    nhhorhhisehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:KvoQaIbMb-67ArV4bBmc2RpjktTOTu2htrFS6x7nBBLLoPBrqRFNWA>
+    <xmx:KvoQaDXlxfsNBzWEWfpPNn3WkaOwuRq4RBCZ-ytnDwHWkj-vfedZ4g>
+    <xmx:KvoQaOn5T373t0x-2P-2e7XQANiqF-W8m12-kAvVwRxe0hW7oLmFmQ>
+    <xmx:KvoQaIdaR5R0z0FBDuuYkYeVQx-TKjcCbhOvTNzIIr1fVQm-9tznPQ>
+    <xmx:LPoQaDEXiVpsVfzjGXrThLlIq64MGOCNelqa1sQJPTmCey1SlPnmck-Y>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id BCBA32220073; Tue, 29 Apr 2025 12:11:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: kernel: device: Add
- devm_of_platform_populate/depopulate
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Danilo Krummrich <dakr@kernel.org>
-Cc: Jason Kridner <jkridner@beagleboard.org>,
- Deepak Khatri <lorforlinux@beagleboard.org>,
- Robert Nelson <robertcnelson@beagleboard.org>, Dhruva Gole <d-gole@ti.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+X-ThreadId: T252c7cf41b12c3c8
+Date: Tue, 29 Apr 2025 18:11:02 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Boqun Feng" <boqun.feng@gmail.com>,
+ "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, "Gary Guo" <gary@garyguo.net>,
+ "Alice Ryhl" <aliceryhl@google.com>, me@kloenk.dev,
+ daniel.almeida@collabora.com, linux-kernel@vger.kernel.org,
+ Netdev <netdev@vger.kernel.org>, "Andrew Lunn" <andrew@lunn.ch>,
+ "Heiner Kallweit" <hkallweit1@gmail.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>,
  =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250429-rust-of-populate-v2-1-0ad329d121c5@beagleboard.org>
- <aBDi2LE3O1rIsGqn@pollux> <2025042904-trade-leverage-0f98@gregkh>
- <aBDl5oRIRpwbPrC1@pollux> <2025042945-aviator-subzero-0263@gregkh>
-Content-Language: en-US
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <2025042945-aviator-subzero-0263@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@samsung.com>,
+ "Anna-Maria Gleixner" <anna-maria@linutronix.de>,
+ "Frederic Weisbecker" <frederic@kernel.org>,
+ "Thomas Gleixner" <tglx@linutronix.de>,
+ "John Stultz" <jstultz@google.com>, "Stephen Boyd" <sboyd@kernel.org>,
+ "Ingo Molnar" <mingo@redhat.com>,
+ "Peter Zijlstra" <peterz@infradead.org>,
+ "Juri Lelli" <juri.lelli@redhat.com>,
+ "Vincent Guittot" <vincent.guittot@linaro.org>,
+ "Dietmar Eggemann" <dietmar.eggemann@arm.com>,
+ "Steven Rostedt" <rostedt@goodmis.org>,
+ "Benjamin Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>,
+ "Valentin Schneider" <vschneid@redhat.com>, tgunders@redhat.com,
+ david.laight.linux@gmail.com, "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Jocelyn Falempe" <jfalempe@redhat.com>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Christian Schrefl" <chrisi.schrefl@gmail.com>,
+ "Linus Walleij" <linus.walleij@linaro.org>
+Message-Id: <1b9e8761-b71f-4015-bf7d-29072b02f2ac@app.fastmail.com>
+In-Reply-To: <de778f47-9bc6-4f4b-bb4f-828305ad4217@app.fastmail.com>
+References: 
+ <6qQX4d2uzNlS_1BySS6jrsBgbZtaF9rsbHDza0bdk8rdArVf_YmGDTnaoo6eeNiU4U_tAg1-RkEOm2Wtcj7fhg==@protonmail.internalid>
+ <20250423192857.199712-6-fujita.tomonori@gmail.com>
+ <871ptc40ds.fsf@kernel.org>
+ <20250429.221733.2034231929519765445.fujita.tomonori@gmail.com>
+ <5c18acfc-7893-4731-9292-dc69a7acdff2@app.fastmail.com>
+ <de778f47-9bc6-4f4b-bb4f-828305ad4217@app.fastmail.com>
+Subject: Re: [PATCH v15 5/6] rust: time: Add wrapper for fsleep() function
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On 4/29/25 20:27, Greg Kroah-Hartman wrote:
-
-> On Tue, Apr 29, 2025 at 04:44:54PM +0200, Danilo Krummrich wrote:
->> On Tue, Apr 29, 2025 at 04:37:49PM +0200, Greg Kroah-Hartman wrote:
->>> On Tue, Apr 29, 2025 at 04:31:52PM +0200, Danilo Krummrich wrote:
->>>> On Tue, Apr 29, 2025 at 05:09:26PM +0530, Ayush Singh wrote:
->>>>> +    /// Remove devices populated from device tree
->>>>> +    pub fn devm_of_platform_depopulate(&self) {
->>>>> +        // SAFETY: self is valid bound Device reference
->>>>> +        unsafe { bindings::devm_of_platform_depopulate(self.as_raw()) }
->>>>> +    }
->>>>> +}
->>>> One additional question regarding devm_of_platform_depopulate(). This function
->>>> is only used once throughout the whole kernel (in [1]), and at a first glance
->>>> the usage there seems unnecessary.
->>>>
->>>> In your upcoming driver you call devm_of_platform_depopulate() from a fallible
->>>> path [2].
->>>>
->>>> So, I think we should change devm_of_platform_depopulate() to return an error
->>>> instead of WARN(ret).
->>>>
->>>> If [1] needs it for some subtle reason I don't see, then I think we can still
->>>> call it from there as
->>>>
->>>> 	WARN(devm_of_platform_depopulate())
->>>>
->>>> [1] https://elixir.bootlin.com/linux/v6.15-rc4/source/drivers/soc/ti/pruss.c#L558
->>>> [2] https://github.com/Ayush1325/linux/commit/cdb1322b7166532445c54b601ad0a252866e574d#diff-7b9e3179e36732d5f3a681034d70c2fda4ff57745c79ad4a656f328c91e54b77R71
->>> Ugh, no, we should just delete this function entirely if only one driver
->>> is using it.  That implies it's not really needed at all.
->> Ayush's driver calls {de}populate() from a sysfs store path [2]; not sure what
->> it's doing semantically or if this is a valid use-case though.
-> That's going to be rough, and full of tricky corner-cases and probably
-> shouldn't be doing that at all :)
+On Tue, Apr 29, 2025, at 18:03, Boqun Feng wrote:
+> On Tue, Apr 29, 2025, at 8:51 AM, Arnd Bergmann wrote:
+>> On Tue, Apr 29, 2025, at 15:17, FUJITA Tomonori wrote:
+>>> On Mon, 28 Apr 2025 20:16:47 +0200 Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>      /// Return the number of milliseconds in the [`Delta`].
+>>>      #[inline]
+>>> -    pub const fn as_millis(self) -> i64 {
+>>> -        self.as_nanos() / NSEC_PER_MSEC
+>>> +    pub fn as_millis(self) -> i64 {
+>>> +        math64::div64_s64(self.as_nanos(), NSEC_PER_MSEC)
+>>>      }
+>>>  }
+>>
+>> I think simply calling ktime_to_ms()/ktime_to_us() should result
+>> in reasonably efficient code, since the C version is able to
+>> convert the constant divisor into a multiply/shift operation.
+>>
 >
-> So let's hold off on this entirely until we see a real user that can
-> actually pass review.  Trying to do system configuration like this in
-> sysfs is a much larger discussion than just adding rust bindings.
->
-> (hint, configfs is for system configuration, not sysfs...)
->
-> Anyway, worst case, you just "open code" the single function call that
-> this one binding was trying to "wrap".  which is what I think the
-> in-kernel user should be doing now.
->
-> thanks,
->
-> greg k-h
+> Well, before we jump into this, I would like to understand why
+> this is not optimized with multiply/shift operations on arm in
+> Rust code. Ideally all the dividing constants cases should not
+> need to call a C function.
 
+I think it's just because nobody has rewritten the
+macros from include/asm-generic/div64.h into rust code.
 
-Well, I don't really want to convert this discussion to addon board 
-connector setup discussions. So I will try to keep things as short as 
-possible here while linking to all the other discussions for the same.
+The compiler could do the same transformation, but they
+generally just fall back to calling a libgcc function.
 
-For starters, what the driver does is as follows:
-
-1. Provide 3 sysfs entries:
-
-     - New cape: Can write the name of the cape (I have not settled on 
-the naming convention yet). This name is then used to load appropriate 
-overlay from `/lib/firmware/` and populate all the devices. The overlay 
-is applied to the connector node. Only one cape overlay can be used at a 
-time.
-
-     - Current cape: Just a ro entry to get the name of any active cape.
-
-     - Delete cape: Remove cape overlay and registered devices.
-
-It's a very basic driver, where I am trying to experiment with the 
-following patches ([2], [3], [4]) to be able to provide a better picture 
-of things, and get a read on what more needs to be added to devicetree 
-spec and/or other infra to make connector setups possible, and provide a 
-proof of concept that might move the needle a bit more than the past 
-year has.
-
-
-I do not think this should use configfs, but maybe I am wrong.
-
-
-`of_platform_populate` is used to discover the devices that are added by 
-the overlay. Without this function, I am not sure how a setup which is 
-supposed to only modify the devicetree in a particular node is supposed 
-to work.
-
-
-The reason why local devicetree overlay is being used instead of 
-modifying the local tree is the discussion here regarding how global 
-tree modification is a security problem and any approach using it will 
-be difficult to upstream [0]. That is one of the reasons for not 
-pursuing the approach described here [1].
-
-
-I am okay with maintaining the patches for Rust side out of tree, 
-because well, at this point, it's a much smaller list than the number of 
-out of tree patches I need to have for the C side to be able to show a 
-semi complete connector setup anyway. And nothing is going to be merged 
-until a so called perfect solution is found. But just want to list out 
-why I at least do not want the C side of 
-`of_platform_populate/depopulate` to not disappear.
-
-
-Of course, feel free to list out any better alternatives than having to 
-use `of_platform_populate/depopulate`, which can be used for this purpose.
-
-
-Best Regards,
-
-Ayush Singh
-
-
-[0]: 
-https://lore.kernel.org/all/9c326bb7-e09a-4c21-944f-006b3fad1870@beagleboard.org/
-
-[1]: https://lore.kernel.org/lkml/20240702164403.29067-1-afd@ti.com/
-
-[2]: 
-https://lore.kernel.org/devicetree-spec/20250415122453.68e4c50f@bootlin.com/T/#m591e737b48ebe96aafa39d87652e07eef99dff90
-
-[3]: 
-https://lore.kernel.org/all/20241209151830.95723-1-herve.codina@bootlin.com/
-
-[4]: 
-https://lore.kernel.org/devicetree-spec/20250401081041.114333-1-herve.codina@bootlin.com/T/#t
-
+     Arnd
