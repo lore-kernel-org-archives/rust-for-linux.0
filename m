@@ -1,118 +1,111 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019B8225405;
-	Tue, 29 Apr 2025 21:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05C1264609
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 21:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745961632; cv=none; b=XZso++wHmmp/jlfcXX7tbfSgOBfpV7nTaGhKsryptbbT55Ogye+467QbVjRuIIYKXX0uKUuqVHQwWATEQKRpVd1OIy1id3ncExqzT32WsIuTuGZK7DV9YEy3hvCB7GBM9vDACtDhC/YtGCG3F2cQR4hB30RaL8Rdwe/0dEoZEk8=
+	t=1745963289; cv=none; b=pvvO4V6iNvU4Yyb6TD9bVlVF/ob1/4ZYdZX3WPK0oy2tgSYNgLMOqh6cAbVCWJ7OWkWEAJBoBABfexTgJZYYuPq4wnwAk9BFZSK9y33ciRfckqiutWvYL7c+bBCiPYYrdbXhL048WdQ0L2gui7+rfx6KUEjKSVjq9m7pPMJRboc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745961632; c=relaxed/simple;
-	bh=Nc8aBTnIKfrJZS9eBFscfQWugrCaRlFMW/WcJ6BU07g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nPfuwTzab17gn4YjoSj0x/WNnVr3+6tZ6zepFkzczfQSK+qIf2KLxaaQNnHeJNAYqrlr8UBNsuIZHlYIqQriHeKvcnlJbSrRhHN4jFCLI1Uimh1HANIMuovCP88m9KShf6nWRCeBS7CJml3pPb/BC12uOYQ8pmGUB2oEvnBHbZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AZ8APVN7; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745963289; c=relaxed/simple;
+	bh=L/lCpqtH0jFdKj9u8j+kmUSd8ti5hWkS4KF1fGAVyvg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kmVU672sXW5xKBzZGhDhWgpPMjTjIinB9J0ZVCScC9L5jnXxyeC+tf5v8GqPEOhnJRVcfk5FvBtC9TIcqlbrgeK98bggcBJ/lMHZ/G/qFBJGw0pUUtqzgeO6ww5ZIjY762SJ1yn6/reTqtgruT01iQTH/jsU5bAdHwZ0SIBvTqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OinrKdxk; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AZ8APVN7"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-227e29b6c55so12062975ad.1;
-        Tue, 29 Apr 2025 14:20:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745961630; x=1746566430; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RuEwpUiS1Ijorc0+ZjEUdCrIger40NnHEM6HilN26Ys=;
-        b=AZ8APVN7UtqGhBvCVyyk0gbDVEH2rOUrdFtH2HPbLo0CHUR/gE1bw6K/DeYNhRCmQh
-         uozoY5vl/pjmMk72AdrUGCnaAaAFd0FBUYLwfNFH7hF9vKshWo7wYe6Gin+M28jmS7bb
-         Y7oB3NRqULC8vRcSU6+0GE5PR/84JeBbP8vTod3QH+Y111c/hh90oJKQ9tYOS5XNqbrB
-         v8ZInFvtAzoMs8Gy/g8uHnC2WFXSn+WD2SUYgC1z2YUdxvZnK9tFfJIOZSsbCbolOCBJ
-         qlAaoIzStfdUxdo0vNEjshsioWVeBWgW2cr9rUWd8HoVdZSEdn8CYv79D/FAY3jPpF/g
-         yBkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745961630; x=1746566430;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RuEwpUiS1Ijorc0+ZjEUdCrIger40NnHEM6HilN26Ys=;
-        b=ZRoKAPiqY7Ut0qKxGdoekfmOTu+v1BSSXflwOjBcl2Sr3WDiVYBv0ODVr/RPF4LfT4
-         Xocu2EM0kafTHuPGSravHtOgPoNkxKi9oGwXCKP7eT1FRcg6QCEJpz2Haju3GaRvoiEf
-         +1pSKTG17DRCz8Oe/bhmcXWpyv0I1ZGc8AZDUD+r8he59Y7bGHiawCbNzNaMkaXWCzV+
-         SX+gcocTTjONQWGFgl/mfoUOXLD+Qu4mn67q5NFtuuCIG8yeuYJXSYmrZMEs837g/Q4q
-         aXl/CJCz5u9CqBnDmzibfaEIrwpsFoCmIkVv8f8ve2oMQS4jr7+my2CoGvbnrNzPJlEs
-         V6Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCWhYjNDdJXBAMBG1UtmyYuliMnwohEjAeZuCsWDvl8nK5zr0xQInMuteQqUO8poiePHKnJ28o/OYjbsBgY=@vger.kernel.org, AJvYcCXT0FFIBCyPlUPRCDPtfRpqTGUCWqOdIz4xfd/ZGhiiqcK7epo9H0iAx+IKscDh4xIZXlWLcpO2O9NyW5HewZA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzyp7RLWumCvXf9+3AO8Y98bskm16rla2j2DTJNV2qmSHFgLzHj
-	kxADbAjgZpXsA+BQ18dZj5i/R5IY0nYvLh/YMqutOyzK0T7H2GgZVpu4i5A05ShytKb24m+us5d
-	JBMg9kVz+/Dtt38julZqkP2e6VAc=
-X-Gm-Gg: ASbGncuxOlagAaS2feUSaAjxZkmleP/0iiRkxP6BQ/Mp5WTqYl9OYz98rZDIX0CM2qr
-	FRhAR/Wv45NrH+sRD+W1/uoDcn39Uc3iLnhoo3G2IxN36YZ7cYy6jx7CJzs90zbvsqhmz8yUQkE
-	p/wK/REY++f9VNLM+Fqli4izN7355/gwfv
-X-Google-Smtp-Source: AGHT+IHx6LSagutwWXWlXWcT66mNZZN+2hua2TKdaMPOojePVst4PzjYeGrk56iqzEJdy0eKxnLLmvUlDVvxgEZDNLc=
-X-Received: by 2002:a17:90b:4b8f:b0:309:f0d4:6e7f with SMTP id
- 98e67ed59e1d1-30a34a96e51mr4788a91.5.1745961630133; Tue, 29 Apr 2025 14:20:30
- -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OinrKdxk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745963286;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=INyowgEVW2BPivCqUoDHjkNAXYriwEw8tF1iKC8NZ08=;
+	b=OinrKdxkZ6lw4a2HIYnHXmVEKUmGiH6agu47m7OpyqUxY2fI9DeM5q7WNAyX1xRNs3hRPs
+	ukkQ+TPZ4duoz/tJM/kQ2eJcO6fHz+t4H4rk1m5mEUvJr3Su6bJuHEgxiDLo6Y0dfTg03l
+	/IfRpt8UNY1DqrNxXXV9TCeF/EC4oqc=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-5I9fOd45OXaX993TnZR_Gw-1; Tue,
+ 29 Apr 2025 17:48:00 -0400
+X-MC-Unique: 5I9fOd45OXaX993TnZR_Gw-1
+X-Mimecast-MFC-AGG-ID: 5I9fOd45OXaX993TnZR_Gw_1745963278
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4FD9818001CA;
+	Tue, 29 Apr 2025 21:47:58 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.88.132])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 976E119560A3;
+	Tue, 29 Apr 2025 21:47:54 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v4 0/7] rust/hrtimer: Various hrtimer + time additions
+Date: Tue, 29 Apr 2025 17:44:36 -0400
+Message-ID: <20250429214752.1637859-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250429210629.513521-1-ojeda@kernel.org>
-In-Reply-To: <20250429210629.513521-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 29 Apr 2025 23:20:18 +0200
-X-Gm-Features: ATxdqUFLuTg4gTSoOk2wtfwNi9ZMgfkk-gHPkVREbWARr9S1gL-bnI_2gdfy1bA
-Message-ID: <CANiq72=vWNZ_y_5R45Kd6KrnBwfd55bh8yAqxtvZcVrrHr5eWA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: device: allow `Device<DeviceContext>::parent()`
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Tue, Apr 29, 2025 at 11:06=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->
-> When `CONFIG_AUXILIARY_BUS` is disabled, `parent()` is still dead code:
->
->     error: method `parent` is never used
->       --> rust/kernel/device.rs:71:19
->        |
->     64 | impl<Ctx: DeviceContext> Device<Ctx> {
->        | ------------------------------------ method in this implementati=
-on
->     ...
->     71 |     pub(crate) fn parent(&self) -> Option<&Self> {
->        |                   ^^^^^^
->        |
->        =3D note: `-D dead-code` implied by `-D warnings`
->        =3D help: to override `-D warnings` add `#[allow(dead_code)]`
->
-> Thus reintroduce the `expect`, but now as a conditional one. Do so as
-> `dead_code` since that is narrower.
->
-> An `allow` would also be possible, but Danilo wants to catch new users
-> in the future [1].
->
-> Link: https://lore.kernel.org/rust-for-linux/aBE8qQrpXOfru_K3@pollux/ [1]
-> Fixes: ce735e73dd59 ("rust: auxiliary: add auxiliary device / driver abst=
-ractions")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+This is a collection of various bindings that I added to hrtimer when I
+was originally getting it ready to be used in rvkms. I've mostly been
+waiting for Andreas's hrtimer series to go upstream before submitting
+these.
 
-Great, I updated this message and somehow broke the title completely
--- please assume it was:
+All of these are currently being used within rvkms for vblank emulation.
 
-    rust: device: conditionally expect `dead_code` for
-`Device<DeviceContext>::parent()`
+This patch series is based off Fujita's patch series "rust: Add IO
+polling":
 
-And, again, please feel free to just `fixup` this patch if preferred.
+https://lore.kernel.org/lkml/20250413104310.162045-1-fujita.tomonori@gmail.com/
 
-Cheers,
-Miguel
+Previous versions:
+  Version 1: https://lkml.org/lkml/2025/4/2/1474
+  Version 2: https://lkml.org/lkml/2025/4/15/1750
+  Version 3 (only a revision of one patch): https://lkml.org/lkml/2025/4/15/1780
+
+Lyude Paul (7):
+  rust: hrtimer: Document the return value for HrTimerHandle::cancel()
+  rust: hrtimer: Add HrTimer::raw_forward() and forward()
+  rust: hrtimer: Add HrTimerCallbackContext and ::forward()
+  rust: time: Add Instant::from_nanos()
+  rust: hrtimer: Add HrTimer::raw_cb_time()
+  rust: hrtimer: Add forward_now() to HrTimer and HrTimerCallbackContext
+  rust: hrtimer: Add HrTimer::expires()
+
+ rust/kernel/time.rs                 |  14 +++
+ rust/kernel/time/hrtimer.rs         | 181 +++++++++++++++++++++++++++-
+ rust/kernel/time/hrtimer/arc.rs     |   9 +-
+ rust/kernel/time/hrtimer/pin.rs     |   9 +-
+ rust/kernel/time/hrtimer/pin_mut.rs |  11 +-
+ rust/kernel/time/hrtimer/tbox.rs    |   9 +-
+ 6 files changed, 224 insertions(+), 9 deletions(-)
+
+
+base-commit: 9d7a0577c9db35c4cc52db90bc415ea248446472
+prerequisite-patch-id: d691366f3fa2a1b616d465d95cf6c2c04918cf92
+prerequisite-patch-id: 38064b4cd5bcead92faaf1f110062dd2d912dbb1
+prerequisite-patch-id: b9427ed9883dece9c1d8e01acbfac570d3fc4b1c
+prerequisite-patch-id: 5358143c9cc94b70739b9a26aef05ec831a344d2
+prerequisite-patch-id: 8fbc8578668f67f2fa42cf875983648f46111c3a
+-- 
+2.48.1
+
