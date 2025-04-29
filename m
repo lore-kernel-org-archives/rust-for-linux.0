@@ -1,202 +1,158 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A191B242D80;
-	Tue, 29 Apr 2025 19:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288BC224222
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 19:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745954885; cv=none; b=Oja0RwVxSFmoOe/oVAtQPYkzhaM65MNRt4hDQaZDARJpzngjjRGdAKyFhrEcVaZ7mkJFMjzZH2wYgFEIq+gvlSC8pC7HD7xvkPVSId2I/CyrxO0Kx81RTwN3GYBYZ2APE7VJOOoAgwM9egx86YVyGxk4l+zTW1H2DKr5bmpEHV8=
+	t=1745954963; cv=none; b=SqNRnFFx6lJvsSxdFeKrUWgtuCeknjQlJ2AQv0aOBSaZnzr4UHBu/Ku5smbuZ2O5bDcjfNijn212wt5vMOKnxop5FBHo/VtZYue5ENnSjC0ux2gn1rJDGtqMrwzzf469jbh9+QWfKo3UJX4vzihmFkX//Fx0Q0UJYnLOTMo+U2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745954885; c=relaxed/simple;
-	bh=QK+O2pC90MzZairg+A6PeUbYG4h/PtcWsHfStCXSPMY=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c1lcRYi98QBjbjt0+CPZEZ6tCHa0hCAWL3sFZYY2I/yoRnvieIsQVmNyC5ywKDvwrxYfB6O/YSTG+NBsrP+MqazUhvUZVQrgxnDcegBexxgQG/KSeih2zu/8E0epSh5q8x26BFJmPCAI6t51BfILFfqeI72aM7GpyGCPtGPTkW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C4v/7B+c; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1745954963; c=relaxed/simple;
+	bh=kHc/cytx5Adj+8CqLo2UyKgU1kEEXeemLFRGfdkhqgQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XxqoyyDOdEOdDi6effOA1I5NNPUnLrPhGg1TkGTV8iAwytYnkhdVdfB1fYc4eAD4eDStwPMhbuR8zp5/Y1XAVyXB/ncNwpaSlSWRQ49qqihRlW6+e08RrbPkQhRbSUncyuONONU98n12StkVly3oEP+R9Df17Hj+1V078/Vjsmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uqmWrgk/; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C4v/7B+c"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7c559b3eb0bso391629985a.1;
-        Tue, 29 Apr 2025 12:28:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uqmWrgk/"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-39ac56756f6so6479661f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 12:29:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745954882; x=1746559682; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1745954960; x=1746559760; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Lfi9kluYEourkOMoCM+SrB+AFs1UD6ZT9elag5E5mv0=;
-        b=C4v/7B+c9UMH1kNen+t75a0bPWeyiUdN9XIXZ4LugPbBVewdR175WIGCDp5m8OijGU
-         E1h/bbr+8XaY0Rvng8vID+N2d2paoubPLBD1B0Q8rcGOmKXGCFLr6F74RoMK2MLYJs5N
-         AB31ZGMKjHs2pG0bsf+PnYxpvvV5Ef41qEv32WE1oboFI9ChotZQna1CYTJ+u5J56pk3
-         6F9jDN8QSs2QNPJFwMysXFH1TCHtHZgaxA+IoHJYgKNFVK8gVOHe/25mCcsnQdoZs/GN
-         COhITf5HZClhY8gZW9+J8psBJbTRFA2Nq7L86wmIJMnSMgBX7iXxCS7UfJChD/EyIkMI
-         YDoQ==
+        bh=XqMZCaPyPBAIN/Fd3CxJHtlGXvSegu6boDxVIZP3NUQ=;
+        b=uqmWrgk/J11SZEksWiK3JPCe1Fzdzgk2pMiYt2UFN8fmxESWsTA2cPGYdXJxWIr8X5
+         F25g4narJfrZNN9Ekauo42pA957PHPuGrz5Tcj7KxbAsNBoguuW22tiZJ5fPWmg+LcTS
+         Ug+87pKTVmaL+vZR79wfjAMDFFErP1JfeCKaZ0MBNg0Ixb4wovtKA0HrfEr38fBVmkgR
+         s7sKjWxglXIWPaC+7kZxEo5FCLnCs/mbEDQEq1AEb3T1l0AZfDqbur8GhlCzKQRpA+EG
+         xaWL3mfTncti2+L+cxMGYYaDNHP5uoz8GgAgPW+xOcgjcuDIV0a/HCDRvLyjwK3nEsiF
+         xVQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745954882; x=1746559682;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1745954960; x=1746559760;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Lfi9kluYEourkOMoCM+SrB+AFs1UD6ZT9elag5E5mv0=;
-        b=svAo/NPZdJV9SmRvV0qjPqqB3tVI1DDfpj2euOL5dRSgCP2tXaCfZbs+LioWS51dnb
-         iqI43QlcijDq0ZN6HgNo07UCf5F62W8cpGDphHkQ7eh+ib8wXDQL7MyKZnLDV7oZ3Qgf
-         Kx4nQ6gCBopq1Aa8dscgYWL81I9Ex9WylmR+l4T8KGHSsn4A3E+QeQ/717FMXA4szb8I
-         fiozm8wovKperDJyzI893rS/U9aIKTCB8NbT/QInncApRJ2abhTjGN/gK3fqzUeePn0p
-         jC7x5xlBiBm8mi+AiC90sQcotGDtRIqJRrRPWRPohiLtsDlrOK1vc1x4DdHYFnoCpQ/v
-         aTzA==
-X-Forwarded-Encrypted: i=1; AJvYcCUb9CZmRdyECq484+06JvtZ4mSXg6imQ9/1G8qVBoEuRFF4W9QKgsnnoTWuhbAdbXoHezjgxpkdjIXTxuEG7mA=@vger.kernel.org, AJvYcCWF3LN14H4cfAOzLEjO30jblXLQANJHSQejjMfKIRRcIKjcy7CKRcKtm2PRzDH0Yq72+5BrE/0mB/YCqfE=@vger.kernel.org, AJvYcCXr4XhQZgG1ebd0iKf1qCaGNITMZ1kFLUmapNMWULjvc5iNKRBimdqIHdONJk8wxrXMOWd5zm14@vger.kernel.org
-X-Gm-Message-State: AOJu0YzemAG03SHHt0szFucyc7xNcUhTSWt6dQV6OWhmWL09M3tsLn+4
-	OspJODKzXMALFhzn7mClj7/KjLQRZ1+SKy95+oIpcRfrLq+KVSTg
-X-Gm-Gg: ASbGncuny2GdGlqjsqXQaE1ZHjzg6OCZUoQTfdr+y3Pdr4IN9q7u4HuoI/BiOL3E2GC
-	NaB4jKCaiZj92K6rx2kxb7fj14qNLfZS5XBUQCuIoAnE7cdrMVQIexsglf6/wcjiBUKXSb4RrVe
-	L4lxER9srY6PUroQ/EzGS56e2W+BU6/CujpAVIKYP77w9McwOm2KSiHP54szgzhISjHX7neBFXv
-	i3s/OPkH90T1XooGR5+QJU7jO9fi23pk8EMUicHE3ugprYfnpdE8S2icrkujvDlji/Xa/rqq6+L
-	+m1TNJ5QcIynGO5m+o1BoRjh0szmVw8GCBIypNpCXsGxGasE9ahpAzSeJYNyV/Obt4goTXnem61
-	b/zX144Xa7vTqatffC2pjvRFHWBJNSCY=
-X-Google-Smtp-Source: AGHT+IEv+oy+QRnhavYgic1PP/exJ6mBalecu936ijvnpINiH2bdODZ2XMZMVH1b+YWZb9R4rXwKKA==
-X-Received: by 2002:a05:620a:404d:b0:7c5:e226:9da2 with SMTP id af79cd13be357-7cac76ca6ffmr45538585a.47.1745954882220;
-        Tue, 29 Apr 2025 12:28:02 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c958cbd21dsm770844485a.42.2025.04.29.12.28.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 12:28:01 -0700 (PDT)
-Message-ID: <68112841.050a0220.17967c.3236@mx.google.com>
-X-Google-Original-Message-ID: <aBEoP88kw6J3rP3I@winterfell.>
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C96E5120006A;
-	Tue, 29 Apr 2025 15:28:00 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 29 Apr 2025 15:28:00 -0400
-X-ME-Sender: <xms:QCgRaAN8G0PZnjMnTUhymqAWGKlxU1vrldDPD-9T1iBSB5BAgE9jYg>
-    <xme:QCgRaG-b2HjwvMYV3z4EoaufQAKxSylGhTAWh0K2H1PpKNk-Q4htoEDYsgKTLd4y8
-    clwSbODQ7i7CpWvkg>
-X-ME-Received: <xmr:QCgRaHRAlJOhjGZMb6pzdxaDP_GVvXMfprVjOd38wS47r6sY5UK5YtFDHw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieegieehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedv
-    teehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopeegtddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheprghrnhgusegrrhhnuggsrdguvgdprhgtphhtthhopehfuhhjihhtrgdrthhomhho
-    nhhorhhisehgmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-    dprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthho
-    pehmvgeskhhlohgvnhhkrdguvghvpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiug
-    grsegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghl
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:QCgRaIsV20_Jj4g_5Qq0NkVIUHVgG8GGvhAvmPb449CLGkadnh2_eQ>
-    <xmx:QCgRaIfSCnjOELVnTGMjUFmObY2cuTC4dd2NBN_x-RbWo2hsP7q-5w>
-    <xmx:QCgRaM2JG32dkefv30tix-hXepnUg_hXSA59RJf4xfsUue8HP5TRBA>
-    <xmx:QCgRaM9rIUS4ibl60KRSRyP_AuNw0OlQYHNS_zEHEoY9b2Akrygv7Q>
-    <xmx:QCgRaP-tm_ZPiDeW5hGtRPH6Vz5uuAICFJjapoIKpmaCSF9ia8aL2ESH>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 29 Apr 2025 15:27:59 -0400 (EDT)
-Date: Tue, 29 Apr 2025 12:27:59 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,	rust-for-linux@vger.kernel.org,
- Gary Guo <gary@garyguo.net>,	Alice Ryhl <aliceryhl@google.com>,
- me@kloenk.dev,	daniel.almeida@collabora.com,
- linux-kernel@vger.kernel.org,	Netdev <netdev@vger.kernel.org>,
- Andrew Lunn <andrew@lunn.ch>,	Heiner Kallweit <hkallweit1@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Anna-Maria Gleixner <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,	John Stultz <jstultz@google.com>,
- Stephen Boyd <sboyd@kernel.org>,	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Benjamin Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>, tgunders@redhat.com,
-	david.laight.linux@gmail.com, Paolo Bonzini <pbonzini@redhat.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v15 5/6] rust: time: Add wrapper for fsleep() function
-References: <6qQX4d2uzNlS_1BySS6jrsBgbZtaF9rsbHDza0bdk8rdArVf_YmGDTnaoo6eeNiU4U_tAg1-RkEOm2Wtcj7fhg==@protonmail.internalid>
- <20250423192857.199712-6-fujita.tomonori@gmail.com>
- <871ptc40ds.fsf@kernel.org>
- <20250429.221733.2034231929519765445.fujita.tomonori@gmail.com>
- <5c18acfc-7893-4731-9292-dc69a7acdff2@app.fastmail.com>
- <de778f47-9bc6-4f4b-bb4f-828305ad4217@app.fastmail.com>
- <1b9e8761-b71f-4015-bf7d-29072b02f2ac@app.fastmail.com>
- <6811092a.050a0220.27f104.5603@mx.google.com>
- <2d89292f-b02c-47b1-9299-92c5f4ba4c9d@app.fastmail.com>
- <681124ff.050a0220.13a0e7.2c80@mx.google.com>
+        bh=XqMZCaPyPBAIN/Fd3CxJHtlGXvSegu6boDxVIZP3NUQ=;
+        b=BINTc09Ybzu04TnU0P9YywJvTgc7xvN1sDOYwziaYoAdDtT1t5bb262UganBwzKz1e
+         jaj0I8JVBrfpOEOTmYZrBvtT1RTRNv0fS9W3oijjf+YFBkzoYIb60UQ2vJy/bgOGYD4G
+         euGeoEyaS5ytD9fBAcepFCO/0/ko4mol2RPpIpWvt5n8OOccfDv0HWullIozslemqFuT
+         5roNFLuunOvmMxMq9GtaEGOp/40exW/8RjN/wRKJd3yMyKyASBs0QXxJEJJ1uIN4MVGG
+         0uFQuP42/X6zCtxU8IafAox2xrllP8Xer0b6JhUJk/Wh6EWgiXoQdo55Y9of/SoEOG8W
+         omeA==
+X-Forwarded-Encrypted: i=1; AJvYcCUOvdBQW52lbJeIMEnbr62EbzEwbQLxWqNBVyTxSlSAHFtDXXCvY6iGTd0VFHSj2lN3jtSCPWXO5oIutO28wQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQNm/2xMtOqt+fbotKkT3OdwsHUEU0tlYzD3nWEzrsIsJzhC3d
+	otpagRD/56j57UhWetHl50k34EpxiMcecuTF3KtADHPeLyBsRN7wKwKo9T5Bp01smlH/HHqigwv
+	JNj2AcnLJNTh2R9+0YJA3FmJW4/Wjm8pjd/Km
+X-Gm-Gg: ASbGncsPYNHMMWCoL0B+XK7Q2Bb4wgqwFkEyZgoo2Cw6NoOMaLy2k6C5uj4CoydOkcn
+	X6uWEx4stjyL3x9SugbwsyzskGWB1XcaRRc5CPZRDAmJyC+SQoUD1T9TP64x3L9feV6zC7omXRS
+	yhuqx1+LWWZw4jXf7gwZDO8axCM7l4acnMDA==
+X-Google-Smtp-Source: AGHT+IH1OnVehQWv94v0BQMbp7CUXSGalAv8VO+ObtTwx1jiibBMzs9kXVSL8iuRc7gDhDYnjG8EJirxKA4k1bx6gxI=
+X-Received: by 2002:a05:6000:400b:b0:3a0:8a37:fb8e with SMTP id
+ ffacd0b85a97d-3a08f77c285mr484722f8f.27.1745954960258; Tue, 29 Apr 2025
+ 12:29:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <681124ff.050a0220.13a0e7.2c80@mx.google.com>
+References: <20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com>
+ <20250429-strncpy-from-user-v2-2-7e6facac0bf0@google.com> <68111422.050a0220.e6713.25af@mx.google.com>
+In-Reply-To: <68111422.050a0220.e6713.25af@mx.google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 29 Apr 2025 21:29:07 +0200
+X-Gm-Features: ATxdqUHzG5OYUybCnGZV1DFce1JDL7NLUDOej9-nRXITvFXjwy1VlvSzbSi_LLY
+Message-ID: <CAH5fLggj-Mfhd3311aKUt9go_+FeAuXdPxditW26QL5VtLD3iQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] uaccess: rust: add UserSliceReader::strcpy_into_buf
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 29, 2025 at 12:14:04PM -0700, Boqun Feng wrote:
-> On Tue, Apr 29, 2025 at 08:33:47PM +0200, Arnd Bergmann wrote:
-> > On Tue, Apr 29, 2025, at 19:15, Boqun Feng wrote:
-> > > On Tue, Apr 29, 2025 at 06:11:02PM +0200, Arnd Bergmann wrote:
-> > >> On Tue, Apr 29, 2025, at 18:03, Boqun Feng wrote:
-> > >
-> > > Would it make sense if we rely on compiler optimization when it's
-> > > avaiable (for x86_64, arm64, riscv, etc), and only call ktime_to_ms() if
+On Tue, Apr 29, 2025 at 8:02=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> On Tue, Apr 29, 2025 at 09:02:23AM +0000, Alice Ryhl wrote:
+> > This patch adds a more convenient method for reading C strings from
+> > userspace. Logic is added to NUL-terminate the buffer when necessary so
+> > that a &CStr can be returned.
+> >
+> > Note that we treat attempts to read past `self.length` as a fault, so
+> > this returns EFAULT if that limit is exceeded before `buf.len()` is
+> > reached.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/uaccess.rs | 35 +++++++++++++++++++++++++++++++++++
+> >  1 file changed, 35 insertions(+)
+> >
+> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> > index acb703f074a30e60d42a222dd26aed80d8bdb76a..7cec1b62bd8b816f523c8be=
+12cb29905740789fc 100644
+> > --- a/rust/kernel/uaccess.rs
+> > +++ b/rust/kernel/uaccess.rs
+> > @@ -293,6 +293,41 @@ pub fn read_all<A: Allocator>(mut self, buf: &mut =
+Vec<u8, A>, flags: Flags) -> R
+> >          unsafe { buf.set_len(buf.len() + len) };
+> >          Ok(())
+> >      }
+> > +
+> > +    /// Read a NUL-terminated string from userspace and append it to `=
+dst`.
+>
+> s/`dst`/`buf`
+>
+> ?
 
-In case I wasn't clear, nowadays Rust compiler supports optimizating
-constant division into multi/shift on x86_64, arm64, riscv already, the
-optimization is only not availabe for arm32. (It's actually an
-optimization provided by LLVM I think)
+Hm, append is also wrong. Thanks.
 
-Regards,
-Boqun
+> > +
+> > +        // We never read more than `self.length` bytes.
+> > +        if dst.len() > self.length {
+> > +            dst =3D &mut dst[..self.length];
+> > +        }
+> > +
+> > +        let mut len =3D raw_strncpy_from_user(self.ptr, dst)?;
+> > +        if len < dst.len() {
+> > +            // Add one to include the NUL-terminator.
+> > +            len +=3D 1;
+> > +        } else if len < buf.len() {
+> > +            // We hit the `self.length` limit before `buf.len()`.
+> > +            return Err(EFAULT);
+> > +        } else {
+> > +            // SAFETY: Due to the check at the beginning, the buffer i=
+s not empty.
+> > +            unsafe { *buf.last_mut().unwrap_unchecked() =3D 0 };
+> > +        }
+> > +        self.skip(len)?;
+> > +
+>
+> So if the UserSlice content is "abcdefg" (not tailing NUL), and the buf
+> size is 4, after a strcpy_into_buf(), the return would be a CStr "abc"
+> (with a tailing NUL), and the UserSlice would move 4 bytes and become
+> "edg" (not tailing NUL), is this a desired behavior?
+>
+> Alternatively, we can make `dst` always 1 byte less then `buf`, so that
+> in the above case, UserSlice will only move 3 bytes and become "defg",
+> and the return CStr is still "abc" (with a tailing NUL).
 
-> > > not? The downside of calling ktime_to_ms() are:
-> > >
-> > > * it's a call function, and cannot be inlined with LTO or INLINE_HELPER:
-> > >
-> > > 	https://lore.kernel.org/all/20250319205141.3528424-1-gary@garyguo.net/
-> > >
-> > > * it doesn't provide the overflow checking even if
-> > >   CONFIG_RUST_OVERFLOW_CHECKS=y
-> > >
-> > > Thoughts?
-> > 
-> > The function call overhead is tiny compared to replacing a 64-bit
-> > division with a constant mult/shift.
-> > 
-> 
-> Just to be clear, are you essientially saying that even in C,
-> ktime_to_ms() is not worth inlining? Because the call overhead is tiny
-> compared to the function own cost?
-> 
-> My impression is that on x86 at least, function call is 10+ cycles, and
-> multiply is 3 cycles, so I would think that ktime_to_ms() itself is at
-> most 10 cycles. Maybe I'm out of date of the modern micro-architecture?
-> 
-> > What is the possible overflow that can happen here? For a constant
-> > division at least there is no chance of divide-by-zero. Do you mean
-> > truncating to 32 bit?
-> > 
-> 
-> I was referring the last part of Miguel's email:
-> 
-> 	https://lore.kernel.org/rust-for-linux/CANiq72mMRpY4NC4_8v_wDpq6Z3qs99Y8gXd-7XL_3Bed58gkJg@mail.gmail.com/
-> 
-> Regards,
-> Boqun
-> 
-> >      Arnd
+Maybe we just have this method consume the UserSliceReader and avoid
+thinking about what happens if you use it afterwards.
+
+> The current behavior makes me feel like we can lose some information,
+> for example, if the user-kernel protocol is that "a userslice that
+> contains 4 64-byte strings which don't have a tailing NUL", we cannot do
+> 4 strcpy_into_buf() to get them, right? But of course, the scenario is
+> completely made up, just food for thoughts.
+
+But then you should probably just read the [u8;64] type four times?
+
+Alice
