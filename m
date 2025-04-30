@@ -1,70 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4130519C556;
-	Wed, 30 Apr 2025 15:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D1725D1F8
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 15:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746028036; cv=none; b=ig26TyDNjOkpFbHaOhIyZVE7cnCBBq4cZuufelOuNh1JmXjxIgRuPFb0YQODF3ta6wQba9f4v/WkRbH35pIww9BlZsUO2WRcUFm02MObAfyR0UYlZ1DZgyIj4vJ9q3uQki/gug5tDzLVe6JwH8KB1jLpx7x6iiTHC3D8bCS5F4U=
+	t=1746028344; cv=none; b=L7npjgI0RumiQinoFm6y9dJE2/3xNX1E2Hi1Ra3rGP4KNFO/S5iIcjpPh+uCSiTmBwoz2nouFXjFlDRJEh/yjoxYaUl6JzDyFbLEivJ5VAS5D1IYHrFq9W86DQenzJMoO/HHGwVacGic2tt8DA8G3IlOzDAJ+400kA84Pe/3Bxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746028036; c=relaxed/simple;
-	bh=RqZy/6PU4jTCi/K6S4Ve1RF8Ukphek4E1WYilXhVSTs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UBDZNYZgqVjR5/s0bMHx87N/I2ptHMzoCj/NGnOnF+RiF4ZV+MgXLxf15tAbgOwePOnUdM21YerqRPjDUCpxJkJZnxN+89Yg/nDNZ+ttl7ZUWMSpKsqjkHYp3L7vKM72t/cDaEp3jU17YdAoM32NnJe2uInz1/sU2XDPawCD5LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZBynokb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746028344; c=relaxed/simple;
+	bh=WWEGPFSEXsgTebWgjNA2jFYbHRJpo1gsdgBtlCbVGQ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RVM51g66ERrpMLblWoij90hTql0nGrgG9ALeP2AqsAeB0wNjDDse+uxkUPQBiOlueSCaxlxIwtUpcrlmqtNtATNl7LczxPjTM2ckeTRSZBz0MnatDUBqU57hooRsJTppGFWJk/28z1CLpdFZKx5WUiOorZD+quxm2ybY6FVhZgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nXjhybv+; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZBynokb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D6EC4CEE7;
-	Wed, 30 Apr 2025 15:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746028035;
-	bh=RqZy/6PU4jTCi/K6S4Ve1RF8Ukphek4E1WYilXhVSTs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YZBynokb7QgG7cAmgQyqkkQuUjObYPQIvFMHKClLFgxrlk0uyp85Ql8e7a+Gp3Fra
-	 HytERvZ3YySdxmXj21yOjDKLvVX2y7AukSqf5nSeJlawdNtGUz1JcH/rVhWzycPseT
-	 0Iqx9WE1sa/GsjwM4y/IsjYowCQU9U4z9P+fRJPzd5+0gGOmXke3ki1eNZEAcOHSnk
-	 5mNi+SiLu5bLKxQrGIFtjVF9apTiod/m9l9aKIQP2fPxyXFytXJ4rBxBN0mLv/s7Vk
-	 3VKgo5zkxtlB1NI7S50L9N110n337eD1OqrnjXrcJx+RGPz48J8u0gKTG5OYaA+A2U
-	 itjFUz7vHkb8Q==
-Date: Wed, 30 Apr 2025 17:47:11 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/7] rust: alloc: add Vec::drain_all
-Message-ID: <aBJF_5_5fM5mORmd@pollux>
-References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
- <20250429-vec-methods-v4-4-dad4436ff82d@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nXjhybv+"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5dbfc122b82so147a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 08:52:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746028341; x=1746633141; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UUgz0lHIM9AvqVgwegmtWsNz7YXlDr9Kk1u0gwL4TQ8=;
+        b=nXjhybv+E2A1cSVU5MLLC6b37URo5kPRWF5lSAKwp2b5iC/y5pGhF81OIeGVF+gz5R
+         zENz+2GIpnYO66vlB2tkKagqxn8fG9haAJPnQOMtJMK+CIevSP42Ll46nHfl9jNk8ih+
+         WCLGc3+nEl/ZxvFgmMkC6tZQYRN/3YJE8tM1NzHn9o3YXdEbzkSHNu0sasKx1p1mcSIJ
+         oFrR75LWKqHk9cW+P4U+hngdALeN1EhBf7jVRYgot7Oz+17FThKp5AcazMy+PQ0/4EeL
+         TKdNH640lH1bO7J6m40AdKhWmVJAq/ssRbHgz88H6H2ZgVzK0L1TqK0mQZCHI9XDbO7Z
+         sJgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746028341; x=1746633141;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UUgz0lHIM9AvqVgwegmtWsNz7YXlDr9Kk1u0gwL4TQ8=;
+        b=dmkGXwhrgOz0szRnXtEMU3+Tx+H+Hso3zC21Hd4bVO5g/adK63z9+SlXdKny0Dr/9b
+         3pYqJRDtF+SwF8WckJ1/n1nTN3A08aYy4ptQgwGaKSPvwNHXnYqtBfJEbxW3oC4l09MX
+         DeocMlYH06acvYa1sKLCdIWerftMdYU7AMq2vWyK8LtjA5bybrzlIbEr3IIZNEZN8BSV
+         YAb8dHX4ZJyeLPjvp+g/jdGN+2st+UeA2Ga2Ew42Xzz1Vn0z+h2pKuK6mJtc84LdwnlT
+         JuNAqevkak1odp8XF8g7yQA5ZOHzkuGYCtQqZudEqqSROwijlUfqT1FzraRI0bXNq0HC
+         9u1g==
+X-Forwarded-Encrypted: i=1; AJvYcCWo7XEGhsVwymkx3qB5HG4AdCTLRePYaCAP7wV4hVsw0ENaiw3OU3u8ktUSLsR6GChEP1kn0GgizqJl1bbeUg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbTT0YXr5il0sZz9wpkKcU3vFLTSnQJQtDM4g9elbUau8t2Y5s
+	DsInFxFvzcjkHEB+2KqYGlctKQuHHmNabi4W6xr6M3WZ7Il6n1NVZ39kurcmNBakzg83o875gQA
+	8zPgBFHha+DDCcq3CR/Sd7NWeBXK8+iMXEZwW
+X-Gm-Gg: ASbGncsnI92JcTXME6J49f3NPguVegsKrDmexhZQ62mncdxh1IGRlFclzG6XMynIaFN
+	fl+abrBMmkjzHlGHG3KcNhXq7tJatmQ5aOgHOK5w4n9u3LidIIUdrU9QkB+3c//Mh5tTcIl/kxG
+	xh28UeIWv6f9roMRyz1o2V8W2tcULXCGevtZ95PsJuOx5QqYH5bWeoWXpwzp0f0Q==
+X-Google-Smtp-Source: AGHT+IFdqOHywsMBaHqXkTcGmB67EXqbMC7FqDHfbXZkAyjokug6b3F9yQT+IzlELuucqJyVURMXtid879Fh+aycpm8=
+X-Received: by 2002:a05:6402:30b1:b0:5ed:f521:e06c with SMTP id
+ 4fb4d7f45d1cf-5f8aac01ebdmr113976a12.7.1746028341167; Wed, 30 Apr 2025
+ 08:52:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429-vec-methods-v4-4-dad4436ff82d@google.com>
+References: <20250430-rust-kcov-v1-1-b9ae94148175@google.com> <CANp29Y4o8o6gz6GbM6NhP9sJUi94q29=aa+tLc1aCk0UVpgj0w@mail.gmail.com>
+In-Reply-To: <CANp29Y4o8o6gz6GbM6NhP9sJUi94q29=aa+tLc1aCk0UVpgj0w@mail.gmail.com>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Wed, 30 Apr 2025 08:52:09 -0700
+X-Gm-Features: ATxdqUFfWkFt2krZSEThZVrbRM32DbyGd7csCuhOc9hU0LccEz016XDL5xHWJ3s
+Message-ID: <CAGSQo01gLXKWLWcrxSytmCB4YmRnGDX++ZizTws0bEjJ1amWtA@mail.gmail.com>
+Subject: Re: [PATCH] kcov: rust: add flags for KCOV with Rust
+To: Aleksandr Nogikh <nogikh@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, kasan-dev@googlegroups.com, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 29, 2025 at 02:44:24PM +0000, Alice Ryhl wrote:
-> 
-> +    /// Takes ownership of all items in this vector without consuming the allocation.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let mut v = kernel::kvec![0, 1, 2, 3]?;
-> +    ///
-> +    /// for (i, j) in v.drain_all().enumerate() {
-> +    ///     assert_eq!(i, j);
-> +    /// }
-> +    ///
-> +    /// assert!(v.capacity() >= 4);
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn drain_all(&mut self) -> DrainAll<'_, T> {
-> +        let len = self.len();
-> +        // SAFETY: The length is not greater than the length.
-> +        let elems = unsafe { self.dec_len(len) };
+On Wed, Apr 30, 2025 at 4:55=E2=80=AFAM Aleksandr Nogikh <nogikh@google.com=
+> wrote:
+>
+> On Wed, Apr 30, 2025 at 10:04=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >
+> > Rust code is currently not instrumented properly when KCOV is enabled.
+> > Thus, add the relevant flags to perform instrumentation correctly. This
+> > is necessary for efficient fuzzing of Rust code.
+> >
+> > The sanitizer-coverage features of LLVM have existed for long enough
+> > that they are available on any LLVM version supported by rustc, so we d=
+o
+> > not need any Kconfig feature detection.
+> >
+> > The coverage level is set to 3, as that is the level needed by trace-pc=
+.
+> >
+> > Co-developed-by: Matthew Maurer <mmaurer@google.com>
+> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>
+> Thanks!
+>
+> I've run syzkaller against a kernel built with the patch applied and
+> the tool was able to successfully obtain coverage feedback from the
+> Rust code, so
+> Tested-by: Aleksandr Nogikh <nogikh@google.com>
+>
+> As a side note, in the resulting code coverage I also see a lot of PCs
+> from rustlib, which isn't the primary target when fuzzing the kernel.
+> Do you find it reasonable not to instrument rustlib with coverage
+> callbacks? For C code, there do exist some exceptions for KCOV, see
+> e.g. lib/Makefile.
 
-Maybe just pass self.len() directly and say that "`By the safety requirements of
-`dec_len()`, self.len() is a valid argument".
+I think filtering out `core.o` and `compiler_builtins.o` would make
+sense, as those are not kernel-originals. Filtering `pin_init.o`
+probably makes sense too.
+
+`kernel.o` I think we should probably keep at least for now, because
+it's kernel-created source that we'd still like proved out. In a
+theoretical world where Rust has become more normalized in a decade,
+we could filter it out to refocus fuzzers on driver code rather than
+bindings, but right now the bindings themselves are worth fuzzing IMO.
+
+>
+> > ---
+> >  scripts/Makefile.kcov | 6 ++++++
+> >  scripts/Makefile.lib  | 3 +++
+> >  2 files changed, 9 insertions(+)
+> >
+> > diff --git a/scripts/Makefile.kcov b/scripts/Makefile.kcov
+> > index 67e8cfe3474b7dcf7552e675cffe356788e6c3a2..ddcc3c6dc513e1988aeaf07=
+b8efa106e8dffa640 100644
+> > --- a/scripts/Makefile.kcov
+> > +++ b/scripts/Makefile.kcov
+> > @@ -3,4 +3,10 @@ kcov-flags-$(CONFIG_CC_HAS_SANCOV_TRACE_PC)    +=3D -f=
+sanitize-coverage=3Dtrace-pc
+> >  kcov-flags-$(CONFIG_KCOV_ENABLE_COMPARISONS)   +=3D -fsanitize-coverag=
+e=3Dtrace-cmp
+> >  kcov-flags-$(CONFIG_GCC_PLUGIN_SANCOV)         +=3D -fplugin=3D$(objtr=
+ee)/scripts/gcc-plugins/sancov_plugin.so
+> >
+> > +kcov-rflags-y                                  +=3D -Cpasses=3Dsancov-=
+module
+> > +kcov-rflags-y                                  +=3D -Cllvm-args=3D-san=
+itizer-coverage-level=3D3
+> > +kcov-rflags-y                                  +=3D -Cllvm-args=3D-san=
+itizer-coverage-trace-pc
+> > +kcov-rflags-$(CONFIG_KCOV_ENABLE_COMPARISONS)  +=3D -Cllvm-args=3D-san=
+itizer-coverage-trace-compares
+> > +
+> >  export CFLAGS_KCOV :=3D $(kcov-flags-y)
+> > +export RUSTFLAGS_KCOV :=3D $(kcov-rflags-y)
+> > diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> > index 2fe73cda0bddb9dcf709d0a9ae541318d54754d2..520905f19a9b19631394cfb=
+5e129effb8846d5b8 100644
+> > --- a/scripts/Makefile.lib
+> > +++ b/scripts/Makefile.lib
+> > @@ -169,6 +169,9 @@ ifeq ($(CONFIG_KCOV),y)
+> >  _c_flags +=3D $(if $(patsubst n%,, \
+> >         $(KCOV_INSTRUMENT_$(target-stem).o)$(KCOV_INSTRUMENT)$(if $(is-=
+kernel-object),$(CONFIG_KCOV_INSTRUMENT_ALL))), \
+> >         $(CFLAGS_KCOV))
+> > +_rust_flags +=3D $(if $(patsubst n%,, \
+> > +       $(KCOV_INSTRUMENT_$(target-stem).o)$(KCOV_INSTRUMENT)$(if $(is-=
+kernel-object),$(CONFIG_KCOV_INSTRUMENT_ALL))), \
+> > +       $(RUSTFLAGS_KCOV))
+> >  endif
+> >
+> >  #
+> >
+> > ---
+> > base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
+> > change-id: 20250430-rust-kcov-6c74fd0f1f06
+> >
+> > Best regards,
+> > --
+> > Alice Ryhl <aliceryhl@google.com>
+> >
