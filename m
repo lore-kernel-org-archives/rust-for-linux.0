@@ -1,126 +1,87 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C92288DA
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 15:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FDA204F9C;
+	Wed, 30 Apr 2025 15:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746026142; cv=none; b=Kr8UT7gboIk3KmrTA6FWfi8OgCWjMs/SXu87r/NcGNVjgPazeBOG9TL5oJkyA4M/Z3ktmr/TpqJ1ekBQ1I2/wBamFyz9Olc7mU+RA9G8dl6nvrVBzafI0zn5g3i4ycSGlIoca8SsJEjrjo5uKbAggIKIXw7i33ac6rsgXi+7j0I=
+	t=1746026472; cv=none; b=kWn+zkQgoutzV4Ti9U2NRB7X5qP+32x8qrGoGidzLtwkL/9vpuJJk/a/NfBpHwZFPyRQuP9ptNDupCBth+UmpNAm/6A5PsTA57+2wKoAlpSFxFjIuDmIhrzEA0PyKRduO8BTj0zhOThtviaBFttB/IM5NwkaBLyHR1d9yOnDN80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746026142; c=relaxed/simple;
-	bh=Hhu6dSisAhS1fMzmQCWhcynvWoTnaQWM5JzsgauEqV0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ob+x1Y7MN41tl05naelpIoBWD0LKmV8t+usmQZo5CgX9r9dAtxyQnisqI85iAju0mT9PwHVvGi6s/RVLNqL2vb5YaNWC2FadQhS7Z5ClrYiHxYkgLxxFRXovBOPAuBjmbsD1jnLHq1sFxk8zxwNUMELj7tCWV91T/Z4nyYVdYQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EmdLc6xS; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1746026472; c=relaxed/simple;
+	bh=2t0avsYGFh5dbngitM91y3UXh//iU+YmHd1EzhAodJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mNj7FAZVPZ/85DYVOZccADwBL2ee9zltj/4Fr7vSlBtCGWbbEMhLbZkXXhfvWer1uophnNGgjlJpfBT/l0HrnHJMFbwmoFNRjTczs28AHcz6unbYdJl9+233uVUoYv2aSVBjuU4HR+flWHWzOtEt1cEvf4GHg5w+oxyjtgVynrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xvz7OAl1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EmdLc6xS"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4774611d40bso596051cf.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 08:15:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746026140; x=1746630940; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pKZ2dgbW06WSeLilefp4vu6PuAs8SnEk6bEC5IxyYL8=;
-        b=EmdLc6xSirYSLDpce3Sqx6twB38aVFKWT06uqyj3xRHpDDpxmzsbwlXEaOTvqgUC29
-         3nOj7bIBzSpqxA8W3M3RCbqVE2fCPyeR3AEqDTpOCnwJlfWw53dwABKACLPeQi9Xnj61
-         mfR2Brt90NURoDoEtCERxVpspyo5YVejCUndm4UgMQVsLgKsfIj8cjPk7Fl4sCDB4IXW
-         8J2hn7iGIXYqV8WIuseAOp0pNMwhtmlQkkAAF7iO8hOTnoXnPSsx5I7/ZydClL0Ml1og
-         oMI069FJulp6M5T+FbhaoqIwKFgwdsgvwUjvu3yG2kiVldoHnPleNf3rGzJHs1REm1TI
-         moPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746026140; x=1746630940;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pKZ2dgbW06WSeLilefp4vu6PuAs8SnEk6bEC5IxyYL8=;
-        b=gUiRRcSTAK/ovnbI7uv8LuFq0TpsHBgbkrAVEl38bhIEtRBy19pvSxrgmetkjtn+8O
-         QehV0XWbfURu/9NF1cNRrwPhBkGrzLLEG3cwxMOYvK9Tl6c3nersau/RCslwRse0HACw
-         OmgF3wtK8+4rFIxB3M4K68lsCmvc4O21l7FY/nPF+Hg48XWBTKc+lHcTmFA6w0IBvm3u
-         kNdE0QqHxf67scBkoLb1TyZhgyg7YWObDTOIylD4rgqNf1NTJ9ZpdBKTNn6+EXJA0yl9
-         3GrsfHVOoycrflaJyqB013GqavFgyW9Hpv9V+zZLFZZpmvUYDlmUH5PonesQl++oXnRa
-         kB4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXZ1lxnHzGGsmodI8eXfJAD2PONBSePM3vcAklZwJ90OJd90v8DdTk/empVEjGPlB4eInDWO63pAcZ6PgWKAA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEajFS8RB5DTjO9zqaKciXQ3xXBGHvquas/h930rsarCmL/uHb
-	19UnqaBJds8IvOXrLVPDiRb9oAMMqW5cpmO2aFIIxEpq0vhbrsjWYzRns+dp4QrAdllZiTgbtDi
-	JgORsclzJ4lLP+Tyrh1A9bPoW+wfVomrxaZn0
-X-Gm-Gg: ASbGncv8Up2tLoYreqaXc91n6iX8jPfodxHosEWNSH9a8wCbv0T14kuZy0Rhz+w2bSr
-	Z3F7+iYbcGJnf/8+ICHmvotxpoh0pjCbs8zaD8Z0whGjAQJ6+N0onlmzd3wrMpr7GaViAz+h0xd
-	jis6waGVKjdOH/ua7F7FfqxgJESAM23omDxLjHN72HuFb5VnrH9oM=
-X-Google-Smtp-Source: AGHT+IEoUkk6NKnGA1wS8/Jh+KADxLx+/EOtFqYZsYHaH0GJgf4iKBkzrp0jMFygx69hC2OqTpumcDjb9StelgW26VU=
-X-Received: by 2002:a05:622a:1349:b0:477:c4f:ee58 with SMTP id
- d75a77b69052e-489bb1907d4mr5141791cf.24.1746026139801; Wed, 30 Apr 2025
- 08:15:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xvz7OAl1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739D1C4CEE7;
+	Wed, 30 Apr 2025 15:21:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746026472;
+	bh=2t0avsYGFh5dbngitM91y3UXh//iU+YmHd1EzhAodJU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xvz7OAl1AD3mMKNOz5ZJUvauSAKo6qYe65ZC9WN86ulr2CZCF+P0qBetm/9t9hAse
+	 2dQXoL5mxH/KXXm/ZFBpjrGDJO15CgoavebDLVcCOZC5T1KCVCtkGd8HIrsY1FGfJ7
+	 1o82B6fOxyTHtjT5v+Cv6Ptg0FoMddDXQs0EIcp4=
+Date: Wed, 30 Apr 2025 17:21:09 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/8] rust: DebugFS Bindings
+Message-ID: <2025043005-monkhood-caring-7829@gregkh>
+References: <20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com>
+ <2025043024-disk-rockfish-1c1b@gregkh>
+ <CAGSQo0040a9efWj8bCr4KiMUXezJJ2HVQVR5aJ90rgrYSjKq1w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com>
- <20250429-debugfs-rust-v1-2-6b6e7cb7929f@google.com> <2025043053-spelling-rehire-a460@gregkh>
-In-Reply-To: <2025043053-spelling-rehire-a460@gregkh>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 30 Apr 2025 08:15:27 -0700
-X-Gm-Features: ATxdqUHr6aQwTUil5JRuLfNwReWGfKZFCaQxAfML745WvIwQy_JozQ2ZpcZtmGI
-Message-ID: <CAGSQo01PneAee+C6FijhmW_sJt-H_Br5SfWR3NGWyfwk7vr7sA@mail.gmail.com>
-Subject: Re: [PATCH 2/8] rust: debugfs: Bind file creation for long-lived Display
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGSQo0040a9efWj8bCr4KiMUXezJJ2HVQVR5aJ90rgrYSjKq1w@mail.gmail.com>
 
-On Wed, Apr 30, 2025 at 5:06=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Apr 29, 2025 at 11:15:56PM +0000, Matthew Maurer wrote:
-> > Allows creation of files for references that live forever and lack
-> > metadata through the `Display` implementation.
->
-> What do you mean "live forever"?  There's always a structure somewhere
-> that holds it, when it goes away the file/directory should also go away.
+On Wed, Apr 30, 2025 at 08:01:38AM -0700, Matthew Maurer wrote:
+> > And yes, I know why you want to tie debugfs layout to a structure
+> > layout, it makes one type of debugfs use really easy to write in rust,
+> > but that's not the common user for what we have today.  Let's address
+> > the common use first please, save the "builder" pattern stuff for after
+> > we nail all of that down.
+> >
+> > thanks,
+> >
+> > greg k-h
+> 
+> I'll remove that API in the next version of the patch series to get
+> the basics down first, but to give some motivation to what I was
+> trying to support which *is* done in C today, see qcom-socinfo [1] -
+> it uses a backing `socinfo_params` struct which is expected to outlive
+> its whole directory structure.
 
-That's the builder implementation I mentioned later - it lets you
-connect the directory to a resource. This is an initial simpler
-version to keep the patches small which lets you export e.g. the
-contents of global variables safely.
+What exactly do you mean by "outlive"?  Right now debugfs has no way to
+"own" a structure and it just "has to work" so that the file will always
+be there and hope that the backing variable is also still there.  I
+guess you are trying to encode that "hope" into something real?  :)
 
->
-> > The reference must live forever because the corresponding file is
-> > reference counted, so there's no way to say the lifetime outlives it
-> > otherwise. This restriction will be relaxed later in the series through
-> > use of `debugfs_remove`.
->
-> Why not use that from the beginning?
+> [1]: https://github.com/torvalds/linux/blob/b6ea1680d0ac0e45157a819c41b46565f4616186/drivers/soc/qcom/socinfo.c#L133-L156
+> 
 
-Because that requires the builder API + pinning, which I thought would
-be a more complex conversation, and wanted to keep the "just register
-a file" patch separate from the "here's how you ensure that data lives
-at least as long as the debugfs directory" patch.
+Yes, SOC drivers are a mess of debugfs files, but manually creating them
+is "fine" to start with, let's not go wild to start with.  If we see
+common patterns outside of the single soc driver use case, then we can
+propose exporting structures as a directory structure in debugfs, but I
+really think that is a very minor use of the api at the moment.
 
->
-> > The `Display` implementation is used because `seq_printf` needs to rout=
-e
-> > through `%pA`, which in turn routes through Arguments. A more generic
-> > API is provided later in the series.
->
-> Building stuff up to review only to remove it later makes it harder to
-> review :)
+thanks,
 
-It doesn't really get removed - `display_file_raw` is still the
-underlying implementation for the more generic API, and this API stays
-around as a convenience API.
-
->
-> thanks,
->
-> greg k-h
+greg k-h
