@@ -1,118 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925E619922D;
-	Wed, 30 Apr 2025 09:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A5B24EA90;
+	Wed, 30 Apr 2025 10:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746006396; cv=none; b=JzbS56Phxq8CXyhRz46uXg20WJeNzAY5Z2542hQDGe67ythXLLBN9v3lrWduCr69/hFSi47wsICWBpcQQa9eWS9EFiYxHP9ncW+lCBA0MSJv2D0X9tRGnImBhGUZIQJjUJZp9K8/lSlsixnv5uT3knpVFnsJTqdB9+3Y+0toM2E=
+	t=1746009163; cv=none; b=OMd+miJZ+gblCMzlI2DoYHpvTHz3NF63kaMEHWHln/jqpPDXj6mzfL8DoY5n4yASfokbFBX/rKlFngZgElyLya1uVg954/zc26mvRMHF19nqHsj2un/4bCM/Fz0AWwnkcDcm0nJRN4er8f+eGZxqQGXdlhyi51fK8T/dW6422B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746006396; c=relaxed/simple;
-	bh=vfj8dmGymxMr5n0rbXOEyFWN4xzpZmgFzCSqrtj2cCk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=C8ObI7WPh84nk6enFEpM68JYb4LYDZBiNLyrpEPLXlzEVnTn0yp9iSCJsIMJW5aMVdZxPsO3f49ANHBXNKhWsXMPZni1SaUEhuRL4guUsCbQrTYrYGM/BVDIOeyKghyPUxjTK8YSVL9yrKRVQaUdCkS8r0Gi9N2JV59cJO5T+DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4TtDnZT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746009163; c=relaxed/simple;
+	bh=o+S1aIP7xzbJyrhAIC/cn6ntSs0hD4BPJIGQKZt97QA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NpNG2SFoshFcXTEer2/8Nq8Fq1A2gKGoMDTdrIMr5kYZegiCR0rds65yr7V5Y11CRKtk+7MZmwHuMcXRHxKoFyTRnxE6m+BoA2xgiXNH8i2VAVUyrN9j8IbT01YiLv9c8iKFvbpDz4s4xAMeomT/9NRSaPmurkcTFvb6OAS6EoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=owBorUhS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4TtDnZT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38ABCC4CEE9;
-	Wed, 30 Apr 2025 09:46:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="owBorUhS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC66C4CEEA;
+	Wed, 30 Apr 2025 10:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746006396;
-	bh=vfj8dmGymxMr5n0rbXOEyFWN4xzpZmgFzCSqrtj2cCk=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=u4TtDnZT4f1GWPEHWOU6TzPXNLrqZIAqcq0XHb06m3S1HYIfRScaMja+NNHaaMWus
-	 RTSi82dUnRyJ9tLuE30bH7PxDzWhPLL29Pb/TDPkjq/kbIqzCjwT65+b0DB+6zcHDg
-	 oBBxTLeRNzPwWakbq57OBaWInqNbFxYHprvzCYB1ZZB40rxpHFtxM6EaB9/yRKgs5j
-	 5L3Dr+yfCCCuCS40O2f1xe/a8MTbLqskgYbsciOWw+0wBHAsVCXS+el8K0Sa7rttzl
-	 twUDQg5pBKDDVkpt7WtYnAt0A6o6mzjplURkNuNjvMxGV6ygd5ZC7430MS0+/PXXjl
-	 tXNMBiz6MjpQA==
+	s=k20201202; t=1746009160;
+	bh=o+S1aIP7xzbJyrhAIC/cn6ntSs0hD4BPJIGQKZt97QA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=owBorUhSaii7VmgJCrYuG9Fv/vFiEpeulZVWmpn2SI2y9kgzM1m372LoLJCviqERr
+	 7yavPWj1x247McK+IFtM7vLr01D0aKar6Nd40qUcxSZ4xWPs1i3ab6mveT2p8wTlIX
+	 uBidLfXY+pY09ClJ1FvUJczfR7V82b5Anq91hcoO6lAiw3dcVPIXxr01wuALpPRWMt
+	 sf9YBXQ8kq8OmxUWxMsGghoFmwaQWhdEGbw7PCK3KOl2K8fEUfVcu7yEyJxnFWg7+c
+	 KoCuEnXVWgjuLxN5qQRGU27IRSVQPGiJEFNx6885EFsSgr0KhU8295ww/87nLd1n0V
+	 futn8s4BTlWJw==
+Date: Wed, 30 Apr 2025 12:32:33 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH 11/16] gpu: nova-core: add falcon register definitions
+ and base code
+Message-ID: <aBH8QUwxabyo-oqm@pollux>
+References: <20250420-nova-frts-v1-0-ecd1cca23963@nvidia.com>
+ <20250420-nova-frts-v1-11-ecd1cca23963@nvidia.com>
+ <aAerWF9j5d01pQv0@cassiopeiae>
+ <C4F54820-4FCE-4096-B341-DB9AB667D0B8@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Apr 2025 11:46:31 +0200
-Message-Id: <D9JVLYZLBG75.2RG8ZG8Q48HNB@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 0/3] rust: add `UnsafePinned` type
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Sky" <sky@sky9.dev>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, =?utf-8?q?Gerald_Wisb=C3=B6ck?=
- <gerald.wisboeck@feather.ink>
-X-Mailer: aerc 0.20.1
-References: <20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com>
-In-Reply-To: <20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <C4F54820-4FCE-4096-B341-DB9AB667D0B8@nvidia.com>
 
-On Wed Apr 30, 2025 at 10:36 AM CEST, Christian Schrefl wrote:
-> This version now only has the kernel implementation without the
-> config flag for using the upstream version. Additionally now
-> commits for using `UnsafePinned` in `Opaque` were added.
->
-> Checkpatch warns about `rust/kernel/types/unsafe_pinned.rs`
-> missing a MAINTAINERS entry, I don't think that is necessary since it
-> will be part of the `RUST` entry anyways (from what I understand).
+On Wed, Apr 30, 2025 at 06:58:44AM +0000, Joel Fernandes wrote:
+> > On Apr 22, 2025, at 10:45 AM, Danilo Krummrich <dakr@kernel.org> wrote:
+> 
+> > [1] https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=bf7035a07e79a4047fb6834eac03a9f2
+> 
+> I am still researching this idea from a rust point of view, but quick question - will this even work if the chip type (GAxxx) is determined at runtime? That does need runtime polymorphism.
 
-That is correct, it will be part of RUST. AFAIK checkpatch always warns
-when a new file is added, but I could be wrong.
+I exetended the example in [2] to address this with `enum HalImpl<E: Engine>`
+and a second architecture that is picked randomly. It needs match for every
+access, but that's probably still better than the dynamic dispatch.
 
----
-Cheers,
-Benno
-
-> Once this has had some time to review I'll rebase my `miscdevice`
-> patches [0] on top of this.
->
-> This patchset depends on the `pin-init` sync for v6.16 [1].
->
-> Link: https://lore.kernel.org/rust-for-linux/20250131-b4-rust_miscdevice_=
-registrationdata-v2-0-588f1e6cfabe@gmail.com/ [0]
-> Link: https://lore.kernel.org/rust-for-linux/20250421221728.528089-1-benn=
-o.lossin@proton.me [1]
->
-> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-> ---
-> Changes in v2:
-> - Expanded `UnsafePinned` documentation to describe differences
->     with upstream rust implementation.
-> - Removed config flag for using upstream `UnsafePinned` type.
-> - Add patch implementing `Wrapper` for `Opaque`
-> - Add patch for using `UnsafePinned` internally in `Opaque`
-> - Link to v1: https://lore.kernel.org/r/20250418-rust_unsafe_pinned-v1-1-=
-c4c7558399f8@gmail.com
->
-> ---
-> Christian Schrefl (3):
->       rust: add UnsafePinned type
->       rust: implement `Wrapper<T>` for `Opaque<T>`
->       rust: use `UnsafePinned` in the implementation of `Opaque`
->
->  init/Kconfig                       |   3 +
->  rust/kernel/lib.rs                 |   1 +
->  rust/kernel/revocable.rs           |   2 +
->  rust/kernel/types.rs               |  42 +++++++-------
->  rust/kernel/types/unsafe_pinned.rs | 115 +++++++++++++++++++++++++++++++=
-++++++
->  5 files changed, 143 insertions(+), 20 deletions(-)
-> ---
-> base-commit: 39051adb070432b283e6c11b2b24937281b9f97f
-> change-id: 20250418-rust_unsafe_pinned-891dce27418d
-> prerequisite-message-id: <20250421221728.528089-1-benno.lossin@proton.me>
-> prerequisite-patch-id: dcf79c049766e66eda0377b225bb441edefcdfe4
-> prerequisite-patch-id: 0a078ba4989327e90317f882fa42a387bb7594a0
-> prerequisite-patch-id: d5182c6fc3e3b2f255001334b5da9d5c5b7b29ed
-> prerequisite-patch-id: 016806607094f0f403000ec455db9ea79e538bf6
-> prerequisite-patch-id: 368bea523f3b3e14f1dd599343475e0b166fad37
-> prerequisite-patch-id: 526054a8a8871d1dd5f376b7ab6aa5542b481b70
-> prerequisite-patch-id: a691b331bc3200287413e6423b8cc3e9cbb177e0
-> prerequisite-patch-id: 5afb38f41b18408fef4d3abc5750c09a67b2d34e
->
-> Best regards,
-
+[2] https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=99ce0f12542488f78e35356c99a1e23f
