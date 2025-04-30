@@ -1,101 +1,169 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39167FBAC
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 16:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD62261362;
+	Wed, 30 Apr 2025 16:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746029772; cv=none; b=TOXw9+GWhhjko6VdsuQ70ArpY95UINN8sHpDxCP3GJ9IbeQ2jNflUDZzATqL3jjbJIgeiIhC7/br+UofTpacklX6r27PcQ2SV/ZfCNV3XFj1EGNvHTX00F/pYvBVcMJNIsTHYUztszgt3akAHxqFp88PdjCrRRNUvX0cfUmKqBI=
+	t=1746030369; cv=none; b=ctY9AT4ocUg7RtunVYxvV5o2F9qOqbWPiH07P6+M/wuYrWY/D+aDw3OS/Ikj8D2iQYlx8W9fNmiOVWXksdrHL+xiyqk55BbIqI4f9CXeDK+xTsMlewmBOG+/ZiNlm0yteWBurBzRtGZGOfhmYq9cHMc/JFlvBoJjSQPqoYEuU9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746029772; c=relaxed/simple;
-	bh=k7I4v82gj5ha2wfX4LinxA1Yg1t64C5c1c7HVqM+iLw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S8Ne/FfG3ZzNBNOdZZSKQ2DTGMTgz5Mber/PvsfFMrh8+pvkR/RflnFRGNeWz3c96Uu0wr140QIlA4ZEnckbwYMWc4xN/cbCWVYP8Iv0uRQESSY4MqdjcuKQSkLYFtSqmw5e6ID3hhzQw4Zq1fZ4C0rdunUBPgJcSI49VAxP//E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FF5aBWbH; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1746030369; c=relaxed/simple;
+	bh=hDWjvaRuOUyneWLyZQ5qYzQIZME0G84HNq7ZxRdl/VI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BCBXla68iriJeMsAQVfRX/hKE4CIT3hZzcoLg6jv7qIPE5EtP7X0/66BTTzPfvQw3s48tmXkEqQDB6Fm5WixSFT4Hh6kdB/xhPgGXc6cFs0SLzTVLmCzRiOn5cGfZYOt8uEDNiiVrCPzO1PJDOV3B6y/CeJKJ3sLUeGE+UNi2Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KD4Y2I0U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FF5aBWbH"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7c08f9d0ef3so474145885a.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 09:16:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746029768; x=1746634568; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k7I4v82gj5ha2wfX4LinxA1Yg1t64C5c1c7HVqM+iLw=;
-        b=FF5aBWbHpB5b8y6JEZtRYRfUXR0XrubFWieb0RjsCqiPXkV/HovP8hYMtzwcEheXlm
-         b5L0eZR3PbctAuJAAndpwstLQMJJ8vmXjsmqWcenoBOkvgKPwLPCR+t2I5U4lTVWgjys
-         DgjSH+Y5KM+RYi2m48TsRoEiOOUYXkp1qGOcZxeD8basOXV1EhZnWCNuQoJVWyhJQKJz
-         KSsjkTNF+7Zqcl9UjMf9DD805Tus7id/XtJ8rr//pejLevvP5Zt0lOSe6+qHqjXa/u3F
-         +PgzjokIs4QpxdMFtC2X2cSeIQ/Rr3auV1CWwd1Ah1KXRG5Y3TeBBAV546WlpB4fZxMA
-         oGIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746029768; x=1746634568;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k7I4v82gj5ha2wfX4LinxA1Yg1t64C5c1c7HVqM+iLw=;
-        b=VHnxnryXT6p5tOdcqqDu3Bm4G9/XQ+ZZXzZObMOPKsTMmQ1fSBCZCwyCYjE/TktMCG
-         yej4ErhO+py52GziupgYMQWD2XCR3RqByzhvei6eJnaFDWK7tfuOfbBE9SktqFB7waE2
-         sz/nKOvORHsM6mTt79FjAC4QtCIZR4f36OYunxEkOZ7kXNsD9j4FFUGNMveviPjDVhtr
-         2elxyQFtCXS2Ccn2Y1aNtEBFzMyJVxKXvmzZhsOZ8aeXYwNR6jNagixnorLL/lJLlj84
-         mQZxc+KdCvv8GSyhd/WxQ6gMRh9sJ+BCvmuX34Bj9GKdX/L/x1V7tYdyEAeUPQiw08Z7
-         YspA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgwlkBbnsvVnfjdC3ywsQruXoNiwWTUom9uIHBRLhaYj0+JQ88x7kEA9Ohqn/tfi0N8EIzo1icQJUtVx5QQg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKJfXPCZ2luTyJGg3FBadAbDJ7AMKfNGKTZhItUHefpUOUc1+U
-	EwM7oJh9NTD4NWrbZgy7LZsyhJZuYLLo8hbQpa8YHpGbMQUZ482AA+MUzHsiv3oSaS9hHp7gKub
-	wiPPsyeUCHPi/4fRHLtPeg3/g+29BpKUoqzax
-X-Gm-Gg: ASbGncunYodQF3893BPji5dOgUF5E2zk1DJsoePQuuMnkG3RexnZ5qzwco92RcHYoW1
-	tpmHhksFkPMJX0Ewl5UqYkIBBgfKGHQumWX5sSXz3XecFC8HfvICoBkbNtWpLzGAw71vf8ulTHD
-	O8TBs1JlZNh9KVb7exK20vzpMbDXz/OvisK2Zauq5Fh4rF2RnZvkM=
-X-Google-Smtp-Source: AGHT+IEjndaFBgLPklaVjaJmwIpe21xcoRJmCvEN8z9dGyswUD0gxgYhYsw0agRo8Eeel6INjc8vH0r0ZgmLyHZ3Knk=
-X-Received: by 2002:ad4:5c62:0:b0:6f4:c8df:43d2 with SMTP id
- 6a1803df08f44-6f4fcf75780mr63178966d6.35.1746029768272; Wed, 30 Apr 2025
- 09:16:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KD4Y2I0U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB40C4CEE7;
+	Wed, 30 Apr 2025 16:26:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746030369;
+	bh=hDWjvaRuOUyneWLyZQ5qYzQIZME0G84HNq7ZxRdl/VI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KD4Y2I0UN/RvRqMxBNGk7d059X1HxBqxD7LhRB1W4WtwOEH5fJNZ55V/GReyXpVIa
+	 +gqvXyKjDeKQpH4C8CMsUrZC3LGWNl5bh9jzP1rL0ByjJeV7MhifKNbezrprLbASB7
+	 VuELCmdDeFrwbtJ6w88n4Xa+fKYVEW4QwHtaHgJqIQep2fOMlvuTyGyiAnNCfRRGit
+	 ycKogItCp8hUCcM61mzFZZaTaMKNAN4EIeCQSmEuJsojzovyEh1oaBzaAhYHBKz6ZU
+	 CsvOMYUe57cG/njsHKzpol6OOzguE/RBhjy37dkqy/2vLJT6JqI0f3Awl7Vn7cvLAh
+	 NEZH46yKCfNWw==
+Date: Wed, 30 Apr 2025 18:26:05 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 5/7] rust: alloc: add Vec::retain
+Message-ID: <aBJPHUDYBGyAgUNf@pollux>
+References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
+ <20250429-vec-methods-v4-5-dad4436ff82d@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250430-rust-kcov-v1-1-b9ae94148175@google.com>
-In-Reply-To: <20250430-rust-kcov-v1-1-b9ae94148175@google.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Wed, 30 Apr 2025 18:15:31 +0200
-X-Gm-Features: ATxdqUFTsrw87yiAkUoAh6if5K7wSAisaG3kMae-iYUZsldqIbdRSg1dOLfX6vw
-Message-ID: <CAG_fn=VoGiRmeYZ=tN+e+R=6VU+piSkdzewwVGuVhfddSTzu3w@mail.gmail.com>
-Subject: Re: [PATCH] kcov: rust: add flags for KCOV with Rust
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Aleksandr Nogikh <nogikh@google.com>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, kasan-dev@googlegroups.com, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250429-vec-methods-v4-5-dad4436ff82d@google.com>
 
-On Wed, Apr 30, 2025 at 10:04=E2=80=AFAM 'Alice Ryhl' via kasan-dev
-<kasan-dev@googlegroups.com> wrote:
->
-> Rust code is currently not instrumented properly when KCOV is enabled.
-> Thus, add the relevant flags to perform instrumentation correctly. This
-> is necessary for efficient fuzzing of Rust code.
->
-> The sanitizer-coverage features of LLVM have existed for long enough
-> that they are available on any LLVM version supported by rustc, so we do
-> not need any Kconfig feature detection.
->
-> The coverage level is set to 3, as that is the level needed by trace-pc.
->
-> Co-developed-by: Matthew Maurer <mmaurer@google.com>
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+On Tue, Apr 29, 2025 at 02:44:25PM +0000, Alice Ryhl wrote:
+> This adds a common Vec method called `retain` that removes all elements
+> that don't match a certain condition. Rust Binder uses it to find all
+> processes that match a given pid.
+> 
+> The stdlib retain method takes &T rather than &mut T and has a separate
+> retain_mut for the &mut T case. However, this is considered an API
+> mistake that can't be fixed now due to backwards compatibility. There's
+> no reason for us to repeat that mistake.
+> 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
+> ---
+>  rust/kernel/alloc/kvec.rs | 72 +++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 72 insertions(+)
+> 
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index 72bc743ec88bf7b91a0a1ffd9f830cfe4f983ffd..357f5a37c7b1d15b709a10c162292841eed0e376 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -608,6 +608,29 @@ pub fn drain_all(&mut self) -> DrainAll<'_, T> {
+>              elements: elems.iter_mut(),
+>          }
+>      }
+> +
+> +    /// Removes all elements that don't match the provided closure.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v = kernel::kvec![1, 2, 3, 4]?;
+> +    /// v.retain(|i| *i % 2 == 0);
+
+NIT: What about making this `v.retain(|&mut i| i % 2 == 0)`?
+
+> +    /// assert_eq!(v, [2, 4]);
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn retain(&mut self, mut f: impl FnMut(&mut T) -> bool) {
+> +        let mut num_kept = 0;
+> +        let mut next_to_check = 0;
+> +        while let Some(to_check) = self.get_mut(next_to_check) {
+> +            if f(to_check) {
+> +                self.swap(num_kept, next_to_check);
+> +                num_kept += 1;
+> +            }
+> +            next_to_check += 1;
+> +        }
+> +        self.truncate(num_kept);
+> +    }
+>  }
+>  
+>  impl<T: Clone, A: Allocator> Vec<T, A> {
+> @@ -1130,3 +1153,52 @@ fn drop(&mut self) {
+>          }
+>      }
+>  }
+> +
+> +#[macros::kunit_tests(rust_kvec_kunit)]
+> +mod tests {
+> +    use super::*;
+> +    use crate::prelude::*;
+> +
+> +    #[test]
+> +    fn test_kvec_retain() {
+
+Can we have this return a Result, like doctests can do?
+
+> +        /// Verify correctness for one specific function.
+> +        #[expect(clippy::needless_range_loop)]
+> +        fn verify(c: &[bool]) {
+> +            let mut vec1: KVec<usize> = KVec::with_capacity(c.len(), GFP_KERNEL).unwrap();
+> +            let mut vec2: KVec<usize> = KVec::with_capacity(c.len(), GFP_KERNEL).unwrap();
+> +
+> +            for i in 0..c.len() {
+> +                vec1.push_within_capacity(i).unwrap();
+> +                if c[i] {
+> +                    vec2.push_within_capacity(i).unwrap();
+> +                }
+> +            }
+> +
+> +            vec1.retain(|i| c[*i]);
+> +
+> +            assert_eq!(vec1, vec2);
+
+Don't we have macros around kunit_assert!() and kunit_assert_eq() outside of
+doctests (i.e. dedicated kunit tests)?
+
+I much prefer their output over the kernel panic we get with the "normal"
+asserts, unwraps, etc.
+
+Consistently sticking to the same output on failure makes it easier to catch and
+easier to setup CI environments.
+
+> +        }
+> +
+> +        /// Add one to a binary integer represented as a boolean array.
+> +        fn add(value: &mut [bool]) {
+> +            let mut carry = true;
+> +            for v in value {
+> +                let new_v = carry != *v;
+> +                carry = carry && *v;
+> +                *v = new_v;
+> +            }
+> +        }
+> +
+> +        // This boolean array represents a function from index to boolean. We check that `retain`
+> +        // behaves correctly for all possible boolean arrays of every possible length less than
+> +        // ten.
+> +        let mut func = KVec::with_capacity(10, GFP_KERNEL).unwrap();
+> +        for len in 0..10 {
+> +            for _ in 0u32..1u32 << len {
+> +                verify(&func);
+> +                add(&mut func);
+> +            }
+> +            func.push_within_capacity(false).unwrap();
+> +        }
+> +    }
+> +}
+> 
+> -- 
+> 2.49.0.901.g37484f566f-goog
+> 
