@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3FA231856;
-	Wed, 30 Apr 2025 09:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB001E51FF;
+	Wed, 30 Apr 2025 09:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746005578; cv=none; b=nUzd+NiN02lXHll0z13BWoPTY5Xc34pZWbUPzQgwTYDiuHf/lQfC1PFPNBqORWOsdZWOZdrQVSgARX3ZCgbyCsZqCO+cL4/u9TLITqadRXynkXZvQBwlMFV9yYh6hH+VDzPVzKjaSDUUYpvDIAAjWkGcPI8qHGUQDv5VxbgX8ug=
+	t=1746005712; cv=none; b=HAjJRy/IR+TeDDbJ43/BgVWP2suzQYw/qJtToy4JVjVARctiNnZ7UjxIKFo9WqUaq9p2N5Zi2kwHIuM4u4Czjmju+E/xQpMLk+RDNR23q5ODpntYKe9Bo7QFAjA3MuJDNURuwA4zR8lRk3WFXIuq1GTbzRaUa/uIlbZA3KgJbRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746005578; c=relaxed/simple;
-	bh=rAJtEV8XNhHDLkmxcy3W+Ng4pKD/f66UzwwLY2Pf8nw=;
+	s=arc-20240116; t=1746005712; c=relaxed/simple;
+	bh=w0O6sqgVzKc2geyCtGY2gZzYcNDmZHMKOUlJyyMv0CU=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=CkrLw/NWXaJ3hLhTFCmEZlk6SQh3MtK3QSgUuIkkteJGikkNUzw3LyolX6P4J9+B3AIVvIwb2XuEkguZxJ9YToEYyVOxtQVtpfR148u2m3IJDRGfzP1rZqCr2KSDlUM88UrkDaesxeVYmFFOgo+t0sFK3j1K5DPv0TrHA/IG4Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNUM8oOq; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=WHDtj1ftJoJjphunl8VCH6VXfPmYekR4YBNWN1CJntL9ya18BxCWaknsiy5t7P8BLh56FTg5YqftAZk6tYJFH0uYbJgu2r3ovMV1HKr67hpTMzp78xXSTBW6DEcdFQQB2bUNtut6lS2LLmk+SD/6Z8fwqSdt46c+MNp2zqgRTe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhF6M12q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNUM8oOq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E30EC4CEE9;
-	Wed, 30 Apr 2025 09:32:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhF6M12q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15313C4CEE9;
+	Wed, 30 Apr 2025 09:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746005578;
-	bh=rAJtEV8XNhHDLkmxcy3W+Ng4pKD/f66UzwwLY2Pf8nw=;
+	s=k20201202; t=1746005712;
+	bh=w0O6sqgVzKc2geyCtGY2gZzYcNDmZHMKOUlJyyMv0CU=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=aNUM8oOqgMjwJCjvIjG4hLIcwTp3UNLPfvDg3UhQleXEiP0WbitlRJbGTXgYRH6Sb
-	 cW1vK5Z6wscBDlPh7k0gV/1kJv+xF6e+QBmFpizgcQvCL32wH2w8ZZThR/4U6L2JAH
-	 wSv8Fk4LQZSOCeZPes0It9ZE1DBhke5ltMiwLpCcuxpWM92q7cne5pc575FZvjBX6i
-	 NIWDt1tdjyIkiteailksmuVcY45G1hjsK6UyRBxfSX7V5nEpaHoENamna/z4Cuf6LM
-	 Cv1NEyIAEmJtzgurPbudHQ9TC3Dh5QW+BH79Zabnob02kBvuKOEbatXlm9mnAGkCys
-	 cg5WFlCmrHrKg==
+	b=uhF6M12qG9rZgIwTDm7/Q+Icy+JMynocJWsQfhs/vPuxxSb7Up6/vYhzdk3mHVU/c
+	 FCjxZbUviHAXAVrghCy6MHrxa3l/vqMCIqm7hk0dgIBW00+eiOk5pJlqTkxsoUlw1e
+	 AbhbwpTQsduVjPrRVm5OaBhon+SUh5hiltXS5VMUwQPyv4RHzIaZq3OW1F0xsnPbGK
+	 a1LP++RlOTCCwWQAXqTPgvkQaYZjDndShx3/G+IByHlvUNdKJmSTm0VzYxZTJvBhMX
+	 c5Ax+v3ZjloVMfr/gdAdJFcgWtNPOVpvIzGy0t0MH0YntBFzJG5Y5iaCXlSIY8WM+Y
+	 vZAtYYX8J3irQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,10 +34,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Apr 2025 11:32:53 +0200
-Message-Id: <D9JVBJ7NUE2G.3AFGELETSX50N@kernel.org>
+Date: Wed, 30 Apr 2025 11:35:07 +0200
+Message-Id: <D9JVD8VXL45C.2NHMV68432VV0@kernel.org>
 Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] rust: implement `Wrapper<T>` for `Opaque<T>`
+Subject: Re: [PATCH v2 3/3] rust: use `UnsafePinned` in the implementation
+ of `Opaque`
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Sky" <sky@sky9.dev>,
  "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
@@ -49,22 +50,28 @@ To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Sky" <sky@sky9.dev>,
  <gerald.wisboeck@feather.ink>
 X-Mailer: aerc 0.20.1
 References: <20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com>
- <20250430-rust_unsafe_pinned-v2-2-fc8617a74024@gmail.com>
-In-Reply-To: <20250430-rust_unsafe_pinned-v2-2-fc8617a74024@gmail.com>
+ <20250430-rust_unsafe_pinned-v2-3-fc8617a74024@gmail.com>
+In-Reply-To: <20250430-rust_unsafe_pinned-v2-3-fc8617a74024@gmail.com>
 
 On Wed Apr 30, 2025 at 10:36 AM CEST, Christian Schrefl wrote:
-> Moves the implementation for `pin-init` from an associated function
-> to the trait function of the `Wrapper` trait and extends the
-> implementation to support pin-initializers with error types.
->
-> This allows to declare functions that are generic over `Wrapper`
-> types.
->
-> Adds a use for the `Wrapper` trait in `revocable.rs`, to use the new
-> `pin-init` function. This is currently the only usage in the kernel.
->
+> This change makes the semantics of the `Opaque` implementation
+> clearer and prepares for the switch to the upstream rust UnsafePinned`
+> type in the future.
+
+s/This change makes/Make/
+s/prepares/prepare/
+s/UnsafePinned`/`UnsafePinned`/
+
+> `Opaque` still uses `UnsafeCell` even though the kernel implementation
+> of `UnsafePinned` already includes it, since the current upstream
+> version does not.
+
+This would be very important to add as a comment on the `value` field.
+
 > Reviewed-by: Gerald Wisb=C3=B6ck <gerald.wisboeck@feather.ink>
 > Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+
+The change itself looks good. With the comment added:
 
 Reviewed-by: Benno Lossin <lossin@kernel.org>
 
@@ -73,6 +80,5 @@ Cheers,
 Benno
 
 > ---
->  rust/kernel/revocable.rs |  2 ++
->  rust/kernel/types.rs     | 25 +++++++++++++------------
->  2 files changed, 15 insertions(+), 12 deletions(-)
+>  rust/kernel/types.rs | 29 ++++++++++++-----------------
+>  1 file changed, 12 insertions(+), 17 deletions(-)
