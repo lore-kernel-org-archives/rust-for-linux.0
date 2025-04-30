@@ -1,270 +1,241 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3334288DA;
-	Wed, 30 Apr 2025 16:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EB92641E2;
+	Wed, 30 Apr 2025 16:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746031389; cv=none; b=ImTFgfNKw3kXdZw1YkZ9kh8Z4HGOC+Ccizu+SP2HpQlulaoiPpKg5nXd1X2AM7aegZ53z44FKBuT8j+rvVxEHHsQao56F4X6wf21Qkt5bsH78rWaus3SMo15QYO6FTYRCB95FEraSkd3c1o54GluZ1rUsn7rd2zHXbFOFPYvuCg=
+	t=1746031451; cv=none; b=mf9G3FNwsnYmSc7CEPasiyq+ESTEH8XyHE/0a8y752+jXlLhcx3ZWkzTQR3awaFzMDwmMnDEfz/jr9JNXp+Nnr3E/PfR+zNqag4k8WyGFa98ByVXHYf4g17B59Bk9f8LFz603oIqfd6ZRslhRl3D3Tqdfmvfl0vTJjcV/8E2uko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746031389; c=relaxed/simple;
-	bh=G4oiFZbFiXvHgWV+JSaBFAW886RfJtGLNAynJQXdcWQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G5aFCidkW9SlARkWavlsSKXrspchjGTlaub76O+WKEbA6pdZEenhIV3bCKh5sb5q54bZ+ylDt2rYqbO32X2+fUvSkFTZ83mFRKaRvsHMMKbqq9kZIMh5vn+a4QjmztyctofSAi1p3ZZm3K4YSRs0QLeApbHnct5ZSHUrCxQ3FW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hi7hiEzM; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1746031451; c=relaxed/simple;
+	bh=S3qjZUTXyva0KmEUxrdqUlTkUktNeKaOQGn0h0IFgoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=snM4mrHKU+aJ3adNutpOGTGDtpZosoqKwDhP1izanUeqtNc89fKXOpGAWrXJV5kdjwRb732pl0dvytl8LvzvjMk6LmBlvqXfGMwF/YqSj25dfRBcCjkyxaO89bqw05JGhN4VgQPDZQrlMeO0+W5dHuP8dz34BIhYmB7nXrsURJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i986bSwp; arc=none smtp.client-ip=209.85.219.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hi7hiEzM"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43cec5cd73bso37630755e9.3;
-        Wed, 30 Apr 2025 09:43:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i986bSwp"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6e8fd49b85eso1751806d6.0;
+        Wed, 30 Apr 2025 09:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746031386; x=1746636186; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nJiAf5o1o3t4Zc12gEdYScmBrcEv2gqtb9G2WE6q1qg=;
-        b=Hi7hiEzMy+I0aE/qidXzukY61vnvw6miovB7z51QWDxP5VmsLGUfIW86mFVvkLHtlJ
-         F1ZzXo9dEMZZ3IJlZXKuGBvJqR9WkD1kXwC98FXmIIEDCwDeRSudKLgzQhvvo+0RCBAE
-         mswH6YQcCCOYU96B8Cb3ZCQvuBgb7A+ytGANE2pUYV8rvrnuJQJoNMUy/R1yzC8qiTY7
-         BhH7BWhG8Tv43gvShPoubZkpxZDLJ3UozbJbmPyLA90AjCb8MFuLXN5uT2kB5Y8YaOSE
-         iecHYqGJn4KjQVCU2gl7M07dJANsdi2vgP5cqcM2ITjtT6SPXXByJFc947+21mTnc6Th
-         m4ng==
+        d=gmail.com; s=20230601; t=1746031448; x=1746636248; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=38HytJ3ptnvrdkyB15yGBsGT1lU1pkC9z7I696Nt/eo=;
+        b=i986bSwpAOWy4A5OyeQhbVLTmuKFhdYeITdTgSeYUbzQefDN6K9Wwmn3OtTAQzh1KV
+         vnwTEaZtzwQM+21pyrTNxggeurLOxuRRccAwbf/h6Yoo00xJYGA2BJysSPuzbsFspyd1
+         uCgX3o5oQyetF0NJTdmX26X4FtgOredmLNerCpqL30de5MTnNdoZbCK+uWaHM/vSQQjX
+         Gx+x+of0xmo//GxENI8aKKdZnt2aijuif+mDJ3RxmDVCttgOG9AjkcROHBCztZLlEOzR
+         P8ttnBHObehhCIjGKn1EK6MGaoxsUqt3eJb+tb6bt9W6AV2cqbN0jV7X7Sb3qRmkbIZI
+         IfjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746031386; x=1746636186;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nJiAf5o1o3t4Zc12gEdYScmBrcEv2gqtb9G2WE6q1qg=;
-        b=i7soSquAtgAP2yRh9IY2HNJB6XvR4h6BnS9H0bJmVcZjFGIfY0iJ0pKUxtcPbmR32B
-         PRIQ8o2P8Anc8R92bT+/1n2Jk674MCeP+TwsCHHNTQaCdnfBTfDvQf5++UvR8O9Xle5Y
-         7odreSNQB4751XyvwlyYttwSzSJykT/F29R8T9xlYplyAaVTPpAsGkVIiI5ESstukgvx
-         Su3xqz+GU48QAGjLCOOa3tgPmTici84gZ5c6BMREGlTdyEV+CMUd8dHp8YpKHimxdOWc
-         xE4OUMZwkBFtuNOwFQ+yqoQhsSgmtMty3Q5BXIErBC8XkK6KeDI6U0t9A5QcWi4ZTiRg
-         8yYw==
-X-Forwarded-Encrypted: i=1; AJvYcCUOZvn0kXy9Brc2YmPeVlAmOVwod+hlaOfJXYtvL3DidsmEAABJouk5bRyrhws2D6UIEbnN9wmhmWlmN3U=@vger.kernel.org, AJvYcCV1U51Sif1AQeJjX0uMbEjZ6QszPeOoyV5QO0Cn7AgW86SBoCcVwfv316GxhKZ2q6fqgtVZ0b9XBc5s5ug9nWw=@vger.kernel.org, AJvYcCWsoE4f0+7boxXstg3tWanvqLe33knCXT/D3rzye/uCnJb+QrkQyzQr4o7rocjeyQRw/KZUY5AG@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJDNHprytbaAh9cigmwgRyCiLZgK8VBvd7y0Ajn3OB5ItZOXtA
-	9hcoLBixTnFXEG/F6WkdYFUPARt67mTGJExbyVeTNWujTr/dU609
-X-Gm-Gg: ASbGncvH1ViG/QRIT6yEbxR+HNpvZaqE/9ADsgFIqTQmiE8difD68NIcw0XlhkVHP02
-	Q49Y76phYsim7/W+feVaJPltzORMfzAQi49VeMnwUMkIeaUuGiR0qK59sBWVq8CE/SVWfF4E/ai
-	GCSyG4W530z4O/EODdDPNjkypvp5fTZK/06Jeu9SoVhwL9vP2oIeVCjHiOieMgPeqWpKlQOLzUQ
-	tpD5AkQliLrltp+wP1JBJSNVgjunYjz49yvzbtT66WrrNIJjmCXhYoak4YNkfMYj9Z99DqO9s3G
-	IwXPn3Sw7/kxtm0rCE75QbkRA/+WxKW7mzcghLrXNkYEc2aWm1ys8Q==
-X-Google-Smtp-Source: AGHT+IGh6opw3i1MptMjyNUX216gNu6ecfuXNuFeE+pokOikg5C6G4kO60j+oSOCzszCovW6gDcsNA==
-X-Received: by 2002:a05:600d:101:b0:440:67f8:7589 with SMTP id 5b1f17b1804b1-441b1f39599mr34373825e9.16.1746031385778;
-        Wed, 30 Apr 2025 09:43:05 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:99c5::1ad1? ([2001:871:22a:99c5::1ad1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2ad7688sm31261115e9.3.2025.04.30.09.43.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Apr 2025 09:43:05 -0700 (PDT)
-Message-ID: <66f78ed5-aeff-4b79-8c6c-2b54a5855bde@gmail.com>
-Date: Wed, 30 Apr 2025 18:43:02 +0200
+        d=1e100.net; s=20230601; t=1746031448; x=1746636248;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=38HytJ3ptnvrdkyB15yGBsGT1lU1pkC9z7I696Nt/eo=;
+        b=Inm/CjTjd8YY2NN8Dk1sgupcgH12VwjOF5sv7nEjCURaC1RtFcnDHr/dB74dielijx
+         Qbsz8F9vt8UNnMJ9r4CY07RLah1CpuYKKnjgW5bY6JXts2EA4+6fFfRQp2eiPOlZ52nl
+         GZsXW+wtt4gNoonGVBf2E9UGpOE3OUT+3ugTZ6G19kPzVNRsL77JAM2DRmO1GZH3YoI4
+         y0UPK+LVDrkJHfOoQ9QJ6Zy+ZIxuvSa5kduWsHzZDixvVNrqgPMX2bL/7jPUaXwG6U+O
+         NWtJYKHJ9Oj0fbBWPH90IFRXtlbbNPyZOTpXp6ikVG6DTnjCohcGToU+ZC0KAcErZuvJ
+         m2EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWhWU4lDJ5sCaj+wh5TjLb43i8B4SCSKBcEteK1zEOGLHiRnG6HuWqrmBUva7AGO2zv5yy3SMQQqThusnQ=@vger.kernel.org, AJvYcCXFp4fhuuOz0C4fWK0koc4UmLbbM/J8Fp1Hqwp76371QguoO0qKrsC1Rjtexr5Kdl3Rp9CsEHKkQQH4rJDlIdU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7I/pM8zQ74VlCcHomV1gwuWjqK7fN9JxCAGmyYjkLIxkMMql4
+	ogYLNcsLHwo37yST7VEjwuYDROPP0gv45Rbfvr0yhWmrgdddU9Be
+X-Gm-Gg: ASbGncvq13BQrWx0p3jlCObDBD4Kflfyj9G9oOuAquhUWQzGR5/bz/J06TSxRVUEEg+
+	i60XgPCs2JVECB32kz/lvJLXnP3nbqWQ2QdpYPu6MIbsUVO+Ej74js2eDnSN2eUGSMmK9Hvn5RH
+	1choMgmpWHI5ue/97lo150+2eYNgqBkp1Kl9wgHibxegswvxm/KdJgiX7Px8vNFthiI1WeR99zm
+	BeYYBSpLGeFFaoJOZ7A31Lgw01jycVt08cEDMIu1ecOLHFCegOwhnlfZ0B85spDhiGEVFoDAWQZ
+	z/yuaMZUKSxM6NI9fjxx7Q40HQbs00FtPGyN6eV703uPGss0AHXGJBnIUFOb9U0Q6Es4hWJaMnq
+	mvjEN4au5vhHaqSRC6ch+QCZd6aS5CEA=
+X-Google-Smtp-Source: AGHT+IELc3QOsbfJHY5DjiUe35nZBF1IsikBmL2i03eBmvpdCOFlfBPfvtgumFyhHoyl4DJvOxu7GQ==
+X-Received: by 2002:ad4:5ba6:0:b0:6f2:c9e1:8511 with SMTP id 6a1803df08f44-6f4fe1318acmr51772396d6.39.1746031448232;
+        Wed, 30 Apr 2025 09:44:08 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f4fe87e355sm10106626d6.124.2025.04.30.09.44.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Apr 2025 09:44:07 -0700 (PDT)
+Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2EDF91200066;
+	Wed, 30 Apr 2025 12:44:07 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Wed, 30 Apr 2025 12:44:07 -0400
+X-ME-Sender: <xms:V1MSaEfHouxbcjBbh0qGSLLRoK4atfd6IqPpASRVYiRyKJZLkE8OfA>
+    <xme:V1MSaGO_wo-gF3IOZnVvKABGJpTT6LZm1Y0G1OWBIswi74JHLq7nYNcDefz8lksCp
+    _9HXPuHoCSRrnxiWA>
+X-ME-Received: <xmr:V1MSaFjHgm4BamVGxJWBgtQIU38VVMrb7GJsSnZoxB3rfF_GKfOiXAo9>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvieejvdduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
+    tddunecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
+    hilhdrtghomheqnecuggftrfgrthhtvghrnheptdegheelveffudejffegvdelgffhhfel
+    keeiieefgeevteejvdegveeuffeihefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
+    rghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpe
+    epghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduiedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrhhishhirdhstghhrhgvfhhlse
+    hgmhgrihhlrdgtohhmpdhrtghpthhtohepshhkhiesshhkhielrdguvghvpdhrtghpthht
+    ohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnh
+    horhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgv
+    thdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprh
+    gtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthho
+    pegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvg
+    hrhihhlhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:V1MSaJ9cy-aO-laN1Mz6YmIKt1MsrXCyyY2BWWkEhNvo9wujqR7e-A>
+    <xmx:V1MSaAsOpXoFKQchFFwx1i1ftnxBTnPH3GvlR5X6wFYBgAlJ-R_Dtg>
+    <xmx:V1MSaAF5739Gnydi-LfMq3krcK2hey1sNuaVHrft9PeXgaiCbGf7IA>
+    <xmx:V1MSaPP8Nn3NZ84WlI2DSq_xZ_3zcw2Eg0sIx30H0e93DjU8SBLItQ>
+    <xmx:V1MSaFPSYKqNRhIdgZM6j8zcMLPLJOh-STX0lMJickTwU4bGm4VabyEx>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 30 Apr 2025 12:44:06 -0400 (EDT)
+Date: Wed, 30 Apr 2025 09:44:05 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Sky <sky@sky9.dev>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gerald =?iso-8859-1?Q?Wisb=F6ck?= <gerald.wisboeck@feather.ink>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Ralf Jung <post@ralfj.de>
+Subject: Re: [PATCH v2 3/3] rust: use `UnsafePinned` in the implementation of
+ `Opaque`
+Message-ID: <aBJTVWsrqzuasx7W@Mac.home>
+References: <20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com>
+ <20250430-rust_unsafe_pinned-v2-3-fc8617a74024@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 5/6] rust: time: Add wrapper for fsleep() function
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>,
- miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@kernel.org, rust-for-linux@vger.kernel.org, gary@garyguo.net,
- aliceryhl@google.com, me@kloenk.dev, daniel.almeida@collabora.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, anna-maria@linutronix.de, frederic@kernel.org,
- tglx@linutronix.de, arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
- mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
- vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
- bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
- tgunders@redhat.com, david.laight.linux@gmail.com, boqun.feng@gmail.com,
- pbonzini@redhat.com, jfalempe@redhat.com, linux@armlinux.org.uk,
- linus.walleij@linaro.org
-References: <871ptc40ds.fsf@kernel.org>
- <20250429.221733.2034231929519765445.fujita.tomonori@gmail.com>
- <CANiq72mMRpY4NC4_8v_wDpq6Z3qs99Y8gXd-7XL_3Bed58gkJg@mail.gmail.com>
- <20250430.225131.834272625051818223.fujita.tomonori@gmail.com>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20250430.225131.834272625051818223.fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250430-rust_unsafe_pinned-v2-3-fc8617a74024@gmail.com>
 
-On 30.04.25 3:51 PM, FUJITA Tomonori wrote:
-> On Tue, 29 Apr 2025 16:35:09 +0200
-> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
-> 
->>> It appears that there is still no consensus on how to resolve it. CC
->>> the participants in the above thread.
->>>
->>> I think that we can drop this patch and better to focus on Instant and
->>> Delta types in this merge window.
->>>
->>> With the patch below, this issue could be resolved like the C side,
->>> but I'm not sure whether we can reach a consensus quickly.
->>
->> I think using the C ones is fine for the moment, but up to what arm
->> and others think.
-> 
-> I don't think anyone would disagree with the rule Russell mentioned
-> that expensive 64-bit by 64-bit division should be avoided unless
-> absolutely necessary so we should go with function div_s64() instead
-> of function div64_s64().
-> 
-> The DRM QR driver was already fixed by avoiding 64-bit division, so
-> for now, the only place where we still need to solve this issue is the
-> time abstraction. So, it seems like Arnd's suggestion to simply call
-> ktime_to_ms() or ktime_to_us() is the right way to go.
-> 
->> This one is also a constant, so something simpler may be better (and
->> it is also a power of 10 divisor, so the other suggestions on that
->> thread would apply too).
-> 
-> One downside of calling the C's functions is that the as_micros/millis
-> methods can no longer be const fn (or is there a way to make that
-> work?).
+[Cc Ralf]
 
-It would theoretically be possible to use the unstable `const_eval_select`
-to use the C implementation at runtume and just divide at compile time.
-I don't think that we want to do this (or that it should be done in any
-serious project should do this) but it would be technically possible.
-
-I'm also not sure how/if const-eval would handle the 64 by 64 bit division.
-
-> We could implement the method Paolo suggested from Hacker's
-> Delight, 2nd edition in Rust and keep using const fn, but I'm not sure
-> if it's really worth it.
+On Wed, Apr 30, 2025 at 10:36:13AM +0200, Christian Schrefl wrote:
+> This change makes the semantics of the `Opaque` implementation
+> clearer and prepares for the switch to the upstream rust UnsafePinned`
+> type in the future.
 > 
-> Any thoughts?
-
-`const fn` would be nice, but if it is not currently needed and would
-complicate the implementation we should probably keep it non-const
-until someone needs it to be const.
-
+> `Opaque` still uses `UnsafeCell` even though the kernel implementation
+> of `UnsafePinned` already includes it, since the current upstream
+> version does not.
 > 
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index a8089a98da9e..daf9e5925e47 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -229,12 +229,116 @@ pub const fn as_nanos(self) -> i64 {
->      /// to the value in the [`Delta`].
->      #[inline]
->      pub const fn as_micros_ceil(self) -> i64 {
-> -        self.as_nanos().saturating_add(NSEC_PER_USEC - 1) / NSEC_PER_USEC
-> +        const NSEC_PER_USEC_EXP: u32 = 3;
-> +
-> +        div10::<NSEC_PER_USEC_EXP>(self.as_nanos().saturating_add(NSEC_PER_USEC - 1))
+> Reviewed-by: Gerald Wisböck <gerald.wisboeck@feather.ink>
+> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+> ---
+>  rust/kernel/types.rs | 29 ++++++++++++-----------------
+>  1 file changed, 12 insertions(+), 17 deletions(-)
+> 
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index f06e8720e012102e5c41e79fd97b0607e927d71c..44d96423a8a6c358bb7ebf12c24fad98e5c2cb61 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -4,12 +4,12 @@
+>  
+>  use core::{
+>      cell::UnsafeCell,
+> -    marker::{PhantomData, PhantomPinned},
+> +    marker::PhantomData,
+>      mem::{ManuallyDrop, MaybeUninit},
+>      ops::{Deref, DerefMut},
+>      ptr::NonNull,
+>  };
+> -use pin_init::{PinInit, Wrapper, Zeroable};
+> +use pin_init::{cast_pin_init, PinInit, Wrapper, Zeroable};
+>  
+>  /// Used to transfer ownership to and from foreign (non-Rust) languages.
+>  ///
+> @@ -308,8 +308,7 @@ fn drop(&mut self) {
+>  /// ```
+>  #[repr(transparent)]
+>  pub struct Opaque<T> {
+> -    value: UnsafeCell<MaybeUninit<T>>,
+> -    _pin: PhantomPinned,
+> +    value: UnsafePinned<UnsafeCell<MaybeUninit<T>>>,
+
+What's the Rust upstream opinion on `&UnsafePinned` vs `&UnsafeCell`?
+Does `&UnsafePinned` provide the same noalias behavior as `&UnsafeCell`?
+
+I'm wondering whether we should just do:
+
+    pub struct Opaque<T> {
+        value: UnsafePinned<MaybeUninit<T>>,
+        _not_sync: PhantomData<UnsafeCell<()>>,
+    }
+
+, instead.
+
+Regards,
+Boqun
+
+>  }
+>  
+>  // SAFETY: `Opaque<T>` allows the inner value to be any bit pattern, including all zeros.
+> @@ -319,16 +318,14 @@ impl<T> Opaque<T> {
+>      /// Creates a new opaque value.
+>      pub const fn new(value: T) -> Self {
+>          Self {
+> -            value: UnsafeCell::new(MaybeUninit::new(value)),
+> -            _pin: PhantomPinned,
+> +            value: UnsafePinned::new(UnsafeCell::new(MaybeUninit::new(value))),
+>          }
 >      }
 >  
->      /// Return the number of milliseconds in the [`Delta`].
->      #[inline]
->      pub const fn as_millis(self) -> i64 {
-> -        self.as_nanos() / NSEC_PER_MSEC
-> +        const NSEC_PER_MSEC_EXP: u32 = 6;
-> +
-> +        div10::<NSEC_PER_MSEC_EXP>(self.as_nanos())
-> +    }
-> +}
-> +
-> +/// Precomputed magic constants for division by powers of 10.
-> +///
-> +/// Each entry corresponds to dividing a number by `10^exp`, where `exp` ranges from 0 to 18.
-> +/// These constants were computed using the algorithm from Hacker's Delight, 2nd edition.
-> +struct MagicMul {
-> +    mult: u64,
-> +    shift: u32,
-> +}
-> +
-> +const DIV10: [MagicMul; 19] = [
-> +    MagicMul {
-> +        mult: 0x1,
-> +        shift: 0,
-> +    },
-> +    MagicMul {
-> +        mult: 0x6666666666666667,
-> +        shift: 66,
-> +    },
-> +    MagicMul {
-> +        mult: 0xA3D70A3D70A3D70B,
-> +        shift: 70,
-> +    },
-> +    MagicMul {
-> +        mult: 0x20C49BA5E353F7CF,
-> +        shift: 71,
-> +    },
-> +    MagicMul {
-> +        mult: 0x346DC5D63886594B,
-> +        shift: 75,
-> +    },
-> +    MagicMul {
-> +        mult: 0x29F16B11C6D1E109,
-> +        shift: 78,
-> +    },
-> +    MagicMul {
-> +        mult: 0x431BDE82D7B634DB,
-> +        shift: 82,
-> +    },
-> +    MagicMul {
-> +        mult: 0xD6BF94D5E57A42BD,
-> +        shift: 87,
-> +    },
-> +    MagicMul {
-> +        mult: 0x55E63B88C230E77F,
-> +        shift: 89,
-> +    },
-> +    MagicMul {
-> +        mult: 0x112E0BE826D694B3,
-> +        shift: 90,
-> +    },
-> +    MagicMul {
-> +        mult: 0x036F9BFB3AF7B757,
-> +        shift: 91,
-> +    },
-> +    MagicMul {
-> +        mult: 0x00AFEBFF0BCB24AB,
-> +        shift: 92,
-> +    },
-> +    MagicMul {
-> +        mult: 0x232F33025BD42233,
-> +        shift: 101,
-> +    },
-> +    MagicMul {
-> +        mult: 0x384B84D092ED0385,
-> +        shift: 105,
-> +    },
-> +    MagicMul {
-> +        mult: 0x0B424DC35095CD81,
-> +        shift: 106,
-> +    },
-> +    MagicMul {
-> +        mult: 0x480EBE7B9D58566D,
-> +        shift: 112,
-> +    },
-> +    MagicMul {
-> +        mult: 0x39A5652FB1137857,
-> +        shift: 115,
-> +    },
-> +    MagicMul {
-> +        mult: 0x5C3BD5191B525A25,
-> +        shift: 119,
-> +    },
-> +    MagicMul {
-> +        mult: 0x12725DD1D243ABA1,
-> +        shift: 120,
-> +    },
-> +];
-> +
-> +const fn div10<const EXP: u32>(val: i64) -> i64 {
-> +    crate::build_assert!(EXP <= 18);
-> +    let MagicMul { mult, shift } = DIV10[EXP as usize];
-> +    let abs_val = val.wrapping_abs() as u64;
-> +    let ret = ((abs_val as u128 * mult as u128) >> shift) as u64;
-> +    if val < 0 {
-> +        -(ret as i64)
-> +    } else {
-> +        ret as i64
+>      /// Creates an uninitialised value.
+>      pub const fn uninit() -> Self {
+>          Self {
+> -            value: UnsafeCell::new(MaybeUninit::uninit()),
+> -            _pin: PhantomPinned,
+> +            value: UnsafePinned::new(UnsafeCell::new(MaybeUninit::uninit())),
+>          }
+>      }
+>  
+> @@ -371,7 +368,7 @@ pub fn try_ffi_init<E>(
+>  
+>      /// Returns a raw pointer to the opaque data.
+>      pub const fn get(&self) -> *mut T {
+> -        UnsafeCell::get(&self.value).cast::<T>()
+> +        UnsafeCell::raw_get(self.value.get()).cast::<T>()
+>      }
+>  
+>      /// Gets the value behind `this`.
+> @@ -384,14 +381,12 @@ pub const fn raw_get(this: *const Self) -> *mut T {
+>  }
+>  impl<T> Wrapper<T> for Opaque<T> {
+>      /// Create an opaque pin-initializer from the given pin-initializer.
+> -    fn pin_init<E>(slot: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+> -        Self::try_ffi_init(|ptr: *mut T| {
+> -            // SAFETY:
+> -            //   - `ptr` is a valid pointer to uninitialized memory,
+> -            //   - `slot` is not accessed on error; the call is infallible,
+> -            //   - `slot` is pinned in memory.
+> -            unsafe { PinInit::<T, E>::__pinned_init(slot, ptr) }
+> -        })
+> +    fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+> +        let value_init =
+> +            UnsafePinned::pin_init(UnsafeCell::pin_init(MaybeUninit::pin_init(value_init)));
+> +        // SAFETY: `Opaque<T>` is a `repr(transparent)` wrapper around
+> +        // `UnsafePinned<UnsafeCell<MabeUninit<T>>>` so the memory representation is compatible.
+> +        unsafe { cast_pin_init(value_init) }
 >      }
 >  }
-
+>  
+> 
+> -- 
+> 2.49.0
+> 
+> 
