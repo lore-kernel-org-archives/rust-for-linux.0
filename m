@@ -1,58 +1,58 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C06C16DC28
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 15:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C92288DA
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 15:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746025945; cv=none; b=BtMmpB8Wxt0xR6gGesdAk6mHR4EAZiKYbdsVKlXTFJsIe7ZD+gymDkV1pzPgd9dwpHPc2DrMgQFZgCm8pLzRaprl8eO2VAQRE1vbcIoXrmbyKlDClVlNXvlmbvvtVoSFiaP+IN5WK3xMe08XHy2RkS+bjOfNgThYM9OQ5oHRXsQ=
+	t=1746026142; cv=none; b=Kr8UT7gboIk3KmrTA6FWfi8OgCWjMs/SXu87r/NcGNVjgPazeBOG9TL5oJkyA4M/Z3ktmr/TpqJ1ekBQ1I2/wBamFyz9Olc7mU+RA9G8dl6nvrVBzafI0zn5g3i4ycSGlIoca8SsJEjrjo5uKbAggIKIXw7i33ac6rsgXi+7j0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746025945; c=relaxed/simple;
-	bh=3cycFABzBd9M6b4gkgL4KrEdY8QhVRFmgCnPwxrmyOk=;
+	s=arc-20240116; t=1746026142; c=relaxed/simple;
+	bh=Hhu6dSisAhS1fMzmQCWhcynvWoTnaQWM5JzsgauEqV0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Stb1m6yT/t88nExm2xx/O3RoDutiXATpJXQTKSOysZXR79WupBsbO77HKSZqs+SHMYreIXoXg2LvNyTkFCtJPTRXCfgAntDeVle/9jFUjdg9THCwNDiOdrRPnG9J2K39vokq6sJvNGNVOjVku3sipfsx2QdGj5lFcwi9g+d+kV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=36O17fre; arc=none smtp.client-ip=209.85.160.178
+	 To:Cc:Content-Type; b=ob+x1Y7MN41tl05naelpIoBWD0LKmV8t+usmQZo5CgX9r9dAtxyQnisqI85iAju0mT9PwHVvGi6s/RVLNqL2vb5YaNWC2FadQhS7Z5ClrYiHxYkgLxxFRXovBOPAuBjmbsD1jnLHq1sFxk8zxwNUMELj7tCWV91T/Z4nyYVdYQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EmdLc6xS; arc=none smtp.client-ip=209.85.160.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="36O17fre"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-47666573242so743751cf.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 08:12:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EmdLc6xS"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4774611d40bso596051cf.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 08:15:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746025942; x=1746630742; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746026140; x=1746630940; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yhEh4tvbRMYHNdTjhp8bc+1l+QqiVag0W2z4WqVEcFg=;
-        b=36O17freEVVJUorWMnWXx5lDRDqTOw0ly60tP2p4r4N3to2CyK3Am3fgWPTWPHyvmt
-         uCQXVQQJJBZPy23VoKFuk/B2BU6+hRD2pHmxhpnO7EHZxUiV2FxkQJpiMC9Sf4mIqX6L
-         XOR3ztBGaG6TwjQkzUsMso48XyeX/mx6tmmdj40eOx6uJVDgCKNhHpyDhYl5K3FuAE4o
-         LeMj7vYx5ZaZ3aiG5A9epukKu49Gm5UWfuHGVNqFNptvTu46X4qq72oP+c5we5nUGPdJ
-         EfJc5HbDs0hg8qmu+1vkF4cgR8MTlCi4sEfNyPZ4v2kpbaVc7cm5LAdYf1kJI0JgCmEN
-         Je0Q==
+        bh=pKZ2dgbW06WSeLilefp4vu6PuAs8SnEk6bEC5IxyYL8=;
+        b=EmdLc6xSirYSLDpce3Sqx6twB38aVFKWT06uqyj3xRHpDDpxmzsbwlXEaOTvqgUC29
+         3nOj7bIBzSpqxA8W3M3RCbqVE2fCPyeR3AEqDTpOCnwJlfWw53dwABKACLPeQi9Xnj61
+         mfR2Brt90NURoDoEtCERxVpspyo5YVejCUndm4UgMQVsLgKsfIj8cjPk7Fl4sCDB4IXW
+         8J2hn7iGIXYqV8WIuseAOp0pNMwhtmlQkkAAF7iO8hOTnoXnPSsx5I7/ZydClL0Ml1og
+         oMI069FJulp6M5T+FbhaoqIwKFgwdsgvwUjvu3yG2kiVldoHnPleNf3rGzJHs1REm1TI
+         moPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746025942; x=1746630742;
+        d=1e100.net; s=20230601; t=1746026140; x=1746630940;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yhEh4tvbRMYHNdTjhp8bc+1l+QqiVag0W2z4WqVEcFg=;
-        b=iiBwudk70fVm9JckL91oeGgj4v8RCY+SfyDQ+79u2g/VHpB5BDR8zYFsc6AjiBNoi8
-         vftQ5XyYfBvo92BckULQeg4X5KsOvDaBteGNlkTD8nbup3T5yPiylcCPN1mVJf0o/h+K
-         YKytlSQZrmnhIX9aE/8N1wjXHKsodKjw5J8kCCexcVhgWW4Vrik9xNjQ6IHmHQoQWPKa
-         Swtd1NL++Z6h7i7zXo+Q9vDqWhb6E11L54Fc2hj/KLFu3QhJjK0CS3lqiZWjU50E9UWP
-         uBt0NREpM+L31SkcVWBcOJLtwBdQTjejFHus9mlAq3FEY/GNw5827uBpfLxQG7sayjFK
-         9DRw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOKeNin8dCRvlYjH/J9NssImeUwSxhdmf/hN8m3XcUjtgdYx+F2Tp1YLIUfr0i/WjDUc34mEQoRcAIyw7PJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2QHc45N/H8WXNG5TkkvlCNPpnZDi1NxkZgh4NS7iYkp/EFwgr
-	awrV9iw0bZ8t4fG1c+zT0N24dzPgC+O2urXd2+NgYPwwUCz62vxOK62pFQ5p+52zUljue5dF4lZ
-	C1/v7P/I91+joL5THMZ97yOZTVrWNuz5RLzdC
-X-Gm-Gg: ASbGncsveNR2Ti+Xyl0q3KDkTgQqTvosww+/r3wbLhSrVYjQR+CoZx+ej8XQiVX8K+d
-	bEZ0EPbc5nOdi2GwhUO/tdriDwRPx9Ll0t2lcF7GwH2Hyd6iKmCjQgK8LFf3ui82plnT9Bb72Xy
-	xBfYAMDRgPbi0/tUkCbyo2wJ1YyRo04wBKFr6VbnVd2I0F2OyPoGg=
-X-Google-Smtp-Source: AGHT+IFmlpWRvz2HKpk5LKdhm8W/XO9lRRW725KI52RH7XaAa1gsuyJ97GzbXpDX+9WOsXmG+wHKzjnR3JYZPru6i48=
-X-Received: by 2002:a05:622a:1a01:b0:48a:ba32:370 with SMTP id
- d75a77b69052e-48aba322710mr352041cf.10.1746025942178; Wed, 30 Apr 2025
- 08:12:22 -0700 (PDT)
+        bh=pKZ2dgbW06WSeLilefp4vu6PuAs8SnEk6bEC5IxyYL8=;
+        b=gUiRRcSTAK/ovnbI7uv8LuFq0TpsHBgbkrAVEl38bhIEtRBy19pvSxrgmetkjtn+8O
+         QehV0XWbfURu/9NF1cNRrwPhBkGrzLLEG3cwxMOYvK9Tl6c3nersau/RCslwRse0HACw
+         OmgF3wtK8+4rFIxB3M4K68lsCmvc4O21l7FY/nPF+Hg48XWBTKc+lHcTmFA6w0IBvm3u
+         kNdE0QqHxf67scBkoLb1TyZhgyg7YWObDTOIylD4rgqNf1NTJ9ZpdBKTNn6+EXJA0yl9
+         3GrsfHVOoycrflaJyqB013GqavFgyW9Hpv9V+zZLFZZpmvUYDlmUH5PonesQl++oXnRa
+         kB4w==
+X-Forwarded-Encrypted: i=1; AJvYcCXZ1lxnHzGGsmodI8eXfJAD2PONBSePM3vcAklZwJ90OJd90v8DdTk/empVEjGPlB4eInDWO63pAcZ6PgWKAA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEajFS8RB5DTjO9zqaKciXQ3xXBGHvquas/h930rsarCmL/uHb
+	19UnqaBJds8IvOXrLVPDiRb9oAMMqW5cpmO2aFIIxEpq0vhbrsjWYzRns+dp4QrAdllZiTgbtDi
+	JgORsclzJ4lLP+Tyrh1A9bPoW+wfVomrxaZn0
+X-Gm-Gg: ASbGncv8Up2tLoYreqaXc91n6iX8jPfodxHosEWNSH9a8wCbv0T14kuZy0Rhz+w2bSr
+	Z3F7+iYbcGJnf/8+ICHmvotxpoh0pjCbs8zaD8Z0whGjAQJ6+N0onlmzd3wrMpr7GaViAz+h0xd
+	jis6waGVKjdOH/ua7F7FfqxgJESAM23omDxLjHN72HuFb5VnrH9oM=
+X-Google-Smtp-Source: AGHT+IEoUkk6NKnGA1wS8/Jh+KADxLx+/EOtFqYZsYHaH0GJgf4iKBkzrp0jMFygx69hC2OqTpumcDjb9StelgW26VU=
+X-Received: by 2002:a05:622a:1349:b0:477:c4f:ee58 with SMTP id
+ d75a77b69052e-489bb1907d4mr5141791cf.24.1746026139801; Wed, 30 Apr 2025
+ 08:15:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,12 +60,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com>
- <20250429-debugfs-rust-v1-2-6b6e7cb7929f@google.com> <2025043006-snowflake-headless-e417@gregkh>
-In-Reply-To: <2025043006-snowflake-headless-e417@gregkh>
+ <20250429-debugfs-rust-v1-2-6b6e7cb7929f@google.com> <2025043053-spelling-rehire-a460@gregkh>
+In-Reply-To: <2025043053-spelling-rehire-a460@gregkh>
 From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 30 Apr 2025 08:12:09 -0700
-X-Gm-Features: ATxdqUHiJZ8BaCLBuJNRHBSIT3lqotNE34NeBiHm7ND-1AR63rbwktVRylHyOGg
-Message-ID: <CAGSQo01-bQydWgiC-+VRL7ac6v8WG2jwZ5RewPheW-quSQBsow@mail.gmail.com>
+Date: Wed, 30 Apr 2025 08:15:27 -0700
+X-Gm-Features: ATxdqUHr6aQwTUil5JRuLfNwReWGfKZFCaQxAfML745WvIwQy_JozQ2ZpcZtmGI
+Message-ID: <CAGSQo01PneAee+C6FijhmW_sJt-H_Br5SfWR3NGWyfwk7vr7sA@mail.gmail.com>
 Subject: Re: [PATCH 2/8] rust: debugfs: Bind file creation for long-lived Display
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -83,39 +83,43 @@ On Wed, Apr 30, 2025 at 5:06=E2=80=AFAM Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
 > On Tue, Apr 29, 2025 at 11:15:56PM +0000, Matthew Maurer wrote:
-> > +    /// Create a file in a DebugFS directory with the provided name, a=
-nd contents from invoking
-> > +    /// [`Display::fmt`] on the provided reference.
-> > +    ///
-> > +    /// # Example
-> > +    ///
-> > +    /// ```
-> > +    /// # use kernel::c_str;
-> > +    /// # use kernel::debugfs::Dir;
-> > +    /// let dir =3D Dir::new(c_str!("my_debugfs_dir"), None)?;
+> > Allows creation of files for references that live forever and lack
+> > metadata through the `Display` implementation.
 >
-> Again, can never fail, so don't check it.
->
-> > +    /// let file =3D dir.display_file(c_str!("foo"), &200)?;
->
-> Again, can never fail, so don't check it.
->
-> And "200" is wrong, did you test these?
+> What do you mean "live forever"?  There's always a structure somewhere
+> that holds it, when it goes away the file/directory should also go away.
 
-How is 200 wrong? This displays the number "200" in a file called
-"foo" in the directory "my_debugfs_dir"?
+That's the builder implementation I mentioned later - it lets you
+connect the directory to a resource. This is an initial simpler
+version to keep the patches small which lets you export e.g. the
+contents of global variables safely.
 
 >
+> > The reference must live forever because the corresponding file is
+> > reference counted, so there's no way to say the lifetime outlives it
+> > otherwise. This restriction will be relaxed later in the series through
+> > use of `debugfs_remove`.
 >
-> > +    /// # Ok::<(), Error>(())
-> > +    /// ```
-> > +    pub fn display_file<T: Display + Sized>(
-> > +        &self,
-> > +        name: &CStr,
-> > +        data: &'static T,
-> > +    ) -> Result<ARef<Self>> {
+> Why not use that from the beginning?
+
+Because that requires the builder API + pinning, which I thought would
+be a more complex conversation, and wanted to keep the "just register
+a file" patch separate from the "here's how you ensure that data lives
+at least as long as the debugfs directory" patch.
+
 >
-> Again, will always succeed, you don't want any checking of Result<>
+> > The `Display` implementation is used because `seq_printf` needs to rout=
+e
+> > through `%pA`, which in turn routes through Arguments. A more generic
+> > API is provided later in the series.
+>
+> Building stuff up to review only to remove it later makes it harder to
+> review :)
+
+It doesn't really get removed - `display_file_raw` is still the
+underlying implementation for the more generic API, and this API stays
+around as a convenience API.
+
 >
 > thanks,
 >
