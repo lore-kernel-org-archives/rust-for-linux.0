@@ -1,252 +1,533 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2078.outbound.protection.outlook.com [40.107.94.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F501B5EB5;
-	Wed, 30 Apr 2025 13:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746021112; cv=none; b=A1PY+gO5XP/RyH4d3Mzjo8+YZVBiBnhIV6japfEvyDLVY8g7FztAS7DkbESKt6HZiSo7ULespDS9JhX/ETlecjKhkwlnnYukurzrY4f3aOraBV9w8papxwvI8mUgYolTiHNu0lQZ1xtG+7AC5ObN562eEB/XvP9t0L9krZRD0p8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746021112; c=relaxed/simple;
-	bh=6lKg1os531NFcBDjwEJw1YQuhF4Fo1Y0v3cg06ARjhU=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=ulxbtmQFh4N85tOU1t6k1mN0Zmthio8Y4jsTUAJsXwdef5/DaFL6NP9yUxChWy4gdQGJBUzuIjXQSucCKBrYNfBo8WKZrGAPskpQ7WhZeWwEovjcQwT8Btho7r0Z8UjuysaullEtcYgtkgnYEszrXmDYztd+BfIzU0po8sl7JMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EJatmC8O; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5D325EF94;
+	Wed, 30 Apr 2025 14:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746023901; cv=fail; b=f2dhyTAZ9uz3ep7VNpqA8oKldsz4Ea6jGqj8sHh5w28i++fmD7cKPB8ce+ii3Y/dPkTNPZDNzqRFjnZgbQ+182XKGJph9Sgp8cUgNaaAVGRsSQiytyFjb7vb+MEi/4HFS+E+nx4NHiMJ1nu/rD607eKr+Wah0nsk4apI1HrgEHk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746023901; c=relaxed/simple;
+	bh=AtJf9G6PpjGY4qcs8Srfpjzo/nmeC+2aWz7Oj5ptQgM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hd9HmEekkM+4EClqxkOcK7qFI++Mkp3V4PqWae/mRv8zcKejkeQK8xxcZElGQABi/HUgk/l/oVV0DVJ1uPG7c5ES5gSPz99df9u68TLX1yb4IszhOpbsciPce3vubkl3ES3L6KEzJtkwPEVRpWacbZYN3kyrUaas1biiOMS3FZ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eBrSEImG; arc=fail smtp.client-ip=40.107.94.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EJatmC8O"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22928d629faso78446375ad.3;
-        Wed, 30 Apr 2025 06:51:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746021110; x=1746625910; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sSaO5HdN2jYcb7WhxxBoa767nZPX+vlCke2cHAE+mMA=;
-        b=EJatmC8OljXNoFBvDehe6ZHlCW0olBFlYEnsaA1kMPATEglZqCCqDjxGOumqN4mir3
-         kybbii9iIsCycPCBK/wpNgB8oBHh5vesuuBOr/6obbTitVpABxD+EXN5F/l3Pm2+N3ki
-         n5LNSO4sXMubKhpEBikViBif6NurqN/hzl+tLNws5BBHhA3BtJlmAb913RKmSSqqJ69s
-         3PE5UiMZ/H5P7y+ROHnbQrj5W3b2pyz+LPoQEJLZs/DFGauPvDjB5bFJrmCI3SybZTzo
-         7M98C03+MDANdTvorFDm0MAFheRChJqiIP/PqjDQ6gMGUa8JnmnC9vGHDGMYA8/vJoo3
-         J5Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746021110; x=1746625910;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=sSaO5HdN2jYcb7WhxxBoa767nZPX+vlCke2cHAE+mMA=;
-        b=GE9e6njC2xjENkLvHm1hpg4NknYCEIYcxFoJmpmzbJG/4RQTxGDtmRcCeExrKHOaXm
-         Mjo/atU9v18GE6Io5aNCQ552StUciGOD7nQWuwr/xxrWKmvanDrx3UiMACcwHsDoV3+w
-         XZPZKTswQL/48qMlUS0VVUCw25gkkwJc89JIcElbMC6biyiLKsAr9zclC3dPqE7FBlUN
-         SB0Jd3J+GiZmWkZs7EHOSKhiOR8HLaQLtdOul/1Reu24zG2/eVN5faJjZbosBpgUC+4B
-         l6OT+xemV9V2zRYvpZQBUAVKFdXKCL+qUVMDwXc8xPRt4K2JHp/tF1UCbjyf44kZiKoN
-         tN3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVWMqjTNed5opVRFAbBl2f9Yx3YfyW+55cEawCscSIWxnl7AE4/342YQ52ZyVZdIWoEIpxrvfr4@vger.kernel.org, AJvYcCVpd+tYTNiPJ9vA0u46CxEeudr6U8hKErPdkE4XpGVTe3Mzu9Am8c4997qEl0xqbw1Qvc8llL6C811bfHCkw90=@vger.kernel.org, AJvYcCWRs9+HfWMlviOs6pCEN2nPYL7/gLOsxp0sQpIZ4sgVXznlSDkK8Eq9bqJ3SKWR9MrRnZLFL36xxz7xBew=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3DNGMAIXH7D1RZbAVQTb66epde0ICFGXggZDQwxFPMGmeThnf
-	r0u0LGcSjPO4CvX77WzQfSR4SztJ4mi3hY1hFfrOT0Mnv99L9n0G
-X-Gm-Gg: ASbGncutNGXsFUbUG9ZjL8l//TuBFd7TJBTfz8SaCoi4D1NzFi0zs/zg2QhgxKHaiLn
-	Ay9PEgexst4IcxGdqzteDsB8lalSf4HW2caGffnizWdvZpAIfthBHpI707X40Ky2lo48tNJ75Fc
-	CUZ8/MW45i+1ELHfeQe4cYEvWLOaKm7c6/fJCHAeI0JP7LcHijjZnGFDnaHjuNEq06imIwIeynj
-	PX4pOdYtM0xvuMmZAI3r7pgDZvHPyyjLg1Potp6218fRQIYsXpzP+JxGqe5n3Qlu/unk67iRi2H
-	TLAFrGsOPbelKciOqfu8cxJUgQRMmUiZoq6PxT79OqNT2jLK+QiB2WoTX0zjrR770s7zT4/J6yD
-	7I6T3hj5aHLpttljCbs4PYYEONE+XwaFHwg==
-X-Google-Smtp-Source: AGHT+IFeETFPHvQx7o64lr2bJdz4LNwJ3EyNpxCVa1tty8DWWZScxrT2IA1cHarp5SxWpdIm9bPECw==
-X-Received: by 2002:a17:902:e803:b0:220:e63c:5b13 with SMTP id d9443c01a7336-22df3587811mr52653905ad.46.1746021110426;
-        Wed, 30 Apr 2025 06:51:50 -0700 (PDT)
-Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4dc7d5fsm121671715ad.103.2025.04.30.06.51.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 06:51:49 -0700 (PDT)
-Date: Wed, 30 Apr 2025 22:51:31 +0900 (JST)
-Message-Id: <20250430.225131.834272625051818223.fujita.tomonori@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: fujita.tomonori@gmail.com, a.hindborg@kernel.org,
- rust-for-linux@vger.kernel.org, gary@garyguo.net, aliceryhl@google.com,
- me@kloenk.dev, daniel.almeida@collabora.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
- arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com,
- david.laight.linux@gmail.com, boqun.feng@gmail.com, pbonzini@redhat.com,
- jfalempe@redhat.com, linux@armlinux.org.uk, chrisi.schrefl@gmail.com,
- linus.walleij@linaro.org
-Subject: Re: [PATCH v15 5/6] rust: time: Add wrapper for fsleep() function
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANiq72mMRpY4NC4_8v_wDpq6Z3qs99Y8gXd-7XL_3Bed58gkJg@mail.gmail.com>
-References: <871ptc40ds.fsf@kernel.org>
-	<20250429.221733.2034231929519765445.fujita.tomonori@gmail.com>
-	<CANiq72mMRpY4NC4_8v_wDpq6Z3qs99Y8gXd-7XL_3Bed58gkJg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eBrSEImG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vrOdUgORFD/OWXVw2y6FLexN/OZ7a3Jr+tIqBlkRAIBYzSfyR5mCR2AGN0x6AEN0uHLCfntm7ZaeCH7re2FbKgHrx+nVQ54vaCEmqEhhK/EG4c6i4dnCRfO+NLIKyIfDycUr2mZUeV8QBhHF9eeaQz1haTOspMx/c7KhbgolwLT611mnYkoJOiwhfK0xMEswCLHY01hrV+6wOE0IF9x97BL5MOtHZPYNgzAT7jvzL9GQ/O9GexbSMohOewom0Xna/aY8K/sU0wlTESrZM+Cag5dLqSLuI5Ti5WJJv3vLUfgr3CfpZEbxVOJo2PE+srYiDU0kJA/gcHuMkWidRYmeBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1MDfyf477uxFIA7tIOCNclBzOQ+78TIs/UF7jBFsUAc=;
+ b=FTt4U2XcGahLs5BdnPhBS5ttW2NY5HMNfajJRSVuMxupYBma97h7YWkzaHsKtXg22ivg89BrAFV3jeNxZIlkfPfHRVJBs9JN1Sdp3tWojXOQjBAobksL1vjJCVbhBH0EXwKk8riWTVR7NTC3Mwri0AxqIhY5mUl70gunMUflARLhhFBfa9YpSitDpdXm0L+xmit+EfcECcwLLOr4nhDQNRUDBJx78KjljKdNxV1T/HCUdBk9eZINeKRfC01XsQb9h1WrT5V0d/d8bBItnj1pWoB9JlBdOz8zH548iSe87HGdOGnKZf9v3UFr08Bd7LlqFyohzByP2/7AynMBykgekA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1MDfyf477uxFIA7tIOCNclBzOQ+78TIs/UF7jBFsUAc=;
+ b=eBrSEImGd3c9WOMkGjmnVFjWJt7yywI98XE2cIfOXY8Ng6gOtkBNMyTqjjaRnT4MdmwosMtSkA6pgxJEClSrYsNgZF+PV4qx1fAmbx6Zr+JKzZva6t1xvYyQ7lFpHPEUA1+DBRcd8FIbtreALlfsE2dxwbvFYlYLF0RpEfnepcT8ML7x1cyfqn+BFACl+qU5zZsxWJpH6ott1d29ihUylBZZ1RxZW/ch48BlKzcAoHIJAduszQ6sqiUAejk+h3xR8QlCtZKzVrf4JhNwVkVrRmv1xLGqSTeJ+1ve906I5fZEIbWpSHZZEkgfui9T/dacmsXy5/qPFigLnXZA4Stm0g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB8056.namprd12.prod.outlook.com (2603:10b6:510:269::21)
+ by DM4PR12MB7527.namprd12.prod.outlook.com (2603:10b6:8:111::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Wed, 30 Apr
+ 2025 14:38:16 +0000
+Received: from PH7PR12MB8056.namprd12.prod.outlook.com
+ ([fe80::5682:7bec:7be0:cbd6]) by PH7PR12MB8056.namprd12.prod.outlook.com
+ ([fe80::5682:7bec:7be0:cbd6%4]) with mapi id 15.20.8699.012; Wed, 30 Apr 2025
+ 14:38:15 +0000
+Message-ID: <9977ad2e-ce2d-48b5-a222-f74a821abfeb@nvidia.com>
+Date: Wed, 30 Apr 2025 10:38:11 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 11/16] gpu: nova-core: add falcon register definitions and
+ base code
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Jonathan Corbet <corbet@lwn.net>, John Hubbard <jhubbard@nvidia.com>,
+ Ben Skeggs <bskeggs@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+References: <20250420-nova-frts-v1-0-ecd1cca23963@nvidia.com>
+ <20250420-nova-frts-v1-11-ecd1cca23963@nvidia.com>
+ <aAerWF9j5d01pQv0@cassiopeiae> <D9K09AU4KTQJ.3TVVZPMDB0H7I@nvidia.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <D9K09AU4KTQJ.3TVVZPMDB0H7I@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN6PR17CA0046.namprd17.prod.outlook.com
+ (2603:10b6:405:75::35) To PH7PR12MB8056.namprd12.prod.outlook.com
+ (2603:10b6:510:269::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB8056:EE_|DM4PR12MB7527:EE_
+X-MS-Office365-Filtering-Correlation-Id: 57aae9b3-c01c-4461-7850-08dd87f4a426
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ang4RW9leGhsbEpORlBWZTNMWG8xQ2tCVjl6N09pK1JJMTg2Q3BYcWU4SC9V?=
+ =?utf-8?B?SjVHcC9GRXpEbFR1aDVXcU8vYVBQbmh6cVBJWHNPa2tFMkkrVmJjOUoxRXhX?=
+ =?utf-8?B?OGwzSVZnSzVpMXAveHpJYndLN000OVI2WGUxanhXOXNQYzVwdk5uVUsxR2Q3?=
+ =?utf-8?B?b0hoV2dlT0dDUjlUN1BIZnh2bHBvN3dFcndLV3ZBQm9UbVVPRjVqdVhlYm5X?=
+ =?utf-8?B?WGphazZNNko5MVFOa01iQkI3ZE9hTUg0SGtBaTQ0NDBWZTVuOXhOSkh0Mk5F?=
+ =?utf-8?B?b1NuNzVBdmNSWlJPa0JKbzhEL1lEcy9HQm9DK1dMTDR1MkZOTlNXQ0xFZkNl?=
+ =?utf-8?B?VTVzeGQrWExFSzkyS2tTRDNERC8wVmYxVW5QQnhLdm1XbHNEblRucWh5dDd2?=
+ =?utf-8?B?VGJEakcwY2lmaUxlUFpKOSt3V050NEFGOHRCR0x6UkZubTdKd1dJaG9SUnJO?=
+ =?utf-8?B?aFkvZHc3aEJwcTBCV1VBa1JDeThBR0Z3eEJGN3ZDL1NvVUp4MVhSeEEybWhH?=
+ =?utf-8?B?WHFXS3dMVU4yWDhBenliKzhGUHhOK3ZGM21aM295V1VDUUQ1bFZua3VRdFdB?=
+ =?utf-8?B?cW52Ri9rSGdZVnQ0TlJNUXNvSWs3YWdvYmxpeXp0Tm95U1hxVFdQczNxRU16?=
+ =?utf-8?B?SGZNRGYxS1BVOE9wVDlvOWg2eHZmbi9YUGY4SFk4aHhLcmlPOFVIYlUvVU1C?=
+ =?utf-8?B?bmhyaGhmN3ZxMlI0L0xWejZkdWx6czBHbSt1dk0wTTE0cWx6amthSmd5bEJW?=
+ =?utf-8?B?dVpBbUtGL1pYNE1kNzBYU1pZQ2ZkMkRkajZnVjc1Skpsb08rajVqTlNJZzNq?=
+ =?utf-8?B?QWR2THJmTGg2YTVmSSt0VmQ2a3BqSmR1M0RnaUZDSkQ5ejUxZkwzK0c5RGY4?=
+ =?utf-8?B?YWJOMk8wd1hRY0ltdjgwL3Jzb2NLMU9QdVhVVnJjcEJ0dXB1R2lDZThraVE1?=
+ =?utf-8?B?THRVYTVJc2ZnM005U1NHa0lBOXpEdFJKWUVSMHNZd2RoQzU0b0xSU3JvSGF4?=
+ =?utf-8?B?VkQyUlA5cHJiTGVFZ3lSek04dlQ0bXovL3kyZDRLNFhCbjNSM3NPQXd5ZjVD?=
+ =?utf-8?B?MnFuQkJiSzV4NUJLbnFaelRnTGJXSGNtbS83RmNzVU9SdFBCVXBPaHFSZlpB?=
+ =?utf-8?B?R1g4VVYrQTVBZm1vRlk2bmNBdWpMcFJBKzVLWWVOOVRmRk55UCtBbTdRVnRW?=
+ =?utf-8?B?S0hxQTlwbXpwUDg5Yk5pbnMzaGR3WlYyR0pGcXptbllUK0Z2SEk3UzhEcXk3?=
+ =?utf-8?B?a25QOGJZQ3o3eWFmL2kvbUh5bG5MdllrVjJFSGpncU5BNjdrRzhqeTBFQkh4?=
+ =?utf-8?B?dGRFQ0hwaGorSHR2REhvT0M1M3o0MGN4NjlaRnNwYUZBcmhxamV1U016M0ox?=
+ =?utf-8?B?WkFUbU1SRStiWWMwWHpaRjdSQkxiNzB6L2VyY24yNVAySnhlUnl3dUhhWFFW?=
+ =?utf-8?B?SUF0OVgyZlJGWXFtTWlWSkdsNFhNZmRKOFNJWG9UY0hTQ0xWdlJCODIwR0tK?=
+ =?utf-8?B?WjAzb05JSnBDKytha2dvOFliTWhJYUNkUkpWTVloY2JVRnJIcjhLUHZndjBY?=
+ =?utf-8?B?SUl4bkxsTkhGeVN5TC9xaExEbzFXSFdOL0t4bmxzRXJ5eGpzSXUzZzlLWkJO?=
+ =?utf-8?B?b2J0c1RvRUxyT2FOZkZJTDV6UGxjRmZzUFYzdkRzNjA1QzJvRkFpcGpDS0Jj?=
+ =?utf-8?B?bERmYzRGWXNkUzhIRzlKUTJBcEpUdFF6cUR1eGp1TnV0TVVJZnJmU0grMksv?=
+ =?utf-8?B?Ukxua0crRU9HaXUyVHN3WXdVM1hhTy9RbHhMbVVNQmgrNGYrSHVDNmFBZmhk?=
+ =?utf-8?B?YnZ5Q2ptRkpScW5aNEkyaXc5YXlFMTN4WmtuU25JUEh6NFlyWmFkVktCRnJS?=
+ =?utf-8?B?ZjEyK0pSZzJqeC94MWxraDQvb09vVWw1endnRUJXUmlzRFNJUDdicjF1RTRF?=
+ =?utf-8?Q?4eYQ9iAUJYo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB8056.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZWdQanlsUlRxbDlCVHVXREEvNndxelFhcnh4MDI4d2Zxa1Rxc2Vkd1pxUU1V?=
+ =?utf-8?B?ZWtNd3ZaV2hxclIzemo5c1FCL2VneFdmR1dpdmxscHRHSWRHYisyQitjdmpi?=
+ =?utf-8?B?MEZMV1QxTmtCaVVUTTRPQktFQUdSdXY5a1N6MHpGZXJsR0tIWVA1QXBUR1c4?=
+ =?utf-8?B?dlN1TytPOXBGRkM4RlRUTWc4QVBCeHFKRmRqZVUvZlRNS3B5V2ZDcUlkVGFQ?=
+ =?utf-8?B?VXV1OWlBK3FaTHdQeXpFNVI5MStnN3RoMTZET0VxOU1Cb2ZZQmlRT0FGNGE2?=
+ =?utf-8?B?aUNFWjJwWWk1anpYYm1Ed0ZnTmZITHl3Z2Q2YkJWYkhsU2Q3NFJjcTBuWHpz?=
+ =?utf-8?B?Zk1JWUxxZjM1Q3hNS3R3NnVNWTUrQVJVSzBnamU3cmhiMDBoSklOeGNaeGVL?=
+ =?utf-8?B?R0U0cDFBZUZERWxHWE5YdFRYY1Q4YnZIZWsyQm15ODRlc29zREFtSzJFNHp5?=
+ =?utf-8?B?a2tERGI5ZC81QWNXbDlPUXo5UWtLQ0lMWmUxN09JekNNUVJ0ZkRweUZUcE1F?=
+ =?utf-8?B?RERFSkNvUWdueG1sd3ZoVjhmOFJDUlN5TUJ5VWZhWms0U3p6MkJXL0R1dVVR?=
+ =?utf-8?B?VkVOTlR0M2ZsYUV4Z3VoeEh5cUg1SnJTOG9UTE4vdTdEUUcyZUN4NkVoa21j?=
+ =?utf-8?B?YzBiNkZVL0FLRWY2dkhWQ1RJbUhpSEhwbm02YXBaSE1WcGpqNUlkMjNGbjFP?=
+ =?utf-8?B?cE5zUlkxbEQxNUc4b2l6MVhEeWpXM3MzSU81WkcrSnBVSG5WUjQwdUFQb1BX?=
+ =?utf-8?B?TlYwYkFNSjlJTERadWdmQ3ZvWnpLaUpOclFEcWlhZGVBOTJvaElyVmhFSXdX?=
+ =?utf-8?B?ZEoycUIzREpYUFc3REdNNzlYVWRWQlJUbEc4aTY3UlVMWEJSZGFKY1lkYmdn?=
+ =?utf-8?B?UXd0a1NPUWFXaUdmN3FmK3F1OE5BUHRsSXR3SEtWMHVMd2NLY3BreHRTN0lQ?=
+ =?utf-8?B?UXN5SXU4L1Y1cjVMTkRnMGMvRG11TmFtM2FsVzUySDNMeGJDRGtnZzczQm5a?=
+ =?utf-8?B?RHdROERsYmgyOXJQdlBzUFVDcGY1bnZmWTRERGFtSkN5MzlCb2YzR0REK2dR?=
+ =?utf-8?B?bG03RWRNd1lCYmRjRU5BVkU0U2FHcmdkaEZZNkhYTzYrUThSTnVaNmFCeUlH?=
+ =?utf-8?B?UDRPWnMyOWFMMkt0Z0IxUllOaTJmZi9RRWVnUjVHaHZLTVBIVGtHSkxPN0R4?=
+ =?utf-8?B?T2N6RFdTeWRLL0REeW1pSDZMQ05UekJ4bUpYY3dGbWhyY3VUTjNMUW8wNGQx?=
+ =?utf-8?B?Tm51bkU3REk3SzRsaUFjaTE4U2pJNHBuZ1lRRUs1aTFxVkJORUZRVkNVMDJV?=
+ =?utf-8?B?amV4aFppbkxrUjhWeEh6V1VSd0RLenJTN0Zhckg1VkZuOTh5SUp2dFZXK0RB?=
+ =?utf-8?B?VFpWMTEwdnk0bXVGeXdHNzl3K0w5eXArTVBUVEM3S0NUU2NBalhMZFdsdk5K?=
+ =?utf-8?B?RTg4dDhlN1E2Y2ljQUtJOEc4Y2hmbzZGbDhCYWRmOTEvZ1Bxbm01dlNWM1pv?=
+ =?utf-8?B?NEhlaHdjcVIwMWxmRkpEU2tDd1ppNUhhN3FmSDRSMEFmcUp5Q1hwajhwSlpy?=
+ =?utf-8?B?VmVGN2xadlAvdVM2SFdjaXB2V0cvNk1BeG5qaUhqWllDV3NkbmNMTDFxSFp6?=
+ =?utf-8?B?VklzV3Q4YmRWa1ZkeFAyL2tubGpjQ0RieEc0VHg0bTBKWkh2cGtrNWFwZHFi?=
+ =?utf-8?B?NWtEQVFGZHRQdGpEc2p5dHQzdjlPck4vU2hUZUlXd295dGhhODNXekJzNVNY?=
+ =?utf-8?B?NTQreU51NnN3UURMVUI2VGdmUVpsRjUwaGZOWFNKUkg0dXlDZ3o2aDkxVW0w?=
+ =?utf-8?B?UHNzK21rNkhZVmxsR1d3bGlmbDFNSjhSd3I5RlZPVXV5dkhmaTU1dzhSSkxR?=
+ =?utf-8?B?TmJpeFl2M1Z5a0t6Vk02ZDJqbTVmdXhUKzhwWkkyUjlCTU02bk0zWVdCbGQ2?=
+ =?utf-8?B?SlFidjJFSERZdU9tSDFlbHA1cDcycWdIamVJTGNicUZQYk5oZlZUZ0Q1RCsw?=
+ =?utf-8?B?emg5cGJoS1JlTlRYM3FwUDJCWnltOFR3Mm1UQjBOK1VSTW10U2lSbHpoZkdu?=
+ =?utf-8?B?MFEvT3ozRUcrbG0wZjZKVCtsWkYrcXBZQTluNzl4MkRHc0dnR3NmSm4yc1R3?=
+ =?utf-8?Q?g76ZawPf/M3N0l3nqrEoZVaYf?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 57aae9b3-c01c-4461-7850-08dd87f4a426
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB8056.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 14:38:15.4878
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eqoO/WfMwIdIt3heex2MLOh75FHwsHjt/TvWS/IwyUmQ/MBTKuMisH0tCwPh0BKarZACgnMM6xfDCfFCeWq+sQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7527
 
-On Tue, 29 Apr 2025 16:35:09 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
->> It appears that there is still no consensus on how to resolve it. CC
->> the participants in the above thread.
->>
->> I think that we can drop this patch and better to focus on Instant and
->> Delta types in this merge window.
->>
->> With the patch below, this issue could be resolved like the C side,
->> but I'm not sure whether we can reach a consensus quickly.
+
+On 4/30/2025 9:25 AM, Alexandre Courbot wrote:
+> Hi Danilo,
 > 
-> I think using the C ones is fine for the moment, but up to what arm
-> and others think.
+> On Tue Apr 22, 2025 at 11:44 PM JST, Danilo Krummrich wrote:
+>> This patch could probably split up a bit, to make it more pleasant to review. :)
+> 
+> Probably yes. I thought since it is mostly new files, splitting up
+> wouldn't change much. Let me see what I can do.
+> 
+>>
+>> On Sun, Apr 20, 2025 at 09:19:43PM +0900, Alexandre Courbot wrote:
+>>>
+>>> +#[repr(u8)]
+>>> +#[derive(Debug, Default, Copy, Clone)]
+>>> +pub(crate) enum FalconSecurityModel {
+>>> +    #[default]
+>>> +    None = 0,
+>>> +    Light = 2,
+>>> +    Heavy = 3,
+>>> +}
+>>
+>> Please add an explanation for the different security modules. Where are the
+>> differences?
+>>
+>> I think most of the structures, registers, abbreviations, etc. introduced in
+>> this patch need some documentation.
+> 
+> I've documented things a bit better for the next revision.
+> 
+>>
+>> Please see https://docs.kernel.org/gpu/nova/guidelines.html#documentation.
+>>
+>>> +
+>>> +impl TryFrom<u32> for FalconSecurityModel {
+>>> +    type Error = Error;
+>>> +
+>>> +    fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
+>>> +        use FalconSecurityModel::*;
+>>> +
+>>> +        let sec_model = match value {
+>>> +            0 => None,
+>>> +            2 => Light,
+>>> +            3 => Heavy,
+>>> +            _ => return Err(EINVAL),
+>>> +        };
+>>> +
+>>> +        Ok(sec_model)
+>>> +    }
+>>> +}
+>>> +
+>>> +#[repr(u8)]
+>>> +#[derive(Debug, Default, Copy, Clone, PartialEq, Eq, PartialOrd, Ord)]
+>>> +pub(crate) enum FalconCoreRevSubversion {
+>>> +    #[default]
+>>> +    Subversion0 = 0,
+>>> +    Subversion1 = 1,
+>>> +    Subversion2 = 2,
+>>> +    Subversion3 = 3,
+>>> +}
+>>> +
+>>> +impl From<u32> for FalconCoreRevSubversion {
+>>> +    fn from(value: u32) -> Self {
+>>> +        use FalconCoreRevSubversion::*;
+>>> +
+>>> +        match value & 0b11 {
+>>> +            0 => Subversion0,
+>>> +            1 => Subversion1,
+>>> +            2 => Subversion2,
+>>> +            3 => Subversion3,
+>>> +            // SAFETY: the `0b11` mask limits the possible values to `0..=3`.
+>>> +            4..=u32::MAX => unsafe { unreachable_unchecked() },
+>>> +        }
+>>
+>> FalconCoreRev uses TryFrom to avoid unsafe code, I think FalconCoreRevSubversion
+>> should do the same thing.
+> 
+> Since the field from which `FalconCoreRevSubversion` is built is only 2
+> bits, I thought we could avoid using `TryFrom` since we are effectively
+> covering all possible values (I wish Rust has n-bit integer types :)).
+> But yeah I have probably overthought that, and that unsafe block is
+> unsightly. Converted to `TryFrom`.
+> 
+>>
+>>> +/// Trait defining the parameters of a given Falcon instance.
+>>> +pub(crate) trait FalconEngine: Sync {
+>>> +    /// Base I/O address for the falcon, relative from which its registers are accessed.
+>>> +    const BASE: usize;
+>>> +}
+>>> +
+>>> +/// Represents a portion of the firmware to be loaded into a particular memory (e.g. IMEM or DMEM).
+>>> +#[derive(Debug)]
+>>> +pub(crate) struct FalconLoadTarget {
+>>> +    /// Offset from the start of the source object to copy from.
+>>> +    pub(crate) src_start: u32,
+>>> +    /// Offset from the start of the destination memory to copy into.
+>>> +    pub(crate) dst_start: u32,
+>>> +    /// Number of bytes to copy.
+>>> +    pub(crate) len: u32,
+>>> +}
+>>> +
+>>> +#[derive(Debug)]
+>>> +pub(crate) struct FalconBromParams {
+>>> +    pub(crate) pkc_data_offset: u32,
+>>> +    pub(crate) engine_id_mask: u16,
+>>> +    pub(crate) ucode_id: u8,
+>>> +}
+>>> +
+>>> +pub(crate) trait FalconFirmware {
+>>> +    type Target: FalconEngine;
+>>> +
+>>> +    /// Returns the DMA handle of the object containing the firmware.
+>>> +    fn dma_handle(&self) -> bindings::dma_addr_t;
+>>> +
+>>> +    /// Returns the load parameters for `IMEM`.
+>>> +    fn imem_load(&self) -> FalconLoadTarget;
+>>> +
+>>> +    /// Returns the load parameters for `DMEM`.
+>>> +    fn dmem_load(&self) -> FalconLoadTarget;
+>>> +
+>>> +    /// Returns the parameters to write into the BROM registers.
+>>> +    fn brom_params(&self) -> FalconBromParams;
+>>> +
+>>> +    /// Returns the start address of the firmware.
+>>> +    fn boot_addr(&self) -> u32;
+>>> +}
+>>> +
+>>> +/// Contains the base parameters common to all Falcon instances.
+>>> +pub(crate) struct Falcon<E: FalconEngine> {
+>>> +    pub hal: Arc<dyn FalconHal<E>>,
+>>
+>> This should probably be private and instead should be exposed via Deref.
+> 
+> Agreed - actually not all the HAL is supposed to be exposed, so I've
+> added a proxy method for the only method that needs to be called from
+> outside this module.
+> 
+>>
+>> Also, please see my comment at create_falcon_hal() regarding the dynamic
+>> dispatch.
+>>
+>>> +}
+>>> +
+>>> +impl<E: FalconEngine + 'static> Falcon<E> {
+>>> +    pub(crate) fn new(
+>>> +        pdev: &pci::Device,
+>>> +        chipset: Chipset,
+>>> +        bar: &Devres<Bar0>,
+>>> +        need_riscv: bool,
+>>> +    ) -> Result<Self> {
+>>> +        let hwcfg1 = with_bar!(bar, |b| regs::FalconHwcfg1::read(b, E::BASE))?;
+>>> +        // Ensure that the revision and security model contain valid values.
+>>> +        let _rev = hwcfg1.core_rev()?;
+>>> +        let _sec_model = hwcfg1.security_model()?;
+>>> +
+>>> +        if need_riscv {
+>>> +            let hwcfg2 = with_bar!(bar, |b| regs::FalconHwcfg2::read(b, E::BASE))?;
+>>> +            if !hwcfg2.riscv() {
+>>> +                dev_err!(
+>>> +                    pdev.as_ref(),
+>>> +                    "riscv support requested on falcon that does not support it\n"
+>>> +                );
+>>> +                return Err(EINVAL);
+>>> +            }
+>>> +        }
+>>> +
+>>> +        Ok(Self {
+>>> +            hal: hal::create_falcon_hal(chipset)?,
+>>
+>> I'd prefer to move the contents of create_falcon_hal() into this constructor.
+> 
+> I think it is actually beneficial to have this in a dedicated method:
+> that way the individual HAL constructors do not need to be visible to
+> the `falcon` module and can be contained in the `hal` sub-module, which
+> I think helps keeping things at their place. Is there a good reason to
+> prefer doing it here?
+> 
+> Ah, maybe you are thinking that we are returning a Boxed HAL because we
+> are going through this function? It's actually on purpose - see below.
+> 
+>>> +pub(crate) struct Gsp;
+>>> +impl FalconEngine for Gsp {
+>>> +    const BASE: usize = 0x00110000;
+>>> +}
+>>> +
+>>> +pub(crate) type GspFalcon = Falcon<Gsp>;
+>>
+>> Please drop this type alias, Falcon<Gsp> seems simple enough and is much more
+>> obvious IMHO.
+> 
+> Yeah, I wanted to avoid having to import two symbols into the gpu
+> module, but I've probably been overthinking it again.
+> 
+>>
+>>> +
+>>> +impl Falcon<Gsp> {
+>>> +    /// Clears the SWGEN0 bit in the Falcon's IRQ status clear register to
+>>> +    /// allow GSP to signal CPU for processing new messages in message queue.
+>>> +    pub(crate) fn clear_swgen0_intr(&self, bar: &Devres<Bar0>) -> Result<()> {
+>>> +        with_bar!(bar, |b| regs::FalconIrqsclr::default()
+>>> +            .set_swgen0(true)
+>>> +            .write(b, Gsp::BASE))
+>>> +    }
+>>> +}
+>>> diff --git a/drivers/gpu/nova-core/falcon/hal.rs b/drivers/gpu/nova-core/falcon/hal.rs
+>>> new file mode 100644
+>>> index 0000000000000000000000000000000000000000..5ebf4e88f1f25a13cf47859a53507be53e795d34
+>>> --- /dev/null
+>>> +++ b/drivers/gpu/nova-core/falcon/hal.rs
+>>> @@ -0,0 +1,54 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +use kernel::devres::Devres;
+>>> +use kernel::prelude::*;
+>>> +use kernel::sync::Arc;
+>>> +
+>>> +use crate::driver::Bar0;
+>>> +use crate::falcon::{FalconBromParams, FalconEngine};
+>>> +use crate::gpu::Chipset;
+>>> +use crate::timer::Timer;
+>>> +
+>>> +mod ga102;
+>>> +
+>>> +/// Hardware Abstraction Layer for Falcon cores.
+>>> +///
+>>> +/// Implements chipset-specific low-level operations. The trait is generic against [`FalconEngine`]
+>>> +/// so its `BASE` parameter can be used in order to avoid runtime bound checks when accessing
+>>> +/// registers.
+>>> +pub(crate) trait FalconHal<E: FalconEngine>: Sync {
+>>> +    // Activates the Falcon core if the engine is a risvc/falcon dual engine.
+>>> +    fn select_core(&self, _bar: &Devres<Bar0>, _timer: &Timer) -> Result<()> {
+>>> +        Ok(())
+>>> +    }
+>>> +
+>>> +    fn get_signature_reg_fuse_version(
+>>> +        &self,
+>>> +        bar: &Devres<Bar0>,
+>>> +        engine_id_mask: u16,
+>>> +        ucode_id: u8,
+>>> +    ) -> Result<u32>;
+>>> +
+>>> +    // Program the BROM registers prior to starting a secure firmware.
+>>> +    fn program_brom(&self, bar: &Devres<Bar0>, params: &FalconBromParams) -> Result<()>;
+>>> +}
+>>> +
+>>> +/// Returns a boxed falcon HAL adequate for the passed `chipset`.
+>>> +///
+>>> +/// We use this function and a heap-allocated trait object instead of statically defined trait
+>>> +/// objects because of the two-dimensional (Chipset, Engine) lookup required to return the
+>>> +/// requested HAL.
+>>
+>> Do we really need the dynamic dispatch? AFAICS, there's only E::BASE that is
+>> relevant to FalconHal impls?
+>>
+>> Can't we do something like I do in the following example [1]?
+>>
+>> ```
+>> use std::marker::PhantomData;
+>> use std::ops::Deref;
+>>
+>> trait Engine {
+>>     const BASE: u32;
+>> }
+>>
+>> trait Hal<E: Engine> {
+>>     fn access(&self);
+>> }
+>>
+>> struct Gsp;
+>>
+>> impl Engine for Gsp {
+>>     const BASE: u32 = 0x1;
+>> }
+>>
+>> struct Sec2;
+>>
+>> impl Engine for Sec2 {
+>>     const BASE: u32 = 0x2;
+>> }
+>>
+>> struct GA100<E: Engine>(PhantomData<E>);
+>>
+>> impl<E: Engine> Hal<E> for GA100<E> {
+>>     fn access(&self) {
+>>         println!("Base: {}", E::BASE);
+>>     }
+>> }
+>>
+>> impl<E: Engine> GA100<E> {
+>>     fn new() -> Self {
+>>         Self(PhantomData)
+>>     }
+>> }
+>>
+>> //struct Falcon<E: Engine>(GA100<E>);
+>>
+>> struct Falcon<H: Hal<E>, E: Engine>(H, PhantomData<E>);
+>>
+>> impl<H: Hal<E>, E: Engine> Falcon<H, E> {
+>>     fn new(hal: H) -> Self {
+>>         Self(hal, PhantomData)
+>>     }
+>> }
+>>
+>> impl<H: Hal<E>, E: Engine> Deref for Falcon<H, E> {
+>>     type Target = H;
+>>
+>>     fn deref(&self) -> &Self::Target {
+>>         &self.0
+>>     }
+>> }
+>>
+>> fn main() {
+>>     let gsp = Falcon::new(GA100::<Gsp>::new());
+>>     let sec2 = Falcon::new(GA100::<Sec2>::new());
+>>
+>>     gsp.access();
+>>     sec2.access();
+>> }
+>> ```
+>>
+>> [1] https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=bf7035a07e79a4047fb6834eac03a9f2
+> 
+> So are you have noticed there are two dimensions from which the falcons
+> can be instantiated:
+> 
+> - The engine, which determines its register BASE,
+> - The HAL, which is determined by the chipset.
+> 
+> For the engine, I want to keep things static for the main reason that if
+> BASE was dynamic, we would have to do all our IO using
+> try_read()/try_write() and check for an out-of-bounds error at each
+> register access. The cost of monomorphization is limited as there are
+> only a handful of engines.
+> 
+> But the HAL introduces a second dimension to this, and if we support N
+> engines then the amount of monomorphized code would then increase by N
+> for each new HAL we add. Chipsets are released at a good cadence, so
+> this is the dimension that risks growing the most.
+> 
+> It is also the one that makes use of methods to abstract things (vs.
+> fixed parameters), so it is a natural candidate for using virtual
+> methods. I am not a fan of having ever-growing boilerplate match
+> statements for each method that needs to be abstracted, especially since
+> this is that virtual methods do without requiring extra code, and for a
+> runtime penalty that is completely negligible in our context and IMHO
+> completely balanced by the smaller binary size that results from their
+> use.
+Adding to what Alex said, note that the runtime cost is still there even without
+using dyn. Because at runtime, the match conditionals need to route function
+calls to the right place. I am just not seeing the benefits of not using dyn for
+this use case and only drawbacks. IMHO, we should try to not be doing the
+compiler's job.
 
-I don't think anyone would disagree with the rule Russell mentioned
-that expensive 64-bit by 64-bit division should be avoided unless
-absolutely necessary so we should go with function div_s64() instead
-of function div64_s64().
+Maybe the only benefit is you don't need an Arc or Kbox wrapper?
 
-The DRM QR driver was already fixed by avoiding 64-bit division, so
-for now, the only place where we still need to solve this issue is the
-time abstraction. So, it seems like Arnd's suggestion to simply call
-ktime_to_ms() or ktime_to_us() is the right way to go.
+ - Joel
 
-> This one is also a constant, so something simpler may be better (and
-> it is also a power of 10 divisor, so the other suggestions on that
-> thread would apply too).
-
-One downside of calling the C's functions is that the as_micros/millis
-methods can no longer be const fn (or is there a way to make that
-work?). We could implement the method Paolo suggested from Hacker's
-Delight, 2nd edition in Rust and keep using const fn, but I'm not sure
-if it's really worth it.
-
-Any thoughts?
-
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index a8089a98da9e..daf9e5925e47 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -229,12 +229,116 @@ pub const fn as_nanos(self) -> i64 {
-     /// to the value in the [`Delta`].
-     #[inline]
-     pub const fn as_micros_ceil(self) -> i64 {
--        self.as_nanos().saturating_add(NSEC_PER_USEC - 1) / NSEC_PER_USEC
-+        const NSEC_PER_USEC_EXP: u32 = 3;
-+
-+        div10::<NSEC_PER_USEC_EXP>(self.as_nanos().saturating_add(NSEC_PER_USEC - 1))
-     }
- 
-     /// Return the number of milliseconds in the [`Delta`].
-     #[inline]
-     pub const fn as_millis(self) -> i64 {
--        self.as_nanos() / NSEC_PER_MSEC
-+        const NSEC_PER_MSEC_EXP: u32 = 6;
-+
-+        div10::<NSEC_PER_MSEC_EXP>(self.as_nanos())
-+    }
-+}
-+
-+/// Precomputed magic constants for division by powers of 10.
-+///
-+/// Each entry corresponds to dividing a number by `10^exp`, where `exp` ranges from 0 to 18.
-+/// These constants were computed using the algorithm from Hacker's Delight, 2nd edition.
-+struct MagicMul {
-+    mult: u64,
-+    shift: u32,
-+}
-+
-+const DIV10: [MagicMul; 19] = [
-+    MagicMul {
-+        mult: 0x1,
-+        shift: 0,
-+    },
-+    MagicMul {
-+        mult: 0x6666666666666667,
-+        shift: 66,
-+    },
-+    MagicMul {
-+        mult: 0xA3D70A3D70A3D70B,
-+        shift: 70,
-+    },
-+    MagicMul {
-+        mult: 0x20C49BA5E353F7CF,
-+        shift: 71,
-+    },
-+    MagicMul {
-+        mult: 0x346DC5D63886594B,
-+        shift: 75,
-+    },
-+    MagicMul {
-+        mult: 0x29F16B11C6D1E109,
-+        shift: 78,
-+    },
-+    MagicMul {
-+        mult: 0x431BDE82D7B634DB,
-+        shift: 82,
-+    },
-+    MagicMul {
-+        mult: 0xD6BF94D5E57A42BD,
-+        shift: 87,
-+    },
-+    MagicMul {
-+        mult: 0x55E63B88C230E77F,
-+        shift: 89,
-+    },
-+    MagicMul {
-+        mult: 0x112E0BE826D694B3,
-+        shift: 90,
-+    },
-+    MagicMul {
-+        mult: 0x036F9BFB3AF7B757,
-+        shift: 91,
-+    },
-+    MagicMul {
-+        mult: 0x00AFEBFF0BCB24AB,
-+        shift: 92,
-+    },
-+    MagicMul {
-+        mult: 0x232F33025BD42233,
-+        shift: 101,
-+    },
-+    MagicMul {
-+        mult: 0x384B84D092ED0385,
-+        shift: 105,
-+    },
-+    MagicMul {
-+        mult: 0x0B424DC35095CD81,
-+        shift: 106,
-+    },
-+    MagicMul {
-+        mult: 0x480EBE7B9D58566D,
-+        shift: 112,
-+    },
-+    MagicMul {
-+        mult: 0x39A5652FB1137857,
-+        shift: 115,
-+    },
-+    MagicMul {
-+        mult: 0x5C3BD5191B525A25,
-+        shift: 119,
-+    },
-+    MagicMul {
-+        mult: 0x12725DD1D243ABA1,
-+        shift: 120,
-+    },
-+];
-+
-+const fn div10<const EXP: u32>(val: i64) -> i64 {
-+    crate::build_assert!(EXP <= 18);
-+    let MagicMul { mult, shift } = DIV10[EXP as usize];
-+    let abs_val = val.wrapping_abs() as u64;
-+    let ret = ((abs_val as u128 * mult as u128) >> shift) as u64;
-+    if val < 0 {
-+        -(ret as i64)
-+    } else {
-+        ret as i64
-     }
- }
