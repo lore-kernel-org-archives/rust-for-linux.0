@@ -1,116 +1,104 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF111CAA85
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 12:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D982512D9;
+	Wed, 30 Apr 2025 12:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746015319; cv=none; b=Dpu36zjjWcEd2RuT73PAvkoMAGe65YE06kQZlJY+7SAqDqoZSkqaVDy7Hnk5O59ss94dixJ6LWb84X+zeMa/KiLTPTq8e/D/LzUWrnfhSGJ/41AjMIug6tuj6P9qrxYcrIiHIRg4HgB1a16evEGi052VgAjq2TLID0byx0aiZuU=
+	t=1746016586; cv=none; b=SeJXoA+1sNLJaIchCD8IQ4y3UKZFCXoRNzCO+Jw/tu05annWG2vdf/FAyPnIOtnDWznH0ciILJtwkJHZWOnaebE6QVDZzYeFdYLkDZJ6Ue4pS+efuHkUlwX1SYhMiHk7BshmewUVDa9AwXgRoSJrwiFmjxcEnpFGNg8v4OqdgHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746015319; c=relaxed/simple;
-	bh=+PMrTV4cMqqu/lA+cBky0GvUBIqaXbLjxr4LQJmpKag=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FTkPhdo2W9pyM9xoghKgS4qiwHo/BWSXKOP/Wn4DplP2ZF++u+UNaaBYen76En0m6Sen4Ip7FK9qhirt58e1Wf3E5uv9QeH+nQ0ycNM6k5N1AnvUPDg+Om9LLYg6VZuj74kMCvjlxiZ73pO03nlfYoKf7BL7QwHRQvCIOjaEOsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JY2Uls+j; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1746016586; c=relaxed/simple;
+	bh=cFbq5SIAJSv/xT/RKflh4/UM5b0ozJSrJFYHMFaCovY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QkoS4bXT2tU7j297X9UP6fLk3opG81HbXKpNxkXeP0Z8jRZoZymvxC+N/y7uudSIoYmPGD18djezEOuTeLJbXdLAAPSKS9NzXIyulBtWi6vMU22nUwtY92RE72RD8VKQEjvwm+eWYUtVFzbOw44aE0phULHfq2fS1iIB3BUjMko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LkxAW8Sf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JY2Uls+j"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43ea256f039so53604295e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 05:15:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746015316; x=1746620116; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nTKCIm+7pqVBVyacOmAhIisX4MK9GGaxDxO7NBbyAN4=;
-        b=JY2Uls+jmAxMbrMhH47Nzk3Bh3KqBPPOHK5E8xB9azg7e/jiZJC+YkfR+J1w4z72ua
-         1ANIIsHmNy/4kLXzKR7AoHb5WUgl/cH5RkLVB/Z9vzjqFwo26okrwZEyA8MuejFy0h5F
-         NkmLLMil1tnagQwOFvHgIZZP5P3J06JjskfBMWPVnEM1geC6y2BID7FmhOYGCbifs6U4
-         IPIGKwX/wti9FEQIwr4XdgPTcyXtk4j3UFH31ofpixcZLfdfVRSlKCIlkv2tGTxiVazZ
-         FbHFH68F26hOkD3+7nvOgz0inZwKaf+CFRGtpmlUG4URkr6fuDE+l1hmZ0MWCYzfGpeo
-         pXcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746015316; x=1746620116;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nTKCIm+7pqVBVyacOmAhIisX4MK9GGaxDxO7NBbyAN4=;
-        b=M54epjW43GUUdDuswsi9fuQZfFzeTXBs8kYlAqElIDz1/2neV401snyDYA63ASU7kk
-         8AHZukIHBA7SpdmbjR4AljBHaYipYi8vJcTNEDLR58+JqMG2YG4UEZFP9hd+9ZDVo/mu
-         t6dMQ77AmsSXiFNZKUG8leZYtkt29hdOIsjr0KRmIHahYJAi2rsJz5aGKGHUCXJgUtvl
-         AF+lqbAEs6KFb/+5lIk5XqDUCRLwgzBJZHla7ztvzFcZ8S6PAI6vk+Mxxg6mk/Orxy8d
-         wlQGOFT7x/PPm3hF3Xem95Aa6+XWH4NGaZjIWFhbwSaPT+bcdOnoNI0lmhTcbf0JTR+4
-         9Z1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUNDNTIzQy/PyA4MTioy/bXGKOtSbDSluOJjH+2zyapi7HUElEZanKXAWVI/+a5qLF9LYeJWpErL5V/paBI0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1DZ3xRNoCyRFvkWRPL35TlU8GvpvucQRIO6tl57ERdETfW8KT
-	xKldgOa7grpvxMi61xpFBH7YaRvMef3rODOPQWCzoTC+kgi/DImT9VGJ+dMy3KeF2+R/RxSlgvM
-	NATr6SDoRmPVNXQ==
-X-Google-Smtp-Source: AGHT+IHMDr/rZjgFYSiN16p1TscIq688FqOB0h/PUjPN14cIJ5RHkwIyd6kYOwKeOQZmyhKW+W0dB9Qx4oUzhP8=
-X-Received: from wmrs8.prod.google.com ([2002:a05:600c:3848:b0:43c:fd72:aae1])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b08:b0:43c:f64c:447f with SMTP id 5b1f17b1804b1-441b43a62ccmr10399725e9.29.1746015316406;
- Wed, 30 Apr 2025 05:15:16 -0700 (PDT)
-Date: Wed, 30 Apr 2025 12:15:14 +0000
-In-Reply-To: <2025043045-overbuilt-swab-5b65@gregkh>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LkxAW8Sf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6570C4CEE9;
+	Wed, 30 Apr 2025 12:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746016586;
+	bh=cFbq5SIAJSv/xT/RKflh4/UM5b0ozJSrJFYHMFaCovY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LkxAW8SfNjoe0pOWwdeeSofPgim9CHvUArIh1cA/nAhejKIVEYbnNbBQ5VASnCZaN
+	 kBZeFBFIbw9tRTEuwJckaqa3jiBtRcUhFid1XOmhxzg8iHRhdrnAkC6YUpgrlydLG0
+	 7hAZh0Z4no44Ir6zhHJqDxS8WomAusicsZ9fB+1zplnWs2deEghn3YxKi81pCGd451
+	 0Sbt4HvRyOJKc16aAChJ/UkrU2J3CflzUtcZlP/aQgQPc6PLqXtlzE79V7Z2rVRqj0
+	 /3cLw6j2xenXYFouRSUInqfmk9b0meKnOYxa72y2HKPA3IazAGxwwZaGf2qyJwg4sg
+	 g1Mthd3QqVQ6w==
+Date: Wed, 30 Apr 2025 14:36:22 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 7/7] rust: alloc: add Vec::insert_within_capacity
+Message-ID: <aBIZRoGo5J6_rqo3@pollux>
+References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
+ <20250429-vec-methods-v4-7-dad4436ff82d@google.com>
+ <2025042925-kindly-squash-fa6f@gregkh>
+ <aBIIZ64_Wsk1unB2@google.com>
+ <2025043045-overbuilt-swab-5b65@gregkh>
+ <aBIUUs4AWTII2bcO@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
- <20250429-vec-methods-v4-7-dad4436ff82d@google.com> <2025042925-kindly-squash-fa6f@gregkh>
- <aBIIZ64_Wsk1unB2@google.com> <2025043045-overbuilt-swab-5b65@gregkh>
-Message-ID: <aBIUUs4AWTII2bcO@google.com>
-Subject: Re: [PATCH v4 7/7] rust: alloc: add Vec::insert_within_capacity
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aBIUUs4AWTII2bcO@google.com>
 
-On Wed, Apr 30, 2025 at 01:39:03PM +0200, Greg KH wrote:
-> On Wed, Apr 30, 2025 at 11:24:23AM +0000, Alice Ryhl wrote:
-> > On Tue, Apr 29, 2025 at 05:30:06PM +0200, Greg KH wrote:
-> > > On Tue, Apr 29, 2025 at 02:44:27PM +0000, Alice Ryhl wrote:
-> > > > This adds a variant of Vec::insert that does not allocate memory. This
-> > > > makes it safe to use this function while holding a spinlock. Rust Binder
-> > > > uses it for the range allocator fast path.
+On Wed, Apr 30, 2025 at 12:15:14PM +0000, Alice Ryhl wrote:
+> On Wed, Apr 30, 2025 at 01:39:03PM +0200, Greg KH wrote:
+> > On Wed, Apr 30, 2025 at 11:24:23AM +0000, Alice Ryhl wrote:
+> > > On Tue, Apr 29, 2025 at 05:30:06PM +0200, Greg KH wrote:
+> > > > On Tue, Apr 29, 2025 at 02:44:27PM +0000, Alice Ryhl wrote:
+> > > > > This adds a variant of Vec::insert that does not allocate memory. This
+> > > > > makes it safe to use this function while holding a spinlock. Rust Binder
+> > > > > uses it for the range allocator fast path.
+> > > > > 
+> > > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > > > ---
+> > > > >  rust/kernel/alloc/kvec.rs | 39 +++++++++++++++++++++++++++++++++++++++
+> > > > >  1 file changed, 39 insertions(+)
+> > > > > 
+> > > > > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > > > > index 0682108951675cbee05faa130e5a9ce72fc343ba..998afdcde47bec94b2c9d990ba3afbb3488ea99e 100644
+> > > > > --- a/rust/kernel/alloc/kvec.rs
+> > > > > +++ b/rust/kernel/alloc/kvec.rs
+> > > > > @@ -355,6 +355,45 @@ pub unsafe fn push_within_capacity_unchecked(&mut self, v: T) {
+> > > > >          unsafe { self.inc_len(1) };
+> > > > >      }
+> > > > >  
+> > > > > +    /// Inserts an element at the given index in the [`Vec`] instance.
+> > > > > +    ///
+> > > > > +    /// Fails if the vector does not have capacity for the new element. Panics if the index is out
+> > > > > +    /// of bounds.
 > > > > 
-> > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > > ---
-> > > >  rust/kernel/alloc/kvec.rs | 39 +++++++++++++++++++++++++++++++++++++++
-> > > >  1 file changed, 39 insertions(+)
-> > > > 
-> > > > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> > > > index 0682108951675cbee05faa130e5a9ce72fc343ba..998afdcde47bec94b2c9d990ba3afbb3488ea99e 100644
-> > > > --- a/rust/kernel/alloc/kvec.rs
-> > > > +++ b/rust/kernel/alloc/kvec.rs
-> > > > @@ -355,6 +355,45 @@ pub unsafe fn push_within_capacity_unchecked(&mut self, v: T) {
-> > > >          unsafe { self.inc_len(1) };
-> > > >      }
-> > > >  
-> > > > +    /// Inserts an element at the given index in the [`Vec`] instance.
-> > > > +    ///
-> > > > +    /// Fails if the vector does not have capacity for the new element. Panics if the index is out
-> > > > +    /// of bounds.
+> > > > Why panic and why not just return an error instead?
 > > > 
-> > > Why panic and why not just return an error instead?
+> > > It's for consistency with stdlib. Illegal use is panic, expected error
+> > > conditions are errors.
 > > 
-> > It's for consistency with stdlib. Illegal use is panic, expected error
-> > conditions are errors.
+> > But this is the kernel, not userspace :)
+> > 
+> > As you can return an error, why not?  Rebooting a box should be a "last
+> > resort" type of thing when you can not recover from an error.  You can
+> > easily not overflow and return an error here, so why do you want to just
+> > give up and cause all data to be lost?
+> > 
+> > And I don't see any other panics happening in this file, so would this
+> > be the first one?
 > 
-> But this is the kernel, not userspace :)
-> 
-> As you can return an error, why not?  Rebooting a box should be a "last
-> resort" type of thing when you can not recover from an error.  You can
-> easily not overflow and return an error here, so why do you want to just
-> give up and cause all data to be lost?
-> 
-> And I don't see any other panics happening in this file, so would this
-> be the first one?
+> I don't feel strongly about this method, but it's not the first panic.
+> The vector type has an indexing operator vec[i] that panics if you index
+> out-of-bounds.
 
-I don't feel strongly about this method, but it's not the first panic.
-The vector type has an indexing operator vec[i] that panics if you index
-out-of-bounds.
+This is because core::ops::Index isn't fallible and even if we wouldn't
+implement Index for Vec, we'd get a slice through Deref, where it is exactly the
+same.
 
-Alice
+In this case though, we can easily avoid the panic by checking the index and
+return an error instead, which is what we should do.
