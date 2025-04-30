@@ -1,55 +1,55 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427B62CA6
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 00:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41614881E
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 00:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745973711; cv=none; b=d4Gp+q4PyCdgow7snl9Wkvt7ZXjGvfG3rY+POqYutnfcuPSmQzOvtlUbbIPAaTXcpbU6DqeIFIRIxFApm1s4pDAIJetGqhihSe/upw2B5sm8JHSTqBYiYifCFWZvCDJnpjn8qr2m5+Lj6sZZTO7xpT5o2TlQj/j5jmIRjDUItNc=
+	t=1745973717; cv=none; b=m0Nq4pmi4yrdJ60eEsfgtip/a38I6wqq0pIWRgsUUidN9dsRHFFcmTMqc4eCuy/35euuE/1RmXo/IGqqTlfN2OnRKT/EhFGB32mlluxK8STmdPkdEFBfAokI3JSxgMR/GsBpbcPf7it/U3fEUxRuJDggl0uXTksLN+obENHKwwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745973711; c=relaxed/simple;
-	bh=YsSJK+JBgrMChothMITffQgSKnUI35D9iUSvUi32+oo=;
+	s=arc-20240116; t=1745973717; c=relaxed/simple;
+	bh=pLvxUdxndsr2wYkJQYg49ecez/cviTwRj3eN4nJwgxo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=o6vug3AfG8JKNUwEE2czgG00eEhZmcIDVapTNnNKnZD+Ta1a9AF9bY6hUcwNR5fMSPfB6TejQVR+KFXMztw1zPJQo7fpBnD77vz4ESMzWnX2HgVI+ZWbmmvZoEsnVixdxF1Ic669ecAWQlhIsKKsco8O1qooaSDtGn+ADD2Ffzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wgwPOYu/; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=ts9Ts26dCuC641vPkebi5KUWYN4cswrZL/EzQ5PSRF2GijrNDQb3L4MneT0PjeoAHgMPKu3chRNW5ioEyD4a+71HzTIBDKSG7urJheNNQya5Gfue37cljS/PalbGq1RRy/j58Mgya7DVLXlmg/hnOeiauKQ4IQdePjXMkfU4xPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=apNF28FV; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wgwPOYu/"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-736cd27d51fso5045448b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 17:41:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="apNF28FV"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-736c7df9b6cso8796223b3a.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Apr 2025 17:41:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745973708; x=1746578508; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1745973715; x=1746578515; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9cYhstsrbro2bvVLigEn3Nm+qEHX+oY+qpb1akXLGPE=;
-        b=wgwPOYu/3MCy4dUbuFwXITtgYdI4a2TuJ3lAVd7tiGEyf6CQr9WFUkktb30NiNLulW
-         u9Jn84uOIuLSsyhdwdg5TKu0BG/0pKsNvfuCR31deHlWmq6MpgYT52wOs2cop3GZwRNE
-         NbMLn/RqntV4VcOmbAapbDda5QwezI2nTjoYhTSeZTrfsB0pnLCwVPqYro7W2AUmNpCp
-         rHDle2ZM6gSN1zI/QdgiWfdd+qCc+aZO9yFV0s+OSSEURrVYU89sI7mx1Vlv3xv2hmc1
-         EzHrOVB7G9XUKnhaZBhUH2j2F+1eBQCScS8NGjRvfqZzeljFvRbMTVYckJchUYcXFuWX
-         iIIQ==
+        bh=VWjkucJuMaosxMcy1Z3rSUNsLtdDY3ZZywavpz7InSY=;
+        b=apNF28FVbWdzH+0p7oT9pqhgVfytqVk4HeXo+6Pnia3EmomAcSMSbJQxSrx5jaqdv+
+         +9rgBfJ7WR8ZIb1AQIrdBZpSvJdoOtkLqFDnVB5bV6hzfAwZgIKVv8/2pSJiSiZ7O8ro
+         aOOxHiF6fqhWoRE/7cGosma/CCpMzJuGDnNx7kYgLDxHMdteOMvJZP/U6mhPM6e9g58P
+         75/BKgxt+1kcfuxqKq+z9uOzONGN5f/ZMidHbVOGMhTnVnGPHEjJSLlRN9DiKcsZx84M
+         WVra43nR9I9c4ShK8cQRuSXo708Z0UXlJWRWmYloVSAdwTMPf/tSHOLldBKRQrWtDlit
+         lltQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745973708; x=1746578508;
+        d=1e100.net; s=20230601; t=1745973715; x=1746578515;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9cYhstsrbro2bvVLigEn3Nm+qEHX+oY+qpb1akXLGPE=;
-        b=M81djuy/2PMGVi/8Y0JvFgDoZK8nxt1wfMGWK6hDGQn2jP5EKLhdA2E1ZXP9C7+MSv
-         UjJtrTJD3Ug6FCyvPt/EPjdftEkbrsopEQKRWWpSwi0XJ5SYe2JgZ+uWxE2t1kbxRzDy
-         Dk9zuya3mwzR1H2yDQ5hdEkFvStStthkKjo4/OvKbvH3cXSuAQZ5aHXBiLueA4thWyYt
-         4d361zCGa+iVX5jZvzlwLKEDIZv8mcVGoG4QTNzlTuy1OJMQNVOoNw/A3Jz650ge0X4u
-         1O6/gHp3Gg7aXfQVU32PMqDpeGIsQYiECEP6Rw+ARycb+yfW0zIlNMUCrFcZlTvsIV5+
-         vNag==
-X-Forwarded-Encrypted: i=1; AJvYcCV2ar23eVb+Z1ipta5N86ibjTS6R574LpjTjP9Bp9FJroWzJLYFR0cOKrK2EEH2XcdFLykcZR8QaQ7/6ovqnw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFMQvQCTju7ai0FeC+fRfirDTN32MAfbY1pZKvduCbzdAOYX/y
-	EYo7PZkSPsFJjhfwZTAkV6cbMZIAqHA22AcYXW61ftfQ00t+SA03HLdW6EEZtV6Q65HlJrCKp4m
-	JCTjwlA==
-X-Google-Smtp-Source: AGHT+IEJsy1CiwSbTZ772fe8tVZ0+2GytQHzJ43kqO3OP7rBH78lCFDM5KKDrcvzIsMB/uaQe+1R5/yWGIpM
-X-Received: from pfbhw20.prod.google.com ([2002:a05:6a00:8914:b0:736:a70b:53c7])
- (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b46:b0:736:6151:c6ca
- with SMTP id d2e1a72fcca58-74038939bc9mr1750119b3a.4.1745973708332; Tue, 29
- Apr 2025 17:41:48 -0700 (PDT)
-Date: Tue, 29 Apr 2025 17:41:27 -0700
+        bh=VWjkucJuMaosxMcy1Z3rSUNsLtdDY3ZZywavpz7InSY=;
+        b=le5i3UDafLIYb9rcKgh+O/Sv8KUeVAPlWeeFD2EgBOZTxG/UTc8oWVsp60egVRDNbb
+         t0BIHibZ9YUFasKiyDOm+VfnL9ns3al5R4rWOZtcetoVB4/uSXGyJK7Z7/B5yR3tfV3I
+         FslxmizPDpTFWf3oZO2IfUhCyyoEAgmf+DjiP2jP6B52E1v4t3OYMy5xzfZJuZlYPz0T
+         oGvm5ceVtMfV21aNMPmKq1BP3nVO/Gobg3/+PD7YA7BWO1GNIL7ujGdxdh4+KmnfNrO9
+         Rfslgt3Csrh+VZoYnD2EShGghQrVjAMjvDV8tej2B75T7gjf2Z3kaVZCNGRPE1bcP2pL
+         1Qug==
+X-Forwarded-Encrypted: i=1; AJvYcCVUNPgRXQnuBZPSZkKiZS0yy2LAJN3rMuBXHdHxIaGkhYjyvqjpboDp09GHeTh92ov7n8Sj1i+XBeyENDetfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJQ5cgZ4f2CHPQ/lcFHHwyGBg7hFm2iXSHqTdiwOOdccIT2pC7
+	8wU9yS2efqZubLxnYLjDjzI8Wz2+QtOs3rhJnbkUWUkA54KxB6ddwwrfRalDZMH0rxFUEQ9y/Ap
+	OHWbDYA==
+X-Google-Smtp-Source: AGHT+IGBKZmj0xcnx3IB64TcbS0pb/r17lmOgH8lxAqqhmr49CDFUH1EBNpi6iyWZc1C2ZsKErjB7VbqxAQl
+X-Received: from pfbfn23.prod.google.com ([2002:a05:6a00:2fd7:b0:740:555:f7af])
+ (user=irogers job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3924:b0:736:34a2:8a18
+ with SMTP id d2e1a72fcca58-7403a836556mr988402b3a.24.1745973715575; Tue, 29
+ Apr 2025 17:41:55 -0700 (PDT)
+Date: Tue, 29 Apr 2025 17:41:28 -0700
 In-Reply-To: <20250430004128.474388-1-irogers@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250430004128.474388-1-irogers@google.com>
 X-Mailer: git-send-email 2.49.0.901.g37484f566f-goog
-Message-ID: <20250430004128.474388-6-irogers@google.com>
-Subject: [PATCH v2 5/6] perf test demangle-java: Switch to using dso__demangle_sym
+Message-ID: <20250430004128.474388-7-irogers@google.com>
+Subject: [PATCH v2 6/6] perf test demangle-ocaml: Switch to using dso__demangle_sym
 From: Ian Rogers <irogers@google.com>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
 	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
@@ -83,59 +83,41 @@ To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
 Cc: Ian Rogers <irogers@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The use of the demangle-java APIs means we don't detect if a different
-demangler is used before the Java one for the case that matters to
-perf. Remove the return types from the demangled names as
-dso__demangle_sym removes those.
+The use of the demangle-ocaml APIs means we don't detect if a different
+demangler is used before the OCaml one for the case that matters to
+perf.
 
 Signed-off-by: Ian Rogers <irogers@google.com>
 ---
- tools/perf/tests/demangle-java-test.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ tools/perf/tests/demangle-ocaml-test.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/tests/demangle-java-test.c b/tools/perf/tests/demangle-java-test.c
-index 93c94408bdc8..ebaf60cdfa99 100644
---- a/tools/perf/tests/demangle-java-test.c
-+++ b/tools/perf/tests/demangle-java-test.c
-@@ -3,10 +3,9 @@
+diff --git a/tools/perf/tests/demangle-ocaml-test.c b/tools/perf/tests/demangle-ocaml-test.c
+index 90a4285e2ad5..612c788b7e0d 100644
+--- a/tools/perf/tests/demangle-ocaml-test.c
++++ b/tools/perf/tests/demangle-ocaml-test.c
+@@ -2,10 +2,9 @@
+ #include <string.h>
  #include <stdlib.h>
  #include <stdio.h>
- #include <linux/kernel.h>
 -#include "tests.h"
 -#include "session.h"
  #include "debug.h"
--#include "demangle-java.h"
+-#include "demangle-ocaml.h"
 +#include "symbol.h"
 +#include "tests.h"
  
- static int test__demangle_java(struct test_suite *test __maybe_unused, int subtest __maybe_unused)
+ static int test__demangle_ocaml(struct test_suite *test __maybe_unused, int subtest __maybe_unused)
  {
-@@ -18,19 +17,19 @@ static int test__demangle_java(struct test_suite *test __maybe_unused, int subte
- 		const char *mangled, *demangled;
- 	} test_cases[] = {
- 		{ "Ljava/lang/StringLatin1;equals([B[B)Z",
--		  "boolean java.lang.StringLatin1.equals(byte[], byte[])" },
-+		  "java.lang.StringLatin1.equals(byte[], byte[])" },
- 		{ "Ljava/util/zip/ZipUtils;CENSIZ([BI)J",
--		  "long java.util.zip.ZipUtils.CENSIZ(byte[], int)" },
-+		  "java.util.zip.ZipUtils.CENSIZ(byte[], int)" },
- 		{ "Ljava/util/regex/Pattern$BmpCharProperty;match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z",
--		  "boolean java.util.regex.Pattern$BmpCharProperty.match(java.util.regex.Matcher, int, java.lang.CharSequence)" },
-+		  "java.util.regex.Pattern$BmpCharProperty.match(java.util.regex.Matcher, int, java.lang.CharSequence)" },
- 		{ "Ljava/lang/AbstractStringBuilder;appendChars(Ljava/lang/String;II)V",
--		  "void java.lang.AbstractStringBuilder.appendChars(java.lang.String, int, int)" },
-+		  "java.lang.AbstractStringBuilder.appendChars(java.lang.String, int, int)" },
- 		{ "Ljava/lang/Object;<init>()V",
--		  "void java.lang.Object<init>()" },
-+		  "java.lang.Object<init>()" },
+@@ -27,7 +26,7 @@ static int test__demangle_ocaml(struct test_suite *test __maybe_unused, int subt
  	};
  
  	for (i = 0; i < ARRAY_SIZE(test_cases); i++) {
--		buf = java_demangle_sym(test_cases[i].mangled, 0);
+-		buf = ocaml_demangle_sym(test_cases[i].mangled);
 +		buf = dso__demangle_sym(/*dso=*/NULL, /*kmodule=*/0, test_cases[i].mangled);
- 		if (strcmp(buf, test_cases[i].demangled)) {
- 			pr_debug("FAILED: %s: %s != %s\n", test_cases[i].mangled,
- 				 buf, test_cases[i].demangled);
+ 		if ((buf == NULL && test_cases[i].demangled != NULL)
+ 				|| (buf != NULL && test_cases[i].demangled == NULL)
+ 				|| (buf != NULL && strcmp(buf, test_cases[i].demangled))) {
 -- 
 2.49.0.901.g37484f566f-goog
 
