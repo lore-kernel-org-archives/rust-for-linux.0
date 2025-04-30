@@ -1,58 +1,58 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E94190676
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 15:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C06C16DC28
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 15:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746025859; cv=none; b=o/P2zs4kED5pKRp5mFGwFJ6TijuLQcRGx6i5MB/xy/atMx5AmAh5bn7B5tZyfR39y3JfqkEKF72A2BgkA009jHUHZWL5DE2AZ0i4ly20CENkhHQW6IKYvkNujJOEHPE1U9VGlZqmPEdS4/X8Kubr1EYI4BtsJQrw4yCNKBCtuy4=
+	t=1746025945; cv=none; b=BtMmpB8Wxt0xR6gGesdAk6mHR4EAZiKYbdsVKlXTFJsIe7ZD+gymDkV1pzPgd9dwpHPc2DrMgQFZgCm8pLzRaprl8eO2VAQRE1vbcIoXrmbyKlDClVlNXvlmbvvtVoSFiaP+IN5WK3xMe08XHy2RkS+bjOfNgThYM9OQ5oHRXsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746025859; c=relaxed/simple;
-	bh=Q7ULWrwV/Ds5hyfQiDZ2WUbNBn+35UNVwvoumJ4KQuo=;
+	s=arc-20240116; t=1746025945; c=relaxed/simple;
+	bh=3cycFABzBd9M6b4gkgL4KrEdY8QhVRFmgCnPwxrmyOk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Za4ZzSYHThSsTYWrA9Puv3Ve60wD39CbhWaBC48IiXa2MV+dNvUGzSBFoKgNvHyn92Q29wV/JeJuU11kij+u8MydS3nZg6qfxaq90qeN+pfwpMbubZ1Z0Y9suyVBO673g8XfsJiy0Fs7VwLAn71MylkVc57SD1/zx4DsfLtG90A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LZ3qrFvT; arc=none smtp.client-ip=209.85.160.176
+	 To:Cc:Content-Type; b=Stb1m6yT/t88nExm2xx/O3RoDutiXATpJXQTKSOysZXR79WupBsbO77HKSZqs+SHMYreIXoXg2LvNyTkFCtJPTRXCfgAntDeVle/9jFUjdg9THCwNDiOdrRPnG9J2K39vokq6sJvNGNVOjVku3sipfsx2QdGj5lFcwi9g+d+kV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=36O17fre; arc=none smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LZ3qrFvT"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4774611d40bso592671cf.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 08:10:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="36O17fre"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-47666573242so743751cf.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 08:12:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746025857; x=1746630657; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746025942; x=1746630742; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xGLsDsRyVtGMtJrAdQ6aTqwgR9IuQ99vMNfBN6aVAhs=;
-        b=LZ3qrFvTzsWDPW+apguQGg0x+ZiZxoRDI6H8PS1FfIta4oLrZL6Nqvp86N2OMn3dwF
-         Aus3TTuMldJcLV/sVI462ZtCLEmRdgtOBYwBnCfCNtjXhTp8MqIF1NA4UpzWdNGSzFua
-         7Dbpphrp/AhPd3Wu79+e16oQSPntrlcvqT60R2ZyHpwGn5Wo2FuUULAByW0mOmoNhEhX
-         CSrvbfQKPvnXo230hdf5x8op0S4M+ZuQ8UGPC9BTnRK3AXDtW5ltPeuQ7USEaJZa6+US
-         vuEHByWHtya96SwkD1Uq84yubdtuvM+3UOY+jZXv3E8hGMT/767J01+0lc14xIM/mjI1
-         xrsA==
+        bh=yhEh4tvbRMYHNdTjhp8bc+1l+QqiVag0W2z4WqVEcFg=;
+        b=36O17freEVVJUorWMnWXx5lDRDqTOw0ly60tP2p4r4N3to2CyK3Am3fgWPTWPHyvmt
+         uCQXVQQJJBZPy23VoKFuk/B2BU6+hRD2pHmxhpnO7EHZxUiV2FxkQJpiMC9Sf4mIqX6L
+         XOR3ztBGaG6TwjQkzUsMso48XyeX/mx6tmmdj40eOx6uJVDgCKNhHpyDhYl5K3FuAE4o
+         LeMj7vYx5ZaZ3aiG5A9epukKu49Gm5UWfuHGVNqFNptvTu46X4qq72oP+c5we5nUGPdJ
+         EfJc5HbDs0hg8qmu+1vkF4cgR8MTlCi4sEfNyPZ4v2kpbaVc7cm5LAdYf1kJI0JgCmEN
+         Je0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746025857; x=1746630657;
+        d=1e100.net; s=20230601; t=1746025942; x=1746630742;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xGLsDsRyVtGMtJrAdQ6aTqwgR9IuQ99vMNfBN6aVAhs=;
-        b=gYjCkiC8tXy8b/bwdR/QJJEVzYzb5WStNp0QtCesMnTzhh71Qw5Yr+OuVok+25AOfu
-         NQ3HOC+9tYeqzl5DCMAfbl5I6Iu8APoncDE7cFJDORKTwOZpcO5HxWOY/LBHy8TuDr/b
-         KbFoZHB3JoQSWlUoGfxnODNuwqre0rva1DRncZUifZokkEAa2OZlEN+Mv8Wlz0GVE0cD
-         M8fvqtBfNIEXIfnFsXX/E9EACwkK0nkM5+srTaAXdU6s1si0wcI1eQ7XBZVIW6TYLzdw
-         ZGGg6//u/kjIzI6rzcnsdnymdxwBHsgdpHNZ+0bZEacheKoK5l05jSlbyrPY3EQqwybB
-         U5kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVkyGyJYpjm9LBgZBLYReNnpIOGySnGsLCSdfvwLFvXhgK3IZxcPDTtXkZCp23xBs1mMw6YeBrbp2ZiGfbtZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf5xXYQqeQ7UFZhtzQpP0fbxgGOpMODkuWZR3b465WnF8ZdspB
-	NeerMnYTafmSkQWS6g1eWAR/jBhLZHdVUnrcrTYQUK1nv6HASv7Rre7KoaRc/2aT66YR2xuZSJh
-	W2ZcllGCRk/ueB4GVGffJcFpCsX7nSoOnAhd7
-X-Gm-Gg: ASbGnctlQVNX6b4FoaggtoADz9EhiU4c4enYg1i57+RAeSNnmxDFJn4rJqlk+SJtP9q
-	YmivczKA69WXhK+wXHQtnjRfFFCcHmDF+25KznNqlrerubYGRyGetG1PHZHHw6PXW5Oank+5mtO
-	ednvPMW7uhBFmzQYFDGIl8aV2bRJW3p8WvMximW7EFeyl+6lxX4uU=
-X-Google-Smtp-Source: AGHT+IEzUE/HJxpRUWYcnbQL8lTMYBvSLNwbtEboX98Yu7xYLyPfkgA+GUOExnn0jN/Lds5vJg3ipvF1R/4hZmW3U5E=
-X-Received: by 2002:a05:622a:408:b0:47b:840:7f5b with SMTP id
- d75a77b69052e-489ddae52bamr4464701cf.29.1746025856924; Wed, 30 Apr 2025
- 08:10:56 -0700 (PDT)
+        bh=yhEh4tvbRMYHNdTjhp8bc+1l+QqiVag0W2z4WqVEcFg=;
+        b=iiBwudk70fVm9JckL91oeGgj4v8RCY+SfyDQ+79u2g/VHpB5BDR8zYFsc6AjiBNoi8
+         vftQ5XyYfBvo92BckULQeg4X5KsOvDaBteGNlkTD8nbup3T5yPiylcCPN1mVJf0o/h+K
+         YKytlSQZrmnhIX9aE/8N1wjXHKsodKjw5J8kCCexcVhgWW4Vrik9xNjQ6IHmHQoQWPKa
+         Swtd1NL++Z6h7i7zXo+Q9vDqWhb6E11L54Fc2hj/KLFu3QhJjK0CS3lqiZWjU50E9UWP
+         uBt0NREpM+L31SkcVWBcOJLtwBdQTjejFHus9mlAq3FEY/GNw5827uBpfLxQG7sayjFK
+         9DRw==
+X-Forwarded-Encrypted: i=1; AJvYcCWOKeNin8dCRvlYjH/J9NssImeUwSxhdmf/hN8m3XcUjtgdYx+F2Tp1YLIUfr0i/WjDUc34mEQoRcAIyw7PJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2QHc45N/H8WXNG5TkkvlCNPpnZDi1NxkZgh4NS7iYkp/EFwgr
+	awrV9iw0bZ8t4fG1c+zT0N24dzPgC+O2urXd2+NgYPwwUCz62vxOK62pFQ5p+52zUljue5dF4lZ
+	C1/v7P/I91+joL5THMZ97yOZTVrWNuz5RLzdC
+X-Gm-Gg: ASbGncsveNR2Ti+Xyl0q3KDkTgQqTvosww+/r3wbLhSrVYjQR+CoZx+ej8XQiVX8K+d
+	bEZ0EPbc5nOdi2GwhUO/tdriDwRPx9Ll0t2lcF7GwH2Hyd6iKmCjQgK8LFf3ui82plnT9Bb72Xy
+	xBfYAMDRgPbi0/tUkCbyo2wJ1YyRo04wBKFr6VbnVd2I0F2OyPoGg=
+X-Google-Smtp-Source: AGHT+IFmlpWRvz2HKpk5LKdhm8W/XO9lRRW725KI52RH7XaAa1gsuyJ97GzbXpDX+9WOsXmG+wHKzjnR3JYZPru6i48=
+X-Received: by 2002:a05:622a:1a01:b0:48a:ba32:370 with SMTP id
+ d75a77b69052e-48aba322710mr352041cf.10.1746025942178; Wed, 30 Apr 2025
+ 08:12:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,13 +60,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com>
- <20250429-debugfs-rust-v1-1-6b6e7cb7929f@google.com> <2025043021-plaza-grip-2916@gregkh>
-In-Reply-To: <2025043021-plaza-grip-2916@gregkh>
+ <20250429-debugfs-rust-v1-2-6b6e7cb7929f@google.com> <2025043006-snowflake-headless-e417@gregkh>
+In-Reply-To: <2025043006-snowflake-headless-e417@gregkh>
 From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 30 Apr 2025 08:10:44 -0700
-X-Gm-Features: ATxdqUFyoYWcrX7k2AT4KidTQ3yFbHZAtR8N0WOUET6xSpojSVmlDQCRUyLSxwI
-Message-ID: <CAGSQo00Kg2QV56LYFg6nRY+yS2KtiVAPaggKaKFCdprjBfXCcA@mail.gmail.com>
-Subject: Re: [PATCH 1/8] rust: debugfs: Bind DebugFS directory creation
+Date: Wed, 30 Apr 2025 08:12:09 -0700
+X-Gm-Features: ATxdqUHiJZ8BaCLBuJNRHBSIT3lqotNE34NeBiHm7ND-1AR63rbwktVRylHyOGg
+Message-ID: <CAGSQo01-bQydWgiC-+VRL7ac6v8WG2jwZ5RewPheW-quSQBsow@mail.gmail.com>
+Subject: Re: [PATCH 2/8] rust: debugfs: Bind file creation for long-lived Display
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -82,70 +82,41 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Apr 30, 2025 at 5:06=E2=80=AFAM Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
-> On Tue, Apr 29, 2025 at 11:15:55PM +0000, Matthew Maurer wrote:
-> > The basic API relies on `dput` to prevent leaks. Use of `debugfs_remove=
-`
-> > is delayed until the more full-featured API, because we need to avoid
-> > the user having an reference to a dir that is recursively removed.
-> >
-> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> On Tue, Apr 29, 2025 at 11:15:56PM +0000, Matthew Maurer wrote:
+> > +    /// Create a file in a DebugFS directory with the provided name, a=
+nd contents from invoking
+> > +    /// [`Display::fmt`] on the provided reference.
+> > +    ///
+> > +    /// # Example
+> > +    ///
+> > +    /// ```
+> > +    /// # use kernel::c_str;
+> > +    /// # use kernel::debugfs::Dir;
+> > +    /// let dir =3D Dir::new(c_str!("my_debugfs_dir"), None)?;
 >
-> First off, many thanks for doing this.  I like this in general, but I
-> have loads of specific questions/comments.  Don't take that as a
-> criticism of this feature, I really want these bindings to be in the
-> tree and work hopefully better/cleaner than the userspace ones do.
+> Again, can never fail, so don't check it.
 >
-> First off, the main "rule" of debugfs is that you should NEVER care
-> about the return value of any debugfs function.  So much so that the C
-> side hides errors almost entirely where possible.  I'd like to see this
-> carried through to the Rust side as well, but I think you didn't do that
-> for various "traditional" reasons.
+> > +    /// let file =3D dir.display_file(c_str!("foo"), &200)?;
+>
+> Again, can never fail, so don't check it.
+>
+> And "200" is wrong, did you test these?
 
-Sure, I mostly had to do error checking because I was using an
-`ARef<Dir>` to represent a directory, which meant that the underlying
-directory needed to be a valid pointer. Given that you've said that
-the returned `dentry *` should never be used as an actual `dentry`,
-only as an abstract handle to a DebugFS object, that requirement goes
-away, and I can remove the error handling code and always successfully
-return a `Dir`, even in cases where an error has occurred.
+How is 200 wrong? This displays the number "200" in a file called
+"foo" in the directory "my_debugfs_dir"?
 
 >
-> Wait, what?  Why would an explicit drop(parent) be required here?  That
-> feels wrong, and way too complex.  Why can't you rely on the child
-> creation to properly manage this if needed (hint, it shouldn't be.)
-
-The explicit `drop` is not required for normal usage, it was intended
-to be illustrative - I was trying to explain what the semantics would
-be if the parent `dentry` was released before the child was. As
-before, now that the child will not be an `ARef<Dir>`, and so not
-assumed to be a valid `dentry` pointer, this example won't be relevant
-anymore.
-
 >
-> Why do you want this wrapped?  And I think you "wrapped" it wrong here.
-> When the object is "gone" it should have called
-> debugfs_remove_recursive(), not dput(), in order to properly drop
-> everything.  Where is that call happening?
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    pub fn display_file<T: Display + Sized>(
+> > +        &self,
+> > +        name: &CStr,
+> > +        data: &'static T,
+> > +    ) -> Result<ARef<Self>> {
 >
-> The debugfs core already handles the reference counting of this object,
-> please don't add some extra reference count calls with dput/get, that's
-> just going to be a mess.
+> Again, will always succeed, you don't want any checking of Result<>
 >
-> You should NEVER be encoding the fact that the return value of a
-> debugfs_*() call is a dentry.  Just treat that as an opaque pointer that
-> just happens to have a common name that might refer to something else.
-> That pointer can be passed back into other debugfs functions, and THAT
-> IS IT.  No checking for it, no passing it to any vfs functions, or
-> anything else.
+> thanks,
 >
-> So the dput() stuff here should not be present at all (hint, no C code
-> that used debugfs ever calls that, so the rust bindings shouldn't
-> either.)
->
-
-I incorrectly assumed that if a `dentry *` was being returned, then at
-some point it would be used as a `dentry *` rather than as a
-debugfs-only handle. I bound it into an `ARef` to avoid backing myself
-into a corner later if someone needed to use the `dentry *` for
-something, but if that's against the API contract of DebugFS, I can
-avoid it entirely.
+> greg k-h
