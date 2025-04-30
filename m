@@ -1,67 +1,67 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5BC1EF08F
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 09:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469CF21C17B
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 09:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746004568; cv=none; b=rI6cS7Cxk3IzNLR9HfEtiAdI7kLm+AHidfF6kP0xjdaA+CS9wTkxIMUY2V/Mhl5c8LcS1sn7XuiqS2Y6QpLMvUEbL2x9/y2tYxOo1fWHVW3A0bC13DqnfyeoZ0DqCeiOkVEva1XOUMhbZtFMdTTvRp8SmrgPjioXEEXuTOMCEQg=
+	t=1746004737; cv=none; b=nXSOFtzW1ZlfjRMo8tplmXj/sPRevMSD0yt6QvcfvQ2pU+1NRIZvyhrQFr1oqYcNjp8isGZ/EV3+cARk3PZSsViybZP8McTrdo3XuIHsEZIB7bW4is6aZ/3CRDe4O/hlhuQNUtSSsFSZ76dFFbzHCgRzfC89YN3EcYIwNbXUeFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746004568; c=relaxed/simple;
-	bh=LtVhfWiqY+K0Ft9EIwL0Molm/ueKWbCMO2rcHu/Ejug=;
+	s=arc-20240116; t=1746004737; c=relaxed/simple;
+	bh=NKCY1jl0KT9vsr0ecCU3ILbHGc8pGJC7LEcgGj2VJ7A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SJdGtDWTWZjRB3cNLPHSzpZBaW7P9Em9otc4n0rNTQbhXUAIFQpfT0J9idEQ2ub5Mw7EQYFzNNqzdBxzi0g++9iaLJi47PZMqrwXAPQmUTAlYDCla08uqISSvwJ+pweWyKsDfdwOvPZhVPL1WusyQAEUqPy6UuFD7Wy5HtZMZsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wht/Sy0N; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=KC0aMYi+TimitwLKzZ1oAbSZIN1nZzdHUR4lqBTYxfzClLqgyESvXybrRX58us5OToLUzv/1+aDUPIbqGuLFyV2bc/ibHqC9vUhSIMUb9lVxTH1nTTNaDwN6CUCW4iFZ1DY5koJvn4BWkzjozKdrrBvmdCplQeh5zE73GcA4XEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QuepOqeG; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wht/Sy0N"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d734da1a3so32055435e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 02:16:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QuepOqeG"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3913aaf1e32so3011619f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 02:18:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746004563; x=1746609363; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746004734; x=1746609534; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LtVhfWiqY+K0Ft9EIwL0Molm/ueKWbCMO2rcHu/Ejug=;
-        b=wht/Sy0NO7eC7k8OuCLEzj/cVUKtk1rs142d3AjLnBGJ/srJD4Rxk+cclaB01y25TT
-         c+vgakjArTWvPAO/Ot9rs3DZqbgZ/gpefrtd+feh4yhPuWIW4ZTEeAgt+TM8sZ/1bOEU
-         t8k5gr76KkiKEkL+KzARWdoj240q3eWtIDgO9cdxW7PfC0BqBCNWwl+GYjxudjPZZPOL
-         FrctyBTOZd/dAOsyhh37Ed/VVGcIwZaD77bUWJIaTx2cqKVcjHPsTtmJQM/k5RWHGjoz
-         G3kwGGf3GsTtTZi1Bx2FHRLfbNI4XoyuegRm93IxjDn/FcJEEwIylFcCUD87EiPOurxm
-         VR1A==
+        bh=NKCY1jl0KT9vsr0ecCU3ILbHGc8pGJC7LEcgGj2VJ7A=;
+        b=QuepOqeGwLo+Ya8z442uVdrsXb0/dp0HLYvVHRqHdmOm+dDXxCEhYc489CVgoxqmTF
+         yWk4DH6Dl2cGcdluLyEdqEyZdFG1ruUALIjmuNOTZWDwObqI3rCPPV+l6ao8dCXduW0f
+         dhtZB9iGdEKanbliLaa6mslvpJTtP/NjKUrnIy1Jm89K9REhFqCClPBZYWeMUEjT0aCn
+         /0JMItcBi8R13mRdVbDUKkzsk+H2M16E1CWGP6PoezDhHcXPeNNbspoQJ8bSDOx2oXEW
+         aubI0gJHFVS25z09+0ZlAfmU61VeAUxFP2O4HgG652EGqhUPeanxD4iGHea8+AZrAv2u
+         Ax6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746004563; x=1746609363;
+        d=1e100.net; s=20230601; t=1746004734; x=1746609534;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=LtVhfWiqY+K0Ft9EIwL0Molm/ueKWbCMO2rcHu/Ejug=;
-        b=LATKhblMTt+steXKSbLvQAVgixKX7fv0ek06z3PNrnGmn/5pCA1oFTZIrF+6rJgmFT
-         /VtC99vY7buNcHXC4T2gJVKrVUhzMXJsbvIOZ3ZyDBEE1O6PB1R/7LJAYAl0U2wyZK/7
-         rHivOmkR7wo8HMO4UcJIXaJpPVHvDvNVheeN1RzohnKLSG+E6HSFkc8t4aVbV74dHVjN
-         zFbv+jO8kpwk2JvWZMLARL2oHfAd8JfxOCMk7LZmxrDRLEz9riToT7eXR+OFB8RCw4SP
-         KHW4NVrgdTrgmuAlQdSVL2hUyPi7yYe6hN8LDtt9iWejzOypUhpEiiMW/WfI13DjCECc
-         J4qw==
-X-Forwarded-Encrypted: i=1; AJvYcCVmNGMg7hlukiT/GHCeXIQ3eo/jT8U9LnlTY6tv5OUGf0EpWv15syAKgA/Mjsbh0gtn+62AEZaqJdJ6AUORSA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyVYo4K8U2uP/TsLNLl2+J3UWb1576K1XK4soJDKB57DKY2piY
-	VJ1f/qeLDQCsNq2skxZScLZpB0OF6ijNAmCxaZVJzZzbn/NcodR0E3sw0iuEIG4rRT/dSFgNvYh
-	eXyahh2bbbqebXQ==
-X-Google-Smtp-Source: AGHT+IFxhcERQYWAcvbhYHN/OW5FD7v/TzNCgH8DCvMD/GLCXurr03llxmGp+GSubB+keZhqjqEoocx36qx5Vs4=
-X-Received: from wmbeu8.prod.google.com ([2002:a05:600c:81c8:b0:440:59df:376a])
+        bh=NKCY1jl0KT9vsr0ecCU3ILbHGc8pGJC7LEcgGj2VJ7A=;
+        b=FTnT021VDY23drSix4U5R1MNNaLaL0+U3VgpLJ2mB/Q+4aPfBUw6CR1cNtLuqygNhq
+         9Gh2pUxNGn0LwJqLGDKnnZ6M+LrY/h1RJUvRDwuuYpadJ4cM/0NP1n2ogUmc0cF3SM8/
+         Jfpitk1SMg6lfjdjxwbXqsqp7vQ2r9kNJWdLb7k8KQ8DvxIjNw5dh4a0z++ybrfyTLzr
+         DSTZ5C1uzLT0c033i9Esg52XT4p8yjEIlBD1FtAnrViMbf7etcC45qkczzo2qRgU1I3n
+         WM6knvt0Q4Iky7aWscndPnM0l7MO1FE0aipXnr57WyRWkHdeUeyMtlLTnrqGcLRg583/
+         5IOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWOEMIn5eN/jSmAweedJ4VO3D2MRKaNTMTIR8VB9dlNHmJkyMcmSiXj82GBzEI/DYeyIlLLk4j4cIQ9yhx4WA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRsJ+A2osB83c2EBQ06zNeWi9fcmt4QPS0Pm+imi1gqL1qS6B3
+	Rz+r725eI2yDpgXN9QRBd1LLS7AmYbjgKofFU/yWaeCfu5FMt3LzOSTVSCIep0yBwKBrxONliux
+	knklCWbxj8r2EWA==
+X-Google-Smtp-Source: AGHT+IGiPLL7kGi6zaOx8QyruoYjmD+DMhhfxRRYesYlhnkukz5u2Qr6TNl1WPBIq3Hae8b8Drh9lqsR8cBNP5M=
+X-Received: from wrp15.prod.google.com ([2002:a05:6000:41ef:b0:391:3d79:3021])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:34c1:b0:43d:db5:7b1a with SMTP id 5b1f17b1804b1-441b263a237mr15978995e9.12.1746004563615;
- Wed, 30 Apr 2025 02:16:03 -0700 (PDT)
-Date: Wed, 30 Apr 2025 09:16:01 +0000
-In-Reply-To: <20250430-rust_unsafe_pinned-v2-1-fc8617a74024@gmail.com>
+ 2002:a5d:47c6:0:b0:3a0:83b1:b3c1 with SMTP id ffacd0b85a97d-3a08f7611d7mr2055656f8f.15.1746004734724;
+ Wed, 30 Apr 2025 02:18:54 -0700 (PDT)
+Date: Wed, 30 Apr 2025 09:18:52 +0000
+In-Reply-To: <20250430-rust_unsafe_pinned-v2-3-fc8617a74024@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com> <20250430-rust_unsafe_pinned-v2-1-fc8617a74024@gmail.com>
-Message-ID: <aBHqUdtkP9uHMdKO@google.com>
-Subject: Re: [PATCH v2 1/3] rust: add UnsafePinned type
+References: <20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com> <20250430-rust_unsafe_pinned-v2-3-fc8617a74024@gmail.com>
+Message-ID: <aBHq_I8FZ-s22M3W@google.com>
+Subject: Re: [PATCH v2 3/3] rust: use `UnsafePinned` in the implementation of `Opaque`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Christian Schrefl <chrisi.schrefl@gmail.com>
 Cc: Sky <sky@sky9.dev>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -74,39 +74,16 @@ Cc: Sky <sky@sky9.dev>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gayno
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 30, 2025 at 10:36:11AM +0200, Christian Schrefl wrote:
-> `UnsafePinned<T>` is useful for cases where a value might be shared with
-> C code but not directly used by it. In particular this is added for
-> storing additional data in the `MiscDeviceRegistration` which will be
-> shared between `fops->open` and the containing struct.
+On Wed, Apr 30, 2025 at 10:36:13AM +0200, Christian Schrefl wrote:
+> This change makes the semantics of the `Opaque` implementation
+> clearer and prepares for the switch to the upstream rust UnsafePinned`
+> type in the future.
 >=20
-> Similar to `Opaque` but guarantees that the value is always initialized
-> and that the inner value is dropped when `UnsafePinned` is dropped.
+> `Opaque` still uses `UnsafeCell` even though the kernel implementation
+> of `UnsafePinned` already includes it, since the current upstream
+> version does not.
 >=20
-> This was originally proposed for the IRQ abstractions [0] and is also
-> useful for other where the inner data may be aliased, but is always
-> valid and automatic `Drop` is desired.
->=20
-> Since then the `UnsafePinned` type was added to upstream Rust [1] by Sky
-> as a unstable feature, therefore this patch implements the subset of the
-> upstream API for the `UnsafePinned` type required for additional data in
-> `MiscDeviceRegistration` and in the implementation of the `Opaque` type.
->=20
-> Some differences to the upstream type definition are required in the
-> kernel implementation, because upstream type uses some compiler changes
-> to opt out of certain optimizations, this is documented in the
-> documentation and a comment on the `UnsafePinned` type.
->=20
-> The documentation on is based on the upstream rust documentation with
-> minor modifications for the kernel implementation.
->=20
-> Link: https://lore.kernel.org/rust-for-linux/CAH5fLgiOASgjoYKFz6kWwzLaH07=
-DqP2ph+3YyCDh2+gYqGpABA@mail.gmail.com [0]
-> Link: https://github.com/rust-lang/rust/pull/137043 [1]
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
 > Reviewed-by: Gerald Wisb=C3=B6ck <gerald.wisboeck@feather.ink>
-> Co-developed-by: Sky <sky@sky9.dev>
-> Signed-off-by: Sky <sky@sky9.dev>
 > Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
