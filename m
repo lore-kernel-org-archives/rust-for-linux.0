@@ -1,77 +1,79 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D1725D1F8
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 15:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804A925F7B9;
+	Wed, 30 Apr 2025 16:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746028344; cv=none; b=L7npjgI0RumiQinoFm6y9dJE2/3xNX1E2Hi1Ra3rGP4KNFO/S5iIcjpPh+uCSiTmBwoz2nouFXjFlDRJEh/yjoxYaUl6JzDyFbLEivJ5VAS5D1IYHrFq9W86DQenzJMoO/HHGwVacGic2tt8DA8G3IlOzDAJ+400kA84Pe/3Bxw=
+	t=1746029534; cv=none; b=FgIZdaXMWzujBA4oyofEnq/Zdjf6zE+tJHmbJL8bS4JGw1lrgjAsDuYUIi+eSDFjlk65w/wwPomJ4slVcvFkOwkjVMMLCeHDiPes46ITJ0akyOtN2LdAT66mlvwh2E3pKb9PW1uESMvKR37ynIpA1FBZEXnZmAWA2wNHGNQWQ3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746028344; c=relaxed/simple;
-	bh=WWEGPFSEXsgTebWgjNA2jFYbHRJpo1gsdgBtlCbVGQ4=;
+	s=arc-20240116; t=1746029534; c=relaxed/simple;
+	bh=d4mNU2googKmhmlSZf1BhrbHafu+MKvI216e5vmdtsU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RVM51g66ERrpMLblWoij90hTql0nGrgG9ALeP2AqsAeB0wNjDDse+uxkUPQBiOlueSCaxlxIwtUpcrlmqtNtATNl7LczxPjTM2ckeTRSZBz0MnatDUBqU57hooRsJTppGFWJk/28z1CLpdFZKx5WUiOorZD+quxm2ybY6FVhZgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nXjhybv+; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=YOtA5NSI+E48Ut2qnywLt06DwvdMbSfA9JZaMe/Hk5tGqPK8poHGn1Ou6wt2hkfB+c7w/35uoHXnQ7lCdMGbpdtaU/GBg08Q3hLruYl13arGBCu+7Nx9+BNlkFsAv9GqgID0xLyK4PGrL9U/HU+S4NyDFXGg3fmXPeSrAa7JhYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jLiWkFfz; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nXjhybv+"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5dbfc122b82so147a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Apr 2025 08:52:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jLiWkFfz"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-30363975406so11457a91.0;
+        Wed, 30 Apr 2025 09:12:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746028341; x=1746633141; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746029533; x=1746634333; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UUgz0lHIM9AvqVgwegmtWsNz7YXlDr9Kk1u0gwL4TQ8=;
-        b=nXjhybv+E2A1cSVU5MLLC6b37URo5kPRWF5lSAKwp2b5iC/y5pGhF81OIeGVF+gz5R
-         zENz+2GIpnYO66vlB2tkKagqxn8fG9haAJPnQOMtJMK+CIevSP42Ll46nHfl9jNk8ih+
-         WCLGc3+nEl/ZxvFgmMkC6tZQYRN/3YJE8tM1NzHn9o3YXdEbzkSHNu0sasKx1p1mcSIJ
-         oFrR75LWKqHk9cW+P4U+hngdALeN1EhBf7jVRYgot7Oz+17FThKp5AcazMy+PQ0/4EeL
-         TKdNH640lH1bO7J6m40AdKhWmVJAq/ssRbHgz88H6H2ZgVzK0L1TqK0mQZCHI9XDbO7Z
-         sJgA==
+        bh=d4mNU2googKmhmlSZf1BhrbHafu+MKvI216e5vmdtsU=;
+        b=jLiWkFfzUvkRqZbeh/ntfnbU7AXp8R/BSjgz5P+tfl1p8o7JUa277YVQS5sLsz6UVp
+         uvnJ1wk31qhp5qYSRnK5sJVCWrxQtF4ApUYIBY/1eGdp0zM2fT489f/KTCRMNPIVU1Y7
+         JmzEsGbuHmoBnWIIwSvaBrYvROYfY0WncRhfGTcxF+r3SbIH5ufXgYMSo292G72eJJx0
+         OsYymlNaQMXUdjWjzGJ1nPqquJXxc/SZQcViyMZrl3QBHB5vC0ULwC7ors+tZyrt217B
+         wZEBHQWl8uDl+bnrIAzh3muYIoi/zLKGl+BJCEH1eQDr9F7GeuI+L7jqQ6w2ITk6G4VI
+         y1ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746028341; x=1746633141;
+        d=1e100.net; s=20230601; t=1746029533; x=1746634333;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UUgz0lHIM9AvqVgwegmtWsNz7YXlDr9Kk1u0gwL4TQ8=;
-        b=dmkGXwhrgOz0szRnXtEMU3+Tx+H+Hso3zC21Hd4bVO5g/adK63z9+SlXdKny0Dr/9b
-         3pYqJRDtF+SwF8WckJ1/n1nTN3A08aYy4ptQgwGaKSPvwNHXnYqtBfJEbxW3oC4l09MX
-         DeocMlYH06acvYa1sKLCdIWerftMdYU7AMq2vWyK8LtjA5bybrzlIbEr3IIZNEZN8BSV
-         YAb8dHX4ZJyeLPjvp+g/jdGN+2st+UeA2Ga2Ew42Xzz1Vn0z+h2pKuK6mJtc84LdwnlT
-         JuNAqevkak1odp8XF8g7yQA5ZOHzkuGYCtQqZudEqqSROwijlUfqT1FzraRI0bXNq0HC
-         9u1g==
-X-Forwarded-Encrypted: i=1; AJvYcCWo7XEGhsVwymkx3qB5HG4AdCTLRePYaCAP7wV4hVsw0ENaiw3OU3u8ktUSLsR6GChEP1kn0GgizqJl1bbeUg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbTT0YXr5il0sZz9wpkKcU3vFLTSnQJQtDM4g9elbUau8t2Y5s
-	DsInFxFvzcjkHEB+2KqYGlctKQuHHmNabi4W6xr6M3WZ7Il6n1NVZ39kurcmNBakzg83o875gQA
-	8zPgBFHha+DDCcq3CR/Sd7NWeBXK8+iMXEZwW
-X-Gm-Gg: ASbGncsnI92JcTXME6J49f3NPguVegsKrDmexhZQ62mncdxh1IGRlFclzG6XMynIaFN
-	fl+abrBMmkjzHlGHG3KcNhXq7tJatmQ5aOgHOK5w4n9u3LidIIUdrU9QkB+3c//Mh5tTcIl/kxG
-	xh28UeIWv6f9roMRyz1o2V8W2tcULXCGevtZ95PsJuOx5QqYH5bWeoWXpwzp0f0Q==
-X-Google-Smtp-Source: AGHT+IFdqOHywsMBaHqXkTcGmB67EXqbMC7FqDHfbXZkAyjokug6b3F9yQT+IzlELuucqJyVURMXtid879Fh+aycpm8=
-X-Received: by 2002:a05:6402:30b1:b0:5ed:f521:e06c with SMTP id
- 4fb4d7f45d1cf-5f8aac01ebdmr113976a12.7.1746028341167; Wed, 30 Apr 2025
- 08:52:21 -0700 (PDT)
+        bh=d4mNU2googKmhmlSZf1BhrbHafu+MKvI216e5vmdtsU=;
+        b=BmngM6+4Ubc+UdimceN4yxQlKzIC4zFgO/w8dzHFo6y8XpZQ2W6xSG8acmV3MttsAL
+         iqO8cpn6s5qtEVuNm332GZkGPeFHbTO4fWeyOQFeXBDUuehDXp+abb70Kt7tZjSLiLPY
+         gaLWM7eGOguYIlbU5bRja7sGFT8i1jDP/9CIub4knNWp4cnyPRjLhD9dzxkPH4Ly2qAK
+         QAzdFmHWF73BkcqvI/UvPRkTB1Sy7A/1p/bLETzVGZsodwdQBIJ1xraoj9joyUgd0tYW
+         ta88ZyXRmaQXQlAaMQHSnlwWvstqfykY08os9iZoAcA2+XrPoveES4m3hu8QZGEvfHiF
+         43CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSMjugIgL7TLNzOAyvCSJh8FkGUZpnqOORtJVEytallwrsW2PasCrM2q2e3E4VZOfqzeKEgCM2XaMnIjs=@vger.kernel.org, AJvYcCWrqzw6vmLD6IvIncRPBFkZY/MpVOWxIglf2IG5taZif+qmbw5fKnUAwrp1LhZfhJoXVy9xqYFR+MGb/DDr@vger.kernel.org, AJvYcCXsgLlgwDfudLj2rYTN/XTnfOVo5DEi7bQAV3a30ZPsbuGWbU52thbFqyipuL8Loq5oa6xrSm3ybU67G3MfOwU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNNGKsuuyHLApdIE4k40PajOCANaHqB5noPBdHsrUn/j7KNFNK
+	6Y5Zx2Kd8UIv3DhW+rQpbx75D7X68myUKcEd5QrFNU06tiKdmqAdAOuUgXyoCR+GNRRR+QriZU1
+	NzM0wc6e3iEtcWrAvSrdd0VvJpKE=
+X-Gm-Gg: ASbGncsvgFyCd9wxuuvNhq8m3C7BbhTn463BeUXG7UHppAjAuM0F230wKD/emVqSnzq
+	jMBsQravzDqd96HTlnSdC9A8PPpMnBOEiUjTttbq8kPUZggEiA3LqSY5nz6ggdq1UyoWmk2E40p
+	zk1dsudzadGfh0HITJMosZww==
+X-Google-Smtp-Source: AGHT+IEbXpICMCZtMlEglv/6u6d9DeHKrHugJiPYxVYKnZgt1+Le0oAHSmnMXEPGZPs5sZ35AafOzpCaejzCGqqC/DI=
+X-Received: by 2002:a17:90b:4d92:b0:2ff:7970:d2b6 with SMTP id
+ 98e67ed59e1d1-30a3bb7eb00mr654907a91.5.1746029532604; Wed, 30 Apr 2025
+ 09:12:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250430-rust-kcov-v1-1-b9ae94148175@google.com> <CANp29Y4o8o6gz6GbM6NhP9sJUi94q29=aa+tLc1aCk0UVpgj0w@mail.gmail.com>
-In-Reply-To: <CANp29Y4o8o6gz6GbM6NhP9sJUi94q29=aa+tLc1aCk0UVpgj0w@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 30 Apr 2025 08:52:09 -0700
-X-Gm-Features: ATxdqUFfWkFt2krZSEThZVrbRM32DbyGd7csCuhOc9hU0LccEz016XDL5xHWJ3s
-Message-ID: <CAGSQo01gLXKWLWcrxSytmCB4YmRnGDX++ZizTws0bEjJ1amWtA@mail.gmail.com>
+References: <20250430-rust-kcov-v1-1-b9ae94148175@google.com>
+ <CANp29Y4o8o6gz6GbM6NhP9sJUi94q29=aa+tLc1aCk0UVpgj0w@mail.gmail.com> <CAGSQo01gLXKWLWcrxSytmCB4YmRnGDX++ZizTws0bEjJ1amWtA@mail.gmail.com>
+In-Reply-To: <CAGSQo01gLXKWLWcrxSytmCB4YmRnGDX++ZizTws0bEjJ1amWtA@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 30 Apr 2025 18:12:00 +0200
+X-Gm-Features: ATxdqUFaNOBfPlrz_zIIOgpzIG1_Zn-Ke3TH9fa3F3oDE9TplG5KBv8TWq9-lvI
+Message-ID: <CANiq72mazsVZxXaw6RD66CfFXRR-sHWf6eVr3jke1mWxBcrTBA@mail.gmail.com>
 Subject: Re: [PATCH] kcov: rust: add flags for KCOV with Rust
-To: Aleksandr Nogikh <nogikh@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Aleksandr Nogikh <nogikh@google.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
 	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
@@ -81,103 +83,16 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Dmitry Vyukov <dvyukov@google.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 30, 2025 at 4:55=E2=80=AFAM Aleksandr Nogikh <nogikh@google.com=
-> wrote:
+On Wed, Apr 30, 2025 at 5:52=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
+ wrote:
 >
-> On Wed, Apr 30, 2025 at 10:04=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> >
-> > Rust code is currently not instrumented properly when KCOV is enabled.
-> > Thus, add the relevant flags to perform instrumentation correctly. This
-> > is necessary for efficient fuzzing of Rust code.
-> >
-> > The sanitizer-coverage features of LLVM have existed for long enough
-> > that they are available on any LLVM version supported by rustc, so we d=
-o
-> > not need any Kconfig feature detection.
-> >
-> > The coverage level is set to 3, as that is the level needed by trace-pc=
-.
-> >
-> > Co-developed-by: Matthew Maurer <mmaurer@google.com>
-> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->
-> Thanks!
->
-> I've run syzkaller against a kernel built with the patch applied and
-> the tool was able to successfully obtain coverage feedback from the
-> Rust code, so
-> Tested-by: Aleksandr Nogikh <nogikh@google.com>
->
-> As a side note, in the resulting code coverage I also see a lot of PCs
-> from rustlib, which isn't the primary target when fuzzing the kernel.
-> Do you find it reasonable not to instrument rustlib with coverage
-> callbacks? For C code, there do exist some exceptions for KCOV, see
-> e.g. lib/Makefile.
+> `kernel.o` I think we should probably keep at least for now, because
+> it's kernel-created source that we'd still like proved out. In a
+> theoretical world where Rust has become more normalized in a decade,
+> we could filter it out to refocus fuzzers on driver code rather than
+> bindings, but right now the bindings themselves are worth fuzzing IMO.
 
-I think filtering out `core.o` and `compiler_builtins.o` would make
-sense, as those are not kernel-originals. Filtering `pin_init.o`
-probably makes sense too.
+Agreed, I think we should definitely keep `kernel` for a while.
 
-`kernel.o` I think we should probably keep at least for now, because
-it's kernel-created source that we'd still like proved out. In a
-theoretical world where Rust has become more normalized in a decade,
-we could filter it out to refocus fuzzers on driver code rather than
-bindings, but right now the bindings themselves are worth fuzzing IMO.
-
->
-> > ---
-> >  scripts/Makefile.kcov | 6 ++++++
-> >  scripts/Makefile.lib  | 3 +++
-> >  2 files changed, 9 insertions(+)
-> >
-> > diff --git a/scripts/Makefile.kcov b/scripts/Makefile.kcov
-> > index 67e8cfe3474b7dcf7552e675cffe356788e6c3a2..ddcc3c6dc513e1988aeaf07=
-b8efa106e8dffa640 100644
-> > --- a/scripts/Makefile.kcov
-> > +++ b/scripts/Makefile.kcov
-> > @@ -3,4 +3,10 @@ kcov-flags-$(CONFIG_CC_HAS_SANCOV_TRACE_PC)    +=3D -f=
-sanitize-coverage=3Dtrace-pc
-> >  kcov-flags-$(CONFIG_KCOV_ENABLE_COMPARISONS)   +=3D -fsanitize-coverag=
-e=3Dtrace-cmp
-> >  kcov-flags-$(CONFIG_GCC_PLUGIN_SANCOV)         +=3D -fplugin=3D$(objtr=
-ee)/scripts/gcc-plugins/sancov_plugin.so
-> >
-> > +kcov-rflags-y                                  +=3D -Cpasses=3Dsancov-=
-module
-> > +kcov-rflags-y                                  +=3D -Cllvm-args=3D-san=
-itizer-coverage-level=3D3
-> > +kcov-rflags-y                                  +=3D -Cllvm-args=3D-san=
-itizer-coverage-trace-pc
-> > +kcov-rflags-$(CONFIG_KCOV_ENABLE_COMPARISONS)  +=3D -Cllvm-args=3D-san=
-itizer-coverage-trace-compares
-> > +
-> >  export CFLAGS_KCOV :=3D $(kcov-flags-y)
-> > +export RUSTFLAGS_KCOV :=3D $(kcov-rflags-y)
-> > diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> > index 2fe73cda0bddb9dcf709d0a9ae541318d54754d2..520905f19a9b19631394cfb=
-5e129effb8846d5b8 100644
-> > --- a/scripts/Makefile.lib
-> > +++ b/scripts/Makefile.lib
-> > @@ -169,6 +169,9 @@ ifeq ($(CONFIG_KCOV),y)
-> >  _c_flags +=3D $(if $(patsubst n%,, \
-> >         $(KCOV_INSTRUMENT_$(target-stem).o)$(KCOV_INSTRUMENT)$(if $(is-=
-kernel-object),$(CONFIG_KCOV_INSTRUMENT_ALL))), \
-> >         $(CFLAGS_KCOV))
-> > +_rust_flags +=3D $(if $(patsubst n%,, \
-> > +       $(KCOV_INSTRUMENT_$(target-stem).o)$(KCOV_INSTRUMENT)$(if $(is-=
-kernel-object),$(CONFIG_KCOV_INSTRUMENT_ALL))), \
-> > +       $(RUSTFLAGS_KCOV))
-> >  endif
-> >
-> >  #
-> >
-> > ---
-> > base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
-> > change-id: 20250430-rust-kcov-6c74fd0f1f06
-> >
-> > Best regards,
-> > --
-> > Alice Ryhl <aliceryhl@google.com>
-> >
+Cheers,
+Miguel
