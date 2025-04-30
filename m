@@ -1,134 +1,127 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75CE26462A;
-	Wed, 30 Apr 2025 16:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED3A190676;
+	Wed, 30 Apr 2025 16:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746031544; cv=none; b=hToNsxoIVTPFo4DsmpC/dQlcv3f+9iGc7V5qygTEG1seH/olTwZhjHFG7VWMwlfe+l6OsaeC0EVFdKc70ysb8wVZS9xuwthSiF2JIem8R5EM05PCKLEw51MbjkfMCF7/bw/6omzXB3GEbKC7tBLc4tejHrWkCKx+U72jiI2vC9g=
+	t=1746032330; cv=none; b=clhBcH60POzKkdgmq2/Qf83yuqroZh2hW98HYCkZ8EwFeD5nLIetHlI3IYORkEhSj5u5eHkx8qt+w8vLtKLPUMdQ6eEaSMrfRO2+fSeVSPqZ7LOLHGlPb9SQXC4KqUKhradz21S5I9X72szrJG1zTn3WCchxszLS7e8cSltmq94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746031544; c=relaxed/simple;
-	bh=B+6epQmRu6aAM29sRnHSJHrCA+DIUmhRfWz0R1Ej17U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pH4LWU11ZCEgLsmtxoPfr23ppwYLeHeBCjzH6xpQnguO0Cn73SN8sKGtLMSeUojySJqCs/5fVWIAUCD+F/vNZyuXu7VMT8swj1GTfc7++MhoCE297Tj9Spl/GkucKAXLqT8vby1D2bQvsGnJKAW2m7smHtllTHCnEJrGH9FTa7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UkQwzLdS; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746032330; c=relaxed/simple;
+	bh=KbNoo8IuXKgkWpm6XiUqHyCkzgi2Y5PoLRe84tOlwAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y3G5ermMFpvkDD7XlD03oWgL2LqWUG2Cg33S0oJecVdCHXPh5NdTaIxe4gCjwYiRfAMiZA47I8ZDTLnbE7tt8czWavnPmNpx3zmDADWO9HfO0lWBkDx0NzC0c/UxnOFkZ0e9MBLvH6pTIzH+XDeZcvTq2q43ALrHjkdaJ6NEs1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJgSmQL3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UkQwzLdS"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cf628cb14so9465095e9.1;
-        Wed, 30 Apr 2025 09:45:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746031541; x=1746636341; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wjRXEWIFTqTSwI6s8gL4rcvQiMkOK5OYlEpGCyQUo30=;
-        b=UkQwzLdSi5fKFp/T7J/apcTZBgvxkv7kZb0zVw0swPD34iXgSjJkDcM6KcZlQVs5Oi
-         Ra8qNctpK4l5TaP+kTH/gn3Tx7rBBnRFmWQd3/peNPTv2wbFf7D4Ect8DJSSJqJvBosx
-         fndNax4Eux384VmORKhNjFl05pIChvya4kNVrYR36z+KcOBM1M2Ti4h9fr0872DqOeNv
-         JSr5sIy8q5cDHqsaRseEzxBuY7hCGE/FYC4sSqYrKz0/0vQhIlTrFGuW9HG10cIgrY2H
-         mmF9tSWYbQ5uKIRK3M6Jkkkk5zBsM+Rvb1TtP+JZCcWjHr5FLZ/VVgdPn+1zCpjpa6IZ
-         VSXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746031541; x=1746636341;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wjRXEWIFTqTSwI6s8gL4rcvQiMkOK5OYlEpGCyQUo30=;
-        b=eN4sG3NaoBQFK+211F2FJwXC8BfvZb9iBgkCu8mg/yAL6y5i+/jzpmI7RVpR+oOin8
-         iedYENMgkhyfkKSfgtCXCRKVR6difYveACOZyVhHvhP2SwAiLSAolTD9NXgfG/ajLF+s
-         4f5tJzKQcFP9mzIglQ8FQ/zsDtRx04beXilMMoJvwPKLcflx994ZpMFoP+Wf8wYIiYe1
-         iC7abrtvH6A7BygeWPohjUVY9Ih5Em8XknZfX+GiSexzS85VwDVhDnH0I/kCIMKmQudS
-         RDRxiKv6iGGZwM3x/D/MEpZBAz0rLuSEIYZrWBBvkI8NBUjxggthJsuemo93ev2c308l
-         o5Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZQCbN+2S+LOQW1anuec1IwkQLwjU7AKL6XgxwEQzeZTeWY3qgEsDaSPi7lxJHDQxXsPHreTWncXRKK/IpNzQ=@vger.kernel.org, AJvYcCXYH9isR/6Mpl9O1iQdYBws9Ykt7yqRrjjxDvrMy52cskA0x22afBd8jlmSpazAYsRjTYgKuZG4hT20k/o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU9GquzBc4wOTU7YgpTUlTMX0oHy6r7AtSEHlnKoIhxnMmMc5X
-	mf+sv2hJxc42Hj9IwLJByeirzwzZx/zTyN/j2OSlGKgX7CUEyawX
-X-Gm-Gg: ASbGncsy+Sns/ruQMQYmz1OPP5nYtWA5t+7zDs/vATvM7S/6hKHzClwHZXxd7fHL8Ep
-	zVAEM1bYl+bncaHn8G8gCvGUmp7dgWPnrIXiCblIjdYiSKj8omy1W5f+/smVte9fwH3Ob2SxzE+
-	81UYDwsx6vQ+dfpx56sc/oSU02qNS1dB1WCaTrVb/sZUZqiNOVUx+NBx4L2xGxyhu8FuT6as54/
-	qaR7dS6pydN44YxiGD1T2IiA4vL8qY/Z7sWmyEDCiY7ddCo9z0hw702jNt1379s1OgAcuBIgDo/
-	URc81RXiuycSGOV6rop8pOD+bwjLfKtc6RhMFvdUWhQGXeAIaWH1+w==
-X-Google-Smtp-Source: AGHT+IE2aMt++LC1H0+BWMSupUM1f7yZvyDXar+UBiQyNWKI+kWeQ6zYt4S/IzAeep+Ms+FjfOs/bA==
-X-Received: by 2002:a05:600c:698c:b0:440:6a68:826a with SMTP id 5b1f17b1804b1-441b5cb1dedmr1501205e9.13.1746031540814;
-        Wed, 30 Apr 2025 09:45:40 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:99c5::1ad1? ([2001:871:22a:99c5::1ad1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2ad7688sm31328575e9.3.2025.04.30.09.45.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Apr 2025 09:45:40 -0700 (PDT)
-Message-ID: <4ba59b40-7842-4ff3-8ee2-cfa5aa8002bb@gmail.com>
-Date: Wed, 30 Apr 2025 18:45:39 +0200
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJgSmQL3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53919C4CEE7;
+	Wed, 30 Apr 2025 16:58:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746032330;
+	bh=KbNoo8IuXKgkWpm6XiUqHyCkzgi2Y5PoLRe84tOlwAA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gJgSmQL3PEHgOBv+tqynMPpReBjxDR0nmy13htO/qBvlNxrN/P9XDsgHlCq4KBh40
+	 P+3WASGL14uiwG0OTNmFe3nomkOdnbLszeW6m5Hkl4QCV0raTp1ceq5D1Vn95gkJNR
+	 vbLiD66gtJu21icCwQd52v2ZjDoOkjeGRj+iz+dc=
+Date: Wed, 30 Apr 2025 18:58:46 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/8] rust: debugfs: Bind DebugFS directory creation
+Message-ID: <2025043059-unlined-plausible-644e@gregkh>
+References: <20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com>
+ <20250429-debugfs-rust-v1-1-6b6e7cb7929f@google.com>
+ <2025043021-plaza-grip-2916@gregkh>
+ <CAGSQo00Kg2QV56LYFg6nRY+yS2KtiVAPaggKaKFCdprjBfXCcA@mail.gmail.com>
+ <2025043022-travesty-slicing-2089@gregkh>
+ <CAGSQo00nE+n41ehYdAuE1XrJmLZJNLEhKYee6qfF0Gp7b0X5Cw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] rust: add UnsafePinned type
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Sky <sky@sky9.dev>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- =?UTF-8?Q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com>
- <20250430-rust_unsafe_pinned-v2-1-fc8617a74024@gmail.com>
- <aBHrO_hE0CEb0Wfw@google.com>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <aBHrO_hE0CEb0Wfw@google.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGSQo00nE+n41ehYdAuE1XrJmLZJNLEhKYee6qfF0Gp7b0X5Cw@mail.gmail.com>
 
-On 30.04.25 11:19 AM, Alice Ryhl wrote:
-> On Wed, Apr 30, 2025 at 10:36:11AM +0200, Christian Schrefl wrote:
->> `UnsafePinned<T>` is useful for cases where a value might be shared with
->> C code but not directly used by it. In particular this is added for
->> storing additional data in the `MiscDeviceRegistration` which will be
->> shared between `fops->open` and the containing struct.
->>
->> Similar to `Opaque` but guarantees that the value is always initialized
->> and that the inner value is dropped when `UnsafePinned` is dropped.
->>
->> This was originally proposed for the IRQ abstractions [0] and is also
->> useful for other where the inner data may be aliased, but is always
->> valid and automatic `Drop` is desired.
->>
->> Since then the `UnsafePinned` type was added to upstream Rust [1] by Sky
->> as a unstable feature, therefore this patch implements the subset of the
->> upstream API for the `UnsafePinned` type required for additional data in
->> `MiscDeviceRegistration` and in the implementation of the `Opaque` type.
->>
->> Some differences to the upstream type definition are required in the
->> kernel implementation, because upstream type uses some compiler changes
->> to opt out of certain optimizations, this is documented in the
->> documentation and a comment on the `UnsafePinned` type.
->>
->> The documentation on is based on the upstream rust documentation with
->> minor modifications for the kernel implementation.
->>
->> Link: https://lore.kernel.org/rust-for-linux/CAH5fLgiOASgjoYKFz6kWwzLaH07DqP2ph+3YyCDh2+gYqGpABA@mail.gmail.com [0]
->> Link: https://github.com/rust-lang/rust/pull/137043 [1]
->> Suggested-by: Alice Ryhl <aliceryhl@google.com>
->> Reviewed-by: Gerald Wisböck <gerald.wisboeck@feather.ink>
->> Co-developed-by: Sky <sky@sky9.dev>
->> Signed-off-by: Sky <sky@sky9.dev>
->> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+On Wed, Apr 30, 2025 at 08:31:29AM -0700, Matthew Maurer wrote:
+> On Wed, Apr 30, 2025 at 8:23 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Wed, Apr 30, 2025 at 08:10:44AM -0700, Matthew Maurer wrote:
+> > > On Wed, Apr 30, 2025 at 5:06 AM Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Tue, Apr 29, 2025 at 11:15:55PM +0000, Matthew Maurer wrote:
+> > > > > The basic API relies on `dput` to prevent leaks. Use of `debugfs_remove`
+> > > > > is delayed until the more full-featured API, because we need to avoid
+> > > > > the user having an reference to a dir that is recursively removed.
+> > > > >
+> > > > > Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> > > >
+> > > > First off, many thanks for doing this.  I like this in general, but I
+> > > > have loads of specific questions/comments.  Don't take that as a
+> > > > criticism of this feature, I really want these bindings to be in the
+> > > > tree and work hopefully better/cleaner than the userspace ones do.
+> > > >
+> > > > First off, the main "rule" of debugfs is that you should NEVER care
+> > > > about the return value of any debugfs function.  So much so that the C
+> > > > side hides errors almost entirely where possible.  I'd like to see this
+> > > > carried through to the Rust side as well, but I think you didn't do that
+> > > > for various "traditional" reasons.
+> > >
+> > > Sure, I mostly had to do error checking because I was using an
+> > > `ARef<Dir>` to represent a directory, which meant that the underlying
+> > > directory needed to be a valid pointer. Given that you've said that
+> > > the returned `dentry *` should never be used as an actual `dentry`,
+> > > only as an abstract handle to a DebugFS object, that requirement goes
+> > > away, and I can remove the error handling code and always successfully
+> > > return a `Dir`, even in cases where an error has occurred.
+> >
+> > Great!
+> >
+> > Except when debugfs is not enabled, then what are you going to return?
+> > The same structure, or an error?
+> >
+> > I'd vote for the same pointer to the structure, just to make it more
+> > obvious that this is a totally opaque thing and that no caller should
+> > ever know or care if debugfs is working or even present in the system.
+> >
+> > Note that some drivers will want to save a bit of space if debugfs is
+> > not enabled in the build, so be prepared to make the binding work
+> > somehow that way too.  Can you have an "empty" object that takes no
+> > memory?  Or is this too overthinking things?
 > 
->> +config RUSTC_HAS_UNSAFE_PINNED
->> +	def_bool RUSTC_VERSION >= 108800
+> Based on what you've expressed, I think what makes sense is:
 > 
->> +#![cfg_attr(CONFIG_RUSTC_HAS_UNSAFE_PINNED, feature(unsafe_pinned))]
-> 
-> Actually, I missed this on the first look. Where is this feature used?
-> You only have a re-implementation right now.
-Was just a leftover from the previous version, removing the feature and
-config flag (to be reintroduced once we want to use the upstream version).
+> * Initial patch will always return the same `Dir`, just sometimes it
+> will be a wrapper around a pointer that is an error code, and
+> sometimes it will be a useful `dentry` pointer. This will match the
+> current behavior of C code to my understanding.
 
-Cheers
-Christian
+Great.
+
+> * Follow-up (probably still in this series) will check
+> `CONFIG_DEBUG_FS`, and if it's off, will just make `Dir` into a ZST,
+> and just discard the pointer. This would be an improvement upon the C
+> interface, because drivers would get the shrinkage without needing to
+> add conditionals on `CONFIG_DEBUG_FS` in their own driver.
+
+You're going to have to check CONFIG_DEBUG_FS anyway for this series,
+otherwise things aren't going to build properly, so this sounds like a
+great way to handle that.
+
+thanks,
+
+greg k-h
