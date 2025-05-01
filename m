@@ -1,118 +1,122 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D4926F463
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 07:17:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B702AEE9;
+	Thu,  1 May 2025 07:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746083866; cv=none; b=R8Ot04B0rI3NPqk6yuTTBRYMbVxRAyJ93luMVGYGaOReyn9BCWydZ8XtAS6fwM9dCnFIoT5MZDpJu6vuBvodETqVU3wEGl4OXsvuL3h8vC69K/x6bcGuHdJMycph3is9GuLvTGSacNeV36T0MccpdzPWE/aQrHEyW1W3drBdlZc=
+	t=1746085214; cv=none; b=FLFg46pnjs1MOVsykA7YB40+UOgQI4X5yyphwNobUAc1pQWBOgOkCH9vgY6TVzmz/+cOSmLCKJq1EfapqynOLa7O4smzCDbdo7rEukznvrZmONwa6g89GfM5Nyn2JeGI+MI5q56BZSPBV/rd+KNmWypreS3PlHZBrJdfhGRdIkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746083866; c=relaxed/simple;
-	bh=IsEFuKr8MdJiyQYBneHaUVR7yEJMImUpl5m96czfCBI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LZYBtLApdC1S7y+/t6YqtaHOAyg483L1rQq+SpxeDXz672ld9XwC5ZmazCpePRJEfoEVaefn8dG2+bu9gw661sjTTWqKAisDrgrl4y6kwnCsC0aLZLyrNTCRQ6QHjTgTNHPWD8Lw9Wp7vfx9uV6UBYy09VeU8z8jRnkz+ofawqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Asn/uqIU; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1746085214; c=relaxed/simple;
+	bh=7i2UqjXjQwKO6jyCSU9SqsM1SVDehiVP499uIvMChZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=axDDxsvjStj8swKheWnMyE4AHza9JqoPHm3ug2bV9vTxdnxCoLa7+wGkYwx4PlYH3W7+xjniuwFJ9k0TV5Sgu8HM4WkhFH+80GFrGR4QP/c5YzJqvxNCn4eIjqfqYOa2M9Y9AaqmnhRLrlx/ufyxjPXEFsTH423zKxnnEQSam+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rg71Nflq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Asn/uqIU"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43690d4605dso4371645e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 May 2025 00:17:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746083860; x=1746688660; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dfbpd6S+j/Op6XJKqOKEnKbRjtTW+fQ4p2/1pzW9EyY=;
-        b=Asn/uqIUxT7H2kQ/yyk5Cmwqr/XYQ1vR7NRDs85+JIjC94pJ0WiCH210kr6HMWehA+
-         RK+fWpOPh35jxVn0qsFnktC/b7eEX7oAr7fcRTLOYd0E5pH4zZU2s0EhMHmwTPPb+rzU
-         5tCUaHA2opkTFrNVx74YQ89+GjMVYSh5ggqiUsu1Nw95vCJBAAGEqtmPqZVJRt/pR0Rs
-         twAABu4IMFnunx4ZTEhbzPphrA+D+QV4SjplxxRIcApSLfZGhS7sgB2SnY1yaIdiEa/u
-         NfnY4EIli1TzDxuu+NTsEXp5fP89QxJe/y2YUapKrWwwvnroZrIE6mVm2WlrQeFe3XvN
-         vr8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746083860; x=1746688660;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dfbpd6S+j/Op6XJKqOKEnKbRjtTW+fQ4p2/1pzW9EyY=;
-        b=if5GYln/2nCO+wLVAF0hTE7dWF3w5KBqV7+befM/UOTkc5qaNwXKWMukgINOg22BWf
-         IskQhmULB5qqXPWKxAkqXCzj68fPA4glhWCAQxubqIZTuTUm1OsdUp90IDS5UNfKX2Vb
-         49Bwvgy05FPbgUQTH+n3OSBWqaaR+C27OW2MCHuM02zHeQQ1ZBSv+SsD/WmaX5MxKjZB
-         7bAywdrOxxDjB4CNhq1wLO+qIKDB92nnfyKWYZUEHV1AifzJyBazeG8o69F4N0oWq9Bz
-         9uKj2WBpAVthLQL59XKHYp5cL/ySxqEbqizJZAoPjCt5oAdw5qpq+TRhibSKHltiIs5p
-         fSFw==
-X-Forwarded-Encrypted: i=1; AJvYcCU6NVkotVaJUngomNdKC/iQV6ugx3O9Sn4/h6Mvy4QUX4GFSUaR1/+6O2cTsxyKr9F6kXBk/lP1fjL34PTsPQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBMntcp7eSXs9odL4eWPPTNmmz3z7100lT+44a5MP7in+8FONp
-	Ir2dz1RZ5LEEnqNteJv4dtyz2V6rcdFLOCZ6SQGvf/zaNm7t3aI/HveLaTIQ3yjoTAuBVu2K0T5
-	fRN+TNmfjReDePZyxeCR7kwIKmtvYz1bbYQFe
-X-Gm-Gg: ASbGncuXx/w6ShFGR5UfCG7bQ4SNUk0NQjo4ohkpQZvCvbF2YJH+ZA+jIgN50Ys9c4c
-	x67/i9V86J9LGuvHGp1+uthpW7y9Em+Vbt/ks+2yPey6IgK6DsTpN8KGLySWSZKdNa1kS80no8n
-	0T+HYhMEdk5ax7vc5i/PH2ChI=
-X-Google-Smtp-Source: AGHT+IFduWCt9dAJ2C1o84Xte2BlzpK0E9RUVCMttsag2Euox2KT9XXx00vsgL2LSClUGCr9nJXH2sWB2Mwl9YOh+0s=
-X-Received: by 2002:a05:600c:3493:b0:43d:fa5d:9314 with SMTP id
- 5b1f17b1804b1-441b653c894mr11786975e9.32.1746083860001; Thu, 01 May 2025
- 00:17:40 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rg71Nflq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0180C4CEE3;
+	Thu,  1 May 2025 07:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746085213;
+	bh=7i2UqjXjQwKO6jyCSU9SqsM1SVDehiVP499uIvMChZo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rg71NflqkGhgVVWBuZ4oSukhp/lsIaGT74TOvJ3LRmGh8Z2W7+nLdevQkeO8A7JjP
+	 2mBulzE9Rp6vUvyXQ/Q7Ur0TaycbYAuMmGJ/sTnOyK4yokz+tkMHUTLMn756YFXm4x
+	 HJlG1kiR8c7dCN6MQgClXzEPMd2Kt8I3cqKQmVFI=
+Date: Thu, 1 May 2025 09:40:10 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] rust: samples: Add debugfs sample
+Message-ID: <2025050137-ongoing-such-46f6@gregkh>
+References: <20250430-debugfs-rust-v2-0-2e8d3985812b@google.com>
+ <20250430-debugfs-rust-v2-4-2e8d3985812b@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250423-rust-xarray-bindings-v19-0-83cdcf11c114@gmail.com>
- <20250423-rust-xarray-bindings-v19-1-83cdcf11c114@gmail.com>
- <20250430193112.4faaff3d.gary@garyguo.net> <CAJ-ks9nrrKvbfjt-6RPk0G-qENukWDvw=6ePPxyBS-me-joTcw@mail.gmail.com>
-In-Reply-To: <CAJ-ks9nrrKvbfjt-6RPk0G-qENukWDvw=6ePPxyBS-me-joTcw@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 May 2025 09:17:27 +0200
-X-Gm-Features: ATxdqUFyUNh-QBM8NkJE1Rola7V4MLYJmp0oVbJRr7K1gApSfORdSuG0qeRLbzM
-Message-ID: <CAH5fLghKLZR7i6YQk8cQrvfOr11xEKia5LHtj1fn8dD3Stv0dQ@mail.gmail.com>
-Subject: Re: [PATCH v19 1/3] rust: types: add `ForeignOwnable::PointedTo`
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Matthew Wilcox <willy@infradead.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	"Rob Herring (Arm)" <robh@kernel.org>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250430-debugfs-rust-v2-4-2e8d3985812b@google.com>
 
-On Wed, Apr 30, 2025 at 8:57=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> On Wed, Apr 30, 2025 at 11:31=E2=80=AFAM Gary Guo <gary@garyguo.net> wrot=
-e:
-> >
-> > On Wed, 23 Apr 2025 09:54:37 -0400
-> > Tamir Duberstein <tamird@gmail.com> wrote:
-> > > -impl<T: 'static, A> ForeignOwnable for Box<T, A>
-> > > +// SAFETY: The `into_foreign` function returns a pointer that is wel=
-l-aligned.
-> > > +unsafe impl<T: 'static, A> ForeignOwnable for Box<T, A>
-> > >  where
-> > >      A: Allocator,
-> > >  {
-> > > +    type PointedTo =3D T;
-> >
-> > I don't think this is the correct solution for this. The returned
-> > pointer is supposed to opaque, and exposing this type may encourage
-> > this is to be wrongly used.
->
-> Can you give an example?
+On Wed, Apr 30, 2025 at 11:31:59PM +0000, Matthew Maurer wrote:
+> Provides an example of using the Rust DebugFS bindings.
+> 
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-This came up when we discussed this patch in the meeting yesterday:
-https://lore.kernel.org/all/20250227-configfs-v5-1-c40e8dc3b9cd@kernel.org/
+Much nicer, many thanks for this!
 
-This is incorrect use of the trait. The pointer is supposed to be
-opaque, and you can't dereference it. See my reply to that patch as
-well:
-https://lore.kernel.org/all/CAH5fLggDwPBzMO2Z48oMjDm4qgoNM0NQs_63TxmVEGy+gt=
-MpOA@mail.gmail.com/
+Some minor comments on the sample code here.  As someone coming from C
+with limited Rust experience, I think I do understand it, but I think it
+could use a bunch of comments to make it more "obvious" what is
+happening, see below.
 
-Alice
+> +static EXAMPLE: AtomicU32 = AtomicU32::new(8);
+
+Wait, why is this set to 8 and then you automatically set it to 10 after
+you create the file?  No one is ever going to see 8 as a valid value
+unless they really race to read the file, right?
+
+> +impl kernel::Module for RustDebugFs {
+> +    fn init(_this: &'static ThisModule) -> Result<Self> {
+> +        let debugfs = Dir::new(c_str!("sample_debugfs"));
+> +        debugfs
+> +            .fmt_file(c_str!("example"), &EXAMPLE, &|example, f| {
+> +                writeln!(f, "Reading atomic: {}", example.load(Ordering::Relaxed))
+> +            })
+> +            .keep();
+> +        EXAMPLE.store(10, Ordering::Relaxed);
+> +        Ok(Self { _debugfs: debugfs })
+> +    }
+> +}
+
+
+How about this rewrite with comments added to help make things more
+obvious:
+
+impl kernel::Module for RustDebugFs {
+    fn init(_this: &'static ThisModule) -> Result<Self> {
+
+        // Create a debugfs directory in the root of the filesystem
+        // called "sample_debugfs"
+        let debugfs = Dir::new(c_str!("sample_debugfs"));
+
+        // Create a single file in the directory called "example" that
+        // allows to read from the EXAMPLE atomic variable, and make
+        // sure it lives past the scope of this function by calling
+        // .keep() on it.
+        debugfs
+            .fmt_file(c_str!("example"), &EXAMPLE, &|example, f| {
+                writeln!(f, "Reading atomic: {}", example.load(Ordering::Relaxed))
+            })
+            .keep();
+
+        // Change the value of EXAMPLE to be 10 so that will be the
+        // value read from the file.  Note, the original value 8 will be
+        // read if the file is read right before this is called.
+        EXAMPLE.store(10, Ordering::Relaxed);
+
+        // Create our module object and save off the pointer to the
+        // debugfs directory we created.  It will be automatically
+        // removed when the module is unloaded by virtue of the
+        // reference count to the structure being dropped at that point
+        // in time.
+        Ok(Self { _debugfs: debugfs })
+    }
+}
+
+thanks,
+
+greg k-h
