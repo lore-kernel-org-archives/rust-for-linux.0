@@ -1,89 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF1519A;
-	Thu,  1 May 2025 11:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3476D34545;
+	Thu,  1 May 2025 12:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746099641; cv=none; b=EPz/mDdxuCd3G5N8KSjYk07TzSQlR3o/4fm0MXsmqZwq1wWch7PZSe8uDBcwo7YDA1gYEvoe//vRoqOV5e/E6XqloGiH/tKfEifOJe7HIeSMkWoO/8uEMUEObldTAOPhKmC2bdhII8GZAFCXIqqctJrY8oqcSfdKqHEeQ/pFgOI=
+	t=1746100963; cv=none; b=XP4VpBrERLr9BPBTqEmXoALkVtQl/wKxBk169hsIQ62Y16fp6hzEipMzvqmj01sH25O2DJx7FrB1flTFY9l2rRB1gh7pqXar8Mm8rtlaGh+eE5mqqiYaBPc0zynG436tWZ7+TiN0m9VIzOv/r+KzIvk6lcxBsso4jnWTiyIzqxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746099641; c=relaxed/simple;
-	bh=aJ+SnGlrOEQl6wQ9VK0ODxd9kUtoPYOh5ETn9dKmSPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=So9GCtP3RlhC89V6zuwbDnDFQM/+3ssJk7V4Q8AEPf938+idKc5nFeP6i1BZ/akv+Dmx/rR+ONZs/f2nGujAR1w3JORRHaX6ywZSBoQQEESBES7zJZViYDETGDRR4qZWFeulFSoRYYS6ygm5ZqOoCi5WHkp1kLHXQ9JE3il6xco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UTFmM2xR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746100963; c=relaxed/simple;
+	bh=jGk1OplUE0le5suV3S4zcZwUPvU/lk7gB1S+ZPLlncs=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=N8SGqR+9ApD+BUueHfy5kxd9wHsxUImWAYPWwUOekIvapTx5EgC66GbMp7SRWP+98G+uiFjWJOuTbXH+yE0YwSucL7vZOxc7cbTN4Uw0jziwdfxMpEJbGpushZcsoXsk8SN2NKOTJAEwfY/2B5qQ6eP4vuO2/nVfeKCD/jea3Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c7Vhs/ws; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UTFmM2xR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863D6C4CEE3;
-	Thu,  1 May 2025 11:40:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746099639;
-	bh=aJ+SnGlrOEQl6wQ9VK0ODxd9kUtoPYOh5ETn9dKmSPs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UTFmM2xRXFu4Fh39nU3NoOvdHe3TxJY51ck/IT8m454g5yjfoCsQhsw86F0kVasTn
-	 +ZCoAsaQByF2H7ty8y2O9YmGZVwqLXgUb0T5/Hd8q/Y6aalThdrCTe5eJCeQOSYLlB
-	 wbc3h8So5xlCa4iAjBpYCye3WZ5028ITLCuVDEecwDOyImecWkqxCE5+SoZWsoR/TN
-	 M8pAY4CDoO1rXrOf+jVBmWiwgYLQzhJajbwhuOmNMGhGVH5ZMO/FmnoNDp/s/zWX1h
-	 Bv46Nux8uuTw1KHRib1UcpuTcbMFUAetQjDIe9zQsTSHIjGOpzLOZaL08BCG2qRSTM
-	 EsXMJImrfRoAg==
-Date: Thu, 1 May 2025 13:40:36 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 6/7] rust: alloc: add Vec::remove
-Message-ID: <aBNdtMAYvsZ8moRq@pollux>
-References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
- <20250429-vec-methods-v4-6-dad4436ff82d@google.com>
- <aBJPwKeJy1ixtwg2@pollux>
- <aBNWts7wijlN8FGy@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c7Vhs/ws"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-227cf12df27so8052105ad.0;
+        Thu, 01 May 2025 05:02:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746100961; x=1746705761; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jGk1OplUE0le5suV3S4zcZwUPvU/lk7gB1S+ZPLlncs=;
+        b=c7Vhs/wsAvPqpKsAjCSi8lI5RWnclVQ/O6+TN4bb1HrEi5Xni94+hKfUFuPR9eU6gV
+         h2rDzYJttkzhMeFY5Kg+xxLNBYC2gdD5bJW4/ATzD8Z1p3975IAX5FIpWO7TypfTK0w6
+         wt5MhlH48RvrVvscUriFFIZ7oQBXJsxS5MuCzHnTMeSTFlVU0cEjf6sGpaBaukfPsqmI
+         56ADS7uvF262xAmURAAEPJ/QtUWvuamt1iH2VhDSdtJ7sG4WIeMNdYCaZz+PhgSYUhMe
+         qQHTWpjwpFdJWUDtohTW+ThljurA+hoEPK/AzXDZnvarl6mR5yW8d4ouzlPTr748hM/4
+         4wIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746100961; x=1746705761;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jGk1OplUE0le5suV3S4zcZwUPvU/lk7gB1S+ZPLlncs=;
+        b=MGN8+sWiojIbbEollplTrCwjPF9AhtiVRrTjak39084fIvCTwHSbWXircEkoziWW43
+         zcxdxgT4z9qkM+APbUz54F9h/fclb11qzc00DiMrohGWQaZebEUz2+sPc7ANrmhbek7N
+         QXtASxwfdnUb1fixqa8qSjIt1gHzEJNcdEOhXVmWz0nr49JaVwsLk4KX6xQQvbo3d1Nw
+         SeyA7RkpfvXsoNMQggYBhMLQjUJL5/5nyHWTuW1H8mFI6ndyZ+Bw89t5vqhsQSjbB8pD
+         yC5BtNz6k2S0foS5ho3WtEaesAUgzUSmxTWwXXoJYpAZc3hOmdqdstbl2KXUrDaT6gYy
+         I3rg==
+X-Forwarded-Encrypted: i=1; AJvYcCUz+nKPxECOiyee48POLBW0cBGzeWviE9iIesiRRYoYQWcOVqi26rB1n4SAEEA3rwe4UYL228kmPI6HIVQ=@vger.kernel.org, AJvYcCWMvgrhi5nOr4oRDfxLTwoON6Shs2ls3CQRgeBSKK7e2G9wtj1laP6GjfSIiHPjznmDJZvI0BPeDUp69UwF8NI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyui4+5QI9YfGCRxqFIdEHfiT9P8Ca/d/6T30fdn0RRg3MkOVYQ
+	ylS36e3LFrPO+mfSaB5QYZeNw4uEuzLRgrw6luYtAv1G3aVUjRq8
+X-Gm-Gg: ASbGncsXykxxnRPbN9qdSoXqWq+6PSDs60Mif4ZvisQx/fQWxF8aPXuo/eEedfYAizP
+	UKiv9vl7dV/6+SwcvrhMPbmeyZD/LopfS8TrWGKQOwxBfPSlE+M2CbrbEECpRoWRj/5rMW7wW7h
+	NbeT0VMNAzmhYBSkLoumyE7nU1oH1ChrfxhxoxdCPDPPTbp9lvmpEdp78soocqkXiSh3AE7trZe
+	dB7/tyyuPbMAOhpEvq83+zRWkiuHWaY0JQA5TFiaYWj7WXgH4gtiw/WA9xSDGp/bJcNrAfMVDiL
+	rGbMIrl7MNxQ8QB9jHlUI+fLV+MapXf3JVknU9e7B//PL6NppxHqzpyBbKokMo2Nt3Nu3fi8HTM
+	9UyTqqp7aI+2LDtVOAQseLWR61zzYbWp5Yg==
+X-Google-Smtp-Source: AGHT+IETed+W3jYpghjJLBblsKLuIb+MtVoT+v/jsF/l1Dvq5v+yc0OvlLfCs9/Y9O6jAeFWDQH/cw==
+X-Received: by 2002:a17:903:2ed0:b0:21f:40de:ae4e with SMTP id d9443c01a7336-22e087e959amr32953875ad.9.1746100961306;
+        Thu, 01 May 2025 05:02:41 -0700 (PDT)
+Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e0bc87a44sm4866675ad.228.2025.05.01.05.02.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 May 2025 05:02:40 -0700 (PDT)
+Date: Thu, 01 May 2025 21:02:24 +0900 (JST)
+Message-Id: <20250501.210224.1459267327368250719.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, a.hindborg@samsung.com,
+ boqun.feng@gmail.com, frederic@kernel.org, lyude@redhat.com,
+ tglx@linutronix.de, anna-maria@linutronix.de, jstultz@google.com,
+ sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ aliceryhl@google.com, tmgross@umich.edu, chrisi.schrefl@gmail.com,
+ arnd@arndb.de, linux@armlinux.org.uk
+Subject: Re: [PATCH v1] rust: time: Avoid 64-bit integer division
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72kiTwpcH6S0XaTEBnLxqyJ6EDVLoZPi9X+MWkanK5wq=w@mail.gmail.com>
+References: <20250501015818.226376-1-fujita.tomonori@gmail.com>
+	<20250501.114534.1953073574103349822.fujita.tomonori@gmail.com>
+	<CANiq72kiTwpcH6S0XaTEBnLxqyJ6EDVLoZPi9X+MWkanK5wq=w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBNWts7wijlN8FGy@google.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On Thu, May 01, 2025 at 11:10:46AM +0000, Alice Ryhl wrote:
-> On Wed, Apr 30, 2025 at 06:28:48PM +0200, Danilo Krummrich wrote:
-> > On Tue, Apr 29, 2025 at 02:44:26PM +0000, Alice Ryhl wrote:
-> > > This is needed by Rust Binder in the range allocator, and by upcoming
-> > > GPU drivers during firmware initialization.
-> > > 
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > ---
-> > >  rust/kernel/alloc/kvec.rs | 36 ++++++++++++++++++++++++++++++++++++
-> > >  1 file changed, 36 insertions(+)
-> > > 
-> > > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> > > index 357f5a37c7b1d15b709a10c162292841eed0e376..0682108951675cbee05faa130e5a9ce72fc343ba 100644
-> > > --- a/rust/kernel/alloc/kvec.rs
-> > > +++ b/rust/kernel/alloc/kvec.rs
-> > > @@ -386,6 +386,42 @@ pub fn pop(&mut self) -> Option<T> {
-> > >          Some(unsafe { removed.read() })
-> > >      }
-> > >  
-> > > +    /// Removes the element at the given index.
-> > > +    ///
-> > > +    /// # Panics
-> > > +    ///
-> > > +    /// Panics if the index is out of bounds.
-> > 
-> > Let's check for the index and return an error instead. I know we also can't
-> > prevent OOB index access panics for e.g. slices, but here we can control it.
-> 
-> Okay, I will return an `Option<T>`.
-
-Hm...to me this looks like it is a real error condition rather than something
-optional.
-
-What does it mean if remove() returns None? It really means that the given index
-is out of bounds, which is never correct behavior for the caller of the API.
-
-So, I'd argue that None is an unexpected return value for a caller and needs to
-be handled in an error path, for which returning a Result is much more
-ergonomic and correct, since Result can describe the reason, i.e. EINVAL,
-whereas with Option a caller would need to pick an error code itself.
+T24gVGh1LCAxIE1heSAyMDI1IDExOjI0OjI0ICswMjAwDQpNaWd1ZWwgT2plZGEgPG1pZ3VlbC5v
+amVkYS5zYW5kb25pc0BnbWFpbC5jb20+IHdyb3RlOg0KDQo+IE9uIFRodSwgTWF5IDEsIDIwMjUg
+YXQgNDo0NeKAr0FNIEZVSklUQSBUb21vbm9yaQ0KPiA8ZnVqaXRhLnRvbW9ub3JpQGdtYWlsLmNv
+bT4gd3JvdGU6DQo+Pg0KPj4gT29wcywgdGhleSBzaG91bGQgY2FsbCBrdGltZV90b191cygpIGFu
+ZCBrdGltZV90b19tcygpIHJlc3BlY3RpdmVseS4NCj4+DQo+PiBJJ2xsIHNlbmQgdjIgbGF0ZXIu
+DQo+IA0KPiBXaGF0IGFib3V0IGFkZGluZyBhIGNvdXBsZSBleGFtcGxlcyB0byB0aGVpciBkb2Nz
+IHNvIHRoYXQgdGhleSBhcmUNCj4gYWxzbyB0ZXN0ZWQgYW5kIHRoaXMgd291bGQgYmUgY2F1Z2h0
+Pw0KPiANCj4gKEluIGFub3RoZXIgcGF0Y2gsIHBvc3NpYmx5IGluIGFub3RoZXIgc2VyaWVzIG9y
+IG5vdC4gV2UgY291bGQgYWxzbw0KPiBvcGVuIGEgZ29vZCBmaXJzdCBpc3N1ZSkNCg0KSSdsbCBz
+dWJtaXQgYW5vdGhlciBwYXRjaCB0byBhZGQgc29tZSBkb2N0ZXN0cyBvbmNlIHRoaXMgaXMgbWVy
+Z2VkLg0K
