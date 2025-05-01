@@ -1,185 +1,159 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E044262FE4;
-	Thu,  1 May 2025 23:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D552B126BF1;
+	Thu,  1 May 2025 23:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746140624; cv=none; b=OOrmzivOMOKPJCr5phiEc5C8cOl0ZoZGC4cxuRzGqYv9RpS6fBQG1flupE0xpk+qh2mN8sunapVd8IxJbkbSiSKG0p904n+dh+VcaOhuub164VHnaOl2gUlZIIlkzdqSStY1aTTHIG6OTY5P2UjKrFPR0f81v6t7w9v7y52D6ZM=
+	t=1746142729; cv=none; b=BBunp8O2/A7lDx3KTsa8/XvUWaKha7vBkellXyqDzW7T2eVHXvo/EoiygdIgif9Sex5CK87lIc8WRq36MPqsR+SzbACekMDg2+qIIlUBabJQHppQokwbYu5ZtSFNk0JkaYbV8E4SXSnGv7Kof8SPzoh2RWnJIQrvBL58Xk7PptU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746140624; c=relaxed/simple;
-	bh=3MmCwbr9hZMwZDnncoyMzN/RG0XMgEYiKW+C4A3wL3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oDjI7e+8xQisqL2M3SM1yxH17GPqG1NTs3WTMNvIrujxtmDzm9KKQJo8HAKo+Lj6TGI4AFnzMxbQOXvuuZ4bTQJ0Ey9SdpkT5Oe/2V52YFr4fC8M+yBgRUY2LZQHXgj/CYs/Yx+h9k8ZWXr/8tN8y79jeANVMwTY6zWnHFliN+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a1eTcK8e; arc=none smtp.client-ip=209.85.160.171
+	s=arc-20240116; t=1746142729; c=relaxed/simple;
+	bh=x4NIPcW2t8+Po2GtxjiAe77L6lbRw7MsrE1vNe8TtY0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jb6t6jIVCsUu83nRgJ+dJlsBHH3HLGbRZudV4UJgKIH9AgjXvYluBlfQZWzvAazkQpeWa47i1hK6eZ7trd4GCUPPxhT+5JCUQSNDBEx8vYgkVrCNSbnqs6cgy43zc9+6axvG2Cl0q+PLax1TRWvPtJ8koYiQCJYP53z2k/bJc9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AFKWetlW; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a1eTcK8e"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-47664364628so17659101cf.1;
-        Thu, 01 May 2025 16:03:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AFKWetlW"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-39ee682e0ddso827081f8f.1;
+        Thu, 01 May 2025 16:38:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746140622; x=1746745422; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HRYQm8KkeXJnAoHO3Ql9+7NuEh+cViypLCBplpx9IJg=;
-        b=a1eTcK8eb+PWPg+kgeWNRZTdnaX9CUREFLaxoRhhHnIg/c0RVlCdq91OJfdyIEn4t6
-         vJ0ryv4EfId+87pY4TEHsxlnMKNrZHiFy/mDc5ifvYyaYBlsxBGaErM7HKWae8dnsuck
-         3L+viSr/w5QBghJ6iKSXD+IyzOWNcIaHjN7fDLhTxr6qYrw+XYhRgFLwzGIeLdoRvvEB
-         lhlpj6Euk2LjTbYPkr4x4KuqEHxHRKheXiJU78vI9Z8fUR2qVG0Ix7SDFGwoyUvYbMC7
-         phNqvRPYjoIzkCEjNifo/JP5oBsP2keFkauA9a/aNh0DzJFmCFZVc+r2V+rwKHKMms1V
-         b4Qw==
+        d=gmail.com; s=20230601; t=1746142726; x=1746747526; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BgTw89Bn8iJJMWWcnciPTntefLN6JrxJBEGd602vq3k=;
+        b=AFKWetlW8h2tQUR1vgG1fKCmW6RXMLsL8ezeUSdAhiPsyOF7hizQNUY3rh0ocCStR+
+         pE82iYHQICCLKuqT8J3zvCQUxI5CbtLKjf3SMYXZDWeYQoeMzyT504ZUsrqlTSXNLVIA
+         R1+JyubhcQeJta1feq0Ouba9Vk+w24ZAhN//F6L8bmEwhCByhPc+vscMRBNbiZJWpcHp
+         Yd+aM4KlgfcI4f0hpDOwx1SC1C5G19T1cBbZB9mdnt3V99A3ZW/QVbPHRuXdxjBt2jdX
+         UVz245BSeu5rhG5IwmpmhMuh5PuuikbsFKckceW8nLxhxtFT8miCzQq6uCMbRPGUezbT
+         R8gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746140622; x=1746745422;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HRYQm8KkeXJnAoHO3Ql9+7NuEh+cViypLCBplpx9IJg=;
-        b=VtQwaJDTdEY6+VgUFQ9PVTROdTqfysDxRGTw1c0IUE8lSicifQ6s5g/UGQAwKta2B+
-         JgQxixK6o+Ag4FIqnJRn2R9O0BUXWMy2Y8Pd5It2vAuWNWWZ/SBOo4TpXId7pSEuMo6f
-         20uILslVfJzw7BSZluvwBfN/QCEAyEpZYjS8WwU9A6lGGUzxHzyNut2amIHbE/bsmC3Z
-         pKMPLVV/DtF07Meut+V/qHvH9R5dhr43XT2KQGgs3VnHHB2PqDbet3yUawtJsS3ajApF
-         cIm5ptYnH6s0Vg0hO8MO4WwYvzicUthXOpgmGXPuLrd4m4gJoDzQhmDfpHnMvjHtKp83
-         84wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9WjHth8XKLL0CE0TLIqDP0Q/Op2Dx3RnEW3oc6k7fpA5ITGn8tEXRLu0hKNRJXVPhd7FUIOl/MFpi3bk+uLg=@vger.kernel.org, AJvYcCXQU7p8/p+tX8bPTjTmeG1XUdHwoIBHAeF40VbVIm/7MSw2O1z9mHQQO3L48rZ1aajCMHw8s5ceowdmc+g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxzq2m+Yu8pXdScg/ryOzqrsZ+KkbmcVsHB45ngoBCee1lwIttH
-	4wStO+r4+Lbi0Msdwz06/MCU1GHNW0aeFJkIJLvugQYPyTkLtQ6s
-X-Gm-Gg: ASbGncvQV/S/XHWP0gCVD+To60vZGOtBFNFGDNCas1Wcl4e1T+6TvjsdCYTuV+cR9cT
-	vIJKgTljwR0MdqfGNA1W8N//qwObhIe5zNILeXBKagmiBky8v7lMh0jLQZYKSqsK60wdyWz9YI4
-	Os6YC+RERkt8s8avYJqzvIqKV+AwtKJoN32m+mOI52SobdRbOpp119zECZKzZWQlxK+aoX0gEXT
-	CBPhXrT6m+LIZmhsjoiboJodjCRkBglODgNk0l+bwPHtrdLqPcy/xEp8t1xwy0JQmEFMgeO3HZg
-	WByQO+SZet3FD9XtkOl1503zeV5Wkny5X6O+TKOffeNfhjT9JaHZq9midtoxa0OR5DomXIR3bdT
-	hG6qA7w9rWbAiIA4WsRBxzJkWYzuzN8w=
-X-Google-Smtp-Source: AGHT+IGeQYINgSiuj9MExDiagzanVfMGfm2vYpMms9YEMbg7e5WF1UWNjSYsdL+EpezN3zRAcMgi9g==
-X-Received: by 2002:a05:622a:5884:b0:471:fc73:b656 with SMTP id d75a77b69052e-48b1aa581b6mr62100351cf.12.1746140621825;
-        Thu, 01 May 2025 16:03:41 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-48b987209f1sm9736091cf.52.2025.05.01.16.03.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 May 2025 16:03:41 -0700 (PDT)
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B451A1200043;
-	Thu,  1 May 2025 19:03:40 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Thu, 01 May 2025 19:03:40 -0400
-X-ME-Sender: <xms:zP0TaHqF_4E1Srlb4d2YlgyIsz7cui8lXRnYr35dJm6qhAzUpaXsDA>
-    <xme:zP0TaBqNJQwuHCAapdnVtKiUySQtyqxXgWG5WkmkB-ETngH11qjvDNQ367KrWHt4T
-    KPteE4bsdRyCDqBGg>
-X-ME-Received: <xmr:zP0TaEPIGoDBZcSqzbt898VrSwUx5z-ATeIQt7L9BLdQiohpluJ67CZY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjedtkeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
-    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddupdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtg
-    hpthhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphht
-    thhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegrrdhhihhnuggsohhrghesshgrmhhsuhhnghdrtghomhdprhgtphhtth
-    hopehfrhgvuggvrhhitgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhihuhguvges
-    rhgvughhrghtrdgtohhmpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidrug
-    gvpdhrtghpthhtoheprghnnhgrqdhmrghrihgrsehlihhnuhhtrhhonhhigidruggv
-X-ME-Proxy: <xmx:zP0TaK7i-peov85ysTE54F4cZJgvYXmjQU8UckHtwO_m8d5388If9Q>
-    <xmx:zP0TaG6cJjaDxmCgnu3aCDdND0Bk2N2QiIjAwf3W_zPqu5VjsuRTmw>
-    <xmx:zP0TaCgLStn69s7HZtZGdVtOPdFIyqevuveHfddN3PhFkLTf0XRzSQ>
-    <xmx:zP0TaI5BCnb_Ya9ltCIiJyawOGQCujlcrtGf4kZfdBWhHx-vcOoJkQ>
-    <xmx:zP0TaFJK3BQpaOF2BxLzzxE8qoOEIMUQxbCyD8GTC5zXl8NyaaaULhH9>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 May 2025 19:03:39 -0400 (EDT)
-Date: Thu, 1 May 2025 16:03:38 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Gleixner <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Russell King <linux@armlinux.org.uk>
-Subject: Re: [PATCH v1] rust: time: Avoid 64-bit integer division
-Message-ID: <aBP9yvWnB66qJeRh@Mac.home>
-References: <20250501015818.226376-1-fujita.tomonori@gmail.com>
- <aBNojspyH5dHsuOm@Mac.home>
- <20250501.220717.849589327730222635.fujita.tomonori@gmail.com>
- <aBNzIp9UF7GZVYLs@Mac.home>
- <aBN1BzCawU0a9Nx9@Mac.home>
- <cbbeca76-7a7a-425b-9cdd-8da778b6d8a1@app.fastmail.com>
+        d=1e100.net; s=20230601; t=1746142726; x=1746747526;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BgTw89Bn8iJJMWWcnciPTntefLN6JrxJBEGd602vq3k=;
+        b=lwD/dld7V/5Ke/LI4TBclaxJKx9d7DvZP05nBr/IAgswGGaue4YRgsSA/dX8PkXMAc
+         y43g1ECsp9s4MmmXNh98VKHjo3Nm/ljoG4C6JIzUCVMyrOhEoSxCiYwretju2u1ElxWn
+         O3jcKdrSG+gy1wMfjZ2SC2yQvcw5r2Tr73Jkox5GEGnCLnAje5O9jALw4IpLpfeBgG6V
+         NwfAAwLe5hTZ/vkVFY4R7chWi+hMBDSq95yu6D1O+QRDYmt9PQk41tV4FFqQX6nUthNN
+         49jAtPBi1MA26Q+Y9YanyT4GJOjEwoGGv9OyHu9fWAfCn9MRDlw5NncTssMjeaD6nxBe
+         H7kA==
+X-Forwarded-Encrypted: i=1; AJvYcCUy3YF2jNC+49jLqNF7SUrg/iM0soOVuTTPTTXejASiBgX5Lk2hG5LNNb3OIJdMKa2QjE4lEtXGZQO5yzgi26k=@vger.kernel.org, AJvYcCXTF4OChWfXK0HRhE6y6o54tayQ2Xi/AsazH6JqwBphrikKgJ1NrS0dT2/tYf1O03fClQt8LgOsnkqxwhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPnE1JX5OlDS+PF4GJ8BkxCQSHhvrsJfxljjo2XKyP4rVFBwFR
+	oKq1DNc5Av12iSFfeh6TPZFtkLfHmrOWoAigk87WkW0syu2MN6J8
+X-Gm-Gg: ASbGncvV2/ZMxjqSUogT6hWgv2kwsM3aXDdKHpjvBG4lL3k9jvI+uF62M3e8Qu6V5lJ
+	StNebueAdp+cmTHenruEXV3crJtmlrGBa0XZrVQl5oP8yuk1PZGDHE6D5azoxlVj00yARgH4sL8
+	ZvFkWLPY38rygDvzZLj7m/dxppFU4ViyY+7UHpbfbPaozlX37XrIZC1Z7ivEcEKThZpJS5oizSh
+	KiDsspPN63rmDixx/NlH+3bqqlf5dJJK0SKSMdsq+uz1vQ4z6+mYhtUkGe620UdGSTy7ARgkXIv
+	gv7WBvFgU0PUvQvq80bMrEIrdNmgGDogvFyzVmKEdgZ+Sylq8zEswSBWqmuMdPGT
+X-Google-Smtp-Source: AGHT+IGGLKRWLKqNHsCAhWo8MFEupNx7xPLyU3TVmOnryIbKhbOKnvbipwShUUdf44Pi9DvOCz147Q==
+X-Received: by 2002:a05:6000:2cf:b0:390:fbcf:56be with SMTP id ffacd0b85a97d-3a099a8597emr338736f8f.0.1746142725929;
+        Thu, 01 May 2025 16:38:45 -0700 (PDT)
+Received: from ?IPV6:2001:871:22a:99c5::1ad1? ([2001:871:22a:99c5::1ad1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099ae0ce2sm525797f8f.16.2025.05.01.16.38.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 May 2025 16:38:45 -0700 (PDT)
+Message-ID: <d770162d-a271-48da-82f5-a2e38ae03c57@gmail.com>
+Date: Fri, 2 May 2025 01:38:43 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cbbeca76-7a7a-425b-9cdd-8da778b6d8a1@app.fastmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] rust: time: Avoid 64-bit integer division
+To: Boqun Feng <boqun.feng@gmail.com>, Arnd Bergmann <arnd@arndb.de>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Anna-Maria Gleixner <anna-maria@linutronix.de>,
+ John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Russell King <linux@armlinux.org.uk>
+References: <20250501015818.226376-1-fujita.tomonori@gmail.com>
+ <aBNojspyH5dHsuOm@Mac.home>
+ <20250501.220717.849589327730222635.fujita.tomonori@gmail.com>
+ <aBNzIp9UF7GZVYLs@Mac.home> <aBN1BzCawU0a9Nx9@Mac.home>
+ <cbbeca76-7a7a-425b-9cdd-8da778b6d8a1@app.fastmail.com>
+ <aBP9yvWnB66qJeRh@Mac.home>
+Content-Language: en-US, de-DE
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <aBP9yvWnB66qJeRh@Mac.home>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 01, 2025 at 05:11:44PM +0200, Arnd Bergmann wrote:
-> On Thu, May 1, 2025, at 15:20, Boqun Feng wrote:
-> > On Thu, May 01, 2025 at 06:12:02AM -0700, Boqun Feng wrote:
-> >> On Thu, May 01, 2025 at 10:07:17PM +0900, FUJITA Tomonori wrote:
-> >> > On Thu, 1 May 2025 05:26:54 -0700
-> >> > Boqun Feng <boqun.feng@gmail.com> wrote:
-> >> > 
-> >> > > On Thu, May 01, 2025 at 10:58:18AM +0900, FUJITA Tomonori wrote:
-> >> > >> Avoid 64-bit integer division that 32-bit architectures don't
-> >> > >> implement generally. This uses ktime_to_ms() and ktime_to_us()
-> >> > >> instead.
-> >> > >> 
-> >> > >> The timer abstraction needs i64 / u32 division so C's div_s64() can be
-> >> > >> used but ktime_to_ms() and ktime_to_us() provide a simpler solution
-> >> > >> for this timer abstraction problem. On some architectures, there is
-> >> > >> room to optimize the implementation of them, but such optimization can
-> >> > >> be done if and when it becomes necessary.
-> >> > >> 
-> >> > > 
-> >> > > Nacked-by: Boqun Feng <boqun.feng@gmail.com>
-> >> > > 
-> >> > > As I said a few times, we should rely on compiler's optimization when
-> >> > > available, i.e. it's a problem that ARM compiler doesn't have this
-> >> > > optimization, don't punish other architecture of no reason.
+On 02.05.25 1:03 AM, Boqun Feng wrote:
+> On Thu, May 01, 2025 at 05:11:44PM +0200, Arnd Bergmann wrote:
+>> On Thu, May 1, 2025, at 15:20, Boqun Feng wrote:
+>>> On Thu, May 01, 2025 at 06:12:02AM -0700, Boqun Feng wrote:
+>>>> On Thu, May 01, 2025 at 10:07:17PM +0900, FUJITA Tomonori wrote:
+>>>>> On Thu, 1 May 2025 05:26:54 -0700
+>>>>> Boqun Feng <boqun.feng@gmail.com> wrote:
+>>>>>
+>>>>>> On Thu, May 01, 2025 at 10:58:18AM +0900, FUJITA Tomonori wrote:
+>>>>>>> Avoid 64-bit integer division that 32-bit architectures don't
+>>>>>>> implement generally. This uses ktime_to_ms() and ktime_to_us()
+>>>>>>> instead.
+>>>>>>>
+>>>>>>> The timer abstraction needs i64 / u32 division so C's div_s64() can be
+>>>>>>> used but ktime_to_ms() and ktime_to_us() provide a simpler solution
+>>>>>>> for this timer abstraction problem. On some architectures, there is
+>>>>>>> room to optimize the implementation of them, but such optimization can
+>>>>>>> be done if and when it becomes necessary.
+>>>>>>>
+>>>>>>
+>>>>>> Nacked-by: Boqun Feng <boqun.feng@gmail.com>
+>>>>>>
+>>>>>> As I said a few times, we should rely on compiler's optimization when
+>>>>>> available, i.e. it's a problem that ARM compiler doesn't have this
+>>>>>> optimization, don't punish other architecture of no reason.
+>>
+>> What is Arm specific here? I'm not aware of the compiler doing anything
 > 
-> What is Arm specific here? I'm not aware of the compiler doing anything
+> Because Arm is the only 32bit architecture that selects CONFIG_HAVE_RUST
+> for non-UML cases, i.e. this is the only 32bit architecture that has
+> this problem. If your point is we should do this for all 32bit
+> architectures, then I won't disagree. Just s/CONFIG_ARM/CONFIG_32BIT
+> then.
 
-Because Arm is the only 32bit architecture that selects CONFIG_HAVE_RUST
-for non-UML cases, i.e. this is the only 32bit architecture that has
-this problem. If your point is we should do this for all 32bit
-architectures, then I won't disagree. Just s/CONFIG_ARM/CONFIG_32BIT
-then.
+I would be for using `CONFIG_32BIT` since from what I understand this
+applies to all 32bit architectures. It feels a bit weird to single out
+arm just because it is the only one that currently has rust support.
 
-Regards,
-Boqun
+Cheers
+Christian
 
-> different from the other 32-bit architectures, though most are missing
-> an optimized __arch_xprod_64() and fall back to slightly worse code
-> from the asm-generic version.
 > 
-> > Copy-paste errors:
-> >
-> > 	    unsafe { bindings::ktime_to_ms(ns) }
-> >
-> >> 	}
-> >> 
-> >> 	#[cfg(not(CONFIG_ARM))]
-> >> 	fn ns_to_ms(ns: i64) -> i64 {
-> >> 	    self.as_nanos() / NSEC_PER_MSEC
-> >
-> > 	    ns / NSEC_PER_MSEC
+> Regards,
+> Boqun
 > 
-> I'm sure this is still broken on all 32-bit targets.
-> 
->      Arnd
+>> different from the other 32-bit architectures, though most are missing
+>> an optimized __arch_xprod_64() and fall back to slightly worse code
+>> from the asm-generic version.
+>>
+>>> Copy-paste errors:
+>>>
+>>> 	    unsafe { bindings::ktime_to_ms(ns) }
+>>>
+>>>> 	}
+>>>>
+>>>> 	#[cfg(not(CONFIG_ARM))]
+>>>> 	fn ns_to_ms(ns: i64) -> i64 {
+>>>> 	    self.as_nanos() / NSEC_PER_MSEC
+>>>
+>>> 	    ns / NSEC_PER_MSEC
+>>
+>> I'm sure this is still broken on all 32-bit targets.
+>>
+>>      Arnd
+
