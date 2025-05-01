@@ -1,115 +1,118 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC33E26461E
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 07:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D4926F463
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 07:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746083623; cv=none; b=e/GUenmrC8tPm53rBJYKY11Ai9kyLjPXmSl+bVtSVUQIG2OHA3RQSpoEwVg+w8y7Wa+xWQe01BCRIzq+Z6lrua/x62C57sHpdWVnj6HgPyq5FEMSA1yk/d/+lCy9Ha1Kq4nTuMFnB4zWId/147AwHSe4+Olmp7z9W78kesdpZ1A=
+	t=1746083866; cv=none; b=R8Ot04B0rI3NPqk6yuTTBRYMbVxRAyJ93luMVGYGaOReyn9BCWydZ8XtAS6fwM9dCnFIoT5MZDpJu6vuBvodETqVU3wEGl4OXsvuL3h8vC69K/x6bcGuHdJMycph3is9GuLvTGSacNeV36T0MccpdzPWE/aQrHEyW1W3drBdlZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746083623; c=relaxed/simple;
-	bh=QSceKILHuAqpArLvBrvn1WkL3zQ7RTNaWnjS/zM11MY=;
+	s=arc-20240116; t=1746083866; c=relaxed/simple;
+	bh=IsEFuKr8MdJiyQYBneHaUVR7yEJMImUpl5m96czfCBI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nQoSMGlJiz87Afi8Cn0akg4b9y00UiavtAG8fCjd9VrmhnUaUOB5JhilOeSiLUFpEUi/7b7KySz9qTkjlg7+/OUGSJb0/kbdcsNiXR6UAiAlLdZHCwbhtF6++o8FrxRLwHsM7GMZEx7F4O+//7j8dWVa7q+AVC1ELLNfoEM+Pmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WJyCDxgI; arc=none smtp.client-ip=209.85.221.48
+	 To:Cc:Content-Type; b=LZYBtLApdC1S7y+/t6YqtaHOAyg483L1rQq+SpxeDXz672ld9XwC5ZmazCpePRJEfoEVaefn8dG2+bu9gw661sjTTWqKAisDrgrl4y6kwnCsC0aLZLyrNTCRQ6QHjTgTNHPWD8Lw9Wp7vfx9uV6UBYy09VeU8z8jRnkz+ofawqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Asn/uqIU; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WJyCDxgI"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3912d2c89ecso395826f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 May 2025 00:13:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Asn/uqIU"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43690d4605dso4371645e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 May 2025 00:17:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746083619; x=1746688419; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746083860; x=1746688660; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QSceKILHuAqpArLvBrvn1WkL3zQ7RTNaWnjS/zM11MY=;
-        b=WJyCDxgIVnVemuoy4+jDE9QanbmUs7X2yg/SEb0RfdES2Wojd9PTe3vJz0wJHTQ1T1
-         0YJAsfD5vs7lMu2X9J3sYq7QM1XMPeTemYlVgky+VZ5FzlIovHV4UKfJ0WuonMvOA4uP
-         NpZ+XsTo3qI5EqPSQXYl8MSyrgv18o/uQlPbn/adKoU7ZypqC+csJXZLshjad7Pv1ksR
-         2y/8GCgmbu9idQaFBLoD+erN9s9jDY/0K1MrJVUYxbKt7zVBNEYMjkMPO8pK9LDvZi72
-         8jDtS+hSo2F7VZbha8LS9yGJDiIEDcdkkNb73SOxA/Nd9NiTk02xRtUAqCt4SXR630zp
-         nLNQ==
+        bh=dfbpd6S+j/Op6XJKqOKEnKbRjtTW+fQ4p2/1pzW9EyY=;
+        b=Asn/uqIUxT7H2kQ/yyk5Cmwqr/XYQ1vR7NRDs85+JIjC94pJ0WiCH210kr6HMWehA+
+         RK+fWpOPh35jxVn0qsFnktC/b7eEX7oAr7fcRTLOYd0E5pH4zZU2s0EhMHmwTPPb+rzU
+         5tCUaHA2opkTFrNVx74YQ89+GjMVYSh5ggqiUsu1Nw95vCJBAAGEqtmPqZVJRt/pR0Rs
+         twAABu4IMFnunx4ZTEhbzPphrA+D+QV4SjplxxRIcApSLfZGhS7sgB2SnY1yaIdiEa/u
+         NfnY4EIli1TzDxuu+NTsEXp5fP89QxJe/y2YUapKrWwwvnroZrIE6mVm2WlrQeFe3XvN
+         vr8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746083619; x=1746688419;
+        d=1e100.net; s=20230601; t=1746083860; x=1746688660;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QSceKILHuAqpArLvBrvn1WkL3zQ7RTNaWnjS/zM11MY=;
-        b=s0CFG3hO6iXAfwRjBovji+TOMnDl3nFDo/7WbajloXwaSDuI7gUXQryTHn9gSpoWro
-         UhgEu1BNP2CFHGYROSRda2gV9gurdAfbOpzBi5UALjP32mNgLaaI8/y6dVr//dcstDJD
-         wDwFXIzY5dejDyxyOqUgFPjtEH0EjNSZe0zSOMoBZIOxTsh75bjdURYHUAfyXhB4pQjT
-         K2V4uJ0OTtytjkH6mFXzsn9q6anGGXP9cCMOYjB1hjg9bweJ0rupc4vqgosfck9ZK9mD
-         mtnT5ddzNVyNH0j+FGXddIsl2BRLoFbODLAXqMbywuwK6K9mK4TAPYwWze1jGCgoA+IV
-         DI+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX6x53Wcc4OJrQEilJUvqjrnx+PzrvwKWVGJU0zCrVSl2shmg/1rFydC24bLnxMR34GYCMUP2epaUXU7WXHlA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeZE2AoliQFXPWONyhvG6/lGUU2Rsv3b3+pr7AsCR6YtVNrlhC
-	xzMUPFg+jKEhx469r55w4pfJYQd8q2LqDrkAk7sPr993jocsnSj1POl18dtBYBBFpyL3t1vgWUX
-	KwpS1fBOSbtzExQ58FEj05FFoZ4+IrB5wC4vL
-X-Gm-Gg: ASbGncv+eYdcnbFHSqw5muzuwL63ik2Nh8HsyCQ+LLiCGIBhtuABArTug2YF1iKEuRn
-	AKwcaB47K3VrZRxOmUlYk48fBSjYXLpmaEaqOc/hXmNuAheTpMWCY1dLGA1/xZAttBPDxc6sdHr
-	yd1GTVh0i6ZJk2x13ppfZUNME=
-X-Google-Smtp-Source: AGHT+IGN3TCVYF0QhPUHuMTXlmMoT5bvOUHFWUt0TCL/e5cKhJDlof9p+ZsQRcjZYfw9VK8lVZJZGWzzaKYax13SJKA=
-X-Received: by 2002:a05:6000:2403:b0:39c:2688:612b with SMTP id
- ffacd0b85a97d-3a094044002mr875832f8f.7.1746083619006; Thu, 01 May 2025
- 00:13:39 -0700 (PDT)
+        bh=dfbpd6S+j/Op6XJKqOKEnKbRjtTW+fQ4p2/1pzW9EyY=;
+        b=if5GYln/2nCO+wLVAF0hTE7dWF3w5KBqV7+befM/UOTkc5qaNwXKWMukgINOg22BWf
+         IskQhmULB5qqXPWKxAkqXCzj68fPA4glhWCAQxubqIZTuTUm1OsdUp90IDS5UNfKX2Vb
+         49Bwvgy05FPbgUQTH+n3OSBWqaaR+C27OW2MCHuM02zHeQQ1ZBSv+SsD/WmaX5MxKjZB
+         7bAywdrOxxDjB4CNhq1wLO+qIKDB92nnfyKWYZUEHV1AifzJyBazeG8o69F4N0oWq9Bz
+         9uKj2WBpAVthLQL59XKHYp5cL/ySxqEbqizJZAoPjCt5oAdw5qpq+TRhibSKHltiIs5p
+         fSFw==
+X-Forwarded-Encrypted: i=1; AJvYcCU6NVkotVaJUngomNdKC/iQV6ugx3O9Sn4/h6Mvy4QUX4GFSUaR1/+6O2cTsxyKr9F6kXBk/lP1fjL34PTsPQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBMntcp7eSXs9odL4eWPPTNmmz3z7100lT+44a5MP7in+8FONp
+	Ir2dz1RZ5LEEnqNteJv4dtyz2V6rcdFLOCZ6SQGvf/zaNm7t3aI/HveLaTIQ3yjoTAuBVu2K0T5
+	fRN+TNmfjReDePZyxeCR7kwIKmtvYz1bbYQFe
+X-Gm-Gg: ASbGncuXx/w6ShFGR5UfCG7bQ4SNUk0NQjo4ohkpQZvCvbF2YJH+ZA+jIgN50Ys9c4c
+	x67/i9V86J9LGuvHGp1+uthpW7y9Em+Vbt/ks+2yPey6IgK6DsTpN8KGLySWSZKdNa1kS80no8n
+	0T+HYhMEdk5ax7vc5i/PH2ChI=
+X-Google-Smtp-Source: AGHT+IFduWCt9dAJ2C1o84Xte2BlzpK0E9RUVCMttsag2Euox2KT9XXx00vsgL2LSClUGCr9nJXH2sWB2Mwl9YOh+0s=
+X-Received: by 2002:a05:600c:3493:b0:43d:fa5d:9314 with SMTP id
+ 5b1f17b1804b1-441b653c894mr11786975e9.32.1746083860001; Thu, 01 May 2025
+ 00:17:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250227-configfs-v5-0-c40e8dc3b9cd@kernel.org> <20250227-configfs-v5-1-c40e8dc3b9cd@kernel.org>
-In-Reply-To: <20250227-configfs-v5-1-c40e8dc3b9cd@kernel.org>
+References: <20250423-rust-xarray-bindings-v19-0-83cdcf11c114@gmail.com>
+ <20250423-rust-xarray-bindings-v19-1-83cdcf11c114@gmail.com>
+ <20250430193112.4faaff3d.gary@garyguo.net> <CAJ-ks9nrrKvbfjt-6RPk0G-qENukWDvw=6ePPxyBS-me-joTcw@mail.gmail.com>
+In-Reply-To: <CAJ-ks9nrrKvbfjt-6RPk0G-qENukWDvw=6ePPxyBS-me-joTcw@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 May 2025 09:13:25 +0200
-X-Gm-Features: ATxdqUGO2CyyZYzRoShGEfmJdbqkfUThUZw7qk03SErsEjIyLXmJS5-laQdv5uk
-Message-ID: <CAH5fLggDwPBzMO2Z48oMjDm4qgoNM0NQs_63TxmVEGy+gtMpOA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] rust: sync: change `<Arc<T> as ForeignOwnable>::PointedTo`
- to `T`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+Date: Thu, 1 May 2025 09:17:27 +0200
+X-Gm-Features: ATxdqUFyUNh-QBM8NkJE1Rola7V4MLYJmp0oVbJRr7K1gApSfORdSuG0qeRLbzM
+Message-ID: <CAH5fLghKLZR7i6YQk8cQrvfOr11xEKia5LHtj1fn8dD3Stv0dQ@mail.gmail.com>
+Subject: Re: [PATCH v19 1/3] rust: types: add `ForeignOwnable::PointedTo`
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, 
-	Joel Becker <jlbec@evilplan.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Fiona Behrens <me@kloenk.dev>, Charalampos Mitrodimas <charmitro@posteo.net>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Matthew Wilcox <willy@infradead.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	"Rob Herring (Arm)" <robh@kernel.org>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 27, 2025 at 1:36=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+On Wed, Apr 30, 2025 at 8:57=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
 >
-> Using `ArcInner` as `PoinedTo` in the `ForeignOwnable` implementation for
-> `Arc` is a bit unfortunate. Using `T` as `PointedTo` does not remove any
-> functionality, but allows `ArcInner` to be private. Further, it allows
-> downstream users to write code that is generic over `Box` and `Arc`, when
-> downstream users need access to `T` after calling `into_foreign`.
+> On Wed, Apr 30, 2025 at 11:31=E2=80=AFAM Gary Guo <gary@garyguo.net> wrot=
+e:
+> >
+> > On Wed, 23 Apr 2025 09:54:37 -0400
+> > Tamir Duberstein <tamird@gmail.com> wrote:
+> > > -impl<T: 'static, A> ForeignOwnable for Box<T, A>
+> > > +// SAFETY: The `into_foreign` function returns a pointer that is wel=
+l-aligned.
+> > > +unsafe impl<T: 'static, A> ForeignOwnable for Box<T, A>
+> > >  where
+> > >      A: Allocator,
+> > >  {
+> > > +    type PointedTo =3D T;
+> >
+> > I don't think this is the correct solution for this. The returned
+> > pointer is supposed to opaque, and exposing this type may encourage
+> > this is to be wrongly used.
 >
-> Reviewed-by: Fiona Behrens <me@kloenk.dev>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Can you give an example?
 
-We discussed this in the meeting yesterday, but just to summarize:
+This came up when we discussed this patch in the meeting yesterday:
+https://lore.kernel.org/all/20250227-configfs-v5-1-c40e8dc3b9cd@kernel.org/
 
-This isn't correct use of the trait. The trait is intended for cases
-where you pass a void pointer into C code, and the C code treats that
-void pointer entirely opaquely. That's why the docs for `into_foreign`
-say this:
-
-The foreign representation is a pointer to void. There are no
-guarantees for this pointer. For example, it might be invalid,
-dangling or pointing to uninitialized memory. Using it in any way
-except for [`from_foreign`], [`try_from_foreign`], [`borrow`], or
-[`borrow_mut`] can result in undefined behavior.
-
-In this case, you want to make this change because the C code in
-configfs will dereference the void pointer and read from it. But
-that's not allowed with the ForeignOwnable trait. You need a new trait
-if you want pointers that are not opaque.
+This is incorrect use of the trait. The pointer is supposed to be
+opaque, and you can't dereference it. See my reply to that patch as
+well:
+https://lore.kernel.org/all/CAH5fLggDwPBzMO2Z48oMjDm4qgoNM0NQs_63TxmVEGy+gt=
+MpOA@mail.gmail.com/
 
 Alice
