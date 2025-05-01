@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE706223710;
-	Thu,  1 May 2025 11:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF1519A;
+	Thu,  1 May 2025 11:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746099246; cv=none; b=F+BCq9MsE4lRgTuC0qFL2kGCgVTbUF6NoqJ/uP5aKS/38C4zO2nuw0nZ+RWgjBVM5Vrd+Gczi4eRU3sk9J+GNa0W5iuMIQd7gXDH8knRS4rbjQalf+XsOxlQKZBwRtd+UXLMr8C7zuOjkH1ac4LKbAvRK5MCOt/8b6u8KQpC6j0=
+	t=1746099641; cv=none; b=EPz/mDdxuCd3G5N8KSjYk07TzSQlR3o/4fm0MXsmqZwq1wWch7PZSe8uDBcwo7YDA1gYEvoe//vRoqOV5e/E6XqloGiH/tKfEifOJe7HIeSMkWoO/8uEMUEObldTAOPhKmC2bdhII8GZAFCXIqqctJrY8oqcSfdKqHEeQ/pFgOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746099246; c=relaxed/simple;
-	bh=MBSsfnpLazFvp18QOe8QQkxjGOkZ0vk0UOps61hYRlo=;
+	s=arc-20240116; t=1746099641; c=relaxed/simple;
+	bh=aJ+SnGlrOEQl6wQ9VK0ODxd9kUtoPYOh5ETn9dKmSPs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QFZzn/Nz4nRuIKRjQJtF7WVHAZh9/rnv4cmRmtwJ/8H7+7EHWUAAbKaNFxUcax1CkVSRYhi+F98c5Zu6moRztBzEyDrXb/jhoJTj4+CE/ya4ifTXEdw4mSrKQgRTQhsOPUk7UVEoAEFLE/DZSST80gWtcxO1tE+lcaLZDRwu/jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vs/C/zHh; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=So9GCtP3RlhC89V6zuwbDnDFQM/+3ssJk7V4Q8AEPf938+idKc5nFeP6i1BZ/akv+Dmx/rR+ONZs/f2nGujAR1w3JORRHaX6ywZSBoQQEESBES7zJZViYDETGDRR4qZWFeulFSoRYYS6ygm5ZqOoCi5WHkp1kLHXQ9JE3il6xco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UTFmM2xR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vs/C/zHh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23109C4CEE4;
-	Thu,  1 May 2025 11:34:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UTFmM2xR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863D6C4CEE3;
+	Thu,  1 May 2025 11:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746099245;
-	bh=MBSsfnpLazFvp18QOe8QQkxjGOkZ0vk0UOps61hYRlo=;
+	s=k20201202; t=1746099639;
+	bh=aJ+SnGlrOEQl6wQ9VK0ODxd9kUtoPYOh5ETn9dKmSPs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vs/C/zHhez/7QBo2fGkFZ/1i8WlCGbG3I7xdHhU6QbI6NuqQLT3Y/mt/9ZqhOnoP2
-	 02Lt26IvbIRC6JwuhcwQQ+nSbGiW10tKZ3M7QUgZPh17onR3zB2ofmy+OL3zYx6uC+
-	 nbwcmyEtzSWzbXc6C6nF2qXBYW3TSt0I8dU4dj/8Jehnp+LnoagX3gv6s0SQPa9nFG
-	 2TKRT4NV5w7+aNsv98O4Gv7PNXw/9a8ovjphpAxgr+A05x81Et891L1gUFQoyFGbRm
-	 UI494g/qiHrY7M5es7jaODkt5whM7PPjn3Ko+qCDuB6WuDjTeDxRslO3pFbbIgduvW
-	 s0GfEGN/9RLwQ==
-Date: Thu, 1 May 2025 13:34:01 +0200
+	b=UTFmM2xRXFu4Fh39nU3NoOvdHe3TxJY51ck/IT8m454g5yjfoCsQhsw86F0kVasTn
+	 +ZCoAsaQByF2H7ty8y2O9YmGZVwqLXgUb0T5/Hd8q/Y6aalThdrCTe5eJCeQOSYLlB
+	 wbc3h8So5xlCa4iAjBpYCye3WZ5028ITLCuVDEecwDOyImecWkqxCE5+SoZWsoR/TN
+	 M8pAY4CDoO1rXrOf+jVBmWiwgYLQzhJajbwhuOmNMGhGVH5ZMO/FmnoNDp/s/zWX1h
+	 Bv46Nux8uuTw1KHRib1UcpuTcbMFUAetQjDIe9zQsTSHIjGOpzLOZaL08BCG2qRSTM
+	 EsXMJImrfRoAg==
+Date: Thu, 1 May 2025 13:40:36 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH v4 3/7] rust: alloc: add Vec::push_within_capacity
-Message-ID: <aBNcKcS_U_kMOAxu@pollux>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 6/7] rust: alloc: add Vec::remove
+Message-ID: <aBNdtMAYvsZ8moRq@pollux>
 References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
- <20250429-vec-methods-v4-3-dad4436ff82d@google.com>
- <aBJC_Ef1lKHNx4dv@pollux>
- <aBNU-XsWZLZtlmOo@google.com>
+ <20250429-vec-methods-v4-6-dad4436ff82d@google.com>
+ <aBJPwKeJy1ixtwg2@pollux>
+ <aBNWts7wijlN8FGy@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,65 +45,45 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aBNU-XsWZLZtlmOo@google.com>
+In-Reply-To: <aBNWts7wijlN8FGy@google.com>
 
-On Thu, May 01, 2025 at 11:03:21AM +0000, Alice Ryhl wrote:
-> On Wed, Apr 30, 2025 at 05:34:20PM +0200, Danilo Krummrich wrote:
-> > On Tue, Apr 29, 2025 at 02:44:23PM +0000, Alice Ryhl wrote:
+On Thu, May 01, 2025 at 11:10:46AM +0000, Alice Ryhl wrote:
+> On Wed, Apr 30, 2025 at 06:28:48PM +0200, Danilo Krummrich wrote:
+> > On Tue, Apr 29, 2025 at 02:44:26PM +0000, Alice Ryhl wrote:
+> > > This is needed by Rust Binder in the range allocator, and by upcoming
+> > > GPU drivers during firmware initialization.
 > > > 
-> > > +    /// Appends an element to the back of the [`Vec`] instance without reallocating.
-> > > +    ///
-> > > +    /// Fails if the vector does not have capacity for the new element.
-> > > +    ///
-> > > +    /// # Examples
-> > > +    ///
-> > > +    /// ```
-> > > +    /// let mut v = KVec::with_capacity(10, GFP_KERNEL)?;
-> > > +    /// for i in 0..10 {
-> > > +    ///     v.push_within_capacity(i).unwrap();
-> > 
-> > I'd prefer to make this
-> > 
-> > 	v.push_within_capacity(i).map_err(|_| ENOMEM)?;
-> > 
-> > instead.
-> 
-> Perhaps we could make a new error type for `push_within_capacity`? That
-> way, you can use it with question mark directly, and you also get a
-> proper error message if you unwrap() it.
-
-Generally, that sounds good to me. However, I'd like to avoid unwrap() or
-anything that panics from doctests, since they also serve as sample code. Hence,
-I think we should showcase how to do things the correct way (as much as
-possible).
-
-> > > +    /// }
-> > > +    ///
-> > > +    /// assert!(v.push_within_capacity(10).is_err());
-> > > +    /// # Ok::<(), Error>(())
-> > > +    /// ```
-> > > +    pub fn push_within_capacity(&mut self, v: T) -> Result<(), T> {
-> > > +        if self.len() < self.capacity() {
-> > > +            // SAFETY: The length is less than the capacity.
-> > > +            unsafe { self.push_within_capacity_unchecked(v) };
-> > > +            Ok(())
-> > > +        } else {
-> > > +            Err(v)
-> > > +        }
-> > > +    }
+> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > ---
+> > >  rust/kernel/alloc/kvec.rs | 36 ++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 36 insertions(+)
+> > > 
+> > > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > > index 357f5a37c7b1d15b709a10c162292841eed0e376..0682108951675cbee05faa130e5a9ce72fc343ba 100644
+> > > --- a/rust/kernel/alloc/kvec.rs
+> > > +++ b/rust/kernel/alloc/kvec.rs
+> > > @@ -386,6 +386,42 @@ pub fn pop(&mut self) -> Option<T> {
+> > >          Some(unsafe { removed.read() })
+> > >      }
 > > >  
-> > > +    /// Appends an element to the back of the [`Vec`] instance without reallocating.
+> > > +    /// Removes the element at the given index.
 > > > +    ///
-> > > +    /// # Safety
+> > > +    /// # Panics
 > > > +    ///
-> > > +    /// The length must be less than the capacity.
+> > > +    /// Panics if the index is out of bounds.
 > > 
-> > NIT: Maybe be more specific and say:
-> > 
-> > "`self.len()` must be less than `self.capacity()`."
+> > Let's check for the index and return an error instead. I know we also can't
+> > prevent OOB index access panics for e.g. slices, but here we can control it.
 > 
-> I try to avoid starting sentences with code, but I can do it if you
-> prefer that. But saying "the length" and "the capacity" does not seem
-> ambiguous to me.
+> Okay, I will return an `Option<T>`.
 
-I'll leave that up to you. :)
+Hm...to me this looks like it is a real error condition rather than something
+optional.
+
+What does it mean if remove() returns None? It really means that the given index
+is out of bounds, which is never correct behavior for the caller of the API.
+
+So, I'd argue that None is an unexpected return value for a caller and needs to
+be handled in an error path, for which returning a Result is much more
+ergonomic and correct, since Result can describe the reason, i.e. EINVAL,
+whereas with Option a caller would need to pick an error code itself.
