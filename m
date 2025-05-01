@@ -1,56 +1,56 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C8F194124
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 14:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887E818C930
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 14:25:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746109455; cv=none; b=udsKtw2dO+e86adGD9+Byq14LgDS+PQ5cLC61PV05k+tej2F0aBdEOACgcrzYakE0CBwHXdgVHQWIoB0xsK+BQNIyKs0gq4f8Uoy4+pcBvXFrpOZJi8XbsH4kzArL2sqr25bXGa3WTGF5J//l6whAZxdyMMYzo3qJ0mf26x+n0w=
+	t=1746109514; cv=none; b=dUhHo659fAuMJ/TfX9avDHW4UOmv7Ck8G18TEb8DeHssdLp/r5mX0zsQKoHicYuh2xASsWELqVkTXclOG9NaIl3lpcvxjS9NSWCisDywmKk9PKhMM5zYI4SPN9ZQNnK2NjU2B6os2v51Ingsz1mLJqTwLWLfkpr+S5LovOX/vDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746109455; c=relaxed/simple;
-	bh=gnCkNJEuzzUc6tNGlIMicZLHA6gxUDZ8Ms+e0F962zQ=;
+	s=arc-20240116; t=1746109514; c=relaxed/simple;
+	bh=Z3MXZ47iTUaCEEBH3kXl1vNor6FTtX2MJHwMmEwV0YQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BcGk4gE0Zn4xRK1cidtGbPC3GWqW++4pxOo6xq7NS65SQyVn7QJvrL9Z9nW5tqpRwuBSW6YLDMKvq+o2FRcTREY/0LgFqtjXNIoEFykfDSldHEYHW10SfyYD5132V5dZihPziU02ynQoyd0l9f5XmKswUGtxRhrOQ7nws17THBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BRAxa/UT; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=EWT7EN44gFZlx0JySsXGFUAnG/C3gsx0vd1//6lmu2ZojDNnm0Z0coZv5WMNIFxHFAy3PvZ9p3tAsdKbR4pn6peNT/8oe3dy4yesNhaJ8wkIFH8tzL8IvTq4DIlrhzifOmNd6rvyjrI+3QtE6eYHHpR+jelMx4IYWBniDi6WgTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zhIn9OR1; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BRAxa/UT"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-39131851046so203718f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 May 2025 07:24:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zhIn9OR1"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43eea5a5d80so3992565e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 May 2025 07:25:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746109452; x=1746714252; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746109511; x=1746714311; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GD4VAxiUdckVgdAlI2FatFx9gxYTX40bGPiV9AMDOdA=;
-        b=BRAxa/UTvkXcbMc0K9CZKQaiDoy7A8zsuA5NGoz6WqElZ4hZOuXAsDrPfxnvzMFDJz
-         XPCx47pvLDjR51o+Q+7OPeXafrNXvu9xoo1ySG8jKihKb7Ek/k1tiGQSK1kv44KJxnkT
-         lTki1K1FC0e2u4ZLo92Bo8y9ATXbSpv4gZhr66zsv0SNClpUV/IL0e8Z7Aqidv/JzKSS
-         DYYc7lqNexVZAc7oITvZOF/qmEfO37fWbP3sLTRTfTazAJIfYScbmrCt926R1rpoqUSi
-         cHFZsompqXguLMsmAwivqUdCOdeqpdgt8R4vsbUmFCFOGpE9USJexelXx0V5yXp0Q8P9
-         PPWQ==
+        bh=N2RQ2LdBVcdrE0vuwfhvFz9qDBhNFqeO1bJGiEFox7o=;
+        b=zhIn9OR1LmYfLKfOB5eZ4UuIbuCOjRvA8teL/jxhWj0HyiGyGV9d18+vc9hadkT51a
+         dIKegCUCh7lNyYu/sOF7kEPRi7ttSyucHvgr1WujtJexf+/NF9Hu2D0hilSrhhqVS0T4
+         aLH/jLaZzUKT/5E0dezVIo8YcCHT5bALAccgTcwtwxF99lrg+qg4IoOFSpJclsdZfqj6
+         ktBNZnAB21KojiXkqW/DvtH9y6FWShXYbmJTTmQ6QCyGyTjFftV0j8uwLVUC7cGMPgH3
+         +xP4bu/HRpjDfjNsCqVqfIO/6JhgUKo9wP4dkewQnkX8dX5E5hIvkx3NMfajhO5LJpxP
+         vIAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746109452; x=1746714252;
+        d=1e100.net; s=20230601; t=1746109511; x=1746714311;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GD4VAxiUdckVgdAlI2FatFx9gxYTX40bGPiV9AMDOdA=;
-        b=psMmKcvKeCuETQh7/NUlbeCyL+MGXu72WZRspMKlhMw2InnGLFLxGzQ91KGSZ53elX
-         QcoyNKR606lNI29rzwj3NeyeN9bS5g8YT+SUcwewr2wojHXr2sehDbeEG2dyf+X5QRr9
-         a5zLxGp35Kb1jrQXoLSdUAP9ae2pJqY0VUbS0Tz5j3OpeZ0VzNfm/WpMv/bxrvV46nd7
-         RfCnd4RHEAiIx2Q5j2/Owb+zUEGjh04oHIOn+n4dKIFCZ3A9UFRnI0ta4mmv1Yey9aR4
-         B9QNzlzH4DEIGNk0qkAkeeAqwlf0bwZtquf2TOJFkopCdB2fyWo7GTeGTA+x2b0/vBAa
-         vKkg==
-X-Forwarded-Encrypted: i=1; AJvYcCUG9nWeZhtQGBO+O7kut7GScYEzL2HSsIAbbji1iMMGVkfpMGGYKq1kwJU2uLXwTZ6P1CX2gFy+fogd7VF+xg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz63OtR7ePHfxe3tIE35sL5yHSkQGYxvcqvGMAchynucVcPEjuA
-	p2+v8XtOm/vD39mXxMUsOxLkRhJLjw/leLJDbLvN8ye73KO01IKKD91iLNBxNqYZoUUfwZYP+7j
-	T04vmCym2Xr94gw==
-X-Google-Smtp-Source: AGHT+IH9yGiPQdQL/rTilbunR/lysJc95bXc2ytBh0NmP0UvNWHaAuoBWrl9kb95nbidxeiQM/JuMcTKm/XCOfs=
-X-Received: from wmbfk13.prod.google.com ([2002:a05:600c:ccd:b0:43c:f6c0:3375])
+        bh=N2RQ2LdBVcdrE0vuwfhvFz9qDBhNFqeO1bJGiEFox7o=;
+        b=mmSrZAUpUtxyX8VDcQsXBjuYxm4X+viSbJhDBs4ItgCUAJkO39U0GZqvBTlw7KH4xR
+         XM2k9DpI1MVIPmXda3Upyk+yC1oAckLTly+qbd/o0rffg+06HLouNr/DgybRZuKcen0K
+         S26CBiGI9x28yMkxYzIw2oJffSSW/FkQSfeb23abm8oesctV3OQJ6iPYmbfgqnRNf64T
+         3J5gH5uuIA2WZQpu+JZcg73oyjlH9tFcAqIv6PbsgigyY8kBsqKZ5yg3e+qmwp1ZKm9c
+         mThK1X2uT5ncfJqzrCRAKKk4YvdzycqjZ3XlmArPdFG6YU9Chpsqsw3LkDTMbF9+EBdJ
+         FgDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW869ZeteQA6IGv10xCOjDy+LsqlYDojMNI9011Gq+qGAIkw5Mbu9jeaSouMaLqq+QysOG1mwqq7po0FreFGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7kutibPG/x8X1giOQBVDLMqBDrr5p+3/dr9+HeY1H9bfzPImM
+	Vaf+gg3P5kUBA+onefnxNEf8AZOy3QSRgDfqlpodlzveGR2naYFjzqIgyU8CpoyF7ZcCbDnnuk1
+	bVV2+WP03u5V2Kw==
+X-Google-Smtp-Source: AGHT+IF1lcudR9XYxdP1+RKvpPDZ0RMQCEUNJVd2gkpIMFGfhav4W3z0iTjIYv3FPyy13Zt6NYgSdQf8uHQ0/dM=
+X-Received: from wmbet10.prod.google.com ([2002:a05:600c:818a:b0:440:5d62:5112])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1446:b0:39c:310a:f87e with SMTP id ffacd0b85a97d-3a09404c8c7mr2238448f8f.16.1746109452277;
- Thu, 01 May 2025 07:24:12 -0700 (PDT)
-Date: Thu, 1 May 2025 14:24:10 +0000
-In-Reply-To: <aBNbTL2dIOFQq8yG@pollux>
+ 2002:a05:600c:3b08:b0:43c:efed:732c with SMTP id 5b1f17b1804b1-441b653c5f4mr16966775e9.28.1746109510977;
+ Thu, 01 May 2025 07:25:10 -0700 (PDT)
+Date: Thu, 1 May 2025 14:25:08 +0000
+In-Reply-To: <aBNdtMAYvsZ8moRq@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,94 +58,59 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
- <20250429-vec-methods-v4-5-dad4436ff82d@google.com> <aBJPHUDYBGyAgUNf@pollux>
- <aBNWlC6uSOiFrQDL@google.com> <aBNbTL2dIOFQq8yG@pollux>
-Message-ID: <aBOECvlbtVjP6iAI@google.com>
-Subject: Re: [PATCH v4 5/7] rust: alloc: add Vec::retain
+ <20250429-vec-methods-v4-6-dad4436ff82d@google.com> <aBJPwKeJy1ixtwg2@pollux>
+ <aBNWts7wijlN8FGy@google.com> <aBNdtMAYvsZ8moRq@pollux>
+Message-ID: <aBOERFGx-kwWpo30@google.com>
+Subject: Re: [PATCH v4 6/7] rust: alloc: add Vec::remove
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, May 01, 2025 at 01:30:20PM +0200, Danilo Krummrich wrote:
-> On Thu, May 01, 2025 at 11:10:12AM +0000, Alice Ryhl wrote:
-> > On Wed, Apr 30, 2025 at 06:26:05PM +0200, Danilo Krummrich wrote:
-> > > On Tue, Apr 29, 2025 at 02:44:25PM +0000, Alice Ryhl wrote:
-> > > > +#[macros::kunit_tests(rust_kvec_kunit)]
-> > > > +mod tests {
-> > > > +    use super::*;
-> > > > +    use crate::prelude::*;
-> > > > +
-> > > > +    #[test]
-> > > > +    fn test_kvec_retain() {
-> > >
-> > > Can we have this return a Result, like doctests can do?
+On Thu, May 01, 2025 at 01:40:36PM +0200, Danilo Krummrich wrote:
+> On Thu, May 01, 2025 at 11:10:46AM +0000, Alice Ryhl wrote:
+> > On Wed, Apr 30, 2025 at 06:28:48PM +0200, Danilo Krummrich wrote:
+> > > On Tue, Apr 29, 2025 at 02:44:26PM +0000, Alice Ryhl wrote:
+> > > > This is needed by Rust Binder in the range allocator, and by upcoming
+> > > > GPU drivers during firmware initialization.
+> > > > 
+> > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > > ---
+> > > >  rust/kernel/alloc/kvec.rs | 36 ++++++++++++++++++++++++++++++++++++
+> > > >  1 file changed, 36 insertions(+)
+> > > > 
+> > > > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > > > index 357f5a37c7b1d15b709a10c162292841eed0e376..0682108951675cbee05faa130e5a9ce72fc343ba 100644
+> > > > --- a/rust/kernel/alloc/kvec.rs
+> > > > +++ b/rust/kernel/alloc/kvec.rs
+> > > > @@ -386,6 +386,42 @@ pub fn pop(&mut self) -> Option<T> {
+> > > >          Some(unsafe { removed.read() })
+> > > >      }
+> > > >  
+> > > > +    /// Removes the element at the given index.
+> > > > +    ///
+> > > > +    /// # Panics
+> > > > +    ///
+> > > > +    /// Panics if the index is out of bounds.
+> > > 
+> > > Let's check for the index and return an error instead. I know we also can't
+> > > prevent OOB index access panics for e.g. slices, but here we can control it.
 > > 
-> > I get warning when I try that:
-> > 
-> > warning: unused `core::result::Result` that must be used
-> >     --> rust/kernel/alloc/kvec.rs:1232:1
-> >      |
-> > 1232 | #[macros::kunit_tests(rust_kvec_kunit)]
-> >      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> >      |
-> >      = note: this `Result` may be an `Err` variant, which should be handled
-> >      = note: `#[warn(unused_must_use)]` on by default
-> >      = note: this warning originates in the attribute macro `macros::kunit_tests`
-> >              (in Nightly builds, run with -Z macro-backtrace for more info)
+> > Okay, I will return an `Option<T>`.
 > 
-> Yes, I'm aware, I tried playing with that myself. I really meant the question as
-> I wrote, not as "Can you please change that?". :-) Sorry for the confusion.
+> Hm...to me this looks like it is a real error condition rather than something
+> optional.
+> 
+> What does it mean if remove() returns None? It really means that the given index
+> is out of bounds, which is never correct behavior for the caller of the API.
+> 
+> So, I'd argue that None is an unexpected return value for a caller and needs to
+> be handled in an error path, for which returning a Result is much more
+> ergonomic and correct, since Result can describe the reason, i.e. EINVAL,
+> whereas with Option a caller would need to pick an error code itself.
 
-One downside is that returning a Result doesn't show the line of code
-where it failed.
-
-> > > > +        /// Verify correctness for one specific function.
-> > > > +        #[expect(clippy::needless_range_loop)]
-> > > > +        fn verify(c: &[bool]) {
-> > > > +            let mut vec1: KVec<usize> = KVec::with_capacity(c.len(), GFP_KERNEL).unwrap();
-> > > > +            let mut vec2: KVec<usize> = KVec::with_capacity(c.len(), GFP_KERNEL).unwrap();
-> > > > +
-> > > > +            for i in 0..c.len() {
-> > > > +                vec1.push_within_capacity(i).unwrap();
-> > > > +                if c[i] {
-> > > > +                    vec2.push_within_capacity(i).unwrap();
-> > > > +                }
-> > > > +            }
-> > > > +
-> > > > +            vec1.retain(|i| c[*i]);
-> > > > +
-> > > > +            assert_eq!(vec1, vec2);
-> > >
-> > > Don't we have macros around kunit_assert!() and kunit_assert_eq() outside of
-> > > doctests (i.e. dedicated kunit tests)?
-> > >
-> > > I much prefer their output over the kernel panic we get with the "normal"
-> > > asserts, unwraps, etc.
-> > >
-> > > Consistently sticking to the same output on failure makes it easier to catch and
-> > > easier to setup CI environments.
-> > 
-> > The documentation for those macros says "Public but hidden since it
-> > should only be used from generated tests." so I don't think I'm supposed
-> > to use them.
-> 
-> Same here, that's more a fundamental question, rather than something for you to
-> change right away.
-> 
-> I really like the way doctests implement the assert macros and how they appear
-> in the kernel log compared to panics through the "real" assert ones, unwraps,
-> etc.
-> 
-> I also think that avoiding things that directly panic in doctests (i.e. example
-> code) is the correct thing to do. For KUnit tests it's probably less important,
-> since they don't directly serve as sample code.
-> 
-> So, I wonder what's our take on that. Do we want to have KUnit and doctests
-> aligned? I think that'd be a good thing.
-
-I think that both of these would be reasonable to fix. Also the fact
-that I had to do #[macros::kunit_tests()] instead of just #[kunit_tests()].
+Fair enough. I think a dedicated error type is probably reasonable here,
+but sure.
 
 Alice
