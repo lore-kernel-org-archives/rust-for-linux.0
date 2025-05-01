@@ -1,114 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F7533F6;
-	Thu,  1 May 2025 16:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7165C20C49E
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 16:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746117327; cv=none; b=EhxuHnVvQu6UPEOFqPV7hSB9M0eYuhpAv1dQf33Rhrn0T18cItzLXmoFQGMXMJ8uMKnPSYFVZeRUup4JvztXF39wSlrw67WS2RcrFcrJaTQoNFmhtwQRT7fUTD/nW9sc0hV7ODlD7zs/6dUYNusl9sfFTVKHqFwRIA9wtIrfnRA=
+	t=1746117520; cv=none; b=UqvFe3CpiiokGGF3WHJTKaXX9qNrOX93kctZxMbkYR5axCcmIa4o3U/3efIg4ImKKB6RkULYKG1dQKXY4J+KuI6wNiRDGyCK1rTAefAEe0siZ1O4ATEmJB9HnxxeFyUIQvoADFbC14QlJ3UxLNg5I9pLgGlpMcZR2aRZHlm3//8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746117327; c=relaxed/simple;
-	bh=4Wfg99HhQU1fQHRwEG2NytbqKJWV1vNC8E9enELUdHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g/KJE3LX7RnXFSGF+ai1c5MedW6+oIP3zww0jIAw1bqJk4PtaFdbwp/5BmHabXGhzDASCiuMU1T5PYyxzW3zAk4pBV2bypJMPvzd9PPea5Uv+ouqVeibNQatxCtfZdyHJH+ziU+n6Nnx89U+qdngtzQyOYE+wO++yIAQQIB/8iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AdauZo2f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746117520; c=relaxed/simple;
+	bh=mq9cB7mvgmVF/wtmdcOXWkQn/YStMMR66oEsQjN7E/o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=dUVYSCgCVqy4Ew7qT7QZ3wiVehtvKMLEDqRf3tIUE5xUINXfBeeJYZNb3B10fSGezLkC3liIVGwDpOdcTiBx7jRaUZrrYHrif0mgj2JvL+UqtkQhUSwIlxDBctHKmJHKVGG94bg/ZHBzVhWrG5BkY8pj6H6Ol0EDNdawUdQuz+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E45/8xbI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AdauZo2f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B164C4CEE3;
-	Thu,  1 May 2025 16:35:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E45/8xbI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55C4C4CEE3;
+	Thu,  1 May 2025 16:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746117326;
-	bh=4Wfg99HhQU1fQHRwEG2NytbqKJWV1vNC8E9enELUdHE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AdauZo2flQbdA9UpmmQ8rjvFpiExQxGfnoxq+mEeN1cC0XQd9iLRql1Zb30gXTJTG
-	 utDRr0X2HGfrrVxyBOxzw+Z6rfA9RQqEmh9npp7bVZuTEkjhlB48DKbjhi3YGwI7iS
-	 hei2yeHPbg/1MYYFJVqKi6EgJjPkDsZhghtYd07SWXImweuGMIhmbitnvY8fq9+Ltp
-	 Ab+RmAp/xTeYT+dp9VQ+Hy0FAo7oBv3S81VOSidyAvXzpFwt30CnJaGkzKJ75Nwzfi
-	 yznRu00+hWHjLCoQ36wlwQo0j+6wngfnpWBOrfcor4QzCfk9xbGz57ZYN/hMtT2EK+
-	 z4N37cqseCiiA==
-Date: Thu, 1 May 2025 18:35:20 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] rust: debugfs: Bind DebugFS directory creation
-Message-ID: <aBOiyB5fG_F60BNv@pollux>
-References: <20250430-debugfs-rust-v2-0-2e8d3985812b@google.com>
- <20250430-debugfs-rust-v2-1-2e8d3985812b@google.com>
- <aBNKEewhCP8jRIZL@pollux>
- <CAGSQo01O8DFe1+APM2cYYFT_4ROKrbTQpNmozYk3NQwYc3Zv2Q@mail.gmail.com>
+	s=k20201202; t=1746117519;
+	bh=mq9cB7mvgmVF/wtmdcOXWkQn/YStMMR66oEsQjN7E/o=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=E45/8xbI/3es3dhBK/yHrHLtmOfI5Jj6Myr008dGaG485v+n4RQFc1K4NB5ExJuUW
+	 x1n3WHj1n02ZNzb+6ocsQgeVtkgkGtktTWG1/QBjvp2vU5uLgmlO5bWlM7vK5avUIV
+	 UjZG5L36+9QA3IkywJR14/f51z/Ajstfwh1E5l9qI3QucXE3C81tdBGUnBQ8ShAXdA
+	 iBp9nXS624dbMR9nSNgqDMlZG6cO3QqOTJNZdvc2aTIJfllbg0nOa+o7bXwdGttKl5
+	 Tsw7Y4wUfwNwK3ZjvvQGNjPc7gl3aMRRGK12YYy0aVT7Qtt8dSeQ5kFIJ9J1kuTHSZ
+	 B2d9YgWaldD+A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSQo01O8DFe1+APM2cYYFT_4ROKrbTQpNmozYk3NQwYc3Zv2Q@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 01 May 2025 18:38:35 +0200
+Message-Id: <D9KZ00WU5YM5.235RJ2R0YSDC9@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 0/8] pin-init sync for v6.16
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250421221728.528089-1-benno.lossin@proton.me>
+In-Reply-To: <20250421221728.528089-1-benno.lossin@proton.me>
 
-On Thu, May 01, 2025 at 09:02:58AM -0700, Matthew Maurer wrote:
-> On Thu, May 1, 2025 at 3:16 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > On Wed, Apr 30, 2025 at 11:31:56PM +0000, Matthew Maurer wrote:
-> > >
-> > > +    /// Create a DebugFS subdirectory.
-> > > +    ///
-> > > +    /// # Examples
-> > > +    ///
-> > > +    /// ```
-> > > +    /// # use kernel::c_str;
-> > > +    /// # use kernel::debugfs::Dir;
-> > > +    /// {
-> > > +    ///    let parent = Dir::new(c_str!("parent"));
-> > > +    ///    // parent exists in DebugFS here.
-> > > +    ///    let child = parent.subdir(c_str!("child"));
-> > > +    ///    // parent/child exists in DebugFS here.
-> > > +    /// }
-> > > +    /// // Neither exist here.
-> > > +    /// ```
-> > > +    pub fn subdir(&self, name: &CStr) -> Self {
-> > > +        Self::create(name, Some(self))
-> > > +    }
-> >
-> > I think this should return a new type (SubDir), which is a transparent wrapper
-> > of Dir and dereferences to Dir.
-> >
-> > Subsequently, we can remove Dir::keep() implement SubDir::keep() instead. This
-> > ensures that we can never call keep() on the root directory, which would always
-> > be a bug.
-> 1. If the code in question is builtin rather than a module, discarding
-> this without tearing it down may not be a bug.
+On Tue Apr 22, 2025 at 12:17 AM CEST, Benno Lossin wrote:
+> Synchronize changes from the upstream repository for v6.16. Branch with
+> all commits on top can be found at [1].
+>
+> I did not expect that I would synchronize a lot of changes this soon,
+> but here we are. They are pretty conservative, so I don't expect anyone
+> to object (if you do find something, of course speak up!). A short
+> overview of the changes:
+>
+> * Make the `Zeroable` derive macro compatible with field visibility and
+>   add union support.
+> * Add a new derive macro for `Zeroable` in order to allow deriving it in
+>   bindgen-generated crates.
+> * Add the `Wrapper` trait to allow initializing wrapper types (such as
+>   `UnsafeCell` and `UnsafePinned`) via pin-initializers.
+>
+> [1]: https://github.com/y86-dev/linux pin-init/sync
+>
+> ---
+> Cheers,
+> Benno
+>
+> Benno Lossin (4):
+>   rust: pin-init: add `cast_[pin_]init` functions to change the
+>     initialized type
+>   rust: pin-init: allow `pub` fields in `derive(Zeroable)`
+>   rust: pin-init: allow `Zeroable` derive macro to also be applied to
+>     unions
+>   rust: pin-init: add `MaybeZeroable` derive macro
+>
+> Christian Schrefl (4):
+>   rust: pin-init: Add the `Wrapper` trait.
+>   rust: pin-init: Implement `Wrapper` for `UnsafePinned` behind feature
+>     flag.
+>   rust: pin-init: Update Changelog and Readme
+>   rust: pin-init: Update the structural pinning link in readme.
+>
+>  rust/pin-init/README.md                |   8 +-
+>  rust/pin-init/internal/src/lib.rs      |   5 +
+>  rust/pin-init/internal/src/zeroable.rs |  27 +++++-
+>  rust/pin-init/src/lib.rs               | 126 ++++++++++++++++++++++++-
+>  rust/pin-init/src/macros.rs            |  91 +++++++++++++++++-
+>  5 files changed, 253 insertions(+), 4 deletions(-)
+>
+>
+> base-commit: 39051adb070432b283e6c11b2b24937281b9f97f
 
-True, if builtin *and* never intended to remove, it's indeed not a bug, but
-arguably not very useful either.
+Applied to pin-init-next -- thanks everyone!
 
-> 2. Users could always write `core::mem::forget()`, so this will always
-> be reachable (even if we decide to remove `::keep` to make it harder
-> to choose).
-
-Yet I wouldn't encourage users to create bugs by offering them a convenient way
-to do so, without any benefit. :)
-
-> > As an alternative to the Deref impl, you can also implement
-> > `From<SubDir> for Dir`, such that a SubDir can either be "kept" or converted to
-> > a Dir. Probably, that's even better.
-> 
-> Yes, this was the "extra type complexity" I referenced in the cover
-> letter that I was considering doing. I think that probably what I'll
-> do for v3 is to have both the `Deref` *and* `From` implementation, so
-> that `SubDir` still automatically gets all of `Dir`s stuff, since your
-> later `File` comment convinces me we can't just have everything be
-> `Dir`.
-
-Sounds good to me, thanks!
+---
+Cheers,
+Benno
