@@ -1,96 +1,110 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F7920E03C;
-	Thu,  1 May 2025 09:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB73155A4E;
+	Thu,  1 May 2025 09:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746091478; cv=none; b=I7UIsUYh7yi6Hhre9WkFx6kamE9VuhJ4i5cPuEQ43lDHdsrW+HVCsFLFxtnXuCyZbvEbPg57oIVnZW0j9gEvnq39iDC8FBitp7282r5DlOacGjNIn1gEKO0IQGLj7zRmRA1guukCK4eQmrcONkZq5kKnEa6kf8jBduxHQwuaz/E=
+	t=1746092853; cv=none; b=JxFUoFH+/k6fAEFjN6g6vV7VvnAu2XqEmVAEU9giWv4QVzRTGPGn9r+NUu/iiNhGJcFJKwXHNYzYTwtSYcto6MO23/Xj8YYFYT7wOhU/uLudaVL4S5THi+5k0RoP+UHKp0gQRwAghWG1TlADzKe4cOaBUWDh8wYeR5tOgtanOXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746091478; c=relaxed/simple;
-	bh=Rft9qxUjGEZBCn4fL+LNYKU7HZTue+kbIiXWNOABubc=;
+	s=arc-20240116; t=1746092853; c=relaxed/simple;
+	bh=hRKuolhB1zUftYWN3jwmzDkr5XOnbczclIJqoj9/VVI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jej1832sY9YnUAoCD9BcjCykjMpSd+ue4eFEfPAzxHRR19d8temy+bb+apOkqnqV6D2JppnoP54olAyvv3gTjIhGisXs15Xw7frcRMiMR3d+WVGYhEpE+5kv/gCeExwHPQn4qbFn8LHfvhsB28KBkLooy8OU6hEAMSHq7NcDaNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MuiVWPaf; arc=none smtp.client-ip=209.85.216.48
+	 To:Cc:Content-Type; b=pAHmnQJgDM2RV5tuMt8TRmKZ/JQgVwFGrOTtyccjQ4z0op4kKJQ0/CgSXo1wflIspCbF5UlrbF02Fq7oRNAI3J9TUtuEKtxj9JfEZluJsOM43Eq7khrW62AlrwSoVUgHWhFt5pG4qoVeQV7ONvNblrUGoDGhchl2Lk7potiM+1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b0RPdiu7; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MuiVWPaf"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-301001bc6a8so95418a91.1;
-        Thu, 01 May 2025 02:24:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0RPdiu7"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2240b4de10eso1524795ad.1;
+        Thu, 01 May 2025 02:47:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746091477; x=1746696277; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746092851; x=1746697651; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Rft9qxUjGEZBCn4fL+LNYKU7HZTue+kbIiXWNOABubc=;
-        b=MuiVWPafn6+B7vWJd/Lo36YF1CWXpWCDDCNljA+AStm9QEQr2g7c/69H4/AcxuIulx
-         J8vK7oL6Q7ZOSGtx8N8LL8mU3ySnMjNg+jXa0gV1KylRJWQOnvePGp7+lDu6Ra7+lb9L
-         bCH5UyrcVKBv5fjKIwuw55V48eTmibHu3joUxMJhdKvWYYMYYV5MPS8/if4Wp+sKtL0W
-         /cp+DvaMu44Khxt5fqDPJsAmhZPTYDECTnYuGoJ8lsSUNJwugbqPUSqhU5zkwl6GPw4H
-         vwKVNGP6SfOaJAUl57DS9M/ydgNsyN2xIRZL4wkcgXAqHyWz29JWPRi4ar35ybp3jP84
-         ZlEQ==
+        bh=GqI0gPUkc+GqxzU4hYi7psCHGG3LY42LoszC9MvYK74=;
+        b=b0RPdiu7Bw3JffNbMg+hivogLs8Uz6rwlRtWls9/jL3GMbhqZETi5J1sU7VA/j8T5l
+         7vvlnt3D0xjZrnS0XaBfAbhbfQSR4kKECCFVlpcxsWyFCbbnz8bie5eK6Or6rRIAZdKM
+         9hkQR/QpDd6bXK4YK8tw3IBHSKxwE5tB2xsgGYnowNqnJgiIZTf3UR5LjFrMPtfJsw/z
+         WMsiX/KboP7hBD3lVYybLY8veihEUnURiIwaeLVTx5AfstZfCpEdNUfWBCuXRIbjV9Mw
+         3yfvwfVlI0uaRN9djFPEy3je/gkW1vPrNZ+xnX3TxpdKIv4aFW2Siad+mdw1/lqAAEib
+         nieQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746091477; x=1746696277;
+        d=1e100.net; s=20230601; t=1746092851; x=1746697651;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Rft9qxUjGEZBCn4fL+LNYKU7HZTue+kbIiXWNOABubc=;
-        b=cs6Hh9FAYbzneopgy47KGduRYvMy8vv2vUfdJLrYF/i2p2bGPWesk/U4fVCKlNjRz7
-         9Ulpmt9pcIPbLEcBYFT1G71h57/cGyg2Q9xBl2DYBBKi7FYCryaR4RzeTmXN0BVzhO3p
-         eeYAy+IuW8Z29Nef0KdX0afeRkE61wCsRIIZZKm25valAprAA6QWVuvkNpJDjWG3H77e
-         F4+7R4rNUlgdf6swZJAR0owCkd2elP7J4lGIMeA2h7r45p+OOnJADgELAK00u36EB4Ur
-         5qIvbRVXFzaQyPsU3AyXs7p/0w70gZQtDmAEWi2af7/CyqC2kRSXNDXKxlMSr2VE5i3G
-         sCNg==
-X-Forwarded-Encrypted: i=1; AJvYcCUWs3nJ8x71h+43Js4obs8zxJPDVM34BrpB6yLZWTRd4IGtKyBOtPNbNnXC0ZCvCMDQR0MU7O0LLTzr+DA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxz5b8lysKXRtXDtUsb1KmIiGX3aT1AJStlCjjxlltX16ETpbpA
-	3mdFQ6H4Fl1Z9XprkVTj349KF+0XHu3jsuFZay8XPDNNQoi6Tj/98xFMA5Qf/XQMwVw/1srjKUk
-	5qC0o0WGUoTmx6s0xuJruCsQafg8=
-X-Gm-Gg: ASbGncvoFpUlPwTklNHa64tyQa4DDOYBOkdhusVuxj744tHfjh+TloEyocLU20eNfI+
-	/g0O3rQCN80nUv053qYe2/BzvHcMZIhQF5HT8zH+YE2JYcTYRLxcoUc3SPZ4+EsYqjWRYYg0orq
-	WgoiI4XZNy4kQj6I5Icwx2/w==
-X-Google-Smtp-Source: AGHT+IF9F6CeeeM197f/LyAyLiqbSNA7NLe3H/55Mms8xhtYqBd0hThbJziNS2hpWqOiIlTOlUhPV7Zrl6RYf5ORV4Q=
-X-Received: by 2002:a17:90b:1644:b0:2fe:b972:a2c3 with SMTP id
- 98e67ed59e1d1-30a348d59f6mr3240858a91.0.1746091476627; Thu, 01 May 2025
- 02:24:36 -0700 (PDT)
+        bh=GqI0gPUkc+GqxzU4hYi7psCHGG3LY42LoszC9MvYK74=;
+        b=Najwqs8pPJr7W57Epjt9ql41a2sOib5BZIllhMZmO0AP0BSLJvYmLenn77S6fYzPHI
+         sCkAu9fHUu5enhStapbIWGi2j/B6XWv1s7Dg+tgjWIEac9qi0kryNFAf3+UDxC0a0tvz
+         aL/Mz8kLGTxMfIHFXuHB5Dsi0pt3ZvLhQ8YePg+wbvaO+5AYHvw53MXhNyqUhOihaeLJ
+         6JfDLi2R0YhEEz0so+aVlF/LcLFB2IW/vS603wuW78tMZMzO9AnZ48MegrAkHI8mhgrW
+         k2GFuwZdgH9ztuoBdPUfqnKTdAYkxSZMNDm2zVl2qQzNFB5YEPY5k9k0khREwLi+gQIC
+         WBxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMDctPKwJPV0H76g1R8Dw25zG6wvNm6KOwQt709KJq1M0wBHd9285OIwaCIe/kOECiTw8vyVhZVwdXz1E=@vger.kernel.org, AJvYcCUuchYy/hG2FcTZgTBAqbXwsI21a0xhd2jpw7FRENxO/yWIrxDaQ2qff8cNEvkrhyfIQHvQlxVyWIo8rXMa@vger.kernel.org, AJvYcCVmIziPWGFphTP/XAmeO3D4auWVpuV+s3heTrKQZY8zfPgL9YR5mgjVF/s/D0jienQVx1By2iWlYxJiI78i2R8=@vger.kernel.org, AJvYcCW0W/gQIqL93uT9JVGey5hhlCjJFl+wpktRn27y9myS81cxCZxYxpIqzN5fWecdBWWlgHL5ZIOMLMG+ps7yvA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzoz16mHzF1HEvBjG6GxbFyPzFMlWBeKqeXZ8ZRfcbMnGxVc5um
+	G2ijPeZ+NqIyG7BCK9PeyAqmfGBy5WxQGnZC7Wc8qqasF0oVWNAsjPjyu1D7WbS7osuDV7occgj
+	c/zMVVDx4nttNRf+Bqdv8bBvPIMY=
+X-Gm-Gg: ASbGncsRD4jIRr1BRSI1TqQ+Le2GbzXZQ2pW7fSMqMamuqh8RdewAS4RYFzxxzjFMWd
+	wlhYdixm/9+0eX7zOL+Vi+pDTeg9ftl7YvBxtktSNJGkGfc8/sPj8JuaGJsow7uMxI/Ei/rydLj
+	p5yjROiiXQLSTVk5xSx8NAoQ==
+X-Google-Smtp-Source: AGHT+IEXx0kSSeSYJHLyIvXT1uulEpBF/3kwRrJXnzbNxGZrVmgpdWeuJxtPO6esb5TFIVxd0e/OV+f7KAkBY5x2MMU=
+X-Received: by 2002:a17:902:d2cb:b0:224:88c:9253 with SMTP id
+ d9443c01a7336-22df578c625mr34721945ad.6.1746092851191; Thu, 01 May 2025
+ 02:47:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250501015818.226376-1-fujita.tomonori@gmail.com> <20250501.114534.1953073574103349822.fujita.tomonori@gmail.com>
-In-Reply-To: <20250501.114534.1953073574103349822.fujita.tomonori@gmail.com>
+References: <20250501-module-params-v3-v10-0-4da485d343d5@kernel.org> <20250501-module-params-v3-v10-1-4da485d343d5@kernel.org>
+In-Reply-To: <20250501-module-params-v3-v10-1-4da485d343d5@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 1 May 2025 11:24:24 +0200
-X-Gm-Features: ATxdqUFcsNxCoX0uT5HR_VGsTscoS2_3xEzFxWuT20f7w5BFt4oPvLX23A1s0jc
-Message-ID: <CANiq72kiTwpcH6S0XaTEBnLxqyJ6EDVLoZPi9X+MWkanK5wq=w@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: time: Avoid 64-bit integer division
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	a.hindborg@samsung.com, boqun.feng@gmail.com, frederic@kernel.org, 
-	lyude@redhat.com, tglx@linutronix.de, anna-maria@linutronix.de, 
-	jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	aliceryhl@google.com, tmgross@umich.edu, chrisi.schrefl@gmail.com, 
-	arnd@arndb.de, linux@armlinux.org.uk
+Date: Thu, 1 May 2025 11:47:19 +0200
+X-Gm-Features: ATxdqUGUXLPG0IIgmjYwkvDtZbTXlfwbnd-BpsPS8lomYgTKKSQtI3bnTkvdIpM
+Message-ID: <CANiq72=_gheZdZmgwoB2q6HSssoXLk4TRkJVagJKjmFTd+LDcQ@mail.gmail.com>
+Subject: Re: [PATCH v10 1/3] rust: str: add radix prefixed integer parsing functions
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, Trevor Gross <tmgross@umich.edu>, 
+	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
+	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 1, 2025 at 4:45=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Thu, May 1, 2025 at 9:55=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
 >
-> Oops, they should call ktime_to_us() and ktime_to_ms() respectively.
->
-> I'll send v2 later.
+> +pub mod parse_int {
+> +
+> +    use crate::prelude::*;
 
-What about adding a couple examples to their docs so that they are
-also tested and this would be caught?
+Spurious newline.
 
-(In another patch, possibly in another series or not. We could also
-open a good first issue)
+> +    use crate::str::BStr;
+> +    use core::ops::Deref;
 
-Thanks!
+> +    /// # Examples
+> +    /// ```
+
+Missing newline.
+
+> +                    // integer. We choose u64 as sufficiently large.
+
+`u64`
+
+(These were all in the range-diff :)
 
 Cheers,
 Miguel
