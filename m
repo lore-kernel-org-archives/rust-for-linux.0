@@ -1,119 +1,100 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58182DC78E;
-	Thu,  1 May 2025 10:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8009E2DC79C;
+	Thu,  1 May 2025 10:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746093651; cv=none; b=FVQlajqWmfVqTaoY98Je+8z430MO2ShopS43WmQoRlzVvEOFGx6dd2bbBSZkVbvvNLJ5ISVWFUnloA++IZYCZGhfQV6yLQLwIlH/UfiRo/fvWO7pbDnQ+QTMlfGiU2iAJbC4kxjTj9tJ0DGIlR3UPhx6sV/EKhIqg/Ja3Wn3VmI=
+	t=1746094526; cv=none; b=XPb/yr7gPBJR1MyUMAt3I6os9jxG+b9fjFnD5Q1k3LhdqbP2GMHOjqu47QUFeSYQ5OEo8nRwzdVqVr+09a58xdEabXI3XsYf/Q4O+A96JB83i9Jx6669vDOrfOqHa8WIRfZtjXVTheZZkQaD9dSyYlyoyIIIv4cF9QmMHs4lOSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746093651; c=relaxed/simple;
-	bh=A2/tYQBZY1Z3uPg6ctYYIbPoFZIQJ6KqDCrjuG7/KAk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gVWoXCPu5h+g2dwFJgk5L5TqqxEmIm9nQwAOJrt3CRnp45x+39CG6QnImp3jVPqA4TJMqKkf1dh1IuEOlNHb5BnfcrtuUmEw+oJq7rtaODWFymNokeQVzXU6Sy9c16/908Ji8DGkS/U0ouCA/8DmDkmsQPNapv2ft98TBevEvBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NkI/nWXa; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746094526; c=relaxed/simple;
+	bh=PhC7U//AGQaUkDe55c7xf5xv4Nn5WDixBpxtADKFSkw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=piSizI789hJHYaUmFncHXurabQ1gj1vHLfkmF/BIeWT0Fwu6+lQuPWhGN3ptosh1bIQxpb7kNLhjz1QC92JKSk8lp+IymByxKCuIo4pW+Y3SHG+uFxq51h+B82Fh95FZGYMzoZ6dpRUnN1I2R3X1GYGButfuMp42eqxLmp3G2Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pS+riKNr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NkI/nWXa"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-227c7e4d5feso1579415ad.2;
-        Thu, 01 May 2025 03:00:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746093649; x=1746698449; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WYd47t4gUtgZAEpPyFJEBYLZ3qfrinyM/AUCXFp30k8=;
-        b=NkI/nWXaTKCV/SeWbZk+Yk6rvX0ZKXpO+7cN4iVgmOcWCT9rgwz1U+bnECoSv7X9pf
-         J8deKP0TedO0FlfAxqlwOY7ZqCwDV6sytbNXV278vqpCSzR0/WRpcdBS70lt75ewtuln
-         7KAEUzWQAPw+1/ZMUuxe35m9bXuw2iyvspoiFxIx/M+HLo3eBv6cHiTxOVsT2wBdUi4K
-         fzjI0Oq4eDL0dxXBsShD2/EbLXSWpLlHcHdkhZ5wL5CAGV07P8ILadcYpGqAPDV4LbYI
-         PKfOFSDS5zJnnNgnXZrMknK57MPKU5ntN2BMJPcmAJ8P6afXpOnkpMVMjWxhSl4TKe3q
-         iO0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746093649; x=1746698449;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WYd47t4gUtgZAEpPyFJEBYLZ3qfrinyM/AUCXFp30k8=;
-        b=VgYm1A3N5Ig+nWlJA1JhY6k6l+x8jsNXDP1+UzusQ3OQcHC4xHBLN0aXACDn7XEL16
-         dVavlxpS2olKgpstEdr3dO5wEIpIAxI4tMiyn+PnCmzcFK3mjzhevLjs5Izbvo9/5vjR
-         lwRH0VkiqPZyafQXEEe67OclqnMJ8nNgRyEzCza1FaN4/uZbsO4tjqRaMDkIB/T0nAad
-         Tn45HzvbTG+dEyiqcI1tIFCGYl/5kjmCytciPWgmhY14j2p0nz88SHg2fIRaQA8krMZr
-         M5mfbB1pGQ8EkvkKuWTVo8H+zwYMrXnH6Mt2U/+FzgK9b/l84ZODy8oJP3j4pIi+rzwk
-         erzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUld98NsIzNZ8SdkdniFN0O5S9QYAvSRgogQgA1e0eJqPjJSXPyXeuLDywsegkfbOeW7/yUZ7JltV5nrVeeYPE=@vger.kernel.org, AJvYcCUmwbzX1sT3JlN4rJ0JbeP4uRisDPzef2OXvtemQKX9zzPeEKSjuazQqv8gAXjjFAY1gMmgMmcGsx7BJdg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbOsf0KpINvZgX8qB/GA6SYB2hh8vZlJpHRyCyRBNasEBmXPIC
-	5nEV3N1SjTQ90IVICD3uALksBGHig6jP0bXNyk/lP7yRVqPJh72K4jrOjuGtbb8JoMXIkFX+5S7
-	ucFLQKhOKI1pvN6iVYlNOBmWTjX0=
-X-Gm-Gg: ASbGncuO9Wbm7xbLP9mTgTZEivwNCSLcIf59Ez1t0ICHIwtZyEdu2fkxBmQ/hUJH16F
-	egWbk8LEByJI1H9UnzUkPlCf1TPZCg177tTVi2+B65zPglv6PwlTmSxnGRu6cT7tIb+2NndJmJ/
-	frCzfUiHyxz8WI5hUuUA1ucQ==
-X-Google-Smtp-Source: AGHT+IFwguHcR8tQBbYtnPIlB9QnWc+bW5pF8LXM/EEbWC88+f1AI898M/1iUA64HX15LkFSIwFHE1TMP0hP9pf9+4I=
-X-Received: by 2002:a17:902:c94e:b0:224:1936:698a with SMTP id
- d9443c01a7336-22e00cc026cmr20951245ad.5.1746093648821; Thu, 01 May 2025
- 03:00:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pS+riKNr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C42C4CEE3;
+	Thu,  1 May 2025 10:15:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746094525;
+	bh=PhC7U//AGQaUkDe55c7xf5xv4Nn5WDixBpxtADKFSkw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=pS+riKNr4eokcfYl9QR9UTjzBqBjA2jxAOkKquZ2JE3nKtUgyUAmdiG95l8TT9mz1
+	 mtJS0816spEeHQVYMM4LadC61lnO+bRrzScLZiHObFsWHNw9C71sJYs/uYzCxlqtMS
+	 /xk/rmZpUjDBBjUNlRBFHS8gkMKsRsaHQGtTgUGXHtE3kIe9VnBIVdAZCLu+VoOMzc
+	 XsFFEORTRtydc4Go8u8CZKmUAgRHjjK8L77OKPhZb/B9nnREgm3vF03SMq0nIOZwmm
+	 TFpqKeH8xOXC0opyv/QbpjlLGwBgh8DKMDHa7AjOKJIP4O3Oqdsc5j7ZIbEXX1pfDG
+	 iWIbbyks2RU4g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Thu, 01 May 2025 12:14:38 +0200
+Subject: [PATCH v6 3/3] MAINTAINERS: add configfs Rust abstractions
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250430-debugfs-rust-v2-0-2e8d3985812b@google.com> <20250430-debugfs-rust-v2-1-2e8d3985812b@google.com>
-In-Reply-To: <20250430-debugfs-rust-v2-1-2e8d3985812b@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 1 May 2025 12:00:36 +0200
-X-Gm-Features: ATxdqUEXxhXQ6AFlFxbNBm4xvnMYu__JxbkT187AjW-JFOw0SWgwNEbPbSps1UQ
-Message-ID: <CANiq72mm5Anx+MPc15Qunq3ewdmQQjkzNTcV7rx78z9UniT9CQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] rust: debugfs: Bind DebugFS directory creation
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250501-configfs-v6-3-66c61eb76368@kernel.org>
+References: <20250501-configfs-v6-0-66c61eb76368@kernel.org>
+In-Reply-To: <20250501-configfs-v6-0-66c61eb76368@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Joel Becker <jlbec@evilplan.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+ Fiona Behrens <me@kloenk.dev>, 
+ Charalampos Mitrodimas <charmitro@posteo.net>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Breno Leitao <leitao@debian.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=654; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=PhC7U//AGQaUkDe55c7xf5xv4Nn5WDixBpxtADKFSkw=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBoE0mphOddEimx4d/e9niYNlL7yS6CPhCaRdk0G
+ /oI1Y2G9B2JAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaBNJqQAKCRDhuBo+eShj
+ dytZD/9dRc5/9yJ/+7TbXE2VIBznBBeL0fCxAnX6J4NesB7qAdU0pQi8SMFBbsc4l0oSfHifRpF
+ 8WPkpKTsNeMDoFLr61FvAvrhugJMv6X4DgPGqN1Mll8wDNFI1nu9tX79+fp/IRpRlzSao3NhkjV
+ p0/1xWsAlDqF3opn7bkM3Bqc8IpJqRtSh+yo8ig1DXYG2tf0xqoNyDN+rC+4rcRumI9dvh7RaJ9
+ tR5YmpqzmHzK3rhaSjYaScptN8WXKG5SXKOirGouYAl1vUAyYmLOHlwCxVZg3BQSjzeCpjOh+BE
+ FjNAOM2u/9nV1H10eCSEgxr/I1NcOZApaFb75gTbywZc4xuOOU7MYk+HPVzSKZvg8xsxDJkl3tX
+ 4bkT1HOtyk8/TffD6CO0r2VLw4VnfMoe1v43fh02VwrDyCNpp2pyLgT0/dGCa2Zju6LpE49uHyw
+ y2CQaRkrygUZS8GKuN/YqdMwXNAoi5khkaxDw/fx3hb0zFN3fAv6fEzSVW6Oix5dWahTw5Z8JbC
+ gh46vm4TO8hw9pBRggcL5EW21utFOvc4S1VW5Oj7QPEji4DtDEpAgcyaO8a0gY1KLlxkUtpc8Zg
+ FPaI4OYqp95CxEWc/T/5acddprmdKiMklgXOeiC2Rc0SbOs2ZTMF9EnZMSRVnooXk4I7sfwJJ8S
+ goySpayU5zGXsqw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Thu, May 1, 2025 at 1:32=E2=80=AFAM Matthew Maurer <mmaurer@google.com> =
-wrote:
->
-> +// INVARIANT: The wrapped pointer will always be NULL, an error, or an o=
-wned DebugFS `dentry`
+Add rust files to configfs MAINTAINERS entry.
 
-We do it the other way around, i.e. `# Invariants` section for the
-type, and `// INVARIANT: ...` comments for the places that ensure the
-type invariant.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
-+    ///    // parent exists in DebugFS here.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3cbf9ac0d83f..5ccf04e1eb1f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5982,7 +5982,9 @@ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git configfs-next
+ F:	fs/configfs/
+ F:	include/linux/configfs.h
++F:	rust/kernel/configfs.rs
+ F:	samples/configfs/
++F:	samples/rust/rust_configfs.rs
+ 
+ CONGATEC BOARD CONTROLLER MFD DRIVER
+ M:	Thomas Richard <thomas.richard@bootlin.com>
 
-Parent ...
+-- 
+2.47.2
 
-> +        // * If parent is None, parent accepts null pointers to mean cre=
-ate at root
-> +        // * If parent is Some, parent accepts live dentry debugfs point=
-ers
 
-`None`, `Some` (also please end sentences with periods)
-
-> +    /// Returns the pointer representation of the DebugFS directory.
-> +    ///
-> +    /// # Invariant
-> +    ///
-> +    /// The value returned from this function will always be an error co=
-de, NUL, or a live DebugFS
-
-Hmm... so far we use `# Invariants` only for types. Perhaps you could
-say something like "Thanks to the type invariant, the return value
-will always be ..."
-
-`NULL`?
-
-Thanks!
-
-Cheers,
-Miguel
