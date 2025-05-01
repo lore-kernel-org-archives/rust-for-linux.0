@@ -1,193 +1,172 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11ED223DC2
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 18:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07DA1C1F22;
+	Thu,  1 May 2025 18:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746124689; cv=none; b=qWt2wuE2/IFZcRJz4j4unV25CAZ3OvD4bX+7Z/Hcm5dNBtwGQjVRNFPcz5mu/3NkgLovoyjmFb3HXdvcSuOzKj6awltgyLHyRTKqYDf/FJsxAp0zSOSISRGZ9+VA4dJ893VbWqIdh3XtLg3joD1Hzn2USn/WihwuIvvjsCqBDcI=
+	t=1746125473; cv=none; b=shhiLZaG2O+A/6wf2SEEjYqlB9TesoKXbsJVTW6SrbMi4AWe7RfRgdHeJBX260gWoeuRey4ropZeermKkFssEHTjQNuNoB+TQoaGVherlfPrWdhAu1BsOXU6pWlUyMa8I6jm50BmNFTSrYvy8cpaQDGEvugEGJTjSsGpeOFl9nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746124689; c=relaxed/simple;
-	bh=DxnFwbyrPKOcqAtYcepj6/QO3dHzr/O5vFh2+K3OJCQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bqsrvy7zer3GnmFBmaYroAogT6YkwfvaI0p/qMOOYuSRLLAQkI5bis/jaCAetD6lGnLLny7NKZp823PjEzXrgk+52QjlMlJ/aEAKHvfbU+HPmgv0qZ7FKpKC4BlMaLNw9TftNBRXQFgSdjdEbU9gDiUzXyjpW9YE/qB0gSh0pPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FmRuLMBX; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1746125473; c=relaxed/simple;
+	bh=pY62LaNG/jEiXSZIEwff6FA5Ipo7tqFe2HThJ681Fyo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=fC+weV9jG9m50JX+3/ydfeFr9mrQ3BmdUmfoZuvdeZ/3rK7JFRmqG7Wb/oIjH36c5HEFgvP9dr5dPIQ+mDMlR0wLfechxjK8u8TG83ZjNkGxnzF/RNfxJdJEb+At6FEXlhVMqfNkFymgyiLTCqeVNTo58QChnhkzleAv4+tgdg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Chg2yfZp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FmRuLMBX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746124686;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1DK3REbEj1TGDhbQ2B+tFzyd7w0GXeJQ4DMYyVW608g=;
-	b=FmRuLMBXH51SOPX0zRzIHhtQwrEKZZd/Crod3xtyIwrP7A9G1lQhFEbiJE95gKmM+ELqi1
-	vu1PiSH6eYJlmnyFcDgXM+4iTOW1H7EoaO4DPFs/jZgf+Xk9Abu6d3BD7fq//Dz41qYMEg
-	PA66xCmSGUJHC98U9h/e8bIG+iabxI4=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-116-JMktBwGQPSmXujas70seOQ-1; Thu,
- 01 May 2025 14:38:01 -0400
-X-MC-Unique: JMktBwGQPSmXujas70seOQ-1
-X-Mimecast-MFC-AGG-ID: JMktBwGQPSmXujas70seOQ_1746124675
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7C1B219560AF;
-	Thu,  1 May 2025 18:37:55 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.88.132])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1E60C1800365;
-	Thu,  1 May 2025 18:37:51 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Asahi Lina <lina@asahilina.net>
-Subject: [PATCH 4/4] rust: drm: gem: Implement AlwaysRefCounted for all gem objects automatically
-Date: Thu,  1 May 2025 14:33:19 -0400
-Message-ID: <20250501183717.2058109-5-lyude@redhat.com>
-In-Reply-To: <20250501183717.2058109-1-lyude@redhat.com>
-References: <20250501183717.2058109-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Chg2yfZp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518EDC4CEE3;
+	Thu,  1 May 2025 18:51:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746125473;
+	bh=pY62LaNG/jEiXSZIEwff6FA5Ipo7tqFe2HThJ681Fyo=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=Chg2yfZp3TMgG8pC2CUoaPyLrj35TsBj1WgBukQxtnPW7WsXhxgWfzXsLjP7LPu6k
+	 rU+SABWMfF3k++SxQmrGfrGxNmJyWNhsDi+4z6uZbBISYciXYz7PVXSNgLgntuzo0R
+	 kL4fNe934FrYaN6RLDXyFReuK99hqaOnULXtz4mVqp8sMACHii+0M0zd7yidzWZ2QB
+	 +sQ/ooMW4cZyow+5e3zd0MjwjYmteC7bM4RDl+VfTlqpWEE3V++k7CNhmlwUMJbz+v
+	 tCzN+Jo66xars08ojJ0qfaTit6NckqY7cp9D2JWGdj4b+i2bRwU69/GszIq8PUYhaj
+	 4Vh8zKgo36raA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 01 May 2025 20:51:08 +0200
+Message-Id: <D9L1TI5NVKJU.361JFPWMLDWN4@kernel.org>
+To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Sky" <sky@sky9.dev>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, =?utf-8?q?Gerald_Wisb=C3=B6ck?=
+ <gerald.wisboeck@feather.ink>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] rust: add UnsafePinned type
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com>
+ <20250430-rust_unsafe_pinned-v2-1-fc8617a74024@gmail.com>
+ <D9JVKYI3LL5L.2SFOJMSK91HLA@kernel.org>
+ <d433986a-fdad-4859-b8bf-080a18158189@gmail.com>
+In-Reply-To: <d433986a-fdad-4859-b8bf-080a18158189@gmail.com>
 
-Currently we are requiring AlwaysRefCounted in most trait bounds for gem
-objects, and implementing it by hand for our only current type of gem
-object. However, all gem objects use the same functions for reference
-counting - and all gem objects support reference counting.
+On Wed Apr 30, 2025 at 7:30 PM CEST, Christian Schrefl wrote:
+> On 30.04.25 11:45 AM, Benno Lossin wrote:
+>> On Wed Apr 30, 2025 at 10:36 AM CEST, Christian Schrefl wrote:
+>>> +/// This implementation works because of the "`!Unpin` hack" in rustc,=
+ which allows (some kinds of)
+>>> +/// mutual aliasing of `!Unpin` types. This hack might be removed at s=
+ome point, after which only
+>>> +/// the `core::pin::UnsafePinned` type will allow this behavior. In or=
+der to simplify the migration
+>>> +/// to future rust versions only this polyfill of this type should be =
+used when this behavior is
+>>> +/// required.
+>>> +///
+>>> +/// In order to disable niche optimizations this implementation uses [=
+`UnsafeCell`] internally,
+>>> +/// the upstream version however will not. So the fact that [`UnsafePi=
+nned`] contains an
+>>> +/// [`UnsafeCell`] must not be relied on (Other than the niche blockin=
+g).
+>>=20
+>> I would make this last paragraph a normal comment, I don't think we
+>> should expose it in the docs.
+>
+> I added this as docs since I wanted it to be a bit more visible,
+> but I can replace the comment text (about `UnsafeCell`) with this paragra=
+ph
+> and drop it from the docs if you want.
 
-We're planning on adding support for shmem gem objects, let's move this
-around a bit by instead making IntoGEMObject require AlwaysRefCounted as a
-trait bound, and then provide a blanket AlwaysRefCounted implementation for
-any object that implements IntoGEMObject so all gem object types can use
-the same AlwaysRefCounted implementation. This also makes things less
-verbose by making the AlwaysRefCounted trait bound implicit for any
-IntoGEMObject bound.
+I think we shouldn't talk about these implementation details in the
+docs.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+>>> +// As opposed to the upstream Rust type this contains a `PhantomPinned=
+`` and `UnsafeCell<T>`
+>>> +// - `PhantomPinned` to avoid needing a `impl<T> !Unpin for UnsafePinn=
+ed<T>`
+>>> +//      Required to use the `!Unpin hack`.
+>>> +// - `UnsafeCell<T>` instead of T to disallow niche optimizations,
+>>> +//     which is handled in the compiler in upstream Rust
+>>> +#[repr(transparent)]
+>>> +pub struct UnsafePinned<T: ?Sized> {
+>>> +    _ph: PhantomPinned,
+>>> +    value: UnsafeCell<T>,
+>>> +}
+>>> +
+>>> +impl<T> UnsafePinned<T> {
+>>> +    /// Constructs a new instance of [`UnsafePinned`] which will wrap =
+the specified value.
+>>> +    ///
+>>> +    /// All access to the inner value through `&UnsafePinned<T>` or `&=
+mut UnsafePinned<T>` or
+>>> +    /// `Pin<&mut UnsafePinned<T>>` requires `unsafe` code.
+>>> +    #[inline(always)]
+>>> +    #[must_use]
+>>> +    pub const fn new(value: T) -> Self {
+>>> +        UnsafePinned {
+>>> +            value: UnsafeCell::new(value),
+>>> +            _ph: PhantomPinned,
+>>> +        }
+>>> +    }
+>>> +}
+>>> +impl<T: ?Sized> UnsafePinned<T> {
+>>> +    /// Get read-only access to the contents of a shared `UnsafePinned=
+`.
+>>> +    ///
+>>> +    /// Note that `&UnsafePinned<T>` is read-only if `&T` is read-only=
+. This means that if there is
+>>> +    /// mutation of the `T`, future reads from the `*const T` returned=
+ here are UB! Use
+>>> +    /// [`UnsafeCell`] if you also need interior mutability.
+>>=20
+>> I agree with copy-pasting the docs from upstream, even though our
+>> implementation already wraps the value in `UnsafeCell`, but I think we
+>> should include a comment at the top of this doc that mentions this
+>> difference. So something along the lines "In order to make replacing
+>> this type with the upstream one, we want to have as little API
+>> divergence as possible. Thus we don't mention the implementation detail
+>> of `UnsafeCell` and people have to use `UnsafePinned<UnsafeCell<T>>`
+>> instead of just `UnsafePinned<T>`." feel free to modify.
+>>=20
+>
+> I already wrote about this in comments (and documentation in this version=
+)
+> on the `UnsafePinned` type definition.
+>
+> I'm not sure where exactly we want to have this, but I think having it
+> at the top of the file and on the type definition is a bit redundant.
+
+Sure.
+
+>>> +    /// Gets a mutable pointer to the wrapped value.
+>>> +    ///
+>>> +    /// The difference from `get_mut_pinned` and `get_mut_unchecked` i=
+s that this function
+>>> +    /// accepts a raw pointer, which is useful to avoid the creation o=
+f temporary references.
+>>=20
+>> You did not include the `get_mut_{pinned,unchecked}` methods, so
+>> mentioning them here in the docs might confuse people. Do we want to
+>> have those methods?
+>
+> I only included the functions that we needed for `Opaque` and my
+> `miscdevice' patches. I think these functions should only be added
+> once they have a user. That's why I wrote the next sentence in the
+> documents.
+>
+> Should I handle this differently?
+>
+> It should be a really simple patch to add these functions and I can
+> do that if someone needs them or I can just include them in this
+> patch set.
+
+Then I'd remove the sentence referencing the functions you don't add.
+
 ---
- rust/kernel/drm/gem/mod.rs | 47 +++++++++++++++++++-------------------
- 1 file changed, 24 insertions(+), 23 deletions(-)
-
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 55b2f1d056c39..929f6c9718362 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -10,7 +10,7 @@
-     drm::driver::{AllocImpl, AllocOps},
-     error::{to_result, Result},
-     prelude::*,
--    types::{ARef, Opaque},
-+    types::{ARef, AlwaysRefCounted, Opaque},
- };
- use core::{mem, ops::Deref, ptr, ptr::NonNull};
- 
-@@ -36,7 +36,7 @@ fn close(
- }
- 
- /// Trait that represents a GEM object subtype
--pub trait IntoGEMObject: Sized + super::private::Sealed {
-+pub trait IntoGEMObject: Sized + super::private::Sealed + AlwaysRefCounted {
-     /// Owning driver for this type
-     type Driver: drm::Driver;
- 
-@@ -52,6 +52,26 @@ pub trait IntoGEMObject: Sized + super::private::Sealed {
-     unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self;
- }
- 
-+// SAFETY: All gem objects are refcounted.
-+unsafe impl<T: IntoGEMObject> AlwaysRefCounted for T {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-+        unsafe { bindings::drm_gem_object_get(self.as_gem_obj()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: We either hold the only refcount on `obj`, or one of many - meaning that no one
-+        // else could possibly hold a mutable reference to `obj` and thus this immutable reference
-+        // is safe.
-+        let obj = unsafe { obj.as_ref() }.as_gem_obj();
-+
-+        // SAFETY:
-+        // - The safety requirements guarantee that the refcount is non-zero.
-+        // - We hold no references to `obj` now, making it safe for us to potentially deallocate it.
-+        unsafe { bindings::drm_gem_object_put(obj) };
-+    }
-+}
-+
- /// Trait which must be implemented by drivers using base GEM objects.
- pub trait DriverObject: BaseDriverObject<Object<Self>> {
-     /// Parent `Driver` for this object.
-@@ -110,10 +130,7 @@ unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self {
- }
- 
- /// Base operations shared by all GEM object classes
--pub trait BaseObject
--where
--    Self: crate::types::AlwaysRefCounted + IntoGEMObject,
--{
-+pub trait BaseObject: IntoGEMObject {
-     /// Returns the size of the object in bytes.
-     fn size(&self) -> usize {
-         // SAFETY: `self.into_gem_obj()` is guaranteed to be a pointer to a valid `struct
-@@ -175,7 +192,7 @@ fn create_mmap_offset(&self) -> Result<u64> {
-     }
- }
- 
--impl<T> BaseObject for T where Self: crate::types::AlwaysRefCounted + IntoGEMObject {}
-+impl<T: IntoGEMObject> BaseObject for T {}
- 
- /// A base GEM object.
- ///
-@@ -269,22 +286,6 @@ extern "C" fn free_callback(obj: *mut bindings::drm_gem_object) {
-     }
- }
- 
--// SAFETY: Instances of `Object<T>` are always reference-counted.
--unsafe impl<T: DriverObject> crate::types::AlwaysRefCounted for Object<T> {
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
--    }
--
--    unsafe fn dec_ref(obj: NonNull<Self>) {
--        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
--        let obj = unsafe { obj.as_ref() };
--
--        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
--        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
--    }
--}
--
- impl<T: DriverObject> super::private::Sealed for Object<T> {}
- 
- impl<T: DriverObject> Deref for Object<T> {
--- 
-2.48.1
-
+Cheers,
+Benno
