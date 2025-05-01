@@ -1,135 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DE22DC799;
-	Thu,  1 May 2025 18:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D70211C
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 18:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746123118; cv=none; b=b/66dC+Od99gIF+azWyEkxA2nLP3OIuvc4XcnAOZ1omCzC39cXlWqueF7SE59Y0lKkeKQzU88c2Z55R4ylwSd0gF6BKYz+9dpEL5rmAWG5lco8B9AnIgnZagSilQlYA16oqUNI2RpNUxf7+4blfGGiRydEpgI74O/eB4rLeA6tM=
+	t=1746124654; cv=none; b=f0fmQ5uJq46QUyVPdnNZuYAuoVpwGav9tTcDpt+RAAEg0zPmhsQCFsPkoCf892fnFBimcOJmHu24RiSJOG4DiiY00TxCocXz+xhFM+DfC5g3CYkdmPveC5crJSnbivN6xasqLhJiLBK3h0kPXXgII24HXKfVYVgQ5Kfc49i8yFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746123118; c=relaxed/simple;
-	bh=gOk61yHjfCCGWRmwY9cwrxs+cpgZNAfK4hq0p8qNcq8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fuXrrEkJhlKlyyepXrdTJDRKi6Tl07ymqdMTxEyzHyF+JimD5mtn8sM5rAfd6fgz3nHLiGKZMZVtIIHmxdqIU2kl0roPQlZhBFM3p7RON6E40s5gtFw+t5WEkXSOZWHpAfl8GQEeZjIwYTcbo10lMU4OFoTsm4NCNPUaOddo7Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyWdcO59; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746124654; c=relaxed/simple;
+	bh=wZmewsYxirG5R+LLCmAVZ9LtO9XThE+B6copsn23sdg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=otLYtOlkKs7Emr3fALBDpbfLcFpqAIMZRyuup5cLEMEvBP1CFu27eKg6vXozxOj7aJ3gYuFRa7BD/o2/SbB5vW2BKqhQ3lLKMGBnI5H+82QyS7cNQt/xjbKWrqlK3fC5Y6JdEEJaoMstmzlb863DANiyubDkGaZy6SI7I83PFFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f+iyMxJg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyWdcO59"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DA5C4CEE3;
-	Thu,  1 May 2025 18:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746123117;
-	bh=gOk61yHjfCCGWRmwY9cwrxs+cpgZNAfK4hq0p8qNcq8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dyWdcO59KUZfhqJh1CQgA50ra3P0WZEUracgFCwtmjexUjKOdc3z583w2/qkBzqiM
-	 PYKQ8t+PXBv2/2CvrC6JBjp5eF8KbqAvxLENb8ILCviVfemyI5Y07J2ddoy8fJeNx3
-	 YmSfR4UP4wtFV+tKptz/HLmcHMUTDM4WfHmBxGmP/malpO8WpNt9phuzVdH5xYHMV2
-	 rVylZ0GWqJ9q5qr4demQfu27OpwgAQrXp3cII+bl/bH0zH2CJt5sYJkGDipi22zm+A
-	 phknxEisK7FfupAUz2jSx3gxxIpF4CPLHMgk48b7BAY5yvrzDGccpNYQqiyn264jqI
-	 cg7Y0ztns70pg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Joel Becker" <jlbec@evilplan.org>,  "Peter Zijlstra"
- <peterz@infradead.org>,  "Ingo Molnar" <mingo@redhat.com>,  "Will Deacon"
- <will@kernel.org>,  "Waiman Long" <longman@redhat.com>,  "Fiona Behrens"
- <me@kloenk.dev>,  "Charalampos Mitrodimas" <charmitro@posteo.net>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,  "Breno Leitao"
- <leitao@debian.org>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 1/3] rust: configfs: introduce rust support for configfs
-In-Reply-To: <CANiq72nd0Pfv4TrpULGQ_fZkyBpHyVVZ1H45_RJBgBxkJuzCJQ@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Thu, 01 May 2025 16:08:11 +0200")
-References: <20250501-configfs-v6-0-66c61eb76368@kernel.org>
-	<20250501-configfs-v6-1-66c61eb76368@kernel.org>
-	<ELsEgktE6XbGxDyusumtuVzyX-eotyYuQdviHTZaIxN7KZaGFr0fNqrv5tac_gYWfbDZYNTC-wQyQuxnmufA2g==@protonmail.internalid>
-	<CANiq72mS_HV5rDjP+t+k0jX9QeAgF2SB9_xX54iEBTH-GoPuEg@mail.gmail.com>
-	<87msbw1s9e.fsf@kernel.org>
-	<86-cT9dBPpEIyQXWVCeEmj3TRvBm6Ta0p1B20sSngRGOqOuC96i6hG3Q9Hg3bN8AQTCPXlsxg_C5Ok0G4JJzpQ==@protonmail.internalid>
-	<CANiq72nd0Pfv4TrpULGQ_fZkyBpHyVVZ1H45_RJBgBxkJuzCJQ@mail.gmail.com>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Thu, 01 May 2025 20:11:42 +0200
-Message-ID: <87h62419r5.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f+iyMxJg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746124651;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zY/y5cuq+QzWFVJKdbHLdKnpZh6l9uuVIW68BDziQX4=;
+	b=f+iyMxJgvOQQ7O/ou8j8mV3FTomkZwtJHlmIge7h3yqpmv6NM6Kq1CNDWGQyfOJycJp00x
+	K/7vRUeVtPGjHJZLZlkBqROrlFVa2pZ7CTZnBc7hJ6+Ax0LtBptko4gTH8qfIMC0+LEW1g
+	DzPFspU3Auez1DEOt+Ua915f5uRLn5w=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-395-kR0NwullNzy9ZxuJq6cPiw-1; Thu,
+ 01 May 2025 14:37:28 -0400
+X-MC-Unique: kR0NwullNzy9ZxuJq6cPiw-1
+X-Mimecast-MFC-AGG-ID: kR0NwullNzy9ZxuJq6cPiw_1746124646
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0724C19560BC;
+	Thu,  1 May 2025 18:37:26 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.88.132])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 903C21800115;
+	Thu,  1 May 2025 18:37:22 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 0/4] drm: Rust GEM bindings cleanup
+Date: Thu,  1 May 2025 14:33:15 -0400
+Message-ID: <20250501183717.2058109-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+Just some patches to fix a handful of minor issues, some of which were already
+mentioned on the mailing list. Some of these patches also make it just a
+little bit easier to add the shmem bindings from Asahi in the future.
 
-> On Thu, May 1, 2025 at 1:32=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
->>
->> The one just before the cut?
->
-> Both.
+This patch series applies on top of dakr's nova-next branch:
+  https://gitlab.freedesktop.org/drm/nova/-/tree/nova-next
 
-But why does that matter? Anything in the commit message after the cut
-is dropped when applying the patch, right?
+Lyude Paul (4):
+  rust: drm: gem: Use NonNull for Object::dev
+  rust: drm: gem: Refactor IntoGEMObject::from_gem_obj() to as_ref()
+  rust: drm: gem: s/into_gem_obj()/as_gem_obj()/
+  rust: drm: gem: Implement AlwaysRefCounted for all gem objects
+    automatically
 
->
->> Thanks. Would be nice with a lint for missed intra-doc links.
->
-> Definitely -- I filled it a while back:
->
->     https://github.com/rust-lang/rust/issues/131510
->
->> Clippy gets mad if we move it up. Because rustfmt wants the unsafe block
->> to a new line:
->
-> Yeah, then it is one of the cases I was referring to. In that case, it
-> is fine, but please indent the safety comment to match the `unsafe`
-> block.
-
-OK. rustfmt does not seem to care about this though.
-
->
->> The reason I choose build_error is that if this should somehow end up
->> being evaluated in non-const context at some point, I want the build to
->> fail if the condition is not true. I don't think I get that with assert?
->
-> I am not sure what you mean. My understanding is that `const` blocks,
-> if execution reaches them, are always evaluated at compile-time (they
-> are a const context):
->
->     https://doc.rust-lang.org/reference/expressions/block-expr.html#const=
--blocks
->
-> e.g.
->
->     https://godbolt.org/z/h36s3nqWK
->
-> We are lucky to have Gary with us, since he stabilized this particular
-> language feature, so he can correct us! :)
-
-I might not have the full picture, but it is my understanding that
-while `const fn` are evaluated in const context when called from const
-context, they _may_ be called from non-const context, and then they are
-evaluated in non-const context if their arguments are not const [1].
-They are not guaranteed to be evaluated in const context.
-
-So my thinking is that down the road, refactoring of this code may cause
-the `AttributeList::add` to be called in a way so that it is not
-evaluated in const context, and then the `assert` would be evaluated at
-run time. With `build_error` we would get an error during build.
-
-But I should probably use `build_assert` instead of the conditional with
-`build_error`.
+ rust/kernel/drm/gem/mod.rs | 141 ++++++++++++++++++++-----------------
+ 1 file changed, 76 insertions(+), 65 deletions(-)
 
 
-Best regards,
-Andreas Hindborg
-
-
-[1] https://doc.rust-lang.org/reference/const_eval.html#r-const-eval.const-=
-expr.list
+base-commit: 3be746ebc1e6e32f499a65afe405df9030153a63
+-- 
+2.48.1
 
