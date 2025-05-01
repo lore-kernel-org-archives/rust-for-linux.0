@@ -1,142 +1,115 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149D72F37;
-	Thu,  1 May 2025 02:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC33E26461E
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 07:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746067553; cv=none; b=hfcfhQJYTtz/JRxsX01e0Sio/pxZzspHVibJvwDYw1iW4jkERdISswbN3IJVefGe+R0a+XTsJrlguTSnwdTI/BEezGjaeyixupL2SS58l6JJCM95HjaWh+kTd5me92FNYJj8ZNNN4xSJ7wDxrWR2OFp2EQSwCT0BI6D9ba2Ay+Q=
+	t=1746083623; cv=none; b=e/GUenmrC8tPm53rBJYKY11Ai9kyLjPXmSl+bVtSVUQIG2OHA3RQSpoEwVg+w8y7Wa+xWQe01BCRIzq+Z6lrua/x62C57sHpdWVnj6HgPyq5FEMSA1yk/d/+lCy9Ha1Kq4nTuMFnB4zWId/147AwHSe4+Olmp7z9W78kesdpZ1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746067553; c=relaxed/simple;
-	bh=gZjRgjeXeQO88HXp97C7IcDNhmOA3+hYIc8ao0riMbY=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=qyVwuNhufLVBvE/H/58sYbIW0sioP2/q4F28VzLmPDqLMUe9KJWtx/dJPJw4cwYpWJ3qsTl4/it2fk7qot+7kXl/hJegsMaU6fsV/XT4J6FDKSVLbVJeybt6yDZjIc4s2T6VjMeFVc8MN92IKvhqNLzsaA8sZMkbfrjAXCPhQGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OvFfOOLK; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746083623; c=relaxed/simple;
+	bh=QSceKILHuAqpArLvBrvn1WkL3zQ7RTNaWnjS/zM11MY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nQoSMGlJiz87Afi8Cn0akg4b9y00UiavtAG8fCjd9VrmhnUaUOB5JhilOeSiLUFpEUi/7b7KySz9qTkjlg7+/OUGSJb0/kbdcsNiXR6UAiAlLdZHCwbhtF6++o8FrxRLwHsM7GMZEx7F4O+//7j8dWVa7q+AVC1ELLNfoEM+Pmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WJyCDxgI; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OvFfOOLK"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-736ab1c43c4so543773b3a.1;
-        Wed, 30 Apr 2025 19:45:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WJyCDxgI"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3912d2c89ecso395826f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 May 2025 00:13:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746067551; x=1746672351; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ri48kks70Ek240acbuWS4Me2Uf3YGEY+5BDzeQgP86g=;
-        b=OvFfOOLKvWuFIYpYgstbBcnATMP4Y25Snk4uDd0rhFBhF0OMpSQvvt8rUWaLp3ozPc
-         5OzLKFNMlLHScZPyfP/r8IcCA6k20sPHgsUrR1SKMps4LQVOzgBQQY42g95xcRO7W0Hl
-         HlX12g6utm49Mz02RZ6r40nN0qSCpFHB08Frcg8w0EM0p5pydS6ucGMeBQQGuPQxTaB5
-         ALia1zB+i/dai4GI20v4nFIwfCNOoxPwJMd96aAHPJxLB/Oqcy99Tjv4Nsi8xt4bztcJ
-         treYGyzIEAjqzmsIuMPzV43FyTOHF2PkEf8O7FGzJo6XfPCPQJE9/Ic4agLXYPbGCXWO
-         yZGg==
+        d=google.com; s=20230601; t=1746083619; x=1746688419; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QSceKILHuAqpArLvBrvn1WkL3zQ7RTNaWnjS/zM11MY=;
+        b=WJyCDxgIVnVemuoy4+jDE9QanbmUs7X2yg/SEb0RfdES2Wojd9PTe3vJz0wJHTQ1T1
+         0YJAsfD5vs7lMu2X9J3sYq7QM1XMPeTemYlVgky+VZ5FzlIovHV4UKfJ0WuonMvOA4uP
+         NpZ+XsTo3qI5EqPSQXYl8MSyrgv18o/uQlPbn/adKoU7ZypqC+csJXZLshjad7Pv1ksR
+         2y/8GCgmbu9idQaFBLoD+erN9s9jDY/0K1MrJVUYxbKt7zVBNEYMjkMPO8pK9LDvZi72
+         8jDtS+hSo2F7VZbha8LS9yGJDiIEDcdkkNb73SOxA/Nd9NiTk02xRtUAqCt4SXR630zp
+         nLNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746067551; x=1746672351;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ri48kks70Ek240acbuWS4Me2Uf3YGEY+5BDzeQgP86g=;
-        b=EYeMPK5AhH8QXYXIyvtBlgx5uMAsrQzafdTmLYMg66SxqwCZXJb1kABKsg0aKqrfex
-         U1hqeJnDBqIEUDy5rRZ0Q+aiuDcUmXisF8RmldInwuo7AAHOapR7zcHjGnEzJ8cOkcbL
-         Z7WSE8Gse2q7RaCc1KDKppM0q6WetxkfA28cSpP0JW7BqUi3gSx5rLdLyN6Iwo8NqsJ/
-         mYdGBRi/ErrhjYUPLaC1tBu/B2ynkUAH/yg/Rn65YnB7AWxfzpnkWQhNA6vpvdpJHfSo
-         ykL9Gklx5s/XRJS16+I2ilZJO9R33hQRmlp4+jEgM0yfzo9Pa3sg8NHQQyQv1Rx7D+5/
-         DY5Q==
-X-Gm-Message-State: AOJu0YyHxTxxjg8k+JiztWm8/IyZHjQKDNqb26pcNTUnXqCNnyTFP5y4
-	dmRYt81q5bQr2Zw96HMAdr3skEyPgmluUzCOBhfn+QZufv7jhOawnks/RpGD
-X-Gm-Gg: ASbGncsMxZslL3Ur+AIaPMo1u3ZbyUge1/fjBY6sGVm0z3jWvetk+2vQVwjtA64WmAx
-	IgbNZZ+WkN7/ad4ANo3Zdxtliw6v4+3jI8gB33QKR4RhN4TttA0WXDyrdUTR50FzJXKjGJZqnn+
-	CtGJDG3NLvY7kIZ3ztXmXsDxyPKE0YcI6BLwpaZaK/V4Z1e0Bqzb09qtzhlBLOm8aYfUvNy2+7L
-	Gts6354MSLM7DgR4U3POn+Ea3vZ74tWa6Q9UYsZA/bvUSds+zwm1K8KIG2sJjlDrpyfkNSg7XhS
-	CYrPEgpZqmv/EVPX9IgeWFNOMOsFN2+YODqDXrAZolaOCwIyo3ilQsS6OAH1f/kTbjt/j1qTfWL
-	8QUIuFWJVlgMvLeTVlY/RrKM=
-X-Google-Smtp-Source: AGHT+IGn7mvDQIye5396/QcDs8efH9XyW/4mgIMHw7cRjbAVOTdxmnK6VRaZKrTVN1Od3OomN972eg==
-X-Received: by 2002:a05:6a00:2306:b0:736:ab1d:7ed5 with SMTP id d2e1a72fcca58-7403a639eddmr6643618b3a.0.1746067550898;
-        Wed, 30 Apr 2025 19:45:50 -0700 (PDT)
-Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74039a944d4sm2543117b3a.172.2025.04.30.19.45.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 19:45:50 -0700 (PDT)
-Date: Thu, 01 May 2025 11:45:34 +0900 (JST)
-Message-Id: <20250501.114534.1953073574103349822.fujita.tomonori@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, a.hindborg@samsung.com,
- boqun.feng@gmail.com, frederic@kernel.org, lyude@redhat.com,
- tglx@linutronix.de, anna-maria@linutronix.de, jstultz@google.com,
- sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- aliceryhl@google.com, tmgross@umich.edu, chrisi.schrefl@gmail.com,
- arnd@arndb.de, linux@armlinux.org.uk
-Subject: Re: [PATCH v1] rust: time: Avoid 64-bit integer division
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20250501015818.226376-1-fujita.tomonori@gmail.com>
-References: <20250501015818.226376-1-fujita.tomonori@gmail.com>
+        d=1e100.net; s=20230601; t=1746083619; x=1746688419;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QSceKILHuAqpArLvBrvn1WkL3zQ7RTNaWnjS/zM11MY=;
+        b=s0CFG3hO6iXAfwRjBovji+TOMnDl3nFDo/7WbajloXwaSDuI7gUXQryTHn9gSpoWro
+         UhgEu1BNP2CFHGYROSRda2gV9gurdAfbOpzBi5UALjP32mNgLaaI8/y6dVr//dcstDJD
+         wDwFXIzY5dejDyxyOqUgFPjtEH0EjNSZe0zSOMoBZIOxTsh75bjdURYHUAfyXhB4pQjT
+         K2V4uJ0OTtytjkH6mFXzsn9q6anGGXP9cCMOYjB1hjg9bweJ0rupc4vqgosfck9ZK9mD
+         mtnT5ddzNVyNH0j+FGXddIsl2BRLoFbODLAXqMbywuwK6K9mK4TAPYwWze1jGCgoA+IV
+         DI+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX6x53Wcc4OJrQEilJUvqjrnx+PzrvwKWVGJU0zCrVSl2shmg/1rFydC24bLnxMR34GYCMUP2epaUXU7WXHlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeZE2AoliQFXPWONyhvG6/lGUU2Rsv3b3+pr7AsCR6YtVNrlhC
+	xzMUPFg+jKEhx469r55w4pfJYQd8q2LqDrkAk7sPr993jocsnSj1POl18dtBYBBFpyL3t1vgWUX
+	KwpS1fBOSbtzExQ58FEj05FFoZ4+IrB5wC4vL
+X-Gm-Gg: ASbGncv+eYdcnbFHSqw5muzuwL63ik2Nh8HsyCQ+LLiCGIBhtuABArTug2YF1iKEuRn
+	AKwcaB47K3VrZRxOmUlYk48fBSjYXLpmaEaqOc/hXmNuAheTpMWCY1dLGA1/xZAttBPDxc6sdHr
+	yd1GTVh0i6ZJk2x13ppfZUNME=
+X-Google-Smtp-Source: AGHT+IGN3TCVYF0QhPUHuMTXlmMoT5bvOUHFWUt0TCL/e5cKhJDlof9p+ZsQRcjZYfw9VK8lVZJZGWzzaKYax13SJKA=
+X-Received: by 2002:a05:6000:2403:b0:39c:2688:612b with SMTP id
+ ffacd0b85a97d-3a094044002mr875832f8f.7.1746083619006; Thu, 01 May 2025
+ 00:13:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20250227-configfs-v5-0-c40e8dc3b9cd@kernel.org> <20250227-configfs-v5-1-c40e8dc3b9cd@kernel.org>
+In-Reply-To: <20250227-configfs-v5-1-c40e8dc3b9cd@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 1 May 2025 09:13:25 +0200
+X-Gm-Features: ATxdqUGO2CyyZYzRoShGEfmJdbqkfUThUZw7qk03SErsEjIyLXmJS5-laQdv5uk
+Message-ID: <CAH5fLggDwPBzMO2Z48oMjDm4qgoNM0NQs_63TxmVEGy+gtMpOA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] rust: sync: change `<Arc<T> as ForeignOwnable>::PointedTo`
+ to `T`
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, 
+	Joel Becker <jlbec@evilplan.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Fiona Behrens <me@kloenk.dev>, Charalampos Mitrodimas <charmitro@posteo.net>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu,  1 May 2025 10:58:18 +0900
-FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+On Thu, Feb 27, 2025 at 1:36=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> Using `ArcInner` as `PoinedTo` in the `ForeignOwnable` implementation for
+> `Arc` is a bit unfortunate. Using `T` as `PointedTo` does not remove any
+> functionality, but allows `ArcInner` to be private. Further, it allows
+> downstream users to write code that is generic over `Box` and `Arc`, when
+> downstream users need access to `T` after calling `into_foreign`.
+>
+> Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> Avoid 64-bit integer division that 32-bit architectures don't
-> implement generally. This uses ktime_to_ms() and ktime_to_us()
-> instead.
-> 
-> The timer abstraction needs i64 / u32 division so C's div_s64() can be
-> used but ktime_to_ms() and ktime_to_us() provide a simpler solution
-> for this timer abstraction problem. On some architectures, there is
-> room to optimize the implementation of them, but such optimization can
-> be done if and when it becomes necessary.
-> 
-> One downside of calling the C's functions is that the as_micros/millis
-> methods can no longer be const fn. We stick with the simpler approach
-> unless there's a compelling need for a const fn.
-> 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/helpers/helpers.c |  1 +
->  rust/helpers/time.c    | 13 +++++++++++++
->  rust/kernel/time.rs    | 10 ++++++----
->  3 files changed, 20 insertions(+), 4 deletions(-)
->  create mode 100644 rust/helpers/time.c
-> 
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 1e7c84df7252..2ac088de050f 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -34,6 +34,7 @@
->  #include "spinlock.c"
->  #include "sync.c"
->  #include "task.c"
-> +#include "time.c"
->  #include "uaccess.c"
->  #include "vmalloc.c"
->  #include "wait.c"
-> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
-> new file mode 100644
-> index 000000000000..0a5d1773a07c
-> --- /dev/null
-> +++ b/rust/helpers/time.c
-> @@ -0,0 +1,13 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/ktime.h>
-> +
-> +s64 rust_helper_ktime_to_us(const ktime_t kt)
-> +{
-> +	return ktime_divns(kt, NSEC_PER_USEC);
-> +}
-> +
-> +s64 rust_helper_ktime_to_ms(const ktime_t kt)
-> +{
-> +	return ktime_divns(kt, NSEC_PER_MSEC);
-> +}
+We discussed this in the meeting yesterday, but just to summarize:
 
-Oops, they should call ktime_to_us() and ktime_to_ms() respectively.
+This isn't correct use of the trait. The trait is intended for cases
+where you pass a void pointer into C code, and the C code treats that
+void pointer entirely opaquely. That's why the docs for `into_foreign`
+say this:
 
-I'll send v2 later.
+The foreign representation is a pointer to void. There are no
+guarantees for this pointer. For example, it might be invalid,
+dangling or pointing to uninitialized memory. Using it in any way
+except for [`from_foreign`], [`try_from_foreign`], [`borrow`], or
+[`borrow_mut`] can result in undefined behavior.
+
+In this case, you want to make this change because the C code in
+configfs will dereference the void pointer and read from it. But
+that's not allowed with the ForeignOwnable trait. You need a new trait
+if you want pointers that are not opaque.
+
+Alice
