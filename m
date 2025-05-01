@@ -1,72 +1,71 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6771EA7FF
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 22:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769EF202C5D
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 May 2025 22:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746139668; cv=none; b=c/RKh/rNqhSirTPh+qBUw6Vh14AXThhWPLdlzPBAEulsOUuMqL/+H9KIW1tjjiKonCt6jOMPG/WSBZGPK7/yJ8ekITTnL3nPzEaPDEa37oUBblrn3UNGLhGbPBnwmE/mBJruG5RCORuhugVLp4McNajhJIR5gkjHL4d5hYi4Mgg=
+	t=1746139669; cv=none; b=Mry8616Y6H0YUUq+y0gP+d8dGnahJCyVeWBTm5WETeX7i31rOg3XZ5c44mNrLlDDLE35iS4zgrAem+dp57JuIhV5iufNHzlQ1dS7YX2CmIvGCdsZ6x4pzmqFVS4Lu/OTWwFF6mEiNnVFY9vmyYRXvlmRCaRIW0osZcJCIMuGDSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746139668; c=relaxed/simple;
-	bh=+sEHQ5a6ov4c05sHc/JUKrhbuajuBghx/mSe8CxfB7Y=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qqmP/R2o660WQbRxwI/Zi42Vmg/XqMD8DSMzVM37GTr/YDUChHBEg0cjDTd9ZtnJK1TTHgMbG7Y4pSjj1Kpx1sSEeLg43m9xZaXMR5l08R6wvtuljE3dFGyR3llMnvsnTy84YxBlgTxDJEujfGrOAC64BHcc9gBDdEovMDTEc2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F9YeMzTX; arc=none smtp.client-ip=209.85.210.202
+	s=arc-20240116; t=1746139669; c=relaxed/simple;
+	bh=JbEd4yVGkc4CGLLwMtsUZunY8qOMQArWopLk0wZkvOI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jKPKXv7g9jJ+0+4VU49taOF28YSjRskPWedyZK5MHlTMdrX5JFvANeQLy40xh/MhcUTBciNO2DGa8oFRn3JAjgj9SrlFJxYpMxfQyQ8T/Y/x8lb+QwPjKdPPrBcvfczO/Ut/5LqUi8MyU8UAX1KwG8HirPbbdvtPI2MjO/A8/Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QWaTUBI4; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F9YeMzTX"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-73917303082so1021693b3a.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 May 2025 15:47:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QWaTUBI4"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-73c205898aaso1055355b3a.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 May 2025 15:47:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746139665; x=1746744465; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NivNxUC2NDqVrkobtJmoapSJ3o66sFfu75Pr8p73xkE=;
-        b=F9YeMzTXhjywf+Mc7+WWYTbvPcNWVRrQWdy2oJ44ePEqYIQ+Dm/zYJmuLzXO6A5Qyt
-         yeNzXfVCCotnWvSjb64LcKmd/xkPFsb7H0eHPYS43z751SJ42lnV4dFHUjKfgGSe70XX
-         JsXEfqgDHN58Y83y7nl076pxR6qLTkFY9P+5L3DaV5xpuCloi1BXu55bLEC2EX8SLVtm
-         t0YAgFzsgFDZ/0gBmLQq9BIcRibssDXWDO1/xtbj+9HgsV1aacrI3KzYUGdIYSoxTC2C
-         +sev0Y4l1qvtqsotDvR/PwjEPuvxWfavKPZsCQ7B7Nw7JsmheQW35trbqae790OY5nV2
-         Jccg==
+        d=google.com; s=20230601; t=1746139667; x=1746744467; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=w44KCo9lpA5CgPVgm2HVbQSg5eZSvHUWTxcca4PJz2I=;
+        b=QWaTUBI40VapxdSFugblR0rqXds4ltyW4b6WS4cLWNv3vShBXzQjRImZ9iHLM/5GvA
+         NC4zmEUcWlKGm1rGw6RWICgNFTHBrSC9IdX/sI6ixrMsO2rCAhmf+PCETqzqXDEpSnvn
+         DxcbMXxIj1vGnZDBBZgRSCsnO0TJ0EF7b73WdKk79ogn1ibTjAQvv8wDl922uAE7Lme+
+         L986mOoEcrJWFACBoKINMb0k09jR9wiJsDD3PTLnSEZ3/e9jWiSyZwaDoFsNuED/7jgh
+         bGjVJ9NrRWyqri0cT/kVFeGBImVu/hhSGAlbKcTlhjkiQuVA3g32qvnqhnGh/SVahvLp
+         Ab4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746139665; x=1746744465;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NivNxUC2NDqVrkobtJmoapSJ3o66sFfu75Pr8p73xkE=;
-        b=kEKOxjUgTxFFiGme+SDdBUlls7414eIS1+C3HrGC7r56fJN2BOx8PHLpWlzSHhYEp8
-         Wy8jrJNJgtv0beAFyZXlTUKwyRFV2yat5iENDPKrPu3Y/LUUMfeobUaP3tEoD1wEMG2e
-         AGULR1QAhAdInKcsImcrpQQ4kno+mgtnyd+M+FLLvfcynwl95r+svteKEFNGjJHvapiL
-         duaE6UJ9zRtADqQJplGHmO0qhbJu/1rg/i6obLv/+o9LUfNzz0QeWoqi/be9TTH9NarV
-         Xrpu3zwoJHC/K06x7AnlCGk35khkfzBR/058WNIDzWI+30RiB0fqO+Ye1/eKT2f7v8EM
-         l0WQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUm083wVxfNtlO/RzHdbiExv5/0o36UXDmu/b8YrnZIgRqOsRo8KfNTZblgMf7+wa/96kkT3bqVtg7T6ZAjBg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjpZpm5KdM2NjS7E+VMM7SjvcxX1u2z4c9Ty+yCsb01oegUXZ9
-	bfM6d21M3aYT9g6VpUE4SmP6pf9cGNw3Fb1EWhJ3SMBE01IEk7sBswzsBN7pxvi3KhE2vC9eOp6
-	JNqoXlw==
-X-Google-Smtp-Source: AGHT+IEQ7LN6nOd2RQOaDvcu0iiE3EfxbAhqLFzbuOYSZdCZwIty37mQeS1DKKhzAugu+3PL5hVpAPVxJNkz
-X-Received: from pfoc21.prod.google.com ([2002:aa7:8815:0:b0:739:45ba:a49a])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:9304:0:b0:736:5438:ccc
- with SMTP id d2e1a72fcca58-74058a20e45mr825131b3a.9.1746139665007; Thu, 01
- May 2025 15:47:45 -0700 (PDT)
-Date: Thu, 01 May 2025 22:47:40 +0000
+        d=1e100.net; s=20230601; t=1746139667; x=1746744467;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w44KCo9lpA5CgPVgm2HVbQSg5eZSvHUWTxcca4PJz2I=;
+        b=foFcRAVnwgmQQdk8V9sBdb6pxM+2kiBdOIpd+wWJZ0NI+FGYkJyh71IHwZQ6gAnk2C
+         y1HMlnjgzEdXuCDpLy7AYD8SrCEEy8v6P3IJjgSHZTXwBj9ZTbINqSBLfSlgD6gr1YEI
+         e/DMWqrEQBZqrAmePJWs3QAp1Uy9XG4/y2B2q+rRS2fMAwNpk3bG3n3eUKL6FswmJPpu
+         9ByMXwO6j9F196uw/HLLqsNRmp/Z87WtJHJm0dF/0EFHo/FsqEuGADLbNriyLfIjc2b9
+         0PX9nwLjoZF/yi9uAM2rz83WbcYeni2p2G7g3uuzl7m7mC0iIqXU+VPHWcFUx25qiZ3p
+         lG5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUNXyoFhbdUpB5cpFiTI8mNZvUeFzynn2oTogAqFxwJZOzDUUCD9iKX0+Fi8m3/jeY9QtWcZN2YqO7k+uCsOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGX099vm11Dr0wjcFTyj7ZsieXBqSfWYJrCDiufdP7w/7Nc5nu
+	bbSR7RiI1aKaoUwRaiDvaCSJZMtUGQkOJkGMkKD4XYNAvEncvS2DJonbmvwDKQyAWfUqt6g9MuF
+	HH34YsQ==
+X-Google-Smtp-Source: AGHT+IGlVa2Bg4kQzTXqXrUtJZZg3o01lqCHz4aOmRSyKYFZMXefdnfozoziz1aewpPKP4pxqQiT2a9yT57m
+X-Received: from pgbcz7.prod.google.com ([2002:a05:6a02:2307:b0:b0b:301e:8e96])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:394f:b0:1f5:7b6f:f8e8
+ with SMTP id adf61e73a8af0-20cde36d531mr991871637.6.1746139666691; Thu, 01
+ May 2025 15:47:46 -0700 (PDT)
+Date: Thu, 01 May 2025 22:47:41 +0000
+In-Reply-To: <20250501-debugfs-rust-v3-0-850869fab672@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAz6E2gC/13M0QrCIBiG4VsZHme43za1o+4jOkj954TK0E2Ks
- XvPDYLW4ffB+0wkYfSYyLGaSMTskw+PMviuIqa/PhxSb8smwKBhB5DUoh5dl2gc00C5sY1RArW
- wNSnJM2LnXyt3vpTd+zSE+F71XC/vF1JbKNeU0Va3KIwWClR3ciG4G+5NuJNFyvBTc/ZXQ6kBp eVKNrIGvannef4ArceSdOcAAAA=
-X-Change-Id: 20250428-debugfs-rust-3cd5c97eb7d1
+References: <20250501-debugfs-rust-v3-0-850869fab672@google.com>
 X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746139663; l=2353;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1746139663; l=7385;
  i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=+sEHQ5a6ov4c05sHc/JUKrhbuajuBghx/mSe8CxfB7Y=; b=xUdA9bF7k9AvDp1lDH/YhMaQvblGwM6xdSrhJY7APgWxQz2pHAq6oJ19paTdmACQfPXxDiIPT
- 73D+HSeLeEeBizWelj+x5f9Wz5Uwyp1My0XEhCY/3kChOZjN1f1nK+p
+ bh=JbEd4yVGkc4CGLLwMtsUZunY8qOMQArWopLk0wZkvOI=; b=AQJYJpVCc5ljzQ9PEPNKo50FEdhNQQ74R4AtsT0cANrJVwYSmxn7/WQtCFRE6M2tDFvw+OqP1
+ 6Jx0HAB9yTtCPeDIhKlVC640Z65Flm/b6EzeipyXYoguP9JHww8qSpv
 X-Mailer: b4 0.14.2
-Message-ID: <20250501-debugfs-rust-v3-0-850869fab672@google.com>
-Subject: [PATCH v3 0/4] rust: DebugFS Bindings
+Message-ID: <20250501-debugfs-rust-v3-1-850869fab672@google.com>
+Subject: [PATCH v3 1/4] rust: debugfs: Bind DebugFS directory creation
 From: Matthew Maurer <mmaurer@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -79,61 +78,222 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This series provides safe DebugFS bindings for Rust, with a sample
-driver using them.
+Support creating DebugFS directories and subdirectories. Similar to the
+original DebugFS API, errors are hidden.
 
-This series currently only supports referencing `'static` lifetime
-objects, because we need to know the objects outlive the DebugFS files.
-A subsequent series may be able to relax this.
+By default, when a root directory handle leaves scope, it will be cleaned
+up.
 
-* Directories created in the root of debugfs are assumed to be owning,
-  and will clean up after themselves when dropped.
-* Subdirectories are assumed non-owning, remaining alive until their
-  containing directory is cleaned up. They can be promoted to owning
-  variants if needed.
-* Files are non-owning, but can be manually removed by handle if needed.
+Subdirectories will by default persist until their root directory is
+cleaned up, but can be converted into a root directory if a scoped
+lifecycle is desired.
 
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
-Changes in v3:
-- Split `Dir` into `Dir`/`SubDir`/`File` to improve API.
-- Add "." to end of all comments.
-- Convert INVARIANT to # Invariants on types.
-- Add backticks everywhere I found variables/types in my comments.
-- Promoted invariant comment to doc comment.
-- Extended sample commenting to make it clearer what is happening.
-- Link to v2: https://lore.kernel.org/r/20250430-debugfs-rust-v2-0-2e8d3985812b@google.com
-
-Changes in v2:
-- Drop support for builder / pinned bindings in initial series
-- Remove `ARef` usage to abstract the dentry nature of handles
-- Remove error handling to discourage users from caring whether DebugFS
-  is enabled.
-- Support CONFIG_DEBUG_FS=n while leaving the API available
-- Fixed mistaken decimal/octal mixup
-- Doc/comment cleanup
-- Link to v1: https://lore.kernel.org/r/20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com
-
----
-Matthew Maurer (4):
-      rust: debugfs: Bind DebugFS directory creation
-      rust: debugfs: Bind file creation for long-lived Display
-      rust: debugfs: Support format hooks
-      rust: samples: Add debugfs sample
-
- MAINTAINERS                     |   2 +
+ MAINTAINERS                     |   1 +
  rust/bindings/bindings_helper.h |   1 +
- rust/kernel/debugfs.rs          | 405 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/debugfs.rs          | 155 ++++++++++++++++++++++++++++++++++++++++
  rust/kernel/lib.rs              |   1 +
- samples/rust/Kconfig            |  11 ++
- samples/rust/Makefile           |   1 +
- samples/rust/rust_debugfs.rs    |  54 ++++++
- 7 files changed, 475 insertions(+)
----
-base-commit: b6a7783d306baf3150ac54cd5124f6e85dd375b0
-change-id: 20250428-debugfs-rust-3cd5c97eb7d1
+ 4 files changed, 158 insertions(+)
 
-Best regards,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 906881b6c5cb6ff743e13b251873b89138c69a1c..a3b835e427b083a4ddd690d9e7739851f0af47ae 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7271,6 +7271,7 @@ F:	include/linux/kobj*
+ F:	include/linux/property.h
+ F:	include/linux/sysfs.h
+ F:	lib/kobj*
++F:	rust/kernel/debugfs.rs
+ F:	rust/kernel/device.rs
+ F:	rust/kernel/device_id.rs
+ F:	rust/kernel/devres.rs
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 8a2add69e5d66d1c2ebed9d2c950380e61c48842..787f928467faabd02a7f3cf041378fac856c4f89 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -13,6 +13,7 @@
+ #include <linux/blkdev.h>
+ #include <linux/cpumask.h>
+ #include <linux/cred.h>
++#include <linux/debugfs.h>
+ #include <linux/device/faux.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/errname.h>
+diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..b589c2d9a8d169bd66e98d2894261784e427230e
+--- /dev/null
++++ b/rust/kernel/debugfs.rs
+@@ -0,0 +1,155 @@
++// SPDX-License-Identifier: GPL-2.0
++
++// Copyright (C) 2025 Google LLC.
++
++//! DebugFS Abstraction
++//!
++//! C header: [`include/linux/debugfs.h`](srctree/include/linux/debugfs.h)
++
++use crate::str::CStr;
++use core::mem::ManuallyDrop;
++use core::ops::Deref;
++
++/// Owning handle to a DebugFS directory.
++///
++/// This directory will be cleaned up when it goes out of scope.
++///
++/// # Invariants
++///
++/// The wrapped pointer will always be `NULL`, an error, or an owned DebugFS `dentry`.
++#[repr(transparent)]
++pub struct Dir(#[cfg(CONFIG_DEBUG_FS)] *mut bindings::dentry);
++
++// SAFETY: Dir is just a `dentry` under the hood, which the API promises can be transferred
++// between threads.
++unsafe impl Send for Dir {}
++
++// SAFETY: All the native functions we re-export use interior locking, and the contents of the
++// struct are opaque to Rust.
++unsafe impl Sync for Dir {}
++
++impl Dir {
++    /// Create a new directory in DebugFS at the root.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::c_str;
++    /// # use kernel::debugfs::Dir;
++    /// {
++    ///    let parent = Dir::new(c_str!("parent"));
++    ///    // The path "parent" exists in DebugFS here.
++    /// }
++    /// // It does not exist here.
++    /// ```
++    pub fn new(name: &CStr) -> Self {
++        Self::create(name, None)
++    }
++
++    /// Create a DebugFS subdirectory.
++    ///
++    /// This returns a [`SubDir`], which will not be automatically cleaned up when it leaves scope.
++    /// To convert this to a handle governing the lifetime of the directory, use [`Dir::from`].
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::c_str;
++    /// # use kernel::debugfs::Dir;
++    /// {
++    ///    let parent = Dir::new(c_str!("parent"));
++    ///    // The path "parent" exists in DebugFS here.
++    ///    {
++    ///        let child = parent.subdir(c_str!("child"));
++    ///        // The path "parent/child" exists in DebugFS here.
++    ///    }
++    ///    // The path "parent/child" still exists.
++    ///    {
++    ///        let child2 = Dir::from(parent.subdir(c_str!("child2")));
++    ///        // The path "parent/child2" exists in DebugFS here.
++    ///    }
++    ///    // The path "parent/child2" is gone.
++    /// }
++    /// // None of the paths exist here.
++    /// ```
++    pub fn subdir(&self, name: &CStr) -> SubDir {
++        SubDir::new(Self::create(name, Some(self)))
++    }
++
++    /// Create a new directory in DebugFS. If `parent` is [`None`], it will be created at the root.
++    #[cfg(CONFIG_DEBUG_FS)]
++    fn create(name: &CStr, parent: Option<&Self>) -> Self {
++        let parent_ptr = match parent {
++            Some(parent) => parent.as_ptr(),
++            None => core::ptr::null_mut(),
++        };
++        // SAFETY:
++        // * `name` argument points to a NUL-terminated string that lives across the call, by
++        //   invariants of `&CStr`.
++        // * If `parent` is `None`, `parent` accepts null pointers to mean create at root.
++        // * If `parent` is `Some`, `parent` accepts live dentry debugfs pointers.
++        // * `debugfs_create_dir` either returns an error code or a legal `dentry` pointer,
++        //   so we can call `Self::from_ptr`.
++        unsafe { Self::from_ptr(bindings::debugfs_create_dir(name.as_char_ptr(), parent_ptr)) }
++    }
++
++    #[cfg(not(CONFIG_DEBUG_FS))]
++    fn create(_name: &CStr, _parent: Option<&Self>) -> Self {
++        Self()
++    }
++
++    /// Constructs a new DebugFS [`Dir`] from the underlying pointer.
++    ///
++    /// # Safety
++    ///
++    /// The pointer must either be an error code, `NULL`, or represent a transfer of ownership of a
++    /// live DebugFS directory.
++    #[cfg(CONFIG_DEBUG_FS)]
++    unsafe fn from_ptr(ptr: *mut bindings::dentry) -> Self {
++        Self(ptr)
++    }
++
++    /// Returns the pointer representation of the DebugFS directory.
++    ///
++    /// Due to the type invariant, the value returned from this function will always be an error
++    /// code, NUL, or a live DebugFS directory.
++    // If this function is ever needed with `not(CONFIG_DEBUG_FS)`, hardcode it to return `ENODEV`.
++    #[cfg(CONFIG_DEBUG_FS)]
++    fn as_ptr(&self) -> *mut bindings::dentry {
++        self.0
++    }
++}
++
++impl Drop for Dir {
++    fn drop(&mut self) {
++        // SAFETY: `debugfs_remove` can take `NULL`, error values, and legal DebugFS dentries.
++        // `as_ptr` guarantees that the pointer is of this form.
++        #[cfg(CONFIG_DEBUG_FS)]
++        unsafe {
++            bindings::debugfs_remove(self.as_ptr())
++        }
++    }
++}
++
++/// Handle to a DebugFS directory that will stay alive after leaving scope.
++#[repr(transparent)]
++pub struct SubDir(ManuallyDrop<Dir>);
++
++impl Deref for SubDir {
++    type Target = Dir;
++    fn deref(&self) -> &Dir {
++        &self.0
++    }
++}
++
++impl From<SubDir> for Dir {
++    fn from(subdir: SubDir) -> Self {
++        ManuallyDrop::into_inner(subdir.0)
++    }
++}
++
++impl SubDir {
++    fn new(dir: Dir) -> Self {
++        Self(ManuallyDrop::new(dir))
++    }
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index c3762e80b314316b4b0cee3bfd9442f8f0510b91..86f6055b828d5f711578293d8916a517f2436977 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -45,6 +45,7 @@
+ #[doc(hidden)]
+ pub mod build_assert;
+ pub mod cred;
++pub mod debugfs;
+ pub mod device;
+ pub mod device_id;
+ pub mod devres;
+
 -- 
-Matthew Maurer <mmaurer@google.com>
+2.49.0.906.g1f30a19c02-goog
 
