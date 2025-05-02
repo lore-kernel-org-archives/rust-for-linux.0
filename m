@@ -1,65 +1,65 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C632B22AE7B
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 11:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A9B1D95A3
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 11:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746185393; cv=none; b=GTdZO+ifHatg6YpOJEn8ZE9GOvZdO1/d7NXeriVkmCzHTD481FCDKwZasuhN2o8wHatx+PBzJbfShsYBb6AopY1ehDjJbZ5mZOKVxDYCAJMuKNv7/JF+ozUz7tZaLKX/8XdonaSr0DlaDE3QxmzJ8N2iVgHGYiym+kzrephglN8=
+	t=1746185576; cv=none; b=ixHKwvybjIzMJoPBNoxZtj3NleQzpiw9agO1uACoVqnqDHE4tjitWubt1Cf1gKP1bhj+bRAaI+6ZCixHk7niTrAk6SMa6Xntdglu8mnT99XNAGZ/7ouhwbaAJ+0jR3v69VYzAUg4qRc34nZscEmj2h34W/x3aE592kQi+opWPu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746185393; c=relaxed/simple;
-	bh=K7FYUCik92QGCe1EXemPYX807oFnT+u9UbAeeptNTxg=;
+	s=arc-20240116; t=1746185576; c=relaxed/simple;
+	bh=7A1HSBrvNQWxj/2gNm3WkF5r1onxQz5OycCMNYENKLk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CTHlrVVR1BftdRKgRHOb1rNSTwnL5JbRTCtEHQQSymnpQeTKp4fmiCUIRmnLUwbEJ81aFUGMut3xGqwWN7+axAWgqHKfAq6ULGWmT9WZGtNoxdkXL1DHwL7gQgvJu34MN3UWvzUYaS375638FLjeigoQ8ojx5jj9FJthb2imk9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fVdM2+Zo; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=T6adbVl5FmVLgu8O9FpGGsrxBRzUIw1gO7vLQGdd0Yt7v5ugEUNN4gOX1JXnNM1aQP9GfAdCroJ8JfTYxUS5LBvDFbse2tOp9gsBOZwzj0g1hctkz8s6G17o1FR5T/oIe+K6vhhiCLBDrldThdEUR91uKD4LZTumZ9CPj6oCBFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lTCliXWO; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fVdM2+Zo"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cf3168b87so7611255e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 04:29:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lTCliXWO"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43cec217977so9878305e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 04:32:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746185390; x=1746790190; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746185573; x=1746790373; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4d8ApGUc/m5siNw2yJnJiebAzNVkN6zwU5JpG7PnXaA=;
-        b=fVdM2+ZopltDOqLdnR6T5q+VEoYMr0VtDvlzADndXGVPnhCt7di4+TYpZ2t3Nljt69
-         DRq+UNj2x9ww8dDsUYcDHN6RpMoRMYoSoB8kyKWC6ZU3RQXCIvRP7b5KO/z8u6koOR+d
-         LVETKmO9Ztr+hfEM80vpn60HAUesIphFcmmWOQM8AhP+GQHW35mFIRPSqGfYVYeTbSkV
-         1HA2pnqEn5XK2KYG7aWm7vqbKW3e3tXTrcW5zjPNEXEzzbKX4Q1lqFUimpdsnmsxYRQO
-         6V5tzOyNc9iXblDD6MtagW4NJIFJfiTtJdwlbd5zc245RlWHJIhjFoyDehdLX6mlSpNo
-         qxNA==
+        bh=ehdcrv2mT2VKoMiW5G3gmtm0EefPx2m3GmPmUMuFdMY=;
+        b=lTCliXWOi2e1WQXt8r929+0SvTVRGxfKCo+4niifv9Ra6CrTQm1sU92lkE+DZEh0lr
+         TPiQ9bgbyobl9foTBNH9+FhGqzZVcjLdZoWYIbIaVEcf8UchA/f9VOxNRGCTmTk6bUWv
+         UeIoXZrD9ORyUkxzblrlmSuAsJHhKjpO1AJ7LMEMM/MLlzagFVgvixY6pYAHCl+pimDb
+         /WXzQaAKuVzf+FkONh5lwj3dlvPRzKTOZK4s+ijC+rpdUBxTae4bPWJx+abA74J4PfhZ
+         +KzTdrIF1e/PspGmM8v13UQqYpOyJ/sfpMUEpERqJjDV5VRqP846MlbBiqhzHxWDuThY
+         4shQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746185390; x=1746790190;
+        d=1e100.net; s=20230601; t=1746185573; x=1746790373;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4d8ApGUc/m5siNw2yJnJiebAzNVkN6zwU5JpG7PnXaA=;
-        b=Y6kpqLJeT8VXY1bRhNU5JlYEyf1NM1qAAR72pxcb+WI9wyHiycWdB+qHHNs7EOJhrS
-         lt+S+bJlegDCvIsCRl0BUj9RzRxR0j7PE+cyf47fJWHQuaFKDC++WEdtzwhVX4z10aG9
-         NZlRN1Xac/e4OTgT0WpEj5dNArZovJY19hHiTXRB5uJj+dxRPBR1ykIKGvslTMtfPUJF
-         YsfqxtoyjdnR29oZN7meu2qw+tmsnrrtee/hqMLYmLqXYAh2ZsS4v466NzmR7UBx8b3u
-         DGqqWqi4/UZy0/HlHKLnbLfLF/dVRmI8DqF9/Pku6uAkjx8n32NfDeMJCtWvdxJJGmLw
-         KBiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXzceAdclRLfx/tSKms3sUkeHD67jQCUJRU/t3hrzthlZNQfYziR5JtOKWF/Qvicti7V8oKPRkENn02iUXA1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAClEdE9EUmxeLZEKKwAUidvwTmILe8ohbZ46ZxdzJOo3nY8RB
-	9Aa2Eb0yuMlvOmezdKTA4aE6OEL0I0lO52/yzvoiUmnAv2fQ3GPosHCPDt9NXjY3Mx1PEnL70jL
-	Ni/iX5Mrto6uBgQ==
-X-Google-Smtp-Source: AGHT+IFpaSC9XcsOrGjeNxb+/dNB8fE7Dy+DCOaiP2DTJl1qxTdYd3MZatQ3DukBEbwwrU9bfI/pYQILIq7g3GU=
-X-Received: from wmbbd9.prod.google.com ([2002:a05:600c:1f09:b0:43d:44cf:11f8])
+        bh=ehdcrv2mT2VKoMiW5G3gmtm0EefPx2m3GmPmUMuFdMY=;
+        b=tquEIMnSBEybmql16H/Cl8rS/B2hEFm3rhtX69LEHtZuKCRz0tciZSeu610Eh8yH7b
+         ZRa3ADOnwj6C1E+a0TzRrnDWRyBIC6KwUVoVEcoJ5rdBD3TRc3i1oT+hszGAKSrkxHrk
+         O1+oXSs3fGAxqni08mc1EN+DBc12DFQ3ArREhQwaUnKAezY5Sm0/c380ZPGBm/ltfsJu
+         2zmS+FfpH+OxbV9bnL8OHJwqdBoD3xBRlnQr2SoiMyLYvbhK9+8lBUMmx23bdW6toC/a
+         cKoqBtqxamp+UT7Ki4Err6qvu8OHK2YZWejx4CCEkwr+N96vUy/FzwakxM4/+qgNvK6k
+         IA6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUP8G6/mXDh6JSx+ORxKt6xh0H5Yc7uZDk4lRdnGX6CbP0AforJ6Mizkq+aSKwei8en6QKWoPqG4NKgK6a3cA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+MOh+w5V2T38GTGa/qsw6Oh1SeCivhNyBP3pSh+J623cMnzkb
+	5l0cp9T/nirSklFHQRF3wV5kRscQkYBLsyw3R6X5yY0s4irY4Zg9zwZXOcyHA/zQ4OCIyKXTpGj
+	+lHOtl9bf1d96Yg==
+X-Google-Smtp-Source: AGHT+IGTFJg1P18OgzK6caFU87y4YhrHM/eoMM1Nq1UEWOnC7eYMyFOfE3yruvrd/4zA8FAvrqLG7/6uMPFF5xQ=
+X-Received: from wmbfl26.prod.google.com ([2002:a05:600c:b9a:b0:43d:55a1:bffc])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5304:b0:43c:fe15:41e1 with SMTP id 5b1f17b1804b1-441bbea0afbmr24277645e9.4.1746185390250;
- Fri, 02 May 2025 04:29:50 -0700 (PDT)
-Date: Fri, 2 May 2025 11:29:48 +0000
-In-Reply-To: <20250502-unique-ref-v10-1-25de64c0307f@pm.me>
+ 2002:a05:600c:5247:b0:43d:ea:51d2 with SMTP id 5b1f17b1804b1-441bbeb0f11mr18023905e9.14.1746185573652;
+ Fri, 02 May 2025 04:32:53 -0700 (PDT)
+Date: Fri, 2 May 2025 11:32:51 +0000
+In-Reply-To: <20250502-unique-ref-v10-2-25de64c0307f@pm.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me> <20250502-unique-ref-v10-1-25de64c0307f@pm.me>
-Message-ID: <aBSsrLGSJgLGTViT@google.com>
-Subject: Re: [PATCH v10 1/5] rust: types: Add Ownable/Owned types
+References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me> <20250502-unique-ref-v10-2-25de64c0307f@pm.me>
+Message-ID: <aBStYylT7wy9JiDx@google.com>
+Subject: Re: [PATCH v10 2/5] rust: Rename AlwaysRefCounted to RefCounted
 From: Alice Ryhl <aliceryhl@google.com>
 To: Oliver Mangold <oliver.mangold@pm.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -70,119 +70,67 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, May 02, 2025 at 09:02:29AM +0000, Oliver Mangold wrote:
-> From: Asahi Lina <lina@asahilina.net>
+On Fri, May 02, 2025 at 09:02:37AM +0000, Oliver Mangold wrote:
+> AlwaysRefCounted will become a marker trait to indicate that it is allowed
+> to obtain an ARef<T> from a `&T`, which cannot be allowed for types which
+> are also Ownable.
 > 
-> By analogy to AlwaysRefCounted and ARef, an Ownable type is a (typically
-> C FFI) type that *may* be owned by Rust, but need not be. Unlike
-> AlwaysRefCounted, this mechanism expects the reference to be unique
-> within Rust, and does not allow cloning.
-> 
-> Conceptually, this is similar to a KBox<T>, except that it delegates
-> resource management to the T instead of using a generic allocator.
-> 
-> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> [ om:
->   - split code into separate file and `pub use` it from types.rs
->   - make from_raw() and into_raw() public
->   - fixes to documentation
-> ]
 > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->  rust/kernel/types.rs         |   3 ++
->  rust/kernel/types/ownable.rs | 117 +++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 120 insertions(+)
-> 
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 9d0471afc9648f2973235488b441eb109069adb1..5d8a99dcba4bf733107635bf3f0c15840ec33e4c 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -11,6 +11,9 @@
->  };
->  use pin_init::{PinInit, Zeroable};
->  
-> +pub mod ownable;
-> +pub use ownable::{Ownable, OwnableMut, Owned};
-> +
->  /// Used to transfer ownership to and from foreign (non-Rust) languages.
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+
+>  // SAFETY: All instances of `Request<T>` are reference counted. This
+> -// implementation of `AlwaysRefCounted` ensure that increments to the ref count
+> +// implementation of `RefCounted` ensure that increments to the ref count
+>  // keeps the object alive in memory at least until a matching reference count
+>  // decrement is executed.
+
+It looks like "keeps" now fits on the previous line. I would reflow all
+text in this patch.
+
+> -/// Types that are _always_ reference counted.
+> +/// Types that are internally reference counted.
 >  ///
->  /// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and
-> diff --git a/rust/kernel/types/ownable.rs b/rust/kernel/types/ownable.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..52e7a69019f1e2bbbe3cf715651b67a5a5c7c13d
-> --- /dev/null
-> +++ b/rust/kernel/types/ownable.rs
-> @@ -0,0 +1,117 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Owned reference types.
-> +
-> +use core::{
-> +    marker::PhantomData,
-> +    mem::ManuallyDrop,
-> +    ops::{Deref, DerefMut},
-> +    ptr::NonNull,
-> +};
-> +
-> +/// Types that may be owned by Rust code or borrowed, but have a lifetime managed by C code.
-> +///
-> +/// It allows such types to define their own custom destructor function to be called when
-> +/// a Rust-owned reference is dropped.
-> +///
-> +/// This is usually implemented by wrappers to existing structures on the C side of the code.
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that:
-> +/// - Any objects owned by Rust as [`Owned<T>`] stay alive while that owned reference exists (i.e.
-> +///   until the [`release()`](Ownable::release) trait method is called).
-> +/// - That the C code follows the usual mutable reference requirements. That is, the kernel will
-> +///   never mutate the [`Ownable`] (excluding internal mutability that follows the usual rules)
-> +///   while Rust owns it.
-
-This seems too strong? Or does the exception mean to say that this does
-not apply to anything containing `Opaque`? By far most structs using
-this will use Opaque, so maybe directly mention Opaque instead?
-
-That C code follows the usual aliasing rules. That is, unless the value
-is wrapped in `Opaque` (or `UnsafeCell`), then the value must not be
-modified in any way while Rust owns it, unless that modification happens
-inside a `&mut T` method on the value.
-
-> +pub unsafe trait Ownable {
-> +    /// Releases the object (frees it or returns it to foreign ownership).
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that the object is no longer referenced after this call.
-> +    unsafe fn release(this: NonNull<Self>);
-> +}
-> +
-> +/// A subtrait of Ownable that asserts that an [`Owned<T>`] or `&mut Owned<T>` Rust reference
-> +/// may be dereferenced into a `&mut T`.
+>  /// It allows such types to define their own custom ref increment and decrement functions.
+> -/// Additionally, it allows users to convert from a shared reference `&T` to an owned reference
+> -/// [`ARef<T>`].
+>  ///
+>  /// This is usually implemented by wrappers to existing structures on the C side of the code. For
+>  /// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) to create reference-counted
+> @@ -410,9 +408,8 @@ pub const fn raw_get(this: *const Self) -> *mut T {
+>  /// at least until matching decrements are performed.
+>  ///
+>  /// Implementers must also ensure that all instances are reference-counted. (Otherwise they
+> -/// won't be able to honour the requirement that [`AlwaysRefCounted::inc_ref`] keep the object
+> -/// alive.)
+> -pub unsafe trait AlwaysRefCounted {
+> +/// won't be able to honour the requirement that [`RefCounted::inc_ref`] keep the object alive.)
+> +pub unsafe trait RefCounted {
+>      /// Increments the reference count on the object.
+>      fn inc_ref(&self);
+>  
+> @@ -425,11 +422,21 @@ pub unsafe trait AlwaysRefCounted {
+>      /// Callers must ensure that there was a previous matching increment to the reference count,
+>      /// and that the object is no longer used after its reference count is decremented (as it may
+>      /// result in the object being freed), unless the caller owns another increment on the refcount
+> -    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then calls
+> -    /// [`AlwaysRefCounted::dec_ref`] once).
+> +    /// (e.g., it calls [`RefCounted::inc_ref`] twice, then calls [`RefCounted::dec_ref`] once).
+>      unsafe fn dec_ref(obj: NonNull<Self>);
+>  }
+>  
+> +/// An extension to RefCounted, which declares that it is allowed to convert
+> +/// from a shared reference `&T` to an owned reference [`ARef<T>`].
 > +///
 > +/// # Safety
 > +///
-> +/// Implementers must ensure that access to a `&mut T` is safe, implying that it is okay to call
-> +/// [`core::mem::swap`] on the `Ownable`. This excludes pinned types (meaning: most kernel types).
-> +pub unsafe trait OwnableMut: Ownable {}
-> +
-> +/// An owned reference to an ownable kernel object.
-> +///
-> +/// The object is automatically freed or released when an instance of [`Owned`] is
-> +/// dropped.
-> +///
-> +/// # Invariants
-> +///
-> +/// The pointer stored in `ptr` is valid for the lifetime of the [`Owned`] instance.
+> +/// Implementers must ensure that no safety invariants are violated by upgrading an `&T`
+> +/// to an [`ARef<T>`]. In particular that implies [`AlwaysRefCounted`] and [`Ownable`]
+> +/// cannot be implemented for the same type, as this would allow to violate the uniqueness
+> +/// guarantee of [`Owned<T>`] by derefencing it into an `&T` and obtaining an [`ARef`] from that.
+> +pub unsafe trait AlwaysRefCounted: RefCounted {}
 
-This should probably talk about ownership.
-
-> +pub struct Owned<T: Ownable> {
-> +    ptr: NonNull<T>,
-> +    _p: PhantomData<T>,
-> +}
+Adding a new trait should not happen in a commit called "rename X to Y".
+Consider renaming this patch to "split AlwaysRefCounted into two traits"
+or similar.
 
 Alice
