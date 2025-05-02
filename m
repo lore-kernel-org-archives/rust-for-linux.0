@@ -1,368 +1,128 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A112417E6
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 11:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427AE224B04;
+	Fri,  2 May 2025 11:54:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746186201; cv=none; b=oITy4QzzdWO1prQ8jeJOvK+eWJnVrqh1Ptzocpae5H5QSKsGjn8yZYBMYgUzktfFG460UXnEThSojoW7tdCMGMWIw/fXTc/CgPKuaJDsaiOoD57YB+aBzIxTtVCeaD+8d8bHExC10ES0abq73361F+xDg2/4Fa7UZP5Ggl5EvDg=
+	t=1746186863; cv=none; b=FKWDjhk+Eg+IBCL26fuYYCTlqxKt6rXCNzLzLUdUY3ZZgH/9VDxKz7hPDxcVVlWr6NylCXHFzPU6uJwGeaWSULmCsd4Hgi0MWGg8dX3JiQUP/IjhrXUSG4AuXvcjrC37iMJKMb3adhAxz/khYS6F1vqgzMxGZOboW+W5dCsXRDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746186201; c=relaxed/simple;
-	bh=8gwBBioMXi3Ll+7Mw/MWxW8gwSz6pU8VF7k7c/qr3K0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lJMY2K8iggYqs2oSdhlS0ztXTM/odK7gFy7wXRULhwFzuY+TeN5RQeKIrCurEZEeQItjki7BKX5U/I3MrS6C8zYCpl3lt2RhtKLbbbtNG4rZc63vtIfNwRRu1tfpIgIH7wDrIiLaJX50z7/ZZG4Szrllgv8f4qewNe13ZaRKWJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lznAkD3S; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1746186863; c=relaxed/simple;
+	bh=KqCHWYDAwRHrAXjGqjKGYmxy69emOTeIfd0UFqib5ig=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MNUjnO1qNyf50eBk7ev2QE33+00zWd75ZTcPzfJoKWJmRtvVVxEn1Ykxv70BPfFJzTFGfvLG7gbJRUP6id62z1kPSPZKLejF5PBGdxxKUVzEfuqCb1xBKFDruspJbRFA6nSzsqBVYS2ER434rADKSGlxBKNXOBeHqRhGPkvzyxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u8P57N0d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lznAkD3S"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43cf44b66f7so9241535e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 04:43:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746186197; x=1746790997; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DidYLOHuLXP5Tq5oB8ufiHav2Zf66UmHbXzwtTzN9hs=;
-        b=lznAkD3SLmVzWE3NnlQdAUy/VGgrazw+OPDw4zp0MO31BtXnim7bhFtLaMZg6cpc5d
-         rt4L6GPX+XedR48RIYDOFANuoRYkQ6OPPauPG93IYy0y4vdPMwen47oWZl9v9SkG9v0K
-         EaYIg0NPYXcqgi+JZ89cVUtGKjFaUguMdQN1bH8IsGDLrRsDSJ0Bx5fJ9OGqUb/VG7ZV
-         /r7gEXegedFlhLQi2FRmyzHw3yp26fiWuDwslj6KyfGIbsIpcgruoWC/Iix8lnU5miIF
-         pm/ZXILbIZZZilVxNuX5u3mJVrf/G/Uzi0A5qLa65zGeRsG1v2v0ZbjZnaYXbCm6JDWY
-         BG+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746186197; x=1746790997;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DidYLOHuLXP5Tq5oB8ufiHav2Zf66UmHbXzwtTzN9hs=;
-        b=Uf8knrCqLn+S0tYiN8cP0V2Xf4OmabN4uv5kSswXpHBl/Mrn5VoZiOwY45hh2d4uXT
-         5nP2vQC8W/nPqbZ4R/QXI6vlfHLP2ouas1lF5dTRBuuM+/fDK0TX8+5C2TdVylRzS9RZ
-         /Y9bJUf5u1ZZK452k5zca7Scz8kb8QTIsVQqOs5LZv5c/W4xCtoGeBTzgzNvMViQG89S
-         sXBuKwj9IfnIKz47UoNYYsrrTntkGT/6ax8+lLL+7zwumZUuHnxUQowbswXZ5E+CGJl0
-         STpoPGfyWO1vMM6Dn7qzwfXwfgD3Hp52vnNpla7B6nAeXtWvDWfk9FpS5MCgfx3yl56Z
-         AWfw==
-X-Forwarded-Encrypted: i=1; AJvYcCXTF8cqd7v5rWHIKwM0zNWvUiSuUl5i0BWToCkBoTBGpSfesvW9J0CWXRZGPZJnsxVZpGl+G6LN4ZZBjNEgUw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSvzWWH6kSXBWISJ5opQH9qp/nW0H300OwNN9e6zsuGeinlTYJ
-	UenpLGMJ7i8osaAWWD0maHYy8JOmCsYwwxEaai6FKtadb0oc+8M3XI73UEyG/MAWFlhFFgywBXv
-	FhFsASTzSCspz6Q==
-X-Google-Smtp-Source: AGHT+IFGa/pmevzllhA3VKUyCdg9dMO5Fkxuvgy8Gq5Jgms9suiSPzBpAtv6+CgiyV3Rj/nCueu/o+qTbmID7mU=
-X-Received: from wmbfm22.prod.google.com ([2002:a05:600c:c16:b0:43c:fce2:1db2])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:ccc:b0:43d:1840:a13f with SMTP id 5b1f17b1804b1-441bbf2bbc1mr18359295e9.25.1746186197444;
- Fri, 02 May 2025 04:43:17 -0700 (PDT)
-Date: Fri, 2 May 2025 11:43:15 +0000
-In-Reply-To: <20250502-unique-ref-v10-5-25de64c0307f@pm.me>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u8P57N0d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C54C4CEE4;
+	Fri,  2 May 2025 11:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746186862;
+	bh=KqCHWYDAwRHrAXjGqjKGYmxy69emOTeIfd0UFqib5ig=;
+	h=From:Date:Subject:To:Cc:From;
+	b=u8P57N0dYjZpwTQdC+xwzLLCR+Ki9PAQNaMLOL41u/wUZPzyiLI//QOGa7RhBkxOk
+	 xUXF9dwMYy5viMaHfG3yiyrG/e1XRvatgGYGk/fSBXW6PbTNNof/zGqn0or1sNpQAG
+	 +mt4wkTf3n8ZDKTSrtotPL0N6G9qqVy+tnokCy176/2fFJDhSKfiYIPKzs8hN+r8uh
+	 T1B7BsiyK7JI6jc/FbUzSL94XXUTghSbYhTYuNerSKzFbTpGQGgnjZyCZsZgfpho0C
+	 FO/fVClfuip2Fcs5ONT3XJ4o16Ut3ycQd9qqJAdrLEZ7tJk9JmHSgrVpEi5Bg0I51D
+	 cx8W5S0rEyhWA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Fri, 02 May 2025 13:53:57 +0200
+Subject: [PATCH] rust: elaborate safety requirements for
+ `AlwaysReferenceCounted`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me> <20250502-unique-ref-v10-5-25de64c0307f@pm.me>
-Message-ID: <aBSv0w5x8qhBfOM8@google.com>
-Subject: Re: [PATCH v10 5/5] rust: Add OwnableRefCounted and SimpleOwnableRefCounted
-From: Alice Ryhl <aliceryhl@google.com>
-To: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250502-aref-from-raw-v1-1-eb0630626bba@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAFSyFGgC/x2MMQqAMAwAvyKZDbSVOvgVcaiaagarpKBC6d8Nj
+ sdxVyCTMGUYmgJCN2c+k4JtG1j2kDZCXpXBGeeNNw6DUMQo54ESHiRrzdxRv87RgzaXWn7/3zj
+ V+gFXG9WhXwAAAA==
+X-Change-ID: 20250502-aref-from-raw-e110b3e6dbf5
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: Oliver Mangold <oliver.mangold@pm.me>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2101; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=KqCHWYDAwRHrAXjGqjKGYmxy69emOTeIfd0UFqib5ig=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBoFLJhwDA4cSoj8/KWclBEo55Y0qMuTSEhDKUhd
+ NkIkIfO1TOJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaBSyYQAKCRDhuBo+eShj
+ dyOGD/9Rn71Ptf+mGiZ/TPi7BWgcJ7eg66sdRHDTLwo4eLB6g/33W0pAQi/kDEk71O2jfJuF0za
+ XQGcSrrARxyiuWM4PgNO++ZGfPXHaYiQbjFlfCuJ0PVAzy2s+Vq8o/+6OHeZ8O12lwC/IMyiL1Z
+ a47o937r4OF7j/ZDmixTfaiVEjgWMCsRJHXSTPtqrHXN47yL+52Aj+sw5+AD/8BEd3jGUAEdOFC
+ gMieNPF0a37XK93v1E41/eifVMX5yVL7kF033zfWVdiICCktrv9aq4H78089wKJw/eBF2oxKuMA
+ 9aeWLpis/VY8fA85FNJAOOyZ+Kx18AR9CjucQlpnXLvT/T81eXkdLHXhsCacJLQsODI7REVkerx
+ CazNw2IQqW14xQpNtwFG+rl0+zISTgaABclaKLiWkwGvJjbWKOdCEoDxblVCwSy6Ooscp1nwMKM
+ a56kwocIg/NfqhtRCWfEYQpt4iYyQa3RzjtDggEFt+HztaEeK9Zfj0E9+SivOqBWWRAbdg4JyW9
+ VW362i/m3a3vH37CXNu3Rp7Dr9keDpV3d/B7uW5+SHkQQE3ZRJ/pOOKRFU5xyUqZsRketf0pGla
+ fMRTw2Nmebo6NHoJIBnAWbJf+67thwrn97dYHvoUriRsHonpSxS3uqfBEmbRkJ6iPIX1Ccaz3Hm
+ emaHNhxIV8f6XzQ==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Fri, May 02, 2025 at 09:03:04AM +0000, Oliver Mangold wrote:
-> Types implementing one of these traits can safely convert between an
-> ARef<T> and an Owned<T>.
-> 
-> This is useful for types which generally are accessed through an ARef
-> but have methods which can only safely be called when the reference is
-> unique, like e.g. `block::mq::Request::end_ok()`.
-> 
-> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/types.rs         |   8 +-
->  rust/kernel/types/ownable.rs | 244 +++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 251 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 33d2b4e4a87b991c6d934f4e8d2c6c71a15b1bcb..3a58905599eb9acb0e701c97bd92d3b93b9515cf 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -12,7 +12,7 @@
->  use pin_init::{PinInit, Zeroable};
->  
->  pub mod ownable;
-> -pub use ownable::{Ownable, OwnableMut, Owned};
-> +pub use ownable::{Ownable, OwnableMut, OwnableRefCounted, Owned, SimpleOwnableRefCounted};
->  
->  /// Used to transfer ownership to and from foreign (non-Rust) languages.
->  ///
-> @@ -544,6 +544,12 @@ fn from(b: &T) -> Self {
->      }
->  }
->  
-> +impl<T: OwnableRefCounted> From<Owned<T>> for ARef<T> {
-> +    fn from(b: Owned<T>) -> Self {
-> +        T::into_shared(b)
-> +    }
-> +}
-> +
->  impl<T: RefCounted> Drop for ARef<T> {
->      fn drop(&mut self) {
->          // SAFETY: The type invariants guarantee that the `ARef` owns the reference we're about to
-> diff --git a/rust/kernel/types/ownable.rs b/rust/kernel/types/ownable.rs
-> index 52e7a69019f1e2bbbe3cf715651b67a5a5c7c13d..b79459d07870ea4fa4f5df0c7565ac72d65e2c53 100644
-> --- a/rust/kernel/types/ownable.rs
-> +++ b/rust/kernel/types/ownable.rs
-> @@ -2,6 +2,7 @@
->  
->  //! Owned reference types.
->  
-> +use crate::types::{ARef, RefCounted};
->  use core::{
->      marker::PhantomData,
->      mem::ManuallyDrop,
-> @@ -115,3 +116,246 @@ fn drop(&mut self) {
->          unsafe { T::release(self.ptr) };
->      }
->  }
-> +
-> +/// A trait for objects that can be wrapped in either one of the reference types [`Owned`] and
-> +/// [`ARef`].
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that:
-> +///
-> +/// - Both the safety requirements for [`Ownable`] and [`RefCounted`] are fulfilled.
-> +/// - [`try_from_shared()`](OwnableRefCounted::into_shared) only returns an [`Owned`] if exactly
-> +///   one [`ARef`] exists.
-> +/// - [`into_shared()`](OwnableRefCounted::into_shared) set the reference count to the value which
-> +///   the returned [`ARef`] expects for an object with a single reference
-> +///   in existence. This implies that if [`into_shared()`](OwnableRefCounted::into_shared) is left
-> +///   on the default implementation, which just rewraps the underlying object, the reference count
-> +///   needs not to be modified when converting a [`Owned`] to an [`ARef`].
-> +///
-> +/// # Examples
-> +///
-> +/// A minimal example implementation of [`OwnableRefCounted`], [`Ownable`] and its usage with
-> +/// [`ARef`] and [`Owned`] looks like this:
-> +///
-> +/// ```
-> +/// # #![expect(clippy::disallowed_names)]
-> +/// use core::cell::Cell;
-> +/// use core::ptr::NonNull;
-> +/// use kernel::alloc::{flags, kbox::KBox, AllocError};
-> +/// use kernel::types::{
-> +///     ARef, RefCounted, Owned, Ownable, OwnableRefCounted,
-> +/// };
-> +///
-> +/// struct Foo {
-> +///     refcount: Cell<usize>,
-> +/// }
-> +///
-> +/// impl Foo {
-> +///     fn new() -> Result<Owned<Self>, AllocError> {
-> +///         // Use a `KBox` to handle the actual allocation.
-> +///         let result = KBox::new(
-> +///             Foo {
-> +///                 refcount: Cell::new(1),
-> +///             },
-> +///             flags::GFP_KERNEL,
-> +///         )?;
-> +///         let result = NonNull::new(KBox::into_raw(result))
-> +///             .expect("Raw pointer to newly allocation KBox is null, this should never happen.");
-> +///         // SAFETY: We just allocated the `Foo`, thus it is valid.
-> +///         Ok(unsafe { Owned::from_raw(result) })
-> +///     }
-> +/// }
-> +///
-> +/// // SAFETY: We increment and decrement each time the respective function is called and only free
-> +/// // the `Foo` when the refcount reaches zero.
-> +/// unsafe impl RefCounted for Foo {
-> +///     fn inc_ref(&self) {
-> +///         self.refcount.replace(self.refcount.get() + 1);
-> +///     }
-> +///
-> +///     unsafe fn dec_ref(this: NonNull<Self>) {
-> +///         // SAFETY: The underlying object is always valid when the function is called.
-> +///         let refcount = unsafe { &this.as_ref().refcount };
-> +///         let new_refcount = refcount.get() - 1;
-> +///         if new_refcount == 0 {
-> +///             // The `Foo` will be dropped when `KBox` goes out of scope.
-> +///             // SAFETY: The `Box<Foo>` is still alive as the old refcount is 1.
-> +///             unsafe { KBox::from_raw(this.as_ptr()) };
-> +///         } else {
-> +///             refcount.replace(new_refcount);
-> +///         }
-> +///     }
-> +/// }
-> +///
-> +/// // SAFETY: We only convert into an `Owned` when the refcount is 1.
-> +/// unsafe impl OwnableRefCounted for Foo {
-> +///     fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>> {
-> +///         if this.refcount.get() == 1 {
-> +///             // SAFETY: The `Foo` is still alive as the refcount is 1.
-> +///             Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
-> +///         } else {
-> +///             Err(this)
-> +///         }
-> +///     }
-> +/// }
-> +///
-> +/// // SAFETY: We are not `AlwaysRefCounted`.
-> +/// unsafe impl Ownable for Foo {
-> +///     unsafe fn release(this: NonNull<Self>) {
-> +///         // SAFETY: Using `dec_ref()` from `RefCounted` to release is okay, as the refcount is
-> +///         // always 1 for an `Owned<Foo>`.
-> +///         unsafe{ Foo::dec_ref(this) };
-> +///     }
-> +/// }
-> +///
-> +/// let foo = Foo::new().unwrap();
-> +/// let mut foo = ARef::from(foo);
-> +/// {
-> +///     let bar = foo.clone();
-> +///     assert!(Owned::try_from(bar).is_err());
-> +/// }
-> +/// assert!(Owned::try_from(foo).is_ok());
-> +/// ```
-> +pub unsafe trait OwnableRefCounted: RefCounted + Ownable + Sized {
-> +    /// Checks if the [`ARef`] is unique and convert it to an [`Owned`] it that is that case.
-> +    /// Otherwise it returns again an [`ARef`] to the same underlying object.
-> +    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>>;
-> +
-> +    /// Converts the [`Owned`] into an [`ARef`].
-> +    fn into_shared(this: Owned<Self>) -> ARef<Self> {
-> +        // SAFETY: Safe by the requirements on implementing the trait.
-> +        unsafe { ARef::from_raw(Owned::into_raw(this)) }
-> +    }
-> +}
-> +
-> +/// This trait allows to implement [`Ownable`] and [`OwnableRefCounted`] together in a simplified
-> +/// way, only requiring to implement [`RefCounted`] and providing the method
-> +/// [`is_unique()`](SimpleOwnableRefCounted::is_unique).
-> +///
-> +/// For non-standard cases where conversion between [`Ownable`] and [`RefCounted`] does not allow
-> +/// [`Ownable::release()`] and [`RefCounted::dec_ref()`] to be the same method, [`Ownable`]
-> +/// and [`OwnableRefCounted`] should be implemented separately.
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that:
-> +///
-> +/// - The safety requirements for [`Ownable`] are fulfilled and [`RefCounted::dec_ref()`] can
-> +///   be used for [`Ownable::release()`].
-> +/// - [`is_unique`](SimpleOwnableRefCounted::is_unique) must only return `true` in case only one
-> +///   [`ARef`] exists and it is impossible for one to be obtained other than by cloning an existing
-> +///   [`ARef`] or converting an [`Owned`] to an [`ARef`].
-> +/// - It is safe to convert an unique [`ARef`] into an [`Owned`] simply by re-wrapping the
-> +///   underlying object without modifying the refcount.
-> +///
-> +/// # Examples
-> +///
-> +/// A minimal example implementation of [`RefCounted`] and [`SimpleOwnableRefCounted`]
-> +/// and its usage with [`ARef`] and [`Owned`] looks like this:
-> +///
-> +/// ```
-> +/// # #![expect(clippy::disallowed_names)]
-> +/// use core::cell::Cell;
-> +/// use core::ptr::NonNull;
-> +/// use kernel::alloc::{flags, kbox::KBox, AllocError};
-> +/// use kernel::types::{
-> +///     ARef, Owned, RefCounted, SimpleOwnableRefCounted,
-> +/// };
-> +///
-> +/// struct Foo {
-> +///     refcount: Cell<usize>,
-> +/// }
-> +///
-> +/// impl Foo {
-> +///     fn new() -> Result<Owned<Self>, AllocError> {
-> +///         // Use a KBox to handle the actual allocation.
-> +///         let result = KBox::new(
-> +///             Foo {
-> +///                 refcount: Cell::new(1),
-> +///             },
-> +///             flags::GFP_KERNEL,
-> +///         )?;
-> +///         let result = NonNull::new(KBox::into_raw(result))
-> +///             .expect("Raw pointer to newly allocation KBox is null, this should never happen.");
-> +///         // SAFETY: We just allocated the `Foo`, thus it is valid.
-> +///         Ok(unsafe { Owned::from_raw(result) })
-> +///     }
-> +/// }
-> +///
-> +/// // SAFETY: we ensure that:
-> +/// // - The `Foo` is only dropped when the refcount is zero.
-> +/// // - `is_unique()` only returns `true` when the refcount is 1.
-> +/// unsafe impl RefCounted for Foo {
-> +///     fn inc_ref(&self) {
-> +///         self.refcount.replace(self.refcount.get() + 1);
-> +///     }
-> +///
-> +///     unsafe fn dec_ref(this: NonNull<Self>) {
-> +///         // SAFETY: The underlying object is always valid when the function is called.
-> +///         let refcount = unsafe { &this.as_ref().refcount };
-> +///         let new_refcount = refcount.get() - 1;
-> +///         if new_refcount == 0 {
-> +///             // The `Foo` will be dropped when KBox goes out of scope.
-> +///             // SAFETY: The `Box<Foo>` is still alive as the old refcount is 1.
-> +///             unsafe { KBox::from_raw(this.as_ptr()) };
-> +///         } else {
-> +///             refcount.replace(new_refcount);
-> +///         }
-> +///     }
-> +/// }
-> +///
-> +/// // SAFETY: we ensure that:
-> +/// // - `is_unique()` only returns `true` when the refcount is 1.
-> +/// unsafe impl SimpleOwnableRefCounted for Foo {
-> +///     fn is_unique(&self) -> bool {
-> +///         self.refcount.get() == 1
-> +///     }
-> +/// }
-> +///
-> +/// let foo = Foo::new().unwrap();
-> +/// let mut foo = ARef::from(foo);
-> +/// {
-> +///     let bar = foo.clone();
-> +///     assert!(Owned::try_from(bar).is_err());
-> +/// }
-> +/// assert!(Owned::try_from(foo).is_ok());
-> +/// ```
-> +pub unsafe trait SimpleOwnableRefCounted: RefCounted {
-> +    /// Checks if exactly one [`ARef`] to the object exists. In case the object is [`Sync`], the
-> +    /// check needs to be race-free.
-> +    fn is_unique(&self) -> bool;
-> +}
-> +
-> +#[cfg_attr(RUSTC_HAS_DO_NOT_RECOMMEND, diagnostic::do_not_recommend)]
-> +// SAFETY: Safe by the requirements on implementation of [`SimpleOwnableRefCounted`].
-> +unsafe impl<T: SimpleOwnableRefCounted> OwnableRefCounted for T {
-> +    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>> {
-> +        if T::is_unique(&*this) {
-> +            // SAFETY: Safe by the requirements on implementation of [`SimpleOwnable`].
-> +            Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
-> +        } else {
-> +            Err(this)
-> +        }
-> +    }
-> +}
-> +
-> +#[cfg_attr(RUSTC_HAS_DO_NOT_RECOMMEND, diagnostic::do_not_recommend)]
-> +// SAFETY: Safe by the requirements on implementation of [`SimpleOwnableRefCounted`].
-> +unsafe impl<T: SimpleOwnableRefCounted> Ownable for T {
-> +    unsafe fn release(this: NonNull<Self>) {
-> +        // SAFETY: Safe by the requirements on implementation of
-> +        // [`SimpleOwnableRefCounted::dec_ref()`].
-> +        unsafe { RefCounted::dec_ref(this) };
-> +    }
-> +}
+Clarify that implementers of `AlwaysReferenceCounted` must prevent the
+implementer from being directly initialized by users.
 
-I wonder if this is too limiting. It will limit our ability to write
-other blanket impls for Ownable and OwnableRefCounted. Using e.g. a
-derive macro might be better?
+It is a violation of the safety requirements of `AlwaysReferenceCounted` if
+its implementers can be initialized on the stack by users. Although this
+follows from the safety requirements, it is not immediately obvious.
 
-Alice
+The following example demonstrates the issue. Note that the safety
+requirements for implementing `AlwaysRefCounted` and for calling
+`ARef::from_raw` are satisfied.
+
+  struct Empty {}
+
+  unsafe impl AlwaysRefCounted for Empty {
+      fn inc_ref(&self) {}
+      unsafe fn dec_ref(_obj: NonNull<Self>) {}
+  }
+
+  fn unsound() -> ARef<Empty> {
+      use core::ptr::NonNull;
+      use kernel::types::{ARef, RefCounted};
+
+      let mut data = Empty {};
+      let ptr = NonNull::<Empty>::new(&mut data).unwrap();
+      let aref: ARef<Empty> = unsafe { ARef::from_raw(ptr) };
+
+      aref
+  }
+
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/types.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index 9d0471afc9648f2973235488b441eb109069adb1..193a1356f0df6fede428498485aaef19b4c845c6 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -409,6 +409,10 @@ pub const fn raw_get(this: *const Self) -> *mut T {
+ /// Implementers must also ensure that all instances are reference-counted. (Otherwise they
+ /// won't be able to honour the requirement that [`AlwaysRefCounted::inc_ref`] keep the object
+ /// alive.)
++///
++/// Note: This means that implementers must prevent users from directly
++/// initializing the implementer. Otherwise users could initialize the
++/// implementer on the stack, which would violate the safety requirements.
+ pub unsafe trait AlwaysRefCounted {
+     /// Increments the reference count on the object.
+     fn inc_ref(&self);
+
+---
+base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
+change-id: 20250502-aref-from-raw-e110b3e6dbf5
+
+Best regards,
+-- 
+Andreas Hindborg <a.hindborg@kernel.org>
+
+
