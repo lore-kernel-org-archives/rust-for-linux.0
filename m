@@ -1,101 +1,103 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B64D230D1E
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 11:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF361E5B62
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 11:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746184335; cv=none; b=t+U+vRrqg+4t52dFaNoTzQKYk2lUKZecPeVBW96TjlJo+OLQMXw95OI2YL4knuaNTFXiXirQoLT0bGJRU9ReeEU2iUEKgyDs6FFTBbrSZQGYIyhygZCC+uStvg536vPGj58UyhYwpKfdJGEr1rTbFEBRsliIAgRy4mAsKCTtPLI=
+	t=1746184648; cv=none; b=YvJRaIDlDdjf+VV+tkvWlN+xO9+BsuohUcyuFmIKKDvk7oHLawEy0H97p8Vp1pwI+ktZDSRClPwGPknLzHgrctHHy0llHzzH0wu3UQarXBRTGQ6hyxKq3awOYYjS4yDja9+mFnnS/ISjrlRZDeKNysi+yKbzb44GETj41vhYoc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746184335; c=relaxed/simple;
-	bh=CfOQILRrI2oOpfR8BBk2bJsADb5RlDrgVjWRzEAU4SE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xnn7B0Eg77q3tTqu57NMh0GqwPeiYYzls7XHGeWTfWss1sV8EBAp6sXu28nNZw8RCU/vtyFSHdRSxWautG87psr693CKgchJRiTNQmg4ug6TG3ARm+mLlv4dFc86X7UH25a7mg5/xC5N32ZcNIYnFAjiPfkE4FMFlI9Bu/QWF34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=lWgDRGAY; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1746184648; c=relaxed/simple;
+	bh=0kUCn+11GmyM4ag1Q3PeNVV9aHHIWQItyHxztuqQhPg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hbC4SIDIHnRfbJl8qQyeSM4XEeU4U++Nf2wvRs0IOeODyC8puqOR9ybP7l+HJPdHvtlRTl2DoKw3Mwe8Qs32+vxuf12pDZyQCqgxPxfjraLRqqbFaPEKecQG70cXa1r87GcUQmQtjzN94ncllbOBN5qHfvlBMcX4KyMMEfffJiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mb7M3ZaN; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="lWgDRGAY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1746184331; x=1746443531;
-	bh=xRovayJYx3DtpzagwTmA/2L4kuh33mTIVzdNmHqy2Ro=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=lWgDRGAY6FfVEr3lCeLwc3j9jijXccPqX7uGSwKQ5S+cR8iFvZ3FKMlSqCGUMth4d
-	 O3lMTH3sBRUJRi2M5RAEHHrtQS0VxtcN3e5KI2tJH7SDEaJGIx5MP0sYsmrVBg8ajz
-	 dTCDJRU/M/19ru+JCswb3OIa0o8OPf1q+tZIBW9146lcp9oqx3PUuZnnSBWXYpKOWI
-	 Gw60ustEeVyich43wgfwh09Yd84LbMpXeH8GDm23IIxdvIW0p6K4VEHYKbN2DDQ0P0
-	 RZLleXPCrZN99zgASEy8mx4vopqjLgSEje7CV61v3Z4OefvhM14q4UxWtId3GeCC3j
-	 5JrFmFO6sCk3A==
-Date: Fri, 02 May 2025 11:12:05 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 3/5] rust: Add missing SAFETY documentation for ARef example
-Message-ID: <aBSofsTTbt4pgsDU@mango>
-In-Reply-To: <87ikmjz45e.fsf@kernel.org>
-References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me> <ih3kqi48IA3vGKmMFL796yktZHuDzsSsrSz1KA_EIHnhlZaeKRQ2dK0FtgmzWTeVNoy9iVs9rNPjAp-ozQO3Xw==@protonmail.internalid> <20250502-unique-ref-v10-3-25de64c0307f@pm.me> <87ikmjz45e.fsf@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 038d256563889b47a1222ea27d8e05b406ef8404
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mb7M3ZaN"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43ceeaf1524so7928875e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 04:17:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746184643; x=1746789443; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=p5OL8nU942aSLT09UgHbmIML3ySj45uDmdMG5/wKvHc=;
+        b=mb7M3ZaNa/pMFAYakRwzRINMq/5/W6DKJPqeQqEWuOZQuuRD95Tib8mIO8MEiArFAl
+         rmFHrSzEH+w/w/DqmFOpWIVY4xZUkvcGc0IqRx2G9IThjpyLrWEWQEnD8rBWdEt5Bo5y
+         V3Z16Jvsk5g/ohwNMfp1HI5uVVY+rd2s4j2Ac3vDO9PgysH5ekLhLKHUawIb7auPd64q
+         Tqiwa+iVxfTIScxyHaibgXRc1neoDdY0/ZrhFPYwNDRA0wTEvFXtn2kJniDvUXRZDQBE
+         b6wlggdtiJ2pdi+na4AfmsVXcT7H2UZTflx4pvkR7RGnvdYXGR51A9oq3tCZD8+SM5wM
+         NtBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746184643; x=1746789443;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p5OL8nU942aSLT09UgHbmIML3ySj45uDmdMG5/wKvHc=;
+        b=vc8yde5YN4S8vdpQnUhUQ9bPr23NdxXG5QPbuJjfec620G5dbBGl3cpRWkb6m3k2fe
+         hrIBCYgx1tCd4VpAwAa6c8fBqUjJINzg0j11sXfRJnNDxk5nuoNF9ZsOXnpVmNpLxkm5
+         dxpUO8t3R3YyDPOQHK785a0/oKoN8FNj5xx82283BQznmW7Y0lwvKOEgQKESkAFrHlO7
+         VJE4XY2GdXUSdVGNee30jzRksd1yY3OmXTUKH5bgwzcLmM9CcJxZFdJv3Q8zNUKKXzfj
+         hi+liw8KXZyl/DYHcDdCh+OTeTNZgmJ30O351cKATgGDyTiUdeJ8saw6OvoUufGFoQ40
+         attQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUahAPmvDiAc/r8maH2PKSLgzZWLu7HaMyAaL9PLDT50bD08pFq99tzbpW6ag0MiKgD2kwfz8/NGW4/g3P4Dw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGOh9qaGWjrMTmgIe+jEpq2FIQ1FzGdLFIpGcSERbiFQjw/NgY
+	JjAy7uxsIFyb6IJJJSFB6+mjcsbowWIrZ0jZhr3zlAAjC5xJVoJoFXv6o97baS9VZTc33+8ARct
+	ohCd1tZ52S/Wzow==
+X-Google-Smtp-Source: AGHT+IE72hvZ6mV4D/kXtlS6V50J8cDZa9GKooUY0w71JECu4b4Ctc5ADtyJqEQ5cdCjB5Oy5b/n+Jkyg9Gzn9c=
+X-Received: from wmbel14.prod.google.com ([2002:a05:600c:3e0e:b0:440:5f8a:667c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3acd:b0:435:edb0:5d27 with SMTP id 5b1f17b1804b1-441b72c0a66mr50048405e9.9.1746184643608;
+ Fri, 02 May 2025 04:17:23 -0700 (PDT)
+Date: Fri, 2 May 2025 11:17:21 +0000
+In-Reply-To: <20250502094537.231725-5-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250502094537.231725-1-fujita.tomonori@gmail.com> <20250502094537.231725-5-fujita.tomonori@gmail.com>
+Message-ID: <aBSpwXh0GnuyXyST@google.com>
+Subject: Re: [PATCH v6 4/4] rust: Add warn_on macro
+From: Alice Ryhl <aliceryhl@google.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	x86@kernel.org, linux-riscv@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, peterz@infradead.org, hpa@zytor.com, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org, 
+	kernel@xen0n.name, tangyouling@loongson.cn, hejinyang@loongson.cn, 
+	yangtiezhu@loongson.cn, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu, 
+	dakr@kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On 250502 1241, Andreas Hindborg wrote:
-> >
-> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> > index d7fa8934c545f46a646ca900ab8957a04b0ad34d..33d2b4e4a87b991c6d934f4=
-e8d2c6c71a15b1bcb 100644
-> > --- a/rust/kernel/types.rs
-> > +++ b/rust/kernel/types.rs
-> > @@ -498,7 +498,9 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-> >      ///
-> >      /// struct Empty {}
-> >      ///
-> > -    /// # // SAFETY: TODO.
-> > +    /// // SAFETY: The `RefCounted` implementation for `Empty` does no=
-t count references
-> > +    /// // and never frees the underlying object. Thus we can act as h=
-aving a
-> > +    /// // refcount on the object that we pass to the newly created `A=
-Ref`.
-> >      /// unsafe impl RefCounted for Empty {
-> >      ///     fn inc_ref(&self) {}
-> >      ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
-> > @@ -506,7 +508,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-> >      ///
-> >      /// let mut data =3D Empty {};
-> >      /// let ptr =3D NonNull::<Empty>::new(&mut data).unwrap();
-> > -    /// # // SAFETY: TODO.
-> > +    /// // SAFETY: We keep `data` around longer than the `ARef`.
->=20
-> I still think this applies:
->=20
-> >> How about:
-> >>
-> >>   The `RefCounted` implementation for `Empty` does not count reference=
-s
-> >>   and never frees the underlying object. Thus we can act as having a
-> >>   refcount on the object that we pass to the newly created `ARef`.
-> >>
+On Fri, May 02, 2025 at 06:45:36PM +0900, FUJITA Tomonori wrote:
+> Add warn_on macro, uses the BUG/WARN feature (lib/bug.c) via assembly
+> for x86_64/arm64/riscv.
+> 
+> The current Rust code simply wraps BUG() macro but doesn't provide the
+> proper debug information. The BUG/WARN feature can only be used from
+> assembly.
+> 
+> This uses the assembly code exported by the C side via ARCH_WARN_ASM
+> macro. To avoid duplicating the assembly code, this approach follows
+> the same strategy as the static branch code: it generates the assembly
+> code for Rust using the C preprocessor at compile time.
+> 
+> Similarly, ARCH_WARN_REACHABLE is also used at compile time to
+> generate the assembly code; objtool's reachable annotation code. It's
+> used for only architectures that use objtool.
+> 
+> For now, Loongarch and arm just use a wrapper for WARN macro.
+> 
+> UML doesn't use the assembly BUG/WARN feature; just wrapping generic
+> BUG/WARN functions implemented in C works.
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Hi Andreas,
-
-I agree. Sorry, I just messed up the fix. Your wording landed in the
-previous to-be-fixed unsafe comment, as you can see.
-
-Happens when you are too much in a hurry and didn't touch the patch for
-too long :/
-
-I will fix it in the next version.
-
-Best,
-
-Oliver
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
