@@ -1,361 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BDB257427;
-	Fri,  2 May 2025 14:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8402F15A848;
+	Fri,  2 May 2025 14:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746194600; cv=none; b=jS1xOEQf0D48x965SzuCnbu4uRMmR1utrveKlbkJvzScGWKwFYAzNRXRUgQuek8pjnggTOwkRzuPuZ9/GGQNb1ZcF4ySZYu8yOLP++wtCtFj7Bb/Ph21Evk+TKCxBdOrs0MT0vTEE5aRR1IlM+huAOOHepaB7JK/Rrtc3YLJtTQ=
+	t=1746194856; cv=none; b=sM5CI7vt0xIaW6JgHFnDIOdm6kCEdg49wL6ve2MKyzHPNG1Gc2PPZOhXYpmGMAzacMCcoNg8ndHGc5i1XGFuuLVl03LUF/izjcrmi10PSqq8vKH8wM0SxewrJzTQI6yAWHMpff0fyPLZIVIcLS7rMsT36OvKejj2QlPXQVIQgNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746194600; c=relaxed/simple;
-	bh=5hjxujVq9UNEKFrCpRJWHAmcCo5XnfoXNdbzgUPep2I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGCqqbfzpt9K5aUFbWri7o9nIbWSv5foQIvmyUoE7lTe7qpM08D2hnikroFoEunWEO1ljrMsZ+6MCd5BytICZO2YBCfzNoSkUvWlVwdQIYJwFx4VMpu9dKOqOl050MdoAkhcp5XEI5zQypfjZGvRxhbOu5EGlWwzDIMbKzdf21I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KhmTD0+3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746194856; c=relaxed/simple;
+	bh=d7e/BxF8TUjSA3tEyDtY7crUEk0g5PG6PGzTvVanYqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qbCXAfUojCVeFWlYk4rtadn94ipix5JUnQbZwyOmyeE/Pkgu++dKZgS3qxTg+ibq31DgZNrc3Q1bOMDAz1sTSvdbisjeL/rtB2RFz6+N9/G08T10BgPi8b7i1ij7ufW27NVvEFhMeUR3HQTDZBaVbaYg3+gannge9Euv+i2vJjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/LC/4L2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KhmTD0+3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FAEC4CEE4;
-	Fri,  2 May 2025 14:03:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746194600;
-	bh=5hjxujVq9UNEKFrCpRJWHAmcCo5XnfoXNdbzgUPep2I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhmTD0+3p83k5lNd4vW8hDNYkrRd4BRw1MxgihTtFzyY3ubnGf2J3Jdmogppkx3qn
-	 Z29LHUwlRRR1Er6x8oocBDW20TcQE0fbYKnPfDVXnefw1vS5ncBxkbFcJreyfKwEtj
-	 IzI9orUg/KTKAZ6s7Hx9QcisDJ2hd/irnq97yzU+SKPZpsJ2a6Q8IPluwweOI/7ymn
-	 WsDAsqa3/OBdfgQMZx3+SvTXIYCiYPVhzacEWd3aNEPxxLFBkCSi7bjRIKVwFJhrRH
-	 Kt8YfJZ1EREKj8GXe+TYwD6oQdaVCg1soItmNm8cG2QWhQjkvsuC5RlwgdUh0P6ItN
-	 l1Gtc/P7E29Eg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH 5/5] rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
-Date: Fri,  2 May 2025 16:02:37 +0200
-Message-ID: <20250502140237.1659624-6-ojeda@kernel.org>
-In-Reply-To: <20250502140237.1659624-1-ojeda@kernel.org>
-References: <20250502140237.1659624-1-ojeda@kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/LC/4L2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D52EC4CEE4;
+	Fri,  2 May 2025 14:07:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746194855;
+	bh=d7e/BxF8TUjSA3tEyDtY7crUEk0g5PG6PGzTvVanYqU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z/LC/4L2Eru4VYZ0NiiqWiYuLOtJPX5P/ekk31UfSch8CdE0wFxXZiCJAErSCE+sE
+	 PKzO560NlLDxapjUfzHZqxX+nHwA0Gd7pa5XWneWNhau8ZLCHxhbHyguSnIUf4mJAB
+	 OfqTLur3oUO2RzjLNcmN9hcpMgdXqqb0JgqUj7L8=
+Date: Fri, 2 May 2025 16:07:33 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/7] rust: alloc: add Vec::push_within_capacity
+Message-ID: <2025050215-affluent-repair-3bb2@gregkh>
+References: <20250502-vec-methods-v5-0-06d20ad9366f@google.com>
+ <20250502-vec-methods-v5-3-06d20ad9366f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250502-vec-methods-v5-3-06d20ad9366f@google.com>
 
-Starting with Rust 1.88.0 (expected 2025-06-26) [1], `rustc` may move
-back the `uninlined_format_args` to `style` from `pedantic` (it was
-there waiting for rust-analyzer suppotr), and thus we will start to see
-lints like:
+On Fri, May 02, 2025 at 01:19:31PM +0000, Alice Ryhl wrote:
+> This introduces a new method called `push_within_capacity` for appending
+> to a vector without attempting to allocate if the capacity is full. Rust
+> Binder will use this in various places to safely push to a vector while
+> holding a spinlock.
+> 
+> The implementation is moved to a push_within_capacity_unchecked method.
+> This is preferred over having push() call push_within_capacity()
+> followed by an unwrap_unchecked() for simpler unsafe.
+> 
+> Panics in the kernel are best avoided when possible, so an error is
+> returned if the vector does not have sufficient capacity. An error type
+> is used rather than just returning Result<(),T> to make it more
+> convenient for callers (i.e. they can use ? or unwrap).
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/alloc/kvec.rs        | 46 ++++++++++++++++++++++++++++++++++++----
+>  rust/kernel/alloc/kvec/errors.rs | 23 ++++++++++++++++++++
+>  2 files changed, 65 insertions(+), 4 deletions(-)
+> 
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index ebca0cfd31c67f3ce13c4825d7039e34bb54f4d4..e9bf4c97a5a78fc9b54751b57f15a33c716c607b 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -21,6 +21,9 @@
+>      slice::SliceIndex,
+>  };
+>  
+> +mod errors;
+> +pub use self::errors::PushError;
+> +
+>  /// Create a [`KVec`] containing the arguments.
+>  ///
+>  /// New memory is allocated with `GFP_KERNEL`.
+> @@ -307,17 +310,52 @@ pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] {
+>      /// ```
+>      pub fn push(&mut self, v: T, flags: Flags) -> Result<(), AllocError> {
+>          self.reserve(1, flags)?;
+> +        // SAFETY: The call to `reserve` was successful, so the capacity is at least one greater
+> +        // than the length.
+> +        unsafe { self.push_within_capacity_unchecked(v) };
+> +        Ok(())
+> +    }
+>  
+> +    /// Appends an element to the back of the [`Vec`] instance without reallocating.
+> +    ///
+> +    /// Fails if the vector does not have capacity for the new element.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v = KVec::with_capacity(10, GFP_KERNEL)?;
+> +    /// for i in 0..10 {
+> +    ///     v.push_within_capacity(i)?;
+> +    /// }
+> +    ///
+> +    /// assert!(v.push_within_capacity(10).is_err());
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    pub fn push_within_capacity(&mut self, v: T) -> Result<(), PushError<T>> {
+> +        if self.len() < self.capacity() {
+> +            // SAFETY: The length is less than the capacity.
+> +            unsafe { self.push_within_capacity_unchecked(v) };
+> +            Ok(())
+> +        } else {
+> +            Err(PushError(v))
+> +        }
+> +    }
+> +
+> +    /// Appends an element to the back of the [`Vec`] instance without reallocating.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The length must be less than the capacity.
+> +    pub unsafe fn push_within_capacity_unchecked(&mut self, v: T) {
 
-    warning: variables can be used directly in the `format!` string
-       --> rust/macros/kunit.rs:105:37
-        |
-    105 |         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-        |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-    help: change this to
-        |
-    105 -         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-    105 +         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{test}");
+Why does this have to be public?  Does binder need to call this instead
+of just push_within_capacity()?
 
-There is even a case that is a pure removal:
+thanks,
 
-    warning: variables can be used directly in the `format!` string
-      --> rust/macros/module.rs:51:13
-       |
-    51 |             format!("{field}={content}\0", field = field, content = content)
-       |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-       |
-       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-    help: change this to
-       |
-    51 -             format!("{field}={content}\0", field = field, content = content)
-    51 +             format!("{field}={content}\0")
-
-The lints all seem like nice cleanups, thus just apply them.
-
-We may want to disable `allow-mixed-uninlined-format-args` in the future.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Cc: Benno Lossin <benno.lossin@proton.me>
-Link: https://github.com/rust-lang/rust-clippy/pull/14160 [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- drivers/gpu/nova-core/gpu.rs              |  2 +-
- rust/kernel/str.rs                        | 46 +++++++++++------------
- rust/macros/kunit.rs                      | 13 ++-----
- rust/macros/module.rs                     | 19 +++-------
- rust/macros/paste.rs                      |  2 +-
- rust/pin-init/internal/src/pinned_drop.rs |  3 +-
- 6 files changed, 35 insertions(+), 50 deletions(-)
-
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 17c9660da450..ab0e5a72a059 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -93,7 +93,7 @@ pub(crate) fn arch(&self) -> Architecture {
- // For now, redirect to fmt::Debug for convenience.
- impl fmt::Display for Chipset {
-     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
--        write!(f, "{:?}", self)
-+        write!(f, "{self:?}")
-     }
- }
-
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 878111cb77bc..fb61ce81ea28 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -73,7 +73,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 b'\r' => f.write_str("\\r")?,
-                 // Printable characters.
-                 0x20..=0x7e => f.write_char(b as char)?,
--                _ => write!(f, "\\x{:02x}", b)?,
-+                _ => write!(f, "\\x{b:02x}")?,
-             }
-         }
-         Ok(())
-@@ -109,7 +109,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 b'\\' => f.write_str("\\\\")?,
-                 // Printable characters.
-                 0x20..=0x7e => f.write_char(b as char)?,
--                _ => write!(f, "\\x{:02x}", b)?,
-+                _ => write!(f, "\\x{b:02x}")?,
-             }
-         }
-         f.write_char('"')
-@@ -447,7 +447,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 // Printable character.
-                 f.write_char(c as char)?;
-             } else {
--                write!(f, "\\x{:02x}", c)?;
-+                write!(f, "\\x{c:02x}")?;
-             }
-         }
-         Ok(())
-@@ -479,7 +479,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 // Printable characters.
-                 b'\"' => f.write_str("\\\"")?,
-                 0x20..=0x7e => f.write_char(c as char)?,
--                _ => write!(f, "\\x{:02x}", c)?,
-+                _ => write!(f, "\\x{c:02x}")?,
-             }
-         }
-         f.write_str("\"")
-@@ -641,13 +641,13 @@ fn test_cstr_as_str_unchecked() {
-     #[test]
-     fn test_cstr_display() {
-         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
--        assert_eq!(format!("{}", hello_world), "hello, world!");
-+        assert_eq!(format!("{hello_world}"), "hello, world!");
-         let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
--        assert_eq!(format!("{}", non_printables), "\\x01\\x09\\x0a");
-+        assert_eq!(format!("{non_printables}"), "\\x01\\x09\\x0a");
-         let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
--        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
-+        assert_eq!(format!("{non_ascii}"), "d\\xe9j\\xe0 vu");
-         let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
--        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
-+        assert_eq!(format!("{good_bytes}"), "\\xf0\\x9f\\xa6\\x80");
-     }
-
-     #[test]
-@@ -658,47 +658,47 @@ fn test_cstr_display_all_bytes() {
-             bytes[i as usize] = i.wrapping_add(1);
-         }
-         let cstr = CStr::from_bytes_with_nul(&bytes).unwrap();
--        assert_eq!(format!("{}", cstr), ALL_ASCII_CHARS);
-+        assert_eq!(format!("{cstr}"), ALL_ASCII_CHARS);
-     }
-
-     #[test]
-     fn test_cstr_debug() {
-         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
--        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
-+        assert_eq!(format!("{hello_world:?}"), "\"hello, world!\"");
-         let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
--        assert_eq!(format!("{:?}", non_printables), "\"\\x01\\x09\\x0a\"");
-+        assert_eq!(format!("{non_printables:?}"), "\"\\x01\\x09\\x0a\"");
-         let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
--        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
-+        assert_eq!(format!("{non_ascii:?}"), "\"d\\xe9j\\xe0 vu\"");
-         let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
--        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
-+        assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
-     }
-
-     #[test]
-     fn test_bstr_display() {
-         let hello_world = BStr::from_bytes(b"hello, world!");
--        assert_eq!(format!("{}", hello_world), "hello, world!");
-+        assert_eq!(format!("{hello_world}"), "hello, world!");
-         let escapes = BStr::from_bytes(b"_\t_\n_\r_\\_\'_\"_");
--        assert_eq!(format!("{}", escapes), "_\\t_\\n_\\r_\\_'_\"_");
-+        assert_eq!(format!("{escapes}"), "_\\t_\\n_\\r_\\_'_\"_");
-         let others = BStr::from_bytes(b"\x01");
--        assert_eq!(format!("{}", others), "\\x01");
-+        assert_eq!(format!("{others}"), "\\x01");
-         let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
--        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
-+        assert_eq!(format!("{non_ascii}"), "d\\xe9j\\xe0 vu");
-         let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
--        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
-+        assert_eq!(format!("{good_bytes}"), "\\xf0\\x9f\\xa6\\x80");
-     }
-
-     #[test]
-     fn test_bstr_debug() {
-         let hello_world = BStr::from_bytes(b"hello, world!");
--        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
-+        assert_eq!(format!("{hello_world:?}"), "\"hello, world!\"");
-         let escapes = BStr::from_bytes(b"_\t_\n_\r_\\_\'_\"_");
--        assert_eq!(format!("{:?}", escapes), "\"_\\t_\\n_\\r_\\\\_'_\\\"_\"");
-+        assert_eq!(format!("{escapes:?}"), "\"_\\t_\\n_\\r_\\\\_'_\\\"_\"");
-         let others = BStr::from_bytes(b"\x01");
--        assert_eq!(format!("{:?}", others), "\"\\x01\"");
-+        assert_eq!(format!("{others:?}"), "\"\\x01\"");
-         let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
--        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
-+        assert_eq!(format!("{non_ascii:?}"), "\"d\\xe9j\\xe0 vu\"");
-         let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
--        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
-+        assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
-     }
- }
-
-diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-index 4f553ecf40c0..99ccac82edde 100644
---- a/rust/macros/kunit.rs
-+++ b/rust/macros/kunit.rs
-@@ -15,10 +15,7 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     }
-
-     if attr.len() > 255 {
--        panic!(
--            "The test suite name `{}` exceeds the maximum length of 255 bytes",
--            attr
--        )
-+        panic!("The test suite name `{attr}` exceeds the maximum length of 255 bytes")
-     }
-
-     let mut tokens: Vec<_> = ts.into_iter().collect();
-@@ -102,16 +99,14 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     let mut kunit_macros = "".to_owned();
-     let mut test_cases = "".to_owned();
-     for test in &tests {
--        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-+        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{test}");
-         let kunit_wrapper = format!(
--            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit) {{ {}(); }}",
--            kunit_wrapper_fn_name, test
-+            "unsafe extern \"C\" fn {kunit_wrapper_fn_name}(_test: *mut kernel::bindings::kunit) {{ {test}(); }}"
-         );
-         writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
-         writeln!(
-             test_cases,
--            "    kernel::kunit::kunit_case(kernel::c_str!(\"{}\"), {}),",
--            test, kunit_wrapper_fn_name
-+            "    kernel::kunit::kunit_case(kernel::c_str!(\"{test}\"), {kunit_wrapper_fn_name}),"
-         )
-         .unwrap();
-     }
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index a9418fbc9b44..2f66107847f7 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -48,7 +48,7 @@ fn emit_base(&mut self, field: &str, content: &str, builtin: bool) {
-             )
-         } else {
-             // Loadable modules' modinfo strings go as-is.
--            format!("{field}={content}\0", field = field, content = content)
-+            format!("{field}={content}\0")
-         };
-
-         write!(
-@@ -126,10 +126,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-             };
-
-             if seen_keys.contains(&key) {
--                panic!(
--                    "Duplicated key \"{}\". Keys can only be specified once.",
--                    key
--                );
-+                panic!("Duplicated key \"{key}\". Keys can only be specified once.");
-             }
-
-             assert_eq!(expect_punct(it), ':');
-@@ -143,10 +140,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-                 "license" => info.license = expect_string_ascii(it),
-                 "alias" => info.alias = Some(expect_string_array(it)),
-                 "firmware" => info.firmware = Some(expect_string_array(it)),
--                _ => panic!(
--                    "Unknown key \"{}\". Valid keys are: {:?}.",
--                    key, EXPECTED_KEYS
--                ),
-+                _ => panic!("Unknown key \"{key}\". Valid keys are: {EXPECTED_KEYS:?}."),
-             }
-
-             assert_eq!(expect_punct(it), ',');
-@@ -158,7 +152,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-
-         for key in REQUIRED_KEYS {
-             if !seen_keys.iter().any(|e| e == key) {
--                panic!("Missing required key \"{}\".", key);
-+                panic!("Missing required key \"{key}\".");
-             }
-         }
-
-@@ -170,10 +164,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-         }
-
-         if seen_keys != ordered_keys {
--            panic!(
--                "Keys are not ordered as expected. Order them like: {:?}.",
--                ordered_keys
--            );
-+            panic!("Keys are not ordered as expected. Order them like: {ordered_keys:?}.");
-         }
-
-         info
-diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
-index 6529a387673f..cce712d19855 100644
---- a/rust/macros/paste.rs
-+++ b/rust/macros/paste.rs
-@@ -50,7 +50,7 @@ fn concat_helper(tokens: &[TokenTree]) -> Vec<(String, Span)> {
-                 let tokens = group.stream().into_iter().collect::<Vec<TokenTree>>();
-                 segments.append(&mut concat_helper(tokens.as_slice()));
-             }
--            token => panic!("unexpected token in paste segments: {:?}", token),
-+            token => panic!("unexpected token in paste segments: {token:?}"),
-         };
-     }
-
-diff --git a/rust/pin-init/internal/src/pinned_drop.rs b/rust/pin-init/internal/src/pinned_drop.rs
-index c824dd8b436d..c4ca7a70b726 100644
---- a/rust/pin-init/internal/src/pinned_drop.rs
-+++ b/rust/pin-init/internal/src/pinned_drop.rs
-@@ -28,8 +28,7 @@ pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream
-             // Found the end of the generics, this should be `PinnedDrop`.
-             assert!(
-                 matches!(tt, TokenTree::Ident(i) if i.to_string() == "PinnedDrop"),
--                "expected 'PinnedDrop', found: '{:?}'",
--                tt
-+                "expected 'PinnedDrop', found: '{tt:?}'"
-             );
-             pinned_drop_idx = Some(i);
-             break;
---
-2.49.0
+greg k-h
