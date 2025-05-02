@@ -1,101 +1,87 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87A51474DA;
-	Fri,  2 May 2025 13:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6AA255F49;
+	Fri,  2 May 2025 14:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746193659; cv=none; b=oVbuHeTXRv7AajG93WexDCTsYAru59ygR8DpW+M1wwNGLijv14C7DSisuInlG5D2kIMAg+BW69LjWHS6cnZ5YAEShqpVBmYpTsiomfm4Ed6N0wTQSTQ6yv3oM+q1t4poEHgsv0e7JUod6dKaG9flC+g51phorws+q70TZ2X0QpE=
+	t=1746194581; cv=none; b=HUqadturRDXaqXK3setkQ9h7hD8oiB63oOIopj17NepAm6k/8c2unwbZ/FltdPgqwEyCT0TFT6gbyFB0hpDvhced/iNlOyEwbHtii1znDYvVmL86y9yY+WiS2y8pPhxL4pxH0dOZdGnHu56nmWkqcKAIMzGWCAox5NYQmL8qReQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746193659; c=relaxed/simple;
-	bh=YO7DeRcZqOkyyJp/N9tF4f54dRAU+mGMvwJb68kNOUs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=foN2BiBH01lImjVtlJLzDdfpWp+nhGa4r0V7/aryAjYMyF/OBBGZRCoty9+VKdqSXPJ0DK37UgZ5O+LCi9SYSb9JdaHBYghJeXe4hy5elqvbEkXLwZcsw6ny5WAgbFH/wQraIrVT5DE8thxNaiqr/la5pEJu8yNJXHJ9m0M7bgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RLckHg55; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746194581; c=relaxed/simple;
+	bh=SIxigMeAMetVPFRmyic26ZlV4C8J7gDJlcnLm59bl3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qOzIUSrfLZkuCEEicR8atwx3QVolVK/WAfkjM1UU8ZUTGOaxA61y6OkN4iUQRYsTmIEV1f4Ez211JIx+5k2i9qKpX0n5qEi/kySQrzFlahYfDG8JAx+7tmqjtqXD14jDHN3J4izsf0yx+uw64ZYEayMKjbodtDQNpkC18eHeQTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qu2ASfoC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RLckHg55"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-227c7e4d5feso3809165ad.2;
-        Fri, 02 May 2025 06:47:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746193657; x=1746798457; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YO7DeRcZqOkyyJp/N9tF4f54dRAU+mGMvwJb68kNOUs=;
-        b=RLckHg55rgdES5VRUp0FSLpuP/AecSQWFUXxtjBvJDVmx6kfylcLhsAZb0zxhhMp9H
-         UvYnSnQPvrV4h2htjyAt6Mumy101ST5mLg9kbwndPbBUZCAutw1l7HX4ukYIUU1kTfCa
-         lQAVC43e40WIGwyuj7/1AgNTkhuZO5Tn2kT/jXpL/qPEitwnSsbkuhaImO9JYzfPdjEX
-         EHMwoWUvuqs+LKdP7aOOhw4ictNpQ0SPOUc+43jeiinMLyaN9TsgPbBBrnqc2grI3lbD
-         dsvjz7NanzjXy+EvfgH0zOfjeCZ4sCbdkaLi953aoGws26mfqt9UyY5iJAlrsDJfBSHm
-         tuMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746193657; x=1746798457;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YO7DeRcZqOkyyJp/N9tF4f54dRAU+mGMvwJb68kNOUs=;
-        b=PKLCWfKlLvYlmc+Xjpwy67fBEVtbupRdruLL1lHQIZWsIFVay0x33LAMBK07lS91sS
-         kjxjcA/1/TishlU9GT7dpspFfuJDwAvUwB9SouiNi4R7gNTKSUoY08Xuo2WHEQ0cmKxT
-         jKhRzaBykchfB+Qx2VLHo4nCs4R/g7FUeK1QMGdbH0QCZ0eVm2eDDGIRFci0iFLhRLMV
-         TS1ltLBI95DlGfjq42NZrbgHDkTRjhLx/slmesR8vXpaAy41bKdKvOVx6f0rV3Odo7o7
-         goCNHzvzn8gDA0XSVYh87JC5Fj8BK0f4446O3Rp7wPB5Rs5Q2ZemOxFnK9XreHgfE/Y0
-         NrjA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+8KwHAH4tvpwyXP+6fMpxKFEulUmHsgWBro0fqaktXgNjit758UpRoAxE0bH9T37/kLI9YHKMBd5JJEGzRws=@vger.kernel.org, AJvYcCWEByFZcunIhSSFEMsgex2G/TZ5WCAALIUXvaV5Ebt1nYcAqoX9wc5tPaSsoVllp84M8eWgT2HSKzOSA0xf@vger.kernel.org, AJvYcCWMVzvS4I8c8rv1BHC6RBWxBwXxkM8RwflxzwEabgssfrPJbYzn5AkonKh/iBHSQVpyGW+qVvmsyPDadrE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwalXbz7V5vVzYRDf0UzUXoNNOT0r2Vfj3OqjewlT82N0JcBWbE
-	F2Qt0UExwjKNL4ncUQQW2/WpkUIAqs8cT/r+Kh0EApl4s2t34ZaV1loRWLhyVY3hmP0uMD4rBon
-	55VxztM2pacQJNS2U/ChqgyFB3M8=
-X-Gm-Gg: ASbGncvwqRaVvo0PzTBDttUwHJklhc/LjFV6cOIoleetFq+zJBXKwVSFiO5vwzs+H4V
-	gLmi4jkVgORT5uSYz2Ctfl7UkeltEUDZ5une8AA3J0VDBV8Jxyq5xevbfDPvbp2umDeMbtdZfFr
-	JBtn1iCvv//ieL5jK80k9UnA==
-X-Google-Smtp-Source: AGHT+IGvS8ysehRTmkpn/MLH73wWVl8uhQ2dVyiEZQB9+BX+Cc/I214Nibn1sSJ0p2PSB3EHImIX9TR/DCb1IZQeD1I=
-X-Received: by 2002:a17:903:2f45:b0:22c:336f:cb5c with SMTP id
- d9443c01a7336-22e1031f5a7mr16755265ad.6.1746193657040; Fri, 02 May 2025
- 06:47:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qu2ASfoC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A1AC4CEE4;
+	Fri,  2 May 2025 14:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746194581;
+	bh=SIxigMeAMetVPFRmyic26ZlV4C8J7gDJlcnLm59bl3A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Qu2ASfoCGmCaieKbL0gPCBWkMv9WtDr4iqtXo6YJdF/wDlQXIYQ5ydjNBRe06qYAl
+	 RMhQmQ+7RfeYlJr81sDvmA5hl1Uhh43wLvfBebNuf4yhhWDf3pbEYoZoPuOpYw1CUO
+	 M89CskVk45sEdDRxEeGzvd9NuRxJp33f3QMnU+67+kqsvMyFRGSzMFfL32raMmhIpD
+	 XDLhB0y5ptjNBNja76gsc/DrWqcao8ANgVaRamfIKBF6hJMQzaN7CpaiLlf5Qkrvac
+	 zxxEUyHC40xl6jahdHVoOMbCjMTgnG4d5lSpkQHNbtC+k9OUVrFbVY+JaIfKpalZJ8
+	 Oa7LHsnzu/L0g==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH 0/5] Rust beta (1.87) and nightly (1.88) lint cleanups
+Date: Fri,  2 May 2025 16:02:32 +0200
+Message-ID: <20250502140237.1659624-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250501-rust-kcov-v2-1-b71e83e9779f@google.com> <CANp29Y41LKZg-kSP+j5hjUKMNeWnPsVd8VvDnOpN8+4WHHjEgQ@mail.gmail.com>
-In-Reply-To: <CANp29Y41LKZg-kSP+j5hjUKMNeWnPsVd8VvDnOpN8+4WHHjEgQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 2 May 2025 15:47:24 +0200
-X-Gm-Features: ATxdqUHPzjJxM4ztTNooAwhiGBxmesfG9DnCr-xy_d1ASwZ94NEytM0G2eVkbK0
-Message-ID: <CANiq72m7GAZ4gfgiU5bXSb86R3-UMG2vsvi5J1Ua1EpVV5EdAQ@mail.gmail.com>
-Subject: Re: [PATCH v2] kcov: rust: add flags for KCOV with Rust
-To: Aleksandr Nogikh <nogikh@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, kasan-dev@googlegroups.com, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
-	Matthew Maurer <mmaurer@google.com>, Alexander Potapenko <glider@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 2, 2025 at 2:36=E2=80=AFPM Aleksandr Nogikh <nogikh@google.com>=
- wrote:
->
-> Thanks for incorporating the core.o change!
-> I've tested the v2 patch on my local setup and it works well.
->
-> Tested-by: Aleksandr Nogikh <nogikh@google.com>
+Now that Rust 1.87.0 is close to release, clean up the new lints that appeared.
 
-Thanks for testing, very much appreciated.
+It may be that one of the patches is not needed by the time it releases, but
+I prefer to not wait much longer since I would like to land this for -rc6 so
+that it is clean for release.
 
-Dmitry/Andrey: I guess you may want this to go through your tree
-(although I don't see a `M:` there), but if not, please let me know:
+In addition, clean some nightly (1.88.0) ones too.
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Miguel Ojeda (5):
+  objtool/rust: add one more `noreturn` Rust function for Rust 1.87.0
+  rust: clean Rust 1.87.0's `clippy::ptr_eq` lints
+  rust: clean Rust 1.88.0's `unnecessary_transmutes` lint
+  rust: clean Rust 1.88.0's warning about `clippy::disallowed_macros`
+    configuration
+  rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
 
-Cheers,
-Miguel
+ .clippy.toml                              |  2 +-
+ drivers/gpu/nova-core/gpu.rs              |  2 +-
+ init/Kconfig                              |  3 ++
+ rust/bindings/lib.rs                      |  1 +
+ rust/kernel/alloc/kvec.rs                 |  2 +-
+ rust/kernel/list.rs                       | 12 +++---
+ rust/kernel/str.rs                        | 46 +++++++++++------------
+ rust/macros/kunit.rs                      | 13 ++-----
+ rust/macros/module.rs                     | 19 +++-------
+ rust/macros/paste.rs                      |  2 +-
+ rust/pin-init/internal/src/pinned_drop.rs |  3 +-
+ rust/uapi/lib.rs                          |  1 +
+ tools/objtool/check.c                     |  1 +
+ 13 files changed, 49 insertions(+), 58 deletions(-)
+
+
+base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
+--
+2.49.0
