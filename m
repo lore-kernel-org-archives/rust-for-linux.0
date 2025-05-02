@@ -1,157 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE51212FBF;
-	Fri,  2 May 2025 21:52:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798521E5B93;
+	Fri,  2 May 2025 21:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746222742; cv=none; b=nJrlyMx9N8q5CGpM2aGl7hlX6tQSW87R394OW4l/Hyo44YNQwBuPSdqM/g0H/NjgNfVaqsM/2X4zXNSRQzXVHmj6Tw094lFC2f9Wx/z38Pa9a9kSKEIgGVMy9bqWxSUmPrJobKY8sVm8d/NXMDIDuew79pGS5K67qhS/luMYezc=
+	t=1746223130; cv=none; b=CC6AUJzRfBrp+Rc5oybVRF6BnHFbvGOuXccpHDI9CxFdBWHeVTSh2HFsG+2bp5jQzPX2QrTtBg0UWBX9kOOGV7MTCZR1HEORK+4e728dubN5D1OXVhyMMWZnpIaz4t1G2eHWCwWDKvlPJ+adXkw8IJRazEOd2AwDZfKbzRgcFdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746222742; c=relaxed/simple;
-	bh=0d+B6C4f5BhKibcwQvvX7AE1XP/6ykd4eiWYjI558WQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aq4q+dDij1x1ilL8qVPpGxwPLLfQu3WXMaUuY4RDM2iK1ZR+arNWlGbCXYMZgjxUnm86eBYn0WuVrJHJ68wGgSQq0N57ZpN0JakKha0BqE7QvWL1kKlZ6wwxss1mAaQxxrEdEMFrB7SxM3xJSmt2CJJGNDj1Yj9z8JxNTht1lnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ueoh3jGQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746223130; c=relaxed/simple;
+	bh=PCGL9Cy9K5EDQuBSei/ZViLPfLdtAWtDnEbrjy7hlCE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sDniOleeS64uLzRNE6M89k9vbJ+Y6ok3yAdLU/dEx/caRUp32TQBlMraD4pUOcSqR5SptjRPT9xJqv9iMcJFmvwWnKQcxnqX2xm6nbmcnEHMGBZ4y29YVR6fFmdBDN4gBafTsl64GtCqExJTVej8FRlcgATWfQcZ4mRILjxZ8IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eCJWM7C3; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ueoh3jGQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCFEC4CEEB;
-	Fri,  2 May 2025 21:52:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746222740;
-	bh=0d+B6C4f5BhKibcwQvvX7AE1XP/6ykd4eiWYjI558WQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ueoh3jGQfdluiir5m9D+KAT0kCQ1LZDyRlD89g7UZTWIvS6/pC7RbnsMNMEqu/S1R
-	 +I5+SO2EsYPlgBsnUKBSoPQHaCyFX0hBRFOGnQkRShOv/7jss6xnMjtpk5qUCzLO4m
-	 0oia8FpH9TBUl9PPc8u1dVTSbDp8gAzZqZzwSayWu+h0S5o9jBcdhsSnWW8XYk5cG6
-	 uDqytDKWPFiOcfEmxfM+ulVSx7L8za/KI2yH/+Dry7JvxSO/E8HoYNWfbfb4jVn1o5
-	 HRUdWQo0Ad9kmCYPAG6g5zsC+1U4PTvwJ2it9VGdmdQnm5unWY9p8n+3HRLrfQOCC9
-	 a72/tkdwZc84Q==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Rae Moar <rmoar@google.com>,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH 7/7] Documentation: rust: testing: add docs on the new KUnit `#[test]` tests
-Date: Fri,  2 May 2025 23:51:32 +0200
-Message-ID: <20250502215133.1923676-8-ojeda@kernel.org>
-In-Reply-To: <20250502215133.1923676-1-ojeda@kernel.org>
-References: <20250502215133.1923676-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eCJWM7C3"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b1f2a3bf3c8so369599a12.1;
+        Fri, 02 May 2025 14:58:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746223129; x=1746827929; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oQa9hHRKRfwkVMnDyppAIh6RlIH0ezHMAOxPF4B0VDw=;
+        b=eCJWM7C3dW44NQcVLI831sc2mv+WE7JaKljostcTyQCW39fSLTcr06JqgBDyR6TNDB
+         pMiS1+iLxBOF2SL47odKNMCzAx6TbvMPRRF1LxckgA0eTRxKDZptKy2zj2Cse4wbSIl1
+         GdGNm+p/qPbhRmlgS6lAfkgB9UoZkNsmMncPjFHPF/sJLPVxUjs04mMscCemLXlCLhRp
+         nKnsad4ZG2cY9Q5+tvFAs0tsj6aRKRgojhQ2F85+1JvcKcyoSSLKp+exz3LlPpivUA4o
+         NF1z1gVuth/kyYjiLpzi/aHzS7936gHJXPoiHpxcIoMXygeQLjzcRvnG54JEWWB6vQTj
+         yKoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746223129; x=1746827929;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oQa9hHRKRfwkVMnDyppAIh6RlIH0ezHMAOxPF4B0VDw=;
+        b=rxF1tGRAMwAPi7fa32U3wIKYE1iKsnjbK1NgX/lCDN61CWVdc1kX0y3y9mpWlXtPQ0
+         ZIPGgyPha7fiVXmwUui3FDpf9sD7uzl+O5rncRzK4KEO6p1O1O4H3jG52eTfB6R2/Ub3
+         dfKUVbJDEyc1TI2xCMRYghPwghDIHz6rqUuY7D9KIZc0NVjx+aClP1/EiAynZZEFVCc2
+         3tLS2iij/ocPdCUiP55JTe7Zmgg+LG4w/LSnZ8uIZL00TuxuTRnSwFTeBFf2V66Ze56c
+         OoSOSnL3dtkYK4yVxjf93YPvL9IHSNxbYGDWyCSRuWtIRBkY5F6niW7/1vkjv09KajWw
+         Fm2A==
+X-Forwarded-Encrypted: i=1; AJvYcCX8kntrCluDTcEcdt3qb0Fw651FgBl2ckYJB4n8Mi4i0Mp+afMjaHgUZdPzVGWzkMAyJAe4TYja/X1eUs1JhCc=@vger.kernel.org, AJvYcCXMBgTdBK8699/3KeGpwBPhLhuN+l+RuDSr5j+KFVg5LY3A8XvmUsCUtff/5OQSZvhlCGP7Q11Sbf21Jpw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdtvtrE6VPQ77Y2OiSK0ccVOig39xYOECU0z7vyW1Xsq+jGkAs
+	abTdQD8R7esrHQfZOB0VTpt1Ylp0kW80ufmg2ImRWLudkdT4jxLGSh95oiu76egiyLFXRrHFyY8
+	K29q5SztVtSncUYYyH8HeFLprxcONGupAyFM=
+X-Gm-Gg: ASbGncsc9sjRPiGpQWgrJMz9+jv0AAzt5LI/ftr/rArdhg1V/6B2nx7CNnuHtEImNER
+	W1RAUrdPlIYyO7V5SX1hsf4V1bd5NwderCiwI3ScDayLd6Do8F7HdRBvUt8FGdHGRRQLmilRsf9
+	xKpOkiS/HzNiyWeIzsjKvKBA==
+X-Google-Smtp-Source: AGHT+IEVVRhzqIeAEqPnmTQ5flBVpniw4O0YlZHLnqtHSSeE2jyjspRRVXcOBOpujALvGnFEiqqtfSXrNHonE/4F6Dk=
+X-Received: by 2002:a17:90b:1652:b0:2fe:b972:a2c3 with SMTP id
+ 98e67ed59e1d1-30a4e42fabdmr2495603a91.0.1746223128619; Fri, 02 May 2025
+ 14:58:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250429-vec-methods-v4-0-dad4436ff82d@google.com>
+ <20250429-vec-methods-v4-5-dad4436ff82d@google.com> <aBJPHUDYBGyAgUNf@pollux>
+ <aBNWlC6uSOiFrQDL@google.com> <aBNbTL2dIOFQq8yG@pollux>
+In-Reply-To: <aBNbTL2dIOFQq8yG@pollux>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 2 May 2025 23:58:35 +0200
+X-Gm-Features: ATxdqUFCXQN5ukLv1Tk2eMea1VEFPNuPw6rPrIyY_vZSnoH7N5pprspCXNM4CpY
+Message-ID: <CANiq72nbxnGNgRNc62mejxxJMe3ZrLQ4kO4xaPxi51GVy6iKjA@mail.gmail.com>
+Subject: Re: [PATCH v4 5/7] rust: alloc: add Vec::retain
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Matthew Maurer <mmaurer@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Gow <davidgow@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-There was no documentation yet on the KUnit-based `#[test]`s.
+On Thu, May 1, 2025 at 1:30=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> I really like the way doctests implement the assert macros and how they a=
+ppear
+> in the kernel log compared to panics through the "real" assert ones, unwr=
+aps,
+> etc.
+>
+> I also think that avoiding things that directly panic in doctests (i.e. e=
+xample
+> code) is the correct thing to do. For KUnit tests it's probably less impo=
+rtant,
+> since they don't directly serve as sample code.
 
-Thus add it now.
+I hadn't seen these earlier messages -- thanks, I am glad people like
+the doctests support :)
 
-It includes an explanation about the `assert*!` macros being mapped to
-KUnit and the support for `-> Result` introduced in these series.
+Yeah, doing the same for `#[test]`s was planned (see PR), but we
+decided to merge roughly what we had from the original author and then
+build on top of that (Cc David).
 
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- Documentation/rust/testing.rst | 71 ++++++++++++++++++++++++++++++++++
- 1 file changed, 71 insertions(+)
+Anyway, I sent it -- hopefully it will mean more people writing lots of tes=
+ts!
 
-diff --git a/Documentation/rust/testing.rst b/Documentation/rust/testing.rst
-index 6337b83815ab..f43cb77bcc69 100644
---- a/Documentation/rust/testing.rst
-+++ b/Documentation/rust/testing.rst
-@@ -130,6 +130,77 @@ please see:
- 
- 	https://rust.docs.kernel.org/kernel/error/type.Result.html#error-codes-in-c-and-rust
- 
-+The ``#[test]`` tests
-+---------------------
-+
-+Additionally, there are the ``#[test]`` tests. Like for documentation tests,
-+these are also fairly similar to what you would expect from userspace, and they
-+are also mapped to KUnit.
-+
-+These tests are introduced by the ``kunit_tests`` procedural macro, which takes
-+the name of the test suite as an argument.
-+
-+For instance, assume we want to test the function ``f`` from the documentation
-+tests section. We could write, in the same file where we have our function:
-+
-+.. code-block:: rust
-+
-+	#[kunit_tests(rust_kernel_mymod)]
-+	mod tests {
-+	    use super::*;
-+
-+	    #[test]
-+	    fn test_f() {
-+	        assert_eq!(f(10, 20), 30);
-+	    }
-+	}
-+
-+And if we run it, the kernel log would look like::
-+
-+	    KTAP version 1
-+	    # Subtest: rust_kernel_mymod
-+	    # speed: normal
-+	    1..1
-+	    # test_f.speed: normal
-+	    ok 1 test_f
-+	ok 1 rust_kernel_mymod
-+
-+Like documentation tests, the ``assert!`` and ``assert_eq!`` macros are mapped
-+back to KUnit and do not panic. Similarly, the
-+`? <https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator>`_
-+operator is supported, i.e. the test functions may return either nothing (i.e.
-+the unit type ``()``) or ``Result`` (i.e. any ``Result<T, E>``). For instance:
-+
-+.. code-block:: rust
-+
-+	#[kunit_tests(rust_kernel_mymod)]
-+	mod tests {
-+	    use super::*;
-+
-+	    #[test]
-+	    fn test_g() -> Result {
-+	        let x = g()?;
-+	        assert_eq!(x, 30);
-+	        Ok(())
-+	    }
-+	}
-+
-+If we run the test and the call to ``g`` fails, then the kernel log would show::
-+
-+	    KTAP version 1
-+	    # Subtest: rust_kernel_mymod
-+	    # speed: normal
-+	    1..1
-+	    # test_g: ASSERTION FAILED at rust/kernel/lib.rs:335
-+	    Expected is_test_result_ok(test_g()) to be true, but is false
-+	    # test_g.speed: normal
-+	    not ok 1 test_g
-+	not ok 1 rust_kernel_mymod
-+
-+If a ``#[test]`` test could be useful as an example for the user, then please
-+use a documentation test instead. Even edge cases of an API, e.g. error or
-+boundary cases, can be interesting to show in examples.
-+
- The ``rusttest`` host tests
- ---------------------------
- 
--- 
-2.49.0
+    https://lore.kernel.org/rust-for-linux/20250502215133.1923676-1-ojeda@k=
+ernel.org/
 
+Cheers,
+Miguel
