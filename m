@@ -1,287 +1,144 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5D9259CBB
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 15:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC94925CC4E;
+	Fri,  2 May 2025 16:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746200932; cv=none; b=na26QPWncjqZ64Rs72jYNihO5sfRZRDNlLab+2Lye3p2s7946nZ6F29QOrCzHvWrTxaJNvo8V644J87Zyhz7OXEsYBE0K+HnQucpQ2jlb5ucjQdMxCIVs32ikKHEQ+mHym41sRIuT4MSZ6XrMvXs64xDqeIxCdlGOmhdJcJYpoo=
+	t=1746201763; cv=none; b=OrtMo+8KTkzM60eXnN94zZClWhT9S+fpIVmOJnjOXGIZV4nCbFYd1KMx1OBCXMQZNAIIWfSHKFqAvMINelIErGrOENA+9Pve75RV87OP61TRdXT7zo8yzyjV/u2SaNKvus/caX9IU5a2jMSqP0HASuXDkLI8xmj+mTLiBSY2OQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746200932; c=relaxed/simple;
-	bh=FPeCjzIRvdfI3vGWlR2T8Gy9kCqxNdJDC8jzb7oidcc=;
+	s=arc-20240116; t=1746201763; c=relaxed/simple;
+	bh=UJ6WwhmFuVCqUdif14DkJqSkQxNVnMZG/jRa4NZF7Ko=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sROyI16jgODSRfLWbHQDuTMvR31Gpkl44B5X9bJggVrgpAgGl/FOhBP3xOilX9oCdvlv9qHLJncHLyX0s4MrYjumLw+LLGVxU4YTz98H3W525tjDyqPBJv25S3ZWjEovtg6JmPLOUjGXmd9A+GeVX18awhbdo6ii4hApNeVTLX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PFMj+9Ni; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=V8f8NCjpyJYxngUgJxIkPbSCH2YweWNwHq5yHJftOePgpSfs6EnyDGbY3rn8B0up/pvkqiDup+JNYqgoVC9Pt/PoPWEjYDRjQNL4i5kEXWUe1ypArdmJf9OBf5p5e7j7tinUzYrbBXV69D1H+1sPZHF7o5TplbrjpQQ4CfclQGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aGlgGK09; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PFMj+9Ni"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5dbfc122b82so12754a12.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 08:48:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aGlgGK09"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54ea69e9352so2481415e87.2;
+        Fri, 02 May 2025 09:02:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746200929; x=1746805729; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746201760; x=1746806560; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wVrSpLcZ6r4nzuYBSe89GJo/s5JqpuFLlwBBSO4pcJo=;
-        b=PFMj+9NibIr9bJ3EA6D5pn8umkL1aYiDpUq9shjI9MXWSHIdxegZTD+tJ8w44q1oCv
-         bjXLnxq1fEpPxvAaOYKKBkqp29huemnYl7VYIrA2FD88QtY3LczZxCsRV6a4QnnNH1ib
-         RZ2BkZIRvcOr5eUg2TLK/QduTlcj1m33Djn3/3635azwmj4maluU3eMK3ydw0Av6Km+l
-         voajUKVMRy/mFPs14yXEtB+NhyMcAXqXvBxXKlaRh+m2sWjD+F6bk9fxmyPzmmTO1kdr
-         tBxjctdWTXteC4T5RMjwi30h7bzjLG+ceh1k6VRMmuMpuAMzrrK89l5cPg47gXNyltFe
-         pBug==
+        bh=bWXi6ouIHtCt+/SVmgFqOORSK5kSta3bTlozmNEeTOw=;
+        b=aGlgGK09m0o1NTDeLTsKXKByFw3aS6xVU+tQFt9M15LN0ecPn3SIFO/rrVYwyinM91
+         /2k7jcq2kRlliVDSQ8iyxVgM7VOI9npbzuK3HMthX4FkDqnEdj6tQaeogOg29rJch41D
+         PsmDl+WRNmqgj6y+pHDoKusWF0tDfly7//0SfqJB+TkDhuRqqIcRMrRTO3zxyM+eEG6C
+         /SX8XKdp+8I1nPUG6odLg9DBCuAtXcYnzoH+mjA5PXoPqEGNsf7aWLzDZMCn2hVOL+1X
+         6bJAZy+PRsW05Pyc72jjFi3godT989y1Rh2gnQ3yFpVd69a6neLrv++sfR6aRQBypAjz
+         vg5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746200929; x=1746805729;
+        d=1e100.net; s=20230601; t=1746201760; x=1746806560;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wVrSpLcZ6r4nzuYBSe89GJo/s5JqpuFLlwBBSO4pcJo=;
-        b=OvDceZeSERUfbngYUklEqmgxICcLYcNj17uluu1YBiwHs/oJd5JaQd6lZHcTSFoKCe
-         doaMZDQ4FoJKMqbsRaVS3sTNwtQV6Ay2uzNrcj4EKbj0lmqCinpQFnHuBNIh//oCa3BX
-         DMn+P5mlVZgdZgEq0hZd/0K5OHHSvRnCsTHQoirDsd9J/HqopyxmOyMH5IFtAfAIDbri
-         ltNRZnj2BIi5/9tZyVrAueOcaHFQ5S7xALC8hR1dyHz6YaIIeqQIr+UqWvyOlkWdsOIM
-         CgHCUt7xKJkqUeF7VLg+sT/YE1gKNHSGlSWjqakNNpJKRg9qpsWobpDzHHgfdAhfPuU7
-         l/Lw==
-X-Forwarded-Encrypted: i=1; AJvYcCVG1Vmy9iBtlE2Z+8vfzpt3ByopKh0GoF9RyQwiu01Lsf7qR4HRRqKicxc7+73anXR1aVgZXcWJPjIOqRidGg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyN0Ao0vrWVxBdOkRyivORN7Lx1G6EJprEwKkIVt7CYCSUjUxOu
-	xAk4U7Mfdzj63/Dc4Tl0/MpT9sXYvFGge8ohunwSIKtoQ/nRg7bQ8KYrCkaiABTSnwLVYQmIbBH
-	pTxXrOYbqtGF/daFxaf/l6N7CiHUfq0e5uZOW
-X-Gm-Gg: ASbGncvWUKMlTk+65OCOvwa7+6d52OXDxpx73zX71jkL6YMJoocgpZjoj/jA4ZCQajA
-	ZqSw363hiW1aV4Q6Avl0xtjHHcdMeMNe69o83CldMPBvRA3dTH2aIzDy/0aQoW5JSwW7R2EI/5g
-	tANuXwcmPzDvdtcnrFobiNTowHHu3B8zYMo5TJxfROD11q4sPcuJmn
-X-Google-Smtp-Source: AGHT+IH4/tWjZeDHJdM8PWTKrL3Ooj7FlnPJ2nQpTmyA6onllO1fxO0OriRQr9OWjDedxUeXcZYMB/Mj/uPv11WJEF0=
-X-Received: by 2002:a05:6402:6c5:b0:5f7:fcf7:a358 with SMTP id
- 4fb4d7f45d1cf-5f9145ecf1dmr214753a12.6.1746200928787; Fri, 02 May 2025
- 08:48:48 -0700 (PDT)
+        bh=bWXi6ouIHtCt+/SVmgFqOORSK5kSta3bTlozmNEeTOw=;
+        b=F7GEN1ZuGtKw8lRAhojjTlF41WgjOAV0TfSs4p7l4IxMNCIPrna1/vtLd99Pn0OjzM
+         ajogo3Ffs1aTU7hj+9Oyv5JKvW+Ftog6A+5hsJGKVTXt8QRhZCuLlpY9MPMUtuVKmRsx
+         S5GDOXOpadk8HlUrQjOi0Yd4U4XGoYrqmVwfXeu9bgrPaNwv9ldWosN6gUTaqlD5QbvL
+         XNjbpywfBi9nRzJ5NpwvVrMa/rMhUsUOJOGobWSPqsFtGZrc/xb00AlQjwRmuMr5rXAg
+         IxHE4aC3NCD3wqpJBYsbt8MzS5quvoA3tLgpNU5bzV5CLCFGIT7BNS5gzn4VTMGKBfJq
+         acNA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3RlZ3uods9nc0U2KKP1f7lOvbUagy5po3kkb9+YnhFgg3/i7HZuSzaJ7iNn4w0ixy+ZKBhHZYvqrG7w/O2w4=@vger.kernel.org, AJvYcCWEs8ozpHP01NG0dnEit/x/8NaNNXwlBEA+m4TiaD15HcqiB55sm/OJXDn9WNZK9xCzkrrC1Y4v@vger.kernel.org, AJvYcCWgMDArRQsCT0vc4JgOaldE4T03tvpH4MXt2gpivWtCnjnjix5Qm76hfXnl9MOS10Ott0RUsfE6ZsrlVIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzp+lAZd5iTYsqYS6HMWmkOKjP5cpUoou6KY0G5g9vCzgp7Jv1i
+	NLBuGvFsldzmhzYOA4D++NspRhDDuZUR7Bvkwa3/i9DNHOMxdYyFEIR9zSEmGNNWe+tNVbpt8QW
+	KR/qQsi7wlU/kFjWoVpizkVdXzHY=
+X-Gm-Gg: ASbGnctmPvKJPfcsKqPkmu+tLXYlHpFnuCIAzOgnSl09P+BdAZPMPn/i212jVx9RwXy
+	/H9KyAmoDppk26V4KQblcRDb8lgFkEXz4vN1BMHW075F2cfYTeZ2C6nR5F+SrLfxpcmrd/5/mIS
+	+wtETirYcAx9Cv701XZWpVd329p/uAp4eZlr4gQQ==
+X-Google-Smtp-Source: AGHT+IFQVJp0oLfBErJDYrcvWauZBR16iubXjM5Ov20E4hDu+u4f8dcYnUxZFRb2GWq/A5s6LAVkaHyvKfsIiT02qF0=
+X-Received: by 2002:a05:6512:3b0b:b0:545:a2f:22ba with SMTP id
+ 2adb3069b0e04-54eac242c91mr923495e87.37.1746201756548; Fri, 02 May 2025
+ 09:02:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250501-debugfs-rust-v3-0-850869fab672@google.com>
- <20250501-debugfs-rust-v3-1-850869fab672@google.com> <aBRoNKjB063QhGZo@pollux>
-In-Reply-To: <aBRoNKjB063QhGZo@pollux>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Fri, 2 May 2025 08:48:36 -0700
-X-Gm-Features: ATxdqUF2I5oMt95aeCSU6GeI6VpXDIeABWR6x24vNbPICz6nkDSzJCmGZL0fx_8
-Message-ID: <CAGSQo00hYLubqJy9zkO3_O3b6V15WtmoSybC+Ep5uJeU6k3t4A@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] rust: debugfs: Bind DebugFS directory creation
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20250502140237.1659624-1-ojeda@kernel.org> <20250502140237.1659624-6-ojeda@kernel.org>
+In-Reply-To: <20250502140237.1659624-6-ojeda@kernel.org>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 2 May 2025 09:01:59 -0700
+X-Gm-Features: ATxdqUEluk2jv-DmfiRVYlxsy5N_uo2h5vdZh8glM634BlTDAbUSZr2VxhwzSKA
+Message-ID: <CAJ-ks9=XJ_cX8=vCtAr8Qr+4iaX9fyc8+djiBmg8=FxJTggS9w@mail.gmail.com>
+Subject: Re: [PATCH 5/5] rust: clean Rust 1.88.0's `clippy::uninlined_format_args`
+ lint
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 1, 2025 at 11:37=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Fri, May 2, 2025 at 7:04=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
 >
-> On Thu, May 01, 2025 at 10:47:41PM +0000, Matthew Maurer wrote:
-> > +/// Owning handle to a DebugFS directory.
-> > +///
-> > +/// This directory will be cleaned up when it goes out of scope.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The wrapped pointer will always be `NULL`, an error, or an owned D=
-ebugFS `dentry`.
-> > +#[repr(transparent)]
-> > +pub struct Dir(#[cfg(CONFIG_DEBUG_FS)] *mut bindings::dentry);
->
-> Should probably use Opaque instead of a raw pointer.
+> Starting with Rust 1.88.0 (expected 2025-06-26) [1], `rustc` may move
+> back the `uninlined_format_args` to `style` from `pedantic` (it was
+> there waiting for rust-analyzer suppotr), and thus we will start to see
 
-Opaque usage is problematic here:
-1. It was explicitly requested in the first patch that I not expose
-the reference counted nature of the dentry we were being provided. At
-the same time, the dentry we are provided isn't a borrow - it doesn't
-live for a fixed lifetime, it goes away when we clean it up. This
-means that if I do `Dir(Opaque<dentry>)`, there's no way to represent
-the return value of directory creation - it's not `Box<Dir>` or
-`Arc<Dir>`, and I've been requested to hide the fact that it's
-`ARef<Dir>` and not decrement the refcount myself. We can't know the
-lifetime at the callsite, so we can't use a `&'a Dir` either. This
-lands with the raw pointer wrapper. I could, technically, produce
-`InnerDir(Opaque<dentry>)` and `Dir(ManuallyDrop<ARef<Dir>>)`, and
-then impl `Drop` for `Dir` to `remove` instead of `dput`, but that
-seems like a bunch of work to construct infrastructure and then
-suppress it that doesn't actually help.
-2. If you were suggesting `Dir(*mut Opaque<dentry>)`, I think this is
-meaningless and will just cause cast noise. My understanding is that
-the use of `Opaque` is to remove restrictions Rust has over legal
-references and values, e.g. it's initialized, it's not being mutated,
-thread safety invariants, etc. However, pointers in Rust explicitly do
-not induce any of these requirements on their pointee (otherwise
-`ptr::dangling()` would be immediate UB in many situations).
-3. Unless we produce an `ARef<Opaque<dentry>>` at some point (which
-again, we've been asked to pretend isn't there), I don't think there's
-any way for the DebugFS bindings to produce a legal `&'a
-Opaque<dentry>`, so there's not really a purpose.
+Typo: s/suppotr/support/
 
+> lints like:
 >
-> > +// SAFETY: Dir is just a `dentry` under the hood, which the API promis=
-es can be transferred
+>     warning: variables can be used directly in the `format!` string
+>        --> rust/macros/kunit.rs:105:37
+>         |
+>     105 |         let kunit_wrapper_fn_name =3D format!("kunit_rust_wrapp=
+er_{}", test);
+>         |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^
+>         |
+>         =3D help: for further information visit https://rust-lang.github.=
+io/rust-clippy/master/index.html#uninlined_format_args
+>     help: change this to
+>         |
+>     105 -         let kunit_wrapper_fn_name =3D format!("kunit_rust_wrapp=
+er_{}", test);
+>     105 +         let kunit_wrapper_fn_name =3D format!("kunit_rust_wrapp=
+er_{test}");
 >
-> [`Dir`]
+> There is even a case that is a pure removal:
 >
-> > +// between threads.
-> > +unsafe impl Send for Dir {}
-> > +
-> > +// SAFETY: All the native functions we re-export use interior locking,=
- and the contents of the
-> > +// struct are opaque to Rust.
-> > +unsafe impl Sync for Dir {}
-> > +
-> > +impl Dir {
-> > +    /// Create a new directory in DebugFS at the root.
-> > +    ///
-> > +    /// # Examples
-> > +    ///
-> > +    /// ```
-> > +    /// # use kernel::c_str;
-> > +    /// # use kernel::debugfs::Dir;
-> > +    /// {
-> > +    ///    let parent =3D Dir::new(c_str!("parent"));
-> > +    ///    // The path "parent" exists in DebugFS here.
-> > +    /// }
-> > +    /// // It does not exist here.
+>     warning: variables can be used directly in the `format!` string
+>       --> rust/macros/module.rs:51:13
+>        |
+>     51 |             format!("{field}=3D{content}\0", field =3D field, co=
+ntent =3D content)
+>        |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^
+>        |
+>        =3D help: for further information visit https://rust-lang.github.i=
+o/rust-clippy/master/index.html#uninlined_format_args
+>     help: change this to
+>        |
+>     51 -             format!("{field}=3D{content}\0", field =3D field, co=
+ntent =3D content)
+>     51 +             format!("{field}=3D{content}\0")
 >
-> This ready like an explanation for scopes; I think we should drop those c=
-omments
-> and the scope.
+> The lints all seem like nice cleanups, thus just apply them.
 >
-> > +    /// ```
-> > +    pub fn new(name: &CStr) -> Self {
-> > +        Self::create(name, None)
-> > +    }
-> > +
-> > +    /// Create a DebugFS subdirectory.
-> > +    ///
-> > +    /// This returns a [`SubDir`], which will not be automatically cle=
-aned up when it leaves scope.
-> > +    /// To convert this to a handle governing the lifetime of the dire=
-ctory, use [`Dir::from`].
-> > +    ///
-> > +    /// # Examples
-> > +    ///
-> > +    /// ```
-> > +    /// # use kernel::c_str;
-> > +    /// # use kernel::debugfs::Dir;
-> > +    /// {
-> > +    ///    let parent =3D Dir::new(c_str!("parent"));
-> > +    ///    // The path "parent" exists in DebugFS here.
-> > +    ///    {
-> > +    ///        let child =3D parent.subdir(c_str!("child"));
-> > +    ///        // The path "parent/child" exists in DebugFS here.
-> > +    ///    }
-> > +    ///    // The path "parent/child" still exists.
-> > +    ///    {
-> > +    ///        let child2 =3D Dir::from(parent.subdir(c_str!("child2")=
-));
-> > +    ///        // The path "parent/child2" exists in DebugFS here.
-> > +    ///    }
-> > +    ///    // The path "parent/child2" is gone.
-> > +    /// }
-> > +    /// // None of the paths exist here.
+> We may want to disable `allow-mixed-uninlined-format-args` in the future.
 >
-> I think the fact that you need all those comments here proves that it's n=
-ot
-> really intuitive. Please see me comment on SubDir below.
->
-> > +    /// ```
-> > +    pub fn subdir(&self, name: &CStr) -> SubDir {
-> > +        SubDir::new(Self::create(name, Some(self)))
-> > +    }
-> > +
-> > +    /// Create a new directory in DebugFS. If `parent` is [`None`], it=
- will be created at the root.
-> > +    #[cfg(CONFIG_DEBUG_FS)]
-> > +    fn create(name: &CStr, parent: Option<&Self>) -> Self {
-> > +        let parent_ptr =3D match parent {
-> > +            Some(parent) =3D> parent.as_ptr(),
-> > +            None =3D> core::ptr::null_mut(),
-> > +        };
-> > +        // SAFETY:
-> > +        // * `name` argument points to a NUL-terminated string that li=
-ves across the call, by
-> > +        //   invariants of `&CStr`.
-> > +        // * If `parent` is `None`, `parent` accepts null pointers to =
-mean create at root.
-> > +        // * If `parent` is `Some`, `parent` accepts live dentry debug=
-fs pointers.
-> > +        // * `debugfs_create_dir` either returns an error code or a le=
-gal `dentry` pointer,
-> > +        //   so we can call `Self::from_ptr`.
-> > +        unsafe { Self::from_ptr(bindings::debugfs_create_dir(name.as_c=
-har_ptr(), parent_ptr)) }
->
-> Please split up in two calls, such that we don't have two unsafe function=
- calls
-> in a single unsafe block.
->
-> > +    }
-> > +
-> > +    #[cfg(not(CONFIG_DEBUG_FS))]
-> > +    fn create(_name: &CStr, _parent: Option<&Self>) -> Self {
-> > +        Self()
-> > +    }
-> > +
-> > +    /// Constructs a new DebugFS [`Dir`] from the underlying pointer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// The pointer must either be an error code, `NULL`, or represent=
- a transfer of ownership of a
-> > +    /// live DebugFS directory.
-> > +    #[cfg(CONFIG_DEBUG_FS)]
-> > +    unsafe fn from_ptr(ptr: *mut bindings::dentry) -> Self {
-> > +        Self(ptr)
-> > +    }
-> > +
-> > +    /// Returns the pointer representation of the DebugFS directory.
-> > +    ///
-> > +    /// Due to the type invariant, the value returned from this functi=
-on will always be an error
-> > +    /// code, NUL, or a live DebugFS directory.
->
-> Maybe put this in a '# Guarantees' section.
->
-> > +    // If this function is ever needed with `not(CONFIG_DEBUG_FS)`, ha=
-rdcode it to return `ENODEV`.
->
-> I think you mean ERR_PTR(ENODEV).
->
-> > +    #[cfg(CONFIG_DEBUG_FS)]
-> > +    fn as_ptr(&self) -> *mut bindings::dentry {
-> > +        self.0
-> > +    }
-> > +}
-> > +
-> > +impl Drop for Dir {
-> > +    fn drop(&mut self) {
-> > +        // SAFETY: `debugfs_remove` can take `NULL`, error values, and=
- legal DebugFS dentries.
-> > +        // `as_ptr` guarantees that the pointer is of this form.
-> > +        #[cfg(CONFIG_DEBUG_FS)]
-> > +        unsafe {
-> > +            bindings::debugfs_remove(self.as_ptr())
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +/// Handle to a DebugFS directory that will stay alive after leaving s=
-cope.
-> > +#[repr(transparent)]
-> > +pub struct SubDir(ManuallyDrop<Dir>);
->
-> I think it's not very intuitive if the default is that a SubDir still exi=
-sts
-> after it has been dropped. I think your first approach being explicit abo=
-ut this
-> with keep() consuming the SubDir was much better; please keep this approa=
-ch.
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Cc: Benno Lossin <benno.lossin@proton.me>
+> Link: https://github.com/rust-lang/rust-clippy/pull/14160 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  drivers/gpu/nova-core/gpu.rs              |  2 +-
+>  rust/kernel/str.rs                        | 46 +++++++++++------------
+>  rust/macros/kunit.rs                      | 13 ++-----
+>  rust/macros/module.rs                     | 19 +++-------
+>  rust/macros/paste.rs                      |  2 +-
+>  rust/pin-init/internal/src/pinned_drop.rs |  3 +-
+>  6 files changed, 35 insertions(+), 50 deletions(-)
+
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
