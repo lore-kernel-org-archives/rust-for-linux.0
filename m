@@ -1,139 +1,287 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5160D255F40;
-	Fri,  2 May 2025 14:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5D9259CBB
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 15:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746196687; cv=none; b=mykD1N4CpMgh7lM4zizKNlpG7pa0c5/qIzqzYpwOJr/Xl5Aj9WXyUdIMHlFb2oSJ+D5od9s/EnqpnGW642D88UsjUFDcxweMqNABHMUBQUvdnzrcZgGCBj8RM8m/pitE409LsFWaCbuDzJflMdGEozXxwr2FnC8g/bW7245a8PI=
+	t=1746200932; cv=none; b=na26QPWncjqZ64Rs72jYNihO5sfRZRDNlLab+2Lye3p2s7946nZ6F29QOrCzHvWrTxaJNvo8V644J87Zyhz7OXEsYBE0K+HnQucpQ2jlb5ucjQdMxCIVs32ikKHEQ+mHym41sRIuT4MSZ6XrMvXs64xDqeIxCdlGOmhdJcJYpoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746196687; c=relaxed/simple;
-	bh=Dis97faY8WwuXxl1lwxU+T2h8FG9qhydxJlqdcT+d2g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=QdYXXdZvxY/UiB7Is+DczDRwPHZxAitHS/F4XFrTmiTQ8LLFetYQvNdNKtd2eVQMRwa4mzYVxQpF6VkOTagbzq/4E4YQQyUWIDk6VgLtMFFQ5VSOaH97e8IBMlMh671SyM9VLiZt+eICseDiDBHSMss9YPJqjHZRk3cfvc6QJks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hxbNa01E; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746200932; c=relaxed/simple;
+	bh=FPeCjzIRvdfI3vGWlR2T8Gy9kCqxNdJDC8jzb7oidcc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sROyI16jgODSRfLWbHQDuTMvR31Gpkl44B5X9bJggVrgpAgGl/FOhBP3xOilX9oCdvlv9qHLJncHLyX0s4MrYjumLw+LLGVxU4YTz98H3W525tjDyqPBJv25S3ZWjEovtg6JmPLOUjGXmd9A+GeVX18awhbdo6ii4hApNeVTLX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PFMj+9Ni; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hxbNa01E"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39129fc51f8so1336032f8f.0;
-        Fri, 02 May 2025 07:38:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PFMj+9Ni"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5dbfc122b82so12754a12.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 08:48:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746196684; x=1746801484; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UIXwDCSt3R/Kba0wXWByslmMSnWGYOxoD+XvPPBaI7g=;
-        b=hxbNa01EluSEy468AS+oxWDumTaZc628/G16HkDdhnE7TcykaAoMcHR6au/CjsUNvY
-         6aoOE0vf10LZABrjD5rpKox0EfwPbHSSXFbcH2z6RXmNKnxxqJBEqZvJDwP9iwMnmHeg
-         l5Q/XB7Qv3cS5Lpeq3SpLE0zMs844Eq0+h80Y0zNVjHq37cVARnAn+hUBFu8+X55Mj+J
-         L8wrosaBgYjPs43mRMqprZTVnv79S1d5aVClBvPJs0qILlyfmupor0+P+/ZPVeajAgrp
-         c9+ttVX8GpNmLxzYuxJO1puDDmz4wRtVyObzdjGst8DsgRD/1TemxtfUypjRo47GN9Ad
-         QUhg==
+        d=google.com; s=20230601; t=1746200929; x=1746805729; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wVrSpLcZ6r4nzuYBSe89GJo/s5JqpuFLlwBBSO4pcJo=;
+        b=PFMj+9NibIr9bJ3EA6D5pn8umkL1aYiDpUq9shjI9MXWSHIdxegZTD+tJ8w44q1oCv
+         bjXLnxq1fEpPxvAaOYKKBkqp29huemnYl7VYIrA2FD88QtY3LczZxCsRV6a4QnnNH1ib
+         RZ2BkZIRvcOr5eUg2TLK/QduTlcj1m33Djn3/3635azwmj4maluU3eMK3ydw0Av6Km+l
+         voajUKVMRy/mFPs14yXEtB+NhyMcAXqXvBxXKlaRh+m2sWjD+F6bk9fxmyPzmmTO1kdr
+         tBxjctdWTXteC4T5RMjwi30h7bzjLG+ceh1k6VRMmuMpuAMzrrK89l5cPg47gXNyltFe
+         pBug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746196684; x=1746801484;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UIXwDCSt3R/Kba0wXWByslmMSnWGYOxoD+XvPPBaI7g=;
-        b=F5QoXlTLMFpUS7KUY7jQTwmEmCfafDTk0Eq7PjswPeXx+usAwk2QHfkrzwyS6TCtHf
-         97cMOUOICahIfiuD5q90G6IjhESLzmOYgblF2zlziuldMvZu3OACj/IQGKfpBTCToh3R
-         SMJMBc9nFOn3jOJ/Z+/JIoa6jah1S7hTIjbiTZzcJ+swpZWdWcflPJ95qyO7IWziFUss
-         0Ao8B16QrSc55EEL766OsAN69JeAOAls8Dy5YziGMKv1tUGaT6IKOEXO5istGn+m83NE
-         pWDZ2RbxI6PBkIi7x4c8h5UfqFgYliuvaK6kbi8mzdBtrjQZEqW67s4N88T6JqfbIjBQ
-         arWA==
-X-Forwarded-Encrypted: i=1; AJvYcCVD9bihmRu8c72PBx+6HWN62q3U5shFKbikzLSFIwGNBSZmhyPXHgD9yurkKjsyG0Wl1mITDy8WfIG5180=@vger.kernel.org, AJvYcCWnH1+2YzR6QecmN1B0CbkgYsiXv4jCzwCOOB50iwYXcVZDXpAxCB5x8QSoY7kktnJgFvmiNzee/f1WrUIQWQRl@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLGFnon+VpbRyni7QlFk4mrnZfPk9widnbmXkqVhBnHPTgG3Or
-	bF+FXRP6RGQF7ZPQLipOVn1pPDUBAi6YcSweoHT2/hzmLQZtkHP3
-X-Gm-Gg: ASbGncu4oO9hUA164OU4HlmtVlYv1oCm36RIlu4ln0xD9OGnAycDe54XafZe34Kq52j
-	qYqwGCB6iM468OyrsZjd5Da90E2VSzrG0QENLlb+Xjr5d0+8I+kb4uGxylKrKzO2L0ZA/HPKzPE
-	kF0cIQTe738A0TDdaoT3sdZK7VXklhAFs0T5XyMQA+Q/em7rXoCXIgK7yXma4xalN+Cw6GQwXFz
-	h7T46D5bDTMnj5yVhq0SQMco/drxLAr4dfXQEgOVA4yd9rfkJhDJGUKjJI8Bzt0bWr8PrZnPRbm
-	Avdw9CTPnKMAOlUZlnVErQPmfPQDLxNSg7A7R0qOIwzBLvZ8In7T7iCzI5kP5DTv8WE2ZFrPfA4
-	ybROE
-X-Google-Smtp-Source: AGHT+IEE7Z3tHdAEmRGKRO5wmPUH8u75ETV8QIuGOp+ArZBYxVNck1mW9J5i5wrBbPQltVCQnoXtXg==
-X-Received: by 2002:a5d:5f87:0:b0:39e:cbe1:8d68 with SMTP id ffacd0b85a97d-3a099ad3677mr2553778f8f.6.1746196683477;
-        Fri, 02 May 2025 07:38:03 -0700 (PDT)
-Received: from laptop.home (178.75.217.87.dynamic.jazztel.es. [87.217.75.178])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099ae0c48sm2318660f8f.8.2025.05.02.07.38.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 May 2025 07:38:03 -0700 (PDT)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: David Gow <davidgow@google.com>,
-	Rae Moar <rmoar@google.com>,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Cc: rust-for-linux@vger.kernel.org,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	x86@kernel.org,
-	linux-kbuild@vger.kernel.org,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-Subject: [PATCH v2] kunit: fix longest symbol length test
-Date: Fri,  2 May 2025 16:37:58 +0200
-Message-Id: <20250502143758.23135-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20230601; t=1746200929; x=1746805729;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wVrSpLcZ6r4nzuYBSe89GJo/s5JqpuFLlwBBSO4pcJo=;
+        b=OvDceZeSERUfbngYUklEqmgxICcLYcNj17uluu1YBiwHs/oJd5JaQd6lZHcTSFoKCe
+         doaMZDQ4FoJKMqbsRaVS3sTNwtQV6Ay2uzNrcj4EKbj0lmqCinpQFnHuBNIh//oCa3BX
+         DMn+P5mlVZgdZgEq0hZd/0K5OHHSvRnCsTHQoirDsd9J/HqopyxmOyMH5IFtAfAIDbri
+         ltNRZnj2BIi5/9tZyVrAueOcaHFQ5S7xALC8hR1dyHz6YaIIeqQIr+UqWvyOlkWdsOIM
+         CgHCUt7xKJkqUeF7VLg+sT/YE1gKNHSGlSWjqakNNpJKRg9qpsWobpDzHHgfdAhfPuU7
+         l/Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCVG1Vmy9iBtlE2Z+8vfzpt3ByopKh0GoF9RyQwiu01Lsf7qR4HRRqKicxc7+73anXR1aVgZXcWJPjIOqRidGg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyN0Ao0vrWVxBdOkRyivORN7Lx1G6EJprEwKkIVt7CYCSUjUxOu
+	xAk4U7Mfdzj63/Dc4Tl0/MpT9sXYvFGge8ohunwSIKtoQ/nRg7bQ8KYrCkaiABTSnwLVYQmIbBH
+	pTxXrOYbqtGF/daFxaf/l6N7CiHUfq0e5uZOW
+X-Gm-Gg: ASbGncvWUKMlTk+65OCOvwa7+6d52OXDxpx73zX71jkL6YMJoocgpZjoj/jA4ZCQajA
+	ZqSw363hiW1aV4Q6Avl0xtjHHcdMeMNe69o83CldMPBvRA3dTH2aIzDy/0aQoW5JSwW7R2EI/5g
+	tANuXwcmPzDvdtcnrFobiNTowHHu3B8zYMo5TJxfROD11q4sPcuJmn
+X-Google-Smtp-Source: AGHT+IH4/tWjZeDHJdM8PWTKrL3Ooj7FlnPJ2nQpTmyA6onllO1fxO0OriRQr9OWjDedxUeXcZYMB/Mj/uPv11WJEF0=
+X-Received: by 2002:a05:6402:6c5:b0:5f7:fcf7:a358 with SMTP id
+ 4fb4d7f45d1cf-5f9145ecf1dmr214753a12.6.1746200928787; Fri, 02 May 2025
+ 08:48:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250501-debugfs-rust-v3-0-850869fab672@google.com>
+ <20250501-debugfs-rust-v3-1-850869fab672@google.com> <aBRoNKjB063QhGZo@pollux>
+In-Reply-To: <aBRoNKjB063QhGZo@pollux>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Fri, 2 May 2025 08:48:36 -0700
+X-Gm-Features: ATxdqUF2I5oMt95aeCSU6GeI6VpXDIeABWR6x24vNbPICz6nkDSzJCmGZL0fx_8
+Message-ID: <CAGSQo00hYLubqJy9zkO3_O3b6V15WtmoSybC+Ep5uJeU6k3t4A@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] rust: debugfs: Bind DebugFS directory creation
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The kunit test that checks the longests symbol length [1], has triggered
-warnings in some pilelines when symbol prefixes are used [2]. The test
-is adjunsted to depend on !PREFIX_SYMBOLS and !CFI_CLANG as sujested in [3]
+On Thu, May 1, 2025 at 11:37=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Thu, May 01, 2025 at 10:47:41PM +0000, Matthew Maurer wrote:
+> > +/// Owning handle to a DebugFS directory.
+> > +///
+> > +/// This directory will be cleaned up when it goes out of scope.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The wrapped pointer will always be `NULL`, an error, or an owned D=
+ebugFS `dentry`.
+> > +#[repr(transparent)]
+> > +pub struct Dir(#[cfg(CONFIG_DEBUG_FS)] *mut bindings::dentry);
+>
+> Should probably use Opaque instead of a raw pointer.
 
-[1] https://lore.kernel.org/rust-for-linux/CABVgOSm=5Q0fM6neBhxSbOUHBgNzmwf2V22vsYC10YRBT=kN1g@mail.gmail.com/T/#t
-[2] https://lore.kernel.org/all/20250328112156.2614513-1-arnd@kernel.org/T/#u
-[3] https://lore.kernel.org/linux-kselftest/20250427200916.GA1661412@ax162/T/#t
+Opaque usage is problematic here:
+1. It was explicitly requested in the first patch that I not expose
+the reference counted nature of the dentry we were being provided. At
+the same time, the dentry we are provided isn't a borrow - it doesn't
+live for a fixed lifetime, it goes away when we clean it up. This
+means that if I do `Dir(Opaque<dentry>)`, there's no way to represent
+the return value of directory creation - it's not `Box<Dir>` or
+`Arc<Dir>`, and I've been requested to hide the fact that it's
+`ARef<Dir>` and not decrement the refcount myself. We can't know the
+lifetime at the callsite, so we can't use a `&'a Dir` either. This
+lands with the raw pointer wrapper. I could, technically, produce
+`InnerDir(Opaque<dentry>)` and `Dir(ManuallyDrop<ARef<Dir>>)`, and
+then impl `Drop` for `Dir` to `remove` instead of `dput`, but that
+seems like a bunch of work to construct infrastructure and then
+suppress it that doesn't actually help.
+2. If you were suggesting `Dir(*mut Opaque<dentry>)`, I think this is
+meaningless and will just cause cast noise. My understanding is that
+the use of `Opaque` is to remove restrictions Rust has over legal
+references and values, e.g. it's initialized, it's not being mutated,
+thread safety invariants, etc. However, pointers in Rust explicitly do
+not induce any of these requirements on their pointee (otherwise
+`ptr::dangling()` would be immediate UB in many situations).
+3. Unless we produce an `ARef<Opaque<dentry>>` at some point (which
+again, we've been asked to pretend isn't there), I don't think there's
+any way for the DebugFS bindings to produce a legal `&'a
+Opaque<dentry>`, so there's not really a purpose.
 
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
----
-V1 -> V2: added dependency on !CFI_CLANG as suggested in [3], removed
-	CONFIG_ prefix
----
- lib/Kconfig.debug                | 2 +-
- lib/tests/longest_symbol_kunit.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index f9051ab610d5..5b33673d82da 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2885,7 +2885,7 @@ config FORTIFY_KUNIT_TEST
- 
- config LONGEST_SYM_KUNIT_TEST
- 	tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
--	depends on KUNIT && KPROBES
-+	depends on KUNIT && KPROBES && !PREFIX_SYMBOLS && !CFI_CLANG
- 	default KUNIT_ALL_TESTS
- 	help
- 	  Tests the longest symbol possible
-diff --git a/lib/tests/longest_symbol_kunit.c b/lib/tests/longest_symbol_kunit.c
-index e3c28ff1807f..b183fb92d1b2 100644
---- a/lib/tests/longest_symbol_kunit.c
-+++ b/lib/tests/longest_symbol_kunit.c
-@@ -3,8 +3,7 @@
-  * Test the longest symbol length. Execute with:
-  *  ./tools/testing/kunit/kunit.py run longest-symbol
-  *  --arch=x86_64 --kconfig_add CONFIG_KPROBES=y --kconfig_add CONFIG_MODULES=y
-- *  --kconfig_add CONFIG_RETPOLINE=n --kconfig_add CONFIG_CFI_CLANG=n
-- *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=n
-+ *  --kconfig_add CONFIG_CPU_MITIGATIONS=n
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-
-base-commit: ebd297a2affadb6f6f4d2e5d975c1eda18ac762d
--- 
-2.39.2
-
+>
+> > +// SAFETY: Dir is just a `dentry` under the hood, which the API promis=
+es can be transferred
+>
+> [`Dir`]
+>
+> > +// between threads.
+> > +unsafe impl Send for Dir {}
+> > +
+> > +// SAFETY: All the native functions we re-export use interior locking,=
+ and the contents of the
+> > +// struct are opaque to Rust.
+> > +unsafe impl Sync for Dir {}
+> > +
+> > +impl Dir {
+> > +    /// Create a new directory in DebugFS at the root.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// # use kernel::c_str;
+> > +    /// # use kernel::debugfs::Dir;
+> > +    /// {
+> > +    ///    let parent =3D Dir::new(c_str!("parent"));
+> > +    ///    // The path "parent" exists in DebugFS here.
+> > +    /// }
+> > +    /// // It does not exist here.
+>
+> This ready like an explanation for scopes; I think we should drop those c=
+omments
+> and the scope.
+>
+> > +    /// ```
+> > +    pub fn new(name: &CStr) -> Self {
+> > +        Self::create(name, None)
+> > +    }
+> > +
+> > +    /// Create a DebugFS subdirectory.
+> > +    ///
+> > +    /// This returns a [`SubDir`], which will not be automatically cle=
+aned up when it leaves scope.
+> > +    /// To convert this to a handle governing the lifetime of the dire=
+ctory, use [`Dir::from`].
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// # use kernel::c_str;
+> > +    /// # use kernel::debugfs::Dir;
+> > +    /// {
+> > +    ///    let parent =3D Dir::new(c_str!("parent"));
+> > +    ///    // The path "parent" exists in DebugFS here.
+> > +    ///    {
+> > +    ///        let child =3D parent.subdir(c_str!("child"));
+> > +    ///        // The path "parent/child" exists in DebugFS here.
+> > +    ///    }
+> > +    ///    // The path "parent/child" still exists.
+> > +    ///    {
+> > +    ///        let child2 =3D Dir::from(parent.subdir(c_str!("child2")=
+));
+> > +    ///        // The path "parent/child2" exists in DebugFS here.
+> > +    ///    }
+> > +    ///    // The path "parent/child2" is gone.
+> > +    /// }
+> > +    /// // None of the paths exist here.
+>
+> I think the fact that you need all those comments here proves that it's n=
+ot
+> really intuitive. Please see me comment on SubDir below.
+>
+> > +    /// ```
+> > +    pub fn subdir(&self, name: &CStr) -> SubDir {
+> > +        SubDir::new(Self::create(name, Some(self)))
+> > +    }
+> > +
+> > +    /// Create a new directory in DebugFS. If `parent` is [`None`], it=
+ will be created at the root.
+> > +    #[cfg(CONFIG_DEBUG_FS)]
+> > +    fn create(name: &CStr, parent: Option<&Self>) -> Self {
+> > +        let parent_ptr =3D match parent {
+> > +            Some(parent) =3D> parent.as_ptr(),
+> > +            None =3D> core::ptr::null_mut(),
+> > +        };
+> > +        // SAFETY:
+> > +        // * `name` argument points to a NUL-terminated string that li=
+ves across the call, by
+> > +        //   invariants of `&CStr`.
+> > +        // * If `parent` is `None`, `parent` accepts null pointers to =
+mean create at root.
+> > +        // * If `parent` is `Some`, `parent` accepts live dentry debug=
+fs pointers.
+> > +        // * `debugfs_create_dir` either returns an error code or a le=
+gal `dentry` pointer,
+> > +        //   so we can call `Self::from_ptr`.
+> > +        unsafe { Self::from_ptr(bindings::debugfs_create_dir(name.as_c=
+har_ptr(), parent_ptr)) }
+>
+> Please split up in two calls, such that we don't have two unsafe function=
+ calls
+> in a single unsafe block.
+>
+> > +    }
+> > +
+> > +    #[cfg(not(CONFIG_DEBUG_FS))]
+> > +    fn create(_name: &CStr, _parent: Option<&Self>) -> Self {
+> > +        Self()
+> > +    }
+> > +
+> > +    /// Constructs a new DebugFS [`Dir`] from the underlying pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The pointer must either be an error code, `NULL`, or represent=
+ a transfer of ownership of a
+> > +    /// live DebugFS directory.
+> > +    #[cfg(CONFIG_DEBUG_FS)]
+> > +    unsafe fn from_ptr(ptr: *mut bindings::dentry) -> Self {
+> > +        Self(ptr)
+> > +    }
+> > +
+> > +    /// Returns the pointer representation of the DebugFS directory.
+> > +    ///
+> > +    /// Due to the type invariant, the value returned from this functi=
+on will always be an error
+> > +    /// code, NUL, or a live DebugFS directory.
+>
+> Maybe put this in a '# Guarantees' section.
+>
+> > +    // If this function is ever needed with `not(CONFIG_DEBUG_FS)`, ha=
+rdcode it to return `ENODEV`.
+>
+> I think you mean ERR_PTR(ENODEV).
+>
+> > +    #[cfg(CONFIG_DEBUG_FS)]
+> > +    fn as_ptr(&self) -> *mut bindings::dentry {
+> > +        self.0
+> > +    }
+> > +}
+> > +
+> > +impl Drop for Dir {
+> > +    fn drop(&mut self) {
+> > +        // SAFETY: `debugfs_remove` can take `NULL`, error values, and=
+ legal DebugFS dentries.
+> > +        // `as_ptr` guarantees that the pointer is of this form.
+> > +        #[cfg(CONFIG_DEBUG_FS)]
+> > +        unsafe {
+> > +            bindings::debugfs_remove(self.as_ptr())
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +/// Handle to a DebugFS directory that will stay alive after leaving s=
+cope.
+> > +#[repr(transparent)]
+> > +pub struct SubDir(ManuallyDrop<Dir>);
+>
+> I think it's not very intuitive if the default is that a SubDir still exi=
+sts
+> after it has been dropped. I think your first approach being explicit abo=
+ut this
+> with keep() consuming the SubDir was much better; please keep this approa=
+ch.
