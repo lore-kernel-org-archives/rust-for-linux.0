@@ -1,110 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FD324336D;
-	Fri,  2 May 2025 12:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C6722A4F8
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 12:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746187292; cv=none; b=e+sHJom2r51lYAHutgxm05pdHgIiasECQKatiiNsKN5Z96ZJkLDfLLbYB1ild5PH1egdMPz3fP6jnPj5t/sIZvKvVerUv7dC12+xjUgSpUUhNHFTh5lwKG+648aNwYcA0xGK/PExKFbrT/jiWgO3xgZIAvUFkk19zO2Put1jPxQ=
+	t=1746187369; cv=none; b=bGFYcNMh3w4fhsJGD74eF6udWvPIybdd8cqmDF6NT/39LlZxyVPcCJnUgn3mumAH4WYdz5nSIt8/1tYZedEqzgNrFXBVzmJ2BW8mOVUH/gYWmhiTeERRTsRAaiK6Lw46g/S0WUdlvdR0U7ZXUo8IOvG00V4gguZGGLs4vNMvqAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746187292; c=relaxed/simple;
-	bh=LCocTjnjID418++BEBg5N/uceuxSWBYVXC5XCu+s4nA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qglsVtf311hX2SOk8vZB8DyCf3W+MU5r3xULgfjs9ekQszT2dlnoIDwJoMP39FlHtvirt6jg23VUJipHYmTxbvh7QW0Ud9q5NetxCBL6r93J1cqA19nfpnPd42m/fwIgJ0j/1fmC/BqeENnsYf5Ed7p+jKmDpxO6HtEVAB535xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=feShMfdB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746187369; c=relaxed/simple;
+	bh=g4eFzVvT77yBI+Qw2ofVmfNImjSBjNLhFW9sOqt1FCg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MdcWO0VRTCDOkBLhrxuBDsBCb3nlgLCAZHWvVefdh+XNPup/+8q3YEUMKY22SHXDLR0UwvAknjrVFzcmch8DxjGkeIKucjXRfAt+tbdNB8YF0Czph1Zf9ZXhoKp0KdYb1WqEhK87uXtJNkRzecXfC1AZFLdZMl0D03XvYKUNbXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xSdmdqaX; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="feShMfdB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F193BC4CEE4;
-	Fri,  2 May 2025 12:01:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746187291;
-	bh=LCocTjnjID418++BEBg5N/uceuxSWBYVXC5XCu+s4nA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=feShMfdBsSfQv3QgyGPh0uzcAmZy8pIQdauK+51OtlRhlTTb4CJk4Mvr2H0hbiXFy
-	 OltRRwlCr5eoeTMHNJKAGixq/4lFNOcVfg/jGOfT6+Zt5HAJRXzBpUP4oMwp5p+1l0
-	 pzqTfoNP+8ptnVzK8QtXEvWdQ9icXOSxvSrqk2+Sr92AeVVAw84D50/EN0ezorkfJy
-	 z+Rx2zKaJP9CTqUzdqUQfMaqzritM3q+ha91LrNqvIyQ28gxFuQ6Ls5tx6AreDIOm0
-	 CxTw3VJJjvJKLFPQjRlUjTFUuuRVmT+aBQURmiCpo3sk3jr4eIZMMOnyTcf5M+z0t1
-	 KwsgSnSZJ4C8A==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Oliver Mangold" <oliver.mangold@pm.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Asahi Lina" <lina@asahilina.net>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v10 3/5] rust: Add missing SAFETY documentation for ARef
- example
-In-Reply-To: <aBSofsTTbt4pgsDU@mango> (Oliver Mangold's message of "Fri, 02
-	May 2025 11:12:05 +0000")
-References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me>
-	<ih3kqi48IA3vGKmMFL796yktZHuDzsSsrSz1KA_EIHnhlZaeKRQ2dK0FtgmzWTeVNoy9iVs9rNPjAp-ozQO3Xw==@protonmail.internalid>
-	<20250502-unique-ref-v10-3-25de64c0307f@pm.me> <87ikmjz45e.fsf@kernel.org>
-	<Ku_y8PI3VVq03v1Vz1YJOPR1fMOyOIKO-L4Rtq4t3kTDcJIHaiEuRnb551OrfID8sYsVvxSi-RGBZW9mjnMAqA==@protonmail.internalid>
-	<aBSofsTTbt4pgsDU@mango>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Fri, 02 May 2025 14:01:22 +0200
-Message-ID: <877c2zz0fh.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xSdmdqaX"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43d01024089so11950505e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 05:02:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746187366; x=1746792166; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UncE169T2um0/KVNW8FIzn79zOglaPAb564ZSpvpVsE=;
+        b=xSdmdqaX69MQUlrEAq9p6w8qRT6XBtLfr3BgIdmzCrwZryaTYdZpXVQagcFclU1+O7
+         H2TqMkgw1UmrKvAKZmFnLKqNBjyoaln9If6yDBkQ+Kz5ScGtvGf53rvYhFXeA12X4Uq9
+         aznHIxk5loGQ/5Rb6kc2ALtv/D9rDRT0hYbsNgmFnp9pVrjpoDghwFn/cHw8pUkasuGq
+         ypqkmH854Ea8NU/zpccoXSVMaAQZe5z1VVn5KROkYHhcFTFS6i6f1dCpxcj04MvnzKdF
+         EpXkmT83K3VYlqfBSsOEJnxgR0NqFbDkITrh2XhvhC6dij02spIsjpKi4SmbDwdXg9Ew
+         /6FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746187366; x=1746792166;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UncE169T2um0/KVNW8FIzn79zOglaPAb564ZSpvpVsE=;
+        b=vgo6p2x1obHWGz3s4uLRwrxUqD2hr4C0c7KmlSR9n7S0dysh3b4c3AgHTJ/2BQGoCx
+         eQAtdqUBxSOKsfiZgWnWHh9bEdNSzR/0HGdfuvCTGGIkFxh8nfQo5REBg1s5TlxWeTbu
+         p66fcXl1u4sSSZ4g6tZqvJwJg9jXstWcIHsmUfn/y9xIJBGRarlehDORTrImfimXAhTl
+         q/RqbYIH0HZqOYL1kiWbOdA3jt90/ySPnH5TIwZXuk7y+MAevhTypd0Xk3+K2jymzBHo
+         auVrRtO+U+G/CguJ+NP3dnL7LSk+fJjPBF1RoJMVItI0aFz7bpUz1L+X5LbnFU/AjnSg
+         7S4w==
+X-Forwarded-Encrypted: i=1; AJvYcCXsG1SAzi0E/sG6t4z8F91OgXrs1tvNJT9lhW+YHl7r5L+GYP8qjnlnCl5Q5kH/y3LjOODQa4CmQ2Vj3jDSIA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuyMKPtu9xPz6OZAC5eTU8bmnBooyUlyU36xxj9wlJoi4ORKwp
+	hsUsNAB5dhDinynOywzv6nRS8xj19DFyGJkj6IcXBGFfBVURshcQOuAl5b40qkDA9U7ChtfgsDF
+	P/hcJ0oGieUrNTg==
+X-Google-Smtp-Source: AGHT+IGr1We1bnkxCvwGNQjj5LrNx2TT3BLBrEN6cQ0S7gvJeMbwhyujVOviCnm19NUM4mVEhK7xhW4ZTpJ7yPM=
+X-Received: from wmqe18.prod.google.com ([2002:a05:600c:4e52:b0:441:b607:4ec0])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4ec9:b0:43d:1b74:e89a with SMTP id 5b1f17b1804b1-441bbeb4843mr19195785e9.9.1746187366501;
+ Fri, 02 May 2025 05:02:46 -0700 (PDT)
+Date: Fri, 2 May 2025 12:02:44 +0000
+In-Reply-To: <20250502-aref-from-raw-v1-1-eb0630626bba@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20250502-aref-from-raw-v1-1-eb0630626bba@kernel.org>
+Message-ID: <aBS0ZP9tFnujvodq@google.com>
+Subject: Re: [PATCH] rust: elaborate safety requirements for `AlwaysReferenceCounted`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Oliver Mangold <oliver.mangold@pm.me>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-"Oliver Mangold" <oliver.mangold@pm.me> writes:
+On Fri, May 02, 2025 at 01:53:57PM +0200, Andreas Hindborg wrote:
+> Clarify that implementers of `AlwaysReferenceCounted` must prevent the
+> implementer from being directly initialized by users.
+> 
+> It is a violation of the safety requirements of `AlwaysReferenceCounted` if
+> its implementers can be initialized on the stack by users. Although this
+> follows from the safety requirements, it is not immediately obvious.
+> 
+> The following example demonstrates the issue. Note that the safety
+> requirements for implementing `AlwaysRefCounted` and for calling
+> `ARef::from_raw` are satisfied.
+> 
+>   struct Empty {}
+> 
+>   unsafe impl AlwaysRefCounted for Empty {
+>       fn inc_ref(&self) {}
+>       unsafe fn dec_ref(_obj: NonNull<Self>) {}
+>   }
+> 
+>   fn unsound() -> ARef<Empty> {
+>       use core::ptr::NonNull;
+>       use kernel::types::{ARef, RefCounted};
+> 
+>       let mut data = Empty {};
+>       let ptr = NonNull::<Empty>::new(&mut data).unwrap();
+>       let aref: ARef<Empty> = unsafe { ARef::from_raw(ptr) };
+> 
+>       aref
+>   }
 
-> On 250502 1241, Andreas Hindborg wrote:
->> >
->> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->> > index d7fa8934c545f46a646ca900ab8957a04b0ad34d..33d2b4e4a87b991c6d934f4e8d2c6c71a15b1bcb 100644
->> > --- a/rust/kernel/types.rs
->> > +++ b/rust/kernel/types.rs
->> > @@ -498,7 +498,9 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
->> >      ///
->> >      /// struct Empty {}
->> >      ///
->> > -    /// # // SAFETY: TODO.
->> > +    /// // SAFETY: The `RefCounted` implementation for `Empty` does not count references
->> > +    /// // and never frees the underlying object. Thus we can act as having a
->> > +    /// // refcount on the object that we pass to the newly created `ARef`.
->> >      /// unsafe impl RefCounted for Empty {
->> >      ///     fn inc_ref(&self) {}
->> >      ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
->> > @@ -506,7 +508,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
->> >      ///
->> >      /// let mut data = Empty {};
->> >      /// let ptr = NonNull::<Empty>::new(&mut data).unwrap();
->> > -    /// # // SAFETY: TODO.
->> > +    /// // SAFETY: We keep `data` around longer than the `ARef`.
->>
->> I still think this applies:
->>
->> >> How about:
->> >>
->> >>   The `RefCounted` implementation for `Empty` does not count references
->> >>   and never frees the underlying object. Thus we can act as having a
->> >>   refcount on the object that we pass to the newly created `ARef`.
->> >>
->
-> Hi Andreas,
->
-> I agree. Sorry, I just messed up the fix. Your wording landed in the
-> previous to-be-fixed unsafe comment, as you can see.
->
-> Happens when you are too much in a hurry and didn't touch the patch for
-> too long :/
->
-> I will fix it in the next version.
+I don't think it's entirely impossible to write an AlwaysRefCounted
+value that can be on the stack. The type just needs a lifetime
+parameter. For example, this API is not unsound:
 
-Cool! Also check my response to v9: https://lore.kernel.org/all/87cycrz1pa.fsf@kernel.org
+struct MyDataStorage {
+    // ...
+}
 
+impl MyDataStorage {
+    fn as_aref(&self) -> ARef<MyData<'_>> {
+        unsafe { ARef::from_raw(ptr::from_ref(self).cast()) }
+    }
+}
 
-Best regards,
-Andreas Hindborg
+#[repr(transparent)]
+struct MyData<'s> {
+    storage: MyDataStorage,
+    _lifetime: PhantomData<&'s MyDataStorage>,
+}
 
+unsafe impl AlwaysRefCounted for MyData<'_> {
+    fn inc_ref(&self) {}
+    unsafe fn dec_ref(_obj: NonNull<Self>) {}
+}
 
+impl Deref for MyData<'_> {
+    type Target = MyDataStorage;
+    fn deref(&self) -> &MyDataStorage {
+        &self.storage
+    }
+}
 
+Alice
