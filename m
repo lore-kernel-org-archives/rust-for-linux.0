@@ -1,171 +1,144 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED8F242D6A
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 12:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123A025486A
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 13:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746189455; cv=none; b=MaSYVyuFIokG97j6jGK7rMgThwOIoiQqsi00YMv5iECwEIdrq34LYTRxOEysVWUMp29CWc1IZpeFuSQaMIbEPPbOdndqBvQBCjJIk2mGOnWQ6vUl8YI8h+2fGo3XVSWYSZgUvbmwaKDbC2QOJXMdomGYLPlwBR+w6IUwVG31CgY=
+	t=1746191982; cv=none; b=GsY6b0OHGDsPeclNUGu6cBkgAPgSJ3tZGDYw4Jj+dltk4JXPy0FPZA/VTUajNzJnaU83Kc0yNSOBKxUFqzSSqwnZEDf8vq63cU9a6kHu5C6mr9fUyRJOGubA+bsBTlI6d63A4x7gHRKXSkcYrbuxmEkDamGacGXxI40h11zpqx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746189455; c=relaxed/simple;
-	bh=i9qafAyvt4Sqrxt9qfuo2++lLzaRzoiUtvRXlje/Nyo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I6PDovBzyluxyW+lbr6Ee7/oV/03fF6od/TFocO+qqmC1NmE/Dc3toIZHv1xt1ozoYtAM/ReabdMSoCz1gXsgXexualv7spjvbi8DwytKuI4m/PX4fEw4r/JENEM00Nl/XcwADU5xDJ/EH+eldf18YM7cxT+/M7Od4Cklk4L27Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JcCTrYCJ; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1746191982; c=relaxed/simple;
+	bh=bL4r3RcaEtE7LLNUmRhz0ELoSWWsrZAkKfJYpkuZOeQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Z7ClOrQssHKJkGxK2P0Ggx6r7M9iApO7xS4bIbYA3oeyqhjF10lTf31kwDq6lvUZ6J5pBMI7b3DIeVRd4u3mCEyAxEFBWmEgh9Bebw3JTMBjvhZ1VwR8nzDhPBWV8mBUjBTNI9lfDqirkuy5efLrWxzXmdXHboLdQH6df5RDVDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N91vFl9l; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JcCTrYCJ"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39ac8e7688aso1367641f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 05:37:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N91vFl9l"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-39ee4b91d1cso1229269f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 06:19:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746189451; x=1746794251; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E+LD7uFVP1leLiXU44C+zD7gJP6t/daHyVJD0W+bQs4=;
-        b=JcCTrYCJRcUTLKDTZM2kyE6yrqNX666v/kKkrOWmeLuTHTMovJkpx1WSUfFcKOMMVA
-         12hhXXcbTxKIZa2w/37x7uXPHj+PCxhq2WXjnVTL7bMACPvE4O9G7BSgm2ubMGWU3zPG
-         VaSssGG6qdXpAyGROzA6Op0GpQV8B6QgWxunlueke35YUEO10+RqrE+khx2aQAnFsfmX
-         7JVgR2im9yYXtiWEvrYiYhwz4HTcDumgvzyTZRrU1JFRQKDZUIlL6CJupFgx9lg4/jcL
-         aGraqdMByjbSiLdjTJnDaxSE6Hx1f7LLf1Nz6kYCbZ6WZu1tHEHfm49B9E0aVjc+qu8y
-         LyvA==
+        d=google.com; s=20230601; t=1746191979; x=1746796779; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HIlPzAl1Ukk5a5YFIh0Teayej0XpzS5CbuohwqBArAc=;
+        b=N91vFl9lmpEaqZX2zYLlbeQ/3Htf+lK1mChiF09fOkHr6jdEwgXSCWQuWf9e16xkA8
+         yf8zdUuUXI7CPd68bqaXGBrGNv3pc8ZsBxZpceihY5Mg+AgG+QUZKEBcjwvrzXOGDbn3
+         KGxY9ujSVvXpYk+9LJT4pjwf/9lWmn8018LOxC4eLWtndlWnLWwEEJl+z3FL0qI4FpGU
+         h/drzVGguCmqn5P/PI1vEJYJ15sMj8iqnchrg2fFM7MAGFR/ULc7FoywO79Xt865WkaW
+         yVZCj5bPvFkJlcXDnKrSzLTRtoWb6LxBJBnbr3tNAekf3c+Uy884L8QcMq+BGUXG2es8
+         wG5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746189451; x=1746794251;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E+LD7uFVP1leLiXU44C+zD7gJP6t/daHyVJD0W+bQs4=;
-        b=remfQNg2L/8Y96lyG2GXwGG/fIG8fHtkuVi5AMjPCqolUtIlLJ7DGJUkTuqRCke0TH
-         gCfFpY1ZrcHmvDnMrvJCAhqaPjCAffxsB5q0ykvewx4QeWwIKcp5eps9NQo0l0r+hopg
-         kM1h9oUJHTT9ubqRIRUN65TCvVJ9FbqkY4pMKWrYcgnl7OjmdvTsACC+RY/f1hlKmMl6
-         7hf3dq7e6S/OIo8h9ArxYUuhPdKc/jTt5uETXjTlpjPZFQvSG1OUnFIQ1loNl+Rr/7HC
-         f5t2nP44SvGrPJZLl/V4TdluuWSwbTzoDBYjffiin+gvIn/UoE+LLy2SP0NsP75A8onA
-         8Mvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUoJuU3k6qspHzbde8tNb/e2A244VikDU6HOWxx2s1tAx/4efOQ5ov2dbimbatvNcnGzTyXUTeECHJWSYFgnA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6q3WhUR4d8NQbJA3IrtPgkRah6XCyqOHX/FykjMGFd9vbgIOH
-	bKxyKLmI2btMAHn5Cka00h2SgBXWraUhdhVrRTsJU846SVA66TtxVooyY3zeCp2pAE4dry90Vgf
-	N2wR3oEtl8Y5ttRJv5kJJ8zP68d9xWb7Nhcto
-X-Gm-Gg: ASbGnctte00lloMnXZi1Hb0ACEMruWvyUGoTDkr7eMbFONKRuRah7HSDco6EdVRfGul
-	CtrzKA3DkYH00OU83TlQ889C61Ozmjvc6skwnemmMTTNHWyKuGW00P7DrVp4fumeq3+vkdpxOVw
-	/enx2AQwV+zlu054yDULVXWu3sXup4XCwwnmBbjAwKfrNcuIWfmKml
-X-Google-Smtp-Source: AGHT+IGPyMbs/4uv+xTOcLOHcJXPcSy0mP9URN/0D+0p2zNyPN27jpO0nnO9tXJRxDAaEoX12v69dBZuX5X5K2lpJgI=
-X-Received: by 2002:a05:6000:186b:b0:3a0:90bf:b9b with SMTP id
- ffacd0b85a97d-3a099ad40dcmr1830545f8f.8.1746189451420; Fri, 02 May 2025
- 05:37:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746191979; x=1746796779;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HIlPzAl1Ukk5a5YFIh0Teayej0XpzS5CbuohwqBArAc=;
+        b=oaq7/q2ZSgFW28snXHN1WHohGI6uBBX4MP0+TVCiZzXwf2QvzsbK5zTFglMOiaflis
+         W7DOjcSS7aiVurrCeOcRjktA69js6zs7S8QhS6vX/UWZJBa2Vc3NjzSfW8PRYVtbKjli
+         76pmbCe04H+Y6z7gI6e9o67q1D4L2Q60o6fO/8mT9ftJhUda0xZDZGrashqQooV+Xi1H
+         t/NLlbGm+UNJHtve6eiz3lAvYa/Wm3OlyiOzh6dNpd083HhHeLtRdhuplXVNLxOaVssK
+         nT5F2Sqlqe7NzToF0lDvLZ7X2dYtMNqGyoYOMzpwieXCARb18jKSUSIw6xvm+pIGxFJS
+         Ikhw==
+X-Forwarded-Encrypted: i=1; AJvYcCWf/n524aXlzID5ya9aYYdx4oTZLyN/qdKRaDZOH/9aPxupXpS4J5uB89VzU44uMemhYIb0sjYUFK05XFsXfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzASo7rnY/CPgEe+OFS1UJfPo8ULvMrSdc2P/Yg7Y6nf63y44d8
+	KmjJHc+oex2nSZcqyZLppo+Z0CELEhxXGVi/+7CtalrzWcPL5JKQprdhzMmOe7AXJwb7VPeFUE0
+	sLXzHZJBLUeEzUQ==
+X-Google-Smtp-Source: AGHT+IEF6HhrM4ach3hLwMNcmYb7kO3InjylCGXQmvy0SvZ0U3xMqtyHLAZxrtfc3TAH+fkpC3IjTYOrytyngb4=
+X-Received: from wmrn13.prod.google.com ([2002:a05:600c:500d:b0:43d:58c9:bb51])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:21a:b0:43c:f509:2bbf with SMTP id 5b1f17b1804b1-441b72ed395mr46597735e9.15.1746191979505;
+ Fri, 02 May 2025 06:19:39 -0700 (PDT)
+Date: Fri, 02 May 2025 13:19:28 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250502-aref-from-raw-v1-1-eb0630626bba@kernel.org>
- <y-zNJ4bc_qB45bZdnhojbouRbKGZCnzfvM4um6WShQHCTrvN6WikMId_DeZsZz2iSiSQwfNZ13cabCinPpDDlA==@protonmail.internalid>
- <aBS0ZP9tFnujvodq@google.com> <87plgrxkg4.fsf@kernel.org>
-In-Reply-To: <87plgrxkg4.fsf@kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAGDGFGgC/23N0Q6CIBTG8VdpXEeTA5h21Xu0LggOypbSwLGa8
+ 91Db9LZ5Xe23/+MJGJwGMnlMJKAyUXn+zzk8UB0q/oGqTN5EyhAFhwKmlDTDofWm0iVsUowlJI
+ zRrJ4BbTuvdRu97xbFwcfPks8sfn6v5MYLejZWCu1BWmxujbeN088ad+ROZRgjdkWQ8alqXWlR MmFfuww/2EBsMU8Y4P5M6KSZaV2WKxxvcVixsoIwUtrKzAbPE3TF6IK3DleAQAA
+X-Change-Id: 20250320-vec-methods-adfa41e55311
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2195; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=bL4r3RcaEtE7LLNUmRhz0ELoSWWsrZAkKfJYpkuZOeQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoFMZjJPZ+uuNN9uAi386AFXCrhkm7b4O9zxIav
+ SZnzis7BWyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaBTGYwAKCRAEWL7uWMY5
+ Roq+D/0axjbo6DFDNlDx7DPql/FLVnpv/aEdEmtJwNUpyU/avSKx9WSo1ZKIzkU02aX7MGj65Na
+ 5ZmZRKRCSG6/R6H7oDPO4KB8gyEktnus+GXOyYHtO2Er7pQ+euCDpjWZx0f2E55MWJC/QVq6OpB
+ xGzpjgY9/oOY774shzyCrTYchZxdWMj9SofC6E2zG+olL0GwwzSNhKIntsQpByodS6h58Xl6Ywi
+ NJd2ifR2QN1+1mtPh+s+LfHh+J/wGRQ5907IS0cEF/zGi/jbRBfc6VsnZ+0XcmBd3+xYLONeZ2p
+ lAH/YJAie8VWwF6rxLMWSuw9rzqe4ggLY37Lmg/RhU0zGIRdjD2tqkvPC1YiUVszqc4r0qUILd9
+ J6lITFMn6YPDVYqNu3iCIUe3wNCjIseOsi2YMuJXCvV5U+rYAMvbvDUghCNOaFqdrBEjcsDRmf8
+ iSCXnlDX++HH9SFj8t3ALw5N83S2TfmizixtyKnh5DvCKmp/Gy8WJ34cMxabJD5je3mVD0g16e7
+ AZo/CueLSQtPgc3Togn5NBWq2e367SVFunQklkQ2sh2JL8dhVWovlONa5RZ30TSB9qPt93MnkpP
+ 3ATOrPps8m1rAzSeYvLW/goSl4OSQne1dRKvcS5KEOb4YJnBYFodwlDe8L25AjJ3YMQPDypxwES 6+hGocp/o35vY2g==
+X-Mailer: b4 0.14.2
+Message-ID: <20250502-vec-methods-v5-0-06d20ad9366f@google.com>
+Subject: [PATCH v5 0/7] Additional methods for Vec
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 2 May 2025 14:37:19 +0200
-X-Gm-Features: ATxdqUHyw9AleEOVnpS-XOSafxmeCRy9bKz9vYtTiEE1KChzGVzZPTpoAk5KAK4
-Message-ID: <CAH5fLgj3j2BEyOmVw+T_988e_h1TYRmYVuEDYaL-baRu_mQq4g@mail.gmail.com>
-Subject: Re: [PATCH] rust: elaborate safety requirements for `AlwaysReferenceCounted`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Oliver Mangold <oliver.mangold@pm.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Tamir Duberstein <tamird@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, May 2, 2025 at 2:32=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
->
-> "Alice Ryhl" <aliceryhl@google.com> writes:
->
-> > On Fri, May 02, 2025 at 01:53:57PM +0200, Andreas Hindborg wrote:
-> >> Clarify that implementers of `AlwaysReferenceCounted` must prevent the
-> >> implementer from being directly initialized by users.
-> >>
-> >> It is a violation of the safety requirements of `AlwaysReferenceCounte=
-d` if
-> >> its implementers can be initialized on the stack by users. Although th=
-is
-> >> follows from the safety requirements, it is not immediately obvious.
-> >>
-> >> The following example demonstrates the issue. Note that the safety
-> >> requirements for implementing `AlwaysRefCounted` and for calling
-> >> `ARef::from_raw` are satisfied.
-> >>
-> >>   struct Empty {}
-> >>
-> >>   unsafe impl AlwaysRefCounted for Empty {
-> >>       fn inc_ref(&self) {}
-> >>       unsafe fn dec_ref(_obj: NonNull<Self>) {}
-> >>   }
-> >>
-> >>   fn unsound() -> ARef<Empty> {
-> >>       use core::ptr::NonNull;
-> >>       use kernel::types::{ARef, RefCounted};
-> >>
-> >>       let mut data =3D Empty {};
-> >>       let ptr =3D NonNull::<Empty>::new(&mut data).unwrap();
-> >>       let aref: ARef<Empty> =3D unsafe { ARef::from_raw(ptr) };
-> >>
-> >>       aref
-> >>   }
-> >
-> > I don't think it's entirely impossible to write an AlwaysRefCounted
-> > value that can be on the stack. The type just needs a lifetime
-> > parameter. For example, this API is not unsound:
-> >
-> > struct MyDataStorage {
-> >     // ...
-> > }
-> >
-> > impl MyDataStorage {
-> >     fn as_aref(&self) -> ARef<MyData<'_>> {
-> >         unsafe { ARef::from_raw(ptr::from_ref(self).cast()) }
-> >     }
-> > }
-> >
-> > #[repr(transparent)]
-> > struct MyData<'s> {
-> >     storage: MyDataStorage,
-> >     _lifetime: PhantomData<&'s MyDataStorage>,
-> > }
-> >
-> > unsafe impl AlwaysRefCounted for MyData<'_> {
-> >     fn inc_ref(&self) {}
-> >     unsafe fn dec_ref(_obj: NonNull<Self>) {}
-> > }
-> >
-> > impl Deref for MyData<'_> {
-> >     type Target =3D MyDataStorage;
-> >     fn deref(&self) -> &MyDataStorage {
-> >         &self.storage
-> >     }
-> > }
->
-> Right. I would rephrase then:
->
-> It is a violation of the safety requirements of `AlwaysReferenceCounted`
-> if its implementers can be initialized on the stack by users and an
-> `ARef` referencing the object can outlive the object. Although this follo=
-ws from
-> the safety requirements, it is not immediately obvious.
->
-> and
->
-> +/// Note: This means that implementers must prevent users from directly
-> +/// initializing the implementer when the implementer is `'static`. Othe=
-rwise users could
-> +/// initialize the implementer on
-> +/// the stack, which would violate the safety requirements.
->
-> What do you think?
+This adds various Vec methods. Some of them are needed by Rust Binder,
+and others are needed in other places. Each commit explains where it is
+needed.
 
-Hmm. Perhaps we should say that you can never own it "by value". There
-must always be pointer indirection.
+This series is based on top of alloc-next and rust: alloc: split
+`Vec::set_len` into `Vec::{inc,dec}_len`
+https://lore.kernel.org/rust-for-linux/20250416-vec-set-len-v4-0-112b222604cd@gmail.com/
 
-Alice
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v5:
+- Replace panics with errors.
+- Avoid variable for length in drain_all.
+- Link to v4: https://lore.kernel.org/r/20250429-vec-methods-v4-0-dad4436ff82d@google.com
+
+Changes in v4:
+- Add missing ? in some doc tests.
+- Fix safety comment in Vec::push_within_capacity.
+- Add panics section to Vec::remove docs.
+- Move self.dec_len(1) to end of Vec::remove.
+- Add kunit test for Vec::retain.
+- Link to v3: https://lore.kernel.org/r/20250422-vec-methods-v3-0-deff5eea568a@google.com
+
+Changes in v3:
+- Rebase on split `Vec::set_len` into `Vec::{inc,dec}_len`.
+- Various modifications to work with inc/dec_len instead of set_len,
+  with some Reviewed-by's dropped due to this.
+- Move push_within_capacity impl into an unchecked variant.
+- Link to v2: https://lore.kernel.org/r/20250321-vec-methods-v2-0-6d9c8a4634cb@google.com
+
+Changes in v2:
+- Add two more methods that I needed.
+- Introduce some uses of set_len.
+- Add example to retain.
+- Simplify pop.
+- Adjust 11 to 10 in push_within_capacity example.
+- Link to v1: https://lore.kernel.org/r/20250320-vec-methods-v1-0-7dff5cf25fe8@google.com
+
+---
+Alice Ryhl (7):
+      rust: alloc: add Vec::clear
+      rust: alloc: add Vec::pop
+      rust: alloc: add Vec::push_within_capacity
+      rust: alloc: add Vec::drain_all
+      rust: alloc: add Vec::retain
+      rust: alloc: add Vec::remove
+      rust: alloc: add Vec::insert_within_capacity
+
+ rust/kernel/alloc/kvec.rs        | 315 ++++++++++++++++++++++++++++++++++++++-
+ rust/kernel/alloc/kvec/errors.rs |  61 ++++++++
+ 2 files changed, 373 insertions(+), 3 deletions(-)
+---
+base-commit: 88d5d6a38d5161228fbfe017eb94d777d5e8a0e4
+change-id: 20250320-vec-methods-adfa41e55311
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
