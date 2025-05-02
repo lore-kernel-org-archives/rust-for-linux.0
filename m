@@ -1,162 +1,161 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE76425522C
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 13:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D005255F55;
+	Fri,  2 May 2025 13:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746193461; cv=none; b=BjVBQwExPnn5KDvHA2wc7fnITzCfuEsYRunc6cF6EHWT8OVDc8yxnSkhvoFgSzf2TcjmQxIn+w2tkzO2pws3vRqWf/DzZpRAEJerXMtt57NNvlc76szXGNTg4JKp7BFwTitaiyUDuJ8HsebJjYLJ5Po9OFuh+KpPsOSlYy2Bq28=
+	t=1746193620; cv=none; b=t3eg3H8ZOLiaf1nKdQGk7BpUWTm0bTVJwkEAcGlJuNHnNJZI7b5KS+BXwva/G51MfEGyJb+UtHcsmhkfO+eUTn+/tQ3YimxA7DMbJ091zv7vXoG96a8Jq00LcC6+eZ3GJ2ZMBxUe+wfAZEMNdIhUzIcaqI/kPzSOTZ4qrNkpC/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746193461; c=relaxed/simple;
-	bh=g1ZgZils+uIGmjH+sJCijkWj58eoAO+5+vhmz54zqng=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UckLT6Wpo9I46/8ko604lsjO01lMxFWSk6DDAbIUPbGo1+E19nXUi+t/ZuMX5VGbRydnslYn7S+q7xj13a6yHsUCiSuap+32eymws6rHGurm3a81ktCkx6GD1riMQjf/RFNzW8WZ5hOFWGxqtuZPsBnu9XDRPM+siycbWVEd7O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AtW3CDbY; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1746193620; c=relaxed/simple;
+	bh=k1VD3xpFASvnDMMDLrtk8RoNkfG78S1jAVJd+19NNic=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XMAK/331O9c8vCaJieQ7vw7upohBJnfte01qbAV3DDLC6d2AeSWPjPd0/zoSc79oV3XT+h4pH/uzQqId0FT0Bit07ub5D7UK7snk4wMJgm63GoYqURbX+8TJ3jEpToOd+/X9eVvmolshTZESpfQ01GajHuDrqPq0qoXV0KcyTxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ygf9/o7c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AtW3CDbY"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43947a0919aso13141065e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 06:44:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746193458; x=1746798258; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8vTlnazaQVMThLmfIbwpqp3Xc7k0uu2U7TuS5r4iVAU=;
-        b=AtW3CDbYrEwsiz3JvGie3okg4UA6QXDOP91W3KSPhN/+ENd1ZwHeCwXfn+3euhw896
-         ICxtn1CH5uPrOTgmKuit2mEWQF027yMJEUxI6Gz8t4fGdWsOTv16vQ9jDvdSMBiP6DXP
-         EqTVzk1tnboNkuWF6xbBpzS6sXaC2FbYN4mzHvk55g47GooFHP+ejFvs8RijH6vEfUUn
-         yvKSZuSoVVBnUJEPQTv17FcO6SAsceXRPAbTjXkcPTU8U2xn7YMruRTilKxe59itUY8b
-         iWgE/MiK4BRpWFQ/xofKUHWWBWmp6gmkwSYoD267WMgnF5LyMdq2oaZoBDSQkPPAMlfW
-         QrZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746193458; x=1746798258;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8vTlnazaQVMThLmfIbwpqp3Xc7k0uu2U7TuS5r4iVAU=;
-        b=M1PWi4XQUvY+5cXaxetbHyqS/JO4zb3MP5SVktM1Vh897jhcQL/7PRIIx/sCEaynfj
-         EMsLMCslyGbyWX/CsCKjC8AGQq++IWTP+A2hcLuVS4Ul08EdxtWPhkSlOcbakSb4khqh
-         tgdCcQXQHnM6J0Hvg6ncUvLcKK+Q2MXQrS6tRPMDWVKp2gvKJ3xu1STWGXNeoeGCbgoq
-         oo9uCd2OoCZWtqBkoVVHGMMrvnaOTlY4kTAllShvRvCaVLDK756bWRJMUdmcGRaMbMu2
-         Z+HShxijhf/4PRbP6zFaY279T0Cp5Cns08cNR6tOaKfCl250iTi2OwUF9QtbUrdDWltH
-         So9A==
-X-Forwarded-Encrypted: i=1; AJvYcCX47XV8epxX7ns3t0jtyrUT7dNQbh0ITuyAvD99U8YmDBLZEFA/PR7mki1JbR/OMgabNtPt7mtUJDFusI+oPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCB0PZKECe7gWmWcOHOTDl32znkOoNkY5JsaiStKN5HbjnsLSH
-	4UlTfpZhc2SwLbRtFoj6iJSVLmCwd5L4idNmaklTaahqfqbWRj29owA3dBmqtFxspSoAfEAjhNO
-	fB0FHI1eMNkMC7w==
-X-Google-Smtp-Source: AGHT+IEEgU9nO8+UD2Pb7fL6yoFx+ADY8fhoKwXwvYxRbDyw/NOtlc4poFHnBmyLm0nVuIh4YARc+RWwPkJd+/E=
-X-Received: from wmbbe6.prod.google.com ([2002:a05:600c:1e86:b0:440:5d4e:87])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1da6:b0:43d:fa59:be39 with SMTP id 5b1f17b1804b1-441bbf38afemr24834895e9.33.1746193458263;
- Fri, 02 May 2025 06:44:18 -0700 (PDT)
-Date: Fri, 2 May 2025 13:44:16 +0000
-In-Reply-To: <20250502-module-params-v3-v11-2-6096875a2b78@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ygf9/o7c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF85C4CEE4;
+	Fri,  2 May 2025 13:46:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746193619;
+	bh=k1VD3xpFASvnDMMDLrtk8RoNkfG78S1jAVJd+19NNic=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Ygf9/o7cOpaatRKXkkR+2sytOAZ7kTZJMMJOGMp39kM3Sgs8AdV5/46jTsRh8f8g8
+	 Ob0KIHYRlcj2iV5QB6FsLq81pHMcRKJ8lyXiG6uYjzod8bUMngpXfibYo5UNTfQ2MX
+	 ne2n5A9Q+u69xfPKD1vLRhtxoz6VUh9lXmgwE6trpt8UEhqcyPfWeeno7FoqRbG0JW
+	 ePPuKHVj2Mi6kCETDY0zegMv1jp04m4xguulLtT64vjkLVrSVHpcMNOxshBxAMn/ru
+	 84I81SOCAaSrB+UFL/6kh3FkH7afnwioT8Vwet8j0ZvPSUVZwC/9MspJMAT5a+0xq5
+	 2Rqe+L4t2MN3Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Danilo Krummrich" <dakr@kernel.org>,  "Oliver Mangold"
+ <oliver.mangold@pm.me>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: elaborate safety requirements for
+ `AlwaysReferenceCounted`
+In-Reply-To: <CAH5fLgj3j2BEyOmVw+T_988e_h1TYRmYVuEDYaL-baRu_mQq4g@mail.gmail.com>
+ (Alice
+	Ryhl's message of "Fri, 02 May 2025 14:37:19 +0200")
+References: <20250502-aref-from-raw-v1-1-eb0630626bba@kernel.org>
+	<y-zNJ4bc_qB45bZdnhojbouRbKGZCnzfvM4um6WShQHCTrvN6WikMId_DeZsZz2iSiSQwfNZ13cabCinPpDDlA==@protonmail.internalid>
+	<aBS0ZP9tFnujvodq@google.com> <87plgrxkg4.fsf@kernel.org>
+	<qZAEtgU86ydRPcawnXwt7UOsRcAfCyf5mIAIMphh-cEtVyojnatuHHk5JvkzdPOBszAHFDw7-eOouW_KB46AHw==@protonmail.internalid>
+	<CAH5fLgj3j2BEyOmVw+T_988e_h1TYRmYVuEDYaL-baRu_mQq4g@mail.gmail.com>
+User-Agent: mu4e 1.12.7; emacs 30.1
+Date: Fri, 02 May 2025 15:46:46 +0200
+Message-ID: <87jz6zxgzd.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250502-module-params-v3-v11-0-6096875a2b78@kernel.org> <20250502-module-params-v3-v11-2-6096875a2b78@kernel.org>
-Message-ID: <aBTMMHWNXS7wK7zS@google.com>
-Subject: Re: [PATCH v11 2/3] rust: add parameter support to the `module!` macro
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Trevor Gross <tmgross@umich.edu>, 
-	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
-	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 02, 2025 at 02:16:35PM +0200, Andreas Hindborg wrote:
-> Add support for module parameters to the `module!` macro. Implement read
-> only support for integer types without `sysfs` support.
-> 
-> Acked-by: Petr Pavlu <petr.pavlu@suse.com> # from modules perspective
-> Tested-by: Daniel Gomez <da.gomez@samsung.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-> +unsafe extern "C" fn set_param<T>(
-> +    val: *const kernel::ffi::c_char,
-> +    param: *const crate::bindings::kernel_param,
-> +) -> core::ffi::c_int
-> +where
-> +    T: ModuleParam,
-> +{
-> +    // NOTE: If we start supporting arguments without values, val _is_ allowed
-> +    // to be null here.
-> +    if val.is_null() {
-> +        // TODO: Use pr_warn_once available.
-> +        crate::pr_warn!("Null pointer passed to `module_param::set_param`");
-> +        return EINVAL.to_errno();
-> +    }
-> +
-> +    // SAFETY: By function safety requirement, val is non-null and
-> +    // null-terminated. By C API contract, `val` is live and valid for reads
-> +    // for the duration of this function.
-> +    let arg = unsafe { CStr::from_char_ptr(val) };
-> +
-> +    crate::error::from_result(|| {
-> +        let new_value = T::try_from_param_arg(arg)?;
-> +
-> +        // SAFETY: `param` is guaranteed to be valid by C API contract
-> +        // and `arg` is guaranteed to point to an instance of `T`.
-> +        let old_value = unsafe { (*param).__bindgen_anon_1.arg as *mut T };
-> +
-> +        // SAFETY: `old_value` is valid for writes, as we have exclusive
-> +        // access. `old_value` is pointing to an initialized static, and
-> +        // so it is properly initialized.
-> +        unsafe { core::ptr::replace(old_value, new_value) };
+> On Fri, May 2, 2025 at 2:32=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
+>>
+>> "Alice Ryhl" <aliceryhl@google.com> writes:
+>>
+>> > On Fri, May 02, 2025 at 01:53:57PM +0200, Andreas Hindborg wrote:
+>> >> Clarify that implementers of `AlwaysReferenceCounted` must prevent the
+>> >> implementer from being directly initialized by users.
+>> >>
+>> >> It is a violation of the safety requirements of `AlwaysReferenceCount=
+ed` if
+>> >> its implementers can be initialized on the stack by users. Although t=
+his
+>> >> follows from the safety requirements, it is not immediately obvious.
+>> >>
+>> >> The following example demonstrates the issue. Note that the safety
+>> >> requirements for implementing `AlwaysRefCounted` and for calling
+>> >> `ARef::from_raw` are satisfied.
+>> >>
+>> >>   struct Empty {}
+>> >>
+>> >>   unsafe impl AlwaysRefCounted for Empty {
+>> >>       fn inc_ref(&self) {}
+>> >>       unsafe fn dec_ref(_obj: NonNull<Self>) {}
+>> >>   }
+>> >>
+>> >>   fn unsound() -> ARef<Empty> {
+>> >>       use core::ptr::NonNull;
+>> >>       use kernel::types::{ARef, RefCounted};
+>> >>
+>> >>       let mut data =3D Empty {};
+>> >>       let ptr =3D NonNull::<Empty>::new(&mut data).unwrap();
+>> >>       let aref: ARef<Empty> =3D unsafe { ARef::from_raw(ptr) };
+>> >>
+>> >>       aref
+>> >>   }
+>> >
+>> > I don't think it's entirely impossible to write an AlwaysRefCounted
+>> > value that can be on the stack. The type just needs a lifetime
+>> > parameter. For example, this API is not unsound:
+>> >
+>> > struct MyDataStorage {
+>> >     // ...
+>> > }
+>> >
+>> > impl MyDataStorage {
+>> >     fn as_aref(&self) -> ARef<MyData<'_>> {
+>> >         unsafe { ARef::from_raw(ptr::from_ref(self).cast()) }
+>> >     }
+>> > }
+>> >
+>> > #[repr(transparent)]
+>> > struct MyData<'s> {
+>> >     storage: MyDataStorage,
+>> >     _lifetime: PhantomData<&'s MyDataStorage>,
+>> > }
+>> >
+>> > unsafe impl AlwaysRefCounted for MyData<'_> {
+>> >     fn inc_ref(&self) {}
+>> >     unsafe fn dec_ref(_obj: NonNull<Self>) {}
+>> > }
+>> >
+>> > impl Deref for MyData<'_> {
+>> >     type Target =3D MyDataStorage;
+>> >     fn deref(&self) -> &MyDataStorage {
+>> >         &self.storage
+>> >     }
+>> > }
+>>
+>> Right. I would rephrase then:
+>>
+>> It is a violation of the safety requirements of `AlwaysReferenceCounted`
+>> if its implementers can be initialized on the stack by users and an
+>> `ARef` referencing the object can outlive the object. Although this foll=
+ows from
+>> the safety requirements, it is not immediately obvious.
+>>
+>> and
+>>
+>> +/// Note: This means that implementers must prevent users from directly
+>> +/// initializing the implementer when the implementer is `'static`. Oth=
+erwise users could
+>> +/// initialize the implementer on
+>> +/// the stack, which would violate the safety requirements.
+>>
+>> What do you think?
+>
+> Hmm. Perhaps we should say that you can never own it "by value". There
+> must always be pointer indirection.
 
-You don't use the return value of this, so this is equivalent to
-unsafe { *old_value = new_value };
+Yes, that could work. I'll send a new version.
 
-> +macro_rules! make_param_ops {
-> +    ($ops:ident, $ty:ty) => {
-> +        ///
-> +        /// Static [`kernel_param_ops`](srctree/include/linux/moduleparam.h)
-> +        /// struct generated by `make_param_ops`
-> +        #[doc = concat!("for [`", stringify!($ty), "`].")]
-> +        pub static $ops: $crate::bindings::kernel_param_ops = $crate::bindings::kernel_param_ops {
-> +            flags: 0,
-> +            set: Some(set_param::<$ty>),
-> +            get: None,
-> +            free: Some(free::<$ty>),
 
-You could potentially only include `free` if
-`core::mem::needs_drop::<T>()` as an optimization.
+Best regards,
+Andreas Hindborg
 
-> +    fn emit_params(&mut self, info: &ModuleInfo) {
-> +        let Some(params) = &info.params else {
-> +            return;
-> +        };
-> +
-> +        for param in params {
-> +            let ops = param_ops_path(&param.ptype);
-> +
-> +            // Note: The spelling of these fields is dictated by the user space
-> +            // tool `modinfo`.
-> +            self.emit_param("parmtype", &param.name, &param.ptype);
-> +            self.emit_param("parm", &param.name, &param.description);
-> +
-> +            write!(
-> +                self.param_buffer,
-> +                "
-> +                    pub(crate) static {param_name}:
-> +                        ::kernel::module_param::ModuleParamAccess<{param_type}> =
-> +                            ::kernel::module_param::ModuleParamAccess::new({param_default});
 
-Is this global accessible to the user? It would be a use-after-free to
-access it during module teardown. For example, what if I access this
-static during its own destructor? Or during the destructor of another
-module parameter?
 
-Alice
+
