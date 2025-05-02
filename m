@@ -1,186 +1,171 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BCB251782
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 12:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED8F242D6A
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 12:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746189374; cv=none; b=uwuRrwhs2TtO8VqBF0iO+fhR5WNtMPh28npOM9jJieNKru/YnChdR3KcOfJJx2HafXpvSFr0s5kzGp7aPp36JfgDeaK1KRTUzvcP9EPtuXlz8bAF4d1gqNzbjvMqbXVVIlX0Yq+uUgzwJi0GFtD627NvxIbh2RLpEQYRjrDouew=
+	t=1746189455; cv=none; b=MaSYVyuFIokG97j6jGK7rMgThwOIoiQqsi00YMv5iECwEIdrq34LYTRxOEysVWUMp29CWc1IZpeFuSQaMIbEPPbOdndqBvQBCjJIk2mGOnWQ6vUl8YI8h+2fGo3XVSWYSZgUvbmwaKDbC2QOJXMdomGYLPlwBR+w6IUwVG31CgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746189374; c=relaxed/simple;
-	bh=JT+qr01uZcVOJZP4RQusBZiCCpnCtGRxDlD4tTq126I=;
+	s=arc-20240116; t=1746189455; c=relaxed/simple;
+	bh=i9qafAyvt4Sqrxt9qfuo2++lLzaRzoiUtvRXlje/Nyo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=juu45RBeqOMAa6vExwaLnElJVJ9eNpAEbZ7nToqFmB4NF+ULYt3pdIYxKX7dRyXTJpd5CZYDTPeeE8zxETwzBku8qK4L56AjhqDalzZ9cYBCg7FEQRJaBjHFHG7gJ6//17TDtSmulN61VPD+u57Ngb/vh0LA0FGQHgiMoTK1LqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o43WR3/X; arc=none smtp.client-ip=209.85.214.177
+	 To:Cc:Content-Type; b=I6PDovBzyluxyW+lbr6Ee7/oV/03fF6od/TFocO+qqmC1NmE/Dc3toIZHv1xt1ozoYtAM/ReabdMSoCz1gXsgXexualv7spjvbi8DwytKuI4m/PX4fEw4r/JENEM00Nl/XcwADU5xDJ/EH+eldf18YM7cxT+/M7Od4Cklk4L27Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JcCTrYCJ; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o43WR3/X"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2243803b776so33068255ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 05:36:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JcCTrYCJ"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-39ac8e7688aso1367641f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 05:37:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746189372; x=1746794172; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746189451; x=1746794251; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2bWVNZpDPjN8he9HssEtQl6bUgAXH/F4pjykOH4GCkk=;
-        b=o43WR3/XeHPk8/UmkM6gW/6FfzBmuagDR81aPWayeJJshkEPsUp/tA1qINlyN25WAV
-         eQ7u6mDW5iQJrKim2+8xXlFvMX6HPgSUOFkTNTMoPuUDOtegMeaimFW2k4lHcHqMqnCT
-         lFQYqe617TE64iM9lRo6jZF6OTHCM2bydxicJsfRLMxzrmY69AKPVScV2yT2eAU/DwZx
-         oXNDu/NOSkHJTMh1lGvpNGAsqhMSZrFwr5fBsY+ubJoSpHEFSELQUy+zqZJKSgZly8iF
-         0UCEft2Xenr7Lp4Z0rDlpI7xT8kqFzS5mluUCmR6+XdIxI+Ytj5KMCYLz50ICesf78X9
-         itwQ==
+        bh=E+LD7uFVP1leLiXU44C+zD7gJP6t/daHyVJD0W+bQs4=;
+        b=JcCTrYCJRcUTLKDTZM2kyE6yrqNX666v/kKkrOWmeLuTHTMovJkpx1WSUfFcKOMMVA
+         12hhXXcbTxKIZa2w/37x7uXPHj+PCxhq2WXjnVTL7bMACPvE4O9G7BSgm2ubMGWU3zPG
+         VaSssGG6qdXpAyGROzA6Op0GpQV8B6QgWxunlueke35YUEO10+RqrE+khx2aQAnFsfmX
+         7JVgR2im9yYXtiWEvrYiYhwz4HTcDumgvzyTZRrU1JFRQKDZUIlL6CJupFgx9lg4/jcL
+         aGraqdMByjbSiLdjTJnDaxSE6Hx1f7LLf1Nz6kYCbZ6WZu1tHEHfm49B9E0aVjc+qu8y
+         LyvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746189372; x=1746794172;
+        d=1e100.net; s=20230601; t=1746189451; x=1746794251;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2bWVNZpDPjN8he9HssEtQl6bUgAXH/F4pjykOH4GCkk=;
-        b=Lg8gwiGezva8VL7mMRW1JAvm4P5cqkdPE4T0YwOYZJl/bJv4IYb6FtF8POfoYYrRbI
-         hBXZDDY7aUV5o6vkp2/Es7aklTIdMQnaAXWWTjipVC1q6EkPg6XVrmXKptY2yFNRM2fn
-         qxlf9P7r9VyznNUTJftghElfJL1EAgbKXSgMbjY/KjOR7WF+2NTzYoWn/Rv4F4K/59LM
-         fP9KC1L9NeH8iyvq/M58/h+RprXPc/r4cQG8cUlOCRniygZhANrm0bMRzbgcFJKq2mLS
-         Lm/t2stucrQs1hSUCGUFKksvQgY3ua2qeC4lbs7vOe/L1qSFu0JOs64OiL7VduP7qFI8
-         HtBg==
-X-Forwarded-Encrypted: i=1; AJvYcCU50HP42Egbg9x0pRpB3P/ImC0hKO/i8+Fzsw6bILMY1EWpyIBlWfapo6rLRMUecdZXD9SjMiVWpPYPhY4U1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yze6w2pBuLU++Huvs3BcA11mfKse2td8enfzMkGf69eRkpiB5wa
-	+LhhRG/Mc/xKKIUOmUjblSHBmOKkz6RGgI1LkmZVGxNJNcW7q3jQqyNmLckiuMF/5cxo1HuBhzg
-	5ZkahMNulPvQiUToQWujjJMBufu6cWQhdCWQO
-X-Gm-Gg: ASbGncshsQm2DR0EzegXMpOyTK+qn4E71X3QXSQiHHiBEGF9JrD0BHy/GZZSmO2otsm
-	3Ju6uWAB6u0a2XQ3iSbMjgWkTmlH/XGqI4J9NJcdgPExBLPmrYFn7sq9Ny52hZPWQHRY1imeaFq
-	PSfDltqzMF3n1OmrfQEpHvhfH5L1JT5W3Nu8k5RASwRGjOkHEkTT4=
-X-Google-Smtp-Source: AGHT+IF2hAF0/clS4lwwEOMq806j1cV+S29WAOdC4HnfL8cwFDY1AIdDC0g10UG7zShMqw7pJ2uU170Vz680MxOUfJs=
-X-Received: by 2002:a17:90b:544c:b0:2fe:a79e:f56f with SMTP id
- 98e67ed59e1d1-30a4e5aa034mr3940014a91.13.1746189371395; Fri, 02 May 2025
- 05:36:11 -0700 (PDT)
+        bh=E+LD7uFVP1leLiXU44C+zD7gJP6t/daHyVJD0W+bQs4=;
+        b=remfQNg2L/8Y96lyG2GXwGG/fIG8fHtkuVi5AMjPCqolUtIlLJ7DGJUkTuqRCke0TH
+         gCfFpY1ZrcHmvDnMrvJCAhqaPjCAffxsB5q0ykvewx4QeWwIKcp5eps9NQo0l0r+hopg
+         kM1h9oUJHTT9ubqRIRUN65TCvVJ9FbqkY4pMKWrYcgnl7OjmdvTsACC+RY/f1hlKmMl6
+         7hf3dq7e6S/OIo8h9ArxYUuhPdKc/jTt5uETXjTlpjPZFQvSG1OUnFIQ1loNl+Rr/7HC
+         f5t2nP44SvGrPJZLl/V4TdluuWSwbTzoDBYjffiin+gvIn/UoE+LLy2SP0NsP75A8onA
+         8Mvg==
+X-Forwarded-Encrypted: i=1; AJvYcCUoJuU3k6qspHzbde8tNb/e2A244VikDU6HOWxx2s1tAx/4efOQ5ov2dbimbatvNcnGzTyXUTeECHJWSYFgnA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6q3WhUR4d8NQbJA3IrtPgkRah6XCyqOHX/FykjMGFd9vbgIOH
+	bKxyKLmI2btMAHn5Cka00h2SgBXWraUhdhVrRTsJU846SVA66TtxVooyY3zeCp2pAE4dry90Vgf
+	N2wR3oEtl8Y5ttRJv5kJJ8zP68d9xWb7Nhcto
+X-Gm-Gg: ASbGnctte00lloMnXZi1Hb0ACEMruWvyUGoTDkr7eMbFONKRuRah7HSDco6EdVRfGul
+	CtrzKA3DkYH00OU83TlQ889C61Ozmjvc6skwnemmMTTNHWyKuGW00P7DrVp4fumeq3+vkdpxOVw
+	/enx2AQwV+zlu054yDULVXWu3sXup4XCwwnmBbjAwKfrNcuIWfmKml
+X-Google-Smtp-Source: AGHT+IGPyMbs/4uv+xTOcLOHcJXPcSy0mP9URN/0D+0p2zNyPN27jpO0nnO9tXJRxDAaEoX12v69dBZuX5X5K2lpJgI=
+X-Received: by 2002:a05:6000:186b:b0:3a0:90bf:b9b with SMTP id
+ ffacd0b85a97d-3a099ad40dcmr1830545f8f.8.1746189451420; Fri, 02 May 2025
+ 05:37:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250501-rust-kcov-v2-1-b71e83e9779f@google.com>
-In-Reply-To: <20250501-rust-kcov-v2-1-b71e83e9779f@google.com>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Fri, 2 May 2025 14:36:00 +0200
-X-Gm-Features: ATxdqUEo80l6Wmog53pGJlK7MMSvohTGvruUy1uyoixwHojHfstDErpJeGH-R1I
-Message-ID: <CANp29Y41LKZg-kSP+j5hjUKMNeWnPsVd8VvDnOpN8+4WHHjEgQ@mail.gmail.com>
-Subject: Re: [PATCH v2] kcov: rust: add flags for KCOV with Rust
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+References: <20250502-aref-from-raw-v1-1-eb0630626bba@kernel.org>
+ <y-zNJ4bc_qB45bZdnhojbouRbKGZCnzfvM4um6WShQHCTrvN6WikMId_DeZsZz2iSiSQwfNZ13cabCinPpDDlA==@protonmail.internalid>
+ <aBS0ZP9tFnujvodq@google.com> <87plgrxkg4.fsf@kernel.org>
+In-Reply-To: <87plgrxkg4.fsf@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 2 May 2025 14:37:19 +0200
+X-Gm-Features: ATxdqUHyw9AleEOVnpS-XOSafxmeCRy9bKz9vYtTiEE1KChzGVzZPTpoAk5KAK4
+Message-ID: <CAH5fLgj3j2BEyOmVw+T_988e_h1TYRmYVuEDYaL-baRu_mQq4g@mail.gmail.com>
+Subject: Re: [PATCH] rust: elaborate safety requirements for `AlwaysReferenceCounted`
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, kasan-dev@googlegroups.com, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
-	Matthew Maurer <mmaurer@google.com>, Alexander Potapenko <glider@google.com>
+	Benno Lossin <benno.lossin@proton.me>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Oliver Mangold <oliver.mangold@pm.me>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 1, 2025 at 2:16=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
+On Fri, May 2, 2025 at 2:32=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
 >
-> Rust code is currently not instrumented properly when KCOV is enabled.
-> Thus, add the relevant flags to perform instrumentation correctly. This
-> is necessary for efficient fuzzing of Rust code.
+> "Alice Ryhl" <aliceryhl@google.com> writes:
 >
-> The sanitizer-coverage features of LLVM have existed for long enough
-> that they are available on any LLVM version supported by rustc, so we do
-> not need any Kconfig feature detection. The coverage level is set to 3,
-> as that is the level needed by trace-pc.
+> > On Fri, May 02, 2025 at 01:53:57PM +0200, Andreas Hindborg wrote:
+> >> Clarify that implementers of `AlwaysReferenceCounted` must prevent the
+> >> implementer from being directly initialized by users.
+> >>
+> >> It is a violation of the safety requirements of `AlwaysReferenceCounte=
+d` if
+> >> its implementers can be initialized on the stack by users. Although th=
+is
+> >> follows from the safety requirements, it is not immediately obvious.
+> >>
+> >> The following example demonstrates the issue. Note that the safety
+> >> requirements for implementing `AlwaysRefCounted` and for calling
+> >> `ARef::from_raw` are satisfied.
+> >>
+> >>   struct Empty {}
+> >>
+> >>   unsafe impl AlwaysRefCounted for Empty {
+> >>       fn inc_ref(&self) {}
+> >>       unsafe fn dec_ref(_obj: NonNull<Self>) {}
+> >>   }
+> >>
+> >>   fn unsound() -> ARef<Empty> {
+> >>       use core::ptr::NonNull;
+> >>       use kernel::types::{ARef, RefCounted};
+> >>
+> >>       let mut data =3D Empty {};
+> >>       let ptr =3D NonNull::<Empty>::new(&mut data).unwrap();
+> >>       let aref: ARef<Empty> =3D unsafe { ARef::from_raw(ptr) };
+> >>
+> >>       aref
+> >>   }
+> >
+> > I don't think it's entirely impossible to write an AlwaysRefCounted
+> > value that can be on the stack. The type just needs a lifetime
+> > parameter. For example, this API is not unsound:
+> >
+> > struct MyDataStorage {
+> >     // ...
+> > }
+> >
+> > impl MyDataStorage {
+> >     fn as_aref(&self) -> ARef<MyData<'_>> {
+> >         unsafe { ARef::from_raw(ptr::from_ref(self).cast()) }
+> >     }
+> > }
+> >
+> > #[repr(transparent)]
+> > struct MyData<'s> {
+> >     storage: MyDataStorage,
+> >     _lifetime: PhantomData<&'s MyDataStorage>,
+> > }
+> >
+> > unsafe impl AlwaysRefCounted for MyData<'_> {
+> >     fn inc_ref(&self) {}
+> >     unsafe fn dec_ref(_obj: NonNull<Self>) {}
+> > }
+> >
+> > impl Deref for MyData<'_> {
+> >     type Target =3D MyDataStorage;
+> >     fn deref(&self) -> &MyDataStorage {
+> >         &self.storage
+> >     }
+> > }
 >
-> We do not instrument `core` since when we fuzz the kernel, we are
-> looking for bugs in the kernel, not the Rust stdlib.
+> Right. I would rephrase then:
 >
-> Co-developed-by: Matthew Maurer <mmaurer@google.com>
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> Reviewed-by: Alexander Potapenko <glider@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> I did not pick up the Tested-by due to the changes. I verified that it
-> looks right under objdump, but I don't have a syzkaller setup I can try
-> it with.
+> It is a violation of the safety requirements of `AlwaysReferenceCounted`
+> if its implementers can be initialized on the stack by users and an
+> `ARef` referencing the object can outlive the object. Although this follo=
+ws from
+> the safety requirements, it is not immediately obvious.
+>
+> and
+>
+> +/// Note: This means that implementers must prevent users from directly
+> +/// initializing the implementer when the implementer is `'static`. Othe=
+rwise users could
+> +/// initialize the implementer on
+> +/// the stack, which would violate the safety requirements.
+>
+> What do you think?
 
-Thanks for incorporating the core.o change!
-I've tested the v2 patch on my local setup and it works well.
+Hmm. Perhaps we should say that you can never own it "by value". There
+must always be pointer indirection.
 
-Tested-by: Aleksandr Nogikh <nogikh@google.com>
-
-> ---
-> Changes in v2:
-> - Ignore `core` in KCOV.
-> - Link to v1: https://lore.kernel.org/r/20250430-rust-kcov-v1-1-b9ae94148=
-175@google.com
-> ---
->  rust/Makefile         | 1 +
->  scripts/Makefile.kcov | 6 ++++++
->  scripts/Makefile.lib  | 3 +++
->  3 files changed, 10 insertions(+)
->
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 3aca903a7d08cfbf4d4e0f172dab66e9115001e3..80c84749d734842774a3ac2aa=
-bbc944a68d02484 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -492,6 +492,7 @@ $(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs \
->  ifneq ($(or $(CONFIG_X86_64),$(CONFIG_X86_32)),)
->  $(obj)/core.o: scripts/target.json
->  endif
-> +KCOV_INSTRUMENT_core.o :=3D n
->
->  $(obj)/compiler_builtins.o: private skip_gendwarfksyms =3D 1
->  $(obj)/compiler_builtins.o: private rustc_objcopy =3D -w -W '__*'
-> diff --git a/scripts/Makefile.kcov b/scripts/Makefile.kcov
-> index 67e8cfe3474b7dcf7552e675cffe356788e6c3a2..ddcc3c6dc513e1988aeaf07b8=
-efa106e8dffa640 100644
-> --- a/scripts/Makefile.kcov
-> +++ b/scripts/Makefile.kcov
-> @@ -3,4 +3,10 @@ kcov-flags-$(CONFIG_CC_HAS_SANCOV_TRACE_PC)    +=3D -fsa=
-nitize-coverage=3Dtrace-pc
->  kcov-flags-$(CONFIG_KCOV_ENABLE_COMPARISONS)   +=3D -fsanitize-coverage=
-=3Dtrace-cmp
->  kcov-flags-$(CONFIG_GCC_PLUGIN_SANCOV)         +=3D -fplugin=3D$(objtree=
-)/scripts/gcc-plugins/sancov_plugin.so
->
-> +kcov-rflags-y                                  +=3D -Cpasses=3Dsancov-mo=
-dule
-> +kcov-rflags-y                                  +=3D -Cllvm-args=3D-sanit=
-izer-coverage-level=3D3
-> +kcov-rflags-y                                  +=3D -Cllvm-args=3D-sanit=
-izer-coverage-trace-pc
-> +kcov-rflags-$(CONFIG_KCOV_ENABLE_COMPARISONS)  +=3D -Cllvm-args=3D-sanit=
-izer-coverage-trace-compares
-> +
->  export CFLAGS_KCOV :=3D $(kcov-flags-y)
-> +export RUSTFLAGS_KCOV :=3D $(kcov-rflags-y)
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index 2fe73cda0bddb9dcf709d0a9ae541318d54754d2..520905f19a9b19631394cfb5e=
-129effb8846d5b8 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -169,6 +169,9 @@ ifeq ($(CONFIG_KCOV),y)
->  _c_flags +=3D $(if $(patsubst n%,, \
->         $(KCOV_INSTRUMENT_$(target-stem).o)$(KCOV_INSTRUMENT)$(if $(is-ke=
-rnel-object),$(CONFIG_KCOV_INSTRUMENT_ALL))), \
->         $(CFLAGS_KCOV))
-> +_rust_flags +=3D $(if $(patsubst n%,, \
-> +       $(KCOV_INSTRUMENT_$(target-stem).o)$(KCOV_INSTRUMENT)$(if $(is-ke=
-rnel-object),$(CONFIG_KCOV_INSTRUMENT_ALL))), \
-> +       $(RUSTFLAGS_KCOV))
->  endif
->
->  #
->
-> ---
-> base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
-> change-id: 20250430-rust-kcov-6c74fd0f1f06
->
-> Best regards,
-> --
-> Alice Ryhl <aliceryhl@google.com>
->
+Alice
