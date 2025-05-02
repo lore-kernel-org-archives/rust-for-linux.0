@@ -1,230 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2CC1DFE8;
-	Fri,  2 May 2025 12:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8028A210185
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 12:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746188239; cv=none; b=NaGoLIsCBPubnCPIF4lhhuA2rNdO069Yoz1vmKbs9WlMRcaY/S1+i4EG8fQvl3IrAnaaBy1yfjLBbp45RGuc2QTfhuYK7v+19GT/gpKkNKqUEMb1se7UegCQFWRIeCOSoxu3/MbGcCuRnuvnOtlRvk8S9/z8rbiQb38eUx74KJU=
+	t=1746188644; cv=none; b=JG4WWOHoU84hDFPTbrEf444SQ17TViigJL8RnIumB5o772uRXuylq+EBGzlatWmmRtR5V40KkYvdBPX5fQVNF4+7sBg7gFEDuWr93640x/hQXFEkTPphOMg4RMsASXII91YYLDwtgzEVrosZWvWqT/1pNTgLojEolr47/J8p7ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746188239; c=relaxed/simple;
-	bh=wzcW3ekbXZkk/AcgoSnj8DaiB1np7Le7U2obV1k72R0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Z8rzw64uyks3QYueZMLqNDp1pHHkKxSRUPjHJ1m5Z4kJzrPOZZ/YxZdQaRNHDvzTzYLZdfu/Bj+FogYy/N1E7RHMDfYW/2p7ciSCnfuOuqKzzfhvAAvsKj4SP/ZlTA4/zqEGTHn32s43fSbKLdCzsHWg7VeS2UaCPMAokSUv034=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EzzP2EJg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746188644; c=relaxed/simple;
+	bh=mb6k8nKlpleQhAanhtj/9QJk/U2LnNkD9GZglwJtXV4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=dSSGgAEbBX85MRYrDus+WEBB3um/eD4YiQdnT2dV/t3oO0hgrYIYFNzhb744MYYFHvX00YoVtbt3DV0dMYjICI3Bv1o9wuoTrrqedjEdoFidDBfiTLsDmi1ZowrE5UxIsu7ttHVWoPGq9Nb49qSJ7sZlCSyWDV+NpjIHDjzS95s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c6ufpCwE; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EzzP2EJg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28405C4CEE4;
-	Fri,  2 May 2025 12:17:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746188238;
-	bh=wzcW3ekbXZkk/AcgoSnj8DaiB1np7Le7U2obV1k72R0=;
-	h=From:Subject:Date:To:Cc:From;
-	b=EzzP2EJg8PbF4hBVk+lMpG3fWA9qfdPixpT04xK1fJqDOx0mFAGG9RsGdlB/wsvgn
-	 iVLaxH2cr1mn77fk0ZUjzmuWTOWjL5nulFWBfiZQHdFoxcSMp05sJ/JCy9jrn19D7e
-	 QveuBoc6aSfbnZMB2Kh3ldA9nEKdRW4P+pfbHH1yCnWVB7aiNaNraJMmEkDWBGI8yX
-	 iliKxNYcMibsljICWdQiZtz9c+rfluvv6jlSE8iBXg7bAvA70ElL4/SkiRBJHL49MS
-	 P8krKrdMEwKRQU6Jvx3wvxnqIcqa71Ic+5EYgdmaMjdCZy9ugH6OyXDZAZ9IG2OLgY
-	 sEHj8BfmtEp1w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH v11 0/3] rust: extend `module!` macro with integer
- parameter support
-Date: Fri, 02 May 2025 14:16:33 +0200
-Message-Id: <20250502-module-params-v3-v11-0-6096875a2b78@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c6ufpCwE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746188641;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wIczffFaYHKPykcw3b0iM8vvrEkTn9lVPlgu8mIdn84=;
+	b=c6ufpCwEmVCMAEBuLfwDdQXJZ11vrAYH2JaUjx20FNXcJP9kXBQVj2VliPQecfvytxQemf
+	OYM/ul2kzYv8nbk7xDaxoGWGvfD8Z8x/1nBgQa5jkyP8iS/feVSPNTMojATtdX2/fa24wA
+	mRMzTYo4hKFn9aYfhN2ewGtdInoyRek=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-402-NNgTTRAHOsO4edZbUpEsIA-1; Fri, 02 May 2025 08:23:58 -0400
+X-MC-Unique: NNgTTRAHOsO4edZbUpEsIA-1
+X-Mimecast-MFC-AGG-ID: NNgTTRAHOsO4edZbUpEsIA_1746188637
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43cf3168b87so7840215e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 05:23:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746188637; x=1746793437;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wIczffFaYHKPykcw3b0iM8vvrEkTn9lVPlgu8mIdn84=;
+        b=RiHQOu0Qe0OSxDGU+TLq/vU5vmdnbs9ot/QQPHRAe1gJgBUWoDv1lEZ1S/eaI760w8
+         YhoU0/7OCPAiggmKGD7i+W/OUzRxuHQlfGl7PvwShzg7qdUSn0GgIUgiv5mHfPXnhUpo
+         sy6K4WNsheSUwQWTtq7L5Z3pBHTLoDRTN9Hg6vbZ5D1ctdhLjQUP3pCPWD7rnRlOwNq0
+         xgA8F7gTU3ggjUL/zZ61FfXLi/NEDC0bbCt6AWSvgM81sOPIN7PNOEhxCtBEd+Vyug7S
+         s1cnffSww4ClWgTMpxGn+AU+Xyp81MWGAcCUhwdpZPqo0n/don0igcFpSaHybCCBiHia
+         IARA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHc6zVPa74gdHgc04VmmeKUfTXQ8MtbWWXEhpLu1+0acmq9PVtXDDOdJz1Sg4qDBQikbOHLQqImBzDn4BrRQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo2i3IQVBDYw4yrGCSqBqjqCgasKTJS/cUIFNsvs3K1Xot9Xga
+	6+YUuL/LJjPYcnvuCrXEkYeyQFxBJqkZQZuEIBICv4BnBqYTYiyNfW4Q9v8D2IlF+M80z5fDEEV
+	f07lDqdJbVDK0k8cOLmTn8iSyoLbQcMdnmnMgAlt3b7L41bJ2XFC7/6YDrSJc9Ra2
+X-Gm-Gg: ASbGncu+YGkQLTW0cJ1RdS6mUJ9rRpkyW/GDNb453o4Y2YUdvPAC4x7I3SOD9cmhoke
+	itwGXu7ZPdPUXYSDzRDi+sphdWn1s6qBKvBmRiu5pwRUdRODJvbaIOZIJOV3SomgcWr9ap9nVMT
+	2hGEjbcZbkaQraLAOmhQfvEe5c3S19C7Fln6y6G4Leou+D0Qqw0mGEQRyJFgeRl6g6e4U1uvy9r
+	tVM0wHoNFsCcbd1G/YEwx+tyJXV9bJvJYdCDDDP8XsyXUj4XIhOoFf/4niBfmIik55HrNzmotVP
+	yk4nVGOFcXkpkOAn2gonbGCLGbisXe40SVWfBN91m8OvYZNI8s8=
+X-Received: by 2002:a05:600c:5022:b0:43c:e6d1:efe7 with SMTP id 5b1f17b1804b1-441bbf34052mr18719425e9.26.1746188637010;
+        Fri, 02 May 2025 05:23:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHtBSWT/9rJ58YwwQsHRZD3aEJKNHkUCm3Vq3qVD5xLR8Kf9BbRNg4RYaf53PhVsYbqWhK/OA==
+X-Received: by 2002:a05:600c:5022:b0:43c:e6d1:efe7 with SMTP id 5b1f17b1804b1-441bbf34052mr18719135e9.26.1746188636561;
+        Fri, 02 May 2025 05:23:56 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2b28718sm89479975e9.36.2025.05.02.05.23.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 May 2025 05:23:56 -0700 (PDT)
+Message-ID: <847a72c8-ea80-4aaa-b439-ab7649dcebd0@redhat.com>
+Date: Fri, 2 May 2025 14:23:54 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/panic: Use a decimal fifo to avoid u64 by u64 divide
+To: Miguel Ojeda <ojeda@kernel.org>,
+ Christian Schrefl <chrisi.schrefl@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Russell King <linux@armlinux.org.uk>, Paolo Bonzini <pbonzini@redhat.com>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ Javier Martinez Canillas <javierm@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org
+References: <20250418165059.560503-1-jfalempe@redhat.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <20250418165059.560503-1-jfalempe@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: g1lhz7cFHZIBovaX871DJmgqyVv0o5sUjnTIx0te7No_1746188637
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKK3FGgC/23SyU7DMBAA0F+pfCbI4yVxOPEfiIOXcRvRJsVpI
- 1CVf2dSqBJkW77MSH7WLDc2YupwZC+7G0s4dWM39BQAPO2YP9h+j1UXKMEEFwoEQHUawvWI1dk
- mexqrSVYWG9TeBOO0ZfTsnDB2X3fz7Z3iQzdehvR9/2KSS/aByRyjyytltOWgrRc+vn5g6vH4P
- KQ9W7RJPQTNgbcFQZHgBTfOR4cAuaBXQXBVEDQJLmokRUEtdCbUG6HUkqkmQSgn2iYEr2TIhGY
- rmILQkKARbLTOWw8uE8xGEE1BMEsfkI7RoZWqyYR2FaQoVdEuVRjXch0FSpX3AfhK0DgKBPBln
- sHSSIOkRvw35t91Sfh5pc27/O3MPP8AC3YgfJcCAAA=
-X-Change-ID: 20241211-module-params-v3-ae7e5c8d8b5a
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Masahiro Yamada <masahiroy@kernel.org>, 
- Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Nicolas Schier <nicolas.schier@linux.dev>
-Cc: Trevor Gross <tmgross@umich.edu>, 
- Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
- Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
- Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
- Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- linux-modules@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6957; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=wzcW3ekbXZkk/AcgoSnj8DaiB1np7Le7U2obV1k72R0=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBoFLeo5oZp61CPP7vUioY4VqXpvqHhi0x3bzp/J
- JBftQZXC16JAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaBS3qAAKCRDhuBo+eShj
- d+jwD/4mMHXUTPbqIcMRbXRIreakO3iENafyECEEu8ovpLDmfCfLTQWm1hgb2yM4EcGZHQ8hEyY
- aHcCC4WVCy18I095uzsj9buaW2RPT+uhjZ9WSbjujNXg1w2I8c2ALBcnFF/8+T+jGwjWn0THKAE
- syWFDW2ZWQtyUz4GTbtpUSpp7Vtj93bZa/Ggr+QOVy5d6wofR55+Vz9GRL5r7SS7wCda7nduGt+
- OzVyv2DOOgERP1iUzmuPNQE6TG9ZEV7ECz7KT8WVMWJ3EyS1bBdnyoLjp/BSokJk7j16G52x5MU
- w9VY2C2vOJoqVCCB9bRoThqR4CvvvlkOoU76bq3J46esSbR7y0Q8OyecTdRu79koZYbgOG7YUi2
- Bhkirj5FiojK7+12C2XKSRc4YX5R7KWfVdL0N9tTQC+EgjRvt//1CjhOfZLfrAh+cYNwxhJDUs4
- 4mc7xN3HLbRJMUrtP4vWOkmGKF4IKEwys8hhTW3VA1K+XC5Ht2IFtX76Poo9ACq/WNU7aKyqZgn
- OrevoGnLwKmxPat/Bf7RBMCjUW3pT0JFIIo/RYl+rwtrkgdPa5fXSPRYo2tIT6nLu5NASWBOs+l
- YfRJsZc+bABZhfhcmPeZW1kS5Lft7eYtDL4m3M+bqg3zZ63rlW6gSTDNMxc2u4/WrAcxSIxd523
- L+d0859OvVem3kQ==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Extend the `module!` macro with support module parameters. Also add some string
-to integer parsing functions and updates `BStr` with a method to strip a string
-prefix.
+On 18/04/2025 18:48, Jocelyn Falempe wrote:
+> On 32bits ARM, u64/u64 is not supported [1], so change the algorithm
+> to use a simple fifo with decimal digits as u8 instead.
+> This is slower but should compile on all architecture.
 
-Based on code by Adam Bratschi-Kaye lifted from the original `rust` branch [1].
+I applied it to drm-misc/drm-misc-next.
 
-Link: https://github.com/Rust-for-Linux/linux/tree/bc22545f38d74473cfef3e9fd65432733435b79f [1]
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-Changes in v11:
-- Apply a few nits from Miguel.
-- Link to v10: https://lore.kernel.org/r/20250501-module-params-v3-v10-0-4da485d343d5@kernel.org
+Thanks for the reviews.
 
-Changes in v10:
-- Apply fixups from Miguel:
-  - Add integer type suffixes to `assert!` in tests.
-  - Fix links to docs.kernel.org.
-  - Applyy markdown and intra-doc links where possible.
-  - Change to `///` for `mod` docs.
-  - Slightly reword a comment.
-  - Pluralize "Examples" section name.
-  - Hide `use`s in example.
-  - Removed `#[expect]` for the `rusttest` target.
-- Link to v9: https://lore.kernel.org/r/20250321-module-params-v3-v9-0-28b905f2e345@kernel.org
-
-Changes in v9:
-- Remove UB when parsing the minimum integer values.
-- Make `FromStr` trait unsafe, since wrong implementations can cause UB.
-- Drop patches that were applied to rust-next.
-- Link to v8: https://lore.kernel.org/r/20250227-module-params-v3-v8-0-ceeee85d9347@kernel.org
-
-Changes in v8:
-- Change print statement in sample to better communicate parameter name.
-- Use imperative mode in commit messages.
-- Remove prefix path from `EINVAL`.
-- Change `try_from_param_arg` to accept `&BStr` rather than `&[u8]`.
-- Parse integers without 128 bit integer types.
-- Seal trait `FromStrRadix`.
-- Strengthen safety requirement of `set_param`.
-- Remove comment about Display and `PAGE_SIZE`.
-- Add note describing why `ModuleParamAccess` is pub.
-- Typo and grammar fixes for documentation.
-- Update MAINTAINERS with rust module files.
-- Link to v7: https://lore.kernel.org/r/20250218-module-params-v3-v7-0-5e1afabcac1b@kernel.org
-
-Changes in v7:
-- Remove dependency on `pr_warn_once` patches, replace with TODO.
-- Rework `ParseInt::from_str` to avoid allocating.
-- Add a comment explaining how we parse "0".
-- Change trait bound on `Index` impl for `BStr` to match std library approach.
-- Link to v6: https://lore.kernel.org/r/20250211-module-params-v3-v6-0-24b297ddc43d@kernel.org
-
-Changes in v6:
-- Fix a bug that prevented parsing of negative default values for
-  parameters in the `module!` macro.
-- Fix a bug that prevented parsing zero in `strip_radix`. Also add a
-  test case for this.
-- Add `AsRef<BStr>` for `[u8]` and `BStr`.
-- Use `impl AsRef<BStr>` as type of prefix in `BStr::strip_prefix`.
-- Link to v5: https://lore.kernel.org/r/20250204-module-params-v3-v5-0-bf5ec2041625@kernel.org
-
-Changes in v5:
-- Fix a typo in a safety comment in `set_param`.
-- Use a match statement in `parse_int::strip_radix`.
-- Add an implementation of `Index` for `BStr`.
-- Fix a logic inversion bug where parameters would not be parsed.
-- Use `kernel::ffi::c_char` in `set_param` rather than the one in `core`.
-- Use `kernel::c_str!` rather than `c"..."` literal in module macro.
-- Rebase on v6.14-rc1.
-- Link to v4: https://lore.kernel.org/r/20250109-module-params-v3-v4-0-c208bcfbe11f@kernel.org
-
-Changes in v4:
-- Add module maintainers to Cc list (sorry)
-- Add a few missing [`doc_links`]
-- Add panic section to `expect_string_field`
-- Fix a typo in safety requirement of `module_params::free`
-- Change `assert!` to `pr_warn_once!` in `module_params::set_param`
-- Remove `module_params::get_param` and install null pointer instead
-- Remove use of the unstable feature `sync_unsafe_cell`
-- Link to v3: https://lore.kernel.org/r/20241213-module-params-v3-v3-0-485a015ac2cf@kernel.org
-
-Changes in v3:
-- use `SyncUnsafeCell` rather than `static mut` and simplify parameter access
-- remove `Display` bound from `ModuleParam`
-- automatically generate documentation for `PARAM_OPS_.*`
-- remove `as *const _ as *mut_` phrasing
-- inline parameter name in struct instantiation in  `emit_params`
-- move `RacyKernelParam` out of macro template
-- use C string literals rather than byte string literals with explicit null
-- template out `__{name}_{param_name}` in `emit_param`
-- indent template in `emit_params`
-- use let-else expression in `emit_params` to get rid of an indentation level
-- document `expect_string_field`
-- move invication of `impl_int_module_param` to be closer to macro def
-- move attributes after docs in `make_param_ops`
-- rename `impl_module_param` to impl_int_module_param`
-- use `ty` instead of `ident` in `impl_parse_int`
-- use `BStr` instead of `&str` for string manipulation
-- move string parsing functions to seperate patch and add examples, fix bugs
-- degrade comment about future support from doc comment to regular comment
-- remove std lib path from `Sized` marker
-- update documentation for `trait ModuleParam`
-- Link to v2: https://lore.kernel.org/all/20240819133345.3438739-1-nmi@metaspace.dk/
-
-Changes in v2:
-- Remove support for params without values (`NOARG_ALLOWED`).
-- Improve documentation for `try_from_param_arg`.
-- Use prelude import.
-- Refactor `try_from_param_arg` to return `Result`.
-- Refactor `ParseInt::from_str` to return `Result`.
-- Move C callable functions out of `ModuleParam` trait.
-- Rename literal string field parser to `expect_string_field`.
-- Move parameter parsing from generation to parsing stage.
-- Use absolute type paths in macro code.
-- Inline `kparam`and `read_func` values.
-- Resolve TODO regarding alignment attributes.
-- Remove unnecessary unsafe blocks in macro code.
-- Improve error message for unrecognized parameter types.
-- Do not use `self` receiver when reading parameter value.
-- Add parameter documentation to `module!` macro.
-- Use empty `enum` for parameter type.
-- Use `addr_of_mut` to get address of parameter value variable.
-- Enabled building of docs for for `module_param` module.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20240705111455.142790-1-nmi@metaspace.dk/
-
----
-Andreas Hindborg (3):
-      rust: str: add radix prefixed integer parsing functions
-      rust: add parameter support to the `module!` macro
-      modules: add rust modules files to MAINTAINERS
-
- MAINTAINERS                  |   2 +
- rust/kernel/lib.rs           |   1 +
- rust/kernel/module_param.rs  | 221 +++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/str.rs           | 172 ++++++++++++++++++++++++++++++++-
- rust/macros/helpers.rs       |  25 +++++
- rust/macros/lib.rs           |  31 ++++++
- rust/macros/module.rs        | 195 ++++++++++++++++++++++++++++++++++----
- samples/rust/rust_minimal.rs |  10 ++
- 8 files changed, 636 insertions(+), 21 deletions(-)
----
-base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
-change-id: 20241211-module-params-v3-ae7e5c8d8b5a
-
-Best regards,
 -- 
-Andreas Hindborg <a.hindborg@kernel.org>
 
+Jocelyn
+> 
+> Link: https://lore.kernel.org/dri-devel/CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com/ [1]
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+> ---
+>   drivers/gpu/drm/drm_panic_qr.rs | 71 ++++++++++++++++++++++-----------
+>   1 file changed, 48 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
+> index 6025a705530e..dd55b1cb764d 100644
+> --- a/drivers/gpu/drm/drm_panic_qr.rs
+> +++ b/drivers/gpu/drm/drm_panic_qr.rs
+> @@ -366,8 +366,48 @@ fn iter(&self) -> SegmentIterator<'_> {
+>           SegmentIterator {
+>               segment: self,
+>               offset: 0,
+> -            carry: 0,
+> -            carry_len: 0,
+> +            decfifo: Default::default(),
+> +        }
+> +    }
+> +}
+> +
+> +/// Max fifo size is 17 (max push) + 2 (max remaining)
+> +const MAX_FIFO_SIZE: usize = 19;
+> +
+> +/// A simple Decimal digit FIFO
+> +#[derive(Default)]
+> +struct DecFifo {
+> +    decimals: [u8; MAX_FIFO_SIZE],
+> +    len: usize,
+> +}
+> +
+> +impl DecFifo {
+> +    fn push(&mut self, data: u64, len: usize) {
+> +        let mut chunk = data;
+> +        for i in (0..self.len).rev() {
+> +            self.decimals[i + len] = self.decimals[i];
+> +        }
+> +        for i in 0..len {
+> +            self.decimals[i] = (chunk % 10) as u8;
+> +            chunk /= 10;
+> +        }
+> +        self.len += len;
+> +    }
+> +
+> +    /// Pop 3 decimal digits from the FIFO
+> +    fn pop3(&mut self) -> Option<(u16, usize)> {
+> +        if self.len == 0 {
+> +            None
+> +        } else {
+> +            let poplen = 3.min(self.len);
+> +            self.len -= poplen;
+> +            let mut out = 0;
+> +            let mut exp = 1;
+> +            for i in 0..poplen {
+> +                out += self.decimals[self.len + i] as u16 * exp;
+> +                exp *= 10;
+> +            }
+> +            Some((out, NUM_CHARS_BITS[poplen]))
+>           }
+>       }
+>   }
+> @@ -375,8 +415,7 @@ fn iter(&self) -> SegmentIterator<'_> {
+>   struct SegmentIterator<'a> {
+>       segment: &'a Segment<'a>,
+>       offset: usize,
+> -    carry: u64,
+> -    carry_len: usize,
+> +    decfifo: DecFifo,
+>   }
+>   
+>   impl Iterator for SegmentIterator<'_> {
+> @@ -394,31 +433,17 @@ fn next(&mut self) -> Option<Self::Item> {
+>                   }
+>               }
+>               Segment::Numeric(data) => {
+> -                if self.carry_len < 3 && self.offset < data.len() {
+> -                    // If there are less than 3 decimal digits in the carry,
+> -                    // take the next 7 bytes of input, and add them to the carry.
+> +                if self.decfifo.len < 3 && self.offset < data.len() {
+> +                    // If there are less than 3 decimal digits in the fifo,
+> +                    // take the next 7 bytes of input, and push them to the fifo.
+>                       let mut buf = [0u8; 8];
+>                       let len = 7.min(data.len() - self.offset);
+>                       buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
+>                       let chunk = u64::from_le_bytes(buf);
+> -                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as u32);
+> -                    self.carry = chunk + self.carry * pow;
+> +                    self.decfifo.push(chunk, BYTES_TO_DIGITS[len]);
+>                       self.offset += len;
+> -                    self.carry_len += BYTES_TO_DIGITS[len];
+> -                }
+> -                match self.carry_len {
+> -                    0 => None,
+> -                    len => {
+> -                        // take the next 3 decimal digits of the carry
+> -                        // and return 10bits of numeric data.
+> -                        let out_len = 3.min(len);
+> -                        self.carry_len -= out_len;
+> -                        let pow = u64::pow(10, self.carry_len as u32);
+> -                        let out = (self.carry / pow) as u16;
+> -                        self.carry %= pow;
+> -                        Some((out, NUM_CHARS_BITS[out_len]))
+> -                    }
+>                   }
+> +                self.decfifo.pop3()
+>               }
+>           }
+>       }
+> 
+> base-commit: 74757ad1c105c8fc00b4cac0b7918fe3262cdb18
 
