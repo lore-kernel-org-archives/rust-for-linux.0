@@ -1,115 +1,313 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C7419E83E;
-	Fri,  2 May 2025 07:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E3F22618F
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 07:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746170012; cv=none; b=BqWdNKGFnrd5b5yFp6yAMzbPywagRmnQOsJ8CIslnO3ne8rif1syRtD5Bpt1XV0/YSWe1rNFTwBB/hh9Sq5dwbWaqGdHOXNG1zhoLFy1iIYbgtnJ2Zmx0yn656p4obZM+g/U8E/70NQJQRXopg727Kan24Pc1Mj+T4PzJTvnJ4Q=
+	t=1746170873; cv=none; b=omniMidm+83BxFikbyx4wUpwdg+OyCn0zjnKD/+FilEzxxNldWWSkBhlBk05++5x01G595vmnZ3y7ofCa7QdFkJ5Z3xo35gEp53DUMXuunCyEPAtyNFj76SsIKTPJBwFn1idC1DquVfpFe2DABgcyHzoDG5MqQWG1wf92uxNH/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746170012; c=relaxed/simple;
-	bh=L66J/eQYes/GoM+dSimhqwXOafQgvfhtmOkECvbQyYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JUl7oBY9M6wXpIxJOjegA9IMpVPRbYDh/myGT/VnrZLISbNRNDfYUXIXVeW7XMNSOIFGNO6/DZyS9b9irrGnmE70J7b/189Fy39XUnXOpzr1kj2XxUS+H/SZ6+ne6Gz7E/qhbSTEQvBRQiNrBKzc+igdUg6utps4dBotsYIjb+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olWs2xSb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746170873; c=relaxed/simple;
+	bh=o8UpEgFJOjW5u3JTcnQKEk0Ohg1e2aAlB98/1EInp/8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=IUrtwFjSu6IL6/IbifhxA6Bax/c+M+enDAnzbA1GsksJWJTLBveateKaxT38w1TWl3PYv4/w+UXFGtJPcqQ7VHgTVbO1YdD9jkmpW78sUa55HzXscOrL1LdZW+oXOKHPab+jFH9cU3Cbd+a78RPhJw7K56vXiClkRJTXD059ctA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=EUgPc6B7; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olWs2xSb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358F9C4CEE4;
-	Fri,  2 May 2025 07:13:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746170010;
-	bh=L66J/eQYes/GoM+dSimhqwXOafQgvfhtmOkECvbQyYk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=olWs2xSb9VKrNz3V3Tz8OaqO0bZEmj/zi6rjuraKEBP+kHtGZIoAbqY8QwnJOyEe6
-	 c3ynuHQGlwxyAPsd5NcEz9Z/b+HQxyC/hqsdll3Tp5FbRE5P/Vh3Z7D//xjDghcp4S
-	 LZBoHFVmI+iMk+q1cyGqyyxZAq/WE5Viy0fkJpGk=
-Date: Fri, 2 May 2025 09:13:28 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] rust: samples: Add debugfs sample
-Message-ID: <2025050253-wriggly-pod-e420@gregkh>
-References: <20250501-debugfs-rust-v3-0-850869fab672@google.com>
- <20250501-debugfs-rust-v3-4-850869fab672@google.com>
- <aBRtrfTaaC3Vk9fL@pollux>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="EUgPc6B7"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id A7592240101
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 09:27:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1746170868; bh=o8UpEgFJOjW5u3JTcnQKEk0Ohg1e2aAlB98/1EInp/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=EUgPc6B7lVCruRhxGDoAz2eg1NU5gqWFY9S/NOgWLO5KZjcAZzM64iD4OkY35aVWg
+	 KgD/4EFPWXXo8fKK40cHJTXxsPjf7NheMBriCnOr1MAlxLw/7k4O455Leq/q7s/kEI
+	 jE3HdQLPRhG0J1UciidgXwEUIsCuoZeQocpXc1aY1mnhgF+lb3K1h4Czg7QxxsoGcz
+	 ogGS4UkrLCxpSWJjByt5zU/rtXaIF7xUzqI+sRVhIXeCcHZ0Yx9ks53LkY3gX7GogD
+	 RPw5I56wwJvV4s+sbNnVRGFr49g6GgaoJ2JT4cL4ZC2Eo2iUreucOEea/HNF2rvIP+
+	 +s/hKvJAhtN/A==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZpjDr22n2z6txp;
+	Fri,  2 May 2025 09:27:40 +0200 (CEST)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>,
+  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,
+  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Benno Lossin <benno.lossin@proton.me>,  Alice Ryhl
+ <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Joel Becker
+ <jlbec@evilplan.org>,  Peter Zijlstra <peterz@infradead.org>,  Ingo Molnar
+ <mingo@redhat.com>,  Will Deacon <will@kernel.org>,  Waiman Long
+ <longman@redhat.com>,  Fiona Behrens <me@kloenk.dev>,  Daniel Almeida
+ <daniel.almeida@collabora.com>,  Breno Leitao <leitao@debian.org>,
+  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 2/3] rust: configfs: add a sample demonstrating
+ configfs usage
+In-Reply-To: <20250501-configfs-v6-2-66c61eb76368@kernel.org>
+References: <20250501-configfs-v6-0-66c61eb76368@kernel.org>
+	<20250501-configfs-v6-2-66c61eb76368@kernel.org>
+Date: Fri, 02 May 2025 07:27:24 +0000
+Message-ID: <87zffvxyjn.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBRtrfTaaC3Vk9fL@pollux>
+Content-Type: text/plain
 
-On Fri, May 02, 2025 at 09:01:01AM +0200, Danilo Krummrich wrote:
-> On Thu, May 01, 2025 at 10:47:44PM +0000, Matthew Maurer wrote:
-> > +struct RustDebugFs {
-> > +    // As we only hold this for drop effect (to remove the directory) we have a leading underscore
-> > +    // to indicate to the compiler that we don't expect to use this field directly.
-> 
-> This feels like an introduction to Rust in the kernel for Rust beginners, which
-> is a great thing!
-> 
-> However, I wonder if, instead, we may want a dedicated (or even multiple) sample
-> modules or sample drivers, where we go into such detail and leave those samples
-> to focus only on the corresponding API?
+Andreas Hindborg <a.hindborg@kernel.org> writes:
 
-People search for the specific example of what they want to do, so I
-recommend just leaving all of these comments in for now as knowing to
-search for a different example is usually not going to happen :)
+> Add a sample to the samples folder, demonstrating the intended use of the
+> Rust configfs API.
+>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  samples/rust/Kconfig          |  11 +++
+>  samples/rust/Makefile         |   1 +
+>  samples/rust/rust_configfs.rs | 192 ++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 204 insertions(+)
+>
+> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+> index cad52b7120b5..be491ad9b3af 100644
+> --- a/samples/rust/Kconfig
+> +++ b/samples/rust/Kconfig
+> @@ -10,6 +10,17 @@ menuconfig SAMPLES_RUST
+>  
+>  if SAMPLES_RUST
+>  
+> +config SAMPLE_RUST_CONFIGFS
+> +	tristate "Configfs sample"
+> +	depends on CONFIGFS_FS
+> +	help
+> +	  This option builds the Rust configfs sample.
+> +
+> +	  To compile this as a module, choose M here:
+> +	  the module will be called rust_configfs.
+> +
+> +	  If unsure, say N.
+> +
+>  config SAMPLE_RUST_MINIMAL
+>  	tristate "Minimal"
+>  	help
+> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+> index c6a2479f7d9c..b3c9178d654a 100644
+> --- a/samples/rust/Makefile
+> +++ b/samples/rust/Makefile
+> @@ -8,6 +8,7 @@ obj-$(CONFIG_SAMPLE_RUST_DMA)			+= rust_dma.o
+>  obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
+>  obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
+>  obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
+> +obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
+>  
+>  rust_print-y := rust_print_main.o rust_print_events.o
+>  
+> diff --git a/samples/rust/rust_configfs.rs b/samples/rust/rust_configfs.rs
+> new file mode 100644
+> index 000000000000..9c0989072a8f
+> --- /dev/null
+> +++ b/samples/rust/rust_configfs.rs
+> @@ -0,0 +1,192 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Rust configfs sample.
+> +
+> +use kernel::alloc::flags;
+> +use kernel::c_str;
+> +use kernel::configfs;
+> +use kernel::configfs_attrs;
+> +use kernel::new_mutex;
+> +use kernel::page::PAGE_SIZE;
+> +use kernel::prelude::*;
+> +use kernel::sync::Mutex;
+> +
+> +module! {
+> +    type: RustConfigfs,
+> +    name: "rust_configfs",
+> +    author: "Rust for Linux Contributors",
+> +    description: "Rust configfs sample",
+> +    license: "GPL",
+> +}
+> +
+> +#[pin_data]
+> +struct RustConfigfs {
+> +    #[pin]
+> +    config: configfs::Subsystem<Configuration>,
+> +}
+> +
+> +#[pin_data]
+> +struct Configuration {
+> +    message: &'static CStr,
+> +    #[pin]
+> +    bar: Mutex<(KBox<[u8; PAGE_SIZE]>, usize)>,
+> +}
+> +
+> +impl Configuration {
+> +    fn new() -> impl PinInit<Self, Error> {
+> +        try_pin_init!(Self {
+> +            message: c_str!("Hello World\n"),
+> +            bar <- new_mutex!((KBox::new([0; PAGE_SIZE], flags::GFP_KERNEL)?, 0)),
+> +        })
+> +    }
+> +}
+> +
+> +impl kernel::InPlaceModule for RustConfigfs {
+> +    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+> +        pr_info!("Rust configfs sample (init)\n");
+> +
+> +        // Define a subsystem with the data type `Configuration`, two
+> +        // attributes, `message` and `bar` and child group type `Child`. `mkdir`
+> +        // in the directory representing this subsystem will create directories
+> +        // backed by the `Child` type.
+> +        let item_type = configfs_attrs! {
+> +            container: configfs::Subsystem<Configuration>,
+> +            data: Configuration,
+> +            child: Child,
+> +            attributes: [
+> +                message: 0,
+> +                bar: 1,
+> +            ],
+> +        };
+> +
+> +        try_pin_init!(Self {
+> +            config <- configfs::Subsystem::new(
+> +                c_str!("rust_configfs"), item_type, Configuration::new()
+> +            ),
+> +        })
+> +    }
+> +}
+> +
+> +#[vtable]
+> +impl configfs::GroupOperations for Configuration {
+> +    type Child = Child;
+> +
+> +    fn make_group(&self, name: &CStr) -> Result<impl PinInit<configfs::Group<Child>, Error>> {
+> +        // Define a group with data type `Child`, one attribute `baz` and child
+> +        // group type `GrandChild`. `mkdir` in the directory representing this
+> +        // group will create directories backed by the `GrandChild` type.
+> +        let tpe = configfs_attrs! {
+> +            container: configfs::Group<Child>,
+> +            data: Child,
+> +            child: GrandChild,
+> +            attributes: [
+> +                baz: 0,
+> +            ],
+> +        };
+> +
+> +        Ok(configfs::Group::new(name.try_into()?, tpe, Child::new()))
+> +    }
+> +}
+> +
+> +#[vtable]
+> +impl configfs::AttributeOperations<0> for Configuration {
+> +    type Data = Configuration;
+> +
+> +    fn show(container: &Configuration, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+> +        pr_info!("Show message\n");
+> +        let data = container.message;
+> +        page[0..data.len()].copy_from_slice(data);
+> +        Ok(data.len())
+> +    }
+> +}
+> +
+> +#[vtable]
+> +impl configfs::AttributeOperations<1> for Configuration {
+> +    type Data = Configuration;
+> +
+> +    fn show(container: &Configuration, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+> +        pr_info!("Show bar\n");
+> +        let guard = container.bar.lock();
+> +        let data = guard.0.as_slice();
+> +        let len = guard.1;
+> +        page[0..len].copy_from_slice(&data[0..len]);
+> +        Ok(len)
+> +    }
+> +
+> +    fn store(container: &Configuration, page: &[u8]) -> Result {
+> +        pr_info!("Store bar\n");
+> +        let mut guard = container.bar.lock();
+> +        guard.0[0..page.len()].copy_from_slice(page);
+> +        guard.1 = page.len();
+> +        Ok(())
+> +    }
+> +}
+> +
+> +// `pin_data` cannot handle structs without braces.
+> +#[pin_data]
+> +struct Child {}
+> +
+> +impl Child {
+> +    fn new() -> impl PinInit<Self, Error> {
+> +        try_pin_init!(Self {})
+> +    }
+> +}
+> +
+> +#[vtable]
+> +impl configfs::GroupOperations for Child {
+> +    type Child = GrandChild;
+> +
+> +    fn make_group(&self, name: &CStr) -> Result<impl PinInit<configfs::Group<GrandChild>, Error>> {
+> +        // Define a group with data type `GrandChild`, one attribute `gz`. As no
 
+Hi Andreas,
 
-> 
-> > +    _debugfs: Dir,
-> > +}
-> > +
-> > +static EXAMPLE: AtomicU32 = AtomicU32::new(8);
-> > +
-> > +impl kernel::Module for RustDebugFs {
-> > +    fn init(_this: &'static ThisModule) -> Result<Self> {
-> > +        // Create a debugfs directory in the root of the filesystem called "sample_debugfs".
-> > +        let debugfs = Dir::new(c_str!("sample_debugfs"));
-> > +
-> > +        // Create a subdirectory, so "sample_debugfs/subdir" now exists.
-> > +        let sub = debugfs.subdir(c_str!("subdir"));
-> > +
-> > +        // Create a single file in the subdirectory called "example" that will read from the
-> > +        // `EXAMPLE` atomic variable.
-> > +        sub.fmt_file(c_str!("example"), &EXAMPLE, &|example, f| {
-> > +            writeln!(f, "Reading atomic: {}", example.load(Ordering::Relaxed))
-> > +        });
-> > +        // Now, "sample_debugfs/subdir/example" will print "Reading atomic: 8\n" when read.
-> > +
-> > +        // Change the value in the variable displayed by the file. This is intended to demonstrate
-> > +        // that the module can continue to change the value used by the file.
-> > +        EXAMPLE.store(10, Ordering::Relaxed);
-> > +        // Now, "sample_debugfs/subdir/example" will print "Reading atomic: 10\n" when read.
-> > +
-> > +        // Save the root debugfs directory we created to our module object. It will be
-> > +        // automatically cleaned up when our module is unloaded because dropping the module object
-> > +        // will drop the `Dir` handle. The base directory, the subdirectory, and the file will all
-> > +        // continue to exist until the module is unloaded.
-> 
-> Same with this comment.
-> 
-> @Greg: I know you proposed this one; for educational purposes I suppose. What's
-> your take on the above?
+Maybe you meant "one attribute `gc`" here?
 
-I like it and want to see this here as it helps explain both how to use
-this, AND how to have maintainers review code that uses the api that are
-not that familiar with how Rust does things.
+C. Mitrodimas
 
-thanks,
-
-greg k-h
+> +        // child type is specified, it will not be possible to create subgroups
+> +        // in this group, and `mkdir`in the directory representing this group
+> +        // will return an error.
+> +        let tpe = configfs_attrs! {
+> +            container: configfs::Group<GrandChild>,
+> +            data: GrandChild,
+> +            attributes: [
+> +                gc: 0,
+> +            ],
+> +        };
+> +
+> +        Ok(configfs::Group::new(
+> +            name.try_into()?,
+> +            tpe,
+> +            GrandChild::new(),
+> +        ))
+> +    }
+> +}
+> +
+> +#[vtable]
+> +impl configfs::AttributeOperations<0> for Child {
+> +    type Data = Child;
+> +
+> +    fn show(_container: &Child, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+> +        pr_info!("Show baz\n");
+> +        let data = c"Hello Baz\n".to_bytes();
+> +        page[0..data.len()].copy_from_slice(data);
+> +        Ok(data.len())
+> +    }
+> +}
+> +
+> +// `pin_data` cannot handle structs without braces.
+> +#[pin_data]
+> +struct GrandChild {}
+> +
+> +impl GrandChild {
+> +    fn new() -> impl PinInit<Self, Error> {
+> +        try_pin_init!(Self {})
+> +    }
+> +}
+> +
+> +#[vtable]
+> +impl configfs::AttributeOperations<0> for GrandChild {
+> +    type Data = GrandChild;
+> +
+> +    fn show(_container: &GrandChild, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
+> +        pr_info!("Show grand child\n");
+> +        let data = c"Hello GC\n".to_bytes();
+> +        page[0..data.len()].copy_from_slice(data);
+> +        Ok(data.len())
+> +    }
+> +}
