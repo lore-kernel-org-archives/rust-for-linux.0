@@ -1,197 +1,162 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22627255230
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 13:19:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE76425522C
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 May 2025 13:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746191998; cv=none; b=B+Yc/ksqy8iYNBWGZGafYL3W0KYSww5DyDH5a0T2IsfSNzeQwGGUsESP0fmnEKVhdnYRkF3SpoGN6wIRKS8Cpct18lIleNb6ynEMJIB8btTehCBUOUaSiuhrZ7z/CCzHvqJ/OyQnJbioGou/JgFSKJS6wV22ZIiGZFgRtAR5ybY=
+	t=1746193461; cv=none; b=BjVBQwExPnn5KDvHA2wc7fnITzCfuEsYRunc6cF6EHWT8OVDc8yxnSkhvoFgSzf2TcjmQxIn+w2tkzO2pws3vRqWf/DzZpRAEJerXMtt57NNvlc76szXGNTg4JKp7BFwTitaiyUDuJ8HsebJjYLJ5Po9OFuh+KpPsOSlYy2Bq28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746191998; c=relaxed/simple;
-	bh=+9IyxSQyP27/emN3Z7piM0ajFLsCl/Pug5kGGN8P3Pw=;
+	s=arc-20240116; t=1746193461; c=relaxed/simple;
+	bh=g1ZgZils+uIGmjH+sJCijkWj58eoAO+5+vhmz54zqng=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jEVsgwuQLTa+4f2UrN6t+IFDqlLDMLyycpXvaWY9rpqfjC5Sgw2dBYdCnDy6AhNXNEvWm912/Fxvqo8nSwTCUHSTgDHyEJmoSbihi7l8na4X2NLdLcIz5PIH9TA9aMrUrTUb4hhsJHFU+hWC9o+tHCl4SUak07/HMFfoNrRNako=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BCrXZ+Yv; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=UckLT6Wpo9I46/8ko604lsjO01lMxFWSk6DDAbIUPbGo1+E19nXUi+t/ZuMX5VGbRydnslYn7S+q7xj13a6yHsUCiSuap+32eymws6rHGurm3a81ktCkx6GD1riMQjf/RFNzW8WZ5hOFWGxqtuZPsBnu9XDRPM+siycbWVEd7O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AtW3CDbY; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BCrXZ+Yv"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43eed325461so9332435e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 06:19:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AtW3CDbY"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43947a0919aso13141065e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 May 2025 06:44:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746191994; x=1746796794; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746193458; x=1746798258; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tgf/dSBfhJF3XyhZfIU4YTUHWPpbhjb3fOqzjou+aqs=;
-        b=BCrXZ+Yv/b38M+1aSMn2fYdQpA8YdVW96o2qRB9/w7g7ynzNxdlCQkHNl3hEExLQKN
-         G6Gc+7qZOKfWQxUUScQP+1NG2swBa/zAgC74I8kk85t5WNpi5zKcU9GCjjYAgZcFqQTg
-         bSl0Rklu0Lc0ZD5/O1yz9G3y7MsnFZCsHuIXkC0vzCbE/s45gZHdpznBWc0t1BP8iydu
-         f5k2YYgf1YrQ9K230nfB4wp3iRBVl3Tk0JIpWZBy2tL3AszscCidaDSyR9OEubxr+J3C
-         tmeT/XmW1RMea+Ev1bcA14lDfB8IJlx+LgjS1V8KLllZQRQJN8lHfDf2MxFCe+BgkM6r
-         GEuQ==
+        bh=8vTlnazaQVMThLmfIbwpqp3Xc7k0uu2U7TuS5r4iVAU=;
+        b=AtW3CDbYrEwsiz3JvGie3okg4UA6QXDOP91W3KSPhN/+ENd1ZwHeCwXfn+3euhw896
+         ICxtn1CH5uPrOTgmKuit2mEWQF027yMJEUxI6Gz8t4fGdWsOTv16vQ9jDvdSMBiP6DXP
+         EqTVzk1tnboNkuWF6xbBpzS6sXaC2FbYN4mzHvk55g47GooFHP+ejFvs8RijH6vEfUUn
+         yvKSZuSoVVBnUJEPQTv17FcO6SAsceXRPAbTjXkcPTU8U2xn7YMruRTilKxe59itUY8b
+         iWgE/MiK4BRpWFQ/xofKUHWWBWmp6gmkwSYoD267WMgnF5LyMdq2oaZoBDSQkPPAMlfW
+         QrZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746191994; x=1746796794;
+        d=1e100.net; s=20230601; t=1746193458; x=1746798258;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tgf/dSBfhJF3XyhZfIU4YTUHWPpbhjb3fOqzjou+aqs=;
-        b=vQcdFfB54IhCFokPCY54GtN18NNS5C3mBNYINK2eeBg2HbCzSDuwal7d1KnJwLaEK1
-         jrkUBy6C3CeJQWLETUuAYSHGRz5vh4S0ery29NLWENW6V2nLHBRrR1kuvOajNMhOSpzu
-         EhIbn1Pkq+HQvpqrGdeNDu2BHR6k1uBr7BnVh2wZ998IeXtjYKz6qkrWsCSsz3xruuEm
-         ncxmGVLMslEbFnYuhDOktL0pS3vj8F3F/ajjTUF53bOT8L3uKxKOK2B9rn8yInDsNL5w
-         r9EQRc1uF+YTxZ9gz5iD4wZwWcCs5iNJjC+APNz1jB9i0mTOaGTM9Uc5Zutj8Hvrcvd4
-         79lA==
-X-Forwarded-Encrypted: i=1; AJvYcCVhQeLhjwVQIkSb0XlyUBvuPie2XgI/68anGy/ZTZnelgMg/LF/W3wT4pzu1r4YBEiH1L44K6fLIUV9e0AfJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSZ++dfiyXrsi8anNg1xTiL3+bae4OU1ogboksFVCOdv+F/lOM
-	AehhlBh+3sI80+qHSf7x7+Gl7UoP6YXcg3ewWPjt67m64BE31dpFPAHx8MyWCvwvFUWjIgtKDSS
-	fIV4mc+cyL28aXg==
-X-Google-Smtp-Source: AGHT+IGBP8X1327QOyf/N5JTak2KzCyZ3u2dbMq6hMfrVCBAcpWg7Vd3dSHLBCRIYSqFJaa16L7xos29pfG9a3c=
-X-Received: from wmbjt7.prod.google.com ([2002:a05:600c:5687:b0:441:bc26:4d3f])
+        bh=8vTlnazaQVMThLmfIbwpqp3Xc7k0uu2U7TuS5r4iVAU=;
+        b=M1PWi4XQUvY+5cXaxetbHyqS/JO4zb3MP5SVktM1Vh897jhcQL/7PRIIx/sCEaynfj
+         EMsLMCslyGbyWX/CsCKjC8AGQq++IWTP+A2hcLuVS4Ul08EdxtWPhkSlOcbakSb4khqh
+         tgdCcQXQHnM6J0Hvg6ncUvLcKK+Q2MXQrS6tRPMDWVKp2gvKJ3xu1STWGXNeoeGCbgoq
+         oo9uCd2OoCZWtqBkoVVHGMMrvnaOTlY4kTAllShvRvCaVLDK756bWRJMUdmcGRaMbMu2
+         Z+HShxijhf/4PRbP6zFaY279T0Cp5Cns08cNR6tOaKfCl250iTi2OwUF9QtbUrdDWltH
+         So9A==
+X-Forwarded-Encrypted: i=1; AJvYcCX47XV8epxX7ns3t0jtyrUT7dNQbh0ITuyAvD99U8YmDBLZEFA/PR7mki1JbR/OMgabNtPt7mtUJDFusI+oPg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCB0PZKECe7gWmWcOHOTDl32znkOoNkY5JsaiStKN5HbjnsLSH
+	4UlTfpZhc2SwLbRtFoj6iJSVLmCwd5L4idNmaklTaahqfqbWRj29owA3dBmqtFxspSoAfEAjhNO
+	fB0FHI1eMNkMC7w==
+X-Google-Smtp-Source: AGHT+IEEgU9nO8+UD2Pb7fL6yoFx+ADY8fhoKwXwvYxRbDyw/NOtlc4poFHnBmyLm0nVuIh4YARc+RWwPkJd+/E=
+X-Received: from wmbbe6.prod.google.com ([2002:a05:600c:1e86:b0:440:5d4e:87])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3d0c:b0:440:54ef:dfdc with SMTP id 5b1f17b1804b1-441bbeb36c5mr23309105e9.8.1746191994633;
- Fri, 02 May 2025 06:19:54 -0700 (PDT)
-Date: Fri, 02 May 2025 13:19:35 +0000
-In-Reply-To: <20250502-vec-methods-v5-0-06d20ad9366f@google.com>
+ 2002:a05:600c:1da6:b0:43d:fa59:be39 with SMTP id 5b1f17b1804b1-441bbf38afemr24834895e9.33.1746193458263;
+ Fri, 02 May 2025 06:44:18 -0700 (PDT)
+Date: Fri, 2 May 2025 13:44:16 +0000
+In-Reply-To: <20250502-module-params-v3-v11-2-6096875a2b78@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250502-vec-methods-v5-0-06d20ad9366f@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4274; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=+9IyxSQyP27/emN3Z7piM0ajFLsCl/Pug5kGGN8P3Pw=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoFMZpYNjX33Q2M4DoOnNQNvAPltogL1FOhVVJs
- ZUXgBheHm2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaBTGaQAKCRAEWL7uWMY5
- RkYsD/wM2urXyc5ZVl+H41WRyHPKUpnzguGEX5AirWP+jwy0PpgupptS8mxUE33Psw7aQvdLn9y
- uXDpQSKFw0sUsb2acfJC7b6hMaQN6NCa5dRqxFfFrBA4Waz+Di8vMK2mCETBmgMDvzx7WmK0rea
- 6vUnKMjZuNaKv1RXEkAuc5DS5Sj+ISVQb+fI+MOUWNs+i1dBLIshBUP2LsWBreV0bCbi/EamEnX
- 7gPodBJuu82aedqM4sj915ccsErzAsJAULzKmhqUzEN3eU53x9SBQ09Z2tt8nm3uxs8xq9bywdC
- T5Xw+2WBW36GUAmmrdqcgN7SNYtAo9fwkyOdvgiQt28QcNQyajJxj9XtrnDYHRG0PNnJiTAuNDd
- yU65QxVQO6BwpsoSTQgGjlNqoF9TgFeqKXLAhvplrJVwHgLEmcdc13Y0YbJ63xzltl4dBTn3J4z
- dIu3o9GQcs2C/N+XTGY1iVACNP/FK27skASha/0p+IjbBkHX1pJigRpNdHfmIjKRPCQiXf7aFlU
- tFt2l1ScjP67S1Hda8XlfAQQ1YxzCSABNX/dVdrYJNxhrjGTszdiShOur+j9+AsKVta1XC9X83c
- UltWl0DN3Y2sGDnPiu6RSoOp8u1Mr6aBLw14Nml4aBGo5us598kVWm5NE1WFpLqJCpzwIG/P88R HcxmH9psjmjekMQ==
-X-Mailer: b4 0.14.2
-Message-ID: <20250502-vec-methods-v5-7-06d20ad9366f@google.com>
-Subject: [PATCH v5 7/7] rust: alloc: add Vec::insert_within_capacity
+References: <20250502-module-params-v3-v11-0-6096875a2b78@kernel.org> <20250502-module-params-v3-v11-2-6096875a2b78@kernel.org>
+Message-ID: <aBTMMHWNXS7wK7zS@google.com>
+Subject: Re: [PATCH v11 2/3] rust: add parameter support to the `module!` macro
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, Trevor Gross <tmgross@umich.edu>, 
+	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
+	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-This adds a variant of Vec::insert that does not allocate memory. This
-makes it safe to use this function while holding a spinlock. Rust Binder
-uses it for the range allocator fast path.
+On Fri, May 02, 2025 at 02:16:35PM +0200, Andreas Hindborg wrote:
+> Add support for module parameters to the `module!` macro. Implement read
+> only support for integer types without `sysfs` support.
+> 
+> Acked-by: Petr Pavlu <petr.pavlu@suse.com> # from modules perspective
+> Tested-by: Daniel Gomez <da.gomez@samsung.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/alloc/kvec.rs        | 51 +++++++++++++++++++++++++++++++++++++++-
- rust/kernel/alloc/kvec/errors.rs | 23 ++++++++++++++++++
- 2 files changed, 73 insertions(+), 1 deletion(-)
+> +unsafe extern "C" fn set_param<T>(
+> +    val: *const kernel::ffi::c_char,
+> +    param: *const crate::bindings::kernel_param,
+> +) -> core::ffi::c_int
+> +where
+> +    T: ModuleParam,
+> +{
+> +    // NOTE: If we start supporting arguments without values, val _is_ allowed
+> +    // to be null here.
+> +    if val.is_null() {
+> +        // TODO: Use pr_warn_once available.
+> +        crate::pr_warn!("Null pointer passed to `module_param::set_param`");
+> +        return EINVAL.to_errno();
+> +    }
+> +
+> +    // SAFETY: By function safety requirement, val is non-null and
+> +    // null-terminated. By C API contract, `val` is live and valid for reads
+> +    // for the duration of this function.
+> +    let arg = unsafe { CStr::from_char_ptr(val) };
+> +
+> +    crate::error::from_result(|| {
+> +        let new_value = T::try_from_param_arg(arg)?;
+> +
+> +        // SAFETY: `param` is guaranteed to be valid by C API contract
+> +        // and `arg` is guaranteed to point to an instance of `T`.
+> +        let old_value = unsafe { (*param).__bindgen_anon_1.arg as *mut T };
+> +
+> +        // SAFETY: `old_value` is valid for writes, as we have exclusive
+> +        // access. `old_value` is pointing to an initialized static, and
+> +        // so it is properly initialized.
+> +        unsafe { core::ptr::replace(old_value, new_value) };
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index 8845e7694334b672476ff935580f3a9eb94d23fe..d2f3669c5417422dddaebcc7348543d3576b9ba8 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -22,7 +22,7 @@
- };
- 
- mod errors;
--pub use self::errors::{PushError, RemoveError};
-+pub use self::errors::{InsertError, PushError, RemoveError};
- 
- /// Create a [`KVec`] containing the arguments.
- ///
-@@ -358,6 +358,55 @@ pub unsafe fn push_within_capacity_unchecked(&mut self, v: T) {
-         unsafe { self.inc_len(1) };
-     }
- 
-+    /// Inserts an element at the given index in the [`Vec`] instance.
-+    ///
-+    /// Fails if the vector does not have capacity for the new element. Panics if the index is out
-+    /// of bounds.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::alloc::kvec::InsertError;
-+    ///
-+    /// let mut v = KVec::with_capacity(5, GFP_KERNEL)?;
-+    /// for i in 0..5 {
-+    ///     v.insert_within_capacity(0, i)?;
-+    /// }
-+    ///
-+    /// assert!(matches!(v.insert_within_capacity(0, 5), Err(InsertError::OutOfCapacity(_))));
-+    /// assert!(matches!(v.insert_within_capacity(1000, 5), Err(InsertError::IndexOutOfBounds(_))));
-+    /// assert_eq!(v, [4, 3, 2, 1, 0]);
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn insert_within_capacity(
-+        &mut self,
-+        index: usize,
-+        element: T,
-+    ) -> Result<(), InsertError<T>> {
-+        let len = self.len();
-+        if index > len {
-+            return Err(InsertError::IndexOutOfBounds(element));
-+        }
-+
-+        if len >= self.capacity() {
-+            return Err(InsertError::OutOfCapacity(element));
-+        }
-+
-+        // SAFETY: This is in bounds since `index <= len < capacity`.
-+        let p = unsafe { self.as_mut_ptr().add(index) };
-+        // INVARIANT: This breaks the Vec invariants by making `index` contain an invalid element,
-+        // but we restore the invariants below.
-+        // SAFETY: Both the src and dst ranges end no later than one element after the length.
-+        // Since the length is less than the capacity, both ranges are in bounds of the allocation.
-+        unsafe { ptr::copy(p, p.add(1), len - index) };
-+        // INVARIANT: This restores the Vec invariants.
-+        // SAFETY: The pointer is in-bounds of the allocation.
-+        unsafe { ptr::write(p, element) };
-+        // SAFETY: Index `len` contains a valid element due to the above copy and write.
-+        unsafe { self.inc_len(1) };
-+        Ok(())
-+    }
-+
-     /// Removes the last element from a vector and returns it, or `None` if it is empty.
-     ///
-     /// # Examples
-diff --git a/rust/kernel/alloc/kvec/errors.rs b/rust/kernel/alloc/kvec/errors.rs
-index 06fe696e8bc6612a5e6aa2f6c28b685033acfa2f..348b8d27e102ca34a0d6194ae9d00b12c11547b4 100644
---- a/rust/kernel/alloc/kvec/errors.rs
-+++ b/rust/kernel/alloc/kvec/errors.rs
-@@ -36,3 +36,26 @@ fn from(_: RemoveError) -> Error {
-         EINVAL
-     }
- }
-+
-+/// Error type for [`Vec::insert_within_capacity`].
-+pub enum InsertError<T> {
-+    /// The value could not be inserted because the index is out of bounds.
-+    IndexOutOfBounds(T),
-+    /// The value could not be inserted because the vector is out of capacity.
-+    OutOfCapacity(T),
-+}
-+
-+impl<T> Debug for InsertError<T> {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-+        match self {
-+            InsertError::IndexOutOfBounds(_) => write!(f, "Index out of bounds"),
-+            InsertError::OutOfCapacity(_) => write!(f, "Not enough capacity"),
-+        }
-+    }
-+}
-+
-+impl<T> From<InsertError<T>> for Error {
-+    fn from(_: InsertError<T>) -> Error {
-+        EINVAL
-+    }
-+}
+You don't use the return value of this, so this is equivalent to
+unsafe { *old_value = new_value };
 
--- 
-2.49.0.967.g6a0df3ecc3-goog
+> +macro_rules! make_param_ops {
+> +    ($ops:ident, $ty:ty) => {
+> +        ///
+> +        /// Static [`kernel_param_ops`](srctree/include/linux/moduleparam.h)
+> +        /// struct generated by `make_param_ops`
+> +        #[doc = concat!("for [`", stringify!($ty), "`].")]
+> +        pub static $ops: $crate::bindings::kernel_param_ops = $crate::bindings::kernel_param_ops {
+> +            flags: 0,
+> +            set: Some(set_param::<$ty>),
+> +            get: None,
+> +            free: Some(free::<$ty>),
 
+You could potentially only include `free` if
+`core::mem::needs_drop::<T>()` as an optimization.
+
+> +    fn emit_params(&mut self, info: &ModuleInfo) {
+> +        let Some(params) = &info.params else {
+> +            return;
+> +        };
+> +
+> +        for param in params {
+> +            let ops = param_ops_path(&param.ptype);
+> +
+> +            // Note: The spelling of these fields is dictated by the user space
+> +            // tool `modinfo`.
+> +            self.emit_param("parmtype", &param.name, &param.ptype);
+> +            self.emit_param("parm", &param.name, &param.description);
+> +
+> +            write!(
+> +                self.param_buffer,
+> +                "
+> +                    pub(crate) static {param_name}:
+> +                        ::kernel::module_param::ModuleParamAccess<{param_type}> =
+> +                            ::kernel::module_param::ModuleParamAccess::new({param_default});
+
+Is this global accessible to the user? It would be a use-after-free to
+access it during module teardown. For example, what if I access this
+static during its own destructor? Or during the destructor of another
+module parameter?
+
+Alice
