@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AD22A1CA;
-	Sat,  3 May 2025 11:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C99519F130;
+	Sat,  3 May 2025 12:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746273500; cv=none; b=C4nSnS3CdxC0P0JKa17037+g7OgUiN/i2WtNu5A07DbZnBu0QwwNpTiCsm+JFbA9N/XjynPHu2nFlC0i3X89VnyDO+zLCgkvkuO4BzHA3ZZoRM9A6/GPBO2KkiH/N3qEnyrhPeZ2HOMJU23GLv2ayINtoLUDQ9hv2dmoJzT/4KA=
+	t=1746274494; cv=none; b=pPVQqAjGUMmlK5iNvvgzg7EwRBPIMBlNUpi2rPjn5GNwqIT2EzzhQdp2s0/YQgPbXPizTy8JY5reSS4gzOmL+Pla+fVcHYV5rieKWT9TMNo+5qQWNsUtwQr3/vQo3BzCKghO9aZ1uWjxkYfq/rj15ITL1e67UQoh3WY/ObdouMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746273500; c=relaxed/simple;
-	bh=Bo2kM4vpWeOzKCXc2t+PVRRC6F4rzJU4RcIaI8kD8nk=;
+	s=arc-20240116; t=1746274494; c=relaxed/simple;
+	bh=5QSKVIWIyE0G0SOrr3V+CMtcq+HMng2o9oPwArw/ys8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V0kaJWmasd7FE0+op9wzuq0udKRzxZ7BUZdXtrcevMZvSnGwvzEG+ZvGQbiqqV0jDZYaofA2am4t1UIKxRekaKJyMTEEhYJCAl9lbXw2fpcqKyAc7SNysUd1dYkABAo82ikWMpDrhFGHvesNu1NsXokx7GfKb8FgAxh+4SxrxXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BpC5CK+o; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bj+CM3aivgztl1LT7LbTbPgVjnPJ6r8ucRQqSvLr/HQkE9IEagmZXhquXDpSAmNe5TiAwqiaMkG+jWPb3hyBSw2bPlDhR/hEuI9huhgjTT552EqY9hKm5TY8AbEgcWTABMcmvXIv/tXHlq/ibi7rMRAHZ5CktwS/xvXY81QbxsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GpseRRlz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BpC5CK+o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23DAC4CEE3;
-	Sat,  3 May 2025 11:58:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GpseRRlz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49663C4CEE3;
+	Sat,  3 May 2025 12:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746273499;
-	bh=Bo2kM4vpWeOzKCXc2t+PVRRC6F4rzJU4RcIaI8kD8nk=;
+	s=k20201202; t=1746274493;
+	bh=5QSKVIWIyE0G0SOrr3V+CMtcq+HMng2o9oPwArw/ys8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BpC5CK+opqWUTeYkEKlTYv7V5RumKqveSSjujEpqSr/YXAnoj+I6qY+Ucvjl85sNh
-	 bxS5DgYLALN3eb67OW/hpt1bDy3aFJemupmEckOfX6//31XpwTwYCnsp36+EPm2Lj3
-	 BqJgJx3gwebE7VjH382cbtEBjzu+XLryBgnRUuwHLOOFYdNxeFs6fXJ9h3gh3SdvTa
-	 dcZI8hAc3Fm1JOJMVGKsN94+GWeGbpBNY4FEn40bxcPrbnNSYR8xWk0fK9waWUwWkr
-	 3/KrH2TL3dcyOu5wwJqXHWp5NmiuyIW0azkaznW1gWVBFRRIa5+BFSYlVn0AhF1EyA
-	 ymbnXYg1yWhEw==
-Date: Sat, 3 May 2025 13:58:10 +0200
+	b=GpseRRlz5KWkNw9uTxAqUrsdJNiI623pvI6Awe96LbPfqKazWdizWGIAykVF2NXS8
+	 1MT8rYe/c6DREdlgKcXxt6jdDPw5skQOrVcE1D9j0ltI5CDxLVIaatFRIztWpBXO7l
+	 u7zQ0d8bn8DkIxgeJl+h8V2MSEwAVwCItE6lXmYzPOEiEed5IdBwhG7IwuqVocsCsO
+	 qcBO5/FuL1d+Q0mAK4RCpu4cWa7mlLzDJPAD0voa6axjjhS7wBrrAGITOOSagUkP2q
+	 9cvfLtai9NX+1dri+Oa4sXU+K1MNvpvfOQsPubCNqAc3nf6Xv+4ccbE3YJJIlVPUxp
+	 VGK3R/lKFg2HA==
+Date: Sat, 3 May 2025 14:14:46 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Matthew Maurer <mmaurer@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -40,40 +40,27 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Sami Tolvanen <samitolvanen@google.com>,
 	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] rust: debugfs: Bind DebugFS directory creation
-Message-ID: <aBYE0rPmS6L6PJbs@polis>
+Subject: Re: [PATCH v3 2/4] rust: debugfs: Bind file creation for long-lived
+ Display
+Message-ID: <aBYItvyLspP5lzBA@polis>
 References: <20250501-debugfs-rust-v3-0-850869fab672@google.com>
- <20250501-debugfs-rust-v3-1-850869fab672@google.com>
- <aBRoNKjB063QhGZo@pollux>
- <CAGSQo00hYLubqJy9zkO3_O3b6V15WtmoSybC+Ep5uJeU6k3t4A@mail.gmail.com>
+ <20250501-debugfs-rust-v3-2-850869fab672@google.com>
+ <aBRrniLfCzWX7nbR@pollux>
+ <CAGSQo02bU9HLG=KoYAukUWDX=Ky+kx_wCJszpS-x4gjWXWrYjQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSQo00hYLubqJy9zkO3_O3b6V15WtmoSybC+Ep5uJeU6k3t4A@mail.gmail.com>
+In-Reply-To: <CAGSQo02bU9HLG=KoYAukUWDX=Ky+kx_wCJszpS-x4gjWXWrYjQ@mail.gmail.com>
 
-On Fri, May 02, 2025 at 08:48:36AM -0700, Matthew Maurer wrote:
-> On Thu, May 1, 2025 at 11:37 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > On Thu, May 01, 2025 at 10:47:41PM +0000, Matthew Maurer wrote:
-> > > +/// Owning handle to a DebugFS directory.
-> > > +///
-> > > +/// This directory will be cleaned up when it goes out of scope.
-> > > +///
-> > > +/// # Invariants
-> > > +///
-> > > +/// The wrapped pointer will always be `NULL`, an error, or an owned DebugFS `dentry`.
-> > > +#[repr(transparent)]
-> > > +pub struct Dir(#[cfg(CONFIG_DEBUG_FS)] *mut bindings::dentry);
-> >
-> > Should probably use Opaque instead of a raw pointer.
-> 
-> Opaque usage is problematic here:
+On Fri, May 02, 2025 at 11:07:47AM -0700, Matthew Maurer wrote:
+> I'm making this change, but so that I can be correct in the future,
+> can you explain why taking an intermediate reference to private is UB?
+> My understanding is that my provided vtable are supposed to be the
+> only methods looking at this field, and they don't mutate it.
 
-Yes, when I wrote this I was back at your v1 in my mind -- the raw pointer is
-fine..
+You're right, I confused it with something else.
