@@ -1,265 +1,181 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2087.outbound.protection.outlook.com [40.107.236.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C6E83CC7;
-	Sat,  3 May 2025 14:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746283669; cv=fail; b=XCHix+XnAL432BKYpUcolsLZAOlD0c0e1NObIV0xBFTlxKRPYb34acQYVmtUFfH65bkTeIUN+8zr8J6XSjIDQcX6RRkRp+/12RXC5ROqeejCEE8S6IRJBwfrWPkV+ab2gETVytYn+MutMmXjp4fRu7ANPakAn+3UfrYcVdzMUfQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746283669; c=relaxed/simple;
-	bh=LAz+By5piBgtW54taAjsO9eN7ZuEaJ6ArMRojOyqePc=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=LAV1UOE2ydEm2hQEIgY0i6ZaQwnYm/MBRGvP7hwn1hdzTmms0aHA4V4berxL5vIrSXCES8m4Iu0cBdPjbFLaQwIt6ND7XF2CX9dafyoqj+ICa419o/lo0jgzh/jS+71QMLCDWLtZ6rEonC10GT/uBHBQQ4rW+e6IK1hYug0k99g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=X2rzWytb; arc=fail smtp.client-ip=40.107.236.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A1F125B2
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 May 2025 14:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746283993; cv=none; b=kW7ffCrcFVV1lYKI7s7LTQz1W+5FIgtJKwdmKrsBFMKnIFxeafLIAS9PBjvCDjdTNkKhdqtdqIyHOe6pK3Lg2T3j/B4GTwv7bcATOSrnuPZ4VMDBxuJJqK9MjwYssniPhvrKlW7WEAVnOGnT1+UDcfkJ5iO2vTY5Z0ZxQgdPEDU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746283993; c=relaxed/simple;
+	bh=j3Ud/OYibTVSOiEsYG8LwGXRbxDePGGcZqGoPPGYliE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=nMrpIb54aUC8JjqUkf57gCkINHUjzJd6gT3xV5RbAPQqXs7WlnguP+Qq9FZYIH9Bx7W3q+hB0LJU+rm/HE7437mZKSuQYRj5TqdrWl03YjpxdJPamb9MIDSg+qWP2i1mzcnFsPHF+bv2+NdQ+1tbKWJ1O8+ojfIur/fW3s9j7n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GQlu/LY3; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="X2rzWytb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hosBIvaFXFA/Ge+L8sVrd7KpqUty3b1S5R1BNRhM3I6fxZ/tGgPVy+C7+ycbh3NnidOq6lg0rEkMNKsIIp45c4u2wLb557vsotGrD2xOXGLUfi+KTPyWuElm8tzgHE9I0r2svuZRcNj17TXTJzvILyXIVoFhOMopaTOFL0R0pmeRABvgDD7BjV661QTzu3uvreXqW8KBOzqqfXftdlsOeXg4fHridFbV2TymhZ9+HoxIDS6hxczvDGilVoOgjju90ggpFbSSSEPp/1dURMnfH0fUwTo4qwI9Rrpmh+emsx9DrK+2uIpIGPTihAXAdtYrEiMqZmwaMHnMWuZ291VurA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XA0U2hC0NdbH2oKoD9RY2vdT+UEIMImCJ96QpOI6VRA=;
- b=kyvoN3pSeWJtkVo0xzkcA+vmymdsTzjxrNrNI/OsGF6NwOJ5WNK0RhHx+6Kuhwo0Y9uTdql39Sk3BBcDik2r3u1wn8ZRZloTD50NKYwV/lvBYsdcdueDMIajZHO9vvT5wmtZbjP7LbhPsjwRXoO5TVYUcyPu0OfRKpavUa6YXwZhXtzMzV83M8NEigN+c6urwWlfkqhZCW1pDSza12G559Er2Ypbxaq8rRRDToEAQ+T/1frCHlognTU3DFI1dT3B5F3YGbx1AajwgnX6hUTRlOFumBWG7p5T8eL9ts6tyk7gZfuNTivR37orpio+ASYRfQOSxINTtI4cePerscemdw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XA0U2hC0NdbH2oKoD9RY2vdT+UEIMImCJ96QpOI6VRA=;
- b=X2rzWytbOWIg/VHHDNW88tm/GMV2vzcdn9Tcki3tfHbf728v5Z/U7QKgQShXjg8RQffrC2ChUWWEEbz4ZmMCV0mR6bS2mGH8R9mmPWwwxYbYoluXgpaUnBHM2sKYD/F3fElhe3X3PIEbjpIaIVJFTJollf8SDUrI0+JO1v0fAr/hQd0LW4P/BDtCAuHBkBz3/bamrIsuaBh4c297qyhP1eI3sIzGIISHOKERYlxYENtDW0QaziuWKN6l/4bryCaofUv35xvybAzW4HTn6ctZLuUyMYDQFCpnm7G4Hpf1Kd7xCGAz5/oqioAp3/ci44MD3fAHDek7G5SLgcBr2byMcA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by LV3PR12MB9235.namprd12.prod.outlook.com (2603:10b6:408:1a4::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.21; Sat, 3 May
- 2025 14:47:43 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%5]) with mapi id 15.20.8699.022; Sat, 3 May 2025
- 14:47:43 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 03 May 2025 23:47:40 +0900
-Message-Id: <D9MLW6HKYY10.2Q7TPUHQAEMQ2@nvidia.com>
-Subject: Re: [PATCH v2 17/21] rust: num: Add an upward alignment helper for
- usize
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
- <corbet@lwn.net>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250501-nova-frts-v2-0-b4a137175337@nvidia.com>
- <20250501-nova-frts-v2-17-b4a137175337@nvidia.com>
- <D9LEQ1U1PLO8.3N22GRY380ZM3@nvidia.com>
- <d6962ea3-282d-437c-b3cf-ce701d514558@nvidia.com>
- <D9M5K55GTN6S.1X827WU0Z50UM@nvidia.com>
- <112d971f-20c8-4598-86c9-6822d9c24001@nvidia.com>
-In-Reply-To: <112d971f-20c8-4598-86c9-6822d9c24001@nvidia.com>
-X-ClientProxiedBy: TYAPR01CA0131.jpnprd01.prod.outlook.com
- (2603:1096:404:2d::23) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GQlu/LY3"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22c336fcdaaso36607835ad.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 03 May 2025 07:53:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746283991; x=1746888791; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rkcV4FXqVYw5sHKdG12V8QpgsgJTWs8KJsxOjdw9VFo=;
+        b=GQlu/LY3D8xrv78vdXuCuCl7elGQ7QBZMszjCEiS9bYZ/qh1OPoKmmmGzCrPPGJHlL
+         edHFcj6uiGQKJ7Ifv908fQbTHcT7ax1w34iFMHoPXtKJ8plSYPR37qnOQtWxQpyqLKNq
+         BbmucWfOsjELFaKSkC2vUtrj1orZZMbbnsTwHpj61+aGeRcimjI9ww8sKms3mLwhpl9X
+         mX86tentEWatEAMm1WH9Y/kG8y2kf7jagJU4wmDKbQ0vTCRm0LX23wMlicjE129NmBxM
+         11oR+jHd7nAW7ZyTEfiwSJ8LUH7KK1nCHdUvdxGqbIr7xjn9LNRu4OtLuRLw1notoB2p
+         BtRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746283991; x=1746888791;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rkcV4FXqVYw5sHKdG12V8QpgsgJTWs8KJsxOjdw9VFo=;
+        b=mgkyvEBRgtvKuTKQcl8CwsA3N72BRdPt/X3vEAkJTQf3z0gqcDVIuo0mizhTrFy8kJ
+         wCChgKSTFg94gT9MVm4CMKVThCr8XwFVV9uOQ9UJq1nLheP712FOVXMCRFAVybMSPChF
+         x1ChXlHUtavrd2aoqOsqRR3jHZxnN+t+00GoLyka8Ar/P4t+RibhGNuQXcsTQ+0CQDOC
+         fVE2vmZrwKTZs8LY3gx5AhDQn5w2mrnnMKCvCEbsBfqGTJMPL0u4cmnfkzbrX3m+Tgec
+         HhMpO4pOm+AcmH9CoJnAOnb6hM5mM/srfQwHUn4JGDqEVSXRK3mWVNTVMerfXnIIStaw
+         9q5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVQJ/fl5U25HUPubKuqVnqywk2oMMOabiqQU4rl3ihHLlRmXurpXOp+ybSaEcOtB6wPmu+PwddjQ6qI4Kl7Iw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8a5WerG2kB0q3ZIdwn0A3mlGBB2CP2EQ55h4q0mWh5kixuSpY
+	J5sNpqOoxcoTC95DoBgCceh/74sFBz2r6efSqp7Js4l7GgvDwOcs
+X-Gm-Gg: ASbGncsd/bZsjQO0xO2f8rBtLYtllO7ADFXQsQLQK9DB9d+J9TDZYQgFYE3yU4sBKJv
+	Q2fTWHxkC2sSDNbhC/gaxIiByZbWQUtdBgFARlXcP2i4TT1iFZF6hRNV54INKGhBTWs9Ls2gQ2T
+	+dyiMPvKR3VVK4mzuq6S33CpfsZkuRrNSG0BofEE22QGIGCKEf1ghPtNCCLfW3TMJTOz5kZLTDA
+	+E32CxryNqk9GfB+NI21mpDWMXLZAlPHyUbe3B83mD4HMRLpO9AzO3WBpLbKzsV4yPb1kbSLe56
+	SMTpXe9bX8rUTLDYh7GvfZxVYzOTxw==
+X-Google-Smtp-Source: AGHT+IFJTnRAgVFbelIKA9hrnKaBnDNBkYYLt2bGra0Z3uL+Z0O6ZpLND/Va0fkQMrGemqaZQVKseQ==
+X-Received: by 2002:a17:903:2446:b0:21f:507b:9ad7 with SMTP id d9443c01a7336-22e1e91463fmr16344825ad.25.1746283991297;
+        Sat, 03 May 2025 07:53:11 -0700 (PDT)
+Received: from fedora.. ([2804:14c:64:af90::1000])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522fa16sm24815715ad.239.2025.05.03.07.53.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 May 2025 07:53:10 -0700 (PDT)
+From: Marcelo Moreira <marcelomoreira1905@gmail.com>
+To: benno.lossin@proton.me,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	~lkcamp/patches@lists.sr.ht
+Subject: [PATCH v2] rust: doc: Clarify safety invariants for Revocable type
+Date: Sat,  3 May 2025 11:53:07 -0300
+Message-ID: <20250503145307.68063-1-marcelomoreira1905@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|LV3PR12MB9235:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2db39584-a197-44fb-df98-08dd8a51761c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|10070799003|366016|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cHI2TFRNMVduTVZVMXo1NEFmR28wL2VCQWppeUp6aHlFcWI0Sy80OG0vTW9J?=
- =?utf-8?B?MU1BV1ZWK0pUSi9nNWVHTHZKdy8ybWdaU25OZXhSL0VOSzJRcVhCUEE3d0k0?=
- =?utf-8?B?Y1BSZFQwUXhTL2kyMWliRmF0VngrV2R3TGR0SG85RWlGNTA2VUdJd2lBZlRl?=
- =?utf-8?B?SGN2NlJWb25sVFJ0ZGVvZFRZUHZhRXBSZWp2VTZ4eVkxbnB6Tm9Zb3IxQWVT?=
- =?utf-8?B?eFRCQ3NRbi8zSElpU2hUQUxnTjVqOURuYkxZTEsrY0svTXZDTTkzcjJEZjFF?=
- =?utf-8?B?Ny8wcDd2TldLaVVSWUoyOWRiaVlxTGNYbVg0azcveU9CUzRKWHQ3NHRTRzM5?=
- =?utf-8?B?WFRSTWtDMCs3cnJWY0E2c0E3V1JJMWNYS0NyWHhEZFAxQk8yMDhGTVQ1Q1Fz?=
- =?utf-8?B?ZTNaaFNPUStaeUJaUlkyT3hXSG9aL2YxVlVPVWwvQ1V3QmpoNTFheXoxQ3c3?=
- =?utf-8?B?YUMzRkJQaE5zWUdFVzdvd3lZL0cwbEQ5NFlnWHNnVHVmcER0d2dNeXoya1pU?=
- =?utf-8?B?ZzJBZWNNREJHTWlKSVRGbGVOSUs3S1Q0QVFseVNxL2s1dFd4YVYvU0xsaTBH?=
- =?utf-8?B?M0d6eHBMMG1FZFRHVVIwRjU2Y3hBa0JhOXFHeDVWeDlkZVloRHovVlZGSis2?=
- =?utf-8?B?Uk02UGlSQmJ0RC8xM3VTMUU2R2xlVzk1RDY4QUpycldGeUNJQ2lGZjdrcFpz?=
- =?utf-8?B?aDlpaVIwclpYWFU3U1VFYU5ZNi8vQ3NsdWpVTDNHUHBDemNXWXlBWmJyYW9l?=
- =?utf-8?B?WmZDWG1yUnhScGdtT25iZXhRczZXZFQ1aEdBOVBwYm8yVitVQnpnM094T0Zv?=
- =?utf-8?B?YWdpUCtKVTk5aWNMRFYraVhCU3Rod1dPYjAzQkoxOE9xZlpTYmxWbU1kc3N1?=
- =?utf-8?B?TzNvRTg4UEN1TzIrbFpxNlBFWDNYZTNaUys1YTJIL0NQNFdxd1ZkNzRYd3dx?=
- =?utf-8?B?Wmp5VlNyWUNiZkxMMzd3aTNLbEdNekt6Sm5SZncxRTh4RWlpd0NKQ1VhMjFI?=
- =?utf-8?B?ZzNxMnc3cGFUdC9JT2dwdURuN2dRUEx2TmtmY3BhL0wzVEhoaGcwWjN4NnlR?=
- =?utf-8?B?SUxJQUpiamwzem1wL1NLbFZINVBJMWNuUzVtckd5c1BQQlBMVTA1bDMycXZX?=
- =?utf-8?B?eTlUdWRlSEp5cnFLT0g5cnFmOEx5QWVLdC9JWldwTTZURUtHRVV5a2Zaa00v?=
- =?utf-8?B?RkdtTEpBNU9YTGhXV01XalpnaXNzcVlWTURCTFRZeWd0bG8zRmNsTGY3WmVs?=
- =?utf-8?B?L2lrVm90ckozckpMUnE5NFN1N1Ivc0IxYUlHampsOUNSb0l6a3haVzgwV1pK?=
- =?utf-8?B?cGJmSHY1WStvUVZ3cWY0RW9HOEFJSTcrci9tVmJqaDRYWDAxTVNsdnFmZUhD?=
- =?utf-8?B?YjBOV2YrUVgwUTFNeU9CUEhNdDMrYk4wa29ZMUR2bGkzSHJRMlZ2cDZUVWxJ?=
- =?utf-8?B?R2Y2UUJTQTdxelJXeTJhWVJISXNGMk9mQXJkN0Q3OVUrRUVNZlRGR2VTWG9Q?=
- =?utf-8?B?UHVjSUtwZ0JmdmtZVys1K1F1cGRsVzZWT2hCUmJqalp0SXVVVVFvNDhXNkpS?=
- =?utf-8?B?TkdzMWtUY2JBVXphZGx3enRXVDFrV1NjWnJCa3lJbW9lTkRFand3TjFGSC9R?=
- =?utf-8?B?S1lGQ21xaTgvbUFMMzhGdjZzUWlNWFpUcGUzVGFYNHFzRFRuWXBlald6UlRB?=
- =?utf-8?B?QkM3aXExanh0Zmd2aFd2Zk92NFl2Yk5vWTF4Z3FyV2Z1bWR3eW1lRW1NMmNy?=
- =?utf-8?B?cmtObDhnNFdVNGgvYlJ3YVRYcjh6MnJWanJ1NTlPNDdrNTJsaWd4dVhCZWsw?=
- =?utf-8?B?QXZ6L2w5Z0FnOFhCVWdrZXdGOWhZQ3BGd084ZlFUQ1ViRXFUS3RUbzN1Vk9Y?=
- =?utf-8?B?MlltV3dDVWVkczRZZkRzNDM0cEhJeE5uRVZKZ0VYRjNIN0NQL0U0bktFRlds?=
- =?utf-8?B?eCtwUzJMcUF3Ukp3SHk0U0pQdUtXY3l2VnVjRGtzNU1kaEd3TXRPUmFsSUhh?=
- =?utf-8?B?SkxpdVhOL0lRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(10070799003)(366016)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WW1QQm9yK2RCQjFnNmh2RGd3T1RBYUxkWksycEhhK1JNd3RraEhSV0dydG5h?=
- =?utf-8?B?WE1jS2dwOTl0THBNYVBzTlo4SmFNdDNVUVZUMUVjT1N4OFVTL1BNT3JGdVJq?=
- =?utf-8?B?SlRkRHdMclJ4S2djcW8vWWRwMmtoQmtsTU5zaWhkbGlSSXNEaEZvYTA2OE1q?=
- =?utf-8?B?NVlSMzdaR2Y3Y0wvdHJXSXNHUzFmaUF1c29XbUsvRHc5ck5Md1I5SHRLRTlF?=
- =?utf-8?B?YXdGSHZiZGFSZGJGSHRLd1dqQUlUbjVHZGZQWExnN25pUStJSUt5aThHS2dq?=
- =?utf-8?B?SnJXK0pSUVVCcTJ6SmZESlQ3UTM5a0VobmdPSlVHemNzNDMrZy9nU3krbXdi?=
- =?utf-8?B?Smpod2h3WGdXb2JVRDYyNGQzTDRDU3pqQkgzMCtqeE5wSzhMcHFHYzRrbllF?=
- =?utf-8?B?cW1oeWppU2JSbGtwVlFUOVJ2VGh5VC9HaUo2ZTF5R2FJckQwT0VGUisveENi?=
- =?utf-8?B?L3kwRThoanR2RDV1OExzZmI0Y0lyelhjNm15SWovTzJIMFFIeS80TmY4OFFn?=
- =?utf-8?B?N0RDKzZxNXh4bUtPNTRuUzZjbVlxUGFTOVJpYm9kSmpEWVRtQmczdjFyS1lz?=
- =?utf-8?B?ZitxbzF0SmFMUXovdGNjVWczdnIwLzU2NUY3ZjBJVHl5STY3WUZLT3JhY3pN?=
- =?utf-8?B?d25tS0wvWXhnSUlycktoMk9QcDBGNUdCWThsdStVOTdKKy9uak5taUc0OGpR?=
- =?utf-8?B?SFB3NmxZdGlybTJGU1pWb05mYTJqNzhjREd6N1grRG1JTFRvY1FqNXRNdE55?=
- =?utf-8?B?ZmdnZWtlUExiMm1CMzNESi92S2xQUUVSb0p1QkRtSmVOWTE2OW1NS2pKNVFK?=
- =?utf-8?B?d1JjSkwvSHBnZmIzenovRjJ3a3Q1Y3VVOG1IeDVmYnZqSi8zbExIR3FGTnB3?=
- =?utf-8?B?djVwTWJ5cjYydm9LK0dBOGY3VStvN09xVXRmVnVhWDBvell1RVZOeXdlbi8v?=
- =?utf-8?B?cUw2c2llMlhRc3doNitXd2NVQ1N0czJxUkxicHZqNDhHOVJxeEpXbFplcEky?=
- =?utf-8?B?Wkp0OVlIVWR6T0N1Qm5BK2szbTZicjA4dWRaQ3Fac2RtemtxdWFnODhiS05G?=
- =?utf-8?B?VWs3L0JVNUtmZ1VPVFpxZEkvZW9HYWs3NFdrWnhzYmFMNVhzcXJJK1hwSXVY?=
- =?utf-8?B?L05lZnR5YW9GeXdNbm9Cb09xYXc3VlFKL1RUZ2xEMUVVNkkyQ2JYeFpwS2xa?=
- =?utf-8?B?ZWh4dVRENUk4aGJtYVdaOEdxdFZtOTd4RnBhdEM5RjV1VTAwaitveklqWk54?=
- =?utf-8?B?QUdPSW5ObDBSNjY1WUxmbzFrZUFzS0ZHSFFCUmEzMXBQRWM1bUF2aHgrSFhi?=
- =?utf-8?B?YjhxS0lKeENaVlZXV0NNZHdrR3VmOEErWkVZZFMxNHRaNW83U1RiakdxS1o0?=
- =?utf-8?B?Q3RMTFZodEFTNUljVnhudDFJbzhQWkJFV1c1OERpTnp0U0paR2NSYzlRdFA3?=
- =?utf-8?B?SGQzMTdkNEV5WkRJT1VnMW1vZ0hnaWZKbWZVcUt0Q01sK21HUkJEZkZ5Vlp4?=
- =?utf-8?B?ekZBdHpZQWN4cEdMTEkzajlsQ0Z5am1nM1V6M2tKb1hMemYvTGJMMUYxUG1r?=
- =?utf-8?B?a1UzVmFqMlBodEowbFJBV1Fuc3BTSndhRGJqYWhmZ21PRGpxTGhtcEtJdlB4?=
- =?utf-8?B?Qk82TlFpYVp3aTdpcmxJSHRIUEh4bktkcm9DMkdwYWJhYlhFY1lzb0FpZjZk?=
- =?utf-8?B?TTB1cHluaFUyNHd5Nm4yYzdlQk1KNGxJT1VFeFpERG9kWG1UQ2pKNmVOMDNG?=
- =?utf-8?B?Q1RXLzFBbkdqK3NoeE54TWtlNldyMEdFdEpkUjY5SkgxcWFHNWxzc3RDK1N6?=
- =?utf-8?B?NkJtZ1hsNlF0N2NLWCsyUnR1SDZUaXRrMHJwSVBBczYxOWRzTTBPSmtOY1RV?=
- =?utf-8?B?Uk83eTRSTXE0VG9NV3BNT1kzc0g3N3QrOEZjZEk2MmFlcjZaYm9pZWoyMHcr?=
- =?utf-8?B?M0hXdU9RS1VJSTZtaGduZ2RPeUlJTExMMTJKcnIza0lNelBJS0F0Y0ZDREp6?=
- =?utf-8?B?UCs4K2VXUWdteGV6Vjl2QWpRUmpxQ0x2b2QrSVRKc3grb1FTUlJhSi9vb0Vw?=
- =?utf-8?B?MVFoSkY4amg4MHdiNitNZWVTY1ZlZ2F5MmFFeDRuVmZqb3E0bXlkVFVVUXBY?=
- =?utf-8?B?bU95eEYrc2M2dHM2QllWT0FMc1lRTG5sMGJZdVFMc0wxMk9Rc3ZoS0Z5TXkv?=
- =?utf-8?Q?KSRxB2JqMxtWjJgVu1Q0Jmb2iMYWQsNOGI4lNQtmO9lq?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2db39584-a197-44fb-df98-08dd8a51761c
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 May 2025 14:47:43.7509
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OJcUVoVMCqDP+Ei32rzTZb25MLt0yxcZyeZ368DaBuRqiVhMt80r8QuzpFXEVuCZYWl6cRZXNzgypf07qz1cEg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9235
+Content-Transfer-Encoding: 8bit
 
-On Sat May 3, 2025 at 12:02 PM JST, Joel Fernandes wrote:
->
->
-> On 5/2/2025 9:59 PM, Alexandre Courbot wrote:
->>> pub trait AlignUp {
->>>     fn align_up(self, alignment: Self) -> Self;
->>> }
->>>
->>> macro_rules! align_up_impl {
->>>     ($($t:ty),+) =3D> {
->>>         $(
->>>             impl AlignUp for $t {
->>>                 fn align_up(self, alignment: Self) -> Self {
->>>                     (self + alignment - 1) & !(alignment - 1)
->>>                 }
->>>             }
->>>         )+
->>>     }
->>> }
->>>
->>> align_up_impl!(usize, u8, u16, u32, u64, u128);
->>>
->>> Or, we can even combine the 2 approaches. Use macros for the "impl Alig=
-nable"
->>> and use generics on the Alignable trait.
->>>
->>> macro_rules! impl_alignable {
->>>     ($($t:ty),+) =3D> {
->>>         $(
->>>             impl Alignable for $t {}
->>>         )+
->>>     };
->>> }
->>>
->>> impl_alignable!(usize, u8, u16, u32, u64, u128);
->>>
->>> pub trait AlignUp {
->>>     fn align_up(self, alignment: Self) -> Self;
->>> }
->>>
->>> impl<T> AlignUp for T
->>> where
->>>     T: Alignable,
->>> {
->>>     fn align_up(self, alignment: Self) -> Self {
->>>         let one =3D T::from(1u8);
->>>         (self + alignment - one) & !(alignment - one)
->>>     }
->>> }
->>>
->>> Thoughts?
->> I think that's the correct way to do it and am fully on board with this
->> approach.
->>=20
->> The only thing this doesn't solve is that it doesn't provide `const`
->> functions. But maybe for that purpose we can use a single macro that
->> nicely panics at build-time should an overflow occur.
->
-> Great, thanks. I split the traits as follows and it is cleaner and works.=
- I will
-> look into the build-time overflow check and the returning of Result chang=
-e on
-> Monday. Let me know if any objections.
+The Revocable type in rust/kernel/revocable.rs lacked a comprehensive
+documentation of its safety invariants, specifically regarding the
+validity of the wrapped data and the necessity of holding the RCU
+read-side lock for access. This patch addresses this by:
 
-Looking good IMHO, apart maybe from the names of the `BitOps` and
-`Unsigned` traits that are not super descriptive and don't need to be
-split for the moment anyway.
+- Adding an '# Invariants' section to the documentation of `Revocable<T>`
+  clarifying that `data` is valid if and only if `is_available` is true,
+  and that access to `data` requires holding the RCU read-side lock.
+- Adding '// INVARIANT:' comments in `try_access` and `try_access_with_guard`
+  to explicitly refer to these invariants before accessing the underlying data.
+- Adding an '# Invariants' section to the documentation of `RevocableGuard<'_, T>`
+  documenting that the RCU read-side lock is held for the lifetime of the guard
+  and that `data_ref` points to valid data during this time.
+- Updating the safety comment in the `Deref` implementation of `RevocableGuard`
+  to explicitly mention the relevant invariants.
 
-Actually it may be a good idea to split this into its own patch/series
-so it gets more attention as this is starting to look like the `num` or
-`num_integer` crates and we might be advised to take more inspiration
-from them in order to avoid reinventing the wheel.
+Changes in v2:
 
-To address our immediate needs of an `align_up`, it just occurred to me
-that we could simply use the `next_multiple_of` method, at least
-temporarily. It is implemented with a modulo and will therefore probably
-result in less efficient code than a version optimized for powers of
-two, but it will do the trick until we figure out how we want to extend
-the primitive types for the kernel, which is really what this patch is
-about - we will also need an `align_down` for instance.
+- Refined the wording of the invariants in `Revocable<T>` to be more direct
+  and address feedback regarding the phrase 'must occur'.
+- Added '// INVARIANT:' comments in `try_access` and `try_access_with_guard`
+  as suggested by reviewers.
+- Added the missing invariant for `RevocableGuard<'_, T>` regarding the
+  validity of `data_ref`.
+- Updated the safety comment in the `Deref` implementation of `RevocableGuard`
+  to refer to the new invariant.
 
-> I added the #[inline] and hopefully that
-> gives similar benefits to const that you're seeking:
+Reported-by: Benno Lossin <benno.lossin@proton.me>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1160
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
+---
+ rust/kernel/revocable.rs | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-A `const` version is still going to be needed, `#[inline]` encourages the
-compiler to try and inline the function, but AFAIK it doesn't allow use
-in const context.
+diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+index 2da3e9460c07..7ef2f34782b4 100644
+--- a/rust/kernel/revocable.rs
++++ b/rust/kernel/revocable.rs
+@@ -64,12 +64,11 @@
+ ///
+ /// # Invariants
+ ///
+-/// - The wrapped object `data` is valid if and only if `is_available` is `true`.
+-/// - Access to `data` must occur only while holding the RCU read-side lock (e.g., via
+-///   [`Revocable::try_access`] or [`Revocable::try_access_with_guard`]).
+-/// - Once `is_available` is set to `false`, further access to `data` is disallowed,
+-///   and the object is dropped either after an RCU grace period (in [`revoke`]),
+-///   or immediately (in [`revoke_nosync`]).
++/// - `data` is valid if and only if `is_available` is true.
++/// - Access to `data` requires holding the RCU read-side lock.
++/// - Once is_available is set to false, further access to data is disallowed,
++///   and the object is dropped either after an RCU grace period (in [revoke]),
++///   or immediately (in [revoke_nosync]).
+ #[pin_data(PinnedDrop)]
+ pub struct Revocable<T> {
+     is_available: AtomicBool,
+@@ -106,8 +105,9 @@ pub fn new(data: impl PinInit<T>) -> impl PinInit<Self> {
+     pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+         let guard = rcu::read_lock();
+         if self.is_available.load(Ordering::Relaxed) {
+-            // Since `self.is_available` is true, data is initialised and has to remain valid
+-            // because the RCU read side lock prevents it from being dropped.
++            // INVARIANT: Since `self.is_available` is true, `self.data` is valid. The
++            // RCU read-side lock held by `guard` ensures that `self.data` remains valid for
++            // the lifetime of the guard.
+             Some(RevocableGuard::new(self.data.get(), guard))
+         } else {
+             None
+@@ -124,8 +124,10 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+     /// object.
+     pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -> Option<&'a T> {
+         if self.is_available.load(Ordering::Relaxed) {
+-            // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
+-            // valid because the RCU read side lock prevents it from being dropped.
++            // SAFETY:
++            // INVARIANT: Since `self.is_available` is true, `self.data` is valid. The
++            // RCU read-side lock held by `_guard` ensures that `self.data` remains valid for
++            // the lifetime of the returned reference.
+             Some(unsafe { &*self.data.get() })
+         } else {
+             None
+@@ -200,7 +202,8 @@ fn drop(self: Pin<&mut Self>) {
+ ///
+ /// # Invariants
+ ///
+-/// The RCU read-side lock is held while the guard is alive.
++/// The RCU read-side lock is held for the lifetime of this guard.
++/// `data_ref` points to valid data for the lifetime of this guard.
+ pub struct RevocableGuard<'a, T> {
+     data_ref: *const T,
+     _rcu_guard: rcu::Guard,
+@@ -221,8 +224,8 @@ impl<T> Deref for RevocableGuard<'_, T> {
+     type Target = T;
+ 
+     fn deref(&self) -> &Self::Target {
+-        // SAFETY: By the type invariants, we hold the rcu read-side lock, so the object is
+-        // guaranteed to remain valid.
++        // SAFETY: By the invariant of `Revocable`, `self.data_ref` is valid because the
++        // RCU read-side lock is held for the lifetime of this guard.
+         unsafe { &*self.data_ref }
+     }
+ }
+-- 
+2.49.0
+
