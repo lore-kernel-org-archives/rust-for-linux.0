@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C99519F130;
-	Sat,  3 May 2025 12:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDC31EB1A7;
+	Sat,  3 May 2025 12:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746274494; cv=none; b=pPVQqAjGUMmlK5iNvvgzg7EwRBPIMBlNUpi2rPjn5GNwqIT2EzzhQdp2s0/YQgPbXPizTy8JY5reSS4gzOmL+Pla+fVcHYV5rieKWT9TMNo+5qQWNsUtwQr3/vQo3BzCKghO9aZ1uWjxkYfq/rj15ITL1e67UQoh3WY/ObdouMI=
+	t=1746275803; cv=none; b=ldkglY0SEg2zBXvJR05/Pi/GCTORa0EmuB1cxwDwL6ic2RKHDr7G5UNXukk6MMfjnZ4TG1kRKIa+wyhcVd9hPnyDrjCAlyAjvkP7xKjewbSF8hNJGSm1IVaNPFD4NeEO+ig2fuVX9k4nD+UHE4eqT4Nn175czjMlj8FDPoXuprs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746274494; c=relaxed/simple;
-	bh=5QSKVIWIyE0G0SOrr3V+CMtcq+HMng2o9oPwArw/ys8=;
+	s=arc-20240116; t=1746275803; c=relaxed/simple;
+	bh=owBqTVcnDifgTSZfKatQXRw6YcVp6JZhiKahYi4emMU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bj+CM3aivgztl1LT7LbTbPgVjnPJ6r8ucRQqSvLr/HQkE9IEagmZXhquXDpSAmNe5TiAwqiaMkG+jWPb3hyBSw2bPlDhR/hEuI9huhgjTT552EqY9hKm5TY8AbEgcWTABMcmvXIv/tXHlq/ibi7rMRAHZ5CktwS/xvXY81QbxsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GpseRRlz; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=i1eq6U8iNbXHTALbcuhwY4/ZywCn2wlUFQnQ7KiD4V+1tq40MpKSDirOtHi8VxV6zZ6col1XZd3r7jnm6Zu7uYGexGQTeKrbRUfzPDpngsVlm10ToQ2F8//kGx6ku/Vm+LHI+m10hsXGcKUnUAaaRoZy71SfG8OQHaKciBL7peM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JvP8PeLb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GpseRRlz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49663C4CEE3;
-	Sat,  3 May 2025 12:14:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JvP8PeLb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EE9C4CEE3;
+	Sat,  3 May 2025 12:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746274493;
-	bh=5QSKVIWIyE0G0SOrr3V+CMtcq+HMng2o9oPwArw/ys8=;
+	s=k20201202; t=1746275803;
+	bh=owBqTVcnDifgTSZfKatQXRw6YcVp6JZhiKahYi4emMU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GpseRRlz5KWkNw9uTxAqUrsdJNiI623pvI6Awe96LbPfqKazWdizWGIAykVF2NXS8
-	 1MT8rYe/c6DREdlgKcXxt6jdDPw5skQOrVcE1D9j0ltI5CDxLVIaatFRIztWpBXO7l
-	 u7zQ0d8bn8DkIxgeJl+h8V2MSEwAVwCItE6lXmYzPOEiEed5IdBwhG7IwuqVocsCsO
-	 qcBO5/FuL1d+Q0mAK4RCpu4cWa7mlLzDJPAD0voa6axjjhS7wBrrAGITOOSagUkP2q
-	 9cvfLtai9NX+1dri+Oa4sXU+K1MNvpvfOQsPubCNqAc3nf6Xv+4ccbE3YJJIlVPUxp
-	 VGK3R/lKFg2HA==
-Date: Sat, 3 May 2025 14:14:46 +0200
+	b=JvP8PeLbawDcuEfi2fduAX2jkvrgcHcDDDrthkR+64W6tqcnXP3tnMwbVN70nAkGL
+	 WQzJncAf31XKC4mxI64abi6ipy/ajNZf/ZjQmGsYJd04j2gTZpeEa6NfQT/zmR4s/f
+	 DNNEdUnwDXRnSwnfh1mvHHoHi05SXynkXB//zVgscL18gU+wtNi+qnwlin2YAO5IfG
+	 hb6Fs24vYeHecgyFCU1uogcMrTO71g8YeEGhPsOdz3MVksowDvqFfPTlAlEhGbIarO
+	 p1p0wMOwF9ZWwE7ZEO7RcrpoIDgBoPl32IaoX1XVfQe5QlM4jjzLpzP+Z2MmgWuQ2N
+	 aejAeWMpG0FiQ==
+Date: Sat, 3 May 2025 14:36:26 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Matthew Maurer <mmaurer@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -40,13 +40,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Sami Tolvanen <samitolvanen@google.com>,
 	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 2/4] rust: debugfs: Bind file creation for long-lived
- Display
-Message-ID: <aBYItvyLspP5lzBA@polis>
-References: <20250501-debugfs-rust-v3-0-850869fab672@google.com>
- <20250501-debugfs-rust-v3-2-850869fab672@google.com>
- <aBRrniLfCzWX7nbR@pollux>
- <CAGSQo02bU9HLG=KoYAukUWDX=Ky+kx_wCJszpS-x4gjWXWrYjQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] rust: debugfs: Bind DebugFS directory creation
+Message-ID: <aBYNyqTRlpGAJVuB@polis>
+References: <20250502-debugfs-rust-v4-0-788a9c6c2e77@google.com>
+ <20250502-debugfs-rust-v4-1-788a9c6c2e77@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,12 +52,72 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGSQo02bU9HLG=KoYAukUWDX=Ky+kx_wCJszpS-x4gjWXWrYjQ@mail.gmail.com>
+In-Reply-To: <20250502-debugfs-rust-v4-1-788a9c6c2e77@google.com>
 
-On Fri, May 02, 2025 at 11:07:47AM -0700, Matthew Maurer wrote:
-> I'm making this change, but so that I can be correct in the future,
-> can you explain why taking an intermediate reference to private is UB?
-> My understanding is that my provided vtable are supposed to be the
-> only methods looking at this field, and they don't mutate it.
+On Fri, May 02, 2025 at 07:49:30PM +0000, Matthew Maurer wrote:
+> +/// Owning handle to a DebugFS directory.
+> +///
+> +/// This directory will be cleaned up when it goes out of scope.
+> +///
+> +/// # Invariants
+> +///
+> +/// The wrapped pointer will always be `NULL`, an error, or an owned DebugFS `dentry`.
+> +#[repr(transparent)]
+> +pub struct Dir<'a, const KEEP: bool = false> {
 
-You're right, I confused it with something else.
+Why did you move to a const generic, rather than a new type? What's the
+advantage? AFAICS, it just makes it less obvious to see from the type itself how
+it will behave. Reading Dir<true> doesn't make it obvious what it does.
+
+While I prefer a new type over the const generic, I'm fine with it. But I think
+we should use something more descriptive than a bool. Please see
+device::DeviceContext for reference.
+
+> +    /// Create a DebugFS subdirectory.
+> +    ///
+> +    /// This returns a [`Dir<'_, true>`], which will not be automatically cleaned up when it
+> +    /// leaves scope.
+> +    /// To convert this to a handle governing the lifetime of the directory, use [`Dir::owning`].
+> +    ///
+> +    /// Regardless of conversion, subdirectory handles cannot outlive the directory handle they
+> +    /// were created from.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// # use kernel::c_str;
+> +    /// # use kernel::debugfs::Dir;
+> +    /// let parent = Dir::new(c_str!("parent"));
+> +    /// let child = parent.subdir(c_str!("child"));
+> +    /// ```
+> +    pub fn subdir<'b>(&'b self, name: &CStr) -> Dir<'b, true> {
+> +        Dir::create(name, Some(self))
+> +    }
+
+The default should be that the directory is removed when the Dir instance is
+dropped.
+
+The common case (which people expect) is that an object is cleaned up on drop().
+
+> +impl<'a> Dir<'a, true> {
+> +    /// Upgrade a non-owning directory to one which will be removed on drop.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// # use kernel::c_str;
+> +    /// # use kernel::debugfs::Dir;
+> +    /// let debugfs = Dir::new(c_str!("parent"));
+> +    /// let subdir = debugfs.subdir(c_str!("child"));
+> +    /// // If subdir were dropped, the directory would not be removed.
+> +    /// let owned_subdir = subdir.owning();
+> +    /// // If owned_subdir is dropped, "child" will be removed.
+> +    /// ```
+> +    pub fn owning(self) -> Dir<'a, false> {
+> +        Dir {
+> +            dir: self.dir,
+> +            _phantom: self._phantom,
+> +        }
+> +    }
+
+As mentioned above, please make it the other way around.
