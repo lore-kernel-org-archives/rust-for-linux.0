@@ -1,59 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BFF1D9A50;
-	Sun,  4 May 2025 16:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC5EE56A
+	for <rust-for-linux@vger.kernel.org>; Sun,  4 May 2025 16:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746375307; cv=none; b=PAM84dKGH13ntOdjIbd+cUbz1+WZbtPq8NfxmWQh5K4JR8JVpR3f2HNHGnwNhsb1xwUzhgXPC5dN7dWRqguo1tA5pIkVrK9SKK79MWg8mH7nXtXiQVfH2mi75Lcx0zBRI9tPCnuh810+sSW1gDf/acBexDO2/Xihe1ZvwyqqbJU=
+	t=1746377059; cv=none; b=ksJNZg6SiNGcXPLnpgxxohOlJAVBhPpeiDcMXJ1J7PCxf04+L2ErkEvT2lssnVMOeimgzjK9ZB6eZ2GvZ5e9PkpdxtqhxCDMqA2CFiRTSHqkDElBcyE2hsYOAxYQF+3uhpS3XJxC/zPPxyI7RNEnTNreivmcXJsUj1AWI+F+A4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746375307; c=relaxed/simple;
-	bh=tKJYnlBaANGFuI7HcwwK/OhmNXjmKApd+I7pw+gyVw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LvQqsiV71xyJZbmA/iMFmAfO1eqSdXCT+cvUfH/XtMF3l31Bo5QVvOzeT/ksNixGeGhS81faXU0nOqWFCvtoq42JrRZ4dvrf8fPbYN6ePNR0L3W/ItPOwWwpYVvti6keJEUxQgzniNbrZbB0ff/wvl2Lgpdgu1F0N8byMTYIwHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dLyGErdI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746377059; c=relaxed/simple;
+	bh=Mfqjk2b9zIS4VNeL9x9PgrtdJr57Dg9oDS36D97N7Ik=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bvUDSlZbuBuihlJ0IVj1xAkzd1gsRVO0g4qU+7lth5h3Qp7zPqz7QG5gqukuI/YJBms+JV7y4OFLM8wgIrOmRwC81uriNVf1WBZkKWJVxZleqCK6VO4IpE788T1PFsWX+Yu4r49iPoOgAo8N/F5WD0HjvekISBr2C24K1+egUrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=MEDfMJVF; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dLyGErdI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D416C4CEE7;
-	Sun,  4 May 2025 16:14:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746375307;
-	bh=tKJYnlBaANGFuI7HcwwK/OhmNXjmKApd+I7pw+gyVw4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dLyGErdI64iZ2qo0TDMyYP6l7LKLLJbCCPc5WJPeTwEE39FUp9SrvyrQgWzJA+oX0
-	 gJPCG2v1hryobjrhnPeHLJ+gmg2IIFcr3IG7FJykAm8LPjQxqkB6Pz5GUrCmi+yvx9
-	 YNt3oIsZhx6piJxkdNh798RYblbGyMKMKpTa7sOa8uVYLwcBvXzavmA0fGUj5rSC8W
-	 M2ZJK8YrNwzI2akrYFr0hlfJXsmNzZkLQZvV5q7bWp1jzMnG9XnZaAPKwCKpOMdFha
-	 K0IKOdzHggl005qU37SX3dsUEERtn/1zxqfzNQ8OX7gEEqVwQtF7nQCYaanNm/iL9Q
-	 chs9iUJ2KSp5Q==
-Date: Sun, 4 May 2025 18:14:55 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	kwilczynski@kernel.org, zhiw@nvidia.com, cjia@nvidia.com,
-	jhubbard@nvidia.com, bskeggs@nvidia.com, acurrid@nvidia.com,
-	joelagnelf@nvidia.com, ttabi@nvidia.com, acourbot@nvidia.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
-Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] Devres optimization with bound devices
-Message-ID: <aBeSf__SNkd7goGv@polis>
-References: <20250428140137.468709-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="MEDfMJVF"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-708ccf87fdbso23940467b3.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 May 2025 09:44:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1746377056; x=1746981856; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ohjEn9zknykaCwIzFS/zvBTBkSuuqmStVXsFpg1eelo=;
+        b=MEDfMJVFkkgi7gSy10J7Glr808HIYhiCOx68ql4nDi4OaJT5sAdQRQS/Od8pjkQP0L
+         Lsq4NDqmKsJYmH58O6IT+QWmHmo3jVx/qTYvrnUmyK12TJWr71X/YRtEE8NTiwyQACkW
+         CSlioEc6zSFwcj8VlXKWEeyou7I3hyUx7OX0BDOBzEgM1qIVuzffF84dlsRdH29A3PlT
+         wVbVyeCpwyepYVzg+taWF40vsPPCF+V0iQmbzoG42sGV4Gqt8FqD1bMR1OyK6ayvGHUT
+         Q/0iYIW58tCJFunZMTxcIoLtlHuX1hHaDk0Bfz9UN6hx8ex0MXzR0RBlLphI6JjTjMoB
+         vNsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746377056; x=1746981856;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ohjEn9zknykaCwIzFS/zvBTBkSuuqmStVXsFpg1eelo=;
+        b=puoH+gng51b3c+SNl5sL7Tv3HAwMfSwzzx0A+w4w9ih37mZdCgo/3iQXLPRPME057G
+         6ZIfBT3+gUdU6zhreiRbtrXTN/wmOrKY56KG1Ck0yQFExwIYIP18qsySMgeVOcJcXDM+
+         5wZ6d4xxTXbJFeUIOlEdhPPY4UH4K/dwWEfGVUa0OVC/xsyxNXecrJg9wcg2jUiY2cmu
+         n8mUzM/+TexPdpELcLYb4BVEOn+kN06i2x2aXzSpjVGV1TVAFEMp7p7kP6KQQsD8bpMx
+         Wg2HDxKWeLj0JXzpSFcoQxV55aja2LRYJsryEstXWBxL4QgYqV/W2Yk+djf63hIheH1d
+         RShA==
+X-Forwarded-Encrypted: i=1; AJvYcCXs0NT9kDDToReawS+8FJiApNAjEhwmiWf2Tr6tc4+q9i1nUTfApnsAm57ZVnTUCHPoL659H/oQ7FYLEYJzzg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZNYZsgy40aOvsjugzjQW7Cz4ZA5m1Q2+FpyAWmIvh3g8Izh2X
+	kPnJvT9RWHIdyy4ODFzXmvdELh/oJA+q+OM6Ku6OAl77N2RN7/DNvHw9L+hKK78=
+X-Gm-Gg: ASbGncv/onXtnCC03wr689YOqVmeuzx+8mTSVdBrFuksJx8Kuw2jqQdpGnnwCn/dgrN
+	c3fTIUMQeU1aFwbo0sfXG25zlvXpy2HG+eLKgP8MGiqd+z0XvwiSgvUmAdCC0g5wkAtz49dJbFJ
+	Ix10xy6mP/dsSvUpxk28XmJkyTSPXJYR9mmcuF/TIQiHV6exgLOABngksCQnGmZtKQJ5qUxpHNL
+	mEfpP5ZOZHgcB9paQ1UctFSymkdvdrzezbzdy+ltRDdkt3T73U5Wuu5VxFwo6iTVQT5mZ7bUO8x
+	NGDvn/I8KrQA4Zy81yyWTfa9TnEsDUjcT6sVOci+Ri0SUCDQ7dAdEgWQ5RNyEdRbLXRw7LaCRmg
+	RH/4W5YOIXTxnbltLUz3RvM/0vQ+LjcKzMXT1
+X-Google-Smtp-Source: AGHT+IE6crcaBlQL/WIFgwdR1rmZkL+Suu5WMsk2ecGJ+st4J+YLF/J+obloWnbgHswWRdJKQDn7cA==
+X-Received: by 2002:a05:690c:7084:b0:706:cc34:daaf with SMTP id 00721157ae682-708eaefed5fmr62288497b3.20.1746377056391;
+        Sun, 04 May 2025 09:44:16 -0700 (PDT)
+Received: from Machine.localdomain (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-708c3f092d3sm17932047b3.20.2025.05.04.09.44.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 May 2025 09:44:16 -0700 (PDT)
+From: Antonio Hickey <contact@antoniohickey.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Antonio Hickey <contact@antoniohickey.com>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 0/1] rust: kernel: create `overflow_assert!`
+Date: Sun,  4 May 2025 12:43:48 -0400
+Message-ID: <20250504164349.84149-1-contact@antoniohickey.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250428140137.468709-1-dakr@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 28, 2025 at 04:00:26PM +0200, Danilo Krummrich wrote:
-> This patch series implements a direct accessor for the data stored within
-> a Devres container for cases where we can prove that we own a reference
-> to a Device<Bound> (i.e. a bound device) of the same device that was used
-> to create the corresponding Devres container.
+This patch set introduces a macro for overflow assertions, the use of
+this macro will avoid local `#ifdef`s by encapsulating the conditional
+behavior to the macro. In addition this macro allows us to document
+the intent of the assertion more clearly.
 
-Applied to nova-next, thanks!
+I also intend to add patches that add use of the assertion and 
+transform any existing asserts that could make use of it. I just
+wanted to get the ball rolling on the review of the macro itself
+before getting started with these patches.
+
+Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+Link: https://github.com/Rust-for-Linux/linux/issues/1159
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+
+
+Antonio Hickey (1):
+  rust: kernel: create `overflow_assert!`
+
+ rust/kernel/lib.rs             |  1 +
+ rust/kernel/overflow_assert.rs | 42 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
+ create mode 100644 rust/kernel/overflow_assert.rs
