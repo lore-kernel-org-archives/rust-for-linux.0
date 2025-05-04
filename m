@@ -1,70 +1,84 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A1F125B2
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 May 2025 14:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B60D3C1F;
+	Sun,  4 May 2025 04:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746283993; cv=none; b=kW7ffCrcFVV1lYKI7s7LTQz1W+5FIgtJKwdmKrsBFMKnIFxeafLIAS9PBjvCDjdTNkKhdqtdqIyHOe6pK3Lg2T3j/B4GTwv7bcATOSrnuPZ4VMDBxuJJqK9MjwYssniPhvrKlW7WEAVnOGnT1+UDcfkJ5iO2vTY5Z0ZxQgdPEDU=
+	t=1746332686; cv=none; b=Jpl8rgHXKDullSx5B3LE+i3X2nntaK0B+HPRigObezReA3DD/DbP3DYaxkPhBog6cz2kaCK3iOvvKsH/qU5/L7VpY+h9vX9sCAfWKwAjcZfMu86SHF3IOQ5N1naC5PsQ11V3JvK05M7qzX6jXGHtxBpf/S0e6zhywcn5GzNe2qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746283993; c=relaxed/simple;
-	bh=j3Ud/OYibTVSOiEsYG8LwGXRbxDePGGcZqGoPPGYliE=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=nMrpIb54aUC8JjqUkf57gCkINHUjzJd6gT3xV5RbAPQqXs7WlnguP+Qq9FZYIH9Bx7W3q+hB0LJU+rm/HE7437mZKSuQYRj5TqdrWl03YjpxdJPamb9MIDSg+qWP2i1mzcnFsPHF+bv2+NdQ+1tbKWJ1O8+ojfIur/fW3s9j7n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GQlu/LY3; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1746332686; c=relaxed/simple;
+	bh=0y3breFb4vE1bxctwmXBiM8xh2KA7P7oCIfoDMCEn3s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nhVQ1DNGo3aGw8RMibDKW0zqUf49R311u/GLxH5IBTBuiRf8zotGsDdkHxkzjVOG7YZni2ZC+sFwZQere5X8z4RNFRle9aP9Eh4W1dD1VNfqR9EicYfw9c3ITwTJRfKIXv6GpNns0v/l7FZz9ZJuyCoxDA45U3Memzw80ilTPp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AGLpRwQI; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GQlu/LY3"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22c336fcdaaso36607835ad.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 03 May 2025 07:53:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AGLpRwQI"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-af52a624283so2931340a12.0;
+        Sat, 03 May 2025 21:24:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746283991; x=1746888791; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rkcV4FXqVYw5sHKdG12V8QpgsgJTWs8KJsxOjdw9VFo=;
-        b=GQlu/LY3D8xrv78vdXuCuCl7elGQ7QBZMszjCEiS9bYZ/qh1OPoKmmmGzCrPPGJHlL
-         edHFcj6uiGQKJ7Ifv908fQbTHcT7ax1w34iFMHoPXtKJ8plSYPR37qnOQtWxQpyqLKNq
-         BbmucWfOsjELFaKSkC2vUtrj1orZZMbbnsTwHpj61+aGeRcimjI9ww8sKms3mLwhpl9X
-         mX86tentEWatEAMm1WH9Y/kG8y2kf7jagJU4wmDKbQ0vTCRm0LX23wMlicjE129NmBxM
-         11oR+jHd7nAW7ZyTEfiwSJ8LUH7KK1nCHdUvdxGqbIr7xjn9LNRu4OtLuRLw1notoB2p
-         BtRA==
+        d=gmail.com; s=20230601; t=1746332684; x=1746937484; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hE3MGps1Pn9q+pVBqv4IQq3bCdItrSB89VcIOdLpsHI=;
+        b=AGLpRwQImcNXFbirq/arpUoi+qdRqKouuksvEsmRHJM000yKesDn/QQ0HS1PqRqXg2
+         400BhmxeKBtCSzmNuXKgSYZG0Gte1NJDBMz76N71PP+Nlt4TicHuCXzcecu8dAGWLFSO
+         dRAomqShU+nPuNhpcL/Wmi44bYn8i5HuUr05GXiZJoWlPVPc7HEozEGljD++9fSqR1FN
+         2hoxaP1PZQRhALrsicepS3GA9yIf0s0Lv5nIS0do/Sy43feFy0+uXUudPvMfQaN6x2dE
+         265UCrlfIYF1IIYgxSogShxIb3eV302I4vIE/P+SMyuw7+syGpj0+lRFLclsAmX7FYbO
+         9QBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746283991; x=1746888791;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rkcV4FXqVYw5sHKdG12V8QpgsgJTWs8KJsxOjdw9VFo=;
-        b=mgkyvEBRgtvKuTKQcl8CwsA3N72BRdPt/X3vEAkJTQf3z0gqcDVIuo0mizhTrFy8kJ
-         wCChgKSTFg94gT9MVm4CMKVThCr8XwFVV9uOQ9UJq1nLheP712FOVXMCRFAVybMSPChF
-         x1ChXlHUtavrd2aoqOsqRR3jHZxnN+t+00GoLyka8Ar/P4t+RibhGNuQXcsTQ+0CQDOC
-         fVE2vmZrwKTZs8LY3gx5AhDQn5w2mrnnMKCvCEbsBfqGTJMPL0u4cmnfkzbrX3m+Tgec
-         HhMpO4pOm+AcmH9CoJnAOnb6hM5mM/srfQwHUn4JGDqEVSXRK3mWVNTVMerfXnIIStaw
-         9q5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVQJ/fl5U25HUPubKuqVnqywk2oMMOabiqQU4rl3ihHLlRmXurpXOp+ybSaEcOtB6wPmu+PwddjQ6qI4Kl7Iw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8a5WerG2kB0q3ZIdwn0A3mlGBB2CP2EQ55h4q0mWh5kixuSpY
-	J5sNpqOoxcoTC95DoBgCceh/74sFBz2r6efSqp7Js4l7GgvDwOcs
-X-Gm-Gg: ASbGncsd/bZsjQO0xO2f8rBtLYtllO7ADFXQsQLQK9DB9d+J9TDZYQgFYE3yU4sBKJv
-	Q2fTWHxkC2sSDNbhC/gaxIiByZbWQUtdBgFARlXcP2i4TT1iFZF6hRNV54INKGhBTWs9Ls2gQ2T
-	+dyiMPvKR3VVK4mzuq6S33CpfsZkuRrNSG0BofEE22QGIGCKEf1ghPtNCCLfW3TMJTOz5kZLTDA
-	+E32CxryNqk9GfB+NI21mpDWMXLZAlPHyUbe3B83mD4HMRLpO9AzO3WBpLbKzsV4yPb1kbSLe56
-	SMTpXe9bX8rUTLDYh7GvfZxVYzOTxw==
-X-Google-Smtp-Source: AGHT+IFJTnRAgVFbelIKA9hrnKaBnDNBkYYLt2bGra0Z3uL+Z0O6ZpLND/Va0fkQMrGemqaZQVKseQ==
-X-Received: by 2002:a17:903:2446:b0:21f:507b:9ad7 with SMTP id d9443c01a7336-22e1e91463fmr16344825ad.25.1746283991297;
-        Sat, 03 May 2025 07:53:11 -0700 (PDT)
-Received: from fedora.. ([2804:14c:64:af90::1000])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522fa16sm24815715ad.239.2025.05.03.07.53.09
+        d=1e100.net; s=20230601; t=1746332684; x=1746937484;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hE3MGps1Pn9q+pVBqv4IQq3bCdItrSB89VcIOdLpsHI=;
+        b=UYzBKxcwnQBak7t6enQG58lCwn5JZBQHyQdMWhOuBydXP1iDekEhRrvbO1vZ+ei/bD
+         TPds4djGqK5+1/lyi/wMuuxKvnJhOhzYN/C0ivBMpE8SvdhXzzr1BDk9rtRoWtdCeY3n
+         CxbMS727HpLv0YC5AY2wFgtyJkkWug9GFUubGM0rHLiaQxSAhU5GgXWDduSNSfOcqeF4
+         /02+e3aJXPSy5Mr1JQQ+QO/HKjFEmY8s8ndeIkbqtBG+jnQYrnTgejYsUeLQw0E20EkP
+         abiRv8Aw21wzxeqZQOjMPfyCw7uAIHzsxlvVf09LaxujV4ExowH2zd/oawJsXP3WneEm
+         N3rw==
+X-Forwarded-Encrypted: i=1; AJvYcCXeMTav1BcMuZZHrMrPhGGBKQELsQ8BWnVYQWb5mMFTv2uS7eCFLgH2/MLgtqNvheQErbd+YPNkiJxDqWI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEHEj+KllQ3T8I5iU16SVhsM5JdwbGCv4aJEAvYfEU+GYLnwkU
+	3ijgTrISRWLxRYmDJzhwwotIxRy1T8gSNVe9nPrr93MQSpZTaZguCZ3jC4Kt
+X-Gm-Gg: ASbGncv/k4j3umWAqmnCCGKOYsnRO0SqQWcPg9UTbqhu9oeBAsbZ4yE+KyJyCGTo4Ra
+	BJz3PM8aeDmgzaBovZjzvmCN0Zm+t5ZybdMWURyJYTRdLYuQ/8UVSyF+/JhlUzmz3ENN+24yirI
+	xABZE+qeI9j9K7VI1Zo3oKIYtp8ZM+FXg2r+82KJug35Xc0gU2autUjSVWZRs1LUyvARjbVi6AR
+	nAQHc1kXjFdhYxSckIbym4G7C/K+WCdEBhAM5a9irwp5M6eVsC7/oqDzdQWap1D9MC+1UjQhEqV
+	orALQtAtrcTwa0KQU8YeFYwuYZlxj3Y5FKiVdE7CpySvo8OavzTfuDGTkT/+DKy1EajtdH7BhVb
+	5wbvNKJvAdRgeas+3BA==
+X-Google-Smtp-Source: AGHT+IH6qPPbtdYxTPkL+pUNLjGn5YYfaPjngTMWB7/9YETcrxB1Dcycw9j9n1dAMv1f9dI9YLjScQ==
+X-Received: by 2002:a17:902:db06:b0:215:a56f:1e50 with SMTP id d9443c01a7336-22e100505d0mr129130625ad.8.1746332683931;
+        Sat, 03 May 2025 21:24:43 -0700 (PDT)
+Received: from mew.. (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1521fbc8sm31482185ad.142.2025.05.03.21.24.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 May 2025 07:53:10 -0700 (PDT)
-From: Marcelo Moreira <marcelomoreira1905@gmail.com>
-To: benno.lossin@proton.me,
+        Sat, 03 May 2025 21:24:43 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: a.hindborg@kernel.org,
+	boqun.feng@gmail.com,
+	frederic@kernel.org,
+	lyude@redhat.com,
+	tglx@linutronix.de,
+	anna-maria@linutronix.de,
+	jstultz@google.com,
+	sboyd@kernel.org,
 	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	~lkcamp/patches@lists.sr.ht
-Subject: [PATCH v2] rust: doc: Clarify safety invariants for Revocable type
-Date: Sat,  3 May 2025 11:53:07 -0300
-Message-ID: <20250503145307.68063-1-marcelomoreira1905@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] rust: time: Introduce typed clock sources and generalize Instant
+Date: Sun,  4 May 2025 13:24:32 +0900
+Message-ID: <20250504042436.237756-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -73,109 +87,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Revocable type in rust/kernel/revocable.rs lacked a comprehensive
-documentation of its safety invariants, specifically regarding the
-validity of the wrapped data and the necessity of holding the RCU
-read-side lock for access. This patch addresses this by:
+This patch series introduces a type-safe abstraction over clock
+sources. The goal is to remove the need for runtime clock selection
+(via ClockId) and instead leverage Rust's type system to statically
+associate the Instant type with a specific clock.
 
-- Adding an '# Invariants' section to the documentation of `Revocable<T>`
-  clarifying that `data` is valid if and only if `is_available` is true,
-  and that access to `data` requires holding the RCU read-side lock.
-- Adding '// INVARIANT:' comments in `try_access` and `try_access_with_guard`
-  to explicitly refer to these invariants before accessing the underlying data.
-- Adding an '# Invariants' section to the documentation of `RevocableGuard<'_, T>`
-  documenting that the RCU read-side lock is held for the lifetime of the guard
-  and that `data_ref` points to valid data during this time.
-- Updating the safety comment in the `Deref` implementation of `RevocableGuard`
-  to explicitly mention the relevant invariants.
+This approach enables compile-time enforcement of clock correctness
+across the APIs of Instant type.
 
-Changes in v2:
+This patchset can be applied on top of the division fix for 32-bit
+architectures:
 
-- Refined the wording of the invariants in `Revocable<T>` to be more direct
-  and address feedback regarding the phrase 'must occur'.
-- Added '// INVARIANT:' comments in `try_access` and `try_access_with_guard`
-  as suggested by reviewers.
-- Added the missing invariant for `RevocableGuard<'_, T>` regarding the
-  validity of `data_ref`.
-- Updated the safety comment in the `Deref` implementation of `RevocableGuard`
-  to refer to the new invariant.
+https://lore.kernel.org/lkml/20250502004524.230553-1-fujita.tomonori@gmail.com/
 
-Reported-by: Benno Lossin <benno.lossin@proton.me>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1160
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
----
- rust/kernel/revocable.rs | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+Most of the changes to the hrtimer code that were included in v1 have
+been removed, as it does not use `Instant` yet. I plan to convert
+hrtimer to use `Instant` and `Delta` in a separate patchset.
 
-diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-index 2da3e9460c07..7ef2f34782b4 100644
---- a/rust/kernel/revocable.rs
-+++ b/rust/kernel/revocable.rs
-@@ -64,12 +64,11 @@
- ///
- /// # Invariants
- ///
--/// - The wrapped object `data` is valid if and only if `is_available` is `true`.
--/// - Access to `data` must occur only while holding the RCU read-side lock (e.g., via
--///   [`Revocable::try_access`] or [`Revocable::try_access_with_guard`]).
--/// - Once `is_available` is set to `false`, further access to `data` is disallowed,
--///   and the object is dropped either after an RCU grace period (in [`revoke`]),
--///   or immediately (in [`revoke_nosync`]).
-+/// - `data` is valid if and only if `is_available` is true.
-+/// - Access to `data` requires holding the RCU read-side lock.
-+/// - Once is_available is set to false, further access to data is disallowed,
-+///   and the object is dropped either after an RCU grace period (in [revoke]),
-+///   or immediately (in [revoke_nosync]).
- #[pin_data(PinnedDrop)]
- pub struct Revocable<T> {
-     is_available: AtomicBool,
-@@ -106,8 +105,9 @@ pub fn new(data: impl PinInit<T>) -> impl PinInit<Self> {
-     pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
-         let guard = rcu::read_lock();
-         if self.is_available.load(Ordering::Relaxed) {
--            // Since `self.is_available` is true, data is initialised and has to remain valid
--            // because the RCU read side lock prevents it from being dropped.
-+            // INVARIANT: Since `self.is_available` is true, `self.data` is valid. The
-+            // RCU read-side lock held by `guard` ensures that `self.data` remains valid for
-+            // the lifetime of the guard.
-             Some(RevocableGuard::new(self.data.get(), guard))
-         } else {
-             None
-@@ -124,8 +124,10 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
-     /// object.
-     pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -> Option<&'a T> {
-         if self.is_available.load(Ordering::Relaxed) {
--            // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
--            // valid because the RCU read side lock prevents it from being dropped.
-+            // SAFETY:
-+            // INVARIANT: Since `self.is_available` is true, `self.data` is valid. The
-+            // RCU read-side lock held by `_guard` ensures that `self.data` remains valid for
-+            // the lifetime of the returned reference.
-             Some(unsafe { &*self.data.get() })
-         } else {
-             None
-@@ -200,7 +202,8 @@ fn drop(self: Pin<&mut Self>) {
- ///
- /// # Invariants
- ///
--/// The RCU read-side lock is held while the guard is alive.
-+/// The RCU read-side lock is held for the lifetime of this guard.
-+/// `data_ref` points to valid data for the lifetime of this guard.
- pub struct RevocableGuard<'a, T> {
-     data_ref: *const T,
-     _rcu_guard: rcu::Guard,
-@@ -221,8 +224,8 @@ impl<T> Deref for RevocableGuard<'_, T> {
-     type Target = T;
- 
-     fn deref(&self) -> &Self::Target {
--        // SAFETY: By the type invariants, we hold the rcu read-side lock, so the object is
--        // guaranteed to remain valid.
-+        // SAFETY: By the invariant of `Revocable`, `self.data_ref` is valid because the
-+        // RCU read-side lock is held for the lifetime of this guard.
-         unsafe { &*self.data_ref }
-     }
- }
+v2:
+- removed most of changes to hrtimer code 
+v1: https://lore.kernel.org/rust-for-linux/20250413105629.162349-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (3):
+  rust: time: Replace ClockId enum with ClockSource trait
+  rust: time: Make Instant generic over ClockSource
+  rust: time: Add ktime_get() to ClockSource trait
+
+ rust/helpers/time.c         |  16 +++
+ rust/kernel/time.rs         | 201 ++++++++++++++++++++++--------------
+ rust/kernel/time/hrtimer.rs |   6 +-
+ 3 files changed, 145 insertions(+), 78 deletions(-)
+
+
+base-commit: adf04b7cc66574ec2a43b540046975dbe73e0382
 -- 
-2.49.0
+2.43.0
 
