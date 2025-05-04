@@ -1,132 +1,99 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98CB18DB18;
-	Sun,  4 May 2025 05:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F19197A76;
+	Sun,  4 May 2025 15:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746334834; cv=none; b=ue1duRjAp1Rc4TZglIXaLhIa4YNVNkZgh4xtIj/Ao/nC6TSG8yoDnZZsK2rzUTB/g91/O4x80jKPV7ouWaY3eKf+XMw5NgDhz5GzStg4tKsQIKQH5RbQpphsM6bPQVgWiB6SsGwSuYzwimpws+slEQey4mGHh97zJ8BwA66UDSY=
+	t=1746373295; cv=none; b=Ty5qskE4j8HZDRv4AUlwwW4IPhau6z1hug0DWfIUCYuJmTQe62NHzXCfvNMUMNzqCVBzKKSEhGP2kmCPmszNC0nVyxQS2AewOHQ7GsL6/HUXSjpFBFNntOWJSWh9m9zO8usGcSJDE6BpqetyiHyJf3zgO5qwxoP4A3QCeOtzLSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746334834; c=relaxed/simple;
-	bh=BKYFylhCTXnSJ3PMuuaK85GfBtfvO9sTwbjzfzDc6KA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2Mnd69DPokARNeyME0s+/i3aS15F7OlTaqnx0JeERLIiNy7GiF1WclYu4k7jYKu17N8lO7dxIz0QBqmhMqR/PB11EKB3xnvyt3/g0hDpSGp6pMzzEYspQNAsGGRQ3VUPL8p7wZ7fOMcGpisZcZXoCpjwiV53UlAz0urjrKij6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XdrBK9q6; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746373295; c=relaxed/simple;
+	bh=vvngYuf/ckQdGCMZX1hN44ueg1Iy36aEVBTa5YONnsA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MdnAOrZlJSE9zis07LmAPHtH8kKndrQ6yWICuv/R5TwH3pKSVH6Q3s4xy61MC9avKhj+9OHZlo82e9DSuN/gBg7QLENnUGnGtC2obBA2QwZWQe3TJ8mUG4qNNzgW+6emJc8XEX8Ur4uGojODacpLb3kFZ0lJdwEG73BPi/fsCOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHN23VK8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XdrBK9q6"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-736c3e7b390so3881866b3a.2;
-        Sat, 03 May 2025 22:00:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746334832; x=1746939632; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BAtLYBrIM9/ajJYtasF5l8HBHfz0+HezoBSoeR9Mong=;
-        b=XdrBK9q6VDwJBJAhkAfomiqV/NOQsFF3arnGSZU+3iuvHXdRijpO8+0RjuWNzALT6A
-         eY31LsrDfhngA0dP6kYPbqSipRJZAUxHf6qAAKXfUHJqoLpoEv2MXK33ePzjG0Fatcd1
-         2mD2DaAlY2MKyARQTpwltqi28HMkxYgXktIaAdP/HkZ+Iq3C1LvKipvEJSmcHXZ9hAJC
-         LUfIdERg4uCpAIg2FEjYu0xHr+pgVsDuZhPgQeHXxahEmo6vwlqibIvDpK+5m7Si2XSl
-         yaSoYPZo+Bk/PpOEbuebeALC3vzinWgjDDweFSXpVhbXL/PTK8qQLJgt8/Kj9PZMLFEc
-         +Jcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746334832; x=1746939632;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BAtLYBrIM9/ajJYtasF5l8HBHfz0+HezoBSoeR9Mong=;
-        b=brZQIDC47beNaJ88eN9t2Cci+vqbY6T0QFjCfTsnCvCm77e7oGDAi4tu+065YjrPaW
-         aEG+qfcIm1sjTGkcDsL3d3/Q/7j+n8sPefSz9CDzPVL4lyEXCFF6e4SduYlCXw25p4Sj
-         CP+S++lsKtabh1M/nmYyoIp8+wQUUaYm8kVaCMeE7UVyxIm7M3MUCh1XsgmiTwii9HrK
-         QDMkQrq5VWXeMSfhe6+69qf+MoGUMWwGz0Ry4rRdeHbnunoaepd9BjdPWGZwdlhH/mnI
-         zh4im41N75SXrT+fMLzRq4odbyxaApzMKF8RRN5h9lqTETl7R3P/EQ5oOwJNsn6lGFj6
-         pt2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXrN6FetYRWj/mp1V2q4n6ac7qr9Z/ATl9t9LFkxMLD40OHq7aFlqaC3QztWG0ihdwl+I08+QFlmfHC/SM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEoHjgyJt14DODcsqEGJg1PZGuZpCveYPXK5HlStXOEm1nFPfF
-	+sXdQi54LEK45YlCpHK/8GYiv/J51XVOopcmkVPi+kKWSSkRQKWKsFRIslFP
-X-Gm-Gg: ASbGnctioz1IHiHKdWxRCXPotXXoL/suXDrDfM+TfcvM9w2BRKbCjf/yjaO1VFg7vMs
-	WH8gAJ1mcK4p+izPgBBVRmh/YHwo3HCBIR4L1caEnfkxodWoFLhDFlhgMVfbXKE2qqZPfHJMPDw
-	4DYKRLR0HmWrF1sTT8PXxfZfEPyBukgLQiEaa3aUg6h7Hp3RRAnkU1DxNFDirV1wZp211Ri99PQ
-	AXoQb9SpE61TxaPk4hjMj640JRvLkGkPfnMk1pl4U/n5BYkVaI9hL05SFAc0/FxrdHncU6WQd4Z
-	0He+FckBYjimr/8nQzyK6dbrfYO8D/qnTZW987BE0Fb62maB8qrluAsInoluL4NulMHXa6te0bT
-	2N8nO7TQDoQ69xDN9nyptytqvyIK2
-X-Google-Smtp-Source: AGHT+IFdxQJB/suLSC5KY0vhzDnmqJVYahHZj/LCDVtudCFG+nUAOQBEjr7DDKNM+n+NKmrbYxKhcQ==
-X-Received: by 2002:a05:6a00:32cb:b0:736:450c:fa54 with SMTP id d2e1a72fcca58-7406f0adf7cmr3670436b3a.6.1746334831893;
-        Sat, 03 May 2025 22:00:31 -0700 (PDT)
-Received: from mew.. (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058db91dasm4225756b3a.44.2025.05.03.22.00.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 May 2025 22:00:31 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: a.hindborg@kernel.org,
-	boqun.feng@gmail.com,
-	frederic@kernel.org,
-	lyude@redhat.com,
-	tglx@linutronix.de,
-	anna-maria@linutronix.de,
-	jstultz@google.com,
-	sboyd@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 5/5] rust: time: Remove Ktime in hrtimer
-Date: Sun,  4 May 2025 13:59:58 +0900
-Message-ID: <20250504045959.238068-6-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250504045959.238068-1-fujita.tomonori@gmail.com>
-References: <20250504045959.238068-1-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHN23VK8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4A4FFC4CEE7;
+	Sun,  4 May 2025 15:41:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746373295;
+	bh=vvngYuf/ckQdGCMZX1hN44ueg1Iy36aEVBTa5YONnsA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=gHN23VK8gfEd0ra/Lj33umTCsFDNS9NkdPBZvK10KzQCGV//F2otikpnD3umoGA1R
+	 2LGmj1mvNiaM7rPSA1S4UGV5xspuNT+dOYVnRPJtqnNeCIA3cRX8BD7aSIvI+mezgK
+	 BUsatGRftTeY7woJYZzxV6hXgBqMy7M2d1mo5QjWz1vNklw7XLy6nQp3g/heIKLBav
+	 qoPvu/ogbxvWCl4FNlbfA5IwUtIsJThCn9qxDX+F56SMTK/AISxH8C9jGnJn3s3UlY
+	 K63dG2rfJlyhYVWHEwk2vHZpwXaKJJC3FKkZJkiIcsuJrzKOTN6CJ7tA718v5aA+cK
+	 yGp6Fr2hwdczA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39512C369DC;
+	Sun,  4 May 2025 15:41:35 +0000 (UTC)
+From: Alban Kurti via B4 Relay <devnull+kurti.invicto.ai@kernel.org>
+Subject: [PATCH v4 0/2] rust: samples: add missing newlines to printing
+ calls
+Date: Sun, 04 May 2025 17:41:13 +0200
+Message-Id: <20250504-pr_info-newline-fix-v4-0-53467c401eb6@invicto.ai>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJmKF2gC/x2MQQqAMAzAviI9W5hju/gVEdlmpwWpsoEK4t8tH
+ hNIHqhUmCr0zQOFTq68i4JrG0hrkIWQZ2WwxnrjjcOjTCx5R6FrYyHMfCNF3+VgjY8hgZZHIdX
+ /dRjf9wOdsi4mZQAAAA==
+X-Change-ID: 20250504-pr_info-newline-fix-eb51fa205bac
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Vincenzo Palazzo <vincenzopalazzodev@gmail.com>, 
+ Xiangfei Ding <dingxiangfei2009@gmail.com>
+Cc: Fiona Behrens <me@kloenk.dev>, Alban Kurti <kurti@invicto.ai>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1746373294; l=1007;
+ i=kurti@invicto.ai; s=20250504; h=from:subject:message-id;
+ bh=vvngYuf/ckQdGCMZX1hN44ueg1Iy36aEVBTa5YONnsA=;
+ b=Va9mPD+1N1ACX78IuRwJoM0OwWAKEGDVLBUw753hij1yoByanyBs8J5m/Y0G9SGU8+kp/RTMA
+ GucJ1PPsn+YCYZa7OFFk8RlOQeySbmyZaGxwS7yzHAECsPSDcGZkXzS
+X-Developer-Key: i=kurti@invicto.ai; a=ed25519;
+ pk=7724GF1zrN6rA3Z2xkyAmVGkoOQxv7bMUvXB4IsIPUs=
+X-Endpoint-Received: by B4 Relay for kurti@invicto.ai/20250504 with
+ auth_id=398
+X-Original-From: Alban Kurti <kurti@invicto.ai>
+Reply-To: kurti@invicto.ai
 
-Remove the use of `Ktime` from the hrtimer code, which was originally
-introduced as a temporary workaround. The hrtimer has now been fully
-converted to use the `Instant` and `Delta` types instead.
+Adding newline at the end of all Rust pr_* and dev_* macro
+calls that miss a newline.
+`pr_*!` and `dev_*!` macros are supposed to be called
+with a newline at the end, just like in the C side
+such that independent lines are not visually missed.
+There were no dev_*! cases with a missing newline found.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Signed-off-by: Alban Kurti <kurti@invicto.ai>
 ---
- rust/kernel/time/hrtimer.rs | 16 ----------------
- 1 file changed, 16 deletions(-)
+Changes in v4:
+- Split into two patches the 6th patch from v3 addressing separate fixes
+- Link to v3: https://lore.kernel.org/rust-for-linux/20250206-printing_fix-v3-0-a85273b501ae@invicto.ai/
 
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 3355ae6fe76d..e396c27e0e1a 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -72,22 +72,6 @@
- use core::marker::PhantomData;
- use pin_init::PinInit;
- 
--/// A Rust wrapper around a `ktime_t`.
--// NOTE: Ktime is going to be removed when hrtimer is converted to Instant/Delta.
--#[repr(transparent)]
--#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord)]
--pub struct Ktime {
--    inner: bindings::ktime_t,
--}
--
--impl Ktime {
--    /// Returns the number of nanoseconds.
--    #[inline]
--    pub fn to_ns(self) -> i64 {
--        self.inner
--    }
--}
--
- /// A timer backed by a C `struct hrtimer`.
- ///
- /// # Invariants
+---
+Alban Kurti (2):
+      rust: samples: add missing newline to pr_info! calls in rust_print_main
+      rust: samples: add missing newline to pr_info! calls in rust_print_main
+
+ samples/rust/rust_print_main.rs | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+---
+base-commit: b4432656b36e5cc1d50a1f2dc15357543add530e
+change-id: 20250504-pr_info-newline-fix-eb51fa205bac
+
+Best regards,
 -- 
-2.43.0
+Alban Kurti <kurti@invicto.ai>
+
 
