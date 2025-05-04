@@ -1,140 +1,185 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A0C1CD1F;
-	Sun,  4 May 2025 17:31:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D8BE56A;
+	Sun,  4 May 2025 17:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746379866; cv=none; b=ty/S2uSzVHv6ZdncKdMjRxN5USNKmHHUL5dRRDZWxv6ocTW5qfcAkLr3Ku0Oh6qBQUJ9JsVcsPwWqgazUYXY/BbhCnAqVa6Br2NOw0TvaMO0wVvsdJtsF7Osf2lAmvam2xKgGWLSXOLoq5059Q+oPuaz8ArAG6wDEmcpLTk6R3c=
+	t=1746379929; cv=none; b=i6WFaAT0PjoElPQ7U3FgCyBuxP7qYH0BuTqUZIeWx6kv/A3E9lNztqXaaS924hdw8cksBxU1XZcqL1Q/on8EvgCP5EzaM7tqUg90ALwfxCoYadknUpj3xSKOD2PYtJuNjn3Ikrfmov8tMbZg0QBCBTojZ9ZugHgt4Yly88lkM6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746379866; c=relaxed/simple;
-	bh=T3U/9FuOE2xtfOj0tUx2Kuhmdtf7tLVJexcbxbRimKI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bICt6TOxPGstHzucwF3Nq4IzSqrGjtVg7J3uRBzhiukgFkkbKAG1gWbovORFq5mxARuSbTluZgoL33qGlw9tkbNk12vBnQS8E+DNmcALVJsUv7qBkmXqq2O6mJJ74M5zSP2f9Ksf9E+aACS83PBh4JedKSxl0o1vjkf2yMxfLi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ebDFf8w8; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ebDFf8w8"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-54c0fa6d455so4467578e87.1;
-        Sun, 04 May 2025 10:31:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746379860; x=1746984660; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0MAjfptIMQwKjMkK2caSxzARquP7ADDmjnSLYI6Zjxw=;
-        b=ebDFf8w84ZEbzEyUGdsF/Usq4cLX1YaOgZbyKFHcICwdLObIv6XZDTVLBJkDPuaPyn
-         DihtA1w7sW6NXrvFehYDjZwU7di8vsAFVmVZEQoCRmebNF4JOKVMGBtqnQWAprhRbD3B
-         8zX8w7L8rVuEqx59EhscaaQDtG/jqYCJm3UAWnHQxFWjsUNVpeUhQQ7a0yt/RL6ho0yY
-         cWnjmIFruJmnuQXatmkXwH08Q2AZQSgDVW28g+PYfy7yEQNTLSaQm8uhuncX2JVn8N6u
-         0hqN9v6dwoPHTOwX0BXfu4bp+xU7OQCMId3vqehyZi8m2OCwFYF2dijnMGUM1PhI7cZH
-         4zkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746379860; x=1746984660;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0MAjfptIMQwKjMkK2caSxzARquP7ADDmjnSLYI6Zjxw=;
-        b=lwRVV1Erv7nhVhB4jdmlT2VQJnxfq2YyQtcoY45vqzf8RrBPtdUJouT+WopBAhKHYp
-         LiGTSN2qhwubEubyQqKtuf3b2/tzEeHhkpplVZxxrdCucBitW1IK/zFFjKalQv1AUZil
-         LSVSzb123/G4WixgvDs3hR47NuC9P5nYHAnf5PrrZLL1/dDpy/oy4VRFI+LPcQOSDfys
-         mNATFMnFGSLXVTfS5KZm/tk66tUyEus9nO2WVc0gtREVJMdzrqd20fz4cny15d+MQDch
-         gCF1dhnM+sV0NfDGmIzXRrxRSedbrDHu3eleQgIWLjBUX3ZMixL8LVlyHrrs9ha+PWU4
-         HZZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUR4jhMUpOx/sVMmnXEsO3NZeepcbExtDJebgicFhwRKn7FhhhwGZCzwFdxDywF9Xi4Oq5c+hiB+2XPU7E=@vger.kernel.org, AJvYcCUy6lYf1JgrMo+v6YWPuHaIfrGhMV/8psYJIDa283gXFVVw7F7Xih5jKMhfu9ep2kemPWFHy229qwTXzO6jawzR@vger.kernel.org, AJvYcCXwG1RJrc088LKqKga++kvRjKZu9l7iB4hQhHV0pxhGtvdn9DLjemrF9eZp1sqndoMwuQHswz3lkOilfFyBFi8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YznMknSVJHnF/6KLufUJGh4lzCDsn9M8RZVIT5NLUrLWNU84qMK
-	JDQeAVLyWAdBuVDzRUUtqzagM89gaSMgePH2zRBuCh8p0hZ/lSCCvLJcu1ErlL3JRWerm7mqnjn
-	jKo7a1I82OEiAeiZDfMwkWZNbDEo=
-X-Gm-Gg: ASbGncuGIJoPUrvQ1KBD/S4T9uWdkevd2QM3MvjQR5gzctJkpfOrVba7mkB7V+y8Qzn
-	WK2i3P1HqQcDoEa8QYKsJ9fm2JF10kOEiT6U86ZIShft/xnTg1jN9ODwT2Gpq7MlZZN6rW4Td+s
-	v7aE1xCZRin7ylMP4Z8WMl1+dvaCVGBH1UCCxa5aa3sJL+/XV9BKdHWGY=
-X-Google-Smtp-Source: AGHT+IGk67ZjNfI5JRZk1E9sIkaiWYoh/CFeHhNDrNSEmUPefy9/YpSuJCSkf4tQjbpLx1hp8nibAzsjUmqph/UNhtQ=
-X-Received: by 2002:a2e:be9c:0:b0:30d:e104:cb74 with SMTP id
- 38308e7fff4ca-320c5fd2023mr23540791fa.41.1746379859507; Sun, 04 May 2025
- 10:30:59 -0700 (PDT)
+	s=arc-20240116; t=1746379929; c=relaxed/simple;
+	bh=sLIMOs86ZUevjJV9wr0yHTtB23Agmsn2XbSfNTjLy0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=diVBioFbigOFo1Bz3mDhxUA511MGCtZFR/zOJQXbD01vlflvg0VUolXHU5cLJRy0e1kfi8sZUQecexffGXimf4jwQ40kGTFsPdRARLBGvB82WZpe/o/gwjA/J9/RmANFTO+UtOKLlWs5kap+JPe9x47Tz2wdScYM6HW+beLyfcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4ZrBYG0B4Qz9tTL;
+	Sun,  4 May 2025 19:32:02 +0200 (CEST)
+From: Remo Senekowitsch <remo@buenzli.dev>
+To: Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Remo Senekowitsch <remo@buenzli.dev>
+Cc: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v4 1/9] rust: device: Create FwNode abstraction for accessing device properties
+Date: Sun,  4 May 2025 19:31:46 +0200
+Message-ID: <20250504173154.488519-2-remo@buenzli.dev>
+In-Reply-To: <20250504173154.488519-1-remo@buenzli.dev>
+References: <20250504173154.488519-1-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502215133.1923676-1-ojeda@kernel.org> <20250502215133.1923676-5-ojeda@kernel.org>
-In-Reply-To: <20250502215133.1923676-5-ojeda@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sun, 4 May 2025 13:30:23 -0400
-X-Gm-Features: ATxdqUH6DCMZhtsVocCllU2SKUNfgzC5NnOkbEXIh3IhAUh31vvSHfK6t0f55C0
-Message-ID: <CAJ-ks9k=uxxumgEU84-54u8OxxJVBsUprGk7Ht31ndoumHB95w@mail.gmail.com>
-Subject: Re: [PATCH 4/7] rust: str: convert `rusttest` tests into KUnit
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Rae Moar <rmoar@google.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4ZrBYG0B4Qz9tTL
 
-On Fri, May 2, 2025 at 5:53=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
->
-> In general, we should aim to test as much as possible within the actual
-> kernel, and not in the build host.
+Not all property-related APIs can be exposed directly on a device.
+For example, iterating over child nodes of a device will yield
+fwnode_handle. Thus, in order to access properties on these child nodes,
+the property access methods must be implemented on the abstraction over
+fwnode_handle.
 
-Is that true? The build host is often easier to work with. There's a
-number of host tests on the C side that exist precisely for this
-reason.
+Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+---
+ MAINTAINERS                              |  2 +-
+ rust/helpers/helpers.c                   |  1 +
+ rust/helpers/property.c                  |  8 ++++
+ rust/kernel/{device.rs => device/mod.rs} |  2 +
+ rust/kernel/device/property.rs           | 47 ++++++++++++++++++++++++
+ 5 files changed, 59 insertions(+), 1 deletion(-)
+ create mode 100644 rust/helpers/property.c
+ rename rust/kernel/{device.rs => device/mod.rs} (99%)
+ create mode 100644 rust/kernel/device/property.rs
 
-> Thus convert these `rusttest` tests into KUnit tests.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  rust/kernel/str.rs | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index 878111cb77bc..cf2caa2db168 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -6,7 +6,7 @@
->  use core::fmt::{self, Write};
->  use core::ops::{self, Deref, DerefMut, Index};
->
-> -use crate::error::{code::*, Error};
-> +use crate::prelude::*;
->
->  /// Byte string without UTF-8 validity guarantee.
->  #[repr(transparent)]
-> @@ -572,8 +572,7 @@ macro_rules! c_str {
->      }};
->  }
->
-> -#[cfg(test)]
-> -#[expect(clippy::items_after_test_module)]
-> +#[kunit_tests(rust_kernel_str)]
->  mod tests {
->      use super::*;
->
-> @@ -622,11 +621,10 @@ fn test_cstr_to_str() {
->      }
->
->      #[test]
-> -    #[should_panic]
-> -    fn test_cstr_to_str_panic() {
-> +    fn test_cstr_to_str_invalid_utf8() {
->          let bad_bytes =3D b"\xc3\x28\0";
->          let checked_cstr =3D CStr::from_bytes_with_nul(bad_bytes).unwrap=
-();
-> -        checked_cstr.to_str().unwrap();
-> +        assert!(checked_cstr.to_str().is_err());
->      }
->
->      #[test]
-> --
-> 2.49.0
->
->
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3cbf9ac0d83f6..8a47c0e10e58d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7247,7 +7247,7 @@ F:	include/linux/kobj*
+ F:	include/linux/property.h
+ F:	include/linux/sysfs.h
+ F:	lib/kobj*
+-F:	rust/kernel/device.rs
++F:	rust/kernel/device/
+ F:	rust/kernel/device_id.rs
+ F:	rust/kernel/devres.rs
+ F:	rust/kernel/driver.rs
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 1e7c84df72521..6aac840417648 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -25,6 +25,7 @@
+ #include "platform.c"
+ #include "pci.c"
+ #include "pid_namespace.c"
++#include "property.c"
+ #include "rbtree.c"
+ #include "rcu.c"
+ #include "refcount.c"
+diff --git a/rust/helpers/property.c b/rust/helpers/property.c
+new file mode 100644
+index 0000000000000..08f68e2dac4a9
+--- /dev/null
++++ b/rust/helpers/property.c
+@@ -0,0 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/property.h>
++
++void rust_helper_fwnode_handle_put(struct fwnode_handle *fwnode)
++{
++	fwnode_handle_put(fwnode);
++}
+diff --git a/rust/kernel/device.rs b/rust/kernel/device/mod.rs
+similarity index 99%
+rename from rust/kernel/device.rs
+rename to rust/kernel/device/mod.rs
+index 0353c5552769c..d8619d4485fb4 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device/mod.rs
+@@ -14,6 +14,8 @@
+ #[cfg(CONFIG_PRINTK)]
+ use crate::c_str;
+ 
++pub mod property;
++
+ /// A reference-counted device.
+ ///
+ /// This structure represents the Rust abstraction for a C `struct device`. This implementation
+diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
+new file mode 100644
+index 0000000000000..e75d55f5856cf
+--- /dev/null
++++ b/rust/kernel/device/property.rs
+@@ -0,0 +1,47 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Unified device property interface.
++//!
++//! C header: [`include/linux/property.h`](srctree/include/linux/property.h)
++
++use core::ptr;
++
++use crate::{bindings, types::Opaque};
++
++/// A reference-counted fwnode_handle.
++///
++/// This structure represents the Rust abstraction for a
++/// C `struct fwnode_handle`. This implementation abstracts the usage of an
++/// already existing C `struct fwnode_handle` within Rust code that we get
++/// passed from the C side.
++///
++/// # Invariants
++///
++/// A `FwNode` instance represents a valid `struct fwnode_handle` created by the
++/// C portion of the kernel.
++///
++/// Instances of this type are always reference-counted, that is, a call to
++/// `fwnode_handle_get` ensures that the allocation remains valid at least until
++/// the matching call to `fwnode_handle_put`.
++#[repr(transparent)]
++pub struct FwNode(Opaque<bindings::fwnode_handle>);
++
++impl FwNode {
++    /// Obtain the raw `struct fwnode_handle *`.
++    pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
++        self.0.get()
++    }
++}
++
++// SAFETY: Instances of `FwNode` are always reference-counted.
++unsafe impl crate::types::AlwaysRefCounted for FwNode {
++    fn inc_ref(&self) {
++        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
++        unsafe { bindings::fwnode_handle_get(self.as_raw()) };
++    }
++
++    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
++        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
++        unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
++    }
++}
+-- 
+2.49.0
+
