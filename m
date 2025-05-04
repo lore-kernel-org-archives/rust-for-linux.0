@@ -1,25 +1,25 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E241E0DEB;
-	Sun,  4 May 2025 17:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE291F3D2C;
+	Sun,  4 May 2025 17:32:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746379939; cv=none; b=iQ8qOmQmrW4pb2Mzk+MXeVqxevMGjnwfsEhKyyax2GZ6ZegudszvZ0NbwxcE8KIxfT7fR41/rewXx3wus2O/QQhOUY4L6cSQ2kT1DJp9dSaahk3XWkrUfOEi6k5rzHe7oa3OJNodt5Ze/jxdLaBjvOLVW5qhzcytHBMzhIPJL5A=
+	t=1746379941; cv=none; b=qt/426xJ5nEID5SCWugGTLzKQiyEm7oX80ZyNiDuxwWCkdxcP6dddVMlczc7Rgp2m0pFhYGlfaD1wkrnXss0FByvLDD8ZiJPHDzhlQ6BtDly9X7IyeSP5s4+QTmKIaDowDs/tRjIjYJy1NL2YMGtqd22YlFKBa6Q9P6zLXmXOs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746379939; c=relaxed/simple;
-	bh=arVvYY/U4KcowDeyUPfOPUK4/y7MQua5SHBupaDB3gU=;
+	s=arc-20240116; t=1746379941; c=relaxed/simple;
+	bh=J2lwdCE8iDDP3UvbXLuSXS9ESV77jCz6AkFvJkR0FyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5Zxpsev81yYacTloR+BCHDn4Z2L/lC5rB+dYhIfLkQAHHqjAHU+U1g2VCIub4hUT9LtIBgKheA6gX+sqNr8VLNqPLHfAGHNHgLYESl+2zBbLqmPkzAjq8CbGbcYBkTAjzH/UWiCWyCZVzYQfHJFg9U+mEHZJmtdUnj4gsxuueU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.172
+	 MIME-Version; b=nMqGwmbjwXBxx1jfMbj3/sCbFjScg8gCyP+pew+vHhuogHHIISIOjtYV+PfkiQgY7DTj5MFCrIsehg9cBLbGB/dRmlB/7qy6FVcjGVZr50cl955dyT1ygrfN1di5WCKHAUwPkYiI9WLo2fun5s1kilw8TrVpisJ8dMtcxmKXQl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
 Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4ZrBYV3TTcz9tSw;
-	Sun,  4 May 2025 19:32:14 +0200 (CEST)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4ZrBYQ25W8z9tQQ;
+	Sun,  4 May 2025 19:32:10 +0200 (CEST)
 From: Remo Senekowitsch <remo@buenzli.dev>
 To: Rob Herring <robh@kernel.org>,
 	Saravana Kannan <saravanak@google.com>,
@@ -40,9 +40,9 @@ To: Rob Herring <robh@kernel.org>,
 Cc: linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v4 7/9] rust: device: Add child accessor and iterator
-Date: Sun,  4 May 2025 19:31:52 +0200
-Message-ID: <20250504173154.488519-8-remo@buenzli.dev>
+Subject: [PATCH v4 5/9] rust: device: Introduce PropertyGuard
+Date: Sun,  4 May 2025 19:31:50 +0200
+Message-ID: <20250504173154.488519-6-remo@buenzli.dev>
 In-Reply-To: <20250504173154.488519-1-remo@buenzli.dev>
 References: <20250504173154.488519-1-remo@buenzli.dev>
 Precedence: bulk
@@ -53,123 +53,85 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Allow Rust drivers to access children of a fwnode either by name or by
-iterating over all of them.
+This abstraction is a way to force users to specify whether a property
+is supposed to be required or not. This allows us to move error
+logging of missing required properties into core, preventing a lot of
+boilerplate in drivers.
 
-In C, there is the function `fwnode_get_next_child_node` for iteration
-and the macro `fwnode_for_each_child_node` that helps with handling the
-pointers. Instead of a macro, a native iterator is used in Rust such
-that regular for-loops can be used.
+It will be used by upcoming methods for reading device properties.
 
 Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
 ---
- rust/kernel/device/property.rs | 79 +++++++++++++++++++++++++++++++++-
- 1 file changed, 78 insertions(+), 1 deletion(-)
+ rust/kernel/device/property.rs | 59 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
 diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-index 413166e2d082e..10061156f79a8 100644
+index 6ccc7947f9c31..59c61e2493831 100644
 --- a/rust/kernel/device/property.rs
 +++ b/rust/kernel/device/property.rs
-@@ -12,7 +12,7 @@
-     error::{to_result, Result},
-     prelude::*,
-     str::{CStr, CString},
--    types::Opaque,
-+    types::{ARef, Opaque},
- };
- 
- /// A reference-counted fwnode_handle.
-@@ -34,6 +34,27 @@
- pub struct FwNode(Opaque<bindings::fwnode_handle>);
- 
- impl FwNode {
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that:
-+    /// - The reference count was incremented at least once.
-+    /// - They relinquish that increment. That is, if there is only one
-+    ///   increment, callers must not use the underlying object anymore -- it is
-+    ///   only safe to do so via the newly created `ARef<FwNode>`.
-+    unsafe fn from_raw(raw: *mut bindings::fwnode_handle) -> ARef<Self> {
-+        // SAFETY: As per the safety requirements of this function:
-+        // - `NonNull::new_unchecked`:
-+        //   - `raw` is not null.
-+        // - `ARef::from_raw`:
-+        //   - `raw` has an incremented refcount.
-+        //   - that increment is relinquished, i.e. it won't be decremented
-+        //     elsewhere.
-+        // CAST: It is safe to cast from a `*mut fwnode_handle` to
-+        // `*mut FwNode`, because `FwNode` is  defined as a
-+        // `#[repr(transparent)]` wrapper around `fwnode_handle`.
-+        unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(raw.cast())) }
-+    }
-+
-     /// Obtain the raw `struct fwnode_handle *`.
-     pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
-         self.0.get()
-@@ -215,6 +236,62 @@ pub fn property_read<'fwnode, 'name, T: Property>(
-             name,
-         }
+@@ -123,3 +123,62 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+         unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
      }
-+
-+    /// Returns first matching named child node handle.
-+    pub fn get_child_by_name(&self, name: &CStr) -> Option<ARef<Self>> {
-+        // SAFETY: `self` and `name` are valid by their type invariants.
-+        let child =
-+            unsafe { bindings::fwnode_get_named_child_node(self.as_raw(), name.as_char_ptr()) };
-+        if child.is_null() {
-+            return None;
-+        }
-+        // SAFETY:
-+        // - `fwnode_get_named_child_node` returns a pointer with its refcount
-+        //   incremented.
-+        // - That increment is relinquished, i.e. the underlying object is not
-+        //   used anymore except via the newly created `ARef`.
-+        Some(unsafe { Self::from_raw(child) })
-+    }
-+
-+    /// Returns an iterator over a node's children.
-+    pub fn children<'a>(&'a self) -> impl Iterator<Item = ARef<FwNode>> + 'a {
-+        let mut prev: Option<ARef<FwNode>> = None;
-+
-+        core::iter::from_fn(move || {
-+            let prev_ptr = match prev.take() {
-+                None => ptr::null_mut(),
-+                Some(prev) => {
-+                    // We will pass `prev` to `fwnode_get_next_child_node`,
-+                    // which decrements its refcount, so we use
-+                    // `ARef::into_raw` to avoid decrementing the refcount
-+                    // twice.
-+                    let prev = ARef::into_raw(prev);
-+                    prev.as_ptr().cast()
-+                }
-+            };
-+            // SAFETY:
-+            // - `self.as_raw()` is valid by its type invariant.
-+            // - `prev_ptr` may be null, which is allowed and corresponds to
-+            //   getting the first child. Otherwise, `prev_ptr` is valid, as it
-+            //   is the stored return value from the previous invocation.
-+            // - `prev_ptr` has its refount incremented.
-+            // - The increment of `prev_ptr` is relinquished, i.e. the
-+            //   underlying object won't be used anymore.
-+            let next = unsafe { bindings::fwnode_get_next_child_node(self.as_raw(), prev_ptr) };
-+            if next.is_null() {
-+                return None;
-+            }
-+            // SAFETY:
-+            // - `next` is valid because `fwnode_get_next_child_node` returns a
-+            //   pointer with its refcount incremented.
-+            // - That increment is relinquished, i.e. the underlying object
-+            //   won't be used anymore, except via the newly created
-+            //   `ARef<Self>`.
-+            let next = unsafe { FwNode::from_raw(next) };
-+            prev = Some(next.clone());
-+            Some(next)
-+        })
-+    }
  }
- 
- // SAFETY: Instances of `FwNode` are always reference-counted.
++
++/// A helper for reading device properties.
++///
++/// Use [`Self::required_by`] if a missing property is considered a bug and
++/// [`Self::optional`] otherwise.
++///
++/// For convenience, [`Self::or`] and [`Self::or_default`] are provided.
++pub struct PropertyGuard<'fwnode, 'name, T> {
++    /// The result of reading the property.
++    inner: Result<T>,
++    /// The fwnode of the property, used for logging in the "required" case.
++    fwnode: &'fwnode FwNode,
++    /// The name of the property, used for logging in the "required" case.
++    name: &'name CStr,
++}
++
++impl<T> PropertyGuard<'_, '_, T> {
++    /// Access the property, indicating it is required.
++    ///
++    /// If the property is not present, the error is automatically logged. If a
++    /// missing property is not an error, use [`Self::optional`] instead. The
++    /// device is required to associate the log with it.
++    pub fn required_by(self, dev: &super::Device) -> Result<T> {
++        if self.inner.is_err() {
++            dev_err!(
++                dev,
++                "{}: property '{}' is missing\n",
++                self.fwnode.display_path(),
++                self.name
++            );
++        }
++        self.inner
++    }
++
++    /// Access the property, indicating it is optional.
++    ///
++    /// In contrast to [`Self::required_by`], no error message is logged if
++    /// the property is not present.
++    pub fn optional(self) -> Option<T> {
++        self.inner.ok()
++    }
++
++    /// Access the property or the specified default value.
++    ///
++    /// Do not pass a sentinel value as default to detect a missing property.
++    /// Use [`Self::required_by`] or [`Self::optional`] instead.
++    pub fn or(self, default: T) -> T {
++        self.inner.unwrap_or(default)
++    }
++}
++
++impl<T: Default> PropertyGuard<'_, '_, T> {
++    /// Access the property or a default value.
++    ///
++    /// Use [`Self::or`] to specify a custom default value.
++    pub fn or_default(self) -> T {
++        self.inner.unwrap_or_default()
++    }
++}
 -- 
 2.49.0
 
