@@ -1,107 +1,133 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06A41A76DE;
-	Sun,  4 May 2025 19:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A800137E;
+	Sun,  4 May 2025 19:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746385348; cv=none; b=h/xGkDu975Fn/8gpIJ5sCqY4Ehf78YIr0oDowDV1BSAdeE6HoqgSrT8do6d9uI1LE2UUTYdEFk9ViIQYNPQKdtsmoJhRc6GnrkYROufrMKFqR5LoAWncLeZkJVTFiFuxCR0SGdSOjC9U9aAMRubDUZJNNoHFJ5/m3I/dcAm3yEI=
+	t=1746387711; cv=none; b=GgFCFnwsvfBJjcURnArQ64B8O1igCz8F8Nf2O3ic+mFf2mULdk0geDaZyNZu7sIy9d8XgfcmOnajNyjRGMJGU+xr4gI8pSL3gT/9ndoiTFo7O4yWv6UWASbOzjBM7oqMaqG3XXFJVKDVWNo/9cyjAF+QsI+vOMg8TyLVvLYkBYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746385348; c=relaxed/simple;
-	bh=gWhqncYnT79JitMZOxQNY9LoBk9q4Nc/oFC/nBl8/SQ=;
+	s=arc-20240116; t=1746387711; c=relaxed/simple;
+	bh=K3F5/KIWAaKbb2R/xf5gjoXGRiWhe+uHcyjSlqkLfLU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qek6i9dXEQJpCBmOS9tBoOUl/tabUBf47CHjS8tO8zEOJAjstQnzkeVKQ1Va3ihVcZWVrRu8Jmn9gF75ruQ2ThjlLblydivMDqAMwioio9uU+kpZsCNQhjMgFX1cxDjZk/Cxn9mxrE02I//gXR23sngwl99O9XEqCtVVpQkPPSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QtKbcMN8; arc=none smtp.client-ip=209.85.216.50
+	 To:Cc:Content-Type; b=iZVPdCgG8qXzVRbecn9s10cveJANcH1+yOsQAMU0VsQ+7yHMlAH6LcThPiko0OV5OHqfjrJ6XVg7GBb7nPFPxvpovQr7A9JXdH0SSq09utJ5iIvUIzJvoyxQZ3pdX/plt+ktJF7UNBdvwUVPtrbqWkZKzbKAOVvFiAmSMUZ2Dt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HgEln8NV; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QtKbcMN8"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-309f26c68b8so374266a91.2;
-        Sun, 04 May 2025 12:02:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HgEln8NV"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-309f26c68b8so378095a91.2;
+        Sun, 04 May 2025 12:41:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746385346; x=1746990146; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746387709; x=1746992509; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gWhqncYnT79JitMZOxQNY9LoBk9q4Nc/oFC/nBl8/SQ=;
-        b=QtKbcMN8bWAkYgu1OJYH36E/J7ZZUVTwLUwoRlQyy8iMFo84jXh+LPUTLnXb9Nfv7Q
-         Wyq7C6I1oBTHp6+3oAb5ad0cqo/ms/QNnwDxsuxiDzreP87y/6pQmo9JKTlB9r5fJGvy
-         rgqb7dhrNpy0xhqEiV2M6YqhNYu3l1n6XLuphurklOQZSvxWjkhHXGLRUrQStWLmiTgL
-         y0X5pVOAJPbh00kCmm4TKeAzdH2+1mUP3DGsoCBZH2TPkdjpslf8oznfU+8zyRYY9CC9
-         oE4sxhskVMdPFGZC0vn5SKEHnxcsIk5/NnDLT8+fpwMiluPSWP88NkkwOX4G57wxxNZW
-         WOOQ==
+        bh=o12aVVyH9kV52ftq4bnSHwH56vkgugSHnAWeFrIO11c=;
+        b=HgEln8NVDEBXsa7EydEPsttJmMKOG84W022SyMqjJxGt9oqtJKohVD5+CLHudv7VY1
+         8kbjXfXCd5DcfYoOFEPDk7h6SfLWJCedK+EZR58X5toIqmImeY0+SeUGfRR6LC9aeGVE
+         gwHJkijO+Q7/NLSBZMLpb7gppRLP5rs3oEW6J7pfE6SIewaplMWnhDi+Gna56w4kIQWo
+         gujiZAKaY8sVXi41YdzU82IV+mRQRy+Mx27UKOwcHqUTCA+lA8Gks1xHvW+YUJ7wMuV8
+         CQhwtUMyDq1HI0/AOqlMSpwYFGr+1WVqvGImBRmH/KH0HwDx7eC2Cn/6EzhnbasIBMEA
+         uJZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746385346; x=1746990146;
+        d=1e100.net; s=20230601; t=1746387709; x=1746992509;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gWhqncYnT79JitMZOxQNY9LoBk9q4Nc/oFC/nBl8/SQ=;
-        b=VQl9vzPl7B2yZv/1iFibZG79GbQZWCMC8uEWkIWf1D79D8ZzLj2juYJFf+926VJpRl
-         ZVBlx978C86hWF7sZEOOy1/ZIeTLyhpgH8F9p0q761RFsDltrGxI7zfbxCC31yAcSG0z
-         9Xqf5Wil22z3FgZEyYb26a15DvXhHMgLP93acE21x6uoFm6N1TBqn8hcgKLkyml5vC1V
-         OmjSYsUShLGUPKRaqlUjHvOLK24orqLG5rfIL+4w6o9hfK6GmHcHr5cbXaC+93zSdglu
-         eIFnEAm2bslZI6kTDQ9y0D1TV5czg7Qw8r7THG7nkljW0CS7qugvqbxDuS4m/GWoGB2d
-         oH0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUWzbvjWcNJxNPMy2CqAersfpzljOYMSvYxQuANEz+qJRQjX3Yay1l09oJPw1Rz0FK09AHo0q4Oky6F2UOB0LMS@vger.kernel.org, AJvYcCWCMv8cRZf0tSI0ymhb7Nx2mnLH8xUd0w7e1WSrusT412gbOIb+BbcVhEbrhaX6N+e5d+ScJ49lJimvFVg=@vger.kernel.org, AJvYcCWwiwRi0rxuoQGD3fo5lXXIM03QjgEkH7W04Zk1CnfqaMmy4v5hdLLyYjwQOEUWMs/SWgXZAUlbHq/R6IqJDVU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz31+gtjaWIkBIpSPNv5Iy2yb2se7HFIb8n0gLEVmGLXOKwqUFg
-	QfK4DUoJNk+CQqV/ztaR1VCGjhjSI/RYJ+PtbvZrjW2hUOi8LPVvycRXI2OE0HuKo7ALZXwxzia
-	HZpybDK67LBXaXEU4Pxw5wmCUJ14=
-X-Gm-Gg: ASbGncsaLWFzheNJ7zw5GHnr7sKSi9JRLT5ylKpoMlLc4uw0S/aHW/rFHi8nTQeFte3
-	dveeSxia7qAsByjLIzUKqEId5J/818tOVlcoS6k6p8fABRPQ6KrTkLjVLxy7NwHQs5Eyb0w3MUi
-	dLNGEIJCCwQg7LvvgrsrA3uA==
-X-Google-Smtp-Source: AGHT+IEO0raa8GkuuUNuEp7ZNefeofLseoaoOs06qtWnnjKYQ6iOYJix1qXEG05SOHHwbs5jqIqPiXaFuIPCWJpZQIU=
-X-Received: by 2002:a17:90b:4b49:b0:2ff:4b7a:f0a4 with SMTP id
- 98e67ed59e1d1-30a4e6c0e69mr5864090a91.3.1746385345937; Sun, 04 May 2025
- 12:02:25 -0700 (PDT)
+        bh=o12aVVyH9kV52ftq4bnSHwH56vkgugSHnAWeFrIO11c=;
+        b=jg2nG9vBZOmZlZzJhwcoEyjCScfqlCY0RL/YyMEfJdzc7c+/WcD+cVsQqQtC5bN3GO
+         pN+3oRLoWQvthGFHfcUFbJKoN95cWiWMewuNpiWgVNSKVOiYAcfjBG03mnaP67DCiHlg
+         AmGZW9zrQsqFuO+6hrBMof3u/r1ArjxdRpRRfl3gLZLWc/YpPxtSmcQDOT4LamAWwq16
+         usSBCyk6kO7R+4Sxx8ubFUzHN/k5ES5v350KFysPDTtpK9zZBEUJR7MLMYnzkDfUmDZa
+         qSDbEWayDoX35ijEMEFhf8hSB/EV7O+TcQ/TTtvtC4Pfek1PrPqs/zAZHUT/8miw8iea
+         F4hA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAW4ADfR+bniOcUHaFtSa9TLmPdzAFh5xKGN8ZXGiR5Konumz58C77eaCi//AFuNaoyJ5X87NsPSDBlEJcVn8=@vger.kernel.org, AJvYcCXw25y6fGqHieqSGURg26z9cwqKltVo/a8OXxCT2Vsaef8hpzxJceog63uQqHV72dn5bcO506qZbZ42mp4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzllbV0myDRHs61gJrGgiaRx9vK9uEw/ft75P/A57DmEGJ2Im1o
+	NXZStxO0CXg/GS19NHUcvRLce1dxdo1us43mtlCGnJ+XdaBNXzXiBez9lRuC5Kmv5bfW7/zm4P6
+	Evak+IzeRJ6IX3LwOqdJK+p4g7mU=
+X-Gm-Gg: ASbGncvrTZnn7FNCkLRE7hLOP3FatwWjqmlFzCQJf85ER/2AmLAfZK5AXniCqm2x11J
+	ZK+pnUQtMZA1ffXg/6ljDky/KkivgnXYlTPfVvCOym2R+doRqdGSHmQm1xEjtum2+PtvBDC+2+C
+	MkdfC2r1DNJXJuw/cMNatWE3E028jGjNci
+X-Google-Smtp-Source: AGHT+IFqnhPLc7BpuUyxCTgZ6K4J4HM1398y0FUsixh0asR5rKXBVFePHUSy8tVngDrGd69+yBMwNbumyyFje7gECu8=
+X-Received: by 2002:a17:90b:1652:b0:2fe:b972:a2c3 with SMTP id
+ 98e67ed59e1d1-30a4e42fabdmr5782880a91.0.1746387709543; Sun, 04 May 2025
+ 12:41:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502215133.1923676-1-ojeda@kernel.org> <20250502215133.1923676-5-ojeda@kernel.org>
- <CAJ-ks9k=uxxumgEU84-54u8OxxJVBsUprGk7Ht31ndoumHB95w@mail.gmail.com>
- <CANiq72=Q_Vbfh6YhDsNeCBDPZ-q1d2HNfaTj4azAsd2Q-zPfEw@mail.gmail.com> <CAJ-ks9mAgR3N+cxL6H5XhAN-iWM=T66vuWr=LEozj8bqofBf6g@mail.gmail.com>
-In-Reply-To: <CAJ-ks9mAgR3N+cxL6H5XhAN-iWM=T66vuWr=LEozj8bqofBf6g@mail.gmail.com>
+References: <20250504165612.86459-1-contact@antoniohickey.com> <20250504165612.86459-2-contact@antoniohickey.com>
+In-Reply-To: <20250504165612.86459-2-contact@antoniohickey.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 4 May 2025 21:02:11 +0200
-X-Gm-Features: ATxdqUHa3BzmXCDKf-vPiiRQBie8yaB_bY4-x1_F18HdvVt9ZxcHIW-X1fAPluM
-Message-ID: <CANiq72nQeHpZFk3KYGsgGO0Sh2TgV8T2z7Pahkijrgd=T64KYQ@mail.gmail.com>
-Subject: Re: [PATCH 4/7] rust: str: convert `rusttest` tests into KUnit
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Rae Moar <rmoar@google.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+Date: Sun, 4 May 2025 21:41:36 +0200
+X-Gm-Features: ATxdqUGqZfuaKFhtmR3Uuslno3VkapNdyHJ-MZ3SAnQPBK-5NKEE2Cs0yd4AaZc
+Message-ID: <CANiq72mvu54B=U+YCUmbFctj_wXgF5zjeE-BB-vHVnAP+3mPcQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] rust: kernel: create `overflow_assert!`
+To: Antonio Hickey <contact@antoniohickey.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 4, 2025 at 8:39=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
+On Sun, May 4, 2025 at 6:56=E2=80=AFPM Antonio Hickey <contact@antoniohicke=
+y.com> wrote:
 >
-> One example is https://github.com/torvalds/linux/blob/59c9ab3e8cc7f56cd65=
-608f6e938b5ae96eb9cd2/tools/testing/radix-tree/xarray.c.
->
-> It might be that these are necessary because the xarray tests don't
-> use kunit, and so are pretty inconvenient to run. As you might have
-> guessed, I discovered these host tests when my patch porting the
-> xarray tests to kunit broke the host-side build :(
+> +/// Overflow assert (i.e. runtime bound check).
 
-It can be useful to have some tests as independent userspace things
-(i.e. outside KUnit-UML) to use other tooling on it, but I think for
-such cases we would want to have a way to use the tests from userspace
-without having to remove them from being KUnit tests too, since we
-definitely want to test them in the actual kernel too.
+Probably this paragraph can be removed, since we have the explanation
+below, i.e. the first line/title is enough.
 
-David et al. can probably tell us more context, e.g. I may be missing
-some plans on their side here. For instance, for Rust, we wanted to
-eventually have a way to tag stuff as kernel vs. host etc., but that
-is longer term.
+> +        core::assert!($x <=3D $y, "overflow assertion failed: {} > {}", =
+$x, $y);
+
+Interesting!
+
+I was thinking of just allowing any expression here. I can see the
+value in printing the values, but it makes it a bit harder to remember
+the comparison and is less flexible -- I can imagine we will have
+other operators being used, or even things that are not tested via an
+operator.
+
+Perhaps we could have two macros, one for the "any expression" and
+another for the `_le` case, like the normal assert has the `_eq`
+version. Though we probably want to see the use cases first before
+deciding on particular variants, so I would just go for the general
+one first only.
+
+Speaking of use cases -- could you please add a sample second patch
+with this macro being used somewhere? e.g. see the linked email in the
+issue (it does not necessarily need to be a "real patch" that applies
+to existing code, although that would be nice).
+
+Also, please fully qualify the path (`::core`) since we are in a macro.
+
+> +macro_rules! assert_no_overflow {
+
+Shouldn't this be the same name? Does it work?
+
+By the way, would it be possible to have the `cfg` attribute inside
+the macro, so that we share the docs and so on? i.e. to make the
+conditional compilation as local as possible even here :)
+
+i.e. as it is currently done, we can have mistake like not sharing the
+"signature", and the generated docs will not have the actual docs of
+the macro if it is disabled.
+
+We could also consider using the `cfg!` macro to force it to be always
+valid code -- not sure about whether we want that in all cases though.
+The standard library does that, though, so perhaps we should do the
+same for consistency. If someone really wants to skip it, they can
+always do it on the caller side.
+
+Thanks for the patch!
 
 Cheers,
 Miguel
