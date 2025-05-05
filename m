@@ -1,70 +1,70 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AEE1B3957
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 May 2025 06:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB36E1A9B24
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 May 2025 06:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746424946; cv=none; b=l/zlxx6swgAwYifIlKWke9FGjCr+UweHbw2ilzYFVKyyGGVSCU+KFx7ebjN7Gx4RJKEyLG4T9GwtC+ZYM2379B/8WGlzqFVLmcDKH99/w4h1lC4fH0NhdVRpapJxTtSckJUlP7TWuJ7pTQaWAIvxvXA2Ne4RNuomX1obc1OOF38=
+	t=1746424953; cv=none; b=DmWhxlX+khv2NnvKXKT+Slx5cIeeXETTAvvrd97g1VGfGKkuvTAwiBCX7Yuf+HY3XYppiyVbwwKrwVGgrNG9Q3GstAmO1HiYKyG4t16roWN/AFCxV12Yp9Pd/rN66bkscBzhjkIEbn7iJT0zkNVuhpzgsp9PcXGKZ33XsDwzWzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746424946; c=relaxed/simple;
-	bh=+VRfIXvPfLgW7+nWEXBzh/R2dzlFyIYvJiOT8Mz7w9g=;
+	s=arc-20240116; t=1746424953; c=relaxed/simple;
+	bh=VvPswExsOKxWifaQSVF73RpUckU0sA7cj/5/+bJlLKw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O4tdJo9QfE4y1M8ZoXCgVUHnMRkGSCB2FMgtE7JJayMUid/hk44gB7QPGIxvSyMaae5c35RzMPExU4q9tky7K55ql+uSM2WkxaO3DqSYTkdvxSAalRzmTbumKmepNOOqGDpfAUswTJqV5HCb3+AyW7/WyOUHV+wq/1SV5ZnM9xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AYhIAKjd; arc=none smtp.client-ip=209.85.222.173
+	 To:Cc:Content-Type; b=Ek6gUqDPsz4b4zhEUdFFO+S+auGIK9Ywaj8oLsW1yKGJu9yAtI4TUaBidKTDjgWZjiK4QaaWYx2sqRlWNrRwRHGH8mYiYskRpp5bFmqFRe5cOM/fCHrgJb/YO/7aD+200LleVrN8fK/V1SinRbnbKOpqhYZZY1wRf9UHC6ld7Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AXF+rTrj; arc=none smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AYhIAKjd"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c7913bab2cso437130585a.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 May 2025 23:02:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AXF+rTrj"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6f2b05f87fdso42912606d6.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 May 2025 23:02:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746424942; x=1747029742; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746424951; x=1747029751; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JIzoAbhU2GKqY24I+e1YUKaCqOfuiqJdMO4ZkZ331m4=;
-        b=AYhIAKjdSo/F6eIM4qVu/nHv120UdSXsVt5Z4zSaDcjsw/zkF71luuey74u87+YpBA
-         dXj0G7q0v11oYypFUogVhAG5o4ILAj3rB7Pxl2cGHSQ0HLpS0gkMZR6Aaj274warBSeR
-         ptaErZHq4NE7LtyCnKViw4Fseavuyjid/gqyvYoMx+j97vW0Zam04bkitEzvutpA4zQ5
-         3OrIbp37akdc9gJtG1QaI4z0r0r1DOPLXJ0auu5tdMKhXBsQL/atlLARi7fpuSQlh59C
-         NqApDWbdE++nLJ8ThNJ09QkQwzXDcVmQFwHqXDxrnC52Z7HlhwyubclqdA3Geg08ysXQ
-         1Ezg==
+        bh=pttYEEnhJvJ4K8ZQS69/vgtDnnmOIif/1SOBS5+U5N8=;
+        b=AXF+rTrjDgEWgmOnTm+XEou9OXfyYijN7vbnH514dZPtsaw5ihAkXNHOeakiQwVeVI
+         vX+4LCB1xLpQXH5g24WJ/P+TCM37S4JrxtbrxwTuUTmQhNnkq+/RgOovZICifw8mBoqI
+         zQII4SzRgczr7p03XyiVOsuEo/XvISL1ZQafMBmZ9+ZVpmvAULle8wcLivh6WV8KG+K0
+         cSool/Ozk8t85Q4s3Qh4vA2yKhVUHJsIsQFB+Fnqw/rzkFrtHUK8FBEf2Ps95c31K0Et
+         gkBuJ1BAe01TTBx2TJZclgYx0ZgKVS+ui3fGbFt3neJYhruZ8vGanfTGl87w+mNRqxeT
+         c9fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746424942; x=1747029742;
+        d=1e100.net; s=20230601; t=1746424951; x=1747029751;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JIzoAbhU2GKqY24I+e1YUKaCqOfuiqJdMO4ZkZ331m4=;
-        b=OvcrKYlCB+Ux4NOTzTN//dgr2TJzmxwHl6WBPo6wSSYHA4s8XMKnXTuGbCwEc8pL6T
-         b1v4qbdG7Dpl4KU05PhoQUmvGZOyAC8/e4HKRfzy5ncuAaynr1urbg27FErcVyD6R3OR
-         XPLR4rF5Lj4wmPWw69XCYsNrOXfk8RXENKrpNKabm8WkBtWe3MpTV36F3vWSG3g5apyk
-         jHs3ERkrzyDZpForvQjq/A0yDngmNVL8Ir66MCzfejZkkuO0KD6bNgRTFA0Po18NSErA
-         azOlfiY0TsWRRwF81Qzikwp2YZh7Bm000+NSpjBhR1gkN0cYs6NfgPGm1wZa2LyFsmrH
-         A3mg==
-X-Forwarded-Encrypted: i=1; AJvYcCVrUN3OkLKfbzkz2rewKyxEGFJmeVKj8YfESIV8YkbCVSB1vNcVb0KwIKut8reeHeSOLs3dVaD119kiaC0i5Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHxFwteF36gAch5zsNqhSwbHNc9ZLFz2MW3ldUrl46XTcJAshk
-	p6HwzGae7o9awxrZOZ0OP1Cz6Elu7Y+N/R76x1eKRuFNtbPtJWOy48eNyG3EZRZIuFPm/hq53kU
-	XmYRA0WJB7jhcLqIMTwRFYOrAYm+VUx5fU2AH
-X-Gm-Gg: ASbGncvda++dZp5lS4SpfPzj/YFQ23SX8AZ1RNkxyjKfo4doYtNISdkda1C/4LfyUCb
-	+jWwqI4cDZbVjGzbSscrNxjyorGT9gTGAheB1ZsgWZyx5Iis0ID11+NsVPYJV1TG4Rk6utgcZHJ
-	CpEA+nTNQu6a1A8IHy5dzaCXBg+bKAwFpdew==
-X-Google-Smtp-Source: AGHT+IENwTVXLe0Zw2O1nUpfwQXnNBCVqTq4UiTlOPBV71cZTouue+7h2pZ+FTYfkSRyTTOhACxuS/VjEDiAolqr37Y=
-X-Received: by 2002:a05:6214:23c6:b0:6e4:4194:df35 with SMTP id
- 6a1803df08f44-6f528c3ec64mr103380936d6.9.1746424942052; Sun, 04 May 2025
- 23:02:22 -0700 (PDT)
+        bh=pttYEEnhJvJ4K8ZQS69/vgtDnnmOIif/1SOBS5+U5N8=;
+        b=R+XxkHENwilMGcKKxFpIKl6+PpGE3RIFQzTTLTlC7U9Ba8DfmLkz1uB3iCsktbJgE7
+         pKfUNfWjqUhV4vM2pbpWDN3eu7wTpUBmHPyLg3RTcC0MUL2gupj14rrOcNpaYNqkCWmb
+         5jj5hcBr04BvNRX5nkClfN5I9JEZcn0bVP5ST3+6fjmIY+BsJMf5B+yvFcvPTloaSH0J
+         IxhSskqyJ++eZxpD6oPvnV8enNRWzu3ZhrGt/whAGPkDOAsAa3Bb/IgB3cEgOuW84EOb
+         uQyTt4Jx1kw8vlSHZSMAwsEyyUZ6ZTEOuC08QfMuv+75u1DkCUM9aHxF30lVGqzpHy40
+         mRnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWfCd5Xe7pqOxQhI6iMFXWu25zMx+1oy53XPrM38Dm6N9mS2EB47xN1kKZ+D22fC6QhqpUUbI8v4fWQhyC2aA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGcgY6rrgmA1EdA/M63qXzzFAIKaD+iilHyyvneqZ+gM+qHhzF
+	GoZp0Lp0U6IOWJsPBRKvM0hnxz8iZNMgANv1fRTeAiD5gudsnOr94o9uORTriZT9ZPCUai43pC2
+	d0G+0ATuRoTAjUNKm5Mt22Jq+aT+IsC3seVmK
+X-Gm-Gg: ASbGncsVFtVqd3sbbc/01B1DCXV+MkAZDjfQQvZd9pqjxOpcY6/GqjrCf+sLfYn9TFh
+	Mx09JwF8Q9nxLGUtjNj0ALlecGoq9ZBtyeWE4Ecq2HJVlivAn9xvJf+50kxwwZqZtvL+U4wg0UR
+	ozCbfdaTVMVIEmCGIeXYmTY2w=
+X-Google-Smtp-Source: AGHT+IE1jvV5zyoDQV6U8eJw4nA3aGdNUsdl8m1aIfk+yYb28903AQoLHqt9OrvhB+SmObJpSWzkav4YzK3p/GNjbPw=
+X-Received: by 2002:a05:6214:40e:b0:6f5:e2b:98a3 with SMTP id
+ 6a1803df08f44-6f51578d484mr226285866d6.25.1746424950430; Sun, 04 May 2025
+ 23:02:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502215133.1923676-1-ojeda@kernel.org> <20250502215133.1923676-3-ojeda@kernel.org>
-In-Reply-To: <20250502215133.1923676-3-ojeda@kernel.org>
+References: <20250502215133.1923676-1-ojeda@kernel.org> <20250502215133.1923676-4-ojeda@kernel.org>
+In-Reply-To: <20250502215133.1923676-4-ojeda@kernel.org>
 From: David Gow <davidgow@google.com>
-Date: Mon, 5 May 2025 14:02:09 +0800
-X-Gm-Features: ATxdqUF9V_rvhFyRGFAGYXIbVphSS3lW64Xn1BEyDIoe-HUn4JUFA_DHxJFMkSY
-Message-ID: <CABVgOSm8T+_kXY78sioUHEcG7rYApfWK2Gfxkrvw94Dz57G0oQ@mail.gmail.com>
-Subject: Re: [PATCH 2/7] rust: kunit: support checked `-> Result`s in KUnit `#[test]`s
+Date: Mon, 5 May 2025 14:02:18 +0800
+X-Gm-Features: ATxdqUGk-208LuwU83pB8PjZACgO3m0UULik7N9jS6i3J2EgxkCEtrpGH_sixD8
+Message-ID: <CABVgOSms9m6zRsaC0d3PLxe+Q1x7d0a5+mMqQrT9Nk2onqC9=w@mail.gmail.com>
+Subject: Re: [PATCH 3/7] rust: add `kunit_tests` to the prelude
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Brendan Higgins <brendan.higgins@linux.dev>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Rae Moar <rmoar@google.com>, linux-kselftest@vger.kernel.org, 
@@ -75,48 +75,24 @@ Cc: Brendan Higgins <brendan.higgins@linux.dev>, Alex Gaynor <alex.gaynor@gmail.
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000548a1e06345d3e8c"
+	boundary="000000000000d4cd5306345d3e05"
 
---000000000000548a1e06345d3e8c
+--000000000000d4cd5306345d3e05
 Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 3 May 2025 at 05:51, Miguel Ojeda <ojeda@kernel.org> wrote:
+On Sat, 3 May 2025 at 05:52, Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> Currently, return values of KUnit `#[test]` functions are ignored.
+> It is convenient to have certain things in the `kernel` prelude, and
+> means kernel developers will find it even easier to start writing tests.
 >
-> Thus introduce support for `-> Result` functions by checking their
-> returned values.
+> And, anyway, nobody should need to use this identifier for anything else.
 >
-> At the same time, require that test functions return `()` or `Result<T,
-> E>`, which should avoid mistakes, especially with non-`#[must_use]`
-> types. Other types can be supported in the future if needed.
->
-> With this, a failing test like:
->
->     #[test]
->     fn my_test() -> Result {
->         f()?;
->         Ok(())
->     }
->
-> will output:
->
->     [    3.744214]     KTAP version 1
->     [    3.744287]     # Subtest: my_test_suite
->     [    3.744378]     # speed: normal
->     [    3.744399]     1..1
->     [    3.745817]     # my_test: ASSERTION FAILED at rust/kernel/lib.rs:321
->     [    3.745817]     Expected is_test_result_ok(my_test()) to be true, but is false
->     [    3.747152]     # my_test.speed: normal
->     [    3.747199]     not ok 1 my_test
->     [    3.747345] not ok 4 my_test_suite
+> Thus add it to the prelude.
 >
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
 
-This is a neat idea. I think a lot of tests will still want to go with
-the () return value, but having both as an option seems like a good
-idea to me.
+Definitely a fan of this here, thanks!
 
 Reviewed-by: David Gow <davidgow@google.com>
 
@@ -124,66 +100,63 @@ Cheers,
 -- David
 
 
->  rust/kernel/kunit.rs | 25 +++++++++++++++++++++++++
->  rust/macros/kunit.rs |  3 ++-
->  2 files changed, 27 insertions(+), 1 deletion(-)
+>  rust/kernel/kunit.rs   | 3 +--
+>  rust/kernel/prelude.rs | 2 +-
+>  rust/macros/lib.rs     | 2 +-
+>  3 files changed, 3 insertions(+), 4 deletions(-)
 >
 > diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> index 2659895d4c5d..f43e3ed460c2 100644
+> index f43e3ed460c2..053a7da147d5 100644
 > --- a/rust/kernel/kunit.rs
 > +++ b/rust/kernel/kunit.rs
-> @@ -164,6 +164,31 @@ macro_rules! kunit_assert_eq {
->      }};
+> @@ -6,6 +6,7 @@
+>  //!
+>  //! Reference: <https://docs.kernel.org/dev-tools/kunit/index.html>
+>
+> +use crate::prelude::*;
+>  use core::{ffi::c_void, fmt};
+>
+>  /// Prints a KUnit error-level message.
+> @@ -40,8 +41,6 @@ pub fn info(args: fmt::Arguments<'_>) {
+>      }
 >  }
 >
-> +trait TestResult {
-> +    fn is_test_result_ok(&self) -> bool;
-> +}
-> +
-> +impl TestResult for () {
-> +    fn is_test_result_ok(&self) -> bool {
-> +        true
-> +    }
-> +}
-> +
-> +impl<T, E> TestResult for Result<T, E> {
-> +    fn is_test_result_ok(&self) -> bool {
-> +        self.is_ok()
-> +    }
-> +}
-> +
-> +/// Returns whether a test result is to be considered OK.
-> +///
-> +/// This will be `assert!`ed from the generated tests.
-> +#[doc(hidden)]
-> +#[expect(private_bounds)]
-> +pub fn is_test_result_ok(t: impl TestResult) -> bool {
-> +    t.is_test_result_ok()
-> +}
-> +
->  /// Represents an individual test case.
+> -use macros::kunit_tests;
+> -
+>  /// Asserts that a boolean expression is `true` at runtime.
 >  ///
->  /// The [`kunit_unsafe_test_suite!`] macro expects a NULL-terminated list of valid test cases.
-> diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-> index eb4f2afdbe43..9681775d160a 100644
-> --- a/rust/macros/kunit.rs
-> +++ b/rust/macros/kunit.rs
-> @@ -105,8 +105,9 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
->      let path = crate::helpers::file();
->      for test in &tests {
->          let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-> +        // An extra `use` is used here to reduce the length of the message.
->          let kunit_wrapper = format!(
-> -            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit) {{ {}(); }}",
-> +            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit) {{ use kernel::kunit::is_test_result_ok; assert!(is_test_result_ok({}())); }}",
->              kunit_wrapper_fn_name, test
->          );
->          writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
+>  /// Public but hidden since it should only be used from generated tests.
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index baa774a351ce..e5d61a83952f 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -17,7 +17,7 @@
+>  pub use crate::alloc::{flags::*, Box, KBox, KVBox, KVVec, KVec, VBox, VVec, Vec};
+>
+>  #[doc(no_inline)]
+> -pub use macros::{export, module, vtable};
+> +pub use macros::{export, kunit_tests, module, vtable};
+>
+>  pub use pin_init::{init, pin_data, pin_init, pinned_drop, InPlaceWrite, Init, PinInit, Zeroable};
+>
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index 8bd7906276be..8b8d46e759d4 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -406,7 +406,7 @@ pub fn paste(input: TokenStream) -> TokenStream {
+>  /// # Examples
+>  ///
+>  /// ```ignore
+> -/// # use macros::kunit_tests;
+> +/// # use kernel::prelude::*;
+>  /// #[kunit_tests(kunit_test_suit_name)]
+>  /// mod tests {
+>  ///     #[test]
 > --
 > 2.49.0
 >
 
---000000000000548a1e06345d3e8c
+--000000000000d4cd5306345d3e05
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -273,13 +246,13 @@ uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
 PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
 Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
 BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
-pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgNhAn3f/12NBagT16C9hg3zgKpV5j
-dovMJa/O80pk87kwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
-NTA1MDYwMjIyWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgyVIv2KTG0sHx4GPvduQfEpjs4QHi
+wtvMFVXMrQLcCRUwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+NTA1MDYwMjMxWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
 YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEAbtntQIDFJxZgiRYx58ewaZKuQ6/YKOyKdhry66d8ZEGpfXUUTq1QtPSGV6CpJJFh
-pj5hKgAb6BWnPPzG45NyJ8gvyv9K5Xx9GtcAU0p84f9lQrtq6J1+rtDWw1F41y/z9duU2urCPfgp
-cJxPQnofMVlBfMOeUEjwz02al9CELPyGLbRRQbH5iCLg+ZgOEAPJiFdZfLJwXHsYnW2lX4JrxNQt
-mv7VS0ATjlvViIPgbscw9CFYlbdR75Omn/tAVTxGmKdFvOFQSnXYG60hDaUvnQrHQGkj1t8GdtxC
-74wFLjTnRKC9LzQ6n3X6PGjTvqsPaEfi/PNW/a7ve84Q3UoC4g==
---000000000000548a1e06345d3e8c--
+AQEBBQAEggEARh/P8k6MEkGRGwnfpD/rMXfxBc/VhVG/OvFcddjCD8bpgDC0EUiEJr2GytY8LGUc
+29UZ5cCrvKuklf4NNr1O4PqnC68YfZXCnh6mZLEjWZ6BmhFaULYFz6Y+BrdiujBNzx0l3yZ4fZ3u
+ZXqlxhaYzE3ae950aUgsMotg/UQ6jRNBkc9zpvYSj3An+y/zyBl6Q/QrBQH0VqQbaWpkjRgmwZMB
+M+AUnXTllwOte2KdN8hJxR3VZCpo9C3g05HDfFM3Ql7VMQAubUIqIbJC+RbWoZJwRLt0RKMhVMf6
+MInwxwMENPWnHkeHhOGkv1Hr4rLSkHEE5hPwG0AKyMfKvplNfw==
+--000000000000d4cd5306345d3e05--
