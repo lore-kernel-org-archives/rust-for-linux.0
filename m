@@ -1,145 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C6B26B097;
-	Mon,  5 May 2025 18:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88552701D7;
+	Mon,  5 May 2025 19:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746470037; cv=none; b=fXHbdKDdKI5CNz1v1PL5aKHrqYyVeM1hfDZNgZAikVom7ovLc5ffWkGWTIcOmNVJBtWWWPxcf+BjU2pMgRQsQMQ6OjLLEjrwBtD5QpU3TdMdivoKtbb+78q1yLdVSTsaXLM0u2dR9WaKqajWFAZvLCxC5lqLwWnDwZr0l1FlqZI=
+	t=1746473038; cv=none; b=SLgPldZ2Izy4R8lVOX2jxAua+dal4fV7Sp12K4nTbtTc2cSjaXKXFS3UhuhaymfGHC9VaCtKTu0r41T+iR7tJHH4PEPv2cpfgUG/VBjaGoXzmiX1CvM1ANRCzv934AfdITnyN5Y+1FbhMc/WgjRWPvBtm2RFXBc+R58ptxcKtwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746470037; c=relaxed/simple;
-	bh=5S8M/c10REYo4PgzbC8d4IT8+Lk4+t8C4D84ntmXYig=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E88KG/iexXiOpYECGyN8S05AgK207aBZYXzblgx9Zhcz4q/yAoB00OQe0CEavcG0yslZJOZHxFWR9m4wu8gLtZA/Fmrnu1O+6+lVR8PinZ20ppmHZ9gdZxA/xeAWZxrA84PCW1Fc1F5OHEdJlj/uoscCgvqGZabSJpMl13aRhus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoYI82O2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746473038; c=relaxed/simple;
+	bh=UbHoQe7vUVf7Q1SI3GkdZE7oA+6I/inQSpaW5ZkL+0o=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Atjo1Vus2GgsFinc3DvqipDZ3Mh/GmJMxxktP2Wf6KMlZILyhOwbq+3up9/2wV78G12sWUGHAMdLMzBF64EOzk++aYcVW874X3edN8YMkIJ8Duimd1thIS3hFObeCZ/4WCDbHl+JcH7WsPNe4EIeMDZEb2V6vq0Ex/uLpAOnv80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZB6Pub9P; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoYI82O2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52CCC4CEE4;
-	Mon,  5 May 2025 18:33:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746470037;
-	bh=5S8M/c10REYo4PgzbC8d4IT8+Lk4+t8C4D84ntmXYig=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SoYI82O2m/0NkHy3N0fDYrkgm4jlBTVenJoq4IKfWeLcfvsNnwVrpKnHUupKwt/nl
-	 3pQNcVC8/9H/16kDZFtWQt2miX73DaRlN5Osus4B8lZAvuRT6QU/89CqQJOSZzeveC
-	 9rOmzYMlRSLuZb2wAQYQL/JndyteJ41+qxP20NRhizh9M0lwsa/QjxA9j6HX5Jxkdd
-	 O1H1DJxEAZy+Cl0NSWuJfq4vujaxlj2IApj4o1O1E9JRETaH3hky1FaEuf0aLndNoa
-	 0sCJmd3SXWtabtXlmy/QPTI+qnvpze+Ugjc2BrkeORZUscI+0gje96xfp9nLxNT8Sa
-	 je5WDQ9cAuFHg==
-Date: Mon, 5 May 2025 13:33:55 -0500
-From: Rob Herring <robh@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZB6Pub9P"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7c53b9d66fdso752006585a.3;
+        Mon, 05 May 2025 12:23:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746473036; x=1747077836; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y8mF8ekD0FxTBHH3O3DC3PQgEAeAHA89eZzD5JEpN1k=;
+        b=ZB6Pub9P6hIu+p3eBV4+WYAtQdNz/AknxYGD1TkFHEcIDmmqtLTkUEEdlNn0AsNtx9
+         KthvQbLwpxFDn7NFJHH/ILITgS/NYgccD537L+73yRCJODuM9Zu1JJatCLBuK2DT/ZFc
+         /ZTJD4yNkQ1wXw/++meWi2FDV95RWvDexB1m/FoYPx7IuX79xrAT3dBvx0rcyZky26J/
+         9Klf5bGP4uFtdfIu7qy4uuAXUIlWDk3Rwu6nS/3pZ80k5PvN3Bupu0mZhGybBwnU6l8Q
+         tCI7crXNkZx7oZ7vuGupsSlv8jq5LFftWWhX7lTCiUuif2pCqKx8QEYjsREAtRb/qLwX
+         9giw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746473036; x=1747077836;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y8mF8ekD0FxTBHH3O3DC3PQgEAeAHA89eZzD5JEpN1k=;
+        b=kg+JGCbFUmTPhLx1C4UBdyam7f8mGUWKhXeD+KgmNSJo8CVey1zfrODlflbc55p5Tt
+         D+elPNyhyXAqAH5g0DGx++sTZlcS2MG/5WbgUXNSoYqemDzC0rDdpv18fCRrf0+8afhT
+         VAO4Ci7fWneYXXQMGyxk4joDLwrrh9IlQNsiuxXZbzl1pn4fBOfRs0tIPGVkhguEjjIx
+         +BxrryY9H54tnNoMZoRyREr5WGoacfj+JkORk8eV+FiKZv+c/FIEyxVTJxK3pacLBf1c
+         kKw68SxYamxTMP2eUtQPAHPdoaojxhUpdqdAdUFQbGiGzltsdwL18feePborqSzWstQ1
+         Bmww==
+X-Forwarded-Encrypted: i=1; AJvYcCUJPgryGOHGb+CmvHIUl5Dc5owbRLnEY0I/Po8IJuX7c9vvjZOju+ve8Rkuc8mJIpqtch23uQPn4QtdeRu4gB4=@vger.kernel.org, AJvYcCWdOLqLBr68lZZmBfX7sm4bNLY/C3D856T3//usLGWuj90VmUKVO6V8jSwffs9g0bgnDjRbz+tz26o747U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6ieTeX8zLOW8b6vSWoY3j15OOu6j7TeEsuhP8L4jcliwmJ/Nw
+	soOqnt+4CnAqt82f9So2JWMW80EyccgkOolNdhJMN648jo7EeFxe
+X-Gm-Gg: ASbGncvNz7xNb5IAUfVFrLr3cwHZsrH23ij1mVrh6mZvRTtZmMept6ht0MUDMOeohWg
+	ixLoori6LMgEAtlMAClxhHepsx0wVrWxsMWyysb09o6vlloVp99p43+WV2EKpfc/a0PBkRc4PEA
+	CyyIl7wZ0l23DnEOjtrNRGwoMiVxn8nUGcE6VdFPT+GKUUOBE+OcAkp1VqzgcXRXFEHsHQg5CxR
+	kqpFKd4VyVlTzbAr8jRpAzo6IldAFdQA3cBCWhd9U12N8RbdQlCICo0iNOhBnGBaeQh6t6fyJnv
+	7nEUiyaTlzNzYyMqXD2dlpi+5T4kIBT7+GJwORsORGoQbj1Cl9Ez7SnkB3ZMFXxKzNKpoMBm5vE
+	5pLNpsn2LwesaOTAVUblqoGeUHgKk2hU=
+X-Google-Smtp-Source: AGHT+IGvCi9dvpJ661lNc76enNNlEwB/QD6Uff/ADRa+mgR1Z9RDyZIeu8KthCjtjfHh3Gk4PHDP2A==
+X-Received: by 2002:a05:620a:3941:b0:7c5:9a37:c418 with SMTP id af79cd13be357-7caf09d77d6mr74859885a.51.1746473035648;
+        Mon, 05 May 2025 12:23:55 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cad23c4ab1sm599381985a.47.2025.05.05.12.23.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 12:23:55 -0700 (PDT)
+Message-ID: <6819104b.050a0220.d2081.0b87@mx.google.com>
+X-Google-Original-Message-ID: <aBkQSO3U-OoD7Sra@winterfell.>
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7C9241200066;
+	Mon,  5 May 2025 15:23:54 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 05 May 2025 15:23:54 -0400
+X-ME-Sender: <xms:ShAZaBmaVG0PRHuvlLPiaGNyAVzJE4cnszeuM2s-MjMB8sc4z2rLDw>
+    <xme:ShAZaM0uepT0JL0QzXaNEWJ3MtM9md9IzJdtJmriXOi37R58zOP29Rd23J1xNTrMM
+    v0Su9GP7cKzgUtjdg>
+X-ME-Received: <xmr:ShAZaHpzbuBZbkpzj56ODNlcCeF_e5ZbAneTnDx40dkS8ffEc6QC9Qn7iQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeduleegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
+    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
+    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
+    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudegpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunh
+    gurghtihhonhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdr
+    tghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    grkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepvhhi
+    rhhoseiivghnihhvrdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopehgrghrhiesgh
+    grrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhm
+    rghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrd
+    hmvgdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:ShAZaBkzIlB4_pDBHf0z31HdwgW72w85O6IVCPL6jy7Jp1hTUHNkcw>
+    <xmx:ShAZaP37x93VN6pJW-kl-hicwlUygorJ7hlj73wiXS-W87shmE5ZtA>
+    <xmx:ShAZaAs1rk6b4TY8QRJ4uSTy54DLrQmgbdoQz4adoSGsOiBs2ZCECw>
+    <xmx:ShAZaDUJluaXYaXSmLDAzg37MgVmroq0gmFXhEJkHl_2S0RcHwjJZw>
+    <xmx:ShAZaG1WtHU8sPru3B9n48o0O1BkYSy79Nc2mYr2GEaWskYZcugXFZbW>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 5 May 2025 15:23:53 -0400 (EDT)
+Date: Mon, 5 May 2025 12:23:52 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 5/9] rust: device: Introduce PropertyGuard
-Message-ID: <20250505183355.GA1658159-robh@kernel.org>
-References: <20250504173154.488519-1-remo@buenzli.dev>
- <20250504173154.488519-6-remo@buenzli.dev>
- <5946174b-3178-462d-bb59-1e0d6c5f4dda@de.bosch.com>
- <D9O8WJ0RDNIA.4JYLWLYLBC2A@buenzli.dev>
- <CAL_Jsq+bzCc2r4H6=MfWq=9ku1SMCUL03KkCTeBPcqQrUEUMLg@mail.gmail.com>
- <D9OCJQ1HH5CM.2OHEAOF271GMC@buenzli.dev>
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] uaccess: rust: add strncpy_from_user
+References: <20250505-strncpy-from-user-v3-0-85c677fd4f91@google.com>
+ <20250505-strncpy-from-user-v3-1-85c677fd4f91@google.com>
+ <2025050544-sneak-compactor-d701@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <D9OCJQ1HH5CM.2OHEAOF271GMC@buenzli.dev>
+In-Reply-To: <2025050544-sneak-compactor-d701@gregkh>
 
-On Mon, May 05, 2025 at 05:53:33PM +0200, Remo Senekowitsch wrote:
-> On Mon May 5, 2025 at 5:37 PM CEST, Rob Herring wrote:
-> > On Mon, May 5, 2025 at 8:02 AM Remo Senekowitsch <remo@buenzli.dev> wrote:
-> >>
-> >> On Mon May 5, 2025 at 7:14 AM CEST, Dirk Behme wrote:
-> >> > On 04/05/2025 19:31, Remo Senekowitsch wrote:
-> >> >> This abstraction is a way to force users to specify whether a property
-> >> >> is supposed to be required or not. This allows us to move error
-> >> >> logging of missing required properties into core, preventing a lot of
-> >> >> boilerplate in drivers.
-> >> >>
-> >> >> It will be used by upcoming methods for reading device properties.
-> >> >>
-> >> >> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> >> >> ---
-> >> >>  rust/kernel/device/property.rs | 59 ++++++++++++++++++++++++++++++++++
-> >> >>  1 file changed, 59 insertions(+)
-> >> >>
-> >> >> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-> >> >> index 6ccc7947f9c31..59c61e2493831 100644
-> >> >> --- a/rust/kernel/device/property.rs
-> >> >> +++ b/rust/kernel/device/property.rs
-> >> >> @@ -123,3 +123,62 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-> >> >>          unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
-> >> >>      }
-> >> >>  }
-> >> >> +
-> >> >> +/// A helper for reading device properties.
-> >> >> +///
-> >> >> +/// Use [`Self::required_by`] if a missing property is considered a bug and
-> >> >> +/// [`Self::optional`] otherwise.
-> >> >> +///
-> >> >> +/// For convenience, [`Self::or`] and [`Self::or_default`] are provided.
-> >> >> +pub struct PropertyGuard<'fwnode, 'name, T> {
-> >> >> +    /// The result of reading the property.
-> >> >> +    inner: Result<T>,
-> >> >> +    /// The fwnode of the property, used for logging in the "required" case.
-> >> >> +    fwnode: &'fwnode FwNode,
-> >> >> +    /// The name of the property, used for logging in the "required" case.
-> >> >> +    name: &'name CStr,
-> >> >> +}
-> >> >> +
-> >> >> +impl<T> PropertyGuard<'_, '_, T> {
-> >> >> +    /// Access the property, indicating it is required.
-> >> >> +    ///
-> >> >> +    /// If the property is not present, the error is automatically logged. If a
-> >> >> +    /// missing property is not an error, use [`Self::optional`] instead. The
-> >> >> +    /// device is required to associate the log with it.
-> >> >> +    pub fn required_by(self, dev: &super::Device) -> Result<T> {
-> >> >> +        if self.inner.is_err() {
-> >> >> +            dev_err!(
-> >> >> +                dev,
-> >> >> +                "{}: property '{}' is missing\n",
-> >> >> +                self.fwnode.display_path(),
-> >> >> +                self.name
-> >> >> +            );
-> >> >> +        }
-> >> >> +        self.inner
-> >> >> +    }
-> >> >
-> >> > Thinking about the .required_by(dev) I wonder if there will be cases
-> >> > where we do *not* have a device? I.e. where we really have a fwnode,
-> >> > only. And therefore can't pass a device. If we have such cases do we
-> >> > need to be able to pass e.g. Option(dev) and switch back to pr_err() in
-> >> > case of None?
-> >>
-> >> In that case, bringing back the previous .required() method seems
-> >> reasonable to me. But only if we definitely know such cases exist.
-> >
-> > They definitely exist. Any property in a child node of the device's
-> > node when the child itself is not another device for example.
+On Mon, May 05, 2025 at 04:30:05PM +0200, Greg Kroah-Hartman wrote:
+[...]
+> > +
+> > +/// Reads a nul-terminated string into `buf` and returns the length.
+> > +///
+> > +/// This reads from userspace until a NUL byte is encountered, or until `buf.len()` bytes have been
+> > +/// read. Fails with [`EFAULT`] if a read happens on a bad address (some data may have been
+> > +/// copied). When the end of the buffer is encountered, no NUL byte is added, so the string is
+> > +/// *not* guaranteed to be NUL-terminated when `Ok(buf.len())` is returned.
+> > +///
+> > +/// # Guarantees
+> > +///
+> > +/// When this function returns `Ok(len)`, it is guaranteed that the first `len` of `buf` bytes are
+> > +/// initialized and non-zero. Furthermore, if `len < buf.len()`, then `buf[len]` is a NUL byte.
+> > +/// Unsafe code may rely on these guarantees.
+> > +#[inline]
+> > +#[expect(dead_code)]
+> > +fn raw_strncpy_from_user(ptr: UserPtr, buf: &mut [MaybeUninit<u8>]) -> Result<usize> {
 > 
-> I don't think that counts, because you do have a device in that
-> situation. The log should be assicated with that. So callers are
-> responsible to propagate a reference to the device to wherever the call
-> to .required_by(dev) is happening.
+[...]
+> Also, it's not your fault, but we don't have any type of __user tag for
+> data coming from userspace yet to track this type of thing?  The
 
-Ah, right. So it would just be cases that aren't a driver at all. That's 
-limited to the OF_DECLARE cases. I agree we can worry about those later.
+I think the type `UserPtr` is supposed to track this information, i.e.
+Rust can only get a `UserPtr` from an input from userspace, and of
+course Rust code cannot treat `UserPtr` as a normal pointer. For
+example, the following would fall because of this:
 
-Rob
+    pub fn foo(ptr: *mut u8, ...) {
+        raw_strncpy_from_user(ptr, ...);
+    }
+
+Regards,
+Boqun
+
+> compiler (well sparse) can catch this type of thing in C, any hints on
+> what we could do in Rust for the same type of guarantee (i.e. don't
+> touch user data before it's been copied, and then we need to treat it as
+> "unverified" but that's a different patch series...)
+> 
+> thanks,
+> 
+> greg k-h
