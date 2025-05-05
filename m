@@ -1,212 +1,145 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4149526D4C3
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 May 2025 17:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C6B26B097;
+	Mon,  5 May 2025 18:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746466375; cv=none; b=bcTo+V+39+c/8yXGjuwMw0eMwo0Mz5x5AjK2RaTyU16iIYsujohP1XhPJ1QV1lrCm6KJOOG6NsDBXrMGu6Ib4JHBtA1GfZddXZOnckPpYa5RHem84VqVV2dFZjntHqr6iw7qfGL1N7tAXybG5jzrhG7pUK5gJf6qpS0fLSUuRCA=
+	t=1746470037; cv=none; b=fXHbdKDdKI5CNz1v1PL5aKHrqYyVeM1hfDZNgZAikVom7ovLc5ffWkGWTIcOmNVJBtWWWPxcf+BjU2pMgRQsQMQ6OjLLEjrwBtD5QpU3TdMdivoKtbb+78q1yLdVSTsaXLM0u2dR9WaKqajWFAZvLCxC5lqLwWnDwZr0l1FlqZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746466375; c=relaxed/simple;
-	bh=60saFr6bAwjPlnthxnJndZnBrEYFpnj34RMvbZ01UnU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZDqHHvS41kK1cAneIX6i8n3qJprD+03M8q2dHr4sayJ4UKyKG7T41Q7o/OUR/huIJh4KZb84QsMvpQh/tRIPOY3H1n5ruqqCtARL3v1dwrFFTvuZIjpNylQEXW/ySJSeu18Ml7Ak2TYC4DGlWh4CIkPVM23PDNjlFEGmVfZni74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VUqTE014; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1746470037; c=relaxed/simple;
+	bh=5S8M/c10REYo4PgzbC8d4IT8+Lk4+t8C4D84ntmXYig=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E88KG/iexXiOpYECGyN8S05AgK207aBZYXzblgx9Zhcz4q/yAoB00OQe0CEavcG0yslZJOZHxFWR9m4wu8gLtZA/Fmrnu1O+6+lVR8PinZ20ppmHZ9gdZxA/xeAWZxrA84PCW1Fc1F5OHEdJlj/uoscCgvqGZabSJpMl13aRhus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoYI82O2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VUqTE014"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5fab85c582fso769a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 10:32:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746466371; x=1747071171; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oeqcbn1zsZR/kDCdlpev1feSus2/PMO7eiPxi+/BYdU=;
-        b=VUqTE014Qib7zkTGxZjZdnvtDwal0CLCRdU9afw0w2/aRUD9H/i4M7f/4NU0WhYSJN
-         pZNzOzxXwvEgvv4AsizCpmHiS6oK7/D4bnn2/GalbUPdAnxGx1Z8wJ83N9fxiOJfWcEK
-         1twOMUF5hU6KJcSESXA1/8u26Vq6hTzmmGo3X9vjZG2fmvpKXPxQ6M4pJ7QiG2fetZio
-         opEdfkmB008gGl1+dQlDRWvfmIL3Ctg5Vu/p/a1u+4O6c03D5XShifm03Oy6ZTnXQv6d
-         CrdFT1jKTAFmmomX9aFdmR07nwT1sIA6ZBoAcvOFBvoS0rw2CMBFipifTDvwPwp6Adjo
-         SOJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746466371; x=1747071171;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oeqcbn1zsZR/kDCdlpev1feSus2/PMO7eiPxi+/BYdU=;
-        b=bd1yzcE7hKlwEKF7vhFEyLAPrpK+BF1paLjZzmxjCXIIN+V+hznFW1lYQA0E//XOqw
-         sghB97LvMy7ll+/koFWGfPHh5O7WeYJ+HmCucletPY+0sqn4Khedg1Zp7XinGQeij4DQ
-         83tyXoZBW80p2vqt3foXjrtPgajD4ACSSLhgLouhsDXu6yJDAXF9DsyLKJ0fNv7ylcBl
-         6dJd/mlcwsErhplQJ+QReKn1Vlcmn5YBaQtshmkA1ixJ4DziJpA4YEhm+fcYP+OBLWRQ
-         Zv4OlfDwiLQzN+sWXZuCmB/ivpiF6bm7uCPxpoCOp+xX14rZtHkRvwvvx2gKXRNNhuLe
-         +6ow==
-X-Forwarded-Encrypted: i=1; AJvYcCXdIA2kPirrhYrqNPGGmKA2Bd888G1PbnAnMzKVDxP35Z45gmqOQadPfijQAmyeoPSf/dL2b2fh07MlwtpBIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5fCj7mEt0zeD8je3Sn9PM7H9NURFxGRppBpxAMRkC8ZcJLyUw
-	9eNBpmM4S0n9xuW6xxeSTfYqP7XOR4Mogg5M0bdWFkp2+7FpR41ektARr0ak6yt4bKqFf4mu/wn
-	zlRp5b5woPgkFi8SzMtYVu0Cetyh3+5CXmvXI
-X-Gm-Gg: ASbGncuSa7jqHF9xxB1DrHzk64jl1rUZKA9wUHUTRi1rqj/RaMoC+R8AN64SOAJWkLB
-	Z65CGQu0+h/f/DX7fI0ukiZUlAlxkSgyIAXBGPtd2sAw4RAmAC0qsRVkfcABjh11BQer7I8iYTj
-	W3AlDihKuz8alJLidisNRQibdUNbqYIpjAKZWA0hGkSz41TeRquw==
-X-Google-Smtp-Source: AGHT+IFm2reIdmDVuzP67fU3bv0WQOYDyoJleqL474xCFKZzzy8hIa0Nuebzh2xXuqZY62nIXry73i1Uf7X+Vbrsw9E=
-X-Received: by 2002:a05:6402:1a47:b0:5fb:1ccd:5434 with SMTP id
- 4fb4d7f45d1cf-5fb566836f0mr29666a12.3.1746466371187; Mon, 05 May 2025
- 10:32:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoYI82O2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52CCC4CEE4;
+	Mon,  5 May 2025 18:33:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746470037;
+	bh=5S8M/c10REYo4PgzbC8d4IT8+Lk4+t8C4D84ntmXYig=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SoYI82O2m/0NkHy3N0fDYrkgm4jlBTVenJoq4IKfWeLcfvsNnwVrpKnHUupKwt/nl
+	 3pQNcVC8/9H/16kDZFtWQt2miX73DaRlN5Osus4B8lZAvuRT6QU/89CqQJOSZzeveC
+	 9rOmzYMlRSLuZb2wAQYQL/JndyteJ41+qxP20NRhizh9M0lwsa/QjxA9j6HX5Jxkdd
+	 O1H1DJxEAZy+Cl0NSWuJfq4vujaxlj2IApj4o1O1E9JRETaH3hky1FaEuf0aLndNoa
+	 0sCJmd3SXWtabtXlmy/QPTI+qnvpze+Ugjc2BrkeORZUscI+0gje96xfp9nLxNT8Sa
+	 je5WDQ9cAuFHg==
+Date: Mon, 5 May 2025 13:33:55 -0500
+From: Rob Herring <robh@kernel.org>
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 5/9] rust: device: Introduce PropertyGuard
+Message-ID: <20250505183355.GA1658159-robh@kernel.org>
+References: <20250504173154.488519-1-remo@buenzli.dev>
+ <20250504173154.488519-6-remo@buenzli.dev>
+ <5946174b-3178-462d-bb59-1e0d6c5f4dda@de.bosch.com>
+ <D9O8WJ0RDNIA.4JYLWLYLBC2A@buenzli.dev>
+ <CAL_Jsq+bzCc2r4H6=MfWq=9ku1SMCUL03KkCTeBPcqQrUEUMLg@mail.gmail.com>
+ <D9OCJQ1HH5CM.2OHEAOF271GMC@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250503-debugfs-rust-attach-v1-0-dc37081fbfbc@google.com>
- <20250503-debugfs-rust-attach-v1-1-dc37081fbfbc@google.com> <aBectw_2jridu43O@polis>
-In-Reply-To: <aBectw_2jridu43O@polis>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Mon, 5 May 2025 10:32:39 -0700
-X-Gm-Features: ATxdqUEBkvu_4Ekfz2UMjZhf3-BkkqEKvDYh8HStOviNON8MZJNbUpYHPQlCSrw
-Message-ID: <CAGSQo03sHhUX-Eo31cMmeNMaNnzWxU0c-ObTkr7Z1CJ2uQ6c4g@mail.gmail.com>
-Subject: Re: [PATCH WIP 1/2] rust: debugfs: Add interface to build debugfs off
- pinned objects
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D9OCJQ1HH5CM.2OHEAOF271GMC@buenzli.dev>
 
-On Sun, May 4, 2025 at 9:58=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> On Sat, May 03, 2025 at 12:43:59AM +0000, Matthew Maurer wrote:
-> > +/// A DebugFS directory combined with a backing store for data to impl=
-ement it.
-> > +#[pin_data]
-> > +pub struct Values<T> {
-> > +    dir: Dir<'static, false>,
-> > +    // The order here is load-bearing - `dir` must be dropped before `=
-backing`, as files under
-> > +    // `dir` may point into `backing`.
-> > +    #[pin]
-> > +    backing: T,
-> > +    // Since the files present under our directory may point into `bac=
-king`, we are `!Unpin`.
-> > +    #[pin]
-> > +    _pin: PhantomPinned,
-> > +}
->
-> This only ever allows attaching data to the root directory, correct? What=
- if I
-> want to remove (or replace) a file or a subdir? Then I'd be left with the=
- data
-> for this specific file (or subdir) until the root is finally removed.
+On Mon, May 05, 2025 at 05:53:33PM +0200, Remo Senekowitsch wrote:
+> On Mon May 5, 2025 at 5:37 PM CEST, Rob Herring wrote:
+> > On Mon, May 5, 2025 at 8:02 AM Remo Senekowitsch <remo@buenzli.dev> wrote:
+> >>
+> >> On Mon May 5, 2025 at 7:14 AM CEST, Dirk Behme wrote:
+> >> > On 04/05/2025 19:31, Remo Senekowitsch wrote:
+> >> >> This abstraction is a way to force users to specify whether a property
+> >> >> is supposed to be required or not. This allows us to move error
+> >> >> logging of missing required properties into core, preventing a lot of
+> >> >> boilerplate in drivers.
+> >> >>
+> >> >> It will be used by upcoming methods for reading device properties.
+> >> >>
+> >> >> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+> >> >> ---
+> >> >>  rust/kernel/device/property.rs | 59 ++++++++++++++++++++++++++++++++++
+> >> >>  1 file changed, 59 insertions(+)
+> >> >>
+> >> >> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
+> >> >> index 6ccc7947f9c31..59c61e2493831 100644
+> >> >> --- a/rust/kernel/device/property.rs
+> >> >> +++ b/rust/kernel/device/property.rs
+> >> >> @@ -123,3 +123,62 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+> >> >>          unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
+> >> >>      }
+> >> >>  }
+> >> >> +
+> >> >> +/// A helper for reading device properties.
+> >> >> +///
+> >> >> +/// Use [`Self::required_by`] if a missing property is considered a bug and
+> >> >> +/// [`Self::optional`] otherwise.
+> >> >> +///
+> >> >> +/// For convenience, [`Self::or`] and [`Self::or_default`] are provided.
+> >> >> +pub struct PropertyGuard<'fwnode, 'name, T> {
+> >> >> +    /// The result of reading the property.
+> >> >> +    inner: Result<T>,
+> >> >> +    /// The fwnode of the property, used for logging in the "required" case.
+> >> >> +    fwnode: &'fwnode FwNode,
+> >> >> +    /// The name of the property, used for logging in the "required" case.
+> >> >> +    name: &'name CStr,
+> >> >> +}
+> >> >> +
+> >> >> +impl<T> PropertyGuard<'_, '_, T> {
+> >> >> +    /// Access the property, indicating it is required.
+> >> >> +    ///
+> >> >> +    /// If the property is not present, the error is automatically logged. If a
+> >> >> +    /// missing property is not an error, use [`Self::optional`] instead. The
+> >> >> +    /// device is required to associate the log with it.
+> >> >> +    pub fn required_by(self, dev: &super::Device) -> Result<T> {
+> >> >> +        if self.inner.is_err() {
+> >> >> +            dev_err!(
+> >> >> +                dev,
+> >> >> +                "{}: property '{}' is missing\n",
+> >> >> +                self.fwnode.display_path(),
+> >> >> +                self.name
+> >> >> +            );
+> >> >> +        }
+> >> >> +        self.inner
+> >> >> +    }
+> >> >
+> >> > Thinking about the .required_by(dev) I wonder if there will be cases
+> >> > where we do *not* have a device? I.e. where we really have a fwnode,
+> >> > only. And therefore can't pass a device. If we have such cases do we
+> >> > need to be able to pass e.g. Option(dev) and switch back to pr_err() in
+> >> > case of None?
+> >>
+> >> In that case, bringing back the previous .required() method seems
+> >> reasonable to me. But only if we definitely know such cases exist.
+> >
+> > They definitely exist. Any property in a child node of the device's
+> > node when the child itself is not another device for example.
+> 
+> I don't think that counts, because you do have a device in that
+> situation. The log should be assicated with that. So callers are
+> responsible to propagate a reference to the device to wherever the call
+> to .required_by(dev) is happening.
 
-The intended way to deal with this is that your debugfs root has
-structures or handles that let you compute what all your debugfs files
-should see, not necessarily fully populated if you want something
-dynamic. For example, one of your entries could be
-`Arc<Mutex<Vec<Record>>>`, and this could get updated elsewhere
-without thinking about DebugFS - you just need to know the shape of
-all the handles DebugFS will need.
+Ah, right. So it would just be cases that aren't a driver at all. That's 
+limited to the OF_DECLARE cases. I agree we can worry about those later.
 
-It'd be pretty easy for me to relax this to allow attachments to
-subtrees. I'd just need to do `Values<'a, T>` and `Dir<'a,  false>`.
-It'd also make the argument for the safety of the builder interface
-slightly more complicated (things that statically outlive the lifetime
-of the dir would also be usable in the builder, which is safe, but
-trickier to argue for).
-
-You wouldn't be able to do nested attachments, but you could do
-attachments starting with any subtree. So for example, you could do:
-```
-let root =3D Dir::new(c_str!("foo"));
-let foo =3D root.subdir(c_str!("bar")).owning();
-let bar =3D root.subdir(c_str!("baz")).owning();
-let foo_values =3D Values::attach(foo_data, foo);
-let bar_values =3D Values::attach(bar_data, foo);
-```
-
-The tricky business here (and why I didn't do it in my initial draft)
-is that because `foo_values` and `bar_values` are restricted to live
-no longer than `root` (since they will be invalidated if `root` is
-dropped), it is hard to store these objects in a module context or
-similar object, which would make it tricky to use. Attaching to a root
-directory on the other hand is not tricky, because their lifecycle
-isn't dependent on some other object.
-
-A legal way of using this kind of scoped interface (but not
-immediately obvious to me how to design the safe interface to let
-users build it) might look like
-
-```
-struct MyDebugFsInfo<T> {
-  // RawValues is a fictitious type that would be like `Values`, but
-with the actual lifetime parameter erased.
-  subdirs: Vec<RawValues<T>>,
-  // Order matters, root must be released last because earlier values
-are borrows
-  root: Dir<'static, false>,
-}
-
-impl<T> MyDebugFsInfo<T> {
-  fn new_subdir(&mut self, name: &CStr, value: T) {
-    let subdir =3D self.root.subdir(name);
-    // SAFETY: We don't allow the root to be destroyed before our structure=
-, so
-    let val =3D unsafe { RawValues::attach(value, self.root.subdir(name)) }=
-;
-    self.subdirs.push(val)
-  }
-  fn get<'a>(&'a self, idx: usize) -> &Values<'a, T> {
-     let x =3D self.subdirs[idx];
-     // SAFETY: We know all our subdirs are children of the root we
-own, so if we have a read-only reference to ourselves, that's an upper
-bound on how long the value struct can live
-     unsafe { RawValues::ascribe(x) }
-  }
-}
-```
-
-If I wanted to do better than this in terms of ergonomics, I think I'd
-need some kind of refcounted wrapper where holding a subdir prevents
-the parent dir from being cleaned up, which I could add, but would be
-a Rust abstraction layer on top of the C one.
-
-
->
-> It would also require Option<V> (where V is the type of a field in T), if=
- I
-> don't have an instance of V yet, when the root directory is created.
-
-`Option<V>` won't actually save you - once you create a `Values<T>`,
-you are intentionally unable to mutate `T` anymore, because it may be
-read at any point in time after that by someone reading a debugfs
-file, so you can't do a potentially racing mutation. If you wanted a
-value to be attached to a debugfs, but didn't have one, you'd need to
-do `Mutex<Option<V>>`.
-
->
-> I think we should store the data per file, rather than per root directory=
-.
-
-This doesn't match what at least seems to be a common usage of
-debugfs, where a debugfs directory is used to represent an object with
-each file in the directory representing one of the properties on the
-object.
-
-This also means that we need to store N handles in a Rust driver (one
-per live file) compared to 1 handle in a C driver.
-
-=3D=3D=3D
-
-I do think that the normal idiomatic way of doing this in Rust would
-be to attach refcounted handles (e.g. similar to `ForeignOwnable`) to
-inodes, and when the inode is destroyed, have that refcount be
-deleted, but we don't currently have any `release` implementation for
-a DebugFS inode afaict, so everything has to be externally scoped via
-this attached pinned data setup I've been producing.
+Rob
