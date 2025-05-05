@@ -1,90 +1,189 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A956D13E41A
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 May 2025 09:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783E11DE3AF;
+	Mon,  5 May 2025 09:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746437038; cv=none; b=uARKmQyl41iBhAvtgGERTQbT+baerm10zjh4XQBEw+AmmEMAsNuj8wuwsUPja5pKoHj/uwfouCclBuoGd5a+UFvHFZxdBLuDY79pLJ1YClmHvQ0OX1lMr4uhZlKzNgpUXMsHTEayuY7Hemv8UIkaOSHa/UnIHMEq9u3IMFBGK/M=
+	t=1746438945; cv=none; b=E5IBC+opG1V12WxDcg5dmoojFHR8SNncUXGhf7mAVEWHF+oR4CKzj1VatAjyPJKASusFnMuUeZnkl2mGLF4RQic97eOIkWCIaQVUcnK1rv4BZwjbh4o0EkXCDeB1iZlunSOrrCHuUECriRubB0RaakjxoeuCBA0pUlbVuHdl9lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746437038; c=relaxed/simple;
-	bh=2xxpj+2ReE48KbP5KJ11PgdY9Ly28L5Z4eGb6xFarec=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ac6cuu6qswRAA/6U5B+JDuMnjjPGVYBERov0k/KW8ajolzZh2jkM+tBtzZzAlpu/nn7kSRItvilACpQ2jz2bobLIprTbdCcoScqDas2nZ91qHcbve2Dap9VX3X2KhdqlvcUpyu06IZa07Fq6ctr1TnJH1ZfgKTZ6MMh7dxcDHKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4FFtXfNH; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1746438945; c=relaxed/simple;
+	bh=C+qofN41T9ZGZV/Yauz2+1+PKYZmi9DihY6aLigOKSI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=kvN5/jnEA0Q2i+sOqYyTd8iwS8bIBErs4UAIlIrZbkPjG3P5SR3ZnWglPaoRDVEKnStHpcXQVtXdnRvgRuSU3NdArTcZP/Nlt4sI9iny/qyHGz8L6tmb4KrwyWbAENvXTRUi3MEAvJdcVPqsyk4B2LzujebhexYKEhhNn2Qy+nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lIG6OFKK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4FFtXfNH"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43d209dc2d3so18833505e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 02:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746437035; x=1747041835; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UNKpSETC3aRoWs26slbmPYaRhZWnx/HOj+OMKwfNopA=;
-        b=4FFtXfNHVOpQM7Jr4isrJSe+z+VDiBnIBysQtpsEP13Bs+QuNDDQ3nITnhu1f/p8NJ
-         l/SE6uudP+jxg1nXQnETYPZdCnQ7ewTIqU4jbu0rm0jn6RMdy5oXSUb/Aw7r4L0rmP70
-         kOv7A7mTXGxSLlkQTC2FUO4e8lswCGjgJ7iaddAe746FTRkKatN0oqi4yW5lx6dTEioE
-         TO1cBJybvx9NNOtTAJPmp8ulcDNMtXcU2fobHRcnWc78BXpvcWvZM9z/KdpnzUUNfiGE
-         HnrTEJ6qR7ADZvtPyVFpwj9Nk/0WdRQ0f0NfYNawWcKeAUmuZ4MqCU4bFv85+WEczNfc
-         J4Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746437035; x=1747041835;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UNKpSETC3aRoWs26slbmPYaRhZWnx/HOj+OMKwfNopA=;
-        b=csJJyqKeOlOFqkdhzDbAMnCfaxu+nqc7TGFv/LBhBSwj/+E7rENRGX3TwbrCyUOWYG
-         o68ZbMv5VXxYogyQTdznR38Znxi2yr4W/qDHXNvQksG+dixD9CmtSga+iaDs7DtGf0jc
-         ipdZZHz5jrbZkMSEXvLa2nmBcIhp5lYTr6PyYnXVpRrn3QE3B0NvNrF1LzdPQR42j8B2
-         GzA+r5DmlGK8tczl8W7NKkt4cUEuqFxLKqcAO6HOLD0Fj/EuJ0lvgzzzFc4r/4hJRTeC
-         FnfJjaGXQDqkrNlDztz3Z74GHbBZ/jbVs6I/HUkcOrGVbLOCbOoOB+vR6WKXOU4LqY87
-         q8DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcQl4FPRoooXxIzkVcvt09e7p+3h+IWKs5I23sTlEPqsfcNww3Uwney6I53OObHyW4MiQPZ2AM+yDec6/uiQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzgql5EBO31hI+ORa1HvT9JFcJnVQVfeeTyCAeLO/EZsa+ZcdaO
-	61/WmB5leZSnW21JGjO7W+RZDSoPB2CHBiD0dAG/yoyoUr9GiP01qydQDyag3jyZyTUAtJE0Hnw
-	YZM3I0bG/uNad7g==
-X-Google-Smtp-Source: AGHT+IHD25Gl0hnIcuOchqaJj6jrQJy3Tcy1tSunT6kxPFMJLsXGIsx+DEdSlsV661NRNl3V8hAe7ZryPPG14R4=
-X-Received: from wmbhh12.prod.google.com ([2002:a05:600c:530c:b0:441:b3fe:b95a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3548:b0:43c:e7ae:4bcf with SMTP id 5b1f17b1804b1-441c1c70782mr68477705e9.0.1746437035142;
- Mon, 05 May 2025 02:23:55 -0700 (PDT)
-Date: Mon, 5 May 2025 09:23:53 +0000
-In-Reply-To: <20250502140237.1659624-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lIG6OFKK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC56C4CEE4;
+	Mon,  5 May 2025 09:55:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746438945;
+	bh=C+qofN41T9ZGZV/Yauz2+1+PKYZmi9DihY6aLigOKSI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=lIG6OFKKuZoF45Xa5t+XOx2zCpIrNGnvG4tQ+MSOPD8cmpNfuqXBeXEQJCQvzV+Tr
+	 TVb9iR3kx5r/nLo6Ivm3btPA3XlQ1WlJcKlQqOVMIlcMTrRvwmjmMdJuvInwuiCPPZ
+	 j8/qiNiZSyf80yMW3JYb2+5Jlr3gxr2/Mfow6l+49fECTvMk6Q2I0ypz0+JQrlAxho
+	 m1CyDA2fbsGuf3vuEmN7m4xX165tSxjwDG616sOdZ1kPN3eRCQ1k9Z188xhX/3gZw9
+	 MdcMGURjj6qG05hThenfkuXn/UuLCyj0UebROnk9llUV1GLIsasAYQwNUqb9Agw06X
+	 q3+FbTdn7wyzw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <benno.lossin@proton.me>,  "Masahiro Yamada"
+ <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,  "Luis
+ Chamberlain" <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,
+  "Nicolas Schier" <nicolas.schier@linux.dev>,  "Trevor Gross"
+ <tmgross@umich.edu>,  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v11 2/3] rust: add parameter support to the `module!` macro
+In-Reply-To: <aBTMMHWNXS7wK7zS@google.com> (Alice Ryhl's message of "Fri, 02
+	May 2025 13:44:16 +0000")
+References: <20250502-module-params-v3-v11-0-6096875a2b78@kernel.org>
+	<20250502-module-params-v3-v11-2-6096875a2b78@kernel.org>
+	<WroEJHY8a-y8vbSQkUvGJJs7yTQGKMsHJqmWFYGkz5bZ_PsiE8GAozjSaNpWjWina1XanjVNpV0Av3woiaUtJg==@protonmail.internalid>
+	<aBTMMHWNXS7wK7zS@google.com>
+User-Agent: mu4e 1.12.7; emacs 30.1
+Date: Mon, 05 May 2025 11:55:33 +0200
+Message-ID: <878qnbxtyi.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250502140237.1659624-1-ojeda@kernel.org>
-Message-ID: <aBiDqQxAzTC4N-n-@google.com>
-Subject: Re: [PATCH 0/5] Rust beta (1.87) and nightly (1.88) lint cleanups
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 02, 2025 at 04:02:32PM +0200, Miguel Ojeda wrote:
-> Now that Rust 1.87.0 is close to release, clean up the new lints that appeared.
-> 
-> It may be that one of the patches is not needed by the time it releases, but
-> I prefer to not wait much longer since I would like to land this for -rc6 so
-> that it is clean for release.
-> 
-> In addition, clean some nightly (1.88.0) ones too.
-> 
-> Miguel Ojeda (5):
->   objtool/rust: add one more `noreturn` Rust function for Rust 1.87.0
->   rust: clean Rust 1.87.0's `clippy::ptr_eq` lints
->   rust: clean Rust 1.88.0's `unnecessary_transmutes` lint
->   rust: clean Rust 1.88.0's warning about `clippy::disallowed_macros`
->     configuration
->   rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> On Fri, May 02, 2025 at 02:16:35PM +0200, Andreas Hindborg wrote:
+>> Add support for module parameters to the `module!` macro. Implement read
+>> only support for integer types without `sysfs` support.
+>>
+>> Acked-by: Petr Pavlu <petr.pavlu@suse.com> # from modules perspective
+>> Tested-by: Daniel Gomez <da.gomez@samsung.com>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+>> +unsafe extern "C" fn set_param<T>(
+>> +    val: *const kernel::ffi::c_char,
+>> +    param: *const crate::bindings::kernel_param,
+>> +) -> core::ffi::c_int
+>> +where
+>> +    T: ModuleParam,
+>> +{
+>> +    // NOTE: If we start supporting arguments without values, val _is_ =
+allowed
+>> +    // to be null here.
+>> +    if val.is_null() {
+>> +        // TODO: Use pr_warn_once available.
+>> +        crate::pr_warn!("Null pointer passed to `module_param::set_para=
+m`");
+>> +        return EINVAL.to_errno();
+>> +    }
+>> +
+>> +    // SAFETY: By function safety requirement, val is non-null and
+>> +    // null-terminated. By C API contract, `val` is live and valid for =
+reads
+>> +    // for the duration of this function.
+>> +    let arg =3D unsafe { CStr::from_char_ptr(val) };
+>> +
+>> +    crate::error::from_result(|| {
+>> +        let new_value =3D T::try_from_param_arg(arg)?;
+>> +
+>> +        // SAFETY: `param` is guaranteed to be valid by C API contract
+>> +        // and `arg` is guaranteed to point to an instance of `T`.
+>> +        let old_value =3D unsafe { (*param).__bindgen_anon_1.arg as *mu=
+t T };
+>> +
+>> +        // SAFETY: `old_value` is valid for writes, as we have exclusive
+>> +        // access. `old_value` is pointing to an initialized static, and
+>> +        // so it is properly initialized.
+>> +        unsafe { core::ptr::replace(old_value, new_value) };
+>
+> You don't use the return value of this, so this is equivalent to
+> unsafe { *old_value =3D new_value };
+
+Thanks.
+
+>
+>> +macro_rules! make_param_ops {
+>> +    ($ops:ident, $ty:ty) =3D> {
+>> +        ///
+>> +        /// Static [`kernel_param_ops`](srctree/include/linux/modulepar=
+am.h)
+>> +        /// struct generated by `make_param_ops`
+>> +        #[doc =3D concat!("for [`", stringify!($ty), "`].")]
+>> +        pub static $ops: $crate::bindings::kernel_param_ops =3D $crate:=
+:bindings::kernel_param_ops {
+>> +            flags: 0,
+>> +            set: Some(set_param::<$ty>),
+>> +            get: None,
+>> +            free: Some(free::<$ty>),
+>
+> You could potentially only include `free` if
+> `core::mem::needs_drop::<T>()` as an optimization.
+
+Right, nice =F0=9F=91=8D
+
+>
+>> +    fn emit_params(&mut self, info: &ModuleInfo) {
+>> +        let Some(params) =3D &info.params else {
+>> +            return;
+>> +        };
+>> +
+>> +        for param in params {
+>> +            let ops =3D param_ops_path(&param.ptype);
+>> +
+>> +            // Note: The spelling of these fields is dictated by the us=
+er space
+>> +            // tool `modinfo`.
+>> +            self.emit_param("parmtype", &param.name, &param.ptype);
+>> +            self.emit_param("parm", &param.name, &param.description);
+>> +
+>> +            write!(
+>> +                self.param_buffer,
+>> +                "
+>> +                    pub(crate) static {param_name}:
+>> +                        ::kernel::module_param::ModuleParamAccess<{para=
+m_type}> =3D
+>> +                            ::kernel::module_param::ModuleParamAccess::=
+new({param_default});
+>
+> Is this global accessible to the user?
+
+Yes.
+
+> It would be a use-after-free to
+> access it during module teardown. For example, what if I access this
+> static during its own destructor? Or during the destructor of another
+> module parameter?
+
+Yes, that is a problem.
+
+We can get around it for now by just not calling `free` for now. We only
+support simple types that do not need drop. I think we would have to
+seal the `ModuleParam` trait for this.
+
+For a proper solution, we could
+ - Require a token to read the parameter.
+ - Synchronize on a module private field and return an option from the
+   parameter getter. This would require module exit to run before param
+   free. I think this is the case, but I did not check.
+ - Use a `Revocable` and revoke the parameter in `free`.
+
+Any other ideas or comments on the outlined solutions?
+
+
+Best regards,
+Andreas Hindborg
+
+
