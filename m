@@ -1,435 +1,506 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA8D219FC;
-	Mon,  5 May 2025 03:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868AE4C6E;
+	Mon,  5 May 2025 03:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746414776; cv=none; b=FRWnJB5KBRstUtjqpC8jPvSo/RE0MMtclQG0md5GxN/cXvSSz4ifDA7VwLFf/uDJAqy3R06rJb2vxV/9jreqC0+HuciUpBttTYueJkd0PYp+glNND1TYE93ad3WPnMflPIp8JM0lKfp8gcSY+CsLbIHSolfQVcCs7SRKQAdbYY4=
+	t=1746417138; cv=none; b=Y+J8hh2mBTBISctOLhz2LlVgm/ZxTlPiws3g8u3sVCeqR58cmyMidvB+O4NqZuOTTGCXnvlC286ouckPNBCaBt1KWtkZlL+ZR03nKbOTwAsLwzxujXVEiJ4wqNj/opKqY+DzyM0pludC3PqiCUZAAAUoauYfeX1zjT0RzpLhLHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746414776; c=relaxed/simple;
-	bh=sIOLIvnuhbx0x5mI+qGYBj4UWxJSZ/LvcsLkVTl3CAc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=fhHB6bV1kPVyAwrKP2+Y73mdlDoSe594TaI7y9QkEBZAMVVYuUv2NzKbGteji4hyXFC+ZVyzrngDllOil7dwzVYoFR12fdTxmyFiR/j3CZrNwRHAzEookMVKnQWcbxZ0EZ0nRSWdM96ouNdknVRvPQHC3mNnSDWSAtPgnRHqD/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bni77eoQ; arc=none smtp.client-ip=209.85.216.51
+	s=arc-20240116; t=1746417138; c=relaxed/simple;
+	bh=H/ONY6ifAPMFQTxbQ7D3jg5vYM3R0Z4G/HfHXfdPjkk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EhMkpLuvBMhkUov0YpQ0At/xQzqHoKwmjTGPKPMkRzd/rz3HGYKyui+TFjAxCoWX7mUQlUPsUCUbzCQa6k4+n88SeOKImtSi7f12Jb6T9Zv4mX9nv21ObHMQ/j3B5FVA4H7TCCmSR6tnxLGs39oRSD/ZB5rnNTNZf0ebXo+lPko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SYL3e7+6; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bni77eoQ"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2ff784dc055so3467598a91.1;
-        Sun, 04 May 2025 20:12:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SYL3e7+6"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-73972a54919so3632849b3a.3;
+        Sun, 04 May 2025 20:52:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746414773; x=1747019573; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TlgSStpSYXQ2a9TUV+lZAcOUuuATCiZr4BxvCgwoP5Y=;
-        b=Bni77eoQlwkCjR6nPhsmL72oGQLiXdTvJQxeR2sVTtQuRMgtY/qB5jGw5wNBEm7Tp+
-         OliRMFHNpzNUmC+Z/EJbz229c8yvl2vuGekOc105miJckZkTF+2BMo01QCnwpQgD/QcO
-         KWnZAtwAMsr1mo93E5UeAaid8EAcQjTHnDQ9iEu4Qz5hDyEGvZGYpQ/12kWjTvo1Iw0o
-         YaSgP/SHxqazbsiKSn4R1qlBMZV8CPh6E9SvbyNQklAEo8Uc/ohsbGu3Ak8ssxdyqncQ
-         Yruvwz9pZ9F++3IX5fJRbqEWWln/IRE9IMMF5NlcY4YHbGyIiyIx6w96PXmHlRGs4gac
-         3iXQ==
+        d=gmail.com; s=20230601; t=1746417136; x=1747021936; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BNvf7o4siGsURDG6n602O7SMh8Opj2zQBQp+iZEtUuM=;
+        b=SYL3e7+65TzDRsIVOj93ZuW55LKB4VV71lo3hw9ThHmHUKCsotRQodIPrTlfZp4O/S
+         8vzQqhxIfLILDd3/L57a/gHEvDsilWdw/flo69/reQ031rcqsca6A9nStzOtg4UxtXRD
+         YpvOvY51Xp8hUt3gphegRqVA9vXc/U8cJKdokdhSanAdwx9P0FNHm8Mx2nLxPWmAt9eX
+         TDUQEotsvtKIo4pki188Me74yalXk6KQAmdUdgkmVvkQfxshkksijbRpjp2l6Rs3+jvE
+         NRKyB/+VPUBpgi7wyzgQf0aiSqgUPl1IDNTNfzTKl8lcarIs4hUP2MRA5dZIP0vTjICK
+         18mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746414773; x=1747019573;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TlgSStpSYXQ2a9TUV+lZAcOUuuATCiZr4BxvCgwoP5Y=;
-        b=YQir3ApTh+9DR4nLqiHDjQME+1/Mz50MeuGnyOf7b1lld5hao6HeBprE9Qi5Tywjzr
-         1ROHvpYKTDjCiFuJLntdVDS937O4GD4cauFsAMWEtwvgpWv8BWzct1E3p1Pod3/RTAd1
-         Xl9Hatk3Sqf7E0z5bMR6PLiu+7zh7tVDwzaKnPLFr7XLAaKxVGR/7a+abUDFTOowJ3NC
-         mzppq6+V3eo7GZjVC/5x6vxXnSJljhEpMWKUKv3UDbvl955woetLCVltyAbZBc9wm8Ka
-         f+sGKpCkOs/ZsKcF/UXyZeM5a2BaGG1v23+TlndW/wTHBdRtz1OXjxqCQAOV+OYmVXkH
-         YBJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDV4SI+GvoWy4jUx1/Xr1hW2J0RwRf95j5XwKAv7pDAEdMOJyADQ5BdCf7vSpvlYSxGCXQ33TOAB+HLuy+@vger.kernel.org, AJvYcCVNVjtRX9zyewCTUVaG/1/BuvOzrCgczV8X3jP1V0i542g1QiefjrRIA3AGoZItGtV9B7l7l/ejXj4=@vger.kernel.org, AJvYcCVQFpF62Iq67XaDS2SSkAnmc2rRnzw8+0U/15Z4FbJA3WDUCp/87hNP2cNScyb7AIT3E5wb9Vaa2Y5siI0h5Ks=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOaHSJ5nYqHczbNCBT2cN/ZYe4fIoF2nrgwn1+5vbtcZLIEf7b
-	F6Zr24XAuuwlEJMBlSph1/Hv47jxyx28wJzf1nvJNl/+Vh98fdn3
-X-Gm-Gg: ASbGncu46bAWl2zxczwgotXLSDQH8kpBWK5ompFuyOBzA4HEPDHZHvm8e1Rmx5R9FRs
-	CJA9F+jp/SSWo7hRlvXkhwCTJ0e5eoFdBXeQDQJBU/ODxZjdCkyZ7IqZpWVZtO0tSgLscRdyMPy
-	07jB2FOABiYaqApaIkfA2krHJUwCx36/gkxeuCTlKEgS6GNlOpl8ABAFtYylScZKpcyLolgWPif
-	a2pPzjW2O2eUH1311ej12JLsVks6o1JEDm9s5Xh13WzGNFQMUT3O4eU8YtOhR+xchmyCrZ/Z208
-	vhs7sbqYINj8kE0Dd4HaDsVDMnJ2X0O+CJt4lNz4/Vu4Natj
-X-Google-Smtp-Source: AGHT+IEIGQK5pJPC9ad+ktF++Wil1ARW/ydqEqUl7LMXOEO9CEBc8/2iFt8F3CH+dqvY45W3k63u+g==
-X-Received: by 2002:a17:90b:4c51:b0:2ee:b4bf:2d06 with SMTP id 98e67ed59e1d1-30a5ae52d16mr10505882a91.19.1746414773098;
-        Sun, 04 May 2025 20:12:53 -0700 (PDT)
-Received: from [192.168.0.150] ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30a4762672bsm7527392a91.32.2025.05.04.20.12.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 May 2025 20:12:52 -0700 (PDT)
-Message-ID: <2b9baf30-53ae-4653-8043-afbc2e396107@gmail.com>
-Date: Mon, 5 May 2025 10:12:47 +0700
+        d=1e100.net; s=20230601; t=1746417136; x=1747021936;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BNvf7o4siGsURDG6n602O7SMh8Opj2zQBQp+iZEtUuM=;
+        b=NSSbBQgRBD5FcLr8TSTz5bw75xxqbpBDjMByH2MdBBPcOPMeaOV3yIHfLR8izCGkf7
+         MFyjvdoTTmZ/ejq9XOxdJNG0n/RCtGwNvvAodghC8n8/0ej/1QWJ1RgjDZi7Ok8IAk9i
+         G7v5m2r5H1V+qX9MqmJl09lB89Bdb3urMV/wA0bkHrFjjBkuhuHsXQVN3GilRO9Q3sNY
+         CpEA+//ZhW+WYVOeh2onoFdb9FtuSmHJ94polzPBs6HJx4w6W57HNkVGKIgWzagYBaZD
+         YX7Zmc3hm60kno/mAkvvkuCPZiSYDOdUogVYZvR3BYQikiHqzXMHCW1Mc687Sfu2eUSC
+         1a+w==
+X-Forwarded-Encrypted: i=1; AJvYcCV+76LWCSAQIyWtUniXugpsBS8FD1LWxuWKdBjftUFGRVd1qBUKmZFMmhjawOt21TWLvxHTVrLhKTI=@vger.kernel.org, AJvYcCV7cWkhWc1ocXn26EGtpRAwlV19urnZONxBSo2QK1n7zXJa1Dxh01l5oCf9U8/wSAfPlTZESnW1B0Lg35OUT94=@vger.kernel.org, AJvYcCWO2tT0ce0of/XVZNzY02bEsadmZwGYuglsRBpye46R+irygbub2KDe4kW2j7WHbRfLMDs/6wtcna9hCGjg@vger.kernel.org
+X-Gm-Message-State: AOJu0YwexmMeLIx2Pfjks8QeBvbTOCVBlgYn55vlmnpF905RjePMUoHd
+	3VrqBLNf0DgBonmoNw6H9rwaRasPoj/gYm8GCV73RbXckkmN9Sdp
+X-Gm-Gg: ASbGncuVe0E/iIFV8i8zw0NjYS+JHWGSWrUbkKdLrY7W+v8WOy2CwJyCD8L9xS+Dcfk
+	3nwmGCRXe1TID5IeXbidsHYscxbLqCDf4XTfbNjmkIWLQ/+kp/fEG/Q0eQOt9wJ/BvYpyuDO8NY
+	bbdXaFVFEmy1Q2/QYu71Uxbm33kBFqBom2byso63EZDWjZVqnEHOSU2zGV8lUGbD3c9s58OC9qM
+	zWJnvy9opBnvr/38vpDnAofVNi/xWHHiLHSzbmsDRsVw/6vqVdEv2RUyx9BpdVMu6Z5SnMFhXoj
+	ercodCN9/+i359jUh5F8zCE90ux/HZwNcQo0IosuLAe5Wv0eVtk=
+X-Google-Smtp-Source: AGHT+IHlp7+ixVqiIJaH6+b7LqZIXj7uOxw3H0zvZbAcOeOpNbN3OyF77IbRRVRnaAblof6XOsJ4Dw==
+X-Received: by 2002:a05:6a00:1c95:b0:740:596b:4a7f with SMTP id d2e1a72fcca58-7406f17a6f9mr8201148b3a.16.1746417135510;
+        Sun, 04 May 2025 20:52:15 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b1fb3b5683esm4556306a12.24.2025.05.04.20.52.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 May 2025 20:52:14 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id BBD2E423CC6A; Mon, 05 May 2025 10:52:11 +0700 (WIB)
+Date: Mon, 5 May 2025 10:52:11 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Shirish Baskaran <sbaskaran@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>, rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 4/7] nova-core: docs: Document fwsec operation and
+ layout
+Message-ID: <aBg163CasSBtciQH@archie.me>
+References: <20250503040802.1411285-1-joelagnelf@nvidia.com>
+ <20250503040802.1411285-5-joelagnelf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/7] nova-core: docs: Document vbios layout
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jonathan Corbet <corbet@lwn.net>
-Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- Alexandre Courbot <acourbot@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
- Shirish Baskaran <sbaskaran@nvidia.com>, Alistair Popple
- <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Ben Skeggs <bskeggs@nvidia.com>, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20250503040802.1411285-1-joelagnelf@nvidia.com>
- <20250503040802.1411285-4-joelagnelf@nvidia.com> <aBgp5ZTIArRukRk8@archie.me>
-Content-Language: en-US
-In-Reply-To: <aBgp5ZTIArRukRk8@archie.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="OcuQ9cRkNODXY/5P"
+Content-Disposition: inline
+In-Reply-To: <20250503040802.1411285-5-joelagnelf@nvidia.com>
 
-On 5/5/25 10:00, Bagas Sanjaya wrote:
-> On Sat, May 03, 2025 at 12:07:55AM -0400, Joel Fernandes wrote:
->> +Here is a block diagram of the VBIOS layout::
->> +
->> + ┌────────────────────────────────────────────────────────────────────────┐
->> + │ VBIOS (Starting at ROM_OFFSET: 0x300000)                               │
->> + ├────────────────────────────────────────────────────────────────────────┤
->> + │ ┌───────────────────────────────────────────────┐                      │
->> + │ │ PciAt Image (Type 0x00)                       │                      │
->> + │ ├───────────────────────────────────────────────┤                      │
->> + │ │ ┌───────────────────┐                         │                      │
->> + │ │ │ ROM Header        │                         │                      │
->> + │ │ │ (Signature 0xAA55)│                         │                      │
->> + │ │ └───────────────────┘                         │                      │
->> + │ │         │ rom header's pci_data_struct_offset │                      │
->> + │ │         │ points to the PCIR structure        │                      │
->> + │ │         V                                     │                      │
->> + │ │ ┌───────────────────┐                         │                      │
->> + │ │ │ PCIR Structure    │                         │                      │
->> + │ │ │ (Signature "PCIR")│                         │                      │
->> + │ │ │ last_image: 0x80  │                         │                      │
->> + │ │ │ image_len: size   │                         │                      │
->> + │ │ │ in 512-byte units │                         │                      │
->> + │ │ └───────────────────┘                         │                      │
->> + │ │         │                                     │                      │
->> + │ │         │ NPDE immediately follows PCIR       │                      │
->> + │ │         V                                     │                      │
->> + │ │ ┌───────────────────┐                         │                      │
->> + │ │ │ NPDE Structure    │                         │                      │
->> + │ │ │ (Signature "NPDE")│                         │                      │
->> + │ │ │ last_image: 0x00  │                         │                      │
->> + │ │ └───────────────────┘                         │                      │
->> + │ │                                               │                      │
->> + │ │ ┌───────────────────┐                         │                      │
->> + │ │ │ BIT Header        │ (Signature scanning     │                      │
->> + │ │ │ (Signature "BIT") │  provides the location  │                      │
->> + │ │ └───────────────────┘  of the BIT table)      │                      │
->> + │ │         │ header is                           │                      │
->> + │ │         | followed by a table of tokens       │                      │
->> + │ │         V one of which is for falcon data.    │                      │
->> + │ │ ┌───────────────────┐                         │                      │
->> + │ │ │ BIT Tokens        │                         │                      │
->> + │ | |  ______________   |                         |                      |
->> + │ │ │ │ Falcon Data │   │                         │                      │
->> + │ │ │ │ Token (0x70)│---+------------>------------┼──+                   │
->> + │ │ │ └─────────────┘   │  falcon_data_ptr()      │  │                   │
->> + │ │ └───────────────────┘                         │  V                   │
->> + │ └───────────────────────────────────────────────┘  │                   │
->> + │              (no gap between images)               │                   │
->> + │ ┌───────────────────────────────────────────────┐  │                   │
->> + │ │ EFI Image (Type 0x03)                         │  │                   │
->> + │ ├───────────────────────────────────────────────┤  │                   │
->> + │ | Contains the UEFI GOP driver (Graphics Output)|  |                   |
->> + │ │ ┌───────────────────┐                         │  │                   │
->> + │ │ │ ROM Header        │                         │  │                   │
->> + │ │ +───────────────────+                         │  │                   │
->> + │ │ │ PCIR Structure    │                         │  │                   │
->> + │ │ +───────────────────+                         │  │                   │
->> + │ │ │ NPDE Structure    │                         │  │                   │
->> + │ │ └───────────────────┘                         │  │                   │
->> + │ │ │ Image data        │                         │  │                   │
->> + │ │ └───────────────────┘                         │  │                   │
->> + │ └───────────────────────────────────────────────┘  │                   │
->> + │              (no gap between images)               │                   │
->> + │ ┌───────────────────────────────────────────────┐  │                   │
->> + │ │ First FwSec Image (Type 0xE0)                 │  │                   │
->> + │ ├───────────────────────────────────────────────┤  │                   │
->> + │ │ ┌───────────────────┐                         │  │                   │
->> + │ │ │ ROM Header        │                         │  │                   │
->> + │ │ +───────────────────+                         │  │                   │
->> + │ │ │ PCIR Structure    │                         │  │                   │
->> + │ │ +───────────────────+                         │  │                   │
->> + │ │ │ NPDE Structure    │                         │  │                   │
->> + │ │ └───────────────────┘                         │  │                   │
->> + │ │ │ Image data        │                         │  │                   │
->> + │ │ └───────────────────┘                         │  │                   │
->> + │ └───────────────────────────────────────────────┘  │                   │
->> + │              (no gap between images)               │                   │
->> + │ ┌───────────────────────────────────────────────┐  │                   │
->> + │ │ Second FwSec Image (Type 0xE0)                │  │                   │
->> + │ ├───────────────────────────────────────────────┤  │                   │
->> + │ │ ┌───────────────────┐                         │  │                   │
->> + │ │ │ ROM Header        │                         │  │                   │
->> + │ │ +───────────────────+                         │  │                   │
->> + │ │ │ PCIR Structure    │                         │  │                   │
->> + │ │ +───────────────────+                         │  │                   │
->> + │ │ │ NPDE Structure    │                         │  │                   │
->> + │ │ └───────────────────┘                         │  │                   │
->> + │ │                                               │  │                   │
->> + │ │ ┌───────────────────┐                         │  │                   │
->> + │ │ │ PMU Lookup Table  │ <- falcon_data_offset   │<─┘                   │
->> + │ │ │ ┌─────────────┐   │    pmu_lookup_table     │                      │
->> + │ │ │ │ Entry 0x85  │   │                         │                      │
->> + │ │ │ │ FWSEC_PROD  │   │                         │                      │
->> + │ │ │ └─────────────┘   │                         │                      │
->> + │ │ └───────────────────┘                         │                      │
->> + │ │         │                                     │                      │
->> + │ │         │ points to                           │                      │
->> + │ │         V                                     │                      │
->> + │ │ ┌───────────────────┐                         │                      │
->> + │ │ │ FalconUCodeDescV3 │ <- falcon_ucode_offset  │                      │
->> + │ │ │ (FWSEC Firmware)  │    fwsec_header()       │                      │
->> + │ │ └───────────────────┘                         │                      │
->> + │ │         │   immediately followed  by...       │                      │
->> + │ │         V                                     │                      │
->> + │ │ ┌────────────────────────────┐                │                      │
->> + │ │ │ Signatures + FWSEC Ucode   │                │                      │
->> + │ │ │ fwsec_sigs(), fwsec_ucode()│                │                      │
->> + │ │ └────────────────────────────┘                │                      │
->> + │ └───────────────────────────────────────────────┘______________________│
-> 
-> Diagram borders look messy in htmldocs output (due to Unicode characters
-> ─ and │), so I use ASCII dash and vertical bar instead:
-> 
-> ---- >8 ----
-> diff --git a/Documentation/gpu/nova/core/vbios.rst b/Documentation/gpu/nova/core/vbios.rst
-> index dd6ac891e5f1d0..c68ef0e7b70124 100644
-> --- a/Documentation/gpu/nova/core/vbios.rst
-> +++ b/Documentation/gpu/nova/core/vbios.rst
-> @@ -56,112 +56,113 @@ The VBIOS layout is roughly a series of concatenated images as follows:
->   
->   Here is a block diagram of the VBIOS layout::
->   
-> - ┌────────────────────────────────────────────────────────────────────────┐
-> - │ VBIOS (Starting at ROM_OFFSET: 0x300000)                               │
-> - ├────────────────────────────────────────────────────────────────────────┤
-> - │ ┌───────────────────────────────────────────────┐                      │
-> - │ │ PciAt Image (Type 0x00)                       │                      │
-> - │ ├───────────────────────────────────────────────┤                      │
-> - │ │ ┌───────────────────┐                         │                      │
-> - │ │ │ ROM Header        │                         │                      │
-> - │ │ │ (Signature 0xAA55)│                         │                      │
-> - │ │ └───────────────────┘                         │                      │
-> - │ │         │ rom header's pci_data_struct_offset │                      │
-> - │ │         │ points to the PCIR structure        │                      │
-> - │ │         V                                     │                      │
-> - │ │ ┌───────────────────┐                         │                      │
-> - │ │ │ PCIR Structure    │                         │                      │
-> - │ │ │ (Signature "PCIR")│                         │                      │
-> - │ │ │ last_image: 0x80  │                         │                      │
-> - │ │ │ image_len: size   │                         │                      │
-> - │ │ │ in 512-byte units │                         │                      │
-> - │ │ └───────────────────┘                         │                      │
-> - │ │         │                                     │                      │
-> - │ │         │ NPDE immediately follows PCIR       │                      │
-> - │ │         V                                     │                      │
-> - │ │ ┌───────────────────┐                         │                      │
-> - │ │ │ NPDE Structure    │                         │                      │
-> - │ │ │ (Signature "NPDE")│                         │                      │
-> - │ │ │ last_image: 0x00  │                         │                      │
-> - │ │ └───────────────────┘                         │                      │
-> - │ │                                               │                      │
-> - │ │ ┌───────────────────┐                         │                      │
-> - │ │ │ BIT Header        │ (Signature scanning     │                      │
-> - │ │ │ (Signature "BIT") │  provides the location  │                      │
-> - │ │ └───────────────────┘  of the BIT table)      │                      │
-> - │ │         │ header is                           │                      │
-> - │ │         | followed by a table of tokens       │                      │
-> - │ │         V one of which is for falcon data.    │                      │
-> - │ │ ┌───────────────────┐                         │                      │
-> - │ │ │ BIT Tokens        │                         │                      │
-> - │ | |  ______________   |                         |                      |
-> - │ │ │ │ Falcon Data │   │                         │                      │
-> - │ │ │ │ Token (0x70)│---+------------>------------┼──+                   │
-> - │ │ │ └─────────────┘   │  falcon_data_ptr()      │  │                   │
-> - │ │ └───────────────────┘                         │  V                   │
-> - │ └───────────────────────────────────────────────┘  │                   │
-> - │              (no gap between images)               │                   │
-> - │ ┌───────────────────────────────────────────────┐  │                   │
-> - │ │ EFI Image (Type 0x03)                         │  │                   │
-> - │ ├───────────────────────────────────────────────┤  │                   │
-> - │ | Contains the UEFI GOP driver (Graphics Output)|  |                   |
-> - │ │ ┌───────────────────┐                         │  │                   │
-> - │ │ │ ROM Header        │                         │  │                   │
-> - │ │ +───────────────────+                         │  │                   │
-> - │ │ │ PCIR Structure    │                         │  │                   │
-> - │ │ +───────────────────+                         │  │                   │
-> - │ │ │ NPDE Structure    │                         │  │                   │
-> - │ │ └───────────────────┘                         │  │                   │
-> - │ │ │ Image data        │                         │  │                   │
-> - │ │ └───────────────────┘                         │  │                   │
-> - │ └───────────────────────────────────────────────┘  │                   │
-> - │              (no gap between images)               │                   │
-> - │ ┌───────────────────────────────────────────────┐  │                   │
-> - │ │ First FwSec Image (Type 0xE0)                 │  │                   │
-> - │ ├───────────────────────────────────────────────┤  │                   │
-> - │ │ ┌───────────────────┐                         │  │                   │
-> - │ │ │ ROM Header        │                         │  │                   │
-> - │ │ +───────────────────+                         │  │                   │
-> - │ │ │ PCIR Structure    │                         │  │                   │
-> - │ │ +───────────────────+                         │  │                   │
-> - │ │ │ NPDE Structure    │                         │  │                   │
-> - │ │ └───────────────────┘                         │  │                   │
-> - │ │ │ Image data        │                         │  │                   │
-> - │ │ └───────────────────┘                         │  │                   │
-> - │ └───────────────────────────────────────────────┘  │                   │
-> - │              (no gap between images)               │                   │
-> - │ ┌───────────────────────────────────────────────┐  │                   │
-> - │ │ Second FwSec Image (Type 0xE0)                │  │                   │
-> - │ ├───────────────────────────────────────────────┤  │                   │
-> - │ │ ┌───────────────────┐                         │  │                   │
-> - │ │ │ ROM Header        │                         │  │                   │
-> - │ │ +───────────────────+                         │  │                   │
-> - │ │ │ PCIR Structure    │                         │  │                   │
-> - │ │ +───────────────────+                         │  │                   │
-> - │ │ │ NPDE Structure    │                         │  │                   │
-> - │ │ └───────────────────┘                         │  │                   │
-> - │ │                                               │  │                   │
-> - │ │ ┌───────────────────┐                         │  │                   │
-> - │ │ │ PMU Lookup Table  │ <- falcon_data_offset   │<─┘                   │
-> - │ │ │ ┌─────────────┐   │    pmu_lookup_table     │                      │
-> - │ │ │ │ Entry 0x85  │   │                         │                      │
-> - │ │ │ │ FWSEC_PROD  │   │                         │                      │
-> - │ │ │ └─────────────┘   │                         │                      │
-> - │ │ └───────────────────┘                         │                      │
-> - │ │         │                                     │                      │
-> - │ │         │ points to                           │                      │
-> - │ │         V                                     │                      │
-> - │ │ ┌───────────────────┐                         │                      │
-> - │ │ │ FalconUCodeDescV3 │ <- falcon_ucode_offset  │                      │
-> - │ │ │ (FWSEC Firmware)  │    fwsec_header()       │                      │
-> - │ │ └───────────────────┘                         │                      │
-> - │ │         │   immediately followed  by...       │                      │
-> - │ │         V                                     │                      │
-> - │ │ ┌────────────────────────────┐                │                      │
-> - │ │ │ Signatures + FWSEC Ucode   │                │                      │
-> - │ │ │ fwsec_sigs(), fwsec_ucode()│                │                      │
-> - │ │ └────────────────────────────┘                │                      │
-> - │ └───────────────────────────────────────────────┘______________________│
-> + ┌------------------------------------------------------------------------┐
-> + | VBIOS (Starting at ROM_OFFSET: 0x300000)                               |
-> + ├------------------------------------------------------------------------┤
-> + | ┌-----------------------------------------------┐                      |
-> + | | PciAt Image (Type 0x00)                       |                      |
-> + | ├-----------------------------------------------┤                      |
-> + | | ┌-------------------┐                         |                      |
-> + | | | ROM Header        |                         |                      |
-> + | | | (Signature 0xAA55)|                         |                      |
-> + | | └-------------------┘                         |                      |
-> + | |         | rom header's pci_data_struct_offset |                      |
-> + | |         | points to the PCIR structure        |                      |
-> + | |         V                                     |                      |
-> + | | ┌-------------------┐                         |                      |
-> + | | | PCIR Structure    |                         |                      |
-> + | | | (Signature "PCIR")|                         |                      |
-> + | | | last_image: 0x80  |                         |                      |
-> + | | | image_len: size   |                         |                      |
-> + | | | in 512-byte units |                         |                      |
-> + | | └-------------------┘                         |                      |
-> + | |         |                                     |                      |
-> + | |         | NPDE immediately follows PCIR       |                      |
-> + | |         V                                     |                      |
-> + | | ┌-------------------┐                         |                      |
-> + | | | NPDE Structure    |                         |                      |
-> + | | | (Signature "NPDE")|                         |                      |
-> + | | | last_image: 0x00  |                         |                      |
-> + | | └-------------------┘                         |                      |
-> + | |                                               |                      |
-> + | | ┌-------------------┐                         |                      |
-> + | | | BIT Header        | (Signature scanning     |                      |
-> + | | | (Signature "BIT") |  provides the location  |                      |
-> + | | └-------------------┘  of the BIT table)      |                      |
-> + | |         | header is                           |                      |
-> + | |         | followed by a table of tokens       |                      |
-> + | |         V one of which is for falcon data.    |                      |
-> + | | ┌-------------------┐                         |                      |
-> + | | | BIT Tokens        |                         |                      |
-> + | | | ┌-------------┐   |                         |                      |
-> + | | | | Falcon Data |   |                         |                      |
-> + | | | | Token (0x70)|---+------------>------------┼--+                   |
-> + | | | └-------------┘   |  falcon_data_ptr()      |  |                   |
-> + | | └-------------------┘                         |  V                   |
-> + | └-----------------------------------------------┘  |                   |
-> + |              (no gap between images)               |                   |
-> + | ┌-----------------------------------------------┐  |                   |
-> + | | EFI Image (Type 0x03)                         |  |                   |
-> + | ├-----------------------------------------------┤  |                   |
-> + | | Contains the UEFI GOP driver (Graphics Output)|  |                   |
-> + | | ┌-------------------┐                         |  |                   |
-> + | | | ROM Header        |                         |  |                   |
-> + | | +-------------------+                         |  |                   |
-> + | | | PCIR Structure    |                         |  |                   |
-> + | | +-------------------+                         |  |                   |
-> + | | | NPDE Structure    |                         |  |                   |
-> + | | └-------------------┘                         |  |                   |
-> + | | | Image data        |                         |  |                   |
-> + | | └-------------------┘                         |  |                   |
-> + | └-----------------------------------------------┘  |                   |
-> + |              (no gap between images)               |                   |
-> + | ┌-----------------------------------------------┐  |                   |
-> + | | First FwSec Image (Type 0xE0)                 |  |                   |
-> + | ├-----------------------------------------------┤  |                   |
-> + | | ┌-------------------┐                         |  |                   |
-> + | | | ROM Header        |                         |  |                   |
-> + | | +-------------------+                         |  |                   |
-> + | | | PCIR Structure    |                         |  |                   |
-> + | | +-------------------+                         |  |                   |
-> + | | | NPDE Structure    |                         |  |                   |
-> + | | └-------------------┘                         |  |                   |
-> + | | | Image data        |                         |  |                   |
-> + | | └-------------------┘                         |  |                   |
-> + | └-----------------------------------------------┘  |                   |
-> + |              (no gap between images)               |                   |
-> + | ┌-----------------------------------------------┐  |                   |
-> + | | Second FwSec Image (Type 0xE0)                |  |                   |
-> + | ├-----------------------------------------------┤  |                   |
-> + | | ┌-------------------┐                         |  |                   |
-> + | | | ROM Header        |                         |  |                   |
-> + | | +-------------------+                         |  |                   |
-> + | | | PCIR Structure    |                         |  |                   |
-> + | | +-------------------+                         |  |                   |
-> + | | | NPDE Structure    |                         |  |                   |
-> + | | └-------------------┘                         |  |                   |
-> + | |                                               |  |                   |
-> + | | ┌-------------------┐                         |  |                   |
-> + | | | PMU Lookup Table  | <- falcon_data_offset   |<-┘                   |
-> + | | | ┌-------------┐   |    pmu_lookup_table     |                      |
-> + | | | | Entry 0x85  |   |                         |                      |
-> + | | | | FWSEC_PROD  |   |                         |                      |
-> + | | | └-------------┘   |                         |                      |
-> + | | └-------------------┘                         |                      |
-> + | |         |                                     |                      |
-> + | |         | points to                           |                      |
-> + | |         V                                     |                      |
-> + | | ┌-------------------┐                         |                      |
-> + | | | FalconUCodeDescV3 | <- falcon_ucode_offset  |                      |
-> + | | | (FWSEC Firmware)  |    fwsec_header()       |                      |
-> + | | └-------------------┘                         |                      |
-> + | |         |   immediately followed  by...       |                      |
-> + | |         V                                     |                      |
-> + | | ┌----------------------------┐                |                      |
-> + | | | Signatures + FWSEC Ucode   |                |                      |
-> + | | | fwsec_sigs(), fwsec_ucode()|                |                      |
-> + | | └----------------------------┘                |                      |
-> + | └-----------------------------------------------┘                      |
-> + └------------------------------------------------------------------------┘
->   
 
-Addendum: I'm using Roboto Mono on my htmldocs build (using custom style 
-sheet). The diagram looks fine with default Alabaster font stack 
-(Consolas). If you disagree you can ignore above diff.
+--OcuQ9cRkNODXY/5P
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, May 03, 2025 at 12:07:56AM -0400, Joel Fernandes wrote:
+> +.. SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+> +FWSEC (Firmware Security)
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D
+
+Separate SPDX line from title heading.
+
+> +Here is a block diagram of the FWSEC memory layout::
+
+Add blank line before actual diagram below.
+
+> + =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> + =E2=94=82                         FWSEC ROM image (type 0xE0)          =
+ =E2=94=82
+> + =E2=94=82                                                              =
+ =E2=94=82
+> + =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=90                          =E2=94=82
+> + =E2=94=82  =E2=94=82     PMU Falcon Ucode Table      =E2=94=82         =
+                 =E2=94=82
+> + =E2=94=82  =E2=94=82     (PmuLookupTable)            =E2=94=82         =
+                 =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=82                 =
+         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 Table Header            =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - version: 0x01         =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - header_size: 6        =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - entry_size: 6         =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - entry_count: N        =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - desc_version:3(unused)=E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82                 =
+         =E2=94=82
+> + =E2=94=82  =E2=94=82         ...                     =E2=94=82         =
+                 =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=82                 =
+         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 Entry for FWSEC (0x85)  =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 (PmuLookupTableEntry)   =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - app_id: 0x85 (FWSEC)  =E2=94=82 =E2=
+=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=90                     =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - target_id: 0x01 (PMU) =E2=94=82    =
+=E2=94=82    =E2=94=82                     =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - data: offset =E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=90 look up FWSEC   =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82    =E2=94=82   =
+=E2=94=82 application.    =E2=94=82
+> + =E2=94=82  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82   =E2=94=82                 =E2=
+=94=82
+> + =E2=94=82                                         =E2=94=82   =E2=94=82=
+                 =E2=94=82
+> + =E2=94=82                                         =E2=94=82   =E2=94=82=
+                 =E2=94=82
+> + =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=82   =E2=94=82                 =E2=
+=94=82
+> + =E2=94=82  =E2=94=82     FWSEC Ucode Component       =E2=94=82<=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=98   =E2=94=82                 =E2=94=82
+> + =E2=94=82  =E2=94=82     (aka Falcon data)           =E2=94=82        =
+=E2=94=82                 =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=82        =E2=94=82=
+                 =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 FalconUCodeDescV3       =E2=94=82<=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98                 =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - hdr                   =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - stored_size           =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - pkc_data_offset       =E2=94=82    =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - interface_offset =E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=90         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - imem_phys_base        =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - imem_load_size        =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - imem_virt_base        =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - dmem_phys_base        =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - dmem_load_size        =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - engine_id_mask        =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - ucode_id              =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - signature_count       =E2=94=82    =
+=E2=94=82    look up sig =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - signature_versions --------------+   =
+       =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82     =E2=94=82   =
+       =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82         (no gap)                =E2=94=82     =E2=
+=94=82          =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=82     =E2=94=82   =
+       =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 Signatures Section      =E2=94=82<=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=98          =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 (384 bytes per sig)     =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - RSA-3K Signature 1    =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 - RSA-3K Signature 2    =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82   ...                   =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82                =
+=E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82                                 =E2=94=82         =
+       =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=82                =
+=E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 IMEM Section (Code)     =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82                         =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 Contains instruction    =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 code etc.               =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82                =
+=E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82                                 =E2=94=82         =
+       =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=82                =
+=E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 DMEM Section (Data)     =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82                         =E2=94=82    =
+=E2=94=82                =E2=94=82         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90 =E2=94=82    =E2=94=82                =E2=94=82         =
+=E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 Application         =E2=94=82=
+ =E2=94=82<=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98         =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 Interface Table     =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 (FalconAppifHdrV1)  =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 Header:             =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - version: 0x01     =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - header_size: 4    =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - entry_size: 8     =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - entry_count: N    =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82                     =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 Entries:            =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90 =E2=
+=94=82 =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=82 DEVINIT (ID 1)  =E2=
+=94=82 =E2=94=82 =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=82 - id: 0x01      =E2=
+=94=82 =E2=94=82 =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=82 - dmemOffset X =E2=
+=94=80=E2=94=BC=E2=94=80=E2=94=BC=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=90                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=94=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98 =E2=
+=94=82 =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90 =E2=
+=94=82 =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=82 DMEMMAPPER(ID 4)=E2=
+=94=82 =E2=94=82 =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=82 - id: 0x04      =E2=
+=94=82 =E2=94=82 =E2=94=82    =E2=94=82 Used only for DevInit    =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=82  (NVFW_FALCON_  =E2=
+=94=82 =E2=94=82 =E2=94=82    =E2=94=82 application (not FWSEC)  =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=82   APPIF_ID_DMEMMAPP=
+ER)   =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=82 - dmemOffset Y =E2=
+=94=80=E2=94=BC=E2=94=80=E2=94=BC=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90=
+                    =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 =E2=94=94=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98 =E2=
+=94=82 =E2=94=82    =E2=94=82     =E2=94=82                    =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98 =E2=94=82    =E2=94=82     =E2=94=82                    =
+=E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82                         =E2=94=82    =
+=E2=94=82     =E2=94=82                    =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90 =E2=94=82    =E2=94=82     =E2=94=82                    =
+=E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 DEVINIT Engine      =E2=94=82=
+<=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98     =E2=94=82 Used =
+by FWSEC      =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 Interface           =E2=94=82=
+ =E2=94=82    =E2=94=82     =E2=94=82         app.       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98 =E2=94=82    =E2=94=82     =E2=94=82                    =
+=E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82                         =E2=94=82    =
+=E2=94=82     =E2=94=82                    =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90 =E2=94=82    =E2=94=82     =E2=94=82                    =
+=E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 DMEM Mapper (ID 4)  =E2=94=82=
+<=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80+=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=98                    =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 (FalconAppifDmemmapperV3)  =
+=E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - signature: "DMAP" =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - version: 0x0003   =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - Size: 64 bytes    =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - cmd_in_buffer_off =E2=94=82=
+ =E2=94=82=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=90             =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - cmd_in_buffer_size=E2=94=82=
+ =E2=94=82    =E2=94=82            =E2=94=82             =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - cmd_out_buffer_off=E2=94=82=
+ =E2=94=82=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=90       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - cmd_out_buffer_sz =E2=94=82=
+ =E2=94=82    =E2=94=82            =E2=94=82     =E2=94=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - init_cmd          =E2=94=82=
+ =E2=94=82    =E2=94=82            =E2=94=82     =E2=94=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - features          =E2=94=82=
+ =E2=94=82    =E2=94=82            =E2=94=82     =E2=94=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - cmd_mask0/1       =E2=94=82=
+ =E2=94=82    =E2=94=82            =E2=94=82     =E2=94=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98 =E2=94=82    =E2=94=82            =E2=94=82     =E2=94=
+=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82                         =E2=94=82    =
+=E2=94=82            =E2=94=82     =E2=94=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90 =E2=94=82    =E2=94=82            =E2=94=82     =E2=94=
+=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 Command Input Buffer=E2=94=82=
+<=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=98     =E2=94=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - Command data      =E2=94=82=
+ =E2=94=82    =E2=94=82                  =E2=94=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - Arguments         =E2=94=82=
+ =E2=94=82    =E2=94=82                  =E2=94=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98 =E2=94=82    =E2=94=82                  =E2=94=82       =
+=E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82                         =E2=94=82    =
+=E2=94=82                  =E2=94=82       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=90 =E2=94=82    =E2=94=82                  =E2=94=82       =
+=E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 Command Output      =E2=94=82=
+<=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=98       =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 Buffer              =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - Results           =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=82 - Status            =E2=94=82=
+ =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=82 =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=98 =E2=94=82    =E2=94=82                          =E2=94=82
+> + =E2=94=82  =E2=94=82  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=82                 =
+         =E2=94=82
+> + =E2=94=82  =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=98                          =E2=94=82
+> + =E2=94=82                                                              =
+ =E2=94=82
+> + =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+
+The diagram can look messy on certain fonts in htmldocs output. Please
+use ASCII dash (-) and vertical bar (|) instead of Unicode box decoration
+variant (=E2=94=80 and =E2=94=82).
 
 Thanks.
 
--- 
+--=20
 An old man doll... just what I always wanted! - Clara
+
+--OcuQ9cRkNODXY/5P
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCaBg15wAKCRD2uYlJVVFO
+o3d7AQDBVc1UI56/zh/MRT97O5/Ouu8QFG4mQHoCYh1roksF/gD/bgBTjzNGqC74
+vVabcuOUUWD/nP9uTMx4g1EuDI98xQ0=
+=LjZE
+-----END PGP SIGNATURE-----
+
+--OcuQ9cRkNODXY/5P--
