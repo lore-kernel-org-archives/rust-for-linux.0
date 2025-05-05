@@ -1,255 +1,185 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2056.outbound.protection.outlook.com [40.107.93.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EF823CB;
-	Mon,  5 May 2025 19:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746473697; cv=none; b=XZsIxJGd29HT2gkQjRCe7jBYQh6W6bjaMIG2SK0MP5YcEMu8QFShKFXy9K07e1Hf7V9e2/Bsf+7jqcKSYfLLXXUKd5Q+AWCsjYOFVwVV7+znW4rg3U5YdfUgJCBiMVPk/ykQt7TFUMiHSJiSxYIuTbSBDyatjpId0GO9mZqI1II=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746473697; c=relaxed/simple;
-	bh=R4UOYAFLSdII7+XphTMNWPVBpYzJxCWHQxa8/SgBsFI=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cwI6HjYu6PSZEbxMY9Oe2t5v6jAsphvlc5DzTKSk57xTKrgQZGUVEdU1eLmMEz8psBVfFVLl1zO767yhP792M+i+ugOIfTAju6W4uNjMq24XajhDVcSOAffzOJlDnpBtD2G1Bw//CcUeEc4hUvS7vUmSENwjWbK2yzLWSyLAztE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BYEqpg3c; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98F816D9C2;
+	Mon,  5 May 2025 21:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746481049; cv=fail; b=K8zyywQuYz10T7C7hO089kP41wPbZCRCbFEozgvq4Czg1lY2pMl7TWIMXm1QJvVsNDvsMFQkQfJgDd+z1mtpLvjGJUUL+6GlMsn79Ni20OAwNtbhJdJYJcj6dOWpAgL4wethNXZ9nVn0iQTX+y0PcAsTK1yxMq0Y7WCEUeECoi4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746481049; c=relaxed/simple;
+	bh=I1pWBWTJPaZgj2nL0jV0fMpTupQigM7XHv3HfdQzC2c=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=RYOs4AU6LB8zRV6uG+jSn1WJeZUjt08YIKgr0j2LnxVXvyif0sZw4GPV0w97+qObnWSHyXFlFbJaROp81CS1C/W68nPpXFIseyNRKEzIr9ZWE1mHOgypLJXsa2Gg0Aa4wyAGMTIVl55aHP+DulD2TEFNvC1TTg7uUuxYWRYiafI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WluRtubD; arc=fail smtp.client-ip=40.107.93.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BYEqpg3c"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c9376c4dbaso564836585a.0;
-        Mon, 05 May 2025 12:34:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746473694; x=1747078494; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GkBn/ab9f6AA7W5UCEebQAelvR/PRTQoq/54e+igHhU=;
-        b=BYEqpg3ci0tL7HuDEHTZa8G54OnqKeV8kkIIFJ7dmra8wfBnoMK9E8jejecxtRyhex
-         SFa6wxWG6qA0BYECaij7N/AoLYUlZTcsBBLnPP25s7YtIZhP8ZZHhDW7J6knP+6LM25N
-         0waZ5XUX/JuoNg5Y0bo3sM037nptGWDetfSiR7q3vB35d+h0Zmb46UXZ9p0nUJOmm4t/
-         BOKNb0l0ZSo+4UtJs6cAYgA9rjUKZAPr5J9PWlu3TDtEOVxLAaL1VYbQE1L+0nDA80/K
-         xcZAGZz/arRFT7xrTJOpjmBWyUjbPJBkuNP5ydOkugCdCzAw7ityVwRoSHaHRs3AZr7K
-         6KIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746473694; x=1747078494;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GkBn/ab9f6AA7W5UCEebQAelvR/PRTQoq/54e+igHhU=;
-        b=OLX9qEFzhjd99urTyUEXJRvB8uJZ9/Ir29FglUbaqCEfrsWZre6Hz07CVq00QRUIDG
-         9eH9dps5nx2/nTv5KQO4/U1ppfgeXv7pNjXBK5MYaCZgbaLBU4KXDOXVYj5RysEKcNfF
-         xavtiM8LcH/ZWXGltDhS+njIb4ztMy1gOBPjoQEadVMaI4bokK+eG3LzHWWYm1EeGAz4
-         1KT78vr3ysfZER8NayUcUo9G3Q9rKWM6vZDzMOxpavhkHz9E2VkYTaB5BLjRio10PxnW
-         sx5/wuRU/EnAftOG0RIr+hw0wksKPThEEZZcGhMwtThHv4I/wBx5PLcSSAUaSEE4bvce
-         eUlg==
-X-Forwarded-Encrypted: i=1; AJvYcCVNZPCpWfBpisdNqlnuIuqXKj4PuTi/o6h/O+hZlgre/ApzwI+mkigQW4huoffM8VJNRQVVukDFUHEdVK4=@vger.kernel.org, AJvYcCVVCAtoHriIfSOTW6iA1tbj1a+ZEYpD0OlV7ZgEs4eF7qOON8gyMCmAZJBkt9Txgg041dZJHq1OY80B7YqLrXUQ@vger.kernel.org, AJvYcCXjYxZKljZRcHO/xdg7kr3Zj1bURdM81qNrfySUI6V6pc0WsSTUdJmQT/i2GKt7vp7v9haN/cP48zisP0EDl2o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbhcDF841CTa1l4TNcc5JZUNjTy1Or/buV1D8L3SrWgdm4qNiu
-	JNho7BKkPr7+ri3evfBCpUc3pjrYp0RiU844BfDAlT8B8Q5P+F5A
-X-Gm-Gg: ASbGncvOOJapLx7PGAZ7VgLSRy8ykIi5TKPPI1MChqxw8bj57FK8uN6HoJEyZhk4cfC
-	CRExEHvTCrSiSnPWqycJsu043Yc8LmYTR5RLszqG3SMSNrjWEVi+M/D8ZhpAlK5SFnoISlt7Jt9
-	3RfzQnvoEdS0rkbt/oNg1XrW+D+kKPfci0L8u6p0HglZgNUN93mlWOw8cB44uxqvl9q3UBYJqv3
-	D7Yqt33Kw9C0ocvEFegco3SerXRCbnJy8UMkaXLgkOE+OkqlNm2A54AA5g0OATG2rFHBnLsDfyW
-	d/z3FbUwFS0JvqKiCOR2KOdu92R7jfkWZpxn1u841/yj5WYbdxwOtRIONxJNB8zrM1OVZuHEJ4b
-	IdRfKEncb0VqOiNiSra30eCbeFMxm0IQ=
-X-Google-Smtp-Source: AGHT+IFY12NsRRcgW0xx+lO9IySSe0Y4a8h3F+41ev4UQvcjKPFIvM2ToqA8JyqXddvLXXcDLCEXng==
-X-Received: by 2002:a05:620a:6105:b0:7c7:c6e9:963c with SMTP id af79cd13be357-7caf04c142fmr87551785a.4.1746473694490;
-        Mon, 05 May 2025 12:34:54 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cad23b5278sm606919985a.1.2025.05.05.12.34.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 12:34:54 -0700 (PDT)
-Message-ID: <681912de.050a0220.383f17.18c4@mx.google.com>
-X-Google-Original-Message-ID: <aBkS25IAZXiyXeXZ@winterfell.>
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8B8F3120007E;
-	Mon,  5 May 2025 15:34:53 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 05 May 2025 15:34:53 -0400
-X-ME-Sender: <xms:3RIZaENOKcV_V4pchMDIGpgqOT8XeYyK7jqMEa--H2Sfepw08f8ijg>
-    <xme:3RIZaK-goJa0QuWpIgmKvY5jgUBAc87hW5au3mVlx9jIUH-AYw9c88C3LDlN6Ame6
-    ChzIm-TziuNeJNc_Q>
-X-ME-Received: <xmr:3RIZaLT8dU3hIUe4mBMvj7PC8hJ4ISIQfR0g0qsKehaR0zeBobQnmGEWsA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeduleeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfel
-    leeivedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgr
-    lhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppe
-    hgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudekpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopegurghvihgughhofiesghhoohhglhgvrd
-    gtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    sghrvghnuggrnhdrhhhighhgihhnsheslhhinhhugidruggvvhdprhgtphhtthhopegrlh
-    gvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprhhmohgrrhesghho
-    ohhglhgvrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhhsvghlfhhtvghsthesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehkuhhnihhtqdguvghvsehgohhoghhl
-    vghgrhhouhhpshdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-    dprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomh
-X-ME-Proxy: <xmx:3RIZaMu8GU9Ixwt_lnrfB4AOZGU4ehJiJajRp5xMVPmQiJJXIwMR5g>
-    <xmx:3RIZaMeI-x4I7P7SZLXK0Dwz3XQnfvQVaJ_THw1O1SNzSzJBci_P5A>
-    <xmx:3RIZaA2jVlhadXx5BUw9i9mSQsvMTHBgGYZ8_1YVGzakXFGH0f3tqA>
-    <xmx:3RIZaA-s-nsYuLKNr6F4LFSWwXc7q5nZq_aELczlW1uCS0L1ELdSLw>
-    <xmx:3RIZaD-J1ajwYTRjr-wt8yw2pWXopfcpzZwsO8yCWY4bEDWi68U8qru9>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 5 May 2025 15:34:53 -0400 (EDT)
-Date: Mon, 5 May 2025 12:34:51 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: David Gow <davidgow@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Rae Moar <rmoar@google.com>,
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 2/7] rust: kunit: support checked `-> Result`s in KUnit
- `#[test]`s
-References: <20250502215133.1923676-1-ojeda@kernel.org>
- <20250502215133.1923676-3-ojeda@kernel.org>
- <CABVgOSm8T+_kXY78sioUHEcG7rYApfWK2Gfxkrvw94Dz57G0oQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WluRtubD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BFjoTf1msKL9P0h+IvEkOEx1aD/i6vqwkoLD4roH34fWMF5J0hOMI2AB7ndFGFvGIE2EsVWLUTD9rW7yax0gNQeDwycoJLdqv1oovjtT0JXFDpw0PItF/f1UoAW9AjnonzCTVAL5lBR4LYnI7mmsuTntjU3h4AlKvudpTUK3dytfVwbvpfsHzCVK8+ChaXpzMiBkx/Yf3TpUDiKLJlwlUfCH8HUYkEmDsS7XacsGdxUsdmZNxZCKphibFsQnoWZoCQyHdB/mBrrHGv12ybGp6wwFE29cmZTxAjBN3PMd8KJrNFoeHmqOVNUWb+CfN/ppgTp6tR8rvuYA8dVm7r3r4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jDB0vJj8LO3XLS5sZ/SZHEgalNjewOcWMXc32cvBkEk=;
+ b=jloW6ZmgFjQds3cdXxkKTfm7KYwK3aLOEcJ0N675pltxQCum/hDDA7UbH2LqzB+weFl7ovMPBUVumsxuVemVzwUzHckDYQtfL3fUa4JhrEsUAKnHeHVvwVIeWHAUWe287a8p7mlpDWbGHMa2D71zF0ou0HnwKJ9RP2CJbQEBmHxVQzB2Gb+PvCNzyt+6URr5O63ixxArxRwT7ijUVphBcYhPzCXVr0lZ7gfFLpOoIwDFZy3iEybvou/RlgTKooRBcfsiJBpsGDu7vOef6flYW8IngU6H5ui9MeEQBSAKb1I/5jWPeb25zJbtaSqK07ztslCh+4Ex+HXlR3nCNZvHHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jDB0vJj8LO3XLS5sZ/SZHEgalNjewOcWMXc32cvBkEk=;
+ b=WluRtubDIwrvRVeM7vsYvqbP39i0FRIGgtBaDO/4ZZQbQx2MuhquUZ3ACiHUBEfvc+2AwW+Q4Ggahv7emZ24JIsA1Rj0cJZv8gvfF9TLaYuh/OJ5ikCGhxrNH1xy8cLUPzmioV+uhqjEVB0qEDgRDAzOzkFJ42VlKk28AtGyjHu+I1vF3celOu6lNtaVKNcn1HCEHbxHZI9tFHvnNgAq6bgCDzdxmflGzNMa3avgPdKIyRJFM5S9gLMb0+sE0dpP4uu0wRnJJHLC4HG9l1+Sr0TWDEsJs7pIa+xVR1ayP3ficeBuRuMVERrxjsSFp146GzvuZWmhDJrMZqxIeH+7zw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by CH3PR12MB7547.namprd12.prod.outlook.com (2603:10b6:610:147::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.22; Mon, 5 May
+ 2025 21:37:24 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.8699.021; Mon, 5 May 2025
+ 21:37:24 +0000
+Message-ID: <c1d417f2-8340-496b-bdab-0ae54d0b499d@nvidia.com>
+Date: Mon, 5 May 2025 17:37:20 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/7] docs: nova-core: Document basics of the Falcon
+To: Bagas Sanjaya <bagasdotme@gmail.com>, linux-kernel@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Jonathan Corbet <corbet@lwn.net>
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ Alexandre Courbot <acourbot@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
+ Shirish Baskaran <sbaskaran@nvidia.com>, Alistair Popple
+ <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Ben Skeggs <bskeggs@nvidia.com>, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20250503040802.1411285-1-joelagnelf@nvidia.com>
+ <20250503040802.1411285-7-joelagnelf@nvidia.com> <aBg7CUoAo1xyYlo8@archie.me>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <aBg7CUoAo1xyYlo8@archie.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN0PR04CA0010.namprd04.prod.outlook.com
+ (2603:10b6:208:52d::25) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABVgOSm8T+_kXY78sioUHEcG7rYApfWK2Gfxkrvw94Dz57G0oQ@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|CH3PR12MB7547:EE_
+X-MS-Office365-Filtering-Correlation-Id: ebba5f8f-6576-4e8d-6790-08dd8c1d05eb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RHM1cUFhTXJrS211TkM5eDNQcVRoWmdRWEt3UENaNytMRFFBczNqTnJpSGtI?=
+ =?utf-8?B?dE5JOTY2Kysrb041d3pmN3dSdXA0bytrMFE1L1N2S2JXeUNCWSs3cFYxYngv?=
+ =?utf-8?B?clgvalVRNklvbGpodXc2TmN0UG4rcy9rUDgzbzZWaTBvUlVBZWtzWXZYdDFY?=
+ =?utf-8?B?Tzg4Z1NZdjJCVWx3bGR3bVVHazB3M3BiaVJIWFJDVVFQZk94RGxHOW5SNW5w?=
+ =?utf-8?B?dUtrMVk4L2lnQUpIY2FMaGlxTHd5VDRNYWdLNTQ3cTZpUTdaS2pFOEwxVDcy?=
+ =?utf-8?B?UkQrNUxuUUltMWFiVWxUMkhkVE51ajF2WnBxczNCWXpqMGpObW5kRWVNTCtt?=
+ =?utf-8?B?R0xWSVlYMlUzZkYwdzNKNTBRMG9LemZVUDVSVDRTN25nZWR0QnJJR0RCRGoz?=
+ =?utf-8?B?MmxIUmlManpiSDYwdTJBcG5sRzB6cnFPa1Z2a0QrbHFzSGM1VmhkeEIyTjc1?=
+ =?utf-8?B?WTNTczk5Yk4xdlZTeS9Fb0dqNEt4QitYcnhOL0lLT01nK0krSWRXcU9ZVmFN?=
+ =?utf-8?B?VjVaZ1NVajRwOU8xS3h4aUhHMGNscDRremE0S0VQRG14WS90WTBUeUcyRGcv?=
+ =?utf-8?B?ZGtHRFdyTHZCOXVwNHViblpHRG4zK1BONXdZR3VBWktIK2FFRG9uRG5EaFhL?=
+ =?utf-8?B?SFRZSElkRER5T1ptc3BGanFuWEprVW9rSlQrWXh5dThJVjJiRS8zTExWYVFC?=
+ =?utf-8?B?UkNURTEzdjFwUVZFVG9FQ2FIMGxRWW9jNkRxK292bWFwdGRDTGs2SjltV2ZC?=
+ =?utf-8?B?VWF2OURzcnFGbWJqTHdUZFpodGJsUXJ5UndSQzMrV0lrQytWdmhRWXZyREpm?=
+ =?utf-8?B?S09vY0kwN3UzZWlXdzJFYVhiaUJYNElZK3lsWmhGZnBhSXZmOWZtaTlXRy9w?=
+ =?utf-8?B?NHRNRFpHNkU1bi9IbU9FOFFxeXF3bkpETFpvMjJ4clJwUG5BeCt6TG1HTk9U?=
+ =?utf-8?B?anhNRU16Ylk0Mzg5bzF0RGlFaHlBT005ZmtFL3p5aXpJaldhcDQzWHV6SjYz?=
+ =?utf-8?B?YTJ4RGdmNi9Yb3d5WXZlS1RvblV2eCtwME1kUUNvZ1R6RGZNMlV1V1Nxbzhv?=
+ =?utf-8?B?S0hBTGxyRHY3ZWNBOTRsZ3hlWVUrcXQwWnhmVExLU1pyNE9SUEtQTEJWTno3?=
+ =?utf-8?B?bHdNNzE4TEQwM0lmZEdHcnFXRHlWZjBMWE1TbEtieWFoZXNMa21jZG9rZTQ0?=
+ =?utf-8?B?am9pN21yWWhwbkJXcEdtY3Myazg5eFc4Yll2T0hNZGsxcDAyTXZTNnRDbjhr?=
+ =?utf-8?B?SmtIdVdGMUJkKzloRDg4RVV4MGdOMk45S2hvaVZZV2dURnFET2lYUmhwQnlS?=
+ =?utf-8?B?dWtURjNOVWZQMlhkdU9TRmlMSUF6YzF0VU80MTZoMnQ0QjZ1TWJ2emZXQUt1?=
+ =?utf-8?B?Y25MVFEyWEJZS0YzdjJJZ3AyZ2JhNHRMNGFpOHJFQjBiRFBRQkgrZGFOQUdS?=
+ =?utf-8?B?azFhSXorUm1jKzdlbmZvZjNjNTJ1RTg2TlhmRmY3RjlkcHlEMnp6WmdMUzhp?=
+ =?utf-8?B?cFVlbklyeTJRc21RODNKYVQ3eXlzTXIyekVibVJGVjlQdTdlRlEyNmxsc2dE?=
+ =?utf-8?B?Q1ZWOURKeEsyV3ZtR0J6MWU5M1dPcWZ6YXQrUUduOXhzTEZMR2JncEg3YmZv?=
+ =?utf-8?B?L1ZwbXJuUlFxRTN3ZStJaThLTVVNS3VQWTREdE9mRzJ4OERrY01ZY3B2dmhy?=
+ =?utf-8?B?UWx1TTBRL1c1dXZiMURUWCs3b2dQSEtIU20xRktGU1J1TE10WHBYZldveUNW?=
+ =?utf-8?B?N09HMmZGU1VNVFNWRFkvQXNnTmJKazNaVXRWbmJGTDVKM0JNN1VXenZQd2Nw?=
+ =?utf-8?B?NkppQis0S3p4MzJBVzZtZHYraWpFRklDK2NFQXdjUldKQ1cyWmY5VW9Sc0FM?=
+ =?utf-8?B?THNmN3hIalM5eXBNQ3FaOUMyUnptblF4cEorZ1UyTEtkRTJibnZGUEZ0bzZo?=
+ =?utf-8?Q?Xf2fz1LdUOY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?a0NFNC9JK1NqamUvcUVhQktORlM3REpPME8zU0VEaTVSR0ZGR3lRQ1BsTGxQ?=
+ =?utf-8?B?Uld2dVBtVHNwS21hdG5Dak9zZ1R1U3NHQ2lJN2hGNktpWkMvNUhyZW52NVZJ?=
+ =?utf-8?B?U2p6WnZtR0ZnMDAvRUtSR3FUSzUxM1VnVnB0LzFWdlh3R3ZVY1pTaVhxSUNk?=
+ =?utf-8?B?Z3NjcjdKb1ZDY09iYmNGZEdqU0g4RG84WlJUVHJ1cERZNHZiZWMyL29oUG9W?=
+ =?utf-8?B?OEl4Q1JpR3Z2ZmZuejJZL1dkcll5Ung0MlUwSytPckFCV3dpRm1RczViNlFW?=
+ =?utf-8?B?T3RoN0lDdDFpeDRzNGk3dmNqMUZyaFFaWEhTWDFIcFQ0T0tOUFYydC9sdk5B?=
+ =?utf-8?B?Wk5hNkZoNlBKYllHVmlIRkhMbTJCODlJWTA2cEFqd3hSS2xxVks3RW1scllF?=
+ =?utf-8?B?K3pFN2puMFRxZW9GZnlHOEZMMDhyYXBMRFVBYTBYbC9qaXBFU0RkcHQzYThS?=
+ =?utf-8?B?NUVhcGRsOUNqTE5aeStkbjM2TkdLVHlTWVBCNFRldHVTb1E2cS9nUnB2TWxP?=
+ =?utf-8?B?c2s1Tk1SYTJKdGhIbTdkYnhGeUtNTjZNQlR0d2pabGtTUGhuYjB5d3hkZUNQ?=
+ =?utf-8?B?bkhaNHVhb0xsYjRyUCt4S013YkpLTnYyREl3N013ajZqa3ZNSThkUkVVY2hu?=
+ =?utf-8?B?Tm5DQ1VyejlNbG5NbGhnbjM2MFljdGoxYXE1Q2lhc0lOclRnOGU0b082VGxs?=
+ =?utf-8?B?OHFESzlNL2Y5VWRkSG9uUURLNTcvQWpKK1h2MnV6WDZQUSs1SzBnY01zQXlx?=
+ =?utf-8?B?ZkFyUUE4N1NSYXY5SkkrNWpDVzNsRW44cWxIcmNqaUpRK1hGZStYc201dzVT?=
+ =?utf-8?B?Tmt2NmthTmtHUzUxSTA3OU1pUVRFcDZORVAxNGQrRTcrMTJhR3J2RUJnVWhX?=
+ =?utf-8?B?ZGhlaVBRenB4SU1temxoclNKMDJOa0o0ZE1ybHR0dVhvV3VKQ0c2dW9kVjV0?=
+ =?utf-8?B?NU9MelhWNVhKZ1BHZGZlZFZvQnBDc1diaWZReHJGamhwMG1KT2Y4ZFlCQ2dj?=
+ =?utf-8?B?cG5tZGNJRWVhcjgyR3lybk5rM0Rsd1RuRVAybzZJWVpEeWN2WEl1TWx3bFMw?=
+ =?utf-8?B?d0EzbXQ5MnEzVGI4T0h6SEUzMXhjSU9zVkVQRUFMVmdvc2kzMm9WUXJMbml0?=
+ =?utf-8?B?WkJTaWVKMHB5MW54dTlZbldkT09FV1ppL05VQlN3ejhaMkNwS1JSYWhjclVT?=
+ =?utf-8?B?WXQxT2ZMMFA3UlNNZ0JXNHdsZzQ5TUozUkVGQUFjejQ3NjNDQmpyYXFOT2I1?=
+ =?utf-8?B?T3Bta3dJY0tPNGRDQTNvM2hMV3c3UmwzL0c1ZWo1ZkN2enVUNHZVWXhobGI3?=
+ =?utf-8?B?RlJpZmlCdW44T09wdE5ZdjkzdzY2dnJJVDZudTVVOHpMeXZCU0RxMzk5TUI5?=
+ =?utf-8?B?K2VHSk05U2RicnJNWW9aTU1ROC9DbUd3VGx6eGllbVlVd2doRWhDUHZVUGRR?=
+ =?utf-8?B?Zk13ZzBONzRFaHJ4M21QY3VQL3Z2Z2UvaUdvUlJEUStIRTZ3bHpDRUhsc1dE?=
+ =?utf-8?B?enZ5NWF2VktteERBSnNpUXVkUE90bmxMdFBuRWRydmZ0UmJVL2d6WWVRVS9x?=
+ =?utf-8?B?NXFWNUxNSFBabjFTMUlBOXhQRS9ZckJMLytESHR2ZU5xNzhNZjhKMmhSc1I5?=
+ =?utf-8?B?QnNHK01ESVVhOTZwUG1YMEwyNnF5bTVJR2wxTStiRFFQU1g1VE84RktTZmhX?=
+ =?utf-8?B?Y1ZEQUlka01IZ3pjT2NVblg2RjB0c1Nyb2FVQVFUWCs1QUlneXQ5VnpaUFBO?=
+ =?utf-8?B?MmdadkpMbWZSSGIrbWtMcExrMEd4YkhLWEFaWnA1MGxmMDlrY1RxUFJyT0ZI?=
+ =?utf-8?B?R01ZajIvZld1dXllckxnUC9YMTVSK01sZU9NY0FVejNlZXJaUFA2THV2ck5j?=
+ =?utf-8?B?ZFNoQlNZYWZqN3NEUUMrdS81SUxSd0lVcnRYeXhIVitMWlU5S1hiRnVCNnBn?=
+ =?utf-8?B?OHR2QWlwTlNNVDI3c05zM1ZUNmVCNUM0NzBpMUlwdXFoTlk2TDgrZWgycGJa?=
+ =?utf-8?B?ZkI3ZWd3WXU0UHVIdndtTzFveDRpd3hvNmt3b1ZXQU9lK3NUamtVRnhnY1hR?=
+ =?utf-8?B?SEI1MVFXSjdZL0U4aVVFWHJXV2NTRjdpVzVURlY3QzNDait0ajhCRUo2d3lT?=
+ =?utf-8?Q?eRK5gu4tL49AAwRwweVHDLLVz?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebba5f8f-6576-4e8d-6790-08dd8c1d05eb
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2025 21:37:24.1348
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3sBtGaOszZoBSxKDOQFixRR4G/m9erKvkhTKSiZyjeoZrp3bqfHh2XSdIfvx9i5e6idSDXoF7mpVsgk1QCsEsA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7547
 
-On Mon, May 05, 2025 at 02:02:09PM +0800, David Gow wrote:
-> On Sat, 3 May 2025 at 05:51, Miguel Ojeda <ojeda@kernel.org> wrote:
-> >
-> > Currently, return values of KUnit `#[test]` functions are ignored.
-> >
-> > Thus introduce support for `-> Result` functions by checking their
-> > returned values.
-> >
-> > At the same time, require that test functions return `()` or `Result<T,
-> > E>`, which should avoid mistakes, especially with non-`#[must_use]`
-> > types. Other types can be supported in the future if needed.
-> >
-> > With this, a failing test like:
-> >
-> >     #[test]
-> >     fn my_test() -> Result {
-> >         f()?;
-> >         Ok(())
-> >     }
-> >
-> > will output:
-> >
-> >     [    3.744214]     KTAP version 1
-> >     [    3.744287]     # Subtest: my_test_suite
-> >     [    3.744378]     # speed: normal
-> >     [    3.744399]     1..1
-> >     [    3.745817]     # my_test: ASSERTION FAILED at rust/kernel/lib.rs:321
-> >     [    3.745817]     Expected is_test_result_ok(my_test()) to be true, but is false
-> >     [    3.747152]     # my_test.speed: normal
-> >     [    3.747199]     not ok 1 my_test
-> >     [    3.747345] not ok 4 my_test_suite
-> >
-> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> > ---
+
+
+On 5/5/2025 12:14 AM, Bagas Sanjaya wrote:
+> On Sat, May 03, 2025 at 12:07:58AM -0400, Joel Fernandes wrote:
+>> +Conceptual diagram (not exact) of the Falcon and its memory subsystem is as follows:
+>> +
+>> +           External Memory (Framebuffer / System DRAM)
+[...]
 > 
-> This is a neat idea. I think a lot of tests will still want to go with
-> the () return value, but having both as an option seems like a good
-> idea to me.
+> Wrap the diagram in literal code block. Also, note that it can look messy in
+> htmldocs output with certain fonts due to box drawing characters. Consider using
+> ASCII constructs (dashes and vertical bars) instead.
 > 
+Done, thanks.
 
-Handling the return value of a test is definitely a good thing, but I'm
-not sure returning `Err` should be treated as assertion failure
-though. Considering:
-
-    #[test]
-    fn foo() -> Result {
-        let b = KBox::new(...)?; // need to allocate memory for the test
-	use_box(b);
-	assert!(...);
-    }
-
-if the test runs without enough memory, then KBox::new() would return a
-Err(ENOMEM), and technically, it's not a test failure rather the test
-has been skipped because of no enough resource.
-
-I would suggest we handle the `Err` returns specially (mark as "SKIPPED"
-maybe?).
-
-Thoughts?
-
-Regards,
-Boqun
-
-> Reviewed-by: David Gow <davidgow@google.com>
-> 
-> Cheers,
-> -- David
-> 
-> 
-> >  rust/kernel/kunit.rs | 25 +++++++++++++++++++++++++
-> >  rust/macros/kunit.rs |  3 ++-
-> >  2 files changed, 27 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> > index 2659895d4c5d..f43e3ed460c2 100644
-> > --- a/rust/kernel/kunit.rs
-> > +++ b/rust/kernel/kunit.rs
-> > @@ -164,6 +164,31 @@ macro_rules! kunit_assert_eq {
-> >      }};
-> >  }
-> >
-> > +trait TestResult {
-> > +    fn is_test_result_ok(&self) -> bool;
-> > +}
-> > +
-> > +impl TestResult for () {
-> > +    fn is_test_result_ok(&self) -> bool {
-> > +        true
-> > +    }
-> > +}
-> > +
-> > +impl<T, E> TestResult for Result<T, E> {
-> > +    fn is_test_result_ok(&self) -> bool {
-> > +        self.is_ok()
-> > +    }
-> > +}
-> > +
-> > +/// Returns whether a test result is to be considered OK.
-> > +///
-> > +/// This will be `assert!`ed from the generated tests.
-> > +#[doc(hidden)]
-> > +#[expect(private_bounds)]
-> > +pub fn is_test_result_ok(t: impl TestResult) -> bool {
-> > +    t.is_test_result_ok()
-> > +}
-> > +
-> >  /// Represents an individual test case.
-> >  ///
-> >  /// The [`kunit_unsafe_test_suite!`] macro expects a NULL-terminated list of valid test cases.
-> > diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-> > index eb4f2afdbe43..9681775d160a 100644
-> > --- a/rust/macros/kunit.rs
-> > +++ b/rust/macros/kunit.rs
-> > @@ -105,8 +105,9 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-> >      let path = crate::helpers::file();
-> >      for test in &tests {
-> >          let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-> > +        // An extra `use` is used here to reduce the length of the message.
-> >          let kunit_wrapper = format!(
-> > -            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit) {{ {}(); }}",
-> > +            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit) {{ use kernel::kunit::is_test_result_ok; assert!(is_test_result_ok({}())); }}",
-> >              kunit_wrapper_fn_name, test
-> >          );
-> >          writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
-> > --
-> > 2.49.0
-> >
-
+ - Joel
 
