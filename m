@@ -1,71 +1,73 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCEB1B6CEF
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 May 2025 06:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62A11C5D53
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 May 2025 06:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746424999; cv=none; b=bm1Y8bR2wRNIFfNAnVY3HCiHyohMztY0Oe3ZLtvmetolK+fsjby7YWAMbmXAlozOR0IUjrz2kF9xr2BqxE+uyjbpRPQWr3E6Hx02KxVb+g6GNgHIYhYuTUacOoOIdKjc/c+iQAsII0qincYdMIFycNkJUGIvMoiyWn2Jqobqfpc=
+	t=1746425004; cv=none; b=gsk5NlDdcY7g88TXhKZxaTJwkIPzRfQujdY24Gqc9p6gWxEg2nLT3CCq5moU9nkZF3t2bgSkvciJz0sCslTTXRAu4VSA52V2s/zVoWyUwQEgSD5+LWw7LsPyVMeDeVGsAGCm7yyNX2YPoxzxS/8VN3AlN/Od0PvToU9kZYg/NNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746424999; c=relaxed/simple;
-	bh=zs/rSHseIlY11AbuAkumeemB+4Gc7hU1XAndoCtfFKU=;
+	s=arc-20240116; t=1746425004; c=relaxed/simple;
+	bh=PH3DWXtV7EAGqSTW/YWTg1OmNV4S+5na5xGMQqf3nOo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ClvqoomLoHXMiMNT+W/8mdu7756GdRuNzzfq58lPioFt99+27XxcaehcKIN3IJZ8wbdS9NH8ShxQjde9E9V4KbyJQqO9Ijf1WwIeC+tD69TGMa2UB2uZCCjbND86ATh/7f1eVG4xcnpAdZhAy3nVorYhJ8Zm+UmUCHzAa1zw7yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RoCkRO+7; arc=none smtp.client-ip=209.85.219.42
+	 To:Cc:Content-Type; b=k3HuqU2jSfAU9CUetC8ao82pYnCj1Yi6UcLk01KzSFKpK2l2z8Aw2q4ljtYyUD+6VGe8Es44+sYC8HB5GaHP2ZgNVJUVcd2XrT79F5dKeh6++0Zpvcd3+0TzL+WCTI/DBQll4ejDw3uWKUJiVMcCVV2idYB9bRN/UiMeezAPl7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vOl1kcFX; arc=none smtp.client-ip=209.85.219.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RoCkRO+7"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6f4e3618437so50347976d6.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 May 2025 23:03:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vOl1kcFX"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6f0ad74483fso50550676d6.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 May 2025 23:03:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746424996; x=1747029796; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746425000; x=1747029800; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zs/rSHseIlY11AbuAkumeemB+4Gc7hU1XAndoCtfFKU=;
-        b=RoCkRO+7klSo8b/I0RwxNBaffxHIyNSOy4GtFATzcYw4aWAcDJtW709EWoOgPF6SW8
-         Vp/venDJpXNDtpRMu9km8cN21qP0kz+ZyWrCA2fK8US4m2TAFUhzVa+YIILkMrYv8ZDf
-         m7k/EdhQKyoQHdPB6lsAYZD797FMNse8Xio0JKd2oG4yis4cbSWw7K3karaZQzfdZ0Gw
-         HrhbpJBSwUwvuolehrIq0o7998j2wI7orCw0TdZ+9uXn+FvJhni0jpIScJimr6mMKAvw
-         LKr523uwra64dHiZbkKTQhjbQ+lid+KsG0EftdOUjtFIHza+FvXUDIXFTyv+U3DVQPvb
-         qVGw==
+        bh=PH3DWXtV7EAGqSTW/YWTg1OmNV4S+5na5xGMQqf3nOo=;
+        b=vOl1kcFXvgu06VEmDULy1JXgUvhiZV5I/MTWW6UhM1SBqeX23bSNKryYboRvszO1a1
+         fEciGdfcJPehqr7hen75vB0Adat5bau+xO0++1i6x2VRXArPBGDNzPPLf0jfrkLe9YGD
+         lUf50zFvNND0+nFmOpQ4rwFrLjawkA8P0ImVQXNZK5n9MB+Q8F9jO0lAwNcO+dqLasHR
+         IrVfff9RHP54rrXKp++IQblq/S7TCpx8flp+jO69+iHL/tI/tDQF2RZBI2kKP1xBwudR
+         kKx22cxiG64uPqrfMALjhURSDDZVT30R4ypA5LH46K9Z06SDIe7d/8f1IQtyfYKlPaj/
+         YSVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746424996; x=1747029796;
+        d=1e100.net; s=20230601; t=1746425000; x=1747029800;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zs/rSHseIlY11AbuAkumeemB+4Gc7hU1XAndoCtfFKU=;
-        b=axuJvYgm82EEJ5LlHCuDGEVEFGXGRLYaBrMDeemGRGxM2ui+tm+1Bw1SjiTpsKGMup
-         f44F0598WD8qmfL/J4RKMSfTc0YpMOlNcesF+4DtxLpLluE6c0e6NauFWYAhJ1oQkxiC
-         vgQbZ0PhJRl2vW+YauLEVR+0bmDisr2Rp6cqwIAYKLGkGFu+BfMCV/Oy3ZTMVwcKNQew
-         2ygUQ6kpPuxcLb1bAJde4gi9HfBUReX38llx0w84P0PPidVZRelN1QLfq28yPdWTtZF7
-         76DScrfKsoPa0sewqrWIsWYTolq+dYmatDusGMhDXpfWBx0NFwBPul1bRAID1uFzH7j1
-         u7Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBajShYqKsWa/qVe06wXT7DWHJnDVXe12u1U5CAUMp75x2ftvks8G5fw/w633y7CwILr6ySKXzFd26HMGOUw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFaFKx1i7vPUYjp3AbLSCtxGH4kCAD6xyhGmiR5Rjq3RwmEy7G
-	vbqJ2cyxmSjGPxn3MqOcjDflFbzqdnHDOdEZXkyM3FIT1awx62HXI8X8Z055vZrGzETYXsRHIGY
-	tKloWKD1Z/IaG9C+WxjemXAn+RHM0e00L/1HS
-X-Gm-Gg: ASbGncu4wJOrsS3pJfbiTF93GDqfMiq2aoxDqfAT8m5LqLvH4QzoaaPY89h/fTbOTHQ
-	Tz9DpKfV2B5dRf3RmMGL9NEjtqGAzFLZ5PBy5ZtAMJIcsfbapJlRYlmd8dtuYe1CLD0/CwD+CfR
-	J+JXkLYIeYWr6eOF88glGQXfo=
-X-Google-Smtp-Source: AGHT+IH7Slx7kJ7AZ/FxAFxFO6odwCFWPLFgHEvqb529XbOlpSDXyNLx3aONbBD534Ib0MrMoxedIIanXzeZUwFmPrM=
-X-Received: by 2002:a05:6214:e86:b0:6f2:b551:a63 with SMTP id
- 6a1803df08f44-6f528c3eb86mr90670586d6.3.1746424996313; Sun, 04 May 2025
- 23:03:16 -0700 (PDT)
+        bh=PH3DWXtV7EAGqSTW/YWTg1OmNV4S+5na5xGMQqf3nOo=;
+        b=Zv9BQpevtjTb6DVT3OS96gSWyjQuUnlo0Swex8H7m0RHiceMdKCtdPbdjTC/wKeAf0
+         7AWGGwsDEEJypJNlMhsGOFOXQVzN5ZwNdE5N3VVPsXv+8Rz99JUj2x/6ZI3h1YK/hPq3
+         X4dRxz4ylhGS8hyjKLPll10SHcMl+qPpakNcDeu67eE2NALBOwxQVB6wnaggpWZ0c4vq
+         uFEOXFmZQEidEQKjKeK6nmtLmn+sfeqpicDbleBYjqav0wVzLnv6LeTGF/z2Z8npe7on
+         +D9pdDc0+xM2Zwnl9wtDGsW3zIFbDmbbz2Odw8TWEmNOLYIU+VDWxEk/s+qL/Mjzxmws
+         oZTw==
+X-Forwarded-Encrypted: i=1; AJvYcCXEAOcMt67yz7M9fs73fsztD/kGMcMjtRimfpmCqwL0+Cmfny3KeAtaYB31B4hwY4xbUaq9LU+8LIXNUmDR5w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSdb7BLkwyeAMs03ajKeyak7nzgz4Vn6w97CrMRKw2+kCxRwZG
+	fuaXxuZ9Ttr2FVY37ppfIoV8Bm/FEZYmcE+NoW3e9bHJfqAWhUs0L4M7BnOxgegkgp5B7v1EyvW
+	8D1ky3dxrz1zH1hETlRYwGpQem7fchTC7KeXT
+X-Gm-Gg: ASbGncuh87InU4iilBPJT19J/LPfw4VZCNvNbx/FJKjKY+xp3MkKeH6bScAdSJWru08
+	JiyrCbcAZrydPHPbwMnBXo8id7f0gMJ6Vsv4bQAMGS+PzILFtaIFeWT+9KwJsPDU6ZVFIkzsfNr
+	gf/0e0sW+pEx0ItYMqNTeSSaI=
+X-Google-Smtp-Source: AGHT+IEFhuCK3QMY81WgIBNq2v94m6B/GUEkcprbog846BVrP+ZTLHFzHeexoEtrNM0L1/E/MZ4o+ontDNfR5zaxFhE=
+X-Received: by 2002:a05:6214:5084:b0:6f5:e0c:b21e with SMTP id
+ 6a1803df08f44-6f52374e3a7mr102534226d6.11.1746425000411; Sun, 04 May 2025
+ 23:03:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502215133.1923676-1-ojeda@kernel.org> <20250502215133.1923676-3-ojeda@kernel.org>
- <CAJ-ks9=v8E_bV+oJ-bdm3KZW2dfrFdiCmeVLs+bgK8oVu6BCUA@mail.gmail.com> <CANiq72=C1+2B221ecxM5Dy1rF8nEtR4ikgAA2nEh3M1=EkkXyg@mail.gmail.com>
-In-Reply-To: <CANiq72=C1+2B221ecxM5Dy1rF8nEtR4ikgAA2nEh3M1=EkkXyg@mail.gmail.com>
+References: <20250502215133.1923676-1-ojeda@kernel.org> <20250502215133.1923676-5-ojeda@kernel.org>
+ <CAJ-ks9k=uxxumgEU84-54u8OxxJVBsUprGk7Ht31ndoumHB95w@mail.gmail.com>
+ <CANiq72=Q_Vbfh6YhDsNeCBDPZ-q1d2HNfaTj4azAsd2Q-zPfEw@mail.gmail.com>
+ <CAJ-ks9mAgR3N+cxL6H5XhAN-iWM=T66vuWr=LEozj8bqofBf6g@mail.gmail.com> <CANiq72nQeHpZFk3KYGsgGO0Sh2TgV8T2z7Pahkijrgd=T64KYQ@mail.gmail.com>
+In-Reply-To: <CANiq72nQeHpZFk3KYGsgGO0Sh2TgV8T2z7Pahkijrgd=T64KYQ@mail.gmail.com>
 From: David Gow <davidgow@google.com>
-Date: Mon, 5 May 2025 14:03:03 +0800
-X-Gm-Features: ATxdqUEUtR-0tp7v5hFhJNEcqmp-vvXK44E9QJdJUtfmQEfbsdrEJ2pXimvwHj8
-Message-ID: <CABVgOSmTCXD1HnBZZOUBTPwANGUzxa+w3+xcFr=HDtWkot0NzQ@mail.gmail.com>
-Subject: Re: [PATCH 2/7] rust: kunit: support checked `-> Result`s in KUnit `#[test]`s
+Date: Mon, 5 May 2025 14:03:09 +0800
+X-Gm-Features: ATxdqUEHy61kWwVB9hppFrYxZgxEdcBoiUigAmWGVOo_uWsssjD5qb5pD1-N68Y
+Message-ID: <CABVgOS=AKHSfifp0S68K3jgNZAkALBr=7iFb=niryG5WDxjSrg@mail.gmail.com>
+Subject: Re: [PATCH 4/7] rust: str: convert `rusttest` tests into KUnit
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Brendan Higgins <brendan.higgins@linux.dev>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -77,45 +79,68 @@ Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000090280406345d4185"
+	boundary="000000000000cefc7b06345d415c"
 
---00000000000090280406345d4185
+--000000000000cefc7b06345d415c
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 5 May 2025 at 02:00, Miguel Ojeda
+On Mon, 5 May 2025 at 03:02, Miguel Ojeda
 <miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Sun, May 4, 2025 at 7:34=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
+> On Sun, May 4, 2025 at 8:39=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
 > wrote:
 > >
-> > Why not restrict this to Result<(), E>?
+> > One example is https://github.com/torvalds/linux/blob/59c9ab3e8cc7f56cd=
+65608f6e938b5ae96eb9cd2/tools/testing/radix-tree/xarray.c.
+> >
+> > It might be that these are necessary because the xarray tests don't
+> > use kunit, and so are pretty inconvenient to run. As you might have
+> > guessed, I discovered these host tests when my patch porting the
+> > xarray tests to kunit broke the host-side build :(
 >
-> I guess it is an option -- not sure if there may be a use case.
+> It can be useful to have some tests as independent userspace things
+> (i.e. outside KUnit-UML) to use other tooling on it, but I think for
+> such cases we would want to have a way to use the tests from userspace
+> without having to remove them from being KUnit tests too, since we
+> definitely want to test them in the actual kernel too.
 >
-> > Is it possible to include the error in the output?
->
-> I thought about giving some more context somehow and perhaps printing
-> it "manually" in the log, possibly in a KUnit `# ...`. David can
-> probably suggest the "proper" way.
+> David et al. can probably tell us more context, e.g. I may be missing
+> some plans on their side here. For instance, for Rust, we wanted to
+> eventually have a way to tag stuff as kernel vs. host etc., but that
+> is longer term.
 
-Yeah, writing it to the log is fine: probably the best way of handling
-this would be to have a kunit assertion macro for "assert_is_ok!()",
-which prints the error nicely.
-We could just use the existing kernel::kunit::err() function (which
-could use some improvement, but is a good start), or even add a proper
-assertion formatter which handles rust types via %pA.
+Yeah, this ultimately boils down to a combination of which tradeoffs
+are best for a given test, and personal preference.
 
-That being said, there's no guarantee that the Err branch of a
-Result<> can be printed: so there'd need to be some magic to handle
-both the case where (e.g.) Err derives Debug, and the case where it
-doesn't (in which case, we're basically stuck with what we've got
-here: "expected is_ok()" or similar.
+KUnit definitely has the advantage of being more a more "accurate"
+test in a kernel environment =E2=80=94 particularly if you're cross-compili=
+ng
+=E2=80=94 but is a bit slower and more bloated (due to having the whole
+kernel), and therefore a bit more difficult to debug.
 
-Cheers,
+In an ideal world, most tests would be able to be compiled either as a
+host-side, standalone test or as a KUnit test. There are some (sadly
+lower-priority) plans to support this more with C code by having a
+standalone implementation of the KUnit API, and things like the
+automatic conversion of, e.g., assert!() macros into their KUnit
+equivalent could help if we wanted to try something similar on the
+Rust side.
+
+But, as you point out, that sort of tagging of tests is really a
+longer-term goal.
+
+In the meantime, my strategy has been to encourage KUnit for new
+tests, or ports where it's not going to break existing workflows too
+much, but ultimately to defer to the maintainer of the tests / code
+being tested if they've got strong opinions. (Of course, I am biased
+in KUnit's favour. :-))
+
+
+
 -- David
 
---00000000000090280406345d4185
+--000000000000cefc7b06345d415c
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -205,13 +230,13 @@ uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
 PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
 Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
 BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
-pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgSO++0B9yXE91vmSK5QswdVHIoIzD
-ZswnqzNolsVPCOAwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
-NTA1MDYwMzE2WjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQg9VCo9AkDzqcO4qtNrYuHU6sfXVr0
+chWM2JzFvG8yav4wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+NTA1MDYwMzIwWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
 YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEAhZZeObKzKFSeo5W82X4i2eJdUgk/fV7YKdFnfd8AQ5+n+cJ1FfCAizReWJtzcUP+
-XCBcOoHfiypR02Qx3xyDRaOQpvazHQ+LzXnAkJ1RLnQnEm3GotNFSr4S2cciqucdjAo6jxIDVbC1
-i+0wB611p0fjc8mf5KNpJ38TDvwJPVZqIy40Bg21GO499/dGE/S+SXhJudfuJONDJ4JF+9ZYTfzJ
-zeUIjAM9fkSDzfRMJFFYpeJ2X71DAkNJbUsftqSwA2te7iHKl9KWn8SB35qErlYNL880TGk15+e8
-Om8GpkKipMLbx5yzIBrnCwk9msH1vDzz1ggwU2HfZSiLV4sekg==
---00000000000090280406345d4185--
+AQEBBQAEggEAgYaeFnOuL2Chg3MMB1Hpg+mzz8/ldCMFcnoVtM4EWho3j5W8WcsskgRAMP69Ohn0
+VhQvqJ1oJo7NfsdbM+GIQZMrg07FjOeIBp0v8gz0B/z4Qz8CLtz622wmPruB7gRZioTybkgS/fNH
+1RVdIfNEBhZrEfBvZy52EuhGMye4UdH53TOIxaxp9LwWB77bdEo7So9WIKzzOVMXfveiTJQ7XUDg
+5vZJ1eaSrcyVqy/00/9IkSDaYA1Q430uLMv+dGvldx5HSYhCwXWIDc1qJPgOUeuIDYE5Q3eH6Ira
+dl2ELvB27043cWnfo4mxqqOPRi+uvSuhfV8qNtoicxNUr7N/rg==
+--000000000000cefc7b06345d415c--
