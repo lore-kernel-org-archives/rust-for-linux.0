@@ -1,189 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783E11DE3AF;
-	Mon,  5 May 2025 09:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E793EAE7;
+	Mon,  5 May 2025 09:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746438945; cv=none; b=E5IBC+opG1V12WxDcg5dmoojFHR8SNncUXGhf7mAVEWHF+oR4CKzj1VatAjyPJKASusFnMuUeZnkl2mGLF4RQic97eOIkWCIaQVUcnK1rv4BZwjbh4o0EkXCDeB1iZlunSOrrCHuUECriRubB0RaakjxoeuCBA0pUlbVuHdl9lM=
+	t=1746439035; cv=none; b=IMm3Ll4lsmhNWsvWVmKWvFJ9Uk667MT4stxv1CjtW8Ab4RN4e3CNGzm3JqHqT8rlcRuI4krCce6bLUb+qyx4UHoOmVO79XWqDLGMfMxlnivKulKmqnWk41iKEliQPFDJ5r9COvzH2hWIWpWjNd84AnDY4Rb0ApQEUd/27EPjx74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746438945; c=relaxed/simple;
-	bh=C+qofN41T9ZGZV/Yauz2+1+PKYZmi9DihY6aLigOKSI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kvN5/jnEA0Q2i+sOqYyTd8iwS8bIBErs4UAIlIrZbkPjG3P5SR3ZnWglPaoRDVEKnStHpcXQVtXdnRvgRuSU3NdArTcZP/Nlt4sI9iny/qyHGz8L6tmb4KrwyWbAENvXTRUi3MEAvJdcVPqsyk4B2LzujebhexYKEhhNn2Qy+nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lIG6OFKK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746439035; c=relaxed/simple;
+	bh=DdUUTkfnlA9fK+AY7ESBEJWr8GgX2XsTVOxe0gHjLFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bni5rZoUSa7tFjJcbVho9H6VjxNaHnp5onVjsW4EdAG839Kfgf2r0py2xR7SEu2y87+1C1L95tnccpp57MXAhEhBzuCXgRFyf/1jUiV/YTzTIiE0gMAbX3dsi/ZqSsHmxjASKS0y+ADy/CaDNhAGYP20oZybWPLW9dBv2L1K7Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rSXq/GKo; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lIG6OFKK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC56C4CEE4;
-	Mon,  5 May 2025 09:55:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746438945;
-	bh=C+qofN41T9ZGZV/Yauz2+1+PKYZmi9DihY6aLigOKSI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lIG6OFKKuZoF45Xa5t+XOx2zCpIrNGnvG4tQ+MSOPD8cmpNfuqXBeXEQJCQvzV+Tr
-	 TVb9iR3kx5r/nLo6Ivm3btPA3XlQ1WlJcKlQqOVMIlcMTrRvwmjmMdJuvInwuiCPPZ
-	 j8/qiNiZSyf80yMW3JYb2+5Jlr3gxr2/Mfow6l+49fECTvMk6Q2I0ypz0+JQrlAxho
-	 m1CyDA2fbsGuf3vuEmN7m4xX165tSxjwDG616sOdZ1kPN3eRCQ1k9Z188xhX/3gZw9
-	 MdcMGURjj6qG05hThenfkuXn/UuLCyj0UebROnk9llUV1GLIsasAYQwNUqb9Agw06X
-	 q3+FbTdn7wyzw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Masahiro Yamada"
- <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,  "Luis
- Chamberlain" <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,
-  "Nicolas Schier" <nicolas.schier@linux.dev>,  "Trevor Gross"
- <tmgross@umich.edu>,  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v11 2/3] rust: add parameter support to the `module!` macro
-In-Reply-To: <aBTMMHWNXS7wK7zS@google.com> (Alice Ryhl's message of "Fri, 02
-	May 2025 13:44:16 +0000")
-References: <20250502-module-params-v3-v11-0-6096875a2b78@kernel.org>
-	<20250502-module-params-v3-v11-2-6096875a2b78@kernel.org>
-	<WroEJHY8a-y8vbSQkUvGJJs7yTQGKMsHJqmWFYGkz5bZ_PsiE8GAozjSaNpWjWina1XanjVNpV0Av3woiaUtJg==@protonmail.internalid>
-	<aBTMMHWNXS7wK7zS@google.com>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Mon, 05 May 2025 11:55:33 +0200
-Message-ID: <878qnbxtyi.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rSXq/GKo"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 544L4Asp030724;
+	Mon, 5 May 2025 09:56:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=LhUGs6EEJ+/H8XoxFLa+sktR1zW0IF
+	WrMGyaiWI3uTk=; b=rSXq/GKoEvm8sjQA6bU+/dc88eodbGbZLyvF6AgQZiLo2S
+	WjYYCeP6GftDPgY2HF7yzJQ0soHbyonEaeaq0vCbvFQO27xFjCGQcwD20UvcQd8J
+	y7FYHmS5Etq8GRGK8567LQV2KvqmLWXE58p746hWMb37aoju6eS/msyOQAqioFwi
+	JNa5xxXgVSamEUyT8Ppr+1SUJWVXIrKcImFyV1ndvHyxVPAjhEvzarbQU+/EPnD+
+	x1sdwGR1biLXggbkXtamzJoKccuWA3lGV0++0oaIO2zXYLyBtV9sOe93euKLL4DC
+	ssebMectqwwdqBS3FABjSD26ee4qONHgpaGdNB9g==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46eftkjaxf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 May 2025 09:56:38 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5459ou9E002673;
+	Mon, 5 May 2025 09:56:37 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46eftkjaxb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 May 2025 09:56:37 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54579DSq025969;
+	Mon, 5 May 2025 09:56:36 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46dwuynsg6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 May 2025 09:56:36 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5459uWsh59113944
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 May 2025 09:56:32 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2C39520043;
+	Mon,  5 May 2025 09:56:32 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F009B20040;
+	Mon,  5 May 2025 09:56:30 +0000 (GMT)
+Received: from osiris (unknown [9.111.37.115])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  5 May 2025 09:56:30 +0000 (GMT)
+Date: Mon, 5 May 2025 11:56:29 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+        Juergen Christ <jchrist@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        "open list:S390 ARCHITECTURE" <linux-s390@vger.kernel.org>,
+        "open list:GENERIC INCLUDE/ASM HEADER FILES" <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH v9 2/9] preempt: Introduce __preempt_count_{sub,
+ add}_return()
+Message-ID: <20250505095629.13658Aea-hca@linux.ibm.com>
+References: <20250227221924.265259-1-lyude@redhat.com>
+ <20250227221924.265259-3-lyude@redhat.com>
+ <20250228091509.8985B18-hca@linux.ibm.com>
+ <1491bedb15db7317d2af77345b2946c2529c70b1.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1491bedb15db7317d2af77345b2946c2529c70b1.camel@redhat.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDA5MSBTYWx0ZWRfXwwP0h4V48zhW 0AVSEswbTvJIy33/TC7mPjmelx5mY/fBKGqOfZeO62vdclxmwgmEzdZ23P6nHJ79SHfb1/Cc8bM P5zZ/+4RgCWhqwoC0lFvAr4xBtyqTHVFIdavnZSF6vJ+Q+Ko+gZnR70DWEV+OnZUvab9wR1aU6l
+ /+T81fMYkazI5rIDrqnJwPRQQnPNbzT1rmL80QY1Y1gz7LWJfH/pD0WPURTfWAkA0XlhL6E2CDO e/Kug34Y7PRy9TbQV4W94TPYiVsFucZ+Xp8lFLWq73iK1sSNcSTFQjkPhM/WU2JoGLyh7aTkfz3 7oupbUF3uvbw8G5DwwczPeylex+rlypqmpZ2bTkyxxiq5CZIscj089xXeELVEjflCR3711/I7Xj
+ lB26F3+9oMDm+Jk3IU7C2kqArGZynSBmWL7vYs3vjcHt6f9oF4diQUrRNzZ5XBB07CGI5XEn
+X-Proofpoint-GUID: VP6z2O9dsYmZNNJdubnfxfxKgcPntrt1
+X-Authority-Analysis: v=2.4 cv=Q7vS452a c=1 sm=1 tr=0 ts=68188b56 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=kj9zAlcOel0A:10 a=dt9VzEwgFbYA:10 a=1J5S7fVpQaFMGjp2_GYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: QgC67dW-fUJDkaoN9Kch0MBUP2vTEdIS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-05_04,2025-04-30_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 phishscore=0 bulkscore=0 spamscore=0 impostorscore=0
+ suspectscore=0 mlxscore=0 mlxlogscore=833 clxscore=1015 adultscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505050091
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+On Wed, Apr 30, 2025 at 05:38:02PM -0400, Lyude Paul wrote:
+> On Fri, 2025-02-28 at 10:15 +0100, Heiko Carstens wrote:
+> > 
+> > Well.. at least it should not, but the way it is currently implemented it
+> > indeed does sometimes depending on config options - there is room for
+> > improvement. That's my fault - going to address that.
+> 
+> BTW - was this ever fixed? Going through and applying changes to the spinlock
+> series to get it ready for sending out again and I don't know if I should
+> leave this code as-is or not here.
 
-> On Fri, May 02, 2025 at 02:16:35PM +0200, Andreas Hindborg wrote:
->> Add support for module parameters to the `module!` macro. Implement read
->> only support for integer types without `sysfs` support.
->>
->> Acked-by: Petr Pavlu <petr.pavlu@suse.com> # from modules perspective
->> Tested-by: Daniel Gomez <da.gomez@samsung.com>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->
->> +unsafe extern "C" fn set_param<T>(
->> +    val: *const kernel::ffi::c_char,
->> +    param: *const crate::bindings::kernel_param,
->> +) -> core::ffi::c_int
->> +where
->> +    T: ModuleParam,
->> +{
->> +    // NOTE: If we start supporting arguments without values, val _is_ =
-allowed
->> +    // to be null here.
->> +    if val.is_null() {
->> +        // TODO: Use pr_warn_once available.
->> +        crate::pr_warn!("Null pointer passed to `module_param::set_para=
-m`");
->> +        return EINVAL.to_errno();
->> +    }
->> +
->> +    // SAFETY: By function safety requirement, val is non-null and
->> +    // null-terminated. By C API contract, `val` is live and valid for =
-reads
->> +    // for the duration of this function.
->> +    let arg =3D unsafe { CStr::from_char_ptr(val) };
->> +
->> +    crate::error::from_result(|| {
->> +        let new_value =3D T::try_from_param_arg(arg)?;
->> +
->> +        // SAFETY: `param` is guaranteed to be valid by C API contract
->> +        // and `arg` is guaranteed to point to an instance of `T`.
->> +        let old_value =3D unsafe { (*param).__bindgen_anon_1.arg as *mu=
-t T };
->> +
->> +        // SAFETY: `old_value` is valid for writes, as we have exclusive
->> +        // access. `old_value` is pointing to an initialized static, and
->> +        // so it is properly initialized.
->> +        unsafe { core::ptr::replace(old_value, new_value) };
->
-> You don't use the return value of this, so this is equivalent to
-> unsafe { *old_value =3D new_value };
+Well, this fix was that the atomic primitives, like used in your code, would
+always fail to compile. That was address with commit 08d95a12cd28
+("s390/atomic_ops: Let __atomic_add_const() variants always return void").
 
-Thanks.
-
->
->> +macro_rules! make_param_ops {
->> +    ($ops:ident, $ty:ty) =3D> {
->> +        ///
->> +        /// Static [`kernel_param_ops`](srctree/include/linux/modulepar=
-am.h)
->> +        /// struct generated by `make_param_ops`
->> +        #[doc =3D concat!("for [`", stringify!($ty), "`].")]
->> +        pub static $ops: $crate::bindings::kernel_param_ops =3D $crate:=
-:bindings::kernel_param_ops {
->> +            flags: 0,
->> +            set: Some(set_param::<$ty>),
->> +            get: None,
->> +            free: Some(free::<$ty>),
->
-> You could potentially only include `free` if
-> `core::mem::needs_drop::<T>()` as an optimization.
-
-Right, nice =F0=9F=91=8D
-
->
->> +    fn emit_params(&mut self, info: &ModuleInfo) {
->> +        let Some(params) =3D &info.params else {
->> +            return;
->> +        };
->> +
->> +        for param in params {
->> +            let ops =3D param_ops_path(&param.ptype);
->> +
->> +            // Note: The spelling of these fields is dictated by the us=
-er space
->> +            // tool `modinfo`.
->> +            self.emit_param("parmtype", &param.name, &param.ptype);
->> +            self.emit_param("parm", &param.name, &param.description);
->> +
->> +            write!(
->> +                self.param_buffer,
->> +                "
->> +                    pub(crate) static {param_name}:
->> +                        ::kernel::module_param::ModuleParamAccess<{para=
-m_type}> =3D
->> +                            ::kernel::module_param::ModuleParamAccess::=
-new({param_default});
->
-> Is this global accessible to the user?
-
-Yes.
-
-> It would be a use-after-free to
-> access it during module teardown. For example, what if I access this
-> static during its own destructor? Or during the destructor of another
-> module parameter?
-
-Yes, that is a problem.
-
-We can get around it for now by just not calling `free` for now. We only
-support simple types that do not need drop. I think we would have to
-seal the `ModuleParam` trait for this.
-
-For a proper solution, we could
- - Require a token to read the parameter.
- - Synchronize on a module private field and return an option from the
-   parameter getter. This would require module exit to run before param
-   free. I think this is the case, but I did not check.
- - Use a `Revocable` and revoke the parameter in `free`.
-
-Any other ideas or comments on the outlined solutions?
-
-
-Best regards,
-Andreas Hindborg
-
-
+So yes, you need to change your code like I proposed.
