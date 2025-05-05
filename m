@@ -1,116 +1,322 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEC320D516;
-	Mon,  5 May 2025 11:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB9B24DFED;
+	Mon,  5 May 2025 12:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746443424; cv=none; b=s+U6mFzi6/I/IpJz1CmABEc/e5MENfOI2F8flVcrqQq7ZRAm/gV517uVJafBy6H5J/yv2vuYXsmzfVkN3EEPqBPKFcaPNiAEcGX0gDzl5pP0MrBYJW6OAR9Uw8BNqpFioXd6JzoZmB/mKGv5vQT5UXzxKAaOCRImVtfQ+PSHkxs=
+	t=1746447445; cv=none; b=bZxMQLrIaqVu/SuKwn606eUg9+2h+/f7xrxYGtSIOHPW2hUizIbG/1Z9aWmE0aRYqiABctesf7clvJ0Fhj4PzumEMFdEhWsT6l6xQ/cXPpv3eRlAmMeaLUhXbvUOqp5Y6H1aERuH1iB/UTGy9B5amZ6qkwBgIijDUQqjhftqu1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746443424; c=relaxed/simple;
-	bh=4FpffMYXeHEJ5GO+8GXJNipXl6pN/tMkkzwOR8vDn4c=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=CK4K1UowG0QZLune9Fc7p/BKj56hf38QLAURSN4Ctry6ihw3HTqDATgB1BfnkmUIqKGyi56P16k4G8mcrZ7uVfymAwq459r0mtX7XaPD9XmZ7oc+q3/COd2IO8RDWxI7wiaHqgCMnnE0H/vi1TqkOpPu1g1wv2KU3lNgBelx84c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bxru4Or9; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746447445; c=relaxed/simple;
+	bh=rzYVWa8T9n45Z4cSfo3JixMLHUxrIRHR2zB8t+Wr27g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=TiuhQwtrdx+HCLz9ZqBZPtzdZhfKiFD0gbrB4eyoX/FVBKJxGssWUgpxtrKU5DfrZO/zcHxfpDhK4DJQY1D7uBizN2o3ijNTHKeYuee6Xyhpwtwvo3TOY8/byeE5FQGp23RHH63UzhFoMzw8khllsUo71hnWJZ8gDos47HRZxNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XMcv6qus; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bxru4Or9"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-309fac646adso4752925a91.1;
-        Mon, 05 May 2025 04:10:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746443422; x=1747048222; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EWZuGmIjp3ybCCUuK9xfd6vrGm/T4V2mNK0626+PnFI=;
-        b=Bxru4Or9bYvAzfaV7UKPDjf0TpMcwlzTS3aopnsZdT8IueO8eWsGUIgOMXFz/1ZmL2
-         iR++aBQGEnbAm6z3CYMlcNll/4YKnu0woAG8ezFcJ2ZgvwPdwNEQXtACIQV467NAvuU1
-         ea0cAr+L6y8HUuMa/0FL1nzq2dIKOaJoIg1PlRrdEcv0trm/bMIjBhEMDYELor7QeyKW
-         15a8B1eUt+oAHUjbi7ohmLtbDyX6KnrCsTXRgWth39nuCQ9yeK5iYBHWge3rz8Iha89k
-         5DuXwAcIOOSjKHKEd3Y0SKWG+7tN9hi5k0YlvlAGxxINXufvGbhj4f0sVvB3ic0LImRL
-         VNJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746443422; x=1747048222;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EWZuGmIjp3ybCCUuK9xfd6vrGm/T4V2mNK0626+PnFI=;
-        b=KnOw0egroa9FWY6FMEI4+o5ew/J/25Y5c9aAO//4F9o2HGJ6kzYkpmihMujbfYSHZ/
-         WuWAiLu5xilmlwe8uubxROMRknuPBnBYsEaS+aTX8fnYHjXlnSFp804z5PQAQjCWi6I9
-         DpCPNP1i5o4jsNzzLn1FAp/Eths8UZrfvQwfbu1FtnlwOnC8sB4uezPj8cgM1k/6pQAy
-         LgXMespYv0tLov8oUCmqP+vKfX0VDUlWk/5mmXRbPagqYZeqy6zwOJqJTgiQfR+RYGxv
-         I9tGB3+JvfBz+Oz7/KvukoyrDuPHxRNMu5/q7MNNRL4xoAp2nCQXVp9TIMRzKWX9tBao
-         Mqyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVm6M0GBFM2QFDEoIgyEFNaQOmblFZYEKI3l3rAbcZLj2H2aZhNv1tsc59+Ybm9OvDwqAmOiEgpWdEOSUY=@vger.kernel.org, AJvYcCWpgQdd5Z3lEC+j6Zl3JdIA4kYAIglatfsNt5U/d4SVhb1VQYdgWmLK39SQ/ipuaX3Ez3F7zT5x46ZIRGq5+/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3M9KPTajvlOtne+fhaaWXwMAOOVroC9Ebox64bGHBepolF9o4
-	/myw5zawE2AkapGisqsQwfaE+4OCDdUTHe2pNlQW1LuRaDKGB+hV
-X-Gm-Gg: ASbGncveeSY8mCrxPT6ot7GeyI1P+1Px9oRvsoAhTgwLKLJGoeIMke/31BNkD1ixI/Q
-	iDReiyV8mzLctA524sI5H4CJamhZ6dTzcdI4NDzfdNbhxX3Bhz+u4xN0IBQ1rvjRA71sLz09f91
-	kVJbP4HOqG06NovhzsXtAvxiYZIEEvErNa4xa04uTOtG2YaE4O6DkzWMfthj/l014put9YO/hJs
-	/UI93gcx+iF9qg4XjaPuna8PXhqjFGDVd+jT1UEYvIt4U3HCvjKttdnkeB6DfHTRSg+6PiNwPrj
-	uYEigG1z9npAVyfP5ngDtNGb+CMXmzvjHfVMmgOGJJkkw/3C/6XB8L8DyRoDA0lKbktyquIs3h1
-	Tef2zXaf9eK53ravEm1JYnAc=
-X-Google-Smtp-Source: AGHT+IEZmSfLIk3S+fUHKlWusHm69xBh3+6MJHfHPMfo8DaMWKxk52G2ayt5nH2JD5u2ecF39C3Jcg==
-X-Received: by 2002:a17:90b:4c51:b0:2ff:5267:e7da with SMTP id 98e67ed59e1d1-30a4e1c94c3mr17244354a91.3.1746443422415;
-        Mon, 05 May 2025 04:10:22 -0700 (PDT)
-Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1521fb4asm51617915ad.113.2025.05.05.04.10.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 04:10:22 -0700 (PDT)
-Date: Mon, 05 May 2025 20:10:04 +0900 (JST)
-Message-Id: <20250505.201004.457132112950898883.fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, a.hindborg@samsung.com,
- boqun.feng@gmail.com, frederic@kernel.org, lyude@redhat.com,
- tglx@linutronix.de, anna-maria@linutronix.de, jstultz@google.com,
- sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- aliceryhl@google.com, tmgross@umich.edu, chrisi.schrefl@gmail.com,
- arnd@arndb.de, linux@armlinux.org.uk
-Subject: Re: [PATCH v1] rust: time: Avoid 64-bit integer division
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <8734djxrm0.fsf@kernel.org>
-References: <20250501015818.226376-1-fujita.tomonori@gmail.com>
-	<8734djxrm0.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XMcv6qus"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AD9C4CEEF;
+	Mon,  5 May 2025 12:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746447444;
+	bh=rzYVWa8T9n45Z4cSfo3JixMLHUxrIRHR2zB8t+Wr27g=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=XMcv6qus0M8Eul0W7sK7agNTIMFF+P0ZENMPw0e40x/sJk1e9IdZ3Isj6oiygMIiR
+	 qHZfn7l76j+mdNDodlbyHWxsPLg2GXedprK5A0CdBcZVlU9xpPeP5B790d5wgrlrmL
+	 C9GKLM+xVZI9whoQyWSPFI0GtwRpqBJQDmG6uqEgF0iWMYZ0iTV8/jLE7IKGvDG82W
+	 Zhhe9sy8fMr2vTfe6lGD90zeyh0fbbsTujePI44lkjj1kwHsKJs1ifd8WkrkI3t5mz
+	 2m0fe48KGPRDhHpsw5uiXKXgVAgYXhwYZDt+DpeadNKSQvuzoq7FvO8BGzl/V53F3a
+	 4G3G7gBHeso0Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Mon, 05 May 2025 14:16:57 +0200
+Subject: [PATCH v7 2/3] rust: configfs: add a sample demonstrating configfs
+ usage
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250505-configfs-v7-2-8bcf47c1fb88@kernel.org>
+References: <20250505-configfs-v7-0-8bcf47c1fb88@kernel.org>
+In-Reply-To: <20250505-configfs-v7-0-8bcf47c1fb88@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Joel Becker <jlbec@evilplan.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+ Fiona Behrens <me@kloenk.dev>, 
+ Charalampos Mitrodimas <charmitro@posteo.net>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Breno Leitao <leitao@debian.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7356; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=rzYVWa8T9n45Z4cSfo3JixMLHUxrIRHR2zB8t+Wr27g=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBoGKxExvuRHZwec4BsCbEsIWMOu6XbleC/AeL3V
+ oK9orrVIayJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaBisRAAKCRDhuBo+eShj
+ d6zVD/9ROTA8f6TlyzQ62mMa8/D/xoR6klzZ2C8b4kX2po0KFAbMbY6lu+UyKeMNdqE9nFaQsZY
+ I79SxRnyTlQVP1SCcqlXeX3rbtKI1Hn20iHlLHP2B9fOiySVIiNGWmwsUW8+VFuTb4Yzymc+D5c
+ +27YyvDKs0chTtEN2VW6Ql0O7pmrL86siuQvZ4H+MJVKbxBmzqkrz5zMzqsXuCtCjNcwzI8tWbH
+ y1TYexNQ97YVY7CBft5ibs0r+sbD9hSwok1ol93JP+19gp6u2Xa99HvF4npSErlQ6KrPsfnwsqT
+ uUI8vo8tCpMFkUxdm1l9gqcZO+7JUfoBAXNKllNqsQC2ezvvDTdF2dkZ/iCpweLxyab936sm4eT
+ Liip4kkaVK4ESnIkeHUqhx3/aIHbtsurDHbuThdeXI2/L2fd85Bu3SJJYirPGqGG4bwK+EWUg0A
+ eXPcJmFTXTZxADYJGad1UcntL/oWVHAvfoGG3ANtfa+esMr0vj1DwR+elKux8Oih1G73tclnMX+
+ L1uFsHkMqniGtUx++m8yrD8PP5IKBI4E2Zdya17B/HqJtiGLX+7PgNkFE9hZ6kWiVgErQDg5Igs
+ IZFp65m6rxeOWMaEnK+tOcOBGiefN/ayDQpK+bZILrxH3TMsQpLHY/vwwsKd3XQPasUVGy4W8Ur
+ S5bGOYZJLNeUHRw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Mon, 05 May 2025 12:46:15 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+Add a sample to the samples folder, demonstrating the intended use of the
+Rust configfs API.
 
-> FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
-> 
->> Avoid 64-bit integer division that 32-bit architectures don't
->> implement generally. This uses ktime_to_ms() and ktime_to_us()
->> instead.
->>
->> The timer abstraction needs i64 / u32 division so C's div_s64() can be
->> used but ktime_to_ms() and ktime_to_us() provide a simpler solution
->> for this timer abstraction problem. On some architectures, there is
->> room to optimize the implementation of them, but such optimization can
->> be done if and when it becomes necessary.
->>
->> One downside of calling the C's functions is that the as_micros/millis
->> methods can no longer be const fn. We stick with the simpler approach
->> unless there's a compelling need for a const fn.
->>
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> 
-> 
-> Please consult recent MAINTAINERS file when you send patches. If you
-> intend for me to see a patch, please use my registered email address.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ samples/rust/Kconfig          |  11 +++
+ samples/rust/Makefile         |   1 +
+ samples/rust/rust_configfs.rs | 192 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 204 insertions(+)
 
-Sorry, I did follow that for the last two patchsets (generalizing
-Instant and hrtimer), but somehow I messed up with this one.
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index cad52b7120b5..be491ad9b3af 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -10,6 +10,17 @@ menuconfig SAMPLES_RUST
+ 
+ if SAMPLES_RUST
+ 
++config SAMPLE_RUST_CONFIGFS
++	tristate "Configfs sample"
++	depends on CONFIGFS_FS
++	help
++	  This option builds the Rust configfs sample.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_configfs.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_MINIMAL
+ 	tristate "Minimal"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index c6a2479f7d9c..b3c9178d654a 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -8,6 +8,7 @@ obj-$(CONFIG_SAMPLE_RUST_DMA)			+= rust_dma.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
++obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
+ 
+ rust_print-y := rust_print_main.o rust_print_events.o
+ 
+diff --git a/samples/rust/rust_configfs.rs b/samples/rust/rust_configfs.rs
+new file mode 100644
+index 000000000000..60ddbe62cda3
+--- /dev/null
++++ b/samples/rust/rust_configfs.rs
+@@ -0,0 +1,192 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Rust configfs sample.
++
++use kernel::alloc::flags;
++use kernel::c_str;
++use kernel::configfs;
++use kernel::configfs_attrs;
++use kernel::new_mutex;
++use kernel::page::PAGE_SIZE;
++use kernel::prelude::*;
++use kernel::sync::Mutex;
++
++module! {
++    type: RustConfigfs,
++    name: "rust_configfs",
++    author: "Rust for Linux Contributors",
++    description: "Rust configfs sample",
++    license: "GPL",
++}
++
++#[pin_data]
++struct RustConfigfs {
++    #[pin]
++    config: configfs::Subsystem<Configuration>,
++}
++
++#[pin_data]
++struct Configuration {
++    message: &'static CStr,
++    #[pin]
++    bar: Mutex<(KBox<[u8; PAGE_SIZE]>, usize)>,
++}
++
++impl Configuration {
++    fn new() -> impl PinInit<Self, Error> {
++        try_pin_init!(Self {
++            message: c_str!("Hello World\n"),
++            bar <- new_mutex!((KBox::new([0; PAGE_SIZE], flags::GFP_KERNEL)?, 0)),
++        })
++    }
++}
++
++impl kernel::InPlaceModule for RustConfigfs {
++    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
++        pr_info!("Rust configfs sample (init)\n");
++
++        // Define a subsystem with the data type `Configuration`, two
++        // attributes, `message` and `bar` and child group type `Child`. `mkdir`
++        // in the directory representing this subsystem will create directories
++        // backed by the `Child` type.
++        let item_type = configfs_attrs! {
++            container: configfs::Subsystem<Configuration>,
++            data: Configuration,
++            child: Child,
++            attributes: [
++                message: 0,
++                bar: 1,
++            ],
++        };
++
++        try_pin_init!(Self {
++            config <- configfs::Subsystem::new(
++                c_str!("rust_configfs"), item_type, Configuration::new()
++            ),
++        })
++    }
++}
++
++#[vtable]
++impl configfs::GroupOperations for Configuration {
++    type Child = Child;
++
++    fn make_group(&self, name: &CStr) -> Result<impl PinInit<configfs::Group<Child>, Error>> {
++        // Define a group with data type `Child`, one attribute `baz` and child
++        // group type `GrandChild`. `mkdir` in the directory representing this
++        // group will create directories backed by the `GrandChild` type.
++        let tpe = configfs_attrs! {
++            container: configfs::Group<Child>,
++            data: Child,
++            child: GrandChild,
++            attributes: [
++                baz: 0,
++            ],
++        };
++
++        Ok(configfs::Group::new(name.try_into()?, tpe, Child::new()))
++    }
++}
++
++#[vtable]
++impl configfs::AttributeOperations<0> for Configuration {
++    type Data = Configuration;
++
++    fn show(container: &Configuration, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++        pr_info!("Show message\n");
++        let data = container.message;
++        page[0..data.len()].copy_from_slice(data);
++        Ok(data.len())
++    }
++}
++
++#[vtable]
++impl configfs::AttributeOperations<1> for Configuration {
++    type Data = Configuration;
++
++    fn show(container: &Configuration, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++        pr_info!("Show bar\n");
++        let guard = container.bar.lock();
++        let data = guard.0.as_slice();
++        let len = guard.1;
++        page[0..len].copy_from_slice(&data[0..len]);
++        Ok(len)
++    }
++
++    fn store(container: &Configuration, page: &[u8]) -> Result {
++        pr_info!("Store bar\n");
++        let mut guard = container.bar.lock();
++        guard.0[0..page.len()].copy_from_slice(page);
++        guard.1 = page.len();
++        Ok(())
++    }
++}
++
++// `pin_data` cannot handle structs without braces.
++#[pin_data]
++struct Child {}
++
++impl Child {
++    fn new() -> impl PinInit<Self, Error> {
++        try_pin_init!(Self {})
++    }
++}
++
++#[vtable]
++impl configfs::GroupOperations for Child {
++    type Child = GrandChild;
++
++    fn make_group(&self, name: &CStr) -> Result<impl PinInit<configfs::Group<GrandChild>, Error>> {
++        // Define a group with data type `GrandChild`, one attribute `gc`. As no
++        // child type is specified, it will not be possible to create subgroups
++        // in this group, and `mkdir`in the directory representing this group
++        // will return an error.
++        let tpe = configfs_attrs! {
++            container: configfs::Group<GrandChild>,
++            data: GrandChild,
++            attributes: [
++                gc: 0,
++            ],
++        };
++
++        Ok(configfs::Group::new(
++            name.try_into()?,
++            tpe,
++            GrandChild::new(),
++        ))
++    }
++}
++
++#[vtable]
++impl configfs::AttributeOperations<0> for Child {
++    type Data = Child;
++
++    fn show(_container: &Child, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++        pr_info!("Show baz\n");
++        let data = c"Hello Baz\n".to_bytes();
++        page[0..data.len()].copy_from_slice(data);
++        Ok(data.len())
++    }
++}
++
++// `pin_data` cannot handle structs without braces.
++#[pin_data]
++struct GrandChild {}
++
++impl GrandChild {
++    fn new() -> impl PinInit<Self, Error> {
++        try_pin_init!(Self {})
++    }
++}
++
++#[vtable]
++impl configfs::AttributeOperations<0> for GrandChild {
++    type Data = GrandChild;
++
++    fn show(_container: &GrandChild, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
++        pr_info!("Show grand child\n");
++        let data = c"Hello GC\n".to_bytes();
++        page[0..data.len()].copy_from_slice(data);
++        Ok(data.len())
++    }
++}
 
-Should I resend v2 of this fix to the correct email address?
+-- 
+2.47.2
 
-https://lore.kernel.org/lkml/20250502004524.230553-1-fujita.tomonori@gmail.com/
+
