@@ -1,96 +1,212 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EC818132A;
-	Mon,  5 May 2025 17:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4149526D4C3
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 May 2025 17:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746464850; cv=none; b=JAcXlvf4i9Qxmv393UCvS+v1ZpnAWEbSas1uNQDZ4NGfpukyfmk6EPH+knhAACbGFH04KqXRyCp51/dmSuxQm2QdgdzAcdSPnP9QgRWDinick0YNYkSUzVLOoP5dL/w0okWK/HwZcGsGnzoQzbWFBOeSkVOc3HqrWIuslurHjXo=
+	t=1746466375; cv=none; b=bcTo+V+39+c/8yXGjuwMw0eMwo0Mz5x5AjK2RaTyU16iIYsujohP1XhPJ1QV1lrCm6KJOOG6NsDBXrMGu6Ib4JHBtA1GfZddXZOnckPpYa5RHem84VqVV2dFZjntHqr6iw7qfGL1N7tAXybG5jzrhG7pUK5gJf6qpS0fLSUuRCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746464850; c=relaxed/simple;
-	bh=Wgko8I/m9BqxxB27PfRkqwDAClmx9QE/pUan8G37ook=;
+	s=arc-20240116; t=1746466375; c=relaxed/simple;
+	bh=60saFr6bAwjPlnthxnJndZnBrEYFpnj34RMvbZ01UnU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R4UyzfZTA6D9OJsizT/Euyf9V1WCwHcktj4fW9d/mDYSeIMgB1nu2SFrpQkcio5KGHPQGwb5XOQpzeAftcxySSmI9DcyQJkUXSbLRx1L1kWB8L0OXVqFhDFyfagfS57x3x1hc2U6iuq3tdXT/6AXSqiggB1WZqaSSTZIOny5M8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a4DqN/24; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=ZDqHHvS41kK1cAneIX6i8n3qJprD+03M8q2dHr4sayJ4UKyKG7T41Q7o/OUR/huIJh4KZb84QsMvpQh/tRIPOY3H1n5ruqqCtARL3v1dwrFFTvuZIjpNylQEXW/ySJSeu18Ml7Ak2TYC4DGlWh4CIkPVM23PDNjlFEGmVfZni74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VUqTE014; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a4DqN/24"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22e1782cbb2so3346965ad.0;
-        Mon, 05 May 2025 10:07:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VUqTE014"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5fab85c582fso769a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 10:32:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746464848; x=1747069648; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746466371; x=1747071171; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Wgko8I/m9BqxxB27PfRkqwDAClmx9QE/pUan8G37ook=;
-        b=a4DqN/244hiGlIpVaOp97ncK//IfBYjR0y7koJmhp1CMFEmCyWB/3Sm1zxvXVTOcTH
-         BJuKKYETTEaoNYevdOMNlMpJRtTL0cssN/AABiXuTxnQIYPOTP22n79iUsna26iHX0xe
-         7FDokiiipxqGXJqGzHDVbO5g3vbdVAFSwffuyAprN1k6q3ZsKegHRQq31wmM9W2WAMSb
-         zaJrlcc0cFpd++ITiiuc21PONJ5d67Y+TlkppwoyGWSmxWPU93h9j4UKXys7RoS6UXDj
-         syCbioGs36mKHu0HpxoXKZ5bPi25SPES/PUxF8RSJ7GJtrWSeTCd3y3pr17kVeVUMApM
-         UIaQ==
+        bh=oeqcbn1zsZR/kDCdlpev1feSus2/PMO7eiPxi+/BYdU=;
+        b=VUqTE014Qib7zkTGxZjZdnvtDwal0CLCRdU9afw0w2/aRUD9H/i4M7f/4NU0WhYSJN
+         pZNzOzxXwvEgvv4AsizCpmHiS6oK7/D4bnn2/GalbUPdAnxGx1Z8wJ83N9fxiOJfWcEK
+         1twOMUF5hU6KJcSESXA1/8u26Vq6hTzmmGo3X9vjZG2fmvpKXPxQ6M4pJ7QiG2fetZio
+         opEdfkmB008gGl1+dQlDRWvfmIL3Ctg5Vu/p/a1u+4O6c03D5XShifm03Oy6ZTnXQv6d
+         CrdFT1jKTAFmmomX9aFdmR07nwT1sIA6ZBoAcvOFBvoS0rw2CMBFipifTDvwPwp6Adjo
+         SOJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746464848; x=1747069648;
+        d=1e100.net; s=20230601; t=1746466371; x=1747071171;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Wgko8I/m9BqxxB27PfRkqwDAClmx9QE/pUan8G37ook=;
-        b=j4jNZe52r3sM53c9qSFSyh0dZgfjTh+9ritGjb0whcRnM/Je4ZXRsmpNLVjVpPygGZ
-         pXshYQA4Covtknk3KD2kP5s0VcfOcTT/QHRAvjKi4X/30Z6DF4fPx717NMCUhmOr6IQl
-         tJWm+0yEPaZ+irl6pZBfVHulqYkbc4fmDVpls9rdlPA4sG8yFJaxJSsVS39WCFCnTr4v
-         VV5c/nA90vPI1BM7sDAsV/s+GsHUF5IxBIpYQa0m6HtypqtbD2TUngk782V7UpbwivNL
-         ut5cttYPUXk/Z9WgxD8qChDtXL1535ycDgeFFQgTHkID/IU89DGgXokCdkVxCqAA3D/c
-         7plQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5dd5rKHR3+C5T5f1VDUhYf3dRoXoq6QGjiHfb/q5JDxkH4p1/L4GeUiGiqS/uUqxjIjmcguTcozYMAmcmckY=@vger.kernel.org, AJvYcCW3tzjuT1J58/q/njeB7M6Xj4DwkGOagFUbplwjWS02iBa8zTTaYonQTU9RPjkU76A4GocXvNhWvj3XPZxPxtws@vger.kernel.org, AJvYcCXAsJmQ8ruhRrMy7Rrdb/C3LQTxaq7uaNbARf2rK6HCMCKBPY7os4w3DwMjeK9j+YqO3CJQ8THDCQjLHdU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4x4DBYLMh3u/re1Mdx5OG+UAKR99YBHEzH9opda//cKtdmrG5
-	MHSLwxEq/7/wNYYroW0y+DJS44ckPARVCEPrSxoDR9Vb3UX5w8rf2fsa2uSJTzwFJnVQMPYe/j6
-	NGRsvWFoTBIuabmnu+HjtnceiTgI=
-X-Gm-Gg: ASbGnctBrJdTbXJpnE6wpLlEUSpVnFZg1dAap5tK6mqiTnJhAtIdBMdkwnW1b3yYHxY
-	Lz7WjOYYMrIBbHyEziffsyhZzR/oVcEZczy/njogi4nBo9p0j3s9LEkt417bJg6j1IyO+fGYv+m
-	2KCM9Ws4aQVMPYW29kFrwl/w==
-X-Google-Smtp-Source: AGHT+IFLxWjul1SJF7ZqOgOBbbo9BHWzWJnRRxBf0NBIcb0vX721AMZ+hB1vr+RFDd/SU5sNyV4H1Xw17bDGwqpnmp4=
-X-Received: by 2002:a17:903:1905:b0:224:10a2:cad1 with SMTP id
- d9443c01a7336-22e10373938mr79787315ad.10.1746464848170; Mon, 05 May 2025
- 10:07:28 -0700 (PDT)
+        bh=oeqcbn1zsZR/kDCdlpev1feSus2/PMO7eiPxi+/BYdU=;
+        b=bd1yzcE7hKlwEKF7vhFEyLAPrpK+BF1paLjZzmxjCXIIN+V+hznFW1lYQA0E//XOqw
+         sghB97LvMy7ll+/koFWGfPHh5O7WeYJ+HmCucletPY+0sqn4Khedg1Zp7XinGQeij4DQ
+         83tyXoZBW80p2vqt3foXjrtPgajD4ACSSLhgLouhsDXu6yJDAXF9DsyLKJ0fNv7ylcBl
+         6dJd/mlcwsErhplQJ+QReKn1Vlcmn5YBaQtshmkA1ixJ4DziJpA4YEhm+fcYP+OBLWRQ
+         Zv4OlfDwiLQzN+sWXZuCmB/ivpiF6bm7uCPxpoCOp+xX14rZtHkRvwvvx2gKXRNNhuLe
+         +6ow==
+X-Forwarded-Encrypted: i=1; AJvYcCXdIA2kPirrhYrqNPGGmKA2Bd888G1PbnAnMzKVDxP35Z45gmqOQadPfijQAmyeoPSf/dL2b2fh07MlwtpBIQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5fCj7mEt0zeD8je3Sn9PM7H9NURFxGRppBpxAMRkC8ZcJLyUw
+	9eNBpmM4S0n9xuW6xxeSTfYqP7XOR4Mogg5M0bdWFkp2+7FpR41ektARr0ak6yt4bKqFf4mu/wn
+	zlRp5b5woPgkFi8SzMtYVu0Cetyh3+5CXmvXI
+X-Gm-Gg: ASbGncuSa7jqHF9xxB1DrHzk64jl1rUZKA9wUHUTRi1rqj/RaMoC+R8AN64SOAJWkLB
+	Z65CGQu0+h/f/DX7fI0ukiZUlAlxkSgyIAXBGPtd2sAw4RAmAC0qsRVkfcABjh11BQer7I8iYTj
+	W3AlDihKuz8alJLidisNRQibdUNbqYIpjAKZWA0hGkSz41TeRquw==
+X-Google-Smtp-Source: AGHT+IFm2reIdmDVuzP67fU3bv0WQOYDyoJleqL474xCFKZzzy8hIa0Nuebzh2xXuqZY62nIXry73i1Uf7X+Vbrsw9E=
+X-Received: by 2002:a05:6402:1a47:b0:5fb:1ccd:5434 with SMTP id
+ 4fb4d7f45d1cf-5fb566836f0mr29666a12.3.1746466371187; Mon, 05 May 2025
+ 10:32:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502215133.1923676-1-ojeda@kernel.org> <aBjuCIHH1ZCIVs_0@polis>
-In-Reply-To: <aBjuCIHH1ZCIVs_0@polis>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 5 May 2025 19:07:16 +0200
-X-Gm-Features: ATxdqUGrqf4jwWLSpQZ_Dz46MOZsF8WvrNskaiy2DPAE2SfbmleZGwbWqKSwNaw
-Message-ID: <CANiq72mKKh437k7HQBuyr+oBqAZ23Z=VKgo42TnQjD2s-VoF7Q@mail.gmail.com>
-Subject: Re: [PATCH 0/7] Rust KUnit `#[test]` support improvements
+References: <20250503-debugfs-rust-attach-v1-0-dc37081fbfbc@google.com>
+ <20250503-debugfs-rust-attach-v1-1-dc37081fbfbc@google.com> <aBectw_2jridu43O@polis>
+In-Reply-To: <aBectw_2jridu43O@polis>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Mon, 5 May 2025 10:32:39 -0700
+X-Gm-Features: ATxdqUEBkvu_4Ekfz2UMjZhf3-BkkqEKvDYh8HStOviNON8MZJNbUpYHPQlCSrw
+Message-ID: <CAGSQo03sHhUX-Eo31cMmeNMaNnzWxU0c-ObTkr7Z1CJ2uQ6c4g@mail.gmail.com>
+Subject: Re: [PATCH WIP 1/2] rust: debugfs: Add interface to build debugfs off
+ pinned objects
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Rae Moar <rmoar@google.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 5, 2025 at 6:57=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+On Sun, May 4, 2025 at 9:58=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
 rote:
 >
-> With that, do we still expose `alloc` primitives to userspace tests?
+> On Sat, May 03, 2025 at 12:43:59AM +0000, Matthew Maurer wrote:
+> > +/// A DebugFS directory combined with a backing store for data to impl=
+ement it.
+> > +#[pin_data]
+> > +pub struct Values<T> {
+> > +    dir: Dir<'static, false>,
+> > +    // The order here is load-bearing - `dir` must be dropped before `=
+backing`, as files under
+> > +    // `dir` may point into `backing`.
+> > +    #[pin]
+> > +    backing: T,
+> > +    // Since the files present under our directory may point into `bac=
+king`, we are `!Unpin`.
+> > +    #[pin]
+> > +    _pin: PhantomPinned,
+> > +}
+>
+> This only ever allows attaching data to the root directory, correct? What=
+ if I
+> want to remove (or replace) a file or a subdir? Then I'd be left with the=
+ data
+> for this specific file (or subdir) until the root is finally removed.
 
-I considered removing a bunch of stuff (even the build support for
-non-`macros` `rusttest`, to be honest) -- you are referring to the
-`any(test, testlib)` bits, right?
+The intended way to deal with this is that your debugfs root has
+structures or handles that let you compute what all your debugfs files
+should see, not necessarily fully populated if you want something
+dynamic. For example, one of your entries could be
+`Arc<Mutex<Vec<Record>>>`, and this could get updated elsewhere
+without thinking about DebugFS - you just need to know the shape of
+all the handles DebugFS will need.
 
-I think we can wait to see if we need it, or we can also just remove
-it and re-introduce later if needed.
+It'd be pretty easy for me to relax this to allow attachments to
+subtrees. I'd just need to do `Values<'a, T>` and `Dir<'a,  false>`.
+It'd also make the argument for the safety of the builder interface
+slightly more complicated (things that statically outlive the lifetime
+of the dir would also be usable in the builder, which is safe, but
+trickier to argue for).
 
-Thanks for taking a look!
+You wouldn't be able to do nested attachments, but you could do
+attachments starting with any subtree. So for example, you could do:
+```
+let root =3D Dir::new(c_str!("foo"));
+let foo =3D root.subdir(c_str!("bar")).owning();
+let bar =3D root.subdir(c_str!("baz")).owning();
+let foo_values =3D Values::attach(foo_data, foo);
+let bar_values =3D Values::attach(bar_data, foo);
+```
 
-Cheers,
-Miguel
+The tricky business here (and why I didn't do it in my initial draft)
+is that because `foo_values` and `bar_values` are restricted to live
+no longer than `root` (since they will be invalidated if `root` is
+dropped), it is hard to store these objects in a module context or
+similar object, which would make it tricky to use. Attaching to a root
+directory on the other hand is not tricky, because their lifecycle
+isn't dependent on some other object.
+
+A legal way of using this kind of scoped interface (but not
+immediately obvious to me how to design the safe interface to let
+users build it) might look like
+
+```
+struct MyDebugFsInfo<T> {
+  // RawValues is a fictitious type that would be like `Values`, but
+with the actual lifetime parameter erased.
+  subdirs: Vec<RawValues<T>>,
+  // Order matters, root must be released last because earlier values
+are borrows
+  root: Dir<'static, false>,
+}
+
+impl<T> MyDebugFsInfo<T> {
+  fn new_subdir(&mut self, name: &CStr, value: T) {
+    let subdir =3D self.root.subdir(name);
+    // SAFETY: We don't allow the root to be destroyed before our structure=
+, so
+    let val =3D unsafe { RawValues::attach(value, self.root.subdir(name)) }=
+;
+    self.subdirs.push(val)
+  }
+  fn get<'a>(&'a self, idx: usize) -> &Values<'a, T> {
+     let x =3D self.subdirs[idx];
+     // SAFETY: We know all our subdirs are children of the root we
+own, so if we have a read-only reference to ourselves, that's an upper
+bound on how long the value struct can live
+     unsafe { RawValues::ascribe(x) }
+  }
+}
+```
+
+If I wanted to do better than this in terms of ergonomics, I think I'd
+need some kind of refcounted wrapper where holding a subdir prevents
+the parent dir from being cleaned up, which I could add, but would be
+a Rust abstraction layer on top of the C one.
+
+
+>
+> It would also require Option<V> (where V is the type of a field in T), if=
+ I
+> don't have an instance of V yet, when the root directory is created.
+
+`Option<V>` won't actually save you - once you create a `Values<T>`,
+you are intentionally unable to mutate `T` anymore, because it may be
+read at any point in time after that by someone reading a debugfs
+file, so you can't do a potentially racing mutation. If you wanted a
+value to be attached to a debugfs, but didn't have one, you'd need to
+do `Mutex<Option<V>>`.
+
+>
+> I think we should store the data per file, rather than per root directory=
+.
+
+This doesn't match what at least seems to be a common usage of
+debugfs, where a debugfs directory is used to represent an object with
+each file in the directory representing one of the properties on the
+object.
+
+This also means that we need to store N handles in a Rust driver (one
+per live file) compared to 1 handle in a C driver.
+
+=3D=3D=3D
+
+I do think that the normal idiomatic way of doing this in Rust would
+be to attach refcounted handles (e.g. similar to `ForeignOwnable`) to
+inodes, and when the inode is destroyed, have that refcount be
+deleted, but we don't currently have any `release` implementation for
+a DebugFS inode afaict, so everything has to be externally scoped via
+this attached pinned data setup I've been producing.
