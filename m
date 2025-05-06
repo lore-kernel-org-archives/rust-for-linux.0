@@ -1,210 +1,274 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C94422F771;
-	Tue,  6 May 2025 04:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FDD257AED
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 06:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746507540; cv=none; b=ojScNyNyN3Qi6BI81Lq552B9G51l7ecEzMQGrkq19I5qI6BgXhwFKHS40svBQIGO2RujL5bkdEbTCaHHV8yTwhBVPbVxsIXOeLJ7TsvAhKD9WePzY5CAPvz3CIB3W97eaOri5BP/hsuiynTMexaN2W99lyNCxqgTPmISjinEZZ4=
+	t=1746513180; cv=none; b=NJBQgQB7ODyUcaLyrfxPXzusc4eM1DhR2nEXOXJcviTMMO8HhTvZjLvPYMljmThBqdl1a4eoiSjLw5etEH5MeHrEZRcgX3wV9sNoEiDCL72MYQqD7AcNP6IiGW1LUXR+krD4+hUU8ZZt/A6QrDpp08eh2ryVIktgKCtoOJ7BbEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746507540; c=relaxed/simple;
-	bh=m7vxYgUh8ULPptGn2nd3MYeUmYgn13h75xWsCTIcIOc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PYD8DcjmEFfRqqf2ka/E2U/g1k5pP9FBZ91W61PRF152LcIFIozyBT7Fam0AcDWlc/qJFAJKHweR2NfYPj3wy0LlpJAX3Avg/QSSsFgZhy9hBmhJbxBvsqtPTPbDB2rVqorS/o1NMsePoj1BemMCjjAgXDdtyH2iB3reynXlPG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CU68XglP; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746513180; c=relaxed/simple;
+	bh=zJHEqZBTP3EyMgee7q3Uq40a068vt8jz12HEqfnrpWE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bvKZWJBseYEySfpYjhvBlB5u53lLJTrUouNRLpV/BqDs5CiRRAS7gnUFl3U+BQARZ4rfdIdM7rW53NNnyRtj8S61PJxnY0JDGRMKdsYIuJXcnmgCWA+DkFg5jn5GKF45lmj1d2qvwqtuh5DefxZKo054Fxi7gQjuqcUbzfwDdb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WVWni+2y; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CU68XglP"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c5e2fe5f17so581739985a.3;
-        Mon, 05 May 2025 21:58:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WVWni+2y"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6f0cfbe2042so69041186d6.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 23:32:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746507537; x=1747112337; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1g9tUIclVmuH2ZaBusryyZl8QxSs3+aGqPstryRtHAo=;
-        b=CU68XglPmwFo7hvY09XSuELSgLMFb2F2BwYu/9foGkH+QcL7PxTAnIIFAV+YiveL82
-         zGFPXa3z2bnhl3FhdHnR0uZTY+BpS9DHCZGHcDX0bn1cNvjn/176iSsUvD8zT5h2ys54
-         hBoRqy2jQ4dTx4Vn4rUXsH9hbFDgFx1H1UYAvW9GqhNlojYkKGxF7K8uhNrdiHmfzBli
-         YdCzLgQR1gJqO1qKt+OxosQgN/8iwtWWxIHDi0PQshvY0YNi41psL1cbmf4KABRitsQr
-         nadMUY0IYJ+XiC8ECB46aGJKqCgyx+w8nTSqohcHHIp0V1xe0CBVhniHExPrLQ+PJv5o
-         Cb9Q==
+        d=google.com; s=20230601; t=1746513177; x=1747117977; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=F215CNi3fBatoQdHmafOhIjOG8WvL/4HAGhrTXFun2g=;
+        b=WVWni+2y04TLN+0/UX/HyNXX9+ncbPDCTGu1ZRre9KYfaNmDFR+p/JyonVntQzQoU5
+         mR4FI6kFJvu9nj/YoN2sUzclFETyTP3vHQYc3qDzwVYRptpcBDkddseJ5JVnYGNWE7qR
+         dGPcwEUhHJZg7yoxlRofFI9LBsOxQfyf+3L7LkbYHJdaavzYZekFz++Iscobn5eawy97
+         m4FeQrwDZmE+BwlGXyQ8ex1FRigzP9UiNkv7Oy+CIDx1VDKtHrbrtmzvJnP7NpANuVkk
+         G1uOexB+9VYLnWFKLm0SR9SKi2yduYA7PSlXfVfqXDFNfH2n72PppThnCahuhAmtxYnX
+         dUgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746507537; x=1747112337;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1g9tUIclVmuH2ZaBusryyZl8QxSs3+aGqPstryRtHAo=;
-        b=ZVJJbnNU/pd0HZMwLB/2GTxPTuW8Dn7ENfJxWML8RUtRPpQk9l5kakBovP8nf0OiVi
-         4xSMVTh+ql3OkevtK/+Dyp9waANfY/Qqt5/VeIBkN15aDSAIL+KgDBioAy5P1b2wXH4G
-         CrVPYn7F67YS0RNpcRvfk2YgoHBPqYnn3xXCYIPdk6mMifh1hdV7DzbnNLnr0FZEWiPT
-         VfuCOlHo3XbsmVP1/GXzHoJdZU7w9om5t4l6bFMCKIv45MIwTyevQaYQlcalhmis0wNJ
-         MZgkLBFSobmH3/B+8UVNXtuhFes2q5XAdGN+R7mITFlJux/Akwz33T3rl7R5hq34vENn
-         29Xg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHjRudYIg06uWdDkYEPeih3MpDqCxuRB+OP6Rx6nPkOltSiNIc21M8OGkGvDRykXC3sMgGIoOwssja8BEWZ/0=@vger.kernel.org, AJvYcCXEpgg97dS2h3SHVe2zV74FBqmPL4xjsYr69UkCNKgZ8jPi3lLTCOzAmgpEYpOJ75p3aokj7BjplFbZ0V0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaxbQ0/xwqmeL/3IwWy97TIuj+S4EMs2h0Ryge41d2AS9sd0V0
-	w4DS8n25tqvJIM00zPTqKuSmhnOwzju764edwnjcC21hz7y0Ftf8
-X-Gm-Gg: ASbGnctIOsRMn2fimODfVqNoHR4xJIzXuOru5RQrLf7CwVCqroN7nwIC5ev7Wf5FdLM
-	zhXkYzzI/qJxwhHwniaye6cdffiHCFxjTZ6PGQ7UTJukr+Mi0+zH3IhTTmjPk1Xd8nd9F46Nb7o
-	qu5HphqDGA9Y1fNd0MwWcVyapZizxkP0i7X21ka8Sqhd1QP36RnDrbB3c/iLDbvkmTKc0gyI6RO
-	1HojHBddRxuU/I8rrsSjSguQegKlVds2vUyILVOwmuK4jnWTpHt+7iNszGon57COGuVGp5yaeVN
-	H8GU3XsGO1Z5fGpamswGC5u0ilcsU4QWTNevpeDrYhCfqU2OCZllLIV0rrFETFVOuWta3X/Tsig
-	L/YYxohqNo3mvCrgg/DRC6R5X0aVnMiY=
-X-Google-Smtp-Source: AGHT+IEmn0U41CRqbdqAxigdPC3H0OSYylwKvqCa/ahyGHbsGpn1EVqOpBvXXjgh2ak2ogbN4Y5aZg==
-X-Received: by 2002:a05:6214:124a:b0:6e4:2dd7:5c88 with SMTP id 6a1803df08f44-6f5358ede5emr31398286d6.38.1746507537275;
-        Mon, 05 May 2025 21:58:57 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f50f3d35e5sm65095526d6.67.2025.05.05.21.58.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 21:58:56 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 16B831200068;
-	Tue,  6 May 2025 00:58:56 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 06 May 2025 00:58:56 -0400
-X-ME-Sender: <xms:EJcZaIfMCBtg_zqqxLxTNzByW-Os9gNQoNnTq_1ZElherufZgY-ESQ>
-    <xme:EJcZaKN76lA0P1qmkcKERFRRmAgAZiknGJem2f-9a0IKEecBM6xjOcdgzGJ7R6W9z
-    vqRv6_0Yh4P0r_ihQ>
-X-ME-Received: <xmr:EJcZaJhuj2p7zB5KoFc3g3QVrqp6-qMTEz4YmzQqcV5KAVcfZAvRY6g0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeeftdekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredt
-    tdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefghfffvefhhfdvgfejgfekvdelgfekgeev
-    ueehlefhiedvgeffjefgteeugfehieenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopeefhedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhiisehi
-    nhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtoh
-    hmpdhrtghpthhtohepjhhurhhirdhlvghllhhisehrvgguhhgrthdrtghomhdprhgtphht
-    thhopehvihhntggvnhhtrdhguhhithhtohhtsehlihhnrghrohdrohhrghdprhgtphhtth
-    hopeguihgvthhmrghrrdgvghhgvghmrghnnhesrghrmhdrtghomhdprhgtphhtthhopehr
-    ohhsthgvughtsehgohhoughmihhsrdhorhhgpdhrtghpthhtohepsghsvghgrghllhesgh
-    hoohhglhgvrdgtohhmpdhrtghpthhtohepmhhgohhrmhgrnhesshhushgvrdguvg
-X-ME-Proxy: <xmx:EJcZaN8SckWPBgUoUFQ4XyKHLlTBqnxM5GjnM1FY8tCQIr56hXDCNw>
-    <xmx:EJcZaEsnXhIf_r3CXgI-2xiJWIPaiJ4E1vbv1ymS6u5G4IyPil5XCg>
-    <xmx:EJcZaEG5bi1O6UeW9mqtX5gT0t9_REB7jYMO6wkk2s32CREWQssd_g>
-    <xmx:EJcZaDPYHmuqwAoXy3TNk2Ng-YF3DMXraJ2J7dJFDoNVRiknVPdUnA>
-    <xmx:EJcZaJOsFOThIGpLP9lWmfsEDivE6On5JUVrNdpcWzB1_prkxwBDFYGJ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 May 2025 00:58:55 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>,	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,	Justin Stitt <justinstitt@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Tamir Duberstein <tamird@gmail.com>,	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Borys Tyran <borys.tyran@protonmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Panagiotis Foliadis <pfoliadis@posteo.net>,	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,	llvm@lists.linux.dev
-Subject: [PATCH 5/5] rust: task: Add Rust version of might_sleep()
-Date: Mon,  5 May 2025 21:58:43 -0700
-Message-Id: <20250506045843.51258-6-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250506045843.51258-1-boqun.feng@gmail.com>
-References: <20250506045843.51258-1-boqun.feng@gmail.com>
+        d=1e100.net; s=20230601; t=1746513177; x=1747117977;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F215CNi3fBatoQdHmafOhIjOG8WvL/4HAGhrTXFun2g=;
+        b=QbYwq+++bbDFUTRe/zYR7bywJN4fc9fQwryOQCKBbMUAaZdeuE3b5dl6lj6Rwqrzyp
+         QSCnvX/3/J40EWNW7d/zW5/cotcfXvaiiGTXApi9EFknVDDWcbGp+vmaV5DMJb93Ldzm
+         PtrCGgwu16tQIw3gqb2lliTwpGCRz+Dc4CWV6V2+MI8Ca1Hu8VvOMOt1DZABD/KCugNK
+         JpPxN0pU7bHGYCwyqo5+mlOAWyKjTf7AOB2v0LF1JVSplkbfJE8XezW2A2DM37hrp0rp
+         OqP39brRLxh2ZUWdg90ita1ah7SYTV9Q5mVMFQli+xbvcp4fhPfr0Ux6GHvVHrCmjhTQ
+         KNNw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqwgb2Rm2wDxz2Q3MmpG8cOV3uW4oiw2u7CRLwpmp/i2tdgSAlwCS9OqkzVu4+rOSV809ByhVa60/nwd0w9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxehhPcn1f9HhoX9mr31nl0gA3sz9kWSs+9WnF0knlls8kLtfZs
+	yaamIAgZOLJt/HgujJVOaZGs0/Lna9PDjvkQ6q0w2aEJOebiZ3pexJTliARnjYw/TxvepuD/odC
+	aoyyTWzAzLzn4LXBZz/ejRFhFxWuPtJmRWTvM
+X-Gm-Gg: ASbGncs/QrzS24IfQpwUlhutJ09m7yT2QQpALlSwCAXKNLLGgyIJRK/ydSaneC5yBc0
+	VpC4GyvduVtzxFvOdMfC+0tRotmVBZsZnMhq693/aUnk9niYYrq/KufFFENEwivX50zp4zJsaVH
+	VPiC7Rqa8/S0Zgu/D1PHidM0o=
+X-Google-Smtp-Source: AGHT+IHmXB/cKgFL6nNzt+WRsUf7MU0M8pDV/7/x1FX+60+c46wo4YqV3iuu4VbjaOKZK01pck0OeA2bhk94rgg5Sc0=
+X-Received: by 2002:a05:6214:2426:b0:6e4:4adb:8c29 with SMTP id
+ 6a1803df08f44-6f5353561bemr37943116d6.12.1746513177383; Mon, 05 May 2025
+ 23:32:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250502215133.1923676-1-ojeda@kernel.org> <20250502215133.1923676-3-ojeda@kernel.org>
+ <CABVgOSm8T+_kXY78sioUHEcG7rYApfWK2Gfxkrvw94Dz57G0oQ@mail.gmail.com> <681912de.050a0220.383f17.18c4@mx.google.com>
+In-Reply-To: <681912de.050a0220.383f17.18c4@mx.google.com>
+From: David Gow <davidgow@google.com>
+Date: Tue, 6 May 2025 14:32:43 +0800
+X-Gm-Features: ATxdqUEJy-YpyvvP5U1JCMB6nqHR1GK4Dy7-fxrfVz-rfLQI6xTA5TKAnyHCloE
+Message-ID: <CABVgOSnqtxwYQBbed_-TYr6D3BZJ=MT3KVv-eXUFbnRm1UyETw@mail.gmail.com>
+Subject: Re: [PATCH 2/7] rust: kunit: support checked `-> Result`s in KUnit `#[test]`s
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Rae Moar <rmoar@google.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000090b6e7063471c9a2"
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+--00000000000090b6e7063471c9a2
+Content-Type: text/plain; charset="UTF-8"
 
-Add a helper function equivalent to the C's might_sleep(), which
-serves as a debugging aid and a potential scheduling point.
+On Tue, 6 May 2025 at 03:34, Boqun Feng <boqun.feng@gmail.com> wrote:
+>
+> On Mon, May 05, 2025 at 02:02:09PM +0800, David Gow wrote:
+> > On Sat, 3 May 2025 at 05:51, Miguel Ojeda <ojeda@kernel.org> wrote:
+> > >
+> > > Currently, return values of KUnit `#[test]` functions are ignored.
+> > >
+> > > Thus introduce support for `-> Result` functions by checking their
+> > > returned values.
+> > >
+> > > At the same time, require that test functions return `()` or `Result<T,
+> > > E>`, which should avoid mistakes, especially with non-`#[must_use]`
+> > > types. Other types can be supported in the future if needed.
+> > >
+> > > With this, a failing test like:
+> > >
+> > >     #[test]
+> > >     fn my_test() -> Result {
+> > >         f()?;
+> > >         Ok(())
+> > >     }
+> > >
+> > > will output:
+> > >
+> > >     [    3.744214]     KTAP version 1
+> > >     [    3.744287]     # Subtest: my_test_suite
+> > >     [    3.744378]     # speed: normal
+> > >     [    3.744399]     1..1
+> > >     [    3.745817]     # my_test: ASSERTION FAILED at rust/kernel/lib.rs:321
+> > >     [    3.745817]     Expected is_test_result_ok(my_test()) to be true, but is false
+> > >     [    3.747152]     # my_test.speed: normal
+> > >     [    3.747199]     not ok 1 my_test
+> > >     [    3.747345] not ok 4 my_test_suite
+> > >
+> > > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> > > ---
+> >
+> > This is a neat idea. I think a lot of tests will still want to go with
+> > the () return value, but having both as an option seems like a good
+> > idea to me.
+> >
+>
+> Handling the return value of a test is definitely a good thing, but I'm
+> not sure returning `Err` should be treated as assertion failure
+> though. Considering:
+>
+>     #[test]
+>     fn foo() -> Result {
+>         let b = KBox::new(...)?; // need to allocate memory for the test
+>         use_box(b);
+>         assert!(...);
+>     }
+>
+> if the test runs without enough memory, then KBox::new() would return a
+> Err(ENOMEM), and technically, it's not a test failure rather the test
+> has been skipped because of no enough resource.
+>
+> I would suggest we handle the `Err` returns specially (mark as "SKIPPED"
+> maybe?).
+>
+> Thoughts?
+>
+> Regards,
+> Boqun
+>
 
-Note that this function can only be used in a nonatomic context.
+FWIW, having out-of-memory situations trigger a test failure is
+consistent with what other KUnit tests (written in C) do.
 
-This will be used by Rust version of read_poll_timeout().
+There's both advantages and disadvantages to this: on the one hand,
+it's prone to false positives (as you mention), on the other, it
+catches cases where the test is using an unusually large amount of
+memory (which could indeed be a test issues).
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20250410225623.152616-3-fujita.tomonori@gmail.com
----
- rust/helpers/task.c |  6 ++++++
- rust/kernel/task.rs | 28 ++++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+)
+My go-to rule is that tests should fail if small allocations (which,
+in the normal course of events, _should_ succeed) fail, but if they
+have unusual resource requirements (beyond "enough memory for the
+system to run normally") these should be checked separately when the
+test starts.
 
-diff --git a/rust/helpers/task.c b/rust/helpers/task.c
-index 31c33ea2dce6..2c85bbc2727e 100644
---- a/rust/helpers/task.c
-+++ b/rust/helpers/task.c
-@@ -1,7 +1,13 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <linux/kernel.h>
- #include <linux/sched/task.h>
- 
-+void rust_helper_might_resched(void)
-+{
-+	might_resched();
-+}
-+
- struct task_struct *rust_helper_get_current(void)
- {
- 	return current;
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 0bf5fdf75c37..067546754939 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -390,3 +390,31 @@ fn eq(&self, other: &Kuid) -> bool {
- }
- 
- impl Eq for Kuid {}
-+
-+/// Annotation for functions that can sleep.
-+///
-+/// Equivalent to the C side [`might_sleep()`], this function serves as
-+/// a debugging aid and a potential scheduling point.
-+///
-+/// This function can only be used in a nonatomic context.
-+#[track_caller]
-+#[inline]
-+pub fn might_sleep() {
-+    #[cfg(CONFIG_DEBUG_ATOMIC_SLEEP)]
-+    {
-+        let loc = core::panic::Location::caller();
-+        let file = loc.file();
-+
-+        // SAFETY: `file.as_ptr()` is valid for reading for `file.len()` bytes.
-+        unsafe {
-+            crate::bindings::__might_sleep_precision(
-+                file.as_ptr().cast(),
-+                file.len() as i32,
-+                loc.line() as i32,
-+            )
-+        }
-+    }
-+
-+    // SAFETY: Always safe to call.
-+    unsafe { crate::bindings::might_resched() }
-+}
--- 
-2.39.5 (Apple Git-154)
+That being said, I definitely think that, by default, an `Err` return
+should map to a FAILED test result, as not all Err Results are a
+resource exhaustion issue, and we definitely don't want to mark a test
+as skipped if there's a real error occurring. If test authors wish to
+skip a test when an out-of-memory condition occurs, they probably
+should handle that explicitly. (But I'd not be opposed to helpers to
+make it easier.)
 
+Cheers,
+-- David
+
+--00000000000090b6e7063471c9a2
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIUnQYJKoZIhvcNAQcCoIIUjjCCFIoCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
+4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
+mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
+KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
+VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
+ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
+vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
+BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
+OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
+1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
+ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
+BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
+18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
+bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
+AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
+BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
+A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
+MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
+jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
+0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
+jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
+jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
+C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
+NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
+zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
+A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
+hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+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
+YE9NAgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
+/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFHgsCGkO2Hex
+N6ybc+GeQEb6790qMFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
+MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
+LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
+bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
+FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQAs
+exV05yVDmPhHRqOq9lAbfWOUvEf8zydxabZUHna6bayb83jD2eb9nMGGEprfuNBRmFg35sgF1TyN
++ieuQakvQYmY8tzK49hhHa2Y3qhGCTqYTHO3ypHvhHsZiGbL0gmdgB9P8ssVIws//34ae99GUOxo
+XKTxPwwsQ5Arq42besv3/HXAW+4nRAT8d3ht5ZWCHc5rjL/vdGzu7PaYo3u0da69AZ8Sh4Gf5yoc
+QANr2ZkMrxXbLmSmnRvbkQrzlZp2YbTFnczx46429D6q75/FNFOL1vAjxtRAPzkyACvW0eKvchza
+TMvvD3IWERLlcBL5yXpENc3rI8/wVjqgAWYxlFg1b/4b/TCgYe2MZC0rx4Uh3zTIbmPNiHdN6QZ9
+oDiYzWUcqWZ5jCO4bMKNlVJXeCvdANLHuhcC8FONj5VzNgYXs6gWkp9/Wt6XnQPX4dF4JBa8JdL/
+cT46RJIzoiJHEx/8syO5FparZHIKbkunoq6niPsRaQUGeqWc56H4Z1sQXuBJN9fhqkIkG0Ywfrwt
+uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
+PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
+Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
+BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
+pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgtWZOZdZAuDJGghy98sOge3obIWgb
+sZBJP2EJxUeNElcwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+NTA2MDYzMjU3WjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
+AQEBBQAEggEAf1UK/9UyQAUjxGkWPZYh4PBL1uU/h+b0nxtlji0QztEM+xzxwSROiRk7bF7JPMnx
+ptVEjM3rKVdsuYsi++U5HSycfpRJ9pEDTZNskk0RIa8H1ci2a29BIxPDPY5SUvQqy3Y+r8Cedh5a
++FN3+h+raNiX0B/jD3iCEdt6E8nArrq5dl+zMLZAC1J6wmbWPRiEYQVOvdP3QPZJ4eALSoNYaiFO
+BvFuOaAwwDyInUTu1JIs/P/ghQP6E0HvcmQXRnTTA0fNUnpvKqqFwQ4rHNdgYai3DcbMcFE9bcoa
+HcwZfdiIYqsFQ3xwS4ImZXhGt2q2BFIBaiUhNyCh8Igc20tgCg==
+--00000000000090b6e7063471c9a2--
