@@ -1,56 +1,56 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25A5265CDE
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 09:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EF5267B15
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 09:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746522658; cv=none; b=fPRwjGbyNnG18JXGLMtvo97bw1y94Gcd4OfAsoiWB9CDc0YJ9DZMRK9G3A5jMODZL+huGbEPYLQVME4L2YyOwrooo2N4lDdXtEXGPetEI4bK63dn89rx7wlOBMA/f0QT+3jEozp1k42Kg73Zx0Zwze38dsgh0yHha5SmmKQxMBk=
+	t=1746523127; cv=none; b=Cu/vye0JkCK7EfzpDVQ2sIE4azII9hi74kNQeuaGeVTr7jpHayr2YYDpBV0cPXaRalTfshq+P/HE+ymYxyTQDq1jBdAaGn6f1Da0pOqvDObLa/dD74ajpW+8umho6JJ+cea8xipT6JJiav3RS+7LcutsRlZos2XfaMLG+LIMZLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746522658; c=relaxed/simple;
-	bh=+gd3EFD3tIRaf8uZxUpcsQzp9JqRZMQZZXab+O+Anys=;
+	s=arc-20240116; t=1746523127; c=relaxed/simple;
+	bh=E17ZjcvNnE3gAHLsWjbhAU+S/T/HGrIZaGnxTG4pkM0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UAccTsZiaPiC0D/VX5dH0nUdlJdtkgBKrP6EkQu7J52i9B9F11nTKCAu0KCZUM2zhL+XRwQrjpclfNfK9d7PtCj69AkCqlOeOY/CupSJxG/zp4S+rJB84+FHKm0M0GFGf9Q0PXpsw3IbkOHgNXkW5X8a9b6I71cbG0hh9Ret9eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QOg8GFlK; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=JiJH0cG+EcTBVxRpN993EnixA1SJ8eTCW2f8jzz7WOkttRxjgwFW5ooxCL4Y9oltgjEYXUnGQuL8CQgqzADQtXpYNZQBqwHkvIG8OGJ7TQpCImIkC4RrcdEvTXez2fTKBdS1jY9LBwXo1axCr/kIxzEM+3RXtwHBQgwdkQw1XHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PbnFn24S; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QOg8GFlK"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3913aea90b4so1700069f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 May 2025 02:10:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PbnFn24S"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d08915f61so27530205e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 May 2025 02:18:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746522655; x=1747127455; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746523124; x=1747127924; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jz3a5HwxM73VUsygopVsk7ADqOlPWS+1Glxw6UncPHk=;
-        b=QOg8GFlKzLlIYbJbNCx9niKrqxskzXZq35hZx+RjOIVf1H1tt+4q3V8n1gFE0i9Cdp
-         fLAnWfEogHvJsz9tQZ5OukCMykiVYfJwN/WmAFmeAHCHCykQ5lu7LEmDlln1BrF5bMGk
-         GVRKHN665Himf0jgzvG9hrEaKIpl0Le7KJOWxqKnB09x7s7o44BokZNctANY6ulOcnmP
-         bcwVdaXnJZRsqanE9QBLgZEdAcERTUqYT41SOFiHBl8lu7MI4LCCXahvdKK01MmUGBZ2
-         zK8MCos9Ao0Rk3dTPa5UFy6ttKvDBXHG5ihbkSnOwNr2lGNqhS3rpqdnwNbdTD5qBNcm
-         tSfw==
+        bh=AiYBfuBPq0PKabiO1M3oY2RQ97WInUw/jmCaL8pZJF0=;
+        b=PbnFn24S6qB0mavg4HYzbbEZ0E0Q3aL4cQx7wrXMOPfw2jmYRtnYPqvWKw6bWht7xc
+         FSU9wJt1vTkD0DDnHMPT52p4jCGJnUqPVKCHFV1JSiDZ+rG1OrRh1QkvJM9q9ML2GNWn
+         RCEjgEQYt0riXvoJWl4apS1hbYDDWQDkXAjNBt6MiGV1Mxkgtk6gAm0wGaCRi2kaXW5O
+         ziks9CXQZTEl1xgX7Doq9j7x5u2gidR1Kpa26ObaBdrc3VNO17gV/dJVdcmEMGDIykaO
+         m943z5svna4nP3aM0rTGmVRVGfwUC4tnkA2vPXIjcqPOBM6K2zlRwhUfOdYuRJ0pH0Fm
+         Q+JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746522655; x=1747127455;
+        d=1e100.net; s=20230601; t=1746523124; x=1747127924;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jz3a5HwxM73VUsygopVsk7ADqOlPWS+1Glxw6UncPHk=;
-        b=YUfT3a+v0QO12GxvPeiO1vlNuwLWcSyIRdTw3MenDjHbkAW8oiSU6gvvOXLGW71Zyw
-         gwdCVSqHhJA0Hj2SVcPqCJL5MqZDfcuv08b6YcuB2fV1Heu/1oWbgAi+3/2s3csHGRwF
-         uJijIfYHehBgOd9NI5UpXsKMt1ytEcS9iCy0Ene4eeDld5lWmYEUErUBjmuI7WomYFuo
-         0h9/hwXIjm99qVlKDpdjgBWN4eOaKfsPkoVKBzdNtDwkPO26XthWaolaL/IbWYYjmeTK
-         iDpaT+qxNa7WFbV9r5E5lfKck9LGmOynUaiNfiSeXF91+3ddtWG4Hkug6/xMzw61kSse
-         zTDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJjoIcWczndkFZyBWJ+Zw+YTY4DFMuGZmi5e9ljEhTgQIKgvNGu69zxwIWeFuor6/3Lc8Mu3M3rEJI9IkbIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZ56QzpkIK2xP+xXLrxCA0xxm4yoEi+moEbCvwIo/t0IXMaNeJ
-	P1VnrNX6U1yZTWILl+sDuwNL+GRg0nI9o1zrHFDiB9qN3YBkms9E99dmQbLknOtK6GfKAJPc0pr
-	6OqepSd1VH7c6ig==
-X-Google-Smtp-Source: AGHT+IGyiMkYwbaMmB8dqPMDkvSFdJCivatLGhIBQhLPFZ0JT3dRMRjM3/jxKXeyS5cJ9gy5621ZK8OdcyZ3mWo=
-X-Received: from wrbay3.prod.google.com ([2002:a5d:6f03:0:b0:3a0:6fdd:fcab])
+        bh=AiYBfuBPq0PKabiO1M3oY2RQ97WInUw/jmCaL8pZJF0=;
+        b=dRi2N+xQQsefZeT9NHhd3Nutevvy7QsRvJkpRoVbjxWqN/5AJv8q2zjT+Je58Gue2k
+         WO0ryKdQLP+y2q7/EONE0zZe2WyDkHZd06pgag3F9A3EtVxqzSVKGH49vreOG4hTFcW+
+         8LSuDELBvwqmSjlAvZwapxyLmwBlFbhIc+7KUn14Dh1Qo8aXz2jos5XEGiaWc2TtryZ7
+         JReOp6YtFn8ChgU20Y4qPUEy3YsQVrIEaQV4EnWuRXEVwKIPF0H2fhWqEgekuiLTVQGG
+         TriHPJt2XtoFYVQni5nlFagfYoeSSrAMkARL1vslpfa7EROlrNBZ7oIR40LKJUjRHb4I
+         M/Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCUC/zkMJrIL00OzQLjs9FOn4gfavJH720fso7p0Oq19AkMSmySwZt1+bZEE38YGPVbcOSaBTLLXzAdYkC+wwA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo2zTodhfzT3ZRx/8vHS4QGnqGWmb5gqOX6ksAJ6WH5u36O3Wa
+	LoTfLNQRlfxQAt4SggD+Mshbq5O33CW+WkM17TBxuBsv7pUF0enarhM0+D5nDMGKRsn/Fejn8tt
+	6/Xk+Fp3plLdl0w==
+X-Google-Smtp-Source: AGHT+IFUIi/aIrJ+YBlE4GZq9QhM4TQhjCYLMqpNPEPZ/dnhztAF0TRSuK+vVuzlXWZ0B183nyofXeU+L1JIfzI=
+X-Received: from wmsp15.prod.google.com ([2002:a05:600c:1d8f:b0:43d:56fa:9b95])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2404:b0:39c:142c:e889 with SMTP id ffacd0b85a97d-3a0ac0ec30emr1669780f8f.27.1746522655314;
- Tue, 06 May 2025 02:10:55 -0700 (PDT)
-Date: Tue, 6 May 2025 09:10:53 +0000
-In-Reply-To: <aBjlx_AfQCS-pmht@polis>
+ 2002:a05:600c:3c90:b0:43c:f44c:72b7 with SMTP id 5b1f17b1804b1-441c48bdfdamr99780575e9.14.1746523123132;
+ Tue, 06 May 2025 02:18:43 -0700 (PDT)
+Date: Tue, 6 May 2025 09:18:41 +0000
+In-Reply-To: <2025050544-sneak-compactor-d701@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,85 +58,107 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250505-strncpy-from-user-v3-0-85c677fd4f91@google.com>
- <20250505-strncpy-from-user-v3-2-85c677fd4f91@google.com> <aBjlx_AfQCS-pmht@polis>
-Message-ID: <aBnSHfFGAyMxAtQa@google.com>
-Subject: Re: [PATCH v3 2/2] uaccess: rust: add UserSliceReader::strcpy_into_buf
+ <20250505-strncpy-from-user-v3-1-85c677fd4f91@google.com> <2025050544-sneak-compactor-d701@gregkh>
+Message-ID: <aBnT8Y3lJqd6J40q@google.com>
+Subject: Re: [PATCH v3 1/2] uaccess: rust: add strncpy_from_user
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, May 05, 2025 at 06:22:31PM +0200, Danilo Krummrich wrote:
-> On Mon, May 05, 2025 at 12:17:32PM +0000, Alice Ryhl wrote:
-> > +    /// Read a NUL-terminated string from userspace and return it.
-> > +    ///
-> > +    /// The string is read into `buf` and a NUL-terminator is added if the end of `buf` is reached.
-> > +    /// Since there must be space to add a NUL-terminator, the buffer must not be empty. The
-> > +    /// returned `&CStr` points into `buf`.
-> > +    ///
-> > +    /// Fails with [`EFAULT`] if the read happens on a bad address (some data may have been
-> > +    /// copied).
-> > +    #[doc(alias = "strncpy_from_user")]
-> > +    pub fn strcpy_into_buf<'buf>(self, buf: &'buf mut [u8]) -> Result<&'buf CStr> {
-> > +        if buf.is_empty() {
-> > +            return Err(EINVAL);
-> > +        }
+On Mon, May 05, 2025 at 04:30:05PM +0200, Greg Kroah-Hartman wrote:
+> On Mon, May 05, 2025 at 12:17:31PM +0000, Alice Ryhl wrote:
+> > This patch adds a direct wrapper around the C function of the same name.
+> > It's not really intended for direct use by Rust code since
+> > strncpy_from_user has a somewhat unfortunate API where it only
+> > nul-terminates the buffer if there's space for the nul-terminator. This
+> > means that a direct Rust wrapper around it could not return a &CStr
+> > since the buffer may not be a cstring. However, we still add the method
+> > to build more convenient APIs on top of it, which will happen in
+> > subsequent patches.
+> > 
+> > Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/uaccess.rs | 35 ++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 34 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> > index 80a9782b1c6e98ed6eae308ade8551afa7adc188..a7b123915e9aa2329f376d67cad93e2fc17ae017 100644
+> > --- a/rust/kernel/uaccess.rs
+> > +++ b/rust/kernel/uaccess.rs
+> > @@ -8,7 +8,7 @@
+> >      alloc::{Allocator, Flags},
+> >      bindings,
+> >      error::Result,
+> > -    ffi::c_void,
+> > +    ffi::{c_char, c_void},
+> >      prelude::*,
+> >      transmute::{AsBytes, FromBytes},
+> >  };
+> > @@ -369,3 +369,36 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
+> >          Ok(())
+> >      }
+> >  }
 > > +
-> > +        // SAFETY: The types are compatible and `strncpy_from_user` doesn't write uninitialized
-> > +        // bytes to `buf`.
-> > +        let mut dst = unsafe { &mut *(buf as *mut [u8] as *mut [MaybeUninit<u8>]) };
-> > +
-> > +        // We never read more than `self.length` bytes.
-> > +        if dst.len() > self.length {
-> > +            dst = &mut dst[..self.length];
-> > +        }
-> > +
-> > +        let mut len = raw_strncpy_from_user(self.ptr, dst)?;
-> > +        if len < dst.len() {
-> > +            // Add one to include the NUL-terminator.
-> > +            len += 1;
-> > +        } else if len < buf.len() {
-> > +            // This implies that len == dst.len() < buf.len().
-> > +            //
-> > +            // This means that we could not fill the entire buffer, but we had to stop reading
-> > +            // because we hit the `self.length` limit of this `UserSliceReader`. Since we did not
-> > +            // fill the buffer, we treat this case as if we tried to read past the `self.length`
-> > +            // limit and received a page fault, which is consistent with other `UserSliceReader`
-> > +            // methods that also return page faults when you exceed `self.length`.
-> > +            return Err(EFAULT);
-> > +        } else {
-> > +            // This implies that len == buf.len().
-> > +            //
-> > +            // This means that we filled the buffer exactly. In this case, we add a NUL-terminator
-> > +            // and return it. Unlike the `len < dst.len()` branch, don't modify `len` because it
-> > +            // already represents the length including the NUL-terminator.
-> > +            //
-> > +            // SAFETY: Due to the check at the beginning, the buffer is not empty.
-> > +            unsafe { *buf.last_mut().unwrap_unchecked() = 0 };
-> > +        }
-> > +
-> > +        // SAFETY: `raw_strncpy_from_user` guarantees that this range of bytes represents a
-> > +        // NUL-terminated string with the only NUL byte being at the end.
+> > +/// Reads a nul-terminated string into `buf` and returns the length.
+> > +///
+> > +/// This reads from userspace until a NUL byte is encountered, or until `buf.len()` bytes have been
+> > +/// read. Fails with [`EFAULT`] if a read happens on a bad address (some data may have been
+> > +/// copied). When the end of the buffer is encountered, no NUL byte is added, so the string is
+> > +/// *not* guaranteed to be NUL-terminated when `Ok(buf.len())` is returned.
+> > +///
+> > +/// # Guarantees
+> > +///
+> > +/// When this function returns `Ok(len)`, it is guaranteed that the first `len` of `buf` bytes are
+> > +/// initialized and non-zero. Furthermore, if `len < buf.len()`, then `buf[len]` is a NUL byte.
+> > +/// Unsafe code may rely on these guarantees.
+> > +#[inline]
+> > +#[expect(dead_code)]
+> > +fn raw_strncpy_from_user(ptr: UserPtr, buf: &mut [MaybeUninit<u8>]) -> Result<usize> {
 > 
-> This isn't true if we hit the else case above, no?
-> 
-> With that fixed,
-> 
-> 	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> Nit, the parameters here are backwards from the C version of
+> strncpy_from_user(), which is going to cause us no end of grief when
+> reviewing code between the two languages :(
 
-I guess the wording is a bit off. I will update to this:
+I'll swap them.
 
-// SAFETY: There are two cases:
-// * If we hit the `len < dst.len()` case, then `raw_strncpy_from_user`
-//   guarantees that this slice contains exactly one NUL byte at the end
-//   of the string.
-// * Otherwise, `raw_strncpy_from_user` guarantees that the string
-//   contained no NUL bytes, and we have since added a NUL byte at the
-//   end.
+fn raw_strncpy_from_user(dst: &mut [MaybeUninit<u8>], src: UserPtr) -> Result<usize> {
+
+> Also, it's not your fault, but we don't have any type of __user tag for
+> data coming from userspace yet to track this type of thing?  The
+> compiler (well sparse) can catch this type of thing in C, any hints on
+> what we could do in Rust for the same type of guarantee (i.e. don't
+> touch user data before it's been copied, and then we need to treat it as
+> "unverified" but that's a different patch series...)
+
+The UserPtr typedef is intended to do that, but since it's only a
+typedef to usize, the compiler won't detect it if you mix up a user
+pointer with a length. (It will detect mix-ups with pointers since we
+use an integer type for UserPtr.)
+
+What we can do is replace the typedef with
+
+#[repr(transparent)]
+struct UserPtr(pub usize);
+
+That way, it becomes it's own separate type (this is called the newtype
+pattern [1]) so that it can't be mixed up with anything else.
+
+The #[repr(transparent)] annotation makes the compiler treat it like a
+bare long for ABI-purposes. I'm not sure if any function ABIs actually
+treat a long differently from a struct that just contains a long, but if
+such ABIs exist, then the annotation ensures that the long ABI is used
+rather than the struct-containing-long ABI.
 
 Alice
+
+[1]: https://doc.rust-lang.org/rust-by-example/generics/new_types.html
