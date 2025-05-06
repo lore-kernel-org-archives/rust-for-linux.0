@@ -1,99 +1,107 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31EE1F7580;
-	Tue,  6 May 2025 10:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2767275869;
+	Tue,  6 May 2025 10:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746526703; cv=none; b=ukIdhUzwSLX5O77pqkq8/huABVFKh7fU02ePXIrlpK1LT/lDQOWKvrgao81yGzNuDLj0jdbIL7+m61fOaNHHnt0x+cBQp6ezwF92zN8fJBVdL5RWaUNJ3fjAbmzLpAfY6Ca2VZrgmeQ7B344PUeuDNzvOMQ0lRJKnhMXDnR+HRs=
+	t=1746527120; cv=none; b=tcDY8M69WKE8AN06gYpAx59dbjKMwUh9E9WmlJAb+VesJy28bI5uV+zbLRzXBW4qTjKN7ZSswwDbow2FD8UgQxJgkqfHiDsyFiJoyYwGCFy5GHd86XSW8cXUtuKAq28LKlSg4uxgwsT8KlC65I1bPvgqUVon6CZG9QZ00aNQcLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746526703; c=relaxed/simple;
-	bh=TkVB+8a7Equf/EbuOsvzUv62MCHrmk/SwZSQs4n6MgI=;
+	s=arc-20240116; t=1746527120; c=relaxed/simple;
+	bh=HNvpa2Eo7tSdFILDlxkSiMCU0KdDUbo+UdR+rUM8044=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gB15cDRsO5eBlOYw4Emy4Bry1Fe7RH4+33iF1lHBb6MPec/V7dPdWtBAUIfJi4oyk3x6RG6E8KoNxfSC84WI6n3wtdLYCN1DdnSLgKZ66ZtZgkoWfnVNBZFmuNdNgIkHvDvtB0YvsDb8CdTcW1v4nqjMVpb1s45MYOBkq2pbVM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFbnB9dC; arc=none smtp.client-ip=209.85.216.50
+	 To:Cc:Content-Type; b=YvwKVt9IeUvAEhdqwyhnlBYTSdSD9PH/ng7jNoU7YtwV1tsinVlXCf9sCS0LV6mt/t+9yGQPRrAb4ddslPaT9sTCDH0oVSljjuguZs5BidsDGQlPVftrO3wy/sdW2pKv9PtNbB7cf+7/bKDr2qnXlsHTRTFaoare7pRYZFO/AL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iDA0NV/b; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFbnB9dC"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-30a892f8124so28970a91.3;
-        Tue, 06 May 2025 03:18:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iDA0NV/b"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22e163543ceso7085365ad.2;
+        Tue, 06 May 2025 03:25:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746526701; x=1747131501; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746527116; x=1747131916; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TkVB+8a7Equf/EbuOsvzUv62MCHrmk/SwZSQs4n6MgI=;
-        b=gFbnB9dCVtg1U46K2SCi9EpWQjEPyUw9la7eZx0KQ6cTOdNYEH5g03JIXR1ehJYkeD
-         5KDP6GV2qtcFvsr/esKfTAOYXCHBPPMK0BrsL85Tm+cSm7t7IdJjV/0w6RC7GplvBYpv
-         JBwh1CCfUiGdMNX0W1Cmg64ZP4WWQqDRPK2dFJbijsON+LZnBAwbo4VAmutLvXLM5S1T
-         ykXXHt/slsOSHuY8q3DpLsiEc5uWAzDKroVbZq2l/eE4x1PEBSPoFnSIJwf59wq8NasR
-         iypnFYe2XQC8P98OrrnheA9nmfzD+uQ8lDyf0u5ZPVA4FTJsUq7cQkzDS2xnSAMG4w8w
-         cNzw==
+        bh=jyLB1z+Ve3MGzRF3v4MVgA5J4WLWRyi2thiBODDNnGI=;
+        b=iDA0NV/b4ro1k7hrotlHG5Mzj3DMdNUw/DLb49o2/ts/xgD8zwLin6YTA9Ma2clmfP
+         kfWSKsz0PJZ5OHOsQGj7XnSweSP5f/iGqMNUanA3SHWtVYM5nenf9Bi9N/HHMIiVBmet
+         hduErkTSWxMGFCEeVfRjYQgw9jEbwg59nHcul5HIgat+yP+5n8q1QQCM/z9nQu+TbZ7V
+         WF2aCmJgvx8k5N17kQV4ERzD77gRmAQX+oVqdTYBO/iCgKvq0ix6PN+wOY4Iv6ORRERX
+         YLmEk7ZsltuAvPY+wwS9iPLDR7kX5RtgOM+/Dq32Chj5GLRt3vdT3JNzrQkhkDHShBa6
+         U2dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746526701; x=1747131501;
+        d=1e100.net; s=20230601; t=1746527116; x=1747131916;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TkVB+8a7Equf/EbuOsvzUv62MCHrmk/SwZSQs4n6MgI=;
-        b=UU+Ui1Wjj1bxmIh6QHO428hGy2uiZhciciN3yciGHFOwuCg+qZTVAs9R9muogvWm5u
-         9Gcta7AdH2qSKLKKfcPtDEYJQoLbHyxzS1+CdU1MgtG/GnfunGpVjxg8020be5795Kqy
-         3pRSlqSFDgFhF6uqSltS9+A9/6l8ugeG2OMYrpCve0N11z52Dv1YLhgzyLgn/vPks2pL
-         Q9855z0OtMb+VRRe8qD0KrpRY9Kq98WtTGdLg4UcWy53oJ1oZEP5oNAtNInm/IZ+HErr
-         4MjnYkWCwZ4bG9FTdM3uDM8wbFvCxNDyeSW4c+7FYOLbOZxyT0uELYSsJb0kGnto98Hb
-         lb2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUTB97NRSJnbHuLRz0GxfehPtIGC5uuradZJqI/S/tSxtpP0AUcAZNf4O1SBjtEZeRTf5U9p36U2FOxYoc=@vger.kernel.org, AJvYcCV4E5e/LPUzmq0PAgIvCbIsf4gT9Hsm1tu6uf5gDF0lz/61UMyjE/fJlb9DZT45jhlkpWaaih7cNa66mPrAnjk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8aavXui+jslKwthCFvONV2zrqWBcOMBkeR6Ipvs14G4tMROrA
-	p9kMCHWn8r2NcUzq64qpck33EOzuuz9FUGGWb8vthPaFSfJ3S7WBE4yB/Fzp2LF2629aXVl4h0x
-	/U0sHCOe1fVj6ecC04KgzqUTmMf4=
-X-Gm-Gg: ASbGncup6lEdheT5bZjneQZTtDTX6TI3lujXCOID2l4m867bSmPdjzY2lTMY+aIBDJy
-	1G8xSlU3ErnS1S7ruNKP9AU1/BzobY7Dtbd0DuGnEYUJf9YP84UjK38lIsbKkxsJie+/GL97lzp
-	8MuR1ErOza4855JBZNjSl3vg==
-X-Google-Smtp-Source: AGHT+IFTQhMrziTWlbb2M+/2CKqeuD9ySvQIFR7HINWqYlufRDWodWwGFdpGFLHaN5vk5bUQ2xswfOSdmk+Gd3iNYOY=
-X-Received: by 2002:a17:90b:4c42:b0:305:5f20:b28c with SMTP id
- 98e67ed59e1d1-30a4e6f3564mr9396337a91.5.1746526700829; Tue, 06 May 2025
- 03:18:20 -0700 (PDT)
+        bh=jyLB1z+Ve3MGzRF3v4MVgA5J4WLWRyi2thiBODDNnGI=;
+        b=O331przK0fDUnYdAuMiBroAED/HzNgdJ6PqD7YWAvuexYT4eJCt8SUlzjO7pKWQxw8
+         Zo/kJjHVK3RvdA1X1nOO2P57GurZPFoUfB4B97R0ZiWoUaNWHAfYTEcCP5VvRIuFgh1i
+         MnnzUhFV3LhY84D9Z7K3oMf0f9kVCkE584pcchPkD3soErzLadtuisvoj5n8eCmE4QnU
+         MYF2zBK8p5RikbOA10JF9EPi+Z7dvPiC0Bd9gJJFNUvLYGzcicDXDJbp3cd/fC6A0y3H
+         IX5iH0GDLK48C8a84iOmbM5tyEBaFNT2dp/yDlav05OAFZA29XyI88nBN2vs3IfvvwKY
+         X1wA==
+X-Forwarded-Encrypted: i=1; AJvYcCURt9/NEG5nN3vuivc3/LBG6i9FOAiMTz9z/BvaNfJpSY2rosS4AHgDkW/D/MeUmbdn1O6vKqGDMOo=@vger.kernel.org, AJvYcCUbVd0jORib3Y2LHcwEvNZnvgb3VIEcXuIjcEtWFdCvnkWCsSun2WcsIWke5oA1v215wrtAJS7A3H4=@vger.kernel.org, AJvYcCWhH6+D6JoAUUMj7f9jH0szL9DUIDUkGY0eouniujtLH/oZecgjsjWfG7/wuTqCH8OLEsSKC8HGubcXQrHk@vger.kernel.org, AJvYcCXHF/Yntajpi8Qfd5m3Th64+OVRqUfDXbE5yN01xd+BFWfD7vcsZIke8ic+C4iyZlxSK4BRLyxpuslVXdTATl4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxWD0IxwcGNB06DWARReYtZNbw3uaTP128bDTHakNM9zqgoKlg
+	fZF8c29Wmg6fbQ184MFEklXZUIpguVMMsYM5X+kSmUrn+grAD9meIfHxtVTbfRHoKD9OwnOJiDx
+	AJD1HzJo6mhTtUnkWcNGV68F06cc=
+X-Gm-Gg: ASbGncvfZseA5d5opOOpGks3BBvAIKMZyBBMN4dZMWGybs6OF7nu1k1Ngj66XrWFOD2
+	TLkTp1deAV1wiCyW7ywLTk9gJ8ioXT6/O0dR+JrLpTGlJInm7PMkNt162s/1SXHML33a/gUE1bJ
+	UskxfEj63ZY3rKA0yTPnf/GA==
+X-Google-Smtp-Source: AGHT+IH3m7O/vizvz4Yjf3dvbJP0kjxJWIh7mJkDG9BEGHYUFYbe+8VcCoCLLDrkr4DxhpzlPe0JKXuS7u5vwajwLBg=
+X-Received: by 2002:a17:902:d4c4:b0:224:e0e:e08b with SMTP id
+ d9443c01a7336-22e1022be16mr98720805ad.0.1746527116173; Tue, 06 May 2025
+ 03:25:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72mvu54B=U+YCUmbFctj_wXgF5zjeE-BB-vHVnAP+3mPcQ@mail.gmail.com>
- <20250506042330.281501-1-contact@antoniohickey.com>
-In-Reply-To: <20250506042330.281501-1-contact@antoniohickey.com>
+References: <20250502070109.inpes2ou3rxx2fxp@vireshk-i7> <20250506101311.142475-1-andrewjballance@gmail.com>
+In-Reply-To: <20250506101311.142475-1-andrewjballance@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 6 May 2025 12:18:08 +0200
-X-Gm-Features: ATxdqUHheYcgH2uYtGDqL5P2WC747Ik5cUU8Qk9P-Zl-sb_irLvy-lFNrX6m8BI
-Message-ID: <CANiq72nu9MrTaQBABxiveqSqX4b9zJZL0MsazG+D64ULQ_Shqg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] rust: kernel: create `overflow_assert!`
-To: Antonio Hickey <contact@antoniohickey.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
+Date: Tue, 6 May 2025 12:25:03 +0200
+X-Gm-Features: ATxdqUFhj6qDR92HHk-3C4iXl6O_UDQOpyfYBJ4TQjYOBDXAz_1ZQp_UBtw0_e0
+Message-ID: <CANiq72k3ozKkLMinTLQwvkyg9K=BeRxs1oYZSKhJHY-veEyZdg@mail.gmail.com>
+Subject: Re: [PATCH V11 00/15] Rust abstractions for clk, cpumask, cpufreq, OPP
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: viresh.kumar@linaro.org, a.hindborg@kernel.org, alex.bennee@linaro.org, 
+	alex.gaynor@gmail.com, aliceryhl@google.com, anisse@astier.eu, 
 	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dakr@kernel.org, gary@garyguo.net, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
+	bqe@google.com, dakr@kernel.org, dakr@redhat.com, 
+	daniel.almeida@collabora.com, gary@garyguo.net, joakim.bech@linaro.org, 
+	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux@armlinux.org.uk, linux@rasmusvillemoes.dk, 
+	manos.pitsidianakis@linaro.org, mturquette@baylibre.com, nm@ti.com, 
+	ojeda@kernel.org, peterz@infradead.org, rafael@kernel.org, robh@kernel.org, 
+	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
+	tmgross@umich.edu, vincent.guittot@linaro.org, vireshk@kernel.org, 
+	yury.norov@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 6, 2025 at 6:23=E2=80=AFAM Antonio Hickey <contact@antoniohicke=
-y.com> wrote:
+On Tue, May 6, 2025 at 12:15=E2=80=AFPM Andrew Ballance
+<andrewjballance@gmail.com> wrote:
 >
-> I do like the idea utilizing the `cfg!` macro, it's cleaner as it
-> reduces the empty boilerplate currently required. I do wonder though
-> could that potentially cause warnings like unreachable code or
-> unused variables?
+> I have tried building the latest linux-next and I think that this
+> patch series causes a build error with the defconfig for x86_64.
 
-Hmm... Isn't it the other way around? i.e. `#[cfg]` is the one that
-completely removes code and thus could introduce cases where no other
-code references something.
+Yeah, I also see it in the latest `linux-next` runs.
 
-As for unreachable, I don't think that triggers with an `if false {
-... }` (it does with e.g. code after a diverging call).
+And in arm64, it builds, but I see a doctest failure too:
 
-The `debug_assert!` macro works with `cfg!`, so unless the compiler
-does something custom on linting for it, I think it should work for us
-here too.
+[    1.014106]     # rust_doctest_kernel_cpumask_rs_0.location:
+rust/kernel/cpumask.rs:180
+[    1.015226]     # rust_doctest_kernel_cpumask_rs_0: ASSERTION
+FAILED at rust/kernel/cpumask.rs:190
+[    1.015226]     Expected mask.weight() =3D=3D 2 to be true, but is false
+[    1.017326]     not ok 40 rust_doctest_kernel_cpumask_rs_0
 
+Viresh: could you please make sure `defconfig`s (and `allmodconfig`s)
+are clean? (including with debug assertions and doctests enabled) We
+will very soon be putting more things into next for the merge window.
 Thanks!
 
 Cheers,
