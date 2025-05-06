@@ -1,110 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6165264A6D
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 09:55:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DED2472A6;
+	Tue,  6 May 2025 10:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746525338; cv=none; b=brqUlmVp73b30xS20olOyIumhH3oabud+vVQmJXzSY0QGZ2m4vMM3MvW05ROjJlqcRRbB1CM/Fv3FQgSj9tllkTNeEm2ZqlbaHcu7gujuh7dtJ+DTcCSTjpHhOc9n6979PuEqOKlVYEex/ECeLFrcOUfeL18PRo7ak6mh4f3f7s=
+	t=1746525986; cv=none; b=B6Fg7K5Vi9/HjXOKs1Rp2VrynucFRFqruOvplpyWEMLBcvbDlp18KXfEt7WCFHYLzSbPb6pTUsUY/vLjR4s2gqVEl8burNSS3vcoioHt3UVywEm6QR8UYVnHTIzKhIIDHqsKth40/ZQybbhOW40sEpT2CgrwN/Rzubn5c7VFfXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746525338; c=relaxed/simple;
-	bh=czA6xtOu+YcHwiDFrFf4mH8B0JFLOQ3hd3G4ICdsFWs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RdRgEAMl0UC1PZqRFdYMG4/KpXdyHh4V+q8IQj9rP5dNmk8xtZ+5u/DZzP+uyznvkvx4+qcUDksTIZPpJKSU2SW7G30RSw1cVe5MFbe0a8G8tcd+0on+3ZYGurk18KlI1W+jNkVqRx8SjtG4yEOMyQqGopt1vOoXNX8fLNBs9y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ozjpWirz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746525986; c=relaxed/simple;
+	bh=uWcVkaDIWPWg4JuOYBhuX2xthL3fS8kru6FrB8vKM80=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Lks44gVghHIYAjXZs5Ina3BHY+PrNRDNu25lcWs2L8kvWyfJJummD0+U5gcIwIE1/AN88ntcpejCuijN4w0iTT/SiRMgzpGeMKvTRikt2mY5OZC0o/kCJs298st7b1RWedFlw2LwIh9D+vdgV2uG0E7kf36/ObN3zDZeKcwsJ0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GJfdu8P0; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ozjpWirz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE764C4CEED;
-	Tue,  6 May 2025 09:55:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746525337;
-	bh=czA6xtOu+YcHwiDFrFf4mH8B0JFLOQ3hd3G4ICdsFWs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ozjpWirzX8Tsr4cdVenOL1rfgO/rSZR/jGmTulv6gf5bXv1ZQIZnl5lH9rYLPQ4Vx
-	 8g4eQpbuwTYuUqiTO/S4FZj2pk1ffNZWqBaJD3Oe6zqsZU386H/9BJowhA9dkFt6G3
-	 iJrlH3734Ph+z1X3VwT5Nq+5e+rngbAODuIdvh09H8UQIIx60lRDRYWK71O7/Spxwd
-	 lqLkI6/toloq0EDWHUUzdjdgB0ZuOy8WbZD6KjOIYXyA/cQ9Xa+94Dqgotb2FwxXKg
-	 36KUswMFdrIQpnOM0aplBE0jLAjkDHLMUAJS4gtfrWAi+QvJi/QYOlc3XLw6BeG5jj
-	 b1XCrlibmIyFw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-  "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	rust-for-linux@vger.kernel.org,
-Subject: [GIT PULL] Rust timekeeping for v6.16 From: Andreas Hindborg
- <a.hindborg@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Tue, 06 May 2025 11:52:11 +0200
-Message-ID: <87v7qeqd6c.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GJfdu8P0"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-22e162515acso5809825ad.3;
+        Tue, 06 May 2025 03:06:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746525984; x=1747130784; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uWcVkaDIWPWg4JuOYBhuX2xthL3fS8kru6FrB8vKM80=;
+        b=GJfdu8P0rvbcOC6vMI5TsAXoqtEyYFNhFYrO6TOuzSpuA7kyjwng4GWWm5E4wV8dIU
+         Kr8/RMs9H6MkOYx6GSULeN17TlP8i7/mQZWGldjjsXqy+vAHv6DXSvG59kZujJBtlkhU
+         2Zc/P8unYSi+4HHCOL00V1gsmLDSlDROgYkp2JOFeaf+Z7R1n/xT53NqNCJ7f4V4DLHw
+         Ncg8haiPOQe4s500ZZ80e9wKeZpvmI8kAXTkhGo6XKixb4+INhY6P4f+A+JpxHA5iYU3
+         rDcyAV5bj9Dt9nQP3WiDbes11S3lycqNlZf2foo6+hEL8eGEVqjkAIYzUlR8T/KsHLHv
+         OA3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746525984; x=1747130784;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uWcVkaDIWPWg4JuOYBhuX2xthL3fS8kru6FrB8vKM80=;
+        b=KA8LVZAOYY3HNVS+dY9yiRscyO+lquLmOGHgTRHMwxpqGkMztywoHLxyAGqkHh5GYx
+         GS0/QuUBg1Ul5PQiIHqpfewiBA2dAmvHdlH4uw1jZNizBMzChhPuF0YY6uPYv+rjlF4K
+         ++kb8p0PpZOp9iU7MkaoUtbj6ee2O9VK2RITxYy5Vjsex4SXEPk2K3XiQ1asepRcwzzR
+         xPbMKZtc2fJ7iYVK7Bmm9h0ctoWq1suisPbybTUlfLfka+PCkfwIaK8AN5HsfdkCjnVm
+         cU333T+pXSsBkU0bWWqanqrhHg5gUvP9PKh1unTW9cLUVKM/WXvpwoy0WbxybOCpqMJb
+         xpIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWgTQ7xCJ1it2Rl5xWv1cJxZ5ZNjC81OzDRC3ggqS8ehgNOhGNYIpthrfszW3hLVGSv6VPxxiHXFtWMOmRzIg==@vger.kernel.org, AJvYcCXbDbaLI5gt8NfWV2uV2mBsjhdPfDxteY2F7A2xUhO9a0QNEZ+JP0Y8ENnekZFXS+Y2IM2fu3IQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGX5Mh8xxwUegeALpXkul9H/cSo8gYYE3r7v5iEopPFrtjr4TZ
+	s9jyJeReZQgcfr3kmNK1LY3P/69n5JFYRWESmYisRPN1r/wXM9EFkyNmuA0IvYFB1ZhV5pBrwJP
+	AXZDO7sQAH4E5X8A2brliKSeoKOo=
+X-Gm-Gg: ASbGncuGZDSLaRE/OPmDJ90psj2iqxzu6E2WL9e+jrQWIQcjSUJhjLcLy1ToTdIRbco
+	KoEFTIqM6+BGctB3G6y3nodvdyGNHP1cCPLZS47SGaeXUEyYNtuKEP/DWcrNkcas2Bgx83SqfY7
+	milSOkSKASRW2rns1itQybFQ==
+X-Google-Smtp-Source: AGHT+IGNW1bQkgEPUzwv/u6V0505kRofrj6rLt2UXk3MK+zuogfsk17vFI3oZzjGvlZjlW1wjS6TUxvtJ7akkl/OTm0=
+X-Received: by 2002:a17:903:1246:b0:224:1579:b347 with SMTP id
+ d9443c01a7336-22e102f7c23mr86440685ad.7.1746525983961; Tue, 06 May 2025
+ 03:06:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250505221419.2672473-1-sashal@kernel.org> <20250505221419.2672473-302-sashal@kernel.org>
+In-Reply-To: <20250505221419.2672473-302-sashal@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 6 May 2025 12:06:11 +0200
+X-Gm-Features: ATxdqUHI5rDYIPwUTcGU9NhC1qwWl_wMASLlZRTTRwZeP9y6bm1JKEA-XYZgxxw
+Message-ID: <CANiq72=1cTG0d4-PWX41tLqr+C7_QjJZ_=n=_5D5+Zgy3PUmRg@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.14 302/642] rust/faux: Add missing parent
+ argument to Registration::new()
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Lyude Paul <lyude@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rafael@kernel.org, 
+	dakr@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
+On Tue, May 6, 2025 at 12:26=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> From: Lyude Paul <lyude@redhat.com>
+>
+> [ Upstream commit 95cb0cb546c2892b7a31ff2fce6573f201a214b8 ]
+>
+> A little late in the review of the faux device interface, we added the
+> ability to specify a parent device when creating new faux devices - but
+> this never got ported over to the rust bindings. So, let's add the missin=
+g
+> argument now so we don't have to convert other users later down the line.
+>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Link: https://lore.kernel.org/r/20250227193522.198344-1-lyude@redhat.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Please pull these changes for Rust timekeeping.
+Does someone need this in 6.14.y?
 
-This PR morphs the rust hrtimer subsystem into the rust timekeeping subsystem
-covering delay, sleep timekeeping, and timers.
+Thanks!
 
-We also add the `Delta` and `Instant` types to replace `Ktime`. We add `Ktime`
-locally for `htrimer` while we rework `hrtimer` to use the new types.
-
-In this iteration, `Instant` does not prevent subtracting instants based on
-different clock sources. We plan to add this via generics in the next cycle.
-
-The commits were in linux-next since next-20250501.
-
-The following changes since commit 9c32cda43eb78f78c73aee4aa344b777714e259b:
-
-  Linux 6.15-rc3 (2025-04-20 13:43:47 -0700)
-
-are available in the Git repository at:
-
-  https://github.com/rust-for-linux/linux.git tags/rust-timekeeping-for-v6.16-v2
-
-for you to fetch changes up to 679185904972421c570a1c337a8266835045012d:
-
-  MAINTAINERS: rust: Add a new section for all of the time stuff (2025-04-29 15:35:25 +0200)
-
-Best regards,
-Andreas
-
-----------------------------------------------------------------
-Rust timekeeping changes for v6.16
-
- - Morph the rust hrtimer subsystem into the rust timekeeping subsystem,
-   covering delay, sleep, timekeeping, timers. This new subsystem has all the
-   relevant timekeeping C maintainers listed in the entry.
-
- - Replace `Ktime` with `Delta` and `Instant` types to represent a duration of
-   time and a point in time.
-
- - Temporarily add `Ktime` to `hrtimer` module to allow `hrtimer` to delay
-   converting to `Instant` and `Delta`.
-
-----------------------------------------------------------------
-FUJITA Tomonori (5):
-      rust: hrtimer: Add Ktime temporarily
-      rust: time: Add PartialEq/Eq/PartialOrd/Ord trait to Ktime
-      rust: time: Introduce Delta type
-      rust: time: Introduce Instant type
-      MAINTAINERS: rust: Add a new section for all of the time stuff
-
- MAINTAINERS                         |  11 ++-
- rust/kernel/time.rs                 | 167 +++++++++++++++++++++++++++---------
- rust/kernel/time/hrtimer.rs         |  18 +++-
- rust/kernel/time/hrtimer/arc.rs     |   2 +-
- rust/kernel/time/hrtimer/pin.rs     |   2 +-
- rust/kernel/time/hrtimer/pin_mut.rs |   4 +-
- rust/kernel/time/hrtimer/tbox.rs    |   2 +-
- 7 files changed, 157 insertions(+), 49 deletions(-)
-
+Cheers,
+Miguel
