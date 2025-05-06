@@ -1,71 +1,72 @@
 Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004BD2989AC
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 01:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8478A2989A6
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 01:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746493460; cv=none; b=TE8pP3vTTJ+rNciUcZcstKdUzsch/QprsqsrHXIs5EEhXbp4nX8QJ4mL90bwGwBctiOtU2bO/20SPiG3JoyNDr4FTy7JVJUoWJHomQvepwsqyp8aCG/WPU4MEkXr3VGhWZ4N1fUilbKrOklsKwM/IAZC+cp1fNc6scQDTM62rEo=
+	t=1746493459; cv=none; b=NmNHqo5cjqwu8qDpY967BlqlTYxZZX2lRG1AwTUcVIEd9XI53pv8d53PJRrG0JE0nzmuudjc0ImDd6c+kyM7+gAiH1M3TjIx4MQpIdsHf3JZWZuI4ncQnVj/vDtES3c8rlyHYE96Dguv8igJqChUzSn+MMFLoGEADTrA+H16K2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746493460; c=relaxed/simple;
-	bh=NAIRHl9jRwApoLdgJlgRFmMt3m5CcZE9so5qmj5XRdo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LqoJcyQUGns+aCd0YeuzJs/dbhwjgKFBe/09lLj736ozSJ0IwmKKKaS/8eu1u2TbbyeBKo57OYgwU/eKwFmVC/MFKV4hTcE4oi4iP08iFJJhlPZXdKUw5Ieb2t6l1J//w1bwCCBCxiXxKUZxWP17LWCpF+Gl5wWitJauJJy4wtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tWNxcKGy; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1746493459; c=relaxed/simple;
+	bh=eA322ppsD+vY/QxxIIPgh2LsmFqa2swR4N1IgO7W+kQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hk8jBM05j/PUkdWL6ZctZFL7kZ1jLY4zhWbwweBqIXU9PogT9AoZK9/fxxYFafCzKpulfne6tSceZKp4UV17E4QzJptmd7U+qYCzKTX7BUsQ8LmwNplhWuWvAw4Raagzwyd0F4ka8asa04WiZXqnlpT7p8kke79gqyhPZPg0NcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=azVNbGvo; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tWNxcKGy"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2242ce15cc3so47725275ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 18:04:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="azVNbGvo"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22e3b03cd64so1466045ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 18:04:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746493457; x=1747098257; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YNg/75q6BfSe8D1KXAmFCz3H50TWhsSoQGs55Qs/RH8=;
-        b=tWNxcKGymebuJEDsLT9E+wdS39VmAQ0p33b1d9a/RCzEynXpwhzbG27ZwjX0IOxGah
-         SD04ZeYYTpPVz38PfPvxN4EkW/npmvsubXDtd204cbH2J+9mkAfC+H4Fi50bT8pWYMhW
-         jpSTh1DYYxma5Yu3FtZ0+u7fV9KTUko5ZMTcS8iddj4MjDBvO7OqHdIRTDE3Lo/C+Eux
-         jIfVvPDqf3GG10vb1xFsYKacQm6+1+6/dc75nOACZGUka3WMiNEUeRWsuM7whIPp5fF6
-         Pk1CHyU47luFL0qS7/Va1ikTLNkMmJbyTOJlw0EaGlxBCACKAqSlqPKNkBvb9gmvyG55
-         JKRA==
+        d=google.com; s=20230601; t=1746493456; x=1747098256; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uuu4gy8/kO7TI9NeJUuJ8F7nLoDTInolVvMw03VZmFY=;
+        b=azVNbGvoe6DfzcFQdy+PgA+54UKpogjtaMOIEGfE7yI5yw/IUTFEAegoZgbT6m/4Xw
+         fkUg6nRruT0nkXFErFkpY0F669s85JusUI7SpMCYxltu9VQ3tB9IVC3iNQM8F+n51DMV
+         ymF8SVV4JsNzx/DqNCA7y6ue1BE2up3Jq5DOOZSAvDJhnkV28jbSWbi4YWtTB+xFlBUd
+         S8MbXlYssBjpvaoTF0KPwXJF4b/iU8KgMhhmeDI4DoY1Hj588+9t2etonmCVDZMSNjgj
+         Pxog+U5Fe9Y7oTSy++U0oSOK2CIIIYd8L3bi3UIllYlklLVQnSQ3Uk7QTzn0gfOVSTOE
+         X/RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746493457; x=1747098257;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YNg/75q6BfSe8D1KXAmFCz3H50TWhsSoQGs55Qs/RH8=;
-        b=eKewYSPT8bd6HxFxxxti+Fl4AI5LOniS3zkTpEY0hCJCo/PsEv71AIYSz+g9jE1sZj
-         Kk4TDYVLapdLhNO+tXr3ngCbtcyHdG2qALaiNgADxIpskJSk3KpP9JF9nTXc5TM46YeB
-         UKA4X3/lFDuJtShhmOy9miA8I7XpdHJpZSoJAy1Y67z9EHNTvAQh6j6pziAcej9wNw42
-         XQdNs7dSZ+EZxydAGLOOrbzKXtWtjVi/7dzGRjKfJ+6O94+MBkiN6hidWBIIeqJb+zAn
-         h1oWsYNuQybGw9EM+ZxAPTJnzFZn5UYe7fWKT6SFzI+GQh036o10rPvYEy2W3TcwS121
-         fCZQ==
-X-Gm-Message-State: AOJu0Ywf570EjAbVH6A16jxqvgcGSia+d0KxRd6Mren1MAFChJPEQS0H
-	yDLUQ24qeqzOVpxQqbcA3TUZg5zvjjiHJZg3N/Gun7FrnCfnmXH7L2uop9RzkuKCef9NnqbSuz9
-	qG6szbg==
-X-Google-Smtp-Source: AGHT+IF6woG3grc42jD9/hM5kbZtDO4mWv1QeZMCoSy1twB/zymf2W6+Y2yIWZd/t0aJHDcjkf0blutiyAVD
-X-Received: from plso8.prod.google.com ([2002:a17:902:bcc8:b0:220:dc21:7a39])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d402:b0:22e:4509:cb8a
- with SMTP id d9443c01a7336-22e4509e0bbmr943085ad.21.1746493456998; Mon, 05
- May 2025 18:04:16 -0700 (PDT)
-Date: Tue, 06 May 2025 01:04:13 +0000
-In-Reply-To: <20250506-debugfs-rust-attach-v2-0-c6f88be3890a@google.com>
+        d=1e100.net; s=20230601; t=1746493456; x=1747098256;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uuu4gy8/kO7TI9NeJUuJ8F7nLoDTInolVvMw03VZmFY=;
+        b=wjpAwmroDwc50pTPPrSp9qoZpP+DM04c6OamqiKu1DfcMSO/mJBbz+9ZWzJfF73qAQ
+         BKfwU8/etrnldXdEETz7Khumx4kHqL3V721NLygmMbdqjfBo88bvIt7gjgeQudLK/xw+
+         +AehL9wE+qiKzrMKT6IHr8n5mgbB7YLVsZT6Y+alMTO0YZKkZJ6b6To7QNYvkb/tzJS2
+         uYtDYqOhOXZc6CcQFvi4JUAruSVyFpff5R5laPUJqFC2xB8mbdgnL6RUuHfXCRXvXWvO
+         KwjsWgDKlRsbdbWw1O+i/8m7PJwjc8Gi1cBpd8iZlc8eNpFo6PeOMc56HXSPZMTVklaH
+         Bx+Q==
+X-Gm-Message-State: AOJu0YwjBONLcgRmy6BYKvbQoYYLeqkLPdp3ROrTjOY22U4tJHSJNvXq
+	0sbIX48wHCuD3bAICx4a5nSqV30iQwVbwClLmnlDOM+48t8FPvHfjGhwrDXZ136plY252oLVRUS
+	S2axL9A==
+X-Google-Smtp-Source: AGHT+IE9AfJR9gBa3pS1z1J42jsjS2eEluabDUorQKOz591rLRv8UFbng0HxgIGbOGyFj5eNwjNbAHNkUGY3
+X-Received: from plbjw7.prod.google.com ([2002:a17:903:2787:b0:22e:4263:f5c8])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1252:b0:220:c63b:d93c
+ with SMTP id d9443c01a7336-22e363bb456mr14830275ad.44.1746493455488; Mon, 05
+ May 2025 18:04:15 -0700 (PDT)
+Date: Tue, 06 May 2025 01:04:12 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250506-debugfs-rust-attach-v2-0-c6f88be3890a@google.com>
+X-B4-Tracking: v=1; b=H4sIAAxgGWgC/22PPW/DIBCG/4rFXCo+DNieumbr1qHKYI7DRkpCA
+ 9hqFfm/l7hRpUod3zvd89x7IxlTwEyG5kYSriGHeKlBPDUE5vEyIQ2uZiKYUEwxTh3aZfKZpiU
+ XOpYywkyR69ZqAz1wTerlR0IfPnfqO3k7vJLjzzDhdamG8tj8Cqrvjm9F9xcvwSnoDVrj+LCqO
+ 9qOGSnE8zmUoZGSSWW1VlwZpTqhWitBcJCetb13RnRohNTd7p9DLjF97U1Xvj/wKCX/LbVyyqg DaVjHvfUWXqYYpxM+Vzs5btv2DRvOEnA8AQAA
+X-Change-Id: 20250501-debugfs-rust-attach-e164b67c9c16
 X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746493453; l=11182;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1746493453; l=1862;
  i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=NAIRHl9jRwApoLdgJlgRFmMt3m5CcZE9so5qmj5XRdo=; b=zWBWiJ3hiBmYSlpNujsN1jzH4rN0ip5oVQa4UNc5k39QLFJFcavaLbxOIMCWd1ndl/lTH3g4i
- KhK1E72hWX0BYe7Ur04/zZ6SGpeHZCDerAaRKM7y2mAsCOOuNHBKJmG
+ bh=eA322ppsD+vY/QxxIIPgh2LsmFqa2swR4N1IgO7W+kQ=; b=hMcz9MYt2ukPs8EAoPesKGSGhSIsT0Dt4SpxFewgWlBpt4jMqHmtcFzLlk2Y1P+dDdG4aEq7p
+ gBnCOBLnxvjC8Qoig3zWBpolx5UBxGw4YN3CKbOkwmBDyRMtPXlUKqO
 X-Mailer: b4 0.14.2
-Message-ID: <20250506-debugfs-rust-attach-v2-1-c6f88be3890a@google.com>
-Subject: [PATCH WIP v2 1/2] rust: debugfs: Add interface to build debugfs off
- pinned objects
+Message-ID: <20250506-debugfs-rust-attach-v2-0-c6f88be3890a@google.com>
+Subject: [PATCH WIP v2 0/2] rust: debugfs: Support attaching data to DebugFS directories
 From: Matthew Maurer <mmaurer@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
 	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -78,288 +79,43 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Previously, we could only expose `'static` references to DebugFS because
-we don't know how long the file could live. This provides a way to
-package data alongside an owning directory to guarantee that it will
-live long enough to be accessed by the DebugFS files, while still
-allowing a dynamic lifecycle.
+We can wait to properly review and land this until after we've decided
+on the final interface for the first part, but since dakr@kernel.org was
+poking at how this might work in his review of the previous patchset, I
+wanted to upload this sketch as context.
+
+The general concept here is that you select an owning directory and
+attach data to it while converting its lifetime to be invariant (e.g.
+can't be shortened) so that you know that the DebugFS contents will be
+cleaned up before the data. You can then implement things underneath
+that directory using the attached data.
 
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
- rust/kernel/debugfs.rs | 218 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 208 insertions(+), 10 deletions(-)
+Changes in v2:
+- Rebased on top of new DebugFS bindings to make it easier to play with.
+- Attachment model still hasn't changed as that's still being discussed.
+  See: https://lore.kernel.org/all/CAGSQo03sHhUX-Eo31cMmeNMaNnzWxU0c-ObTkr7Z1CJ2uQ6c4g@mail.gmail.com/
+- Link to v1: https://lore.kernel.org/r/20250503-debugfs-rust-attach-v1-0-dc37081fbfbc@google.com
 
-diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
-index e2f5960bb87f24607780b3f4e67039e379f3bda6..560a2b68c7d28371ae11bc90efd15e7ada17ff77 100644
---- a/rust/kernel/debugfs.rs
-+++ b/rust/kernel/debugfs.rs
-@@ -5,10 +5,15 @@
- //!
- //! C header: [`include/linux/debugfs.h`](srctree/include/linux/debugfs.h)
- 
-+use crate::prelude::PinInit;
- use crate::str::CStr;
- use core::fmt;
- use core::fmt::Display;
--use core::marker::PhantomData;
-+use core::marker::{PhantomData, PhantomPinned};
-+use core::mem::ManuallyDrop;
-+use core::ops::Deref;
-+use core::pin::Pin;
-+use pin_init::pin_data;
- 
- /// Owning handle to a DebugFS entry.
- ///
-@@ -80,6 +85,19 @@ fn new() -> Self {
-     fn as_ptr(&self) -> *mut bindings::dentry {
-         self.entry
-     }
-+
-+    /// Rescopes the entry based on a borrow.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Caller promises they will not drop the wrapped entry.
-+    unsafe fn borrow<'b>(&'b self) -> ManuallyDrop<Entry<'b>> {
-+        ManuallyDrop::new(Entry {
-+            #[cfg(CONFIG_DEBUG_FS)]
-+            entry: self.entry,
-+            _phantom: PhantomData,
-+        })
-+    }
- }
- 
- impl Drop for Entry<'_> {
-@@ -186,6 +204,8 @@ pub fn fmt_file<'b, T, F: Fn(&T, &mut fmt::Formatter<'_>) -> fmt::Result>(
-         f: &'static F,
-     ) -> File<'b> {
-         // SAFETY: As `data` lives for the static lifetime, it outlives the file
-+        // As we return `File<'b>`, and we have a borrow to a directory with lifetime 'b, we have a
-+        // lower bound of `'b` on the directory.
-         unsafe { self.fmt_file_raw(name, data, f) }
-     }
- 
-@@ -197,11 +217,10 @@ pub fn fmt_file<'b, T, F: Fn(&T, &mut fmt::Formatter<'_>) -> fmt::Result>(
-     /// This means that before `data` may become invalid, either:
-     /// * The refcount must go to zero.
-     /// * The file must be rendered inaccessible, e.g. via `debugfs_remove`.
--    unsafe fn display_file_raw<'b, T: Display + Sized>(
--        &'b self,
--        name: &CStr,
--        data: *const T,
--    ) -> File<'b> {
-+    /// * If `self` may take longer than `'a` to be destroyed, the caller is responsible for
-+    ///   shortening the lifetime of the return value to a lower bound for the lifetime of that
-+    ///   object.
-+    unsafe fn display_file_raw<T: Display + Sized>(&self, name: &CStr, data: *const T) -> File<'a> {
-         // SAFETY:
-         // * `name` is a NUL-terminated C string, living across the call, by `CStr` invariant.
-         // * `parent` is a live `dentry` since we have a reference to it.
-@@ -243,13 +262,16 @@ unsafe fn display_file_raw<'b, T: Display + Sized>(
-     ///
-     /// # Safety
-     ///
--    /// `data` must outlive the resulting file's accessibility
--    unsafe fn fmt_file_raw<'b, T, F: Fn(&T, &mut fmt::Formatter<'_>) -> fmt::Result>(
--        &'b self,
-+    /// * `data` must outlive the resulting file's accessibility
-+    /// * If `self` may take longer than `'a` to be destroyed, the caller is responsible for
-+    ///   shortening the lifetime of the return value to a lower bound for the lifetime of that
-+    ///   object.
-+    unsafe fn fmt_file_raw<T, F: Fn(&T, &mut fmt::Formatter<'_>) -> fmt::Result>(
-+        &self,
-         name: &CStr,
-         data: &T,
-         f: &'static F,
--    ) -> File<'b> {
-+    ) -> File<'a> {
-         #[cfg(CONFIG_DEBUG_FS)]
-         let data_adapted = FormatAdapter::new(data, f);
-         #[cfg(not(CONFIG_DEBUG_FS))]
-@@ -280,6 +302,182 @@ pub fn new(name: &CStr) -> Self {
- #[repr(transparent)]
- pub struct File<'a>(Entry<'a>);
- 
-+/// A DebugFS directory combined with a backing store for data to implement it.
-+#[pin_data]
-+pub struct Values<T> {
-+    dir: Dir<'static>,
-+    // The order here is load-bearing - `dir` must be dropped before `backing`, as files under
-+    // `dir` may point into `backing`.
-+    #[pin]
-+    backing: T,
-+    // Since the files present under our directory may point into `backing`, we are `!Unpin`.
-+    #[pin]
-+    _pin: PhantomPinned,
-+}
-+
-+impl<T> Deref for Values<T> {
-+    type Target = T;
-+    fn deref(&self) -> &T {
-+        &self.backing
-+    }
-+}
-+
-+impl<T> Values<T> {
-+    /// Attach backing data to a DebugFS directory.
-+    ///
-+    /// Attached data will be available inside [`Values::build`] to use when defining files in
-+    /// the provided directory. When this object is dropped, it will remove the provided directory
-+    /// before destroying the attached data.
-+    ///
-+    /// # Example
-+    ///
-+    /// ```
-+    /// # use kernel::{c_str, new_mutex};
-+    /// # use kernel::debugfs::{Dir, Values};
-+    /// let dir = Dir::new(c_str!("foo"));
-+    /// let debugfs = KBox::pin_init(Values::attach(new_mutex!(0), dir), GFP_KERNEL)?;
-+    /// // Files can be put inside `debugfs` which reference the constructed mutex.
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn attach(backing: impl PinInit<T>, dir: Dir<'static>) -> impl PinInit<Self> {
-+        pin_init::pin_init! { Self {
-+            dir: dir,
-+            backing <- backing,
-+            _pin: PhantomPinned,
-+        }}
-+    }
-+
-+    /// Runs a function which can create files from the backing data.
-+    ///
-+    /// # Example
-+    ///
-+    /// ```
-+    /// # use kernel::{c_str, new_mutex};
-+    /// # use kernel::debugfs::{Dir, Values};
-+    /// let dir = Dir::new(c_str!("foo"));
-+    /// let debugfs = KBox::pin_init(Values::attach(new_mutex!(0), dir), GFP_KERNEL)?;
-+    /// debugfs.as_ref().build(|mutex, dir| {
-+    ///   // Can access `BoundDir` methods on `dir` here, with lifetime unified to the
-+    ///   // lifetime of `mutex`
-+    /// });
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn build<U, F: for<'b> FnOnce(&'b T, BoundDir<'b>) -> U>(self: Pin<&Self>, f: F) -> U {
-+        // SAFETY: The `BoundDir` here is only being provided as a universally quantified argument
-+        // to a function, so in the body, it will only be available in an existentially quantified
-+        // context. This means that the function is legal to execute agains the true lifetime of
-+        // the directory, even if we don't know exactly what that is.
-+        f(&self.backing, unsafe { BoundDir::new(&self.dir) })
-+    }
-+}
-+
-+/// A `Dir`, bound to the lifetime for which it will exist. Unlike `&'a Dir`, this has an invariant
-+/// lifetime - it cannot be shortened or lengthened.
-+///
-+/// # Invariants
-+///
-+/// * `BoundDir`'s lifetime must match the actual lifetime the directory lives for. In practice,
-+///   this means that a `BoundDir` may only be used in an existentially quantified context.
-+/// * `dir` will never be promoted to an owning reference (e.g. via calling `Dir::owning`)
-+#[repr(transparent)]
-+pub struct BoundDir<'a> {
-+    dir: ManuallyDrop<Dir<'a>>,
-+    _invariant: PhantomData<fn(&'a ()) -> &'a ()>,
-+}
-+
-+impl<'a> BoundDir<'a> {
-+    /// Create a new bound directory.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `'a` is being used in a context where it is existentially quantified.
-+    unsafe fn new(dir: &'a Dir<'_>) -> Self {
-+        // SAFETY: We will keep the return wrapped in ManuallyDrop, so we will not drop it.
-+        let entry = unsafe { dir.0.borrow() };
-+        // Rewrap it into a directory
-+        let dir = ManuallyDrop::new(Dir(ManuallyDrop::into_inner(entry)));
-+        Self {
-+            dir,
-+            _invariant: PhantomData,
-+        }
-+    }
-+
-+    /// Create a DebugFS subdirectory.
-+    ///
-+    /// This will produce another [`BoundDir`], scoped to the lifetime of the parent [`BoundDir`].
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::c_str;
-+    /// # use kernel::debugfs::{Dir, Values};
-+    /// let parent = Dir::new(c_str!("parent"));
-+    /// let values = KBox::pin_init(Values::attach(0, parent), GFP_KERNEL)?;
-+    /// values.as_ref().build(|value, builder| {
-+    ///   builder.subdir(c_str!("child"));
-+    /// });
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn subdir<'b>(&'b self, name: &CStr) -> BoundDir<'b> {
-+        BoundDir {
-+            dir: ManuallyDrop::new(Dir::create(name, Some(&self.dir))),
-+            _invariant: PhantomData,
-+        }
-+    }
-+
-+    /// Create a file in a DebugFS directory with the provided name, and contents from invoking `f`
-+    /// on the provided reference.
-+    ///
-+    /// `f` must be a function item or a non-capturing closure, or this will fail to compile.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{c_str, new_mutex};
-+    /// # use kernel::debugfs::{Dir, Values};
-+    /// let parent = Dir::new(c_str!("parent"));
-+    /// let values = KBox::pin_init(Values::attach(new_mutex!(0), parent), GFP_KERNEL)?;
-+    /// values.as_ref().build(|value, builder| {
-+    ///   builder.fmt_file(c_str!("child"), value, &|value, f| {
-+    ///     writeln!(f, "Reading a mutex: {}", *value.lock())
-+    ///   });
-+    /// });
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn fmt_file<T, F: Fn(&T, &mut fmt::Formatter<'_>) -> fmt::Result>(
-+        &self,
-+        name: &CStr,
-+        data: &'a T,
-+        f: &'static F,
-+    ) -> File<'a> {
-+        // SAFETY: As `data` lives for the same lifetime as our `BoundDir` lifetime, which is
-+        // instantiated as the actual lifetime of the directory, it lives long enough.
-+        // We don't need to shorten the file handle because `BoundDir`'s lifetime parameter is both
-+        // a lower *and* upper bound.
-+        unsafe { self.dir.fmt_file_raw(name, data, f) }
-+    }
-+
-+    /// Create a file in a DebugFS directory with the provided name, and contents from invoking
-+    /// [`Display::fmt`] on the provided reference with a trailing newline.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{c_str, new_mutex};
-+    /// # use kernel::debugfs::{Dir, Values};
-+    /// let parent = Dir::new(c_str!("parent"));
-+    /// let values = KBox::pin_init(Values::attach((1, 2), parent), GFP_KERNEL)?;
-+    /// values.as_ref().build(|value, builder| {
-+    ///   builder.display_file(c_str!("child_0"), &value.0);
-+    ///   builder.display_file(c_str!("child_1"), &value.1);
-+    /// });
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn display_file<T: Display>(&self, name: &CStr, data: &'a T) -> File<'a> {
-+        self.fmt_file(name, data, &|data, f| writeln!(f, "{}", data))
-+    }
-+}
-+
- #[cfg(CONFIG_DEBUG_FS)]
- mod helpers {
-     use crate::seq_file::SeqFile;
+---
+Matthew Maurer (2):
+      rust: debugfs: Add interface to build debugfs off pinned objects
+      rust: debugfs: Extend sample to use attached data
 
+ rust/kernel/debugfs.rs       | 218 +++++++++++++++++++++++++++++++++++++++++--
+ samples/rust/rust_debugfs.rs | 110 +++++++++++++++++++++-
+ 2 files changed, 314 insertions(+), 14 deletions(-)
+---
+base-commit: 33035b665157558254b3c21c3f049fd728e72368
+change-id: 20250501-debugfs-rust-attach-e164b67c9c16
+prerequisite-change-id: 20250428-debugfs-rust-3cd5c97eb7d1:v5
+prerequisite-patch-id: 1bc0f0d9ea12a4dfa986bd6b88863b0561d7e215
+prerequisite-patch-id: 6338f30c269eb6ec314d3e4c0b9c2c0215f58325
+prerequisite-patch-id: 862adaf3d9fbc860a8eb23bf8779c4b299c0149e
+prerequisite-patch-id: 0198767a9410d24382e72ca9cf1e3d205deb4fd3
+
+Best regards,
 -- 
-2.49.0.967.g6a0df3ecc3-goog
+Matthew Maurer <mmaurer@google.com>
 
