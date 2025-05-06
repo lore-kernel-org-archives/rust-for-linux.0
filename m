@@ -1,242 +1,121 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D982989A1
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 01:04:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50F3215184
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 04:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746493461; cv=none; b=EcpyJP5iVQomUXW0JWZV1sdvFpsoL5MQNzaFNWA2EFBnaK4ZyRaMesLPllYb9yD2YBU9yl7lcASQMIc8LNt0fZ44beA0/GYCbXFt0AL1x8t7UHyRQWlJk1THFkHKwuarOI98G3nDTeGF/Iq2UuBJDVzaOdVo5tia/WWmjy6lffY=
+	t=1746505418; cv=none; b=P37jWw8uOu+dAFYSRsAn+HwhUzACG7cUdwW9aAR3XLhELkOUCXPzqrzUMv6hrh2i850P7IZ01iZ8+wHut03Nyog/H6MCkI7nUehBrl1zGm4llpjQdqmlwYJ76mzLtP4Adz9hqKdvrhdObE4c+6JxmPQlpE1XsBRrVUuE8Gw+3b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746493461; c=relaxed/simple;
-	bh=/k3Yo3khleRb+uxwsSODt3lvyFcZ63bMldnep7BhLE8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HGNkET8/4Rv1ayvZ6NL1JwxuWcqbkSGw15M963UdTmp5VlFdB9lys1NMG6MtplUyXVi4ymXA7AlDnRmeTvHSgwoMK9cHEuNu28eywsIb0XKNJvYX5ZWdT7eLBhdHfhZk3Y1EvzpFcublEbnd3BZPSCvEFvUvwig4fgUZSpox0K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z2OL1KhP; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
+	s=arc-20240116; t=1746505418; c=relaxed/simple;
+	bh=hn9c591dXJgjp1caC2arr6sOqTPBu/Sc8oYI1nnrfhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BIg7Pq9ciiSBbWpCzneYDxwnw2BVceMfOC9I7qMSWTSe1W9nl2PxGhnXibw58NswS4QrCTIm04otbDpBfN+XhYwHkulvccXnfewt7oUDw0O8i3hIs0WDwu7wcYVAHg/o2/bXlEPinRNvoh2c9mkB6UF6TwvjGe64RNQNNYMIHXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=byte-forge.io; dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b=wyMyww7o; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=antoniohickey.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=byte-forge.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z2OL1KhP"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3055f2e1486so7586872a91.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 18:04:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=byte-forge-io.20230601.gappssmtp.com header.i=@byte-forge-io.20230601.gappssmtp.com header.b="wyMyww7o"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-708ac7dfc19so40015897b3.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 21:23:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746493459; x=1747098259; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T8/F7HTaR1lenYv3bo9DPTN5D8KoLav+c1ChwtLfsdY=;
-        b=z2OL1KhPrDx80f+1EzE6n1bGXnJxtn07RG6551YpXzLkwUZwy4oWlb+sV3TdKuBJ2V
-         p36Mc8h02N7KovbbNxojEi0yRxBAAxw8KnkcXG3etQ9ezsnHUtTTf9gtpZ3XEm6rhWC4
-         aZtMf2OdOrL+eXm/K9380eStClgmJkNg7TX5hkQ6+mGHVQe8xKWJLsJKYPlYPdeAd0iw
-         eKeCJ1a9lfS75SseSf6MKiJn76rgo7nQ8Oin2b1lFFsPKVP5ACMQuSq/ZlWkxqUDKZZT
-         epKpy6x0IN6mKr2dnSgwn89+QCPKuPnJPXiFF0whDZyIzEB2tDheup3G7SNoADp7Eivi
-         oRtQ==
+        d=byte-forge-io.20230601.gappssmtp.com; s=20230601; t=1746505415; x=1747110215; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kk0rHIP824tzYSJd/wcdfmqz9sqjrngOzbFuZVahSig=;
+        b=wyMyww7oVuoSHfIbHaQN31ZjFvVLsEkkh1UigINhxrJdg+2rrH+WK9v/6CdFhgsQG9
+         Vcju+28T1CJxfTl8bxazhFwq4sNZ9d3daxaPMRRziyhVMeuO3EMa0W3tLQpsQmN1ijNr
+         WQENFLoqJbsT4JcrRybyr82QbsuAm178stgTMsNJSatDJtUVbSdh0JXe4/N/3OFNy2AM
+         My/Zs7kFLz4RaBP20Q9lWee/FmZVR83jkrMv+JHVLE7IwSgHfe+uBMkBWTTieL16nHru
+         C3cDsgWvjoCwku/Wm2BbyrVANC8Cdbb5OpYEaYI9UslRErnWC5+5OBFs8h5T8j9NhN2y
+         myiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746493459; x=1747098259;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T8/F7HTaR1lenYv3bo9DPTN5D8KoLav+c1ChwtLfsdY=;
-        b=bSl52O9zyNeee4fgo+kG3LL7z0wAGqYeCHtgxpndel40nitIlcBpoKyGRPsG4Knh5h
-         DmLYwE0SO3lHDwB3Vrg+dVLEWSiRWusv4FWXPWioWputTVMAfG4e3vrE4bpG3G1CBtAJ
-         vWM6HjPl9qPpzFgIyLwKFMHxnRDcnHo4YqARsLnEuNJSjwvt2l46ajVAUXeTOLVziuZS
-         RL41rlDdpYaR50gisCWkTlUfjlMU9hRWde1dKSeVwPm9HQXqBtofy/r4PG4qhNwx3viR
-         fG5PKyzjtIQXt4T4PRbkPTPJESwGpszyrs6Q5ozbqOT1u3SWq/7d8FbqVjTQ2FmvskBi
-         Awqw==
-X-Gm-Message-State: AOJu0YzYnZisNySNdTv46GTUNXYQ+wa7rauDChjPfCPHScQJ8ZzWkcKP
-	HR9lXSXhpz74vaRNP0K10FPP7Bm/kcIMHUgntq+QjBWAOFv3IURegNS3Arm/7DvZILQDdeKgp1u
-	ikAnA5A==
-X-Google-Smtp-Source: AGHT+IHgCB4fVw2Q+BCHF9mjG2qX9mTc3bFJdne7hHQKkSQzvpo0cj2msg14MbGPMOt6w+ocQVkp0Nu6Jimf
-X-Received: from pjbtb7.prod.google.com ([2002:a17:90b:53c7:b0:301:2679:9d9])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:56c8:b0:2ee:8ea0:6b9c
- with SMTP id 98e67ed59e1d1-30a7c0806e9mr2600361a91.12.1746493458765; Mon, 05
- May 2025 18:04:18 -0700 (PDT)
-Date: Tue, 06 May 2025 01:04:14 +0000
-In-Reply-To: <20250506-debugfs-rust-attach-v2-0-c6f88be3890a@google.com>
+        d=1e100.net; s=20230601; t=1746505415; x=1747110215;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kk0rHIP824tzYSJd/wcdfmqz9sqjrngOzbFuZVahSig=;
+        b=fqyksTgh6Q5eGD4mfqPaIcOzvcul2O4fgzmDS26JK9Rob/kRSwH1KoY7kAU0XKc2ZS
+         Dk4d9PTRPe5suTpHFAJAh9U5cJsNHe0FQt7pgx8wVTRLN2+cJU9FZqJ6hNLb/XF2/NuL
+         uK4Fatr6W/I1KI/c/e5ZkVdL9P48bCqHJDSK/t+sKARg/GGCcAsOy6hz2/GBjvTkg0Q1
+         0IUl1MY6mxvVeRCy3A1cdwPo3o5FYzlNWsGr9UDAkIku0Adyv0qJeJWueqCg1aXWpCBX
+         +eYjU8ZPeICP1vaoUGAzi3EQtovCGnkhzvT+oyvL0obSz0kEYAQFzCVC/r4yBX9m2brF
+         yRYA==
+X-Forwarded-Encrypted: i=1; AJvYcCVm72hFJbIsjzsfF40tQvfYuOos1BqRo+AntZ+9NYHIFrjaKkmhe8hrIE7SIxSBvvP7rOToOd0TCT01B+Oqww==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHMoUjytaY+NExKp/8bjGIXErTLWg3bYEplQsnaGaY58ZH8F8M
+	hZf14Aixx4lekFhRJwHWame6i1IBvPoD44D9LdAeTqpgZz5lhyuBNM2Al0sI5dE=
+X-Gm-Gg: ASbGncs3bxc6zCKxZ76CxR4Q4HBlbYpV8zoz6/ID7ExjkDpkkSSsMMfotWuIh0JnAsn
+	7OxZwnRvBoDrwgmD6bNc+rov6Jg/DqCAoeNK95+cF5EME5Tt9uxozPAcxnfh5oGIjDCOOf1K8xI
+	FfZjff52UsoEkflP3eL4+bEuY6bVfaULIZsnbCCMa46qAkwilmcyEFwgXKaAHhzqoPsHuR5Z0g5
+	vGaCu1WBe9fe3SdlL78llA3MUrtIwwbyPo1TbDTDrPEYjhRHZWRjvwKMmFzcATcDhgbW/Yy44kh
+	Vz2h9T2l7nyhJLnfxORZruY8WBxyJ7Mt9RMX/malKDAkj0Ddcc3KlQyXaj+ecfH7iZlr6x75iR3
+	UvI81lvKiySGsdl9JwDVo8inYbq9LbbH9Y2Qi
+X-Google-Smtp-Source: AGHT+IGauOMcdmDl7gE3jT1FrLe8gRcfpx/0h850sWX5FJCsvFHooQ2WBnw1X6kYbTtIVDUjYEjHTQ==
+X-Received: by 2002:a05:690c:7084:b0:706:cc34:daaf with SMTP id 00721157ae682-708eaefed5fmr142349547b3.20.1746505415634;
+        Mon, 05 May 2025 21:23:35 -0700 (PDT)
+Received: from Machine.localdomain (107-219-75-226.lightspeed.wepbfl.sbcglobal.net. [107.219.75.226])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-708c3f0a86esm25385877b3.14.2025.05.05.21.23.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 21:23:35 -0700 (PDT)
+From: Antonio Hickey <contact@antoniohickey.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	contact@antoniohickey.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH v2 1/1] rust: kernel: create `overflow_assert!`
+Date: Tue,  6 May 2025 00:23:30 -0400
+Message-ID: <20250506042330.281501-1-contact@antoniohickey.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <CANiq72mvu54B=U+YCUmbFctj_wXgF5zjeE-BB-vHVnAP+3mPcQ@mail.gmail.com>
+References: <CANiq72mvu54B=U+YCUmbFctj_wXgF5zjeE-BB-vHVnAP+3mPcQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250506-debugfs-rust-attach-v2-0-c6f88be3890a@google.com>
-X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746493453; l=6273;
- i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=/k3Yo3khleRb+uxwsSODt3lvyFcZ63bMldnep7BhLE8=; b=SCAhhh32aNFPz7cmDQI4C3sCPKGhapQWcPJVBsZsIU8GMTMEXvfsAyPFbxDsscRgcSw/LU+F5
- c2ytLqN7pIQDKauKD6eB5tfJrsfjzMQDWKo3KQoXIHQzjSAPgRZOPY5
-X-Mailer: b4 0.14.2
-Message-ID: <20250506-debugfs-rust-attach-v2-2-c6f88be3890a@google.com>
-Subject: [PATCH WIP v2 2/2] rust: debugfs: Extend sample to use attached data
-From: Matthew Maurer <mmaurer@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Sami Tolvanen <samitolvanen@google.com>, 
-	Timur Tabi <ttabi@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Demonstrates how to attach data/handles needed for implementing DebugFS
-file to a directory.
+On Sun, May 04, 2025 at 09:41:36PM +0200, Miguel Ojeda wrote:
+> I was thinking of just allowing any expression here. I can see the
+> value in printing the values, but it makes it a bit harder to remember
+> the comparison and is less flexible -- I can imagine we will have
+> other operators being used, or even things that are not tested via an
+> operator.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- samples/rust/rust_debugfs.rs | 110 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 106 insertions(+), 4 deletions(-)
+Oh wow yea this could be so much more flexible allowing any expression,
+didn't even think of this now my approach feels so naive haha.
 
-diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
-index a4b17c8241330b2f6caf8f17a5b2366138de6ced..efaca1b140f710fcc7d0467e9b00e02a69c2cf55 100644
---- a/samples/rust/rust_debugfs.rs
-+++ b/samples/rust/rust_debugfs.rs
-@@ -4,11 +4,15 @@
- 
- //! Sample DebugFS exporting module
- 
-+use core::fmt;
-+use core::fmt::{Display, Formatter};
- use core::mem::{forget, ManuallyDrop};
- use core::sync::atomic::{AtomicU32, Ordering};
- use kernel::c_str;
--use kernel::debugfs::Dir;
-+use kernel::debugfs::{BoundDir, Dir, Values};
-+use kernel::new_mutex;
- use kernel::prelude::*;
-+use kernel::sync::{Arc, Mutex};
- 
- module! {
-     type: RustDebugFs,
-@@ -21,7 +25,89 @@
- struct RustDebugFs {
-     // As we only hold this for drop effect (to remove the directory) we have a leading underscore
-     // to indicate to the compiler that we don't expect to use this field directly.
--    _debugfs: Dir<'static>,
-+    _debugfs: Pin<KBox<Values<Backing>>>,
-+}
-+
-+struct Composite {
-+    major: u32,
-+    minor: u32,
-+}
-+
-+struct Record {
-+    name: &'static CStr,
-+    size: usize,
-+    stride: usize,
-+}
-+
-+struct Backing {
-+    simple: u32,
-+    composite: Composite,
-+    custom: u32,
-+    many: KVec<Record>,
-+    atomic: AtomicU32,
-+    locked: Arc<Mutex<u32>>,
-+}
-+
-+impl Display for Composite {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-+        write!(f, "{}.{}", self.major, self.minor)
-+    }
-+}
-+
-+impl Backing {
-+    fn new() -> Result<Self> {
-+        let mut many = KVec::new();
-+        many.push(
-+            Record {
-+                name: c_str!("foo"),
-+                size: 1,
-+                stride: 2,
-+            },
-+            GFP_KERNEL,
-+        )?;
-+        many.push(
-+            Record {
-+                name: c_str!("bar"),
-+                size: 3,
-+                stride: 4,
-+            },
-+            GFP_KERNEL,
-+        )?;
-+        Ok(Self {
-+            simple: 10,
-+            composite: Composite { major: 1, minor: 2 },
-+            custom: 37,
-+            many,
-+            atomic: AtomicU32::new(7),
-+            locked: Arc::pin_init(new_mutex!(0), GFP_KERNEL)?,
-+        })
-+    }
-+
-+    fn build<'a>(&'a self, root: BoundDir<'a>) {
-+        // Just prints out the number in the field
-+        forget(root.display_file(c_str!("simple"), &self.simple));
-+        // Uses the custom display implementation to print major.minor
-+        forget(root.display_file(c_str!("composite"), &self.composite));
-+        // Uses the custom hook print the number in 0-padded hex with some decorations.
-+        forget(root.fmt_file(c_str!("custom"), &self.custom, &|custom, f| {
-+            writeln!(f, "Foo! {:#010x} Bar!", custom)
-+        }));
-+        // Creates a directory for every record in the list, named the name of the item, with files
-+        // for each attribute.
-+        for record in self.many.iter() {
-+            let dir = ManuallyDrop::new(root.subdir(record.name));
-+            forget(dir.display_file(c_str!("size"), &record.size));
-+            forget(dir.display_file(c_str!("stride"), &record.stride));
-+        }
-+        // Access the attached atomic via `.load()`
-+        forget(root.fmt_file(c_str!("atomic"), &self.atomic, &|atomic, f| {
-+            writeln!(f, "{}", atomic.load(Ordering::Relaxed))
-+        }));
-+        // Access the attached mutex-guarded data via `.lock()`
-+        forget(root.fmt_file(c_str!("locked"), &self.locked, &|locked, f| {
-+            writeln!(f, "{}", *locked.lock())
-+        }));
-+    }
- }
- 
- static EXAMPLE: AtomicU32 = AtomicU32::new(8);
-@@ -29,13 +115,13 @@ struct RustDebugFs {
- impl kernel::Module for RustDebugFs {
-     fn init(_this: &'static ThisModule) -> Result<Self> {
-         // Create a debugfs directory in the root of the filesystem called "sample_debugfs".
--        let debugfs = Dir::new(c_str!("sample_debugfs"));
-+        let root = Dir::new(c_str!("sample_debugfs"));
- 
-         {
-             // Create a subdirectory, so "sample_debugfs/subdir" now exists.
-             // We wrap it in `ManuallyDrop` so that the subdirectory is not automatically discarded
-             // at the end of the scope - it will be cleaned up when `debugfs` is.
--            let sub = ManuallyDrop::new(debugfs.subdir(c_str!("subdir")));
-+            let sub = ManuallyDrop::new(root.subdir(c_str!("subdir")));
- 
-             // Create a single file in the subdirectory called "example" that will read from the
-             // `EXAMPLE` atomic variable.
-@@ -51,6 +137,22 @@ fn init(_this: &'static ThisModule) -> Result<Self> {
-         EXAMPLE.store(10, Ordering::Relaxed);
-         // Now, "sample_debugfs/subdir/example" will print "Reading atomic: 10\n" when read.
- 
-+        // We can also attach data scoped to our root directory
-+        let backing = Backing::new()?;
-+        // Grab a refcount pointing to the locked data
-+        let locked = backing.locked.clone();
-+        let debugfs = KBox::pin_init(Values::attach(backing, root), GFP_KERNEL)?;
-+
-+        // Once it's attached, we can invoke `Backing::build` to create the relevant files:
-+        debugfs.as_ref().build(Backing::build);
-+
-+        // We can still access read-only references the contents of the attached values. If the
-+        // values allow interior mutability, like atomics, this lets us still change them:
-+        debugfs.as_ref().atomic.store(8, Ordering::Relaxed);
-+
-+        // If we attached refcounted data, we can use an external handle to access it
-+        *locked.lock() = 42;
-+
-         // Save the root debugfs directory we created to our module object. It will be
-         // automatically cleaned up when our module is unloaded because dropping the module object
-         // will drop the `Dir` handle. The base directory, the subdirectory, and the file will all
+> By the way, would it be possible to have the `cfg` attribute inside
+> the macro, so that we share the docs and so on? i.e. to make the
+> conditional compilation as local as possible even here :)
+> 
+> i.e. as it is currently done, we can have mistake like not sharing the
+> "signature", and the generated docs will not have the actual docs of
+> the macro if it is disabled.
 
--- 
-2.49.0.967.g6a0df3ecc3-goog
+I originally thought we couldn't do conditional compilation in macros,
+but I'm looking into it now and it seems possible, I'll have to test 
+this.
 
+> We could also consider using the `cfg!` macro to force it to be always
+> valid code -- not sure about whether we want that in all cases though.
+> The standard library does that, though, so perhaps we should do the
+> same for consistency. If someone really wants to skip it, they can
+> always do it on the caller side.
+
+I do like the idea utilizing the `cfg!` macro, it's cleaner as it 
+reduces the empty boilerplate currently required. I do wonder though
+could that potentially cause warnings like unreachable code or 
+unused variables?
