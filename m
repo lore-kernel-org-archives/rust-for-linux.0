@@ -1,140 +1,157 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D396277035
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 10:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EA5277036;
+	Tue,  6 May 2025 10:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746526239; cv=none; b=YjrhvmlNKk1XCHB6CSPNtjynLELxCDXoX1i1FMsXYPeeFhhb48tpmiQGwL1XRJES6E/FuTy6rRK08lm84Kchb8vHicTgdtzEal1JwtRMKfsz0kFoM0DRM5kyTDY5eogJOM4GTFUWE99BRYC6oAomkxLNZFxUS2cZPXSmmiBdk5w=
+	t=1746526512; cv=none; b=qDvxu9CCcoHXg5kpTnWeZRBr24W4YLavDeWKTqklc+2IVs1RQM9m85khE4+I08xFRUwmsguXQcCZSLENUJtkSpWycByr6pNJD+LA7TGe0D78M+Ujmh2UMmZ3wuxWtWNWlE9KlOn1VoxPF5X7mlvxRkFJKicHDljiHANl6DzpnUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746526239; c=relaxed/simple;
-	bh=/HBE0X80tekKwVpe/I6rSG6afei1xLRG1IopLTv4b90=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ZSXmBJiRqLw6Hc2HMNX58oNn5pLFQj17Ets/ndKwKRuYyGyVZfuKx0EX5uQdfJWBsDozqdt+i+Zx1oOr4AY6I1GV91dOZHJx3GhuaBLQdjprTftuyX4HFjjt9fTPi/7s098oZKj8chQhC6eKN9y2ectZg1xLTBKYXcQj6hO/Fjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=k3yezd4p; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+	s=arc-20240116; t=1746526512; c=relaxed/simple;
+	bh=H3fLQxygZC6XKdNmeZEZ2FzeMvkZHRYPXqX08psAQ6s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N4l5A2vPQU2mVg6LWyQxH/3HOvfnvhu3bc1bzBAkNKREZuUQEJQsqgNZ8HDVG5W7GUtZL8teCWnbRIA8F2oeTll1Z30RFP5j/ZrIoFmd4K+CPVQHTAt6LQCgFHQ8Y8Su9SzTpsBnQh7MF9bW49irGpqw4fLRkZTtrY8LJzZB0JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CY6oH42E; arc=none smtp.client-ip=209.85.167.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="k3yezd4p"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3912387cf48so115315f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 May 2025 03:10:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CY6oH42E"
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-40337dd3847so2996774b6e.0;
+        Tue, 06 May 2025 03:15:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1746526235; x=1747131035; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1746526508; x=1747131308; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MDlCPukG676ZkXDqA7+irYPpUi8ypltoa/WLU7iYTZw=;
-        b=k3yezd4pHOP993DCvnJYvnnrLQ1mQCRimlX6KF3OwLBGIjRxOc3HI5AcNZB8pZhuWj
-         pzuW1eppoxocBCntG/gAypFjNT0c2K33klUSjcfO5TClCnm76dz3JLIX/z5ESFhaprPT
-         nRwfLtrtLlpz8HVBl5tXVu+qSANl+Vudwd5La9yJ9av/tFmsKPxcvsVmai85Yg9S0G2j
-         gBYB/Q3FrSGMB3QfoQs0HpjGJymi73TUlgOsy1VraKjWGcyD6teiRQxVunD8dpEx3FX4
-         iAKFmr0MeOH735cMF502s277NyhW/SvQIBLSEPUkrR6JYMN+955NaiHnc5d/DcCc8Z9d
-         C91w==
+        bh=xKR53B3qPFijXew46vboZyZL5TEINx3Tkrkttdk5rDA=;
+        b=CY6oH42E+cITuANaDNBxhcIp6x0aB9LX9HvhOf2zCx/nIKrLwMQIMGUWew89Cmn2T3
+         hYK/OpK/fZgadoX0d4m+fGGb71oFv4q/SNOT/cqCTrOGYmvIAkIa+Qrsi3CKV5CBz8rR
+         1mwCP9iqcyTMKvz9h0KaPuohQ3K5qurTvJR35/e750VHpC2x55vEMFFOkhLl8hTTymUt
+         rGjBdk242WCwkc5HS7EdEJmWOU18MNlZKMSAAajV4Pgw77NXp7D0I2F15/IJNQfPJQ7E
+         IHSpof3Ot+LkErh8Y10v1IxmzOAxGEqMwLDuEo44FrH0dEewEPjMTSG3MxNL5ze0JD6a
+         jRQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746526235; x=1747131035;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MDlCPukG676ZkXDqA7+irYPpUi8ypltoa/WLU7iYTZw=;
-        b=q3H5/TCIu9uDIwYuL6TI8ne2+Vbc27mYLwX+joniCAWBg6mGF4N9WYe6rL2E4yPlUQ
-         NJuNxRD6SuWFsRb3r2g6v9PWTPNpb2t6aplJmVOrSV9BIN27J7FQNdoF2FDO7pxaaoCW
-         Ug6p9D6bXjVHAQAyV1JI1hp7QrqY3Aj1pQw6yJ3VHfjpBrlb3EF8l7ndscRPTPI9uclC
-         E+5m4popQ4fjd2/4FkhjZ2BTpHzMKdjPnZha9e5jF7qEYyVX+j7+6nQDJo8ypHmbSF6x
-         wt1QL/3fL7m2iSn6fAt1ZyScVy8G0NZlgthNcXJbG+QyOZ6ftcVt3DWBBAPx9AG10EBV
-         XtAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUoO6JJP2VGf7CnqeyK9Am4g/O9te2fQq+q+wPbL++vpvb7pSrTMYZuW176YmTeYzAXYCm6H1H2gRqKg4P2/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YymtKlCmxbkgdom5VGwEZrzP2HofoAQe20UE3ubgcFpypRSnNn9
-	xgqQ6Bcz29SejCHwU6nzs/e2+seQu5PJ2D1e0irx1c5HjJGQtsU+cFoMCNTMSiE=
-X-Gm-Gg: ASbGncvOtBxQyJJwkVp95AH3DXY2i0ZVYjl2I/waAZmTnbLtpg3W0JroJRrl4C1mO3R
-	pJmDkFENK3PlH2G7B6eY3tytFBw98PMOeN98x1/A+EwviVN7YZqE+m0BlltU80IXzDd+D9SSatX
-	8HElsyzt79HY2uWZXBNSgEPSA1/4OvgS/7JUt+2iXbe/E2QZbxC5UIpXngoW4do/heYcR4QsgYg
-	Yyc+Z+b6hpTauEbu23gwTPIQ9Y3SECbGd8xED8AhHGQGDxopwdN1pYokjkSqfB6uN1NJ5KQHxz1
-	O5bnM1cUhryOjJqBgNdqQx3dxrhp6MgYaybk0hycc1yEBYhx
-X-Google-Smtp-Source: AGHT+IEUjKjGwlmMCjrKZvF7YuhMUsrs5D+dPoN1CPSaPd4oD3QBATAQzTQqUOqU1bgynoQlRYwsyA==
-X-Received: by 2002:a05:6000:144a:b0:3a0:9f28:2e53 with SMTP id ffacd0b85a97d-3a09f282ec4mr3244079f8f.0.1746526235363;
-        Tue, 06 May 2025 03:10:35 -0700 (PDT)
-Received: from localhost ([2a02:8308:a00c:e200:d5f0:7802:c94b:10f6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b89cc441sm166448565e9.3.2025.05.06.03.10.34
+        d=1e100.net; s=20230601; t=1746526508; x=1747131308;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xKR53B3qPFijXew46vboZyZL5TEINx3Tkrkttdk5rDA=;
+        b=kOUS2XQCT0helJ5Omwl9xbu4xgQCOtVvsEzSYsFvDZUwESd9vKj1Quqh6Hpxv8DQoa
+         4AefvFjCor10dYmke9SdJQ2K41XfZLMuW1UrqjofVZzJ0KYBxIjwnUagu5CZAv1WjpXy
+         Kf+azi1Ayzdu3mCIek51eJyZFaZXKYQLI0H4JrATl5e+LJsUHu09yinJ0YpRvX8m9uD1
+         h2r7vVA7xnJIKf+2RPthNnPLpb2ROa2RKhediaZdPhmr9QCdKLaVlqoZiUJhdlVYmb7U
+         S8DrRZoOl4PIJ3tz7EVUjJ9XPMAVJZRTqmXGFTmsPNR9t+42NAtCH4dJDHOhEwEFHGAb
+         nzeg==
+X-Forwarded-Encrypted: i=1; AJvYcCU88Ic4rrMDiesPPdufJgMEA5tKsDgFQ1LxPMa4AQmw9qHzqc7PfLg7f9SavObtWYRY4ZvMA+aeX8Y=@vger.kernel.org, AJvYcCVfI5aFptHrDF/EX6VCoOo1pObYRsWLCwqUDCWGwkBt65IqtV1ln1rDCpS8qSfJTER1xuNPUrh7knXZKZGn@vger.kernel.org, AJvYcCVrXxvlf7WrLlnIg0yklX1TZQY2dceNDbFxaf3Qr9kgo5rpCVHJIbvimyKjt5rowiOsNGjNXCV5kOA=@vger.kernel.org, AJvYcCXIszgkY4l/dUX01NSnUDeUMDgFsotMMtJDzXc1jLh7GDupoWPmCOwUjdFSjYXztJ8KqpkB1n6Woy5liv7zcCA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywrbh+Jn73X5hiZ8WiWdMQl1PcaqcLZiFI+2CMzgN+02wpr8OKp
+	9o0cFZp+w1uo1AECeHW1j+Apz1DRzGdkGSHETsqPEnUwoMM3D8nW
+X-Gm-Gg: ASbGnctUJVUzmm+F225uwsO3dRUBsINAyOdDxw6m41PrDrvaT5BNi4JmolQDsnUDsYX
+	Xxz3Bo5cHHtrpSDEeAcvmzaWl13H/1b9cAbT7DQRGDtOIi7PixUg+7EMHW0MRFR5Uyc6xZsYCY/
+	YKs3gjYGCXXbX9sZvDo0s6wUar9Y9e0avfM5mAZo0fwDMqLFdBY+eNaeDMesYNX2iZMMgNLYbE/
+	TnG0/tiL+jC+5VdvtQyl70VPJb79KSewbEd758/MvfQQeXZvbNo1b1SEpjh+DyNFzzTCX4GKcSX
+	noy862e42bu15QSkQ8LfLrCUeThCvzn9ywWXqYOfRW+PAwB9pT7VWjy12FNom14ZCKgESceJIOv
+	er9lTPmpCZGKtKQd7Xc2KM10=
+X-Google-Smtp-Source: AGHT+IHE8caFW7rhcABhjbpxTvjrWJ3oASf6F/4xoBjVlsPODe2HL2MtdDc5iad7lX+dv3sdRNkD1g==
+X-Received: by 2002:a05:6808:3008:b0:3f9:36ec:dab3 with SMTP id 5614622812f47-40368ca72d7mr1345277b6e.14.1746526508421;
+        Tue, 06 May 2025 03:15:08 -0700 (PDT)
+Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
+        by smtp.googlemail.com with ESMTPSA id 5614622812f47-4033dae726dsm2390904b6e.30.2025.05.06.03.14.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 May 2025 03:10:35 -0700 (PDT)
+        Tue, 06 May 2025 03:15:07 -0700 (PDT)
+From: Andrew Ballance <andrewjballance@gmail.com>
+To: viresh.kumar@linaro.org
+Cc: a.hindborg@kernel.org,
+	alex.bennee@linaro.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	anisse@astier.eu,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	bqe@google.com,
+	dakr@kernel.org,
+	dakr@redhat.com,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	joakim.bech@linaro.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux@armlinux.org.uk,
+	linux@rasmusvillemoes.dk,
+	manos.pitsidianakis@linaro.org,
+	miguel.ojeda.sandonis@gmail.com,
+	mturquette@baylibre.com,
+	nm@ti.com,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	rafael@kernel.org,
+	robh@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	sboyd@kernel.org,
+	tglx@linutronix.de,
+	tmgross@umich.edu,
+	vincent.guittot@linaro.org,
+	vireshk@kernel.org,
+	yury.norov@gmail.com
+Subject: Re: [PATCH V11 00/15] Rust abstractions for clk, cpumask, cpufreq, OPP
+Date: Tue,  6 May 2025 05:13:11 -0500
+Message-ID: <20250506101311.142475-1-andrewjballance@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250502070109.inpes2ou3rxx2fxp@vireshk-i7>
+References: <20250502070109.inpes2ou3rxx2fxp@vireshk-i7>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 06 May 2025 12:10:34 +0200
-Message-Id: <D9OZVNOGLU4T.2XOUPX27HN0W8@ventanamicro.com>
-Subject: Re: [PATCH v15 05/27] riscv: usercfi state for task and
- save/restore of CSR_SSP on trap entry/exit
-Cc: <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
- <devicetree@vger.kernel.org>, <linux-arch@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <alistair.francis@wdc.com>, <richard.henderson@linaro.org>,
- <jim.shu@sifive.com>, <andybnac@gmail.com>, <kito.cheng@sifive.com>,
- <charlie@rivosinc.com>, <atishp@rivosinc.com>, <evan@rivosinc.com>,
- <cleger@rivosinc.com>, <alexghiti@rivosinc.com>, <samitolvanen@google.com>,
- <broonie@kernel.org>, <rick.p.edgecombe@intel.com>,
- <rust-for-linux@vger.kernel.org>, "Zong Li" <zong.li@sifive.com>,
- "linux-riscv" <linux-riscv-bounces@lists.infradead.org>
-To: "Deepak Gupta" <debug@rivosinc.com>, "Thomas Gleixner"
- <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov"
- <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
- <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Paul Walmsley" <paul.walmsley@sifive.com>,
- "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
- "Conor Dooley" <conor@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Arnd Bergmann"
- <arnd@arndb.de>, "Christian Brauner" <brauner@kernel.org>, "Peter Zijlstra"
- <peterz@infradead.org>, "Oleg Nesterov" <oleg@redhat.com>, "Eric Biederman"
- <ebiederm@xmission.com>, "Kees Cook" <kees@kernel.org>, "Jonathan Corbet"
- <corbet@lwn.net>, "Shuah Khan" <shuah@kernel.org>, "Jann Horn"
- <jannh@google.com>, "Conor Dooley" <conor+dt@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>
-From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
-References: <20250502-v5_user_cfi_series-v15-0-914966471885@rivosinc.com>
- <20250502-v5_user_cfi_series-v15-5-914966471885@rivosinc.com>
-In-Reply-To: <20250502-v5_user_cfi_series-v15-5-914966471885@rivosinc.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-[Ah, I missed v13 and v14, feel free to Cc me on next versions.]
+On Fri, May 02, 2025 at 12:31:09PM +0530, Viresh Kumar wrote:
+> Applied to the cpufreq tree few days back and is now included in
+> linux-next:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git/log/?h=cpufreq/arm/linux-next
+> 
+> Will send it for v6.16-rc1 (unless there are any objections).
+> 
+> -- 
+> viresh
 
-2025-05-02T16:30:36-07:00, Deepak Gupta <debug@rivosinc.com>:
-> diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-> @@ -91,6 +91,32 @@
-> +.macro save_userssp tmp, status
-> +	ALTERNATIVE("nops(4)",
-> +		__stringify(				\
-> +		andi \tmp, \status, SR_SPP;		\
-> +		bnez \tmp, skip_ssp_save;		\
-> +		csrrw \tmp, CSR_SSP, x0;		\
-> +		REG_S \tmp, TASK_TI_USER_SSP(tp);	\
-> +		skip_ssp_save:),
-> +		0,
-> +		RISCV_ISA_EXT_ZICFISS,
-> +		CONFIG_RISCV_USER_CFI)
-> +.endm
-> +
-> +.macro restore_userssp tmp
-> +	ALTERNATIVE("nops(2)",
-> +		__stringify(				\
-> +		REG_L \tmp, TASK_TI_USER_SSP(tp);	\
-> +		csrw CSR_SSP, \tmp),
-> +		0,
-> +		RISCV_ISA_EXT_ZICFISS,
-> +		CONFIG_RISCV_USER_CFI)
-> +.endm
+Hi,
 
-Do we need to emit the nops when CONFIG_RISCV_USER_CFI isn't selected?
+I have tried building the latest linux-next and I think that this
+patch series causes a build error with the defconfig for x86_64.
 
-(Why not put #ifdef CONFIG_RISCV_USER_CFI around the ALTERNATIVES?)
+commit: 407f60a151df3c44397e5afc0111eb9b026c38d3
 
-Thanks.
+steps to reproduce:
+    make LLVM=1 defconfig
+    make LLVM=1 rust.config
+    make LLVM=1
+
+build error message:
+    error[E0432]: unresolved import `crate::clk`
+      --> rust/kernel/cpufreq.rs:12:5
+       |
+    12 |     clk::{Clk, Hertz},
+       |     ^^^ could not find `clk` in the crate root
+       |
+    note: found an item that was configured out
+      --> rust/kernel/lib.rs:48:9
+       |
+    48 | pub mod clk;
+       |         ^^^
+    note: the item is gated here
+      --> rust/kernel/lib.rs:47:1
+       |
+    47 | #[cfg(CONFIG_COMMON_CLK)]
+       | ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    error: aborting due to 1 previous error
+
+it looks like this occurs when CONFIG_COMMON_CLK=n and CONFIG_CPU_FREQ=y.
+
+Best regards,
+Andrew Ballance
