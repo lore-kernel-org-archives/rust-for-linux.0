@@ -1,72 +1,70 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8478A2989A6
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 01:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D982989A1
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 01:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746493459; cv=none; b=NmNHqo5cjqwu8qDpY967BlqlTYxZZX2lRG1AwTUcVIEd9XI53pv8d53PJRrG0JE0nzmuudjc0ImDd6c+kyM7+gAiH1M3TjIx4MQpIdsHf3JZWZuI4ncQnVj/vDtES3c8rlyHYE96Dguv8igJqChUzSn+MMFLoGEADTrA+H16K2Q=
+	t=1746493461; cv=none; b=EcpyJP5iVQomUXW0JWZV1sdvFpsoL5MQNzaFNWA2EFBnaK4ZyRaMesLPllYb9yD2YBU9yl7lcASQMIc8LNt0fZ44beA0/GYCbXFt0AL1x8t7UHyRQWlJk1THFkHKwuarOI98G3nDTeGF/Iq2UuBJDVzaOdVo5tia/WWmjy6lffY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746493459; c=relaxed/simple;
-	bh=eA322ppsD+vY/QxxIIPgh2LsmFqa2swR4N1IgO7W+kQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hk8jBM05j/PUkdWL6ZctZFL7kZ1jLY4zhWbwweBqIXU9PogT9AoZK9/fxxYFafCzKpulfne6tSceZKp4UV17E4QzJptmd7U+qYCzKTX7BUsQ8LmwNplhWuWvAw4Raagzwyd0F4ka8asa04WiZXqnlpT7p8kke79gqyhPZPg0NcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=azVNbGvo; arc=none smtp.client-ip=209.85.214.202
+	s=arc-20240116; t=1746493461; c=relaxed/simple;
+	bh=/k3Yo3khleRb+uxwsSODt3lvyFcZ63bMldnep7BhLE8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HGNkET8/4Rv1ayvZ6NL1JwxuWcqbkSGw15M963UdTmp5VlFdB9lys1NMG6MtplUyXVi4ymXA7AlDnRmeTvHSgwoMK9cHEuNu28eywsIb0XKNJvYX5ZWdT7eLBhdHfhZk3Y1EvzpFcublEbnd3BZPSCvEFvUvwig4fgUZSpox0K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z2OL1KhP; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="azVNbGvo"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-22e3b03cd64so1466045ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 18:04:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z2OL1KhP"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3055f2e1486so7586872a91.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 May 2025 18:04:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746493456; x=1747098256; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=uuu4gy8/kO7TI9NeJUuJ8F7nLoDTInolVvMw03VZmFY=;
-        b=azVNbGvoe6DfzcFQdy+PgA+54UKpogjtaMOIEGfE7yI5yw/IUTFEAegoZgbT6m/4Xw
-         fkUg6nRruT0nkXFErFkpY0F669s85JusUI7SpMCYxltu9VQ3tB9IVC3iNQM8F+n51DMV
-         ymF8SVV4JsNzx/DqNCA7y6ue1BE2up3Jq5DOOZSAvDJhnkV28jbSWbi4YWtTB+xFlBUd
-         S8MbXlYssBjpvaoTF0KPwXJF4b/iU8KgMhhmeDI4DoY1Hj588+9t2etonmCVDZMSNjgj
-         Pxog+U5Fe9Y7oTSy++U0oSOK2CIIIYd8L3bi3UIllYlklLVQnSQ3Uk7QTzn0gfOVSTOE
-         X/RA==
+        d=google.com; s=20230601; t=1746493459; x=1747098259; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=T8/F7HTaR1lenYv3bo9DPTN5D8KoLav+c1ChwtLfsdY=;
+        b=z2OL1KhPrDx80f+1EzE6n1bGXnJxtn07RG6551YpXzLkwUZwy4oWlb+sV3TdKuBJ2V
+         p36Mc8h02N7KovbbNxojEi0yRxBAAxw8KnkcXG3etQ9ezsnHUtTTf9gtpZ3XEm6rhWC4
+         aZtMf2OdOrL+eXm/K9380eStClgmJkNg7TX5hkQ6+mGHVQe8xKWJLsJKYPlYPdeAd0iw
+         eKeCJ1a9lfS75SseSf6MKiJn76rgo7nQ8Oin2b1lFFsPKVP5ACMQuSq/ZlWkxqUDKZZT
+         epKpy6x0IN6mKr2dnSgwn89+QCPKuPnJPXiFF0whDZyIzEB2tDheup3G7SNoADp7Eivi
+         oRtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746493456; x=1747098256;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uuu4gy8/kO7TI9NeJUuJ8F7nLoDTInolVvMw03VZmFY=;
-        b=wjpAwmroDwc50pTPPrSp9qoZpP+DM04c6OamqiKu1DfcMSO/mJBbz+9ZWzJfF73qAQ
-         BKfwU8/etrnldXdEETz7Khumx4kHqL3V721NLygmMbdqjfBo88bvIt7gjgeQudLK/xw+
-         +AehL9wE+qiKzrMKT6IHr8n5mgbB7YLVsZT6Y+alMTO0YZKkZJ6b6To7QNYvkb/tzJS2
-         uYtDYqOhOXZc6CcQFvi4JUAruSVyFpff5R5laPUJqFC2xB8mbdgnL6RUuHfXCRXvXWvO
-         KwjsWgDKlRsbdbWw1O+i/8m7PJwjc8Gi1cBpd8iZlc8eNpFo6PeOMc56HXSPZMTVklaH
-         Bx+Q==
-X-Gm-Message-State: AOJu0YwjBONLcgRmy6BYKvbQoYYLeqkLPdp3ROrTjOY22U4tJHSJNvXq
-	0sbIX48wHCuD3bAICx4a5nSqV30iQwVbwClLmnlDOM+48t8FPvHfjGhwrDXZ136plY252oLVRUS
-	S2axL9A==
-X-Google-Smtp-Source: AGHT+IE9AfJR9gBa3pS1z1J42jsjS2eEluabDUorQKOz591rLRv8UFbng0HxgIGbOGyFj5eNwjNbAHNkUGY3
-X-Received: from plbjw7.prod.google.com ([2002:a17:903:2787:b0:22e:4263:f5c8])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1252:b0:220:c63b:d93c
- with SMTP id d9443c01a7336-22e363bb456mr14830275ad.44.1746493455488; Mon, 05
- May 2025 18:04:15 -0700 (PDT)
-Date: Tue, 06 May 2025 01:04:12 +0000
+        d=1e100.net; s=20230601; t=1746493459; x=1747098259;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T8/F7HTaR1lenYv3bo9DPTN5D8KoLav+c1ChwtLfsdY=;
+        b=bSl52O9zyNeee4fgo+kG3LL7z0wAGqYeCHtgxpndel40nitIlcBpoKyGRPsG4Knh5h
+         DmLYwE0SO3lHDwB3Vrg+dVLEWSiRWusv4FWXPWioWputTVMAfG4e3vrE4bpG3G1CBtAJ
+         vWM6HjPl9qPpzFgIyLwKFMHxnRDcnHo4YqARsLnEuNJSjwvt2l46ajVAUXeTOLVziuZS
+         RL41rlDdpYaR50gisCWkTlUfjlMU9hRWde1dKSeVwPm9HQXqBtofy/r4PG4qhNwx3viR
+         fG5PKyzjtIQXt4T4PRbkPTPJESwGpszyrs6Q5ozbqOT1u3SWq/7d8FbqVjTQ2FmvskBi
+         Awqw==
+X-Gm-Message-State: AOJu0YzYnZisNySNdTv46GTUNXYQ+wa7rauDChjPfCPHScQJ8ZzWkcKP
+	HR9lXSXhpz74vaRNP0K10FPP7Bm/kcIMHUgntq+QjBWAOFv3IURegNS3Arm/7DvZILQDdeKgp1u
+	ikAnA5A==
+X-Google-Smtp-Source: AGHT+IHgCB4fVw2Q+BCHF9mjG2qX9mTc3bFJdne7hHQKkSQzvpo0cj2msg14MbGPMOt6w+ocQVkp0Nu6Jimf
+X-Received: from pjbtb7.prod.google.com ([2002:a17:90b:53c7:b0:301:2679:9d9])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:56c8:b0:2ee:8ea0:6b9c
+ with SMTP id 98e67ed59e1d1-30a7c0806e9mr2600361a91.12.1746493458765; Mon, 05
+ May 2025 18:04:18 -0700 (PDT)
+Date: Tue, 06 May 2025 01:04:14 +0000
+In-Reply-To: <20250506-debugfs-rust-attach-v2-0-c6f88be3890a@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAxgGWgC/22PPW/DIBCG/4rFXCo+DNieumbr1qHKYI7DRkpCA
- 9hqFfm/l7hRpUod3zvd89x7IxlTwEyG5kYSriGHeKlBPDUE5vEyIQ2uZiKYUEwxTh3aZfKZpiU
- XOpYywkyR69ZqAz1wTerlR0IfPnfqO3k7vJLjzzDhdamG8tj8Cqrvjm9F9xcvwSnoDVrj+LCqO
- 9qOGSnE8zmUoZGSSWW1VlwZpTqhWitBcJCetb13RnRohNTd7p9DLjF97U1Xvj/wKCX/LbVyyqg DaVjHvfUWXqYYpxM+Vzs5btv2DRvOEnA8AQAA
-X-Change-Id: 20250501-debugfs-rust-attach-e164b67c9c16
+References: <20250506-debugfs-rust-attach-v2-0-c6f88be3890a@google.com>
 X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746493453; l=1862;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1746493453; l=6273;
  i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=eA322ppsD+vY/QxxIIPgh2LsmFqa2swR4N1IgO7W+kQ=; b=hMcz9MYt2ukPs8EAoPesKGSGhSIsT0Dt4SpxFewgWlBpt4jMqHmtcFzLlk2Y1P+dDdG4aEq7p
- gBnCOBLnxvjC8Qoig3zWBpolx5UBxGw4YN3CKbOkwmBDyRMtPXlUKqO
+ bh=/k3Yo3khleRb+uxwsSODt3lvyFcZ63bMldnep7BhLE8=; b=SCAhhh32aNFPz7cmDQI4C3sCPKGhapQWcPJVBsZsIU8GMTMEXvfsAyPFbxDsscRgcSw/LU+F5
+ c2ytLqN7pIQDKauKD6eB5tfJrsfjzMQDWKo3KQoXIHQzjSAPgRZOPY5
 X-Mailer: b4 0.14.2
-Message-ID: <20250506-debugfs-rust-attach-v2-0-c6f88be3890a@google.com>
-Subject: [PATCH WIP v2 0/2] rust: debugfs: Support attaching data to DebugFS directories
+Message-ID: <20250506-debugfs-rust-attach-v2-2-c6f88be3890a@google.com>
+Subject: [PATCH WIP v2 2/2] rust: debugfs: Extend sample to use attached data
 From: Matthew Maurer <mmaurer@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
 	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -79,43 +77,166 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-We can wait to properly review and land this until after we've decided
-on the final interface for the first part, but since dakr@kernel.org was
-poking at how this might work in his review of the previous patchset, I
-wanted to upload this sketch as context.
-
-The general concept here is that you select an owning directory and
-attach data to it while converting its lifetime to be invariant (e.g.
-can't be shortened) so that you know that the DebugFS contents will be
-cleaned up before the data. You can then implement things underneath
-that directory using the attached data.
+Demonstrates how to attach data/handles needed for implementing DebugFS
+file to a directory.
 
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
-Changes in v2:
-- Rebased on top of new DebugFS bindings to make it easier to play with.
-- Attachment model still hasn't changed as that's still being discussed.
-  See: https://lore.kernel.org/all/CAGSQo03sHhUX-Eo31cMmeNMaNnzWxU0c-ObTkr7Z1CJ2uQ6c4g@mail.gmail.com/
-- Link to v1: https://lore.kernel.org/r/20250503-debugfs-rust-attach-v1-0-dc37081fbfbc@google.com
+ samples/rust/rust_debugfs.rs | 110 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 106 insertions(+), 4 deletions(-)
 
----
-Matthew Maurer (2):
-      rust: debugfs: Add interface to build debugfs off pinned objects
-      rust: debugfs: Extend sample to use attached data
+diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
+index a4b17c8241330b2f6caf8f17a5b2366138de6ced..efaca1b140f710fcc7d0467e9b00e02a69c2cf55 100644
+--- a/samples/rust/rust_debugfs.rs
++++ b/samples/rust/rust_debugfs.rs
+@@ -4,11 +4,15 @@
+ 
+ //! Sample DebugFS exporting module
+ 
++use core::fmt;
++use core::fmt::{Display, Formatter};
+ use core::mem::{forget, ManuallyDrop};
+ use core::sync::atomic::{AtomicU32, Ordering};
+ use kernel::c_str;
+-use kernel::debugfs::Dir;
++use kernel::debugfs::{BoundDir, Dir, Values};
++use kernel::new_mutex;
+ use kernel::prelude::*;
++use kernel::sync::{Arc, Mutex};
+ 
+ module! {
+     type: RustDebugFs,
+@@ -21,7 +25,89 @@
+ struct RustDebugFs {
+     // As we only hold this for drop effect (to remove the directory) we have a leading underscore
+     // to indicate to the compiler that we don't expect to use this field directly.
+-    _debugfs: Dir<'static>,
++    _debugfs: Pin<KBox<Values<Backing>>>,
++}
++
++struct Composite {
++    major: u32,
++    minor: u32,
++}
++
++struct Record {
++    name: &'static CStr,
++    size: usize,
++    stride: usize,
++}
++
++struct Backing {
++    simple: u32,
++    composite: Composite,
++    custom: u32,
++    many: KVec<Record>,
++    atomic: AtomicU32,
++    locked: Arc<Mutex<u32>>,
++}
++
++impl Display for Composite {
++    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
++        write!(f, "{}.{}", self.major, self.minor)
++    }
++}
++
++impl Backing {
++    fn new() -> Result<Self> {
++        let mut many = KVec::new();
++        many.push(
++            Record {
++                name: c_str!("foo"),
++                size: 1,
++                stride: 2,
++            },
++            GFP_KERNEL,
++        )?;
++        many.push(
++            Record {
++                name: c_str!("bar"),
++                size: 3,
++                stride: 4,
++            },
++            GFP_KERNEL,
++        )?;
++        Ok(Self {
++            simple: 10,
++            composite: Composite { major: 1, minor: 2 },
++            custom: 37,
++            many,
++            atomic: AtomicU32::new(7),
++            locked: Arc::pin_init(new_mutex!(0), GFP_KERNEL)?,
++        })
++    }
++
++    fn build<'a>(&'a self, root: BoundDir<'a>) {
++        // Just prints out the number in the field
++        forget(root.display_file(c_str!("simple"), &self.simple));
++        // Uses the custom display implementation to print major.minor
++        forget(root.display_file(c_str!("composite"), &self.composite));
++        // Uses the custom hook print the number in 0-padded hex with some decorations.
++        forget(root.fmt_file(c_str!("custom"), &self.custom, &|custom, f| {
++            writeln!(f, "Foo! {:#010x} Bar!", custom)
++        }));
++        // Creates a directory for every record in the list, named the name of the item, with files
++        // for each attribute.
++        for record in self.many.iter() {
++            let dir = ManuallyDrop::new(root.subdir(record.name));
++            forget(dir.display_file(c_str!("size"), &record.size));
++            forget(dir.display_file(c_str!("stride"), &record.stride));
++        }
++        // Access the attached atomic via `.load()`
++        forget(root.fmt_file(c_str!("atomic"), &self.atomic, &|atomic, f| {
++            writeln!(f, "{}", atomic.load(Ordering::Relaxed))
++        }));
++        // Access the attached mutex-guarded data via `.lock()`
++        forget(root.fmt_file(c_str!("locked"), &self.locked, &|locked, f| {
++            writeln!(f, "{}", *locked.lock())
++        }));
++    }
+ }
+ 
+ static EXAMPLE: AtomicU32 = AtomicU32::new(8);
+@@ -29,13 +115,13 @@ struct RustDebugFs {
+ impl kernel::Module for RustDebugFs {
+     fn init(_this: &'static ThisModule) -> Result<Self> {
+         // Create a debugfs directory in the root of the filesystem called "sample_debugfs".
+-        let debugfs = Dir::new(c_str!("sample_debugfs"));
++        let root = Dir::new(c_str!("sample_debugfs"));
+ 
+         {
+             // Create a subdirectory, so "sample_debugfs/subdir" now exists.
+             // We wrap it in `ManuallyDrop` so that the subdirectory is not automatically discarded
+             // at the end of the scope - it will be cleaned up when `debugfs` is.
+-            let sub = ManuallyDrop::new(debugfs.subdir(c_str!("subdir")));
++            let sub = ManuallyDrop::new(root.subdir(c_str!("subdir")));
+ 
+             // Create a single file in the subdirectory called "example" that will read from the
+             // `EXAMPLE` atomic variable.
+@@ -51,6 +137,22 @@ fn init(_this: &'static ThisModule) -> Result<Self> {
+         EXAMPLE.store(10, Ordering::Relaxed);
+         // Now, "sample_debugfs/subdir/example" will print "Reading atomic: 10\n" when read.
+ 
++        // We can also attach data scoped to our root directory
++        let backing = Backing::new()?;
++        // Grab a refcount pointing to the locked data
++        let locked = backing.locked.clone();
++        let debugfs = KBox::pin_init(Values::attach(backing, root), GFP_KERNEL)?;
++
++        // Once it's attached, we can invoke `Backing::build` to create the relevant files:
++        debugfs.as_ref().build(Backing::build);
++
++        // We can still access read-only references the contents of the attached values. If the
++        // values allow interior mutability, like atomics, this lets us still change them:
++        debugfs.as_ref().atomic.store(8, Ordering::Relaxed);
++
++        // If we attached refcounted data, we can use an external handle to access it
++        *locked.lock() = 42;
++
+         // Save the root debugfs directory we created to our module object. It will be
+         // automatically cleaned up when our module is unloaded because dropping the module object
+         // will drop the `Dir` handle. The base directory, the subdirectory, and the file will all
 
- rust/kernel/debugfs.rs       | 218 +++++++++++++++++++++++++++++++++++++++++--
- samples/rust/rust_debugfs.rs | 110 +++++++++++++++++++++-
- 2 files changed, 314 insertions(+), 14 deletions(-)
----
-base-commit: 33035b665157558254b3c21c3f049fd728e72368
-change-id: 20250501-debugfs-rust-attach-e164b67c9c16
-prerequisite-change-id: 20250428-debugfs-rust-3cd5c97eb7d1:v5
-prerequisite-patch-id: 1bc0f0d9ea12a4dfa986bd6b88863b0561d7e215
-prerequisite-patch-id: 6338f30c269eb6ec314d3e4c0b9c2c0215f58325
-prerequisite-patch-id: 862adaf3d9fbc860a8eb23bf8779c4b299c0149e
-prerequisite-patch-id: 0198767a9410d24382e72ca9cf1e3d205deb4fd3
-
-Best regards,
 -- 
-Matthew Maurer <mmaurer@google.com>
+2.49.0.967.g6a0df3ecc3-goog
 
