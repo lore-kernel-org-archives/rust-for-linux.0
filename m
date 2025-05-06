@@ -1,117 +1,155 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F13027B51F;
-	Tue,  6 May 2025 11:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ABC27AC41;
+	Tue,  6 May 2025 12:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746532400; cv=none; b=C1OFGjZ8sjc+3MTTsNXDpSikVrP1TCK7H2M7CQNfOIL1MSr2/DAFx2x7Vz93Bow590jAtaHcj2dpso+hO1p44LIONICVeYSddqokBEUTHRY1sHY8G8gypK98SR7zaXLo4UaWu6GfHwy7344arqbuLJJX2uM6XAM6TDiYHOgyn70=
+	t=1746535962; cv=none; b=V63SwthajCqfz6MfkxEqT8n1Y6+0dzELcwMioshiSyoODAE4DpRMPzdTSI2RZaCdamh2RCPz2GCMfZlplJYUCfpxlJWNa9udcgWKJ6DiJuGK8oSGImlgNQhS4TWex6AevaH0RLPnJiIz7fLBjMTXkQ0GHPvxObe9S7pAmOVBtwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746532400; c=relaxed/simple;
-	bh=phKhwzwBBsKUNTwTuCqGqFtLytQEhltV8oTOiryixAw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=spO8ud7BgRaz+TqwYfaJQEcFJYJqE0VPagyIXXMTDmgaNb7KGEeEImMlAXihT8UXEKIiLFMZlFu8j+xXtpPWvYos4+QylvRfCGEV/PxHiUk0cdLhOZR34eU0UVGaXQdAeDd/2d8YKNZzq8PaRJrXOa4UXp2vdHBh8MASSwfxMP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BuJXK8f3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746535962; c=relaxed/simple;
+	bh=CoGj5SFcRaCss+CpurOaTAPuqA7YnJFs78eMCJRv7H8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aDtYAXpKrDlQ/wcZ8Zg0jaQ8mlB6oPYtIfKmrIELa1nPzPlYtgKYEbwVb5AmlpyhakgE5VkaXTC7QuvtUOcLT/KU/CbOztjTlq80A73MUPypMFEwil9nE4XMs/BCSCklBcLgDpea3damHGDxqjyMILiKkDRZ3z/55FBLPI1M3lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaYu+12Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BuJXK8f3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C16C4CEED;
-	Tue,  6 May 2025 11:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746532400;
-	bh=phKhwzwBBsKUNTwTuCqGqFtLytQEhltV8oTOiryixAw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=BuJXK8f3+6nrBJZh0HBI891bC/OR1WxkU+iQAKcDASsi4/nJdYeI8vLjcVaxGe3P6
-	 Se26eRn0cDqIVbUqfi8A9cDyUQEufUYPOY0owQw2r34LWmHOIEKWB+LSU/c6CP8bCD
-	 8FSeySu6MCjlBKrBvqLn4W3CqWBjZa7XPaZQVKwve5nreGsK6XnCO4JUHhc5x7TuqQ
-	 0j3EyF29AKQ0L+EakP0hIJndY4mE28l9on11E71DV5Sw5uksmXAG6wsXDfdcwRqCHo
-	 Kkb6s3yDACNb47S7Kil81NA+VKaSnium/RdsC4jAlcYgOVyOf0mYP8hHFWdS0ocXGh
-	 AkcKqAtSE0FHQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Masahiro Yamada"
- <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,  "Luis
- Chamberlain" <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,
-  "Nicolas Schier" <nicolas.schier@linux.dev>,  "Trevor Gross"
- <tmgross@umich.edu>,  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v11 2/3] rust: add parameter support to the `module!` macro
-In-Reply-To: <aBnQpWJeiRKIMJ5D@google.com> (Alice Ryhl's message of "Tue, 06
-	May 2025 09:04:37 +0000")
-References: <20250502-module-params-v3-v11-0-6096875a2b78@kernel.org>
-	<20250502-module-params-v3-v11-2-6096875a2b78@kernel.org>
-	<WroEJHY8a-y8vbSQkUvGJJs7yTQGKMsHJqmWFYGkz5bZ_PsiE8GAozjSaNpWjWina1XanjVNpV0Av3woiaUtJg==@protonmail.internalid>
-	<aBTMMHWNXS7wK7zS@google.com> <878qnbxtyi.fsf@kernel.org>
-	<I9aVTs-nIPqYQrXB9KHd84xis2sWTBG-c8R8JQfCa23WzZopwS4vt4mA07cO3byOUNYf9sYUxrFi-O_kWdQGxQ==@protonmail.internalid>
-	<aBnQpWJeiRKIMJ5D@google.com>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Tue, 06 May 2025 13:53:08 +0200
-Message-ID: <87wmauot0b.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaYu+12Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AABAC4CEE4;
+	Tue,  6 May 2025 12:52:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746535962;
+	bh=CoGj5SFcRaCss+CpurOaTAPuqA7YnJFs78eMCJRv7H8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gaYu+12YUu9M8YmpGzc0XxsT+IKB0ZKv5u0NT+X9pcZbWFnzcmw/SkQic+ogKcLxD
+	 qtyed+o+FA94SdC/r6RXdcse9KifRcdHmsQ/YABoTYXv/E7VnjgPuHoD37ZIpOQ191
+	 yiElZUmotKu6yJIlSsiv+O99p6Vj/yErO8pN3be0=
+Date: Tue, 6 May 2025 14:52:39 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] uaccess: rust: add strncpy_from_user
+Message-ID: <2025050645-trifocals-olympics-4692@gregkh>
+References: <20250505-strncpy-from-user-v3-0-85c677fd4f91@google.com>
+ <20250505-strncpy-from-user-v3-1-85c677fd4f91@google.com>
+ <2025050544-sneak-compactor-d701@gregkh>
+ <aBnT8Y3lJqd6J40q@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aBnT8Y3lJqd6J40q@google.com>
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+On Tue, May 06, 2025 at 09:18:41AM +0000, Alice Ryhl wrote:
+> On Mon, May 05, 2025 at 04:30:05PM +0200, Greg Kroah-Hartman wrote:
+> > On Mon, May 05, 2025 at 12:17:31PM +0000, Alice Ryhl wrote:
+> > > This patch adds a direct wrapper around the C function of the same name.
+> > > It's not really intended for direct use by Rust code since
+> > > strncpy_from_user has a somewhat unfortunate API where it only
+> > > nul-terminates the buffer if there's space for the nul-terminator. This
+> > > means that a direct Rust wrapper around it could not return a &CStr
+> > > since the buffer may not be a cstring. However, we still add the method
+> > > to build more convenient APIs on top of it, which will happen in
+> > > subsequent patches.
+> > > 
+> > > Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> > > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > ---
+> > >  rust/kernel/uaccess.rs | 35 ++++++++++++++++++++++++++++++++++-
+> > >  1 file changed, 34 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+> > > index 80a9782b1c6e98ed6eae308ade8551afa7adc188..a7b123915e9aa2329f376d67cad93e2fc17ae017 100644
+> > > --- a/rust/kernel/uaccess.rs
+> > > +++ b/rust/kernel/uaccess.rs
+> > > @@ -8,7 +8,7 @@
+> > >      alloc::{Allocator, Flags},
+> > >      bindings,
+> > >      error::Result,
+> > > -    ffi::c_void,
+> > > +    ffi::{c_char, c_void},
+> > >      prelude::*,
+> > >      transmute::{AsBytes, FromBytes},
+> > >  };
+> > > @@ -369,3 +369,36 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
+> > >          Ok(())
+> > >      }
+> > >  }
+> > > +
+> > > +/// Reads a nul-terminated string into `buf` and returns the length.
+> > > +///
+> > > +/// This reads from userspace until a NUL byte is encountered, or until `buf.len()` bytes have been
+> > > +/// read. Fails with [`EFAULT`] if a read happens on a bad address (some data may have been
+> > > +/// copied). When the end of the buffer is encountered, no NUL byte is added, so the string is
+> > > +/// *not* guaranteed to be NUL-terminated when `Ok(buf.len())` is returned.
+> > > +///
+> > > +/// # Guarantees
+> > > +///
+> > > +/// When this function returns `Ok(len)`, it is guaranteed that the first `len` of `buf` bytes are
+> > > +/// initialized and non-zero. Furthermore, if `len < buf.len()`, then `buf[len]` is a NUL byte.
+> > > +/// Unsafe code may rely on these guarantees.
+> > > +#[inline]
+> > > +#[expect(dead_code)]
+> > > +fn raw_strncpy_from_user(ptr: UserPtr, buf: &mut [MaybeUninit<u8>]) -> Result<usize> {
+> > 
+> > Nit, the parameters here are backwards from the C version of
+> > strncpy_from_user(), which is going to cause us no end of grief when
+> > reviewing code between the two languages :(
+> 
+> I'll swap them.
+> 
+> fn raw_strncpy_from_user(dst: &mut [MaybeUninit<u8>], src: UserPtr) -> Result<usize> {
+> 
+> > Also, it's not your fault, but we don't have any type of __user tag for
+> > data coming from userspace yet to track this type of thing?  The
+> > compiler (well sparse) can catch this type of thing in C, any hints on
+> > what we could do in Rust for the same type of guarantee (i.e. don't
+> > touch user data before it's been copied, and then we need to treat it as
+> > "unverified" but that's a different patch series...)
+> 
+> The UserPtr typedef is intended to do that, but since it's only a
+> typedef to usize, the compiler won't detect it if you mix up a user
+> pointer with a length. (It will detect mix-ups with pointers since we
+> use an integer type for UserPtr.)
 
-> On Mon, May 05, 2025 at 11:55:33AM +0200, Andreas Hindborg wrote:
->> "Alice Ryhl" <aliceryhl@google.com> writes:
->>
->> > On Fri, May 02, 2025 at 02:16:35PM +0200, Andreas Hindborg wrote:
->> > It would be a use-after-free to
->> > access it during module teardown. For example, what if I access this
->> > static during its own destructor? Or during the destructor of another
->> > module parameter?
->>
->> Yes, that is a problem.
->>
->> We can get around it for now by just not calling `free` for now. We only
->> support simple types that do not need drop. I think we would have to
->> seal the `ModuleParam` trait for this.
->>
->> For a proper solution, we could
->>  - Require a token to read the parameter.
->>  - Synchronize on a module private field and return an option from the
->>    parameter getter. This would require module exit to run before param
->>    free. I think this is the case, but I did not check.
->>  - Use a `Revocable` and revoke the parameter in `free`.
->>
->> Any other ideas or comments on the outlined solutions?
->
-> I think the simplest you can do right now is
->
-> trait ModuleParam: Copy
+Sorry, I missed the "UserPtr" for some reason.  But having an integer
+type for UserPtr feels like it's going to cause problems in the
+long-run.
 
-Cool =F0=9F=91=8D
+> What we can do is replace the typedef with
+> 
+> #[repr(transparent)]
+> struct UserPtr(pub usize);
+> 
+> That way, it becomes it's own separate type (this is called the newtype
+> pattern [1]) so that it can't be mixed up with anything else.
 
->
-> so that it can't contain any non-trivial values. That way you don't need
-> Drop either.
->
-> Long term, I think we need a way to detect whether it's safe to access
-> module globals. The exact same problem applies to the existing global
-> for the module itself - except it's worse there because we can't access
-> that one during init either.
+Why not use a real pointer like:
+	struct UserPtr(pub *const u8)
 
-Yep.
+> The #[repr(transparent)] annotation makes the compiler treat it like a
+> bare long for ABI-purposes. I'm not sure if any function ABIs actually
+> treat a long differently from a struct that just contains a long, but if
+> such ABIs exist, then the annotation ensures that the long ABI is used
+> rather than the struct-containing-long ABI.
 
+In the kernel, "unsigned long" is guaranteed to hold a pointer.  Which
+is why many of the old allocation functions return that type.
 
+thanks,
 
-Best regards,
-Andreas Hindborg
-
-
-
+greg k-h
