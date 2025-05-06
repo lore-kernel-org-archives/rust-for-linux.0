@@ -1,164 +1,110 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EF5267B15
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 09:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6165264A6D
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 May 2025 09:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746523127; cv=none; b=Cu/vye0JkCK7EfzpDVQ2sIE4azII9hi74kNQeuaGeVTr7jpHayr2YYDpBV0cPXaRalTfshq+P/HE+ymYxyTQDq1jBdAaGn6f1Da0pOqvDObLa/dD74ajpW+8umho6JJ+cea8xipT6JJiav3RS+7LcutsRlZos2XfaMLG+LIMZLY=
+	t=1746525338; cv=none; b=brqUlmVp73b30xS20olOyIumhH3oabud+vVQmJXzSY0QGZ2m4vMM3MvW05ROjJlqcRRbB1CM/Fv3FQgSj9tllkTNeEm2ZqlbaHcu7gujuh7dtJ+DTcCSTjpHhOc9n6979PuEqOKlVYEex/ECeLFrcOUfeL18PRo7ak6mh4f3f7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746523127; c=relaxed/simple;
-	bh=E17ZjcvNnE3gAHLsWjbhAU+S/T/HGrIZaGnxTG4pkM0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JiJH0cG+EcTBVxRpN993EnixA1SJ8eTCW2f8jzz7WOkttRxjgwFW5ooxCL4Y9oltgjEYXUnGQuL8CQgqzADQtXpYNZQBqwHkvIG8OGJ7TQpCImIkC4RrcdEvTXez2fTKBdS1jY9LBwXo1axCr/kIxzEM+3RXtwHBQgwdkQw1XHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PbnFn24S; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1746525338; c=relaxed/simple;
+	bh=czA6xtOu+YcHwiDFrFf4mH8B0JFLOQ3hd3G4ICdsFWs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RdRgEAMl0UC1PZqRFdYMG4/KpXdyHh4V+q8IQj9rP5dNmk8xtZ+5u/DZzP+uyznvkvx4+qcUDksTIZPpJKSU2SW7G30RSw1cVe5MFbe0a8G8tcd+0on+3ZYGurk18KlI1W+jNkVqRx8SjtG4yEOMyQqGopt1vOoXNX8fLNBs9y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ozjpWirz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PbnFn24S"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d08915f61so27530205e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 May 2025 02:18:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746523124; x=1747127924; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AiYBfuBPq0PKabiO1M3oY2RQ97WInUw/jmCaL8pZJF0=;
-        b=PbnFn24S6qB0mavg4HYzbbEZ0E0Q3aL4cQx7wrXMOPfw2jmYRtnYPqvWKw6bWht7xc
-         FSU9wJt1vTkD0DDnHMPT52p4jCGJnUqPVKCHFV1JSiDZ+rG1OrRh1QkvJM9q9ML2GNWn
-         RCEjgEQYt0riXvoJWl4apS1hbYDDWQDkXAjNBt6MiGV1Mxkgtk6gAm0wGaCRi2kaXW5O
-         ziks9CXQZTEl1xgX7Doq9j7x5u2gidR1Kpa26ObaBdrc3VNO17gV/dJVdcmEMGDIykaO
-         m943z5svna4nP3aM0rTGmVRVGfwUC4tnkA2vPXIjcqPOBM6K2zlRwhUfOdYuRJ0pH0Fm
-         Q+JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746523124; x=1747127924;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AiYBfuBPq0PKabiO1M3oY2RQ97WInUw/jmCaL8pZJF0=;
-        b=dRi2N+xQQsefZeT9NHhd3Nutevvy7QsRvJkpRoVbjxWqN/5AJv8q2zjT+Je58Gue2k
-         WO0ryKdQLP+y2q7/EONE0zZe2WyDkHZd06pgag3F9A3EtVxqzSVKGH49vreOG4hTFcW+
-         8LSuDELBvwqmSjlAvZwapxyLmwBlFbhIc+7KUn14Dh1Qo8aXz2jos5XEGiaWc2TtryZ7
-         JReOp6YtFn8ChgU20Y4qPUEy3YsQVrIEaQV4EnWuRXEVwKIPF0H2fhWqEgekuiLTVQGG
-         TriHPJt2XtoFYVQni5nlFagfYoeSSrAMkARL1vslpfa7EROlrNBZ7oIR40LKJUjRHb4I
-         M/Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCUC/zkMJrIL00OzQLjs9FOn4gfavJH720fso7p0Oq19AkMSmySwZt1+bZEE38YGPVbcOSaBTLLXzAdYkC+wwA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyo2zTodhfzT3ZRx/8vHS4QGnqGWmb5gqOX6ksAJ6WH5u36O3Wa
-	LoTfLNQRlfxQAt4SggD+Mshbq5O33CW+WkM17TBxuBsv7pUF0enarhM0+D5nDMGKRsn/Fejn8tt
-	6/Xk+Fp3plLdl0w==
-X-Google-Smtp-Source: AGHT+IFUIi/aIrJ+YBlE4GZq9QhM4TQhjCYLMqpNPEPZ/dnhztAF0TRSuK+vVuzlXWZ0B183nyofXeU+L1JIfzI=
-X-Received: from wmsp15.prod.google.com ([2002:a05:600c:1d8f:b0:43d:56fa:9b95])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3c90:b0:43c:f44c:72b7 with SMTP id 5b1f17b1804b1-441c48bdfdamr99780575e9.14.1746523123132;
- Tue, 06 May 2025 02:18:43 -0700 (PDT)
-Date: Tue, 6 May 2025 09:18:41 +0000
-In-Reply-To: <2025050544-sneak-compactor-d701@gregkh>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ozjpWirz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE764C4CEED;
+	Tue,  6 May 2025 09:55:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746525337;
+	bh=czA6xtOu+YcHwiDFrFf4mH8B0JFLOQ3hd3G4ICdsFWs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ozjpWirzX8Tsr4cdVenOL1rfgO/rSZR/jGmTulv6gf5bXv1ZQIZnl5lH9rYLPQ4Vx
+	 8g4eQpbuwTYuUqiTO/S4FZj2pk1ffNZWqBaJD3Oe6zqsZU386H/9BJowhA9dkFt6G3
+	 iJrlH3734Ph+z1X3VwT5Nq+5e+rngbAODuIdvh09H8UQIIx60lRDRYWK71O7/Spxwd
+	 lqLkI6/toloq0EDWHUUzdjdgB0ZuOy8WbZD6KjOIYXyA/cQ9Xa+94Dqgotb2FwxXKg
+	 36KUswMFdrIQpnOM0aplBE0jLAjkDHLMUAJS4gtfrWAi+QvJi/QYOlc3XLw6BeG5jj
+	 b1XCrlibmIyFw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+  "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	rust-for-linux@vger.kernel.org,
+Subject: [GIT PULL] Rust timekeeping for v6.16 From: Andreas Hindborg
+ <a.hindborg@kernel.org>
+User-Agent: mu4e 1.12.7; emacs 30.1
+Date: Tue, 06 May 2025 11:52:11 +0200
+Message-ID: <87v7qeqd6c.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250505-strncpy-from-user-v3-0-85c677fd4f91@google.com>
- <20250505-strncpy-from-user-v3-1-85c677fd4f91@google.com> <2025050544-sneak-compactor-d701@gregkh>
-Message-ID: <aBnT8Y3lJqd6J40q@google.com>
-Subject: Re: [PATCH v3 1/2] uaccess: rust: add strncpy_from_user
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Mon, May 05, 2025 at 04:30:05PM +0200, Greg Kroah-Hartman wrote:
-> On Mon, May 05, 2025 at 12:17:31PM +0000, Alice Ryhl wrote:
-> > This patch adds a direct wrapper around the C function of the same name.
-> > It's not really intended for direct use by Rust code since
-> > strncpy_from_user has a somewhat unfortunate API where it only
-> > nul-terminates the buffer if there's space for the nul-terminator. This
-> > means that a direct Rust wrapper around it could not return a &CStr
-> > since the buffer may not be a cstring. However, we still add the method
-> > to build more convenient APIs on top of it, which will happen in
-> > subsequent patches.
-> > 
-> > Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/kernel/uaccess.rs | 35 ++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 34 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> > index 80a9782b1c6e98ed6eae308ade8551afa7adc188..a7b123915e9aa2329f376d67cad93e2fc17ae017 100644
-> > --- a/rust/kernel/uaccess.rs
-> > +++ b/rust/kernel/uaccess.rs
-> > @@ -8,7 +8,7 @@
-> >      alloc::{Allocator, Flags},
-> >      bindings,
-> >      error::Result,
-> > -    ffi::c_void,
-> > +    ffi::{c_char, c_void},
-> >      prelude::*,
-> >      transmute::{AsBytes, FromBytes},
-> >  };
-> > @@ -369,3 +369,36 @@ pub fn write<T: AsBytes>(&mut self, value: &T) -> Result {
-> >          Ok(())
-> >      }
-> >  }
-> > +
-> > +/// Reads a nul-terminated string into `buf` and returns the length.
-> > +///
-> > +/// This reads from userspace until a NUL byte is encountered, or until `buf.len()` bytes have been
-> > +/// read. Fails with [`EFAULT`] if a read happens on a bad address (some data may have been
-> > +/// copied). When the end of the buffer is encountered, no NUL byte is added, so the string is
-> > +/// *not* guaranteed to be NUL-terminated when `Ok(buf.len())` is returned.
-> > +///
-> > +/// # Guarantees
-> > +///
-> > +/// When this function returns `Ok(len)`, it is guaranteed that the first `len` of `buf` bytes are
-> > +/// initialized and non-zero. Furthermore, if `len < buf.len()`, then `buf[len]` is a NUL byte.
-> > +/// Unsafe code may rely on these guarantees.
-> > +#[inline]
-> > +#[expect(dead_code)]
-> > +fn raw_strncpy_from_user(ptr: UserPtr, buf: &mut [MaybeUninit<u8>]) -> Result<usize> {
-> 
-> Nit, the parameters here are backwards from the C version of
-> strncpy_from_user(), which is going to cause us no end of grief when
-> reviewing code between the two languages :(
+Hi Miguel,
 
-I'll swap them.
+Please pull these changes for Rust timekeeping.
 
-fn raw_strncpy_from_user(dst: &mut [MaybeUninit<u8>], src: UserPtr) -> Result<usize> {
+This PR morphs the rust hrtimer subsystem into the rust timekeeping subsystem
+covering delay, sleep timekeeping, and timers.
 
-> Also, it's not your fault, but we don't have any type of __user tag for
-> data coming from userspace yet to track this type of thing?  The
-> compiler (well sparse) can catch this type of thing in C, any hints on
-> what we could do in Rust for the same type of guarantee (i.e. don't
-> touch user data before it's been copied, and then we need to treat it as
-> "unverified" but that's a different patch series...)
+We also add the `Delta` and `Instant` types to replace `Ktime`. We add `Ktime`
+locally for `htrimer` while we rework `hrtimer` to use the new types.
 
-The UserPtr typedef is intended to do that, but since it's only a
-typedef to usize, the compiler won't detect it if you mix up a user
-pointer with a length. (It will detect mix-ups with pointers since we
-use an integer type for UserPtr.)
+In this iteration, `Instant` does not prevent subtracting instants based on
+different clock sources. We plan to add this via generics in the next cycle.
 
-What we can do is replace the typedef with
+The commits were in linux-next since next-20250501.
 
-#[repr(transparent)]
-struct UserPtr(pub usize);
+The following changes since commit 9c32cda43eb78f78c73aee4aa344b777714e259b:
 
-That way, it becomes it's own separate type (this is called the newtype
-pattern [1]) so that it can't be mixed up with anything else.
+  Linux 6.15-rc3 (2025-04-20 13:43:47 -0700)
 
-The #[repr(transparent)] annotation makes the compiler treat it like a
-bare long for ABI-purposes. I'm not sure if any function ABIs actually
-treat a long differently from a struct that just contains a long, but if
-such ABIs exist, then the annotation ensures that the long ABI is used
-rather than the struct-containing-long ABI.
+are available in the Git repository at:
 
-Alice
+  https://github.com/rust-for-linux/linux.git tags/rust-timekeeping-for-v6.16-v2
 
-[1]: https://doc.rust-lang.org/rust-by-example/generics/new_types.html
+for you to fetch changes up to 679185904972421c570a1c337a8266835045012d:
+
+  MAINTAINERS: rust: Add a new section for all of the time stuff (2025-04-29 15:35:25 +0200)
+
+Best regards,
+Andreas
+
+----------------------------------------------------------------
+Rust timekeeping changes for v6.16
+
+ - Morph the rust hrtimer subsystem into the rust timekeeping subsystem,
+   covering delay, sleep, timekeeping, timers. This new subsystem has all the
+   relevant timekeeping C maintainers listed in the entry.
+
+ - Replace `Ktime` with `Delta` and `Instant` types to represent a duration of
+   time and a point in time.
+
+ - Temporarily add `Ktime` to `hrtimer` module to allow `hrtimer` to delay
+   converting to `Instant` and `Delta`.
+
+----------------------------------------------------------------
+FUJITA Tomonori (5):
+      rust: hrtimer: Add Ktime temporarily
+      rust: time: Add PartialEq/Eq/PartialOrd/Ord trait to Ktime
+      rust: time: Introduce Delta type
+      rust: time: Introduce Instant type
+      MAINTAINERS: rust: Add a new section for all of the time stuff
+
+ MAINTAINERS                         |  11 ++-
+ rust/kernel/time.rs                 | 167 +++++++++++++++++++++++++++---------
+ rust/kernel/time/hrtimer.rs         |  18 +++-
+ rust/kernel/time/hrtimer/arc.rs     |   2 +-
+ rust/kernel/time/hrtimer/pin.rs     |   2 +-
+ rust/kernel/time/hrtimer/pin_mut.rs |   4 +-
+ rust/kernel/time/hrtimer/tbox.rs    |   2 +-
+ 7 files changed, 157 insertions(+), 49 deletions(-)
+
