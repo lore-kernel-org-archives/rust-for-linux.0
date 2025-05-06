@@ -1,129 +1,124 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9A1275842;
-	Tue,  6 May 2025 13:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AB2278745;
+	Tue,  6 May 2025 13:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746539582; cv=none; b=dP+1n3i9c6Nh43BOdizX8FhFL1Ej+oq0iX/iFkTaXdJl2FXFyMxS6aztma7IPvhb4aWGHM2mo+9Ix3KLwaJu7lE68/u7GCkPkvopnMKTDh6EqGWNR9FRugsaR1BDRJXtNqIa+7qebc5HOusxJSg2ddokvQGudn5Fo7Y5zo/eQ98=
+	t=1746539975; cv=none; b=lF7DMqHRQxMe2IpJr60KQd+BjXSXt3FJdIcUWzMh70KkGupKO4sbbPkI3WuZ/o1NmIGYiUd4hUpOHA3zn1svk91cEdvrn8ZVmX8T1BWPv2pJvL7cHROTIJz/bG11BF7Wtbi3dDv8LLDzEgaWCCstN30VWUdvoSnVTcMpHOsvyyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746539582; c=relaxed/simple;
-	bh=doBlcIkAGp9cJeKf4hCj5NkGHK+v0DTsswbEiCYjK44=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qtCMALK6jNGj3xKEcagf3FaeLlMImCI3Ml8rRaU4bkoZsKeE9Q/slL/ZJBdQ1M1zeoyVZ8dN8CMkDQ9i7jTf3F49hLaW94BaoDYXM/4covVyluIZNmMbNgk6taO1fc2WW9zoLPLlXRMGUK58p4BHqM+AQ1Vh7CvPZK6LleLTAEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IZoo9nq7; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1746539975; c=relaxed/simple;
+	bh=/iHPx3jD/CToO4u+U45ghy1w7g3pWoLFrxwJAIs19ro=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tEelCX+vGV2hOASXaQtg28x0+JQz4XWB12TgW5KWb6njgKJVUkqujeqDDqbvdNY9AIXiHSHBEypnnrJguKGPcNtd+NfVXNBLBh0gvSQ2DS/25oTnbcUeAOAVYl/Yxh1dR/GHGOG7+KgiJndopM5v0Id0P14hIOrxJe5gWCHCJl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JIUTr+xU; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IZoo9nq7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746539580; x=1778075580;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=doBlcIkAGp9cJeKf4hCj5NkGHK+v0DTsswbEiCYjK44=;
-  b=IZoo9nq7/DlBiZEGACUk7Qr4GtOhAsIZWdGnVX2qeOC5yILC5xd/oCrB
-   ZWh/JovW61WrYsHleJELWQTxcLlGt+nVUmdwkeO59YChfoCoWNcr429So
-   OkGAyZfvYIGduKsPSOvT2gsC92O21fi187lnrZMLrDQunEzoKs8cfSlg0
-   FzMxjvD5NJ+j7sTCb9kQ1cvQDaO3dDiXf9aLrpYxBTIPQt3xgWQRCxh5E
-   ISCqqjGaZvc4hP7nkfWuxhiQwv5Jf3+j6HcTOtG1QJ8vraA/HN9Bq7ZJg
-   wtBjH1yI7MIucVStsiBNoYVXSXI/tRdO8IFSxNxksYYJ6xBgvpevM3D8g
-   Q==;
-X-CSE-ConnectionGUID: URgpnRrLSeGD7APha0CmDA==
-X-CSE-MsgGUID: jp6jo1hPQxG7bPDQ7Xf1MQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="58867030"
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
-   d="scan'208";a="58867030"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 06:52:59 -0700
-X-CSE-ConnectionGUID: 4oSb292TTJ65oXyNxraLWQ==
-X-CSE-MsgGUID: RGkFFAy2T1al+PF4saJVKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
-   d="scan'208";a="136570123"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.221])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 06:52:54 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Jocelyn Falempe <jfalempe@redhat.com>, Thomas Zimmermann
- <tzimmermann@suse.de>, Javier Martinez Canillas <javierm@redhat.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Subject: Re: [PATCH] MAINTAINERS: Add entries for drm_panic,
- drm_panic_qr_code and drm_log
-In-Reply-To: <20250506133143.156447-1-jfalempe@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20250506133143.156447-1-jfalempe@redhat.com>
-Date: Tue, 06 May 2025 16:52:51 +0300
-Message-ID: <87tt5xvob0.fsf@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JIUTr+xU"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3054e2d13a7so403462a91.2;
+        Tue, 06 May 2025 06:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746539973; x=1747144773; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YE+axMvDCs66pYIdbl+vi6mEby8kQb7qSQ66DYmsH4o=;
+        b=JIUTr+xUJjQvhyqsTL43lvWHMIlcqYBMgGVxuj9n8yaGP2hvjWgfmuLqYbmZVDZwse
+         m2GOqsFIoNOEAQXd7+zSLVqLzKsbEhic8Q0FtVGYy8U74+TunWYP1qCMFGaNcKw+/bUv
+         jvM7aMCciOB6MjF4yXwuNb4KIim3YKyf5zlvPylb790MmWNCZOgEgr3By+JghQJy2UML
+         lDpDe/e3JUc5ZCBY6IfhM1HLFQDaQ4dHqhevhIEkvNIR7s/Nb+uzx4u/3EvWEg+XL1Ye
+         7IeJaDl/mADHm+Ax8kMENZMV7dYadOf/a9ocSd+/tsZ59gRdBt7REoJBZZ0KH/2hNedy
+         sydQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746539973; x=1747144773;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YE+axMvDCs66pYIdbl+vi6mEby8kQb7qSQ66DYmsH4o=;
+        b=B31Q0yfoKRrHh1MNQymZKUQCcyRfcdxs69pTqzATiBmqsuYoPkeV2dT/KtJCnKrkOm
+         rRIP9C0brM1Nn1dWbAEh7Q2YuOI+CL3bqAfVhRQ/T3WFpWoA5XoZFuxKi/hwHVb9+E7d
+         7RmVY28AATe4q3nXP6HaTvQuIHroGnekRYv2yjHRxN+Y+WGPX/AuXDFl1G5RcTV4RRMr
+         QZyEtouD80MU3BYyvq3VCBj2g9T6zg21VwZFOBM9kF42fEmrQl3fIq5kd2qONtGYcBSG
+         T7L4pMkcsXtroD1EHMURHYWvl5ht4lEZJ//DzcpRRXH4bGEKGsJFZZRDQ/zGW3K4j5hB
+         984g==
+X-Forwarded-Encrypted: i=1; AJvYcCUaZgNrJJyMUVcd1PS9kOetL3E3IfDXl/ZgfshuLF1aT4t4ENfnDACym9+3E7oJih6lw5yRiTqo4D7nbuPVWOI=@vger.kernel.org, AJvYcCXGIdZevjRuR3Jcq+b+CA4YzvMeoqsX/8mqsnpgii3QqmCl9MkKppEHVOuhIJutmuZ45V97a/MunNslHdY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwT+wTjtrFsWpOCFMClNJ12pb1AES5wJlx2MLaWnXtBCj7pGR8o
+	UWKqJPswtUqKXmkYCUmO3twmiz/TO2HcpCIyGv+GVpwfLhc4NCglQjYDIHdTLgNj9QqPUQOaqbu
+	EaJS7SDUp8Xr9DWFYhal3dW8MqgQ=
+X-Gm-Gg: ASbGnct3ZSM2Oh7sLGIXlojrvtG51NGL+RHYdlEJYCDkzjEefUecw02lNdowDVbqA2M
+	SoiAfNo+g7avVpMEwQTRhTArSGVj4hvjYEgTOMdAbR79ghTzTQqUsvOBb+0ejExQ6fBsmBPxloz
+	uuXCEM89T9wq1BHFcBuWGE/g==
+X-Google-Smtp-Source: AGHT+IEgubHAsCipwGxCBt3lb83P0YrrXiB4eeA5IxsYnYqCjW/NGSjwPJ0hk5KEcB9E3qTXs6R4DvKPyPUlZXoz14o=
+X-Received: by 2002:a17:90b:4c51:b0:2ff:6bcf:5411 with SMTP id
+ 98e67ed59e1d1-30a4e55f68cmr8746149a91.1.1746539973558; Tue, 06 May 2025
+ 06:59:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250506-userptr-newtype-v1-1-a0f6f8ce9fc5@google.com>
+In-Reply-To: <20250506-userptr-newtype-v1-1-a0f6f8ce9fc5@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 6 May 2025 15:59:20 +0200
+X-Gm-Features: ATxdqUHTdvyp2ma6bPVb7UEv_QMYmLJKYg7vfMfh7c_IgVQyBBYoRBb17EujvOs
+Message-ID: <CANiq72=n68DB+hZ77GT4d7odPSS=wxc+YLvaBhU8-H7PyK25Rw@mail.gmail.com>
+Subject: Re: [PATCH] uaccess: rust: use newtype for user pointers
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 06 May 2025, Jocelyn Falempe <jfalempe@redhat.com> wrote:
-> Add myself and Javier as maintainer for drm_panic, drm_panic_qr_code
-> and drm_log.
+On Tue, May 6, 2025 at 3:26=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
 >
-> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-> ---
->  MAINTAINERS | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 38df6b159a3b..df3abdcf1767 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -8177,6 +8177,34 @@ F:	drivers/gpu/drm/drm_panel.c
->  F:	drivers/gpu/drm/panel/
->  F:	include/drm/drm_panel.h
->  
-> +DRM PANIC
-> +M:	Jocelyn Falempe <jfalempe@redhat.com>
-> +M:	Javier Martinez Canillas <javierm@redhat.com>
-> +L:	dri-devel@lists.freedesktop.org
-> +S:	Supported
-> +T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
-> +F:	drivers/gpu/drm/drm_draw.c
-> +F:	drivers/gpu/drm/drm_draw_internal.h
-> +F:	drivers/gpu/drm/drm_panic*.c
-> +F:	include/drm/drm_panic*
-> +
-> +DRM PANIC QR CODE
-> +M:	Jocelyn Falempe <jfalempe@redhat.com>
-> +M:	Javier Martinez Canillas <javierm@redhat.com>
-> +L:	dri-devel@lists.freedesktop.org
-> +L:	rust-for-linux@vger.kernel.org
-> +S:	Supported
-> +T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
-> +F:	drivers/gpu/drm/drm_panic_qr.rs
-> +
-> +DRM LOG
-> +M:	Jocelyn Falempe <jfalempe@redhat.com>
-> +M:	Javier Martinez Canillas <javierm@redhat.com>
-> +L:	dri-devel@lists.freedesktop.org
-> +S:	Supported
-> +T:	git https://gitlab.freedesktop.org/drm/misc/kernel.git
-> +F:	drivers/gpu/drm/clients/drm_log.c
-> +
+> The UserPtr type is not marked with #[derive(Debug)], which means that
+> it's not possible to print values of this type. This avoids ASLR
+> breakage.
 
-MAINTAINERS is supposed to be sorted. See commit 80e62bc8487b
-("MAINTAINERS: re-sort all entries and fields").
+By breakage you mean leaking the information by mistake?
 
-BR,
-Jani.
+Since it is `pub`, should we make it even harder to make a mistake
+here by making it private? You are already providing and using the
+`as_` methods anyway, so we would only need a `new` or conversion
+method or `Into` similar (not sure which one would be best -- perhaps
+a single one with a descriptive name is a good idea to grep for it
+easily).
 
+> +    /// Increment this user pointer by `add` bytes.
+> +    ///
+> +    /// This is addition is wrapping, so wrapping around the address spa=
+ce does not result in a
 
->  DRM PRIVACY-SCREEN CLASS
->  M:	Hans de Goede <hdegoede@redhat.com>
->  L:	dri-devel@lists.freedesktop.org
->
-> base-commit: 258aebf100540d36aba910f545d4d5ddf4ecaf0b
+s/is//
 
--- 
-Jani Nikula, Intel
+> +    /// panic even if `CONFIG_RUST_OVERFLOW_CHECKS` is enabled.
+> +    pub fn wrapping_add(self, add: usize) -> UserPtr {
+> +        UserPtr(self.0.wrapping_add(add))
+> +    }
+> +}
+
+I guess you are using `wrapping_add` since we have a `usize` internal
+type, but I wonder if we should use the pointer-related naming, i.e.
+`wrapping_byte_add`.
+
+Also, perhaps it is best to use another name for the parameter -- I
+would pick `count` like the standard library.
+
+In addition, should we get this directly into the `prelude`? `__user`
+is also global and fairly short. It may not be heavily used all the
+time like other things, but it is fairly fundamental, like the `c_*`
+ones.
+
+Thanks!
+
+Cheers,
+Miguel
