@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F89D1DF270;
-	Wed,  7 May 2025 11:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2C221B9F1;
+	Wed,  7 May 2025 11:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746617217; cv=none; b=WTXur2yJ50hBkeDCjdNZ3oeFneML6TksEtkVFh9014H/Ujx+TDLGcnnrD21woaiH/ucB8MsNXbVfsfIsEeeTOzcmsbex2LvgCb/SlsTUP7HlEuaj9YQ5i+MMMVeNN5GvnzhpsiZI3q65BHInKUINmMQrkD0+FVVndQy+dKaq1E4=
+	t=1746617350; cv=none; b=QuKdOlQNpBxzokehgIOBPOEs/9q1MlLgtBpxK1+hBoFQhudswRAxj6N5dx9eZ3u1H3ouKTxKGFeO7o8oSAjjUmq1JZvXD1Z6ZFNFTD4YUmPpI+nmIzVHCHIg+OhfFE6CqPA4qGdhxLb+BLJOJ6lO57Kd6hvp5tVaMs5DoZDeKfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746617217; c=relaxed/simple;
-	bh=3OP80T1TUr1RcBZZRe44AoSvO1VcM/ywxxkRLXR8834=;
+	s=arc-20240116; t=1746617350; c=relaxed/simple;
+	bh=Nj51xk3On+TtmHT8qaq83NkgnSPFnqdrPPmzZbTtP/4=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=HtZxMQNfErbfZb42KzbB1rLzB2GFVpLPMghfUxa3dwq4xncAXuAxN3CWugVi+dxtNJDBKCVheYvR7AWssNtzOFx9Jt4H/VLYeytoOKWG1a53/wM4SrqpLIdBza7sAg9SVzSEOFGB6xzVGKq/2LXG0n/Dqy6ESeThKH6Z6n503FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q38L8S9S; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=XoEKW0Q212oPinaX8th/+ffmggMp1g4PYAupC+VWqsS78uXTyqAXlWnFPZJ+DXlHIwcRYaknHC2Rp1+W6YCjcQbOcPa22HGin2HBE51912paVTpJ8EDFztEcBFc2x1z2ndWXZrC95kq8rIlcwqI+1gcfhvJr3G9WDjYrUeyRgac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MP6Qgwtg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q38L8S9S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6F9C4CEE7;
-	Wed,  7 May 2025 11:26:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MP6Qgwtg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F3FC4CEE7;
+	Wed,  7 May 2025 11:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746617216;
-	bh=3OP80T1TUr1RcBZZRe44AoSvO1VcM/ywxxkRLXR8834=;
+	s=k20201202; t=1746617349;
+	bh=Nj51xk3On+TtmHT8qaq83NkgnSPFnqdrPPmzZbTtP/4=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=q38L8S9S+wve2b5pG+K/5t5A5qxlxyLzXDtbSG1idYmWYm7B0pa5wJvoq+Sx7WkfM
-	 DkWdl/PgZJd1eTXt8RmLRO2hCbOAJHofDUPV8WcZ8Z69LHyAn7ccFde/96RC3pM9ys
-	 ozeckDk2e2JwX5DZnAWfD/CB16GMF4tHahQqezTig1dfwpNMgFoivSAQePFckF36rE
-	 uuUj/DJvZUagpGDN4bmba5CxkWzeB54sRO4skiR17n9y+9rlG12C5+KFS690vkTgiS
-	 OT0Yfzv8PaWwJ9e1bZ+HDtJ9kvabW4KWNkMiUTlPYi3u4H128FshaW5U5XiL9b2gxf
-	 1UwrMyGl1ahvA==
+	b=MP6QgwtgiwX43sT7HLeQtFhX4UvOm3pfA5NjzhEmHrtcG1WpDWnR9FsK44Cw6Mwbc
+	 IrbkWyqM2EdUXMyT1YfzSSIR65I9aWdkds5pEYnyO7ft2hS6VrXb8IT7KQVBhoia18
+	 Li1EnuAptFTtN7q0RUTMBFKKtzg7aNeLSLESS3YgmCaVDKnWPj51Ivr3X1jOc6ZRYN
+	 xuymiZQ815+y/q+Hm4Gr1/zOHnIxI0yA7J3OHoxXSf2Z+AlvCiHsU9p5by5ZMGECVT
+	 sFlhOICs4r8Xaj+SHSsJ9SP3W5MuqTXMBI2n8vB5ImcClRrgJypm6Q/yxf2LfZJYsl
+	 0hhxurz8WW7+A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,99 +34,86 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 07 May 2025 13:26:52 +0200
-Message-Id: <D9PW4M8X6TMK.33M9WF0S42KI4@kernel.org>
+Date: Wed, 07 May 2025 13:29:03 +0200
+Message-Id: <D9PW6AGXCWM8.31IPHEJLS9SNZ@kernel.org>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Oliver Mangold" <oliver.mangold@pm.me>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] rust: elaborate safety requirements for
- `AlwaysReferenceCounted`
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Nathan Chancellor" <nathan@kernel.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Nicolas Schier"
+ <nicolas.schier@linux.dev>, "Trevor Gross" <tmgross@umich.edu>, "Adam
+ Bratschi-Kaye" <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
+ "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
+ Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v12 1/3] rust: str: add radix prefixed integer parsing
+ functions
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250506-aref-from-raw-v2-1-5a35e47f4ec2@kernel.org>
- <D9PSH8MJ48JO.3OOA3Z3NSBGC9@kernel.org>
- <P0Vs61xa67BWtC_H9sCVioTN9Eb9G0N6w23IVMhek_I0QzvNsTQYYs269Ud_VBv72bWdMab3i8z8YsOeYkCEvA==@protonmail.internalid> <aBscvBwCD1o0OC_v@google.com> <87frhgpym0.fsf@kernel.org>
-In-Reply-To: <87frhgpym0.fsf@kernel.org>
+References: <20250506-module-params-v3-v12-0-c04d80c8a2b1@kernel.org>
+ <20250506-module-params-v3-v12-1-c04d80c8a2b1@kernel.org>
+ <UfD3pllWu8O_qAKsi04IMH1WGszkDe31KpLs7oMvDsUC-tryEbrYKmtDAPj5w-BO2CyZ8_S_G5lWBE2Ud72n8w==@protonmail.internalid> <D9PSYQMCW74W.39JB3NDCWB2H3@kernel.org> <87ldr8pys8.fsf@kernel.org>
+In-Reply-To: <87ldr8pys8.fsf@kernel.org>
 
-On Wed May 7, 2025 at 11:19 AM CEST, Andreas Hindborg wrote:
-> "Alice Ryhl" <aliceryhl@google.com> writes:
->> On Wed, May 07, 2025 at 10:35:16AM +0200, Benno Lossin wrote:
->>> On Tue May 6, 2025 at 10:29 AM CEST, Andreas Hindborg wrote:
->>> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->>> > index 9d0471afc964..52683d686c8a 100644
->>> > --- a/rust/kernel/types.rs
->>> > +++ b/rust/kernel/types.rs
->>> > @@ -409,6 +409,10 @@ pub const fn raw_get(this: *const Self) -> *mut =
-T {
->>> >  /// Implementers must also ensure that all instances are reference-c=
-ounted. (Otherwise they
->>> >  /// won't be able to honour the requirement that [`AlwaysRefCounted:=
-:inc_ref`] keep the object
->>> >  /// alive.)
->>> > +///
->>> > +/// Implementers of this trait must ensure that values of types impl=
-ementing this trait can never be
->>> > +/// owned by value. Instead, values must be owned and used through a=
- pointer type. That is, a type
->>> > +/// that implements [`Deref`].
->>>
->>> I don't think this covers every case, if I modify your example above
->>> with Alice's suggestion and using `Box` instead of the stack, I get the
->>> same problem:
->>>
->>>     struct Empty {}
->>>
->>>     unsafe impl AlwaysRefCounted for Empty {
->>>         fn inc_ref(&self) {}
->>>         unsafe fn dec_ref(_obj: NonNull<Self>) {}
->>>     }
->>>
->>>     fn unsound() -> ARef<Empty> {
->>>         use kernel::types::{ARef, RefCounted};
->>>
->>>         let data =3D Box::new(Empty {});
->>>         let aref =3D ARef::from(&data);
->>>
->>>         aref
->>>     }
->>>
->>> The same should be true if one uses `Arc` instead of `Box`. So, even
->>> though we store it in a "pointer type that implements `Deref`", it is
->>> unsound.
->>>
->>> I think that types that implement `AlwaysRefCounted` must only be store
->>> inside of `ARef<T>`. So something like "Values of this trait must only
->>> be exposed as `ARef<Self>` or `&Self`." I'm not satisfied with the
->>> wording 'exposed', maybe you have a better word or can expand the
->>> sentence.
+On Wed May 7, 2025 at 11:15 AM CEST, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
+>> On Tue May 6, 2025 at 3:02 PM CEST, Andreas Hindborg wrote:
+>>> +    pub trait ParseInt: private::FromStrRadix + TryFrom<u64> {
+>>> +        /// Parse a string according to the description in [`Self`].
+>>> +        fn from_str(src: &BStr) -> Result<Self> {
+>>> +            match src.deref() {
+>>> +                [b'-', rest @ ..] =3D> {
+>>> +                    let (radix, digits) =3D strip_radix(rest.as_ref())=
+;
+>>> +                    // 2's complement values range from -2^(b-1) to 2^=
+(b-1)-1.
+>>> +                    // So if we want to parse negative numbers as posi=
+tive and
+>>> +                    // later multiply by -1, we have to parse into a l=
+arger
+>>> +                    // integer. We choose `u64` as sufficiently large.
+>>> +                    //
+>>> +                    // NOTE: 128 bit integers are not available on all
+>>> +                    // platforms, hence the choice of 64 bits.
+>>> +                    let val =3D u64::from_str_radix(
+>>> +                        core::str::from_utf8(digits).map_err(|_| EINVA=
+L)?,
+>>> +                        radix,
+>>> +                    )
+>>> +                    .map_err(|_| EINVAL)?;
+>>> +
+>>> +                    if val > Self::abs_min() {
+>>> +                        return Err(EINVAL);
+>>> +                    }
+>>> +
+>>> +                    if val =3D=3D Self::abs_min() {
+>>> +                        return Ok(Self::MIN);
+>>> +                    }
+>>> +
+>>> +                    // SAFETY: We checked that `val` will fit in `Self=
+` above.
+>>> +                    let val: Self =3D unsafe { val.try_into().unwrap_u=
+nchecked() };
+>>> +
+>>> +                    Ok(val.complement())
 >>
->> I mean, in some sense the problem is that Empty violates the existing
->> requirement:
->>
->> Implementers must also ensure that all instances are reference-counted.
->> (Otherwise they won't be able to honour the requirement that
->> [`AlwaysRefCounted::inc_ref`] keep the object alive.)
+>> You're allowing to parse `u32` with a leading `-`? I'd expect an error
+>> in that case. Maybe `complement` should be named `negate` and return a
+>> `Result`?
 >
-> The example holds, even if you implement `inc_ref`/`dec_ref` properly,
-> right?
+> You would get `Err(EINVAL)` in that case, hitting this:
+>
+>   if val > Self::abs_min() {
+>       return Err(EINVAL);
+>   }
 
-Yes.
-
-Although one could interpret the part that Alice quoted above to mean
-the same thing as I suggested (only giving access to `ARef<Self>`, as
-any other smart pointer isn't aware of the inner refcounting of the
-value).
-
-With that interpretation, we could argue that there is nothing wrong
-with the safety requirements. But I'd say that we should definitely
-mention that one is only allowed to use `ARef<Self>`/`&Self` and not
-hand out any other ways to access `Self`.
+Ah, I think I asked this in a previous version already... Thanks.
 
 ---
 Cheers,
