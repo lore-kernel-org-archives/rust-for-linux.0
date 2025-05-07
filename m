@@ -1,280 +1,112 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2088.outbound.protection.outlook.com [40.107.94.88])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483B728A3E4;
-	Wed,  7 May 2025 14:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.88
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746627131; cv=fail; b=e7ijUuSu7oGdWe7DJM2+9OeFi79F88Dh7A4FrFKz6xU2drsYvfPL+NLgqG62mfRTBI1Hkn9NLULcnsmVgXEbeBmc0er5iIAKwoST2YR5deina1h6p8dGcxf1L/VmiCKpMuH+kq1ZI5kA12RSx59RQIupIVNBiqOTg9Md7C4IJQU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746627131; c=relaxed/simple;
-	bh=X7mBzkbITSJL34k3woVAhak448/kpJyivOUl+VNM5Vs=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ZfLDVGqU3kwNA6sG1tW5wHoWGcEqPUvaQD+pdgRqJ3izXyT5L5cG9s0ouFU0SZ5xmWNf9M23gzqO0hNobqRFSAWKqiuc8nDiq/YahK98ECtltVwORjt76xNJtLFjG2hO3LqWSwMTc0YCQ+SWKfIVocHIjIaBx5US5DI1wdlJiIU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=n+WSKwfI; arc=fail smtp.client-ip=40.107.94.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE19B28A419;
+	Wed,  7 May 2025 15:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746631629; cv=none; b=q4PbV+ri2l8HhHNYRr4U668AESPLh/++ww+qCS06ebvtYYDmewEgwgoBhGdsDnbt420Fg9PhHTQy9dSZt9io+ErZ8gvhzt7KwiZ7moEZBC2Ihi9u7UuyXYhDGdYv9azxC9nCKfhZyjyY5iuI3aMdsDJY9RoBXmprx2KWIAsF5zo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746631629; c=relaxed/simple;
+	bh=dSxWBR6uNnt2Ow5gUL3hqc70/Tl+5eZVriLB2UuGbzk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KwQYVGTz2Qu0bYuq4AACKyxWyZV19uvqJNZ5sSCil7ljcNqvCXHNPVxa45umDWCHbUoGgPlQZGZz87RYic0H8qiCHnzEgBcwVGRncAxuB/iQYJnTW1jCcD9eDrkfpQ+W2+ROkEQdbjFgbg+MGhi3+4ek3S9uewFFRqYJyzMg4a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WS2abuPW; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="n+WSKwfI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kKnewoPC5K5Zrnq9HWA4d1nPp/xorplfSu1CwbEAFI1VAEcGnH+0PlC5sHT1LlHWqpvFv5g6Svo9AZGqFTdQj28hbww7842YXon7F540GCerDj8EHfvr8BFbbiA3lJEsPyGA+jrYIrv1pkowsA1ZL56p7XcVXJBtDl9WirEoxVdbFeHStYfbobzQuR6ZcY85JxjqVpnoN7K8gSLQx/RNK7TISIRxeBVt5O0bHlO2HiKCcR97K0Svw75cbbiusnurJuVa59EO9DxQlCB2XHEZxlDi9y2dGVve1bc3U/oe92PPDEZ70FCiVbHWisk9NGDc07BzDpcSIcKZcWsblw71jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kmwfPeoelHsTumPpFLrBckGhFhAPls7i7W+dYfes86E=;
- b=IwknFeZzxn5so0sxOZrELN2gCMdfJY7zbIUAbldeJvkaG6eHKO4BVTS/opSd8P2FNB4ut0kPP0g+Rk5yhHHy5CivwSewyBbl4cAp6QfeDs60I4/sPQ7O9aCx8n6v6D3DzHuqeRYsIKpxonTjblKbRCPw/nOriwsUHgQh2J0R8sEkwAZP0d10bZLsax1xWXeo+kPrwn/3T3dqw745HPSfw7AsCq/z4zK3jVl8KHhpcZoj7ZiUbkHeVbpsS8OMqCg+DGjPlcdJfIJfu3yMmhHjJzD/wqUD4tfIJ6rH9ADLhvOkSVECXEhrlMTtcHL9YHUO+Z3IFaT8eeE5p45uoqqypg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kmwfPeoelHsTumPpFLrBckGhFhAPls7i7W+dYfes86E=;
- b=n+WSKwfIc2uALYV2fdF3cou0dU9ftMJEBmQB44tZknf2qAhpdLo8ex1Y6VbHDOt5OI4PhJjL5lKF9OnUM68Qo2kdpmnoa+A4KLSjcG4u1CxD/sshgQ/kTmb91GiJss06xt1NcV4/ObS0CgQXDhovzyr0cZdx3pM7xCXeOlYaUaJMG1jcyIyKM8dPVEfZmITv2u16Bpv7uBK3mOrCB/yK8oRByabtKd1EPjN6uBe2Z3wdeJYXc+xyT7/2MzrAd2cXASBelDRM7OP39dmK9yROuqHaHVLbAhcqVRySPaE8+B5pjI6oCjArge+IPw8lJHAe8QY1wQ/bDmBPNyIFXxxfZg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DM4PR12MB7742.namprd12.prod.outlook.com (2603:10b6:8:102::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Wed, 7 May
- 2025 14:12:02 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8699.026; Wed, 7 May 2025
- 14:12:02 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 07 May 2025 23:11:59 +0900
-Message-Id: <D9PZN1E5H5I4.WXP8OB3ANJ02@nvidia.com>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v2 17/21] rust: num: Add an upward alignment helper for
- usize
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
- <corbet@lwn.net>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250501-nova-frts-v2-0-b4a137175337@nvidia.com>
- <20250501-nova-frts-v2-17-b4a137175337@nvidia.com>
- <D9LEQ1U1PLO8.3N22GRY380ZM3@nvidia.com>
- <d6962ea3-282d-437c-b3cf-ce701d514558@nvidia.com>
- <D9M5K55GTN6S.1X827WU0Z50UM@nvidia.com>
- <112d971f-20c8-4598-86c9-6822d9c24001@nvidia.com>
- <D9MLOQC5G7XH.3GTUIRCCN8X70@nvidia.com>
- <ce197acc-8b66-4a6c-85aa-3318666d80d3@nvidia.com>
-In-Reply-To: <ce197acc-8b66-4a6c-85aa-3318666d80d3@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0229.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:3c7::8) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WS2abuPW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746631627; x=1778167627;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dSxWBR6uNnt2Ow5gUL3hqc70/Tl+5eZVriLB2UuGbzk=;
+  b=WS2abuPWD09HQb2mv/vugQ8xFZOi1n0n7mZDbTVd3urMdEaJ4ixY4OU8
+   TcTvrTeuh0c4TPf7XH/vAnNtMM1e67AMexDhWyuU9VAiAgfQ6KFB8xMwa
+   vZ8ah7XngCjR3CJBJY3oAWvv0rRo73RSmQuG2IUMb3820yupjddDSvd0r
+   EqIIGry4ZPAz3vbPSurgkzcUGImdzH6VTAFDpDsWBMcH9TuNrcFzrWKU9
+   meenzAILzUdOwpEypQB1OmaoviAsZdrRoPs5e899twFMOf4I72/+ivpPB
+   26+E5+rp1aQ/T0P5CFFJ3kSvCCA7AGDxBEvswCodA2HNI5AYYIBoMQKgS
+   Q==;
+X-CSE-ConnectionGUID: Cwst8ctLR5++2NRt/fxLEg==
+X-CSE-MsgGUID: Wj6LQtNPSQq2lYQ68d2oHA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="59029009"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="59029009"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 08:27:06 -0700
+X-CSE-ConnectionGUID: Sjw+UHyMShKKK6dnruuP5w==
+X-CSE-MsgGUID: y7H2T2VATtmJOFOhND4f1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="166914976"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 07 May 2025 08:27:02 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uCgfk-00084v-2e;
+	Wed, 07 May 2025 15:27:00 +0000
+Date: Wed, 7 May 2025 23:26:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Burak Emir <bqe@google.com>, Yury Norov <yury.norov@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Burak Emir <bqe@google.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
+Message-ID: <202505072334.8gubqjKX-lkp@intel.com>
+References: <20250423134344.3888205-6-bqe@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM4PR12MB7742:EE_
-X-MS-Office365-Filtering-Correlation-Id: 714bd876-d538-48fa-9be2-08dd8d71236c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|366016|1800799024|376014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eTQyc29zZE5pOEtnRVh5M1pFMnJwNkJWSnY4M2w0dFFUcnN0aGlBZ0Y3VXlK?=
- =?utf-8?B?VmYwcTlpSDJoQ3M3MXpLSWc1RXkrNTJaU3F0RVRKeFZzam1kRVlETkd5TGpl?=
- =?utf-8?B?VWdJcHd3Z2dkWDVyOG1qYXB5YWZHNEhxS2tNTTVRRnFrQVI0NGozSEIrd3N6?=
- =?utf-8?B?S1d2RFhUZTBkaEg5aEhhakdmU0ZhNnNQcGs0dXQzWkN5aFNuaWNIbFpkM3JR?=
- =?utf-8?B?RXJNZ2dvTjZkZlVYaEVlRExWRWtVZDNsZDlEdTA3RkgzaTlQWEM0VnRsVlFG?=
- =?utf-8?B?L1VyZGEySGhHQzZNVnJKbEZKblhWcEdvT2FZeTk2bTVzY042Uno5dlhXS20w?=
- =?utf-8?B?TW5TU1B6U2EzNmp6cXdvQW11QWJlTTN3NUNEQ21SeUJTVjNJZmRmTEU1THBj?=
- =?utf-8?B?Y1BTU0hpYWxZTncvRmtsY0ZRdmNjRFVMQkVTVXhkRDRtWDA2MVNTRkd2eFVz?=
- =?utf-8?B?eWk2WWlpRUphdG1VbFBRNlNEYm1YcndwU2QvL3RKSkN0T2srd3pxdGludXF5?=
- =?utf-8?B?SUlJZFZSdUcvNTZUWDB2SEY1bE5TRHpCME9WUW1QWmxOK1pjT0JuTzBIcnp0?=
- =?utf-8?B?aUxJa1Q4aldMaUF2MXlGajRTTnVrY3BVR3hGREhzQktYdWpvT05VOE1waGR4?=
- =?utf-8?B?Nm5VdVhtQU5RbXluYmpyLzgwVk5zU0s3dEFwMnlQSnZueFUrM1ZwbW91SHFW?=
- =?utf-8?B?YzIrVStGNVhuWXFBUHI2Mi9FbXBVdVNKenFhVnFpSEZxQ1VvMWltZFovMklx?=
- =?utf-8?B?bG1GR29ISFIvN0ZDWFdNV0taSVZIa25WZXBoOHpkUFpQcnNMeUoyM0c2UEV4?=
- =?utf-8?B?Z2tONzRHOXNnb3V0dU9WbCtHZ1lPcXFSTUtwK0dqMkpTNW9RWFVpc212enE2?=
- =?utf-8?B?S1dTVWRpWVFWbG1CWHdnaVQ0cDA0cVVPanNoRTh6Ui9zZndMdW9FRVBMaURj?=
- =?utf-8?B?MndORGtjVmR1aitKejdTdmVxc2lTSTBWVkVQQlBIaXlsMFJVMEN0SEYxdnVU?=
- =?utf-8?B?YlhWd2s4N2kwaVNnTll2c0xMeVhqd21xczU4NlRNTnFUek9nTlp2RzNEcjRl?=
- =?utf-8?B?MDhzRXZkM3JMckcwcUhJUHN3U0NBbUZFWDNuQjFCRjh6QmtRWVlBNVBPbEUw?=
- =?utf-8?B?cnM5b3MrRkl0VUlPSEpnc1Ywb25EK2lGYVl3ZG5mTENVbmZYOVFveWhNTTg1?=
- =?utf-8?B?MjJXQkVvZEI2SERWTkxCYVd2NUFMTVl6TzNCbVo5R044TzFVREZpamVubFRX?=
- =?utf-8?B?bDhpY3dHbFBQd01HVkFKelZsbFE5eWlNZVovWnZlMk5yMkd2RnI2WG1jQUFj?=
- =?utf-8?B?SCttS0Z1MDRPUkZwb1MyUTExSFdweGJBWHNpZ1NhRVllSmJHYWVpQndOZGsw?=
- =?utf-8?B?UTI5cmhJci9rT24yRTZxMlcrSXZGOGxTVWMxenB4VkptdGRSdTFCQ0hwM1JI?=
- =?utf-8?B?N3NZTWJtbU55QlJKZ0QzUlpRc2ZISG92am1oTGJZSkcyZWNKYUR0YmE0Y3E1?=
- =?utf-8?B?WUEvSG1ub3JBWTFwT1ppSmZJb3JQRzVGOFdlUTkxNEE5YzFNNjlaa1Jka2JJ?=
- =?utf-8?B?dHhqNjRDUXBiNUJEaXpWd3UzMVVlZzZDVWlxd2F5cTFHenJrRWxaWlJWN1J2?=
- =?utf-8?B?eGtjSzhuZzExOUtjVmFqeFcrRUxkUjBHU0s2ajg0bVk3VktUOEE0dyt5anpV?=
- =?utf-8?B?SWtLSFhxeVNmV1JKV1ZpTnlzN2hqa3Z3a0xXTXUybHFTUVBwTVhDeDN6blJQ?=
- =?utf-8?B?UWc5cXgzYlBxallTQWJyM0FHRGQ5SWlSclA4MGttYU9pMzBMWG1sY2loZy95?=
- =?utf-8?B?RTF1WkVGU2RQTk1yYUxORGh4SjRZWGZmaGhEMnZWcy9aK0JrYUdMaFZpaTVZ?=
- =?utf-8?B?eVdxUnZZY3BjS2dDQ3Q1WnFOQlg4NDAybXh0bVR0TEw3aDZONWlRS3NJRFRL?=
- =?utf-8?B?cnpzNTJ0RmdMK2xTMWFuY2h2RkFzRldRWjFSUGhZNTg0WHAyUGdTelFqZkxy?=
- =?utf-8?B?T3EvdmJKYkpBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(366016)(1800799024)(376014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QU1WeXA3WUt6N2NkV25kWE9ieTNTb1ozWWhvLzJqb09vVzdOdWpKYjY5dkFv?=
- =?utf-8?B?STBVSnRXZml1R3laaDdFK0g0d3owaEpsUmlXZ3M4eDJrc2M3QTZhSm9PQjNH?=
- =?utf-8?B?eFdvZGlZSkVydzYzZSs3RzF6WVBHL29xNlJwNXVHVWgzaFlwNDVVZGJnRWhV?=
- =?utf-8?B?M0tJVE5XYjA3djliYUxJMUoydW11YmN2Q1hFbkRZait2R0xja0hDT21XVFhB?=
- =?utf-8?B?cHgveWd3SFp3ZmRuQ0VmamlodllvUWJGa040VWY0QzVRT2VGNW9xbnZrM2hR?=
- =?utf-8?B?dTRCdC93UFlZNXNZU1RLWHg4N1JpWEV0dTZvdGpCbTZ2Z3lsbVFDM0RMZEhL?=
- =?utf-8?B?OU81UThiRmZ2K1REdHZMcU5nTkJyNmNxTWNCZ0luV2svNVU5Ulg2MHgybUY4?=
- =?utf-8?B?QkdSWGZvZDcyVFBFSWN5WjJkZTRCWmdLMXRIc3JqTHI2aTBkV1ZHbE5tazNJ?=
- =?utf-8?B?M29qYnp4cnk1WXpaZituMXhlQ1VnMHZtcXMyRHR6V1FMaEVwY0tzR0d2Y1Zk?=
- =?utf-8?B?WGREM1pZNStjaGFOSVcyZEpSRHdRQzgrVk9vbkdMQ2xYV3l5dGZvOGd3SDZm?=
- =?utf-8?B?cGg3TGFlQUlLcjBLNENqUEcvYVZTbytXWVEyYnRZV0lXdC8rQnBLZXZnM0tO?=
- =?utf-8?B?UWNqaUpmYU9GbkhaUUtIdzRNakZMV1ZHaUJsd0dZTDI0N0doblVjZ3BzdUt4?=
- =?utf-8?B?MGtNeUlEa3F5Mm5Td3VUY3pqWTkyTzd2MjloVkRaSDZseEZMaHg1WFhrb01k?=
- =?utf-8?B?ODBmUVF2VllOVVN2VzN3QmZNZ2x5SWMyNUhXakU4Qm95ZXAxeWNNK3hBTitD?=
- =?utf-8?B?SFViY0U2amZBZWhsQWQwcHAxdlAyd3VmOFRjamJsL3EzWUlKUXNNNVN3cncy?=
- =?utf-8?B?a21DL0Q0SmtEd1VRMzJqTXVHYVpEc3NCanlOTDU5dmpocUFaRmIyNk1pM3c3?=
- =?utf-8?B?NWxGaGJoL3dWbmhDeVprd0lBbjlDclRNcUxQcm8wVVVETi9Cb2pjNEgwM3J2?=
- =?utf-8?B?N2QrWTQ4Z0dvTGlsQ0EzNjVhdXNHN1pJMHBLODB4d25aNUdBdk5lakt1YmVG?=
- =?utf-8?B?M0tvY010ZkpqWUlLQWg1eW5yV2Q3UlFWWEVMMkl2NnFkeENNSGtDbnVqZjJ1?=
- =?utf-8?B?K2E0dWpCVXN0YS9XQml1aU9kclhGZzBUTi8zRXF0aUxIb0hFeDlIbEM1QWh4?=
- =?utf-8?B?dEx6WUJXWUtqc2kwV3ZhM1NCUG9CVmF2L0p4TU81OUZZR1BmK1o3eE91Sml3?=
- =?utf-8?B?b25ETEtrTytEL0g4UEJuR1NUTTlwNWk0M0x4YitBZUZFUko5bDQvYjhmTFY3?=
- =?utf-8?B?eHdaN1NsYVpkVDBjdlRqdVppZjNtTVlacDJuZDZQU1VWY2RWY2J6TzhWeUZj?=
- =?utf-8?B?NWwrWHpwQWRRQTZMcEl6bStQelhmWXlaY05WbWEvUzNyWjlJOFdQbDFGeVBl?=
- =?utf-8?B?WmF4WjJoYmg4MHlTZUtpd1RkNnBkNFlIUDRvSGhuVVBkbHZMZXpMMmx1V3Ra?=
- =?utf-8?B?M3pEV2tjcVVxcDNCVmJEU01VMDFQMFdON2hQanFMUXVtRGwzeXlnMHlvSGJY?=
- =?utf-8?B?N01ib2FzNmtGTVYzYWVEZzFSR3VsVXlJTHJSTGJvSFY1U1Y3STBLUHo4RU1H?=
- =?utf-8?B?NWNoNWEybXFyVGFPSkgwcXBRK0VweTVlMGFDWnROcU5nOS9PNXNibEVQSEtm?=
- =?utf-8?B?M3BHUFJIMmtkMmg1L1djTXA1R1dtR2JkWmJSdmVlYiszWkFPMUlScDlkOEhr?=
- =?utf-8?B?OUJnS0s1b2tWaWVoL1dJS080UTVpWWw1SVlNb2kzSDBndFE4VCtielBnMnFL?=
- =?utf-8?B?NmtYZGRmQjV3Vm1NM2hNeHprck0xMXkzZ1RhSzNhekpzV2NaZ1F3VEo3K0o1?=
- =?utf-8?B?NUg5SWtmLzh6RXJNQkM3TCtWVkJGOGhITHVpT0lLRHlZSnMySTlaZEQzWmdN?=
- =?utf-8?B?Nlg5R2VDSmhHVDJoejV6MzJGalBvTHZITURJOVhQQjNDVzMxYithRWlaSzM4?=
- =?utf-8?B?TGEyc3pYaHh6UHh1czRuRnIyZk5LUnJmdFo5bE9VNW9sSmExNll5U0pjTGxq?=
- =?utf-8?B?ejZHM3RQa2Z4akRzeklPYm1YM1YrKzhvUkNYdkI4QWphT01tMERzbFhwdlpN?=
- =?utf-8?B?U09qSFVROUdmeW5JeEJVRkwrWmtaalJRNi9iWU9WeHZPNEJmemRtOUpqOXZa?=
- =?utf-8?Q?WuChYC7bTqYA22rDd7a493lQ+yEKMD/UXpg/ILmhhmZl?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 714bd876-d538-48fa-9be2-08dd8d71236c
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 14:12:02.3348
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AdnutZnXDl3iaPSn5TjgJVfW+KsIyhqArXIWojWYzlKPhyFR1FZtsSh/WUu61J8TPGoN7oRzjr+YSuTxhRucNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7742
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250423134344.3888205-6-bqe@google.com>
 
-On Tue May 6, 2025 at 12:25 AM JST, Joel Fernandes wrote:
->> Actually it may be a good idea to move this into its own patch/series so
->> it gets more attention as this is starting to look like the `num` or
->> `num_integer` crates and we might be well-advised to take more
->> inspiration from them in order to avoid reinventing the wheel. It is
->> basically asking the question "how do we want to extend the integer
->> types in a useful way for the kernel", so it's actually pretty important
->> that we get our answer right. :)
->
-> I am not sure if we want to split the series for a simple change like thi=
-s,
-> because then the whole series gets blocked? It may also be better to pair=
- the
-> user of the function with the function itself IMHO since the function is =
-also
-> quite small. I am also Ok with keeping the original patch in the series a=
-nd
-> extending on that in the future (with just usize) to not block the series=
-.
->
-> Regarding for the full blown num module, I looked over the weekend and it=
-s
-> actually a bunch of modules working together, with dozens of numeric APIs=
-, so I
-> am not sure if we should pull everything or try to copy parts of it. The =
-R4l
-> guidelines have something to say here. A good approach IMO is to just do =
-it
-> incrementally, like I'm doing with this patch.
->
-> I think defining a "Unsigned" trait does make sense, and then for future
-> expansion, it can be expanded on in the new num module?
+Hi Burak,
 
-Yeah maybe I was looking too far ahead. This can definitely grow
-gradually.
+kernel test robot noticed the following build errors:
 
->> To address our immediate needs of an `align_up`, it just occurred to me
->> that we could simply use the `next_multiple_of` method, at least
->> temporarily. It is implemented with a modulo and will therefore probably
->> result in less efficient code than a version optimized for powers of
->> two, but it will do the trick until we figure out how we want to extend
->> the primitive types for the kernel, which is really what this patch is
->> about - we will also need an `align_down` for instance, and I don't know
->> of a standard library equivalent for it...
->
-> Why do we want to trade off for "less efficient code"? :) I think that's =
-worse
-> than the original change (before this series) I had which had no function=
- call
-> at all, but hardcoded the expression at the call site. The suggestion is =
-also
-> less desirable than having a local helper in the vbios module itself. I a=
-m not
-> much a fan of the idea "lets call this temporarily and have sub optimal c=
-ode"
-> when the alternative is to just do it in-place, in-module, or via a num m=
-odule
-> extension :)
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on akpm-mm/mm-nonmm-unstable linus/master v6.15-rc5]
+[cannot apply to next-20250507]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-`next_multiple_of` has the benefit of returning the correct result even
-for non-powers of 2, but at the same time trying to align to something
-that is not a power of 2 is probably a defect in the code itself. ^_^;
+url:    https://github.com/intel-lab-lkp/linux/commits/Burak-Emir/rust-add-bindings-for-bitmap-h/20250423-214819
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20250423134344.3888205-6-bqe%40google.com
+patch subject: [PATCH v7 4/5] rust: add find_bit_benchmark_rust module.
+config: riscv-allyesconfig (https://download.01.org/0day-ci/archive/20250507/202505072334.8gubqjKX-lkp@intel.com/config)
+compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250507/202505072334.8gubqjKX-lkp@intel.com/reproduce)
 
-Another reason for not using it is to have things properly named, so
-agreed that an extension trait with the functionality we need, with a
-name that clearly carries our intent and implemented as efficiently as
-the C equivalent is better than reusing standard library methods that
-happen to provide the correct result.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505072334.8gubqjKX-lkp@intel.com/
 
->>> I added the #[inline] and hopefully that
->>> gives similar benefits to const that you're seeking:
->>=20
->> A `const` version is still going to be needed, `#[inline]` encourages th=
-e
->> compiler to try and inline the function, but AFAIK it doesn't allow use
->> in const context.
->
-> Right, so for the vbios use case there is no use of a const function. The=
- only
-> reason I added it is because there were other functions at the time which=
- were
-> used (by the now dropped timer module). I suggest let us add the const fu=
-nction
-> once there is a user of it, I also don't know right how to do it. Like if=
- I use
-> generics for the const fn, I get this:
->
-> const fn align_up_unsigned<T: Unsigned>(value: T, alignment: T) -> T {
->     let one =3D T::from(1u8);
->     (value + alignment - one) & !(alignment - one)
-> }
->
-> error[E0658]: cannot call conditionally-const method `<T as Add>::add` in
-> constant functions
+All errors (new ones prefixed by >>):
 
-Interesting, I would expect that to fail but "conditionally-const"?
-After looking that up is appears we can constraint a generic type
-against a const trait, but that feature is still experimental and not
-enabled in the kernel. So agreed, let's consider that later.
+>> error[E0463]: can't find crate for `core`
+   |
+   = note: the `riscv64imac-unknown-none-elf` target may not be installed
+   = help: consider downloading the target with `rustup target add riscv64imac-unknown-none-elf`
+   = help: consider building the standard library from source with `cargo build -Zbuild-std`
 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
