@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781B01553AA;
-	Wed,  7 May 2025 11:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C53421019C;
+	Wed,  7 May 2025 11:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746617877; cv=none; b=RLYL8ucnex3+avrpPsCJKPMsvsDI6N57FG9Qr5NOY32vdiD8gwT8kD/i++7E5NyoIz/8CugJerowIv0kLmxHojMwdH0fOCHhIQUAaapPXqGvkUqaTcFtYqgOctlIg3bIiz52dXWXuD6p4iih2ytE9Z9gBfQ/I8Rk9CFnphB/+sM=
+	t=1746618028; cv=none; b=I+9yJSGQcvKw5Ut8NMdE6SwWeaYnlTsMUEMoPC+iaRsB7gIVuu0utOa1pyE20wRQCbqCkAQzMzTkr7lHzf7espPyB3ZP3XsQn7tY43ZyuBvPyOv1nBJ7OdXSUehN4GYzzgmEtHBvOnN96iOgOrbl3lEMaskMSyzi7WIbSQLJZVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746617877; c=relaxed/simple;
-	bh=btVRiThXFQDNMGo1xwZjxj17jJUQAThMgxZxOxdTXNU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=FvubLILcEesPgDCoU/XOCYUgf7AWOupO5kAy7+LhVcua19S/G13ud66y2TKNrRIr0gfXAQTS0jdrzQnI1nkVFDjk4EidV5L1WRZcGbL8Fcb5IV7RfPDYINW358cvWnQqZFaQHqrcF/86xFewuEiXWuMM+veENZaV3Z7QDU++FcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtNzlUkG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746618028; c=relaxed/simple;
+	bh=MVhGmkgKv9f2GOw2ah3i3lQTMchQP2sRt8YrLvIigHI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=HzJDY9GebagkZnoQEfQxUWcd6UQF69oSNxS4Zb5pXwoWOunUsYV+Bb5RtsSLbzqBYWkHfYl2TTMhul9RDduGU3Zwu9C6U0hn4437LUxJk6N/yOIBzdk0KEK4NB4mxp1CMEjaa5IPmAH8V3WlU9GKj3itU5fat12gWFUUoFHyuUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqwQKKzc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtNzlUkG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3567C4CEE7;
-	Wed,  7 May 2025 11:37:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqwQKKzc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8076C4CEE7;
+	Wed,  7 May 2025 11:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746617876;
-	bh=btVRiThXFQDNMGo1xwZjxj17jJUQAThMgxZxOxdTXNU=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=dtNzlUkG3nNNytw1glxcIx1Bywa0rowCS4mIf6t+d/oVJTgvIk+RYb28w944JrJoh
-	 /PdDkwXKZjbN0rHsbXH72fRTeqxCMZs5hBZHfLiPX/tHp69aEUtWSrA5krJNk1xpjn
-	 dzRv4ONzmuBIV4b0W/2zJSURK6ELL3M7RWvkmeRxuTHOe1DWSgrcvduO6J50xzk+kU
-	 Ll/JtFg6mqK5j28B6faLOReLskFaUxGmWLdfelYMhAR3butjm1tE8mBYUpkylQkU7H
-	 UknCEig9EZalCiPKU8NuFS6Jb4OcgKFTA5smmi1lNA9mOFMvVV5FO6PCDLLcgd9il1
-	 fI4QxULNIcJfg==
+	s=k20201202; t=1746618028;
+	bh=MVhGmkgKv9f2GOw2ah3i3lQTMchQP2sRt8YrLvIigHI=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=eqwQKKzc9cMqacHp3OHOgKVo6GuNu7VuaBafS0/74BwuiEu9X+LbEGNmSZiklzVod
+	 W1A6az2JoMe1ea5Gm9VdKTvhWrHB395BVoUemo5c0ib0ftbTMltUCZ4k/ejiJLdXTx
+	 SSNAhOAFLXd/xcY/0ioVkCYgHLQOahzzMBqhENLiqUo3J1jBCmiyK+xGKSO5trYqxm
+	 faOPHbgWqWYCsmTEbVVh8iyJkytZ8ErjJ11uk3x7+kkFgsqPSMd8yaIlOsssD2cAhV
+	 O724FkyOn0JeNvvHWVyrNlRIw2yWHAi4rszzSpntM9gvqubvO70M6VX80OchpEt+pY
+	 OX2MhWzBbsilg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,27 +34,28 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 07 May 2025 13:37:54 +0200
-Message-Id: <D9PWD2EJFDZN.5LYMLZZQ4QCF@kernel.org>
-Subject: Re: [PATCH v5 4/7] rust: alloc: add Vec::drain_all
+Date: Wed, 07 May 2025 13:40:25 +0200
+Message-Id: <D9PWEZPNXD2P.39TR3DPNH4J3O@kernel.org>
+Cc: "Matthew Maurer" <mmaurer@google.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 5/7] rust: alloc: add Vec::retain
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich"
  <dakr@kernel.org>
-Cc: "Matthew Maurer" <mmaurer@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.20.1
 References: <20250502-vec-methods-v5-0-06d20ad9366f@google.com>
- <20250502-vec-methods-v5-4-06d20ad9366f@google.com>
-In-Reply-To: <20250502-vec-methods-v5-4-06d20ad9366f@google.com>
+ <20250502-vec-methods-v5-5-06d20ad9366f@google.com>
+In-Reply-To: <20250502-vec-methods-v5-5-06d20ad9366f@google.com>
 
 On Fri May 2, 2025 at 3:19 PM CEST, Alice Ryhl wrote:
-> This is like the stdlib method drain, except that it's hard-coded to use
-> the entire vector's range. Rust Binder uses it in the range allocator to
-> take ownership of everything in a vector in a case where reusing the
-> vector is desirable.
+> This adds a common Vec method called `retain` that removes all elements
+> that don't match a certain condition. Rust Binder uses it to find all
+> processes that match a given pid.
 >
-> Implementing `DrainAll` in terms of `slice::IterMut` lets us reuse some
-> nice optimizations in core for the case where T is a ZST.
+> The stdlib retain method takes &T rather than &mut T and has a separate
+> retain_mut for the &mut T case. However, this is considered an API
+> mistake that can't be fixed now due to backwards compatibility. There's
+> no reason for us to repeat that mistake.
 >
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
@@ -65,6 +66,6 @@ Cheers,
 Benno
 
 > ---
->  rust/kernel/alloc/kvec.rs | 59 +++++++++++++++++++++++++++++++++++++++++=
+>  rust/kernel/alloc/kvec.rs | 72 +++++++++++++++++++++++++++++++++++++++++=
 ++++++
->  1 file changed, 59 insertions(+)
+>  1 file changed, 72 insertions(+)
