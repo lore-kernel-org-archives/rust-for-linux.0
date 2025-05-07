@@ -1,122 +1,199 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA754A00
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 May 2025 06:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0821FECCD
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 May 2025 06:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746598780; cv=none; b=XvWTx9jzdXJvRl7qDb7C45LeF6f4t4RbRbCBIg6oP0yvjhq1uLZ6v0JMwe3kKNhLNhgcrXahZSqk9tnIJnNELmjO045YZvzSNWesXsrXKkZUee35Aj+bZ6Khz6KARjRStHyzAce9IkVfVe3tbj1cDQ47DWPiReW0GKaPQUXD9EU=
+	t=1746598820; cv=none; b=jXboEtPfpD5bz2uUs3Pcq6JCbZZA8uFNJMJHDTnARa8O8vCMeS7dQuQgM0RuWV+mpzTqQqCUggZr9JgCVu3WtVezwy3u/jbrcBWZ7diS2DIvi4Wi4zZ8J//EIL52JmX9v9zyN322tb3k91eLnSDKosz+EqFBflEL8H/c8R0aZHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746598780; c=relaxed/simple;
-	bh=6tydWcRpZBzUQvyxODFlgjL3R3CohVies8vRsbCnPXI=;
+	s=arc-20240116; t=1746598820; c=relaxed/simple;
+	bh=oVzO12ncyGqg+ZQk7J5TfT09sDCOkhTgdT/AEkH0y2w=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mtvSKuC+c2ChP/2TwXFwFhohi0autGwNwRzZ0k4jT4O2u/aqbKpXQ5O2Y9c4I6SaEaB0ccLcm1IA+LniMM3R258cE4b2BMPxGMgGW8LXH/PcOXN+bU7Px1ipeQNs+FQmYnJ0+gh2vrpq/SvPEC7RCGEjDxLw/qLIl66b1s6Hfgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VcZKKJ/K; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=U4eWR2z7wFAkYM0rGxWatElw5v84PBMh5j42CzNqQ0OA0aktFaQWGivW0KneoZ3n/+3UbmFOtNeyiVwrq6reiybrEeFSemQqoop0htoGCCDTR0JKQkDBGElYPi/t8LKo9/vAUyVLPdG/+6F2nh2I67sIkc98cFrRhhHQFR0eiuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D3IVb3xl; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VcZKKJ/K"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-39141ffa913so3205998f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 May 2025 23:19:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D3IVb3xl"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ceb011ea5so36230105e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 May 2025 23:20:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746598776; x=1747203576; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1746598815; x=1747203615; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxyUNTvP34JoK6iEo8F8cf8Z5bCf9zDMz2zqlSL1qSk=;
-        b=VcZKKJ/KywaQpCQu1zGLu7WoWGfMIwFlwN7c+oF3j0ZVn6wDbxM35jvKYJpJYkGrU+
-         WgTzUi30NhiN+IqIKszfr941o413zXYguBmcpTOKCJLQSzlDcw/68la7+9GTSNCSBiRq
-         AD7+pSSFJ0jEUU5tDB8E4EKK5Xrh/tU4YaXGr5zKEGdxrEBtQ4VnCf1nKhRELfWvJbRc
-         EZTpsuneyE4YsasPvxms2C9OesrbCGiIL4K+nEC7+6E+6gQZHsZv1mVSfKVNm3uTseeD
-         ntC3M630edgQVN9wBdAbCWnLyOSDsG0bJ6QxOB+UXcjzvVDDTtqN9Y6mQM4mv0K0w64C
-         a4YQ==
+        bh=ls5MgKciqm6FU9ZD38WWbxuKWTlwn7qiovMV9GCozTM=;
+        b=D3IVb3xlGpLqTVvxJbm65CES4pvmk+Rhw3PW1vsM1r2KWM70vyQi3RVGZ3GpYQ9NCu
+         KZQ5HIpZmzb+oKWmUI9WirFVd8Xclo0ICBLtdGVlo7kK7uHZQKzZnHMOV2QieIZpaI6r
+         EYaeFzk1EseGrbCpU27uuaBpUDOS7+yeyBdRFGp0vIKn/dwa6jKOuE6lQS/h7alXbiOh
+         rZTqBpPpUe/9I9l0NTZc6pRy4rs9Jw3//ds5+RFHBi/CqlJy3tLTj69+plAazaQ6I0cG
+         QBmHh1qWfZeeLMheYG3ZFsR4tMx3qoTBd8qpRSlsfk7BDf+GbrblbqFssBnAqcjqbBX9
+         F1HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746598776; x=1747203576;
+        d=1e100.net; s=20230601; t=1746598815; x=1747203615;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxyUNTvP34JoK6iEo8F8cf8Z5bCf9zDMz2zqlSL1qSk=;
-        b=L38rTfy3FraK2TlHBs64faO2m6oBhh/IdqR4VojF3yq7nlVUWP2s0vqmWeOouL8i38
-         BrUS6mI7OO/l81sl1x/anyYh/LL+xxG84ksWsloguXBqui25/lOv80nEOoyCVQAJxMoX
-         HuCyWbyXDReIHyqg3XamxTbU3obEHyqPYcbJ9ifUjD0H9hcRS1ZfOK0/CvE/2uJLDlO7
-         6k7CzOD8RbhlOzHpWBs2mapplSOLVtxmJV/JeQdecVpNApuFPAtOwjYtYvjaOEW+yRMq
-         m9xQvBaYz3q7EA2jm8DlELd1u7XDnxsQqssC6hlHPBkuF7FnSbNwG2PttYdlgCaOIORZ
-         FNQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXUxs/1uDELJ3i/EFJHIFOyrhVmRn9HvqB2KWxURq7cqXeJVdBStZWyvHQxrYg1MdlPGNDNCxRobZsVrXayQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0Q/4CTiaix2PQusjz1zuX0f0TH73vZ0hi/xmfBxhfMb14YIrh
-	8Bem7lUSVD+NKTOqwJ1pgmI7Kmg0/hd8LY3hR4BC+hKM6acZFvp0FLuQtyihJRkmsRpSYMEmu1v
-	gs7DQTgigEFxU0w==
-X-Google-Smtp-Source: AGHT+IH/A+GW9/vNl8LxbYeXDaJTSi5tAp4zqD7UPsjEV+kj3rFAEWxJ+FSBbd8dF4ixIv0poZ4cjkpbq1Y2mGw=
-X-Received: from wrbeq17.prod.google.com ([2002:a05:6000:4311:b0:3a0:b229:c407])
+        bh=ls5MgKciqm6FU9ZD38WWbxuKWTlwn7qiovMV9GCozTM=;
+        b=UJDNfcTjz73N5gnCR6qKEQwUH6ur+eSWqdKztltR0biwNqsyDly6+kqJYa2AVNUPjl
+         wdpzROb+c4j193Zta9K9JE4WwVBZuhX5lA6jpbTYXh/9XBi8aGMj2tcQuPVUqirL0L1w
+         nzszVNbQjWkh3KH/3YE6YOvRndqmFKq2PcKrxDHwBuXB0Wf/tfhs1+yGQtYWcder+sgy
+         c3WDWx2/3jFnZwk+SBhO3+ehf50jx+rlp5oXu6CN3JoM7mAd9Loi2gMWU3xFlL0TNACM
+         N3UiF1edJ9hVLsIwZPPV5f6cUcU9HNL8SKaLdvpXv9qWZbiZqYNZv/+ZGIkIZgPmFf21
+         dmDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUme0ycMF+JwxijImkuTHQf4TtLd4NaDKT9T98D0OOVFVLDgVhbFcQ0eRnN9BAEP9BTCtAesO1pC0r9FrtWtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKX0O3lSKkXV8znw37vLY2G6Ny8feIeDcC/ES7YxMIU5AbUkMA
+	u8XfqKhtGPvm9kSOETeWswXiHaA08zUPVFq1cEejPBOM5YsZvMOBe2OHbLTyKdnFw4tJoTyfQjZ
+	EBwuCVlZj22HgvA==
+X-Google-Smtp-Source: AGHT+IFchIQSs6/uaxnQNTXkJre3kxCjqjKEbsAqhsRKcdwlycwmgb49bF0r1rNpdSe8w8oMvecRmqhQu70oY8g=
+X-Received: from wmbei16.prod.google.com ([2002:a05:600c:3f10:b0:440:59df:376a])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1447:b0:39c:1f0e:95af with SMTP id ffacd0b85a97d-3a0b4997fd0mr1573685f8f.3.1746598776608;
- Tue, 06 May 2025 23:19:36 -0700 (PDT)
-Date: Wed, 7 May 2025 06:19:34 +0000
-In-Reply-To: <aBn1jJBRToyElrF3@mango>
+ 2002:a05:600c:8283:b0:43d:fa5d:9315 with SMTP id 5b1f17b1804b1-441d44e5195mr10736555e9.33.1746598815766;
+ Tue, 06 May 2025 23:20:15 -0700 (PDT)
+Date: Wed, 7 May 2025 06:20:13 +0000
+In-Reply-To: <87ecx2q93v.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me> <20250502-unique-ref-v10-5-25de64c0307f@pm.me>
- <aBSv0w5x8qhBfOM8@google.com> <aBn1jJBRToyElrF3@mango>
-Message-ID: <aBr7dm_L7JEQIVxC@google.com>
-Subject: Re: [PATCH v10 5/5] rust: Add OwnableRefCounted and SimpleOwnableRefCounted
+References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me> <20250502-unique-ref-v10-1-25de64c0307f@pm.me>
+ <ZQ8N85Nd1qwR7qgLQKvl4cyYaCeQPD_ugOpVmYypwTmeLoV6acIhB2WLf3eBT-VUjm6jWF2qQzp2tU0kCqq39A==@protonmail.internalid>
+ <aBSsrLGSJgLGTViT@google.com> <87ecx2q93v.fsf@kernel.org>
+Message-ID: <aBr7nbI2AScXSjTg@google.com>
+Subject: Re: [PATCH v10 1/5] rust: types: Add Ownable/Owned types
 From: Alice Ryhl <aliceryhl@google.com>
-To: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Oliver Mangold <oliver.mangold@pm.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, May 06, 2025 at 11:42:08AM +0000, Oliver Mangold wrote:
-> On 250502 1143, Alice Ryhl wrote:
-> > On Fri, May 02, 2025 at 09:03:04AM +0000, Oliver Mangold wrote:
-> > > +pub unsafe trait SimpleOwnableRefCounted: RefCounted {
-> > > +    /// Checks if exactly one [`ARef`] to the object exists. In case the object is [`Sync`], the
-> > > +    /// check needs to be race-free.
-> > > +    fn is_unique(&self) -> bool;
-> > > +}
-> > > +
-> > > +#[cfg_attr(RUSTC_HAS_DO_NOT_RECOMMEND, diagnostic::do_not_recommend)]
-> > > +// SAFETY: Safe by the requirements on implementation of [`SimpleOwnableRefCounted`].
-> > > +unsafe impl<T: SimpleOwnableRefCounted> OwnableRefCounted for T {
-> > > +    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, ARef<Self>> {
-> > > +        if T::is_unique(&*this) {
-> > > +            // SAFETY: Safe by the requirements on implementation of [`SimpleOwnable`].
-> > > +            Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
-> > > +        } else {
-> > > +            Err(this)
-> > > +        }
-> > > +    }
-> > > +}
-> > > +
-> > > +#[cfg_attr(RUSTC_HAS_DO_NOT_RECOMMEND, diagnostic::do_not_recommend)]
-> > > +// SAFETY: Safe by the requirements on implementation of [`SimpleOwnableRefCounted`].
-> > > +unsafe impl<T: SimpleOwnableRefCounted> Ownable for T {
-> > > +    unsafe fn release(this: NonNull<Self>) {
-> > > +        // SAFETY: Safe by the requirements on implementation of
-> > > +        // [`SimpleOwnableRefCounted::dec_ref()`].
-> > > +        unsafe { RefCounted::dec_ref(this) };
-> > > +    }
-> > > +}
-> > 
-> > I wonder if this is too limiting. It will limit our ability to write
-> > other blanket impls for Ownable and OwnableRefCounted. Using e.g. a
-> > derive macro might be better?
-> > 
-> > Alice
+On Tue, May 06, 2025 at 01:20:04PM +0200, Andreas Hindborg wrote:
+> "Alice Ryhl" <aliceryhl@google.com> writes:
 > 
-> You might be right. I don't have a strong opinion on the matter.
+> > On Fri, May 02, 2025 at 09:02:29AM +0000, Oliver Mangold wrote:
+> >> From: Asahi Lina <lina@asahilina.net>
+> >>
+> >> By analogy to AlwaysRefCounted and ARef, an Ownable type is a (typically
+> >> C FFI) type that *may* be owned by Rust, but need not be. Unlike
+> >> AlwaysRefCounted, this mechanism expects the reference to be unique
+> >> within Rust, and does not allow cloning.
+> >>
+> >> Conceptually, this is similar to a KBox<T>, except that it delegates
+> >> resource management to the T instead of using a generic allocator.
+> >>
+> >> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
+> >> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> >> [ om:
+> >>   - split code into separate file and `pub use` it from types.rs
+> >>   - make from_raw() and into_raw() public
+> >>   - fixes to documentation
+> >> ]
+> >> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> >> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> >> ---
+> >>  rust/kernel/types.rs         |   3 ++
+> >>  rust/kernel/types/ownable.rs | 117 +++++++++++++++++++++++++++++++++++++++++++
+> >>  2 files changed, 120 insertions(+)
+> >>
+> >> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> >> index 9d0471afc9648f2973235488b441eb109069adb1..5d8a99dcba4bf733107635bf3f0c15840ec33e4c 100644
+> >> --- a/rust/kernel/types.rs
+> >> +++ b/rust/kernel/types.rs
+> >> @@ -11,6 +11,9 @@
+> >>  };
+> >>  use pin_init::{PinInit, Zeroable};
+> >>
+> >> +pub mod ownable;
+> >> +pub use ownable::{Ownable, OwnableMut, Owned};
+> >> +
+> >>  /// Used to transfer ownership to and from foreign (non-Rust) languages.
+> >>  ///
+> >>  /// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and
+> >> diff --git a/rust/kernel/types/ownable.rs b/rust/kernel/types/ownable.rs
+> >> new file mode 100644
+> >> index 0000000000000000000000000000000000000000..52e7a69019f1e2bbbe3cf715651b67a5a5c7c13d
+> >> --- /dev/null
+> >> +++ b/rust/kernel/types/ownable.rs
+> >> @@ -0,0 +1,117 @@
+> >> +// SPDX-License-Identifier: GPL-2.0
+> >> +
+> >> +//! Owned reference types.
+> >> +
+> >> +use core::{
+> >> +    marker::PhantomData,
+> >> +    mem::ManuallyDrop,
+> >> +    ops::{Deref, DerefMut},
+> >> +    ptr::NonNull,
+> >> +};
+> >> +
+> >> +/// Types that may be owned by Rust code or borrowed, but have a lifetime managed by C code.
+> >> +///
+> >> +/// It allows such types to define their own custom destructor function to be called when
+> >> +/// a Rust-owned reference is dropped.
+> >> +///
+> >> +/// This is usually implemented by wrappers to existing structures on the C side of the code.
+> >> +///
+> >> +/// # Safety
+> >> +///
+> >> +/// Implementers must ensure that:
+> >> +/// - Any objects owned by Rust as [`Owned<T>`] stay alive while that owned reference exists (i.e.
+> >> +///   until the [`release()`](Ownable::release) trait method is called).
+> >> +/// - That the C code follows the usual mutable reference requirements. That is, the kernel will
+> >> +///   never mutate the [`Ownable`] (excluding internal mutability that follows the usual rules)
+> >> +///   while Rust owns it.
+> >
+> > This seems too strong? Or does the exception mean to say that this does
+> > not apply to anything containing `Opaque`? By far most structs using
+> > this will use Opaque, so maybe directly mention Opaque instead?
 > 
-> I'm not really familiar with procmacros, though. So maybe I should just do
-> away with SimpleOwnableRefCounted for now?
-> 
-> I mean Andreas doesn't need it for his current use case and this or a derive
-> macro can always be added later if it makes sense.
+> `Opaque` is covered by "(excluding internal mutability that follows the usual rules)".
 
-That's okay for now.
+I guess. But I think it would still be good to rephrase to mention
+Opaque for ease of understanding.
+
+> > That C code follows the usual aliasing rules. That is, unless the value
+> > is wrapped in `Opaque` (or `UnsafeCell`), then the value must not be
+> > modified in any way while Rust owns it, unless that modification happens
+> > inside a `&mut T` method on the value.
+> >
+> >> +pub unsafe trait Ownable {
+> >> +    /// Releases the object (frees it or returns it to foreign ownership).
+> >> +    ///
+> >> +    /// # Safety
+> >> +    ///
+> >> +    /// Callers must ensure that the object is no longer referenced after this call.
+> >> +    unsafe fn release(this: NonNull<Self>);
+> >> +}
+> >> +
+> >> +/// A subtrait of Ownable that asserts that an [`Owned<T>`] or `&mut Owned<T>` Rust reference
+> >> +/// may be dereferenced into a `&mut T`.
+> >> +///
+> >> +/// # Safety
+> >> +///
+> >> +/// Implementers must ensure that access to a `&mut T` is safe, implying that it is okay to call
+> >> +/// [`core::mem::swap`] on the `Ownable`. This excludes pinned types (meaning: most kernel types).
+> >> +pub unsafe trait OwnableMut: Ownable {}
+> >> +
+> >> +/// An owned reference to an ownable kernel object.
+> >> +///
+> >> +/// The object is automatically freed or released when an instance of [`Owned`] is
+> >> +/// dropped.
+> >> +///
+> >> +/// # Invariants
+> >> +///
+> >> +/// The pointer stored in `ptr` is valid for the lifetime of the [`Owned`] instance.
+> >
+> > This should probably talk about ownership.
+> 
+> How about
+> 
+>   The pointee of `ptr` can be considered owned by the [`Owned`] instance.
+
+Sure.
 
 Alice
