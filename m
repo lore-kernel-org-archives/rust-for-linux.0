@@ -1,126 +1,142 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A6D1862
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 May 2025 08:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF003149C64;
+	Wed,  7 May 2025 08:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746607298; cv=none; b=uYjR/Csh7x0CMVwPmmT9zMkjCqy1zwnGEj7OZgeztR2YB99imw8xIrTYTZeJeBF5D4PY4pqnZBH+6dyTk3UCIy3a7cpZl6Y54OwQJJk8z6dNRRQvTSQ6HC3rzl/b6xC/w69OM7QFHfAnUtjilj+qRSkk5ka2ghqGP2REGdZN4BM=
+	t=1746608296; cv=none; b=pT2w/vociIqmW6mec/bmRdemDn+iGi+brOBXXmZNEZ2ZfJFDJOeTCnWSHOV13mP8ynoPVJvjY6OVwAo/0D2Offh7g+64TpGYQDXlk7GrfzjeycKOblSjurZV5rRxRYYpEgX0FlU0XZ6oEh0/zGo9i4p6d1KBW3jid+ue84qBjxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746607298; c=relaxed/simple;
-	bh=cjJuTrZu+3Vc8bh9TFTKyaM/Xj3qcqCITNeeBaivs0A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XWkMtd5yMNeE6MAGLHWFera6qzUBJquMafP/BIizVTgXxjskWRJOYhgymLFOKvizKNfksT50FUqfYV1Mx7LV6oTEqZ74Fl+th8c5NcYI2c8zgV7bQJIT3CoMo3NoVdAcYF2zQoLKvBF68WzIDHd/mphiFTmPEvefyKUKiKhPcT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R0YCcm8m; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1746608296; c=relaxed/simple;
+	bh=lpLYWTvwCD9ibFjrHBDefiW1/xmwvteVjOwcFqoHT9Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=sTQeQyMixfuP+TBiTW7U3tOcvNs8KgOY05ZzjrjCP9488j9jJTnRlP3EoJDWU13bfcJ0hD2wVJxs2VIziY7WgecZvGFeq4nztojW0YquKPNmttATs6I7Z/sRvydikEICRCcR8pN9r6kpO7Tww4XsEW4K3pgPKOGB1te4WbOpjzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMrtRN7W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R0YCcm8m"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d5ca7c86aso38621345e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 May 2025 01:41:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746607295; x=1747212095; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OHVU9LpqU+6SrvxGXGLpeAb6/atL3y2Ymj53f2bTkWM=;
-        b=R0YCcm8m5Ckc8pHguNhtU3JCbRuOAGLRmYR47Nge0kb1N/grxtxQwEsmEE64pu7qY4
-         Dmt2QAIB7ijlRSLALMIzZgC9Ql+bSBGMO+0L7jwMtPP1QCbt5Oysg+Iva1f4rxc2mCrw
-         Hc7+8uGpMnlfz741/7VyVfNF/9P+mfyNFB73XZy+cBZjILbanmPm222KvxM/gPldDQnn
-         1QeWunmXeV4U/E6P4oXbamdtrOT0cRe2NqB7ecx7OQRJK7QOSVO5ypTqjg1qIpTJOpFM
-         nQog1NvcWK1nvOpvZYg+jXYoyaJMV5xAWDlJGmV2JaMKmuUYxXZsd+eahEa5+h4vJy7F
-         U+qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746607295; x=1747212095;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OHVU9LpqU+6SrvxGXGLpeAb6/atL3y2Ymj53f2bTkWM=;
-        b=kj/TX9yHHLvGAAQpjE/0c8kzDA9YFbaWe5glVZbuXkH5dH5H5QyJYnUBZ0GnucaPCX
-         j7/Pb7mE2IQ5I07YbqikBm9uqChDpk3CyCBRcRXGPltZ0UMOmE1ytSGrXkoLgitkG4VK
-         y9c2pIiS0rhJGpqEbwY/Ahl0k43P1kF6d+J9HRxWClhoCpsONrmSViXxQv3VGlqIHHfk
-         h11uuNqwuElUok4teQSRgW+LZpzUULa7758eE+auylfqC5ZuGylgbl9n/KsJ0mGx0VCV
-         sEUVMTnLAZ1pBdhxk5d3/NBYDCY80ifut9ih3E4ilQdsu42bokTqhIKNw38LZBJDhLc1
-         K5SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgA/YQI7h4zMJ65kuKvsm4kpnNKXr7ofwSycAA+4QX+vIatufBgdWKxg7LBTp5sMr5sffGfTjr5ZSe4FWdmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhK7QvQVnvlVju2aiHnefBe1D/ssLyzgAoZQvi2C5tL/1d242z
-	eAUn2sMahzFQIsqV0hrMUTol6lZAZGAQhlMwZMJYMIX/hsioTLdhAsNE+DjBuvqtaqGcbso0bh8
-	g7n+C5g4MkZN/LA==
-X-Google-Smtp-Source: AGHT+IENg9KN7gnKRmoV3shqKQEW6l/POb1KRWOlYwRFpAwdf65TgaQaCf/Ky7+O4/CkDaWL2nQsLkySfyald70=
-X-Received: from wmbdr11.prod.google.com ([2002:a05:600c:608b:b0:43d:5828:13ee])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3d17:b0:43c:f4b3:b094 with SMTP id 5b1f17b1804b1-441d44bc6ddmr16122895e9.6.1746607294944;
- Wed, 07 May 2025 01:41:34 -0700 (PDT)
-Date: Wed, 7 May 2025 08:41:32 +0000
-In-Reply-To: <D9PSH8MJ48JO.3OOA3Z3NSBGC9@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMrtRN7W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B329C4CEE7;
+	Wed,  7 May 2025 08:58:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746608295;
+	bh=lpLYWTvwCD9ibFjrHBDefiW1/xmwvteVjOwcFqoHT9Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SMrtRN7WHuITA7k8CqvBVY1rQVRkZt4CichuUXA6AxxTIKXgtbscdi+UPROmuiwhd
+	 XKxaDqNH/46G52FnAwCofXYsBmZG8TWeB1IJ+fzJ2icLDvWNYz1EMBOVZQRuDVp+Xm
+	 wKsCWrCUvSltGBH2sSBp3ZbPuuH6TOoQFHNk341KUdquOffXKIzeVGUivQOhaoiEC/
+	 lCauskOTTVozvLQ6dVsjylDOLEhPIbEVoa54To55oaPkC0ZsVE3StaAzB453ir1Wdo
+	 +fyLWJ9xx0dFETF6XrrzJNmXu9j5tIVYbO3BqGbmF1+QfsRVuwZzK5sYONvBZs9rcY
+	 W/l12eN5WjHag==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250506-aref-from-raw-v2-1-5a35e47f4ec2@kernel.org> <D9PSH8MJ48JO.3OOA3Z3NSBGC9@kernel.org>
-Message-ID: <aBscvBwCD1o0OC_v@google.com>
-Subject: Re: [PATCH v2] rust: elaborate safety requirements for `AlwaysReferenceCounted`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Oliver Mangold <oliver.mangold@pm.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 07 May 2025 10:58:08 +0200
+Message-Id: <D9PSYQMCW74W.39JB3NDCWB2H3@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
+ Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>
+Cc: "Trevor Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye"
+ <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
+ "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
+ Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v12 1/3] rust: str: add radix prefixed integer parsing
+ functions
+X-Mailer: aerc 0.20.1
+References: <20250506-module-params-v3-v12-0-c04d80c8a2b1@kernel.org>
+ <20250506-module-params-v3-v12-1-c04d80c8a2b1@kernel.org>
+In-Reply-To: <20250506-module-params-v3-v12-1-c04d80c8a2b1@kernel.org>
 
-On Wed, May 07, 2025 at 10:35:16AM +0200, Benno Lossin wrote:
-> On Tue May 6, 2025 at 10:29 AM CEST, Andreas Hindborg wrote:
-> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> > index 9d0471afc964..52683d686c8a 100644
-> > --- a/rust/kernel/types.rs
-> > +++ b/rust/kernel/types.rs
-> > @@ -409,6 +409,10 @@ pub const fn raw_get(this: *const Self) -> *mut T {
-> >  /// Implementers must also ensure that all instances are reference-counted. (Otherwise they
-> >  /// won't be able to honour the requirement that [`AlwaysRefCounted::inc_ref`] keep the object
-> >  /// alive.)
-> > +///
-> > +/// Implementers of this trait must ensure that values of types implementing this trait can never be
-> > +/// owned by value. Instead, values must be owned and used through a pointer type. That is, a type
-> > +/// that implements [`Deref`].
-> 
-> I don't think this covers every case, if I modify your example above
-> with Alice's suggestion and using `Box` instead of the stack, I get the
-> same problem:
-> 
->     struct Empty {}
->  
->     unsafe impl AlwaysRefCounted for Empty {
->         fn inc_ref(&self) {}
->         unsafe fn dec_ref(_obj: NonNull<Self>) {}
->     }
->  
->     fn unsound() -> ARef<Empty> {
->         use kernel::types::{ARef, RefCounted};
->  
->         let data = Box::new(Empty {});
->         let aref = ARef::from(&data);
->  
->         aref
->     }
-> 
-> The same should be true if one uses `Arc` instead of `Box`. So, even
-> though we store it in a "pointer type that implements `Deref`", it is
-> unsound.
-> 
-> I think that types that implement `AlwaysRefCounted` must only be store
-> inside of `ARef<T>`. So something like "Values of this trait must only
-> be exposed as `ARef<Self>` or `&Self`." I'm not satisfied with the
-> wording 'exposed', maybe you have a better word or can expand the
-> sentence.
+On Tue May 6, 2025 at 3:02 PM CEST, Andreas Hindborg wrote:
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index 878111cb77bc..174e70397305 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -573,7 +573,6 @@ macro_rules! c_str {
+>  }
+> =20
+>  #[cfg(test)]
+> -#[expect(clippy::items_after_test_module)]
+>  mod tests {
+>      use super::*;
+> =20
+> @@ -946,3 +945,174 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::R=
+esult {
+>  macro_rules! fmt {
+>      ($($f:tt)*) =3D> ( core::format_args!($($f)*) )
+>  }
+> +
+> +/// Integer parsing functions for parsing signed and unsigned integers
+> +/// potentially prefixed with `0x`, `0o`, or `0b`.
+> +pub mod parse_int {
 
-I mean, in some sense the problem is that Empty violates the existing
-requirement:
+Why not make this its own file? It's 172 lines long already.
 
-Implementers must also ensure that all instances are reference-counted.
-(Otherwise they won't be able to honour the requirement that
-[`AlwaysRefCounted::inc_ref`] keep the object alive.)
+> +    pub trait ParseInt: private::FromStrRadix + TryFrom<u64> {
+> +        /// Parse a string according to the description in [`Self`].
+> +        fn from_str(src: &BStr) -> Result<Self> {
+> +            match src.deref() {
+> +                [b'-', rest @ ..] =3D> {
+> +                    let (radix, digits) =3D strip_radix(rest.as_ref());
+> +                    // 2's complement values range from -2^(b-1) to 2^(b=
+-1)-1.
+> +                    // So if we want to parse negative numbers as positi=
+ve and
+> +                    // later multiply by -1, we have to parse into a lar=
+ger
+> +                    // integer. We choose `u64` as sufficiently large.
+> +                    //
+> +                    // NOTE: 128 bit integers are not available on all
+> +                    // platforms, hence the choice of 64 bits.
+> +                    let val =3D u64::from_str_radix(
+> +                        core::str::from_utf8(digits).map_err(|_| EINVAL)=
+?,
+> +                        radix,
+> +                    )
+> +                    .map_err(|_| EINVAL)?;
+> +
+> +                    if val > Self::abs_min() {
+> +                        return Err(EINVAL);
+> +                    }
+> +
+> +                    if val =3D=3D Self::abs_min() {
+> +                        return Ok(Self::MIN);
+> +                    }
+> +
+> +                    // SAFETY: We checked that `val` will fit in `Self` =
+above.
+> +                    let val: Self =3D unsafe { val.try_into().unwrap_unc=
+hecked() };
+> +
+> +                    Ok(val.complement())
 
-Alice
+You're allowing to parse `u32` with a leading `-`? I'd expect an error
+in that case. Maybe `complement` should be named `negate` and return a
+`Result`?
+
+---
+Cheers,
+Benno
+
+> +                }
+> +                _ =3D> {
+> +                    let (radix, digits) =3D strip_radix(src);
+> +                    Self::from_str_radix(digits, radix).map_err(|_| EINV=
+AL)
+> +                }
+> +            }
+> +        }
+> +    }
