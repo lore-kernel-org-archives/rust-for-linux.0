@@ -1,130 +1,87 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514001E231D
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 May 2025 06:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14E81C5D4E
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 May 2025 06:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746599346; cv=none; b=VRLav5RA4DeLlTspeJODvjmIx3chQ8QoDEM3uF9hGnp5bXNEi1mfG6I4kubUh79lK2IFNQ1MVyBxoQ+Vo+WuxEONhU6/67NoyTEsZDZLvsa6gi22ZaY4SuKIlrAMyntgI5dYoNmdqSALzTn9sONq5CSU+yLW1R1kgnh7YVpL5ik=
+	t=1746599530; cv=none; b=GkvzdOnQ79BXWaIAdNVP6K+RkkiV6dIcDQZMikbKpyLmzeVyAtLLPC2i/dx+ZcPNj6clF3nhdaZBhnRtJjjEJCAp3+mrJDqj1Z4onwUdNygtKaUm2Ut05CT5XGWBoT/HGkq2l+Wl8W98hhxQ7SJG27WckonXLIB8Wrs+eyZpS20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746599346; c=relaxed/simple;
-	bh=HHEU69R/esLe/xtz5QeWjsmHEwQGLstAP7tEJwTNAO0=;
+	s=arc-20240116; t=1746599530; c=relaxed/simple;
+	bh=exbcRCBcXP75cDIPN2zF7G/kZPfJqnrNFxp1zshUZ+8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ATIUWnzgUSNBpqVcN3UrPdJM7aJX17M6CVRzQ13MH1qWk3w0D2IDSI2K3x0e9/Is6n0MXfvJQOX9OIE9MsMgowZR2GRjgBK60Hd0h6xj7kRxmP6FxbmeQOGBShPo5ohzZr22Ht3LFPkdvaeirED5FCPbfPgR8qpBPWQwzcL1tuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eGxhz/SU; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=uHZjTKCWfh2ydditDGKIRHolhYiSE85PUbHySuaTDGT9B0Zb38EWoRfL8INX3a2AxdmP7HZPuLCFa7JdbDeIzFsrMTuz2avifrk9mwRrVmBOtLtdbwroOxddJopT451VmMqVs7R+QZZR9ihiz+oXMBDINM+8SFCy0nfgkddV7ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N/q9UBbW; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eGxhz/SU"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43ceb011ea5so36270475e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 May 2025 23:29:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N/q9UBbW"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43d01024089so41485265e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 May 2025 23:32:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746599342; x=1747204142; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VtFkzNEPcHp8hksu6rI+HDSavzLjinA+UG+dWVvbQbI=;
-        b=eGxhz/SUvrCBgy27NHZ1yMAL6nzxlkbFS1Bv7BS8XjwVeO0J13dcrCYtDAzyXA6C2T
-         JJrxY9gnxY36tMyFWuhvbGN4y2NqlnsGykB9EVeu4yn1gVFtnY62deiU+snU1aQMqvxV
-         jHDoAaMEw01mx+vhsnCy5pKnRf7fYFrNoZ9GXMQO6EWBS1mDxQAD/Ki/4XDs+lyttTbe
-         tLPe0sszrGLSdE6Xs10am4x3KtPnVfK9R7Py/o9kRURNx/e5MCYj7YNNYh2FkyaJVCqO
-         XF7ksJBDVNbMcH8J70rRmAAVdiRSBNKKoTnYwhyvEsZceCkIu6Q3X6COvFM+ljUS1JGW
-         X8Yg==
+        d=google.com; s=20230601; t=1746599527; x=1747204327; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=L8GCAFg1aaYXlvR66YXUtPzPYdtJZ6yf/ekYSx+SpVs=;
+        b=N/q9UBbWqYRUZ9PU5CLprdk2AnnJln+hsMshsMXsG/QAytTP4mYtZzhCbtHTo9wv/j
+         XrUr4ABk2zBk9UTZuZnmMDm0t/akwcqgrU75VnJoV/YFE+oLGHWFM/9LreKO6d/05hrA
+         o+fhxnnQmk59Qdx3QTJbxCr164prmf1oCTH6mHVY7DYg+HNG+0DGa3449GI69EtaPx76
+         7tdQDeGbm47k2pNgNzCPUeWzj/FiBqLXDdbbYwBm9ZbEPlPVniyJ+FBfbz0btKy4EZd/
+         /yCherlFcG/JWYP8Vm0LdzbcCJU+pgoLcqUCHj7K042jlZ8wVYkIEjgnRnxqDR9SV85J
+         YCTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746599342; x=1747204142;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VtFkzNEPcHp8hksu6rI+HDSavzLjinA+UG+dWVvbQbI=;
-        b=qR6mtMs2IP/cjBy8sRjiwh/n9aDEojlQIQcMl2aQHfyGQo5DKV7p8cffF8PprjsFDg
-         5xIaGnQBvZILm830AZog/XmIHsnD6q0DMhtqbp+VXdhn7fyZjbHgmtuGx+7YAWAt6Csk
-         vV+ECRVFyoYRkm+INFwE+frGOAGghX+xuRq9sCSHJ482mYKN2GhyYYzXD7UjD1BO6COg
-         D57Nme0BBIUcfTza/88ZFyPAX+FKvrw4Nvy1lhQ0AL/OmKxguswD58Db9w5ktW6jaB1Y
-         tUWZ+nSXENxkyCfNcKocfRmp1UsXq1YkS22ss+nL/Hts3DjawC5m6v1fetCVNX7nhfBd
-         B2tw==
-X-Forwarded-Encrypted: i=1; AJvYcCWatH6+hCpkqtlRgkhOF9KaagM3IIyaLExrwbpvdU7aMS2fcVZZvT+okLkmiB50TQVo5yxfXwz4FA/OT3/Lnw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8FBOX2doZtF+QNGbab15WaEbnwD69imULlnfnsG/KPakNvKlv
-	5V8bTBJ9dhkHZBdS9FhwoVnNWC0qWSuP4ftME2sX01MoWLYlHHxJka9l0qK4o7adGpwAJ0hsV4F
-	IrOqKV9xWphuiqA==
-X-Google-Smtp-Source: AGHT+IE2uljIkDO298yZduLzh13K4OEDT4YJSJN42cZ6z3mMwc4wpvGSukeIfDDLixpGMqN8CFXmZHpSCXFxv+A=
-X-Received: from wmbdo8.prod.google.com ([2002:a05:600c:6808:b0:440:68cb:bd4])
+        d=1e100.net; s=20230601; t=1746599527; x=1747204327;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L8GCAFg1aaYXlvR66YXUtPzPYdtJZ6yf/ekYSx+SpVs=;
+        b=eXFKsgop6xtxC7Xx92pCi12tyUI2GCwFfiiVTYqipJ2JkS7vC+3l4LjbMjFUcQkCZc
+         bHpBmjY3gItpMBvBG765SBXdjRoAiuKiP7Xc0Fd9/PPpQwZeryBdddydvXDWF/5r6h6y
+         AP5vEkc1j8t6ssRJCXd9po/lxgD7s4X2Jw56RJEBnQpMfdeRKJ2uWUJrw6OI22sIdJGM
+         bRUC51qWjL9xVA6KK4IpSLTHDUGVmsY2CTzhyvYBGXdRogEJLrr68ChjPc0p27CBsblv
+         6dNxrW+tVlKOqu8GkM3g2LnWr46IQMGB4ORR8dF4ZzJzD15O7kNavvmv3IrAxy+SECws
+         6RXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWM03F3exv3/cnuF5TJyAztlfDTjc8gN/1RisryJGJYLdKW2eNOod5ilUam9x18NjhMuVQ75kFCZkzVE5uT4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcFPzowYavdjT4S4heUURBpsuDimuWaXv2oGPOTiRfMNtW386T
+	PmhBh6bYw/02s7Qo3ilJiKlovPIJNDMUcnS/j+kyMLOrXVg3rqgQyJoD/dlc1vvLeixPIOXOSMX
+	EDLp76CfHyny1Og==
+X-Google-Smtp-Source: AGHT+IErajDqfwcZTf8rFmNjgBY75jdYeqJxRWcm3VL9E4WUwCBuF8N519b5ETfv2d2sPP/taqAt/46bX7Ge2ro=
+X-Received: from wmbhj13.prod.google.com ([2002:a05:600c:528d:b0:43d:58c9:bb51])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6749:b0:43d:ea:51d2 with SMTP id 5b1f17b1804b1-441d44c3a91mr15322665e9.14.1746599342754;
- Tue, 06 May 2025 23:29:02 -0700 (PDT)
-Date: Wed, 7 May 2025 06:29:00 +0000
-In-Reply-To: <CANiq72=n68DB+hZ77GT4d7odPSS=wxc+YLvaBhU8-H7PyK25Rw@mail.gmail.com>
+ 2002:a05:600c:1d08:b0:43c:fffc:7855 with SMTP id 5b1f17b1804b1-441d44c7d8cmr15872725e9.15.1746599527327;
+ Tue, 06 May 2025 23:32:07 -0700 (PDT)
+Date: Wed, 7 May 2025 06:32:05 +0000
+In-Reply-To: <D9POL1CR89RN.2OOMXJAOR4XAK@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250506-userptr-newtype-v1-1-a0f6f8ce9fc5@google.com> <CANiq72=n68DB+hZ77GT4d7odPSS=wxc+YLvaBhU8-H7PyK25Rw@mail.gmail.com>
-Message-ID: <aBr9rI1OUAEJpQsL@google.com>
-Subject: Re: [PATCH] uaccess: rust: use newtype for user pointers
+References: <20250502-vec-methods-v5-0-06d20ad9366f@google.com>
+ <20250502-vec-methods-v5-6-06d20ad9366f@google.com> <D9POJZ60ZCYQ.1XBNZSXOQ9UJS@nvidia.com>
+ <D9POL1CR89RN.2OOMXJAOR4XAK@nvidia.com>
+Message-ID: <aBr-ZZMBPyy0KfZH@google.com>
+Subject: Re: [PATCH v5 6/7] rust: alloc: add Vec::remove'
 From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 06, 2025 at 03:59:20PM +0200, Miguel Ojeda wrote:
-> On Tue, May 6, 2025 at 3:26=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Wed, May 07, 2025 at 02:32:10PM +0900, Alexandre Courbot wrote:
+> On Wed May 7, 2025 at 2:30 PM JST, Alexandre Courbot wrote:
+> > On Fri May 2, 2025 at 10:19 PM JST, Alice Ryhl wrote:
+> >> +    /// Removes the element at the given index.
+> >> +    ///
+> >> +    /// # Panics
+> >> +    ///
+> >> +    /// Panics if the index is out of bounds.
 > >
-> > The UserPtr type is not marked with #[derive(Debug)], which means that
-> > it's not possible to print values of this type. This avoids ASLR
-> > breakage.
->=20
-> By breakage you mean leaking the information by mistake?
+> > According to the commit log (and the code of the method) I think this
+> > panic section is not valid anymore?
+> 
+> Oops never mind, I didn't notice Danilo already pointed this out. >_<
 
-Yeah, I'll reword to "ASLR leakage".
-
-> Since it is `pub`, should we make it even harder to make a mistake
-> here by making it private? You are already providing and using the
-> `as_` methods anyway, so we would only need a `new` or conversion
-> method or `Into` similar (not sure which one would be best -- perhaps
-> a single one with a descriptive name is a good idea to grep for it
-> easily).
-
-If we change it to store a raw pointer, then that might be a good idea.
-
-> > +    /// Increment this user pointer by `add` bytes.
-> > +    ///
-> > +    /// This is addition is wrapping, so wrapping around the address s=
-pace does not result in a
->=20
-> s/is//
->=20
-> > +    /// panic even if `CONFIG_RUST_OVERFLOW_CHECKS` is enabled.
-> > +    pub fn wrapping_add(self, add: usize) -> UserPtr {
-> > +        UserPtr(self.0.wrapping_add(add))
-> > +    }
-> > +}
->=20
-> I guess you are using `wrapping_add` since we have a `usize` internal
-> type, but I wonder if we should use the pointer-related naming, i.e.
-> `wrapping_byte_add`.
-
-That makes sense.
-
-> Also, perhaps it is best to use another name for the parameter -- I
-> would pick `count` like the standard library.
-
-Sure.
-
-> In addition, should we get this directly into the `prelude`? `__user`
-> is also global and fairly short. It may not be heavily used all the
-> time like other things, but it is fairly fundamental, like the `c_*`
-> ones.
-
-Good idea.
+Thanks for taking a look!
 
 Alice
