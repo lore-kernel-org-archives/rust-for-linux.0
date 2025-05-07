@@ -1,150 +1,320 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62FF1CAA65;
-	Wed,  7 May 2025 10:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EADC4B1E6E;
+	Wed,  7 May 2025 11:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746615309; cv=none; b=TwlyQQGTaavTWCsH5AybDPbsLmYslyREjA4/lkHx7uRD2cNVYkoE5e+D1uRz+lGEdlaLqYIdGn7DqlR9WU/Us3T3cKIcgjEk2HrVCGUjOL0+rvDQjvCCZhwzzKPTu20Qxut18aI0oXie4kk6WaCyozZDrPzF4NJEbiGearORThM=
+	t=1746616987; cv=none; b=TAQdjekj//7Exw5uD9s9vqqhbCV6Kb3rdHNTKXNObnUitgradapR402AZoMAAXl5SyWYQgwypslLRoHuGIlnFXxaaCQQF39Z0LX5GqrWymDSOY84w1WkpNFOhl7TbVD7S3KQeZZWAlqLHbqkQJC9/erZRnI8YHnFi44QavA/9f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746615309; c=relaxed/simple;
-	bh=Mjgl4GYvmrpJHPWDXrDZoRQ30ykxjTvUSF9Aqasm2ZQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DznFf90V6hpX+/P8SxwgQgXUVLRVVZHQ2DKMQPWfzzHVnyS2EuwvHS9QP32Y2aSvqPwWiBgfPEiZxmdbpxyxBnDwWUjPSNWUooVYomsD8eppirR/C2dRXyw/lxF/PpxiZuqj8fQ3Vuj6SktGrXJchmWqZXLX6pmxZuKpH5HrG2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfZHi9jf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746616987; c=relaxed/simple;
+	bh=A74vXDFWSWnKhjsMSQhZJL5xQ7wU7bDlQLBPPoCJGno=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=QVR98VCn7kRocZp+q13ejUFPmiVhAYQ9Ydw86SdsMggLLJW4CNKSv/dyu9FgduGca3YFh2llJRJMQIczAtt9iRKzv8Kbm/h2A6RIjOm4NtDw4eQlz7fRwEeqqjHdoiIybS79JXl9UQXOhY6G1le80VUE1Hd8WVmIPrQgzljo7VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JYHE91EX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfZHi9jf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88B2C4CEE7;
-	Wed,  7 May 2025 10:55:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JYHE91EX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC435C4CEE7;
+	Wed,  7 May 2025 11:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746615309;
-	bh=Mjgl4GYvmrpJHPWDXrDZoRQ30ykxjTvUSF9Aqasm2ZQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cfZHi9jfhp+8tsZewtEIcAjJqlP7coH83jzwbpxirtrRrvXwY9v/Xpkk8fHxXrhiK
-	 PEUglkAx3CZLg2nmr7Br4S6HIlPfdJFhw3mqOSPKYUM6UeDw6/BxI06xGF6zlqBUBK
-	 ek6gfjG9kv2d5Q3c7srcJim69qo1sbvfzcOkAdu3HfnaYE2k/qjgmZVYpD/pyITj+m
-	 vsHV4xk66tfKOS43aLF/xyWnOkXsgeXdmxiyTgpSy+79lynrZA0QFPkvdd9wJrxlyv
-	 Watv4hzQYbDsdfNMA7Wfxt9Nr14dsnY6nq6b5fKA5wobXbXr/H52A9YY7g8b7sAm9x
-	 rAh+tQaiBBwNg==
-From: Benno Lossin <lossin@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Fiona Behrens <me@kloenk.dev>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Alban Kurti <kurti@invicto.ai>,
-	Michael Vetter <jubalh@iodoru.org>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Benno Lossin <lossin@kernel.org>
-Subject: [GIT PULL] Rust pin-init for v6.16
-Date: Wed,  7 May 2025 12:54:55 +0200
-Message-ID: <20250507105455.72863-1-lossin@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=k20201202; t=1746616986;
+	bh=A74vXDFWSWnKhjsMSQhZJL5xQ7wU7bDlQLBPPoCJGno=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=JYHE91EXAOzRikVYhL2Zf9hdJmFEnwwUxR6cvcWYsNW3ziZePNwI38/95H3VZrYgX
+	 BqbaUxfpJc6vvNjunDXMF4BHQGaOcHEHoEY1RPHEiMaTJLSLmCKfokdmikKcyBerhp
+	 OgiOQ+N++wi2VMbYk6cJeeQvnC3MVY8r2awo6kTvYqyRWDwTn7EqcDFVxyM7Qi5OFR
+	 oLJ9a4QSQhMVDWELGiCF4PTn3Z1NEyXEk3cctsceIkeDKfIVv3jB8seJjLjxah201n
+	 Et1XJsAZA43H9jqsBILdSLmarAFNQCNW8IhMj7PZzbbk0m5JoByN5Wn2ZMS4QgQufB
+	 unJEy7JSvAQWw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 07 May 2025 13:22:59 +0200
+Message-Id: <D9PW1NI2S6FV.8LA53J87VCML@kernel.org>
+Cc: "Trevor Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye"
+ <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
+ "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
+ Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v12 2/3] rust: add parameter support to the `module!`
+ macro
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
+ Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>
+X-Mailer: aerc 0.20.1
+References: <20250506-module-params-v3-v12-0-c04d80c8a2b1@kernel.org>
+ <20250506-module-params-v3-v12-2-c04d80c8a2b1@kernel.org>
+In-Reply-To: <20250506-module-params-v3-v12-2-c04d80c8a2b1@kernel.org>
 
-Hi Miguel,
+On Tue May 6, 2025 at 3:02 PM CEST, Andreas Hindborg wrote:
+> Add support for module parameters to the `module!` macro. Implement read
+> only support for integer types without `sysfs` support.
+>
+> Acked-by: Petr Pavlu <petr.pavlu@suse.com> # from modules perspective
+> Tested-by: Daniel Gomez <da.gomez@samsung.com>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/lib.rs           |   1 +
+>  rust/kernel/module_param.rs  | 204 +++++++++++++++++++++++++++++++++++++=
+++++++
+>  rust/macros/helpers.rs       |  25 ++++++
+>  rust/macros/lib.rs           |  31 +++++++
+>  rust/macros/module.rs        | 195 ++++++++++++++++++++++++++++++++++++-=
+----
+>  samples/rust/rust_minimal.rs |  10 +++
 
-Here is the first pin-init pull request! It contains more changes than I
-expected the first PR to have, but the new CI discovered a few smaller
-issues and I also got a contribution.
+I know this is already the 12th version, but I think this patch should
+be split into the module_param module introduction, proc-macro
+modifications and the sample changes.
 
-All commits have been in linux-next for a few days. The earlier commits
-have been in linux-next for a few weeks.
+[...]
 
-No conflicts expected.
+> +/// Set the module parameter from a string.
+> +///
+> +/// Used to set the parameter value at kernel initialization, when loadi=
+ng
+> +/// the module or when set through `sysfs`.
+> +///
+> +/// See `struct kernel_param_ops.set`.
+> +///
+> +/// # Safety
+> +///
+> +/// - If `val` is non-null then it must point to a valid null-terminated=
+ string.
+> +///   The `arg` field of `param` must be an instance of `T`.
 
-Please pull for v6.16 -- thanks!
+This sentence is conveying the same (or at least similar) requirement as
+the bullet point below.
+
+> +/// - `param.arg` must be a pointer to valid `*mut T` as set up by the
+> +///   [`module!`] macro.
+> +///
+> +/// # Invariants
+> +///
+> +/// Currently, we only support read-only parameters that are not readabl=
+e
+> +/// from `sysfs`. Thus, this function is only called at kernel
+> +/// initialization time, or at module load time, and we have exclusive
+> +/// access to the parameter for the duration of the function.
+
+Why is this an Invariants section?
+
+> +///
+> +/// [`module!`]: macros::module
+> +unsafe extern "C" fn set_param<T>(
+> +    val: *const kernel::ffi::c_char,
+> +    param: *const crate::bindings::kernel_param,
+> +) -> core::ffi::c_int
+> +where
+> +    T: ModuleParam,
+> +{
+> +    // NOTE: If we start supporting arguments without values, val _is_ a=
+llowed
+> +    // to be null here.
+> +    if val.is_null() {
+> +        // TODO: Use pr_warn_once available.
+> +        crate::pr_warn!("Null pointer passed to `module_param::set_param=
+`");
+> +        return EINVAL.to_errno();
+> +    }
+> +
+> +    // SAFETY: By function safety requirement, val is non-null and
+> +    // null-terminated. By C API contract, `val` is live and valid for r=
+eads
+> +    // for the duration of this function.
+
+We shouldn't mention "C API contract" here and move the liveness
+requirement to the safety requirements of the function. Or change the
+safety requirements for this function to only be called from some
+specific C API.=20
+
+> +    let arg =3D unsafe { CStr::from_char_ptr(val) };
+> +
+> +    crate::error::from_result(|| {
+> +        let new_value =3D T::try_from_param_arg(arg)?;
+> +
+> +        // SAFETY: `param` is guaranteed to be valid by C API contract
+> +        // and `arg` is guaranteed to point to an instance of `T`.
+
+Ditto.
+
+> +        let old_value =3D unsafe { (*param).__bindgen_anon_1.arg as *mut=
+ T };
+> +
+> +        // SAFETY: `old_value` is valid for writes, as we have exclusive
+> +        // access. `old_value` is pointing to an initialized static, and
+> +        // so it is properly initialized.
+
+Why do we have exclusive access? Should be in the safety requirements.
+
+> +        unsafe { *old_value =3D new_value };
+> +        Ok(0)
+> +    })
+> +}
+
+[...]
+
+> +#[doc(hidden)]
+> +#[macro_export]
+> +/// Generate a static [`kernel_param_ops`](srctree/include/linux/modulep=
+aram.h) struct.
+> +///
+> +/// # Examples
+> +///
+> +/// ```ignore
+> +/// make_param_ops!(
+> +///     /// Documentation for new param ops.
+> +///     PARAM_OPS_MYTYPE, // Name for the static.
+> +///     MyType // A type which implements [`ModuleParam`].
+> +/// );
+> +/// ```
+> +macro_rules! make_param_ops {
+> +    ($ops:ident, $ty:ty) =3D> {
+> +        ///
+
+Spurious newline?
+
+> +        /// Static [`kernel_param_ops`](srctree/include/linux/modulepara=
+m.h)
+> +        /// struct generated by `make_param_ops`
+
+Is it useful for this fact to be in the docs? I'd remove it.
+
+> +        #[doc =3D concat!("for [`", stringify!($ty), "`].")]
+> +        pub static $ops: $crate::bindings::kernel_param_ops =3D $crate::=
+bindings::kernel_param_ops {
+> +            flags: 0,
+> +            set: Some(set_param::<$ty>),
+> +            get: None,
+> +            free: None,
+> +        };
+> +    };
+> +}
+> +
+> +make_param_ops!(PARAM_OPS_I8, i8);
+> +make_param_ops!(PARAM_OPS_U8, u8);
+> +make_param_ops!(PARAM_OPS_I16, i16);
+> +make_param_ops!(PARAM_OPS_U16, u16);
+> +make_param_ops!(PARAM_OPS_I32, i32);
+> +make_param_ops!(PARAM_OPS_U32, u32);
+> +make_param_ops!(PARAM_OPS_I64, i64);
+> +make_param_ops!(PARAM_OPS_U64, u64);
+> +make_param_ops!(PARAM_OPS_ISIZE, isize);
+> +make_param_ops!(PARAM_OPS_USIZE, usize);
+> diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
+> index a3ee27e29a6f..16d300ad3d3b 100644
+> --- a/rust/macros/helpers.rs
+> +++ b/rust/macros/helpers.rs
+> @@ -10,6 +10,17 @@ pub(crate) fn try_ident(it: &mut token_stream::IntoIte=
+r) -> Option<String> {
+>      }
+>  }
+> =20
+> +pub(crate) fn try_sign(it: &mut token_stream::IntoIter) -> Option<char> =
+{
+> +    let peek =3D it.clone().next();
+> +    match peek {
+> +        Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D '-' =3D>=
+ {
+
+Should we also allow a leading `+`?
+
+> +            let _ =3D it.next();
+> +            Some(punct.as_char())
+> +        }
+> +        _ =3D> None,
+> +    }
+> +}
+> +
+>  pub(crate) fn try_literal(it: &mut token_stream::IntoIter) -> Option<Str=
+ing> {
+>      if let Some(TokenTree::Literal(literal)) =3D it.next() {
+>          Some(literal.to_string())
+> @@ -86,3 +97,17 @@ pub(crate) fn function_name(input: TokenStream) -> Opt=
+ion<Ident> {
+>      }
+>      None
+>  }
+> +
+> +/// Parse a token stream of the form `expected_name: "value",` and retur=
+n the
+> +/// string in the position of "value".
+> +///
+> +/// # Panics
+> +///
+> +/// - On parse error.
+> +pub(crate) fn expect_string_field(it: &mut token_stream::IntoIter, expec=
+ted_name: &str) -> String {
+> +    assert_eq!(expect_ident(it), expected_name);
+> +    assert_eq!(expect_punct(it), ':');
+> +    let string =3D expect_string(it);
+> +    assert_eq!(expect_punct(it), ',');
+
+This won't allow omitting the trailing comma.
+
+> +    string
+> +}
+
+[...]
+
+> @@ -186,33 +336,35 @@ pub(crate) fn module(ts: TokenStream) -> TokenStrea=
+m {
+>      let info =3D ModuleInfo::parse(&mut it);
+> =20
+>      let mut modinfo =3D ModInfoBuilder::new(info.name.as_ref());
+> -    if let Some(author) =3D info.author {
+> -        modinfo.emit("author", &author);
+> +    if let Some(author) =3D &info.author {
+> +        modinfo.emit("author", author);
+>      }
+> -    if let Some(authors) =3D info.authors {
+> +    if let Some(authors) =3D &info.authors {
+>          for author in authors {
+> -            modinfo.emit("author", &author);
+> +            modinfo.emit("author", author);
+>          }
+>      }
+> -    if let Some(description) =3D info.description {
+> -        modinfo.emit("description", &description);
+> +    if let Some(description) =3D &info.description {
+> +        modinfo.emit("description", description);
+>      }
+>      modinfo.emit("license", &info.license);
+> -    if let Some(aliases) =3D info.alias {
+> +    if let Some(aliases) =3D &info.alias {
+>          for alias in aliases {
+> -            modinfo.emit("alias", &alias);
+> +            modinfo.emit("alias", alias);
+>          }
+>      }
+> -    if let Some(firmware) =3D info.firmware {
+> +    if let Some(firmware) =3D &info.firmware {
+>          for fw in firmware {
+> -            modinfo.emit("firmware", &fw);
+> +            modinfo.emit("firmware", fw);
+
+I don't like that you have to change all of these. Can't you just take a
+`&[Parameter]` argument in `emit_params` instead of the whole
+`ModuleInfo` struct?
 
 ---
 Cheers,
 Benno
 
-The following changes since commit 9c32cda43eb78f78c73aee4aa344b777714e259b:
-
-  Linux 6.15-rc3 (2025-04-20 13:43:47 -0700)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/pin-init-v6.16
-
-for you to fetch changes up to 9de1a293c8ece00d226b21a35751ec178be2a9fa:
-
-  rust: pin-init: improve documentation for `Zeroable` derive macros (2025-05-01 18:16:22 +0200)
-
-----------------------------------------------------------------
-pin-init changes for v6.16
-
-Added:
-
-- 'Wrapper<T>' trait for creating pin-initializers for wrapper structs
-  with a structurally pinned value such as 'UnsafeCell<T>' or
-  'MaybeUninit<T>'.
-
-- 'MaybeZeroable' derive macro to try to derive 'Zeroable', but not
-  error if not all fields implement it. This is needed to derive
-  'Zeroable' for all bindgen-generated structs.
-
-- 'unsafe fn cast_[pin_]init()' functions to unsafely change the
-  initialized type of an initializer. These are utilized by the
-  'Wrapper<T>' implementations.
-
-Changed:
-
-- Added support for visibility in 'Zeroable' derive macro.
-
-- Added support for 'union's in 'Zeroable' derive macro.
-
-Upstream dev news:
-
-- The CI has been streamlined & some bugs with it have been fixed. I
-  also added new workflows to check if the user-space version and the
-  one in the kernel tree have diverged.
-
-- I also started to use the issues [1] tab to keep track of any problems
-  or unexpected/unwanted things. This should help folks report and
-  diagnose issues w.r.t. 'pin-init' better.
-
-[1]: https://github.com/rust-for-linux/pin-init/issues
-
-----------------------------------------------------------------
-Benno Lossin (10):
-      rust: pin-init: synchronize README.md
-      rust: pin-init: internal: skip rustfmt formatting of kernel-only module
-      rust: pin-init: examples: conditionally enable `feature(lint_reasons)`
-      rust: pin-init: examples: use `allow` instead of `expect`
-      rust: pin-init: add `cast_[pin_]init` functions to change the initialized type
-      rust: pin-init: allow `pub` fields in `derive(Zeroable)`
-      rust: pin-init: allow `Zeroable` derive macro to also be applied to unions
-      rust: pin-init: add `MaybeZeroable` derive macro
-      rust: pin-init: fix typos
-      rust: pin-init: improve documentation for `Zeroable` derive macros
-
-Christian Schrefl (4):
-      rust: pin-init: Add the `Wrapper` trait.
-      rust: pin-init: Implement `Wrapper` for `UnsafePinned` behind feature flag.
-      rust: pin-init: Update Changelog and Readme
-      rust: pin-init: Update the structural pinning link in readme.
-
- rust/pin-init/README.md                 |  14 +++-
- rust/pin-init/examples/linked_list.rs   |   1 +
- rust/pin-init/examples/mutex.rs         |   1 +
- rust/pin-init/examples/pthread_mutex.rs |   4 +-
- rust/pin-init/examples/static_init.rs   |   1 +
- rust/pin-init/internal/src/lib.rs       |   6 ++
- rust/pin-init/internal/src/zeroable.rs  |  27 +++++-
- rust/pin-init/src/lib.rs                | 144 +++++++++++++++++++++++++++++++-
- rust/pin-init/src/macros.rs             |  91 +++++++++++++++++++-
- 9 files changed, 279 insertions(+), 10 deletions(-)
+>          }
+>      }
