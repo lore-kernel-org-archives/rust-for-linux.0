@@ -1,120 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C92232367;
-	Wed,  7 May 2025 09:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62FF1CAA65;
+	Wed,  7 May 2025 10:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746609556; cv=none; b=Pj6iNx0Iuu4rD/d3h1uLOdn+ssf5rlI+MW/jSu4aO1C8zhaFPGPqffF7im2XsP8eZ/36Vc8uKet7MFFUSJ69kp+UAHPwibziLmfZml1Bna6mLP7jkLwNJeMsQ4zdxcDdg3P5YKtnp0I283UkYNgz6X20LBwgJ4236ZAWDcJ4BAE=
+	t=1746615309; cv=none; b=TwlyQQGTaavTWCsH5AybDPbsLmYslyREjA4/lkHx7uRD2cNVYkoE5e+D1uRz+lGEdlaLqYIdGn7DqlR9WU/Us3T3cKIcgjEk2HrVCGUjOL0+rvDQjvCCZhwzzKPTu20Qxut18aI0oXie4kk6WaCyozZDrPzF4NJEbiGearORThM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746609556; c=relaxed/simple;
-	bh=RHy1p/pe3RnqXeYZsuyEV6sW/JsqFl/6BIAqtHzbpaA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=exHtuBpyQPfoT14GOn+I24zu77hM/NoZLsKulCMShojU7OAbzBCTp9BCkjJl+YqHSA9NzHaCf5sK7ZrfCZ2KmDmNQojCroYQBOd2Df6X4gMV9c9LHWY3TqQ6Q3HhJQ4zbqJicpP2xnVmVardJEpB2r/AnW7RdTJVYDN4EK2MSZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l5uSrBXN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746615309; c=relaxed/simple;
+	bh=Mjgl4GYvmrpJHPWDXrDZoRQ30ykxjTvUSF9Aqasm2ZQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DznFf90V6hpX+/P8SxwgQgXUVLRVVZHQ2DKMQPWfzzHVnyS2EuwvHS9QP32Y2aSvqPwWiBgfPEiZxmdbpxyxBnDwWUjPSNWUooVYomsD8eppirR/C2dRXyw/lxF/PpxiZuqj8fQ3Vuj6SktGrXJchmWqZXLX6pmxZuKpH5HrG2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfZHi9jf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l5uSrBXN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A79C4CEE7;
-	Wed,  7 May 2025 09:19:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfZHi9jf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88B2C4CEE7;
+	Wed,  7 May 2025 10:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746609556;
-	bh=RHy1p/pe3RnqXeYZsuyEV6sW/JsqFl/6BIAqtHzbpaA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=l5uSrBXNLrz2BYMMTXtfn+dPK7t3cthqimXZBsM5Tq+eZM1OdExV4Gs0KY/j8ghVK
-	 Pk4h3I2I8hNoYfFedqf9HPsR2SuON9gVzRZZukqY8HSX56GCOepsMzAg7IXI7hEHjt
-	 w+6JT8zibVy2UdFZPd/jFoxHe3XJS3L7jWjwDr79kI3MM7+c3+9zmRsgw/hqc2jOjA
-	 YXNjS9G5RvJmZ1CaObjneKWhb0naws9oARGkdtHpKIfXKwmT8QqV+mym6T9Zzc7Ny/
-	 zdDHJ7efkIXhLBzv+VHhOEGD4e4Kd1gJXm6vN4FB8uDxdwV04RnNY1z5kV8CwiCOrJ
-	 6ZAmMXwzNZYWw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Benno Lossin" <lossin@kernel.org>,  "Miguel Ojeda" <ojeda@kernel.org>,
-  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Oliver Mangold" <oliver.mangold@pm.me>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] rust: elaborate safety requirements for
- `AlwaysReferenceCounted`
-In-Reply-To: <aBscvBwCD1o0OC_v@google.com> (Alice Ryhl's message of "Wed, 07
-	May 2025 08:41:32 +0000")
-References: <20250506-aref-from-raw-v2-1-5a35e47f4ec2@kernel.org>
-	<D9PSH8MJ48JO.3OOA3Z3NSBGC9@kernel.org>
-	<P0Vs61xa67BWtC_H9sCVioTN9Eb9G0N6w23IVMhek_I0QzvNsTQYYs269Ud_VBv72bWdMab3i8z8YsOeYkCEvA==@protonmail.internalid>
-	<aBscvBwCD1o0OC_v@google.com>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Wed, 07 May 2025 11:19:03 +0200
-Message-ID: <87frhgpym0.fsf@kernel.org>
+	s=k20201202; t=1746615309;
+	bh=Mjgl4GYvmrpJHPWDXrDZoRQ30ykxjTvUSF9Aqasm2ZQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cfZHi9jfhp+8tsZewtEIcAjJqlP7coH83jzwbpxirtrRrvXwY9v/Xpkk8fHxXrhiK
+	 PEUglkAx3CZLg2nmr7Br4S6HIlPfdJFhw3mqOSPKYUM6UeDw6/BxI06xGF6zlqBUBK
+	 ek6gfjG9kv2d5Q3c7srcJim69qo1sbvfzcOkAdu3HfnaYE2k/qjgmZVYpD/pyITj+m
+	 vsHV4xk66tfKOS43aLF/xyWnOkXsgeXdmxiyTgpSy+79lynrZA0QFPkvdd9wJrxlyv
+	 Watv4hzQYbDsdfNMA7Wfxt9Nr14dsnY6nq6b5fKA5wobXbXr/H52A9YY7g8b7sAm9x
+	 rAh+tQaiBBwNg==
+From: Benno Lossin <lossin@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Fiona Behrens <me@kloenk.dev>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Alban Kurti <kurti@invicto.ai>,
+	Michael Vetter <jubalh@iodoru.org>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Benno Lossin <lossin@kernel.org>
+Subject: [GIT PULL] Rust pin-init for v6.16
+Date: Wed,  7 May 2025 12:54:55 +0200
+Message-ID: <20250507105455.72863-1-lossin@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
+Hi Miguel,
 
-> On Wed, May 07, 2025 at 10:35:16AM +0200, Benno Lossin wrote:
->> On Tue May 6, 2025 at 10:29 AM CEST, Andreas Hindborg wrote:
->> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->> > index 9d0471afc964..52683d686c8a 100644
->> > --- a/rust/kernel/types.rs
->> > +++ b/rust/kernel/types.rs
->> > @@ -409,6 +409,10 @@ pub const fn raw_get(this: *const Self) -> *mut T {
->> >  /// Implementers must also ensure that all instances are reference-counted. (Otherwise they
->> >  /// won't be able to honour the requirement that [`AlwaysRefCounted::inc_ref`] keep the object
->> >  /// alive.)
->> > +///
->> > +/// Implementers of this trait must ensure that values of types implementing this trait can never be
->> > +/// owned by value. Instead, values must be owned and used through a pointer type. That is, a type
->> > +/// that implements [`Deref`].
->>
->> I don't think this covers every case, if I modify your example above
->> with Alice's suggestion and using `Box` instead of the stack, I get the
->> same problem:
->>
->>     struct Empty {}
->>
->>     unsafe impl AlwaysRefCounted for Empty {
->>         fn inc_ref(&self) {}
->>         unsafe fn dec_ref(_obj: NonNull<Self>) {}
->>     }
->>
->>     fn unsound() -> ARef<Empty> {
->>         use kernel::types::{ARef, RefCounted};
->>
->>         let data = Box::new(Empty {});
->>         let aref = ARef::from(&data);
->>
->>         aref
->>     }
->>
->> The same should be true if one uses `Arc` instead of `Box`. So, even
->> though we store it in a "pointer type that implements `Deref`", it is
->> unsound.
->>
->> I think that types that implement `AlwaysRefCounted` must only be store
->> inside of `ARef<T>`. So something like "Values of this trait must only
->> be exposed as `ARef<Self>` or `&Self`." I'm not satisfied with the
->> wording 'exposed', maybe you have a better word or can expand the
->> sentence.
->
-> I mean, in some sense the problem is that Empty violates the existing
-> requirement:
->
-> Implementers must also ensure that all instances are reference-counted.
-> (Otherwise they won't be able to honour the requirement that
-> [`AlwaysRefCounted::inc_ref`] keep the object alive.)
+Here is the first pin-init pull request! It contains more changes than I
+expected the first PR to have, but the new CI discovered a few smaller
+issues and I also got a contribution.
 
-The example holds, even if you implement `inc_ref`/`dec_ref` properly,
-right?
+All commits have been in linux-next for a few days. The earlier commits
+have been in linux-next for a few weeks.
 
+No conflicts expected.
 
-Best regards,
-Andreas Hindborg
+Please pull for v6.16 -- thanks!
 
+---
+Cheers,
+Benno
 
+The following changes since commit 9c32cda43eb78f78c73aee4aa344b777714e259b:
 
+  Linux 6.15-rc3 (2025-04-20 13:43:47 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/pin-init-v6.16
+
+for you to fetch changes up to 9de1a293c8ece00d226b21a35751ec178be2a9fa:
+
+  rust: pin-init: improve documentation for `Zeroable` derive macros (2025-05-01 18:16:22 +0200)
+
+----------------------------------------------------------------
+pin-init changes for v6.16
+
+Added:
+
+- 'Wrapper<T>' trait for creating pin-initializers for wrapper structs
+  with a structurally pinned value such as 'UnsafeCell<T>' or
+  'MaybeUninit<T>'.
+
+- 'MaybeZeroable' derive macro to try to derive 'Zeroable', but not
+  error if not all fields implement it. This is needed to derive
+  'Zeroable' for all bindgen-generated structs.
+
+- 'unsafe fn cast_[pin_]init()' functions to unsafely change the
+  initialized type of an initializer. These are utilized by the
+  'Wrapper<T>' implementations.
+
+Changed:
+
+- Added support for visibility in 'Zeroable' derive macro.
+
+- Added support for 'union's in 'Zeroable' derive macro.
+
+Upstream dev news:
+
+- The CI has been streamlined & some bugs with it have been fixed. I
+  also added new workflows to check if the user-space version and the
+  one in the kernel tree have diverged.
+
+- I also started to use the issues [1] tab to keep track of any problems
+  or unexpected/unwanted things. This should help folks report and
+  diagnose issues w.r.t. 'pin-init' better.
+
+[1]: https://github.com/rust-for-linux/pin-init/issues
+
+----------------------------------------------------------------
+Benno Lossin (10):
+      rust: pin-init: synchronize README.md
+      rust: pin-init: internal: skip rustfmt formatting of kernel-only module
+      rust: pin-init: examples: conditionally enable `feature(lint_reasons)`
+      rust: pin-init: examples: use `allow` instead of `expect`
+      rust: pin-init: add `cast_[pin_]init` functions to change the initialized type
+      rust: pin-init: allow `pub` fields in `derive(Zeroable)`
+      rust: pin-init: allow `Zeroable` derive macro to also be applied to unions
+      rust: pin-init: add `MaybeZeroable` derive macro
+      rust: pin-init: fix typos
+      rust: pin-init: improve documentation for `Zeroable` derive macros
+
+Christian Schrefl (4):
+      rust: pin-init: Add the `Wrapper` trait.
+      rust: pin-init: Implement `Wrapper` for `UnsafePinned` behind feature flag.
+      rust: pin-init: Update Changelog and Readme
+      rust: pin-init: Update the structural pinning link in readme.
+
+ rust/pin-init/README.md                 |  14 +++-
+ rust/pin-init/examples/linked_list.rs   |   1 +
+ rust/pin-init/examples/mutex.rs         |   1 +
+ rust/pin-init/examples/pthread_mutex.rs |   4 +-
+ rust/pin-init/examples/static_init.rs   |   1 +
+ rust/pin-init/internal/src/lib.rs       |   6 ++
+ rust/pin-init/internal/src/zeroable.rs  |  27 +++++-
+ rust/pin-init/src/lib.rs                | 144 +++++++++++++++++++++++++++++++-
+ rust/pin-init/src/macros.rs             |  91 +++++++++++++++++++-
+ 9 files changed, 279 insertions(+), 10 deletions(-)
