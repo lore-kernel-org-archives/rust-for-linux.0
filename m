@@ -1,111 +1,100 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA59A1FDE19;
-	Fri,  9 May 2025 11:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B674826FDB5
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 May 2025 12:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746790525; cv=none; b=kNpCw+zMP4fSHcVW6GB5dZuaadUZ3gaalf/HHBH3TFIi1+GZvwTZ6D6kzwl0yPmy8bucbKLiAk8FCtOkRqz30AOSHFW41BGl1uGz7KmxuM9W9ThnsjOSVkO4o7X+48f1Ea8m9CskzJpGB+nve+69XnRPqKPdi2xNl5BWxwP5Mcc=
+	t=1746795382; cv=none; b=s1XTNIvT+dUHYg5XEWjbjRLDruXUde/MyR0+mDtwHDh/o4jbfUYdcB3ODhPh/bjr7IbZZMCw7BHoNL59vv3NGhj4cZO893wpgUBKnKxjleq4aXc29dDxp5gC8ks73VWak8KOlzZCPTkzZpFOqsvQH76luLj3q7FOtHPmn+3Otk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746790525; c=relaxed/simple;
-	bh=8KIHf9OmLLgE+hOeF978U0+HWSf5VFUlCD/UL8AeEME=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ooknfEWbDTg9U2Dwrwtr01Jisa4jkVPWXkkdTeXtL77SzFFpHUdls8+7jso2EQeYLEpsmMx+afPgPa4/WNZFVvzBlqmr16acMXXU3YEQYCa2vWDgJMhNwO5S5iL6Vj0CX2vr13xSWa4IOuTi9gE9urGCM7HgRobcyOW8Tx0Ri3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UIgRaLKY; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1746795382; c=relaxed/simple;
+	bh=IhVt1QCCLBwbJW2kxZXLV7OpWziutg/GuXr0dlismgA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=noh2WtPvVSnUyQ2pB7RO/zN1xzkt0/nEcwBiJD3imTy9HfeV5SIaUhQvPwpVLtJCdoH/zvymoCdcUyPiKuZY0NOtdYoDtrDuLd2zRbcpDTTOwJ3/UiCjpwaCAaiz07x90xrwHv+jleoIQcxVmBglJKvu1FAXVmKFHkY107EYu1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XkdnqvVR; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UIgRaLKY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746790524; x=1778326524;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8KIHf9OmLLgE+hOeF978U0+HWSf5VFUlCD/UL8AeEME=;
-  b=UIgRaLKYjlEXHY4jphyIO/xw+DPgP0+hbxEzPazGV9aqxqzC15MPMdIQ
-   QHrnDQjyPs+Q+1JPzDXi1uCBe0BOZkHrwfwcIWF3yxv8tBnJn5+pvdEh0
-   WUzGaW8ii42VYL91sDc9yjwE99xUoBMxi4c+EHjmaWmLIHsNyc6HiIewz
-   6h60AtJzwV26VwR/yiVTAF3i9NSv2K3Faqz7HKxCUJnrM4dH+dJSdzvbs
-   An0nK/XGOt9dcYuf14aDA4nSefXC6vgzWVURjeE9i3YPMRenyiJDZijaA
-   RvUp4cZ1TFfIiKlluuTvcKumxVTmo3Mxa1vXZpzaZN9q0pj7Kqoq5bifA
-   Q==;
-X-CSE-ConnectionGUID: uavRL3aaS1yRHq9TDUFQYw==
-X-CSE-MsgGUID: kJio2pVPRx6vWt3tD9EBnw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="60018331"
-X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
-   d="scan'208";a="60018331"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 04:35:23 -0700
-X-CSE-ConnectionGUID: dnI/PA9fR7C/uvI0OgZHvg==
-X-CSE-MsgGUID: rir706HgTC2/66cqhrngjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
-   d="scan'208";a="173761276"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 04:35:17 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uDM0X-000000004rY-0p0E;
-	Fri, 09 May 2025 14:35:13 +0300
-Date: Fri, 9 May 2025 14:35:12 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andrew Ballance <andrewjballance@gmail.com>
-Cc: dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
-	akpm@linux-foundation.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, gregkh@linuxfoundation.org, rafael@kernel.org,
-	bhelgaas@google.com, kwilczynski@kernel.org, raag.jadav@intel.com,
-	arnd@arndb.de, me@kloenk.dev, fujita.tomonori@gmail.com,
-	daniel.almeida@collabora.com, nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 06/11] io: move PIO_OFFSET to linux/io.h
-Message-ID: <aB3ocO8xh5GugfDD@smile.fi.intel.com>
-References: <20250509031524.2604087-1-andrewjballance@gmail.com>
- <20250509031524.2604087-7-andrewjballance@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XkdnqvVR"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b170c99aa49so1373871a12.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 May 2025 05:56:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746795380; x=1747400180; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IhVt1QCCLBwbJW2kxZXLV7OpWziutg/GuXr0dlismgA=;
+        b=XkdnqvVREQFwYARIPlsNWzmRqfq/CVgU1MRPn1nWFRMnZbc7zVBb5FZBH2+hn4wh4d
+         3ToUF9/BtS16SvbHx/n4sX7JhX+t6kemnyDg8S6c4VkHQwPmiDefKezDgOzJg8Yf2GTD
+         KWw4bXcFTY3Hf33rPsCSWc3YeY43UtlBOHca5spDMq8ftDZI3S1EOweJu4mEytUGZKlZ
+         9JixGlHk4tMISp7gJwgu6824doRj5qk9YqBPIAhFq0rtu0GOgdcMjMTKRhPvMdUnRVw1
+         6r5gYWfvF8Ao7CqljDdEvaOyB0A+BEbL6u/6OoChubYjuS7aiG68PiFcCubOrEy9zabI
+         kKKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746795380; x=1747400180;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IhVt1QCCLBwbJW2kxZXLV7OpWziutg/GuXr0dlismgA=;
+        b=GXn/A5VmoB1hDiqGva9XEkvWHhPIJ9mhou9XCZrg3ID1YhPyp7zBvj8Bb2SuU+a4RQ
+         bbhMq4AJMkIwN8LLYugXVjapRaVnud5Fb+UmxiqpnSK/aHvk/RGdFfLzc7MgsjKWPZVk
+         ir34DLiOERx/QsIeE7Y+DBUZ1xa7z41veNBDwR+P27FhzhOBY9WAWvUvtsSC/axDw3GY
+         1Yp+T+MOVZIC9AvUqBJI7c+s9Ehc4gayBr3o3Ey+mC7Ks1emHSvh0arr9UTyIOHTtXnH
+         XoGzIG1HjUnWpBteigOZOF+zJNbrFGbGygLmL0naH8SORlbC2rNvK6bDhCY6aeYmI8ur
+         f3cw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDBdVFTavDRwzw3IfvuG2Cki6Ek6uR99j+jXrhYK3l961x2817GZHvbDFBRQKMDSjU8ro5J8UWiR8F67OIcg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBy2ut1Ih6kXy6QFCwibGZxVJ879pgG3xZyfi1uFL0AzKDApB7
+	ouO6Ewvp/5VyDvFaiWAfRi4s4vIqNVMGHNxyXfW/z3sP7JNIGWo71IQl4jWfoEU9VwNMyUjwByG
+	4MijDruPxle1Ec54tmSb3EkuHQbeqjNu6IJ6V
+X-Gm-Gg: ASbGnctwKh+EHNZXI3MjxSrqzcJTy6xVQPT32PvFHQHzvHlqQq1vA5C8Rnzta5NsJxW
+	03gPS/7bBqGUCRw9CRfRveiRi3qlqQjiKkm5LVs/+vEt0+hyhtVBFYVGeAWk5l2XqbZ9w+gQZhR
+	9GKJvgRZrTuIpgo7ge7GDC+z0Fc1foOyV13qNYLXIEAt19ISTnHAc=
+X-Google-Smtp-Source: AGHT+IEF3voQQuq3aFOECMAygtEf3hwl6YY0yhW1fQO8wOseEwkI/Dd+gAS06Wo/TKctdBMdVYmR1NU47eAo9Xfgt0M=
+X-Received: by 2002:a17:903:182:b0:22e:6cc6:cf77 with SMTP id
+ d9443c01a7336-22fc91cec2bmr56558115ad.53.1746795379720; Fri, 09 May 2025
+ 05:56:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250509031524.2604087-7-andrewjballance@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com> <20250505-debugfs-rust-v5-2-3e93ce7bb76e@google.com>
+In-Reply-To: <20250505-debugfs-rust-v5-2-3e93ce7bb76e@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 9 May 2025 14:56:05 +0200
+X-Gm-Features: AX0GCFsiweMfJW577uoe_PGY4lTxO5mFT6enSbv3HTbSwAWbXXWKv-S99GFfYLs
+Message-ID: <CAH5fLggovWEOctW2rYnAszSzpUMCammvH2+8-sQ0eypEbhSa3A@mail.gmail.com>
+Subject: Re: [PATCH v5 2/4] rust: debugfs: Bind file creation for long-lived Display
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 08, 2025 at 10:15:19PM -0500, Andrew Ballance wrote:
-> From: Fiona Behrens <me@kloenk.dev>
-> 
-> Move the non arch specific PIO size to linux/io.h.
-> 
-> This allows rust to access `PIO_OFFSET`, `PIO_MASK` and
-> `PIO_RESERVED`. This is required to implement `IO_COND` in rust.
+On Tue, May 6, 2025 at 1:51=E2=80=AFAM Matthew Maurer <mmaurer@google.com> =
+wrote:
+>
+> Allows creation of files for references that live forever and lack
+> metadata through the `Display` implementation.
+>
+> The reference must live forever because we do not have a maximum
+> lifetime for the file we are creating.
+>
+> The `Display` implementation is used because `seq_printf` needs to route
+> through `%pA`, which in turn routes through Arguments. A more generic
+> API is provided later in the series, implemented in terms of this one.
+>
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-...
+I believe it should be possible to bind owned data to a `File` using a
+signature like this:
 
-> +/*
-> + * We encode the physical PIO addresses (0-0xffff) into the
-
-I know this is the original text, but we have a chance to improve it a bit by
-saying range more explicitly:
-
- * We encode the physical PIO addresses (0x0000-0xffff) into the
-
-> + * pointer by offsetting them with a constant (0x10000) and
-> + * assuming that all the low addresses are always PIO. That means
-> + * we can do some sanity checks on the low bits, and don't
-> + * need to just take things for granted.
-> + */
-> +#define PIO_OFFSET	0x10000UL
-> +#define PIO_MASK	0x0ffffUL
-> +#define PIO_RESERVED	0x40000UL
-> +#endif
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+fn create_file<T>(&self, name: &CStr, data: impl PinInit<T>) -> impl
+PinInit<FileWithData<T>>
