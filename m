@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9DA231A21;
-	Fri,  9 May 2025 21:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A896225C82E;
+	Fri,  9 May 2025 21:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746826707; cv=pass; b=AFz9utBM77kDmtrW5Gq0hzakQM2al2FI+1Ln29sNgrD7to3W2rrFqD2LKwdRpHGhP2BxDiKsHlWmFrVviuNx5T1GFIaKiPbWIKP52ckCu3RaJd1xod0huDPK1sGiUC/yH6H/Q6UqwbDk34zgbWfNm5oMCgv0hiXyvAXIS7XVGx4=
+	t=1746826987; cv=pass; b=DgnK2OS32ftI3iypPJKQjJnJkBw5XiBoW9qRIedcHbSrSixOPYnB9ZaZ5pVa+Zc4fo98iCGixbkRAK+ZxLuOk/LuLLHdvCjeUkdjyPBTR0MUyhUY8Dz/pMLPXA0tTS1nB46XCTchgnT0gcR/b8pX+X9vnAV7VkzSDVeKJkYvK9A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746826707; c=relaxed/simple;
-	bh=JR3oarlI6eN+Z0j9+LCA/IM58p818z+VC8vRoHsKcxM=;
+	s=arc-20240116; t=1746826987; c=relaxed/simple;
+	bh=3hwjDaebYOfFUJ/ZHzCyOJHtNHDwmdFy5WsivJNN/tg=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=RFhQ46hsY/xENynLilH89hvVrnjAdIAKwPnddBTj0violxHEElrX+yd8jaSvdsqqSrMh25SvYennbfNozhACDbO9/nZBmqNRqKSXAdbeRrQg2mb+DqteR1CP0nU4T7qF7tq14AITpAHOCRDd3uJiOrjE0nUPxTqQ47dj9nyY24M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=T1/40aG5; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=gtqVOHanKENhZ6u41Mltk8dY74Wdz7z/PDyUXXILnCfDMxb340GFprhd0J/R4wbY8Bl+n8vDob9vddM2MIv3Vo31qmLPZvDB0zLjipnYazyYxaETRs1dIwEsvcIOIl41PpczT6nhra9yE8x5g7y1X2Gxk+DjW/UmleC4eeJGtH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Jucn2dsF; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="T1/40aG5"
-ARC-Seal: i=1; a=rsa-sha256; t=1746826660; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Jucn2dsF"
+ARC-Seal: i=1; a=rsa-sha256; t=1746826951; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=WKLU011SkivK0CNI3kcoJf+l62KFY2BaL9IORqjf32F2qaFwW2n+oZkocV/RyAwQllsqiMudkyp0+JyMd6wGRJGmF8hOSYbS0COt0fxW3I6WCPjTGxtAED+ngGBYxZMU/mbBrjA8rbLMsRV9rk8dqpvw4GXQ7dMPS2VQzd0uEjE=
+	b=VMGUGMc2VA7dXaFDn98icvQbJGDA45Cvk2SbMdmMorjdfpiEUem9BAceT+MvS5nXTiKJXD+5kdoshfGhKyTolhbdx2f46tDtPEDEbXbmjoPJIX18kFDJ2tmRK1Ugx6oGyKGbRcPfynddbKyyL/ibtqfB7V5fCHGVjtIK7oPXkmk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1746826660; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=8uQ/Q3BZqWs3AB74fmSdEwMz4hZv89bD/2dhgqYOFcA=; 
-	b=RlRw7YotPSJCKobOTnXOogLGVeSgZdNDHjNWiaX3zvpSkwlNzgsk/jyzxVWHdM0AwbX3rSi7Z8ULF0euyiypZrK+gD22fwa3gtv1/rX5RbhOPUU9oFoNWYlRBNFTwt6bWR0mgU9J1Z5B0w6bSPU3SIcJwBsGFQVHDJS1+eQaCJ8=
+	t=1746826951; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=owVjo58ul/GnTuZG0UmMNti1i3FStOLBCiI8f4mUzlc=; 
+	b=epYErGucFPGTrkSF9PC3xfrnbI7gpmq+sntHtZ4bRPhJxTf/SY2ivg02QhgZAbok7KZ2NHcg1KZptcXeyjKRv+y47RBrObwwQO4qKecHyAm1mb5CVeHxZTooLxyiNcTQJr6tyA3xo7jG97ykKEpzcKIqo0WYTIqgsNxZ1U+rfOY=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1746826660;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1746826951;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=8uQ/Q3BZqWs3AB74fmSdEwMz4hZv89bD/2dhgqYOFcA=;
-	b=T1/40aG5XAwBQa9Lngu832NkdWK/kp+55bqU87dAFsnovWg4PPz2ZO/Gki6pxCp5
-	E7Tde/p9crMaG0mA577r6TCqJknvHJXibFsTnMAbNmAo9TtviIqmU6AgOBUsgU3qsAP
-	dVzyB2gyy6FLHDLkIP7PRd6VCVFNn+S8b9iVSDMM=
-Received: by mx.zohomail.com with SMTPS id 1746826657711256.6976409448082;
-	Fri, 9 May 2025 14:37:37 -0700 (PDT)
+	bh=owVjo58ul/GnTuZG0UmMNti1i3FStOLBCiI8f4mUzlc=;
+	b=Jucn2dsFcUL+5iir6UEK3Ud3Yc+5pMcA43ECvIxdupv7UsaufyePfnYa+Q1bFjfj
+	GhNOKyc1DbjddSAAgDGiJjfvddFp0/tetQT6T2MK3kXoTT1ZL7AvZphmyeOU3EEVI4r
+	kqJM2ikZMQ4bic/RnUW5s/W2w20cCIPoMn/t+oik=
+Received: by mx.zohomail.com with SMTPS id 1746826949914316.9241470000976;
+	Fri, 9 May 2025 14:42:29 -0700 (PDT)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -44,19 +44,18 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH 2/4] rust: drm: gem: Refactor
- IntoGEMObject::from_gem_obj() to as_ref()
+Subject: Re: [PATCH 3/4] rust: drm: gem: s/into_gem_obj()/as_gem_obj()/
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250501183717.2058109-3-lyude@redhat.com>
-Date: Fri, 9 May 2025 18:37:20 -0300
+In-Reply-To: <20250501183717.2058109-4-lyude@redhat.com>
+Date: Fri, 9 May 2025 18:42:12 -0300
 Cc: dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>,
  Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
  Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
@@ -67,200 +66,124 @@ Cc: dri-devel@lists.freedesktop.org,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
  Danilo Krummrich <dakr@kernel.org>,
- Asahi Lina <lina@asahilina.net>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Asahi Lina <lina@asahilina.net>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <036A1696-C113-4C71-93AD-D5EA92EA3552@collabora.com>
+Message-Id: <128B16D7-2E18-440E-A2EE-C7194194D7D3@collabora.com>
 References: <20250501183717.2058109-1-lyude@redhat.com>
- <20250501183717.2058109-3-lyude@redhat.com>
+ <20250501183717.2058109-4-lyude@redhat.com>
 To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.500.181.1.5)
 X-ZohoMailClient: External
 
-Hi Lyude
+Hi Lyude,
 
 > On 1 May 2025, at 15:33, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> There's a few issues with this function, mainly:
->=20
-> * This function -probably- should have been unsafe from the start. =
-Pointers
->  are not always necessarily valid, but you want a function that does
->  field-projection for a pointer that can travel outside of the =
-original
->  struct to be unsafe, at least if I understand properly.
-> * *mut Self is not terribly useful in this context, the majority of =
-uses of
->  from_gem_obj() grab a *mut Self and then immediately convert it into =
-a
->  &'a Self. It also goes against the ffi conventions we've set in the =
-rest
->  of the kernel thus far.
-> * from_gem_obj() also doesn't follow the naming conventions in the =
-rest of
->  the DRM bindings at the moment, as_ref() would be a better name.
->=20
-> So, let's:
->=20
-> * Make from_gem_obj() unsafe
-> * Convert it to return &'a Self
-> * Rename it to as_ref()
-> * Update all call locations
+> There's a few changes here:
+> * The rename, of course (this should also let us drop the clippy =
+annotation
+>  here)
+> * Return *mut bindings::drm_gem_object instead of
+>  &Opaque<bindings::drm_gem_object> - the latter doesn't really have =
+any
+>  benefit and just results in conversion from the rust type to the C =
+type
+>  having to be more verbose than necessary.
 >=20
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
-> rust/kernel/drm/gem/mod.rs | 67 ++++++++++++++++++++++++--------------
-> 1 file changed, 42 insertions(+), 25 deletions(-)
+> rust/kernel/drm/gem/mod.rs | 21 +++++++--------------
+> 1 file changed, 7 insertions(+), 14 deletions(-)
 >=20
 > diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index df8f9fdae5c22..f70531889c21f 100644
+> index f70531889c21f..55b2f1d056c39 100644
 > --- a/rust/kernel/drm/gem/mod.rs
 > +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -45,8 +45,12 @@ pub trait IntoGEMObject: Sized + =
+> @@ -42,8 +42,7 @@ pub trait IntoGEMObject: Sized + =
 super::private::Sealed {
->     #[allow(clippy::wrong_self_convention)]
->     fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object>;
 >=20
-> -    /// Converts a pointer to a `struct drm_gem_object` into a =
-pointer to `Self`.
-> -    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self;
-> +    /// Converts a pointer to a `struct drm_gem_object` into a =
+>     /// Returns a reference to the raw `drm_gem_object` structure, =
+which must be valid as long as
+>     /// this owning object is valid.
+> -    #[allow(clippy::wrong_self_convention)]
+> -    fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object>;
+> +    fn as_gem_obj(&self) -> *mut bindings::drm_gem_object;
+>=20
+>     /// Converts a pointer to a `struct drm_gem_object` into a =
 reference to `Self`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `self_ptr` must be a valid pointer to `Self`.
-
-Must also obey the reference rules. This is a bit obvious but it should
-probably be mentioned regardless.
-
-> +    unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> =
-&'a Self;
-> }
->=20
-> /// Trait which must be implemented by drivers using base GEM objects.
-> @@ -63,14 +67,13 @@ extern "C" fn open_callback<T: =
-BaseDriverObject<U>, U: BaseObject>(
->     let file =3D unsafe {
->         drm::File::<<<U as IntoGEMObject>::Driver as =
-drm::Driver>::File>::as_ref(raw_file)
->     };
-> -    let obj =3D
-> -        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as =
-IntoGEMObject>::from_gem_obj(
-> -            raw_obj,
-> -        );
-> -
-> -    // SAFETY: `from_gem_obj()` returns a valid pointer as long as =
-the type is correct and the
-> -    // `raw_obj` we got is valid.
-> -    match T::open(unsafe { &*obj }, file) {
-> +    // SAFETY: `open_callback` is specified in the AllocOps structure =
-for `Object<T>`, ensuring that
-> +    // `raw_obj` is indeed contained within a `Object<T>`.
-> +    let obj =3D unsafe {
-> +        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as =
-IntoGEMObject>::as_ref(raw_obj)
-> +    };
-
-Ugh..IMHO we need to have aliases for all of these. This is, of course,
-orthogonal to your patch. Just a nice-to-have for the future :)
-
-> +
-> +    match T::open(obj, file) {
->         Err(e) =3D> e.to_errno(),
->         Ok(()) =3D> 0,
->     }
-> @@ -84,14 +87,13 @@ extern "C" fn close_callback<T: =
-BaseDriverObject<U>, U: BaseObject>(
->     let file =3D unsafe {
->         drm::File::<<<U as IntoGEMObject>::Driver as =
-drm::Driver>::File>::as_ref(raw_file)
->     };
-> -    let obj =3D
-> -        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as =
-IntoGEMObject>::from_gem_obj(
-> -            raw_obj,
-> -        );
-> -
-> -    // SAFETY: `from_gem_obj()` returns a valid pointer as long as =
-the type is correct and the
-> -    // `raw_obj` we got is valid.
-> -    T::close(unsafe { &*obj }, file);
-> +    // SAFETY: `close_callback` is specified in the AllocOps =
-structure for `Object<T>`, ensuring
-> +    // that `raw_obj` is indeed contained within a `Object<T>`.
-> +    let obj =3D unsafe {
-> +        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as =
-IntoGEMObject>::as_ref(raw_obj)
-> +    };
-> +
-> +    T::close(obj, file);
-> }
->=20
+>     ///
+> @@ -99,8 +98,8 @@ extern "C" fn close_callback<T: BaseDriverObject<U>, =
+U: BaseObject>(
 > impl<T: DriverObject> IntoGEMObject for Object<T> {
-> @@ -101,9 +103,10 @@ fn into_gem_obj(&self) -> =
-&Opaque<bindings::drm_gem_object> {
->         &self.obj
+>     type Driver =3D T::Driver;
+>=20
+> -    fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object> {
+> -        &self.obj
+> +    fn as_gem_obj(&self) -> *mut bindings::drm_gem_object {
+> +        self.obj.get()
 >     }
 >=20
-> -    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self =
-{
-> -        // SAFETY: All of our objects are Object<T>.
-> -        unsafe { crate::container_of!(obj, Object<T>, obj).cast_mut() =
-}
-> +    unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> =
+>     unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> =
 &'a Self {
-> +        // SAFETY: `obj` is guaranteed to be in an `Object<T>` via =
-the safety contract of this
-> +        // function
-> +        unsafe { &*crate::container_of!(self_ptr, Object<T>, obj) }
+> @@ -119,7 +118,7 @@ pub trait BaseObject
+>     fn size(&self) -> usize {
+>         // SAFETY: `self.into_gem_obj()` is guaranteed to be a pointer =
+to a valid `struct
+>         // drm_gem_object`.
+> -        unsafe { (*self.into_gem_obj().get()).size }
+> +        unsafe { (*self.as_gem_obj()).size }
 >     }
-> }
 >=20
-> @@ -144,11 +147,25 @@ fn lookup_handle(
->     ) -> Result<ARef<Self>> {
+>     /// Creates a new handle for the object associated with a given =
+`File`
+> @@ -131,11 +130,7 @@ fn create_handle(
+>         let mut handle: u32 =3D 0;
 >         // SAFETY: The arguments are all valid per the type =
 invariants.
->         let ptr =3D unsafe { =
-bindings::drm_gem_object_lookup(file.as_raw().cast(), handle) };
-> -        let ptr =3D <Self as IntoGEMObject>::from_gem_obj(ptr);
-> -        let ptr =3D NonNull::new(ptr).ok_or(ENOENT)?;
->=20
-> -        // SAFETY: We take ownership of the reference of =
-`drm_gem_object_lookup()`.
-> -        Ok(unsafe { ARef::from_raw(ptr) })
-> +        // SAFETY:
-> +        // - A `drm::Driver` can only have a single `File` =
-implementation.
-> +        // - `file` uses the same `drm::Driver` as `Self`.
-> +        // - Therefore, we're guaranteed that `ptr` must be a gem =
-object embedded within `Self`.
-> +        // - And we check if the pointer is null befoe calling =
-as_ref(), ensuring that `ptr` is a
-> +        //   valid pointer to an initialized `Self`.
-> +        // XXX: The expect lint here is to workaround
-> +        // https://github.com/rust-lang/rust-clippy/issues/13024
-> +        #[expect(clippy::undocumented_unsafe_blocks)]
-> +        let obj =3D (!ptr.is_null())
-> +            .then(|| unsafe { Self::as_ref(ptr) })
-> +            .ok_or(ENOENT)?;
-> +
-> +        // SAFETY:
-> +        // - We take ownership of the reference of =
-`drm_gem_object_lookup()`.
-> +        // - Our `NonNull` comes from an immutable reference, thus =
-ensuring it is a valid pointer to
-> +        //   `Self`.
-> +        Ok(unsafe { ARef::from_raw(obj.into()) })
+>         to_result(unsafe {
+> -            bindings::drm_gem_handle_create(
+> -                file.as_raw().cast(),
+> -                self.into_gem_obj().get(),
+> -                &mut handle,
+> -            )
+> +            bindings::drm_gem_handle_create(file.as_raw().cast(), =
+self.as_gem_obj(), &mut handle)
+>         })?;
+>         Ok(handle)
 >     }
->=20
+> @@ -171,13 +166,11 @@ fn lookup_handle(
 >     /// Creates an mmap offset to map the object from userspace.
+>     fn create_mmap_offset(&self) -> Result<u64> {
+>         // SAFETY: The arguments are valid per the type invariant.
+> -        to_result(unsafe { =
+bindings::drm_gem_create_mmap_offset(self.into_gem_obj().get()) })?;
+> +        to_result(unsafe { =
+bindings::drm_gem_create_mmap_offset(self.as_gem_obj()) })?;
+>=20
+>         // SAFETY: The arguments are valid per the type invariant.
+>         Ok(unsafe {
+> -            bindings::drm_vma_node_offset_addr(ptr::addr_of_mut!(
+> -                (*self.into_gem_obj().get()).vma_node
+> -            ))
+> +            =
+bindings::drm_vma_node_offset_addr(ptr::addr_of_mut!((*self.as_gem_obj()).=
+vma_node))
+
+Hmm, I thought we were on a quest to remove addr_of_mut!() in favor of =
+&raw mut?
+
+Anyways, this is again orthogonal to your patch.
+
+>         })
+>     }
+> }
 > --=20
 > 2.48.1
 >=20
 >=20
 
-With the extra safety requirement,
+This looks good.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+
