@@ -1,107 +1,134 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFFE21CC60;
-	Fri,  9 May 2025 19:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540B623E342;
+	Fri,  9 May 2025 20:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746819198; cv=none; b=hsAt0uOamUcZGhIfozN+dg4wzSoAVBoDNj4k0y0EQ3HveunXxBoyFb7xOU1OMF/QkclrMYYtqAE9wZRQFLcxmpONgJrW4C9ZeJoeRbpdnzlLdo7qvgqlX6WnjySgswZWIkJmno8U7JRR+3CGeMqWouq1xQWdgWcsF0jWdxoKlc4=
+	t=1746821029; cv=none; b=tp7aUPiVuo1gFKyInyVnUdSx1akLY0n5iXCbNSv1GNn77eA9/wcgLVc1LvaasCOcQDm2Cu0bRaOTC8qYwsBxlE4hL6rWA6RM7XvsHuIgIzbxMjk8KF8x1UpM9hYDm6QsRCSyfaMKDYsg8ZgHiw9sIY1ulH5ZPiPGbGiljTEX5v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746819198; c=relaxed/simple;
-	bh=gcXbNo6dJxypnrrB1Lryz35q6/nYgcIJf/jVLyFqoL0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=smDJ/FFBA1vsq0bMj3TlfaIwYUxukpQGnhzZXEeQBWHNSKFiqBxG4CcEy1lY/bDzu63BO0eSos+bTPpGdm9D+RG+a6WJpIf7Dlskw1jXfdIOailvW1mFGw/voY3/fYT9y2+Gjq9+yWKuMiIHj9dOEl0I1Ndar7akaHPPlXuRLUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EJoqr1Ew; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746821029; c=relaxed/simple;
+	bh=Tlb5MDgotIsmFC5l0enuv4HrkZGo1UYHZBpeu4qlZeE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S+T4McVwDcQZl0CdrDP0WRJKYKWcuxVomZrqYSkZEe+hUUZ9QCrFaBGrvCUn+QzCCJ4hgMfRyq3pHInKx/x3F4mSAmw6X8Y/8VoTuQuXsf6BOOknkqttFAnpV3IG3ivC9+lD4Q6vhVZdYPVTHhcmy6a6MUeZYaBoBUvl8ITZXkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvGlyerw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EJoqr1Ew"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22e696bbc85so3861675ad.2;
-        Fri, 09 May 2025 12:33:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746819195; x=1747423995; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gcXbNo6dJxypnrrB1Lryz35q6/nYgcIJf/jVLyFqoL0=;
-        b=EJoqr1EwPNyQmiTHlflpBtnkpzIrIm2LuLAw9wrHClRN7SD00jyhHtTAK+3Pz+Qk8V
-         OZAbzgsXzXTHfHNqJqa6mpnfbz5nZPn0KdUt6B8gB+Pe5sUe1m0GcZ4Bmc+gHM7H4x+e
-         n/b9IjTCuQWhzF3KnujU88FETH/6/C+X6Db9e9C50wO/LvpzmbqC8sg3HYODL4bZ+30D
-         Prj6hdk+YhVVmx2tRgLjBcCQh85yB8ac9E6tWFVBOuj+2QIzS7wD1ckA8aV7j/+G6agz
-         BzYT9SAXNd0vcjrIOJ+VgjfQIJsphG6NWsAvMA0aWamRrzNBe6TvWzJLaC/f8q7wukWP
-         sJ0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746819195; x=1747423995;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gcXbNo6dJxypnrrB1Lryz35q6/nYgcIJf/jVLyFqoL0=;
-        b=PtUB5K+CXWMyIUPRKKWKdtM+siLAxKq/CLPcaJsRznACB4hr2LW3/Vod5nPLVTr6bv
-         ySS6x1rA4lnY7XgTHXWkEa+oSW3KVhaCBaPzkbtnGhQcAjhuYgqBDsvZEtSZKJmLa6/6
-         3HVV4V5KYKXefW8KkdRGz7BU0ReGmREql02+AXq6m03N5AaHfp9/zNNfwVCOZsFn7Trs
-         svQ3t76P9HGQ3O/XS0ws2sXVVRSetZ1rgdQmxApP9cbx8lweClDhUtdvSG5LOoZrjhZT
-         bRjiQS35nlZBUjQEYxb9g3K9hfi3F5mYdZqrgW2BKFYCR36NwDs5DlEYFlh/G5g9eL7/
-         GoUA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7mvYN3+0LuF2vZtW8EubWOLvmoohRKx5fW604lHo0mQ6bsgBAHJi5/AGVMuXH9L+0HqtBC+YQRbTEE8Qm4kA=@vger.kernel.org, AJvYcCX0Hhlt6KX1CLmb1Qbm4hcvgkByLKRiutYxeDzcEWtRPlvRjILBUlNl+HYXkk9dziwruH2jUfCI2Clf0Ag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZpc+9FrSv9xtVa/uIMjy9QJH/XY8o88myaGzvZR7Rx7LvvMU7
-	I4VGczKmhG65FWSrsMrCDnB7X8tK9T7q53EGkCeKE+XcRdY+ZZPaZuE+UV06YLJf9o3wHCFAIiZ
-	/eN4Wd+MPLXK8asxS8b/OX6GtIhc=
-X-Gm-Gg: ASbGncur01Rrc76A8Akx16QCtGhMoNm8Jz4HlfLXnXMv7o/9b+hCZljsSVrCRYW/2bQ
-	C/byTu8OvnDXgVTIuRSKnePXSyCOvLnjQDwrvpOuhcwAhxiCwFlcTFQsWdkiUaF1zwUkfyteRO0
-	NiiFgLgKuGsswQYU7imcB2ZcsWIkPb2WtH
-X-Google-Smtp-Source: AGHT+IEc+d5JlKdjlFuIvBIjbzfQ3nYKhJC8MzeBGJwwq9mAHyd9wC7lk9Jb4ibJ0mKKb5H5AmC+T8ZMCBG7KEqaRMM=
-X-Received: by 2002:a17:903:198d:b0:22c:336f:cb5c with SMTP id
- d9443c01a7336-22fc8b5d360mr27329195ad.6.1746819195491; Fri, 09 May 2025
- 12:33:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvGlyerw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C93EC4CEE4;
+	Fri,  9 May 2025 20:03:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746821028;
+	bh=Tlb5MDgotIsmFC5l0enuv4HrkZGo1UYHZBpeu4qlZeE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pvGlyerwXRkpmzHnBUeKJCpK7IgRxYieKDXWZmfUv9CHHNUsCb3nkvKF/XJDfrQWF
+	 3wgyQenDD0gaD/MlO4dJQsuhnPfIpkktj/eIJJI2iJHaRj9yX4HxjJnFRgjp01Qc9X
+	 yGP70dk5ivyzPzXzv4//Q4p/psZm/EjidykT8dC+Ib/EwPVYuxdqZmQyEfNMXYQ7Y2
+	 zxIqeW5PzHb7mTFRNUJXk6wqM6MB3B+ncevEScmIOSkcM6LH1ntjkbFw3+v4r1myTL
+	 ybqP1/yuWmHJ/XlorLsIJ36Jw7TNYOR9NOxAlnYJDJxtOdmkCFU2AR58L3Gchw9LeC
+	 DmwGIhDobDmtg==
+Date: Fri, 9 May 2025 17:03:46 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Ian Rogers <irogers@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Howard Chu <howardchu95@gmail.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
+	Daniel Xu <dxu@dxuuu.xyz>, Ariel Ben-Yehuda <ariel.byd@gmail.com>
+Subject: Re: [PATCH v2 0/6] Use rustc-demangle for Rust demangling
+Message-ID: <aB5fog7c-Ucs6dAN@x1>
+References: <20250430004128.474388-1-irogers@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250410132649.GE9833@noisy.programming.kicks-ass.net>
- <CANiq72=Q_Z8KfV+n4z9wWVJsZwVevag=Vh3URe71XkUuWuqEDg@mail.gmail.com>
- <20250410133446.GF9833@noisy.programming.kicks-ass.net> <CAH5fLghrcqSYwkqbC4SSp6oYCny0riMRGA6W+oqQ69aA=NwYWw@mail.gmail.com>
- <CANiq72k0AM3v9JZe=8mDN6T1ToiAt1-1e1zJ3z0Oh6ZWfchzag@mail.gmail.com>
- <20250416202040.GD38216@noisy.programming.kicks-ass.net> <202504161442.66CE2596@keescook>
- <20250417081818.GJ38216@noisy.programming.kicks-ass.net> <CANiq72kjDM0cKALVy4POEzhfdT4nO7tqz0Pm7xM+3=_0+L1t=A@mail.gmail.com>
- <CANiq72muSS+NNs5fxp4GPKWWhyXT95spvbGsZz6AJnK8RerUqQ@mail.gmail.com>
- <aB3A0Qe5WqmxXQJt@google.com> <CANiq72=NymSwziZw1a0PUNyJ=TCN5tkr3PojJRQ0sjqFWDjz-g@mail.gmail.com>
- <CAM5zL5psM0ED0A5ZkEdNi34q2itfyMCi+QRBtG-5URUsChUU6A@mail.gmail.com>
-In-Reply-To: <CAM5zL5psM0ED0A5ZkEdNi34q2itfyMCi+QRBtG-5URUsChUU6A@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 9 May 2025 21:33:02 +0200
-X-Gm-Features: AX0GCFtkYaIQp1AmgGJnhaM7CVq74VADIURITEbAJCO-BFghfABDmVAwuLpLGuc
-Message-ID: <CANiq72=eMued_fEb8j8auBmEUiQ7Cnh7fQiTv-kMeKgh-JALFA@mail.gmail.com>
-Subject: Re: [PATCH] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
-To: =?UTF-8?Q?Pawe=C5=82_Anikiel?= <panikiel@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Kees Cook <kees@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, 
-	Ramon de C Valle <rcvalle@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250430004128.474388-1-irogers@google.com>
 
-On Fri, May 9, 2025 at 11:12=E2=80=AFAM Pawe=C5=82 Anikiel <panikiel@google=
-.com> wrote:
->
-> On Fri, May 9, 2025 at 11:04=E2=80=AFAM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > I thought the intention was to avoid disabling FineIBT at config time:
-> > https://lore.kernel.org/all/202504161442.66CE2596@keescook/
->
-> I think you mean enabling FineIBT - yes, this patch does exactly that,
-> it's still possible to enable it by hand with cfi=3D
+On Tue, Apr 29, 2025 at 05:41:22PM -0700, Ian Rogers wrote:
+> Discussion of improved Rust demangling started with:
+> https://lore.kernel.org/lkml/jgxfnphfo3nzlfipnuuzdlfc4ehbr2tnh2evz3mdhynd6wvrsu@fcz6vrvepybb/
+> that led to implementing a Rust v0 demangler:
+> https://lore.kernel.org/lkml/20250129193037.573431-1-irogers@google.com/
+> Discussion on that patch series led to the rust-lang issue:
+> https://github.com/rust-lang/rust/issues/60705
+> where the pre-existing Rust C demangler, authored by Ariel Ben-Yehuda
+>  <ariel.byd@gmail.com>, was mentioned. There wasn't progress on that
+> issue and so I've pulled that work into perf as discussed on the
+> issue.
+> 
+> v2: Changes to references from arielb1 to "Ariel Ben Yehuda
+>     <ariel.byd@gmail.com>", license tidying as suggested by Miguel
+>     Ojeda" <ojeda@kernel.org>. Don't change from alternate demangling
+>     flag from false to true in the test change, make it true from the
+>     beginning (patch 2).
+> 
+> Ian Rogers (6):
+>   perf demangle-rust: Add rustc-demangle C demangler
+>   perf symbol-elf: Integrate rust-v0 demangling
+>   perf demangle-rust: Remove previous legacy rust decoder
+>   perf test demangle-rust: Add Rust demangling test
+>   perf test demangle-java: Switch to using dso__demangle_sym
+>   perf test demangle-ocaml: Switch to using dso__demangle_sym
 
-No, I meant avoiding to disable it at config time due to the rehash
-discussion between Peter & Kees in the Lore link I mentioned (I see
-Kees has replied again -- thanks!)
+I'm fixing these up, ok?
 
-Cheers,
-Miguel
+  ✗ BADSIG: DKIM/google.com
+---
+Total patches: 6
+---
+Cover: ./v2_20250429_irogers_use_rustc_demangle_for_rust_demangling.cover
+ Link: https://lore.kernel.org/r/20250430004128.474388-1-irogers@google.com
+ Base: applies clean to current tree
+       git checkout -b v2_20250429_irogers_google_com HEAD
+       git am ./v2_20250429_irogers_use_rustc_demangle_for_rust_demangling.mbx
+⬢ [acme@toolbx perf-tools-next]$        git am ./v2_20250429_irogers_use_rustc_demangle_for_rust_demangling.mbx
+Applying: perf demangle-rust: Add rustc-demangle C demangler
+.git/rebase-apply/patch:1098: trailing whitespace.
+    
+.git/rebase-apply/patch:1363: trailing whitespace.
+    
+.git/rebase-apply/patch:1474: trailing whitespace.
+    default: 
+.git/rebase-apply/patch:1791: trailing whitespace.
+        { NULL }, 
+.git/rebase-apply/patch:1814: trailing whitespace.
+        // From here on, inner contains a pointer to the next element, rest[:len] to the current one        
+warning: squelched 4 whitespace errors
+warning: 9 lines add whitespace errors.
+Applying: perf symbol-elf: Integrate rust-v0 demangling
+Applying: perf demangle-rust: Remove previous legacy rust decoder
+Applying: perf test demangle-rust: Add Rust demangling test
+Applying: perf test demangle-java: Switch to using dso__demangle_sym
+Applying: perf test demangle-ocaml: Switch to using dso__demangle_sym
+⬢ [acme@toolbx perf-tools-next]$
+
+Applied.
+
+- Arnaldo
