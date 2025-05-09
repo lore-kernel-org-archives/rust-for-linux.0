@@ -1,76 +1,80 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DB727EC99
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 May 2025 08:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D3114F98;
+	Fri,  9 May 2025 09:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746780375; cv=none; b=D8bsPKlYq/EufgIJDmgLdVnObXnIWNlE1RbY693T70h2j/ezAMHzb21XsL7ZFc506LWKAKlNCHI21V9w5GtJzo3+OKLpCV6OEXWpIWhgTyY+pKzxfmzYQ8Ie+XpvfgD2JnMxyjB808xcxoDeUnyIe3C7DWLWc5wLUKvcCpwfCm0=
+	t=1746781470; cv=none; b=tFV5BV2FcBLzg34s9MFmYjaeU1oA3b1qjcoWQOCeEeX/8NhkMtezJhQt+krFUt+475WMrE8J9TCjQFOMd8wtv3ZQI6qjwI83ckZW8k34etAxNdKnZDyopeTqt1c9iIOUwZXe4+Awhg0AokMHdR0WSrw8N0aBdpIhNnsMPGqTMho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746780375; c=relaxed/simple;
-	bh=qsl/joelKwczJ7bi9V1St9WtcC0k/O+XG8627gyNOKE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FHWRfZEjR323xonwBvXNkL2l/hhMF56e4eMiI8pFCY/8Scoy+5LQwqm5lz1PSobZG6HpyZolYEf3sj/DJEf+mmE5yxDEL+Rl6cY+VZywWtso2xJnwd0Qk0xeEly+YmPZVeShIdsFgWNeKU9EfNyjZ2LkJasuVXFJ3RXo6lQqb4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DS8DsYq7; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1746781470; c=relaxed/simple;
+	bh=X0A6ZHuppb4JfJ0oMiCdmzcVz7xpQPiCgEUEjzsOr0E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oX+BtMkVqnQoId04AxfTQP1vhzQDtkED5s6EhgyONAY19NmnP2ujWyVet0tp2QDndBDvCGiBupmVp4WDdoZq4WtohBRT1mXINkyVd3xe80nvj1L8TOb6bDnKwS0Yn3dKuElYR6IbRz5LCQiyrRdyikZA6vQKHxXijLkRsQapST8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BtIh+MHm; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DS8DsYq7"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43efa869b0aso12763825e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 May 2025 01:46:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BtIh+MHm"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b1ff8a0a13cso272549a12.0;
+        Fri, 09 May 2025 02:04:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746780371; x=1747385171; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MGJzbeAPShVS80kaiI20MlTe07Nkf3fvhyjfEiBHmj0=;
-        b=DS8DsYq7AgvGJ74cfgR0vVfM06tnemuI4DcKSKNKxvTu8+FfM6s+nVFBS9kRoQnXyS
-         v8nBuMYX4QP1WY4pEZo+pH22tOdGXe3y8vM81cs6TT2ENESJEdgyrShPQ/f9k2xY9FWZ
-         dimRh1zDWa+le/ldmuUM5MCXknF5TdJGQkfpXp9O5DsQ3R1PGVjSjaQx50Y4kW24wpAe
-         RFw73U4/RLfiE0pExrP1qZ6fQz5+VYfhc1t/Xqbbt5PV1op0uFvkffEtEytsqmxwuSra
-         qipV1Zhwa2hlLiiBc16tqmxdhl3OWIGBIhMR9Axq4XkxPIJ6gD2XXV0PYjd6MXKKRtc/
-         V2Hw==
+        d=gmail.com; s=20230601; t=1746781468; x=1747386268; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X0A6ZHuppb4JfJ0oMiCdmzcVz7xpQPiCgEUEjzsOr0E=;
+        b=BtIh+MHm4rw8RHM+0ZhGVeQjeBXXd06fECmeV5DXW+vxGret9pNqXh4khTAiiF8ggN
+         gWdrSPxvD4sW0E8Kq4xvxdWBOmhA+ZgiWFj1tKAQoQ2B5gK2f0/X1WmFEZS1VyByDNzE
+         +LQPR6WFEJJzc/nkQT0XMU9O28lwQnvziDwRsYMCN1wKEX7cSN4JHymPHOcD2QITFt+N
+         DdMneJoKRizE1+CgH6wGkiMYd2esu8Xhr9d2H7+Aa06TQPXsfGxabE64pIEQDinOI+Oc
+         b3CUWHfMQaS4HEQyyFKwLhhCi1AOZ24REK14iWuIwBf1OHXvzju07+G1gUVNvShNWe52
+         rSew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746780371; x=1747385171;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MGJzbeAPShVS80kaiI20MlTe07Nkf3fvhyjfEiBHmj0=;
-        b=RsqMp5D1kpV9JdoML2jlM+iUYo/rWCxtrIZrHG/cXhL+VxSnTWQBogkBgGYvpocrFJ
-         SzNHbaJB8cz5hAiNlVl2/uJveEVxtdKoslACMiwpGiPjzeTPh6kIv41CyoGPUnwdaGfe
-         EXXHXdEC3SjWap9nHiVOi3AfH3xWpqiqwb/c2OMDy8dsCeFmGZHVdSFHq+8iU/jk/KhV
-         VTpiXfwwXiwyniU6naGKTK4s7XBFhViO6CTEpF3Apv3U6iRuVf+yC4I30wb/dB7UpO5/
-         rhWIVwTzHdTcIMxK0+rmgTpAQ0jiEbduxECbnFaqzXnjpdqGKA3MdIi8WT8cD7Z03Qx1
-         NfPA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDoIKemC3H6vYoJ4+9qm2HUvlMyi1QvXt2G50RBBv4TkHCLmlEdyK8fGL2082+TRGcGkUDo9iKBGNQya2LnQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyh2TMIbvazmewj/bbgK1UpIseY9hcXu4GQkeOLbkByXCmpcVbJ
-	ulqM8ddPGeXANFQLdEIC8V7xYEV8vuOutULlsqPBTKFCM1AY1z+9E8TdCT9Dvcc40O065eNR6Tt
-	TcNHhh1QRUT1CSQ==
-X-Google-Smtp-Source: AGHT+IE1g5YyKhENi+6gXRQtJXAWEa/UniZ8LOkUkrGgQNc45EoYtxjXpwi6qJONxZWCOgGv1QUMncVWtyjEBmM=
-X-Received: from wmrm7.prod.google.com ([2002:a05:600c:37c7:b0:440:5f8a:667c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:608c:b0:43c:e70d:450c with SMTP id 5b1f17b1804b1-442d6dbbd6cmr19045605e9.22.1746780371623;
- Fri, 09 May 2025 01:46:11 -0700 (PDT)
-Date: Fri, 9 May 2025 08:46:09 +0000
-In-Reply-To: <CANiq72muSS+NNs5fxp4GPKWWhyXT95spvbGsZz6AJnK8RerUqQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1746781468; x=1747386268;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X0A6ZHuppb4JfJ0oMiCdmzcVz7xpQPiCgEUEjzsOr0E=;
+        b=okpk3NY2S83qG9DmMc4YWgsSYW0+RRQ0cKrWNDYbGP+cR3zdKsTQ6dMxIkqtDmNzul
+         FHz9HBAN3xEtN7pXt8GxKG1Rg03KuM66oi1kfUHhfExA0Qh/tMpsAhEQ/lih1LVoGXEn
+         i0/g5CyE7rBd5igRCrRSPmPJBB297rfpv8XPyY+A5X7mU+5wj5ajAkvXlVGBo+RQXLVh
+         3LoHfq9sCQn7qKHcUoRUATN1w7U3UUMcO4MH026zAEegpQWhvAyOFuYyI4hPKce6nxK/
+         1lp0Brci65TiYtgRwYFSuv3TTMRdGPihTL+V8vTDpMcU0vqrkT3cp46lJ604mDAxRZC1
+         MVHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUCmDuEMe4nTOAtaJrrIU2Yw595ZArTnPfpEeb4IYP5x8JcFw2h5EiWBuHulFIi7zfYcT4FRjh2FlUdB2D096E=@vger.kernel.org, AJvYcCUb97bz/7PykPQ5iPie0iQ1z1MNnQNmoQEOBuNnquJNpvHhv2CdCsY1+1NkjgyMhfc1LQFt0dPzSRjm8RI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZ7lFWCeqtPJqlD+rmipxXv6inmrY4NxqEAXTpKVdgIUXaDRTF
+	SNkPNnZuGvekeeASEZeRl+E7nZS/tdy9ZgD4GQec2U1hwI2UjpQdiqDyA8eMFIu6YhRyP32y4vz
+	fJjy6gWtf5/q4pSU2hC/lSE7GNfo=
+X-Gm-Gg: ASbGncti2bFEscypOmnjQ4cXNn8dvbP6XGuSUz7+T20mGZjxOErJqlXE1L32nr7ZcJU
+	3XZEkShMMcmpLu4yvTsQFfsMG7KtlwUJC0bapyJ3f59BWbkESG3e764hMtRapJwaUjmGxWYZGPF
+	g1KB6hLYT07+jqGLrrnMapKFjq44Pu77VT
+X-Google-Smtp-Source: AGHT+IGLvfsMSuG403juuxmjYD6zkSBGa82yr4Bub0/jZclaT8byFROK43HZNtsTWZonmM7i7ngV4gLcDp3WILbzHbo=
+X-Received: by 2002:a17:902:d2c7:b0:223:f903:aa86 with SMTP id
+ d9443c01a7336-22fc8b106d0mr14930655ad.1.1746781468519; Fri, 09 May 2025
+ 02:04:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20250410132649.GE9833@noisy.programming.kicks-ass.net>
  <CANiq72=Q_Z8KfV+n4z9wWVJsZwVevag=Vh3URe71XkUuWuqEDg@mail.gmail.com>
  <20250410133446.GF9833@noisy.programming.kicks-ass.net> <CAH5fLghrcqSYwkqbC4SSp6oYCny0riMRGA6W+oqQ69aA=NwYWw@mail.gmail.com>
  <CANiq72k0AM3v9JZe=8mDN6T1ToiAt1-1e1zJ3z0Oh6ZWfchzag@mail.gmail.com>
  <20250416202040.GD38216@noisy.programming.kicks-ass.net> <202504161442.66CE2596@keescook>
  <20250417081818.GJ38216@noisy.programming.kicks-ass.net> <CANiq72kjDM0cKALVy4POEzhfdT4nO7tqz0Pm7xM+3=_0+L1t=A@mail.gmail.com>
- <CANiq72muSS+NNs5fxp4GPKWWhyXT95spvbGsZz6AJnK8RerUqQ@mail.gmail.com>
-Message-ID: <aB3A0Qe5WqmxXQJt@google.com>
+ <CANiq72muSS+NNs5fxp4GPKWWhyXT95spvbGsZz6AJnK8RerUqQ@mail.gmail.com> <aB3A0Qe5WqmxXQJt@google.com>
+In-Reply-To: <aB3A0Qe5WqmxXQJt@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 9 May 2025 11:04:16 +0200
+X-Gm-Features: AX0GCFtO1tbkSmX1p0BKP9eiGvH-PWTbseVatqIE62Mh9CEceli3-tEMjRmaSdU
+Message-ID: <CANiq72=NymSwziZw1a0PUNyJ=TCN5tkr3PojJRQ0sjqFWDjz-g@mail.gmail.com>
 Subject: Re: [PATCH] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: Kees Cook <kees@kernel.org>, "=?utf-8?B?UGF3ZcWC?= Anikiel" <panikiel@google.com>, 
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Kees Cook <kees@kernel.org>, 
+	=?UTF-8?Q?Pawe=C5=82_Anikiel?= <panikiel@google.com>, 
 	Sami Tolvanen <samitolvanen@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
 	Ingo Molnar <mingo@redhat.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
@@ -78,44 +82,25 @@ Cc: Kees Cook <kees@kernel.org>, "=?utf-8?B?UGF3ZcWC?= Anikiel" <panikiel@google
 	Thomas Gleixner <tglx@linutronix.de>, Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, 
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
 	Matthew Maurer <mmaurer@google.com>, Ramon de C Valle <rcvalle@google.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 07, 2025 at 12:19:11AM +0200, Miguel Ojeda wrote:
-> On Thu, Apr 17, 2025 at 8:40=E2=80=AFPM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > Thanks Peter (and Kees for clarifying) -- not sure how you/others
-> > prefer to route this patch or if you expect a v2, but I got the
-> > following (attached). I converted your Ack.
->=20
-> Applied to `rust-fixes` -- thanks everyone!
->=20
-> (If someone else prefers to carry it, please shout)
->=20
->     [ Rust 1.88.0 (scheduled for 2025-06-26) should have this fixed [1],
->       and thus we relaxed the condition with Rust >=3D 1.88.
->=20
->       When `objtool` lands checking for this with e.g. [2], the plan is
->       to ideally run that in upstream Rust's CI to prevent regressions
->       early [3], since we do not control `core`'s source code.
->=20
->       Alice tested the Rust PR backported to an older compiler.
->=20
->       Peter would like that Rust provides a stable `core` which can be
->       pulled into the kernel: "Relying on that much out of tree code is
->       'unfortunate'".
->=20
->         - Miguel ]
->=20
->     [ Reduced splat. - Miguel ]
+On Fri, May 9, 2025 at 10:46=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> Actually ... I don't think putting it on CFI_AUTO_DEFAULT the right
+> approach.
+>
+> Shouldn't the depends on clause go on `config FINEIBT` instead? After
+> all, the current patch just means that you can't make FineIBT the
+> default option. But you can still pass kcfi=3Dfineibt on boot to enble
+> FineIBT which would result in the same crash.
 
-Actually ... I don't think putting it on CFI_AUTO_DEFAULT the right
-approach.
+I thought the intention was to avoid disabling FineIBT at config time:
+https://lore.kernel.org/all/202504161442.66CE2596@keescook/
 
-Shouldn't the depends on clause go on `config FINEIBT` instead? After
-all, the current patch just means that you can't make FineIBT the
-default option. But you can still pass kcfi=3Dfineibt on boot to enble
-FineIBT which would result in the same crash.
+If another approach is needed, then we can change it on top if that is
+OK (I am about to submit the PR).
 
-Alice
+Cheers,
+Miguel
