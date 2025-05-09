@@ -1,120 +1,186 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6554964E
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 May 2025 09:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EED4277035
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 May 2025 09:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746781922; cv=none; b=lXtfzUki7wl5VRRZILp/RZ6QndXkpyb9EUlulzheBH/HCDDXXKWUtAsRajFJX9V8mqzrrdWXbocyxhqxeem80JSSNyNVUI109zwBN2PSzjhuWn/x7PCQJsLAJcuOMNyMkRTqVYVxbLydhubHgBNBL/XihS0qOie6sWEZtEkeWis=
+	t=1746782450; cv=none; b=cTB5BgvQ8GXWplOML2NLIn+xOrtzAxgV3De2W/PWMHQpm0NzLIgWX39dDX5jakUpkjpFNgmZU96GCBQpZDNks/PBRmw+TblVZ0x+KTwlP7GuHnEVBIfUXk72nihfqXjzWCC3y4cncx2qk+2QB9Ga2TN/W6fmAHjGxEKkKMxwIYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746781922; c=relaxed/simple;
-	bh=Ci/t6dlu80O2JuGu3DUlOlvoakx7dZpPT5xzy04MF3c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VGA/Z5gzOtPPffAVQDOuEPCiNVTFpzIQZV43ts2RPI29tjEOe06W7dU04i0oLe5d3fmfpjaYAxh+otoy3z8QUsfsl2IT+uFRX7PzI0u8A9qIm4Yw/WUMnD72qTDzvDScC4b2v5CgDKTU2LIqTTffKMj9nGI38AbkSmJ/2czfWb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y0m10W+/; arc=none smtp.client-ip=209.85.160.170
+	s=arc-20240116; t=1746782450; c=relaxed/simple;
+	bh=92OJhgzUjFkOtbE9HWjk9mos4q0J9p13l5+gly9O6B4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=DGx1zPtRRxbtFOqPXy61wuIYJu2/XAj7/wrB5RQviSzSnz0/61Tx2yV0ckV8kwSAdenqLuZHmALvc4dMSckBPwB3uLr+7V7sZ/r5Xjdz59Z9NaQ4jSZOXQ6yiX1krR7i/VxAoIwXHFksm1OhowiCRmsq2JUEJr4IeOvNVHIqCD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gbx46zna; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y0m10W+/"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-476ab588f32so29450161cf.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 May 2025 02:12:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gbx46zna"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d734da1a3so9116215e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 May 2025 02:20:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746781920; x=1747386720; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yqOryqskqRvQ8bx+Wjf9vUcQYnHMdUoN2Z5HJ3jNYUA=;
-        b=Y0m10W+/4eEh/QjuG9CybJ4s4uD2kXLOVnX4haGHeMQgnLD4wjIq8es4J0PLgC8xVE
-         VdiPDPsYPoA63pS8xYaxhqs9/Lkt2HPgnExyNjDPbJ3p19TczHD2IT5PtADXQfrhn3u9
-         zoHdoKh4/nUhGZxFzX0P6iEbDpA3opvX4FNLZNETwKFrs0FS+FUC/gMQdLmXuJi60fSP
-         UMD9paG/nube03dMaQGs3PJtbgrfNxPekIg2nMMOWShYRSIE2dhieKUMlmgTV67mLeMI
-         Ai+Hf/Rxkbbh8X8TsgQViLTivtfOSrG/0MFyWyS9SjgUrR5fVlnPEC47HXdHghQo/pjK
-         httA==
+        d=google.com; s=20230601; t=1746782445; x=1747387245; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xse/MuumvZWNGL7RhYB2Lqx5Phv6lYmDCP0vNNVPW4s=;
+        b=Gbx46znatBKppDSSJrbY8DcvVYpZjP2il5nvZxjJRfdz74KtY8cHN2nXOj0Wucxgly
+         xEKJfvZ6qKGE3G4+YA74EDnFs/8+HYfNQGSWCGJsgc/J/PYdUEydiDvvPE5wTVBelMT6
+         328zO7eNT/KijI9ZoXzkjtaZZTPlI2UQnFx9hS9nj0TA9qE0y2UUdV3pccmEr+2q2/cd
+         s50fqaDcyQw0TlA3btx3lt1epVONL743LZLrbToLbZx3mKZe76Cqu0eIgJNwnpRvQLTk
+         ul/021zO9eN4gKhFyvpV3qPhFVkdjvLBM9v8M+rQdqVoIUcSSUXPbHylzmpP79MyJOfN
+         8HUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746781920; x=1747386720;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yqOryqskqRvQ8bx+Wjf9vUcQYnHMdUoN2Z5HJ3jNYUA=;
-        b=CoZ1MI4tPZsyDP0xgwF50SHgNpfUs0LTGb84R2elymOMVWxeK/e2cxEyO/XqenCtpW
-         EGlRvcWSI3/6O66+l7D93iVy+hVyUIn0IP7qzkhidVuhtub7b3ZI6TRPo7VB1QZeKI4P
-         fVuDaG5p5BtByyVWYhQnqDfx1LQZjDwqRpfkDnPANbBJ4Eznjuni34cOIX4ufAel0F5y
-         N3QNdG9QcohC95QRntOI9rJcv2jnjoNReCSQSiCKRtJ2l1+xkIU5kMxCGeDH10F2mxjv
-         8krRQKsujHOr426Kh0Ujl184loyyf9KvOXiPdY2jtOS6z45yRnQisBRPRFipr7oybQlh
-         4W9g==
-X-Forwarded-Encrypted: i=1; AJvYcCX67z/g0391KhV35ORCZElxXkjtU6V+/Ngd8JmTKIba2jcZ4dffdZKeXbKZ1msHW+kzIftEo1jnBt9H/B18DQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlIKDqideL91wIyb1TFo4pEC/KHV7pawS2NDg5eiUVBgiCoUWN
-	AbqoyCF6PHBc0Os93ial7lW7eT6PVT4NhriQ9snJxHGwGSRHtzOvoWKWlff1Ka9V95WYjjxyUhy
-	+4QXxZ+Lh8t2Ny9OEe194wzYBoEpcZaxAQUm3
-X-Gm-Gg: ASbGnctr74xTrxnqt322lFBBxxdyKDtyifnfEqqAp+duZKq1qqU6VWc5dhKErwphxlJ
-	uUQsC60q8SAj/kMbZAHyH9Xva3aO3V6PdK2YR8r+NhhIBncoRRF1YwEaD5dwsv05zuC10uBwM5U
-	IveHBOHyzFmL04xkXdBN1qmoALEVD5u9kn6oGozlBFRgXi4DShW5g=
-X-Google-Smtp-Source: AGHT+IFlirV44fJeIqumI+ufd/Qr9Q/v5a/Fg/xwhsZmRAokCZsEllXBa5Ze2evO1cIXYt++e/Jy6nrAg0xfT6uDtEM=
-X-Received: by 2002:a05:620a:f13:b0:7c5:9a09:cb73 with SMTP id
- af79cd13be357-7cd0110453amr416174285a.23.1746781919858; Fri, 09 May 2025
- 02:11:59 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746782445; x=1747387245;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xse/MuumvZWNGL7RhYB2Lqx5Phv6lYmDCP0vNNVPW4s=;
+        b=RXEdX0oPQxOxur+Zc1q+9noDQMkb6N5Jm5uKUeiZ09V9PF7PhRPg4rcxYOBDVvuluv
+         D6x64mZ71K5wQTp1pslOWBxcIc6+jd5FMdQr19oHgKnXxcKZersG8vUYzCVYmCNa3FHQ
+         srh8gQ1lMQ+wqTTkTnIpEpYfAnAwtzP3Qclf0COV5LbdZ5uAznrFBjAkWmUyXRH+QxEu
+         3DEIg93TV7kzO65AyI/A+k5KNDJmwSdZmjHBZ652sECHEYR2HbzrPXsSRe6vG0dxIlBX
+         gbbnNoefltOFoYAlf1iq0tRY1f3ZajCSM8JJ+XXNWAcahaZztcOmLmzPhLbHIg+ZUKRn
+         sJ7A==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ9Vae09/x1TV4UERru8UbFXLOb7SDFFe880ggn6WblhCIVPu7RiBJjdWqIq0ysJJ2kVnIViAIyRpDH82AcA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzigSjBU8WkdyDnt5BRuaELbNuAaSJQ98ErAnLrw9xTOxZFd4CD
+	F7NEKoJMUdnImi2H4JRYFuvGl/NEOtFYazgsLuNTAIXkLrkeacK/ty8Tm4U/y5TOk/z6yEDuo/G
+	FYck7u+TW5cPItw==
+X-Google-Smtp-Source: AGHT+IEfB4RX5z3hIuO5Du+V62ZdH6yKf3Q/8br7x4OG7oxYICZrWu8v/yGtMoMSgvs+ViJU/R9zsW+6x08prmc=
+X-Received: from wmbfk10.prod.google.com ([2002:a05:600c:cca:b0:440:5d4e:87])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:6612:b0:440:54ef:dfdc with SMTP id 5b1f17b1804b1-442d6d448c9mr18690195e9.8.1746782445453;
+ Fri, 09 May 2025 02:20:45 -0700 (PDT)
+Date: Fri, 9 May 2025 09:20:43 +0000
+In-Reply-To: <aB2aAEELa3253nBh@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250410132649.GE9833@noisy.programming.kicks-ass.net>
- <CANiq72=Q_Z8KfV+n4z9wWVJsZwVevag=Vh3URe71XkUuWuqEDg@mail.gmail.com>
- <20250410133446.GF9833@noisy.programming.kicks-ass.net> <CAH5fLghrcqSYwkqbC4SSp6oYCny0riMRGA6W+oqQ69aA=NwYWw@mail.gmail.com>
- <CANiq72k0AM3v9JZe=8mDN6T1ToiAt1-1e1zJ3z0Oh6ZWfchzag@mail.gmail.com>
- <20250416202040.GD38216@noisy.programming.kicks-ass.net> <202504161442.66CE2596@keescook>
- <20250417081818.GJ38216@noisy.programming.kicks-ass.net> <CANiq72kjDM0cKALVy4POEzhfdT4nO7tqz0Pm7xM+3=_0+L1t=A@mail.gmail.com>
- <CANiq72muSS+NNs5fxp4GPKWWhyXT95spvbGsZz6AJnK8RerUqQ@mail.gmail.com>
- <aB3A0Qe5WqmxXQJt@google.com> <CANiq72=NymSwziZw1a0PUNyJ=TCN5tkr3PojJRQ0sjqFWDjz-g@mail.gmail.com>
-In-Reply-To: <CANiq72=NymSwziZw1a0PUNyJ=TCN5tkr3PojJRQ0sjqFWDjz-g@mail.gmail.com>
-From: =?UTF-8?Q?Pawe=C5=82_Anikiel?= <panikiel@google.com>
-Date: Fri, 9 May 2025 11:11:48 +0200
-X-Gm-Features: ATxdqUFNtz40aZaXy527JX_9a4RrdQI_LkIIgT_Hz3D0wk_Vdl1WGRXF-uEInLU
-Message-ID: <CAM5zL5psM0ED0A5ZkEdNi34q2itfyMCi+QRBtG-5URUsChUU6A@mail.gmail.com>
-Subject: Re: [PATCH] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Kees Cook <kees@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, 
-	Ramon de C Valle <rcvalle@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250506045843.51258-1-boqun.feng@gmail.com> <20250506045843.51258-5-boqun.feng@gmail.com>
+ <aB2aAEELa3253nBh@gmail.com>
+Message-ID: <aB3I62o8hWSULGBm@google.com>
+Subject: Re: [PATCH 4/5] sched/core: Add __might_sleep_precision()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Tamir Duberstein <tamird@gmail.com>, Kunwu Chan <kunwu.chan@hotmail.com>, 
+	Mitchell Levy <levymitchell0@gmail.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+	Borys Tyran <borys.tyran@protonmail.com>, Christian Brauner <brauner@kernel.org>, 
+	Panagiotis Foliadis <pfoliadis@posteo.net>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	Daniel Almeida <daniel.almeida@collabora.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, May 9, 2025 at 11:04=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Fri, May 9, 2025 at 10:46=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > Actually ... I don't think putting it on CFI_AUTO_DEFAULT the right
-> > approach.
-> >
-> > Shouldn't the depends on clause go on `config FINEIBT` instead? After
-> > all, the current patch just means that you can't make FineIBT the
-> > default option. But you can still pass kcfi=3Dfineibt on boot to enble
-> > FineIBT which would result in the same crash.
->
-> I thought the intention was to avoid disabling FineIBT at config time:
-> https://lore.kernel.org/all/202504161442.66CE2596@keescook/
+On Fri, May 09, 2025 at 08:00:32AM +0200, Ingo Molnar wrote:
+> 
+> * Boqun Feng <boqun.feng@gmail.com> wrote:
+> 
+> > From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > 
+> > Add __might_sleep_precision(), Rust friendly version of
+> > __might_sleep(), which takes a pointer to a string with the length
+> > instead of a null-terminated string.
+> > 
+> > Rust's core::panic::Location::file(), which gives the file name of a
+> > caller, doesn't provide a null-terminated
+> > string. __might_sleep_precision() uses a precision specifier in the
+> > printk format, which specifies the length of a string; a string
+> > doesn't need to be a null-terminated.
+> > 
+> > Modify __might_sleep() to call __might_sleep_precision() but the
+> > impact should be negligible. When printing the error (sleeping
+> > function called from invalid context), the precision string format is
+> > used instead of the simple string format; the precision specifies the
+> > the maximum length of the displayed string.
+> > 
+> > Note that Location::file() providing a null-terminated string for
+> > better C interoperability is under discussion [1].
+> > 
+> > [1]: https://github.com/rust-lang/libs-team/issues/466
+> > 
+> > Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > Link: https://lore.kernel.org/r/20250410225623.152616-2-fujita.tomonori@gmail.com
+> > ---
+> >  include/linux/kernel.h |  2 ++
+> >  kernel/sched/core.c    | 62 ++++++++++++++++++++++++++++--------------
+> >  2 files changed, 43 insertions(+), 21 deletions(-)
+> > 
+> > diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+> > index be2e8c0a187e..086ee1dc447e 100644
+> > --- a/include/linux/kernel.h
+> > +++ b/include/linux/kernel.h
+> > @@ -87,6 +87,7 @@ extern int dynamic_might_resched(void);
+> >  #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+> >  extern void __might_resched(const char *file, int line, unsigned int offsets);
+> >  extern void __might_sleep(const char *file, int line);
+> > +extern void __might_sleep_precision(const char *file, int len, int line);
+> 
+> Ugh.
+> 
+> Firstly, '_precision' is really ambiguous in this context and suggests 
+> 'precise sleep' or something like that, which this is not about at all. 
+> So the naming here is all sorts of bad already.
+> 
+> But more importantly, this is really a Rust problem. Does Rust really 
+> have no NUL-terminated strings? It should hide them in shame and 
+> construct proper, robust strings, instead of spreading this disease to 
+> the rest of the kernel, IMHO ...
 
-I think you mean enabling FineIBT - yes, this patch does exactly that,
-it's still possible to enable it by hand with cfi=3D
+Rust does have NUL-terminated strings, but they aren't the default. In
+most circumstances, obtaining a NUL-terminated string is possible, but
+we can't do it in this particular case.
 
-> If another approach is needed, then we can change it on top if that is
-> OK (I am about to submit the PR).
+Specifically, it's because we're relying on the #[track_caller] language
+feature. When this annotation is placed on a function, it implicitly
+adds an extra hidden argument to the function signature containing a
+pointer to a location struct that holds the file, line, and column of
+the caller. This works recursively until it hits a function without the
+annotation, so code like this:
 
-Putting it on CONFIG_FINEIBT was my initial idea, but it turns out
-that this creates a dependency cycle in Kconfig:
+#[track_caller]
+fn schedule() {
+     might_sleep();
+     // Call into C implementation of schedule.
+     unsafe { bindings::schedule() };
+}
 
-error: recursive dependency detected!
-        symbol RUST depends on CALL_PADDING
-        symbol CALL_PADDING is selected by FINEIBT
-        symbol FINEIBT depends on RUST
+would report a line number in the *caller* of schedule() rather than
+just reporting the line number inside the schedule() function.
 
-Not sure if it's possible to make it work.
+The problem is that the location struct is generated by the compiler,
+and we don't have any control over how its generated. Unfortunately, the
+compiler does not place a NUL terminator in the file name.
+
+> Rust is supposed to be about increased security, right? How does extra, 
+> nonsensical complexity for simple concepts such as strings achieve 
+> that? If the Rust runtime wants to hook into debug facilities of the 
+> Linux kernel then I have bad news: almost all strings used by kernel 
+> debugging facilities are NUL-terminated.
+> 
+> So I really don't like this patch. Is there no other way to do this?
+
+I filed a proposal to add a NUL-terminator to the file names used by
+rustc-generated location structs:
+
+https://github.com/rust-lang/libs-team/issues/466
+
+But I have not had success with landing it, unfortunately.
+
+Alice
