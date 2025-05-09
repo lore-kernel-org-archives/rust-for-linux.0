@@ -1,153 +1,107 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23DD254AE6
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 May 2025 19:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFFE21CC60;
+	Fri,  9 May 2025 19:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746817785; cv=none; b=bTyEvq/fMeTBaFecjMcF68Gz8nSdOB9ejO4MemQTPgXAriireEbYD8C3pQIvLaqGSTTicMPfwG+hXcEO3dWG7uSeAOpRaSFDPfx+gNT4xcMKhhLABmJ3SpFPlqIivn0os6PffMuKnI8sqNMMMpSi3Hn647trDVjpf5b4ytNYX54=
+	t=1746819198; cv=none; b=hsAt0uOamUcZGhIfozN+dg4wzSoAVBoDNj4k0y0EQ3HveunXxBoyFb7xOU1OMF/QkclrMYYtqAE9wZRQFLcxmpONgJrW4C9ZeJoeRbpdnzlLdo7qvgqlX6WnjySgswZWIkJmno8U7JRR+3CGeMqWouq1xQWdgWcsF0jWdxoKlc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746817785; c=relaxed/simple;
-	bh=qQf8woevCJ8kA3JtZEEcQ/O/k2+45wGHIZ83vkM20q4=;
+	s=arc-20240116; t=1746819198; c=relaxed/simple;
+	bh=gcXbNo6dJxypnrrB1Lryz35q6/nYgcIJf/jVLyFqoL0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UCrZJKB2SmISE+R1kTHeuft5tSspaAgfXaxRM1GTPsLli4wwUQ/YxdvwNSX8YDS7vM7pIhrbNe2+Izk5wB85+q4DWxTcpSdR6YP20zPLBpKzlfwZuYFZgwItwYzWGIsO/w2OlZWR3mcS3cDAcRnZ5msf3XUR11zsHlif+W88hHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XbBkHXwJ; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=smDJ/FFBA1vsq0bMj3TlfaIwYUxukpQGnhzZXEeQBWHNSKFiqBxG4CcEy1lY/bDzu63BO0eSos+bTPpGdm9D+RG+a6WJpIf7Dlskw1jXfdIOailvW1mFGw/voY3/fYT9y2+Gjq9+yWKuMiIHj9dOEl0I1Ndar7akaHPPlXuRLUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EJoqr1Ew; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XbBkHXwJ"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4774ce422easo27242231cf.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 May 2025 12:09:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EJoqr1Ew"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22e696bbc85so3861675ad.2;
+        Fri, 09 May 2025 12:33:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746817782; x=1747422582; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1746819195; x=1747423995; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1US4Tot5ZRLUbVOfDIYuDUcAOxjlfPVY/WTxWnyy0tk=;
-        b=XbBkHXwJlR+m1DWsn8aX+mEqfS6zwzImo8b8ZSZPzmCZqGydJEQ8q4Orw0vgDItTIe
-         1ELzIcguJpTx8ZQSluuML4HR8wuFf+voLyOAqW/7hgizPNb/eTR4Bu643hi5QHFu+ulR
-         DrlBj18g031GYq+WlFw579cU8Nf90++gCtU62qOJ5w0wP6AbKg1iZ8wg6vzq6vZuhqG7
-         BDXkwqasa6A5zIKcAaJufmy6jdsVLpgdWX6l64wZHGFP3U2Ag+ejLK/c56ZtUjF+nP4s
-         YahPcLcJBv0Asx86qkGrnyiQ2OTrVaKD0+QSNkFRZcVM/GTBp8VGN2zT60fMYJjvaSv/
-         Hljw==
+        bh=gcXbNo6dJxypnrrB1Lryz35q6/nYgcIJf/jVLyFqoL0=;
+        b=EJoqr1EwPNyQmiTHlflpBtnkpzIrIm2LuLAw9wrHClRN7SD00jyhHtTAK+3Pz+Qk8V
+         OZAbzgsXzXTHfHNqJqa6mpnfbz5nZPn0KdUt6B8gB+Pe5sUe1m0GcZ4Bmc+gHM7H4x+e
+         n/b9IjTCuQWhzF3KnujU88FETH/6/C+X6Db9e9C50wO/LvpzmbqC8sg3HYODL4bZ+30D
+         Prj6hdk+YhVVmx2tRgLjBcCQh85yB8ac9E6tWFVBOuj+2QIzS7wD1ckA8aV7j/+G6agz
+         BzYT9SAXNd0vcjrIOJ+VgjfQIJsphG6NWsAvMA0aWamRrzNBe6TvWzJLaC/f8q7wukWP
+         sJ0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746817782; x=1747422582;
+        d=1e100.net; s=20230601; t=1746819195; x=1747423995;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1US4Tot5ZRLUbVOfDIYuDUcAOxjlfPVY/WTxWnyy0tk=;
-        b=XgQPYE3X75tZDbq3vXIHtiVzlSBPi0ESojlswRmgnC650LkLYYvprFsPePYXUd2ddZ
-         BlgpnBY8WOKXZRn9whWHregYeg7AkNODKo1TpCYCstg8XE3UQaOjxMVsNwZAKKXPaWEK
-         ES5upHH+FmTSu3tfxDZqWKVvbILXUqWJ4OlyYC2qDuRg25pwFCw7nykfigPjEU7sefGj
-         Vio2sqVijP5ulJqXmgyQVu2u/hMRmFoixXHRTdnuMcvP44eJMQwzILFoneUvdpzclPBB
-         mJ2mkDxG20G3mrJZIeUxcz5evPa1Io/tl+Hgkp6SyYU2xiLFwKkw8KAspHBpRmEVCIpO
-         oHbg==
-X-Forwarded-Encrypted: i=1; AJvYcCWnWYoCpi9v5aEtjsxNKY2UAecIy9CDNJCSwskrhtNJGzZ2t5f+sFmsadxsCSqkzFp1WPm0bv+dRYXhYzgQuQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydLPkYac/WFUIdn1oHt104oxwKDGhGn8Uw+b/pj70VzSvnixUb
-	51lWTkTudt4ZGeBlHlGE8JnUHbhq1bYemxXN8ZHPa69rsCu/21rKUH6n8U8iHKXpRIHx4k1/V43
-	cBNEGfTInP/OkMx4T7rB9V8kk44I9jqsF6ar7
-X-Gm-Gg: ASbGnculGroD7z85ODPEK6c0S4ruqULdjpvgXEP48Dw2TOn0bxktpaFJuasKmJebhyv
-	SkPqd82wPc5bwvRSpFMaAPmuHDlztGvypBB6i7LBZJ18XWEyFxckpEhjpRLi2+wtl0nRxP7pbT7
-	nGc8fWs5RpiI8pmDlIdrPKx7ZFmotrhSHPYXbJo/u/wvKJe79+vRigF9wvSsyYvok=
-X-Google-Smtp-Source: AGHT+IHvCrYZY/d2ouKHbFk+cJkR2aLg9kcOYaj5tuX+qslQ0tF6tgsnOc8lSUqm1Ecbb49tSZUe27RUEJ74/C1rTEc=
-X-Received: by 2002:a05:6214:acf:b0:6f5:3e38:612b with SMTP id
- 6a1803df08f44-6f6e480eb13mr64668846d6.41.1746817782359; Fri, 09 May 2025
- 12:09:42 -0700 (PDT)
+        bh=gcXbNo6dJxypnrrB1Lryz35q6/nYgcIJf/jVLyFqoL0=;
+        b=PtUB5K+CXWMyIUPRKKWKdtM+siLAxKq/CLPcaJsRznACB4hr2LW3/Vod5nPLVTr6bv
+         ySS6x1rA4lnY7XgTHXWkEa+oSW3KVhaCBaPzkbtnGhQcAjhuYgqBDsvZEtSZKJmLa6/6
+         3HVV4V5KYKXefW8KkdRGz7BU0ReGmREql02+AXq6m03N5AaHfp9/zNNfwVCOZsFn7Trs
+         svQ3t76P9HGQ3O/XS0ws2sXVVRSetZ1rgdQmxApP9cbx8lweClDhUtdvSG5LOoZrjhZT
+         bRjiQS35nlZBUjQEYxb9g3K9hfi3F5mYdZqrgW2BKFYCR36NwDs5DlEYFlh/G5g9eL7/
+         GoUA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7mvYN3+0LuF2vZtW8EubWOLvmoohRKx5fW604lHo0mQ6bsgBAHJi5/AGVMuXH9L+0HqtBC+YQRbTEE8Qm4kA=@vger.kernel.org, AJvYcCX0Hhlt6KX1CLmb1Qbm4hcvgkByLKRiutYxeDzcEWtRPlvRjILBUlNl+HYXkk9dziwruH2jUfCI2Clf0Ag=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZpc+9FrSv9xtVa/uIMjy9QJH/XY8o88myaGzvZR7Rx7LvvMU7
+	I4VGczKmhG65FWSrsMrCDnB7X8tK9T7q53EGkCeKE+XcRdY+ZZPaZuE+UV06YLJf9o3wHCFAIiZ
+	/eN4Wd+MPLXK8asxS8b/OX6GtIhc=
+X-Gm-Gg: ASbGncur01Rrc76A8Akx16QCtGhMoNm8Jz4HlfLXnXMv7o/9b+hCZljsSVrCRYW/2bQ
+	C/byTu8OvnDXgVTIuRSKnePXSyCOvLnjQDwrvpOuhcwAhxiCwFlcTFQsWdkiUaF1zwUkfyteRO0
+	NiiFgLgKuGsswQYU7imcB2ZcsWIkPb2WtH
+X-Google-Smtp-Source: AGHT+IEc+d5JlKdjlFuIvBIjbzfQ3nYKhJC8MzeBGJwwq9mAHyd9wC7lk9Jb4ibJ0mKKb5H5AmC+T8ZMCBG7KEqaRMM=
+X-Received: by 2002:a17:903:198d:b0:22c:336f:cb5c with SMTP id
+ d9443c01a7336-22fc8b5d360mr27329195ad.6.1746819195491; Fri, 09 May 2025
+ 12:33:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502143758.23135-1-sergio.collado@gmail.com>
-In-Reply-To: <20250502143758.23135-1-sergio.collado@gmail.com>
-From: Rae Moar <rmoar@google.com>
-Date: Fri, 9 May 2025 15:09:31 -0400
-X-Gm-Features: AX0GCFtVkLsLpWqqi9BcnSgHiBSCQbxqkIfVnKy5ylciZiJb71kxGpm9Eprb76Y
-Message-ID: <CA+GJov4N+MMYaRKCbma0tqOpjZ7E3iHvJi+aAk64u-R3EJG+5A@mail.gmail.com>
-Subject: Re: [PATCH v2] kunit: fix longest symbol length test
-To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Cc: David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Arnd Bergmann <arnd@arndb.de>, rust-for-linux@vger.kernel.org, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nathan Chancellor <nathan@kernel.org>, 
-	David Laight <david.laight.linux@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, x86@kernel.org, linux-kbuild@vger.kernel.org
+References: <20250410132649.GE9833@noisy.programming.kicks-ass.net>
+ <CANiq72=Q_Z8KfV+n4z9wWVJsZwVevag=Vh3URe71XkUuWuqEDg@mail.gmail.com>
+ <20250410133446.GF9833@noisy.programming.kicks-ass.net> <CAH5fLghrcqSYwkqbC4SSp6oYCny0riMRGA6W+oqQ69aA=NwYWw@mail.gmail.com>
+ <CANiq72k0AM3v9JZe=8mDN6T1ToiAt1-1e1zJ3z0Oh6ZWfchzag@mail.gmail.com>
+ <20250416202040.GD38216@noisy.programming.kicks-ass.net> <202504161442.66CE2596@keescook>
+ <20250417081818.GJ38216@noisy.programming.kicks-ass.net> <CANiq72kjDM0cKALVy4POEzhfdT4nO7tqz0Pm7xM+3=_0+L1t=A@mail.gmail.com>
+ <CANiq72muSS+NNs5fxp4GPKWWhyXT95spvbGsZz6AJnK8RerUqQ@mail.gmail.com>
+ <aB3A0Qe5WqmxXQJt@google.com> <CANiq72=NymSwziZw1a0PUNyJ=TCN5tkr3PojJRQ0sjqFWDjz-g@mail.gmail.com>
+ <CAM5zL5psM0ED0A5ZkEdNi34q2itfyMCi+QRBtG-5URUsChUU6A@mail.gmail.com>
+In-Reply-To: <CAM5zL5psM0ED0A5ZkEdNi34q2itfyMCi+QRBtG-5URUsChUU6A@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 9 May 2025 21:33:02 +0200
+X-Gm-Features: AX0GCFtkYaIQp1AmgGJnhaM7CVq74VADIURITEbAJCO-BFghfABDmVAwuLpLGuc
+Message-ID: <CANiq72=eMued_fEb8j8auBmEUiQ7Cnh7fQiTv-kMeKgh-JALFA@mail.gmail.com>
+Subject: Re: [PATCH] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST
+To: =?UTF-8?Q?Pawe=C5=82_Anikiel?= <panikiel@google.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Kees Cook <kees@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Nathan Chancellor <nathan@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Matthew Maurer <mmaurer@google.com>, 
+	Ramon de C Valle <rcvalle@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 2, 2025 at 10:38=E2=80=AFAM Sergio Gonz=C3=A1lez Collado
-<sergio.collado@gmail.com> wrote:
+On Fri, May 9, 2025 at 11:12=E2=80=AFAM Pawe=C5=82 Anikiel <panikiel@google=
+.com> wrote:
 >
-> The kunit test that checks the longests symbol length [1], has triggered
-> warnings in some pilelines when symbol prefixes are used [2]. The test
-> is adjunsted to depend on !PREFIX_SYMBOLS and !CFI_CLANG as sujested in [=
-3]
+> On Fri, May 9, 2025 at 11:04=E2=80=AFAM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > I thought the intention was to avoid disabling FineIBT at config time:
+> > https://lore.kernel.org/all/202504161442.66CE2596@keescook/
 >
-> [1] https://lore.kernel.org/rust-for-linux/CABVgOSm=3D5Q0fM6neBhxSbOUHBgN=
-zmwf2V22vsYC10YRBT=3DkN1g@mail.gmail.com/T/#t
-> [2] https://lore.kernel.org/all/20250328112156.2614513-1-arnd@kernel.org/=
-T/#u
-> [3] https://lore.kernel.org/linux-kselftest/20250427200916.GA1661412@ax16=
-2/T/#t
->
-> Signed-off-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
+> I think you mean enabling FineIBT - yes, this patch does exactly that,
+> it's still possible to enable it by hand with cfi=3D
 
-Hello!
+No, I meant avoiding to disable it at config time due to the rehash
+discussion between Peter & Kees in the Lore link I mentioned (I see
+Kees has replied again -- thanks!)
 
-This is working for me both when the test is built-in (run using
-kunit.py) and when it is loaded as a module. Those that had issues
-with this breaking with prefix symbols, feel free to dispute this if
-you are still having issues. However, otherwise I am happy to see this
-go through the KUnit tree.
-
-Reviewed-by: Rae Moar <rmoar@google.com>
-
-Thanks!
--Rae
-
->
-> ---
-> V1 -> V2: added dependency on !CFI_CLANG as suggested in [3], removed
->         CONFIG_ prefix
-> ---
->  lib/Kconfig.debug                | 2 +-
->  lib/tests/longest_symbol_kunit.c | 3 +--
->  2 files changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index f9051ab610d5..5b33673d82da 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -2885,7 +2885,7 @@ config FORTIFY_KUNIT_TEST
->
->  config LONGEST_SYM_KUNIT_TEST
->         tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
-> -       depends on KUNIT && KPROBES
-> +       depends on KUNIT && KPROBES && !PREFIX_SYMBOLS && !CFI_CLANG
->         default KUNIT_ALL_TESTS
->         help
->           Tests the longest symbol possible
-> diff --git a/lib/tests/longest_symbol_kunit.c b/lib/tests/longest_symbol_=
-kunit.c
-> index e3c28ff1807f..b183fb92d1b2 100644
-> --- a/lib/tests/longest_symbol_kunit.c
-> +++ b/lib/tests/longest_symbol_kunit.c
-> @@ -3,8 +3,7 @@
->   * Test the longest symbol length. Execute with:
->   *  ./tools/testing/kunit/kunit.py run longest-symbol
->   *  --arch=3Dx86_64 --kconfig_add CONFIG_KPROBES=3Dy --kconfig_add CONFI=
-G_MODULES=3Dy
-> - *  --kconfig_add CONFIG_RETPOLINE=3Dn --kconfig_add CONFIG_CFI_CLANG=3D=
-n
-> - *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=3Dn
-> + *  --kconfig_add CONFIG_CPU_MITIGATIONS=3Dn
->   */
->
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->
-> base-commit: ebd297a2affadb6f6f4d2e5d975c1eda18ac762d
-> --
-> 2.39.2
->
+Cheers,
+Miguel
