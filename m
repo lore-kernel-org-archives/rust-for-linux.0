@@ -1,95 +1,151 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F1126FDA7;
-	Fri,  9 May 2025 07:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481391990A7;
+	Fri,  9 May 2025 07:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746775691; cv=none; b=l9foF/VMF8kWo/9FIPUd+9kMaUwsojhuAzVa1l0UJtfYDiri8LnUesKRcmt+xRb8J+Ls4ytx/qRT4LJ8rJp0ByyKmWbEC3Pxe06Erdhemdpy5EKHqX7uY6Sy+H/nMFAIk8ncwLfu9COblQEGxCgo8y9YSYJEnPBTfTtc3S2A90g=
+	t=1746776511; cv=none; b=OIfWmBjcyiOEJV7DXapiQHNQ99nL173yja442f25a91ZrtdvFq37bR9Khpiz4cQ1mahBnKhUu4gdZpOePkwoQns9g7C5Gye6ajwgMhPr7pnnxMz9VdPCMmO038sF7iJT3uUOyax9FW3koOlGj6gYrmHnM7CGDXTygd8Nwu6kyVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746775691; c=relaxed/simple;
-	bh=Ov6WTSmPcRqqmbQnF9ivBjIVimf0CJ35r0KM5SNX83M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=auFJEewrieAzkF5iT3m0wju8++8d+obOv4ajm1qcO3tlwGcRyMh+GHSAiIUsp6rEfkLoUw0XTRxe4FgIlxji3H+PtR8T2ikjR1kzg13fNmKc9pAjzrNS8UoodYUYHTELOhXrfQsFpuE3Zt0lZ4GMiDqC6v6l7bFsgqwCuMZKRos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OExiCV7i; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1746776511; c=relaxed/simple;
+	bh=tcdXYt+d9QC9Jlh1NzRG+oQJPwhMPB5zQsOLpL3DEq0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=q3wzXlmjSFJcef4aLitQGVb8pSBhRYwCmiLKOS2NGp8FQgGiX3nJPdAgkJXRccyj4woULiQ3XvFWdoZsSL9X3/GeRG5rqvsnuWMo/hYVJUglJY4tgM9babLZaKt+3CHI788r5Z69fQ3fvoZllkc5VU1UcKoMK7xUEfYEWmUQYyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WffbsTHq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OExiCV7i"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-af5f28ecbcaso141831a12.0;
-        Fri, 09 May 2025 00:28:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746775689; x=1747380489; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ov6WTSmPcRqqmbQnF9ivBjIVimf0CJ35r0KM5SNX83M=;
-        b=OExiCV7i96IvO3Sf6x2FpNwxFeEMaon03TDc/JSz2btp1u4MOsWvJnVtC2+YLJ/WBJ
-         qRiQJUuSMqqpw0J+O5OD9F4WFdNE60jvyqyvDjt7vSlC0F3qNrDAcvdioBCdqZFDjD03
-         MKBniYvW1P5rnHEpujHem0hg/w2vytPwzN654wkJzbf0Mt6dU4TdRTh9G6BOA51RpGTa
-         fOOhrGoirOp6HSrv5DiORyJztAZBIZGQpvOPPc4YkkNXkrNyO7tRfaIOVtNNiP1IeVpd
-         DJTrTaXU+diPVeP0UcpGvxZ5fMxcI6mR7VmQvA7FdvRBwOwWB9ZvHuyJUchGZYkFwwge
-         XEFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746775689; x=1747380489;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ov6WTSmPcRqqmbQnF9ivBjIVimf0CJ35r0KM5SNX83M=;
-        b=EUb2DsjnBcqedS+XSL9teOvmIEKtpKVfoGMwJdFMmM8+55DnIwQm49Fvk71Ni/7oA1
-         JZojtT20yx6nE/6ob6KL+OuMNFDBefbZHXoHU0Dhye/ieNdycN1Qf2p3XrjEKWGGqd9S
-         kSWybMedlaql0TwmRSGDthyJVjfUsDEx2O77kYJULlDcfElVPJgTZztTdAkZ64Xa5kSs
-         OT1M2Qs+Sci4SHZiqGIeClf0WdAt/0Tc4TpLkHim1NgSXpYlajqzJ9YC9iDo+HNZ0MlJ
-         xItOG6YKsJW9heaZ+vBWQG99e+ai8uY3xPOXD0rvcHK3S+FXOFqF5I2dy/MM3VX32apT
-         NmCg==
-X-Forwarded-Encrypted: i=1; AJvYcCVj5IlbrcN9M+wQ+crmdNCD1qHriiXwp4MJQCtHgX0wOAKI9IZLVAz3BjP3vyTpgF6vNhr+N8aEmyB4hLdGqIA=@vger.kernel.org, AJvYcCXnYYzr+yWZyTD2nFmUfjfvpoy0CnTWZqLsfP+Vfwp5SPiUvvzgOzEBBaUVVIu3QwVHXB1A2L7c5nXzkxE0@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAysvHEZBmUPf57+sZqx8m5T5ALXe7Y+v7jy9gramAbVuMNCxM
-	SL2FzcptQ2iigl75B+DAes9Dl2to8+hHOjPOyxfQPwq+ZR5DoGs9MxUJymU9sJ0WxiMAmXHsYn8
-	Z+WOlQqMUrcB2op4kAiQrrS7Op9A=
-X-Gm-Gg: ASbGnct+927Gh1oDhPglWHmc5lXLNcaFgUe4vXG0HiSU0RUCfaD+NZ9CD+kRLD/PTo6
-	4OOepc+HUAZKY1/8EsuTFRyxCW+c5bMANMMlvK9if+2LBRiJqntTxLb+gJ0wYgazfKunDAD8bzd
-	9A2PiJIfGt7FssGFuIgdSatg==
-X-Google-Smtp-Source: AGHT+IEYeN5v5TsmNAVX5/zFyrsgqTLSTqDluUCaA0q90511E9XGc3V3Wl2WPMD86tu44NTBwH7DpnodAwumQZ0G3oY=
-X-Received: by 2002:a17:903:3a8d:b0:22e:7913:d360 with SMTP id
- d9443c01a7336-22fc8b5bea1mr13956745ad.7.1746775688981; Fri, 09 May 2025
- 00:28:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WffbsTHq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C723C4CEE4;
+	Fri,  9 May 2025 07:41:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746776510;
+	bh=tcdXYt+d9QC9Jlh1NzRG+oQJPwhMPB5zQsOLpL3DEq0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=WffbsTHq6x06a9pNizrSBArDb919iHJ0oRrCsLjoZNTJ1/mZFWsY7NcJstMPCqvHg
+	 e/aLaVrtKIg4T/dBQbQFuCgqC9GyfwEOJoi6HUzx6IjEVkZ8GAtdSocMK+um3wrUi8
+	 mNJ/TS9vP2T28xaPkESMGAm8DxAu2rVdvyVhzTCdunWvZVXhryxVxW1F2kK4NtFQZv
+	 FDYJMeaWJtIE/fMu9mUSqtfQyUXvtZFgJ0N+vCRheqA+dOkt6+0+u5NP+yqQUt8oGC
+	 4IxyWyTdc+O6F9BT1qlO5v/TEwymwPJAhgGfHR903x42kEntjY2CAS3I3sru9DNsbT
+	 iAta2lcHsuZBg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,  Peter Zijlstra
+ <peterz@infradead.org>,  Ingo Molnar <mingo@redhat.com>,  Juri Lelli
+ <juri.lelli@redhat.com>,  Vincent Guittot <vincent.guittot@linaro.org>,
+  Dietmar Eggemann <dietmar.eggemann@arm.com>,  Steven Rostedt
+ <rostedt@goodmis.org>,  Ben Segall <bsegall@google.com>,  Mel Gorman
+ <mgorman@suse.de>,  Valentin Schneider <vschneid@redhat.com>,  Miguel
+ Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Gary Guo
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno
+ Lossin <benno.lossin@proton.me>,  Alice Ryhl <aliceryhl@google.com>,
+  Trevor Gross <tmgross@umich.edu>,  Danilo Krummrich <dakr@kernel.org>,
+  Nathan Chancellor <nathan@kernel.org>,  Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>,  Bill Wendling <morbo@google.com>,
+  Justin Stitt <justinstitt@google.com>,  FUJITA Tomonori
+ <fujita.tomonori@gmail.com>,  Tamir Duberstein <tamird@gmail.com>,  Kunwu
+ Chan <kunwu.chan@hotmail.com>,  Mitchell Levy <levymitchell0@gmail.com>,
+  Martin Rodriguez Reboredo <yakoyoku@gmail.com>,  Borys Tyran
+ <borys.tyran@protonmail.com>,  Christian Brauner <brauner@kernel.org>,
+  Panagiotis Foliadis <pfoliadis@posteo.net>,
+  linux-kernel@vger.kernel.org,  rust-for-linux@vger.kernel.org,
+  llvm@lists.linux.dev,  Daniel Almeida <daniel.almeida@collabora.com>,
+  Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 4/5] sched/core: Add __might_sleep_precision()
+In-Reply-To: <aB2aAEELa3253nBh@gmail.com> (Ingo Molnar's message of "Fri, 9
+	May 2025 08:00:32 +0200")
+References: <20250506045843.51258-1-boqun.feng@gmail.com>
+	<20250506045843.51258-5-boqun.feng@gmail.com> <aB2aAEELa3253nBh@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 30.1
+Date: Fri, 09 May 2025 09:41:36 +0200
+Message-ID: <87plginscv.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250308044506.14458-1-fujita.tomonori@gmail.com>
- <CANiq72=LEma8DEgpy-z6hCK_xv2Vk91MLbGGC5=votDAVP-3mg@mail.gmail.com> <20250509.131622.164788613577030480.fujita.tomonori@gmail.com>
-In-Reply-To: <20250509.131622.164788613577030480.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 9 May 2025 09:27:55 +0200
-X-Gm-Features: AX0GCFv8sE8RswZuY7qr6HM6GTumnWf-keuvFmnzyQeQSg0OqA-suiQU3GQQJCI
-Message-ID: <CANiq72n_ySP_K_2m28C9L3FOqRtqn8ohkWqtX1Fe9L0szGxSzA@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: module: place cleanup_module() in .exit.text section
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, rust-for-linux@vger.kernel.org, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, Luis Chamberlain <mcgrof@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, May 9, 2025 at 6:16=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+Ingo Molnar <mingo@kernel.org> writes:
+
+> * Boqun Feng <boqun.feng@gmail.com> wrote:
 >
-> Do I need to update the commit message and submit a v2 of this patch?
+>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> 
+>> Add __might_sleep_precision(), Rust friendly version of
+>> __might_sleep(), which takes a pointer to a string with the length
+>> instead of a null-terminated string.
+>> 
+>> Rust's core::panic::Location::file(), which gives the file name of a
+>> caller, doesn't provide a null-terminated
+>> string. __might_sleep_precision() uses a precision specifier in the
+>> printk format, which specifies the length of a string; a string
+>> doesn't need to be a null-terminated.
+>> 
+>> Modify __might_sleep() to call __might_sleep_precision() but the
+>> impact should be negligible. When printing the error (sleeping
+>> function called from invalid context), the precision string format is
+>> used instead of the simple string format; the precision specifies the
+>> the maximum length of the displayed string.
+>> 
+>> Note that Location::file() providing a null-terminated string for
+>> better C interoperability is under discussion [1].
+>> 
+>> [1]: https://github.com/rust-lang/libs-team/issues/466
+>> 
+>> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+>> Link: https://lore.kernel.org/r/20250410225623.152616-2-fujita.tomonori@gmail.com
+>> ---
+>>  include/linux/kernel.h |  2 ++
+>>  kernel/sched/core.c    | 62 ++++++++++++++++++++++++++++--------------
+>>  2 files changed, 43 insertions(+), 21 deletions(-)
+>> 
+>> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+>> index be2e8c0a187e..086ee1dc447e 100644
+>> --- a/include/linux/kernel.h
+>> +++ b/include/linux/kernel.h
+>> @@ -87,6 +87,7 @@ extern int dynamic_might_resched(void);
+>>  #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+>>  extern void __might_resched(const char *file, int line, unsigned int offsets);
+>>  extern void __might_sleep(const char *file, int line);
+>> +extern void __might_sleep_precision(const char *file, int len, int line);
+>
+> Ugh.
+>
+> Firstly, '_precision' is really ambiguous in this context and suggests 
+> 'precise sleep' or something like that, which this is not about at all. 
+> So the naming here is all sorts of bad already.
+>
+> But more importantly, this is really a Rust problem. Does Rust really 
+> have no NUL-terminated strings? It should hide them in shame and 
+> construct proper, robust strings, instead of spreading this disease to 
+> the rest of the kernel, IMHO ...
 
-I think it is OK, i.e. we can add what you wrote above when applying
-(though it always helps to do it on your side when it is a non-trivial
-change).
+Not to discuss this particular patch or language interop in general, but
+I am curious why you think that null terminated strings are more robust
+than pointer + length strings? From the paragraph below, it seems you
+also believe that pointer + length is worse for security. Why is that?
 
-By the way, Cc'ing MODULE SUPPORT in case they want to say something
-(or even take it themselves).
 
-Thanks!
+Best regards,
+Andreas Hindborg
 
-Cheers,
-Miguel
+
+>
+> Rust is supposed to be about increased security, right? How does extra, 
+> nonsensical complexity for simple concepts such as strings achieve 
+> that? If the Rust runtime wants to hook into debug facilities of the 
+> Linux kernel then I have bad news: almost all strings used by kernel 
+> debugging facilities are NUL-terminated.
+>
+> So I really don't like this patch. Is there no other way to do this?
+>
+> Thanks,
+>
+> 	Ingo
+
