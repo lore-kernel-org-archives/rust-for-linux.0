@@ -1,151 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481391990A7;
-	Fri,  9 May 2025 07:41:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C8227586B;
+	Fri,  9 May 2025 08:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746776511; cv=none; b=OIfWmBjcyiOEJV7DXapiQHNQ99nL173yja442f25a91ZrtdvFq37bR9Khpiz4cQ1mahBnKhUu4gdZpOePkwoQns9g7C5Gye6ajwgMhPr7pnnxMz9VdPCMmO038sF7iJT3uUOyax9FW3koOlGj6gYrmHnM7CGDXTygd8Nwu6kyVg=
+	t=1746780226; cv=none; b=gLsDhS8EuKJInHUC8qs8fIwCHq7e5dxTCMGbB2LLYYtq0DFy+dieuT6Qsg15v1jRUge8/nLi+wBZeAW/2X6ijrNH6/+MIAPxcaLaSyDhB29WKE+zb1emDz2Z3dVNaM0PI271VcOQRl7rIKoy1lbX7/rmDcJc87bPBnF0lU9BlyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746776511; c=relaxed/simple;
-	bh=tcdXYt+d9QC9Jlh1NzRG+oQJPwhMPB5zQsOLpL3DEq0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=q3wzXlmjSFJcef4aLitQGVb8pSBhRYwCmiLKOS2NGp8FQgGiX3nJPdAgkJXRccyj4woULiQ3XvFWdoZsSL9X3/GeRG5rqvsnuWMo/hYVJUglJY4tgM9babLZaKt+3CHI788r5Z69fQ3fvoZllkc5VU1UcKoMK7xUEfYEWmUQYyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WffbsTHq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1746780226; c=relaxed/simple;
+	bh=D+Z3MPOOomLStRJL1NiuAWmq/XdQJ45mhJewSQu6uSs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rwea1stYNHMpfu+MaPP6C4RkEkVaunQzn8rYmTSnVP0RSS2dINNvIubQrWsZB/Ebka5lQdPzRKGy1aAZZHwJQk6yw40g2sEzQ/lCQTr9ZW04fZnwwsXCVFGpW0u99ksa8juJYc8B/fOehKIp0j9Ul3NsH+mx+up5yqMNoETnOsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RMJXFD7i; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WffbsTHq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C723C4CEE4;
-	Fri,  9 May 2025 07:41:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746776510;
-	bh=tcdXYt+d9QC9Jlh1NzRG+oQJPwhMPB5zQsOLpL3DEq0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=WffbsTHq6x06a9pNizrSBArDb919iHJ0oRrCsLjoZNTJ1/mZFWsY7NcJstMPCqvHg
-	 e/aLaVrtKIg4T/dBQbQFuCgqC9GyfwEOJoi6HUzx6IjEVkZ8GAtdSocMK+um3wrUi8
-	 mNJ/TS9vP2T28xaPkESMGAm8DxAu2rVdvyVhzTCdunWvZVXhryxVxW1F2kK4NtFQZv
-	 FDYJMeaWJtIE/fMu9mUSqtfQyUXvtZFgJ0N+vCRheqA+dOkt6+0+u5NP+yqQUt8oGC
-	 4IxyWyTdc+O6F9BT1qlO5v/TEwymwPJAhgGfHR903x42kEntjY2CAS3I3sru9DNsbT
-	 iAta2lcHsuZBg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,  Peter Zijlstra
- <peterz@infradead.org>,  Ingo Molnar <mingo@redhat.com>,  Juri Lelli
- <juri.lelli@redhat.com>,  Vincent Guittot <vincent.guittot@linaro.org>,
-  Dietmar Eggemann <dietmar.eggemann@arm.com>,  Steven Rostedt
- <rostedt@goodmis.org>,  Ben Segall <bsegall@google.com>,  Mel Gorman
- <mgorman@suse.de>,  Valentin Schneider <vschneid@redhat.com>,  Miguel
- Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Gary Guo
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno
- Lossin <benno.lossin@proton.me>,  Alice Ryhl <aliceryhl@google.com>,
-  Trevor Gross <tmgross@umich.edu>,  Danilo Krummrich <dakr@kernel.org>,
-  Nathan Chancellor <nathan@kernel.org>,  Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>,  Bill Wendling <morbo@google.com>,
-  Justin Stitt <justinstitt@google.com>,  FUJITA Tomonori
- <fujita.tomonori@gmail.com>,  Tamir Duberstein <tamird@gmail.com>,  Kunwu
- Chan <kunwu.chan@hotmail.com>,  Mitchell Levy <levymitchell0@gmail.com>,
-  Martin Rodriguez Reboredo <yakoyoku@gmail.com>,  Borys Tyran
- <borys.tyran@protonmail.com>,  Christian Brauner <brauner@kernel.org>,
-  Panagiotis Foliadis <pfoliadis@posteo.net>,
-  linux-kernel@vger.kernel.org,  rust-for-linux@vger.kernel.org,
-  llvm@lists.linux.dev,  Daniel Almeida <daniel.almeida@collabora.com>,
-  Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 4/5] sched/core: Add __might_sleep_precision()
-In-Reply-To: <aB2aAEELa3253nBh@gmail.com> (Ingo Molnar's message of "Fri, 9
-	May 2025 08:00:32 +0200")
-References: <20250506045843.51258-1-boqun.feng@gmail.com>
-	<20250506045843.51258-5-boqun.feng@gmail.com> <aB2aAEELa3253nBh@gmail.com>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Fri, 09 May 2025 09:41:36 +0200
-Message-ID: <87plginscv.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RMJXFD7i"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22e1597a5abso2870175ad.0;
+        Fri, 09 May 2025 01:43:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746780223; x=1747385023; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D+Z3MPOOomLStRJL1NiuAWmq/XdQJ45mhJewSQu6uSs=;
+        b=RMJXFD7ijQWGBpHWufRoc7MieAPslSTryiZ/REJWFYnricDnpv9lTG071wK1DVYoSn
+         pe9VgQ/BtEjMDB+zkLlOcOg7IrLeXK0sAktMDCiTVH+MUwP8PIhEqq4UqFUIgcJ7TnaC
+         jvptc8GN1beSgf2K+J34t9mSREORt0IA2/H8dXRWvNb5vcOsf1wKFwDt3uEN3C577w/K
+         ZO8RsBO4KKj58iLD/hH3IcZBa4PzuGMUmHNY+zRyDR1E/sZ06m9hDakUyJVa0Ue2p7iB
+         YUIibXf2HLZbD6UGqHiAwLoYL0HS21KlZbHXFcXpU1zZFOxabtA0rL/DBGvSh2mWL+Py
+         8TuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746780223; x=1747385023;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=D+Z3MPOOomLStRJL1NiuAWmq/XdQJ45mhJewSQu6uSs=;
+        b=EeB5DaV5RCyOt3id9zm1mSnmowcquYJTlTbQqKPi5R66GINopTVGNJZ0qUQ2gt6YSz
+         YC2lLh1nxJ0+UtsBKZ71a5H6Qa2fdC98/ESOJH9mAFp3sG5f91CXa2kqH7ECxAARvgBD
+         HNUQkrmzlKxFv2YjL/FO4u9ZVkbF0PMsAQgf4/vQcqPcsNQiRyoxYHsuKxCUworEMNAQ
+         i5t+PAaQRfvPDGnQXXRvyHFKpsAQL5JIPaUqPl98avU2M0LCXQPZO2y7WCFpINesuclb
+         dTOoU4odNfFuZdUBqy7A2EWi698mu0SOrTDZOaQ7t7uAKQtNbuhMovAva5LeIeENRELr
+         Mrqw==
+X-Forwarded-Encrypted: i=1; AJvYcCUgrC5yKvkXZ7LdexIzg4TbDLNOcSbHuOx36QAHCsmHXHafy0XVAnvRSQg1o9aaWsaEHSKaQ6D4F8ihqgCa@vger.kernel.org, AJvYcCUrrDaVvi96hzlMbMn27F6PUhqE5QWPCHZ4ZDYTlk8dlNReV61ygPY+RgpLTEKEf8N6ojYXlFk/ZfY=@vger.kernel.org, AJvYcCVg+8QMZYTwaSmqDDhrgSRX2ibqWd/1GWkU7EkRiVNbR2xCI/5hZDfpxctZS9J/7U+pNfQTi1UoZV4=@vger.kernel.org, AJvYcCWN2XEDhdo7W8FF2Pl6d6PSeoiuSSVrMNikZdWpIq5OBeDHLJKLzFbE7btYMtxBPlMT5bwFvq1NMrWFeb8knw8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMKveKz5CriEX/rOcBmBO9ECDj/Bdm9Qe5R+wCDfSyITh/xv0N
+	T1i28pPPUmalyIIhui/BmEznTjdwLdUeAlu7v1rWI1vPZE/H3/qh4NcUH/NXITcx4bpqj2hqhC2
+	F124fXvFNVs0QngCQlP4Oz5HVD5U=
+X-Gm-Gg: ASbGncseyCAdX6YeP7CgMUCmM10x6mNxvgogUUemomtdF+eZvP1bE6EHodE2JQsmDcx
+	283lOiMYD9CMCYze9/0zPEyIM9zI4g7oImP7YoVMuBJoAAzat7Def3acWkdxZLYFre5ZTAX24tB
+	N02WTS8UvlSDkSst5nXIF8Tw==
+X-Google-Smtp-Source: AGHT+IEJ5b65Q0v/CP2S0OTkUGvauUws7VombfalBDLX8YTyGJdmjd6kE+QjHM7Qv0bMlOEC/TCXzyk6KW7sbDKSNtw=
+X-Received: by 2002:a17:902:e54f:b0:22f:b00d:fe59 with SMTP id
+ d9443c01a7336-22fc8d98a69mr14263115ad.9.1746780223105; Fri, 09 May 2025
+ 01:43:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250502070109.inpes2ou3rxx2fxp@vireshk-i7> <20250506101311.142475-1-andrewjballance@gmail.com>
+ <CANiq72k3ozKkLMinTLQwvkyg9K=BeRxs1oYZSKhJHY-veEyZdg@mail.gmail.com> <CAKohponbEEP4_weUuKkOGLRj5-1oOsoL_Zu_7W_SxB61hjsSCw@mail.gmail.com>
+In-Reply-To: <CAKohponbEEP4_weUuKkOGLRj5-1oOsoL_Zu_7W_SxB61hjsSCw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 9 May 2025 10:43:30 +0200
+X-Gm-Features: AX0GCFtvP7qV0uyKskrVkXxx4K1dOjHrcNE79kiWKdjUal4cdNNd8gXeg84r6B4
+Message-ID: <CANiq72mSDEwDQx6ePq20SRi40aCs95mwo6fShZ0WCK9rmiWVVQ@mail.gmail.com>
+Subject: Re: [PATCH V11 00/15] Rust abstractions for clk, cpumask, cpufreq, OPP
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Philip Li <philip.li@intel.com>, kbuild test robot <lkp@intel.com>, 
+	Andrew Ballance <andrewjballance@gmail.com>, a.hindborg@kernel.org, alex.bennee@linaro.org, 
+	alex.gaynor@gmail.com, aliceryhl@google.com, anisse@astier.eu, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	bqe@google.com, dakr@kernel.org, dakr@redhat.com, 
+	daniel.almeida@collabora.com, gary@garyguo.net, joakim.bech@linaro.org, 
+	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux@armlinux.org.uk, linux@rasmusvillemoes.dk, 
+	manos.pitsidianakis@linaro.org, mturquette@baylibre.com, nm@ti.com, 
+	ojeda@kernel.org, peterz@infradead.org, rafael@kernel.org, robh@kernel.org, 
+	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
+	tmgross@umich.edu, vincent.guittot@linaro.org, vireshk@kernel.org, 
+	yury.norov@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ingo Molnar <mingo@kernel.org> writes:
+On Thu, May 8, 2025 at 4:10=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.or=
+g> wrote:
+>
+> That's strange. I have tested this earlier and made sure such issues
+> weren't there. I tried "next-20250507" now for arm64 (with qemu)
+> with and without CONFIG_CPUMASK_OFFSTACK and still don't
+> see these issues.
+>
+> Anything apart from this ?
+>
+> CONFIG_RUST_KERNEL_DOCTESTS=3Dy
+>
+> Sorry for the trouble, I thought this is all covered already
+> (apart from x86 failure).
 
-> * Boqun Feng <boqun.feng@gmail.com> wrote:
->
->> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> 
->> Add __might_sleep_precision(), Rust friendly version of
->> __might_sleep(), which takes a pointer to a string with the length
->> instead of a null-terminated string.
->> 
->> Rust's core::panic::Location::file(), which gives the file name of a
->> caller, doesn't provide a null-terminated
->> string. __might_sleep_precision() uses a precision specifier in the
->> printk format, which specifies the length of a string; a string
->> doesn't need to be a null-terminated.
->> 
->> Modify __might_sleep() to call __might_sleep_precision() but the
->> impact should be negligible. When printing the error (sleeping
->> function called from invalid context), the precision string format is
->> used instead of the simple string format; the precision specifies the
->> the maximum length of the displayed string.
->> 
->> Note that Location::file() providing a null-terminated string for
->> better C interoperability is under discussion [1].
->> 
->> [1]: https://github.com/rust-lang/libs-team/issues/466
->> 
->> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
->> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
->> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->> Link: https://lore.kernel.org/r/20250410225623.152616-2-fujita.tomonori@gmail.com
->> ---
->>  include/linux/kernel.h |  2 ++
->>  kernel/sched/core.c    | 62 ++++++++++++++++++++++++++++--------------
->>  2 files changed, 43 insertions(+), 21 deletions(-)
->> 
->> diff --git a/include/linux/kernel.h b/include/linux/kernel.h
->> index be2e8c0a187e..086ee1dc447e 100644
->> --- a/include/linux/kernel.h
->> +++ b/include/linux/kernel.h
->> @@ -87,6 +87,7 @@ extern int dynamic_might_resched(void);
->>  #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
->>  extern void __might_resched(const char *file, int line, unsigned int offsets);
->>  extern void __might_sleep(const char *file, int line);
->> +extern void __might_sleep_precision(const char *file, int len, int line);
->
-> Ugh.
->
-> Firstly, '_precision' is really ambiguous in this context and suggests 
-> 'precise sleep' or something like that, which this is not about at all. 
-> So the naming here is all sorts of bad already.
->
-> But more importantly, this is really a Rust problem. Does Rust really 
-> have no NUL-terminated strings? It should hide them in shame and 
-> construct proper, robust strings, instead of spreading this disease to 
-> the rest of the kernel, IMHO ...
+No worries, it happens!
 
-Not to discuss this particular patch or language interop in general, but
-I am curious why you think that null terminated strings are more robust
-than pointer + length strings? From the paragraph below, it seems you
-also believe that pointer + length is worse for security. Why is that?
+I can still reproduce it on next-20250508 with defconfig RUST=3Dy
+KUNIT=3Dy RUST_KERNEL_DOCTESTS=3Dy and then running in QEMU with e.g.
+`-machine virt -cpu cortex-a53`.
 
-
-Best regards,
-Andreas Hindborg
-
-
->
-> Rust is supposed to be about increased security, right? How does extra, 
-> nonsensical complexity for simple concepts such as strings achieve 
-> that? If the Rust runtime wants to hook into debug facilities of the 
-> Linux kernel then I have bad news: almost all strings used by kernel 
-> debugging facilities are NUL-terminated.
->
-> So I really don't like this patch. Is there no other way to do this?
->
-> Thanks,
->
-> 	Ingo
-
+Cheers,
+Miguel
