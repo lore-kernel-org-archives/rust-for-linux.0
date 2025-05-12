@@ -1,109 +1,114 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEE94A3C;
-	Mon, 12 May 2025 13:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720332EB1D;
+	Mon, 12 May 2025 13:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747057657; cv=none; b=btJCmbCBndXP5QOqGnarTXhFEpxd5ganHbsunEMxOQ0WJ7RLnMiLt1m9Oi0+vtNgJNPOYE2UIHie1GvF5zXVbO7YFfmeIcpbWZbj4Qn4UhzGo0CfkPGZ9kjOYkxd6K3VrHq9waTVzHOH3EpTfXc6Q8oIZpLIwQNUntNX7vIW6Dk=
+	t=1747057685; cv=none; b=Ab6u087UA0O9L/7geeBbaV34IzzReB1bxyH4oYJcAkqxa+Vdyi/YEH3oABMIY3deps9CR4cnb54KNWBlmXP7sypfxAlmapq44tPDFa+UhRBcBok5EfNd0YxTpnI4tsBkpghXf59a/qkV25Gkf3JMmRSdrCQdqSaIlKsUeKqnwuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747057657; c=relaxed/simple;
-	bh=ff/BkoK0UAKrKgoa/SVlnryGs4F19dLoJj5SVwSUo4Q=;
+	s=arc-20240116; t=1747057685; c=relaxed/simple;
+	bh=BHpueVAwfm3FWQvl4EsygXnay/5mtTUqUqaYBsW2JyM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ddrXT1ReUPcEaSW7+EGfnACSjpXLqcI/acdpSGgJWjqwaAtrXpabcScg6QASBqT6u9/y1KXJma/A7yQ+2j2JfNQ89UETQvMqXVHX4T0rjziVSRrLj9IGfiKRhyb1YX4bBPItvgaQx/HjGecF7lil6lKNPsPRqRq2u4lqJihu7QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V8KnYwMf; arc=none smtp.client-ip=209.85.215.178
+	 To:Cc:Content-Type; b=kNpEGQrGZtbsYwQqOpvf73cANIWxGsRYkBEdfkZigTaAOf5dXOb1csE2bLaD9ORWRFxuY9ZKr3yyi8QXnhQQEzfUz0z2e6vYYpiDQHUlU0er25K6Ur/U5CeO5gmA09gSbmvjL/xI5Vy3tXsJ69OfNVpsFCnI4Dsf7j1wC1GWRgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a4xfudJ/; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V8KnYwMf"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b1ff8a0a13cso751303a12.0;
-        Mon, 12 May 2025 06:47:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a4xfudJ/"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-af5499ca131so363784a12.3;
+        Mon, 12 May 2025 06:48:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747057655; x=1747662455; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747057684; x=1747662484; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nSSN0QVCB0auKOlByp57Ot7u5PowxUCeUXro48vkcbw=;
-        b=V8KnYwMfLpFoeB4+czyS+qJTUS98quvjsy0N30zx+VW4kPNo/tXLS1phAdxAV/QXdc
-         VWld9Rk5ZhGB/G+xjOWfv0LfPfllzyZWydlQWBTErg/EdvgoGowGhUcUlspcCIALMSZP
-         Rb7lrWIIUhTPx3RL8vhQ3+3z1sFD2q1kDQ2tD8qW5sr3eGCKyBeEBfC+kaQUYkTnO+mV
-         yd86DsftbEKefVIpXxfAS3wyBggozTFBkAIHqSsFTbCQrherKR8sINcKUouMMKBG4OKZ
-         Y3F+k1e7EYnvJFgFi3GLKGiXvmJVQBgmdom1hR4YzPvaxwHQQl8nSOEq6SxGfM7E522q
-         PI7A==
+        bh=b1fMuIe/7ONMMCdQeIFnVXYkOelK3PlNZeZ2qTQVxIk=;
+        b=a4xfudJ/s9mVIZaL9l12nxjr/ivn/qKigikuGFWoj2hrWsq300DXF9wHSaWf9mIarp
+         yG6ps6qgh+M+vmztXRs+shNsNXGeVe5k6umQ666Fmv8Le9tliGiWYAYG4LjDxamWSoO0
+         rx8vqrQ0gkYAkZ/rTvvmcEpwbhS8y30xqLVdFjrmeIDcj1nN1dYX8envogbq9npMUlpP
+         V8t2NVFZPrkpwr4nJqcssC24DzrBV4KWD7pTtKUFepy6HK2M+Dk8xMQI9poE5wReU7iz
+         NJWH9MKPgqmvPBk7KQpi+vxHmucNGKcco5lf/JnbSOmKtWxE+oIP/CC+3vwCghVz1T2J
+         RpdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747057655; x=1747662455;
+        d=1e100.net; s=20230601; t=1747057684; x=1747662484;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nSSN0QVCB0auKOlByp57Ot7u5PowxUCeUXro48vkcbw=;
-        b=lm/CCjeLMIXW88O+zTC0wkjp/FY8AeTPdRMUPO1RsM6uJtAG4hh0Ss14KmqRI4p3XR
-         ylgmAMn+xbd71mDZsHMS37u3lB7WCVQvbbxbvSDvTWk4d0UeaTzmxc+xTMNUMht8bjA1
-         58x9r2wHteZfjVWWdfvgEFr9aaf3ztBPeSv98ayX4J3qMMBbq0os/MvQvngO8pdWJNOH
-         lk+HijQlvmDfWKD/CvYIiEgAittokEwwkTeyyqX9+BSfn0YcLhlnoP/wVcz+AdZ6uQ9G
-         +VIwlWVynqc2PquBbJp/I7aflHLHar5hWNU15RN5GI3PtWvkNqDr4Q5PULhCt6nPrXme
-         pgbA==
-X-Forwarded-Encrypted: i=1; AJvYcCXMR+eXFvjzE4CLkvHBUhyE5ot2wOMLtW9H6UeHgGtLXOnCr2qHF6w+2r44LpUjWTN6jnbEZMVQlpHoulQ=@vger.kernel.org, AJvYcCXtwsGtDo3IzSXqbfUREBbw+b+fRduQfRBy5hBM7MhmgZZM66YmC3xQuGcpejq0MmOvJ9crgFDhDCm1rybI5SE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZ/75NZdSH6KbK1+4oM0EwZ5lMZWppnehkbRw0dONXQCYMMUL+
-	CpIBDy7cOophMMAEgMg6TeFQwfZw9NZAAl9nq++Q+vI5EYi1Fks/fv1Bw4fcrllmIdKBpC8SAK8
-	kU+5SHf+Bx2hMrtDI0x68SvbbURU=
-X-Gm-Gg: ASbGnctshG+TRks98PWa/bhncwtUv1yF+rr6AiBUpHhIUwgyoEf0pIyBpYT/Q8l0E6s
-	0X0fa73nliI5Nt8FXAlNoRml1ErPPSEOMRWYcAOUQVxzdJViOTxTaPX49ZXIau/5C9B1gTFPM/a
-	gMOe4Un3aaRQTCjaBtYTFYopORbs8Ieok6
-X-Google-Smtp-Source: AGHT+IHicxSAY2ahCa82NqPdRsKS2nLtw4K9WryM+tvkR9Vd6fIZ0xjbPPFQnJMiW6iVED0G6oSwMwOYHzh4pwOBru8=
-X-Received: by 2002:a17:903:2984:b0:22e:62c3:8c5d with SMTP id
- d9443c01a7336-22fc8c8c1bcmr74033075ad.8.1747057655140; Mon, 12 May 2025
- 06:47:35 -0700 (PDT)
+        bh=b1fMuIe/7ONMMCdQeIFnVXYkOelK3PlNZeZ2qTQVxIk=;
+        b=i+o4HbAeH8Aw6AE9hUeOWXwUMgwaA9K7JotLhm8uYZVNFa4iRjKhsbfo3VfFtdMJpG
+         fhaPkySmlgC68go/H/If/LyMWA9v/OHLxjZofb61X10nJmhzSBRCjZbUGzvJMoZEQGth
+         ZomfkucfG52dVdQw9KleV8jmSzDYienouQFo8beAcy/hYmE9zDuvC7XeTp1gYYoiIigU
+         VcOM+2fxARJYqPrrgYtnaQe5IT8YBcoN17YY6VEnJQxGqmyH6hVh0ZF+HxvaL5WJOCeY
+         iiPp6qSiMIXo3W5VnFwYEQodJlOxyRUK3msthjhzSmcqTcTGDLuO1Tx1PbZDDL2Dl9vy
+         TFiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWbBJjMeAUs5rQWOLsAkbuqp0Udy23e51SKrXl4NEhiw+au2JGeUAWda1PJTDy3GuZPWFFxik7ayOtpMd9@vger.kernel.org, AJvYcCWEiH3+Nt0ST/Pv66Pmw6QbDYGOx2QuAFv5VuLWz73QjAd94w7ItlxO8WxMW1AOV6mwLYAWOTNAr+0=@vger.kernel.org, AJvYcCXo/bJGjGocoZoxGCZXNR4F1u/SAWlNRGMy20Bzxes6lwOEYZ7M36Zn4Mk5sed1OXxHvkYgkKnH9P6O3i6y3bI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/DFZ12EaguY5ZrgVLScpe2AyvWJVPlBgUni5/dXKOwJv0lWH1
+	6rvovstjDHqqFfNRBWsZafkiBp8hiu500HlDYmBjp0k763+pVK1lP2fbplM/GBdI7HbwvNflW1y
+	f1EsA3xJjug8EZWfOVaDXsiNLbN8=
+X-Gm-Gg: ASbGncunyB+87/NdFxrRbW8sIGnQES61bNOSjsG2fXizgqQBfd4B81ZesxZi/KIIDGH
+	UKyCJj9yN+kjGTT+RDYGhQlZ2Neb8gV7xzlUWNi9HQuxqaxdOTRAu9tjMtnP6zhiTwMQn7irH3c
+	HjV5OZkTFAKsaG7ovcUWD7hMQh0Y9EX0jU
+X-Google-Smtp-Source: AGHT+IFdgJb6WFnCwQ1ckUq6mAtXOgztfx5HsquGECmUxd5me5EhOzT9KO3/c+Lqq8UBo7wF7VCfW7Fkeyh9no0X8W8=
+X-Received: by 2002:a17:902:ec86:b0:224:1212:7da1 with SMTP id
+ d9443c01a7336-22fc918d174mr63653765ad.13.1747057683677; Mon, 12 May 2025
+ 06:48:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250321080124.484647-1-kunwu.chan@linux.dev>
-In-Reply-To: <20250321080124.484647-1-kunwu.chan@linux.dev>
+References: <20250416112454.2503872-1-ojeda@kernel.org>
+In-Reply-To: <20250416112454.2503872-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 12 May 2025 15:47:23 +0200
-X-Gm-Features: AX0GCFtjrAQIZQvRJ49eTgAfdFwyQYEsuDLwSVRff4tQTTKSn5Eq48N-yLr6Y1U
-Message-ID: <CANiq72nQuRr0+U9QkAx_d01hymgwsor3SQKQFNt0Y3SStFOfDw@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: page:: optimize rust symbol generation for Page
-To: Kunwu Chan <kunwu.chan@linux.dev>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
-	morbo@google.com, justinstitt@google.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	Kunwu Chan <kunwu.chan@hotmail.com>, Grace Deng <Grace.Deng006@gmail.com>
+Date: Mon, 12 May 2025 15:47:51 +0200
+X-Gm-Features: AX0GCFssLceZsQg3tu5ORZXSomdeXScaEYnRsjvkmAEYjZ92Z9K6uKADlNuukfc
+Message-ID: <CANiq72kEgg2ATEdtVPLX5shUcVJdJKuftt6qMtA-t5C-ALpx6A@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: explain that `///` vs. `//` applies to
+ private items too
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Viresh Kumar <viresh.kumar@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 21, 2025 at 9:02=E2=80=AFAM Kunwu Chan <kunwu.chan@linux.dev> w=
-rote:
+On Wed, Apr 16, 2025 at 1:25=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> When build the kernel using the llvm-18.1.3-rust-1.85.0-x86_64
-> with ARCH=3Darm64, the following symbols are generated:
+> Sometimes kernel developers use `//` for documenting private items,
+> since those do not get rendered at the moment.
 >
-> $nm vmlinux | grep ' _R'.*Page | rustfilt
-> ffff8000805b6f98 T <kernel::page::Page>::alloc_page
-> ffff8000805b715c T <kernel::page::Page>::fill_zero_raw
-> ffff8000805b720c T <kernel::page::Page>::copy_from_user_slice_raw
-> ffff8000805b6fb4 T <kernel::page::Page>::read_raw
-> ffff8000805b7088 T <kernel::page::Page>::write_raw
-> ffff8000805b72fc T <kernel::page::Page as core::ops::drop::Drop>::drop
+> That is reasonable, but the intention behind `///` (and `//!`) vs. `//`
+> is to convey the distinction between documentation and other kinds of
+> comments, such as implementation details or TODOs.
 >
-> These Rust symbols(alloc_page and drop) are trivial wrappers around the C
-> functions alloc_pages and __free_pages. It doesn't make sense to go
-> through a trivial wrapper for these functions, so mark them inline.
+> It also increases consistency with the public items and thus e.g. allows
+> to change visibility of an item with less changed involved.
 >
-> Link: https://github.com/Rust-for-Linux/linux/issues/1145
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Co-developed-by: Grace Deng <Grace.Deng006@Gmail.com>
-> Signed-off-by: Grace Deng <Grace.Deng006@Gmail.com>
-> Signed-off-by: Kunwu Chan <kunwu.chan@hotmail.com>
+> It is not just useful for human readers, but also tooling. For instance,
+> we may want to eventually generate documentation for private items
+> (perhaps as a toggle in the HTML UI). On top of that, `rustdoc` lints
+> as usual for those, too, so we may want to do it even if we do not use
+> the result.
+>
+> Thus document this explicitly.
+>
+> Cc: Viresh Kumar <viresh.kumar@linaro.org>
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72n_C7exSOMe5yf-7jKKnhS=
+Cv+a9QcD=3DOE2B_Q2UFBL3Xg@mail.gmail.com/
+> Link: https://github.com/Rust-for-Linux/linux/issues/1157
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-next` -- thanks!
+Applied to `rust-next` -- thanks everyone!
 
-    [ Removed spurious colon in title. - Miguel ]
+    [ Fixed typo. - Miguel ]
 
 Cheers,
 Miguel
