@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762B9253352;
-	Mon, 12 May 2025 17:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF75C296D23;
+	Mon, 12 May 2025 17:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747069744; cv=none; b=pQKq0F97tp+ItQziDoojjcYruSrk6+X0i00JLk4Wun0Cap17YP8FABxRAu80ZUfz097Vca8vPrNMSTjEuzjUnYRe3CUDciTfG1sHwG34BvWT5GNQtbo0+1SkKZaE5NsFg8+z4ok3QQLKfV1YFfWxyS/eXzD4A/L/KtfuInDBUP4=
+	t=1747070999; cv=none; b=QhqLKDjw8nY4TnWUyWx+Cp48B9S1OIzS6Ngn2IwPebmsUF3motMOni7VM/425YIFetGgrrCuTmZz5zJQmVRtX64nzu9Y5AtTVDttVgY7VqCSEKNugCzUIqryz4B+xcAlMdyYcqtw1ioVzlQxo2RAMx79RgekdkB6spLCczOGsmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747069744; c=relaxed/simple;
-	bh=NXrn6pd6C/pHrLJRV8tm1na465rKRwRiRJAsOnDNemg=;
+	s=arc-20240116; t=1747070999; c=relaxed/simple;
+	bh=ohP3qwU/g292m6VUOxkkeEfG4yKASr7Uz6QM0jrslJg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dGR43XD991om5EHOSiRQ+Vxh1BLuHrBqq0XQkbajzw3A2lRa5cvb7eh+CivijyMZcg7i+XZDNsNyQ8WBNOgLYab+bnSLmvwTcIyMkrqe+p42bHipYlw09RAYSjfSvJpkv3uF6hHRlviNkOAeSREWqUQf3k5CwFl9e9mrhk3qIzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kfBRFxip; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=NtxvCG127PIrhEnx03aPrZ8SRuqy2m8ESlk96VzmD05vyfIDkq56B/MNxxXZrNDVEvBSz9vV7XPATC8ciytvFk0SkH4cQayDV753jhN9TNeglnnovG8zy6j48IQYaiVjkNY/OYnRTNRba7R1wyExvuQ3opob4XEc6rLLvyQqm7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCCPTbi7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kfBRFxip"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0542EC4CEE7;
-	Mon, 12 May 2025 17:09:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCCPTbi7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFB6C4CEE7;
+	Mon, 12 May 2025 17:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747069744;
-	bh=NXrn6pd6C/pHrLJRV8tm1na465rKRwRiRJAsOnDNemg=;
+	s=k20201202; t=1747070999;
+	bh=ohP3qwU/g292m6VUOxkkeEfG4yKASr7Uz6QM0jrslJg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kfBRFxipEX9Zi6bx8K12OZUZKZJ5Ej0zY3Oh2qmYxXTsfNNcItD5ExaQFlGC3QO8r
-	 SH3jhdntHJWMCgRhD60gsmhfQejxr6qSnd64toFAS7i+a+ARgdiJxmwmuXUzIJCPIW
-	 Osu790tp65CuFDxhdvqWVKrLR5fmS/In6lFnK8unfaX1d0hpFhTkulhfOa1REU7Jin
-	 0QhRoUsJ1GZ1eSJn4v50ShHCH5WVg584lvOELBejruVBNtKA48FFtorOIROWImn8lp
-	 uIui+pkwcyoywGYxGqzQ+n5KA2+ZLwUQ1RqkQJlAUnnDxzizwumsYmaYzXT4l+qTyN
-	 EAppQaZJcq1TQ==
-Date: Mon, 12 May 2025 12:09:02 -0500
+	b=RCCPTbi7SjeUkqsta7xtU0G8ZJkwCEaeIhgmNOGdlIBXZTqqKIGTUahgIx8fY/T2+
+	 8W/EJzP0D+7cA+QqLG9BSmlnb/Mp4/8OQADhfnY1vg3kQCUiC23CdDl8ZBPC35i/OE
+	 whsVWKEpMii9g7p4cZ7xhUOC1MzOvwD3RS2cQADZIQAyRk1CzUAEiBbbNwsicjZZjV
+	 sKuqnKFB6sLK9+KqU9wECDoDraj2HHWFuEli+e2rDP/AEZy5+m+Jvhw6FadWPNWWbe
+	 4kbxza4L8O1gnhgBdL+cSs8TGhMcCoxsK2iQ4eR1wgHL2yhSINlX8f0ihGuVallwol
+	 toQ1zqJOvaa0Q==
+Date: Mon, 12 May 2025 12:29:57 -0500
 From: Rob Herring <robh@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
+To: Remo Senekowitsch <remo@buenzli.dev>,
+	Viresh Kumar <viresh.kumar@linaro.org>
 Cc: Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
@@ -41,10 +42,10 @@ Cc: Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 5/9] rust: device: Introduce PropertyGuard
-Message-ID: <20250512170902.GA3463681-robh@kernel.org>
+Subject: Re: [PATCH v4 3/9] rust: device: Move property_present() to FwNode
+Message-ID: <20250512172957.GB3463681-robh@kernel.org>
 References: <20250504173154.488519-1-remo@buenzli.dev>
- <20250504173154.488519-6-remo@buenzli.dev>
+ <20250504173154.488519-4-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,63 +54,84 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250504173154.488519-6-remo@buenzli.dev>
+In-Reply-To: <20250504173154.488519-4-remo@buenzli.dev>
 
-On Sun, May 04, 2025 at 07:31:50PM +0200, Remo Senekowitsch wrote:
-> This abstraction is a way to force users to specify whether a property
-> is supposed to be required or not. This allows us to move error
-> logging of missing required properties into core, preventing a lot of
-> boilerplate in drivers.
+On Sun, May 04, 2025 at 07:31:48PM +0200, Remo Senekowitsch wrote:
+> The new FwNode abstraction will be used for accessing all device
+> properties, so it must have the property_present method.
 > 
-> It will be used by upcoming methods for reading device properties.
+> It's possible to duplicate the methods on the device itself, but since
+> some of the methods on Device would have different type sigatures as the
+> ones on FwNode, this would only lead to inconsistency and confusion.
+> Hence, remove the method from Device.
+> 
+> There aren't any users to update yet.
+
+But there is one going into 6.16 most likely with the cpufreq stuff[1] 
+which complicates merging.
+
+Rob
+
+[1] https://lore.kernel.org/all/f7e96b7da77ac217be5ccb09b9309da28fd96c90.1745218976.git.viresh.kumar@linaro.org/
+
 > 
 > Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
 > ---
->  rust/kernel/device/property.rs | 59 ++++++++++++++++++++++++++++++++++
->  1 file changed, 59 insertions(+)
+>  rust/kernel/device/mod.rs      | 7 -------
+>  rust/kernel/device/property.rs | 8 +++++++-
+>  2 files changed, 7 insertions(+), 8 deletions(-)
 > 
+> diff --git a/rust/kernel/device/mod.rs b/rust/kernel/device/mod.rs
+> index b4b7056eb80f8..15d89cd45e871 100644
+> --- a/rust/kernel/device/mod.rs
+> +++ b/rust/kernel/device/mod.rs
+> @@ -6,7 +6,6 @@
+>  
+>  use crate::{
+>      bindings,
+> -    str::CStr,
+>      types::{ARef, Opaque},
+>  };
+>  use core::{fmt, marker::PhantomData, ptr};
+> @@ -200,12 +199,6 @@ pub fn fwnode(&self) -> Option<&property::FwNode> {
+>          // defined as a `#[repr(transparent)]` wrapper around `fwnode_handle`.
+>          Some(unsafe { &*fwnode_handle.cast() })
+>      }
+> -
+> -    /// Checks if property is present or not.
+> -    pub fn property_present(&self, name: &CStr) -> bool {
+> -        // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
+> -        unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
+> -    }
+>  }
+>  
+>  // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
 > diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-> index 6ccc7947f9c31..59c61e2493831 100644
+> index e75d55f5856cf..70593343bd811 100644
 > --- a/rust/kernel/device/property.rs
 > +++ b/rust/kernel/device/property.rs
-> @@ -123,3 +123,62 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
->          unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
+> @@ -6,7 +6,7 @@
+>  
+>  use core::ptr;
+>  
+> -use crate::{bindings, types::Opaque};
+> +use crate::{bindings, str::CStr, types::Opaque};
+>  
+>  /// A reference-counted fwnode_handle.
+>  ///
+> @@ -31,6 +31,12 @@ impl FwNode {
+>      pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
+>          self.0.get()
 >      }
+> +
+> +    /// Checks if property is present or not.
+> +    pub fn property_present(&self, name: &CStr) -> bool {
+> +        // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
+> +        unsafe { bindings::fwnode_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
+> +    }
 >  }
-> +
-> +/// A helper for reading device properties.
-> +///
-> +/// Use [`Self::required_by`] if a missing property is considered a bug and
-> +/// [`Self::optional`] otherwise.
-> +///
-> +/// For convenience, [`Self::or`] and [`Self::or_default`] are provided.
-> +pub struct PropertyGuard<'fwnode, 'name, T> {
-> +    /// The result of reading the property.
-> +    inner: Result<T>,
-> +    /// The fwnode of the property, used for logging in the "required" case.
-> +    fwnode: &'fwnode FwNode,
-> +    /// The name of the property, used for logging in the "required" case.
-> +    name: &'name CStr,
-> +}
-> +
-> +impl<T> PropertyGuard<'_, '_, T> {
-> +    /// Access the property, indicating it is required.
-> +    ///
-> +    /// If the property is not present, the error is automatically logged. If a
-> +    /// missing property is not an error, use [`Self::optional`] instead. The
-> +    /// device is required to associate the log with it.
-> +    pub fn required_by(self, dev: &super::Device) -> Result<T> {
-> +        if self.inner.is_err() {
-> +            dev_err!(
-> +                dev,
-> +                "{}: property '{}' is missing\n",
-> +                self.fwnode.display_path(),
-
-Is it possible to do "{self.fwnode}: property ..."?
-
-Then if we want to modify the default, we could do something like 
-"{self.fwnode:pn}"? It doesn't look like that's something which would 
-work OOTB and is not something we need to solve now. So just the default 
-formatter is good for now.
-
-Rob
+>  
+>  // SAFETY: Instances of `FwNode` are always reference-counted.
+> -- 
+> 2.49.0
+> 
