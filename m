@@ -1,119 +1,81 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB01D29712B;
-	Mon, 12 May 2025 20:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747080181; cv=pass; b=mVld2+/JrNohOx/bLYgwKkt0NrD3HjhjBzFQ7EV3uLKwnIKObFe0kzjdeXDnDzxU7M3E1e/xNNQY0zlfkalddIw5BceEH5dzEzx3SW6x08E384sQcx6RHxPW0vs69B4dM7O5KroOKaneBAM5r/FnK0kuOKF4yqTo4LUWAVI+QjQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747080181; c=relaxed/simple;
-	bh=puzRHBcMO8rvHuz8H81UYhM6x70hrg+q4UMp/8aK5o8=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=eliAsIwoJyQOVZtwjyqR7zPbYRmjYiYljbC4l2oHYEHIBLGPMcG0ozYrFrJS10h5ov9VLmgFhMrPnO31JWvqj1/UuNrj6PpCeKHizgj4NGs6RLpa4yzKH1SLzA+Rk4LKG3QInfigv1DB68ACYk0j/226Boc6qkllmp5KSaXjRrg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=K27k90PB; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8E4229B0E;
+	Mon, 12 May 2025 20:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747080457; cv=none; b=ZYuFLqz+P3y+BIo525WlzIcCdwBBe+Nj4q+DIkNXUxYAXhD5zyJQqqJqZ/TmemeGkRAJ0Tymyk9CJqjMSKZNePI+abuOupZXhQquwnrdMRwydmia1Lm1CPIO0SuNqAZQVQydOoAGBP3RMTMYX7QNFRFmxmMSjkGy0H7EQRoeCRQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747080457; c=relaxed/simple;
+	bh=Az4ibXiBakDxOB/LA6OaUS+wvOTTZFFucoLFx2LzIag=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=LeQhrfw6RAj/MK2lKqFBGTtnp+XzSQAGbRjn7L3T6Vb6t//qBZjpxLtt58EkV8SdgHVBlhF/MyOFJRDrBTCcyM06laGUxGIMxip1evNWPFP6pQa/SZCAI9Ag23fbwA0gQ8g3JkognkMUQlsUOtAAnBQf4BfMjI6YiJV3WhFYHzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f24Md++a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="K27k90PB"
-ARC-Seal: i=1; a=rsa-sha256; t=1747080127; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Jotc9F0RGGpOV6IqypJ1faIXrg/K7Q4lYxpVOeSWJBaYI6PIQ17nU7hqgUFVlHX8c3ofIrDgpzFAwryzizvDjXstuTSCpUSJoM8oR2+J+a9HvzZCpOeajne5gdSK94hfiQKubp2sgYYkWXgWOFsZuHjp8eJEwYm7Cbgdo8fL/eg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1747080127; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=n45Gcyqae2E8eLGQsbBmy9RbSgznDF/XzToG8E9egpM=; 
-	b=GHZu5K73POYkxCAiatUmzNv9QD2SBYUogTAhqLSdmFMjwOSJJFsq+4Xm4IOcJN1BpkjQ5zuLN7znwx4f8Si0HM8VAK21W9YV3POS2WnI+vpez45hD3Gz1NFTniGvJ9Ta0XMkIJj17AcFjqgMUFpMI7pzQco6WpnKgwiKmR5nhD4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747080127;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=n45Gcyqae2E8eLGQsbBmy9RbSgznDF/XzToG8E9egpM=;
-	b=K27k90PBkwJEqxcXWeecYvPmqyoSgUt89o1u1bvcZixbxbKRbq7xqKPSwnkxL+17
-	0/2VRsre0Fta4Dy7pxlcR2M7vD6VyRIVD1boXIO3ZdPZP+m5F5o5dKxAqBeEWgy5yKY
-	vJfvPTAbpc2F5Clyse8K/IbF6vlZ4GoYYyMUebPg=
-Received: by mx.zohomail.com with SMTPS id 1747080124518928.7435041447463;
-	Mon, 12 May 2025 13:02:04 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f24Md++a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3828C4CEE7;
+	Mon, 12 May 2025 20:07:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747080457;
+	bh=Az4ibXiBakDxOB/LA6OaUS+wvOTTZFFucoLFx2LzIag=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=f24Md++aQzEQfOEm96/rYw7SthZNEh2UBcHOBy4HSkJeILcPVetuY/eQlWUGfZGLi
+	 UCmBc554nVfbXefiHzddrpkAKkGxxlW3Vkruj96EVb5aBVrjf8FV//hijvQgauRkpa
+	 SYuBBJlCg+9IDSjtOKtyICE8RaB2A7xUFM3K4EkgItlNofzJD8bc2M8KQejyuW4ttd
+	 /ecCmjUQJ2QnAAy2UUpfy4wVdpdoSFjgqmP23xUoct9Qw+QyU7T+00rIVqaxEbOm+b
+	 SG4aIVoNwBMESSgux1qRwhIdG9UiXf1qKh6lsUVUGbfpNa9luyaU8BAAHCTDjF3BHv
+	 60jLvXnJrlfGQ==
+Date: Mon, 12 May 2025 15:07:34 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+	akpm@linux-foundation.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, gregkh@linuxfoundation.org, rafael@kernel.org,
+	bhelgaas@google.com, kwilczynski@kernel.org, raag.jadav@intel.com,
+	andriy.shevchenko@linux.intel.com, arnd@arndb.de, me@kloenk.dev,
+	fujita.tomonori@gmail.com, daniel.almeida@collabora.com,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH 02/11] rust: io: Replace Io with MMIo using IoAccess trait
+Message-ID: <20250512200734.GA1120867@bhelgaas>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [RFC PATCH 1/2] rust: add initial scatterlist bindings
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250512164247.GF138689@ziepe.ca>
-Date: Mon, 12 May 2025 17:01:45 -0300
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- dakr@kernel.org,
- lyude@redhat.com,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Valentin Obst <kernel@valentinobst.de>,
- open list <linux-kernel@vger.kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>,
- airlied@redhat.com,
- rust-for-linux@vger.kernel.org,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
- Petr Tesarik <petr@tesarici.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Sui Jingfeng <sui.jingfeng@linux.dev>,
- Randy Dunlap <rdunlap@infradead.org>,
- Michael Kelley <mhklinux@outlook.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <AC0FC018-4440-4027-9943-12FFB481AA6E@collabora.com>
-References: <20250512095544.3334680-1-abdiel.janulgue@gmail.com>
- <20250512095544.3334680-2-abdiel.janulgue@gmail.com>
- <20250512164247.GF138689@ziepe.ca>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250509031524.2604087-3-andrewjballance@gmail.com>
 
-Hi Jason,
+On Thu, May 08, 2025 at 10:15:15PM -0500, Andrew Ballance wrote:
+> From: Fiona Behrens <me@kloenk.dev>
+> 
+> Replace the Io struct with a new MMIo struct that uses the different
+> traits (`IoAccess`, `IoAccess64`, `IoAccessRelaxed` and
+> `IoAccess64Relaxed).
+> This allows to later implement PortIo and a generic Io framework.
 
->> +
->> +    /// Map this scatter-gather table describing a buffer for DMA.
->> +    pub fn dma_map(&mut self, dir: DmaDataDirection) -> Result {
->> +        // SAFETY: Invariants on `Device` and `SGTable` ensures that =
-the `self.dev` and `self.sg`
->> +        // pointers are valid.
->> +        let ret =3D unsafe {
->> +            bindings::dma_map_sgtable(
->> +                self.dev.as_raw(),
->> +                self.sg.as_raw(),
->=20
-> Can't call this function on an unbound driver, didn't someone add
-> special types for this recently?
+Add blank line between paragraphs.
 
-JFYI: I think that the =E2=80=9CBound=E2=80=9D state is still WIP and =
-not upstream yet.
+> +    /// Read data from a give offset known at compile time.
 
->=20
->> +impl Drop for DeviceSGTable {
->> +    fn drop(&mut self) {
->> +        if self.dir !=3D DmaDataDirection::DmaNone {
->> +            // SAFETY: Invariants on `Device` and `SGTable` ensures =
-that the `self.dev` and `self.sg`
->> +            // pointers are valid.
->=20
-> Wrong safety statement, Device must be on a bound driver to call this
-> function, a valid pointer (eg device refcount) is not enough.
->=20
-> Jason
+s/give/given/
 
+> +    /// Bound checks are perfomed on compile time, hence if the offset is not known at compile
+> +    /// time, the build will fail.
 
-=E2=80=94 Daniel
+s/perfomed on/performed at/
 
+> +    /// Bound checks are performed on runtime, it fails if the offset (plus type size) is
+> +    /// out of bounds.
+
+s/on runtime/at runtime/
+
+> +/// This Takes either `@read` or `@write` to generate a single read or write accessor function.
+
+s/This Takes/This takes/
