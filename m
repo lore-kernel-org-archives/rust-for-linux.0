@@ -1,102 +1,128 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC33019E82A;
-	Mon, 12 May 2025 09:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7925A25C80B;
+	Mon, 12 May 2025 09:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747041273; cv=none; b=WYQhdHY8fipo7vcumC+AK3aevtKwjGPfduyQrNckCgnz+g1s+PBE5wTHjTQccGnUh0cUQydoOU7muHrnrU3pQnj8dJqt3X1RfulgFKBb01Tt/52vkBNSk2Y8w58aunha0De5fOyjCtfKcVFxsHs3S/+aXX1CFMH6X5ktdDFbRAM=
+	t=1747042157; cv=none; b=TL0DLhxebGysUS5qGGk0ulbmYM6G6vegN8lzjiz/YAg99/rO5qhUeFqJC40Zjx+rIPbSejj7xbKbECkHTpGnLWKeVOBGP3y+zVJQehFALbv1RSy3XBfFFsfi4sS0kJI1WVesfX7Pg/rZ1PSAT8+4c4Rjj0bJj/cpGpN3aKTeKGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747041273; c=relaxed/simple;
-	bh=HgA23X09EOQHUFdqhgBCZBj6qKS3pvzLCSZC53aWWgQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=syBb6RsRtIw5lF8VPL19+FgtKTSwT60BuaEOxs7CGqrTQ+rkjl7qWTZ8L3Mz5hltfVZ/jnFiEZeN7fHYPPl1vN12d4h0BG9XypvAQ7195zFLfT5zsfKRksqKmNWTqmEzZ31/fp3LbPNjmnfmzbpd7cXOH6Vl7zjbA3NbJCYUEoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxApOAvI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747042157; c=relaxed/simple;
+	bh=YoFP98jJRr0F64My2fRMIusw9vmWrrP/FVPPIlYjxR0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TNY29hQdRk+GRgdfM0zuT4vtWPbFmLeQCtKKsSBLNXZdfX9WxZCLRlwU1ADwrpo2yhw1segbkQeJye0fn+R2Re/X++1sixbnUd81S0hJfqJSsjcl6/7CKvvjQ/rX+2Aw8SFdsQqwIqtSYQCTHx4CbHS9nmK73VnPdPdfvwHfvVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pR2oqz9W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxApOAvI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B42CC4CEF3;
-	Mon, 12 May 2025 09:14:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pR2oqz9W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6072C4CEE7;
+	Mon, 12 May 2025 09:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747041273;
-	bh=HgA23X09EOQHUFdqhgBCZBj6qKS3pvzLCSZC53aWWgQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WxApOAvI5khzXSx79Zsp5Hahc/Z6tpb2T/q5qG4jaPyzbkjEGiU6jYZzQw+cy7FYB
-	 merz+lo5ZejorU9fQWuEsMvsGx6qsAC91DHkpSc9R2kUIbUdqxbDKbMDtVcQqSt0kO
-	 dY2xTRqejucrFyZ/VJ8uaj/6oH3Bltczpui7AmYboiNVTgGYI0eAFIC52RxdGWHFec
-	 BdGyTstPpAEqrk02K9rN6wU4qtL77DwhWX+EdUpo1elZJKBN75Pm8h2obpm8W/vT7v
-	 wWxE5Ydqo0pc+9VCNeOgenxnEv7j/ZiH67qKxh0/lGpbicV31UWhGmCVxQd1JNoExV
-	 su9zR7u5i0uOg==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30effbfaf61so51316831fa.0;
-        Mon, 12 May 2025 02:14:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVRvEW0NyObkeqjnL2756mmdPG1v32/TYdBo0nPNI0nqz+157+GFk4rnMq9rIQTAOlmnoBsXorNZ7umrGsGIoI=@vger.kernel.org, AJvYcCW1CP66mtNkX2uKERhM3dBpnUvxuiK3MjSDH8D6Wj5WXrebqwtOkpYY9vRSVXSCl+lR5vqXh8d/1rqkM+m4@vger.kernel.org, AJvYcCWkiiikO9Jlgh0vBz014p2F+WVDGB8CoNEhvtKICRrwQEFYmxbc5NByCCi5RXeKCQehXIlSmosP64I=@vger.kernel.org, AJvYcCXCwG6JidX90EnajByysIDYD8vYj7fJs3BOXHg90+PXbf8CaZ60PkYumlkGGdyKu86/Bo3pYOJraMrjrCfO@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkCsbXNgPvjRLl+yZK3G73I92P1A/SzrsygQrtb4AJgEXjEFXK
-	wqxkPgjSnBtqRM4P8DyXenZSHInH7SKg4SnzXAsSM6iQfUoR5d5ttnx1ECiOhKbHoN74adPhdUd
-	0017gwhmTMkPqAZ8WefOywAXKDww=
-X-Google-Smtp-Source: AGHT+IHPEQt2Y0pz/cmLWyo9qzhRO7GhKCjDosc6S/Df5anYnXykwsDnAOCfso46oOY/2ZUEpv40Ux2NDtYMxB8jNDA=
-X-Received: by 2002:a05:651c:3254:20b0:326:cb09:8220 with SMTP id
- 38308e7fff4ca-326cb098720mr20785581fa.16.1747041271801; Mon, 12 May 2025
- 02:14:31 -0700 (PDT)
+	s=k20201202; t=1747042155;
+	bh=YoFP98jJRr0F64My2fRMIusw9vmWrrP/FVPPIlYjxR0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=pR2oqz9WRy6IHfP4dmMBu4l4ojFFud5bn7tYkwsdFCcXPrk9d3hvmCNTk3PtIVTx7
+	 BfsDoP3MsaUhEld5BKPvzcQ6nyoWFYYabBTTNB1vouvENWI8f0Riv50fpd32279xqG
+	 7Swq2gyP4m8O+uEixaE2VjGxc0m8zrwAZ2e0A3QkzlfVLCQ1YhqFkgQ86SxbsQv4OW
+	 R16KMvXQtm9tkH5LtoJEHzWjNvgsyS4+wnC9nwCrOsQ/2nhsFWpHD9/trLG2rPE/QE
+	 TON4gOP2OA5+kRDaElaq2zMKP6AA8t/bIRJqIEzZH9BGREymwoZ4aPqNKJ6wls5Jaq
+	 S1j5EvLlQAcoA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Ingo Molnar" <mingo@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>,  "Thomas Gleixner" <tglx@linutronix.de>,
+  "Frederic Weisbecker" <frederic@kernel.org>,  "H . Peter Anvin"
+ <hpa@zytor.com>,  "Linus Torvalds" <torvalds@linux-foundation.org>,
+  "Peter Zijlstra" <peterz@infradead.org>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Anna-Maria
+ Behnsen" <anna-maria@linutronix.de>,  "Boqun Feng" <boqun.feng@gmail.com>,
+  "Lyude Paul" <lyude@redhat.com>,  "Rust ML"
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 01/10] rust: Rename timer_container_of() to
+ hrtimer_container_of()
+In-Reply-To: <aBu2ocPIFOvq_EiA@gmail.com> (Ingo Molnar's message of "Wed, 07
+	May 2025 21:38:09 +0200")
+References: <20250507175338.672442-1-mingo@kernel.org>
+	<qqz686a7_ob8uzbREL3X3P-MTdPUVJo9hi33Dsv-3kgJoB1_bE0ynnuXFVLIwbZ5dNkntegTdZhkBp04syneXA==@protonmail.internalid>
+	<20250507175338.672442-2-mingo@kernel.org> <877c2spaag.fsf@kernel.org>
+	<exZlQK8ioPft3NijtFzp4A_qkGlCunbqRbqwq8STs5kyK8khboJDM8LqVH7EZTImMbpeMOnxadeRvyEnyU69kA==@protonmail.internalid>
+	<aBu2ocPIFOvq_EiA@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 30.1
+Date: Mon, 12 May 2025 11:29:01 +0200
+Message-ID: <87jz6mnpnm.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250511-kbuild-revert-file-prefix-map-v1-0-9ba640c8411e@weissschuh.net>
-In-Reply-To: <20250511-kbuild-revert-file-prefix-map-v1-0-9ba640c8411e@weissschuh.net>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 12 May 2025 18:13:54 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARq9LdeB2uGusFxSrG=enrpAk05KC2V77o8Wh191y_Z4w@mail.gmail.com>
-X-Gm-Features: AX0GCFvsK52rOeUbpqcgGKDBRYxdE-fzGACWT3JmBUy3_4FTOVNX5AXbjFlkqbE
-Message-ID: <CAK7LNARq9LdeB2uGusFxSrG=enrpAk05KC2V77o8Wh191y_Z4w@mail.gmail.com>
-Subject: Re: [PATCH 0/2] kbuild: revert relative paths in compiler outputs
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Matthieu Baerts <matttbe@kernel.org>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sun, May 11, 2025 at 3:02=E2=80=AFPM Thomas Wei=C3=9Fschuh <linux@weisss=
-chuh.net> wrote:
+"Ingo Molnar" <mingo@kernel.org> writes:
+
+> * Andreas Hindborg <a.hindborg@kernel.org> wrote:
 >
-> -ffile-prefix-map/--remap-path-prefix break the ability of debuggers to
-> find the source file corresponding to object files. As there is no
-> simple or uniform way to specify the source directory explicitly, this
-> breaks developers workflows.
+>> "Ingo Molnar" <mingo@kernel.org> writes:
+>>
+>> > This primitive is dealing with 'struct hrtimer' objects, not
+>> > 'struct timer_list' objects - so clarify the name.
+>> >
+>> > We want to introduce the timer_container_of() symbol in the kernel
+>> > for timer_list, make sure there's no clash of namespaces, at least
+>> > on the conceptual plane.
+>>
+>> Is this a resend?
 >
-> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> ---
-> Thomas Wei=C3=9Fschuh (2):
->       Revert "kbuild: make all file references relative to source root"
->       Revert "kbuild, rust: use -fremap-path-prefix to make paths relativ=
-e"
+> I noted the changes in the boilerplate:
 >
->  Documentation/kbuild/reproducible-builds.rst | 17 +++++++++++++++++
->  Makefile                                     |  3 +--
->  2 files changed, 18 insertions(+), 2 deletions(-)
-> ---
-> base-commit: 3ce9925823c7d6bb0e6eb951bf2db0e9e182582d
-> change-id: 20250511-kbuild-revert-file-prefix-map-4de45dfada75
+>   Changes in -v3:
 >
-> Best regards,
-> --
-> Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+>     - Picked up review tags
+>     - Rebased to v6.15-rc5
+>
+> This particular patch didn't change.
+
+Thanks. I didn't get the cover letter, but I should have looked for it.
+
+>
+>> Again, I think this change is unnecessary. Please see my earlier reply [1].
+>>
+>> Best regards,
+>> Andreas Hindborg
+>>
+>>
+>> [1] https://lore.kernel.org/all/877c3cbdq2.fsf@kernel.org
+>
+> Yeah, saw that, but you said you are fine with it if I insist, and I'd
+> like to have this to free up the timer_* namespace.
+
+Yes. I did not hear any proper insisting till now though.
+
+> Since I think we'd
+> like to introduce the timer_container_of() in the future it would be
+> nice to do this rename, as:
+>
+> 	$ git grep -w timer_container_of
+>
+> will have hrtimer related false positive hits in rust/ code, even
+> though the namespaces are obviously independent.
+
+Ok, I see. I'm not used to grepping like that, but I see how that can be
+annoying.
+
+>
+> The Rust method is arguably a minor misnomer as well: you have
+> work_container_of around struct work, but timer_container_of is around
+> struct hrtimer?
+
+Yes, you are right.
+
+Feel free to take this through tip. Otherwise maybe Miguel can pick it
+up in the rust PR for 6.15.
 
 
-Both applied.
-(I locally fixed the doubled Fixes:)
-
-Thanks.
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
 
 
+Best regards,
+Andreas Hindborg
 
---=20
-Best Regards
-Masahiro Yamada
+
