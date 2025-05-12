@@ -1,96 +1,81 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8936342AA4;
-	Sun, 11 May 2025 21:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC62253929;
+	Mon, 12 May 2025 07:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746997645; cv=none; b=hZceABPc9FjKzcNv2es7tZKbdDzqC5UoOgUsfw2hroISoOppa0/zChfqvhMz8K9Bh7o2ADZtqYm1CdDVO3Jy2X9MemohFCGtMG7jwfARN/PMExVhn8OMnAfq3FIR03br2dBy9KnY/YnkwceafmgNNnqhXzG/QqA1Gs9c9RDZOmg=
+	t=1747036028; cv=none; b=FrPyeUkFhpq9388DK6NCp4VwdrpMk1M3/rYUKjLxi7AnV7xwgTa5a8BKtlpzcP2thn5dq4VhOemvZHiRY6+v3sKX850SYq7sYH/JEMogxgEE0gvPwfzEpjs2WxwlIT8kMy4AhYPKephAVMQTNkDNwcbcRY/h11fF4pKpzKCO6/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746997645; c=relaxed/simple;
-	bh=DXOr8azKPEQfA0+v3vyruAT6gQrdg8VlIpS8xAaQW+w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hWZqfnpQoJnAZNUN4CtfdMpQtoSCiLrEPaiMPwJMU8y9Uvxt/7Q3KvghaCTzSfzuEj4M6bdaDnRZHhWKvmSCr1z/3aFxk0cDu8mKVQA27ID6n9Q8MvSmqKGD4zaHu7uWujBLADM87Lhl5MxymwPIUxr3RVNfAuY9TbEixa35LEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZgIiZrEk; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747036028; c=relaxed/simple;
+	bh=psmNOYtnv8pKbBB+YwR64a2qRy7BuUJnfYdP3LoWlLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cfHnQeIahH0z3qNgWODYe1eHe7nuR1dR0nT0qB5vRsGg9sN1Rgu2MTMhg5pglQlfOXGIwGWkUh0mXmMlnjNCtsqfbhGpfoKNCpt8JiNd356UCutqADX3NXTzY+ZglNGnmevQd1SUbW7X9LKIs7NVyBVr95qchlGokVGE7D21vKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nGkwsk4D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZgIiZrEk"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-309e54e469cso675533a91.1;
-        Sun, 11 May 2025 14:07:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746997644; x=1747602444; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DXOr8azKPEQfA0+v3vyruAT6gQrdg8VlIpS8xAaQW+w=;
-        b=ZgIiZrEk2euVbpujG7Pe1EBOBgJxFEDpRHauUFCrelaKFOaAw2s5z6YZlR2CJVzNw0
-         3WeSt4umoIxDXbjL5b+YhLWrXOYKthfUeSyMc4Gb5GcmYULLdpqRDZbD9PvU/nmHVo31
-         vv9nxztriXD21a1MD9pQ7yYGC2FaBplJVgN8r8Kb02PD0710KOEibWWOy10DHlXK1Q3c
-         LE71PBn1+7QEWorNiyrNUjD1oMn037u1ptD+uqBABtMcLirCcILICrZpvhTHRW1+8duN
-         e3pkNEWIK/qOZI0SduKIeQyHlvMpNO+LBUkl74OMvds5m+w0YRFRmpZcD51I0AR1vhVr
-         Lq5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746997644; x=1747602444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DXOr8azKPEQfA0+v3vyruAT6gQrdg8VlIpS8xAaQW+w=;
-        b=pLaSbmdvJ0eCqGsDgFmLkQEY+omX1uzNOFOlw9S/jl6i2ERJsLKalx/Bn1fgHyZN5Q
-         /F/38rLn1noE1bo5ShxZBGIZ1bmgwrS3osLAYiXdjoBiKy7kqfGD41jbc4MJrNtHDZhT
-         vqYB+jbBcnZPcD85X4JGbBAxdJwAFBCRRPlR6ZJE5MZt/x44NGTaebqzq5y178HGMR5O
-         iOi+BjdKLtaiHq/sIUDC8qJsS9kXj1csPFy/PLQWbV6mF7BUDlOOCTNxeGQMC/XhX/BQ
-         zT6yJZ9O7s94pw6oqAl8Q4Mr0JV9DjzPgdwSan2xBZKO2lVGlOFrdIok8K3zjm1pbogj
-         rzLg==
-X-Forwarded-Encrypted: i=1; AJvYcCUiVgSapbD8QlLGQfri5nT/WQtjQwCY7HOM6JhxdX1wbcD0IDCyHwSjDdkJMIh/2MVSy5QIEXm9ymY=@vger.kernel.org, AJvYcCV1rerUWZAKrpIWEqR/ZiST5N/dErHcc7oASBAvIH9LOgJ51S+Hc3FFwvEO1jJpO1lIFDw7wIdc7PCi7ZopdIM=@vger.kernel.org, AJvYcCW85JEK0e7GtKkUdDNJHfbKWI7fnJYUNbh6Pkhq3/X6vxZxHh51p+RsXVh6y9XuqTteig2ndhuKYJOy5JaD@vger.kernel.org, AJvYcCXi9bdwKVtdLNxg2I5JCUo+RhChe9A/AhyXN9qprT5luyyV87XWvbZm4uqstj8YZI8CYVmyyOZlRaGf/edM@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHhr60Sb6Rnwq49RPaiN8eVYrIdYFiqmx8B3lF5LonA67Dgw+b
-	b3MwJNM8iV+s8io+lTx9ieDY8bh8hEaMO/qMFIE1LMfTPhG8RQ54pDbzWYr2Nn60FqoTMYEAUqz
-	KDaEMVSoDz4khdeyXkULLuBWH+4Y=
-X-Gm-Gg: ASbGncubRxar7McfafDv5AULghs4DagM3KLTL7/Po3dlfdfT54pHgFPDToJ2ume5xOf
-	9itLIEVT7nv8JhgvG2oLBIdh02MiR/1XLWpR3tMplvLuBfFLAzkowIKy9C/rrsbeTS75ZNxErDf
-	OTSTAVC3/qfrg9lSgKu30EWUyreoQU6FpO
-X-Google-Smtp-Source: AGHT+IHOfWeexnJk8Ca7bBLpdOcTT4LIUmMhpfY5ZTB+wvnXT6EZAH9xZy+kPylcjg5KwkYw2tDcwdaikYzvarSPAhg=
-X-Received: by 2002:a17:903:3bae:b0:22e:72fe:5f8c with SMTP id
- d9443c01a7336-22fc91a1e93mr49802155ad.13.1746997643741; Sun, 11 May 2025
- 14:07:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nGkwsk4D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D5EC4CEE7;
+	Mon, 12 May 2025 07:47:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747036027;
+	bh=psmNOYtnv8pKbBB+YwR64a2qRy7BuUJnfYdP3LoWlLI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nGkwsk4Df5QM0cMW34rfTLRaZflrp7vnp2y93vrsJ2NUZu1VeNEwOC10SNhdF0+PW
+	 KCO17KivRdceP11JmT50P9osJkMBz5SIvL+cVwQ+J6d+WnOIdaNPF+WZDcAzPwrv5v
+	 xaWt0L3hc/jT0zVOOsNI/crUP4KsfyIr/KbrHeUsb3TkoVRSDA0hf1SYLnC2SFd2O7
+	 Jb5HqacxB3rKMxJxUHVglxoUEyc7l4xrg5tJvR3j0p1gCXn8UkFqgCdWBKbkYMtVwP
+	 SVEePStefzo0+TdyiW8atRTs69cwANz9nMDrSj1ei7x/i5on76fORuUZOA/rPxi7cp
+	 VMAFwWdIZT9PQ==
+Date: Mon, 12 May 2025 09:47:02 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [PATCH] rust: devres: fix doctest build under `!CONFIG_PCI`
+Message-ID: <aCGndjmLQMXM76I3@pollux>
+References: <20250511182533.1016163-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250511-kbuild-revert-file-prefix-map-v1-0-9ba640c8411e@weissschuh.net>
- <20250511-kbuild-revert-file-prefix-map-v1-2-9ba640c8411e@weissschuh.net> <CANiq72mrXv8JfsOE3vERAZCVhXs5JPsMRu3jAPPoNzFao2qdjQ@mail.gmail.com>
-In-Reply-To: <CANiq72mrXv8JfsOE3vERAZCVhXs5JPsMRu3jAPPoNzFao2qdjQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 11 May 2025 23:07:11 +0200
-X-Gm-Features: AX0GCFvyjEWABnXQLqIgIgnApF-urYQBkt2BKnPa3VBBUxdjCGeAX14Gn152RYc
-Message-ID: <CANiq72mdBq=9Us+e+H75c_ToSJd7h6kqvPeAiaUx3Hj9APLMMg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] Revert "kbuild, rust: use -fremap-path-prefix to make
- paths relative"
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Jonathan Corbet <corbet@lwn.net>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Matthieu Baerts <matttbe@kernel.org>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250511182533.1016163-1-ojeda@kernel.org>
 
-On Sun, May 11, 2025 at 10:58=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Hmm... could you please give a bit of detail on what workflow breaks?
-> I quickly tried to open a C and a Rust object file with gdb and it
-> seemed fine. I can try later on after some travel.
+On Sun, May 11, 2025 at 08:25:33PM +0200, Miguel Ojeda wrote:
+> The doctest requires `CONFIG_PCI`:
+> 
+>     error[E0432]: unresolved import `kernel::pci`
+>         --> rust/doctests_kernel_generated.rs:2689:44
+>          |
+>     2689 | use kernel::{device::Core, devres::Devres, pci};
+>          |                                            ^^^ no `pci` in the root
+>          |
+>     note: found an item that was configured out
+>         --> rust/kernel/lib.rs:96:9
+>     note: the item is gated here
+>         --> rust/kernel/lib.rs:95:1
+> 
+> Thus conditionally compile it (which still checks the syntax).
+> 
+> Fixes: f301cb978c06 ("rust: devres: implement Devres::access()")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Ah, I think I may get it now -- do you mean if the debugger is invoked
-in a different working directory than the srctree?
+Good catch!
 
-Cheers,
-Miguel
+Once we have the platform ioremap() abstractions [1], which are always built-in,
+we should use those for the doctests. Maybe this could be a good first issue.
+
+Applied to nova-next, thanks!
+
+[1] https://lore.kernel.org/rust-for-linux/20250509-topics-tyr-platform_iomem-v8-3-e9f1725a40da@collabora.com/
