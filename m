@@ -1,84 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF962571DF;
-	Mon, 12 May 2025 10:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747046660; cv=none; b=FDkr/c2+l8CgCZsALZM9fyLVMhBo8tAapw5l4yW8yBL4JI9X0bp5DCk1V2v6IZ+SQEKoJeU9TzNgJLUXj26Aw+4HIUx8PWk8/RlppvdkZk11xUIo1qz0SArzGX+A21MreEcyxJBa6C5I0GZ6pfy1Ve5js3nbMUAdBjTzDzBCThw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747046660; c=relaxed/simple;
-	bh=xpA2W98QKz/yXqwDYFUSH3uYiK9VbI4MNRHLwNI5HJU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=oG1f0Kpj6Y8aRtv7zDG3nyJw+TVRM4qZD2sJ8IgTPIId/sesHynPrmYxMZyJCUlec/Vao4U4niLo51cyKiUo/Vf90cEwqVFC+SjGSC0kvvjsmqIMbmvAp7Ok2MrnILU3MLZ+ahee/R8VxfmVFPHOPm1XAHX8seBJKxWS452m+1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixckrZv5; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A02A291886;
+	Mon, 12 May 2025 11:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747048865; cv=pass; b=BGPBYVbLZRbHvriB8vdm9nAGHUFr4IGb5yTOpOhm/wgqqN2n8NJ4dr0zxF3JQfP7rG8av28FngZhV07QTkLMZqNoLUrJDL9pEET/rivbpg7W/vSbJZ+ia9vKBJYGNgurOd5k750UFZUEMTi6pcIyWQDzSMz8Qs4G6SzZkKBHMw8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747048865; c=relaxed/simple;
+	bh=fmR6fYqFrhWsjxGe1HOlntFlYUX6RV99vix96HuSf/Q=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=s7oyHmRMeoB85nY2H5MwlHP1tnuFUQgQZntIdCBWMcZTPNa61fvOKDqqQGn8venARuIywBYB4SH1+ObM/NUOyhHR2pZG9bp8Wy+gssR1kOxjk/8OLLq/Ok2wPls7XVlc6dtO9y+LYnXy4QXBtQajYG1oWV4TxeB5AcZbqjZJ0u4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=R3LxhEyL; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixckrZv5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE55C4CEE7;
-	Mon, 12 May 2025 10:44:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747046660;
-	bh=xpA2W98QKz/yXqwDYFUSH3uYiK9VbI4MNRHLwNI5HJU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ixckrZv5M/tUrYxIViG3YYh8oHhCJzgWCqvV9o9uv65ELj62MrsDo5vswCTioSK4d
-	 /x/ZAhxmz2bSnPiKKDiQsV8k99HfGfpH3s+NB9tnVLcRJmI63ZL5eUHKJc1Qu4VL00
-	 F3Kb3+LJ6WhvyvRe0LaV4AHTkp1da5/wtoSqoeaxrT/tSM0FpRvIYaVtgloPCGYOkW
-	 V8AMDQEgPZt4FNR2+8kjBwsp+LMUnA3fY7QTay4a8MoPOQAq7CQHsrNMQg/yveBvi6
-	 h+HXbNnQ/bF+I/e/CGcBSLrYTqbdI2tCzPROvHllb6HWp/F8HxKjfOx+7XJR5f2Lmm
-	 wSkcUgbPjd7qQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Joel Becker <jlbec@evilplan.org>, 
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
- Fiona Behrens <me@kloenk.dev>, 
- Charalampos Mitrodimas <charmitro@posteo.net>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Breno Leitao <leitao@debian.org>, Andreas Hindborg <a.hindborg@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250508-configfs-v8-0-8ebde6180edc@kernel.org>
-References: <20250508-configfs-v8-0-8ebde6180edc@kernel.org>
-Subject: Re: [PATCH v8 0/3] rust: configfs abstractions
-Message-Id: <174704662683.2171454.9300396804399742742.b4-ty@kernel.org>
-Date: Mon, 12 May 2025 12:43:46 +0200
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="R3LxhEyL"
+ARC-Seal: i=1; a=rsa-sha256; t=1747048809; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=IGKqITX6Hjk690RY4FGEkhcu0uueDzYWH+OLU72fXnXH6OOjN7ZatAhSq64w3SvZnjFb4K7mPg78q/+VY6Cy/UgVseEW17UQ0plnO+1zKo7Zp0zrrN1mKzoriGnzcfMbpPm/H4TC+NoxwFJyxE9YH09oFkW4mqrLzNnXXeTpexc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1747048809; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=g90Nw/fmAwO4pS0osmfC5pCtVd1LdCVyskY3AiteFZ8=; 
+	b=GSz+wyQ0B6J5lticVKsosdIHC/sAwq6EkWhn+PJ9fdBFQDAolCQYBoMYPZDkVMiTnz345VHIf8cGZv0VOg+MyURqAPNnoknsrIs2Re6qZ8Duj5MpwIKheuCbvSLYnjr6GeBEJU+JyJTNrIVROm6ENaDTF/cOwDHsNprxCFGeuC4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747048809;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=g90Nw/fmAwO4pS0osmfC5pCtVd1LdCVyskY3AiteFZ8=;
+	b=R3LxhEyLq2DqfFYmblbWb4c+h3W1emUUlpHrUoLXj01DG1IuMN1Guo4mY/Kp6YFw
+	IprYx4QLCd3qwdqfNiVVsonHKMMiRVdYpAcTn53vRBcgZqED4b0hu/QS6OZDRm1wgBO
+	Rl/5YiS0EOBOTaJQFoGiM1VJYjH5nTYtW1kQ2wAk=
+Received: by mx.zohomail.com with SMTPS id 1747048806755289.84670803140045;
+	Mon, 12 May 2025 04:20:06 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
+Subject: Re: [RFC PATCH 0/2] scatterlist rust bindings
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250512095544.3334680-1-abdiel.janulgue@gmail.com>
+Date: Mon, 12 May 2025 08:19:48 -0300
+Cc: dakr@kernel.org,
+ lyude@redhat.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ airlied@redhat.com,
+ rust-for-linux@vger.kernel.org,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+ Petr Tesarik <petr@tesarici.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Sui Jingfeng <sui.jingfeng@linux.dev>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <78DB1F66-9DF5-4679-ADC4-177BED5D4FDE@collabora.com>
+References: <20250512095544.3334680-1-abdiel.janulgue@gmail.com>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+X-Mailer: Apple Mail (2.3826.500.181.1.5)
+X-ZohoMailClient: External
 
+Hi Abdiel,
 
-On Thu, 08 May 2025 10:52:08 +0200, Andreas Hindborg wrote:
-> Add a safe Rust API that allows Rust modules to interface the `configfs`
-> machinery.
-> 
-> Add an example for the samples folder to demonstrate usage of the API.
-> 
-> Add a maintainer entry for the Rust configfs abstractions in the last patch, to
-> make it absolutely clear that I will commit to maintain these abstractions, if
-> required.
-> 
-> [...]
+> On 12 May 2025, at 06:53, Abdiel Janulgue <abdiel.janulgue@gmail.com> =
+wrote:
+>=20
+> Hi,
+>=20
+> Here are the scatterlist bindings that has been brewing for a while in =
+my
+> local tree while working with Nova code. The bindings are used mostly =
+to
+> build the radix3 table from the GSP firmware which is loaded via dma.
+> This interface can be used on top of existing kernel scatterlist =
+objects
+> or to allocate a new one from scratch.
+>=20
+> Some questions still need to be resolved, which mostly come from
+> the DeviceSGTable::dma_map() function. Primarily, what if you call
+> bindings::dma_map_sgtable() on an already mapped sg_table? =46rom my
 
-Applied, thanks!
+Perhaps we should introduce a type for buffers which are known to be =
+mapped. Then
+we can simply not offer the option to map for that type.
 
-[1/3] rust: configfs: introduce rust support for configfs
-      commit: 446cafc295bfc0e89da94a482fe8290bd8b429fb
-[2/3] rust: configfs: add a sample demonstrating configfs usage
-      commit: 1bfb105051566ec5cc7c4f693362420b37a68781
-[3/3] MAINTAINERS: add configfs Rust abstractions
-      commit: c6b1908224593db76f77b904894cd51933559ae9
+> experiments it doesn't seem to do anything and no indication is =
+returned if
+> the call succeeded or not. Should we save the "mapping info" to a list
+> everytime we call DeviceSGTable::dma_map more than once?
 
-Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
+What mapping info are you referring to?
 
+>=20
+> Hoping this initial submission will generate some discussion. I'd like =
+to
+> acknowledge valuable feedback from Danilo Krummrich and Lyude
+> Paul in shaping this up.
+>=20
+> Abdiel Janulgue (2):
+>  rust: add initial scatterlist bindings
+>  samples: rust: add sample code for scatterlist bindings
+>=20
+> rust/bindings/bindings_helper.h |   1 +
+> rust/helpers/helpers.c          |   1 +
+> rust/helpers/scatterlist.c      |  25 +++
+> rust/kernel/lib.rs              |   1 +
+> rust/kernel/scatterlist.rs      | 275 ++++++++++++++++++++++++++++++++
+> samples/rust/rust_dma.rs        |  14 +-
+> 6 files changed, 316 insertions(+), 1 deletion(-)
+> create mode 100644 rust/helpers/scatterlist.c
+> create mode 100644 rust/kernel/scatterlist.rs
+>=20
+>=20
+> base-commit: dd21715de3dfa6f6457432ce909e5f7eb142a7d2
+> --=20
+> 2.43.0
+>=20
+>=20
+
+=E2=80=94 Daniel=20
 
