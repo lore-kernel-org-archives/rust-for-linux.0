@@ -1,214 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C571D932F;
-	Mon, 12 May 2025 13:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9721DACA1;
+	Mon, 12 May 2025 13:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747058054; cv=none; b=g0YrnZiyycnPgFYlofu+8dIMi2ih1yFbgT48gIg/Newsj/O5eFOX32fxZh61Wqp2Ti7R+RBEs9AT0dqBtsQ81H39s/wtAYUlLN9tR1hpDuTi2h388T57blsmqQV1P8ApY9ngk6F0o1gL4qkqLBGZiBR4tldzh9Yg/veb5NQr/3o=
+	t=1747058153; cv=none; b=IWmjaExYc11mSNsDGJT8uqfW0DJLD0sANScWLjebABAnCvSKWDtc24ZPdE77SpzX4DeAGELtFO382v0bttaLUwKaGEyUMKqqOYSWAw/3oDV9se1y4KMiR13dpqxHMg9e4PntJTRX6tp0QNyni160yYRjnlsvJK+z4Jf7wd45YmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747058054; c=relaxed/simple;
-	bh=kkei6kQ/IroDw4Fur6pVY2ogMklH5DkvVsA3sBxm1tI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Frs3RysJjDf9rSTjfTEBCDDY64Df0nVy0GxtpxOBwvXJ//51SA5zA2bzPBWqntLE7OjlnzfB5ojFXIxTFs2zcztY0SCG/tLeRl8+HUVw7tI7dKAQsZIoj18pjdvSyJ2g2usTmQeTfKbfKhM0Kj439r01i+wY8rqMSZLUqyM3/SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pyqmf/SL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747058153; c=relaxed/simple;
+	bh=+ZZSzyIE925hYW7q42//ezvUz+07QvMzLEpyUvxe9Xs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pqJX+7oKJncbR73erSz8w0iFYR9wSGWZB7i1DIGvqCILn73dtDpFrc2IFTNznC7d4OKyQfCKSlk5lBzF5BhQRuFsgHazVIZKDxMgwUFBooyusrWmUEG7o+BBo0Kl32zlvet+W/Ss7N3UUr9KlNdpoRp1Ji73mnMuj5w/v5g76jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=InVSDza7; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pyqmf/SL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD09C4CEED;
-	Mon, 12 May 2025 13:54:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747058053;
-	bh=kkei6kQ/IroDw4Fur6pVY2ogMklH5DkvVsA3sBxm1tI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pyqmf/SLA/LwKJg+pwa5MUD/nxp2c7FWrFKH1D9IT4ZwCUnaDqX7//vN9MD4Yfdbu
-	 h9UxRliqc4Mx8pOlV5yDf6KFPUYKL6eJyb6THtLFYOgqMgZHNt949QRSKQGllEkzay
-	 rVLMsD/QbYmkgGyqwvxHhb+TAVverxe/Hl2tZAgANNbgCTBsJr/4/ip/L3VvWUjIEm
-	 E8dUHxzWVR3/65v7MA10Jznv/WUYteythFNX+gMsTObgJYLZAxwuyqG3gYRPr8+5f8
-	 dQbKviVJEISyxF60XIzek9+6zEo79om7Y78KeIR+mcTs9e1Y9Kxjybifz6bNJZTgyW
-	 l9q8FedEXwnYw==
-Date: Mon, 12 May 2025 15:54:07 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 9/9] samples: rust: platform: Add property read
- examples
-Message-ID: <aCH9f35BJ93ebWiB@pollux>
-References: <20250504173154.488519-1-remo@buenzli.dev>
- <20250504173154.488519-10-remo@buenzli.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="InVSDza7"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-22e696bbc85so5255095ad.2;
+        Mon, 12 May 2025 06:55:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747058151; x=1747662951; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uagD9PML4UKLbVE3TK9z0hidHWU3xrubZHMIlw3aa6A=;
+        b=InVSDza7OyZEGp64Rxjf0eBphpJNd8NfDNajZXaVMoewlyNtkaQTvt8JAtK7OVyVlm
+         6KOCNZConBbwuwvNfTI0tDFUb7519lTkZowAk1xpqp3OfTf4sUZ+vSwe+i2WNi8tRX64
+         NwXQYR64I8jBULwVjbCO+B82neG1bNwAgjA1sv9aKMX2xF0RTWuhBu+4/ipb/AEu8IbZ
+         ZC6a8n5ISFlPJxN5wXjEGXZwEXSLaVV4FU1LJxqJrmxLmKeC5UNhW+gsTIn1IVdv8DKT
+         NXoJn93U6tBD536Z69mKKJWJNQtOiOGre79uG0d4LPAc5ThFrrPIRXDLsm+tZPI1K1JV
+         zGUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747058151; x=1747662951;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uagD9PML4UKLbVE3TK9z0hidHWU3xrubZHMIlw3aa6A=;
+        b=HyoUUOvvTYR2J5XRbtJdn3F+NjHzlGm94zbVE5B8ZwewQ3zzP0JOtzBaXJX4ULUAvE
+         4nkIjzXT6ek7qoWmw8qEzmntFtxK3LlWozigqBmjG1h2NHojtvnkImb5GimdcRvqryDb
+         Xi+kkk3HNt8Wm7mCHDrAhjSDfNxXQkqv/2eCFcT3TzDd1odpTzcOMGOFH8sFcivUUq7m
+         qe718Zi6UveasayR16iuLxg6BrRy+Uu0uwrtK1MiTDqCN5B4sB6uz562FjMw3OJiqW0i
+         GwqvQC7ADazmUAYpv279FnwaOK0EE5uV13CZQXlKFnEZnowcMloJ5s5bBfiHZ2QXwshM
+         lK+w==
+X-Forwarded-Encrypted: i=1; AJvYcCU6smp9XtZQnjxSlZm/r5sDtvXwsqnPx8jWM+v6a3rE/6YUe81glRrnrkYUUSmxNXKUVrsQwptH+WDRixItUIE=@vger.kernel.org, AJvYcCX1IH3Phxg5fjWFjCWkS6mtB0ARFhC/89X6aIjylCDFgzlzjrcF9pU3xWE7/aTXSaGZWEPm4EI8lUqp5DI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5/p6fs3LG6M5pxHPhPm5Fopk1Ip+U5z1nqHBHW/ABVPCvubLS
+	pRsdnykuTID4ljefokZCSRj6/K64HoAv2n65NlAFcW+iykXzWttNCOLejJJt/APZnHSIIiWismC
+	l/uZQueBlvLkbDjbVQAS1E1XPZTE=
+X-Gm-Gg: ASbGnctjArYDELdQbWr/VdUDUf0xrA3NBoVbYL0e+nNoYTu+c5+i2sojdU4HzRtCuRz
+	rhLfwBIFLL616K2oG6GZUefX+xYvbq0xQ1UwmP89PiJbY2Suh5f3qHJ410AIHHs5ZkUtLkO/qdW
+	h/FisE+aaKMT2Dd064inr2OisOnW+yHuUR
+X-Google-Smtp-Source: AGHT+IFM0DnpRaQKkaWcwkchrJ3QrCTyVQMGRqJs2wr/StUOKT3dl/zrI3+MhxJsKUpkerRo8rtPtT+oQxFxgCaqxGw=
+X-Received: by 2002:a17:903:443:b0:230:413c:d46b with SMTP id
+ d9443c01a7336-230413cd6b0mr11618955ad.6.1747058150937; Mon, 12 May 2025
+ 06:55:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250504173154.488519-10-remo@buenzli.dev>
+References: <20250325133352.441425-1-andrewjballance@gmail.com>
+In-Reply-To: <20250325133352.441425-1-andrewjballance@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 12 May 2025 15:55:37 +0200
+X-Gm-Features: AX0GCFuoSyH2lQY6tvCfxm3orzDtbjWMIdmxl-_VMfgu74lYck7z6XPjpUnzfjs
+Message-ID: <CANiq72kFCo-5HwXsTDsE=AKx2GEJvQn605F_07jfrXBRB-rOmA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: docs: replace rustdoc refrences to alloc::format
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: dakr@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	jubalh@iodoru.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 04, 2025 at 07:31:54PM +0200, Remo Senekowitsch wrote:
-> Add some example usage of the device property read methods for
-> DT/ACPI/swnode properties.
-> 
-> Co-developed-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> ---
->  drivers/of/unittest-data/tests-platform.dtsi |  3 +
->  samples/rust/rust_driver_platform.rs         | 71 +++++++++++++++++++-
->  2 files changed, 72 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
-> index 4171f43cf01cc..50a51f38afb60 100644
-> --- a/drivers/of/unittest-data/tests-platform.dtsi
-> +++ b/drivers/of/unittest-data/tests-platform.dtsi
-> @@ -37,6 +37,9 @@ dev@100 {
->  			test-device@2 {
->  				compatible = "test,rust-device";
->  				reg = <0x2>;
-> +
-> +				test,u32-prop = <0xdeadbeef>;
-> +				test,i16-array = /bits/ 16 <1 2 (-3) (-4)>;
->  			};
->  		};
->  
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-> index 8b42b3cfb363a..a04ff4afb1325 100644
-> --- a/samples/rust/rust_driver_platform.rs
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -2,7 +2,7 @@
->  
->  //! Rust Platform driver sample.
->  
-> -use kernel::{c_str, device::Core, of, platform, prelude::*, types::ARef};
-> +use kernel::{c_str, device::Core, of, platform, prelude::*, str::CString, types::ARef};
->  
->  struct SampleDriver {
->      pdev: ARef<platform::Device>,
-> @@ -25,18 +25,85 @@ fn probe(
->          pdev: &platform::Device<Core>,
->          info: Option<&Self::IdInfo>,
->      ) -> Result<Pin<KBox<Self>>> {
-> +        let dev = pdev.as_ref();
-> +
->          dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
->  
->          if let Some(info) = info {
-> -            dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-> +            dev_info!(dev, "Probed with info: '{}'.\n", info.0);
+On Tue, Mar 25, 2025 at 2:34=E2=80=AFPM Andrew Ballance
+<andrewjballance@gmail.com> wrote:
+>
+> replaces alloc::format[1] in the pr_* and dev_* macros' doc comments
+> with std::format[2] because they are identical but less likely to get
+> confused with the kernel's alloc crate. and adds a url link
+> for the std::format! macro
+>
+> Link: https://doc.rust-lang.org/alloc/macro.format.html [1]
+> Link: https://doc.rust-lang.org/std/macro.format.html [2]
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
 
-You switch to use dev here, but not for dev_dbg() above.
+Applied to rust-next -- thanks everyone!
 
->          }
->  
-> +        Self::properties_parse(dev)?;
+    [ Fixed typo and reworded slightly. - Miguel ]
 
-Let's just use pdev.as_ref() here too.
-
-> +
->          let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
->  
->          Ok(drvdata.into())
->      }
->  }
->  
-> +impl SampleDriver {
-> +    fn properties_parse(dev: &kernel::device::Device) -> Result<()> {
-
-Please refer to this as &device::Device, i.e. import kernel::device. You should
-also be able to just use Result, without the generic.
-
-> +        let fwnode = dev.fwnode().ok_or(ENOENT)?;
-> +
-> +        if let Ok(idx) =
-> +            fwnode.property_match_string(c_str!("compatible"), c_str!("test,rust-device"))
-> +        {
-> +            dev_info!(dev, "matched compatible string idx = {}\n", idx);
-> +        }
-> +
-> +        if let Ok(str) = fwnode
-> +            .property_read::<CString>(c_str!("compatible"))
-> +            .required_by(dev)
-> +        {
-> +            dev_info!(dev, "compatible string = {:?}\n", str);
-> +        }
-
-And else? Why do you ignore a potential error?
-
-> +
-> +        let prop = fwnode.property_read_bool(c_str!("test,bool-prop"));
-> +        dev_info!(dev, "bool prop is {}\n", prop);
-
-Let's use a consistent style for all those prints, e.g. '$name'='$value'. For
-instance:
-
-	let name = c_str!("test,bool-prop");
-	let prop = fwnode.property_read_bool(name);
-	dev_info!(dev, "'{}'='{}'\n", name, prop);
-
-> +        if fwnode.property_present(c_str!("test,u32-prop")) {
-> +            dev_info!(dev, "'test,u32-prop' is present\n");
-
-Given the above, I'd keep this one as it is.
-
-> +        }
-> +
-> +        let prop = fwnode
-> +            .property_read::<u32>(c_str!("test,u32-optional-prop"))
-> +            .or(0x12);
-> +        dev_info!(
-> +            dev,
-> +            "'test,u32-optional-prop' is {:#x} (default = {:#x})\n",
-> +            prop,
-> +            0x12
-> +        );
-> +
-> +        // Missing property without a default will print an error
-
-Maybe additionally add that you discard the Result intentionally in order to not
-make properties_parse() fail in this case.
-
-> +        let _ = fwnode
-> +            .property_read::<u32>(c_str!("test,u32-required-prop"))
-> +            .required_by(dev);
-> +
-> +        let prop: u32 = fwnode
-> +            .property_read(c_str!("test,u32-prop"))
-> +            .required_by(dev)?;
-> +        dev_info!(dev, "'test,u32-prop' is {:#x}\n", prop);
-> +
-> +        let prop: [i16; 4] = fwnode
-> +            .property_read(c_str!("test,i16-array"))
-> +            .required_by(dev)?;
-> +        dev_info!(dev, "'test,i16-array' is {:?}\n", prop);
-> +        dev_info!(
-> +            dev,
-> +            "'test,i16-array' length is {}\n",
-> +            fwnode.property_count_elem::<u16>(c_str!("test,i16-array"))?,
-> +        );
-> +
-> +        let prop: KVec<i16> = fwnode
-> +            .property_read_array_vec(c_str!("test,i16-array"), 4)?
-> +            .required_by(dev)?;
-> +        dev_info!(dev, "'test,i16-array' is KVec {:?}\n", prop);
-> +
-> +        Ok(())
-> +    }
-> +}
-> +
->  impl Drop for SampleDriver {
->      fn drop(&mut self) {
->          dev_dbg!(self.pdev.as_ref(), "Remove Rust Platform driver sample.\n");
-> -- 
-> 2.49.0
-> 
+Cheers,
+Miguel
