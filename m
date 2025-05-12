@@ -1,380 +1,215 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D6323C507;
-	Mon, 12 May 2025 16:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747067457; cv=pass; b=IYyrbiZUnXfaKQGGlQX1TZGj1mjLERtQCzkfxYx8kkjOrgMLrXXXjlKHxANOtWMlGZ7cmaWXSIrpRyyLTEtnpulfjK7lT3DWr2bak1hVY3SwJYVvruktnYnzSMwkDpGI3Hoii8ISCjjuEYv0eaZ4lXTcj33SzNyQMOnO9G0kczI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747067457; c=relaxed/simple;
-	bh=nrV0kwsD63vnf9FLmBC7/OdVdmEDDu/ssIk3VHcv1ck=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=iQZwqFny6VR22tSc+G7sFKvFQb5aDFHBhadH3fREXgxu1K+gpmz59z4irgVU8XU9vxJpyNfyxpJBhUJLNI/Q2pQmiGI0MPI0OeX7MI/drPsU9LHt6bUWpSxkE0Y9HtzcoDiR3KTo0ffFGXunaYu36DVbw/Ju4h/KPnyFDnOOGNA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YIb3jdk/; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9292522B4
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 May 2025 16:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747068172; cv=none; b=mLd0aoG+KaAtn3r+ZL0Wdr+SqRosO7VSqPIQ7Ri/v0kkcbmzAr+62Wj51zG8I0LeGQe9oexihk8cmrrMfFAxB3mtHdkbMG4Ob6hY3J6it3qZg0gk5VfqGmDHjzoV/pH4f4XXAfN2nLIG/J85ZSqxrzQ6/YdoqG88w9qU2kEspgw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747068172; c=relaxed/simple;
+	bh=4NEeBlcVo8EPUIH6uSkGLOmWnV76wrGd1pi2UJNgQ10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E66nDubAiPnjjTG5YnR1nEUfeGdfePQODGfATEgglCpOqp4vMyyiiFULO9kU3yR7B3GOqtuLNmwfizpX6g1yitxzJenahIBlxH17ZerNL18dKJRFxewlOWUtEBeNgy5HFoNIu5v3RDQGGtNF2rnunZKYn7CVuYWNLW/kaxA1cec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=aDwpXLh3; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YIb3jdk/"
-ARC-Seal: i=1; a=rsa-sha256; t=1747067416; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=a1/iz/wmSFjpDcus3Em7EY9WriuzhM7FByzqDmOmWW0AzJfvWEHjyqoGZIC0Zza/ZlbXJ22IrN69iicN4YmKf07ARLKj7+MYLzo0cDUN6dYUUUz5dBeGRQ/Ud/ss/L9GGM70RBwSG6wJjvpn+BoI4AdGbpwQX0cVO9Neq1iLYUM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1747067416; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=xi83OUcZSlLpzeMfBYvzx20Np2AJkyRKSUzEzDY8W+0=; 
-	b=aQNAxN4UJFp8Soa0fWJKaQVBtXbmqE3oUWZCAPPFRImJRWmBNRwnTbDVqOQz0vjo0kbO9naIvtqQrpD02w9QmebILfdRP9AYD4ZVGl/BLyYgBgvIxB0Iiz7dOC8hT7g7plR+34Sp/TcL+Nn8RGvReG7xqVvl5dzHmrK1f0sNRXE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747067416;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=xi83OUcZSlLpzeMfBYvzx20Np2AJkyRKSUzEzDY8W+0=;
-	b=YIb3jdk/X1Iqvcydz0HXfb96dREEANg7qVTnmadmwvLguB1tXAkOiRMp6b0GSdvO
-	tT5YznydMt9RjLX2fPFg/05Sl6TyhFmLT87+TI9CHDt+tyKx9kRhInDisk2BFSS1Uz5
-	OQfoLdM1VArk1ULL+FrxnwGtNrwmoS2pwEpPXjhU=
-Received: by mx.zohomail.com with SMTPS id 174706741359340.4873184991236;
-	Mon, 12 May 2025 09:30:13 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="aDwpXLh3"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6f0cfbe2042so60320476d6.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 May 2025 09:42:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1747068169; x=1747672969; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9jSEksFk0IPmw2THI2TM14u1OYvzYeSgfWSUpppsY90=;
+        b=aDwpXLh3VAMNIz+xl9HMIN8SG2N7DSRs+RhLM4NbnUwDvgGPdrLe1/cU9SNgm88Bqs
+         aD3IerVONmsvi2m9pUm2GutnFlZSxmGuVSNMRLE47v/4wD+y7VSeJoREiH41GRKmudY4
+         5IAh6B220ISiOUm7LC3fBFTezEqbxUIhWit+k/xKqzyQPtQ1M6lvKtVYl5ro+S0o7JUw
+         kY3Ibvc4oyT0jzwAjOECZV9agyPVniru73+qFjar7b5OkILWADacWBgb32PQ5kJUHUNF
+         lxpbN/9zhfWqVvtoAj2+pEFAcsMmboXjfxLQPMreR2RtFx0wJaME4cMPBtWPd4cMsjUP
+         AXWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747068169; x=1747672969;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9jSEksFk0IPmw2THI2TM14u1OYvzYeSgfWSUpppsY90=;
+        b=IGFZuL3VS+lIEUWdpCHDzuRHHo+Rg1sXJ2fsF5fjiiw4YcUMIbOXXkAEBXTGbyNfKY
+         GF/cdlbgXq060t64R3cgSmJ7xKk6HItJHnDuGmIuDuSok4VWCNMdaBDITGZFz6QD/SAc
+         3NxOQFvzSduG9yPgCsMAQFBZh1A+yLeK/SYvJgHhdcaXDXPzxtZSs38TJviPwFaqGPhs
+         3pKUOUaEBHU6Rw3zPcdKU/WW/a/W/VNj5ZhJGL7G/tBxHy9b6w7kUJh1Ne/LpT09rWON
+         oYY52V0O4KnUIwefXdVOOaxE1INDI1c4To0edi6qDtdwUH7+JSBy5eRIsrYnIuUvQn9E
+         MSkg==
+X-Forwarded-Encrypted: i=1; AJvYcCVGR8frwnPbxufoKT5by/2BBC7chpEih9R/LuF8cwFoDZ2EY1joLG7AEr0KJ/iW1cXGUPEaMJlRJyhrYAhzCA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgiH2vrcJ1Zv0GW7tp/Sra3TYpojTsfPBHba/GCBwsUwSlrC0F
+	4JxP91jgTj7/QF4LEPp3mqvQlb+3lCTM11itZriH7WfB4FnkKd0l3cqd/XQjxsY=
+X-Gm-Gg: ASbGncvidK+M9MgoZVywEz2TcyR2Iq4Ke/hR3pfDCYF6IK4qV/4D4gmcoIu0AinWVyN
+	InB/IKyr5wLAzysbhWvD4Abj4eLdSk6We+FZ5MALVZSHBLNUA5MVIatlPZTOsTnoHcPKYA+TO7b
+	z59lWpVtMniA9TLC7i73d3B1F4o0ExtoRb/A7xsRs02yeA2Vpu+7MwvNEioJEZen57Eq6vEtOw2
+	NSL6kT6RR034eVzIAMY9ScRX7uh4YKSnPwKQHS2dwf3JSog4r38j+ZXs4Q3UgW47WJnzQCKZsDS
+	SDhIcZ/O4JSLv5vJ4bd2nOrXwoDgKxX61Wo8zEfiubjsou5CkZ0FEVCQZZlNFaMxLjleyyYYXhB
+	RIpOeNI6jWAutjcoN6oHa3JECvApg3UaGirTRVQ==
+X-Google-Smtp-Source: AGHT+IGTze44sKS3PS34pEWNgJkuuq56OX0bHzvAhd6fhWp6wOev3UKy9acjrmM4zvb7NFy+ZXZLxw==
+X-Received: by 2002:a05:6214:242c:b0:6ea:d604:9e4f with SMTP id 6a1803df08f44-6f85b680750mr2513886d6.19.1747068168660;
+        Mon, 12 May 2025 09:42:48 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f6e39f4689sm54710036d6.28.2025.05.12.09.42.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 May 2025 09:42:47 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uEWEp-00000001Ku1-1UPJ;
+	Mon, 12 May 2025 13:42:47 -0300
+Date: Mon, 12 May 2025 13:42:47 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: dakr@kernel.org, lyude@redhat.com, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	Petr Tesarik <petr@tesarici.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [RFC PATCH 1/2] rust: add initial scatterlist bindings
+Message-ID: <20250512164247.GF138689@ziepe.ca>
+References: <20250512095544.3334680-1-abdiel.janulgue@gmail.com>
+ <20250512095544.3334680-2-abdiel.janulgue@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [RFC v3 05/33] rust: drm/kms: Add drm_plane bindings
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250305230406.567126-6-lyude@redhat.com>
-Date: Mon, 12 May 2025 13:29:56 -0300
-Cc: dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
- mcanal@igalia.com,
- Alice Ryhl <aliceryhl@google.com>,
- Maxime Ripard <mripard@kernel.org>,
- Simona Vetter <sima@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Asahi Lina <lina@asahilina.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- open list <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7CBB09E7-1B00-4F75-8EC5-D6139734654C@collabora.com>
-References: <20250305230406.567126-1-lyude@redhat.com>
- <20250305230406.567126-6-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250512095544.3334680-2-abdiel.janulgue@gmail.com>
 
-Hi Lyude,
-
-This patch is similar to the last one, I see that most of my
-comments also apply here.
-
-> On 5 Mar 2025, at 19:59, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> The next step is adding a set of basic bindings to create a plane, =
-which
-> has to happen before we can create a CRTC (since we need to be able to =
-at
-> least specify a primary plane for a CRTC upon creation). This mostly
-> follows the same general pattern as connectors (AsRawPlane,
-> AsRawPlaneState, etc.).
->=20
-> There is one major difference with planes vs. other types of atomic =
-mode
-> objects: drm_plane_state isn't the only base plane struct used in DRM
-> drivers, as some drivers will use helpers like drm_shadow_plane_state =
-which
-> have a drm_plane_state embedded within them.
->=20
-> Since we'll eventually be adding bindings for shadow planes, we =
-introduce a
-> PlaneStateHelper trait - which represents any data type which can be =
-used
-> as the main wrapping structure around a drm_plane_state - and we =
-implement
-> this trait for PlaneState<T>. This trait can be used in our C =
-callbacks to
-> allow for drivers to use different wrapping structures without needing =
-to
-> implement a separate set of FFI callbacks for each type. Currently =
-planes
-> are the only type I'm aware of which do this.
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
->=20
-> ---
->=20
-> V2:
-> * Start using Gerry Guo's updated #[vtable] function so that our =
-driver
->  operations table has a static location in memory
-
-nit: Gary=E2=80=99s name is misspelled.
-
->=20
-> V3:
-> * Add safety comment for implementation of ModeObject
-> * Make AsRawPlane unsafe, since we need a guarantee that `as_raw()` =
-always
->  returns a valid pointer to an initialized drm_plane.
-> * Add comments to __drm_atomic_helper_duplicate_state()
-> * Switch `PlaneType` to camel casing
-> * Improve safety comment in `Plane::<T>::new()`
-> * Fix parameter types for `formats` and `format_modifiers`, as pointed =
-out
->  by Louis Chauvet DRM will copy all of these into its own storage.
-> * Improve safety comments in FromRawPlaneState
-> * Introduce UnregisteredPlane type
-> * Don't have AsRawPlane be a supertrait of StaticModeObject. We don't =
-want
->  Unregistered mode object variants to be able to return a pointer to =
-the
->  DRM device since that would break the UnregisteredKmsDevice pattern.
-> * Change name of PlaneType to Type (for consistency with the other =
-type IDs
->  we've adde)
-> * Use addr_of_mut! in more places instead of &mut
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
-> rust/bindings/bindings_helper.h |   2 +
-> rust/kernel/drm/fourcc.rs       |   1 -
-> rust/kernel/drm/kms.rs          |   1 +
-> rust/kernel/drm/kms/plane.rs    | 621 ++++++++++++++++++++++++++++++++
-> 4 files changed, 624 insertions(+), 1 deletion(-)
-> create mode 100644 rust/kernel/drm/kms/plane.rs
->=20
-> diff --git a/rust/bindings/bindings_helper.h =
-b/rust/bindings/bindings_helper.h
-> index c41a3309223b2..5b85f3faca525 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -10,6 +10,7 @@
-> #include <drm/drm_atomic_helper.h>
-> #include <drm/clients/drm_client_setup.h>
-> #include <drm/drm_connector.h>
-> +#include <drm/drm_plane.h>
-> #include <drm/drm_device.h>
-> #include <drm/drm_drv.h>
-> #include <drm/drm_file.h>
-> @@ -18,6 +19,7 @@
-> #include <drm/drm_gem.h>
-> #include <drm/drm_gem_framebuffer_helper.h>
-> #include <drm/drm_gem_shmem_helper.h>
-> +#include <drm/drm_plane.h>
-> #include <drm/drm_ioctl.h>
-> #include <kunit/test.h>
-> #include <linux/blk-mq.h>
-> diff --git a/rust/kernel/drm/fourcc.rs b/rust/kernel/drm/fourcc.rs
-> index 62203478b5955..a30e40dbc037c 100644
-> --- a/rust/kernel/drm/fourcc.rs
-> +++ b/rust/kernel/drm/fourcc.rs
-> @@ -11,7 +11,6 @@ const fn fourcc_code(a: u8, b: u8, c: u8, d: u8) -> =
-u32 {
->=20
-> // TODO: We manually import this because we don't have a reasonable =
-way of getting constants from
-> // function-like macros in bindgen yet.
-> -#[allow(dead_code)]
-> pub(crate) const FORMAT_MOD_INVALID: u64 =3D 0xffffffffffffff;
->=20
-> // TODO: We need to automate importing all of these. For the time =
-being, just add the single one
-> diff --git a/rust/kernel/drm/kms.rs b/rust/kernel/drm/kms.rs
-> index f10e9f83ccb78..6cc5bb53f3628 100644
-> --- a/rust/kernel/drm/kms.rs
-> +++ b/rust/kernel/drm/kms.rs
-> @@ -3,6 +3,7 @@
-> //! KMS driver abstractions for rust.
->=20
-> pub mod connector;
-> +pub mod plane;
->=20
-> use crate::{
->     device,
-> diff --git a/rust/kernel/drm/kms/plane.rs =
-b/rust/kernel/drm/kms/plane.rs
-> new file mode 100644
-> index 0000000000000..9f262156eac6c
-> --- /dev/null
-> +++ b/rust/kernel/drm/kms/plane.rs
-> @@ -0,0 +1,621 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR MIT
-> +
-> +//! DRM display planes.
-> +//!
-> +//! C header: =
-[`include/drm/drm_plane.h`](srctree/include/drm/drm_plane.h)
-> +
-> +use super::{KmsDriver, ModeObject, StaticModeObject, =
-UnregisteredKmsDevice};
-> +use crate::{
-> +    alloc::KBox,
-> +    bindings,
-> +    drm::{device::Device, fourcc::*},
-> +    error::{to_result, Error},
-> +    init::Zeroable,
-> +    prelude::*,
-> +    private::Sealed,
-> +    types::{NotThreadSafe, Opaque},
-> +};
-> +use core::{
-> +    marker::*,
-> +    mem,
-> +    ops::*,
-> +    pin::Pin,
-> +    ptr::{addr_of_mut, null, null_mut},
-> +};
-> +use macros::pin_data;
-> +
-> +/// The main trait for implementing the [`struct drm_plane`] API for =
-[`Plane`].
-> +///
-> +/// Any KMS driver should have at least one implementation of this =
-type, which allows them to create
-> +/// [`Plane`] objects. Additionally, a driver may store =
-driver-private data within the type that
-> +/// implements [`DriverPlane`] - and it will be made available when =
-using a fully typed [`Plane`]
-> +/// object.
-> +///
-> +/// # Invariants
-> +///
-> +/// - Any C FFI callbacks generated using this trait are guaranteed =
-that passed-in
-> +///   [`struct drm_plane`] pointers are contained within a =
-[`Plane<Self>`].
-> +/// - Any C FFI callbacks generated using this trait are guaranteed =
-that passed-in
-> +///   [`struct drm_plane_state`] pointers are contained within a =
-[`PlaneState<Self::State>`].
-> +///
-> +/// [`struct drm_plane`]: srctree/include/drm/drm_plane.h
-> +/// [`struct drm_plane_state`]: srctree/include/drm/drm_plane.h
-> +#[vtable]
-> +pub trait DriverPlane: Send + Sync + Sized {
-> +    /// The generated C vtable for this [`DriverPlane`] =
-implementation.
-> +    #[unique]
-> +    const OPS: &'static DriverPlaneOps =3D &DriverPlaneOps {
-> +        funcs: bindings::drm_plane_funcs {
-> +            update_plane: =
-Some(bindings::drm_atomic_helper_update_plane),
-> +            disable_plane: =
-Some(bindings::drm_atomic_helper_disable_plane),
-> +            destroy: Some(plane_destroy_callback::<Self>),
-> +            reset: Some(plane_reset_callback::<Self>),
-> +            set_property: None,
-> +            atomic_duplicate_state: =
-Some(atomic_duplicate_state_callback::<Self::State>),
-> +            atomic_destroy_state: =
-Some(atomic_destroy_state_callback::<Self::State>),
-> +            atomic_set_property: None,
-> +            atomic_get_property: None,
-> +            late_register: None,
-> +            early_unregister: None,
-> +            atomic_print_state: None,
-> +            format_mod_supported: None,
-> +        },
-> +
-> +        helper_funcs: bindings::drm_plane_helper_funcs {
-> +            prepare_fb: None,
-> +            cleanup_fb: None,
-> +            begin_fb_access: None,
-> +            end_fb_access: None,
-> +            atomic_check: None,
-> +            atomic_update: None,
-> +            atomic_enable: None,
-> +            atomic_disable: None,
-> +            atomic_async_check: None,
-> +            atomic_async_update: None,
-> +            panic_flush: None,
-> +            get_scanout_buffer: None,
-> +        },
-> +    };
-> +
-> +    /// The type to pass to the `args` field of =
-[`UnregisteredPlane::new`].
+On Mon, May 12, 2025 at 12:53:27PM +0300, Abdiel Janulgue wrote:
+> +impl SGEntry {
+> +    /// Convert a raw `struct scatterlist *` to a `&'a SGEntry`.
 > +    ///
-> +    /// This type will be made available in in the `args` argument of =
-[`Self::new`]. Drivers which
-> +    /// don't need this can simply pass [`()`] here.
-> +    type Args;
-> +
-> +    /// The parent [`KmsDriver`] implementation.
-> +    type Driver: KmsDriver;
-> +
-> +    /// The [`DriverPlaneState`] implementation for this =
-[`DriverPlane`].
+> +    /// # Safety
 > +    ///
-> +    /// See [`DriverPlaneState`] for more info.
-> +    type State: DriverPlaneState;
+> +    /// Callers must ensure that the `struct scatterlist` pointed to by `ptr` is valid for the lifetime
+> +    /// of the returned reference.
+> +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::scatterlist) -> &'a Self {
+> +        // SAFETY: The pointer is valid and guaranteed by the safety requirements of the function.
+> +        unsafe { &*ptr.cast() }
+> +    }
 > +
-> +    /// The constructor for creating a [`Plane`] using this =
-[`DriverPlane`] implementation.
+> +    /// Convert a raw `struct scatterlist *` to a `&'a mut SGEntry`.
 > +    ///
-> +    /// Drivers may use this to instantiate their [`DriverPlane`] =
-object.
-> +    fn new(device: &Device<Self::Driver>, args: Self::Args) -> impl =
-PinInit<Self, Error>;
-> +}
+> +    /// # Safety
+> +    ///
+> +    /// See safety requirements of [`SGEntry::as_ref`]. In addition, callers must ensure that only
+> +    /// a single mutable reference can be taken from the same raw pointer, i.e. for the lifetime of the
+> +    /// returned reference, no other call to this function on the same `struct scatterlist *` should
+> +    /// be permitted.
+> +    unsafe fn as_mut<'a>(ptr: *mut bindings::scatterlist) -> &'a mut Self {
+> +        // SAFETY: The pointer is valid and guaranteed by the safety requirements of the function.
+> +        unsafe { &mut *ptr.cast() }
+> +    }
 > +
-> +/// The generated C vtable for a [`DriverPlane`].
+> +    /// Returns the DMA address of this SG entry.
+> +    pub fn dma_address(&self) -> bindings::dma_addr_t {
+> +        // SAFETY: By the type invariant of `SGEntry`, ptr is valid.
+> +        unsafe { bindings::sg_dma_address(self.0.get()) }
+> +    }
+> +
+> +    /// Returns the length of this SG entry.
+> +    pub fn dma_len(&self) -> u32 {
+> +        // SAFETY: By the type invariant of `SGEntry`, ptr is valid.
+> +        unsafe { bindings::sg_dma_len(self.0.get()) }
+> +    }
+> +
+> +    /// Set this entry to point at a given page.
+> +    pub fn set_page(&mut self, page: &Page, length: u32, offset: u32) {
+> +        let c: *mut bindings::scatterlist = self.0.get();
+> +        // SAFETY: according to the `SGEntry` invariant, the scatterlist pointer is valid.
+> +        // `Page` invariant also ensure the pointer is valid.
+> +        unsafe { bindings::sg_set_page(c, page.as_ptr(), length, offset) };
+> +    }
+
+I think this is repeating the main API mistake of scatterlist here in
+Rust.
+
+Scatterlist is actually two different lists of value pairs stored in
+overlapping memory.
+
+It's lifetime starts out with a list of CPU pages using struct page *
+
+Then it is DMA mapped and you get a list of DMA ranges using
+dma_len/dma_address. At this point the CPU list becoms immutable
+
+Iterators work over one list or the other, never ever both at once. So
+you should never have a user facing API where they get a type with
+both a set_page and a dma_len.
+
+Arguably set_page probably shouldn't exist in the rust bindings, it is
+better to use one of the append functions to build up the initial
+list.
+
+> +/// DMA mapping direction.
 > +///
-> +/// This type is created internally by DRM.
-> +pub struct DriverPlaneOps {
-> +    funcs: bindings::drm_plane_funcs,
-> +    helper_funcs: bindings::drm_plane_helper_funcs,
-> +}
-> +
-> +#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+> +/// Corresponds to the kernel's [`enum dma_data_direction`].
+> +///
+> +/// [`enum dma_data_direction`]: srctree/include/linux/dma-direction.h
+> +#[derive(Copy, Clone, PartialEq, Eq)]
 > +#[repr(u32)]
-> +/// An enumerator describing a type of [`Plane`].
-> +///
-> +/// This is mainly just relevant for DRM legacy drivers.
-> +///
-> +/// # Invariants
-> +///
-> +/// This type is identical to [`enum drm_plane_type`].
-> +///
-> +/// [`enum drm_plane_type`]: srctree/include/drm/drm_plane.h
+> +pub enum DmaDataDirection {
 
-nit: the order of attributes and docs is reversed here.
+Shouldn't this in the DMA API headers?
 
-> +pub enum Type {
-> +    /// Overlay planes represent all non-primary, non-cursor planes. =
-Some drivers refer to these
-> +    /// types of planes as "sprites" internally.
-> +    Overlay =3D bindings::drm_plane_type_DRM_PLANE_TYPE_OVERLAY,
+> +impl DeviceSGTable {
+> +    /// Allocate and construct the scatter-gather table.
+> +    pub fn alloc_table(dev: &Device, nents: usize, flags: kernel::alloc::Flags) -> Result<Self> {
+> +        let sgt: Opaque<bindings::sg_table> = Opaque::uninit();
 > +
-> +    /// A primary plane attached to a CRTC that is the most likely to =
-be able to light up the CRTC
-> +    /// when no scaling/cropping is used, and the plane covers the =
-whole CRTC.
-> +    Primary =3D bindings::drm_plane_type_DRM_PLANE_TYPE_PRIMARY,
+> +        // SAFETY: The sgt pointer is from the Opaque-wrapped `sg_table` object hence is valid.
+> +        let ret = unsafe { bindings::sg_alloc_table(sgt.get(), nents as _, flags.as_raw()) };
+> +        if ret != 0 {
+> +            return Err(Error::from_errno(ret));
+> +        }
 > +
-> +    /// A cursor plane attached to a CRTC that is more likely to be =
-enabled when no scaling/cropping
-> +    /// is used, and the framebuffer has the size indicated by =
-[`ModeConfigInfo::max_cursor`].
-> +    ///
-> +    /// [`ModeConfigInfo::max_cursor`]: =
-crate::drm::kms::ModeConfigInfo
-> +    Cursor =3D bindings::drm_plane_type_DRM_PLANE_TYPE_CURSOR,
-> +}
+> +        Ok(Self {
+> +            sg: SGTable(sgt),
+> +            dir: DmaDataDirection::DmaNone,
+> +            dev: dev.into(),
+> +        })
+> +    }
 > +
->=20
+> +    /// Map this scatter-gather table describing a buffer for DMA.
+> +    pub fn dma_map(&mut self, dir: DmaDataDirection) -> Result {
+> +        // SAFETY: Invariants on `Device` and `SGTable` ensures that the `self.dev` and `self.sg`
+> +        // pointers are valid.
+> +        let ret = unsafe {
+> +            bindings::dma_map_sgtable(
+> +                self.dev.as_raw(),
+> +                self.sg.as_raw(),
 
-=E2=80=94 Daniel
+Can't call this function on an unbound driver, didn't someone add
+special types for this recently?
 
+> +impl Drop for DeviceSGTable {
+> +    fn drop(&mut self) {
+> +        if self.dir != DmaDataDirection::DmaNone {
+> +            // SAFETY: Invariants on `Device` and `SGTable` ensures that the `self.dev` and `self.sg`
+> +            // pointers are valid.
+
+Wrong safety statement, Device must be on a bound driver to call this
+function, a valid pointer (eg device refcount) is not enough.
+
+Jason
