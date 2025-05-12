@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4185A29827E;
-	Mon, 12 May 2025 18:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1436B29AAFF;
+	Mon, 12 May 2025 18:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073058; cv=none; b=ULHrsotlt7dgsi636K7Pj7tIaQudbpUq7vqxHH5hch2y8fJONrdu//z23lhmQazTjQp9r2LL/2SifUrfIYMiDP6vxX1QqZNpYZBlWUrfD1vt/uS06d46VU3zW2dqJJMZFb8/P4Hl9Hzl4z8mAMj0xYYKlCvxdo+WHcKBx8SkAuU=
+	t=1747073085; cv=none; b=dY42qoG2WI8pvGwsBKMHZB/OeDOaGfzykjLdqeLZHs5yiZR95bjc64ri8iVWTNXcFX9y6a1jEeXxsxAunKFT31a8K5VbjrmxPITIRkBojw06zAEyxp9Y5KsJRujtRPK4IowaHwoA8hC+z0twKJShKIPWNVIDBVyWC3skyFycihE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073058; c=relaxed/simple;
-	bh=ihl1kSVlIi5HspHm0RxdI7ss1jafMpv7LPgD1idjFFE=;
+	s=arc-20240116; t=1747073085; c=relaxed/simple;
+	bh=HhrvNm+isyW/VAC6isg7LoKASpTaPmXFkHyqOgGO8qw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ANUMKYvGjbs6EhXr2B/s9K/wQrgbYSmgZMqdk+HIzSpmG/XW58IOQ0LDESvxl+gfn2whDFZtBs5eeQNAU91OAI7/n0GaWzqWd850qxNPEBROj+drUlCv2kB8EQZkJenIDu9qPJUD70zQmOIr1JN8JCUtbZmyzqVFlG1u5GEJVrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyU/rdBF; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=CYehW8m4IudomAPLFQwbvvxLwR8LhMDUMOugan13sdbMOg6y95ZxGCFXV7kkuNWiYFNSABeEX3xXxbT7wXIqW/XWQQM/NoUeLTB+pSSEOlfSvDkKbDeypY6ucoFKkO3VvUdWmOAbxsByoscPuwpt11s3/Bu4viHUk5R0HeLx8hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNhSE/4G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyU/rdBF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BEBC4CEEF;
-	Mon, 12 May 2025 18:04:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNhSE/4G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8761C4CEF4;
+	Mon, 12 May 2025 18:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073058;
-	bh=ihl1kSVlIi5HspHm0RxdI7ss1jafMpv7LPgD1idjFFE=;
+	s=k20201202; t=1747073084;
+	bh=HhrvNm+isyW/VAC6isg7LoKASpTaPmXFkHyqOgGO8qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UyU/rdBF5nbmvwd1Um3jdR2cmUBIjpeWyo+kqCF3upz1bnLDiL0+pGbW0MeaBSCFZ
-	 +ejRYDsi55n8BQCkzGJ0Fz/eBwhokmM9WHs6sV3sSwW8Dw2d1a+Vj+gFdWGOMPD4Cn
-	 A8/Sn+W06TmUGIukf1IwpGo8SFcXx8GjO2azyfQYlcIFAn18uRHerAm03akFhk1rq5
-	 2IXUFM4rEgcPAlZ89ODEMDwRAAxm0msmApqNPKzA7PU0hMON05i49okcXs6sjMjQJW
-	 XAK47T/EPCmDdHMahBXNiAqPkDwfBlxldE+K1a+7fMtxXn8mSBltmbZ+SCM3gYdTTu
-	 PfPTnPEG4/wdw==
+	b=eNhSE/4GsetDA/7gNDbQUrCnvG9f5bILUGoK1RZz2js8M12dZ8NfiXZ7k+LbcpOgD
+	 nOTt+SB6M3L2KLWOeKfZrKS8YD088CH6clmTiazsyiAhQRLyD2VeGiDq4mz7Fe//wX
+	 vfFSWdlqo6hTCLGksI61zjYEf6l9QW0Kmf00JXU7JD4sk4NYMDKb8u82sErOZdlaPP
+	 YPpSTMAVk6VY9UyC8ZqkeSoNxn1VQuazD6LLHXR7pgy9V2b2o5XcvIZtiEOm+pINzK
+	 2OMHKftkj1YXGfsdDM1ULQvGARby4gIX119x87ulZpaMYCxI/XBwD4nG0VoMMU+PJu
+	 Lh7rAbm85C7OA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -42,12 +42,12 @@ Cc: =?UTF-8?q?Pawe=C5=82=20Anikiel?= <panikiel@google.com>,
 	alex.gaynor@gmail.com,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 12/15] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST or Rust >= 1.88
-Date: Mon, 12 May 2025 14:03:47 -0400
-Message-Id: <20250512180352.437356-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 08/11] x86/Kconfig: make CFI_AUTO_DEFAULT depend on !RUST or Rust >= 1.88
+Date: Mon, 12 May 2025 14:04:23 -0400
+Message-Id: <20250512180426.437627-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250512180352.437356-1-sashal@kernel.org>
-References: <20250512180352.437356-1-sashal@kernel.org>
+In-Reply-To: <20250512180426.437627-1-sashal@kernel.org>
+References: <20250512180426.437627-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,7 +57,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.6
+X-stable-base: Linux 6.12.28
 Content-Transfer-Encoding: 8bit
 
 From: Paweł Anikiel <panikiel@google.com>
@@ -133,10 +133,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index aeb95b6e55369..fec9c72ad8d90 100644
+index e54da3b4d334e..7aaa1b0ca29a2 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -2430,6 +2430,7 @@ config STRICT_SIGALTSTACK_SIZE
+@@ -2420,6 +2420,7 @@ config STRICT_SIGALTSTACK_SIZE
  config CFI_AUTO_DEFAULT
  	bool "Attempt to use FineIBT by default at boot time"
  	depends on FINEIBT
