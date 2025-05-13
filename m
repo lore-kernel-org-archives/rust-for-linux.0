@@ -1,91 +1,91 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C90C2BFC62
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 May 2025 19:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4CE28C2CE
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 May 2025 19:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747164324; cv=none; b=T/zE4CvRoAew54YNMDfBtUXfyFBm2Zv6O68Cc7Qc4eGlrNEG+L9+ixNoZU3Rsluo7wYUJr4r03c21AKrpeyxKFIa8CXbGBP7sCEKPUX6FwK7qASneTpBXS84tppc6DSqJXf6lQTBED9TzAsoIrtaJbb0SADYlAQpeYZNxo5HAx4=
+	t=1747164393; cv=none; b=qbd76h3YUOc/1uuWkUbbEbYhj7v3FVPfl9l6bHore6bVYgngTNU886O2QMfvjKBz+ON+eprQYzaaZckjz8fAIgTA8i72dC7HRBuK0QFDQu6tYk91Qbgvpd0ruQev/cBw3WqUl63rzf2rp+ZocNQBJN/C5JlQN+3jLwMUQEY7dZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747164324; c=relaxed/simple;
-	bh=F3dclWZiOjgrOETx9MG8sVzrUPSav8cWT7TFA6uFJPo=;
+	s=arc-20240116; t=1747164393; c=relaxed/simple;
+	bh=wa7OK+aWnsiZothnyv93wtuAtLL4DnYWVC1vvjfQI+k=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a6RjBp0OqX5AREVysgdiB27m/SwpeJavkG5fFAOO5mkibT5qECFCvk4BqFmWnTqN6kh1KmSL63IUr53tarcv+vbgZOLaYVtCcxjnN7NX00Q9nuBlW4H1h51DL2Y4IJUT79ly9hLPYRJ2KijBl6h9lGt83dZJNddOdxZ5GpnwHbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J2ptqNpI; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=lcJRPI7uvQOqjpITRBET/l3p6u0n8VbUccEARFIXvVclQnanon7nty+r5qr9Mrw2UERgr/b2+dg8ihmG0ssSmYwCDXnNSsPPdWwZ2pELMOTyO3vvHJ/PEeZimi4FiCYUvdRnc0T05rmu9lRvRXJvXgdmc1vNRgWDgQS2XgCFlTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a2OyoI/r; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J2ptqNpI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a2OyoI/r"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747164321;
+	s=mimecast20190719; t=1747164389;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=F3dclWZiOjgrOETx9MG8sVzrUPSav8cWT7TFA6uFJPo=;
-	b=J2ptqNpIF+k8a6M8o8rsJNVocH7JqfAgKWH6NszTZTJ2z2bUodjul5u8BsNDIK9O1n7MHA
-	XNON37mZSdTlF+pQPbQ9Uc9ZPTVZTZc+AVgrENskOcNgFmM0LCkfAw4ewyYo5IYOgd1qur
-	R3FIsCcYNF6KKfEbJMewZvhbfmkfd5I=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=FNCYu5TXVpar+ZguZo6EJV02IKEiYq71SRjKdPPl+jo=;
+	b=a2OyoI/r9Zl1Xxs56tE2e/h0jjdVAdzx1qu0l1zDhQX+uiPnJcPYxeMDC21W0HitD4ef3+
+	yaQKICqCkZ/nbD4PYGp/K3NjpMaibvKpGyYJKhkqZcJ2jD73czQkaz/2RNI+7SoQ6LiZTx
+	+gxQYCLqiDY6qWhLCE71SG2hyo3PisE=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-YpVYriavM1uPu5oktZtGpg-1; Tue, 13 May 2025 15:25:20 -0400
-X-MC-Unique: YpVYriavM1uPu5oktZtGpg-1
-X-Mimecast-MFC-AGG-ID: YpVYriavM1uPu5oktZtGpg_1747164320
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6f6ea9b56c4so63364706d6.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 13 May 2025 12:25:20 -0700 (PDT)
+ us-mta-206-6_YZyNhaMhuXkbXflZ79KQ-1; Tue, 13 May 2025 15:26:26 -0400
+X-MC-Unique: 6_YZyNhaMhuXkbXflZ79KQ-1
+X-Mimecast-MFC-AGG-ID: 6_YZyNhaMhuXkbXflZ79KQ_1747164385
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4766c80d57eso102272071cf.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 13 May 2025 12:26:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747164318; x=1747769118;
+        d=1e100.net; s=20230601; t=1747164385; x=1747769185;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F3dclWZiOjgrOETx9MG8sVzrUPSav8cWT7TFA6uFJPo=;
-        b=uRZzo/oZWhjeSFrENUxHbarCvwuwnwFy2VHLmC4m0MkMVjM82JdNXq5v4MiDocdlyp
-         pwIh00Uqt0sxeoxFOCHND3u57Ru+121+7nY/quUPxH19jKOGA5HyeOlw9x0JJ9OP/eA6
-         6Cli2uw+mOi7bDiCy/DCt7UbT5XWmzcQDarTUWoOIK71EKEqvCAkuHqb5B6LXny3LrOz
-         Il/fxvYOW4o1clfNmp74EGubGlBOiw2z8Oahv74S90WSGgWAE1tbXeyilVqcX+HNQteP
-         rsANbbZn7EIPh5m0SHMa2YqWmDoMoCgj1u7hv/UATZE7bj5HnMwKlNTJwX2MkvJ0REIT
-         RsKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNIQoi4c0MOpi0aWeMuZfYiJOXbULJ8sQbAeofBAZKNNOrk0ZpGuinN53rR6HkEholHvDG3QfAaEG/XcxCqA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbrECgYu62dTZkO06fAJUSOjsoRynKSoVuJOryNYmDuLvNbYOP
-	0Zc7Xc2wDNA+B+XMO1qXPf9QjLPcLKIotJpHboWWvxS60pviWNAGcNFXrPVrInMPtb4SaEe+whQ
-	NcRC/bhdn48gsdxGyUjWu8xFvSofrA1cM5sTseiEE2hOFWGToAW8gLW6xOK5zIVqPc10zXFOJdd
-	E=
-X-Gm-Gg: ASbGncvS6I32DuU7ThaScOn3FiQSU+TtNDGFbEYzn8yAyxObZ6T3UNLTESUGX2d3X0V
-	uclLK1nAxJP98YZFB6uggcjA0UUIm2mbGXvhLv8sBHAdv38wbOLhJ+vavwTCVciY4PtePmKUZpV
-	XYCXvfktJ/cr0d3myhaQ2aZ8DxLmlbm2eXJ8kNAOMAewwl1mgEEkzeO8JPD/gidXPbQsWp2F2Y5
-	3JaIbbTqnIs/a7Z6ZKLmeH5KjN9T4DOUXln+mKvC9BS4bwNAP4cs/Jxe7HS3LyNmg59YONNRSPG
-	2G2cTqN/TCNf2BNAWA==
-X-Received: by 2002:a05:6214:20cf:b0:6e4:4194:df35 with SMTP id 6a1803df08f44-6f896dfb423mr10349196d6.9.1747164318263;
-        Tue, 13 May 2025 12:25:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzUNKrcRpYeYSQiO8tNKBw0ZI2ugdGPaVGMGMLuPgbso+Nt+CxKyQI9ddfPMQIU3HA5VwKJw==
-X-Received: by 2002:a05:6214:2586:b0:6d8:b115:76a6 with SMTP id 6a1803df08f44-6f896d6de2bmr9659436d6.0.1747164307635;
-        Tue, 13 May 2025 12:25:07 -0700 (PDT)
+        bh=W8aMdFr/yd0FHKE72BZ5LS8lsg/RjOaqGGXLst0tKus=;
+        b=HB/l38srcECxJP5+eBXYzFEgM/qbbTnXNL6TQKx3oKvcE6IYBDna2WoA7zlbtPypJf
+         soLvgp3fhuhPlURTWaHZuwX7z/fWygpysSuewpk+pRBs0anvv3ja0+uYrmR2oM419Dia
+         nJSF+egwv9OLBkRrOxhxADyDwBNfqvWHMzIUyjlnNnuWuInLSa/i7BYGFsalPITqYSYs
+         BULcPtoEbTWrqMpcYisMRsICSmk8mxLqi0B0Q77RAiqZ3qLakHn3/9UqHtcWoQ/BI0jM
+         LwBqjDBd0xBSk8gzFGqHdQ2aqybcvGQpK/e1V1bOUqsupi8Hh7dujLwYY8V1+hZQt3hd
+         hXZg==
+X-Forwarded-Encrypted: i=1; AJvYcCW78F8Id9MAsnrsxuNDFdTYCZUIGIfqZ4uNhEDnUt3AawRF5RjrTqDgiOliWdZkitLcyjJuQLjx5oYZM1YKtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlzLreysu9dDCsJwJvE3/3RxGl+CfHMEtzeDtW/MJxlQImGqu7
+	OUkoLWSUGOHBRxJ6QzEEfjypnhUnogJCXIfSIUU1Dn1P3HKEainrxABMSQ7fn3KyYyd0/tc+Smc
+	mmR54+8624c9hLaE6ye9ftmDIPwVKkSAj50untOMXEAd9cD76MCqcMeiIE3rYOEHX
+X-Gm-Gg: ASbGncvCT5PpgVPlje42gFWWcbV6Bz6uOrTr2mlriQROBSJWchY9c+ZsI1OCXsfvq9b
+	Ur8NdkoFrebkSSczh3/5Pk/UGkmERV9mg5d2VkXwL9hvsJpuhOnFV30V1hPLvPW0qkurNjtst6y
+	8rOrVCY+7j6a0gyGIByU9K/3NPqUae5Odjfz1wLJbn5chblcXG0MfgAt6Kna323K0qgt9ehmocf
+	gi1jJ6YVIrtW7xmCaYl4A5Eyx+i0xUkjIDKYpgKTWGYLKocQ0ChwfzGiA/yOnhv97tx6bIKfhtt
+	1yGvzc3+DliOcxy0vQ==
+X-Received: by 2002:a05:622a:8c8:b0:48d:f08e:3416 with SMTP id d75a77b69052e-49495cf66d1mr10703931cf.47.1747164385497;
+        Tue, 13 May 2025 12:26:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9TT8ugoD/slYSgo0Dlx3xwHi7ScB/aOTy0oC3Giz/+6i+g16d71j1JTR/BnzSGXPHBN0AnQ==
+X-Received: by 2002:a05:622a:8c8:b0:48d:f08e:3416 with SMTP id d75a77b69052e-49495cf66d1mr10703641cf.47.1747164385159;
+        Tue, 13 May 2025 12:26:25 -0700 (PDT)
 Received: from ?IPv6:2600:4040:5c4b:da00::bb3? ([2600:4040:5c4b:da00::bb3])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f6e39e0721sm70719596d6.12.2025.05.13.12.25.05
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4945246c6b8sm68902621cf.13.2025.05.13.12.26.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 May 2025 12:25:06 -0700 (PDT)
-Message-ID: <3f5be3895e221713295cfca1727e7c0e0c557fd1.camel@redhat.com>
-Subject: Re: [PATCH 2/4] rust: drm: gem: Refactor
- IntoGEMObject::from_gem_obj() to as_ref()
+        Tue, 13 May 2025 12:26:23 -0700 (PDT)
+Message-ID: <689ef07e8d167341d9820a7607afe614aa239899.camel@redhat.com>
+Subject: Re: [PATCH 1/7] drm/shmem-helper: Add lockdep asserts to vmap/vunmap
 From: Lyude Paul <lyude@redhat.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Maarten Lankhorst	
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
  Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,  Gary
- Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl	 <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich	 <dakr@kernel.org>,
- Asahi Lina <lina@asahilina.net>, Alyssa Rosenzweig	 <alyssa@rosenzweig.io>
-Date: Tue, 13 May 2025 15:25:05 -0400
-In-Reply-To: <036A1696-C113-4C71-93AD-D5EA92EA3552@collabora.com>
-References: <20250501183717.2058109-1-lyude@redhat.com>
-	 <20250501183717.2058109-3-lyude@redhat.com>
-	 <036A1696-C113-4C71-93AD-D5EA92EA3552@collabora.com>
+ Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Sumit Semwal <sumit.semwal@linaro.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-media@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org, Danilo Krummrich <dakr@kernel.org>, Asahi
+ Lina	 <lina@asahilina.net>
+Date: Tue, 13 May 2025 15:26:22 -0400
+In-Reply-To: <fb7ca812-ad3f-4116-bb58-d34a8bcf979f@amd.com>
+References: <20250318-drm-gem-shmem-v1-0-64b96511a84f@collabora.com>
+	 <20250318-drm-gem-shmem-v1-1-64b96511a84f@collabora.com>
+	 <fb7ca812-ad3f-4116-bb58-d34a8bcf979f@amd.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41)
 Precedence: bulk
@@ -95,19 +95,64 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qflofOivbqFc-RhdBQpe8FD07e_6x461Sl-nz1A9mos_1747164320
+X-Mimecast-MFC-PROC-ID: hHmzqpw14dly4hNHqtBWdKCstwZypYUO-ldnkI5FV20_1747164385
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2025-05-09 at 18:37 -0300, Daniel Almeida wrote:
-> Ugh..IMHO we need to have aliases for all of these. This is, of course,
-> orthogonal to your patch. Just a nice-to-have for the future :)
+On Wed, 2025-03-19 at 08:49 +0100, Christian K=C3=B6nig wrote:
+> Am 18.03.25 um 20:22 schrieb Daniel Almeida:
+> > From: Asahi Lina <lina@asahilina.net>
+> >=20
+> > Since commit 21aa27ddc582 ("drm/shmem-helper: Switch to reservation
+> > lock"), the drm_gem_shmem_vmap and drm_gem_shmem_vunmap functions
+> > require that the caller holds the DMA reservation lock for the object.
+> > Add lockdep assertions to help validate this.
+> >=20
+> > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>=20
+> Oh, yeah that is certainly a good idea.
+>=20
+> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
 
-Good news then, I actually have another patch I came up with after sending
-this series out that cleans up a lot of the generic soup - so I might as we=
-ll
-add this on top of it :).
+JFYI - been reviving this patch series and getting it ready for sending out
+another version. Since this patch looks to be reviewed I will go ahead and
+push it to drm-misc-next
+
+>=20
+> > ---
+> >  drivers/gpu/drm/drm_gem_shmem_helper.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >=20
+> > diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/d=
+rm_gem_shmem_helper.c
+> > index 5ab351409312b5a0de542df2b636278d6186cb7b..ec89e9499f5f02a2a357136=
+69bf649dd2abb9938 100644
+> > --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> > +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> > @@ -338,6 +338,8 @@ int drm_gem_shmem_vmap(struct drm_gem_shmem_object =
+*shmem,
+> >  =09struct drm_gem_object *obj =3D &shmem->base;
+> >  =09int ret =3D 0;
+> > =20
+> > +=09dma_resv_assert_held(obj->resv);
+> > +
+> >  =09if (obj->import_attach) {
+> >  =09=09ret =3D dma_buf_vmap(obj->import_attach->dmabuf, map);
+> >  =09=09if (!ret) {
+> > @@ -404,6 +406,8 @@ void drm_gem_shmem_vunmap(struct drm_gem_shmem_obje=
+ct *shmem,
+> >  {
+> >  =09struct drm_gem_object *obj =3D &shmem->base;
+> > =20
+> > +=09dma_resv_assert_held(obj->resv);
+> > +
+> >  =09if (obj->import_attach) {
+> >  =09=09dma_buf_vunmap(obj->import_attach->dmabuf, map);
+> >  =09} else {
+> >=20
+>=20
 
 --=20
 Cheers,
