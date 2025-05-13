@@ -1,53 +1,52 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BEC20C016
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713581FFC46
 	for <rust-for-linux@vger.kernel.org>; Tue, 13 May 2025 22:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747174285; cv=none; b=iM149YjBvlFEuZqNh3qxwo/4YNRSaOvTQxCtWPdv+RR0auBXIHW9cV3thMjtjkHJIk2cNQLZ6RvDhja9BpuMlTNE82I6bdPhW7gnSlqdhO2M0Y85j4xLeU5Kaluzz+QA6jx8QsLnEUL2HjBD30SllbWRRZzhpIlfX2adTqJW7CE=
+	t=1747174286; cv=none; b=CFZScVi9EMPevdmWa33lCaiZjVWlXeZfzGjb3rPu4Pl2y774ra4m+XhZMg4e/9AzFw8H5rQTPoTcIlb/UjwlDlHFM0DZSm6Mfhj9dOvOddPZVv818gIJfFZwzX2OczirAdvd5c5DrzlQq80MdELW4pwLg6oIhXZRcymEsGBeKPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747174285; c=relaxed/simple;
-	bh=snAJJ4dqpLVI5y1ozRwgddYi9+s23TmxoUqv5KcTbrw=;
+	s=arc-20240116; t=1747174286; c=relaxed/simple;
+	bh=7d0VgSPJROTSMaQPGs5A4pTzXg/ZW8CCULSCOL8oGRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJjl5ZbS8PEIx8+wua0cV1eIJkWKwUybDkIDiOWOIwk71+eATez4pzM0P+lZllJW8Q2yJ769DhgU4xJytcxie71Wwi+CEYSshTcspnjxNeLwDy8UM1xoZXTtEYyMTCBZN1oVkCJ9vM57BxM81aaoLhTiHU5c0CuxkM8TZDl3Zl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XdbTb9Y+; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=FqB7vx+EsnONOdBAMLfT34X1T9PMYlLXTMPjFIk3+IC37N6he9vWK1lP7pwJSVsHqeD2LlUu/bZcIOeagB9tPyQWdN87pFSrkii2fv2moHvJImfuY5O2ZUsgCQ/hlFCMGA51j7kpzu0WaqMmIKoDjtD/o8/pf0E0OTSU2pxNHx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MpmeCMD/; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XdbTb9Y+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MpmeCMD/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747174282;
+	s=mimecast20190719; t=1747174281;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+eRdN+ZheJAEz/HIzsmMzXqUM9+/iVZmHsdLdFswD3U=;
-	b=XdbTb9Y+WmDRpkM7TWrCG/2ybTcY8Ao7GGknEwglJjO+cGRjLgMh4Wa2GLFG53sJPpfFk3
-	WJ3SZUNkobB/dE/WfunP5BXB5phrIUpKOutGnsqYy6YpmMRgbM7kd4zQ9PEC7N7E8z9bnB
-	DTKNQ+HBGFG23IKs/zL5ar0I67WcSk4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=Tt1JSePFPFuckdQ49k5xhTN6H2hYpcBzjeDUG0vewRk=;
+	b=MpmeCMD/9aC4ppF3ti0GVgV1aXwU9yEoVQbnKYKcQUy41lyrSktLFSCdeFmgePhxOxfwMt
+	87/n2MA2IT0Q0oRSYwGCVdABAQHHw6RYRlY2ZgmF3+bstIoTiKDCOXFd/AXiieODotD+2h
+	XVZaAkf0wh2vSBn2pJfDb8J1Gs9ENFM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-lmH3wHABP0iRzkoMnM7q2w-1; Tue,
- 13 May 2025 18:11:19 -0400
-X-MC-Unique: lmH3wHABP0iRzkoMnM7q2w-1
-X-Mimecast-MFC-AGG-ID: lmH3wHABP0iRzkoMnM7q2w_1747174277
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-p7kry4B1MlGfHFKlsC4WMg-1; Tue,
+ 13 May 2025 18:11:15 -0400
+X-MC-Unique: p7kry4B1MlGfHFKlsC4WMg-1
+X-Mimecast-MFC-AGG-ID: p7kry4B1MlGfHFKlsC4WMg_1747174269
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 354891955BF2;
-	Tue, 13 May 2025 22:11:16 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 82A9E1800374;
+	Tue, 13 May 2025 22:11:08 +0000 (UTC)
 Received: from chopper.lyude.net (unknown [10.22.64.99])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C52021944A82;
-	Tue, 13 May 2025 22:11:11 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8100C1944A82;
+	Tue, 13 May 2025 22:11:03 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
 Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
@@ -62,11 +61,12 @@ Cc: Daniel Almeida <daniel.almeida@collabora.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Asahi Lina <lina@asahilina.net>
-Subject: [PATCH v2 3/4] rust: drm: gem: s/into_gem_obj()/as_raw()/
-Date: Tue, 13 May 2025 18:09:56 -0400
-Message-ID: <20250513221046.903358-4-lyude@redhat.com>
+	Danilo Krummrich <dakr@kernel.org>,
+	Asahi Lina <lina@asahilina.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Subject: [PATCH v2 2/4] rust: drm: gem: Refactor IntoGEMObject::from_gem_obj() to as_ref()
+Date: Tue, 13 May 2025 18:09:55 -0400
+Message-ID: <20250513221046.903358-3-lyude@redhat.com>
 In-Reply-To: <20250513221046.903358-1-lyude@redhat.com>
 References: <20250513221046.903358-1-lyude@redhat.com>
 Precedence: bulk
@@ -78,101 +78,147 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-There's a few changes here:
-* The rename, of course (this should also let us drop the clippy annotation
-  here)
-* Return *mut bindings::drm_gem_object instead of
-  &Opaque<bindings::drm_gem_object> - the latter doesn't really have any
-  benefit and just results in conversion from the rust type to the C type
-  having to be more verbose than necessary.
+There's a few issues with this function, mainly:
+
+* This function -probably- should have been unsafe from the start. Pointers
+  are not always necessarily valid, but you want a function that does
+  field-projection for a pointer that can travel outside of the original
+  struct to be unsafe, at least if I understand properly.
+* *mut Self is not terribly useful in this context, the majority of uses of
+  from_gem_obj() grab a *mut Self and then immediately convert it into a
+  &'a Self. It also goes against the ffi conventions we've set in the rest
+  of the kernel thus far.
+* from_gem_obj() also doesn't follow the naming conventions in the rest of
+  the DRM bindings at the moment, as_ref() would be a better name.
+
+So, let's:
+
+* Make from_gem_obj() unsafe
+* Convert it to return &'a Self
+* Rename it to as_ref()
+* Update all call locations
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 
 ---
 V2:
-
-Rename to as_raw()
+* Apply Danilo's comments in lookup_handle()
+* Add safety comment from Daniel
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/drm/gem/mod.rs | 25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ rust/kernel/drm/gem/mod.rs | 69 ++++++++++++++++++++++++--------------
+ 1 file changed, 43 insertions(+), 26 deletions(-)
 
 diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 1ea1f15d8313c..fa293c08f431d 100644
+index df8f9fdae5c22..1ea1f15d8313c 100644
 --- a/rust/kernel/drm/gem/mod.rs
 +++ b/rust/kernel/drm/gem/mod.rs
-@@ -12,7 +12,7 @@
-     prelude::*,
-     types::{ARef, Opaque},
- };
--use core::{mem, ops::Deref, ptr, ptr::NonNull};
-+use core::{mem, ops::Deref, ptr::NonNull};
+@@ -45,8 +45,14 @@ pub trait IntoGEMObject: Sized + super::private::Sealed {
+     #[allow(clippy::wrong_self_convention)]
+     fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object>;
  
- /// GEM object functions, which must be implemented by drivers.
- pub trait BaseDriverObject<T: BaseObject>: Sync + Send + Sized {
-@@ -42,8 +42,7 @@ pub trait IntoGEMObject: Sized + super::private::Sealed {
+-    /// Converts a pointer to a `struct drm_gem_object` into a pointer to `Self`.
+-    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self;
++    /// Converts a pointer to a `struct drm_gem_object` into a reference to `Self`.
++    ///
++    /// # Safety
++    ///
++    /// - `self_ptr` must be a valid pointer to `Self`.
++    /// - The caller promises that holding the immutable reference returned by this function does
++    ///   not violate rust's data aliasing rules and remains valid throughout the lifetime of `'a`.
++    unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self;
+ }
  
-     /// Returns a reference to the raw `drm_gem_object` structure, which must be valid as long as
-     /// this owning object is valid.
--    #[allow(clippy::wrong_self_convention)]
--    fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object>;
-+    fn as_raw(&self) -> *mut bindings::drm_gem_object;
+ /// Trait which must be implemented by drivers using base GEM objects.
+@@ -63,14 +69,13 @@ extern "C" fn open_callback<T: BaseDriverObject<U>, U: BaseObject>(
+     let file = unsafe {
+         drm::File::<<<U as IntoGEMObject>::Driver as drm::Driver>::File>::as_ref(raw_file)
+     };
+-    let obj =
+-        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::from_gem_obj(
+-            raw_obj,
+-        );
+-
+-    // SAFETY: `from_gem_obj()` returns a valid pointer as long as the type is correct and the
+-    // `raw_obj` we got is valid.
+-    match T::open(unsafe { &*obj }, file) {
++    // SAFETY: `open_callback` is specified in the AllocOps structure for `Object<T>`, ensuring that
++    // `raw_obj` is indeed contained within a `Object<T>`.
++    let obj = unsafe {
++        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::as_ref(raw_obj)
++    };
++
++    match T::open(obj, file) {
+         Err(e) => e.to_errno(),
+         Ok(()) => 0,
+     }
+@@ -84,14 +89,13 @@ extern "C" fn close_callback<T: BaseDriverObject<U>, U: BaseObject>(
+     let file = unsafe {
+         drm::File::<<<U as IntoGEMObject>::Driver as drm::Driver>::File>::as_ref(raw_file)
+     };
+-    let obj =
+-        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::from_gem_obj(
+-            raw_obj,
+-        );
+-
+-    // SAFETY: `from_gem_obj()` returns a valid pointer as long as the type is correct and the
+-    // `raw_obj` we got is valid.
+-    T::close(unsafe { &*obj }, file);
++    // SAFETY: `close_callback` is specified in the AllocOps structure for `Object<T>`, ensuring
++    // that `raw_obj` is indeed contained within a `Object<T>`.
++    let obj = unsafe {
++        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::as_ref(raw_obj)
++    };
++
++    T::close(obj, file);
+ }
  
-     /// Converts a pointer to a `struct drm_gem_object` into a reference to `Self`.
-     ///
-@@ -101,8 +100,8 @@ extern "C" fn close_callback<T: BaseDriverObject<U>, U: BaseObject>(
  impl<T: DriverObject> IntoGEMObject for Object<T> {
-     type Driver = T::Driver;
- 
--    fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object> {
--        &self.obj
-+    fn as_raw(&self) -> *mut bindings::drm_gem_object {
-+        self.obj.get()
+@@ -101,9 +105,10 @@ fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object> {
+         &self.obj
      }
  
-     unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self {
-@@ -121,7 +120,7 @@ pub trait BaseObject
-     fn size(&self) -> usize {
-         // SAFETY: `self.into_gem_obj()` is guaranteed to be a pointer to a valid `struct
-         // drm_gem_object`.
--        unsafe { (*self.into_gem_obj().get()).size }
-+        unsafe { (*self.as_raw()).size }
-     }
- 
-     /// Creates a new handle for the object associated with a given `File`
-@@ -133,11 +132,7 @@ fn create_handle(
-         let mut handle: u32 = 0;
-         // SAFETY: The arguments are all valid per the type invariants.
-         to_result(unsafe {
--            bindings::drm_gem_handle_create(
--                file.as_raw().cast(),
--                self.into_gem_obj().get(),
--                &mut handle,
--            )
-+            bindings::drm_gem_handle_create(file.as_raw().cast(), self.as_raw(), &mut handle)
-         })?;
-         Ok(handle)
-     }
-@@ -171,14 +166,10 @@ fn lookup_handle(
-     /// Creates an mmap offset to map the object from userspace.
-     fn create_mmap_offset(&self) -> Result<u64> {
-         // SAFETY: The arguments are valid per the type invariant.
--        to_result(unsafe { bindings::drm_gem_create_mmap_offset(self.into_gem_obj().get()) })?;
-+        to_result(unsafe { bindings::drm_gem_create_mmap_offset(self.as_raw()) })?;
- 
-         // SAFETY: The arguments are valid per the type invariant.
--        Ok(unsafe {
--            bindings::drm_vma_node_offset_addr(ptr::addr_of_mut!(
--                (*self.into_gem_obj().get()).vma_node
--            ))
--        })
-+        Ok(unsafe { bindings::drm_vma_node_offset_addr(&raw mut (*self.as_raw()).vma_node) })
+-    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self {
+-        // SAFETY: All of our objects are Object<T>.
+-        unsafe { crate::container_of!(obj, Object<T>, obj).cast_mut() }
++    unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self {
++        // SAFETY: `obj` is guaranteed to be in an `Object<T>` via the safety contract of this
++        // function
++        unsafe { &*crate::container_of!(self_ptr, Object<T>, obj) }
      }
  }
  
+@@ -144,11 +149,23 @@ fn lookup_handle(
+     ) -> Result<ARef<Self>> {
+         // SAFETY: The arguments are all valid per the type invariants.
+         let ptr = unsafe { bindings::drm_gem_object_lookup(file.as_raw().cast(), handle) };
+-        let ptr = <Self as IntoGEMObject>::from_gem_obj(ptr);
+-        let ptr = NonNull::new(ptr).ok_or(ENOENT)?;
+-
+-        // SAFETY: We take ownership of the reference of `drm_gem_object_lookup()`.
+-        Ok(unsafe { ARef::from_raw(ptr) })
++        if ptr.is_null() {
++            return Err(ENOENT);
++        }
++
++        // SAFETY:
++        // - A `drm::Driver` can only have a single `File` implementation.
++        // - `file` uses the same `drm::Driver` as `Self`.
++        // - Therefore, we're guaranteed that `ptr` must be a gem object embedded within `Self`.
++        // - And we check if the pointer is null befoe calling as_ref(), ensuring that `ptr` is a
++        //   valid pointer to an initialized `Self`.
++        let obj = unsafe { Self::as_ref(ptr) };
++
++        // SAFETY:
++        // - We take ownership of the reference of `drm_gem_object_lookup()`.
++        // - Our `NonNull` comes from an immutable reference, thus ensuring it is a valid pointer to
++        //   `Self`.
++        Ok(unsafe { ARef::from_raw(obj.into()) })
+     }
+ 
+     /// Creates an mmap offset to map the object from userspace.
 -- 
 2.49.0
 
