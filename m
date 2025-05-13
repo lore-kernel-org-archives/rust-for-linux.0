@@ -1,490 +1,225 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2049.outbound.protection.outlook.com [40.107.94.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EECF2C031E;
-	Tue, 13 May 2025 17:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747156804; cv=none; b=inp66WzBgWd4u2vn7kJc75T0ccS+M4BEvzbFF4SQdeyufDJ91UVS+QeFW/WR7hEpKVTnKF2YS/1npnQ8Z/Fz8qZswiQm1Xx2vjCiR3c9OityyZYF+BrvweJPRK4wF9+rO9Vplb0i0YZ5p/HHLNXPfkHSLMTT2AN0M8TDCUBZbzU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747156804; c=relaxed/simple;
-	bh=MQuhWpdzL93g7rThL0qxlaSL6Ket9ASq4jJ/RLoxeI8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oxcta7xU1muK0UEa+7wHFKlF80pAftCLf6xmaTrltAWjUzPayC5DsKXhrpf7RDNatFC8LhghIEZqfw0Do38ICX+/QMnXk9X8+NcRtrLacf1/+Kidrg6DPO86UkpQGvMhBdR11Fd71J/sYVEp86hFQ1QDjO5eInHwZ0XivHMmCME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VKfFUr6X; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D710C1E0083;
+	Tue, 13 May 2025 18:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747159684; cv=fail; b=KbPRYtCE/rKbdQu6066HlMMuL82KWdkfIFTxbi4JwCLdrHYAYEQw4AvgMNn6mOOYHaQJtJmwXoTSbRW0C00tXdFHQrLCwgENq1RnPgM+0psuotZn/0dK9APUCFaHcB8UhfxL2ofjEp9mafhYcpZm76hvMBhWMA+WDLvDK336pY8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747159684; c=relaxed/simple;
+	bh=DiVLv+CSvvDcBHzAG3fHCH4KWWn0H2YJ7pROAHmfZB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uJaPVt0Z2rNRkhDx+theJNfqp/k1X6JuBoEZOENdabXUHuuJ8Xcbyn9ramihRHLFzy+wLtAj1TI1FrILThETm04o3mOMCUJbZffG726S2iYTGLoelKafLxxsRWWCFqxk19Cl4IvHI18BtaDS8562vL1AoIv0rGqV8r3156odMws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H+85oZrd; arc=fail smtp.client-ip=40.107.94.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VKfFUr6X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CF0C4CEE4;
-	Tue, 13 May 2025 17:19:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747156803;
-	bh=MQuhWpdzL93g7rThL0qxlaSL6Ket9ASq4jJ/RLoxeI8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VKfFUr6XKjwZWWOe1h2dm2026+ajtQ08OViaXvJUs32VjY9pNgCDp3vdLArWlg/ug
-	 puZwKFsV0jOk0iacJI6p36/oeQziVIxeiSJAUyKnqq/fBml6h8WOzbMgT2/zUegqoy
-	 B4fHJgF8FL0ohX1wmj5VJ4avHzsU1GTK1pwn4i0gDw5oFh/urFsYch6R3cXUojWqDX
-	 KJnzl3Kr6WGFJ9Lb92Rj/xUgjOsndgggZdhKrDOsqNtIsCqskFcnAFLHJarQIC1ORk
-	 D40A/u3s2+8SpfFgxm5uPh7YMDge5lXgrYnokS5rdcBYcNVgn3EY3M+HxeobdcBAaI
-	 b3saKvA8f5miA==
-Date: Tue, 13 May 2025 19:19:56 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H+85oZrd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dFyA350pd+xJ1898x2N8XfkdBsZuidIaeVWh8p2lWkIctNdebaf2zy+DSINMCFifsjroyvAmVkSIotK6qVDCO5aDk2riOlPFKuvVCYDWy+n4gBo78teNxGKfgmOt5we9k53+MPx/GMaTIv8il9iCoGnxDMI/XDWOXpWlNEPT9i0CnH41xI3SkQlUc9Z7A14lI9X4vu3CU/Q9sjvhWHqAMUsd3rRJzapGFjHkEmw4M7tYheIwm7bbDKX3++YpLOh8qlXdaiqBehmdAruRuLhLrQIY4Dqxc1Afq6/lnsdqg/Z2vm/Zx8fp+VDAFysb+zWUuSwhjskttEz9A3LYotundA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dBBm6Yv/AfS4cDh/NLwLrtXaosVnqfDThvjk4GNLciM=;
+ b=L+Ind297TIbb9pLg1k/oJ9XkN2d02Wdykrn7Bueek4BDXfgSD22HV5OHS44bYvmVPRMcYDt3qNgEXxcExR6K+q/rob80cW7sSRLevFzIH/WYH8ExEnMD/c3EzH4dpByF5cacNPXQQXlSm0DDc7TdxwVdBXiS7B53zGn504NJJrL1Owi1buzGbr+ieHKLfVrKqay8xoiUpqXunNQmiXd8sdCphYZDdHOdhY8lNzdWVFaCkQMrrj4rf39ysrCymU/2akLy5lFDN1oLL6FLxuQOI5cApfimGMexcV3jMaxwyNMrPAk5GZQAGG/CK+5c11Qw8J2V+whc+dxIa8x3fgIbuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dBBm6Yv/AfS4cDh/NLwLrtXaosVnqfDThvjk4GNLciM=;
+ b=H+85oZrdxGfvzEG4TF7AX7fJDVBNimzYeE/eyIGKKqHrzXqN1qvY5qKwFLilyzVhVRiRLXbSGnGm4JKZx4ekgU7MhjM68qCzX6ykKILlMsSRLZaRzMOmkimNmZ41G4qHthBlP/TGVNY17AL80yWbcTyFfNEhbQW9PxNqNm7YZa9kt27O0Yw458NR3xRAjSQgV23O9z8BnWOcP1lv/Kxe7134OV1kTp2PjOXl8GgQCiC+6tqt20yOKGl/Cbchhr5zj9Qfpwu3oe5fHe5XR4h33NIX5Jay7b06rYPC3P6wwNylAfuQtTtvEw3fCOt603h+rnnngY/cOvLECUsuZ+1Gvw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by MW4PR12MB7240.namprd12.prod.outlook.com (2603:10b6:303:226::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.28; Tue, 13 May
+ 2025 18:07:59 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.8722.027; Tue, 13 May 2025
+ 18:07:59 +0000
+Date: Tue, 13 May 2025 14:07:57 -0400
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	Shirish Baskaran <sbaskaran@nvidia.com>
-Subject: Re: [PATCH v3 16/19] nova-core: Add support for VBIOS ucode
- extraction for boot
-Message-ID: <aCN_PIYEEzs73AqT@pollux>
-References: <20250507-nova-frts-v3-0-fcb02749754d@nvidia.com>
- <20250507-nova-frts-v3-16-fcb02749754d@nvidia.com>
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+	stable@vger.kernel.org, Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>, ttabi@nvidia.com,
+	acourbot@nvidia.com, jhubbard@nvidia.com, apopple@nvidia.com
+Subject: Re: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
+ for Rust 1.87.0
+Message-ID: <20250513180757.GA1295002@joelnvbox>
+References: <20250502140237.1659624-1-ojeda@kernel.org>
+ <20250502140237.1659624-2-ojeda@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250502140237.1659624-2-ojeda@kernel.org>
+X-ClientProxiedBy: MN2PR10CA0015.namprd10.prod.outlook.com
+ (2603:10b6:208:120::28) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250507-nova-frts-v3-16-fcb02749754d@nvidia.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|MW4PR12MB7240:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39ed9f64-3ed3-4e61-2a89-08dd9249181c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ZqQHIcZEZs8n132VToEW8Ds2IyzTkqSPi/QeCH0ZNJpQesClN39Y1NaE9gYT?=
+ =?us-ascii?Q?SjI8VFi2S+cVGhO1wD1vBcwp8QkH7Z97KM3ECouQ6FbhV3M2s/dfBJq3ktbP?=
+ =?us-ascii?Q?HpkPI035pwS3RGDa2jpzhz3nW3CYiQSVv8PJ9hFpQmf69rJFF7TvBeSmQhlN?=
+ =?us-ascii?Q?ir9OPn+0Oa+QUO19zjmGmoJvDeZq8IxiBUfDl5XNTAXsO15/X7WPXgBbJFCB?=
+ =?us-ascii?Q?01fsSt1GAi3i9t4JVv5GuctrNFJdo71/q0qo14U7Yimi2vY7NLxkCpL1IKXW?=
+ =?us-ascii?Q?7DWMazKgl/Oro7+vuzx64y3o/nDm4ytoVsEQFJIRn7aC87i+PgHbwQ4QXA3e?=
+ =?us-ascii?Q?2gdiAesPECkgM8fjMrcKEzXjUrxrGmcIcWLe8uedWSdfXsePCvkGUi8jz3dI?=
+ =?us-ascii?Q?qgwzbVAwWYcp7zfEwDN57MY2WZDLJ0GJzjV2RcZo4jFoXhmjD/s1M2Lz/22f?=
+ =?us-ascii?Q?j1LrfRVn0JVf/ljrm9oEFT/ByYhmmPKIuW+wHZZoiVWC6qxkKsH11mdfdRlJ?=
+ =?us-ascii?Q?RbKb/+qTmETsaveCZPolnyGhcBmARlqN0YCyv2qjlcnPqwQgVfYdeS8vnLVB?=
+ =?us-ascii?Q?1rocxjV3wW7AFalTXN1XOCzQxE9CfW5E53IlQNsfN6jDtzyQUxtSkDZ6MeoV?=
+ =?us-ascii?Q?OFgTdtB8azWmBZ9XSTmQKqBayjYTF+vykryzB+SEKDEn3/I6PrL0Ok7yrnVw?=
+ =?us-ascii?Q?ZF5t0MdGepbvAJ6UCUuiVzlHZGZ3xe7VRhWCPSc11niKNF5Mn7NuXFyEF7mn?=
+ =?us-ascii?Q?hHmga34G0WoRLor5GdkVq9epE5kJHMPAh7uPo199+amhds5d6WTyr9v5DfAd?=
+ =?us-ascii?Q?7ByDZoBWm1gDLQ3LNNMx9PccaqLAJL+oywJqqT75xV09u1gFlItZh65OhudF?=
+ =?us-ascii?Q?DeIozsnIDvYZ+w30vSyvYo/X1lIF1QyisS+GoJ00bL+2j6Y/okRNZfVQGmIV?=
+ =?us-ascii?Q?BQztlLm6+giOIjGYbvC9fmE3Bp11VLOFE6t+MIjHFpulbBT0GwTa2k9qO9uj?=
+ =?us-ascii?Q?RCAhYn3M3cTW4PI6smJAlFOp/izIJ9w4ND8VZo1xX7GfY+iEhV9HKEwZFuzn?=
+ =?us-ascii?Q?Ax65IxY7juk9JJByYaQoxgxirxreNTSXjcxcKej5qC2fEFPrali3nd+x/S7b?=
+ =?us-ascii?Q?Yvx6jakGlWNgZ3S3RIirQn2YUsF5QvlI1SWKRLqdjzcxNepC0xIF/4oA5GnG?=
+ =?us-ascii?Q?Ikb3VigiuUH8K5fN+kwx+6WqN/ObBvjhucTeC5au0pAsxJflK4NOaaBgcgER?=
+ =?us-ascii?Q?Mh6Q6yXYK4BsfI0t7FNWMTROMRn6Q9mXNtPIIekBmw1YxwZHdFTl9ec8xnw9?=
+ =?us-ascii?Q?tlPsClcrIt2nn3dLvCsA9YshXqVE7oGRapYYEtL3UXPwYeQudymRlWiBxcw6?=
+ =?us-ascii?Q?is3nfvIpXTYXFhEmoU4uLprZh3Pu2n57tTsF8P8jRdaFGSzzXveneb3K4BZf?=
+ =?us-ascii?Q?2u7CMFfEJz0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KcA1i6RksMvuYXQzUuBnB1hLNOR9xVCUwgGINVjHCOJE7cwvCZHAwUERxGkV?=
+ =?us-ascii?Q?K46ermCgIVaP1WYBt2xlWaHDCApP86TWao2l11MtnqRRSWgO9gaY0Ed//fad?=
+ =?us-ascii?Q?rn2fLMsqYIrT6ahJPJEOKe2j6ASuoVl6l9Jff7a3njDqwIya2zCgxA+qQWhp?=
+ =?us-ascii?Q?mO/RvhSAFFHxcTqKKPQSBsqbmykvbI6S2/JWQRo8osIaHVrsxEy58O25czJR?=
+ =?us-ascii?Q?L66U/3mggyjjB+nLwlCUj2eKVlgmtc3MVNdwsAnWfoYTEs8tifnBpwG5Hz7d?=
+ =?us-ascii?Q?7bn7287pc9u1xdU8pt9Jnb8LF06lqpkSBTj2ogQ4zkc1PnLAuezV2oo9dyhC?=
+ =?us-ascii?Q?/1J4uZ9K0BDmXdc4ZgtRlVNPO5lrfbqjcXlZJnfeJH1zwEMyRx9iF6qYlmnz?=
+ =?us-ascii?Q?UQN0qnJJ9tXHPmw94HUPqq/wPulYF4ohcKfbHJX8AD95dgcbeoc7eovS4SYo?=
+ =?us-ascii?Q?ekFpdBH4ll8DrGYr+y5ZkjW/jGYhKeQ15As/BmLN9NpJ5bJ/ZM1zs6Y0w23u?=
+ =?us-ascii?Q?6cGktpYO3Shgeb7cvQJbdtollE9reOoP8VqWfjcujjW/tlms3XXrCrXRPu7G?=
+ =?us-ascii?Q?YgtMtCT5ms9FXuqwI+sLMKph4rtiKBi6K3Pk+LrUn3e1TXissx+m5Yjr4Chd?=
+ =?us-ascii?Q?3j0E8QI1W1eR5bdAS+/ygWH2FRzWbJ2K2+9SQCQSQUFptbuE3pBzdklqvPao?=
+ =?us-ascii?Q?s594ebyoOKLc6vML+ikoAsFlzprOJ3NEXwi+BeOEfZJBzrN2S3a5kgckDTK/?=
+ =?us-ascii?Q?tnrrBB/PwRZg21jcVkMYJGbKg/4tTfZEcSLXfST/juqkoEc8qbOBmtNzeYZ6?=
+ =?us-ascii?Q?jrNMHiZc3nL6EpJWxhVnkKYDetRFmuHeOQ1NlJ7Pi5ABweGlWWpQGPgluG4G?=
+ =?us-ascii?Q?19oQpyEc/7YJj+XWz2JU2DbrdoAoGQ9Rd1x6oEqlsTYP+jh7oKJRxh7m1FT2?=
+ =?us-ascii?Q?m3KdHaHMiC4UkfQJkAbcJveKyw/uL2DGVdT7EPBQ5TyoXNGj7y3IqNx+XcQI?=
+ =?us-ascii?Q?F1I4MIv6ao3Hw1wHQNKtoxvTErMPfFsQirwKqtNjsLNLHOP98ccPY5U5pbDK?=
+ =?us-ascii?Q?gmlAk2P2dLCism+TP2Qmh13qb/ruxrHX6sfTE/x+FMNdZr8xTfeJXH15uG2t?=
+ =?us-ascii?Q?JiY6CSS415A/KOOXd4sAhKFgekn2l+msTWGw7NbJUN4pZtVsYoxSXGEKOpXZ?=
+ =?us-ascii?Q?Tx5gs82kI2frDpLr5Jo5U9MdWeQDuX2+ejW292HvxNuemACkqZml+Txn29o/?=
+ =?us-ascii?Q?jm3vpeCBCsG0V8/684iYURV9y/PqE+ItuKhOuhFoTCa/WnIpRkCtwnDyeOKz?=
+ =?us-ascii?Q?GnSOxO+8sxng5ZSpGJiEOg+5pZ9UGiRYinrVXNGOi+x337fUtMjox1MWDM4Y?=
+ =?us-ascii?Q?Dl5eZ/FJduO+vTU0hgcj3aWU6jzHv1Z3YQPxgzu2EjPgCgTn+Y2v+demTzBC?=
+ =?us-ascii?Q?HYQ7FrUCoIljOp3oAcEZoJceJFUYXYzFo5R1oS6foX1Xidk/xaVpPJcirKb0?=
+ =?us-ascii?Q?8t3fWwlI/wHTOlqLn/A1X+fvy5Y/rYerBu3rZJGQKU3rkPv4Vdn10wP8omEq?=
+ =?us-ascii?Q?ozibz+Nv0wPOWk1tSrQiRce6oWxWhHAkY40C6bhU?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39ed9f64-3ed3-4e61-2a89-08dd9249181c
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 18:07:59.2981
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zXASC+rILuoL1VjrLD557BnYhvOITc//O80VthKHcH9CO998Rc0yQt5o/oZnTWUA/mDzgHG8AvnHSRbCz/ysFw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7240
 
-On Wed, May 07, 2025 at 10:52:43PM +0900, Alexandre Courbot wrote:
-> From: Joel Fernandes <joelagnelf@nvidia.com>
+Hello Miguel,
+
+On Fri, May 02, 2025 at 04:02:33PM +0200, Miguel Ojeda wrote:
+> Starting with Rust 1.87.0 (expected 2025-05-15), `objtool` may report:
 > 
-> Add support for navigating and setting up vBIOS ucode data required for
-> GSP to boot. The main data extracted from the vBIOS is the FWSEC-FRTS
-> firmware which runs on the GSP processor. This firmware runs in high
-> secure mode, and sets up the WPR2 (Write protected region) before the
-> Booter runs on the SEC2 processor.
+>     rust/core.o: warning: objtool: _R..._4core9panicking9panic_fmt() falls
+>     through to next function _R..._4core9panicking18panic_nounwind_fmt()
 > 
-> Also add log messages to show the BIOS images.
+>     rust/core.o: warning: objtool: _R..._4core9panicking18panic_nounwind_fmt()
+>     falls through to next function _R..._4core9panicking5panic()
+
+We are seeing a similar issue with the patch [1]:
+
+  RUSTC [M] drivers/gpu/nova-core/nova_core.o
+drivers/gpu/nova-core/nova_core.o: warning: objtool:
+<nova_core::vbios::PciAtBiosImage as
+core::convert::TryFrom<nova_core::vbios::BiosImageBase>>::try_from() falls
+through to next function <nova_core::vbios::FwSecBiosImage>::fwsec_header()
+
+The code in concern is implementing try_from():
++
++impl TryFrom<BiosImageBase> for PciAtBiosImage {
++    type Error = Error;
++
++    fn try_from(base: BiosImageBase) -> Result<Self> {
+
+I dumped the codegen [2] for this function and at the end of the codegen, there
+is a call instruction to to the fwsec_header() function.
+
+Any thoughts on how to fix the warning?
+
+thanks,
+
+ - Joel
+
+[1] https://lore.kernel.org/all/20250420-nova-frts-v1-13-ecd1cca23963@nvidia.com/
+[2] https://paste.debian.net/1374516/
+
+
+> The reason is that `rust_begin_unwind` is now mangled:
 > 
-> [102141.013287] NovaCore: Found BIOS image at offset 0x0, size: 0xfe00, type: PciAt
-> [102141.080692] NovaCore: Found BIOS image at offset 0xfe00, size: 0x14800, type: Efi
-> [102141.098443] NovaCore: Found BIOS image at offset 0x24600, size: 0x5600, type: FwSec
-> [102141.415095] NovaCore: Found BIOS image at offset 0x29c00, size: 0x60800, type: FwSec
+>     _R..._7___rustc17rust_begin_unwind
 > 
-> Tested on my Ampere GA102 and boot is successful.
+> Thus add the mangled one to the list so that `objtool` knows it is
+> actually `noreturn`.
 > 
-> [applied changes by Alex Courbot for fwsec signatures]
-> [applied feedback from Alex Courbot and Timur Tabi]
-> [applied changes related to code reorg, prints etc from Danilo Krummrich]
-> [acourbot@nvidia.com: fix clippy warnings]
-> [acourbot@nvidia.com: remove now-unneeded Devres acquisition]
-> [acourbot@nvidia.com: fix read_more to read `len` bytes, not u32s]
+> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+> for more details.
 > 
-> Cc: Alexandre Courbot <acourbot@nvidia.com>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Shirish Baskaran <sbaskaran@nvidia.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Timur Tabi <ttabi@nvidia.com>
-> Cc: Ben Skeggs <bskeggs@nvidia.com>
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> Alternatively, we could remove the fixed one in `noreturn.h` and relax
+> this test to cover both, but it seems best to be strict as long as we can.
+> 
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
->  drivers/gpu/nova-core/firmware.rs  |    2 -
->  drivers/gpu/nova-core/gpu.rs       |    3 +
->  drivers/gpu/nova-core/nova_core.rs |    1 +
->  drivers/gpu/nova-core/vbios.rs     | 1147 ++++++++++++++++++++++++++++++++++++
->  4 files changed, 1151 insertions(+), 2 deletions(-)
+>  tools/objtool/check.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-> index 1eb216307cd01d975b3d5beda1dc516f34b4b3f2..960982174d834c7c66a47ecfb3a15bf47116b2c5 100644
-> --- a/drivers/gpu/nova-core/firmware.rs
-> +++ b/drivers/gpu/nova-core/firmware.rs
-> @@ -80,8 +80,6 @@ pub(crate) struct FalconUCodeDescV3 {
->      _reserved: u16,
->  }
->  
-> -// To be removed once that code is used.
-> -#[expect(dead_code)]
->  impl FalconUCodeDescV3 {
->      pub(crate) fn size(&self) -> usize {
->          ((self.hdr & 0xffff0000) >> 16) as usize
-> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-> index ece13594fba687f3f714e255b5436e72d80dece3..4bf7f72247e5320935a517270b5a0e1ec2becfec 100644
-> --- a/drivers/gpu/nova-core/gpu.rs
-> +++ b/drivers/gpu/nova-core/gpu.rs
-> @@ -9,6 +9,7 @@
->  use crate::firmware::Firmware;
->  use crate::regs;
->  use crate::util;
-> +use crate::vbios::Vbios;
->  use core::fmt;
->  
->  macro_rules! define_chipset {
-> @@ -238,6 +239,8 @@ pub(crate) fn new(
->  
->          let _sec2_falcon = Falcon::<Sec2>::new(pdev.as_ref(), spec.chipset, bar, true)?;
->  
-> +        let _bios = Vbios::new(pdev, bar)?;
-
-Please add a comment why, even though unused, it is important to create this
-instance.
-
-Also, please use `_` if it's not intended to ever be used.
-
-> +
->          Ok(pin_init!(Self {
->              spec,
->              bar: devres_bar,
-> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
-> index 8342482a1aa16da2e69f7d99143c1549a82c969e..ff6d0b40c18f36af4c7e2d5c839fdf77dba23321 100644
-> --- a/drivers/gpu/nova-core/nova_core.rs
-> +++ b/drivers/gpu/nova-core/nova_core.rs
-> @@ -10,6 +10,7 @@
->  mod gpu;
->  mod regs;
->  mod util;
-> +mod vbios;
->  
->  kernel::module_pci_driver! {
->      type: driver::NovaCore,
-> diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..cd55d8dbf8e12d532f776d7544c7e5f2a865d6f8
-> --- /dev/null
-> +++ b/drivers/gpu/nova-core/vbios.rs
-> @@ -0,0 +1,1147 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! VBIOS extraction and parsing.
-> +
-> +// To be removed when all code is used.
-> +#![expect(dead_code)]
-> +
-> +use crate::driver::Bar0;
-> +use crate::firmware::FalconUCodeDescV3;
-> +use core::convert::TryFrom;
-> +use kernel::device;
-> +use kernel::error::Result;
-> +use kernel::num::NumAlign;
-> +use kernel::pci;
-> +use kernel::prelude::*;
-> +
-> +/// The offset of the VBIOS ROM in the BAR0 space.
-> +const ROM_OFFSET: usize = 0x300000;
-> +/// The maximum length of the VBIOS ROM to scan into.
-> +const BIOS_MAX_SCAN_LEN: usize = 0x100000;
-> +/// The size to read ahead when parsing initial BIOS image headers.
-> +const BIOS_READ_AHEAD_SIZE: usize = 1024;
-> +/// The bit in the last image indicator byte for the PCI Data Structure that
-> +/// indicates the last image. Bit 0-6 are reserved, bit 7 is last image bit.
-> +const LAST_IMAGE_BIT_MASK: u8 = 0x80;
-> +
-> +// PMU lookup table entry types. Used to locate PMU table entries
-> +// in the Fwsec image, corresponding to falcon ucodes.
-> +#[expect(dead_code)]
-> +const FALCON_UCODE_ENTRY_APPID_FIRMWARE_SEC_LIC: u8 = 0x05;
-> +#[expect(dead_code)]
-> +const FALCON_UCODE_ENTRY_APPID_FWSEC_DBG: u8 = 0x45;
-> +const FALCON_UCODE_ENTRY_APPID_FWSEC_PROD: u8 = 0x85;
-> +
-> +/// Vbios Reader for constructing the VBIOS data
-> +struct VbiosIterator<'a> {
-> +    pdev: &'a pci::Device,
-> +    bar0: &'a Bar0,
-> +    // VBIOS data vector: As BIOS images are scanned, they are added to this vector
-> +    // for reference or copying into other data structures. It is the entire
-> +    // scanned contents of the VBIOS which progressively extends. It is used
-> +    // so that we do not re-read any contents that are already read as we use
-> +    // the cumulative length read so far, and re-read any gaps as we extend
-> +    // the length.
-> +    data: KVec<u8>,
-> +    current_offset: usize, // Current offset for iterator
-> +    last_found: bool,      // Whether the last image has been found
-> +}
-> +
-> +impl<'a> VbiosIterator<'a> {
-> +    fn new(pdev: &'a pci::Device, bar0: &'a Bar0) -> Result<Self> {
-> +        Ok(Self {
-> +            pdev,
-> +            bar0,
-> +            data: KVec::new(),
-> +            current_offset: 0,
-> +            last_found: false,
-> +        })
-> +    }
-> +
-> +    /// Read bytes from the ROM at the current end of the data vector
-> +    fn read_more(&mut self, len: usize) -> Result {
-> +        let current_len = self.data.len();
-> +        let start = ROM_OFFSET + current_len;
-> +
-> +        // Ensure length is a multiple of 4 for 32-bit reads
-> +        if len % core::mem::size_of::<u32>() != 0 {
-> +            dev_err!(
-> +                self.pdev.as_ref(),
-> +                "VBIOS read length {} is not a multiple of 4\n",
-> +                len
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        self.data.reserve(len, GFP_KERNEL)?;
-> +        // Read ROM data bytes and push directly to vector
-> +        for i in (0..len).step_by(core::mem::size_of::<u32>()) {
-> +            // Read 32-bit word from the VBIOS ROM
-> +            let word = self.bar0.try_read32(start + i)?;
-> +
-> +            // Convert the u32 to a 4 byte array and push each byte
-> +            word.to_ne_bytes()
-> +                .iter()
-> +                .try_for_each(|&b| self.data.push(b, GFP_KERNEL))?;
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +
-> +    /// Read bytes at a specific offset, filling any gap
-> +    fn read_more_at_offset(&mut self, offset: usize, len: usize) -> Result {
-> +        if offset > BIOS_MAX_SCAN_LEN {
-> +            dev_err!(self.pdev.as_ref(), "Error: exceeded BIOS scan limit.\n");
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        // If offset is beyond current data size, fill the gap first
-> +        let current_len = self.data.len();
-> +        let gap_bytes = offset.saturating_sub(current_len);
-> +
-> +        // Now read the requested bytes at the offset
-> +        self.read_more(gap_bytes + len)
-> +    }
-> +
-> +    /// Read a BIOS image at a specific offset and create a BiosImage from it.
-> +    /// self.data is extended as needed and a new BiosImage is returned.
-> +    /// @context is a string describing the operation for error reporting
-> +    fn read_bios_image_at_offset(
-> +        &mut self,
-> +        offset: usize,
-> +        len: usize,
-> +        context: &str,
-> +    ) -> Result<BiosImage> {
-> +        let data_len = self.data.len();
-> +        if offset + len > data_len {
-> +            self.read_more_at_offset(offset, len).inspect_err(|e| {
-> +                dev_err!(
-> +                    self.pdev.as_ref(),
-> +                    "Failed to read more at offset {:#x}: {:?}\n",
-> +                    offset,
-> +                    e
-> +                )
-> +            })?;
-> +        }
-> +
-> +        BiosImage::new(self.pdev, &self.data[offset..offset + len]).inspect_err(|err| {
-> +            dev_err!(
-> +                self.pdev.as_ref(),
-> +                "Failed to {} at offset {:#x}: {:?}\n",
-> +                context,
-> +                offset,
-> +                err
-> +            )
-> +        })
-> +    }
-> +}
-> +
-> +impl<'a> Iterator for VbiosIterator<'a> {
-> +    type Item = Result<BiosImage>;
-> +
-> +    /// Iterate over all VBIOS images until the last image is detected or offset
-> +    /// exceeds scan limit.
-> +    fn next(&mut self) -> Option<Self::Item> {
-> +        if self.last_found {
-> +            return None;
-> +        }
-> +
-> +        if self.current_offset > BIOS_MAX_SCAN_LEN {
-> +            dev_err!(
-> +                self.pdev.as_ref(),
-> +                "Error: exceeded BIOS scan limit, stopping scan\n"
-> +            );
-> +            return None;
-> +        }
-> +
-> +        // Parse image headers first to get image size
-> +        let image_size = match self
-> +            .read_bios_image_at_offset(
-> +                self.current_offset,
-> +                BIOS_READ_AHEAD_SIZE,
-> +                "parse initial BIOS image headers",
-> +            )
-> +            .and_then(|image| image.image_size_bytes())
-> +        {
-> +            Ok(size) => size,
-> +            Err(e) => return Some(Err(e)),
-> +        };
-> +
-> +        // Now create a new BiosImage with the full image data
-> +        let full_image = match self.read_bios_image_at_offset(
-> +            self.current_offset,
-> +            image_size,
-> +            "parse full BIOS image",
-> +        ) {
-> +            Ok(image) => image,
-> +            Err(e) => return Some(Err(e)),
-> +        };
-> +
-> +        self.last_found = full_image.is_last();
-> +
-> +        // Advance to next image (aligned to 512 bytes)
-> +        self.current_offset += image_size;
-> +        self.current_offset = self.current_offset.align_up(512);
-> +
-> +        Some(Ok(full_image))
-> +    }
-> +}
-> +
-> +pub(crate) struct Vbios {
-> +    pub fwsec_image: Option<FwSecBiosImage>,
-
-Please use pub(crate) instead or provide an accessor.
-
-Also, this shouldn't be an Option, see below comment in Vbios::new().
-
-> +}
-> +
-> +impl Vbios {
-> +    /// Probe for VBIOS extraction
-> +    /// Once the VBIOS object is built, bar0 is not read for vbios purposes anymore.
-> +    pub(crate) fn new(pdev: &pci::Device, bar0: &Bar0) -> Result<Vbios> {
-> +        // Images to extract from iteration
-> +        let mut pci_at_image: Option<PciAtBiosImage> = None;
-> +        let mut first_fwsec_image: Option<FwSecBiosImage> = None;
-> +        let mut second_fwsec_image: Option<FwSecBiosImage> = None;
-> +
-> +        // Parse all VBIOS images in the ROM
-> +        for image_result in VbiosIterator::new(pdev, bar0)? {
-> +            let full_image = image_result?;
-> +
-> +            dev_info!(
-
-Let's use dev_dbg!() instaed.
-
-> +                pdev.as_ref(),
-> +                "Found BIOS image: size: {:#x}, type: {}, last: {}\n",
-> +                full_image.image_size_bytes()?,
-> +                full_image.image_type_str(),
-> +                full_image.is_last()
-> +            );
-> +
-> +            // Get references to images we will need after the loop, in order to
-> +            // setup the falcon data offset.
-> +            match full_image {
-> +                BiosImage::PciAt(image) => {
-> +                    pci_at_image = Some(image);
-> +                }
-> +                BiosImage::FwSec(image) => {
-> +                    if first_fwsec_image.is_none() {
-> +                        first_fwsec_image = Some(image);
-> +                    } else {
-> +                        second_fwsec_image = Some(image);
-> +                    }
-> +                }
-> +                // For now we don't need to handle these
-> +                BiosImage::Efi(_image) => {}
-> +                BiosImage::Nbsi(_image) => {}
-> +            }
-> +        }
-> +
-> +        // Using all the images, setup the falcon data pointer in Fwsec.
-> +        // We need mutable access here, so we handle the Option manually.
-> +        let final_fwsec_image = {
-> +            let mut second = second_fwsec_image; // Take ownership of the option
-> +
-> +            if let (Some(second), Some(first), Some(pci_at)) =
-> +                (second.as_mut(), first_fwsec_image, pci_at_image)
-> +            {
-> +                second
-> +                    .setup_falcon_data(pdev, &pci_at, &first)
-> +                    .inspect_err(|e| {
-> +                        dev_err!(pdev.as_ref(), "Falcon data setup failed: {:?}\n", e)
-> +                    })?;
-> +            } else {
-> +                dev_err!(
-> +                    pdev.as_ref(),
-> +                    "Missing required images for falcon data setup, skipping\n"
-> +                );
-> +                return Err(EINVAL);
-
-This means that if second == None we fail, which makes sense, so why store an
-Option in Vbios? All methods of Vbios fail if fwsec_image == None.
-
-> +            }
-> +            second
-> +        };
-
-I think this should be:
-
-	let mut second = second_fwsec_image;
-	
-	if let (Some(second), Some(first), Some(pci_at)) =
-	    (second.as_mut(), first_fwsec_image, pci_at_image)
-	{
-	    second
-	        .setup_falcon_data(pdev, &pci_at, &first)
-	        .inspect_err(|e| {
-	            dev_err!(pdev.as_ref(), "Falcon data setup failed: {:?}\n", e)
-	        })?;
-	
-	    Ok(Vbios(second)
-	} else {
-	    dev_err!(
-	        pdev.as_ref(),
-	        "Missing required images for falcon data setup, skipping\n"
-	    );
-	
-	    Err(EINVAL)
-	}
-
-where Vbios can just be
-
-	pub(crate) struct Vbios(FwSecBiosImage);
-
-> +
-> +        Ok(Vbios {
-> +            fwsec_image: final_fwsec_image,
-> +        })
-> +    }
-> +
-> +    pub(crate) fn fwsec_header(&self, pdev: &device::Device) -> Result<&FalconUCodeDescV3> {
-> +        let image = self.fwsec_image.as_ref().ok_or(EINVAL)?;
-> +        image.fwsec_header(pdev)
-> +    }
-> +
-> +    pub(crate) fn fwsec_ucode(&self, pdev: &device::Device) -> Result<&[u8]> {
-> +        let image = self.fwsec_image.as_ref().ok_or(EINVAL)?;
-> +        image.fwsec_ucode(pdev, image.fwsec_header(pdev)?)
-> +    }
-> +
-> +    pub(crate) fn fwsec_sigs(&self, pdev: &device::Device) -> Result<&[u8]> {
-> +        let image = self.fwsec_image.as_ref().ok_or(EINVAL)?;
-> +        image.fwsec_sigs(pdev, image.fwsec_header(pdev)?)
-> +    }
-
-Those then become infallible, e.g.
-
-	pub(crate) fn fwsec_sigs(&self, pdev: &device::Device) -> &[u8] {
-	    self.0.fwsec_sigs(pdev, self.fwsec_header(pdev))
-	}
-
-> +}
-
-<snip>
-
-I have to continue with the rest of this patch later on.
-
-- Danilo
+> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+> index 3a411064fa34..b21b12ec88d9 100644
+> --- a/tools/objtool/check.c
+> +++ b/tools/objtool/check.c
+> @@ -227,6 +227,7 @@ static bool is_rust_noreturn(const struct symbol *func)
+>  	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
+>  	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
+>  	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
+> +	       str_ends_with(func->name, "_7___rustc17rust_begin_unwind")				||
+>  	       strstr(func->name, "_4core9panicking13assert_failed")					||
+>  	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
+>  	       (strstr(func->name, "_4core5slice5index24slice_") &&
+> --
+> 2.49.0
