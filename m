@@ -1,48 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282691F16B;
-	Tue, 13 May 2025 08:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5A52522B4;
+	Tue, 13 May 2025 10:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747125158; cv=none; b=RWYyMaaYnM+sMb3Ih4jeB9DyCr35ic98mUJPeZ/JptjasPULBunqIDVOANU2Sg4BuVLB8LtH48nFUbjG+DElVfAU/Gh/nbwqeEv9FnLWLIpJeuk8r+WvXC6b6IYrKLNU/iPsGEVMriCRo1AmvfrtyVQHX0sG8vD3Y+2547klXbg=
+	t=1747130408; cv=none; b=b8UQLvMk9QWL/Gvo7NBvMU+bW6gG8yG4gOOfJ/SNDo7H69yNwtj9SMBavQ2SrbA/F/nNjRwB7youXg5m4HHEVqRszWXXHnQ7egpGlfiHUBuBcGhUX6zYcaVSUfHm8fwR1rLw3PdI0vbTaFHwhq5N+8pM90XuUD+bpf4Rd1C8cS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747125158; c=relaxed/simple;
-	bh=q70TIRrGdpp6yg967Z9NaG3C82XUVJAKivW+wfIO/tM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AGf8BnWvW0wjf1Ok+mwwtzEEcJZp+6nejrv3Xi59cHZ02g/rUj7UI9BI08+nA+xP07byhogmi6XfP/84S404aIBOvV8DUHNSmW/kxjJSRzb+nU4CPplEi0wjmjKZL3x3FV7CFYmxjyTNBGwKE/BHRpvL+7P36+2hAX60uC8bPPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHeQbiTn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747130408; c=relaxed/simple;
+	bh=/fzsepHpqLW4buNd1bdj2oiNVq6iv96nDcrAG+1zr+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=uBjJHxO5yFtoiDf/cPFhOEk23jlA33RXnflUajjwDn7dSb9jdvmzcQGHvRs84vrUPCG9LgRRhcC8Q3e+uegnNSlGBsKBmJ89XDjvrCbqPRVcIDMMyBmSqm7cJzQ3JQcxLmhR0+xs/+H3XnNBvjwj5fR6s3dVX3doEomqBUgt8Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQO/JwTU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHeQbiTn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7ED0C4CEE4;
-	Tue, 13 May 2025 08:32:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQO/JwTU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED998C4CEE4;
+	Tue, 13 May 2025 10:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747125157;
-	bh=q70TIRrGdpp6yg967Z9NaG3C82XUVJAKivW+wfIO/tM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UHeQbiTn5XtYLW7+AfbL65SS3DvgOAZP2K+mt25BR8fhFkeRHeTTgjYJffT4uH6MD
-	 b77UFscjVwRx6Us3pQDmBq7Qlm7hmUzpyno/WePUR5mYocp+jiIy1yP822oACfAtLu
-	 eCx62UP6S4ZREJAEQ7HiCyZlntpUW/XMgRyni3i5wdrSUWNVntt+xDdzT2o1L6daS7
-	 gauhQEePN4NFpabmrfMTUgA604cCtWtWOunaees9Vjj+r2UpJO+mqfARF6Ns1U3d7N
-	 kL+2BBL7BNr2K3gOHn7g+X3PGFF+H4q7l33pTTUohTO9YOgw/Sz0Zm513FmUv68Om8
-	 b1uHeAuC4Czuw==
-Date: Tue, 13 May 2025 10:32:29 +0200
+	s=k20201202; t=1747130408;
+	bh=/fzsepHpqLW4buNd1bdj2oiNVq6iv96nDcrAG+1zr+g=;
+	h=Date:From:To:Cc:Subject:From;
+	b=KQO/JwTU9I9VqnzO8kGRF2uvLUVvfq/A2W85FcpaFwm8GgmndVSghKHfXamVXvL5u
+	 kIkimaMkW2aPk3ug5gZSsDUiV3GP+mYe1qKB1y4LQSVQmekoAZJH0wqXjllQWl20+m
+	 tlOGczev1x2ty37dxJkydGzwb9fHay5rJQ+5WwGL+ACcxX6l6Zj1UO40yqkimOCbKb
+	 20Ldr3ua7X6J8KIiahYmTM9ukm5TZ4txpkAOXKv/T7sCoWIumILEkox2yra4Woz0h/
+	 M1xLPPUHobQtUvS4HgUkgWp9y4TUJBgwXxWRoWXPQW34KAIQ+mP015V96dWUyWIW9o
+	 Q3OccsbyimqdQ==
+Date: Tue, 13 May 2025 12:00:03 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Andrew Ballance <andrewjballance@gmail.com>
-Cc: airlied@gmail.com, simona@ffwll.ch, akpm@linux-foundation.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	kwilczynski@kernel.org, raag.jadav@intel.com,
-	andriy.shevchenko@linux.intel.com, arnd@arndb.de, me@kloenk.dev,
-	fujita.tomonori@gmail.com, daniel.almeida@collabora.com,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH 00/11] rust: add support for Port io
-Message-ID: <aCMDnQCcAOt28ONM@pollux>
-References: <20250509031524.2604087-1-andrewjballance@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust ALLOC for v6.16
+Message-ID: <aCMYI-phNWE1PZGz@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,52 +46,87 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250509031524.2604087-1-andrewjballance@gmail.com>
 
-Hi Andrew,
+Hi Miguel,
 
-On Thu, May 08, 2025 at 10:15:13PM -0500, Andrew Ballance wrote:
-> currently the rust `Io` type maps to the c read{b, w, l, q}/write{b, w, l, q}
-> functions and have no support for port io.this is a problem for pci::Bar
-> because the pointer returned by pci_iomap is expected to accessed with
-> the ioread/iowrite api [0].
-> 
-> this patch series splits the `Io` type into `Io`, `PortIo` and `MMIo`.and,
-> updates pci::Bar, as suggested in the zulip[1], so that it is generic over
-> Io and, a user can optionally give a compile time hint about the type of io. 
-> 
-> Link: https://docs.kernel.org/6.11/driver-api/pci/pci.html#c.pci_iomap [0]
-> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/.60IoRaw.60.20and.20.60usize.60/near/514788730 [1]
-> 
-> Andrew Ballance (6):
->   rust: io: add new Io type
->   rust: io: add from_raw_cookie functions
->   rust: pci: make Bar generic over Io
->   samples: rust: rust_driver_pci: update to use new bar and io api
->   gpu: nova-core: update to use the new bar and io api
->   rust: devres: fix doctest
-> 
-> Fiona Behrens (5):
->   rust: helpers: io: use macro to generate io accessor functions
->   rust: io: Replace Io with MMIo using IoAccess trait
->   rust: io: implement Debug for IoRaw and add some doctests
->   rust: io: add PortIo
->   io: move PIO_OFFSET to linux/io.h
+Please pull the following ALLOC changes.
 
-Thanks for sending out the patch series.
+Most of them are new methods for Vec, required by binder and nova-core.
 
-I gave it a quick shot and the series breaks the build starting with patch 2. I
-see that you have fixup commits later in the series, however in the kernel we
-don't allow patches to intermediately introduce build failures, build warnings,
-bugs, etc., see also [1]. You should still try to break things down logically as
-good as possible.
+All commits have been in linux-next for at least a few days -- no conflicts
+expected.
 
-From the current structure of your patches it seems to me that structure-wise
-you should be good by going through them one by one and fix them up; your later
-patches should become "noops" then. But feel free to re-organize things if you
-feel that's not the best approach.
+- Danilo
 
-Can you please fix this up and resend right away? This should make the
-subsequent review much easier.
+The following changes since commit 0af2f6be1b4281385b618cb86ad946eded089ac8:
 
-[1] https://docs.kernel.org/process/submitting-patches.html#separate-your-changes
+  Linux 6.15-rc1 (2025-04-06 13:11:33 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/alloc-next-v6.16-2025-05-13
+
+for you to fetch changes up to 771c5a7d9843643b035938624050e7769133b9cc:
+
+  rust: alloc: add Vec::insert_within_capacity (2025-05-07 18:40:45 +0200)
+
+----------------------------------------------------------------
+Alloc changes for v6.16
+
+Box:
+  - support for type coercion, e.g. `Box<T>` to `Box<dyn U>` if T
+    implements U
+
+Vec:
+  - implement new methods (prerequisites for nova-core and binder)
+    - Vec::truncate()
+    - Vec::resize()
+    - Vec::clear()
+    - Vec::pop()
+    - Vec::push_within_capacity()
+      - new error type: PushError
+    - Vec::drain_all()
+    - Vec::retain()
+    - Vec::remove()
+      - new error type: RemoveError
+    - Vec::insert_within_capacity
+      - new error type: InsertError
+  - simplify Vec::push() using Vec::spare_capacity_mut()
+  - split Vec::set_len() into Vec::inc_len() and Vec::dec_len()
+    - add type invariant Vec::len() <= Vec::capacity
+    - simplify Vec::truncate() using Vec::dec_len()
+
+----------------------------------------------------------------
+Alexandre Courbot (1):
+      rust: alloc: allow coercion from `Box<T>` to `Box<dyn U>` if T implements U
+
+Alice Ryhl (7):
+      rust: alloc: add Vec::clear
+      rust: alloc: add Vec::pop
+      rust: alloc: add Vec::push_within_capacity
+      rust: alloc: add Vec::drain_all
+      rust: alloc: add Vec::retain
+      rust: alloc: add Vec::remove
+      rust: alloc: add Vec::insert_within_capacity
+
+Andrew Ballance (2):
+      rust: alloc: add Vec::truncate method
+      rust: alloc: add Vec::resize method
+
+Danilo Krummrich (1):
+      rust: alloc: add missing invariant in Vec::set_len()
+
+Tamir Duberstein (5):
+      rust: alloc: use `spare_capacity_mut` to reduce unsafe
+      rust: alloc: add Vec::len() <= Vec::capacity invariant
+      rust: alloc: add `Vec::dec_len`
+      rust: alloc: refactor `Vec::truncate` using `dec_len`
+      rust: alloc: replace `Vec::set_len` with `inc_len`
+
+ rust/kernel/alloc/kbox.rs        |  40 ++++++++++-
+ rust/kernel/alloc/kvec.rs        | 430 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------
+ rust/kernel/alloc/kvec/errors.rs |  61 +++++++++++++++++
+ rust/kernel/str.rs               |   2 +-
+ rust/kernel/uaccess.rs           |   2 +-
+ 5 files changed, 506 insertions(+), 29 deletions(-)
+ create mode 100644 rust/kernel/alloc/kvec/errors.rs
