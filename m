@@ -1,55 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77291AD3E0;
-	Tue, 13 May 2025 14:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35B418E1F;
+	Tue, 13 May 2025 15:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747147851; cv=none; b=Ym7wEGnvNyRKN2KrlAaoCby43FXW8U4OR1WqY/cLA450gpaGHFL1G6hXsj5jZU7Y/TS5WsZzlwUslJ/0ojnIk1YwcNFntWLQVCuxHYlOJmICvfz/qt3k9Ur7i5TNTS4KxkxaSqtlN7W7ODC2CpONfepGerEzoPMAIJiVMx4zE3Y=
+	t=1747149371; cv=none; b=c3qeQGEX5O0boOS1n0E4VNXzYN54smMeQIQQSiCL9qVCF80y+4fvToLdXTHWacZP2CfAU9+vm4Nyfd6eHDpsB9hQ4cGK4mQ/c5CNbzaK3c2QM4McsCfY3WOt0r5qQNFdZKLgufiXTIwgIMU9IsElsZVF2Vs/hhJi6MCVf+6cm9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747147851; c=relaxed/simple;
-	bh=P0yYrCIcx+PDwB9Lm4fz/iNcnTAiCqq+e79+nMbOLq0=;
+	s=arc-20240116; t=1747149371; c=relaxed/simple;
+	bh=0uh/PTXJRbMcazwRaWv8Bo4RnC9VvZ9wH65449hEE1k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jpSwkFuRgfaGNzq/sD+oor+UvarPdYLy7c0GPcaYU0MVaoLWAaXI1/PzhfqmM5q5pKrj+HN5Q0p6ny3+u+5aMCqL695V7mu3snUd9KfgLkRAucJbfpqX1pNqXkf2BhbR+EkaAy1A44sNWe10wV+iSm8CO4u0E7DklJOqzQuRVnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4hhYmnM; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=lzBnXBoO8TSf1uAhOH3qHobe22fwoek2soxj8Rr/xudv5mKV8eaXaFAu5SGYUowVvkEhg+YkRFrRBHqvXmFf9U8ASFyizZitTxCwVHNBNumfY9YKR9vFO41Xkr8i+ds6HYqI1L6hkRBVCx9D1cEivyCeG4bfsKwggf5D6qQq5LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TjsGTcZC; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4hhYmnM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AAFC4CEE4;
-	Tue, 13 May 2025 14:50:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747147850;
-	bh=P0yYrCIcx+PDwB9Lm4fz/iNcnTAiCqq+e79+nMbOLq0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s4hhYmnMkgCWhLxei+8Im/qiK+MQYg6mKhl5PS2aQQEscXeywewtbJvpSVLj4R0AM
-	 trPAIQM6fK9Isiju+k23VZfxrSfYmoj99pSHLWNaloR5GXdn0UMQ8Scg4ZGcilQrud
-	 0Qhq7YnrjgeWXkxzSFlgZ/P862iwELBMt5savjgD/KV2DFkdwWBPE2GUSClsHCgMmV
-	 vRCCOpQzliTZOP1h4HTdGeHFqSB60CUy5P13cVx3jty5P/q7XiDOhhDjuyCFvho9wb
-	 p5/ckzKaxsVtPgXy8A3J93gAu5pct2VOmNdoMUwPMRdmpyHUlmf9bc80mnwHKd5RlS
-	 BvAwESHTBAK3w==
-Date: Tue, 13 May 2025 16:50:43 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TjsGTcZC"
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-730580b0de8so3918031a34.1;
+        Tue, 13 May 2025 08:16:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747149369; x=1747754169; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0uh/PTXJRbMcazwRaWv8Bo4RnC9VvZ9wH65449hEE1k=;
+        b=TjsGTcZCG8xVHzecc3IhC0N0hWKrd12FzhBu4N7uI7Oyjnz3vdy3hfI6Tmam6eHbTn
+         hRimn/ncGUfz/OL43gghjHooZvWGmtSkyHoErZ6Z5PiZP4IQ5DqtfiPa3G+Iih8t7kGY
+         p4zk0iMFp1kDQU4M5YqrTHgl+JJ2VBkkJ/J18BdGVCB2vyaE4fL9psS1mwj6NVw6LFsp
+         +vkCZkuResQEAGz4YnDY5Xn0l1gdOjHY6V55MBvHIkoclNjL4O7sdyRbg677bOb+N+/p
+         OaGmgDcarhIiCYkj4dj/cfcyTa66XyyPqy+KGzjMkf9PvUuNhrYOMjfW64sJib+7udGV
+         fvzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747149369; x=1747754169;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0uh/PTXJRbMcazwRaWv8Bo4RnC9VvZ9wH65449hEE1k=;
+        b=K2+Svxw9AhVSwV3jECbw156pq2IoWF+uaVQmOSirnKIvV3qNYj3ZquKRqv/4+ZTt8+
+         ika1bgypSp28PMhIPB+XqTzbMKpPzaDCbh14uFyY9kbkV66Mp9OyiR4GNz+SIPixiwTS
+         MA0Z9BYouCY0m/6dbFjFxEkSplKzlYjxVLnR4jggxlHqoZV2queGsvWMngooCB57vudd
+         8ed11D/509FOVkwmzUE2rOZUq4wuKw+6EfDchoWw/0kFCGIfYlmgnFGfOVrdJ3jSk+Cp
+         DQ26WYn6st0WKSH6YTLhE/xuaDQQBzBJZwEwPu2q4+Uh+nml6y2s7t8Hejct6Ytqbx/n
+         q2Pw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3V3f2dGyXbd8J7AeiUmGY02Y9YZ/GEqYFMBy3y/rYgLOma4ZM/O5GE8s96qGHn7mk9j9v9MucyjyN@vger.kernel.org, AJvYcCUimwU2XgGQsZervKcY5E9wfMvczCzE5P0MuI2nDDOqUMXdyIk65zkzca/GlWENGHgBQ0VSJ4PKoGr5m6B+7LU=@vger.kernel.org, AJvYcCV+Ufsu6Bfst/7IlmDJw6x/NmeQX3HQSyJK68ai5nX/SO9ARwwNuFhLdg+HnQNj59X4zjrHtDf7+iKfmng=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykwwNkyao4eGYmJ0OMIuosFHkTKBM7mEWlHUQPEqEA6aS4nSg+
+	Jg+u507GMqrR8my7z/clyIS735yt43xNy0O9QfbMEVEBRAopnQxI
+X-Gm-Gg: ASbGncuWSmEj/tOmFBqbUbz3SBZR47igfiFdsoh47S4U73M91Wlpb8pGRiWlMaZrjlE
+	1ktH+nre2EWaF5bYlHIao/R4TmWOBeUqf+TdWpMGxfwsjrYyB4SEv4bP6zadqqbenNW+e180rOX
+	l5xfDMkkeCl3wI4aXQsJqbRqAhv4Du6Mliv0CbBZZ4qLFj0iyFRvySq4yyP9o69lv/MRbcZw7Kp
+	Gzqov7la21gd42HiUNIo57h7MRw7WvS8ZEgKHAg9qDzfcYyCoFRaidMKR+z9oZe7/LBtQxRy5h3
+	V5D18DtChGyzibe7besFAp4VSSbpNZ3pk+bzkEZCWIv8J9FNx1cG2435TZWI9bl807KZi61ovhj
+	u1SgCjyeXDA2G2NqdUkU5TdY00ktV
+X-Google-Smtp-Source: AGHT+IGbr/uZ7r4cS/fBNvQYU2fhVqEpCiBt00je02tqMC1tSmemGmi5CB3JGNk1qdmVKM7wKn0FCw==
+X-Received: by 2002:a05:6871:e086:b0:2c4:1b1c:42c3 with SMTP id 586e51a60fabf-2e005bc46camr2217682fac.9.1747149368576;
+        Tue, 13 May 2025 08:16:08 -0700 (PDT)
+Received: from my-computer (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2dba0b7f856sm2270445fac.45.2025.05.13.08.16.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 May 2025 08:16:08 -0700 (PDT)
+Date: Tue, 13 May 2025 10:15:24 -0500
+From: Andrew Ballance <andrewjballance@gmail.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Danilo Krummrich <dakr@kernel.org>, Dave Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v3 12/19] gpu: nova-core: add helper function to wait on
- condition
-Message-ID: <aCNcQ835i40UUW--@pollux>
-References: <20250507-nova-frts-v3-0-fcb02749754d@nvidia.com>
- <20250507-nova-frts-v3-12-fcb02749754d@nvidia.com>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>, bhelgaas@google.com,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, me@kloenk.dev,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	daniel.almeida@collabora.com,
+	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH 00/11] rust: add support for Port io
+Message-ID: <aCNiDPgMGZ-tD66n@my-computer>
+References: <20250509031524.2604087-1-andrewjballance@gmail.com>
+ <ff526b49-a033-450d-9e48-699187167712@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,68 +92,18 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507-nova-frts-v3-12-fcb02749754d@nvidia.com>
+In-Reply-To: <ff526b49-a033-450d-9e48-699187167712@app.fastmail.com>
 
-On Wed, May 07, 2025 at 10:52:39PM +0900, Alexandre Courbot wrote:
-> While programming the hardware, we frequently need to busy-wait until
-> a condition (like a given bit of a register to switch value) happens.
-> 
-> Add a basic `wait_on` helper function to wait on such conditions
-> expressed as a closure, with a timeout argument.
-> 
-> This is temporary as we will switch to `read_poll_timeout` [1] once it
-> is available.
-> 
-> [1] https://lore.kernel.org/lkml/20250220070611.214262-8-fujita.tomonori@gmail.com/
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  drivers/gpu/nova-core/util.rs | 30 ++++++++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
-> 
-> diff --git a/drivers/gpu/nova-core/util.rs b/drivers/gpu/nova-core/util.rs
-> index 332a64cfc6a9d7d787fbdc228887c0be53a97160..afb525228431a2645afe7bb34988e9537757b1d7 100644
-> --- a/drivers/gpu/nova-core/util.rs
-> +++ b/drivers/gpu/nova-core/util.rs
-> @@ -1,5 +1,10 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
-> +use core::time::Duration;
-> +
-> +use kernel::prelude::*;
-> +use kernel::time::Ktime;
-> +
->  pub(crate) const fn to_lowercase_bytes<const N: usize>(s: &str) -> [u8; N] {
->      let src = s.as_bytes();
->      let mut dst = [0; N];
-> @@ -19,3 +24,28 @@ pub(crate) const fn const_bytes_to_str(bytes: &[u8]) -> &str {
->          Err(_) => kernel::build_error!("Bytes are not valid UTF-8."),
->      }
->  }
-> +
-> +/// Wait until `cond` is true or `timeout` elapsed.
-> +///
-> +/// When `cond` evaluates to `Some`, its return value is returned.
-> +///
-> +/// `Err(ETIMEDOUT)` is returned if `timeout` has been reached without `cond` evaluating to
-> +/// `Some`.
-> +///
-> +/// TODO: replace with `read_poll_timeout` once it is available.
-> +/// (https://lore.kernel.org/lkml/20250220070611.214262-8-fujita.tomonori@gmail.com/)
-> +#[expect(dead_code)]
-> +pub(crate) fn wait_on<R, F: Fn() -> Option<R>>(timeout: Duration, cond: F) -> Result<R> {
-> +    let start_time = Ktime::ktime_get();
-> +
-> +    loop {
-> +        if let Some(ret) = cond() {
-> +            return Ok(ret);
-> +        }
-> +
-> +        let cur_time = Ktime::ktime_get();
-> +        if (cur_time - start_time).to_ns() > timeout.as_nanos() as i64 {
-> +            return Err(ETIMEDOUT);
-> +        }
-> +    }
-> +}
+On Fri, May 09, 2025 at 07:53:31AM +0200, Arnd Bergmann wrote:
+> Can you describe here why you want to support both "Io" and "PortIo"
+> cases separately? I don't think we need to micro-optimize for
+> legacy ISA devices any more, so I'd hope the "Io" path would be
+> sufficient to cover the common outliers (ata, uart, vga, ipmi, ne2000)
+> that need the iomap indirection and also the legacy devices that only
+> need port I/O (floppy, x86 platform devices, ...).
 
-NIT: Can't you use this for wait_gfw_boot_completion() too?
+Yeah, we probably don`t need the `PortIo` type and can rely on `Io` for
+port io. I`ll remove it for the v2.
+
+Best regards
+Andrew Ballance
