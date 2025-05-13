@@ -1,81 +1,102 @@
-Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBCE1A5BBC;
-	Tue, 13 May 2025 07:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.15.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282691F16B;
+	Tue, 13 May 2025 08:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747121914; cv=none; b=A5qXdJGaTa9X/4wmi8EV7u+NJPL94YKicPUvL5d0BHoW2ac48UvG49ADHUjM9p88FQl5bUfmEDZWUoFQ57Fa578b4OR/YLTturMJOfSLmRv0Iar0nEFEcAnZzknL4rViOucXWSmrYBHg62YnvFqPelo7ZpXopTwo3c6JPzgGeZo=
+	t=1747125158; cv=none; b=RWYyMaaYnM+sMb3Ih4jeB9DyCr35ic98mUJPeZ/JptjasPULBunqIDVOANU2Sg4BuVLB8LtH48nFUbjG+DElVfAU/Gh/nbwqeEv9FnLWLIpJeuk8r+WvXC6b6IYrKLNU/iPsGEVMriCRo1AmvfrtyVQHX0sG8vD3Y+2547klXbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747121914; c=relaxed/simple;
-	bh=vCUUs/wgIUL18F25aLyau9K4HGFSB7fzoH0c+V6krq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rewyR01ayh2BHbGcn4Sf0TuM0J/UM603LpU98xEsLC2yxTtlF7BK+UMH31EjknsgzfGlYGsCIpb6b2hb3ULTimaAI/dJEhqFokc7jCYmuneKcwnZJJu+4y8Dr5iv41Lq/5PsKgaWtXkw2PXFugzpkthYwcfHGRohiTTMOxvOVcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz; spf=pass smtp.mailfrom=tesarici.cz; dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b=hgrlPGgR; arc=none smtp.client-ip=37.205.15.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tesarici.cz
+	s=arc-20240116; t=1747125158; c=relaxed/simple;
+	bh=q70TIRrGdpp6yg967Z9NaG3C82XUVJAKivW+wfIO/tM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AGf8BnWvW0wjf1Ok+mwwtzEEcJZp+6nejrv3Xi59cHZ02g/rUj7UI9BI08+nA+xP07byhogmi6XfP/84S404aIBOvV8DUHNSmW/kxjJSRzb+nU4CPplEi0wjmjKZL3x3FV7CFYmxjyTNBGwKE/BHRpvL+7P36+2hAX60uC8bPPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHeQbiTn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b="hgrlPGgR"
-Received: from mordecai (unknown [193.86.92.181])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by bee.tesarici.cz (Postfix) with ESMTPSA id 78C74223E20;
-	Tue, 13 May 2025 09:38:28 +0200 (CEST)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
-	t=1747121908; bh=nWyqrjvABvf/Aot02RBbZkj3rjM/TY+hnwm8vexdR4w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hgrlPGgRyQ1L7y1kP0h6rq0XyghJWdtwOnOxjnjXa/lAiEMsczNvrSDm3/716T1M9
-	 DOZGJp1+zvmHS6J/4sucnCfWRME0er0/MtOvP6cKzVYaVdz39sAs1glNExiiD88Syd
-	 SjyaYwc/jq8hZrPsWY+gIYsT9+9zf1IQRn1/kZ3lLw7P10/tq9vIsL6IdgYvEAlBBR
-	 /UvngDDYL21lv4nJZtPkEJ+7AZX2FffxfazbIHPdkugHubZfaqtNfNoVNqhkuE87PY
-	 f8sr33+1DhBvhkGJolqlSLg82T5sYBUUocRRwHEpzbhN4Ven51hNDrB0fphLhKDGS4
-	 7c7kjwtj1a7Nw==
-Date: Tue, 13 May 2025 09:38:24 +0200
-From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, Abdiel Janulgue
- <abdiel.janulgue@gmail.com>, dakr@kernel.org, lyude@redhat.com, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Valentin
- Obst <kernel@valentinobst.de>, open list <linux-kernel@vger.kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy
- <robin.murphy@arm.com>, airlied@redhat.com, rust-for-linux@vger.kernel.org,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>, Andrew Morton
- <akpm@linux-foundation.org>, Sui Jingfeng <sui.jingfeng@linux.dev>, Randy
- Dunlap <rdunlap@infradead.org>, Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [RFC PATCH 0/2] scatterlist rust bindings
-Message-ID: <20250513093824.65ab7c85@mordecai>
-In-Reply-To: <aCLdpXp6RzvPuSET@infradead.org>
-References: <20250512095544.3334680-1-abdiel.janulgue@gmail.com>
-	<aCKsQSob4TNDZb99@gondor.apana.org.au>
-	<aCLdpXp6RzvPuSET@infradead.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.48; x86_64-suse-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHeQbiTn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7ED0C4CEE4;
+	Tue, 13 May 2025 08:32:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747125157;
+	bh=q70TIRrGdpp6yg967Z9NaG3C82XUVJAKivW+wfIO/tM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UHeQbiTn5XtYLW7+AfbL65SS3DvgOAZP2K+mt25BR8fhFkeRHeTTgjYJffT4uH6MD
+	 b77UFscjVwRx6Us3pQDmBq7Qlm7hmUzpyno/WePUR5mYocp+jiIy1yP822oACfAtLu
+	 eCx62UP6S4ZREJAEQ7HiCyZlntpUW/XMgRyni3i5wdrSUWNVntt+xDdzT2o1L6daS7
+	 gauhQEePN4NFpabmrfMTUgA604cCtWtWOunaees9Vjj+r2UpJO+mqfARF6Ns1U3d7N
+	 kL+2BBL7BNr2K3gOHn7g+X3PGFF+H4q7l33pTTUohTO9YOgw/Sz0Zm513FmUv68Om8
+	 b1uHeAuC4Czuw==
+Date: Tue, 13 May 2025 10:32:29 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: airlied@gmail.com, simona@ffwll.ch, akpm@linux-foundation.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	kwilczynski@kernel.org, raag.jadav@intel.com,
+	andriy.shevchenko@linux.intel.com, arnd@arndb.de, me@kloenk.dev,
+	fujita.tomonori@gmail.com, daniel.almeida@collabora.com,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH 00/11] rust: add support for Port io
+Message-ID: <aCMDnQCcAOt28ONM@pollux>
+References: <20250509031524.2604087-1-andrewjballance@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250509031524.2604087-1-andrewjballance@gmail.com>
 
-On Mon, 12 May 2025 22:50:29 -0700
-Christoph Hellwig <hch@infradead.org> wrote:
+Hi Andrew,
 
-> On Tue, May 13, 2025 at 10:19:45AM +0800, Herbert Xu wrote:
-> > You should cc Christoph Hellwig on the DMA mapping API.  
+On Thu, May 08, 2025 at 10:15:13PM -0500, Andrew Ballance wrote:
+> currently the rust `Io` type maps to the c read{b, w, l, q}/write{b, w, l, q}
+> functions and have no support for port io.this is a problem for pci::Bar
+> because the pointer returned by pci_iomap is expected to accessed with
+> the ioread/iowrite api [0].
 > 
-> I'm not going to use my scare time to let this cancer creep further.
+> this patch series splits the `Io` type into `Io`, `PortIo` and `MMIo`.and,
+> updates pci::Bar, as suggested in the zulip[1], so that it is generic over
+> Io and, a user can optionally give a compile time hint about the type of io. 
+> 
+> Link: https://docs.kernel.org/6.11/driver-api/pci/pci.html#c.pci_iomap [0]
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/.60IoRaw.60.20and.20.60usize.60/near/514788730 [1]
+> 
+> Andrew Ballance (6):
+>   rust: io: add new Io type
+>   rust: io: add from_raw_cookie functions
+>   rust: pci: make Bar generic over Io
+>   samples: rust: rust_driver_pci: update to use new bar and io api
+>   gpu: nova-core: update to use the new bar and io api
+>   rust: devres: fix doctest
+> 
+> Fiona Behrens (5):
+>   rust: helpers: io: use macro to generate io accessor functions
+>   rust: io: Replace Io with MMIo using IoAccess trait
+>   rust: io: implement Debug for IoRaw and add some doctests
+>   rust: io: add PortIo
+>   io: move PIO_OFFSET to linux/io.h
 
-No, please do not scare us with cancer again. We do respect your
-position on the Rust acceptance scale (where this end is in fact named
-after you).
+Thanks for sending out the patch series.
 
-It's fine; you don't have to do anything here.
+I gave it a quick shot and the series breaks the build starting with patch 2. I
+see that you have fixup commits later in the series, however in the kernel we
+don't allow patches to intermediately introduce build failures, build warnings,
+bugs, etc., see also [1]. You should still try to break things down logically as
+good as possible.
 
-Petr T
+From the current structure of your patches it seems to me that structure-wise
+you should be good by going through them one by one and fix them up; your later
+patches should become "noops" then. But feel free to re-organize things if you
+feel that's not the best approach.
+
+Can you please fix this up and resend right away? This should make the
+subsequent review much easier.
+
+[1] https://docs.kernel.org/process/submitting-patches.html#separate-your-changes
