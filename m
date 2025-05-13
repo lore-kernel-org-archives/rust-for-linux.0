@@ -1,52 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713581FFC46
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 May 2025 22:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5DA20B7F3
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 May 2025 22:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747174286; cv=none; b=CFZScVi9EMPevdmWa33lCaiZjVWlXeZfzGjb3rPu4Pl2y774ra4m+XhZMg4e/9AzFw8H5rQTPoTcIlb/UjwlDlHFM0DZSm6Mfhj9dOvOddPZVv818gIJfFZwzX2OczirAdvd5c5DrzlQq80MdELW4pwLg6oIhXZRcymEsGBeKPQ=
+	t=1747174290; cv=none; b=NTk1YiaB1tWTDs8v5JHkt1iyzcrrJzULVCqjEX+Gm71F1CYNW5qBooVnmx396cwykN0uOMuo2KRprJqSiuR3UBR1H9X6LSUxHzVhJ5s4AM8310fctDUfvJbGWyUbg0hCYwRTayrFL8AxLKsXzJasUMsiv3hJLASa7NqZjw+ydrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747174286; c=relaxed/simple;
-	bh=7d0VgSPJROTSMaQPGs5A4pTzXg/ZW8CCULSCOL8oGRs=;
+	s=arc-20240116; t=1747174290; c=relaxed/simple;
+	bh=U1MawUGWBcgYAEhGFc1+n/mR3HcYKhPFm9YsxAJy/+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqB7vx+EsnONOdBAMLfT34X1T9PMYlLXTMPjFIk3+IC37N6he9vWK1lP7pwJSVsHqeD2LlUu/bZcIOeagB9tPyQWdN87pFSrkii2fv2moHvJImfuY5O2ZUsgCQ/hlFCMGA51j7kpzu0WaqMmIKoDjtD/o8/pf0E0OTSU2pxNHx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MpmeCMD/; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=mUmsPxbIEjTMPuED0Hodzel7uy6Z7urnaJeR33cjUfr4/jjp/RdOAtqUDwhTo0uEBmjuJWj51aRqr1Mz4V1ruQ2AhdTxuk3E5/Mw/e6Ns3mRJntweY24pa82GdoUVPksqNT4s93uyKJacqGC0vRkh4dWGothCuMdFs5jiXzyx/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BqW5bMo2; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MpmeCMD/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BqW5bMo2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747174281;
+	s=mimecast20190719; t=1747174287;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tt1JSePFPFuckdQ49k5xhTN6H2hYpcBzjeDUG0vewRk=;
-	b=MpmeCMD/9aC4ppF3ti0GVgV1aXwU9yEoVQbnKYKcQUy41lyrSktLFSCdeFmgePhxOxfwMt
-	87/n2MA2IT0Q0oRSYwGCVdABAQHHw6RYRlY2ZgmF3+bstIoTiKDCOXFd/AXiieODotD+2h
-	XVZaAkf0wh2vSBn2pJfDb8J1Gs9ENFM=
+	bh=qYpgcS7RnRGZH3+H9PW9GmynVyhw2nSeHj3h6xR1Dao=;
+	b=BqW5bMo2jjqZ+dPZ8scbYIu2JH4mxkwSpjKz64KJkWM3wMB23n96bTyjOo5D0cnZ27awQb
+	v6T4jyjIJxiAo08mC1KffW/egx+h1iAjLKX1KdseAS3ZwVcgG9RRWNMbS85Jj8faK7NsqL
+	20hofjEBC97X6zztT+1WLxGdTa1BGHQ=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-218-p7kry4B1MlGfHFKlsC4WMg-1; Tue,
- 13 May 2025 18:11:15 -0400
-X-MC-Unique: p7kry4B1MlGfHFKlsC4WMg-1
-X-Mimecast-MFC-AGG-ID: p7kry4B1MlGfHFKlsC4WMg_1747174269
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-15-KpYSB-q-Md-OvwAxl0nexQ-1; Tue,
+ 13 May 2025 18:11:26 -0400
+X-MC-Unique: KpYSB-q-Md-OvwAxl0nexQ-1
+X-Mimecast-MFC-AGG-ID: KpYSB-q-Md-OvwAxl0nexQ_1747174283
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 82A9E1800374;
-	Tue, 13 May 2025 22:11:08 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9ABA7180036F;
+	Tue, 13 May 2025 22:11:23 +0000 (UTC)
 Received: from chopper.lyude.net (unknown [10.22.64.99])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8100C1944A82;
-	Tue, 13 May 2025 22:11:03 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3FDA61944A82;
+	Tue, 13 May 2025 22:11:19 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
@@ -61,12 +62,11 @@ Cc: Daniel Almeida <daniel.almeida@collabora.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
 	Asahi Lina <lina@asahilina.net>,
 	Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Subject: [PATCH v2 2/4] rust: drm: gem: Refactor IntoGEMObject::from_gem_obj() to as_ref()
-Date: Tue, 13 May 2025 18:09:55 -0400
-Message-ID: <20250513221046.903358-3-lyude@redhat.com>
+Subject: [PATCH v2 4/4] rust: drm: gem: Implement AlwaysRefCounted for all gem objects automatically
+Date: Tue, 13 May 2025 18:09:57 -0400
+Message-ID: <20250513221046.903358-5-lyude@redhat.com>
 In-Reply-To: <20250513221046.903358-1-lyude@redhat.com>
 References: <20250513221046.903358-1-lyude@redhat.com>
 Precedence: bulk
@@ -78,147 +78,119 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-There's a few issues with this function, mainly:
+Currently we are requiring AlwaysRefCounted in most trait bounds for gem
+objects, and implementing it by hand for our only current type of gem
+object. However, all gem objects use the same functions for reference
+counting - and all gem objects support reference counting.
 
-* This function -probably- should have been unsafe from the start. Pointers
-  are not always necessarily valid, but you want a function that does
-  field-projection for a pointer that can travel outside of the original
-  struct to be unsafe, at least if I understand properly.
-* *mut Self is not terribly useful in this context, the majority of uses of
-  from_gem_obj() grab a *mut Self and then immediately convert it into a
-  &'a Self. It also goes against the ffi conventions we've set in the rest
-  of the kernel thus far.
-* from_gem_obj() also doesn't follow the naming conventions in the rest of
-  the DRM bindings at the moment, as_ref() would be a better name.
-
-So, let's:
-
-* Make from_gem_obj() unsafe
-* Convert it to return &'a Self
-* Rename it to as_ref()
-* Update all call locations
+We're planning on adding support for shmem gem objects, let's move this
+around a bit by instead making IntoGEMObject require AlwaysRefCounted as a
+trait bound, and then provide a blanket AlwaysRefCounted implementation for
+any object that implements IntoGEMObject so all gem object types can use
+the same AlwaysRefCounted implementation. This also makes things less
+verbose by making the AlwaysRefCounted trait bound implicit for any
+IntoGEMObject bound.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
 ---
-V2:
-* Apply Danilo's comments in lookup_handle()
-* Add safety comment from Daniel
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/drm/gem/mod.rs | 69 ++++++++++++++++++++++++--------------
- 1 file changed, 43 insertions(+), 26 deletions(-)
+ rust/kernel/drm/gem/mod.rs | 47 +++++++++++++++++++-------------------
+ 1 file changed, 24 insertions(+), 23 deletions(-)
 
 diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index df8f9fdae5c22..1ea1f15d8313c 100644
+index fa293c08f431d..e920c7a7edb21 100644
 --- a/rust/kernel/drm/gem/mod.rs
 +++ b/rust/kernel/drm/gem/mod.rs
-@@ -45,8 +45,14 @@ pub trait IntoGEMObject: Sized + super::private::Sealed {
-     #[allow(clippy::wrong_self_convention)]
-     fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object>;
+@@ -10,7 +10,7 @@
+     drm::driver::{AllocImpl, AllocOps},
+     error::{to_result, Result},
+     prelude::*,
+-    types::{ARef, Opaque},
++    types::{ARef, AlwaysRefCounted, Opaque},
+ };
+ use core::{mem, ops::Deref, ptr::NonNull};
  
--    /// Converts a pointer to a `struct drm_gem_object` into a pointer to `Self`.
--    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self;
-+    /// Converts a pointer to a `struct drm_gem_object` into a reference to `Self`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// - `self_ptr` must be a valid pointer to `Self`.
-+    /// - The caller promises that holding the immutable reference returned by this function does
-+    ///   not violate rust's data aliasing rules and remains valid throughout the lifetime of `'a`.
-+    unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self;
+@@ -36,7 +36,7 @@ fn close(
  }
  
+ /// Trait that represents a GEM object subtype
+-pub trait IntoGEMObject: Sized + super::private::Sealed {
++pub trait IntoGEMObject: Sized + super::private::Sealed + AlwaysRefCounted {
+     /// Owning driver for this type
+     type Driver: drm::Driver;
+ 
+@@ -54,6 +54,26 @@ pub trait IntoGEMObject: Sized + super::private::Sealed {
+     unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self;
+ }
+ 
++// SAFETY: All gem objects are refcounted.
++unsafe impl<T: IntoGEMObject> AlwaysRefCounted for T {
++    fn inc_ref(&self) {
++        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
++        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
++    }
++
++    unsafe fn dec_ref(obj: NonNull<Self>) {
++        // SAFETY: We either hold the only refcount on `obj`, or one of many - meaning that no one
++        // else could possibly hold a mutable reference to `obj` and thus this immutable reference
++        // is safe.
++        let obj = unsafe { obj.as_ref() }.as_raw();
++
++        // SAFETY:
++        // - The safety requirements guarantee that the refcount is non-zero.
++        // - We hold no references to `obj` now, making it safe for us to potentially deallocate it.
++        unsafe { bindings::drm_gem_object_put(obj) };
++    }
++}
++
  /// Trait which must be implemented by drivers using base GEM objects.
-@@ -63,14 +69,13 @@ extern "C" fn open_callback<T: BaseDriverObject<U>, U: BaseObject>(
-     let file = unsafe {
-         drm::File::<<<U as IntoGEMObject>::Driver as drm::Driver>::File>::as_ref(raw_file)
-     };
--    let obj =
--        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::from_gem_obj(
--            raw_obj,
--        );
--
--    // SAFETY: `from_gem_obj()` returns a valid pointer as long as the type is correct and the
--    // `raw_obj` we got is valid.
--    match T::open(unsafe { &*obj }, file) {
-+    // SAFETY: `open_callback` is specified in the AllocOps structure for `Object<T>`, ensuring that
-+    // `raw_obj` is indeed contained within a `Object<T>`.
-+    let obj = unsafe {
-+        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::as_ref(raw_obj)
-+    };
-+
-+    match T::open(obj, file) {
-         Err(e) => e.to_errno(),
-         Ok(()) => 0,
-     }
-@@ -84,14 +89,13 @@ extern "C" fn close_callback<T: BaseDriverObject<U>, U: BaseObject>(
-     let file = unsafe {
-         drm::File::<<<U as IntoGEMObject>::Driver as drm::Driver>::File>::as_ref(raw_file)
-     };
--    let obj =
--        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::from_gem_obj(
--            raw_obj,
--        );
--
--    // SAFETY: `from_gem_obj()` returns a valid pointer as long as the type is correct and the
--    // `raw_obj` we got is valid.
--    T::close(unsafe { &*obj }, file);
-+    // SAFETY: `close_callback` is specified in the AllocOps structure for `Object<T>`, ensuring
-+    // that `raw_obj` is indeed contained within a `Object<T>`.
-+    let obj = unsafe {
-+        <<<U as IntoGEMObject>::Driver as drm::Driver>::Object as IntoGEMObject>::as_ref(raw_obj)
-+    };
-+
-+    T::close(obj, file);
+ pub trait DriverObject: BaseDriverObject<Object<Self>> {
+     /// Parent `Driver` for this object.
+@@ -112,10 +132,7 @@ unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self {
  }
  
- impl<T: DriverObject> IntoGEMObject for Object<T> {
-@@ -101,9 +105,10 @@ fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object> {
-         &self.obj
-     }
- 
--    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self {
--        // SAFETY: All of our objects are Object<T>.
--        unsafe { crate::container_of!(obj, Object<T>, obj).cast_mut() }
-+    unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self {
-+        // SAFETY: `obj` is guaranteed to be in an `Object<T>` via the safety contract of this
-+        // function
-+        unsafe { &*crate::container_of!(self_ptr, Object<T>, obj) }
+ /// Base operations shared by all GEM object classes
+-pub trait BaseObject
+-where
+-    Self: crate::types::AlwaysRefCounted + IntoGEMObject,
+-{
++pub trait BaseObject: IntoGEMObject {
+     /// Returns the size of the object in bytes.
+     fn size(&self) -> usize {
+         // SAFETY: `self.into_gem_obj()` is guaranteed to be a pointer to a valid `struct
+@@ -173,7 +190,7 @@ fn create_mmap_offset(&self) -> Result<u64> {
      }
  }
  
-@@ -144,11 +149,23 @@ fn lookup_handle(
-     ) -> Result<ARef<Self>> {
-         // SAFETY: The arguments are all valid per the type invariants.
-         let ptr = unsafe { bindings::drm_gem_object_lookup(file.as_raw().cast(), handle) };
--        let ptr = <Self as IntoGEMObject>::from_gem_obj(ptr);
--        let ptr = NonNull::new(ptr).ok_or(ENOENT)?;
--
--        // SAFETY: We take ownership of the reference of `drm_gem_object_lookup()`.
--        Ok(unsafe { ARef::from_raw(ptr) })
-+        if ptr.is_null() {
-+            return Err(ENOENT);
-+        }
-+
-+        // SAFETY:
-+        // - A `drm::Driver` can only have a single `File` implementation.
-+        // - `file` uses the same `drm::Driver` as `Self`.
-+        // - Therefore, we're guaranteed that `ptr` must be a gem object embedded within `Self`.
-+        // - And we check if the pointer is null befoe calling as_ref(), ensuring that `ptr` is a
-+        //   valid pointer to an initialized `Self`.
-+        let obj = unsafe { Self::as_ref(ptr) };
-+
-+        // SAFETY:
-+        // - We take ownership of the reference of `drm_gem_object_lookup()`.
-+        // - Our `NonNull` comes from an immutable reference, thus ensuring it is a valid pointer to
-+        //   `Self`.
-+        Ok(unsafe { ARef::from_raw(obj.into()) })
-     }
+-impl<T> BaseObject for T where Self: crate::types::AlwaysRefCounted + IntoGEMObject {}
++impl<T: IntoGEMObject> BaseObject for T {}
  
-     /// Creates an mmap offset to map the object from userspace.
+ /// A base GEM object.
+ ///
+@@ -267,22 +284,6 @@ extern "C" fn free_callback(obj: *mut bindings::drm_gem_object) {
+     }
+ }
+ 
+-// SAFETY: Instances of `Object<T>` are always reference-counted.
+-unsafe impl<T: DriverObject> crate::types::AlwaysRefCounted for Object<T> {
+-    fn inc_ref(&self) {
+-        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
+-        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
+-    }
+-
+-    unsafe fn dec_ref(obj: NonNull<Self>) {
+-        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
+-        let obj = unsafe { obj.as_ref() };
+-
+-        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
+-        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
+-    }
+-}
+-
+ impl<T: DriverObject> super::private::Sealed for Object<T> {}
+ 
+ impl<T: DriverObject> Deref for Object<T> {
 -- 
 2.49.0
 
