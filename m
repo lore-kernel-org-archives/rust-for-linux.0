@@ -1,58 +1,58 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2058F1F0E26
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 May 2025 22:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BEC20C016
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 May 2025 22:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747174268; cv=none; b=BRrRO2/qAE/wMJFNujrnQGz1V5bxB31fkGQE0HgYvEDxIPsK5bMISli5IJVJE0LAL5iCBFxkgBS7xiQHt4URxcimRS2DY0KrX9DY4ccgQ1oblTefQXQwI0OcLlZRnK9ZrZRn2dtYWGjY7nwPSw5l1EXj9S/Etg/kptiSa3G24fE=
+	t=1747174285; cv=none; b=iM149YjBvlFEuZqNh3qxwo/4YNRSaOvTQxCtWPdv+RR0auBXIHW9cV3thMjtjkHJIk2cNQLZ6RvDhja9BpuMlTNE82I6bdPhW7gnSlqdhO2M0Y85j4xLeU5Kaluzz+QA6jx8QsLnEUL2HjBD30SllbWRRZzhpIlfX2adTqJW7CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747174268; c=relaxed/simple;
-	bh=KoVg+RCs4hMlFuoabocT3S/EpmV31xnUshELhfpKYDk=;
+	s=arc-20240116; t=1747174285; c=relaxed/simple;
+	bh=snAJJ4dqpLVI5y1ozRwgddYi9+s23TmxoUqv5KcTbrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/iQB9bzjFQecGFgmnbPWpyy8+xyaHIxgkQTfTPsWiczO804P300tDrZG2ZKNPUKgXX/+Yj6+jPDzMS4e7TG1wEmitRGJiBKoPws9fgJbINftWbxQaBy5yGU7FyyavudlLe3Jca0whX1P7iPAqt8fZoi87HJGyejIcnSLPbfMSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SnAThFk+; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=QJjl5ZbS8PEIx8+wua0cV1eIJkWKwUybDkIDiOWOIwk71+eATez4pzM0P+lZllJW8Q2yJ769DhgU4xJytcxie71Wwi+CEYSshTcspnjxNeLwDy8UM1xoZXTtEYyMTCBZN1oVkCJ9vM57BxM81aaoLhTiHU5c0CuxkM8TZDl3Zl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XdbTb9Y+; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SnAThFk+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XdbTb9Y+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747174266;
+	s=mimecast20190719; t=1747174282;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DCw2wvd2m1wTO/RjJyxO6cpVaBvDfLJZ2984Y/kSd2U=;
-	b=SnAThFk+yMENEKlArQ9SR2wNoBmiKszhQ0cfvzKrPFjrr908oMsR7rgy/e6BVA1y70PKuL
-	u4ej+J/s2Wz4Ja9GJsbZSm9seo4GDH/LX5NGDvI8E+3anm5f75quVVHNuuFFsYapmNTw3X
-	JosD4Aa0JSzI0t0LeYP4f6A7YmG9ezA=
+	bh=+eRdN+ZheJAEz/HIzsmMzXqUM9+/iVZmHsdLdFswD3U=;
+	b=XdbTb9Y+WmDRpkM7TWrCG/2ybTcY8Ao7GGknEwglJjO+cGRjLgMh4Wa2GLFG53sJPpfFk3
+	WJ3SZUNkobB/dE/WfunP5BXB5phrIUpKOutGnsqYy6YpmMRgbM7kd4zQ9PEC7N7E8z9bnB
+	DTKNQ+HBGFG23IKs/zL5ar0I67WcSk4=
 Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-wm0OVJk3O6makUvGSG_Vyg-1; Tue,
- 13 May 2025 18:11:03 -0400
-X-MC-Unique: wm0OVJk3O6makUvGSG_Vyg-1
-X-Mimecast-MFC-AGG-ID: wm0OVJk3O6makUvGSG_Vyg_1747174261
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-lmH3wHABP0iRzkoMnM7q2w-1; Tue,
+ 13 May 2025 18:11:19 -0400
+X-MC-Unique: lmH3wHABP0iRzkoMnM7q2w-1
+X-Mimecast-MFC-AGG-ID: lmH3wHABP0iRzkoMnM7q2w_1747174277
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6859A195DE0B;
-	Tue, 13 May 2025 22:11:00 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 354891955BF2;
+	Tue, 13 May 2025 22:11:16 +0000 (UTC)
 Received: from chopper.lyude.net (unknown [10.22.64.99])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 577821940E95;
-	Tue, 13 May 2025 22:10:55 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C52021944A82;
+	Tue, 13 May 2025 22:11:11 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
 Cc: Daniel Almeida <daniel.almeida@collabora.com>,
 	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -62,11 +62,11 @@ Cc: Daniel Almeida <daniel.almeida@collabora.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Asahi Lina <lina@asahilina.net>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Subject: [PATCH v2 1/4] rust: drm: gem: Use NonNull for Object::dev
-Date: Tue, 13 May 2025 18:09:54 -0400
-Message-ID: <20250513221046.903358-2-lyude@redhat.com>
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Asahi Lina <lina@asahilina.net>
+Subject: [PATCH v2 3/4] rust: drm: gem: s/into_gem_obj()/as_raw()/
+Date: Tue, 13 May 2025 18:09:56 -0400
+Message-ID: <20250513221046.903358-4-lyude@redhat.com>
 In-Reply-To: <20250513221046.903358-1-lyude@redhat.com>
 References: <20250513221046.903358-1-lyude@redhat.com>
 Precedence: bulk
@@ -78,47 +78,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-There is usually not much of a reason to use a raw pointer in a data
-struct, so move this to NonNull instead.
+There's a few changes here:
+* The rename, of course (this should also let us drop the clippy annotation
+  here)
+* Return *mut bindings::drm_gem_object instead of
+  &Opaque<bindings::drm_gem_object> - the latter doesn't really have any
+  benefit and just results in conversion from the rust type to the C type
+  having to be more verbose than necessary.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+
 ---
- rust/kernel/drm/gem/mod.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+V2:
+
+Rename to as_raw()
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
+ rust/kernel/drm/gem/mod.rs | 25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
 diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 0cafa4a424206..df8f9fdae5c22 100644
+index 1ea1f15d8313c..fa293c08f431d 100644
 --- a/rust/kernel/drm/gem/mod.rs
 +++ b/rust/kernel/drm/gem/mod.rs
-@@ -177,7 +177,7 @@ impl<T> BaseObject for T where Self: crate::types::AlwaysRefCounted + IntoGEMObj
- #[pin_data]
- pub struct Object<T: DriverObject + Send + Sync> {
-     obj: Opaque<bindings::drm_gem_object>,
--    dev: *const drm::Device<T::Driver>,
-+    dev: NonNull<drm::Device<T::Driver>>,
-     #[pin]
-     data: T,
- }
-@@ -212,7 +212,7 @@ pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
-                 data <- T::new(dev, size),
-                 // INVARIANT: The drm subsystem guarantees that the `struct drm_device` will live
-                 // as long as the GEM object lives.
--                dev,
-+                dev: dev.into(),
-             }),
-             GFP_KERNEL,
-         )?;
-@@ -237,7 +237,7 @@ pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
-     pub fn dev(&self) -> &drm::Device<T::Driver> {
-         // SAFETY: The DRM subsystem guarantees that the `struct drm_device` will live as long as
-         // the GEM object lives, hence the pointer must be valid.
--        unsafe { &*self.dev }
-+        unsafe { self.dev.as_ref() }
+@@ -12,7 +12,7 @@
+     prelude::*,
+     types::{ARef, Opaque},
+ };
+-use core::{mem, ops::Deref, ptr, ptr::NonNull};
++use core::{mem, ops::Deref, ptr::NonNull};
+ 
+ /// GEM object functions, which must be implemented by drivers.
+ pub trait BaseDriverObject<T: BaseObject>: Sync + Send + Sized {
+@@ -42,8 +42,7 @@ pub trait IntoGEMObject: Sized + super::private::Sealed {
+ 
+     /// Returns a reference to the raw `drm_gem_object` structure, which must be valid as long as
+     /// this owning object is valid.
+-    #[allow(clippy::wrong_self_convention)]
+-    fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object>;
++    fn as_raw(&self) -> *mut bindings::drm_gem_object;
+ 
+     /// Converts a pointer to a `struct drm_gem_object` into a reference to `Self`.
+     ///
+@@ -101,8 +100,8 @@ extern "C" fn close_callback<T: BaseDriverObject<U>, U: BaseObject>(
+ impl<T: DriverObject> IntoGEMObject for Object<T> {
+     type Driver = T::Driver;
+ 
+-    fn into_gem_obj(&self) -> &Opaque<bindings::drm_gem_object> {
+-        &self.obj
++    fn as_raw(&self) -> *mut bindings::drm_gem_object {
++        self.obj.get()
      }
  
-     fn as_raw(&self) -> *mut bindings::drm_gem_object {
+     unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self {
+@@ -121,7 +120,7 @@ pub trait BaseObject
+     fn size(&self) -> usize {
+         // SAFETY: `self.into_gem_obj()` is guaranteed to be a pointer to a valid `struct
+         // drm_gem_object`.
+-        unsafe { (*self.into_gem_obj().get()).size }
++        unsafe { (*self.as_raw()).size }
+     }
+ 
+     /// Creates a new handle for the object associated with a given `File`
+@@ -133,11 +132,7 @@ fn create_handle(
+         let mut handle: u32 = 0;
+         // SAFETY: The arguments are all valid per the type invariants.
+         to_result(unsafe {
+-            bindings::drm_gem_handle_create(
+-                file.as_raw().cast(),
+-                self.into_gem_obj().get(),
+-                &mut handle,
+-            )
++            bindings::drm_gem_handle_create(file.as_raw().cast(), self.as_raw(), &mut handle)
+         })?;
+         Ok(handle)
+     }
+@@ -171,14 +166,10 @@ fn lookup_handle(
+     /// Creates an mmap offset to map the object from userspace.
+     fn create_mmap_offset(&self) -> Result<u64> {
+         // SAFETY: The arguments are valid per the type invariant.
+-        to_result(unsafe { bindings::drm_gem_create_mmap_offset(self.into_gem_obj().get()) })?;
++        to_result(unsafe { bindings::drm_gem_create_mmap_offset(self.as_raw()) })?;
+ 
+         // SAFETY: The arguments are valid per the type invariant.
+-        Ok(unsafe {
+-            bindings::drm_vma_node_offset_addr(ptr::addr_of_mut!(
+-                (*self.into_gem_obj().get()).vma_node
+-            ))
+-        })
++        Ok(unsafe { bindings::drm_vma_node_offset_addr(&raw mut (*self.as_raw()).vma_node) })
+     }
+ }
+ 
 -- 
 2.49.0
 
