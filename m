@@ -1,210 +1,84 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8316C21CFEA
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 May 2025 22:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E065221FCE;
+	Wed, 14 May 2025 22:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747260518; cv=none; b=Eak/JsBVzNUKP8UPVxEHTC5ayvaKyUycaCBTn1fTNexHKm43GVTgiAR/IRHM0OQrAqRDlXfiGdT5x+O4buk8hjJao0HTUlMxwXKpuMccqkleO0vlpjQYjODNsQkv9YvUK3L3+zilkop1ct/vCXqPHyFlGF4crM121ik2kA0AUwk=
+	t=1747260864; cv=none; b=LwqpJTDtsDfxtxABqbX9XRd3X4ZTsVmqCa2okaYRTEQvqK4zIjRlPGG56xpDhaoEot4SbKiuoFs1YqeT5v28tcmCNZRkqwc4GZRJPKtzkAFxtHN3YS6zZvfMwRA1ZTLsSwcN/BWfUGEmbyGHT1S+aEcpSZ9n01S1qnl9FqUz8iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747260518; c=relaxed/simple;
-	bh=VXYOi+mWdK2nyf8NSpJHLMX8PteuU4saap7if/EVbIs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KJKdE6WTLlJoN2FpG3OfIMso888mAaDBWLh3sqawMF3CXEdOGqtuTtxX+WahxKgRN3bv5fW1Z3pUqLeESsVi8gmT6L4ea2XOaKo6qmCiMXyVMtRP5UgwR4YbmdekvOhmSaZvXQt9ed3Ob7s+ZxxglONNMy2j2U1uIWrmJ4nAkWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mjthdptp; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1747260864; c=relaxed/simple;
+	bh=E6fL/Nh/cGSne4KWSvMAVkm3g30wfFAm4/j5LB41is8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EjA953pWVH+EpRmID9C6tG7zAeBR/s01YXCR2ZgHu2yvNJLnq/RDHjluAsRdf6T+lJRP0Et539yZvXB4IOdsmHVhHzKBEGREqY0MTmqNQQanzQxRHevyNZn423SbHKwLPf4784aKBAufFtkZRjuKZs/WV5X1iFomBsafNAP5+fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgCUsUHT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mjthdptp"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso1404a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 May 2025 15:08:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747260515; x=1747865315; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tss58B0SAO67/66OTKmRwlNtSs2G5+tLvkvbDgLLbnw=;
-        b=mjthdptpqqDWgLOyOZu9P+CYPfCHsYCxG+/RhRETStKt7xj381BcsU9Ost4If1eROr
-         JZrbaEV6iLJnUhFAebErma53k2Za6JWCEeoFO6JjicuRgpufdLa6+QaCY0ueoivy8dSy
-         YfIQtast2Mvde9C8+xXLUpyJ1ufy+VIt7hMWmHyNK0fQfRxbRw/hdkR0Kl4eK0MIQxhP
-         FZd/DZkQGylISVHaneCkdhiH3xe07AlM6XVX7IRGgNyBloUYP67DhkYJqFrc/7A0I8GL
-         IjsfZ7EoEhh4Mm1fdDUXFMVfHlVAFkxDfUsAQOGm+FSQE+tUDMVWQDRrUVTHXbpjtgnr
-         dDbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747260515; x=1747865315;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tss58B0SAO67/66OTKmRwlNtSs2G5+tLvkvbDgLLbnw=;
-        b=ffUFURXdAHJyy0UjgVgpcgZ/vhFcekGrjJb/slkErjP4RhFv3GOCiM2bHqLxnl/DnU
-         H7l6DxdcEEh/i5orJdKAnI5xZuy71cedCnUiWl2dE5Ua817jch8yRy2fRNv5NkdmegJJ
-         1YHMCm5Z51bhHyO2c29jHUERPjEijoC62iG/YcHPg0XS7V13ByObQqzEUrH0hrrQq0e8
-         zVdqDZHMR3mbqPHrqIFu01PvPWUN08PqGnrOv9VdULcXMR8e5VZWnXW/nnGF48L2+HP+
-         bUmRygU5dCGh9bMs4GedTt9hZJ/SSuHRRkqYqoJ6R2I0ZdXq7J2Tk7NMtxjquCBxi95P
-         pGGg==
-X-Forwarded-Encrypted: i=1; AJvYcCU11i46A7T4QDlxN4JJW85RRtVZnJ69wMA3uDXhKA1Far8Fg9zBc9sLQz3XCE+1jEPQ9OYHHc7wf2wW+fvZOw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRIkN2T6pngZZVmrB4FFpPtRMeGxV2QVFKTldRaynrMGTRKDq8
-	oJt1lFbcD65tHFg9LXbndUg4Gt38bML4ZgS64OHfyO+re6xzETMfmSWq68CMDX6BocleSO++idZ
-	YzhkLIcFaJ8qLxky1zj5Nyy7ygEN4SBktEli+X94v
-X-Gm-Gg: ASbGncuUBWZMVC1Ng3UDOIS6/m59O9Uv4RkUOZCCXAORlT4FH/FFZBQyePU/ATAmVHW
-	Nmlvq4cI/S34qaj4yuUbPlLSBddrcXLt7s0UTHk3zF8mMsXDhcI9z6jrVVFl5pcsr540pT57wJW
-	klJgI/mkniH47Xojrja+GzfZ6wdl5XQVasWChs9HS5B2ypfhqykMTCs5HXaWzTQCkSquNQy53Iv
-	Q==
-X-Google-Smtp-Source: AGHT+IG0l9l9w/Y2N68M8u49vGIn5Dyo1YjrH8Fm6t+utuN/7LDawmGrkISOfwBFdZwW4Dlpr9Yra6I/CGpssPX8fvk=
-X-Received: by 2002:aa7:d7d8:0:b0:5fb:89b1:717f with SMTP id
- 4fb4d7f45d1cf-5ffc94f77c8mr36035a12.0.1747260514477; Wed, 14 May 2025
- 15:08:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgCUsUHT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198A5C4CEE3;
+	Wed, 14 May 2025 22:14:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747260863;
+	bh=E6fL/Nh/cGSne4KWSvMAVkm3g30wfFAm4/j5LB41is8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NgCUsUHTbxycn3v4K6MrPPNH1nVBglRGL0niFlaMB+4bHGSqYQd3d2NQp4NllzWyJ
+	 Ltu/kusf94smajJdNyOUdgewNFHg24uEDuAX5aqiGYJRx0LhppMUgO6cT9eJ5eVukM
+	 /xzX8eVuwa5KzFgk5VHScIk83nhTtfO7rYA0APlZLpb+qictAM1qJPaAFzdY0G/gza
+	 8xciVMtpbHkwkb2qHThFgkmdzlIE9ct8kFld7hnkA2z4oyYEPgAzfariu1EC/g+vTo
+	 1nSoDHycHIPKO/9FTjeXrSqMvZrZQgIcP/wuEG51TDhNf0BqFucdrt4q7xSPy9TEaB
+	 hC+QRyahZAU3Q==
+Date: Thu, 15 May 2025 00:14:17 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+Message-ID: <aCUVuXO_jORqlxwr@pollux>
+References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
+ <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
+ <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+ <aCRdNJ2oq-REBotd@pollux>
+ <D9VSJTPCSNXV.1LCXKGKVDGP96@kernel.org>
+ <CAGSQo00Pj0qF90712K7xACNEvr2e0q=98b8-0VUcXLD5V+oDhg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
- <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com> <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
- <aCRdNJ2oq-REBotd@pollux> <D9VSJTPCSNXV.1LCXKGKVDGP96@kernel.org>
-In-Reply-To: <D9VSJTPCSNXV.1LCXKGKVDGP96@kernel.org>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 14 May 2025 15:08:21 -0700
-X-Gm-Features: AX0GCFtl0OfYlEhDAnlQDcwPdAZRvWX7bhRhSpfSow8B6gQb1NW0J7_xgJ6pbdo
-Message-ID: <CAGSQo00Pj0qF90712K7xACNEvr2e0q=98b8-0VUcXLD5V+oDhg@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-To: Benno Lossin <lossin@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGSQo00Pj0qF90712K7xACNEvr2e0q=98b8-0VUcXLD5V+oDhg@mail.gmail.com>
 
-On Wed, May 14, 2025 at 2:54=E2=80=AFAM Benno Lossin <lossin@kernel.org> wr=
-ote:
->
-> On Wed May 14, 2025 at 11:07 AM CEST, Danilo Krummrich wrote:
-> > On Wed, May 14, 2025 at 09:20:49AM +0200, Benno Lossin wrote:
-> >> On Tue May 6, 2025 at 1:51 AM CEST, Matthew Maurer wrote:
-> >> > +impl kernel::Module for RustDebugFs {
-> >> > +    fn init(_this: &'static ThisModule) -> Result<Self> {
-> >> > +        // Create a debugfs directory in the root of the filesystem=
- called "sample_debugfs".
-> >> > +        let debugfs =3D Dir::new(c_str!("sample_debugfs"));
-> >> > +
-> >> > +        {
-> >> > +            // Create a subdirectory, so "sample_debugfs/subdir" no=
-w exists.
-> >> > +            // We wrap it in `ManuallyDrop` so that the subdirector=
-y is not automatically discarded
-> >> > +            // at the end of the scope - it will be cleaned up when=
- `debugfs` is.
-> >> > +            let sub =3D ManuallyDrop::new(debugfs.subdir(c_str!("su=
-bdir")));
-> >>
-> >> I dislike the direct usage of `ManuallyDrop`. To me the usage of
-> >> `ManuallyDrop` signifies that one has to opt out of `Drop` without the
-> >> support of the wrapped type. But in this case, `Dir` is sometimes
-> >> intended to not be dropped, so I'd rather have a `.keep()` function I
-> >> saw mentioned somewhere.
-> >
-> > I agree, if we really want to "officially" support to forget() (sub-)di=
-rectories
-> > and files in order to rely on the recursive cleanup of the "root" direc=
-tory, it
-> > should be covered explicitly by the API. I.e. (sub-)directories and fil=
-es should
-> > have some kind of keep() and / or forget() method, to make it clear tha=
-t this is
-> > supported and by design and won't lead to any leaks.
-> >
-> > Consequently, this would mean that we'd need something like your propos=
-ed const
-> > generic on the Dir type, such that keep() / forget() cannot be called o=
-n the
-> > "root" directory.
-> >
-> > However, I really think we should keep the code as it is in this versio=
-n and
-> > just don't provide an example that utilizes ManuallyDrop and forget().
-> >
-> > I don't see how the idea of "manually dropping" (sub-)directories and f=
-iles
-> > provides any real value compared to just storing their instance in a dr=
-iver
-> > structure as long as they should stay alive, which is much more intuiti=
-ve
-> > anyways.
->
-> Yeah that's whats normally done in Rust anyways. But I think that
-> lifetimes bite us in this case:
->
->     let debugfs: Dir<'static> =3D Dir::new(cstr!("sample_debugfs"));
->
->     let sub: Dir<'a> =3D debugfs.subdir(cstr!("subdir"));
->     // lifetime `'a` starts in the line above and `sub` borrows `debugfs`
->
->     /* code for creating the file etc */
->
->     Ok(Self { _debugfs: debugfs, _sub: sub })
->     // lifetime `'a` has to end in the line above, since debugfs is moved=
- but `sub` still borrows from it!
->
-> This code won't compile, since we can't store the "root" dir in the same
-> struct that we want to store the subdir, because the subdir borrows from
-> the root dir.
->
-> Essentially this would require self-referential structs like the
-> `ouroboros` crate [1] from user-space Rust. We should rather have the
-> `.keep()` function in the API than use self-referential structs.
->
-> [1]: https://docs.rs/ouroboros/latest/ouroboros/attr.self_referencing.htm=
-l
+On Wed, May 14, 2025 at 03:08:21PM -0700, Matthew Maurer wrote:
+> On Wed, May 14, 2025 at 2:54 AM Benno Lossin <lossin@kernel.org> wrote:
+> > Another problem that only affects complicated debugfs structures is that
+> > you would have to store all subdirs & files somewhere. If the structure
+> > is dynamic and changes over the lifetime of the driver, then you'll need
+> > a `Vec` or store the dirs in `Arc` or similar, leading to extra
+> > allocations.
+> 
+> Yep, this is part of why I tried to follow the "Build it, then hold
+> the needed handles to keep it alive" approach rather than keeping the
+> entire structure around.
 
-Yes, this is also an issue when it comes to attaching data to debugfs
-if you look at the WIP patchset [1]. If we do end up deciding to try
-to do self-referential structs for users (I'd rather not, but I
-understand I don't have the deciding vote here), I'd strongly suggest
-considering self_cell [2] as a model instead of ouroboros - there are
-structural UB issues [3] with ouroboros that are unlikely to be
-resolved, and the author of ouroboros encourages use of self_cell
-instead [4]
+I already replied to that [1]:
 
-[1]: https://lore.kernel.org/all/20250506-debugfs-rust-attach-v2-0-c6f88be3=
-890a@google.com/
-[2]: https://docs.rs/self_cell/latest/self_cell/
-[3]: https://github.com/rust-lang/miri/issues/2844#issuecomment-1510577943
-[4]: https://github.com/someguynamedjosh/ouroboros/issues/88
+"If it changes dynamically then it's pretty likely that we do not only want to
+add entries dynamically, but also remove them, which implies that we need to be
+able to drop them. So, I don't think that's a problem."
 
->
-> Another problem that only affects complicated debugfs structures is that
-> you would have to store all subdirs & files somewhere. If the structure
-> is dynamic and changes over the lifetime of the driver, then you'll need
-> a `Vec` or store the dirs in `Arc` or similar, leading to extra
-> allocations.
+It is much more of a problem if we can't remove certain entries anymore without
+removing all of them.
 
-Yep, this is part of why I tried to follow the "Build it, then hold
-the needed handles to keep it alive" approach rather than keeping the
-entire structure around.
-
->
-> > It either just adds complexity to the API (due to the need to distingis=
-h between
-> > the "root" directory and sub-directories) or makes the API error prone =
-by
-> > providing a *valid looking* option to users to leak the "root" director=
-y.
->
-> I agree with this, I want that `ManuallyDrop` & `forget` are only used
-> rarely mostly for low-level operations.
-
-Sure, I'll re-instate `Dir::keep` and `File::keep` as aliases for
-`ManuallyDrop::new` in the next version. TBD whether we add the bit
-that Danilo suggested to make `Dir::keep` not exist for root-level
-directories.
-
->
-> ---
-> Cheers,
-> Benno
+[1] https://lore.kernel.org/rust-for-linux/aCR9cD7OcSefeaUm@pollux/
