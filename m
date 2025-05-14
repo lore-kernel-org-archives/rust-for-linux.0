@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80B5278162;
-	Wed, 14 May 2025 13:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323404A0F;
+	Wed, 14 May 2025 14:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747231047; cv=none; b=IAQUCCV6jH8SE5z6BYYRH75TR5CVSo5r6h7IgUEnwigeh/MFjj4550MGm7F+Qu9eKTjtTaI/9ebHSQ9Itj7v5pJV8slS9RChtcG/HGpg0hK9AY7kzV8aK0YSaQdDML70gTWpbx5U440T4anoYfG/DVsHrlhygucp5bgBkd8N/o8=
+	t=1747231569; cv=none; b=hBFjm7xRHtlkfLaJopR6iWgmam00G+LfVAxxTwkpfPQ5HD6gOFBgtOGtoVTkz1AJvRxXw0T7MtyJUMtRi8JqucGXF3PHFwcmaDBDJb39Bx85FVIq8aD82mBOs4qCG6AvdbU/3bWDGe7owX2oBorqUqVJ88vXY7iYr7z4+yHXa94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747231047; c=relaxed/simple;
-	bh=BhLOVDIWnEq0nnThxI1EmaSEQnntC6wSwC5bMYkcfp4=;
+	s=arc-20240116; t=1747231569; c=relaxed/simple;
+	bh=6VWroJfqXW3f/nuCV3yKOtP1GGZzBfP7+NeW4zEP8iM=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=bANhV5LSG5itctH5nU8IqopKsKWYoIo7CZ5ZtM0T8h29n1cet8D8Qe8CHgLaA0qP0RWOO4EmWmcqJxgtHdTpqi2o8RTD+Jutkj/JowWThVO/eYf8T/mjHKpS+yEcI3DVnMsGRh9eENx1j/EFSwhSAHXh7kU+McbfE6iJy8NhhRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZM/eWa2I; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=PIE70EVU4vjkykltyfcH4Hyf4n2fmUf4EhqnPMGbkSrTEYF+Vk6LKb7LxAfoulNYtSFFbQyRtW+3KlvpC4xkXeuPm/sgfaMBgXX05G1JrX1Ou/CSit8c1p537U+mQ0MRLDM61ezfa41n5fc1fDrUPlrus5Un+ICcqVKLFjBsGS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rAqN4uH8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZM/eWa2I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B56AC4CEE9;
-	Wed, 14 May 2025 13:57:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rAqN4uH8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA30C4CEED;
+	Wed, 14 May 2025 14:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747231047;
-	bh=BhLOVDIWnEq0nnThxI1EmaSEQnntC6wSwC5bMYkcfp4=;
+	s=k20201202; t=1747231568;
+	bh=6VWroJfqXW3f/nuCV3yKOtP1GGZzBfP7+NeW4zEP8iM=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ZM/eWa2IafVzJRCl6gFkh6G4SyEEzlPqnE78PZMlVIxe60Cxw5OI9Chs9PlTWlY6N
-	 rz83gkG+VTD0SQFjj0MgeZP146TRVO7PqJ0wsiAGqpvGYziieFEr095GlvoRB7AB3/
-	 smJ34QR+cpv96hoJejaQ/5OXZvDBp0EU3Y8m8JuqU+fGuRi8d7Hc+p6smX/totyldB
-	 2hS85ErNgrxexWxXTTSNfqiv4CfKoW27usKvwe436uCMcrF2Tr5WUc19YBuZf34vOW
-	 F6RvJMLiJr+hjbF8eJHJH6nVl+SFG8B5zSWn0b9mlp/+/AAPT0Si1eRMOKuhNxYRx0
-	 JqOP0gJfjH6/g==
+	b=rAqN4uH8uGsFsz1E3Bn5lHcypmPb15H+R/k6RfsVzAO0fKrqNdl0OHjRkFJ12hl11
+	 0iPpPOVYqo7S2tofsg6YdKGAjjepxq7Lw/2swWHMrIoEwV7BU5eCXMOKHE6kB+7DEi
+	 E8PP90pdy+4wsgDgv6kwBcmj5++1QDvzXG5Ze/QZ5HVNcB75ocJVUTkQDL3qh6kD70
+	 pBYSG7Aqq5wQIV0dF3I3LI9FUQ1z1/FzeEIvXm7AVQ6dxGCmeibinWEztdfsOtBt46
+	 i8OpXXW9IjyjN3uZJEwn5leGlyRyOBMjZovxImRvGR76ze67xlDqwZHGBFN2IEzNyh
+	 dHMZCIYJpGbZA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,227 +34,111 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 14 May 2025 15:57:22 +0200
-Message-Id: <D9VXPNT4HNXP.1PKET0Q1H7O9Y@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Boris Brezillon"
+Date: Wed, 14 May 2025 16:06:03 +0200
+Message-Id: <D9VXWBFF85HC.VQBCQLD2X9VE@kernel.org>
+Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Boris Brezillon"
  <boris.brezillon@collabora.com>, "Sebastian Reichel"
  <sebastian.reichel@collabora.com>, "Liam Girdwood" <lgirdwood@gmail.com>,
- "Mark Brown" <broonie@kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
 Subject: Re: [PATCH v3] rust: regulator: add a bare minimum regulator
  abstraction
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
+To: "Mark Brown" <broonie@kernel.org>
 X-Mailer: aerc 0.20.1
 References: <20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com>
  <D9VATLUHDGU8.53I80TGVRV0J@kernel.org>
- <B288AFB1-BA0A-4383-9823-EAC9E5DCA59F@collabora.com>
-In-Reply-To: <B288AFB1-BA0A-4383-9823-EAC9E5DCA59F@collabora.com>
+ <aCRKR5h_X04OXgjq@finisterre.sirena.org.uk>
+ <D9VS6WE94O04.GXFI0K5BH4XN@kernel.org>
+ <aCRti2d5x2bL0mj6@finisterre.sirena.org.uk>
+ <D9VTC578EVTH.2HFJ9TNPFW8NQ@kernel.org>
+ <aCSDnjxVENpimTyf@finisterre.sirena.org.uk>
+ <D9VVPGM147GP.3V338KUZGRQ6D@kernel.org>
+ <aCSRJnKu3-igA2PK@finisterre.sirena.org.uk>
+In-Reply-To: <aCSRJnKu3-igA2PK@finisterre.sirena.org.uk>
 
-On Wed May 14, 2025 at 3:01 PM CEST, Daniel Almeida wrote:
->> On 13 May 2025, at 17:01, Benno Lossin <lossin@kernel.org> wrote:
->> On Tue May 13, 2025 at 5:44 PM CEST, Daniel Almeida wrote:
->>> diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
->>> new file mode 100644
->>> index 0000000000000000000000000000000000000000..7b07b64f61fdd4a84ffb38e=
-9b0f90830d5291ab9
->>> --- /dev/null
->>> +++ b/rust/kernel/regulator.rs
->>> @@ -0,0 +1,211 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +
->>> +//! Regulator abstractions, providing a standard kernel interface to c=
-ontrol
->>> +//! voltage and current regulators.
->>> +//!
->>> +//! The intention is to allow systems to dynamically control regulator=
- power
->>> +//! output in order to save power and prolong battery life. This appli=
-es to both
->>> +//! voltage regulators (where voltage output is controllable) and curr=
-ent sinks
->>> +//! (where current limit is controllable).
->>> +//!
->>> +//! C header: [`include/linux/regulator/consumer.h`](srctree/include/l=
-inux/regulator/consumer.h)
->>> +//!
->>> +//! Regulators are modeled in Rust with two types: [`Regulator`] and
->>> +//! [`EnabledRegulator`].
->>=20
->> Would it make sense to store this in a generic variable acting as a type
->> state instead of using two different names? So:
->>=20
->>    pub struct Regulator<State: RegulatorState> { /* ... */ }
->>=20
->>    pub trait RegulatorState: private::Sealed {}
->>=20
->>    pub struct Enabled;
->>    pub struct Disabled;
->>=20
->>    impl RegulatorState for Enabled {}
->>    impl RegulatorState for Disabled {}
->>=20
->> And then one would use `Regulator<Enabled>` and `Regulator<Disabled>`.
+On Wed May 14, 2025 at 2:48 PM CEST, Mark Brown wrote:
+> On Wed, May 14, 2025 at 02:23:04PM +0200, Benno Lossin wrote:
+>> On Wed May 14, 2025 at 1:50 PM CEST, Mark Brown wrote:
 >
-> This seems like just another way of doing the same thing.
+>> > In the C API the disable operation just fails and it's treated as thou=
+gh
+>> > you hadn't done anything from a refcounting point of view.
 >
-> I have nothing against a typestate, it's an elegant solution really, but =
-so is
-> the current one. I'd say let's keep what we have unless there is somethin=
-g
-> objectively better about a typestatethat makes it worthy to change this.
-
-I'd say it's cleaner and we already have some APIs that utilize type
-states, so I'd prefer we use that where it makes sense.
-
->>> +/// # Invariants
->>> +///
->>> +/// - [`Regulator`] is a non-null wrapper over a pointer to a `struct
->>> +///   regulator` obtained from [`regulator_get()`](https://docs.kernel=
-.org/driver-api/regulator.html#c.regulator_get).
->>=20
->> This should be "`inner` is a pointer obtained from
->> [`regulator_get()`](...)".
->>=20
->>> +/// - Each instance of [`Regulator`] is associated with a single count=
- of
->>> +///   [`regulator_get()`](https://docs.kernel.org/driver-api/regulator=
-.html#c.regulator_get).
->>=20
->> This is redundant, so we should remove it.
+>> But if it succeeds it takes ownership? The function `regulator_disable`
+>> is also used in the `Drop` impl of the `EnabledRegulator`, so it better
+>> give up the refcount, otherwise we would leak it.
 >
-> Why is this redundant? It says that we are associated with a *single* ref=
-count.
+> I can't understand what you are saying at all, sorry.  What does "take
+> ownership" mean, and what is the "it" here?  We are talking about the
+> case where regulator_disable() fails here, that means it didn't do what
+> it was asked to do.
 
-I'd fold it into the previous bullet point. To me they aren't really
-disjoint.
+My confusion got cleared by what Daniel wrote:
 
->>> +/// A [`Regulator`] that is known to be enabled.
->>> +///
->>> +/// # Invariants
->>> +///
->>> +/// - [`EnabledRegulator`] is a valid regulator that has been enabled.
->>=20
->> This isn't fully clear what it's supposed to mean to me. Maybe mention
->> the `regulator_enable` function?
->>=20
->>> +/// - Each instance of [`EnabledRegulator`] is associated with a singl=
-e count
->>> +///   of [`regulator_enable()`](https://docs.kernel.org/driver-api/reg=
-ulator.html#c.regulator_enable)
->>> +///   that was obtained from the [`Regulator`] instance once it was en=
-abled.
->>=20
->> Ah I see you mention it here, then what is the bullet point above about?
->
-> Again, the word _single_ is what is important here.
-
-I don't see the point in stating it in two separate bullet points.
-
->>> +pub struct EnabledRegulator {
->>> +    inner: Regulator,
->>> +}
->>> +
->>> +impl EnabledRegulator {
->>> +    fn as_ptr(&self) -> *mut bindings::regulator {
->>> +        self.inner.inner.as_ptr()
->>> +    }
->>> +
->>> +    /// Disables the regulator.
->>> +    pub fn disable(self) -> Result<Regulator> {
->>> +        // Keep the count on `regulator_get()`.
->>> +        let regulator =3D ManuallyDrop::new(self);
->>=20
->> Why don't we drop the refcount if the `regulator_disable` call fails?
->
 > I am operating under the assumption that regulator_enable() and
 > regulator_disable() do not touch the reference count. Note that we do not
 > acquire a new reference when we build EnabledRegulator in Regulator::enab=
 le(),
 > we merely move our instance of Regulator into EnabledRegulator.
->
-> disable() takes EnabledRegulator by value in order to convert it to Regul=
-ator.
-> If we let the destructor run, that will decrement the refcount as it call=
-s
-> inner.drop(), so that is why the ManuallyDrop is there in the first place=
-. =20
->
-> Now if disable() fails, perhaps we should somehow return `self` to the ca=
-ller.
-> That would let them retry the operation, even if it's unlikely to be of a=
-ny
-> help, as Mark said. In this sense, I agree that there is a leak that I
-> overlooked.
 
-I see two different options on what to do about the leak:
+and
 
-(1) implement `disable` in terms of a new function `try_disable`
-    returning `Result<Regulator, DisableError>` where `DisableError`
-    gives access to the `EnabledRegulator`.
-
-(2) document that the `disable` function leaks the refcount if an error
-    is returned.
-
-I have a slight preference for (1), but if Mark & you decide that it's
-not necessary, since users of regulators won't need it any time soon,
-then go with (2).
-
-> On a second note, Benno, do you have a clean way to return both kernel::E=
-rror
-> and `self` here? I assume that introducing a separate error type just for=
- this
-> function is overkill.
-
-It's pretty common in Rust to have a custom error type for those cases.
-I think we should also do it here, Alice already used the pattern in the
-alloc module [1].
-
-[1]: https://lore.kernel.org/all/20250502-vec-methods-v5-3-06d20ad9366f@goo=
-gle.com
-
->>> +
->>> +        // SAFETY: Safe as per the type invariants of `Self`.
->>> +        let res =3D to_result(unsafe { bindings::regulator_disable(reg=
-ulator.as_ptr()) });
->>> +
->>> +        res.map(|()| Regulator {
->>> +            inner: regulator.inner.inner,
->>> +        })
->>> +    }
->>> +
->>> +    /// Sets the voltage for the regulator.
->>> +    pub fn set_voltage(&self, min_uv: Microvolt, max_uv: Microvolt) ->=
- Result {
->>> +        self.inner.set_voltage(min_uv, max_uv)
->>> +    }
->>> +
->>> +    /// Gets the current voltage of the regulator.
->>> +    pub fn get_voltage(&self) -> Result<Microvolt> {
->>> +        self.inner.get_voltage()
->>> +    }
->>> +}
->>> +
 >>> +impl Drop for EnabledRegulator {
 >>> +    fn drop(&mut self) {
 >>> +        // SAFETY: By the type invariants, we know that `self` owns a =
 reference,
 >>> +        // so it is safe to relinquish it now.
 >>> +        unsafe { bindings::regulator_disable(self.as_ptr()) };
->>=20
+>>
 >> Same here, what happens to the refcount?
 >
 > It remains the same, we never acquired one when we enabled, so we are rel=
 ying
 > on inner.drop() to decrement it.
 
-Ah I overlooked that. Then it's fine.
+I'll try to explain what my initial question regardless, maybe that'll
+clear up your confusion :)
+
+My initial question was whether `regulator_disable` would drop the
+refcount (in the case of success and/or in the case of failure). Since
+if it failed in the quoted code:
+
+> +    /// Disables the regulator.
+> +    pub fn disable(self) -> Result<Regulator> {
+> +        // Keep the count on `regulator_get()`.
+> +        let regulator =3D ManuallyDrop::new(self);
+> +
+> +        // SAFETY: Safe as per the type invariants of `Self`.
+> +        let res =3D to_result(unsafe { bindings::regulator_disable(regul=
+ator.as_ptr()) });
+So this call would fail                           ^^^^^^^^^^^^^^^^^
+
+> +
+> +        res.map(|()| Regulator {
+> +            inner: regulator.inner.inner,
+> +        })
+> +    }
+
+Then the `.map` call below the `regulator_disable` call would not take
+ownership of the `inner.inner` value of the `regulator` variable, since
+the `res` variable would be the `Err` variant of the `Result` enum (the
+closure supplied to the `map` function only operates on the `Ok`
+variant). This would mean that the refcount is not decremented, but the
+`Regulator` wouldn't be available to the caller any more, thus leaking
+the refcount.
+
+Now if the `regulator_disable` function took ownership of the refcount
+(ie decrement it, or store the regulator somewhere else that would own
+that refcount), then this would be fine.
+
+See my reply to Daniel as for what I suggest to do about the refcount
+leak.
 
 ---
 Cheers,
