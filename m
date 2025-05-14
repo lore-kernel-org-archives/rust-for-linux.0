@@ -1,338 +1,166 @@
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D47276053;
-	Wed, 14 May 2025 10:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC7042A82;
+	Wed, 14 May 2025 11:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747220335; cv=none; b=lX1Qx/Ro5Ss5PTCHSxZuFonQ08FFXVRRpxzFg/BAw20xsc6wsycZ+XErNg01Uaq6qnz2yfGfTjon3NgYElYvntSeojpQD07XoBRUZvKgH98gGQYutkEQAQPy2tdm4L0j79//APR6f6wODUOrqmqd9C/HRyNxVYSJiopZrPXTjuI=
+	t=1747221879; cv=none; b=QHnqv1LztKbiVKT59JGDgVaJs0+bLPWqpqfj3HAo9am8+rd/boX0FWAuVeu+4DhCcRXt2QYZS+DZYxqPn+SHNciwp1OazTvqhfNwZj6tL4XlkjnJwj0LYCtj/fIoe6+4ejjaVz5+XOXHYgVO1juyZZ8DaJx1a2xItHYuBIpT6jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747220335; c=relaxed/simple;
-	bh=bDOrowS5NDCnhOqDvuFplAJW+UVvxHo3B+vHfABMAP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suwU0eV3hxOXxOIxwiMjgWyq0fPtKMwVTZ1sZBlbpUEkEKPzEmrYzoOvN3OoHpT1I8Dr/IiR7tlw3Ida5O2frush7o9pWtVLfKrN40DTvLIW7O+mkRb6F5h7rv8LJodh7Tj5S7bxJtYRxYnd83p5fiCKX1yXQF31SQPgNiRctnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FrQIKYJM; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747221879; c=relaxed/simple;
+	bh=gmgCElPVE0zz99nGO29XUN1y5zd8AhbRBwx8UQ5oge0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pBI/+01yO8CsErIUtgGK29nP6uBNG8ruNc7W9Wvdw14kug2MsLyyOmpo008r99ghzH77FD3qFCt2wnK/slskN6Sn5Hc7tTyvSu2l4LWbu/UYrxcJ9nG83yrenVySMU7GLXzN5r7lJPk/fFHgHsUYd+QN3PWqufwjpmEKTF5m8b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zm9x/9i+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FrQIKYJM"
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-72c40235c34so1871294a34.3;
-        Wed, 14 May 2025 03:58:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747220333; x=1747825133; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qD5w6c0a6kvz0Ef85ipEl+D0Znk2XoV05BpXME7RAZc=;
-        b=FrQIKYJMrfTtP/dxB3ZECMuHLMNKQWKfe8gzy1uN1qEbPirkfSxJ39237KQ8XLuptI
-         NVLaci8dfX+LjFelEEYOOrM/e6WgCh/CYvmbCjuu6tXEqkMFNaYcdpW5cqMX1RQzKML3
-         uphyQLRsg2HfaGrRtlei/EURIlN6d3W1R5+iTtVu0KE+rZlSPvVy5NR/GRxd2hVbS3dz
-         +y9itwxhRqNzWSArcJ7pLSh5qHJ3EQ3TBG70T2FUkoyD6L3DNL5z3EaCRAbN+hM1rNho
-         r8NFMFNTr4gxVmV3LnNPnCQMQ0reFPSEVsIURdDN2OjGqnWfSVrrTODeG1uVS5tKubeV
-         WVlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747220333; x=1747825133;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qD5w6c0a6kvz0Ef85ipEl+D0Znk2XoV05BpXME7RAZc=;
-        b=ESYS668TAYaUNO1e17LW9qjdsI6pnUS6qaANaiHiw/wFp0ci3w5sOxt88eNEYZ2WXT
-         Ecb2ITLIbU/g163Rez3uKT/UzpuZ1+fJQhvbn5AgopPOg95mhalWfhljyGoeimezo1lf
-         AgdRYEMBJ747pDy3Edi/2ppuzOUMPsyjsmOzFC2/7Qr9JtytnGIPwcomU/vzxFyNChI/
-         VRcg5vx92Ze+fDQLduaIA3lgXWva2V+MDOf2RIxkUx2SEbDKjVBLzWnqj/cv8FeyO9EL
-         Ndpe/bJuwA7JvK89emxC+kQ/7xYr33nu4/S9TdnvmwR/DZMKf7b2WAB9tFmzJQPNSHHc
-         dNjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUpT4mUcXfksiDyhzD4W4bvFvgxQZKGc3bdMbyrQX2EYyshx8dw+myn9RKUWeQ+Gi1t2094AGP9fFFDTqs=@vger.kernel.org, AJvYcCUthJPjkYUOJhhBjVlPorcYXFd/8f4lvlNVo+AovQvquA+vFfpNo/55JIP85zpu7cwx2qVtoptQmUWxEYvXoDE=@vger.kernel.org, AJvYcCXGXcuu+4Q3+/qVFc5M9OOtAnceqXhdHfHXiVeplTg6ibBAw19bqA75+cZVA1cxehA+Si/rDjXsI7CD@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCGyiFnZuNoMG2I1x0hyYILaT72S34eDy0p6lDPcjoemrGgMJ1
-	pVEEz5OIFl6voFSBoW/gK4QSG0qEmeTuuSvAFEYAZx/dkmAPeCYO
-X-Gm-Gg: ASbGncu+7+j7J5GL98NRwky5i0sAX6e+KgjvO3ryWvFYS7KGN9lNOAtUo/4v4hXfsCZ
-	msia5NvcE4MT50D2QT85JiR87+Xn0KoWTZSBSxA1SGF5vXgaAhVHh3x0JrVqoo+3bUNaCNjrYT4
-	Udrpx/QDjoWmjv3PD10PJO363ueAVb+tdLNwc4rAF3TX0/tIOev4BhTEcu57zgSomVdQSHC/oRM
-	nDsYFwgXZXfAS0hVzJKqVmk7WKgQnuHHON1J+Ey2dJb90WUCaw/qCzx4FtrXUNECmqJkc95EPxg
-	8YrLmRmIeDrnXN6/f1SEKk/4AyrqJMmjU9kDq0kwicw5n+tJZTyk3pstlZbjXjr350jaRKZ5ut8
-	tUKU4tAuiJOdWufyu4RFsCQz8wPrchZWXpA==
-X-Google-Smtp-Source: AGHT+IE54MfSAuxodqlDuPCWb0IgGKv5g1H7LzyyZwbg9zyX4LOVBOAb43K73rSiK2QfFtlG75L38w==
-X-Received: by 2002:a05:6830:368f:b0:727:345d:3b72 with SMTP id 46e09a7af769-734e144c500mr1437251a34.16.1747220332495;
-        Wed, 14 May 2025 03:58:52 -0700 (PDT)
-Received: from my-computer.lan (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.googlemail.com with ESMTPSA id 586e51a60fabf-2dba060be9esm2654535fac.10.2025.05.14.03.58.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 May 2025 03:58:52 -0700 (PDT)
-From: Andrew Ballance <andrewjballance@gmail.com>
-To: dakr@kernel.org,
-	a.hindborg@kernel.org,
-	airlied@gmail.com,
-	akpm@linux-foundation.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	andrewjballance@gmail.com,
-	andriy.shevchenko@linux.intel.com,
-	arnd@arndb.de,
-	benno.lossin@proton.me,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	daniel.almeida@collabora.com,
-	fujita.tomonori@gmail.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	kwilczynski@kernel.org,
-	me@kloenk.dev,
-	ojeda@kernel.org,
-	raag.jadav@intel.com,
-	rafael@kernel.org,
-	simona@ffwll.ch,
-	tmgross@umich.edu
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	nouveau@lists.freedesktop.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zm9x/9i+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB61C4CEE9;
+	Wed, 14 May 2025 11:24:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747221878;
+	bh=gmgCElPVE0zz99nGO29XUN1y5zd8AhbRBwx8UQ5oge0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Zm9x/9i+2KZphUfiROiOwodWUrnsqA1D0MV/8szPyZ023qNfYsDNL32vfi23VN5lY
+	 EUqSm2eLLeLWH2qUKyot73kzMQtGcxwtOEBon0ZPDS8WZ4BTigLBK0lBC7SAaKwZAm
+	 jPZLDtmUP6aUx7uk5wGPyp4Un0z8XiGanT8oEcGAdaNgRRXrDc/DAdTbS/k9pNn3sH
+	 E5migZmhc+QUkaajHhKm6Nh884jwNFWYx7Iowa2jHfq1NAHRkTE2gIxNoEkp158qYp
+	 gB3cjJcIim8uPbktFNfg/otib/ciPZgQO454IuZ/rGDGGjlOnaL21BfxBDms64QRuF
+	 6fDs13bVBVFdw==
+Date: Wed, 14 May 2025 13:24:32 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 6/6] rust: pci: make Bar generic over Io
-Date: Wed, 14 May 2025 05:57:34 -0500
-Message-ID: <20250514105734.3898411-7-andrewjballance@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250514105734.3898411-1-andrewjballance@gmail.com>
-References: <20250514105734.3898411-1-andrewjballance@gmail.com>
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+Message-ID: <aCR9cD7OcSefeaUm@pollux>
+References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
+ <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
+ <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+ <aCRdNJ2oq-REBotd@pollux>
+ <D9VSJTPCSNXV.1LCXKGKVDGP96@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D9VSJTPCSNXV.1LCXKGKVDGP96@kernel.org>
 
-renames `Bar` to `RawBar` and makes it generic over `IoAccess`.
-a user can give a compile time suggestion when mapping a bar so
-that the type of io can be known.
+On Wed, May 14, 2025 at 11:54:39AM +0200, Benno Lossin wrote:
+> On Wed May 14, 2025 at 11:07 AM CEST, Danilo Krummrich wrote:
+> > On Wed, May 14, 2025 at 09:20:49AM +0200, Benno Lossin wrote:
+> >> On Tue May 6, 2025 at 1:51 AM CEST, Matthew Maurer wrote:
+> >> > +impl kernel::Module for RustDebugFs {
+> >> > +    fn init(_this: &'static ThisModule) -> Result<Self> {
+> >> > +        // Create a debugfs directory in the root of the filesystem called "sample_debugfs".
+> >> > +        let debugfs = Dir::new(c_str!("sample_debugfs"));
+> >> > +
+> >> > +        {
+> >> > +            // Create a subdirectory, so "sample_debugfs/subdir" now exists.
+> >> > +            // We wrap it in `ManuallyDrop` so that the subdirectory is not automatically discarded
+> >> > +            // at the end of the scope - it will be cleaned up when `debugfs` is.
+> >> > +            let sub = ManuallyDrop::new(debugfs.subdir(c_str!("subdir")));
+> >> 
+> >> I dislike the direct usage of `ManuallyDrop`. To me the usage of
+> >> `ManuallyDrop` signifies that one has to opt out of `Drop` without the
+> >> support of the wrapped type. But in this case, `Dir` is sometimes
+> >> intended to not be dropped, so I'd rather have a `.keep()` function I
+> >> saw mentioned somewhere.
+> >
+> > I agree, if we really want to "officially" support to forget() (sub-)directories
+> > and files in order to rely on the recursive cleanup of the "root" directory, it
+> > should be covered explicitly by the API. I.e. (sub-)directories and files should
+> > have some kind of keep() and / or forget() method, to make it clear that this is
+> > supported and by design and won't lead to any leaks.
+> >
+> > Consequently, this would mean that we'd need something like your proposed const
+> > generic on the Dir type, such that keep() / forget() cannot be called on the
+> > "root" directory.
+> >
+> > However, I really think we should keep the code as it is in this version and
+> > just don't provide an example that utilizes ManuallyDrop and forget().
+> >
+> > I don't see how the idea of "manually dropping" (sub-)directories and files
+> > provides any real value compared to just storing their instance in a driver
+> > structure as long as they should stay alive, which is much more intuitive
+> > anyways.
+> 
+> Yeah that's whats normally done in Rust anyways. But I think that
+> lifetimes bite us in this case:
+> 
+>     let debugfs: Dir<'static> = Dir::new(cstr!("sample_debugfs"));
+> 
+>     let sub: Dir<'a> = debugfs.subdir(cstr!("subdir"));
+>     // lifetime `'a` starts in the line above and `sub` borrows `debugfs`
+> 
+>     /* code for creating the file etc */
+> 
+>     Ok(Self { _debugfs: debugfs, _sub: sub })
+>     // lifetime `'a` has to end in the line above, since debugfs is moved but `sub` still borrows from it!
+> 
+> This code won't compile, since we can't store the "root" dir in the same
+> struct that we want to store the subdir, because the subdir borrows from
+> the root dir.
+> 
+> Essentially this would require self-referential structs like the
+> `ouroboros` crate [1] from user-space Rust. We should rather have the
+> `.keep()` function in the API than use self-referential structs.
 
-updates nova-core and rust_driver_pci to use new bar api.
+Fair enough -- I think we should properly document those limitations, recommend
+using keep() for those cases and ensure that we can't call keep() on the "root"
+directory then.
 
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
----
- drivers/gpu/nova-core/driver.rs |   4 +-
- rust/kernel/pci.rs              | 101 +++++++++++++++++++++++++-------
- samples/rust/rust_driver_pci.rs |   2 +-
- 3 files changed, 83 insertions(+), 24 deletions(-)
+Unless, we can find a better solution, which, unfortunately, I can't think of
+one. The only thing I can think of is to reference count (parent) directories,
+which would be contrary to how the C API works and not desirable.
 
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index a08fb6599267..c03283d1e60e 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -11,7 +11,7 @@ pub(crate) struct NovaCore {
- }
- 
- const BAR0_SIZE: usize = 8;
--pub(crate) type Bar0 = pci::Bar<BAR0_SIZE>;
-+pub(crate) type Bar0 = pci::MMIoBar<BAR0_SIZE>;
- 
- kernel::pci_device_table!(
-     PCI_TABLE,
-@@ -33,7 +33,7 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self
-         pdev.enable_device_mem()?;
-         pdev.set_master();
- 
--        let bar = pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova-core/bar0"))?;
-+        let bar = pdev.iomap_region_sized_mmio::<BAR0_SIZE>(0, c_str!("nova-core/bar0"))?;
- 
-         let this = KBox::pin_init(
-             try_pin_init!(Self {
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 9f5ca22d327a..42fbe597b06e 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -11,8 +11,7 @@
-     devres::Devres,
-     driver,
-     error::{to_result, Result},
--    io::Io,
--    io::IoRaw,
-+    io::{Io, IoAccess, IoRaw, MMIo},
-     str::CStr,
-     types::{ARef, ForeignOwnable, Opaque},
-     ThisModule,
-@@ -259,15 +258,21 @@ pub struct Device<Ctx: device::DeviceContext = device::Normal>(
- ///
- /// # Invariants
- ///
--/// `Bar` always holds an `IoRaw` inststance that holds a valid pointer to the start of the I/O
-+/// `Bar` always holds an `I` inststance that holds a valid pointer to the start of the I/O
- /// memory mapped PCI bar and its size.
--pub struct Bar<const SIZE: usize = 0> {
-+pub struct RawBar<const SIZE: usize = 0, I: IoAccess<SIZE> = Io<SIZE>> {
-     pdev: ARef<Device>,
--    io: IoRaw<SIZE>,
-+    io: I,
-     num: i32,
- }
- 
--impl<const SIZE: usize> Bar<SIZE> {
-+/// a pci bar that can be either PortIo or MMIo
-+pub type IoBar<const SIZE: usize = 0> = RawBar<SIZE, Io<SIZE>>;
-+
-+/// a pci bar that maps a [`MMIo`].
-+pub type MMIoBar<const SIZE: usize = 0> = RawBar<SIZE, MMIo<SIZE>>;
-+
-+impl<const SIZE: usize, I: IoAccess<SIZE>> RawBar<SIZE, I> {
-     fn new(pdev: &Device, num: u32, name: &CStr) -> Result<Self> {
-         let len = pdev.resource_len(num)?;
-         if len == 0 {
-@@ -299,7 +304,7 @@ fn new(pdev: &Device, num: u32, name: &CStr) -> Result<Self> {
-             return Err(ENOMEM);
-         }
- 
--        let io = match IoRaw::new(ioptr, len as usize) {
-+        let raw = match IoRaw::new(ioptr, len as usize) {
-             Ok(io) => io,
-             Err(err) => {
-                 // SAFETY:
-@@ -311,7 +316,22 @@ fn new(pdev: &Device, num: u32, name: &CStr) -> Result<Self> {
-             }
-         };
- 
--        Ok(Bar {
-+        // SAFETY:
-+        // - `raw` is from `pci_iomap`
-+        // - addresses from `pci_iomap` should be accesed through ioread/iowrite
-+        let io = match unsafe { I::from_raw_cookie(raw) } {
-+            Ok(io) => io,
-+            Err(err) => {
-+                // SAFETY:
-+                // `pdev` is valid by the invariants of `Device`.
-+                // `ioptr` is guaranteed to be the start of a valid I/O mapped memory region.
-+                // `num` is checked for validity by a previous call to `Device::resource_len`.
-+                unsafe { Self::do_release(pdev, ioptr, num) };
-+                return Err(err);
-+            }
-+        };
-+
-+        Ok(RawBar {
-             pdev: pdev.into(),
-             io,
-             num,
-@@ -338,25 +358,24 @@ fn release(&self) {
-     }
- }
- 
--impl Bar {
-+impl RawBar {
-     fn index_is_valid(index: u32) -> bool {
-         // A `struct pci_dev` owns an array of resources with at most `PCI_NUM_RESOURCES` entries.
-         index < bindings::PCI_NUM_RESOURCES
-     }
- }
- 
--impl<const SIZE: usize> Drop for Bar<SIZE> {
-+impl<const SIZE: usize, I: IoAccess<SIZE>> Drop for RawBar<SIZE, I> {
-     fn drop(&mut self) {
-         self.release();
-     }
- }
- 
--impl<const SIZE: usize> Deref for Bar<SIZE> {
--    type Target = Io<SIZE>;
-+impl<const SIZE: usize, I: IoAccess<SIZE>> Deref for RawBar<SIZE, I> {
-+    type Target = I;
- 
-     fn deref(&self) -> &Self::Target {
--        // SAFETY: By the type invariant of `Self`, the MMIO range in `self.io` is properly mapped.
--        unsafe { Io::from_raw_ref(&self.io) }
-+        &self.io
-     }
- }
- 
-@@ -379,7 +398,7 @@ pub fn device_id(&self) -> u16 {
- 
-     /// Returns the size of the given PCI bar resource.
-     pub fn resource_len(&self, bar: u32) -> Result<bindings::resource_size_t> {
--        if !Bar::index_is_valid(bar) {
-+        if !RawBar::index_is_valid(bar) {
-             return Err(EINVAL);
-         }
- 
-@@ -389,22 +408,62 @@ pub fn resource_len(&self, bar: u32) -> Result<bindings::resource_size_t> {
-         Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.try_into()?) })
-     }
- 
--    /// Mapps an entire PCI-BAR after performing a region-request on it. I/O operation bound checks
-+    /// Maps an entire PCI-BAR after performing a region-request on it. I/O operation bound checks
-     /// can be performed on compile time for offsets (plus the requested type size) < SIZE.
-     pub fn iomap_region_sized<const SIZE: usize>(
-         &self,
-         bar: u32,
-         name: &CStr,
--    ) -> Result<Devres<Bar<SIZE>>> {
--        let bar = Bar::<SIZE>::new(self, bar, name)?;
-+    ) -> Result<Devres<IoBar<SIZE>>> {
-+        self.iomap_region_sized_hint::<SIZE, Io<SIZE>>(bar, name)
-+    }
-+
-+    /// Maps an entire PCI-BAR after performing a region-request on it.
-+    pub fn iomap_region(&self, bar: u32, name: &CStr) -> Result<Devres<IoBar>> {
-+        self.iomap_region_sized::<0>(bar, name)
-+    }
-+
-+    /// Maps an entire PCI-BAR after performing a region-request on it. I/O operation bound checks
-+    /// can be performed on compile time for offsets (plus the requested type size) < SIZE.
-+    /// where it is known that the bar is [`MMIo`]
-+    pub fn iomap_region_sized_mmio<const SIZE: usize>(
-+        &self,
-+        bar: u32,
-+        name: &CStr,
-+    ) -> Result<Devres<MMIoBar<SIZE>>> {
-+        self.iomap_region_sized_hint::<SIZE, MMIo<SIZE>>(bar, name)
-+    }
-+
-+    /// Maps an entire PCI-BAR after performing a region-request on it.
-+    /// where it is known that the bar is [`MMIo`]
-+    pub fn iomap_region_mmio(&self, bar: u32, name: &CStr) -> Result<Devres<MMIoBar>> {
-+        self.iomap_region_sized_hint::<0, MMIo<0>>(bar, name)
-+    }
-+
-+    /// Maps an entire PCI-BAR after performing a region-request where the
-+    /// type of Io backend is known at compile time.
-+    pub fn iomap_region_hint<I: IoAccess>(
-+        &self,
-+        bar: u32,
-+        name: &CStr,
-+    ) -> Result<Devres<RawBar<0, I>>> {
-+        let bar = RawBar::<0, I>::new(self, bar, name)?;
-         let devres = Devres::new(self.as_ref(), bar, GFP_KERNEL)?;
- 
-         Ok(devres)
-     }
-+    /// Maps an entire PCI-BAR after performing a region-request where the
-+    /// type of Io backend is known at compile time. I/O operation bound checks
-+    /// can be performed on compile time for offsets (plus the requested type size) < SIZE.
-+    pub fn iomap_region_sized_hint<const SIZE: usize, I: IoAccess<SIZE>>(
-+        &self,
-+        bar: u32,
-+        name: &CStr,
-+    ) -> Result<Devres<RawBar<SIZE, I>>> {
-+        let bar = RawBar::<SIZE, I>::new(self, bar, name)?;
-+        let devres = Devres::new(self.as_ref(), bar, GFP_KERNEL)?;
- 
--    /// Mapps an entire PCI-BAR after performing a region-request on it.
--    pub fn iomap_region(&self, bar: u32, name: &CStr) -> Result<Devres<Bar>> {
--        self.iomap_region_sized::<0>(bar, name)
-+        Ok(devres)
-     }
- }
- 
-diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-index a8d292f4c1b3..b645155142db 100644
---- a/samples/rust/rust_driver_pci.rs
-+++ b/samples/rust/rust_driver_pci.rs
-@@ -18,7 +18,7 @@ impl Regs {
-     const END: usize = 0x10;
- }
- 
--type Bar0 = pci::Bar<{ Regs::END }>;
-+type Bar0 = pci::IoBar<{ Regs::END }>;
- 
- #[derive(Debug)]
- struct TestIndex(u8);
--- 
-2.49.0
+> [1]: https://docs.rs/ouroboros/latest/ouroboros/attr.self_referencing.html
+> 
+> Another problem that only affects complicated debugfs structures is that
+> you would have to store all subdirs & files somewhere. If the structure
+> is dynamic and changes over the lifetime of the driver, then you'll need
+> a `Vec` or store the dirs in `Arc` or similar, leading to extra
+> allocations.
 
+If it changes dynamically then it's pretty likely that we do not only want to
+add entries dynamically, but also remove them, which implies that we need to be
+able to drop them. So, I don't think that's a problem.
+
+What I see more likely to happen is a situation where the "root" directory
+(almost) lives forever, and hence subsequent calls, such as
+
+	root.subdir("foo").keep()
+
+effectively are leaks.
+
+One specific example for that would be usb_debug_root, which is created in the
+module scope of usb-common and is used by USB host / gadget / phy drivers.
+
+The same is true for other cases where the debugfs "root" is created in the
+module scope, but subsequent entries are created by driver instances. If a
+driver would use keep() in such a case, we'd effectively leak memory everytime a
+device is unplugged (or unbound in general).
+
+> 
+> > It either just adds complexity to the API (due to the need to distingish between
+> > the "root" directory and sub-directories) or makes the API error prone by
+> > providing a *valid looking* option to users to leak the "root" directory.
+> 
+> I agree with this, I want that `ManuallyDrop` & `forget` are only used
+> rarely mostly for low-level operations.
+> 
+> ---
+> Cheers,
+> Benno
