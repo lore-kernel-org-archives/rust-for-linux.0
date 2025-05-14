@@ -1,197 +1,566 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2086.outbound.protection.outlook.com [40.107.92.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63B1323D;
-	Wed, 14 May 2025 19:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747252014; cv=fail; b=eTE/4RTxDALcBg4J9JsJvHTdoQP6k28lM3ZT1pIPj5/nQD0niYoIusXSFU2mwDxF6Rlnk7QyJR6Bn6Us22y9uIbFZ72wbuGDIgWf3iFIAD9brav7hWXxaHWSRGrwRjry17eW8jL6MFCrOA6M8qO+ZdK9QmSn5KFO6SzAL7qqmws=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747252014; c=relaxed/simple;
-	bh=ByHj+yDctN3rTEtjWXQwckYRCf4QE3CrtHoFznEb6YE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LQdlBQx3WxvviI0RVYNFF5cXvSOgD7+zvUROc85ce2LX/1vcQW4H92SHBQO10S+3CzePsqZwxeKwrEhqGVnlOh7y4T6w5LLCAez7s+i6LFJVVz0Y170gJHiTz+OIsssuEA7fAmkdegAHs/85FPdiusGxoOo2h19+7LwxinDEVrw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RFeDmMcj; arc=fail smtp.client-ip=40.107.92.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BA8C120;
+	Wed, 14 May 2025 20:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747253088; cv=none; b=FNEHJSFMGHLW3iwjzhMvAV7Xmsh6GkBecQ1Vn+BGX8sn9IaZQkTu+vu+JIQPMMCheErZWFgoQblwFmd5bPnnfhUtXkL7BKKmcEDfNslbtwcr24uGQtBNBWMTuMDhd/sEecOK9gZKzrCXzpq+fJWV4XWDGJph/La885T2T8G971c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747253088; c=relaxed/simple;
+	bh=246Are/mRoUxNFRbYb0hiCd2/mp652DLO+8XgKyNyZg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=P1RWdPHLhCu0ImCJavSQF3y+q8z76Frw7rawtAK9XnysOqJ9EnwtOJ0RXIMNbqpfNuDzzG3/aJ+BFMspmPdGh99QdKBcXmfMmL2vOgaFtE2aIG7E6qqnsfBpb348kx2qkaiaaQktgjBmR9NDYGI5uYPvWHOqJ32nqjZwWclHqjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHrqa1hk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RFeDmMcj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r2+CA1uJT8CGjq9lOsvYJEIk9xqugjvr/XQzAO9aswa+Zi+RFUH6O7nK75GPv5U5U/D3NZqvf2da5avc+m7Ut3aUImdtnxootqNgudwY0SRPsccygstKa8W6HnHPLIxwLzVz4qvTHUER+vTtxeyCUbG5dl0DCOUJdS/ggLLJwEPbX4OdcSBZ3EBP+qa14tEkt0vMI5lfSn+dKzZytr83BeTM7nGuIQw9V23b+aObbpTdTdeY3EWS8RfS1pKA73osVbPiM7Em0dgZ/WBQyou2vMiYpM2aWD2NI3IKvzA7eG8F+wZEHUG4wQ/7XCp4PAS+LTn17eO7BrUTf1czcRId7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ByHj+yDctN3rTEtjWXQwckYRCf4QE3CrtHoFznEb6YE=;
- b=UpQ0bLg+IkV6QtQF4+cfLVEoyd7ODzZQvf80JizfgdTfFSAHEzIY5of6DOOOX07J7NjvAlUwGbgV015+Io34t7Ex1rEn48R5BNTB4BKhLn5i2/hVJMbnG8WVQF9ZNG+5D6WnlhbzC//na8aW8KX2S+kDNjDyE8y2gj3s77bJ8crUnS5Da+Ub1LYW1p2Fb+mBaISQcxRlEJf59Zjk2NHQDSsww3Ou8FcZzC/jlFVK4OcxF+h/lYawM4aK8o7h9G5BNG+J0oWxngiBOhLfQsiio9WSinnLGSoi9Y5zckNrDMmV88zzwrsQbwL6lSgPwC6wPA9167auUBeweu32AIMrLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ByHj+yDctN3rTEtjWXQwckYRCf4QE3CrtHoFznEb6YE=;
- b=RFeDmMcjF69hg9zT9zOnbjD3i0r8B5Yfy42mmFaM0C+hxUdYnfglvYbWQYbZrG04UGwcpsYaOzpfA/6Jc8TOFLDRuZyLQRGyUrUDXuvdEERZ11jcuOsuy9rjFHAYc7NuuSAkYwxjK0bjq5u+7jb1j9YHcR2lc8lnOx2Rtpqija4PP/DXbi8TzXc7ThZD5NMEJIBuPxBlYzCNkWLLQknKyj8XDHfrsQN7HFaA4zYvQrl72jtyWC5Y6jTNg9M818OVZxKzAsWZeaHKJzeaOoIFTN2WiB5Z5PMd8F9cCq/VnPany9Jea3AAfFZrK9rb7T8Q7xlaWt0HeNBbLdOtSnUoDA==
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20)
- by IA1PR12MB6234.namprd12.prod.outlook.com (2603:10b6:208:3e6::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Wed, 14 May
- 2025 19:46:49 +0000
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56]) by CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56%5]) with mapi id 15.20.8722.027; Wed, 14 May 2025
- 19:46:49 +0000
-From: Timur Tabi <ttabi@nvidia.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>, "jpoimboe@kernel.org"
-	<jpoimboe@kernel.org>
-CC: "gary@garyguo.net" <gary@garyguo.net>, "a.hindborg@kernel.org"
-	<a.hindborg@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
-	"boqun.feng@gmail.com" <boqun.feng@gmail.com>, "patches@lists.linux.dev"
-	<patches@lists.linux.dev>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"tmgross@umich.edu" <tmgross@umich.edu>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "alex.gaynor@gmail.com"
-	<alex.gaynor@gmail.com>, "benno.lossin@proton.me" <benno.lossin@proton.me>,
-	John Hubbard <jhubbard@nvidia.com>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>, "bjorn3_gh@protonmail.com"
-	<bjorn3_gh@protonmail.com>, "peterz@infradead.org" <peterz@infradead.org>,
-	"aliceryhl@google.com" <aliceryhl@google.com>, Alexandre Courbot
-	<acourbot@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>, Alistair Popple
-	<apopple@nvidia.com>
-Subject: Re: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
- for Rust 1.87.0
-Thread-Topic: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
- for Rust 1.87.0
-Thread-Index:
- AQHbxDH3Ep6RzftN7kiIvL2+4bJBKrPRG/KAgAAoPoCAAAXLgIAA7TOAgABJQICAAAkJAA==
-Date: Wed, 14 May 2025 19:46:49 +0000
-Message-ID: <554965650ac2aaa210028d495b06e1ede6aab74d.camel@nvidia.com>
-References: <20250502140237.1659624-1-ojeda@kernel.org>
-	 <20250502140237.1659624-2-ojeda@kernel.org>
-	 <20250513180757.GA1295002@joelnvbox> <20250513215833.GA1353208@joelnvbox>
-	 <38a7d3f8-3e75-4a1f-bc93-9b301330d898@nvidia.com>
-	 <f4c946b2988d63a26aff2d03fe73fbfe1f52f31b.camel@nvidia.com>
-	 <723f7ae8-bb36-4a4c-a1d8-733d131ca222@nvidia.com>
-	 <grdfkevm4nnovdefhn7thydixjtdt2w2aybuvnrtot2jolyte3@pmvcv3vbmmll>
-In-Reply-To: <grdfkevm4nnovdefhn7thydixjtdt2w2aybuvnrtot2jolyte3@pmvcv3vbmmll>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY5PR12MB6526:EE_|IA1PR12MB6234:EE_
-x-ms-office365-filtering-correlation-id: db3554ac-3141-4d09-2f1b-08dd93201139
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?NWNJVDBuQllqTG1aWmZkcjAya3p4QmJ2YlpCNXR0ZVVZVkdBdDU1UEJQVE9B?=
- =?utf-8?B?N0ZqRytIMDUwdyttYlNpSDJ4dkJFZzhhdWNwcVQrUGYyZ2VSOU92VFFhMGF4?=
- =?utf-8?B?UVF3ZGZlQkxzZW5pUXQ4T1RMZTZ1UEdHZ1ZEVkdMRFh3d2pQckpVdFJCZFU1?=
- =?utf-8?B?TDBOTStFa1c0OVl5dEdnYWtSOGJQaURCUmVSVmJlVzdMSjFZK3MvQ2NnR2Iz?=
- =?utf-8?B?T0IvMEs2VEJPNkMwTHpLUGtDZkRtOGZhQUVLZFU0TEp0SGxsRHZRb0lOL0px?=
- =?utf-8?B?Zm1GemJYWkdNckRSWWNrTkdocDEwYm1vbEMwU3BmdFNYREJySjFTY0k2bHp4?=
- =?utf-8?B?aklrd2c0TEQ0bEZaTlF4M04vUzVHNDZxWG1lWENQM2x4S093blJKYVVrZTk3?=
- =?utf-8?B?Q0YxenpaQmIxZE90djczZW1LRmNtUTNiM0FDZXQwcFB4R2V1enVtT2xyN0Iv?=
- =?utf-8?B?dHNhN0JSS2hrL0p5ZGpoNUtSc2VkRXRLTzR3Mm54dW8zQjFUSlJzTkp5SWo1?=
- =?utf-8?B?dmMyUXlvbW9nSy9rNjR6d1htS2NWVjZjSFpkcjRIRmt0REdQQXAyUEcwME9I?=
- =?utf-8?B?TUM4MGFvMmhncVJhRnRaNjVNb0hGTlNhMlloSlUxaVpoUThFMzVvdy9Zc0ta?=
- =?utf-8?B?b0txQStUWjl5ZHVJM2VLNmhlODVaQlF5OW5MVWQ1RksvMExheWlKZlR1aE5w?=
- =?utf-8?B?QVViMWtqbW92Ni9uNUtRMHVrQlNWVGJmbFJDaytCTEIyQTY4dmhDRU5jSkVF?=
- =?utf-8?B?SUtpcmhCSUxtNjVKWmJsL0JIVHBKbGJ2Q3ZaTjdRUUVQbEpmNkVuY0FOcnBn?=
- =?utf-8?B?OVdYeWN1b1VUWHZ0SHF3QzlKUnVmbzRPd1IxUEJGcHpYRmxXLzJRSzBYdXlU?=
- =?utf-8?B?Z3Bta3ptbVl5Tzl3L2VsUzF5ZnFveGhSSk51K3o4RHJpSlU0dXdjb3BYRnEy?=
- =?utf-8?B?d0NzVWRnNFB5MktxUy9FUXVRbk1NYUhsOUQyYVVjWDlNNm9Icyt4ZDk1Q3FB?=
- =?utf-8?B?YWhsZ0JVL0RwczRwdEZTYURtZDBybndIdTVwcVUvL1dGajVtaW53bnB6M2xr?=
- =?utf-8?B?YTVrR21DZ0JCbEhlMnprWTNtRlMza056Wm5VOHZOVFkvYWxxV0tzai9XY2NP?=
- =?utf-8?B?UlY1ZTVhOGNBTmNROXNtYm9udHZjaTZORkVvdXR5aDVSL21QVC9yb0NaNUVp?=
- =?utf-8?B?WGJYSnRvbUlFQThxdE9PNUQvbzVDYzFYTWlKNU9PbzV0SjNpeXN1RXErOEh4?=
- =?utf-8?B?d0NZWVQyRzdQaUZiSG5CTDRVNDUrU0hSNHNxVmxZVHArQ01HZ1NMQUpoWnUr?=
- =?utf-8?B?OXg0UzFlTGVvREw2S2ZmUkRQYVJza3ZGQUpaWkdOaVZXNHBlbHdwT2E2NDc0?=
- =?utf-8?B?R1FWb2ZwUzdtNGVYYWg3N2pHUEVScWNxWit0VThzdnZEdjh0bmJMblc0SmpR?=
- =?utf-8?B?ZGZZT1RMWk1jeDhiNFZ4ZWJEUGkrRjZWRzk1ZnIyWVFReVNFUVN6MklMcWo3?=
- =?utf-8?B?VUJsclVBT3lCdWV5V3ZVRzlYcWwzeHROT3lqODgzcGZENXhVQThGWURMYWRn?=
- =?utf-8?B?TXhvQms2UWlBSTYwbDdydDhBd2s4enNaL084YlkrNUxsRWRhd0tJVk52akgx?=
- =?utf-8?B?NFBuSW5UZ3dqZHVxTWk3R1BYb09FZEY5Nk9FTngzbkY1R1lDK28zWkE0ek1Q?=
- =?utf-8?B?ODdLRDVXcnVId3pTRjYwUzRDcURQSDY3ejZiSDd0WEFzK2RCUkRTUS9vYitx?=
- =?utf-8?B?bmdSM1I1SlFVakQ4U0tNNXF2ZFFjbHhWUzJvNXhQMllxdXZSYVY3dEN4cXJT?=
- =?utf-8?B?SlF5dDVYK0FZbjZvMXVndXltMmszWlB0eWgrajQzUTQrYTJxNXpFQlJ0MTBi?=
- =?utf-8?B?TitjNXJlUXZ0U3BEaURYMjB6MkJvcjNPbStRL1JVRDRuTXoyMGVOd3kyZE13?=
- =?utf-8?B?cTFJdjI4ZGcyMHJHMmFyL1NQTjJXMTYxS0xhMDEyVHp5YXF3QytjNWN4WEUz?=
- =?utf-8?Q?VrEwGRXvQ9tQ5weSTMOoZPW5qk+UvE=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6526.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?Z0lBODNwTXFBR0d1bStLTVlxVkwrWE0xR2x1emwxWjd5cEU2SlZ4L0hYMGgx?=
- =?utf-8?B?R3UvUFYyeGdLZEplRGRBVjVRYVo2TUVxR0FnOG9lTHd0bDY4d3N1QUZ5WGRl?=
- =?utf-8?B?aUtiK2cxcnViYjliVllCK1RrSmVZVVJSckhabUY4c1Exa3BsVUh4aXgvQWJN?=
- =?utf-8?B?cjdLcGhyaVN1RUFIaEFkWWJkQzR6ZlhFMktqVHdzczFvUUFNRldubld0OUN5?=
- =?utf-8?B?UDVtbjV1T1hkWDAzY2FycHp3UHA5ZkxNUWU2L1NuTUI2VENlZkx6QmphQUl5?=
- =?utf-8?B?K0txMGh6TXUveS9CUjIxLytPVVJzR0k1U2d6VVFvMEJ1RkgvczdmVjV4cTBP?=
- =?utf-8?B?MDAraGhXZ0R2eDJVRlNtRGxDNkpFVy9ick9YeE1IZmdrZXB2NDBGbXpTYlBQ?=
- =?utf-8?B?SHZKdjBJRGxYa08wclJKbkVsei9Nb05LQ3lFbU1Rck1YYjM3OGZXR1ZOYi9l?=
- =?utf-8?B?Zkx2eitKZXczUW1ZYlBYZzV2elV4RFRJL0daYkJwZ0hLeGtXYldHVHhxMVlF?=
- =?utf-8?B?SFQxNFZ2NkxJdEtHUW1wSDNrRjBYVEJvcGVJTlh3cWh2NEhOTXBoRGNSTzFX?=
- =?utf-8?B?T0lOM21kUGdkM3Mzb0hoQVc5NXM0Y2ZzSzZGWGlBL0RNeExDR2VkSmJmKzFQ?=
- =?utf-8?B?WlpRYkE4ejlrWUx4NVRHaUc3czB2d0x6MmkzTjhwNCtFL3orUVBJdGxwaUFo?=
- =?utf-8?B?dWpzWEF4YjY1bWRSbjlqZmtyTWdObWNoeTZVMktrT0pIUTRmMTFnRE55eSty?=
- =?utf-8?B?dkZqMzlvOUQzK2hZWktQR0NpaVZmT2R4cExiVFlEai9kNGNBVFlOYm1VRXpU?=
- =?utf-8?B?andZMG9pWk9KZyt6c2tpZ1hKa2ZSb05yaEd4eitvaWhrVkdGYjdyMXR6K0RB?=
- =?utf-8?B?c24vcHpQL3VlRjdpQ2xiUWwxVEdVRjR3a3pYeXRYWmF0MkhrVTRXdzhhNldz?=
- =?utf-8?B?MnJQbWdQSGNhelc3VmlDK0lBdTZDWlFBTHJJdXVYWTM4dUw0ekJZenA5SHRD?=
- =?utf-8?B?V3hXLzV6Y04wVkUrdjJMd2RWTlVhRzFiZk1zNzNxVGtHbTFGRkZkUlJVS3Rx?=
- =?utf-8?B?SFA0UXI4djM3bENVbS9wV0RnUTl1MUNURkZsRXV2cVhBN3Q5ZWhsdVNQUXFJ?=
- =?utf-8?B?c1VZMlEyc2p0QzV5clRSakRzRDRNUUFpMVQ1UkhqWUhiWmwvTFdUbEttYVJK?=
- =?utf-8?B?d1Z5bngxS3g4UUJucHpPMWx6c0lvNWNXa043U0czRnErNDBSWlZEMnlJM1Rp?=
- =?utf-8?B?UTBrcGVlcGxBWm9SRHU3NE1DZGUveTFxVW9lZXZ4eEJGQmNhMlR4T2UwSWhq?=
- =?utf-8?B?OU9oRml4OFhtYU0zUW5pTTAyY3NUSi80NTBhQmg3RFlEdzR4Q1pZTndXWWpi?=
- =?utf-8?B?Zk03YWoxTXliUWRKTURsVEtuMmdDWk5DSVdIUGZTN2tRVEJPVWp6eFVESHJj?=
- =?utf-8?B?WU9obEY4dzV5a3cxTTdtTVE2UmVRRFdzTUl3ekJrRTJnWWJrcUZURmdNem9C?=
- =?utf-8?B?MitJMVMrL01Hd3JmcjZ1ZTg5cEpuOUE3Q0kwZWRjOVVEQVZJWjkvRmE2TFRK?=
- =?utf-8?B?MkZrRStKeUdyYjBBYzB0bEhQUzNZS3h1U3ptWXh1TUhqQ1dRWlZWR2N5cjF4?=
- =?utf-8?B?Zk4wek9sV1M2RTBJVkZlUmlVcTZVMy9MMURNNXVMQ2c5VjRSZ01BYkFtTUdY?=
- =?utf-8?B?cnFGZlpzS0t0SkxOOFBpMGNsbmVDUG90SHA5R2hZYWdRaFE5aFk3Mk9xU1Ni?=
- =?utf-8?B?WlVxVm9HdGg0cW45TjZ6KzRaczFaN0M0dDNSc3hSbUhmT2FCdFRMMFNOckdW?=
- =?utf-8?B?Z2RhN3VzUFdJUVFGNVJ1Z2NwWUszMUh5TzZNVUNwZ3NWc3ZMZmZ0N2hHeHF4?=
- =?utf-8?B?bmE1ODRxRTdaRHRISVBMcDBHN0M3aVZ4QjBHTmFDOEcyanZOUEJhNVlXK2Q4?=
- =?utf-8?B?T1d0UXAxMHdYanBMOXVpaEwxekxzNEVyemk4eko1VWpmR1BycDJSb3h0TEcw?=
- =?utf-8?B?UTJxbW83RS84ZnE4ZTFMSGFSTmlOK05hNG1vSlJZOHliL0hMNGlZQW92Mnla?=
- =?utf-8?B?WUdqTXF4WlpiTGhyUjZvdnYzSWNXc3hyd0VROEtIekVnRklXcEd5eWtKYytl?=
- =?utf-8?Q?eBdGeWv9qbRS4wOyaRfsQ/z/s?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8BD9861EB1421546974039BF595AE0C2@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHrqa1hk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49D1C4CEE3;
+	Wed, 14 May 2025 20:04:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747253088;
+	bh=246Are/mRoUxNFRbYb0hiCd2/mp652DLO+8XgKyNyZg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=QHrqa1hkyHdg5BQE9zJg5hzT2huZEvl5JaJtXhsr889AcpaEv2wC7jrb/sxRjqx9y
+	 FckrvB5zc33/cDOKCa9Eq2pl/iqvof72JyvIZor4Kd/yVEpjsXoz1uAQ8iUxz23/EQ
+	 gXwPngA4VgBzAYd3CnFBaYFk3zIESznnjPTyg/YgeG6G07KeA31JIsREGH9f8XS0ay
+	 AmO7gImif1KXRac1MpmGfAM73+1jxtp9GhkOY2nv1Aun/Jn+M5l52sYXbcYQOEk8Fu
+	 9+PQYraZJsZwmi3ZMMT1GTA33MgUXQCeMnM1fb8qyfCclhDjeaPl4kOU6HoOStgo3u
+	 TKyO14MBSHpWA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6526.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db3554ac-3141-4d09-2f1b-08dd93201139
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 May 2025 19:46:49.3163
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rz85jl6UYevI1yU2/gkivseQoBp5iBoFi/09XnZHHvYeljdbHmav4fCpORmbjlusrJlGQfLp3mTpDunSHDQOaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6234
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 May 2025 22:04:43 +0200
+Message-Id: <D9W5IX9Z7QMU.3DL48O2KYTN1Z@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Thomas Gleixner" <tglx@linutronix.de>
+X-Mailer: aerc 0.20.1
+References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com> <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
+In-Reply-To: <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
 
-T24gV2VkLCAyMDI1LTA1LTE0IGF0IDEyOjE0IC0wNzAwLCBKb3NoIFBvaW1ib2V1ZiB3cm90ZToN
-Cj4gVGhlIGFib3ZlIHdhcm5pbmcgaXMgaW4gY29tcGxldGVseSBkaWZmZXJlbnQgY29kZSBmcm9t
-IHRoZSBSdXN0IG9uZSwgc28NCj4gdGhleSdyZSBsaWtlbHkgdW5yZWxhdGVkLg0KDQpUcnVlLCBi
-dXQgdGhlIGZhbGwtdGhyb3VnaCBpcyBib2d1cyBpbiB0aGUgQyBjb2RlIGFzIHdlbGwuDQoNCj4g
-VGhlIGZhbGx0aHJvdWdoIHdhcm5pbmdzIGFyZSB0eXBpY2FsbHkgY2F1c2VkIGJ5IGVpdGhlciBD
-bGFuZyB1bmRlZmluZWQNCj4gYmVoYXZpb3IgKHVzdWFsbHkgcG90ZW50aWFsIGRpdmlkZSBieSB6
-ZXJvIG9yIG5lZ2F0aXZlIHNoaWZ0KSwgb3IgYSBjYWxsDQo+IHRvIGFuIHVuYW5ub3RhdGVkIG5v
-cmV0dXJuIGZ1bmN0aW9uLg0KPiANCj4gVGltdXIsIGNhbiB5b3Ugc2hhcmUgeW91ciAuY29uZmln
-IGFuZCBjb21waWxlciB2ZXJzaW9uPw0KDQouY29uZmlnOiBodHRwczovL3Bhc3RlYmluLmNvbS9p
-bkRIZm1iRw0KDQp0dGFiaUB0dGFiaTp+JCBsbHZtLWNvbmZpZyAtLXZlcnNpb24NCjE4LjEuMw0K
-dHRhYmlAdHRhYmk6fiQgZ2NjIC0tdmVyc2lvbg0KZ2NjIChVYnVudHUgMTQuMi4wLTR1YnVudHUy
-fjI0LjA0KSAxNC4yLjANCg0KU2luY2UgSSBidWlsZCB3aXRoIExMVk09MSwgSSdtIGFzc3VtaW5n
-IHRoZSBhbnN3ZXIgaXMgMTguMS4zDQo=
+On Wed May 14, 2025 at 9:20 PM CEST, Daniel Almeida wrote:
+> Add support for registering IRQ handlers in Rust.
+>
+> IRQ handlers are extensively used in drivers when some peripheral wants
+> to obtain the CPU attention. Registering a handler will make the system
+> invoke the passed-in function whenever the chosen IRQ line is triggered.
+>
+> Both regular and threaded IRQ handlers are supported through a Handler
+> (or ThreadedHandler) trait that is meant to be implemented by a type
+> that:
+>
+> a) provides a function to be run by the system when the IRQ fires and,
+>
+> b) holds the shared data (i.e.: `T`) between process and IRQ contexts.
+>
+> The requirement that T is Sync derives from the fact that handlers might
+> run concurrently with other processes executing the same driver,
+> creating the potential for data races.
+>
+> Ideally, some interior mutability must be in place if T is to be
+> mutated. This should usually be done through the in-flight SpinLockIrq
+> type.
+>
+> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/helpers.c          |   1 +
+>  rust/helpers/irq.c              |   9 +
+>  rust/kernel/irq.rs              |  24 +++
+>  rust/kernel/irq/flags.rs        | 102 +++++++++
+>  rust/kernel/irq/request.rs      | 455 ++++++++++++++++++++++++++++++++++=
+++++++
+>  rust/kernel/lib.rs              |   1 +
+>  7 files changed, 593 insertions(+)
+
+Could you split this patch into smaller chunks?
+
+> +pub use request::Handler;
+> +pub use request::IrqReturn;
+> +pub use request::Registration;
+> +pub use request::ThreadedHandler;
+> +pub use request::ThreadedIrqReturn;
+> +pub use request::ThreadedRegistration;
+
+Why not?:
+
+    pub use request::{Handler, ..., ThreadedRegistration};
+
+> diff --git a/rust/kernel/irq/flags.rs b/rust/kernel/irq/flags.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..3cfaef65ae14f6c02f55ebcf4=
+d52450c0052df30
+> --- /dev/null
+> +++ b/rust/kernel/irq/flags.rs
+> @@ -0,0 +1,102 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// SPDX-FileCopyrightText: Copyright 2025 Collabora ltd.
+> +
+> +use crate::bindings;
+> +
+> +/// Flags to be used when registering IRQ handlers.
+> +///
+> +/// They can be combined with the operators `|`, `&`, and `!`.
+> +#[derive(Clone, Copy, PartialEq, Eq)]
+> +pub struct Flags(u64);
+
+The constants below seem to all be 32 bit, why did you choose u64?
+
+> +
+> +impl Flags {
+> +    pub(crate) fn into_inner(self) -> u64 {
+> +        self.0
+> +    }
+> +}
+> +pub const NO_DEBUG: Flags =3D Flags(bindings::IRQF_NO_DEBUG as u64);
+
+> diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..55f0ea8f9a93dc9ada67ce91a=
+f686a9634c8e8ed
+> --- /dev/null
+> +++ b/rust/kernel/irq/request.rs
+> @@ -0,0 +1,455 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// SPDX-FileCopyrightText: Copyright 2025 Collabora ltd.
+> +
+> +//! IRQ allocation and handling
+
+Missing `.`.
+
+> +
+> +use core::marker::PhantomPinned;
+> +use core::ptr::addr_of_mut;
+> +
+> +use pin_init::pin_init_from_closure;
+> +
+> +use crate::alloc::Allocator;
+> +use crate::error::to_result;
+> +use crate::irq::flags::Flags;
+> +use crate::prelude::*;
+> +use crate::str::CStr;
+> +use crate::sync::Arc;
+> +
+> +/// The value that can be returned from an IrqHandler or a ThreadedIrqHa=
+ndler.
+> +#[repr(u32)]
+
+I think we should let the compiler decide the layout & discriminants, it
+might do something smarter when returning this value together with
+others. Then we just need this function:
+
+    fn into_inner(self) -> u32 {
+        match self {
+            Self::None =3D> bindings::irqreturn_IRQ_NONE,
+            Self::Handled =3D> bindings::irqreturn_IRQ_HANDLED,
+        }
+    }
+
+> +pub enum IrqReturn {
+> +    /// The interrupt was not from this device or was not handled.
+> +    None =3D bindings::irqreturn_IRQ_NONE,
+> +
+> +    /// The interrupt was handled by this device.
+> +    Handled =3D bindings::irqreturn_IRQ_HANDLED,
+> +}
+> +
+> +/// Callbacks for an IRQ handler.
+> +pub trait Handler: Sync {
+> +    /// The actual handler function. As usual, sleeps are not allowed in=
+ IRQ
+> +    /// context.
+> +    fn handle_irq(&self) -> IrqReturn;
+> +}
+> +
+> +impl<T: ?Sized + Handler + Send> Handler for Arc<T> {
+> +    fn handle_irq(&self) -> IrqReturn {
+> +        T::handle_irq(self)
+> +    }
+> +}
+> +
+> +impl<T: ?Sized + Handler, A: Allocator> Handler for Box<T, A> {
+> +    fn handle_irq(&self) -> IrqReturn {
+> +        T::handle_irq(self)
+> +    }
+> +}
+> +
+> +/// A registration of an IRQ handler for a given IRQ line.
+> +///
+> +/// # Examples
+> +///
+> +/// The following is an example of using `Registration`. It uses a
+> +/// [`SpinLock`](crate::sync::SpinLockIrq) to provide the interior mutab=
+ility.
+> +/// Note that Spinlocks are not safe to use in IRQ context as of now, bu=
+t may be
+> +/// in the future.
+
+Didn't your commit message mention SpinLockIrq?
+
+> +///
+> +/// ```
+> +/// use kernel::prelude::*;
+> +/// use kernel::irq::flags;
+> +/// use kernel::irq::Registration;
+> +/// use kernel::irq::IrqReturn;
+> +/// use kernel::sync::Arc;
+> +/// use kernel::sync::SpinLock;
+> +/// use kernel::c_str;
+> +/// use kernel::alloc::flags::GFP_KERNEL;
+> +///
+> +/// // Declare a struct that will be passed in when the interrupt fires.=
+ The u32
+> +/// // merely serves as an example of some internal data.
+> +/// struct Data(SpinLock<u32>);
+> +///
+> +/// // [`handle_irq`] takes &self. This example illustrates interior
+> +/// // mutability can be used when share the data between process contex=
+t and IRQ
+> +/// // context.
+> +///
+> +/// type Handler =3D Data;
+> +///
+> +/// impl kernel::irq::request::Handler for Handler {
+> +///     // This is executing in IRQ context in some CPU. Other CPUs can =
+still
+> +///     // try to access to data.
+> +///     fn handle_irq(&self) -> IrqReturn {
+> +///         // We now have exclusive access to the data by locking the
+> +///         // SpinLock.
+> +///         let mut data =3D self.0.lock();
+> +///         *data +=3D 1;
+> +///
+> +///         IrqReturn::Handled
+> +///     }
+> +/// }
+> +///
+> +/// // This is running in process context.
+> +/// fn register_irq(irq: u32, handler: Handler) -> Result<Arc<Registrati=
+on<Handler>>> {
+> +///     let registration =3D Registration::register(irq, flags::SHARED, =
+c_str!("my-device"), handler);
+> +///
+> +///     // You can have as many references to the registration as you wa=
+nt, so
+> +///     // multiple parts of the driver can access it.
+> +///     let registration =3D Arc::pin_init(registration, GFP_KERNEL)?;
+> +///
+> +///     // The handler may be called immediately after the function abov=
+e
+> +///     // returns, possibly in a different CPU.
+> +///
+> +///     {
+> +///         // The data can be accessed from the process context too.
+> +///         let mut data =3D registration.handler().0.lock();
+> +///         *data =3D 42;
+> +///     }
+> +///
+> +///     Ok(registration)
+> +/// }
+> +///
+> +/// # Ok::<(), Error>(())
+> +///```
+> +///
+> +/// # Invariants
+> +///
+> +/// * We own an irq handler using `&self` as its private data.
+> +///
+> +#[pin_data(PinnedDrop)]
+> +pub struct Registration<T: Handler> {
+> +    irq: u32,
+> +    #[pin]
+> +    handler: T,
+> +    #[pin]
+> +    /// Pinned because we need address stability so that we can pass a p=
+ointer
+> +    /// to the callback.
+> +    _pin: PhantomPinned,
+> +}
+> +
+> +impl<T: Handler> Registration<T> {
+> +    /// Registers the IRQ handler with the system for the given IRQ numb=
+er. The
+> +    /// handler must be able to be called as soon as this function retur=
+ns.
+
+The first line of documentation should be a single sentence description
+of what the item does. It will get rendered next to it on the summary &
+search pages.
+
+What is meant by the second sentence? What about this phrasing?: "The
+handler might be called immediately after this function returns.".
+
+> +    pub fn register(
+> +        irq: u32,
+> +        flags: Flags,
+> +        name: &'static CStr,
+> +        handler: T,
+> +    ) -> impl PinInit<Self, Error> {
+> +        let closure =3D move |slot: *mut Self| {
+> +            // SAFETY: The slot passed to pin initializer is valid for w=
+riting.
+> +            unsafe {
+> +                slot.write(Self {
+> +                    irq,
+> +                    handler,
+> +                    _pin: PhantomPinned,
+> +                })
+> +            };
+> +
+> +            // SAFETY:
+> +            // - The callbacks are valid for use with request_irq.
+> +            // - If this succeeds, the slot is guaranteed to be valid un=
+til the
+> +            // destructor of Self runs, which will deregister the callba=
+cks
+> +            // before the memory location becomes invalid.
+> +            let res =3D to_result(unsafe {
+> +                bindings::request_irq(
+> +                    irq,
+> +                    Some(handle_irq_callback::<T>),
+> +                    flags.into_inner() as usize,
+> +                    name.as_char_ptr(),
+> +                    &*slot as *const _ as *mut core::ffi::c_void,
+
+Please don't use `as` casts when possible, instead use `.cast()` on
+pointers.
+
+> +                )
+> +            });
+> +
+> +            if res.is_err() {
+> +                // SAFETY: We are returning an error, so we can destroy =
+the slot.
+> +                unsafe { core::ptr::drop_in_place(addr_of_mut!((*slot).h=
+andler)) };
+> +            }
+> +
+> +            res
+> +        };
+> +
+> +        // SAFETY:
+> +        // - if this returns Ok, then every field of `slot` is fully
+> +        // initialized.
+> +        // - if this returns an error, then the slot does not need to re=
+main
+> +        // valid.
+> +        unsafe { pin_init_from_closure(closure) }
+
+Please don't use `pin_init_from_closure`, instead do this:
+
+    pin_init!(Self {
+        irq,
+        handler,
+        _pin: PhantomPinned
+    })
+    .pin_chain(|this| {
+        // SAFETY: TODO: correct FFI safety requirements
+        to_result(unsafe {
+            bindings::request_irq(...)
+        })
+    })
+
+The `pin_chain` function is exactly for this use-case, doing some
+operation that might fail after initializing & it will drop the value
+when the closure fails.
+
+> +    }
+> +
+> +    /// Returns a reference to the handler that was registered with the =
+system.
+> +    pub fn handler(&self) -> &T {
+> +        &self.handler
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl<T: Handler> PinnedDrop for Registration<T> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY:
+> +        // - `self.irq` is the same as the one passed to `reques_irq`.
+> +        // -  `&self` was passed to `request_irq` as the cookie. It is
+> +        // guaranteed to be unique by the type system, since each call t=
+o
+> +        // `register` will return a different instance of `Registration`=
+.
+
+This is missing important information: `self` is `!Unpin` **and** was
+initializing using pin-init, so it occupied the same memory location for
+the entirety of its lifetime.
+
+> +        //
+> +        // Notice that this will block until all handlers finish executi=
+ng,
+> +        // i.e.: at no point will &self be invalid while the handler is =
+running.
+
+This is good to know!
+
+> +        unsafe { bindings::free_irq(self.irq, &*self as *const Self as *=
+mut core::ffi::c_void) };
+> +    }
+> +}
+> +
+> +/// The value that can be returned from `ThreadedHandler::handle_irq`.
+> +#[repr(u32)]
+> +pub enum ThreadedIrqReturn {
+> +    /// The interrupt was not from this device or was not handled.
+> +    None =3D bindings::irqreturn_IRQ_NONE,
+> +
+> +    /// The interrupt was handled by this device.
+> +    Handled =3D bindings::irqreturn_IRQ_HANDLED,
+> +
+> +    /// The handler wants the handler thread to wake up.
+
+How about "The handler wants the handler thread to take care of the
+interrupt." or is that incorrect?
+
+> +    WakeThread =3D bindings::irqreturn_IRQ_WAKE_THREAD,
+> +}
+> +
+> +/// Callbacks for a threaded IRQ handler.
+
+What is the difference to a normal one?
+
+> +pub trait ThreadedHandler: Sync {
+> +    /// The actual handler function. As usual, sleeps are not allowed in=
+ IRQ
+> +    /// context.
+> +    fn handle_irq(&self) -> ThreadedIrqReturn;
+
+Why does this `handle_irq` function return a `ThreadedIrqReturn`...
+
+> +
+> +    /// The threaded handler function. This function is called from the =
+irq
+> +    /// handler thread, which is automatically created by the system.
+> +    fn thread_fn(&self) -> IrqReturn;
+
+... and this `thread_fn` an `IrqReturn`? I would have expected it to be
+the other way around.
+
+> +}
+> +
+> +impl<T: ?Sized + ThreadedHandler + Send> ThreadedHandler for Arc<T> {
+> +    fn handle_irq(&self) -> ThreadedIrqReturn {
+> +        T::handle_irq(self)
+> +    }
+> +
+> +    fn thread_fn(&self) -> IrqReturn {
+> +        T::thread_fn(self)
+> +    }
+> +}
+> +
+> +impl<T: ?Sized + ThreadedHandler, A: Allocator> ThreadedHandler for Box<=
+T, A> {
+> +    fn handle_irq(&self) -> ThreadedIrqReturn {
+> +        T::handle_irq(self)
+> +    }
+> +
+> +    fn thread_fn(&self) -> IrqReturn {
+> +        T::thread_fn(self)
+> +    }
+> +}
+> +
+> +/// A registration of a threaded IRQ handler for a given IRQ line.
+> +///
+> +/// Two callbacks are required: one to handle the IRQ, and one to handle=
+ any
+> +/// other work in a separate thread.
+> +///
+> +/// The thread handler is only called if the IRQ handler returns `WakeTh=
+read`.
+
+Ah this is some information that should be on `ThreadedHandler`. (it
+also explains the difference in return types above)
+
+> +///
+> +/// # Examples
+> +///
+> +/// The following is an example of using `ThreadedRegistration`. It uses=
+ a
+> +/// [`SpinLock`](crate::sync::SpinLockIrq) to provide the interior mutab=
+ility.
+> +/// Note that Spinlocks are not safe to use in IRQ context as of now, bu=
+t may be
+> +/// in the future.
+> +///
+> +/// ```
+> +/// use kernel::prelude::*;
+> +/// use kernel::irq::flags;
+> +/// use kernel::irq::ThreadedIrqReturn;
+> +/// use kernel::irq::ThreadedRegistration;
+> +/// use kernel::irq::IrqReturn;
+> +/// use kernel::sync::Arc;
+> +/// use kernel::sync::SpinLock;
+> +/// use kernel::alloc::flags::GFP_KERNEL;
+> +/// use kernel::c_str;
+> +///
+> +/// // Declare a struct that will be passed in when the interrupt fires.=
+ The u32
+> +/// // merely serves as an example of some internal data.
+> +/// struct Data(SpinLock<u32>);
+> +///
+> +/// // [`handle_irq`] takes &self. This example illustrates interior
+> +/// // mutability can be used when share the data between process contex=
+t and IRQ
+> +/// // context.
+> +///
+> +/// type Handler =3D Data;
+> +///
+> +/// impl kernel::irq::request::ThreadedHandler for Handler {
+> +///     // This is executing in IRQ context in some CPU. Other CPUs can =
+still
+> +///     // try to access to data.
+> +///     fn handle_irq(&self) -> ThreadedIrqReturn {
+> +///         // We now have exclusive access to the data by locking the
+> +///         // SpinLockIrq.
+> +///         let mut data =3D self.0.lock();
+> +///         *data +=3D 1;
+> +///
+> +///         // By returning `WakeThread`, we indicate to the system that=
+ the
+> +///         // thread function should be called. Otherwise, return
+> +///         // ThreadedIrqReturn::Handled.
+> +///         ThreadedIrqReturn::WakeThread
+> +///     }
+> +///
+> +///     // This will run (in a separate kthread) if and only if `handle_=
+irq`
+> +///     // returns `WakeThread`.
+> +///     fn thread_fn(&self) -> IrqReturn {
+> +///         // We now have exclusive access to the data by locking the S=
+pinLock.
+> +///         //
+> +///         // Ideally, we should disable interrupts while we are doing =
+this to
+> +///         // avoid deadlocks, but this is not currently possible.
+
+Would this be solved by SpinLockIrq?
+
+---
+Cheers,
+Benno
+
+> +///         let mut data =3D self.0.lock();
+> +///         *data +=3D 1;
+> +///
+> +///         IrqReturn::Handled
+> +///     }
+> +/// }
