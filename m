@@ -1,104 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2829321A43D;
-	Wed, 14 May 2025 19:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747250072; cv=none; b=SeIpfhiZG/Swmcls27KythF1T8SoTR6qhohDHkXkStkpqKn91xMSSC49ox4G0oME1Mpeht/6ExFac0U4sVKDKAMvc6UWS2+fJm6MS/mFVrrFA6VzwNPeEyWhJLXu75To0l8gq1i7RpeJeiRlF2VuWQId18PJrdBKowrNWXgN2ag=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747250072; c=relaxed/simple;
-	bh=lOa0LK4b8qZWlQ7JnonxWFPgOHkWrQ9weNETFEnVwo8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gaoIuPR4P8cz9BzQWL1KHtluaW3ePYRu+rpk8EcKw7IlinB55CZTrzPjZfYIzLcU12PGHS5pmDzfTC/6smgFqVX9YGis/jSq4uNuWubiqzAtoJbg3yuNTC6+n3gkMO0AbZ9Qu2CnWBqLuNDTh6a7dwIMt/wDThYuWcoG3iDtwRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5gwmOzO; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3E528DF06;
+	Wed, 14 May 2025 19:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747250519; cv=pass; b=dB7adRCawNz3niZOSaWmZSzeJyATLVcNokheEmPiGnMpapdTX+venpdr33NOb/I0gYspoL5DfQARFSreBCqwAR1TE4evazK+06338p9K/tStKrY23NpY9xmY2m2/QrRlqdI6uD9O1IhW4motE3F39QzEOJvVeMNanj/fy8fZ3aU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747250519; c=relaxed/simple;
+	bh=oQQtLGpaLQeTz3MBR+hp0bvhk8AGqQPKXrLnOeR+ATM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=izv/p9BiCON2wCfNEqksUyZqpD+C+4mhkGy77R5xbUva5t1DUzNaVYr0LUbKEnAP1H5j91P6JQqR1i7YE6IvyBffm9J92SDELbF/q5a7bQPT+cynUdxECmRwAx67kJb+6fmTP/0s/jvcl46bK7uu207OEcOCxYKfYrDT2PpEf50=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=dfyo+wf5; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5gwmOzO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81568C4CEE3;
-	Wed, 14 May 2025 19:14:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747250070;
-	bh=lOa0LK4b8qZWlQ7JnonxWFPgOHkWrQ9weNETFEnVwo8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R5gwmOzOVsYI8gjDNNv0WY9HKizp9D1CBX90KWUjAeSeruXtRb+UkvQ8cY6VVViYg
-	 6UlaTcqXAKCtiOE4fmk/fDDRHpQn1XXhD/u42yvkIvmE3EaT8SLzITvHRnDzum4QHY
-	 /PCvkTDQX8R2pFZdlpnjCn6ib/DEmk/wxGLlup2yETyGUv5A/IbET5W3VjVD6jRhek
-	 i+HwV2TRWG8LhGqjhKIn0hTqnn9sNjDNLJHMB8ZAM5fzPkR6dtIpmc2A9DtWYGzssH
-	 s5aP00EN1EKYor2uGoPQ3ah8YnNBEsrgtv+iUwhNZfjir16U5N0EungQOwlhMwwoRU
-	 ki6yLUIVoZmGA==
-Date: Wed, 14 May 2025 12:14:27 -0700
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Timur Tabi <ttabi@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>, 
-	"a.hindborg@kernel.org" <a.hindborg@kernel.org>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, 
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, "tmgross@umich.edu" <tmgross@umich.edu>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "benno.lossin@proton.me" <benno.lossin@proton.me>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, 
-	"peterz@infradead.org" <peterz@infradead.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>, 
-	Alistair Popple <apopple@nvidia.com>
-Subject: Re: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
- for Rust 1.87.0
-Message-ID: <grdfkevm4nnovdefhn7thydixjtdt2w2aybuvnrtot2jolyte3@pmvcv3vbmmll>
-References: <20250502140237.1659624-1-ojeda@kernel.org>
- <20250502140237.1659624-2-ojeda@kernel.org>
- <20250513180757.GA1295002@joelnvbox>
- <20250513215833.GA1353208@joelnvbox>
- <38a7d3f8-3e75-4a1f-bc93-9b301330d898@nvidia.com>
- <f4c946b2988d63a26aff2d03fe73fbfe1f52f31b.camel@nvidia.com>
- <723f7ae8-bb36-4a4c-a1d8-733d131ca222@nvidia.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="dfyo+wf5"
+ARC-Seal: i=1; a=rsa-sha256; t=1747250485; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Wfdv1B8T83o9DZh8SpH3dWjoG+NTYUUTDN3N6T04dqDdUySysMaEQtwSuiXpMoZO47Bdx40Rae5NeKPqLtLejgZg+US1VWSxMMSbnwQIcS6OvjejyXLK9YZT6/mrc4Lbh98vPRPP2N2ZWPZCZnuQF8ihwHsd6HQzfEXwEGTdhXA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1747250485; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yP+1ifj6zxHBL7CjkL5Fc2BNoyCt8ujOfFQ4GKtCvSY=; 
+	b=LQ0vpiNJ08nH9SBAY+1izlBcuL5Czk9B0Zujtgr2iyWFo+8rhncS2DLh1PuOmYVHs+s6Dz6GDxuA0VwtExrAS/W6zQpM5Cqwe5/x5xIAmFIL2gYRNIQASM84/3Ws92JmtlsiOtZRTwTkJfiwoNhrqkwZ7x53JFckQgy+rpYzw8g=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747250485;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=yP+1ifj6zxHBL7CjkL5Fc2BNoyCt8ujOfFQ4GKtCvSY=;
+	b=dfyo+wf5Y1K1R0eLQZvMOeyDt/NWY+npmbKxge28jKcjKUDKZsieiq+zHs2hhPKh
+	G7vci3Vlal6iJZP8DWNw4dHJ5z87kVIm34ddK2ji8/wxdS6IlnlJ1SlcigokxHjXrXh
+	PFKyv6XbVuzlxEXV6LCZSMh4etRYjtBi6SjrHOPA=
+Received: by mx.zohomail.com with SMTPS id 1747250482588551.1658179621887;
+	Wed, 14 May 2025 12:21:22 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH v3 0/2] rust: add support for request_irq
+Date: Wed, 14 May 2025 16:20:50 -0300
+Message-Id: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <723f7ae8-bb36-4a4c-a1d8-733d131ca222@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABLtJGgC/52NQQ6CMBBFr0K6toS2UNCV9zDG1DLIJEBhWomEc
+ HcL3sDl+8l7f2UeCMGzS7Iyghk9uiGCOiXMtmZ4Acc6MpOZLLJC5Dy4Ea3nYSFOML3BhwfSxPN
+ GG5VVqgRTsSiPBA1+jvDtHrlFHxwtx88s9vWXFFIKrc5KprnW55ILXpsBoUtN1wPW5mpd15mnI
+ 5Na17M9Ncv/9W3bvgK1QL7zAAAA
+X-Change-ID: 20250514-topics-tyr-request_irq-4f6a30837ea8
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-On Wed, May 14, 2025 at 10:52:17AM -0400, Joel Fernandes wrote:
-> On 5/13/2025 8:43 PM, Timur Tabi wrote:
-> > On Tue, 2025-05-13 at 17:22 -0700, John Hubbard wrote:
-> >> On 5/13/25 2:58 PM, Joel Fernandes wrote:
-> >>> On Tue, May 13, 2025 at 02:07:57PM -0400, Joel Fernandes wrote:
-> >>>> On Fri, May 02, 2025 at 04:02:33PM +0200, Miguel Ojeda wrote:
-> >>>>> Starting with Rust 1.87.0 (expected 2025-05-15), `objtool` may report:
-> >> ...
-> >>> Btw, Danilo mentioned to me the latest Rust compiler (1.86?) does not give
-> >>> this warning for that patch.
-> >>
-> >> I'm sorry to burst this happy bubble, but I just upgraded to rustc 1.86 and did
-> >> a clean build, and I *am* setting these warnings:
-> > 
-> > I see these warnings with .c code also:
-> > 
-> >   CHK     kernel/kheaders_data.tar.xz
-> > drivers/media/pci/solo6x10/solo6x10-tw28.o: error: objtool: tw28_set_ctrl_val() falls through to
-> > next function tw28_get_ctrl_val()
-> > make[9]: *** [scripts/Makefile.build:203: drivers/media/pci/solo6x10/solo6x10-tw28.o] Error 1
-> > 
-> > I think it's an objtool bug and not a rustc bug.
-> 
-> Thanks John and Timur.
-> And sigh, fwiw I pulled the latest rust nightly build and I see the warning as well:
-> 
-> rustc --version
-> rustc 1.89.0-nightly (414482f6a 2025-05-13)
-> 
-> I am leaning more towards Timur's opinion that this is more than likely an
-> objtool issue.
 
-The above warning is in completely different code from the Rust one, so
-they're likely unrelated.
+---
+Changes in v3:
+- Rebased on driver-core-next
+- Added patch to get the irq numbers from a platform device (thanks,
+  Christian!)
+- Split flags into its own file.
+- Change iff to "if and only if"
+- Implement PartialEq and Eq for Flags
+- Fix some broken docs/markdown
+- Reexport most things so users can elide ::request from the path
+- Add a blanket implementation of ThreadedHandler and Handler for
+  Arc/Box<T: Handler> that just forwards the call to the T. This lets us
+  have Arc<Foo> and Box<Foo> as handlers if Foo: Handler.
+- Rework the examples a bit.
+- Remove "as _" casts in favor of "as u64" for flags. This is needed to
+  cast the individual flags into u64.
+- Use #[repr(u32)] for ThreadedIrqReturn and IrqReturn.
+- Wrapped commit messages to < 75 characters
 
-The fallthrough warnings are typically caused by either Clang undefined
-behavior (usually potential divide by zero or negative shift), or a call
-to an unannotated noreturn function.
+- Link to v2: https://lore.kernel.org/r/20250122163932.46697-1-daniel.almeida@collabora.com
 
-Timur, can you share your .config and compiler version?
+Changes in v2:
+- Added Co-developed-by tag to account for the work that Alice did in order to
+figure out how to do this without Opaque<T> (Thanks!)
+- Removed Opaque<T> in favor of plain T
+- Fixed the examples
+- Made sure that the invariants sections are the last entry in the docs
+- Switched to slot.cast() where applicable,
+- Mentioned in the safety comments that we require that T: Sync,
+- Removed ThreadedFnReturn in favor of IrqReturn,
+- Improved the commit message
 
+Link to v1: https://lore.kernel.org/rust-for-linux/20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com/
+
+---
+Daniel Almeida (2):
+      rust: irq: add support for request_irq()
+      rust: platform: add irq accessors
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/irq.c              |   9 +
+ rust/kernel/irq.rs              |  24 +++
+ rust/kernel/irq/flags.rs        | 102 +++++++++
+ rust/kernel/irq/request.rs      | 455 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/platform.rs         |  52 +++++
+ 8 files changed, 645 insertions(+)
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250514-topics-tyr-request_irq-4f6a30837ea8
+
+Best regards,
 -- 
-Josh
+Daniel Almeida <daniel.almeida@collabora.com>
+
