@@ -1,57 +1,58 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B9326AC3
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 May 2025 22:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA2820C009
+	for <rust-for-linux@vger.kernel.org>; Wed, 14 May 2025 22:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747261408; cv=none; b=EJFGb4N/EY/1G2BUokxNzwEVW+KLwpNDi6KazYL0FY4EVoeEKGG6Sb8twwAh8j4TUQpBqDgJgQpIxLT6koQGMKpU5wZs6AUZ+V/TyzHNnR0JYdal2RhUhC94JeNIMW5d1uO5D4NBHcCF4+HYpYvaustt+2vBaX33+y7Tyg+YE1M=
+	t=1747261599; cv=none; b=nYPH/g0fNh2Vjp/Urln7ziftgehdtVNSXY1eVCNNFcAn6RPk9ABr32nC3c5WC2WUTwC1m7wieZE99orXHfSL27/ev6GZ2j9TbY8IjzRBzzcPPN4rHR9apKwYFrPUkauRkCAKZM56VHI0CURu5qrlUE0eMwF5OfhQcJCNqZdvjX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747261408; c=relaxed/simple;
-	bh=RwTNmCvNmlnw9Kgd5xGr7CHXS0izABe2RbMN9CFXMS8=;
+	s=arc-20240116; t=1747261599; c=relaxed/simple;
+	bh=FtQTm3oxNvJ/l1FwcAmyvIh6lN4Fw3Y5j1lS0sixKYA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iFOYvUWHYD5YSRwBw6pYLEW7vK9MOjUFPUIOme/tdmaHZOysWhI8GAKK6pg6KmqugXHbGOdb0up10J2ZGcTduX6wYKman2BXhnmNZNwyetBaSerVnHx0eT+vxLVr5M4e7VL3G08/TfQZ4yvvSUPPH1PwTYGQvwNhuColRrHg1Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FwniQTTN; arc=none smtp.client-ip=209.85.208.52
+	 To:Cc:Content-Type; b=mJkysMoqLm85he/rxJbPgmO+Ie0515wKOgsiCnAbqVhpz4aV+cJyWgdKcjqesIVl/1SprmIkYuNUrOrCwxYFpz0Of01sSGrhuDQ4FPSbYJ5MxFFnL25fvuK7xaxVr4m3Vj+puNeMV78SdLeR7qDP5GXci6PhmLiDjuMoz4VpJ3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KMj6SQoh; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FwniQTTN"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5fc4fc27983so1543a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 May 2025 15:23:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KMj6SQoh"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5f438523d6fso1524a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 May 2025 15:26:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747261405; x=1747866205; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1747261596; x=1747866396; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RwTNmCvNmlnw9Kgd5xGr7CHXS0izABe2RbMN9CFXMS8=;
-        b=FwniQTTNxiGxg9jBgkUyfHCL0ypZMyho/IgHGGK79kk71Wn47gMm0Ozi2K/D7Cd9f2
-         r07Sssy6rWd8knUoeas8IMFZfwsq4Hr1As+P8NJmV6Ca23uE3hi0vzT2KsBXF69lJH8I
-         7cTTiLmHBbQ2PGIaKL4E4tU2IkD32zEivIor0r0Az875cj/1YhBoqDkldG1TgwP01Owz
-         AtgF6S0D7cUAE907Z9zRbSAD7QVgTpLJTSiq8A8bklxq6ROafP9vXwcL89XaeZ3KBRn6
-         BE49fqUDvCNw0rwJqcJkdYk9YINLKMpnTBoVngL41nupnKB7aLamR6LwpxFnXJw1jTDh
-         VGyw==
+        bh=ajK788JZDGFUfelYOxj8uXfAGypj9boxd8OPVuuZGk4=;
+        b=KMj6SQohGOxtor+gneddbjVEaM6opt+/eJNYIM2DAorurGugmB6scQsN2/UgrrFc1n
+         5l34ubRpqa1o3A0Gw2JOTMmqeJcPaBkIC9X0gkdBHiPDPxV0tXCJkGXLqLErlDpWtamT
+         tbTzfelTV0fGPeMfyIg/315Ozv42esIIpkaS39SCTLXgOK98I1rPyoWNtwrZRNKlLL/z
+         2iGNd8h5Dpw4qqEqszBot98rxZXAshMVKL0YHcSGVdUcNgz5WK1Nta0B2YxubxLTuduF
+         Si5+fyCtO5pVbstRNxM9FzbJ0uJWpJqbWPjtfPO1+2vFEmOf+Y9UuUhHXzz6ObLZyRl7
+         OMsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747261405; x=1747866205;
+        d=1e100.net; s=20230601; t=1747261596; x=1747866396;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RwTNmCvNmlnw9Kgd5xGr7CHXS0izABe2RbMN9CFXMS8=;
-        b=E58r6mdYsspptZZvqfOShdTUFI6cz2zzr8HRRb/3V1kUquzMkQPyuo//qSwz2jar4O
-         dFvwfTZByunJDrWTfbFGSWmLXUrOUiXtBUPdVEu9Dw6mtb+07/CB6joa+iyhgFIome6S
-         7u2njGjKiEDmiovLsm3Wz2mfKj/8SC0q6va93ddR4OZnh5kzCu5wcwaQtT1PmN+jYDLR
-         kNjXy50zfLhymM2J3zireIE2EPH82GycRxaUPppCxhc3cPcYaROIAvUGxpuB+Vsizlk6
-         nkb4djhfrpXAYs6FioV+AlrI7gulFwyAkSCEH9Lki0u8ci4jIyog0+SNspV6iXSWEBcR
-         bL0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU/Fk6gUIlx1grkMUxVEHrR4hyTVdME+HP/dqF1JPS2uGHhKnY/fuNq3yMTDZ2xh8Q3wq8Uv8FN1TgycaH9Yg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyz37eC3qsEgl6+UWAkC/tgqWNGjz1wwLwiN9Un5lye1HaPLT/D
-	LGCIzcUPya1bOdBZy1QmdSUwl+1GX7kt9OTYg3tiRMxN7C/lLsoUEZ91pSRjdXUQcNTJh6c03FU
-	FkZgAhr4XfSQ9lTFibVYsS6bXgVrPjf3eDig94pVY
-X-Gm-Gg: ASbGncsAjIqLiCTxXY/yIOcZeA/rsgXIX0UAFJo/FvKAOqZeZLxC79ZFQn5RzXnAv+4
-	eT5JgYJXYVF2AzzRYd6vWgstvuDIQPrxztjiaBRFsrrxXYCLZzn3VgCwhtboN4cQkpiWtHJBDs+
-	OPdoImJJ/Ehdx1QW/NuRRSxIxQhW3Ro0xBPXF3tpeyZaLkdz77fRwa1KL6S4FDxHw=
-X-Google-Smtp-Source: AGHT+IEcioS8IOc5TbxfNIfZ5cXjNsWw1XzQAseXhhNfXHRz90x7fLQmbiM1kAMbf0vqYJtrywQKEHAKfnDImrrK8/w=
-X-Received: by 2002:a50:c049:0:b0:5fd:28:c3f6 with SMTP id 4fb4d7f45d1cf-5ffc9dbe5b8mr28640a12.4.1747261405302;
- Wed, 14 May 2025 15:23:25 -0700 (PDT)
+        bh=ajK788JZDGFUfelYOxj8uXfAGypj9boxd8OPVuuZGk4=;
+        b=i6mZkVRJ8HXpemlNmkWacedU9FaSOnjS1V/7xiNheXH1o8bLL5gxI5w/t8y+AIQ9ku
+         s8MR9j6+BBSGmI5AndguKeRTqzYGbRZZce/YXqR/ieYhe5FSOxjZQZ7svdZ7rzMTknph
+         xzeduq7Jp+7C3ed5JXFnlZM51H6VKsOSizRzJbedptOO/D4kO7tI+lKPjXq7eDrBpVBy
+         8kobCavSVh565PrxgWvt3UIBcwwu8dgAN0BIbJxdrLIRIk4AbXhM2qpTjOYFohpgjfcO
+         v8paMOznEyQcKYyBc+sD/K3X0/8pfQ9OwSFyYfk0+7GNfPasxEg8itkx2B+bTL45DmrU
+         2X2g==
+X-Forwarded-Encrypted: i=1; AJvYcCXv611IIVcnpruk75T6KD6WBRmwFKC7D9+wBA0HExzqDi2SaXFGxUcwI1QJZsr8KATBmm64aUleH/R52ZdCcg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRqIfPmLiK98FhAZ7zhTQmLEnIrpToePNXGhi7pPfTA1tmX+YJ
+	hi0Q0pZzIpLymr349qkkHL27/p/uwKhG+80Acccv4xhA06pJsMzrMgQuSY2G9/tq/Bv7dohykL9
+	+0BTCkQPKDSPgleyvV5qxWcq3VSGl82/BH2VhNJld
+X-Gm-Gg: ASbGncsrI/jiWEHdupIg5h77PR8X8j0H90Ap2q4jEXY7AVASa2Lqnkuahk+2U5YlmD0
+	04L98juzD4BV5Fk7yRkqa5VI4glF0t10bhkfnL8WOSFQPlvYYFEY3DgNQupWkG/ZPm6X6O2Tjbo
+	ohN4w896/I04nwGkj0xN3WNXNnrjp34bn+HGedKFbqaFXx0kJBu8QsNcAGWPQ5mIQ=
+X-Google-Smtp-Source: AGHT+IGfecSoyspK8L8+g9hqxfDItdcBIBiuhjZMOg8osC4F1/5QLuRdI0pTHJslDrRqhO1yPhpfEUEj1++mmGVrHUA=
+X-Received: by 2002:a50:9f44:0:b0:5fc:e6a6:6a34 with SMTP id
+ 4fb4d7f45d1cf-5ffc9db067cmr33617a12.6.1747261596038; Wed, 14 May 2025
+ 15:26:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,67 +60,136 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
- <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com> <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
- <aCRdNJ2oq-REBotd@pollux> <D9VSJTPCSNXV.1LCXKGKVDGP96@kernel.org>
- <CAGSQo00Pj0qF90712K7xACNEvr2e0q=98b8-0VUcXLD5V+oDhg@mail.gmail.com> <aCUVuXO_jORqlxwr@pollux>
-In-Reply-To: <aCUVuXO_jORqlxwr@pollux>
+ <20250505-debugfs-rust-v5-1-3e93ce7bb76e@google.com> <57ddf59f8f2ca740b11650360ea7d5356dad7112.camel@nvidia.com>
+In-Reply-To: <57ddf59f8f2ca740b11650360ea7d5356dad7112.camel@nvidia.com>
 From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 14 May 2025 15:23:13 -0700
-X-Gm-Features: AX0GCFvRzMPG5-jMuSJFNadqt7uft43BjTBD2x5kHBJ84bqUjANdigcojvCVTLY
-Message-ID: <CAGSQo02nP8MT8q-_gQwjUGFNSyiW2AKOQ3V4yy9jofDzjc0SpA@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+Date: Wed, 14 May 2025 15:26:24 -0700
+X-Gm-Features: AX0GCFua-U5cokvwHDg0ArWsLq4jP7K06ErwyHL95H35likqkuCfUzV0DvJvDfQ
+Message-ID: <CAGSQo03rWM8DABQWGfiHwQVbUGC5rXTVvKx5AZhCer58g2A-iA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] rust: debugfs: Bind DebugFS directory creation
+To: Timur Tabi <ttabi@nvidia.com>
+Cc: "tmgross@umich.edu" <tmgross@umich.edu>, "benno.lossin@proton.me" <benno.lossin@proton.me>, 
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "gary@garyguo.net" <gary@garyguo.net>, 
+	"a.hindborg@kernel.org" <a.hindborg@kernel.org>, 
+	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, 
+	"dakr@kernel.org" <dakr@kernel.org>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, 
+	"aliceryhl@google.com" <aliceryhl@google.com>, "ojeda@kernel.org" <ojeda@kernel.org>, 
+	"rafael@kernel.org" <rafael@kernel.org>, "samitolvanen@google.com" <samitolvanen@google.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 14, 2025 at 3:14=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Wed, May 7, 2025 at 11:46=E2=80=AFAM Timur Tabi <ttabi@nvidia.com> wrote=
+:
 >
-> On Wed, May 14, 2025 at 03:08:21PM -0700, Matthew Maurer wrote:
-> > On Wed, May 14, 2025 at 2:54=E2=80=AFAM Benno Lossin <lossin@kernel.org=
-> wrote:
-> > > Another problem that only affects complicated debugfs structures is t=
-hat
-> > > you would have to store all subdirs & files somewhere. If the structu=
-re
-> > > is dynamic and changes over the lifetime of the driver, then you'll n=
-eed
-> > > a `Vec` or store the dirs in `Arc` or similar, leading to extra
-> > > allocations.
+> On Mon, 2025-05-05 at 23:51 +0000, Matthew Maurer wrote:
 > >
-> > Yep, this is part of why I tried to follow the "Build it, then hold
-> > the needed handles to keep it alive" approach rather than keeping the
-> > entire structure around.
+> > +impl<'a> Entry<'a> {
+> > +    /// Constructs a new DebugFS [`Entry`] from the underlying pointer=
+.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The pointer must either be an error code, `NULL`, or represent=
+ a transfer of ownership of
+> > a
+> > +    /// live DebugFS directory. If this is a child directory or file, =
+`'a` must be less than the
+> > +    /// lifetime of the parent directory.
+> > +    #[cfg(CONFIG_DEBUG_FS)]
+> > +    unsafe fn from_ptr(entry: *mut bindings::dentry) -> Self {
+> > +        Self {
+> > +            entry,
+> > +            _phantom: PhantomData,
+> > +        }
+> > +    }
+> > +
+> > +    #[cfg(not(CONFIG_DEBUG_FS))]
+> > +    fn new() -> Self {
+> > +        Self {
+> > +            _phantom: PhantomData,
+> > +        }
+> > +    }
 >
-> I already replied to that [1]:
->
-> "If it changes dynamically then it's pretty likely that we do not only wa=
-nt to
-> add entries dynamically, but also remove them, which implies that we need=
- to be
-> able to drop them. So, I don't think that's a problem."
->
-> It is much more of a problem if we can't remove certain entries anymore w=
-ithout
-> removing all of them.
->
-> [1] https://lore.kernel.org/rust-for-linux/aCR9cD7OcSefeaUm@pollux/
+> I am new to Rust, so forgive me if this is a dumb question, but it looks =
+to me that if
+> CONFIG_DEBUG_FS is defined, then you need to call from_ptr() to create a =
+new Entry, but if
+> CONFIG_DEBUG_FS is not defined, then you need to call new() instead.  Is =
+that right?  If so, is that
+> really idiomatic?
 
-I think the main question here is this - is it OK to land an API that
-does static-layout or add-only-layout first, and we figure out how to
-do dynamic modification later, or do you think we need to solve the
-self-referential lifetimes issue in the first edition of DebugFS
-support?
+I could make `from_ptr` take an arbitrary pointer and discard it as
+well, but the callsite for `from_ptr` involves calling into the C
+bindings to get a pointer back. I can do one of the following:
+1. Create a stub function for the CONFIG_DEBUG_FS=3Dn variant of those
+functions (since those are in header files, so they need a special
+helper) which gets compiled in, and just returns ERR_PTR(ENODEV), call
+that, and pass it back in. (This leads to code bloat, though not
+much.)
+2. Manually call `ptr::dangling()` and pass it to the alt `from_ptr`
+that ignores its argument
+3. Create and call `::new`.
 
-If you do think we need support for dynamic layout modification in the
-first patchset, do you think we want to allow static layouts that
-forget things, or mandate that we always manage all of the handles for
-the user?
+If I had more call-sites where I had a pointer-like object to put in
+there, I'd use a `from_ptr` that discards. I used `::new` just because
+it was easier.
+
+>
+> In the Dir implementation below, you are careful to call from_ptr() only =
+from the CONFIG_DEBUG_FS
+> version of create(), and you call new() only from the !CONFIG_DEBUG_FS ve=
+rsion of create().  So your
+> bases are covered as long as no driver tries to create an Entry from scra=
+tch.
+>
+> But I guess that can't happen because Entry is not public, right?
+
+Correct, `Entry` is a private type.
+
+>
+> > +    /// Create a DebugFS subdirectory.
+> > +    ///
+> > +    /// Subdirectory handles cannot outlive the directory handle they =
+were created from.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// # use kernel::c_str;
+> > +    /// # use kernel::debugfs::Dir;
+> > +    /// let parent =3D Dir::new(c_str!("parent"));
+> > +    /// let child =3D parent.subdir(c_str!("child"));
+> > +    /// ```
+> > +    pub fn subdir<'b>(&'b self, name: &CStr) -> Dir<'b> {
+> > +        Dir::create(name, Some(self))
+> > +    }
+> > +
+> > +    /// Create a new directory in DebugFS at the root.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// # use kernel::c_str;
+> > +    /// # use kernel::debugfs::Dir;
+> > +    /// let debugfs =3D Dir::new(c_str!("parent"));
+> > +    /// ```
+> > +    pub fn new(name: &CStr) -> Self {
+> > +        Dir::create(name, None)
+> > +    }
+>
+> Is there any real value to having two constructors, just to avoid passing=
+ None for the one time that
+> a root directory will be created?  The C code has no problem passing NULL=
+.
+
+Past revisions (and some of Danilo's suggestions on this revision)
+required the ability to return different types when a directory was
+not a subdir. In earlier versions, because subdirectories were not
+automatically cleaned on drop unless opted in, where the root
+directory was. In future versions, he would like me to use this to
+suppress `Dir::keep` from being callable on root directories.
+
+>
+>
