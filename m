@@ -1,30 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D801722172F;
-	Wed, 14 May 2025 08:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8357121D3F8;
+	Wed, 14 May 2025 09:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747212656; cv=none; b=jUPW796Is5Tpqyxt7lnF3OiMYjcqau4VWgufHU+nVM5cA48nLGbu9WP59A7L/KbVtAWaWqJb7ciUhQ+g3/HZMvfPikWOo1+GVkJZKcvM9jVVtuGweOtDDdtOR0ZkOBRls9/Ik/KGB/sc1Q7utU4v4/WrgaUu/fr6ZZWrBvCts0E=
+	t=1747213627; cv=none; b=ifsbuZWHYkRukpy6M8Vsm6GLrmbUL03u5FOh2QVV50O/MWN+et49JdOey+jGZe0dd+0JukzGjG7WiNNXlzcb4DRXYUWVoVFzdzmLFBL7nuRHkwqE606I032QzjTbMD8Ko8I+huJJRyS8l1LgcU6AX779n7RkUSVm9DrXC7KqdRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747212656; c=relaxed/simple;
-	bh=bPJvJAlEG0gOfJqjqZ+91FUwlJXWKk81fnhHqDaQHG8=;
+	s=arc-20240116; t=1747213627; c=relaxed/simple;
+	bh=1Ay91pQIr/kxqIgBdE0CINhcNvTb+Iv5tv8OnEo7WeQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jFfIjT/LI0HLqj0V/LWZukBnnCJicE5+pCEitObpCATBe7L9GUOVDr3X9RzirVfkVPu90ZJmGOYROGOQ3YD/j7i927+3XFEYUKCF3Kt1UCd75SpRAooL9ss6Ji+XfWZes9ikoX49VlRFrKx8eJNCLPCbx8DIdFjSH2Wt1eYE748=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pX0TR5qW; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=dbxmgj+vjo8Hidq/5EkLm4+/plYsgpf/81yZNfn5WDqhX8RTru0ga+Cg9RSQD8AZ0FApqn8wXcrZbi3T02w8UHfUWKbNJobEQOWS2ewIxr8BKmCyztrXbFgkncWiE7vRp+UwPBQjD5WJ1ElkXCBmlAfDp6cnWk9Nr/quVOwXt1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWVNPvoO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pX0TR5qW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961E3C4CEE9;
-	Wed, 14 May 2025 08:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747212655;
-	bh=bPJvJAlEG0gOfJqjqZ+91FUwlJXWKk81fnhHqDaQHG8=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWVNPvoO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EBAC4CEE9;
+	Wed, 14 May 2025 09:07:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747213626;
+	bh=1Ay91pQIr/kxqIgBdE0CINhcNvTb+Iv5tv8OnEo7WeQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pX0TR5qWdb3VXmfeH9EVnwfs/BTG+FfwuDGtTzY9sXVnq36NxEW0Y7GfKRA53rGB4
-	 6YZ8xIkcq7lxo+g+58KhbiCPsuQ2WGLcjJtrkDiz/UlCzDv2FmPZFwgz85NMWai5h3
-	 RN3zMijGH4z8tT4bz84CGZzsY1EfTY24b+zb00RQ=
-Date: Wed, 14 May 2025 10:49:06 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	b=gWVNPvoOdLLSVh1tHgeSbUxni0SH6RxnyqdF9sNjtQazkLdHxDe2TK4Y3rmLhEdmq
+	 aCMwhcZIFEcBRc4MAOQRpUDpcC8heN2jlF8eFmzjifU21G1Dk5tBIUTUd6LUn6GEy6
+	 AlPNf5envYISTq696ezMGl+ANrCWcDd04vyhJEc4iV8pAe3Z+hOLMsTFQLEaldnro8
+	 7YR7yYmmwvRepRrMzpthA8HcHAvO2ZVA4ncal2Bog8p/JAT5Rs6woZLp2c1qHXJkDp
+	 XBBT0Ec6uLQOZFILt0SRwbX0B2fKw07aApJ8aP4DjXvQ91ca+nTDeBQdcN4tGmfl9m
+	 L0uqB+FFVt2pg==
+Date: Wed, 14 May 2025 11:07:00 +0200
+From: Danilo Krummrich <dakr@kernel.org>
 To: Benno Lossin <lossin@kernel.org>
 Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -33,16 +36,16 @@ Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sami Tolvanen <samitolvanen@google.com>,
 	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 1/4] rust: debugfs: Bind DebugFS directory creation
-Message-ID: <2025051451-charm-lankiness-8d59@gregkh>
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+Message-ID: <aCRdNJ2oq-REBotd@pollux>
 References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
- <20250505-debugfs-rust-v5-1-3e93ce7bb76e@google.com>
- <D9VPJFJ44PUP.3D0HGIEJC9UGY@kernel.org>
+ <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
+ <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,63 +54,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <D9VPJFJ44PUP.3D0HGIEJC9UGY@kernel.org>
+In-Reply-To: <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
 
-On Wed, May 14, 2025 at 09:33:05AM +0200, Benno Lossin wrote:
+On Wed, May 14, 2025 at 09:20:49AM +0200, Benno Lossin wrote:
 > On Tue May 6, 2025 at 1:51 AM CEST, Matthew Maurer wrote:
-> > +impl<'a> Dir<'a> {
-> > +    /// Create a new directory in DebugFS. If `parent` is [`None`], it will be created at the root.
-> > +    #[cfg(CONFIG_DEBUG_FS)]
-> > +    fn create<'b>(name: &CStr, parent: Option<&'a Dir<'b>>) -> Self {
-> > +        let parent_ptr = match parent {
-> > +            Some(parent) => parent.0.as_ptr(),
-> > +            None => core::ptr::null_mut(),
-> > +        };
-> > +        // SAFETY:
-> > +        // * `name` argument points to a NUL-terminated string that lives across the call, by
-> > +        //   invariants of `&CStr`.
-> > +        // * If `parent` is `None`, `parent` accepts null pointers to mean create at root.
-> > +        // * If `parent` is `Some`, `parent` accepts live dentry debugfs pointers.
-> > +        //   so we can call `Self::from_ptr`.
-> > +        let dir = unsafe { bindings::debugfs_create_dir(name.as_char_ptr(), parent_ptr) };
+> > +impl kernel::Module for RustDebugFs {
+> > +    fn init(_this: &'static ThisModule) -> Result<Self> {
+> > +        // Create a debugfs directory in the root of the filesystem called "sample_debugfs".
+> > +        let debugfs = Dir::new(c_str!("sample_debugfs"));
 > > +
-> > +        // SAFETY: `debugfs_create_dir` either returns an error code or a legal `dentry` pointer,
-> > +        Self(unsafe { Entry::from_ptr(dir) })
-> > +    }
-> > +
-> > +    #[cfg(not(CONFIG_DEBUG_FS))]
-> > +    fn create<'b>(_name: &CStr, _parent: Option<&'a Dir<'b>>) -> Self {
-> > +        Self(Entry::new())
-> > +    }
-> > +
-> > +    /// Create a DebugFS subdirectory.
+> > +        {
+> > +            // Create a subdirectory, so "sample_debugfs/subdir" now exists.
+> > +            // We wrap it in `ManuallyDrop` so that the subdirectory is not automatically discarded
+> > +            // at the end of the scope - it will be cleaned up when `debugfs` is.
+> > +            let sub = ManuallyDrop::new(debugfs.subdir(c_str!("subdir")));
 > 
-> I'm not familiar with debugfs, if I run `Dir::create(c"foo", None)`
-> twice, will both of the returned values refer to the same or different
-> directories? 
+> I dislike the direct usage of `ManuallyDrop`. To me the usage of
+> `ManuallyDrop` signifies that one has to opt out of `Drop` without the
+> support of the wrapped type. But in this case, `Dir` is sometimes
+> intended to not be dropped, so I'd rather have a `.keep()` function I
+> saw mentioned somewhere.
 
-You can not create a directory, or file, in the same location with the
-same name.  The call will fail, so don't do that :)
+I agree, if we really want to "officially" support to forget() (sub-)directories
+and files in order to rely on the recursive cleanup of the "root" directory, it
+should be covered explicitly by the API. I.e. (sub-)directories and files should
+have some kind of keep() and / or forget() method, to make it clear that this is
+supported and by design and won't lead to any leaks.
 
-> What if I give a parent?
+Consequently, this would mean that we'd need something like your proposed const
+generic on the Dir type, such that keep() / forget() cannot be called on the
+"root" directory.
 
-Same thing, it will fail.
+However, I really think we should keep the code as it is in this version and
+just don't provide an example that utilizes ManuallyDrop and forget().
 
-> If the answer in both cases is that they will refer to the same
-> directory, then I'd change the docs to mention that.
+I don't see how the idea of "manually dropping" (sub-)directories and files
+provides any real value compared to just storing their instance in a driver
+structure as long as they should stay alive, which is much more intuitive
+anyways.
 
-Nope, that does not happen.
+It either just adds complexity to the API (due to the need to distingish between
+the "root" directory and sub-directories) or makes the API error prone by
+providing a *valid looking* option to users to leak the "root" directory.
 
-> So instead of
-> "Creates" we could say "Finds or creates" or something better.
-
-Find does not happen.
-
-> If they refer to different files, then I am confused how that would look
-> like in user-land :)
-
-Agreed, which is why that does not happen :)
-
-thanks,
-
-greg k-h
+- Danilo
