@@ -1,150 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDBE269CE4;
-	Wed, 14 May 2025 09:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA5A270572;
+	Wed, 14 May 2025 10:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747216484; cv=none; b=a7N8s8/CpzE/KQn0YND+NNewqmhpr8FJeFuPjGyIbOCKu0V2LFz5bdW1UG/zaJ4PQUGi0Lyllwz02JCbDO7Mkzr9RqfhyijHDRs3jPx+znvSRXE0WZ2A49BlFMdsXF964nRCzckcCoAFaxHj8vcS5qitySDAZQmA8c+Iyj1P14g=
+	t=1747217809; cv=none; b=UOeaZLS3vlYx/gFJuQBz4gQi1NodfVjNMq2jRKcgDYrbh8eOLCNOaGmz7Dc4jOJWcFh2rG0ESDtxn2bXafV5Gvh3ESE+RUy1DCfHZTTO5S8WoT48l7PD8OVdHVv1LxuCQkJQRcIXT5LaxYSG8OiVOmrR2l52fFASpOgK/nejxpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747216484; c=relaxed/simple;
-	bh=Q4i1YFY9BC6oY63LcLnbiox6aS6RopyQdTJcQYzHeO0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=SqFpkDcfwv09dDLFTfIuD1O7G0hyvCKPsmw2B6icyCi0qcNAyWWZCJAwb/Cqe85Ih8RbjAeUnAmlfiLo9zodcb8uAPTs+Eird6TJP53AevHuO3+YLTPKZRO+6TQLLNBQB6kga081mgBne6I3g5sOYmPcmohX8Mn/SihumY7IOZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcMBFmdI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747217809; c=relaxed/simple;
+	bh=oCtyEl+NOfQyDc1IWfVhZUWDYE1ceWAqg6CDpX7/77A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D3MavXGuQ0HFxfBq8QrIKrOIV7hJlc/Smm+gOkjON33e1+HeonnoIC1tiTDEFvGeK6YWvlOL3NRhC6RIKmlFGLd+v0h+Tk5osDNUY3Y6ssjEjW8vS+5cfSq2Fd+673QBPDp6HQuu75ATXfTtgLwhqw7KphvTduGTCjJ4qJ05wps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j91Lsu+B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcMBFmdI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4DFC4CEE9;
-	Wed, 14 May 2025 09:54:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j91Lsu+B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B71BC4CEFD;
+	Wed, 14 May 2025 10:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747216484;
-	bh=Q4i1YFY9BC6oY63LcLnbiox6aS6RopyQdTJcQYzHeO0=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=BcMBFmdISrvZvNb1vVC4v+ZJdxkEb+WywgMGtkavsjXwsP+YfzcRyk5vadYKGpjH3
-	 9aska77FprvEx70Mxa9uPW8tryWt4cSmjeHc8kqbZEfmt3fCu1WCSnEUSRNAD2H1ek
-	 mdY/MOd7sn2Fx31vTYE4mj5TUxlkAV2+7zNNeQosPKBR5aC0cV67ZHP5sjNHSJhDF/
-	 rrr2pDU3R4CatP3X+9+DTj/WCbTHY6R/xYf3IJINUCwhCYgoDJcYdpGvxH4uq00Jnh
-	 eFUzujg+7hdnsNMDZ/hntN+NPZWknF0YEgyfCWQpG+PemjZDc1Sb5O3eP1cCdLNsdZ
-	 t4RorkmslpIBg==
+	s=k20201202; t=1747217809;
+	bh=oCtyEl+NOfQyDc1IWfVhZUWDYE1ceWAqg6CDpX7/77A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j91Lsu+BpGJDE0kvIn4V5dcLCYvOA6E79NPM3xmlvk8hFVfp/1Yh3CiNV3EBME8jI
+	 REHrvyAIUZ/S7N63051S3/QP0kAX6iBRAmf5yJuKPStL9IQXHe5PYgptwt8iqc4GeZ
+	 RGkThlYFqfdnp72kUhD9XdGYDR1KJOW7uTGQknvmPdawgb27d/ccq88w3B3ZEQk08u
+	 UKsPSObsdyl8Wv0LvUSpiqnQIXgA3I2wVwRmtIquBtgJwiwA5f9VhhdnoQuVw8m2tE
+	 XV0W6x+LxWcJo/5mqX2ohl8XmRc4LDrkmcdS9JaoARz+eHvDZ+gQL8ZbOI4w4s0VqO
+	 l1DjH9lHwst7A==
+Date: Wed, 14 May 2025 12:16:43 +0200
+From: Mark Brown <broonie@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3] rust: regulator: add a bare minimum regulator
+ abstraction
+Message-ID: <aCRti2d5x2bL0mj6@finisterre.sirena.org.uk>
+References: <20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com>
+ <D9VATLUHDGU8.53I80TGVRV0J@kernel.org>
+ <aCRKR5h_X04OXgjq@finisterre.sirena.org.uk>
+ <D9VS6WE94O04.GXFI0K5BH4XN@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 14 May 2025 11:54:39 +0200
-Message-Id: <D9VSJTPCSNXV.1LCXKGKVDGP96@kernel.org>
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
- Tabi" <ttabi@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
- <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
- <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org> <aCRdNJ2oq-REBotd@pollux>
-In-Reply-To: <aCRdNJ2oq-REBotd@pollux>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="eknOCiAO5QhR+QEZ"
+Content-Disposition: inline
+In-Reply-To: <D9VS6WE94O04.GXFI0K5BH4XN@kernel.org>
+X-Cookie: Well begun is half done.
 
-On Wed May 14, 2025 at 11:07 AM CEST, Danilo Krummrich wrote:
-> On Wed, May 14, 2025 at 09:20:49AM +0200, Benno Lossin wrote:
->> On Tue May 6, 2025 at 1:51 AM CEST, Matthew Maurer wrote:
->> > +impl kernel::Module for RustDebugFs {
->> > +    fn init(_this: &'static ThisModule) -> Result<Self> {
->> > +        // Create a debugfs directory in the root of the filesystem c=
-alled "sample_debugfs".
->> > +        let debugfs =3D Dir::new(c_str!("sample_debugfs"));
->> > +
->> > +        {
->> > +            // Create a subdirectory, so "sample_debugfs/subdir" now =
-exists.
->> > +            // We wrap it in `ManuallyDrop` so that the subdirectory =
-is not automatically discarded
->> > +            // at the end of the scope - it will be cleaned up when `=
-debugfs` is.
->> > +            let sub =3D ManuallyDrop::new(debugfs.subdir(c_str!("subd=
-ir")));
->>=20
->> I dislike the direct usage of `ManuallyDrop`. To me the usage of
->> `ManuallyDrop` signifies that one has to opt out of `Drop` without the
->> support of the wrapped type. But in this case, `Dir` is sometimes
->> intended to not be dropped, so I'd rather have a `.keep()` function I
->> saw mentioned somewhere.
->
-> I agree, if we really want to "officially" support to forget() (sub-)dire=
-ctories
-> and files in order to rely on the recursive cleanup of the "root" directo=
-ry, it
-> should be covered explicitly by the API. I.e. (sub-)directories and files=
- should
-> have some kind of keep() and / or forget() method, to make it clear that =
-this is
-> supported and by design and won't lead to any leaks.
->
-> Consequently, this would mean that we'd need something like your proposed=
- const
-> generic on the Dir type, such that keep() / forget() cannot be called on =
-the
-> "root" directory.
->
-> However, I really think we should keep the code as it is in this version =
-and
-> just don't provide an example that utilizes ManuallyDrop and forget().
->
-> I don't see how the idea of "manually dropping" (sub-)directories and fil=
-es
-> provides any real value compared to just storing their instance in a driv=
-er
-> structure as long as they should stay alive, which is much more intuitive
-> anyways.
 
-Yeah that's whats normally done in Rust anyways. But I think that
-lifetimes bite us in this case:
+--eknOCiAO5QhR+QEZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-    let debugfs: Dir<'static> =3D Dir::new(cstr!("sample_debugfs"));
+On Wed, May 14, 2025 at 11:37:46AM +0200, Benno Lossin wrote:
+> On Wed May 14, 2025 at 9:46 AM CEST, Mark Brown wrote:
+> > On Tue, May 13, 2025 at 10:01:05PM +0200, Benno Lossin wrote:
 
-    let sub: Dir<'a> =3D debugfs.subdir(cstr!("subdir"));
-    // lifetime `'a` starts in the line above and `sub` borrows `debugfs`
+> >> This isn't fully clear what it's supposed to mean to me. Maybe mention
+> >> the `regulator_enable` function?
 
-    /* code for creating the file etc */
+> > I suspect this is adequately clear to someone with the domain specific
+> > knowledge required to be using the API.
 
-    Ok(Self { _debugfs: debugfs, _sub: sub })
-    // lifetime `'a` has to end in the line above, since debugfs is moved b=
-ut `sub` still borrows from it!
+> I still think it's useful to name the exact function that is meant by
+> "enabled".
 
-This code won't compile, since we can't store the "root" dir in the same
-struct that we want to store the subdir, because the subdir borrows from
-the root dir.
+It's not clear to me that it's helpful to have to refer to the C API, as
+opposed to just being free standing.
 
-Essentially this would require self-referential structs like the
-`ouroboros` crate [1] from user-space Rust. We should rather have the
-`.keep()` function in the API than use self-referential structs.
+> >> Why don't we drop the refcount if the `regulator_disable` call fails?
 
-[1]: https://docs.rs/ouroboros/latest/ouroboros/attr.self_referencing.html
+> > If you fail to disable the regulator then the underlying C code won't
+> > drop it's reference count.
 
-Another problem that only affects complicated debugfs structures is that
-you would have to store all subdirs & files somewhere. If the structure
-is dynamic and changes over the lifetime of the driver, then you'll need
-a `Vec` or store the dirs in `Arc` or similar, leading to extra
-allocations.
+> So if it fails, the regulator should stay alive indefinitely? Would be
+> useful to explain that in the comment above the `ManuallyDrop`.
 
-> It either just adds complexity to the API (due to the need to distingish =
-between
-> the "root" directory and sub-directories) or makes the API error prone by
-> providing a *valid looking* option to users to leak the "root" directory.
+Practically speaking if the regulator disable fails the system is having
+an extremely bad time and the actual state of the regulator is not clear.
+Users might want to try some attempt at retrying, one of which could
+possibly succeed in future, but realistically if this happens there's
+something fairly catastrophic going on.  Some critical users might want
+to care and have a good idea what makes sense for them, but probably the
+majority of users of the API aren't going to have a good strategy here.
 
-I agree with this, I want that `ManuallyDrop` & `forget` are only used
-rarely mostly for low-level operations.
+--eknOCiAO5QhR+QEZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
----
-Cheers,
-Benno
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgkbYcACgkQJNaLcl1U
+h9Am8Qf8C86IhOs2s/K19hiPXFhxdjQYOMCBzsE5/+5E1xtX3kF8cSebCdtzAGMz
+D3oH80+SkCuOH2/LOQFiCPc2g/aLJ4Pt6Q+QrHQi9hYVTJveYqgd7oqD535dp3pH
+jC9GZHL/WfrD+EQNR+viPu/O9Sn81kFWKPprLeyqfMAWZXeiUnPSYEYs9jOINGMB
+5SlBXMp7SR86yKHzUgcNI0i+ZuXysOUQj7QDFlqOdexlhbHI2H67p//DaRAYuLgR
+3HUBSO4OwCXxAG5WBjlmcVViViPZR/MvqzGq5L4WxUc/Vh/bC1kF7Ww4dtK23oDL
+sB5ISU3Pgpyx8zMkJEv7yLSUO2H6dw==
+=VwnR
+-----END PGP SIGNATURE-----
+
+--eknOCiAO5QhR+QEZ--
