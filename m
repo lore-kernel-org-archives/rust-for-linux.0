@@ -1,100 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8357121D3F8;
-	Wed, 14 May 2025 09:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7C21FF60E;
+	Wed, 14 May 2025 09:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747213627; cv=none; b=ifsbuZWHYkRukpy6M8Vsm6GLrmbUL03u5FOh2QVV50O/MWN+et49JdOey+jGZe0dd+0JukzGjG7WiNNXlzcb4DRXYUWVoVFzdzmLFBL7nuRHkwqE606I032QzjTbMD8Ko8I+huJJRyS8l1LgcU6AX779n7RkUSVm9DrXC7KqdRc=
+	t=1747215144; cv=none; b=pmY7BnFPiALntB4bwxNOreMAI7t3dXBJIqVo9RmCKKQD5fVEq3huLszw8g8IjaJBTfQRZ8Fg7JddWh5tmo1fzeIuamUsnRlHFSaAT23JfYW23RgGgVh+7fVxBWVa9bkv9PF8SHjjOSjaVZ6RwNhx/+Y+9PDfwTjO2+DeJZiKODQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747213627; c=relaxed/simple;
-	bh=1Ay91pQIr/kxqIgBdE0CINhcNvTb+Iv5tv8OnEo7WeQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dbxmgj+vjo8Hidq/5EkLm4+/plYsgpf/81yZNfn5WDqhX8RTru0ga+Cg9RSQD8AZ0FApqn8wXcrZbi3T02w8UHfUWKbNJobEQOWS2ewIxr8BKmCyztrXbFgkncWiE7vRp+UwPBQjD5WJ1ElkXCBmlAfDp6cnWk9Nr/quVOwXt1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWVNPvoO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747215144; c=relaxed/simple;
+	bh=OsCI+SEfMW/es4yIxIl67MqpGQd1arTAgfmC5tthM/o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Qd1k/2LXI0SnN/uGEN4xutktUO6hSuZILs8QytsTgFsRbiCZnXpQw/CiPte5ZpFmvy3Rt713X7voEjCX6hWdO+D1zUZFqm4voVaSJymutL8xypVGiqSI1dPJVB7dLOEMoh8fTY6ua1AsgaM9B0SKFm1WhmicWY085V4bXn4x6tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOYq9BuH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWVNPvoO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EBAC4CEE9;
-	Wed, 14 May 2025 09:07:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOYq9BuH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22583C4CEE9;
+	Wed, 14 May 2025 09:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747213626;
-	bh=1Ay91pQIr/kxqIgBdE0CINhcNvTb+Iv5tv8OnEo7WeQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gWVNPvoOdLLSVh1tHgeSbUxni0SH6RxnyqdF9sNjtQazkLdHxDe2TK4Y3rmLhEdmq
-	 aCMwhcZIFEcBRc4MAOQRpUDpcC8heN2jlF8eFmzjifU21G1Dk5tBIUTUd6LUn6GEy6
-	 AlPNf5envYISTq696ezMGl+ANrCWcDd04vyhJEc4iV8pAe3Z+hOLMsTFQLEaldnro8
-	 7YR7yYmmwvRepRrMzpthA8HcHAvO2ZVA4ncal2Bog8p/JAT5Rs6woZLp2c1qHXJkDp
-	 XBBT0Ec6uLQOZFILt0SRwbX0B2fKw07aApJ8aP4DjXvQ91ca+nTDeBQdcN4tGmfl9m
-	 L0uqB+FFVt2pg==
-Date: Wed, 14 May 2025 11:07:00 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-Message-ID: <aCRdNJ2oq-REBotd@pollux>
-References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
- <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
- <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+	s=k20201202; t=1747215143;
+	bh=OsCI+SEfMW/es4yIxIl67MqpGQd1arTAgfmC5tthM/o=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=IOYq9BuHy+XUHlHP9+BfK9AEUSgQWF/kgBjJLWyXIFqg2kWAcd+HYj0q2Y79hI20O
+	 GA3H6TYlRDjcm/J+FbNpr/hEQjdwUfeBET+RNWSLI6xNEW3JmzzoZ6q/ty9I/7Hoph
+	 Lg3e9gAdKXMkVyDZt7FjqYFxVvp7xl8LdiPPIldcECwwlmQvTm2wb+RIf2dTvimuRF
+	 vAcvVyMPe1IWRudxByjLlFrDQ+4wkzWJ+GfLqbCcDLDGgAQGZFqX8Q3wat8vJgSINK
+	 PrRVJ+Yy+WX+mskIeeraESU4s8dXzu+Ky+tX6CTVI6mSHqQ0Lb3UgcAPWiGRrukaz9
+	 9sHAClmj5slFA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 May 2025 11:32:19 +0200
+Message-Id: <D9VS2Q4IX7LH.3JLXQUMWYJ2FP@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v10 1/5] rust: types: Add Ownable/Owned types
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Oliver Mangold" <oliver.mangold@pm.me>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Asahi Lina" <lina@asahilina.net>
+X-Mailer: aerc 0.20.1
+References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me>
+ <20250502-unique-ref-v10-1-25de64c0307f@pm.me>
+In-Reply-To: <20250502-unique-ref-v10-1-25de64c0307f@pm.me>
 
-On Wed, May 14, 2025 at 09:20:49AM +0200, Benno Lossin wrote:
-> On Tue May 6, 2025 at 1:51 AM CEST, Matthew Maurer wrote:
-> > +impl kernel::Module for RustDebugFs {
-> > +    fn init(_this: &'static ThisModule) -> Result<Self> {
-> > +        // Create a debugfs directory in the root of the filesystem called "sample_debugfs".
-> > +        let debugfs = Dir::new(c_str!("sample_debugfs"));
-> > +
-> > +        {
-> > +            // Create a subdirectory, so "sample_debugfs/subdir" now exists.
-> > +            // We wrap it in `ManuallyDrop` so that the subdirectory is not automatically discarded
-> > +            // at the end of the scope - it will be cleaned up when `debugfs` is.
-> > +            let sub = ManuallyDrop::new(debugfs.subdir(c_str!("subdir")));
-> 
-> I dislike the direct usage of `ManuallyDrop`. To me the usage of
-> `ManuallyDrop` signifies that one has to opt out of `Drop` without the
-> support of the wrapped type. But in this case, `Dir` is sometimes
-> intended to not be dropped, so I'd rather have a `.keep()` function I
-> saw mentioned somewhere.
+On Fri May 2, 2025 at 11:02 AM CEST, Oliver Mangold wrote:
+> +/// Types that may be owned by Rust code or borrowed, but have a lifetim=
+e managed by C code.
+> +///
+> +/// It allows such types to define their own custom destructor function =
+to be called when
+> +/// a Rust-owned reference is dropped.
+> +///
+> +/// This is usually implemented by wrappers to existing structures on th=
+e C side of the code.
 
-I agree, if we really want to "officially" support to forget() (sub-)directories
-and files in order to rely on the recursive cleanup of the "root" directory, it
-should be covered explicitly by the API. I.e. (sub-)directories and files should
-have some kind of keep() and / or forget() method, to make it clear that this is
-supported and by design and won't lead to any leaks.
+The docs should mention `AlwaysRefCounted` and when to use it instead of
+this trait. We should probably also backlink from `AlwaysRefCounted` to
+`Ownable`.
 
-Consequently, this would mean that we'd need something like your proposed const
-generic on the Dir type, such that keep() / forget() cannot be called on the
-"root" directory.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that:
+> +/// - Any objects owned by Rust as [`Owned<T>`] stay alive while that ow=
+ned reference exists (i.e.
+> +///   until the [`release()`](Ownable::release) trait method is called).
 
-However, I really think we should keep the code as it is in this version and
-just don't provide an example that utilizes ManuallyDrop and forget().
+I don't immediately understand what this means. How about "Any value of
+type `Self` needs to be stored as [`Owned<Self>`]."? And then ask in
+`Owned::from_raw` for a pointer that is valid indefinitely (or at least
+until `release` is called).
 
-I don't see how the idea of "manually dropping" (sub-)directories and files
-provides any real value compared to just storing their instance in a driver
-structure as long as they should stay alive, which is much more intuitive
-anyways.
+> +/// - That the C code follows the usual mutable reference requirements. =
+That is, the kernel will
+> +///   never mutate the [`Ownable`] (excluding internal mutability that f=
+ollows the usual rules)
+> +///   while Rust owns it.
 
-It either just adds complexity to the API (due to the need to distingish between
-the "root" directory and sub-directories) or makes the API error prone by
-providing a *valid looking* option to users to leak the "root" directory.
+I feel like this requirement is better put on the `Owned::from_raw`
+function.
 
-- Danilo
+> +pub unsafe trait Ownable {
+> +    /// Releases the object (frees it or returns it to foreign ownership=
+).
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the object is no longer referenced afte=
+r this call.
+> +    unsafe fn release(this: NonNull<Self>);
+> +}
+> +
+> +/// A subtrait of Ownable that asserts that an [`Owned<T>`] or `&mut Own=
+ed<T>` Rust reference
+> +/// may be dereferenced into a `&mut T`.
+
+The "A subtrait of Ownable that asserts" sounds a bit clumsy to me, how
+about "Type where [`Owned<Self>`] derefs to `&mut Self`."?
+
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that access to a `&mut T` is safe, implying=
+ that it is okay to call
+> +/// [`core::mem::swap`] on the `Ownable`. This excludes pinned types (me=
+aning: most kernel types).
+
+I don't like that we put this requirement here, since it's actually
+something that should be asserted by `Owned::from_raw`.
+The reason for that is that anyone can call `Owned::from_raw` with a
+pointer pointing to `Self` and there is no safety requirement on that
+function that ensures the correctness of the `DerefMut` impl.
+
+> +pub unsafe trait OwnableMut: Ownable {}
+
+I don't like the name, but at the same time I also have no good
+suggestion :( I'll think some more about it.
+
+---
+Cheers,
+Benno
