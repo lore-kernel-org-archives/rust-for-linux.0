@@ -1,144 +1,197 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2086.outbound.protection.outlook.com [40.107.92.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB4F28C863;
-	Wed, 14 May 2025 19:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747250678; cv=none; b=V5B4Y2XgoCs24HkztA6QVLWKXaWvkUgf6Fy756Uwb+bvqQC0t143H2MK5uPOruO3e22dAanj5FNYwahsWvl2r9dWtGgP9JRBWTI73WuAeRKoSNubGWs31aGMqbK0qE8ZczQQFP4xVyg05EFHeYoCweSVY/SE1Cne51NMEzZ89ZU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747250678; c=relaxed/simple;
-	bh=sya+8JjGJHbFscoxWgUm22pBcbKnQ+x9xicjbxzjARs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=u17HLKpRi1nk7r7diZ6924pSi+3YPV1Wzl8a8bFxD3CyZfroKNpMCxS56/kZxQRRMFHzc21jPMw7YI+H10lIM90iD887nPJsgFkvkoNrXOBwlBHEbij1HysbRs8TVK3cAP+Zuuk3VCo/IhVHY/nWo9JygyGqJDSZpa2w1dmYUc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O40zK9QH; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63B1323D;
+	Wed, 14 May 2025 19:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747252014; cv=fail; b=eTE/4RTxDALcBg4J9JsJvHTdoQP6k28lM3ZT1pIPj5/nQD0niYoIusXSFU2mwDxF6Rlnk7QyJR6Bn6Us22y9uIbFZ72wbuGDIgWf3iFIAD9brav7hWXxaHWSRGrwRjry17eW8jL6MFCrOA6M8qO+ZdK9QmSn5KFO6SzAL7qqmws=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747252014; c=relaxed/simple;
+	bh=ByHj+yDctN3rTEtjWXQwckYRCf4QE3CrtHoFznEb6YE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LQdlBQx3WxvviI0RVYNFF5cXvSOgD7+zvUROc85ce2LX/1vcQW4H92SHBQO10S+3CzePsqZwxeKwrEhqGVnlOh7y4T6w5LLCAez7s+i6LFJVVz0Y170gJHiTz+OIsssuEA7fAmkdegAHs/85FPdiusGxoOo2h19+7LwxinDEVrw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RFeDmMcj; arc=fail smtp.client-ip=40.107.92.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O40zK9QH"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a0adcc3e54so84788f8f.1;
-        Wed, 14 May 2025 12:24:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747250674; x=1747855474; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Ym2VjItfmlQR+4MFTtDnGlE59abfrw+zWC9kBxVcBU=;
-        b=O40zK9QHF9j4t8YbnbiJRVeG3mCNhTa5R8WDom7MGZ7KdQl41i4LiGQVpnIYNUZGW9
-         NlSrBxhuveBjpMOODADz0qdJRng6d3zQA7UDL1jqv8iZNPfDGfJTMy4Kv9qcyQaEwPw7
-         NCUqeRuULdInHuHj0P/zJs5CQTbUSyTJNOlH0rPJBr4B5dP5p1JSza3ukXw6u0vcYYmS
-         Lj0ZfZvUJHJufA22xwZUo2LUuSOIUC6XaQE6Kpxg/NC++HGPn9BwO/C3z6U3pIb9wjIg
-         QKhY2mZogsxzXgQcN9RYR4+ABxEab3oP7/ovCEvb2NXhyIM9TuyPlKPhPallDtBacY8Q
-         Be9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747250674; x=1747855474;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7Ym2VjItfmlQR+4MFTtDnGlE59abfrw+zWC9kBxVcBU=;
-        b=UxN2+etvyp29/pHKNMBEmfxlkza+kJusx+GMUvpyeREZdkpS55yBX1mceZliQ8yHyb
-         G5YMXM8xAzs6cjOfkcX6M+V/qxZFhv15jMLM1JH5Lic4v8ly+80Nwr+6fBjRYPsFh3Q5
-         AHxNP/Yiysm2eSIQpOkX3T0HK+BD/VZMBRb1zaNw9zIbqzThvi7x8KzZdpJTE3JM/71s
-         8m99JKXN8vszm3dBzETxcuE0Ap+NQu8K9E3TzuBpp4cEJe334rrEkHXmIuVzthNOf+XN
-         gzpMBFweIi8u2llU3CSs5/Tix3kOqfPvslFpaXWwewEcoaBnJt7Zouwct1YxgRAAy7JS
-         cXGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUt8LZ06nYYJuS2kx7UC2bYB1ZxDEvOkGSgfwfjIDSpf/Q7CCkmic1U7l0anJU1om7DOoG9P7/L5Vrb2+o=@vger.kernel.org, AJvYcCVyXJl+kvIOqaA2x5o/zOODzrO8cZ5VeD0wCJgfJw8glE3d68mdu5PN1MgGVs+OcU465QnU2B09MjlfFpkuMgmM@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8eQ/1+nDLGtjU3bVDkoqWocJmNcXgbWLTj2Vxr9HdRaF+9Kal
-	phYdM4TC+WgZ7On+3QZ8J66WX7cZfkax6Lh9LVBWsM+V/dGa4ffY
-X-Gm-Gg: ASbGncsrsw2l/czyaQE5hqTH34TS99VXvbHz/lqVxy40Tzdo+IvaHeJ2Eyy1RaSJr+L
-	1urdbTiB7h5Ru2R9A/d3LIgFHmWRPqu149MrEpzj1gUbinr/4ONz0sNpnU3LIERkLj+a1ir1P5Y
-	QiM+GKXVCYHV9/cSd9hTw/VywlFGr8dcK5+d3km1cCRnV9MWCWyedSfTKQldthiedmQhsDPHOVX
-	krmLEcuIQM6UbSTjrZQLwmE9s6NMqjGY6vUgrkPgjYPVxljRcGaIhvqTz4HeU9Knw6W4Hcm18KR
-	U6uK43e/F+0WXnseVHX/mBJz/Xcp3hZB221R8M4XdOs+cKKlOMfU/LQPepZKN577lDvYh0Ss/jt
-	rYst3TseKJHn9Uas=
-X-Google-Smtp-Source: AGHT+IHtyTAbb12nHg9iq1Qfx2ymhpqGsQF2bMASvRtPni01++HQHUO/z+Hi7IH3R0Q7InFaI68IdA==
-X-Received: by 2002:a05:6000:40dc:b0:3a0:bcb0:f69c with SMTP id ffacd0b85a97d-3a34969ac5amr4163564f8f.3.1747250674296;
-        Wed, 14 May 2025 12:24:34 -0700 (PDT)
-Received: from laptop.home (178.75.217.87.dynamic.jazztel.es. [87.217.75.178])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f5a4c5d6sm20341715f8f.83.2025.05.14.12.24.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 May 2025 12:24:33 -0700 (PDT)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: David Gow <davidgow@google.com>,
-	Rae Moar <rmoar@google.com>,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Randy Dunlap <rdunlap@infradead.org>
-Cc: rust-for-linux@vger.kernel.org,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	x86@kernel.org,
-	linux-kbuild@vger.kernel.org,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-Subject: [PATCH v3] kunit: fix longest symbol length test
-Date: Wed, 14 May 2025 21:24:16 +0200
-Message-Id: <20250514192416.12635-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RFeDmMcj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r2+CA1uJT8CGjq9lOsvYJEIk9xqugjvr/XQzAO9aswa+Zi+RFUH6O7nK75GPv5U5U/D3NZqvf2da5avc+m7Ut3aUImdtnxootqNgudwY0SRPsccygstKa8W6HnHPLIxwLzVz4qvTHUER+vTtxeyCUbG5dl0DCOUJdS/ggLLJwEPbX4OdcSBZ3EBP+qa14tEkt0vMI5lfSn+dKzZytr83BeTM7nGuIQw9V23b+aObbpTdTdeY3EWS8RfS1pKA73osVbPiM7Em0dgZ/WBQyou2vMiYpM2aWD2NI3IKvzA7eG8F+wZEHUG4wQ/7XCp4PAS+LTn17eO7BrUTf1czcRId7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ByHj+yDctN3rTEtjWXQwckYRCf4QE3CrtHoFznEb6YE=;
+ b=UpQ0bLg+IkV6QtQF4+cfLVEoyd7ODzZQvf80JizfgdTfFSAHEzIY5of6DOOOX07J7NjvAlUwGbgV015+Io34t7Ex1rEn48R5BNTB4BKhLn5i2/hVJMbnG8WVQF9ZNG+5D6WnlhbzC//na8aW8KX2S+kDNjDyE8y2gj3s77bJ8crUnS5Da+Ub1LYW1p2Fb+mBaISQcxRlEJf59Zjk2NHQDSsww3Ou8FcZzC/jlFVK4OcxF+h/lYawM4aK8o7h9G5BNG+J0oWxngiBOhLfQsiio9WSinnLGSoi9Y5zckNrDMmV88zzwrsQbwL6lSgPwC6wPA9167auUBeweu32AIMrLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ByHj+yDctN3rTEtjWXQwckYRCf4QE3CrtHoFznEb6YE=;
+ b=RFeDmMcjF69hg9zT9zOnbjD3i0r8B5Yfy42mmFaM0C+hxUdYnfglvYbWQYbZrG04UGwcpsYaOzpfA/6Jc8TOFLDRuZyLQRGyUrUDXuvdEERZ11jcuOsuy9rjFHAYc7NuuSAkYwxjK0bjq5u+7jb1j9YHcR2lc8lnOx2Rtpqija4PP/DXbi8TzXc7ThZD5NMEJIBuPxBlYzCNkWLLQknKyj8XDHfrsQN7HFaA4zYvQrl72jtyWC5Y6jTNg9M818OVZxKzAsWZeaHKJzeaOoIFTN2WiB5Z5PMd8F9cCq/VnPany9Jea3AAfFZrK9rb7T8Q7xlaWt0HeNBbLdOtSnUoDA==
+Received: from CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20)
+ by IA1PR12MB6234.namprd12.prod.outlook.com (2603:10b6:208:3e6::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Wed, 14 May
+ 2025 19:46:49 +0000
+Received: from CY5PR12MB6526.namprd12.prod.outlook.com
+ ([fe80::e420:4e37:166:9c56]) by CY5PR12MB6526.namprd12.prod.outlook.com
+ ([fe80::e420:4e37:166:9c56%5]) with mapi id 15.20.8722.027; Wed, 14 May 2025
+ 19:46:49 +0000
+From: Timur Tabi <ttabi@nvidia.com>
+To: Joel Fernandes <joelagnelf@nvidia.com>, "jpoimboe@kernel.org"
+	<jpoimboe@kernel.org>
+CC: "gary@garyguo.net" <gary@garyguo.net>, "a.hindborg@kernel.org"
+	<a.hindborg@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
+	"boqun.feng@gmail.com" <boqun.feng@gmail.com>, "patches@lists.linux.dev"
+	<patches@lists.linux.dev>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"tmgross@umich.edu" <tmgross@umich.edu>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "alex.gaynor@gmail.com"
+	<alex.gaynor@gmail.com>, "benno.lossin@proton.me" <benno.lossin@proton.me>,
+	John Hubbard <jhubbard@nvidia.com>, "rust-for-linux@vger.kernel.org"
+	<rust-for-linux@vger.kernel.org>, "bjorn3_gh@protonmail.com"
+	<bjorn3_gh@protonmail.com>, "peterz@infradead.org" <peterz@infradead.org>,
+	"aliceryhl@google.com" <aliceryhl@google.com>, Alexandre Courbot
+	<acourbot@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>, Alistair Popple
+	<apopple@nvidia.com>
+Subject: Re: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
+ for Rust 1.87.0
+Thread-Topic: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
+ for Rust 1.87.0
+Thread-Index:
+ AQHbxDH3Ep6RzftN7kiIvL2+4bJBKrPRG/KAgAAoPoCAAAXLgIAA7TOAgABJQICAAAkJAA==
+Date: Wed, 14 May 2025 19:46:49 +0000
+Message-ID: <554965650ac2aaa210028d495b06e1ede6aab74d.camel@nvidia.com>
+References: <20250502140237.1659624-1-ojeda@kernel.org>
+	 <20250502140237.1659624-2-ojeda@kernel.org>
+	 <20250513180757.GA1295002@joelnvbox> <20250513215833.GA1353208@joelnvbox>
+	 <38a7d3f8-3e75-4a1f-bc93-9b301330d898@nvidia.com>
+	 <f4c946b2988d63a26aff2d03fe73fbfe1f52f31b.camel@nvidia.com>
+	 <723f7ae8-bb36-4a4c-a1d8-733d131ca222@nvidia.com>
+	 <grdfkevm4nnovdefhn7thydixjtdt2w2aybuvnrtot2jolyte3@pmvcv3vbmmll>
+In-Reply-To: <grdfkevm4nnovdefhn7thydixjtdt2w2aybuvnrtot2jolyte3@pmvcv3vbmmll>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.3-0ubuntu1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR12MB6526:EE_|IA1PR12MB6234:EE_
+x-ms-office365-filtering-correlation-id: db3554ac-3141-4d09-2f1b-08dd93201139
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?NWNJVDBuQllqTG1aWmZkcjAya3p4QmJ2YlpCNXR0ZVVZVkdBdDU1UEJQVE9B?=
+ =?utf-8?B?N0ZqRytIMDUwdyttYlNpSDJ4dkJFZzhhdWNwcVQrUGYyZ2VSOU92VFFhMGF4?=
+ =?utf-8?B?UVF3ZGZlQkxzZW5pUXQ4T1RMZTZ1UEdHZ1ZEVkdMRFh3d2pQckpVdFJCZFU1?=
+ =?utf-8?B?TDBOTStFa1c0OVl5dEdnYWtSOGJQaURCUmVSVmJlVzdMSjFZK3MvQ2NnR2Iz?=
+ =?utf-8?B?T0IvMEs2VEJPNkMwTHpLUGtDZkRtOGZhQUVLZFU0TEp0SGxsRHZRb0lOL0px?=
+ =?utf-8?B?Zm1GemJYWkdNckRSWWNrTkdocDEwYm1vbEMwU3BmdFNYREJySjFTY0k2bHp4?=
+ =?utf-8?B?aklrd2c0TEQ0bEZaTlF4M04vUzVHNDZxWG1lWENQM2x4S093blJKYVVrZTk3?=
+ =?utf-8?B?Q0YxenpaQmIxZE90djczZW1LRmNtUTNiM0FDZXQwcFB4R2V1enVtT2xyN0Iv?=
+ =?utf-8?B?dHNhN0JSS2hrL0p5ZGpoNUtSc2VkRXRLTzR3Mm54dW8zQjFUSlJzTkp5SWo1?=
+ =?utf-8?B?dmMyUXlvbW9nSy9rNjR6d1htS2NWVjZjSFpkcjRIRmt0REdQQXAyUEcwME9I?=
+ =?utf-8?B?TUM4MGFvMmhncVJhRnRaNjVNb0hGTlNhMlloSlUxaVpoUThFMzVvdy9Zc0ta?=
+ =?utf-8?B?b0txQStUWjl5ZHVJM2VLNmhlODVaQlF5OW5MVWQ1RksvMExheWlKZlR1aE5w?=
+ =?utf-8?B?QVViMWtqbW92Ni9uNUtRMHVrQlNWVGJmbFJDaytCTEIyQTY4dmhDRU5jSkVF?=
+ =?utf-8?B?SUtpcmhCSUxtNjVKWmJsL0JIVHBKbGJ2Q3ZaTjdRUUVQbEpmNkVuY0FOcnBn?=
+ =?utf-8?B?OVdYeWN1b1VUWHZ0SHF3QzlKUnVmbzRPd1IxUEJGcHpYRmxXLzJRSzBYdXlU?=
+ =?utf-8?B?Z3Bta3ptbVl5Tzl3L2VsUzF5ZnFveGhSSk51K3o4RHJpSlU0dXdjb3BYRnEy?=
+ =?utf-8?B?d0NzVWRnNFB5MktxUy9FUXVRbk1NYUhsOUQyYVVjWDlNNm9Icyt4ZDk1Q3FB?=
+ =?utf-8?B?YWhsZ0JVL0RwczRwdEZTYURtZDBybndIdTVwcVUvL1dGajVtaW53bnB6M2xr?=
+ =?utf-8?B?YTVrR21DZ0JCbEhlMnprWTNtRlMza056Wm5VOHZOVFkvYWxxV0tzai9XY2NP?=
+ =?utf-8?B?UlY1ZTVhOGNBTmNROXNtYm9udHZjaTZORkVvdXR5aDVSL21QVC9yb0NaNUVp?=
+ =?utf-8?B?WGJYSnRvbUlFQThxdE9PNUQvbzVDYzFYTWlKNU9PbzV0SjNpeXN1RXErOEh4?=
+ =?utf-8?B?d0NZWVQyRzdQaUZiSG5CTDRVNDUrU0hSNHNxVmxZVHArQ01HZ1NMQUpoWnUr?=
+ =?utf-8?B?OXg0UzFlTGVvREw2S2ZmUkRQYVJza3ZGQUpaWkdOaVZXNHBlbHdwT2E2NDc0?=
+ =?utf-8?B?R1FWb2ZwUzdtNGVYYWg3N2pHUEVScWNxWit0VThzdnZEdjh0bmJMblc0SmpR?=
+ =?utf-8?B?ZGZZT1RMWk1jeDhiNFZ4ZWJEUGkrRjZWRzk1ZnIyWVFReVNFUVN6MklMcWo3?=
+ =?utf-8?B?VUJsclVBT3lCdWV5V3ZVRzlYcWwzeHROT3lqODgzcGZENXhVQThGWURMYWRn?=
+ =?utf-8?B?TXhvQms2UWlBSTYwbDdydDhBd2s4enNaL084YlkrNUxsRWRhd0tJVk52akgx?=
+ =?utf-8?B?NFBuSW5UZ3dqZHVxTWk3R1BYb09FZEY5Nk9FTngzbkY1R1lDK28zWkE0ek1Q?=
+ =?utf-8?B?ODdLRDVXcnVId3pTRjYwUzRDcURQSDY3ejZiSDd0WEFzK2RCUkRTUS9vYitx?=
+ =?utf-8?B?bmdSM1I1SlFVakQ4U0tNNXF2ZFFjbHhWUzJvNXhQMllxdXZSYVY3dEN4cXJT?=
+ =?utf-8?B?SlF5dDVYK0FZbjZvMXVndXltMmszWlB0eWgrajQzUTQrYTJxNXpFQlJ0MTBi?=
+ =?utf-8?B?TitjNXJlUXZ0U3BEaURYMjB6MkJvcjNPbStRL1JVRDRuTXoyMGVOd3kyZE13?=
+ =?utf-8?B?cTFJdjI4ZGcyMHJHMmFyL1NQTjJXMTYxS0xhMDEyVHp5YXF3QytjNWN4WEUz?=
+ =?utf-8?Q?VrEwGRXvQ9tQ5weSTMOoZPW5qk+UvE=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6526.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?Z0lBODNwTXFBR0d1bStLTVlxVkwrWE0xR2x1emwxWjd5cEU2SlZ4L0hYMGgx?=
+ =?utf-8?B?R3UvUFYyeGdLZEplRGRBVjVRYVo2TUVxR0FnOG9lTHd0bDY4d3N1QUZ5WGRl?=
+ =?utf-8?B?aUtiK2cxcnViYjliVllCK1RrSmVZVVJSckhabUY4c1Exa3BsVUh4aXgvQWJN?=
+ =?utf-8?B?cjdLcGhyaVN1RUFIaEFkWWJkQzR6ZlhFMktqVHdzczFvUUFNRldubld0OUN5?=
+ =?utf-8?B?UDVtbjV1T1hkWDAzY2FycHp3UHA5ZkxNUWU2L1NuTUI2VENlZkx6QmphQUl5?=
+ =?utf-8?B?K0txMGh6TXUveS9CUjIxLytPVVJzR0k1U2d6VVFvMEJ1RkgvczdmVjV4cTBP?=
+ =?utf-8?B?MDAraGhXZ0R2eDJVRlNtRGxDNkpFVy9ick9YeE1IZmdrZXB2NDBGbXpTYlBQ?=
+ =?utf-8?B?SHZKdjBJRGxYa08wclJKbkVsei9Nb05LQ3lFbU1Rck1YYjM3OGZXR1ZOYi9l?=
+ =?utf-8?B?Zkx2eitKZXczUW1ZYlBYZzV2elV4RFRJL0daYkJwZ0hLeGtXYldHVHhxMVlF?=
+ =?utf-8?B?SFQxNFZ2NkxJdEtHUW1wSDNrRjBYVEJvcGVJTlh3cWh2NEhOTXBoRGNSTzFX?=
+ =?utf-8?B?T0lOM21kUGdkM3Mzb0hoQVc5NXM0Y2ZzSzZGWGlBL0RNeExDR2VkSmJmKzFQ?=
+ =?utf-8?B?WlpRYkE4ejlrWUx4NVRHaUc3czB2d0x6MmkzTjhwNCtFL3orUVBJdGxwaUFo?=
+ =?utf-8?B?dWpzWEF4YjY1bWRSbjlqZmtyTWdObWNoeTZVMktrT0pIUTRmMTFnRE55eSty?=
+ =?utf-8?B?dkZqMzlvOUQzK2hZWktQR0NpaVZmT2R4cExiVFlEai9kNGNBVFlOYm1VRXpU?=
+ =?utf-8?B?andZMG9pWk9KZyt6c2tpZ1hKa2ZSb05yaEd4eitvaWhrVkdGYjdyMXR6K0RB?=
+ =?utf-8?B?c24vcHpQL3VlRjdpQ2xiUWwxVEdVRjR3a3pYeXRYWmF0MkhrVTRXdzhhNldz?=
+ =?utf-8?B?MnJQbWdQSGNhelc3VmlDK0lBdTZDWlFBTHJJdXVYWTM4dUw0ekJZenA5SHRD?=
+ =?utf-8?B?V3hXLzV6Y04wVkUrdjJMd2RWTlVhRzFiZk1zNzNxVGtHbTFGRkZkUlJVS3Rx?=
+ =?utf-8?B?SFA0UXI4djM3bENVbS9wV0RnUTl1MUNURkZsRXV2cVhBN3Q5ZWhsdVNQUXFJ?=
+ =?utf-8?B?c1VZMlEyc2p0QzV5clRSakRzRDRNUUFpMVQ1UkhqWUhiWmwvTFdUbEttYVJK?=
+ =?utf-8?B?d1Z5bngxS3g4UUJucHpPMWx6c0lvNWNXa043U0czRnErNDBSWlZEMnlJM1Rp?=
+ =?utf-8?B?UTBrcGVlcGxBWm9SRHU3NE1DZGUveTFxVW9lZXZ4eEJGQmNhMlR4T2UwSWhq?=
+ =?utf-8?B?OU9oRml4OFhtYU0zUW5pTTAyY3NUSi80NTBhQmg3RFlEdzR4Q1pZTndXWWpi?=
+ =?utf-8?B?Zk03YWoxTXliUWRKTURsVEtuMmdDWk5DSVdIUGZTN2tRVEJPVWp6eFVESHJj?=
+ =?utf-8?B?WU9obEY4dzV5a3cxTTdtTVE2UmVRRFdzTUl3ekJrRTJnWWJrcUZURmdNem9C?=
+ =?utf-8?B?MitJMVMrL01Hd3JmcjZ1ZTg5cEpuOUE3Q0kwZWRjOVVEQVZJWjkvRmE2TFRK?=
+ =?utf-8?B?MkZrRStKeUdyYjBBYzB0bEhQUzNZS3h1U3ptWXh1TUhqQ1dRWlZWR2N5cjF4?=
+ =?utf-8?B?Zk4wek9sV1M2RTBJVkZlUmlVcTZVMy9MMURNNXVMQ2c5VjRSZ01BYkFtTUdY?=
+ =?utf-8?B?cnFGZlpzS0t0SkxOOFBpMGNsbmVDUG90SHA5R2hZYWdRaFE5aFk3Mk9xU1Ni?=
+ =?utf-8?B?WlVxVm9HdGg0cW45TjZ6KzRaczFaN0M0dDNSc3hSbUhmT2FCdFRMMFNOckdW?=
+ =?utf-8?B?Z2RhN3VzUFdJUVFGNVJ1Z2NwWUszMUh5TzZNVUNwZ3NWc3ZMZmZ0N2hHeHF4?=
+ =?utf-8?B?bmE1ODRxRTdaRHRISVBMcDBHN0M3aVZ4QjBHTmFDOEcyanZOUEJhNVlXK2Q4?=
+ =?utf-8?B?T1d0UXAxMHdYanBMOXVpaEwxekxzNEVyemk4eko1VWpmR1BycDJSb3h0TEcw?=
+ =?utf-8?B?UTJxbW83RS84ZnE4ZTFMSGFSTmlOK05hNG1vSlJZOHliL0hMNGlZQW92Mnla?=
+ =?utf-8?B?WUdqTXF4WlpiTGhyUjZvdnYzSWNXc3hyd0VROEtIekVnRklXcEd5eWtKYytl?=
+ =?utf-8?Q?eBdGeWv9qbRS4wOyaRfsQ/z/s?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <8BD9861EB1421546974039BF595AE0C2@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6526.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db3554ac-3141-4d09-2f1b-08dd93201139
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 May 2025 19:46:49.3163
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: rz85jl6UYevI1yU2/gkivseQoBp5iBoFi/09XnZHHvYeljdbHmav4fCpORmbjlusrJlGQfLp3mTpDunSHDQOaQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6234
 
-The kunit test that checks the longests symbol length [1], has triggered
-warnings in some pilelines when symbol prefixes are used [2][3]. The test
-will to depend on !PREFIX_SYMBOLS and !CFI_CLANG as sujested in [4] and
-on !GCOV_KERNEL.
-
-[1] https://lore.kernel.org/rust-for-linux/CABVgOSm=5Q0fM6neBhxSbOUHBgNzmwf2V22vsYC10YRBT=kN1g@mail.gmail.com/T/#t
-[2] https://lore.kernel.org/all/20250328112156.2614513-1-arnd@kernel.org/T/#u
-[3] https://lore.kernel.org/rust-for-linux/bbd03b37-c4d9-4a92-9be2-75aaf8c19815@infradead.org/T/#t
-[4] https://lore.kernel.org/linux-kselftest/20250427200916.GA1661412@ax162/T/#t
-
-Reviewed-by: Rae Moar <rmoar@google.com>
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
----
-v2 -> v3: added dependency on !GCOV_KERNEL (to avoid __gcov_ prefix)
----
-v1 -> v2: added dependency on !CFI_CLANG as suggested in [3], removed
-	CONFIG_ prefix
----
- lib/Kconfig.debug                | 1 +
- lib/tests/longest_symbol_kunit.c | 3 +--
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index f9051ab610d5..e55c761eae20 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2886,6 +2886,7 @@ config FORTIFY_KUNIT_TEST
- config LONGEST_SYM_KUNIT_TEST
- 	tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && KPROBES
-+	depends on !PREFIX_SYMBOLS && !CFI_CLANG && !GCOV_KERNEL
- 	default KUNIT_ALL_TESTS
- 	help
- 	  Tests the longest symbol possible
-diff --git a/lib/tests/longest_symbol_kunit.c b/lib/tests/longest_symbol_kunit.c
-index e3c28ff1807f..9b4de3050ba7 100644
---- a/lib/tests/longest_symbol_kunit.c
-+++ b/lib/tests/longest_symbol_kunit.c
-@@ -3,8 +3,7 @@
-  * Test the longest symbol length. Execute with:
-  *  ./tools/testing/kunit/kunit.py run longest-symbol
-  *  --arch=x86_64 --kconfig_add CONFIG_KPROBES=y --kconfig_add CONFIG_MODULES=y
-- *  --kconfig_add CONFIG_RETPOLINE=n --kconfig_add CONFIG_CFI_CLANG=n
-- *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=n
-+ *  --kconfig_add CONFIG_CPU_MITIGATIONS=n --kconfig_add CONFIG_GCOV_KERNEL=n
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-
-base-commit: 1a80a098c606b285fb0a13aa992af4f86da1ff06
--- 
-2.39.2
-
+T24gV2VkLCAyMDI1LTA1LTE0IGF0IDEyOjE0IC0wNzAwLCBKb3NoIFBvaW1ib2V1ZiB3cm90ZToN
+Cj4gVGhlIGFib3ZlIHdhcm5pbmcgaXMgaW4gY29tcGxldGVseSBkaWZmZXJlbnQgY29kZSBmcm9t
+IHRoZSBSdXN0IG9uZSwgc28NCj4gdGhleSdyZSBsaWtlbHkgdW5yZWxhdGVkLg0KDQpUcnVlLCBi
+dXQgdGhlIGZhbGwtdGhyb3VnaCBpcyBib2d1cyBpbiB0aGUgQyBjb2RlIGFzIHdlbGwuDQoNCj4g
+VGhlIGZhbGx0aHJvdWdoIHdhcm5pbmdzIGFyZSB0eXBpY2FsbHkgY2F1c2VkIGJ5IGVpdGhlciBD
+bGFuZyB1bmRlZmluZWQNCj4gYmVoYXZpb3IgKHVzdWFsbHkgcG90ZW50aWFsIGRpdmlkZSBieSB6
+ZXJvIG9yIG5lZ2F0aXZlIHNoaWZ0KSwgb3IgYSBjYWxsDQo+IHRvIGFuIHVuYW5ub3RhdGVkIG5v
+cmV0dXJuIGZ1bmN0aW9uLg0KPiANCj4gVGltdXIsIGNhbiB5b3Ugc2hhcmUgeW91ciAuY29uZmln
+IGFuZCBjb21waWxlciB2ZXJzaW9uPw0KDQouY29uZmlnOiBodHRwczovL3Bhc3RlYmluLmNvbS9p
+bkRIZm1iRw0KDQp0dGFiaUB0dGFiaTp+JCBsbHZtLWNvbmZpZyAtLXZlcnNpb24NCjE4LjEuMw0K
+dHRhYmlAdHRhYmk6fiQgZ2NjIC0tdmVyc2lvbg0KZ2NjIChVYnVudHUgMTQuMi4wLTR1YnVudHUy
+fjI0LjA0KSAxNC4yLjANCg0KU2luY2UgSSBidWlsZCB3aXRoIExMVk09MSwgSSdtIGFzc3VtaW5n
+IHRoZSBhbnN3ZXIgaXMgMTguMS4zDQo=
