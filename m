@@ -1,206 +1,302 @@
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2082.outbound.protection.outlook.com [40.107.102.82])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F0D2882D1;
-	Thu, 15 May 2025 08:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747297987; cv=fail; b=oJJ19e2s+8xcoEJVOZYyoqY+S4JnZOwl0Yz8nDqvhtEl/80EqGUgul/KMbpm30Gx3ooRRZwN3BQ8iIWo2exWMYL/h9f6nvB13wTsCwU3ODPNuxMZnf5JisJZNUOkDT1zzS2KYFDXdaUm8MOkrse2h7/0G4vi9M8OrCybac9K1CY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747297987; c=relaxed/simple;
-	bh=f5IcOLicxiH5ZF7/fZEllXdYNsxudAF8PdXTs7kHn9o=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=L4BzxAWQvNv6MHH/20p/ZJlMQ6xhz9NGi2MID7+CrWQSd5AiLgw3SzeU3znpUt6Bpxd2fxxzCFRYTPkWZGgnlsKEsvxmlCD/CKsItOq5lhlN8krpIgdUgyHfUYqOnb97poYhtxhdWHoHrXXvhK8trJ70CdJ6l6HG4kevT8REceA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DZKSO7Jk; arc=fail smtp.client-ip=40.107.102.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075D11A28D;
+	Thu, 15 May 2025 08:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747298793; cv=none; b=FRVOi2qTB39pDK8huQkrA2QjTAme/MOhFahxz/s2LSjfrrG3tk42rxOXhuj89IAflGV7S8xgVqMGBlVlLxttH3TZz/oxyBB7mI5AivluPtWDNgChlB8FwV7/wLFrxfjEAYDCw2IzNHAuhvyl0RYpAC42h28WXKAKsLxZ4G5I+ag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747298793; c=relaxed/simple;
+	bh=RaBEVejUBWVrVHhrOXFQBMtESL1DRpV6lkC7nuNepHI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=ehDTbvpOvTQWH0tZuUQYkTF/aTp9d6CD/hwVs9EYVWjaGz+vX++qrCmsVO0TO2UV7ckLeEg35dCVr+80Sxp7+MPXTdxecFgr2lJM53zTZhzp3+SonHmJfsSWaoai/11zAKfNwbobrEQz3pq62gXMYjiKTy8w5AeemR0SWgjMvcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QeXFD3md; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DZKSO7Jk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xOn1uNwkgipnFUlpbHUTNecCK2YAuYyw7+3+60JAhmlyNThkoERyaZN1uhwGLHbZGjN5OKMdfVT0ouJ6Z4w/olz2HLMtl3MRmAGz+labD2sskJY40SZ9XyBMVlRJoUtHwQPS1fOnqHDn7L7d/aqXkDnT65uMPCRWusbQPFG+oNRmjPscjXGhAOGiKYfhGdAqPUyjWVgfDbl5/h0sCsxhDKFa6Db3gJjYBM1p+bb8cNW/WjX30MSP0sJh5H8jQ9n/CFzqyAi/icX3ZtNrxtOfDqSLfDVx0d5vsOJjqZuz74W+B+g+5VgZW7NEfyeEXQELpsy+A5pc2oJD9QI9V0yHzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3+tVeDBxzyxYW4g3Kr7Z8jiDU1SoPmz0BNdb+bpL9wA=;
- b=p+IEjW2i5hU89xC+amE52bLIgPe5gT+u1PFfE2iO3YvaVabQy5xhtZha/8aQsyXJsj92Mubxdim6eQH5s8dunZ8xguBMYnwwqsZXAigjeclsRgYhR5rvyr19tSOqqIqzvz6IzTmDy9b35iQjZc0qjSLnRkUvabOs6q7LIv0+AX18yi0hfz0Q27m/0WBR2FE1hxuWyBiB/cZEuZh8B5v3wjs6qgRD5w+0gvbPEbfHPIqr00eE+rgJOMCafh5oMdHMJhIFCWpjLFaNbK7ZPeOC+hPutrdxqtFghotUOBO/9Q8m0wSJfScJX1Uh7wGwCvcFM9oeSYcV++jVRV9MUWg+mA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3+tVeDBxzyxYW4g3Kr7Z8jiDU1SoPmz0BNdb+bpL9wA=;
- b=DZKSO7JkNceZCOWKmPHU3LoPCCgmqCX4te6u6H/rRsqi5KsB/xQ8YI37PK6ic6/y0TmyG7YGFC5qIpFB61Mfsa+1EGzK8SvuTJypb5DWN0ZnF03CX10G2YR+zN0bVnbUQBFB6oKUd1vUWj42J5CYOb5VaDusoSLT+XmlciI+wEJ6ALImb43w+HZGGJ2yLfbwnRS1a+16n6q3rK1CsB3sEso3pnfoe8AHseorvWh5s5oSIXu1Lau2vuEwzwx6pW4stEIa6n6BPVTZTo8Ljd3U8oa98VAnRPOaJjwyqQVEtNuKzQuce4Ws5wFMIQnZ0ohUJvK/AO7+oT7kXgOAaXf99Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by BN5PR12MB9464.namprd12.prod.outlook.com (2603:10b6:408:2ab::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.31; Thu, 15 May
- 2025 08:33:02 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%5]) with mapi id 15.20.8722.027; Thu, 15 May 2025
- 08:33:02 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 May 2025 17:32:57 +0900
-Message-Id: <D9WLFTPRB9FJ.OL6I760HKALZ@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: add basic ELF sections parser
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250515-elf-v1-1-4b53745453c0@nvidia.com>
- <2025051543-override-rockiness-3ead@gregkh>
-In-Reply-To: <2025051543-override-rockiness-3ead@gregkh>
-X-ClientProxiedBy: TYCP286CA0368.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:79::19) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QeXFD3md"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E2BC4CEE7;
+	Thu, 15 May 2025 08:46:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747298792;
+	bh=RaBEVejUBWVrVHhrOXFQBMtESL1DRpV6lkC7nuNepHI=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=QeXFD3mdSVlfAJmSw3M4/M3dFGSG74apaLIocx1dji2b5TfS9wmsszgMdztGV+1tz
+	 FoddcBPvASE/Fh9DdOFWl02YntJbbebW5DzXAHBFt0rDLYDVxqSVqqpPRe1Omu0G5l
+	 m7fjrngM+C2wek+ZYYbN+T02Sjzvwx0XWTMDpmJUD+9MG2OSGENCzws+SE9QQ0e1sz
+	 366we9g7pEhmZmCRjbgWobGY7Z/SbB/mMJBQJBrJsWJGA70aLjS57kmwLsmQpcJ9Ox
+	 TpEvSfE1QTUPkTYqSSWlNExyOzkESNW5cfLnV0JcdQqih+MgRLvPj3TC+vFCANaQiZ
+	 cV+7U5BIGJz5Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BN5PR12MB9464:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8123f160-8ebf-4614-2756-08dd938b1af9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?R1BRQzZFOFJPVUtrTTh1OHpId2g4SC9iZkxjTGVsMk1vVENjMlpVQm5jaXFa?=
- =?utf-8?B?RVZnTWp2M2pwWDBHRDBITTFxN2M3d1JacVp5ZWVNTEVudi9XTEE0SFBzVk93?=
- =?utf-8?B?Q2lsM2hBOWdqVWdGYjc1RU5qcWhjSkhvd1c3Y3V4b29FQVF3NzlqY2xsaFNh?=
- =?utf-8?B?N0FjRW5PdFArWlRBQUI5eVY1ZXV3eTJrMHltWU40TzdPYWY0U1hvcWZKamxH?=
- =?utf-8?B?NXNBQzJQMlpiOE9kWkhTNXphREgrcGlrWU5XU2dxclU1RGErRm1UZzZRdUFh?=
- =?utf-8?B?KzRvQlRqcjZkTlFhM0h2d3FmOGcrWXNCZkxLcXZuWXZPWTRQcUwrUFJkNUs4?=
- =?utf-8?B?ODE2QWMyb2dYU295d3orUkpDTGtINFRONTVvOHd6WW5OZVdiOXFiUmNzekdr?=
- =?utf-8?B?My9zb2ZhV3QwSjQ2MVlWcHQzUlpJRk8vc2VrQ3VQaVBGQ3Z1cys0WU1wdXp3?=
- =?utf-8?B?VFlPMnF3VnM1TENvOUNTRXJRWlBTcXpRTVErMUMvSTlzZHJTWGh6UFUwZVFw?=
- =?utf-8?B?dVN6SnRndDhMRTZiTUpEUWppZGtkbkFGaHB5V2EycG0zc0RJRlE1N0xkK2g0?=
- =?utf-8?B?cjJoSnlRaVlweG9FQWExeTYzamc3K3IzRTdDTFp5QW52M1FhWUJ2cDFjcyt3?=
- =?utf-8?B?ZC9OcFlrTVZjOVcyR09NTlhBRmUzTWVLWTc1NVAzaHR5UVdsMWM3Tkx3UnVY?=
- =?utf-8?B?MGRJMWRLT0ZLbjRudDI4Y1h2WGx5NWtMeU93T0pnTllxY1I5S0VGU3JZR1Rz?=
- =?utf-8?B?MFgvbWk4bXhkN1czM1B2TEtZTXB0bndrR0NQN05lZWI0UG52S3RkamdJRWtQ?=
- =?utf-8?B?akI4cjhZampiRDlGZmNaS0pUU1RzM0hGMWZPOEllTy9rcEh3bCtlbFNuWHVa?=
- =?utf-8?B?OUYrUndEbHJqQ0NHZmJjL3V3K3lpZW9sQXV2YWxNL2NoZ2hGY2h6b2dycTVt?=
- =?utf-8?B?ektHeHBMVFdSY2xIMWdIMFJ5OUdoOGhUWUJTeTMxNmx1ZUh6WEVBYm5PSU05?=
- =?utf-8?B?Q2lsMlN5S3NOWTNQZFJaVXB0VXZxQjg2UlJ4SXFxcUNWV3k3KzU1YWFWbU5C?=
- =?utf-8?B?U0hTNnRRMC9RV29KNmlBejVwQXd0bll5UFJ2d3V1anM3d1h4NHlCc29jellP?=
- =?utf-8?B?S3BhY1QwZFQ4L2QxWmJEUWk2eVRUZEVkWUNWQmhHWFZBbkV3U1ZBOXpicVJy?=
- =?utf-8?B?WjhvYjEwVlFXMWNRbUp6SWIwR3R4SVYxS1NrdU9pcVZ6Qkt2bHEzemE3ZEFl?=
- =?utf-8?B?NFRLbzdLWlZPVmdGSnU0dE9SNGI5L3d0Yk1mWkVuL1hKYU5BZnFla3B3dDBG?=
- =?utf-8?B?VElSU0RDcCs5OHR5T1hmZExETzdmSkZJUHlWS0hiZHNuQ1JYaGtkdUJwTzdX?=
- =?utf-8?B?cW5wV0FkNVk3RjFMeHF4LzJDVXRpVzJUS3hvZm84TEYydVh4L212VWYxUkN6?=
- =?utf-8?B?SmhlaDZtbW5HanR6L1ZNd3AwVjZLTWRzZGl0N1Nodm8veW12d2tnVjZCOTk4?=
- =?utf-8?B?MDVNUzQ5YVVTQk1sZXlIOFoxNlBsRzg5aGlzWTdFbEpDRWtHZFZvY1ZwQndu?=
- =?utf-8?B?MG5oVGp3WGprcjFwUUVDbENLMThwb2VvTFpXUzB1ZWw2OVFldUZpclJqVXBK?=
- =?utf-8?B?dGRoTml5cXZ3cnBUYm9lKzlxUGpzeUZrUzhsazNCbk15d0ZvODRVb3VTQXVE?=
- =?utf-8?B?VzdMc2lrY0x3cndZWFhuNEV3Ums5ZTVBNFBEMFRCTlZIVkVzekNQMUxtRWo4?=
- =?utf-8?B?aitVNzZKazMyUnRSSmk5L3dQdmErbmRCU3h4cUw0a2JjcVg5bHBmSFJWVW03?=
- =?utf-8?B?U1hqMVdXYjdaSnpON0ZncGRaUUkyM1YyQzMwQ25QTWRrT3hDVEJsMFhoc2Y1?=
- =?utf-8?B?dVoraU9SRVk3ZDlIdHY0L09yL2Z5amJGT1hpZTRhTTFNeVFoQmZoMmlXSVor?=
- =?utf-8?Q?4xGkywg4ryw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?blVCUDBaemw0KzNYUGYwWDEwRjZTZ0VGMHd0anVkaElITzRXWTROMElJMGI0?=
- =?utf-8?B?SVFoelNLUkVjUWdlSzR6cUV2ZkhISXdGeFl2dkRybXZSc2k4OFJjak1pMyt5?=
- =?utf-8?B?UFhmRTJtUHF1VG5ra0o0QmtaYzU1bWtuQytxUDJwNmxLbngvTm0vdU53OXls?=
- =?utf-8?B?TWNDR09FQ1JhaXl4SkJnZGRlUlFRV0h1bFN1V2dtVHo5cldxcjRHbzZTOTBV?=
- =?utf-8?B?UW1VaHY3SUtsRTBlSHNSTHBuMzlNandlbnI3YXJ6OE9pMHpuT0d0WmZwR1ZD?=
- =?utf-8?B?VDE2ZmhaNFgxeUw2QTNHYytxdFFCZjdyWk1Rd3dxQ1ZVSGFJb3ozQTFFdjdj?=
- =?utf-8?B?cVgyOVlhalp6OXVMYkNLZWd4RGhTVlE2MEhBMkkrNlJXRWEzMW0rNFhkL0N0?=
- =?utf-8?B?YWFEd3RsZzVhYXZUUUkyMVJwa3p5T094UUVpT2ZKY005RUNVMEkzS0lRSVlr?=
- =?utf-8?B?Wk52b044VnFQcDQ5c0pXaGdoWWNYc2gySzE0cUZidmIvbmdwL3R5SlJ0QnV6?=
- =?utf-8?B?WEQxVGUwYVljNFcrZ2Zhd3UvaDRVWk8rYXVIQTNCZHEyUDV5bmVxcnhudWRp?=
- =?utf-8?B?SVN2SVpCN1pqeW5xVytrcm9LV0VPN0RMQ0dKaTNiS3F1c1FGZ3lvb0k4Yi82?=
- =?utf-8?B?azJVaHRTOXNySC9wdEwyRmhYQnRIYW9pSThpMmZUZVdwUW1pRHRiMVVVSFF4?=
- =?utf-8?B?WkZPMkNjS0g5WjhZWmxGMUg2M1lTK1BEYkdUNXlid3JyMXFjSkVTdU9DYTJt?=
- =?utf-8?B?dVptcDZNaTBjN2JEcXkvUngyQS8yVnZOMVRlcGxQeTZWL3lYd3k5alREL0t1?=
- =?utf-8?B?SnN3alB5d0pySHRva3k0NVU5QU9JM3NLMm05cm9POGtIa2FhOTQ2V2ladzdP?=
- =?utf-8?B?MHppaFV1Z21BK3F4M2k2SnNsSEFFNkphYnUxWm9qQ0hkTjNzM2tvNjFlbXE1?=
- =?utf-8?B?YlFETVJ0V3paK0RSNHBHRzF0MkZoQ2tiUTlUM0QweC9Tc1RqSlRWQXloNjRq?=
- =?utf-8?B?Wk55emhwTDRsQ2srOXFDcXFhditJM1QwSlpwTUo2MExDdkU5YlZoVnVvbDFr?=
- =?utf-8?B?QjRnSnAxbGoyOFpHdHphWGwwYTllT1FsNTl1bFhpSS9iZy9obXM5RXd0RHkx?=
- =?utf-8?B?cXVCVGFYNXlCN3FaeERhRHlCNU1GNWFHOC9nL2JhbmphY0FLek5KU0NWenNR?=
- =?utf-8?B?WitWcnRIenNxZUZDbi8yZTJGWGlmYitod3VIbDVaNW1zYlgrSDlDazZWYkF0?=
- =?utf-8?B?ZjFiNHphN3FtQW9hams2OGZ2bnQ3OWFja1lQNVlUYjdoaXZNd0NsbSs4OWJw?=
- =?utf-8?B?R2lIY28wS0F4U1NZd1BtTUpEVEF4V3BYdTFvSDhsdGNqVVczWkdtTDBxemZz?=
- =?utf-8?B?bHhEa1o5TTI4azZ4MkIza24wR0JhQjlkcFpGTzU0UUdQc2xBNHBvdnUrbyt3?=
- =?utf-8?B?b0JheVJwNWtYQ2ZlNjlHK2FiT3ViM1RidXpHUzdwQ3hqNklaNjNHY2ZseVA5?=
- =?utf-8?B?NHlzNTBYdG16WHlzaERoTzFhUXoxZmFDUFBvV2d6dDM0QmpReEM4RDh6M2xG?=
- =?utf-8?B?c1hGQjFMQVRPYW8xM0Y5T2dLek51L0UyV2hkcER6amhHdmRRMXpxSTQ2bi94?=
- =?utf-8?B?VEZrUjllYTBuRHB2Z0phNUFRZEhJcHAxM1RubGpsQ2tqRFFNRFVjYkN5STRG?=
- =?utf-8?B?WXMwQVcra2RXTUgwTUp5bHBpWGZ5QnVlY3c3eHlnZ2pUcVpURmdnalp5aVYy?=
- =?utf-8?B?Y1A4Y211cDA3SW5Bc09HYk11VjF4cEZFMm8vZnI0UzlLQnlNZzJVZ2FqVkti?=
- =?utf-8?B?Nnh3d09pWFVIMHlubjNTa040dG0vL0JZd1JoZEJrc0c0WmpVSFNsTFg1N0tW?=
- =?utf-8?B?ZHBsVkxWZnl3MWQ4Z0xWRElRQkxZbTkzOHJUdkxjaU01SXFSMXBpM2JPK2hE?=
- =?utf-8?B?cW1zZkk3VWpwcFdEYVpGZFMvbmVDcU9SUTBBdkxuVmVrM1R1WXhuWUwveFMr?=
- =?utf-8?B?eDVRWFJCb091SU1zK2tFM0VxczRRU2lMZzZOYmw1bk90bzYxeEthWUgvYjZK?=
- =?utf-8?B?TVFmVklacGkvVzBBYlVwam5TbXZEUVI2SmNUdXZ4R0RoVTJxcExIVU5VV3U3?=
- =?utf-8?B?REM4bVo0aVpoamtNTlREUjdNYm9kaUdRcS9nRlpiZzhvR3NRVmV1N0lCUTFp?=
- =?utf-8?Q?O5vjJymWBk6s2bZY56vEkbVH1OvPLOqSzPo/z4OiEY/8?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8123f160-8ebf-4614-2756-08dd938b1af9
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2025 08:33:02.1629
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U7XbGyhiDVuAgd2c7gycpmdFRasFPf4dCbZbN0xUANyoPRbsl6GXF7k3imhxoB97gZKeFsVSWSKLm1JuIgeukw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9464
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 15 May 2025 10:46:22 +0200
+Message-Id: <D9WLQ3J2TRD1.AA50TVOPKMVQ@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Thomas Gleixner" <tglx@linutronix.de>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Gary Guo"
+ <gary@garyguo.net>
+X-Mailer: aerc 0.20.1
+References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com> <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com> <D9W5IX9Z7QMU.3DL48O2KYTN1Z@kernel.org> <497D0D1E-B607-4822-A083-C0C5B9DB3C57@collabora.com>
+In-Reply-To: <497D0D1E-B607-4822-A083-C0C5B9DB3C57@collabora.com>
 
-Hi Greg,
+On Wed May 14, 2025 at 10:58 PM CEST, Daniel Almeida wrote:
+> Hi Benno, I really appreciate you taking the time to review my patches.
 
-On Thu May 15, 2025 at 4:38 PM JST, Greg KH wrote:
-> On Thu, May 15, 2025 at 03:03:51PM +0900, Alexandre Courbot wrote:
->> Add a simple ELF sections parser for unpacking loaded binaries from
->> user-space. This is not intended to become a fully-fledged ELF parser,
->> just a helper to parse firmwares packaged in that format.
->>=20
->> This parser is notably helpful for NVIDIA's GSP firmware, which is
->> provided as an ELF binary using sections to separate the firmware code
->> to its other components like chipset-specific signatures.
->>=20
->> Since the data source is likely to be user-space, checked arithmetic
->> operations and strict bound checking are used.
->>=20
->> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->> ---
->> This will soon be needed in order to load the GSP firmware in nova-core,
->> so sending this early for separate review.
->> ---
->>  rust/kernel/elf.rs | 322 ++++++++++++++++++++++++++++++++++++++++++++++=
+Glad I can help :)
+
+>> On 14 May 2025, at 17:04, Benno Lossin <lossin@kernel.org> wrote:
+>> On Wed May 14, 2025 at 9:20 PM CEST, Daniel Almeida wrote:
+>>> Add support for registering IRQ handlers in Rust.
+>>>=20
+>>> IRQ handlers are extensively used in drivers when some peripheral wants
+>>> to obtain the CPU attention. Registering a handler will make the system
+>>> invoke the passed-in function whenever the chosen IRQ line is triggered=
+.
+>>>=20
+>>> Both regular and threaded IRQ handlers are supported through a Handler
+>>> (or ThreadedHandler) trait that is meant to be implemented by a type
+>>> that:
+>>>=20
+>>> a) provides a function to be run by the system when the IRQ fires and,
+>>>=20
+>>> b) holds the shared data (i.e.: `T`) between process and IRQ contexts.
+>>>=20
+>>> The requirement that T is Sync derives from the fact that handlers migh=
+t
+>>> run concurrently with other processes executing the same driver,
+>>> creating the potential for data races.
+>>>=20
+>>> Ideally, some interior mutability must be in place if T is to be
+>>> mutated. This should usually be done through the in-flight SpinLockIrq
+>>> type.
+>>>=20
+>>> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+>>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>> ---
+>>> rust/bindings/bindings_helper.h |   1 +
+>>> rust/helpers/helpers.c          |   1 +
+>>> rust/helpers/irq.c              |   9 +
+>>> rust/kernel/irq.rs              |  24 +++
+>>> rust/kernel/irq/flags.rs        | 102 +++++++++
+>>> rust/kernel/irq/request.rs      | 455 +++++++++++++++++++++++++++++++++=
 +++++++
+>>> rust/kernel/lib.rs              |   1 +
+>>> 7 files changed, 593 insertions(+)
+>>=20
+>> Could you split this patch into smaller chunks?
 >
-> Why is this not just done in userspace and then have userspace feed the
-> proper elf sections to the kernel through the firmware interface?
-> Having to parse elf seems crazy for the kernel to be forced to do here
-> as the kernel should NOT be touching anything in a firmware blob other
-> than passing it off to the firmware directly.
+> How? This patch does one thing: it adds request_irq functionality.
 
-FWIW, the GSP firmware in question is already in linux-firmware and
-loaded by e.g. Nouveau.
+You could split off the threaded irq stuff and the flags module.
 
-I am not sure how userspace could feed the proper ELF sections otherwise
-than by splitting the ELF binary into as many files as there are
-sections. Is that what you imply, or is there another means that would
-preserve the current firmware format?
+Smaller patches are much much easier to review IMO.
 
-Note also that in this particular case, the kernel cannot just pass the
-firmware without modifying it anyway since the signatures relevant to
-the chipset need to be patched into the right place before it is loaded.
+>>> +pub use request::Handler;
+>>> +pub use request::IrqReturn;
+>>> +pub use request::Registration;
+>>> +pub use request::ThreadedHandler;
+>>> +pub use request::ThreadedIrqReturn;
+>>> +pub use request::ThreadedRegistration;
+>>=20
+>> Why not?:
+>>=20
+>>    pub use request::{Handler, ..., ThreadedRegistration};
+>
+> I dislike this notation. It is just a magnet for conflicts.
+
+Rust-analyzer has the "normalize imports" code action that can help with
+that. In one of our meetings, we once discussed having a custom tool
+that could merge imports, but nobody took the time to build it.
+
+I don't see the argument here, as this re-export shouldn't really
+change.
+
+>>> diff --git a/rust/kernel/irq/flags.rs b/rust/kernel/irq/flags.rs
+>>> new file mode 100644
+>>> index 0000000000000000000000000000000000000000..3cfaef65ae14f6c02f55ebc=
+f4d52450c0052df30
+>>> --- /dev/null
+>>> +++ b/rust/kernel/irq/flags.rs
+>>> @@ -0,0 +1,102 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +// SPDX-FileCopyrightText: Copyright 2025 Collabora ltd.
+>>> +
+>>> +use crate::bindings;
+>>> +
+>>> +/// Flags to be used when registering IRQ handlers.
+>>> +///
+>>> +/// They can be combined with the operators `|`, `&`, and `!`.
+>>> +#[derive(Clone, Copy, PartialEq, Eq)]
+>>> +pub struct Flags(u64);
+>>=20
+>> The constants below seem to all be 32 bit, why did you choose u64?
+>
+> The C code takes in ffi::c_ulong. Shouldn=E2=80=99t this map to u64? Or m=
+aybe usize.
+
+Maybe bindgen is doing some funky stuff, Gary changed the mappings a
+couple months ago (from rust/ffi.rs):
+
+    c_long =3D isize;
+    c_ulong =3D usize;
+
+So this indeed should be usize, what is going on here?
+
+>>> +/// A registration of an IRQ handler for a given IRQ line.
+>>> +///
+>>> +/// # Examples
+>>> +///
+>>> +/// The following is an example of using `Registration`. It uses a
+>>> +/// [`SpinLock`](crate::sync::SpinLockIrq) to provide the interior mut=
+ability.
+>>> +/// Note that Spinlocks are not safe to use in IRQ context as of now, =
+but may be
+>>> +/// in the future.
+>>=20
+>> Didn't your commit message mention SpinLockIrq?
+>
+> This is not upstream yet. I removed all mentions of SpinLockIrq on
+> purpose, but I apparently missed some as you say.
+>
+> We definitely need interrupt-aware spinlocks to access the data in interr=
+upt
+> context. It is just a matter of deciding whether we will be referring to =
+a type
+> whose API is not 100% formalized as we speak, or to SpinLock itself - whi=
+ch is
+> already upstream - with a caveat. I chose the latter.
+
+I don't think we should knowingly do something that is "not safe". If
+this requires `SpinLockIrq`, then that should land first. I think
+referring to a not-yet-existing type is fine.
+
+>>> +/// # Invariants
+>>> +///
+>>> +/// * We own an irq handler using `&self` as its private data.
+>>> +///
+>>> +#[pin_data(PinnedDrop)]
+>>> +pub struct Registration<T: Handler> {
+>>> +    irq: u32,
+>>> +    #[pin]
+>>> +    handler: T,
+>>> +    #[pin]
+>>> +    /// Pinned because we need address stability so that we can pass a=
+ pointer
+>>> +    /// to the callback.
+>>> +    _pin: PhantomPinned,
+>>> +}
+>>> +
+>>> +impl<T: Handler> Registration<T> {
+>>> +    /// Registers the IRQ handler with the system for the given IRQ nu=
+mber. The
+>>> +    /// handler must be able to be called as soon as this function ret=
+urns.
+>>=20
+>> The first line of documentation should be a single sentence description
+>> of what the item does. It will get rendered next to it on the summary &
+>> search pages.
+>
+> Right, I actually rendered the docs before submitting, but apparently I m=
+issed this.
+>
+>>=20
+>> What is meant by the second sentence? What about this phrasing?: "The
+>> handler might be called immediately after this function returns.".
+>
+> It's a reminder, inherited from the C side, that literally as soon as
+> request_irq() returns, your handler may be called. Anything that you need=
+ to
+> setup before your handler can run must already have been done by this poi=
+nt.
+>
+> Is this the =E2=80=9Csecond sentence=E2=80=9D you are referring to?
+
+Yes. The sentence was worded in a weird way, since in Rust, I would
+normally expect that anything can happen to a value, if I give up
+ownership.
+
+Also it is not true, since the code in the function body is only run
+once you use the initializer, so running this code doesn't do anything:
+
+    let handler =3D ...;
+    let flags =3D ...;
+    let irg =3D ...;
+   =20
+
+    let reg =3D Registration::register(irq, flags, cstr!("foo"), handler);
+
+    // the registration is not yet created, only an initializer for a regis=
+tration.
+
+    let reg =3D Arc::pin_init(reg);
+
+    // now the registration has been created and the handler can be called.
+
+>>> +    pub fn register(
+>>> +        irq: u32,
+>>> +        flags: Flags,
+>>> +        name: &'static CStr,
+>>> +        handler: T,
+>>> +    ) -> impl PinInit<Self, Error> {
+
+>>> +/// The value that can be returned from `ThreadedHandler::handle_irq`.
+>>> +#[repr(u32)]
+>>> +pub enum ThreadedIrqReturn {
+>>> +    /// The interrupt was not from this device or was not handled.
+>>> +    None =3D bindings::irqreturn_IRQ_NONE,
+>>> +
+>>> +    /// The interrupt was handled by this device.
+>>> +    Handled =3D bindings::irqreturn_IRQ_HANDLED,
+>>> +
+>>> +    /// The handler wants the handler thread to wake up.
+>>=20
+>> How about "The handler wants the handler thread to take care of the
+>> interrupt." or is that incorrect?
+>
+> This is taken straight from the C docs. As I told Andreas, I=E2=80=99d pr=
+efer if we
+> didn=E2=80=99t add our own docs for C things that have their own docs alr=
+eady.
+
+Fine with me, but we could also change the C docs :)
+
+>>> +///     // This will run (in a separate kthread) if and only if `handl=
+e_irq`
+>>> +///     // returns `WakeThread`.
+>>> +///     fn thread_fn(&self) -> IrqReturn {
+>>> +///         // We now have exclusive access to the data by locking the=
+ SpinLock.
+>>> +///         //
+>>> +///         // Ideally, we should disable interrupts while we are doin=
+g this to
+>>> +///         // avoid deadlocks, but this is not currently possible.
+>>=20
+>> Would this be solved by SpinLockIrq?
+>
+>
+> Yes, that is the point of SpinLockIrq. The exact syntax is still up for d=
+ebate,
+> although by this time I think Lyude & Boqun have already settled on somet=
+hing.
+
+I also was part of the discussion at some point, but dropped out & was
+busy with other things. I'll move it up in my todo-list.
+
+---
+Cheers,
+Benno
