@@ -1,182 +1,106 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076352222CB;
-	Thu, 15 May 2025 12:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747312111; cv=pass; b=WUz6I9TGr/7eB8VAL2uaHMQshzos58BMTRSHRfwwOTLaFwpfOnj5uLeISxTNZnFcY1+cclN9Kf2/KXyYBZKrz7ex6YRqP50P8C/QtYgaA92TEz+rOBKwZ39QuU+G8WQDIif8cJ/FU5UifQ/9s5MB6Fp3yh74VT7G1eBjQxcmAro=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747312111; c=relaxed/simple;
-	bh=1KmjICqAPMW902hFnhxBalK1v+p498bQnPm22BLWGEA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=RWkOVKFt9VwfW2jlj3/dOYxAKK6fxWbytTcBc0idHoPkO57+qv51E/ozPjy/D5LbyDxmAjpf/VJs0KDhg9QCWH0Rr5lwrjSDEbZF1r7kPfgMA1L9ZXYxueoBAjnqKL84oVwA2GtfiGPnXL9BB9gjvQcCgRv4DO9GNORnOfkACc0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CSTl+sl+; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF49298C37;
+	Thu, 15 May 2025 12:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747312659; cv=none; b=lxyoid1MkqOpjhZoUgfJdPt9I/rT7Fu3QA7kxkL5Ph7UogZ3iC7OCOkfL0pnPBlwtzBKaoAczwYCE5MDhauKiNSFWl/bo6AkQo1+DAJBYWak+2Q6d2IgXnNn3quNyzGwm+hJSByWA+VFFqZu2mH7LP1BVWj1l/lQtfIrx69HYEw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747312659; c=relaxed/simple;
+	bh=V7NGCpEoGaOGQDfebTYdttgeG8ku2izNigxgicjHoT8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FV5PKfWQ3LlSX6EgqvJ8BCHg+CLXjcRp8MJWpizjyWkE57fVkiUlPuoe57GEGqvXRwsfabZv+Xi+znnYkOyQmLYo6omSbywiG+GZRdC8BwLIEGwtCUk28xlIaw1vHXasoC2iy5HRhIcq14jI5RPMk9I+2szrqFdUngotg2y1QMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqr8v2TC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CSTl+sl+"
-ARC-Seal: i=1; a=rsa-sha256; t=1747312088; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hE5Ahuoe3liWlEt3Ayxmaghi/Hr2Qj9XuMC6VMi+Tz4gk8Ql4v62rGUaopNfb0rLiGnLFSJxjpGvsU4WEx2BYBtvxKnPHcwJzxdAL4f6cHoReJJrpUR8y6xTRJ2BqMgJpvufaxFldORC7rQ4S4NMykGtmVWKhfi0d6wJ8Zl+Rq0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1747312088; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=pL7tEiHHFxsDRCPZMIVsmA66s8fZk8HT6WlwVxESBm0=; 
-	b=DyKuI//dykh19/JooaAa4gATHB76KhGYTN2rL7iWAjwDBPKLTXPvBNUB1Ar6CwcgYdKSWMonbrqvZfFB4iaPIJaSx+XlXyTF8voTxk7hAvHYMFNhI2vr5Gvguf9Vlem57jmOcBGWdpaMrfyE6P2gc42kBB103b0jefnHr1F28C0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747312088;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=pL7tEiHHFxsDRCPZMIVsmA66s8fZk8HT6WlwVxESBm0=;
-	b=CSTl+sl+Z03hAt+YSxSsu5EOkFiolwIldIjtRwcxPT244jSd3OUE+YtYvncYTgiC
-	LzG0uTph4z+EHiqg1xHhdfxaYhq45qu57zM33jbo3VW1qVbXR4HfGR3LKQWbf1O3Nuz
-	IaD+Y207lzkDwBeLzoiG9xKnLMo3y87/pxUUuPjQ=
-Received: by mx.zohomail.com with SMTPS id 1747312086918595.3368740394998;
-	Thu, 15 May 2025 05:28:06 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqr8v2TC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4119C4CEE7;
+	Thu, 15 May 2025 12:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747312659;
+	bh=V7NGCpEoGaOGQDfebTYdttgeG8ku2izNigxgicjHoT8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gqr8v2TCWC/a7oTUMHIbZYMulY59gpgtxv+sQvQfAXE+UoOYS14AFy8C1Xot+4Uy1
+	 FM8MUgcLemOpbdpTVfylNuYp2CbSqOPJ5FJnAAJv9DWfSmcvJYPTYe+i+SNCAtAwRb
+	 HbJvrhP6ePOZS2jf0NOA/9SX/v7nQHqAS8ni9o50WGNcTHWhh1hJ+90/xgBMzTBtVs
+	 H/+kQQL3EBqhXV7EHUGgyZHXygRXgfzYIB64I1wxYNsPOwonJL3NdPWw2IF533IvM3
+	 Ri9ZYP8TaD8a/hXxzvBU6PwcFxccoh9tiFCBhopCYIBjdhRzHEJvYSL+sW3XGR/Cmf
+	 ej3piM20Sia2Q==
+Date: Thu, 15 May 2025 14:37:32 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Benno Lossin <lossin@kernel.org>, Matthew Maurer <mmaurer@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+Message-ID: <aCXgDHtdXb7Wf92P@pollux>
+References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
+ <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
+ <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+ <aCRdNJ2oq-REBotd@pollux>
+ <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
+ <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
+ <2025051524-festival-afterglow-8483@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aCXYaCGvO_tI1OOh@pollux>
-Date: Thu, 15 May 2025 09:27:51 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <39C56E3E-07C6-44BB-B5F6-38090F037032@collabora.com>
-References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
- <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
- <aCUQ0VWgoxdmIUaS@pollux>
- <A7E3A124-AF77-4A4A-B4E2-AE7DDB1CE007@collabora.com>
- <aCXYaCGvO_tI1OOh@pollux>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025051524-festival-afterglow-8483@gregkh>
 
+On Thu, May 15, 2025 at 01:43:09PM +0200, Greg Kroah-Hartman wrote:
+> On Thu, May 15, 2025 at 10:59:44AM +0200, Benno Lossin wrote:
+> > On Wed May 14, 2025 at 11:55 PM CEST, Matthew Maurer wrote:
+> > > On Wed, May 14, 2025 at 2:07 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> > >> However, I really think we should keep the code as it is in this version and
+> > >> just don't provide an example that utilizes ManuallyDrop and forget().
+> > >>
+> > >> I don't see how the idea of "manually dropping" (sub-)directories and files
+> > >> provides any real value compared to just storing their instance in a driver
+> > >> structure as long as they should stay alive, which is much more intuitive
+> > >> anyways.
+> > >
+> > > We can't easily do this, because dropping a root directory recursively
+> > > drops everything underneath it. This means that if I have
+> > >
+> > > foo/
+> > >   - bar/
+> > >   - baz/
+> > >
+> > > Then my directory handle for `bar` have to be guaranteed to outlive my
+> > > directory handle for `foo` so that I know it's didn't get deleted
+> > > under me. This is why they have a borrow onto their parent directory.
+> > > This borrow means that you can't (without `unsafe`, or something like
+> > > `yoke`) keep handles to `foo` and `bar` in the same struct.
+> > 
+> > Is there no refcount that we can use instead of borrowing? I guess not,
+> > since one can call `debugfs_remove`. What about a refcount on the rust
+> > side? or is debugfs not used for "debugging" and needs to have the
+> > performance of no refcount?
+> 
+> debugfs should never have any performance issues (i.e. you don't use it
+> for performant things.)
+> 
+> So refcount away!  That should never be an issue.
 
+Reference counting (parent) directories should lead to a much cleaner solution.
 
-> On 15 May 2025, at 09:04, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> On Thu, May 15, 2025 at 08:54:35AM -0300, Daniel Almeida wrote:
->> Hi Danilo,
->>=20
->>> On 14 May 2025, at 18:53, Danilo Krummrich <dakr@kernel.org> wrote:
->>>=20
->>> On Wed, May 14, 2025 at 04:20:51PM -0300, Daniel Almeida wrote:
->>>> +/// // This is running in process context.
->>>> +/// fn register_irq(irq: u32, handler: Handler) -> =
-Result<Arc<Registration<Handler>>> {
->>>> +///     let registration =3D Registration::register(irq, =
-flags::SHARED, c_str!("my-device"), handler);
->>>> +///
->>>> +///     // You can have as many references to the registration as =
-you want, so
->>>> +///     // multiple parts of the driver can access it.
->>>> +///     let registration =3D Arc::pin_init(registration, =
-GFP_KERNEL)?;
->>>=20
->>> This makes it possible to arbitrarily extend the lifetime of an IRQ
->>> registration. However, we must guarantee that the IRQ is =
-unregistered when the
->>> corresponding device is unbound. We can't allow drivers to hold on =
-to device
->>> resources after the corresponding device has been unbound.
->>>=20
->>> Why does the data need to be part of the IRQ registration itself? =
-Why can't we
->>> pass in an Arc<T> instance already when we register the IRQ?
->>>=20
->>> This way we'd never have a reason to ever access the Registration =
-instance
->>> itself ever again and we can easily wrap it as =
-Devres<irq::Registration> -
->>> analogously to devm_request_irq() on the C side - without any =
-penalties.
->>>=20
->>>> +///     // The handler may be called immediately after the =
-function above
->>>> +///     // returns, possibly in a different CPU.
->>>> +///
->>>> +///     {
->>>> +///         // The data can be accessed from the process context =
-too.
->>>> +///         let mut data =3D registration.handler().0.lock();
->>>> +///         *data =3D 42;
->>>> +///     }
->>>> +///
->>>> +///     Ok(registration)
->>>> +/// }
->>>=20
->>=20
->> Up until this point, there was no need for the data to not be inline =
-with the
->> registration. This new design would force an Arc, which, apart from =
-the
->> heap-allocation, is restrictive for users.
->=20
-> Does the current design not also imply a heap allocation heap =
-allocation? With
-> my proposal irq::Registration::new() can just return an =
-irq::Registration
-> instance, not an impl PinInit that you need to stuff into a Box or Arc =
-instead.
-> Hence, there shouldn't be a difference.
+I mentioned that previously, but also said in that context that it's a bit
+contrary to how the C API is utilized currently, which usually isn't desired.
 
-Well, not really, because this impl PinInit can be assigned to something =
-larger
-that is already pinned, like drm::Device::Data for example, which is (or =
-was)
-already behind an Arc, or any other private data in other subsystems.
-
-IIUC what you proposed has yet another indirection. If we reuse the =
-example
-from above, that would be an Arc for the drm Data, and another Arc for =
-the
-handler itself?
-
-I definitely see your point here, I am just trying to brainstorm another =
-way of
-doing this.
-
->=20
->> Can=E2=80=99t we use Devres with the current implementation?
->>=20
->> IIUC from a very cursory glance, all that would mean is that you'd =
-have to call
->> try_access() on your handler, which should be fine?
->=20
-> Well, that would work indeed.
->=20
-> But people will - with good reason - be upset that every access to the =
-handler's
-> data needs to be guarded with the RCU read side critical section =
-implied by
-> Revocable and hence Devres.
-
-True, I totally missed that.
-
->=20
-> We can easily avoid that in this case, hence we should do it.
-
-=E2=80=94 Daniel
-
+However, if we're fine with that I think it's superior to the borrowing
+solution, which requires keep(). IMHO keep() is a footgun in general, even if
+not callable for "root" directories.
