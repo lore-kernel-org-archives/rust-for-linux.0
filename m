@@ -1,31 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075D11A28D;
-	Thu, 15 May 2025 08:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD2D288513
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 May 2025 08:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747298793; cv=none; b=FRVOi2qTB39pDK8huQkrA2QjTAme/MOhFahxz/s2LSjfrrG3tk42rxOXhuj89IAflGV7S8xgVqMGBlVlLxttH3TZz/oxyBB7mI5AivluPtWDNgChlB8FwV7/wLFrxfjEAYDCw2IzNHAuhvyl0RYpAC42h28WXKAKsLxZ4G5I+ag=
+	t=1747298920; cv=none; b=od421m3rWdm+fWVI3yAsQYBLY8igAYoFRTBDKkC7ivV1JGcYMwpNKZsWtlqqqitool08oURhiVcDyW8BaNH5B0jZsljUZPMk8+i8qzUJcwPArIM5/n1rLCG8xl2ctwR54ArtUXJHatMykCkCd077l99zsYIWw0z/tcN5SgZWwUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747298793; c=relaxed/simple;
-	bh=RaBEVejUBWVrVHhrOXFQBMtESL1DRpV6lkC7nuNepHI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ehDTbvpOvTQWH0tZuUQYkTF/aTp9d6CD/hwVs9EYVWjaGz+vX++qrCmsVO0TO2UV7ckLeEg35dCVr+80Sxp7+MPXTdxecFgr2lJM53zTZhzp3+SonHmJfsSWaoai/11zAKfNwbobrEQz3pq62gXMYjiKTy8w5AeemR0SWgjMvcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QeXFD3md; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747298920; c=relaxed/simple;
+	bh=uafTKsLt5Y6vI+2YJVWbCoVLU1+w6d1TN41/6GcJe8w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=PuqnDwql+kJs77QHgkm/I+tsLUSclujk9gGX+Q3Y5i4Xdt5c51TX0KISpjslwQb42VQVLOTLGXBiAZrnVhV58W2iuywhyfUCY05nJNsxwZXIaRtFfVahm/zkaB1aswUbsemRIG/OQ3iSFngDmzJD2j0cVW9ihZywo3dIj4vRIPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=I+o+mqOr; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QeXFD3md"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E2BC4CEE7;
-	Thu, 15 May 2025 08:46:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747298792;
-	bh=RaBEVejUBWVrVHhrOXFQBMtESL1DRpV6lkC7nuNepHI=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=QeXFD3mdSVlfAJmSw3M4/M3dFGSG74apaLIocx1dji2b5TfS9wmsszgMdztGV+1tz
-	 FoddcBPvASE/Fh9DdOFWl02YntJbbebW5DzXAHBFt0rDLYDVxqSVqqpPRe1Omu0G5l
-	 m7fjrngM+C2wek+ZYYbN+T02Sjzvwx0XWTMDpmJUD+9MG2OSGENCzws+SE9QQ0e1sz
-	 366we9g7pEhmZmCRjbgWobGY7Z/SbB/mMJBQJBrJsWJGA70aLjS57kmwLsmQpcJ9Ox
-	 TpEvSfE1QTUPkTYqSSWlNExyOzkESNW5cfLnV0JcdQqih+MgRLvPj3TC+vFCANaQiZ
-	 cV+7U5BIGJz5Q==
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="I+o+mqOr"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-442e9c7cf0eso288705e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 May 2025 01:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1747298916; x=1747903716; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bdVLI+IKJQCwIaBP/4ipGt86DAIuj3sOKMK9lc4aqFc=;
+        b=I+o+mqOrLwb6wAy3fZ6S3zjKPSqaM3CwDCRIeUdIay3/UdKVnn2nqClHp2i280eIJo
+         tZyO0jy8xMq7nzDk/AqEDzGLQA6Av8h5IUIrV+E9571R5E2Zid8XpZXo6RayFQu3J9Et
+         F/GBqCB1+3SvxUlFk0JZ8KNMo3Pt8iiTg8MJGPAZ2Y7gQJZL9F5OGqKptUTpV1kwK24L
+         EOlzSCCEVIi2oevOVj9yLa8GrSIWcCDBU4NLrVldY0U3XkdWSWI2ytaUJ8Sq3ZQqb4cs
+         u1f0G8OtL1VTWuMsykX7Bwk74nyGnyworNNU6w3awX+4DK4SlJeRIYuANTsjnT//Pq4q
+         lnrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747298916; x=1747903716;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bdVLI+IKJQCwIaBP/4ipGt86DAIuj3sOKMK9lc4aqFc=;
+        b=FUlw0C9taECZEAx/CZBQYsEBV8rz6rTfkMvAtWXQeD090YDqsRlqvnN+P5Y/eWYh7U
+         cXm2RovU51JQ2JNV6pH5Cnz8mRzkcuLHst4i1Ls0JXddioIOKNgqtbpRy6PZsTCUuX3g
+         +SvcfQbmjmq8JVf494WbbfHr6J5vuV3w81tKt1BUYONair9eITqBWjcxumMemFPJloNz
+         xsmcvzVqgh3Y96GpCnwPKnEuHr5+xqQlg0/dqxngn7S/JMWayHK08gooakyomimHpHO3
+         a3hgZ6IIGG9XVIv95mXNMenr1NWJnN4SJ6d4j8qS1mehPl7hBlabAgphyCd3op2pHRla
+         /Xkw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3rravmwK1b5+b2uLUkBJrmh9xUHnhRxEY5Ut7ZhXa8eGwnDBf01kPZlAxka/GGSFGtBMN6Xd5hAPICS9ycg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy96Kh8TXDRmzuXu3N9JGWPwSgC38xbW8qejTU+ugVqlTTMAK9j
+	WVwHiebMkv8hTKWtOI4b32YdoGxLy/l69PmMEQ2B7Bh3jGixjUXrzxygXDrWDgk=
+X-Gm-Gg: ASbGncuhWXLQZ9RDsI5DJUAGA9m5nNBCLexA/H65Po/a9B6/W/JoyIusyc+EOXJMYTt
+	R1JXPLSGDug7y5cfcATg4BAUuQTWCuxZ6wpWYhLH5pljdVvExtwz+vfftDFeNTaYcCvovSXPBPU
+	6ZwqHlQ2CyBW9AyqbaHgOK0o9ZhFEnXqOI/TQ5wgLp+9pJN4+DXuVEHCWx3ZjGhOf9R7wPfxhpE
+	ra+BCk6xA4jyJvAXPg0orUxrK7gB+0FhYZSUm9wLwk51LNZRjUJxKEVDSz6yjkpmNbexe7josX0
+	/eN4lyAjromGa4xHAnmUsJVXCqwaH3kscY7f8flCg/q98vOHa7x5vfnNurIWy1vRmGm8NimCMnq
+	Zc0knDH6Q4Ss=
+X-Google-Smtp-Source: AGHT+IFl5ofT8H2ymocVMBID7uffI6yQBoHWwntFgE3AOdsNMnKtMdzBwHwHlEbKzThnIcYnf09dKg==
+X-Received: by 2002:a5d:4311:0:b0:3a3:55b4:1abb with SMTP id ffacd0b85a97d-3a355b41b8emr294033f8f.12.1747298916300;
+        Thu, 15 May 2025 01:48:36 -0700 (PDT)
+Received: from localhost (ip-89-103-73-235.bb.vodafone.cz. [89.103.73.235])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f5a2cf2bsm21822557f8f.80.2025.05.15.01.48.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 May 2025 01:48:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,269 +66,90 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 May 2025 10:46:22 +0200
-Message-Id: <D9WLQ3J2TRD1.AA50TVOPKMVQ@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+Date: Thu, 15 May 2025 10:48:35 +0200
+Message-Id: <D9WLRSAB63M5.3DZD4ND3WVZ6F@ventanamicro.com>
+Subject: Re: [PATCH v15 05/27] riscv: usercfi state for task and
+ save/restore of CSR_SSP on trap entry/exit
+Cc: <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
+ <devicetree@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <alistair.francis@wdc.com>, <richard.henderson@linaro.org>,
+ <jim.shu@sifive.com>, <andybnac@gmail.com>, <kito.cheng@sifive.com>,
+ <charlie@rivosinc.com>, <atishp@rivosinc.com>, <evan@rivosinc.com>,
+ <cleger@rivosinc.com>, <alexghiti@rivosinc.com>, <samitolvanen@google.com>,
+ <broonie@kernel.org>, <rick.p.edgecombe@intel.com>,
+ <rust-for-linux@vger.kernel.org>, "Zong Li" <zong.li@sifive.com>,
+ "linux-riscv" <linux-riscv-bounces@lists.infradead.org>
+To: "Alexandre Ghiti" <alex@ghiti.fr>, "Deepak Gupta" <debug@rivosinc.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
+ <dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+ <hpa@zytor.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Paul Walmsley"
+ <paul.walmsley@sifive.com>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert
+ Ou" <aou@eecs.berkeley.edu>, "Conor Dooley" <conor@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Arnd Bergmann" <arnd@arndb.de>, "Christian Brauner" <brauner@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Oleg Nesterov" <oleg@redhat.com>,
+ "Eric Biederman" <ebiederm@xmission.com>, "Kees Cook" <kees@kernel.org>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan" <shuah@kernel.org>, "Jann
+ Horn" <jannh@google.com>, "Conor Dooley" <conor+dt@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
  <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Thomas Gleixner" <tglx@linutronix.de>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Gary Guo"
- <gary@garyguo.net>
-X-Mailer: aerc 0.20.1
-References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com> <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com> <D9W5IX9Z7QMU.3DL48O2KYTN1Z@kernel.org> <497D0D1E-B607-4822-A083-C0C5B9DB3C57@collabora.com>
-In-Reply-To: <497D0D1E-B607-4822-A083-C0C5B9DB3C57@collabora.com>
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>
+From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
+References: <20250502-v5_user_cfi_series-v15-0-914966471885@rivosinc.com>
+ <20250502-v5_user_cfi_series-v15-5-914966471885@rivosinc.com>
+ <D9OZVNOGLU4T.2XOUPX27HN0W8@ventanamicro.com>
+ <122fc6cd-2e21-4fca-979d-bcf558107b81@ghiti.fr>
+In-Reply-To: <122fc6cd-2e21-4fca-979d-bcf558107b81@ghiti.fr>
 
-On Wed May 14, 2025 at 10:58 PM CEST, Daniel Almeida wrote:
-> Hi Benno, I really appreciate you taking the time to review my patches.
-
-Glad I can help :)
-
->> On 14 May 2025, at 17:04, Benno Lossin <lossin@kernel.org> wrote:
->> On Wed May 14, 2025 at 9:20 PM CEST, Daniel Almeida wrote:
->>> Add support for registering IRQ handlers in Rust.
->>>=20
->>> IRQ handlers are extensively used in drivers when some peripheral wants
->>> to obtain the CPU attention. Registering a handler will make the system
->>> invoke the passed-in function whenever the chosen IRQ line is triggered=
-.
->>>=20
->>> Both regular and threaded IRQ handlers are supported through a Handler
->>> (or ThreadedHandler) trait that is meant to be implemented by a type
->>> that:
->>>=20
->>> a) provides a function to be run by the system when the IRQ fires and,
->>>=20
->>> b) holds the shared data (i.e.: `T`) between process and IRQ contexts.
->>>=20
->>> The requirement that T is Sync derives from the fact that handlers migh=
-t
->>> run concurrently with other processes executing the same driver,
->>> creating the potential for data races.
->>>=20
->>> Ideally, some interior mutability must be in place if T is to be
->>> mutated. This should usually be done through the in-flight SpinLockIrq
->>> type.
->>>=20
->>> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
->>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
->>> ---
->>> rust/bindings/bindings_helper.h |   1 +
->>> rust/helpers/helpers.c          |   1 +
->>> rust/helpers/irq.c              |   9 +
->>> rust/kernel/irq.rs              |  24 +++
->>> rust/kernel/irq/flags.rs        | 102 +++++++++
->>> rust/kernel/irq/request.rs      | 455 +++++++++++++++++++++++++++++++++=
-+++++++
->>> rust/kernel/lib.rs              |   1 +
->>> 7 files changed, 593 insertions(+)
->>=20
->> Could you split this patch into smaller chunks?
+2025-05-15T09:28:25+02:00, Alexandre Ghiti <alex@ghiti.fr>:
+> On 06/05/2025 12:10, Radim Kr=C4=8Dm=C3=A1=C5=99 wrote:
+>> 2025-05-02T16:30:36-07:00, Deepak Gupta <debug@rivosinc.com>:
+>>> diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
+>>> @@ -91,6 +91,32 @@
+>>> +.macro restore_userssp tmp
+>>> +	ALTERNATIVE("nops(2)",
+>>> +		__stringify(				\
+>>> +		REG_L \tmp, TASK_TI_USER_SSP(tp);	\
+>>> +		csrw CSR_SSP, \tmp),
+>>> +		0,
+>>> +		RISCV_ISA_EXT_ZICFISS,
+>>> +		CONFIG_RISCV_USER_CFI)
+>>> +.endm
+>> Do we need to emit the nops when CONFIG_RISCV_USER_CFI isn't selected?
+>>
+>> (Why not put #ifdef CONFIG_RISCV_USER_CFI around the ALTERNATIVES?)
 >
-> How? This patch does one thing: it adds request_irq functionality.
+> The alternatives are used to create a generic kernel that contains the=20
+> code for a large number of extensions and only enable it at runtime=20
+> depending on the platform capabilities. This way distros can ship a=20
+> single kernel that works on all platforms.
 
-You could split off the threaded irq stuff and the flags module.
+Yup, and if a kernel is compiled without CONFIG_RISCV_USER_CFI, the nops
+will only enlarge the binary and potentially slow down execution.
+In other words, why we don't do something like this
 
-Smaller patches are much much easier to review IMO.
+ (!CONFIG_RISCV_USER_CFI ? "" :
+   (RISCV_ISA_EXT_ZICFISS ? __stringify(...) : "nops(x)"))
 
->>> +pub use request::Handler;
->>> +pub use request::IrqReturn;
->>> +pub use request::Registration;
->>> +pub use request::ThreadedHandler;
->>> +pub use request::ThreadedIrqReturn;
->>> +pub use request::ThreadedRegistration;
->>=20
->> Why not?:
->>=20
->>    pub use request::{Handler, ..., ThreadedRegistration};
->
-> I dislike this notation. It is just a magnet for conflicts.
+instead of the current
 
-Rust-analyzer has the "normalize imports" code action that can help with
-that. In one of our meetings, we once discussed having a custom tool
-that could merge imports, but nobody took the time to build it.
+ (CONFIG_RISCV_USER_CFI &&
+    RISCV_ISA_EXT_ZICFISS ? __stringify(...) : "nops(x)")
 
-I don't see the argument here, as this re-export shouldn't really
-change.
+It could be a new preprocessor macro in case we wanted to make it nice,
+but it's probably not a common case, so an ifdef could work as well.
 
->>> diff --git a/rust/kernel/irq/flags.rs b/rust/kernel/irq/flags.rs
->>> new file mode 100644
->>> index 0000000000000000000000000000000000000000..3cfaef65ae14f6c02f55ebc=
-f4d52450c0052df30
->>> --- /dev/null
->>> +++ b/rust/kernel/irq/flags.rs
->>> @@ -0,0 +1,102 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +// SPDX-FileCopyrightText: Copyright 2025 Collabora ltd.
->>> +
->>> +use crate::bindings;
->>> +
->>> +/// Flags to be used when registering IRQ handlers.
->>> +///
->>> +/// They can be combined with the operators `|`, `&`, and `!`.
->>> +#[derive(Clone, Copy, PartialEq, Eq)]
->>> +pub struct Flags(u64);
->>=20
->> The constants below seem to all be 32 bit, why did you choose u64?
->
-> The C code takes in ffi::c_ulong. Shouldn=E2=80=99t this map to u64? Or m=
-aybe usize.
+Do we just generally not care about such minor optimizations?
 
-Maybe bindgen is doing some funky stuff, Gary changed the mappings a
-couple months ago (from rust/ffi.rs):
+(If we wanted to go an extra mile, we could also keep the nops when both
+ CONFIG_RISCV_USER_CFI and RISCV_ISA_EXT_ZICFISS are present, but
+ command line riscv_nousercfi disabled backward cfi.)
 
-    c_long =3D isize;
-    c_ulong =3D usize;
-
-So this indeed should be usize, what is going on here?
-
->>> +/// A registration of an IRQ handler for a given IRQ line.
->>> +///
->>> +/// # Examples
->>> +///
->>> +/// The following is an example of using `Registration`. It uses a
->>> +/// [`SpinLock`](crate::sync::SpinLockIrq) to provide the interior mut=
-ability.
->>> +/// Note that Spinlocks are not safe to use in IRQ context as of now, =
-but may be
->>> +/// in the future.
->>=20
->> Didn't your commit message mention SpinLockIrq?
->
-> This is not upstream yet. I removed all mentions of SpinLockIrq on
-> purpose, but I apparently missed some as you say.
->
-> We definitely need interrupt-aware spinlocks to access the data in interr=
-upt
-> context. It is just a matter of deciding whether we will be referring to =
-a type
-> whose API is not 100% formalized as we speak, or to SpinLock itself - whi=
-ch is
-> already upstream - with a caveat. I chose the latter.
-
-I don't think we should knowingly do something that is "not safe". If
-this requires `SpinLockIrq`, then that should land first. I think
-referring to a not-yet-existing type is fine.
-
->>> +/// # Invariants
->>> +///
->>> +/// * We own an irq handler using `&self` as its private data.
->>> +///
->>> +#[pin_data(PinnedDrop)]
->>> +pub struct Registration<T: Handler> {
->>> +    irq: u32,
->>> +    #[pin]
->>> +    handler: T,
->>> +    #[pin]
->>> +    /// Pinned because we need address stability so that we can pass a=
- pointer
->>> +    /// to the callback.
->>> +    _pin: PhantomPinned,
->>> +}
->>> +
->>> +impl<T: Handler> Registration<T> {
->>> +    /// Registers the IRQ handler with the system for the given IRQ nu=
-mber. The
->>> +    /// handler must be able to be called as soon as this function ret=
-urns.
->>=20
->> The first line of documentation should be a single sentence description
->> of what the item does. It will get rendered next to it on the summary &
->> search pages.
->
-> Right, I actually rendered the docs before submitting, but apparently I m=
-issed this.
->
->>=20
->> What is meant by the second sentence? What about this phrasing?: "The
->> handler might be called immediately after this function returns.".
->
-> It's a reminder, inherited from the C side, that literally as soon as
-> request_irq() returns, your handler may be called. Anything that you need=
- to
-> setup before your handler can run must already have been done by this poi=
-nt.
->
-> Is this the =E2=80=9Csecond sentence=E2=80=9D you are referring to?
-
-Yes. The sentence was worded in a weird way, since in Rust, I would
-normally expect that anything can happen to a value, if I give up
-ownership.
-
-Also it is not true, since the code in the function body is only run
-once you use the initializer, so running this code doesn't do anything:
-
-    let handler =3D ...;
-    let flags =3D ...;
-    let irg =3D ...;
-   =20
-
-    let reg =3D Registration::register(irq, flags, cstr!("foo"), handler);
-
-    // the registration is not yet created, only an initializer for a regis=
-tration.
-
-    let reg =3D Arc::pin_init(reg);
-
-    // now the registration has been created and the handler can be called.
-
->>> +    pub fn register(
->>> +        irq: u32,
->>> +        flags: Flags,
->>> +        name: &'static CStr,
->>> +        handler: T,
->>> +    ) -> impl PinInit<Self, Error> {
-
->>> +/// The value that can be returned from `ThreadedHandler::handle_irq`.
->>> +#[repr(u32)]
->>> +pub enum ThreadedIrqReturn {
->>> +    /// The interrupt was not from this device or was not handled.
->>> +    None =3D bindings::irqreturn_IRQ_NONE,
->>> +
->>> +    /// The interrupt was handled by this device.
->>> +    Handled =3D bindings::irqreturn_IRQ_HANDLED,
->>> +
->>> +    /// The handler wants the handler thread to wake up.
->>=20
->> How about "The handler wants the handler thread to take care of the
->> interrupt." or is that incorrect?
->
-> This is taken straight from the C docs. As I told Andreas, I=E2=80=99d pr=
-efer if we
-> didn=E2=80=99t add our own docs for C things that have their own docs alr=
-eady.
-
-Fine with me, but we could also change the C docs :)
-
->>> +///     // This will run (in a separate kthread) if and only if `handl=
-e_irq`
->>> +///     // returns `WakeThread`.
->>> +///     fn thread_fn(&self) -> IrqReturn {
->>> +///         // We now have exclusive access to the data by locking the=
- SpinLock.
->>> +///         //
->>> +///         // Ideally, we should disable interrupts while we are doin=
-g this to
->>> +///         // avoid deadlocks, but this is not currently possible.
->>=20
->> Would this be solved by SpinLockIrq?
->
->
-> Yes, that is the point of SpinLockIrq. The exact syntax is still up for d=
-ebate,
-> although by this time I think Lyude & Boqun have already settled on somet=
-hing.
-
-I also was part of the discussion at some point, but dropped out & was
-busy with other things. I'll move it up in my todo-list.
-
----
-Cheers,
-Benno
+Thanks.
