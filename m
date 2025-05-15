@@ -1,132 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DA161FCE;
-	Thu, 15 May 2025 13:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1365D1DDE9;
+	Thu, 15 May 2025 14:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747317155; cv=none; b=M6oWxadd0amF22cxI09AR6w+waqD0QTGUraboMR1+F2Bm6hS+fzdyoszAe4I7HDeljT5cB+uRWdQiAVqUcFe/YyGQtdki1fGvDjgbny0EU+rBMIbSUdWZZk9S7tL7iXrfJ9GifGKNEY+3TuBWB3pCNkvjdd2KiycfIzEhlfsCzM=
+	t=1747319467; cv=none; b=p1fD/R0FC1s067SpXC0RRt2R+ps4cL+/5XbnhwJKIW9tTywI66u91mH1U4mmOiFkY1xa64fbV+UYfnwaQjmEHZdyzCEkpLLN9DkSdslcbmhk2ud38sADb3F4GQ108PD4Kw3X268MdTJZtheodfTdkL033voLwlP/jnx3/V9zHVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747317155; c=relaxed/simple;
-	bh=1goV/IH2W0v4lJhJQXfNOetGBRDKZao2V7PBJPLKVmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fAMFn/cfSuXCDAd064qWG6M/RLdLQEJt4MZ4TOmAJUKijTv80tcW2fcePw7NvFDaWS4H5O1+4Nutbbqik6S/AMltANcq4gV9xHq/HYARWQBLeFJ3XTv0o1IhkWXJqR+6OAQOJdy722LRxMkAnmHwvf/gyoFz8F0/pV/SaFNtynw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQrFOqpE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747319467; c=relaxed/simple;
+	bh=gBVcgI+bVIW8089OzOAqCSzjfYMoWZXlfDLqx2jCPmA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aCcDsC/SfT2szINBRRx8zVHOooFAA3l468ThujAE04TSGQt3mB7gSYupJYSCw+lNudJOPLWle7hulHemVq4oIaT3rohFgTUnM3zXgbINCNoJdRQA8vBQXYdjaiPc+3hKwQTE6sKYZeB/M0WFe30ot4kbdA0uFyVTjhhDEHoSOs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HWBx0eCU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQrFOqpE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8189C4CEEB;
-	Thu, 15 May 2025 13:52:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HWBx0eCU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8112CC4CEEB;
+	Thu, 15 May 2025 14:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747317155;
-	bh=1goV/IH2W0v4lJhJQXfNOetGBRDKZao2V7PBJPLKVmk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eQrFOqpE4RICxz+SJSpwX/Zhfm4M8rhDAaYMYR5OlTf+yluWHNlVedJJHgj9DHGqN
-	 g07i7GJ9zzFrPaUFZpYjtnWu9HPWJY1YLm93EzUpJHuYTTxE4dDsA0AcQ66tFTxyl9
-	 mKzko4InbP2tuy5YRklogDJnX4DpTwl9m6d+7Emo7QCzluWnV/NXWI4Tp0PXw/eUIf
-	 JmYdmtQuwgtkZMURBAz0wsUrUVrr2nc4+ma9kx8mbaRhlgYE7X+DBzrz1GrwikYj8n
-	 abVNlv87C+im4CgkXm/oqjXZVQ03k4MAzJDSFYJA5Dl4JFl2XJKzyvkDw2uku4IHyZ
-	 hNkfRoFCjWt3g==
-Date: Thu, 15 May 2025 15:52:29 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
-Message-ID: <aCXxnUdO8--5y8Zo@pollux>
-References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
- <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
- <aCUQ0VWgoxdmIUaS@pollux>
- <A7E3A124-AF77-4A4A-B4E2-AE7DDB1CE007@collabora.com>
- <aCXYaCGvO_tI1OOh@pollux>
- <39C56E3E-07C6-44BB-B5F6-38090F037032@collabora.com>
- <aCXh1g5FWNiz7exb@pollux>
- <BEDD659F-B222-4150-9018-3B59126140E6@collabora.com>
- <aCXv86nAARGgoqEq@pollux>
+	s=k20201202; t=1747319466;
+	bh=gBVcgI+bVIW8089OzOAqCSzjfYMoWZXlfDLqx2jCPmA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HWBx0eCUbJnz4Ejz3fckFs6s+gnEZIIp5C5jdVn9DnNWM9TqiKGmZmrhvw0qaFxW9
+	 jXTT+wDk175eR/8/kIGhU3Zoa7cDhHB37ljjTt+fuHk0VoBT8B9+s8wvQ9Vg5VbPfa
+	 U+N9tFo6QZpxfldW2YwX0IGUWjEVLESNHfpT9z/7ffAKc5tm6W/whkaKxVXLCNybTM
+	 Bba4SAAj1B9n1bjEQkTOxtwP+90oD+dLYnJjyWbZ9qSgSLrR7vOsG+IF6NeYnHGGA/
+	 GB9JkYz7pgoK9htWDseTdpuJ4cUyzAyCfRU4cChmtK0GJpVbDhrU8HPQPGC2TvAFcH
+	 qrVD8Z9Te+A4g==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ad1f6aa2f84so210873266b.0;
+        Thu, 15 May 2025 07:31:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVuodCV3+7lRBUJoNuLScLCDX7LCjDA9wtsjdiguFx/ivm+4QnlMgC019tjpGu/+tiCGi04EB2c3mSUr6teiD0=@vger.kernel.org, AJvYcCX63CD9t0Lp+iJj44sSCW3UHqGbLMPNETYOFcJdbtyF7x87KMWCr4f2TNKaKFJ0YrImb5XNZVtoEtAeltc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMIhZPNmTI+4HreHoVdCrZpvwr+96xxYGLJEQsiRaKmyQYUo8+
+	BW7SPTwHI9dSe5EpnKKM0Ib56nWsNZqocq8XqZDsB5l2OAvzkikDMdQDmMhwvI0aKQ4DrZzvLf6
+	dKsEr/LNPOZdokuYb7seAy28GjGc=
+X-Google-Smtp-Source: AGHT+IGN876loDT8s+NGMAWAM46LQrqWUl7KnLWNCjkwPsoQU/5Vy+NFYEVa/HhDZO7UdP+c5HGPEGWy3u340bSCL8k=
+X-Received: by 2002:a17:907:d28:b0:ace:dc05:b186 with SMTP id
+ a640c23a62f3a-ad50f639d09mr341806666b.21.1747319465054; Thu, 15 May 2025
+ 07:31:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aCXv86nAARGgoqEq@pollux>
+References: <20250515-elf-v1-1-4b53745453c0@nvidia.com> <2025051543-override-rockiness-3ead@gregkh>
+ <D9WLFTPRB9FJ.OL6I760HKALZ@nvidia.com> <D9WP3YU31199.Q8IEDBJZ87LU@nvidia.com> <2025051532-gentleman-reset-58f2@gregkh>
+In-Reply-To: <2025051532-gentleman-reset-58f2@gregkh>
+From: Timur Tabi <timur@kernel.org>
+Date: Thu, 15 May 2025 09:30:28 -0500
+X-Gmail-Original-Message-ID: <CAOZdJXWKLu0y+kwC+Bm8nBCLizQVpsDdDUoS--hVgz2vnuZJQg@mail.gmail.com>
+X-Gm-Features: AX0GCFufjMIcd7AJh9ZUGCRgOX9zzN0oFtSrFsrGtHN8krwCpqrMyqtRdj_rCqQ
+Message-ID: <CAOZdJXWKLu0y+kwC+Bm8nBCLizQVpsDdDUoS--hVgz2vnuZJQg@mail.gmail.com>
+Subject: Re: [PATCH] rust: add basic ELF sections parser
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 15, 2025 at 03:45:28PM +0200, Danilo Krummrich wrote:
-> On Thu, May 15, 2025 at 10:16:33AM -0300, Daniel Almeida wrote:
-> > 
-> > >> 
-> > >> Well, not really, because this impl PinInit can be assigned to something larger
-> > >> that is already pinned, like drm::Device::Data for example, which is (or was)
-> > >> already behind an Arc, or any other private data in other subsystems.
-> > >> 
-> > >> IIUC what you proposed has yet another indirection. If we reuse the example
-> > >> from above, that would be an Arc for the drm Data, and another Arc for the
-> > >> handler itself?
-> > > 
-> > > Can't you implement Handler for drm::Device::Data and e.g. make Registration
-> > > take an Arc<T: Handler>?
-> > 
-> > No, because drivers may need more than one handler. Panthor needs 3, for
-> > example, for 3 different lines.
-> > 
-> > > 
-> > > The irq::Registration itself doesn't need to be allocated dynamically, so it'd
-> > > still be a single allocation, no?
-> > > 
-> > 
-> > Right, the registrations don't, but the handlers do.
-> 
-> Why does the handler need to be allocated dynamically?
-> 
-> What about something like the following?
-> 
-> 	pub struct Registration<T, H: Handler<T>> { ... };
-> 
-> 	pub trait Handler<T> {
-> 	   fn handle_irq(&T) -> IrqReturn;
-> 	}
-> 
-> 	// Could be `drm::Device::Data`.
-> 	struct MyData { ... };
-> 
-> 	// Implements `Handler<MyData>`.
-> 	struct IRQHandler1;
-> 	struct IRQHandler2;
-> 
-> 	// `data` is `Arc<MyData>`
-> 	irq::Registration::<IRQHandler1>::new(data, ...);
-> 	irq::Registration::<IRQHandler2>::new(data, ...);
-> 
-> With that you can have as many IRQs as you want without any additional
-> allocation.
+On Thu, May 15, 2025 at 6:43=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+> > Or if ELF is the problem, I don't mind introducing a WAD loader. ;)
+>
+> The "problem" I'm not understanding is why does the kernel have to do
+> any of this parsing at all?
 
-Alternatively we could also do the following, which is probably simpler.
+Nova will need to parse ELF headers in order to properly load and boot
+Nvidia firmware images.  Nouveau does this already:
 
-	pub struct Registration<H: Handler> { ... };
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dri=
+vers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c#n2931
 
-	pub trait Handler {
-	   fn handle_irq(&self) -> IrqReturn;
-	}
+In addition, we are adding new ELF image support to Nouveau to support
+newer Hopper and Blackwell GPUs:
 
-	// Could be `drm::Device::Data`.
-	struct MyData { ... };
+https://lore.kernel.org/nouveau/20250511210722.80350-55-bskeggs@nvidia.com/=
+T/
+(grep for "elf_header[]")
 
-	// Implements `Handler`.
-	struct IRQHandler1(Arc<MyData>);
-	struct IRQHandler2(Arc<MyData>);
+For this new code, I used ELF for new firmware images. I did this for
+a few reasons:
 
-	// `data` is `Arc<MyData>`
-	let handler1 = IRQHandler1::new(data);
-	let handler2 = IRQHandler2::new(data);
+1. In addition to the large GSP-RM binary, there are 3 "meta data"
+blobs that are very small (<100 bytes) and I wanted a way to combine
+all blobs into one file to keep things neat.
+2. I didn't want to invent a new encapsulation format from scratch.
+3. ELF allows you to use existing user-space tools to parse the file
+if you are so inclined.
+4. ELF contained all of the header bits I was looking for.
+5. I was even able to include a CRC in the ELF header, for extra validation=
+.
+6. Structs for the headers already exist in the kernel and are used by
+other drivers.
 
-	irq::Registration::new(handler1, ...);
-	irq::Registration::new(handler2, ...);
+
+
+ What does it do with these segments that
+> userspace can't do instead?  Why does patching have to be done within
+> the kernel at all?  What prevents all of this from being done elsewhere?
+>
+> And ELF parsing is "tricky" in places, and you aren't using the existing
+> elf parser, as proof of needing a new parser in rust :)
+>
+> thanks,
+>
+> greg k-h
+>
