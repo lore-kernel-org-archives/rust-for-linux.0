@@ -1,91 +1,202 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7575B145323;
-	Thu, 15 May 2025 16:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1D261FCE;
+	Thu, 15 May 2025 16:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747325917; cv=none; b=VPOsj3jYbsVEx98hSowy/8dT7XYC4QZJf7xoAm/qWbBQruxkCwwE7d2bdqbQ860/bxRnfwxRgzGHwGsFryEtR470gvuUp5NLi3EMwnuExRAwrmSl1LFQfmOiKkMB7X/1lBkq5/dWP6Z3B9o405wAOFhrI2lsBh+wntb9LC1aDXM=
+	t=1747326242; cv=none; b=lMLWsQIhMIp6O2tim4OlMrq1ZBDiIv6r32JuSU+5B4ftS1ySWpyGYUQvMBUI8uWzsH0yVIIwvS0sdrGaSl/MG7jntbp3gaAN6K7hgkl4+wND1wuxBp+XoTaKrRPb65InindKYj1xs2J+NK0Nw9PApAJuwxMBfWQbeQEi/dXfbjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747325917; c=relaxed/simple;
-	bh=L0kIF48XCYT861Asg5Q6lEo9pZRH1uwyCTmWad2IdM4=;
+	s=arc-20240116; t=1747326242; c=relaxed/simple;
+	bh=xaJeKpXzMkCVEJ82tQivYy7KG4dkYjUuJxcUxvweYGc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=spqRkkGBF7GUPoQ5D0BRDdcDf45NQX/k963IfknXhAtrFFFpqPG3ixkAcLirY/g758u3tVRi18WegSrW+8WxpRd4VxE1r+xgW3wu9buGmJclM68tMoXZ3HGbC2tX/UgN2trKEUCtHiks2FiDdNG525V7lm59UBJjaGSer185dvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SlEsi/03; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UFRyrSB17VxmTJZuTreq8VQ89hxQ7S9YowkEILlRXCzisdLBzt4qbcCX3OLlXltHka4Y6M/nDV3PD2prvlubD8f19fZds2hp2FlQUcvnCwiJXeOQkuPMiXdjggwUQKDPbp2PTPu37TRhbUES8j8aoAqRmJRxp568X5USdWIKmjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSXM1Xx0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SlEsi/03"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36C8C4CEE7;
-	Thu, 15 May 2025 16:18:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSXM1Xx0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34A1C4CEEB;
+	Thu, 15 May 2025 16:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747325917;
-	bh=L0kIF48XCYT861Asg5Q6lEo9pZRH1uwyCTmWad2IdM4=;
+	s=k20201202; t=1747326242;
+	bh=xaJeKpXzMkCVEJ82tQivYy7KG4dkYjUuJxcUxvweYGc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SlEsi/03MYcTceqX9DlGjgDznpzb/ll3S3PZJWkS/EYDimu/o3ELCxDbeNmfflnh0
-	 aKFYZU8oat6WH6Ywh5X5WcsXFjg6VqRteO3SN3AG594EGzPMtfrH/dpo3NOpXlRmoo
-	 B58QC0C/mxX/tBVSPWSdZnKZQiU57tzx9hOs99a6WRB3SIUuaBbSN4tPlirv1qwkpk
-	 A9mMSoPSnHx5scFPjIufS8IcJBJY9QMvhV6Khj8+Q07XwBLmICQg4DCJZDx2SKPk6g
-	 jSX5nJOIrDjSJGPnnaCmXYNjFcaB97vvbboY6DF9CIBdT7RlfS2kI6o4vtzyLAMUpq
-	 3LvHHPQb/nOfQ==
-Date: Thu, 15 May 2025 09:18:34 -0700
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, 
-	"gary@garyguo.net" <gary@garyguo.net>, "a.hindborg@kernel.org" <a.hindborg@kernel.org>, 
-	"ojeda@kernel.org" <ojeda@kernel.org>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, 
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"tmgross@umich.edu" <tmgross@umich.edu>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "benno.lossin@proton.me" <benno.lossin@proton.me>, 
-	John Hubbard <jhubbard@nvidia.com>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, 
-	"peterz@infradead.org" <peterz@infradead.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>, 
-	Alistair Popple <apopple@nvidia.com>
-Subject: Re: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
- for Rust 1.87.0
-Message-ID: <devk5empq6e3fy4vp5mhxaznzrxfso6d4bqqzpzachlwy5w567@32tvtoddkn6p>
-References: <20250502140237.1659624-1-ojeda@kernel.org>
- <20250502140237.1659624-2-ojeda@kernel.org>
- <20250513180757.GA1295002@joelnvbox>
- <20250513215833.GA1353208@joelnvbox>
- <38a7d3f8-3e75-4a1f-bc93-9b301330d898@nvidia.com>
- <f4c946b2988d63a26aff2d03fe73fbfe1f52f31b.camel@nvidia.com>
- <723f7ae8-bb36-4a4c-a1d8-733d131ca222@nvidia.com>
- <grdfkevm4nnovdefhn7thydixjtdt2w2aybuvnrtot2jolyte3@pmvcv3vbmmll>
- <554965650ac2aaa210028d495b06e1ede6aab74d.camel@nvidia.com>
+	b=cSXM1Xx0CD6ZH+s0d0tP2nkzQCfULH7eu5NR8FRZc9Pfpf2cFXtHOUWZr020BEjp6
+	 qCSCAVaCP7EN9fhn0X1lkFiLizocnFcsBZ/djsViCVqC7L1jLkoDAaVsLbkbHp31ve
+	 yTtqLNW5q9l6eCHag78wXFYqv0PlyxR6c/9qjJqoExb4AvNDpIYwTV/kRcVZ2YygAF
+	 qjVxw2yipkVkLPhGuraT6SL5tZn/0l+oV2nt6/nt18dtfDK2KAQqoAXLK3YImB+3Ea
+	 idjN/ZiIdJUSQx/vsZE8Wgo6y/F0rA38N5uNMjuribxT63l0coLvjK30/5MI9NMons
+	 g7RkwKFw7FmtQ==
+Date: Thu, 15 May 2025 18:23:55 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v8 3/3] rust: platform: allow ioremap of platform
+ resources
+Message-ID: <aCYVG-VVdJXYnSTt@pollux>
+References: <20250509-topics-tyr-platform_iomem-v8-0-e9f1725a40da@collabora.com>
+ <20250509-topics-tyr-platform_iomem-v8-3-e9f1725a40da@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <554965650ac2aaa210028d495b06e1ede6aab74d.camel@nvidia.com>
+In-Reply-To: <20250509-topics-tyr-platform_iomem-v8-3-e9f1725a40da@collabora.com>
 
-On Wed, May 14, 2025 at 07:46:49PM +0000, Timur Tabi wrote:
-> On Wed, 2025-05-14 at 12:14 -0700, Josh Poimboeuf wrote:
-> > The above warning is in completely different code from the Rust one, so
-> > they're likely unrelated.
-> 
-> True, but the fall-through is bogus in the C code as well.
-> 
-> > The fallthrough warnings are typically caused by either Clang undefined
-> > behavior (usually potential divide by zero or negative shift), or a call
-> > to an unannotated noreturn function.
-> > 
-> > Timur, can you share your .config and compiler version?
-> 
-> .config: https://pastebin.com/inDHfmbG
-> 
-> ttabi@ttabi:~$ llvm-config --version
-> 18.1.3
-> ttabi@ttabi:~$ gcc --version
-> gcc (Ubuntu 14.2.0-4ubuntu2~24.04) 14.2.0
-> 
-> Since I build with LLVM=1, I'm assuming the answer is 18.1.3
+On Fri, May 09, 2025 at 05:29:48PM -0300, Daniel Almeida wrote:
+> +impl Device<device::Core> {
+> +    /// Maps a platform resource through ioremap() where the size is known at
+> +    /// compile time.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```no_run
+> +    /// # use kernel::{bindings, c_str, platform};
+> +    /// # use kernel::device::Core;
+> +    ///
+> +    ///
+> +    /// fn probe(pdev: &mut platform::Device<Core>, /* ... */) -> Result<()> {
 
-I'm not able to recreate, can you run with OBJTOOL_VERBOSE=1 and paste
-the output?
+Should be &platform::Device<Core> (i.e. not mutable). You should also be able to
+just use `Result` as return type. Though, it would probably be better to use the
+real probe() function here, i.e.
 
--- 
-Josh
+	# struct Driver;
+
+	impl platform::Driver for SampleDriver {
+	   # type IdInfo = ();
+	   # const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
+
+	   fn probe(
+	      pdev: &platform::Device<Core>,
+	      info: Option<&Self::IdInfo>,
+	   ) -> Result<Pin<KBox<Self>>> {
+	      ...
+	   }
+	}
+
+> +    ///     let offset = 0; // Some offset.
+> +    ///
+> +    ///     // If the size is known at compile time, use `ioremap_resource_sized`.
+> +    ///     // No runtime checks will apply when reading and writing.
+> +    ///     let resource = pdev.resource(0).ok_or(ENODEV)?;
+> +    ///     let iomem = pdev.ioremap_resource_sized::<42>(&resource)?;
+> +    ///
+> +    ///     // Read and write a 32-bit value at `offset`. Calling `try_access()` on
+> +    ///     // the `Devres` makes sure that the resource is still valid.
+> +    ///     let data = iomem.try_access().ok_or(ENODEV)?.read32_relaxed(offset);
+> +    ///
+> +    ///     iomem.try_access().ok_or(ENODEV)?.write32_relaxed(data, offset);
+
+Since this won't land for v6.16, can you please use Devres::access() [1]
+instead? I.e.
+
+	let iomem = pdev.ioremap_resource_sized::<42>(&resource)?;
+	let io = Devres::access(pdev.as_ref())?;
+
+	let data = io.read32_relaxed(offset);
+	io.write32_relaxed(data, offset);
+
+Devres::access() is in nova-next and lands in v6.16.
+
+[1] https://gitlab.freedesktop.org/drm/nova/-/commit/f301cb978c068faa8fcd630be2cb317a2d0ec063
+
+> +    ///
+> +    ///     # Ok::<(), Error>(())
+> +    /// }
+> +    /// ```
+> +    pub fn ioremap_resource_sized<const SIZE: usize>(
+> +        &self,
+> +        resource: &Resource,
+> +    ) -> Result<Devres<IoMem<SIZE>>> {
+> +        IoMem::new(resource, self.as_ref())
+> +    }
+> +
+> +    /// Same as [`Self::ioremap_resource_sized`] but with exclusive access to the
+> +    /// underlying region.
+> +    pub fn ioremap_resource_exclusive_sized<const SIZE: usize>(
+> +        &self,
+> +        resource: &Resource,
+> +    ) -> Result<Devres<ExclusiveIoMem<SIZE>>> {
+> +        ExclusiveIoMem::new(resource, self.as_ref())
+> +    }
+> +
+> +    /// Maps a platform resource through ioremap().
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```no_run
+> +    /// # use kernel::{bindings, c_str, platform};
+> +    /// # use kernel::device::Core;
+> +    ///
+> +    /// fn probe(pdev: &mut platform::Device<Core>, /* ... */) -> Result<()> {
+> +    ///     let offset = 0; // Some offset.
+> +    ///
+> +    ///     // Unlike `ioremap_resource_sized`, here the size of the memory region
+> +    ///     // is not known at compile time, so only the `try_read*` and `try_write*`
+> +    ///     // family of functions should be used, leading to runtime checks on every
+> +    ///     // access.
+> +    ///     let resource = pdev.resource(0).ok_or(ENODEV)?;
+> +    ///     let iomem = pdev.ioremap_resource(&resource)?;
+> +    ///
+> +    ///     let data = iomem.try_access().ok_or(ENODEV)?.try_read32_relaxed(offset)?;
+> +    ///
+> +    ///     iomem.try_access().ok_or(ENODEV)?.try_write32_relaxed(data, offset)?;
+> +    ///
+> +    ///     # Ok::<(), Error>(())
+> +    /// }
+
+Same as above.
+
+> +    /// ```
+> +    pub fn ioremap_resource(&self, resource: &Resource) -> Result<Devres<IoMem<0>>> {
+> +        self.ioremap_resource_sized::<0>(resource)
+> +    }
+> +
+> +    /// Same as [`Self::ioremap_resource`] but with exclusive access to the underlying
+> +    /// region.
+> +    pub fn ioremap_resource_exclusive(
+> +        &self,
+> +        resource: &Resource,
+> +    ) -> Result<Devres<ExclusiveIoMem<0>>> {
+> +        self.ioremap_resource_exclusive_sized::<0>(resource)
+> +    }
+> +
+> +    /// Returns the resource at `index`, if any.
+> +    pub fn resource(&self, index: u32) -> Option<&Resource> {
+> +        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct platform_device`.
+> +        let resource = unsafe {
+> +            bindings::platform_get_resource(self.as_raw(), bindings::IORESOURCE_MEM, index)
+> +        };
+> +
+> +        if resource.is_null() {
+> +            return None;
+> +        }
+> +
+> +        // SAFETY: `resource` is a valid pointer to a `struct resource` as
+> +        // returned by `platform_get_resource`.
+> +        Some(unsafe { Resource::from_ptr(resource) })
+> +    }
+> +
+> +    /// Returns the resource with a given `name`, if any.
+> +    pub fn resource_by_name(&self, name: &CStr) -> Option<&Resource> {
+
+This method should be a separate patch, no? Also, I think this one can go into
+the `impl<Ctx: device::DeviceContext> Device<Ctx>` block, since it should be
+valid to call from any device context.
