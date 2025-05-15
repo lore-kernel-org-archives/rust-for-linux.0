@@ -1,202 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1D261FCE;
-	Thu, 15 May 2025 16:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA89AD51;
+	Thu, 15 May 2025 17:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747326242; cv=none; b=lMLWsQIhMIp6O2tim4OlMrq1ZBDiIv6r32JuSU+5B4ftS1ySWpyGYUQvMBUI8uWzsH0yVIIwvS0sdrGaSl/MG7jntbp3gaAN6K7hgkl4+wND1wuxBp+XoTaKrRPb65InindKYj1xs2J+NK0Nw9PApAJuwxMBfWQbeQEi/dXfbjI=
+	t=1747329430; cv=none; b=JyLEtEnLFNeBnQEpKQa+nDQUAzpnQLC2KeoDxWq8HyXFVdcE3uEf8xERRK7F5r6rZXmrWAwVnOdZXTeGZljl7M0BtIJWGxiBUnWkWnsSMPOBj/hjjF6xnMEzgZktRmE9ZFqxx5PpaMDuaW7ZgKt5vJ0D4ongLEPhKRz9sNI3RfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747326242; c=relaxed/simple;
-	bh=xaJeKpXzMkCVEJ82tQivYy7KG4dkYjUuJxcUxvweYGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UFRyrSB17VxmTJZuTreq8VQ89hxQ7S9YowkEILlRXCzisdLBzt4qbcCX3OLlXltHka4Y6M/nDV3PD2prvlubD8f19fZds2hp2FlQUcvnCwiJXeOQkuPMiXdjggwUQKDPbp2PTPu37TRhbUES8j8aoAqRmJRxp568X5USdWIKmjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSXM1Xx0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747329430; c=relaxed/simple;
+	bh=YIej14svbynVNJ7oV8uJDQT+RCz/8iduQcehqThmXLg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IGkMJjMHJwm8JWThzAWJJpOKoUFYYp2TgESgaT/JolubhoRrE+32bV3koBOFFaSiiuhQB+lqDX4D1+fKl/GmInF71G2ryI7GVDKK3bNLCEpsZ7l3mUjE7r/uMt4uHR+ySzJ6wthb2ufd+6ge0huX6h0aHyFQ9TimzFl6wgqXaGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THU64+Xk; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSXM1Xx0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34A1C4CEEB;
-	Thu, 15 May 2025 16:23:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747326242;
-	bh=xaJeKpXzMkCVEJ82tQivYy7KG4dkYjUuJxcUxvweYGc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cSXM1Xx0CD6ZH+s0d0tP2nkzQCfULH7eu5NR8FRZc9Pfpf2cFXtHOUWZr020BEjp6
-	 qCSCAVaCP7EN9fhn0X1lkFiLizocnFcsBZ/djsViCVqC7L1jLkoDAaVsLbkbHp31ve
-	 yTtqLNW5q9l6eCHag78wXFYqv0PlyxR6c/9qjJqoExb4AvNDpIYwTV/kRcVZ2YygAF
-	 qjVxw2yipkVkLPhGuraT6SL5tZn/0l+oV2nt6/nt18dtfDK2KAQqoAXLK3YImB+3Ea
-	 idjN/ZiIdJUSQx/vsZE8Wgo6y/F0rA38N5uNMjuribxT63l0coLvjK30/5MI9NMons
-	 g7RkwKFw7FmtQ==
-Date: Thu, 15 May 2025 18:23:55 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Ying Huang <huang.ying.caritas@gmail.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 3/3] rust: platform: allow ioremap of platform
- resources
-Message-ID: <aCYVG-VVdJXYnSTt@pollux>
-References: <20250509-topics-tyr-platform_iomem-v8-0-e9f1725a40da@collabora.com>
- <20250509-topics-tyr-platform_iomem-v8-3-e9f1725a40da@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THU64+Xk"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ad23c20f977so166465866b.2;
+        Thu, 15 May 2025 10:17:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747329427; x=1747934227; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N/fwEcu64Y1kuqYfRsZYEnm9+ArZFqH26eYEtd1UgQY=;
+        b=THU64+XkHPxaDowNZmDd9rojfJT4GyWvgMIGbCA0UKEc3ln56/yZOMbw7XynCvf/C3
+         oE2bW1CUvALpIKAvrT4NzW0WVIzByl26W7qBH5291ZyksR76r2g3IWok9CmA4TBG6nTX
+         iGdEUmJOGE0UGBZ+ZhAjBKzskGn7aLN5UZLeGuxWB+7bLq5rmQ2Uj8gv+PY/W1jHOJKE
+         +fMFBsXAz2koypdEe67qFBjv/mk5dZ8KmB6TjkJxn/ELYUA077mSL69vg+Nt+rE4RybM
+         /A9wuQbUhllCR2nKB41a9EZ5+oPW4MJ6/ao75H2bDebw6NniJVzajdpxeM6ZCmxRTCDF
+         I1QA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747329427; x=1747934227;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N/fwEcu64Y1kuqYfRsZYEnm9+ArZFqH26eYEtd1UgQY=;
+        b=HR7M/+EVdAAh5vdK4zMJ4FHwuuz1Fcff1M9P5mrPO6KkfZTfn3tymy7jpWaeR3F0Xu
+         RTgmaSfYgjdII0U70AOmu2w2+ncc5FBEhjUq/WRS1thDzik7Wamomp7ilQ6MifF465Ml
+         hGZXA1ZSNA6l8xJ2DUNR6SoBAYP1TelgCqvHzPLfDR5GyOqoOfdaqolQ6rDcHehZyVHG
+         eaqCuMCCB1HWx1pM52OLoavayOSxO6afPRuF/0zEYVYeRoCKfzHZflZD9TXn2ZPWANDa
+         cjaX/lWOSRrYVJm3K+gacyAH8CalrqSRZPFTJT8aqJiUdLH2y+1MYZdFOusxtzNcItbB
+         KKxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUdbRW9at9i9DhLAZoHJx6/OeDsKORtv0Qxufgug1TNHjgncEZQi7hX/eNQrkhRjC/0N9E9V1lqDudEBoSVsGk=@vger.kernel.org, AJvYcCXzJdRQioXCIAGbsZOa/B+4KH78tNSpnd3loh4msubvqJYLj18mOrNjTYf0rnfstv6g/T9fiYuCd+Zg1Gc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxq0xGwwUYMEZ61awRVMA3MFNhCIciNR+0zuMACTcg32tbf8G/H
+	V6nTXawaSWpDcBMAtWhMPr/myoT3PlrJWS6woaBXEgjFMRSqDWeUvqSF
+X-Gm-Gg: ASbGncvZyWkqOzPgOKBY7B/UtyM4QCIF38COe+XvLJ/X+Owz899pJhPGuYTixoJVXsK
+	UhgfYf79/zsTJu7KUUHpbGlDHALyWd6vQER0mQORSDNF8n875TtkinqexfDWecdOb24e3FYVW9Y
+	QVqBAVd2i7aZWC5fwSR7/bi8IC14inUYpQC8sGiTSL8MGb7jm4pShpcuptm82X63R++B3dLLySB
+	LjPkt0nJQQ4EF3aMJI2RWEjXemWFa/4sWKinE/QhbH/Nu0yNu2ZE9dtID2Bh+PNVKxM2vgi9EYR
+	jgfClkPF75hGEdbramNUPmGJPo/P8B+WEHrUi5i7nb4IUSKm1k2pwuqi7BNo
+X-Google-Smtp-Source: AGHT+IFgOYVrkyAZ2u0WfrrawTMEd2jWr9TwcmhkKNUZgt57lfdu4okQTmuCJuwmhGUEMYxpKUsgFg==
+X-Received: by 2002:a17:907:948c:b0:ad5:2a11:efa7 with SMTP id a640c23a62f3a-ad52d4ea530mr56862966b.29.1747329426929;
+        Thu, 15 May 2025 10:17:06 -0700 (PDT)
+Received: from [10.5.1.156] ([193.170.134.247])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6005ac35e33sm107683a12.60.2025.05.15.10.17.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 May 2025 10:17:06 -0700 (PDT)
+Message-ID: <42820306-3a94-4c47-be9b-c3f89de34866@gmail.com>
+Date: Thu, 15 May 2025 19:17:05 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250509-topics-tyr-platform_iomem-v8-3-e9f1725a40da@collabora.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: irq: add support for request_irq()
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+ Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@kernel.org, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250122163932.46697-1-daniel.almeida@collabora.com>
+ <Z5HtHVMipAdNvOcj@boqun-archlinux>
+ <CAH5fLggSET--eSW=rA_hw2jAyAO6_fa82gm0X3qeanXEvmZscA@mail.gmail.com>
+ <3753EBEB-8538-403A-BEFC-768390EB2D9E@collabora.com>
+Content-Language: en-US, de-DE
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <3753EBEB-8538-403A-BEFC-768390EB2D9E@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 09, 2025 at 05:29:48PM -0300, Daniel Almeida wrote:
-> +impl Device<device::Core> {
-> +    /// Maps a platform resource through ioremap() where the size is known at
-> +    /// compile time.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```no_run
-> +    /// # use kernel::{bindings, c_str, platform};
-> +    /// # use kernel::device::Core;
-> +    ///
-> +    ///
-> +    /// fn probe(pdev: &mut platform::Device<Core>, /* ... */) -> Result<()> {
+Hi Daniel
 
-Should be &platform::Device<Core> (i.e. not mutable). You should also be able to
-just use `Result` as return type. Though, it would probably be better to use the
-real probe() function here, i.e.
+On 14.05.25 4:44 PM, Daniel Almeida wrote:
+> Hi Alice,
+> 
+>> On 23 Jan 2025, at 06:07, Alice Ryhl <aliceryhl@google.com> wrote:
+>>
+>> On Thu, Jan 23, 2025 at 8:18 AM Boqun Feng <boqun.feng@gmail.com> wrote:
+>>>
+>>> On Wed, Jan 22, 2025 at 01:39:30PM -0300, Daniel Almeida wrote:
+>>>> Add support for registering IRQ handlers in Rust.
+>>>>
+>>>> IRQ handlers are extensively used in drivers when some peripheral wants to
+>>>> obtain the CPU attention. Registering a handler will make the system invoke the
+>>>> passed-in function whenever the chosen IRQ line is triggered.
+>>>>
+>>>> Both regular and threaded IRQ handlers are supported through a Handler (or
+>>>> ThreadedHandler) trait that is meant to be implemented by a type that:
+>>>>
+>>>> a) provides a function to be run by the system when the IRQ fires and,
+>>>>
+>>>> b) holds the shared data (i.e.: `T`) between process and IRQ contexts.
+>>>>
+>>>> The requirement that T is Sync derives from the fact that handlers might run
+>>>> concurrently with other processes executing the same driver, creating the
+>>>> potential for data races.
+>>>>
+>>>> Ideally, some interior mutability must be in place if T is to be mutated. This
+>>>> should usually be done through the in-flight SpinLockIrq type.
+>>>>
+>>>> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+>>>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>>>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>>> ---
+>>>>
+>>>> Changes from v1:
+>>>>
+>>>> - Added Co-developed-by tag to account for the work that Alice did in order to
+>>>> figure out how to do this without Opaque<T> (Thanks!)
+>>>> - Removed Opaque<T> in favor of plain T
+>>>
+>>> Hmmm...
+>>>
+>>> [...]
+>>>
+>>>> +#[pin_data(PinnedDrop)]
+>>>> +pub struct Registration<T: Handler> {
+>>>> +    irq: u32,
+>>>> +    #[pin]
+>>>> +    handler: T,
+>>>
+>>> I think you still need to make `handler` as `!Unpin` because compilers
+>>> can assume a `&mut T` from a `Pin<&mut Registration>`, am I missing
+>>> something here?
+>>
+>> The current version operates under the assumption that PhantomPinned
+>> is enough. But I'm happy to add Aliased here.
+>>
+>> Alice
+> 
+> Aliased? What is this? I can’t find that trait or type anywhere.
 
-	# struct Driver;
+Aliased was a name previously considered for `UnsafePinned` [0].
+I believe that was what Alice referred to here.
 
-	impl platform::Driver for SampleDriver {
-	   # type IdInfo = ();
-	   # const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
+Just marking the type as !Unpin should be fine on current
+Rust versions, but on some future rust versions `UnsafePinned`
+might be the only way to make this sound.
 
-	   fn probe(
-	      pdev: &platform::Device<Core>,
-	      info: Option<&Self::IdInfo>,
-	   ) -> Result<Pin<KBox<Self>>> {
-	      ...
-	   }
-	}
+[0]: https://lore.kernel.org/rust-for-linux/D9VBVURZLSNT.4BTQQ8UCTGPJ@kernel.org/
 
-> +    ///     let offset = 0; // Some offset.
-> +    ///
-> +    ///     // If the size is known at compile time, use `ioremap_resource_sized`.
-> +    ///     // No runtime checks will apply when reading and writing.
-> +    ///     let resource = pdev.resource(0).ok_or(ENODEV)?;
-> +    ///     let iomem = pdev.ioremap_resource_sized::<42>(&resource)?;
-> +    ///
-> +    ///     // Read and write a 32-bit value at `offset`. Calling `try_access()` on
-> +    ///     // the `Devres` makes sure that the resource is still valid.
-> +    ///     let data = iomem.try_access().ok_or(ENODEV)?.read32_relaxed(offset);
-> +    ///
-> +    ///     iomem.try_access().ok_or(ENODEV)?.write32_relaxed(data, offset);
+Cheers
+Christian
 
-Since this won't land for v6.16, can you please use Devres::access() [1]
-instead? I.e.
-
-	let iomem = pdev.ioremap_resource_sized::<42>(&resource)?;
-	let io = Devres::access(pdev.as_ref())?;
-
-	let data = io.read32_relaxed(offset);
-	io.write32_relaxed(data, offset);
-
-Devres::access() is in nova-next and lands in v6.16.
-
-[1] https://gitlab.freedesktop.org/drm/nova/-/commit/f301cb978c068faa8fcd630be2cb317a2d0ec063
-
-> +    ///
-> +    ///     # Ok::<(), Error>(())
-> +    /// }
-> +    /// ```
-> +    pub fn ioremap_resource_sized<const SIZE: usize>(
-> +        &self,
-> +        resource: &Resource,
-> +    ) -> Result<Devres<IoMem<SIZE>>> {
-> +        IoMem::new(resource, self.as_ref())
-> +    }
-> +
-> +    /// Same as [`Self::ioremap_resource_sized`] but with exclusive access to the
-> +    /// underlying region.
-> +    pub fn ioremap_resource_exclusive_sized<const SIZE: usize>(
-> +        &self,
-> +        resource: &Resource,
-> +    ) -> Result<Devres<ExclusiveIoMem<SIZE>>> {
-> +        ExclusiveIoMem::new(resource, self.as_ref())
-> +    }
-> +
-> +    /// Maps a platform resource through ioremap().
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```no_run
-> +    /// # use kernel::{bindings, c_str, platform};
-> +    /// # use kernel::device::Core;
-> +    ///
-> +    /// fn probe(pdev: &mut platform::Device<Core>, /* ... */) -> Result<()> {
-> +    ///     let offset = 0; // Some offset.
-> +    ///
-> +    ///     // Unlike `ioremap_resource_sized`, here the size of the memory region
-> +    ///     // is not known at compile time, so only the `try_read*` and `try_write*`
-> +    ///     // family of functions should be used, leading to runtime checks on every
-> +    ///     // access.
-> +    ///     let resource = pdev.resource(0).ok_or(ENODEV)?;
-> +    ///     let iomem = pdev.ioremap_resource(&resource)?;
-> +    ///
-> +    ///     let data = iomem.try_access().ok_or(ENODEV)?.try_read32_relaxed(offset)?;
-> +    ///
-> +    ///     iomem.try_access().ok_or(ENODEV)?.try_write32_relaxed(data, offset)?;
-> +    ///
-> +    ///     # Ok::<(), Error>(())
-> +    /// }
-
-Same as above.
-
-> +    /// ```
-> +    pub fn ioremap_resource(&self, resource: &Resource) -> Result<Devres<IoMem<0>>> {
-> +        self.ioremap_resource_sized::<0>(resource)
-> +    }
-> +
-> +    /// Same as [`Self::ioremap_resource`] but with exclusive access to the underlying
-> +    /// region.
-> +    pub fn ioremap_resource_exclusive(
-> +        &self,
-> +        resource: &Resource,
-> +    ) -> Result<Devres<ExclusiveIoMem<0>>> {
-> +        self.ioremap_resource_exclusive_sized::<0>(resource)
-> +    }
-> +
-> +    /// Returns the resource at `index`, if any.
-> +    pub fn resource(&self, index: u32) -> Option<&Resource> {
-> +        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct platform_device`.
-> +        let resource = unsafe {
-> +            bindings::platform_get_resource(self.as_raw(), bindings::IORESOURCE_MEM, index)
-> +        };
-> +
-> +        if resource.is_null() {
-> +            return None;
-> +        }
-> +
-> +        // SAFETY: `resource` is a valid pointer to a `struct resource` as
-> +        // returned by `platform_get_resource`.
-> +        Some(unsafe { Resource::from_ptr(resource) })
-> +    }
-> +
-> +    /// Returns the resource with a given `name`, if any.
-> +    pub fn resource_by_name(&self, name: &CStr) -> Option<&Resource> {
-
-This method should be a separate patch, no? Also, I think this one can go into
-the `impl<Ctx: device::DeviceContext> Device<Ctx>` block, since it should be
-valid to call from any device context.
