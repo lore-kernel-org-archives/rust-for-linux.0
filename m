@@ -1,223 +1,213 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2076.outbound.protection.outlook.com [40.107.101.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27B8C2C9;
-	Thu, 15 May 2025 11:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747308347; cv=fail; b=Nm8P7LFWp2VE1bGLimPLZxuCzpSafJzi8SnKQAihw/D8PONmq8W+HcdTP4wtkmcB8TzVA9v/8Nvfm/qLhvo9djCrSukM3eljKrXsBxRnX2Cl2peigsUW9XeaFS9UMcS8BtNmSIa1L5OzKru3xmlhG8Ac72deJZE8VMFQ47Iks4g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747308347; c=relaxed/simple;
-	bh=UZ6uMa76tgQcLMLWnVCy2aQZvGW5wKMX5olIfQkNnJg=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=AIA7YUjVzWdnHPLVXa0gJq7utn3TBaO3suhYp0N6tDVsmkgbSGTxmcCfM8mQXlHzUomY2bGB9DrFwC6LN1IEzlqmbw/dFDVghbFwm6vciyFHIeqYj9iyHAQ5LZofDEqUYpo8p8AwC8tCHq6tBZDBBzDvSE9JPpbrFw0aWYEHgIA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MR/fvmXb; arc=fail smtp.client-ip=40.107.101.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99ECC2C9;
+	Thu, 15 May 2025 11:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747308470; cv=none; b=geZfbIe7QmEtGSyRujWPDL+/UZrjY5gZFUWIxJ5Eu/muolNAbWAlPvaWv20PMLe7wLzIiA4vEDEAHOWn91y92/XtvUtVVy60grk3NJCikgSkRjgZFTIzmnRJPO2LhwKbndsDphqdnTYzDmpSpeeYK/VTlUq87p7rn45yLQJjy+Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747308470; c=relaxed/simple;
+	bh=IHEbxTdfFrUtfZog6KNofPyuX8tZOMngVfJeR70MBG4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=oCzaIbOwpXHSmA7DxSE04teblsbEbRFtmIRdZH5I/C7JT/vVGfRALxqJm5xTaVtEPpNY2v116WGoObIq2oARhejf8bO7CwaZQrMWKzrZYQ3ii3LFUqIOFDxYprWBX3AxHkmaAcfxvKF9Lmdvf0uDwcKVffbJftP9JKUfUn3ekJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j7aCdyWB; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MR/fvmXb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SOIjrw0t8oQW5UABFujrRZXe+JcIwhfK9y2me//vv7ZDDJfoeRolBjAA4Lk1Ccc3Pd9Y4EKKxBx66VGMvH2J40tcQAvfTWzMoWDIVDDZ7FvNpwl0liywWFDv8YqcT6srQYEv2wseA0khJHG4b8BKxQpEoFFvd96XjZxM7g7bTyjZQMseNzlcSrUUV1qyY0gTOYux1NboVfQeuBKVsUMBnh0AvP96dY75Z7IDD5Va/wt6impF+Hd+7KXLmAf5txQyaazdZtjETe6cRrW6W404ItQyfRlRNwsTzw9pRtP6cbj0nI9UN0oPXBSw4TnNlPXCkQ42WmbJp6UpVnOxMw1fxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8kXt16iAHtXq/2Tp0GpG+cLiromO6Wbh4FeyIs8Yh+w=;
- b=D28jbk1BbKQQESS5gFPePcv6qLBi2ciR2YHp59MLuG8/e2nIiKtssj/pCYGqmUdHN84xlu/8FMl5tlVJKuLLRCCv9d9edFIBLCIIZ/J7UulXB8lTC14dFaxs932YMXGn9h0qvLU3Uc+IsJpcYAMzj5PACIR6A94hlHlZEsA6AhCV6Fo3yuTSbH6aMuEdjfHNkUYny2LwTsRq/4OCkLRke9GE8wG1+iKgx7pCx2VRXNEzbYgl+FNlB1AVRjqLeNdXT0nLi6rfQ6/Is3o/H0UWae6VHoVOLugt/Lws3WlbqT+HyTcXaH5QCoj2NoL2rD5g3yaITNH2MQEk1x2nbEwxyw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8kXt16iAHtXq/2Tp0GpG+cLiromO6Wbh4FeyIs8Yh+w=;
- b=MR/fvmXbk6mrdjZsrrDu4yg9TqHJaziJDX8cOfPZertSKeanThbGZ6S/8Xf/AIA7PotFwFO+u50lOXZgt/n69WsDeDLsV4OIzbFE+eCmbbxtecDM82TV7sdkNjU/Mi6zlVL9jps1fSJ5rPN5daUzR53nPUidLjoQ1jF7tKRRJ2+QHFvnMc3229xwldr2TFnNoHoqiBSKMA3HAeLNxBqX03CfevhZw2+L6pOi+6EpaTYIGkKy0ZSRhH77okynMOwEEyuart/7IgZMKVeYydhZcckxP6WG/2GkfM6Tn42Gl6Y28AnFSa6EjfidX++yTnzODHlDqDeVxe7ycDyN7Fqa4g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SJ2PR12MB8784.namprd12.prod.outlook.com (2603:10b6:a03:4d0::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Thu, 15 May
- 2025 11:25:42 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%5]) with mapi id 15.20.8722.027; Thu, 15 May 2025
- 11:25:39 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 May 2025 20:25:33 +0900
-Message-Id: <D9WP3YU31199.Q8IEDBJZ87LU@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: add basic ELF sections parser
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Greg KH"
- <gregkh@linuxfoundation.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250515-elf-v1-1-4b53745453c0@nvidia.com>
- <2025051543-override-rockiness-3ead@gregkh>
- <D9WLFTPRB9FJ.OL6I760HKALZ@nvidia.com>
-In-Reply-To: <D9WLFTPRB9FJ.OL6I760HKALZ@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0068.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:31a::8) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j7aCdyWB"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-441d1ed82faso6540895e9.0;
+        Thu, 15 May 2025 04:27:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747308467; x=1747913267; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B8Xm5zeIBlrs+HmAsFhBOQv0MoMNMWkb0X3GIsfScBU=;
+        b=j7aCdyWBHq/GPtnXFi54dpjUwM+CM2ZNfW24VcQOMRcdllTafzvXYlrwkAbffJroh9
+         J6idLfcBOETBPvafy97+YfErNsynNVT1rXLWsJ2Ba0gIHL5vNuY0k9s8LB+7ZFykyME4
+         DPtRV97NcR0pD2bPImORC1m/9yH+yWP+J1LSpR8+sEf4l2HHBmP2f+iVTQy+ZeoG2vgb
+         00vkzMqLr5GJZxlf+y5ujTCjSJf+A7wF6eaED1D5U+Anu76fYSvvIilccFzPsLTdWAvp
+         w2w5m3Eo1DVLPIt9E7AubGv+/foRooTvk71CYrroBOHcE/lLFwTFJdK2V1IOWxVCbSiw
+         kLDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747308467; x=1747913267;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B8Xm5zeIBlrs+HmAsFhBOQv0MoMNMWkb0X3GIsfScBU=;
+        b=doAnaMJ8U2/IdqCU/LnhEOGPRrhDFoADd9/beRyo6bcNuan33aeyTKxFrH4wX7Xk+R
+         3u/3XeRXysX8fF3cuCgxovqu43wYGzwU1Q+1pbnWJyh2JgX1TPXwu93Q3ska8ahxEBSD
+         vP/ES/rOi5AnnsB1hIxQ1kron8pbtjH40x7WZS1vBzmM97yjS6kzfJN8rf6XPG4/OTyk
+         R72fg56xwbaVRN8xrGMBsMFLnKAmZysOFmw4jBbayDLe6ZChrkAedkYCG9ngT1Cnhtwd
+         vM6xPHLlgAUNaDD7xHvf16IFPS7pz2tMa1WapXNmMRvgMgBManSXhHA6+eB6tMyEW/2L
+         ZmWg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8lqXCCm4c1LYfuX52dNurhtpLacyIVWvaJWeqAP1cBeyswp2EhdH2UwWcE3J00FTl9TwlvisX@vger.kernel.org, AJvYcCVm4Ytw/tYUGhjiXml3zm633VfLPCX9QEt83MFQPSNDSkzaQuzDQAy3pQre0i7nGVJlcQpi+gQC/swjG3vQvvo=@vger.kernel.org, AJvYcCWqde1auqfVCL+6eJ19inl6uozte+lQg3H6ItxMZ5D108596KIp2DzuaNSHIy2Mh49W5guN2wuEuepg@vger.kernel.org, AJvYcCXtOwpvWTlNCBOm92AMFfcI3WYE0/Og0qGwCTD/DXCXoTOCeO9B9JqQ5XHpujUBa/MpNd2lefMmB8/D/xwF@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAwgVl8g9bfCDmoxUz+TFpWl7jk0JQlX+ctWjKMX+dXiXhTdkG
+	GfxE9CUxz+qA8zBwI+NhOuD11IwhUsz+1T3272Jcda91i40GFbCi
+X-Gm-Gg: ASbGncuNPHYZppBXNJEFoQBYyLp0vP2dVLqb+VF3jdvvAcJI/SjiF6zRp4tIG4TQIQ8
+	V4kJoORYPiDDig/ITlS//KujX8HPmO3hILMXzhcGAc6uPn6f6pSSR26cBoNflJ0wiSA2K5N7MtA
+	FiwLrHuUoTSQK6Y08HFtmunsP+A/Ozxs6uPMIZRSS/D01ndPuNT5dn6HJH65SAAfrobZGLYrjl3
+	xzvDMlzYQaY4w5rysZB+vUvXidHbXev/peLnJfdhM0mZWMDAJCIbYOGjHe6cQ3Oreywt46FS0dS
+	brF0Rwx+63FkNtg1v1Zx7fpnVyKOUBf8s68UbCfQ9AlaxR8Ggpqi3Mp0eDX0aRxZJWGAW6rCtlz
+	sq5962SscqytGmC75E3ds2gLxjL7S3QM=
+X-Google-Smtp-Source: AGHT+IGrR4bvumvCK+BkPJcNYl7XLyNLoFZWi1UDL8VOie04vvoCc/DszG+qwTtfSpXLyEjD2+Xdwg==
+X-Received: by 2002:a05:600c:3f08:b0:43c:fd27:a216 with SMTP id 5b1f17b1804b1-442f970b20dmr17777375e9.23.1747308466763;
+        Thu, 15 May 2025 04:27:46 -0700 (PDT)
+Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-442f39517f7sm64497795e9.20.2025.05.15.04.27.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 May 2025 04:27:45 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrei Botila <andrei.botila@oss.nxp.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Michael Klein <michael@fossekall.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [net-next PATCH v10 0/7] net: phy: Add support for new Aeonsemi PHYs
+Date: Thu, 15 May 2025 13:27:05 +0200
+Message-ID: <20250515112721.19323-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ2PR12MB8784:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad6eb74a-b72d-402b-c6e9-08dd93a33795
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Wk41TG1GejNOejl2dldHb0dJeTVFRVVvcGNyOXZCR0wydGxCYU93c2hYN000?=
- =?utf-8?B?NWlyQ2tlVmJOa1p0TkRoaXhOM0YyV2U4UjhCOXV2aGIvNUI1MzZ6aVM2V0hi?=
- =?utf-8?B?d3V0QzRkd0xDbUlxK3NBTXNKeHhaWEZ3WmtZUkZIKzcvU3ZWc1FVb0JHTGg1?=
- =?utf-8?B?Z3RTYWVzU0pMb2dmR3lzL29zaHgrMFJGNEtwci9MdGtLN3ZhSzJZVEJ0ZFF5?=
- =?utf-8?B?bm51d2J3YmFYMFFnMDZRdHlkY2lRWVVzSUFjQzZYZnA0WUNWOGpDa21HNzBJ?=
- =?utf-8?B?cEtkNWY5VW5tQ1diTEZFTzdBdmQrcFZJYW1GVE5kMmNTdTRBMVMrcjRkWnBC?=
- =?utf-8?B?V2JnSUM3SUxlQytPMnhpY1V1M1lYekVIa1RwSndSdDN3bCttRTA4M1FPZVlS?=
- =?utf-8?B?RGF6QkRnR0J4QmlINFlmZ2lhSlYzb2NnTDRwTEtSQjlIMk1zQUdJMU9mSFZl?=
- =?utf-8?B?Yk5MUGhHUmZoOGZjVDNzTkowaExudzlKMXFhVWVReUxQRVBXbERkajVNbWJK?=
- =?utf-8?B?QmFzcDZzb3E3bHNHY1FnalU4cDN5ek13UzVLUWNyMWVuWDROeXJQc1poSVd2?=
- =?utf-8?B?aTBRM1dtcTNhZTJjemp2a3ZybWFrNGYwZEtIc0VhVXBkc2ZQb21reGRDMmcv?=
- =?utf-8?B?aFRWN0FPc2ptZkxEYmZBV1h4aVhTMWVwYnhmd2t0cnpxdDNvQnluUjk5Z0xF?=
- =?utf-8?B?S3EzNXBmT2VUOTFzL2drRU52OTlwOWg3VmxzekVDVkNFNDdUa2VYbUxiTk9H?=
- =?utf-8?B?UmpiQTJsK0tMam82d3lSV1hTdVFYYzJuOHEzVUFBcGxCRFljQmNkVCtWRFBh?=
- =?utf-8?B?Z09OZXZOdXlUTGpoWGt1QytTUDlQS2dFU3ZLZXltcmR1MjVpeVRvWEw4aDNy?=
- =?utf-8?B?TWFBb29iOC8ydStaQVJucmtFMXdhUXRkMnNRSGM4cDNMVGFXbEZac3NRekYx?=
- =?utf-8?B?SUhWQTF6U1dCMk1XUW42cndJUkxTVitZWkZZSEJmdVNLa005cEFyd2FFSC9Z?=
- =?utf-8?B?TVgzK1lGcjYxTWtoY3N3aGtjbVlDU0hHcUUzdUtXUHV5THIya01QZXVkUCtQ?=
- =?utf-8?B?L2xkT2k3MndwZ0xYa3k5VzF2WWx2aGsxdWJKMHlEeDY1YXlseXA0VTh1d3RI?=
- =?utf-8?B?cDYveDE1QnNsZWxzaTN2N2trb3RzbGY4TnRUWnE2VlZmU0htTU1FeUdkRUN4?=
- =?utf-8?B?NzVjcDNRYmFMMFprSXdFT1pmdG1CcWI0cHd4VDd2THNpNW02NTdZNENmb1Fy?=
- =?utf-8?B?clBFWmx3bEc3STQyNUphMDVrZ0NQL1hVU3JiZ1p3aWdwOXM3dW5qY0p4SWp0?=
- =?utf-8?B?WEhPT1JmMDdxcmY4alZQTFcyT3lVUDk0VElPYnF3b1ZNdXJuMXN4eENYR0dG?=
- =?utf-8?B?VHFMVE5YMzV5RXozK2d4dlp3Sk5LOTRRUWtaWU13VTRENlFGV3pJRCtWQU5R?=
- =?utf-8?B?TDNQRktJRVN4Z1NJUnh1STZHaE5YS2FIZUZTeVUyOWV2Tm9ob2Q2YWRzZlRT?=
- =?utf-8?B?Qk9iZnQrTXgyb0xPWWVpV1ljeUhmSFl6bFZhbDJjUVl5NkpGbldMTE5paXpk?=
- =?utf-8?B?TkVweWxMMjczYVlSTVVzMkF4SllXK1RpMWZhN2RLR0pod3hKN3lMbDdMZU9K?=
- =?utf-8?B?cmxVRlJmcVBmSmpESEtJWWRISlVUVFZuWFdsYTU3MHhhR29Vemx0NlNnaUdM?=
- =?utf-8?B?aDBDNUhTajVEY0JyRDVlY0JaNW11YXFKOGpYbWxjUUhFTy9wTjF0akZOT1Ns?=
- =?utf-8?B?U0NubFlUQXhzVFNtSGRwOUpJU2dzVTBoZ21EZ0Z1bWpLRkNoUVdjbHhuM0hq?=
- =?utf-8?B?YUJnZGs2Sk1hWlJyamlkWjdrbVNnMDdoY3B1a1lXYzErUnR3cUR6OG9kRXV3?=
- =?utf-8?B?UEJncGR4NmpZTWtSdFVhQU1XUU1OT2lJeEcrb2gzcExyT1J0QnloZDcrRzFa?=
- =?utf-8?Q?86vAgsWrzX0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QTByK0pqdzluR05iVGNydHFNMUEwSGlhYjNsTnBxQWhGSUt2M29qM2tseVNE?=
- =?utf-8?B?ZW42ZlJjZllBRVhWc2FTUWNGMk9oZWpUOXZvUDJ2S0t0Y2ZBM3VEd0t6c01x?=
- =?utf-8?B?TVZBOTBNZXZWc2s1TWs4RldEV2ZhVFoxOUV5RlhXSXRFeG90TEhLb3JYRk43?=
- =?utf-8?B?VXJpQ3dlQ2FUT0J1QytILzB6aTBuaUxhdDkwL296ZmdadlQxYVJWcFpqZlZT?=
- =?utf-8?B?N2crNktRSFFRMndYTlVLY2xRVzBEaXplTWRaQndIMktXWTE2SjFBSHgwMTlO?=
- =?utf-8?B?aS9MTWFmcUdpZWQ4USswU2Z1ZHhmRGxYdUVMVVZlSmp4SzV0V2ZlMDNPdFdq?=
- =?utf-8?B?YUtRemhybWR2RWhnTWp3aWw1UnB0eTNRbXFQdGJZZ2VibnRHZ2ZwKzZjRk1r?=
- =?utf-8?B?STNXTTVDQzEwOXlPRkNVTEtrUmxYMlh2L0xaS2FkdVhld3pMVlZwcmVUekd0?=
- =?utf-8?B?bFZZeWRNS2dpWG5sQ0RsS21UcHhZc2pKR0x1amVIQjFOcENBWHJkRm5YS29X?=
- =?utf-8?B?R3FWcmVobU9sODZ0YVFGUkRxUWRzZ0d0RTdRY3BNRUdSRTZhLy9VM3JLQUIw?=
- =?utf-8?B?VVBCb3IxZzFXYlhJdFlFLytIZ0pHRm52UjRxVTdQbm8yeTJaTlVvUnl1WUpV?=
- =?utf-8?B?SmxXdklrNG0vUmdzWkJxSFloUTd4QXlHMmtrOWlkSFNZT3BaOXNNUDdQK3Fk?=
- =?utf-8?B?Qy9NYmtGRHpVaGJyM29MSnc2bDhSS3hYMFdqRFc5SzFjT0lsOHpaOXgvV2pQ?=
- =?utf-8?B?cTJZSm9jQ2JVSUVZZUpIcDcyVHJTVk91cHcxQjNNdERIOFh2cjdhTXpRQUll?=
- =?utf-8?B?V0hFNWZTQjd5WU5PeGNHVDQ2YTZTWVkrbUk5ZzlYMXFQR2JSWk1QKzRndGVr?=
- =?utf-8?B?OGZhay91SUpUTXU4R0sybGlsWVZkQzUxaFVmbTBlTVFHeWFBMFdJN2hpa2Rv?=
- =?utf-8?B?Z0RVOTI4RXN0Q2czdzVHQ0pQVTJmQktVQTBqRG4vaDlXVlp5aWRqNjYyNkl3?=
- =?utf-8?B?NGZ6RnEzQ3ZDVmVhVk5HNkI2bkxCbDdZYURGVVhFbTN1Skd0OTEyRUFSLzN1?=
- =?utf-8?B?YWQ1YzllNXZSVGFydC9keSt5Z2VWRnV4d1FpSW9taitFMTlZU0dEZXFxNktt?=
- =?utf-8?B?SG1hU0ptQ1Q1a2krbEdiMk9TTDJ3UXNNVFh5RjFyRFVhVVdCNThJdjZ0cE9M?=
- =?utf-8?B?aHlTUG8zK1F0a1BROFdhM3B1NmxGcSs1QkN5bU9RZmE1NUFEaTZLWktDdy9v?=
- =?utf-8?B?VzZqdlErblBlZk8rVkpuQmFVUStFVHdlQS9mMktFZk5qMFRVY0dObWlsRjJl?=
- =?utf-8?B?UTZOTGNqU3JMeWNGUm9Hd1pFWkJZZkxnLzNLSkFLUlNhWUMzMEpWSW5KNmpI?=
- =?utf-8?B?RTZRK3doMjl3QkxLVW14cjdBSjNEMGtza2ttazJTSEl3WXZlNXFPVThEOGg0?=
- =?utf-8?B?Z3g0cGhOajFRd3lnM2Z5cEZIQUdaVEo1dGVhMzRLejdSdDZHWW0rWEZMSkdi?=
- =?utf-8?B?VktUbmlJUkFqckhVZ0pBUzRxeStHOTFXS09PWE9YbUJaTHJucCtvL3l4SnVq?=
- =?utf-8?B?R2RJdU8zR3NDaUtMRVZDUHJ4QUFnUzFzUjJUQTRDaHRpMjIwUXBQRjlxdTFT?=
- =?utf-8?B?dndjNGZ5bWRNM283VllGN0NiUlF0NEZhODhZeWFJY3ZmUjRhaU9xd1VSd3Ry?=
- =?utf-8?B?ZC9XQm4yUld2Vkc1dExLKzJzZVVXSnZBYmNNVVZiRU9PUFRhR2MwWm9XNW83?=
- =?utf-8?B?WkdkMW03bkNnQlp2bVpUM0VhN29SREx5UTY1SkdlQVpBQUtGWFVjZElQSkNV?=
- =?utf-8?B?Rlk1WXhwRktTeEpKMnFWMmp4aEg2WnRuTWlHd3dSZzladTlWaUIxTUZaWVJL?=
- =?utf-8?B?YkcvSmlGNUl0QllEZDVWcTlIb0oyOEpzS0VkVjZPTVcvTjR5T1pjR2NSMk5U?=
- =?utf-8?B?RE1YcHg4bnRWVEZvVzVlU2c2czZjb1dXcDQ5dVRROE52Tjk5WnJ1MC8vNk1w?=
- =?utf-8?B?S0RZamZNZExyRndjTDhxU2psZk5QcVZjNzlzbTNqZ2MvOFV3cVFVaHMwNE9z?=
- =?utf-8?B?TWlBaDhucjZINFJnajVsWmxUVVFESjlmVEtlZWhiR3h5UjgvcjJtRXlrd1dZ?=
- =?utf-8?B?UmQ5WElET3YrMW1ucEhDNTNQaEZNRlVmUUtRaHk5cVJpK3ZzWXZWc0llaktr?=
- =?utf-8?Q?69i9aqjzcz2JzI0czdJqodaFCwj4whkXBrBYR13kJmej?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad6eb74a-b72d-402b-c6e9-08dd93a33795
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2025 11:25:39.1106
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dzn6nbULZPKYhhu3yCS9qNTFPJhWKadz5OhBD46vPFR09p3GO7Yw1OeGiCyubGVbg1FZlV7IXabboO2aT4ExjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8784
+Content-Transfer-Encoding: 8bit
 
-On Thu May 15, 2025 at 5:32 PM JST, Alexandre Courbot wrote:
-> Hi Greg,
->
-> On Thu May 15, 2025 at 4:38 PM JST, Greg KH wrote:
->> On Thu, May 15, 2025 at 03:03:51PM +0900, Alexandre Courbot wrote:
->>> Add a simple ELF sections parser for unpacking loaded binaries from
->>> user-space. This is not intended to become a fully-fledged ELF parser,
->>> just a helper to parse firmwares packaged in that format.
->>>=20
->>> This parser is notably helpful for NVIDIA's GSP firmware, which is
->>> provided as an ELF binary using sections to separate the firmware code
->>> to its other components like chipset-specific signatures.
->>>=20
->>> Since the data source is likely to be user-space, checked arithmetic
->>> operations and strict bound checking are used.
->>>=20
->>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>> ---
->>> This will soon be needed in order to load the GSP firmware in nova-core=
-,
->>> so sending this early for separate review.
->>> ---
->>>  rust/kernel/elf.rs | 322 +++++++++++++++++++++++++++++++++++++++++++++=
-++++++++
->>
->> Why is this not just done in userspace and then have userspace feed the
->> proper elf sections to the kernel through the firmware interface?
->> Having to parse elf seems crazy for the kernel to be forced to do here
->> as the kernel should NOT be touching anything in a firmware blob other
->> than passing it off to the firmware directly.
->
-> FWIW, the GSP firmware in question is already in linux-firmware and
-> loaded by e.g. Nouveau.
->
-> I am not sure how userspace could feed the proper ELF sections otherwise
-> than by splitting the ELF binary into as many files as there are
-> sections. Is that what you imply, or is there another means that would
-> preserve the current firmware format?
->
-> Note also that in this particular case, the kernel cannot just pass the
-> firmware without modifying it anyway since the signatures relevant to
-> the chipset need to be patched into the right place before it is loaded.
+Add support for new Aeonsemi 10G C45 PHYs. These PHYs intergate an IPC
+to setup some configuration and require special handling to sync with
+the parity bit. The parity bit is a way the IPC use to follow correct
+order of command sent.
 
-Quick nit, as that last statement was not entirely correct: while we do
-patch some loaded firmware with signatures, this is not the case for the
-GSP (the one in ELF format). Not that it changes the point, but for the
-sake of accuracy. :)
+Supported PHYs AS21011JB1, AS21011PB1, AS21010JB1, AS21010PB1,
+AS21511JB1, AS21511PB1, AS21510JB1, AS21510PB1, AS21210JB1,
+AS21210PB1 that all register with the PHY ID 0x7500 0x7500
+before the firmware is loaded.
 
-The point being that even without using ELF as a container format, we do
-need to parse header structures in loaded firmware files anyway, so the
-kernel cannot simply act as a dumb pipe for firmware. And since we need
-to add structure, let's at least use a format that is simple, well
-accepted and which layout is already in the kernel.
+The big special thing about this PHY is that it does provide
+a generic PHY ID in C45 register that change to the correct one
+one the firmware is loaded.
 
-Or if ELF is the problem, I don't mind introducing a WAD loader. ;)
+In practice:
+- MMD 0x7 ID 0x7500 0x9410 -> FW LOAD -> ID 0x7500 0x9422
+
+To handle this, we operate on .match_phy_device where
+we check the PHY ID, if the ID match the generic one,
+we load the firmware and we return 0 (PHY driver doesn't
+match). Then PHY core will try the next PHY driver in the list
+and this time the PHY is correctly filled in and we register
+for it.
+
+To help in the matching and not modify part of the PHY device
+struct, .match_phy_device is extended to provide also the
+current phy_driver is trying to match for. This add the
+extra benefits that some other PHY can simplify their
+.match_phy_device OP.
+
+Changes v10:
+- Add rust patch
+Changes v9:
+- Reorder AS21XXX_PHY kconfig before Airoha
+- Add Reviewed-by tag from Andrew
+Changes v8:
+- Move IPC ready condition to dedicated function for poll
+  timeout
+- Fix typo aeon_ipcs_wait_cmd -> aeon_ipc_wait_cmd
+- Merge aeon_ipc_send_msg and aeon_ipc_rcv_msg to
+  correctly handle locking
+- Fix AEON_MAX_LDES typo
+Changes v7:
+- Make sure fw_version is NULL terminated
+- Better describe logic for .match_phy_device
+Changes v6:
+- Out of RFC
+- Add Reviewed-by tag from Russell
+Changes v5:
+- Add Reviewed-by tag from Rob
+- Fix subject in DT patch
+- Fix wrong Suggested-by tag in patch 1
+- Rework nxp patch to 80 column
+Changes v4:
+- Add Reviewed-by tag
+- Better handle PHY ID scan in as21xxx
+- Also simplify nxp driver and fix .match_phy_device
+Changes v3:
+- Correct typo intergate->integrate
+- Try to reduce to 80 column (where possible... define become
+  unreasable if split)
+- Rework to new .match_phy_device implementation
+- Init active_low_led and fix other minor smatch war
+- Drop inline tag (kbot doesn't like it but not reported by checkpatch???)
+Changes v2:
+- Move to RFC as net-next closed :(
+- Add lock for IPC command
+- Better check size values from IPC
+- Add PHY ID for all supported PHYs
+- Drop .get_feature (correct values are exported by standard
+  regs)
+- Rework LED event to enum
+- Update .yaml with changes requested (firmware-name required
+  for generic PHY ID)
+- Better document C22 in C45
+- Document PHY name logic
+- Introduce patch to load PHY 2 times
+
+Christian Marangi (7):
+  net: phy: pass PHY driver to .match_phy_device OP
+  net: phy: bcm87xx: simplify .match_phy_device OP
+  net: phy: nxp-c45-tja11xx: simplify .match_phy_device OP
+  net: phy: introduce genphy_match_phy_device()
+  net: phy: Add support for Aeonsemi AS21xxx PHYs
+  dt-bindings: net: Document support for Aeonsemi PHYs
+  rust: net::phy sync with match_phy_device C changes
+
+ .../bindings/net/aeonsemi,as21xxx.yaml        |  122 ++
+ MAINTAINERS                                   |    7 +
+ drivers/net/phy/Kconfig                       |   12 +
+ drivers/net/phy/Makefile                      |    1 +
+ drivers/net/phy/as21xxx.c                     | 1087 +++++++++++++++++
+ drivers/net/phy/bcm87xx.c                     |   14 +-
+ drivers/net/phy/icplus.c                      |    6 +-
+ drivers/net/phy/marvell10g.c                  |   12 +-
+ drivers/net/phy/micrel.c                      |    6 +-
+ drivers/net/phy/nxp-c45-tja11xx.c             |   41 +-
+ drivers/net/phy/nxp-tja11xx.c                 |    6 +-
+ drivers/net/phy/phy_device.c                  |   52 +-
+ drivers/net/phy/realtek/realtek_main.c        |   27 +-
+ drivers/net/phy/teranetics.c                  |    3 +-
+ include/linux/phy.h                           |    6 +-
+ rust/kernel/net/phy.rs                        |   26 +-
+ 16 files changed, 1359 insertions(+), 69 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
+ create mode 100644 drivers/net/phy/as21xxx.c
+
+-- 
+2.48.1
+
