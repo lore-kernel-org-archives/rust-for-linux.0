@@ -1,117 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915834B1E51;
-	Thu, 15 May 2025 07:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB1F15278E;
+	Thu, 15 May 2025 08:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747295119; cv=none; b=Mhbf5kfKbkpVOjkrMdG/9lVmBDXxLiJaUYMzXXzokJVaGngxgbzgfmHukmYJE5+h0/AxHfoZeMAuudYLm6Fv3vFdGYXIZCOS4gdV9eEMwTR3blU47YLQHj0NYc31mCDbGjkeSiyuw7HBLHGeFh+/gTh5tUbZqgFPBq1XujM9KiY=
+	t=1747297193; cv=none; b=qH3pI+uD2ohN6X5fgd1OLKjldrCDY8Ksp6DFUJO4PxXwByZQaOpIJDuq/G2AB5AFAn3I4edYeuSHIPMyrYeccp5TRWfj+cS5dy4vlxBazCLQSzNCMAldLV2CstsgovCLX9HczzieH3Kc3hMe8cZV7ZbsyotIKdkVffzVK6z8l3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747295119; c=relaxed/simple;
-	bh=Mwfoa7pfou8cfJ+qwk62V37KTgsEWtdPzhvEfUlY/Uc=;
+	s=arc-20240116; t=1747297193; c=relaxed/simple;
+	bh=EBgEc80X4JujFpyfHDJXv8CR/kytYB6nQV6DMuwd/WI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bUiNXqKG3fyl3yERjwsQx1i9q5Cigyl9Ig1eZAcDXpuLY4ZP8H/q6R49E2t/jEDBrWMn29WhbKZmAQMs7ej6eVh0/xf/Ot4E2Ta4x5pRn8ygA033JC18+j7CYpGCBVSErETBDFb/VEZ6tO83lkPxCC9wSU+QJfyV+aFXcaz+6Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDv9fMGz; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=t3kbWjLGjtesi3gna1n2rhTQU2urG8/MsShNu6hme+u6vDc1UTkGU7pqXV7N5yHzhuQkdnoNUa7FSN3SR0BCuWCH786b3YrokN/0HLQ8xheOHWtSoyxVjv6lYIk2r+unlAnw54Eoienu/EkT3koKAMFdS047fGNmQ411cAzgViY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PW3EGD3y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDv9fMGz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47109C4CEE9;
-	Thu, 15 May 2025 07:45:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747295119;
-	bh=Mwfoa7pfou8cfJ+qwk62V37KTgsEWtdPzhvEfUlY/Uc=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PW3EGD3y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C97C4CEE7;
+	Thu, 15 May 2025 08:19:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747297193;
+	bh=EBgEc80X4JujFpyfHDJXv8CR/kytYB6nQV6DMuwd/WI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qDv9fMGzsx9fPQslRlieJe7hWbVdtoh0zhfZ2SgMN0q9iQPgRNoeqzEhbAkVIpMh7
-	 GZ9N438yDg3iIeKlMK9sctvzn06ylEZbUOL6immLnjvrgx4tMEYnoq9a5x17qUg787
-	 hr9Bmo0BLnnh6ZjCju8jYtW4QrDQoLUqSN1yyJGA=
-Date: Thu, 15 May 2025 09:43:30 +0200
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Timur Tabi <ttabi@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>,
-	"tmgross@umich.edu" <tmgross@umich.edu>,
-	"benno.lossin@proton.me" <benno.lossin@proton.me>,
-	"gary@garyguo.net" <gary@garyguo.net>,
-	"a.hindborg@kernel.org" <a.hindborg@kernel.org>,
-	"lossin@kernel.org" <lossin@kernel.org>,
-	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
-	"boqun.feng@gmail.com" <boqun.feng@gmail.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
-	"aliceryhl@google.com" <aliceryhl@google.com>,
-	"ojeda@kernel.org" <ojeda@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"samitolvanen@google.com" <samitolvanen@google.com>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-Message-ID: <2025051540-snowsuit-manhole-7858@gregkh>
-References: <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
- <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
- <aCRdNJ2oq-REBotd@pollux>
- <D9VSJTPCSNXV.1LCXKGKVDGP96@kernel.org>
- <CAGSQo00Pj0qF90712K7xACNEvr2e0q=98b8-0VUcXLD5V+oDhg@mail.gmail.com>
- <aCUVuXO_jORqlxwr@pollux>
- <CAGSQo02nP8MT8q-_gQwjUGFNSyiW2AKOQ3V4yy9jofDzjc0SpA@mail.gmail.com>
- <CAGSQo017FgGmStYxLX7JeqV+AcMUMjmnxF6KBesFhc31BieBbw@mail.gmail.com>
- <d61e11e2d99659cf13d0e20f56afe319720d03b7.camel@nvidia.com>
- <CAGSQo02-vYG-hkP2VXBVX9Lp8+=gxkyKh7TAYkAYhpiz6gj54w@mail.gmail.com>
+	b=PW3EGD3yvFbnJjQ+FVii/BHgOInyv7T8Awd8oQaHNiFDO+nHSygZCzwSOP/mAB/bE
+	 kH6C63NviCmMBhy/iv+G+uHA3qc9FyiK4lgsL5byFdF0dwmzPvneqCf6iq67HOjddT
+	 RyyLZr4WLrgSPBrBC2AyJ9965sP4i69qKzZhP3eocgb6qO5651i7D3GrAvd9vABc0V
+	 /O62NgFJwg67VCVMSrfsYTp/fJ2no3Nr1BELwwzb/0oMbyFKSnlb7+whP74VXEWY74
+	 Pz+7SpHab4Eb+839kcN22A8PJngC0hFoMTQ/DQ8+ca39DnfeqGHhwmkTDv4uZS/stZ
+	 e5byVg3CZn3rA==
+Date: Thu, 15 May 2025 10:19:47 +0200
+From: Mark Brown <broonie@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3] rust: regulator: add a bare minimum regulator
+ abstraction
+Message-ID: <aCWjox6uWXVgcZ6v@finisterre.sirena.org.uk>
+References: <20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com>
+ <D9VATLUHDGU8.53I80TGVRV0J@kernel.org>
+ <B288AFB1-BA0A-4383-9823-EAC9E5DCA59F@collabora.com>
+ <D9VXPNT4HNXP.1PKET0Q1H7O9Y@kernel.org>
+ <52CFFCA2-F253-49F1-9EA5-2865BD094B25@collabora.com>
+ <D9VZV8APBYWU.2SWXJLHIQ18ZB@kernel.org>
+ <aCS71sbQKn7zeosR@finisterre.sirena.org.uk>
+ <4EF1B72A-826A-4435-A586-B7E0EB2DCF84@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5tNFcK0XXE5jlzrk"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSQo02-vYG-hkP2VXBVX9Lp8+=gxkyKh7TAYkAYhpiz6gj54w@mail.gmail.com>
+In-Reply-To: <4EF1B72A-826A-4435-A586-B7E0EB2DCF84@collabora.com>
+X-Cookie: Well begun is half done.
 
-On Wed, May 14, 2025 at 03:42:46PM -0700, Matthew Maurer wrote:
-> On Wed, May 14, 2025 at 3:40 PM Timur Tabi <ttabi@nvidia.com> wrote:
-> >
-> > On Wed, 2025-05-14 at 15:32 -0700, Matthew Maurer wrote:
-> > > One further possibility here, which we'd need Greg to weigh in on - we
-> > > could add a method to the debugfs API intended for Rust usage which
-> > > specifically releases a directory or file *without* releasing any
-> > > nested elements. This would mean we could get rid of all the lifetimes
-> > > on directory and file handles.
-> >
-> > I had a conversation with Greg about this topic just the other week.
-> >
-> > https://lore.kernel.org/linux-doc/20250429173958.3973958-1-ttabi@nvidia.com/
-> >
-> > There are two versions of debugfs_remove:
-> >
-> > void debugfs_remove(struct dentry *dentry);
-> > #define debugfs_remove_recursive debugfs_remove
-> >
-> > Unfortunately, the direction that we've been going is to get rid of debugfs_remove_recursive() and
-> > have drivers only call debugfs_remove().
-> >
-> > What would solve your problem is doing the opposite: making debugfs_remove() be non-recursive and
-> > require drivers to call debugfs_remove_recursive() if that's what they really want.
-> >
-> > Maybe we need debugfs_remove_single()?
-> >
-> 
-> Yes, having access to `debugfs_remove_single()`, if it has the
-> properties I would expect (namely that the kernel objects for
-> inaccessible directories continue to exist, they're just not reachable
-> through the VFS) would allow this design. It's not obvious to me if
-> it's the design we want, but it would enable that design.
 
-Ick, no, we got rid of debugfs_remove() only removing a single dentry a
-while ago as it was causing problems.  Let's not go back to that at all.
+--5tNFcK0XXE5jlzrk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This shouldn't be all that complex, it's supposed to be simple to use
-and reason about.  If you create a directory, you can "own" it until you
-drop the reference and then it, and all files/subdirs will then be
-removed.  I like that logic much better than what we are stuck with in C
-where we can create a directory but then be forced to remember to look
-it up later to remove it when finished.
+On Wed, May 14, 2025 at 01:10:52PM -0300, Daniel Almeida wrote:
+> > On 14 May 2025, at 12:50, Mark Brown <broonie@kernel.org> wrote:
 
-Ideally we can migrate the C code to be more like the rust api in the
-future as that should be easier to deal with over time by driver
-authors.
+> >> Hmm, so a `struct regulator` might already be enabled and calling
+> >> `regulator_enable` doesn't do anything?
 
-thanks,
+> > It takes a reference to the regulator.  This may or may not result in a
+> > change in an underlying physical regulator.
 
-greg k-h
+> I assume these are two different reference counts, right? One for
+> regulator_get()/regulator_put(), and one for
+> regulator_enable()/regulator_disable().
+
+> Looking at regulator_dev, I can see both "use_count" and "open_count" for
+> example.
+
+Yes, there are separate counts for gets and enables.
+
+--5tNFcK0XXE5jlzrk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmglo6MACgkQJNaLcl1U
+h9D1Cwf/T/AtpAdruFmQVXLbKGny0TzH/ysi006l6eAn0eaPS+gtSKozhTu+y28w
+uWNqektDXR/6LaKpF2MwxS2+ftYqg/fp5jx9WcXIEFaxrN9dqPXFatLCuFFMV3bG
+1f+Ep06VONie7Ghe9+yip3hiU4KWI+Ogh//+2QrvEsi5vyU64q3ITYtk6zY7faL+
+WPAQsEGz/G0e6K2aQwZtWbRS/Yh2LcjPRWuTk4fOXLCcS3+Z95oul67Z6rmlgBcW
+jQ03ZNgYBPWttosKSZ/WJ8n0qsEdVQYBLG6dFAgIOOAW5UfDaervDENkzGESNAFL
+Uzx1ZLsKoVIuw+IMlXLtg0tZ1HIowg==
+=sJ+h
+-----END PGP SIGNATURE-----
+
+--5tNFcK0XXE5jlzrk--
