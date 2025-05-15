@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4A72063FD;
-	Thu, 15 May 2025 15:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B15C1A8F60;
+	Thu, 15 May 2025 16:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747324452; cv=none; b=EIFWddbjz4+bO1XaJ0oE5n4gcoOOgfXziLcckwQCb6K1YoGwrC4o4WKQwTSBNu0x3xItN1Gj9p5a4VHT1CKy303H9z3aSIg4AHRPf+PAFusHFn3mzYti6g4xHfR69nVbc5ZUB+wda7lACvOVtVht/OHStr7ndGK932Qprxc4HyQ=
+	t=1747324897; cv=none; b=M7tvPbaui63z+prknB8szTboHgx3QllmhouG84I90Nn0kkoUjw2oyokba/hdf3Xh9hMdAq+sKCqgc3ewKycwKACwMHc8/dldWpUIg+oIOBPoDlq24mbDnXmTNJHZvJYOH4GqzhRV5P3/q9654joNHyCqdariQvp++iVQcfntg5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747324452; c=relaxed/simple;
-	bh=8hI1qe2hxBqeFh6uUNoLq9a1bdmjOHivnrCUFrEcMfk=;
+	s=arc-20240116; t=1747324897; c=relaxed/simple;
+	bh=/etv6FhAOMtkeW4iQwy/VQCKZ10duMq8G/6MNyszHSw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c+aVsqWH94KZ0QthBoTqWNMTfGQxV5gK58EXVZYGkD6J4/kI1X16K/DFCQmDmQHW7kjKe/tiBhD5PeHyvTv7lrPYSFyRTyz7PC/IcJJAr7vJqEhhVo7JJc+2Bavh36CGDOGQgbb1Bz8Lj4YmwQSDDH1XOcchA/rvwnjdMKRCEKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NI/+t4av; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=CFHX1156/KghG6FCzwCxIxVMGGOrrxGb4FFMBNo5EL/ujBrUAlcnVKowXpssq60rYHgNbkv2W+lWqVPQ7XKKD2rXizM3nfQNXifZGLFGT7u7kP+2K8hTc+e3LPq+231rXnzx0O8PbRZBpJPVPqq7UZ51HgA31JNP95LvWllLXRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q25G/zH7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NI/+t4av"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34634C4CEE7;
-	Thu, 15 May 2025 15:54:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q25G/zH7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3D8C4CEE7;
+	Thu, 15 May 2025 16:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747324452;
-	bh=8hI1qe2hxBqeFh6uUNoLq9a1bdmjOHivnrCUFrEcMfk=;
+	s=k20201202; t=1747324897;
+	bh=/etv6FhAOMtkeW4iQwy/VQCKZ10duMq8G/6MNyszHSw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NI/+t4avubeyf6S8afXk7WaFKgpu0T6ypfHSXP5Bcybt9fxwj4W03EoflMXiazQ1y
-	 6vbGyGKHMLLwBf6TmlOvpGG0i90iXt7CzgRq5oCL5390/Tiycr9oZZDTlBTDkZELcq
-	 BgIBFMQPMJg6riN6O7153Q46oEsS1IxR8qrLoH24B1Yg7A3x08v5Cok85aZHZk1Eon
-	 Xec5HZL91WbakSVH8/gUztdWY0TuioT1QTJNKcAxI3NoVbI8S0hO+aCA6Kld+piLMv
-	 lV2jHzzqO9hSZFUTPIwR4K/40+AOIubP3Cs4k3+X6KQ50yJ6Tmj+cWbYDVliKNW6/t
-	 q6UG4ZGzAUf4g==
-Date: Thu, 15 May 2025 17:53:57 +0200
+	b=Q25G/zH71Wlj2naF1VSDhTfa8OoDvyjXREDkq+JxqSTafFi4kaCoHg4qxwFNwajyF
+	 ciwBjJtk/1yIBGDDqihLGOwKMacM0qYcfk9RgHeF2fO4z+qw7g0qfQkVz7BR29HSiB
+	 18W/ZahDF9uDVelC/Etmipgco/QZqJ9JZlwkoVjGeflNgktmCbyyS+zXIDBocNvyfA
+	 20sELMwKw3l1CtOs+Pz+mcm8XgN0N221540HRxu0ogKJkDEHbI0Gi75XJhc7eup8eT
+	 kSBIY/W1YqjT8vaAqu6Ti/leHUoRdnirjdbLZhILF224KXYvU7dreM7xH4SmiEyjGt
+	 sTJFHMNSdFUrg==
+Date: Thu, 15 May 2025 18:01:30 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -43,12 +43,11 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Ying Huang <huang.ying.caritas@gmail.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Fiona Behrens <me@kloenk.dev>
-Subject: Re: [PATCH v8 1/3] rust: io: add resource abstraction
-Message-ID: <aCYOFbVn8LcOpWPf@pollux>
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v8 2/3] rust: io: mem: add a generic iomem abstraction
+Message-ID: <aCYP2j6R7NkcC2ya@pollux>
 References: <20250509-topics-tyr-platform_iomem-v8-0-e9f1725a40da@collabora.com>
- <20250509-topics-tyr-platform_iomem-v8-1-e9f1725a40da@collabora.com>
+ <20250509-topics-tyr-platform_iomem-v8-2-e9f1725a40da@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,45 +56,32 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250509-topics-tyr-platform_iomem-v8-1-e9f1725a40da@collabora.com>
+In-Reply-To: <20250509-topics-tyr-platform_iomem-v8-2-e9f1725a40da@collabora.com>
 
-On Fri, May 09, 2025 at 05:29:46PM -0300, Daniel Almeida wrote:
-> +#[cfg(CONFIG_HAS_IOPORT)]
-> +/// Returns a reference to the global `ioport_resource` variable.
-> +pub fn ioport_resource() -> &'static Resource {
-> +    // SAFETY: `bindings::ioport_resoure` has global lifetime and is of type Resource.
-> +    unsafe { Resource::from_ptr(core::ptr::addr_of_mut!(bindings::ioport_resource)) }
-
-Should be possible to use `&raw mut`.
-
-> +}
+On Fri, May 09, 2025 at 05:29:47PM -0300, Daniel Almeida wrote:
+> +impl<const SIZE: usize> ExclusiveIoMem<SIZE> {
+> +    /// Creates a new `ExclusiveIoMem` instance.
+> +    pub(crate) fn ioremap(resource: &Resource) -> Result<Self> {
+> +        let iomem = IoMem::ioremap(resource)?;
 > +
-> +#[cfg(CONFIG_HAS_IOMEM)]
-> +/// Returns a reference to the global `iomem_resource` variable.
-> +pub fn iomem_resource() -> &'static Resource {
-> +    // SAFETY: `bindings::iomem_resoure` has global lifetime and is of type Resource.
-> +    unsafe { Resource::from_ptr(core::ptr::addr_of_mut!(bindings::iomem_resource)) }
-
-Same here.
-
-> +/// A resource abstraction.
-> +///
-> +/// # Invariants
-> +///
-> +/// `Resource` is a transparent wrapper around a valid `bindings::resource`.
-> +#[repr(transparent)]
-> +pub struct Resource(Opaque<bindings::resource>);
+> +        let start = resource.start();
+> +        let size = resource.size();
+> +        let name = resource.name();
 > +
-> +impl Resource {
-> +    /// Creates a reference to a [`Resource`] from a valid pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that for the duration of 'a, the pointer will
-> +    /// point at a valid `bindings::resource`
-> +    ///
-> +    /// The caller must also ensure that the `Resource` is only accessed via the
-> +    /// returned reference for the duration of 'a.
-> +    pub(crate) const unsafe fn from_ptr<'a>(ptr: *mut bindings::resource) -> &'a Self {
+> +        let region = resource
+> +            .request_region(start, size, name, io::resource::flags::IORESOURCE_MEM)
+> +            .ok_or(EBUSY)?;
+> +
+> +        let iomem = ExclusiveIoMem {
+> +            iomem,
+> +            _region: region,
+> +        };
+> +
+> +        Ok(iomem)
+> +    }
+> +
+> +    pub(crate) fn new(resource: &Resource, device: &Device) -> Result<Devres<Self>> {
+> +        let iomem = Self::ioremap(resource)?;
+> +        let devres = Devres::new(device, iomem, GFP_KERNEL)?;
 
-Throughout the tree, functions with this signature are usually called as_ref().
+Here and in IoMem, Devres::new() requires a &Device<Bound>.
