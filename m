@@ -1,117 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CBA819;
-	Thu, 15 May 2025 11:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55C428DEE6;
+	Thu, 15 May 2025 11:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747309434; cv=none; b=gc2TU/oZZfZ7PCplj+VceDeV9Hlm2W0mDZ8KtSAJBGCabQYpkl23E90cnZ7vyMQ0ewWmh4rWERZYHGtTC8/jGWa9CAW7ic0SlKvKScim44JujGL4I4VMDWzOCvV0DuFcjcioc65wWv4GVWXva60WxJGFjNZVJmRkQiut/eEDeKk=
+	t=1747309497; cv=none; b=Mqyeb4EmRVspcURZ6l/S14YYWYaQWZxjfaLZDz45SWStVZ4fGqf7Ualf20HKRtg/FFzxY32JpRL31r5Y5J+SglRNdUKKziqkJb9sNLlMN18YQ6G1okBvfXQLhjoB32RNXg0DhTwH/GjAGBw8uUlTLOgIoXiUzib59ruKbxsHOgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747309434; c=relaxed/simple;
-	bh=cqZmizesdV382UCWkAJvVk+InOvjAczf6ib7rBZjAsY=;
+	s=arc-20240116; t=1747309497; c=relaxed/simple;
+	bh=9L1IyfyzQObJzbaVGvEPZrNbRGkTUP7BBjXPMB7XoiU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W1bo5Gw1Zl4+pYverix2sWsn7G0VQI0ZYrlgYL1w/mW2nQx9v4xW+Gahkb50ZViPht+PdYxyuQpnXTEyZdH8wBZxkeKaQGeOO5hqNmEWqzfovo2wITLTBmmMURHbJWAj9esJdG+zorYdnRLSzOtED4Qr/TycAM3Tq6mY516Nrk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OU2NTZIG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=eVH7apNf7AiL1QTEZpGD0mD1FIFThfztaAFERLvzSzgMc7SAJ1EOqVaMHGXQ8hfW6NLm2aG8aSB8GpUTl63Uvp9tBYxzBAWSuMm3BtwTK4KEUaWb9voiaGX8sEuFPgCbzsL5/0B2WKO2zzWxBHm0IIhOYggfNFuYeqE5dFIup6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FpzRxTF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OU2NTZIG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA6FC4CEE7;
-	Thu, 15 May 2025 11:43:53 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FpzRxTF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA271C4CEED;
+	Thu, 15 May 2025 11:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747309434;
-	bh=cqZmizesdV382UCWkAJvVk+InOvjAczf6ib7rBZjAsY=;
+	s=korg; t=1747309497;
+	bh=9L1IyfyzQObJzbaVGvEPZrNbRGkTUP7BBjXPMB7XoiU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OU2NTZIGHmokuMikpj91WMhvhyCz0MgzU98cEhvJWzdS3i87rxoxK1kHrGWv97hRH
-	 3Xwj/nOWKMfnUpNvIkk9N660xcTSSR2DJx7FN+obqBpZNIxoQBwee5eJJ/ojcOy9Tt
-	 auz8T46jDdETzBwpst9dXqrt+XgvLAr7swC+PwD4=
-Date: Thu, 15 May 2025 13:42:05 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	b=0FpzRxTFUsa9HxV6CXrpFGp2bV4BtdySujaFJyCtIqWXoTIPVZM+s82/v1ggGc/ct
+	 JwpUZ889TWiSgw7hA59a5J+/ti3J2dOpXmme8ucvgXNUrJMgRUQ1TLawj9EMHwanZ4
+	 5/nzvO8qoLqnRhTrq7/3JgOQvtwzafeSaYbcFmG0=
+Date: Thu, 15 May 2025 13:43:09 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: add basic ELF sections parser
-Message-ID: <2025051532-gentleman-reset-58f2@gregkh>
-References: <20250515-elf-v1-1-4b53745453c0@nvidia.com>
- <2025051543-override-rockiness-3ead@gregkh>
- <D9WLFTPRB9FJ.OL6I760HKALZ@nvidia.com>
- <D9WP3YU31199.Q8IEDBJZ87LU@nvidia.com>
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+Message-ID: <2025051524-festival-afterglow-8483@gregkh>
+References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
+ <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
+ <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+ <aCRdNJ2oq-REBotd@pollux>
+ <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
+ <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <D9WP3YU31199.Q8IEDBJZ87LU@nvidia.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
 
-On Thu, May 15, 2025 at 08:25:33PM +0900, Alexandre Courbot wrote:
-> On Thu May 15, 2025 at 5:32 PM JST, Alexandre Courbot wrote:
-> > Hi Greg,
-> >
-> > On Thu May 15, 2025 at 4:38 PM JST, Greg KH wrote:
-> >> On Thu, May 15, 2025 at 03:03:51PM +0900, Alexandre Courbot wrote:
-> >>> Add a simple ELF sections parser for unpacking loaded binaries from
-> >>> user-space. This is not intended to become a fully-fledged ELF parser,
-> >>> just a helper to parse firmwares packaged in that format.
-> >>> 
-> >>> This parser is notably helpful for NVIDIA's GSP firmware, which is
-> >>> provided as an ELF binary using sections to separate the firmware code
-> >>> to its other components like chipset-specific signatures.
-> >>> 
-> >>> Since the data source is likely to be user-space, checked arithmetic
-> >>> operations and strict bound checking are used.
-> >>> 
-> >>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> >>> ---
-> >>> This will soon be needed in order to load the GSP firmware in nova-core,
-> >>> so sending this early for separate review.
-> >>> ---
-> >>>  rust/kernel/elf.rs | 322 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+On Thu, May 15, 2025 at 10:59:44AM +0200, Benno Lossin wrote:
+> On Wed May 14, 2025 at 11:55 PM CEST, Matthew Maurer wrote:
+> > On Wed, May 14, 2025 at 2:07 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> >> However, I really think we should keep the code as it is in this version and
+> >> just don't provide an example that utilizes ManuallyDrop and forget().
 > >>
-> >> Why is this not just done in userspace and then have userspace feed the
-> >> proper elf sections to the kernel through the firmware interface?
-> >> Having to parse elf seems crazy for the kernel to be forced to do here
-> >> as the kernel should NOT be touching anything in a firmware blob other
-> >> than passing it off to the firmware directly.
+> >> I don't see how the idea of "manually dropping" (sub-)directories and files
+> >> provides any real value compared to just storing their instance in a driver
+> >> structure as long as they should stay alive, which is much more intuitive
+> >> anyways.
 > >
-> > FWIW, the GSP firmware in question is already in linux-firmware and
-> > loaded by e.g. Nouveau.
+> > We can't easily do this, because dropping a root directory recursively
+> > drops everything underneath it. This means that if I have
 > >
-> > I am not sure how userspace could feed the proper ELF sections otherwise
-> > than by splitting the ELF binary into as many files as there are
-> > sections. Is that what you imply, or is there another means that would
-> > preserve the current firmware format?
+> > foo/
+> >   - bar/
+> >   - baz/
 > >
-> > Note also that in this particular case, the kernel cannot just pass the
-> > firmware without modifying it anyway since the signatures relevant to
-> > the chipset need to be patched into the right place before it is loaded.
+> > Then my directory handle for `bar` have to be guaranteed to outlive my
+> > directory handle for `foo` so that I know it's didn't get deleted
+> > under me. This is why they have a borrow onto their parent directory.
+> > This borrow means that you can't (without `unsafe`, or something like
+> > `yoke`) keep handles to `foo` and `bar` in the same struct.
 > 
-> Quick nit, as that last statement was not entirely correct: while we do
-> patch some loaded firmware with signatures, this is not the case for the
-> GSP (the one in ELF format). Not that it changes the point, but for the
-> sake of accuracy. :)
-> 
-> The point being that even without using ELF as a container format, we do
-> need to parse header structures in loaded firmware files anyway, so the
-> kernel cannot simply act as a dumb pipe for firmware. And since we need
-> to add structure, let's at least use a format that is simple, well
-> accepted and which layout is already in the kernel.
-> 
-> Or if ELF is the problem, I don't mind introducing a WAD loader. ;)
+> Is there no refcount that we can use instead of borrowing? I guess not,
+> since one can call `debugfs_remove`. What about a refcount on the rust
+> side? or is debugfs not used for "debugging" and needs to have the
+> performance of no refcount?
 
-The "problem" I'm not understanding is why does the kernel have to do
-any of this parsing at all?  What does it do with these segments that
-userspace can't do instead?  Why does patching have to be done within
-the kernel at all?  What prevents all of this from being done elsewhere?
+debugfs should never have any performance issues (i.e. you don't use it
+for performant things.)
 
-And ELF parsing is "tricky" in places, and you aren't using the existing
-elf parser, as proof of needing a new parser in rust :)
+So refcount away!  That should never be an issue.
 
 thanks,
 
