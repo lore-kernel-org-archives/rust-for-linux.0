@@ -1,41 +1,41 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18BF29B20A;
-	Thu, 15 May 2025 12:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076352222CB;
+	Thu, 15 May 2025 12:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747310820; cv=pass; b=rq25eVrj+z36+4biVKgyYsNuma5JB2NGeZ1g9Op4KJ/OmQ+l4YkWLNFLMTh85TXOj3Ac7KNrrvOfRGwy7c07mM55vWvC6tfeWHvljYl6TS96NW8GTc0EMW8EslMnwtAeKme31+jHQ3Fhczr8lTEGZSh4/iZi74kOM+geZ138/O8=
+	t=1747312111; cv=pass; b=WUz6I9TGr/7eB8VAL2uaHMQshzos58BMTRSHRfwwOTLaFwpfOnj5uLeISxTNZnFcY1+cclN9Kf2/KXyYBZKrz7ex6YRqP50P8C/QtYgaA92TEz+rOBKwZ39QuU+G8WQDIif8cJ/FU5UifQ/9s5MB6Fp3yh74VT7G1eBjQxcmAro=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747310820; c=relaxed/simple;
-	bh=YHBcZfj+gpOyd1pbp1wvKIUykdBNSwdEb0Hvd5YLVg4=;
+	s=arc-20240116; t=1747312111; c=relaxed/simple;
+	bh=1KmjICqAPMW902hFnhxBalK1v+p498bQnPm22BLWGEA=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=UgaELASK8fYX12zmcHgnHHHrbniFCncdv7aOiN3tQhnzxp92U8Bagie16iiS0RqSTOH1xWIgJML4hoXOuglPW0GrRGSMkaOvXCJwObK9WnaNWoOYsotbcFVmirLAVpV+bHHHDpq+t3Cy1/Gkj0FAWpAFlDdpgyDtlsmfNGyqj1c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=jCe2m7/G; arc=pass smtp.client-ip=136.143.188.12
+	 Message-Id:References:To; b=RWkOVKFt9VwfW2jlj3/dOYxAKK6fxWbytTcBc0idHoPkO57+qv51E/ozPjy/D5LbyDxmAjpf/VJs0KDhg9QCWH0Rr5lwrjSDEbZF1r7kPfgMA1L9ZXYxueoBAjnqKL84oVwA2GtfiGPnXL9BB9gjvQcCgRv4DO9GNORnOfkACc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CSTl+sl+; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="jCe2m7/G"
-ARC-Seal: i=1; a=rsa-sha256; t=1747310786; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CSTl+sl+"
+ARC-Seal: i=1; a=rsa-sha256; t=1747312088; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=a6Gpr9s71JpP8q0FaDIH5QIJBcHXWhKBPHo3wcrAFWMsbGpcoVLJbyg1bge8PwdsHJQFR65aP9LjWJeHzrF5YUHW2K2PlSXazJi4ogmiuBpmwy57ViWN/KzZbEXLDWhXWq/YgOGgcsDHK4jyF7KvQdnV8O+P1ZNuS/yHSigJgk8=
+	b=hE5Ahuoe3liWlEt3Ayxmaghi/Hr2Qj9XuMC6VMi+Tz4gk8Ql4v62rGUaopNfb0rLiGnLFSJxjpGvsU4WEx2BYBtvxKnPHcwJzxdAL4f6cHoReJJrpUR8y6xTRJ2BqMgJpvufaxFldORC7rQ4S4NMykGtmVWKhfi0d6wJ8Zl+Rq0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1747310786; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=xSGp2fjruvmM+cWh+o5418ZbfERk+gGKDQg0b2YWQEU=; 
-	b=IdDFKCyRlkGGQ2ej5fcAQhDY8QA9ZGPfNbI8RkSiUMALitG1PVryVnpBFGv/gk4sDh7gDY2YXq5sJl59AqDBWwbgHjHgGn76El++0svN9BYwjO0iu1ZfdlVpD2iRb/1CBi80bIzH/+hGHntmGTV73DFEWXiURgOc1aPCwCn1h1I=
+	t=1747312088; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=pL7tEiHHFxsDRCPZMIVsmA66s8fZk8HT6WlwVxESBm0=; 
+	b=DyKuI//dykh19/JooaAa4gATHB76KhGYTN2rL7iWAjwDBPKLTXPvBNUB1Ar6CwcgYdKSWMonbrqvZfFB4iaPIJaSx+XlXyTF8voTxk7hAvHYMFNhI2vr5Gvguf9Vlem57jmOcBGWdpaMrfyE6P2gc42kBB103b0jefnHr1F28C0=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747310786;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747312088;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=xSGp2fjruvmM+cWh+o5418ZbfERk+gGKDQg0b2YWQEU=;
-	b=jCe2m7/Gj8+ebINvfEYUYCgOT6wxqi9Rv6R2UvL/v+MzeRyHzTYJG7cSixgtStKO
-	0NMONVx1aS3tVnUQchebaNwt9kEwoYZD07772ppxmhd0TgVZAgTZL3MfWLQOEQ82vnO
-	Hlwxq5PMQZiFNZV6duX83bgAd/OQr7gSFG5oiXtg=
-Received: by mx.zohomail.com with SMTPS id 1747310785107904.5936302375475;
-	Thu, 15 May 2025 05:06:25 -0700 (PDT)
+	bh=pL7tEiHHFxsDRCPZMIVsmA66s8fZk8HT6WlwVxESBm0=;
+	b=CSTl+sl+Z03hAt+YSxSsu5EOkFiolwIldIjtRwcxPT244jSd3OUE+YtYvncYTgiC
+	LzG0uTph4z+EHiqg1xHhdfxaYhq45qu57zM33jbo3VW1qVbXR4HfGR3LKQWbf1O3Nuz
+	IaD+Y207lzkDwBeLzoiG9xKnLMo3y87/pxUUuPjQ=
+Received: by mx.zohomail.com with SMTPS id 1747312086918595.3368740394998;
+	Thu, 15 May 2025 05:28:06 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -46,351 +46,137 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
 Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <D9WLQ3J2TRD1.AA50TVOPKMVQ@kernel.org>
-Date: Thu, 15 May 2025 09:06:09 -0300
-Cc: Gary Guo <gary@garyguo.net>,
- Miguel Ojeda <ojeda@kernel.org>,
+In-Reply-To: <aCXYaCGvO_tI1OOh@pollux>
+Date: Thu, 15 May 2025 09:27:51 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <benno.lossin@proton.me>,
  Andreas Hindborg <a.hindborg@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Rafael J. Wysocki" <rafael@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>,
  linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <BA37BE0B-33A6-4B23-9405-ED796B451427@collabora.com>
+Message-Id: <39C56E3E-07C6-44BB-B5F6-38090F037032@collabora.com>
 References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
  <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
- <D9W5IX9Z7QMU.3DL48O2KYTN1Z@kernel.org>
- <497D0D1E-B607-4822-A083-C0C5B9DB3C57@collabora.com>
- <D9WLQ3J2TRD1.AA50TVOPKMVQ@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
+ <aCUQ0VWgoxdmIUaS@pollux>
+ <A7E3A124-AF77-4A4A-B4E2-AE7DDB1CE007@collabora.com>
+ <aCXYaCGvO_tI1OOh@pollux>
+To: Danilo Krummrich <dakr@kernel.org>
 X-Mailer: Apple Mail (2.3826.500.181.1.5)
 X-ZohoMailClient: External
 
-Hi Benno,
 
-> On 15 May 2025, at 05:46, Benno Lossin <lossin@kernel.org> wrote:
+
+> On 15 May 2025, at 09:04, Danilo Krummrich <dakr@kernel.org> wrote:
 >=20
-> On Wed May 14, 2025 at 10:58 PM CEST, Daniel Almeida wrote:
->> Hi Benno, I really appreciate you taking the time to review my =
-patches.
->=20
-> Glad I can help :)
->=20
->>> On 14 May 2025, at 17:04, Benno Lossin <lossin@kernel.org> wrote:
->>> On Wed May 14, 2025 at 9:20 PM CEST, Daniel Almeida wrote:
->>>> Add support for registering IRQ handlers in Rust.
->>>>=20
->>>> IRQ handlers are extensively used in drivers when some peripheral =
-wants
->>>> to obtain the CPU attention. Registering a handler will make the =
-system
->>>> invoke the passed-in function whenever the chosen IRQ line is =
-triggered.
->>>>=20
->>>> Both regular and threaded IRQ handlers are supported through a =
-Handler
->>>> (or ThreadedHandler) trait that is meant to be implemented by a =
-type
->>>> that:
->>>>=20
->>>> a) provides a function to be run by the system when the IRQ fires =
-and,
->>>>=20
->>>> b) holds the shared data (i.e.: `T`) between process and IRQ =
-contexts.
->>>>=20
->>>> The requirement that T is Sync derives from the fact that handlers =
-might
->>>> run concurrently with other processes executing the same driver,
->>>> creating the potential for data races.
->>>>=20
->>>> Ideally, some interior mutability must be in place if T is to be
->>>> mutated. This should usually be done through the in-flight =
-SpinLockIrq
->>>> type.
->>>>=20
->>>> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
->>>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->>>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
->>>> ---
->>>> rust/bindings/bindings_helper.h |   1 +
->>>> rust/helpers/helpers.c          |   1 +
->>>> rust/helpers/irq.c              |   9 +
->>>> rust/kernel/irq.rs              |  24 +++
->>>> rust/kernel/irq/flags.rs        | 102 +++++++++
->>>> rust/kernel/irq/request.rs      | 455 =
-++++++++++++++++++++++++++++++++++++++++
->>>> rust/kernel/lib.rs              |   1 +
->>>> 7 files changed, 593 insertions(+)
->>>=20
->>> Could you split this patch into smaller chunks?
+> On Thu, May 15, 2025 at 08:54:35AM -0300, Daniel Almeida wrote:
+>> Hi Danilo,
 >>=20
->> How? This patch does one thing: it adds request_irq functionality.
->=20
-> You could split off the threaded irq stuff and the flags module.
->=20
-> Smaller patches are much much easier to review IMO.
-
-The flags are needed for non-threaded IRQs too.
-
-I think this can probably be split into:
-
-"Add IRQ module"
-"Add IRQ flags" <--- in preparation for next patch
-"Add non-threaded IRQs"
-"Add threaded IRQs=E2=80=9D
-
-WDYT?
-
->=20
->>>> +pub use request::Handler;
->>>> +pub use request::IrqReturn;
->>>> +pub use request::Registration;
->>>> +pub use request::ThreadedHandler;
->>>> +pub use request::ThreadedIrqReturn;
->>>> +pub use request::ThreadedRegistration;
+>>> On 14 May 2025, at 18:53, Danilo Krummrich <dakr@kernel.org> wrote:
 >>>=20
->>> Why not?:
->>>=20
->>>   pub use request::{Handler, ..., ThreadedRegistration};
->>=20
->> I dislike this notation. It is just a magnet for conflicts.
->=20
-> Rust-analyzer has the "normalize imports" code action that can help =
-with
-> that. In one of our meetings, we once discussed having a custom tool
-> that could merge imports, but nobody took the time to build it.
->=20
-> I don't see the argument here, as this re-export shouldn't really
-> change.
-
-Yeah, in this instance that is true.=20
-
-
->=20
->>>> diff --git a/rust/kernel/irq/flags.rs b/rust/kernel/irq/flags.rs
->>>> new file mode 100644
->>>> index =
-0000000000000000000000000000000000000000..3cfaef65ae14f6c02f55ebcf4d52450c=
-0052df30
->>>> --- /dev/null
->>>> +++ b/rust/kernel/irq/flags.rs
->>>> @@ -0,0 +1,102 @@
->>>> +// SPDX-License-Identifier: GPL-2.0
->>>> +// SPDX-FileCopyrightText: Copyright 2025 Collabora ltd.
->>>> +
->>>> +use crate::bindings;
->>>> +
->>>> +/// Flags to be used when registering IRQ handlers.
+>>> On Wed, May 14, 2025 at 04:20:51PM -0300, Daniel Almeida wrote:
+>>>> +/// // This is running in process context.
+>>>> +/// fn register_irq(irq: u32, handler: Handler) -> =
+Result<Arc<Registration<Handler>>> {
+>>>> +///     let registration =3D Registration::register(irq, =
+flags::SHARED, c_str!("my-device"), handler);
 >>>> +///
->>>> +/// They can be combined with the operators `|`, `&`, and `!`.
->>>> +#[derive(Clone, Copy, PartialEq, Eq)]
->>>> +pub struct Flags(u64);
+>>>> +///     // You can have as many references to the registration as =
+you want, so
+>>>> +///     // multiple parts of the driver can access it.
+>>>> +///     let registration =3D Arc::pin_init(registration, =
+GFP_KERNEL)?;
 >>>=20
->>> The constants below seem to all be 32 bit, why did you choose u64?
->>=20
->> The C code takes in ffi::c_ulong. Shouldn=E2=80=99t this map to u64? =
-Or maybe usize.
->=20
-> Maybe bindgen is doing some funky stuff, Gary changed the mappings a
-> couple months ago (from rust/ffi.rs):
->=20
->    c_long =3D isize;
->    c_ulong =3D usize;
->=20
-> So this indeed should be usize, what is going on here?
-
-I think this is working as intended. The C bindgen function does take =
-usize, so
-the u64 can go away. I guess this confusion started because the =
-individual
-flags are u32 though, so at least a conversion from u32 to usize will be
-needed.
-
->=20
->>>> +/// A registration of an IRQ handler for a given IRQ line.
->>>> +///
->>>> +/// # Examples
->>>> +///
->>>> +/// The following is an example of using `Registration`. It uses a
->>>> +/// [`SpinLock`](crate::sync::SpinLockIrq) to provide the interior =
-mutability.
->>>> +/// Note that Spinlocks are not safe to use in IRQ context as of =
-now, but may be
->>>> +/// in the future.
+>>> This makes it possible to arbitrarily extend the lifetime of an IRQ
+>>> registration. However, we must guarantee that the IRQ is =
+unregistered when the
+>>> corresponding device is unbound. We can't allow drivers to hold on =
+to device
+>>> resources after the corresponding device has been unbound.
 >>>=20
->>> Didn't your commit message mention SpinLockIrq?
+>>> Why does the data need to be part of the IRQ registration itself? =
+Why can't we
+>>> pass in an Arc<T> instance already when we register the IRQ?
+>>>=20
+>>> This way we'd never have a reason to ever access the Registration =
+instance
+>>> itself ever again and we can easily wrap it as =
+Devres<irq::Registration> -
+>>> analogously to devm_request_irq() on the C side - without any =
+penalties.
+>>>=20
+>>>> +///     // The handler may be called immediately after the =
+function above
+>>>> +///     // returns, possibly in a different CPU.
+>>>> +///
+>>>> +///     {
+>>>> +///         // The data can be accessed from the process context =
+too.
+>>>> +///         let mut data =3D registration.handler().0.lock();
+>>>> +///         *data =3D 42;
+>>>> +///     }
+>>>> +///
+>>>> +///     Ok(registration)
+>>>> +/// }
+>>>=20
 >>=20
->> This is not upstream yet. I removed all mentions of SpinLockIrq on
->> purpose, but I apparently missed some as you say.
->>=20
->> We definitely need interrupt-aware spinlocks to access the data in =
-interrupt
->> context. It is just a matter of deciding whether we will be referring =
-to a type
->> whose API is not 100% formalized as we speak, or to SpinLock itself - =
-which is
->> already upstream - with a caveat. I chose the latter.
->=20
-> I don't think we should knowingly do something that is "not safe". If
-> this requires `SpinLockIrq`, then that should land first. I think
-> referring to a not-yet-existing type is fine.
-
-Well, SpinLockIrq has been brewing for quite a while. Waiting for it to =
-land
-can introduce an unbounded delay here. Note that IRQ handling is =
-extremely
-important for drivers.
-
-What we can do is to simply remove the locks from all the examples. The =
-code
-will still work fine, you just won't be able to mutate the data without =
+>> Up until this point, there was no need for the data to not be inline =
+with the
+>> registration. This new design would force an Arc, which, apart from =
 the
-interior mutability, of course.
+>> heap-allocation, is restrictive for users.
+>=20
+> Does the current design not also imply a heap allocation heap =
+allocation? With
+> my proposal irq::Registration::new() can just return an =
+irq::Registration
+> instance, not an impl PinInit that you need to stuff into a Box or Arc =
+instead.
+> Hence, there shouldn't be a difference.
 
-A subsequent patch can (re)introduce the examples where the data is =
-mutated
-when SpinLockIrq lands. WDYT?
+Well, not really, because this impl PinInit can be assigned to something =
+larger
+that is already pinned, like drm::Device::Data for example, which is (or =
+was)
+already behind an Arc, or any other private data in other subsystems.
 
->=20
->>>> +/// # Invariants
->>>> +///
->>>> +/// * We own an irq handler using `&self` as its private data.
->>>> +///
->>>> +#[pin_data(PinnedDrop)]
->>>> +pub struct Registration<T: Handler> {
->>>> +    irq: u32,
->>>> +    #[pin]
->>>> +    handler: T,
->>>> +    #[pin]
->>>> +    /// Pinned because we need address stability so that we can =
-pass a pointer
->>>> +    /// to the callback.
->>>> +    _pin: PhantomPinned,
->>>> +}
->>>> +
->>>> +impl<T: Handler> Registration<T> {
->>>> +    /// Registers the IRQ handler with the system for the given =
-IRQ number. The
->>>> +    /// handler must be able to be called as soon as this function =
-returns.
->>>=20
->>> The first line of documentation should be a single sentence =
-description
->>> of what the item does. It will get rendered next to it on the =
-summary &
->>> search pages.
->>=20
->> Right, I actually rendered the docs before submitting, but apparently =
-I missed this.
->>=20
->>>=20
->>> What is meant by the second sentence? What about this phrasing?: =
-"The
->>> handler might be called immediately after this function returns.".
->>=20
->> It's a reminder, inherited from the C side, that literally as soon as
->> request_irq() returns, your handler may be called. Anything that you =
-need to
->> setup before your handler can run must already have been done by this =
-point.
->>=20
->> Is this the =E2=80=9Csecond sentence=E2=80=9D you are referring to?
->=20
-> Yes. The sentence was worded in a weird way, since in Rust, I would
-> normally expect that anything can happen to a value, if I give up
-> ownership.
->=20
-> Also it is not true, since the code in the function body is only run
-> once you use the initializer, so running this code doesn't do =
-anything:
->=20
->    let handler =3D ...;
->    let flags =3D ...;
->    let irg =3D ...;
->=20
->=20
->    let reg =3D Registration::register(irq, flags, cstr!("foo"), =
-handler);
->=20
->    // the registration is not yet created, only an initializer for a =
-registration.
->=20
->    let reg =3D Arc::pin_init(reg);
->=20
->    // now the registration has been created and the handler can be =
-called.
+IIUC what you proposed has yet another indirection. If we reuse the =
+example
+from above, that would be an Arc for the drm Data, and another Arc for =
+the
+handler itself?
 
-Right, this is true.
+I definitely see your point here, I am just trying to brainstorm another =
+way of
+doing this.
 
 >=20
->>>> +    pub fn register(
->>>> +        irq: u32,
->>>> +        flags: Flags,
->>>> +        name: &'static CStr,
->>>> +        handler: T,
->>>> +    ) -> impl PinInit<Self, Error> {
->=20
->>>> +/// The value that can be returned from =
-`ThreadedHandler::handle_irq`.
->>>> +#[repr(u32)]
->>>> +pub enum ThreadedIrqReturn {
->>>> +    /// The interrupt was not from this device or was not handled.
->>>> +    None =3D bindings::irqreturn_IRQ_NONE,
->>>> +
->>>> +    /// The interrupt was handled by this device.
->>>> +    Handled =3D bindings::irqreturn_IRQ_HANDLED,
->>>> +
->>>> +    /// The handler wants the handler thread to wake up.
->>>=20
->>> How about "The handler wants the handler thread to take care of the
->>> interrupt." or is that incorrect?
+>> Can=E2=80=99t we use Devres with the current implementation?
 >>=20
->> This is taken straight from the C docs. As I told Andreas, I=E2=80=99d =
-prefer if we
->> didn=E2=80=99t add our own docs for C things that have their own docs =
-already.
+>> IIUC from a very cursory glance, all that would mean is that you'd =
+have to call
+>> try_access() on your handler, which should be fine?
 >=20
-> Fine with me, but we could also change the C docs :)
+> Well, that would work indeed.
 >=20
->>>> +///     // This will run (in a separate kthread) if and only if =
-`handle_irq`
->>>> +///     // returns `WakeThread`.
->>>> +///     fn thread_fn(&self) -> IrqReturn {
->>>> +///         // We now have exclusive access to the data by locking =
-the SpinLock.
->>>> +///         //
->>>> +///         // Ideally, we should disable interrupts while we are =
-doing this to
->>>> +///         // avoid deadlocks, but this is not currently =
-possible.
->>>=20
->>> Would this be solved by SpinLockIrq?
->>=20
->>=20
->> Yes, that is the point of SpinLockIrq. The exact syntax is still up =
-for debate,
->> although by this time I think Lyude & Boqun have already settled on =
-something.
->=20
-> I also was part of the discussion at some point, but dropped out & was
-> busy with other things. I'll move it up in my todo-list.
+> But people will - with good reason - be upset that every access to the =
+handler's
+> data needs to be guarded with the RCU read side critical section =
+implied by
+> Revocable and hence Devres.
 
-Ah yes, that would be very helpful. SpinLockIrq is another very =
-important
-missing piece in the ecosystem.
+True, I totally missed that.
 
 >=20
-> ---
-> Cheers,
-> Benno
+> We can easily avoid that in this case, hence we should do it.
 
+=E2=80=94 Daniel
 
