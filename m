@@ -1,93 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEA727990E;
-	Thu, 15 May 2025 21:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD13229B79F;
+	Thu, 15 May 2025 21:12:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747343482; cv=none; b=BB1vTucbkuzmWFG7EDe9CnNDuNVcccu2xT616w2tGoZgWWFxj2IGs7SIVKP6YOFWkNmnX/onsdVvZUvtt5x4IiaflLjwnD64cBGSTstVCx2E4BV6jv/z6iio6Z2WJF7l2L6tSd0DNuiKlFbsUhQKLseHZ3CpAqtaIMCo3DJRZvg=
+	t=1747343572; cv=none; b=GhMUR//l2zYw3998G5z4uDWsakAgrkBbKaFHbMLrUFcQ3rIyGp3QPoFM3XbWGyfFlL1QUyru2eNw9df01QGkbptRunUoF0bkMcmxQyU7bqOWAM/mZqzVpGFf7Pc8uj/DjdFvhI8vSLhxL0sPJOWaI5bF9KE2gfrl1+kL2vLIa14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747343482; c=relaxed/simple;
-	bh=76b2FsZ7bxhwXZ3UFAT/V8jL4UEZ1JmSZ4WVDRpN1PE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DSt731PKXsfsAYosIovmjZpk223IHSFkRDfyUFT7ULiaXgmWmSlO3FZ1DQg7UkAuWAL4Z485lw0Ec7pZATnYllPPUMm6sa7bkA31CNCPnXiJdGzUinufV+WTB+QpA5QY4kqMRAnA84wxUjIqWFXa7cEernPrVfASAtAWYDTD2I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l6rZW6U9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747343572; c=relaxed/simple;
+	bh=q3PDrZM6G8zDDRhj4QwvJtG8rSqiKqS/I3flXIXrZeU=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=riXmeNEbzADRhWQ8fE1Nju9DWtcMUczRsE/Hn59g526yPPRjlbDOCMarotghDWf8SKezLVrvC0pZnukGRvzvMF10XrD4tVUyol4PIRJTxCt9WcK1k6FRrNqdEGZ+xLU3yhY/3zEJAHNLg1egcdA6Ha59OB5aLZsgee5HJq7jaMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F+6nMkEf; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l6rZW6U9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388F3C4CEE7;
-	Thu, 15 May 2025 21:11:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747343481;
-	bh=76b2FsZ7bxhwXZ3UFAT/V8jL4UEZ1JmSZ4WVDRpN1PE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l6rZW6U9t4D4AHu4YsW433Hew5OY+vbKi1Jp/05gKTzBaApTRsS+dkCi76ivVDVHD
-	 fETWkWglei5kOK+XxBRfurauMborScpboch4I5FuTvuFg/TH+R8eaC41NPq1vFR4TY
-	 dGubF1gb7aSDz/krEwYVRoEEx/DgH9f4Pz9ds3QzwYqgJDiQT1TTc7ZHZSJ1ZarlEU
-	 6LZWDqce8uhOhU204oBbmJ9DzoMJ18s1SADd//8B/gic7wCowln2VaDx2GbHoMb+fj
-	 st9PBN/gXHYHQw8Ij6uUNyP6Fy3ywkw4eLX5U782WeDLh2L/qezjmsCps2sPYYNqvK
-	 WoDZ523/KCjqQ==
-Date: Thu, 15 May 2025 23:11:14 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, lyude@redhat.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	Petr Tesarik <petr@tesarici.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [RFC PATCH 1/2] rust: add initial scatterlist bindings
-Message-ID: <aCZYcs6Aj-cz81qs@pollux>
-References: <20250512095544.3334680-1-abdiel.janulgue@gmail.com>
- <20250512095544.3334680-2-abdiel.janulgue@gmail.com>
- <B3564D77-9E26-4019-9B75-B0C53B26B64F@collabora.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F+6nMkEf"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a0b933f214so915869f8f.0;
+        Thu, 15 May 2025 14:12:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747343569; x=1747948369; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=opuvm8FKWBIYNRf90PxXi7sMcW0qx9YAX9FlKAsACPA=;
+        b=F+6nMkEfOeVKIEfWFWzsSAyNOLPH2amXneoP/icZ/EbVRUCme1GMOwZ9KvNLr4Bhj5
+         8/NF4m+wWTYk/7cDuO8EUEpWsMDqUv3j2/hPTGP4yEvyRYIMY14Fv7vmHxfgnBuS9qn7
+         HaXOk1Bm8b2DlFs/xLJ6/Vv9Q5443jmOL+JI+0f1PxTAadvTakvPVOLVvPOUiP5Wy6eV
+         bgjikKyM5tB/qIg99AKkXGQTVKrAx684BNFaF2xeffa6Erh1QoCdjhi9Ze/RxvXgmnDZ
+         vFYA77xU/ijNPy3pT3IQUg1JvT4w3iHTUnMWD2i5AXN4TDJ4GzkzyULkjFQ47mccOX3D
+         eh9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747343569; x=1747948369;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=opuvm8FKWBIYNRf90PxXi7sMcW0qx9YAX9FlKAsACPA=;
+        b=JtFUVsh1QRlCW32Qu9ENZ9KA8U8qNL8siq+cJ4hfkYHq3DMI2u/sEUt/TY2029azl0
+         OiYM9kTptoyM2mNTLY0VTEn4mC9P9wxDruKigZ0IZT7aJ2paZi8FIWR3a5NIDzF28lt5
+         5Qs/W7fRs1gSRsYZTHl5vyizO4Jo+sHkPUl0TicDJLQrfSYVbJPtHMugwS0Gyc3EQGK6
+         IZnuVQl1+do2ESITYUN9M4hyeyTQonoSqDSAjgTKxIc62C4gAa3FzDFLaU9Y3Zo8IvCV
+         6yrLP0uipKICuj8RS3L6mB4J5rNCvw1j1TDx54Qhq1m1wjDiw+DDkf8hQuIJKwYMpOls
+         yYDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0xPimJXvZsFqKaBIc/AwnyiFTUyFOw4s+YaJUh2w/152ZQZNNFur6WX8QL+vUDjgYebXJPi7YgCNgU04=@vger.kernel.org, AJvYcCUXu6DL0q/H//BaV3BnLxvfeXuZDRThSruCAxmH1pi67/GEd6GD+fsse+KpRl5wwWnVXAz+bcgN@vger.kernel.org, AJvYcCWYzzXJt0JdldMtoShEQG9XNGAPCLWF90KJ2l9a5550pEAYuOfdB/kXG5QX7Q4zrWImAA/WXFFc7tyDOeI8gz0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpgFik2ET216dOpRMKunfAG3BftN7GdMkMbIe/zQKa1GLUVx/O
+	DACxnqA1023iuQ1NjUNJL5DDakhuM0CEfskQmqeZDVD5NNUqXMwvoXx1emUUBuWPOlWPQ1lf1nj
+	ZcIRZgXKsaZvLxTDf1epk99GwLTlmstU=
+X-Gm-Gg: ASbGnctQxtDJel2k53CGujOnUM3y7W+yHr0X2iP7jYFkMKUhvinCfPpXpcy4xxONnOh
+	yrN7ZfYO6++GExptyzIrMPLlfXOjpMgUV9atCeQdEkKb8Jx3BOuOuzv7keygU5Gzy54qEroNVPa
+	2jozMjtrlQzf/9KX2p7Cb7wcEl21hQbNyC9g==
+X-Google-Smtp-Source: AGHT+IEYoK6f7wP0SPm/gfKqdWjWZ4HX90FKs87O0UBgxajWhbvIOpj9PHkIZ8r7babBAps9G/Ln4njRTceq0nIyQp0=
+X-Received: by 2002:a5d:5c84:0:b0:3a2:12a:e637 with SMTP id
+ ffacd0b85a97d-3a35c8542a6mr1195017f8f.56.1747343568560; Thu, 15 May 2025
+ 14:12:48 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 15 May 2025 14:12:48 -0700
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 15 May 2025 14:12:48 -0700
+From: Kane York <kanepyork@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <097a4926cebc9030469d42cc7a3392b39dfd703d.camel@nvidia.com>
+References: <097a4926cebc9030469d42cc7a3392b39dfd703d.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <B3564D77-9E26-4019-9B75-B0C53B26B64F@collabora.com>
+Date: Thu, 15 May 2025 14:12:48 -0700
+X-Gm-Features: AX0GCFslEILHetAnpjY2QFEJ9SocrJkFvcA9OUfU-AXwwAPQyRsjmsYuQT8ABk4
+Message-ID: <CABeNrKVfCHww2k_W-0s4GQE=2bA+wjje=FEH=gL8FhNbFB1tOw@mail.gmail.com>
+Subject: Re: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
+ for Rust 1.87.0
+To: ttabi@nvidia.com
+Cc: a.hindborg@kernel.org, acourbot@nvidia.com, alex.gaynor@gmail.com, 
+	aliceryhl@google.com, apopple@nvidia.com, benno.lossin@proton.me, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
+	gary@garyguo.net, jhubbard@nvidia.com, joelagnelf@nvidia.com, 
+	jpoimboe@kernel.org, linux-kernel@vger.kernel.org, ojeda@kernel.org, 
+	patches@lists.linux.dev, peterz@infradead.org, rust-for-linux@vger.kernel.org, 
+	stable@vger.kernel.org, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, May 12, 2025 at 08:39:36AM -0300, Daniel Almeida wrote:
-> > On 12 May 2025, at 06:53, Abdiel Janulgue <abdiel.janulgue@gmail.com> wrote:
-> > +impl SGEntry {
-> > +    /// Convert a raw `struct scatterlist *` to a `&'a SGEntry`.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that the `struct scatterlist` pointed to by `ptr` is valid for the lifetime
-> > +    /// of the returned reference.
-> > +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::scatterlist) -> &'a Self {
-> > +        // SAFETY: The pointer is valid and guaranteed by the safety requirements of the function.
-> > +        unsafe { &*ptr.cast() }
-> > +    }
-> 
-> Hmm, this name is not good. When people see as_ref() they will think of the
-> standard library where it is used to convert from &T to &U. This is not what is
-> happening here. Same in other places where as_ref() is used in this patch.
+On Thu, 15 May 2025 19:06:10 +0000, Timur Tabi <ttabi@nvidia.com> wrote:
+> On Thu, 2025-05-15 at 09:18 -0700, Josh Poimboeuf wrote:
+> > > Since I build with LLVM=1, I'm assuming the answer is 18.1.3
+> >
+> > I'm not able to recreate, can you run with OBJTOOL_VERBOSE=1 and paste
+> > the output?
+>
+> You probably can't repro because it includes code that hasn't been merged upstream yet.  Try this:
+>
+> https://github.com/ttabi/linux/commits/alex
+>
+>   CHK     kernel/kheaders_data.tar.xz
+> drivers/gpu/nova-core/nova_core.o: warning: objtool:
+> _RNvXsa_NtCs8S3917Wilyo_9nova_core5vbiosNtB5_14PciAtBiosImageINtNtCsgK88DPai1lC_4core7convert7TryFro
+> mNtB5_13BiosImageBaseE8try_from() falls through to next function
 
-as_ref() is fine, we use this exact way commonly in the kernel, e.g. for Device,
-GlobalLockedBy, Cpumask and for various DRM types.
+...
 
-Rust std does the same, e.g. in [1].
+> 011b     634b:	e8 00 00 00 00       	call   6350 <.Ltmp38>	634c:
+> R_X86_64_PLT32
+> _RNvNtNtCsgK88DPai1lC_4core5slice5index26slice_start_index_len_fail-0x4
 
-I think I also asked for this in your Resource patch for consistency, where you
-call this from_ptr() instead.
+Yup, that's an unrecognized noreturn function.
 
-[1] https://doc.rust-lang.org/std/ptr/struct.NonNull.html#method.as_ref
+src/core/slice/index.rs:
+> #[cfg_attr(not(feature = "panic_immediate_abort"), inline(never), cold)]
+> #[cfg_attr(feature = "panic_immediate_abort", inline)]
+> #[track_caller]
+> #[rustc_const_unstable(feature = "const_slice_index", issue = "none")]
+> const fn slice_start_index_len_fail(index: usize, len: usize) -> ! {
+>     // SAFETY: we are just panicking here
+>     unsafe {
+>         const_eval_select(
+>             (index, len),
+>             slice_start_index_len_fail_ct,
+>             slice_start_index_len_fail_rt,
+>         )
+>     }
+> }
+>
+> // FIXME const-hack
+> #[inline]
+> #[track_caller]
+> fn slice_start_index_len_fail_rt(index: usize, len: usize) -> ! {
+>     panic!("range start index {index} out of range for slice of length {len}");
+> }
+
+The return is at offset 0093 (x62c3) with a jump to __x86_return_thunk.
