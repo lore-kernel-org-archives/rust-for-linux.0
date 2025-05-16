@@ -1,32 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0991E48A;
-	Fri, 16 May 2025 13:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34DE44C77;
+	Fri, 16 May 2025 13:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747402481; cv=none; b=BLPPDDuPIGcOICum7EtvD+/bkR1JWln50ZnjnqgNyRYMRbm/azjFAybsIgdevIAw7/LvrqMw6qgQzTK4INhO4Wc7k19Xanu/V0okGAlk6UeTCPzkZ1/zep1YYvGpJM2SiBbLZeLFSEfnU5P3KOMN0TTUmMpsKgs5HMT0Dvu6mB8=
+	t=1747402563; cv=none; b=V8Cz0O6qfa/M+RWVvOuO8yJBNabzfavO0KxKQozThPQycjjtXiHszKy7+dL42ANLWpvXh1AvXCGCj0U/YXNoVFoba69Ln/SFr1bbkMuZpIdb0y9FEvR9SMyIdw4W+ScH64vQXpKLtNq1/PjoMSY/yHENxLWhc0nDk+wS8sX96bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747402481; c=relaxed/simple;
-	bh=lKcUD295I76uRBBr0ES0OEdjbbwToH1/Rx9lryRYqIE=;
+	s=arc-20240116; t=1747402563; c=relaxed/simple;
+	bh=Wu4UYb7lOXgJ9cCW4w9aorjz/8JJbWYUC1DNkB48hJA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sl5x9LreDEwXYCxq5LsFJOOTjjjJp+xdJJCIXmkpaTuBAuK4NkBkqKQbb7jNKaderULJKtgFXo1T6NjV+DP66DEGh1ky8iWgLD7ilhhLhb1uR0rjrrf21QWNaK8K99q+fuaJQWLMlZuJt6sEE3fTIkJJhjIOxzX4cweSYMQOmb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjNJcEVG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=d7A+SdnudvVCmfp7Zd8GpcpR+zQjJNTyx2Fn8z+FHqnqoX+Cq0jSU55qGLdc6ZtFcb0Lm+2z3uihY+ldPUpRg1SNCWFqYhXEXGCm9IwnJbvj0c2SDse78Y2GWku08/8JlOYi/z90R7xLPK8CdKzqaXzkDlhSwgtR9XcUhCtmV2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvqUjJbB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjNJcEVG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081A2C4CEE4;
-	Fri, 16 May 2025 13:34:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747402480;
-	bh=lKcUD295I76uRBBr0ES0OEdjbbwToH1/Rx9lryRYqIE=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvqUjJbB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32724C4CEE4;
+	Fri, 16 May 2025 13:36:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747402563;
+	bh=Wu4UYb7lOXgJ9cCW4w9aorjz/8JJbWYUC1DNkB48hJA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hjNJcEVGQ2pfN1eiKZc2ufifDCOQbQI1wpf4s6bxRLcvGyFQp3TTwHOmWH8JAh2x1
-	 6FvpNyViFztNeOvafLs7bh6srWanVoWFkgsGQzQ5TL6XthT0wy9iFqQ3QqQm8X0rfg
-	 CX4sW+9PrqZrfr+uGS98b6BfTuLoohW5hWmX/i4g=
-Date: Fri, 16 May 2025 15:32:52 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
+	b=tvqUjJbBpCBHnrB+fbIIp3FHlaE+OpNrKywarn0+2zIaQcRS3kOF7Ndn1Nhy6UVtn
+	 6eNfeC9SjNo8C0GeoeQ+33/ehBNuuy+Z9XtPOtpYKTCQtsnoAwxwjvz+55U2DceW+z
+	 9kOKYCu1EN2aVznvSTw74BNScnPaWLT3rtLiSAvDEklTwBZT0GUA/TTkUI0UuzTGCi
+	 nICtrbxdjgZZ48c7pbXw8lBQHTEgtQA/urlIr6AtuiBgT0LydmPW6EzPO5FWnRI31y
+	 jQ5xvGz9cjysDCo79VcfAi2C5cnUsjI6FUuVAjQ6pqCZ4vb9NfDXbsPex1eYOyMK81
+	 MVyHHsdJe7m5Q==
+Date: Fri, 16 May 2025 15:35:57 +0200
+From: Danilo Krummrich <dakr@kernel.org>
 To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: John Hubbard <jhubbard@nvidia.com>, Timur Tabi <timur@kernel.org>,
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <timur@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
@@ -34,10 +38,9 @@ Cc: John Hubbard <jhubbard@nvidia.com>, Timur Tabi <timur@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH] rust: add basic ELF sections parser
-Message-ID: <2025051614-scribe-excavator-2d00@gregkh>
+Message-ID: <aCc_PSOPkLWTcTru@pollux>
 References: <20250515-elf-v1-1-4b53745453c0@nvidia.com>
  <2025051543-override-rockiness-3ead@gregkh>
  <D9WLFTPRB9FJ.OL6I760HKALZ@nvidia.com>
@@ -102,7 +105,15 @@ On Fri, May 16, 2025 at 10:26:10PM +0900, Alexandre Courbot wrote:
 > Keeping this local to nova-core is perfectly fine if you think this is
 > more acceptable. AFAIK there are no other users for it at the moment.
 
-Then I recommend doing this, thanks.
+I'm not quite on board with that.
+
+I think we should either we get to the conclusion that the desire of parsing (at
+least part of) the firmware ELF is valid in the kernel and make it generic
+infrastructure, or conclude that there really isn't a reasonable technical
+reason to do that.
+
+Please let's work out the exact technical reasons for doing this in the kernel,
+such that we can either conclude one or the other.
 
 > > And I still think that having the kernel do this is a mistake, firmware
 > > should always just be a "pass through" otherwise you open yourself up to
@@ -112,16 +123,3 @@ Then I recommend doing this, thanks.
 > I agree on principle, but I cannot think of a way to avoid doing this in
 > the kernel without making things overly complex. We're happy to consider
 > alternatives though, if they exist.
-
-With the exception of the "set the fuse issue", I really don't see why
-sending a bunch of small firmware files through the kernel to the
-hardware is any harder to do in userspace vs. within the kernel itself.
-Either way you have to do the "parsing" and splitting up, it's just
-generally safer to do all of that in userspace instead.
-
-But you all have a beast of a device to control, odds are this is one of
-the only tiny minor issues involved with that overall :)
-
-thanks,
-
-greg k-h
