@@ -1,274 +1,153 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2330D1CF5C6
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 May 2025 19:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BA427CCC4;
+	Fri, 16 May 2025 20:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747423965; cv=none; b=ff5MyrHL+wbZuyupyGl35nx1vGs/eoguEwA9TWqLvgAP5vtBzOVhgANMCHi15kuuRTnOvuUvgHw/wQtawk6xG+vcZcjmbEHjgMcbyzBuXGE5wv6/0VRGZEvAUwDDBbDNgD5i1KRpzGppH9qELq4l2Gc5HGsQR5yfwz5jKp03NMU=
+	t=1747426590; cv=none; b=sJZPhKQhALlh2k3PIRRBS05Xvs3/CSfwODlDXD1Ju6s0MZpzpcQTSamX6Z9dqgh+o6sJFb3OMcu39n+h+lHWrnSAjGHpxfaCF0VXFiDecfqmi34TC/O4J8Hb+zhMBQyVRe/ihLnsyaWuibb+zJQT2KIEVGcSKSQ+4GJ5ZKrsa0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747423965; c=relaxed/simple;
-	bh=TbC/rc1Gc2waMYjSf69c7Q7O4fQXmnx3+3LZrew34CY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KXUMtopXpWa3Lc5VkiRgVAc5q+NvKxr3qqCfUv5/YmnEqIrKOIF9lggKynWNg1TnLnTwWhwMt2Xe9GdjM70nfSSsJ1VmIgh71pg/QJuWEtZu6rm2vRX99KWJQl/m/sVu1L8an/RiDmQxXxBu2jjP+U30SGFXXZt51GEUpdrApgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zwkD7CIr; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1747426590; c=relaxed/simple;
+	bh=D1Z5w9AYGSfUlSKYqF+jgYYMgx9eNNsKAADS1moCkaw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=dqbP0DcAA4DEhI+WCAWCKgx/gaZUHgYzzpkbv0akLuM8T8wwwthzmNqBiei/xU7AOlyxSDnnDVGWeXjbQcwFaO/jZ+Gsq4reUumUxZMe9QPBXHdmQNzrMnm13+xN1eOuu/5vEuGHbK5HzdwlfEKpMTh3U9Qi4kd5tPNO0AhUWtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwqCmEeo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zwkD7CIr"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d007b2c79so18882865e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 May 2025 12:32:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747423961; x=1748028761; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=iF5Q4RTlZRKmTG/lOha5KuRxlr9mPUE/8DV6NZ7DJq4=;
-        b=zwkD7CIrbuHIN+xdd38w1xBn8zDHsgyhzoqxs2f38eTYNIe4h8ywWm/+LFy+1+YiYA
-         /2JShatMXeMjq0D3j19wOyYBEkMXEAAFTgucAl9chBzbXoLr3kV/mZV1e6mCIqm3CPLh
-         SNLwLfMcUAq4BHPOyJJStzGU5WnQqEraKtSgYRJoroDvj8RGil2v4qr585e2RwHaX12z
-         /N4o58iA+VZ1EwMJ8ulYhN7rMZP1Ti6y7OHp1c2jcC9m0CfWzDeVp4qPb8KFBWUDmfcc
-         M5eAfKUuLbrdfKVLnsvdSZW8F8IesgC7p8CYBqWAg56f6cmnIqrMdi8iMAI36zuY/G1i
-         HIew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747423961; x=1748028761;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iF5Q4RTlZRKmTG/lOha5KuRxlr9mPUE/8DV6NZ7DJq4=;
-        b=nutdyr1lW2azl6KA/1RJa0ZjJpjy0422euxrtw8BVv7oLAiods5GkZcNgr4QDKfJ0L
-         rCifSKsA+0L+NMJvZI+cSCyxA6Tq9bdc97jUCxm8u9pI32vAsoe0JCY80lkhEV7ThdHu
-         QUUaSpTSSVdOMfMe9S9Absc6I4hjh4xPVHM4zVQhXHBAxLBY7XOsHNKXqXYNM6/lvUig
-         gvnpRRBI5OQogtM1qE0IZQTxOk4jCixtAnTcm6sMkENP3KxQf7sdewF5cYTcKfjpNb7v
-         CZ47TRwvYBlveJ68cSNH6YIk0tUJA6mB+C04DO05+83dYahZhplxCjHr7cU6Pu9mPYOP
-         twSA==
-X-Forwarded-Encrypted: i=1; AJvYcCVydeCHTLYoOE0DwAO/n4hGozhSLwsAX5HH2/wiqVzF2QA9YUu09z1WaXDfGtddbd8Fz4AFHDDQF/AOxsamRw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbJIKoyDOfGPkLNpLD6XF40/ZXZfti4y17/7ywJ34Udd4p3ebE
-	6tD/uEMx63uiacH7BXnUjMEXqnmbWn5uEbH/ep4JbxnfVHQ8D+6tQpUVcb/eLcu+3LZLUKrvwf8
-	dULp5l7/nbQc01KbHJA==
-X-Google-Smtp-Source: AGHT+IEsXNdM7c7UBV+9bN0MXrbsEHFUQpgGzgenbWMdXL3xT6y1P+Jz0AIdUiBBDrT9pkq0FOPYKXjizNJybJQ=
-X-Received: from wmbfj9.prod.google.com ([2002:a05:600c:c89:b0:43c:fd72:aae1])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2aa:b0:3a0:8a1c:ef0 with SMTP id ffacd0b85a97d-3a35c825988mr4612415f8f.24.1747423961454;
- Fri, 16 May 2025 12:32:41 -0700 (PDT)
-Date: Fri, 16 May 2025 19:32:19 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwqCmEeo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D593C4CEE4;
+	Fri, 16 May 2025 20:16:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747426589;
+	bh=D1Z5w9AYGSfUlSKYqF+jgYYMgx9eNNsKAADS1moCkaw=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=pwqCmEeonx6ZXsuHmxwr0Jq+QDCCSpFRxtVtCeFnTCGBowrq1J/0iVNS+DlBi8lT5
+	 3086VLUmQPO+HjhKKoeuLvHgdKJNjYW7tV11djgzhOesw81NxW4b83xfLL3WK+fRcG
+	 eoA0LtBJgkrc++Tk0L9/C0/IKi3IZLSLwS5Ogyy9RATr+JzkQILJug8DFmCe85v5d/
+	 8XGn6o4w1ZgJD4uipVfaCJAiGijIyz+xLxm1S6/Bve61cO+RXpK5PlweNjUVxB2JOf
+	 7uWXhI4oCgWfRPAAcVHr7rz+6EB7ASHt6F+9GLxKvqQmu4ZJUKxDbASAGOUK2f58Z1
+	 ieYD1QT0BfbYw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6581; i=aliceryhl@google.com;
- h=from:subject; bh=TbC/rc1Gc2waMYjSf69c7Q7O4fQXmnx3+3LZrew34CY=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoJ5KjFnF2Wg75uY7u7QDnfW47Z85e5fsHnuOXC
- bQTFHW1Jg+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaCeSowAKCRAEWL7uWMY5
- RvS8D/9650JlLCEcfYFOj2YVsFuEaDhwzNr5TSnXT0p8dmUeSCoL0ExebYHHTkr+pfyH4cEPGBJ
- GNbAooxe/Z/GPBjEnr9motN0aVyAq7UkJtmP51XTRpeU6O9NSWSgiLcbcHl2hYiPihCr+dcxDE6
- w1qKKr9hWH69TZho53L2+FuveBacf558aXUL2lQQwmcbWxw2nJSCuJPrxQmdGnLrCkgJ3Mr3PLL
- s2UV3e5t5XbxoWC0/RP4+qP/qo+2hwDODmA+8tX1ATwNtifKSXjUKkxyhBDYG6tr+0FGAd3u/hC
- xQK07uG8l6PTVwp6podxxjQltfBS1ta9YDvWMblxVhPgjpKd5FZOCHnJwHyZO4FxceV9mEdWi/4
- TddvMCBMKVYSDl6NbeoEqXrzSWpAhVmU0kNA12y633Pe9BEvABepxJYv4Nmr+P5vC0S3fE7gpGG
- 6o3M+gnKduhSH5DqKCvsfXBlDkrjwN8KXZ2EbWlyFGfSbeQ0ZvFlL5vu2ZjBTLfXieJl6EGkLkz
- Pye1sjugbyXfhApxpe3CQUTFFi0VQKpThCJ7gRjDa2Bie7Qv365N/BXl5MetYQx417sBdK6TaZO
- MjiwmDDTmQC2gHcHVvBBA5Xas7mFr6XKGrbnCibpjm43/HXuvCBegbSl3Peibr+8ASO8Bkmi/Rn YT+8AEYbKpjoAbw==
-X-Mailer: git-send-email 2.49.0.1101.gccaa498523-goog
-Message-ID: <20250516193219.2987032-1-aliceryhl@google.com>
-Subject: [PATCH v2] mm: rust: make CONFIG_MMU ifdefs more narrow
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org, oe-kbuild-all@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	kernel test robot <lkp@intel.com>, Boqun Feng <boqun.feng@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 16 May 2025 22:16:23 +0200
+Message-Id: <D9XV0Y22JHU5.3T51FVQONVERC@kernel.org>
+Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <pabeni@redhat.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+ <conor+dt@kernel.org>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+ <florian.fainelli@broadcom.com>, <bcm-kernel-feedback-list@broadcom.com>,
+ <kabel@kernel.org>, <andrei.botila@oss.nxp.com>, <tmgross@umich.edu>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <dakr@kernel.org>,
+ <sd@queasysnail.net>, <michael@fossekall.de>, <daniel@makrotopia.org>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [net-next PATCH v10 7/7] rust: net::phy sync with
+ match_phy_device C changes
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Christian Marangi" <ansuelsmth@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20250515112721.19323-1-ansuelsmth@gmail.com>
+ <20250515112721.19323-8-ansuelsmth@gmail.com>
+ <20250516.213005.1257508224493103119.fujita.tomonori@gmail.com>
+ <D9XO2721HEQI.3BGSHJXCHPTL@kernel.org>
+ <682755d8.050a0220.3c78c8.a604@mx.google.com>
+In-Reply-To: <682755d8.050a0220.3c78c8.a604@mx.google.com>
 
-Currently the entire kernel::mm module is ifdef'd out when CONFIG_MMU=n.
-However, there are some downstream users of the module in
-rust/kernel/task.rs and rust/kernel/miscdevice.rs. Thus, update the cfgs
-so that only MmWithUserAsync is removed with CONFIG_MMU=n.
+On Fri May 16, 2025 at 5:12 PM CEST, Christian Marangi wrote:
+> On Fri, May 16, 2025 at 04:48:53PM +0200, Benno Lossin wrote:
+>> On Fri May 16, 2025 at 2:30 PM CEST, FUJITA Tomonori wrote:
+>> > On Thu, 15 May 2025 13:27:12 +0200
+>> > Christian Marangi <ansuelsmth@gmail.com> wrote:
+>> >> @@ -574,6 +577,23 @@ pub const fn create_phy_driver<T: Driver>() -> D=
+riverVTable {
+>> >>  /// This trait is used to create a [`DriverVTable`].
+>> >>  #[vtable]
+>> >>  pub trait Driver {
+>> >> +    /// # Safety
+>> >> +    ///
+>> >> +    /// For the duration of `'a`,
+>> >> +    /// - the pointer must point at a valid `phy_driver`, and the ca=
+ller
+>> >> +    ///   must be in a context where all methods defined on this str=
+uct
+>> >> +    ///   are safe to call.
+>> >> +    unsafe fn from_raw<'a>(ptr: *const bindings::phy_driver) -> &'a =
+Self
+>> >> +    where
+>> >> +        Self: Sized,
+>> >> +    {
+>> >> +        // CAST: `Self` is a `repr(transparent)` wrapper around `bin=
+dings::phy_driver`.
+>> >> +        let ptr =3D ptr.cast::<Self>();
+>> >> +        // SAFETY: by the function requirements the pointer is valid=
+ and we have unique access for
+>> >> +        // the duration of `'a`.
+>> >> +        unsafe { &*ptr }
+>> >> +    }
+>> >
+>> > We might need to update the comment. phy_driver is const so I think
+>> > that we can access to it any time.
+>>=20
+>> Why is any type implementing `Driver` a transparent wrapper around
+>> `bindings::phy_driver`?
+>>=20
+>
+> Is this referred to a problem with using from_raw or more of a general
+> question on how the rust wrapper are done for phy code?
 
-The code is moved into a new file, since the #[cfg()] annotation
-otherwise has to be duplicated several times.
+I looked at the `phy.rs` file again and now I'm pretty sure the above
+code is wrong. `Self` can be implemented on any type (even types like
+`Infallible` that do not have any valid bit patterns, since it's an
+empty enum). The abstraction for `bindings::phy_driver` is
+`DriverVTable` not an object of type `Self`, so you should cast to that
+pointer instead.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202505071753.kldNHYVQ-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202505072116.eSYC8igT-lkp@intel.com/
-Fixes: 5bb9ed6cdfeb ("mm: rust: add abstraction for struct mm_struct")
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>> >>      /// Defines certain other features this PHY supports.
+>> >>      /// It is a combination of the flags in the [`flags`] module.
+>> >>      const FLAGS: u32 =3D 0;
+>> >> @@ -602,7 +622,7 @@ fn get_features(_dev: &mut Device) -> Result {
+>> >> =20
+>> >>      /// Returns true if this is a suitable driver for the given phyd=
+ev.
+>> >>      /// If not implemented, matching is based on [`Driver::PHY_DEVIC=
+E_ID`].
+>> >> -    fn match_phy_device(_dev: &Device) -> bool {
+>> >> +    fn match_phy_device<T: Driver>(_dev: &mut Device, _drv: &T) -> b=
+ool {
+>> >>          false
+>> >>      }
+>> >
+>> > I think that it could be a bit simpler:
+>> >
+>> > fn match_phy_device(_dev: &mut Device, _drv: &Self) -> bool
+>> >
+>> > Or making it a trait method might be more idiomatic?
+>> >
+>> > fn match_phy_device(&self, _dev: &mut Device) -> bool
+>>=20
+>> Yeah that would make most sense.
+>>
+>
+> I think
+>
+> fn match_phy_device(_dev: &mut Device, _drv: &Self) -> bool
+>
+> more resemble the C parallel function so I think this suite the best,
+> should make it easier to port if ever (am I wrong?)
+
+I don't understand what you mean by "easier to port if ever". From a
+Rust perspective, it makes much more sense to use the `&self` receiver,
+since the driver is asked if it can take care of the device. If you want
+to keep the order how it is in C that is also fine, but if I were to
+write it, I'd use the receiver.
+
 ---
-Intended for the mm tree.
-
-Changes in v2:
-* Fix Reported-tag and Closes tags.
-* Update commit hash of Fixes: annotation to commit in mm-stable.
-* Pick up Boqun's Reviewed-by tag.
-
- rust/kernel/mm.rs             | 56 +++--------------------------
- rust/kernel/mm/mmput_async.rs | 68 +++++++++++++++++++++++++++++++++++
- 2 files changed, 72 insertions(+), 52 deletions(-)
- create mode 100644 rust/kernel/mm/mmput_async.rs
-
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-index 615907a0f3b4..43f525c0d16c 100644
---- a/rust/kernel/mm.rs
-+++ b/rust/kernel/mm.rs
-@@ -10,7 +10,6 @@
- //! control what happens when userspace reads or writes to that region of memory.
- //!
- //! C header: [`include/linux/mm.h`](srctree/include/linux/mm.h)
--#![cfg(CONFIG_MMU)]
- 
- use crate::{
-     bindings,
-@@ -21,6 +20,10 @@
- pub mod virt;
- use virt::VmaRef;
- 
-+#[cfg(CONFIG_MMU)]
-+pub use mmput_async::MmWithUserAsync;
-+mod mmput_async;
-+
- /// A wrapper for the kernel's `struct mm_struct`.
- ///
- /// This represents the address space of a userspace process, so each process has one `Mm`
-@@ -111,50 +114,6 @@ fn deref(&self) -> &Mm {
-     }
- }
- 
--/// A wrapper for the kernel's `struct mm_struct`.
--///
--/// This type is identical to `MmWithUser` except that it uses `mmput_async` when dropping a
--/// refcount. This means that the destructor of `ARef<MmWithUserAsync>` is safe to call in atomic
--/// context.
--///
--/// # Invariants
--///
--/// Values of this type are always refcounted using `mmget`. The value of `mm_users` is non-zero.
--#[repr(transparent)]
--pub struct MmWithUserAsync {
--    mm: MmWithUser,
--}
--
--// SAFETY: It is safe to call `mmput_async` on another thread than where `mmget` was called.
--unsafe impl Send for MmWithUserAsync {}
--// SAFETY: All methods on `MmWithUserAsync` can be called in parallel from several threads.
--unsafe impl Sync for MmWithUserAsync {}
--
--// SAFETY: By the type invariants, this type is always refcounted.
--unsafe impl AlwaysRefCounted for MmWithUserAsync {
--    #[inline]
--    fn inc_ref(&self) {
--        // SAFETY: The pointer is valid since self is a reference.
--        unsafe { bindings::mmget(self.as_raw()) };
--    }
--
--    #[inline]
--    unsafe fn dec_ref(obj: NonNull<Self>) {
--        // SAFETY: The caller is giving up their refcount.
--        unsafe { bindings::mmput_async(obj.cast().as_ptr()) };
--    }
--}
--
--// Make all `MmWithUser` methods available on `MmWithUserAsync`.
--impl Deref for MmWithUserAsync {
--    type Target = MmWithUser;
--
--    #[inline]
--    fn deref(&self) -> &MmWithUser {
--        &self.mm
--    }
--}
--
- // These methods are safe to call even if `mm_users` is zero.
- impl Mm {
-     /// Returns a raw pointer to the inner `mm_struct`.
-@@ -206,13 +165,6 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::mm_struct) -> &'a MmWithUser {
-         unsafe { &*ptr.cast() }
-     }
- 
--    /// Use `mmput_async` when dropping this refcount.
--    #[inline]
--    pub fn into_mmput_async(me: ARef<MmWithUser>) -> ARef<MmWithUserAsync> {
--        // SAFETY: The layouts and invariants are compatible.
--        unsafe { ARef::from_raw(ARef::into_raw(me).cast()) }
--    }
--
-     /// Attempt to access a vma using the vma read lock.
-     ///
-     /// This is an optimistic trylock operation, so it may fail if there is contention. In that
-diff --git a/rust/kernel/mm/mmput_async.rs b/rust/kernel/mm/mmput_async.rs
-new file mode 100644
-index 000000000000..9289e05f7a67
---- /dev/null
-+++ b/rust/kernel/mm/mmput_async.rs
-@@ -0,0 +1,68 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2024 Google LLC.
-+
-+//! Version of `MmWithUser` using `mmput_async`.
-+//!
-+//! This is a separate file from `mm.rs` due to the dependency on `CONFIG_MMU=y`.
-+#![cfg(CONFIG_MMU)]
-+
-+use crate::{
-+    bindings,
-+    mm::MmWithUser,
-+    types::{ARef, AlwaysRefCounted},
-+};
-+use core::{ops::Deref, ptr::NonNull};
-+
-+/// A wrapper for the kernel's `struct mm_struct`.
-+///
-+/// This type is identical to `MmWithUser` except that it uses `mmput_async` when dropping a
-+/// refcount. This means that the destructor of `ARef<MmWithUserAsync>` is safe to call in atomic
-+/// context.
-+///
-+/// # Invariants
-+///
-+/// Values of this type are always refcounted using `mmget`. The value of `mm_users` is non-zero.
-+#[repr(transparent)]
-+pub struct MmWithUserAsync {
-+    mm: MmWithUser,
-+}
-+
-+// SAFETY: It is safe to call `mmput_async` on another thread than where `mmget` was called.
-+unsafe impl Send for MmWithUserAsync {}
-+// SAFETY: All methods on `MmWithUserAsync` can be called in parallel from several threads.
-+unsafe impl Sync for MmWithUserAsync {}
-+
-+// SAFETY: By the type invariants, this type is always refcounted.
-+unsafe impl AlwaysRefCounted for MmWithUserAsync {
-+    #[inline]
-+    fn inc_ref(&self) {
-+        // SAFETY: The pointer is valid since self is a reference.
-+        unsafe { bindings::mmget(self.as_raw()) };
-+    }
-+
-+    #[inline]
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: The caller is giving up their refcount.
-+        unsafe { bindings::mmput_async(obj.cast().as_ptr()) };
-+    }
-+}
-+
-+// Make all `MmWithUser` methods available on `MmWithUserAsync`.
-+impl Deref for MmWithUserAsync {
-+    type Target = MmWithUser;
-+
-+    #[inline]
-+    fn deref(&self) -> &MmWithUser {
-+        &self.mm
-+    }
-+}
-+
-+impl MmWithUser {
-+    /// Use `mmput_async` when dropping this refcount.
-+    #[inline]
-+    pub fn into_mmput_async(me: ARef<MmWithUser>) -> ARef<MmWithUserAsync> {
-+        // SAFETY: The layouts and invariants are compatible.
-+        unsafe { ARef::from_raw(ARef::into_raw(me).cast()) }
-+    }
-+}
--- 
-2.49.0.1101.gccaa498523-goog
-
+Cheers,
+Benno
