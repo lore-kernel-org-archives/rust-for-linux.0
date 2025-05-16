@@ -1,82 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF2A86359;
-	Fri, 16 May 2025 16:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747412933; cv=none; b=CGuxkQsSjxd8/xlWW7V3PXiwXWaX+fnX6FmPicjkpuMX3x4QCwMKJOEKZGB0bqlM9MghHLZu3Cg+IG2urq+MXvd4ftPf9wChpj5+UkYH2vDAm8XJwxEKttUb7qL+tqVGJ2h/ab9+cORzUGDyzUGtYWM+i0AZopLhCxl1V3A5+7E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747412933; c=relaxed/simple;
-	bh=FTYFrVj4awtJfW3qAwCEdjiCVlrz2NLcawO5FwDP0r0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZrY5WSeVeBAUHi2iIrbfulLBqq7rsuEnrzqxBkeX4Q/5PQ0YWO8cNrKn4JyydQWxj2xJN60xwyJ+/cy9v+sgFb+c2B/Xr0vVrqa/vf11eUzV/lt+Y+9iqIpq5FT+xKLonSHPCJssnfaRQXWck9i+wW8lhkW2EJxJT5lCITlm4m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKv8qMhE; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2422F2116F4;
+	Fri, 16 May 2025 16:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747414752; cv=pass; b=s3cbkMbAAhFaqkXmoRGsHzrWM3WZ1yLfsPchi2J6eNso6wso2Oznpv4/fD5Nhn3j+JHgELODWXBsmjy9FREx1entzUJyBhE/JU4/wDAJGLwZCQe+zOsBQKNXPjPvT0B/WimYYw3qpR0uvXBV91YxIoS2z5nkwjrbKBMmpaLTBgI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747414752; c=relaxed/simple;
+	bh=u9CnnsxgBHYiMqrlH88scXaMolkI1hCUr/OKugbhe5w=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=pixG/EZULAcVfl0rpVnmQd0IA/C8c4jNFP8NIPDheBqP1DsyR2W7O4aNDDteKdUc/7iq0gDMU0aVj/KFFPaWnC0w9ro9ejnkocB7iQM/E7yvNXjftLeiPETEPi5YeZzwOH3hpZ4M2cdQvn4z5CaFFi59UkGKey3lsBJbFULWQhc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=FbziE6P3; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKv8qMhE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F277C4AF0B;
-	Fri, 16 May 2025 16:28:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747412933;
-	bh=FTYFrVj4awtJfW3qAwCEdjiCVlrz2NLcawO5FwDP0r0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=oKv8qMhEt1A+0M5mYm8QwOzYTXehC9Zi4DVHvENNv1g0x7V3wgpNiSpPPhQ9kZHlC
-	 wGdqzkhnR28rly1BU62qup7bQqvEVyHonFZvqZyrL5vSH89qiUlqq7ohQ6Am14rYgb
-	 NR8y1iJDHoNahcZ7J6/vQNCHIO26Uf8GXh2S7nx5GF8qjIgrSvkLyy9JqcYvKMCrcv
-	 BvZ4UzEULeXQEJkthM/5VmiQu6t30PeqvA5+hBAY6MihWtr80Qm0B1ocILQySN88mJ
-	 6aOpIcYfqhp6IMpfNcVOBeec3Qpm+6Vfvn+IA+XG9zvnfOljfadBgq0qJ3j3zUniUk
-	 4vVQnFxIX0d8w==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ad1f6aa2f84so470774666b.0;
-        Fri, 16 May 2025 09:28:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWUJbuFoB1sJ2WzLvBFganEFoQV4brSqsKR9i7z3y9v818KhdRtb5bDd1FDtdxdas423P4wEPURSVcr9RJhstI=@vger.kernel.org, AJvYcCX8D8zGmF9Y2qUAZQ3dPGAHl3ge6Lcm4MhHSTeBJ+gLethqmnVq9VxDq++WJTkcqh904RMk34IUOPxlo9k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQoE7OODAm/cithYIhiya+qDZCl7+6lpz4SishWAz6VPwzv80o
-	QruqX/NczwnfLsmlz4QplPGE1alYOCLGYcxVX5QsMn2SYJFiHdBwvKxsjVDT/zK1hNoN1FLTFZY
-	N2invyysQc0zQYB/ZpJVxdGpXdKXfZM8=
-X-Google-Smtp-Source: AGHT+IG9tgxiM6/+KJfbVumIqvRQLZ5c9aVQRfgPzDiopXUShRVm3aRy3IvkP8/2aCadHOh79NuDcntss8gsRLhft7g=
-X-Received: by 2002:a17:907:3f19:b0:ad2:18fa:e265 with SMTP id
- a640c23a62f3a-ad50f64a1admr852145666b.11.1747412931597; Fri, 16 May 2025
- 09:28:51 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="FbziE6P3"
+ARC-Seal: i=1; a=rsa-sha256; t=1747414698; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ACyHRvfJmA7Y2Kox0fwKg6zSpbnFTWJWZE/4EHlZDMSQZFrU8DeFj2P9BRvL6oWv72ZAPcWkCiLVq8Fr5kYNhkY7KskQ2TGrFRhCLgRPhNunmksAQXsxUqbmX78LJl86QREzTQ9TLSr9gCZSFxiHE+KQX7Sr5qd+0wzEZyQYY9w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1747414698; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=74P/MVvEdQBxgBZoK6QuPVyfTK+cWj6e2b7brUvTP/I=; 
+	b=SYPfq2OYs9F78KHHzfZ01ofNRtneVGNZLZi+ha5tQkeg44WCU54zq0dMx7gOblNp9AE5QwKU1bW3hTXl6nxtw4etoPZepWqjeNKq3v4BhSHAhvCC2c8Thz5UWF8Utqq2ggVvEbuXGgrWYOyJp4sstQqp1fV8HU/bwxQzghwcPrw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747414698;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=74P/MVvEdQBxgBZoK6QuPVyfTK+cWj6e2b7brUvTP/I=;
+	b=FbziE6P3W0Kl3k2r5njdXfq6gpVRmRRn2+f5FaytbMT7wdfA8gASt6BaYNVWUSbO
+	MiwOjO9FRVDrstgCM+QkGV6HFjpYPs0+C7WrYjTsjjtHeIkKQyfJ9mYCiBnmEzTEGNo
+	kcdieD+cO/XeoWkueu2dVKeTlFGmMor/OBe2ew9k=
+Received: by mx.zohomail.com with SMTPS id 1747414696338270.7222041661928;
+	Fri, 16 May 2025 09:58:16 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250515-elf-v1-1-4b53745453c0@nvidia.com> <2025051543-override-rockiness-3ead@gregkh>
- <D9WLFTPRB9FJ.OL6I760HKALZ@nvidia.com> <D9WP3YU31199.Q8IEDBJZ87LU@nvidia.com>
- <2025051532-gentleman-reset-58f2@gregkh> <CAOZdJXWKLu0y+kwC+Bm8nBCLizQVpsDdDUoS--hVgz2vnuZJQg@mail.gmail.com>
- <8b14b078-b899-42e8-8522-599daa65bc63@nvidia.com> <2025051647-urology-think-b8e0@gregkh>
- <D9XMAV4ERYK7.39TLQBLYTX3TU@nvidia.com> <aCc_PSOPkLWTcTru@pollux> <D9XNS413TVXB.3SWWJE4JGEN8B@nvidia.com>
-In-Reply-To: <D9XNS413TVXB.3SWWJE4JGEN8B@nvidia.com>
-From: Timur Tabi <timur@kernel.org>
-Date: Fri, 16 May 2025 11:28:14 -0500
-X-Gmail-Original-Message-ID: <CAOZdJXW+PoFgxH+wPEum-kYvRmSRd8c4kaxvbNAq5dfZJiXapA@mail.gmail.com>
-X-Gm-Features: AX0GCFtA2M71135St4n-WiGJNvjyNod59W6UCg5qaqRXjyhf40RlVnrlWP7C0uo
-Message-ID: <CAOZdJXW+PoFgxH+wPEum-kYvRmSRd8c4kaxvbNAq5dfZJiXapA@mail.gmail.com>
-Subject: Re: [PATCH] rust: add basic ELF sections parser
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <timur@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
+Subject: Re: [RFC PATCH 1/2] rust: add initial scatterlist bindings
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aCZYcs6Aj-cz81qs@pollux>
+Date: Fri, 16 May 2025 13:57:59 -0300
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ lyude@redhat.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ airlied@redhat.com,
+ rust-for-linux@vger.kernel.org,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+ Petr Tesarik <petr@tesarici.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Sui Jingfeng <sui.jingfeng@linux.dev>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <E2F129BE-777A-4DBD-BC3E-44033BCD11E4@collabora.com>
+References: <20250512095544.3334680-1-abdiel.janulgue@gmail.com>
+ <20250512095544.3334680-2-abdiel.janulgue@gmail.com>
+ <B3564D77-9E26-4019-9B75-B0C53B26B64F@collabora.com>
+ <aCZYcs6Aj-cz81qs@pollux>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.500.181.1.5)
+X-ZohoMailClient: External
 
-On Fri, May 16, 2025 at 9:35=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
->
-> We use ELF as a container format to associate binary blobs with named
-> sections. Can we extract these sections into individual files that we
-> load using request_firmware()? Why yes, we could.
+Hi Danilo,=20
 
-Actually, I don't think we can.  This is the actual GSP-RM ELF image
-you're talking about.  This comes packaged as one binary blob and it's
-intended to be mostly opaque.  We can't just disassemble the ELF
-sections and then re-assemble them in the driver.
+Replying to you and Lyude here at the same time.
 
-Unfortunately, for pre-Hopper booting, we need to do a little
-pre-processing on the image, referencing the ELF sections, and based
-on data from fuses that cannot be read in user-space.
+> On 15 May 2025, at 18:11, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Mon, May 12, 2025 at 08:39:36AM -0300, Daniel Almeida wrote:
+>>> On 12 May 2025, at 06:53, Abdiel Janulgue =
+<abdiel.janulgue@gmail.com> wrote:
+>>> +impl SGEntry {
+>>> +    /// Convert a raw `struct scatterlist *` to a `&'a SGEntry`.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// Callers must ensure that the `struct scatterlist` pointed =
+to by `ptr` is valid for the lifetime
+>>> +    /// of the returned reference.
+>>> +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::scatterlist) -> =
+&'a Self {
+>>> +        // SAFETY: The pointer is valid and guaranteed by the =
+safety requirements of the function.
+>>> +        unsafe { &*ptr.cast() }
+>>> +    }
+>>=20
+>> Hmm, this name is not good. When people see as_ref() they will think =
+of the
+>> standard library where it is used to convert from &T to &U. This is =
+not what is
+>> happening here. Same in other places where as_ref() is used in this =
+patch.
+>=20
+> as_ref() is fine, we use this exact way commonly in the kernel, e.g. =
+for Device,
+> GlobalLockedBy, Cpumask and for various DRM types.
+>=20
+> Rust std does the same, e.g. in [1].
+>=20
+> I think I also asked for this in your Resource patch for consistency, =
+where you
+> call this from_ptr() instead.
+>=20
+> [1] =
+https://doc.rust-lang.org/std/ptr/struct.NonNull.html#method.as_ref
+>=20
+
+That is not the same thing. What you've linked to still takes &self and =
+returns
+&T. In order words, it converts *from* &self to another type:
+
+pub trait AsRef<T>
+where
+T: ?Sized,
+{
+    // Required method
+    fn as_ref(&self) -> &T;
+}
+
+The signature in the kernel is different, i.e.:
+
+fn as_ref<'a>(ptr: *mut bindings::scatterlist) -> &'a Self =20
+
+This takes a pointer and converts *to* &self, which is a bit in the =
+wrong
+direction IMHO. You also have to provide `ptr`, which is a departure =
+from the
+syntax used elsewhere in Rust, i.e.:
+
+// no explicit arguments:
+let bar: &Bar =3D foo.as_ref();
+
+vs
+
+// slightly confusing:
+//
+// Bar::as_ref() creates &Bar instead of taking it as an argument to =
+return something else
+let bar =3D Bar::as_ref(foo_ptr);  =20
+
+
+Which is more akin to how the "from" prefix works, starting from the =
+=46rom trait
+itself, i.e.:
+
+let bar  =3D Bar::from(...); // Ok: creates Bar,
+
+...to other similar nomenclatures:
+
+let bar =3D Bar::from_ptr(foo_ptr); // Ok, creates &Bar
+
+So, IMHO, the problem is not conflicting with the std AsRef, in the =
+sense that the
+code might not compile because of it. The problem is taking a very well
+known name and then changing its semantics.
+
+Anyways, this is just a small observation. I'll drop my case, specially
+considering that the current as_ref() is already prevalent in a lot of =
+code upstream :)
+
+=E2=80=94 Daniel
+
