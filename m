@@ -1,234 +1,215 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2065.outbound.protection.outlook.com [40.107.243.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6BB42AA3;
-	Fri, 16 May 2025 20:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747427898; cv=fail; b=lL4E/6k7e0UuYS5nIy6PdnWObTP0YlkpVdS3GbuCFC3aXHecVLtFdCM5/7uttLQpBTcr2i+wT76ky7gVZp7YawxaTcmhvbAhpJvh9+ceW2zs06Vcs/8lqQ4YaM4vqVcUuWtDpjlHuKASQrlk6YbSWuw+e9dA41GT7W89paU05ug=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747427898; c=relaxed/simple;
-	bh=VAuMk7xx3hyTHU68wou1d77o7QSmJO4Z2/V9Ryktf2c=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=mxNpLcYPreDoowVz4vqK4qc1DYxIXo/xy/LU+dFVE6QBcL6Kgi15YjW1bL/sdJzyls2plmNVSkT5qzKfragB55L7AcaeKrnV1VmC/0t1EpK204T7AEViemXJwm4mm6YbF3frW6BEoLkh0h1Wd8/u8r2wJFshRC3xDnR1RCYjy0o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RSMpx59b; arc=fail smtp.client-ip=40.107.243.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76A726B0B3;
+	Fri, 16 May 2025 21:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747430666; cv=none; b=MCbxa/z3Wu+xVTqrusr8ALU6rcfiwpAc8oqivT5Fd4SV/erme8IHioGTJhEfLgHUmN3yqHLkiBLBhCoTSvnzNRMsT1TSg2gZQQ8b0mmZ4FSqwtcLwMvvp2t2BSI+T5JyfcA7lya6HyDuz86vrYJIB00uGlsndZsPVt9hH60YDpM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747430666; c=relaxed/simple;
+	bh=6JWtqOHadcjsUf5CIy4bEylZn9nAVubWr6zqmBXJYRw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=BGT28E/x0ZVsHGt1uckoHHf7UthSFRwuNZUInpEdV4gTeI+sMtIWx0SYDB22C2SNnhvY8KEiSCzszuoFQLrUPlGvF4OX9a2gFT4svK2Ozx7LmvCYqCj86iAg5ZCIrB3+FkKt+KluZWrdoXKGhhgVgbLeDK0QMUHElojThSHQXSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DMPSzhVc; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RSMpx59b"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RPYDHfYWY3mKXsbPv6VMJxgQYt8NOh/XxI0PZOMky549EVlGGOMahYSeYx0KgCmY9rypdd4FfXLPJVOO47wT3+AqaeAybFW9Zd5WgP53RLK/Xd1xujKjCCS4qS9xQWUakyg4cqW0jnnLQfOVwRLlsWzjTz/91YM2Mo9NPKMky+wvhEDOoZpdthbZI7LznNfrPvN6OzzcsJ5mjEd+ZZmqBkD/dX7SdFcDw/JCvhtOxwZWENubeOdHjPLEwsJuWXx9cpz30xC/NJZ+MZ2I7kt0soWX1/0yBmV0d23YSpUp46aE9rp1Vv5C4+vfga16e7aFi1j507k6mmVBQjnmjaxgPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VAuMk7xx3hyTHU68wou1d77o7QSmJO4Z2/V9Ryktf2c=;
- b=N6+z5JSQYycXDFzaW/4NqfJp4/3xS1YmWf8IWSzxKbHT2ImKdkHEHC/KVMW7d16614giDmuRKC3rm9i70r0+9EMUJ4Vnx8flnW/zI/wqLvy9TriWJc8An61FE68f1DuqzCNTFwKEnPuhW+U8U6jX3DSFZFTg8kz7VzgK00fjhgtTw2ZxZAQwvnUU9UcxmmKOLeFDXxmoY2XPaqPnGzTdcWBD6L8L1dvSnqzg0dq580fVdcq2YjY2ElA3B75nkn9ps5UOUW8K+e09LpqcnanR2yljtpQ27j/e3CI07GLZTZHKOR17aGJTyctDbYWTNH+rb7p5DuN0Qs9G5oIB9TriRQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VAuMk7xx3hyTHU68wou1d77o7QSmJO4Z2/V9Ryktf2c=;
- b=RSMpx59b+CeTGiynQem3WlkRrAQDFaQyVcgQEuEkUFYWtl3AW7VPOvAkGmCb1QySBQMzVpjzm9HHQ2cP1oQRZ9kAUQCM8zOvaDZ0dpXAP/uqf3Us3F8TOFMW9gkc5cm4X4tIooUzhn0OjRu7p5DLtvNKNt5FyuopFXP7CTd0qO1uRWASAgaLXLO5CxrxknX+HxSjDba9m+F8smNmjALztCChEeYUQc/2pFBJvM+jKrsJNYVwPtsLkd6nI+/UB5qykXg6GLGGnAr77Sqt5l2R659i1YYVMVZUswR5rzERG2lvD8tMFD/7NZB5y4riEfFaV6O0ZD2vlCRfdUCZoSodWQ==
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20)
- by IA0PR12MB8207.namprd12.prod.outlook.com (2603:10b6:208:401::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.32; Fri, 16 May
- 2025 20:38:12 +0000
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56]) by CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56%5]) with mapi id 15.20.8722.031; Fri, 16 May 2025
- 20:38:12 +0000
-From: Timur Tabi <ttabi@nvidia.com>
-To: "dakr@kernel.org" <dakr@kernel.org>, "a.hindborg@kernel.org"
-	<a.hindborg@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
-	"boqun.feng@gmail.com" <boqun.feng@gmail.com>, "simona@ffwll.ch"
-	<simona@ffwll.ch>, "tmgross@umich.edu" <tmgross@umich.edu>,
-	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "tzimmermann@suse.de"
-	<tzimmermann@suse.de>, "corbet@lwn.net" <corbet@lwn.net>,
-	"mripard@kernel.org" <mripard@kernel.org>,
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	"benno.lossin@proton.me" <benno.lossin@proton.me>, "bjorn3_gh@protonmail.com"
-	<bjorn3_gh@protonmail.com>, "airlied@gmail.com" <airlied@gmail.com>,
-	"aliceryhl@google.com" <aliceryhl@google.com>, Alexandre Courbot
-	<acourbot@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>
-CC: Shirish Baskaran <sbaskaran@nvidia.com>, Alistair Popple
-	<apopple@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Joel Fernandes
-	<joelagnelf@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>
-Subject: Re: [PATCH v3 16/19] nova-core: Add support for VBIOS ucode
- extraction for boot
-Thread-Topic: [PATCH v3 16/19] nova-core: Add support for VBIOS ucode
- extraction for boot
-Thread-Index: AQHbv1d4kNTQJm76CEihluB9C1YU07PVxjGA
-Date: Fri, 16 May 2025 20:38:12 +0000
-Message-ID: <3a32db1ee57f26ed59a69c9aa53f1cfff6f29176.camel@nvidia.com>
-References: <20250507-nova-frts-v3-0-fcb02749754d@nvidia.com>
-	 <20250507-nova-frts-v3-16-fcb02749754d@nvidia.com>
-In-Reply-To: <20250507-nova-frts-v3-16-fcb02749754d@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY5PR12MB6526:EE_|IA0PR12MB8207:EE_
-x-ms-office365-filtering-correlation-id: c89122fa-d47f-440a-699d-08dd94b993a3
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?bFRnN0daZENYbi9lOTRrUWVZeHBlaVBnRE85V3hpUTc3YnFjV1hZbWZwYXRP?=
- =?utf-8?B?bFlpY2srNDhLanFZa2ptV2dmOW5aWGl6Wnl3REx3WWtFcmxtamVpOG1Fa1NQ?=
- =?utf-8?B?dmQ0TGNLajhRcUp6THFEYlhoalpSRXo3MjBaNkUyTFVCbUIvU1Z2dWNTQUlM?=
- =?utf-8?B?b2RWUW5YblZTZ1RVenNWZFVjR3dOQUFLUFpwUi9lMXo4ZUV0OHVBWGVoUjRp?=
- =?utf-8?B?YllyRzFSY0tBYlpyRkRCWm9WM1J0UEYwVEUvT3ZkSFhKZlE3ajB5OEtIZndN?=
- =?utf-8?B?Y3R0WUJBWkg4TmcrWlZsYS9pbUxqaGxPUkJQRGZUMmRYNThUZTQweXRoVzJR?=
- =?utf-8?B?MmpQT0RhSW1SVTlhZzlFaDFLRnNrekhFL0ZjZnVaSEpxZ1FUUURjNmFpdnBu?=
- =?utf-8?B?bVV5RC84MWR5dC9YQkJ2aG04ZmFncU9zRmtZaFRrWXhXZ1VEb0FuTTlJZ0Rn?=
- =?utf-8?B?UmJPQUc2bncxTUp0ZGNOMnBydVNiQU9ReDFRb1JzQXR5Q2Uvck9VSlc5emda?=
- =?utf-8?B?SFZidHRCYkprUk1FdTBnamZuWG1GNm9PQnpDREdEMVRDcnF4Q0JiSFNyUTBu?=
- =?utf-8?B?c3NvOEZIaEEzUEpDNzAwUXl5am1sTlNzR0FIeS9jNUsxbGlRYksrbStISkxN?=
- =?utf-8?B?RVNFb2tvZUx3TEZyT20zeUViMkVBNWFHKzZUeENoUU9POHFPWkRnNHRhWXZo?=
- =?utf-8?B?d29ReENGVUgxK1RkaDVEUXlyU3lCaDlINlpkcVJjVi9BNy9vT3h1L1hZSTJN?=
- =?utf-8?B?VjlWMlE3MnJvL25aMHFsT3orL2g2WnpPMy9PS2pKdFozRGR2RGlIRWwxOFc3?=
- =?utf-8?B?NXBaaE1sZkhWV2c1a0NBMVpnQktEWkFnRDlwald5OWJxRnk0aEs0cDhnZVdV?=
- =?utf-8?B?SW1CcmpZK3NjWmowcmxZY0VTNEkwVVVHbEp2YitGS29OTkFOOTVFRnBBYUVB?=
- =?utf-8?B?Y3VYc0lDb0ZEYnh4RVJ4djFNUy9GNEVUL3dGL28rbnhnZ0hIWWZqcWxWNGlC?=
- =?utf-8?B?Wmg5RGhMVGE4V2MyVGU2bVdCbXRBNHpkdzkzdDBvTW92Tm9WNVlIdllQbW1B?=
- =?utf-8?B?dk1TUEEyRjJ6a2xBSTBKWnlSOUJ4Y0RNZFovOFdxeGlGcGZQY2RDSVFiTlZK?=
- =?utf-8?B?NWQ0OWd6cUliL3BFb3lPRlZSdEl5L2dua1VKT24zSVlvUFA1UmtDNjZqVHBO?=
- =?utf-8?B?dEpQQU52aVljdXZ0NXh6SUJrVGIxRFF6VStEUjcyNU9ydzdXOFlaTWl0UUpH?=
- =?utf-8?B?QWRXR0xib2pNdyt1aXJhTWs2SG5pc2NRRWtNWVZib0prL2xsWVBnUE5PRjhB?=
- =?utf-8?B?YnFTam9UNTU1Y0lCY1p3TkJ0cVlIM05wMTlkdTZlbWxZMUNRU0ZDOGVaK1Q1?=
- =?utf-8?B?dmFjbklQU2VmL21ySmpnQWFianlHa08vSXdYYmQ1TUQ1UVZ0VEpzS1Y1WFB5?=
- =?utf-8?B?Y2QrV1o3ODBnbFJIRDRya3hQb2Jub1FEQm1zcElXNks2ZVBFcEdwVEg1RGx3?=
- =?utf-8?B?Vm5QMW1YQ0s4Sm5JL3B0T3RVZC82SUx6Q00wQzFqV1Q2YnV1N0lrT2ptdUFt?=
- =?utf-8?B?c1J6NGw0Vkx2TGNhaWl5TFNrRjhYdnR1eW5aRkpjZE1nVmhxSUdSRzBYSDVC?=
- =?utf-8?B?QWRCV1F5Q2J0RlI1V096WTJyMmlCcCtVY1pQempQYkpncnVuWEw2SFNMWVN6?=
- =?utf-8?B?SDMySnJSMXRjL041UVViTXNqa1FmWFFndU9Cbm0zM2NQYkduRDhHa3BPR1Fy?=
- =?utf-8?B?a3p6cHlTUmQ2bWRwSjcxMktSUzVBOUtJUmhUR2NJNXdPeUt1MU9Fa3BCWDhC?=
- =?utf-8?B?TzkyMGZkTXNLTyt2SVNVOHFTcnRyWko2UERRUmZMcndTNHRyS3dnQkN6WUJs?=
- =?utf-8?B?RDh6Z01OYVpmaXZveDU3SGdQY3pneTZ0MnBtNVduSTM5eUxRQkUzS2FjQTJ2?=
- =?utf-8?B?Wlg5UW0xRjVYMjNFdHJsRVhKcDVycmpwZnE5WW5PaUcvVno1KzgvQ2VEU2xE?=
- =?utf-8?Q?zBroJM3hDImy7ByFbrEtrxlEWYpt1U=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6526.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?SFczYTFuK0h4OE1nYVorUWFyUDliaDh3M2lLYmdZZHo5OGNGay8vdVJnQkxL?=
- =?utf-8?B?d3F0VGlKZTIxYU9nQ0M4eTJBbU55SXVZaDhxekcxUHBsR2ZJTm9WRS9KNjRU?=
- =?utf-8?B?RCt5cWlFTkUyeGVHbWhnUDYzZVhIVHo4TWlQK0ZRM2oxVWJsWGkvUk9LTGVT?=
- =?utf-8?B?RGd1dFk4Q21VVmZ4bVBmWWhPc2FpaFl0QWVocGhIcjNJdDVhQzY2b3VBeitj?=
- =?utf-8?B?SjBoT0RESlcxQ25jVmcveXJ0b082azdwZmRTdFJ2bXlBM2l4Nm5XSXJtMHJo?=
- =?utf-8?B?V3RRR3BvSDZBYkxCakhwOWFwMWhKZFdYOHJsVHR3SS9YMy9DMDh1WWtFd0lt?=
- =?utf-8?B?TW1wQ0Uxd3AxaE5CREVKVjgzZU9FNEROOW9zTEJ1Y1dDa2NGRE9EbW0ydDRK?=
- =?utf-8?B?b2M5U05kZzE1clhMa2hPODdqMlBHOFFQYXFwUm1JMnZSSEhQTjk3N1JPNGtY?=
- =?utf-8?B?UURHdlc5YS82YVZXSUdkSHpuaS9LTVIwZllCS1BSeVFtQTU3Zzl0U0FBZTdo?=
- =?utf-8?B?aGFTV01TcUZORG15VDFZbW8rdHBPVkdDNzZDdy9nOGo4VzRkYlE2aERSVzRx?=
- =?utf-8?B?cEJ3ejAya2xzR0FZcVJyVTdTcVlwVmFaZklGN21GSkhBaWNsdmxCaXFqV2Fq?=
- =?utf-8?B?ZDkyeUxqZ2pHTFpUc2tFSDJuQUM2SWNIZlV2ekg4MDlTU0FUOGRVMStkcFpm?=
- =?utf-8?B?QjJWZ1lsb0hhYnV0aFJGaHV5eTdLU3hDSHp1dUVRR3BMRkxZSE9FK3RHOHI1?=
- =?utf-8?B?UFFqanFaQVhXWGM4TGI1QWdPNWJuYnFHaFBXOFNwaW1RZHI3WXB1WE1tcU9l?=
- =?utf-8?B?a2tlVE9VR21QMmw4b2IyV1poMUhJMlNTcjU4NzdxeW02M24xY0xoOVBWN1JK?=
- =?utf-8?B?N3l2enNveWpWM1VEU2xsaWZvZWRTbHd5VUlaMXU0TlVOY0NkRXFXWU5vOFlq?=
- =?utf-8?B?d0x1YmdsRkw0akdneTlJOHZIbmlOZit1MUF4Mk5jQlY2Rlh2c2FFbmx6ZHhO?=
- =?utf-8?B?aWFJV0txakFoVDR4K3BmblBNS3RoVXBXT3l0SWtPZkUyU21Cd3F4Smw0ZWtk?=
- =?utf-8?B?enMrNGZiR0tKQTRxZnQ1aFlGUkxvQ3prR2JOSGZPaDhicDhMcG51TE5MRFMz?=
- =?utf-8?B?ME0rcE5yMkVpU0pvYU9Lblp4em9BdXZISFpTTm5ZUjA1OWtIWVBuVmZJZTJQ?=
- =?utf-8?B?NDZiK1Y5M2VUak9jcUlZZnJVNldZYVdCRlZZUkNpckZPd2xmTWpaYkhGUzVj?=
- =?utf-8?B?LzhmUTJnU0ZJbmhleVhLSTQ4d085RDk2UGd0UGFtYndsUXRqNkYzUGNhejlR?=
- =?utf-8?B?Q3gxRGxKa1RKM050NWR6ZVNYK1BYdWIwU00wSGRhbGd4by9nMU4yUmgyaENV?=
- =?utf-8?B?UzloVzFJUEhNKzhLNEtwYW9zVldncVNKcjlOQmVlVmdGaEtjN3I1Mm9rQ01Q?=
- =?utf-8?B?bnowSmlQTjVFaUVPZk9wMzdMUm95L09GWkJOYW5MQUxMakYrSUdWWlVUbHFU?=
- =?utf-8?B?bVI2a0sxT3dsNmdlaUtYNXZ2QUMza1BBbEdkS1hPTkp5WjdBSlFLSnorNG1C?=
- =?utf-8?B?VVNZc3ZzeFhCWVN3Y0Vxc2dRdGVxNGZQWWQ3QzRNYWIzYUFqVnEzZmpVOGN6?=
- =?utf-8?B?TFN4K1lMVjNZZWorNURnU0lWcWRjNHpxc3NlWG1hamVodnFiTEF1R3ozWjkx?=
- =?utf-8?B?OGRDWVNXM2x3ZC9zNXhGd3hMcURNWmxJZUdYWVl3TXJqQ3NpV3J3QVdkMm94?=
- =?utf-8?B?SW5CNW83UytqT05TMzVpbjBYVjVBMUZaM3luRFgvVWRUbVN1RTZsUnlsY2x0?=
- =?utf-8?B?NVhqV1hmZGdLYWZjQzg0TjdsMEpwRXZXWWpRa3pZSEg1MlRYNHAzWjQxNHIw?=
- =?utf-8?B?blp5QXYwblBTS09CVjFiV1QwTmVyNXNDdDRmeEdRWjN3MklTWE93SlFMSGNw?=
- =?utf-8?B?WVlvb21GWVRJRVVMK0JHWHcvSGM0Z2hlZzZtYXQ3Z2VQRDlJandaNjZjSnVJ?=
- =?utf-8?B?cDNzNUFneUlTVzUvVzFOYmlmcWJGeElKYWNtM2JRRWpwZWJrVmlDTFM5U0x1?=
- =?utf-8?B?bzVCWFZZL1JEeENOcElGTVg3QkFFcXRaSE03R3Q0bTlTQ1JsU2Z0eW03RGxH?=
- =?utf-8?Q?UmRY8ANyhPYuM9dnItW+Pkijj?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <135CA944A48E1547A38C6E4AC70C23C0@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DMPSzhVc"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-442eb5d143eso23417445e9.0;
+        Fri, 16 May 2025 14:24:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747430663; x=1748035463; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=l1Hta4W1dPFUTar/rJllAxygYiLl+WXDAdv6ahBc1HM=;
+        b=DMPSzhVceuuerH/+YBrHMae9vv8uE9S/D0mj8/TFLF/6KzW214RYw4saf74VxuhIWy
+         EN+Ph4GbfNA7FLnUfAc+C6RovC5KXDltX857kWrZHsX77PYl2hNXuVa98CsEGYWBWe3s
+         CFUPKRR/qkhGXmfz4E1ZJCtrJlViuooM6k8qQTmu8Z29113kd+sdVZ8qaSS2Yjrogolb
+         0x0u8I7uOVWykWXh/9xclWXy5mGRsYTuqQoqqRpTs8adCgM+as0e4O9msIvXqL9l2q5a
+         jAFrCHcWeGthY0cK1N1TC+aN0t+kAK+28RFXp3IHh+F9VPwU+ziLdvQauQSn2f4rXAyr
+         +meQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747430663; x=1748035463;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l1Hta4W1dPFUTar/rJllAxygYiLl+WXDAdv6ahBc1HM=;
+        b=kfTfiELJg/4+cjenwA6GgeESSHHO/opYDzAFJ/q+KUm22YLAqoE8gu55hd19Qsx72O
+         vRVLAVa2Sjcf9h0yZXENZLOUy7G1GsKsbgRwJAaJnUTuKCEgTR49zVkla2VPwN9ZzSNF
+         mZOPPEU9dJKXIhaUgwzFfUi5NDuLWVp6S+Uvj9wnJCCfjkNdfXPhsMN4hK8oM0VgehNS
+         5UjGGzV/640iBRRAz85JWSYsucImLt55GUdE+RhH2L2fAeBigJ0GwXU40EjUUCPP1DeM
+         aRSoyeJPpyUHhxv+ImOKjuSYjR8H3pcuRbBbtlYKiOltrO8Z4CoMDMS/s3SLKehLMGsV
+         +IaA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGR7ncu2aGEh6X3wUyUvjRxPMuNcR0zCpG4pWYf4CHj5A40TBMTc3S/qJSwljdtF2iuzhsn4lSGU15hfrl@vger.kernel.org, AJvYcCUOx4suIc59hbbb9NtxleVk/u+8MNxTSzZxN/gKGSvtG4oqpq8z1umaOAXPBaNk4oM8xGaJI+Yd@vger.kernel.org, AJvYcCVTEUheFYdbL5z13/PUyMyo/L16jlBPzAWn97sVHyTYDkDB2H5Mrkd7UDrtc/O9QdaSBRrFvqz42j1KwUS4AYM=@vger.kernel.org, AJvYcCXEIx7G7sHDPDob269h5HtpazlIyiz2YNbc3ZmZpqncjlpLCe/syfIxS4VbynPj6sWXTGe/lsF6i6JC@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUvelwp2L5rmDU9J14ELECL6zNk+ABTtQBCMq9n9BkuztY8Wrl
+	X3OD0dJ8dkfkCcctqI8TrOBXhKds65TflIyQg85ndywkiVdKp9Pd/D+G
+X-Gm-Gg: ASbGncunTIQ+XvcxORD3lR4LYEmE4Z/iFY1jr1OCdsN0Tf3/wkJfb8ATXH12uFIkbBU
+	3Oj4sN/32Fb5OZElTWKMYjEU0zJN5goct8vh4s/1laeyaN6BhrBPp430K7runGPbJe41pELcACz
+	IbtxNSF0jTNAQ7PlHoN4Z2mVabeUxkxAAvfpMODaIxJXc9wLv08OoKjvwJF0jFN5wh8lJUKahRH
+	xrnpImDOekYchAzSJh+vKkp7M/KAFf7mOfuAn3S27cYeYSPgTtqbNljKAu8E63BzGIGHIS1PgMn
+	S+37yA3Ff0TMryw+/My0Fy+clDaXUajlbEr472obL/2GhSwbO9pwMbNeWsCcEytCHzBz2bnncQs
+	o8zQIGT6zEhLAx/EdEkGR
+X-Google-Smtp-Source: AGHT+IEo0u5x2s8Yof4YAfr0AOlCc9AbwKoIkjnv3htsZOGqLDBbTKC7E7kYNwS4cOoUxYSIeGylDw==
+X-Received: by 2002:a05:600c:4592:b0:43d:45a:8fbb with SMTP id 5b1f17b1804b1-442fd6649d0mr43553545e9.22.1747430662720;
+        Fri, 16 May 2025 14:24:22 -0700 (PDT)
+Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-442f39e84d3sm126293555e9.32.2025.05.16.14.24.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 May 2025 14:24:22 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrei Botila <andrei.botila@oss.nxp.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Michael Klein <michael@fossekall.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [net-next PATCH v11 0/6] net: phy: Add support for new Aeonsemi PHYs
+Date: Fri, 16 May 2025 23:23:25 +0200
+Message-ID: <20250516212354.32313-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6526.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c89122fa-d47f-440a-699d-08dd94b993a3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 May 2025 20:38:12.3257
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: TGI+ZGBOY/Hg2HzFiegcjXzOnrEm9EWY50kkBeRKuTpQIbcEsduwFJMV8e7JYOgmKKB78x28+fYcahqvujV6eQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8207
+Content-Transfer-Encoding: 8bit
 
-T24gV2VkLCAyMDI1LTA1LTA3IGF0IDIyOjUyICswOTAwLCBBbGV4YW5kcmUgQ291cmJvdCB3cm90
-ZToKPiAraW1wbCBGd1NlY0Jpb3NJbWFnZSB7Cj4gK8KgwqDCoCBmbiBzZXR1cF9mYWxjb25fZGF0
-YSgKPiArwqDCoMKgwqDCoMKgwqAgJm11dCBzZWxmLAo+ICvCoMKgwqDCoMKgwqDCoCBwZGV2OiAm
-cGNpOjpEZXZpY2UsCj4gK8KgwqDCoMKgwqDCoMKgIHBjaV9hdF9pbWFnZTogJlBjaUF0Qmlvc0lt
-YWdlLAo+ICvCoMKgwqDCoMKgwqDCoCBmaXJzdF9md3NlY19pbWFnZTogJkZ3U2VjQmlvc0ltYWdl
-LAo+ICvCoMKgwqAgKSAtPiBSZXN1bHQ8KCk+IHsKPiArwqDCoMKgwqDCoMKgwqAgbGV0IG11dCBv
-ZmZzZXQgPSBwY2lfYXRfaW1hZ2UuZmFsY29uX2RhdGFfcHRyKHBkZXYpPyBhcyB1c2l6ZTsKPiAr
-Cj4gK8KgwqDCoMKgwqDCoMKgIC8vIFRoZSBmYWxjb24gZGF0YSBwb2ludGVyIGFzc3VtZXMgdGhh
-dCB0aGUgUGNpQXQgYW5kIEZXU0VDIGltYWdlcwo+ICvCoMKgwqDCoMKgwqDCoCAvLyBhcmUgY29u
-dGlndW91cyBpbiBtZW1vcnkuIEhvd2V2ZXIsIHRlc3Rpbmcgc2hvd3MgdGhlIEVGSSBpbWFnZSBz
-aXRzIGluCj4gK8KgwqDCoMKgwqDCoMKgIC8vIGJldHdlZW4gdGhlbS4gU28gY2FsY3VsYXRlIHRo
-ZSBvZmZzZXQgZnJvbSB0aGUgZW5kIG9mIHRoZSBQY2lBdCBpbWFnZQo+ICvCoMKgwqDCoMKgwqDC
-oCAvLyByYXRoZXIgdGhhbiB0aGUgc3RhcnQgb2YgaXQuIENvbXBlbnNhdGUuCj4gK8KgwqDCoMKg
-wqDCoMKgIG9mZnNldCAtPSBwY2lfYXRfaW1hZ2UuYmFzZS5kYXRhLmxlbigpOwo+ICsKPiArwqDC
-oMKgwqDCoMKgwqAgLy8gVGhlIG9mZnNldCBpcyBub3cgZnJvbSB0aGUgc3RhcnQgb2YgdGhlIGZp
-cnN0IEZ3c2VjIGltYWdlLCBob3dldmVyCj4gK8KgwqDCoMKgwqDCoMKgIC8vIHRoZSBvZmZzZXQg
-cG9pbnRzIHRvIGEgbG9jYXRpb24gaW4gdGhlIHNlY29uZCBGd3NlYyBpbWFnZS4gU2luY2UKPiAr
-wqDCoMKgwqDCoMKgwqAgLy8gdGhlIGZ3c2VjIGltYWdlcyBhcmUgY29udGlndW91cywgc3VidHJh
-Y3QgdGhlIGxlbmd0aCBvZiB0aGUgZmlyc3QgRndzZWMKPiArwqDCoMKgwqDCoMKgwqAgLy8gaW1h
-Z2UgZnJvbSB0aGUgb2Zmc2V0IHRvIGdldCB0aGUgb2Zmc2V0IHRvIHRoZSBzdGFydCBvZiB0aGUg
-c2Vjb25kCj4gK8KgwqDCoMKgwqDCoMKgIC8vIEZ3c2VjIGltYWdlLgo+ICvCoMKgwqDCoMKgwqDC
-oCBvZmZzZXQgLT0gZmlyc3RfZndzZWNfaW1hZ2UuYmFzZS5kYXRhLmxlbigpOwo+ICsKPiArwqDC
-oMKgwqDCoMKgwqAgc2VsZi5mYWxjb25fZGF0YV9vZmZzZXQgPSBTb21lKG9mZnNldCk7Cj4gKwo+
-ICvCoMKgwqDCoMKgwqDCoCAvLyBUaGUgUG11TG9va3VwVGFibGUgc3RhcnRzIGF0IHRoZSBvZmZz
-ZXQgb2YgdGhlIGZhbGNvbiBkYXRhIHBvaW50ZXIKPiArwqDCoMKgwqDCoMKgwqAgc2VsZi5wbXVf
-bG9va3VwX3RhYmxlID0gU29tZShQbXVMb29rdXBUYWJsZTo6bmV3KCZzZWxmLmJhc2UuZGF0YVtv
-ZmZzZXQuLl0pPyk7Cj4gKwo+ICvCoMKgwqDCoMKgwqDCoCBtYXRjaCBzZWxmCj4gK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgLnBtdV9sb29rdXBfdGFibGUKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCAuYXNfcmVmKCkKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAub2tfb3IoRUlOVkFMKT8KPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAuZmluZF9lbnRyeV9ieV90eXBlKEZBTENPTl9VQ09ERV9F
-TlRSWV9BUFBJRF9GV1NFQ19QUk9EKQo+ICvCoMKgwqDCoMKgwqDCoCB7Cj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgT2soZW50cnkpID0+IHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIGxldCBtdXQgdWNvZGVfb2Zmc2V0ID0gZW50cnkuZGF0YSBhcyB1c2l6ZTsKPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHVjb2RlX29mZnNldCAtPSBwY2lfYXRfaW1hZ2UuYmFz
-ZS5kYXRhLmxlbigpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdWNvZGVfb2Zm
-c2V0IC09IGZpcnN0X2Z3c2VjX2ltYWdlLmJhc2UuZGF0YS5sZW4oKTsKPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIHNlbGYuZmFsY29uX3Vjb2RlX29mZnNldCA9IFNvbWUodWNvZGVf
-b2Zmc2V0KTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlmIGNmZyEoZGVidWdf
-YXNzZXJ0aW9ucykgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAv
-LyBQcmludCB0aGUgdjNfZGVzYyBoZWFkZXIgZm9yIGRlYnVnZ2luZwo+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBsZXQgdjNfZGVzYyA9IHNlbGYuZndzZWNfaGVhZGVy
-KHBkZXYuYXNfcmVmKCkpPzsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgcHJfaW5mbyEoIlBtdUxvb2t1cFRhYmxlRW50cnkgdjNfZGVzYzogezojP31cbiIsIHYzX2Rl
-c2MpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfQo+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIH0KPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBFcnIoZSkgPT4gewo+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGV2X2VyciEoCj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIHBkZXYuYXNfcmVmKCksCj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgICJQbXVMb29rdXBUYWJsZUVudHJ5IG5vdCBmb3VuZCwgZXJy
-b3I6IHs6P31cbiIsCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGUK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICk7CgpTaG91bGRuJ3QgeW91IHJldHVy
-biBhbiBlcnJvciBoZXJlPwoKSWYgbm90LCB0aGVuIG1heWJlIHRoaXMgc2hvdWxkIHByb2JhYmx5
-IGJlIGRldl93YXJuLgoK
+Add support for new Aeonsemi 10G C45 PHYs. These PHYs intergate an IPC
+to setup some configuration and require special handling to sync with
+the parity bit. The parity bit is a way the IPC use to follow correct
+order of command sent.
+
+Supported PHYs AS21011JB1, AS21011PB1, AS21010JB1, AS21010PB1,
+AS21511JB1, AS21511PB1, AS21510JB1, AS21510PB1, AS21210JB1,
+AS21210PB1 that all register with the PHY ID 0x7500 0x7500
+before the firmware is loaded.
+
+The big special thing about this PHY is that it does provide
+a generic PHY ID in C45 register that change to the correct one
+one the firmware is loaded.
+
+In practice:
+- MMD 0x7 ID 0x7500 0x9410 -> FW LOAD -> ID 0x7500 0x9422
+
+To handle this, we operate on .match_phy_device where
+we check the PHY ID, if the ID match the generic one,
+we load the firmware and we return 0 (PHY driver doesn't
+match). Then PHY core will try the next PHY driver in the list
+and this time the PHY is correctly filled in and we register
+for it.
+
+To help in the matching and not modify part of the PHY device
+struct, .match_phy_device is extended to provide also the
+current phy_driver is trying to match for. This add the
+extra benefits that some other PHY can simplify their
+.match_phy_device OP.
+
+Changes v11:
+- Move rust changes to patch 1 (improve bisectability)
+- Improve rust binding with suggested format
+Changes v10:
+- Add rust patch
+Changes v9:
+- Reorder AS21XXX_PHY kconfig before Airoha
+- Add Reviewed-by tag from Andrew
+Changes v8:
+- Move IPC ready condition to dedicated function for poll
+  timeout
+- Fix typo aeon_ipcs_wait_cmd -> aeon_ipc_wait_cmd
+- Merge aeon_ipc_send_msg and aeon_ipc_rcv_msg to
+  correctly handle locking
+- Fix AEON_MAX_LDES typo
+Changes v7:
+- Make sure fw_version is NULL terminated
+- Better describe logic for .match_phy_device
+Changes v6:
+- Out of RFC
+- Add Reviewed-by tag from Russell
+Changes v5:
+- Add Reviewed-by tag from Rob
+- Fix subject in DT patch
+- Fix wrong Suggested-by tag in patch 1
+- Rework nxp patch to 80 column
+Changes v4:
+- Add Reviewed-by tag
+- Better handle PHY ID scan in as21xxx
+- Also simplify nxp driver and fix .match_phy_device
+Changes v3:
+- Correct typo intergate->integrate
+- Try to reduce to 80 column (where possible... define become
+  unreasable if split)
+- Rework to new .match_phy_device implementation
+- Init active_low_led and fix other minor smatch war
+- Drop inline tag (kbot doesn't like it but not reported by checkpatch???)
+Changes v2:
+- Move to RFC as net-next closed :(
+- Add lock for IPC command
+- Better check size values from IPC
+- Add PHY ID for all supported PHYs
+- Drop .get_feature (correct values are exported by standard
+  regs)
+- Rework LED event to enum
+- Update .yaml with changes requested (firmware-name required
+  for generic PHY ID)
+- Better document C22 in C45
+- Document PHY name logic
+- Introduce patch to load PHY 2 times
+
+Christian Marangi (6):
+  net: phy: pass PHY driver to .match_phy_device OP
+  net: phy: bcm87xx: simplify .match_phy_device OP
+  net: phy: nxp-c45-tja11xx: simplify .match_phy_device OP
+  net: phy: introduce genphy_match_phy_device()
+  net: phy: Add support for Aeonsemi AS21xxx PHYs
+  dt-bindings: net: Document support for Aeonsemi PHYs
+
+ .../bindings/net/aeonsemi,as21xxx.yaml        |  122 ++
+ MAINTAINERS                                   |    7 +
+ drivers/net/phy/Kconfig                       |   12 +
+ drivers/net/phy/Makefile                      |    1 +
+ drivers/net/phy/as21xxx.c                     | 1087 +++++++++++++++++
+ drivers/net/phy/bcm87xx.c                     |   14 +-
+ drivers/net/phy/icplus.c                      |    6 +-
+ drivers/net/phy/marvell10g.c                  |   12 +-
+ drivers/net/phy/micrel.c                      |    6 +-
+ drivers/net/phy/nxp-c45-tja11xx.c             |   41 +-
+ drivers/net/phy/nxp-tja11xx.c                 |    6 +-
+ drivers/net/phy/phy_device.c                  |   52 +-
+ drivers/net/phy/realtek/realtek_main.c        |   27 +-
+ drivers/net/phy/teranetics.c                  |    3 +-
+ include/linux/phy.h                           |    6 +-
+ rust/kernel/net/phy.rs                        |   22 +-
+ 16 files changed, 1355 insertions(+), 69 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
+ create mode 100644 drivers/net/phy/as21xxx.c
+
+-- 
+2.48.1
+
