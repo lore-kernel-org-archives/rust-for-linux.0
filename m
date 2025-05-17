@@ -1,108 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45269F4FA;
-	Sat, 17 May 2025 10:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4F96F53E;
+	Sat, 17 May 2025 11:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747476818; cv=none; b=YoJjwBj3mAFtvoQz3SdGo+nJDzoB81iqI6ZoiEZtnwDpW3p3yeOP14Cghl/U5NuPUjQEoPFpBihk6MtCIjFONkuECcrMX6liv6Hw5/LJgujdFx7rWqKfKNYugc0XKZ6W2l5gZBeC674gxy3eioLiVq2QwJcsKtuiUFzjTPWQXPM=
+	t=1747480005; cv=none; b=F6npEXdpEq6gr4M8n2VNTo4yYw26VUA/4hWbuhBoLH4BwVZUTbjVgT4M79aB1e/I/cBYUUhhoz3PKH2x0ErxW5Xsc+0wlymYUScvpugCQq9Mma2aJWfCvSOPvbr+gr7rrZgsjtCfH/UWCd4OV5Mh33nzWqMmAy+jSuanHCRiqGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747476818; c=relaxed/simple;
-	bh=8yh9ur/IZvga/MBbfC24SRQ6hiqIOhARvKINKIIyYsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uDJia0ZsXOupalfbfGosEk4bnCP/7E1+DJwK0vBn40d8efMWEH0bOI+BZdG+O5lWdHxy0BK1/nhPLtu9wnL1VVMVGEmLpROt9yWTPHCcbU9Zrf3tvwyB3n901pwDnYKsCYkMSACzil8cOpsx5NgBGVfnrMwa2HWJ1pNLXd2/S6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gXDRp+AZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747480005; c=relaxed/simple;
+	bh=wxFkLH97QUBnMhVlN0HekHi+TDUeXXOTCwuCVZPdCpg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kpdN2/NjKRWiNcQrr6gJkJ2U8pfnQcDtuxe8odHCG4HZPnti7zhoKmdhfI2lfyiN+YClnK0yERCJ+PD7znmGjq/+LVs6TMqdu1b+rIkxtPNlJWo7Y8b2ne39OYg3YBK0MBHlW195dhXWU3DIJXssxjJXDdXGBVRc/EQHbgbf7yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EX3MoYuV; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gXDRp+AZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BFDC4CEE3;
-	Sat, 17 May 2025 10:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747476817;
-	bh=8yh9ur/IZvga/MBbfC24SRQ6hiqIOhARvKINKIIyYsw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gXDRp+AZr6hTkDdELXCjL8VZSUncksHbTgeuKQBwpTJciP10Le46qm6h24SJz8EDN
-	 gyOUOXzwifMGvpdxiuHvWRULijdksDs+nAf8bbJX7OD0MCDPLMeWIvvLGmyFYbTs0y
-	 s7eEA7PPyJpJcsoAcrEcYEhlVS84kQO51FW8bFSo894kB/zv7zroBH2bNVY8nlDZol
-	 m/Mv4emnCmLonzPJGL3VSNdi+AhaNgn2f44d1ou2xZUmDzdh3behSJxWDxx8Kj+rjE
-	 djoPd6KjAsjWezADaCYeNahN5zyAdRlK72LU81WHjdhKYR3WbpNvH8Q5AxtZWKjeuQ
-	 Muro7NPPMh9Ag==
-Date: Sat, 17 May 2025 12:13:32 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>, Timur Tabi <timur@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: add basic ELF sections parser
-Message-ID: <aChhTJvY6KFvqrTP@pollux>
-References: <D9WP3YU31199.Q8IEDBJZ87LU@nvidia.com>
- <2025051532-gentleman-reset-58f2@gregkh>
- <CAOZdJXWKLu0y+kwC+Bm8nBCLizQVpsDdDUoS--hVgz2vnuZJQg@mail.gmail.com>
- <8b14b078-b899-42e8-8522-599daa65bc63@nvidia.com>
- <2025051647-urology-think-b8e0@gregkh>
- <D9XMAV4ERYK7.39TLQBLYTX3TU@nvidia.com>
- <aCc_PSOPkLWTcTru@pollux>
- <D9XNS413TVXB.3SWWJE4JGEN8B@nvidia.com>
- <aCdhS10JCh6HRpqV@pollux>
- <08a91cb8-2e08-44a5-9d5c-c2c223aaa71d@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EX3MoYuV"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a0b9af89f2so1912466f8f.3;
+        Sat, 17 May 2025 04:06:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747480002; x=1748084802; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LN10ub9SUJoEtLWgEKDd7leaebOInHySnp4vLatU5k8=;
+        b=EX3MoYuVNHt80ROUMD2/tZAxHgk2XqgAAYawf5GEBD6ErZBy04fNyyreaea/kT6SED
+         XBZi/3axYkKgIvPTV+DbtkLAqqxxLcKexwRuQNHH446HaHBk28NUgHDrQ9xSUj3KJlqC
+         Zqxa6HxM+qfhJjsFfZ/uXNgfvFQgP0qXU57LsUVWf+shNoZ1k0I3cd2+sbJsGXEEgj4o
+         AujnQJBDzm0HU2HYlbdFTpdLd+oulaSpMv0ZAsC5fB/9NAgwQbeVWtY6eSfG3UpX7Xu9
+         dz9kwPWUY7RQq9UHMDkiXuFAJ4qxsYuceOcpoK4xnW495Gpi/D23seTf4wInuxtb/6RY
+         FZpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747480002; x=1748084802;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LN10ub9SUJoEtLWgEKDd7leaebOInHySnp4vLatU5k8=;
+        b=FALtQ8EM8vTuXO326SeBPHBr2UfNj9ZVywoEREACpaKdwjzezPemHyuLhtdwEoq7/B
+         fZKIUdeiUwI5CuOH2Cy4I0E4Cf8CW/8My7I7RfOduAfstyJUFAj/AAwfG80C4eDWk2az
+         TKFdM+Oxc0XCxdy9fcF1liiI/mAPO/mQVShpp7go+iXGfnIgc9CCZry1Kwc6vbFgsCDz
+         WXC9o/KqlMwKWi6r0jVWqB4n59d2ffg/93xzCgRuqZ73y16q1tcN4f4gg0ATpKw0PEjV
+         fp2nYTf17lzlaHqjlAOHCdyotrIYz3jtTVkNrcKOcMTq3r+FJCWsuD7UA29BJaUGDWXE
+         7XVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMZXb3Ik3KGd/f2PlG9+FQx0smfGjMKCXLeeDOZmHj83lxBAQVoob4ul7G206wOoAAgadY9PdMkgYlKGk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVkIx4pUHtasFxLebD1o0eBGuYrl3/PeI816nXJ59Wu2bp5iEc
+	ziBEriGhFmFAFC9Gj/be36/3fd7cbBRjht8xcEZuGnVbvIVaYU6jn6/L
+X-Gm-Gg: ASbGncuoeK9c3n4BvCJIzbHzFnEUGz5nULuYdeGY9QCOxXg0lmk6TRWWlrpx5xuqbu2
+	AlTELbGt6Sp7iDKtxodgxhR+y+V0/ve0p0+ViSG4wDHrgtSVthz3jTJlkXTKpp4LJ/xVnP6nSPD
+	hZNC2iOC+Jws9GK3kYOqPp5mwrjkcdfE4ZXdh00E33kiyQ2SUlz/0GbLGtOBpeDeg/culOg8M7K
+	YzI9Br2TrQBCJbGKyW7U4aWEZDv0OGoFnk4diMK8RfSQz964xaBKJRWVonHH5q+vV+uFxhW7HEN
+	clEwykrIwWY7NzUhgQVUw1iLSbTT368o1fyqmoU=
+X-Google-Smtp-Source: AGHT+IF270RwBq2VTzapNGt7NEd27D2jdB0hdgxwvcNvalDCvF5nbrRBGR2DZjVM7yNbDWjN5eNwZw==
+X-Received: by 2002:a05:6000:1a85:b0:3a2:3c52:103d with SMTP id ffacd0b85a97d-3a3601d09efmr4765113f8f.58.1747480001825;
+        Sat, 17 May 2025 04:06:41 -0700 (PDT)
+Received: from [10.0.1.56] ([2001:871:22a:99c5::171c])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-442fd583efasm64284605e9.29.2025.05.17.04.06.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 May 2025 04:06:41 -0700 (PDT)
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+Date: Sat, 17 May 2025 13:06:15 +0200
+Subject: [PATCH] rust: miscdevice: fix typo in MiscDevice::ioctl
+ documentation
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <08a91cb8-2e08-44a5-9d5c-c2c223aaa71d@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250517-rust_miscdevice_fix_typo-v1-1-8c30a6237ba9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAKZtKGgC/x2MSwqAMAwFryJZW6jVKnoVkSI1ahZ+aKoo4t0NL
+ oc3bx5gDIQMTfJAwJOYtlUgSxPwc79OqGgQBqON1TarVDg4uoXYD2J7dCNdLt77pnRR9SavbYm
+ 6BrnvAWX70233vh8Dx3f8agAAAA==
+X-Change-ID: 20250517-rust_miscdevice_fix_typo-047a23956e09
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Christian Schrefl <chrisi.schrefl@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1747480001; l=1188;
+ i=chrisi.schrefl@gmail.com; s=20250119; h=from:subject:message-id;
+ bh=wxFkLH97QUBnMhVlN0HekHi+TDUeXXOTCwuCVZPdCpg=;
+ b=ljGpYJQ6sIIppIgh8dS9RVpymj/n+F+6/S4fOOYhLK3Y5q7TnKDmGCTFzsI9Ya5bnnicDbYFy
+ KH0euNqT8eLAahAAm5xD9PIQjcYgXCk/5oXFqEejh2dkAbUzG34IyZm
+X-Developer-Key: i=chrisi.schrefl@gmail.com; a=ed25519;
+ pk=EIyitYCrzxWlybrqoGqiL2jyvO7Vp9X40n0dQ6HE4oU=
 
-On Fri, May 16, 2025 at 12:00:11PM -0700, John Hubbard wrote:
-> On 5/16/25 9:01 AM, Danilo Krummrich wrote:
-> > I did not argue for or against it -- what I do disagree with is that we seem to
-> > just agree to disagree and stuff a generic piece of code into nova-core after
-> > three mails back and forth.
-> > 
-> > Please keep discussing the above with Greg until we get to a real conclusion.
-> 
-> Danilo, this is a small amount of code. Is there any real problem with
-> a compromise, that starts out with Greg's approach of putting this code
-> in Nova?
-> 
-> And then we can promote it if and when we can make a good case for that.
-> 
-> But in the meantime, we really need to be able to take "yes" (from Greg)
-> for an answer! I don't want to blow up the firmware images, shred
-> the "Nouveau and Nova can use the same images" story, and delay merging,
-> all over 100 lines of code.
+Fixes one small typo (`utilties` to `utilities`) in the documentation of
+`MiscDevice::ioctl`.
 
-What I disagree with is that it seems that you actually *can* "make a good case
-for it", but stop discussing it with Greg, because he would agree with just
-stuffing this generic infrastructure in the driver.
+Fixes: f893691e7426 ("rust: miscdevice: add base miscdevice abstraction")
+Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+---
+I've found this small typo while working on my `miscdevice` changes.
+---
+ rust/kernel/miscdevice.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It seems like taking the way of least resistance even though you seem to have
-good arguments for this to be generic infrastructure.
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index fa9ecc42602a477328a25b5d357db90b59dc72ae..15d10e5c1db7da8f8686ed1c5d4174291231351b 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -121,7 +121,7 @@ fn release(device: Self::Ptr, _file: &File) {
+ 
+     /// Handler for ioctls.
+     ///
+-    /// The `cmd` argument is usually manipulated using the utilties in [`kernel::ioctl`].
++    /// The `cmd` argument is usually manipulated using the utilities in [`kernel::ioctl`].
+     ///
+     /// [`kernel::ioctl`]: mod@crate::ioctl
+     fn ioctl(
 
-The fact that *only* nova-core would use it to begin with is not the relevant
-factor. nova-core is, for obvious reasons, the only user of quite some generic
-infrastructure, yet we don't stuff it into the driver.
+---
+base-commit: edc5e6e019c99b529b3d1f2801d5cce9924ae79b
+change-id: 20250517-rust_miscdevice_fix_typo-047a23956e09
 
-The relevant factor is, do we agree that this is a valid requirement for drivers
-in general (which you seem to answer with a clear "yes"). Which means we should
-keep discussing it.
+Best regards,
+-- 
+Christian Schrefl <chrisi.schrefl@gmail.com>
 
-If we can't conclude that this should be generic infrastructure, we can still
-figure out the way forward for nova-core (i.e. have our own ELF parser in
-nova-core if necessary).
-
-But, as I said above, please don't stop the discussion with agreeing to disagree
-after three mails back and forth.
-
-We have plenty of time to discuss it; we do not target v6.16 and the v6.17 merge
-window is far away.
-
-- Danilo
