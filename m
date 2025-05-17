@@ -1,167 +1,241 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2049.outbound.protection.outlook.com [40.107.237.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3294C1F473C;
-	Sat, 17 May 2025 13:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747488504; cv=none; b=oOjWkHV5lSUu8RdxnJUOgDmX13j/VvZeVvTi41OHcKy+FM1FRTbM3GEun+16ccKNtvvyMLOKvPOmiyeJkTriVueJ4/d4KBIwTNYDKoEhJiFE/e1UtoGmDNul35BPFKoXFyNu7qzt6pdn8z/tb/1vWO74JQZeLQRMZPDgAEnSdM4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747488504; c=relaxed/simple;
-	bh=S1MWY0PJeO+keP5r+TY+fV9VcsQvbmi76vsf+dgP8hw=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Bvpn3s8KWkUmV7+Ts/LEq6c1Lctf6jLP//kyp2Dtk4MMmo52Z38jAsTGwfujFMbuMULyeIrr7/EdMqdkh08VE7q01oWExlVybIegDXUBIZjM/ylH0QNwKLQt1vzdwQQtIKrEg03FjhEPZWMPNeA3TvzdQo4RueN3tOvO6P3sNFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImxvMX9E; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0191FCFDB;
+	Sat, 17 May 2025 13:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747489323; cv=fail; b=TXGTNYt0OZADAdWq3RlOk/TY6huVmDRZKNKtplViWoKhp8oVm8QDUZe65K0dXWGLxWiCZLLp3k5x3f3+Np8y9evQljFpHr2YKdtDKk9vI/RG+RG7DOMoPihCXYTE+9/Z1ey8p4q4KACicvvaaMcYB2Q9SfSTfjsoObZqguRXipc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747489323; c=relaxed/simple;
+	bh=4PF22Cs5iC55mxdXN32iIuY+YK5l/4NpnQPyXkjLSXk=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=OP7aArzc3soPQ95iLZ7eEhCpRGHh/UnlcP2tuLej8sGCzQ6OKAse5nvKloMZmNrjVCzbHlgW7hdDZiWylLd278fFQ9SBFD/OPHQZYgAQGN0IEbYzAgUPSwjliwHJeSrrpDO1Mw37m8V5r57gsrK90niSybt6fadQxROGAamh/lg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CEAmuB1c; arc=fail smtp.client-ip=40.107.237.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImxvMX9E"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b200047a6a5so3711706a12.0;
-        Sat, 17 May 2025 06:28:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747488502; x=1748093302; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ok+Jn31WmGz0SXzj4UmJNwMJtqo//nsvsVAqld9UWx4=;
-        b=ImxvMX9E8Y/+h+VMKLoHrdT3XeavjrPofImFu4ueL/hehW7dKSG6QIHIOyXUeAoebu
-         BT22ZyeBWBBysYS/vI8DpyZ3h27YiXltwB67J8GOD/K+tNP9QQisSq3m4QeCKWPwzqz0
-         gojB4i+YyTLhGuL+IrjwonJ56yFCPBp82tAQwbkdT3n63pI4uxHgxQDIPh3IUUW2zvH9
-         R92xTPAUguWFRWj+CrIhD6siFt7VZPwRv88iOhjnBPvT20fGLxZZhhGS3iIReRMoKAOO
-         BjK8Tmm0nOVeC4Ng7xZbjLCRrxibRp3RW3R1a+9RIXQf8hqqQUxr+jdsjvzQb/xHp5iX
-         +QMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747488502; x=1748093302;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Ok+Jn31WmGz0SXzj4UmJNwMJtqo//nsvsVAqld9UWx4=;
-        b=I+DD0ip/dAw2yx+/NkRFfXo4kRJYTSnDVETh04J9U9ZpAmr7J8cEqMVg+uB0uuYO4Q
-         9beY7pKFsmFl/NkSQrZMPw5Dh0W0aAOKLafm5o/Yucwz+o9fLumqHsuraPg7VY+CzKjZ
-         P2ZJypnE2qcEnVGo0MdUksH3JmajGYtYwutyMH3nZ/l24p5sb3Xe005Dacqg5s8n0+XW
-         2pCch2cm3XXGhvhTxqHik1TgWEeFmW3q1T/0iO8cVMsMR3dIXn3XO6uEAG/LbLjisSHv
-         w9PiMuueM+Iurkv1AAYHaYjBMLZtsA5CkK7pQgqQVsrp2lYHPkNMgqM62KYr1xRPUor4
-         W21A==
-X-Forwarded-Encrypted: i=1; AJvYcCURp1dIGfVt+Ib7SG5uBLYXG0+9QQFPhWb+SKaN9oXR6NeLan8v6S6yHWgR+2NRjPNCZ2GvLE5nafDx1dgbCzM=@vger.kernel.org, AJvYcCWMOWVikQUefQ2za1GfuEy51C9VcT08PuPCOyFBhKU68W6rafuihiP+fwJhon1+Ut0FPSwQqSABNjd1@vger.kernel.org, AJvYcCWYgiVL7V1bHOKWlm/6qeipXeNgnYKhO91xMwoPH0ldLV/Olyn5pJKsVY7RX+A3WwVpNshaAZMq@vger.kernel.org, AJvYcCXTW16F/F5bVvESxe+VkLxgLFzftrS9R+f443lSzpBAPLWNBJVuwTNH18yZRXY15KMfCAEfmW0MHdodfaDV@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/MhQtpQGCtLJNpGlzFpKC/OVFeUR+QtPJOsyXHIloCgwCCy0T
-	LvE6F+o+pDibV35+IBf2ECRT8whePwCuBQ6HMZLjXEamq0F8zzzkkn8W
-X-Gm-Gg: ASbGncty/Cs5Z262ngp6QDPD4Hp8heB0Rj/xtoj+k/H2KVoCoNO9DfeFtOgqysQ74xt
-	XUm1VgIN8A4H3fLk9+57aGHiMCVQO7DmEsPWkToXG1pMNT38sxMvYC8QJ+OlpQGoQrv5H312hD4
-	Cg+rezvjSWQ6CZtOF8uMBb0UE0lV3D+iJLZa8tQFRo0H55ROty0Wfc+Q996NAFGPLLYgyndpATJ
-	2WY1eJNXEDPTaQDkBq7+KhPcv1Ig1qX+lNcPa4lg4Aijm5Ip/EhOTp8CPGm2R1TLE3dfh8z6kUT
-	xml1hK3p19sdfO15xjyUIwkNuwHM90daYVFcbYn6Biz/n9vu6MaIJsmn2wUMX1RoBxv74ote+ye
-	LgNAam9dbXkNnuJnwBK3kv65sM6wJzroazw==
-X-Google-Smtp-Source: AGHT+IH1yn0X4kPCK1uLV4MGl8bTGl35nSAlr0/UoFaLxgHm9QPrSBYXGKUXCH/5q+OGg4JXuR79pQ==
-X-Received: by 2002:a17:90a:d2ce:b0:30e:3737:7c87 with SMTP id 98e67ed59e1d1-30e7dc4ecb4mr9309953a91.5.1747488502263;
-        Sat, 17 May 2025 06:28:22 -0700 (PDT)
-Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30e334016e7sm7006077a91.9.2025.05.17.06.28.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 May 2025 06:28:21 -0700 (PDT)
-Date: Sat, 17 May 2025 22:28:04 +0900 (JST)
-Message-Id: <20250517.222804.482303667530450320.fujita.tomonori@gmail.com>
-To: lossin@kernel.org
-Cc: ansuelsmth@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, hkallweit1@gmail.com,
- linux@armlinux.org.uk, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, kabel@kernel.org,
- andrei.botila@oss.nxp.com, fujita.tomonori@gmail.com, tmgross@umich.edu,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@kernel.org, aliceryhl@google.com, dakr@kernel.org,
- sd@queasysnail.net, michael@fossekall.de, daniel@makrotopia.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- rmk+kernel@armlinux.org.uk
-Subject: Re: [net-next PATCH v11 1/6] net: phy: pass PHY driver to
- .match_phy_device OP
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <D9YA78RFVQMH.QPUFXMHSVU7V@kernel.org>
-References: <20250516212354.32313-1-ansuelsmth@gmail.com>
-	<20250516212354.32313-2-ansuelsmth@gmail.com>
-	<D9YA78RFVQMH.QPUFXMHSVU7V@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CEAmuB1c"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PMdmxODNXQlQQSODRKPS+z3ulONYvupwNKKgziO+OY1/VOR72ghJBhwq+5Ee5DNzgyFuiMnxijbhlkaNth88N/5fIIOsg1V2Wys8PyyS0AvKPqM7QVtlhVExvhHA9DiYR4J1fAA/Gx5jIFgIGEotYO2TJRPc3Bzu6uI5B6e9ShmxhE9bxdA0+5Asj+CWC6eqRKTlbw029PVgJA3UL6ta2b1FLlkwRm1EeZNJP696t7rU67f2kCQ1b98CnNZThhuxcjlQB73FcZb5MP52dncqRkZkk5iAm5CNUO3ViMhe++QaFrk7hSoun1E+NEQhqU7BVAdX7Ir0BCEEWDy0/2gzmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4PF22Cs5iC55mxdXN32iIuY+YK5l/4NpnQPyXkjLSXk=;
+ b=SiRznqdLGt/6W/6y0l4XuncFZ5lEXzgFiWq5u7ZuI6SULGSy0f9c5oIPROkQdo3XKjXN+yPe2r6kjyKbRBGVCoO1c9+F4rDeVwW6RHXFeo2cWKrFPpQCA2TA9oG1znyW4c7I6gZZuQBP2zcorDAyv4//mo1cfinJWXeGbunPcJwwb4aku6XKvVnDP5+xG0JtD+f8ahT819D0dVpIzm1aFSpLWt46rUqvcVZtVWMaMwJPlojODihZvEjErOCATnR0IVuzSDBBlL/W84/QAiR+t+Mue1qoL63e3SB1EGqxvKcqjA0NZ7PR5lvQMyuqbYiXWPWdZKuL40ahVcudbWPb2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4PF22Cs5iC55mxdXN32iIuY+YK5l/4NpnQPyXkjLSXk=;
+ b=CEAmuB1cenqVTYDUehDCs8u4Fk2InAEDubqil6RbapJHGtXWUmgXwy6euiHtuKT4jkv4G1Hru2itP1fogVHKIfzf2PmULodQxB6S8+Wy65VIG8uijRSBm2nvMnxMklwfUItuVZGbh6okz7wgHpSAoy9Hp2G/Cdee4Owb/EveXeUY/e3qBWKXmwh+YhYCHM9P/pR5QhHYbbaxDQ+FSlxmqOKf2NevwtskdPKbFKgJz/ff5sucHGJyFVhquxbUdB2bohXM/B5JZp2obHfoHQhZGBv+s6AzoSULRspi+e/l9Rw/+yg4XL/75d/08c36ujtt67uGbqsKAFqids0spl5QyA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DS7PR12MB6118.namprd12.prod.outlook.com (2603:10b6:8:9a::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8678.28; Sat, 17 May 2025 13:41:52 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%5]) with mapi id 15.20.8722.031; Sat, 17 May 2025
+ 13:41:51 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 17 May 2025 22:41:45 +0900
+Message-Id: <D9YH9CJUTMVL.3DAA5LXB46ASA@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, "John Hubbard"
+ <jhubbard@nvidia.com>
+Cc: "Greg KH" <gregkh@linuxfoundation.org>, "Timur Tabi" <timur@kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust: add basic ELF sections parser
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <D9WP3YU31199.Q8IEDBJZ87LU@nvidia.com>
+ <2025051532-gentleman-reset-58f2@gregkh>
+ <CAOZdJXWKLu0y+kwC+Bm8nBCLizQVpsDdDUoS--hVgz2vnuZJQg@mail.gmail.com>
+ <8b14b078-b899-42e8-8522-599daa65bc63@nvidia.com>
+ <2025051647-urology-think-b8e0@gregkh>
+ <D9XMAV4ERYK7.39TLQBLYTX3TU@nvidia.com> <aCc_PSOPkLWTcTru@pollux>
+ <D9XNS413TVXB.3SWWJE4JGEN8B@nvidia.com> <aCdhS10JCh6HRpqV@pollux>
+ <08a91cb8-2e08-44a5-9d5c-c2c223aaa71d@nvidia.com> <aChhTJvY6KFvqrTP@pollux>
+In-Reply-To: <aChhTJvY6KFvqrTP@pollux>
+X-ClientProxiedBy: TY2PR01CA0024.jpnprd01.prod.outlook.com
+ (2603:1096:404:a::36) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS7PR12MB6118:EE_
+X-MS-Office365-Filtering-Correlation-Id: ceef9378-5f51-483d-9bdb-08dd95489372
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?azVOcS9GUk0reWZWTWlPZ1FYK0JIbHQ5bnRuMFFEaUNqaFRtbEp1c3VUclZS?=
+ =?utf-8?B?SWMxSWJXM29XamxzelVsT2pjT3EvcFo2SWJDYlYwNmF5RklLTTdaa2VTa3lZ?=
+ =?utf-8?B?YzZqcm1tNjFEeUpTRzhDNEhvYlJDSHhxalBzUFNDQ0JwNFFSdVZFdXAwWDhU?=
+ =?utf-8?B?NUJWajVQaWlqUGNjb0gxWkd3Yk54WW4zSm5wVGZHVjltTzd5SUFMd2FhQ0Fn?=
+ =?utf-8?B?VW0xRGxsTTdrQkZaQy9LbnU1Tm9Wck9vR3Z5OElqUWJxbUZnRVk3WU5DRDhW?=
+ =?utf-8?B?Y05Hc2s3UGhtZWNsRzhFOVdBSFgxUnU3YlF0blVpQ1JMc1FNRkxXeTNCMEdp?=
+ =?utf-8?B?M00zSWxTcUZKeTVNeUVIQ1FmYW9INmx3Qno4MGhVa3NGanVLaDhaN1BIbFdm?=
+ =?utf-8?B?cG4zMGQ2US8xMmpIaVhNN3lNcE9Xc25aTkRlbkZQQmdGY3p6dWdyYzZKRGd0?=
+ =?utf-8?B?dmdrd1JDUER3VGVaUUFXa00veG93SFc3QWd6MHlpa3ZkeFVMYlRYUVphamI5?=
+ =?utf-8?B?Rk9FUVVvTEozZE1GM25CQU13Q1ZiR3hnUXBHZ2RGVnh3V3Jab2pnenptNEVT?=
+ =?utf-8?B?UEp4Um9teEI0ckUvUHlKdm1YejE2SWRHcFVkYUZwK0NTbGtUQVRoTit5S3NL?=
+ =?utf-8?B?RDh0WUV1aktndFlGdHFTZkZ0aDNvN2lvTlQ2NUY2Y0N2K2U5UXV0Y2JldUkr?=
+ =?utf-8?B?UXNxaE41TzNvbFJCMjF6cVNCcUh3NnVXb3ZnSTRrcHdzZTJMRHNNcFZKU2tw?=
+ =?utf-8?B?dW5GTFprRnltNDluY1BOU291MTF3M0tsbWtBZVMzdnQ4ZW1oSFJzZUdiRlkw?=
+ =?utf-8?B?K0tSVjNGcmRLR2dBYVZYa1h1VmY0WVVRbTI1RWp2T0VYcnNReXdTR2IxM1FQ?=
+ =?utf-8?B?YUI1NDNxaXdkdFVnUm9BaUJhaXNOeS9HbmhheEN3NWVQTHZtdy9sd0l5dFBL?=
+ =?utf-8?B?UnFnbTI4QTFxTXhaRW9wY2JQQUNuUHNPTTZlZVpJaTZNTE5CcjQwQ1FJOFdZ?=
+ =?utf-8?B?RmhuVkpVZ0NsTGNMZUlvOGR3Y3d2MVhKQTN2VFpJTGYzOTltaVozaFFPTzhY?=
+ =?utf-8?B?a3d5bDFSUFJaZElqSnVRR3ZwVzRjV2lTTEYxZHBHSlJKdFE3aTB1NVc2RkIz?=
+ =?utf-8?B?ejN1NG80YitmZkZxcHVNRVNTei8xSktKMWlCMm8wT00rc0tsdFR6bWRUaXQy?=
+ =?utf-8?B?SnNLQUFzT1E1dXZycEp1MFZYZmZlNHUzbzlPQlRPQXpwQWZnUnUzRG5NU094?=
+ =?utf-8?B?K2w5NG5jQ1ducVh0bzdSVXdTOGRaUThNUDVkTVhHMHJzWHhFUWxyT3I5SzZx?=
+ =?utf-8?B?QkR1a1FZM3JFcHJMeVZ6aEh4MUJMSnBpK1hnRUtaUFlRUFM1OHFaSUM0SmNS?=
+ =?utf-8?B?T1BKM2lqaTBncFlDYzg5K1R6N3lmWksxNTNTR0d2K1pxQ0YxemRaZjllN2F6?=
+ =?utf-8?B?NWxacENYT3RUY1dyZVp3TDE4T2hpWU9QWlZheDdVM0VnS2FiK045TXJjRDJX?=
+ =?utf-8?B?OVhoSDdpL01CYjduSEJlV0U5NWROaGxnT0xaUzkzKzk5Q05ERUEvUUlpQmZh?=
+ =?utf-8?B?QnlJa0hJWFJPQlBOc1dwckJ6eEhqSm51TFFkanloNWp3cEhwcWNzK2p6Y1Uv?=
+ =?utf-8?B?dTBvYU5HOTR0bGdWMEx3VS9WSlZzaFdQSmJpMEtDR0x1VUxzYTE3S2Q1MWtE?=
+ =?utf-8?B?dWd2RmRYU3R2L21IOVRQMnBza0ZLOTB6Mit0OHJMaVZIUUNjV1lRSk84akt6?=
+ =?utf-8?B?TVh2N0hmaUlORHRLdmdKS3hUYVJrNDlma2ZnMmg2a2x6Yno1bXJDa0Zidlcw?=
+ =?utf-8?B?T2lPRzAzQU4vZXhUeVhsbGd2MFRCM2RmbFBRYzlkUHBxUEhzZmNqMWRLUHhU?=
+ =?utf-8?B?RG1vZ3JvQkZIZXFUNUNhWmdhZ1IzY1hVV3JzOUhRNlhWR21jQ1R6OXBqWDNZ?=
+ =?utf-8?Q?vQDbxtSk0gY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VVQxTXk0eXR4SWRKdWJKby84OGNlcy9PcmNlT3NubFI5R2VKWk5oOXUramcz?=
+ =?utf-8?B?ZUtVb1NaVmo1TndodHo4RFY2Q0RQRXljQW1NSjhmaGV6dGI0UUxaMmg4Mjhz?=
+ =?utf-8?B?aGhwcWM4cHdhaENEMnN0OUE5U1VLUjJrclNtMWZWTWZ6dHdnQjRtZkRHeUdC?=
+ =?utf-8?B?TTVQUVRvN0RRem0yY1BMU0lMN2kvR1E2N3RnQzJpc3lkSFNEdmUyUlVScjBB?=
+ =?utf-8?B?NTlzazgrbnNiOWc2VU9jWkhpdDF5UEZFdEFmeGd1S1p2TkVTZzhWOVZzRWJP?=
+ =?utf-8?B?aERLZW9hSFNRdlRJZEpxRDdjZmhWZjBTRTEzdWNXWHNtbk4ycDloakk0UWtG?=
+ =?utf-8?B?bjd4UUsrTXVDOXI4R3pNZUNIV3hCbWxLNFExazlaUldoelVib1Z2RktKcmh3?=
+ =?utf-8?B?WjJhbVgra2RZcEgxd3Nxd1NkRWo1d1p0d1luM2RMOCtSZHY3TFZWUHVkenNk?=
+ =?utf-8?B?cmxFNjRlelZZSXRLNHRlNGtIdGdPdWk2c3l5SXB4THJSaHRyVU5ZQWFEUDN2?=
+ =?utf-8?B?emllUHpORUJHNlRKcFRuM3RtZkwrWDA1cUFqa1BrVnNFRjVBaVlmZksyblBE?=
+ =?utf-8?B?NDl3dzBmV05zclVsdHN6dXJQMU00dENLSmh4NUVGNEJlMFQ2allFNHhHcjN6?=
+ =?utf-8?B?VDVrbGUrbkxFTTR0VTE3L1VuckxkanBxa1J1ak9HRnpjeTFhSzlHWXZmYVZj?=
+ =?utf-8?B?bzZzNFVZVzNYYi9xaWF6RFowdlF1UHdaVlNQQWlpdWk1NERyejdmQ21rMU9L?=
+ =?utf-8?B?ZFBKOGZydUtsbE5DY2xhcXZFNzloV1NWbWNsZE4vN2ZsMUpsMDhOYS9rcEFs?=
+ =?utf-8?B?YlJQWjFkYWRvMm1yc25yWnM2ODZRK2pCU3lLenNqajEyTkc5V05QQUtmMm0y?=
+ =?utf-8?B?MGRNK05Ea2FrYUlPWjdGcHgzWDlJdUdUVVRDaWpOTGszY2lUT2JhaWNtVTZz?=
+ =?utf-8?B?eWorMmdlVmd5eTB0Uktta2RaVVpuWWZzS0dadGorM2VjVHp4RnlvQXVsbjJt?=
+ =?utf-8?B?Q1ZiWHAyWnRqeTNUNTA0a3BqZDNDa0Uyb3M0MUlUc0NLMnkzWHh2TDRMVFJl?=
+ =?utf-8?B?WjZLL1diODRldzNXNmhnZStpQmlqSkdHcmp2SEhwelVhbTZ2QnJBOVR5SEpj?=
+ =?utf-8?B?YmFrRmwrZHpzY0NWVFJkbS9aNjJGVU5PWmwvd3RnMldLY0pJTnRoblgyMUNM?=
+ =?utf-8?B?TnplN1ZCNmJmWWNyQURxWWswQ3VZQUtYQjEzZlZwK05HcktQOS9nejhzUGpp?=
+ =?utf-8?B?VjhDenRVUFB2ZkFaelFsK1lUbjBmM3U2Wm5tZXlsc0VDMk9Eb0ZDNGx1TjFH?=
+ =?utf-8?B?NHU2N3BYd1dHb0pSQ09WOXk2MXc5MDM0SGF5SUpxZEVWaXBIQlMrZ3BFdWcy?=
+ =?utf-8?B?QXlBTFl3bHdVbkFuSm5BT0RiZGFQT25rYlBiQlY1eldGQkdFc2F3TS81a3FG?=
+ =?utf-8?B?OEpjc3YreUhlb01XMEVWbFhEZkZGbzJOTzJGc3ZKSEM3Ry84RzBCRFZTdjlP?=
+ =?utf-8?B?YXlQUmxHZm5pNVZhcUNFUGx1RkZDQThLcmk5RVBUVnkyQVp5Q3RYZElNOFlY?=
+ =?utf-8?B?S053cFI1TEdaaGRBdHhjNi9oQzRzQkUvbTFuTXN2MlZWY3NHNzdxOXJjUzVi?=
+ =?utf-8?B?L3NrODdRcFQyM2lDSUR1SjRpU09LV1RBRDVRTE8yenJrcUhWaGg3NWxBdWpZ?=
+ =?utf-8?B?bExzZE0wbFRWZzhJTmgzajlMQWdLRUhRR1BpbXR3cXFEU3MvbEo5b2t3dUp1?=
+ =?utf-8?B?V1MrU2NEU0VaOWdrZHhJd0k0VEE4ZmpEcEkySzZ5aVR5VXBtejY2WWw1WTVV?=
+ =?utf-8?B?R2FNNE55NWU2eWZEdC8rbUI1RkRtb2V6ZmhaZEJCOXIrYTcvKzhUdmFHK3lQ?=
+ =?utf-8?B?VVh1dG5jN0k2OTh2bkwyVXR2WGtLRlpXYTZVNTBOeUd4WnU3MzJOb3lOOEpK?=
+ =?utf-8?B?em5rakR6N1hxdlUyV3Z2UXBhanFtMTU1VjdSazFtTlVHZTdBMlpDeTJ5VHps?=
+ =?utf-8?B?N1ZJUlBRNmdEcGpXcUorK0FaNWFMQ0I3OTFOa001bnNHbUpCVEJkQWxMMTlm?=
+ =?utf-8?B?a3pua3Q4NjNQZHkzeVNGNHRRancvcUdSZ2kxQkwrTFFycmttYzVwMHMvYzZ0?=
+ =?utf-8?B?V25GTmpzaGtLVUJtTStwdlRTU3l1VWJxeHQ1eWJTTFp0aGQrMDMzZTlDdHlS?=
+ =?utf-8?Q?8ygARfuMRZ7TLOuSL+c+CPF6NG8PB4ANeajOgW4CGA3N?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ceef9378-5f51-483d-9bdb-08dd95489372
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2025 13:41:50.5069
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZZZfws2kYhaY/4yIjgm3S8SpO5Isq3iqWBJlJviDDKN9P1lwKmo2OuxZhK55lUZukn2Vn+5yE4ZFS/HI44PP8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6118
 
-On Sat, 17 May 2025 10:09:53 +0200
-"Benno Lossin" <lossin@kernel.org> wrote:
+On Sat May 17, 2025 at 7:13 PM JST, Danilo Krummrich wrote:
+> On Fri, May 16, 2025 at 12:00:11PM -0700, John Hubbard wrote:
+>> On 5/16/25 9:01 AM, Danilo Krummrich wrote:
+>> > I did not argue for or against it -- what I do disagree with is that w=
+e seem to
+>> > just agree to disagree and stuff a generic piece of code into nova-cor=
+e after
+>> > three mails back and forth.
+>> >=20
+>> > Please keep discussing the above with Greg until we get to a real conc=
+lusion.
+>>=20
+>> Danilo, this is a small amount of code. Is there any real problem with
+>> a compromise, that starts out with Greg's approach of putting this code
+>> in Nova?
+>>=20
+>> And then we can promote it if and when we can make a good case for that.
+>>=20
+>> But in the meantime, we really need to be able to take "yes" (from Greg)
+>> for an answer! I don't want to blow up the firmware images, shred
+>> the "Nouveau and Nova can use the same images" story, and delay merging,
+>> all over 100 lines of code.
+>
+> What I disagree with is that it seems that you actually *can* "make a goo=
+d case
+> for it", but stop discussing it with Greg, because he would agree with ju=
+st
+> stuffing this generic infrastructure in the driver.
+>
+> It seems like taking the way of least resistance even though you seem to =
+have
+> good arguments for this to be generic infrastructure.
+>
+> The fact that *only* nova-core would use it to begin with is not the rele=
+vant
+> factor. nova-core is, for obvious reasons, the only user of quite some ge=
+neric
+> infrastructure, yet we don't stuff it into the driver.
+>
+> The relevant factor is, do we agree that this is a valid requirement for =
+drivers
+> in general (which you seem to answer with a clear "yes"). Which means we =
+should
+> keep discussing it.
+>
+> If we can't conclude that this should be generic infrastructure, we can s=
+till
+> figure out the way forward for nova-core (i.e. have our own ELF parser in
+> nova-core if necessary).
+>
+> But, as I said above, please don't stop the discussion with agreeing to d=
+isagree
+> after three mails back and forth.
+>
+> We have plenty of time to discuss it; we do not target v6.16 and the v6.1=
+7 merge
+> window is far away.
 
-> On Fri May 16, 2025 at 11:23 PM CEST, Christian Marangi wrote:
->> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
->> index a59469c785e3..079a0f884887 100644
->> --- a/rust/kernel/net/phy.rs
->> +++ b/rust/kernel/net/phy.rs
->> @@ -418,15 +418,18 @@ impl<T: Driver> Adapter<T> {
->>  
->>      /// # Safety
->>      ///
->> -    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
->> +    /// `phydev` and `phydrv` must be passed by the corresponding callback in
->> +    //  `phy_driver`.
->>      unsafe extern "C" fn match_phy_device_callback(
->>          phydev: *mut bindings::phy_device,
->> +        phydrv: *const bindings::phy_driver,
->>      ) -> crate::ffi::c_int {
->>          // SAFETY: This callback is called only in contexts
->>          // where we hold `phy_device->lock`, so the accessors on
->>          // `Device` are okay to call.
->>          let dev = unsafe { Device::from_raw(phydev) };
->> -        T::match_phy_device(dev) as i32
->> +        let drv = unsafe { T::from_raw(phydrv) };
->> +        T::match_phy_device(dev, drv) as i32
->>      }
->>  
->>      /// # Safety
->> @@ -574,6 +577,19 @@ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
->>  /// This trait is used to create a [`DriverVTable`].
->>  #[vtable]
->>  pub trait Driver {
->> +    /// # Safety
->> +    ///
->> +    /// For the duration of `'a`, the pointer must point at a valid
->> +    /// `phy_driver`, and the caller must be in a context where all
->> +    /// methods defined on this struct are safe to call.
->> +    unsafe fn from_raw<'a>(ptr: *const bindings::phy_driver) -> &'a DriverVTable {
->> +        // CAST: `DriverVTable` is a `repr(transparent)` wrapper around `bindings::phy_driver`.
->> +        let ptr = ptr.cast::<DriverVTable>();
->> +        // SAFETY: by the function requirements the pointer is const and is
->> +        // always valid to access for the duration of `'a`.
->> +        unsafe { &*ptr }
->> +    }
-> 
-> If we go the way of supplying a `&DriverVTable` in the
-> `match_phy_device` function, then this should be a function in the impl
-> block of `DriverVTable` and not in `Driver`.
+I've tried to make the case for this being generic infrastructure in my
+other email, the TL;DR being that there is precedent with at least three
+C drivers (if we include Nouveau), likely a few more - and I haven't yet
+looked for drivers doing the same thing with their own container format,
+there might be a few surprises here as well. ^_^;
 
-Yeah.
-
-> See my reply to Fujita on the previous version, I don't think that we
-> need to add the `DriverVTable` to the `match_phy_device` function if we
-> don't provide accessor methods. Currently that isn't needed, so you only
-> need the hunks above this one. (I'd wait for Fujita's reply though).
-
-Agreed, to make DriverVTable actually useful in match_phy_device(),
-further changes would be needed. I think it's sufficient to simply
-make the Rust code compile, as shown in the patch below.
-
-I can take care of making sure Rust uses DriverVTable correctly later.
-
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index a59469c785e3..32ea43ece646 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -421,6 +421,7 @@ impl<T: Driver> Adapter<T> {
-     /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-     unsafe extern "C" fn match_phy_device_callback(
-         phydev: *mut bindings::phy_device,
-+        _phydrv: *const bindings::phy_driver,
-     ) -> crate::ffi::c_int {
-         // SAFETY: This callback is called only in contexts
-         // where we hold `phy_device->lock`, so the accessors on
+You are right that we are not in a hurry, and having this discussion
+should not slow Nova's progress (which is our main concern). But should
+the decision take some time, let's keep in mind that moving the module
+out of nova-core into the kernel crate requires little more than a
+matter of doing `git mv`, so there is little friction in having it
+locally first.
