@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827742C9A
-	for <rust-for-linux@vger.kernel.org>; Sat, 17 May 2025 19:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F92017B418;
+	Sat, 17 May 2025 19:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747508947; cv=none; b=sWUFhwkahtRByQek2QW9N92nzfiDoyMJv+om9MInpF2h8E6ig8KMgICp3v1aHdAsZpt2rhv2f8pNrctYkF26urQ4r+h5cB+5G8drszmEgLsYdgLnoKTGRXiy9RyKZoWn/z8V/gDNqJqycLiocVYv4zw1Ho9mirQcSmo2VAB1FW0=
+	t=1747509004; cv=none; b=Yi3XnAuVly4GYL6gKm6JgiLYkIGxZa5XimdhInhAcX1xWK8DOigM+w0oePq/f1HXdhxiB83haGo3jdbFL9FsnfAEaUciOPUIJWDYsOlnKt7pHPyK8+ThzWp4vCr9R9soLtD075iVgMTQ0QoQsTiO/onHzazPQBPnFLCPkn6Xols=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747508947; c=relaxed/simple;
-	bh=giiFTAvo8R16w0FvI+CNVg05Te46rFwSFFDtIKhpE4s=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=b0jcQeMW0YrNCtbCGH1EZDKfvJdxn2UQQIoMCMpHx2Tc/sA8hyGE/qVbRztmIIDP6PVI4u7jYizL7+uALwFLun9nQchF2GgGcslUQjD4+zKrPlmiQ79ff6cObOd048UeujMsbFe3USwP3krK4KYmpa0elFU3A1NGKQ3/MrNhnFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IR9/XvQk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747509004; c=relaxed/simple;
+	bh=k+5UWbrgpiWdeXHIP57h4QlIssmQ95rqoMKkKrHaPxI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=JsJNs7JeU96qJT3BNXs7EnF5r29IsOS8/eecfLL4MzmmvBE3yvv9FUv1fBnTwHqDSGe+4Biihv7RPpolD689l8JDSMRHK4f4rNAsuzwEpjLfaiPygUoMTCLB3kSK3teYm5UAHnDT1fRPuGT8p6O6GcVjqPB8xAiJ2upI3frEXpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ue6aPgp8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IR9/XvQk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9C1C4CEE3;
-	Sat, 17 May 2025 19:09:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ue6aPgp8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7B0C4CEE3;
+	Sat, 17 May 2025 19:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747508946;
-	bh=giiFTAvo8R16w0FvI+CNVg05Te46rFwSFFDtIKhpE4s=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=IR9/XvQkAzRrIlO/y4riEzzX89Lh0GNhb0InwxsPH+8vrn4k+fRGbD86BAhx/6DpN
-	 V8j++Vtc3ZXDFkZESkRowCPxFJuBpJE40Kw3O07/yD4blnSSDhYUP1C4+4YcV59FaX
-	 sfXoWpCb8FEcffbHFIMPt4GElrA2CrrfonApKqzfQWLkX4LUABxaKjixL1SxLexXJg
-	 CwikRMvueYBOZ95FBvpq49K5LSKVPLs3LOfaJM+2zZg+5UENJZA8COfRFCzoZIsmJr
-	 De7hYjKj6WdMCcajEpCFDCyGrOlT6bx3psU3k1c50aQjvPDPIGsheqUAkZjasyt4cO
-	 tOfZjJAH8ve5w==
+	s=k20201202; t=1747509004;
+	bh=k+5UWbrgpiWdeXHIP57h4QlIssmQ95rqoMKkKrHaPxI=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=ue6aPgp8i1e9ocaSTTZtZOHsOo7o51s0k0vjFhsPY2DzIn7UA+zWoYRzcZ4QzuymF
+	 Z/6Syvc1gPmXFyf3/PIIwP3k9R+ArwCXAPbBAanyNpnsfi62ZwYw5A2fElYKhR+dTp
+	 CI4jydXFPfKzYWYCsv6/UXC8wnxGHfSxjblHQqfhPALGCsipxLS3yzb1Kj5Gf/mImW
+	 QqlyVevcr1L/rzNK+2808giI8ae5iPr5k0jE0MjO/WbpylWXGn6v2OR+/eyk3DG9y4
+	 /yocrj0qwO1ae5YFW2Dg4FFaQ/dbbDsyV8qeTfr/nfo3PlrR3q8z8azDsCf8WYmT+Q
+	 A/a3ppo3ztFyA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,99 +34,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 17 May 2025 21:09:02 +0200
-Message-Id: <D9YO7XDNV712.3A5HSSLUQIZ2W@kernel.org>
-Subject: Re: [PATCH v2] rust: doc: Clarify safety invariants for Revocable
- type
+Date: Sat, 17 May 2025 21:09:59 +0200
+Message-Id: <D9YO8NQ32W8Z.ZZKSFWFK6HEZ@kernel.org>
+To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: miscdevice: fix typo in MiscDevice::ioctl
+ documentation
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Marcelo Moreira" <marcelomoreira1905@gmail.com>,
- <benno.lossin@proton.me>, <ojeda@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <skhan@linuxfoundation.org>,
- <linux-kernel-mentees@lists.linuxfoundation.org>,
- <~lkcamp/patches@lists.sr.ht>
 X-Mailer: aerc 0.20.1
-References: <20250503145307.68063-1-marcelomoreira1905@gmail.com>
- <D9RJQYNTIOK1.3HI7NDDWPK6IM@kernel.org> <aChczAWsPdmdeen3@pollux>
-In-Reply-To: <aChczAWsPdmdeen3@pollux>
+References: <20250517-rust_miscdevice_fix_typo-v1-1-8c30a6237ba9@gmail.com>
+In-Reply-To: <20250517-rust_miscdevice_fix_typo-v1-1-8c30a6237ba9@gmail.com>
 
-On Sat May 17, 2025 at 11:54 AM CEST, Danilo Krummrich wrote:
-> On Fri, May 09, 2025 at 12:10:08PM +0200, Benno Lossin wrote:
->> On Sat May 3, 2025 at 4:53 PM CEST, Marcelo Moreira wrote:
->> >  /// # Invariants
->> >  ///
->> > -/// - The wrapped object `data` is valid if and only if `is_available=
-` is `true`.
->> > -/// - Access to `data` must occur only while holding the RCU read-sid=
-e lock (e.g., via
->> > -///   [`Revocable::try_access`] or [`Revocable::try_access_with_guard=
-`]).
->> > -/// - Once `is_available` is set to `false`, further access to `data`=
- is disallowed,
->> > -///   and the object is dropped either after an RCU grace period (in =
-[`revoke`]),
->> > -///   or immediately (in [`revoke_nosync`]).
->> > +/// - `data` is valid if and only if `is_available` is true.
->> > +/// - Access to `data` requires holding the RCU read-side lock.
->>=20
->> I'm not sure what the correct wording here should be. The current
->> wording makes the `revoke_internal` function illegal, as it doesn't hold
->> the read-side lock, but still accesses `data`.
->>=20
->> Maybe @Danilo can help here, but as I understand it, the value in `data`
->> is valid for as long as the rcu read-side lock is held *and* if
->> `is_available` was true at some point while holding the lock.
+On Sat May 17, 2025 at 1:06 PM CEST, Christian Schrefl wrote:
+> Fixes one small typo (`utilties` to `utilities`) in the documentation of
+> `MiscDevice::ioctl`.
 >
-> IMHO, the RCU read lock is *not* a requirement, it's (for some methods) t=
-he
-> justification for how it is ensured that the `is_available` atomic cannot=
- be
-> altered during the usage of `data`. So, it shouldn't be part of the type
-> invariants.
+> Fixes: f893691e7426 ("rust: miscdevice: add base miscdevice abstraction")
+> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+> ---
+> I've found this small typo while working on my `miscdevice` changes.
+> ---
+>  rust/kernel/miscdevice.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-But the `is_available` atomic *can* be altered during the usage of
-`data`. And in that case it isn't clear to me how you still allow usage
-without relying on rcu.
-
-> For instance, we also have the Revocalbe::access() [1], which is an unsaf=
-e
-> direct accessor for `data`. It has the following safety requirement:
->
-> 	 "The caller must ensure this [`Revocable`] instance hasn't been revoked
-> 	 and won't be revoked as long as the returned `&T` lives."
->
-> Which is equal to the caller must ensure that `is_available` is true, and=
- won't
-> be altered to false as long as the returned reference lives.
-
-Sure. We could add that it remains valid while `is_available` is true,
-but when it changes, the data is still valid until the end of the rcu
-grace period?
-
-> One valid way for the caller would be to wrap it into an RCU read side cr=
-itical
-> section and check `is_available`. However, depending on the context, ther=
-e are
-> also other justifications, e.g. [2].
-
-For the justification in [2], you need a type invariant.
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
 ---
 Cheers,
 Benno
-
-> [1] https://gitlab.freedesktop.org/drm/nova/-/blob/nova-next/rust/kernel/=
-revocable.rs?ref_type=3Dheads#L148
-> [2] https://gitlab.freedesktop.org/drm/nova/-/blob/nova-next/rust/kernel/=
-devres.rs?ref_type=3Dheads#L221
->
->> > +/// - Once is_available is set to false, further access to data is di=
-sallowed,
->> > +///   and the object is dropped either after an RCU grace period (in =
-[revoke]),
->> > +///   or immediately (in [revoke_nosync]).
->
-> Same here, RCU isn't a relevant factor for the type invariant IMHO. It's =
-just
-> how part of the implementation guarantees to up-hold the invariant.
-
