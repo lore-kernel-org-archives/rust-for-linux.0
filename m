@@ -1,268 +1,129 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE8E219EB6;
-	Sat, 17 May 2025 20:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4E31DDC0F
+	for <rust-for-linux@vger.kernel.org>; Sat, 17 May 2025 21:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747512881; cv=none; b=fU4C13SdMmGi7qFcTgqirbz79K6PxPt9Y3G8JScswdZQFFc/sACtu7srakNfPFvwGH/O3U+xiZ9ws7oTRUO1seMHnqYtN/1qBQDl+ZM9gmo6+3ZgJUf4cFgaYc78RN2eMsf6ZuvrJAs9DNmaQRQnL+YK/WmprWwEVF0TSNHURVs=
+	t=1747517846; cv=none; b=caSKA+l20nJ6VgDoAH5ECUf78gL78H8Cudlw+BBT2hIccE8dKmeC5uaCn1ogp8wMeRx4TWEePcRmB7j4nz5LXwbKNiPMLvxeA64XOyYbRIBC0SdkHKJAYuU6tRiK2c5SFg+QDdY06wpfDSJ2VNZxS1msW51ro8Kd2M+gyJyh3Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747512881; c=relaxed/simple;
-	bh=2yGKARmPcHbfZzyzn2WTevDsYdGxrPhfxSpFQ/v7kks=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCs6vf32q+gqU2FnzXl6EG3yujw5xLx9RSCUf1//pa/eFuHQC6u6MFHw2FhB1OUhfNCiCntCcF29XihhR+/IxqQgCYSyQBAuMtnSN9dAqblZJ5jlRAzApG2awiAb6q0Y6QWu85Z9kQg18CRWChSlnwDEiySwvJvps9u/yUoRjZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IO8zZh+Z; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747517846; c=relaxed/simple;
+	bh=a4Z+OfYM/RmSaLQ/ZTI97l43un5yBV8OEUGbPy6KrCs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nEB2Jt7bP+4IMqNNWO5zVWiQvqeullTERDWjxrBuw0AzecUS9iGVICtMsqu0iIcgsi81m7Orel74Wbe0B45XZjwfAOmWlT8orKyRHAPZvQTnAiafhPSw8hdobNx2DV72+BmpIbjvGD5DYgIqX+jugkwss4loY7IV/uJIhX+Wwk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jJ1LX0hJ; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IO8zZh+Z"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-442ed8a275fso38628835e9.2;
-        Sat, 17 May 2025 13:14:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747512878; x=1748117678; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1+WJq3/QRM5Ozd7Q8cMybi3PuINc6tP7bYwsOpEjVlw=;
-        b=IO8zZh+ZBCx4T/i3oOkqHVlbhwKDp9TQR3TcPA//R3BtAiEj0l+gwz94or1idGXiYZ
-         jAk0EySIg5dOvAtj0jIl6mzKsc91k+jcDHf/SQwTcP0Cd9oEMsc5kIlltMT7g5UBgDUD
-         gBeUWizArWCmSHV9YNRUxchk372FcpiTVc/PI4LmcsfQMda/QRU4Ib2XmTTNmptNB5rP
-         tDLoXs06yWSWOcyW6zeZJVmi+2uoJ7vFwtbCr2QKzPDGq0FzyE50w+Gt8g4I4zynEzZe
-         x95+UpFADfegPk1pXa+zKnQIcEb6I2H45lUjT1avEBn/WgGIapaUVs3VyF29fli5MSFm
-         BiUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747512878; x=1748117678;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1+WJq3/QRM5Ozd7Q8cMybi3PuINc6tP7bYwsOpEjVlw=;
-        b=nr0kXgI9RuTUGHlONfaf9biHyNcW8mDRLXBlDTFYarnj35afxqAskkBdESyEiW9KaF
-         GocDKScVXd+Pp/sY3wfmosnahgcDq7tkSHOST6eoPWFQdVhmaQw+yKV41iPXD2NzDl7r
-         dIc6fHzOsk53TcLmDFfiYLopWq8B+j67fIbBAzIAOksDqllPaeOo4K2FFEjaOU3jHHNK
-         s4iTyjBMGsz6pUbtW9Ck6ABbGFatWslnPfuJSjE1gYPMedC/4ikAWu2+rfwnj68x95sv
-         JPVgdIcaGXmXpw6m1f5eMuheNHO+M0IgrqMQFWxU8UPyZyBszhNWopuQSLVweKtIM4cr
-         kQgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+CZRaswF6lVh2Impq+pt9gB2hLGONcce97fkAklRS8FqINpeqGlp/CLaeJ8Zg3DD4H5HaAkBSEuRl3VEnmaw=@vger.kernel.org, AJvYcCVSnDQvw/Sw8nseyhS9324Go9k9pcXavA3JAY08ClyrhAATFK0kGf8MADeTKxjLnWY+sOpfzgzf@vger.kernel.org, AJvYcCWlqa1FY5usYICl583nmLkBfJCxAABPzmb2+QeJMIn/LDKUy2HnqnvnOuanfhdboWzrjONCjpTw7unh@vger.kernel.org, AJvYcCXuvboBEhoi50kQkgWZG9BEecSgpurA3i9U2UkRWDdB8ij8qHXMfJ5pgci/k0QdVESW9GcotgMFyFj7k4O+@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyiv8K+fp+UOBDTgGjo7VyEeD8TC8HWtC8oPYinS8UcgpgmJByR
-	/jGJuVdRq6vY5T/Tp5E9Omqi9+g9lUg7WnFhbdmuvUXPxIR0+aOZTD17
-X-Gm-Gg: ASbGnctxNtW45TNJI+6jkJbbiXu9q76XCThZuVkqdDa9+7cX9TL1bBY6/zKFxWN/mH+
-	1xjYxdizhYcqYfJGBD9pFRZ9QR0j02V5IDcsJrJMRzZjO2D3DYS0E4/XRlhcAqY8ICJgS3xo0YZ
-	LUoHH3SCP7B1AsWlsZAmfhk8dZOlfDPKFSB10qmqkZbD4tGsRLnA81HEk3A6OXbUNdBi/EMtyA/
-	1e7o+IjgDecVEqPFa9+kRlip6/XNqO/9wiywvHpxfkjAiUyF8fOJ7bcc2QLqAY3CRgh5I2NOJYf
-	jv7QnK98nTTA8w0lb3gMTV493+8A5M19BdjB2BC9NMgq02EgDVRNin7a+0bokXv8dnDrKKrJBNZ
-	R9/fOYESunCMlTF0Br45F
-X-Google-Smtp-Source: AGHT+IEMYLcYs6Tqfs3/y2GsUBIqhzMkMi1qwMQIwzchu5sAPL3gwZ2+PECG9rDdW0ZYMuv/KfO3ng==
-X-Received: by 2002:a05:600c:3e88:b0:43c:fbbf:7bf1 with SMTP id 5b1f17b1804b1-442fd6724bbmr85451855e9.30.1747512877584;
-        Sat, 17 May 2025 13:14:37 -0700 (PDT)
-Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-442fd4fdcccsm85345445e9.6.2025.05.17.13.14.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 May 2025 13:14:37 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrei Botila <andrei.botila@oss.nxp.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jJ1LX0hJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747517845; x=1779053845;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a4Z+OfYM/RmSaLQ/ZTI97l43un5yBV8OEUGbPy6KrCs=;
+  b=jJ1LX0hJVkccVeZ4U89KHy6BTX2REXAFf6a8i63KRANfPY1Ybnh9aCal
+   lKzBAVJjtcguEbYXwEt6FNoGvT3WHppcon9wBpUbXrI44Tc/2zjXFC8Bq
+   j4gusdNhrFgzXumuGntH4sAb0AiBfoPVd1OWtgT51bBse7HJmYEtV/Pi0
+   KEZj7G2wZY+sxLxVloBe7ggXB5+3bq97k14won4XiyTyuMzyt+5bvL+Oh
+   LtQPWKaHZJNSDtIIG5k/Gkw4LPXBpOYOPUwpXC8tKRGPRM8BkVka3+G0u
+   w84BtxMBjlnRqtLYRd1iFwnFyyWoXQpacqUZxDbQjyzBYFpNMnq71sJZb
+   w==;
+X-CSE-ConnectionGUID: ebpKXtCTSbyZrZrZ+upeQg==
+X-CSE-MsgGUID: vEZv1wUjRvirE5s1Qz/6Ow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11436"; a="49567140"
+X-IronPort-AV: E=Sophos;i="6.15,297,1739865600"; 
+   d="scan'208";a="49567140"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2025 14:37:24 -0700
+X-CSE-ConnectionGUID: 7bZfwtb7QoC0ylkpxoMQIQ==
+X-CSE-MsgGUID: QtBAnf0RQUuQh7+WOotLLQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,297,1739865600"; 
+   d="scan'208";a="139496803"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 17 May 2025 14:37:21 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uGPDa-000KS7-2g;
+	Sat, 17 May 2025 21:37:18 +0000
+Date: Sun, 18 May 2025 05:36:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Igor Korotin <igor.korotin@yahoo.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Michael Klein <michael@fossekall.de>,
-	Daniel Golle <daniel@makrotopia.org>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [net-next PATCH v12 6/6] dt-bindings: net: Document support for Aeonsemi PHYs
-Date: Sat, 17 May 2025 22:13:50 +0200
-Message-ID: <20250517201353.5137-7-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250517201353.5137-1-ansuelsmth@gmail.com>
-References: <20250517201353.5137-1-ansuelsmth@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	Igor Korotin <igor.korotin@yahoo.com>
+Subject: Re: [PATCH v4] rust: macros: Fix macro referencing core and kernel
+ crates
+Message-ID: <202505180525.LRAJXV9j-lkp@intel.com>
+References: <20250516122349.1944895-1-igor.korotin@yahoo.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250516122349.1944895-1-igor.korotin@yahoo.com>
 
-Add Aeonsemi PHYs and the requirement of a firmware to correctly work.
-Also document the max number of LEDs supported and what PHY ID expose
-when no firmware is loaded.
+Hi Igor,
 
-Supported PHYs AS21011JB1, AS21011PB1, AS21010JB1, AS21010PB1,
-AS21511JB1, AS21511PB1, AS21510JB1, AS21510PB1, AS21210JB1,
-AS21210PB1 that all register with the PHY ID 0x7500 0x9410 on C45
-registers before the firmware is loaded.
+kernel test robot noticed the following build errors:
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- .../bindings/net/aeonsemi,as21xxx.yaml        | 122 ++++++++++++++++++
- MAINTAINERS                                   |   1 +
- 2 files changed, 123 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
+[auto build test ERROR on rust/rust-next]
+[cannot apply to shuah-kselftest/kunit shuah-kselftest/kunit-fixes linus/master v6.15-rc6 next-20250516]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml b/Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
-new file mode 100644
-index 000000000000..69eb29dc4d7b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
-@@ -0,0 +1,122 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/aeonsemi,as21xxx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Aeonsemi AS21XXX Ethernet PHY
-+
-+maintainers:
-+  - Christian Marangi <ansuelsmth@gmail.com>
-+
-+description: |
-+  Aeonsemi AS21xxx Ethernet PHYs requires a firmware to be loaded to actually
-+  work. The same firmware is compatible with various PHYs of the same family.
-+
-+  A PHY with not firmware loaded will be exposed on the MDIO bus with ID
-+  0x7500 0x7500 or 0x7500 0x9410 on C45 registers.
-+
-+  This can be done and is implemented by OEM in 2 different way:
-+    - Attached SPI flash directly to the PHY with the firmware. The PHY
-+      will self load the firmware in the presence of this configuration.
-+    - Manually provided firmware loaded from a file in the filesystem.
-+
-+  Each PHY can support up to 5 LEDs.
-+
-+  AS2xxx PHY Name logic:
-+
-+  AS21x1xxB1
-+      ^ ^^
-+      | |J: Supports SyncE/PTP
-+      | |P: No SyncE/PTP support
-+      | 1: Supports 2nd Serdes
-+      | 2: Not 2nd Serdes support
-+      0: 10G, 5G, 2.5G
-+      5: 5G, 2.5G
-+      2: 2.5G
-+
-+allOf:
-+  - $ref: ethernet-phy.yaml#
-+
-+select:
-+  properties:
-+    compatible:
-+      contains:
-+        enum:
-+          - ethernet-phy-id7500.9410
-+          - ethernet-phy-id7500.9402
-+          - ethernet-phy-id7500.9412
-+          - ethernet-phy-id7500.9422
-+          - ethernet-phy-id7500.9432
-+          - ethernet-phy-id7500.9442
-+          - ethernet-phy-id7500.9452
-+          - ethernet-phy-id7500.9462
-+          - ethernet-phy-id7500.9472
-+          - ethernet-phy-id7500.9482
-+          - ethernet-phy-id7500.9492
-+  required:
-+    - compatible
-+
-+properties:
-+  reg:
-+    maxItems: 1
-+
-+  firmware-name:
-+    description: specify the name of PHY firmware to load
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+if:
-+  properties:
-+    compatible:
-+      contains:
-+        const: ethernet-phy-id7500.9410
-+then:
-+  required:
-+    - firmware-name
-+else:
-+  properties:
-+    firmware-name: false
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/leds/common.h>
-+
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ethernet-phy@1f {
-+            compatible = "ethernet-phy-id7500.9410",
-+                         "ethernet-phy-ieee802.3-c45";
-+
-+            reg = <31>;
-+            firmware-name = "as21x1x_fw.bin";
-+
-+            leds {
-+                #address-cells = <1>;
-+                #size-cells = <0>;
-+
-+                led@0 {
-+                    reg = <0>;
-+                    color = <LED_COLOR_ID_GREEN>;
-+                    function = LED_FUNCTION_LAN;
-+                    function-enumerator = <0>;
-+                    default-state = "keep";
-+                };
-+
-+                led@1 {
-+                    reg = <1>;
-+                    color = <LED_COLOR_ID_GREEN>;
-+                    function = LED_FUNCTION_LAN;
-+                    function-enumerator = <1>;
-+                    default-state = "keep";
-+                };
-+            };
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6cc52e99c1f8..d11038a90113 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -650,6 +650,7 @@ AEONSEMI PHY DRIVER
- M:	Christian Marangi <ansuelsmth@gmail.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/net/aeonsemi,as21xxx.yaml
- F:	drivers/net/phy/as21xxx.c
- 
- AF8133J THREE-AXIS MAGNETOMETER DRIVER
+url:    https://github.com/intel-lab-lkp/linux/commits/Igor-Korotin/rust-macros-Fix-macro-referencing-core-and-kernel-crates/20250516-203554
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20250516122349.1944895-1-igor.korotin%40yahoo.com
+patch subject: [PATCH v4] rust: macros: Fix macro referencing core and kernel crates
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250518/202505180525.LRAJXV9j-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250518/202505180525.LRAJXV9j-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505180525.LRAJXV9j-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   PATH=/opt/cross/clang-18/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.78.0-bindgen-0.65.1/cargo/bin:/opt/cross/clang-18/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
+   make: Entering directory '/kbuild/src/consumer'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in scripts/rustdoc_test_builder.rs at line 50:
+        // Qualify `Result` to avoid the collision with our own `Result` coming from the prelude.
+        let body = body.replace(
+            &format!("{rustdoc_function_name}() -> Result<(), impl ::core::fmt::Debug> {{"),
+   -        &format!("{rustdoc_function_name}() -> ::core::result::Result<(), impl ::core::fmt::Debug> {{"),
+   +        &format!(
+   +            "{rustdoc_function_name}() -> ::core::result::Result<(), impl ::core::fmt::Debug> {{"
+   +        ),
+        );
+    
+        // For tests that get generated with `Result`, like above, `rustdoc` generates an `unwrap()` on
+   make[2]: *** [Makefile:1826: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src/consumer'
+
 -- 
-2.48.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
