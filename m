@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583B2F50F;
-	Sun, 18 May 2025 07:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538592AEE4
+	for <rust-for-linux@vger.kernel.org>; Sun, 18 May 2025 07:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747552777; cv=none; b=SW/PE+OSf3l3nqQW6ieNjmVFIVmqA9vPiDES6Rcm4U7UouOH8N9jfD5u/OIlmvcaZlEjEw0+ySIfhIZFSt9QLu2QlSA8xKHiS6xlbqpwlKjj+t88dxBMQVl41NXtffOqmrknmOACV9PYhv86ZnLdJ+pnHff5V6+xFMmdIcSAo18=
+	t=1747553600; cv=none; b=f4ae7OEctUZNH9acZ4VSyEj2zyONv7M5UTRMb2471PQF+ejAOv5DsfHQRedez63kVxVNDio2YZyBfh3rovb17ZmQ7rFUgh0ry9Zw3h4PaXDj/G6Pjmun6iqkQX5BSV7KB8dr/9cjufQFxUQ2wqGVr2H/adEu7eCUXW45IDyUE0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747552777; c=relaxed/simple;
-	bh=eZTv81uAYSuj3s2veI21xz+VC0/ANUgRdzq9TDNSayA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=r2l9MtSi60cHVoZq+RgJ7CzHwLI0pYsAykUH37KI7CoaPwArNpEneY/U1PRnYMpxzjpUTL5vDAU8gwU7yEQHJTdOlWEetrtkrqi4jiUTsPVQjrkyfO+El/paTQP+z50nfORmWxK2k91fhxZXcdBD67S2fdqqhZXWSplzCnriIUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gr5lXed9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747553600; c=relaxed/simple;
+	bh=LJyvCwFYKgmQkmpKDNVDrc82wn/ZRzqtVtWAdfbIcYc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=FNyrCru5vJLlB2OTy+f1YJiF07mseu/B5scTvu3VrLCWc/T6XKTfIacPjejtit/U7fFptiAKt+2kORIUGv2GFNt8WZGwVBSMPoSC0O8j1ESlbILNdHHBDk4A8nec5ywju0s8TxmPKXXktszr1bdvK5DApms6BEzyC2Q53XqFOmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtioRlGa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gr5lXed9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81ACC4CEE7;
-	Sun, 18 May 2025 07:19:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtioRlGa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994C3C4CEE7;
+	Sun, 18 May 2025 07:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747552776;
-	bh=eZTv81uAYSuj3s2veI21xz+VC0/ANUgRdzq9TDNSayA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=gr5lXed98/psCI6YG1EDjEqbMWClv30in0JVqiv3S0IaaTiKvXuaKsudtuFglt6Jd
-	 P259ZRfAb+sa/DZo4VZkVFeMyC37jwswtPFGm8ItrEmfywVJetfNSSoUIi8Ngh2scN
-	 gfVKeW6tBulVNNy/aD2s7B5cQUQfOJagSVXoAM4M8yrGpU8M3LQhJd80KW2i05YKga
-	 rD5u0y0doe7RvLoniFdEU+susu/2op+g5faDqd+xZ+41c5ESdovMwwQVRl32o5waZm
-	 ZdFXZnvaspMU83Z0In7Tine1KsLeBnU+ri/XEhFDTp3vx56mqkrZoTdIdSLUyJyx9Q
-	 CrOl5K55eisEg==
+	s=k20201202; t=1747553598;
+	bh=LJyvCwFYKgmQkmpKDNVDrc82wn/ZRzqtVtWAdfbIcYc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EtioRlGadxLwQpGwZOe+wFNVspkAEb9w4o0EN07EOh/irugSNUJAGMII9XSLi6O2+
+	 jANbSwzY+DaONdoiD64713q/PzsH6DXXE0dyfxynS+3j9kQpiO/rBm2AtSvxkicCZ7
+	 dtD/Q8iJp7wp9hMUxe2xkWGt+hOdP3h1NgeqnoNzdHC5qsC7XKMuOXDd/C56BgJRV8
+	 H3K30DWCyr+mkIo7HCSs68Uknl1K6SNtZTqSnPUZfToMOfF2zaVEe/uQUePl5ydNN5
+	 M+5eAoYttNkhrkolBBkzIF/YZcH/H6FGi0BD2QqKkySjNA+B280C8NbXIeUAmKp2ab
+	 jfpWiCqUU5SJA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,106 +34,74 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 18 May 2025 09:19:23 +0200
-Message-Id: <D9Z3R4EYAXV9.211IFNRTOPM6O@kernel.org>
-Subject: Re: [PATCH v3] rust: regulator: add a bare minimum regulator
- abstraction
+Date: Sun, 18 May 2025 09:33:08 +0200
+Message-Id: <D9Z41NMNT28E.50YJYE4DC9M7@kernel.org>
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, "Sebastian Reichel"
- <sebastian.reichel@collabora.com>, "Liam Girdwood" <lgirdwood@gmail.com>,
- "Mark Brown" <broonie@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Igor Korotin" <igor.korotin@yahoo.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v4] rust: macros: Fix macro referencing core and kernel
+ crates
 X-Mailer: aerc 0.20.1
-References: <20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com>
- <D9YXK1J1XO37.JVILKENRKYXD@nvidia.com>
-In-Reply-To: <D9YXK1J1XO37.JVILKENRKYXD@nvidia.com>
+References: <20250516122349.1944895-1-igor.korotin.ref@yahoo.com>
+ <20250516122349.1944895-1-igor.korotin@yahoo.com>
+In-Reply-To: <20250516122349.1944895-1-igor.korotin@yahoo.com>
 
-On Sun May 18, 2025 at 4:28 AM CEST, Alexandre Courbot wrote:
-> On Wed May 14, 2025 at 12:44 AM JST, Daniel Almeida wrote:
->> +//! Regulator abstractions, providing a standard kernel interface to co=
-ntrol
->> +//! voltage and current regulators.
->> +//!
->> +//! The intention is to allow systems to dynamically control regulator =
-power
->> +//! output in order to save power and prolong battery life. This applie=
-s to both
->> +//! voltage regulators (where voltage output is controllable) and curre=
-nt sinks
->> +//! (where current limit is controllable).
->> +//!
->> +//! C header: [`include/linux/regulator/consumer.h`](srctree/include/li=
-nux/regulator/consumer.h)
->> +//!
->> +//! Regulators are modeled in Rust with two types: [`Regulator`] and
->> +//! [`EnabledRegulator`].
->> +//!
->> +//! The transition between these types is done by calling
->> +//! [`Regulator::enable()`] and [`EnabledRegulator::disable()`] respect=
-ively.
->> +//!
->> +//! Use an enum or [`kernel::types::Either`] to gracefully transition b=
-etween
->> +//! the two states at runtime if needed. Store [`EnabledRegulator`] dir=
-ectly
->> +//! otherwise.
+On Fri May 16, 2025 at 2:23 PM CEST, Igor Korotin wrote:
+> Fix macros and auto-generated code to use absolute paths, `::core::...`
+> and `::kernel::...`, for core and kernel references. This prevents issues
+> where user-defined modules named `core` or `kernel` could be picked up
+> instead of the `core` or `kernel` crates.
 >
-> Having the enabled or disabled state baked into the type is indeed
-> valuable for drivers that just need to acquire and enable a regulator at
-> probe time. However, there are also more dynamic use cases and I don't
-> think the burden of managing this aspect - by either performing a manual
-> match to call any method (even the shared ones), or implementing custom
-> dispatch types (which will lead to many similar ad-hoc implementations)
-> - should fall on the user. Thus I strongly suggest that this module
-> provides a solution for this as well.
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1150
+> Signed-off-by: Igor Korotin <igor.korotin@yahoo.com>
+> ---
 >
-> It has been proposed earlier to use a typestate, and this would indeed
-> provide several benefits, the first one being the ability to have shared
-> impl blocks (and shared documentation) between the enabled and disabled
-> states for methods like set/get_voltage().
+> Changes since v3:
+>  - rebased changes on top of the branch rust-next
+>  - added one fix in auto-generated code in file rust/macros/module.rs
+>  - link to v3: https://lore.kernel.org/rust-for-linux/20250331102451.2362=
+415-1-igor.korotin@yahoo.com/
+> Changes since v2:
+>  - rewrote commit message
+>  - link to v2: https://lore.kernel.org/lkml/20250328180312.2025317-2-igor=
+.korotin@yahoo.com/
+> Changes since v1:
+>  - rewrote commit message
+>  - Added fixes in auto-generated code in files rust/macros/kunit.rs,=20
+>    rust/macros/module.rs, scripts/rustdoc_test_builder.rs,
+>    scripts/rustdoc_test_gen.rs thanks to Benno
+>  - link to v1: https://lore.kernel.org/lkml/20250326182302.5650-1-igor.ko=
+rotin@yahoo.com/
 >
-> But the key benefit I see is that it could also address the
-> aforementioned dynamic management problem through the introduction of a
-> third state.
->
-> Alongside the `Enabled` and `Disabled` states, there would be a third
-> state (`Dynamic`?) in which the regulator could either be enabled or
-> disabled. This `Dynamic` state is the only one providing `enable` and
-> `disable` methods (as well as `is_enabled`) to change its operational
-> state without affecting its type.
->
-> All three states then implement `set_voltage` and `get_voltage` through
-> a common impl block, that could be extended with other methods from the
-> C API that are independent of the state, as needed.
->
-> To handle typestate transitions:
->
-> - The `Disabled` and `Dynamic` states provide a `try_into_enabled()`
->   method to transition the regulator to the `Enabled` state.
-> - The `Enabled` and `Dynamic` states provide `try_into_disabled()`.
-> - `Enabled` and `Disabled` also provide `into_dynamic()` (which cannot
->   fail).
->
-> Essentially, the `Enabled` and `Disabled` states simply enforce an
-> additional operational state invariant on the underlying regulator, and
-> do not provide methods to change it.
->
-> The `Dynamic` state would be the default for `Regulator`, so by just
-> using `Regulator`, the user gets an interface that works very similarly
-> to the C API it abstracts, making it intuitive to those familiar with
-> it.
+>  rust/ffi.rs                     |  2 +-
+>  rust/kernel/device.rs           |  2 +-
+>  rust/kernel/device_id.rs        |  4 ++--
+>  rust/kernel/kunit.rs            |  8 ++++----
+>  rust/kernel/static_assert.rs    |  4 ++--
+>  rust/kernel/str.rs              |  4 ++--
+>  rust/macros/kunit.rs            | 22 +++++++++++-----------
+>  rust/macros/lib.rs              |  6 +++---
+>  rust/macros/module.rs           | 31 ++++++++++++++++---------------
+>  scripts/rustdoc_test_builder.rs |  6 +++---
+>  scripts/rustdoc_test_gen.rs     | 16 ++++++++++------
+>  11 files changed, 55 insertions(+), 50 deletions(-)
 
-How will the `Dynamic` typestate track the enable refcount? AFAIK one
-has to drop all enable refcounts before removing the regulator. Also
-what happens when I call `disable` without any enable calls before?
+The changes look good, there is one rustfmt issue the bot detected, but
+Miguel can take care of that when picking the patch, so no need to send
+a new version just for that.
+
+I tried to find any instances that you might have overlooked, but
+couldn't find any :) I didn't write a script to find them all though, so
+I might also have missed some. Would be great if someone else also could
+try to find any missing ones.
+
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
 ---
 Cheers,
