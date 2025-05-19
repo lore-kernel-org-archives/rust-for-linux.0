@@ -1,62 +1,62 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F84267B9B
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 07:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E494D266595
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 07:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747638476; cv=none; b=XuUXjdXzk8FO5fYM03DeLaxb4Vr+KoYU7SDBs2QxjDDUA2zLzYg9vpoEfJx0ITFapB2+VzS0Bfy7LGc0jXPa1tb8wl4FZa1Izib5uF2ZIrp6nGjSKFway9aDTQBSy1epT2b+YW3aShsVyRKdFOIXL6qjW0HOh5A68aUDTwnEyyQ=
+	t=1747638481; cv=none; b=H/M6z4u/1VppihnseGuPjS50Z5AJNnpEYBF8onS0MsDXqfsc/T6LDDUmWXUTFNQYIiyTifY2jhORbE8DwY3Zi0PAK0bI4lKXqbCK0MuqeNv0LWRZBQEZqviw7k/n1NgxarHoDGU666FvYhK22MVvFCYkph3+AuwhwcDTo3/VXj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747638476; c=relaxed/simple;
-	bh=pRm5rikPg836Cpaht6T2Bti6G/gsdEEiL/oreW2ehWs=;
+	s=arc-20240116; t=1747638481; c=relaxed/simple;
+	bh=4HWksdgns8ejVb++Q4NJVdKDSuHEDHdMmvi+j+YhGlo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L5mZ/H8w9i1Xy1Ejn+qVDcev1CbWKKA8rMzeY98Sn2QiXlIFdRrjyJfNtr1Jf5a3b7zihzUaVx50QEqfzxPiuRcg2jA9bvcd1bHRhGjqaA88aL2Z3TGYGYKod5yN2+MUw3vFD+bLGzDxGAk1/mL6CkwtFyMQCAKH/pN1t9/Swwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l+YTjkwB; arc=none smtp.client-ip=209.85.215.177
+	 MIME-Version; b=hht3addEF3WXAvhldnF/IgtbpquC7VdEhNj/3kpT2lNhktlksRExE6chqLXweYNdFisDahcSQe3A5a3TpNSb+bDOAahPKOuj8WYTFuFULfNn67S8eRoGTxgZG0ScXHee9303yzNp0ytazIq53SHHTQOARbZTvvGDoUtIoeiQslU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oURx1vhr; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l+YTjkwB"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b26f7d2c1f1so2222381a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 00:07:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oURx1vhr"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-30ed99132abso856685a91.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 00:07:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747638474; x=1748243274; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1747638478; x=1748243278; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eaMUD1BDVL417dtmG3+/1YWJeUCWl78+KVSs+NX3TJI=;
-        b=l+YTjkwBHgTH8v1w34B5fJiYaOKFe53M9ewGKfa4UJjZ0k2lPCEBBnbIfYCSZt/FD0
-         SNRIYAbSqo+1wpXam+T4jvGZoAY6LhMQFHXwziespZte5KjJRGOFbOiRgZ1P0AHxh1nf
-         m5/NqgSIqQlqKxdMxDAfsmhY8RV/JJ1DAvo5JmtLmffHUU0MD6xY51VnsI4kYsinWjiL
-         cOqrUv3QAkIKFPP0hGlGiYvyYwSIYbgjdRZC/we3aLkAw81Z8sqEmRuyqOxBRxFlejdk
-         3PKeKykFAEjDNLKF+gi6/GtuG6X5Zgsdxzbh+gxXjI+YtfO5xxV/DglU/fbI+II04ShC
-         1Hlg==
+        bh=WNsggH78Gujq22EIg5QA+ygoUlPHiqAj8S6vH5ayXvk=;
+        b=oURx1vhrE893jp72/YQ/sUBnRtO8aTJTcAZq5IkvzRVzrRghsh/zfhBt3kO+2Ga9/G
+         fnJkmwPOzd1K3K4/rrKi9ygZw1pfP93z2gBG8A344F1E5f7w5mN9TfgGNcvlT6Eijth2
+         Y2YFbybWguowNkOL5aE+oxSz7y2h+7zuZoRC0T+gxDZxj84wWzcmMcLv9Rn63M4Gbd9/
+         HLmVcagmqxawzKlfHBGBXrW+LhRhyTm13qBaomzswvepcjQl2Thmjm2o6R3asXRgHWbn
+         5HUMxLz35a+CGiV3YJJe2VzhL6cSdsEsj3ETo/AAcjtm6de/iYaX+dfhcp+i2R3ILLm2
+         XH4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747638474; x=1748243274;
+        d=1e100.net; s=20230601; t=1747638478; x=1748243278;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eaMUD1BDVL417dtmG3+/1YWJeUCWl78+KVSs+NX3TJI=;
-        b=UFGRanrW+YG+TT8dOVsjsPvJnm4l+hUqgUWkm7gLPwRsVt8nQOkivN3WepN8G0rvJ+
-         2IZ/oIpMUd+eSueSiY4uatsytdLXp6kRQIlCOKviJpa16LdmnaYjDFOIls7X89MRdfdr
-         y+YgWixNLhyB4bG9/vWT58QP5CpatR2weTraSrwmnbda1dgJj4OPNQ9wtJbTcnTNYUR5
-         Ml7MUwbuGTiC2E0eY4tDQGVGwkiO5xybTdRruYGK9SqAzMpkQDsnHZPQ+FRFn/W+icnz
-         KlKRdeTo69zKeR0KNiOak4Z/06T5NjJQSB6bq1kOFYoD7Lifw1S+i70qfv0r7IGWu3XJ
-         WI5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWrZC1xKEI/dce18UuJsYx2UnZ9VbfwPyykqCdCDiwvGn9ByE/s8yZLoocvwSUWmSo+yTW4pdcVHX4cErXtfQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwvXgSNiZ5F8pA3jqQbemoy7JbYLhTmJtSeuE3mkr0IrW5uEJ/
-	njy3343WFPdXEiv+e6dNxKRqymyiN+eMT1KwabJl9jNFU0MyCTpzfzvGUn+kZaBenpc=
-X-Gm-Gg: ASbGncv5t/0g11dO4l7o18dcoGFeESPzhgV6it33xeqJsDQgpoRUYDDFQK2yGJuhh5I
-	ciLNsh+WF5Z3SriJh2yZcGM0j/PiE0DvHI6y+oJ4haNuQzOcbAOsLKqxrwpISpA3KgdK2WA/D5d
-	pTfDQdrWUCe6MxsLc3jglwOsuFc3lZve2wn2DGn28JR5gv0WjZy3n4HhLd2UEymZnalfg8muaic
-	ZIH1TfaFYm03oj+7+TXYXQZrvoU8bS/5/Ls+AlmDnKK+rSOOzPHban3R0r77XrrUv6L0mjaEaS4
-	QiEUEsJjG7nHarKvjAEQgqgO7oAN1wn2UhxonD9bOGm/TXGQdHrv
-X-Google-Smtp-Source: AGHT+IF6hrADdyFBpfdMCMprB3NMgzCMsos6RN5vYSz8df1JQKxMeM5q1LLUUUmaKL61jlqJM0kYYw==
-X-Received: by 2002:a17:902:e808:b0:22e:3eb9:471b with SMTP id d9443c01a7336-231de36ba47mr143813725ad.23.1747638473898;
-        Mon, 19 May 2025 00:07:53 -0700 (PDT)
+        bh=WNsggH78Gujq22EIg5QA+ygoUlPHiqAj8S6vH5ayXvk=;
+        b=d63dlDtXSy8WcR9/mW4FWHnFKvWsJvA5KACNgA34aJjx+Bddy+LiGq4tJfzD3snlis
+         ufktO271TvMKdndvM0ZfRd1iWYdroLV4soV5/vBRstjakbzPgqdeohkmKsIXaJOOJQfn
+         ZPqgAwVcJNoN1F5lHIScBM7rrjopvYQt3up56+rZT4/w/1nrr+0opUGH3OhBf3bUMl6V
+         0rzkHIRWsIufV2dFRluqykMnUsM0QvCYlENKfhVqWynquYIBgMjsiJJH+n/vwwvWTVly
+         jtqjJltZSSDASJTVjz2xU0bAUw+wJv06+m8o8D2g2Kqi4L+eKz9265sJbHnpdCWchRv+
+         j2GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEXrfhAoSI5hSQrPwQCtYVc/mnnrgyRtv7y6MIn2eodexLW6MvDDZGqjsEN96cjPDDhB450GIgomK9W4SvJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhWoMoKAhsuEV991T8FDk43UxUk2uc5Y6/x2YXiCK2XtPD5w/d
+	ELep7QPPQtKnIsvmAaDyBGsg/LDh/HEXh1o9dowQFR56GfysJRhJ1OfybOhTxjI8uUA=
+X-Gm-Gg: ASbGncsfF1ikFutgRZs+uveUktPSB44/Kkb5cc/IwBAvVLvqHeFYbBV+t4Bd3cxo+n6
+	e7baqas+abo3CXL/RPuPSLa32TCN3Y0Vx9zc3OdN86K3HtVorBhxIqhllb5mw+MbPizzAGS/yGf
+	3fyND+TgJzezzLceKds9c6g9oTUFyx98BNdyeNYCYwlvXyRbgD5KJq4gj6QzViFqGsYbjuk2Y5E
+	LkEBe4lMupKs0mL9YWJNPiEcS4DrcK3+HXVVe9KZfVWaCs2p/6AZg2Mgmw3O2JBi2Bx1MrcMj6v
+	1KzmcovR6/Ekk8tFKi6CNGRivuy9ZEN02wJhS/POmjFjyY0wWGN663lsnVodz5c=
+X-Google-Smtp-Source: AGHT+IHyX79iTRiEese5DXhXzl4RcrDdeFt3S9RU8Ax4nAHLTvc2jaPooDG34VMRP3xDbTxlkEsoKQ==
+X-Received: by 2002:a17:90b:558e:b0:30e:840a:92ed with SMTP id 98e67ed59e1d1-30e840a93d2mr16053139a91.31.1747638478085;
+        Mon, 19 May 2025 00:07:58 -0700 (PDT)
 Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4e988c3sm53200075ad.120.2025.05.19.00.07.52
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30ef3c50c31sm1582169a91.45.2025.05.19.00.07.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 00:07:53 -0700 (PDT)
+        Mon, 19 May 2025 00:07:57 -0700 (PDT)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
@@ -70,11 +70,12 @@ To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
 	Nishanth Menon <nm@ti.com>,
 	rust-for-linux@vger.kernel.org,
 	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
@@ -86,12 +87,12 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	Russell King <linux@armlinux.org.uk>,
 	linux-clk@vger.kernel.org,
-	Michael Turquette <mturquette@baylibre.com>,
 	Andrew Ballance <andrewjballance@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH V12 03/15] MAINTAINERS: Add entry for Rust cpumask API
-Date: Mon, 19 May 2025 12:37:08 +0530
-Message-Id: <0bda169b2243ea571c7dc26a3362380a4b2c7840.1747634382.git.viresh.kumar@linaro.org>
+Subject: [PATCH V12 04/15] rust: clk: Add helpers for Rust code
+Date: Mon, 19 May 2025 12:37:09 +0530
+Message-Id: <0ec0250c1170a8a6efb2db7a6cb49ae974d7ce05.1747634382.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 In-Reply-To: <cover.1747634382.git.viresh.kumar@linaro.org>
 References: <cover.1747634382.git.viresh.kumar@linaro.org>
@@ -103,35 +104,131 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update the MAINTAINERS file to include the Rust abstractions for cpumask
-API.
+Non-trivial C macros and inlined C functions cannot be used directly
+in the Rust code and are used via functions ("helpers") that wrap
+those so that they can be called from Rust.
 
-Yury has indicated that he does not wish to maintain the Rust code but
-would like to be listed as a reviewer.
+In order to prepare for adding Rust abstractions for the clock APIs,
+add clock helpers required by the Rust implementation.
 
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
 ---
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+ MAINTAINERS                     |  1 +
+ rust/bindings/bindings_helper.h |  1 +
+ rust/helpers/clk.c              | 66 +++++++++++++++++++++++++++++++++
+ rust/helpers/helpers.c          |  1 +
+ 4 files changed, 69 insertions(+)
+ create mode 100644 rust/helpers/clk.c
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 96b827049501..bd7c54af4fd4 100644
+index bd7c54af4fd4..608689342aaf 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -6237,6 +6237,12 @@ L:	linux-riscv@lists.infradead.org
- S:	Maintained
- F:	drivers/cpuidle/cpuidle-riscv-sbi.c
+@@ -5883,6 +5883,7 @@ F:	include/dt-bindings/clock/
+ F:	include/linux/clk-pr*
+ F:	include/linux/clk/
+ F:	include/linux/of_clk.h
++F:	rust/helpers/clk.c
+ X:	drivers/clk/clkdev.c
  
-+CPUMASK API [RUST]
-+M:	Viresh Kumar <viresh.kumar@linaro.org>
-+R:	Yury Norov <yury.norov@gmail.com>
-+S:	Maintained
-+F:	rust/kernel/cpumask.rs
+ COMMON INTERNET FILE SYSTEM CLIENT (CIFS and SMB3)
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index ab37e1d35c70..f53d6e1a21f2 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -10,6 +10,7 @@
+ #include <linux/blk-mq.h>
+ #include <linux/blk_types.h>
+ #include <linux/blkdev.h>
++#include <linux/clk.h>
+ #include <linux/cpumask.h>
+ #include <linux/cred.h>
+ #include <linux/device/faux.h>
+diff --git a/rust/helpers/clk.c b/rust/helpers/clk.c
+new file mode 100644
+index 000000000000..6d04372c9f3b
+--- /dev/null
++++ b/rust/helpers/clk.c
+@@ -0,0 +1,66 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- CRAMFS FILESYSTEM
- M:	Nicolas Pitre <nico@fluxnic.net>
- S:	Maintained
++#include <linux/clk.h>
++
++/*
++ * The "inline" implementation of below helpers are only available when
++ * CONFIG_HAVE_CLK or CONFIG_HAVE_CLK_PREPARE aren't set.
++ */
++#ifndef CONFIG_HAVE_CLK
++struct clk *rust_helper_clk_get(struct device *dev, const char *id)
++{
++	return clk_get(dev, id);
++}
++
++void rust_helper_clk_put(struct clk *clk)
++{
++	clk_put(clk);
++}
++
++int rust_helper_clk_enable(struct clk *clk)
++{
++	return clk_enable(clk);
++}
++
++void rust_helper_clk_disable(struct clk *clk)
++{
++	clk_disable(clk);
++}
++
++unsigned long rust_helper_clk_get_rate(struct clk *clk)
++{
++	return clk_get_rate(clk);
++}
++
++int rust_helper_clk_set_rate(struct clk *clk, unsigned long rate)
++{
++	return clk_set_rate(clk, rate);
++}
++#endif
++
++#ifndef CONFIG_HAVE_CLK_PREPARE
++int rust_helper_clk_prepare(struct clk *clk)
++{
++	return clk_prepare(clk);
++}
++
++void rust_helper_clk_unprepare(struct clk *clk)
++{
++	clk_unprepare(clk);
++}
++#endif
++
++struct clk *rust_helper_clk_get_optional(struct device *dev, const char *id)
++{
++	return clk_get_optional(dev, id);
++}
++
++int rust_helper_clk_prepare_enable(struct clk *clk)
++{
++	return clk_prepare_enable(clk);
++}
++
++void rust_helper_clk_disable_unprepare(struct clk *clk)
++{
++	clk_disable_unprepare(clk);
++}
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index e1c21eba9b15..ae595c9cd91b 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -11,6 +11,7 @@
+ #include "bug.c"
+ #include "build_assert.c"
+ #include "build_bug.c"
++#include "clk.c"
+ #include "cpumask.c"
+ #include "cred.c"
+ #include "device.c"
 -- 
 2.31.1.272.g89b43f80a514
 
