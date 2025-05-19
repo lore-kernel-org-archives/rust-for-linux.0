@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAE2243364
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 12:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9D01C5485;
+	Mon, 19 May 2025 12:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747657569; cv=none; b=CtXFTzo+q+nLEK7udi9NSAmcEayojeHkcCGDZwTodIhFVrgCkhi9xq/nLK3R/dAikQnP4t3uIScWVctGtVuE8w0qUlpQ+bbbNmlLitRkAh4Sam2Ve+pw+8rIpRqyOqIQHfNOxfa4OeyaF5peq101xiZBfc5rYP9xRMcGkzNrdws=
+	t=1747657811; cv=none; b=ASbTljAKlIbiGdemuBhzgJvgtdApvFun6Pl4a0UwMi1EGrmqdyk1IW23rNFLcQof1zNXHTp/jCbcHBmKEOGjOT+3ln4AP7tr3menp63ySQlAGoNUcc4V+UU9/EfOmbKtGl81DhgRk0ehs/W7Fn4wFcQ8VDUPUJOivD8qrmSOLcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747657569; c=relaxed/simple;
-	bh=IDm1lnmH8i5Jc0QN2R5yydX3w8LDzL7R8VSGykatnf8=;
+	s=arc-20240116; t=1747657811; c=relaxed/simple;
+	bh=O3K+tc7r6sCh2WGTsamVvNqKcPwy0BoFCEaeoHRZrgw=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=KbpsikW0H1c8qmzFQaaUzcCfHyKGLS8FbhbfyYXiSx54uHrA1xWfs1T7l4+7T0kATaL26HEIZOyrmB+A1VyYMT/QSq7etezJX3II4sqxBbu+MfTBUMJy1cdAyfjm7uwM85n+49i3yuy+ccHADCQv3x54c8EadBpf0RGQtQFg2OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kkh2beBp; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=fF2PltWP3JsKmKa/e1wy9x9L4McG9ldliDaTJuX/IQSxlskFuipSHoI5sYniEkEu33ZFHScTNgHOm68eQr5FmBwjt83RXHfybaM6U6x1w7Jma6BbkZ670tVKp42xqbaxGuVG85Z0FnQsjB3yhKyWmEOr7nD+JCqkLOrUUCNhdaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qsDEfCsa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kkh2beBp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9960C4CEE4;
-	Mon, 19 May 2025 12:26:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsDEfCsa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0931AC4CEE9;
+	Mon, 19 May 2025 12:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747657568;
-	bh=IDm1lnmH8i5Jc0QN2R5yydX3w8LDzL7R8VSGykatnf8=;
+	s=k20201202; t=1747657810;
+	bh=O3K+tc7r6sCh2WGTsamVvNqKcPwy0BoFCEaeoHRZrgw=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Kkh2beBpeRsbGlCBVl8e0CULPkNejvQJ4zJKUYGzUejxFwtsFkLHFkidcguhV/2TP
-	 ZLP1qFSw7xP9TheeusRNFJpeVDpYPaab0+0k6fQqxV9R6Itm2+buupGUTzjm0AVRfo
-	 PRTw5b3EtnkQH1+BCGit9iwe0WK79FUMQmjOAuaeDZaG0H3h2zGVU/xsgNweeQ73v/
-	 n6hHpK3sGEmELblGyxn8uU3mSFK2Z0b7DlETQjZSnVoQL3AlrdxZcTOqxHh9cIZwbw
-	 Wft67JZugUPPSGhIcfrJAzrgvgqC1jtK16SWicBcYnjeL+O03YLw3l5tLGuTHWeB6+
-	 B07l/91pwH77g==
+	b=qsDEfCsa017zfFatvitoerp33o/vXsUqOMGzgt3hWELWDCn+KP72BytZz5PA9rPke
+	 dNd7b6znWVPEoNQqURvCUB/VMSrY4k6gCjgQfSt0vGxJKi5W4pKXkde7ANQrtjiX/6
+	 ncKZvqGU1BaXFAPsqg6UhxVx7q4f5wL3ebaPGKgDu2cVFIsS36UimPkJ9lZRxVub3m
+	 MhsekG3cCjZDWIx4WN6x6Gn7FuCY4HtpIu6KGWVKQ2LgT3T9ihhBSx+3tUIbJXgwdJ
+	 olbe4QX6wRiDf7ZJ8hZITqhsS8HhXm9d06zam8ReBzXcibXN7cd1/LuWewwT2puyC+
+	 yGYZGVmt9UTtA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,99 +34,72 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 May 2025 14:26:05 +0200
-Message-Id: <DA04WHRZBBS0.17WRMWDF0A335@kernel.org>
-Cc: "Marcelo Moreira" <marcelomoreira1905@gmail.com>,
- <benno.lossin@proton.me>, <ojeda@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <skhan@linuxfoundation.org>,
- <linux-kernel-mentees@lists.linuxfoundation.org>,
- <~lkcamp/patches@lists.sr.ht>
-Subject: Re: [PATCH v2] rust: doc: Clarify safety invariants for Revocable
- type
+Date: Mon, 19 May 2025 14:30:05 +0200
+Message-Id: <DA04ZK6NFF1N.35LFZRY7O7SG8@kernel.org>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Boris Brezillon"
+ <boris.brezillon@collabora.com>, "Sebastian Reichel"
+ <sebastian.reichel@collabora.com>, "Liam Girdwood" <lgirdwood@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v3] rust: regulator: add a bare minimum regulator
+ abstraction
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
+To: "Mark Brown" <broonie@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250503145307.68063-1-marcelomoreira1905@gmail.com>
- <D9RJQYNTIOK1.3HI7NDDWPK6IM@kernel.org> <aChczAWsPdmdeen3@pollux>
- <D9YO7XDNV712.3A5HSSLUQIZ2W@kernel.org> <aCrwuQP46RFHxYB5@pollux>
- <DA00X0RTYKMA.2OG25TZ1X3AU@kernel.org> <aCsAEJtkCKKhspnF@pollux>
- <DA03ANJMDOU2.1ZQWA6MIENVKD@kernel.org> <aCsX-k0K_jqLvD4e@pollux>
-In-Reply-To: <aCsX-k0K_jqLvD4e@pollux>
+References: <20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com>
+ <D9YXK1J1XO37.JVILKENRKYXD@nvidia.com>
+ <D9Z3R4EYAXV9.211IFNRTOPM6O@kernel.org>
+ <D9Z4XGQ2QHXA.2H5X1NZ5IZECC@nvidia.com>
+ <aCnQo15SbhXZ9Fln@finisterre.sirena.org.uk>
+ <D9ZCD8D6J5QW.14H6VM9LQ5R2Z@kernel.org>
+ <a1a6b2f8-af42-4942-ab62-678e37381d08@sirena.org.uk>
+ <DA03MG3VURVI.37CBV5WEEKJSH@kernel.org>
+ <8229a161-52b8-4265-8296-8f1ac49bab62@sirena.org.uk>
+In-Reply-To: <8229a161-52b8-4265-8296-8f1ac49bab62@sirena.org.uk>
 
-On Mon May 19, 2025 at 1:37 PM CEST, Danilo Krummrich wrote:
-> On Mon, May 19, 2025 at 01:10:32PM +0200, Benno Lossin wrote:
->> On Mon May 19, 2025 at 11:55 AM CEST, Danilo Krummrich wrote:
->> > On Mon, May 19, 2025 at 11:18:42AM +0200, Benno Lossin wrote:
->> > Why not? Please show me a case where `is_available` is false, but I ca=
-n still
->> > technically access data (without violating a safety requirement).
->>=20
->>     let r: Arc<Revocable<i32>> =3D ...;
->>     let guard =3D r.try_access().unwrap(); // nobody else is holding a r=
-eference, so this can't fail
->>=20
->>     let r2 =3D r.clone();
->>=20
->>     // I know we don't have threads, but I don't want to have to look up
->>     // how to use the workqueue or something else...
->>     thread::spawn(move || {
->>         r2.revoke();
->>     });
->>=20
->>     for _ in 0..10_000_000 {
->>         // do some non-sleeping work that takes a while
->>     }
->>=20
->>     // now the thread above has executed `self.is_available.swap(false, =
-Ordering::Relaxed)`
->>     // in `revoke_internal` and is waiting for the `synchronize_rcu` cal=
-l to return.
->>     // but we can still access `guard`:
->>=20
->>     pr_info!("{}", &*guard);
+On Mon May 19, 2025 at 1:46 PM CEST, Mark Brown wrote:
+> On Mon, May 19, 2025 at 01:25:56PM +0200, Benno Lossin wrote:
+>> On Mon May 19, 2025 at 11:56 AM CEST, Mark Brown wrote:
 >
-> Which is perfectly correct, you're right. I think I was too focused on th=
+>> > No.  You should not leak any refcount, the per consumer refcount
+>> > duplicates what's being done for the regulator as a whole, one should
+>> > never be incremented or decremented without the other (but there may b=
 e
-> optimization case. :-)
-
-And I was assuming the example was obvious with just saying "But the
-`is_available` atomic *can* be altered during the usage of `data`." :-)
-
->> > However, this invariant does not need to be fulfilled for access() and
->>=20
->> Where is `access()` defined?
+>> > multiple consumers to choose from).
 >
-> https://gitlab.freedesktop.org/drm/nova/-/commit/46f91addfabbd4109fb64876=
-a032ae4a4a924919
-
-"Reviewed-by: Benno Lossin <benno.lossin@proton.me>" huh, I already
-forgot about the patch... But that also shouldn't be difficult to
-support with the right invariant.
-
->> > revoke_nosync(), because it would circumvent their purpose, i.e. cases=
- where an
->> > abstraction can prove that there can't be a concurrent user of the dat=
-a or a
->> > concurrent user revoking the data respectively.
->>=20
->> Yes. How about something like "`data` is valid while `is_available` is
->> true. It also is valid if the RCU read-side lock is being held and it
->> was taken while `is_available` was true."?
->>=20
->> That should also cover the "nobody else is accessing this" case.
+>> What stops the last `regulator_put` to also call `regulator_disable` a
+>> correct number of times?
 >
-> Sounds good to me!
+> We obviously could but the regulator API defaults to not doing anything
+> unless explicitly told to since getting things wrong can physically
+> damage the system.  We've no idea if just disabling the regulator would
+> be safe at this point so we just don't touch anything and complain about
+> it.
 
-I'm not happy with the sentence structure, so how about:
+Gotcha.
 
-* `data` is valid for reads in two cases:
-    * while `is_available` is true, or
-    * while the RCU read-side lock is taken and it was acquired while `is_a=
-vailable` was `true`.
-* `data` is valid for writes when `is_available` was atomically changed fro=
-m `true` to `false`.
+>> What are the kinds of problems that one could encounter when not calling
+>> `regulator_disable` before `regulator_put` or if `regulator_enable` was
+>> never called to begin with?
+>
+> If you don't disable the regulator you've just leaked a reference which
+> is obviously a problem.
 
-The last one is needed in order to call `drop_in_place`.
+For sure. But I'm trying to figure out if this is a safety-related issue
+or not. Safety in Rust has a rather specific meaning that can be
+summarized with "no UB". So since the C side does nothing if the user
+screwed up the refcounts, it lets me to believe that we don't have any
+safety related issues when forgetting to call `regulator_disable`.
+
+Of course we still should strive for an API that makes that impossible
+or at least very hard, but we don't need to make the API `unsafe` or
+have to take special care. (At least if I understood correctly)
 
 ---
 Cheers,
