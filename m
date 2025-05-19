@@ -1,119 +1,80 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5232857C4;
-	Mon, 19 May 2025 18:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428131C84C0;
+	Mon, 19 May 2025 18:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747679170; cv=none; b=WTRzB3wuQpeHfYM+87ThZJlVjWtL95g1CTSAul6kbbygjAreOsGgmgVuoaBss+/2j3Aa8G5CHos62scia86TbF2b60pGvwf03aCmjpog0ycOrmqtVlh63832WDHy1Y+vaS6XjuHuNeJFIvIB2hnpInB7HzreVS/7Yq+APB/prM0=
+	t=1747679680; cv=none; b=i9fxTqyjjTjTFJVSttA4vwYfisEIxRt4iZGTDIekWKEUY5Hzl/QgNk/wcZ7IHaxsLkiEDCzJSOpUmMj3ZUCL7J55vBrK4DYToleNJr0dWuq+pQC0jhzRguKQGF9eFCKMUfWj7ds/sx0Lj9jS4xq2gGqoM4nZQ4L6yV9ySgG8NJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747679170; c=relaxed/simple;
-	bh=KGH4zMpQ7qD9i5f4sPixq1K/THXTYM9pWp8ZS31Ly7E=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YobMPbGef8KTUoBcc6NBgNtI6mbufHc5CQplWsk5w2wj4IjSiBe4ozDEQ7X9kx0RwlXPQn3QhiXvisKye9LrhsCw1IYFyUkrM2i7/KT3DO4sawd+yAugIAOHnRo7cdSk+BUc/xWTdqK3HtApn0+V1BKP5Zky3pimv5Ly4+ZJvqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IpAYlWM5; arc=none smtp.client-ip=209.85.222.170
+	s=arc-20240116; t=1747679680; c=relaxed/simple;
+	bh=mIuTQTuafDLxwJyW/8ql5CnmcoDLPkCrNgOVYhINBxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UqI4AVQssSZz00kYRbMON0MFcsHSzdE5PEpoDI5DwfGpdMJL/MqAxTj2pBjqT4+5iQYIuB/49WayfaNzZmeuZHgBYfhlxZxX1cHHnaMaz0eLBbmpQiZ2StSMUK4MA19RCnbB88TKDrRbzbL47r4S++VeMQ1+SpxrpjFIck32dOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bkqXP2sN; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IpAYlWM5"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c5e39d1e0eso526992485a.1;
-        Mon, 19 May 2025 11:26:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bkqXP2sN"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b074d908e56so3060253a12.2;
+        Mon, 19 May 2025 11:34:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747679167; x=1748283967; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ce9QlVqnLl0uWFM7eacQ/M5kTWSPkz2EnpFgGM0tFis=;
-        b=IpAYlWM5FdKqF//GQrdFpMUaFg0tn8f4c87pUxsxyH/khGY9myLoEpRGNr+rpe6boh
-         m/DcvbI9zG6K4nF5SSbx3CA+AGV3Qa2NOeS841hPLf7A2oD2o9FO5ynX4Hjy71x90BBn
-         PKaxpf8fAadCYJJ+/h/aNhjgJfRmYnM5z8p7muAjE6/TUwvFZmzgB0leAIhsGT9Ip3E+
-         LbwAZ2IGTpvqxv8LdO+XMZDpdTo9RpmXcD/ucnkJYUA+4IS+pmzsxt6O9cjEf1ndZfRm
-         /6zOX9I1z7Yf79mkO5Y7EI4zZtiJr0EgM3hbQeWz3w2Wwk16jybO+exhtEV/sbVAww0+
-         l5XQ==
+        d=gmail.com; s=20230601; t=1747679677; x=1748284477; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xnIRj2RqR1cnm9CM+XbwkvFomUeYfJkTYyw1bP2K0es=;
+        b=bkqXP2sNisqLGcpycI/xk1gHjrgWIte1Fle4Frv8gUIhlAjvAXCc0NTRW4bGGjuvo9
+         fI35ctszXgW2lMAewY20UiE7Lou7F9jt6nwweFmPu3gE6i937ldFRdN+22LbT/od7HYW
+         Nx9TcPNG0JfoR4lOyfMU0aLZCTaivrEZA7O5qatSuqeCr1jhQrPYYQkAeWggR9gWehck
+         /Zih7IYXS7CCZtDh+u2jZhSM2IwSo8XmXbTmBdJpZsTSGw1lg4lIrhl/FrJh2k91Dll1
+         kmhIsF2VQnOwLOvozj3dbGMc0rwG0d3li/w/8IBIsFpsQ0e+fb7PYKWgpb2pgL5YI6e9
+         cXzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747679167; x=1748283967;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ce9QlVqnLl0uWFM7eacQ/M5kTWSPkz2EnpFgGM0tFis=;
-        b=ASX13jTfrp4whSozf9/ckj+tcyhj6TexjsDoHV1OtcM4c8aLd2ZlGvf0oVYhRgTJrx
-         7zXfGOInHVZrS+6IXDa8BQmyCrNPu/kqFsG5gt6WQ/7nGZGsFbZr56wKJVCsNVdvTKjV
-         XNktYjh3BPL3tOmkPFPn4vXj0T3Y2O1hEWD/QGONfPJupDXqwjj/X2PC+/1VcsUQtfHT
-         w4y/PHTLncM7CmHEJ5aABa5SM8AIdJEi9sjy8DpGTiYlFbg9KIRkOcOXWetK+8D81ZYY
-         2G2KCiXqC0q9fwK2Zq8sJIi/brCn3qIjiPdt2LsQpiNrJuXvHGpiKi5+PXUQKZwGZKTU
-         dVaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvUkJttY2xTp1Pt+OsAWEbke3ySnmAUTEDXt68lTQN72ls1U2QgLnniJ+cVVaa86TYkK7h0MKKQU7foltqVHw=@vger.kernel.org, AJvYcCX67gIlpy2AJOeic11ZaiQFEEQ/A9q02vjD6X9pHhznKz8PTzc2pt5I9c2vS4R2FlGix9GntheUBnHPF9o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSIj5oeReXWyHKv7DOfMfG1Ou4gKDk1psBQ6c+Qy0gNnjBkBah
-	yaWhSK7aXMv1UmijH49JqNVbvUE0aPW7lrakqPfQfmwPXb3ybTTrstIB
-X-Gm-Gg: ASbGncuGGwYjb0YjpfHhvdIc/VDdDMT+uthJku1x1EsZIAI4BXLVvAnauF8pgZANKuP
-	goKovn8Bl7t8qmn+UwLSk+DAfJO/Bur7EN17pdAV+0DZVNYAH+Xkoqqr/h/s3mtySmnxEUYc28x
-	4X05VvD8SgMyFFFjv0clL1J6G3CMQRmLLSX+g+gr+Jhrv5xFuHAvpqi+7VR3imvUptIZZ9VWHCZ
-	GBYN8v8aGkK/0sAUqC9GfPLGbG7zVovtpogGBIv5AHMbFsrl4xj3Y3s8/xLw6Z6QmQEMF9tSUSW
-	6doTOAYL1DGAcJNd0SRUNSZRkmYOi6Pw8BCGYiSZoaEglR80z609T5rRFdqXaW3cjRsCCVyCzy+
-	HZfG3xcStkcfE/bPkHtt6yU4ut0flBXrFSjDEdOszpg==
-X-Google-Smtp-Source: AGHT+IEk73D5hU5Y8sNSajDL0L2bhfKMqVZEoILAk2SEPUyR5xGVY369yA3gX8z7NcvL2A7ScXshMg==
-X-Received: by 2002:a05:620a:2849:b0:7c5:4913:500a with SMTP id af79cd13be357-7cd47f3d6damr1887848985a.19.1747679167523;
-        Mon, 19 May 2025 11:26:07 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd468ccd94sm615228085a.109.2025.05.19.11.26.06
+        d=1e100.net; s=20230601; t=1747679677; x=1748284477;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xnIRj2RqR1cnm9CM+XbwkvFomUeYfJkTYyw1bP2K0es=;
+        b=Jdcv9OQkvS+KmI9FhMsd94G7+sJkZBfd/6kF9SLYNkRe+2stqERwnKqneuD3klCygg
+         K07gpaMwq6aqQn2s2gfGxNC/bMx169TtL56sPvMbXwI/7HECe/H+A3D+lfnf2dyz5O0d
+         Wy64NToBoEcyDI8QbvjNI6v+tLkn6Y0VvIb3BXACDHzJeaMwW22F9UjzBNw0VNsvQPl0
+         y/uQjWKr3BSmtfJoDTTrBzxiTysOkgzAMGCPQzVy97QSd0ikaulClCAB4MT0KQaQUgiE
+         AjTxGPbCQcyJ/4zPGVAzkaogUnuo5GYreNOqmMA/0V+oS0mZRQvMVk3F2UPfyRQ7OjL3
+         PNQA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4yClqlse6KB8zjd3f57LyHqnZX2VHdSJrWaf01A8N5v479/BT9DzZcjgznFK3axZVNcF98ZwQzMAFrABiyX4=@vger.kernel.org, AJvYcCUdQtKMvG8myetQNMClvrIWc6/wrdRIqHlybCOxxTXOxzbrOZwgCcduYAsCMxtRa8tiAgGdDxYT7pYnNJCoSiA=@vger.kernel.org, AJvYcCVd1ldvnSysJM6f1KmeUxuLUwB6SJV9Hck/v/dnrCR4OVvIXBKSnSbglKF0kZZqEhutmdgVu2/lCx5GzYCz@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgAc6R1a9ySHUI/oPITur7E94JLWWhOBLSHWZUjK8PzMh5nl6k
+	V/ddojsvIPxBPVBweNgpQo1Mhq4N2KC56dfMHWoYcEQudxkx6AygujGY
+X-Gm-Gg: ASbGncsiDoXVusay3Z/uBDZt+ShsNDpy+ojw6/YWfz5Rnd4ZHY2xRF7hbXLXCmOv7Le
+	ifKIFbyNKwfkCCimMPY7n0qRPcfYBwyKJSdU+jk6hX9nbk/yrmVqTKVTP7qHiJmDUtU3nGPsH+W
+	rXjpvLqM2/f1bdPhfVirOShO4H9lo63KOodCdB8PJ7i8Mn+l6p2p07o95KmsPXR6NeWr9a6CcyO
+	4jt6w3bzHeAvmzXRglDjbASmd0vSKI1c2UPI+jikdS9nJldESr6GDHugE2Q5VL5x/7urWXEzJiH
+	RFMhOSPYb+TvIebXyQNUtAozSzo6FoO/MYOkd5r6/UbtUQq5bsI=
+X-Google-Smtp-Source: AGHT+IF4iNXXikl+qNT7wpsafELOsJwJpe7rMKuco/SXGTI7XUhJ7CcytrfQymYy8SdziGCIMHeImA==
+X-Received: by 2002:a17:903:11c6:b0:216:6283:5a8c with SMTP id d9443c01a7336-231de370f04mr160319865ad.39.1747679677224;
+        Mon, 19 May 2025 11:34:37 -0700 (PDT)
+Received: from localhost ([216.228.127.130])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4ac91e9sm63364135ad.15.2025.05.19.11.34.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 11:26:07 -0700 (PDT)
-Message-ID: <682b77bf.050a0220.205248.9559@mx.google.com>
-X-Google-Original-Message-ID: <aCt3veA8bw1EQ3AV@winterfell.>
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 92DE61200066;
-	Mon, 19 May 2025 14:26:06 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 19 May 2025 14:26:06 -0400
-X-ME-Sender: <xms:vncraGJ9z7tDaeV7F00ICmGbP573QksziNl_XN3NK1sF6QLBgP4A0Q>
-    <xme:vncraOKKTDyagUvLD6D7xApSC5hK42yLYe9WftARh1oN678mTar6hcpoGtN9Uxpmq
-    4fMNzS74QRT8FA8dA>
-X-ME-Received: <xmr:vncraGuGFm1rMVgVTBxW-Tujc93xsR8Dd3DeOO0Npsae9-jxvNnn92aMOA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefvddvtdelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
-    hlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedv
-    teehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheptghhrhhishhirdhstghhrhgvfhhlsehgmhgrihhlrdgtohhmpdhrtghpthhtohep
-    shhkhiesshhkhielrdguvghvpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphht
-    thhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpgh
-    hhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhi
-    nhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:vncraLbJ4qhXFlYBIfRSgI-IkblrBN3GYRZnvwY00JiWaGLP1qLVlg>
-    <xmx:vncraNYq1a3WGO_BJBOWhneNN9lCuD2MCAZp2ulVPU1r3v67kzji6w>
-    <xmx:vncraHAdbhrYvmNL3ZeiO_cHA8xBo1hcxvC0lJgladgAYy6VNkrnDw>
-    <xmx:vncraDa6MuVGJa0D9PJRKFGZ-2l2kpQjMxQXbWwiCDwMXYtDSdx9RQ>
-    <xmx:vncraNqZXrDXBSTNoQGOlCZXDn__MJDzC9cOjeDmyHKMZN1xU8Fej9oq>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 May 2025 14:26:05 -0400 (EDT)
-Date: Mon, 19 May 2025 11:26:05 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Sky <sky@sky9.dev>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Mon, 19 May 2025 11:34:36 -0700 (PDT)
+Date: Mon, 19 May 2025 14:34:34 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Burak Emir <bqe@google.com>
+Cc: Kees Cook <kees@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Gerald =?iso-8859-1?Q?Wisb=F6ck?= <gerald.wisboeck@feather.ink>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
-	Benno Lossin <lossin@kernel.org>
-Subject: Re: [PATCH v4 0/3] rust: add `UnsafePinned` type
-References: <20250511-rust_unsafe_pinned-v4-0-a86c32e47e3d@gmail.com>
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v8 0/5] rust: adds Bitmap API, ID pool and bindings
+Message-ID: <aCt5uvbnIVgOscKf@yury>
+References: <20250519161712.2609395-1-bqe@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -122,65 +83,181 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250511-rust_unsafe_pinned-v4-0-a86c32e47e3d@gmail.com>
+In-Reply-To: <20250519161712.2609395-1-bqe@google.com>
 
-On Sun, May 11, 2025 at 08:21:37PM +0200, Christian Schrefl wrote:
-> This version now only has the kernel implementation without the
-> config flag for using the upstream version. Additionally now
-> commits for using `UnsafePinned` in `Opaque` were added.
+On Mon, May 19, 2025 at 04:17:00PM +0000, Burak Emir wrote:
+> This series adds a Rust bitmap API for porting the approach from
+> commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
+> to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
 > 
-> Checkpatch warns about `rust/kernel/types/unsafe_pinned.rs`
-> missing a MAINTAINERS entry. This should be fine because it
-> will be included in the RUST entry.
+> The Rust bitmap API provides a safe abstraction to underlying bitmap
+> and bitops operations. For now, only includes method necessary for
+> dbitmap.h, more can be added later. We perform bounds checks for
+> hardening, violations are programmer errors that result in panics.
 > 
-> This patchset is based on the pin-init-next branch.
+> We include set_bit_atomic and clear_bit_atomic operations. One has
+> to avoid races with non-atomic operations, which is ensure by the
+> Rust type system: either callers have shared references &bitmap in
+> which case the mutations are atomic operations. Or there is a
+> exclusive reference &mut bitmap, in which case there is no concurrent
+> access.
 > 
-> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+> This version includes an optimization to represent the bitmap inline,
+> as suggested by Yury.
+> 
+> A benchmark using a production configuration shows performance on par
+> with C:
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+This should also go in corresponding patch. 'On par' is not a number.
+Can you calculate percents? It looks like +7% for next_zero_bit. For
+some application this may be a significant number.
 
-Thanks a lot for doing this!
+Did you enable hardening? Did you estimate confidential interval?
+Maybe it's just a noise...
 
-Regards,
-Boqun
+> 
+> ```
+>               Start testing find_bit() with random-filled bitmap
+> [    6.974435] find_next_bit:                  944136 ns, 163996 iterations
+> [    6.982039] find_next_zero_bit:             981618 ns, 163685 iterations
+> [    6.989460] find_last_bit:                  800630 ns, 163996 iterations
+> [    7.004710] find_nth_bit:                  8627435 ns,  16281 iterations
+> [    7.013791] find_first_bit:                2459789 ns,  16282 iterations
+> [    7.054645] find_first_and_bit:           34227540 ns,  32733 iterations
+> [    7.061743] find_next_and_bit:              474530 ns,  73676 iterations
+> [    7.068365] 
+>                Start testing find_bit() with sparse bitmap
+> [    7.075035] find_next_bit:                   11394 ns,    656 iterations
+> [    7.083579] find_next_zero_bit:            1920337 ns, 327025 iterations
+> [    7.090213] find_last_bit:                   12061 ns,    656 iterations
+> [    7.100121] find_nth_bit:                  3279811 ns,    655 iterations
+> [    7.107930] find_first_bit:                1188115 ns,    656 iterations
+> [    7.114558] find_first_and_bit:               3730 ns,      1 iterations
+> [    7.121184] find_next_and_bit:                4679 ns,      1 iterations
+> [    7.127805] find_bit_benchmark_rust_module: Start testing find_bit() Rust with random-filled bitmap
+> [    7.138550] find_bit_benchmark_rust_module: next_bit:                       999542 ns, 163592 iterations
+> [    7.148974] find_bit_benchmark_rust_module: next_zero_bit:                 1053432 ns, 164088 iterations
+> [    7.158342] find_bit_benchmark_rust_module: Start testing find_bit() Rust with sparse bitmap
+> [    7.166718] find_bit_benchmark_rust_module: next_bit:                        11474 ns,    655 iterations
+> [    7.178143] find_bit_benchmark_rust_module: next_zero_bit:                 2056913 ns, 327025 iterations
+> ```
 
-> ---
-> Changes in v4:
-> - Reworked `UnsafePinned::add` doctest to not use get_mut_unchecked.
-> - Link to v3: https://lore.kernel.org/r/20250510-rust_unsafe_pinned-v3-0-57ce151123f9@gmail.com
+So, your output exceeds 80- and even 100-chars limit. Can you drop
+that useless "find_bit_benchmark_rust_module:" part?
+
+Thanks,
+Yury
+
+> We introduce a Rust API that would replace (dbitmap.h) in file 
+> id_pool.rs. This data structure is tightly coupled to the bitmap API. 
+> Includes an example of usage that requires releasing a spinlock, as expected
+> in Binder driver.
 > 
-> Changes in v3:
-> - Dropped CONFIG_RUSTC_HAS_UNSAFE_PINNED and feature(unsafe_pinned) (Alice)
-> - Add comment to `Opaque` reasoning about included `UnsafeCell` (Benno)
-> - Small changes in commit message of Patch 3 (Benno)
-> - Removed docs mentioning not included functions (Benno)
-> - Removed docs mentioning implementation details and added that as
->     comment instead (Benno)
-> - Link to v2: https://lore.kernel.org/r/20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com
+> This is v8 of a patch introducing Rust bitmap API [v7]. Thanks
+> for all the helpful comments, this series has improved significantly
+> as a result of your work.
 > 
-> Changes in v2:
-> - Expanded `UnsafePinned` documentation to describe differences
->     with upstream rust implementation.
-> - Removed config flag for using upstream `UnsafePinned` type.
-> - Add patch implementing `Wrapper` for `Opaque`
-> - Add patch for using `UnsafePinned` internally in `Opaque`
-> - Link to v1: https://lore.kernel.org/r/20250418-rust_unsafe_pinned-v1-1-c4c7558399f8@gmail.com
+> Changes v7 --> v8:
+> - added Acked-by for bindings patches
+> - add RUST_BITMAP_HARDENED config, making the extra bound-checks configurable.
+>   This is added to security/Kconfig.hardening 
+> - changed checks of `index` return value to >=
+> - removed change to FIND_BIT_BENCHMARK
 > 
-> ---
-> Christian Schrefl (3):
->       rust: add UnsafePinned type
->       rust: implement `Wrapper<T>` for `Opaque<T>`
->       rust: use `UnsafePinned` in the implementation of `Opaque`
+> Changes v6 --> v7:
+> - Added separate unit tests in bitmap.rs and benchmark module,
+>   following the example in find_bit_benchmark.c
+> - Added discussion about using vendored bitset to commit message.
+> - Refined warning about naming convention
 > 
->  rust/kernel/revocable.rs           |   2 +
->  rust/kernel/types.rs               |  45 ++++++++-------
->  rust/kernel/types/unsafe_pinned.rs | 111 +++++++++++++++++++++++++++++++++++++
->  3 files changed, 138 insertions(+), 20 deletions(-)
-> ---
-> base-commit: 9de1a293c8ece00d226b21a35751ec178be2a9fa
-> change-id: 20250418-rust_unsafe_pinned-891dce27418d
+> Changes v5 --> v6:
+> - Added SAFETY comment for atomic operations.
+> - Added missing volatile to bitops set_bit and clear_bit bindings.
+> - Fixed condition on `nbits` to be <= i32::MAX, update SAFETY comments.
+> - Readability improvements.
+> - Updated doc comments wording and indentation.
 > 
-> Best regards,
+> Changes v4 --> v5: (suggested by Yury and Alice)
+> - rebased on next-20250318
+> - split MAINTAINERS changes
+> - no dependencies on [1] and [2] anymore - Viresh,
+>   please do add a separate section if you want to maintain cpumask.rs
+>   separately.
+> - imports atomic and non-atomic variants, introduces a naming convention
+>   set_bit and set_bit_atomic on the Rust side.
+> - changed naming and comments. Keeping `new`.
+> - change dynamic_id_pool to id_pool
+> - represent bitmap inline when possible
+> - add some more tests
+> - add myself to M: line for the Rust abstractions
+> 
+> Changes v3 --> v4:
+> - Rebased on Viresh's v3 [2].
+> - split into multiple patches, separate Rust and bindings. (Yury)
+> - adds dynamic_id_pool.rs to show the Binder use case. (Yury)
+> - include example usage that requires release of spinlock (Alice)
+> - changed bounds checks to `assert!`, shorter (Yury)
+> - fix param names in binding helpers. (Miguel)
+> - proper rustdoc formatting, and use examples as kunit tests. (Miguel)
+> - reduce number of Bitmap methods, and simplify API through
+>   use Option<usize> to handle the "not found" case.
+> - make Bitmap pointer accessors private, so Rust Bitmap API
+>   provides an actual abstraction boundary (Tamir)
+> - we still return `AllocError` in `Bitmap::new` in case client code
+>   asks for a size that is too large. Intentionally
+>   different from other bounds checks because it is not about
+>   access but allocation, and we expect that client code need
+>   never handle AllocError and nbits > u32::MAX situations
+>   differently.
+> 
+> Changes v2 --> v3:
+> - change `bitmap_copy` to `copy_from_bitmap_and_extend` which
+>   zeroes out extra bits. This enables dbitmap shrink and grow use
+>   cases while offering a consistent and understandable Rust API for
+>   other uses (Alice)
+> 
+> Changes v1 --> v2:
+> - Rebased on Yury's v2 [1] and Viresh's v3 [2] changes related to
+>   bitmap.
+> - Removed import of `bindings::*`, keeping only prefix (Miguel)
+> - Renamed panic methods to make more explicit (Miguel)
+> - use markdown in doc comments and added example/kunit test (Miguel)
+> - Added maintainer section for BITOPS API BINDINGS [RUST] (Yury)
+> - Added M: entry for bitmap.rs which goes to Alice (Viresh, Alice)
+> - Changed calls from find_* to _find_*, removed helpers (Yury)
+> - Use non-atomic __set_bit and __clear_bit from Bitmap Rust API (Yury)
+> 
+> Link [1] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.com/
+> Link [2] https://lore.kernel.org/rust-for-linux/cover.1742296835.git.viresh.kumar@linaro.org/
+> Link [v7] https://lore.kernel.org/rust-for-linux/20250423134344.3888205-2-bqe@google.com/
+> 
+> 
+> 
+> Burak Emir (5):
+>   rust: add bindings for bitmap.h
+>   rust: add bindings for bitops.h
+>   rust: add bitmap API.
+>   rust: add find_bit_benchmark_rust module.
+>   rust: add dynamic ID pool abstraction for bitmap
+> 
+>  MAINTAINERS                     |  15 ++
+>  lib/Kconfig.debug               |  13 +
+>  lib/Makefile                    |   1 +
+>  lib/find_bit_benchmark_rust.rs  |  94 +++++++
+>  rust/bindings/bindings_helper.h |   2 +
+>  rust/helpers/bitmap.c           |   9 +
+>  rust/helpers/bitops.c           |  23 ++
+>  rust/helpers/helpers.c          |   2 +
+>  rust/kernel/bitmap.rs           | 429 ++++++++++++++++++++++++++++++++
+>  rust/kernel/id_pool.rs          | 201 +++++++++++++++
+>  rust/kernel/lib.rs              |   2 +
+>  security/Kconfig.hardening      |   9 +
+>  12 files changed, 800 insertions(+)
+>  create mode 100644 lib/find_bit_benchmark_rust.rs
+>  create mode 100644 rust/helpers/bitmap.c
+>  create mode 100644 rust/helpers/bitops.c
+>  create mode 100644 rust/kernel/bitmap.rs
+>  create mode 100644 rust/kernel/id_pool.rs
+> 
 > -- 
-> Christian Schrefl <chrisi.schrefl@gmail.com>
-> 
+> 2.49.0.1101.gccaa498523-goog
