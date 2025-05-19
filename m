@@ -1,96 +1,110 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3DF1DF963;
-	Mon, 19 May 2025 17:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C24F20AF87
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 17:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747674182; cv=none; b=JSH2EiEqC7Ke9kuJuCKXIBSmgv1cHlvFV9F/wytGsmPTnH7J1M8JJwc35LdqwAERVBGe+A/F74sCk/XIhMLH1WS3A/1qLjO/GeiJjFGJDL0qeeaWDJPPL7LLIMTrrwz7FT0LaTrm3Bwqwo7QSrVRWegzK87hW8XOIbDfl2YO+fg=
+	t=1747674640; cv=none; b=k/2XE13eH4jy0Tn24mlJ5a8YURgWVDHBQP9SLNrzSboqFkYWT+KOidmYmyHQhbSCitLPQwJzrSE+zWU4FwFnOVzGU195RAD6PHNHopi55mAOP1FeGVJ3Q2gKZSzJFhdgLRZnfJSa2mS4sXuT6sK77cN+Pr4/FVR+Z9IPc/q5bV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747674182; c=relaxed/simple;
-	bh=dLkUJ3SdmyWzypJshGqqCuSQZ/CXnDd1H8MEMaxlk4s=;
+	s=arc-20240116; t=1747674640; c=relaxed/simple;
+	bh=P8N2y65o4MO0NBQKOl6J3DHg82v4Gb5hE/6uXupkNSY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=go0idILoSExK7xv5B2f+h/9dpEJo5VKWfL0PMqh4obwCe3Am4T0xpBNaQGNAWOs6UFC0yE3fTu1DWRqTNaDl83sI+aefHWZnA6y0hBc/SbL1VcDbzs3pEpnYJTqr42nRgJ+2I5XMakkYuyXvj2HxBy9giz889Q3NGd6EmW8+zYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D7vPJq8u; arc=none smtp.client-ip=209.85.214.178
+	 To:Cc:Content-Type; b=ug0j/BpK8xWh6Djv61S9yw+57V4sIYOdU42qrxtAWXg8v5XzrtObItlWB7VNdM87EkkApIHHrjyt58syMtRT7Y3coeaQFC69iLj2Z5GSGuFboaSJ5pgfy8kZamTUfkEWHCdxPVle1yfBTaAOy+7HYrMEe1Rn5miTA85mVidanf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bKckkw2V; arc=none smtp.client-ip=209.85.215.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D7vPJq8u"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22e19c71070so7750245ad.3;
-        Mon, 19 May 2025 10:03:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bKckkw2V"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b26e6c551f8so347291a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 10:10:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747674180; x=1748278980; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747674638; x=1748279438; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dLkUJ3SdmyWzypJshGqqCuSQZ/CXnDd1H8MEMaxlk4s=;
-        b=D7vPJq8uLTS77eJMBVVjfKXLvbtBDqQXZJFN9jvYyca8ORMjH3Khdskm9McsmEMCvH
-         SJDY0O8EkwPIf19Q4Jgh3q6AuwuifOytn99HzGUkA03wP9ys8g8534PQlTUmXqU/Jkjf
-         j9+NLbhRUW0EumCm9pIGkKcf3wwTy6ZCW60aXKqtDJCqCz51obhGJyUbQQoW5K6ez52M
-         8S7NevuHV1+B8AM1Zo/qDusSEivw3Y47P+Lm2cLexqJawfUZ468C1ihpEJT/Czutiosw
-         efIXoGKVd8SULufoBnA3OayuEvi5EGrWkrXaPnr4zbli/3+2t7+EM+AtSVYceAk4nprS
-         4jaA==
+        bh=EmUcaKS1V6l+6g7NxIOIxnfg2hTZMWJY0U/K5nkakgY=;
+        b=bKckkw2VHp5WYjYvEX3C+pYBHBBNG9200xvBbDbcgWgK8oLXPRrPT5Gvt/qxZcAZQs
+         mEm3ixS0toRbPS62Qc1+k4Oo1YtWho0auf53qkA9HJNYkcD59LpKFN9w0r0daO+3dK7a
+         HqWGKz+nh/E1uLuzMoF+ue9Ow8HO3k+vxhX9RWVIbWC4mtS0bCdgz4EPNgMTFTNow+Fj
+         GUGlEl3zURadfscj/08RYt0+d1JqY0RPnddzpa9VpOYzk+oAo53B6fbJPLoERQN+O/NH
+         nKYi9wohf/kUzB5rBiAbst019NeDrQrWMaLoEOg2nukd9K0PC0Z4Yhg1OMGav+G+1+uI
+         hvKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747674180; x=1748278980;
+        d=1e100.net; s=20230601; t=1747674638; x=1748279438;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dLkUJ3SdmyWzypJshGqqCuSQZ/CXnDd1H8MEMaxlk4s=;
-        b=sjWU+nF+4DNvnpCCsDwetyp2VDsD9s5nizR4ngSrNzGh3qH1/mZ/IknTNxHnUat56J
-         Fiz6M5kQlAsS+YKSFH92h1VJyhn6PkS+gvV4XzHd2FG5DWN2cjBYMVL+Zvhr3kyjBYiw
-         neJAmA7DsQ1gIlpbOkE0eGaeu8VOq4Ksh+OJcdu8+94aAp/Zg3kkJRPfYQPGoAnNzTgU
-         larGBaFb2jdQpHWokYRHTQr1mvwj6mkj6Qhd0cx2R+W7RWEZtLGV3tpT+qPBvKydrMI4
-         UWW8AMWkM1xKvfuV/SKGE55+9fjcBF0nam9jogIYJfiAF/KS3bODTLrznJMLOGN/ySlf
-         q4RA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNCF4xhwVcBK2wPUdliGp/A/mVeaQ3JEquq3GbraN/aN46Tbzvz6jIop8Jd+0iDymx7LoTD7CN@vger.kernel.org, AJvYcCVACHazgQB0fAbFWtpNEY/8zAnKUcyWXvPThWcK4A8PBLD8eurJJ2P+ZcX0TBGAC0J+KoxmwYqx8LGmVNAaIMU=@vger.kernel.org, AJvYcCXTBOgwKl9zs6HTdmUuant0Lu7qHCrZVGBVMDvxmN9DVlpReO+gVdJjaNdBJB2zhddu5xGyCMSnwMjx+e8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjlyRiPImYMDE0G3OrWofOHB/nkKy3O5nxcEeYiDHKLaMm6kqK
-	+MtKA7sWXLrscNQ6MUT+Hl0obIkGQoRg4UTzFnT6EaIZUuyWtDbp60kTgyvVN6s9Y6//uWYeDaV
-	craID05992Fizd8rM8pRg7mzZsWyq1ns=
-X-Gm-Gg: ASbGncu53POEL6yiYuGMWhmFijJh3V9wkoOcd3kAEPcGg7Ciqx397edDrA43TFISkSg
-	KdjFFhGhdZWeIwq3BC2IaCXTY5ehsiOADL7kZlHmPExEWgOwr0ZcNsXQLFvSew7Bwk8LTSlze3B
-	PA9msvDR0JNy1yn5OITztAyQP2UUcmMkqU
-X-Google-Smtp-Source: AGHT+IFbR/hkcZrextwiHSaNvyH4tAV9pXid5iCOxR5MP99p8ZrfDGeKZfpphVbbGXYZSk5vQ78hf1JU1jwExjH5G/s=
-X-Received: by 2002:a17:903:2cc:b0:22e:361e:7572 with SMTP id
- d9443c01a7336-231d43bb4f5mr63483115ad.7.1747674180455; Mon, 19 May 2025
- 10:03:00 -0700 (PDT)
+        bh=EmUcaKS1V6l+6g7NxIOIxnfg2hTZMWJY0U/K5nkakgY=;
+        b=gtNCIp25SSsM4OKecW5AaFQYq9Q2ra2bwwlxuPDxUPqjTfb8HodEHuGhZp++Grc9fR
+         yMOfyOHq1RzLYNa/G94s2tMq2Y8rIyUVJzX5yp/nDl3QwmBB4c1I3QLGG6NqXN/Bspwq
+         +rBUAWi3B4E1JSlC7+3KFYXvXqGgS0BZBYFLsByZ9HpBmF+v1++tEg4+3mA43tKSl19V
+         BlrTMgbg67p6NoEBthvmGk/aFXzikXgS5SyoO4fnnhS6MeKC/VXFY6t3Dqlw/QxTCsCB
+         tf7g5To9T7j0x/dXGMYOhnD/9I0hDW0zxzZNVlE9R6TfSzAlAgdvPfhu5C3jFD3YZ11J
+         gj5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXqGeaSCeGrSBXtIBCm7s77Omn+zLVtIjFuhdvyl2iBgiSCjhgrCCSjEFc3s+grzWg6kvTNKAWwSSnTfk0naw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywm1fI+P3Fe1ONlRgbH0inymSwvkn/jyK04e52gUcvQTfpDtF9G
+	CnxyiyBbTiJrjGNyzzvCt/5mjKKWeVNRtp7dLjCLYPKYUgvQBg7kbWZqZe0zv3U56Ic5jFVPlZ1
+	MhyryjxLeHO4dUIICh66L+83g0e8WbHo=
+X-Gm-Gg: ASbGncuxtK7lcKmDyXn2vBHXuIx8yOY+bjpzZ5qYd1KK7Gzf/Rpl4CiXg7ou2sDZqws
+	Fn0bAEVR/GaAPlBtO+XMnDEzGxwjEzy62iiueBOF4RTswIhP6c7JerEx9O2JZzcNc4Ih1FPbk1P
+	r/fc17IdX19qgYp/zZXhg2w4x5mtCWNNX/
+X-Google-Smtp-Source: AGHT+IEOI34QtkibIgvsVcb9KcEBhX3YOR2s96qRnM1r4GryJWtbx6ZUaSoi1HO8eYNwc37nm8vtS97HlyjrCxsomoQ=
+X-Received: by 2002:a17:902:cf07:b0:220:e1e6:446e with SMTP id
+ d9443c01a7336-231d437f0damr69159875ad.1.1747674638592; Mon, 19 May 2025
+ 10:10:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250517085600.2857460-1-gary@garyguo.net>
-In-Reply-To: <20250517085600.2857460-1-gary@garyguo.net>
+References: <20250516122349.1944895-1-igor.korotin@yahoo.com> <20250519164615.3310844-1-igor.korotin.linux@gmail.com>
+In-Reply-To: <20250519164615.3310844-1-igor.korotin.linux@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 19 May 2025 19:02:47 +0200
-X-Gm-Features: AX0GCFtaysJVcUQOMTcbPDH1T0mGXdawyzH-WpOc8Eu6TBiYqOuUj-gxkOrlqTk
-Message-ID: <CANiq72kdReW=OVdKPo4CJ1b+DU0GbkLxOOmEh+5C7zW9NgFtaA@mail.gmail.com>
-Subject: Re: [PATCH] rust: compile libcore with edition 2024 for 1.87+
-To: Gary Guo <gary@garyguo.net>
+Date: Mon, 19 May 2025 19:10:26 +0200
+X-Gm-Features: AX0GCFuEp7vsTSfNNmeD-pRiPPUqa0fjnoK2amX-_T8XnejdgzOFamvwu5SYbRE
+Message-ID: <CANiq72kis5ykiO8kNAB-uu84+cQ1Doip=An4B+Q2W+Zg+Y0tww@mail.gmail.com>
+Subject: Re: [PATCH v5] rust: macros: Fix macro referencing core and kernel crates
+To: igor.korotin.linux@gmail.com
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, est31@protonmail.com
+	Benno Lossin <benno.lossin@proton.me>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 17, 2025 at 10:56=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
+On Mon, May 19, 2025 at 6:49=E2=80=AFPM <igor.korotin.linux@gmail.com> wrot=
+e:
 >
-> Rust 1.87 (released on 2025-05-15) compiles core library with edition
-> 2024 instead of 2021 [1]. Ensure that the edition matches libcore's
-> expectation to avoid potential breakage.
+> From: Igor Korotin <igor.korotin.linux@gmail.com>
 >
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
-n older LTSs).
-> Link: https://github.com/rust-lang/rust/pull/138162 [1]
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1163
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Fix macros and auto-generated code to use absolute paths, `::core::...`
+> and `::kernel::...`, for core and kernel references. This prevents issues
+> where user-defined modules named `core` or `kernel` could be picked up
+> instead of the `core` or `kernel` crates.
+>
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1150
+> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
 
-Cc'ing est31 -- I will add:
+Oh, we crossed emails... :)
 
-Reported-by: est31 <est31@protonmail.com>
+Couple notes (no need for v6 -- I can fix locally when applying if you pref=
+er):
+
+  - Normally you would keep the Reviewed-by from the previous version
+if there are no big changes -- in this one Benno agreed to drop the
+`static_assert!` change I mentioned, so the Reviewed-by should still
+apply without risk.
+
+  - The email header (From) lacks the name, so Git had to add the
+From: ... at the top. I would suggest checking the email setup so that
+the email goes with the full name too.
+
+  - I normally suggest sending new versions as a new thread -- it is
+easier to read in certain clients and in Lore.
 
 Thanks!
 
