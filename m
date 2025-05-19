@@ -1,111 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B46F1E0B86;
-	Mon, 19 May 2025 12:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A398278E42;
+	Mon, 19 May 2025 12:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747658822; cv=none; b=Tc/5Uu3NiGNIBpPmRlcHPhiviBA78FdzxCriCy+nmUCI8fhL3YR/gufeocyabDdztM/5AyTCUxp+YTHk+SkuMW6QQtVi2mu626OZdEmfqVTOPGyzNGFwFKyCOzZxy5/PcvZJVIRICGeaWKpmfVE5YqKhoiNuTgoQxBQrhH3Uy7M=
+	t=1747659124; cv=none; b=eLWAb00Ca3aN9vUvNpPYBhGM82hUkJ0JulFdyeAo09fwctxEyxVzE4ZC3FesRSjyCOxkZ9fClc3HijFgj/MtX8O/3sZKsnNae1JBqyOM5LT/mXtpIfyqBK1x6j1YPgZDT8+AjUscvYX/Qtqbrvs6xwz1SDTmuM76EFq3q1w3YDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747658822; c=relaxed/simple;
-	bh=COvNHhxfOFdcPkYswikn5zrTUNVBmHzZqGP2ItG+TfE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S/eFQQSqeLDI7lsBHbjhsBPZ0gOIQf5TtKrw+k+Iz9nbMP0Ivj3ogRgXRky6Io9Nm/QfrQX8PZQ/N0Cql5FmWLp3Ofguo+Y/gtKrSTPYxF25okmUrykivKwCbk4tuoNBpchk8MGbxcHLrUr3WPR9SuyDjtxra09Z7D/Nbu5k7xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fn+PSvuf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747659124; c=relaxed/simple;
+	bh=sfW3T+vo1+Sy5qSz9UXUWZ/rKPHP36qwJ6NQxledKXc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=b8blglemLLbUb/RTphTFywEXAyh2WJbNSH8S4JiALbAKSb9PeE+aIuXSldXOrrsN1Bnmbpyle2kZlfMSdjZP6BRftke+sE313rOZqiehXc+prxeIMlMErKJB19PWiOX5WFeMxWHKCArmoc4vgdP9r2+2OmYLN2xsMzcM7QQ4TUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LaytfcXk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fn+PSvuf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE2BC4CEE4;
-	Mon, 19 May 2025 12:46:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LaytfcXk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBB1C4CEE4;
+	Mon, 19 May 2025 12:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747658821;
-	bh=COvNHhxfOFdcPkYswikn5zrTUNVBmHzZqGP2ItG+TfE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fn+PSvufpLJ5jRCahyjS4VPPLIuMe1NFJox9OdV0SaTO15h6AHrRqACWfXAc1VpXa
-	 /evqVnMVE5qx/MVM51A4V3gqKhBSBh1LB50fR+oyeA9Yv96e25QXv1Jo7mNQujEVr9
-	 4rLvUWRDsKvp5Eeob9FwEZbcnVjOoxga+xnzPT5OLxxr2VK0olwf1WPtf5xDUpbAKi
-	 5Jf61le612jeDo7yL1NuOFygtrng1PJxAsdtkA/f4+lwiWGHR3b28dvz+Z3qnFPI3n
-	 lhRAvalWPcwyteS4XwSJjCsG3cmdoPMVeEU4sd1L928YNtlvNV+IK1CHuhheHzv+69
-	 e7qws5d5cPb/Q==
-Date: Mon, 19 May 2025 13:46:55 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3] rust: regulator: add a bare minimum regulator
- abstraction
-Message-ID: <ca6ed5c1-5b39-4e22-8294-88380885bb65@sirena.org.uk>
-References: <20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com>
- <D9YXK1J1XO37.JVILKENRKYXD@nvidia.com>
- <D9Z3R4EYAXV9.211IFNRTOPM6O@kernel.org>
- <D9Z4XGQ2QHXA.2H5X1NZ5IZECC@nvidia.com>
- <aCnQo15SbhXZ9Fln@finisterre.sirena.org.uk>
- <D9ZCD8D6J5QW.14H6VM9LQ5R2Z@kernel.org>
- <a1a6b2f8-af42-4942-ab62-678e37381d08@sirena.org.uk>
- <DA03MG3VURVI.37CBV5WEEKJSH@kernel.org>
- <8229a161-52b8-4265-8296-8f1ac49bab62@sirena.org.uk>
- <DA04ZK6NFF1N.35LFZRY7O7SG8@kernel.org>
+	s=k20201202; t=1747659123;
+	bh=sfW3T+vo1+Sy5qSz9UXUWZ/rKPHP36qwJ6NQxledKXc=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=LaytfcXkBzo1JYDQs1kmjiB56pSbeBrNpE1LgdKpfoBYR7YKFhKD9Bq3bsqCJDRSf
+	 z0gNVal+VZjmhk7VaDxwzKWhxzyst5z21AIBYa0/738kxOnm+OmFrscu7UuMiOcqXA
+	 p11542j4iuWbGQ/bLfONlyLRJ5WJMhqbOIpjX5JXAYOchJIAP7wVHW00T6lPIzojCE
+	 ZoBQ71JIORNKtRyIBOFBiytUppWc2I2o6A0QczLMHs1D8RYwHV34MAC5R9Sr94EJ9K
+	 F/1YvKtkmP2+jJv1UzbbF/ZJcsqTA6cWW3NPdrwfzxUdIk8FWML5xxTU+CTIo/m+xq
+	 Jm+31dgbaxPMQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="k6GpUpGM6uoPrUAq"
-Content-Disposition: inline
-In-Reply-To: <DA04ZK6NFF1N.35LFZRY7O7SG8@kernel.org>
-X-Cookie: We have ears, earther...FOUR OF THEM!
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 May 2025 14:51:55 +0200
+Message-Id: <DA05GA6QUD1R.1XR0GFPLNXPTQ@kernel.org>
+Cc: <ansuelsmth@gmail.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+ <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+ <florian.fainelli@broadcom.com>, <bcm-kernel-feedback-list@broadcom.com>,
+ <kabel@kernel.org>, <andrei.botila@oss.nxp.com>, <tmgross@umich.edu>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <dakr@kernel.org>,
+ <sd@queasysnail.net>, <michael@fossekall.de>, <daniel@makrotopia.org>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [net-next PATCH v10 7/7] rust: net::phy sync with
+ match_phy_device C changes
+From: "Benno Lossin" <lossin@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <D9YO3781UI2X.1CI7FG1EATN8G@kernel.org>
+ <20250519.210059.2097701450976383427.fujita.tomonori@gmail.com>
+ <DA051LGPX0NX.20CQCK4V3B6PF@kernel.org>
+ <20250519.214449.1761137544422192991.fujita.tomonori@gmail.com>
+In-Reply-To: <20250519.214449.1761137544422192991.fujita.tomonori@gmail.com>
 
+On Mon May 19, 2025 at 2:44 PM CEST, FUJITA Tomonori wrote:
+> On Mon, 19 May 2025 14:32:44 +0200
+> "Benno Lossin" <lossin@kernel.org> wrote:
+>>>>> The other use case, as mentioned above, is when using the generic hel=
+per
+>>>>> function inside match_phy_device() callback. For example, the 4th
+>>>>> patch in this patchset adds genphy_match_phy_device():
+>>>>>
+>>>>> int genphy_match_phy_device(struct phy_device *phydev,
+>>>>>                            const struct phy_driver *phydrv)
+>>>>>
+>>>>> We could add a wrapper for this function as phy::Device's method like
+>>>>>
+>>>>> impl Device {
+>>>>>     ...
+>>>>>     pub fn genphy_match_phy_device(&self, drv: &phy::DriverVTable) ->=
+ i32=20
+>>>>=20
+>>>> Not sure why this returns an `i32`, but we probably could have such a
+>>>
+>>> Maybe a bool would be more appropriate here because the C's comment
+>>> says:
+>>>
+>>> Return: 1 if the PHY device matches the driver, 0 otherwise.
+>>>
+>>>> function as well (though I wouldn't use the vtable for that).
+>>>
+>>> What would you use instead?
+>>=20
+>> The concept that I sketched above:
+>>=20
+>>     impl Device {
+>>         fn genphy_match_phy_device<T: Driver>(&self) -> bool {
+>>             self.phy_id() =3D=3D T::PHY_DEVICE_ID.id
+>>         }
+>>     }
+>
+> I think there might be a misunderstanding.
+>
+> Rust's genphy_match_phy_device() is supposed to be a wrapper for C's
+> genphy_match_phy_device():
+>
+> https://lore.kernel.org/rust-for-linux/20250517201353.5137-5-ansuelsmth@g=
+mail.com/
 
---k6GpUpGM6uoPrUAq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Oh yeah you're right. But using `DriverVTable` for that doesn't sound
+nice...
 
-On Mon, May 19, 2025 at 02:30:05PM +0200, Benno Lossin wrote:
-> On Mon May 19, 2025 at 1:46 PM CEST, Mark Brown wrote:
-
-> > If you don't disable the regulator you've just leaked a reference which
-> > is obviously a problem.
-
-> For sure. But I'm trying to figure out if this is a safety-related issue
-> or not. Safety in Rust has a rather specific meaning that can be
-> summarized with "no UB". So since the C side does nothing if the user
-> screwed up the refcounts, it lets me to believe that we don't have any
-> safety related issues when forgetting to call `regulator_disable`.
-
-> Of course we still should strive for an API that makes that impossible
-> or at least very hard, but we don't need to make the API `unsafe` or
-> have to take special care. (At least if I understood correctly)
-
-Yes, it's relatively unlikely that it would lead to any undefined
-behaviour.  There is an API for crashing through the refcounts and
-disabling if we detect some emergency, but that's very extreme.
-
---k6GpUpGM6uoPrUAq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgrKD4ACgkQJNaLcl1U
-h9DFtwf/YKX6XE2sVpe0n7HKco7rUCWFYlpVz27Vk1u89lmzUaDo1Xq1rgGmyAix
-jyGn5bZ5sqNbs1OZlGfPNq1XNBSbMfyu41BEg8jmhSfRn153yIDXtoB3At0GVkD/
-V+m3bH4sqc1WSdMaI50UmvQjOeuDRT/h7G6/S5gg63t5RmjCFOBo9EHsrZWZfLOF
-dr87DgiAoZeGL0BPZbUmUX1RRrMbXgZzyAvdm9bXasv2Nuue4dAFVXyF32Nl2l7U
-V/G1OVuN71x6cc9ASIZlTL0NBUeSi8I6dSgp1iGjwHm4iK0MdtJBenv7XHPO90NV
-wqQfZzgWEYnzekwOQW4uNqNK3HtEZw==
-=2l14
------END PGP SIGNATURE-----
-
---k6GpUpGM6uoPrUAq--
+---
+Cheers,
+Benno
