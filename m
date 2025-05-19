@@ -1,330 +1,78 @@
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2067.outbound.protection.outlook.com [40.107.92.67])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3332B267386;
-	Mon, 19 May 2025 14:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747664657; cv=fail; b=mct1D37XfFxwnq69HF88i87qJQFKZM8cB3Q5Mj+pKFm3fwAoYVLLZrRhWcJZnc6uMFeB+ph6hI7oWN7BbyxvXhHTHJGFBdgi7/P7JDxj3fp3u9D/HugYMPsn2RpYPWroR+fJwWDkOSVtTifMgjmyxpfEPMplv9ktbToSuDpxs5s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747664657; c=relaxed/simple;
-	bh=UG7vBu6rJ5KjtoPhVIDRV241/1cu+J3q71OADKuplD8=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=DK4Po6xFeh8Sbu4Pk3w9bRC1WyChOnJ0iGx+0fdBM2KKsTfPvXFdWJsPf0OhsnHNy6w4G4o9agZh/Wvw3oJDLz6cdGYJXd58lNAURNW4HWYWPvQTsW+xt7AvjPQYZxWVuJ/KD1j7bSfP1YGzVJCSQAQkIF6q5fV2fy4evnqVxaE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Fq8D70w1; arc=fail smtp.client-ip=40.107.92.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E59F2820D7
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 14:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747665194; cv=none; b=EJbNKxv3hcE73yivPYXA3JHG1tCIzY2qHZrcIOAILoLLqhAxLBnh7jt6hjm7cO5FfrLQnrzLtVP8F1MqpQhSoZL9Aqp+rHgI8+mITjCfc3rUeAyaomSXqD/EkXIobFDfjdsvabbwWZiyY0tk71QAKMP4hF+3/MQosQCNwEYG9xg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747665194; c=relaxed/simple;
+	bh=AKYw8YDSUZsaHjqytXztHX49OHRCkBpFUHZbpFiL9DM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=W1DR9apWqUWRpJRYHOLJaFcw3SADXQ2fh75vJAcc8zYYPODGixpmRNng2C7xBsCXHgIbpLyUP1oGQ7FBg6/TlSe0bmIQBBseZ0eoYqrSYhT1GWzyfXu9u8D4zW9HabDdk6shUjySsOAHhd3UcXQ/9sxHPBc9wt7qmGxQFkZGIeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYpnW0L7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Fq8D70w1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rm/wMJvwBaF4WRDsTBYcgqjBxQsftR5lOCA3+f5V8m0dRmWEcm0VhdJLSGRuLj42CSsR/gLvrOrvk9S/WcCx/N6aixhH/cIVsBuryHqVd8ztG2RN3gKuNqXtR8aP+sg2/EhgtBhASgeBKW7JwFSBlD2DUQUKhQRxpNTc6SxB5dserhZZM0AzBJRkPz9O6YkrnR2y3ShBWcwWu/6pfgrtBA46aioONmHgVqO8vj7pZWJO4vQsNafEaG9VicuAREFlC9ytmLy797m5pRGIh+5l+WUw6c0ryewHgS3axnjm4MtKbS+68o0ybFgBvla0oTa0FD3kU0J9iFmk+BbD25kpcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ECQUdvns9u4reGBhF5sEo6Os9GTJwB/VyzCWsSzdGqk=;
- b=NnQ5r36k90bFaS3orEmY1cCrFumRkee/o7yV93ChkBESHxlgkZO+hKAJ8BFyL3YIIrH0++OmcMbZSW9IinkpvABKdd2oXelJZWZ9JFwJ9KBvpQnpAUx+3ufl29RAuwEoiVNVXqStuMqpmLa9UDXulfKok2wtxaG+6Uojhv1R1uF7u1dW3doXdj4giCpUtIUfqDC1cJ2viwGnrpHkiamBnngxIeImdHai+9TUjkAn4yeC2XfugxhMj904BmKrbt25TPMmKndAlNZBdGAFFQIx/Dg8DwM2M7XnuqAq+fvjOl559aUzcJnpMyFohrgt0GsvaY6s1eIVHOx/xLZRpKgNOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ECQUdvns9u4reGBhF5sEo6Os9GTJwB/VyzCWsSzdGqk=;
- b=Fq8D70w1qMgzRkwmYkS33gD8juqGNBD/me3e6sJI+Yo+qhYJwe5/a+bnR+OcOI6wxHSX5OGuLDsCKYMXy/Oe8R4AOE2h6rvxkg6LDH9+rFDFReQAmXQHqpsNDZWIjg6fBYjfT9596JU/MhdLT0gVzyWs+R8TsyQyiE0PLfsdP0V8Uyx/hiUfclNaKbIFH2LgGueOeF+0Sy+g4IkIXHqYa6z09c1a4neZebhECQqtGLv08d4goXwRvzz7Qa+BKo8OWHZmbytL/eFNFp8HbHk4XZD/13wkpGo5VLrN/LuAjJQBz86IUhgFMl9GJzkEcE6BNyBBTstNivMxAc1qpCzi1g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by LV8PR12MB9084.namprd12.prod.outlook.com (2603:10b6:408:18e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Mon, 19 May
- 2025 14:24:11 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%5]) with mapi id 15.20.8746.030; Mon, 19 May 2025
- 14:24:11 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 May 2025 23:24:08 +0900
-Message-Id: <DA07EVNAJXQW.MF79KW7CZAOV@nvidia.com>
-Subject: Re: [PATCH v3 18/19] gpu: nova-core: extract FWSEC from BIOS and
- patch it to run FWSEC-FRTS
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
- <corbet@lwn.net>, "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs"
- <bskeggs@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250507-nova-frts-v3-0-fcb02749754d@nvidia.com>
- <20250507-nova-frts-v3-18-fcb02749754d@nvidia.com>
- <aCTHBO0Wqx3rc81W@pollux>
-In-Reply-To: <aCTHBO0Wqx3rc81W@pollux>
-X-ClientProxiedBy: TYAPR04CA0021.apcprd04.prod.outlook.com
- (2603:1096:404:15::33) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYpnW0L7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B406BC4CEE4;
+	Mon, 19 May 2025 14:33:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747665194;
+	bh=AKYw8YDSUZsaHjqytXztHX49OHRCkBpFUHZbpFiL9DM=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=SYpnW0L7yU3FtfDyNt/ekvsAlOyAM3zbqXaenG+5vUMZ7hp/8AlJ54G8ciamLa6a/
+	 m6XGay+jeDWA2DV2q9FnE0H5QRPL9ig5sdVA6bX9OmCsN6fN3LEPrc3eyR1bJS8H0x
+	 yc42SR9PjhSwxeud0yINEZ9G9HpKiHNBQER45iJOlUDHJEkwfiz+UWQA4kBSepwBmM
+	 rf8s1BhAEDCelv3VwH8U7IStOD1pjpLEKil3v33C7KozpSd0I0WNWaUFrYgLhJ6xmp
+	 +zQhWL6UT3MVynPgNeG7QbjA6NGjcZJ4EYIu2+D/OYd43xrjUIVPYU/9tfMkH6etfy
+	 xsvVZXzPmHfCA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|LV8PR12MB9084:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52997816-60b0-4e61-2e59-08dd96e0d2c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UDR3cmRhTEsxTEFURkNxZlROaHJUaHVsS0dUSlVzbHlxR1JWejlLUzNteVMx?=
- =?utf-8?B?OHZwWmtGU3haa0gzZU5wTEF1Y3hKREhmYmttTnVKcDVWbk5rK0QwZWlhVEZu?=
- =?utf-8?B?WWg4R3grbUc1bmdTOFRRWmlvbWQ4ZFo4eVIwRElxcnkxbVQvRHU0czdnRy9X?=
- =?utf-8?B?S3VJQStCenRzOUJCWlJQeXM2bkQvNVdpQjRVNjBnVUlnbGdPK2crOUFwd3dO?=
- =?utf-8?B?T0FBK0I3dDQxZWlIaFhSWWJzTzloL0VwSXdvS2hrZk1scStycVhNdDFOWnVL?=
- =?utf-8?B?elhxa0prbHo5TWU0dTBXLyt2YkRpOUN5cVVRSUZMV2RlYklkSUFvemlzWDN4?=
- =?utf-8?B?ckFZR0tOaUtXSXVsU3E1K0k2Q0JoeEgrN1p2K2dNV0FtUWpzTVJNSUw5NWIv?=
- =?utf-8?B?VHp3K0Y3UU9iNFJ0WGw4RUhvV3VNZVk4a3NqejMzb3Rjc3hCcUxzVDdzM2FC?=
- =?utf-8?B?VUVkY2lSMkhySUtueExLQXlvdjNENzYwaWFpYWRISUhQS0pPWkpyZ1V4N2k1?=
- =?utf-8?B?SnkzMHNvRmpZV3VuNkdnS2ZPYUtaN0FDUkhzeFlrTTJmK1B6bVBqa29DU1JX?=
- =?utf-8?B?dVM0WnlZRW1lQURnWnlKNHIwUnNYTDNoalNIV3FyelJWOXlnNWJHYTVYM2l1?=
- =?utf-8?B?R2htc1gycUhWN0ZRVUtTZXc4cU9NbktKeE1aa25wb25kVko4aG9EQThKSlhh?=
- =?utf-8?B?cW02a0ZMSnFtL1FBL2MxNXl6OHNWQ1NMbEJWVXhsb2kwb3BBWUQ2eGMxeUkx?=
- =?utf-8?B?bTBhL3RuTnduR0xIZ2FITU1wQWo0NE5NT0tvMEk2WmVwaStZR00raWZCVHJ2?=
- =?utf-8?B?dlozMmFqOVZ4bWFjMVZIWjRZWDRMampjR0RwdU1USEhVWElPOFU4YnlmSzVi?=
- =?utf-8?B?RmpscVBKaWZVbTE2b2Rnc3IwUXJwSFhUckRxMkd5VFA1MGMwOWtKVTJCcEI2?=
- =?utf-8?B?RGtOcmFtM0ZBTW10UG1lMnZIdGZCMVdYZ1I1SjhRODAwRk4xUitzQnRWRExW?=
- =?utf-8?B?WDZERnI4ZTJydy91M2QrZ3RGdmxjOXZnVFM1UkZvaHd4NEZadnRSRk9IK2py?=
- =?utf-8?B?THl6NHdzV2d0UDBYR29vbXJISnZXZng4dzVZWWdhdFpYQU5TeHFLUTVrcllv?=
- =?utf-8?B?MElYczBCbEg1SXRIR2cwZ3dia2dwNmFoQm5qWU9rcDV4SkxLcnpOUmJkQXQ3?=
- =?utf-8?B?N0NNeHRWODBTc0tqbDRtQ2p3RGYxTXh1dDE5ang2dVZsSHc3RDJKUHJBaDhG?=
- =?utf-8?B?Yk0rZDFWbUpXZE5GaXlxWmE4OGkwYXFjS01BWm9oRUFLNlpMUXRGeTJpTlY3?=
- =?utf-8?B?cktkQVhqQzVXTDRwN0tjN3RHMnU3TElQeDNlV0djNUVhUnNUdE96eTFqRjZR?=
- =?utf-8?B?T3JDRE4yaHZDSXpuM01nakR0QXEyQzRJSk1NTGNta1RIazQ1R0hWT1QxQ0hQ?=
- =?utf-8?B?OTRyKzBBKy85dVUwQzcyZDdZVUZjblJodytmZW9MOUJ1M1k1TXoweHFFVzZX?=
- =?utf-8?B?NkNRaGl4Vk5LTGk1aFRsdno1UHYxTS9GVHhNd0ZsdlhaOHZ6aE5qMUtJbW5E?=
- =?utf-8?B?Y2dWeXVtZjNZSG0vSksyZGNrd1BzVVdNamJ1UDF5NngzRWkyaTc1RHdRcGt0?=
- =?utf-8?B?elAyQmpVZUxCT1FFVlVQOTBTUkRtbmxWN2dYTmJ1SmJSSkdha3Q2WXh6Umxs?=
- =?utf-8?B?SElJL2NDcm53aU8xcTNNTnAwdUxXTjBaRDROQUp1c01UdVl2R2tlenh3eWdr?=
- =?utf-8?B?NFV4MWVkY3ViekZSbFdOS1VJVUxPdFVCS2Y1UmhkL0FCQmR4SGVrTDdwb1h3?=
- =?utf-8?B?bzc2MkJEVXZyaE0yVzJSbmFEbUV1VGs1TklrOGdBVGtZM3lwY3pPcVk3SWRW?=
- =?utf-8?B?SDNsSTErR2FPbnBrSU5pczN4T1BCaGd6SkdpUHFFL3JtZmEvUzZpR0IyMEY3?=
- =?utf-8?Q?6K+gNRB5Sls=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T25raE9jZTBvMkVSbjdwSzhxUUY5NVF3NU9zMTQ4Zm5FMVB1cXZQTkhFM0JQ?=
- =?utf-8?B?R2FkSDJtUTZObWpmNm1OZi9ON2trM210Ym4xVWNwcTFCVFQ2ZzI0ekhhUzZ2?=
- =?utf-8?B?R2xlNHl5bVdINW5RclREVElRckNBWmQxbDd0eHl3dUdrZnVVbHFiUUVPaEdx?=
- =?utf-8?B?ZFNraFZaa1l2Z3FCM2RBYjkrcUpRbVE2ZDFEYTEyTVp4WkxIUi80SFo1QTl0?=
- =?utf-8?B?cGhXWW5SNlJQbU85M1FiY2JVandKWXRBS0dmemtTRDlaTUFEWThZYm1ycVd1?=
- =?utf-8?B?d3AxU3UyaUtsOTZITjVXRnZvQ05rMWlJNkJ2RkVTTDg4THBiQTNHTldkRnVH?=
- =?utf-8?B?OVJTQlZvUkhIQWVQZUFGd01FejJSUjJjTmN6Z1ptTEwxeHhxWDdHR3k2b2ZG?=
- =?utf-8?B?eW93Skw2dkNydmtHUHVqQ1I4WGU1SWE3ejh0MDVtVTRJa0pkeVdvayswakxn?=
- =?utf-8?B?RU0vUW9odjlJZ1c2cnN3UkRFZVZ5STVhbGJiQng4UmNVakVLVDFkUGFBMVdZ?=
- =?utf-8?B?SFc5bkQraEppY0NlaHIxUFI5RkFQQVdCWll1dUFnZWVONjhtOUZlTDBIKzdt?=
- =?utf-8?B?Vk9lWHRUSlRXamd4MHNFRDAxbGxKb1NIT3BJWWloaCsrOW1BT05JeTJkTVpl?=
- =?utf-8?B?U1ZHaGw2MTBGV2JwTDQ4bXJLSktEemQzbXFxTzlrQUtZeHZqNUZ0WTQxRGJw?=
- =?utf-8?B?eEdiR2pETEJUQ1lETWJOVDEwQVNHWkV4dlBpYnI5emtFaE4zV1ZRYi92MEVz?=
- =?utf-8?B?SWt0d0NnUXVEVllRTUtEQmN6Wllaei8vRmlXZWg3M1U2aXk5eEdGTzZCOXFO?=
- =?utf-8?B?OHhaMTRLM1ppK0h6TG4vOUg5ZGp5V3NvRFVGaUtKbFcwUUpzL1IrejZPZ2Nh?=
- =?utf-8?B?dTZHdEFEbERlOWNYWFVINGM0UjFScExDWitkUUM2czdSVFFsYzFaRU03bklo?=
- =?utf-8?B?Y1FzenlIVHNpdlAzaHJHVFpDOUtPK3BpTk9UMHo3NzZpZitVaGdsbUwvSUFT?=
- =?utf-8?B?cVcyS2ZZQzJuVUFhZEJpdmE2aTNFNUxBM2xaVGVNWkVVZXZ4cXlPSnNlZjZS?=
- =?utf-8?B?U3pxTi9kKzlCT3FFcHdSY1hSQ2NyUU5CYm1JNnB0dE9JQVNFNVpzVVRGSGIy?=
- =?utf-8?B?R0x6UGtBaW00NGIrOE16TDczR3NXOTB3TXhhRElhTWwxNjN1QndFY3hma1Nt?=
- =?utf-8?B?V29qT2c2SERCT3RXREp6d2Q4Qmg3OHBHa1N5TGZZOHRPZFVTUnV0cXMycHhl?=
- =?utf-8?B?bFhJdUJudFppL1F4bXUxUkNrb1hRMFI5U21BeWtHaWkxby9wazlFUnBHbzh4?=
- =?utf-8?B?UmtOKys3K1d6NDBiVGhKVm81akFVR2hSZXJzV0pDUVhURzlmOUowek1ZcnJU?=
- =?utf-8?B?SnhxbVdYbjBkSXJyTGs3VEZxaVdaSWVmNDZIZXpRRms5Qkc0aDJIY3BxOWww?=
- =?utf-8?B?d1c0Z1RBRk5UbGlZMmlQK1V0MStVWkRQSS9NVnhsNUF0NU5sUWpVeTFXcWVM?=
- =?utf-8?B?eTZBV1FUY1JUM2Jua3d2Uzkzdk5xcGVKczVNOTVsMitCVzRVRTVJeGVxdDR6?=
- =?utf-8?B?bDlOeEp1VFFHV2R0aDd4cnFqMlp1OXlqT2MrTjgxdHlaWllrblVMdStFajNr?=
- =?utf-8?B?ZDJpREhzenE0TWYwbUVHTTJkdm5FeUxSZ0RETWhlOGlUcDZJQXI0UGMwQ1ZZ?=
- =?utf-8?B?eFl1R0JJMWlkYVB2UzRkalQ1czA2U2N4NWtMMVlvZmV5VSsvdGpFdGlwZndF?=
- =?utf-8?B?b24zV3doZGhJQTRJZGFZZkZKRktVNkZkdnl5SDBHeDZmOTIrYkFhMVpVY2J5?=
- =?utf-8?B?eWJIVFVLTzRRVUlXYmhxYWlVNjkxWWhZelhaQTVvSEhwUXRHQnp2QmllMlJp?=
- =?utf-8?B?VmhuMkYydEhWYjJlSjlWN3plTk1KVDd2YVZNNFJoeG9tMnhtWlE2bmxNc1pZ?=
- =?utf-8?B?Y1VjeER0VGFwaE9nQW9MUjQwZUdkQWxOS3p3OCtya3BRajFETC9sbnoyRDgx?=
- =?utf-8?B?Sk1jYVJ0QXZRWWk5ZVN1Yk5kOWZRQnV4WWVOUFM4ck42NGhCY0UzRTN6cjJU?=
- =?utf-8?B?RmM1dmtCSHJTMk5yQ1cvWG5CbnN4WU41VGdGaGsvZUZwNVpsSERwU2pwT1dq?=
- =?utf-8?B?VWhMcjZ6VGVFS09SUitwa2ZHQXRvdGJWblZ4OUxUdEU0QWk4dWhEQnlNRUYy?=
- =?utf-8?Q?FBhdfZvsizrbnjBqZHgMPxztsx2CihqdjP31nZg+R/oI?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52997816-60b0-4e61-2e59-08dd96e0d2c7
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 14:24:11.1910
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3E0flucK/rAFpXWknehjPnvL9Nc8dUBBnHFYNcVM5Khe5AxT8yKrwOrF/y1YKRSce8hRtgXNOPCPesQSMrgYTw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9084
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 May 2025 16:33:10 +0200
+Message-Id: <DA07LSLNRJTA.3M5DBYHRUV8K7@kernel.org>
+Subject: Re: [PATCH v4] rust: macros: Fix macro referencing core and kernel
+ crates
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Igor Korotin"
+ <igor.korotin@yahoo.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250516122349.1944895-1-igor.korotin.ref@yahoo.com>
+ <20250516122349.1944895-1-igor.korotin@yahoo.com>
+ <CANiq72=ErVyyszgnH0W56Bjvakvdcprh-Z0pXt+Pc25q4z_Afg@mail.gmail.com>
+In-Reply-To: <CANiq72=ErVyyszgnH0W56Bjvakvdcprh-Z0pXt+Pc25q4z_Afg@mail.gmail.com>
 
-On Thu May 15, 2025 at 1:38 AM JST, Danilo Krummrich wrote:
-> On Wed, May 07, 2025 at 10:52:45PM +0900, Alexandre Courbot wrote:
->> The FWSEC firmware needs to be extracted from the VBIOS and patched with
->> the desired command, as well as the right signature. Do this so we are
->> ready to load and run this firmware into the GSP falcon and create the
->> FRTS region.
->>=20
->> [joelagnelf@nvidia.com: give better names to FalconAppifHdrV1's fields]
->> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/dma.rs            |   3 -
->>  drivers/gpu/nova-core/firmware.rs       |  18 ++
->>  drivers/gpu/nova-core/firmware/fwsec.rs | 359 +++++++++++++++++++++++++=
-+++++++
->>  drivers/gpu/nova-core/gpu.rs            |  20 +-
->>  drivers/gpu/nova-core/vbios.rs          |   3 -
->>  5 files changed, 395 insertions(+), 8 deletions(-)
->>=20
->> diff --git a/drivers/gpu/nova-core/dma.rs b/drivers/gpu/nova-core/dma.rs
->> index 9d90ae01d0044eaab4ddbc3eba216741d7a623ef..a12d0dff574aa38fb5eb8f4d=
-759611af2f8ba3ec 100644
->> --- a/drivers/gpu/nova-core/dma.rs
->> +++ b/drivers/gpu/nova-core/dma.rs
->> @@ -2,9 +2,6 @@
->> =20
->>  //! Simple DMA object wrapper.
->> =20
->> -// To be removed when all code is used.
->> -#![expect(dead_code)]
->> -
->>  use core::ops::{Deref, DerefMut};
->> =20
->>  use kernel::device;
->> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/f=
-irmware.rs
->> index 960982174d834c7c66a47ecfb3a15bf47116b2c5..3945fd18499555ddd6fb2e0e=
-a69535b40fcc4b08 100644
->> --- a/drivers/gpu/nova-core/firmware.rs
->> +++ b/drivers/gpu/nova-core/firmware.rs
->> @@ -8,9 +8,12 @@
->>  use kernel::prelude::*;
->>  use kernel::str::CString;
->> =20
->> +use crate::dma::DmaObject;
->>  use crate::gpu;
->>  use crate::gpu::Chipset;
->> =20
->> +pub(crate) mod fwsec;
->> +
->>  pub(crate) const FIRMWARE_VERSION: &str =3D "535.113.01";
->> =20
->>  /// Structure encapsulating the firmware blobs required for the GPU to =
-operate.
->> @@ -86,6 +89,21 @@ pub(crate) fn size(&self) -> usize {
->>      }
->>  }
->> =20
->> +/// Patch the `ucode_dma` firmware at offset `sig_base_img` with `signa=
-ture`.
->> +fn patch_signature(ucode_dma: &mut DmaObject, signature: &[u8], sig_bas=
-e_img: usize) -> Result<()> {
->> +    if sig_base_img + signature.len() > ucode_dma.size() {
->> +        return Err(EINVAL);
->> +    }
->> +
->> +    // SAFETY: we are the only user of this object, so there cannot be =
-any race.
->> +    let dst =3D unsafe { ucode_dma.start_ptr_mut().add(sig_base_img) };
->> +
->> +    // SAFETY: `signature` and `dst` are valid, properly aligned, and d=
-o not overlap.
->> +    unsafe { core::ptr::copy_nonoverlapping(signature.as_ptr(), dst, si=
-gnature.len()) };
->> +
->> +    Ok(())
->> +}
+On Mon May 19, 2025 at 4:20 PM CEST, Miguel Ojeda wrote:
+> On Fri, May 16, 2025 at 2:35=E2=80=AFPM Igor Korotin <igor.korotin@yahoo.=
+com> wrote:
+>>
+>> diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
+>> index d8120f838260..5e5a0bee9888 100644
+>> --- a/rust/kernel/static_assert.rs
+>> +++ b/rust/kernel/static_assert.rs
+>> @@ -20,7 +20,7 @@
+>>  ///
+>>  /// ```
+>>  /// static_assert!(42 > 24);
+>> -/// static_assert!(core::mem::size_of::<u8>() =3D=3D 1);
+>> +/// static_assert!(::core::mem::size_of::<u8>() =3D=3D 1);
 >
-> Why is this not in firmware/fwsec.rs, like patch_command()?
+> Hmm... Why are we changing this one?
 
-Ah, there is no way to know it now, but this function will also be used
-to patch the booter firmware that runs on sec2, so having it here makes
-it available to both sub-modules. I'm fine with moving it into the fwsec
-module temporarily if you prefer though.
+Yeah this one doesn't seem necessary.
 
->
-> Also, please wrap the ucode DmaObject in its own type, i.e.
-> `struct UcodeDma(DmaObject)` and make the patch_*() functions methods of =
-this
-> type. They're only applicable for the ucode DmaObject.
-
-Indeed, good idea. We will event want to specialize that type against
-the kind of firmware as not all patching methods may be applicable
-depending on the firmware.
-
-<snip>
->> +impl FwsecFirmware {
->> +    /// Extract the Fwsec firmware from `bios` and patch it to run with=
- the `cmd` command.
->> +    pub(crate) fn new(
->> +        falcon: &Falcon<Gsp>,
->> +        dev: &Device<device::Bound>,
->> +        bar: &Bar0,
->> +        bios: &Vbios,
->> +        cmd: FwsecCommand,
->> +    ) -> Result<Self> {
->> +        let v3_desc =3D bios.fwsec_header(dev)?;
->> +        let ucode =3D bios.fwsec_ucode(dev)?;
->> +
->> +        let mut ucode_dma =3D DmaObject::from_data(dev, ucode)?;
->> +        patch_command(&mut ucode_dma, v3_desc, cmd)?;
->> +
->> +        const SIG_SIZE: usize =3D 96 * 4;
->
-> 96 * 4? :-)
-
-Mmmm let me look that up. ^_^; But I think it means that a signature is
-made of 96 32-bit integers.
-
->
->> +        let signatures =3D bios.fwsec_sigs(dev)?;
->> +        let sig_base_img =3D (v3_desc.imem_load_size + v3_desc.pkc_data=
-_offset) as usize;
->> +
->> +        if v3_desc.signature_count !=3D 0 {
->> +            // Patch signature.
->> +            let desc_sig_versions =3D v3_desc.signature_versions as u32=
-;
->> +            let reg_fuse_version =3D falcon.get_signature_reg_fuse_vers=
-ion(
->> +                bar,
->> +                v3_desc.engine_id_mask,
->> +                v3_desc.ucode_id,
->> +            )?;
->> +            dev_dbg!(
->> +                dev,
->> +                "desc_sig_versions: {:#x}, reg_fuse_version: {}\n",
->> +                desc_sig_versions,
->> +                reg_fuse_version
->> +            );
->> +            let signature_idx =3D {
->> +                let reg_fuse_version_bit =3D 1 << reg_fuse_version;
->> +
->> +                // Check if the fuse version is supported by the firmwa=
-re.
->> +                if desc_sig_versions & reg_fuse_version_bit =3D=3D 0 {
->> +                    dev_warn!(
->> +                        dev,
->> +                        "no matching signature: {:#x} {:#x}\n",
->> +                        reg_fuse_version_bit,
->> +                        v3_desc.signature_versions
->> +                    );
->
-> Looks like this should be dev_err!().
-
-Indeed, fixed.
-
+---
+Cheers,
+Benno
