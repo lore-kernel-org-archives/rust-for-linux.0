@@ -1,97 +1,151 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CE726F475;
-	Mon, 19 May 2025 11:01:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747652517; cv=pass; b=KIEV4bsnU2MrS40p8c/a6GQZ4cO0pq94ZkC3Wk+523JEEjksmOpY/7XVsO+FsxmVSexyD+oYks6/XB9yxh4gWfgPzne/CMc+F6sfkEScE8RlPOb5aEJf+Lnsc8j+zvV/dXt0smV8t29E3eZaqI9B+8f6C3nsnIjhqL3d9vrSRPo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747652517; c=relaxed/simple;
-	bh=161YKafeuZNBBRQedRWPgSGczjQQFeXjckeJgSUb4Ug=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=kSUM5F7QxV5IlNqTWr3HVAqwoHqfw2VAkwxJ9yDfav3bPAu/k5lNGg825Ix8+bgHoqBxPLddWy9ifDEMxC4+IhcouSs4BZXQmEdQcThSGChj+of4gueu6zhLxZ0tzX2h3fHFWXm55h8A4IyHIgtywFYodtGOUbAih7Oypakk4N8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=lDnEexXp; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C3726D4EF;
+	Mon, 19 May 2025 11:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747652819; cv=none; b=tEJypwOHpRrD6kVABl4+Fe5kaOrIjjrqPWaB5Hlwio8FG9adbyQPF81ywxoDxlTlLXydlS8IvyO88nSdoKrwsjYu0PWTYQwTeWRpPTzfk4RAAHACNNi2t0ZelpmRPRRxiNQ5SjeAFhjT6BrABaK98gAWx4rQdFEGY35coSptuO8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747652819; c=relaxed/simple;
+	bh=QW6b2iPr1kIC6mJxbCjvYl2N57UynhfAeMer3vkWIAk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tgRNJWfb0drH13D/nTrENiBoNTh7bOtG5lKm99GXTsuJGPBBzLPyqdO3xkL9KchQ98OX282LBJELr3JsEqUF4u39yKXGZZjMNctVOdmundcKevqGUw8ukRxwlTIU/p9vEKh5AhunckYuHJSQz/Irq/TiK26ew2YRezqLPNPNn/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BuhIXdxa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="lDnEexXp"
-ARC-Seal: i=1; a=rsa-sha256; t=1747652492; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Hha3soeWmrR5sI8lj0Pn1aptnlszujnHw0dutzRMR2pwtTpS1r5LAUiKrAhBBga6SQzy4LvRF2MxQGXQK4jXwkfnWCnbdoxp9TZPGplF9n0BTZIINF+c5kJB60+vlccgctooSj7RWpMZjsFL6/QCpui0hyShQwYVUB1A5B9nNrU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1747652492; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=161YKafeuZNBBRQedRWPgSGczjQQFeXjckeJgSUb4Ug=; 
-	b=RJshY1k1c4WSV+I/EJDUsBrMBJFNY1tDM+hw4YsAau9ad/62/VkAhaJTQvQ5se0OPGNN3xLEoaq7jA8oH+7u26hDjcSt0HRnD4mYfAZon1FWxh/Yn717XYBLzGsvKGeJLu7nqWn8T5RbbiS+kAwBCEsqK2dXSmPmrLybAbZ2nsY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747652492;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=161YKafeuZNBBRQedRWPgSGczjQQFeXjckeJgSUb4Ug=;
-	b=lDnEexXpJYXQtOW357EOXaSUc62BOfwx8fr7qwLDSwUTIvy+lbZkqHUbOpYm9fpI
-	GPNjsr3HZ93/k2zPYcOZOcWY9yakCYwmh7TaoqRyvvXN5Op3HOk+tNJuF62VJWbBpoH
-	IfCBuXbj21ey9knQ6/QVh7QID0FP7x4D+I7TFAZI=
-Received: by mx.zohomail.com with SMTPS id 1747652490961168.45082575803247;
-	Mon, 19 May 2025 04:01:30 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BuhIXdxa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A038C4CEEB;
+	Mon, 19 May 2025 11:06:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747652818;
+	bh=QW6b2iPr1kIC6mJxbCjvYl2N57UynhfAeMer3vkWIAk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BuhIXdxakTY1pYyP0h9EYlDjkftNK2yF2RT5R1m5fJFV/cyYtxCauwCEJ1wgdWEmB
+	 L+doYZLJnMrYA4uNiPnzlim3/rRaLR+3BpBYYGhx5vf2vywCuqBQsp4Jzha6VtOog4
+	 dzCUNXuCoTU3jjTpx2898tHtA+g+IjH5carTbwqcDiGnpuxgdKPpUeVbdv7VKNn5Y6
+	 zRhRj5PtPtbT+aBCeSGbsEHyuVBmKLbbMk83Wz3himg43IKctQNZbm86vygEvwLNtn
+	 ACpudJeRajJ2TMzOnpihwAnCF8yUdm4j5eHVvlEExnz/WB3CA8e+PpYvmBzWF7/BOe
+	 m+FAPlrbuL7Ig==
+Date: Mon, 19 May 2025 13:06:50 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
+	Michael Turquette <mturquette@baylibre.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V12 13/15] rust: cpufreq: Extend abstractions for driver
+ registration
+Message-ID: <aCsQylyW7R5rC15m@pollux>
+References: <cover.1747634382.git.viresh.kumar@linaro.org>
+ <68906d67109c3b323b54469fb1ee44e10c1c5b1e.1747634382.git.viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH v3] rust: regulator: add a bare minimum regulator
- abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <8517D6F0-C1A2-4E38-8E62-57DCCD5E58D4@collabora.com>
-Date: Mon, 19 May 2025 08:01:15 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A0008125-1FE6-4B95-8188-9DEA67F68942@collabora.com>
-References: <20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com>
- <D9YXK1J1XO37.JVILKENRKYXD@nvidia.com>
- <498AB71C-58EF-487E-8D9B-C7C113862948@collabora.com>
- <D9ZQUUA4FLXD.19MJI9HD48EMZ@nvidia.com>
- <8517D6F0-C1A2-4E38-8E62-57DCCD5E58D4@collabora.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68906d67109c3b323b54469fb1ee44e10c1c5b1e.1747634382.git.viresh.kumar@linaro.org>
 
-Minor correction:
+On Mon, May 19, 2025 at 12:37:18PM +0530, Viresh Kumar wrote:
+> +/// CPU frequency driver Registration.
+> +///
+> +/// ## Examples
+> +///
+> +/// The following example demonstrates how to register a cpufreq driver.
+> +///
+> +/// ```
+> +/// use kernel::{
+> +///     cpu, cpufreq,
+> +///     c_str,
+> +///     device::{Bound, Device},
+> +///     macros::vtable,
+> +///     sync::Arc,
+> +/// };
+> +/// struct FooDevice;
+> +///
+> +/// #[derive(Default)]
+> +/// struct FooDriver;
+> +///
+> +/// #[vtable]
+> +/// impl cpufreq::Driver for FooDriver {
+> +///     const NAME: &'static CStr = c_str!("cpufreq-foo");
+> +///     const FLAGS: u16 = cpufreq::flags::NEED_INITIAL_FREQ_CHECK | cpufreq::flags::IS_COOLING_DEV;
+> +///     const BOOST_ENABLED: bool = true;
+> +///
+> +///     type PData = Arc<FooDevice>;
+> +///
+> +///     fn init(policy: &mut cpufreq::Policy) -> Result<Self::PData> {
+> +///         // Initialize here
+> +///         Ok(Arc::new(FooDevice, GFP_KERNEL)?)
+> +///     }
+> +///
+> +///     fn exit(_policy: &mut cpufreq::Policy, _data: Option<Self::PData>) -> Result<()> {
 
+This can just be `Result`, here and below.
 
-> This is explicitly not supported, because (given the current code) why =
-should it be?
->=20
-> If you want a given regulator to be enabled, just make sure you have
-> Regulator<Enabled> in your kernel::types::Either container.
->=20
-> You don't need a counter either: Regulator<Enabled> has a count of =
-one, and
-> when that goes out of scope, it's decremented.
+> +///         Ok(())
+> +///     }
+> +///
+> +///     fn suspend(policy: &mut cpufreq::Policy) -> Result<()> {
+> +///         policy.generic_suspend()
+> +///     }
+> +///
+> +///     fn verify(data: &mut cpufreq::PolicyData) -> Result<()> {
+> +///         data.generic_verify()
+> +///     }
+> +///
+> +///     fn target_index(policy: &mut cpufreq::Policy, index: cpufreq::TableIndex) -> Result<()> {
+> +///         // Update CPU frequency
+> +///         Ok(())
+> +///     }
+> +///
+> +///     fn get(policy: &mut cpufreq::Policy) -> Result<u32> {
+> +///         policy.generic_get()
+> +///     }
+> +/// }
+> +///
+> +/// fn foo_probe(dev: &Device<Bound>) {
 
-Regulator<Enabled> has a +1 on the count. The actual underlying count is =
-unknown.
+You could use a real probe function, e.g. from platform:
 
-=E2=80=94 Daniel
+	# struct Driver;
+	
+	impl platform::Driver for SampleDriver {
+	   # type IdInfo = ();
+	   # const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
+	
+	   fn probe(
+	      pdev: &platform::Device<Core>,
+	      info: Option<&Self::IdInfo>,
+	   ) -> Result<Pin<KBox<Self>>> {
+	      ...
+	   }
+	}
 
+> +///     cpufreq::Registration::<FooDriver>::new_foreign_owned(dev).unwrap();
 
+I prefer if we do not use unwrap() in doctests, since they also serve as example
+and people might think that calling unwrap() is valid thing to do.
+
+Sorry, I didn't catch the above in my previous review -- fine for me if you do
+those improvements in a subsequent patch.
