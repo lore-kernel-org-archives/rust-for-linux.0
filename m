@@ -1,78 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E59F2820D7
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 14:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F51283C97;
+	Mon, 19 May 2025 14:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747665194; cv=none; b=EJbNKxv3hcE73yivPYXA3JHG1tCIzY2qHZrcIOAILoLLqhAxLBnh7jt6hjm7cO5FfrLQnrzLtVP8F1MqpQhSoZL9Aqp+rHgI8+mITjCfc3rUeAyaomSXqD/EkXIobFDfjdsvabbwWZiyY0tk71QAKMP4hF+3/MQosQCNwEYG9xg=
+	t=1747665599; cv=none; b=IqZwwhumAwzrBsnRqO5OgzWrNHEoHlKIuDtAtXSp8jDnpkwDL3kqNvY5CKjt2Y8G0VtvLZudMOh/dNAHQrhrfKyg8M+nK7ESAvAH5eO+3j0WZ6wjFigT7AAEEHBPhU9OU+q8rysiEjvprd9lqS78lH0ArpyVPXj1B9sW+njMWxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747665194; c=relaxed/simple;
-	bh=AKYw8YDSUZsaHjqytXztHX49OHRCkBpFUHZbpFiL9DM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=W1DR9apWqUWRpJRYHOLJaFcw3SADXQ2fh75vJAcc8zYYPODGixpmRNng2C7xBsCXHgIbpLyUP1oGQ7FBg6/TlSe0bmIQBBseZ0eoYqrSYhT1GWzyfXu9u8D4zW9HabDdk6shUjySsOAHhd3UcXQ/9sxHPBc9wt7qmGxQFkZGIeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYpnW0L7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747665599; c=relaxed/simple;
+	bh=LlgyKOkIjeOrsH6cU0SxQLBz2yybyFfPXRPS0jolXh8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Bp5GjddpMtWicKxo3pKHx5FqKGmOoE4oF+DpfwDt+V5d6LJfQKY+F9jyzG+woG+kWuUsCJ3NnfFDOZmju7ilw70LDe1hd8gYXASHBqpvyP748Z1kT1DlgCK4rSzvXGolIcXV1pyjPAkd34PK2BtWeYfMbWY5OOCPXR1C9tsWggE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mF2JquK8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYpnW0L7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B406BC4CEE4;
-	Mon, 19 May 2025 14:33:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mF2JquK8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335FEC4CEE4;
+	Mon, 19 May 2025 14:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747665194;
-	bh=AKYw8YDSUZsaHjqytXztHX49OHRCkBpFUHZbpFiL9DM=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=SYpnW0L7yU3FtfDyNt/ekvsAlOyAM3zbqXaenG+5vUMZ7hp/8AlJ54G8ciamLa6a/
-	 m6XGay+jeDWA2DV2q9FnE0H5QRPL9ig5sdVA6bX9OmCsN6fN3LEPrc3eyR1bJS8H0x
-	 yc42SR9PjhSwxeud0yINEZ9G9HpKiHNBQER45iJOlUDHJEkwfiz+UWQA4kBSepwBmM
-	 rf8s1BhAEDCelv3VwH8U7IStOD1pjpLEKil3v33C7KozpSd0I0WNWaUFrYgLhJ6xmp
-	 +zQhWL6UT3MVynPgNeG7QbjA6NGjcZJ4EYIu2+D/OYd43xrjUIVPYU/9tfMkH6etfy
-	 xsvVZXzPmHfCA==
+	s=k20201202; t=1747665599;
+	bh=LlgyKOkIjeOrsH6cU0SxQLBz2yybyFfPXRPS0jolXh8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mF2JquK8bLw40iGet/6TAAT2zTEOkA1RNNRHolUbfT+IGjx1n0UegRPyl8vZ400X4
+	 MGc/YejGZM1I7KDHkiG1Z/Wae3qd6XkkJl8MRESlBAidG9T+bsI4xmhh5g1j0Mopnl
+	 I/Rxl/+0d/slaML7MuCBlmhuLD6yRXHylWE6kvNi9H7Jc3gyJR9OH9n74DI7t67PHq
+	 alIGlYxp6yfQ+Ypgr7sgryatgqS1nIYWjYoaamBlQ3p6iGcKvodETsfThPhAG5yHul
+	 +2zB6ibGvgMLeyaOvZ0r9GKS7Nj+Hhe20q8M4U/5UGZLZy8DkRG+W+Bx4OuRTe1VRY
+	 KEo6dzuRUgIoQ==
+From: Benno Lossin <lossin@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: mailmap: update Benno Lossin's email address
+Date: Mon, 19 May 2025 16:39:51 +0200
+Message-ID: <20250519143952.11412-1-lossin@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 May 2025 16:33:10 +0200
-Message-Id: <DA07LSLNRJTA.3M5DBYHRUV8K7@kernel.org>
-Subject: Re: [PATCH v4] rust: macros: Fix macro referencing core and kernel
- crates
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Igor Korotin"
- <igor.korotin@yahoo.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250516122349.1944895-1-igor.korotin.ref@yahoo.com>
- <20250516122349.1944895-1-igor.korotin@yahoo.com>
- <CANiq72=ErVyyszgnH0W56Bjvakvdcprh-Z0pXt+Pc25q4z_Afg@mail.gmail.com>
-In-Reply-To: <CANiq72=ErVyyszgnH0W56Bjvakvdcprh-Z0pXt+Pc25q4z_Afg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon May 19, 2025 at 4:20 PM CEST, Miguel Ojeda wrote:
-> On Fri, May 16, 2025 at 2:35=E2=80=AFPM Igor Korotin <igor.korotin@yahoo.=
-com> wrote:
->>
->> diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
->> index d8120f838260..5e5a0bee9888 100644
->> --- a/rust/kernel/static_assert.rs
->> +++ b/rust/kernel/static_assert.rs
->> @@ -20,7 +20,7 @@
->>  ///
->>  /// ```
->>  /// static_assert!(42 > 24);
->> -/// static_assert!(core::mem::size_of::<u8>() =3D=3D 1);
->> +/// static_assert!(::core::mem::size_of::<u8>() =3D=3D 1);
->
-> Hmm... Why are we changing this one?
+Update Benno Lossin's email address to `@kernel.org`.
 
-Yeah this one doesn't seem necessary.
-
+Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
-Cheers,
-Benno
+ .mailmap    | 1 +
+ MAINTAINERS | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/.mailmap b/.mailmap
+index 1c70e51c789d..ad38ec96f783 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -134,6 +134,7 @@ Ben Widawsky <bwidawsk@kernel.org> <benjamin.widawsky@intel.com>
+ Benjamin Poirier <benjamin.poirier@gmail.com> <bpoirier@suse.de>
+ Benjamin Tissoires <bentiss@kernel.org> <benjamin.tissoires@gmail.com>
+ Benjamin Tissoires <bentiss@kernel.org> <benjamin.tissoires@redhat.com>
++Benno Lossin <lossin@kernel.org> <benno.lossin@protons.me>
+ Bingwu Zhang <xtex@aosc.io> <xtexchooser@duck.com>
+ Bingwu Zhang <xtex@aosc.io> <xtex@xtexx.eu.org>
+ Bjorn Andersson <andersson@kernel.org> <bjorn@kryo.se>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f21f1dabb5fe..fe5786175d03 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21252,7 +21252,7 @@ M:	Alex Gaynor <alex.gaynor@gmail.com>
+ R:	Boqun Feng <boqun.feng@gmail.com>
+ R:	Gary Guo <gary@garyguo.net>
+ R:	Björn Roy Baron <bjorn3_gh@protonmail.com>
+-R:	Benno Lossin <benno.lossin@proton.me>
++R:	Benno Lossin <lossin@kernel.org>
+ R:	Andreas Hindborg <a.hindborg@kernel.org>
+ R:	Alice Ryhl <aliceryhl@google.com>
+ R:	Trevor Gross <tmgross@umich.edu>
+@@ -21282,7 +21282,7 @@ F:	rust/kernel/alloc.rs
+ F:	rust/kernel/alloc/
+ 
+ RUST [PIN-INIT]
+-M:	Benno Lossin <benno.lossin@proton.me>
++M:	Benno Lossin <lossin@kernel.org>
+ L:	rust-for-linux@vger.kernel.org
+ S:	Maintained
+ W:	https://rust-for-linux.com/pin-init
+
+base-commit: edc5e6e019c99b529b3d1f2801d5cce9924ae79b
+-- 
+2.49.0
+
