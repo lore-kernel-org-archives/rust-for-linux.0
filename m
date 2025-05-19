@@ -1,31 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CF2201246;
-	Mon, 19 May 2025 12:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F6A278E75
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 12:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747657973; cv=none; b=DcqjY1zopRZSer6MV6J3xJuo9Ac/7o0XESRdyGmlt959I7Fe/F+ksZZWIFHfNwiX/8HBzqi1aN/Nh6u9s/qGLucY2Z1Q87HWVzIsPB5Wv+Lct7VLlzPqd/34/+6gE4Ltwg+2oh6ZOGqUpvF0K0NC3/yR7qJoP0o/iA4jsZfqE5M=
+	t=1747658353; cv=none; b=hpCx83cRooSKgM2/mrxdnW5Ivcj7mNZrNS5V5GRjt03TaDvChrO14vFULSs2t8wsWXk62D0/ftbSNvzAPOVDjE+37iQrKgUTxLDITUA3CGQvKaKAKJiLGkL70yM7NnDiCdYLXeQJrdAJc/ae1ShXavvVm84sf+lDoVD/8rL6yBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747657973; c=relaxed/simple;
-	bh=dnGUpjpvPnIIq8pfVahqq1mSR6YtP6V2Pb03V+FCKGw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=hwh81o4wVPieidrkfD7l9OHdTCkx69nHjsi78E+wRac+8qSgShKmEKAPCZdqQ5X6oYfRrftmMAeaCtwd7zPkIC58siKUQCtB5GXZyXesC/kdqGqzDEmS62AwZW4kJRrN8Ne15/yZbkhrq0d1ygGC3dNrFr0OtE/kO+51vJhNF/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muYJCXup; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747658353; c=relaxed/simple;
+	bh=wAgE1d1Nn9Gs3icpp4n2PghbKllsJSUIZKEeigydyr0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=bRklg4CJ8c+juI9HlUOYxBfD5/+fnM6CRO6/6IsfLIZT7v2W1MbBuuzCcSlubSdSj5ITxvn87RL6W+UEX1DmlDo33o87tfEO/3AN/josG//8eLcAG/XhYgHvAQYTsg1rwGyIalvbkDY6Y+xjSo+J0heXE7rOgufc3p25QmccE30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=c0asuxeh; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muYJCXup"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5AEC4CEE4;
-	Mon, 19 May 2025 12:32:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747657972;
-	bh=dnGUpjpvPnIIq8pfVahqq1mSR6YtP6V2Pb03V+FCKGw=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=muYJCXuppZCqLkP6vfbQUKWU74VdlhJWhiryj1aPy4AGnH2LYBzPizWQB30pHojci
-	 j6c7udKL2judwXeWUDvAHarXzyIw6St8dJ7varjd7P+cXkrsZTB33B91OJ9njWeaua
-	 jPlvphs+nGT8E4LOM9j4/rf2rrAQvDM8ISOHy+gBpslbFSo3e7OlFjOmHIfUHHEABT
-	 wcnn3EVN5OI/ShUyq6+AEfdQCKdLhdWU5Tgr0gUpFZinjObbY5A2ZMd6aBFfO8rT+X
-	 yvrr8lAHq0TNlcsCpQLwt8C/LvBTIY4rgtKlW0QKkZiGc9M0hRqYuBDZknKVlQAz9u
-	 3QDRyV4sqtbmA==
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="c0asuxeh"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43d4ff56136so3475495e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 05:39:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1747658350; x=1748263150; darn=vger.kernel.org;
+        h=in-reply-to:references:to:cc:subject:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8TID/8Or9YAzKWADzCmDKYmYbQ3PtBl4rxavpksxXcw=;
+        b=c0asuxeh9zKDI4BFM+0+N/0QABL/hv9jgthEHTsCykJZ49PXAo5NS4AbsKwWngXmAP
+         XUSqAurvr+cBeuW9/QQotGhmFmgPGhn+d6Ja/1dA8PBwkUcBy8CC2B6VeGNshgTdK6Pw
+         tcaZU8hVqAxZaK4Ca5Nih6cf3qFBrNvw0fSbId0IPZZxi//uKN5+xqRuG2TtIfzxzYun
+         F2Pv86q84JNAlfLHK2+scX0atyD/IwnGhwqe9AlZlqwfGNiW3jScfqEuzgkvlPIvlu9s
+         LafrHDMlIQymbeapTyTmKUweUd38786lwxgaaJWyenB/0Z+5jDAYxkMK3BAs9NMI+z21
+         2hfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747658350; x=1748263150;
+        h=in-reply-to:references:to:cc:subject:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8TID/8Or9YAzKWADzCmDKYmYbQ3PtBl4rxavpksxXcw=;
+        b=WFEDm5tMFfXOHX6XiIf6/kJcvdEq8wfK362iFvFxPtWe8ohNdXba3ewWK7onmH7WO6
+         3PoZLXdranM2I2CRa1B/bRM9mpLQFUbX1Cn3YqWxmB5EmeO6JQpp5xFIsXlGe0VPqmJ1
+         Y4vVPYwxWEHd1ED9hrMq9u1G2qS5DM1wzVRnhIORcXOsLhEejPSRkydwL0LLnBGUiIUD
+         2KbU88/8JyYSKWuqKhfbMmKA0Xb4OZcQmdBOTwKvgU/UFvqebjHH2XQHWNNg49qVZBQ5
+         rsofQhAdqhRxR1TxMDIeY49Ccl4RUCV+mP4d8CNnFjiblBFcX2CQHAwDvQ/uNJqWojt3
+         doLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqRyNx2V4SxnzgvAKNP6dPlsFGR5TIhTlfX/pCapq7khTGQ3MzfQB96zBeSGldeDK7G81twxIHwz1p59lRow==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5MuczyYyALTeZ8sX+k9eQmRfGL/mCjHG9bIJ1oUp01UV1hBKy
+	AyXsi1BGTZni+2BuPRx/nN8/OF1Dlbgwjm8FJ0wvCe9AjP39SYNeLh1XN7FS5uAKZ7g=
+X-Gm-Gg: ASbGncs3beimYB4bVG6+2nxcA6Mj99qPIhlbgPopOk+8U2Di+rhglC7zslufrg/vlCn
+	BiFtxV4XejlgqggYMOvzWCE1+PypPX2J5GhHim737hSGKvrUYu17vPsGI02DcYkiRRmmYAruinZ
+	PebP9jxs9xewNWkfRf4vBTQGChzCtLWuTSxz87oMfFcp6ixs65puqBwEdG3JC0MS4c/GpzDV9xs
+	IrvlbdHLietLZfNLMOodRHtGaLZ+s7mck3P3UxR9dszatf+Qw9tmtIft/YdsMwqxwD1a90JmzJY
+	J9EQSQbQMK+aZUstXeGQ1UlMalQgbruDFnjw4C4KlAypFfl2H9+YkWAsc6s=
+X-Google-Smtp-Source: AGHT+IFfWi9oi0Jcra9sXbpqrxyg3hOkHnBuCeesfYKMaPVxn3iQR7mctJDpcqzl/F4hYBE/NRWxrg==
+X-Received: by 2002:a05:600d:108:10b0:43b:c0fa:f9bf with SMTP id 5b1f17b1804b1-442fd7165b7mr23100365e9.3.1747658349729;
+        Mon, 19 May 2025 05:39:09 -0700 (PDT)
+Received: from localhost ([2a02:8308:a00c:e200:29b7:4911:a29c:2135])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442fd583f20sm136362615e9.28.2025.05.19.05.39.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 May 2025 05:39:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,106 +65,122 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 May 2025 14:32:44 +0200
-Message-Id: <DA051LGPX0NX.20CQCK4V3B6PF@kernel.org>
-Cc: <ansuelsmth@gmail.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
- <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
- <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
- <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
- <florian.fainelli@broadcom.com>, <bcm-kernel-feedback-list@broadcom.com>,
- <kabel@kernel.org>, <andrei.botila@oss.nxp.com>, <tmgross@umich.edu>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <dakr@kernel.org>,
- <sd@queasysnail.net>, <michael@fossekall.de>, <daniel@makrotopia.org>,
- <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [net-next PATCH v10 7/7] rust: net::phy sync with
- match_phy_device C changes
-From: "Benno Lossin" <lossin@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <D9YA4FS5EX4S.217A1IK0WW4WR@kernel.org>
- <20250517.221313.1252217275580085717.fujita.tomonori@gmail.com>
- <D9YO3781UI2X.1CI7FG1EATN8G@kernel.org>
- <20250519.210059.2097701450976383427.fujita.tomonori@gmail.com>
-In-Reply-To: <20250519.210059.2097701450976383427.fujita.tomonori@gmail.com>
+Date: Mon, 19 May 2025 14:39:08 +0200
+Message-Id: <DA056HQ5G6S6.2B1OITOT8LLWS@ventanamicro.com>
+From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
+Subject: Re: [PATCH v15 05/27] riscv: usercfi state for task and
+ save/restore of CSR_SSP on trap entry/exit
+Cc: "Alexandre Ghiti" <alex@ghiti.fr>, "Thomas Gleixner"
+ <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov"
+ <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
+ <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Paul Walmsley" <paul.walmsley@sifive.com>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
+ "Conor Dooley" <conor@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Arnd Bergmann"
+ <arnd@arndb.de>, "Christian Brauner" <brauner@kernel.org>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Oleg Nesterov" <oleg@redhat.com>, "Eric Biederman"
+ <ebiederm@xmission.com>, "Kees Cook" <kees@kernel.org>, "Jonathan Corbet"
+ <corbet@lwn.net>, "Shuah Khan" <shuah@kernel.org>, "Jann Horn"
+ <jannh@google.com>, "Conor Dooley" <conor+dt@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
+ <devicetree@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <alistair.francis@wdc.com>, <richard.henderson@linaro.org>,
+ <jim.shu@sifive.com>, <andybnac@gmail.com>, <kito.cheng@sifive.com>,
+ <charlie@rivosinc.com>, <atishp@rivosinc.com>, <evan@rivosinc.com>,
+ <cleger@rivosinc.com>, <alexghiti@rivosinc.com>, <samitolvanen@google.com>,
+ <broonie@kernel.org>, <rick.p.edgecombe@intel.com>,
+ <rust-for-linux@vger.kernel.org>, "Zong Li" <zong.li@sifive.com>,
+ "linux-riscv" <linux-riscv-bounces@lists.infradead.org>
+To: "Deepak Gupta" <debug@rivosinc.com>
+References: <20250502-v5_user_cfi_series-v15-0-914966471885@rivosinc.com>
+ <20250502-v5_user_cfi_series-v15-5-914966471885@rivosinc.com>
+ <D9OZVNOGLU4T.2XOUPX27HN0W8@ventanamicro.com>
+ <122fc6cd-2e21-4fca-979d-bcf558107b81@ghiti.fr>
+ <D9WLRSAB63M5.3DZD4ND3WVZ6F@ventanamicro.com>
+ <aCdbASlCyqhid82c@debug.ba.rivosinc.com>
+In-Reply-To: <aCdbASlCyqhid82c@debug.ba.rivosinc.com>
 
-On Mon May 19, 2025 at 2:00 PM CEST, FUJITA Tomonori wrote:
-> On Sat, 17 May 2025 21:02:51 +0200
-> "Benno Lossin" <lossin@kernel.org> wrote:
->>>> I think that's wrong, nothing stops me from implementing `Driver` for =
-an
->>>> empty enum and that can't be instantiated. The reason that one wants t=
-o
->>>> have this in C is because the same `match` function is used for
->>>> different drivers (or maybe devices? I'm not too familiar with the
->>>> terminology). In Rust, you must implement the match function for a
->>>> single PHY_DEVICE_ID only, so maybe we don't need to change the
->>>> signature at all?
+2025-05-16T08:34:25-07:00, Deepak Gupta <debug@rivosinc.com>:
+> On Thu, May 15, 2025 at 10:48:35AM +0200, Radim Kr=C4=8Dm=C3=A1=C5=99 wro=
+te:
+>>2025-05-15T09:28:25+02:00, Alexandre Ghiti <alex@ghiti.fr>:
+>>> On 06/05/2025 12:10, Radim Kr=C4=8Dm=C3=A1=C5=99 wrote:
+>>>> 2025-05-02T16:30:36-07:00, Deepak Gupta <debug@rivosinc.com>:
+>>>>> diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
+>>>>> @@ -91,6 +91,32 @@
+>>>>> +.macro restore_userssp tmp
+>>>>> +	ALTERNATIVE("nops(2)",
+>>>>> +		__stringify(				\
+>>>>> +		REG_L \tmp, TASK_TI_USER_SSP(tp);	\
+>>>>> +		csrw CSR_SSP, \tmp),
+>>>>> +		0,
+>>>>> +		RISCV_ISA_EXT_ZICFISS,
+>>>>> +		CONFIG_RISCV_USER_CFI)
+>>>>> +.endm
+>>>> Do we need to emit the nops when CONFIG_RISCV_USER_CFI isn't selected?
+>>>>
+>>>> (Why not put #ifdef CONFIG_RISCV_USER_CFI around the ALTERNATIVES?)
 >>>
->>> I'm not sure I understand the last sentence. The Rust PHY abstraction
->>> allows one module to support multiple drivers. So we can could the
->>> similar trick that the second patch in this patchset does.
->>>
->>> fn match_device_id(dev: &mut phy::Device, drv: &phy::DriverVTable) -> b=
-ool {
->>>     // do comparison workking for three drivers
->>> }
->>=20
->> I wouldn't do it like this in Rust, instead this would be a "rustier"
->> function signature:
->>=20
->>     fn match_device_id<T: Driver>(dev: &mut phy::Device) -> bool {
->>         // do the comparison with T::PHY_DEVICE_ID
->>         dev.id() =3D=3D T::PHY_DEVICE_ID
->>     }
->>=20
->> And then in the impls for Phy{A,B,C,D} do this:
->>=20
->>     impl Driver for PhyA {
->>         fn match_phy_device(dev: &mut phy::Device) -> bool {
->>             match_device_id::<Self>(dev)
->>         }
->>     }
+>>> The alternatives are used to create a generic kernel that contains the
+>>> code for a large number of extensions and only enable it at runtime
+>>> depending on the platform capabilities. This way distros can ship a
+>>> single kernel that works on all platforms.
+>>
+>>Yup, and if a kernel is compiled without CONFIG_RISCV_USER_CFI, the nops
+>>will only enlarge the binary and potentially slow down execution.
+>>In other words, why we don't do something like this
+>>
+>> (!CONFIG_RISCV_USER_CFI ? "" :
+>>   (RISCV_ISA_EXT_ZICFISS ? __stringify(...) : "nops(x)"))
+>>
+>>instead of the current
+>>
+>> (CONFIG_RISCV_USER_CFI &&
+>>    RISCV_ISA_EXT_ZICFISS ? __stringify(...) : "nops(x)")
+>>
+>>It could be a new preprocessor macro in case we wanted to make it nice,
+>>but it's probably not a common case, so an ifdef could work as well.
+>>
+>>Do we just generally not care about such minor optimizations?
 >
-> Ah, yes, this works well.
->
->
->>> The other use case, as mentioned above, is when using the generic helpe=
-r
->>> function inside match_phy_device() callback. For example, the 4th
->>> patch in this patchset adds genphy_match_phy_device():
->>>
->>> int genphy_match_phy_device(struct phy_device *phydev,
->>>                            const struct phy_driver *phydrv)
->>>
->>> We could add a wrapper for this function as phy::Device's method like
->>>
->>> impl Device {
->>>     ...
->>>     pub fn genphy_match_phy_device(&self, drv: &phy::DriverVTable) -> i=
-32=20
->>=20
->> Not sure why this returns an `i32`, but we probably could have such a
->
-> Maybe a bool would be more appropriate here because the C's comment
-> says:
->
-> Return: 1 if the PHY device matches the driver, 0 otherwise.
->
->> function as well (though I wouldn't use the vtable for that).
->
-> What would you use instead?
+> On its own just for this series, I am not sure if I would call it even a
+> minor optimization.
 
-The concept that I sketched above:
+This patch uses ifdef in thread_info, but not here.
 
-    impl Device {
-        fn genphy_match_phy_device<T: Driver>(&self) -> bool {
-            self.phy_id() =3D=3D T::PHY_DEVICE_ID.id
-        }
-    }
+Both places minimize the runtime impact on kernels that don't have
+CONFIG_RISCV_USER_CFI, so I would like to understand the reasoning
+behind the decision to include one and not the other.
 
----
-Cheers,
-Benno
+> But sure, it may (or may not) have noticeable effect if someone were
+> to go around and muck with ALTERNATIVES macro and emit `old_c` only
+> if config were selected. That should be a patch set on its own with
+> data providing benefits from it.
+
+The difference is small and each build and implementation can behave
+differently, so code analysis seems the most appropriate tool here.
+We must still do a lot of subjective guesswork, because it is hard to
+predict the future development.
+
+We should be moving on the pareto front and there are 3 roughly
+optimization parameters in this case: the C code, the binary code, and
+the work done by the programmer.
+The current patch is forgoing the binary quality (nops are strictly
+worse).
+The ifdef and the macro solutions prefer binary quality, and then differ
+if they consider work minimization (ifdef) or nice C (macro).
+
+Does the current patch represent the ideal compromise?
+(I can just recalibrate my values for future reviews...)
+
+Thanks.
