@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9D01C5485;
-	Mon, 19 May 2025 12:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CF2201246;
+	Mon, 19 May 2025 12:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747657811; cv=none; b=ASbTljAKlIbiGdemuBhzgJvgtdApvFun6Pl4a0UwMi1EGrmqdyk1IW23rNFLcQof1zNXHTp/jCbcHBmKEOGjOT+3ln4AP7tr3menp63ySQlAGoNUcc4V+UU9/EfOmbKtGl81DhgRk0ehs/W7Fn4wFcQ8VDUPUJOivD8qrmSOLcs=
+	t=1747657973; cv=none; b=DcqjY1zopRZSer6MV6J3xJuo9Ac/7o0XESRdyGmlt959I7Fe/F+ksZZWIFHfNwiX/8HBzqi1aN/Nh6u9s/qGLucY2Z1Q87HWVzIsPB5Wv+Lct7VLlzPqd/34/+6gE4Ltwg+2oh6ZOGqUpvF0K0NC3/yR7qJoP0o/iA4jsZfqE5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747657811; c=relaxed/simple;
-	bh=O3K+tc7r6sCh2WGTsamVvNqKcPwy0BoFCEaeoHRZrgw=;
+	s=arc-20240116; t=1747657973; c=relaxed/simple;
+	bh=dnGUpjpvPnIIq8pfVahqq1mSR6YtP6V2Pb03V+FCKGw=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=fF2PltWP3JsKmKa/e1wy9x9L4McG9ldliDaTJuX/IQSxlskFuipSHoI5sYniEkEu33ZFHScTNgHOm68eQr5FmBwjt83RXHfybaM6U6x1w7Jma6BbkZ670tVKp42xqbaxGuVG85Z0FnQsjB3yhKyWmEOr7nD+JCqkLOrUUCNhdaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qsDEfCsa; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=hwh81o4wVPieidrkfD7l9OHdTCkx69nHjsi78E+wRac+8qSgShKmEKAPCZdqQ5X6oYfRrftmMAeaCtwd7zPkIC58siKUQCtB5GXZyXesC/kdqGqzDEmS62AwZW4kJRrN8Ne15/yZbkhrq0d1ygGC3dNrFr0OtE/kO+51vJhNF/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muYJCXup; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsDEfCsa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0931AC4CEE9;
-	Mon, 19 May 2025 12:30:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muYJCXup"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5AEC4CEE4;
+	Mon, 19 May 2025 12:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747657810;
-	bh=O3K+tc7r6sCh2WGTsamVvNqKcPwy0BoFCEaeoHRZrgw=;
+	s=k20201202; t=1747657972;
+	bh=dnGUpjpvPnIIq8pfVahqq1mSR6YtP6V2Pb03V+FCKGw=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=qsDEfCsa017zfFatvitoerp33o/vXsUqOMGzgt3hWELWDCn+KP72BytZz5PA9rPke
-	 dNd7b6znWVPEoNQqURvCUB/VMSrY4k6gCjgQfSt0vGxJKi5W4pKXkde7ANQrtjiX/6
-	 ncKZvqGU1BaXFAPsqg6UhxVx7q4f5wL3ebaPGKgDu2cVFIsS36UimPkJ9lZRxVub3m
-	 MhsekG3cCjZDWIx4WN6x6Gn7FuCY4HtpIu6KGWVKQ2LgT3T9ihhBSx+3tUIbJXgwdJ
-	 olbe4QX6wRiDf7ZJ8hZITqhsS8HhXm9d06zam8ReBzXcibXN7cd1/LuWewwT2puyC+
-	 yGYZGVmt9UTtA==
+	b=muYJCXuppZCqLkP6vfbQUKWU74VdlhJWhiryj1aPy4AGnH2LYBzPizWQB30pHojci
+	 j6c7udKL2judwXeWUDvAHarXzyIw6St8dJ7varjd7P+cXkrsZTB33B91OJ9njWeaua
+	 jPlvphs+nGT8E4LOM9j4/rf2rrAQvDM8ISOHy+gBpslbFSo3e7OlFjOmHIfUHHEABT
+	 wcnn3EVN5OI/ShUyq6+AEfdQCKdLhdWU5Tgr0gUpFZinjObbY5A2ZMd6aBFfO8rT+X
+	 yvrr8lAHq0TNlcsCpQLwt8C/LvBTIY4rgtKlW0QKkZiGc9M0hRqYuBDZknKVlQAz9u
+	 3QDRyV4sqtbmA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,72 +34,105 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 May 2025 14:30:05 +0200
-Message-Id: <DA04ZK6NFF1N.35LFZRY7O7SG8@kernel.org>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, "Sebastian Reichel"
- <sebastian.reichel@collabora.com>, "Liam Girdwood" <lgirdwood@gmail.com>,
+Date: Mon, 19 May 2025 14:32:44 +0200
+Message-Id: <DA051LGPX0NX.20CQCK4V3B6PF@kernel.org>
+Cc: <ansuelsmth@gmail.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+ <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+ <florian.fainelli@broadcom.com>, <bcm-kernel-feedback-list@broadcom.com>,
+ <kabel@kernel.org>, <andrei.botila@oss.nxp.com>, <tmgross@umich.edu>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <dakr@kernel.org>,
+ <sd@queasysnail.net>, <michael@fossekall.de>, <daniel@makrotopia.org>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3] rust: regulator: add a bare minimum regulator
- abstraction
+Subject: Re: [net-next PATCH v10 7/7] rust: net::phy sync with
+ match_phy_device C changes
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Mark Brown" <broonie@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
 X-Mailer: aerc 0.20.1
-References: <20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com>
- <D9YXK1J1XO37.JVILKENRKYXD@nvidia.com>
- <D9Z3R4EYAXV9.211IFNRTOPM6O@kernel.org>
- <D9Z4XGQ2QHXA.2H5X1NZ5IZECC@nvidia.com>
- <aCnQo15SbhXZ9Fln@finisterre.sirena.org.uk>
- <D9ZCD8D6J5QW.14H6VM9LQ5R2Z@kernel.org>
- <a1a6b2f8-af42-4942-ab62-678e37381d08@sirena.org.uk>
- <DA03MG3VURVI.37CBV5WEEKJSH@kernel.org>
- <8229a161-52b8-4265-8296-8f1ac49bab62@sirena.org.uk>
-In-Reply-To: <8229a161-52b8-4265-8296-8f1ac49bab62@sirena.org.uk>
+References: <D9YA4FS5EX4S.217A1IK0WW4WR@kernel.org>
+ <20250517.221313.1252217275580085717.fujita.tomonori@gmail.com>
+ <D9YO3781UI2X.1CI7FG1EATN8G@kernel.org>
+ <20250519.210059.2097701450976383427.fujita.tomonori@gmail.com>
+In-Reply-To: <20250519.210059.2097701450976383427.fujita.tomonori@gmail.com>
 
-On Mon May 19, 2025 at 1:46 PM CEST, Mark Brown wrote:
-> On Mon, May 19, 2025 at 01:25:56PM +0200, Benno Lossin wrote:
->> On Mon May 19, 2025 at 11:56 AM CEST, Mark Brown wrote:
+On Mon May 19, 2025 at 2:00 PM CEST, FUJITA Tomonori wrote:
+> On Sat, 17 May 2025 21:02:51 +0200
+> "Benno Lossin" <lossin@kernel.org> wrote:
+>>>> I think that's wrong, nothing stops me from implementing `Driver` for =
+an
+>>>> empty enum and that can't be instantiated. The reason that one wants t=
+o
+>>>> have this in C is because the same `match` function is used for
+>>>> different drivers (or maybe devices? I'm not too familiar with the
+>>>> terminology). In Rust, you must implement the match function for a
+>>>> single PHY_DEVICE_ID only, so maybe we don't need to change the
+>>>> signature at all?
+>>>
+>>> I'm not sure I understand the last sentence. The Rust PHY abstraction
+>>> allows one module to support multiple drivers. So we can could the
+>>> similar trick that the second patch in this patchset does.
+>>>
+>>> fn match_device_id(dev: &mut phy::Device, drv: &phy::DriverVTable) -> b=
+ool {
+>>>     // do comparison workking for three drivers
+>>> }
+>>=20
+>> I wouldn't do it like this in Rust, instead this would be a "rustier"
+>> function signature:
+>>=20
+>>     fn match_device_id<T: Driver>(dev: &mut phy::Device) -> bool {
+>>         // do the comparison with T::PHY_DEVICE_ID
+>>         dev.id() =3D=3D T::PHY_DEVICE_ID
+>>     }
+>>=20
+>> And then in the impls for Phy{A,B,C,D} do this:
+>>=20
+>>     impl Driver for PhyA {
+>>         fn match_phy_device(dev: &mut phy::Device) -> bool {
+>>             match_device_id::<Self>(dev)
+>>         }
+>>     }
 >
->> > No.  You should not leak any refcount, the per consumer refcount
->> > duplicates what's being done for the regulator as a whole, one should
->> > never be incremented or decremented without the other (but there may b=
-e
->> > multiple consumers to choose from).
+> Ah, yes, this works well.
 >
->> What stops the last `regulator_put` to also call `regulator_disable` a
->> correct number of times?
 >
-> We obviously could but the regulator API defaults to not doing anything
-> unless explicitly told to since getting things wrong can physically
-> damage the system.  We've no idea if just disabling the regulator would
-> be safe at this point so we just don't touch anything and complain about
-> it.
-
-Gotcha.
-
->> What are the kinds of problems that one could encounter when not calling
->> `regulator_disable` before `regulator_put` or if `regulator_enable` was
->> never called to begin with?
+>>> The other use case, as mentioned above, is when using the generic helpe=
+r
+>>> function inside match_phy_device() callback. For example, the 4th
+>>> patch in this patchset adds genphy_match_phy_device():
+>>>
+>>> int genphy_match_phy_device(struct phy_device *phydev,
+>>>                            const struct phy_driver *phydrv)
+>>>
+>>> We could add a wrapper for this function as phy::Device's method like
+>>>
+>>> impl Device {
+>>>     ...
+>>>     pub fn genphy_match_phy_device(&self, drv: &phy::DriverVTable) -> i=
+32=20
+>>=20
+>> Not sure why this returns an `i32`, but we probably could have such a
 >
-> If you don't disable the regulator you've just leaked a reference which
-> is obviously a problem.
+> Maybe a bool would be more appropriate here because the C's comment
+> says:
+>
+> Return: 1 if the PHY device matches the driver, 0 otherwise.
+>
+>> function as well (though I wouldn't use the vtable for that).
+>
+> What would you use instead?
 
-For sure. But I'm trying to figure out if this is a safety-related issue
-or not. Safety in Rust has a rather specific meaning that can be
-summarized with "no UB". So since the C side does nothing if the user
-screwed up the refcounts, it lets me to believe that we don't have any
-safety related issues when forgetting to call `regulator_disable`.
+The concept that I sketched above:
 
-Of course we still should strive for an API that makes that impossible
-or at least very hard, but we don't need to make the API `unsafe` or
-have to take special care. (At least if I understood correctly)
+    impl Device {
+        fn genphy_match_phy_device<T: Driver>(&self) -> bool {
+            self.phy_id() =3D=3D T::PHY_DEVICE_ID.id
+        }
+    }
 
 ---
 Cheers,
