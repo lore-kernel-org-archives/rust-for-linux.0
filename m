@@ -1,106 +1,132 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D73D1C700D
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 05:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AF522538F;
+	Mon, 19 May 2025 06:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747631543; cv=none; b=PrqnSAiYV4iRJawif2tKYpuXlnydw6OlLuvs85Q1MPghLxTgPQ5tob8/CPBrTyiSJlL+g22/zQBlo9QIscArvpoiNWj3Bd5rl6iT5ytP6WJue3lh+1LpaB5UwzLKj4Oz5Cke0gK/aCpu6o2IPe5iPlDuQyWPG/a+SfyYe1/ynu0=
+	t=1747634990; cv=none; b=d26xoIgVIWezQb6Eobd2icRF+cgkcX0EN0REHO4jBhc9l/erWSpR7+vBA14yrmDyO+eLUfnqsMIhr6h1Q/q5cLQtCIp7s3GLvNZvAkTDkYY0lcp48AUSQRR7t4Vmk99JSJE884DaQw1yV8RxQdSe1Ras/YKGelAWyfgasAJRwBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747631543; c=relaxed/simple;
-	bh=YREARJL98nMn8x0h6I7v+KTCGPwNBPRJT3dvhaSnBAE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=luEXJhPeCvoTgyucVIhA/N/6xblBtGoRwBhVTeweOo+pmEqnrpC50lchQmDmqOnTHWVcZ/fyDu+7rARvDl1I2BUSTNqxU4KNwjPGESYPWyi/VRtWmu+BOjfEbEWv5e6St1vQmXCIZcxdUA1krZx/cRPHXD9YhocGaPES1W+rZow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K1fJYvUo; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1747634990; c=relaxed/simple;
+	bh=96AL4BcJrGHqEJ9hFry1I6kX260b5WUQ2aCpMvWixBc=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=P8zSyc1QOs38aUla9TLBQXU+TlYYWaLHDYsLG87ZGF86DlDQ+hJrbT0RQRecb0jsSU1RUDm7e15JO36a9Nf6AvQ96L7fmUCrqBnH0ZpqjtAkbF0I+FzpsIgwBi5m1ylHQuT5ZfuVFDpQDt2dHu4uZmj4FkugTqK9rKE1xnj/xDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UFJV9dLz; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K1fJYvUo"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b26ef4791a5so2539666a12.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 May 2025 22:12:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UFJV9dLz"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b26df8f44e6so3734887a12.2;
+        Sun, 18 May 2025 23:09:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747631541; x=1748236341; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gYGQbDlVIPyEa7xs1WPDKLP/YgeKrN15Sc6vhyvvkpU=;
-        b=K1fJYvUosTAhlTY2ECMk9s9FMsopa4uxNMH9CI5vlUfpJaJOjZ4UP41a5Nolksv+Mu
-         wZMcTBDwB0dMOZFxTIvNz0JjlXqFVe4haoYI1FM8EFMcRqRjytCW7VF7jMAgdnCGw+Zd
-         J1NW8JjkzkGnvsIjljgwvVQTsKmu11SNzgWbA9A5BDAa3R+VvcPUbtV1yEV8fsmH8FEq
-         zSIAy7Pbj4wFJ1xPDgtUzjQQ36G7ETv/N+LsSdiJq728PXu0SYiZa5h7bvtgz/e3bNi9
-         YK7d2TBYuqqMvWU/4+UKkyvxyk6Mly7Yssk5Un1B7KzPIiP0K7GKWrnew2rCLr0DTqG5
-         qaHQ==
+        d=gmail.com; s=20230601; t=1747634988; x=1748239788; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fZq5C2nAtqXvToxkhK76speunl4djNnbXazWf3GNPfQ=;
+        b=UFJV9dLzEuOl8LthHnxdcKbTjU1Ef/xZyfvW76aqepCisXtGEOUkKCO7Sa2ZZdCBql
+         9Dme/lYfZYX75khuf5DQww3VWWA/sjBaRUQtY735fo7X83eeiLZy7okiIRG/yB5HhPER
+         UtDI7FIsIgTtVHoJNdOQR2FsuG7KiO6cwgD8a5GkR3bFPftBY95r9NFlVSQQX9OR6Y9U
+         Xc/iYjVUrNq3iiqXecbP9Zo3nTg1vLhWFXHY/sJzr07QYcoB56bBZma6aeU5N0ZpVURv
+         8tomN82QaqOecl+xBIHK0wHhfjPN4VBK2YBuwyP3h4iSSETC56XUSnO45culDCvvrY2N
+         7q+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747631541; x=1748236341;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gYGQbDlVIPyEa7xs1WPDKLP/YgeKrN15Sc6vhyvvkpU=;
-        b=d7T9jInlZjSojfXob15pqLlyk0SM6X8JQNNrm8dYE4sLKhus0fHJ1Z1xGOwNTZMpEJ
-         a6jdQtHx+52MOZR6QyOzXT8ouEFJuf1xffGovWJQCqyW9KRmek9DXnKObz5EZeBLaVHf
-         jS3ivzRco1njlgvO6lozsLVQ1HuAdq+yzmQzJxn5adXRrHtnsRFfdcD6K2ebjUj1kv2G
-         tJJ9Ymqy5nr/4enCGXJj8esNqkUYhS1cUTzNcQXYsnrrAAMKq40pbvFyJeZ26WJ6/Rns
-         A/MQqLJkrSfPeK8HLZ8c20qdhqCuHPQbYyqOnKOy6AyyNcHwElgOpFFqr4om4edub54W
-         eOOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUutq5oTgJ1NiXpPdIR9ngcHwzAHV4fDbji3Wx6FHnIRCaKGKnepIv5zmrIk54sJBcerfPO87QeCZLmFrquJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzvq2M5Rvd6I7Cz6Y6wfFDn/LBVzveSNQL0F/x0PMhuFSLKAW11
-	OvUg6/5b1DA3z99ZkBMfPV0Sv+fRH8bYr4GZBMSXArM6PtZXBTPxTv/OJJKZlDTX7gk=
-X-Gm-Gg: ASbGncvzM+q8b32Kid/EwK6t9eGdMCIMP2Vou+jDxawne2J3uw3ca1yiU6xkaNognG6
-	+ZAElTlEqKq6OCCXL0cnuMN5T1jlRfR2YaOgh5sNzdY2XPurJilvkeQKx4rAvBgM7cYivc2rkej
-	A7qAsKTw7YFb4l0GJJIadOs7SYB77rVcBWejPUCv2UEfXYOc0OYPftRPqQ2ju0AXcNvL73hcNgb
-	nGXMLS+rZhboEs8IKZRziJbDmBGPD4ZCBJhQTj5cPw1INvY7X8m0PfCKYPVAJ9pZDXTPrg1367R
-	BOuhYbRFkwzkUbk0vkor18Ob+frIYTxKjMyUfKkRunExW++zwb/S
-X-Google-Smtp-Source: AGHT+IEreJKmg3dlWZ4j347XsS/9PUGaSzSwWgE94zxhHw42bn9a5SbwwrfFutiaT9FgmTDVKLHP/A==
-X-Received: by 2002:a05:6a20:6f8a:b0:218:c01:ddce with SMTP id adf61e73a8af0-2180c01de06mr16043557637.40.1747631541346;
-        Sun, 18 May 2025 22:12:21 -0700 (PDT)
-Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b26eaf8a199sm4560811a12.33.2025.05.18.22.12.19
+        d=1e100.net; s=20230601; t=1747634988; x=1748239788;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fZq5C2nAtqXvToxkhK76speunl4djNnbXazWf3GNPfQ=;
+        b=O5I97UGyqm8865pwqSkz/7z0/JrWFCFh5W2mJ9Nq+n0/+MKR/czA3y8GAkHFb28Txf
+         NotOjQTNCPBjvG5W4R3Fz7jw9E4mWA3kctbsEAH+6CQOhFf0rfJ1ZJbqk+IbESRP1LeI
+         OD+80mg/vuRz+WWRy/ooUKN0ptNSsopD7F1upVP9hiEbdORJnrsOudCWNpRObN2sPD1U
+         YwkrnJImsXgo1Qau9zPhfczFE274g33NBso/OZtPt2Wv1AD6hBi9q6lm8v/xYM3Pe695
+         3ev0OWqjCsxvWEps45Ikud0DHTqNxiU969FtStGeJnwAc6HbS941YLAFQaiK29FsNXHr
+         KOYg==
+X-Forwarded-Encrypted: i=1; AJvYcCUVdmZUBqDJFdnFG/4FqLa4SsVlHsAi84TkhIPssZIBaMuM4jnsoWa/gheMRScXyqYI5Mkf4uB9l3BoFnl/@vger.kernel.org, AJvYcCV8UZ4GBPn12XT1rGglR1PaJlK1+sUhtx22utOUaXZm3yNtAVwOk03rR9hWJk3cbTebL+V7St0gZQLm@vger.kernel.org, AJvYcCWav5Sya0xPwy2tmjHfonat4Gk4j52mUi5J0f5EQjLXxiJABatSBJWrFcVpcgSGfcm/T4Iz2OlR@vger.kernel.org, AJvYcCWewnR2LTpFGU8EEAuy6TgqJyiv2kZaTLE/ziaFfjfvjAsubbVJoNNq7zTii8X21NV5Fz/7S6SBo9TeBFq2UCY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw56Ma1GjXA7w9+7JD2o1NkM0AZ0UmS+8aRLbRrCi64Oly0sxs1
+	X8FnwQYaA2JtfbmugxsHF5+YOlFsD88Vvi100GCpBBfspLfpx76jmuz2
+X-Gm-Gg: ASbGncsCyXD3OinWBe8nnPfsVBN3nxXByOgqz07QG3ST8m0pQwP+EVuK/W0SVWuogyX
+	oEzYjrvxQk6p9GaJCQJmeUU546rRB22w1sIBdAIuEHP1GBFj20mcAJsIOT2xqvgmde7vFlqi4dx
+	Rr26PZpuiuFtVTEDwbJvigvfYfyOch234kM+TyNAGujnbCLPpmcwbP8Qlai70Jv9DF7f/+gvnDo
+	ZriSVxxZ2h2SIBkNf7T2qu3o6ygDrHKSrIObfM5QOaLP38rJumC6WcqX6T7GadfmdQrFTx2VipW
+	z+1DLkTuAXd0I67da5pcDNZ5rKgTAsYRoiPuvAnQmZLOqUhcanum9ZOnmn9ffHs6TSl/8hj7OOs
+	Vasm75oeKBsrJ3SzkOW0Jwy/4DeqHAKlSVw==
+X-Google-Smtp-Source: AGHT+IELag7CjPk/EztKgu/bui7qkSTouCTFpuh6lXhH2TBCVewVe8EY8r5ytRPlESvuwqMCXQHS9w==
+X-Received: by 2002:a17:902:c949:b0:220:f449:7419 with SMTP id d9443c01a7336-231d438b3femr160373195ad.7.1747634987701;
+        Sun, 18 May 2025 23:09:47 -0700 (PDT)
+Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4eba524sm52135435ad.191.2025.05.18.23.09.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 May 2025 22:12:19 -0700 (PDT)
-Date: Mon, 19 May 2025 10:42:17 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Philip Li <philip.li@intel.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	kbuild test robot <lkp@intel.com>,
-	Andrew Ballance <andrewjballance@gmail.com>, a.hindborg@kernel.org,
-	alex.bennee@linaro.org, alex.gaynor@gmail.com, aliceryhl@google.com,
-	anisse@astier.eu, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, bqe@google.com, dakr@kernel.org,
-	dakr@redhat.com, daniel.almeida@collabora.com, gary@garyguo.net,
-	joakim.bech@linaro.org, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux@armlinux.org.uk, linux@rasmusvillemoes.dk,
-	manos.pitsidianakis@linaro.org, mturquette@baylibre.com, nm@ti.com,
-	ojeda@kernel.org, peterz@infradead.org, rafael@kernel.org,
-	robh@kernel.org, rust-for-linux@vger.kernel.org, sboyd@kernel.org,
-	tglx@linutronix.de, tmgross@umich.edu, vincent.guittot@linaro.org,
-	vireshk@kernel.org, yury.norov@gmail.com
-Subject: Re: [PATCH V11 00/15] Rust abstractions for clk, cpumask, cpufreq,
- OPP
-Message-ID: <20250519051217.clxqculya7zxl7rp@vireshk-i7>
-References: <20250502070109.inpes2ou3rxx2fxp@vireshk-i7>
- <20250506101311.142475-1-andrewjballance@gmail.com>
- <CANiq72k3ozKkLMinTLQwvkyg9K=BeRxs1oYZSKhJHY-veEyZdg@mail.gmail.com>
- <CAKohponbEEP4_weUuKkOGLRj5-1oOsoL_Zu_7W_SxB61hjsSCw@mail.gmail.com>
- <aBwcWzc4zmPzAW5s@rli9-mobl>
+        Sun, 18 May 2025 23:09:47 -0700 (PDT)
+Date: Mon, 19 May 2025 15:09:29 +0900 (JST)
+Message-Id: <20250519.150929.1041324722416773408.fujita.tomonori@gmail.com>
+To: ansuelsmth@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ florian.fainelli@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+ kabel@kernel.org, andrei.botila@oss.nxp.com, fujita.tomonori@gmail.com,
+ tmgross@umich.edu, ojeda@kernel.org, alex.gaynor@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+ dakr@kernel.org, sd@queasysnail.net, michael@fossekall.de,
+ daniel@makrotopia.org, netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ rmk+kernel@armlinux.org.uk
+Subject: Re: [net-next PATCH v12 1/6] net: phy: pass PHY driver to
+ .match_phy_device OP
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20250517201353.5137-2-ansuelsmth@gmail.com>
+References: <20250517201353.5137-1-ansuelsmth@gmail.com>
+	<20250517201353.5137-2-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBwcWzc4zmPzAW5s@rli9-mobl>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On 08-05-25, 10:52, Philip Li wrote:
-> Sorry Viresh, there's coverage gap at the bot side. One is rust kconfig
-> is not set as mandatory early on. Also the bot met build test slowness
-> these days and is under recovering gradually. Thus I think the issue
-> is not detected in time.
+On Sat, 17 May 2025 22:13:45 +0200
+Christian Marangi <ansuelsmth@gmail.com> wrote:
+
+> Pass PHY driver pointer to .match_phy_device OP in addition to phydev.
+> Having access to the PHY driver struct might be useful to check the
+> PHY ID of the driver is being matched for in case the PHY ID scanned in
+> the phydev is not consistent.
 > 
-> We will resolve both issues asap to provide better test coverage.
+> A scenario for this is a PHY that change PHY ID after a firmware is
+> loaded, in such case, the PHY ID stored in PHY device struct is not
+> valid anymore and PHY will manually scan the ID in the match_phy_device
+> function.
+> 
+> Having the PHY driver info is also useful for those PHY driver that
+> implement multiple simple .match_phy_device OP to match specific MMD PHY
+> ID. With this extra info if the parsing logic is the same, the matching
+> function can be generalized by using the phy_id in the PHY driver
+> instead of hardcoding.
+> 
+> Rust wrapper callback is updated to align to the new match_phy_device
+> arguments.
+> 
+> Suggested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> ---
+>  drivers/net/phy/bcm87xx.c              |  6 ++++--
+>  drivers/net/phy/icplus.c               |  6 ++++--
+>  drivers/net/phy/marvell10g.c           | 12 ++++++++----
+>  drivers/net/phy/micrel.c               |  6 ++++--
+>  drivers/net/phy/nxp-c45-tja11xx.c      | 12 ++++++++----
+>  drivers/net/phy/nxp-tja11xx.c          |  6 ++++--
+>  drivers/net/phy/phy_device.c           |  2 +-
+>  drivers/net/phy/realtek/realtek_main.c | 27 +++++++++++++++++---------
+>  drivers/net/phy/teranetics.c           |  3 ++-
+>  include/linux/phy.h                    |  3 ++-
+>  rust/kernel/net/phy.rs                 |  1 +
+>  11 files changed, 56 insertions(+), 28 deletions(-)
 
-Thanks Philip, I can see the reports (with failures) now.
+As for Rust PHY abstractions:
 
--- 
-viresh
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
