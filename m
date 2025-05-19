@@ -1,66 +1,67 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963EF1E1C22
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 05:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D73D1C700D
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 05:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747630837; cv=none; b=Ah9vWLO6ATIePqI8aoeLmDeGGJVFrPuLmwYgjc7ES6476JTlIxiw0bh5Klaj4UP2Jh2FpV1BqiNaQ1MaNrcL5dMK6odgHtasZ9Gy8KqnjPqNAgXM2t8wk5iKdmfNXTvGSDz/5I4XebYQW2gMpvEW96x7d1g2fr4MMPRSzsl/FsM=
+	t=1747631543; cv=none; b=PrqnSAiYV4iRJawif2tKYpuXlnydw6OlLuvs85Q1MPghLxTgPQ5tob8/CPBrTyiSJlL+g22/zQBlo9QIscArvpoiNWj3Bd5rl6iT5ytP6WJue3lh+1LpaB5UwzLKj4Oz5Cke0gK/aCpu6o2IPe5iPlDuQyWPG/a+SfyYe1/ynu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747630837; c=relaxed/simple;
-	bh=52xFP2yXmzdy76BSD3IQGcBieRU5x1c1JEIQJWBn5z0=;
+	s=arc-20240116; t=1747631543; c=relaxed/simple;
+	bh=YREARJL98nMn8x0h6I7v+KTCGPwNBPRJT3dvhaSnBAE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RXtyU5mKkhpgr4U54k4NU5nXpoWKniiwaKrSSF4ahm59fIOBD13aANXzWejNXQfyoRCFxSuBatmHFKzaswJU2xkjNaqdis+gHmRe/Mh6RmRf85SZwJpFYuQ9q6q5CcmL1+vfpelNFQCOb4qZcrMc1lgKw+xyI12Y8tmJLRZeZkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BujHbdjw; arc=none smtp.client-ip=209.85.214.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=luEXJhPeCvoTgyucVIhA/N/6xblBtGoRwBhVTeweOo+pmEqnrpC50lchQmDmqOnTHWVcZ/fyDu+7rARvDl1I2BUSTNqxU4KNwjPGESYPWyi/VRtWmu+BOjfEbEWv5e6St1vQmXCIZcxdUA1krZx/cRPHXD9YhocGaPES1W+rZow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K1fJYvUo; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BujHbdjw"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-231f6af929eso22803515ad.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 18 May 2025 22:00:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K1fJYvUo"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b26ef4791a5so2539666a12.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 18 May 2025 22:12:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747630835; x=1748235635; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1747631541; x=1748236341; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=82v/sx1Sw6y7WKPsyPlbe0lUzCp5MKII3VW5cqIabiM=;
-        b=BujHbdjwz+ibS/qq5qTUi7Kf3A2x+VhVDYQNsDpQhJ3ScvbNjK19LtOnDczuX8bzeM
-         piabifgBhTbmIOb+QHftgYm1EOKsYv8CCfXiaWxfYE1PwGYACUlvdIRzG65IrtBlqnB0
-         mBVHzvrJoYz6zmcf3saFZDNOoEmx93+XwqydK4PmFXdVhGDgAyoQBQkvFOYW3e/1VOHI
-         V04RAzMeKJLbt433/29SD/hPzLJm/B1x06p/M1B7kVGtJrTG3KUsuOtVH+izueTLYi5M
-         +6ro7mGpskuIyLJGHkeWk3hRB3YL40fG/bpo83iJUWlF4wmsHabid9Gr1W3AnAjj0CAV
-         pRAA==
+        bh=gYGQbDlVIPyEa7xs1WPDKLP/YgeKrN15Sc6vhyvvkpU=;
+        b=K1fJYvUosTAhlTY2ECMk9s9FMsopa4uxNMH9CI5vlUfpJaJOjZ4UP41a5Nolksv+Mu
+         wZMcTBDwB0dMOZFxTIvNz0JjlXqFVe4haoYI1FM8EFMcRqRjytCW7VF7jMAgdnCGw+Zd
+         J1NW8JjkzkGnvsIjljgwvVQTsKmu11SNzgWbA9A5BDAa3R+VvcPUbtV1yEV8fsmH8FEq
+         zSIAy7Pbj4wFJ1xPDgtUzjQQ36G7ETv/N+LsSdiJq728PXu0SYiZa5h7bvtgz/e3bNi9
+         YK7d2TBYuqqMvWU/4+UKkyvxyk6Mly7Yssk5Un1B7KzPIiP0K7GKWrnew2rCLr0DTqG5
+         qaHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747630835; x=1748235635;
+        d=1e100.net; s=20230601; t=1747631541; x=1748236341;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=82v/sx1Sw6y7WKPsyPlbe0lUzCp5MKII3VW5cqIabiM=;
-        b=JRXGP/S+AW98irGW8E8Kbv8pUHPLxjAyVDlUajFeN0UYWp5TV6nRV9UIM7yZpoqjcB
-         jVQPwzHf+bmPsV+jmVh41yUSKaU6JBK20ADifCQjcMqQNTi2xcbKzru8z+DNedt6KdFw
-         NNfk+gUEk9FICHOQbMnpVEfsSOy5hWisxG4zkpHqwK6IuOElLfbgcEDUeUaXC/NrFOFZ
-         3rx2pWHbrwV1IZHvhH5Jdb+lBuNwGEdyr/F/S2wAsJc5sx+EIYtikBoERjT0GTpPDhwL
-         igd8ajyk2bBYxDFtClcK7ByCZ3jw1WP43as0zW+053aJpvvHLPG/Y6meJRG33B3xMp/Y
-         /P8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUf3wMnIknuK13Ym9cXnceQlTTnnlwatBdKxtIlz7b0/20hhc4s/lInfE8H43bQp2ZXnAZtQkVA+tad5tQ0iQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsI9EWWj8FJnlkl/P3Ich4GQWds1XGbFoi7nXy3+vBNY9jEc4b
-	KIi9WH+uuV1GxrWkdyQUHg8UX2BuPffrJQwHaYumfuigzbuPOYK9JaP9F9aUoeeu8dU=
-X-Gm-Gg: ASbGncv9t5zKyZOQe8U7T9sWXUSk5Edd0y6KUd9muFhIjDHXJhe50iVtaF3gb+almr3
-	SQntCafrVK3lbBs52nW3osgaCQx01thSKlHgd/NG73AT9g61qMtnoHAPfeCE+ZDqNXENYDXTEOQ
-	okrPelnWc1fqsgCT+6XKGcA25+kFEiK3VSB8V4lRmny8gDvj3cZJqqgQ+8zZW1Xt8Nioq+KVJx0
-	e8Q1oI2oPORPGR2g+SeKZy/Y4ChtjDrUB9+Lv9mpgPC5hu4p2uite/6qj/WsrUcLYcVYj5I4SA3
-	6wTeQBXY2giuLbrS/x8K5lEwzH4uHjYZCu7L0QV0ZjH3Pw+hAJXg
-X-Google-Smtp-Source: AGHT+IHY0g16rfbp5zZDSXcf+iHzCxEm729X3u6FpJ10x26f8ry1SAGnoYpao17zGAVNjZkMWFdSFw==
-X-Received: by 2002:a17:903:3d07:b0:224:a96:e39 with SMTP id d9443c01a7336-231d438b420mr168488495ad.9.1747630834666;
-        Sun, 18 May 2025 22:00:34 -0700 (PDT)
+        bh=gYGQbDlVIPyEa7xs1WPDKLP/YgeKrN15Sc6vhyvvkpU=;
+        b=d7T9jInlZjSojfXob15pqLlyk0SM6X8JQNNrm8dYE4sLKhus0fHJ1Z1xGOwNTZMpEJ
+         a6jdQtHx+52MOZR6QyOzXT8ouEFJuf1xffGovWJQCqyW9KRmek9DXnKObz5EZeBLaVHf
+         jS3ivzRco1njlgvO6lozsLVQ1HuAdq+yzmQzJxn5adXRrHtnsRFfdcD6K2ebjUj1kv2G
+         tJJ9Ymqy5nr/4enCGXJj8esNqkUYhS1cUTzNcQXYsnrrAAMKq40pbvFyJeZ26WJ6/Rns
+         A/MQqLJkrSfPeK8HLZ8c20qdhqCuHPQbYyqOnKOy6AyyNcHwElgOpFFqr4om4edub54W
+         eOOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUutq5oTgJ1NiXpPdIR9ngcHwzAHV4fDbji3Wx6FHnIRCaKGKnepIv5zmrIk54sJBcerfPO87QeCZLmFrquJA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzvq2M5Rvd6I7Cz6Y6wfFDn/LBVzveSNQL0F/x0PMhuFSLKAW11
+	OvUg6/5b1DA3z99ZkBMfPV0Sv+fRH8bYr4GZBMSXArM6PtZXBTPxTv/OJJKZlDTX7gk=
+X-Gm-Gg: ASbGncvzM+q8b32Kid/EwK6t9eGdMCIMP2Vou+jDxawne2J3uw3ca1yiU6xkaNognG6
+	+ZAElTlEqKq6OCCXL0cnuMN5T1jlRfR2YaOgh5sNzdY2XPurJilvkeQKx4rAvBgM7cYivc2rkej
+	A7qAsKTw7YFb4l0GJJIadOs7SYB77rVcBWejPUCv2UEfXYOc0OYPftRPqQ2ju0AXcNvL73hcNgb
+	nGXMLS+rZhboEs8IKZRziJbDmBGPD4ZCBJhQTj5cPw1INvY7X8m0PfCKYPVAJ9pZDXTPrg1367R
+	BOuhYbRFkwzkUbk0vkor18Ob+frIYTxKjMyUfKkRunExW++zwb/S
+X-Google-Smtp-Source: AGHT+IEreJKmg3dlWZ4j347XsS/9PUGaSzSwWgE94zxhHw42bn9a5SbwwrfFutiaT9FgmTDVKLHP/A==
+X-Received: by 2002:a05:6a20:6f8a:b0:218:c01:ddce with SMTP id adf61e73a8af0-2180c01de06mr16043557637.40.1747631541346;
+        Sun, 18 May 2025 22:12:21 -0700 (PDT)
 Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4ac9256sm51112355ad.35.2025.05.18.22.00.33
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b26eaf8a199sm4560811a12.33.2025.05.18.22.12.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 May 2025 22:00:33 -0700 (PDT)
-Date: Mon, 19 May 2025 10:30:31 +0530
+        Sun, 18 May 2025 22:12:19 -0700 (PDT)
+Date: Mon, 19 May 2025 10:42:17 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Philip Li <philip.li@intel.com>, kbuild test robot <lkp@intel.com>
-Cc: Andrew Ballance <andrewjballance@gmail.com>, a.hindborg@kernel.org,
+To: Philip Li <philip.li@intel.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	kbuild test robot <lkp@intel.com>,
+	Andrew Ballance <andrewjballance@gmail.com>, a.hindborg@kernel.org,
 	alex.bennee@linaro.org, alex.gaynor@gmail.com, aliceryhl@google.com,
 	anisse@astier.eu, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
 	boqun.feng@gmail.com, bqe@google.com, dakr@kernel.org,
@@ -75,11 +76,12 @@ Cc: Andrew Ballance <andrewjballance@gmail.com>, a.hindborg@kernel.org,
 	vireshk@kernel.org, yury.norov@gmail.com
 Subject: Re: [PATCH V11 00/15] Rust abstractions for clk, cpumask, cpufreq,
  OPP
-Message-ID: <20250519050031.ubtfvbzjuyhc3bab@vireshk-i7>
+Message-ID: <20250519051217.clxqculya7zxl7rp@vireshk-i7>
 References: <20250502070109.inpes2ou3rxx2fxp@vireshk-i7>
  <20250506101311.142475-1-andrewjballance@gmail.com>
  <CANiq72k3ozKkLMinTLQwvkyg9K=BeRxs1oYZSKhJHY-veEyZdg@mail.gmail.com>
  <CAKohponbEEP4_weUuKkOGLRj5-1oOsoL_Zu_7W_SxB61hjsSCw@mail.gmail.com>
+ <aBwcWzc4zmPzAW5s@rli9-mobl>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,21 +90,17 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAKohponbEEP4_weUuKkOGLRj5-1oOsoL_Zu_7W_SxB61hjsSCw@mail.gmail.com>
+In-Reply-To: <aBwcWzc4zmPzAW5s@rli9-mobl>
 
-On 08-05-25, 07:40, Viresh Kumar wrote:
-> Thanks for the report Andrew. I was expecting to get
-> these from LKP (for my branch [1]) but I didn't. Even if
-> my branch isn't getting tested for Rust currently (please
-> enable that Philip), I should have received these for
-> linux-next ? Philip ?
+On 08-05-25, 10:52, Philip Li wrote:
+> Sorry Viresh, there's coverage gap at the bot side. One is rust kconfig
+> is not set as mandatory early on. Also the bot met build test slowness
+> these days and is under recovering gradually. Thus I think the issue
+> is not detected in time.
 > 
-> Anyway, I have prepared a branch with a fix for this, but
-> facing issues with pushing my branch on git.kernel.org
-> currently (Don't have my regular work setup while traveling).
+> We will resolve both issues asap to provide better test coverage.
 
-Andrew, I have pushed the branch today, should be fixed in linux-next soon.
-Thanks.
+Thanks Philip, I can see the reports (with failures) now.
 
 -- 
 viresh
