@@ -1,113 +1,103 @@
-Received: from sonic310-24.consmr.mail.ne1.yahoo.com (sonic310-24.consmr.mail.ne1.yahoo.com [66.163.186.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D2328641D
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 16:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C445928313B;
+	Mon, 19 May 2025 16:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747673420; cv=none; b=SuvzJrQzyFuXZRxAhreOwcf+7kY7JMrWueDN444wK4v61dnknL78OIc3/Hu0OTQinJ88HqU0QXFUElQlqp+GLFjHMbV09VZy8plGaL/h0qkV7/5mXCz2zVG8iz6oEfjWe+YDZMBmdpEBgMbMovrIQBb67f0F1xDYD24U6zg2ESc=
+	t=1747673721; cv=none; b=JqJiX+HK6VnRjjBLkh/P0iL322TvAYcpr8VMqLuFIqLw3Jb2FoMvx3VrrjTJe97FjBgqLixNYR6Xl9NAMJNv7ykGod966gMiUT2uuDTBJjxla8H004i8lzqQ/fG/fMgO/9Kxmu6voNgt4XWjioDqvT9O/fSh05hehz0r+qVJpJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747673420; c=relaxed/simple;
-	bh=eZJzkH667zh1ChamBMr0LgP/JUZb45fhQUCtTbzR044=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uYyQIIkeRXqg1y51niMyme6JLR5g5JiieLhbDHJLshiE79B0uyNCBOank+G5egPhGKyjb6Wy9PF3zAk64pOwCW7CURHfnciPswNEnCqGYqlglH6Xwjzt3jAPaWwkuzKFUp+uWwSAdaW8t+PvfvyxokfosmfBjSDWYlyA988ytxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=cnj6HRSu; arc=none smtp.client-ip=66.163.186.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1747673721; c=relaxed/simple;
+	bh=2h0wqLSQAYlElqRvO3VWXqKcEeKB1rJERvwy1eOIfRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bJPj5UU4p+CrqatlBPKAqc1bhU01oz9FgaRBudHnU+y7TtjUKkx0SWQZ5DPnA4aB3OcV6rS0Amo3lwPfEtGGvI7eTJSoBhFZLLo0mQFArO4eudNCjdN25RKRHR/qq7QSoNkpAj1CGnOfqavvWShT3IC/59jlSQXWPJfLPnqiNPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmvIyYmr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="cnj6HRSu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747673418; bh=TOGMbztvtGWk2jwI3gxqi6b0/RKexmZ9/Evi1cSAg18=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=cnj6HRSumehTWgXSc0x0RbqlgxeOjcboI5RaHPN00rbaRHOzr3zRHe+0DjjGg8aueqnakzkdX2ygVQuA7+Tn6zFJQK0JkiXCxhGz2TcGQHA5M/6jU9Y2kdimUKh2OdjZPwgw4+pE4U7Gmm9IU98/t3DOAcq4GdHHLRrPSTNU06xvSjSVdnXit0TC7XecGFT+nC/4GhMlBV+P2rDm2p/IEPZvvUrRZe1/NzgLE/A2pSXZERkEs1xTFaOuLfEZhXcSwX6U4hW7ETPpQr8EYXHTg6UNS5KGUTHBpOmWZWA922OZ4rIWhNt7wf0bL5HMNLZKYvumIfjZgBhaEDKZMdAxHg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747673418; bh=8YEKAGdjp+ibY0a5eNq+L1GF8gouKmSd1NlPgSdEGnf=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=LFL7oo/XoPj1NhyttusdyUJMOZxfQBI+RDfV60+TL4Kc+TRJ9ZoAi9YLVsVOfEpKICrNnzpoivUfxivBzUz89gHU4JTM8ziMw/Zg5DihOHC40q2CYPPB0YGkFEjb3/xRayUwiscPT9Z5774cYOWaWzKqfYKOahaCtzkTlXdqDGWQgcLQUQvS7HyfOGL8kPFe9MqOcOdek12hnTe6Bs5/mfhQAZa2riHVbDdR+xa2W2uHvRhWnGBPlqOpCuqyuG2zO0kgTPJCo90u+RjtKCHZKOz6c9O5UUp47q45uLasUtHR088HhlXdAPNUyUrigbTigaW4KQXrga3AHnpxQlyW0g==
-X-YMail-OSG: .Ad8BRQVM1mIuD2rwcCQALuvyYdlSokonNWcJYLXZsCWko7dhktz7gC4bM.RoJn
- .K86Nyklbx6zE0VNqbpSGeU9VA8.NUpigd_.bKT752TgdzpRe2vgff4GSXMrauyFPOVdqU2yWK68
- n0ZS1_tnkrPJFb6SqVIjeM8mph7J73n_0hRBwB7zFYiL7JO3HTFuCFzHAj5Tzhlxbd58NLJa.QYU
- ikzfmGLBs4ibZwFDNDr5HCBIr3nU_CGH_qq6ZgOZiSC53bTyD8iUquNNJWFNR9C2gGGcj.ZAnwKl
- VB.PUo2nVlf91o2OJgaeCJ6dKMh3GEhm0oi2sBAHR7UXoagmleE4Nhyt962OfsZpPg1cuUivSWsS
- 2faOjoSDJWYaNKcqvIB_b14245RELabzC7XFXy._f01SI5S0NU0G9iRTytaMp1nCjc.HWXsT.wSF
- CUM0eg3_qo3WpAGt1Ur2x7G8hpHIkjdATLOAUNsibNimHZblC4XrZ6HiHbtXqsw1QVH7aFXYFw4B
- .Jc7m9ghE5oBWDN3NKDlJJG7oSd2fdyvG0gD_mG3jCigR9jqUP3UDbGZ67djijfL8obC3.DAj_mw
- J9tYFVDlZpCU0SCemM6obECi4MsDJFKGQYdRNTPE4n92h8rDMSO8phi3e8Cs.VrDeZZ9phLE0257
- rGelGq4NiVYn5Jilb10CaeGPkq33.ZNBwUekc6GqD9RiCpEwtPy9HtejA9EKQU7BZvzzT.o9Khr_
- 16B36boc6BLm9k74w4Sp2.NOf.9vi7DRvAe8_LEoietv.YPBtsMrGxWJ3_4ri_mT9Aq9.LlrVLuY
- bRBCeNyzt2DKVBY0TDp2MVrZE3rgG2DpuxBtb_Yo6r1TBM4uxYvRRyiKtMeU1mIA93UYia6qKDu.
- z0bCh93WzuxqbbrEe2.UVNYRANclmBxVFvpEmXb2jUcPaWi7Ksjyn6bVaZCvH6_HwV2mdg_XJboq
- szvmQNS.pZcFXbw1uPIdOrLc2E97U87Ux0.VAngIGhx0IVukybLnwK_BOQzt6gUug0gazgFO8M7O
- VvqO_yaoUSy0SgK1OcYCxVL6hbBa51Lut3rJi3L0ZhOj4mWybpnhLyfVJqgOfxEs_UJ6YG0J2NVV
- J9BizWWnB4plB8vF4aw2TbLDkb9dQuBXCCs7MDuM7H7NQtztqohprsi4hffluI7cIw8VZKhClyaN
- DJHqTS8o4aLq03Ekl5PXXwyM9VLPVB5jCShbLFd_hRRlD9.EJBOvA8n_MXdPGGlxJSJy9ICHL9Ou
- Gnfy5V819On.ynwXsvaSp.83PQCdKaA7e0b_Z5MFeP9qkCrU_VjErexN2e2zVuDKqfotA_SDC.s4
- nYHCAi4wPZYpy.ZfQXZZiJXbSOlNoqznyrDrYYn_.H7bmmQTOsr46mFi1lfSwEIzdzI9ppjO_Msl
- JD4IHWwXj_Wl8KIZepwJB1.9QT7g1rnjp3qC8MbpGDeLgwxj_z2vK7akKgl48cl6fxGxr7J4cTXh
- KU5JeSzVWzzdGKBLUjSYKC6Itep5OJSiDuGNVl0qKjAx313upx3.9BpVNhT6nByJJ_wmjr3tNXIA
- U96P7rglQh2QUGwLbULztaYPWZHo3S_8YpSEpXw8ujXh7.VJ9bzDvcAQuniXJylJ5S18vQcq5YeK
- B5OBN.V0cXJUexTdkoSGs47cBesfBf9E8EbqydCjJoeO.kx8bAFKUBW4R99kWvJet_xcE1fYPkyR
- xFOXO.UvR51Y9Nvnszj5YS.2SWOe.sKMHvpKDvNWnhJWGMVrRRwvMwirtQ1b9HPp78v5BupytiCJ
- DSts7xMPQrdvMC.oBW8.e9FdDna85jFEUZb7Rp7ttMcM4qKi7SS3XdG4Nu3glAO7DKw.sjdpznj5
- HNn_kKKHQg6roMEqqmLkXN0w06D3vR8OEjQoLoXxrO_k36_GurhTdxnV0X6Oe97EqUolGoTu7F7e
- BQTaKG1VSQi7LBzJFeucN.q7exE0wR3r7Vz96yIK_tLkPA4tWKGsef7YdB4e7E2RcDse_xFjVAbX
- 9oyFABplVBaO.B9HaNaa3QO2_tdEZpjfaw3Cg0gfNVkz5Q1oWD0.gbK5OHCh6LsIp_xW2MAb2Skt
- eKDsM2zmr92n40HajGfHQeY6v048FlGE.ToWl5x.F.q7FuLJs8EQO9HKpGjy0MjZeeR1Lj4hJhlw
- H1iI_vUw_2v5UcQ1VkHpEpKDJF5I_T4REgN8WXK2ktQ9SQs4YFg--
-X-Sonic-MF: <igor.korotin@yahoo.com>
-X-Sonic-ID: caf1578b-099a-4bc9-8fb7-bc6f516ac697
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Mon, 19 May 2025 16:50:18 +0000
-Received: by hermes--production-ir2-858bd4ff7b-c77nt (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c6d6e1428892ee9078a6a007d60c832d;
-          Mon, 19 May 2025 16:09:44 +0000 (UTC)
-Message-ID: <54a0b100-a860-4c73-84aa-e5377bbd692c@yahoo.com>
-Date: Mon, 19 May 2025 17:09:41 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmvIyYmr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF4DC4CEE4;
+	Mon, 19 May 2025 16:55:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747673721;
+	bh=2h0wqLSQAYlElqRvO3VWXqKcEeKB1rJERvwy1eOIfRs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DmvIyYmrZw9KxwuV3vy7iaq2az7uLh0I5ZryIaEK/JcaKbHGmEvaZQoD3PP8WSLn3
+	 8Fx2aAAMGhRG6QSvffgCza6onu3XlAqPSmL7Xg4TF50zWzFVTfdeD17+d4EoxBflfk
+	 pWLcnL2PN12Hnt6WKOZV/w5MGMlSP0I9YZZbjkYrtjQsjupYkbC+36Ao+lmQ5en14V
+	 gxtZA+YAQxzV2GoVHZYoXKz5PqeUD+evujZoypecoYalPUzL8qMMCmIH52OCrJXC/3
+	 FzETVaKkd/c5exIXW0LvqKe7AVwmp4sNB3GzGcz7ohM2rz/qQYaSSqqPjWvsZky9OX
+	 pdbkPQ0phMphg==
+Date: Mon, 19 May 2025 18:55:14 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 6/9] rust: device: Add bindings for reading device
+ properties
+Message-ID: <aCtici15vSCBDbzE@pollux>
+References: <20250504173154.488519-1-remo@buenzli.dev>
+ <20250504173154.488519-7-remo@buenzli.dev>
+ <aCH5WgORn9ZGl9Il@pollux>
+ <DA093HA2415H.29OCPLS0M7H84@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] rust: macros: Fix macro referencing core and kernel
- crates
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org, Benno Lossin <benno.lossin@proton.me>
-References: <20250516122349.1944895-1-igor.korotin.ref@yahoo.com>
- <20250516122349.1944895-1-igor.korotin@yahoo.com>
- <CANiq72=ErVyyszgnH0W56Bjvakvdcprh-Z0pXt+Pc25q4z_Afg@mail.gmail.com>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin@yahoo.com>
-In-Reply-To: <CANiq72=ErVyyszgnH0W56Bjvakvdcprh-Z0pXt+Pc25q4z_Afg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.23840 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DA093HA2415H.29OCPLS0M7H84@buenzli.dev>
 
-
-
-On 5/19/25 15:20, Miguel Ojeda wrote:
-> On Fri, May 16, 2025 at 2:35 PM Igor Korotin <igor.korotin@yahoo.com> wrote:
->>
->> diff --git a/rust/kernel/static_assert.rs b/rust/kernel/static_assert.rs
->> index d8120f838260..5e5a0bee9888 100644
->> --- a/rust/kernel/static_assert.rs
->> +++ b/rust/kernel/static_assert.rs
->> @@ -20,7 +20,7 @@
->>   ///
->>   /// ```
->>   /// static_assert!(42 > 24);
->> -/// static_assert!(core::mem::size_of::<u8>() == 1);
->> +/// static_assert!(::core::mem::size_of::<u8>() == 1);
+On Mon, May 19, 2025 at 05:43:17PM +0200, Remo Senekowitsch wrote:
+> On Mon May 12, 2025 at 3:36 PM CEST, Danilo Krummrich wrote:
+> >> +/// Implemented for all integers that can be read as properties.
+> >> +///
+> >> +/// This helper trait is needed on top of the existing [`Property`]
+> >> +/// trait to associate the integer types of various sizes with their
+> >> +/// corresponding `fwnode_property_read_*_array` functions.
+> >> +pub trait PropertyInt: Copy {
+> >> +    /// # Safety
+> >> +    ///
+> >> +    /// Callers must uphold the same safety invariants as for the various
+> >> +    /// `fwnode_property_read_*_array` functions.
+> >
+> > I think you have additional requirements on the fwnode, propname and val
+> > pointers as well as on nval, please document them as well.
 > 
-> Hmm... Why are we changing this one?
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
+> What are the additional requirements? The implementation just calls the
+> underlying `fwnode_property_read_*_array` with the exact same arguments,
+> so I don't know what the additional requirements are.
 
-This is a mistake. I'll drop this change in v5. Thanks for the review.
+First of all, I don't think you can refer to the safety requirements of the
+`fwnode_property_read_*_array` functions, since they don't have any documented
+safety requirements.
 
-I didn't receive Benno's reply in my mailbox for some reason, but I saw 
-it on lore.kernel.org. Thanks to him as well for pointing it out.
+So, I think you have safety requirements regarding pointer validity of fwnode,
+propname and val.
 
-Best Regards
-Igor
+Additionally, there's the requirement that val has to be an array of nval
+length.
+
+Also, the PropertyInt trait itself has to be unsafe, given that it contains
+unsafe functions.
+
+I also pinged Benno about it, he usually knows best how to cover such things
+properly. :)
+
+> >> +    unsafe fn read_array_from_fwnode_property(
+> >> +        fwnode: *const bindings::fwnode_handle,
+> >> +        propname: *const ffi::c_char,
+> >> +        val: *mut Self,
+> >> +        nval: usize,
+> >> +    ) -> ffi::c_int;
+> >> +}
