@@ -1,186 +1,288 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F6A278E75
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 12:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518FF1DFD84;
+	Mon, 19 May 2025 12:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747658353; cv=none; b=hpCx83cRooSKgM2/mrxdnW5Ivcj7mNZrNS5V5GRjt03TaDvChrO14vFULSs2t8wsWXk62D0/ftbSNvzAPOVDjE+37iQrKgUTxLDITUA3CGQvKaKAKJiLGkL70yM7NnDiCdYLXeQJrdAJc/ae1ShXavvVm84sf+lDoVD/8rL6yBk=
+	t=1747658458; cv=none; b=Wil793ocS2eu8jWud1Uiht7I+pIa3Lgfm/p6dghpUMtQv4PkmZY1akTZOZfsz/jDRqMhuV0CYi9eaUpwU3xGoe2Q/cqk7mGDB69cgUAuKsvsGUEzlq5lXIchZEVDOsuv0SqfKlR7JxNrSZpWY3wNeofn2fDzWgjmcwAIJVBMymA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747658353; c=relaxed/simple;
-	bh=wAgE1d1Nn9Gs3icpp4n2PghbKllsJSUIZKEeigydyr0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=bRklg4CJ8c+juI9HlUOYxBfD5/+fnM6CRO6/6IsfLIZT7v2W1MbBuuzCcSlubSdSj5ITxvn87RL6W+UEX1DmlDo33o87tfEO/3AN/josG//8eLcAG/XhYgHvAQYTsg1rwGyIalvbkDY6Y+xjSo+J0heXE7rOgufc3p25QmccE30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=c0asuxeh; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+	s=arc-20240116; t=1747658458; c=relaxed/simple;
+	bh=pZ/q2IcyaKRZFo9NGBc8Uoa7oyO/n2mGtP+zq1BbZ4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rW2U6bqEsMGX4KKBQAo1kbUvkhUY1eqUuTcNuqcOtqqw3kLsQBAjTzoBSxKm9E9M2EL0z7oPouUz6oveyYbi2IJ5/UmgBbqjZgqCvsNpoBlo2/INSUiNWjKd1XTvaLyLHuOjwGDfOZdhNgLi6LJCMwZI8zeYaZy3+PGQ+1eiBT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FTrrL/Ov; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="c0asuxeh"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43d4ff56136so3475495e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 05:39:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FTrrL/Ov"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6f8b10b807fso44330836d6.1;
+        Mon, 19 May 2025 05:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1747658350; x=1748263150; darn=vger.kernel.org;
-        h=in-reply-to:references:to:cc:subject:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1747658455; x=1748263255; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8TID/8Or9YAzKWADzCmDKYmYbQ3PtBl4rxavpksxXcw=;
-        b=c0asuxeh9zKDI4BFM+0+N/0QABL/hv9jgthEHTsCykJZ49PXAo5NS4AbsKwWngXmAP
-         XUSqAurvr+cBeuW9/QQotGhmFmgPGhn+d6Ja/1dA8PBwkUcBy8CC2B6VeGNshgTdK6Pw
-         tcaZU8hVqAxZaK4Ca5Nih6cf3qFBrNvw0fSbId0IPZZxi//uKN5+xqRuG2TtIfzxzYun
-         F2Pv86q84JNAlfLHK2+scX0atyD/IwnGhwqe9AlZlqwfGNiW3jScfqEuzgkvlPIvlu9s
-         LafrHDMlIQymbeapTyTmKUweUd38786lwxgaaJWyenB/0Z+5jDAYxkMK3BAs9NMI+z21
-         2hfg==
+        bh=9HL4PEgvdQSii9S9OzQmnwTX0Z46/rSId1V0vWlnEH0=;
+        b=FTrrL/OvBEJlynezVpRAQ22uMYmOuBsHy5wbTZzrgyxaooPLaJhN6L2oWxfIhO0WAg
+         dfgYx4uezZJZ7TZSZnRoUOaHJk8qS1hWpY4slIXHOyySwrKS9djxTYQNPAHKLpl5yZhc
+         ldu6bu7gzprgcV6EJcsWNkLT3txlDX6yjOq5afuXzMtAncfmQ7XwVWUPpj5lWlkNbFPK
+         eQ/x6kkiQzoXmiZCyzzhDweZt4rQLQGmzF0+5sXcionCzvExGQWiMYIyvAY6suOfVD1S
+         HeOF8GXsR/DNERILdSIjC1nDxfFisNhoYgSZqqFV2A2jvecIyUhM80jzbDsJIlKmU2q1
+         i5zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747658350; x=1748263150;
-        h=in-reply-to:references:to:cc:subject:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8TID/8Or9YAzKWADzCmDKYmYbQ3PtBl4rxavpksxXcw=;
-        b=WFEDm5tMFfXOHX6XiIf6/kJcvdEq8wfK362iFvFxPtWe8ohNdXba3ewWK7onmH7WO6
-         3PoZLXdranM2I2CRa1B/bRM9mpLQFUbX1Cn3YqWxmB5EmeO6JQpp5xFIsXlGe0VPqmJ1
-         Y4vVPYwxWEHd1ED9hrMq9u1G2qS5DM1wzVRnhIORcXOsLhEejPSRkydwL0LLnBGUiIUD
-         2KbU88/8JyYSKWuqKhfbMmKA0Xb4OZcQmdBOTwKvgU/UFvqebjHH2XQHWNNg49qVZBQ5
-         rsofQhAdqhRxR1TxMDIeY49Ccl4RUCV+mP4d8CNnFjiblBFcX2CQHAwDvQ/uNJqWojt3
-         doLA==
-X-Forwarded-Encrypted: i=1; AJvYcCWqRyNx2V4SxnzgvAKNP6dPlsFGR5TIhTlfX/pCapq7khTGQ3MzfQB96zBeSGldeDK7G81twxIHwz1p59lRow==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5MuczyYyALTeZ8sX+k9eQmRfGL/mCjHG9bIJ1oUp01UV1hBKy
-	AyXsi1BGTZni+2BuPRx/nN8/OF1Dlbgwjm8FJ0wvCe9AjP39SYNeLh1XN7FS5uAKZ7g=
-X-Gm-Gg: ASbGncs3beimYB4bVG6+2nxcA6Mj99qPIhlbgPopOk+8U2Di+rhglC7zslufrg/vlCn
-	BiFtxV4XejlgqggYMOvzWCE1+PypPX2J5GhHim737hSGKvrUYu17vPsGI02DcYkiRRmmYAruinZ
-	PebP9jxs9xewNWkfRf4vBTQGChzCtLWuTSxz87oMfFcp6ixs65puqBwEdG3JC0MS4c/GpzDV9xs
-	IrvlbdHLietLZfNLMOodRHtGaLZ+s7mck3P3UxR9dszatf+Qw9tmtIft/YdsMwqxwD1a90JmzJY
-	J9EQSQbQMK+aZUstXeGQ1UlMalQgbruDFnjw4C4KlAypFfl2H9+YkWAsc6s=
-X-Google-Smtp-Source: AGHT+IFfWi9oi0Jcra9sXbpqrxyg3hOkHnBuCeesfYKMaPVxn3iQR7mctJDpcqzl/F4hYBE/NRWxrg==
-X-Received: by 2002:a05:600d:108:10b0:43b:c0fa:f9bf with SMTP id 5b1f17b1804b1-442fd7165b7mr23100365e9.3.1747658349729;
-        Mon, 19 May 2025 05:39:09 -0700 (PDT)
-Received: from localhost ([2a02:8308:a00c:e200:29b7:4911:a29c:2135])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442fd583f20sm136362615e9.28.2025.05.19.05.39.08
+        d=1e100.net; s=20230601; t=1747658455; x=1748263255;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9HL4PEgvdQSii9S9OzQmnwTX0Z46/rSId1V0vWlnEH0=;
+        b=TXmz5me70wcRhgHfzh/MXiZi3LwFIFIa/j446It2FTwNyyHgGe8DX3t6KKevf8BBea
+         A+3i3uRcDNQaca5G9rMfpesKMmPFMtk61hZZa6yrYB+OE9Hef1ZEZNIFSzltOoAuJMUm
+         uHeRrCZyiqlHHsE5Y8SMYyNljMShFTnL8oS+u1HWpZ6N3EWvoweoGMFWs5ilaS7MoZXq
+         y4TbbUNAdz7BS+d0uF8w0QGVBrgS6JYfSbZulZFmBVLxNGRatNxaVFWdPHKBkmzvtCOd
+         TzK+/85obLc5U5NJYmF8obSlWd12LlUnFf0nvksP9CkaTl5lAXP4sjJkbQ02q4ixrntE
+         RVOg==
+X-Forwarded-Encrypted: i=1; AJvYcCV01iZa3V7Zi80VhhA70+QpGlzADqoiHwZm5bekh6d68vrq12ntuG9QfsBcMTbyshVcHV4mhHSBa0juT+FgO8s=@vger.kernel.org, AJvYcCVLp2bS+XHm8uI87+/sPWsKOLlsuCVm3l7ugAQqgzshgGLMrhM+wt4+fvT+Ikb+tid1lDXOZv2nQnR5FTM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzERfDFXFhbblfqHQgF8fH6t+L+fBTQ1NTDNib0chzaCkAaybJl
+	9WHWIC3WguLJf1CDj6tVm0hhzMK8iy2vFRL9apy25/rGRVrZbiZiGlY9
+X-Gm-Gg: ASbGnctj9yYI75hjzB12l0Nq7K3ZJYMqXpFMt4PLWxd8fdIZ8Oqf/WAFeTmXGNJquDJ
+	wLjNZ6+NE1E1gYZzwzOePvjU0XrwV0WRv8SLXufpTZNhK8J3M4KE8OXAwA7yCyxGFO1ciVct9a7
+	t7Zqpo1hQvYc/EGaxF88THRn6t9YhO0sPO4CsEeeFR2fRKvvW3UgRkdjx123eVfCCpSo0utNWuh
+	yDZtxuDuJj7J1Zm090kNNu0/SgrDQ6Co7FYI9OWAIEDDFkdIhy+VbDOjTiJxfuPghcMltJB/7fq
+	X4xPYkZxzBC+AQTfGdPuW3GBbw1nerBMKPoTALUMLEw9qJ7fn8ft0FdNi2MZfDYmW8jaT+fRzWI
+	lL0bsoxKGcTjVAwSOeOudEBaKih06swvdAI65qmpV9A==
+X-Google-Smtp-Source: AGHT+IHowygK3ZyKOQeFR4gHSylWXGMc7TC+uPQ+k42ijshuY2kG998H9pbjMtzWFboAOgDteCzGRA==
+X-Received: by 2002:a05:6214:c44:b0:6f4:cbcf:5d46 with SMTP id 6a1803df08f44-6f8b08abafamr192189606d6.20.1747658455074;
+        Mon, 19 May 2025 05:40:55 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f8b0883b6esm56139566d6.10.2025.05.19.05.40.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 05:39:09 -0700 (PDT)
+        Mon, 19 May 2025 05:40:54 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9E6181200043;
+	Mon, 19 May 2025 08:40:53 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 19 May 2025 08:40:53 -0400
+X-ME-Sender: <xms:1SYraOi5BfD5SAVLJU5LfrukU11x64_9w5nvKDA9qqe4FBTvJHmGQQ>
+    <xme:1SYraPCzTDHN9B8gjEH65q84s9OUJmDLTZ87NRxfB8ifmin2TWia1zZWge8-oXL-h
+    Ts6vBhNCFzow33yIA>
+X-ME-Received: <xmr:1SYraGGV8t-e22HZ3TlvRlDoLFZUwqdRMmUx5Ke8TkkK9UR-aFPjkRon>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefvddugeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrih
+    hlrdgtohhmqeenucggtffrrghtthgvrhhnpeejvedtheejueffheevgeeitdehudevgffg
+    gedvieetveetfffftdfgieekledvgfenucffohhmrghinhepghhithhhuhgsrdgtohhmpd
+    hkvghrnhgvlhdrohhrghdprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghrufhi
+    iigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruh
+    hthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhq
+    uhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtg
+    hpthhtohepfeejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhnghhosehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdroh
+    hrghdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopehj
+    uhhrihdrlhgvlhhlihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepvhhinhgtvghnth
+    drghhuihhtthhotheslhhinhgrrhhordhorhhgpdhrtghpthhtohepughivghtmhgrrhdr
+    vghgghgvmhgrnhhnsegrrhhmrdgtohhmpdhrtghpthhtoheprhhoshhtvgguthesghhooh
+    gumhhishdrohhrghdprhgtphhtthhopegsshgvghgrlhhlsehgohhoghhlvgdrtghomhdp
+    rhgtphhtthhopehmghhorhhmrghnsehsuhhsvgdruggv
+X-ME-Proxy: <xmx:1SYraHQszmT8vz7b1TgXroqgmtHAXKKJTPxNyxH0qdz_72Xm95Axgw>
+    <xmx:1SYraLzp7PaE4aw-fA7M3gWcAixese8Uv9p5x1wsBccnNYmBQ6QcNQ>
+    <xmx:1SYraF4JFf9M2A0yYrLnPLF1q4yveHWg8bjC5U-QkeaSLwSqg50jFw>
+    <xmx:1SYraIwCpRtAbXCV_pCaP10hjL3JnDxQ4aeI87885yrFg1ElwgSN7Q>
+    <xmx:1SYraHiqTM-_ve_eLjOCnTLENXGdiCaW6JVomyxoTXveOousgTzcbCmB>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 19 May 2025 08:40:52 -0400 (EDT)
+Date: Mon, 19 May 2025 05:40:51 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,	Justin Stitt <justinstitt@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Tamir Duberstein <tamird@gmail.com>,	Kunwu Chan <kunwu.chan@hotmail.com>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Borys Tyran <borys.tyran@protonmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Panagiotis Foliadis <pfoliadis@posteo.net>,	linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,	llvm@lists.linux.dev,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 4/5] sched/core: Add __might_sleep_precision()
+Message-ID: <aCsm0x_mSUgAayvU@Mac.home>
+References: <20250506045843.51258-1-boqun.feng@gmail.com>
+ <20250506045843.51258-5-boqun.feng@gmail.com>
+ <aB2aAEELa3253nBh@gmail.com>
+ <aB2sZ60WI5thp6ve@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 May 2025 14:39:08 +0200
-Message-Id: <DA056HQ5G6S6.2B1OITOT8LLWS@ventanamicro.com>
-From: =?utf-8?q?Radim_Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@ventanamicro.com>
-Subject: Re: [PATCH v15 05/27] riscv: usercfi state for task and
- save/restore of CSR_SSP on trap entry/exit
-Cc: "Alexandre Ghiti" <alex@ghiti.fr>, "Thomas Gleixner"
- <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov"
- <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
- <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Paul Walmsley" <paul.walmsley@sifive.com>,
- "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
- "Conor Dooley" <conor@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Arnd Bergmann"
- <arnd@arndb.de>, "Christian Brauner" <brauner@kernel.org>, "Peter Zijlstra"
- <peterz@infradead.org>, "Oleg Nesterov" <oleg@redhat.com>, "Eric Biederman"
- <ebiederm@xmission.com>, "Kees Cook" <kees@kernel.org>, "Jonathan Corbet"
- <corbet@lwn.net>, "Shuah Khan" <shuah@kernel.org>, "Jann Horn"
- <jannh@google.com>, "Conor Dooley" <conor+dt@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
- <devicetree@vger.kernel.org>, <linux-arch@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <alistair.francis@wdc.com>, <richard.henderson@linaro.org>,
- <jim.shu@sifive.com>, <andybnac@gmail.com>, <kito.cheng@sifive.com>,
- <charlie@rivosinc.com>, <atishp@rivosinc.com>, <evan@rivosinc.com>,
- <cleger@rivosinc.com>, <alexghiti@rivosinc.com>, <samitolvanen@google.com>,
- <broonie@kernel.org>, <rick.p.edgecombe@intel.com>,
- <rust-for-linux@vger.kernel.org>, "Zong Li" <zong.li@sifive.com>,
- "linux-riscv" <linux-riscv-bounces@lists.infradead.org>
-To: "Deepak Gupta" <debug@rivosinc.com>
-References: <20250502-v5_user_cfi_series-v15-0-914966471885@rivosinc.com>
- <20250502-v5_user_cfi_series-v15-5-914966471885@rivosinc.com>
- <D9OZVNOGLU4T.2XOUPX27HN0W8@ventanamicro.com>
- <122fc6cd-2e21-4fca-979d-bcf558107b81@ghiti.fr>
- <D9WLRSAB63M5.3DZD4ND3WVZ6F@ventanamicro.com>
- <aCdbASlCyqhid82c@debug.ba.rivosinc.com>
-In-Reply-To: <aCdbASlCyqhid82c@debug.ba.rivosinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aB2sZ60WI5thp6ve@Mac.home>
 
-2025-05-16T08:34:25-07:00, Deepak Gupta <debug@rivosinc.com>:
-> On Thu, May 15, 2025 at 10:48:35AM +0200, Radim Kr=C4=8Dm=C3=A1=C5=99 wro=
-te:
->>2025-05-15T09:28:25+02:00, Alexandre Ghiti <alex@ghiti.fr>:
->>> On 06/05/2025 12:10, Radim Kr=C4=8Dm=C3=A1=C5=99 wrote:
->>>> 2025-05-02T16:30:36-07:00, Deepak Gupta <debug@rivosinc.com>:
->>>>> diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
->>>>> @@ -91,6 +91,32 @@
->>>>> +.macro restore_userssp tmp
->>>>> +	ALTERNATIVE("nops(2)",
->>>>> +		__stringify(				\
->>>>> +		REG_L \tmp, TASK_TI_USER_SSP(tp);	\
->>>>> +		csrw CSR_SSP, \tmp),
->>>>> +		0,
->>>>> +		RISCV_ISA_EXT_ZICFISS,
->>>>> +		CONFIG_RISCV_USER_CFI)
->>>>> +.endm
->>>> Do we need to emit the nops when CONFIG_RISCV_USER_CFI isn't selected?
->>>>
->>>> (Why not put #ifdef CONFIG_RISCV_USER_CFI around the ALTERNATIVES?)
->>>
->>> The alternatives are used to create a generic kernel that contains the
->>> code for a large number of extensions and only enable it at runtime
->>> depending on the platform capabilities. This way distros can ship a
->>> single kernel that works on all platforms.
->>
->>Yup, and if a kernel is compiled without CONFIG_RISCV_USER_CFI, the nops
->>will only enlarge the binary and potentially slow down execution.
->>In other words, why we don't do something like this
->>
->> (!CONFIG_RISCV_USER_CFI ? "" :
->>   (RISCV_ISA_EXT_ZICFISS ? __stringify(...) : "nops(x)"))
->>
->>instead of the current
->>
->> (CONFIG_RISCV_USER_CFI &&
->>    RISCV_ISA_EXT_ZICFISS ? __stringify(...) : "nops(x)")
->>
->>It could be a new preprocessor macro in case we wanted to make it nice,
->>but it's probably not a common case, so an ifdef could work as well.
->>
->>Do we just generally not care about such minor optimizations?
->
-> On its own just for this series, I am not sure if I would call it even a
-> minor optimization.
+On Fri, May 09, 2025 at 12:19:03AM -0700, Boqun Feng wrote:
+> On Fri, May 09, 2025 at 08:00:32AM +0200, Ingo Molnar wrote:
+> > 
+> > * Boqun Feng <boqun.feng@gmail.com> wrote:
+> > 
+> > > From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > > 
+> > > Add __might_sleep_precision(), Rust friendly version of
+> > > __might_sleep(), which takes a pointer to a string with the length
+> > > instead of a null-terminated string.
+> > > 
+> > > Rust's core::panic::Location::file(), which gives the file name of a
+> > > caller, doesn't provide a null-terminated
+> > > string. __might_sleep_precision() uses a precision specifier in the
+> > > printk format, which specifies the length of a string; a string
+> > > doesn't need to be a null-terminated.
+> > > 
+> > > Modify __might_sleep() to call __might_sleep_precision() but the
+> > > impact should be negligible. When printing the error (sleeping
+> > > function called from invalid context), the precision string format is
+> > > used instead of the simple string format; the precision specifies the
+> > > the maximum length of the displayed string.
+> > > 
+> > > Note that Location::file() providing a null-terminated string for
+> > > better C interoperability is under discussion [1].
+> > > 
+> > > [1]: https://github.com/rust-lang/libs-team/issues/466
+> > > 
+> > > Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> > > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > > Link: https://lore.kernel.org/r/20250410225623.152616-2-fujita.tomonori@gmail.com
+> > > ---
+> > >  include/linux/kernel.h |  2 ++
+> > >  kernel/sched/core.c    | 62 ++++++++++++++++++++++++++++--------------
+> > >  2 files changed, 43 insertions(+), 21 deletions(-)
+> > > 
+> > > diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+> > > index be2e8c0a187e..086ee1dc447e 100644
+> > > --- a/include/linux/kernel.h
+> > > +++ b/include/linux/kernel.h
+> > > @@ -87,6 +87,7 @@ extern int dynamic_might_resched(void);
+> > >  #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+> > >  extern void __might_resched(const char *file, int line, unsigned int offsets);
+> > >  extern void __might_sleep(const char *file, int line);
+> > > +extern void __might_sleep_precision(const char *file, int len, int line);
+> > 
+> > Ugh.
+> > 
+> > Firstly, '_precision' is really ambiguous in this context and suggests 
+> > 'precise sleep' or something like that, which this is not about at all. 
+> > So the naming here is all sorts of bad already.
+> > 
+> 
+> I accept this is not a good naming.
+> 
+> > But more importantly, this is really a Rust problem. Does Rust really 
+> > have no NUL-terminated strings? It should hide them in shame and 
+> 
+> You can create NUL-terminated strings in Rust of course, but in this
+> case, because we want to use the "#[trace_caller]" attribute [1], which
+> allows might_sleep() in Rust to be defined as a function, and can use
+> Location::caller() to get the caller file and line number information,
+> and `Location` type yet doesn't return a Nul-terminated string literal,
+> so we have to work this around.
+> 
+> > construct proper, robust strings, instead of spreading this disease to 
+> > the rest of the kernel, IMHO ...
+> > 
+> > Rust is supposed to be about increased security, right? How does extra, 
+> > nonsensical complexity for simple concepts such as strings achieve 
+> > that? If the Rust runtime wants to hook into debug facilities of the 
+> > Linux kernel then I have bad news: almost all strings used by kernel 
+> > debugging facilities are NUL-terminated.
+> 
+> This is more of a special case because `Location` is used (i.e. file
+> name is the string literal). For things like user-defined string, we use
+> the macro c_str!(), which generates NUL-terminated strings. For example,
+> lockdep class names.
+> 
+> > 
+> > So I really don't like this patch. Is there no other way to do this?
+> > 
+> 
 
-This patch uses ifdef in thread_info, but not here.
+Trying to see if we can make some forward-progress on this one,
+considering:
 
-Both places minimize the runtime impact on kernels that don't have
-CONFIG_RISCV_USER_CFI, so I would like to understand the reasoning
-behind the decision to include one and not the other.
+1. #[track_caller] is really a desired feature to be used for Rust's
+   might_sleep(), Alice's reply [3] also explains a bit more on the
+   "why" part.
 
-> But sure, it may (or may not) have noticeable effect if someone were
-> to go around and muck with ALTERNATIVES macro and emit `old_c` only
-> if config were selected. That should be a patch set on its own with
-> data providing benefits from it.
+2. To achieve #1, we will need to handle the file name returned by
+   Rust's `Location` struct, especially Location::file() will return a
+   string literal without a tailing NUL.
 
-The difference is small and each build and implementation can behave
-differently, so code analysis seems the most appropriate tool here.
-We must still do a lot of subjective guesswork, because it is hard to
-predict the future development.
+3. Other than the current approach proposed by this patch, if the
+   existing might_sleep() functionality does not couple (task) state
+   inquiries with debug printing, we can maybe avoid printing the
+   non-NUL-terminated string in C's __might_sleep*() function by
+   printing Location::file() in Rust code:
 
-We should be moving on the pareto front and there are 3 roughly
-optimization parameters in this case: the C code, the binary code, and
-the work done by the programmer.
-The current patch is forgoing the binary quality (nops are strictly
-worse).
-The ifdef and the macro solutions prefer binary quality, and then differ
-if they consider work minimization (ifdef) or nice C (macro).
+    #[track_caller]
+    fn might_sleep() {
+        let loc = Location::caller();
 
-Does the current patch represent the ideal compromise?
-(I can just recalibrate my values for future reviews...)
+	if (__might_sleep_is_violated()) {
+	    pr_err!("BUG: sleeping function called from invalid context at {loc}\n");
+	    
+	    ...
+	}
+    }
 
-Thanks.
+    but this essentially would add more changes into C code compared to
+    the current patch.
+
+4. This is only a special case where we need the "debug information"
+   provided by Rust, so this won't happen a lot; and printing a
+   non-NUL-terminated string is already supported by printk already, so
+   we reuse what kernel already has here.
+
+Given the above, I think the current patch is the best solution.
+
+[3]: https://lore.kernel.org/lkml/aB3I62o8hWSULGBm@google.com/
+
+Regards,
+Boqun
+
+> There's a `c_str` [2] macro which could generates a NUL-terminated
+> string, but using that will requires might_sleep() defined as a macro as
+> well. Given that might_sleep() is the user interface that most users
+> will use, and how it handles string literal for file names is an
+> implementation detail, so I figured it's better we resolve in the
+> current way.
+> 
+> [1]: https://rustc-dev-guide.rust-lang.org/backend/implicit-caller-location.html
+> [2]: https://rust.docs.kernel.org/kernel/macro.c_str.html
+> 
+> Regards,
+> Boqun
+> 
+> > Thanks,
+> > 
+> > 	Ingo
