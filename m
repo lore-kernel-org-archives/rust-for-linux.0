@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5037727BF7D;
-	Tue, 20 May 2025 18:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54E424C692;
+	Tue, 20 May 2025 19:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747767366; cv=none; b=fIGceSbYLPmBHo3yhxjydD1VV3x/wmX7Ey3jBH+mTU5SK/dTGkH8e3MTT86xB7jkxciL5noB/EeLxHRuuctwKztmQTupn3yR0N+mdUwB/GKgkTrTVPuzlpkYeuKELzX1Z/macuNtXy+drvNL/zl2BZtdfmMZqNW65kxuWl3M8vA=
+	t=1747768846; cv=none; b=mc4hN4BbxVlXMZx5vmA/DZV1z+pXyWzObnmgtT9PXeXyBojLhg/LCXZFJoLECgM8zMjbRSwzkUmQ1UWFFHs1IPGnpQcfc95NCVOBOZILGFqyecvYCO3dwoSKHDxWeKVuf0eUntOiL70PaA6bNpfY2m7IMQ6iiV1lyB346e4OSas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747767366; c=relaxed/simple;
-	bh=RQmU7ezkBQCoyTFpXIqZ6e3GD/9vmGdYmUjBtJPu0M0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IHcK9zH1sOzhWkIrd05tZ1kpzSrUFYqLaI9rGIhZ/u1kpHpzcue1Ll/BfHOHuVwGkAqdL7v2sreyzpUqYFiANVbCvhzrK6NrhS5KyQYOhnvFUvz8ggm2kTRAQukoj+4wuJL/2LDRxm6Ci+P6dIj1VXX/f7LCGK3Pk38AaR28VRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxs73m4v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747768846; c=relaxed/simple;
+	bh=WL+oZ2MYQpnuVlpx+GohcQq+F1xhZWw9zI0Bz3ifrss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OeNB3EvAEX/i3F/R72mtTdtAJ7YiFz5Si1f9oMmvgWiUzyN/UAGYFZRt2CWhs0EK1Wsl2w3c2ZeGYl4HVrzdHDcXGDWMhjDKIFywqMQcvb+/kwNNmtl22Kr7Cr8sT0JzudIaAo07nWBI8jOUaWABs2DClyYDiDJnWEM340g+tP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ki3b9EtO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxs73m4v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD83C4CEE9;
-	Tue, 20 May 2025 18:56:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ki3b9EtO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9674C4CEE9;
+	Tue, 20 May 2025 19:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747767365;
-	bh=RQmU7ezkBQCoyTFpXIqZ6e3GD/9vmGdYmUjBtJPu0M0=;
+	s=k20201202; t=1747768846;
+	bh=WL+oZ2MYQpnuVlpx+GohcQq+F1xhZWw9zI0Bz3ifrss=;
 	h=From:To:Cc:Subject:Date:From;
-	b=oxs73m4v1aU+7EhWgM0E0YJtBqCh0sl1uADbXbEZkcBE7l/y57qnIXhjXv3pnival
-	 AbhzhEHHiIXIuRsDslzASYpPDaU98el4SmBR1+huFro8aDevjY1L4Nb8rdaAwCqCL6
-	 iPnaighpWFkbIdGPmMxMo+1znNk+/yrg9jbF99AcU1jRFPGU/D3gybpApLmvKbKPKr
-	 IdG6/p6EHJLu3vc7V6eZ9qoPW8T7kZ7yow9a1QzwFBldYvzZpckHSVp+5wjTBvrkqa
-	 QU6/AuatC1wyWgQleSoZ6IxGuIsbS9Ccm9A6EIyixdvwPzVDBF+rpRakitHT3G4llW
-	 +pcP4SVeKxR+A==
+	b=Ki3b9EtO356CV2lvoGptrYkmyv1YUM6PUNwvQk1U8gfzwobfXVrSNDvAM2ZjSlgdY
+	 jfzBKouPVA0tntG14HPwl4QhVIsG1vCv40iM8rPMxkWzD8x7ldddiNSdrw3zYCNtAb
+	 EBz31sRg25d1HO6NI1kPSnN6AGxyD+B5DBhNm3PvaAUY2mdPYNAQCynd0zwlN9LbFw
+	 qb0Hz4peSUVJjfiIeFqGQ+DbuHg7L5GiXqtQwx/oXSvqVD4WMFGYRbzvNwGKZCiODG
+	 iKGeYUzz9B2kMl03rygLWEgipoFRRKCDyOvZMIe61BOSRTKq0fmrPFUKR6njaQ0r7Y
+	 PIZQAs9BDlMFg==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
+	Masahiro Yamada <masahiroy@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
@@ -39,16 +38,16 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	rust-for-linux@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	linux-kbuild@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	patches@lists.linux.dev,
 	stable@vger.kernel.org,
-	John Hubbard <jhubbard@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Kane York <kanepyork@gmail.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: [PATCH] objtool/rust: relax slice condition to cover more `noreturn` Rust functions
-Date: Tue, 20 May 2025 20:55:55 +0200
-Message-ID: <20250520185555.825242-1-ojeda@kernel.org>
+	Tamir Duberstein <tamird@gmail.com>
+Subject: [PATCH] rust: kbuild: rebuild if `.clippy.toml` changes
+Date: Tue, 20 May 2025 21:20:34 +0200
+Message-ID: <20250520192034.889415-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,52 +56,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Developers are indeed hitting other of the `noreturn` slice symbols in
-Nova [1], thus relax the last check in the list so that we catch all of
-them, i.e.
+We rarely modify `.clippy.toml`, but currently we do not rebuild if that
+happens, thus it is easy to miss possible changes in lints.
 
-    *_4core5slice5index22slice_index_order_fail
-    *_4core5slice5index24slice_end_index_len_fail
-    *_4core5slice5index26slice_start_index_len_fail
-    *_4core5slice5index29slice_end_index_overflow_fail
-    *_4core5slice5index31slice_start_index_overflow_fail
+Thus rebuild in case of changes.
 
-These all exist since at least Rust 1.78.0, thus backport it too.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Timur Tabi <ttabi@nvidia.com>
-Cc: Kane York <kanepyork@gmail.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Reported-by: Joel Fernandes <joelagnelf@nvidia.com>
-Link: https://lore.kernel.org/rust-for-linux/20250513180757.GA1295002@joelnvbox/ [1]
+Cc: stable@vger.kernel.org
+Reported-by: Tamir Duberstein <tamird@gmail.com>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1151
+Fixes: 7d56786edcbd ("rust: introduce `.clippy.toml`")
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
-I tested it with the Timur's `alex` branch, but a Tested-by is appreciated.
-Thanks!
+ rust/Makefile | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
- tools/objtool/check.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+diff --git a/rust/Makefile b/rust/Makefile
+index 3aca903a7d08..0dcc9ba0d225 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -405,11 +405,12 @@ quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
+ 		--crate-name $(patsubst lib%.$(libmacros_extension),%,$(notdir $@)) $<
+ 
+ # Procedural macros can only be used with the `rustc` that compiled it.
+-$(obj)/$(libmacros_name): $(src)/macros/lib.rs FORCE
++$(obj)/$(libmacros_name): $(src)/macros/lib.rs $(srctree)/.clippy.toml FORCE
+ 	+$(call if_changed_dep,rustc_procmacro)
+ 
+ $(obj)/$(libpin_init_internal_name): private rustc_target_flags = --cfg kernel
+-$(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs FORCE
++$(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs \
++    $(srctree)/.clippy.toml FORCE
+ 	+$(call if_changed_dep,rustc_procmacro)
+ 
+ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L $@
+@@ -495,7 +496,8 @@ endif
+ 
+ $(obj)/compiler_builtins.o: private skip_gendwarfksyms = 1
+ $(obj)/compiler_builtins.o: private rustc_objcopy = -w -W '__*'
+-$(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FORCE
++$(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o \
++    $(srctree)/.clippy.toml FORCE
+ 	+$(call if_changed_rule,rustc_library)
+ 
+ $(obj)/pin_init.o: private skip_gendwarfksyms = 1
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index b21b12ec88d9..f23bdda737aa 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -230,7 +230,8 @@ static bool is_rust_noreturn(const struct symbol *func)
- 	       str_ends_with(func->name, "_7___rustc17rust_begin_unwind")				||
- 	       strstr(func->name, "_4core9panicking13assert_failed")					||
- 	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
--	       (strstr(func->name, "_4core5slice5index24slice_") &&
-+	       (strstr(func->name, "_4core5slice5index") &&
-+		strstr(func->name, "slice_") &&
- 		str_ends_with(func->name, "_fail"));
- }
-
-
-base-commit: a5806cd506af5a7c19bcd596e4708b5c464bfd21
---
+base-commit: 22c3335c5dcd33063fe1894676a3a6ff1008d506
+-- 
 2.49.0
+
