@@ -1,105 +1,66 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A80A4317D;
-	Mon, 19 May 2025 23:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEF81D61AA;
+	Tue, 20 May 2025 00:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747698987; cv=none; b=k2CkC6GpgpvT5shzanCGoJOdYlwgybLo3QpohGntbTVlBFauuofu+V3/gB7yz1F7Lkg3LMeco4jqfq3tT0hOZPX/siW83hulD/OXahvn2wBuIqb8fOXMPi5KlAWjZ//HDJV+/BiaWU+TREWeJz8eE9wlghot92+YqUrj43GD8VE=
+	t=1747702629; cv=none; b=J8IafcaUxR5/87HOryFNgQDWq5SU4ERwO19O6rNRNjmA+aSyDhIqRqxz/04VreyxFWYlqwySvE/vPIjcjhsTVM4QAH8EJBzLHL1sf6KbYbGMis0UoQvtHX6EoNnb1kb7DLcjGAVeuxlKkFx+rYbRIoky3FLwKgfPuDZ72+hhtHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747698987; c=relaxed/simple;
-	bh=MRpEHT0Aj8NPgofmlBKIiaHmNmVlxyIY1DN5O55M6ow=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=duiyd2h699zVlJ0EfQC2BA6FeGlb/pxfLHe/H9RDaYPFk7fWigkH9XvtJ6bso9gV8ydG1fA1BC7pxXwI9X+OELu4Dh//9T+5olbmWi2+OWRohcSFk++m6fRnFLeGVe6NS/rp+jhzsQlAupowVIDBDZLgkKsv3ItaK/1pGvJ/bKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DF6vG/tR; arc=none smtp.client-ip=209.85.160.175
+	s=arc-20240116; t=1747702629; c=relaxed/simple;
+	bh=3ay46nlc3n+X2gjdnp64fYuIFnWIDPYbwP20Wl2PbOI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jzqhunNBiUVndFqSvvUzlnO/n4YVCFZ0oIBy/uIgp47A0o0kJ9a0l2X8jQzPlmMglIGjeziBV4QLMia6BOtInFS+7n+5UGqu8xE6i59x6IHSoD5sZyQIJhwPxsnZd0tJuHHNyKYT9p280h6FPySRexhXH/BpCOiU2y8kzuO5vqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YEchxQIs; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DF6vG/tR"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-476ab588f32so75437681cf.2;
-        Mon, 19 May 2025 16:56:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YEchxQIs"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-af908bb32fdso3956470a12.1;
+        Mon, 19 May 2025 17:57:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747698985; x=1748303785; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747702627; x=1748307427; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:subject:cc:to:from:date:feedback-id
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=PH2VgzY/5BEaj0T/YAEp7MmgJEQhgRf5xUTgav8kQlY=;
-        b=DF6vG/tRfppbas+wogbaBcsYBB29I9EzS58iaU+YSUBkoNUoLHpysLYYS9bP6O53Sq
-         rs5XQzq1IRJjZh1v9GoNUTTUcXHjuSukdTY2ja3C5XsV12Yuev2rJvTc4At2QK3Vg+Pu
-         ZhXkp1gEfQAQ4wqx+pNW36yy9kw7LW1/M2vA30kayFDg8y7dZSU2hxRohO2oylLn7jfP
-         PUD2HPPSp9WCWE/v9V5732SXmA4JpU4q3fjUCF5Lcm2Xd3XZkZLDBA84WjlZQ838XdnE
-         FbjbTKXvbEZlZ2eLKXlWpP/WEMIy/yvfvgjlimfsiy7CtKBhp+lngZJBuezugdfrl8qX
-         24Tg==
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WOZoj5lGolAElPriJPP5mMHKvwh3tkRDIoUgFiEfOK0=;
+        b=YEchxQIszVnKxxB9NSYEvbsdETfjzaMnHhn+5wbTLczKAvX+MxwiPT7Qe45tYWNYjC
+         n/K8Joq9fQ41PRbwXKvhZ4vsmG/IOmWZrNdUfNZgOLek/Ga56+zTO6WLrjBbG3/Cyh+l
+         BkxouRguAj0dUjf/O58BA9n5UM5/PtFrtCuPUK3AedgA3Um0s1Vf+apZ3G+pWJSNyUUt
+         u7tiMmgeDlf87L+yXKjFU0pfajZ7eUE+HK7fkvlceeEiDfUmQ0xcJa/d0BSBCNEtFAfA
+         TqnLOB94t8qLA9AJrfF0klgdOAy3v8Mpjq0MZOeNWHHAXpDw6g6AX7SfWP4JFPRHtI2D
+         6c6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747698985; x=1748303785;
+        d=1e100.net; s=20230601; t=1747702627; x=1748307427;
         h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:subject:cc:to:from:date:feedback-id
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PH2VgzY/5BEaj0T/YAEp7MmgJEQhgRf5xUTgav8kQlY=;
-        b=GL5M6q5B0zWsX7nPPbEhvPVU5xph+DThZ3o3sSrZRMzaOK/bA5WDP5jLWGktMjFHOC
-         alX9Hea5fc4B1iS4LhQgSkvFIEHOCLk40lknITGNvffwjh0Za312BBQe8QL3rjsb3zOb
-         lKt/WEncfRdfARcFgVtxOxOeRdK5bDAcTuirUqNCEZwh3ymqctrVhZZYN17aUvi2p+DP
-         PM4J9OAtgUmYcgCh/hTUvsopQtLacveK6dEzKtjU/hPBeWFb3L1nlQzB95ppov8frERY
-         Jt8R2Ep22T5AA+aoASYp2b+LeynGoNmhJZ+2KnU2eE/5commdpyiOEcjVUkieuX1MPUU
-         xLWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQrkqSg/RXOYBFNYQ2KzapyE2HY+Or00EpNaZ639JJTS0ry2lJU5fL6fs+0htiSa9nca0w7DL7PrEVcYkyPTU=@vger.kernel.org, AJvYcCUoLgbhUeDWYED/1zAMdFtls8jspigFbhc8H/ATKTnOq/IGJQBV4Nq6GBKO3l5GCM2rK/BsjwX+cB4pc04K@vger.kernel.org, AJvYcCXeAoaIamWSq+2QLD5zlSWR/XKX7Bkidmx1LyaAwGYqHzDjVSfsV66Rs5z5CGs0Uiw4IdLQVVC5GQcCcWd5U64=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdUnWlmxRzxGw5xjJ6xaRxztOybCVX7ujoBJJ9TTQJWgSx9afU
-	WAxljiUZhNszDJUHNzQg3/2uuVHEA5BF2AW+2mzVmV0xnuaYv65uXFNH
-X-Gm-Gg: ASbGnct/zdg7nwywWdZfEZIAFUBNb1blxJnJYmmrUuLLsQxNtkPadhhUkki+Jo0dXKq
-	fF+XpklKJriPJsjU+oGwdVxaAXVqTsud/Fx+Z792BleO7EE3YDBVc9jQHSTG1z//oWZcBZpjhbW
-	B1GkL5G01Pjcmu98InpV5SOCI0hyAuvDvywb1pCo8tY5GqmPy8lHvO343CjkV+NIX7sEjgTEJi1
-	qJk2tPc9AtvzETbDehwNrwE6rEMRlzzmozkfB+CZcROq5+RX9uo4OtbWewIUj6adtRCytR0RQv1
-	jMQoxJJG0WXMMtOfNfk4Nwle5RJsxoAySqtUSV71LvlFleaMZcYuwhKraz32HteSABHbKmJjz5L
-	YoTJeVYrgidpaMhoPyFreG4nzSqs4HDIbDwjPs/gdTQ==
-X-Google-Smtp-Source: AGHT+IGGQ22Fxhiq41h2TGXux2TQUhBaRyuMzu3p1dr6JWQqE6tPFG6VPGwZdjYis6/v1x4kVy5raA==
-X-Received: by 2002:a05:622a:5c96:b0:476:91f1:9e5 with SMTP id d75a77b69052e-494b096c63cmr301354431cf.50.1747698984812;
-        Mon, 19 May 2025 16:56:24 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-494ae4fd7f0sm62122281cf.57.2025.05.19.16.56.24
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WOZoj5lGolAElPriJPP5mMHKvwh3tkRDIoUgFiEfOK0=;
+        b=ImF/XtzXQHDI1l7ns/U5CuKNE8WE9IstZSFvwOT68HtEeSCOQpBJ2it8In+8sMPnE+
+         rdYFf8GjVPmD0xCfhj/32NCw12iaR+Ptb2GGxYYUbb03YKmDGpEdYuR3E8c/6gnTd37z
+         3SeDREpEDg1WfqCPUBlNAmjCi/Tb8upTEe6ATwWpcOfv9oisUrEbEvQ/AqM5Nh5GJLab
+         oE6i4mysUoZqTOxLbg3rsXpdunVUtc7LyJg/nmxhJ6QQ9LXqijBlDYfvbWDevUZPLhph
+         ucd2ldGzcXNiCOf+fjh25i5aYIHMTm5fZwD/081Szz5TPOIut/mtDlXXUQDkS01g3w9z
+         0z+w==
+X-Forwarded-Encrypted: i=1; AJvYcCU/Mts1XQ8ONYTpLrSF2TzpyqVdMHElAxZiqW1L8CttSUEs/FX9Km062/X3s+6HpcsLMQcRLQmsDJU9cbUX@vger.kernel.org, AJvYcCW7wm3+oeMJ/zezkYVCZKWeG2m1QnhYGzaXfjmyZ7xDoFQK5SVZ3PxnhxayF4Lg4Bh+m9irAhyI/upVn/eXTd8=@vger.kernel.org, AJvYcCXzoRgy4sJGzdcLsYfyugHTFeFGjyNfCHE2OCdmd1skrpnvBdyTzaDKcfiLqa//t9Yl29SKqnuoPu0juviuxp0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz4NLHwO6W6Xk5nGvD0MjWHWtaRKmCqeRGGHAWTLs7PgADp8pC
+	z/1RJ1CNUNZv8mvndWFGm+2Zid4kmdvubU+sG2x1fl2/Y3Ongg+0IsWs
+X-Gm-Gg: ASbGnctOIS4UfV7XePJaHfKiWTIvhyePp+pv6pu8JCwhtlRBLP50HYpTw1PuSSSDCMd
+	+nKcM2TE81dj6BWueUhzIbAC4SPUR505qzpD48fBntdkp2poR/9JCe7gr9Bkx/f0o/9THKQiH8Q
+	3qY4ry/kS45e5wb+RXpymqQXOz+qO1SnNIx4vyIVvJni68RupMaD9PFejue/Efxya+8veim4jIz
+	wkHJBzOFawtfgyn5uayDICmsVKlIX7wQTQG3KLAEfFq1x/fIMRhNQCkm3I7QyptlGCWB3n1JlVk
+	2koBAdhNdwBu7Duwq9QJSAml0nacNMENdgSfAg6ZHQW+ck/7hqU=
+X-Google-Smtp-Source: AGHT+IGvVskIxNh+tv8noWy4hcl0vR3Ickl8Ky+fPBkOU92qo0wzJ8dAq+wnVoplwYE5SFuk2Gf1PQ==
+X-Received: by 2002:a17:903:3d10:b0:22e:23c1:d711 with SMTP id d9443c01a7336-231d4e5087cmr211842255ad.16.1747702626934;
+        Mon, 19 May 2025 17:57:06 -0700 (PDT)
+Received: from localhost ([216.228.127.130])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231f304a55fsm55208655ad.93.2025.05.19.17.57.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 16:56:24 -0700 (PDT)
-Message-ID: <682bc528.c80a0220.13f632.9ec0@mx.google.com>
-X-Google-Original-Message-ID: <aCvFJYt_Qg69nCVP@winterfell.>
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id BC41B1200082;
-	Mon, 19 May 2025 19:56:23 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Mon, 19 May 2025 19:56:23 -0400
-X-ME-Sender: <xms:J8UraPEPv0ib_w1GxDKXaj91ipBMu9ByfOTZYsfT41KbZ0Vuv4CYvQ>
-    <xme:J8UraMVrzpl9OfKUybaWWZxbi5KrbqsPIfITS95XXuK4xgU9kByOAMRri5vTlUd72
-    niL6f_S8Uj81Xvsvg>
-X-ME-Received: <xmr:J8UraBI5sxjEDnOQLg4F7J7c9p1XMAu_8U8pSFNH-6lGTc-O3-2WxbDrZA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefvddvjeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
-    tdejnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrg
-    hilhdrtghomheqnecuggftrfgrthhtvghrnhepjefhieekkeffjeeggeeuvefftdegfedu
-    teelgeejledvffetiefhleefhedvgeeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrgh
-    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhq
-    uhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqud
-    ejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgv
-    rdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgtph
-    htthhopehjrghnnhhhsehgohhoghhlvgdrtghomhdprhgtphhtthhopegsqhgvsehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopeihuhhrhidrnhhorhhovhesghhmrghilhdrtghomh
-    dprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    giesrhgrshhmuhhsvhhilhhlvghmohgvshdrughkpdhrtghpthhtohepvhhirhgvshhhrd
-    hkuhhmrghrsehlihhnrghrohdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpd
-    hrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
-X-ME-Proxy: <xmx:J8UraNHkEAenxCFwvnJnQqws4ekhqQ7EluIO7AGKc3KmTdc3mSzfSA>
-    <xmx:J8UraFX3tJp5ubAadnCutjYSd_PGTDPp3u33H4xi7R-HwgwB6kzH1A>
-    <xmx:J8UraINJhq7B9FoEiqnAni5AtZO4EiJ_lWpKjOd7iiXrSoAipIZfCA>
-    <xmx:J8UraE2QmsZtEIdU49t1NNrAosM98NM6--4pb6Lty945qMxNewz0bg>
-    <xmx:J8UraKVrIUOVBHj0_3pRXEkXN4Dmg6c42M8-hKEgejR1OiS-Ic7mpik6>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 May 2025 19:56:23 -0400 (EDT)
-Date: Mon, 19 May 2025 16:56:21 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Jann Horn <jannh@google.com>
-Cc: Burak Emir <bqe@google.com>, Yury Norov <yury.norov@gmail.com>,
+        Mon, 19 May 2025 17:57:06 -0700 (PDT)
+Date: Mon, 19 May 2025 20:57:04 -0400
+From: Yury Norov <yury.norov@gmail.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Jann Horn <jannh@google.com>, Burak Emir <bqe@google.com>,
 	Kees Cook <kees@kernel.org>,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -110,12 +71,14 @@ Cc: Burak Emir <bqe@google.com>, Yury Norov <yury.norov@gmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
+	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 Subject: Re: [PATCH v8 5/5] rust: add dynamic ID pool abstraction for bitmap
+Message-ID: <aCvTYHMtuWZZizn9@yury>
 References: <20250519161712.2609395-1-bqe@google.com>
  <20250519161712.2609395-6-bqe@google.com>
  <CAG48ez2WdxXVCzVsAPeQWgso3ZBQS_Xm+9D1FLBx6UHFV1bGHQ@mail.gmail.com>
+ <682bc528.c80a0220.13f632.9ec0@mx.google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -125,28 +88,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG48ez2WdxXVCzVsAPeQWgso3ZBQS_Xm+9D1FLBx6UHFV1bGHQ@mail.gmail.com>
+In-Reply-To: <682bc528.c80a0220.13f632.9ec0@mx.google.com>
 
-On Tue, May 20, 2025 at 12:51:07AM +0200, Jann Horn wrote:
-> On Mon, May 19, 2025 at 6:20 PM Burak Emir <bqe@google.com> wrote:
-> > This is a port of the Binder data structure introduced in commit
-> > 15d9da3f818c ("binder: use bitmap for faster descriptor lookup") to
-> > Rust.
++ Carlos Llamas
+
+On Mon, May 19, 2025 at 04:56:21PM -0700, Boqun Feng wrote:
+> On Tue, May 20, 2025 at 12:51:07AM +0200, Jann Horn wrote:
+> > On Mon, May 19, 2025 at 6:20 PM Burak Emir <bqe@google.com> wrote:
+> > > This is a port of the Binder data structure introduced in commit
+> > > 15d9da3f818c ("binder: use bitmap for faster descriptor lookup") to
+> > > Rust.
+> > 
+> > Stupid high-level side comment:
+> > 
+> > That commit looks like it changed a simple linear rbtree scan (which
+> > is O(n) with slow steps) into a bitmap thing. A more elegant option
+> > might have been to use an augmented rbtree, reducing the O(n) rbtree
+> > scan to an O(log n) rbtree lookup, just like how finding a free area
 > 
-> Stupid high-level side comment:
+> I think RBTree::cursor_lower_bound() [1] does exactly what you said
 > 
-> That commit looks like it changed a simple linear rbtree scan (which
-> is O(n) with slow steps) into a bitmap thing. A more elegant option
-> might have been to use an augmented rbtree, reducing the O(n) rbtree
-> scan to an O(log n) rbtree lookup, just like how finding a free area
+> [1]: https://rust.docs.kernel.org/kernel/rbtree/struct.RBTree.html#method.cursor_lower_bound
 
-I think RBTree::cursor_lower_bound() [1] does exactly what you said
+Alice mentioned before that in many cases the whole pool of IDs will
+fit into a single machine word if represented as bitmap. If that holds,
+bitmaps will win over any other data structure that I can imagine. 
 
-[1]: https://rust.docs.kernel.org/kernel/rbtree/struct.RBTree.html#method.cursor_lower_bound
+For very large ID pools, the algorithmic complexity will take over,
+for sure. On the other hand, the 15d9da3f818ca explicitly mentions
+that it switches implementation to bitmaps for performance reasons. 
 
-Regards,
-Boqun
+Anyways, Burak and Alice, before we move forward, can you tell if you
+ran any experiments with data structures allowing logarithmic lookup,
+like rb-tree? Can you maybe measure at which point rb-tree lookup will
+win over find_bit as the size of pool growth?
 
-> used to work in MM code... That would let you drop that ID pool bitmap
-> entirely. But I guess actually wiring up an augmented rbtree into Rust
-> would be very annoying too.
+Can you describe how the existing dbitmap is used now? What is the
+typical size of ID pools? Which operation is the bottleneck? Looking
+forward, are there any expectations about ID pools size in future?
+
+Carlos, can you please elaborate your motivation to switch to bitmaps?
+Have you considered rb-trees with O(logn) lookup?
+
+Thanks,
+Yury
+
+
