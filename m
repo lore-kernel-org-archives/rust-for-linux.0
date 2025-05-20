@@ -1,97 +1,112 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FFA21FF3D
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 18:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83912441B4;
+	Tue, 20 May 2025 18:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747765325; cv=none; b=CE3CFG4shWrs4MjSh/EyvWpfGF66k+mbODugiaaGc/YvhkUJhpUSwUM05NOXnMsLqbu6d+sQ2U6LPR5oFFP5+q+mHZzySIDGKMr3Wh49AIEwRNg4+HTB4mfu2Es/7HEM3IgpNpfWPOgjZMa3oCm5oeNgSCIRtthM2GkT2XvKPhg=
+	t=1747765326; cv=none; b=ugPASCxs8NxYC6R/10iZx2u0Vv7fT7K+F3RLrhWSub3XrFk1SIuut9ymJKAasrKVZf/fkAY5mzh9KqNX7y5YGvcFwGioBF7mvugMN+jna22rHbfbXe24B4zP07eTrfTD9jIfJy8LxRhnhfmywO/IINcEjYQR4wr3OyWht3W/Cao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747765325; c=relaxed/simple;
-	bh=m4sHC2ioZAb64/cUCBsTQaCvS5uxQBAT9kNBqe/0RBQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EDztTOJWNln+Z/uUMAeGs71ayNgOp/tdCuK/KXeF8tznl2G0YCnvKKgvtB4AV6VoSdVNLpGQiRvhk0D5HlOWZpycVLVkf5fdcVaeZ+ZKSChGKr0SXX4FWzl3XE9yQ0CeIPnU2UtYci7LZn05UnTTT9xiyqPKLtHjAoCLyCKseWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XohT/5tZ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1747765326; c=relaxed/simple;
+	bh=oFzdpd2yc5D7rMJdLpf9Avjzs2bAR0+fMOdTiwKSyKk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OItozX8Tpr/QQDPBHBLoVs45LAQvXtbT6nkl2OKF3ZLb/h8hvaqUmNUcWESY1MgCJodaHpOdVXSTPl64n/4ShqtPj5DMnB/0TWHvGQ3O0LmlBe+0KCYSELXbu9YmAw+QSPoh3H+c89w27WRUjG6zjYAPPxdAQXvAQxepmSfF2gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dddb4imp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XohT/5tZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747765322;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=XroMdzJgXjsY6oKfDQ1D1PKCN2nDrCD9DIs6odFzCFw=;
-	b=XohT/5tZ/mQr/mU2KQA/BYdSKJ6bH4UFMJ8QcOW0lgiuBau9cPtayD15vMepmh9LvT8FBB
-	br0rpIMUGeYPvi4A0/wSuCikDymG0Tf+YJz98nkIYEv/b9AhTOk1cDG0mPsitUnY2BagMM
-	RkHJcmLqG328JkZw4De9A0y02/+pNEE=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-304-WhckBVWBN12h4cBgMZiCfg-1; Tue,
- 20 May 2025 14:21:59 -0400
-X-MC-Unique: WhckBVWBN12h4cBgMZiCfg-1
-X-Mimecast-MFC-AGG-ID: WhckBVWBN12h4cBgMZiCfg_1747765317
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8711D180045B;
-	Tue, 20 May 2025 18:21:57 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.88.70])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 18880180045B;
-	Tue, 20 May 2025 18:21:53 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dddb4imp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAA0C4CEED;
+	Tue, 20 May 2025 18:22:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747765325;
+	bh=oFzdpd2yc5D7rMJdLpf9Avjzs2bAR0+fMOdTiwKSyKk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Dddb4impTC4CB40Afjwqdp6IvmKMKZY4kZy0jB6oui+yPVzUoDg2fLiv+zeyIOkiX
+	 lQ5gFql/4Ux2zkxkFczUJWEuca43qI1UQjSwRkR1OJH8HfOgqIoNWFqdw28bPprbz+
+	 xnv3THJ1Bvs3LcEKIDMHbDPw/9LfjtGI6suQKrWwhD77C9bPv4Ie6Vxsk6ubHYywm7
+	 75KuFMWsJGCGH6/b4Qre1Z8MYrQL4a5E9JSO3SX7zwBhQPZiES9quDP616KKsKO5Ue
+	 8Ei+J5D3ngg3YSl5G0YRCkcICeaT7JAQFbOASW7zhw09K0pRHms22Er+znXV5sQ8K1
+	 dbl+G2LrWGcpQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v3 0/4] rust: drm: gem: More (and final) cleanup
-Date: Tue, 20 May 2025 14:19:11 -0400
-Message-ID: <20250520182144.1313262-1-lyude@redhat.com>
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH] rust: remove unneeded Rust 1.87.0 `allow(clippy::ptr_eq)`
+Date: Tue, 20 May 2025 20:21:25 +0200
+Message-ID: <20250520182125.806758-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Look mom, no generic soup!
+Before a change to relax the lint was backported to Rust 1.87.0 before
+its release, Clippy was expected to warn with:
 
-Anyway - this is just the last of the cleanup stuff I ended up while
-working on cleaning up the gem shmem patch series. It simplifies the use
-of generics and also adds a type alias for some very long types
-currently in use. Also, drop one unused constant I noticed.
+    error: use `core::ptr::eq` when comparing raw pointers
+       --> rust/kernel/list.rs:438:12
+        |
+    438 |         if self.first == item {
+        |            ^^^^^^^^^^^^^^^^^^ help: try: `core::ptr::eq(self.first, item)`
+        |
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_eq
+        = note: `-D clippy::ptr-eq` implied by `-D warnings`
+        = help: to override `-D warnings` add `#[allow(clippy::ptr_eq)]`
 
-Applies on top of nova/nova-next:
-  https://gitlab.freedesktop.org/drm/nova/-/tree/nova-next
+The backported finally landed indeed, thus remove the `allow`s we added
+back then, which were added just in case the backport did not land
+in time.
 
-Lyude Paul (4):
-  rust: drm: gem: Simplify use of generics
-  rust: drm: gem: Add DriverFile type alias
-  rust: drm: gem: Drop Object::SIZE
-  rust: drm: Use gem::BaseDriverObject in driver::Driver
+See commit a39f30870927 ("rust: allow Rust 1.87.0's `clippy::ptr_eq`
+lint") for details.
 
- drivers/gpu/drm/nova/driver.rs |   4 +-
- drivers/gpu/drm/nova/gem.rs    |   9 ++-
- rust/kernel/drm/device.rs      |  17 +++---
- rust/kernel/drm/driver.rs      |   5 +-
- rust/kernel/drm/gem/mod.rs     | 108 +++++++++++++++------------------
- 5 files changed, 70 insertions(+), 73 deletions(-)
+Link: https://github.com/rust-lang/rust/pull/140859 [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/kernel/alloc/kvec.rs | 3 ---
+ rust/kernel/list.rs       | 3 ---
+ 2 files changed, 6 deletions(-)
 
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index 87a71fd40c3c..ae9d072741ce 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -2,9 +2,6 @@
+ 
+ //! Implementation of [`Vec`].
+ 
+-// May not be needed in Rust 1.87.0 (pending beta backport).
+-#![allow(clippy::ptr_eq)]
+-
+ use super::{
+     allocator::{KVmalloc, Kmalloc, Vmalloc},
+     layout::ArrayLayout,
+diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
+index 2054682c5724..a335c3b1ff5e 100644
+--- a/rust/kernel/list.rs
++++ b/rust/kernel/list.rs
+@@ -4,9 +4,6 @@
+ 
+ //! A linked list implementation.
+ 
+-// May not be needed in Rust 1.87.0 (pending beta backport).
+-#![allow(clippy::ptr_eq)]
+-
+ use crate::sync::ArcBorrow;
+ use crate::types::Opaque;
+ use core::iter::{DoubleEndedIterator, FusedIterator};
 
-base-commit: 276c53c66e032c8e7cc0da63555f2742eb1afd69
+base-commit: a5806cd506af5a7c19bcd596e4708b5c464bfd21
 -- 
 2.49.0
 
