@@ -1,187 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3C1158545;
-	Tue, 20 May 2025 15:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDC2263C91
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 15:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747755419; cv=none; b=ZOgmMmjQor6upitfEhn6y5v/N6aShaHzffHoOMgX9EVGcS3rmEg8Mw5WYaoNxjMGLxOWIlRkFdQf86k33vv2LfV2kvUzEstDmsEDMdW/cBmvV2oKObnDCQyvfTvMKm6QC3ziW3y+e2Zc5ej4ZAYO92ddoI/fpsYWYwdGCmxaMR0=
+	t=1747756589; cv=none; b=S2Fn+yM/gHu3paOCI15HnQqtIj6gFUlCkmY3VCmijx+9t4mBPkVYiJBu1lpBPDclrxrtbgemgymgG+OelyV7VKSPGxVdQu7xHaLFgfedib6gYRKnym2xHNTTpYeSkxKVIff0Ka+Xk6GvHROeQfqSfl+ZYYqk2O9laWiGB+paYUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747755419; c=relaxed/simple;
-	bh=sfLD6pz/hgOykoSuAIvLsAQl1i68ILiyfvdiHoUOzY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WoWh8jow0Rs1PzMWDt1YF7IwsNILK/2EketlvpzP96bZ7OIsPhqmghoBffS/EzpTdfxyaTZYyxdiBQD38TZpEHSRwyoyftIhV9muGog2zKCljNs3IGXrvCmR/tH2gSKfeGhFEI4nPKHulv1XjufQfLNWr7y8GZDrHLpu3JANOfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHAMTePx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747756589; c=relaxed/simple;
+	bh=ER3NJ5O3PAzpO1IEIeCsXoWaX/vAGysVFXgbd71q+b4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H5BrsS3Ps5T2IgJXBQYfZaQE2QmM02nCmezU5lEix2bQs2mlUY193DrUWzHyMOpZrvdji2BsVJLcMoX+Gmj8Hgu761edr1N4FHZCkz3R4F2IPkEUViTMJgAdZCKMHx1DL2cCXeDo9p2q0saNz8+HOZRZhccO+PRN9lyA80EXp5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TWop25BO; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHAMTePx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CC0C4CEE9;
-	Tue, 20 May 2025 15:36:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747755418;
-	bh=sfLD6pz/hgOykoSuAIvLsAQl1i68ILiyfvdiHoUOzY8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WHAMTePx+VNs9+XHL7M+pKyOf7aHJYN/Kt52QHUVcEhUyofo1k4h8eVx6Egn2MA2P
-	 5iv9QWjj7oFEEmkf1VZPnwO3GdbYnSbQJtMHCv4voN7sokTl2klVbZ9xE4ODOauTKn
-	 i3oAfp1Rmub/EvJzv8aCO2lRG+jcezoyAFMBSVYouQNnKr2RDBjuBGAdJZNWfby6Dg
-	 jb2Xa1OzIE3jgZ3vYoA7lK+LC/La0Cjm+5G+ZkkNCi+Idpn6YSn9Y8ELKnWoxF6RoU
-	 tQ5BTnhfFbRKLRrIh5jNoB/x+sHv52d/LJrXE+L1MQys6ellI7rYN9AC/Bt/6Trpgk
-	 6fvWCdFGSGDxw==
-Date: Tue, 20 May 2025 17:36:50 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	Shirish Baskaran <sbaskaran@nvidia.com>
-Subject: Re: [PATCH v3 16/19] nova-core: Add support for VBIOS ucode
- extraction for boot
-Message-ID: <aCyhkiBTXV86P_GF@cassiopeiae>
-References: <20250507-nova-frts-v3-0-fcb02749754d@nvidia.com>
- <20250507-nova-frts-v3-16-fcb02749754d@nvidia.com>
- <aCN_PIYEEzs73AqT@pollux>
- <4fee85be-a8c5-4a99-8397-c93e79d72d15@nvidia.com>
- <aCxLyxcERNHKzfvI@cassiopeiae>
- <3cfb7a8c-467e-44d0-9874-361f719748b8@nvidia.com>
- <aCyZPUaPSks_DhTn@cassiopeiae>
- <bdb290d4-b369-4b8e-b78d-8c8d3cc07057@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TWop25BO"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-231f61dc510so782315ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 08:56:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747756587; x=1748361387; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ER3NJ5O3PAzpO1IEIeCsXoWaX/vAGysVFXgbd71q+b4=;
+        b=TWop25BOFRU5dDKeS9QPoeYFABHBraSn+G7kag80qs/4iEXRJpEPfcnJuTCiGwAeIR
+         Qm6+HnqesJaDiS/0z9LMmaE3H0BO+9fKzpqR7kXxoNLw1rRdKhQyPLmiB0UNN1AtvZC1
+         kyFfkxRS8mVT1AQQOtaLk7hDnuGKfzhCHC3oNHwGAeaPsYCPW25QHNa9DaV9O7W9zCKz
+         YVNaFDlEYva5qIBlB1PpbXlbmcmVBkRk5BpGkZRso+5vQhuCalGQzFL80rrvk6UZ9yJa
+         eTYz2D8eVa68gJEGyDanmY3s/ASkBRbM6t8GHb0qCTmbW59jZCIXMTkwXp/GZYQIQCur
+         KLCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747756587; x=1748361387;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ER3NJ5O3PAzpO1IEIeCsXoWaX/vAGysVFXgbd71q+b4=;
+        b=JeUjJxQFDjxaQeiu9N+Fnp379+iElV0+k5LLt1SZWd1VSRVDTTEG0WRuQi7QDnePHK
+         otPl0e5UlISvtlC8QUE0Ll3caC2W9LDsWFv6Kj+FgkHJWoov/gWiyh2b8GLyzRnROqzP
+         UTiO+wKmfcADoE42uxzYWLv+Z8Ri45Xo/tmYxNDWZ7l9qzGdAho9Jvg2DMBlYbAJFVX6
+         DZrjcq1d5KL43yFfWlEyybUMm0Z1t5Q/b0zaIfZNNAvzbvk4HW3u5XQb2Fgx0YR8Ya8b
+         HP61ZxCvrMVlcCK7/QmED0JDmUcVzkKHu0Kazb2zzIZkD5sLfgBWDR8xsUxzaE+Et9Br
+         Lnbg==
+X-Forwarded-Encrypted: i=1; AJvYcCVnWAyrnqLBarpCLdGJtc8BJDrQd3P21TfMo6WQOhDabYlm57DNfRtmDXoiJwkrzieElZjYtUVRqQJ4ijH5qw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyosAZgFkfukr7AjBkBfj1ld6q2aTVe9vd2tUKW/sY75UU+Eb/k
+	vLfnaHjvDZY5+6D+53ataXXp3jBT8E5LPFwq7+G06tZPxwZf9RTvw3KGmWvfiE5U9oLvmv2GHji
+	8z37dL6DK2YE6SfbxPF0GLmnDl6YZh5niv6aiq7d+
+X-Gm-Gg: ASbGncvb9OsWYn0qUr0svA42FO6oopWHCz2wbiPZ8N074JNgDcOpS1H8GiN9c+YNnxV
+	uO3MIpQSPjZeciC/M8ZD4Dua0STi+ltsk2nzCvZQ3nq7rjufk1SapPtgyuCY+/zd8vKvNMxJ5Vf
+	FMEqHeoTrIGSwoNdc8OMiMJmdVwkffkjtgrT0nIJH+d6sgC4G10v5OjEQUUG2czdXh4fjxag==
+X-Google-Smtp-Source: AGHT+IE3UoafRXp4fFTWsfLrSpxZrXhZFQX6aCH6gZeuLrfBVPCauhB9DuTu6AnjgBWc6z7HnULlUjYmKw4eAcPInfc=
+X-Received: by 2002:a17:903:11c8:b0:21d:dca4:21ac with SMTP id
+ d9443c01a7336-231ffd0e31cmr8019275ad.6.1747756586623; Tue, 20 May 2025
+ 08:56:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bdb290d4-b369-4b8e-b78d-8c8d3cc07057@nvidia.com>
+References: <20250519161712.2609395-1-bqe@google.com> <20250519161712.2609395-6-bqe@google.com>
+ <CAG48ez2WdxXVCzVsAPeQWgso3ZBQS_Xm+9D1FLBx6UHFV1bGHQ@mail.gmail.com>
+ <682bc528.c80a0220.13f632.9ec0@mx.google.com> <CAH5fLghNJYjxPFUc2E4-2pJpGT5umUr1EJstZvs88ox3MsXDGQ@mail.gmail.com>
+ <aCwRZlkBWekRmDg7@Mac.home> <CAH5fLgj1NVodPy-95CFUygGO7WC0siNEKSyEhgLvpX-1zMXErQ@mail.gmail.com>
+ <aCx77cCum_b-IR4H@Mac.home> <CAH5fLgjqj7binVaLDh7Pc7SVKDM-XrYDEDj7GYBX_MnjHgufFg@mail.gmail.com>
+ <aCyB4z23VP-3Hmor@Mac.home>
+In-Reply-To: <aCyB4z23VP-3Hmor@Mac.home>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 20 May 2025 17:55:47 +0200
+X-Gm-Features: AX0GCFs0RrSQrNlKygeYsUjA_mLlWNKtB4CI8gjUfxmH7vR_28jbNDCMVUE1uVM
+Message-ID: <CAG48ez32gxwdmQ63XWB8Dz4b5seH7tOhY0yREC=34ubTHZ5VOg@mail.gmail.com>
+Subject: Re: [PATCH v8 5/5] rust: add dynamic ID pool abstraction for bitmap
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Burak Emir <bqe@google.com>, 
+	Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 20, 2025 at 11:11:12AM -0400, Joel Fernandes wrote:
-> On 5/20/2025 11:01 AM, Danilo Krummrich wrote:
-> 
-> I made this change and it LGTM. Thanks! I did not do the '.0' though since I
-> want to keep the readability, lets see in the next revision if that looks good.
+On Tue, May 20, 2025 at 3:21=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+> On Tue, May 20, 2025 at 06:05:52AM -0700, Alice Ryhl wrote:
+> > On Tue, May 20, 2025 at 5:56=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
+m> wrote:
+> > >
+> > > On Tue, May 20, 2025 at 05:42:51AM -0700, Alice Ryhl wrote:
+> > > > On Mon, May 19, 2025 at 10:21=E2=80=AFPM Boqun Feng <boqun.feng@gma=
+il.com> wrote:
+> > > > >
+> > > > > On Mon, May 19, 2025 at 08:46:37PM -0700, Alice Ryhl wrote:
+> > > > > > On Mon, May 19, 2025 at 4:56=E2=80=AFPM Boqun Feng <boqun.feng@=
+gmail.com> wrote:
+> > > > > > >
+> > > > > > > On Tue, May 20, 2025 at 12:51:07AM +0200, Jann Horn wrote:
+> > > > > > > > On Mon, May 19, 2025 at 6:20=E2=80=AFPM Burak Emir <bqe@goo=
+gle.com> wrote:
+> > > > > > > > > This is a port of the Binder data structure introduced in=
+ commit
+> > > > > > > > > 15d9da3f818c ("binder: use bitmap for faster descriptor l=
+ookup") to
+> > > > > > > > > Rust.
+> > > > > > > >
+> > > > > > > > Stupid high-level side comment:
+> > > > > > > >
+> > > > > > > > That commit looks like it changed a simple linear rbtree sc=
+an (which
+> > > > > > > > is O(n) with slow steps) into a bitmap thing. A more elegan=
+t option
+> > > > > > > > might have been to use an augmented rbtree, reducing the O(=
+n) rbtree
+> > > > > > > > scan to an O(log n) rbtree lookup, just like how finding a =
+free area
+> > > > > > >
+> > > > > > > I think RBTree::cursor_lower_bound() [1] does exactly what yo=
+u said
+> > > > > >
+> > > > > > We need the smallest ID without a value, not the smallest ID in=
+ use.
+> > > > > >
+> > > > >
+> > > > > Ok, but it shouldn't be hard to write a Rust function that search=
+ that,
+> > > > > right? My point was mostly the Rust rbtree binding can do O(log n=
+)
+> > > > > search. I have no idea about "even so, should we try something li=
+ke Jann
+> > > > > suggested". And I think your other reply basically says no.
+> > > >
+> > > > We would need to store additional data in the r/b tree to know whet=
+her
+> > > > to go left or right, so it would be somewhat tricky. We don't have =
+an
+> > >
+> > > Hmm... I'm confused, I thought you can implement a search like that b=
+y
+> > > doing what RBTree::raw_entry() does except that when Ordering::Equal =
+you
+> > > always go left or right (depending on whether you want to get an unus=
+ed
+> > > ID less or greater than a key value), i.e. you always search until yo=
+u
+> > > get an Vacant entry. Why do you need store additional data for that?
+> > > Maybe I'm missing something here?
+> >
+> > Let's say you're at the root node of an r/b tree, and you see that the
+> > root node has id 17, the left node has id 8, and the right node has id
+> > 25. Do you go left or right?
+> >
+>
+> I went to check what commit 15d9da3f818c actually did and I understand
+> what you mean now ;-) In your case, the rbtree cannot have nodes with
+> the same key. If Jann can provide the O(log n) search that could help in
+> this case, I'm happy to learn about it ;-)
 
-I think readability, is just as good with `.0`, but I'm fine with either.
+Linux has the concept of an "augmented rbtree", where you can stuff
+extra information into the rbtree to keep track of things like "how
+big is the biggest gap between objects in this subtree". This is how
+the MM subsystem used to find free space in the virtual address space
+before the maple tree refactor, a complicated example is here:
 
-> >>> In general, I feel like a lot of those Option come from a programming pattern
-> >>> that is very common in C, i.e. allocate a structure (stack or heap) and then
-> >>> initialize its fields.
-> >>>
-> >>> In Rust you should aim to initialize all the fields of a structure when you
-> >>> create the instance. Option as a return type of a function is common, but it's
-> >>> always a bit suspicious when there is an Option field in a struct.
-> >>
-> >> I looked into it, I could not git rid of those ones because we need to
-> >> initialize in the "impl TryFrom<BiosImageBase> for BiosImage {"
-> >>
-> >>             0xE0 => Ok(BiosImage::FwSec(FwSecBiosImage {
-> >>                 base,
-> >>                 falcon_data_offset: None,
-> >>                 pmu_lookup_table: None,
-> >>                 falcon_ucode_offset: None,
-> >>             })),
-> >>
-> >> And these fields will not be determined until much later, because as is the case
-> >> with the earlier example, these fields cannot be determined until all the images
-> >> are parsed.
-> > 
-> > You should not use TryFrom, but instead use a normal constructor, such as
-> > 
-> > 	BiosImage::new(base_bios_image)
-> > 
-> > and do the parsing within this constructor.
-> > 
-> > If you want a helper type with Options while parsing that's totally fine, but
-> > the final result can clearly be without Options. For instance:
-> > 
-> > 	struct Data {
-> > 	   image: KVec<u8>,
-> > 	}
-> > 
-> > 	impl Data {
-> > 	   fn new() -> Result<Self> {
-> > 	      let parser = DataParser::new();
-> > 
-> > 	      Self { image: parser.parse()? }
-> > 	   }
-> > 
-> > 	   fn load_image(&self) {
-> > 	      ...
-> > 	   }
-> > 	}
-> > 
-> > 	struct DataParser {
-> > 	   // Only some images have a checksum.
-> > 	   checksum: Option<u64>,
-> > 	   // Some images have an extra offset.
-> > 	   offset: Option<u64>,
-> > 	   // Some images need to be patched.
-> > 	   patch: Option<KVec<u8>>,
-> > 	   image: KVec<u8>,
-> > 	}
-> > 
-> > 	impl DataParser {
-> > 	   fn new() -> Self {
-> > 	      Self {
-> > 	         checksum: None,
-> > 	         offset: None,
-> > 	         patch: None,
-> > 	         bytes: KVec::new(),
-> > 	      }
-> > 	   }
-> > 
-> > 	   fn parse(self) -> Result<KVec<u8>> {
-> > 	      // Fetch all the required data.
-> > 	      self.fetch_checksum()?;
-> > 	      self.fetch_offset()?;
-> > 	      self.fetch_patch()?;
-> > 	      self.fetch_byes()?;
-> > 
-> > 	      // Doesn't do anything if `checksum == None`.
-> > 	      self.validate_checksum()?;
-> > 
-> > 	      // Doesn't do anything if `offset == None`.
-> > 	      self.apply_offset()?;
-> > 
-> > 	      // Doesn't do anything if `patch == None`.
-> > 	      self.apply_patch()?;
-> > 
-> > 	      // Return the final image.
-> > 	      self.image
-> > 	   }
-> > 	}
-> > 
-> > I think the pattern here is the same, but in this example you keep working with
-> > the DataParser, instead of a new instance of Data.
-> 
-> I think this would be a fundamental rewrite of the patch. I am Ok with looking
-> into it as a future item, but right now I am not sure if it justifies not using
-> Option for these few. There's a lot of immediate work we have to do for boot,
-> lets please not block the patch on just this if that's Ok with you. If you want,
-> I could add a TODO here.
+finding a free region (by looking at vm_area_struct::rb_subtree_gap to
+decide whether to go left or right; this is made complicated here
+because they have more search constraints):
+https://elixir.bootlin.com/linux/v4.19.325/source/mm/mmap.c#L1841
 
-Honestly, I don't think it'd be too bad to fix this up. It's "just" a bit of
-juggling fields and moving code around. The actual code should not change much.
+But that requires an "augmented rbtree" where the rbtree code calls
+back into callbacks for updating the subtree gap; the MM code has its
+gap update here:
+https://elixir.bootlin.com/linux/v4.19.325/source/mm/mmap.c#L261
 
-Having Option<T> where the corresponding value T isn't actually optional is
-extremely confusing and makes it hard for everyone, but especially new
-contributors, to understand the code and can easily trick people into taking
-wrong assumptions.
+And associates that with VMA trees through this macro magic that would
+probably be a terrible fit for Rust code:
+https://elixir.bootlin.com/linux/v4.19.325/source/mm/mmap.c#L400
 
-Making the code reasonably accessible for (new) contributors is one of the
-objectives of nova and one of the learnings from nouveau.
+As Alice said, this is probably not a great fit for Rust code. As she
+said, an xarray or maple tree would have this kind of gap search
+built-in, which would be nicer here. But if you're trying to do
+insertions while holding your own outer spinlocks, I think they would
+be hard (or impossible?) to use.
 
-Hence, let's get this right from the get-go please.
+If you managed to avoid broad use of spinlocks, that might make it
+much easier to use xarrays or maple trees (and that would also allow
+you to make the bitmap API much simpler).
