@@ -1,66 +1,94 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1931325C717
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 06:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D88825C81C
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 06:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747721989; cv=none; b=mc9FG+lobjzp3bCw3i7WfEOrFMhWQCxTrUWOcaqqWmWkuzVVoEkiwEPxvt3CqDTzkyaLCgYybKXkfCITcc6tTZtN9HsEyu1emcjrSJlrfQfYskk46/bOXdgYpjd/16EDzcDWy6A1WnAX931tXoLDnoTYBcpEZPzUA5Kfl/9W4Zs=
+	t=1747722141; cv=none; b=iaocmSOZtyRzqc6xZG1wzQMEAREIZCK7Gpz/y8rI2Xv+3wTAnHomGIDVg7OyrE8ZoJQ0gStV/sGsaXQqORZzWWJHPhRLXOkW6XSeFpqXJ2tK9ivTh0kIh7vvBuNaLIQItWyShHaVAb7EkclgAO8vhnn40gqPb0HJ8GMOGUCJqoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747721989; c=relaxed/simple;
-	bh=OU4ByQOtWJ+gydec1QudsIgdSpAgtbfCrGrIflz+nS8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=TUBAM6Qwsqgo/Zf1OVyRguLzY4ZvSNT78dE1u1Ct9xZcGiWXU7Sdac0HndE9qrhybFl3NwD5q3pG+jYocWx6D5sIjPJYbY6kPAZP63MGGbtAADaHDqcDg2MaxEJpZuqh9JoFp1V9d7syzcCy/LJE5trYTzkixINhVPBnpo65c9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i+60eLsu; arc=none smtp.client-ip=209.85.215.176
+	s=arc-20240116; t=1747722141; c=relaxed/simple;
+	bh=B/X6KNDiCJa6ANQuk/d5rOGAHgPZdwkWQandSI2PQck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e+KXQ28tqwlIwIxf+F/l1nTbmYSli/K/FE/woRAsOst2fOcdHmfL7dUuTCuRrR3/Hv0oknX0wTS/V6NJh3IG6Ou6F+ynW6B4QRNCvFBSHlSILx8SNUleVw4Og2iGXGOhhBkiLiszAL85eJgGdnuwZRPunfwk2LMq4+2nJYx6UPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SU4QjGgK; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i+60eLsu"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b26f01c638fso3633987a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 23:19:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SU4QjGgK"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22d95f0dda4so56103255ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 23:22:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747721987; x=1748326787; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3QrXriFq0Ub8Xkck+rczHyL+UrIKWIcIp4tiFFkhPQs=;
-        b=i+60eLsuO0ylqhzpxi+ZOIKwJ8fyv5ziruPyFc2o5VRpOSsKHK7K25lFad/aizRAly
-         XMP2vGfQIovyOVRuu7ggnrAZaZQNsELNX5MYd5e/H5jSmgxth/trdWxqUKER04w9IJej
-         DXvIXBx8So+/JplflzfN/KmVg/Hn/jYsgF1KqhSTSxEvI4x5IhYrQJVetPVQcuak9p84
-         VmE7Tj9U+Kzyam44jsDRyglmnXlWSLwU4nI8RAabdLpNyMzdzwPR7/O0mC97gPTE2Fxe
-         ddsiqTauLwxB5iomUVaC9oV2LbSeCqpxIGT0VZN+xNP2pYMaSz9wsXgb5WUli+B355Hf
-         pDnA==
+        d=linaro.org; s=google; t=1747722139; x=1748326939; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HrOBdBL/ajwXK2WrufVyFeTUDJmhOQ5UWLvVqOesTt0=;
+        b=SU4QjGgKN3wg9epxAawEM9OWJgzIxLhjEF7cH8MYUxPjfNSQczKVMzaJYTg5Zw2s+i
+         PRx8sCUwKmJz2rRK6KGvgs79JAeuttnjh4HjyQytURxmkvxiBXIR0VbfzuBEEWkaAWIR
+         JjId95bnOLTIU4g92JBE5R+l96SRKkpxBLkgYX3HVACBQtg/uIVYi7bh4bthP4yYis/+
+         vki2IRJ73Xqn366iJYf4++9XdG1vLAb3h0dzUOi5H7x29Lg54PlvJwLx6XsjtagitPTv
+         FM6Q/QMKQuz8ABN0KfyfwEPK2Sr+3Jt12wlnY2gCWzFWu7BWj4WsOHcXmkW3kla7UHIO
+         tqvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747721987; x=1748326787;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3QrXriFq0Ub8Xkck+rczHyL+UrIKWIcIp4tiFFkhPQs=;
-        b=TLmPZKNFyIbkOPGrJ4U/ODcQTwqAbhHjCxRd+nK12k3cevc9seYR9zeU6W50M3yLIM
-         jO5Q5hu7+D1LW4stJFM0G1qCZwN2ESo29K5dBXdDSLWc4zNCwrVc3dUXaHvtmAnfM/6e
-         nxfkhSbhffyFpEBETrDIXj12xbaO5AyjCSEyLfghknMoRC1/IoGKzeKEWC4kNPShxdR5
-         /68QJTHeUgCpZ1QK9x2F0CYRXUC8KyQCwh8G3D6ELKqnXq3Ngb0ux5yA75iEB7EFBsgD
-         yv4/OzGvh+2+c+iwykgo+frGjg4XkROH/FAGN3sObviwue8ZeZHeI2V2S4jONG4hUcaS
-         Sppg==
-X-Forwarded-Encrypted: i=1; AJvYcCWR2FMp59laDcuznP6zLZCr9boapwb7/VB2RCyCDdg6t6yvoBsZrKwCdePoUnsEERIbX3zRRlpNR2tfGPUAzA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt3wkrF4t3hSYY/Ekt9AhDOvcdmbTFpwnQbLFsSsAjQJ23X/V4
-	fOuW9/Xj3NBsVUx7M7TGXxcLaAoshq3q+qzR1LaDZg1hcyOoaeorZh3l65RfvxdHaH0=
-X-Gm-Gg: ASbGnctDLOUvfe1XSCj+kZuNXffhUNYNHaeaBMopl+uE9NE2xDclX+I0boRZAPFzWbI
-	g25dzyQkHLl9e0puWsihJ7jSYcfozMpD+tGay4V98Nx1yNr0KdzYOETvRYJMvYVCahblmKb8FT/
-	W9uiawkFmPr7SQCjfF0R3++60niAGsYC+sJexPrRRDp5D1z5wLbBVGTQgpsfzf9ot9JVnou2Lwx
-	XnTpYW6pXMpXcLhzKCPOeB6bMzoiPNF6DVrWgtz7ROHLyblsV4CJqqhb1Z0r4etabl32R3mVnnz
-	1KNx07fs8vH8AfXAQ24BkguS8DTDxxlnBiDxkrCtGIwCc4LfpJCl
-X-Google-Smtp-Source: AGHT+IGel+JHrtNl1VZJn7tExvpoE+fr1Yt4fLgYovTO9C4ueG3OMFXqk0yUacYe6nEzeAwxxm7EIw==
-X-Received: by 2002:a05:6a20:10a9:b0:216:60bc:2ca9 with SMTP id adf61e73a8af0-21660cb6eefmr17944742637.40.1747721987317;
-        Mon, 19 May 2025 23:19:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1747722139; x=1748326939;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HrOBdBL/ajwXK2WrufVyFeTUDJmhOQ5UWLvVqOesTt0=;
+        b=j6I9/vhr+LAwpzUvMjuSv8uZWKwEAE/+kzNXGQlVAS0+sklnWGVABe203H11j9mvfV
+         rmh73C4bNfa//t1WmcbiCN6+fv2QNlgXgL9QT9KVJ8U8jpHMjpFo602KMzU/E+1BkHu2
+         cHJGPBD4eFmF6lPx5JFbpHebuYipmoFk0dXnBPSjTRIOU1Qou6DTCLFvnn+qEfaN8yjG
+         dZkNTgGqXQ+LDO/cZxFQxoUY/RVW2HioKezaZSVo1aFkPZVL0x8jp9Y6p5cQokxAX0Pp
+         acwlj2tX1TcG4PevmV/6D4GE16yiidEjyAImkXhbf7tvObVuKdfL/hzemUlX7WGzkBSC
+         vNYA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9cqJKPJsxmzPAf5FoccLsVcVWobBzmdNVCUET3F9fQzKcNIrwALHJ4lxMWAcDXuGr2D+SxJoLkbTN/td7ZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx95X7k/HA+J3IPSNeAwJzbEjjHMZkBtv7Ur1Pok5Nh3Wz6bPyo
+	tjP+J1Rk++Q6XMZB105oSlhE50PGllxtqgq+68+4asxmPLm2iT9EgXPoqgW7ET8ZGWs=
+X-Gm-Gg: ASbGncu4BSprSaJ1gu76mj60In2ocL1HsmKnNdldjWa1Dg+ikpbOsaFZBv/Z4+dQspz
+	mhCkwMaq37KGnMiHIzViEjArglojqkU+XgQwAJ04UXhBhb+nkc0NVyMwZLH7aAf95w2rrC920rQ
+	yCi90Rf/omgwDKpBfs7fRxWCTowRjv7IKzh3S5/vp6PUlsBzlcVDUC8r2By3i3V/sRXeWVO7LfA
+	nOVzirf7HoCGz3IiEqSuF/D2yz3387Tm6g4nU9Yf3WLgBE2dVc9ozW9ZmE+n72VMAaDU3A5PP8e
+	cWnCvGRqgboiT3g0SiBeLwa2hdbXhN9VUlYK4I4Z061WmDaiTbIl
+X-Google-Smtp-Source: AGHT+IHqX4UIh9iZKFgN3Ay/GR1l8mxNVHiGVA+Xwyg70cgbG5KGI7VYQskHB7LBusRKk6dj1H1mWQ==
+X-Received: by 2002:a17:902:e801:b0:22e:4cae:5958 with SMTP id d9443c01a7336-231d44f6bffmr191916275ad.18.1747722138909;
+        Mon, 19 May 2025 23:22:18 -0700 (PDT)
 Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b26eaf6e6a5sm7238085a12.17.2025.05.19.23.19.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-232044a59casm51435295ad.244.2025.05.19.23.22.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 23:19:46 -0700 (PDT)
-Date: Tue, 20 May 2025 11:49:44 +0530
+        Mon, 19 May 2025 23:22:18 -0700 (PDT)
+Date: Tue, 20 May 2025 11:52:16 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>, rust-for-linux@vger.kernel.org
-Subject: [GIT PULL] cpufreq/arm updates for 6.16
-Message-ID: <20250520061944.pl3mqw2clo2roe3s@vireshk-i7>
+To: Anisse Astier <anisse@astier.eu>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
+	Michael Turquette <mturquette@baylibre.com>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V12 06/15] rust: macros: enable use of hyphens in module
+ names
+Message-ID: <20250520062216.7lyqzvhv4mgzoudl@vireshk-i7>
+References: <cover.1747634382.git.viresh.kumar@linaro.org>
+ <21b4c30db60f22d56cc6386a18564705ad3a6f4a.1747634382.git.viresh.kumar@linaro.org>
+ <CANiq72mNHYKXcDm6DiB=69W0w8pZ1KhqeARqqKBK_s01PPRsmQ@mail.gmail.com>
+ <20250520043355.wjkrslnripaqj6mm@vireshk-i7>
+ <e8a404b2-4ec6-4e1d-a973-15684676e870@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,105 +97,16 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <e8a404b2-4ec6-4e1d-a973-15684676e870@app.fastmail.com>
 
-Hi Rafael,
+On 20-05-25, 08:13, Anisse Astier wrote:
+> Thank you Viresh for iterating on this and picking up review
+> comments. Do not hesitate to add your Co-developed-by.
 
-This contains few patches from Danilo Krummrich as well, which will
-get merged via driver-core separately. Please push this to Linus once
-that is merged during rc1. Thanks.
-
-The following changes since commit a374f28700abd20e8a7d026f89aa26f759445918:
-
-  cpufreq: fix compile-test defaults (2025-04-17 13:36:29 +0530)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git tags/cpufreq-arm-updates-6.16
-
-for you to fetch changes up to 6c9bb86922728c7a4cceb99f131e00dd87514f20:
-
-  cpufreq: scmi: Skip SCMI devices that aren't used by the CPUs (2025-05-20 11:24:18 +0530)
-
-----------------------------------------------------------------
-CPUFreq updates for 6.16
-
-- Rust abstractions for CPUFreq framework (Viresh Kumar).
-
-- Rust abstractions for OPP framework (Viresh Kumar).
-
-- Basic Rust abstractions for Clk and Cpumask frameworks (Viresh Kumar).
-
-- Minor cleanup to the SCMI cpufreq driver (Mike Tipton).
-
-----------------------------------------------------------------
-Anisse Astier (1):
-      rust: macros: enable use of hyphens in module names
-
-Danilo Krummrich (8):
-      rust: device: implement impl_device_context_deref!
-      rust: device: implement impl_device_context_into_aref!
-      rust: device: implement device context for Device
-      rust: platform: preserve device context in AsRef
-      rust: pci: preserve device context in AsRef
-      rust: device: implement Bound device context
-      rust: pci: move iomap_region() to impl Device<Bound>
-      rust: devres: require a bound device
-
-Mike Tipton (1):
-      cpufreq: scmi: Skip SCMI devices that aren't used by the CPUs
-
-Viresh Kumar (16):
-      Merge commit 'eaff6b62d343' of pm/linux-next into commit 'f720efda2db5' of driver-core/driver-core-next
-      rust: cpumask: Add few more helpers
-      rust: cpumask: Add initial abstractions
-      MAINTAINERS: Add entry for Rust cpumask API
-      rust: clk: Add helpers for Rust code
-      rust: clk: Add initial abstractions
-      rust: cpu: Add from_cpu()
-      rust: opp: Add initial abstractions for OPP framework
-      rust: opp: Add abstractions for the OPP table
-      rust: opp: Add abstractions for the configuration options
-      rust: cpufreq: Add initial abstractions for cpufreq framework
-      rust: cpufreq: Extend abstractions for policy and driver ops
-      rust: cpufreq: Extend abstractions for driver registration
-      rust: opp: Extend OPP abstractions with cpufreq support
-      cpufreq: Add Rust-based cpufreq-dt driver
-      Merge branch 'rust/cpufreq-dt' into cpufreq/arm/linux-next
-
- MAINTAINERS                     |   11 ++
- drivers/cpufreq/Kconfig         |   12 ++
- drivers/cpufreq/Makefile        |    1 +
- drivers/cpufreq/amd-pstate.c    |    7 +-
- drivers/cpufreq/cpufreq.c       |  345 +++++++++++++++++----------------------
- drivers/cpufreq/intel_pstate.c  |   47 +++---
- drivers/cpufreq/rcpufreq_dt.rs  |  226 ++++++++++++++++++++++++++
- drivers/cpufreq/scmi-cpufreq.c  |   36 ++++-
- include/linux/cpufreq.h         |   10 +-
- rust/bindings/bindings_helper.h |    4 +
- rust/helpers/clk.c              |   66 ++++++++
- rust/helpers/cpufreq.c          |   10 ++
- rust/helpers/cpumask.c          |   25 +++
- rust/helpers/helpers.c          |    2 +
- rust/kernel/clk.rs              |  334 ++++++++++++++++++++++++++++++++++++++
- rust/kernel/cpu.rs              |   30 ++++
- rust/kernel/cpufreq.rs          | 1321 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/cpumask.rs          |  330 +++++++++++++++++++++++++++++++++++++
- rust/kernel/device.rs           |   90 ++++++++++-
- rust/kernel/devres.rs           |   17 +-
- rust/kernel/lib.rs              |    7 +
- rust/kernel/opp.rs              | 1145 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/pci.rs              |   33 ++--
- rust/kernel/platform.rs         |   32 +---
- rust/macros/module.rs           |   20 ++-
- 25 files changed, 3861 insertions(+), 300 deletions(-)
- create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
- create mode 100644 rust/helpers/clk.c
- create mode 100644 rust/helpers/cpufreq.c
- create mode 100644 rust/kernel/clk.rs
- create mode 100644 rust/kernel/cpu.rs
- create mode 100644 rust/kernel/cpufreq.rs
- create mode 100644 rust/kernel/cpumask.rs
- create mode 100644 rust/kernel/opp.rs
+I haven't added Co-developed-by, but I did mention the changes I have
+made in the cover-letter. This is all your work and thanks a lot for
+this patch. I was struggling with this for quite some time and was
+desperately looking for help :)
 
 -- 
 viresh
