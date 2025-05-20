@@ -1,222 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD491EB5DA;
-	Tue, 20 May 2025 11:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4780F19F461
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 12:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747739048; cv=none; b=VtgXBcXir0xEuHr9OBv0yxCOSHWAY7MZR9P1lq7f4r5CDlbcgLUMzXlucgXs7HXyI1ZjoJw7hnB2SQz2HvAXUQ8mnKs515kjxkzBfluXdBYP5YkrSGKdCJlO6KvIQXgLWbMbA/J/lz+zPp0CdPMhLNa+68s5W9QyFzY9cIHOSp4=
+	t=1747744987; cv=none; b=VlrPox/R+x4bOW8uWWUcAK7XQrn7On+7t4nfaGzHDampAIsdpE6K4SbIF938iACtJmu2VmcsfiqSkJeUBvzlc95uDdRO9QYvsAkCNK05qUpeKzsV0LDhUb13hM3Z7i+PCZ5G94Y2KL1fIrbbeFeMVjhwkcWaQKNkr32zJ/82Kx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747739048; c=relaxed/simple;
-	bh=ZyVcfvjxM1I6n4gKTauGERvGlWcYkNltfm3/b8t60DI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ATyKnSdcJmLZWyj8t/QDyF+sHQz5V3M7N7qNXpqoEVSsfPaViyCbFj2Z6TEwKIfacrNP3dUaT4Ha0OYauH+o9dRbyKdjCgOew+d7SM67DyPBZfAXdRPHR6uww2acb+ko7hccHtng3odj1Tc/nW6HCv1BUgd4bGqVcUK8TgLgpA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oG8Rhfsh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747744987; c=relaxed/simple;
+	bh=EAHzzRlqwHD0tyyHiLnOawAa1WH6/3DVglP+aReQHPc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ynjb5PhEW10jVgIO7XHjwEz5/NbkbAvZiK3bZ0oyOWI4g+TTslOZRZXV9TiHiVFMTfbnbEoF1WbsIbh3xNEqzpjZ7hHOqc40ZAPQYC4YoT/iw9/46onNBbcNn0vbSijIt38jMgugFItEiI1oOgTp7GF/OFQliWN5BJrUdYvqi+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B1VMsJdU; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oG8Rhfsh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFA5C4CEE9;
-	Tue, 20 May 2025 11:04:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747739047;
-	bh=ZyVcfvjxM1I6n4gKTauGERvGlWcYkNltfm3/b8t60DI=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=oG8RhfshlxAEDRpznA+7GButlNZ5JPtKTzRUJ74HT7/aOrIXekTh/AZBNZmllkwxk
-	 P4sttLFH6PGY8/FPn8G6ksKgEHX/9Bzzxv2IFns5EQVMgIH/PVgJHs3zKyw9RoFXIW
-	 fK/3ht0yaRPf0ps3rqPBku0qLCtrfxxsNO97nhmUkooW31o/Bj+hInAFL2+FRY6A9s
-	 Bch/019eBHjwaI3ObaMnS8xizxrAdqbz8bq9KD7oNR3bPWYC+fUtuzi9ZWzvk4Z2xw
-	 xNoWh4DX23aJTQBc/+DPW2pze+hjQNU4pJ0PqF6okAKyzXC3fEOdZVjHwodyZ+oK++
-	 7xvUq1aM80T7w==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B1VMsJdU"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a366843fa6so1958461f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 05:43:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747744983; x=1748349783; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EAHzzRlqwHD0tyyHiLnOawAa1WH6/3DVglP+aReQHPc=;
+        b=B1VMsJdUTtNZ5AeibbEr7PXGb+bgZA78QdWsAheDRcoVinv9wUHKmtW7183x/7R0Q7
+         77EZ2RqvZSAyd1Mht6XSmypEFCwYBLIbqobkXmRcFX8xPvUOGZh3Ip54AT205WhRjxzR
+         eaQ7jG6lgIEFdQX5KmLB1Pf+hjwX1x9FD0E/0hcvkbOm/4lVfm13L+ekdVyvp4l3zgD7
+         Li5wKHHeOy+310BDqvSE8RjphNofrdvBrZZP1E8AojPm495mntqF+qc5p+iA7h05mJ4F
+         vv3Iwd2Zn/cSuN959zeQ6lm9B9oZ0pSGWgudpYIRT5U59PA1KEvZXDXl5skAM1R49jQ5
+         XeRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747744983; x=1748349783;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EAHzzRlqwHD0tyyHiLnOawAa1WH6/3DVglP+aReQHPc=;
+        b=CpAqnl/h7+o4clNKOJZGWhPR/GXHk8fHIkORqIgqksUmbAI66NRoDutjV7x7lI0AVd
+         AkzuUHRmPrLserF2tnlmX4c+wWgoCgJ0VL2Dc5TsHOkXDESasGKPTWiWji3T8rMiPOOS
+         Z+7XmAiY790jeny787PlqgZemAYiIbjx5hAgIo6bhDREM++NhoDbG5ivRbQfagA5Bew8
+         xdnGFSt3OhaIHjUE5xasPkXtyl/ln3Anh1V2FCyjoesri27/xXrUyTwvWqie4XO6kP+3
+         3MwcU8IBOVcfqhI1QTDRw3Sn9u3m8uu5FA352MPPLJLaK+1k05jDucZZXR5xwo/wra09
+         wSFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWhCD6Axnt48lYVqRHgz8FYNq4V9ivAzUrNNPnhqzo5odjydPc9n2vlV6v4OtHEmYbnYYSuCj44rd6KMJA2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm3XVyU2rIPHwwTOxBdNbHL0taEW/IbQTIYx1DX3saQgRlHLRX
+	34CCny6aTNaepqgc37CmnaBsgrG6jhXAohcy3p28giyTKMdBKGdgiJ3HzKOd0rQ2Zm73tiZTwXW
+	/npQDk3lFLgGhHHYHoTxyQ0gfDJmqBmRZs4U2uzXZ
+X-Gm-Gg: ASbGnctW3pXJkaJ58zDv3JQ0TkB6XFmWCsX9RXo1qXOlW/xTZxzVE0fbcaisRzLjreC
+	tQeg2W6BRhMJhaBK1OuttdCH0vWcT91wQ2lCHVxfQnM0hFAKohj3XQXRMVpSBoFgyUntdjxbSpF
+	z67V7o3jvR8oV6tDXpqMWa3Y2ndTqUfCJjSvY2Nn/i+/iS
+X-Google-Smtp-Source: AGHT+IHS0wTiDrmTRT4pPLA0kd7EuOcSAEADiFb2xPxNv7tTT14Pcvfk2m6J1zKafjkxbkm02/1Z8djAmA08uVBrLX8=
+X-Received: by 2002:a05:6000:40e0:b0:3a0:b733:f264 with SMTP id
+ ffacd0b85a97d-3a35fe5ba7amr14020745f8f.11.1747744983401; Tue, 20 May 2025
+ 05:43:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250519161712.2609395-1-bqe@google.com> <20250519161712.2609395-6-bqe@google.com>
+ <CAG48ez2WdxXVCzVsAPeQWgso3ZBQS_Xm+9D1FLBx6UHFV1bGHQ@mail.gmail.com>
+ <682bc528.c80a0220.13f632.9ec0@mx.google.com> <CAH5fLghNJYjxPFUc2E4-2pJpGT5umUr1EJstZvs88ox3MsXDGQ@mail.gmail.com>
+ <aCwRZlkBWekRmDg7@Mac.home>
+In-Reply-To: <aCwRZlkBWekRmDg7@Mac.home>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 20 May 2025 05:42:51 -0700
+X-Gm-Features: AX0GCFvPyNIDsyx7gzZx16RwjzE4BKj1SXehnk-VJvEazvtsPhKBabrEv6qfeaI
+Message-ID: <CAH5fLgj1NVodPy-95CFUygGO7WC0siNEKSyEhgLvpX-1zMXErQ@mail.gmail.com>
+Subject: Re: [PATCH v8 5/5] rust: add dynamic ID pool abstraction for bitmap
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Jann Horn <jannh@google.com>, Burak Emir <bqe@google.com>, Yury Norov <yury.norov@gmail.com>, 
+	Kees Cook <kees@kernel.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 May 2025 13:04:01 +0200
-Message-Id: <DA0XS7JK5B71.3D2CS7QVKOM52@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v4 6/9] rust: device: Add bindings for reading device
- properties
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Remo Senekowitsch" <remo@buenzli.dev>, "Rob Herring" <robh@kernel.org>,
- "Saravana Kannan" <saravanak@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Dirk Behme" <dirk.behme@de.bosch.com>
-X-Mailer: aerc 0.20.1
-References: <20250504173154.488519-1-remo@buenzli.dev>
- <20250504173154.488519-7-remo@buenzli.dev>
- <DA0TDQ2DPTRX.1T9O4NZEME2JX@kernel.org>
- <DA0X3RE11LJI.3GDSU2DK09HQ0@buenzli.dev>
-In-Reply-To: <DA0X3RE11LJI.3GDSU2DK09HQ0@buenzli.dev>
 
-On Tue May 20, 2025 at 12:32 PM CEST, Remo Senekowitsch wrote:
-> On Tue May 20, 2025 at 9:37 AM CEST, Benno Lossin wrote:
->> On Sun May 4, 2025 at 7:31 PM CEST, Remo Senekowitsch wrote:
->>> +/// Implemented for all integers that can be read as properties.
->>> +///
->>> +/// This helper trait is needed on top of the existing [`Property`]
->>> +/// trait to associate the integer types of various sizes with their
->>> +/// corresponding `fwnode_property_read_*_array` functions.
->>> +pub trait PropertyInt: Copy {
->>> +    /// # Safety
->>> +    ///
->>> +    /// Callers must uphold the same safety invariants as for the vari=
-ous
->>> +    /// `fwnode_property_read_*_array` functions.
->>> +    unsafe fn read_array_from_fwnode_property(
->>> +        fwnode: *const bindings::fwnode_handle,
->>> +        propname: *const ffi::c_char,
->>> +        val: *mut Self,
->>> +        nval: usize,
->>> +    ) -> ffi::c_int;
->>
->> I really, really dislike that this trait has to have an unsafe function
->> with all those raw pointer inputs.
+On Mon, May 19, 2025 at 10:21=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> =
+wrote:
 >
-> What is the concrete problem with that? Or is it just "not pretty"?
-> (I'm fine with making it prettier, just making sure I understand
-> correctly.)
-
-With the design I explained below, this becomes not necessary. Less
-unsafe code always is better, since there are fewer places that can go
-wrong.
-
-Also hiding all the unsafe code inside of your module as private code or
-implementation detail is also much better, as you prevent people from
-accidentally using it.
-
->>> +}
->>> +// This macro generates implementations of the traits `Property` and
->>> +// `PropertyInt` for integers of various sizes. Its input is a list
->>> +// of pairs separated by commas. The first element of the pair is the
->>> +// type of the integer, the second one is the name of its correspondin=
-g
->>> +// `fwnode_property_read_*_array` function.
->>> +macro_rules! impl_property_for_int {
->>> +    ($($int:ty: $f:ident),* $(,)?) =3D> { $(
->>> +        impl PropertyInt for $int {
->>> +            unsafe fn read_array_from_fwnode_property(
->>> +                fwnode: *const bindings::fwnode_handle,
->>> +                propname: *const ffi::c_char,
->>> +                val: *mut Self,
->>> +                nval: usize,
->>> +            ) -> ffi::c_int {
->>> +                // SAFETY: The safety invariants on the trait require
->>> +                // callers to uphold the invariants of the functions
->>> +                // this macro is called with.
->>> +                unsafe {
->>> +                    bindings::$f(fwnode, propname, val.cast(), nval)
->>> +                }
->>> +            }
->>> +        }
->>> +    )* };
->>> +}
->>> +impl_property_for_int! {
->>> +    u8: fwnode_property_read_u8_array,
->>> +    u16: fwnode_property_read_u16_array,
->>> +    u32: fwnode_property_read_u32_array,
->>> +    u64: fwnode_property_read_u64_array,
->>> +    i8: fwnode_property_read_u8_array,
->>> +    i16: fwnode_property_read_u16_array,
->>> +    i32: fwnode_property_read_u32_array,
->>> +    i64: fwnode_property_read_u64_array,
->>> +}
->>> +/// # Safety
->>> +///
->>> +/// Callers must ensure that if `len` is non-zero, `out_param` must be
->>> +/// valid and point to memory that has enough space to hold at least
->>> +/// `len` number of elements.
->>> +unsafe fn read_array_out_param<T: PropertyInt>(
->>> +    fwnode: &FwNode,
->>> +    name: &CStr,
->>> +    out_param: *mut T,
->>> +    len: usize,
->>> +) -> ffi::c_int {
->>> +    // SAFETY: `name` is non-null and null-terminated.
->>> +    // `fwnode.as_raw` is valid because `fwnode` is valid.
->>> +    // `out_param` is valid and has enough space for at least
->>> +    // `len` number of elements as per the safety requirement.
->>> +    unsafe {
->>> +        T::read_array_from_fwnode_property(fwnode.as_raw(), name.as_ch=
-ar_ptr(), out_param, len)
->>> +    }
->>> +}
->>
->> Why does this function exist? It doesn't do anything and just delegates
->> the call to `T::read_array_from_fwnode_property`.
+> On Mon, May 19, 2025 at 08:46:37PM -0700, Alice Ryhl wrote:
+> > On Mon, May 19, 2025 at 4:56=E2=80=AFPM Boqun Feng <boqun.feng@gmail.co=
+m> wrote:
+> > >
+> > > On Tue, May 20, 2025 at 12:51:07AM +0200, Jann Horn wrote:
+> > > > On Mon, May 19, 2025 at 6:20=E2=80=AFPM Burak Emir <bqe@google.com>=
+ wrote:
+> > > > > This is a port of the Binder data structure introduced in commit
+> > > > > 15d9da3f818c ("binder: use bitmap for faster descriptor lookup") =
+to
+> > > > > Rust.
+> > > >
+> > > > Stupid high-level side comment:
+> > > >
+> > > > That commit looks like it changed a simple linear rbtree scan (whic=
+h
+> > > > is O(n) with slow steps) into a bitmap thing. A more elegant option
+> > > > might have been to use an augmented rbtree, reducing the O(n) rbtre=
+e
+> > > > scan to an O(log n) rbtree lookup, just like how finding a free are=
+a
+> > >
+> > > I think RBTree::cursor_lower_bound() [1] does exactly what you said
+> >
+> > We need the smallest ID without a value, not the smallest ID in use.
+> >
 >
-> It's used in three places. Taking Rust references as input reduces the
-> safety requirements the callers must uphold. But I guess it's a small
-> benefit, I can remove it.
+> Ok, but it shouldn't be hard to write a Rust function that search that,
+> right? My point was mostly the Rust rbtree binding can do O(log n)
+> search. I have no idea about "even so, should we try something like Jann
+> suggested". And I think your other reply basically says no.
 
-That's true, but why not make the trait take references if all users
-will use references anyways :)
+We would need to store additional data in the r/b tree to know whether
+to go left or right, so it would be somewhat tricky. We don't have an
+implementation of that in Rust.
 
->> This feels like you're dragging the C interface through the lower layers
->> of your Rust abstractions, which I wouldn't do. I also looked a bit at
->> the C code and saw this comment in `driver/base/property.c:324`:
->>
->>      * It's recommended to call fwnode_property_count_u8() instead of ca=
-lling
->>      * this function with @val equals %NULL and @nval equals 0.
->>
->> That probably holds also for the other functions, so maybe we should do
->> that instead? (although `fwnode_property_count_u8` just delegates and
->> calls with `fwnode_property_read_u8_array`...)
->
-> Yeah, I saw that too. The original implementation is from Rob. I assume
-> the recommendation is for users, maybe for clarity and readability of
-> the code. These Rust abstractions are pretty low level, so I thought
-> it's probably fine.
-
-Yeah it's probably fine.
-
->> How about we do it like this:
->>
->>     pub trait PropertyInt: Copy + Sized + private::Sealed {
->>         /// ...
->>         ///
->>         /// Returns a reference to `out` containing all written elements=
-.
->>         fn read<'a>(
->>             fwnode: &FwNode,
->>             name: &CStr,
->>             out: &'a mut [MaybeUninit<Self>],
->>         ) -> Result<&'a mut [Self]>;
->>
->>         fn length(fwnode: &FwNode, name: &CStr) -> Result<usize>;
->>     }
->>
->> And then have a macro to implement it on all the integers.
->
-> I think I tried to make the macro as small as possible and use regular
-> generics on top, because I was concerned people would be put off by big
-> complicated macros. I'm fine with moving the actual trait implementation
-> into the macro body, seems reasonable.
-
-Big macro bodies are rarely the issue. Lots of parsing in declarative
-macros is where they become unreadable.
-
-> But still, I'm not sure why we're trying to make the PropertyInt trait's
-> interface pretty or rusty. It's not supposed to be used, implemented or
-> in any way interacted with outside this module. It's just a low-level
-> building block to make some functions generic, giving users type
-> inference.
-
-Sure, but if we can make it safe, we should. I could also very much
-imagine that someone has a statically allocated buffer they would want
-to write stuff to and this function would then allow that with much
-easier `unsafe` code than the current approach.
-
----
-Cheers,
-Benno
+Alice
