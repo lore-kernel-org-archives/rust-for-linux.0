@@ -1,91 +1,131 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDE524C692;
-	Tue, 20 May 2025 19:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAC7211710
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 19:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747769833; cv=none; b=eScNpyA0l19oUbscCs6MKSQBvRgqvGcLQRMTDlI98OcHovphUuPr5Q8l3Xos092mtXsxxbsBl0Tb6Tsax079CPglgdi32e1KW9ZYhX+Pq/L1+0LOm8+zobtB+2/E8NMWzr8ykJ0kaOevgEgZaf0hz0QZM6HeBS5LAQy1qCU1rLM=
+	t=1747770220; cv=none; b=sqW7ARshoeGW9Lkp1lRFpA9b5OndKIv/gZv6K/w4ZIRi+JftGC6jh3tQ0sHDG1sCbCzLNvsogz+OXcXed4Yw5MO4ZmM8ail1dxedoAbM33qMUGDH2ueOu4U+YKqXGL6JtZuppsa0Qt4nrmWbCJdipbhOVCUKbzLpO6zKjXGL1Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747769833; c=relaxed/simple;
-	bh=yJmrJvk+batnwnKet1/z0D18l948QTmCnCbwr2N/m5I=;
+	s=arc-20240116; t=1747770220; c=relaxed/simple;
+	bh=7iMP3VzOA6iwjrwMuGY+lRy6An1jzocIfGU1h7/Ibj8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uhleKY+cyiWnMKUft1dpJv/XbKIT8PgOPwVKpdRn452kjCsl7LkBpxefyaVM6Z/1URVl1zddIyj4Ta6b6r2FzeY5o5tIe5xZzoQ+m1WvtfnOif13HTYQIeHiYi9087C45chphCXUkyrhFlDr36NnkPwAKBNST4CWq+X/+VvKevQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=con0xA/k; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=JmzkOB7qGV7LFfvIaSIuZYOY3O3bD4iCiwW28N/DxXzizcWNrHJefpTyZijSlNHleeYH0LOt2sWClWBIoklD6KEZv3TK2oL5r3H284JZZarObolRFMXpgzDznva0pCBPTlfAoG9HbN0NNL9AkLzV8amb5yo2luKvifsHAlr+T+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=myc/QjjK; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="con0xA/k"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-231c88cc984so6544105ad.1;
-        Tue, 20 May 2025 12:37:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="myc/QjjK"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5fab85c582fso29624a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 12:43:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747769831; x=1748374631; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1747770217; x=1748375017; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yJmrJvk+batnwnKet1/z0D18l948QTmCnCbwr2N/m5I=;
-        b=con0xA/kWTW/xK0tg040qkLzknxgv8KC85yzKgZ0hvHhaKduUPmF86SOjae/CE3RR8
-         psKpvvSsE8Zy5BKQBzy5TpbEeYOLcFk58s+HThhsq31t5KffC2wmMeSSkNl7IUNtMjLh
-         puvUk6YDDg4CeWT8fD4u/63aZ1OIH2naYvTVnzXYYK2ReNArm2VPqhfVUkG5N8VquhHG
-         Gwz7bJKif0lUhz1puLougTi8d2xYTT2GlhZ9MbSYf/rW95T24vM+j+DP4L8wp002Rdxx
-         AhVWCUhoZx0GLr+uwAsEryLCRjGtyz2ReIl/G7jWH5DxZm9CsiaqE2UHV5IBnkezYw7f
-         7NUQ==
+        bh=uVuh6S3J1F9TaWrAVLril0Q/q54OEZ/trnQNfVZ1jAY=;
+        b=myc/QjjKPiVbzbJi+G0r12g+wecVjA+RRokdhOJ4Me3p6toFfP+v9qZbNudpaUufzK
+         oizrnKy3Exm+0ZxqRt9tZihRG3QeJ2YxyOO8lqKwMQqc/XYEIWbhVPcHtlMHXXE57zj9
+         oSc3sm7nGb6y5TYUyD7EtLxFQ5B7GYkvCCv/BA8sDgCDedTdKy0bBYZpRmd0pFcu83fg
+         2fOmxP+QiZA6/UpSUSHKqmjoHZ6IDrpScISBLQ0uaCRx7+mEnrPd+j9R96I+TxLlG1y/
+         ing7GUV7tFFKZ7SxpMChRtls48HBi1w/5bUGocL4EWyY64Wgv1vhXWhni/5zIBaNv6/C
+         6TNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747769831; x=1748374631;
+        d=1e100.net; s=20230601; t=1747770217; x=1748375017;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yJmrJvk+batnwnKet1/z0D18l948QTmCnCbwr2N/m5I=;
-        b=oowsOODQP+8zKYXMJh/LViE8MORdKTvWh+trT52xO65YhII/P0OO1G8mehSnZ/3QvC
-         8rydxQfzeBuUyrnlZVLZVMPYU6P8dlQmE+c0oXNTHrjaAl73A+K/oVV9NhW8LdNeRkio
-         60bsRaaTGcdgBKN21lsPkwRDkXav06phcs3C55eRAQJDo5eUPf5kHqXRDT6GQxgTiZlA
-         HJuAsltBZTLCjKp4+B9ALRseCIbYMohBYUxv5ChxKkSR+8FvPZL2fQ4q89sodgtLtsRA
-         0sPr8I9LXq3a6zWmYRcU+Xmo0R6kvkUim6/BRrLZotQg+foF1fe6eXxPh9I5ZzqKAWA1
-         ru8A==
-X-Forwarded-Encrypted: i=1; AJvYcCU1H0gc+KIyb/h0cIjM9R6U/MGJqkPvikQkaQO0BedM9Jk0DC4neY2RRy1SZQYn8GgA9DR8/8Jfq90ybXX3@vger.kernel.org, AJvYcCU3nUpYi0Ynk5H4NRexqZDFPP5WYXnzv1xse3wTuTA7UTK3C3ZXaV6XCH4aG1l9NIr3sAuSh+PDJUEXKn4=@vger.kernel.org, AJvYcCV/wpMYiUWdGkSSKTkufQJI94KSbJ9/hIU/wnH54s9iywr87EoX8zRUK201GRREI50vnJdbY0AU2qWhifrf3wY=@vger.kernel.org, AJvYcCV1tyAPx7O1a/+5n9s2lb+WYUh2dqaQ47gbcvrJoN4ix63Ms0tD/Ne9fLeT8pg+IiB1oPQJEHjt@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfNT85DJds+GEFNWXSi4vH0KoqjDucVlj69BXBX1CQ0v6c1TzI
-	RizhYGLgWjbWAEsueQSD1cI0XNzmIuyK49TJ4RvDBaSCTE6bunpiwCvUQiWN0WP0lntgC7mlKIJ
-	JME3k02z8Bbo8whDBUYYuuRXYsfeA9Qw=
-X-Gm-Gg: ASbGncsEvV+7BG0idjRWjVr1MZTbgsqCn4JMT1qtyPLDkcsx+iAtWz9VM+ikWmuDJ4I
-	bnfqZP4fcaOipDobIqMW0Iu2vPx0wdu36sd3JiHLCIKUAVMsjIkDmqAq5Du/YqfCiWIgLkZzYOp
-	tW+bVQrKYak/twFvyJiVCiHb7LB4l+Hbav
-X-Google-Smtp-Source: AGHT+IHRYWQO+o6MeHbMj6f06qEP8DvM7w1Xe2r2Fhyflg1I5VaCbhW3BSNMk/qJJgj1bw9CC+AcMMksSMpaZZLrGkA=
-X-Received: by 2002:a17:903:1aa7:b0:224:1212:7da1 with SMTP id
- d9443c01a7336-231d454c962mr86733025ad.13.1747769831293; Tue, 20 May 2025
- 12:37:11 -0700 (PDT)
+        bh=uVuh6S3J1F9TaWrAVLril0Q/q54OEZ/trnQNfVZ1jAY=;
+        b=r3Utvm4LtXbrSp0XU8q2o0E+M/AiRtmYdJrst7lL28aGLRtSyOQdIWQ9A652K3bN1q
+         GT8yjHvTv/OP1o3KVaQ76pDcpmcW2zweqb3KkPa3/h8mMSgl8NxCO78ccw6bOu/CAGZz
+         Ga7F6BDCELJx0aMJ6xFnTgooLl7WrrVllxhVx8D0C4upKcnSDYu0PLiLAx6QuCXrYkst
+         3s4BQtMS6g2/kQHZ4z/SCEtGq83tWyLf0cXj7iwWCAnkdI59gOnr/u589NbXQV3IOHHT
+         wj+ZXnfb8wDjVmNQQXfvsUSAWyZlMwwz7/oa+GHN/xCBB7mIWm1meYA401Mef/A2oMHI
+         oQYA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnEmRmncEfaBdc+xUjrECU9+FzPV4F5a/be7O5EVDsBja8d/xEr/x/jt6kf8IMjDXvuKvTt1io31FQl9nUBw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI7A4pDq8Z3rJTKqfWqVn+xoL0U6hwqKHfCcRlM8TishC48Gpo
+	nRoScEm/gBS+drWiiypGuYqaMhbMduCVsebXdcKE15swJHwHG5IqtvzKBKzp6p6mvhpVMBDO/2u
+	CghVMWBPqvlSxFbSn4Upl8olxCnmWQ046hRjJJ0FD
+X-Gm-Gg: ASbGncv6dbcnU7NaWIovybg7I+sfwZ4x5eR7R7fQj+X02k92FTmkRUI2ssp6h+LCBlb
+	iC14AjL3E2F77gueFgWbuM8I/FQlebYhHYvSka+8QtAN6WibSb+nscYmmLVsbw5pK1WIbkoOgJ+
+	ZL04x8LyUeL07x93uKVKDBdvsjImjWrOww8zQ54qdsKw7HPwkTXOUWwA7hV5IgYjkHlwUg3svHk
+	WvwHa2bTQ==
+X-Google-Smtp-Source: AGHT+IHJvX9YjDx2d3c583rLSRmMUshXchB5sWSCQCJw3GuXnKAXqOqVSJqf4TKJyzYdOkmw2CS439Nybj4XBPXOmMI=
+X-Received: by 2002:a05:6402:368:b0:5fc:e6a6:6a34 with SMTP id
+ 4fb4d7f45d1cf-6019c7917b7mr327364a12.6.1747770216674; Tue, 20 May 2025
+ 12:43:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250520192034.889415-1-ojeda@kernel.org> <CAJ-ks9=4DJdbUBiy_45wWPviOs48NEK1DmeqWnDaFSpkoda_GQ@mail.gmail.com>
-In-Reply-To: <CAJ-ks9=4DJdbUBiy_45wWPviOs48NEK1DmeqWnDaFSpkoda_GQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 20 May 2025 21:36:57 +0200
-X-Gm-Features: AX0GCFv7GwY_uuzeDx4i5uB4OAE_8m-4VXTRgK6xXtbANDNefPefyVLnTkVFpw0
-Message-ID: <CANiq72mZafMsLOnLHGTsn_2yfYy4xf=OrTVHR68EqAx+6OBdww@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: rebuild if `.clippy.toml` changes
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20250519161712.2609395-1-bqe@google.com> <20250519161712.2609395-6-bqe@google.com>
+In-Reply-To: <20250519161712.2609395-6-bqe@google.com>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 20 May 2025 21:43:00 +0200
+X-Gm-Features: AX0GCFud_K6kp4jeZEy1YtPgHu6MpFW_3N3hcU-WCHo0eBEV6HSTF1SnPHjVTps
+Message-ID: <CAG48ez1vpyAARm-fk1GBfm-Dq-+W1CpCtYiGJm9ZQFq-pDKoQA@mail.gmail.com>
+Subject: Re: [PATCH v8 5/5] rust: add dynamic ID pool abstraction for bitmap
+To: Burak Emir <bqe@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 20, 2025 at 9:24=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> It is possible to do this only if CLIPPY=3D1?
+On Mon, May 19, 2025 at 6:20=E2=80=AFPM Burak Emir <bqe@google.com> wrote:
+> +/// fn get_id_maybe_alloc(guarded_pool: &SpinLock<IdPool>) -> Result<usi=
+ze, AllocError> {
+> +///   let mut pool =3D guarded_pool.lock();
+> +///   loop {
+> +///     match pool.acquire_next_id(0) {
+> +///       Some(index) =3D> return Ok(index),
+> +///       None =3D> {
+> +///         let alloc_request =3D pool.grow_alloc();
+> +///         drop(pool);
+> +///         let resizer =3D alloc_request.alloc(GFP_KERNEL)?;
+> +///         pool =3D guarded_pool.lock();
+> +///         pool.grow(resizer)
+> +///       }
+> +///     }
+> +///   }
+> +/// }
+> +/// ```
 
-I kept it simple on purpose, since we will not save much (changing
-`.clippy.toml` is quite rare to begin with), but I can add a
-conditional (likely in a variable). Not sure if it is worth it.
+Hmm, I think I just understood a bit better than before what's
+actually going on in the C binder code... the reason why you have this
+complicated API for reallocation here in Rust is that you want the
+guarded_pool to not have its own lock, but a lock provided by the
+caller? And so pool functions are unable to take/drop the lock that
+protects the pool?
 
-Cheers,
-Miguel
+This is just me idly wondering, and I know I tend to come up with
+overcomplicated approaches and I'm bad at Rust - please just ignore
+this message if you think it's not a good idea.
+
+I wonder if there is a way in Rust to address this kind of situation
+that looks nicer. Maybe you could have a function as part of the
+IdPool implementation that operates on an IdPool, but instead of an
+IdPool as parameter, the parameter is something like a function that
+can be called to obtain a guard that gives you a mutable reference?
+Could you maybe have some lock trait whose implementations store a
+pointer to something like a SpinLock, with a "lock()" method that
+first locks the SpinLock (creating a Guard), then looks up a specific
+member of the data contained inside the SpinLock, and returns a
+mutable pointer to that? Basically a subset view of the SpinLock. Then
+the IdPool implementation would be able to internally do this pattern
+of alternating lock/unlock. Though this way you'd still have to not
+hold the lock when calling into this.
+
+It might be an even better fit for a 1:1 translation of the C code if
+you could then combine this with some kind of SpinLockUnlockGuard that
+mutably borrows a SpinLockGuard; releases the underlying lock when it
+is created; and reacquires the lock when it is dropped... but that's
+maybe taking things too far.
