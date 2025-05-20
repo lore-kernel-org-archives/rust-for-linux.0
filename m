@@ -1,91 +1,149 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2964D1D63CD;
-	Tue, 20 May 2025 21:15:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8D12528FD
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 21:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747775751; cv=none; b=l/lHQEtIl7EHNwt3zjSM7eKJbJILSRWhaBtbud9Wm6jZiTGpItJT78rNBcrKAm/YhdtOlV8mdzM6cp/Gx2+8xbIG7pMDssszb2lpEy+p7u4ahkf0EeWeNjQIBr0LmTu2QlbBkD+kd/J8Nq8smKkbvpd5hfBMTpcHh9wCVMCtXeM=
+	t=1747776266; cv=none; b=mGKm76f/dH9y54MMFIpPhdNJC55xaCKnIxmkAmCQlGO5OnjDEctQGuhe7byEwDYZavBTblN6VkUTVWb2S+XaYibrBjoBxgh8sGy5TpdjOvcXu6bW8Pg71Ok+obCCpzCmFi6TD2ZX7KsHZ9nc/YwL9FRjqP7oR82pbe7LVZsFTSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747775751; c=relaxed/simple;
-	bh=rQ0v6aAtkhMKUAxjVR9doQu8GjSnpe4bFE7B9ZAOWRI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kMEHfFSPOle949YWoTXf5LHiasGiWw35gb1HQgxlPPGGCvha2Gc5GJTefIFe9v0dmJhf2xsmIqgks5uTsjHpwjTgbr0ql7bPouYabFYfdROt3GhQ8qCdAGedmN/Of8ABvFma59RbPD8QkVQWhXOJy4LafJKna9YDfhDN4t3QPJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k19PFJcI; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747776266; c=relaxed/simple;
+	bh=qBAn9K0gwiw7l/PvQKNwTTjTsiS+Ohorv1ckRgbFivc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jR2E8/GctSMlj345KwbUzSsR/Wv5iObfkUZBiv5/EP7nzAIawh7r2CgaaaYyzJcgWQyGeeVjFyfXdXFCYBHe1NrDADoqDiXpDLVuVIo69m9CFZPdAobrThVCTo+f6LYdrZHtvGU4woZ7UJ/eCVxvK/ST1ihrhUsPmqqz3UWjDnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=igkKk+9K; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k19PFJcI"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-231c88cc984so6637865ad.1;
-        Tue, 20 May 2025 14:15:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="igkKk+9K"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a1f6c5f4f2so2337352f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 14:24:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747775749; x=1748380549; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rQ0v6aAtkhMKUAxjVR9doQu8GjSnpe4bFE7B9ZAOWRI=;
-        b=k19PFJcIxxCohYDD4/0pdwkxqjwwYKgT7CDNKTyiKZk5TjtV9JYzDciFaktidH3r9h
-         hzsbs+rLPAgt9rEGQCvJTtkqpE0ODZ6KIPGR+tpHvz2PpEeXOTJ6yifW1BghvLim1Ep4
-         tPgxJI1/2GdEK8NYwuzTjbHBgVq8RH0m+w+6M9GfN3voXjhVcZywhdwU7cTsDpQEnYjw
-         hnKIGyN7R7FH0XoBonmdUo8vTqezgD50e9gtj+dfXiVxu0WDSJ6SbArk32hs7G6GJoER
-         Pg4R93h9VXfS7ACXwv9AebDvfDT0k6aMzsTdtBZtJNLr19nEb5aLhZogYu77ECFUd1KA
-         YQFQ==
+        d=google.com; s=20230601; t=1747776263; x=1748381063; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kqxtighEQhFf5QGc5IOw85K4fBlqypHOau9ttcox3Tk=;
+        b=igkKk+9KC2Gj7Clnnox3YL3I1fuT4MTXyX0fBkUkh173Zg/NpS439uyL1+YJFxnHXv
+         W3VkhE4GLE7yNY4FcvltC5eq+OTFS029YD1a10M4+7RuVuJAxWnCNUEBbDS0eod0asOf
+         K79yoF628M6lY1F2FwyxhnuNvZlZCuTf3Y9oicBd2Zm/ymo2GXgDkicnszp1b1eS7WGg
+         XiiTFugvppsf6fB5SYXb7MxPfIqiIuAe2VBtsp3OaOfu6Dpmw7oOCFTjagq5MyCVVSsl
+         1cOGjUr1AdhmsLl9MZnQx4syp3X/d0zGUg6b/qBa+FOTMwRdD2BHQ7kW6flj5TS8Y3gE
+         YVLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747775749; x=1748380549;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rQ0v6aAtkhMKUAxjVR9doQu8GjSnpe4bFE7B9ZAOWRI=;
-        b=aAxTk643VAru0sNhay93T3CMZ47yBz54ayv/uB5LIpNoJzHnCBoE35HPmwk4jg1exX
-         spQQ0pQdjOb0LqEjEESxvadmGxCufFAfmDGpF7llJaxTsB5jA/5xo1Je7Uhk29TSB1M9
-         7I7NvMP/EegeARxzsQo9BQT5ymB28Cb3DP75Y/kh8TKYz9F2I+WO1XvwOKFVto6WVXYy
-         JMwAaD5OgQnblM3vHhiOmHzK6r7ricUnai52ylaF6G0Qj/HCT3a1OeDWjGi9GyPvNtvT
-         lbyQcM+GNebf6SpspNn15aacNeNQdyIpKlvarDccaSM+wjwGEOw2sjFL9zuK6m0GOdo+
-         /ovw==
-X-Forwarded-Encrypted: i=1; AJvYcCXe3iqBlGWqbVac05OP3dzvdIy+MffIkbwe0wOTpI1V1q+plggmhLac5vyGEffZFYNwNn3Dpd/Ho32SDMM=@vger.kernel.org, AJvYcCXyezDp/iSIylK631N8VdaqQoMW1PtjIRPraXWYXqdQxDB4NgIfH4IEbSed8xWv9ppdcdQiSI3c/s8b+f2pbAk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLNCcT2YglSx87zI8ND9j35vKqF0375LTzSE/i/2WFoXbHWNzy
-	nxq+OVqQ+Ct657gtL/dGXKNXLpC5YYgKfIMShbzE77WvC58KRjfl5NTOaX2vGKU9oVelkjuIuBx
-	Rmz+g2ecwWSV4c5Dd/Mxg24MCu8Gb/6U=
-X-Gm-Gg: ASbGncuGbm/gxbSdsw6kQWVqA8l+jYqtZLPw4XNeD+wR3M3YMUAFSmQEbJooM0xc4Tl
-	ks9zGV4qRr4ezbeZGY7luiQGUcMdlqYO8uGzyelc7Mn8HfODDm4NHT2u1cyxDWitLQdQY5tRMs9
-	kknLqfzRxA8b4K/QLZEwde0jhnn0d6Vv84DlWYAxRTZB4=
-X-Google-Smtp-Source: AGHT+IGe5cmPDopFk7kzA8avugdNH9Oc/G5g/gnDbo4+tqDroKCGs5KoZRfDCQgaJ9Xn1CsSiuQtgV7Lwhr9LWD0wbI=
-X-Received: by 2002:a17:903:2285:b0:223:49ce:67a2 with SMTP id
- d9443c01a7336-231d4502e3bmr89295735ad.9.1747775749295; Tue, 20 May 2025
- 14:15:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1747776263; x=1748381063;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=kqxtighEQhFf5QGc5IOw85K4fBlqypHOau9ttcox3Tk=;
+        b=IK8Oemyvg2GdPedmlkcOfY2w2d4xiejux2X9cmTZ9XeI9rAAR3/6CFmmt6tOsYVcmv
+         wgs4yM/PBwGWqJkgffP2s7iU0HWiuVijbW63DRP7PAgJzlG63/wzVvngvw9ytHWfku2+
+         e3fz20rGlEvft8PYuevwSKH5NXqM7Iyl2AyKEOjb3ihEltcsU7pXKzwEuK6iadPjH+8/
+         STQ0zuJr83BX0IrZoFwWfz5lOJeEmH2enX0tQaNsHdzMfgV9yG4DndEp6NMTj1R6jxQT
+         5+0AOa8PN8rvHGM3H8tOMnmJ/QVfE6BrzlBlFFI5WP0KhON74KSZaFZbzXvwFUdydbcp
+         aP+g==
+X-Forwarded-Encrypted: i=1; AJvYcCX/Ll80Loxv7M2I2J7xAstjq1AWDy8WQNdFh5UOV75DuchzE+Vjmx7BoyzQqWIulxcn66FbhHS0e4qYTCHn1A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3t5hiSfiypz9E/KhCxd2rE82E8f3x8aiQkNYwANg5kTep094B
+	pNOvSeChhKFp/1S4dDI6AoyBE1ZSrlYZYu26asqsbucuaHQrF9aIlS7naxTgwF4QnCsLeBwu7o1
+	5OaXvLqu7aBOHmJiMGA==
+X-Google-Smtp-Source: AGHT+IFvK6lYQvx2L6jINFxQO+gBq2YbD35qhGJkE3BkwWu3QiVTLgX06dnqeiYQgUXgqTMgQIL2MCI9nV8n47k=
+X-Received: from wrs11.prod.google.com ([2002:a05:6000:64b:b0:3a0:b572:e1d4])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:400f:b0:3a0:aed9:e34 with SMTP id ffacd0b85a97d-3a3601db6c1mr16608989f8f.48.1747776263102;
+ Tue, 20 May 2025 14:24:23 -0700 (PDT)
+Date: Tue, 20 May 2025 21:24:21 +0000
+In-Reply-To: <2025051524-festival-afterglow-8483@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250520182125.806758-1-ojeda@kernel.org> <aCzwaCkENAiaG-As@google.com>
-In-Reply-To: <aCzwaCkENAiaG-As@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 20 May 2025 23:15:35 +0200
-X-Gm-Features: AX0GCFsvA9kp6CIt8sW48iUVHIlQVdVSvDpStLMHCL5PIeI8knACDOJ3Z9bIlow
-Message-ID: <CANiq72nQdaZpWmVjt3wqNtZRjibecwe=Lh83mQB0rzV8EjddLA@mail.gmail.com>
-Subject: Re: [PATCH] rust: remove unneeded Rust 1.87.0 `allow(clippy::ptr_eq)`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
+ <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com> <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+ <aCRdNJ2oq-REBotd@pollux> <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
+ <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org> <2025051524-festival-afterglow-8483@gregkh>
+Message-ID: <aCzzBT96ktapP03e@google.com>
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Benno Lossin <lossin@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 20, 2025 at 11:13=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> This commit message is worded in a confusing manner, but the change
-> LGTM.
+On Thu, May 15, 2025 at 01:43:09PM +0200, Greg Kroah-Hartman wrote:
+> On Thu, May 15, 2025 at 10:59:44AM +0200, Benno Lossin wrote:
+> > On Wed May 14, 2025 at 11:55 PM CEST, Matthew Maurer wrote:
+> > > On Wed, May 14, 2025 at 2:07=E2=80=AFAM Danilo Krummrich <dakr@kernel=
+.org> wrote:
+> > >> However, I really think we should keep the code as it is in this ver=
+sion and
+> > >> just don't provide an example that utilizes ManuallyDrop and forget(=
+).
+> > >>
+> > >> I don't see how the idea of "manually dropping" (sub-)directories an=
+d files
+> > >> provides any real value compared to just storing their instance in a=
+ driver
+> > >> structure as long as they should stay alive, which is much more intu=
+itive
+> > >> anyways.
+> > >
+> > > We can't easily do this, because dropping a root directory recursivel=
+y
+> > > drops everything underneath it. This means that if I have
+> > >
+> > > foo/
+> > >   - bar/
+> > >   - baz/
+> > >
+> > > Then my directory handle for `bar` have to be guaranteed to outlive m=
+y
+> > > directory handle for `foo` so that I know it's didn't get deleted
+> > > under me. This is why they have a borrow onto their parent directory.
+> > > This borrow means that you can't (without `unsafe`, or something like
+> > > `yoke`) keep handles to `foo` and `bar` in the same struct.
+> >=20
+> > Is there no refcount that we can use instead of borrowing? I guess not,
+> > since one can call `debugfs_remove`. What about a refcount on the rust
+> > side? or is debugfs not used for "debugging" and needs to have the
+> > performance of no refcount?
+>=20
+> debugfs should never have any performance issues (i.e. you don't use it
+> for performant things.)
+>=20
+> So refcount away!  That should never be an issue.
 
-Yeah, I wrote via rearranging a previous one, and sounds a bit
-strange. I can try to clarify it when I apply it.
+What I imagine would be the ideal API for Rust is the following:
 
-Thanks!
+* For each file / dir you create, you get a Rust object that owns it.
 
-Cheers,
-Miguel
+* When you destroy one of these Rust objects, it disappears from the
+  file system. I.e., dropping a directory removes things recursively.
+
+* If you remove a directory before the removing objects inside it, then
+  the Rust objects become "ghost" objects that are still usable, but not
+  visible in the file system anywhere. I.e. calling methods on them
+  succeed but are no-ops.
+
+* Possibly we have a way to drop a Rust object without removing it from
+  the file system. In this case, it can never be accessed from Rust
+  again, and the only way to remove it is to drop its parent directory.
+
+This way, you can drop foo/ before dropping bar/ and baz/ without that
+having to be unsafe.
+
+Whether that's best implemented by calling dget/dput on the dentry or by
+having Rust keep track of a separate Rust-only refcount, I don't know.
+But I think this is the API we want.
+
+Thoughts?
+
+Alice
