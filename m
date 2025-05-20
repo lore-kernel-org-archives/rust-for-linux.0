@@ -1,324 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC4518C31;
-	Tue, 20 May 2025 09:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E155726A0F6;
+	Tue, 20 May 2025 10:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747733459; cv=none; b=Xcrx9PHM9wFryrlj63PwHvs0yDB5+UgGA/T5l+DJGP5lIO3UbMwBzXQrBVd8zLkkAFEVaENOg5y9FgYuFIka5gPImAYzw7ObtTapi00v9+ujqQ9Z1TtyxL0CdzNdfHFh6Yj2kRURex5XosFbtTKmta1NiEebvYyXcP9Hpg7YPC0=
+	t=1747737142; cv=none; b=iRozr56YYV+te4X8c8j8N9JnSkoRnlFmdLdwG+AUksQ80MZC2tNnhzXLKK1ogIx2QPPeWce8hFcjyTXO9yci2EHakUI4o0glAUomDBPkf2pnNP83yLnALSf2Xc/DypUIXMWEJhFWgAUyaQ2VEWVPbT/HumlGEigTT3eWuMmqY/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747733459; c=relaxed/simple;
-	bh=jcb4aPAbKPsWRg6KidM3qub1Bb9HpbBNOe12kNEXwSU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CSLnC2xBwZ/HlTTwO31no6UUStFZg/u29YjNK2npLhsTlYiYxlmP2PaiOihSjpTvArK7bXGlBLVuoceU1aFyc0qVcUKxYVaHf29awhF4GoKNa2VDC6tJeaC3GDO3rEedpdDg3LJNbA/YFI/U7nm0FMFMykf0gasfglZIC4YI7J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXBc2pGq; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXBc2pGq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E36C4CEE9;
-	Tue, 20 May 2025 09:30:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747733459;
-	bh=jcb4aPAbKPsWRg6KidM3qub1Bb9HpbBNOe12kNEXwSU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IXBc2pGqp+VVik11Y7jfvML+CkrotItGRoxjZZGTMo5og35cO210IyMChrOKrfY7c
-	 dysWNOqI39ZDurXZ9RHWc/LOhAm3EQIcmorx05+Z6zWEDRKFwFMiK7xRvH8kCgDwJU
-	 X9x/X4UVhK9JqYuFF1ed3w4IAtuMM+T9wwNcKCIFkg5UcK/qsYlBkDLUBnoCKHaFj6
-	 FGxxEPzdpyH2O4HYQXhq/Fn5b50S297R9OaR7SkYtCeEpdio2q16uw3/ooM1QLkAVi
-	 ONhWUU9/6Lnup0BcTlsA4fIbqCTRj4QQZQSxFVA+8itV+AZbiTGzB47zWPXnk7qLMh
-	 UwdOgr9LG2HeA==
-Date: Tue, 20 May 2025 11:30:51 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	Shirish Baskaran <sbaskaran@nvidia.com>
-Subject: Re: [PATCH v3 16/19] nova-core: Add support for VBIOS ucode
- extraction for boot
-Message-ID: <aCxLyxcERNHKzfvI@cassiopeiae>
-References: <20250507-nova-frts-v3-0-fcb02749754d@nvidia.com>
- <20250507-nova-frts-v3-16-fcb02749754d@nvidia.com>
- <aCN_PIYEEzs73AqT@pollux>
- <4fee85be-a8c5-4a99-8397-c93e79d72d15@nvidia.com>
+	s=arc-20240116; t=1747737142; c=relaxed/simple;
+	bh=Pq1ftI00kBkDlSWEq6rlyruRH9SImrSn0nEiC5X6xTo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=GIHd8cfuexkIw7A7Z7n1Yj9CzyDawWIBWfmkk2TQ8+LYjDLlLQjrLEbr9oTf+p/RvwlmxJZEs9NGbYsPgNMJFlgCq5OCm7RMRBoYIPVdUfPRjIG0FArJ2ZVZ9aFKehAfPPI2XWYwKkHNVjhBPDrt3MwvPiEACnPMN+phJ/N37eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4b1rTR5QMzz9sNt;
+	Tue, 20 May 2025 12:32:11 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4fee85be-a8c5-4a99-8397-c93e79d72d15@nvidia.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 20 May 2025 12:32:05 +0200
+Message-Id: <DA0X3RE11LJI.3GDSU2DK09HQ0@buenzli.dev>
+Cc: <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v4 6/9] rust: device: Add bindings for reading device
+ properties
+From: "Remo Senekowitsch" <remo@buenzli.dev>
+To: "Benno Lossin" <lossin@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Saravana Kannan" <saravanak@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>
+References: <20250504173154.488519-1-remo@buenzli.dev>
+ <20250504173154.488519-7-remo@buenzli.dev>
+ <DA0TDQ2DPTRX.1T9O4NZEME2JX@kernel.org>
+In-Reply-To: <DA0TDQ2DPTRX.1T9O4NZEME2JX@kernel.org>
 
-On Tue, May 20, 2025 at 03:55:06AM -0400, Joel Fernandes wrote:
-> On 5/13/2025 1:19 PM, Danilo Krummrich wrote:
-> > On Wed, May 07, 2025 at 10:52:43PM +0900, Alexandre Courbot wrote:
-> >> @@ -238,6 +239,8 @@ pub(crate) fn new(
-> >>  
-> >>          let _sec2_falcon = Falcon::<Sec2>::new(pdev.as_ref(), spec.chipset, bar, true)?;
-> >>  
-> >> +        let _bios = Vbios::new(pdev, bar)?;
-> > 
-> > Please add a comment why, even though unused, it is important to create this
-> > instance.
-> > 
-> > Also, please use `_` if it's not intended to ever be used.
-> 
-> If I add a comment, it will simply be removed by the next patch. I can add that
-> though so it makes it more clear.
+On Tue May 20, 2025 at 9:37 AM CEST, Benno Lossin wrote:
+> On Sun May 4, 2025 at 7:31 PM CEST, Remo Senekowitsch wrote:
+>> +/// Implemented for all integers that can be read as properties.
+>> +///
+>> +/// This helper trait is needed on top of the existing [`Property`]
+>> +/// trait to associate the integer types of various sizes with their
+>> +/// corresponding `fwnode_property_read_*_array` functions.
+>> +pub trait PropertyInt: Copy {
+>> +    /// # Safety
+>> +    ///
+>> +    /// Callers must uphold the same safety invariants as for the vario=
+us
+>> +    /// `fwnode_property_read_*_array` functions.
+>> +    unsafe fn read_array_from_fwnode_property(
+>> +        fwnode: *const bindings::fwnode_handle,
+>> +        propname: *const ffi::c_char,
+>> +        val: *mut Self,
+>> +        nval: usize,
+>> +    ) -> ffi::c_int;
+>
+> I really, really dislike that this trait has to have an unsafe function
+> with all those raw pointer inputs.
 
-I recommend to add such comments, because then reviewers don't stumble over it.
-:-)
+What is the concrete problem with that? Or is it just "not pretty"?
+(I'm fine with making it prettier, just making sure I understand
+correctly.)
 
-> >> +impl Vbios {
-> >> +    /// Probe for VBIOS extraction
-> >> +    /// Once the VBIOS object is built, bar0 is not read for vbios purposes anymore.
-> >> +    pub(crate) fn new(pdev: &pci::Device, bar0: &Bar0) -> Result<Vbios> {
-> >> +        // Images to extract from iteration
-> >> +        let mut pci_at_image: Option<PciAtBiosImage> = None;
-> >> +        let mut first_fwsec_image: Option<FwSecBiosImage> = None;
-> >> +        let mut second_fwsec_image: Option<FwSecBiosImage> = None;
-> >> +
-> >> +        // Parse all VBIOS images in the ROM
-> >> +        for image_result in VbiosIterator::new(pdev, bar0)? {
-> >> +            let full_image = image_result?;
-> >> +
-> >> +            dev_info!(
-> > 
-> > Let's use dev_dbg!() instaed.
-> 
-> Done.
-> 
-> > 
-> >> +                pdev.as_ref(),
-> >> +                "Found BIOS image: size: {:#x}, type: {}, last: {}\n",
-> >> +                full_image.image_size_bytes()?,
-> >> +                full_image.image_type_str(),
-> >> +                full_image.is_last()
-> >> +            );
-> >> +
-> >> +            // Get references to images we will need after the loop, in order to
-> >> +            // setup the falcon data offset.
-> >> +            match full_image {
-> >> +                BiosImage::PciAt(image) => {
-> >> +                    pci_at_image = Some(image);
-> >> +                }
-> >> +                BiosImage::FwSec(image) => {
-> >> +                    if first_fwsec_image.is_none() {
-> >> +                        first_fwsec_image = Some(image);
-> >> +                    } else {
-> >> +                        second_fwsec_image = Some(image);
-> >> +                    }
-> >> +                }
-> >> +                // For now we don't need to handle these
-> >> +                BiosImage::Efi(_image) => {}
-> >> +                BiosImage::Nbsi(_image) => {}
-> >> +            }
-> >> +        }
-> >> +
-> >> +        // Using all the images, setup the falcon data pointer in Fwsec.
-> >> +        // We need mutable access here, so we handle the Option manually.
-> >> +        let final_fwsec_image = {
-> >> +            let mut second = second_fwsec_image; // Take ownership of the option
-> >> +
-> >> +            if let (Some(second), Some(first), Some(pci_at)) =
-> >> +                (second.as_mut(), first_fwsec_image, pci_at_image)
-> >> +            {
-> >> +                second
-> >> +                    .setup_falcon_data(pdev, &pci_at, &first)
-> >> +                    .inspect_err(|e| {
-> >> +                        dev_err!(pdev.as_ref(), "Falcon data setup failed: {:?}\n", e)
-> >> +                    })?;
-> >> +            } else {
-> >> +                dev_err!(
-> >> +                    pdev.as_ref(),
-> >> +                    "Missing required images for falcon data setup, skipping\n"
-> >> +                );
-> >> +                return Err(EINVAL);
-> > 
-> > This means that if second == None we fail, which makes sense, so why store an
-> > Option in Vbios? All methods of Vbios fail if fwsec_image == None.
-> > 
-> 
-> Well, if first and pci_at are None, we will fail as well. Not just second. But
-> we don't know until we finish parsing all the images in the prior loop, if we
-> found all the images. So we store it as Option during the prior loop, and check
-> it later. Right?
+>> +}
+>> +// This macro generates implementations of the traits `Property` and
+>> +// `PropertyInt` for integers of various sizes. Its input is a list
+>> +// of pairs separated by commas. The first element of the pair is the
+>> +// type of the integer, the second one is the name of its corresponding
+>> +// `fwnode_property_read_*_array` function.
+>> +macro_rules! impl_property_for_int {
+>> +    ($($int:ty: $f:ident),* $(,)?) =3D> { $(
+>> +        impl PropertyInt for $int {
+>> +            unsafe fn read_array_from_fwnode_property(
+>> +                fwnode: *const bindings::fwnode_handle,
+>> +                propname: *const ffi::c_char,
+>> +                val: *mut Self,
+>> +                nval: usize,
+>> +            ) -> ffi::c_int {
+>> +                // SAFETY: The safety invariants on the trait require
+>> +                // callers to uphold the invariants of the functions
+>> +                // this macro is called with.
+>> +                unsafe {
+>> +                    bindings::$f(fwnode, propname, val.cast(), nval)
+>> +                }
+>> +            }
+>> +        }
+>> +    )* };
+>> +}
+>> +impl_property_for_int! {
+>> +    u8: fwnode_property_read_u8_array,
+>> +    u16: fwnode_property_read_u16_array,
+>> +    u32: fwnode_property_read_u32_array,
+>> +    u64: fwnode_property_read_u64_array,
+>> +    i8: fwnode_property_read_u8_array,
+>> +    i16: fwnode_property_read_u16_array,
+>> +    i32: fwnode_property_read_u32_array,
+>> +    i64: fwnode_property_read_u64_array,
+>> +}
+>> +/// # Safety
+>> +///
+>> +/// Callers must ensure that if `len` is non-zero, `out_param` must be
+>> +/// valid and point to memory that has enough space to hold at least
+>> +/// `len` number of elements.
+>> +unsafe fn read_array_out_param<T: PropertyInt>(
+>> +    fwnode: &FwNode,
+>> +    name: &CStr,
+>> +    out_param: *mut T,
+>> +    len: usize,
+>> +) -> ffi::c_int {
+>> +    // SAFETY: `name` is non-null and null-terminated.
+>> +    // `fwnode.as_raw` is valid because `fwnode` is valid.
+>> +    // `out_param` is valid and has enough space for at least
+>> +    // `len` number of elements as per the safety requirement.
+>> +    unsafe {
+>> +        T::read_array_from_fwnode_property(fwnode.as_raw(), name.as_cha=
+r_ptr(), out_param, len)
+>> +    }
+>> +}
+>
+> Why does this function exist? It doesn't do anything and just delegates
+> the call to `T::read_array_from_fwnode_property`.
 
-My point is not that second is an option within this function -- that's fine. I
-don't want the Vbios type to store an Option, because that doesn't make sense.
-I.e. it should be
+It's used in three places. Taking Rust references as input reduces the
+safety requirements the callers must uphold. But I guess it's a small
+benefit, I can remove it.
 
-	struct Vbios {
-	   fwsec_image: FwSecBiosImage,
-	}
+> This feels like you're dragging the C interface through the lower layers
+> of your Rust abstractions, which I wouldn't do. I also looked a bit at
+> the C code and saw this comment in `driver/base/property.c:324`:
+>
+>      * It's recommended to call fwnode_property_count_u8() instead of cal=
+ling
+>      * this function with @val equals %NULL and @nval equals 0.
+>
+> That probably holds also for the other functions, so maybe we should do
+> that instead? (although `fwnode_property_count_u8` just delegates and
+> calls with `fwnode_property_read_u8_array`...)
 
-or just
+Yeah, I saw that too. The original implementation is from Rob. I assume
+the recommendation is for users, maybe for clarity and readability of
+the code. These Rust abstractions are pretty low level, so I thought
+it's probably fine.
 
-	struct Vbios(FwSecBiosImage);
+> How about we do it like this:
+>
+>     pub trait PropertyInt: Copy + Sized + private::Sealed {
+>         /// ...
+>         ///
+>         /// Returns a reference to `out` containing all written elements.
+>         fn read<'a>(
+>             fwnode: &FwNode,
+>             name: &CStr,
+>             out: &'a mut [MaybeUninit<Self>],
+>         ) -> Result<&'a mut [Self]>;
+>
+>         fn length(fwnode: &FwNode, name: &CStr) -> Result<usize>;
+>     }
+>
+> And then have a macro to implement it on all the integers.
 
-which is the same, rather than
+I think I tried to make the macro as small as possible and use regular
+generics on top, because I was concerned people would be put off by big
+complicated macros. I'm fine with moving the actual trait implementation
+into the macro body, seems reasonable.
 
-	struct Vbios {
-	   fwsec_image: Option<FwSecBiosImage>,
-	}
+But still, I'm not sure why we're trying to make the PropertyInt trait's
+interface pretty or rusty. It's not supposed to be used, implemented or
+in any way interacted with outside this module. It's just a low-level
+building block to make some functions generic, giving users type
+inference.
 
-because Vbios::new() fails anyways if any of the images is None, i.e.
-vbios.fwsec_image can't ever be None.
-
-The code below does that for you, i.e. it returns an instance of Vbios without
-the inner Option.
-
-> >> +            }
-> >> +            second
-> >> +        };
-> > 
-> > I think this should be:
-> > 
-> > 	let mut second = second_fwsec_image;
-> > 	
-> > 	if let (Some(second), Some(first), Some(pci_at)) =
-> > 	    (second.as_mut(), first_fwsec_image, pci_at_image)
-> > 	{
-> > 	    second
-> > 	        .setup_falcon_data(pdev, &pci_at, &first)
-> > 	        .inspect_err(|e| {
-> > 	            dev_err!(pdev.as_ref(), "Falcon data setup failed: {:?}\n", e)
-> > 	        })?;
-> > 	
-> > 	    Ok(Vbios(second)
-> > 	} else {
-> > 	    dev_err!(
-> > 	        pdev.as_ref(),
-> > 	        "Missing required images for falcon data setup, skipping\n"
-> > 	    );
-> > 	
-> > 	    Err(EINVAL)
-> > 	}
-> > 
-> > where Vbios can just be
-> > 
-> > 	pub(crate) struct Vbios(FwSecBiosImage);
-> 
-> But your suggestion here still considers second as an Option? That's why you
-> wrote 'Some(second)' ?
-
-Yes, that's fine, see above. The difference is that the code returns you an
-instance of
-
-	struct Vbios(FwSecBiosImage);
-
-rather than
-
-	struct Vbios {
-	   fwsec_image: Option<FwSecBiosImage>,
-	}
-
-which is unnecessary.
-
-> 
-> > 
-> >> +
-> >> +        Ok(Vbios {
-> >> +            fwsec_image: final_fwsec_image,
-> >> +        })
-> >> +    }
-> >> +
-> >> +    pub(crate) fn fwsec_header(&self, pdev: &device::Device) -> Result<&FalconUCodeDescV3> {
-> >> +        let image = self.fwsec_image.as_ref().ok_or(EINVAL)?;
-> >> +        image.fwsec_header(pdev)
-> >> +    }
-> >> +
-> >> +    pub(crate) fn fwsec_ucode(&self, pdev: &device::Device) -> Result<&[u8]> {
-> >> +        let image = self.fwsec_image.as_ref().ok_or(EINVAL)?;
-> >> +        image.fwsec_ucode(pdev, image.fwsec_header(pdev)?)
-> >> +    }
-> >> +
-> >> +    pub(crate) fn fwsec_sigs(&self, pdev: &device::Device) -> Result<&[u8]> {
-> >> +        let image = self.fwsec_image.as_ref().ok_or(EINVAL)?;
-> >> +        image.fwsec_sigs(pdev, image.fwsec_header(pdev)?)
-> >> +    }
-> > 
-> > Those then become infallible, e.g.
-> > 
-> > 	pub(crate) fn fwsec_sigs(&self, pdev: &device::Device) -> &[u8] {
-> > 	    self.0.fwsec_sigs(pdev, self.fwsec_header(pdev))
-> > 	}
-> > 
-> 
-> Nope, I think you are wrong there. fwsec_sigs() of the underlying .0 returns a
-> Result.
-
-That's true, I confused self.fwsec_sigs() with self.0.fwsec_sigs(). It seems
-that you may want to implement Deref for Vbios.
-
-Also, can you please double check the Options in FwSecBiosImage (in case we
-didn't talk about them yet)? They look quite suspicious too.
-
-In general, I feel like a lot of those Option come from a programming pattern
-that is very common in C, i.e. allocate a structure (stack or heap) and then
-initialize its fields.
-
-In Rust you should aim to initialize all the fields of a structure when you
-create the instance. Option as a return type of a function is common, but it's
-always a bit suspicious when there is an Option field in a struct.
-
-I understand that there are cases where we can't omit it, and for obvious
-reasons the Vbios code is probably a perfect example for that.
-
-However, I recommend looking at this from top to bottom: Do the "final"
-structures that we expose to the driver from the Vbios module have fields that
-are *really* optional? Or is the Option type just a result from the parsing
-process?
-
-If it's the latter, we should get rid of it and work with a different type
-during the parsing process and then create the final instance that is exposed to
-the driver at the end.
-
-For instance FwSecBiosImage is defined as:
-
-	pub(crate) struct FwSecBiosImage {
-	    base: BiosImageBase,
-	    falcon_data_offset: Option<usize>,
-	    pmu_lookup_table: Option<PmuLookupTable>,
-	    falcon_ucode_offset: Option<usize>,
-	}
-
-Do only *some* FwSecBiosImage instances have a falcon_ucode_offset?
-
-If the answer is 'no' then it shouldn't be an Option. If the answer is 'yes',
-then this indicates that FwSecBiosImage is probably too generic and should be
-split into more specific types of a FwSecBiosImage which instead share a common
-trait in order to treat the different types generically.
-
-> Also in Vbios::new(), I extract the Option when returning:
-> 
->         Ok(Vbios {
->             fwsec_image: final_fwsec_image.ok_or(EINVAL)?,
->         })
-
-Maybe you do so in your tree? v3 of the patch series has:
-
-	pub(crate) struct Vbios {
-	   pub fwsec_image: Option<FwSecBiosImage>,
-	}
-
-and
-
-	Ok(Vbios {
-	   fwsec_image: final_fwsec_image,
-	})
+Best regards,
+Remo
