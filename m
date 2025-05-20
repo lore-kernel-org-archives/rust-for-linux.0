@@ -1,149 +1,102 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8D12528FD
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 21:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0262528FD;
+	Tue, 20 May 2025 21:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747776266; cv=none; b=mGKm76f/dH9y54MMFIpPhdNJC55xaCKnIxmkAmCQlGO5OnjDEctQGuhe7byEwDYZavBTblN6VkUTVWb2S+XaYibrBjoBxgh8sGy5TpdjOvcXu6bW8Pg71Ok+obCCpzCmFi6TD2ZX7KsHZ9nc/YwL9FRjqP7oR82pbe7LVZsFTSQ=
+	t=1747776398; cv=none; b=AryAYn+i2jKDSAIzHN4+clAT4V7+wbOJFMBBL5L4NSlJud1663iiQRa0slparMWqGMgflhmAhfLye8RmCpPDjSyhLS0ahmaRnypjOjTFOxC6Ti3CxpE1sNhn4peU4M4IbeYdeVRlF1FldVpmCn+zzC92JDI5aeEkeUrY1M8WsXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747776266; c=relaxed/simple;
-	bh=qBAn9K0gwiw7l/PvQKNwTTjTsiS+Ohorv1ckRgbFivc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jR2E8/GctSMlj345KwbUzSsR/Wv5iObfkUZBiv5/EP7nzAIawh7r2CgaaaYyzJcgWQyGeeVjFyfXdXFCYBHe1NrDADoqDiXpDLVuVIo69m9CFZPdAobrThVCTo+f6LYdrZHtvGU4woZ7UJ/eCVxvK/ST1ihrhUsPmqqz3UWjDnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=igkKk+9K; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1747776398; c=relaxed/simple;
+	bh=nQGih8zxH/VoEsswrvKaa1/NqFqGIDNLNQwrrXd1bfM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GaI25CzrP6CQlt0o/I9uECkWbO5XGtC0rheXWVQde7KZb4/UQx9Wva0aN4+6ebH1JoHMzE1fDZOvYavvxTS9jqmYEFPARAFmavc6X796z8JWdKb9x6HfkD6O/vWzHE0IWNzcXFGViJuMyrfrTf8QMFgr8jlTUCfIix7hYYeeXoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZNgvsFW8; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="igkKk+9K"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a1f6c5f4f2so2337352f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 14:24:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZNgvsFW8"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-231c88cc984so6646785ad.1;
+        Tue, 20 May 2025 14:26:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747776263; x=1748381063; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kqxtighEQhFf5QGc5IOw85K4fBlqypHOau9ttcox3Tk=;
-        b=igkKk+9KC2Gj7Clnnox3YL3I1fuT4MTXyX0fBkUkh173Zg/NpS439uyL1+YJFxnHXv
-         W3VkhE4GLE7yNY4FcvltC5eq+OTFS029YD1a10M4+7RuVuJAxWnCNUEBbDS0eod0asOf
-         K79yoF628M6lY1F2FwyxhnuNvZlZCuTf3Y9oicBd2Zm/ymo2GXgDkicnszp1b1eS7WGg
-         XiiTFugvppsf6fB5SYXb7MxPfIqiIuAe2VBtsp3OaOfu6Dpmw7oOCFTjagq5MyCVVSsl
-         1cOGjUr1AdhmsLl9MZnQx4syp3X/d0zGUg6b/qBa+FOTMwRdD2BHQ7kW6flj5TS8Y3gE
-         YVLA==
+        d=gmail.com; s=20230601; t=1747776396; x=1748381196; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HS12UrQYG8FOz8WwBWci8HxogfBg3U2CIyyf4Uw5/Ik=;
+        b=ZNgvsFW8Jhsh5RXneXAlTjWpEc67XuVkXqK8OEAoeVWZT2LBbj92tOPTQ7sTTHPpeG
+         pS66Qdvs7uBVbcz8bol0jOGQ8fjoU0k568LZ2dH6THXOyXtN+ODwVAGlKLvQtl+TXpRf
+         2cRZSi6LMHJVUPwP3U5M4HMA3W0nc8FOc5StVR+QSsuwVGODcskriNp2IxrPO1dBvLAa
+         O29CG2t7R4Czvrj13XiRBPNUsVIyfdBRWWGZvh/3ELlVOre8UJC2fFEOYo3Q4Hh3q/Jj
+         Wu6Yhk5x9IDb3C/efGklkzYRQfe+h8l5+B6KbS/JT7MA4TiR9hZ2AjJSXsXpp9kcpXaE
+         ZBPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747776263; x=1748381063;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kqxtighEQhFf5QGc5IOw85K4fBlqypHOau9ttcox3Tk=;
-        b=IK8Oemyvg2GdPedmlkcOfY2w2d4xiejux2X9cmTZ9XeI9rAAR3/6CFmmt6tOsYVcmv
-         wgs4yM/PBwGWqJkgffP2s7iU0HWiuVijbW63DRP7PAgJzlG63/wzVvngvw9ytHWfku2+
-         e3fz20rGlEvft8PYuevwSKH5NXqM7Iyl2AyKEOjb3ihEltcsU7pXKzwEuK6iadPjH+8/
-         STQ0zuJr83BX0IrZoFwWfz5lOJeEmH2enX0tQaNsHdzMfgV9yG4DndEp6NMTj1R6jxQT
-         5+0AOa8PN8rvHGM3H8tOMnmJ/QVfE6BrzlBlFFI5WP0KhON74KSZaFZbzXvwFUdydbcp
-         aP+g==
-X-Forwarded-Encrypted: i=1; AJvYcCX/Ll80Loxv7M2I2J7xAstjq1AWDy8WQNdFh5UOV75DuchzE+Vjmx7BoyzQqWIulxcn66FbhHS0e4qYTCHn1A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3t5hiSfiypz9E/KhCxd2rE82E8f3x8aiQkNYwANg5kTep094B
-	pNOvSeChhKFp/1S4dDI6AoyBE1ZSrlYZYu26asqsbucuaHQrF9aIlS7naxTgwF4QnCsLeBwu7o1
-	5OaXvLqu7aBOHmJiMGA==
-X-Google-Smtp-Source: AGHT+IFvK6lYQvx2L6jINFxQO+gBq2YbD35qhGJkE3BkwWu3QiVTLgX06dnqeiYQgUXgqTMgQIL2MCI9nV8n47k=
-X-Received: from wrs11.prod.google.com ([2002:a05:6000:64b:b0:3a0:b572:e1d4])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:400f:b0:3a0:aed9:e34 with SMTP id ffacd0b85a97d-3a3601db6c1mr16608989f8f.48.1747776263102;
- Tue, 20 May 2025 14:24:23 -0700 (PDT)
-Date: Tue, 20 May 2025 21:24:21 +0000
-In-Reply-To: <2025051524-festival-afterglow-8483@gregkh>
+        d=1e100.net; s=20230601; t=1747776396; x=1748381196;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HS12UrQYG8FOz8WwBWci8HxogfBg3U2CIyyf4Uw5/Ik=;
+        b=A0Kp85KIZyQ+c948Ka5Fd4TJqg9BO/jJKwq/RTM9jgwJo+iHsjmGSy2nkJ0mu7ImLq
+         iekpP1g5jfef9Vc2X5E7xy+peRfeba3SULcPdA5nUurm8Yl4V8KdwyGwYOHiHqYWtvrh
+         hXa4Ok3fnhU8GUr7y/gWqUUT0PL2qMuHCz/CICJPs/9RWrBhKJw8bPWgNSj4HhlyBA6j
+         HXbaKwkixWmuUo21t9JB5NANxllXPRKd4Bh6tLEFyxv3Khv9mSDYujOmFaK859bTEI0F
+         J++GZ6zXmtzQ+BGHnnQ5vFCsaCqcIcGMe5Em1ZE473nXDm5wFZQQvX2/eurCyFM8yh5F
+         TGkg==
+X-Forwarded-Encrypted: i=1; AJvYcCUKXJuTgTNWMUCymJ85w25L7+V0waDKN/9tXyno3RqsB9CwlIl4JFUGjoDR7e9WMCiNEtoM3juciAONRZIP8To=@vger.kernel.org, AJvYcCUX6uIkC1fa9hQ8TTNc9IfsJX6JN2zxaMxoyVULAAXjON58XBPSEPkaPRqXRXLXEPIFOAQTKR6UxajRcdI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYLAPLIhA4gHwui0BrKbaJD0/RqlBn4xOG5GDdeJDghuBIXWKI
+	EC3dBWmpZbqCc/XBM1K47DyZfX5ZI8cM2J1mF6Bd562ej9GoGI7Do1jdsxAJd0f5GOs8pHD4u3L
+	xVO9NtzTheOQRACzXUjw0NHg3GZSGE20=
+X-Gm-Gg: ASbGncskm5BRMKT8r5dlH5ltr/9M6czIisx5Ba27RSb+IXwUbcb3HWFCwt9FoNp3exl
+	fjv0TtQxhiqai3y96sAj/OLo0Rs3DsG4SDHHjJ7DQ+tTSuqCbZ1gZDXc/YCYNh5uFABhx/hdc+m
+	UGjEpIBZWUrMkjxXzShXDoZFCMMdsSeBnf7au3YiFCoyA=
+X-Google-Smtp-Source: AGHT+IFe7MmjlmtUNXGOQwgtb0GunBupn24MRWKrlZVElPHZgZU+iZUAdlM7xHeK50gn3/K2wWFs+xCavEyfHI6B4rw=
+X-Received: by 2002:a17:903:2285:b0:223:49ce:67a2 with SMTP id
+ d9443c01a7336-231d4502e3bmr89430325ad.9.1747776396506; Tue, 20 May 2025
+ 14:26:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
- <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com> <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
- <aCRdNJ2oq-REBotd@pollux> <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
- <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org> <2025051524-festival-afterglow-8483@gregkh>
-Message-ID: <aCzzBT96ktapP03e@google.com>
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Benno Lossin <lossin@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+MIME-Version: 1.0
+References: <20250511-rust_unsafe_pinned-v4-0-a86c32e47e3d@gmail.com> <20250511-rust_unsafe_pinned-v4-1-a86c32e47e3d@gmail.com>
+In-Reply-To: <20250511-rust_unsafe_pinned-v4-1-a86c32e47e3d@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 20 May 2025 23:26:22 +0200
+X-Gm-Features: AX0GCFtV2Jx7NnypTgqMG-mZr9OtcqXo72rNX0dRAhFEUfAeCCyratYCcrsBNPA
+Message-ID: <CANiq72n0EcibX3Vx95tiPEkd04DA4hjY-TJQs9YSOmHj=VZ_5g@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] rust: add UnsafePinned type
+To: Sky <sky@sky9.dev>, Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, =?UTF-8?Q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 15, 2025 at 01:43:09PM +0200, Greg Kroah-Hartman wrote:
-> On Thu, May 15, 2025 at 10:59:44AM +0200, Benno Lossin wrote:
-> > On Wed May 14, 2025 at 11:55 PM CEST, Matthew Maurer wrote:
-> > > On Wed, May 14, 2025 at 2:07=E2=80=AFAM Danilo Krummrich <dakr@kernel=
-.org> wrote:
-> > >> However, I really think we should keep the code as it is in this ver=
-sion and
-> > >> just don't provide an example that utilizes ManuallyDrop and forget(=
-).
-> > >>
-> > >> I don't see how the idea of "manually dropping" (sub-)directories an=
-d files
-> > >> provides any real value compared to just storing their instance in a=
- driver
-> > >> structure as long as they should stay alive, which is much more intu=
-itive
-> > >> anyways.
-> > >
-> > > We can't easily do this, because dropping a root directory recursivel=
-y
-> > > drops everything underneath it. This means that if I have
-> > >
-> > > foo/
-> > >   - bar/
-> > >   - baz/
-> > >
-> > > Then my directory handle for `bar` have to be guaranteed to outlive m=
-y
-> > > directory handle for `foo` so that I know it's didn't get deleted
-> > > under me. This is why they have a borrow onto their parent directory.
-> > > This borrow means that you can't (without `unsafe`, or something like
-> > > `yoke`) keep handles to `foo` and `bar` in the same struct.
-> >=20
-> > Is there no refcount that we can use instead of borrowing? I guess not,
-> > since one can call `debugfs_remove`. What about a refcount on the rust
-> > side? or is debugfs not used for "debugging" and needs to have the
-> > performance of no refcount?
->=20
-> debugfs should never have any performance issues (i.e. you don't use it
-> for performant things.)
->=20
-> So refcount away!  That should never be an issue.
+On Sun, May 11, 2025 at 8:21=E2=80=AFPM Christian Schrefl
+<chrisi.schrefl@gmail.com> wrote:
+>
+> Signed-off-by: Sky <sky@sky9.dev>
 
-What I imagine would be the ideal API for Rust is the following:
+Apologies for not noticing this earlier...
 
-* For each file / dir you create, you get a Rust object that owns it.
+Since this is a Signed-off-by, the DCO applies, and it requires that
+the name is a "known identity":
 
-* When you destroy one of these Rust objects, it disappears from the
-  file system. I.e., dropping a directory removes things recursively.
+    https://docs.kernel.org/process/submitting-patches.html#developer-s-cer=
+tificate-of-origin-1-1
 
-* If you remove a directory before the removing objects inside it, then
-  the Rust objects become "ghost" objects that are still usable, but not
-  visible in the file system anywhere. I.e. calling methods on them
-  succeed but are no-ops.
+Sky: is that name one you use to sign paperwork etc.? If so, that is
+fine (and apologies in that case!) -- please let me know. If not,
+please feel free to ping me in private if needed.
 
-* Possibly we have a way to drop a Rust object without removing it from
-  the file system. In this case, it can never be accessed from Rust
-  again, and the only way to remove it is to drop its parent directory.
+Thanks!
 
-This way, you can drop foo/ before dropping bar/ and baz/ without that
-having to be unsafe.
-
-Whether that's best implemented by calling dget/dput on the dentry or by
-having Rust keep track of a separate Rust-only refcount, I don't know.
-But I think this is the API we want.
-
-Thoughts?
-
-Alice
+Cheers,
+Miguel
