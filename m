@@ -1,113 +1,68 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4866B1D90C8
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 04:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8E325B1C5;
+	Tue, 20 May 2025 05:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747715640; cv=none; b=f9XL8wi5+y1iJpiO5KC9qTT4mvs+1iNgoi00y8i9svOUe5pov+goDC5zGHU8CY33147AebuxIkf5C8bHn0CExKhTKB1OVhtZApqtqaUXFgG+WCh/DmnbCyziBn5g8rUoe8Us10fuvVa/nsjDsudcQ2WEk/q6adxDPky8bLVXno8=
+	t=1747717279; cv=none; b=gkCfrYL/t8F/y6LS45dJ3snj8BSkd9mTnqZs+qxtOL+4sXwRsXi9gw3cHn4OkHAwiWetkB7FEHWcrCIEH/PoVndFuVbHouzizjtkbr8xZ0j0k9f6+WwNGOjyGRA4ZmEMZcZltKNIRoWYEooviefaP9/EJEWFI5mXlkaTDbYZc00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747715640; c=relaxed/simple;
-	bh=TM7YWc2HanxUC5uSa/mx8mHwCfO/Qpz2hocXunXzOnQ=;
+	s=arc-20240116; t=1747717279; c=relaxed/simple;
+	bh=/f9inSBBw1FpFk23RnNhhj4e42pJmmWSrQe4LCigA/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AceYfpA3k1GG7pnAL7DoAxmLV3Ty3u8tupdpFIs48PuCc9+qSPlPIjgIDCqLmnRCsbtu6zGPpiVLzLu5d0dzjZQhlZiAwU+1h64O3GsEV4zeLBqtauN/SYuP0mnzznn4YHsje1s27SHbQPfTpsHEw6l0fc4uuUSQ2h1YQW+QWM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DTEtPKVx; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=nKCYoRsBKw1lHoMqNcGbVkYV8G762EisbskSm4jtATXCCU5kS3tgylXHlN2zxZmOKIftLzzpY6F7vWFT5IFTWybpHk0r9/Xxql21rbnAaueQyx9bbcEozSWEesfjRa0X6Tl3LUwsajklZb4tfca2ReyUzlvLXmesT6Bqq1vIfYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RS2nDKiJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DTEtPKVx"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-30e8a968b15so3153621a91.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 May 2025 21:33:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747715638; x=1748320438; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vmXtbFG7YZNNbJEDh1fYDcGa0WLHVZ/52LrX9t09NXg=;
-        b=DTEtPKVxPh29thGGyvRwymyu6QWa5HrLLK1TOwWteGJkisDMVF5VfmI9KQDARigvz6
-         9eeSDnSsK6REQDVEmaeBX/v2tqPUAKIrEwogrzS4cLIF1kfJaRSyZWRy4GCQbT1uMLIy
-         /DzvcOhOzF9KeGmt8fPXmATyQUT5D8htprY8ePsYCksh7rsWjvzaSV/5tzPRL+f8PUki
-         NxPoDEPc1rhdESWvJDeFvd/tQZ5vnqhrgR3D01vuP2nkzW9lX3KCqyosAWy//aCqtaIv
-         Z2mHGXpbzi8NFMHDX4F+583rdVhQ7C2RjRG3BsOEAVw4CtNTPo/D/+Kqt1zGRsFLZQoB
-         bLIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747715638; x=1748320438;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vmXtbFG7YZNNbJEDh1fYDcGa0WLHVZ/52LrX9t09NXg=;
-        b=vWAK6sz+DtpDZH6aDBHPdFXCkIUHFFc7gOCDyV7aVK5Dnnzh3+vW+ctFSokS49/G8p
-         OrmZE8NhnNtXZ3B8g5YanNQevEvbKF9Jbv9Kq7tq58COjw7t+gPb/WO326eJ5VhqZ0zT
-         T+PnucIzvV66oVHCPlsGNVeqiTwSs2XmideecyNY89DOBdDKNoqrGvXB4Y5W35eWhLy2
-         gpHmpa6cfWC9aC/WaZQ65YT4AIxiQIjutBlhR4YLL0VW8C879kg6bvvnt1YmdCLJSz4x
-         F92AIQpVsFekb+LLcxEDjvv0AMGQ4UalXKpGl6gzSBbzf152Pb4S4QURGdgG7qKYdsyS
-         iH8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUP+PPYYRma5/bZAHvZOEB8Qrws+ZANw67g3q3PIogO/g5aMPtXmwxaq/jvQoREhMLlo4hSUaIPXj+6+C3+CQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfMrXvXgBC9nHseAQ4Vv0xMCItzdW2KHLWzYQcDpBEvx/3+BEg
-	Q/SAEO5BBOj1h542iJTTg0JOJ9xDlvzvZbCbYmG+26focHHPZ6tkF/H7Cw6zS/hM4Mw=
-X-Gm-Gg: ASbGncv5T6cjowTnH5MP0OC72GWM0OF2m9eL1cWuAHtDeW2/HDeNJGfXmrHrYOGTwb5
-	vjaamZmj3M+2110i44wIPziTrAablFu+MhadzaLh9ScGDhDUwXJpf6qzItY75YXl4IugxWJIksj
-	CVT9PJDZ12joJhtPQF2FlutmtPvbWT6KbV801qAqbTtZHI7hL6cAs49Gt3YhMnbOZ51xvIy/gS5
-	mtCTW2si4EP330xtldAcOU9r/D77i75hG1A5iW/3HcRsVaqbviI6AtCLr5mgirq2Pcf9Rg8os52
-	VVA8xj7xvy/VjiWl8/rPOOJUE42b2tX/7M9/0GWKIEDYmfzrsnkw
-X-Google-Smtp-Source: AGHT+IEv6gz69p3L0tnkjs4WbboIMeCV0Y6PseXGe/lkFOQuL+7jOhnn31ID8Drzpd2DcrW3kToDNw==
-X-Received: by 2002:a17:90b:1a91:b0:2ee:e113:815d with SMTP id 98e67ed59e1d1-30e830ebc99mr22665162a91.8.1747715638413;
-        Mon, 19 May 2025 21:33:58 -0700 (PDT)
-Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30f36491611sm643232a91.26.2025.05.19.21.33.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 21:33:57 -0700 (PDT)
-Date: Tue, 20 May 2025 10:03:55 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RS2nDKiJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B745CC4CEEA;
+	Tue, 20 May 2025 05:01:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747717279;
+	bh=/f9inSBBw1FpFk23RnNhhj4e42pJmmWSrQe4LCigA/g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RS2nDKiJPG7LreutyPwdoM/+GHI0tVDM/a1z67DUqzjp2fUh4V+a2YI9RIzRq9qry
+	 6IQOuUOdeWeODId05sYopsyKQIE4GNUZQFWeUyxCdP/AzOlXbW0v0s1dkej10q5ROV
+	 WXjrpeByXdPMap9Kn4UVh+NWDfReYxJV/Lc4Nt8c=
+Date: Tue, 20 May 2025 06:59:29 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Russell King <linux@armlinux.org.uk>, linux-clk@vger.kernel.org,
-	Michael Turquette <mturquette@baylibre.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Anisse Astier <anisse@astier.eu>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V12 06/15] rust: macros: enable use of hyphens in module
- names
-Message-ID: <20250520043355.wjkrslnripaqj6mm@vireshk-i7>
-References: <cover.1747634382.git.viresh.kumar@linaro.org>
- <21b4c30db60f22d56cc6386a18564705ad3a6f4a.1747634382.git.viresh.kumar@linaro.org>
- <CANiq72mNHYKXcDm6DiB=69W0w8pZ1KhqeARqqKBK_s01PPRsmQ@mail.gmail.com>
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: miscdevice: fix typo in MiscDevice::ioctl
+ documentation
+Message-ID: <2025052020-unpopular-sternum-a032@gregkh>
+References: <20250517-rust_miscdevice_fix_typo-v1-1-8c30a6237ba9@gmail.com>
+ <aCtzxoDeo6boMQMT@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mNHYKXcDm6DiB=69W0w8pZ1KhqeARqqKBK_s01PPRsmQ@mail.gmail.com>
+In-Reply-To: <aCtzxoDeo6boMQMT@google.com>
 
-On 19-05-25, 16:15, Miguel Ojeda wrote:
-> On Mon, May 19, 2025 at 9:08 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> >
-> > +    /* Rust does not allow hyphens in identifiers, use underscore instead */
+On Mon, May 19, 2025 at 06:09:10PM +0000, Alice Ryhl wrote:
+> On Sat, May 17, 2025 at 01:06:15PM +0200, Christian Schrefl wrote:
+> > Fixes one small typo (`utilties` to `utilities`) in the documentation of
+> > `MiscDevice::ioctl`.
+> > 
+> > Fixes: f893691e7426 ("rust: miscdevice: add base miscdevice abstraction")
+> > Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
 > 
-> (In case you see this before you apply)
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > 
-> Nit: `//` for comments, also please end with a period.
+> I guess this should go through Greg's tree?
 
-Done.
+Sure, I'll take it later today, thanks.
 
--- 
-viresh
+greg k-h
