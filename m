@@ -1,166 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69887235041;
-	Wed, 21 May 2025 07:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434871DC9A3;
+	Wed, 21 May 2025 08:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747814256; cv=none; b=GSLiikk8UtV+Q9YaNx/NrXvlQNX9dO9ztDulUzRRCPfRr2hQEXibwpfQqGkPpD+uoB7bcntjEl//IjMKrR7vgn9GSWesVDxNWT0LyrnLktNIYObmtnU7WjTqvx5r54Ix2Jgs053ABR1Nw0MqZT1pLE74LJCSvvIrVxutOga8k1o=
+	t=1747814435; cv=none; b=UF+gwo7vt40di+yDXkStR3nF7RRlK3x+dvNGmMa9goNtCdPV+BzFRBZmRssbvTOq9oH2d5nhIo+GpPfEjRnBXwtkFC/waakzIrafOgQlhXAAthkHbSmX/outFg1fMuHGYRSttsliQXD7hcJloRrOdL9/otP+9yHPEUK7KGplCyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747814256; c=relaxed/simple;
-	bh=MHWGAPWpziP5huR9TIH8wZAZmnhA3WW5t97xCAWUmGU=;
+	s=arc-20240116; t=1747814435; c=relaxed/simple;
+	bh=NXbCTTtiVf1hxjNTRc1GM2RzoMelIfvrZhBNyZ0cQJs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OXwmT6TBAh7MA4pJrRhM98zOAnLAaSVux6n9vkAAZk6JGJfE9XXHQ2W9jvxWAkLJAmKkcd9AYO586rtskK5DTahmZ7hv8ZQYzhpMMXAR1GDbPBoDyQMRDpTVgnhECsifGMdJ6rmMKM69eBgL1bZq1rueHXVgtaR4/fny13+RQrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIHtLvO1; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=tezvQDPv/iRw5dtmRKYa3j4SrxQDKRq4ELMX3+qSBdxUsR5ccoY3IK2XSyrleBldZfiUZy7GxJqqk24Ve3muqpkwxz5+2w25HWZMLxbveyR13jSdENS/OV43f/w/6K0QPsa1RVrnEZIu1WrK8sMoCgvDUznU4NfWdFbNvrzSF4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m2/9uM/U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIHtLvO1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A64C4CEE4;
-	Wed, 21 May 2025 07:57:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m2/9uM/U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149D9C4CEE4;
+	Wed, 21 May 2025 08:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747814255;
-	bh=MHWGAPWpziP5huR9TIH8wZAZmnhA3WW5t97xCAWUmGU=;
+	s=k20201202; t=1747814434;
+	bh=NXbCTTtiVf1hxjNTRc1GM2RzoMelIfvrZhBNyZ0cQJs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oIHtLvO1oZCWSWwEVSDYC2natdJxOh1JFUZdlzLs4BDRQ33zt/yRX12B5GIjp6B2X
-	 SvABv8HG7JPyNmOdtFmrWBd6MoX2cC4hotCNLpZIwtY2VTgSMFYwBtwzawuOkQ1dmV
-	 xCLDw/p6s9vegdw6xCeg6t0v8tBfdHsiXtAdLF2OzP2YhvJwYsIkjXt/AbsyZ+crp7
-	 6LpoXzEjRoZd6lfjbXXVwVW6rkvTdmyOuC80Q27p5G0kvqk0C08j4c3NNnjLoqKp7o
-	 nHDCbgfgut07BqEDj0q1AYT4CqYcMX2Ru69Q8WIyAdPNrY9m2MnNmW7vPRqWbB1QBf
-	 UZYoXj8nTVQyQ==
-Date: Wed, 21 May 2025 09:57:29 +0200
+	b=m2/9uM/UEfrYjyZRB5+ZA8Cs/2Hmzow+6pqeB30HS4fYP9dE/0yDvbAta6DX0hKcW
+	 CdgvE2HGDxvB86ylvjwlpAQ5UlZ4FF2laz60QCYmYwsos8qZEvzO3e1hi84Yw8u8BA
+	 DrrnFuSjhGIQm7wGHSLQ6OYQUUb1p1BrhVK33smEnGBJK5BS2Pn/Dm+JZ59cH5UXlB
+	 uX1S5xdpjDt0HVVsA2hkx9HZdS2hwH+jsMeNXLRPxUu9VvQYzlhAzklsccQ2PKfVHQ
+	 UFFTZj3xOBMhocKbIJO49SEeXDGfWr0b/lDVE6GUSfsfGSJI3fMRxLFuvBUr68wz7o
+	 cZRSU6h8DYctw==
+Date: Wed, 21 May 2025 10:00:27 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-Message-ID: <aC2HacSU7j5d9bzu@pollux>
-References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
- <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
- <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
- <aCRdNJ2oq-REBotd@pollux>
- <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
- <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
- <2025051524-festival-afterglow-8483@gregkh>
- <aCzzBT96ktapP03e@google.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v4 01/20] rust: dma: expose the count and size of
+ CoherentAllocation
+Message-ID: <aC2IG7amsKLk6G0a@pollux>
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-1-05dfd4f39479@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aCzzBT96ktapP03e@google.com>
+In-Reply-To: <20250521-nova-frts-v4-1-05dfd4f39479@nvidia.com>
 
-On Tue, May 20, 2025 at 09:24:21PM +0000, Alice Ryhl wrote:
-> On Thu, May 15, 2025 at 01:43:09PM +0200, Greg Kroah-Hartman wrote:
-> > On Thu, May 15, 2025 at 10:59:44AM +0200, Benno Lossin wrote:
-> > > On Wed May 14, 2025 at 11:55 PM CEST, Matthew Maurer wrote:
-> > > > On Wed, May 14, 2025 at 2:07 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> > > >> However, I really think we should keep the code as it is in this version and
-> > > >> just don't provide an example that utilizes ManuallyDrop and forget().
-> > > >>
-> > > >> I don't see how the idea of "manually dropping" (sub-)directories and files
-> > > >> provides any real value compared to just storing their instance in a driver
-> > > >> structure as long as they should stay alive, which is much more intuitive
-> > > >> anyways.
-> > > >
-> > > > We can't easily do this, because dropping a root directory recursively
-> > > > drops everything underneath it. This means that if I have
-> > > >
-> > > > foo/
-> > > >   - bar/
-> > > >   - baz/
-> > > >
-> > > > Then my directory handle for `bar` have to be guaranteed to outlive my
-> > > > directory handle for `foo` so that I know it's didn't get deleted
-> > > > under me. This is why they have a borrow onto their parent directory.
-> > > > This borrow means that you can't (without `unsafe`, or something like
-> > > > `yoke`) keep handles to `foo` and `bar` in the same struct.
-> > > 
-> > > Is there no refcount that we can use instead of borrowing? I guess not,
-> > > since one can call `debugfs_remove`. What about a refcount on the rust
-> > > side? or is debugfs not used for "debugging" and needs to have the
-> > > performance of no refcount?
-> > 
-> > debugfs should never have any performance issues (i.e. you don't use it
-> > for performant things.)
-> > 
-> > So refcount away!  That should never be an issue.
+On Wed, May 21, 2025 at 03:44:56PM +0900, Alexandre Courbot wrote:
+> These properties are very useful to have and should be accessible.
 > 
-> What I imagine would be the ideal API for Rust is the following:
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  rust/kernel/dma.rs | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
 > 
-> * For each file / dir you create, you get a Rust object that owns it.
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> index 605e01e35715667f93297fd9ec49d8e7032e0910..2a60eefa47dfc1f836c30ee342e26c6ff3e9b13a 100644
+> --- a/rust/kernel/dma.rs
+> +++ b/rust/kernel/dma.rs
+> @@ -129,6 +129,10 @@ pub mod attrs {
+>  //
+>  // Hence, find a way to revoke the device resources of a `CoherentAllocation`, but not the
+>  // entire `CoherentAllocation` including the allocated memory itself.
+> +//
+> +// # Invariants
+> +//
+> +// The size in bytes of the allocation is equal to `size_of::<T> * count()`.
+
+I think this also needs an invariant comment whenever self.count is set.
+
+>  pub struct CoherentAllocation<T: AsBytes + FromBytes> {
+>      dev: ARef<Device>,
+>      dma_handle: bindings::dma_addr_t,
+> @@ -201,6 +205,20 @@ pub fn alloc_coherent(
+>          CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attrs(0))
+>      }
+>  
+> +    /// Returns the number of elements `T` in this allocation.
+> +    ///
+> +    /// Note that this is not the size of the allocation in bytes, which is provided by
+> +    /// [`Self::size`].
+> +    pub fn count(&self) -> usize {
+> +        self.count
+> +    }
+> +
+> +    /// Returns the size in bytes of this allocation.
+> +    pub fn size(&self) -> usize {
+> +        // As per the invariants of `CoherentAllocation`.
+> +        self.count * core::mem::size_of::<T>()
+> +    }
+> +
+>      /// Returns the base address to the allocated region in the CPU's virtual address space.
+>      pub fn start_ptr(&self) -> *const T {
+>          self.cpu_addr
 > 
-> * When you destroy one of these Rust objects, it disappears from the
->   file system. I.e., dropping a directory removes things recursively.
+> -- 
+> 2.49.0
 > 
-> * If you remove a directory before the removing objects inside it, then
->   the Rust objects become "ghost" objects that are still usable, but not
->   visible in the file system anywhere. I.e. calling methods on them
->   succeed but are no-ops.
-
-If we would want to keep an entry alive as long as there are more leaves, we'd
-obviously need to reference count things.
-
-But what do we need reference counting for with this logic? Shouldn't this be
-also possible without?
-
-> * Possibly we have a way to drop a Rust object without removing it from
->   the file system. In this case, it can never be accessed from Rust
->   again, and the only way to remove it is to drop its parent directory.
-
-I'm not sure about this one.
-
-IIUC, this basically brings back the "keep() logic", which I still think is a
-footgun and should be avoided.
-
-Also, we only needed this, since due to the borrowing design we couldn't store
-parent and child nodes in the same structure. With reference counting (or the
-logic above) this goes away.
-
-I wrote the following in a previous conversation [1].
-
---
-
-What I see more likely to happen is a situation where the "root" directory
-(almost) lives forever, and hence subsequent calls, such as
-
-	root.subdir("foo").keep()
-
-effectively are leaks.
-
-One specific example for that would be usb_debug_root, which is created in the
-module scope of usb-common and is used by USB host / gadget / phy drivers.
-
-The same is true for other cases where the debugfs "root" is created in the
-module scope, but subsequent entries are created by driver instances. If a
-driver would use keep() in such a case, we'd effectively leak memory everytime a
-device is unplugged (or unbound in general).
-
---
-
-[1] https://lore.kernel.org/lkml/aCR9cD7OcSefeaUm@pollux/
-
-> This way, you can drop foo/ before dropping bar/ and baz/ without that
-> having to be unsafe.
-> 
-> Whether that's best implemented by calling dget/dput on the dentry or by
-> having Rust keep track of a separate Rust-only refcount, I don't know.
-> But I think this is the API we want.
-> 
-> Thoughts?
-> 
-> Alice
