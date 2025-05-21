@@ -1,236 +1,112 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2045.outbound.protection.outlook.com [40.107.212.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9F6221F1E;
-	Wed, 21 May 2025 15:59:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747843185; cv=fail; b=c5Wzi9IoZ42gwGWKx5QxLea+CX2DKq0X/Je9I4kxvK37MIQWsgnVz/cz/Xuro+wYKMolTa8PgbMok/Gtre1rBhy9d6CcDCtDa7x3/4RwYH8++2raK1OP0O0yZjXfDk9qr7HAOV8QvhQFVihV69qWjuGA076KR51mZYzo3VQ2hms=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747843185; c=relaxed/simple;
-	bh=W8doU9+FyZNstQKbXskyW0YdhwS0oe1jGalnedKdhk8=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=iNzuTWphA9feE20BtnJWTNWyaCnUbNeuFuq9dr2lb6rEwhVZRZSab3SldpHt3gQA6SQjirBM5QcW5pqD0ezvDNWBFXkTO6jE6eEliTk7eyTxW2M/uUYly9nclteGw/0jxhyT5Avo41P9yI6Wxzr1cJHIt0Hn+liqJaqKnQLeQWs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iuRSbdjK; arc=fail smtp.client-ip=40.107.212.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CA71CEEB2;
+	Wed, 21 May 2025 16:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747846728; cv=none; b=tEbkGt7/6OGr6EBv7p7NgUyt6Z36tFBpzulfKsuTCHnxuO2jg4D/QLliC6Ke7P5+rMx26/YOSXN/GnZ3V8+IZx1s2/NEuqZWQT8VZP51Vfd6/2LnegHhrESgUEgp+uclQO/SfBWriYJEIYdbHLplpESXH+7eLnpl+e6GvnQ56CA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747846728; c=relaxed/simple;
+	bh=59oAJcTJpmR8OLFJ0gR8UPLguvkoStgGoffZseDex2g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CdA4isKl49KyCq693+7uLkH4Kvk29L+b6xrtLYfhXJPPZ3wwyuQfSDCLUcMs8eD9tk+5TXqqrWtEA1ezqUy2U1yE4zbw7WecL3WyVO2MQFDPL8HL6ASBbPJvWfvABOP1aYu8xGQPzlm55ig4A6MwW9d29s2IZKCMr8YYf5h2FDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEcWuyg8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iuRSbdjK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p+YZrVMxoxiF/EpXwcos3x33VQK+tlRQv5p/7vxmK7l9fgOIgkqlL0mwGYXL7I+mVcx6lcL0dyw3+VgmRPq19E+qWbgHwPeiGdxRIkW0TmDhgjQuKGIX8g1itJG0aakGo67UpUk91sSiNt0XIpF1eym8oVyIi9oChIO1r8FNudyEFN3sbHJ0uPofZ3m6s8dburnHafEFEjbcW9HaE10FW2J08O55D4OYvR/8KyQ/RhElg1xQJxIw6O/yn+Y0HH/EksZMBh7GxwNoy6yjyylXY5cZpfgGR44bb097WNWlE8onFnCNK7XXpiMQeuS6VPP31t0fFoel4BO9Ao9X1gYP+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aFv4WPyJERDJBX4BwTJPbxxOiKfxy7n7tdqAm0Z/PTU=;
- b=Nt6AVIUeWJ1rfIG9EoutF9fsHodlcx/07Rwf2Mtj8t/QINVjhVAbpv5NGs5ZNLPQDo+t2A5cfknR/OjzjVN53YZ5i2Rd9NgWpZtDe/Q9ip6LXHNe9Jp6PPSUr6bsIJ1n6Uci1oECdx6EZr2kFDDTXeWpWuPyBHNV0HExQdLolRf2x8F41/L/8dAVj1m/G7GSdl1mnnGQf57XjnalIEqB0EoQ4DmD8gLznQbpdRzjAgypdEGcbROfUcTDXARJ4Rum9yD5QOVKaPf5Qyznlv/YwemysKecrq1qlLMNIivuZRDTSGXTeZIFj53Ek55gip8Y95ZHVoDN8pIkRVpFZT6wFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aFv4WPyJERDJBX4BwTJPbxxOiKfxy7n7tdqAm0Z/PTU=;
- b=iuRSbdjKEWqJQgivoD+ri40cEUy/bo8uXY03fDKfp4wwer5d99fesF+nK5BtmOUFfNvqhNEfVxhQhrTE5qP5Evt6fJXzm4lLYpXS00jHMKN59pAxev6UJmnwp63MHgjgkZgiNCpZKeZ8OnPnZxfOqeHvAtz3d5X+t6SLXCM09huRTB4Vi7JpqoHPbcaUv/sr2Vup+mEjJWL9J+rxPkeEzxqB/izNIE2MHlGSM+NbT3d8+36M4YjK4m2hjgKtkDJZamMQPor7Ms7sLhOTJOAT5H0PUrFCf8VI6dcqxtstI32YtcG4G4Ha9+1dANtcD/a1tIQiQSgn3LNZvIV6a09idA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by SN7PR12MB7419.namprd12.prod.outlook.com (2603:10b6:806:2a6::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.20; Wed, 21 May
- 2025 15:59:34 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.8746.030; Wed, 21 May 2025
- 15:59:33 +0000
-Message-ID: <ad10ce1c-c3cb-438e-a0e6-37653eb0a37e@nvidia.com>
-Date: Wed, 21 May 2025 11:59:30 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/20] rust: dma: expose the count and size of
- CoherentAllocation
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Boqun Feng <boqun.feng@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-1-05dfd4f39479@nvidia.com> <aC3KbKeEVlHggi5l@Mac.home>
- <0d5a71b7-92d4-4052-93a8-ed61bc9ebb67@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <0d5a71b7-92d4-4052-93a8-ed61bc9ebb67@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN0PR04CA0011.namprd04.prod.outlook.com
- (2603:10b6:208:52d::7) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEcWuyg8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCC2C4CEE4;
+	Wed, 21 May 2025 16:58:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747846728;
+	bh=59oAJcTJpmR8OLFJ0gR8UPLguvkoStgGoffZseDex2g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hEcWuyg8NDZHwjwFdz1hKQdHeyloCDmxGf4ySMcqClZTIFYnrGv6Z9k/7vxobndeY
+	 Md28uGshRkdCxLeXocEiFhcg6/0elgPtySg9cy6VIV/5+F5+2LUCmiCXqnjZVjABcP
+	 C6+723bA/Ct345PLSLtIS7Zl2V/BSKfJ2MrU2n7A=
+Date: Wed, 21 May 2025 18:58:45 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 4/9] rust: device: Enable printing fwnode name and path
+Message-ID: <2025052116-gem-blend-2585@gregkh>
+References: <20250520200024.268655-1-remo@buenzli.dev>
+ <20250520200024.268655-5-remo@buenzli.dev>
+ <2025052153-steadier-bargraph-e81a@gregkh>
+ <DA1UXY2O47Y2.1ND9MC6L01217@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|SN7PR12MB7419:EE_
-X-MS-Office365-Filtering-Correlation-Id: a50d56cd-2291-482c-902a-08dd98807a9d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bnQrR3loN2NDQVdMaXFCQzE0UnR6QkYzQk8wUkZPWVdXSC9ORXFjWmlkMjlq?=
- =?utf-8?B?QnBub1lEL2NwVEt3M2VRM3lqczJacHI2M1dkcmdOMkcrTmFlRUxCM08zM2xk?=
- =?utf-8?B?WnFKUkg1QW1oK2lKbmpsMFNrRlBINm1sM2lWNVJ6aWYveXZ5VlBFaEVPWEYy?=
- =?utf-8?B?K2ZYNjVONXZ5a1ZsbkxVclQrTG1vam5iVkl2YnpsU2JsMHBWODZqaEZUTmlL?=
- =?utf-8?B?R3JOMU02a2M3YzVCdm42TUFkMXJ3M25KLzJ2SVBIeFFoNzM0KzhsdklqOEcw?=
- =?utf-8?B?RmF4NVlOMms5TlkzTnl0amhmMmxrVmpCUHRUcnFuanpQdEVtWkQzUks0OE9m?=
- =?utf-8?B?ZmQzQ3RkZDB2M1RwbHNnWjdCLzBkSXNqVGxWMk90V2ZqTkkvQVE5bFQ1TjNU?=
- =?utf-8?B?SW1nMU0wWHhFUTM3bERqTHRCM0RBbVhFSDk0U1E0KzhFb1JJRkJzT3RleHQ5?=
- =?utf-8?B?blRYYWlVSVpyY1B1KzBIZkNaR056c3ByNUZQZjVNRXF0d2xTRG5IOHNaUUps?=
- =?utf-8?B?clpmWGt0SDBJVHFXSDRkckxZLzNuc0RzRUJxS0JxcU9oQlhwQWFOd0pHTXFE?=
- =?utf-8?B?dHJPMUdjOW4zRkZFekoyTUNmcHh4c0p4QnJpclg0c2tRTW1XazB2OTVvZ3Vu?=
- =?utf-8?B?Mk5nRU9Oejk5YW9xZ2daS0pPeldYZXFiSXNvZmxxWGh3UC84aVdzZVRBY0J3?=
- =?utf-8?B?QnBST0svMERoUVJ2bFFWN0t5bzhmblIyZ3VJNUVVU1BrSm5LVTM0Z1Ivenhz?=
- =?utf-8?B?M1UwTUlqK0wxcXg2cXcvRGdUVm9XZzQ2VmIyVUZ2LzA2cS9MYUFnZDhLYWUw?=
- =?utf-8?B?aXlsYm9pUWxLcEt1ejNxN2FsWC9BcHQrTmVyVFd0bVlnWDNHU0FjM3gyMkgx?=
- =?utf-8?B?eVRPcVZ6c1BFWWhyRGsxeWlnenBVKzRrZDJtZitSRjdYTHppNkRneXFCUzZm?=
- =?utf-8?B?Qkk2MEphQlA3d0gwQTZGQ0l3cmtHZ2JRSHRDQmNSbEhDRHcvcHcrM3A1M00x?=
- =?utf-8?B?L255V3VYR21wTHBZQms1Z1hOcWhQS2RvVUFGa1lpYXMvdnBNUVhWK1dQSzE0?=
- =?utf-8?B?c2RiVlcyRGhXVHNOUmJIRTdlS3NZRUlZKzJyR1N4MEQ4S1RUSUd0Q2hLcWFR?=
- =?utf-8?B?SWJNdUlzUkZTVjY2QklKU2dFMkc1Q095cVBZMFFrNlNMQlQvRU1yWTVrZWRO?=
- =?utf-8?B?SUpwbFFLVDRINWUwM2ZjYkJsT3ZkWHc0SllCRWhYWHlSMWFXdEsrL0RFai9a?=
- =?utf-8?B?alNuamJrcTgrSUVwcUcvd1BzV2xwa1VtbVVXbmtpZlNQMjB5eXEzcHhjV0xI?=
- =?utf-8?B?VExmVTFXMDFqczZWcE9CZlpDc05GbEJnbWpRYUhhTllzUzdoaHNoQ1Jyd0t5?=
- =?utf-8?B?Y0Izdk16TGhlSHZxM3h2M09SWFhPUEZQb1RKNHo1Nk9sZ2pvUVJVN3hjREtY?=
- =?utf-8?B?Nll5SCsxcTZYYTRZakdXamI5aW1ObUJTanVLOUE0VlV6cTk0SHFvdUJmZWhC?=
- =?utf-8?B?eEFjMXNOL0R4bHJHQldxblRYNm1HNEQ0cVBPRnR5ODZjTk1IdVVnVnJ3dW03?=
- =?utf-8?B?enJSTmFiQzM3Z0FpbzlPeHorWll3QlJ3d0NaYk4zc0ZHSDhhSDhMa2VOdXhI?=
- =?utf-8?B?Z1ZQbHZWdzBoeE1UQXpsMndxS1g1NTJQOWJkL3ZPb3hkb1pXOXN2MVdmdXEw?=
- =?utf-8?B?bkcwSDBNcXRqTkdwdGszQVk5eGROY1BhRFladExMWUwwRHBDV0RmT1VTYTk1?=
- =?utf-8?B?aXR4aStsMWRDQVQzcG9OUlNPMk1LemZ5YVd4T090OGQwSHhieUZXaWJYSmZ0?=
- =?utf-8?B?c0tBR1NqS3BUOVpDSHJwSGJQV0cwYk9SNkRGbWZ6WTFjZ2RUYnZFNys1OHFx?=
- =?utf-8?B?N3ZyTnVjRXpZV1BRbG5NTExhcVRRZ0NuNnBnY0ZGc0d1MXFRTWtFOUJTZHRu?=
- =?utf-8?Q?nkQ3OdPQMi4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TUNxcUFhdUpGN3dmTWx2K1pvcy8rUm5LKytYMFo3MHNhOXNKZFlDc1RsQ2hF?=
- =?utf-8?B?K3dGZHBzWXdqNVJDSWZSN3ZzQTEyNHEvMGt1NnNVN2EzeVZWUFo3ajNUMGNR?=
- =?utf-8?B?bUZBRWZvSTh1WExVc0U4cHNKaGxITURBZlFrS1FnYitsaFpKbFZMUG5OZXIz?=
- =?utf-8?B?ZlRpVlk1aHZzVkJxMlVYTFpHejlPdFB3K1dQSm15RTlnR2NEenZmRXQ4WVV5?=
- =?utf-8?B?VUxSTE1Ock1jK3kyQjNGdG85NGFLMnlQa1JqTWR0QVlpVGpLa0FaZlVJMUdX?=
- =?utf-8?B?akNxZzgxT2MvNXZxMXNQSkJlVTZYbXZDelVydm9DYlhDN2t2TE42SGhWeHBa?=
- =?utf-8?B?VUJZUEdndkxtZ1hqSzBBMU5WdXB3TVVFSkZ3L2hzdVYxeHc3NXJ0T3ZuQU53?=
- =?utf-8?B?UFFWKzZzQkd2SGhHTlRpbTRTeXZZMi9VRGh6bHJESm91YXdvYmJjbEh6OGJ3?=
- =?utf-8?B?WGNKQ2ZnOExJQnlSZmgxZXM1bnQ3a1pQM0ppWEJ6cjB4T2JrTVZqaTBXdWtn?=
- =?utf-8?B?ZnRRNkRLQjFrSEZBY1luVDRDVG9TUURGNmV1MWtaZzZhZFBOc0VROTg2SHNo?=
- =?utf-8?B?d1g4bUxQMzdVenV4bFBQS3VIT2F1R3lMcnA0QnJwL2RTSzdMQ202SW9uMUUx?=
- =?utf-8?B?SWQxM0V1c1MyQjIzcmQ2Mk1Ed0RES0x2bjZlSXliUHEwQ2xaZUhkOUErTWFT?=
- =?utf-8?B?bG9Zc2ZZNVpuYlhxNk8yQXZEOExHNXNBbVMrT3daRGhHYkZoSXQ4c2Y1S3JU?=
- =?utf-8?B?bTVnV3FQRGx2STYwMXFncStmcmM3Tm5oTzBxWlZyU3RKZ2NDdVlYajltWmNZ?=
- =?utf-8?B?dEFVVWRhYjVYR2k1VGVmQjh4UTVMSDlmWmFSRnZlb1BUcFJpQnhURURNdXVI?=
- =?utf-8?B?K0NvZXN5NU1WcGFGT1R4d3JMMjEwYWk4Qmh4Z0tLL21wU2thV3RVb28xZzZD?=
- =?utf-8?B?b0dDcUJzUTBGWHA5Yk0rMThNNENQRlZRS0w2OVJYTmxpRDZJQ2FCVTIyMjJk?=
- =?utf-8?B?VzdjaDJUNE9HOHNTNTV6WUl3QUhRU2VQbElZMkNHV3FFUzB1N2MrODFOY0k0?=
- =?utf-8?B?VngweHhZSWtsc0ZVcDA4dHJqNlV6OGRJV3hwYStDd3kwbSsxZ1lxUlZrUG1s?=
- =?utf-8?B?WDFXM0IvTWc2ajJTYVdBRUdYZm8ydmFxUWYxVUdNUWt6NEIzSnd4TkU5QnNZ?=
- =?utf-8?B?ejgwbFFZdSt5dklySy8vUGFTcW9LZ0JtU3dhWUpBSWJXdXV4MU92bnVXVzl0?=
- =?utf-8?B?UVlKTWtWSXFKalJEVWdIcmVlOXFvcDVKdk1MTVRzTGY0MDM2NmJNSnVONm1N?=
- =?utf-8?B?cm9EOS9xcEtNZjBmT3ZRMkVxaU0waTFlSVJEeHZrYnpGcjJ1VnRkK1A3WVUr?=
- =?utf-8?B?b1V4Kzk0SXh0TVhId1lFL0R6aFp2eG51bVNobGhYME5CTG95eHJXMnpPbVc0?=
- =?utf-8?B?RmtDZDR5cnA4SHo2bW1Sajl5cjY2UTdwVG9MTzdGREhhc0o4ZmJvajNMakZG?=
- =?utf-8?B?Vk04NVlZenpOQjkyT3crcmRDREU2Lys5MkhJSVVZZis0N3l0UC84NkdJMEZz?=
- =?utf-8?B?cU5KWVFUSlpEUnY5Wkx3TFZIUEt1NFJKbnZQUlI0N0VST2phU3Z2Tkp4bEho?=
- =?utf-8?B?SHJBVVRXQkh3Q2NNVDBuS1U4Ujk3cXJGeGRVcTdxWkJCZzVyVWpaMGgvZDhY?=
- =?utf-8?B?VWoyaW9zcnRpeEdjMUhocUNzN252dnliUGxadVFzYWFLR1U2Y0xXVjFDb2Zp?=
- =?utf-8?B?bG4vaUpZSjVqRDdBUHBxZGp1U3oyQXBtdzJqM3hPSFpYYkFpZzZJc1dGeHBJ?=
- =?utf-8?B?WVk3RWI3OTd3VXZwSWdNRUZXL0JYdGNERmRCWWFsVkZuU0pmTmtnalJrT1h3?=
- =?utf-8?B?N0pOMmZ3dWVPSzBZYitTajhtbW1SVU1nRTkzeUhFRlJNdklzVkN5MlNXVm5v?=
- =?utf-8?B?M0htN3A1eTlELzFKS1RuTzdkRFVsN0NtSEhBckZaMnRqa0xHYWo1dWtFWFJx?=
- =?utf-8?B?cEIwbFdXNGx6RkwvWGFMdlh3eTFNWWdXRUZBMTU0aHpBWTNvUk9HN1EraTZ4?=
- =?utf-8?B?bmk4UVRlMVFhZTZqTmc3TUZKZlArYU15NVoyWE1NYS9HUXRFN3hmdTBYbm9F?=
- =?utf-8?Q?KGcIWXS4pEkkjUCNHfcnBYIjm?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a50d56cd-2291-482c-902a-08dd98807a9d
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 15:59:33.8338
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vAjfImkkcolDBBebN82b7ygEHwxGm+oS/rUpwepsJjdJJ5bLn6I6J9EiYupJCdvMGMonDctb01qJFMDrREOh5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7419
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DA1UXY2O47Y2.1ND9MC6L01217@buenzli.dev>
 
-
-
-On 5/21/2025 11:57 AM, Joel Fernandes wrote:
+On Wed, May 21, 2025 at 03:03:07PM +0200, Remo Senekowitsch wrote:
+> On Wed May 21, 2025 at 2:02 PM CEST, Greg Kroah-Hartman wrote:
+> > On Tue, May 20, 2025 at 10:00:19PM +0200, Remo Senekowitsch wrote:
+> >> Add two new public methods `display_name` and `display_path` to
+> >> `FwNode`. They can be used by driver authors for logging purposes. In
+> >> addition, they will be used by core property abstractions for automatic
+> >> logging, for example when a driver attempts to read a required but
+> >> missing property.
+> >> 
+> >> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+> >> ---
+> >>  rust/kernel/device/property.rs | 72 ++++++++++++++++++++++++++++++++++
+> >>  1 file changed, 72 insertions(+)
+> >> 
+> >> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
+> >> index 70593343bd811..6ccc7947f9c31 100644
+> >> --- a/rust/kernel/device/property.rs
+> >> +++ b/rust/kernel/device/property.rs
+> >> @@ -32,6 +32,78 @@ pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
+> >>          self.0.get()
+> >>      }
+> >>  
+> >> +    /// Returns an object that implements [`Display`](core::fmt::Display) for
+> >> +    /// printing the name of a node.
+> >> +    pub fn display_name(&self) -> impl core::fmt::Display + '_ {
+> >> +        struct FwNodeDisplayName<'a>(&'a FwNode);
+> >> +
+> >> +        impl core::fmt::Display for FwNodeDisplayName<'_> {
+> >> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+> >> +                // SAFETY: self is valid by its type invariant
+> >> +                let name = unsafe { bindings::fwnode_get_name(self.0.as_raw()) };
+> >> +                if name.is_null() {
+> >> +                    return Ok(());
+> >
+> > So if there is no name, you are returning Ok()?  Are you sure that's ok
+> > to do?  What will the result of the string look like then?
 > 
+> In that case we're not writing anything to the formatter, which is
+> equivalent to an empty string. `Ok(())` means that writing succeeded.
 > 
-> On 5/21/2025 8:43 AM, Boqun Feng wrote:
->> On Wed, May 21, 2025 at 03:44:56PM +0900, Alexandre Courbot wrote:
->>> These properties are very useful to have and should be accessible.
->>>
->>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>> ---
->>>  rust/kernel/dma.rs | 18 ++++++++++++++++++
->>>  1 file changed, 18 insertions(+)
->>>
->>> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
->>> index 605e01e35715667f93297fd9ec49d8e7032e0910..2a60eefa47dfc1f836c30ee342e26c6ff3e9b13a 100644
->>> --- a/rust/kernel/dma.rs
->>> +++ b/rust/kernel/dma.rs
->>> @@ -129,6 +129,10 @@ pub mod attrs {
->>>  //
->>>  // Hence, find a way to revoke the device resources of a `CoherentAllocation`, but not the
->>>  // entire `CoherentAllocation` including the allocated memory itself.
->>> +//
->>> +// # Invariants
->>> +//
->>> +// The size in bytes of the allocation is equal to `size_of::<T> * count()`.
->>>  pub struct CoherentAllocation<T: AsBytes + FromBytes> {
->>>      dev: ARef<Device>,
->>>      dma_handle: bindings::dma_addr_t,
->>> @@ -201,6 +205,20 @@ pub fn alloc_coherent(
->>>          CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attrs(0))
->>>      }
->>>  
->>> +    /// Returns the number of elements `T` in this allocation.
->>> +    ///
->>> +    /// Note that this is not the size of the allocation in bytes, which is provided by
->>> +    /// [`Self::size`].
->>> +    pub fn count(&self) -> usize {
->>> +        self.count
->>> +    }
->>> +
->>> +    /// Returns the size in bytes of this allocation.
->>> +    pub fn size(&self) -> usize {
->>> +        // As per the invariants of `CoherentAllocation`.
->>> +        self.count * core::mem::size_of::<T>()
->>
->> I think we need a comment or even an invariant saying this multiply
->> cannot overflow.
->>
-> If there is a coding error (say large count passed to alloc_coherent()), then I
-> don't think it can guaranteed. Maybe use
-> self.count.checked_mul(core::mem::size_of::<T>())?
-> 
-Nevermind, we already checking for overflow in alloc_coherent():
+> I assumed that a valid node would always have a name. And we're
+> guaranteed to have a valid node. So I assumed this case would never
+> happen and didn't think too hard about it. But even if a valid node has
+> not name, empty string is probably the correct thing, right?
 
-        let size = count
-            .checked_mul(core::mem::size_of::<T>())
-            .ok_or(EOVERFLOW)?;
+I don't know what this "name" is used for.  An empty string might not be
+what you want to use here, given that you could be naming something
+based on it, right?  fwnode_get_name() is used for many things,
+including the detection if a name is not present at all, and if not,
+then the code needs to clean up and abort.
 
-So maybe just a comment suffices, then.
+So what exactly are you going to be using this for?
 
 thanks,
 
- - Joel
-
+greg k-h
