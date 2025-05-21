@@ -1,129 +1,170 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715C91428E7;
-	Wed, 21 May 2025 13:50:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F69E1632F2;
+	Wed, 21 May 2025 13:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747835453; cv=none; b=RzzgOOjBMs9fgKM5WQkdvExYIYj3U4YeEBI3WRSIzxFR2K3mPeaIlcXhLuf3mfmtF6anaAUWKQAJEK8EqftGsvvD8wgv6CwlAt9sqrD6y//ztc4xiUOmfBQI6ik32iVslv8Z/trBUiogpETMzf9MITIljdZyl5QRkqPO4hqGnsI=
+	t=1747835854; cv=none; b=pF3zXi1NBx92FDxhqllSwJsfAOCs+lwo/JsvL/Fx4oYHZsp8ycpug1gg39+fs9Nn9Phl8CYHZHkUu0G+kW15tEhcvGZJm9/SBRZkVVkOePfZSvc2KLVUTShuOMyJKEklayG3narFQWEsfmt9n2BFAq/udB0v1k+EBcR81AFaGzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747835453; c=relaxed/simple;
-	bh=UsA9YoJF2otEMcdV3c1rOsX8L26ArSdMgD+keKpiMxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YscoocE14y5LJMsJ99PHPkx+LOZcjb59QrGTLGaFw4hJFVkuIGaQhUwiZFLfjmXnT/HyU/XhmUJghk2ShxdCDZkFKgJ/XrtYl+sMC4ez4D7OGylnmKHJtVkI95zMLvb8IIA5v4iXv35qS54GtchMBmWRaYuTsfqOy96Q25zf+TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B5f2r/NT; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1747835854; c=relaxed/simple;
+	bh=8z2YBX+EFRSuHcRj54L24/zNxbTxIEMwakhOzYSLITA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vo/IkAHIwQRwtgJFd4dxPVsZsovVh5VIHeEGu9qHTsfoIam5e9PdNmBLIiXbG1R7VTmPBWgWaSGqH+3t/zQQZ5LdiiSJCDqsWuC6qpzZwmDtxFiJ9H44Wr9n9WICGS7zMLm9MMGhi1ygKxGLPVI8LvRNQRX8JVvCUNDY/5ZmfYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VhGDSGFu; arc=none smtp.client-ip=209.85.215.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B5f2r/NT"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso5951202b3a.2;
-        Wed, 21 May 2025 06:50:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VhGDSGFu"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b170c99aa49so4611009a12.1;
+        Wed, 21 May 2025 06:57:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747835451; x=1748440251; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R46w2tr8IxWCBsHZquRdLIceMnJPkpXIZ27lFgmh76M=;
-        b=B5f2r/NT+rMPJ8MlPU0WOOhKT1DVfOKROnhrvxAu3YaL/VSyFisVcI8hdz0cSNzUNF
-         WS/LnJbJOU4sfVAIAiHCvBf5zZT6AFrbWCPugTYWN3N6ROG/eKzHLBvSALBH6Xv4bPuK
-         wuW9XtT9iVEZKmz7B0shVH72coR8dZy/jQd9voMybIutBkDMtus/VrADEXDZPQYwXh8x
-         gzc6/2Klmdd7/cCzN/XPKVGRZLHmsWCLoWs59xpWUsfmeAdZMBkIAg1S/z+fC+jbDOI8
-         5YV5lUssy1N1KmO+Ar+o6ftZbb5kP2KfgH2fzrRRnwTyoOPrmCq2B6geKlMdLOpc7Kny
-         R1QA==
+        d=gmail.com; s=20230601; t=1747835852; x=1748440652; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=R0+1gi/Kvs1Gh9UB+OHBczCRkWyKK7CTayIxCJ1WI6o=;
+        b=VhGDSGFuV3/ga7/g+hKcgeheVv1TK+9JQ5mDJri0vemTWwl/bExauGSCznkizPekU8
+         aysJ6gYje7etHlo1rIdK3eWDRUa0lkc/EJ2YXapR95qg0J8K6zPL4lqdvzpWOg5oOTKD
+         VVQv0eaQiuT2IIGYWY52fep0cKwNYvxdPnPI7bIXc4JxTIn2Fj4xE53uqnvsD/b2/ER4
+         2+DJiD6glvn/83AnUsDo+8FAt8uDKWbVgIDVP5dbn0m2DytpkkHqVoiwB+YLSRCCZtAz
+         dAhzoib6RO4z0zKtFNFVTkFx7SRrGsImsWFMx/4CiQ891mOhZU27gi89wx/neklF8jtW
+         FU3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747835451; x=1748440251;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R46w2tr8IxWCBsHZquRdLIceMnJPkpXIZ27lFgmh76M=;
-        b=h5/GAijFzWfVmZRsmclHDfhreNEHKi9k+d3EvwMgf94J49IFPFoJNfJ9Ln58AeILcG
-         TJycMT4IN7mnV0IlphFILYgdCjdq4b79hCmC6PpXhbz775u6jKp7JWqTxpdH7nOQYdFG
-         UPaSS418Ab3wR5ERzfPGFwLoA4U7guFzrdkSuxhZ5XsGqzLA3pxpGgz1Wd/J+7IeK/mK
-         PppLI1mjlCjDHA9+l/hcbdLXRsxJyTB0fnxfJw960jJOPPdUtHVS1ICLJl5WyTwL6sJQ
-         UE1JlyoCGuKalyApm4Dm6TPSagjz6JKxgEUyPibRzYkBuWrSLWKH1HZ2qIVkqWICOoMw
-         0clw==
-X-Forwarded-Encrypted: i=1; AJvYcCWvBYDSAddiAu6KWRjdSvTShZXwHITLNxkeEeeYGuxyubOqdlU7NNW4PdRzJAoQU8XXCcs8cLsqxLv4KS+K@vger.kernel.org, AJvYcCXN8hrSo4DJYdNfSDXg7ysEZuaNkRhZXZ/v38XVOshYarLo157h2HEqGyV+cnbETZXyqoG5CawBdPHqct+g8b4=@vger.kernel.org, AJvYcCXRq2KdeNPBs2NN8IAXT50gkfrq10eD42JHV56AqOes+ET/IslMq+MvhLne2yt4G4DiWhSE5QzfIGgYeExj3tI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/pFyBE+HYWgonI0TqVeXGPSgPV8F1M88dRQ507vTwJB55bM2C
-	zfguQctmZrvVeGwKXRgslIw8mTDGTcaew9PGPLZ+nMurOY4n8KaPqgO7
-X-Gm-Gg: ASbGncvZoHTv3iGNai/jVTo/UGcO1sHMz94Vyvmxm0fGacE7uqiAPvEYP2aTLzVj8Yo
-	PWTW5v3s/CDxkfb5QO5zMmwQ/AYwx6vR8nwH8xeBFUL2CfUJD8JmCVAtxM+hC1f7IbioAXJjYNL
-	lwVttjflc71RW11pr06vI5HyAs504BPQYwkbY451Cms8y2aeRzXMoT8xUS9Vq9V59qONyj5dV1E
-	hKk4SEx/qdB2mnaEoT9Jy6ZbNefnxKiSpz6xWWHUV8ccPHcZPsbNB7xmmK3h2C3C+NTYQdKiPjY
-	6SSSCFKufPS5CRHpj9XXX9SkH8lNcWakOIaIc6WkXUpGAJ1frGY=
-X-Google-Smtp-Source: AGHT+IHq0eKFjeI06BIzgN/0Irky/CQsRzAEPDFf/mbGOmUNgOvRZ0bdxlbo1gFAcVOpwE59CRgcBw==
-X-Received: by 2002:a05:6a00:3985:b0:742:a334:466a with SMTP id d2e1a72fcca58-742a97eb677mr28920367b3a.12.1747835451476;
-        Wed, 21 May 2025 06:50:51 -0700 (PDT)
-Received: from localhost ([216.228.127.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a9877056sm9880588b3a.143.2025.05.21.06.50.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 06:50:50 -0700 (PDT)
-Date: Wed, 21 May 2025 09:50:48 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jann Horn <jannh@google.com>,
-	Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v8 5/5] rust: add dynamic ID pool abstraction for bitmap
-Message-ID: <aC3aOHWEGzjjDNgb@yury>
-References: <20250519161712.2609395-1-bqe@google.com>
- <20250519161712.2609395-6-bqe@google.com>
- <CAG48ez2WdxXVCzVsAPeQWgso3ZBQS_Xm+9D1FLBx6UHFV1bGHQ@mail.gmail.com>
- <682bc528.c80a0220.13f632.9ec0@mx.google.com>
- <aCvTYHMtuWZZizn9@yury>
- <aC1PQ7tmcqMSmbHc@google.com>
+        d=1e100.net; s=20230601; t=1747835852; x=1748440652;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=R0+1gi/Kvs1Gh9UB+OHBczCRkWyKK7CTayIxCJ1WI6o=;
+        b=hugjRebiMph57hDoH4niUg6oT9EAS3dRWC3CBJRUDI+51b6oQntMwIZjXCyhQWrclA
+         z2vVA7wzrTq85HtkLBGJtTcQN+5kaMdJp9Kt3XIoANmjphWjGib4U22ZZg0kR9eoT6xf
+         l2RcyDvB0EC6dMMR0aEmLm6wCZcbUNsT1A4d4ihureHIBdZskgskXH6UIa5ah99m9P0B
+         xCkPCCZYiEL9gUhfk1s6yaC6/pFRy13BAC0WP9UoxDz3oQrnVpF60slCai2De8wsIYVS
+         1Fkq2ZgogN8f07r5bVb9UPb6Na3UgpTAJQtN67522UlckRwBVbphJZ2ivAeOxG51NQOE
+         9Raw==
+X-Forwarded-Encrypted: i=1; AJvYcCVBFxOHQVx7QYrPNJDD2MEEVjh4S4Wsl1ewHTN2g0zg/eeE7FnOVCwZ3l1Q1H90BxX2ETcRpWowfJqkGIUakbE=@vger.kernel.org, AJvYcCXENf7tLtwl+2/pcjCQs3UQP/+oyFvejfxbq2Ghva/C3mC+qQMCKMRw0XbNKHiNCMYuRBVavV/jUQx5ba4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywvk8JSCtS1dwyWTO0ZuWoti2uCa1wFq9q1KuEE1/7LQ0iZmwYr
+	8ir0eXu8q8BUlYwG+z6Ix+Xe+1OsHH7yimbwozWc2qXZzH1cNSj5q+DP
+X-Gm-Gg: ASbGncu1Wzl8xI6sPGf4w5eQVGDSCTdXGcVOIWrvG29hKkkvXJCGkow8U7vCp2Pvv+Y
+	pmoTKoxtUp0bflYd2nFEdBGfTYcfnImDd3Oap2MOF+swYkmQ8XS3TGQlNgNYZ2gzBinyXNm4t30
+	hgBf8MBXoiMUm+7ee/ct9GsIKYDCddp/1IQs+VR1E1JylKBuLmNyX2XWia0+7UJumyUpfFJy3Bs
+	2HUoJo8XGP/8z0gC+KOrsCINlyXWNauQx8xhCD1vvitpBSfPPnG+Ddi1Tb3o8bt+VB0OVNJfR3k
+	SJd9lhePzN+398eJ32v8ED81EI/kxQpTGppqF8qAFtOdQj+68Olb/C1uYLP8x5KCjnsNPLBiLPh
+	egjqCxRhaiynde0+vulhjtw==
+X-Google-Smtp-Source: AGHT+IGVi9s0oTxfVW0Z7RPZndmVIwVFJ/m8Ijk1ItkxPamjzeLF2LcDH9LTf7a99UQYb7PJGtnwPg==
+X-Received: by 2002:a17:90a:dfc7:b0:310:89e8:c7ba with SMTP id 98e67ed59e1d1-31089e8c7e6mr5867279a91.2.1747835852438;
+        Wed, 21 May 2025 06:57:32 -0700 (PDT)
+Received: from ?IPV6:2601:644:8500:5dd0:864b:f5ff:fe5c:59a5? ([2601:644:8500:5dd0:864b:f5ff:fe5c:59a5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30f365d46ffsm3659347a91.25.2025.05.21.06.57.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 May 2025 06:57:32 -0700 (PDT)
+Message-ID: <d6515a2d-7986-4b53-a655-869d568d4081@gmail.com>
+Date: Wed, 21 May 2025 06:57:29 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aC1PQ7tmcqMSmbHc@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm: Fix rustgcc unknown argument '-mno-fdpic'
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: torvalds@linux-foundation.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Christian Schrrefl <chrisi.schrefl@gmail.com>,
+ Russell King <rmk+kernel@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>,
+ anders.roxell@linaro.org, arnd@arndb.de, dan.carpenter@linaro.org,
+ laura.nao@collabora.com, lkft-triage@lists.linaro.org,
+ regressions@lists.linux.dev, Nick Clifton <nickc@redhat.com>,
+ Richard Earnshaw <richard.earnshaw@arm.com>,
+ Ramana Radhakrishnan <ramanara@nvidia.com>,
+ Linux Kernel Functional Testing <lkft@linaro.org>
+References: <20250520-rust-mno-fdpic-arm-fix-v1-1-44e77fe6b2a1@gmail.com>
+ <CANiq72nUFqM7mnpSGZF65n3Aak37KVVSa0d830o31EuZyh+OfA@mail.gmail.com>
+Content-Language: en-US
+From: Rudraksha Gupta <guptarud@gmail.com>
+In-Reply-To: <CANiq72nUFqM7mnpSGZF65n3Aak37KVVSa0d830o31EuZyh+OfA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 21, 2025 at 03:57:55AM +0000, Carlos Llamas wrote:
-> On Mon, May 19, 2025 at 08:57:04PM -0400, Yury Norov wrote:
-> > + Carlos Llamas
+> Thanks for the patch!
+>
+> A few quick notes -- I hope these help to explain how it usually woks,
+> given what you said in the other thread:
+>
+>    - Since you asked: in general, Linus does not take patches.
+> Normally, patches go through some relevant tree, and then then
+> eventually sent to Linus. In this case, the Rust tree would typically
+> be the one taking this patch. Please see the `MAINTAINERS` file.
 
-...
+Hello Miguel,
 
-> > Carlos, can you please elaborate your motivation to switch to bitmaps?
-> > Have you considered rb-trees with O(logn) lookup?
-> 
-> Yeah, we tried rb-trees. There was even a patch that implemented the
-> augmented logic. See this:
-> https://lore.kernel.org/all/20240917030203.286-1-ebpqwerty472123@gmail.com/
-> IIRC, it just didn't make sense for our use case because of the extra
-> memory bytes required for this solution. The performance ended up being
-> the same (from my local testing).
-> 
-> I'm not certain of this but one potential factor is that the rb nodes
-> are in-strucutre members allocated separately. This can lead to more
-> cache misses when traversing them. I don't know how applicable this
-> would be for the Rust implementation though. Take that with a grain of
-> salt as I didn't actually look super close while running the tests.
-> 
-> I would also note, this whole logic wouldn't be required if userspace
-> wasn't using these descriptor IDs as vector indexes. At some point this
-> practice will be fixed and we can remove the "dbitmap" implementation.
 
-Yeah, I expected to get this kind of feedback from real-world testing.
-Your reply to the patch you mentioned above answers all my questions:
+Oh gotcha, yeah b4 inputted the correct To: and CC:, I just moved that 
+all to CC: and directed the patch to Linus since this was a bug fix. It 
+seems the regular flow still applies. Sorry about that!
 
-https://lore.kernel.org/all/ZwdWe_I2p3zD-v1O@google.com/
+>    - You cannot generally send a patch in the name of someone else
+> unless they provided their Signed-off-by. Here, neither I nor Naresh
+> provided the Signed-off-by as far as I know. Please be careful with
+> that! Please read the DCO and the rest of the Submitting Patches file:
+> https://docs.kernel.org/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+>
+>    - Similarly, in general, you should be careful about adding tags
+> from someone else unless they provided them or there was an
+> understanding they meant to provide it (e.g. Tested-by). Please see
+> the "Tagging people requires permission" section in the same file:
+> https://docs.kernel.org/process/submitting-patches.html#tagging-people-requires-permission.
+>
+>    - The chain of SoBs has a particular meaning. For instance, this
+> patch would mean (as written) that I wrote the patch, and that then
+> Naresh carried it, and then you carried it. And if I had written the
+> patch, then the Git author should have been me ("From:" would have
+> been added by Git). I guess you may have meant to indicate there were
+> several contributors -- that is typically done with e.g.
+> Co-developed-by or Suggested-by, depending on how they contributed.
+Whoops! I didn't realize that's what that meant, was just wanting to 
+give you both credit for that. Thanks!
+>    - There is some repeated text in the non-commit message part of the
+> email. Also, tags are written without empty lines between them.
 
-Let's stick to bitmaps unless someone shows clear benefit of using any
-alternative approach, both in time and memory perspectives, supported
-by testing.
+Ah, I see. Usually b4 likes doing a cover letter, and for single patches 
+it appends that in the commit itself. I'll keep that in mind moving 
+forward. And thanks for letting me know about the tags! It seems like b4 
+generated that, so I'll manually separate that from now on
+
+>    - Ideally, fixes for build errors contain the main part of the build
+> error message in the commit text so that it is easy to match it later
+> on.
+Ah gotcha, I'll keep that in mind!
+> What I would have suggested to do in this situation is to ping in the
+> other thread with a normal email (similar to the one you sent), asking
+> if Naresh or someone else was going to send it, and mention that
+> otherwise you are willing to do so (under yours or perhaps Naresh's
+> name).
+>
+> I hope this helps!
+
+This does, thanks! I'll drop this patch for now then and will assume 
+that Naresh will eventually send it. I was hoping to get this in by the 
+stable release that is set to happen during the weekend (doesn't excuse 
+my sloppiness though, sorry about that once again)
+
+Anyways, thanks for being patient with me as I learn. :)
+
 
 Thanks,
-Yury
+
+Rudraksha
+
+>
+> Cheers,
+> Miguel
