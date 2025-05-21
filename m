@@ -1,151 +1,119 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBC92C2AAC
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 May 2025 20:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A4721CC51;
+	Wed, 21 May 2025 21:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747860546; cv=none; b=QlWcO/H3e3XAbl4+IxV4pd48wVWCMf9AKWhUD8RnOpqfciQm0Huk7o6HlYzpsXaS1lklVZI6u0bjzqWyAdXBcktwu3KKO2/owugn/93Fsx1BSGINkRDIUONQUxCrd3RlWg1brUj1s55zocgvahZws1vivc1LO/Rzsxzo/nIPXVM=
+	t=1747863328; cv=none; b=ahxfSGa/cx/evfh/OwHLpFEWzGqpaeeHiF25SLxyeuqGHGQqQSrgdS3jfU5m/jasFLySUu0RHiAAqvJQKHwUi1++sxAHduu3vZACSuRX36U7zUm8ZXTim9IirN/BLZUm8v2gIvKpqrR5uSnxuTu9qL8oPuYk8OJCNAIK4WXa9xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747860546; c=relaxed/simple;
-	bh=3xouPFq+QfUA7590BKH5N+mHnFY8gUh31jE6jRZaJS4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P3QG3D/OLGI8x+xFPoyctDgm1vh0cL7dzJdpBzuaMo4ORV7r5kMRn2vVR4RDdSip9QqlWO8MmRaqWwe/Ohk7zoSgv83gAyqSCoB5IEmBZWsfGfKry+1Ov7gR2EX7guiiGdqBtSgjMqSV3OY1K6jSfV7xyTAtJbIuLmyume8kdzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LfQdArj5; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1747863328; c=relaxed/simple;
+	bh=YZLxa21Ar6q84YL0TrLgO1kJWRoUTzRZEIr+JUaZ3Iw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S5Sx5wRW5dRNjPFw9PrGjQL1VTHjfjN7M6cMG5tV/W2SHBOn6dpg1oKEErdQ3dXpdICN2BSfemTw7tJAEtHH3q7U3n65QYT3TXUANxUy+wbg02JyqlI3BWba22PsycggPnXd0PaNPx3K937Q5cV85mkf+GfeUvbrqfRtOUdqBpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PYlEmkw+; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LfQdArj5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747860543;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mD23raNQ8ZbMrMICq/gFGTjyDRhqWnP+hWWFLjdKFbY=;
-	b=LfQdArj5PG0UjBPwOAChikLxzcighbKSV2UCsF2bEuCSt3lV1A1JRYPxdpdSLZLQCW1e78
-	d3Pv7cUwKb1coHOvxxNUOrRTTsq9VDc/YXQQ+cdD02PU9H+ds25uimom11lXIPfbM0ILpN
-	gI3B+EZLykYV6tz6JZwElWPdiWweM7o=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-WCuYGeHcPVG1goaQZEv7DA-1; Wed,
- 21 May 2025 16:48:32 -0400
-X-MC-Unique: WCuYGeHcPVG1goaQZEv7DA-1
-X-Mimecast-MFC-AGG-ID: WCuYGeHcPVG1goaQZEv7DA_1747860510
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E94E91955DAB;
-	Wed, 21 May 2025 20:48:29 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.80.100])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F141F19560B7;
-	Wed, 21 May 2025 20:48:25 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PYlEmkw+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747863327; x=1779399327;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YZLxa21Ar6q84YL0TrLgO1kJWRoUTzRZEIr+JUaZ3Iw=;
+  b=PYlEmkw+2aveZn5WP1pXtbRVRSr1CRnVV5/W1RB2nekd6zMZH+z+vgPN
+   dnGkaqHrYm2bV5WUs5DWgGWQ7KBbyC9EjBxoNunzeu8Owr9mYwX2bMB5Y
+   UZhMQGFikPCwl4vGOSeXbahGcUgoXXZjf2yiffE7k44dHeEBq51JOGKQl
+   dfzdXO4v2cKhPEOPlHc+fFs9ZQQ/Zfr54MSRnSsWWWzpyXptnyLe4PojO
+   A/173SmaYHVUTbxIknM4HbG30FKyafxcx99ovMkOpexZ2giJgCrozy1sr
+   DOA5Zdk5LfrtwajtqYXbCybNRRuESbEK/IyHlaIQD15DzHOkWvGKHGmMg
+   g==;
+X-CSE-ConnectionGUID: cCOK04uaTJKtizwcEqUekA==
+X-CSE-MsgGUID: 8yZmZJhSTPCMvI1LHjDDAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="61208572"
+X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
+   d="scan'208";a="61208572"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 14:35:23 -0700
+X-CSE-ConnectionGUID: r3/OdqIXRo6HroqyBfm0bQ==
+X-CSE-MsgGUID: Oc+ST89ATLKOARaVVf9qTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
+   d="scan'208";a="145393225"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 21 May 2025 14:35:18 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uHr5n-000Oeg-2k;
+	Wed, 21 May 2025 21:35:15 +0000
+Date: Thu, 22 May 2025 05:34:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Remo Senekowitsch <remo@buenzli.dev>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	linux-media@vger.kernel.org (open list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b),
-	linaro-mm-sig@lists.linaro.org (moderated list:DMA BUFFER SHARING FRAMEWORK:Keyword:\bdma_(?:buf|fence|resv)\b)
-Subject: [PATCH v2 10/12] rust: Add dma_buf stub bindings
-Date: Wed, 21 May 2025 16:29:17 -0400
-Message-ID: <20250521204654.1610607-11-lyude@redhat.com>
-In-Reply-To: <20250521204654.1610607-1-lyude@redhat.com>
-References: <20250521204654.1610607-1-lyude@redhat.com>
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 6/9] rust: device: Implement accessors for firmware
+ properties
+Message-ID: <202505220521.EPHBSqQg-lkp@intel.com>
+References: <20250520200024.268655-7-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250520200024.268655-7-remo@buenzli.dev>
 
-In order to implement the gem export callback, we need a type to represent
-struct dma_buf. So - this commit introduces a set of stub bindings for
-dma_buf. These bindings provide a ref-counted DmaBuf object, but don't
-currently implement any functionality for using the DmaBuf.
+Hi Remo,
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/dma_buf.rs | 39 +++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs     |  1 +
- 2 files changed, 40 insertions(+)
- create mode 100644 rust/kernel/dma_buf.rs
+kernel test robot noticed the following build errors:
 
-diff --git a/rust/kernel/dma_buf.rs b/rust/kernel/dma_buf.rs
-new file mode 100644
-index 0000000000000..318518ff0b28f
---- /dev/null
-+++ b/rust/kernel/dma_buf.rs
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! DMA buffer API
-+//!
-+//! C header: [`include/linux/dma-buf.h`](srctree/include/linux/dma-buf.h)
-+
-+use bindings;
-+use kernel::types::*;
-+
-+/// A DMA buffer object.
-+///
-+/// # Invariants
-+///
-+/// The data layout of this type is equivalent to that of `struct dma_buf`.
-+#[repr(transparent)]
-+pub struct DmaBuf(Opaque<bindings::dma_buf>);
-+
-+// SAFETY: `struct dma_buf` is thread-safe
-+unsafe impl Send for DmaBuf {}
-+// SAFETY: `struct dma_buf` is thread-safe
-+unsafe impl Sync for DmaBuf {}
-+
-+impl DmaBuf {
-+    /// Convert from a `*mut bindings::dma_buf` to a [`DmaBuf`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller guarantees that `self_ptr` points to a valid initialized `struct dma_buf` for the
-+    /// duration of the lifetime of `'a`, and promises to not violate rust's data aliasing rules
-+    /// using the reference provided by this function.
-+    pub(crate) unsafe fn as_ref<'a>(self_ptr: *mut bindings::dma_buf) -> &'a Self {
-+        // SAFETY: Our data layout is equivalent to `dma_buf` .
-+        unsafe { &*self_ptr.cast() }
-+    }
-+
-+    pub(crate) fn as_raw(&self) -> *mut bindings::dma_buf {
-+        self.0.get()
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index cbacedfe54434..02d4311bb080c 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -49,6 +49,7 @@
- pub mod device_id;
- pub mod devres;
- pub mod dma;
-+pub mod dma_buf;
- pub mod driver;
- #[cfg(CONFIG_DRM = "y")]
- pub mod drm;
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus robh/for-next linus/master v6.15-rc7 next-20250521]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Remo-Senekowitsch/rust-device-Create-FwNode-abstraction-for-accessing-device-properties/20250521-040612
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20250520200024.268655-7-remo%40buenzli.dev
+patch subject: [PATCH v5 6/9] rust: device: Implement accessors for firmware properties
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250522/202505220521.EPHBSqQg-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250522/202505220521.EPHBSqQg-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505220521.EPHBSqQg-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0432]: unresolved import `crate::private`
+   --> rust/kernel/device/property.rs:14:5
+   |
+   14 |     private::Sealed,
+   |     ^^^^^^^
+   |     |
+   |     unresolved import
+   |     help: a similar path exists: `crate::device::private`
+
 -- 
-2.49.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
