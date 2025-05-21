@@ -1,73 +1,73 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453FB2620FA;
-	Wed, 21 May 2025 12:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59F1267397;
+	Wed, 21 May 2025 12:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747831410; cv=none; b=ES8r3p7Ka0Z84VIWXCk3jBecVIT+cCrpuJWbHfbTpORHiiizyX7yuAPlyA4WSD1mfy+kkuQfdFex1EYq7GyyTqgEr5/zsAZkKidS2cjhvq7qC87mvY+qpmA7+4AwITzXV/BJnQCfGlk04LCnchmobk8CUSKcUXuLJc6DvlpFOpU=
+	t=1747831513; cv=none; b=EMVe3x5+nArEQszO/BLmG5AtikZXYA3BqScgkcT8WD7meH/Im4D23FXk3ZtnLJncAnOuq63OH2k4QuW1DX1G3Jpiaa8GDDYS2iQ2J/T3CF+omhIuMkaBU8g+2s5nPz4dJects6wH3u64NUliOsOmVhZNrsQ39C7x0h4R7cT0H2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747831410; c=relaxed/simple;
-	bh=YMoJAErzM5EZpwxgq0GrpjlYUWjIwa/Xx0qvGcd/9IA=;
+	s=arc-20240116; t=1747831513; c=relaxed/simple;
+	bh=4H0rPkjQH+/fJ/cjuVaeZatOtnNeHYnsf/hZvYEqwrs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fbdO7s2KScjUKMg12HcbuGiuWJjTNB0rnBlrcE5b4CQn+SlImpSShMQHlLTofCiHs24iNmULx3LYlDaQPJyUl1maPwUsqVVO8lTdeblG4D9dAlXLB+wIL4y4qE2SHlNFFekbJ3hiCsHCMazUBUtWlf6bQjTG2owzpWG0GYGMiUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wdmg1DXo; arc=none smtp.client-ip=209.85.160.178
+	 Content-Type:Content-Disposition:In-Reply-To; b=kWYwxEVeiVx+7zme0b730p4iAX0wm7WSNuEH+mrl0AZijWb5LRz1yxfKj4rhn67kVR818H7Qsu7U9c+o7h9Y2JFevRi9gNeA+o1BIBJCJyhjJ0Mnpn6DmOFvudZDL0NtA2rZXzIrXE/Ho1KLpZS745zc3y0wovhzGpz0uRwvJy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UTnGNjdE; arc=none smtp.client-ip=209.85.219.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wdmg1DXo"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4767e969b94so120587301cf.2;
-        Wed, 21 May 2025 05:43:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UTnGNjdE"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6f0c30a1ca3so66665556d6.1;
+        Wed, 21 May 2025 05:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747831408; x=1748436208; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747831510; x=1748436310; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hgjwFdM2k5sCslQZdWwlZbIspHEoXzqe2FcVDJivI+o=;
-        b=Wdmg1DXoibSNJuM4v0H/7yd4l73HmoypbOzxK02lt9bIQEbxpESSe23NmSSAbBPQLX
-         +PGjgYS7KHY6GjYnfbrI5BxvQNQ5PrHeoMHJnU2KRu9leLFxL/YuiIivgmK7D0cZ1z/O
-         eAg1t0Kb2kYrGSriKjbT04tJkuVwIeTEj+cIHPO+Ni/gmhf8VO9rQpYraBfIehIx/hS4
-         G2j1RRZSoXFRmXXGlHWghFhVrffGre1e87uVK/5WGbNRs8+/7yLB4YfZen2N5YGd4VDR
-         +diJK8aeBmMI/0QshTrS1H2OVO9RTX9jnQlZPymea4Yp0DCRrjfImVHdpPPu2CuRpmiX
-         RlGg==
+        bh=Vhnzj3NnJO366VT/ATwYapAPa7ylDj+dwVk+TFu/WXo=;
+        b=UTnGNjdELAWoS2Ursmtk+PExd44r6owpYWGHTwpRJ2sM/IfUFwT8/v8BglAbIhuZ0n
+         ftUl80CeXohbwzEJutS/sf+00K+FDuJArlxPSDuPEVWSu1oQFFzU9m2VtU40bahzC3T9
+         lpzix4tb6WAFz3iuJoGLEIKCC/QVlVw0YY4B4H0nP1LUXqgOiD7scrrVDPMDsoPecJG7
+         YjZ9MCuopqQ45gGUP1O6DVDJZoPmzFsDCdzRVk5N5bXOJR6clGMXKqy0VLyvNiQZNQxe
+         GqZ/8+k+jcE14cLPojE8zMDJzZaQn4+NCATHpUGio0eW4vzR39E1GBRB9DDTRQhVB2aq
+         DxMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747831408; x=1748436208;
+        d=1e100.net; s=20230601; t=1747831510; x=1748436310;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hgjwFdM2k5sCslQZdWwlZbIspHEoXzqe2FcVDJivI+o=;
-        b=r5jmFCY0+RCvn8ovznjjSOkL6hLT7KfUHIZwpT9N8Rq0QeeuwnN0tII9B9r8mSurwL
-         7apCToC1ZvQnXGdkPl5l2yyop9sgv/68uHW6s+Uql8RAU11zBy/12tHSfm38TzucIjgU
-         BRwIChreBPC7ABJslyCEvSgIbqnCVRcMsjo8bQ0Rfv6ECKibaV7mQuSentisPaex+DXR
-         T9IVa8o8wAOcjX+Af0hUtK3hCgGXP4R3hhL6Qb9CtEWtXYnapInSyAfgjZTHnUcEemON
-         cXY/qnVVNjXoiyZu9bQd5G0t2hUgMAengcPJTq0Bpb3KTAL9QY993amBqXFXbXMK2LeE
-         1W1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUP7XEwSAGqu3RwZmIGP8+bRCm5UOxuA1sifjifgNr0cnKS6l4uMO4OUNFPhDI2MF5HvOBH3QkHDd/Pnt4A+xQ=@vger.kernel.org, AJvYcCXuoIz9y2RFfHy4G0Kmgwc54CdQ/+kkRTXH7JzDES37whpaNrAdkSBRvyXC/UWEX9cqPP6OJEFuVuev2Ko=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyrlnze6mBE7KAmUsc82F/npVkGdy0wwlFHXEWhhcrp/EPzz3kF
-	2Hj8jY7vQE5WGk5zpYN9uUhaOQUg5lZUck/icO2Puy272zu7BS7B0OhS
-X-Gm-Gg: ASbGncvk/78zB9Jz+KctaWqdPpw7mXSVBBcOgxChvJnEFpZbZr6o0cZhCqt5bumsgTg
-	DMRymqaWQBHA/5Dx7GpOHNyCkfwRX4me/5tbNDn24FIZprakqPp8ZFrITlagtu4Y79tOJvwy/Tm
-	H6eBEZLuUQHAvc4wFj8t3UEnOxEFBC96ZtM8eTGCfJTqi+U0xFYXfJqMkFEzOzQ2dDP9Hy0CPtZ
-	G6YoOOGRp+vznV7PSkpOIbmgsTf3H4JfhFfNUJz0HCx9/PkZ0f1xI9JDu1MSUfrz2Rh+qXdLpQk
-	2XG1wtKxPtW0cFsDAl+qO+FTWcfyaqU58GiKIx4AZv2vAw4iKi83sucs5b/HSTkeEj+J21vFgS5
-	8M9hKzNRnpF5ZexTN35nU975p+WNrQT6exhIPMFGYGaYQuWchotpd
-X-Google-Smtp-Source: AGHT+IErCuCfRGil1ejhob4xg9yF6HudkK+JCsZ+ou6hegKIPEwSjezrXHPPDMBGZDMU5QdCutpJMw==
-X-Received: by 2002:a05:622a:5a92:b0:474:fee1:7915 with SMTP id d75a77b69052e-494b0804fccmr351306121cf.31.1747831408000;
-        Wed, 21 May 2025 05:43:28 -0700 (PDT)
+        bh=Vhnzj3NnJO366VT/ATwYapAPa7ylDj+dwVk+TFu/WXo=;
+        b=u4Wdwb+ZBhR9tyMDl/motOIrq1HV6ej0e3bOogxd/7qmgH3YixGe9kZIu8CGtK+dKI
+         6y7kc0KY8Sil+v4olkJK1RdIyu5SJHMY9zQrODer0jq4FfKlH+ZN+9qcMnE8aKo5REBM
+         GBzD64EJltMBqJzMDiNedH+WLl9Inu8oisbBd/78JzYt+ApY5rrYUUqxLC8H353wTaqV
+         jiJoMmHk/aQm42erkgcTuCcHXEpkrPnHkZHvKCeNBwJdjW7k0QFiq5B/O1k7Oa/lrRHJ
+         zHFBF+cn9/VXHltktWjoJC/hajfsQ/7eQPJN5GrBbx08MW95Y370ZTtHeDZ4c1fnVzp5
+         fdUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV0/m2xqLykc3BBh/UoqyunTx8yOr6j95uJQg2UfAsdhfX7pmaZtg/1yp1ugTCjp+lWAGA2kuGY1rGtQtc=@vger.kernel.org, AJvYcCXX8CPjw0ASg4j3dzVwYLil+xXIKn6RF4nr7L5DlMW60hR8XHWdvIOkp91vKOZFcHOt/JbcWhszBSwR7jlc/Ks=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD8YBQSYkIDq6nUefaoMUOij1DIfp1FLfxrGLrf5MJswVNQI1E
+	tvrci3ywO6TN2iLOf7nPI+yktGmLTB6onirZzwOGogu6rAYNd9mUl73i
+X-Gm-Gg: ASbGncsDGfpVcQ7rWpd8/94aBA4ygbKFnYIpLu1LWlhoKVdsdPjg74Ggw7/yvmIufM3
+	LA8pNmc2gYCY6VuJnAZ0V8yk61wm2qS0eFTja6A16oEbf1mq5V6TqtHWbC7eJf5M8OYSSbJNxwX
+	kEbx2j4ckoWHlYi44y/D7LR4Mzlgmv4XGuKtVlgiZ/KsZ6N9IwbTFKomCGPQfEpNSN/v8hVs0bU
+	lA3hKdSBsTG8afX8yt3EbBd1Co0RomOzewBVVeyeakayuxy528GAnnKHkDizpAkdLPPm/lE/rVR
+	3MKkU1WRrva+XkWoPFxPmY9/5p+0VJgbwczsPO8dLW2DpXKyiy06vpeyaQNjTc/4T3XNVM2I9wm
+	rGaVx23bCcXNTSjk8nxPROYFz5HNyppULloG18bXkpA==
+X-Google-Smtp-Source: AGHT+IEfRSqcGJ5t4rcRxmzM2k920FXsaJwu1wxt9D1Hfdpn8uKSN3fb6OCq2dNh4iOIGz1TYtv/Hg==
+X-Received: by 2002:a05:6214:cac:b0:6fa:864f:87cc with SMTP id 6a1803df08f44-6fa864f8a4fmr18904046d6.33.1747831510427;
+        Wed, 21 May 2025 05:45:10 -0700 (PDT)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-494b2de7adesm78612461cf.17.2025.05.21.05.43.27
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f8b08bf66bsm84578696d6.63.2025.05.21.05.45.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 05:43:27 -0700 (PDT)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C0F0E120007A;
-	Wed, 21 May 2025 08:43:26 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Wed, 21 May 2025 08:43:26 -0400
-X-ME-Sender: <xms:bsotaDmo6rPZ2tXj80tjivOzXA9zUk6xy3r7BaxKDzBH9Tl7SYB8Jw>
-    <xme:bsotaG3yjjhGuEA2SFUFzXmthWJxpZLhxozreZrqF_Mh0IiDABi6OW1yzmMv1Uc1B
-    1yS-xMRrtdJYAqDgQ>
-X-ME-Received: <xmr:bsotaJp-h3wu69T1xoojOOr2UB59J6teF9TmX8dDoOrOvdDnOJQiPFLq>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdefudduucdltddurdegfedvrddttd
+        Wed, 21 May 2025 05:45:09 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5CD34120007A;
+	Wed, 21 May 2025 08:45:09 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 21 May 2025 08:45:09 -0400
+X-ME-Sender: <xms:1cotaFbzhLa-AVxwpQ35d8kX6hIq-ZwWislwhChbDGrE886dcXNkqg>
+    <xme:1cotaMb7eFhXctyLi7ci4R4k3tFn2T2VAuphJPlupRodTcGwYg19z8qCxeIB3OiXg
+    GoUBfDa8naZrFuR_A>
+X-ME-Received: <xmr:1cotaH9vnyOR6XHBgx3dt1S-54GBmy0ro27iatwvJnw6GrIg8QlhdE-Y>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdefuddvucdltddurdegfedvrddttd
     dmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgf
     nhhsuhgsshgtrhhisggvpdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttd
     enucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhgg
@@ -85,15 +85,15 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdefudduucdltddurdegfe
     hinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhn
     vghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpd
     hrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:bsotaLmvSkg2Q06ODnYxXBUDGpip6DQk3VTw7K4qMb2reqkkcSWrVA>
-    <xmx:bsotaB3MfIrt8FFge-AucHIiw6NaEDMgIfwaMG4fS9t1kft0C04zuA>
-    <xmx:bsotaKuSJ-iPW_ldhIxNCQ2UxEf5EaZ56wZOLmaLS1G0rcJmTJ2YgA>
-    <xmx:bsotaFWm4FiQy945-CSPTPkSXQlvyTnVjbb8iPWajXkBDIE068QB1g>
-    <xmx:bsotaA39I8JQdG94Oyw-Ah8xDMPX_twLC3gAiGlTsg415qakz7IrijV3>
+X-ME-Proxy: <xmx:1cotaDr_BZnTBO2ZZrxy5srrQmZLzeo9gWXnSOIXgNKffweWuOxofg>
+    <xmx:1cotaAqMl1zRLe7L77t9gwX1n54-xBKwNgVE1PMBxXFMnUOO50bscw>
+    <xmx:1cotaJQ4dtper7JsxvJG39LklNMIPguYPvErgkSuMnOiT_alNE6wdA>
+    <xmx:1cotaIqgOC4ilrO4JZb18O9O6GbSlFri46ozj22VjBeOFxpIB5P63g>
+    <xmx:1cotaJ4jQULX3Xw0qsN9n-dwPqENjGgYpRv_JvJUfS2Dt1RcyknYAt6Z>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 21 May 2025 08:43:25 -0400 (EDT)
-Date: Wed, 21 May 2025 05:43:24 -0700
+ 21 May 2025 08:45:08 -0400 (EDT)
+Date: Wed, 21 May 2025 05:45:07 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -112,11 +112,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v4 01/20] rust: dma: expose the count and size of
- CoherentAllocation
-Message-ID: <aC3KbKeEVlHggi5l@Mac.home>
+Subject: Re: [PATCH v4 03/20] rust: sizes: add constants up to SZ_2G
+Message-ID: <aC3K0-z7JARmg7Cc@Mac.home>
 References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-1-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-3-05dfd4f39479@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -125,59 +124,55 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250521-nova-frts-v4-1-05dfd4f39479@nvidia.com>
+In-Reply-To: <20250521-nova-frts-v4-3-05dfd4f39479@nvidia.com>
 
-On Wed, May 21, 2025 at 03:44:56PM +0900, Alexandre Courbot wrote:
-> These properties are very useful to have and should be accessible.
+On Wed, May 21, 2025 at 03:44:58PM +0900, Alexandre Courbot wrote:
+> nova-core will need to use SZ_1M, so make the remaining constants
+> available.
 > 
 > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  rust/kernel/dma.rs | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index 605e01e35715667f93297fd9ec49d8e7032e0910..2a60eefa47dfc1f836c30ee342e26c6ff3e9b13a 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -129,6 +129,10 @@ pub mod attrs {
->  //
->  // Hence, find a way to revoke the device resources of a `CoherentAllocation`, but not the
->  // entire `CoherentAllocation` including the allocated memory itself.
-> +//
-> +// # Invariants
-> +//
-> +// The size in bytes of the allocation is equal to `size_of::<T> * count()`.
->  pub struct CoherentAllocation<T: AsBytes + FromBytes> {
->      dev: ARef<Device>,
->      dma_handle: bindings::dma_addr_t,
-> @@ -201,6 +205,20 @@ pub fn alloc_coherent(
->          CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attrs(0))
->      }
->  
-> +    /// Returns the number of elements `T` in this allocation.
-> +    ///
-> +    /// Note that this is not the size of the allocation in bytes, which is provided by
-> +    /// [`Self::size`].
-> +    pub fn count(&self) -> usize {
-> +        self.count
-> +    }
-> +
-> +    /// Returns the size in bytes of this allocation.
-> +    pub fn size(&self) -> usize {
-> +        // As per the invariants of `CoherentAllocation`.
-> +        self.count * core::mem::size_of::<T>()
 
-I think we need a comment or even an invariant saying this multiply
-cannot overflow.
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
 Regards,
 Boqun
 
-> +    }
-> +
->      /// Returns the base address to the allocated region in the CPU's virtual address space.
->      pub fn start_ptr(&self) -> *const T {
->          self.cpu_addr
+> ---
+>  rust/kernel/sizes.rs | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+> 
+> diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
+> index 834c343e4170f507821b870e77afd08e2392911f..661e680d9330616478513a19fe2f87f9521516d7 100644
+> --- a/rust/kernel/sizes.rs
+> +++ b/rust/kernel/sizes.rs
+> @@ -24,3 +24,27 @@
+>  pub const SZ_256K: usize = bindings::SZ_256K as usize;
+>  /// 0x00080000
+>  pub const SZ_512K: usize = bindings::SZ_512K as usize;
+> +/// 0x00100000
+> +pub const SZ_1M: usize = bindings::SZ_1M as usize;
+> +/// 0x00200000
+> +pub const SZ_2M: usize = bindings::SZ_2M as usize;
+> +/// 0x00400000
+> +pub const SZ_4M: usize = bindings::SZ_4M as usize;
+> +/// 0x00800000
+> +pub const SZ_8M: usize = bindings::SZ_8M as usize;
+> +/// 0x01000000
+> +pub const SZ_16M: usize = bindings::SZ_16M as usize;
+> +/// 0x02000000
+> +pub const SZ_32M: usize = bindings::SZ_32M as usize;
+> +/// 0x04000000
+> +pub const SZ_64M: usize = bindings::SZ_64M as usize;
+> +/// 0x08000000
+> +pub const SZ_128M: usize = bindings::SZ_128M as usize;
+> +/// 0x10000000
+> +pub const SZ_256M: usize = bindings::SZ_256M as usize;
+> +/// 0x20000000
+> +pub const SZ_512M: usize = bindings::SZ_512M as usize;
+> +/// 0x40000000
+> +pub const SZ_1G: usize = bindings::SZ_1G as usize;
+> +/// 0x80000000
+> +pub const SZ_2G: usize = bindings::SZ_2G as usize;
 > 
 > -- 
 > 2.49.0
