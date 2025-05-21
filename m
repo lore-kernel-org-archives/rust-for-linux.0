@@ -1,128 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2C926D4D2;
-	Wed, 21 May 2025 13:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE61326560D;
+	Wed, 21 May 2025 13:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747832404; cv=none; b=HFyVZTxXuuDTp6pqWXsxlcjpZ/HUsK8gDlrTdb160AxO/nd1PKcF0tFslrXGN5G9v5TaXcbgo0FSbyVztFkjagiBXEc7IsBY/QQIAlzLp8cYnsCM/zr5tsHx/7HIuaJp1T5RBeCzX2Puvw6OtV1+q6SVyies4RYvuw0VNZoPLYg=
+	t=1747832603; cv=none; b=RqAw99kDi/FTXHpRU+YBBGt2UxEZfo0h0M8XS6bES9EkQzp27bq5Ulc7Zv2qOwBmo4eQT0hvqvP+goWBT92m6FybcEdLUfUIyiB7O3KZ604LF+3zheWYpQGTxuohGp0AxRVajSi3sZr3SnU2j8Nj9Ew4Rl1ajoD2KZYl2YlcbGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747832404; c=relaxed/simple;
-	bh=iWukOTP5Zbi8mZBtT07eYoKDE3ALYLBiIEOJ2pVeONY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RpI1shw4vbibEmtFgqZqCfjr1G1aaJnQYDV4t89zzVNKn8/EustGXE6ywr6JNwklxQFg8tjq+rWQ8M7wSY4M2lpNZ1D7G/N0MhjJXqUPmlX8NoGlk9OYe5KtDPDdCsmmRSW7sD3Ptc4JdWZ4XzEnh98dTKTPp+w2CXe8YLx8kUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYrXcWSw; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYrXcWSw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB9BC4CEE7;
-	Wed, 21 May 2025 13:00:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747832403;
-	bh=iWukOTP5Zbi8mZBtT07eYoKDE3ALYLBiIEOJ2pVeONY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rYrXcWSwhiFPPMjV66tTBtf4yvaIBeKi9k8dqVlQGjZYXU0VheqzVvs7VXQewG7At
-	 gBNaDGto6i9n0P2WU+XFgz1exfsVmgX91tDvDD3ZqsnlAX/VXWgz2SE2fiZjD8d7Hg
-	 30Ir1QfMu7EH0z/gLvew27wF3QQ5Xm3jP/OBefmc=
-Date: Wed, 21 May 2025 15:00:00 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Gerald =?iso-8859-1?Q?Wisb=F6ck?= <gerald.wisboeck@feather.ink>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] rust: miscdevice: add additional data to
- MiscDeviceRegistration
-Message-ID: <2025052138-phony-amplify-83ea@gregkh>
-References: <20250517-b4-rust_miscdevice_registrationdata-v3-0-cdb33e228d37@gmail.com>
- <20250517-b4-rust_miscdevice_registrationdata-v3-1-cdb33e228d37@gmail.com>
- <aCiSRZjOETsD8MhX@pollux>
- <2025052107-awhile-drainer-38d0@gregkh>
- <2025052104-mockup-dupe-2573@gregkh>
- <4616772d-0052-4c2f-afec-69ae32f908aa@gmail.com>
+	s=arc-20240116; t=1747832603; c=relaxed/simple;
+	bh=dwIYOE3htI9GbHZbf78nxBK6FjqrDFIKmLnz0i4XDIw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=S5DMd8rS6esVeyiIlH9z6aD/7t0ob7bqQ0tvFL8YO7RrGba7VipK3jjsmhJY1NRsSY8dM5ep2e536bjO9F94ONwkEOrBkFNd4KrHYoDumW2+aiK6AsYO5yeMAB2fyhH9yOtcSQqapfKYivd3wTAEANvp/4FGlBkgB+fzd7JC2h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4b2WnD0Hhyz9vJ0;
+	Wed, 21 May 2025 15:03:12 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4616772d-0052-4c2f-afec-69ae32f908aa@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 May 2025 15:03:07 +0200
+Message-Id: <DA1UXY2O47Y2.1ND9MC6L01217@buenzli.dev>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc: "Rob Herring" <robh@kernel.org>, "Saravana Kannan"
+ <saravanak@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Dirk Behme" <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v5 4/9] rust: device: Enable printing fwnode name and
+ path
+From: "Remo Senekowitsch" <remo@buenzli.dev>
+References: <20250520200024.268655-1-remo@buenzli.dev>
+ <20250520200024.268655-5-remo@buenzli.dev>
+ <2025052153-steadier-bargraph-e81a@gregkh>
+In-Reply-To: <2025052153-steadier-bargraph-e81a@gregkh>
+X-Rspamd-Queue-Id: 4b2WnD0Hhyz9vJ0
 
-On Wed, May 21, 2025 at 02:16:20PM +0200, Christian Schrefl wrote:
-> Hi Greg,
-> 
-> On 21.05.25 2:04 PM, Greg Kroah-Hartman wrote:
-> > On Wed, May 21, 2025 at 01:55:36PM +0200, Greg Kroah-Hartman wrote:
-> >> On Sat, May 17, 2025 at 03:42:29PM +0200, Danilo Krummrich wrote:
-> >>> On Sat, May 17, 2025 at 01:33:49PM +0200, Christian Schrefl wrote:
-> >>>> +pub struct MiscDeviceRegistration<T: MiscDevice> {
-> >>>>      #[pin]
-> >>>>      inner: Opaque<bindings::miscdevice>,
-> >>>> +    #[pin]
-> >>>> +    data: UnsafePinned<T::RegistrationData>,
-> >>>>      _t: PhantomData<T>,
-> >>>>  }
-> >>>
-> >>> I recommend not to store data within a Registration type itself.
-> >>>
-> >>> I know that this is designed with the focus on using misc device directly from
-> >>> the module scope; and in this context it works great.
-> >>>
-> >>> However, it becomes quite suboptimal when used from a driver scope. For
-> >>> instance, if the misc device is registered within a platform driver's probe()
-> >>> function.
-> >>>
-> >>> I know this probably isn't supported yet. At least, I assume it isn't supported
-> >>> "officially", given that the abstraction does not provide an option to set a
-> >>> parent device. Yet I think we should consider it.
-> >>
-> >> It's going to be a requirement to properly set the parent device, and
-> >> as you point out, this really should be in some sort of scope, not just
-> >> a module.
-> >>
-> >> But, we have two types of users of a misc device, one like this is
-> >> written, for a module-scope, and one for the "normal" device scope.  The
-> >> device scope is going to be tricker as it can, and will, get
-> >> disconnected from the device separately from the misc device lifespan,
-> >> so when that logic is added, it's going to be tricky as you point out.
-> >>
-> >> So I'll take this now, but in the future this is going to have to be
-> >> cleaned up and modified.
-> > 
-> > Nope, can't take it, it breaks the build from my tree:
-> > 
-> > error[E0432]: unresolved import `crate::types::UnsafePinned`
-> >   --> rust/kernel/miscdevice.rs:20:37
-> >    |
-> > 20 |     types::{ForeignOwnable, Opaque, UnsafePinned},
-> >    |                                     ^^^^^^^^^^^^ no `UnsafePinned` in `types`
-> > 
-> > error[E0432]: unresolved import `pin_init::Wrapper`
-> >   --> rust/kernel/miscdevice.rs:23:5
-> >    |
-> > 23 | use pin_init::Wrapper;
-> >    |     ^^^^^^^^^^^^^^^^^ no `Wrapper` in the root
-> > 
-> > error: aborting due to 2 previous errors
-> > 
-> > :(
-> 
-> This requires my `UnsafePinned` [0] patches (& with that pin-init-next) like I wrote
-> in the cover letter.
-> 
-> [0]: https://lore.kernel.org/rust-for-linux/20250511-rust_unsafe_pinned-v4-0-a86c32e47e3d@gmail.com/
+On Wed May 21, 2025 at 2:02 PM CEST, Greg Kroah-Hartman wrote:
+> On Tue, May 20, 2025 at 10:00:19PM +0200, Remo Senekowitsch wrote:
+>> Add two new public methods `display_name` and `display_path` to
+>> `FwNode`. They can be used by driver authors for logging purposes. In
+>> addition, they will be used by core property abstractions for automatic
+>> logging, for example when a driver attempts to read a required but
+>> missing property.
+>>=20
+>> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+>> ---
+>>  rust/kernel/device/property.rs | 72 ++++++++++++++++++++++++++++++++++
+>>  1 file changed, 72 insertions(+)
+>>=20
+>> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/propert=
+y.rs
+>> index 70593343bd811..6ccc7947f9c31 100644
+>> --- a/rust/kernel/device/property.rs
+>> +++ b/rust/kernel/device/property.rs
+>> @@ -32,6 +32,78 @@ pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_=
+handle {
+>>          self.0.get()
+>>      }
+>> =20
+>> +    /// Returns an object that implements [`Display`](core::fmt::Displa=
+y) for
+>> +    /// printing the name of a node.
+>> +    pub fn display_name(&self) -> impl core::fmt::Display + '_ {
+>> +        struct FwNodeDisplayName<'a>(&'a FwNode);
+>> +
+>> +        impl core::fmt::Display for FwNodeDisplayName<'_> {
+>> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fm=
+t::Result {
+>> +                // SAFETY: self is valid by its type invariant
+>> +                let name =3D unsafe { bindings::fwnode_get_name(self.0.=
+as_raw()) };
+>> +                if name.is_null() {
+>> +                    return Ok(());
+>
+> So if there is no name, you are returning Ok()?  Are you sure that's ok
+> to do?  What will the result of the string look like then?
 
-I never read cover letters, all of the needed information should be in
-the individual commits as that's what ends up in the changelog :)
+In that case we're not writing anything to the formatter, which is
+equivalent to an empty string. `Ok(())` means that writing succeeded.
 
-thanks,
-
-greg k-h
+I assumed that a valid node would always have a name. And we're
+guaranteed to have a valid node. So I assumed this case would never
+happen and didn't think too hard about it. But even if a valid node has
+not name, empty string is probably the correct thing, right?
