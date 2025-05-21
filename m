@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434871DC9A3;
-	Wed, 21 May 2025 08:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B4421ABB9;
+	Wed, 21 May 2025 08:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747814435; cv=none; b=UF+gwo7vt40di+yDXkStR3nF7RRlK3x+dvNGmMa9goNtCdPV+BzFRBZmRssbvTOq9oH2d5nhIo+GpPfEjRnBXwtkFC/waakzIrafOgQlhXAAthkHbSmX/outFg1fMuHGYRSttsliQXD7hcJloRrOdL9/otP+9yHPEUK7KGplCyI=
+	t=1747816640; cv=none; b=IfkkpYNBaWveK2P04ZWiq99nVPHf5SyvXHGLV5pjvW4LZyBM+UZuIgkZz2ZMOi+1DZMLRXBx7Pz1C3KrbqCzASe6D9UnFGVLYIyLyNqdl5fan12S5yn9WFKtl+Z8LBfZ+Wn1TCU1DqQsoFB2xzABlwTjGqq/JgmYXav8N232xIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747814435; c=relaxed/simple;
-	bh=NXbCTTtiVf1hxjNTRc1GM2RzoMelIfvrZhBNyZ0cQJs=;
+	s=arc-20240116; t=1747816640; c=relaxed/simple;
+	bh=vHs0uFXE4QDWJyTB2uO5NgtTvDkhWOmq0wYfhjspCDU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tezvQDPv/iRw5dtmRKYa3j4SrxQDKRq4ELMX3+qSBdxUsR5ccoY3IK2XSyrleBldZfiUZy7GxJqqk24Ve3muqpkwxz5+2w25HWZMLxbveyR13jSdENS/OV43f/w/6K0QPsa1RVrnEZIu1WrK8sMoCgvDUznU4NfWdFbNvrzSF4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m2/9uM/U; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=finzXXiKNyFPA3XMYJH2tfnHQp+RE9/o5aQTMSysQPa9nzXdxxAyFYd9Ki3GS3ZhRWocoMGErTm1iWjbEwr91t/PHGHnEABHSqZeH3BZV61kfzignJyNhCYpjhoM+F3s178OpTelGUrXiMDRVPCQyrHKaKeWm4Kwzo04q1GDqa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOF9PUkn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m2/9uM/U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149D9C4CEE4;
-	Wed, 21 May 2025 08:00:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOF9PUkn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00873C4CEE4;
+	Wed, 21 May 2025 08:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747814434;
-	bh=NXbCTTtiVf1hxjNTRc1GM2RzoMelIfvrZhBNyZ0cQJs=;
+	s=k20201202; t=1747816640;
+	bh=vHs0uFXE4QDWJyTB2uO5NgtTvDkhWOmq0wYfhjspCDU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m2/9uM/UEfrYjyZRB5+ZA8Cs/2Hmzow+6pqeB30HS4fYP9dE/0yDvbAta6DX0hKcW
-	 CdgvE2HGDxvB86ylvjwlpAQ5UlZ4FF2laz60QCYmYwsos8qZEvzO3e1hi84Yw8u8BA
-	 DrrnFuSjhGIQm7wGHSLQ6OYQUUb1p1BrhVK33smEnGBJK5BS2Pn/Dm+JZ59cH5UXlB
-	 uX1S5xdpjDt0HVVsA2hkx9HZdS2hwH+jsMeNXLRPxUu9VvQYzlhAzklsccQ2PKfVHQ
-	 UFFTZj3xOBMhocKbIJO49SEeXDGfWr0b/lDVE6GUSfsfGSJI3fMRxLFuvBUr68wz7o
-	 cZRSU6h8DYctw==
-Date: Wed, 21 May 2025 10:00:27 +0200
+	b=JOF9PUknCG3XoxV5ePcPOdk+//R8CCQdYie0iZpzXV9MI8mwqXJiisyPEfgZ5UbxN
+	 GyG/z+L6of5ZHzq4P9yJCLudMmVhuzFD8DHgXnixz5aJ0KyNYlhZt+EZAXTkHj76o1
+	 o1pDTYiv8VAAkd+OclJ2Mqidu/qzBW7p6cDSGegP6wvun74nrcTJhqSwegsF098jvU
+	 yvOzCfxkO6bZCTSoFVbCl7ngiZr+jzN9sIej5xoYo7974GCsTZ/mVs8SPYJpQsCvMv
+	 yBdxP7RLYSfPnTPmhXnIe0aYj3/mRM9ZaxzvdnpXgGXCti8TrDXaovXCEpEy1P4qdg
+	 uvwm6TjHcdDlw==
+Date: Wed, 21 May 2025 10:37:13 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -44,11 +44,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v4 01/20] rust: dma: expose the count and size of
- CoherentAllocation
-Message-ID: <aC2IG7amsKLk6G0a@pollux>
+Subject: Re: [PATCH v4 08/20] gpu: nova-core: allow register aliases
+Message-ID: <aC2Quag3HYN70D8p@pollux>
 References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-1-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-8-05dfd4f39479@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,56 +56,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250521-nova-frts-v4-1-05dfd4f39479@nvidia.com>
+In-Reply-To: <20250521-nova-frts-v4-8-05dfd4f39479@nvidia.com>
 
-On Wed, May 21, 2025 at 03:44:56PM +0900, Alexandre Courbot wrote:
-> These properties are very useful to have and should be accessible.
+On Wed, May 21, 2025 at 03:45:03PM +0900, Alexandre Courbot wrote:
+> Some registers (notably scratch registers) don't have a definitive
+> purpose, but need to be interpreted differently depending on context.
+> 
+> Expand the register!() macro to support a syntax indicating that a
+> register type should be at the same offset as another one, but under a
+> different name, and with different fields and documentation.
 > 
 > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 > ---
->  rust/kernel/dma.rs | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>  drivers/gpu/nova-core/regs/macros.rs | 40 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 38 insertions(+), 2 deletions(-)
 > 
-> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-> index 605e01e35715667f93297fd9ec49d8e7032e0910..2a60eefa47dfc1f836c30ee342e26c6ff3e9b13a 100644
-> --- a/rust/kernel/dma.rs
-> +++ b/rust/kernel/dma.rs
-> @@ -129,6 +129,10 @@ pub mod attrs {
->  //
->  // Hence, find a way to revoke the device resources of a `CoherentAllocation`, but not the
->  // entire `CoherentAllocation` including the allocated memory itself.
-> +//
-> +// # Invariants
-> +//
-> +// The size in bytes of the allocation is equal to `size_of::<T> * count()`.
+> diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core/regs/macros.rs
+> index 7cd013f3c90bbd8ca437d4072cae8f11d7946fcd..64dda1d4d93d3c7022ef02b6f6fb81b58e90dd44 100644
+> --- a/drivers/gpu/nova-core/regs/macros.rs
+> +++ b/drivers/gpu/nova-core/regs/macros.rs
+> @@ -71,6 +71,20 @@
+>  /// pr_info!("CPU CTL: {:#x}", cpuctl);
+>  /// cpuctl.set_start(true).write(&bar, CPU_BASE);
+>  /// ```
+> +///
+> +/// It is also possible to create a alias register by using the `=> PARENT` syntax. This is useful
+> +/// for cases where a register's interpretation depends on the context:
+> +///
+> +/// ```no_run
+> +/// register!(SCRATCH_0 @ 0x0000100, "Scratch register 0" {
+> +///    31:0     value as u32, "Raw value";
+> +///
+> +/// register!(SCRATCH_0_BOOT_STATUS => SCRATCH_0, "Boot status of the firmware" {
 
-I think this also needs an invariant comment whenever self.count is set.
-
->  pub struct CoherentAllocation<T: AsBytes + FromBytes> {
->      dev: ARef<Device>,
->      dma_handle: bindings::dma_addr_t,
-> @@ -201,6 +205,20 @@ pub fn alloc_coherent(
->          CoherentAllocation::alloc_attrs(dev, count, gfp_flags, Attrs(0))
->      }
->  
-> +    /// Returns the number of elements `T` in this allocation.
-> +    ///
-> +    /// Note that this is not the size of the allocation in bytes, which is provided by
-> +    /// [`Self::size`].
-> +    pub fn count(&self) -> usize {
-> +        self.count
-> +    }
-> +
-> +    /// Returns the size in bytes of this allocation.
-> +    pub fn size(&self) -> usize {
-> +        // As per the invariants of `CoherentAllocation`.
-> +        self.count * core::mem::size_of::<T>()
-> +    }
-> +
->      /// Returns the base address to the allocated region in the CPU's virtual address space.
->      pub fn start_ptr(&self) -> *const T {
->          self.cpu_addr
-> 
-> -- 
-> 2.49.0
-> 
+NIT: I'd put the arrow the other way around, i.e. SCRATCH_0_BOOT_STATUS is
+derived from SCRATCH_0, not the other way around.
