@@ -1,86 +1,53 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8ED322DA17
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 May 2025 03:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DB833993;
+	Wed, 21 May 2025 04:47:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747799884; cv=none; b=XT9N63RxFVUhJgnSHIDim2Jw2/IiVUiqnzl1H8Xg/Pe/jtwmOIYAT732Uw5F1kEFpmUKxa9Z4P7lYbaoyMLrklpoyywdImq+VPU2gL8MZTBsLsIYfOx7l1o22U4AeNKmyiFuQJJ7OAggrf2H483/qkgOtGNo4OuLhUi4CXuroXE=
+	t=1747802863; cv=none; b=XEJGedK+wCfzTuSIWBcgqThtuYcumPB0Ow9WfiyvKMRvOkxVewEmdRCFaTlhVVnzWQwddAdl2w8hMYqpcp61PsDnAqroIRLfA14j6Bx7QgTkAfIm5lbtSE4avsedU0bxEdN+WTmDvQRSJBRCbWnnRSlmFO4NXHB0GFcm6d+CMVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747799884; c=relaxed/simple;
-	bh=wlsjQW0Yibuw5qncy8R7Cr0VHmy7PGLOqqCXs10/zxA=;
+	s=arc-20240116; t=1747802863; c=relaxed/simple;
+	bh=/xdrjkOx71cX945z+mCCHRJZV8JxwfrNR2/2hevWRnc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bAgstDnmw/6xrK50WFkAPLAGFFTqZ9UwJK16TBt4rzjGJaGcEidHeME88v1BhnDBcz84g0HnNR+drVFeZkglMQf9QkwoVWKhfszp5y3bUdHFbPwc6xkQEb36/ilTyN31XUP+jyMvGdinjXb5BzdLz4B3n9uwqOic4njgA7pfkaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J9RjlIqh; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=X51cxzM0hjCN1/oHdZwPLzWoEIjN3PspwlgC/N1iSaBZlDC90kczJ0Qn3sQ7alapRc8jS1tL1qi5bVbq9R1olZe+CA1qFVE5c4TuI8j0fxLlNqv3AOc+dNgA68xW08VrtMEwmYrRdImZwRWRhEolpXDYGYpdtb9tHFmiA2BloZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vjd0EnWb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J9RjlIqh"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-231f61dc510so932455ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 20:58:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747799882; x=1748404682; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0wx3hoPbcWp9uiaTRbvdc0caMEO1HJqfQgmTjdqGLG4=;
-        b=J9RjlIqhzg7D73WJIPD4oKMWJmMdqZW7laCBqyfzWAD/1qObsc8Rf+mP0cI6/laBS4
-         7/w+LtT5qG9RzrPcA8A1AYJm9hASl45remVFSS8IX7sWcBquSc1gYKMuZrE0y1OubZ3s
-         jAigBpyxkNmSd4O4OiJdN1MyliGv/OcDlyAm8YtUMMQ/4ipqbLBCgPw47F6vEbz0ZQ9v
-         gNCHnro0NnYl42bx6GSAW+n8dog1TAd+zX5fxvi2M4hgBsX8GK5LasoTK7XdFl2OSkwe
-         MrIY/I97bSeTW7PpIkqf3UzuesyerEoRNubd/cuNrMJq9b2D6Q5oyfAOxAPZACHiBk6X
-         hVvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747799882; x=1748404682;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0wx3hoPbcWp9uiaTRbvdc0caMEO1HJqfQgmTjdqGLG4=;
-        b=JgP4idyyemhcERa0XPP8BrRAwKLbPPGVWza+m5yBT0557IAAOIR+DL8IGMiIZYJGcY
-         x5Bmq0CCs9LLUcsBiLH0OWtdoH21zVVJ5NnslYdnX0PjWEieLzcPH8j5MO37HnUAZSjs
-         DeUgl1N8hVIGwBDJF9oS1y+sl5RqB7sVDKtzSylkwAO9BSiY+3WDZLSnPZgNnA25iXiD
-         0wMjG5TK42QP6B8n9Fp2oqmt0QTh6+gMb68mYtLhEIB506qHcs6q7nr40+zObaqnpYom
-         pfHLkca7vjzLk5NfB/MPXrA4GbjOT7OKc8nmAjg23NoJyukHZsEN5kYildKsZH6AwKMs
-         G4Ig==
-X-Forwarded-Encrypted: i=1; AJvYcCX49njwFUQxiWc1Op9MqUP8FQ8M8GHUHHAxRo3+pqdRtM7Jr4F8k6lHDQeYw/wSpFrJHxKt0TCc/87+BhairA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCynSWG23bnyRbM8LYutjQmIaSgKKHZAJYdyGW7+aXH+9XxYzr
-	nGi53sVUxGLeg19TWNro4smZTwGGaBOi0XE32FsVBUolO8ZCmfNP5L0Gpiv3k8n0eg==
-X-Gm-Gg: ASbGncuiMH/dIyme73tAd3pTAX+4VoHNE9IW8bTpaxrUFlnGW94+Ss4xxwGO7fltvG6
-	DgiKCdzkBIPVCmd/XefHps7SXo0xXFV6z+tzBZphqmZZLhCSXjm/mBWsFMGMBI52hjUnFrY5Drg
-	CsIlvD/mHJ1UKT5hWZbORb8oND7M1+sFcusA9GBo9hoEQHu/88IfzC2DoTrK77UatwWM2wg6PwT
-	Od09Rhd78lHmB7wS/j+AYFu0FlHMwzWLOH1lzerVBQtGYJPRw+IXvyTc1+504jepTRB4UkoTqfk
-	rlVhJB9Ey2EYY4uTd3qFQ6UwwvTI73KQwzdQRdVtUtU0uCkOK6Nlz18tlBdl0vtQ38jo+t2SxoW
-	L+tnfrnWpA6QaQbQNuiw=
-X-Google-Smtp-Source: AGHT+IFCRZkwpnReRQWrGPg1IKtuRs98lKF9l3e5qmq9BPLVfG4ZV5CokuhsO8rtpUNOuqhM4g0RUQ==
-X-Received: by 2002:a17:903:228c:b0:224:6c8:8d84 with SMTP id d9443c01a7336-231ffd0ec4amr10032895ad.4.1747799881655;
-        Tue, 20 May 2025 20:58:01 -0700 (PDT)
-Received: from google.com (3.32.125.34.bc.googleusercontent.com. [34.125.32.3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a970b9basm8660405b3a.49.2025.05.20.20.58.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 May 2025 20:58:01 -0700 (PDT)
-Date: Wed, 21 May 2025 03:57:55 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jann Horn <jannh@google.com>,
-	Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vjd0EnWb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7D3C4CEE4;
+	Wed, 21 May 2025 04:47:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747802863;
+	bh=/xdrjkOx71cX945z+mCCHRJZV8JxwfrNR2/2hevWRnc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Vjd0EnWb8s5rBQu/YVD25G0y0GvkavynWZkl89dGpJqrnE2bo3vOSo7BIMFOh2HaQ
+	 G0SEi6/mXv+IM+bw2SE9+I6cFP3FqMn0ZaCoT8z9ATTbd5TAc72h32Bt5l5LUvDxRN
+	 JulXL8HN2JU20iDo1hGApDkJURnwULgYOYZ66pik=
+Date: Wed, 21 May 2025 06:47:40 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Benno Lossin <lossin@kernel.org>, Matthew Maurer <mmaurer@google.com>,
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v8 5/5] rust: add dynamic ID pool abstraction for bitmap
-Message-ID: <aC1PQ7tmcqMSmbHc@google.com>
-References: <20250519161712.2609395-1-bqe@google.com>
- <20250519161712.2609395-6-bqe@google.com>
- <CAG48ez2WdxXVCzVsAPeQWgso3ZBQS_Xm+9D1FLBx6UHFV1bGHQ@mail.gmail.com>
- <682bc528.c80a0220.13f632.9ec0@mx.google.com>
- <aCvTYHMtuWZZizn9@yury>
+	Trevor Gross <tmgross@umich.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+Message-ID: <2025052148-copied-riverside-6187@gregkh>
+References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
+ <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
+ <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+ <aCRdNJ2oq-REBotd@pollux>
+ <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
+ <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
+ <2025051524-festival-afterglow-8483@gregkh>
+ <aCzzBT96ktapP03e@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -90,66 +57,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aCvTYHMtuWZZizn9@yury>
+In-Reply-To: <aCzzBT96ktapP03e@google.com>
 
-On Mon, May 19, 2025 at 08:57:04PM -0400, Yury Norov wrote:
-> + Carlos Llamas
-> 
-> On Mon, May 19, 2025 at 04:56:21PM -0700, Boqun Feng wrote:
-> > On Tue, May 20, 2025 at 12:51:07AM +0200, Jann Horn wrote:
-> > > On Mon, May 19, 2025 at 6:20 PM Burak Emir <bqe@google.com> wrote:
-> > > > This is a port of the Binder data structure introduced in commit
-> > > > 15d9da3f818c ("binder: use bitmap for faster descriptor lookup") to
-> > > > Rust.
+On Tue, May 20, 2025 at 09:24:21PM +0000, Alice Ryhl wrote:
+> On Thu, May 15, 2025 at 01:43:09PM +0200, Greg Kroah-Hartman wrote:
+> > On Thu, May 15, 2025 at 10:59:44AM +0200, Benno Lossin wrote:
+> > > On Wed May 14, 2025 at 11:55 PM CEST, Matthew Maurer wrote:
+> > > > On Wed, May 14, 2025 at 2:07 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> > > >> However, I really think we should keep the code as it is in this version and
+> > > >> just don't provide an example that utilizes ManuallyDrop and forget().
+> > > >>
+> > > >> I don't see how the idea of "manually dropping" (sub-)directories and files
+> > > >> provides any real value compared to just storing their instance in a driver
+> > > >> structure as long as they should stay alive, which is much more intuitive
+> > > >> anyways.
+> > > >
+> > > > We can't easily do this, because dropping a root directory recursively
+> > > > drops everything underneath it. This means that if I have
+> > > >
+> > > > foo/
+> > > >   - bar/
+> > > >   - baz/
+> > > >
+> > > > Then my directory handle for `bar` have to be guaranteed to outlive my
+> > > > directory handle for `foo` so that I know it's didn't get deleted
+> > > > under me. This is why they have a borrow onto their parent directory.
+> > > > This borrow means that you can't (without `unsafe`, or something like
+> > > > `yoke`) keep handles to `foo` and `bar` in the same struct.
 > > > 
-> > > Stupid high-level side comment:
-> > > 
-> > > That commit looks like it changed a simple linear rbtree scan (which
-> > > is O(n) with slow steps) into a bitmap thing. A more elegant option
-> > > might have been to use an augmented rbtree, reducing the O(n) rbtree
-> > > scan to an O(log n) rbtree lookup, just like how finding a free area
+> > > Is there no refcount that we can use instead of borrowing? I guess not,
+> > > since one can call `debugfs_remove`. What about a refcount on the rust
+> > > side? or is debugfs not used for "debugging" and needs to have the
+> > > performance of no refcount?
 > > 
-> > I think RBTree::cursor_lower_bound() [1] does exactly what you said
+> > debugfs should never have any performance issues (i.e. you don't use it
+> > for performant things.)
 > > 
-> > [1]: https://rust.docs.kernel.org/kernel/rbtree/struct.RBTree.html#method.cursor_lower_bound
+> > So refcount away!  That should never be an issue.
 > 
-> Alice mentioned before that in many cases the whole pool of IDs will
-> fit into a single machine word if represented as bitmap. If that holds,
-> bitmaps will win over any other data structure that I can imagine. 
+> What I imagine would be the ideal API for Rust is the following:
 > 
-> For very large ID pools, the algorithmic complexity will take over,
-> for sure. On the other hand, the 15d9da3f818ca explicitly mentions
-> that it switches implementation to bitmaps for performance reasons. 
+> * For each file / dir you create, you get a Rust object that owns it.
 > 
-> Anyways, Burak and Alice, before we move forward, can you tell if you
-> ran any experiments with data structures allowing logarithmic lookup,
-> like rb-tree? Can you maybe measure at which point rb-tree lookup will
-> win over find_bit as the size of pool growth?
+> * When you destroy one of these Rust objects, it disappears from the
+>   file system. I.e., dropping a directory removes things recursively.
 > 
-> Can you describe how the existing dbitmap is used now? What is the
-> typical size of ID pools? Which operation is the bottleneck? Looking
-> forward, are there any expectations about ID pools size in future?
-> 
-> Carlos, can you please elaborate your motivation to switch to bitmaps?
-> Have you considered rb-trees with O(logn) lookup?
+> * If you remove a directory before the removing objects inside it, then
+>   the Rust objects become "ghost" objects that are still usable, but not
+>   visible in the file system anywhere. I.e. calling methods on them
+>   succeed but are no-ops.
 
-Yeah, we tried rb-trees. There was even a patch that implemented the
-augmented logic. See this:
-https://lore.kernel.org/all/20240917030203.286-1-ebpqwerty472123@gmail.com/
-IIRC, it just didn't make sense for our use case because of the extra
-memory bytes required for this solution. The performance ended up being
-the same (from my local testing).
+Why not just also remove those objects at the same time?  That would be
+more like what the filesystem logic itself does today.
 
-I'm not certain of this but one potential factor is that the rb nodes
-are in-strucutre members allocated separately. This can lead to more
-cache misses when traversing them. I don't know how applicable this
-would be for the Rust implementation though. Take that with a grain of
-salt as I didn't actually look super close while running the tests.
+> * Possibly we have a way to drop a Rust object without removing it from
+>   the file system. In this case, it can never be accessed from Rust
+>   again, and the only way to remove it is to drop its parent directory.
 
-I would also note, this whole logic wouldn't be required if userspace
-wasn't using these descriptor IDs as vector indexes. At some point this
-practice will be fixed and we can remove the "dbitmap" implementation.
+This too would be nice as that's how the existing api works in C.
 
-Cheers,
---
-Carlos Llamas
+> This way, you can drop foo/ before dropping bar/ and baz/ without that
+> having to be unsafe.
+> 
+> Whether that's best implemented by calling dget/dput on the dentry or by
+> having Rust keep track of a separate Rust-only refcount, I don't know.
+> But I think this is the API we want.
+> 
+> Thoughts?
+
+Sounds reasonable to me and should be easy to use, which is the key
+feature/requirement of debugfs.
+
+thanks,
+
+greg k-h
