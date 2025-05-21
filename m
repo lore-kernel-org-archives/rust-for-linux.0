@@ -1,119 +1,182 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A4721CC51;
-	Wed, 21 May 2025 21:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE0C239E62
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 May 2025 22:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747863328; cv=none; b=ahxfSGa/cx/evfh/OwHLpFEWzGqpaeeHiF25SLxyeuqGHGQqQSrgdS3jfU5m/jasFLySUu0RHiAAqvJQKHwUi1++sxAHduu3vZACSuRX36U7zUm8ZXTim9IirN/BLZUm8v2gIvKpqrR5uSnxuTu9qL8oPuYk8OJCNAIK4WXa9xM=
+	t=1747867228; cv=none; b=Y/ErPIjVbyYfoS6cCG4WXByRb38jEIUqEfhlgdqU9llXdDMVRw1f0sd86gp4zUq9mVV9ViJb4oh8z2YxlI1ylGI79IOxQgJn6cwHZkVsj4HikfY8s7teSq0U4SeMYd+uFRwVbY57CSc1kEHf/o3oiuDlOe7bnx8px6JseDVXN84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747863328; c=relaxed/simple;
-	bh=YZLxa21Ar6q84YL0TrLgO1kJWRoUTzRZEIr+JUaZ3Iw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S5Sx5wRW5dRNjPFw9PrGjQL1VTHjfjN7M6cMG5tV/W2SHBOn6dpg1oKEErdQ3dXpdICN2BSfemTw7tJAEtHH3q7U3n65QYT3TXUANxUy+wbg02JyqlI3BWba22PsycggPnXd0PaNPx3K937Q5cV85mkf+GfeUvbrqfRtOUdqBpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PYlEmkw+; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1747867228; c=relaxed/simple;
+	bh=F4TUNNkSdlkr8t9q3Z3MT3g+NNfMKFvdORSGoJ0bvFw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZFT7tFqraTR2IoSvI/vB2ATKUFMzD5WMN4PxnAw7mi3KspEqs4CFGJjXgrQJDk+JZmSyXSt+R7DbuR09xiS1BOZB4qQxDkZS8NcvG0nww7vM+AuOxB5dvEp10kJz3SYTeNm8UO3ocIYmErG0CE5fMX8E7NZqviA/nBW+YVNGNZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CO2sMfVM; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PYlEmkw+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747863327; x=1779399327;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YZLxa21Ar6q84YL0TrLgO1kJWRoUTzRZEIr+JUaZ3Iw=;
-  b=PYlEmkw+2aveZn5WP1pXtbRVRSr1CRnVV5/W1RB2nekd6zMZH+z+vgPN
-   dnGkaqHrYm2bV5WUs5DWgGWQ7KBbyC9EjBxoNunzeu8Owr9mYwX2bMB5Y
-   UZhMQGFikPCwl4vGOSeXbahGcUgoXXZjf2yiffE7k44dHeEBq51JOGKQl
-   dfzdXO4v2cKhPEOPlHc+fFs9ZQQ/Zfr54MSRnSsWWWzpyXptnyLe4PojO
-   A/173SmaYHVUTbxIknM4HbG30FKyafxcx99ovMkOpexZ2giJgCrozy1sr
-   DOA5Zdk5LfrtwajtqYXbCybNRRuESbEK/IyHlaIQD15DzHOkWvGKHGmMg
-   g==;
-X-CSE-ConnectionGUID: cCOK04uaTJKtizwcEqUekA==
-X-CSE-MsgGUID: 8yZmZJhSTPCMvI1LHjDDAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="61208572"
-X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
-   d="scan'208";a="61208572"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 14:35:23 -0700
-X-CSE-ConnectionGUID: r3/OdqIXRo6HroqyBfm0bQ==
-X-CSE-MsgGUID: Oc+ST89ATLKOARaVVf9qTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
-   d="scan'208";a="145393225"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 21 May 2025 14:35:18 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uHr5n-000Oeg-2k;
-	Wed, 21 May 2025 21:35:15 +0000
-Date: Thu, 22 May 2025 05:34:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Remo Senekowitsch <remo@buenzli.dev>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 6/9] rust: device: Implement accessors for firmware
- properties
-Message-ID: <202505220521.EPHBSqQg-lkp@intel.com>
-References: <20250520200024.268655-7-remo@buenzli.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CO2sMfVM"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a36bbfbd96so2055186f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 May 2025 15:40:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747867224; x=1748472024; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JeyfoSdrjT500rt7W8gHkxdV1/qT0T253oIZuxVzNcM=;
+        b=CO2sMfVMN1IjuGajAesuZNSoEmhHK3zcVKrj1QNnkU1vNo9FSFqT3edvVb5TQNt4yn
+         RDbByFr6ARpzf+YKVMji5BS5odnoTIMGFdczX27ih122qiR2hIMVHfY4nSoGbeYw4Rdz
+         5o4lSTq11jidyMR+oCCJYDY6/JLyVLCOYdH+WYRsIvXZfr3B8/S7uCfH4hq5qprGy8qw
+         8UkqchjJMd2Dzy6Gg/qkYb41foUzh06La5zAVSl8Zf2wNUA4IGX0+bsRrTHpa3qcDAYQ
+         026bsyI99YrGozIB2R+rX/+zVUpLGlN0zM/4oiwj1ky8uvRg01QydjmuigTtVM5JeFWR
+         BsWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747867224; x=1748472024;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JeyfoSdrjT500rt7W8gHkxdV1/qT0T253oIZuxVzNcM=;
+        b=nno34Kmr1drW1JnUpMmNu19EhzzmS1r6b0kxB/ZOoogpcIpkIgBTs011IlMWRnqKrC
+         nQ+fPoeLYa5mflTXMg/dE4IrLxA9tmC83Dpfe7KJC9vv0BEH52wVpNuGfD7yTQZRiCKd
+         ucRRJGC/J/JDV2QxTbHKoAMFS9E5izwkpJEVm9f2c4sHjjohfSFWl5lruRq8caAYgosW
+         guorwGkAltjyTamcnd3zJpgvr/D7TP0LArSkUIsMqbwEDrer/0bAbhxo2PfmOPIL5qj9
+         UUKepGML5Bqt3oprGxPC4p1ylxN/m+cOIw7FJD/Ko4e9wuECNdIelzQMRIZOuzTPvX9W
+         pLDg==
+X-Forwarded-Encrypted: i=1; AJvYcCXA/8A6yLJs0qAvDuVNstD0myR9HyvUWp1rzmE4ViHEDmj173odqEixPgPrfeVKO6cAqLABnXGFRVJ5ZdKNcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHH7QllGllNOn0KM1clJ/vCkCGr0mTvCdtNSTQykNxi3QBtJ49
+	qcf6AMUVN9oM8pXy9gCln1HUsRJpXbWgQ0l0xJngLs+ovZhRXQyQ+pzNEbUoAwz+o2ID2SaXUEw
+	lUQcMwwef5xEAa7iGqg==
+X-Google-Smtp-Source: AGHT+IFkc5ma9H5Ql4lDi9DIkUwgKb5ji7hQh7JWeeel8ZTiKf9PND+wMCUhMELv8D2cl3E0lQdTENZQ2Jup0SM=
+X-Received: from wrbee18.prod.google.com ([2002:a05:6000:2112:b0:3a3:66c9:9231])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:4308:b0:3a3:75d7:585f with SMTP id ffacd0b85a97d-3a375d758b0mr11092710f8f.55.1747867224588;
+ Wed, 21 May 2025 15:40:24 -0700 (PDT)
+Date: Wed, 21 May 2025 22:40:22 +0000
+In-Reply-To: <2025052148-copied-riverside-6187@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250520200024.268655-7-remo@buenzli.dev>
+Mime-Version: 1.0
+References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
+ <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com> <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+ <aCRdNJ2oq-REBotd@pollux> <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
+ <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org> <2025051524-festival-afterglow-8483@gregkh>
+ <aCzzBT96ktapP03e@google.com> <2025052148-copied-riverside-6187@gregkh>
+Message-ID: <aC5WVgf7PlvmsAfO@google.com>
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Benno Lossin <lossin@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Remo,
+On Wed, May 21, 2025 at 06:47:40AM +0200, Greg Kroah-Hartman wrote:
+> On Tue, May 20, 2025 at 09:24:21PM +0000, Alice Ryhl wrote:
+> > On Thu, May 15, 2025 at 01:43:09PM +0200, Greg Kroah-Hartman wrote:
+> > > On Thu, May 15, 2025 at 10:59:44AM +0200, Benno Lossin wrote:
+> > > > On Wed May 14, 2025 at 11:55 PM CEST, Matthew Maurer wrote:
+> > > > > On Wed, May 14, 2025 at 2:07=E2=80=AFAM Danilo Krummrich <dakr@ke=
+rnel.org> wrote:
+> > > > >> However, I really think we should keep the code as it is in this=
+ version and
+> > > > >> just don't provide an example that utilizes ManuallyDrop and for=
+get().
+> > > > >>
+> > > > >> I don't see how the idea of "manually dropping" (sub-)directorie=
+s and files
+> > > > >> provides any real value compared to just storing their instance =
+in a driver
+> > > > >> structure as long as they should stay alive, which is much more =
+intuitive
+> > > > >> anyways.
+> > > > >
+> > > > > We can't easily do this, because dropping a root directory recurs=
+ively
+> > > > > drops everything underneath it. This means that if I have
+> > > > >
+> > > > > foo/
+> > > > >   - bar/
+> > > > >   - baz/
+> > > > >
+> > > > > Then my directory handle for `bar` have to be guaranteed to outli=
+ve my
+> > > > > directory handle for `foo` so that I know it's didn't get deleted
+> > > > > under me. This is why they have a borrow onto their parent direct=
+ory.
+> > > > > This borrow means that you can't (without `unsafe`, or something =
+like
+> > > > > `yoke`) keep handles to `foo` and `bar` in the same struct.
+> > > >=20
+> > > > Is there no refcount that we can use instead of borrowing? I guess =
+not,
+> > > > since one can call `debugfs_remove`. What about a refcount on the r=
+ust
+> > > > side? or is debugfs not used for "debugging" and needs to have the
+> > > > performance of no refcount?
+> > >=20
+> > > debugfs should never have any performance issues (i.e. you don't use =
+it
+> > > for performant things.)
+> > >=20
+> > > So refcount away!  That should never be an issue.
+> >=20
+> > What I imagine would be the ideal API for Rust is the following:
+> >=20
+> > * For each file / dir you create, you get a Rust object that owns it.
+> >=20
+> > * When you destroy one of these Rust objects, it disappears from the
+> >   file system. I.e., dropping a directory removes things recursively.
+> >=20
+> > * If you remove a directory before the removing objects inside it, then
+> >   the Rust objects become "ghost" objects that are still usable, but no=
+t
+> >   visible in the file system anywhere. I.e. calling methods on them
+> >   succeed but are no-ops.
+>=20
+> Why not just also remove those objects at the same time?  That would be
+> more like what the filesystem logic itself does today.
 
-kernel test robot noticed the following build errors:
+I mean, if I write a driver and I store a Rust object that holds a
+debugfs directory in some random struct of mine, how is debugfs going to
+go remove it from my struct? It can't.
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus robh/for-next linus/master v6.15-rc7 next-20250521]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+At most we could enforce that you destroy them in the right order, but
+actually designing an API which enforces that is difficult and results
+in something inconvenient to use.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Remo-Senekowitsch/rust-device-Create-FwNode-abstraction-for-accessing-device-properties/20250521-040612
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20250520200024.268655-7-remo%40buenzli.dev
-patch subject: [PATCH v5 6/9] rust: device: Implement accessors for firmware properties
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250522/202505220521.EPHBSqQg-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250522/202505220521.EPHBSqQg-lkp@intel.com/reproduce)
+Of course, drivers probably shouldn't keep those ghost objects around,
+but I don't think the API should hard enforce that.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505220521.EPHBSqQg-lkp@intel.com/
+Alice
 
-All errors (new ones prefixed by >>):
-
->> error[E0432]: unresolved import `crate::private`
-   --> rust/kernel/device/property.rs:14:5
-   |
-   14 |     private::Sealed,
-   |     ^^^^^^^
-   |     |
-   |     unresolved import
-   |     help: a similar path exists: `crate::device::private`
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> > * Possibly we have a way to drop a Rust object without removing it from
+> >   the file system. In this case, it can never be accessed from Rust
+> >   again, and the only way to remove it is to drop its parent directory.
+>=20
+> This too would be nice as that's how the existing api works in C.
+>=20
+> > This way, you can drop foo/ before dropping bar/ and baz/ without that
+> > having to be unsafe.
+> >=20
+> > Whether that's best implemented by calling dget/dput on the dentry or b=
+y
+> > having Rust keep track of a separate Rust-only refcount, I don't know.
+> > But I think this is the API we want.
+> >=20
+> > Thoughts?
+>=20
+> Sounds reasonable to me and should be easy to use, which is the key
+> feature/requirement of debugfs.
+>=20
+> thanks,
+>=20
+> greg k-h
