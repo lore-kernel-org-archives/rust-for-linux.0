@@ -1,89 +1,128 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6B32686A2;
-	Wed, 21 May 2025 12:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2C926D4D2;
+	Wed, 21 May 2025 13:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747831517; cv=none; b=hy/cdC7AvjF0hGp9Li/sApY9vyrDyjfmQEUiuy4vZxkUdHskm3ht+9esJqXxqmgSDFQDUzeHPUBQT+rbztryVe6x7u+sxz8iGZhMwEKkQfGzvHh7/FEvJVEQmh5rLyziw6HRgI2CV8KUSEivzjy5rM4+oBquQR2+7XOS2m4DOVg=
+	t=1747832404; cv=none; b=HFyVZTxXuuDTp6pqWXsxlcjpZ/HUsK8gDlrTdb160AxO/nd1PKcF0tFslrXGN5G9v5TaXcbgo0FSbyVztFkjagiBXEc7IsBY/QQIAlzLp8cYnsCM/zr5tsHx/7HIuaJp1T5RBeCzX2Puvw6OtV1+q6SVyies4RYvuw0VNZoPLYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747831517; c=relaxed/simple;
-	bh=Gr8c9KBWDVaRJC+tyPor+w/fd8erzTw+z40GTSLgH6Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=W7vsH8nWYyGMchlmtiZ/+RjNCqfkLk4kUiE+/IN4Q4uFEYoEI0XYGcxxRZG03cWkiT6Mv5vhYmTSrE8anuZY34aw76gUmqYt/A3v7OpNFaAIz14uGD5BLccRhxbl3J43MFYgtpJrshowjY9K6mUBqfGP4ncOPfWb15yeHqShe8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4b2WNR3znkz9sRc;
-	Wed, 21 May 2025 14:45:11 +0200 (CEST)
+	s=arc-20240116; t=1747832404; c=relaxed/simple;
+	bh=iWukOTP5Zbi8mZBtT07eYoKDE3ALYLBiIEOJ2pVeONY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RpI1shw4vbibEmtFgqZqCfjr1G1aaJnQYDV4t89zzVNKn8/EustGXE6ywr6JNwklxQFg8tjq+rWQ8M7wSY4M2lpNZ1D7G/N0MhjJXqUPmlX8NoGlk9OYe5KtDPDdCsmmRSW7sD3Ptc4JdWZ4XzEnh98dTKTPp+w2CXe8YLx8kUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYrXcWSw; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYrXcWSw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB9BC4CEE7;
+	Wed, 21 May 2025 13:00:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747832403;
+	bh=iWukOTP5Zbi8mZBtT07eYoKDE3ALYLBiIEOJ2pVeONY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rYrXcWSwhiFPPMjV66tTBtf4yvaIBeKi9k8dqVlQGjZYXU0VheqzVvs7VXQewG7At
+	 gBNaDGto6i9n0P2WU+XFgz1exfsVmgX91tDvDD3ZqsnlAX/VXWgz2SE2fiZjD8d7Hg
+	 30Ir1QfMu7EH0z/gLvew27wF3QQ5Xm3jP/OBefmc=
+Date: Wed, 21 May 2025 15:00:00 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Arnd Bergmann <arnd@arndb.de>, Lee Jones <lee@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Gerald =?iso-8859-1?Q?Wisb=F6ck?= <gerald.wisboeck@feather.ink>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] rust: miscdevice: add additional data to
+ MiscDeviceRegistration
+Message-ID: <2025052138-phony-amplify-83ea@gregkh>
+References: <20250517-b4-rust_miscdevice_registrationdata-v3-0-cdb33e228d37@gmail.com>
+ <20250517-b4-rust_miscdevice_registrationdata-v3-1-cdb33e228d37@gmail.com>
+ <aCiSRZjOETsD8MhX@pollux>
+ <2025052107-awhile-drainer-38d0@gregkh>
+ <2025052104-mockup-dupe-2573@gregkh>
+ <4616772d-0052-4c2f-afec-69ae32f908aa@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 21 May 2025 14:45:06 +0200
-Message-Id: <DA1UK58JZWCM.CXSOPB8BN4H7@buenzli.dev>
-Cc: "Rob Herring" <robh@kernel.org>, "Saravana Kannan"
- <saravanak@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Dirk Behme" <dirk.behme@de.bosch.com>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v5 2/9] rust: device: Enable accessing the FwNode of a
- Device
-From: "Remo Senekowitsch" <remo@buenzli.dev>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-References: <20250520200024.268655-1-remo@buenzli.dev>
- <20250520200024.268655-3-remo@buenzli.dev>
- <2025052143-ergonomic-ongoing-36e5@gregkh>
-In-Reply-To: <2025052143-ergonomic-ongoing-36e5@gregkh>
-X-Rspamd-Queue-Id: 4b2WNR3znkz9sRc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4616772d-0052-4c2f-afec-69ae32f908aa@gmail.com>
 
-On Wed May 21, 2025 at 1:59 PM CEST, Greg Kroah-Hartman wrote:
-> On Tue, May 20, 2025 at 10:00:17PM +0200, Remo Senekowitsch wrote:
->> Subsequent patches will add methods for reading properties to FwNode.
->> The first step to accessing these methods will be to access the "root"
->> FwNode of a Device.
->>=20
->> Add the method `fwnode` to `Device`.
->>=20
->> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
->> ---
->>  rust/kernel/device.rs | 15 +++++++++++++++
->>  1 file changed, 15 insertions(+)
->>=20
->> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
->> index d8619d4485fb4..b4b7056eb80f8 100644
->> --- a/rust/kernel/device.rs
->> +++ b/rust/kernel/device.rs
->> @@ -186,6 +186,21 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Ar=
-guments<'_>) {
->>          };
->>      }
->> =20
->> +    /// Obtain the [`FwNode`](property::FwNode) corresponding to the de=
-vice.
->> +    pub fn fwnode(&self) -> Option<&property::FwNode> {
->> +        // SAFETY: `self` is valid.
->> +        let fwnode_handle =3D unsafe { bindings::__dev_fwnode(self.as_r=
-aw()) };
->
-> Why isn't this calling __dev_fwnode_const()?  And there's no way to just
-> use dev_fwnode() directly?  Ugh, it's a macro...
+On Wed, May 21, 2025 at 02:16:20PM +0200, Christian Schrefl wrote:
+> Hi Greg,
+> 
+> On 21.05.25 2:04 PM, Greg Kroah-Hartman wrote:
+> > On Wed, May 21, 2025 at 01:55:36PM +0200, Greg Kroah-Hartman wrote:
+> >> On Sat, May 17, 2025 at 03:42:29PM +0200, Danilo Krummrich wrote:
+> >>> On Sat, May 17, 2025 at 01:33:49PM +0200, Christian Schrefl wrote:
+> >>>> +pub struct MiscDeviceRegistration<T: MiscDevice> {
+> >>>>      #[pin]
+> >>>>      inner: Opaque<bindings::miscdevice>,
+> >>>> +    #[pin]
+> >>>> +    data: UnsafePinned<T::RegistrationData>,
+> >>>>      _t: PhantomData<T>,
+> >>>>  }
+> >>>
+> >>> I recommend not to store data within a Registration type itself.
+> >>>
+> >>> I know that this is designed with the focus on using misc device directly from
+> >>> the module scope; and in this context it works great.
+> >>>
+> >>> However, it becomes quite suboptimal when used from a driver scope. For
+> >>> instance, if the misc device is registered within a platform driver's probe()
+> >>> function.
+> >>>
+> >>> I know this probably isn't supported yet. At least, I assume it isn't supported
+> >>> "officially", given that the abstraction does not provide an option to set a
+> >>> parent device. Yet I think we should consider it.
+> >>
+> >> It's going to be a requirement to properly set the parent device, and
+> >> as you point out, this really should be in some sort of scope, not just
+> >> a module.
+> >>
+> >> But, we have two types of users of a misc device, one like this is
+> >> written, for a module-scope, and one for the "normal" device scope.  The
+> >> device scope is going to be tricker as it can, and will, get
+> >> disconnected from the device separately from the misc device lifespan,
+> >> so when that logic is added, it's going to be tricky as you point out.
+> >>
+> >> So I'll take this now, but in the future this is going to have to be
+> >> cleaned up and modified.
+> > 
+> > Nope, can't take it, it breaks the build from my tree:
+> > 
+> > error[E0432]: unresolved import `crate::types::UnsafePinned`
+> >   --> rust/kernel/miscdevice.rs:20:37
+> >    |
+> > 20 |     types::{ForeignOwnable, Opaque, UnsafePinned},
+> >    |                                     ^^^^^^^^^^^^ no `UnsafePinned` in `types`
+> > 
+> > error[E0432]: unresolved import `pin_init::Wrapper`
+> >   --> rust/kernel/miscdevice.rs:23:5
+> >    |
+> > 23 | use pin_init::Wrapper;
+> >    |     ^^^^^^^^^^^^^^^^^ no `Wrapper` in the root
+> > 
+> > error: aborting due to 2 previous errors
+> > 
+> > :(
+> 
+> This requires my `UnsafePinned` [0] patches (& with that pin-init-next) like I wrote
+> in the cover letter.
+> 
+> [0]: https://lore.kernel.org/rust-for-linux/20250511-rust_unsafe_pinned-v4-0-a86c32e47e3d@gmail.com/
 
-I think I had that in earlier versions of the patch series. There was
-a helper to call the macro from Rust. It was pointed out that this is
-not clearly expressing the intent - whether fwnode is mutated or not.
-And I think someone said the fwnode can be mutated so __dev_fwnode() is
-semantically correct.
+I never read cover letters, all of the needed information should be in
+the individual commits as that's what ends up in the changelog :)
+
+thanks,
+
+greg k-h
