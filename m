@@ -1,290 +1,155 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2040.outbound.protection.outlook.com [40.107.220.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC1414D433;
-	Wed, 21 May 2025 03:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747797436; cv=fail; b=B5ZnrWAlDhVYB+cemjA32pDmdUc+ht7saccbvEfarxTeEKDIyQmbLgGr7XKf3+IlG2NRb0sYBuSny7stsl12B6xaL72PgHCGQlZznTjR6KbHEgjZZiMX06pS9beUJ6JTYACLhjLP7puu24ETSxnBMytC4VutnOxxdqUJPJFp3TE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747797436; c=relaxed/simple;
-	bh=77FyeB0GxEeVrRn0xF+3SuRGunTW4KJIlv8OFo7PGwc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RcQV9AwNqRMktY50Q6LLeoW+V9dbgwzLTGwuQCrbt6v8fKSI20Xci0BB7sMyU8G33zb7EUZtIX5Cqbh+EHt3s4cRqeKcev/kQDbC06tzNHE4n7WK3+7caio72HYOt9V/U8jFxSARiQyETAem7jQMhmjDOklPsrp5smQR0Df7gjw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nf28bh4j; arc=fail smtp.client-ip=40.107.220.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8ED322DA17
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 May 2025 03:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747799884; cv=none; b=XT9N63RxFVUhJgnSHIDim2Jw2/IiVUiqnzl1H8Xg/Pe/jtwmOIYAT732Uw5F1kEFpmUKxa9Z4P7lYbaoyMLrklpoyywdImq+VPU2gL8MZTBsLsIYfOx7l1o22U4AeNKmyiFuQJJ7OAggrf2H483/qkgOtGNo4OuLhUi4CXuroXE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747799884; c=relaxed/simple;
+	bh=wlsjQW0Yibuw5qncy8R7Cr0VHmy7PGLOqqCXs10/zxA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bAgstDnmw/6xrK50WFkAPLAGFFTqZ9UwJK16TBt4rzjGJaGcEidHeME88v1BhnDBcz84g0HnNR+drVFeZkglMQf9QkwoVWKhfszp5y3bUdHFbPwc6xkQEb36/ilTyN31XUP+jyMvGdinjXb5BzdLz4B3n9uwqOic4njgA7pfkaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J9RjlIqh; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nf28bh4j"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SMM0PClhZzLTGJ4vTP6QiiXHccMNUV8TldxcWmZyttbzrs+CP7HrX2GnC/Eqq8ZetJqL+73BYiR601i8KAcCQAd6FrhNmHq/IJUaSmqTpZRK3LoZlzaxFWESLbMIkPH612CqpJjbE0ihaGLeJ5IjqNmpdVqLBE4OU8bh4ueG2SEWiK9EFpKcPco+9yJ2+hJbaL7pQ5J4VrtfwDbwU8lnLX863s8mPv/OmZFObh07Q/ukvsaWQqhENhpIYA/3d9vbiZ/maleAhEtLrDki/lAcw6SuVCaIYVr1zU5ONW6THaAA3XcBMduIynLiZe8t/aRXxjOy+xMRg58mWd32OXZUAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Yoj5sSehnX5EShiyYAs9OOKFUTb6kE8YnJ1hBkqXT54=;
- b=kB18qQ5hgpmoM6ug2tEyxsSBmNniDOBVJoiGjP+kAM6mBPnPLlQX4KHxKuN6RXcW2IkEcKPvyjeEtkyxxZMM8lvxLNR1cQuFri1zr7RgCeRIDdafBjeJm6wF8Sqefv6UllyJ0bXb2c3X53OlqWfGTH98LtWydfTyydhh5v3N1iRIOv0s2URvTsLqtzgRMm8S2hRpTbSMDdyUX4nMeMS3X+8I+9CPGCIkqN7r8qD4YFTj0+PmmV/a+EbjIF5aOcD9h+7uSUc+trV95TFvzgdh4L7qsyysLrpYPYvvajKlFuCjWlOL3so+CHXKUt5AjYnBic7OFM6vOwDS1853rvX6Hw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Yoj5sSehnX5EShiyYAs9OOKFUTb6kE8YnJ1hBkqXT54=;
- b=nf28bh4jNG7ymn98JWABL2GwfyJS41PsbKD2Mv7ozLJiRwzPQjZm5IkBMy6gDXzQmt3A2RD56MOfcla9eGny126FV1jwQyLtVgew8Q4YOj/VZ70aQZ9o+wHJnmxTilbMyUPq9IB76TlhkZaoda3WO+HCRHM5zfj7cn5jzA7cYKA5zZs+nFi2+YkcLrbosHBaIWcfThyxQuCojZOSsxdIxDxclV9ePoLztw3KsT/vHdUUDuy7my7x/FDR9IkMlwThmwzmiWdtGxZ4HyKleAbNqNqKCpjmykTabBz6TqTlNgtd5pNtY44ikqCuBM480QAs0PdbJdO6ioV0jcOf5AyBig==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by PH7PR12MB8053.namprd12.prod.outlook.com (2603:10b6:510:279::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.31; Wed, 21 May
- 2025 03:17:10 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.8746.030; Wed, 21 May 2025
- 03:17:10 +0000
-Message-ID: <17701f1c-8117-4045-8da1-a578a7082caa@nvidia.com>
-Date: Tue, 20 May 2025 23:17:06 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 16/19] nova-core: Add support for VBIOS ucode
- extraction for boot
-To: Dave Airlie <airlied@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Jonathan Corbet <corbet@lwn.net>, John Hubbard <jhubbard@nvidia.com>,
- Ben Skeggs <bskeggs@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, Shirish Baskaran <sbaskaran@nvidia.com>
-References: <20250507-nova-frts-v3-0-fcb02749754d@nvidia.com>
- <20250507-nova-frts-v3-16-fcb02749754d@nvidia.com> <aCN_PIYEEzs73AqT@pollux>
- <4fee85be-a8c5-4a99-8397-c93e79d72d15@nvidia.com>
- <aCxLyxcERNHKzfvI@cassiopeiae>
- <3cfb7a8c-467e-44d0-9874-361f719748b8@nvidia.com>
- <aCyZPUaPSks_DhTn@cassiopeiae>
- <bdb290d4-b369-4b8e-b78d-8c8d3cc07057@nvidia.com>
- <aCyhkiBTXV86P_GF@cassiopeiae>
- <dcd249d6-7e99-476e-b216-8ca9e1a936e5@nvidia.com>
- <CAPM=9typcavVsj-w_4zaBkU=eo-hsOagHn4cMekCsXPHwLK3Aw@mail.gmail.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <CAPM=9typcavVsj-w_4zaBkU=eo-hsOagHn4cMekCsXPHwLK3Aw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL1P223CA0038.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:208:5b6::7) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J9RjlIqh"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-231f61dc510so932455ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 May 2025 20:58:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747799882; x=1748404682; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0wx3hoPbcWp9uiaTRbvdc0caMEO1HJqfQgmTjdqGLG4=;
+        b=J9RjlIqhzg7D73WJIPD4oKMWJmMdqZW7laCBqyfzWAD/1qObsc8Rf+mP0cI6/laBS4
+         7/w+LtT5qG9RzrPcA8A1AYJm9hASl45remVFSS8IX7sWcBquSc1gYKMuZrE0y1OubZ3s
+         jAigBpyxkNmSd4O4OiJdN1MyliGv/OcDlyAm8YtUMMQ/4ipqbLBCgPw47F6vEbz0ZQ9v
+         gNCHnro0NnYl42bx6GSAW+n8dog1TAd+zX5fxvi2M4hgBsX8GK5LasoTK7XdFl2OSkwe
+         MrIY/I97bSeTW7PpIkqf3UzuesyerEoRNubd/cuNrMJq9b2D6Q5oyfAOxAPZACHiBk6X
+         hVvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747799882; x=1748404682;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0wx3hoPbcWp9uiaTRbvdc0caMEO1HJqfQgmTjdqGLG4=;
+        b=JgP4idyyemhcERa0XPP8BrRAwKLbPPGVWza+m5yBT0557IAAOIR+DL8IGMiIZYJGcY
+         x5Bmq0CCs9LLUcsBiLH0OWtdoH21zVVJ5NnslYdnX0PjWEieLzcPH8j5MO37HnUAZSjs
+         DeUgl1N8hVIGwBDJF9oS1y+sl5RqB7sVDKtzSylkwAO9BSiY+3WDZLSnPZgNnA25iXiD
+         0wMjG5TK42QP6B8n9Fp2oqmt0QTh6+gMb68mYtLhEIB506qHcs6q7nr40+zObaqnpYom
+         pfHLkca7vjzLk5NfB/MPXrA4GbjOT7OKc8nmAjg23NoJyukHZsEN5kYildKsZH6AwKMs
+         G4Ig==
+X-Forwarded-Encrypted: i=1; AJvYcCX49njwFUQxiWc1Op9MqUP8FQ8M8GHUHHAxRo3+pqdRtM7Jr4F8k6lHDQeYw/wSpFrJHxKt0TCc/87+BhairA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCynSWG23bnyRbM8LYutjQmIaSgKKHZAJYdyGW7+aXH+9XxYzr
+	nGi53sVUxGLeg19TWNro4smZTwGGaBOi0XE32FsVBUolO8ZCmfNP5L0Gpiv3k8n0eg==
+X-Gm-Gg: ASbGncuiMH/dIyme73tAd3pTAX+4VoHNE9IW8bTpaxrUFlnGW94+Ss4xxwGO7fltvG6
+	DgiKCdzkBIPVCmd/XefHps7SXo0xXFV6z+tzBZphqmZZLhCSXjm/mBWsFMGMBI52hjUnFrY5Drg
+	CsIlvD/mHJ1UKT5hWZbORb8oND7M1+sFcusA9GBo9hoEQHu/88IfzC2DoTrK77UatwWM2wg6PwT
+	Od09Rhd78lHmB7wS/j+AYFu0FlHMwzWLOH1lzerVBQtGYJPRw+IXvyTc1+504jepTRB4UkoTqfk
+	rlVhJB9Ey2EYY4uTd3qFQ6UwwvTI73KQwzdQRdVtUtU0uCkOK6Nlz18tlBdl0vtQ38jo+t2SxoW
+	L+tnfrnWpA6QaQbQNuiw=
+X-Google-Smtp-Source: AGHT+IFCRZkwpnReRQWrGPg1IKtuRs98lKF9l3e5qmq9BPLVfG4ZV5CokuhsO8rtpUNOuqhM4g0RUQ==
+X-Received: by 2002:a17:903:228c:b0:224:6c8:8d84 with SMTP id d9443c01a7336-231ffd0ec4amr10032895ad.4.1747799881655;
+        Tue, 20 May 2025 20:58:01 -0700 (PDT)
+Received: from google.com (3.32.125.34.bc.googleusercontent.com. [34.125.32.3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a970b9basm8660405b3a.49.2025.05.20.20.58.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 May 2025 20:58:01 -0700 (PDT)
+Date: Wed, 21 May 2025 03:57:55 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jann Horn <jannh@google.com>,
+	Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v8 5/5] rust: add dynamic ID pool abstraction for bitmap
+Message-ID: <aC1PQ7tmcqMSmbHc@google.com>
+References: <20250519161712.2609395-1-bqe@google.com>
+ <20250519161712.2609395-6-bqe@google.com>
+ <CAG48ez2WdxXVCzVsAPeQWgso3ZBQS_Xm+9D1FLBx6UHFV1bGHQ@mail.gmail.com>
+ <682bc528.c80a0220.13f632.9ec0@mx.google.com>
+ <aCvTYHMtuWZZizn9@yury>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|PH7PR12MB8053:EE_
-X-MS-Office365-Filtering-Correlation-Id: 39804e66-ed5c-4e64-cd55-08dd9815f95b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NHFSa3pXOWh1QzVuam45WEJlN1pXaXhBY053U3JhMHNUSkNyN0xHdkJtTWZN?=
- =?utf-8?B?eEpjaXAyMTdxa0NiNmwyYUZnc2R6WkJiSXFpZlVUdWRxbXlZL0oyY1FxeDlq?=
- =?utf-8?B?THJ1Tjd0S0hoQlIrenI1ZngwTHJXdE9nT1pGdm9aVXJwK2V3Vldrc0RWY01G?=
- =?utf-8?B?RFdXeGVKdmx5bTEwU1JEejFLdWpjaDBZUjh2Q2NFYzlJaWJ4eHJPSE1IcTdH?=
- =?utf-8?B?WkgrcmQvK3ZtY2xxQ3lqMk13N2VRRmphSDc5REg1STRUcW0vZlozdXZZUDNV?=
- =?utf-8?B?TWNULzV4VlkvNmRUd0FMMHE1ckRlS2tPRlZDTG1TQXdLVGV1K3hENTZLSmVv?=
- =?utf-8?B?MEh6ZWlxNVppc0RudEpPdHhYZmJyQmFqYXZNQXZQMU5wWVZCZ2pEMDArVlVl?=
- =?utf-8?B?anlLdU84QTRoeFN5UVozSWtaSHd2dDUvZWdCMXF6dkxKM28vdWhpNnBoTXBV?=
- =?utf-8?B?ZTRZL1d6L3J6bXVPR3diYVRTSjdrOEhNMXF2RzJQTUw1eHlsT21UTnh1clVk?=
- =?utf-8?B?cEZQWVdZRkEyOXFlUTU1Z3lBb1lxQXFHVUtzWjVpczdkNHNhejF6RUFRZXRt?=
- =?utf-8?B?TU1PU0NLZk9MMkYxVlVDSCtxWHdHVWRpL1piSExRTmRoWjhWQlVtRXNHTVl4?=
- =?utf-8?B?YmN0UGh5Q2FQdHVUdkFGejQ4b2pkYllEVFhoUEd5N1hMdkswVmRXWDBqUmR2?=
- =?utf-8?B?Y0NUM044VCtiU1Z2dDBIdUJlRFpTZ3FnZFk0THJvaWJFNWJ6YnR1cDlVbFY4?=
- =?utf-8?B?c1U3UFpJL3NOaC9sb1RLSlVmcGxUTGw5ckthOGhIaytLcENCTkJEVjVBUmJn?=
- =?utf-8?B?NFR2aW5QQUZTbFBtT01MZ29UbjVzc3FWbmJva28vSGZ5NUNBUTF3QlZISi9a?=
- =?utf-8?B?R2g3Z0hRdXhaMVlLK1BPNVN3NzQ1YlRuUlNHK095NSt4NmdOWm5pVXhaNzU4?=
- =?utf-8?B?MHU4YkRMaWgxelQ4cVlpTHNuYzBGN0JlMS8rajRBQjdVdkIyaityYzJjcHNM?=
- =?utf-8?B?Z2tMSmpKakpoT3lnZHFVVDREV053QXVpbTdsYUcxck04ek04MVR2NkVQeXpD?=
- =?utf-8?B?TXFDbFhER2lmTGxsMytYeGpsY0d1RjZIYUJIOUhuYkE3UmU0K1RiYXFwRlVN?=
- =?utf-8?B?NXhMbEZUM29QbkVPdG5Kb01UazhDamZJZjZ0QWt2QytiUzdNM2NwY25vbXhq?=
- =?utf-8?B?dmdJWXdjK0ZjemFXRGtFb3dJejNHRW93RkREMGkxYS9yNXNiR0dJVklDZXlO?=
- =?utf-8?B?SmlZOEE0WVd0dkRNTlcrNHZnUXdZa0ttdUlRUWgrTVo4ZWJYd1J2YW5YVGE5?=
- =?utf-8?B?b0EyQnhuSDFpYVRrQ01lT0YzMXR1TlU1b3krUDdCTURCdUZjVHZHVlFQSXls?=
- =?utf-8?B?QmlSSlM4a01MTUo5eUxJRmhNeTRlbzZobitPcGFDN2ZvYW5JMkRKQTZwcEp1?=
- =?utf-8?B?ZXdYR0JUTTJGcHYrNE01L0FiVStFM0FFRDFTNDloM3Q3RU9QdDFxRlgrTHdy?=
- =?utf-8?B?bVlkNFVvQWwyMVBlUjN0Z05NK1hNVTB4U1FCVmF2V2o1QWI3OXJ5ZnZ6M1JF?=
- =?utf-8?B?SVF0TGtTUG1GbWM4QisyWCtzaUJ4QXoxY0kvT1YrZHZXcXBRR1JZL0VTbXdk?=
- =?utf-8?B?L3pBc214aWZLZGF4OGFER0NLWW9VWW82LzhubTJlRElxcXdoL2xWTS91TWxm?=
- =?utf-8?B?bmx0bzJrbTBRdjFTOTZqYUlnUnlNWmNWWW03bXpPL2V0bzk4cU1NeStnb1ov?=
- =?utf-8?B?WEEyNW9INWEyanVWdVVlc0E0Sllid3dWbm90VUgwTWV2M0NvdzB5TDNPT1Yy?=
- =?utf-8?B?R2YrNDdHSHkxT1R2SHN1YnZjLytnY0h5QmtvaHRPZElMTHdaWmJSeW5wbWMy?=
- =?utf-8?B?dzVPVW0vV28wdkxhZEJGRHpTQ0hSeDhSNWJ1S1NtcEx2OFpmbGM4dUorejRL?=
- =?utf-8?Q?IFRgGM8vuxo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eEoxRFRveXhSb0IwVVkyVUxHbXpxWUtKTjJ5dUhXSVA4Mmp0MHhkOE5Pc2RZ?=
- =?utf-8?B?bEdJbVhsTWp5dzZKVUpCMXRRTWZiTWtzSWxuOVBWTGE4YXFKRVZnZTJnWG9N?=
- =?utf-8?B?R0JrQml6a3F2TklnRDFQYkthalJINFFOcEdvS2prbmlocXNKT2ZXbWY5bDlP?=
- =?utf-8?B?SGlaR0NDVzJNMnF6Q2taK1ZGK05oZmU2emtNNlcwV3dzeHYrR0ZrMk00ME56?=
- =?utf-8?B?ajUvY0N5RW5NZk9uUjBBVTJ3ZnJsc1JkKzk4dUpuOWFjUkw3a0piM244LzBP?=
- =?utf-8?B?elZoKzA0NnhNek5yZEk3MzhZcTV1TkRaaHpPZGdWU2ZoUUNUQjduTnFsRnlT?=
- =?utf-8?B?RU9DMWRacVFEZWRPNXcxaU8yc1N2Mll3R2tYdXFJbmNCL0ZUMVBRbEhSOHcz?=
- =?utf-8?B?ZnYvenNBYmtqRFcrTDZ2eFBtajVpaVdpWXVUeEJHWVZsejBMN2xWT0dla3Fy?=
- =?utf-8?B?STNNQ3Nla1pQZ055ZFdwMVlJbC9SeFdOUTZQUWpxOTMrdDcvQW5GR05Semhn?=
- =?utf-8?B?RTAyS0ZFMHNHYVdXaFMxWFFHNnErd1JzSkhZN0U3ZHR6ZTQ0OVhwS0pCSk1G?=
- =?utf-8?B?dmpndExwZmFiRFQ2aXhPc0ZJMnFPNTVnczBMcjJLZjZwRnEvclYvanYwSjlH?=
- =?utf-8?B?MmF5SHM5TUNrYXJ1VCsrQ0MyVS9NeHNQMERJQUsvZ25ldVZLZGxzbFFubEJT?=
- =?utf-8?B?bFlUZzdVSE9zdFRLeVJ4TnpINDdSOVlkRjBWTE5hTW9WcFA1OGhxNkdCVGEy?=
- =?utf-8?B?R1JaMDl2UTR2NkxnTjFaTXFobXRKU0hIWkVDbUdoZkxoWG9pQXY5RG5LTEFu?=
- =?utf-8?B?QlRXRzdLVithNjNnUVhBc2txSkg4Z1ZMNWV2RWZoakpMdUNXR0tNaUIvZUNr?=
- =?utf-8?B?d1VJOWRTRVk2UjhJU1BjdjhDNmZXUVVDdjlOV1Q4VzZOUk1YZEF5V0tKb2NW?=
- =?utf-8?B?T1ZqOXNYNHJnRVR6cTMwb2k5Um9kUmFpTXgwRTc0WmxQbU16RlVCbW96NktP?=
- =?utf-8?B?T0VoeGR5d0V3K0NUTjN0aW9ManMvRiszd3dGVFdZMGkrNDZERHhxcVVvcXlU?=
- =?utf-8?B?RXVsNzBhUEZHRWw3QjJjMmhkVGMzUFJRYXE2czI4cW5sT1ZSOW5aVkpnVUVi?=
- =?utf-8?B?UzY0Ri8yeVdIQmVGdDhvbktUeStXNTJVV3ZQdjkyY004UXFxbklFVUhMYzlO?=
- =?utf-8?B?N01OM2s3ZVVJY1VEYVNWdTJ2SmtIM1pOMnh0cGQzVTNDdm5QWGoxMlNzTXpC?=
- =?utf-8?B?Vk5mb2JvcHI1TU5wM2REQlMxYm15WjJ0aFVjOVh2ZHdHdmU5NzBLZnVkamNX?=
- =?utf-8?B?WWlNN0MyVU1VVFJiYnBUVXNVcFoyV1FzbGYwNERDY3R1K29tK3lSRTZSVGRq?=
- =?utf-8?B?eFg3a1BkK3d6UDM5VUpsTUF4WmorNERDb1dmK2FlYWRMckVSa3VkTnBNeHFx?=
- =?utf-8?B?WDVaZ09HNTQ1VEgzK2xHLzBVQmZjc0JYaXNENVFPU2xuOUVoZklFTUZnTlBx?=
- =?utf-8?B?Yi81azhycHpteFBIVEhkRWRzQm9JM09TaHNXYTM0YjlIOEtpSm1IZmFBV0xy?=
- =?utf-8?B?b0FrS3Y5OWI4ajBiZk9JTnN2UkpzRkxrLzhQNXNxRnVkNGcyMVNhN011VjM4?=
- =?utf-8?B?enNEK2ZtNVh5ZnVMUUxOSWVWbWdrYnc0VEVlYXBGZnE3Zms4MjJmVGl2RFNJ?=
- =?utf-8?B?K3hEemlFTlozVVBLMDdSWkQ2akQxakVjSCtodzUvUlE1dUFiVmZnV3E0bUtK?=
- =?utf-8?B?OHBzakwxTlZPWWtkbHRFT0NqV1czc2tNSWhpRWc1RkRENVdIVUJnd2V4T0V1?=
- =?utf-8?B?aVpTa01WL2Nxanl5c2JtUEVVdURzcjBiRHBlZmNodUpFZUlueUI0RWRtU1Nv?=
- =?utf-8?B?bGhPVTZxeG5KWmFFeHZGV2JMU3NoUDVYNmUrOFlsSVd4eFR3S3BNSFYvN1RE?=
- =?utf-8?B?ZFJPdEQ5ZkJDWW9YdWZKZjVaUGVSMGU1MEMxRDlRSUcrd1ppK3plOWx1K01N?=
- =?utf-8?B?TU00bUtQT3l5TVBtSHU2Tjh1REhZRURPbXFRYWgxejlvWGJmaEU0NlJrcEhV?=
- =?utf-8?B?bFg3b1NMaC9KamZsdzFqYWk2YXhidjdSWnp4SlFvdGxVK1FYa2xuSzdGMENo?=
- =?utf-8?Q?poCf7qP6kr60BUpFom17QE1OI?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39804e66-ed5c-4e64-cd55-08dd9815f95b
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2025 03:17:10.3460
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pPJHwlLBVdevKn1ErW3qPKZ6tzRSR8fqKDtPHmb/JR7uXVSRWtY6LT1biGOAveNUdpA/2bUPo7kS4//u4LIlmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8053
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aCvTYHMtuWZZizn9@yury>
 
-
-
-On 5/20/2025 5:32 PM, Dave Airlie wrote:
-> On Wed, 21 May 2025 at 04:13, Joel Fernandes <joelagnelf@nvidia.com> wrote:
->>
->>
->>
->> On 5/20/2025 11:36 AM, Danilo Krummrich wrote:
->>>>> If you want a helper type with Options while parsing that's totally fine, but
->>>>> the final result can clearly be without Options. For instance:
->>>>>
->>>>>     struct Data {
->>>>>        image: KVec<u8>,
->>>>>     }
->>>>>
->>>>>     impl Data {
->>>>>        fn new() -> Result<Self> {
->>>>>           let parser = DataParser::new();
->>>>>
->>>>>           Self { image: parser.parse()? }
->>>>>        }
->>>>>
->>>>>        fn load_image(&self) {
->>>>>           ...
->>>>>        }
->>>>>     }
->>>>>
->>>>>     struct DataParser {
->>>>>        // Only some images have a checksum.
->>>>>        checksum: Option<u64>,
->>>>>        // Some images have an extra offset.
->>>>>        offset: Option<u64>,
->>>>>        // Some images need to be patched.
->>>>>        patch: Option<KVec<u8>>,
->>>>>        image: KVec<u8>,
->>>>>     }
->>>>>
->>>>>     impl DataParser {
->>>>>        fn new() -> Self {
->>>>>           Self {
->>>>>              checksum: None,
->>>>>              offset: None,
->>>>>              patch: None,
->>>>>              bytes: KVec::new(),
->>>>>           }
->>>>>        }
->>>>>
->>>>>        fn parse(self) -> Result<KVec<u8>> {
->>>>>           // Fetch all the required data.
->>>>>           self.fetch_checksum()?;
->>>>>           self.fetch_offset()?;
->>>>>           self.fetch_patch()?;
->>>>>           self.fetch_byes()?;
->>>>>
->>>>>           // Doesn't do anything if `checksum == None`.
->>>>>           self.validate_checksum()?;
->>>>>
->>>>>           // Doesn't do anything if `offset == None`.
->>>>>           self.apply_offset()?;
->>>>>
->>>>>           // Doesn't do anything if `patch == None`.
->>>>>           self.apply_patch()?;
->>>>>
->>>>>           // Return the final image.
->>>>>           self.image
->>>>>        }
->>>>>     }
->>>>>
->>>>> I think the pattern here is the same, but in this example you keep working with
->>>>> the DataParser, instead of a new instance of Data.
->>>> I think this would be a fundamental rewrite of the patch. I am Ok with looking
->>>> into it as a future item, but right now I am not sure if it justifies not using
->>>> Option for these few. There's a lot of immediate work we have to do for boot,
->>>> lets please not block the patch on just this if that's Ok with you. If you want,
->>>> I could add a TODO here.
->>>
->>> Honestly, I don't think it'd be too bad to fix this up. It's "just" a bit of
->>> juggling fields and moving code around. The actual code should not change much.
->>>
->>> Having Option<T> where the corresponding value T isn't actually optional is
->>> extremely confusing and makes it hard for everyone, but especially new
->>> contributors, to understand the code and can easily trick people into taking
->>> wrong assumptions.
->>>
->>> Making the code reasonably accessible for (new) contributors is one of the
->>> objectives of nova and one of the learnings from nouveau.
+On Mon, May 19, 2025 at 08:57:04PM -0400, Yury Norov wrote:
+> + Carlos Llamas
 > 
-> I just want to back Danilo up on this concept as well.
+> On Mon, May 19, 2025 at 04:56:21PM -0700, Boqun Feng wrote:
+> > On Tue, May 20, 2025 at 12:51:07AM +0200, Jann Horn wrote:
+> > > On Mon, May 19, 2025 at 6:20 PM Burak Emir <bqe@google.com> wrote:
+> > > > This is a port of the Binder data structure introduced in commit
+> > > > 15d9da3f818c ("binder: use bitmap for faster descriptor lookup") to
+> > > > Rust.
+> > > 
+> > > Stupid high-level side comment:
+> > > 
+> > > That commit looks like it changed a simple linear rbtree scan (which
+> > > is O(n) with slow steps) into a bitmap thing. A more elegant option
+> > > might have been to use an augmented rbtree, reducing the O(n) rbtree
+> > > scan to an O(log n) rbtree lookup, just like how finding a free area
+> > 
+> > I think RBTree::cursor_lower_bound() [1] does exactly what you said
+> > 
+> > [1]: https://rust.docs.kernel.org/kernel/rbtree/struct.RBTree.html#method.cursor_lower_bound
 > 
-> When I did the experiments code, I faced the not fully constructed
-> object problem a lot, and I tried to resist the C pattern of Option<>
-> all the things, it's a very C based thing where we create an object
-> then initialise it as we go, and it's not a great pattern to have for
-> rust code.
+> Alice mentioned before that in many cases the whole pool of IDs will
+> fit into a single machine word if represented as bitmap. If that holds,
+> bitmaps will win over any other data structure that I can imagine. 
 > 
-> I'm not a huge fan of constructor/builder objects either if they can
-> be avoided, please do, and I tried to also avoid proliferating them,
-> but I think for most things we can build the pieces and then the final
-> object as we go, it just requires doing so from the start, and not
-> giving into the Option<> pattern.
+> For very large ID pools, the algorithmic complexity will take over,
+> for sure. On the other hand, the 15d9da3f818ca explicitly mentions
+> that it switches implementation to bitmaps for performance reasons. 
+> 
+> Anyways, Burak and Alice, before we move forward, can you tell if you
+> ran any experiments with data structures allowing logarithmic lookup,
+> like rb-tree? Can you maybe measure at which point rb-tree lookup will
+> win over find_bit as the size of pool growth?
+> 
+> Can you describe how the existing dbitmap is used now? What is the
+> typical size of ID pools? Which operation is the bottleneck? Looking
+> forward, are there any expectations about ID pools size in future?
+> 
+> Carlos, can you please elaborate your motivation to switch to bitmaps?
+> Have you considered rb-trees with O(logn) lookup?
 
-Sure, I am on the same page there as well. For next revision of this patch,
-struct Vbios will contain a struct FwsecBiosImage without any Option in either
-struct Vbios or struct FwsecBiosImage. This is only logical, because there is
-nothing optional about it (in what Vbios::new() returns).
+Yeah, we tried rb-trees. There was even a patch that implemented the
+augmented logic. See this:
+https://lore.kernel.org/all/20240917030203.286-1-ebpqwerty472123@gmail.com/
+IIRC, it just didn't make sense for our use case because of the extra
+memory bytes required for this solution. The performance ended up being
+the same (from my local testing).
 
-thanks,
+I'm not certain of this but one potential factor is that the rb nodes
+are in-strucutre members allocated separately. This can lead to more
+cache misses when traversing them. I don't know how applicable this
+would be for the Rust implementation though. Take that with a grain of
+salt as I didn't actually look super close while running the tests.
 
- - Joel
+I would also note, this whole logic wouldn't be required if userspace
+wasn't using these descriptor IDs as vector indexes. At some point this
+practice will be fixed and we can remove the "dbitmap" implementation.
 
+Cheers,
+--
+Carlos Llamas
