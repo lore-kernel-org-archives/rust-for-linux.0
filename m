@@ -1,163 +1,101 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1AB26B958;
-	Thu, 22 May 2025 22:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1115926E15A
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 May 2025 22:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747952028; cv=none; b=fgAeXkW/d/fvm02n9eQXtTMQYiMxtiUYQIJccxumeHidg9CunjR+p78GNflc07EF7essnFP/I2ZngtPSkmMT72Fb4qpcp9ucgYd1w4yy4GJ8AxTvT+IuvDz0WHstKxsowOipAhRTySaI2TsUeUB4mv4E/fGq49bxF8LqFxxZyNk=
+	t=1747952065; cv=none; b=tfwKfixX2pu1LhXMmhBmfB0gb03nCe98sor9bs2Wj8nXhky0wIkXRAsovS6+6dZemUypXuVWlSnTFqPuCnigNf8EHZ5if2NSrhtJIKS3FYK3v13h72HJrTwIOYdSPThOfTvuxu5B3BcDu0c5QAfkljqDkiDSTjqpgfBJoc7W7t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747952028; c=relaxed/simple;
-	bh=5dENeOLtnJGFObbzdDXN0f5y5BtraJcblhTQRAod3S8=;
+	s=arc-20240116; t=1747952065; c=relaxed/simple;
+	bh=x6wxXDuMVX+OmfDt/ovHVstThij0g+Cx4xT2C755JDg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AuW06mELLhPVFcyjxN9m1hizufhBPdkfcGbUyOomk8+jTapJq7qiR1eSuEFmaNBhsJ+FBkuy/wjlc/gZHsP9ZBt4a0zgBqnPfTxIbGlUCif594TyttqMhsL6EfZxqqANIunza3p/KY6auwcV7ayuxgpOs9jS84bm/EjJ//bfAMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TGRESWor; arc=none smtp.client-ip=209.85.214.180
+	 To:Cc:Content-Type; b=quysS6TzE+IHJmuvXmXa+CLIqTeNNbSmMsFDeINy2oxnEOZYwp3inGbLSkesfnlIC15g50frGDLQr/IqBiGAtjVgvZWb2oAy+pVcMeYtfP/dri61mMlx79rYSLRV81p2ui8VnSNkRvqazUy9YswWbwq92G7FQAkZ97YqmCkVNuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DusnAOLZ; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TGRESWor"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-231c38c9d9eso6917505ad.3;
-        Thu, 22 May 2025 15:13:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DusnAOLZ"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-23179999d4aso7851575ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 22 May 2025 15:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747952026; x=1748556826; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747952063; x=1748556863; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AMhz1MVSg+20hErSHEivJDb3RiqjMCis/42ObFUBGKI=;
-        b=TGRESWorsWj5QhsVEHLZVj2gEKzxRvoD3P+7nakYG0kz2YN4TJS19EwfKDhaQ2+JKa
-         Og1SwQIaUQDgRFYpCuQ9VtkgAvUOLVn5z7D13Ij6tcCNhtKNnmOj6xmUfYwOM1mmf+Y5
-         ioAN4anUvMLyMXdRyhGa1ataHWnux9xmbINLnYX0ffGvsRqL/+dctEfFHJe+ecw0a1ZR
-         lCakiOjv/JQjahO/ejf0H+UJY+cKTo6KdDfbpGjCwegL9R2dLufFEQ6/Q0qU7ZLnpICw
-         DcwvCg0Gbcv4Lgm81wfnmaCNqP9j9dC9pIAbbFCQ+1S4ZyXkUdHaEBwRqw8Q2qG0+Twx
-         hWSQ==
+        bh=SteAIc0aK3U11eG8bAWWiwo2hGup6SyoLTpBN7C0z5k=;
+        b=DusnAOLZKlFW+ETGOvC8MMI28dGYVV9BSQHyH0/EMC+KLTDBSJDN7EcbsiQKI2xruz
+         3EeWmm2upHD2go1SIVUP2E8+Aq1Ty6yW2a/AyCo+RanEYz19zjLTkeCnOm9VtXd1vamV
+         bp5kkxmCkRdsy5nNxMJYsjMHkKiATr0AqINYTfEitXDkRMXbQxdVECZrYVtNf66odizd
+         NKypXXryUgv4mOWXJyPU93AuLg2EnMbqW9RmJ3m/i55BgxBOI3PUflA2/cr+1SBWJtXc
+         P9ftoibRg++HM5LnoAFKro1lC3YMrWuZj2LTZcB4Yn0m2lj06oUug0fW87i8Gc5rbwdh
+         3H6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747952026; x=1748556826;
+        d=1e100.net; s=20230601; t=1747952063; x=1748556863;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AMhz1MVSg+20hErSHEivJDb3RiqjMCis/42ObFUBGKI=;
-        b=LoSEq5ez/f270c4nbdr2uL+To+LfJJkUDHWQFIY7q8lU91k4AyuUppTLkxZuKXHrr0
-         9CAKUv4mLgEEVsVjQmHlLsO4XaPxNpFCPkkFEqufDo2rmaL8JrfedDf41K5v9ZUJ2ycP
-         aLPyxn3h7iX+34K8uUgserojDm2TyQbcKSl1tpU25GMt/cT3IOo//kusIHI0NB7pbmU6
-         WzsIGguQldUpbfSxF99BM2LwFSQNAn6tu5WnQlxJDh1r/0r8snwqOo0BYanmpHmgadw6
-         tGCNCtfRczu/1Df8q3xcLxgNWRxWfDSC7uzgfKqP4WfyLpOwn+6sTm4s0WaKWV9o4TBV
-         Aatg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWbNlP3gpR4uCl4oP2cGqEFhTUq4ZkybkFMhNEVMp7deZ8nYG0QVZWbo7/85iSDwBgqfyaOjIaPZUsjjw=@vger.kernel.org, AJvYcCWpff++l8M+LHoCqi+SbA8oEMXJaHePXN8mlXc3RuTCYUhVm4H1vOlCZg7fnwd58wY9QYunVxmLVZDgRkPdsgw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi7dDAy7PjEZxaUziaLz+9VEUAI7tmFr/IrCHiZYhH5uRirAxp
-	atoEg1NUYuLpbtWLlA9zI4ujg4w9Dg+HyvaXOqgOf+yxnccRzV1frrCGsvG1a66vNARD4LLVcLJ
-	FRx1kMxyzCHjP/mFPFhhmUaSMlo45XtQ=
-X-Gm-Gg: ASbGncsDD8/thdVtgiHOpuUFfoY6fVzIyEX8TqBkOJTs4ZidXcanRcchQXlb82+ObsV
-	ilkiE3Uc8oB+vfhGJM4ioNkPFwiPUQMTWCxMI/QvymqSb57zo4drwfHp74CRvy63alM8As4f/PV
-	33Pp7P03CUMm3DDEl7lygazAPf0BomOSzuafrBCvV1D50=
-X-Google-Smtp-Source: AGHT+IFTyjvX9iO5arSB+Hrj2K8L6YOfX+CN4mhTlBRVV8gnFAIiCtQe8lkHwIlvRc1U3Eaocj5eWFvoqT3N1A2+8ZQ=
-X-Received: by 2002:a17:902:d4cd:b0:231:c9bb:6105 with SMTP id
- d9443c01a7336-231d334d214mr141617365ad.0.1747952025723; Thu, 22 May 2025
- 15:13:45 -0700 (PDT)
+        bh=SteAIc0aK3U11eG8bAWWiwo2hGup6SyoLTpBN7C0z5k=;
+        b=EHLYp03mWNLspRziINxmx6Nk1of7QAU1DeV1jVaO3vwuvBA1EMFZcmrhwmWmMNZfr9
+         kEPsjfBEI3Tpwr7qifab4cAvoHQCtfliZcfl7a7qiY76shYVm5rMC/i+gHl1Z5ovQd5p
+         j1r5To9XsExwUufQsSXpJsv/Lij+1v+uxsIJLdEDVjGCtvlfIh1gmJ0yoYrrU6gxnh4r
+         ETwGcPdFtoEr17RCZhYHy2EcNbqhEfE9BTe6XiLIGb6edYKPGdAe+l3FScSq3PjvO1tC
+         Mq/k+czWa9NmZykQoTRS/DaZjE3B5WrPieXM6tlBtbpxl6/DwzMKwvdInQ2RvM1QEmHd
+         xzhw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ6NVvf6Xeb0QqEvykiO9ntwed3acAJbwVv4FvYCoyMGVekynCFxhKWr0NgUvtB0fKYGIVS4+jnIeNfawyjA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvzAv8i4wNm+3671pf2eIF105joc2DUm2uBAqLIMz8Y+1dOvkH
+	yAqn+BnH+ksSAJ8Jwf5gmt19h0LB4GeLvaLU88RzGGdXFg3rAyeaX+CYeiD7dPiwD0CPnJqKlJz
+	ujuQqBhsgW8HwizccTy3oyDcgf0JP7XI9q2XCCo8KMg==
+X-Gm-Gg: ASbGnctkkaWvnrfcpkKWfUtgwlttX3uldtQr41M//wy0jAgfDj6VS1xUTHl3m6IgPu5
+	ViVMBOqDv6c+Cj3x7U7kUR2Ail9NitcFcw/I8yiC3wuG3cpuSSIptm0kBPapD3uDpbVioqznrVQ
+	RUpgwfHtPaFrTK4T8uKdtoXr/2qLUjxskE
+X-Google-Smtp-Source: AGHT+IGBXYuDWd/iRt0hALutBbr73I/+w1xgElVahE8xlMu5Kt74/TfBeV3TM0fpbAApxbAorVd1M4/si+mNW+oqBVA=
+X-Received: by 2002:a17:903:41d0:b0:224:1005:7281 with SMTP id
+ d9443c01a7336-231d43c3d88mr133963825ad.7.1747952063194; Thu, 22 May 2025
+ 15:14:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250522-rust-mno-fdpic-arm-fix-v2-1-a6f691d9c198@gmail.com>
-In-Reply-To: <20250522-rust-mno-fdpic-arm-fix-v2-1-a6f691d9c198@gmail.com>
+References: <20250516122349.1944895-1-igor.korotin@yahoo.com> <20250519164615.3310844-1-igor.korotin.linux@gmail.com>
+In-Reply-To: <20250519164615.3310844-1-igor.korotin.linux@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 23 May 2025 00:13:32 +0200
-X-Gm-Features: AX0GCFtr6WgCm1ku7z1BrqoxOWC4SJPyclrOJsw4oTJrTJaoW2ki_s3m3SE0AGg
-Message-ID: <CANiq72kHh9e-gB-b1udjJn07=ampsy+4dkTFgEeQ3VNUUw_7+A@mail.gmail.com>
-Subject: Re: [PATCH v2] arm: Fix rustgcc unknown argument '-mno-fdpic'
-To: Rudraksha Gupta <guptarud@gmail.com>
+Date: Fri, 23 May 2025 00:14:10 +0200
+X-Gm-Features: AX0GCFsbYxW10RiEe0xJSdce6PudH4KA085D6GUGbBxbPnFpt1xNUwDdRCHRP40
+Message-ID: <CANiq72m77gLJRD+On=k+M1ZFLZAkRz=d0mzspr59FR6+VV2qOQ@mail.gmail.com>
+Subject: Re: [PATCH v5] rust: macros: Fix macro referencing core and kernel crates
+To: igor.korotin.linux@gmail.com
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	torvalds@linux-foundation.org, Ben Wolsieffer <ben.wolsieffer@hefring.com>, 
-	Naresh Kamboju <naresh.kamboju@linaro.org>, Christian Schrrefl <chrisi.schrefl@gmail.com>, 
-	Russell King <rmk+kernel@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>, anders.roxell@linaro.org, 
-	arnd@arndb.de, dan.carpenter@linaro.org, laura.nao@collabora.com, 
-	lkft-triage@lists.linaro.org, regressions@lists.linux.dev, 
-	Nick Clifton <nickc@redhat.com>, Richard Earnshaw <richard.earnshaw@arm.com>, 
-	Ramana Radhakrishnan <ramanara@nvidia.com>, Linux Kernel Functional Testing <lkft@linaro.org>
+	Benno Lossin <benno.lossin@proton.me>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 22, 2025 at 2:02=E2=80=AFPM Rudraksha Gupta <guptarud@gmail.com=
-> wrote:
+On Mon, May 19, 2025 at 6:49=E2=80=AFPM <igor.korotin.linux@gmail.com> wrot=
+e:
 >
-> Currently rust on arm fails to compile due to '-mno-fdpic'. This flag
-> disables a GCC feature that we don't want for kernel builds, so let's
-> skip it as it doesn't apply to Clang.
+> From: Igor Korotin <igor.korotin.linux@gmail.com>
 >
->     UPD     include/generated/asm-offsets.h
->     CALL    scripts/checksyscalls.sh
->     RUSTC L rust/core.o
->     BINDGEN rust/bindings/bindings_generated.rs
->     BINDGEN rust/bindings/bindings_helpers_generated.rs
->     CC      rust/helpers/helpers.o
->     Unable to generate bindings: clang diagnosed error: error: unknown ar=
-gument: '-mno-fdpic'
->     make[2]: *** [rust/Makefile:369: rust/bindings/bindings_helpers_gener=
-ated.rs] Error 1
->     make[2]: *** Deleting file 'rust/bindings/bindings_helpers_generated.=
-rs'
->     make[2]: *** Waiting for unfinished jobs....
->     Unable to generate bindings: clang diagnosed error: error: unknown ar=
-gument: '-mno-fdpic'
->     make[2]: *** [rust/Makefile:349: rust/bindings/bindings_generated.rs]=
- Error 1
->     make[2]: *** Deleting file 'rust/bindings/bindings_generated.rs'
->     make[1]: *** [/home/pmos/build/src/linux-next-next-20250521/Makefile:=
-1285: prepare] Error 2
->     make: *** [Makefile:248: __sub-make] Error 2
+> Fix macros and auto-generated code to use absolute paths, `::core::...`
+> and `::kernel::...`, for core and kernel references. This prevents issues
+> where user-defined modules named `core` or `kernel` could be picked up
+> instead of the `core` or `kernel` crates.
 >
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> Closes: https://lore.kernel.org/all/CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJX=
-Yu7wWK51w38QUQ@mail.gmail.com/
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Tested-by: Rudraksha Gupta <guptarud@gmail.com>
-> Acked-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-> Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1150
+> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
 
 Applied to `rust-next` -- thanks everyone!
 
-    [ Naresh provided the draft diff [1].
+    [ Applied `rustfmt`. Reworded slightly. - Miguel ]
 
-      Ben explained [2]:
+I picked up Benno's review from v4.
 
-        FDPIC is only relevant with no-MMU targets, and then only for users=
-pace.
-        When configured for the arm-*-uclinuxfdpiceabi target, GCC enables =
-FDPIC
-        by default to facilitate compiling userspace programs. FDPIC is nev=
-er
-        used for the kernel, and we pass -mno-fdpic when building the kerne=
-l to
-        override the default and make sure FDPIC is disabled.
-
-      and [3]:
-
-        -mno-fdpic disables a GCC feature that we don't want for kernel bui=
-lds.
-        clang does not support this feature, so it always behaves as though
-        -mno-fdpic is passed. Therefore, it should be fine to mix the two, =
-at
-        least as far as FDPIC is concerned.
-
-      [1] https://lore.kernel.org/rust-for-linux/CA+G9fYt4otQK4pHv8pJBW9e28=
-yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com/
-      [2] https://lore.kernel.org/rust-for-linux/aAKrq2InExQk7f_k@dell-prec=
-ision-5540/
-      [3] https://lore.kernel.org/rust-for-linux/aAo_F_UP1Gd4jHlZ@dell-prec=
-ision-5540/
-
-        - Miguel ]
-
-    [ Reworded title. - Miguel ]
+If KUnit does not want this in, please shout.
 
 Cheers,
 Miguel
