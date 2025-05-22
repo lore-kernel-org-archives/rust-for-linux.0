@@ -1,138 +1,163 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA8B26A1C3;
-	Thu, 22 May 2025 22:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1AB26B958;
+	Thu, 22 May 2025 22:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747951839; cv=none; b=N85cp+NFdV37Tj05I/oBLuskKGtWet2WfC97eK0ltpglHOdkQB6ov42pCPawyP6PBSZWlJob9uy/d+DLM0Uoup8av8HlB74IjXUJjfy1ljV5Kba0gszLmIuzqe4GgBOz33rVXlLqRJsVtfoDtXS7xRSHuPZdF/gQ8pnhS+VTQh8=
+	t=1747952028; cv=none; b=fgAeXkW/d/fvm02n9eQXtTMQYiMxtiUYQIJccxumeHidg9CunjR+p78GNflc07EF7essnFP/I2ZngtPSkmMT72Fb4qpcp9ucgYd1w4yy4GJ8AxTvT+IuvDz0WHstKxsowOipAhRTySaI2TsUeUB4mv4E/fGq49bxF8LqFxxZyNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747951839; c=relaxed/simple;
-	bh=Vwp7L6L0DbadGmW+6IbLFn7FDl7XlbaZVO+AUTwmZBA=;
+	s=arc-20240116; t=1747952028; c=relaxed/simple;
+	bh=5dENeOLtnJGFObbzdDXN0f5y5BtraJcblhTQRAod3S8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MwMwdyLsHDvLimENrulVzopNfWe0csOgNSi5jDR7HOZhxYpZHww/Kpghizlrct0vZ4H6KonaHvmispX161H7OmAkvLSYL4vefnBFFcJzLD6UyEhfXFzuz0+Et+fRyJXbWZwhSmyGou9Vm0vyNWQGBJhQ92k9IF3tGtdoqkiZD1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XnWL0igM; arc=none smtp.client-ip=209.85.214.182
+	 To:Cc:Content-Type; b=AuW06mELLhPVFcyjxN9m1hizufhBPdkfcGbUyOomk8+jTapJq7qiR1eSuEFmaNBhsJ+FBkuy/wjlc/gZHsP9ZBt4a0zgBqnPfTxIbGlUCif594TyttqMhsL6EfZxqqANIunza3p/KY6auwcV7ayuxgpOs9jS84bm/EjJ//bfAMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TGRESWor; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XnWL0igM"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-231ba912ba1so8555145ad.2;
-        Thu, 22 May 2025 15:10:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TGRESWor"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-231c38c9d9eso6917505ad.3;
+        Thu, 22 May 2025 15:13:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747951837; x=1748556637; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747952026; x=1748556826; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QaVcQnOHZhXdhQaf8IN9xC9rWiAxsOh9GVu5nLs1VX8=;
-        b=XnWL0igMo5ImU27Dr1cDv7pEPZbGBDS865Qun5D52pzVRa3Q51oa9l9/pMnXopidBG
-         nPZMF2oOMop7RWc9YKxmsE3Wh1/8WS6WPGFxnOA61TGATn5FMap0BBhRSWVbRWJa3l4W
-         rIlkRxtc3QWWY5ttZo7YDX6iFYoxtzo2Zc2FItg/QiX5v8rAYu3F6+L1KihtJ4HaI3P/
-         wKZp0r6/DnS8CifaB/fT7xQ+zXtkXBXGEndMa3lS3ZlhFJzsEWybztlaXdiSZp3OrJir
-         n56d23ULQXTXncRZGaDRMtjAQt1xsPk2Y3wL6NWQpD9lls6qLv42euvdn4nFfzTKOEWu
-         n2Hg==
+        bh=AMhz1MVSg+20hErSHEivJDb3RiqjMCis/42ObFUBGKI=;
+        b=TGRESWorsWj5QhsVEHLZVj2gEKzxRvoD3P+7nakYG0kz2YN4TJS19EwfKDhaQ2+JKa
+         Og1SwQIaUQDgRFYpCuQ9VtkgAvUOLVn5z7D13Ij6tcCNhtKNnmOj6xmUfYwOM1mmf+Y5
+         ioAN4anUvMLyMXdRyhGa1ataHWnux9xmbINLnYX0ffGvsRqL/+dctEfFHJe+ecw0a1ZR
+         lCakiOjv/JQjahO/ejf0H+UJY+cKTo6KdDfbpGjCwegL9R2dLufFEQ6/Q0qU7ZLnpICw
+         DcwvCg0Gbcv4Lgm81wfnmaCNqP9j9dC9pIAbbFCQ+1S4ZyXkUdHaEBwRqw8Q2qG0+Twx
+         hWSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747951837; x=1748556637;
+        d=1e100.net; s=20230601; t=1747952026; x=1748556826;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QaVcQnOHZhXdhQaf8IN9xC9rWiAxsOh9GVu5nLs1VX8=;
-        b=nIOc1ErzHjVvLhXkbRgPFjQG9nqipJFSaVcHcce3DV4CahGrV9SNmwlFkPvGRTazTD
-         T6OeEvEAym/+OsfcTgJ2g3oe9NKFW4zEsuRIY4gFFN3rIF6k0rlaer4o3J0FhIeanD7n
-         JrOIdDQvo6hNaZKIPbsEJZ7tA6yEPuykqbBPtrhyAEN7fMlG9iyQE3pdZPCYQmaT9ZWv
-         ywPRLhtxRxJZ71OThg7BFRQ6Wika5y7zEuAsiKJUeOG/mNs4J0Wojn8MPdNOmoQuuOrJ
-         DfufiVwBN3WEdy3L8ytvAPLh/XLnUAjPe7UBbjKbIcR0qsKtFsm0FR7CMG8d5XPpfHJQ
-         ELzw==
-X-Forwarded-Encrypted: i=1; AJvYcCXDXJ6ISCgUeTpbUXvc3lHw3vCGrQw5kVx1jkggnbfnkroWETZGPZd0SQGqHKHVU14XCBmHFCW/3IPyGtfNv3M=@vger.kernel.org, AJvYcCXRsunBudnCAMZSk8HDKvEPgu9fiBLRZLfEgACVROFNbx4K5NnEt3xNsval3dnjvwk83QeGDP7B74AorOs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsJP8SpsJFKeeg/ehaex75x9fI2/wsx8hwtiK1VfXnEKuFqCPE
-	AXoI7Z/MKHvK+po9tjFVx2sBPuyLROVDidJzkWEtBW/7CXrZJWQ8Ie0tER5zNbel3k1oBYaySqW
-	4XdMZ66Uo4pzcz3RRFSuKMnguyxKKanQ=
-X-Gm-Gg: ASbGnctTqUikpE+GIj/4zBTm7/WWqgBN+xAW/phTrtzlwSnfjQ8BHj2e2LfmFr5FqzU
-	yTqa714iVXuu5O7SS7kBmJVGAmCoNvPD14nTYi2IPJ/OFtHVh0pO9yolSIvBhUtTDVrMulbv7H0
-	XGmxQiSHx10Z9QsnlhYFWBUD3pSXwMF2JW
-X-Google-Smtp-Source: AGHT+IE6aWxf93Mgju2436vKfZ9FnWr6MAWyx+AfEYRoQoWD+Un59jcMnqr7D+uOUxx2gT5GGNl/U6k7mzVQmXV29jA=
-X-Received: by 2002:a17:903:4b28:b0:22e:50d1:b8d1 with SMTP id
- d9443c01a7336-233f3658cafmr976555ad.3.1747951837366; Thu, 22 May 2025
- 15:10:37 -0700 (PDT)
+        bh=AMhz1MVSg+20hErSHEivJDb3RiqjMCis/42ObFUBGKI=;
+        b=LoSEq5ez/f270c4nbdr2uL+To+LfJJkUDHWQFIY7q8lU91k4AyuUppTLkxZuKXHrr0
+         9CAKUv4mLgEEVsVjQmHlLsO4XaPxNpFCPkkFEqufDo2rmaL8JrfedDf41K5v9ZUJ2ycP
+         aLPyxn3h7iX+34K8uUgserojDm2TyQbcKSl1tpU25GMt/cT3IOo//kusIHI0NB7pbmU6
+         WzsIGguQldUpbfSxF99BM2LwFSQNAn6tu5WnQlxJDh1r/0r8snwqOo0BYanmpHmgadw6
+         tGCNCtfRczu/1Df8q3xcLxgNWRxWfDSC7uzgfKqP4WfyLpOwn+6sTm4s0WaKWV9o4TBV
+         Aatg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWbNlP3gpR4uCl4oP2cGqEFhTUq4ZkybkFMhNEVMp7deZ8nYG0QVZWbo7/85iSDwBgqfyaOjIaPZUsjjw=@vger.kernel.org, AJvYcCWpff++l8M+LHoCqi+SbA8oEMXJaHePXN8mlXc3RuTCYUhVm4H1vOlCZg7fnwd58wY9QYunVxmLVZDgRkPdsgw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyi7dDAy7PjEZxaUziaLz+9VEUAI7tmFr/IrCHiZYhH5uRirAxp
+	atoEg1NUYuLpbtWLlA9zI4ujg4w9Dg+HyvaXOqgOf+yxnccRzV1frrCGsvG1a66vNARD4LLVcLJ
+	FRx1kMxyzCHjP/mFPFhhmUaSMlo45XtQ=
+X-Gm-Gg: ASbGncsDD8/thdVtgiHOpuUFfoY6fVzIyEX8TqBkOJTs4ZidXcanRcchQXlb82+ObsV
+	ilkiE3Uc8oB+vfhGJM4ioNkPFwiPUQMTWCxMI/QvymqSb57zo4drwfHp74CRvy63alM8As4f/PV
+	33Pp7P03CUMm3DDEl7lygazAPf0BomOSzuafrBCvV1D50=
+X-Google-Smtp-Source: AGHT+IFTyjvX9iO5arSB+Hrj2K8L6YOfX+CN4mhTlBRVV8gnFAIiCtQe8lkHwIlvRc1U3Eaocj5eWFvoqT3N1A2+8ZQ=
+X-Received: by 2002:a17:902:d4cd:b0:231:c9bb:6105 with SMTP id
+ d9443c01a7336-231d334d214mr141617365ad.0.1747952025723; Thu, 22 May 2025
+ 15:13:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250325184309.97170-1-ojeda@kernel.org>
-In-Reply-To: <20250325184309.97170-1-ojeda@kernel.org>
+References: <20250522-rust-mno-fdpic-arm-fix-v2-1-a6f691d9c198@gmail.com>
+In-Reply-To: <20250522-rust-mno-fdpic-arm-fix-v2-1-a6f691d9c198@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 23 May 2025 00:10:24 +0200
-X-Gm-Features: AX0GCFuI-Cp0LblAbfBsD5C8vBzb-kYyMkgjULkrHzzq5fNIwQ_8FcHrtWkpgus
-Message-ID: <CANiq72mwbJZ4kDe6CGBovX=_y0h+6y_xzYKoY6384oyCmcazSw@mail.gmail.com>
-Subject: Re: [PATCH] rust: workaround `bindgen` issue with forward references
- to `enum` types
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Fri, 23 May 2025 00:13:32 +0200
+X-Gm-Features: AX0GCFtr6WgCm1ku7z1BrqoxOWC4SJPyclrOJsw4oTJrTJaoW2ki_s3m3SE0AGg
+Message-ID: <CANiq72kHh9e-gB-b1udjJn07=ampsy+4dkTFgEeQ3VNUUw_7+A@mail.gmail.com>
+Subject: Re: [PATCH v2] arm: Fix rustgcc unknown argument '-mno-fdpic'
+To: Rudraksha Gupta <guptarud@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	torvalds@linux-foundation.org, Ben Wolsieffer <ben.wolsieffer@hefring.com>, 
+	Naresh Kamboju <naresh.kamboju@linaro.org>, Christian Schrrefl <chrisi.schrefl@gmail.com>, 
+	Russell King <rmk+kernel@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>, anders.roxell@linaro.org, 
+	arnd@arndb.de, dan.carpenter@linaro.org, laura.nao@collabora.com, 
+	lkft-triage@lists.linaro.org, regressions@lists.linux.dev, 
+	Nick Clifton <nickc@redhat.com>, Richard Earnshaw <richard.earnshaw@arm.com>, 
+	Ramana Radhakrishnan <ramanara@nvidia.com>, Linux Kernel Functional Testing <lkft@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 25, 2025 at 7:43=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Thu, May 22, 2025 at 2:02=E2=80=AFPM Rudraksha Gupta <guptarud@gmail.com=
+> wrote:
 >
-> `bindgen` currently generates the wrong type for an `enum` when there
-> is a forward reference to it. For instance:
+> Currently rust on arm fails to compile due to '-mno-fdpic'. This flag
+> disables a GCC feature that we don't want for kernel builds, so let's
+> skip it as it doesn't apply to Clang.
 >
->     enum E;
->     enum E { A };
+>     UPD     include/generated/asm-offsets.h
+>     CALL    scripts/checksyscalls.sh
+>     RUSTC L rust/core.o
+>     BINDGEN rust/bindings/bindings_generated.rs
+>     BINDGEN rust/bindings/bindings_helpers_generated.rs
+>     CC      rust/helpers/helpers.o
+>     Unable to generate bindings: clang diagnosed error: error: unknown ar=
+gument: '-mno-fdpic'
+>     make[2]: *** [rust/Makefile:369: rust/bindings/bindings_helpers_gener=
+ated.rs] Error 1
+>     make[2]: *** Deleting file 'rust/bindings/bindings_helpers_generated.=
+rs'
+>     make[2]: *** Waiting for unfinished jobs....
+>     Unable to generate bindings: clang diagnosed error: error: unknown ar=
+gument: '-mno-fdpic'
+>     make[2]: *** [rust/Makefile:349: rust/bindings/bindings_generated.rs]=
+ Error 1
+>     make[2]: *** Deleting file 'rust/bindings/bindings_generated.rs'
+>     make[1]: *** [/home/pmos/build/src/linux-next-next-20250521/Makefile:=
+1285: prepare] Error 2
+>     make: *** [Makefile:248: __sub-make] Error 2
 >
-> generates:
->
->     pub const E_A: E =3D 0;
->     pub type E =3D i32;
->
-> instead of the expected:
->
->     pub const E_A: E =3D 0;
->     pub type E =3D ffi::c_uint;
->
-> The issue was reported to upstream `bindgen` [1].
->
-> Now, both GCC and Clang support silently these forward references to
-> `enum` types, unless `-Wpedantic` is passed, and it turns out that some
-> headers in the kernel depend on them.
->
-> Thus, depending on how the headers are included, which in turn may depend
-> on the kernel configuration or the architecture, we may get a different
-> type on the Rust side for a given C `enum`.
->
-> That can be quite confusing, to say the least, especially since
-> developers may only notice issues when building for other architectures
-> like in [2]. In particular, they may end up forcing a cast and adding
-> an `#[allow(clippy::unnecessary_cast)]` like it was done in commit
-> 94e05a66ea3e ("rust: hrtimer: allow timer restart from timer handler"),
-> which isn't great.
->
-> Instead, let's have a section at the top of our `bindings_helper.h` that
-> `#include`s the headers with the affected types -- hopefully there are
-> not many cases and there is a single ordering that covers all cases.
->
-> This allows us to remove the cast and the `#[allow]`, thus keeping the
-> correct code in the source files. When the issue gets resolved in upstrea=
-m
-> `bindgen` (and we update our minimum `bindgen` version), we can easily
-> remove this section at the top.
->
-> Link: https://github.com/rust-lang/rust-bindgen/issues/3179 [1]
-> Link: https://lore.kernel.org/rust-for-linux/87tt7md1s6.fsf@kernel.org/ [=
-2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Closes: https://lore.kernel.org/all/CA+G9fYvOanQBYXKSg7C6EU30k8sTRC0JRPJX=
+Yu7wWK51w38QUQ@mail.gmail.com/
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Tested-by: Rudraksha Gupta <guptarud@gmail.com>
+> Acked-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
 
 Applied to `rust-next` -- thanks everyone!
 
-    [ Added extra paragraph on the comment to clarify that the workaround m=
-ay
-      not be possible in some cases. - Miguel ]
+    [ Naresh provided the draft diff [1].
+
+      Ben explained [2]:
+
+        FDPIC is only relevant with no-MMU targets, and then only for users=
+pace.
+        When configured for the arm-*-uclinuxfdpiceabi target, GCC enables =
+FDPIC
+        by default to facilitate compiling userspace programs. FDPIC is nev=
+er
+        used for the kernel, and we pass -mno-fdpic when building the kerne=
+l to
+        override the default and make sure FDPIC is disabled.
+
+      and [3]:
+
+        -mno-fdpic disables a GCC feature that we don't want for kernel bui=
+lds.
+        clang does not support this feature, so it always behaves as though
+        -mno-fdpic is passed. Therefore, it should be fine to mix the two, =
+at
+        least as far as FDPIC is concerned.
+
+      [1] https://lore.kernel.org/rust-for-linux/CA+G9fYt4otQK4pHv8pJBW9e28=
+yHSGCDncKquwuJiJ_1ou0pq0w@mail.gmail.com/
+      [2] https://lore.kernel.org/rust-for-linux/aAKrq2InExQk7f_k@dell-prec=
+ision-5540/
+      [3] https://lore.kernel.org/rust-for-linux/aAo_F_UP1Gd4jHlZ@dell-prec=
+ision-5540/
+
+        - Miguel ]
+
+    [ Reworded title. - Miguel ]
 
 Cheers,
 Miguel
