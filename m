@@ -1,63 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2B1288515;
-	Thu, 22 May 2025 09:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1395618027;
+	Thu, 22 May 2025 09:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747907388; cv=none; b=BDD9Z+pgp8FT1UfJM82Cl0ZD0IZ5yQkJ3kthGH5CJ2AJgrvXLIEdYQu67MZmOZ/cuRsbsrTODb9S6yIUK02UfCQv6LPxsY/lFgQdJ4d2rMM6chaYS3tEGNeW93B3v4EiHS4vkqm2Q7pRQ1Z7qR3bcuH2wDIDh2NZwGfY4w+Pj2o=
+	t=1747907526; cv=none; b=nI0is0sWRPZKoXPiPhOmHudOMy5q+cAAhvRg4V1QzX+5wxxxna/ouXS7IFAmR0JEWfbVmsxGoKIptCcgsCGYd1m5IbbNKVX3Uh9tVygAO4hp1YDXh3CzIPEX3X6H2m/3mJUoB1HQaHxHhqhJa9bojo/053mV/PiC9ppXR5hfIak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747907388; c=relaxed/simple;
-	bh=WxrkF6GhZtKT3lX+bYF1iWXLBucnPgzrZfyUZ85+8Gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eiK3YFgMaR9fG4qMou9yORB4SCupHUBIfTBlXZEoKuDqr9ZVi9kwOBnabhLzXwmNTsWGZ5oCTeYbIuE3cH9a8fDsz1C8MAFX90oQHU0k4G85VP/DeDQiBGtI18M9e4tEXMdyGTAaOjoiIv4in5kqRsjFS+ruZhsLIz4XRL8xNCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5bCObJ3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747907526; c=relaxed/simple;
+	bh=R5gUtd7Ej8tnX3ImIcWWLb8QpdfRfk/XdEuvZ0Eu8ng=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=TIGBLqtRmSWGzTj8aNy+1BM4Uzq4NQxdrcb/JgQPOVKlPiOqMxZQoo27AmyTXhm+EGKcQ7jcvsq+FDYD0I9fNzlY5yK/VKPu49oHzdpBRQTiO8stkerV8JoH/wYmOvaca1e55yYI3E5MyyZr84wtlwaOCsoQyD9JS7nMDY8HS5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ryo8D6wt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5bCObJ3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359C9C4CEEF;
-	Thu, 22 May 2025 09:49:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ryo8D6wt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C67C4CEE4;
+	Thu, 22 May 2025 09:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747907387;
-	bh=WxrkF6GhZtKT3lX+bYF1iWXLBucnPgzrZfyUZ85+8Gk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J5bCObJ3kb/50cBDx08JW1l4U5veARWb2DzwU9phvLNFL2pmv+scZsdU6Hl5ok8lH
-	 L7sODWPPOt0uMYHdjHJ76jynYYuZWVXfI4pPkqM+kjOVoMz26fUn2YaGPz/npdX8nH
-	 2BZv0kJLYK5z4KTpvP8FurxB5PS6tzzWvY4832ctdavp7/RGH8bkbsoAtIKElSA0IB
-	 DU8tmpqHgsqItFZKHgSfZxLKZ59Vky63s8RJKW9HcBHxfKjMF4icePWjNqFh3oI8k9
-	 5jZrz5eIvipjgUXtcaxkYdGvGJpdiGrYzB5OdSmptoUVsyv8SYYUKIqO6Zjm1az0MR
-	 bpzm7f82gVXeQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: richard120310@gmail.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	jserv@ccns.ncku.edu.tw,
-	linux-kernel-mentees@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	tmgross@umich.edu
-Subject: Re: [RFC PATCH v2] rust: list: Add examples for linked list
-Date: Thu, 22 May 2025 11:49:36 +0200
-Message-ID: <20250522094936.1370073-1-ojeda@kernel.org>
-In-Reply-To: <20250311133357.90322-1-richard120310@gmail.com>
-References: <20250311133357.90322-1-richard120310@gmail.com>
+	s=k20201202; t=1747907524;
+	bh=R5gUtd7Ej8tnX3ImIcWWLb8QpdfRfk/XdEuvZ0Eu8ng=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ryo8D6wtSvio0CwhkzR158v1NFzbaqmqiiBwFrJbco1L3dx7qjfRT8hcDlZEpg6t4
+	 AxdT8B05kPM0A/uePIPKj/GrBb+wRCpVDn3hEC7QmnG+wu9wLhehBRmW+BS8DAQa2W
+	 G7K89ET0Zr0pWgEUpGq/whnwYMVQ7QUT8UI7duMghmtqm+SShBPtC34PzCuk9oapmE
+	 G4IDcD5Ica0TWIx0nunXa+Ml+f9q3/b5UkEFza31GI9wiFYDJSb0aPmCFBCNufryRV
+	 tPwLuBFkVEDXWgVNkJ0w0Wb9eNQz1qRPjTvcT6AA8JMmwhpftiKYgMOehnL5VTaX6f
+	 Ju41I9GoINa+A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 22 May 2025 11:51:59 +0200
+Message-Id: <DA2LI55W3BY8.14DMW9GGSAEY5@kernel.org>
+Cc: <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <skhan@linuxfoundation.org>,
+ <linux-kernel-mentees@lists.linux.dev>, <jserv@ccns.ncku.edu.tw>
+Subject: Re: [RFC PATCH v2] rust: list: Add examples for linked list
+From: "Benno Lossin" <lossin@kernel.org>
+To: "I Hsin Cheng" <richard120310@gmail.com>, <ojeda@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250311133357.90322-1-richard120310@gmail.com>
+In-Reply-To: <20250311133357.90322-1-richard120310@gmail.com>
 
-On Tue, 11 Mar 2025 21:33:57 +0800 I Hsin Cheng <richard120310@gmail.com> wrote:
->
+On Tue Mar 11, 2025 at 2:33 PM CET, I Hsin Cheng wrote:
 > Add basic examples for the structure "List", also serve as the unit
 > tests for basic list methods. Including the following manipulations:
 > * List creation
@@ -75,11 +67,39 @@ On Tue, 11 Mar 2025 21:33:57 +0800 I Hsin Cheng <richard120310@gmail.com> wrote:
 >
 > Link: https://github.com/Rust-for-Linux/linux/issues/1121
 > Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+> ---
+> Changelog:
+>
+> v1 -> v2:
+>     - Abandon new implementation of method to create a new "ListLink"
+>       instance
+>     - Rephrase the examples' comment
+>     - Increase the coverity of the examples
+>
+> Tests was performed on ubuntu 24.04 with x86_64 architecture.
+>
+> $ ./tools/testing/kunit/kunit.py run --make_options LLVM=3D1 --arch x86_6=
+4 --kconfig_add CONFIG_RUST=3Dy
+> ...
+> [21:13:11] Testing complete. Ran 615 tests: passed: 563, skipped: 52
+> [21:13:11] Elapsed time: 23.020s total, 0.001s configuring, 10.985s build=
+ing, 12.020s running
+>
+> Rust related unit tests are all passed.
+>
+> Best regards,
+> I Hsin Cheng
+> ---
+>  rust/kernel/list.rs | 117 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 117 insertions(+)
 
-Applied to `rust-next` -- thanks everyone!
+This is a nice example, so
 
-    [ Removed prelude import and spurious newlines. Formatted comments
-      with the usual style. Reworded slightly. - Miguel ]
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
+It uses `unwrap` a lot, which might confuse newcomers that that is ok in
+normal code. I'm wondering if we can do something about that though...
+
+---
 Cheers,
-Miguel
+Benno
