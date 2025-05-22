@@ -1,56 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB7D1A23B7;
-	Thu, 22 May 2025 05:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF131A314C;
+	Thu, 22 May 2025 06:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747892839; cv=none; b=HmLdlzw6KFlHy+TVAizcSM1dVjunXf78UjxsdU0btius3J5cdSqCaW2HWxHGm9Yt3PdLc8/jUzrcj6WVpm4tpO3yDSemeZA34iC5IOgfl7a7fwwfVZwW2/JGjyCrxx3dvqjmtxMoABCxOv9YC+ANqdNGLMkyDkcSyVvCbl9aHLo=
+	t=1747895132; cv=none; b=sXip3qevjm1C6ifKMV5J4IQJdfFpktbIRXbevKGDlJ0qzp1gxkFj0A3KuG/RqF4qxhJSr55i9IPZJir4/EVO9GvDbRkRsCY/SstSAykGIcIGWpF9r/f2sSL6pPvv0V8XXEpcWtkvz/ggOVvQTAMSfBDlhuFEX9wa6z5uCYWoEXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747892839; c=relaxed/simple;
-	bh=OvBJFUTeD1fn/6i4rvUVGu2s79IT+JY7hcjKDidl78k=;
+	s=arc-20240116; t=1747895132; c=relaxed/simple;
+	bh=rqZZrgrPFKYEYT1roByKlO/+55B5s+fywF/7nzwuwJ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qxQ45a2yfzwimtRy20vI+B+fN0wmxo/9sAY/vR+DAA4VdOEegA8ww6jeeD3IIribcVCJuF/n3KMTTZlUVeELmyzlwN0nDVDNlml1Djn8O/yF+NCfmOlQD4PLOGkX9PDLt5W0/ek9cyAsrb3Kp4mpCx3S5nRT/0Jl/xB/N+gH+HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRgC3Pub; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=YE7CobsBKJENMU3XOSDG4wcyI75FViSTgA+iDksBbeWRbFSxB+lWH2wPCskOOfGlx/EdCGybptqzGrOmfJZNC+W2PAbmdOjw/uLl2m0XXfW5oqWSIvoGhz0aeWZiEMOQKS017Bzhgyf8JiaavZv/Ro5V6g7N/NYYdn3OlzQ8J0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEmxZY7I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRgC3Pub"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFA1C4CEE4;
-	Thu, 22 May 2025 05:47:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEmxZY7I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CC5C4CEE4;
+	Thu, 22 May 2025 06:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747892838;
-	bh=OvBJFUTeD1fn/6i4rvUVGu2s79IT+JY7hcjKDidl78k=;
+	s=k20201202; t=1747895131;
+	bh=rqZZrgrPFKYEYT1roByKlO/+55B5s+fywF/7nzwuwJ4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gRgC3PubJEkYoFhk5/eL7JHJQ7kcr4piLda2/KZE0wC5u1GNbNXOoDfNDuP4CJexB
-	 nrsA1uFHr6s2dcPyL6CBqxCTJgXdk7hav/FK/rGg9ZL9SkYeJf1tOTHKSvNqYLAVUN
-	 U1IJgMakr4Qxbgu/PNI17xVgbTjs3OqT8/Br+Hlfn3opp6WAbpeYuL+XVkniVak8ei
-	 mscrNq+ENG1imDXTLG3yZ8Gg42u+BTY2JPZFivWAM3tlXNIWc3Wm1xnTLq5wdfSyMA
-	 AmZg7qnEER1Q2Y4vazlDBDD70HSLraOFa2TSzgSFyAWbYJ8cAmvJ6d9pgBPh2+QkVB
-	 vCyb5oPO/sdWw==
-Date: Thu, 22 May 2025 07:47:12 +0200
+	b=dEmxZY7IVmJ7dWmwNE2udc7u5aM0xnIaFlKqPPW0nYtNKLbs9902av+Mvsj4G5/kz
+	 8rkw80Tt3lJOo8sTV1EutOhp9PZqAghO8h5vqf9HyISxmsrtxeuqbYd4elWdr01NQk
+	 pz4+zsFRu10t6PUbZRojnJzNDTCbhw3/666iNYcrla7sMOC5vwQgHPADsSIj0lT21Z
+	 75I1VobS3UvIEI4y4ik2ncFLEmb4XMfhm/VKwIPpA+Zb1QbWlumAd23yjBjInDfG5B
+	 A7gA37iZwIKbfg025SSbCLhwsQmg8ISKCLf+Ggg/jV072i4PyQ9sVJ6mB5gb1XbFZs
+	 WIvOmqNaOTHGA==
+Date: Thu, 22 May 2025 08:25:25 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Remo Senekowitsch <remo@buenzli.dev>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Trevor Gross <tmgross@umich.edu>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 4/9] rust: device: Enable printing fwnode name and path
-Message-ID: <aC66YD55QD8fH6Wh@pollux>
-References: <20250520200024.268655-1-remo@buenzli.dev>
- <20250520200024.268655-5-remo@buenzli.dev>
- <2025052153-steadier-bargraph-e81a@gregkh>
- <DA1UXY2O47Y2.1ND9MC6L01217@buenzli.dev>
- <2025052116-gem-blend-2585@gregkh>
- <DA220Y73P1NR.192OYSQH3UD7A@buenzli.dev>
- <aC4lxKwYKRkcTNtD@cassiopeiae>
- <2025052244-untaken-spied-868b@gregkh>
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+Message-ID: <aC7DVewqqWIKetmk@pollux>
+References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
+ <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
+ <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+ <aCRdNJ2oq-REBotd@pollux>
+ <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
+ <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
+ <2025051524-festival-afterglow-8483@gregkh>
+ <aCzzBT96ktapP03e@google.com>
+ <aC2HacSU7j5d9bzu@pollux>
+ <aC5XDi7SaDJeUaAC@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,85 +63,83 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025052244-untaken-spied-868b@gregkh>
+In-Reply-To: <aC5XDi7SaDJeUaAC@google.com>
 
-On Thu, May 22, 2025 at 06:49:15AM +0200, Greg Kroah-Hartman wrote:
-> On Wed, May 21, 2025 at 09:13:08PM +0200, Danilo Krummrich wrote:
-> > On Wed, May 21, 2025 at 08:36:10PM +0200, Remo Senekowitsch wrote:
-> > > On Wed May 21, 2025 at 6:58 PM CEST, Greg Kroah-Hartman wrote:
-> > > > On Wed, May 21, 2025 at 03:03:07PM +0200, Remo Senekowitsch wrote:
-> > > >> On Wed May 21, 2025 at 2:02 PM CEST, Greg Kroah-Hartman wrote:
-> > > >> > On Tue, May 20, 2025 at 10:00:19PM +0200, Remo Senekowitsch wrote:
-> > > >> >> Add two new public methods `display_name` and `display_path` to
-> > > >> >> `FwNode`. They can be used by driver authors for logging purposes. In
-> > > >> >> addition, they will be used by core property abstractions for automatic
-> > > >> >> logging, for example when a driver attempts to read a required but
-> > > >> >> missing property.
-> > > >> >> 
-> > > >> >> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> > > >> >> ---
-> > > >> >>  rust/kernel/device/property.rs | 72 ++++++++++++++++++++++++++++++++++
-> > > >> >>  1 file changed, 72 insertions(+)
-> > > >> >> 
-> > > >> >> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-> > > >> >> index 70593343bd811..6ccc7947f9c31 100644
-> > > >> >> --- a/rust/kernel/device/property.rs
-> > > >> >> +++ b/rust/kernel/device/property.rs
-> > > >> >> @@ -32,6 +32,78 @@ pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
-> > > >> >>          self.0.get()
-> > > >> >>      }
-> > > >> >>  
-> > > >> >> +    /// Returns an object that implements [`Display`](core::fmt::Display) for
-> > > >> >> +    /// printing the name of a node.
-> > > >> >> +    pub fn display_name(&self) -> impl core::fmt::Display + '_ {
-> > > >> >> +        struct FwNodeDisplayName<'a>(&'a FwNode);
-> > > >> >> +
-> > > >> >> +        impl core::fmt::Display for FwNodeDisplayName<'_> {
-> > > >> >> +            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-> > > >> >> +                // SAFETY: self is valid by its type invariant
-> > > >> >> +                let name = unsafe { bindings::fwnode_get_name(self.0.as_raw()) };
-> > > >> >> +                if name.is_null() {
-> > > >> >> +                    return Ok(());
-> > > >> >
-> > > >> > So if there is no name, you are returning Ok()?  Are you sure that's ok
-> > > >> > to do?  What will the result of the string look like then?
-> > > >> 
-> > > >> In that case we're not writing anything to the formatter, which is
-> > > >> equivalent to an empty string. `Ok(())` means that writing succeeded.
-> > > >> 
-> > > >> I assumed that a valid node would always have a name. And we're
-> > > >> guaranteed to have a valid node. So I assumed this case would never
-> > > >> happen and didn't think too hard about it. But even if a valid node has
-> > > >> not name, empty string is probably the correct thing, right?
-> > > >
-> > > > I don't know what this "name" is used for.  An empty string might not be
-> > > > what you want to use here, given that you could be naming something
-> > > > based on it, right?  fwnode_get_name() is used for many things,
-> > > > including the detection if a name is not present at all, and if not,
-> > > > then the code needs to clean up and abort.
-> > > >
-> > > > So what exactly are you going to be using this for?
-> > > 
-> > > Valid question... I'm not using it for anything.
+On Wed, May 21, 2025 at 10:43:26PM +0000, Alice Ryhl wrote:
+> On Wed, May 21, 2025 at 09:57:29AM +0200, Danilo Krummrich wrote:
+> > On Tue, May 20, 2025 at 09:24:21PM +0000, Alice Ryhl wrote:
+> > > * If you remove a directory before the removing objects inside it, then
+> > >   the Rust objects become "ghost" objects that are still usable, but not
+> > >   visible in the file system anywhere. I.e. calling methods on them
+> > >   succeed but are no-ops.
 > > 
-> > You're using this in PropertyGuard::required_by(), where you use display_path()
-> > and hence display_name() to print the node path in the error case.
+> > If we would want to keep an entry alive as long as there are more leaves, we'd
+> > obviously need to reference count things.
 > > 
-> > So, currently, this is only used in the error case when a property of a given
-> > node that is required by a driver can't be found.
+> > But what do we need reference counting for with this logic? Shouldn't this be
+> > also possible without?
 > 
-> And in that case, the "normal" dev_err() output should be all that is
-> needed here, not a "pretty printer" that might fail to document it at
-> all :)
+> Well, my understanding is that when you remove the parent directory, the
+> dentries for child directories and files are freed, so trying to use the
+> Rust objects that correspond to those child dentries would be a UAF. I
+> want to refcount those child entries so that they at least remain valid
+> memory even if they're no longer visible in the file system.
 
-That's what the code does; PropertyGuard::required_by() uses dev_err!() to print
-the string.
+Yes, that makes sense.
 
-It's just that the functions from the C side that provide the strings are
-abstracted in an implementation of core::fmt::Display for the FwNode, which is
-the idiomatic way to abstract a string representations of a type.
+Instead of using the dentry pointer as a handle, we could also use the entry's
+path and do a lookup whenever the entry is used. Not saying this is better
+though.
 
-And since Display::fmt() is fallible, we need to decide if NULL is a valid value
-for fwnode_get_name() to return. The interface, i.e. struct fwnode_operations,
-does not document this, but to me it seems that fwnode_get_name() returning a
-NULL pointer is an error case.
+> > > * Possibly we have a way to drop a Rust object without removing it from
+> > >   the file system. In this case, it can never be accessed from Rust
+> > >   again, and the only way to remove it is to drop its parent directory.
+> > 
+> > I'm not sure about this one.
+> > 
+> > IIUC, this basically brings back the "keep() logic", which I still think is a
+> > footgun and should be avoided.
+> > 
+> > Also, we only needed this, since due to the borrowing design we couldn't store
+> > parent and child nodes in the same structure. With reference counting (or the
+> > logic above) this goes away.
+> > 
+> > I wrote the following in a previous conversation [1].
+> > 
+> > --
+> > 
+> > What I see more likely to happen is a situation where the "root" directory
+> > (almost) lives forever, and hence subsequent calls, such as
+> > 
+> > 	root.subdir("foo").keep()
+> > 
+> > effectively are leaks.
+> > 
+> > One specific example for that would be usb_debug_root, which is created in the
+> > module scope of usb-common and is used by USB host / gadget / phy drivers.
+> > 
+> > The same is true for other cases where the debugfs "root" is created in the
+> > module scope, but subsequent entries are created by driver instances. If a
+> > driver would use keep() in such a case, we'd effectively leak memory everytime a
+> > device is unplugged (or unbound in general).
+> 
+> Where is the leak? If the file is still visible in the file system, then
+> it's not a leak to still have the memory. If the file got removed by
+> removing its parent, then my intent is that this should free the memory
+> of the child object.
+
+Well, take the case I described above, where the debugfs "root" is created in
+the module scope, but subsequent entries are created by driver instances. If a
+driver would use keep() in such a case, we'd effectively the file / directory
+(and subsequently also the corresponding memory) everytime a device is unplugged
+(or unbound in general)."
+
+If the module is built-in the directory from the module scope is *never*
+removed, but the entries the driver e.g. creates in probe() for a particular
+device with keep() will pile up endlessly, especially for hot-pluggable devices.
+
+(It's getting even worse when there's data bound to such a leaked file, that
+might even contain a vtable that is entered from any of the fops of the file.)
+
+That'd be clearly a bug, but for the driver author calling keep() seems like a
+valid thing to do -- to me that's clearly a built-in footgun.
