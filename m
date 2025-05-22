@@ -1,100 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAFD223324;
-	Thu, 22 May 2025 20:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA8B26A1C3;
+	Thu, 22 May 2025 22:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747945619; cv=none; b=iUrH1MLvOmUisb0v3qRH6HTVQxq/tj3HMBOnTRrSG5/F6cmU7hL/kiAQthBWjIYwgUmsYg38Y+yIB9YjuCGNE8uh5/Dn0pJSnMSUPRENAwN+9NvugCxLhbUU2IUz0n/mqIPmUoIhc0mFDNUKSl/kzPI5zT05q7SODFvvg9OtEyo=
+	t=1747951839; cv=none; b=N85cp+NFdV37Tj05I/oBLuskKGtWet2WfC97eK0ltpglHOdkQB6ov42pCPawyP6PBSZWlJob9uy/d+DLM0Uoup8av8HlB74IjXUJjfy1ljV5Kba0gszLmIuzqe4GgBOz33rVXlLqRJsVtfoDtXS7xRSHuPZdF/gQ8pnhS+VTQh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747945619; c=relaxed/simple;
-	bh=jop/IKCXLh5COEghxS3UK6eTSCF0YL1V6QpibBl0xkQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Zlb60ucB2fQkEUY3dSPbbv9lRRJiUDsQZYBR5NfPXNOsN5322/XCkgzTftSAumvHflqcKbTLX9ZUrE3pYsULG7Uy6b/eHHv7yuYJgOUjSQheC+itqbu5dt9T6l4GAyX6NAOqQGsm2OsUV5ls40fLen9N/OikvVeiq6wksrf2tsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ix/kq32m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747951839; c=relaxed/simple;
+	bh=Vwp7L6L0DbadGmW+6IbLFn7FDl7XlbaZVO+AUTwmZBA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MwMwdyLsHDvLimENrulVzopNfWe0csOgNSi5jDR7HOZhxYpZHww/Kpghizlrct0vZ4H6KonaHvmispX161H7OmAkvLSYL4vefnBFFcJzLD6UyEhfXFzuz0+Et+fRyJXbWZwhSmyGou9Vm0vyNWQGBJhQ92k9IF3tGtdoqkiZD1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XnWL0igM; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ix/kq32m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9B8C4CEE4;
-	Thu, 22 May 2025 20:26:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747945619;
-	bh=jop/IKCXLh5COEghxS3UK6eTSCF0YL1V6QpibBl0xkQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Ix/kq32mHPSU9po435TRd2FwKedgEa/XUtp8YtDEgt1+yZOguqOFeh4OeQWdQ+h5x
-	 gtLVu1Bn+AHPJYmGCqz8FfCX+31msWlEkVV8wW6LtstAqa5MzFR7c0SYj6Ot7Y7ckn
-	 VVT62bSV+UJBfAUsEou+sYT9093dzaNuwOS6SklASMg4bsU8bChVTXsh2pcnknvb4x
-	 XRcWPBILvIv9rL+FgHHdQbHJ+E5mv7vBxgvuVX+2iohLVSDgD2SwmfDvWjQxKh46Xc
-	 Wq5RtY2xxUq4D5/ktmQX44604zYE/0uUxuESphZ9SrHylZxeFfOrADloUQy0lnek7x
-	 wg+yZfpkd3Rxg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XnWL0igM"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-231ba912ba1so8555145ad.2;
+        Thu, 22 May 2025 15:10:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747951837; x=1748556637; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QaVcQnOHZhXdhQaf8IN9xC9rWiAxsOh9GVu5nLs1VX8=;
+        b=XnWL0igMo5ImU27Dr1cDv7pEPZbGBDS865Qun5D52pzVRa3Q51oa9l9/pMnXopidBG
+         nPZMF2oOMop7RWc9YKxmsE3Wh1/8WS6WPGFxnOA61TGATn5FMap0BBhRSWVbRWJa3l4W
+         rIlkRxtc3QWWY5ttZo7YDX6iFYoxtzo2Zc2FItg/QiX5v8rAYu3F6+L1KihtJ4HaI3P/
+         wKZp0r6/DnS8CifaB/fT7xQ+zXtkXBXGEndMa3lS3ZlhFJzsEWybztlaXdiSZp3OrJir
+         n56d23ULQXTXncRZGaDRMtjAQt1xsPk2Y3wL6NWQpD9lls6qLv42euvdn4nFfzTKOEWu
+         n2Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747951837; x=1748556637;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QaVcQnOHZhXdhQaf8IN9xC9rWiAxsOh9GVu5nLs1VX8=;
+        b=nIOc1ErzHjVvLhXkbRgPFjQG9nqipJFSaVcHcce3DV4CahGrV9SNmwlFkPvGRTazTD
+         T6OeEvEAym/+OsfcTgJ2g3oe9NKFW4zEsuRIY4gFFN3rIF6k0rlaer4o3J0FhIeanD7n
+         JrOIdDQvo6hNaZKIPbsEJZ7tA6yEPuykqbBPtrhyAEN7fMlG9iyQE3pdZPCYQmaT9ZWv
+         ywPRLhtxRxJZ71OThg7BFRQ6Wika5y7zEuAsiKJUeOG/mNs4J0Wojn8MPdNOmoQuuOrJ
+         DfufiVwBN3WEdy3L8ytvAPLh/XLnUAjPe7UBbjKbIcR0qsKtFsm0FR7CMG8d5XPpfHJQ
+         ELzw==
+X-Forwarded-Encrypted: i=1; AJvYcCXDXJ6ISCgUeTpbUXvc3lHw3vCGrQw5kVx1jkggnbfnkroWETZGPZd0SQGqHKHVU14XCBmHFCW/3IPyGtfNv3M=@vger.kernel.org, AJvYcCXRsunBudnCAMZSk8HDKvEPgu9fiBLRZLfEgACVROFNbx4K5NnEt3xNsval3dnjvwk83QeGDP7B74AorOs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsJP8SpsJFKeeg/ehaex75x9fI2/wsx8hwtiK1VfXnEKuFqCPE
+	AXoI7Z/MKHvK+po9tjFVx2sBPuyLROVDidJzkWEtBW/7CXrZJWQ8Ie0tER5zNbel3k1oBYaySqW
+	4XdMZ66Uo4pzcz3RRFSuKMnguyxKKanQ=
+X-Gm-Gg: ASbGnctTqUikpE+GIj/4zBTm7/WWqgBN+xAW/phTrtzlwSnfjQ8BHj2e2LfmFr5FqzU
+	yTqa714iVXuu5O7SS7kBmJVGAmCoNvPD14nTYi2IPJ/OFtHVh0pO9yolSIvBhUtTDVrMulbv7H0
+	XGmxQiSHx10Z9QsnlhYFWBUD3pSXwMF2JW
+X-Google-Smtp-Source: AGHT+IE6aWxf93Mgju2436vKfZ9FnWr6MAWyx+AfEYRoQoWD+Un59jcMnqr7D+uOUxx2gT5GGNl/U6k7mzVQmXV29jA=
+X-Received: by 2002:a17:903:4b28:b0:22e:50d1:b8d1 with SMTP id
+ d9443c01a7336-233f3658cafmr976555ad.3.1747951837366; Thu, 22 May 2025
+ 15:10:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250325184309.97170-1-ojeda@kernel.org>
+In-Reply-To: <20250325184309.97170-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 23 May 2025 00:10:24 +0200
+X-Gm-Features: AX0GCFuI-Cp0LblAbfBsD5C8vBzb-kYyMkgjULkrHzzq5fNIwQ_8FcHrtWkpgus
+Message-ID: <CANiq72mwbJZ4kDe6CGBovX=_y0h+6y_xzYKoY6384oyCmcazSw@mail.gmail.com>
+Subject: Re: [PATCH] rust: workaround `bindgen` issue with forward references
+ to `enum` types
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 22 May 2025 22:26:54 +0200
-Message-Id: <DA2Z09MJZSKV.35D1CB1MQ4EJD@kernel.org>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Matthew Maurer"
- <mmaurer@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, "Sami
- Tolvanen" <samitolvanen@google.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>
-X-Mailer: aerc 0.20.1
-References: <aCRdNJ2oq-REBotd@pollux>
- <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
- <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
- <2025051524-festival-afterglow-8483@gregkh> <aCzzBT96ktapP03e@google.com>
- <aC2HacSU7j5d9bzu@pollux> <aC5XDi7SaDJeUaAC@google.com>
- <aC7DVewqqWIKetmk@pollux> <aC8uNmrLUSS8sxHU@google.com>
- <2025052201-return-reprogram-add9@gregkh> <aC9hm9D458C6LsRW@google.com>
-In-Reply-To: <aC9hm9D458C6LsRW@google.com>
 
-On Thu May 22, 2025 at 7:40 PM CEST, Alice Ryhl wrote:
-> On Thu, May 22, 2025 at 04:15:46PM +0200, Greg Kroah-Hartman wrote:
->> No, sorry, but debugfs files are "create and forget" type of things.
->> The caller has NO reference back to the file at all in the C version,
->> let's not add that functionality back to the rust side after I spent a
->> long time removing it from the C code :)
->>=20
->> If you really want to delete a debugfs file that you have created in the
->> past, then look it up and delete it with the call that is present for
->> that.
->>=20
->> The only thing I think that might be worth "keeping" in some form, as an
->> object reference as discussed, is a debugfs directory.
+On Tue, Mar 25, 2025 at 7:43=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> That could work if we don't have any Rust value for files at all. The
-> problem is that if we do have such values, then code like this:
+> `bindgen` currently generates the wrong type for an `enum` when there
+> is a forward reference to it. For instance:
 >
-> let my_file =3D dir.create_file("my_file_name");
-> dir.delete_file("my_file_name");
-> my_file.do_something();
+>     enum E;
+>     enum E { A };
+>
+> generates:
+>
+>     pub const E_A: E =3D 0;
+>     pub type E =3D i32;
+>
+> instead of the expected:
+>
+>     pub const E_A: E =3D 0;
+>     pub type E =3D ffi::c_uint;
+>
+> The issue was reported to upstream `bindgen` [1].
+>
+> Now, both GCC and Clang support silently these forward references to
+> `enum` types, unless `-Wpedantic` is passed, and it turns out that some
+> headers in the kernel depend on them.
+>
+> Thus, depending on how the headers are included, which in turn may depend
+> on the kernel configuration or the architecture, we may get a different
+> type on the Rust side for a given C `enum`.
+>
+> That can be quite confusing, to say the least, especially since
+> developers may only notice issues when building for other architectures
+> like in [2]. In particular, they may end up forcing a cast and adding
+> an `#[allow(clippy::unnecessary_cast)]` like it was done in commit
+> 94e05a66ea3e ("rust: hrtimer: allow timer restart from timer handler"),
+> which isn't great.
+>
+> Instead, let's have a section at the top of our `bindings_helper.h` that
+> `#include`s the headers with the affected types -- hopefully there are
+> not many cases and there is a single ordering that covers all cases.
+>
+> This allows us to remove the cast and the `#[allow]`, thus keeping the
+> correct code in the source files. When the issue gets resolved in upstrea=
+m
+> `bindgen` (and we update our minimum `bindgen` version), we can easily
+> remove this section at the top.
+>
+> Link: https://github.com/rust-lang/rust-bindgen/issues/3179 [1]
+> Link: https://lore.kernel.org/rust-for-linux/87tt7md1s6.fsf@kernel.org/ [=
+2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-I might have misunderstood something, but "deleting a debugfs file" is
-not the same as freeing the representing object (is that a dentry?). So
-you could still call `do_something`, it just wouldn't do anything.
+Applied to `rust-next` -- thanks everyone!
 
-Or did I misunderstand?
+    [ Added extra paragraph on the comment to clarify that the workaround m=
+ay
+      not be possible in some cases. - Miguel ]
 
----
 Cheers,
-Benno
-
-> would be a UAF on the last line. We have to design the Rust API to avoid
-> such UAF, which is why I suggested the ghost objects; the delete_file()
-> call leaves my_file in a valid but useless state. And as a ghost object,
-> the .do_something() call becomes a no-op since the file is now missing
-> from the filesystem.
->
-> Alice
-
+Miguel
