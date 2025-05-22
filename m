@@ -1,145 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF131A314C;
-	Thu, 22 May 2025 06:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB57CD517;
+	Thu, 22 May 2025 06:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747895132; cv=none; b=sXip3qevjm1C6ifKMV5J4IQJdfFpktbIRXbevKGDlJ0qzp1gxkFj0A3KuG/RqF4qxhJSr55i9IPZJir4/EVO9GvDbRkRsCY/SstSAykGIcIGWpF9r/f2sSL6pPvv0V8XXEpcWtkvz/ggOVvQTAMSfBDlhuFEX9wa6z5uCYWoEXc=
+	t=1747896862; cv=none; b=VpKjsSVWn2IS5NTYJ15vnQzFqouRnpQkFTv06udkzD3j7LWLRsuAzBRBFpES+KPndg6ojRr2QmH5wKDJIRdumb67sa+WpkEy/KFh7zfcPWiyxphNBrUivRPuCQ7lEeNSSKn7YWauPtxVIZPMmisdxDR/rb1Ko8IdorIyIviLH0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747895132; c=relaxed/simple;
-	bh=rqZZrgrPFKYEYT1roByKlO/+55B5s+fywF/7nzwuwJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YE7CobsBKJENMU3XOSDG4wcyI75FViSTgA+iDksBbeWRbFSxB+lWH2wPCskOOfGlx/EdCGybptqzGrOmfJZNC+W2PAbmdOjw/uLl2m0XXfW5oqWSIvoGhz0aeWZiEMOQKS017Bzhgyf8JiaavZv/Ro5V6g7N/NYYdn3OlzQ8J0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEmxZY7I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747896862; c=relaxed/simple;
+	bh=kawiY0JhilbZz8Xe2w4qeL4gCrofrUP/ZZz71VqiLyY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=B4JJvImIVdHqBcj1cfgl8R7i7r4Q7oQCk5cGWjYoNaU9HkC1zT0ykyAD/WmFqlRJr7laJYOt55mkNlZ8kFWa/bz9Raoa2M0qO80eau1uKAd00Zq3X34nTFVIqGm1T+1/ULGna3iKQjch2rIvusVFb3/7Ei0V/0X66OO/BnOoYrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdXi97yH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEmxZY7I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CC5C4CEE4;
-	Thu, 22 May 2025 06:25:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdXi97yH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6492C4CEE4;
+	Thu, 22 May 2025 06:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747895131;
-	bh=rqZZrgrPFKYEYT1roByKlO/+55B5s+fywF/7nzwuwJ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dEmxZY7IVmJ7dWmwNE2udc7u5aM0xnIaFlKqPPW0nYtNKLbs9902av+Mvsj4G5/kz
-	 8rkw80Tt3lJOo8sTV1EutOhp9PZqAghO8h5vqf9HyISxmsrtxeuqbYd4elWdr01NQk
-	 pz4+zsFRu10t6PUbZRojnJzNDTCbhw3/666iNYcrla7sMOC5vwQgHPADsSIj0lT21Z
-	 75I1VobS3UvIEI4y4ik2ncFLEmb4XMfhm/VKwIPpA+Zb1QbWlumAd23yjBjInDfG5B
-	 A7gA37iZwIKbfg025SSbCLhwsQmg8ISKCLf+Ggg/jV072i4PyQ9sVJ6mB5gb1XbFZs
-	 WIvOmqNaOTHGA==
-Date: Thu, 22 May 2025 08:25:25 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-Message-ID: <aC7DVewqqWIKetmk@pollux>
-References: <20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com>
- <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
- <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
- <aCRdNJ2oq-REBotd@pollux>
- <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
- <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
- <2025051524-festival-afterglow-8483@gregkh>
- <aCzzBT96ktapP03e@google.com>
- <aC2HacSU7j5d9bzu@pollux>
- <aC5XDi7SaDJeUaAC@google.com>
+	s=k20201202; t=1747896862;
+	bh=kawiY0JhilbZz8Xe2w4qeL4gCrofrUP/ZZz71VqiLyY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=gdXi97yH+FlKJerb5KxklLLkduGGoLXoGf+x2bJ7BPqL8IabaTsWCCH+VPtr0RAzm
+	 tH1tkCrxj9E4VRWI+m8CuV2SU/ef1zBoqVKfgN3GPhK+f56aMM5jDeI6yxmaXwHENC
+	 hHqd2JzzIhKt9W481FHT5I+ilmwqufGGPSGvUL3ecotZAdB8UJXMTdeXONU+/RY3dk
+	 HkM6F96w1s9DUXz3PXPwbaiOxx+tdWGeDLbMA02CII01aNVajT+zEquTkE7r7UhUZg
+	 aPm/zjbwaUmPRmuvAAALAvm4YkpBa2qbpLBvAnlucry5IxWoiLIqyQGAabnkjiGX6N
+	 NOE81qq3bZyOw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,
+  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Benno Lossin <benno.lossin@proton.me>,  Alice Ryhl
+ <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Danilo
+ Krummrich <dakr@kernel.org>,  rust-for-linux@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  patches@lists.linux.dev
+Subject: Re: [PATCH] rust: workaround `bindgen` issue with forward
+ references to `enum` types
+In-Reply-To: <20250325184309.97170-1-ojeda@kernel.org> (Miguel Ojeda's message
+	of "Tue, 25 Mar 2025 19:43:09 +0100")
+References: <20250325184309.97170-1-ojeda@kernel.org>
+User-Agent: mu4e 1.12.7; emacs 30.1
+Date: Thu, 22 May 2025 08:50:55 +0200
+Message-ID: <874ixddtps.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aC5XDi7SaDJeUaAC@google.com>
+Content-Type: text/plain
 
-On Wed, May 21, 2025 at 10:43:26PM +0000, Alice Ryhl wrote:
-> On Wed, May 21, 2025 at 09:57:29AM +0200, Danilo Krummrich wrote:
-> > On Tue, May 20, 2025 at 09:24:21PM +0000, Alice Ryhl wrote:
-> > > * If you remove a directory before the removing objects inside it, then
-> > >   the Rust objects become "ghost" objects that are still usable, but not
-> > >   visible in the file system anywhere. I.e. calling methods on them
-> > >   succeed but are no-ops.
-> > 
-> > If we would want to keep an entry alive as long as there are more leaves, we'd
-> > obviously need to reference count things.
-> > 
-> > But what do we need reference counting for with this logic? Shouldn't this be
-> > also possible without?
-> 
-> Well, my understanding is that when you remove the parent directory, the
-> dentries for child directories and files are freed, so trying to use the
-> Rust objects that correspond to those child dentries would be a UAF. I
-> want to refcount those child entries so that they at least remain valid
-> memory even if they're no longer visible in the file system.
+Miguel Ojeda <ojeda@kernel.org> writes:
 
-Yes, that makes sense.
+> `bindgen` currently generates the wrong type for an `enum` when there
+> is a forward reference to it. For instance:
+>
+>     enum E;
+>     enum E { A };
+>
+> generates:
+>
+>     pub const E_A: E = 0;
+>     pub type E = i32;
+>
+> instead of the expected:
+>
+>     pub const E_A: E = 0;
+>     pub type E = ffi::c_uint;
+>
+> The issue was reported to upstream `bindgen` [1].
+>
+> Now, both GCC and Clang support silently these forward references to
+> `enum` types, unless `-Wpedantic` is passed, and it turns out that some
+> headers in the kernel depend on them.
+>
+> Thus, depending on how the headers are included, which in turn may depend
+> on the kernel configuration or the architecture, we may get a different
+> type on the Rust side for a given C `enum`.
+>
+> That can be quite confusing, to say the least, especially since
+> developers may only notice issues when building for other architectures
+> like in [2]. In particular, they may end up forcing a cast and adding
+> an `#[allow(clippy::unnecessary_cast)]` like it was done in commit
+> 94e05a66ea3e ("rust: hrtimer: allow timer restart from timer handler"),
+> which isn't great.
+>
+> Instead, let's have a section at the top of our `bindings_helper.h` that
+> `#include`s the headers with the affected types -- hopefully there are
+> not many cases and there is a single ordering that covers all cases.
+>
+> This allows us to remove the cast and the `#[allow]`, thus keeping the
+> correct code in the source files. When the issue gets resolved in upstream
+> `bindgen` (and we update our minimum `bindgen` version), we can easily
+> remove this section at the top.
+>
+> Link: https://github.com/rust-lang/rust-bindgen/issues/3179 [1]
+> Link: https://lore.kernel.org/rust-for-linux/87tt7md1s6.fsf@kernel.org/ [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Instead of using the dentry pointer as a handle, we could also use the entry's
-path and do a lookup whenever the entry is used. Not saying this is better
-though.
 
-> > > * Possibly we have a way to drop a Rust object without removing it from
-> > >   the file system. In this case, it can never be accessed from Rust
-> > >   again, and the only way to remove it is to drop its parent directory.
-> > 
-> > I'm not sure about this one.
-> > 
-> > IIUC, this basically brings back the "keep() logic", which I still think is a
-> > footgun and should be avoided.
-> > 
-> > Also, we only needed this, since due to the borrowing design we couldn't store
-> > parent and child nodes in the same structure. With reference counting (or the
-> > logic above) this goes away.
-> > 
-> > I wrote the following in a previous conversation [1].
-> > 
-> > --
-> > 
-> > What I see more likely to happen is a situation where the "root" directory
-> > (almost) lives forever, and hence subsequent calls, such as
-> > 
-> > 	root.subdir("foo").keep()
-> > 
-> > effectively are leaks.
-> > 
-> > One specific example for that would be usb_debug_root, which is created in the
-> > module scope of usb-common and is used by USB host / gadget / phy drivers.
-> > 
-> > The same is true for other cases where the debugfs "root" is created in the
-> > module scope, but subsequent entries are created by driver instances. If a
-> > driver would use keep() in such a case, we'd effectively leak memory everytime a
-> > device is unplugged (or unbound in general).
-> 
-> Where is the leak? If the file is still visible in the file system, then
-> it's not a leak to still have the memory. If the file got removed by
-> removing its parent, then my intent is that this should free the memory
-> of the child object.
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Well, take the case I described above, where the debugfs "root" is created in
-the module scope, but subsequent entries are created by driver instances. If a
-driver would use keep() in such a case, we'd effectively the file / directory
-(and subsequently also the corresponding memory) everytime a device is unplugged
-(or unbound in general)."
 
-If the module is built-in the directory from the module scope is *never*
-removed, but the entries the driver e.g. creates in probe() for a particular
-device with keep() will pile up endlessly, especially for hot-pluggable devices.
+Best regards,
+Andreas Hindborg
 
-(It's getting even worse when there's data bound to such a leaked file, that
-might even contain a vtable that is entered from any of the fops of the file.)
 
-That'd be clearly a bug, but for the driver author calling keep() seems like a
-valid thing to do -- to me that's clearly a built-in footgun.
+
