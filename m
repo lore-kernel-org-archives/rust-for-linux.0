@@ -1,139 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78181F94C;
-	Thu, 22 May 2025 16:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512D517C21B
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 May 2025 17:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747929931; cv=none; b=TJuEQhHGqpYjj37lWaWaQnmCFY3DIdByo7plQe857oZU+zSxJI3oJWDNehL80EE1qxp/FjCESKTQb7CP2o6Z2z48sbnVgBrZH5VXYJXdb6L1aR0gOqoEId64y1QUCEB0YcuDpWZgCg8bkBTgCO9Cw0dW/c3QfHJA79cAhwXP27g=
+	t=1747935649; cv=none; b=e39AN+gQVKZsnHn4p/fO1OTEntmhMDJKGKQg4XobL8N+zv7AAuq7Rlb5OsSPnHuSexieNUgDXd02D+FTEGmm5LQD+BynE/7O9KPg4aK7RweUZaVXogEO0ikwTo2jZ1vqSm6FsQ4K51O/+x1Ka/chBxTFYgW+Wv3u9o+ZJjAIrPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747929931; c=relaxed/simple;
-	bh=lXcZo/Pm+/t88dRoboEWB2Dhb1AAlhDP0aV2NXjyjVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ksGZV7kVvNyfkmuMdPMvLOEKvanzGlIaK/PXJwjhwkr2fPAmXldMmDZYfyBZOXuAc8hFBnNmvy3n1d8HsslYCHZ6Qcz3nzcwJXYn6Oef58hJSWUPxITRLm7suSabsBSSiFr31ryvmLLlH9EMiO+TRI12O3BufnPwZP9nlEJ5F20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynU8/xW4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747935649; c=relaxed/simple;
+	bh=2q+nvK98glNS1OrImQ40LpGSURdNbFHXEYA7zULYzG4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uo5AB/KqNmIPoiW/WNap5q3w68bDBvIfZdrcxl2Ku+l5hRtkThK9u5n3uRjQp2QYC8hQunjbG9KqjJ1Vb6rUkyfSVI/a+QOFuohQwQSGEj7WqhKiInWh+TMGr6RlnIUgF9R7uT/8VY11iRxuVELESLbN1ajZzpU5nRyM3nDYNFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YbkBSbb1; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynU8/xW4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623F6C4CEE4;
-	Thu, 22 May 2025 16:05:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747929931;
-	bh=lXcZo/Pm+/t88dRoboEWB2Dhb1AAlhDP0aV2NXjyjVk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ynU8/xW4jYhimq8ZQZJXx3PAr/speS4llL7jGk7Zw810zunMth1fyw+YThm476U/W
-	 hRKKHArAJCXspS6S4OnpFbvhLP8o/s9nle4Q/iNBcNt1drSFpdCVuxtHPh/tjAZMbQ
-	 mQR09Ma6W+Er9cS/pjqFFwaP2EtreRmNLq8enKgs=
-Date: Thu, 22 May 2025 16:15:46 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-Message-ID: <2025052201-return-reprogram-add9@gregkh>
-References: <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
- <aCRdNJ2oq-REBotd@pollux>
- <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
- <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
- <2025051524-festival-afterglow-8483@gregkh>
- <aCzzBT96ktapP03e@google.com>
- <aC2HacSU7j5d9bzu@pollux>
- <aC5XDi7SaDJeUaAC@google.com>
- <aC7DVewqqWIKetmk@pollux>
- <aC8uNmrLUSS8sxHU@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YbkBSbb1"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a4bafbb1abso772075f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 22 May 2025 10:40:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747935645; x=1748540445; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RztcMjTLHfY23vLuGORKKnjudgJGslj+PjsonErxbkQ=;
+        b=YbkBSbb1mEzi6aqU6gllICn+Fyw9MC9XtTaannSOalUilo+1B3IppTq4AsXtAN5BrP
+         bL5aaJJn1eWVQA/cRTBq2FQ5ngJ82ySUyrd/2QsR0Ubs7dEl3drmsdcy7evEK4ojMr1N
+         LPCu5B9Gj0DlW4hCXRv1a0QDurNAWnD6sk9NTSNQTMEFAkJ+rFkASow85obMwoQgvINS
+         sKgwpzLfoMroztM5h0bCiFzzlMY4TyDGKJGAv+33UlRwNUz3xQcBen1w7bfXPici2exb
+         SsNaAIZXS71cyJ/uALvODrgkr+wwFDM18MHe19dVxM1zckcNPuyeq66QtXrd1vo3viA2
+         bTWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747935645; x=1748540445;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RztcMjTLHfY23vLuGORKKnjudgJGslj+PjsonErxbkQ=;
+        b=UIeqnwqsv41TLpvKK5B20rFkp/DMzNmDORMaHiGzfDLvDASdja5wBkhn25lfOKNp4e
+         o+xIDJ7XHp+puvPve7H8RbQekSQ07ZfzUSRafa0vB6laC0MWQEMML0edLaQJKG6473My
+         Qa4+1+aZvUL9XYGczBjcScgkOT/RYX1VxCedUBlU+wxoBXS5E1L6D6HHPIZcVjolghzR
+         7OsqaRV57Cl34qeJEBTV6Hht2I3Lez8rCkj+e9ncUqwwW+K1+FXvOatWvjB2ifQ+x15D
+         FsMP315w77Re/dnGRrHaokvSHjbdYCI4F7RbjVFyJeTpUve1DznkIYR+ka28Tw5Ri5G5
+         o82A==
+X-Forwarded-Encrypted: i=1; AJvYcCUKg68KE8HIytSOwut1H4wj3ChrhqKkdYNb+sfeE3Y7rB1GQv3YfxH0CSQMQ9tq3PnnavHRHCYqihbTqhZRvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFF3sT5bIB4WgysXvwnHMClcbyRt68Skb/5SsCHRsN0JGi7iLb
+	65zlMVtB9QuwwVN3hklMHMTI5IaXzw11jROxgQKqz9dsc4mHsD7w92GP8DMS4HznuWcQB7ry3Aq
+	7H9ydHWVrDEJL1ShjqA==
+X-Google-Smtp-Source: AGHT+IF9OwV6oxhkvb6hFcvf8W+yXowqsFL3Y+t3gINXRCXBioOEg1RYheJvI1SMPeCdKIHlD7kguFPVoKDHOUE=
+X-Received: from wmbhj14.prod.google.com ([2002:a05:600c:528e:b0:442:f9ef:e460])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:37cf:b0:442:f485:6fa4 with SMTP id 5b1f17b1804b1-442ff03c45amr286843375e9.31.1747935645775;
+ Thu, 22 May 2025 10:40:45 -0700 (PDT)
+Date: Thu, 22 May 2025 17:40:43 +0000
+In-Reply-To: <2025052201-return-reprogram-add9@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aC8uNmrLUSS8sxHU@google.com>
+Mime-Version: 1.0
+References: <aCRdNJ2oq-REBotd@pollux> <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
+ <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org> <2025051524-festival-afterglow-8483@gregkh>
+ <aCzzBT96ktapP03e@google.com> <aC2HacSU7j5d9bzu@pollux> <aC5XDi7SaDJeUaAC@google.com>
+ <aC7DVewqqWIKetmk@pollux> <aC8uNmrLUSS8sxHU@google.com> <2025052201-return-reprogram-add9@gregkh>
+Message-ID: <aC9hm9D458C6LsRW@google.com>
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, May 22, 2025 at 02:01:26PM +0000, Alice Ryhl wrote:
-> On Thu, May 22, 2025 at 08:25:25AM +0200, Danilo Krummrich wrote:
-> > On Wed, May 21, 2025 at 10:43:26PM +0000, Alice Ryhl wrote:
-> > > > > * Possibly we have a way to drop a Rust object without removing it from
-> > > > >   the file system. In this case, it can never be accessed from Rust
-> > > > >   again, and the only way to remove it is to drop its parent directory.
-> > > > 
-> > > > I'm not sure about this one.
-> > > > 
-> > > > IIUC, this basically brings back the "keep() logic", which I still think is a
-> > > > footgun and should be avoided.
-> > > > 
-> > > > Also, we only needed this, since due to the borrowing design we couldn't store
-> > > > parent and child nodes in the same structure. With reference counting (or the
-> > > > logic above) this goes away.
-> > > > 
-> > > > I wrote the following in a previous conversation [1].
-> > > > 
-> > > > --
-> > > > 
-> > > > What I see more likely to happen is a situation where the "root" directory
-> > > > (almost) lives forever, and hence subsequent calls, such as
-> > > > 
-> > > > 	root.subdir("foo").keep()
-> > > > 
-> > > > effectively are leaks.
-> > > > 
-> > > > One specific example for that would be usb_debug_root, which is created in the
-> > > > module scope of usb-common and is used by USB host / gadget / phy drivers.
-> > > > 
-> > > > The same is true for other cases where the debugfs "root" is created in the
-> > > > module scope, but subsequent entries are created by driver instances. If a
-> > > > driver would use keep() in such a case, we'd effectively leak memory everytime a
-> > > > device is unplugged (or unbound in general).
+On Thu, May 22, 2025 at 04:15:46PM +0200, Greg Kroah-Hartman wrote:
+> > > Well, take the case I described above, where the debugfs "root" is created in
+> > > the module scope, but subsequent entries are created by driver instances. If a
+> > > driver would use keep() in such a case, we'd effectively the file / directory
+> > > (and subsequently also the corresponding memory) everytime a device is unplugged
+> > > (or unbound in general)."
 > > > 
-> > > Where is the leak? If the file is still visible in the file system, then
-> > > it's not a leak to still have the memory. If the file got removed by
-> > > removing its parent, then my intent is that this should free the memory
-> > > of the child object.
+> > > If the module is built-in the directory from the module scope is *never*
+> > > removed, but the entries the driver e.g. creates in probe() for a particular
+> > > device with keep() will pile up endlessly, especially for hot-pluggable devices.
+> > > 
+> > > (It's getting even worse when there's data bound to such a leaked file, that
+> > > might even contain a vtable that is entered from any of the fops of the file.)
+> > > 
+> > > That'd be clearly a bug, but for the driver author calling keep() seems like a
+> > > valid thing to do -- to me that's clearly a built-in footgun.
 > > 
-> > Well, take the case I described above, where the debugfs "root" is created in
-> > the module scope, but subsequent entries are created by driver instances. If a
-> > driver would use keep() in such a case, we'd effectively the file / directory
-> > (and subsequently also the corresponding memory) everytime a device is unplugged
-> > (or unbound in general)."
-> > 
-> > If the module is built-in the directory from the module scope is *never*
-> > removed, but the entries the driver e.g. creates in probe() for a particular
-> > device with keep() will pile up endlessly, especially for hot-pluggable devices.
-> > 
-> > (It's getting even worse when there's data bound to such a leaked file, that
-> > might even contain a vtable that is entered from any of the fops of the file.)
-> > 
-> > That'd be clearly a bug, but for the driver author calling keep() seems like a
-> > valid thing to do -- to me that's clearly a built-in footgun.
+> > I mean, for cases such as this, I could imagine that you use `keep()` on
+> > the files stored inside of the driver directory, but don't use it on the
+> > directory. That way, you only have to keep a single reference to an
+> > entire directory around, which may be more convenient.
 > 
-> I mean, for cases such as this, I could imagine that you use `keep()` on
-> the files stored inside of the driver directory, but don't use it on the
-> directory. That way, you only have to keep a single reference to an
-> entire directory around, which may be more convenient.
+> No, sorry, but debugfs files are "create and forget" type of things.
+> The caller has NO reference back to the file at all in the C version,
+> let's not add that functionality back to the rust side after I spent a
+> long time removing it from the C code :)
+> 
+> If you really want to delete a debugfs file that you have created in the
+> past, then look it up and delete it with the call that is present for
+> that.
+> 
+> The only thing I think that might be worth "keeping" in some form, as an
+> object reference as discussed, is a debugfs directory.
 
-No, sorry, but debugfs files are "create and forget" type of things.
-The caller has NO reference back to the file at all in the C version,
-let's not add that functionality back to the rust side after I spent a
-long time removing it from the C code :)
+That could work if we don't have any Rust value for files at all. The
+problem is that if we do have such values, then code like this:
 
-If you really want to delete a debugfs file that you have created in the
-past, then look it up and delete it with the call that is present for
-that.
+let my_file = dir.create_file("my_file_name");
+dir.delete_file("my_file_name");
+my_file.do_something();
 
-The only thing I think that might be worth "keeping" in some form, as an
-object reference as discussed, is a debugfs directory.
+would be a UAF on the last line. We have to design the Rust API to avoid
+such UAF, which is why I suggested the ghost objects; the delete_file()
+call leaves my_file in a valid but useless state. And as a ghost object,
+the .do_something() call becomes a no-op since the file is now missing
+from the filesystem.
 
-thanks,
-
-greg k-h
+Alice
