@@ -1,144 +1,111 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DD72770B
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 May 2025 14:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747922491; cv=none; b=cPxrsEDX+TBvua8r3WzYeAt2R4niUQqKJ2c6/R+RzznzWKXAQTs3pyI49kD9qrUPlts/RozkDgcKcXnUDWJQgjwvsytiDp1t49+jaVUiA4KSvG+dgRsZp9lU96ZwI0kehAyR2Kn9S5fSLLHiwsJUlZqmj0hmBA0rJT1ktkQOb1w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747922491; c=relaxed/simple;
-	bh=cCWawGlAi5EtcYvzNkZAwjsiQ+dNfkFRLkupLUUHfQg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Fgt1hNNFQt7xGIqYznbbZXYAXmziyLTuJYXz3Gp8BjQX3r63Qna/K7UOhz/PHFeWig1j7CxkyJBkAHNUbmBlLXuBddaHRwOuRXlBAYV2CAg0R4fPk1kcwHjg51FX40fUp2UjTcgYCq2VxfoGEd1BfayI/lt3p82N+xylH2rYAfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i3tXZ2R4; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B4935977;
+	Thu, 22 May 2025 15:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747926277; cv=pass; b=gMS/QecaJ+3l+Ax3Af4Zsl8XwWuWbeEggbDVH61p55npRmWorm3ugJY7PJlCpfZbdBaU52OWYSx4kqnS7shj9gg4SpCgITWvCiQ52ZGzGnPiRssRCk6KbcsYppkMygWdVUaa2EHs3l13HmFKty/A7wKM0UHUOyHFg2MSwMswXy4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747926277; c=relaxed/simple;
+	bh=y1QZHCVzfxwbLKbffCkbbTuzNdwB0qlTI7Ka0fWBIBc=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NulGZL+hWHoP4t145HAbNIa6UAcq8YnA1Qx8kxiC5nYqHXEIIBKh97S8Qk81Y9KRRV4DgnnpD+PRfASSMINKnNz80Un7YuUZKb18k2Yn2PD7THsYt2zh1aneP+PeaeKXKThTN4GhwWm6Js7VUtR2yOeK4LxGv69p7ugFMVcpbHc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Mgs3MbYH; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i3tXZ2R4"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-442d472cf7fso62170325e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 22 May 2025 07:01:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747922488; x=1748527288; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=B5cC6E2WomPxiNcD5teHZW1dRsw1h86IYWuFIwHpyWc=;
-        b=i3tXZ2R4xmbogWhaST2zyvHAQAgtdkej1wQlqH4Z92RhnG/Km+kgMPq3riXPDLbkOs
-         tI+MdYoFL1Zl5UONiJqcqc9lI52/wFqLD2lUWDoC01HaLIxfkaGIOXDriYZzvc3h1JPl
-         vKwsBpfDijLj5gqfMHaeXh+Ep5BSVJNuT6a4bRer2+IpTT5TV1u0ciDsZobLTm2UmQl6
-         Bb3CJwKqqi/yHBboGiUtgPC9HJDDQKcP79ojSW9+EoGrE2h1WgPn/9BTZE/b+G0oDMsK
-         SkTrha/xGlVpduweJqlbf5gn8NbP3X2Xl8S3DT8dmKFmspS9/Yh9RQrKh5cduBhE0X7J
-         08Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747922488; x=1748527288;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B5cC6E2WomPxiNcD5teHZW1dRsw1h86IYWuFIwHpyWc=;
-        b=CZKyiJqw4OtDwskrRZXoLW25SkW9aBVjSwbYNNNPjMj2uQsBP4zyQsQEfTafnD/8ot
-         Q5TySsB7xV8OQh3D0mU30CcrKef6hqFxH4CiMleEfZDO+BL+s4FbP1G56zE7B8HUkN3n
-         0rzjYZZ3mev/iuMltrwi7kxNIYH/HJ6eXqaF4En4IZEt3RPz9Tv6lQU9RpxtUWzlDLOL
-         t+9Dak/kBr//atfRUock8uQnOzX6ERlFTji8xj+Ev9CzaieSHbUkPbHYvBdiVgE6WA+P
-         cCoyfqvE9Q+PNz5Kd4E+xnGgMlVPuoWu20zLfqOSq3uoXR/QgdoJxkL2dkkJ+cWNAYe8
-         vbLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV6gRtMEyxasTeSQsxCESmSCT0bxouoE0t5/KGYLZMN87Mx8C5HbEoucsJIdhlWF0Dh9lX7s7lIAX8nFrDQLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQK/HeQgVu1u4QfCE3cNfLZfE4DXfVNrhXOM2pkJDmcICBFQ3l
-	S0s+WRkxSefvKSK/tAV+80DQJ91iqUyVb5EqL2NgCwW0Ixhqi2MmaUISNhtNWLoecgkdynTZpjx
-	Csa8xg4wF6P9I/WpgLQ==
-X-Google-Smtp-Source: AGHT+IHXp07QVhjl+t3lNrZ1dIZAODtIlQUgQhsn4x8db8r4PIqRl2H9njnvwDbHjr+d09nNweYztlMrIdTzR74=
-X-Received: from wmbes12.prod.google.com ([2002:a05:600c:810c:b0:44a:bfe9:5b4])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8215:b0:441:b5cb:4f94 with SMTP id 5b1f17b1804b1-442fd606ba6mr236732175e9.5.1747922487933;
- Thu, 22 May 2025 07:01:27 -0700 (PDT)
-Date: Thu, 22 May 2025 14:01:26 +0000
-In-Reply-To: <aC7DVewqqWIKetmk@pollux>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Mgs3MbYH"
+ARC-Seal: i=1; a=rsa-sha256; t=1747926226; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=VaT0+rMMISfANLEhrx1eJeDw3XEdDuO0H1+K3rgnnBDqIhYyPwBvEIb4HnAuAHld5i/OkBw8g+VA9uKWADhzCXZfnA2lpBpMb5jGpgGFugvuuHPiPtxWzmeKgtYsh9LHcfhnGkKtC3Q6H6lhLtHfzMiufoR8/wEOIzNHr0K5aLM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1747926226; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=y1QZHCVzfxwbLKbffCkbbTuzNdwB0qlTI7Ka0fWBIBc=; 
+	b=gMpBT9qIfc/XFVFWHYwam0lFFmgvEiiNypO+KQcTDDVcRS9aBiQJcBt6jY56hZGpN4FI8cMeG2a48TniWiea5cHULyqfXkUBMtFDf7mI1EpOFdogjXlBhq3X8j7gHZY4XaDc9HULJqkABKXByJ6GOfyNrs5YgLlHszF1+FUHnmA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747926226;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=y1QZHCVzfxwbLKbffCkbbTuzNdwB0qlTI7Ka0fWBIBc=;
+	b=Mgs3MbYHIxOzfkKPolz5IJUMnnuNafNkYVitKYXys0UNAyR4GHJanrBMy4XvsHm5
+	opbJkiwT7CEaSZv8wfHbWnY8eSWB5JDW8sN4VjVeU0VoKaZr9vLBb59OOkUjrsRDd5H
+	UEpcGnyY2QiJCi4vSI+hJJMujGz/TGg25Bj+KE98=
+Received: by mx.zohomail.com with SMTPS id 1747926224476523.4321217431499;
+	Thu, 22 May 2025 08:03:44 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250505-debugfs-rust-v5-4-3e93ce7bb76e@google.com>
- <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org> <aCRdNJ2oq-REBotd@pollux>
- <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
- <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org> <2025051524-festival-afterglow-8483@gregkh>
- <aCzzBT96ktapP03e@google.com> <aC2HacSU7j5d9bzu@pollux> <aC5XDi7SaDJeUaAC@google.com>
- <aC7DVewqqWIKetmk@pollux>
-Message-ID: <aC8uNmrLUSS8sxHU@google.com>
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Benno Lossin <lossin@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
+Subject: Re: [PATCH v2 01/12] rust: helpers: Add bindings/wrappers for
+ dma_resv_lock
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <ab32a3ea-84a0-484c-a07b-85aecf99ae00@amd.com>
+Date: Thu, 22 May 2025 12:03:27 -0300
+Cc: Lyude Paul <lyude@redhat.com>,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Asahi Lina <lina@asahilina.net>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ "open list:DMA BUFFER SHARING FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linux-media@vger.kernel.org>,
+ "moderated list:DMA BUFFER SHARING
+ FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linaro-mm-sig@lists.linaro.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <56CCCD08-01BB-40F0-B7BA-CD7DAE2C23D3@collabora.com>
+References: <20250521204654.1610607-1-lyude@redhat.com>
+ <20250521204654.1610607-2-lyude@redhat.com>
+ <ab32a3ea-84a0-484c-a07b-85aecf99ae00@amd.com>
+To: =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+X-Mailer: Apple Mail (2.3826.500.181.1.5)
+X-ZohoMailClient: External
 
-On Thu, May 22, 2025 at 08:25:25AM +0200, Danilo Krummrich wrote:
-> On Wed, May 21, 2025 at 10:43:26PM +0000, Alice Ryhl wrote:
-> > > > * Possibly we have a way to drop a Rust object without removing it from
-> > > >   the file system. In this case, it can never be accessed from Rust
-> > > >   again, and the only way to remove it is to drop its parent directory.
-> > > 
-> > > I'm not sure about this one.
-> > > 
-> > > IIUC, this basically brings back the "keep() logic", which I still think is a
-> > > footgun and should be avoided.
-> > > 
-> > > Also, we only needed this, since due to the borrowing design we couldn't store
-> > > parent and child nodes in the same structure. With reference counting (or the
-> > > logic above) this goes away.
-> > > 
-> > > I wrote the following in a previous conversation [1].
-> > > 
-> > > --
-> > > 
-> > > What I see more likely to happen is a situation where the "root" directory
-> > > (almost) lives forever, and hence subsequent calls, such as
-> > > 
-> > > 	root.subdir("foo").keep()
-> > > 
-> > > effectively are leaks.
-> > > 
-> > > One specific example for that would be usb_debug_root, which is created in the
-> > > module scope of usb-common and is used by USB host / gadget / phy drivers.
-> > > 
-> > > The same is true for other cases where the debugfs "root" is created in the
-> > > module scope, but subsequent entries are created by driver instances. If a
-> > > driver would use keep() in such a case, we'd effectively leak memory everytime a
-> > > device is unplugged (or unbound in general).
-> > 
-> > Where is the leak? If the file is still visible in the file system, then
-> > it's not a leak to still have the memory. If the file got removed by
-> > removing its parent, then my intent is that this should free the memory
-> > of the child object.
-> 
-> Well, take the case I described above, where the debugfs "root" is created in
-> the module scope, but subsequent entries are created by driver instances. If a
-> driver would use keep() in such a case, we'd effectively the file / directory
-> (and subsequently also the corresponding memory) everytime a device is unplugged
-> (or unbound in general)."
-> 
-> If the module is built-in the directory from the module scope is *never*
-> removed, but the entries the driver e.g. creates in probe() for a particular
-> device with keep() will pile up endlessly, especially for hot-pluggable devices.
-> 
-> (It's getting even worse when there's data bound to such a leaked file, that
-> might even contain a vtable that is entered from any of the fops of the file.)
-> 
-> That'd be clearly a bug, but for the driver author calling keep() seems like a
-> valid thing to do -- to me that's clearly a built-in footgun.
+Hi Christian
 
-I mean, for cases such as this, I could imagine that you use `keep()` on
-the files stored inside of the driver directory, but don't use it on the
-directory. That way, you only have to keep a single reference to an
-entire directory around, which may be more convenient.
+> On 22 May 2025, at 05:44, Christian K=C3=B6nig =
+<christian.koenig@amd.com> wrote:
+>=20
+> On 5/21/25 22:29, Lyude Paul wrote:
+>> From: Asahi Lina <lina@asahilina.net>
+>>=20
+>> This is just for basic usage in the DRM shmem abstractions for =
+implied
+>> locking, not intended as a full DMA Reservation abstraction yet.
+>=20
+> Looks good in general, but my question is if it wouldn't be better to =
+export the higher level drm_exec component instead?
+>=20
+> The drm_exec component implements the necessary loop if you want to =
+lock multiple GEM objects at the same time. As well as makes sure that =
+those GEM objects can't be released while working with them.
+>=20
+> Regtards,
+> Christian.
+>=20
 
-But I also see your point. I don't think keep() is a critical part of
-what I think the approach should be.
+I guess Danilo is the right person to ask, but IIRC the plan was to =
+expose the
+exec logic as part of the GPUVM abstraction, which is currently work in
+progress.
 
-Alice
+=E2=80=94 Daniel=
