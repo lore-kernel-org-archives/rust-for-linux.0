@@ -1,110 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB57CD517;
-	Thu, 22 May 2025 06:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EEC17A2E1;
+	Thu, 22 May 2025 08:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747896862; cv=none; b=VpKjsSVWn2IS5NTYJ15vnQzFqouRnpQkFTv06udkzD3j7LWLRsuAzBRBFpES+KPndg6ojRr2QmH5wKDJIRdumb67sa+WpkEy/KFh7zfcPWiyxphNBrUivRPuCQ7lEeNSSKn7YWauPtxVIZPMmisdxDR/rb1Ko8IdorIyIviLH0g=
+	t=1747902135; cv=none; b=UNzU3X3PId02zq0TFoOpEwMRbKx5nMRcM12g82zSh0CDdJ7ohSYGX6q1FKw9jd1BuKFTpSmjtbnKIz06igtqZ/rEYGkGRcAZ8+eJCFgC/IoiQ21q4AbXPTOpqCLVHui/+5nqQdkuP+4iQggTrJKQG4rTCdLSg+Du1U3Q4cqIF+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747896862; c=relaxed/simple;
-	bh=kawiY0JhilbZz8Xe2w4qeL4gCrofrUP/ZZz71VqiLyY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=B4JJvImIVdHqBcj1cfgl8R7i7r4Q7oQCk5cGWjYoNaU9HkC1zT0ykyAD/WmFqlRJr7laJYOt55mkNlZ8kFWa/bz9Raoa2M0qO80eau1uKAd00Zq3X34nTFVIqGm1T+1/ULGna3iKQjch2rIvusVFb3/7Ei0V/0X66OO/BnOoYrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdXi97yH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1747902135; c=relaxed/simple;
+	bh=HJpZF9KlDiTFw4LdyYEPTP7DBDQGdT5e7+/N31GSelU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rrLlNiroldY7VXGdBeJgIKk2pnn1pD5+MAqIbyl+2czCAYuvdoH6pu+jRaOCWHhtCvNNetB8fYS5iVSl/CvNI0vaAqDQxf5oljycysX5yykxsVJvbEIl+50Qx9/BnODH0/eacSZuBVih63i+1zajlOsnj7Rvtm52zuuk0DCMBR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/rjP3yC; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdXi97yH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6492C4CEE4;
-	Thu, 22 May 2025 06:54:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747896862;
-	bh=kawiY0JhilbZz8Xe2w4qeL4gCrofrUP/ZZz71VqiLyY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=gdXi97yH+FlKJerb5KxklLLkduGGoLXoGf+x2bJ7BPqL8IabaTsWCCH+VPtr0RAzm
-	 tH1tkCrxj9E4VRWI+m8CuV2SU/ef1zBoqVKfgN3GPhK+f56aMM5jDeI6yxmaXwHENC
-	 hHqd2JzzIhKt9W481FHT5I+ilmwqufGGPSGvUL3ecotZAdB8UJXMTdeXONU+/RY3dk
-	 HkM6F96w1s9DUXz3PXPwbaiOxx+tdWGeDLbMA02CII01aNVajT+zEquTkE7r7UhUZg
-	 aPm/zjbwaUmPRmuvAAALAvm4YkpBa2qbpLBvAnlucry5IxWoiLIqyQGAabnkjiGX6N
-	 NOE81qq3bZyOw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,
-  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  Benno Lossin <benno.lossin@proton.me>,  Alice Ryhl
- <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,  Danilo
- Krummrich <dakr@kernel.org>,  rust-for-linux@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  patches@lists.linux.dev
-Subject: Re: [PATCH] rust: workaround `bindgen` issue with forward
- references to `enum` types
-In-Reply-To: <20250325184309.97170-1-ojeda@kernel.org> (Miguel Ojeda's message
-	of "Tue, 25 Mar 2025 19:43:09 +0100")
-References: <20250325184309.97170-1-ojeda@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 30.1
-Date: Thu, 22 May 2025 08:50:55 +0200
-Message-ID: <874ixddtps.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/rjP3yC"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b2700de85d0so517669a12.2;
+        Thu, 22 May 2025 01:22:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747902133; x=1748506933; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ONODD9O59Xo3Ja6pqA8L/7sjkOJQ6kUNEStCVy7GufQ=;
+        b=e/rjP3yCzzRPwom0gTcoonywks6M0MVxd9Qos7o23hiYSWlXKwGZ2Wl3Nhqh0ajr0+
+         2YNsi4eZBqYv37DZFoWNF1J4MZ66ZY+x79LhTx8r8JZ5oXjhEH+cXJam8tCp38l5BVLo
+         mrkz7HQ6y4GYk3iH0H2BvYHX1OLd1oNofdAsEd8BuhYExaYBl1UIhEUExhK1msvx528e
+         /lf2BvzxjlOOpkLuq8C0MxqkbtD032f97ILQa0LHjtRkoEx0yj3wAlWdOU5jKadLyPZe
+         5fkX+1+OBG7d1Pxvxeh2N24zY9v67AnQVjYQ8UKmO09+i7dBDruyfT0j3YmRmfmDK8To
+         nHfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747902133; x=1748506933;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ONODD9O59Xo3Ja6pqA8L/7sjkOJQ6kUNEStCVy7GufQ=;
+        b=MgO56Jdx6O1pBLZwfy2CWNb6xAftcrmOCwMm5XZMJ6NocKXPEK9TmFJRWzCPXwZkWG
+         u2M/5xLq4fr5k+lZYy9pmuTE2v24xrX8etqmDYsF3XuqYNh+jcRimKy7TA8lGlTxUYkr
+         af+7RPHfD9KIcbWGR0TytZJfoDO0iypWYYWxI1u/6SM7ZZKCrl9rZsbh7onFP+46GANA
+         xhakj4jWChZ5FaGF9mfaBo+HIB7XGYT+/8xG0HhFy6645DVdqg1xXRziMPqVqEXw3Te8
+         70bJ8JCrsYDEiqzuoNcIB7RpG06f5PxebXDVyjICQMgq9Eg4Y7L6qvVi+oznqkoGO5Jg
+         edTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVj/p8tqu6OtClnr6yCI8gAh0hGbYwFsIvNvPKSsRvvGWTY9D/NM59xuXruQd1IX7lJEeVoFnrAPque41sL2rw=@vger.kernel.org, AJvYcCXbIqSuO+8ZvJu39SYkh+e0Gg229FFaTtPXr8CtEJZeRs3cO/WG4O2q3ERatWUSixaNZi9WoFFStnrqZSg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsT44Yr1ztTf8/pZStC5LfJ75UA7gi0RlJ8GmZL7WojQ8zWUzD
+	r7PhxbocUaq35UNq7n9GrxeN4WQVETxBepZ7PDpvugbilIGoOlj5jB7Xge4Lu45uqME3ZVQ4PA4
+	rdD8U1Mr1G/WHtdsp3y1sA8kC7EqrwYA=
+X-Gm-Gg: ASbGncv6V0hvjSNlGs8B7OBssgH54+Kp5+t75qg3laQPg2V6y1IwY8RdPgC1vxO0IeC
+	mKGPXzc8vhY9jfJVgwsuSTtD8dxtaQ/lwJ3JSWcQc2VrmRmmRHphoqZxellKorYa1+f56IS9ARr
+	G+FND1QKNE/EMdHfUXJj/DEdlpsyqJP9gKEEz+J0om3CQ=
+X-Google-Smtp-Source: AGHT+IEnwT6n67OpiIrImjuZYIvpN8McYWE9dnW1NEa8a52ATP3QKsZyj4A/ke0Iltd+2GuSC3YNtjYPS4g5jGlfdpM=
+X-Received: by 2002:a17:903:2ed0:b0:224:1785:8044 with SMTP id
+ d9443c01a7336-231d43980eemr116310475ad.4.1747902133004; Thu, 22 May 2025
+ 01:22:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250326-topic-panthor-rs-genmask-v5-1-bfa6140214da@collabora.com>
+ <DA2D41UHSQTB.2P6FHWB6TBVO7@nvidia.com>
+In-Reply-To: <DA2D41UHSQTB.2P6FHWB6TBVO7@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 22 May 2025 10:21:59 +0200
+X-Gm-Features: AX0GCFvSjSw4v9b0T-yvzVrFm3RDdHT4iKSbP0P7X-wzqcfGXVrYbTbpxi0kp1I
+Message-ID: <CANiq72ny+uSZ8wNyqozTUNma1tKfS4du0yd4+nTjioYmyw25CQ@mail.gmail.com>
+Subject: Re: [PATCH v5] rust: kernel: add support for bits/genmask macros
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Miguel Ojeda <ojeda@kernel.org> writes:
+On Thu, May 22, 2025 at 5:17=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
+>
+>                 // Compile-time error if `n` is out of bounds.
+>                 pub const fn bit_u32(n: u32) -> u32 {
+>         // Only accept values known at compile-time.
+>                           static_assert!(n < u32::BITS);
+>                           1u32 << n
+>                 }
 
-> `bindgen` currently generates the wrong type for an `enum` when there
-> is a forward reference to it. For instance:
->
->     enum E;
->     enum E { A };
->
-> generates:
->
->     pub const E_A: E = 0;
->     pub type E = i32;
->
-> instead of the expected:
->
->     pub const E_A: E = 0;
->     pub type E = ffi::c_uint;
->
-> The issue was reported to upstream `bindgen` [1].
->
-> Now, both GCC and Clang support silently these forward references to
-> `enum` types, unless `-Wpedantic` is passed, and it turns out that some
-> headers in the kernel depend on them.
->
-> Thus, depending on how the headers are included, which in turn may depend
-> on the kernel configuration or the architecture, we may get a different
-> type on the Rust side for a given C `enum`.
->
-> That can be quite confusing, to say the least, especially since
-> developers may only notice issues when building for other architectures
-> like in [2]. In particular, they may end up forcing a cast and adding
-> an `#[allow(clippy::unnecessary_cast)]` like it was done in commit
-> 94e05a66ea3e ("rust: hrtimer: allow timer restart from timer handler"),
-> which isn't great.
->
-> Instead, let's have a section at the top of our `bindings_helper.h` that
-> `#include`s the headers with the affected types -- hopefully there are
-> not many cases and there is a single ordering that covers all cases.
->
-> This allows us to remove the cast and the `#[allow]`, thus keeping the
-> correct code in the source files. When the issue gets resolved in upstream
-> `bindgen` (and we update our minimum `bindgen` version), we can easily
-> remove this section at the top.
->
-> Link: https://github.com/rust-lang/rust-bindgen/issues/3179 [1]
-> Link: https://lore.kernel.org/rust-for-linux/87tt7md1s6.fsf@kernel.org/ [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+I think this was meant to be `build_assert!`. `static_assert!` cannot
+be used when the value is potentially not known.
 
+(It would need to be `#[inline]` too).
 
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+Cheers,
+Miguel
