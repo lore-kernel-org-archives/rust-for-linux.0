@@ -1,100 +1,103 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F49281519;
-	Thu, 22 May 2025 08:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE7922333D;
+	Thu, 22 May 2025 08:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747903504; cv=none; b=fKtJDqlKMVOAh1lWIX/ZS98qvKl7jh5AiDlfh1HcRe4Fi0gcwv9Q+SZeQVBOqgNEYL66GOWjfpyhV+cFlC8vw7YnLJo2ibQvir5fFOFyjyKrRA+jDhuf9k+tVkjvRaajNiWr6Yc2jIEf9bwv0hHaQwYJvfml/P5QU/emfzQ+h/U=
+	t=1747903579; cv=none; b=SFWAQxEeopDApR4jZBhhFBPujoanKnTOSbBEfLnv8nnZnBH3x+oFDRmFefQxvBoPZz1y8Hn7vA/5AH5443GfhVFSrFPFAuKkpI5sVMphP3kHXBKwq32dt1oOvWsjozl/Sbl1OYd+SrVriitNX0Qt4vtO6314xk9VKy8ivr6VGFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747903504; c=relaxed/simple;
-	bh=e9dormL9HrrIAVH/MkapwqpUc/OQw/GWiqS4n86n8Ls=;
+	s=arc-20240116; t=1747903579; c=relaxed/simple;
+	bh=bBxJ2jI2C//1oSmc8MnMiFtY8i7Qaz8dXwp/CgG/dTA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h1/IJYmM2BOCB6FzRAP92i/8Qvu0vwGFqCJjF07PeDj60QJgMoU+HdbQm9f6+A+GjXtNRPe7OLH6owP7L9RUn02v1wFLRXQEXUcZsXlQ0XdIMBGmmBZtZ5F9HkWYTKQ0vUQgDkkXREBfLxVltdALJm4FgMrJO4kPCw/X1QgOKCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bbmSFQgt; arc=none smtp.client-ip=209.85.214.179
+	 To:Cc:Content-Type; b=HfPhnEBdStZtbkC9gLj+67YX+KjHKK7EYPLqVr7D9bEyYYKw6IRrkhGtDSklaPOjqeP3eNTcjSs2fj009CkMG4jcWwoSHg1hohSxt+HuqtJM2wjMTQ+Salt2uRCQKaYTKQ+Qq918xoxU1tNRSozWSDlWY7axI7wlub1bekH9hDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AP46fh6e; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bbmSFQgt"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-231ba912ba1so7726035ad.2;
-        Thu, 22 May 2025 01:45:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AP46fh6e"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3032a9c7cfeso1261845a91.1;
+        Thu, 22 May 2025 01:46:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747903502; x=1748508302; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747903577; x=1748508377; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e9dormL9HrrIAVH/MkapwqpUc/OQw/GWiqS4n86n8Ls=;
-        b=bbmSFQgtaHusxpP79l1qV+v+FDQdYyOnPMHOAIjs6t7mvqGiO0FzX+TrgkDN3kOsYN
-         A0T6zS7XolAQYSzqVVm8Pgc3KmR7p69LZDHmcfDNNf0jg27sDHAG1xSAANmPeSZho9L6
-         2/MGL3IiNJLyftJb34HIZGx/J3xSH9dyXJEWmHUFJHvF4pNCL5NE9bFg4ChPpxrEo3FI
-         TbvRvwSDsxrc6zO/SzqHBpz/NvvvS3kkK2Jt9TzUsoaGVDaz3ajWw0QKEmvObvFe7AFf
-         bfzOH5OwwAz0li089w+w1iA3qoiMT2ZZNJ0Ch0GKI4X4hs7C62k1X5pUnFL20n+SIrvD
-         f+4Q==
+        bh=bBxJ2jI2C//1oSmc8MnMiFtY8i7Qaz8dXwp/CgG/dTA=;
+        b=AP46fh6eheA8XLi0dDipF0gWapECaK+VpfRXCUFgoadfBW0Wjwc3BUMepAK6zI2ry9
+         LncZ+hFbb0LwtDD4X+fPczbEJxYHMh5Rn8W9ziqa5DLOeSzMVFixTVPduvg3a9pNvbfE
+         vnQiMahmTbF3+m8+ZV5yTxu4WKxKk9Eg2wGgu4q3nfIgKCYk+1OqI96GN7Q1AbNtQtJK
+         LfACWJcDLVK5qG6isfuAS7zwsAwtbzpHGJ1HBiNFKWJcVx2brV/tfCEF7nPJh78REf+q
+         IXLMRk7gjK1FnNhFhizdtpKGskKKkHEc4fbnGV6wbhTIrrWXGcslYHpKiANFs6CJBbPJ
+         j1eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747903502; x=1748508302;
+        d=1e100.net; s=20230601; t=1747903577; x=1748508377;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=e9dormL9HrrIAVH/MkapwqpUc/OQw/GWiqS4n86n8Ls=;
-        b=tVQ/b6fRGoe8jSj3VljA82ebxLGJScdAUeFSl8YD35PYj/XfxWjuwOnmiCNtKFTRdT
-         Hb9hwZYsUZo/PIh+m04iFBxUIgW3FUlMJINgl6wcc6/sOGvobWRjZ7hJfR/W1fvrLIAt
-         aRopRtdAtMZb7xzPGzAdKRRfIXiqNqkYu8bxwalHj9PlhLsTqcJL0R1eH5/xL86f1k7R
-         QPBN664pvfX1ZuuLVelIEr6e5zXV8PCroZub1odKukJzkdc4b/1OfGu4oMQUB+nyo6wi
-         LZOWLMTYhBHgSmD0tEPlZj1GFX7xkkM0pTNJzojw3rH5uJTLmXlt7tItWo2yxYBirMJa
-         fFxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfWkHV75Hw+UP8EWqpocDDyUPternQznfDob08/2uJK2JOWylr002qU4NUTe0Gzx3eDglXYrJKR4fQL6g=@vger.kernel.org, AJvYcCXl2q0+rzSAQ0S1P36ody4hequ8Xy/HoYE4rTp6+pyyf1GKm43jPDy3n6etHl2eoGY1AzjOGUS4e6rfYWyO2Vk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEoDOuKzbNxPzXgJ0RQ1ExUzM9JyNlAspXdpfNFcjS5aTz/TNh
-	pD34dQbvzDiKWI/gZDZ25qrXueJI5KQPxYEEDAQMcpG/wdCouEgJjcqA5zZ3IqQQFUqGIWhEZh/
-	ksMeMSZ7X6ar77WpJZRRxG6bHH52UUmw=
-X-Gm-Gg: ASbGnctKefhIzE5LTbsfv+mRm/X2Qtlc9Z6iVqE/muWklMdSYuk44DUFMoVrzAXauTv
-	/avqwGWwOIhVZV/yDQK12rFaFZyeDer2gGghcBApzF7di2/15PvqCq5+uNH12ajr4b6mhlx2EQL
-	GZN89obzRbwwyiIIEAKIHH7xmapdg3M9Zt4DICSGma+Cs=
-X-Google-Smtp-Source: AGHT+IHcDoEYiYNfDCdUkacNcMEAOzs+8U1TP1/BcHDhQFdNfXEeXQOFjK7ijS68XWJepFQkaZKUMIQQVff3hXBYuFc=
-X-Received: by 2002:a17:902:eccd:b0:22e:50d1:b8d1 with SMTP id
- d9443c01a7336-231d437f0e7mr141804895ad.3.1747903502395; Thu, 22 May 2025
- 01:45:02 -0700 (PDT)
+        bh=bBxJ2jI2C//1oSmc8MnMiFtY8i7Qaz8dXwp/CgG/dTA=;
+        b=AQfUYB5OV4w/MU3s9otxDQZya2Y6cmRJT94wh/9bRz+wPfHX5ITz3TluBMk5PZ3l36
+         sAGSZAXWL2ymY686h2n7Fs0afAC5Y0X6d1LImwnO3Zrk2xPNffIZaiBqK5Osn+YFV5eF
+         2e4uc72+uuLv5LeDwssyoGk0pDhqn2IlQfjo6UZt+BErk/Mi9bQvsfQA1JqeWsA3qPo7
+         3yq1sKU/+Vxp0rPalgq5WccaI/H3RkWZeVZ0Ar01WVBfSkIawWZzOdB9M87rQNdmBeEK
+         BKPVsbm0wjY8inlFwMVxi29Sf9DBm2dQEYdTW77e1toW6l3lgKP4Qf48gEjbQY/c8Xm3
+         JZxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9bfXtflEO+2cfmjcFIMp2SPjZVMxwYRZCQa4nQ5Fj6s2u0VOZJceBTsSfHS8uxx9e6d2WvKnVZFPYdjc=@vger.kernel.org, AJvYcCXA3Fd2ExBq//fcMFZ51JWOp1uSglt6fKJeUUObL40ItvhcGVgD8b2WAt7odTwC3z2HDUl09OfXsUSHCw/wYZE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQ3iFfg/M1sZqKNjFqi5zRJv50GoKV93Hq3MdMFrCchezWyiDc
+	5v7SPrAkCI6bfZcl/tKvlGZQDJU6eFHyQX8hrv7E1qIMYOSRa3B7R7TpF5/8B26sGqRndM+gAnK
+	JYwahLfnYwCDT6Q6NW7Sj3suRg/952A6+p1oQDsmJMw==
+X-Gm-Gg: ASbGnctnPKAVrrOhvjxXv2He+8Sh2GKGpzwwoa5aUzxaO6B8lYULk+kDhAr0c4h9sed
+	A1qDuh9L51hehyes2MTSU8efWKwOtPL21BAZjXFJeOweTkY0r18HUqVgVu3kg6j6m/69b6tlBx3
+	2x/+TIVJtXOB8dRTLe4wXteU5t2ZiBEAKXpwLSvQxi+kY=
+X-Google-Smtp-Source: AGHT+IFEUErAXQrqjBBPl5uNIbn+/slSrj+fuj4AS1Y2QFurbevf52b9yENWRIYvRaV5fLdSL2wU0HUdEbeZghGIoAU=
+X-Received: by 2002:a17:903:41d0:b0:224:1005:7281 with SMTP id
+ d9443c01a7336-231d43c3d88mr121249505ad.7.1747903576940; Thu, 22 May 2025
+ 01:46:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-4-05dfd4f39479@nvidia.com> <DA2E1BNC668R.MMCARZ3K2NTS@nvidia.com>
-In-Reply-To: <DA2E1BNC668R.MMCARZ3K2NTS@nvidia.com>
+References: <20250520-rust-mno-fdpic-arm-fix-v1-1-44e77fe6b2a1@gmail.com>
+ <CANiq72nUFqM7mnpSGZF65n3Aak37KVVSa0d830o31EuZyh+OfA@mail.gmail.com>
+ <d6515a2d-7986-4b53-a655-869d568d4081@gmail.com> <CANiq72nDCfoy2v-VbMR9ntNbTt=3JoYsVhz_gqX=Q=4iWN1YCw@mail.gmail.com>
+ <CA+G9fYtM-s0cgS39wX9Go_OAXxYa4nME6h8CbhyK_-QrRvQk5w@mail.gmail.com>
+In-Reply-To: <CA+G9fYtM-s0cgS39wX9Go_OAXxYa4nME6h8CbhyK_-QrRvQk5w@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 22 May 2025 10:44:49 +0200
-X-Gm-Features: AX0GCFvCHoNK_pM6k7TEPjfKCmoWB02CvdL9c9h6ygApOUg3uOuHv8pwBTVxdiI
-Message-ID: <CANiq72nQwxqeRGWBW2WSHijUKLs4c26UGQvJFjt-_SpnJJaaYQ@mail.gmail.com>
-Subject: Re: [PATCH v4 04/20] rust: add new `num` module with useful integer operations
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Thu, 22 May 2025 10:46:04 +0200
+X-Gm-Features: AX0GCFvUWLoHcftNnHHcnXk02qKWEmZlVswhSl88DhaF-XC_13tHObndO2efYGw
+Message-ID: <CANiq72=bdckmehoqoEfpTespZPaTCVDsGSwkEd2fgd5kT70S4w@mail.gmail.com>
+Subject: Re: [PATCH] arm: Fix rustgcc unknown argument '-mno-fdpic'
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: Rudraksha Gupta <guptarud@gmail.com>, torvalds@linux-foundation.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Ben Wolsieffer <ben.wolsieffer@hefring.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Christian Schrrefl <chrisi.schrefl@gmail.com>, 
+	Russell King <rmk+kernel@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>, anders.roxell@linaro.org, 
+	arnd@arndb.de, dan.carpenter@linaro.org, laura.nao@collabora.com, 
+	lkft-triage@lists.linaro.org, regressions@lists.linux.dev, 
+	Nick Clifton <nickc@redhat.com>, Richard Earnshaw <richard.earnshaw@arm.com>, 
+	Ramana Radhakrishnan <ramanara@nvidia.com>, Linux Kernel Functional Testing <lkft@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 22, 2025 at 6:01=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
+On Thu, May 22, 2025 at 10:35=E2=80=AFAM Naresh Kamboju
+<naresh.kamboju@linaro.org> wrote:
 >
-> Either that, or we enable `#![feature(const_trait_impl)]`. I just tried
-> and with it we could indeed define and implement `NumExt` as const,
-> which looks like the cleanest way to do this to me.
+> [I was off and travelling]
+>
+> Hi Miguel,
+>
+> Please accept this patch from Rudraksha.
+>
+> Acked-by: Naresh Kamboju <naresh.kamboju@linaro.org>
 
-Hmm... I think that one is actively being worked on, with a possible
-syntax change in the works. We would need to speak to upstream Rust to
-see when we could reasonably stat to use it, and consider the older
-compilers (e.g. if the syntax changes).
+Thanks Naresh! Will do.
 
 Cheers,
 Miguel
