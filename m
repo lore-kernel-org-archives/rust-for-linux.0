@@ -1,111 +1,118 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B4935977;
-	Thu, 22 May 2025 15:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747926277; cv=pass; b=gMS/QecaJ+3l+Ax3Af4Zsl8XwWuWbeEggbDVH61p55npRmWorm3ugJY7PJlCpfZbdBaU52OWYSx4kqnS7shj9gg4SpCgITWvCiQ52ZGzGnPiRssRCk6KbcsYppkMygWdVUaa2EHs3l13HmFKty/A7wKM0UHUOyHFg2MSwMswXy4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747926277; c=relaxed/simple;
-	bh=y1QZHCVzfxwbLKbffCkbbTuzNdwB0qlTI7Ka0fWBIBc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=NulGZL+hWHoP4t145HAbNIa6UAcq8YnA1Qx8kxiC5nYqHXEIIBKh97S8Qk81Y9KRRV4DgnnpD+PRfASSMINKnNz80Un7YuUZKb18k2Yn2PD7THsYt2zh1aneP+PeaeKXKThTN4GhwWm6Js7VUtR2yOeK4LxGv69p7ugFMVcpbHc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Mgs3MbYH; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AD82900AF;
+	Thu, 22 May 2025 15:14:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747926892; cv=none; b=e+zB4lWfw3Cv4Rr7TIgiVQbqWht7T0+mb17UNob/mhD87GfZ+ykwAgpm9E/u7z+iQWE04xP30ae2rho24wITYVH/Mtc9voVd/yxavN/G5nSi8TdIoVIWaaXHW7ylaekyhZcwZnRQxbDcFVgUEzq8DhzfCmbxgSBfLMYsUf21Aa0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747926892; c=relaxed/simple;
+	bh=WsxG8OORjCH2ppomC5jfk23UfoRK9sGqeuLdPN9mfNg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZeAdtYAFi5SXgjQ9oo8OcdnpxlCqgdDc/lTp1JLTdCglAMs6UT7zyMrc2NxEc+MLQsHoJKJxIjpYonhB3OCfZZaJP5tEG3mq/NJYRSxIBuuf46441DxSjy4Ej6371sYwBD+zZtJE8hu3HZhbA0J2eXzAdr1RJ2Byc/bUZ6S3Mmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVnPFJRi; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Mgs3MbYH"
-ARC-Seal: i=1; a=rsa-sha256; t=1747926226; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=VaT0+rMMISfANLEhrx1eJeDw3XEdDuO0H1+K3rgnnBDqIhYyPwBvEIb4HnAuAHld5i/OkBw8g+VA9uKWADhzCXZfnA2lpBpMb5jGpgGFugvuuHPiPtxWzmeKgtYsh9LHcfhnGkKtC3Q6H6lhLtHfzMiufoR8/wEOIzNHr0K5aLM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1747926226; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=y1QZHCVzfxwbLKbffCkbbTuzNdwB0qlTI7Ka0fWBIBc=; 
-	b=gMpBT9qIfc/XFVFWHYwam0lFFmgvEiiNypO+KQcTDDVcRS9aBiQJcBt6jY56hZGpN4FI8cMeG2a48TniWiea5cHULyqfXkUBMtFDf7mI1EpOFdogjXlBhq3X8j7gHZY4XaDc9HULJqkABKXByJ6GOfyNrs5YgLlHszF1+FUHnmA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1747926226;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=y1QZHCVzfxwbLKbffCkbbTuzNdwB0qlTI7Ka0fWBIBc=;
-	b=Mgs3MbYHIxOzfkKPolz5IJUMnnuNafNkYVitKYXys0UNAyR4GHJanrBMy4XvsHm5
-	opbJkiwT7CEaSZv8wfHbWnY8eSWB5JDW8sN4VjVeU0VoKaZr9vLBb59OOkUjrsRDd5H
-	UEpcGnyY2QiJCi4vSI+hJJMujGz/TGg25Bj+KE98=
-Received: by mx.zohomail.com with SMTPS id 1747926224476523.4321217431499;
-	Thu, 22 May 2025 08:03:44 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVnPFJRi"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-232059c0b50so50298325ad.2;
+        Thu, 22 May 2025 08:14:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747926890; x=1748531690; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WsxG8OORjCH2ppomC5jfk23UfoRK9sGqeuLdPN9mfNg=;
+        b=KVnPFJRilfw7eeBMYf09YI2wOOjscz1er1H+tW6DbURjOCgdvUgVgctt0LjUgSDqE5
+         wSpIcJSqmazowzDL54Q++3Q5bb7rWyKoFxotC15bJXji+3DCrTq5KZsf3CxezrNEHIoW
+         mlx+G1RPDcy/w3GarvjdEysMvKXc+p+knzNQ2Ca2ORUt3KT7qwLlA8pgeCAoLXYf3aSQ
+         f6pqnw2bQryhplJJKlAMlhj8My0E6TUFwlPRh5I7uF+pQc+zqFm9fdnd2H+D58gPk9QV
+         qvNEO1RY5stbP3wpdxqUXYmJy0TrMs8dFwFi5wg2FF4I9BwjhdQXsl3o5MOLFphydz1/
+         nl5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747926890; x=1748531690;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WsxG8OORjCH2ppomC5jfk23UfoRK9sGqeuLdPN9mfNg=;
+        b=F5sN0+geD8LQ1LqZ/c8krEkOx+bq+McRo+GZtvFYoRO1E+JpazAbPHUVXVQEJiDPEB
+         Ma8InymN1Ke95I/iLzlkXJSxmXg1DwFHmEqiQvg6TZO5JahdcMQzpsBuWriegB7Y9BJi
+         WN9rmMfOxrZwqIkQdur0Akj8QyNdzDUbrV5yqPje3E/RVeswUhRU87ycvCdQEaJGku3t
+         lqB9PcD7XYjkaE5Qa099Zz6E1/YChKKdr7H/6GqgkpsTaLQqZPQ0BWgbhH++suew1IHp
+         I0pZDwI4wRmTRwqyPq/gsIb8KDJA2dcFM9blHA5QcDb+NmbCMU+90gYKm3PjFscXBirr
+         Va5A==
+X-Forwarded-Encrypted: i=1; AJvYcCWuRnDdacazf6zhZMBj8WUozoAIGOvV/t9C513DEI7jv2WdsMHGx4qH6jwdq6ID9PlPz3YFGStUlLWTDm/sY7Q=@vger.kernel.org, AJvYcCXw1fevQHW4LcCMg1lSVD6D4i3wKHbklYXfzmGxYqfkz5/7FGKHgizG+Tm11ASkElrMqhZ5r3F7teTFUO4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuprSYIalvGopZNl5K1QdgE4RmU6M5r75R7KSRNuH0eoSg+MCC
+	X9xoMPZtBdlkyi8778kSP0NVTN2eAV6Q6/jSDyekJ6umhQ6wOipO8piB
+X-Gm-Gg: ASbGnctlTLzdlLHyBQda8Q5zjbx18P5V//vja/vt02zp2Ik+anWZqLvUzg9MxaWTSdY
+	hXRUSNnzG6rhKciPajF761El9Qdti/Z9FDpB7VTqAYRJo4Y0tMe9lDU23eqdHildrOkU5sP5ZT6
+	GtY0HUs8hrkBB2bYxuQo7BPV9xU4Plieh2ZPRZzvZ98IGPzoK57mqGPgtjoOYazSov5L1XgkKe3
+	gxnuw2BosPg7FE1UuE+MK98DbAg232wfdtAcHTz+1SeKCpt2Vj0+AhypiC5ul1Akk9p9ZQDDz14
+	kvGRgAdJYtixus9hdLpolsYDBKhkgXw42guXir40rdigOfTeOjs4j4D5ZWvy2YuJo/R5eAhSnfj
+	t8cdjfHAENX6tWh2BmeSbIg==
+X-Google-Smtp-Source: AGHT+IFFHdCg2bYOMTipIdA9PaTTIsK/FEQRHO9l1ug8WETlJWK+AYJ1xQFp0K0ePyvYyX5dR5SrDw==
+X-Received: by 2002:a17:903:1a68:b0:22f:c568:e691 with SMTP id d9443c01a7336-231de3149ddmr360264745ad.21.1747926889909;
+        Thu, 22 May 2025 08:14:49 -0700 (PDT)
+Received: from ?IPV6:2601:644:8500:5dd0:864b:f5ff:fe5c:59a5? ([2601:644:8500:5dd0:864b:f5ff:fe5c:59a5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4ac93besm109295605ad.12.2025.05.22.08.14.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 May 2025 08:14:49 -0700 (PDT)
+Message-ID: <95d28adf-1eae-4d33-9421-c0864933c242@gmail.com>
+Date: Thu, 22 May 2025 08:14:46 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.500.181.1.5\))
-Subject: Re: [PATCH v2 01/12] rust: helpers: Add bindings/wrappers for
- dma_resv_lock
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <ab32a3ea-84a0-484c-a07b-85aecf99ae00@amd.com>
-Date: Thu, 22 May 2025 12:03:27 -0300
-Cc: Lyude Paul <lyude@redhat.com>,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Asahi Lina <lina@asahilina.net>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm: Fix rustgcc unknown argument '-mno-fdpic'
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- "open list:DMA BUFFER SHARING FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linux-media@vger.kernel.org>,
- "moderated list:DMA BUFFER SHARING
- FRAMEWORK:Keyword:bdma_(?:buf|fence|resv)b" <linaro-mm-sig@lists.linaro.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <56CCCD08-01BB-40F0-B7BA-CD7DAE2C23D3@collabora.com>
-References: <20250521204654.1610607-1-lyude@redhat.com>
- <20250521204654.1610607-2-lyude@redhat.com>
- <ab32a3ea-84a0-484c-a07b-85aecf99ae00@amd.com>
-To: =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-X-Mailer: Apple Mail (2.3826.500.181.1.5)
-X-ZohoMailClient: External
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, torvalds@linux-foundation.org,
+ Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Christian Schrrefl <chrisi.schrefl@gmail.com>,
+ Russell King <rmk+kernel@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>,
+ anders.roxell@linaro.org, arnd@arndb.de, dan.carpenter@linaro.org,
+ laura.nao@collabora.com, lkft-triage@lists.linaro.org,
+ regressions@lists.linux.dev, Nick Clifton <nickc@redhat.com>,
+ Richard Earnshaw <richard.earnshaw@arm.com>,
+ Ramana Radhakrishnan <ramanara@nvidia.com>,
+ Linux Kernel Functional Testing <lkft@linaro.org>
+References: <20250522-rust-mno-fdpic-arm-fix-v2-1-a6f691d9c198@gmail.com>
+ <CANiq72mh1h8d-EWrZef=BPPtadZyHG0B+tg9GgA_RnWiETWMkA@mail.gmail.com>
+ <db93019f-0a57-4b1d-95a6-ed5a6ab9a989@gmail.com>
+ <CANiq72n3UzgG4BTcZXd9aJK_9+BwodRkbzewPtipi4-iCqdeqA@mail.gmail.com>
+Content-Language: en-US
+From: Rudraksha Gupta <guptarud@gmail.com>
+In-Reply-To: <CANiq72n3UzgG4BTcZXd9aJK_9+BwodRkbzewPtipi4-iCqdeqA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Christian
+> No worries, I will apply this one :)
+>
+> I will remove the tag, unless you want it there for some reason (e.g.
+> because you want to point out some extra testing that goes beyond what
+> would normally be done).
+>
+> Thanks!
 
-> On 22 May 2025, at 05:44, Christian K=C3=B6nig =
-<christian.koenig@amd.com> wrote:
->=20
-> On 5/21/25 22:29, Lyude Paul wrote:
->> From: Asahi Lina <lina@asahilina.net>
->>=20
->> This is just for basic usage in the DRM shmem abstractions for =
-implied
->> locking, not intended as a full DMA Reservation abstraction yet.
->=20
-> Looks good in general, but my question is if it wouldn't be better to =
-export the higher level drm_exec component instead?
->=20
-> The drm_exec component implements the necessary loop if you want to =
-lock multiple GEM objects at the same time. As well as makes sure that =
-those GEM objects can't be released while working with them.
->=20
-> Regtards,
-> Christian.
->=20
+Removing the tag is fine by me :)
 
-I guess Danilo is the right person to ask, but IIRC the plan was to =
-expose the
-exec logic as part of the GPUVM abstraction, which is currently work in
-progress.
 
-=E2=80=94 Daniel=
+Rudraksha
+
+>
+> Cheers,
+> Miguel
