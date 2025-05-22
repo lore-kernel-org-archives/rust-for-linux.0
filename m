@@ -1,58 +1,59 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B681EDA39;
-	Thu, 22 May 2025 20:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722C02BF3EF
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 May 2025 20:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747944352; cv=none; b=nyB0j9DqRsIezGgKOJjljOsbcmIJwnVZm1oCumsmCISSLabB1xOLan5dxVB0tO1ZTgZ0QHfSFIBNsuhtTantSTkp8k9P04doGECUJwnsj5s6nTfkoDNGBPQ0mfkfbawsLcr3AjGOe9CmPCAkgA6gNVIYJSAk/9RlllKGPJF/HPY=
+	t=1747944619; cv=none; b=f0sKN71TeCzijH0l5j7ssTpHS0I03zVs55q5X4vsSxBEbscor1ecCponUoFa/T6q9/LkOBaBane/uMUGpK2O5BULPpvO+9l/KEoNSIXYKfuvPHqCEEJs447CJkKOHq6h5f+EXkNLm4DzK/SBMMJNID6Z26AG/5ehSNsgXjAsQMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747944352; c=relaxed/simple;
-	bh=PwXql5ZCCKKA4XkDZsjmxfvBZJ2akfXd0xfKzICmRAI=;
+	s=arc-20240116; t=1747944619; c=relaxed/simple;
+	bh=u1d0amzEQMXWLc+O6o+EmY9H47Q/ZLgRR2P2wcViHWM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FSdA+uD5Yk2KPpMXeBgqsaD/4LE+HGUaoXRQWW3pE7czLoWyaTbOAqdQrLjXdPysxWkY2SEdURZlOhnzKVc9gLcgcukkAtIYX1FMbMbfeLQB2dq9Qxjeu9/eFaCg9YjujN+XQImjFAu0t+gqg20rVuOWeKzzghXkz4m7gQrnBlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QI2mnTcH; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Y8IXQei1d+oHg8yvjRGUHHMWov3RX4ktNj+KfVhUrxML69f6aELJH/7lXEO/IMrp7S791qKnaJisf8AXfIaWhIf0OkBG2T5przei3M0cwrV8VPHQ6n+imGDkeIUYz+v7dLSIU74y2RPuSZpvSTNnSblFhkr0T31bVPb2pLR7DbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fl556fUl; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QI2mnTcH"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-231c88cc984so8515675ad.1;
-        Thu, 22 May 2025 13:05:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fl556fUl"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-440685d6afcso90036905e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 22 May 2025 13:10:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747944350; x=1748549150; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1747944616; x=1748549416; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PEAP9pb/0X/MHqDazxQDkHXQgCofrGr3ghVoB2vRtOE=;
-        b=QI2mnTcHdAms0/mXpLl0lqvAUK/BxM80gMJXu/Bspk8C5UtKV5606faH4V/Zmb2gXn
-         c9K6nt571x2SIETk0JnDgl0ylvFY21EoSvFIF7XVg9O4RFl6lzEIhqyfkMkE1aL2IbQx
-         Xb2ZizQkizDjwI3oLGG8gXMXnQKLAdZyv0dhPja3P5CDq7NvPLOTzd+dE9CHy/6AhEUi
-         x8f7v97/i8yKkyM3wFH14sJNTVYXQ7hvIA15YNdpmgDYNf34KkeUKbzO2wSWTKzAQQ2L
-         wmQ/LCiBPrWGAMEAJTAEEVZUZjX2wpYhS2Ajwpb3mkcNqEC+P6ZRPFu3+Cc+t0m1oYP+
-         EL9Q==
+        bh=Zi6UK63Kniro/hiv/vg69lXNbuiW+Rc4uGAFOEdYP7c=;
+        b=Fl556fUljacUaSLGbWtgKpbXHUXrH7uPQgGPfrjX3KR0zEHB/4GmEqMjK9OCeqq94z
+         Bn8oiIWpZT6IoX6uJDM4OyfYFDyKDzEEpM2eAu2xd2ft+Img4qTmPLAASVD6X1BE37u/
+         aRF2XK9oZt7FJiAAMy44KmBT0wW/s+jg0kxLFZ0cG1WQ8goucEU3TEMV+x3bNujiOK8v
+         cUP5MaZlySPFYWlvxBs6uA7XO/l2SsodAaYTQscV+ej4fVnWH64606/gis6bDQxBRojM
+         csCO4LwkEohVkZ30yoCSUBW4tBD9JkLYqC4amEwjjeqaWWo084R8Hneq2YK7REzztQpy
+         ukHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747944350; x=1748549150;
+        d=1e100.net; s=20230601; t=1747944616; x=1748549416;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PEAP9pb/0X/MHqDazxQDkHXQgCofrGr3ghVoB2vRtOE=;
-        b=icvnt9hMBJfnFzAj5eiXh7ZrGCDUFm8rImNSLJ/Ht/fxv8ZJyg/Xwwm1+p4ZzzRDbs
-         fxONZ1hwNJZhPg2VNLxN+ayL4g/TgJKWF9rSvLpRQvYG3yPi8cscB9mWBKFBgpVc+ctf
-         YY56l2J8rz9XdHuBJlg+zLxbybHo1RSvhNUKU7W8ZJVbL3nGbD1sEntCKgXNVdWao2tV
-         hrkeHaC1PUJATX3G0QhSORXjzeDj2ueSzkkXkWEuORm9mtHc+UbOvraN/DwtqqgZjQW4
-         d+3HZxncAlPDJvxs6xe5v3vaL8VOEEOgimtpcVCTKKzvE8l9ZcSv67VusbY1MXg6Z9sC
-         yqRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUpVVkbOVsL8KZXl3W5kdJ4LEHT6qwr0/Y/am4IYD0WErqzgVsVR/PcOUhd670fRV9noc6PsBN1rGnOW7E=@vger.kernel.org, AJvYcCVnDs0xiAoPL/5PtIofgLgBJI+uUCTtwBZmxgtJyYto5u+nHVGdlTZfD6IYHIS40Q/CIazJaBkHUTGVWrHccWA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoTI32ME7OON1eSEw7MpzIyKDLsOnHHVW7auUbATORrjhwmu2/
-	20abbadS3sBIG8KBzpGH4J/R2hQwOHX/jY4tiP/b1VXcMWE/WZMd5aSbRuC0tT4jeS+REtzttTk
-	roWx+0mTUpBUfkmCE/sOPTOkBF+6pPNg=
-X-Gm-Gg: ASbGncuC9roBCK7Ijm/vLw5I+JMUnG/snG1eQagfL5af+r826U2tjSPLGDvrD3beCy9
-	Ds85naRwmyjWIltVqiLXSfH6Zgcg+wHSuq5JL7t3P5UtqxsOkkgyp5rI+40eGVI/cX4+d/pYvM/
-	xWnLIFyr5F3ECIZcn3mNNIqTtax/+cs+xf
-X-Google-Smtp-Source: AGHT+IGPM4c++XAu2BeE0v0Qn2lebj+uX6J1h637R5QAppETAHsqqSaI+d/qnmhdsieSt+fAB2/XC93MamPMrxQDWBg=
-X-Received: by 2002:a17:902:ea0a:b0:224:c46:d164 with SMTP id
- d9443c01a7336-231d43891f9mr125907535ad.2.1747944350417; Thu, 22 May 2025
- 13:05:50 -0700 (PDT)
+        bh=Zi6UK63Kniro/hiv/vg69lXNbuiW+Rc4uGAFOEdYP7c=;
+        b=n/yhE8zjt7refY8xTyFBOcMBfx05FSSXYdQAQkKWGs2VbNYFLfhSxKXuvOaEGRsCTM
+         JKuFyVOhIfHmSrdX5mZrJTFg0N2T2tujAgUocew1+fZ2/Zm9DGJPY3fbrGhr3Mksoe8q
+         h4/g8Pq46gGd0TFOVw2UAkYf42LYR3glXzx1bLa7qJtdlZ0QF8nWaCzGFS34Bqq1XzTe
+         l/ECxPV5CNEPh545v+10We9eVyXrKEJ6wRAgFuyXz9HV67mRXtNveGgDoSvIfCXOh5lc
+         atac71mEwbJWZmLvHsMDnprv0+uqlcTvGTDHsEugSGODFfUwEyEE5exTux503WRpLpNM
+         NH8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW6+/6oM55/5mGLdBvuMKePQ3Vin7f1cuyhEZXWEuoDuBIejX3VqSi4/WPBF52DmGf/dyccAnqd081DG55dsg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3QXiPsKp1LuJKE2e9VAKeQAAvzrgH2PlINIRKZ0IowhYdFvKf
+	lwU5FSqayHOKbW+U/FrQwlsXrevyKlg6lOCPnIOyAvSeY/TNfFDUMJjbqs/OQN5Q5qmrWYz2sbL
+	AL3w7a/Dy30dNHi/4/jMwJZIfI1a1kDiBxroa+3nD
+X-Gm-Gg: ASbGnctX+kRxq9HnlKuNnXg9BWsGFdAd6F8cBHDoxMUoE713mLEUTuBGdz5J7ruzvBu
+	azluRQHR3TTlpYs+a6jfLG8sVk5SuWRsW3Jr9/IoiQWHaUXfT/UbfoYM9E/1VXdnB8xo4rg4toH
+	I6odsJTd7vJ0pi60nW5ekBnzFquBWONUtlvhR/t42ygDmWT+hmCFPrYboSfrNK4PLEfJsKDJ09g
+	w==
+X-Google-Smtp-Source: AGHT+IHd6YqAoxYw8miBcoEkIf/xB+HqLUuOOhvJRjCeKRZF7C69+8RuD1SZ5w0zECEw6IKhFE00IUJDA7Pw53bTrRo=
+X-Received: by 2002:a5d:64c7:0:b0:3a3:6584:3fa1 with SMTP id
+ ffacd0b85a97d-3a365844ba6mr22936770f8f.44.1747944615640; Thu, 22 May 2025
+ 13:10:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,14 +61,15 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250413005650.1745894-1-ojeda@kernel.org> <CAH5fLgiF0kZdOYaQi18_LTNx6Onq-5PBomA=bwS0m0z+C0wtvg@mail.gmail.com>
- <CANiq72ngfTJ5PTYaJOOQ2NedERrLYzA62hL8Fgw5C4QkuZ2R-Q@mail.gmail.com> <Z_0X8Z9M2H0mmcK8@google.com>
-In-Reply-To: <Z_0X8Z9M2H0mmcK8@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 22 May 2025 22:05:37 +0200
-X-Gm-Features: AX0GCFsd3MjqVKVYRSlSmd3gv8L2oHNQPn44WQ8nmzQaz13xEZl3bEswwymnTDg
-Message-ID: <CANiq72=ttuQYrGNDqNZDmBN5G4TUpna+ex8eD85HvOP723frDw@mail.gmail.com>
+ <CANiq72ngfTJ5PTYaJOOQ2NedERrLYzA62hL8Fgw5C4QkuZ2R-Q@mail.gmail.com>
+ <Z_0X8Z9M2H0mmcK8@google.com> <CANiq72=ttuQYrGNDqNZDmBN5G4TUpna+ex8eD85HvOP723frDw@mail.gmail.com>
+In-Reply-To: <CANiq72=ttuQYrGNDqNZDmBN5G4TUpna+ex8eD85HvOP723frDw@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 22 May 2025 13:10:03 -0700
+X-Gm-Features: AX0GCFsS36Reksqvi8aRibe6a18Oz-bTGUW4k34hhUquW5v3Uv-Z43TgekyqjRs
+Message-ID: <CAH5fLggfFJ3TmoDbVa1SqOPywOHKDy85CR5pz5wZ8VpZj+Cr6w@mail.gmail.com>
 Subject: Re: [PATCH] rust: add C FFI types to the prelude
-To: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -77,26 +79,27 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 14, 2025 at 4:13=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Thu, May 22, 2025 at 1:05=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Hmm. Maybe, but I think having it at the end is okay. Could we catch
-> core::ffi with checkpath instead of clippy? Just search for core::ffi?
+> On Mon, Apr 14, 2025 at 4:13=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > Hmm. Maybe, but I think having it at the end is okay. Could we catch
+> > core::ffi with checkpath instead of clippy? Just search for core::ffi?
+>
+> Sure, we can add it as a good first issue (Clippy would still be ideal
+> -- it allows to check all the current code).
+>
+> I came up with this, which puts the right way first:
+>
+>     Rust kernel code refers to C types, such as ``int``, using type
+>     aliases such as ``c_int``, which are readily available from
+>     the ``kernel`` prelude. Please do not use the aliases from
+>     ``core::ffi`` -- they may not map to the correct types.
+>
+> If neither of you are against that, I will put that in a few days,
+> including Danilo's tag.
 
-Sure, we can add it as a good first issue (Clippy would still be ideal
--- it allows to check all the current code).
-
-I came up with this, which puts the right way first:
-
-    Rust kernel code refers to C types, such as ``int``, using type
-    aliases such as ``c_int``, which are readily available from
-    the ``kernel`` prelude. Please do not use the aliases from
-    ``core::ffi`` -- they may not map to the correct types.
-
-If neither of you are against that, I will put that in a few days,
-including Danilo's tag.
-
-Thanks!
-
-Cheers,
-Miguel
+LGTM
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
