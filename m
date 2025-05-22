@@ -1,118 +1,139 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AD82900AF;
-	Thu, 22 May 2025 15:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78181F94C;
+	Thu, 22 May 2025 16:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747926892; cv=none; b=e+zB4lWfw3Cv4Rr7TIgiVQbqWht7T0+mb17UNob/mhD87GfZ+ykwAgpm9E/u7z+iQWE04xP30ae2rho24wITYVH/Mtc9voVd/yxavN/G5nSi8TdIoVIWaaXHW7ylaekyhZcwZnRQxbDcFVgUEzq8DhzfCmbxgSBfLMYsUf21Aa0=
+	t=1747929931; cv=none; b=TJuEQhHGqpYjj37lWaWaQnmCFY3DIdByo7plQe857oZU+zSxJI3oJWDNehL80EE1qxp/FjCESKTQb7CP2o6Z2z48sbnVgBrZH5VXYJXdb6L1aR0gOqoEId64y1QUCEB0YcuDpWZgCg8bkBTgCO9Cw0dW/c3QfHJA79cAhwXP27g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747926892; c=relaxed/simple;
-	bh=WsxG8OORjCH2ppomC5jfk23UfoRK9sGqeuLdPN9mfNg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZeAdtYAFi5SXgjQ9oo8OcdnpxlCqgdDc/lTp1JLTdCglAMs6UT7zyMrc2NxEc+MLQsHoJKJxIjpYonhB3OCfZZaJP5tEG3mq/NJYRSxIBuuf46441DxSjy4Ej6371sYwBD+zZtJE8hu3HZhbA0J2eXzAdr1RJ2Byc/bUZ6S3Mmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVnPFJRi; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1747929931; c=relaxed/simple;
+	bh=lXcZo/Pm+/t88dRoboEWB2Dhb1AAlhDP0aV2NXjyjVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ksGZV7kVvNyfkmuMdPMvLOEKvanzGlIaK/PXJwjhwkr2fPAmXldMmDZYfyBZOXuAc8hFBnNmvy3n1d8HsslYCHZ6Qcz3nzcwJXYn6Oef58hJSWUPxITRLm7suSabsBSSiFr31ryvmLLlH9EMiO+TRI12O3BufnPwZP9nlEJ5F20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynU8/xW4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVnPFJRi"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-232059c0b50so50298325ad.2;
-        Thu, 22 May 2025 08:14:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747926890; x=1748531690; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WsxG8OORjCH2ppomC5jfk23UfoRK9sGqeuLdPN9mfNg=;
-        b=KVnPFJRilfw7eeBMYf09YI2wOOjscz1er1H+tW6DbURjOCgdvUgVgctt0LjUgSDqE5
-         wSpIcJSqmazowzDL54Q++3Q5bb7rWyKoFxotC15bJXji+3DCrTq5KZsf3CxezrNEHIoW
-         mlx+G1RPDcy/w3GarvjdEysMvKXc+p+knzNQ2Ca2ORUt3KT7qwLlA8pgeCAoLXYf3aSQ
-         f6pqnw2bQryhplJJKlAMlhj8My0E6TUFwlPRh5I7uF+pQc+zqFm9fdnd2H+D58gPk9QV
-         qvNEO1RY5stbP3wpdxqUXYmJy0TrMs8dFwFi5wg2FF4I9BwjhdQXsl3o5MOLFphydz1/
-         nl5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747926890; x=1748531690;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WsxG8OORjCH2ppomC5jfk23UfoRK9sGqeuLdPN9mfNg=;
-        b=F5sN0+geD8LQ1LqZ/c8krEkOx+bq+McRo+GZtvFYoRO1E+JpazAbPHUVXVQEJiDPEB
-         Ma8InymN1Ke95I/iLzlkXJSxmXg1DwFHmEqiQvg6TZO5JahdcMQzpsBuWriegB7Y9BJi
-         WN9rmMfOxrZwqIkQdur0Akj8QyNdzDUbrV5yqPje3E/RVeswUhRU87ycvCdQEaJGku3t
-         lqB9PcD7XYjkaE5Qa099Zz6E1/YChKKdr7H/6GqgkpsTaLQqZPQ0BWgbhH++suew1IHp
-         I0pZDwI4wRmTRwqyPq/gsIb8KDJA2dcFM9blHA5QcDb+NmbCMU+90gYKm3PjFscXBirr
-         Va5A==
-X-Forwarded-Encrypted: i=1; AJvYcCWuRnDdacazf6zhZMBj8WUozoAIGOvV/t9C513DEI7jv2WdsMHGx4qH6jwdq6ID9PlPz3YFGStUlLWTDm/sY7Q=@vger.kernel.org, AJvYcCXw1fevQHW4LcCMg1lSVD6D4i3wKHbklYXfzmGxYqfkz5/7FGKHgizG+Tm11ASkElrMqhZ5r3F7teTFUO4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuprSYIalvGopZNl5K1QdgE4RmU6M5r75R7KSRNuH0eoSg+MCC
-	X9xoMPZtBdlkyi8778kSP0NVTN2eAV6Q6/jSDyekJ6umhQ6wOipO8piB
-X-Gm-Gg: ASbGnctlTLzdlLHyBQda8Q5zjbx18P5V//vja/vt02zp2Ik+anWZqLvUzg9MxaWTSdY
-	hXRUSNnzG6rhKciPajF761El9Qdti/Z9FDpB7VTqAYRJo4Y0tMe9lDU23eqdHildrOkU5sP5ZT6
-	GtY0HUs8hrkBB2bYxuQo7BPV9xU4Plieh2ZPRZzvZ98IGPzoK57mqGPgtjoOYazSov5L1XgkKe3
-	gxnuw2BosPg7FE1UuE+MK98DbAg232wfdtAcHTz+1SeKCpt2Vj0+AhypiC5ul1Akk9p9ZQDDz14
-	kvGRgAdJYtixus9hdLpolsYDBKhkgXw42guXir40rdigOfTeOjs4j4D5ZWvy2YuJo/R5eAhSnfj
-	t8cdjfHAENX6tWh2BmeSbIg==
-X-Google-Smtp-Source: AGHT+IFFHdCg2bYOMTipIdA9PaTTIsK/FEQRHO9l1ug8WETlJWK+AYJ1xQFp0K0ePyvYyX5dR5SrDw==
-X-Received: by 2002:a17:903:1a68:b0:22f:c568:e691 with SMTP id d9443c01a7336-231de3149ddmr360264745ad.21.1747926889909;
-        Thu, 22 May 2025 08:14:49 -0700 (PDT)
-Received: from ?IPV6:2601:644:8500:5dd0:864b:f5ff:fe5c:59a5? ([2601:644:8500:5dd0:864b:f5ff:fe5c:59a5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4ac93besm109295605ad.12.2025.05.22.08.14.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 May 2025 08:14:49 -0700 (PDT)
-Message-ID: <95d28adf-1eae-4d33-9421-c0864933c242@gmail.com>
-Date: Thu, 22 May 2025 08:14:46 -0700
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynU8/xW4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623F6C4CEE4;
+	Thu, 22 May 2025 16:05:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747929931;
+	bh=lXcZo/Pm+/t88dRoboEWB2Dhb1AAlhDP0aV2NXjyjVk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ynU8/xW4jYhimq8ZQZJXx3PAr/speS4llL7jGk7Zw810zunMth1fyw+YThm476U/W
+	 hRKKHArAJCXspS6S4OnpFbvhLP8o/s9nle4Q/iNBcNt1drSFpdCVuxtHPh/tjAZMbQ
+	 mQR09Ma6W+Er9cS/pjqFFwaP2EtreRmNLq8enKgs=
+Date: Thu, 22 May 2025 16:15:46 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+Message-ID: <2025052201-return-reprogram-add9@gregkh>
+References: <D9VPA1M45WBK.1TB4KOUXD24BD@kernel.org>
+ <aCRdNJ2oq-REBotd@pollux>
+ <CAGSQo0204_Dz65G33pAN3_iY=ejPXJRdAiB4ioM-nvMkAh0YXQ@mail.gmail.com>
+ <D9WM0BP5446N.1NVNDCZ4Y2QN1@kernel.org>
+ <2025051524-festival-afterglow-8483@gregkh>
+ <aCzzBT96ktapP03e@google.com>
+ <aC2HacSU7j5d9bzu@pollux>
+ <aC5XDi7SaDJeUaAC@google.com>
+ <aC7DVewqqWIKetmk@pollux>
+ <aC8uNmrLUSS8sxHU@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm: Fix rustgcc unknown argument '-mno-fdpic'
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, torvalds@linux-foundation.org,
- Ben Wolsieffer <ben.wolsieffer@hefring.com>,
- Naresh Kamboju <naresh.kamboju@linaro.org>,
- Christian Schrrefl <chrisi.schrefl@gmail.com>,
- Russell King <rmk+kernel@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>,
- anders.roxell@linaro.org, arnd@arndb.de, dan.carpenter@linaro.org,
- laura.nao@collabora.com, lkft-triage@lists.linaro.org,
- regressions@lists.linux.dev, Nick Clifton <nickc@redhat.com>,
- Richard Earnshaw <richard.earnshaw@arm.com>,
- Ramana Radhakrishnan <ramanara@nvidia.com>,
- Linux Kernel Functional Testing <lkft@linaro.org>
-References: <20250522-rust-mno-fdpic-arm-fix-v2-1-a6f691d9c198@gmail.com>
- <CANiq72mh1h8d-EWrZef=BPPtadZyHG0B+tg9GgA_RnWiETWMkA@mail.gmail.com>
- <db93019f-0a57-4b1d-95a6-ed5a6ab9a989@gmail.com>
- <CANiq72n3UzgG4BTcZXd9aJK_9+BwodRkbzewPtipi4-iCqdeqA@mail.gmail.com>
-Content-Language: en-US
-From: Rudraksha Gupta <guptarud@gmail.com>
-In-Reply-To: <CANiq72n3UzgG4BTcZXd9aJK_9+BwodRkbzewPtipi4-iCqdeqA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aC8uNmrLUSS8sxHU@google.com>
 
-> No worries, I will apply this one :)
->
-> I will remove the tag, unless you want it there for some reason (e.g.
-> because you want to point out some extra testing that goes beyond what
-> would normally be done).
->
-> Thanks!
+On Thu, May 22, 2025 at 02:01:26PM +0000, Alice Ryhl wrote:
+> On Thu, May 22, 2025 at 08:25:25AM +0200, Danilo Krummrich wrote:
+> > On Wed, May 21, 2025 at 10:43:26PM +0000, Alice Ryhl wrote:
+> > > > > * Possibly we have a way to drop a Rust object without removing it from
+> > > > >   the file system. In this case, it can never be accessed from Rust
+> > > > >   again, and the only way to remove it is to drop its parent directory.
+> > > > 
+> > > > I'm not sure about this one.
+> > > > 
+> > > > IIUC, this basically brings back the "keep() logic", which I still think is a
+> > > > footgun and should be avoided.
+> > > > 
+> > > > Also, we only needed this, since due to the borrowing design we couldn't store
+> > > > parent and child nodes in the same structure. With reference counting (or the
+> > > > logic above) this goes away.
+> > > > 
+> > > > I wrote the following in a previous conversation [1].
+> > > > 
+> > > > --
+> > > > 
+> > > > What I see more likely to happen is a situation where the "root" directory
+> > > > (almost) lives forever, and hence subsequent calls, such as
+> > > > 
+> > > > 	root.subdir("foo").keep()
+> > > > 
+> > > > effectively are leaks.
+> > > > 
+> > > > One specific example for that would be usb_debug_root, which is created in the
+> > > > module scope of usb-common and is used by USB host / gadget / phy drivers.
+> > > > 
+> > > > The same is true for other cases where the debugfs "root" is created in the
+> > > > module scope, but subsequent entries are created by driver instances. If a
+> > > > driver would use keep() in such a case, we'd effectively leak memory everytime a
+> > > > device is unplugged (or unbound in general).
+> > > 
+> > > Where is the leak? If the file is still visible in the file system, then
+> > > it's not a leak to still have the memory. If the file got removed by
+> > > removing its parent, then my intent is that this should free the memory
+> > > of the child object.
+> > 
+> > Well, take the case I described above, where the debugfs "root" is created in
+> > the module scope, but subsequent entries are created by driver instances. If a
+> > driver would use keep() in such a case, we'd effectively the file / directory
+> > (and subsequently also the corresponding memory) everytime a device is unplugged
+> > (or unbound in general)."
+> > 
+> > If the module is built-in the directory from the module scope is *never*
+> > removed, but the entries the driver e.g. creates in probe() for a particular
+> > device with keep() will pile up endlessly, especially for hot-pluggable devices.
+> > 
+> > (It's getting even worse when there's data bound to such a leaked file, that
+> > might even contain a vtable that is entered from any of the fops of the file.)
+> > 
+> > That'd be clearly a bug, but for the driver author calling keep() seems like a
+> > valid thing to do -- to me that's clearly a built-in footgun.
+> 
+> I mean, for cases such as this, I could imagine that you use `keep()` on
+> the files stored inside of the driver directory, but don't use it on the
+> directory. That way, you only have to keep a single reference to an
+> entire directory around, which may be more convenient.
 
-Removing the tag is fine by me :)
+No, sorry, but debugfs files are "create and forget" type of things.
+The caller has NO reference back to the file at all in the C version,
+let's not add that functionality back to the rust side after I spent a
+long time removing it from the C code :)
 
+If you really want to delete a debugfs file that you have created in the
+past, then look it up and delete it with the call that is present for
+that.
 
-Rudraksha
+The only thing I think that might be worth "keeping" in some form, as an
+object reference as discussed, is a debugfs directory.
 
->
-> Cheers,
-> Miguel
+thanks,
+
+greg k-h
