@@ -1,33 +1,27 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6A021B8F6
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 May 2025 07:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63555220F4A;
+	Fri, 23 May 2025 07:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747984758; cv=none; b=GECA/vvLR1CDQzKH/uSqB3iuhJmn039MyqFhGyNnuEZaeeEe0w0hE6hcRlJm7MjFU4yJaGsff5Gpccr2ZkwdGF/7qAn6Jlg6SJ7UlIPUrqKNe0irjk4WXxLECAEwpn7eMRfvL0JjJbgTUl6fUBYsNI3+CJNMh/IFm9mY5JHQ3+w=
+	t=1747985128; cv=none; b=noaAkSIAOl/olBHPgXBmmL66fm15ChP5BSDBid8bm3Fzsl7pYiHbdfqlXoJs19l9ezYXY/aSQ/EpBBH7sP7I6tc1UJZ2+2egjDrU6EFmCk9kF9ay4Bs/OBhHKTBdvi05sI0w9kmcDtb9dR9qduiKeR/bLeumf+OCXUFVSJVSozI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747984758; c=relaxed/simple;
-	bh=E0ShDCdu9lAOMVz7ALM4jbU551cKu8SSMbDSrCRZxEU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K0rro6JikeETbezly5TXTW1JnxJBIsHhIfptYz/QilADiXuElvS8kshg/ZY5GdyYs9+b91eVwM95rhNW9PfLRmR0YNFzcNGUW06rvLPcWTWEjqxgWvFNP+WpjzGce18ARmufKoHhIRsllp0rASH4C04Xw4hwoFqNCihAU/ZX5g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6ql+FeD; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6ql+FeD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CBAC4CEE9;
-	Fri, 23 May 2025 07:19:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747984758;
-	bh=E0ShDCdu9lAOMVz7ALM4jbU551cKu8SSMbDSrCRZxEU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=J6ql+FeD4AFFmKKjw47tjsuBVAqf9jtS0npqWGk3pkKq/ji4wg2/M9p3mGZNEkp5F
-	 lP1x/SjEBOI2Ihf78j5nfdRRPMHb/4pNyXwfyVS9pxN2TUcf1SCDjkcb8W/aoFOIKp
-	 AY/BWK09Br3j+yLyeEwB6kwoLxyrul/MzoFr8EVdH5qWMWcaMu2ar/SOcv0bcFqS4t
-	 vQvQgHvxV29GNOTk22RUgKZT6nrLCcFSoctur79u/XkvFvXn7PxA387EleEulfpg+1
-	 Y9v95a+MS60JrgG7axsv9OIAgcKPLPHxPZHECFdWGDZnkn9XeX98BVkw3pyshpUkS9
-	 xA67iJ0A97RqA==
-Message-ID: <2390300b-49d0-4fe5-81b5-5a9f3fd9e300@kernel.org>
-Date: Fri, 23 May 2025 09:19:14 +0200
+	s=arc-20240116; t=1747985128; c=relaxed/simple;
+	bh=L5hwYD2GMGyVP6SnLZsdCyv/4gTl9d7s2F5LvXkL4x0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jaxG0FwuJIJhwdoaFR4ELOfALJqhGEZAZD21EJiB4Ujvham2G7i8OpQbryrDcun8BUVOmSY1BbFsJerM4Jxf3WF2RebwfJbfn+0zaJvz1yF1dQcww+16vvbBtUBEGU/zWqvOeajdHGt/0xCzYT8FZ9x4ThWHB0Ao+BaFW86Qa90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
+Received: from [IPV6:2a02:8084:255b:aa00:6055:15d5:ba02:27bb] (unknown [IPv6:2a02:8084:255b:aa00:6055:15d5:ba02:27bb])
+	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id C500940A0F;
+	Fri, 23 May 2025 07:15:23 +0000 (UTC)
+Authentication-Results: Plesk;
+        spf=pass (sender IP is 2a02:8084:255b:aa00:6055:15d5:ba02:27bb) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=[IPV6:2a02:8084:255b:aa00:6055:15d5:ba02:27bb]
+Received-SPF: pass (Plesk: connection is authenticated)
+Message-ID: <8ff76bf6-b5a5-4030-ad02-e0e56acdb730@arnaud-lcm.com>
+Date: Fri, 23 May 2025 08:15:25 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,37 +29,80 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: doc: Clarify safety invariants for Revocable
- type
-To: Benno Lossin <lossin@kernel.org>
-Cc: Marcelo Moreira <marcelomoreira1905@gmail.com>, benno.lossin@proton.me,
- ojeda@kernel.org, rust-for-linux@vger.kernel.org, skhan@linuxfoundation.org,
- linux-kernel-mentees@lists.linuxfoundation.org, ~lkcamp/patches@lists.sr.ht
-References: <20250503145307.68063-1-marcelomoreira1905@gmail.com>
- <D9RJQYNTIOK1.3HI7NDDWPK6IM@kernel.org> <aChczAWsPdmdeen3@pollux>
- <D9YO7XDNV712.3A5HSSLUQIZ2W@kernel.org> <aCrwuQP46RFHxYB5@pollux>
- <DA00X0RTYKMA.2OG25TZ1X3AU@kernel.org> <aCsAEJtkCKKhspnF@pollux>
- <DA03ANJMDOU2.1ZQWA6MIENVKD@kernel.org> <aCsX-k0K_jqLvD4e@pollux>
- <DA04WHRZBBS0.17WRMWDF0A335@kernel.org>
-From: Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v3 1/2] checkpatch.pl: warn about // comments on private
+ Rust items
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>,
+ Dwaipayan Ray <dwaipayanray1@gmail.com>,
+ Lukas Bulwahn <lukas.bulwahn@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ llvm@lists.linux.dev, skhan@linuxfoundation.org
+References: <20250422125633.30413-1-contact@arnaud-lcm.com>
+ <20250422125824.30525-1-contact@arnaud-lcm.com>
+ <CANiq72n41Oj4K-yZCWbNXJQEEjTqjXHYgrkffAg_mUg8dKLWQg@mail.gmail.com>
+ <06dde2dd-5d88-49d4-9e46-72a2e12ab1c2@arnaud-lcm.com>
+ <CANiq72=UOOyf-esnRUCR0_gxFptdpNOymCz02vgesdNL7zTvHg@mail.gmail.com>
+ <32293daf-a6ce-49cc-b41d-1001037444da@arnaud-lcm.com>
 Content-Language: en-US
-In-Reply-To: <DA04WHRZBBS0.17WRMWDF0A335@kernel.org>
+In-Reply-To: <32293daf-a6ce-49cc-b41d-1001037444da@arnaud-lcm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: <174798452510.11144.1771928608104289286@Plesk>
+X-PPP-Vhost: arnaud-lcm.com
 
-On 5/19/25 2:26 PM, Benno Lossin wrote:
-> I'm not happy with the sentence structure, so how about:
-> 
-> * `data` is valid for reads in two cases:
->      * while `is_available` is true, or
->      * while the RCU read-side lock is taken and it was acquired while `is_available` was `true`.
+Hi everyone !
+Is there any update so far ?
 
-That sounds good!
+Best regards,
+Arnaud
 
-> * `data` is valid for writes when `is_available` was atomically changed from `true` to `false`.
-> 
-> The last one is needed in order to call `drop_in_place`.
-
-If think for this you have the same conditional, in the RCU case you can't call
-drop_in_place() immediately after is_available was altered, but have to wait for
-synchronize_rcu() to return.
+On 23/04/2025 12:33, Arnaud Lecomte wrote:
+> On 22/04/2025 17:32, Miguel Ojeda wrote:
+>
+>> On Tue, Apr 22, 2025 at 4:37 PM Arnaud Lecomte 
+>> <contact@arnaud-lcm.com> wrote:
+>>> As mentioned earlier, we can reduce the score of any heuristic which
+>>> could lead to any important false positive.
+>>> In my opinion, as long as the heuristic is relevant, we always have the
+>>> possibility to diminish the score associated with the heuristic, hence
+>>> preventing unnecessary false positives.
+>> Definitely (my comment above for this one was just a note, i.e. there
+>> may be nothing to change -- I just thought the commit message referred
+>> to just checking "Return" and not "Returns", since it said
+>> "imperative").
+>>
+>>> I think that you are definitely more experienced with what's done
+>>> commonly in rust code. Let's maybe change this heuristic definition 
+>>> with
+>>> @ related to types or some other annotation. Do you have some example I
+>>> could have a look to come in the next version with a relevant list of @
+>>> we can encounter.
+>> What does "references" mean in that heuristic? If you mean external
+>> links to some URL, then we typically use Markdown for those. The
+>> inline ones like `<https://...>`happen in both comments and docs. The
+>> `[...]: https://...` ones are way less common in comments I think (I
+>> can't find one).
+> We should then remove it. I'll wait for other reviewers for their 
+> feedback and then send a new version of the patch serie. Thanks :)
+>> As for `@`, if you mean the actual character, I grepped for it in Rust
+>> files with the /.*@ regex and found just ~13 matches, and all were the
+>> emails and disambiguators I mentioned. So I don't think we really use
+>> it for "references" (assuming I understand what that means).
+>>
+>> I guess you already looked in some `rust/kernel/` files -- some of
+>> those are really the best examples of how docs and comments should
+>> generally be written.
+>> Thanks!
+>>
+>> Cheers,
+>> Miguel
+>>
