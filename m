@@ -1,52 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E9A14B96E;
-	Fri, 23 May 2025 12:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673892957A8
+	for <rust-for-linux@vger.kernel.org>; Fri, 23 May 2025 14:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748004907; cv=none; b=qdkf8AgzsOjPxPff2XPzpyKuGbyqv1ezljsEhkWCXh/bsI5ocTlcBWwu5GGPcgJoOHmvOuT4utJ0T1DjcW/ziBXSClCF+dF9SFOmePtRlIsOWxpEt67E+Ev9TAWT9juVyZQ9YwncIDPXbOYRMwns+9lzAwxE6kO/8cNpkgtqoKY=
+	t=1748011901; cv=none; b=i3otMvdsnghUVM0YyaZX0tLbMva6gcqYX45k3sfViYhi0DOE7L5lkxilS2foZX1GTXy5Ssxgv42uIj8tENv/mS+HcQR7krviw3kPGCjlPz/ldu/kH7SAvYU9jg1KxrGLry1sv4hlMh7SXveRS5rynpypnpRkskKPL7Ix6gzEv+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748004907; c=relaxed/simple;
-	bh=UGO20Ph0m/03hTKf8vS+w+bTRY12hJNYL+9+4BG3VpE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5s/wxBpCElfmLuvpPCU7SsNulSukIL6LU1CZaYN3jctSc3RaMdTbIybZ2aPDJ5dL5J+7w71IUU46Uw30YxtQOvan9qslZpJgs8Pt6CGj81EP9KmCTNVE3HmPZ1nnmsC/81+xm43+8B0NYqhT6p7SD/bReR/2iUkYOWhI0jB/RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqsBI1K4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748011901; c=relaxed/simple;
+	bh=2tIdyWGkHErVHp9H5S1CX1BAkJNC1bxYnSgUuRTtFiY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VN4uNNg8ou/JH/GuXrjIEN/8eF++DtdkqqMhNg4q/br3J+KG5eEHzXBqOf9Ga9CsgtfsZDdX1wMguX/BgQnm/dItQrqI8b9ZIpFIvsdElLmxoC1nrGf2pVQKLCah0K2So+eLcblTL8zsGyStz1jT3P/4Phmjck/WlJ+XFTEZSIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2oocImW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqsBI1K4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F703C4CEE9;
-	Fri, 23 May 2025 12:55:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2oocImW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC64C4CEE9;
+	Fri, 23 May 2025 14:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748004906;
-	bh=UGO20Ph0m/03hTKf8vS+w+bTRY12hJNYL+9+4BG3VpE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqsBI1K4OXbeScHKCQBLEclO45JlZHNR4JTfIPzvfdr8j8ZCB8JWL6FHvMSnmqYUS
-	 MG6CrAtDw9FHrOURNGgxoIe24waEPhBrRbs+wHetcrnGizbEx/9TMp7JYNdZBDIHwc
-	 vCnwOEVM/+o/+O+ytvRGMux8G/ZBCtFhLjeNPzVAnWWnAsfDTB23Lpgg9you//QQp6
-	 0U2biS7XhmAKwUpStEMrOBT23SmAR7j7U2zp3qMZ6Hh3mCnZbgIpyUH/1YpN09S9q+
-	 QF2D+NefnzH5jmUORgbSKVozjOIGHJfc6AreaqXMxpPvamORlhzGVpD93JCFxk0WIh
-	 Qqz0cbIjzBZyw==
+	s=k20201202; t=1748011900;
+	bh=2tIdyWGkHErVHp9H5S1CX1BAkJNC1bxYnSgUuRTtFiY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=a2oocImWIKaxGKBYSPxYBaRPmGBl2WpZKwuIOnpzTY7mIeKFZr2FDq52vD1r+Sw6l
+	 AfLbURgA+Xwv2gTo8KX936BwBFxPUIZyvv5q2b2J8KIop7i/wd6Oz+DWq9Kc/RcaBQ
+	 CF24jaTcFxY9iIHEtl+JApE0wBJO8PW1uXINeLmgbOkGRt/70ug0u+Y23BSZHeUU01
+	 4LAVtd8EK4F/wor6LpEl6f2YbJIgV8yX5OkMKZOU4sTd9Zdstn3oiYOuH/jl9ReQ03
+	 71I7aPHbogiUjhGSjbaIukE7Ogd7M+gDzsY84HLoevV5AoESF42Qs9FSSy/dvyxSF7
+	 l2ZgZE9IkrlKQ==
 From: Benno Lossin <lossin@kernel.org>
-To: Benno Lossin <lossin@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Fiona Behrens <me@kloenk.dev>
-Cc: Benno Lossin <benno.lossin@proton.me>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] rust: pin-init: feature-gate the `stack_init_reuse` test on the `std` feature
-Date: Fri, 23 May 2025 14:54:13 +0200
-Message-ID: <20250523125424.192843-4-lossin@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 00/13] `Zeroable` improvements & bindings integration
+Date: Fri, 23 May 2025 16:50:56 +0200
+Message-ID: <20250523145125.523275-1-lossin@kernel.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250523125424.192843-1-lossin@kernel.org>
-References: <20250523125424.192843-1-lossin@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,31 +50,79 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Benno Lossin <benno.lossin@proton.me>
+Depends on the pin-init test & CI fixes sync [1].
 
-When trying to run `cargo check --all-targets --no-default-features`, an
-error is reported by the test, as it cannot find the `std` crate. This
-is to be expected, since the `--no-default-features` flag enables the
-`no-std` behavior of the crate. Thus exclude the test in that scenario.
+This came from a discussion at [2]. And I added some more useful parts
+to the original idea.
 
-Link: https://github.com/Rust-for-Linux/pin-init/pull/50/commits/2813729ccacdedee9dbfcab1ed285b8721a0391b
-Signed-off-by: Benno Lossin <lossin@kernel.org>
----
- rust/pin-init/src/__internal.rs | 1 +
- 1 file changed, 1 insertion(+)
+I'm not sure on the impact of build times and rust-analyzer. We're
+adding a derive macro to every struct and union emitted by bindgen.
+Building using my test-config took 27.7s before and 28.2s after this
+change, but those are only two runs on my machine with a very reduced
+config (that enables all Rust code that we have at the moment).
 
-diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
-index 557b5948cddc..90f18e9a2912 100644
---- a/rust/pin-init/src/__internal.rs
-+++ b/rust/pin-init/src/__internal.rs
-@@ -188,6 +188,7 @@ pub fn init<E>(self: Pin<&mut Self>, init: impl PinInit<T, E>) -> Result<Pin<&mu
- }
- 
- #[test]
-+#[cfg(feature = "std")]
- fn stack_init_reuse() {
-     use ::std::{borrow::ToOwned, println, string::String};
-     use core::pin::pin;
+Maybe we have to reevaluate this when more C code is scanned by bindgen.
+
+[1]: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/topic/Zeroable.20trait.20for.20C.20structs/with/509711564
+[2]: https://lore.kernel.org/all/20250523125424.192843-1-lossin@kernel.org
+
+Changelog
+=========
+* v2:
+  - added patches with more extensive pin-init changes to `Zeroable` &
+    related methods. for the upstream PR, see
+    https://github.com/Rust-for-Linux/pin-init/pull/56
+  - added patches replacing usage of `mem::zeroed` and
+    `MaybeUninit::zeroed().assume_init()` with the new
+    `pin_init::zeroed`
+  - fix rust-analyzer support 
+  - use import in `{uapi,bindings}/lib.rs` to avoid the `pin_init::`
+    prefix
+* v1: https://lore.kernel.org/all/20250520192307.259142-1-lossin@kernel.org
+
+Benno Lossin (13):
+  rust: pin-init: rename `zeroed` to `init_zeroed`
+  rust: pin-init: add `Zeroable::init_zeroed`
+  rust: pin-init: add `zeroed()` & `Zeroable::zeroed()` functions
+  rust: pin-init: implement `ZeroableOption` for `&T` and `&mut T`
+  rust: pin-init: change `impl Zeroable for Option<NonNull<T>>` to
+    `ZeroableOption for NonNull<T>`
+  rust: pin-init: implement `ZeroableOption` for function pointers with
+    up to 20 arguments
+  rust: add `pin-init` as a dependency to `bindings` and `uapi`
+  rust: derive `Zeroable` for all structs & unions generated by bindgen
+    where possible
+  rust: miscdevice: replace `MaybeUninit::zeroed().assume_init` with
+    `pin_init::zeroed`
+  rust: phy: replace `MaybeUninit::zeroed().assume_init` with
+    `pin_init::zeroed`
+  rust: block: replace `core::mem::zeroed` with `pin_init::zeroed`
+  rust: of: replace `core::mem::zeroed` with `pin_init::zeroed`
+  rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
+
+ rust/Makefile                                 |   6 +-
+ rust/bindgen_parameters                       |   4 +
+ rust/bindings/lib.rs                          |   8 ++
+ rust/kernel/block/mq/gen_disk.rs              |   3 +-
+ rust/kernel/block/mq/tag_set.rs               |   4 +-
+ rust/kernel/init.rs                           |   8 +-
+ rust/kernel/miscdevice.rs                     |   8 +-
+ rust/kernel/net/phy.rs                        |   4 +-
+ rust/kernel/of.rs                             |   4 +-
+ rust/kernel/security.rs                       |   3 +-
+ rust/pin-init/README.md                       |   2 +-
+ rust/pin-init/examples/big_struct_in_place.rs |   4 +-
+ rust/pin-init/src/lib.rs                      | 120 +++++++++++++++---
+ rust/pin-init/src/macros.rs                   |  16 +--
+ rust/uapi/lib.rs                              |   2 +
+ scripts/generate_rust_analyzer.py             |   4 +-
+ 16 files changed, 147 insertions(+), 53 deletions(-)
+
+
+base-commit: ae8b3a83fb9de394f609035041cd7a668fda2ab3
+prerequisite-patch-id: 8d7ade67c2e5189bf8a2c91253d925e25744cba5
+prerequisite-patch-id: 0ebbd4a86bebeff23257870db92a1b0fe017c481
+prerequisite-patch-id: 1437fc7adeff6e13abd433594da923272b9388bf
 -- 
 2.49.0
 
