@@ -1,85 +1,119 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1092D299A97
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 May 2025 18:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50D12628D;
+	Sat, 24 May 2025 12:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748024784; cv=none; b=aanryxFkOdQkh1ZwfFfm8He0Eobb89fbSv6ApbzN8pa2toDPNMmD6wpUHsvigFl2ayZlWFCW5qg9IEMTizd3dw6qcQTTYs63J/XxMSXTzARo1HQ2eQIsvLxn/SO94LJCMzrY7caxcO69780St2wHSqodQzwVk1WoUL94Uuhv8Fc=
+	t=1748089534; cv=none; b=qhLUh39yqcqQOzBVGu5yhWgQ61kXxDYyH1mjrpdHy+eHtqw22R0TNlfLwJJ8s6neTm5WDKVN8+IiJc+gmie7ftIzQrVC9lKX+7Au0a4I3P26idauCDVGui+bCooOEVem/EUUMM6DHhA7NqXRrUgR1HrzDaqKaPGrBLIEUNXNuMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748024784; c=relaxed/simple;
-	bh=dcGWOSc3/Y0IeMwL83lxSdWRdQQX44QTYLONnNt+Flk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=khhmy2fTzoiK+e7brSRacSWfKT7JjdNJ9BSDV7gj6jBYqLNnwV6EKJT16l/6qoLm9Bi/lAmHKFDnm/2OjvP1Qu5mvCOEzlN0/Kv1aek6gi3e1mhZpOHSwXQlyuw65XzjzO9i6aaFoO1bG0pj8C1nuxYYgAD285+OoI73Y5lkspc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e8w7MY7Y; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1748089534; c=relaxed/simple;
+	bh=yVYaerb/jU3BxcNZXp7iBv190F9MWlYXKuCoD8t8ycw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u15BA6yd8r5+IIC8GkKbe5Urj/SG/LbmE8Qdy1N4pejJwZPGuhIVuiJk1Swtf4TVOf8sr8fB4UHpKZnOTKDJWtGVR5Nvh9dkDYFgYifXJh1n8g4JS2ywcrzZgCEmbxCTyeVGw2IpkWhCYdnUZBtHjxLGCultGG6kJqtRRMDpis4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p/zpeqA8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e8w7MY7Y"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-442fa43e018so5864725e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 May 2025 11:26:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748024781; x=1748629581; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eIVsk3ZBOpVpyi6iCyVjmqPgvnJwX8qqbjIjeoqWPQE=;
-        b=e8w7MY7YyhTGNNvqe6dX0ZZbKbVLT9PC0uVUJIpOm+MVozlfyR7bVZ3YCd6Z3EqEXY
-         CrGD5paR9mXTGYdkuTKQfwTCSCJV3uXiZ/NpgeCDJqLNHYdUk+GnAn2PMaOx++iN7FVv
-         n4eMYgZZvHcYSs+f9is1KHeSLT518fAvwdiVa/Lt4tYRFXTMI8sVuyuJn4fDJ7GMUkjF
-         XRpK3I/SiLxVSlvNYJnDYgVxjN3T5evVG7wi38id8CQE4YsGCk1lPvDPFmRuGTf1asEN
-         GeBO7FN2cBF1eFuDPlKIKRN8CpG7CW0i9JTeBf47Yqki50u/+mKneNAZEUURfuoNcllS
-         mqgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748024781; x=1748629581;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eIVsk3ZBOpVpyi6iCyVjmqPgvnJwX8qqbjIjeoqWPQE=;
-        b=Jxclj3EulFu8bRb/wnosqqwlxBBZZ8yp6GRaGrMmntSsa4AT/wkY0Junt228v2GL8w
-         xsB6Qw20KDrH/SFboul1Rawgh+AscxzadQHoT4pmpCcvn+VCUzO0V0VF6MzwOYUWRIq9
-         MNHuGEhhg4x4X79O00DOjF14VNyf5hFe9rZKGiGNyL2P1fvf9PKIwyQ8XbSomuY/2gdN
-         gcfjyrjize0AibPTbzLVGERGj/HqoK/FRuAuOAsGIjbC27oQqPVXtWdHZoL+0RzBJGB0
-         nj2QOdQWhwKgsn6PZAqe2ZICELMpexepepJBbNZwJjtKL/+XbDlIi3GqAlQLpnVbKgw7
-         AtZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVgAcUr0oKf94Ab7je1eEVZZ8b0+V/Ux1LqfY51QjB5apAFpFWeIc3wsMUrKesDAyjq8BcBTDtr81xKM8zbyg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5UHNTVgitausqJj7hdlm1ILax00JKDvr5xOy1YyYokRC/9Ya6
-	Qkp1XxnDD0n6li6pWwU9wgh5ySeDfzRMbpBZRyFFDNqx11WVGmUECUa46rVQ8bCIA7kTTku4MvS
-	eerqns/cbXVGTud6IgA==
-X-Google-Smtp-Source: AGHT+IHTMFU6zphaK0VjoGf2O8qEZJ/Q9FuQYgLODKApHDtc9W29A2gMyzATSuySDpbxJU3+W2HrVpuONCDqvWU=
-X-Received: from wmbay36.prod.google.com ([2002:a05:600c:1e24:b0:43c:faa1:bb58])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:83ca:b0:442:f861:3536 with SMTP id 5b1f17b1804b1-44c7ac30196mr4983085e9.7.1748024781449;
- Fri, 23 May 2025 11:26:21 -0700 (PDT)
-Date: Fri, 23 May 2025 18:26:19 +0000
-In-Reply-To: <20250523125424.192843-3-lossin@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p/zpeqA8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0670CC4CEE4;
+	Sat, 24 May 2025 12:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748089533;
+	bh=yVYaerb/jU3BxcNZXp7iBv190F9MWlYXKuCoD8t8ycw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p/zpeqA8ezheaDjtuGcRTgNSB9q8hRQl4GYWED/+PHCIDWNW8mMbhLOsU43svDgGK
+	 F2IJlphinhn4HQhOZXnUOsc/x9qoL3Qw2WeKCgZbF09epyyhjC+SwmcKbz8MwlXz3c
+	 NCj5/+r2voKPPYQGub/B44mCzDB/HAJ1ttVET09SM0IeBNiaZiwzpn8T4c+1AwKzOD
+	 LBYggOiRy+m7e7fwOvAFnGjmI++y826u9thYInXB2e25zZa5B2LXM2sStYSbsfZH3x
+	 Ua/6LVSaTbKTwURmuZtTuLE7dCJ8RoJ1p2NogHJaWhqJ+LFCuNsAokDfWq666zniHU
+	 PYsyCVLHDHxDQ==
+Date: Sat, 24 May 2025 14:25:27 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+Message-ID: <aDG6t-HdZSuWyPGo@pollux.localdomain>
+References: <aCzzBT96ktapP03e@google.com>
+ <aC2HacSU7j5d9bzu@pollux>
+ <aC5XDi7SaDJeUaAC@google.com>
+ <aC7DVewqqWIKetmk@pollux>
+ <aC8uNmrLUSS8sxHU@google.com>
+ <2025052201-return-reprogram-add9@gregkh>
+ <aC9krUYJmJqu0xVR@cassiopeiae>
+ <2025052330-reverence-slideshow-d498@gregkh>
+ <aDBC__rflS8625Vb@cassiopeiae>
+ <aDCrufEjtJeGjO6z@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250523125424.192843-1-lossin@kernel.org> <20250523125424.192843-3-lossin@kernel.org>
-Message-ID: <aDC9y829vZZBzZ2p@google.com>
-Subject: Re: [PATCH 2/3] rust: pin-init: examples: pthread_mutex: disable the
- main test for miri
-From: Alice Ryhl <aliceryhl@google.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
-	Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aDCrufEjtJeGjO6z@google.com>
 
-On Fri, May 23, 2025 at 02:54:12PM +0200, Benno Lossin wrote:
-> From: Benno Lossin <benno.lossin@proton.me>
+On Fri, May 23, 2025 at 05:09:13PM +0000, Alice Ryhl wrote:
+> On Fri, May 23, 2025 at 11:42:23AM +0200, Danilo Krummrich wrote:
+> > The only thing I don't want to is to allow to leak files or directories, i.e.
+> > 
+> > 	File::new("bar_file", bar_dir).leak()
+> > 
+> > which keeps the file in the filesystem, but takes away the handle from the Rust
+> > side, such that it won't be removed from the filesystem anymore when the handle
+> > goes out of scope, which can cause nasty bugs. But I think there isn't any
+> > benefit to allow this anyways and it isn't needed with reference counting.
 > 
-> `miri` takes a long time to execute the test, so disable it.
-> 
-> Link: https://github.com/Rust-for-Linux/pin-init/pull/50/commits/e717a9eec85024c11e79e8bd9dcb664ad0de8f94
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
+> Why not have leak() for files only? That way, the files still go away
+> when you drop the directory, and you don't have to keep around a bunch
+> of File objects in your Rust structs.
 
-I usually recommend ignoring tests rather than cfg'ing them out
-entirely.
+In a previous mail I said that there are more reasons why we don't want to have
+files (or directories) in the filesystem without an object representation in
+Rust.
 
-#[cfg_attr(miri, ignore)]
+One of them is when attaching private data to a file, like we do with
+debugfs_create_file().
+
+When we do this, in most of the cases we want to share data between a driver
+structure and the debugfs file (e.g. a GPU's VM to dump the virtual address
+space layout).
+
+And most likely we do this by passing an Arc<T> to dir.file(), to make the file
+own a reference to the corresponding reference counted object (in C we just hope
+that no one frees the object while the debugfs file holds a pointer to it).
+
+The question is, what happens to this reference if we would subsequently call
+file.leak()? We can't drop the Arc, because otherwise we risk a UAF in the
+filesystem callback, but we can't keep it either because otherwise we *really*
+leak this reference, even if the parent directory is removed eventually.
+
+--
+
+Now, one could say, what about attaching the file's private data to the directory
+instead? (And I think this has been proposed already elsewhere.)
+
+But I really don't like this approach, because it would mean that when creating
+the directory we would necessarily need to know all the files we will ever
+create in this directory *and* have all the corresponding private data
+available at this point of time. But that would be an insane requirement.
+
+For instance, let's assume a driver creates a directory 'clients', which for
+every connected userspace "client" wants to provide a file with some metadata
+for this client.
+
+Sure, you can work around this somehow, e.g. by using a mutex protected Vec as
+private data or by always creating a new directory first for dynamically created
+debugfs entires. But this sounds pretty horrible to me.
