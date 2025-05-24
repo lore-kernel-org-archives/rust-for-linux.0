@@ -1,119 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50D12628D;
-	Sat, 24 May 2025 12:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0049D64D;
+	Sat, 24 May 2025 14:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748089534; cv=none; b=qhLUh39yqcqQOzBVGu5yhWgQ61kXxDYyH1mjrpdHy+eHtqw22R0TNlfLwJJ8s6neTm5WDKVN8+IiJc+gmie7ftIzQrVC9lKX+7Au0a4I3P26idauCDVGui+bCooOEVem/EUUMM6DHhA7NqXRrUgR1HrzDaqKaPGrBLIEUNXNuMo=
+	t=1748096289; cv=none; b=i7OLdMW9/nvHUU6UZyrDdIntxiV9BAA7q5ucjm5hVxNyj61ZXwcYPBXC91aiw2Ug3LxhEpkBj7tExq+S+SLSTWqyqrRKRFRbu6k3SAyCxVyUgxLpu78/WGCvsem3CJnedyR7mjqBB+eJd9HrFPUejtVvHbARKxar0Ml+2UPKigo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748089534; c=relaxed/simple;
-	bh=yVYaerb/jU3BxcNZXp7iBv190F9MWlYXKuCoD8t8ycw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u15BA6yd8r5+IIC8GkKbe5Urj/SG/LbmE8Qdy1N4pejJwZPGuhIVuiJk1Swtf4TVOf8sr8fB4UHpKZnOTKDJWtGVR5Nvh9dkDYFgYifXJh1n8g4JS2ywcrzZgCEmbxCTyeVGw2IpkWhCYdnUZBtHjxLGCultGG6kJqtRRMDpis4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p/zpeqA8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748096289; c=relaxed/simple;
+	bh=QEyX9mg5w42738RO8LaL5c9rCGcjqtBlllc5NNb2u5c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fpnGZKql54AorBEV5tzsLE7q63e/n78Q651e92VJabQogYzBvH8DukpwjFlgVj2tT+RVwu0SRTWy9GCyaXBWJR9flr4QEO0b5d3yPCnMGG2YaaMiR8Nj/R+Y+DvYfJwlDLmKwHeZaCQa+gLxHWgEqyBOVXFieWSoB1kvga8SHcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONIgFe8s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p/zpeqA8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0670CC4CEE4;
-	Sat, 24 May 2025 12:25:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONIgFe8s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20E7C4CEE4;
+	Sat, 24 May 2025 14:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748089533;
-	bh=yVYaerb/jU3BxcNZXp7iBv190F9MWlYXKuCoD8t8ycw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p/zpeqA8ezheaDjtuGcRTgNSB9q8hRQl4GYWED/+PHCIDWNW8mMbhLOsU43svDgGK
-	 F2IJlphinhn4HQhOZXnUOsc/x9qoL3Qw2WeKCgZbF09epyyhjC+SwmcKbz8MwlXz3c
-	 NCj5/+r2voKPPYQGub/B44mCzDB/HAJ1ttVET09SM0IeBNiaZiwzpn8T4c+1AwKzOD
-	 LBYggOiRy+m7e7fwOvAFnGjmI++y826u9thYInXB2e25zZa5B2LXM2sStYSbsfZH3x
-	 Ua/6LVSaTbKTwURmuZtTuLE7dCJ8RoJ1p2NogHJaWhqJ+LFCuNsAokDfWq666zniHU
-	 PYsyCVLHDHxDQ==
-Date: Sat, 24 May 2025 14:25:27 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-Message-ID: <aDG6t-HdZSuWyPGo@pollux.localdomain>
-References: <aCzzBT96ktapP03e@google.com>
- <aC2HacSU7j5d9bzu@pollux>
- <aC5XDi7SaDJeUaAC@google.com>
- <aC7DVewqqWIKetmk@pollux>
- <aC8uNmrLUSS8sxHU@google.com>
- <2025052201-return-reprogram-add9@gregkh>
- <aC9krUYJmJqu0xVR@cassiopeiae>
- <2025052330-reverence-slideshow-d498@gregkh>
- <aDBC__rflS8625Vb@cassiopeiae>
- <aDCrufEjtJeGjO6z@google.com>
+	s=k20201202; t=1748096288;
+	bh=QEyX9mg5w42738RO8LaL5c9rCGcjqtBlllc5NNb2u5c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ONIgFe8sB8bsYRmB/1y3leRkjbjdTF5z/xKv25ze0jpIzusSHNAULE3xadda+DNgs
+	 E9FoyaY1xn+a18Mgqr9uglgbOqzAxxfPVhr9E4F4cIZpRTVRdWWdLWZrX2mYHeuEHU
+	 Jr+ZS9fcxjECEKN1e+hlEqsr1Cg1KA0FjJAwY0N1jdFpe3QWfW/Ppz0pS5Pg0zSa3r
+	 PxwsNqrjb6RYuwD6DvEQ2wTjJmKUS4fDen5MyXeU+h8qDjoorIjuELAD8b8BtgfWu2
+	 8jhHcnGowGlaeKSciQ+Ef7LWUb1sJVS0SsGV5jfIbsE16MBSOd7hj5uyok1dQB2+o6
+	 YFVPBRy7zf/Gw==
+Message-ID: <9791eb90-95f6-43c7-93cd-1fe94b7128f3@kernel.org>
+Date: Sat, 24 May 2025 16:18:03 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aDCrufEjtJeGjO6z@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] rust: clean and enable Clippy `doc_markdown` lint
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, Rob Herring
+ <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+ Miguel Ojeda <ojeda@kernel.org>
+References: <20250324210359.1199574-1-ojeda@kernel.org>
+ <CANiq72mBHcsCpn1ZJRJ9Qa-Ass1MsoKdKcFpiFF7hNwyOXjAOA@mail.gmail.com>
+Content-Language: en-US
+From: Danilo Krummrich <dakr@kernel.org>
+In-Reply-To: <CANiq72mBHcsCpn1ZJRJ9Qa-Ass1MsoKdKcFpiFF7hNwyOXjAOA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 23, 2025 at 05:09:13PM +0000, Alice Ryhl wrote:
-> On Fri, May 23, 2025 at 11:42:23AM +0200, Danilo Krummrich wrote:
-> > The only thing I don't want to is to allow to leak files or directories, i.e.
-> > 
-> > 	File::new("bar_file", bar_dir).leak()
-> > 
-> > which keeps the file in the filesystem, but takes away the handle from the Rust
-> > side, such that it won't be removed from the filesystem anymore when the handle
-> > goes out of scope, which can cause nasty bugs. But I think there isn't any
-> > benefit to allow this anyways and it isn't needed with reference counting.
+On 21.05.2025 16:01, Miguel Ojeda wrote:
+> On Mon, Mar 24, 2025 at 10:04 PM Miguel Ojeda <ojeda@kernel.org> wrote:
+>>
+>>   rust: alloc: add missing Markdown code spans
+>>   rust: alloc: add missing Markdown code span
+>>   rust: dma: add missing Markdown code span
+>>   rust: of: add missing Markdown code span
+>>   rust: pci: fix docs related to missing Markdown code spans
+>>   rust: platform: fix docs related to missing Markdown code spans
+>>   rust: task: add missing Markdown code spans and intra-doc links
 > 
-> Why not have leak() for files only? That way, the files still go away
-> when you drop the directory, and you don't have to keep around a bunch
-> of File objects in your Rust structs.
+> Abdiel, Danilo, Rob, Saravana, Greg, Rafael: anything against me
+> picking these ones up?
 
-In a previous mail I said that there are more reasons why we don't want to have
-files (or directories) in the filesystem without an object representation in
-Rust.
-
-One of them is when attaching private data to a file, like we do with
-debugfs_create_file().
-
-When we do this, in most of the cases we want to share data between a driver
-structure and the debugfs file (e.g. a GPU's VM to dump the virtual address
-space layout).
-
-And most likely we do this by passing an Arc<T> to dir.file(), to make the file
-own a reference to the corresponding reference counted object (in C we just hope
-that no one frees the object while the debugfs file holds a pointer to it).
-
-The question is, what happens to this reference if we would subsequently call
-file.leak()? We can't drop the Arc, because otherwise we risk a UAF in the
-filesystem callback, but we can't keep it either because otherwise we *really*
-leak this reference, even if the parent directory is removed eventually.
-
---
-
-Now, one could say, what about attaching the file's private data to the directory
-instead? (And I think this has been proposed already elsewhere.)
-
-But I really don't like this approach, because it would mean that when creating
-the directory we would necessarily need to know all the files we will ever
-create in this directory *and* have all the corresponding private data
-available at this point of time. But that would be an insane requirement.
-
-For instance, let's assume a driver creates a directory 'clients', which for
-every connected userspace "client" wants to provide a file with some metadata
-for this client.
-
-Sure, you can work around this somehow, e.g. by using a mutex protected Vec as
-private data or by always creating a new directory first for dynamically created
-debugfs entires. But this sounds pretty horrible to me.
+Acked-by: Danilo Krummrich <dakr@kernel.org>
