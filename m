@@ -1,73 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0049D64D;
-	Sat, 24 May 2025 14:18:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C241C8639;
+	Sat, 24 May 2025 19:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748096289; cv=none; b=i7OLdMW9/nvHUU6UZyrDdIntxiV9BAA7q5ucjm5hVxNyj61ZXwcYPBXC91aiw2Ug3LxhEpkBj7tExq+S+SLSTWqyqrRKRFRbu6k3SAyCxVyUgxLpu78/WGCvsem3CJnedyR7mjqBB+eJd9HrFPUejtVvHbARKxar0Ml+2UPKigo=
+	t=1748114579; cv=none; b=sIrGcuQKEHinHDach7uzFVLPcUrrIcwKpDHOmAhHU8ffcwMWp8g1TeJhoVsLCXlqxW4W5TyiRFWaMOCt16sxL9a8X88UTdZilLqvHngUdvOtQq0CGPCb+d5TTBCp/mceipPxg8ryfZuRi29Qcm0gjt1GCy+HuN1wVyrX3sUxMvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748096289; c=relaxed/simple;
-	bh=QEyX9mg5w42738RO8LaL5c9rCGcjqtBlllc5NNb2u5c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fpnGZKql54AorBEV5tzsLE7q63e/n78Q651e92VJabQogYzBvH8DukpwjFlgVj2tT+RVwu0SRTWy9GCyaXBWJR9flr4QEO0b5d3yPCnMGG2YaaMiR8Nj/R+Y+DvYfJwlDLmKwHeZaCQa+gLxHWgEqyBOVXFieWSoB1kvga8SHcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONIgFe8s; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONIgFe8s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20E7C4CEE4;
-	Sat, 24 May 2025 14:18:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748096288;
-	bh=QEyX9mg5w42738RO8LaL5c9rCGcjqtBlllc5NNb2u5c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ONIgFe8sB8bsYRmB/1y3leRkjbjdTF5z/xKv25ze0jpIzusSHNAULE3xadda+DNgs
-	 E9FoyaY1xn+a18Mgqr9uglgbOqzAxxfPVhr9E4F4cIZpRTVRdWWdLWZrX2mYHeuEHU
-	 Jr+ZS9fcxjECEKN1e+hlEqsr1Cg1KA0FjJAwY0N1jdFpe3QWfW/Ppz0pS5Pg0zSa3r
-	 PxwsNqrjb6RYuwD6DvEQ2wTjJmKUS4fDen5MyXeU+h8qDjoorIjuELAD8b8BtgfWu2
-	 8jhHcnGowGlaeKSciQ+Ef7LWUb1sJVS0SsGV5jfIbsE16MBSOd7hj5uyok1dQB2+o6
-	 YFVPBRy7zf/Gw==
-Message-ID: <9791eb90-95f6-43c7-93cd-1fe94b7128f3@kernel.org>
-Date: Sat, 24 May 2025 16:18:03 +0200
+	s=arc-20240116; t=1748114579; c=relaxed/simple;
+	bh=3Xim4n6OyByGG3+RW3974WHdRFFfL58AY5dMLyB6t08=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OSukkJ18OrWTvQXRVf3Hlg+ulh20zl7MhAgSUT+TMOluK2vjP05xQs79ZimiRl2XEbUcloVqTzbHkZEXQor4I/nKZVRUTYXivakKXIxt8JHOXJ1mDHkpfHm5oW8Gjaqu/IG2LZiXDy1eQo31ZzhLfQeO9MEYl219MzPF8AxFTNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4b4X3y2lpDz9sQ5;
+	Sat, 24 May 2025 21:22:54 +0200 (CEST)
+From: Remo Senekowitsch <remo@buenzli.dev>
+To: Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Remo Senekowitsch <remo@buenzli.dev>
+Cc: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v6 3/9] rust: device: Add property_present() to FwNode
+Date: Sat, 24 May 2025 21:22:26 +0200
+Message-ID: <20250524192232.705860-4-remo@buenzli.dev>
+In-Reply-To: <20250524192232.705860-1-remo@buenzli.dev>
+References: <20250524192232.705860-1-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/10] rust: clean and enable Clippy `doc_markdown` lint
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, Rob Herring
- <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev,
- Miguel Ojeda <ojeda@kernel.org>
-References: <20250324210359.1199574-1-ojeda@kernel.org>
- <CANiq72mBHcsCpn1ZJRJ9Qa-Ass1MsoKdKcFpiFF7hNwyOXjAOA@mail.gmail.com>
-Content-Language: en-US
-From: Danilo Krummrich <dakr@kernel.org>
-In-Reply-To: <CANiq72mBHcsCpn1ZJRJ9Qa-Ass1MsoKdKcFpiFF7hNwyOXjAOA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 21.05.2025 16:01, Miguel Ojeda wrote:
-> On Mon, Mar 24, 2025 at 10:04 PM Miguel Ojeda <ojeda@kernel.org> wrote:
->>
->>   rust: alloc: add missing Markdown code spans
->>   rust: alloc: add missing Markdown code span
->>   rust: dma: add missing Markdown code span
->>   rust: of: add missing Markdown code span
->>   rust: pci: fix docs related to missing Markdown code spans
->>   rust: platform: fix docs related to missing Markdown code spans
->>   rust: task: add missing Markdown code spans and intra-doc links
-> 
-> Abdiel, Danilo, Rob, Saravana, Greg, Rafael: anything against me
-> picking these ones up?
+The new FwNode abstraction will be used for accessing all device
+properties, so it must have the property_present method.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+It's possible to duplicate the methods on the device itself, but since
+some of the methods on Device would have different type sigatures as
+the ones on FwNode, this would only lead to inconsistency and confusion.
+So, in the future, property_perent will be removed from Device. However,
+there's a user about to be merged, so the method is left to make merging
+easier.
+
+Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+---
+ rust/kernel/device/property.rs | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
+index ca525ed0e8e8f..71a0605b8ecad 100644
+--- a/rust/kernel/device/property.rs
++++ b/rust/kernel/device/property.rs
+@@ -6,7 +6,7 @@
+ 
+ use core::ptr;
+ 
+-use crate::{bindings, types::Opaque};
++use crate::{bindings, str::CStr, types::Opaque};
+ 
+ /// A reference-counted fwnode_handle.
+ ///
+@@ -31,6 +31,12 @@ impl FwNode {
+     pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
+         self.0.get()
+     }
++
++    /// Checks if property is present or not.
++    pub fn property_present(&self, name: &CStr) -> bool {
++        // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
++        unsafe { bindings::fwnode_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
++    }
+ }
+ 
+ // SAFETY: Instances of `FwNode` are always reference-counted.
+-- 
+2.49.0
+
