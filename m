@@ -1,114 +1,145 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92418146D6A
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 14:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED7B146A72
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 14:22:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748268153; cv=none; b=kSAXk65ZBf4YVlLZYnw7VlAgJCsUGGOZXdHQK1G285QcswHHSPr9Iw1OTbNOt/bZIEB/llWIGL+i1hbhSMWuQbR5RcQspB+3huEFCwm+6/fvitiamP24q2akympOs7HhzYtS+TSPDuFhrbXMaiPGweG8vnDB0Fp+wR/37ZRPcb0=
+	t=1748269365; cv=none; b=LPJqz5WW1G4usNC8bfp7HOh+UZanwHFeiaqGac8HxAlGrzCTBsKzYR21av21ARElLaTrpur60oz41n7sx5gNEfgpAMeLt04TJX74SI2sp5pKyPOGlZ2upmI+Rqfqd/6BL0ZxuJ3CXjKYAWfyRAKc/h8X9iIosZLYtuyi2EhtyMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748268153; c=relaxed/simple;
-	bh=1FPYTLYFolCPqa4UiErcCX9Vk38FXUDWIxtP75x1kQ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=igM11tcWpOeFNvQhVPU8NJUXqElq2QbkRkijOae4tJkSjvDQOV6eMfbVtnGQCErxQ5PDy9h5OdICOToxq974bZUkmm87nDo5VBcych/NBYLxoz6Ru/a6xcKYbR75p1wSMgfnXKGtkTnXgOFQfaQ2sYNzllY2h6w6/7twm5SXhxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=LncjDDat; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1748269365; c=relaxed/simple;
+	bh=ozdZCu4sbeFf0TUaBG2zQu930/uOGL2LDeITT9iP378=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GS89H1tDg7mvrML5aFbMKc+qlbtniau3iUhpSaidtSn3keX/A+m+dPVaiDwFlxdKlsQHm8IlqfbpTgqIcuLJuVycZXKkWmIgZoYI9qPj4BxbEe1blOIbTGpGu1itdugqAXZobGIfnzEeDxVpnYNsuyFo0znUx96mSREnfebVhdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CbMxnNXp; arc=none smtp.client-ip=209.85.160.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="LncjDDat"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250526140229euoutp012f1bd8c833b1e0cb25b423cb0e09f8fa~DGJ6Z-NNc0491704917euoutp01G
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 14:02:29 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250526140229euoutp012f1bd8c833b1e0cb25b423cb0e09f8fa~DGJ6Z-NNc0491704917euoutp01G
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1748268149;
-	bh=X9hidhnbjeXr79/7hjWdiP66/YfJFrDGrP9fti1zI8k=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=LncjDDatBDAFyd8dSMOXhSUWNzHT/wRYhIls3esbaJZnr9ufGHCuIeBUqXlzPNEAn
-	 3yRKkT6HOjdP0cSwXC6CW+HiLrwjwQ3sgaPFtLfKxXVvJTiPOmoItgIt/Ep0dyYhTH
-	 +zvLkck0VJPtip1ZELVDgfYh7qfus1bqVVLUqPUk=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250526140229eucas1p29ab92fba79975fb3f6f5d3f9831f9da6~DGJ5v-bu92582525825eucas1p2e;
-	Mon, 26 May 2025 14:02:29 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250526140227eusmtip1fc55917f132ab805ce6dd5cdab5f4fe9~DGJ4sSGgu1355013550eusmtip1C;
-	Mon, 26 May 2025 14:02:27 +0000 (GMT)
-Message-ID: <fec3e2d8-592a-4474-9a15-3a196829c9f6@samsung.com>
-Date: Mon, 26 May 2025 16:02:27 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CbMxnNXp"
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2e3e58edab5so727929fac.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 07:22:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748269362; x=1748874162; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ozdZCu4sbeFf0TUaBG2zQu930/uOGL2LDeITT9iP378=;
+        b=CbMxnNXpdH7dcuT163alnLe+DLlw9R0OWw1VSkPj3/lZcaEPAdUX+K2zMLv9+6wgy8
+         CJvLuCs6msm0CL4MYeEfiyq6fxoM7/dQa7ueXtHGffoLLLCmnGpL7bfDSLnYGQqNWyxi
+         4IUzqqF49IoS3OeK/cm+uRANpljL5VyoAaNW02z8cqFilm62ivL+/A2mlz+zt9LVL7A+
+         CSZ17Q5iAJ4vup2jJMic+W19M7zf6s9AIgYozGiQn2j6meSIBglgbqYsyqpXtvofMH00
+         /0WB8AmwKkJVhxNQqIwDyN+KjROGKIUIHJj09w4goMQMlCCoQqyt+gum6TI6FvYoZ+XP
+         fnmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748269362; x=1748874162;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ozdZCu4sbeFf0TUaBG2zQu930/uOGL2LDeITT9iP378=;
+        b=ncjSIEJRYqiQD0PqetYEuow+eZSn/6/FuY483GtucHCNv7Vvj5SedUN6ns4tSIydk3
+         mbDLYpbSvI92auxQzQMD+YMpBpoKFg5+ongj+HjZJG7qgPy9vJQzuTjzR4cOv6Tt7WuN
+         tSnlwktpVMjsCr1TAlutv7gI/8APsnOsXODRk0WBqLaUbiC2vg5yqMWVX5VYBc36+IRV
+         qJr18To3f8EF9hyuHFEN9tdW+WvkBojjxB3qQ7KrJ6gkrcitMTPkYQx6vTWwamZBj0g1
+         WANPPV/mPcR39xtKZN8SsaCxcrdvpSRt1hktXSGvHD8QRb5S/JTMfarh/vKFTCaTCz2j
+         8bSg==
+X-Forwarded-Encrypted: i=1; AJvYcCXpQtVSKbrN48uVQUpBhVR/eNzUYOMGqJfR/9U8gnv592SyFVdqzWABhIQ0nkvPy+pNKlp8VcPVA3fRnU/iaA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzxr/6G8ev75qOw5EP/w4XO7yzEYlfBZxGsm9Psx9h0W/TW4Xlm
+	ettWZrpBO3l/2RK99t5CwRxxNBk2RuQ/c/68bSHQqzVeM2cTtcmK0NppaymzurQYVKQGNAZteZs
+	OTcPtAgQ1Gp64IxeRRQYLxgsF/VqGLMkyqMwRuRJv
+X-Gm-Gg: ASbGncub8Nod9siZNT2vfno0gWsz6KNqwruPxgqQ4EwLHJfratTyyMvS7/09fEgey5Q
+	lUwMPNmq9Yg7NxciSHozDPoga9c+1Jvd5YZqlxCOXOIVvUFp2zl1Sz0WHaxtwdsj62mOyF4PXsq
+	SUOgEu6Xt/IrejkA68JnzfzjRo658Peqb/KYP0qt79myVZstxA8AQaXoxQOUBx/j1ZzHaoqqIlI
+	Q==
+X-Google-Smtp-Source: AGHT+IGgbU7dY/aYiuMiK0TQSXjmB1sIYr/LZnn+GBvw6EcrTaqiOABq0t//pFIO8AAy4IdCBf27PJqhqe3BHFJ+79Y=
+X-Received: by 2002:a05:6870:8894:b0:2d4:d07c:7cb2 with SMTP id
+ 586e51a60fabf-2e861e5ef24mr4321746fac.11.1748269362074; Mon, 26 May 2025
+ 07:22:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 1/6] rust: Add basic PWM abstractions
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
-	Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
-	Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>, Guo Ren
-	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
-	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
-	Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <enxctdseecqz765nmd24vziiaksmyhltqfwycdszmfq3s7orjm@lnpc7czuluis>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250526140229eucas1p29ab92fba79975fb3f6f5d3f9831f9da6
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250524211520eucas1p1378fbab27f4b1ae8808706c074fa217c
-X-EPHeader: CA
-X-CMS-RootMailID: 20250524211520eucas1p1378fbab27f4b1ae8808706c074fa217c
-References: <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
-	<CGME20250524211520eucas1p1378fbab27f4b1ae8808706c074fa217c@eucas1p1.samsung.com>
-	<20250524-rust-next-pwm-working-fan-for-sending-v1-1-bdd2d5094ff7@samsung.com>
-	<enxctdseecqz765nmd24vziiaksmyhltqfwycdszmfq3s7orjm@lnpc7czuluis>
+References: <20250519161712.2609395-1-bqe@google.com> <20250519161712.2609395-6-bqe@google.com>
+ <CAG48ez2WdxXVCzVsAPeQWgso3ZBQS_Xm+9D1FLBx6UHFV1bGHQ@mail.gmail.com>
+ <682bc528.c80a0220.13f632.9ec0@mx.google.com> <aCvTYHMtuWZZizn9@yury>
+ <aC1PQ7tmcqMSmbHc@google.com> <aC3aOHWEGzjjDNgb@yury>
+In-Reply-To: <aC3aOHWEGzjjDNgb@yury>
+From: Burak Emir <bqe@google.com>
+Date: Mon, 26 May 2025 16:22:29 +0200
+X-Gm-Features: AX0GCFtaK59XKWVw-zjdUPgLjtmA8XtEQrH2zT15JLsncpG05JyCsu31b_JxoI8
+Message-ID: <CACQBu=XmC-9OHSHv_9KP88HpV3Ei83gmNmy-B8DAfbtipKmyLQ@mail.gmail.com>
+Subject: Re: [PATCH v8 5/5] rust: add dynamic ID pool abstraction for bitmap
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Carlos Llamas <cmllamas@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Jann Horn <jannh@google.com>, Kees Cook <kees@kernel.org>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, May 21, 2025 at 3:50=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
+rote:
+>
+> On Wed, May 21, 2025 at 03:57:55AM +0000, Carlos Llamas wrote:
+> > On Mon, May 19, 2025 at 08:57:04PM -0400, Yury Norov wrote:
+> > > + Carlos Llamas
+>
+> ...
+>
+> > > Carlos, can you please elaborate your motivation to switch to bitmaps=
+?
+> > > Have you considered rb-trees with O(logn) lookup?
+> >
+> > Yeah, we tried rb-trees. There was even a patch that implemented the
+> > augmented logic. See this:
+> > https://lore.kernel.org/all/20240917030203.286-1-ebpqwerty472123@gmail.=
+com/
+> > IIRC, it just didn't make sense for our use case because of the extra
+> > memory bytes required for this solution. The performance ended up being
+> > the same (from my local testing).
+> >
+> > I'm not certain of this but one potential factor is that the rb nodes
+> > are in-strucutre members allocated separately. This can lead to more
+> > cache misses when traversing them. I don't know how applicable this
+> > would be for the Rust implementation though. Take that with a grain of
+> > salt as I didn't actually look super close while running the tests.
+> >
+> > I would also note, this whole logic wouldn't be required if userspace
+> > wasn't using these descriptor IDs as vector indexes. At some point this
+> > practice will be fixed and we can remove the "dbitmap" implementation.
+>
+> Yeah, I expected to get this kind of feedback from real-world testing.
+> Your reply to the patch you mentioned above answers all my questions:
+>
+> https://lore.kernel.org/all/ZwdWe_I2p3zD-v1O@google.com/
+>
+> Let's stick to bitmaps unless someone shows clear benefit of using any
+> alternative approach, both in time and memory perspectives, supported
+> by testing.
 
+Thanks all for the additional context.
 
-On 5/26/25 09:53, Uwe Kleine-König wrote:
-> Hello Michal,
-> 
-> On Sat, May 24, 2025 at 11:14:55PM +0200, Michal Wilczynski wrote:
->> Introduce initial Rust abstractions for the Linux PWM subsystem. These
->> abstractions provide safe wrappers around the core C data structures and
->> functions, enabling the development of PWM chip drivers in Rust.
-> 
-> Oh wow, thanks for rustifying PWM. That might be my chance to actually
-> learn Rust.
-> 
-> I don't know when I will find the time to look into that in detail but
-> one thing I'd like to have for Rust support is that the drivers use the
-> new abstraction (i.e. .round_waveform_tohw() + .round_waveform_fromhw()
-> + .read_waveform() + .write_waveform()) instead of the older .apply()
-> callback.
+Yury, I've addressed most of the comments.
 
-Hi Uwe,
+You also commented on the API. The weirdness of the API is all due to
+the separating "request to shrink/grow" from allocation.
+Since allocation can happen while other threads may mess with the id
+pool, one has to double check that the request to shrink/grow still
+makes sense.
+Dealing with this situation is required in the Android binder context
+where this ID pool is used, my understanding is that one cannot
+allocate there while holding the spinlock.
 
-Thanks for the valuable feedback. You're right, building on the newer
-waveform abstractions is a correct approach.
+In the next version, I have renamed the operations to make this a bit
+clearer, and made the comments a bit more explicit.
+If it's ok, let's move the discussion to v9 that I will send in a
+moment, I hope it clears things up a bit.
 
-I'll rework the patches to use .round_waveform_tohw(),
-.round_waveform_fromhw(), .read_waveform(), and .write_waveform() as you
-suggested, instead of the .apply() callback.
-
-I appreciate you steering me in the right direction.
-
-> 
-> Best regards
-> Uwe
-
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+Thanks.
+Burak
