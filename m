@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BF61BF33F;
-	Mon, 26 May 2025 19:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B0F5661
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 20:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748286071; cv=none; b=Nf+lhFprVUn7iyZw5LxFNYsamLk5VWJ/hDoiphDHFoj9DOT/vr4AhQnughyYoOa0vND+TAiO7VUSyqrS06zJB+tODF33UxQf9lekdF+IgPTBOjx66lDXt9+q2JzdbNKJvNfYZ49ZwLCJeVqlhrtoEU4x+b4EJgFcUkhv9hUqXVU=
+	t=1748291292; cv=none; b=nQBeBQ6gOtVG36BpAnE6kI9yN4Tjw9r7oxMW0XlRaAk5ZGF21pt44LRLVA5ZiWtH5Efse/VUT8sRr22F44XbH4+ER8xv+Iqa6fmDiaWoaWNqXcd3Ed4GA/hVhIyGnjU3gObPzH1MIS9uZNl1rInbE5AAEhPZ19NqZ5AQWwGBtz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748286071; c=relaxed/simple;
-	bh=3BkYDdh9GKMYYq2NtRGYfetcMgFlCuh7mXjigTbK44Q=;
+	s=arc-20240116; t=1748291292; c=relaxed/simple;
+	bh=9Ciinazl2kdQ2MEg9td4Iu/bpFfu0Wstt1SrBAOcgng=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=I2TI6WTy2FN0RCgxGrXFVT/VD/RQhafP/EWdSwPYH7tSYc3cUshIOahhzgKt0wrL2RDHCZoS3whr/NTA7jkoy4Gz+HaQMJRl/6tBx9RkhhDp+yIEcV0rrAbatqlr+P6RYNXQ7BbL0QceQzfOtOKKz4o6baWZS2AH15/e0fceg2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K303g54/; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=jKQoeAWmzXRsLHS3rud4PGDSSvvSZsZPKxQen4ZZ+1nSk2gOCbS1as5Pyn967M5VnZAo/iXh20OexMUw50ofMdYRs4ZmQ7jh9EfnbZG+t1STNbT9nAVceHABG56YyuF9aULmf+7kCh5wyNDk/ZX0t5UYuq33B93RTFaxns7yRu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lx6nGoLW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K303g54/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E8DC4CEE7;
-	Mon, 26 May 2025 19:01:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lx6nGoLW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38201C4CEE7;
+	Mon, 26 May 2025 20:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748286071;
-	bh=3BkYDdh9GKMYYq2NtRGYfetcMgFlCuh7mXjigTbK44Q=;
+	s=k20201202; t=1748291291;
+	bh=9Ciinazl2kdQ2MEg9td4Iu/bpFfu0Wstt1SrBAOcgng=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=K303g54/jNRRpFlR3QCjTUOq/RMGjfOJz11DSNnR+2fWmXGaQ3oK6Z4MzA3uAZtP9
-	 AR+1BRxBwmxt7yZ/jBnIejM6Pg3mwGrnQg4YcSbOSxculPSc1HBiVsw2ODYSRAypDZ
-	 HPZ/anQLqzH40D78OXOXsZMJAlGjoxQ/Z4iRPHGAyMVmKA5WB0nLgvGOTQ/lPLtkk9
-	 3xAJswcn+B0zHnVy3dm/R6TVZ6ddo28cXvglokhsgPRJ6XnFwM1vYLuy5nPqKEU4oL
-	 7KCGzxwswotHqWvN53ujt8g5npVL1HLUHWiqbOl2eTBDUcjY6F4i2LC/HTdiyxMQhy
-	 p8BMlVvk88j0Q==
+	b=Lx6nGoLWxoY62urzEi5doswcHLOAAbFaxecNkJhlhIp0cvtQlThHpkzB0WVxYMpji
+	 WK8YVEqpnNn8TLLFA3nRqVTG2xs4bi3sEU5tvaucRCqPMs9pj1g8sha36Tboj7Mk6+
+	 cCaQU/vS7Qsu8lWCPu2KYjfUH5nT/ctqpk9GEn+XrC6EVOBeF9+mV/GpiXYCq1WDVk
+	 EQO+4rs7aYVHmIyTKnzLg/W3z4s+8YDbvJAUaPksVbT82vZC+hxhB5iw8r+g6PpWDV
+	 YVLwi3RSsN/YFhjNZPv+FaNBiPvivUsaEsLwYKrALSxsYiz3A3s7SlMKmDdnvAiGtm
+	 O4PDAU81Bym1w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,53 +34,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 May 2025 21:01:06 +0200
-Message-Id: <DA6BORD02WHT.19D9226XGI6GA@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
- "Xiangfei Ding" <dingxiangfei2009@gmail.com>, <stable@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: list: fix path of `assert_pinned!`
+Date: Mon, 26 May 2025 22:28:08 +0200
+Message-Id: <DA6DJEG780UH.3FURKORQ8OY6U@kernel.org>
+Cc: "Albin Babu Varghese" <albinbabuvarghese20@gmail.com>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [[PATCH]] rust/list: replace unwrap() with ? in doctest
+ examples
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
 X-Mailer: aerc 0.20.1
-References: <20250525173450.853413-1-lossin@kernel.org>
- <CANiq72=G5w4D=c4U0KEQnRcy7vmARbWovmJwO3+vkyhixFinjw@mail.gmail.com>
-In-Reply-To: <CANiq72=G5w4D=c4U0KEQnRcy7vmARbWovmJwO3+vkyhixFinjw@mail.gmail.com>
+References: <20250525225925.14797-1-albinbabuvarghese20@gmail.com>
+ <DA5Y0QPY52WJ.DFA7YNSN2B2M@kernel.org>
+ <CANiq72nNX++eUKAHYvxMvEeHy6cfDP98cteVAgM7RuQH5hDkVg@mail.gmail.com>
+In-Reply-To: <CANiq72nNX++eUKAHYvxMvEeHy6cfDP98cteVAgM7RuQH5hDkVg@mail.gmail.com>
 
-On Mon May 26, 2025 at 8:46 PM CEST, Miguel Ojeda wrote:
-> On Sun, May 25, 2025 at 7:34=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
-wrote:
+On Mon May 26, 2025 at 12:33 PM CEST, Miguel Ojeda wrote:
+> On Mon, May 26, 2025 at 10:18=E2=80=AFAM Benno Lossin <lossin@kernel.org>=
+ wrote:
 >>
->> Commit dbd5058ba60c ("rust: make pin-init its own crate") moved all
->> items from pin-init into the pin-init crate, including the
->> `assert_pinned!` macro.
->>
->> Thus fix the path.
->>
->> This occurrence was missed in that commit, since it has no current
->> users, although binder does.
->>
->> Cc: stable@kernel.org # I haven't found the commit in stable yet, but ju=
-st to be sure.
->> Fixes: dbd5058ba60c ("rust: make pin-init its own crate")
->> Signed-off-by: Benno Lossin <lossin@kernel.org>
+>> The changes themselves look good, if we want to use the `ok_or` + error
+>> combination. I haven't thought about this, so there might be something
+>> better here, but it already is an improvement over the previous one.
 >
-> Applied to `rust-next` -- thanks!
->
->     [ Reworded slightly as discussed in the list. - Miguel ]
->
-> The commit is in v6.15 (rather than just in e.g. rust-next), so it
-> should indeed have the Cc: stable (I removed the suffix).
+> Yeah, I thought if perhaps we could have a better method (extension
+> trait) for these cases, at least for unit tests. On the other hand, if
+> it is just for unit tests, we are back at using something that is not
+> "real code", which is what triggered this patch (but at least it would
+> not panic).
 
-Yes, at the time of writing the commit, I hadn't pulled from Linus'
-tree & the stable trees.
-
-Thanks!
+Having thought about this more, I think this is fine. I don't know which
+extension function we would add to make this nicer.
 
 ---
 Cheers,
