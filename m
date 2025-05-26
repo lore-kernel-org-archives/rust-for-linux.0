@@ -1,109 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88301F4180;
-	Mon, 26 May 2025 11:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3431FA14E;
+	Mon, 26 May 2025 11:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748257751; cv=none; b=nJe/az0XbNBpYirCPRBq5T93coUsdsdaK5Cs9rxNiRkK81tVESxFw+xfHyK8opmYugzpTbxHtbPhaNtA32OFVpbyueoByOu01QoOSvkG2MGpOg3w6qhbVF0bm1A2sZ4AgNPhHUmMdTYUd6LDgM1p90zLmvgv8gNT5TkHENCtAgM=
+	t=1748258942; cv=none; b=d+KOEWEWFohijRGxYy+H6/v/8342QHfCuhQeek8h8tEWlLoskh7lPAM9lInp/+W41Mm5rkPiYDq0MuCAZwHpTmQXB5cx+dGauY8hwLUxqYNund8n4PIAd/+pqhiDPqbTN8cbLUGhRdUBSNDz6VRKYYoBT4Vj11n/ifoTHD80gyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748257751; c=relaxed/simple;
-	bh=AsfpaPTDC+OYbgOCC0jEDUUnbLPKEPdMFbZHZ4SKdh8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N/uRB4XMdoKgCLh5PK6r/lRoZaK6LdC74SI+ssvj9xmfdy/XuoB6ytL5YN5yeJ3HtFdGuqi72CfEPuSPY9Go6D1DXRmCkKTndMA/OWQlChyqcaCIK1CePPXBxiGYjJasQCXLW97/yE/66kEfR+gBg276AkEwHoVSdisU1fdtIkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rvv8IKZw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748258942; c=relaxed/simple;
+	bh=wZGfiWYVYSInJYNXkga0gk8tFNqCzxPMMLGzyZzTFy4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=dF2hb2xkizNB1bJ2AjXHsjvE+9CCL54ydYrAjZmdzb1CNaYOnIvgeY8RJX3mmP+A1T2MCO38sSOoz2kFrxVPpgbxIy8TRCEpAPHcot6gAddZUWxu5Q3+g5Uo9MCb941dR7hJkcBcsOUWCDgsxsMjnLsk+9j9nQm/YCopzRaoDE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFdGv/CE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rvv8IKZw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189C1C4CEF4;
-	Mon, 26 May 2025 11:09:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFdGv/CE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30424C4CEE7;
+	Mon, 26 May 2025 11:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748257751;
-	bh=AsfpaPTDC+OYbgOCC0jEDUUnbLPKEPdMFbZHZ4SKdh8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rvv8IKZwV7//CReWxIASz+vn2B/lgb/ziIEmWFhe05CpYYODJr4yabe8Wrw1T3tna
-	 I6z0oZkGKl0jb4krW/mmRXZJdrxdpai7TJ6kJyrcfc7yUt9C6QBBPbYiZDGm5pbhEL
-	 RWHAcKg5ucUA9mPTQOXPuoGgGKAMEU1PvWF5rAFL4tkm9g+h1Kzob8YBhneNLAaYQk
-	 K4BYv0QgjEp/mEqs66DzAzvk5d2Ux8f1LINwAHg08LOIz09wJrO/GsXGMw0+5R6TjK
-	 MCCwsYWVEXenUMwCXQXSo+mh2pDdsgQQ0FDdTbWCzgD8PLqJFNHA/RGfXD61c5EQ+G
-	 2kK/jLo4GoH1g==
-Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-400fa6eafa9so1222041b6e.1;
-        Mon, 26 May 2025 04:09:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU3r8UbTf/OREUjbEZeEUJ1d0IWLANmulheGZorCeq0bNdbMrtKqlGP9jgtvMH9CPUrO/l58IdiK5Kk4Lg=@vger.kernel.org, AJvYcCUSP5MTW3bjpsabbac4/UPl/1nkXMB6Q1WIGald7CLGOgBUgCgd3PbZ86RSr74XeoWj8IUTkWcyX62XYlAN+eo=@vger.kernel.org, AJvYcCXrps8ELbxJJTOkF3c9h14ijzUmJngV2GyEj5J3ibg0vZGJuvbDwNOpzp6YbCGUbpETP6pYvkKjJkY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzj8PBP/Mekcvhzp67oDK20Zo2oVAH+zWWzFT+PFc9MA/NdlZJA
-	pd615W2DVbT19gqeeYgTUR5CAiMF2CsztCkKeJlG5AHE8+HDl3+sUEAk7dwlWHwwA6I3q7seAp1
-	TE+CgfkN/gMGCVIq5aV6Hf73fBb2YYZI=
-X-Google-Smtp-Source: AGHT+IFOeaPpPGmYn7dVAaU+KM8QqAb/9uaFoMYACp+Z/v1FEQ0CuwF9UtmQD2LKWYhzbyNsqmfJzpkzY3j5ntJfQuM=
-X-Received: by 2002:a05:6808:1a24:b0:404:a009:630b with SMTP id
- 5614622812f47-40646874847mr5236886b6e.39.1748257750304; Mon, 26 May 2025
- 04:09:10 -0700 (PDT)
+	s=k20201202; t=1748258941;
+	bh=wZGfiWYVYSInJYNXkga0gk8tFNqCzxPMMLGzyZzTFy4=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=lFdGv/CEZw1hKNeDE0Ks7bL79xRdXrXWHwyJ/sqNw1dwFFuOwn0P2TnrImlv7RoQg
+	 ugS8p7xMTaFRTnQhI6iwtssQscNCg2o74IsqPtujXvBjE0ZC59C5F0ra/ORDzUagBL
+	 Do5HmR7FxiX4TVwBPvgtL5KqejyOqbnDY2KszgIUhXlvuaZnD3yEsxD/uIdARFLw36
+	 kM6IF5DD14CiWxILs3BiMiWrXuG9uIXq+GW9C4j3d2ZSjU/6SSmdDsSr66rlWGjXQR
+	 Y0EYYwEEccwxKoZF+fIk6/C6FQOhU8aQWymeZLPCx2YtpkcQfEuDmMxeOtor47Z8+C
+	 4zGb9qaWRvOIw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <a80bfedcb4d94531dc27d3b48062db5042078e88.1748237646.git.viresh.kumar@linaro.org>
-In-Reply-To: <a80bfedcb4d94531dc27d3b48062db5042078e88.1748237646.git.viresh.kumar@linaro.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 26 May 2025 13:08:56 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0j5-8U5HbDHjx8C+Z3eX3M0sfE_FV+O29HY04eWoecfJQ@mail.gmail.com>
-X-Gm-Features: AX0GCFtYCnEaJcZ6GzBtfXoM8p2Uo3heQzV1-lGDSlStuT03-KN64WF9iTd_FzA
-Message-ID: <CAJZ5v0j5-8U5HbDHjx8C+Z3eX3M0sfE_FV+O29HY04eWoecfJQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: opp: Make the doctest example depend on CONFIG_OF
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>, kernel test robot <lkp@intel.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 May 2025 13:28:49 +0200
+Message-Id: <DA622GQOFB4B.2MDK03ECPO3DA@kernel.org>
+Subject: Re: [PATCH v10 1/5] rust: retitle "Example" section as "Examples"
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>, "Michal Rostecki"
+ <vadorovsky@protonmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Brendan Higgins" <brendan.higgins@linux.dev>, "David Gow"
+ <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+ "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "FUJITA
+ Tomonori" <fujita.tomonori@gmail.com>, "Rob Herring" <robh@kernel.org>,
+ "Saravana Kannan" <saravanak@google.com>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
+ <will@kernel.org>, "Waiman Long" <longman@redhat.com>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
+ "Bill Wendling" <morbo@google.com>, "Justin Stitt"
+ <justinstitt@google.com>, "Andrew Lunn" <andrew@lunn.ch>, "Heiner Kallweit"
+ <hkallweit1@gmail.com>, "Russell King" <linux@armlinux.org.uk>, "David S.
+ Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Arnd Bergmann" <arnd@arndb.de>, "Jens
+ Axboe" <axboe@kernel.dk>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
+ <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <llvm@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <linux-block@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com>
+ <20250524-cstr-core-v10-1-6412a94d9d75@gmail.com>
+In-Reply-To: <20250524-cstr-core-v10-1-6412a94d9d75@gmail.com>
 
-On Mon, May 26, 2025 at 7:35=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
+On Sat May 24, 2025 at 10:33 PM CEST, Tamir Duberstein wrote:
+> This title is consistent with all other macros' documentation,
+> regardless of the number of examples contained in their "Examples"
+> sections.
 >
-> The doctest example uses a function only available for CONFIG_OF and so
-> the build with doc tests fails when it isn't enabled.
->
->   error[E0599]: no function or associated item named `from_of_cpumask`
->   found for struct `rust_doctest_kernel_alloc_kbox_rs_4::kernel::opp::Tab=
-le`
->   in the current scope
->
-> Fix this by making the doctest depend on CONFIG_OF.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202505260856.ZQWHW2xT-lkp@i=
-ntel.com/
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
-> Rafael,
->
-> Please apply this directly, if no one objects to it. Thanks.
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Done, thanks!
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
->
->  rust/kernel/opp.rs | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-> index 212555dacd45..c2bdc11f3999 100644
-> --- a/rust/kernel/opp.rs
-> +++ b/rust/kernel/opp.rs
-> @@ -582,6 +582,7 @@ extern "C" fn config_regulators(
->  /// use kernel::opp::Table;
->  /// use kernel::types::ARef;
->  ///
-> +/// #[cfg(CONFIG_OF)]
->  /// fn get_table(dev: &ARef<Device>, mask: &mut Cpumask, freq: Hertz) ->=
- Result<Table> {
->  ///     let mut opp_table =3D Table::from_of_cpumask(dev, mask)?;
->  ///
-> --
-> 2.31.1.272.g89b43f80a514
->
+---
+Cheers,
+Benno
