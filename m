@@ -1,70 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B0F5661
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 20:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6A81487F4;
+	Mon, 26 May 2025 20:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748291292; cv=none; b=nQBeBQ6gOtVG36BpAnE6kI9yN4Tjw9r7oxMW0XlRaAk5ZGF21pt44LRLVA5ZiWtH5Efse/VUT8sRr22F44XbH4+ER8xv+Iqa6fmDiaWoaWNqXcd3Ed4GA/hVhIyGnjU3gObPzH1MIS9uZNl1rInbE5AAEhPZ19NqZ5AQWwGBtz4=
+	t=1748292148; cv=none; b=iMzJqPjYe72E+9uDXrrM1y6dbQC0A520x1TbaEJrDWq2scc/+d+h020ROj/KSKomzHJjhnTqOlw4yg7ua7AKF/WgfQ4gRMct4cooQYpqZ0Y9zgR5yeG5LBMrELq/VJeaXpxqXXpXU/Rl7tvV9bdOkC/ArIRIRERdgKbQfzIIA6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748291292; c=relaxed/simple;
-	bh=9Ciinazl2kdQ2MEg9td4Iu/bpFfu0Wstt1SrBAOcgng=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=jKQoeAWmzXRsLHS3rud4PGDSSvvSZsZPKxQen4ZZ+1nSk2gOCbS1as5Pyn967M5VnZAo/iXh20OexMUw50ofMdYRs4ZmQ7jh9EfnbZG+t1STNbT9nAVceHABG56YyuF9aULmf+7kCh5wyNDk/ZX0t5UYuq33B93RTFaxns7yRu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lx6nGoLW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748292148; c=relaxed/simple;
+	bh=3gRNXhmVhQUXXi3jmcxIfz8vm/k3JI7NUoNq7z7BuyM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KprkRjATMgN2mi2hcqbi88gKGYZKgRBb+WxjeUV+QPD24e7roqSzvhMTnfz0RoLF5iwMa4O4qhOivn/Tl6OR5ybqQsBweYeNS61kAyO+SyFnH3HgYq0UowTmzG+zXRGYlpw1Fn6BkeiADSpQ+x7aUqMLnII/br6fScSqQrq+eUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JJ5fm9IU; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lx6nGoLW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38201C4CEE7;
-	Mon, 26 May 2025 20:28:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748291291;
-	bh=9Ciinazl2kdQ2MEg9td4Iu/bpFfu0Wstt1SrBAOcgng=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Lx6nGoLWxoY62urzEi5doswcHLOAAbFaxecNkJhlhIp0cvtQlThHpkzB0WVxYMpji
-	 WK8YVEqpnNn8TLLFA3nRqVTG2xs4bi3sEU5tvaucRCqPMs9pj1g8sha36Tboj7Mk6+
-	 cCaQU/vS7Qsu8lWCPu2KYjfUH5nT/ctqpk9GEn+XrC6EVOBeF9+mV/GpiXYCq1WDVk
-	 EQO+4rs7aYVHmIyTKnzLg/W3z4s+8YDbvJAUaPksVbT82vZC+hxhB5iw8r+g6PpWDV
-	 YVLwi3RSsN/YFhjNZPv+FaNBiPvivUsaEsLwYKrALSxsYiz3A3s7SlMKmDdnvAiGtm
-	 O4PDAU81Bym1w==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JJ5fm9IU"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-32923999549so25112141fa.2;
+        Mon, 26 May 2025 13:42:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748292145; x=1748896945; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SUmUNbUCgQeGYiOspE2SyC9Ks1s3ZxLZ5UKKm2WjJzg=;
+        b=JJ5fm9IUFoQz3Xi14v9VQF9bp/Ns1xygdZXoSDR022wp9Pl8qWefMuCxpgeSwPoxbg
+         uxxAqV5UeY7BYpKVBwa5fh0TAMHAvDjwW+roCqY1URO8BQ3ZyQIa/98wKBxYLLLvILMW
+         XOm3hr3bvgUOBiWAEWk/OfJUjJvsGS5ocNrZvkQ91MZDhrmyix7St98KfoJQOQXK4Bmp
+         pmYbXIeJ9QJFdSkrrgbnEAWxxt7yUuVLwY24Ozp5jVdayxGnpCd8vYYAvUDmFvHNihBO
+         88wjv1+lb1ZXwCCZ0LWiy1511CJiUsQvN9CyLfkogMoWeBPzKDOZ1kYZaMpW69KRY0Po
+         xp2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748292145; x=1748896945;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SUmUNbUCgQeGYiOspE2SyC9Ks1s3ZxLZ5UKKm2WjJzg=;
+        b=pU0571OOdlRFc+kqOTMMXcF+p83QXVcBujPDhgzNPnnZblYKQSl02tnfw4DhVYXDd1
+         R/c//cVUEJCCP+7fFT1pHJRwhXbYj8nFM/6fVeDBmf+k3xySmyZ6HP90yPtEz0Q6aD2F
+         S5X7oD3+ecsvawfsYdGU8UZ39kyr+QFb4f5tuEip2MLQ8GxmdjCdawd1RX2X4mueOybC
+         JHUbso/pXeel1jodktcMX2OCuss/k/O1AXk38AejMCBdKd1hNi2mtNJdYdfY41QBNCPv
+         XusMGoEOtPpupFMHYq0wks1ATgEWTk2Wyj/iMFe5UYSrM4hx5j7GVMQLr4aE/lga57Cd
+         itRA==
+X-Forwarded-Encrypted: i=1; AJvYcCVDNOfCh5iR5R4M5eD4/bHFwKNedVNcQrLQ80KSPu5OTXdJwYTeeObQXJ3xXar2lJtMwkoM+HYL@vger.kernel.org, AJvYcCVQtdWyIzD3vz+XfAJ94E7M1snVPUj/nonzJ6qJT5kn33KawtFbvN9FC41J8JbfPyidR0z7F9VPWbpSdXE=@vger.kernel.org, AJvYcCVcMF+k/IfNQwTGbODvsDSAbh5QaE8BVO3O9wdpa9Yh6yzlz+SJ18Gjk7HKSANpIctI+YpLYnxQJmS/@vger.kernel.org, AJvYcCWDtDLG2CG8541e+ekXCp+NqDuX+H8oSyYJzlk/r6iAs+4I+vX0+7Ax5kpwz1kzZNXJs9nBoR7qVuzpCLiS5CM1@vger.kernel.org, AJvYcCWKYLD/FH37RLiGzqnjwlORb0RjdJ9U+tS3X/5UJKh6Cp7kdzwOFSZTGlPjhRsjdQKC9P8qb9+o5IT2@vger.kernel.org, AJvYcCX4755Cuj7NXfsBe5TFfcJZx3Y03epPRtTnq9H/cjTeyq0ItKjfFOrvVIXRHnl8D9ghKuk7s/XgDwbTwM2EFU4=@vger.kernel.org, AJvYcCXDFmbI8wY6G3TMFYpYR90ZmQMRzW9k9D3iMzjNeBvXz5eCR9NwUOT+hq/+JLWHIbp2WNIsiIrmJYyiEvHU@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJqlYiuC3OT/RzITTw9va7U337zabhkr5O3bpTQ69RCu3NCh7c
+	BrrawKqhtGRhlsqpMjfJECrkPinTATQU3dDhs7zgzy62BmEswA+N/6BIIa95r4xtIFURv6YM6qt
+	EP5HNHD2hdO18foO76r4oxZg7nmdlTZs=
+X-Gm-Gg: ASbGncumnEsySrTs4gSgIBk8cC07W5QcDK3lqmRWlUVCfs0oTYOng7hctCYjnnIR5VI
+	geKcGXDeVW2jLnOxyexJuA+MLXu39rM1utg4i0rMegmMjqW4OKloauAYQ3Chg3pt4ETO78UwV3+
+	7r5MHk6ui2HiJxcFzn9GX/doW7z/KYtBlTDGizWDdXz5f2CxzT3yhF5/zMpzAQzKZry9Ay/agzz
+	Zbl6g==
+X-Google-Smtp-Source: AGHT+IGPgo+KZWDTPWJ/8ifTkY1Vatt42x8Q1KGRg7v+MsCMTuGoZeMjT/G3sX9/OWQr2VdJiIhB6KXrUJ+SLPtTc/w=
+X-Received: by 2002:a2e:be8d:0:b0:30c:317:f3ec with SMTP id
+ 38308e7fff4ca-3295b9e2b19mr25881171fa.17.1748292144402; Mon, 26 May 2025
+ 13:42:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com>
+ <20250524-cstr-core-v10-1-6412a94d9d75@gmail.com> <CANiq72nhNmLMdFTzpSQSxxMLanFA7Od6tBZ+3CrVERv9Spou5Q@mail.gmail.com>
+In-Reply-To: <CANiq72nhNmLMdFTzpSQSxxMLanFA7Od6tBZ+3CrVERv9Spou5Q@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 26 May 2025 16:41:48 -0400
+X-Gm-Features: AX0GCFtRDT-ngLir-CN5e7tolI7SMct6WsZy2xxM7WLN6cJzwd9Ur8Y0NvGqQWU
+Message-ID: <CAJ-ks9=8QXn9wQSX8frRqN0p7=nL+eUwLC6UV8HdQyY13=wx-w@mail.gmail.com>
+Subject: Re: [PATCH v10 1/5] rust: retitle "Example" section as "Examples"
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Patrick Miller <paddymills@proton.me>, Hridesh MG <hridesh699@gmail.com>, 
+	Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, Benno Lossin <lossin@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, llvm@lists.linux.dev, linux-pci@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 May 2025 22:28:08 +0200
-Message-Id: <DA6DJEG780UH.3FURKORQ8OY6U@kernel.org>
-Cc: "Albin Babu Varghese" <albinbabuvarghese20@gmail.com>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [[PATCH]] rust/list: replace unwrap() with ? in doctest
- examples
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250525225925.14797-1-albinbabuvarghese20@gmail.com>
- <DA5Y0QPY52WJ.DFA7YNSN2B2M@kernel.org>
- <CANiq72nNX++eUKAHYvxMvEeHy6cfDP98cteVAgM7RuQH5hDkVg@mail.gmail.com>
-In-Reply-To: <CANiq72nNX++eUKAHYvxMvEeHy6cfDP98cteVAgM7RuQH5hDkVg@mail.gmail.com>
 
-On Mon May 26, 2025 at 12:33 PM CEST, Miguel Ojeda wrote:
-> On Mon, May 26, 2025 at 10:18=E2=80=AFAM Benno Lossin <lossin@kernel.org>=
- wrote:
->>
->> The changes themselves look good, if we want to use the `ok_or` + error
->> combination. I haven't thought about this, so there might be something
->> better here, but it already is an improvement over the previous one.
+On Mon, May 26, 2025 at 12:15=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Yeah, I thought if perhaps we could have a better method (extension
-> trait) for these cases, at least for unit tests. On the other hand, if
-> it is just for unit tests, we are back at using something that is not
-> "real code", which is what triggered this patch (but at least it would
-> not panic).
+> On Sat, May 24, 2025 at 10:33=E2=80=AFPM Tamir Duberstein <tamird@gmail.c=
+om> wrote:
+> >
+> > This title is consistent with all other macros' documentation,
+> > regardless of the number of examples contained in their "Examples"
+> > sections.
+> >
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+>
+> I was going to say that I could take this one independently, but we
+> already had #1 of:
+>
+>     https://lore.kernel.org/rust-for-linux/20240906164448.2268368-1-paddy=
+mills@proton.me/
+>
+> I will take that one (which given the `checkpatch.pl` one got stalled,
+> I should have taken it separately as I mentioned at some point).
 
-Having thought about this more, I think this is fine. I don't know which
-extension function we would add to make this nicer.
-
----
-Cheers,
-Benno
+Sounds good. I'll drop this one.
