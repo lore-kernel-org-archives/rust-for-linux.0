@@ -1,110 +1,63 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE0E1F4CB5;
-	Mon, 26 May 2025 21:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AA3243958;
+	Mon, 26 May 2025 21:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748293374; cv=none; b=bjRlH0CLsJB6zDkaC0RVmEPPcyx3UTM6g9f+CHDOye8FxKL0kKaBsW3ikMytp6nsrn5Y3UuHT1ssCarUDloNSdiEgfd5Vv+xSmn3Q78Bx5ec7u9DG0yUi393KhrfpHF5NI0/D2oxX4Bs0yKzbaWAWNikcyhPIL6d1yjMbi4LNrM=
+	t=1748294380; cv=none; b=Rf+VFjZ5+w59aBAhFuB2jP0w5Kt5YEgFQMXhLmZZ2xMP8yzpjNjEcVPbQifUZn4YpGyF/AotxIQxAjY49xO1u/q/NZO+g4/0m2hr3TwFfl6IUzNIoldT7XR5T02u6//D6C5JBf6luaJfa8hcOKYKh3v2DvkfI6jqmhIFXrl9K4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748293374; c=relaxed/simple;
-	bh=HFoLzWXsdbXPDnO+7KButpJfxjK8elvqnYvhrA5Hbak=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gawQJtnQbzQRqZopQrvr3acdaYtcN3Ck0Wz9rhVE0YqINMI4nkh0VWL4Le2R9lAIfJ0s2FF3f+v0qedHJinoF1ZZoAfHGAqdXCpaesrx6MlY/U4ZzhodJMlRO3Q6ez4gwTXvLRUT+4yFF0bzeS51tls9+ao3W/lTZZyJ1cbtB/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YnXKqig2; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748294380; c=relaxed/simple;
+	bh=qAUgO2UoJoGGmaThYuKXzBBxafo6Rn1ajluvpjT56/M=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=ln20Ffi2JNe/Av71U+yMEm4uefcuO5dBn/Kg2lrDiNFG9h1BXup/N9UDnaWbxIzfQCKgcjT2ExFtWP2tGLw82Z8W5zibigobRnUKZb7pueNCqgI8hQ2RrB8nU4dkmDMb+DH3Fhds+Aozvp9wSEYyLKwItMb0SY6bLv54aiet+B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rv1Cr14Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YnXKqig2"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3087a70557bso463641a91.2;
-        Mon, 26 May 2025 14:02:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748293372; x=1748898172; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/AC1/MK6Cj/tOt7Y2lAVJFz4X+BOSYolz6DZCpGYHzE=;
-        b=YnXKqig275Uo0aR8mYbs5ag7a/Sbd9mElbuIz2k8VVpY8cleLODpyZPTjRT57UZSyv
-         RCTUz8sj/i43TQCwgkHdPYr7n0gFPk8s2fyUL0YPRZfpdMPAHtLt8Z0tCsrs7Lkj53KE
-         iVRL3TIuLvtW5MabE1mQSJQvrJ11CF7LAZkLnItBE9/A8HUOYFIFbz0meuE41gPpGYMG
-         D9zawFoeLqqw6r99PHAEPKGTlfQHQl0Pu6V9Hbm6yqiFj0C7o5mAGfdnadcxToDPdPse
-         oNA4A3X6xfXHiXYlsRJl6jRaR4S3mv76lNMLPYinEWAMp0rzQ5bXW7di2DKQdGdky1vW
-         I6YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748293372; x=1748898172;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/AC1/MK6Cj/tOt7Y2lAVJFz4X+BOSYolz6DZCpGYHzE=;
-        b=wkfu4L0VyCsvHPFy9GtsCmNfzPj0e2gHnZQusOGO221qsZ0nTe7lugB99jHwTLaVYM
-         sVKnuiR3xUQUTaZQXl/bzlIMEl9GpxYvwW9mI2mY8Jo+KEA3Yg3fNQcg/qz15+CERNfj
-         ON5kIlO3DcysAj3p8Cf7ULNnJmPDwo/NcvrL1bSPmAJjH7VsQoi9QD6lhpyXXmFnHmhn
-         bKYP3g0II8JOmzn4d65QFh+6MqD0TdA31VZPB5HLwoTeADJuZp9Y9ssL5tfrkBMMkIUk
-         IdbfqeHUxB0dsJvYebvS0Do9QYsR6cP0F4om/SfxRF0/94+xT8doq0Fqv92NfZtxNl+K
-         aVmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUT8MNDGsQVmZIUb2Fn+ZCmXbgv2PsWNfju6sBjWUo1LawNMwHlLsRFWIVnNfdF9y5/gMWenWeM6Eankqgsz2Y=@vger.kernel.org, AJvYcCXG8NvBYn3laSTt6TZOsMuG1WOl/plPJ7RMNrIy5lW83qVZhby7vA1WenxT8PeSeNrv7PT3fc+84xYnyVU=@vger.kernel.org, AJvYcCXTRlr9Y036CLjlwRhxMxNcKGY9R390LvTUzW54E8pPDdqPV4Wp+aAW5TNFQFA9J0AHl1OdvaMm64M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxE49ZHQ11W/SXN9F6iFQDocGiJocnfFJ6kSLxmfUMnIeyzjNC
-	TPtHjEEh9fLFBdgqzcOsOsNSKTbPNw8FWi2t6mPZkBvLQJZwy0ofNdFAniTAOTQ7/0Fb5wExeu2
-	ZzGCdcZSx6FgdDcabWeFlMU+wGqLrmIc=
-X-Gm-Gg: ASbGnctXHQSQL5kWCOaqOzT88pUwtCB/1UcGdObrDWcXcvVImGBApIfdIEMfH/IVZvK
-	wGklh44fX0jvL0dFT20PyQ5FiJ6kHU2szMbs9EWggnlFp5iS0A3a9EfSjWQRrETNZw9CCmNad4p
-	uTHjLo5Xjywe86WcmO/o9d4SDABB0aN8HRodWLtZgUo4M=
-X-Google-Smtp-Source: AGHT+IFVOZbMnrJUIuHlM77IXFRc/w6606oR8GF9Q4Qc8rse04e4M7th9KMo/MGfPgFY7ftmMEWzzHMCwEqIMjjisdU=
-X-Received: by 2002:a17:90b:3b8a:b0:2fe:7f51:d2ec with SMTP id
- 98e67ed59e1d1-3110efdcef2mr6176790a91.0.1748293371579; Mon, 26 May 2025
- 14:02:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rv1Cr14Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7956DC4CEE7;
+	Mon, 26 May 2025 21:19:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748294380;
+	bh=qAUgO2UoJoGGmaThYuKXzBBxafo6Rn1ajluvpjT56/M=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=rv1Cr14ZORdoUAbRijFq8HGOj2PqMu7YdxmNUDwrip35k1hbnuC3EojURtFT+dCsX
+	 7iKlZUdasY8IGleYNZLopEEmuDhJLM5RMPmGfuKkObRVJZ6jnzC6xcSnnCXp8aVwM1
+	 4invRn0W/ZNvpddDPvlCTdSTGB5Ci0slP/Hf/TzndcwkNFp44kgsWMD7KHzAQRh92C
+	 gbIebRCNBoT8zpxzqwfroiHsbDv/HtL0FY51j9Fb2ZA1UJUWbxWt6OYIK8HV3lIOnS
+	 rmYXjdmeO0wvqTSjpxLzK2EearJAwgEy1scx6sfP1yo2sfdbdH6nrAa17CxDnwVyki
+	 6aJ7bxazOGkDQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33F10380AAE2;
+	Mon, 26 May 2025 21:20:16 +0000 (UTC)
+Subject: Re: [GIT PULL] configfs for v6.16
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <871psp56yb.fsf@kernel.org>
+References: <871psp56yb.fsf@kernel.org>
+X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
+X-PR-Tracked-Message-Id: <871psp56yb.fsf@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git tags/configfs-for-v6.16
+X-PR-Tracked-Commit-Id: c6b1908224593db76f77b904894cd51933559ae9
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: a56d3133bd875d90ef3237f24e37b75b6d0326a9
+Message-Id: <174829441512.1051981.17323216450657444824.pr-tracker-bot@kernel.org>
+Date: Mon, 26 May 2025 21:20:15 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, Joel Becker <jlbec@evilplan.org>, Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <a80bfedcb4d94531dc27d3b48062db5042078e88.1748237646.git.viresh.kumar@linaro.org>
-In-Reply-To: <a80bfedcb4d94531dc27d3b48062db5042078e88.1748237646.git.viresh.kumar@linaro.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 26 May 2025 23:02:39 +0200
-X-Gm-Features: AX0GCFs3mitDZeUVaag9Ym6BT3_NQqZhEEXfqbYGVBcWRJm2ip1NubhIC79BqA8
-Message-ID: <CANiq72nLpziMATRyod2qg8_MjtpO6OxOggAyanJ=Kd_FLwhy6w@mail.gmail.com>
-Subject: Re: [PATCH] rust: opp: Make the doctest example depend on CONFIG_OF
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>, kernel test robot <lkp@intel.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 26, 2025 at 7:35=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
->
-> +/// #[cfg(CONFIG_OF)]
->  /// fn get_table(dev: &ARef<Device>, mask: &mut Cpumask, freq: Hertz) ->=
- Result<Table> {
+The pull request you sent on Fri, 16 May 2025 09:51:40 +0200:
 
-Quick note related to this patch for the future/discussion: I think it
-is a good idea to keep `cfg`s as local as possible, like it is done
-here, although for documentation I wonder if it may be best to put it
-at the top and hide it, e.g.
+> https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git tags/configfs-for-v6.16
 
-    /// ```
-    /// # #![cfg(CONFIG_OPP)]
-    /// use kernel::clk::Hertz;
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/a56d3133bd875d90ef3237f24e37b75b6d0326a9
 
-(We took that approach in another example recently)
+Thank you!
 
-It is nice that the `CONFIG_`s appear at the top, so that one knows at
-a glance when the example applies, as if it was configuration for the
-example.
-
-On the other hand, it may be useful for the reader to see immediately
-that they will need the `cfg`s. But it may be distracting from the
-actual examples, and there could be a need to add it too many times
-(e.g. in every related example).
-
-Cheers,
-Miguel
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
