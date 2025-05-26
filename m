@@ -1,92 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEFB1E9B0B;
-	Mon, 26 May 2025 09:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944A241C64
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 10:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748250126; cv=none; b=a9iNe6lN/Ymuw3k9tleEzMAQsUXJcjJbSHg5F4RN1LZK3GyfKVYWDjIZMxaqixPgMhGohXoH+4WYmq7OtfUsWTsnB83EUXjYgn3FrFEwppXMgRfhfWWEUYDRjlW+BWuH83NVnAPVSx/eP9+dWlD78ybOa7m5TTloKrFSnY4nX/A=
+	t=1748255598; cv=none; b=HMyUTgBsTKfeJFaRgIrJmOjJGiTIX1dt5v8v46apRHSB11dQZDCQKBuaSv/hlaVTRNkxuVsWIRw8XjrYbN3w2kuEGWYODXKv/RW4YDwEivYGvZYjJKFst58qkV6IIlPKmMrJFNSPuA9EewsFP3sAHHaeqNcWtrjbALsnnyHozI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748250126; c=relaxed/simple;
-	bh=dN/e6uhiPG0gbtb1wPFzzVl1DX4FB152MF7H9e4ibV8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=KYvIPRtMnmVBk1XYGDHZhKzfJ2VxIjfCPlsr2gKhdD5vDdwZd/VDEMxwUdmUW1cuGiU7KIr7poRNPYZUyIvMepay/JibrWdhSZlQ9BfXU5jNRkizOsMT9O8P0HL1aVW8SmOQf3QicobjmELEtq2CIyjWCR48AVzVeYprDJyWVdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bdR91CGU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748255598; c=relaxed/simple;
+	bh=V1yHOUnThyh395kdf42aHTbtbWYKpImm9uGhsOZFxnU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sFGd8srd/MxLNcIuiGgF7w1fioVfTCovkfj3xVRlUv8AUg3dFqZThUakBT6jOTR0zgEthrrDDtdb26caaefSHrtoou1ip4b+3vUvzbfd7YSNuv76Vi3vzVNztvhRquX7yIZpA5s52aCkdjiS02Tk791JJCdGwMZax/BU5kZFs20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CLHs9LLU; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bdR91CGU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 355C0C4CEE7;
-	Mon, 26 May 2025 09:02:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748250125;
-	bh=dN/e6uhiPG0gbtb1wPFzzVl1DX4FB152MF7H9e4ibV8=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=bdR91CGUEmWkCYOZTftiSKKI4OzJqQ3ATjbzVx9FaySp2fTLbRstZR0/VYQMdirxI
-	 ihEUXGt2TX9j6+AEXjLgjxoy2k+75rvx+6eVrFdYy08O3SYWwNXgUc3lr9051mnF+P
-	 1z4TNJ4qwATNqXRl7ZOHvgzr6FHi1RPwcWgN/RE9cz9q7nEmTNHj7xPIVGo5D5RmiZ
-	 RU6FAvPeVL6ri6u6wG7lbtL46aLMGxfau3O45zztpA0mqmuJnhFaHWe2hiY1SeSEE/
-	 aOhDXjTYaI7vCq5OHwCdVJENXPFQUin5ak4mR7yipel7BrfRfmmFiKE/1aoIn+CaAE
-	 e9FGsdk8YMIPg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CLHs9LLU"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7373aa99e2cso185536b3a.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 03:33:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748255597; x=1748860397; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V1yHOUnThyh395kdf42aHTbtbWYKpImm9uGhsOZFxnU=;
+        b=CLHs9LLUFAarJIX5oRWw2KXVeiuDnc7d1EjfB0Ki3oczGu/B1kMuCjopHJiJsoLMvO
+         LH3IO1++r437ntdzctw6RrsoVc797CJL4Bb04Y+mv42bBPiQcMejQXSoZRjIUC7x6TCe
+         EqTh38Es8k2GfEo6U/WinlIdwT3QAYIJkWmiLyIrMZNwE7VyFtFzaH0qkqHDii0j4fWk
+         Ot+Y+f0SBv+2T3vtzm/zFUuT9ReSJMnoRYZDByO5PQU0bIV8pXRkqVA1XNB93h+b5y0o
+         hgNCPb+/+8WeYTmL8/B661KWL607KcZVPU0txLJhmesFQbZegEdtlU83YQnJtpo5SvbC
+         JDxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748255597; x=1748860397;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V1yHOUnThyh395kdf42aHTbtbWYKpImm9uGhsOZFxnU=;
+        b=H2de4GtTq5bnbXUlpsPj16bHYH4n86k7s/ZjX7yRzp82FkAOfmymB8HNJd7jOwn5/F
+         oaiPHAwxeR9nfQrgRuc+0kXDarO+3qXZfrmVSiQgWjstREnltsatcpeSYZRbkfmy4N+r
+         YNTx8cxo+fCI/ply5WSbYBRReMP+cuouDOvAvPsl9+wKwS1PY8vl8LVu9uZUrcU8BzB3
+         YspqPiCfNwq9vfzg0P+7I1101idzYY6kKux4uJLqokqVhfbhaaOlVCbswkrvqha2HHKu
+         GTxV3oBgU8aN3qhN08P+izCwnfwg9uUkA2xsXRVxdY3oBVkLUnD8KAcdzLOMV7AqOxS9
+         0LUw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3n6IcAE7iRj18UpkGfTM1o4ayr5IfwT5HfssnK35rVg66GUeeeQPHrBJpc1PHcad3s70Xnp4SdBOy0KBAfg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YycwGMxTBiLg8PZ88vJlORaBZEC0hd8ljeWKWeB21XvCkZdceTv
+	Ofb1oyaifv1b/LMmaW7Ed1a3rDGyH7KwmhJmEH755okjxC53F58ITHKcT0dMCIgwCkVLr14Grku
+	ia4Do1XIco7ZynglnMEkiQ+r+bUAV3GU=
+X-Gm-Gg: ASbGnctV6sorzUA0etf8s9ZFpTokL66QM47VjMThkortTKGvq2r4UmkD1LILLRlyXme
+	6ptkqnze4UviEuG9UES0KrBJy+NYvfQ4NgaQcVAA7N6f+6YSi6Ld3Ta+vXsZlcuMmyBh2iL7QjA
+	IWpcpaRVVFPh3mmw0TmFoIAmk3SudAb036
+X-Google-Smtp-Source: AGHT+IE8v1OCScBuBi8lraSRL4qWxI2qBdv5bWrjKwBZorb/J+6tJr8qbUK35rhsHrGeWQMVVKyPP5G7NFDRXsQU+CI=
+X-Received: by 2002:a17:902:db03:b0:223:5525:622f with SMTP id
+ d9443c01a7336-23414f2fca5mr48980035ad.1.1748255596702; Mon, 26 May 2025
+ 03:33:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250525225925.14797-1-albinbabuvarghese20@gmail.com> <DA5Y0QPY52WJ.DFA7YNSN2B2M@kernel.org>
+In-Reply-To: <DA5Y0QPY52WJ.DFA7YNSN2B2M@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 26 May 2025 12:33:03 +0200
+X-Gm-Features: AX0GCFtX-9iLHdWfCw_wP_FYtYngY55VwGuxaqmYiFphtTpv-AX9smcnDn_KU1I
+Message-ID: <CANiq72nNX++eUKAHYvxMvEeHy6cfDP98cteVAgM7RuQH5hDkVg@mail.gmail.com>
+Subject: Re: [[PATCH]] rust/list: replace unwrap() with ? in doctest examples
+To: Benno Lossin <lossin@kernel.org>
+Cc: Albin Babu Varghese <albinbabuvarghese20@gmail.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 May 2025 11:01:58 +0200
-Message-Id: <DA5YY0YF28GO.3DONTQDLY6VBD@kernel.org>
-Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Drew Fustini" <drew@pdp7.com>, "Guo
- Ren" <guoren@kernel.org>, "Fu Wei" <wefu@redhat.com>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Paul Walmsley" <paul.walmsley@sifive.com>,
- "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
- "Alexandre Ghiti" <alex@ghiti.fr>, "Marek Szyprowski"
- <m.szyprowski@samsung.com>, <linux-kernel@vger.kernel.org>,
- <linux-pwm@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-riscv@lists.infradead.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH RFC 0/6] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Michal Wilczynski" <m.wilczynski@samsung.com>, "Drew Fustini"
- <pdp7pdp7@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <CGME20250524211519eucas1p218997c69b98b14d3af2eb6bf4e9d3187@eucas1p2.samsung.com> <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com> <aDJGgLZ9tITwGBxq@x1> <b5f4af17-05ef-453d-8f04-283590ae5b87@samsung.com>
-In-Reply-To: <b5f4af17-05ef-453d-8f04-283590ae5b87@samsung.com>
 
-On Mon May 26, 2025 at 10:22 AM CEST, Michal Wilczynski wrote:
-> On 5/25/25 00:21, Drew Fustini wrote:
->> Thanks for the patch series. It will be great to have PWM working
->> upstream.
->>=20
->> I've not built Linux with Rust before, so I'm going through the quick
->> start [1]. I've also never built Linux with LLVM before but clang seems
->> like the best compiler to use for Rust. Are you using LLVM?
+On Mon, May 26, 2025 at 10:18=E2=80=AFAM Benno Lossin <lossin@kernel.org> w=
+rote:
 >
-> Hi Drew,
-> You're correct, Clang is the way to go for Rust in the kernel. I also
-> followed the official quick start guide. To answer your question
-> directly: yes, I'm using LLVM.
+> The changes themselves look good, if we want to use the `ok_or` + error
+> combination. I haven't thought about this, so there might be something
+> better here, but it already is an improvement over the previous one.
 
-Just to let you know, there is an effort to get rustc to work with a gcc
-backend rustc_gcc_codegen [1]. And there also is the gccrs project [2]
-trying to create a gnu Rust compiler.
+Yeah, I thought if perhaps we could have a better method (extension
+trait) for these cases, at least for unit tests. On the other hand, if
+it is just for unit tests, we are back at using something that is not
+"real code", which is what triggered this patch (but at least it would
+not panic).
 
-[1]: https://rust-for-linux.com/rustc_codegen_gcc
-[2]: https://rust-for-linux.com/gccrs
-
-They have made a lot of progress over the last year, so we're hopeful
-that they become usable in the near future. But for the moment,
-Clang/LLVM is the way to go.
-
-Hope this helps!
-
----
 Cheers,
-Benno
+Miguel
