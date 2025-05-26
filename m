@@ -1,100 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB331C84CD;
-	Mon, 26 May 2025 07:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E76213BC3F
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 08:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748245987; cv=none; b=tSxE3THfYaEj58sUWZWWiW9Kw2pJz6a5kkORsos2ydKG7qJRc97KIVkmODp6meOAjegctvms/zuVIXaSe6Lm3JWyFTKxnC4m7kAvgEzU8ArVWiB+IOO1IYLEtC9t6ZpYsX2CXCKtPFHkf8OFYo7C8oeICtzXKH+oGcaCfFW9f7o=
+	t=1748247513; cv=none; b=r/dN15uvQMswDCUZoQSJFvokgk9hZmNihDlqUZEajj8PVkKxSFpM+ZyEvKH/4LAAgjOSyKAmD/NoSVij79BCpuNQM8ekv61zhBtXzbFMEdbvwSe6HUH14ctWX0CQeuvQEqAIuhQRjs9iyqTs0YDZLzt5CCfCVn49L81E/1aicoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748245987; c=relaxed/simple;
-	bh=BbYGMsfcLHp+/GVsG438+tTvy3Zkb+vofZ3c+RLfKYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hz7J9pL3D9k1hI94JGzWLGfSxtb9Twzk7xtdFwATGmgSiGxcAhTsPy0XCFwGiy14lQfQMF/0Zx0K+jYGqNP6tPtONxAzBO9U09yIK2DKSUIpbnHWkq1C1DvqnjPx2QrRRXosRr9nsWDdmueehmkT8o7JJLe4Q+rLX52RS/2sLxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LzTJvrdC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748247513; c=relaxed/simple;
+	bh=qH/f4+03Q5B6YbDGh6aVNuBGyY8oJOF/mPRmTQ4jrtg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=vFGJf8QB4S5MOOM78iYOMUUMuzCt66++XFmc95iKs3844JYL3IqZtS5MSfw7HrMVjVDRnJmMvVXZZpdn3uCDMuji4hNKNlT7V9CSGoVN73xbu/wqCualow/PUzxXOoavdZZKRluqQPrb19O5cbaIrptsOKLD/QIw9//Ek1JLtAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aSl53ANE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LzTJvrdC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1D8C4CEE7;
-	Mon, 26 May 2025 07:53:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aSl53ANE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B9DC4CEE7;
+	Mon, 26 May 2025 08:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748245987;
-	bh=BbYGMsfcLHp+/GVsG438+tTvy3Zkb+vofZ3c+RLfKYE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LzTJvrdCv3nCLYhYIyEeMGq+fLpz1CGeMaWzTofOe+2rmzvRlodufbGuN+/2f/w4G
-	 KBXhQ55ORwcVVU92jYoabGLkCqfcCbu/Gz64FYjnA3kC4n2lXAUvePfc2IaRHyla4G
-	 Ns+hSFLf2rSCV8sINX63yJrk1TRm8jqBh5E0hcb4anV7JnDZgm9Gvrq+OYFzNQbVg6
-	 pLWkpdIOjUZoamrP4CODlUBJHpD8owQmUlbsTAhXZX78ufwuuEYqQH8JvPFkC41PqF
-	 yws+zgWoe3a3BUJlJI8MCWycG58EOYJDeLk1DiLLNyvalOc7drqO6BbjLwasHGacyy
-	 4bq16Cx6N3Y1Q==
-Date: Mon, 26 May 2025 09:53:04 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>, 
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH RFC 1/6] rust: Add basic PWM abstractions
-Message-ID: <enxctdseecqz765nmd24vziiaksmyhltqfwycdszmfq3s7orjm@lnpc7czuluis>
-References: <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
- <CGME20250524211520eucas1p1378fbab27f4b1ae8808706c074fa217c@eucas1p1.samsung.com>
- <20250524-rust-next-pwm-working-fan-for-sending-v1-1-bdd2d5094ff7@samsung.com>
+	s=k20201202; t=1748247512;
+	bh=qH/f4+03Q5B6YbDGh6aVNuBGyY8oJOF/mPRmTQ4jrtg=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=aSl53ANEtm+gtNJTS6T/3cBrYim0PIWZRkRMzIalNL34nUPaZhbEDKMEw2puqFHzd
+	 c/f+HZUsLwWnY5ZSPHSiyhhNhViyRWjpCUh64mMxG8i2eP7z5sofkkiTGMJbvT1zw7
+	 X0NPM15ma+ClZsPGvaNsJHngiPtPui2lS0Gb0a1+NJXPNlXTySSuc2Ixpj19z2qQ5b
+	 pp34UbJ/J/k1uZnyB3BNFHL6zxUBMtrG1g1v6CGAolSN+YL/zgpjTch8XkAlvz2NAb
+	 q39vLh785dt6VHS8EyYbbVqS+jztspM9dxBJ41G1jEJ8QagYdFgvCzRT1hqDfqV2az
+	 IENn7eBMTW/pw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ojsy757ta3qba3or"
-Content-Disposition: inline
-In-Reply-To: <20250524-rust-next-pwm-working-fan-for-sending-v1-1-bdd2d5094ff7@samsung.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 May 2025 10:18:30 +0200
+Message-Id: <DA5Y0QPY52WJ.DFA7YNSN2B2M@kernel.org>
+Subject: Re: [[PATCH]] rust/list: replace unwrap() with ? in doctest
+ examples
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Albin Babu Varghese" <albinbabuvarghese20@gmail.com>,
+ <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250525225925.14797-1-albinbabuvarghese20@gmail.com>
+In-Reply-To: <20250525225925.14797-1-albinbabuvarghese20@gmail.com>
 
+Hi,
 
---ojsy757ta3qba3or
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH RFC 1/6] rust: Add basic PWM abstractions
-MIME-Version: 1.0
+Thanks for the patch, a couple comments below.
 
-Hello Michal,
+The subject of your email starts with `[[PATCH]]`, normally we use
+`[PATCH]` instead. Did you use `git send-email` and `git format-patch`?
 
-On Sat, May 24, 2025 at 11:14:55PM +0200, Michal Wilczynski wrote:
-> Introduce initial Rust abstractions for the Linux PWM subsystem. These
-> abstractions provide safe wrappers around the core C data structures and
-> functions, enabling the development of PWM chip drivers in Rust.
+On Mon May 26, 2025 at 12:59 AM CEST, Albin Babu Varghese wrote:
+> Replace panicking `unwrap()` calls in the `kernel::list` doctests with `o=
+k_or(EINVAL)?` so they return a proper `Error` instead of panicking.
 
-Oh wow, thanks for rustifying PWM. That might be my chance to actually
-learn Rust.
+Commit messages should be wrapped to a sensible column length such as 72
+characters.
 
-I don't know when I will find the time to look into that in detail but
-one thing I'd like to have for Rust support is that the drivers use the
-new abstraction (i.e. .round_waveform_tohw() + .round_waveform_fromhw()
-+ .read_waveform() + .write_waveform()) instead of the older .apply()
-callback.
+Also this is missing the motivation that newcomers might get the
+impression that calling `unwrap` is OK.
 
-Best regards
-Uwe
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+>
 
---ojsy757ta3qba3or
-Content-Type: application/pgp-signature; name="signature.asc"
+No need for blank lines in the taglist.
 
------BEGIN PGP SIGNATURE-----
+> Link: https://github.com/Rust-for-Linux/linux/issues/1164
+> Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+> ---
+>  rust/kernel/list.rs | 38 +++++++++++++++++++-------------------
+>  1 file changed, 19 insertions(+), 19 deletions(-)
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmg0Hd0ACgkQj4D7WH0S
-/k59QQf/Zie657XEyEobiX+YRFby/LT3J0PihO7GXdaQaMVGvLXBOvDxjG8OeNu0
-+ZLs+pGuXMJEBtLuBgN35D8f0MRvrzhYkHLoG4OEMCUXYl8F5PandUtiVaW9YRjQ
-Qd5ty0G46BqM2IA20QvxKKkF3AVsirwbNjANp5TvaQTyesJcg/vh++5W0Lt0q7mb
-YI8daLWPWRRYwCk8pHmPIMtsjHVTVG6MxvPH+Gg4u3Yd7d5NBb0CyHs4VMtITtFl
-XNtNmS8hfXx3VYXyOo5UNFXezymWT31Uu+zPeNRRUIr2wmCiXajJu8m7SmFlk8B1
-3LKMk6AoAK7O/+PlI1FfS3OTse1tsg==
-=SkCA
------END PGP SIGNATURE-----
+The changes themselves look good, if we want to use the `ok_or` + error
+combination. I haven't thought about this, so there might be something
+better here, but it already is an improvement over the previous one.
 
---ojsy757ta3qba3or--
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+---
+Cheers,
+Benno
