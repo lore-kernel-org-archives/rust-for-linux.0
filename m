@@ -1,107 +1,91 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF3672607;
-	Mon, 26 May 2025 18:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE3DF9E8;
+	Mon, 26 May 2025 18:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748285213; cv=none; b=APufKtCmXZ3Xf/KMg41tt9IUA55Da1goWugXFmHOIQzSIyrEiO+D4AA4d+ZRWfRf5NwNXkbLbc1t4KbG2WmVpODFJxMa8d+4mUv2XlDyhh14AMWarqcK0eB9WOy7ctYGHHs9ARIJpCTDJnGNG14D+4PmjWX6pVyJBy8tZAtNzjQ=
+	t=1748285361; cv=none; b=Fx6a6ziWIfNFEotGVOFQkv+ewPH/df7zjQa+fzThFRUqJ3Bo0jJjO3/9pe+ekctLPFMpRAgXUl9mQ0pE54TLMATMJRK8Oa2zYyZgXqg2NOzmxioVDp1VFQ/9f/7Mvwv+SUlQzYrDm3cK++Z91kpoZDY5+5oOo4DnsMxBm3e8WKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748285213; c=relaxed/simple;
-	bh=Lsr4bVmd+hLUzILtQaE7DnjbxkvXxlOzELoVmKLYLBg=;
+	s=arc-20240116; t=1748285361; c=relaxed/simple;
+	bh=aP+iTuH/mfcgRD0YyZwzgE7GpVrJ784Jiws8hm/8sBE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qtkpj558Ktf9M5PJQdqM2fZmdozTBIWMuYpK/Urh89vqQcdjM3Mf76lzOEjcUC+S61j+esWxY2RK8X4I1qINP86vlRl+U0MWUsxNTfqVFpjZ/dc21jURuaxLJ6eYSN2oFNv9zLrPCTXmZyMLKwyecY1urZPMCk3+nYcqBeY47Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LUuJSQYa; arc=none smtp.client-ip=209.85.216.51
+	 To:Cc:Content-Type; b=ue0VTEUH1ytCy1hFQaOoypEMEWzmxOHYOYDfyIDpWcxljfuslujIR9erJaZ0rLv+FECC6ssw34BYdTrBpfebo0Xn1dC9wejy5qpsAjhu1SIeupJfN1jdIPreTt9/dAc68WwxLnyDjueeVPlMrxkZPqm54OYHJ46woL78oouacCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zb2YnIRX; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LUuJSQYa"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-309e54e469cso347006a91.1;
-        Mon, 26 May 2025 11:46:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zb2YnIRX"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b07698318ebso395964a12.2;
+        Mon, 26 May 2025 11:49:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748285211; x=1748890011; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748285360; x=1748890160; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/Fof5SyO9Y1rauzqYmUz1Uops4LK2EJWd8S1VclhC/s=;
-        b=LUuJSQYarbLvnmOHx6ny7SUgyxD+1pVCIG4PLvF0YDNMlDyKexSjcoexFB3RD6j3cm
-         MKYVQ73Dc1pAB/HGuMv6JjY/xnog9msPrLq80skFQ2qajtjLZnzytgsy+1ogN3xPR6zK
-         NXhN0BH2zbrkO4IcytLtZbI31beIzWGyKevjsBdduDGoNAHsITO1H7l6IRZj68bKwWGl
-         vjM9Mj7ZmgjJcSDWKaxInzcuyHoHRlwYrQvq6PEoxf9w82bi7NRHYOAxlQG668YqPGYI
-         EycDJC/uXrxPGX9/4egoGuCiaSVjIMjeLS37kOSgDWN/Y3JlPwRT25JB0Flk6wi0ZWXC
-         EWTw==
+        bh=aP+iTuH/mfcgRD0YyZwzgE7GpVrJ784Jiws8hm/8sBE=;
+        b=Zb2YnIRXwfg1i7/fw92KrflaMxqwcaQDQ+/uPVxI2ZqFf+8ZmINfMZeGYixxOXP4fQ
+         n8NXBJiHbZH4m+ApvaVNzFsr5+GS7DC0QXIL/YPrTMYT6Zzwkq0yRHn1LmR7frVPlFMi
+         +LEHs+LIO2UbSbhmXgUrfAt9Xgy6GxOiIoB3uNKLufdlJDtB28WfpzOZXVufJX54FA46
+         YXNQPJDOIRXCRJiBqwVuulMNp99tp4Vinao4Ck/Z/boGJmBL2rYVl2VCdfkdSy1Jyr1p
+         uqUwMK93CEp9/oTb11n2UIBldV2t10YXzb6/QUVTCFd6nK/rLK+hLC46cjy/8gbY1hdf
+         uEhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748285211; x=1748890011;
+        d=1e100.net; s=20230601; t=1748285360; x=1748890160;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/Fof5SyO9Y1rauzqYmUz1Uops4LK2EJWd8S1VclhC/s=;
-        b=vIC1diWtoin2nSiTdPrzMHZpw/bcRSyYq155+AJ/ihlxafKpOA310zag6WXcws5xRq
-         A82bqfTTmCRzjWyS+BeLtH7mBtexIscxuxsrkYH5oMxjdp7ZDI5IaLpwv4SFECjd3BaJ
-         u8osFmCydnYtzlD6nfOpnY8GQ1gdXIkqdy9LpFPAnJtIYvEHgzcKLIzDOt+tbMon/Rcm
-         4IbawXiU8ISr+kXbRZWsQ4LJ3tl9EkS1rGpWm+LT8HIKGlGyYK64m+IFfaefnxvi3Qd8
-         EnrUVzI2V2xEnvmKCgCs0mPZE0n8xxAswxcftvz4kZERm6hmnAC3XUykXV93ajLI+lD5
-         RB7w==
-X-Forwarded-Encrypted: i=1; AJvYcCUzTt8wMYbYCqP6UWDCnGukuGyvuZ8wiNFUYO4IeCCHO9QFnn6QOT/vZISeQlSLHoGLK91+BEyGaNepvknJ/jU=@vger.kernel.org, AJvYcCXzZaHQMlA62WWJkg5rdH+iGQDlCLA/TcjmpZyYIzNVCGu4EwZN2Sjj49bH9JQ8aLffkOEpttiZODQsaos=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrwS3HAEBe69MaJo0lmmCdSez8opyokF2b7oHIVNc+Km3pzG1B
-	W6W+P9WbhuzyNo0JPqWt8mWgRs6RhwmKZD9Fl+eW7F8ubFQhUFOdYE4l/uMqvhDURO2EVgZFBnN
-	i8HCVy7p4melgSu+niVCPGwhlfb2gegQ=
-X-Gm-Gg: ASbGncs3OOB0AHBvKPfOiy55ZhMKjOy8WznXdg+qc21iz3EIBPvc+tjjWoGp5+aPwwr
-	8i1+fsLDqQiZKYyFq63kwX2noO+ZZso0MhwUpbtM38LkuOMWxJF3Ozh/GgAKJ8LLY5ScxZ2vOj6
-	qm5FUJXUp96Z2A0KdFusDeZmPW+3em+k5vzM4dIIBslpk=
-X-Google-Smtp-Source: AGHT+IFzl1m7HWc2fjOsnOSy6UjMQrC1VDyLJQxaAXZswGlaFWkZe5vYMzKYaAOh1/w1zUrRNpSoZXFmVO5YVBnHFBg=
-X-Received: by 2002:a17:90b:2250:b0:310:cfd2:bad5 with SMTP id
- 98e67ed59e1d1-3110efe16b1mr5997256a91.0.1748285211494; Mon, 26 May 2025
- 11:46:51 -0700 (PDT)
+        bh=aP+iTuH/mfcgRD0YyZwzgE7GpVrJ784Jiws8hm/8sBE=;
+        b=p9IOWhBVOKo9itEKEiHeZPc6VqeOEpcxJdYn3h9tBNciD2KNyRbi51XZJUxFXK9Jyt
+         yj2ARuWSkpmSaeiskzhjKl3KCvn3lJsAugmITDgo9I9rqw1gQEEIxElzI7fk6W7tEh5o
+         3SnN+qRO1W4RPDBpwxrzy1KAUx3Bl9KlhkTjdM1dZoVgIy9AWp5IdSpYq3mSLvHnSg4p
+         o+ofApeOba35MoJKyQgke0WAdATZfh8jItwCHCXO2XWPuWxzioZfYXcD+0QxWL61SOST
+         qbPG2tkyBo0/vb4jOfTCmI1cYi9/lJZlhNO5XMbC+ERtqfnxdbGOvfx0TpZlMQT7Moph
+         Jwow==
+X-Forwarded-Encrypted: i=1; AJvYcCU0UQva6hl6I3jpAgjqLV0EDDThjUdOHnltWB4tYTTdycyDW5zMTBW4AV4wLgZG7W1xSZr6eu7n8xLvPza4ROI=@vger.kernel.org, AJvYcCXFzY/v3VeIdE+oLmEEkBVL/XLvvwe8gKwh/rMjjW8DcjRV1Q+RvtfJSLM2VfHtf72imuRmePi0fme2FWUP5kA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyflgux7EdW+JRI9HfsCKtF2heGi+io6GKAuSNSPX7M2b81cE44
+	RAzLGndHCwnCtcP6iaysihOSwwC5KcJrPwGaEIau9usV7GPKWzsiuhstlzJ5Ea2ToFq3mQLEk9E
+	xbpkschCk/1E9rbZXnoEdOY+tAEKDgtk=
+X-Gm-Gg: ASbGncvOn/eGwjzZan8TuYHUJhpTsOD/Y7dwj19y5Zsh7OFEt7gkfTs8gLSF1y7ZEtI
+	SARVnNOC/SjZhLcLVebxXc9hQ8Shzh94TgFA+DwIaThyg6sANnPdSC5UBU/hsVpc/t2109q2imb
+	5R+QYPpiYKmwCmkcmrfJk9o1ou/AV+B2ZZ
+X-Google-Smtp-Source: AGHT+IFXw/uV5fj6YI1GbXpHH/O8jxgZV3bjO3IEOn/6akb0SHXj1NxUy+CsDScQQigAHI4tGoddxvo7CGyLoTOfsBM=
+X-Received: by 2002:a17:90b:3891:b0:2ff:7970:d2b6 with SMTP id
+ 98e67ed59e1d1-31110c7cd91mr5833616a91.5.1748285359600; Mon, 26 May 2025
+ 11:49:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250525173450.853413-1-lossin@kernel.org>
-In-Reply-To: <20250525173450.853413-1-lossin@kernel.org>
+References: <20250302221518.76874-1-sergio.collado@gmail.com> <CANiq72k2Pa6HTkOwSoisyQr1eLa59iYAKe2HKziyae41pG-okg@mail.gmail.com>
+In-Reply-To: <CANiq72k2Pa6HTkOwSoisyQr1eLa59iYAKe2HKziyae41pG-okg@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 26 May 2025 20:46:38 +0200
-X-Gm-Features: AX0GCFu4Dw5twC8ejdBaxSvVXT5rnEG8M4cTShj0x4LieLkSWrUT9T53bN1Gpw8
-Message-ID: <CANiq72=G5w4D=c4U0KEQnRcy7vmARbWovmJwO3+vkyhixFinjw@mail.gmail.com>
-Subject: Re: [PATCH] rust: list: fix path of `assert_pinned!`
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Mon, 26 May 2025 20:49:07 +0200
+X-Gm-Features: AX0GCFsmL6F9b9bcGhp-QMqDa4OcEqXTuQwFGcRjIg6QEgHO7Qy-KJwQg4-oNBs
+Message-ID: <CANiq72=ZH_RoYB88GRDGu9ELZBBtaMhpSnwyiGAjD7Qw2LFftA@mail.gmail.com>
+Subject: Re: [PATCH v9] Kunit to check the longest symbol length
+To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
+Cc: David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
-	Xiangfei Ding <dingxiangfei2009@gmail.com>, stable@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, David Rheinsberg <david@readahead.eu>, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 25, 2025 at 7:34=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
-ote:
+On Mon, May 26, 2025 at 8:27=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Commit dbd5058ba60c ("rust: make pin-init its own crate") moved all
-> items from pin-init into the pin-init crate, including the
-> `assert_pinned!` macro.
->
-> Thus fix the path.
->
-> This occurrence was missed in that commit, since it has no current
-> users, although binder does.
->
-> Cc: stable@kernel.org # I haven't found the commit in stable yet, but jus=
-t to be sure.
-> Fixes: dbd5058ba60c ("rust: make pin-init its own crate")
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
+> Should at least this part of the patch be backported to the LTSs?
 
-Applied to `rust-next` -- thanks!
-
-    [ Reworded slightly as discussed in the list. - Miguel ]
-
-The commit is in v6.15 (rather than just in e.g. rust-next), so it
-should indeed have the Cc: stable (I removed the suffix).
-
-Thanks!
+For future reference/context, we had another report at:
+https://github.com/Rust-for-Linux/linux/issues/1134.
 
 Cheers,
 Miguel
