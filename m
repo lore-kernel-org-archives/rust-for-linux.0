@@ -1,88 +1,109 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944A241C64
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 10:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88301F4180;
+	Mon, 26 May 2025 11:09:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748255598; cv=none; b=HMyUTgBsTKfeJFaRgIrJmOjJGiTIX1dt5v8v46apRHSB11dQZDCQKBuaSv/hlaVTRNkxuVsWIRw8XjrYbN3w2kuEGWYODXKv/RW4YDwEivYGvZYjJKFst58qkV6IIlPKmMrJFNSPuA9EewsFP3sAHHaeqNcWtrjbALsnnyHozI0=
+	t=1748257751; cv=none; b=nJe/az0XbNBpYirCPRBq5T93coUsdsdaK5Cs9rxNiRkK81tVESxFw+xfHyK8opmYugzpTbxHtbPhaNtA32OFVpbyueoByOu01QoOSvkG2MGpOg3w6qhbVF0bm1A2sZ4AgNPhHUmMdTYUd6LDgM1p90zLmvgv8gNT5TkHENCtAgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748255598; c=relaxed/simple;
-	bh=V1yHOUnThyh395kdf42aHTbtbWYKpImm9uGhsOZFxnU=;
+	s=arc-20240116; t=1748257751; c=relaxed/simple;
+	bh=AsfpaPTDC+OYbgOCC0jEDUUnbLPKEPdMFbZHZ4SKdh8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sFGd8srd/MxLNcIuiGgF7w1fioVfTCovkfj3xVRlUv8AUg3dFqZThUakBT6jOTR0zgEthrrDDtdb26caaefSHrtoou1ip4b+3vUvzbfd7YSNuv76Vi3vzVNztvhRquX7yIZpA5s52aCkdjiS02Tk791JJCdGwMZax/BU5kZFs20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CLHs9LLU; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=N/uRB4XMdoKgCLh5PK6r/lRoZaK6LdC74SI+ssvj9xmfdy/XuoB6ytL5YN5yeJ3HtFdGuqi72CfEPuSPY9Go6D1DXRmCkKTndMA/OWQlChyqcaCIK1CePPXBxiGYjJasQCXLW97/yE/66kEfR+gBg276AkEwHoVSdisU1fdtIkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rvv8IKZw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CLHs9LLU"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7373aa99e2cso185536b3a.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 May 2025 03:33:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748255597; x=1748860397; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V1yHOUnThyh395kdf42aHTbtbWYKpImm9uGhsOZFxnU=;
-        b=CLHs9LLUFAarJIX5oRWw2KXVeiuDnc7d1EjfB0Ki3oczGu/B1kMuCjopHJiJsoLMvO
-         LH3IO1++r437ntdzctw6RrsoVc797CJL4Bb04Y+mv42bBPiQcMejQXSoZRjIUC7x6TCe
-         EqTh38Es8k2GfEo6U/WinlIdwT3QAYIJkWmiLyIrMZNwE7VyFtFzaH0qkqHDii0j4fWk
-         Ot+Y+f0SBv+2T3vtzm/zFUuT9ReSJMnoRYZDByO5PQU0bIV8pXRkqVA1XNB93h+b5y0o
-         hgNCPb+/+8WeYTmL8/B661KWL607KcZVPU0txLJhmesFQbZegEdtlU83YQnJtpo5SvbC
-         JDxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748255597; x=1748860397;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V1yHOUnThyh395kdf42aHTbtbWYKpImm9uGhsOZFxnU=;
-        b=H2de4GtTq5bnbXUlpsPj16bHYH4n86k7s/ZjX7yRzp82FkAOfmymB8HNJd7jOwn5/F
-         oaiPHAwxeR9nfQrgRuc+0kXDarO+3qXZfrmVSiQgWjstREnltsatcpeSYZRbkfmy4N+r
-         YNTx8cxo+fCI/ply5WSbYBRReMP+cuouDOvAvPsl9+wKwS1PY8vl8LVu9uZUrcU8BzB3
-         YspqPiCfNwq9vfzg0P+7I1101idzYY6kKux4uJLqokqVhfbhaaOlVCbswkrvqha2HHKu
-         GTxV3oBgU8aN3qhN08P+izCwnfwg9uUkA2xsXRVxdY3oBVkLUnD8KAcdzLOMV7AqOxS9
-         0LUw==
-X-Forwarded-Encrypted: i=1; AJvYcCW3n6IcAE7iRj18UpkGfTM1o4ayr5IfwT5HfssnK35rVg66GUeeeQPHrBJpc1PHcad3s70Xnp4SdBOy0KBAfg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YycwGMxTBiLg8PZ88vJlORaBZEC0hd8ljeWKWeB21XvCkZdceTv
-	Ofb1oyaifv1b/LMmaW7Ed1a3rDGyH7KwmhJmEH755okjxC53F58ITHKcT0dMCIgwCkVLr14Grku
-	ia4Do1XIco7ZynglnMEkiQ+r+bUAV3GU=
-X-Gm-Gg: ASbGnctV6sorzUA0etf8s9ZFpTokL66QM47VjMThkortTKGvq2r4UmkD1LILLRlyXme
-	6ptkqnze4UviEuG9UES0KrBJy+NYvfQ4NgaQcVAA7N6f+6YSi6Ld3Ta+vXsZlcuMmyBh2iL7QjA
-	IWpcpaRVVFPh3mmw0TmFoIAmk3SudAb036
-X-Google-Smtp-Source: AGHT+IE8v1OCScBuBi8lraSRL4qWxI2qBdv5bWrjKwBZorb/J+6tJr8qbUK35rhsHrGeWQMVVKyPP5G7NFDRXsQU+CI=
-X-Received: by 2002:a17:902:db03:b0:223:5525:622f with SMTP id
- d9443c01a7336-23414f2fca5mr48980035ad.1.1748255596702; Mon, 26 May 2025
- 03:33:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rvv8IKZw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189C1C4CEF4;
+	Mon, 26 May 2025 11:09:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748257751;
+	bh=AsfpaPTDC+OYbgOCC0jEDUUnbLPKEPdMFbZHZ4SKdh8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rvv8IKZwV7//CReWxIASz+vn2B/lgb/ziIEmWFhe05CpYYODJr4yabe8Wrw1T3tna
+	 I6z0oZkGKl0jb4krW/mmRXZJdrxdpai7TJ6kJyrcfc7yUt9C6QBBPbYiZDGm5pbhEL
+	 RWHAcKg5ucUA9mPTQOXPuoGgGKAMEU1PvWF5rAFL4tkm9g+h1Kzob8YBhneNLAaYQk
+	 K4BYv0QgjEp/mEqs66DzAzvk5d2Ux8f1LINwAHg08LOIz09wJrO/GsXGMw0+5R6TjK
+	 MCCwsYWVEXenUMwCXQXSo+mh2pDdsgQQ0FDdTbWCzgD8PLqJFNHA/RGfXD61c5EQ+G
+	 2kK/jLo4GoH1g==
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-400fa6eafa9so1222041b6e.1;
+        Mon, 26 May 2025 04:09:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU3r8UbTf/OREUjbEZeEUJ1d0IWLANmulheGZorCeq0bNdbMrtKqlGP9jgtvMH9CPUrO/l58IdiK5Kk4Lg=@vger.kernel.org, AJvYcCUSP5MTW3bjpsabbac4/UPl/1nkXMB6Q1WIGald7CLGOgBUgCgd3PbZ86RSr74XeoWj8IUTkWcyX62XYlAN+eo=@vger.kernel.org, AJvYcCXrps8ELbxJJTOkF3c9h14ijzUmJngV2GyEj5J3ibg0vZGJuvbDwNOpzp6YbCGUbpETP6pYvkKjJkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzj8PBP/Mekcvhzp67oDK20Zo2oVAH+zWWzFT+PFc9MA/NdlZJA
+	pd615W2DVbT19gqeeYgTUR5CAiMF2CsztCkKeJlG5AHE8+HDl3+sUEAk7dwlWHwwA6I3q7seAp1
+	TE+CgfkN/gMGCVIq5aV6Hf73fBb2YYZI=
+X-Google-Smtp-Source: AGHT+IFOeaPpPGmYn7dVAaU+KM8QqAb/9uaFoMYACp+Z/v1FEQ0CuwF9UtmQD2LKWYhzbyNsqmfJzpkzY3j5ntJfQuM=
+X-Received: by 2002:a05:6808:1a24:b0:404:a009:630b with SMTP id
+ 5614622812f47-40646874847mr5236886b6e.39.1748257750304; Mon, 26 May 2025
+ 04:09:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250525225925.14797-1-albinbabuvarghese20@gmail.com> <DA5Y0QPY52WJ.DFA7YNSN2B2M@kernel.org>
-In-Reply-To: <DA5Y0QPY52WJ.DFA7YNSN2B2M@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 26 May 2025 12:33:03 +0200
-X-Gm-Features: AX0GCFtX-9iLHdWfCw_wP_FYtYngY55VwGuxaqmYiFphtTpv-AX9smcnDn_KU1I
-Message-ID: <CANiq72nNX++eUKAHYvxMvEeHy6cfDP98cteVAgM7RuQH5hDkVg@mail.gmail.com>
-Subject: Re: [[PATCH]] rust/list: replace unwrap() with ? in doctest examples
-To: Benno Lossin <lossin@kernel.org>
-Cc: Albin Babu Varghese <albinbabuvarghese20@gmail.com>, rust-for-linux@vger.kernel.org
+References: <a80bfedcb4d94531dc27d3b48062db5042078e88.1748237646.git.viresh.kumar@linaro.org>
+In-Reply-To: <a80bfedcb4d94531dc27d3b48062db5042078e88.1748237646.git.viresh.kumar@linaro.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 26 May 2025 13:08:56 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j5-8U5HbDHjx8C+Z3eX3M0sfE_FV+O29HY04eWoecfJQ@mail.gmail.com>
+X-Gm-Features: AX0GCFtYCnEaJcZ6GzBtfXoM8p2Uo3heQzV1-lGDSlStuT03-KN64WF9iTd_FzA
+Message-ID: <CAJZ5v0j5-8U5HbDHjx8C+Z3eX3M0sfE_FV+O29HY04eWoecfJQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: opp: Make the doctest example depend on CONFIG_OF
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, 
+	Vincent Guittot <vincent.guittot@linaro.org>, kernel test robot <lkp@intel.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 26, 2025 at 10:18=E2=80=AFAM Benno Lossin <lossin@kernel.org> w=
-rote:
+On Mon, May 26, 2025 at 7:35=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
 >
-> The changes themselves look good, if we want to use the `ok_or` + error
-> combination. I haven't thought about this, so there might be something
-> better here, but it already is an improvement over the previous one.
+> The doctest example uses a function only available for CONFIG_OF and so
+> the build with doc tests fails when it isn't enabled.
+>
+>   error[E0599]: no function or associated item named `from_of_cpumask`
+>   found for struct `rust_doctest_kernel_alloc_kbox_rs_4::kernel::opp::Tab=
+le`
+>   in the current scope
+>
+> Fix this by making the doctest depend on CONFIG_OF.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202505260856.ZQWHW2xT-lkp@i=
+ntel.com/
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> ---
+> Rafael,
+>
+> Please apply this directly, if no one objects to it. Thanks.
 
-Yeah, I thought if perhaps we could have a better method (extension
-trait) for these cases, at least for unit tests. On the other hand, if
-it is just for unit tests, we are back at using something that is not
-"real code", which is what triggered this patch (but at least it would
-not panic).
+Done, thanks!
 
-Cheers,
-Miguel
+>
+>  rust/kernel/opp.rs | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
+> index 212555dacd45..c2bdc11f3999 100644
+> --- a/rust/kernel/opp.rs
+> +++ b/rust/kernel/opp.rs
+> @@ -582,6 +582,7 @@ extern "C" fn config_regulators(
+>  /// use kernel::opp::Table;
+>  /// use kernel::types::ARef;
+>  ///
+> +/// #[cfg(CONFIG_OF)]
+>  /// fn get_table(dev: &ARef<Device>, mask: &mut Cpumask, freq: Hertz) ->=
+ Result<Table> {
+>  ///     let mut opp_table =3D Table::from_of_cpumask(dev, mask)?;
+>  ///
+> --
+> 2.31.1.272.g89b43f80a514
+>
