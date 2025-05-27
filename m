@@ -1,110 +1,137 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FD424BBEE
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 08:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7781B24BD1A
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 08:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748335516; cv=none; b=I58XOTvFUIAO1A7q95M4GJrDQpc7TGym13DAOiElx47Xbf/Czm8KTspxOk5BmG/fk51QEIuxW7fJrgUBaXHDCDF68MqHzwCwoZei9vN33YFv2M7rXVGGolaMjySnHnD/OwG8wdb/bBE0JBjC2kbI60lLoa9odIcywW6R0t6/zk8=
+	t=1748336096; cv=none; b=cVG4pkl9+cHReOT0Fqb61eWwb1TdqV2kfExEUThPuOAWa/ccIClVZ2JVFBuH5iv17akCodTPSpwU2kKEX5vDy04QwB9SfWqeDhDR5xng+01uk7mB+a+dBSUWw2QDxs8bbpDy4Lp0lhnOa3sH4abjW/Zat1zNfPTYVaxDyK7H5Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748335516; c=relaxed/simple;
-	bh=g/OHQjDpbJeO7aSJx6LO1dgocetnFYYYHquamLC5R3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k25/Jdb8QylKy/LA/OPUbEOAiXs1gRhjt+7cQpBaq/tmCk7/gRJoDFRWb2flx/bdEM+tgei9Ca9A6oEFACp2VEahFbFSdiJ+C0Y2FOFwonC+pqXmlNC2GLQy1QlIF8d7htLlP1AZHij+uCEQwbpDvy5+KqXv2ji4llaozP+9CzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZXiOZDjn; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1748336096; c=relaxed/simple;
+	bh=FDhUkvstbN2kfBz+VcptLoIi6UpV5Y68pHLLt3pGpUU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=r9lL0VGYjLIJiXyx3pEtp3sYcHbIzKSUYuq6ZhuOTIjRBTvSxGu+zpF/rdf8AdMDmmflWz/MM/lyjBYn27i65q8Io+BmTFiA3uUpk8+dbUTi1isNEezZdBN0rtuUdljwjEro6Byx+JwbuGO61eIZPBUcFAMheKJe2+a8sw1Hc0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=JfWEZ/Dw; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZXiOZDjn"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-23449dde9ccso15755045ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 01:45:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748335514; x=1748940314; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5plvP5KcTSQCNhrzz/CfYJsTCK3IA9hQqyTdjVPsPvo=;
-        b=ZXiOZDjnAlgkV+dy6c98+T5fk5+GvekzhTUhaYblx/SyvseT5NbUCEGeOdj+6FuAKA
-         eeen1X9buQbIZh4H+JHPzKz8vQOs4yW3gYmJEnm+C4sZjhXswmVZ6bxC5GcSYBgiBcQe
-         mC3SORRhqI/cdaaSnMIEZT/3Wvvr/GQR2s/uo/aoEmJRfJ3v32k0iaSReRSSOd7YzjUA
-         BX0P4VCJcZE8F1ai9ZUjSSgHSrgrUI+ynfzDDgEekF+V386R0lzrQnjvR1wA/ug7Fyn9
-         J4ulV71P7cG+vnL2yxSBCiMrpX2bexP53clEBs5vmguD8+4qa+n95gtrRBDmAdpyC1d7
-         r/lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748335514; x=1748940314;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5plvP5KcTSQCNhrzz/CfYJsTCK3IA9hQqyTdjVPsPvo=;
-        b=Fyru1brsE73VsFt+/f5pK/guVGZEBHxbY7xdY81mhejvKNCbtKRp/N7Rd1mkZ6DEEm
-         kpjmf3oHCUvbe+pN251/CfOq6rERDY9vlR2xEimCHgNmx11RZPQgPRfE38xWpBll3fse
-         Kn1UtegDon0Cln9ftG3jVw/5f1IvKAZFLRhosOkJkqYXlMs3jRmObbNi+JOerqOtyM4J
-         hy/W/fwUQ43EgwjmeF+AIU5CZXnH6C6F9k/QRUIg/BmpiWGM1G51rcBYe0G2dzi2nDUP
-         arqEpIOSQDBfm8ebr+Vu/0Io+up/u+yqwvzrCNbIrHLNHbukuD6MI2ZdUP+NVbspQDfM
-         t/XA==
-X-Forwarded-Encrypted: i=1; AJvYcCX11VYo37YA5ep8PoCQtbsA7baQfBY/fbskEAes+vkJ7PVJaOSlVEoB0b+70alhhFUgUoo9woHBrzB9axo0LA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8Jrmk1qvcTuKu+hExM3sQqx1OAU7TYXkLmJEwenO3/hWnNFOv
-	35f2SJo8hiY3PDdZApEPUAgRxl1sYihsXQV4dqZQJewhE9Ak1AKJSf8+KhNEu1dxwpk=
-X-Gm-Gg: ASbGnctCWt3Luet8zOXI3Z/tWzL4Y7KOkGScuUOSCp4J7PEc5IkgR7QPk9RrogzVEPd
-	u9ogyi2m/hUiXe5ZtOtJ9Zz8GGXnjA3eRjxnpHFhzAt9WNjOdqsxScfA/zuSC8e16iKlhjQdmFh
-	GE0MWGTELg6v9bEa8Fv1/GUQCQz4b89mNfL3WKj/D/QWDHhI4KLkurSXd7fBPn8Xh4EQF2veBcf
-	mNOS7U62N+sxFDMGoBhYHxLzUBseaFO4kpO1LMAawjoA6GMF5sfEkFHljcS/tBNDUAgpIdPnfAU
-	vYmzsQb7TO1Db6Z5DeNB+ETkaA6qv5JWbfJkp7VUv+QxmRQD7gzx
-X-Google-Smtp-Source: AGHT+IH0PwmJJSWcUj1FVrKXJZ5zyjJgcJctx2JJXHccuUo6vWybu14HrnIvMyHRtH39ycBL6f9Gnw==
-X-Received: by 2002:a17:903:2b0c:b0:22e:5e82:6701 with SMTP id d9443c01a7336-23414f535bdmr170018555ad.18.1748335514299;
-        Tue, 27 May 2025 01:45:14 -0700 (PDT)
-Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2340c2df1fbsm59336735ad.139.2025.05.27.01.45.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 May 2025 01:45:13 -0700 (PDT)
-Date: Tue, 27 May 2025 14:15:11 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: opp: Move `cfg(CONFIG_OF)` attribute to the top of
- doc test
-Message-ID: <20250527084511.gfwzuqhsaheifpe2@vireshk-i7>
-References: <9d93c783cc4419f16dd8942a4359d74bc0149203.1748323971.git.viresh.kumar@linaro.org>
- <CANiq72m2jztPbqiH19560RTBW0PUghi8ajjyi6Pw6jmrHFdtSA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="JfWEZ/Dw"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250527085445euoutp0148bf3d7a4116bda5a47aadcbde55ee22~DVmgsZ5_D0349503495euoutp01c
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 08:54:45 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250527085445euoutp0148bf3d7a4116bda5a47aadcbde55ee22~DVmgsZ5_D0349503495euoutp01c
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1748336085;
+	bh=YNWmGS5CMUNgwusCiMiRXuZnmCjMkDyxd0GsI2VazJQ=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=JfWEZ/DwFr/HpuY6L8CtkXw78pLFB92zehs/NA+Kg5p014u2tgYsbhxhiEFKym5OP
+	 eIIweHXnQNBY8TCPT9AI85m99e/LXnt228fF4roIkCyAsUQhvyuGCapDUBhugriBYW
+	 BSN7ACs2nsOWCy7UpB52cwLXqD8nAO5fy/mIgpMk=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250527085445eucas1p214ecce3d8b8769c58f3eab2b0b73df93~DVmgGT1os0889508895eucas1p28;
+	Tue, 27 May 2025 08:54:45 +0000 (GMT)
+Received: from [106.210.136.40] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250527085444eusmtip1bab9c1b6732e4f053faaa518fb79ee9b~DVmfOH2Pq0318603186eusmtip1l;
+	Tue, 27 May 2025 08:54:44 +0000 (GMT)
+Message-ID: <0dc42c81-a082-4fce-a447-32995b75f1c9@samsung.com>
+Date: Tue, 27 May 2025 10:54:42 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72m2jztPbqiH19560RTBW0PUghi8ajjyi6Pw6jmrHFdtSA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 5/6] riscv: dts: thead: Add PVT node
+To: Drew Fustini <drew@pdp7.com>
+Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+	Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+	Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei
+	<wefu@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
+Content-Language: pl
+From: "Michal Wilczynski/Kernel (PLT) /SRPOL/Engineer/Samsung Electronics"
+	<m.wilczynski@samsung.com>
+In-Reply-To: <aDVxDJi0KkWXiPCK@x1>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250527085445eucas1p214ecce3d8b8769c58f3eab2b0b73df93
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250524211525eucas1p244963b69e0531c95a9052e4a7a1d1e01
+X-EPHeader: CA
+X-CMS-RootMailID: 20250524211525eucas1p244963b69e0531c95a9052e4a7a1d1e01
+References: <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
+	<CGME20250524211525eucas1p244963b69e0531c95a9052e4a7a1d1e01@eucas1p2.samsung.com>
+	<20250524-rust-next-pwm-working-fan-for-sending-v1-5-bdd2d5094ff7@samsung.com>
+	<aDVxDJi0KkWXiPCK@x1>
 
-On 27-05-25, 10:39, Miguel Ojeda wrote:
-> Sorry, to be clear, I meant it as a discussion, i.e. no need to send a
-> patch for this in a hurry!
 
-Yeah, I know you started it as a discussion, but I did like it. And
-honestly I didn't realize earlier that I can add this at the top of
-the whole block (and hide it too), otherwise that would have been part
-of my initial patch itself.
+W dniu 27.05.2025 o 10:00, Drew Fustini pisze:
+> On Sat, May 24, 2025 at 11:14:59PM +0200, Michal Wilczynski wrote:
+>> Add PVT DT node for thermal sensor.
+>>
+>> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+>> ---
+>>   arch/riscv/boot/dts/thead/th1520.dtsi | 11 +++++++++++
+>>   1 file changed, 11 insertions(+)
+>>
+>> diff --git a/arch/riscv/boot/dts/thead/th1520.dtsi b/arch/riscv/boot/dts/thead/th1520.dtsi
+>> index f24e12d7259fabcfbdc2dfa966d759db06684ab4..faf5c3aaf209b24cd99ddc377a88e08a8cce24fe 100644
+>> --- a/arch/riscv/boot/dts/thead/th1520.dtsi
+>> +++ b/arch/riscv/boot/dts/thead/th1520.dtsi
+>> @@ -648,6 +648,17 @@ padctrl_aosys: pinctrl@fffff4a000 {
+>>   			thead,pad-group = <1>;
+>>   		};
+>>   
+>> +		pvt: pvt@fffff4e000 {
+>> +			compatible = "moortec,mr75203";
+>> +			reg = <0xff 0xfff4e000 0x0 0x80>,
+>> +			      <0xff 0xfff4e080 0x0 0x100>,
+>> +			      <0xff 0xfff4e180 0x0 0x680>,
+>> +			      <0xff 0xfff4e800 0x0 0x600>;
+>> +			reg-names = "common", "ts", "pd", "vm";
+>> +			clocks = <&aonsys_clk>;
+>> +			#thermal-sensor-cells = <1>;
+>> +		};
+>> +
+>>   		gpio@fffff52000 {
+>>   			compatible = "snps,dw-apb-gpio";
+>>   			reg = <0xff 0xfff52000 0x0 0x1000>;
+>>
+>> -- 
+>> 2.34.1
+>>
+> I found that on my lpi4a that boot while hang after applying this patch.
+> I think that it is related to clocks as boot finished okay when using
+> clk_ignore_unused on the kernel cmdline. Do you happen have that in your
+> kernel cmdline?
 
-> It is just something we did for another example, but it is not a
-> guideline or anything yet (it may not be a good idea, in fact -- I was
-> hoping for others to chime in). Even if it were, there is no rush to
-> "fix" it :)
+Right I had that option enabled, that's why I've missed this. Thanks for
 
-That's why I didn't mark it as a fix, but just an improvement that I
-agree with :)
+letting me know ! I'll remove this option for future testing.
 
-Specially for this particular case, there is only function in this doc
-test, and so marking the whole block with cfg looks better.
+>
+> I need to investigate further to understand which clocks are causing the
+> problem.
 
--- 
-viresh
+
+No problem I can look into that as well, most likely towards the end
+
+of the week as I'm travelling and don't have access to the board.
+
+
+>
+> Thanks,
+> Drew
+>
