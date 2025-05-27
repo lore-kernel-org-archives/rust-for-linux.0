@@ -1,123 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA90B26FA4F;
-	Tue, 27 May 2025 13:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61E629A9;
+	Tue, 27 May 2025 13:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748350835; cv=none; b=DpFE5lofZ+wRPvsyKYUpVdYUN6ZEZ1YVAS/BzhcTXlX4x63hV59Vzaav4hp4ySs9Z+ao+jYVrGUXh4IOBRDm8uQ4cwZ1mxB7yvnfR71W8vsg4ofWEGWsxKQT5qhq6nJi9jEUfbQEIbFypYjfMUlhWChA7gXgiJk4EUYo3V/cLNg=
+	t=1748352817; cv=none; b=BADSl08PvhD216p449v+1M2A5Qjb6shN+eHi4n08DqCAiry0Gv3wuLB4qAh3kwHasAL5u9saSFDIFn2U71ZGfI13zmPEJoEzClKghNb624PzlkKlcTsGFAUAQObL/x/3i0h2ggIGaacmq+BOsqrxcwrmqC4I0NbuqNFY5z9ffP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748350835; c=relaxed/simple;
-	bh=rH0fS1EkuuKxnjq68htChxno+6ZqIneRHLz2oaYXSAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LTF8XOYCCWyyzc/o5vFREOdo3r02nO2JOalOZTHIU76pQYJC7h1u3LA9R2aTu4FpejXj2CUNpgDExIm6s9QwioFTZchsbOGe8CFys4dARwXsU6H/NpWlXkSAru24RSTK+p7vkZGuBpxIZ/UFXXmx96IcxLrzFnY9jIrRxi9fUCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCyiXWXF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748352817; c=relaxed/simple;
+	bh=Yreqtg9dXS+66jF3KiKpeR9AoTTlKwBiTIy4diGcyQY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HRgzrym6xjISj6jgdvGS6MNYPzwK/ZoGky6JK8Jf5S924UgV4uR8M0yLPMmZORwWcFTGW3OCgNMRiipPJ3XJEIYyMex7pAjuvLxqwMiipGA9uV3RiWjHC2WeFTj5VQzFYhF08Vh9Cr2C2Goyr6TIxVz990l/t9/yjrQDWJji/I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fIMZ3+5/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCyiXWXF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92C6C4CEE9;
-	Tue, 27 May 2025 13:00:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fIMZ3+5/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207A0C4CEEB;
+	Tue, 27 May 2025 13:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748350835;
-	bh=rH0fS1EkuuKxnjq68htChxno+6ZqIneRHLz2oaYXSAU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SCyiXWXF4GD5OzmsDdQm2QCmHs7Xi1pg9wMxuwnVVw/8vkuYASFSMMHdip77oyxSj
-	 tG5te1IK4mq50ciNIrEYi85zEql1zCDdnDDVCGPt1CbiJ9Rs6eW8JrIErnzB21A8E+
-	 q3uNIMmCP+OaD/aBHdF70fX0jjuiilWmXwyIK0MFA6Kt618+D5QeN/cAztiUxPldF1
-	 I8rnRBcwKcXHPPD5xL2q9zLQ5KVR3eqODR82grqgqX2zRz9ZEyFGW9dLjjhOVvtaAo
-	 IKypfo7BvCathejm9qT0X/ls7XOmb6/+Z2jz0gwXOb0ShLBLhgxULyVnX7LEIFYrop
-	 h4+pKxO03RMJA==
-Date: Tue, 27 May 2025 15:00:27 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: "Michal Wilczynski/Kernel (PLT) /SRPOL/Engineer/Samsung Electronics" <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Drew Fustini <drew@pdp7.com>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH RFC 2/6] pwm: Add Rust driver for T-HEAD TH1520 SoC
-Message-ID: <aDW3a1sjeWWfwaq8@cassiopeiae>
-References: <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
- <CGME20250524211521eucas1p1929a51901c91d1a37e9f4c2da86ff7b0@eucas1p1.samsung.com>
- <20250524-rust-next-pwm-working-fan-for-sending-v1-2-bdd2d5094ff7@samsung.com>
- <aDMHEcpJn8nyJHFV@pollux.localdomain>
- <db8e34c9-daff-43d9-b79b-8ec1bc98a00f@samsung.com>
+	s=k20201202; t=1748352817;
+	bh=Yreqtg9dXS+66jF3KiKpeR9AoTTlKwBiTIy4diGcyQY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=fIMZ3+5/0ZqRdXA3U2cwAYmSlVzYIb3hJEsVnFRsN7eOilKcfNioI1MQJQiN2E8WJ
+	 3Tm7PatE7f3l8xFMGR4SQPj7iEUjOnjtRS3tGiv5R3izTRT0rKZhO94eruptlTv+nR
+	 RaBfMs131bLmk0HCm4Z7gR7WL8PHvMGA9yk+kYv59rFJ4wDM4GOdhhfDfpVu9+Kd6r
+	 jCgI0cPIY0s3HqytDx4pLOzrzsglE7LDTCb5ShL6VLgDPn0JXllFZeYhbzplAJHG6V
+	 HRxvxCumTcO/1s2NOQBTwJSr6O9fCoqk/VsPC7wtUokAuhjmZ/tGM7CZvHsofll4y6
+	 ox5ZiV2hBovPA==
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-60634f82d1aso613472eaf.3;
+        Tue, 27 May 2025 06:33:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUkyoSJ6jaaGV5LiJBqqPh7rw21icfqwhNHa7EuZsya7u9DdMwioOIPBQxsqY/GHbgL1gDHinkiS/k=@vger.kernel.org, AJvYcCUmI9bpKsU8gXRiSI/91pf9CzZMuZAglg9ArvL1dolQK48tQFo+JJQQW5F/Kc9WLjctC2suiilHunA3cCv6myo=@vger.kernel.org, AJvYcCVeRkZm4D7BtIRfZQLUhP/9rC54pWqrLnRlTYyIVMouVxz1XmRD+X4qKNi1AA6C7Fa8uwWrGkUkLn54mkw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyouD4LQTii9BIviHcngA/Sj3XSjxgozRjyvD3UeZrRIyIvyipB
+	S3sHuHNJ/iotGhUHRsvBjyGFkeVPF0LiRgqgdn6wNpWcJlW+bVHG5VGIw46+6fk6Z/uVANFFcJc
+	rSBufk6gDThbshZzp/vwHW13aL0LEgLo=
+X-Google-Smtp-Source: AGHT+IFau92567au2cPuYAeAGw2urSGzecPQifSVDg7w8zBs1XpWLq+I5vuHek99lyWJrrswIdCtvq7ShRJx7g096Yc=
+X-Received: by 2002:a05:6808:6f97:b0:404:ee1a:2057 with SMTP id
+ 5614622812f47-40646845fc8mr6864503b6e.29.1748352816387; Tue, 27 May 2025
+ 06:33:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <db8e34c9-daff-43d9-b79b-8ec1bc98a00f@samsung.com>
+References: <9d93c783cc4419f16dd8942a4359d74bc0149203.1748323971.git.viresh.kumar@linaro.org>
+In-Reply-To: <9d93c783cc4419f16dd8942a4359d74bc0149203.1748323971.git.viresh.kumar@linaro.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 27 May 2025 15:33:25 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iSnZkEOmmeVnLJ=f+EQB5Xsa8yZY5g-0kEZm+Rovdnag@mail.gmail.com>
+X-Gm-Features: AX0GCFvTqkJYSrSEu4gGBevBj1ylrAXBrfzJpN8JKF5VCANJ8k_C8tCnFZbj2o0
+Message-ID: <CAJZ5v0iSnZkEOmmeVnLJ=f+EQB5Xsa8yZY5g-0kEZm+Rovdnag@mail.gmail.com>
+Subject: Re: [PATCH] rust: opp: Move `cfg(CONFIG_OF)` attribute to the top of
+ doc test
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 27, 2025 at 02:44:57PM +0200, Michal Wilczynski/Kernel (PLT) /SRPOL/Engineer/Samsung Electronics wrote:
-> W dniu 25.05.2025 o 14:03, Danilo Krummrich pisze:
-> > On Sat, May 24, 2025 at 11:14:56PM +0200, Michal Wilczynski wrote:
-> >> diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-> >> new file mode 100644
-> >> index 0000000000000000000000000000000000000000..4665e293e8d0bdc1a62a4e295cdaf4d47b3dd134
-> >> --- /dev/null
-> >> +++ b/drivers/pwm/pwm_th1520.rs
-> >> @@ -0,0 +1,272 @@
-> >> +// SPDX-License-Identifier: GPL-2.0
-> >> +// Copyright (c) 2025 Samsung Electronics Co., Ltd.
-> >> +// Author: Michal Wilczynski <m.wilczynski@samsung.com>
-> >> +
-> >> +//! Rust T-HEAD TH1520 PWM driver
-> >> +use kernel::{c_st
-> >> +
-> >> +struct Th1520PwmChipData {
-> >> +    clk: Clk,
-> >> +    iomem: kernel::devres::Devres<IoMem<0>>,
-> > Why IoMem<0>? If you put the expected memory region size for this chip instead
-> > all your subsequent accesses can be iomem.write() / iomem.read() rather than the
-> > fallible try_{read,write}() variants.
-> The size of the memory region is not known at the compile time. Instead 
-> it's configured
-> via Device Tree. I'm not sure why it should work differently in Rust ?
+On Tue, May 27, 2025 at 7:33=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
+>
+> Move the `#[cfg(CONFIG_OF)]` attribute to the top of the documentation te=
+st
+> block and hide it. This applies the condition to the entire test and impr=
+oves
+> readability.
+>
+> Placing configuration flags like `CONFIG_OF` at the top serves as a clear
+> indicator of the conditions under which the example is valid, effectively
+> acting like configuration metadata for the example itself.
+>
+> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> ---
+> Rafael,
+>
+> Sorry for the trouble, one more patch to apply :(
 
-There are two sizes:
+No problem, applied.
 
-  (1) The size of the actual MMIO region, which comes from the device-tree.
-  (2) The size of the MMIO region that the driver knows it requires to work.
+Thanks!
 
-Let's say your driver uses registers with the following offsets.
-
-REG0_OFFSET = 0x0
-REG1_OFFSET = 0x4
-REG2_OFFSET = 0x100
-
-This means that the size of (2) is 0x100 + width of REG2 (let's say 0x4), which
-means that you can safely define your MMIO memory type as IoMem<0x104>.
-
-If you subsequently call pdev.ioremap_resource_sized() it will fail on runtime
-if the MMIO region defined in the device-tree does not have a size of at least
-0x104, i.e. (1) < (2). That's not a problem because if (1) < (2) your driver
-can't work anyways.
-
-In return, you can call the non-try variant of the read / write methods of
-IoMem, which do boundary checks on compile time and hence are infallible.
-
-Note that this does not prevent you to still call the try variants of read /
-write in case you also have to deal with dynamic offsets that are not known at
-compile time.
-
-I hope this helps.
-
-- Danilo
+>  rust/kernel/opp.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
+> index c2bdc11f3999..a566fc3e7dcb 100644
+> --- a/rust/kernel/opp.rs
+> +++ b/rust/kernel/opp.rs
+> @@ -575,6 +575,7 @@ extern "C" fn config_regulators(
+>  /// frequency.
+>  ///
+>  /// ```
+> +/// # #![cfg(CONFIG_OF)]
+>  /// use kernel::clk::Hertz;
+>  /// use kernel::cpumask::Cpumask;
+>  /// use kernel::device::Device;
+> @@ -582,7 +583,6 @@ extern "C" fn config_regulators(
+>  /// use kernel::opp::Table;
+>  /// use kernel::types::ARef;
+>  ///
+> -/// #[cfg(CONFIG_OF)]
+>  /// fn get_table(dev: &ARef<Device>, mask: &mut Cpumask, freq: Hertz) ->=
+ Result<Table> {
+>  ///     let mut opp_table =3D Table::from_of_cpumask(dev, mask)?;
+>  ///
+> --
+> 2.31.1.272.g89b43f80a514
+>
+>
