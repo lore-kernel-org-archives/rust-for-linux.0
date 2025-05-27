@@ -1,118 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61E629A9;
-	Tue, 27 May 2025 13:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3435D274FD9;
+	Tue, 27 May 2025 13:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748352817; cv=none; b=BADSl08PvhD216p449v+1M2A5Qjb6shN+eHi4n08DqCAiry0Gv3wuLB4qAh3kwHasAL5u9saSFDIFn2U71ZGfI13zmPEJoEzClKghNb624PzlkKlcTsGFAUAQObL/x/3i0h2ggIGaacmq+BOsqrxcwrmqC4I0NbuqNFY5z9ffP4=
+	t=1748353897; cv=none; b=ClguTCSov6jEzU6h8L0UcndsEegDRBE2HYBUiKLuyn+r/KlIVcECAxfxjCEckZOEcQzqxO8rKVk3V0HrMCOTe6WG21ITIupv96wO6c1vOxjfcO/m/NpnVN20QpIle1wiscuIV0iJqSMTkmYMlIjlEgvIUvNa+mzi7bwf4xMb6JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748352817; c=relaxed/simple;
-	bh=Yreqtg9dXS+66jF3KiKpeR9AoTTlKwBiTIy4diGcyQY=;
+	s=arc-20240116; t=1748353897; c=relaxed/simple;
+	bh=7F1ee+yy/Njni7Dw2zSyIXqtdK6yXJhzoen+bfGcQ68=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HRgzrym6xjISj6jgdvGS6MNYPzwK/ZoGky6JK8Jf5S924UgV4uR8M0yLPMmZORwWcFTGW3OCgNMRiipPJ3XJEIYyMex7pAjuvLxqwMiipGA9uV3RiWjHC2WeFTj5VQzFYhF08Vh9Cr2C2Goyr6TIxVz990l/t9/yjrQDWJji/I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fIMZ3+5/; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=ezqWbBTNPUmuOTgOUNZMPjpNWqbISrWk3PYMwOF7+uUjDX+Lm7DoEqohUB4IXBnzSEUus1uYWC3e+sZQ8dWv96eRWAoJ8sogzwxEa0dbXNgNdJ796jaX8skH5ys260eI+WPaefzDnqqrWSLwGqn608Sw/UoVlEb/BnG0x4KeuaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PsA3NYur; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fIMZ3+5/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207A0C4CEEB;
-	Tue, 27 May 2025 13:33:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748352817;
-	bh=Yreqtg9dXS+66jF3KiKpeR9AoTTlKwBiTIy4diGcyQY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fIMZ3+5/0ZqRdXA3U2cwAYmSlVzYIb3hJEsVnFRsN7eOilKcfNioI1MQJQiN2E8WJ
-	 3Tm7PatE7f3l8xFMGR4SQPj7iEUjOnjtRS3tGiv5R3izTRT0rKZhO94eruptlTv+nR
-	 RaBfMs131bLmk0HCm4Z7gR7WL8PHvMGA9yk+kYv59rFJ4wDM4GOdhhfDfpVu9+Kd6r
-	 jCgI0cPIY0s3HqytDx4pLOzrzsglE7LDTCb5ShL6VLgDPn0JXllFZeYhbzplAJHG6V
-	 HRxvxCumTcO/1s2NOQBTwJSr6O9fCoqk/VsPC7wtUokAuhjmZ/tGM7CZvHsofll4y6
-	 ox5ZiV2hBovPA==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-60634f82d1aso613472eaf.3;
-        Tue, 27 May 2025 06:33:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUkyoSJ6jaaGV5LiJBqqPh7rw21icfqwhNHa7EuZsya7u9DdMwioOIPBQxsqY/GHbgL1gDHinkiS/k=@vger.kernel.org, AJvYcCUmI9bpKsU8gXRiSI/91pf9CzZMuZAglg9ArvL1dolQK48tQFo+JJQQW5F/Kc9WLjctC2suiilHunA3cCv6myo=@vger.kernel.org, AJvYcCVeRkZm4D7BtIRfZQLUhP/9rC54pWqrLnRlTYyIVMouVxz1XmRD+X4qKNi1AA6C7Fa8uwWrGkUkLn54mkw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyouD4LQTii9BIviHcngA/Sj3XSjxgozRjyvD3UeZrRIyIvyipB
-	S3sHuHNJ/iotGhUHRsvBjyGFkeVPF0LiRgqgdn6wNpWcJlW+bVHG5VGIw46+6fk6Z/uVANFFcJc
-	rSBufk6gDThbshZzp/vwHW13aL0LEgLo=
-X-Google-Smtp-Source: AGHT+IFau92567au2cPuYAeAGw2urSGzecPQifSVDg7w8zBs1XpWLq+I5vuHek99lyWJrrswIdCtvq7ShRJx7g096Yc=
-X-Received: by 2002:a05:6808:6f97:b0:404:ee1a:2057 with SMTP id
- 5614622812f47-40646845fc8mr6864503b6e.29.1748352816387; Tue, 27 May 2025
- 06:33:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PsA3NYur"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b26ed340399so355760a12.2;
+        Tue, 27 May 2025 06:51:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748353895; x=1748958695; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7F1ee+yy/Njni7Dw2zSyIXqtdK6yXJhzoen+bfGcQ68=;
+        b=PsA3NYur8KJIrZv559PYgIeX2mhFNpgo7c3xZTqtCsr+bjIjuNQACrPMOzgjTAldaJ
+         0jC2+Vv5y1AKDxlAXt3K4HpYOgaXOGqIt/kJRYsEl7xKRak4i/dnFkMc5Mo/AbGMsxhs
+         KjGINLQAsYlm3mHxVrGG4JYfKyC0xOGd0Os6ARUvzZgTAP/G5xldz7TUikzrbHLDyONR
+         yvGFUm2H6LosBk2mXhRhDeuy6hpgTE6zR2ZBgZXYp6cNXDPYRh9WES/+Ggk8LHQbeyMu
+         N7y0DFUULJTLxR/+UhKdTFRHKw6cTNCZE+KIBlplBjMgOWDSyd7nkBiBrbwtXIeam8cB
+         TqGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748353895; x=1748958695;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7F1ee+yy/Njni7Dw2zSyIXqtdK6yXJhzoen+bfGcQ68=;
+        b=g9E+hg+c+ho8G9LDYFqWtu8mAkyzyT40OvPBEwfF3wKdprALe9GVd49/jdtMQpeFVM
+         oBxES3+IHpYpyFyKvEvEeuQWSi+t3nLduXhQCXjAgrT/VgKMSiiw2GkgAy6qpKyxd2tX
+         EEaZSOZM9E4MdYRaUFQUJn4mWvdEYJIrY4EOQzFP++xIJtmFFWobf6MchqKfi+Mh9RKz
+         b42VOlmk/pGrbxAHuM7uhgolw5Xy5MxNr/ghyrsEI1P3fxPaPrRKfeKInlxvSAffPOBJ
+         ullMfzwxZe6PEUb7iqtqftBoFukLR9U0IrIt3H6uy7k2CbPcuQ8FzmOTzc3UlA0DkW9o
+         SO6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVET4+Pn34GeonO/HRDWVZBLtK3SYS3Dh8V1UhU9HfG2P6LRk3jLwtySkt7u6ORH1MWSXtFLI0fxLwniz40CP8=@vger.kernel.org, AJvYcCX5S/zamVEwk2HWT7LA6y5eL4Blug/dSVl8CO87yEqRFY06BP47rjEudqyp6kzVF4eLxmuHypEM3V1FVG6Xt2tO@vger.kernel.org, AJvYcCXvJSVQteSAwXD51Ws+o7oy06553DXV6ylxMOFgjrng8vTg1khY8DynMi3SnKHyNxlbAQ/FzHU4NhUmAiM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYIG6ctxoTfq5yZT7qvUQqAlt9s7yXkChPzpbcLyKmu6PN7VNH
+	l/yTxkpLMWB1r5eF/4nKZ2Mf50Pz1ahaHnOxTDmUn1o/l9SJ+ItUftdAMZnxUikmgeaTPzdiNOY
+	OTbdSgd621mq/qTnTBZrRf88t//41I+k=
+X-Gm-Gg: ASbGncumfSFYQv6I67olSQvYpwZNhOba0lVC4WgbA25WLrThIkSKFr9RUSi7zZnI8Uw
+	VsuNjCJZ87EXtAotrCQaud5v5YcNK1jPpO2S+2ztK3ZibXUPdwo1SZcXgW6kb2GmMv8ceeUeayH
+	xepNgVNSUHCXiUTE10XBPueZo+Oe7AnwDBY3hOIgyBCNM=
+X-Google-Smtp-Source: AGHT+IEtIQ1z32zAY2NEFKsK2DZNLLbwjhnGL64WMVavBityRy9+1/bAxBjuVOOV9i2JKI6LmOxTYNC0DZF59fX+M1Y=
+X-Received: by 2002:a17:90b:17cb:b0:305:5f20:b28c with SMTP id
+ 98e67ed59e1d1-3110f33ecacmr7596771a91.5.1748353895332; Tue, 27 May 2025
+ 06:51:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <9d93c783cc4419f16dd8942a4359d74bc0149203.1748323971.git.viresh.kumar@linaro.org>
-In-Reply-To: <9d93c783cc4419f16dd8942a4359d74bc0149203.1748323971.git.viresh.kumar@linaro.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 27 May 2025 15:33:25 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iSnZkEOmmeVnLJ=f+EQB5Xsa8yZY5g-0kEZm+Rovdnag@mail.gmail.com>
-X-Gm-Features: AX0GCFvTqkJYSrSEu4gGBevBj1ylrAXBrfzJpN8JKF5VCANJ8k_C8tCnFZbj2o0
-Message-ID: <CAJZ5v0iSnZkEOmmeVnLJ=f+EQB5Xsa8yZY5g-0kEZm+Rovdnag@mail.gmail.com>
-Subject: Re: [PATCH] rust: opp: Move `cfg(CONFIG_OF)` attribute to the top of
- doc test
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250526162429.1114862-1-y.j3ms.n@gmail.com> <DA6XI37GNRHE.1FN5893KE2OIG@kernel.org>
+In-Reply-To: <DA6XI37GNRHE.1FN5893KE2OIG@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 27 May 2025 15:51:22 +0200
+X-Gm-Features: AX0GCFsfs3QdZvA4icfA5wPLKbrCfW_02pE3_eM6-6sXiZ7RxS8FT94BATqtVvY
+Message-ID: <CANiq72=ue5Fw+7TPPpRcK+0Zk4KTRhH+5YnAY8BQQVX_4YUWqA@mail.gmail.com>
+Subject: Re: [PATCH] rust: kunit: use crate-level mapping for `c_void`
+To: Benno Lossin <lossin@kernel.org>
+Cc: Jesung Yang <y.j3ms.n@gmail.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 27, 2025 at 7:33=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
+On Tue, May 27, 2025 at 2:06=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
 >
-> Move the `#[cfg(CONFIG_OF)]` attribute to the top of the documentation te=
-st
-> block and hide it. This applies the condition to the entire test and impr=
-oves
-> readability.
->
-> Placing configuration flags like `CONFIG_OF` at the top serves as a clear
-> indicator of the conditions under which the example is valid, effectively
-> acting like configuration metadata for the example itself.
->
-> Suggested-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
-> Rafael,
->
-> Sorry for the trouble, one more patch to apply :(
+> We don't need to explicitly import it, as `c_void` is present in the
+> prelude since 3d5bef5d47c3 ("rust: add C FFI types to the prelude").
 
-No problem, applied.
+Hmm... But the prelude isn't there yet in this patch, no? i.e. our
+prelude is (so far) not a "real prelude" that gets injected
+automatically. So I guess you mean importing the prelude instead.
+
+(It is imported in the KUnit series anyway, so it will llikely be
+there either way)
 
 Thanks!
 
->  rust/kernel/opp.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-> index c2bdc11f3999..a566fc3e7dcb 100644
-> --- a/rust/kernel/opp.rs
-> +++ b/rust/kernel/opp.rs
-> @@ -575,6 +575,7 @@ extern "C" fn config_regulators(
->  /// frequency.
->  ///
->  /// ```
-> +/// # #![cfg(CONFIG_OF)]
->  /// use kernel::clk::Hertz;
->  /// use kernel::cpumask::Cpumask;
->  /// use kernel::device::Device;
-> @@ -582,7 +583,6 @@ extern "C" fn config_regulators(
->  /// use kernel::opp::Table;
->  /// use kernel::types::ARef;
->  ///
-> -/// #[cfg(CONFIG_OF)]
->  /// fn get_table(dev: &ARef<Device>, mask: &mut Cpumask, freq: Hertz) ->=
- Result<Table> {
->  ///     let mut opp_table =3D Table::from_of_cpumask(dev, mask)?;
->  ///
-> --
-> 2.31.1.272.g89b43f80a514
->
->
+Cheers,
+Miguel
