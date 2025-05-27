@@ -1,91 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF0F2641CA;
-	Tue, 27 May 2025 12:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6F6253F15
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 12:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748347613; cv=none; b=KX/P6FxjPxKAeAx8sRyrhF8PSFxRXHrzjmQP8SoZhjnl7tt75d8IalptZXQr7m/gXtO44/54wbPNVW2NbJHNZrBhwcVrDNPLRwNnWvVPVKPp4xRo/tcJEXe1rYH0KVHFaVW9ceovhYI2K3qCzyeYDF5IWKiFt10J5qBjbjNKyrc=
+	t=1748349278; cv=none; b=gNBs2DwP5h4H8V3ymfERT7VadnzvgjJQi2Svjrqt9Z85f5sgRqNQbeLZPRMIJn/00sL/2M2ZYkUu7wsWx721rDi07aBzLBDaZojhrEQjwxu/vn7P5v/1XyzLtOXuiL9f1hFhSIqmkb6Db+XUwrx5KWvLbgcZfdfFSLH0Ky+fcUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748347613; c=relaxed/simple;
-	bh=RXDbnBymAlSsSIpER/QV+lZ97Yk/cvFyNkxvhvW7rhw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=YpW/P4UDR1+HeW3VgVPPxFt7slNPHWRobvEifrH458/iM0gaJetIqAW9d9rf5fMsmdPZly1YySquuB5IFLp7jFAhCcei/u6RdKgunMr6y39xWAeK8i9t0ti8NODLYBzYNERHbB1jgldKeqpV8kaatCNe3/cMbpG7FCrCHxJbs4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LF45kAWw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748349278; c=relaxed/simple;
+	bh=zm8f+XbfBaBm9TWLCzudEh0969smWg4jpHxzciP3nts=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IxbuXx7ymGZ2Az5og4+LM5u3KjF0nOY+dw9YjJkJKh6v7eVpTnxAavnE7uI3R/rBMNE3lW+MSnDLsMGIursnqZGjiz6Fe4EyOvkjjnLTISexws4uKl6YEydnFhVc6pX+k7WFMk3KuAiPioith+4/i3Td9vAVT1BLUTzDCyzFcMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IU6TnJpT; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LF45kAWw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F67C4CEE9;
-	Tue, 27 May 2025 12:06:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748347613;
-	bh=RXDbnBymAlSsSIpER/QV+lZ97Yk/cvFyNkxvhvW7rhw=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=LF45kAWwqzc+RzdywBYfELSXxD3ncUbPKHKWc8cE5JEEYkptAnlAZomEl+WRn1ZRt
-	 yhU0t9RVEZOYEtF+3Nl4VI7XLziO7byu1h/mZyQisVblBxBU+3Vvn41PvztXeFNRF8
-	 e3/MJ7TpkIFjdK1N8E+P93ESX9cf2hGQP+OCiIGR/e0bpSJmEsrayrkfwLKxHfXjdu
-	 fxaCkr3XEBzk+ZvcPHl7QaQA4739SamxajuurWPGSnuiSGvVJYj5t/kJpIMczXUR8m
-	 NDhRfVkknaNRCx4dkxSvYYo4E3RsSomCxQhRMt+wCh94RDxF3DzCMpeq3bLcSsCl/d
-	 iML0sm2dp1PWA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IU6TnJpT"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a4bafbb1abso2135434f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 05:34:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748349275; x=1748954075; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7EZfR79TUOD74W0kOihVyn9Eguwj1PW4Tc4XDWwTRXs=;
+        b=IU6TnJpTRt4hFFsKsyCKOc4YX7xx3bPEVaf1HYmALoZaSY57iExs7GxL1xPf2rv7xm
+         Hl6S8ILJSNVrornhcKRl5OcUheH9HU8eEM87KUM2njoIF7xEDm7h1wcSxT0TjIeyS1CK
+         BQAZgR2G/gUtohBNCy2wFIUr7BrtGX1d6CRet+htkLvjuTWtprwwdp1ojP09JKvHElqU
+         KVCqf36Umulv0pSaVAD0iVl3vY8miCAXBAqviL+WkSWIyUsBQbVAZji45xbSBsnRxcWI
+         tbLL2BUJKKZWrKnoiVK2UrLWHbn31wFCGhI+SllIfTpDIzMgEFmYF34bNJE74UdBATQm
+         w9Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748349275; x=1748954075;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7EZfR79TUOD74W0kOihVyn9Eguwj1PW4Tc4XDWwTRXs=;
+        b=bwu+3ZgZEUvcGIdAkFlvspGPXGYXsAJb4lEmFyDCfkW0WnxTTkX1FbfMDtO0M0vkSd
+         aFq1RhsrCmoj1ab4dICk3yWzk9WGRWWUzgjH0vxVTu5IjY8DsFEsJj0BSgsn9Xt+q1Ot
+         sv6JLIJsJUqCDjxCW2YNReMxmgJI7z7FnghMstOdWNE/b+64o6a950j5cow4dn9Zoy5D
+         NYN/6y6lAtu8JJ0fn4oaZ6L9l85avYzdfIr1a4d+m8W1JJYSKletxdx89f/GL4+N/kqY
+         KY4uInE2cxxAju/AoG/6gGQP9NQ5FrvHVpegT1UWtQplCNNFXUbSDHBMT5TZXh5ScIf2
+         ViAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUl20jLYacydgp9LaieXvv1021j1KEqjaGFp43IK+9ZprVbjl1k/jnkk/Fw4YvU9W0bFKNDFbckWyBizyOoBw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9OrlmY0nUo0JnlxItCIKz4bkPjftXFdZOD+wKVq3xD+3kaKf7
+	8kui066PZ2qa053cQNDuQiopIXbAA8zwDq5SXzqcUSaZbCrpHn0czvVDePElkflYlmAKItRGhtq
+	qks3PtAnO4Qwt7qw8wA==
+X-Google-Smtp-Source: AGHT+IHbTzUnbD4QU88pHfVKcUpbZQ3IQk3dzdmFq1Dq60S9+kjTKanyLuqcIWdj/XWLaoAzWu4qIApdkHjXGLI=
+X-Received: from wmrm3.prod.google.com ([2002:a05:600c:37c3:b0:442:cab2:15c3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:3111:b0:3a4:c713:7d8 with SMTP id ffacd0b85a97d-3a4cb44925cmr10348616f8f.16.1748349275276;
+ Tue, 27 May 2025 05:34:35 -0700 (PDT)
+Date: Tue, 27 May 2025 12:34:21 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 May 2025 14:06:48 +0200
-Message-Id: <DA6XI37GNRHE.1FN5893KE2OIG@kernel.org>
-To: "Jesung Yang" <y.j3ms.n@gmail.com>, "Brendan Higgins"
- <brendan.higgins@linux.dev>, "David Gow" <davidgow@google.com>, "Rae Moar"
- <rmoar@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>
-Cc: <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: kunit: use crate-level mapping for `c_void`
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250526162429.1114862-1-y.j3ms.n@gmail.com>
-In-Reply-To: <20250526162429.1114862-1-y.j3ms.n@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAE6xNWgC/33NTQ6CMBAF4KuYrh3Tln9X3sO4gHYGmgglLRIJ4
+ e4WNmokZlbvJe+bmXl0Bj07H2bmcDTe2C6E+Hhgqim7GsHokJnkMuGxjMEPrlP9BORsC4+wBkF
+ S87TiSmtkYdc7JPPczOst5Mb4wbppezGKtf2njQIEUJFHhFKkeVJeamvrO56UbdnKjfKTKPYIC RwyTKlUpeIV8R8iehPh9ogoEHmi0iwjHVMhvohlWV6OZAedOQEAAA==
+X-Change-Id: 20250424-strncpy-from-user-1f2d06b0cdde
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1944; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=zm8f+XbfBaBm9TWLCzudEh0969smWg4jpHxzciP3nts=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoNbFSf7Ncb06wiBcurbUfrWLPVhBsY7nIFW6HR
+ UrWTborWZGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaDWxUgAKCRAEWL7uWMY5
+ Rr9xEACDBjeTNDz0Qlul7AMJCxWMa8EOeslJUADgwBwEwbLVi0ih6g1d9qFq5QCkRs5gYnKqRIz
+ kHDfJeaFTLsWte7DuQxlOApRjwbb1RCMTlaqwqM3R5L/H3DemHFpJ+LV/mGAEH8OoCA9h7LNckt
+ Wys6eZGZIdARVuTYReYH3dKixqA7sDXPkTQnd2W+5xJ7AGKB7ZB1eSGETEiBFt2ZsanmXmQoEPX
+ jvs2veDZOX2LDaNE8VugubVuTB+1VEJ47ppDDjdaGBMTvZtt7d6J4tbRXYiWDHIlzJBqCoav1MM
+ G3TEq/n5Lzx6lsF7WEgt6az1iNsPMtR9i3bCUc8yCeyaobqhxINOMVeAm33KMK1kTmptyFtaCCp
+ SVONokpxt0G8GaABZqoEfywZ/RZn2L/ZhFQjQr6MgvQlLfNp6HauJwVe8kFv009NUjUekpYfuEk
+ nmU489iN8WF4trihlVA1ciSH9+n+wCr3E9XY5n0j4O4FYZC18IXEKbMiKHlW0mIn/SYwJUuRzYP
+ ITP5cSLgVdxSb3KWmh1hNpNnFvNtE4PUFC4d7qAI/um4CIA8pi8fBfC5btm5la4aLafsGhgvTSG
+ YGY4xRFe042UquzV8E+s/bWtuhFltbWrsoBvTP+Iq8Urbr4rFXt9aEOfDnMHzBB+E9I+3n4294y CgONx6gYrydXu7A==
+X-Mailer: b4 0.14.2
+Message-ID: <20250527-strncpy-from-user-v4-0-82168470d472@google.com>
+Subject: [PATCH v4 0/2] strncpy_from_user for Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon May 26, 2025 at 6:24 PM CEST, Jesung Yang wrote:
-> Use `kernel::ffi::c_void` instead of `core::ffi::c_void` for consistency
-> and to centralize abstraction.
->
-> Since `kernel::ffi::c_void` is a transparent wrapper around
-> `core::ffi::c_void`, both are functionally equivalent. However, using
-> `kernel::ffi::c_void` improves consistency across the kernel's Rust code
-> and provides a unified reference point in case the definition ever needs
-> to change, even if such a change is unlikely.
->
-> Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
-> ---
->  rust/kernel/kunit.rs | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-> index 81833a687b75..bd6fc712dd79 100644
-> --- a/rust/kernel/kunit.rs
-> +++ b/rust/kernel/kunit.rs
-> @@ -6,7 +6,8 @@
->  //!
->  //! Reference: <https://docs.kernel.org/dev-tools/kunit/index.html>
-> =20
-> -use core::{ffi::c_void, fmt};
-> +use core::fmt;
-> +use kernel::ffi::c_void;
+There is currently no easy way to read NUL-terminated strings from
+userspace. Trying to use the ordinary read function on an array of the
+maximum length doesn't work because it could fail with EFAULT when the C
+string is shorter than the maximum length. In this case,
+strncpy_from_user is better because it doesn't return EFAULT even if it
+encounters a page fault on bytes that are after the NUL-terminator but
+before the maximum length.
 
-We don't need to explicitly import it, as `c_void` is present in the
-prelude since 3d5bef5d47c3 ("rust: add C FFI types to the prelude").
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v4:
+- Swap order of arguments to raw_strncpy_from_user, and rename buf to
+  dst.
+- Update safety comment on CStr::from_bytes_with_nul_unchecked.
+- Add `` in "This implies that len == dst.len() < buf.len()."
+- Pick up Reviewed-by tags.
+- Link to v3: https://lore.kernel.org/r/20250505-strncpy-from-user-v3-0-85c677fd4f91@google.com
 
-With the import removed:
+Changes in v3:
+- Remove pub from raw_strncpy_from_user.
+- Mention that some data may have been copied on EFAULT.
+- Add more comments to strcpy_into_buf about tricky cases.
+- Rewrite documentation of strcpy_into_buf.
+- Add documentation alias.
+- Pick up Reviewed-by tags.
+- Link to v2: https://lore.kernel.org/r/20250429-strncpy-from-user-v2-0-7e6facac0bf0@google.com
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+Changes in v2:
+- Rename the raw wrapper around strncpy_from_user to raw_strncpy_from_user.
+- Add a more convenient helper on top that adds the missing
+  NUL-terminator when necessary.
+- Link to v1: https://lore.kernel.org/r/20250424-strncpy-from-user-v1-1-f983fe21685a@google.com
 
 ---
-Cheers,
-Benno
+Alice Ryhl (2):
+      uaccess: rust: add strncpy_from_user
+      uaccess: rust: add UserSliceReader::strcpy_into_buf
+
+ rust/kernel/uaccess.rs | 89 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 88 insertions(+), 1 deletion(-)
+---
+base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
+change-id: 20250424-strncpy-from-user-1f2d06b0cdde
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
