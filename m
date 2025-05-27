@@ -1,79 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-24424.protonmail.ch (mail-24424.protonmail.ch [109.224.244.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F1D2F5E;
-	Tue, 27 May 2025 20:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371AA1FCFF8;
+	Tue, 27 May 2025 20:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748378326; cv=none; b=CaadZdQg2oMt7hBruXcNfrhAjqZ7XWFChxm13E/+Y6djfY8aWcyn8ksMNw9lBwmt7ssbfcsxt8Yqfc0b+MU5lTdKgISzRDmCq2xLTCPmW7J6soJGcq59rcNAjBWrqcQUUdRZELWmuALo5RWw1rm/hwOa0KCN02cLtVnl2q1WUuM=
+	t=1748378950; cv=none; b=l8Km/+KAIVM/e3R8yEs/weS2spFbgXs+xxixStmZaolT3wO8SHrC8GiswfqJm6G4vuG8bKq0kJoyokXLowQRTdikwuh6g7p4SiIDEO6rBUqVYMdTd0LGgZz80wpkquNIDpFDDcVKVhWFvtsIk38nXBQZ23zPz/ICq2bOetFMtlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748378326; c=relaxed/simple;
-	bh=BapnUP1IoIf8nYjTuVXWEkLsnc2IMqI9Qe2u8wk5ZAw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Hs4LiLG9uqBUO1tJWTfbzy18i/P50ZRqrreP5yO7dTOf5JLoaamTnhoyI4R7vJDaLxM6E8CfqiqHaSIU8M31W9fTds0A677uQ8Dai3LulfRGt/ytuDlCIf65oC3v+TU/nm9dgtkE1iXYhS9ZCG3Lx+ZNTqDSQ2RfGkGRpGQeb+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgJOVINO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748378950; c=relaxed/simple;
+	bh=EuBia1JKE9lcqZQ6RSMNw9YtLgSStqd1ny1U8ZAlM/w=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=bKzFh+nivpe9k0wdDdc/T+0I6O8zB+xwDkoQsyVYK9CC45RWnZnpl7dusFsmTcH+blKXqeBxFmKhr5bnVNkgChd2VrLjA6fGizq8xAxEt8xhdB4ChPIusveON9WfeAvDZeviNQATOmpWayIHaeSnpfp2A+hsF/VtwiBQudHxjD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=m/dxZvkS; arc=none smtp.client-ip=109.224.244.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgJOVINO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B1DC4CEEB;
-	Tue, 27 May 2025 20:38:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748378325;
-	bh=BapnUP1IoIf8nYjTuVXWEkLsnc2IMqI9Qe2u8wk5ZAw=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=tgJOVINOaOVk17qThB05ojD2VR+ETal4D8BIgtU2LUXr3qWUDjjIEJ42/YUAkDRyN
-	 4lUbEGJJThXPhZfXZybqpOSXLyvnDE+4EiT/YGTOe3i5/KTj3NaFPv3pJWMGqunpf9
-	 H+wBvhVnWZs2Im6MM5MvqUthvUTZOq0b8rpyfx+0Nvi4c/HdtVa9LqELEhwFQt0pml
-	 5j1pHWluTKwERuOrBU7L125oGRSHDL/sb1O3UhEwzMn8s0URe6xUudzDQR7Uw4t8bA
-	 vDk9fikhr4pSOCIGnEn40FSMYABtu8EZsYKkpJpQM+5EwAhixvV1523j/T6X3LmZii
-	 f7rMZikNHpbOQ==
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="m/dxZvkS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1748378939; x=1748638139;
+	bh=RmF85GSTZGhzWBPEBhnVNoD6j/L15dcGwJDPHtGO6kc=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=m/dxZvkSsmTMUEk993my2mD4xPXUY4O4T3/xZAJUE/EgiEF1XgHhk59yseTzPNkYp
+	 c51QRxd7WKPvDPi4wWtt7PmZMg8zdQkA+PVMbikt/FmCc1m/RLsvwV9PpnZHYn+BbI
+	 HDousAaQYce5GoBa38ufd4jTkmdlEatSjAcnAzbv+ogplU3QSJrq3jkoeaHczYds6w
+	 aQEESDKVt/+VDJl4jG/3I/1ZTaegQZv/l5YKM7Kkrjo/IdPKBdDKnc6g7Rf7KVOJTj
+	 E+N5StG0ApZ60ZGDV/l7dmVWfGHJPEsuBSTwK64NSGlE+1bgNd1Zny1d/tif0wHte/
+	 nvh+l9RohTQBQ==
+Date: Tue, 27 May 2025 20:48:55 +0000
+To: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+From: Pekka Ristola <pekkarr@protonmail.com>
+Cc: Jan Kara <jack@suse.cz>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Pekka Ristola <pekkarr@protonmail.com>
+Subject: [PATCH 1/2] rust: file: mark `LocalFile` as `repr(transparent)`
+Message-ID: <20250527204636.12573-1-pekkarr@protonmail.com>
+Feedback-ID: 29854222:user:proton
+X-Pm-Message-ID: 4eaa0b5fd5b9c7aaa1eec78bb8537d59f67462a5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 May 2025 22:38:40 +0200
-Message-Id: <DA78E05ZANKN.1U1GZRIBC163K@kernel.org>
-Cc: "Jesung Yang" <y.j3ms.n@gmail.com>, "Brendan Higgins"
- <brendan.higgins@linux.dev>, "David Gow" <davidgow@google.com>, "Rae Moar"
- <rmoar@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, <linux-kselftest@vger.kernel.org>,
- <kunit-dev@googlegroups.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: kunit: use crate-level mapping for `c_void`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250526162429.1114862-1-y.j3ms.n@gmail.com>
- <DA6XI37GNRHE.1FN5893KE2OIG@kernel.org>
- <CANiq72=ue5Fw+7TPPpRcK+0Zk4KTRhH+5YnAY8BQQVX_4YUWqA@mail.gmail.com>
-In-Reply-To: <CANiq72=ue5Fw+7TPPpRcK+0Zk4KTRhH+5YnAY8BQQVX_4YUWqA@mail.gmail.com>
 
-On Tue May 27, 2025 at 3:51 PM CEST, Miguel Ojeda wrote:
-> On Tue, May 27, 2025 at 2:06=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
-wrote:
->>
->> We don't need to explicitly import it, as `c_void` is present in the
->> prelude since 3d5bef5d47c3 ("rust: add C FFI types to the prelude").
->
-> Hmm... But the prelude isn't there yet in this patch, no? i.e. our
-> prelude is (so far) not a "real prelude" that gets injected
-> automatically. So I guess you mean importing the prelude instead.
+Unsafe code in `LocalFile`'s methods assumes that the type has the same
+layout as the inner `bindings::file`. This is not guaranteed by the default
+struct representation in Rust, but requires specifying the `transparent`
+representation.
 
-Ah right it's only auto-imported in the doctests. Forgot that, would be
-nice if it could be :)
+The `File` struct (which also wraps `bindings::file`) is already marked as
+`repr(transparent)`, so this change makes their layouts equivalent.
 
-> (It is imported in the KUnit series anyway, so it will llikely be
-> there either way)
-
-Oh yeah, it's in rust-next already :)
-
+Fixes: 851849824bb5 ("rust: file: add Rust abstraction for `struct file`")
+Closes: https://github.com/Rust-for-Linux/linux/issues/1165
+Signed-off-by: Pekka Ristola <pekkarr@protonmail.com>
 ---
-Cheers,
-Benno
+ rust/kernel/fs/file.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
+index 13a0e44cd1aa..138693bdeb3f 100644
+--- a/rust/kernel/fs/file.rs
++++ b/rust/kernel/fs/file.rs
+@@ -219,6 +219,7 @@ unsafe fn dec_ref(obj: ptr::NonNull<File>) {
+ ///   must be on the same thread as this file.
+ ///
+ /// [`assume_no_fdget_pos`]: LocalFile::assume_no_fdget_pos
++#[repr(transparent)]
+ pub struct LocalFile {
+     inner: Opaque<bindings::file>,
+ }
+--=20
+2.49.0
+
+
