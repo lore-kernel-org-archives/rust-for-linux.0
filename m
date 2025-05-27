@@ -1,196 +1,142 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338F627B505
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 19:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98DB207DF7
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 20:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748372974; cv=none; b=Lyyyq5mjkegkRIGM9fCcNDKDQOBsgzQFXylnl3AscPqVEMFr1cYIe6/Iok5ISTt6beai2Tfe6lfj98Fu5V+sWr/DGAbjp63h1O0sr/q8lwiEnI9AldkiZl6+kTJATz+GEUec+EHcT93s+fHyS9xds8Ks0K/Wwj8OIcAmwq5nw90=
+	t=1748378083; cv=none; b=czzYAQzW+Fm3XH67mWzHjr+w3vyNtdcMR98tbscyOzc9oA8gRaZ/jFwZU10T27+ye0Tn6X3/I4/mXri5vSDrp0RHCcno89Dg6WjphTr5HXhIJV5qb2P/6u6UO1HK+jQlYupVdSlvhkWTfd5tbaINBywINMZtyO+CEkOzzn3k+0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748372974; c=relaxed/simple;
-	bh=bSksGcjPCyanouN+hiN825NWqMc+12BD8rmccNPo5pM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VKDVl3DWESvSJ6bIrmkxrXBJR5HQIyWcjEN9Ray9201Nc4b8oFCNnyJYYb6Es7Qj99/CylQrcE3FHK+qMda1QM11Vxgt9MYHYNAAEHkakxL5jbqfvRqLDOqLDmaPsJvbmrbA68vbA4yC3m9f4WtkV18jF2Vxw6EhWh3+P1nPhio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R4eoq95I; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1748378083; c=relaxed/simple;
+	bh=WFrf8h0EsBhuIZr3pXmc+Gk70qBJc63v1czz66GunHQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RJR0ZIFG30KuPUTKy/+SzipaAthA6lp4CcjFXHv4Wz5+CZEWYmdaxCcgirzYnA5YRhojIjR7aHdVpsqEoZhlt0cyT1MEz8l196LswMx95BxDdZ2P4km74M1r0L0HnCsOpvzYssZ5UwOcmLdke+t/zQ61JCHKHQayHg27tsxH5CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CYNjee9S; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R4eoq95I"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a361b8a66cso2494099f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 12:09:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748372970; x=1748977770; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8dOmAfNz0J4VU50Ta61/Y35bE8/jZsy+ud2vyxXldSk=;
-        b=R4eoq95I2bzYlXoWs52GfFsYedFfILrmGqDQdeLWXevVxuzlFz54hvr6UCWt/Yd1q8
-         VbO0/wuSZrbgCnCBijxP5aIureUoSWiQOJBiivSJQAgT4b7D+MmwQ4mkH4IfEl73Q3YI
-         euxtauxyF/mizrQ6G4Nrjf430nT8RYj+F6yLEXzkdFQjjKtnPdaeNaAUdQYs4KPv7icT
-         PR0ws9vcFFpqBN758d1sJvmW+4Dq/e1yF8Dw1layoKticxL7ObcAhKaAcErQqXIud3u/
-         oKrhepQq4WcUY52z0ncicSiyiFiTJpkL+9lJIwjQJ5HHlCTAMFj11TskmDsnebDGXKZy
-         SKqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748372970; x=1748977770;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8dOmAfNz0J4VU50Ta61/Y35bE8/jZsy+ud2vyxXldSk=;
-        b=ctLMorGBwxXcIdJBBu1ylJQJA+2PSE0jxwoc209vCtr2MQbKMDhOmj92vrCtx6L+pb
-         60yiBqT1qIxvdsd0ND2Bg+Snwvy0PkTXYbqsRxlMXfT8UDLGZnDTax3I59G/1AnTNWM2
-         57V3qP3Po7JPSsNySEyGGKT6YaAaGxVS09o3DQG+3SNmAdObJiw2WdLM/E8At3qPfOUA
-         IhZ3SDyb/tZluB28B6V0s0fJGj8tof7AHaifwgaU1d6eH0/y1iNPEP2PuioqDWpginEP
-         uQkNGJt6QkkHbIRO00K8orkFUH65MfxTjGzA683Lheujs/uStaikJ4QhW/X2L/5g2wYs
-         4oxA==
-X-Forwarded-Encrypted: i=1; AJvYcCWXGEqgaXNjqBHjZBDpcnxZw5w3B2DyiP0BvuHLy39rmAzqAGWzanZEB1APdzZhwoPi6/7HxtvzLokvxmgntA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmXe3h9oXAny0nlTUtJDYOph30/T0q/Y6t74s/nebRZ5VV08Yj
-	l8mNITmjU0lebvTOVU+jGPeIKoOE6YicmkZ1BLOhvibYKhmxAPw2vNxqk/Eel0ZmgNZCBGAZw/z
-	dZNQXZ8glur/nJ3vq/Fh6K6hca/ic150PltrnTPZf
-X-Gm-Gg: ASbGncvi1DYYInilobER4gpAA0zEwJAv0guMcNCbKYVDwn1aJx/gHrFz0I2FfOhF/zi
-	UMt3mKhZ34FEbFau8xUTeGg9qi8nFjXXJ5Gs5dhGaweKVBHVCP2XyAkLfHJUp4n/1KtzZS7iXVr
-	CF/mBbm2Kqevqo50vKO4DFgcdtpyneHcpxVbAS3w5uhQ2n
-X-Google-Smtp-Source: AGHT+IFaMs2J0Pk1Vh+y4AbilLNsGSVdTuJctlJ92Fw4s5ySbn/+eJa4hgbBty34AVrR49z/yzGO7W42muYFkQOanm8=
-X-Received: by 2002:a05:6000:248a:b0:3a4:dd16:a26d with SMTP id
- ffacd0b85a97d-3a4dd16a2e9mr7140516f8f.38.1748372970315; Tue, 27 May 2025
- 12:09:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CYNjee9S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748378080;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qyhGX9TysOct1LJVAWGiSKDcEfScPBYQiUtTvog/bC8=;
+	b=CYNjee9SqtfBrPUPaJiNvltFynHK3zCQz4RKZMr0c/FUD/ciYQdYrM9eWqas8svaHgDTfY
+	py7qICmXsfa9EG3lvZCUqSv9eX3GyiPsCs+0eYFva09NEfF/+uZPsEOmu1A5caRSBCz85R
+	DW8QyYE2ScXb0ivAuZyqfWOM6/ArYtI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-DEPerqrVOlqKWpNASXTynQ-1; Tue,
+ 27 May 2025 16:34:37 -0400
+X-MC-Unique: DEPerqrVOlqKWpNASXTynQ-1
+X-Mimecast-MFC-AGG-ID: DEPerqrVOlqKWpNASXTynQ_1748378075
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9F7DD1801BC0;
+	Tue, 27 May 2025 20:34:01 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.82.65])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 21BE418003FC;
+	Tue, 27 May 2025 20:33:57 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [RFC v10 00/14] Refcounted interrupts, SpinLockIrq for rust
+Date: Tue, 27 May 2025 16:26:45 -0400
+Message-ID: <20250527203355.551287-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250527-userptr-newtype-v2-1-a789d266f6b0@google.com> <83969228-bc7c-4eda-8531-53681e7f6600@gmail.com>
-In-Reply-To: <83969228-bc7c-4eda-8531-53681e7f6600@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 27 May 2025 21:09:17 +0200
-X-Gm-Features: AX0GCFu4z_K9XSP28dr5yPFTOFud6VBojyX9J8peZUSq3NL6IvZmJ85gmHLKcDg
-Message-ID: <CAH5fLggNJ+5CxOAg7q2uQovueum2wznqd5kpUPwH_crtjbMU5w@mail.gmail.com>
-Subject: Re: [PATCH v2] uaccess: rust: use newtype for user pointers
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Tue, May 27, 2025 at 9:03=E2=80=AFPM Christian Schrefl
-<chrisi.schrefl@gmail.com> wrote:
->
-> Hi Alice,
->
-> On 27.05.25 3:53 PM, Alice Ryhl wrote:
-> > In C code we use sparse with the __user annotation to detect cases wher=
-e
-> > a user pointer is mixed up with other things. To replicate that, we
-> > introduce a new struct UserPtr that serves the same purpose using the
-> > newtype pattern.
-> >
-> > The UserPtr type is not marked with #[derive(Debug)], which means that
-> > it's not possible to print values of this type. This avoids ASLR
-> > leakage.
-> >
-> > The type is added to the prelude as it is a fairly fundamental type
-> > similar to c_int. The wrapping_add() method is renamed to
-> > wrapping_byte_add() for consistency with the method name found on raw
-> > pointers.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> > This is based on top of the strncpy_from_user for Rust patch.
-> > ---
-> > Changes in v2:
-> > - Change usize to raw pointer.
-> > - Make field private.
-> > - Rename wrapping_add to wrapping_byte_add.
-> > - Add to prelude.
-> > - Rebase on v4 of strncpy_from_user
-> > - Link to v1: https://lore.kernel.org/r/20250506-userptr-newtype-v1-1-a=
-0f6f8ce9fc5@google.com
-> > ---
-> >  rust/kernel/prelude.rs           |  2 ++
-> >  rust/kernel/uaccess.rs           | 68 ++++++++++++++++++++++++++++++++=
-+-------
-> >  samples/rust/rust_misc_device.rs |  2 ++
-> >  3 files changed, 60 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-> > index baa774a351ceeb995a2a647f78a27b408d9f3834..081af5bc07b0bcefb1da16e=
-5a81fc611b3178aea 100644
-> > --- a/rust/kernel/prelude.rs
-> > +++ b/rust/kernel/prelude.rs
-> > @@ -41,3 +41,5 @@
-> >  pub use super::init::InPlaceInit;
-> >
-> >  pub use super::current;
-> > +
-> > +pub use super::uaccess::UserPtr;
-> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> > index e6534b52a1920254d61f8349426d4cdb38286089..02e0561eb1c6f4d813a4ab1=
-3a124bfac2d2a5c75 100644
-> > --- a/rust/kernel/uaccess.rs
-> > +++ b/rust/kernel/uaccess.rs
-> > @@ -14,8 +14,48 @@
-> >  };
-> >  use core::mem::{size_of, MaybeUninit};
-> >
-> > -/// The type used for userspace addresses.
-> > -pub type UserPtr =3D usize;
-> > +/// A pointer into userspace.
-> > +///
-> > +/// This is the Rust equivalent to C pointers tagged with `__user`.
-> > +#[repr(transparent)]
-> > +#[derive(Copy, Clone)]
-> > +pub struct UserPtr(*mut c_void);
-> > +
-> > +impl UserPtr {
-> > +    /// Create a `UserPtr` from an integer representing the userspace =
-address.
-> > +    pub fn from_addr(addr: usize) -> Self {
-> > +        Self(addr as *mut c_void)
-> > +    }
-> > +
-> > +    /// Create a `UserPtr` from a pointer representing the userspace a=
-ddress.
-> > +    pub fn from_ptr(addr: *mut c_void) -> Self {
-> > +        Self(addr)
-> > +    }
-> > +
-> > +    /// Cast this userspace pointer to a raw const void pointer.
-> > +    ///
-> > +    /// It is up to the caller to use the returned pointer correctly.
-> > +    #[inline]
-> > +    pub fn as_const_ptr(self) -> *const c_void {
-> > +        self.0
-> > +    }
-> > +
-> > +    /// Cast this userspace pointer to a raw mutable void pointer.
-> > +    ///
-> > +    /// It is up to the caller to use the returned pointer correctly.
-> > +    #[inline]
-> > +    pub fn as_mut_ptr(self) -> *mut c_void {
-> > +        self.0
-> > +    }
-> > +
-> > +    /// Increment this user pointer by `add` bytes.
-> > +    ///
-> > +    /// This addition is wrapping, so wrapping around the address spac=
-e does not result in a panic
-> > +    /// even if `CONFIG_RUST_OVERFLOW_CHECKS` is enabled.
-> > +    pub fn wrapping_byte_add(self, add: usize) -> UserPtr {
-> > +        UserPtr(self.0.wrapping_add(add))
->
-> Why use `ptr::wrapping_add` instead of `ptr::wrapping_byte_add`?
->
-> Should not really matter in this case, because `c_void` is
-> `repr(u8)`, but I find it a bit weird to use `wrapping_add` here.
->
-> With that fixed:
->
-> Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+Hi! While this patch series still needs some changes on the C side, I
+wanted to update things and send out the latest version of it that's
+been sitting on my machine for a while now. This adds back the
+mistakenly missing commit messages along with a number of other changes
+that were requested.
 
-Ah yeah, this should probably just be wrapping_byte_add() too.
-Alice
+Please keep in mind, there are still some issues with this patch series
+that I do need help with solving before it can move forward:
+
+* https://lore.kernel.org/rust-for-linux/ZxrCrlg1XvaTtJ1I@boqun-archlinux/
+* Concerns around double checking the HARDIRQ bits against all
+  architectures that have interrupt priority support. I know what IPL is
+  but I really don't have a clear understanding of how this actually
+  fits together in the kernel's codebase or even how to find the
+  documentation for many of the architectures involved here.
+
+  Please help :C! If you want these rust bindings, figuring out these
+  two issues will let this patch seires move forward.
+
+The previous version of this patch series can be found here:
+
+https://lore.kernel.org/rust-for-linux/20250227221924.265259-4-lyude@redhat.com/T/
+
+Boqun Feng (6):
+  preempt: Introduce HARDIRQ_DISABLE_BITS
+  preempt: Introduce __preempt_count_{sub, add}_return()
+  irq & spin_lock: Add counted interrupt disabling/enabling
+  rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+  rust: sync: lock: Add `Backend::BackendInContext`
+  locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+
+Lyude Paul (8):
+  rust: Introduce interrupt module
+  rust: sync: Add SpinLockIrq
+  rust: sync: Introduce lock::Backend::Context
+  rust: sync: Add a lifetime parameter to lock::global::GlobalGuard
+  rust: sync: lock/global: Rename B to G in trait bounds
+  rust: sync: Expose lock::Backend
+  rust: sync: lock/global: Add Backend parameter to GlobalGuard
+  rust: sync: lock/global: Add BackendInContext support to GlobalLock
+
+ arch/arm64/include/asm/preempt.h  |  18 +++
+ arch/s390/include/asm/preempt.h   |  19 +++
+ arch/x86/include/asm/preempt.h    |  10 ++
+ include/asm-generic/preempt.h     |  14 +++
+ include/linux/irqflags.h          |   1 -
+ include/linux/irqflags_types.h    |   6 +
+ include/linux/preempt.h           |  20 +++-
+ include/linux/spinlock.h          |  88 +++++++++++---
+ include/linux/spinlock_api_smp.h  |  27 +++++
+ include/linux/spinlock_api_up.h   |   8 ++
+ include/linux/spinlock_rt.h       |  16 +++
+ kernel/locking/spinlock.c         |  31 +++++
+ kernel/softirq.c                  |   3 +
+ rust/helpers/helpers.c            |   1 +
+ rust/helpers/interrupt.c          |  18 +++
+ rust/helpers/spinlock.c           |  15 +++
+ rust/kernel/interrupt.rs          |  83 +++++++++++++
+ rust/kernel/lib.rs                |   1 +
+ rust/kernel/sync.rs               |   5 +-
+ rust/kernel/sync/lock.rs          |  69 ++++++++++-
+ rust/kernel/sync/lock/global.rs   |  91 ++++++++++-----
+ rust/kernel/sync/lock/mutex.rs    |   2 +
+ rust/kernel/sync/lock/spinlock.rs | 186 ++++++++++++++++++++++++++++++
+ 23 files changed, 680 insertions(+), 52 deletions(-)
+ create mode 100644 rust/helpers/interrupt.c
+ create mode 100644 rust/kernel/interrupt.rs
+
+
+base-commit: a3b2347343e077e81d3c169f32c9b2cb1364f4cc
+-- 
+2.49.0
+
