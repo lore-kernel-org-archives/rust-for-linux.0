@@ -1,141 +1,99 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CBF23B0
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 08:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC6324A056;
+	Tue, 27 May 2025 08:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748332816; cv=none; b=lD36MCNEVTsFjMhBvJyoy40OMuOusc5jjl7TzHtylvmr4CX6src375eI482zVrEyc3E7EIX4UiBBFNaMNalQ4hM2DtQbqL2R1/CrsrrpnP42OMN9MlizvauAr0TFATcTSOqXQ6Hq3hidN0Or6BAOJ0FNZcnCq3dGZIxrwWR5qrc=
+	t=1748335182; cv=none; b=Ra2Qnx7NtsDAaTJeZaoUzNKSa52WYNjFX7FIy1IQbbkDYCTG1s/yHni6w/Il1syl7f8Ha65MpEZkQI1TrHI00jhyJpw3zOSkHL8wmkeRsQwJp3KQjCYxtaVgKhp6Ck6now2jDSoIX9R5xb+GprbUIflFC93tBEqcnAOjKt5KeXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748332816; c=relaxed/simple;
-	bh=yEaq2AyzfgJ9c5t9b0CsXDMHvC/M3FL4KCVrex/8yZU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vEquSjqBHmMg9N0mPTSGAnQKyh5FUJOu1bTGQkqF8mdHVOwj5iedsLHBDlfpyPQrPTiOwZCnMgyOKLxt8WrA48F2v6+1WdfpiVQvd8QkvqvJ+GT7c620a415O87A0sa6j16yFMGDW+Qg0IEs16yVv754qitaDOG2RFfsXBKVDA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com; spf=none smtp.mailfrom=pdp7.com; dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b=03/rMuMk; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pdp7.com
+	s=arc-20240116; t=1748335182; c=relaxed/simple;
+	bh=an9Dpp+MtkCdkNTGPODtJ1diDg/WTHKHuUIZYnHZllg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QSs5eQb95VPusA2j8qoMJN9i89iHnakUZwzJ/qucd2xL9q+oEe7zxIrfGcqp2YJzG2T+YCdP0wJZBLb948N0wW1XNCVVNXFnFzherlv5qvetOrkqVn8D07nhCjlZvWpaCPWSKnxCNTCpo97ee+2WbYOank1qhJryWBJzz5fYFiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jb6/AHmZ; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b="03/rMuMk"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-23446bb8785so24258775ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 May 2025 01:00:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jb6/AHmZ"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-309e54e469cso422691a91.1;
+        Tue, 27 May 2025 01:39:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pdp7-com.20230601.gappssmtp.com; s=20230601; t=1748332814; x=1748937614; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=69mSzDBjctUjkk/D5FpImgqRo3X987asQpikl13S/kU=;
-        b=03/rMuMkaDdOVPrReoSnbmzgy2uJlFpvD3OpfhqUU9FUrYb33BkA+1t7ZNHdKtpSPI
-         LEQvO8/YaBxACDFaeVlvty8iJQE8Yblo6w+C+Su8NOuvWdOOs2vLxKASLI+V+7RT9epo
-         zX7Rr3cVeGj0lF9lwqgORUGFXgOPJFhuKDcfrI6NODjpY7AeTXq4bh5aE256wngCmhGK
-         8chNdap7Gbvqk0GlNzgi/dnfS4zXfb9V+XxwnRe/SokOufWEG1BYNQbXFJGR7FOI3RDb
-         sy+pkoyygO+Z3ROCewBrylFyGJaWuJJCfyyEragTOOFYo7LM4kqRdSH8astQOqL7y+J6
-         P18g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748332814; x=1748937614;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1748335180; x=1748939980; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=69mSzDBjctUjkk/D5FpImgqRo3X987asQpikl13S/kU=;
-        b=n/Gt/wF2vKrreZ7xiQrbpkZxPEDiJ+FadBdUStqTskZQpbRGpOM6xgf61qmVvKt9kY
-         odr3MJR7GZlU6Yt+NPYWYfeRdb16OnEIJaZzcbxpAq9saBQt7PLpOARSLn0aQA4OTq0F
-         AdAbvat5aYvTfYG5p56P5cYF7wPBgt7EaIRFvl7YTy1mLd9LCguuj/Gs7obCvbRT4j1e
-         jzUh6/61WYg7aALihLZg9LNJIWM6dHnVaftbBe6KGwPL5YoeovvkxOclKAmlkM4B0to3
-         ioHcn/5wrjNeOP2SPr02bxcVRmmBmiWF1b7q4rquP62DvUojYFRNRATuYvDjqTQPaK8P
-         cqTA==
-X-Forwarded-Encrypted: i=1; AJvYcCVuZbgtZPi2GO/bMRk7zN4nCofNgU7WF5fIzClOHqog65MEH60DRFV39vEd9W7CpB5jxBkqMlOq57lU1bO2yQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtEu3N2jzA6c4iIYRiJ2YK8dP/BP34/eZMHVHz6LlLVaUPLvW8
-	TQfkoI8n0UYF0BPv3zGfToKAkJgOxG5P2gms214rLfh/9tXX2Xk9dfRQDhXTRNFqQXc=
-X-Gm-Gg: ASbGncsKhgcGfLiSWP9vdLQZm4q7livzvkVytXogL+i0FhdLfKIsr/I6PExd//f/J/+
-	Na9kzrd02j4aQCWoFIL3hDwnlEOmX0njuorGkTxafCJAVi46xQaBYPe6OB429+BQJ/pOV+Hkarg
-	JhsXCUGe8z4JAjYjvkMXkorr2q/pHzoqxxV0YrekVGgcKl+8rkTMTIPpS++IwCOaIqXp4VS2llD
-	1nYNzaYJPk/H3e+fEwINy8El4HjzS1JQ/IT7Z970I02/zN3J9VLFlZ0l5wZ5bH/72d5afL3AcQ0
-	MiabWtwnkPLj7gnlfKeADEfvsQptDRAC/37tQUlefb+pKXsIrvK78oVvE4EcF+/4VaxqcsAMtA=
-	=
-X-Google-Smtp-Source: AGHT+IG/9w9RYy8XeVSB35Aj2XQw0SQ1Z8HiupqD9XgJZnnAgEoB0hzA2HUmbCT1F6TH9+lzKYQesg==
-X-Received: by 2002:a17:903:1a45:b0:224:23be:c569 with SMTP id d9443c01a7336-23414f80419mr226841935ad.22.1748332814563;
-        Tue, 27 May 2025 01:00:14 -0700 (PDT)
-Received: from x1 (97-120-251-212.ptld.qwest.net. [97.120.251.212])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-233f8b2dc89sm65321825ad.114.2025.05.27.01.00.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 May 2025 01:00:14 -0700 (PDT)
-Date: Tue, 27 May 2025 01:00:12 -0700
-From: Drew Fustini <drew@pdp7.com>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH RFC 5/6] riscv: dts: thead: Add PVT node
-Message-ID: <aDVxDJi0KkWXiPCK@x1>
-References: <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
- <CGME20250524211525eucas1p244963b69e0531c95a9052e4a7a1d1e01@eucas1p2.samsung.com>
- <20250524-rust-next-pwm-working-fan-for-sending-v1-5-bdd2d5094ff7@samsung.com>
+        bh=an9Dpp+MtkCdkNTGPODtJ1diDg/WTHKHuUIZYnHZllg=;
+        b=Jb6/AHmZfTJ84UMvvofvLPtwJGDWeC6g1sqtR1wjJ86V7O8qhwVSK2PQzQaxdNM8CR
+         Pls9kGV8UFpm/ACSK2EvEf/jFCBJovql5QlGnxADdyhBFmNzak2dcQQR6wjXJcW/fmOI
+         qzbRvIpOGMmOm/EKF6K3thY8gEUddWSKoVdjBko15raLx91rmaQRAP6+bNG+d8ukdMwe
+         Jgw+Su7bDDh2mpEx0wpVKQLCiX7O7mHpZR+fMcoSvTgYg2OCN1/j96CPGCoDcygif2Dt
+         0q18LAiIP+iW1ylpYoxhbz0Mxx1WzGUyz/XfCMrZckfxQ3LKNn0lgzjMpPODODK5+83C
+         EoiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748335180; x=1748939980;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=an9Dpp+MtkCdkNTGPODtJ1diDg/WTHKHuUIZYnHZllg=;
+        b=gd/8pjYio8VSl461OebOjbvOjDjxzhbZoWUpVz6CRiAryYOxpbkdloq4e/zcVtwNhN
+         WNuB6jkwfBw4F+i/ciD4jsS7WAqF2dDqmeQb1LAZb+6vZErI20jpE7WrHCCjo+sfGJQI
+         HClf7wUP7lsBWfEXBryp/OSQcRmonKmaKUfss26jeIBW2nQZUnsSNYP38zcAfV0JWZOt
+         9hFPELNJXMQHZqpfLWPZzCDX4FmspCqYv+Ksu0N/rQ+fI2YAhIiUsGvMNIsn38CofKTA
+         SWBbr/uyCSu0P7ridOBf7y5dSiDHZCPTbM5BmKFPrjeh4EqA9uWpvMsCHGvmA4dxqEYZ
+         fjcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVCZVoethVPABGGgTqnPg7SiUvl7gm5MnCD2KxqDJe7sgVxEpTlQ+F7jha8EuCG+KO+hCqO7uO7zsG4qHk=@vger.kernel.org, AJvYcCWx/dEKz3iQgeDcXcCz4ESODhGfDidluFbID+SYCu9BTbamIIe+eazda3sEjO0T7XJYUZxwYjtXFgQ=@vger.kernel.org, AJvYcCX6jLs73L/RgoWdqG+CiIkVNyyTnsrAMZ+c8FwJq24Mz7mO1ATmTsWw3AFL4COYAL6dFBzCqOxZgosSAFWI+90=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxU0LBUuT14btZhLNcaCITuQM8BrsHd532T1eD9sye34qBM9nsq
+	G3sVVcYCICQNUSnyzpolaM1ZWO60jc98GijjqdGdtz+Hk1uIlHvHs2wfUpa99QOZwa+PeidOwDw
+	lg9xEPZhiYfA4RRWHN5A+45/XHW5SX9E=
+X-Gm-Gg: ASbGncscAUIZ6eyY7Ybz50y4teOLcBYknTNvnoVbZ5eXjvjivAiO0h+FgacwEJKkmEa
+	oncYffxBzq8vYCOyA/3T5A4GltRIoEg6XzCSP7r9z/XRr7vUd0eywj+Xg4dhxLkB4/NYnZsEKj1
+	fm++hHlyd7Y5AIY9sYPG0lQJAEscofUPtd
+X-Google-Smtp-Source: AGHT+IGpFpizqB5SfgTl841kY7avc32Mm2bRFLgu7sBidE8M+Mdk2Lh0XtJVawj+sV17S+IlsEid6TIvD5QwAR8C6/Y=
+X-Received: by 2002:a17:90b:33cc:b0:30e:7127:644c with SMTP id
+ 98e67ed59e1d1-311119433b7mr7288308a91.6.1748335179926; Tue, 27 May 2025
+ 01:39:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250524-rust-next-pwm-working-fan-for-sending-v1-5-bdd2d5094ff7@samsung.com>
+References: <9d93c783cc4419f16dd8942a4359d74bc0149203.1748323971.git.viresh.kumar@linaro.org>
+In-Reply-To: <9d93c783cc4419f16dd8942a4359d74bc0149203.1748323971.git.viresh.kumar@linaro.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 27 May 2025 10:39:27 +0200
+X-Gm-Features: AX0GCFtaO_BqO83Us9VmFP8uHQ6yFobCe1L4dso7Zu8yoGskjf1j4ixRzeBoOcI
+Message-ID: <CANiq72m2jztPbqiH19560RTBW0PUghi8ajjyi6Pw6jmrHFdtSA@mail.gmail.com>
+Subject: Re: [PATCH] rust: opp: Move `cfg(CONFIG_OF)` attribute to the top of
+ doc test
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, 
+	Vincent Guittot <vincent.guittot@linaro.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 24, 2025 at 11:14:59PM +0200, Michal Wilczynski wrote:
-> Add PVT DT node for thermal sensor.
-> 
-> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> ---
->  arch/riscv/boot/dts/thead/th1520.dtsi | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/arch/riscv/boot/dts/thead/th1520.dtsi b/arch/riscv/boot/dts/thead/th1520.dtsi
-> index f24e12d7259fabcfbdc2dfa966d759db06684ab4..faf5c3aaf209b24cd99ddc377a88e08a8cce24fe 100644
-> --- a/arch/riscv/boot/dts/thead/th1520.dtsi
-> +++ b/arch/riscv/boot/dts/thead/th1520.dtsi
-> @@ -648,6 +648,17 @@ padctrl_aosys: pinctrl@fffff4a000 {
->  			thead,pad-group = <1>;
->  		};
->  
-> +		pvt: pvt@fffff4e000 {
-> +			compatible = "moortec,mr75203";
-> +			reg = <0xff 0xfff4e000 0x0 0x80>,
-> +			      <0xff 0xfff4e080 0x0 0x100>,
-> +			      <0xff 0xfff4e180 0x0 0x680>,
-> +			      <0xff 0xfff4e800 0x0 0x600>;
-> +			reg-names = "common", "ts", "pd", "vm";
-> +			clocks = <&aonsys_clk>;
-> +			#thermal-sensor-cells = <1>;
-> +		};
-> +
->  		gpio@fffff52000 {
->  			compatible = "snps,dw-apb-gpio";
->  			reg = <0xff 0xfff52000 0x0 0x1000>;
-> 
-> -- 
-> 2.34.1
-> 
+On Tue, May 27, 2025 at 7:33=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
+>
+> Sorry for the trouble, one more patch to apply :(
 
-I found that on my lpi4a that boot while hang after applying this patch.
-I think that it is related to clocks as boot finished okay when using
-clk_ignore_unused on the kernel cmdline. Do you happen have that in your
-kernel cmdline?
+Sorry, to be clear, I meant it as a discussion, i.e. no need to send a
+patch for this in a hurry!
 
-I need to investigate further to understand which clocks are causing the
-problem.
+It is just something we did for another example, but it is not a
+guideline or anything yet (it may not be a good idea, in fact -- I was
+hoping for others to chime in). Even if it were, there is no rush to
+"fix" it :)
 
-Thanks,
-Drew
+Thanks!
+
+Cheers,
+Miguel
