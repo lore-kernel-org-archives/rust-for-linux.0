@@ -1,145 +1,116 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A337B134CB;
-	Tue, 27 May 2025 13:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E4A13A41F;
+	Tue, 27 May 2025 13:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748354183; cv=none; b=KW+MSicXPJKVHn4QZL/GCx4F63nJywRU13sS1Hc8Yc1VvpStV9CyQf26Ju0Uv4pbAH9C/RCH9Zr42UZIGoutgQDDv4XrvjMHnzjuIoNjCvPyBtKgvYN7QCLnmS0Z1T4NgjS1icDI6y85kkEYasJT6bOm6lQ46Hz4AZ69gT2edWw=
+	t=1748354228; cv=none; b=nhVjE6Mcg7Pa7XpSCy635suCL9IP2GLcC5kYiMRGsW88WNi6oX2Fd390nuYojZS1TTCzvKvZCZgACE3JvH/1m9l932ITusBnmoeWA5w8NHDc/CXzMKnfucy6xgr241fhMaFvxaAO2ACsWJ8ZgjKEl1QPsuNOhAaR7ymrCixn3wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748354183; c=relaxed/simple;
-	bh=wMlcAUTr2JWpW/Jw3FrSvD4HubPhNV5PvBq4p8YRk00=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ReEu3iL0NL76zjnGqMDGnsFm3KU1VifpxBNHIGqAbk3xXt+t+UFxGSlGm+LONiJ9CfedBzdHmA7qiTtd8DLupS0B7kWrRWt8BAsW4yHQoXJaGluBpJAq95ol3HqgAFR5C2iJpFlZUhL85aegFTA6dNrDcmNT+gtuo6owdbf8wFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CCUiOMhd; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748354228; c=relaxed/simple;
+	bh=sWjTd1b4saAt0goojyaoXWF5Z91e7Gpdg64+FdJRQdE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BFcQvcRbHANlF8HAlRxXQ6hi7liqhX978BlHg9Ag66cF7+N3HFrDpbR0WnHx8In51YCAburupu8Ov03BtEafKkw1ZV+vlSE2MaFRYr1NBwKG7uA09MUPAztUJD4wfbDTlFqgP2kmmXh0xB5oYX7dC9ItKaoMer2HE3XOmp6e/ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6p04V9O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CCUiOMhd"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2346765d5b0so19345465ad.2;
-        Tue, 27 May 2025 06:56:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748354177; x=1748958977; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XnktFiXJXJodN0pB61aJG59CK1E9b68p2VWpKi9y8vw=;
-        b=CCUiOMhddQUodpu/cXeo/oyESSX+rawGMqih2vlfV9uFyENsCdq0hQS28+nm1VLoYY
-         /z5WKuzaU+KQWjt8i1ULG5ZXtt3ao42iz8/p6K9rqCv9WFkWfYHRaZpTzlxldxJgqgp9
-         GbsB+d2x5w/GV1aqgTc22c8Mk6QIPv6GmMn+glQMYtFSyLfgeb6MPWereggmtK95cNvO
-         a03+HMvKiHB3w/ltOUKH4fLX4BxvbeJTvogsBqlCXR9oCbeGNPB7U6YRQiQp0ivepV8X
-         1LSKFQ7vjtVZccWcBMkW9gOeSSu8X/DIef67ybN8U8B+VeivBHwvA6o+bHjdGexkKwC/
-         Rzeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748354177; x=1748958977;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XnktFiXJXJodN0pB61aJG59CK1E9b68p2VWpKi9y8vw=;
-        b=tUdanh0ViSWPONtK6KSZ0ij3U8wx7TW0ZRXgLWRXvhvDhDdbuRnH7eGqSo2z8bMDGD
-         tsmmaHd9IzzFF1Nuf9uOcoV8dcKmGkhV++4P2fRqw1/qMDSx1QJv1/pNEUX6Fabo61fw
-         atAypINBzG1uGwXCk7wFExiZuN2ttAi8XvO1/g3Ou8tcUZasvUV2kyKFMtVZvaXuiXBQ
-         oFiqIsFRWIjlQqmvCMuNhlBTutDxqW1Qr9b7fUB48ynuV0jvd6QJ/hdDTmlTYhDCUsa2
-         QpxKfCKaXIMICaUYwvF1VCDZ2asKl8x9pqQZKTolAWz5AISj6nRW/T5wtvV0KzGIUkDo
-         wyNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWAlOTXZRThKu5jjMyYpdCnC3x8XFSz1HwmEdjr3U7rjx2PSd9V0mTapNoHFiHIwHpK2/vnwzoag+lkKoE=@vger.kernel.org, AJvYcCWeEG4wkXa0Ah9DgjqjhhL6q+fKO8888B9cCQp4RpOn6NJb7IxeXpDmjkbG4qEzWXOsVv+GPGwwSLnadYfq7vM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXuDaV30UuZgBccmG6+lePjxOD2HKWXnmyM6+gI9QeMNpNo3UW
-	jhHHS5fiIbMyI+7Kx9KSo1QbsawOKbx7WCYnwmq2QC3J/p6kbg8Ga/cp
-X-Gm-Gg: ASbGnctgtUIqxVjiIfoL/TRbWjQgjznJAL8APQzU7zNUTXgTgDwC1OXsSQTBlspbylg
-	yv7DnmDNQwVBVNILmvIParjuHXvLUl0k13OglS2Y7RaBGMh9er2Q9ur7+IYOWja4lZ8uvXjPt55
-	XR+V+LUy78dlqo7GlGoYHGWBx3v9rqum1diDAoWzsrSqFSOWtSLMSCVcbEX2YUPqYtQoU9fQxTB
-	mLYZUtgbV0pv173vZbeB+htBaWoDy+rdiFxMO9MYp74vS2QCTIJ+lyM+ZuZwlmhyobe5aOHogNI
-	isjTz9Pj/oLcwKueUcqQ98jexKDBQ0m6fUurj7eSP2znAQSiR55K8zLTxDcRqyI=
-X-Google-Smtp-Source: AGHT+IFNNoxF29EfkZcUJGXn/ohVeLl/OG6M5rRHNblzkgPj16tTYH/KioWbWzao9437hQv8KtCczg==
-X-Received: by 2002:a17:902:f54c:b0:22c:35c5:e30a with SMTP id d9443c01a7336-23414f4a6b9mr166280325ad.16.1748354176742;
-        Tue, 27 May 2025 06:56:16 -0700 (PDT)
-Received: from localhost.localdomain ([104.28.249.218])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-234018ac5desm67801475ad.158.2025.05.27.06.56.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 May 2025 06:56:16 -0700 (PDT)
-From: Jesung Yang <y.j3ms.n@gmail.com>
-To: Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Rae Moar <rmoar@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jesung Yang <y.j3ms.n@gmail.com>
-Subject: Re: [PATCH] rust: kunit: use crate-level mapping for `c_void`
-Date: Tue, 27 May 2025 13:55:49 +0000
-Message-Id: <20250527135549.1982244-1-y.j3ms.n@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <DA6XI37GNRHE.1FN5893KE2OIG@kernel.org>
-References: <DA6XI37GNRHE.1FN5893KE2OIG@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6p04V9O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CF8C4CEE9;
+	Tue, 27 May 2025 13:57:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748354227;
+	bh=sWjTd1b4saAt0goojyaoXWF5Z91e7Gpdg64+FdJRQdE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=g6p04V9OH+I6LP9PFnOQd04QlUaLSHclDi8RwzQnPa/ZoYB3xTIINen5RcI5pZzP/
+	 /A51/Up3p/o1dhnrgXkSGn/cqIsCKpiwLUlGVWYmbpFQ46jjJDNwHBkarOzjv6/8hq
+	 MHm2Ba7DW3CgKo0t0RdJ5aVQ4QSccBwD1+SnIMPv73rKC+297u2I2gsq+GWTiFIh3n
+	 z9u3az4G9eX/oSt1ro3XQaNZcQtZF3IVZDCLmdkFWbIZjseEYWykQD4sZbXiqYARKr
+	 R+mpP0W3DF6FGH1IbM8u+NdObThTmQtgb/3a9phecV4UZOw11wmK323sF9S5ae8O3G
+	 0s2jkagEOzKFg==
+Date: Tue, 27 May 2025 15:57:04 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: "Michal Wilczynski/Kernel (PLT) /SRPOL/Engineer/Samsung Electronics" <m.wilczynski@samsung.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Drew Fustini <drew@pdp7.com>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH RFC 2/6] pwm: Add Rust driver for T-HEAD TH1520 SoC
+Message-ID: <3qdplpa3w2uxq7emonc4tufr4mae3xelk4habdhfvuvw5vxwe3@qdyu4rkeobhd>
+References: <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
+ <CGME20250524211521eucas1p1929a51901c91d1a37e9f4c2da86ff7b0@eucas1p1.samsung.com>
+ <20250524-rust-next-pwm-working-fan-for-sending-v1-2-bdd2d5094ff7@samsung.com>
+ <aDMHEcpJn8nyJHFV@pollux.localdomain>
+ <db8e34c9-daff-43d9-b79b-8ec1bc98a00f@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rnawmuhzlrg5qj6b"
+Content-Disposition: inline
+In-Reply-To: <db8e34c9-daff-43d9-b79b-8ec1bc98a00f@samsung.com>
 
-Hi,
 
-On Tue, May 27, 2025 at 9:06 PM Benno Lossin <lossin@kernel.org> wrote:
->
-> We don't need to explicitly import it, as `c_void` is present in the
-> prelude since 3d5bef5d47c3 ("rust: add C FFI types to the prelude").
+--rnawmuhzlrg5qj6b
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH RFC 2/6] pwm: Add Rust driver for T-HEAD TH1520 SoC
+MIME-Version: 1.0
 
-The base commit of my patch is f4daa80d6be7 ("rust: compile libcore with
-edition 2024 for 1.87+"), which unfortunately predates the addition of
-`use crate::prelude::*`. As a result, removing `use kernel::ffi::c_void`
-causes the build to fail with the following error:
+Hello,
 
-```
-error[E0412]: cannot find type `c_void` in this scope
-  --> rust/kernel/kunit.rs:22:41
-   |
-22 |             &args as *const _ as *const c_void,
-   |                                         ^^^^^^ not found in this scope
-   |
-help: consider importing one of these enums
-   |
-9  + use crate::prelude::c_void;
-   |
-9  + use core::ffi::c_void;
-   |
-9  + use ffi::c_void;
-   |
+On Tue, May 27, 2025 at 02:44:57PM +0200, Michal Wilczynski/Kernel (PLT) /S=
+RPOL/Engineer/Samsung Electronics wrote:
+> W dniu 25.05.2025 o=A014:03, Danilo Krummrich pisze:
+> > On Sat, May 24, 2025 at 11:14:56PM +0200, Michal Wilczynski wrote:
+> >> +impl pwm::PwmOps for Th1520PwmChipData {
+> >> +    // This driver implements get_state
+> >> +    fn apply(
+> >> +        pwm_chip_ref: &mut pwm::Chip,
+> >> +        pwm_dev: &mut pwm::Device,
+> >> +        target_state: &pwm::State,
+> >> +    ) -> Result {
+> > I assume those callbacks can't race with pwmchip_remove() called from d=
+river
+> > remove()? I.e. the callbacks are guaranteed to complete before pwmchip_=
+remove()
+> > completes?
+>=20
+> Yeah this is my understanding as well - this is something that the PWM=20
+> core should
+> guarantee. Fairly recently there was a commit adding even more locking
+> 1cc2e1faafb3 ("pwm: Add more locking")
 
-error[E0412]: cannot find type `c_void` in this scope
-  --> rust/kernel/kunit.rs:38:41
-   |
-38 |             &args as *const _ as *const c_void,
-   |                                         ^^^^^^ not found in this scope
-   |
-help: consider importing one of these enums
-   |
-9  + use crate::prelude::c_void;
-   |
-9  + use core::ffi::c_void;
-   |
-9  + use ffi::c_void;
-   |
+I confirm that starting with that commit pwmchip_remove() and the driver
+callbacks are properly serialized. Before that this an issue, even
+though it was hard to hit. (Because if you triggered the callbacks via
+sysfs the locking in sysfs code implicitly worked around the problems.)
 
-error: aborting due to 2 previous errors
-```
+Best regards
+Uwe
 
-Starting from commit c4c0574ee33b ("rust: add `kunit_tests` to the
-prelude"), we do have `use crate::prelude::*;`, so the explicit import
-is no longer necessary in that context.
+--rnawmuhzlrg5qj6b
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks for pointing this out!
+-----BEGIN PGP SIGNATURE-----
 
-Best regards,
-Jesung
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmg1xK0ACgkQj4D7WH0S
+/k7AoAgAgE6kPJ1bWcoaVzz4NG5KVOPDcjUi7+v9I5B79DFiy/xRcsUpAci8rFOd
+ndfUs3BSC7MNhbGn3TqPLdHFu13JlfAM8SiaomyGJY//cFZyLYea6eW2ZSBFA8ja
+NQH+C3AEG3OjnOgVQ53AcGR85thfg/hpk08UV+rWZ70xC9s6nFZZO3xn0r6sjCdr
+3ETCq0a9KPvv3BrAHBGEmTD3+dsEgPFWJqje7I0+FUheZzqwn/M4OqmU5t6SMbL4
+NGFc6KEWx6747Do9zqL5qKcIiDKqVlebkcYSPalO1epD4cMgSLKop259dBGIGKYF
+cdg6otbdDgUaWHNIiPNAyvpYlpgEsg==
+=IUKj
+-----END PGP SIGNATURE-----
+
+--rnawmuhzlrg5qj6b--
