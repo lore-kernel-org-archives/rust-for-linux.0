@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CB6C2D1;
-	Wed, 28 May 2025 15:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251212750E8;
+	Wed, 28 May 2025 15:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748446214; cv=none; b=fW2X/hb1lY8v0f6t5NTjW2J0oAsJ8DbjKBMzaV8t/Z+BuzReEusbMpY4npsvjIWmQG4ithoIeU03Q/Q+tdqD8yUBLr/4Js5wMJcH5ti4NxAhHIGIkjKNjZldmwvR6RmFA6C1bFwTZ9WXTBjudYvGXqDhZpxnBIU6NLp7Uvd9+98=
+	t=1748446506; cv=none; b=HGyuyk4sxvMcSIledlf903uwqXotRZ3eLj7cNyIT1nWHPAlcjcQhgx0Rjus7VEic/Nl2PruKBE08X6u1uamcEIX7kDX/i4W6WuCr1MqTpI/BRRtmaf4OOih5tMhw0yeosR8omN9WwvOlT0GfcP/DFbF3HpzOWu+mIlVypCfJ20A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748446214; c=relaxed/simple;
-	bh=RCQ8xW6PYSFY6YML5KXLcLAH/Vax2zlFYfHD+delJug=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=pZnFbsQ4n/zJGxeuaK9E6ICASsOnaNgLQsOiA7+y09ZQoWgrb6N0Tim0T92Gn9D1cIp3IyxPASN9Q8KDY3bru9zhLX5KHNW03xkvSqpr2yGgvhCX4Lgj77Tg8QqTtq+fEA+h/D1sXvLVbzl05OZFsJPqzVNJGdY8kxME3e/j4AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nTFJ0OJx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748446506; c=relaxed/simple;
+	bh=zB7eSGVJ68Jl0gMC9+d7mPya9pfNddYzQqEMb7NDisM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=bfP+XXmzZwosfYyV1htHeT21FYHH7Gu4L91xrysMa0SMI71/hWzz5AGNs03PY+24WJ+ffjMfEdFUILt5FsY6lqTkBxhy2pGs3tF7sBC4zS6q2YjkEw6/qlBFQGH9V6JuobNfGRoXbnvw8AmBJE7SB1fr0saBHYeim9Rh1NfJc9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kVPnqshC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nTFJ0OJx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51587C4CEE3;
-	Wed, 28 May 2025 15:30:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kVPnqshC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B031C4CEE3;
+	Wed, 28 May 2025 15:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748446213;
-	bh=RCQ8xW6PYSFY6YML5KXLcLAH/Vax2zlFYfHD+delJug=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nTFJ0OJxwfsI5WBVIuHQg/Z2p5aO+BY9hB3KNviu2GoYqv8lz4ipExjKQKFn5LUR8
-	 sN9UBtcAxAS2rElj0V9UimfySL9oaGeyaGVlZLJC+LN0oVPyygIHtUMNFDwL170iO5
-	 8LQaduULGzww27EX0n4kYNlpnmK9tvI7axyaSI1YurmC0JFBAeyWkowuhetHm7q+BY
-	 5P8AX/X3GsAH5LstDzfns6j9li8M4znHITEnf8yF+FtcbpUuh1W64Wut+fN2b63Csz
-	 IveDKAMmyZi7rtRww05/8cDt0Sz9A9HOLAHjjvd+8qJKNSxfqIwuNR0s896RdnSXne
-	 rd4HTvb440R3g==
+	s=k20201202; t=1748446506;
+	bh=zB7eSGVJ68Jl0gMC9+d7mPya9pfNddYzQqEMb7NDisM=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=kVPnqshCxEe5Da+hatugp5jpRO+YqdxnSK8hHV9/MuHaeYogJc8HUNfD+v7Y7oNnd
+	 ajTOOvKZaF0AWykZCZmwO7rAa8WJYeT6DIdhhnZOGCLAyadkSOftnheVVRR4FwmZLb
+	 wINaZlL/et1WxglyVXp6Bdc2km89Q4hZ8nTMOxo7LZNYnc6ZSms6wti8wzmuvtyWSz
+	 Ytq92scLm0QqesXBybdXA+fa1nRyGQudkluYwUXFNmEW9Vvt+RNGG7P+2+BjFDmGjt
+	 0jtso4IYLC52ByJ/P3KhBshux6a8WckGKiCjTxpDWhMHWsCdgKZeCnAhtK1FWUAVGf
+	 4ZiszX0mmUL+w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,41 +34,80 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 28 May 2025 17:30:08 +0200
-Message-Id: <DA7WGBL3SIYQ.KSQX9KU9JH79@kernel.org>
-Cc: "Jan Kara" <jack@suse.cz>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] rust: file: improve safety comments
+Date: Wed, 28 May 2025 17:34:53 +0200
+Message-Id: <DA7WJYNAN5AI.2HE6B953GR16A@kernel.org>
+Subject: Re: [PATCH v10 4/5] rust: replace `kernel::c_str!` with C-Strings
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Pekka Ristola" <pekkarr@protonmail.com>, "Alexander Viro"
- <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Tamir Duberstein"
+ <tamird@gmail.com>
+Cc: "Michal Rostecki" <vadorovsky@protonmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Brendan Higgins" <brendan.higgins@linux.dev>, "David Gow"
+ <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+ "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "FUJITA
+ Tomonori" <fujita.tomonori@gmail.com>, "Rob Herring" <robh@kernel.org>,
+ "Saravana Kannan" <saravanak@google.com>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
+ <will@kernel.org>, "Waiman Long" <longman@redhat.com>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
+ "Bill Wendling" <morbo@google.com>, "Justin Stitt"
+ <justinstitt@google.com>, "Andrew Lunn" <andrew@lunn.ch>, "Heiner Kallweit"
+ <hkallweit1@gmail.com>, "Russell King" <linux@armlinux.org.uk>, "David S.
+ Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Arnd Bergmann" <arnd@arndb.de>, "Jens
+ Axboe" <axboe@kernel.dk>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <kunit-dev@googlegroups.com>, <dri-devel@lists.freedesktop.org>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <llvm@lists.linux.dev>, <linux-pci@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <linux-block@vger.kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250527204636.12573-1-pekkarr@protonmail.com>
- <20250527204636.12573-2-pekkarr@protonmail.com>
-In-Reply-To: <20250527204636.12573-2-pekkarr@protonmail.com>
+References: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com>
+ <20250524-cstr-core-v10-4-6412a94d9d75@gmail.com>
+ <DA66NJXU86M4.1HU12P6E79JLO@kernel.org>
+ <CAJ-ks9nd6_iGK+ie-f+F0x4kwpyEGJ-kQiQGt-ffdbVN5S6kOg@mail.gmail.com>
+ <aDbnLzPIGiAZISOq@google.com>
+In-Reply-To: <aDbnLzPIGiAZISOq@google.com>
 
-On Tue May 27, 2025 at 10:48 PM CEST, Pekka Ristola wrote:
-> Some of the safety comments in `LocalFile`'s methods incorrectly refer to
-> the `File` type instead of `LocalFile`, so fix them to use the correct
-> type.
+On Wed May 28, 2025 at 12:36 PM CEST, Alice Ryhl wrote:
+> On Mon, May 26, 2025 at 06:29:46PM -0400, Tamir Duberstein wrote:
+>> On Mon, May 26, 2025 at 11:04=E2=80=AFAM Benno Lossin <lossin@kernel.org=
+> wrote:
+>> >
+>> > On Sat May 24, 2025 at 10:33 PM CEST, Tamir Duberstein wrote:
+>> > > +macro_rules! c_str_avoid_literals {
+>> >
+>> > I don't like this name, how about `concat_to_c_str` or
+>> > `concat_with_nul`?
+>> >
+>> > This macro also is useful from macros that have a normal string litera=
+l,
+>> > but can't turn it into a `c""` one.
+>>=20
+>> Uh, can you give an example? I'm not attached to the name.
 >
-> Also add missing Markdown code spans around lifetimes in the safety
-> comments, i.e. change 'a to `'a`.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1165
-> Signed-off-by: Pekka Ristola <pekkarr@protonmail.com>
+> I also think it should be renamed. Right now it sounds like it creates a
+> c string while avoiding literals in the input ... whatever that means.
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+Yeah that's a good way to put why the name is weird.
+
+> I like Benno's suggestions, but str_to_cstr! could also work?
+
+Hmm, I think then people won't know that it can also concat? I don't
+think it matters too much, the macro probably won't be used that often
+and if someone needs to use it, they probably wouldn't fine it by name
+alone.
 
 ---
 Cheers,
 Benno
-
-> ---
->  rust/kernel/fs/file.rs | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
