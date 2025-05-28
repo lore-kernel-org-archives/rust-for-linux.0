@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1671C683;
-	Wed, 28 May 2025 15:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38442882BE;
+	Wed, 28 May 2025 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748445518; cv=none; b=jNEC+4+9vxjQjHpna/bjj/zL+Qf5suRWn+02U9SxnJOXAZGAd+3wacoTLph/ZInO9X11dbX0ShEbVTbJtSCXg/6KXBgbrlXzR4Ct/ssSNgfz5NypoSLVtWHq9W2wa5L1P411ynqxQRicdAPm3x2LT7dDX89rRA1wkOcHtwkEyqg=
+	t=1748446172; cv=none; b=cr8mgjxSJnfXMwimkPrpEpxOtTh6D8/fsV6+5SL5dlnjCIuzvv/4EpHvue5umDn1YRZGEV49eNVhOPqP3MuWlymcNdrEVifMNM+aWOJ2cVrT0VwrDdcu1Vl4tAqFAuteO1P1Vg+nVq2Ide8WFatJ1Lidq7bfB9Idd08+1svEje8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748445518; c=relaxed/simple;
-	bh=+zDJ8MaeFZpDuL2f5yRXJ9pjdL74Yqj2SSN6QD34VgI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=u1MTTjuenGXpwG+IpzwKQwTiEP6m4S12UFt/PAGqS5Sb8Oj/JsAvkVA7+uDCfN/PGgtC5vroGHhsd+Y9TMhNCZwuKO3mKRKUES1ze3SurorQ9tuQssqNmodTLqB877JmcCMj88R7VysXnsLak9i1Q2BZiEYc5iB2kgajmOF15DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nu+Pb8gI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748446172; c=relaxed/simple;
+	bh=VKnzuxZGbyr5nWMvWhI8JQXl3fxnPGXhp3oyzAehjpk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=t9DwHnmVkZbAib2xCCXwXCw2Y3FNdx8BleTHtVeRneNfiUV4mhLPV0dL9i8YdnH8Sv6baCR0syzJO5XLCm3+39FRUDYsnWpmqB1E41giCP+mEBADoL5Pr6W0jDGCUncknRtYUNfh+Mj2hYLLm2bxZaX1VoGc4y3rHfQExJp5/KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kuwh3OKl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nu+Pb8gI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC23EC4CEED;
-	Wed, 28 May 2025 15:18:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kuwh3OKl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF82C4CEE3;
+	Wed, 28 May 2025 15:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748445518;
-	bh=+zDJ8MaeFZpDuL2f5yRXJ9pjdL74Yqj2SSN6QD34VgI=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Nu+Pb8gIrtgHgB8mrs3o9QSmjutdd2/6IMQK9d2hPiK40xRnhXMPFs1lWMMNLKk3w
-	 c2/2+Di7rKMH+2GM1eMlqbNlniagubrsvoRxesI4Rf7GOQW/6sl2yB5jVp95vQkvQq
-	 wmw2EmFHJTwCy6J+ZteoJVY/38oo2+Pz/4C4sU4zkM0H/GgcETdy8DxKUvJeravkuR
-	 Tw5s9ISOuOMLxKCIsr5pjz1cgabfJeCoUcRgX8xST+uYzoRoUxxdct5Kgxkv/rFgaG
-	 J1VlxWxfXEW/n6cQnohF9iRnaDZoYk5bfUaHH5pbV1C92wss+pJ/L6PXwgsLthlLZA
-	 /ZepwO3iA/BFA==
+	s=k20201202; t=1748446171;
+	bh=VKnzuxZGbyr5nWMvWhI8JQXl3fxnPGXhp3oyzAehjpk=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=kuwh3OKlGofxP5IsZbgkRlvyv8McwOCKSMORSXgDIhOPKeX718PbZC1/hVRb4NcmB
+	 f/1dm9Bc1XFqL4k/G3m3kmXDq34rePmxzJ5TiEZIN8vgX7M+3Qal+XtozXVA4n/IO1
+	 4Y7C1apTmM7Px5CZXTEwlT8vTmqH0UrWvAoY7J+6r2qP+6bCKco3tTReAjB5N54Zbo
+	 ph5xMd6rSoTtu//s8F05qUhGLLxdOelGMTwZutjvb7c3HDJDgDqQyXeH4z996ToBEB
+	 rHxUcxNbg4WDC0BqNQGMuR4HDlcXbTm6FAUhlSy5PIUK0c0sG4ZJAORslHpD7/Mr3l
+	 Wkb9MzSJn1ZHw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,41 +34,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 28 May 2025 17:18:32 +0200
-Message-Id: <DA7W7FU3XF0C.3N7KB44MCSPTG@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+Date: Wed, 28 May 2025 17:29:26 +0200
+Message-Id: <DA7WFS13MU9F.349OE3IGIDMBY@kernel.org>
+Subject: Re: [PATCH 1/2] rust: file: mark `LocalFile` as `repr(transparent)`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Pekka Ristola" <pekkarr@protonmail.com>, "Alexander Viro"
+ <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>
+Cc: "Jan Kara" <jack@suse.cz>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
  "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
- "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Alban Kurti"
- <kurti@invicto.ai>, "Michael Vetter" <jubalh@iodoru.org>, "Lyude Paul"
- <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 01/13] rust: pin-init: rename `zeroed` to
- `init_zeroed`
-From: "Benno Lossin" <lossin@kernel.org>
-To: =?utf-8?q?Beno=C3=AEt_du_Garreau?= <benoit@dugarreau.fr>
+ "Danilo Krummrich" <dakr@kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250523145125.523275-2-lossin@kernel.org>
- <20250527215424.26374-1-benoit@dugarreau.fr>
-In-Reply-To: <20250527215424.26374-1-benoit@dugarreau.fr>
+References: <20250527204636.12573-1-pekkarr@protonmail.com>
+In-Reply-To: <20250527204636.12573-1-pekkarr@protonmail.com>
 
-On Tue May 27, 2025 at 11:54 PM CEST, Beno=C3=AEt du Garreau wrote:
-> On Fri, 23 May 2025 16:50:57 +0200 Benno Lossin <lossin@kernel.org> wrote=
-:
->> @@ -1469,7 +1469,7 @@ pub unsafe trait PinnedDrop: __internal::HasPinDat=
-a {
->>  /// this is not UB:
->>  ///
->>  /// ```rust,ignore
->> -/// let val: Self =3D unsafe { core::mem::zeroed() };
->> +/// let val: Self =3D unsafe { core::mem::init_zeroed() };
+On Tue May 27, 2025 at 10:48 PM CEST, Pekka Ristola wrote:
+> Unsafe code in `LocalFile`'s methods assumes that the type has the same
+> layout as the inner `bindings::file`. This is not guaranteed by the defau=
+lt
+> struct representation in Rust, but requires specifying the `transparent`
+> representation.
 >
-> This looks like a find/replace that was a bit too eager :)
+> The `File` struct (which also wraps `bindings::file`) is already marked a=
+s
+> `repr(transparent)`, so this change makes their layouts equivalent.
+>
+> Fixes: 851849824bb5 ("rust: file: add Rust abstraction for `struct file`"=
+)
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1165
+> Signed-off-by: Pekka Ristola <pekkarr@protonmail.com>
 
-Oh yeah! Thanks for spotting this!
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
 ---
 Cheers,
