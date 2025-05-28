@@ -1,85 +1,85 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62911214229
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 10:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50CF20551C
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 10:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748427616; cv=none; b=teMCUziZTvK8Te3qCh0+gXIE3l5u9xfqzrdfofbauLuJktAGpqCa4bV47ElhOSZwfBrwFEBAOmzxicsR9nUzvG5kjwy82Q33BM2Qw0n4+lxDTrLlsOTfvMwq5dJtEC6sBpMYxjZWKmQZWu2erh0lQtPFb0jbSbD6+EBJjNjWPdg=
+	t=1748427692; cv=none; b=UYSG1uFmzU3urHCLNlNMUwzK8vvgUoMAyKtd4tCXGhRmvoOlP21XMloSYgr4ghaJMRgJ7+a3ZQLeFR/PWyrMIj2w0LTH/XSOIaWsX4sLWOf8X6XznttJpweL1hVPHZ+HG3s2dvTdcNnWb8RINU0Mbk/sbDBG85ZtZG+/1/EY6+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748427616; c=relaxed/simple;
-	bh=QVXvLr3GtA7cc1rTDq8wqrsCt69VXLlXgxESkQwMPGs=;
+	s=arc-20240116; t=1748427692; c=relaxed/simple;
+	bh=dcMsoNk413jU5nMOVSSWNMWozGrxa6Y/JoRiP9+BC/w=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZBUWyFivncKWE2hkJDETwav7n85w1D0Mi2TkLWuDUe/IVbpzWN7kt3m4uC6LGrl6TbMVphODT3PCKfN/LPGNeRKZwzV6nkzdgkIDhqxRuaM97gvLvLwdScXpqj93192Wdq6Avlsh4IfGKfNL8SJTfO1rNCuk5nM4+MUq6LNigTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KJoSS04+; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=ogWJMWgeHWynV5jTI103grSTuseAD5RLZSZXBDVFAG/V9gYwJv6AuWcTreN9RNexusdL08bV7W+ODTuqbhyyY1tZidCj08Io2WX4OF4Y0YuQdbQCSA1k00UoFXLfnfu4Rg+K8Sdf7h/iXj7N6DFSTRwIohclpk49gIl2j6QTN4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dPGc8QOZ; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KJoSS04+"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43d4d15058dso32249655e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 03:20:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dPGc8QOZ"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45048826b64so3537905e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 03:21:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748427613; x=1749032413; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1748427689; x=1749032489; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZqTpKLT888ECG39NBheVQQY2QZ8sDTvoN58x2xm6E7Y=;
-        b=KJoSS04+5nFceubjLn07ZmwFPgjJAPvZD2Ya8WqinsLMA23elwz8zz2ZwI3Ywwewdv
-         quIbB1+ANRrSMqPeEZcaoF+YxuZ01Xs1fJO/eXHbsPPAtPtJYhpqYFAZ9m8WIklNr7u+
-         gy0KI2JQY+E8QtvkxK6P2HHDRTpNebxqt1CdJvG+6/BtJx21I4wNA3ZmIbGSaQq6871a
-         +L2xArlSw9D6NLNxHknGZ1XsoJrzjQDJnr9fRitB0PPBBJDheR7slHCCAmpEoJlMX9Bp
-         hzTfGqTlnU6L5/FcqEoP7C16k3ZITgudSHwO44RthEX45/iQaAWJ9zUA10n/vTtf+OSb
-         9dFQ==
+        bh=ihiUk54rwHLhPgQ/ymNPw0bmICGiLYzE3RfqwI1pWg8=;
+        b=dPGc8QOZEEOtso2iiK+PNqTfM11KNVC0sX2yftEkhPp8JR9hFAxJKOGokvsok0nJUd
+         mx/2MxhInCejAtp732bS2ikE2y7eLEm7XoPtfRppkUxSJLEE7dY82J+ZHe/iI16ol7fr
+         7yKHDNfvZoZlt3g2cQ11ZaPv0QauV6DpqC3uNQANv9aGfRkXDI90RBhUsTH61MxSY2qO
+         2wAqDY9g9YGlY5njlyu8u3ioG64IIVzjS9zBCPvMPAnjkTpD/P3H9+NwgQ8CkkYVFaGw
+         j7/HFzjiryTSe26tXWkZ6Fj4WmzHdoQmNBIoXXEVUNHYmyaT3Tb5H1Ppg9WPj1dxXKcI
+         gKMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748427613; x=1749032413;
+        d=1e100.net; s=20230601; t=1748427689; x=1749032489;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZqTpKLT888ECG39NBheVQQY2QZ8sDTvoN58x2xm6E7Y=;
-        b=TzYSfUWQ1UC6k6dg2v6Tcezim4va/L29wzM5NIYxTXzyU3m3TNpZEc6Nnlgy9Mu0GK
-         NBCPydZ1523cJPILdSijuYikyoLQTHrqqphp3h2JZM6SSpvGoNxssfC976B8dLDo2f9r
-         c2ZWA5AEm0WVnAEqrBedGo0N095hZ4eL6yAe2GvgG0QSmr7JwQ+uwdgfIznKm8bZlQZC
-         YdohhHIj/Wh/Xrf43H/D+p9Kpf8lkTT31YWjgSTo5VvqQBSXzuJGBpm7hnCGM+bW05ik
-         hYsy2tlxXAgCMZsf2D//qmTwJ7fAT85LYKGZlPsg3gVpNYqHE7OpskMabq7JIFnAc34h
-         3MFA==
-X-Forwarded-Encrypted: i=1; AJvYcCWa+co4wuR0KNEIpVbxXZsirpZ1FRVyM+e2SwuJWcOClrifo6iePA+i3Duna5bfAyDrn00B+r5kMtIwsjSidg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywnaf70xLNCQqFkrK5FNlolB+F8Suz3zKX29PCAUcPS0W0/OBj2
-	js15VerMHbtVYb8QdRhOpWrlktwW5R2OktKmFsExyvZhV8Oa8mYHqsZxZ3l+d58zetcv6s+5nA2
-	6XVXju8OlgS5mLRa7OA==
-X-Google-Smtp-Source: AGHT+IFbZP87yhpd+A5UORuRl+efDd9mhI47Db4pLu1nsC4kPmFxtELld4jQWoKyvlreBoGWn167CcDJWgZNgZI=
-X-Received: from wmbdv21.prod.google.com ([2002:a05:600c:6215:b0:450:5dbe:5f11])
+        bh=ihiUk54rwHLhPgQ/ymNPw0bmICGiLYzE3RfqwI1pWg8=;
+        b=sVB8zrqu6ac8bwkKD0l4LFGJzFLs5qehuF1d8vLQpV2kwvH8i/AHDRwWGNrDuJIxYU
+         M/rlDOHPG8x27AqutHBjyYZ/tK0zC7BCdHjvbs5S2W3tCiAtdyrwcdsLWnhMATdh84jx
+         yTovt65F/TH37kiAEvEf+F4XSIloyVZbcNwz4WwNIdObxFyVZomGnJDAtjgmpRUAUkBi
+         pvXtDjssBfqHxNtuVePjklIW6iFzofDaTAjMM5ZXaecOMZMlRWC2kZHQxZ/14+t5oVjy
+         TJFUPl6uSQwroZa/jxy8wDSbYjZdQdNMwo5S+Ai7dv58C2Wz7Y57g34jpQq9iEbJbiLF
+         AZwg==
+X-Forwarded-Encrypted: i=1; AJvYcCXg3RXzWAld+zOJ0s5UxTzOvNo5DJjRRDwrN7AxiV7XzhusmpWvWehjgB5SlVymYEo9ZBgVIz/WeUJydvtVZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxovScrAsQk+YALOqaeJi1Kgj5NGlobfGmh4ADUSBEzfBsS9+/5
+	IQAt7qDYTXvDOn5JD/23uBNaEkREF49Y2PmVg16eLJtT40BAwzIq10zO1G6XF579ruD0gLENcm5
+	tQKbXGh8FHdgn3oRZUg==
+X-Google-Smtp-Source: AGHT+IHs5mJnbDInw3TkGPf3wo/Sg9XehLgPlODOdQf67wGziF/MJj+S+6bCTlQgb/SVU7imTB0yCuQAEVqM6f8=
+X-Received: from wmbez3.prod.google.com ([2002:a05:600c:83c3:b0:442:f8e9:a2ac])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a13:b0:43d:160:cd9e with SMTP id 5b1f17b1804b1-44c91fbb448mr159238185e9.17.1748427612802;
- Wed, 28 May 2025 03:20:12 -0700 (PDT)
-Date: Wed, 28 May 2025 10:20:10 +0000
-In-Reply-To: <20250527204636.12573-2-pekkarr@protonmail.com>
+ 2002:a05:600c:3f07:b0:442:f4d4:522 with SMTP id 5b1f17b1804b1-44c916072e2mr127245905e9.5.1748427689385;
+ Wed, 28 May 2025 03:21:29 -0700 (PDT)
+Date: Wed, 28 May 2025 10:21:27 +0000
+In-Reply-To: <20250527204928.5117-1-albinbabuvarghese20@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250527204636.12573-1-pekkarr@protonmail.com> <20250527204636.12573-2-pekkarr@protonmail.com>
-Message-ID: <aDbjWk-18QxVPIn8@google.com>
-Subject: Re: [PATCH 2/2] rust: file: improve safety comments
+References: <20250527204928.5117-1-albinbabuvarghese20@gmail.com>
+Message-ID: <aDbjp1oCqtGi6W9l@google.com>
+Subject: Re: [PATCH v2] rust/list: replace unwrap() with ? in doctest examples
 From: Alice Ryhl <aliceryhl@google.com>
-To: Pekka Ristola <pekkarr@protonmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Jan Kara <jack@suse.cz>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-fsdevel@vger.kernel.org, 
+To: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, May 27, 2025 at 08:48:59PM +0000, Pekka Ristola wrote:
-> Some of the safety comments in `LocalFile`'s methods incorrectly refer to
-> the `File` type instead of `LocalFile`, so fix them to use the correct
-> type.
+On Tue, May 27, 2025 at 04:49:28PM -0400, Albin Babu Varghese wrote:
+> Using `unwrap()` in kernel doctests can cause panics on error and may
+> give newcomers the mistaken impression that panicking is acceptable
+> in kernel code.
 > 
-> Also add missing Markdown code spans around lifetimes in the safety
-> comments, i.e. change 'a to `'a`.
+> Replace all `.unwrap()` calls in `kernel::list`
+> examples with `.ok_or(EINVAL)?` so that errors are properly propagated.
 > 
-> Link: https://github.com/Rust-for-Linux/linux/issues/1165
-> Signed-off-by: Pekka Ristola <pekkarr@protonmail.com>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1164
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1164
+> Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
