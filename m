@@ -1,115 +1,221 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D5F2797B5;
-	Wed, 28 May 2025 14:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9E828BA86;
+	Wed, 28 May 2025 14:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748441449; cv=none; b=u/dtwD78+NXLsbKH2PbvMMdN5e0U/nXj8goxpjFSho1n3NloQD5jBKplKB/s/gCGvdFgEbILJu5e7yNOUJw8zlMoBZhJZenKEJerUJpnJEVkocCNeiL5He1I2jB/InLnB/GbUq9BRpNcmUD244jyaDb5tpKX3SXD+3YZiCcxtLc=
+	t=1748443637; cv=none; b=E/xax24XxvyMK7rwi4JSz2UmwIu+66VCdnzi5pS84xYjk7nridcXCDGwyqmG2zWyHlbI2o+MvIbZx8gFTW0scxBLMauR0Hy+6xO8q/21qL4ga+11aR4EH8mdU5K8O0IhE6a1Y620yNtn/ontM78iSKfGcYI5W7orNsI5E15VU5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748441449; c=relaxed/simple;
-	bh=SH5cP+3YWmXs8/zc7fXq9BP075bBVMwRnqEHsDoMzq4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SYF43egu2qr9kEwlc55+Wij9uDd6wJJbH3DI8IcFEj1NJ25jOPkm+xbASfXCCytTyYROyQVwaB4OJgTbsZy9Ow7IUfImE/dgFxDdaRXrUEO7LN6dl02nUYhdyoSL7VjrcUNaqR7jJeQIG8xe+hNV8lptqPMY7GEnBr4gtodTIgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ncskE/1q; arc=none smtp.client-ip=209.85.167.51
+	s=arc-20240116; t=1748443637; c=relaxed/simple;
+	bh=m+MaMGjgOQIJ9Pg5U4JmFhaKVJyB3n1SsDypWk9VzOg=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mLlfHlX0xR7EtMiLftnqQmAmaWniQ0+jU8FXW7b3eFBNW4uhpkZXvgYsUkKQi1mJxYMhfJPaakWLN3YmlOJOjZePOL1tANBiR+IbSzv/rJR2BjBZ/Z9h1qdgDklrA9P9h1dl7yhtVSLi+jRg9jlDCczCdwga/qoD+qlPEua1GQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ddxrQcIy; arc=none smtp.client-ip=209.85.222.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ncskE/1q"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54b0d638e86so7496540e87.1;
-        Wed, 28 May 2025 07:10:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ddxrQcIy"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c560c55bc1so441422085a.1;
+        Wed, 28 May 2025 07:47:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748441446; x=1749046246; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1748443634; x=1749048434; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SH5cP+3YWmXs8/zc7fXq9BP075bBVMwRnqEHsDoMzq4=;
-        b=ncskE/1qpE5GIB0tRRJI0OpXtkQeUZl/GfBepqdstOKB06Zuixq7BFZCRt5fEKykrl
-         ak7SuuutO7XkXpxb3+78XexF74Pcc30lPd4IuKAZwmN5n3FGpTi6ZI/OOdsUk6Kw2aHs
-         8maw20gFpwp7R787w4oO3M8PPIYhO0JA7LUsKzrFVk2m2G6BimP4RWuu84SVCJxAc7GW
-         QKm3OSYT/7a+icMaH8RI/hLxSj5dvxv1WgWptksm10yMsXOriFpdnMnjGDccUKcithfw
-         /zkl2OjuPUU9+egrpiqfHjU70w7SNYgYJe8LQZ8Bm9RviJve1EaKsA+XWYonumTZS5i9
-         Fshg==
+        bh=GeCEdtOf7WNBgSJClbP1+l5L+CozBjsJNA4pYrE2hbM=;
+        b=ddxrQcIyDuExMoiWqpltwpZPdM7/clMKHxLKYsgysQzLbYKo0qQLEPwcnqvgwNKXIW
+         F9o3DsRUcZrvp5/yzr2gEi+FmBKrL7yotmbCYnHpln+8JL4Xqpq3jYpseQ7S1Ht924yz
+         Dnq3stZvM6M7qqz2spR8Bjf1SX6tTuOIxZx3HDUzEkqRil+5XCxJ9RtRzihvyNE7K/7b
+         K/S29HRwMyd0SiNLujFfqiehI/T+/PBEtLJm5wR9zdxYCrVWRPwVcNDWoQUdFbltPzTA
+         t/QlclCO6QDL0cCEMaM4SH+tuYCj/sXYd8irpJj8YgQuQJGj9C2JrPd/BwjuLC2sjUEO
+         76kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748441446; x=1749046246;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1748443634; x=1749048434;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:feedback-id:message-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SH5cP+3YWmXs8/zc7fXq9BP075bBVMwRnqEHsDoMzq4=;
-        b=Svu1dNYN1ykfCyzMDej2Kk81tE1WHNpq/5Tv1fM7iIfcXP1mTG1Mj3g3RhFf2IQ3D2
-         Z6kn8FkE4OJaP2VTqGWl7jyH5/J7Tzw3pVf++ybIyVO/VLU9B6tEzPTeC3wIrgPJwgLz
-         udWzIPW7s6gI0PyYYEPin80WSTEkwNGD+/JNmHIWqxyQ/Jpbt/k0UsiuqtyHLg4VemDy
-         mKAfihjTDVjtkJT2Kn1oIxl0UrKi5P7NwaqmlX3I0kkhxQBWK921UBw36b9Ngidh3R9T
-         RGrtz6KyBIi2iVj5qLFDzMHitcmBR4oZWlinrGM8UjH2pVwoaosfMrgdp5XYgAjD3Vga
-         5Kjw==
-X-Forwarded-Encrypted: i=1; AJvYcCU87L2M7n42vA5/SG8CS5ZwI9K3d5LMBWJz/osFyFdH7En96lu41Yc8D03B9Ci+OPMQ90mVs7OuUzPl@vger.kernel.org, AJvYcCUpkr5ry1iQfpgHvKChPBnuwrYBfBWGUN6mYenRAhDmwr/XOvvw8LdhWYJ6C/U+1utPvs8hdmvvImMgC+A=@vger.kernel.org, AJvYcCVLRu25OYdCSSZBQZKAFdBwokVQDCJi5lWd+ppYHQ5NrWEzcfY19tmwqiLUQa/taejRbJU0f0hVRacohP3L@vger.kernel.org, AJvYcCWWrKmJvshohWo4xnniKKDXdio7m9PjREs1gcfIo72LVnCELaRKYmUKThV+Ew91uYGIdBxf8Avz5KmihARFVzA=@vger.kernel.org, AJvYcCWcSVKarrOr47JCMbSAAZ50S+5K4DIO/oNuht+AvSQOQrBhbQE7ofDz9zlEJy9msqOU5ISI8xDUOx+7u/6JNjtV@vger.kernel.org, AJvYcCXEUnIE1efEM936bzs4jIbxfGQ+FHEBnWkzGxpdYkUYf30tPKBZuCKrCPXUKAt8kxR2JeGojKZvwJs+@vger.kernel.org, AJvYcCXHHOuIYT8xMBeBxv3f1IX8l+uU3gv6/Jj50ozBBIY+q5QbnJuzm+L7dfVm3hQh+woG7u55GYb/@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWLRHXw262es9Or2NgQ1WXcNnCJ6fw24YJe7XrMwq5WbPButOj
-	4l/USUbmtMi5qeYDWB7Wk3dWC5WXLhivt9t0qx6oZcb8mDCGaQFOO/E9HnEPmbBTWJUeMbE4p2x
-	qCkzM6wDOlRX9Pmu6+tq0CyenUCTFb9I=
-X-Gm-Gg: ASbGncscClWaQg69lVFecrPgKEPkr10wuO25UXRabc01e75p5XnOtpTptyCBKRZts6o
-	hC96Eg7eOT7Xk+qnU7MWgiHU5dhEB1kNCUA4I3FKoLj13nanXsNAFGzk022fsg7zyaHitpRh2Gi
-	8cLnqmjjDpzj6gwhSCCeC79lDRmpDeibbyYzKsrXJfKzu/fg9B
-X-Google-Smtp-Source: AGHT+IG3dTRzhOJeaA21sQ8Cl6CUs5QffL1O5Hi46hlWsg6xnHSKewHgYxirdmC8QSEO4fDwgYnRgzhaJUbQ8K+6RKc=
-X-Received: by 2002:a05:651c:1469:b0:32a:7122:58cc with SMTP id
- 38308e7fff4ca-32a71225a60mr20885251fa.6.1748441445644; Wed, 28 May 2025
- 07:10:45 -0700 (PDT)
+        bh=GeCEdtOf7WNBgSJClbP1+l5L+CozBjsJNA4pYrE2hbM=;
+        b=jyf8B4GPw1rwoDITHSie1UKdxAuVomir7WkVSXnb5iXwKfFyYvx+BDjiJvB/kYkrSj
+         VYUevRHQTFwQNmqZOYx9AhB5A0l97+GVOu52VbMcAYZnsYlUjuGunuNyHy4wv5ZVSXJw
+         1wp1JD6MoCVIMoE78foyHOch81hbnxYQ39/zXLxpkgLbvMLWfv3Hm6fdKq8l/P/kwF1P
+         sjZ6Ou1FcXr0kP5mNOdo+/jbVlYUHrfycaS3WJsLqN1OF0QXufromq4cWr6iK78O2zTe
+         SulaXV35OwplX8kguLRrMPs+PuqcNz3ZfM+UJYgcQOKvuMlwLTWNf5oeF0ZC0sIKo2TJ
+         G4DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9R4mG0ROgZENIDKFFc2NcVqr9WOVv18UzbSX0AbuZ6+OCct5KcR1GcoV5ZpfpXcgI/6GfFrT++oKgqpvDMnM=@vger.kernel.org, AJvYcCUSZRRdrHqt7Jzn7R5k1FFF9s9TMVrzyc3aAITjMQpFCiMQKP0QJZc2H8bM7lgyB4OvshVz9U+UYlmdz1c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxF4JUOEBMIhAHtn0weF4nyXQ6ooCwVMgwiAv1tHda4LUk211u4
+	cTDuK8Nx4X+Yif0LJR5HhDWLoyW7yqDkplnPv9CHkJnZaEjQDFzwnvuM
+X-Gm-Gg: ASbGncuZXxaQKzwlNUkUFbZgXjdpy2g7+OXB9oSwWMNMX8i4UYc1TH6awvbK+CscGW/
+	wYwFrV0lNhVudYw6AoeoACuuaOILZGgwTALVDEQGI34XW+NkgOAmLpoeqAgbjm1JhJxhVHicCPF
+	dBByvFehYLzLg5JkPJW8WznIf94yvKlyKHSff2S0j+s1tIbyfBEVKLwL6K+xQ5vWxZFU5BInlZY
+	uCaH9S4Uw+5MX4yJGm5f/d7KgbATRRFPzeobAJ9ZEoIX+O7R1z3ZKeJEKJSEiUCdRt34pb3DyMW
+	SVvyhJnYuU6SiljsWazPnOJfWq4ZZyB+mxEyojDy3+benqKgJzn6dKeqvYsYuLr78BQCnE08L4t
+	Wz5l9HN+U97Lv+9ghI2twO35suzgZNs1TP34rk5ZYyg==
+X-Google-Smtp-Source: AGHT+IFPXQGaw1O1c9U5xXJZVucDUV3AN03vR3z9CahJul5Aavx1etvqSZyGVwO9KoEQIhM2j8MZdg==
+X-Received: by 2002:a05:620a:4046:b0:7c5:3cf6:7838 with SMTP id af79cd13be357-7cfcac2a902mr377293585a.49.1748443634006;
+        Wed, 28 May 2025 07:47:14 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cfc5d3a3c6sm78141685a.71.2025.05.28.07.47.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 07:47:13 -0700 (PDT)
+Message-ID: <683721f1.050a0220.80421.29ff@mx.google.com>
+X-Google-Original-Message-ID: <aDch7ZOD6jjGXJdE@winterfell.>
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id ABE6B1200043;
+	Wed, 28 May 2025 10:47:12 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Wed, 28 May 2025 10:47:12 -0400
+X-ME-Sender: <xms:8CE3aP0TA48N3AZsWa2ACT3TYM888jb-hDQVijyVQYV0L3eH47Frmw>
+    <xme:8CE3aOHsdsOZUgpjv_U6t9wcWRyrqEHYNIhEIx5ij_XKSP0f_vf0cEnph7-6ifyN5
+    xT8EMgQ4Izu1PBO3A>
+X-ME-Received: <xmr:8CE3aP5ZQYe14_NIekJBEMAzDe6qai93IpzDAd5w9qWIxwPnZ0RucDFBI-Gij_Fglrpq0-teK2A->
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvfeehfeculddtuddrgeefvddrtd
+    dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
+    fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
+    dtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhf
+    gggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquh
+    hnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhephedugfduffff
+    teeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrh
+    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhp
+    rghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsg
+    hoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggp
+    rhgtphhtthhopeeffedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgvthgvrh
+    iisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhihuhguvgesrhgvughhrght
+    rdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhr
+    tghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsghorhgrrdgtohhm
+    pdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepjhhurh
+    hirdhlvghllhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehvihhntggvnhhtrdhg
+    uhhithhtohhtsehlihhnrghrohdrohhrgh
+X-ME-Proxy: <xmx:8CE3aE3xuMxJzwINYgvwwxtX5FFkJxZUUqr1wdz-dljBa-9RybqZ-A>
+    <xmx:8CE3aCGwycgRSDP5pzGYQX0bheqFQqfkkhv_KXSSDw9xnD5s20V_kw>
+    <xmx:8CE3aF9AcC9kTcYyNrG1BtoeXW-QfRlqPO0aKRo6gbFFCvhcoz-sAA>
+    <xmx:8CE3aPlT0jjET3CjFdiHGaYTZTsZrSSULvAWTX64aLxViYKuI1fTXQ>
+    <xmx:8CE3aOFDPIloTPLi5MWNuMI6ghUzAEhdAJRR-jrjx_lUcz5H5g_lO26e>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 28 May 2025 10:47:11 -0400 (EDT)
+Date: Wed, 28 May 2025 07:47:09 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,	David Woodhouse <dwmw@amazon.co.uk>,
+ Jens Axboe <axboe@kernel.dk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	NeilBrown <neilb@suse.de>,	Caleb Sander Mateos <csander@purestorage.com>,
+	Ryo Takakura <ryotkkr98@gmail.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [RFC RESEND v10 03/14] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+References: <20250527222254.565881-1-lyude@redhat.com>
+ <20250527222254.565881-4-lyude@redhat.com>
+ <20250528091023.GY39944@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com> <aDbniZzL1ZOSnfVi@google.com>
-In-Reply-To: <aDbniZzL1ZOSnfVi@google.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 28 May 2025 10:10:09 -0400
-X-Gm-Features: AX0GCFtCzkUkdNofO07GNzu_PibpIwzD2C0rC3Syu4m48_lWgFYSC9rhS2sdGcs
-Message-ID: <CAJ-ks9mcPd+-tFRuhxVGrYRPFEtJa3nQTdkvTtzLppqitVfaLg@mail.gmail.com>
-Subject: Re: [PATCH v10 0/5] rust: replace kernel::str::CStr w/ core::ffi::CStr
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, Benno Lossin <lossin@kernel.org>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, llvm@lists.linux.dev, linux-pci@vger.kernel.org, 
-	nouveau@lists.freedesktop.org, linux-block@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250528091023.GY39944@noisy.programming.kicks-ass.net>
 
-On Wed, May 28, 2025 at 6:38=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> On Sat, May 24, 2025 at 04:33:00PM -0400, Tamir Duberstein wrote:
-> > This picks up from Michal Rostecki's work[0]. Per Michal's guidance I
-> > have omitted Co-authored tags, as the end result is quite different.
-> >
-> > Link: https://lore.kernel.org/rust-for-linux/20240819153656.28807-2-vad=
-orovsky@protonmail.com/t/#u [0]
-> > Closes: https://github.com/Rust-for-Linux/linux/issues/1075
-> >
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
->
-> Overall LGTM, thanks! Left a few comments on individual patches, but I
-> can probably give a RB when those a fixed. :)
+On Wed, May 28, 2025 at 11:10:23AM +0200, Peter Zijlstra wrote:
+> On Tue, May 27, 2025 at 06:21:44PM -0400, Lyude Paul wrote:
+> > From: Boqun Feng <boqun.feng@gmail.com>
+> > 
+> > Currently the nested interrupt disabling and enabling is present by
+> > _irqsave() and _irqrestore() APIs, which are relatively unsafe, for
+> > example:
+> > 
+> > 	<interrupts are enabled as beginning>
+> > 	spin_lock_irqsave(l1, flag1);
+> > 	spin_lock_irqsave(l2, flag2);
+> > 	spin_unlock_irqrestore(l1, flags1);
+> > 	<l2 is still held but interrupts are enabled>
+> > 	// accesses to interrupt-disable protect data will cause races.
+> > 
+> > This is even easier to triggered with guard facilities:
+> > 
+> > 	unsigned long flag2;
+> > 
+> > 	scoped_guard(spin_lock_irqsave, l1) {
+> > 		spin_lock_irqsave(l2, flag2);
+> > 	}
+> > 	// l2 locked but interrupts are enabled.
+> > 	spin_unlock_irqrestore(l2, flag2);
+> > 
+> > (Hand-to-hand locking critical sections are not uncommon for a
+> > fine-grained lock design)
+> > 
+> > And because this unsafety, Rust cannot easily wrap the
+> > interrupt-disabling locks in a safe API, which complicates the design.
+> > 
+> > To resolve this, introduce a new set of interrupt disabling APIs:
+> > 
+> > *	local_interrupt_disable();
+> > *	local_interrupt_enable();
+> > 
+> > They work like local_irq_save() and local_irq_restore() except that 1)
+> > the outermost local_interrupt_disable() call save the interrupt state
+> > into a percpu variable, so that the outermost local_interrupt_enable()
+> > can restore the state, and 2) a percpu counter is added to record the
+> > nest level of these calls, so that interrupts are not accidentally
+> > enabled inside the outermost critical section.
+> > 
+> > Also add the corresponding spin_lock primitives: spin_lock_irq_disable()
+> > and spin_unlock_irq_enable(), as a result, code as follow:
+> > 
+> > 	spin_lock_irq_disable(l1);
+> > 	spin_lock_irq_disable(l2);
+> > 	spin_unlock_irq_enable(l1);
+> > 	// Interrupts are still disabled.
+> > 	spin_unlock_irq_enable(l2);
+> > 
+> > doesn't have the issue that interrupts are accidentally enabled.
+> > 
+> > This also makes the wrapper of interrupt-disabling locks on Rust easier
+> > to design.
+> > 
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > 
+> > ---
+> > V10:
+> > * Add missing __raw_spin_lock_irq_disable() definition in spinlock.c
+> > 
+> > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> 
+> Your SOB is placed wrong, should be below Boqun's. This way it gets
+> lost.
+> 
+> Also, is there effort planned to fully remove the save/restore variant?
+> As before, my main objection is adding variants with overlapping
+> functionality while not cleaning up the pre-existing code.
+> 
 
-Thanks for looking! You say a few comments, but I only saw one. Did
-some get lost?
+My plan is to map local_irq_disable() to local_interrupt_disable() and
+keep local_irq_save() as it is. That is, local_irq_disable() is the
+auto-pilot version and local_irq_save/restore() is the manual version.
+The reason is that I can see more "creative" (i.e. unpaired) usage of
+local_irq_save/restore(), and maybe someone would like to keep them.
+Thoughts?
+
+Regards,
+Boqun
+
+> 
