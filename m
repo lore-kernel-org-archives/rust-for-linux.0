@@ -1,90 +1,100 @@
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82EA28BA8E;
-	Wed, 28 May 2025 16:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A7C28BA8E;
+	Wed, 28 May 2025 16:55:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748450559; cv=none; b=Y9rh/KWzSo239FMKSSTPOENBru8gXciPxlkxwQ6LPKBoBu77oVhgSjRhC6Lk8COINkIG8+prN+se/Sdx+2/Mf0H0GAO5SZKKH+WKTsAdKnmaHMwxuFA3pCts4krrVYL0qXqAuqZJmQ8CNEMnDLVO3J1bfYfI/7Domi+/AXme5v0=
+	t=1748451315; cv=none; b=FZ1kntP9lyjmgacnyxBeFZJVgYf9li8/2mGkyz/4lgax+O/KULX7c4Pw9LjcBnYn7LQRf+EXq2jo/gRfGyyqGNo4sVVYcM8nst91OHAiyjEZibePVHbtILNELRu6QTrudM7IQPQBGfINyeH4675dpEvg3SkaGAB5gLeatNh7ZO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748450559; c=relaxed/simple;
-	bh=CL4fdIyFZSXeMM+ZGv0Bz4ORS2ADdJgyt9Wpq8s2V/M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=knTW6zL2mnn1lRTOjFH0l2iznq0dIaVqtOvksr31e/4JjoXYixf5Fhdf6wRTv5gQdclMtNRXju1TIvowjPoFT6yOpVWE+CxHkYlfkvAX84KpbJdu7WesJ+pnmGZUr7XgchV2iBACfSsc8EwV3q8/8CmKTlZcpLb1gWfVqUVIoRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E4+wvNe+; arc=none smtp.client-ip=209.85.166.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748451315; c=relaxed/simple;
+	bh=5Hke1jdgkb7E4JB+nI/3vbEv9WPdF4VEQmJVuDrr/GE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=m+luLE/T31AdB1m5HvF7p6DeyBVqH9thgqYin/RuZ1mxKug0AV+4RSgCDZeBiMaifXiMioPYejI+tbDT9gRSgjfa6P9jjuFpJ6rlHdizZMb1gR4OAt9Cm6yBvS3t9zex55nuzljA60VtodiHtVhDQpWSUU1onpEZzlMu0ksd8fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnwijIyC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E4+wvNe+"
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3dca2473129so119415ab.2;
-        Wed, 28 May 2025 09:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748450557; x=1749055357; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CL4fdIyFZSXeMM+ZGv0Bz4ORS2ADdJgyt9Wpq8s2V/M=;
-        b=E4+wvNe+TerObiEnW+2WoSaU52r9EJ8YOBUPFzrNr3DHfcTb8VOhoHpVou00o0ftf5
-         IMm/aE813nJ/FkiqAmBPZCzhFRdEQrkjKAOU0H6kzEyFfbdqLtfN/Q89VUFbGdS1HIBT
-         EhdoaI6CncOHI9BTXRfOdH5RCz7jke0N8kgqjLE3DZEtIZ/f0uniYrPUDhI/53tEwRZo
-         eb0Fy+OuzogaubJlb4cbvGj3ByOVj3yg0MRMuf7gVf//6CF33h1eY0kCwKgss/FnDLho
-         GQNi1MpZr1cBTVL1eOGS+irLJmV5pSrQD/y3XpQgjE9ktDIw4CeF3chj8WdCXd7eOA6M
-         oo6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748450557; x=1749055357;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CL4fdIyFZSXeMM+ZGv0Bz4ORS2ADdJgyt9Wpq8s2V/M=;
-        b=CcrLeRvBITNNvL3Q5iqejCvUPSa2ZG4YsCwgxLAVpPP7w/tr3uZvhF1nEMexn63QKK
-         n4g/A0gsBOe1jruNrpm60Lat0DjgyRNq58Elcs6yru/CU4JjHHHGz9brHKlC2DZKlLxl
-         tZazgROrL425g5r1UUOpAzoBMPGD96Cr3bNhSVbsZYBd42gHOAcpHhyHsLOlMTnaeJQ1
-         Wa70yhpcCQjb01U6DV8XtfAY/Z2SOqYahgk37k39BujnLcAmfARqL+nNBao9P14nAQqo
-         BvsazWXJYpPqjOpWVLzaeJwbrIBEhqDZipA+Q+AYTEsj1K0SW7NuCxLwI6pnt6KdXzPZ
-         ZQSw==
-X-Forwarded-Encrypted: i=1; AJvYcCVn9yGy9NQvLHU4tsKQ9Pk4XKpYRLWgx6QqG1wjd6NpGXNZLShI945OHidmhkXaTR728NMbWhu5HwNQFvQ=@vger.kernel.org, AJvYcCWI1v/UrRREeQ5pOA9Y1HsBW6ojkvcmbfvsz59H2+KQfunWDIkJK5Xe5/BAsPWIyJR0KpXnkk2r6ETR+cRuvpU=@vger.kernel.org, AJvYcCWtOYtFemF9O1TIvGkk8IcQYMzY+IcJ8r2f5zDCkTWX09tQX8R28b0dgR6g0CQQ6jMTXWGe31kQSV25PHmVMeTT@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrymmnwNLLpS6dYdFCW24b/mbG/5GYCBWkwvOXIhJy70JeHkLm
-	Drxa1HWY8JUgEGERHAM91G8984GqrO7ji3tvZp3tHIb36iKelhOPfb+UFCwrLsKGPVi6JkI7nk5
-	gyo/yt52DFuieHfTrwjxxQ9dXnuYw8KM=
-X-Gm-Gg: ASbGncuZWjIuUJ3i5iWWp/u/D9/BlDiefuPpo4+mLvflAsOJEE6BozASr1w25HXcbNB
-	er6gOsN/s7hBCRF2RU444iA2G8cUnxUm4o8DKlykUrLiGhsOVOLeKPenN/Z4clrmdDrpvHbojv5
-	OkP4O28tLWq8ezxP3+5kEJLcHaPN9cZM8Frp4O32snzSY=
-X-Google-Smtp-Source: AGHT+IG8CoEoXwbyCTS6/cob1FWwDC2rYze5HbDUoZubz0J/3OyoxsvLb+KnOL6AWmmS/KoRCLrClA89L8jvbfvLGA4=
-X-Received: by 2002:a05:6e02:b43:b0:3dc:76c6:436f with SMTP id
- e9e14a558f8ab-3dc9b7656abmr189693575ab.21.1748450556856; Wed, 28 May 2025
- 09:42:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HnwijIyC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E68C4CEE3;
+	Wed, 28 May 2025 16:55:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748451314;
+	bh=5Hke1jdgkb7E4JB+nI/3vbEv9WPdF4VEQmJVuDrr/GE=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=HnwijIyCWH7NYuGFX/L5P6hnuqkbRt4g2GbUtjxQarWIJm03VpnQLzfIEyZQkA+8R
+	 DoMjBBuZmUkxIEueYcy1g6x6WCC1vLVUCJ5Ja/8VY8UCo7tri/6daLWggEi96J6j7S
+	 bHyQX79rRNq5oSPHQfLWlZmgIO7GrfGB8UIG5zdp8L4URgupE4X7TgcEeMqCrWiCL5
+	 UGP3RPPPkheJc1aMHXyLNYKn/0eiiqQLOm9diKCjCKNzGNf9PUMaA/3LuOvS39a6q9
+	 XoGzXyXxVY3vrzvt/NnVwLY77jtf+trszI51hd1UoApy2wsiNobVTInN1HaILTWueR
+	 8Zx7cmcOAUIMQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250528155147.2793921-1-y.j3ms.n@gmail.com> <CANiq72==P-Sp=d6N7B=f-_aHak3Gr596Bs-3MmMBs+tw9J_K9Q@mail.gmail.com>
-In-Reply-To: <CANiq72==P-Sp=d6N7B=f-_aHak3Gr596Bs-3MmMBs+tw9J_K9Q@mail.gmail.com>
-From: JS Y <y.j3ms.n@gmail.com>
-Date: Thu, 29 May 2025 01:42:25 +0900
-X-Gm-Features: AX0GCFssabpDLq5oViRLdDvNbOrwHvkIlD3DNI5Pjr-KshHdlvaTWBADm0sTz54
-Message-ID: <CA+tqQ4+Y_zYowu3ig0CPHc6VTWi1wj6rdZkdq9FBOagC+tfNAA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: kunit: use crate-level mapping for `c_void`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 28 May 2025 18:55:08 +0200
+Message-Id: <DA7Y9ELFKI6U.32MUDCD0VQEE2@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] uaccess: rust: use newtype for user pointers
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Arnd Bergmann" <arnd@arndb.de>
+X-Mailer: aerc 0.20.1
+References: <20250527-userptr-newtype-v2-1-a789d266f6b0@google.com>
+In-Reply-To: <20250527-userptr-newtype-v2-1-a789d266f6b0@google.com>
 
-On Thu, May 29, 2025 at 1:31=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Tue May 27, 2025 at 3:53 PM CEST, Alice Ryhl wrote:
+> In C code we use sparse with the __user annotation to detect cases where
+> a user pointer is mixed up with other things. To replicate that, we
+> introduce a new struct UserPtr that serves the same purpose using the
+> newtype pattern.
 >
-> I see this is based on rust-next -- if you rebase the patch on top of
-> the latest one, you will see the prelude there :)
+> The UserPtr type is not marked with #[derive(Debug)], which means that
 
-Thanks for the heads up! I'll rebase and send out v3 accordingly.
+Should we still implement it, not printing the address of course? So
+something like `UserPtr(/* .. */)` or whatever people print instead of
+showing the address?
 
-Best regards,
-Jesung
+> it's not possible to print values of this type. This avoids ASLR
+> leakage.
+>
+> The type is added to the prelude as it is a fairly fundamental type
+> similar to c_int. The wrapping_add() method is renamed to
+> wrapping_byte_add() for consistency with the method name found on raw
+> pointers.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+
+I left one question below, but it already looks good, so:
+
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+> @@ -444,7 +484,11 @@ fn raw_strncpy_from_user(dst: &mut [MaybeUninit<u8>]=
+, src: UserPtr) -> Result<us
+> =20
+>      // SAFETY: `dst` is valid for writing `dst.len()` bytes.
+>      let res =3D unsafe {
+> -        bindings::strncpy_from_user(dst.as_mut_ptr().cast::<c_char>(), s=
+rc as *const c_char, len)
+> +        bindings::strncpy_from_user(
+> +            dst.as_mut_ptr().cast::<c_char>(),
+> +            src.as_const_ptr().cast::<c_char>(),
+
+Should we also have `as_{const,mut}_char_ptr` functions? After a quick
+search, I found that `char __user *` is a common type for user pointers.
+
+---
+Cheers,
+Benno
+
+> +            len,
+> +        )
+>      };
