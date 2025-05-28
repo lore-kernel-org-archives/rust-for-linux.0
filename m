@@ -1,128 +1,75 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A217E107;
-	Wed, 28 May 2025 17:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748453435; cv=pass; b=drPQNUk09/D8+uyblVSySiFgFwIO2IGQdoRo7bA7l77hTb3hRpG//uIlivX2EKyB9g/i5ahrUHCUpuRWPU5QBmOWaqHmfehpkE7wZlTujPuCGlaqDVGRBIij/UgDfd4ElkAIeFBqbgghF5m1xpfErI8DKhxQDn1Va/3BkIN8VyQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748453435; c=relaxed/simple;
-	bh=oxapIJUhuAH7C5mchQDq2upP03mEfxyRa2A9sT6SIrs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=MOghUTgPFCXdJht0ORpOQQa70YSNZZsz9M3fEgW33EtZ9ydq2gSi7R/HTov7r06nVaEzjMpItgAnN+ZVPDlR4TQJKMJ9LTPcthluiQf01qJ8ZxDNTnZ03NIYf48gEKsi6GkCkSTNDJa8dXDQcSGgLP1sxLMWJNATP2zf2Yd8rwo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=VzCrRYax; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A671B6D06;
+	Wed, 28 May 2025 17:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748454356; cv=none; b=hsj6HO8QUlEUsVBdMPdCDeIqCy4Sq2xN3GwOWyZBt9BXYmgyhyu1LqVd7a/IPM1HAjAij+0UwRcMgxygFl100pgL/8H64k/+m3x8601Zsc1/17Q3qQ0RftbC5+SJz7ZMdPvyYHcaEykfnzn/LfQ0Q5LaIyEvuua76cOo1AibJRA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748454356; c=relaxed/simple;
+	bh=HYHkALbXo3pnLVUrs+6b3S7pMKN/XYoSOkMG6JfxG6I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MV2izN3IOe3JJluMIeqY/l31btC/XEVm/DTpo5QHD0JsHimdYbbkMujkV4mT340TYLwEKh1eQvZVEmhN3HwKMB7aAREAP78uToqQtLxL/Sn5/ZmoiSbjRxuTN8PSSVpwRUQiE2hK6I558rPFHxMOh2sETWWOFx5/kOCn41RoI/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=A4+5FNp7; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="VzCrRYax"
-ARC-Seal: i=1; a=rsa-sha256; t=1748453402; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=A9brW/8mv1YNAt58KcT18LlPzEOQaZkEEzKoTQeX0IVGFAtOxfusodD3nJuX93wAlbWvsCpi5XQ3ssR/oRjzWTIEM/YhhqDoGGZohLle6VqAo1QZbPwGn8tLY/G1Tlv3Jq2T4WkH1HtLsG29NLwhSOCg9KByOLGLu06JesgcGaw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1748453402; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=vijCCIgMRuv2HsNGVhwlJlzo9DZfoqJJX6CBYjOowuY=; 
-	b=IszMaJO+SwvxiQ2yplc/xe1W/znJemQPVTwlwXOkgFnpypMbZGxiKmE2PTNtiukZqR0D02JqxKko5YCZMOB4MJnmgUrp25a5RY1tKZ8u69ej2jt4erXPtLpoQLn0CKVTeE5I5yiB0FMcIe1mTIpSTAgZ/y5xcXHPe61uBph+9+U=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1748453402;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=vijCCIgMRuv2HsNGVhwlJlzo9DZfoqJJX6CBYjOowuY=;
-	b=VzCrRYaxx1JMo6Yq85D/aWmwpLLtucRJZPvz9vGKX/RZSA6UQFwGgZnwLN7T1oEo
-	z92RWsDoLohqZWTYigceeA+GR4ZmRBTYpBUL1Sn15bsrWVgb8XJ/n4CjLRDyQPWvivg
-	IwE1iAL1KkD6vFoKR6opedMjguv89hCMjvRksN2I=
-Received: by mx.zohomail.com with SMTPS id 1748453401588404.8876402861505;
-	Wed, 28 May 2025 10:30:01 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="A4+5FNp7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5WyBr0ASdpvAFCWr18lM8e8ssQr82+v2ps7SNoOuuGk=; b=A4+5FNp7Jp3OY3LPC2nM7n28l7
+	LO1OZChVBlk/8JjBkvtFKKLGaD2EvXkokSX0h1flzskpgFtm0zlAP1Y2rNf+jrFhRJowGdhkOlIkM
+	ukz396ZCEm6xb3WuOgC+qbdy6m6HD9cistodIQmRHCmPeAIcBvzF8NmUEVMjVl8X6e7Vz7/9E5jXy
+	Ae+TR9HP/kOuR2CARGJkuwSHHOb3f+khFi2c2HCv+Eb4MPDVAhDeuocmgDtGlPUHri0sqKyMipXMF
+	9ktHbwBT6PqLEga4Az3FH868qJBDj5fa8gM2DnRsRw0t04HosYSlMxIOm4dZ2ojGWC7h9Klfhx9PH
+	P15ULvMg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uKKqY-00000007yio-1e8O;
+	Wed, 28 May 2025 17:45:46 +0000
+Date: Wed, 28 May 2025 18:45:46 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] uaccess: rust: use newtype for user pointers
+Message-ID: <20250528174546.GC2023217@ZenIV>
+References: <20250527-userptr-newtype-v2-1-a789d266f6b0@google.com>
+ <20250527221211.GB2023217@ZenIV>
+ <aDbpsB3ayj6tFfbI@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v8 3/3] rust: platform: allow ioremap of platform
- resources
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aCYVG-VVdJXYnSTt@pollux>
-Date: Wed, 28 May 2025 14:29:44 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Ying Huang <huang.ying.caritas@gmail.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5B875DFB-D655-4BAC-A475-43AE309520E2@collabora.com>
-References: <20250509-topics-tyr-platform_iomem-v8-0-e9f1725a40da@collabora.com>
- <20250509-topics-tyr-platform_iomem-v8-3-e9f1725a40da@collabora.com>
- <aCYVG-VVdJXYnSTt@pollux>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aDbpsB3ayj6tFfbI@google.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Hi Danilo,
+On Wed, May 28, 2025 at 10:47:12AM +0000, Alice Ryhl wrote:
 
-[=E2=80=A6]
+> We don't currently have any way to perform that kind of pointer-math on
+> user pointers, nor do we have any users of it. I imagine that this type
+> checking is only useful if you can actually perform pointer math in the
+> first place?
 
->=20
->> +    ///     let offset =3D 0; // Some offset.
->> +    ///
->> +    ///     // If the size is known at compile time, use =
-`ioremap_resource_sized`.
->> +    ///     // No runtime checks will apply when reading and =
-writing.
->> +    ///     let resource =3D pdev.resource(0).ok_or(ENODEV)?;
->> +    ///     let iomem =3D =
-pdev.ioremap_resource_sized::<42>(&resource)?;
->> +    ///
->> +    ///     // Read and write a 32-bit value at `offset`. Calling =
-`try_access()` on
->> +    ///     // the `Devres` makes sure that the resource is still =
-valid.
->> +    ///     let data =3D =
-iomem.try_access().ok_or(ENODEV)?.read32_relaxed(offset);
->> +    ///
->> +    ///     iomem.try_access().ok_or(ENODEV)?.write32_relaxed(data, =
-offset);
->=20
-> Since this won't land for v6.16, can you please use Devres::access() =
-[1]
-> instead? I.e.
->=20
-> let iomem =3D pdev.ioremap_resource_sized::<42>(&resource)?;
-> let io =3D Devres::access(pdev.as_ref())?;
->=20
-> let data =3D io.read32_relaxed(offset);
-> io.write32_relaxed(data, offset);
->=20
-> Devres::access() is in nova-next and lands in v6.16.
->=20
-> [1] =
-https://gitlab.freedesktop.org/drm/nova/-/commit/f301cb978c068faa8fcd630be=
-2cb317a2d0ec063
+What you want is something like
+	x->field::UserPtr(beta) iff
+		x::UserPtr(alpha) and
+		_.field::beta where _::alpha
 
-Devres:access takes &Device<Bound>, but the argument in probe() is
-&Device<Core>.
-
-Are these two types supposed to convert between them? I see no explicit
-function to do so.
-
-=E2=80=94 Daniel
-
+Generated code would be "add offset and cast to pointer to type of...",
+but doing that manually would really invite headache.
