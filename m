@@ -1,135 +1,112 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5412A1B6D06;
-	Wed, 28 May 2025 17:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C495A111AD;
+	Wed, 28 May 2025 18:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748454694; cv=none; b=jXf8pCoc5Et8CFMNg7adJlowl6ypEGU5nBhWApYE7xkeSg8PuaguyO5irUsKKHCuuxzp7vh+D68/8Upj0x7k1yWHB3iRfLEhUNtBQEtOpqb9NiNf4izsGXXDvheCkDH+uVSx80g9qZKrpExFkGp8gktKKycVknQRfF3y3L0ob4w=
+	t=1748455583; cv=none; b=I0DGH0oUwC1vztlYifPcbYUt01UWgFUhWO0lYSvFauvVcepyABr5b9HkeZxl2mrBn7a1HJ225327sUr1YIeebrjPN16r38CSvV495uztzvANfLUD1zZtLiwQSBfXzyn8/QwBZriUDLEy0K1gZ+6HodII5PK0QjnjHHM/yY2nNvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748454694; c=relaxed/simple;
-	bh=pKrP+SJ4LaJNwfbkiX7iV0LUuK6iL+pWws8KTlHLUeg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=brgbEGL91gLTlHslKtAm879I2aGBxbStRvDKVJM2Yc5qvTkQH8ITUICsM1YOOSM9ygKGCcvrNK9L8SI5iJEZIyizN8El8ixE4XMSGhoQTmL+tULZJ6YZKwsjnHvpfmtgsVbVLtE5WmdkUVCID8kiiIxdmeIbd3Bf5pPZ1Iharrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U9nx6qrv; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748455583; c=relaxed/simple;
+	bh=SwYQFIc7r2JHQ2hnmDJnXLD9YNcIS11EmU+W4n5WpnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ioTWUxN7Qflcgv4wD+BORdChkgsBa0Ung05XWhUbr3OR8AE2Tt7c7XqcXM5XOeZLXioqcR2bXnNItVxzG7L3JPESpwSKEjloUjTHs44x6SzMNhvoaRALzqnZcbKR7fVSI2UkHwzi6M5Gi1x5tG0dCCMSts9CmSlT5oXnMkcCHtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPYy9JI5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U9nx6qrv"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-742c9907967so4057b3a.1;
-        Wed, 28 May 2025 10:51:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748454691; x=1749059491; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E1+IwopJU0lv/yXFu4CFGB0kRxCi/XJPpkkbxvoT8Jg=;
-        b=U9nx6qrvwTBTE0E9FH9Ud+sUx4t7XjL3vqdo+kYeAFs9xHExMxImYHPCGQj5sTxFAY
-         rbKOnNFDmzjAORPD3IXxmnebNuA6g2r4Lt44DEihGeuva3NFqm8yE98GhMBYrFYHXiIb
-         Yt4NalcYlOVskTY6axOz4fOtmLLTlEitfTvYZ3VrhUXZmrovyoJjmHB6tW4U+xk1kOt0
-         DMvnOU5pB4CcBkwaTyAPPYXVYYk7giI55dlxa8b+2uhBq2rFgnnQeNGRU9R+is0SaZ+L
-         ZzCam0HWRRju5jqSAt3A0M07RV+IkxDUM4hNAYVDOXbFMdOf7iEJ7O9+xeRYALLHQTcq
-         ZyCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748454691; x=1749059491;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E1+IwopJU0lv/yXFu4CFGB0kRxCi/XJPpkkbxvoT8Jg=;
-        b=K0wo3IIszrGeWtE3j2UGHOrN3XyXA/gjIQXcXdgKCGqskn5rmo0DdE0OldO9Ws2HbX
-         ThahkK9x5iN9ZJNj7Sr0MIwFqLPmYpJKGgozT8xWgZKvdJeSZ+hP/pUUTdivb6kciKEr
-         rjz+SuDBn17RjTXaADOF2CnM3FLCk9wTcNrbb9YpH4RHHWF6q3N/X8zK1uX4g8YEp0CT
-         TFQGlX7ln0f24oEnzM4XA+rj/JwHqG4TB2aUMxrjZO4i6iYFhiLB9XBZUiOV+u1I7ICE
-         rsFks7V108W13E7XnmZr5jWM9t6Vr4+VzGZF3E8D5eMdPDMF6wTgEk0U2jFrn64UHbE0
-         YdWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6TNbAPMHcHBFKCgZ3JjUDm+779i6VT+YQm/tmepKh7d0z3t48XhpRI2Kldb5OsVpKzilre4BCT0gxzTaRwxU=@vger.kernel.org, AJvYcCXZJXhS2bpeov8hzU//nf5FBmQvvDzI3+mRFpy7dYaIvzHaSQ3+lg6ESFJM55NVd1w0NlSlNGVXRCvnuXs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7l45LYRNzKuOuIt8wPPMfKNY7GtI2apg7eBIfmt2F6jfSPYrj
-	AnZqnfGO09eE5kRyQgsvcn43W/kI7BeNqEoZwBH+KeQkmg8QUTNl+oWO
-X-Gm-Gg: ASbGncu65p8PtlEN/reOOFyvDi9FOrbGWuy64HRc3xXaWxhRF6xJIFEe8+Pcw45cjUr
-	vKoe8RWiNmHMGAOHQNejj9lKjbnHnTjjo9T+dPxcVAADtSD418tlADBedpoz1/9blqXFi357Hs+
-	B9UQNqbVEH6XLqNsEptpVlnqQlc22D2vmP0kY+OMgtdaigRdXFkelccSb8x+nYHGXlgWy4B4NyV
-	1cPkCoWzrlDk6KF2c7FrFBcVQ1ChQlAN/ANDSYY8RBGX5PQcUxZxtvczkRZMJG4djSiKXsOUH5n
-	1Rifi/VJv6lYkjpgdF0j91VDlJNP8WbdBhzXP9fLzAwwpVRSW+IbNOKqqNB/k+MumiInhbT7CB7
-	E7BIMyHHlOv0mM51OFA==
-X-Google-Smtp-Source: AGHT+IFVO7KOkICyQIQM0olRxVieRE+++FIRGraoGJUL+14X0dln5wxY/fKxuitqFepnzJOlCJVoBQ==
-X-Received: by 2002:aa7:888d:0:b0:742:a82c:d832 with SMTP id d2e1a72fcca58-745fe05d238mr29975839b3a.24.1748454691493;
-        Wed, 28 May 2025 10:51:31 -0700 (PDT)
-Received: from localhost.localdomain ([112.149.32.52])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-746e343c015sm1544696b3a.138.2025.05.28.10.51.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 May 2025 10:51:31 -0700 (PDT)
-From: Jesung Yang <y.j3ms.n@gmail.com>
-To: Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Rae Moar <rmoar@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPYy9JI5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DC1C4CEE3;
+	Wed, 28 May 2025 18:06:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748455583;
+	bh=SwYQFIc7r2JHQ2hnmDJnXLD9YNcIS11EmU+W4n5WpnE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tPYy9JI5+Gq5oIXon40EQ7pZd9jgDOyyAG7rfA1wIsXVU6Qg1E7TFYs9rekn7ijcZ
+	 czdAEjOqRjbCaQC5a1Zf4ZXBhNSpGOM39Oj+BUsp0Ckgzc7oP4wjVoJpmhgSzBO8UY
+	 5oUxUni4HiriTQY9fnXq7QAo5h55D801ScHz80ztdfprIIDTx7TDfUn9rwRHrCdzi+
+	 ysZHBygnTEMVto2mSjV+I5Ulb/YBHAebj1cxrloW8JxHyYDno1597lDZ496iqVPqrU
+	 ZtE5dX013juINIBqTO3C/BtjYmsX30k0MKDhpZ0Hec8EXu8wiVsfefoMfdmdpninH4
+	 pmAXzwCsHDwEQ==
+Date: Wed, 28 May 2025 20:06:16 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jesung Yang <y.j3ms.n@gmail.com>
-Subject: [PATCH v3] rust: kunit: use crate-level mapping for `c_void`
-Date: Wed, 28 May 2025 17:49:55 +0000
-Message-Id: <20250528174953.2948570-1-y.j3ms.n@gmail.com>
-X-Mailer: git-send-email 2.39.5
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v8 3/3] rust: platform: allow ioremap of platform
+ resources
+Message-ID: <aDdQmJ-pen_MQNDB@cassiopeiae>
+References: <20250509-topics-tyr-platform_iomem-v8-0-e9f1725a40da@collabora.com>
+ <20250509-topics-tyr-platform_iomem-v8-3-e9f1725a40da@collabora.com>
+ <aCYVG-VVdJXYnSTt@pollux>
+ <5B875DFB-D655-4BAC-A475-43AE309520E2@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <5B875DFB-D655-4BAC-A475-43AE309520E2@collabora.com>
 
-Remove `use core::ffi::c_void`, which shadows `kernel::ffi::c_void`
-brought in via `use crate::prelude::*`, to maintain consistency and
-centralize the abstraction.
+On Wed, May 28, 2025 at 02:29:44PM -0300, Daniel Almeida wrote:
+> Hi Danilo,
+> 
+> […]
+> 
+> > 
+> >> +    ///     let offset = 0; // Some offset.
+> >> +    ///
+> >> +    ///     // If the size is known at compile time, use `ioremap_resource_sized`.
+> >> +    ///     // No runtime checks will apply when reading and writing.
+> >> +    ///     let resource = pdev.resource(0).ok_or(ENODEV)?;
+> >> +    ///     let iomem = pdev.ioremap_resource_sized::<42>(&resource)?;
+> >> +    ///
+> >> +    ///     // Read and write a 32-bit value at `offset`. Calling `try_access()` on
+> >> +    ///     // the `Devres` makes sure that the resource is still valid.
+> >> +    ///     let data = iomem.try_access().ok_or(ENODEV)?.read32_relaxed(offset);
+> >> +    ///
+> >> +    ///     iomem.try_access().ok_or(ENODEV)?.write32_relaxed(data, offset);
+> > 
+> > Since this won't land for v6.16, can you please use Devres::access() [1]
+> > instead? I.e.
+> > 
+> > let iomem = pdev.ioremap_resource_sized::<42>(&resource)?;
+> > let io = Devres::access(pdev.as_ref())?;
+> > 
+> > let data = io.read32_relaxed(offset);
+> > io.write32_relaxed(data, offset);
+> > 
+> > Devres::access() is in nova-next and lands in v6.16.
+> > 
+> > [1] https://gitlab.freedesktop.org/drm/nova/-/commit/f301cb978c068faa8fcd630be2cb317a2d0ec063
+> 
+> Devres:access takes &Device<Bound>, but the argument in probe() is
+> &Device<Core>.
+> 
+> Are these two types supposed to convert between them? I see no explicit
+> function to do so.
 
-Since `kernel::ffi::c_void` is a straightforward re-export of
-`core::ffi::c_void`, both are functionally equivalent. However, using
-`kernel::ffi::c_void` improves consistency across the kernel's Rust code
-and provides a unified reference point in case the definition ever needs
-to change, even if such a change is unlikely.
+Yes, it comes from impl_device_context_deref!() [1], which, as the name implies,
+implements the corresponding Deref traits.
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x/near/520452733
----
-Changes in v3:
-- Rebase on a3b2347343e0
-- Remove the explicit import of `kernel::ffi::c_void`
-- Reword the commit message accordingly
-- Link to v2: https://lore.kernel.org/rust-for-linux/20250528155147.2793921-1-y.j3ms.n@gmail.com/
+Device dereference in the following way:
 
-Changes in v2:
-- Add "Link" tag to the related discussion on Zulip
-- Reword the commit message to clarify `kernel::ffi::c_void` is a re-export
-- Link to v1: https://lore.kernel.org/rust-for-linux/20250526162429.1114862-1-y.j3ms.n@gmail.com/
----
- rust/kernel/kunit.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+	&Device<Core> -> &Device<Bound> -> &Device (i.e. &Device<Normal>)
 
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 4b8cdcb21e77..603330f247c7 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -7,7 +7,7 @@
- //! Reference: <https://docs.kernel.org/dev-tools/kunit/index.html>
- 
- use crate::prelude::*;
--use core::{ffi::c_void, fmt};
-+use core::fmt;
- 
- /// Prints a KUnit error-level message.
- ///
+You can just pass in the &Device<Core>, it will work.
 
-base-commit: a3b2347343e077e81d3c169f32c9b2cb1364f4cc
--- 
-2.39.5
-
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git/tree/rust/kernel/device.rs?h=driver-core-next#n284
