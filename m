@@ -1,190 +1,80 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5813B20297B
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 19:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C001DE8AD;
+	Wed, 28 May 2025 20:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748462193; cv=none; b=TyUq1Q/ZTgq7Mifkvz1MlmAnB0cXo3amodC1OCguA+DNmWLccGf3HdMEI1+ncL8heM/VX+IWbzbyK/oiyxeVOFaE/OT85ymc3OC60JUs5J/NEo5TLtm/Hcw217CgA6bsE8QFiJ84qGXGo2LysdtdlKoojoSPOGO22gRwzRS8iu8=
+	t=1748462492; cv=none; b=CzpBul+nLol+jemG+1JhyqMoF1WTZ+C/A/BA4sLhoJ8qOVwJ/9gybJ7HiAjqYFfA7jIBRmYU/KFWEXD5Rfl2zjjtRJJyUufsISy372mY5/8Y/vXGxKGWP6/BX8IhFz63ULIVdN9EMj2gGVswJHAEbAlsI6A3gQs3vPt8K8AXyzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748462193; c=relaxed/simple;
-	bh=OB7MWLP4yrp3bJtXUUZYYFMCjCcMT3kpUGeeUVvJ74k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q0RlLSmup1jD1oiStDEzEDDGADBQSHf0PKSZ7eQEoTrcWA1+tUpHEL6QGiDoRwH0YgBcgj6VbVxOWBpr+3mwMLwCUoiXAc/4YPpPY8/WUK6mvgYkTg21sAAE5TbHn1ReicCfRBwtMCDaB51QPDp9cXdOeqb9YHQA6R+5yfQkOpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OyO5BUz4; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1748462492; c=relaxed/simple;
+	bh=A1Ky1Pg/WuDt4SJ7yWJhVPZwBDVd6rWYJ8XLCUaDi0k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qXRXr1a52e8b6F8n43Pgvi8nEMhDFfe7mvB+lrToqOAsmioROSX1p1UU4eb0QlzXX4fVVg6BGHk4ZurotxcptMdhxGp9gV/E8NxYSTSkh88yFfehH8+2rJwRso0O5dzG9y86M5M5wXj3iWVqK3RDPDcOdduON2+S1wq6BfaC1IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=d8PcjOyN; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OyO5BUz4"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a36e090102so96749f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 12:56:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748462189; x=1749066989; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W8L7PhpfmS2m6BHlUu71cqULvSSH20y8r59Td9C3Kyo=;
-        b=OyO5BUz4bG+CxcffXm8uoRbB8uHasH35ebE4tze4v2HHZklsVzC/CYnp8Zxt0/FYeB
-         RFkc9vj/yoAfcWvt1NKanDqu3Hom8t3g4lTITym12QgI2CuAdh9uSti1a2NoouY3zgpZ
-         jllcn0uNSghGELlI+mO18k3d45ktGYbcB8FTr2NIPtTn0QIPF/C11UcKTpQXpuu8vO0+
-         niUjbzmsvz7SAM4agRnxmFSxQY/iepQF9niUN94kxNnlzlM1+khoEF9IxqwsNR2RzDw9
-         iQl6iy6/pJsKyqDgPwCRzc+iwjagrv4MwTje8qCNWeMGKDzEl6STc9r20XA60uIDDcnx
-         GUsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748462189; x=1749066989;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W8L7PhpfmS2m6BHlUu71cqULvSSH20y8r59Td9C3Kyo=;
-        b=Oqe+3fhCa2RQB0FMbYL7nemaIOPd1ELv6ydGB7IZjrTbGSoMykv/Fhz2ugbF5Be88/
-         8giNUOWBegOU8BofMk6AD4Fkodes+4WEbMQORiP0AUtDr0e3jtGeL1TtDaJPvw8Z6UJE
-         eiDNqlox7f2XVqmeWOLp00vxq2E8qem/qqRgWolu3ygsaNlzubnXBJS106VZXdka2X9j
-         HOCSVUlyC9oOn20hCA+vCnCJDvyL2n4SBFvTTxPBakOzNujnWSCaAH88vLcv2I0JiU5z
-         otBdTjgYTSCbt5raY5/SZAGsjA4RFnZmPblvqXkQiOEGRgCDK5NWwgzPu4Pwi0yE3Xdy
-         +bMw==
-X-Forwarded-Encrypted: i=1; AJvYcCV2QgIgUa20m0GbUFqwttnATrM3vGyu+9z64eup+1BO9HWSDO2/Vjfb/SGUmTtEK0rkZ0MdVsRzNjkk0j8I5g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRAV60fYzrncJesqWW6glYhkX5QEk34+MCulS2ahbqubvnbam2
-	wRXmlDKxE8a1pgW9bpsCX5gRpDygYQMYdXsM7EbOM95XyaYwwcKPwXhviWU4FhnJi0dQiNgfA/V
-	/yErOufMekN13lnmY3+gof8Is1/UJ801apjavbAdb
-X-Gm-Gg: ASbGncu63qztIr4lu+yTpNxXf4TCjvwEYiw36GVGqcziVp4TUlkYhHUBjT1dYmcY+KG
-	AkQavXBZ9RNEeziJYgiXwRN+C8TYrnofYDPsCjdHq2iDXkzfIJzZ9oj0jx+xgADQZ1XtcxSR8i7
-	LlhIvCRHvfzLuo/cMv6fZy81VcZj15JyJ1xDdnpBjr+w6S
-X-Google-Smtp-Source: AGHT+IFRVTFehgHIP4jtTiYzkqzpeEat7ZA6bJJwBruO3MHFT/UlZRIXUBmqTA+/UeIEFdiM+66uwtk4K0Bw983sfEM=
-X-Received: by 2002:a05:6000:402b:b0:3a4:cbc6:9db0 with SMTP id
- ffacd0b85a97d-3a4e95818e6mr3321018f8f.51.1748462189419; Wed, 28 May 2025
- 12:56:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="d8PcjOyN"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=t9ZDI2fbFaZxw/Hi/Ar0BF0dqM6pRsb+8q9S5GBxCqQ=; b=d8PcjOyNcAEYTX5j/kM5EuKi9t
+	wk4la5Uic8Fd1vZKOP8roelHlrSEBLnGS+LGU6hve2XokIBNWtWjHvkAXOCGlwP/+hqNpdtHEX5yZ
+	IJ5Efuhnipe8tg17fLTNwRT6fuNOB68DQ2LyZkvx5NIvAbuMO4KT31M8XvOSoRIJ0VrPcG3fh0XpL
+	9lAFgyocpwJOJIFwUK63PlkwNQYQrfxUKWesETHfq6/ncq9bvkAdLmmZWXDlWqguZWoQzlr6SyQSc
+	KVj6TBT1FrnabtLBe7uADlTcylKSBz0vgBOB2yjH0ID44uRyq11Q290dGl/VbzIIQJ7hXkBaxqd85
+	ZroSaD5g==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uKMxl-000000094hL-1gS9;
+	Wed, 28 May 2025 20:01:21 +0000
+Date: Wed, 28 May 2025 21:01:21 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] uaccess: rust: use newtype for user pointers
+Message-ID: <20250528200121.GD2023217@ZenIV>
+References: <20250527-userptr-newtype-v2-1-a789d266f6b0@google.com>
+ <20250527221211.GB2023217@ZenIV>
+ <aDbpsB3ayj6tFfbI@google.com>
+ <20250528174546.GC2023217@ZenIV>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com> <20250521-nova-frts-v4-4-05dfd4f39479@nvidia.com>
-In-Reply-To: <20250521-nova-frts-v4-4-05dfd4f39479@nvidia.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 28 May 2025 21:56:17 +0200
-X-Gm-Features: AX0GCFvvfi0IO-4qmWiebEf60BPOOjb4AGpy4FTSeIFi9VcgYiwZXSln0SEgVK0
-Message-ID: <CAH5fLgg6s2JM3HtzR3jimUnjLY0BBBpnNLuBUdrsOYCqmx+8pg@mail.gmail.com>
-Subject: Re: [PATCH v4 04/20] rust: add new `num` module with useful integer operations
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250528174546.GC2023217@ZenIV>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Wed, May 21, 2025 at 8:45=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
->
-> Introduce the `num` module, featuring the `NumExt` extension trait
-> that expands unsigned integers with useful operations for the kernel.
->
-> These are to be used by the nova-core driver, but they are so ubiquitous
-> that other drivers should be able to take advantage of them as well.
->
-> The currently implemented operations are:
->
-> - align_down()
-> - align_up()
-> - fls()
->
-> But this trait is expected to be expanded further.
->
-> `NumExt` is on unsigned types using a macro. An approach using another
-> trait constrained by the operator traits that we need (`Add`, `Sub`,
-> etc) was also considered, but had to be dropped as we need to use
-> wrapping operations, which are not provided by any trait.
->
-> Co-developed-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  rust/kernel/lib.rs |  1 +
->  rust/kernel/num.rs | 82 ++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 83 insertions(+)
->
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index ab0286857061d2de1be0279cbd2cd3490e5a48c3..be75b196aa7a29cf3eed7c902=
-ed8fb98689bbb50 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -67,6 +67,7 @@
->  pub mod miscdevice;
->  #[cfg(CONFIG_NET)]
->  pub mod net;
-> +pub mod num;
->  pub mod of;
->  pub mod page;
->  #[cfg(CONFIG_PCI)]
-> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..05d45b59313d830876c1a7b45=
-2827689a6dd5400
-> --- /dev/null
-> +++ b/rust/kernel/num.rs
-> @@ -0,0 +1,82 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Numerical and binary utilities for primitive types.
-> +
-> +/// Extension trait providing useful methods for the kernel on integers.
-> +pub trait NumExt {
+On Wed, May 28, 2025 at 06:45:46PM +0100, Al Viro wrote:
+> On Wed, May 28, 2025 at 10:47:12AM +0000, Alice Ryhl wrote:
+> 
+> > We don't currently have any way to perform that kind of pointer-math on
+> > user pointers, nor do we have any users of it. I imagine that this type
+> > checking is only useful if you can actually perform pointer math in the
+> > first place?
+> 
+> What you want is something like
+> 	x->field::UserPtr(beta) iff
+> 		x::UserPtr(alpha) and
+> 		_.field::beta where _::alpha
+> 
+> Generated code would be "add offset and cast to pointer to type of...",
+> but doing that manually would really invite headache.
 
-I wonder if these should just be standalone methods instead of an
-extension trait?
-
-> +    /// Align `self` down to `alignment`.
-> +    ///
-> +    /// `alignment` must be a power of 2 for accurate results.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::num::NumExt;
-> +    ///
-> +    /// assert_eq!(0x4fffu32.align_down(0x1000), 0x4000);
-> +    /// assert_eq!(0x4fffu32.align_down(0x0), 0x0);
-> +    /// ```
-> +    fn align_down(self, alignment: Self) -> Self;
-> +
-> +    /// Align `self` up to `alignment`.
-> +    ///
-> +    /// `alignment` must be a power of 2 for accurate results.
-> +    ///
-> +    /// Wraps around to `0` if the requested alignment pushes the result=
- above the type's limits.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::num::NumExt;
-> +    ///
-> +    /// assert_eq!(0x4fffu32.align_up(0x1000), 0x5000);
-> +    /// assert_eq!(0x4000u32.align_up(0x1000), 0x4000);
-> +    /// assert_eq!(0x0u32.align_up(0x1000), 0x0);
-> +    /// assert_eq!(0xffffu16.align_up(0x100), 0x0);
-> +    /// assert_eq!(0x4fffu32.align_up(0x0), 0x0);
-> +    /// ```
-> +    fn align_up(self, alignment: Self) -> Self;
-
-I would probably make alignment into a const parameter.
-
-fn align_up<ALIGN: usize>(value: usize) -> usize {
-    const { assert!(ALIGN.is_power_of_two()) };
-    self.wrapping_add(ALIGN.wrapping_sub(1)).align_down(ALIGN)
-}
-
-Here the check for power-of-two happens at compile time. Unless you
-have cases where the alignment is a dynamic parameter?
-
-Alice
+... except that -> comes with wrong connotations, of course.  Hell knows
+what a decent syntax would look like.
