@@ -1,115 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05358F6B;
-	Wed, 28 May 2025 20:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EB28634A;
+	Wed, 28 May 2025 22:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748464507; cv=none; b=qqRfAIHmhK41XJZOqvjOVeKIF3FJdRX65AZ3d4PEJDUNyDHMgXW/T5yubZEwLkBdBY0cyTZ8MM6oVjwu/VpjQOhopfK88AjhBK5VrBhwfjEI9Ft6ACyEx3/DlHx3XKuvPHOKlRSc40ESTPkKy7kERZwt9B3YwqeaWE5I1E+Q5oQ=
+	t=1748470564; cv=none; b=HLAPOU6RwaEe7zsHDKQ6czWHU8RM3Qt9HfyzgNMEymSWr79ziiGM1YWDWUJoy+GL9Z4em8KIhe/HAQ3sjJVoaG5WUuFDyE0B/ANJwobqIlIftGBorpY3/bRY8RJsQSH8KJKeya4RmNLy4HTbOLyEOMOvt9IAj6eqbzy/0gfa+8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748464507; c=relaxed/simple;
-	bh=6mNI6+5X2ZfP/LGcaBZDGWjzIzPRAkxIlDtsurqBF5U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=smlO2qkCd1BHQaOwLhPDElzQTIhKF2iwcYozWd/EyEmO2ewXMIpoTzgCxbm9VFeV3eDElf/QAyMjAMsFTNblXY+DhQiwWKmCXShsrqJV0LMlwOv9UsbQ4LzB/QMMucgPhDoY837IyzSW25xIUfafABIYh45lTpaZ9pnfMqX2/Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u8Jbe5r9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748470564; c=relaxed/simple;
+	bh=yOrU7SGPQ3OrGhFEa4kTFyzjCvRlbqHUS+eLZvJ2fE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TG/6RBxKDyFbBrnrmmG3UQVRwJzXKvdC0YeioJHiDZquHNjbbV7nyTib08k12YFR1ucukuLKGNGV87FR0Hi77jOvI6VAwXKpp+4moFsDaR82qSA54pqz9vBZlTDjOFh0osPUsVwqDA9EciAP2mgJOOL+kQnIwq6VTgZo7etJvYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=agST2RTl; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u8Jbe5r9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20843C4CEE3;
-	Wed, 28 May 2025 20:35:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748464506;
-	bh=6mNI6+5X2ZfP/LGcaBZDGWjzIzPRAkxIlDtsurqBF5U=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=u8Jbe5r9O2itgEsB0A0s4v3vbgwUxB/9coRnZ7PxRcgnB1LDmTcUBJYDZ28N3iFpd
-	 LBHx8tDWeMMhzxqFUPlZ0XN2JshDc/q9aLPiC0Al2OywUM2Ki6etxwnpxPDlpXwQDf
-	 H884mvUcVXrwjuJr0bGxyMroSnjciGkOYaiV4MGkByLKrZdVLcMMHmY9P2S09H/9pw
-	 559Bd3b9yz215tLSF+hUca9JZtQslKomRgZ3his3Qeaokt1J/GxdmbYLbXlHm2nRcz
-	 kl4vD4WvJrGTSfkrIA/z7grGxhjMuqvtQdT8gaggUmK5hPwftBENfD1am3xKQhqH0p
-	 BRiqqRy+YT4JA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="agST2RTl"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3292aad800aso3946981fa.0;
+        Wed, 28 May 2025 15:16:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748470561; x=1749075361; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sE2bIPrvcBK+tw3u4Z3n9q+Um+FsoesBae4mFssigCg=;
+        b=agST2RTlfZ7Mj5aeBmC2sd/TLjQNngACJBoktCT6kdiSXgn+9iHrjLJ2SsIeCXyyf7
+         OBaLcj+1LxZet2yAOoiZejPXDeBrV+8/to1jl1vLUVF0xftA1zHh4zn5uwUNorttALYs
+         wiBapRq1x57kJFAvSPbGRJPc44dh9A+ufWbbzrClknDo1tiCkGpT+tnnF32xwMhn63Gp
+         K3iWy888Y3dsEGyxJy7v1NMl9Q6nCJShL+ppRet5Mm5kwmBxxHdXOcAyc7mPqBTcq939
+         fBoIq0ofZaQlo43g/k/M4jxfDNO13LprKIU9zbl5KOUpmD0mCLs2hQwNYOS2HxkI2ZUF
+         HOFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748470561; x=1749075361;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sE2bIPrvcBK+tw3u4Z3n9q+Um+FsoesBae4mFssigCg=;
+        b=D8mkLAXDJnErjX/VcMomcWW8PagHPV0QzjRlTR9DJldyK2VAx6ci6hrwHwbcoiHeD3
+         d32ra6aDj+khZdv6myWXdvWAP4RLLDUWXa9afgQRjZ5z1qbEo+ken8eHNOZli5FT3BEZ
+         CNkGi+EZvwksisaZdCZ6O2bm2XeCJHImjLwf1eGIEAfaFMFvsZzQOI11fz8gqsrt+vQ3
+         XpICpUONrASUBHUpSF6uYYb0c18K/Z1GdABnHWrzXa679UrlrcLOwYhdK3wX3WLFGoBX
+         ycZcIt7PpPMyHsy9asallO3asC70glTB/vyeSf+ome3dPpwCDpRwci0+wJSV2hmnwQQR
+         ApHA==
+X-Forwarded-Encrypted: i=1; AJvYcCWTAFCYsxoY55rmsUrNVWanBXQHu3MrnNjDQ7FiqZ+QGrfvh+qD1A3lEokVURwAM26sEeo8oeB4iadQgO3boCI=@vger.kernel.org, AJvYcCWX4Kvm607fPNm8hlaQdgMMV15dZWRwPtoQctPqqF6ufF0oHBPgow0jq9bnV+Td38dlloUFruLvyZwd6pM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7MbHUlalw8B/KIn46P+tIXjzssZptalDNYKTen9CwtOAo7Xci
+	19JmQLfkpj3grX6IfQQK0tNaSnZkKj6m71UbgAi0ldEZUCIRPDazHj88
+X-Gm-Gg: ASbGncs/iroK+BkAPFMwY9379kn8J0FHj0SDJqZKgh9n09EaZ6ol+BfLwJJrsHJ1xNl
+	P+hGAXg9szDtKVekNZdY0gEBW7C54hi9Coyvg/HK4dI1MvElHy2+etMORssTtbopqlXxkCfblL+
+	eovI1Bfh1RJUZ9DtNqHLXI3F6aOU7H9GVYE1ZhG9e/p9h8Nn2Q6v1VqzuZGbcrH0+Tmc+MxGtpg
+	vYoXNC8+zrDrQw9ak0Ft+4x9zarJP6ROYjIWhUsn13uyU/H1iwYBa2NPFJdf6ATDoRQKbYuh1sZ
+	UPsjmTrPGGWVt/9B0qT2pTKs6gi+wYZL7lJ0qJh2PSohvKOHMrm4SwQQjobgUGy3+YPaW0L1bdM
+	/ANzqlLM2zaZTLZ0ZaJeF6ijXRhcQ
+X-Google-Smtp-Source: AGHT+IFuoR6xo29lnwzewO6jtWGAATl3ZfrBI/QrwrebjbEHcd1CciMFpJdZcqrbHs9oVwEdqnG4bg==
+X-Received: by 2002:a05:651c:19a2:b0:328:ff56:8da with SMTP id 38308e7fff4ca-32a82663ecdmr3777741fa.16.1748470560547;
+        Wed, 28 May 2025 15:16:00 -0700 (PDT)
+Received: from abj-NUC9VXQNX.. (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32a85b55de7sm156911fa.53.2025.05.28.15.15.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 May 2025 15:15:59 -0700 (PDT)
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+To: jgg@ziepe.ca,
+	acourbot@nvidia.com,
+	dakr@kernel.org,
+	lyude@redhat.com
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kernel@vger.kernel.org (open list),
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	airlied@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
+	Petr Tesarik <petr@tesarici.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Subject: [PATCH 0/2] rust: add initial scatterlist abstraction
+Date: Thu, 29 May 2025 01:14:04 +0300
+Message-ID: <20250528221525.1705117-1-abdiel.janulgue@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 28 May 2025 22:35:01 +0200
-Message-Id: <DA82XR7C0NCM.DPN2F8RHAB3Y@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Arnd Bergmann" <arnd@arndb.de>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Al Viro"
- <viro@ftp.linux.org.uk>
-Subject: Re: [PATCH v2] uaccess: rust: use newtype for user pointers
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Al Viro" <viro@zeniv.linux.org.uk>, "Alice Ryhl" <aliceryhl@google.com>
-X-Mailer: aerc 0.20.1
-References: <20250527-userptr-newtype-v2-1-a789d266f6b0@google.com>
- <20250527221211.GB2023217@ZenIV> <aDbpsB3ayj6tFfbI@google.com>
- <20250528174546.GC2023217@ZenIV>
-In-Reply-To: <20250528174546.GC2023217@ZenIV>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed May 28, 2025 at 7:45 PM CEST, Al Viro wrote:
-> On Wed, May 28, 2025 at 10:47:12AM +0000, Alice Ryhl wrote:
->
->> We don't currently have any way to perform that kind of pointer-math on
->> user pointers, nor do we have any users of it. I imagine that this type
->> checking is only useful if you can actually perform pointer math in the
->> first place?
->
-> What you want is something like
-> 	x->field::UserPtr(beta) iff
-> 		x::UserPtr(alpha) and
-> 		_.field::beta where _::alpha
+Hello all, this patch series is the next version of the initial
+scatterlist rust abstraction initially sent as RFC[0]. I appreciate
+all the feedback especially from Jason Gunthorpe[1] and Alexandre
+Courbot[2] in shaping the design of the API.
 
-Not 100% sure I understand your code correctly, do you mean that:
-`x->field` is of type `UserPtr(beta)` given that `x` is of type
-`UserPtr(alpha)` and `field` is a field of `alpha` of type `beta`?
+This particular version implements the typestate pattern referred to
+by Alexandre to fix the limitations of the scatterlist API. We now
+have two iterators, one for building the list and the other when the
+list is mapped via DMA for a device. This version introduces a cleaner
+flow of the state transitions and enforces restrictions in calling
+functions that are not allowed in a particular state of the sg_table
+i.e, querying the dma_addresses on a table that is not yet mapped via
+DMA or setting the pages on a sg_table that is already mapped via DMA.
 
-If that is correct, then I have a proposal called field projection [1]
-for the rust language itself to support this kind of operation for any
-custom type.
+Doesn't apply to rust-next yet but is based instead on top of
+driver-core-next which provides the needed Device<Bound> functionality.
 
-I also have an macro-based implementation [2] and I could cook up some
-examples with `UserPtr` [^3].
+[0] https://lore.kernel.org/rust-for-linux/20250512095544.3334680-1-abdiel.janulgue@gmail.com/
+[1] https://lore.kernel.org/rust-for-linux/20250512164247.GF138689@ziepe.ca/
+[2] https://lore.kernel.org/rust-for-linux/D9VWA9ZQLY85.277DFA3YTH5R0@nvidia.com/
 
-[1]: https://github.com/rust-lang/rfcs/pull/3735
-[2]: https://github.com/Rust-for-Linux/field-projection/tree/new
-[^3]: Here is a quick sketch of how the above would look like in Rust
-      using [2]:
+Abdiel Janulgue (2):
+  rust: add initial scatterlist bindings
+  samples: rust: add sample code for scatterlist bindings
 
-      #[derive(HasFields)]
-      struct Alpha {
-          field: Beta,
-      }
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/scatterlist.c      |  25 +++
+ rust/kernel/dma.rs              |  17 ++
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/scatterlist.rs      | 369 ++++++++++++++++++++++++++++++++
+ samples/rust/rust_dma.rs        |  21 +-
+ 7 files changed, 434 insertions(+), 1 deletion(-)
+ create mode 100644 rust/helpers/scatterlist.c
+ create mode 100644 rust/kernel/scatterlist.rs
 
-      impl Alpha {
-          fn write_beta<'a>(mut self: UserPtr<'a, Self>, value: Beta) {
-              start_proj!(mut self);
-              let mut field: UserPtr<'a, Beta> =3D p!(@mut self->field);
-              field.write(value);
-          }
-      }
 
-      A couple notes for anyone not too familiar with Rust:
+-- 
+2.43.0
 
-      * `'a` is called a lifetime, it says for how long a value is valid
-      * the `< ... >` are generic types
-      * the `ident: Type` is a type annotation used in parameters (not
-        optional) and in local variable bindings (optional)
-      * the `self` parameter is special, it allows one to use the
-        `val.fun` syntax (it's similar to `this` in java and `self` in
-        python, but without the object orientation stuff associated with
-        it)
-
----
-Cheers,
-Benno
-
-> Generated code would be "add offset and cast to pointer to type of...",
-> but doing that manually would really invite headache.
