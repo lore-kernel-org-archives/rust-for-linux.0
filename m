@@ -1,105 +1,116 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E2427602A
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 10:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8876D26A0E0
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 10:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748428688; cv=none; b=VeI0GuRF6dXnITQ5oOvqNFKDCqEWe11cC7qWzfykNXPrEaWebYsNicDLb9DQ/nepQXflJEpyooEX0l4iFxQ9ermA8YLeOcu3oKaDndigxHH2ry5D3z2TOYYPG+/BAzpTJ9/SP3haTGhXIiezL6wQpcluAvUaknbMOwnIRLdd0oQ=
+	t=1748429238; cv=none; b=Ivi9Rhrc4xtzyrg5MTAEZtmgJKGn7sfcZids7wZn+cdKPcVgjwL+HALO9x70/C3W5MMCCsmmO7KWy15UjK8ENl1TMcyuGUlzxPHCdLDkn/ypwuVvCEBRuhYRMo3C8LLOU6xgPcSN/oPSzPGbmWmFchXl7l6w2D8AsGDuTad37PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748428688; c=relaxed/simple;
-	bh=f88538q2yu07+QCvEaeEz9oVquJwFySRVSt/ENxM+xU=;
+	s=arc-20240116; t=1748429238; c=relaxed/simple;
+	bh=4JAIloCGROmw8RqSeSc6609mQLhycM753L10JAOfvMo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tp6iLJ90CGoO6sHxVc31qac+QM3iB3Q28mL6wQPhcMt0myFoHAaz2njmvun9q03NqTMRRnQeUBiMRKfWlFZIzdiD8ih5Z7z8kP2KUlvKF2LVAzzOEug+B918JFkEor9N4bkjUheCCrtBHeG+LFBAcoJmWBot4EsZTh5P1hOrfxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VWBoXXg2; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=GoBl6VjxPl4vAXsahvFrlJ8puJxORMqfZFS4sh9A3DYPtQanE7RqH9hrohzThOiTe6k2HxOwBOYSYv5pwVFmm+uyr6gB01sqolXniAOHeALp87Bm8dux3yoXd2OjBfhvfAxUW8RSzQkVtJDcH/S7VGSYgz0tU1+AopqVHvN7N6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ol2tJsEy; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VWBoXXg2"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4c8a4963fso2696289f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 03:38:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ol2tJsEy"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-445135eb689so26785325e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 03:47:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748428684; x=1749033484; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1748429235; x=1749034035; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IeeR9yH0GpAyOFZydrFxToBZKNrKT1e0eUyjOqJKqG0=;
-        b=VWBoXXg2NKCUo1b0ZAwDu3yGggmSYzpOOrmhru6hwShEWwN5g+N2vaIJ76si/ovTlU
-         fb6bOkDkEQIitJr0XlnJCaBoxuOrx2WMrFhhZ7tU488N5eEBAdq3Yqr3gVBrYctdinbK
-         EmCD7KeZXxCX9abK4O8wJjqm0svYkdKy2CtsGqYRejSzDEJtFLRuEOl9aFrTuYJqkL1G
-         B9F+SS+snvFhYk1pSRIoek5V1cNSDCkCV0U0mecx/gisAaD138LbyTcDsiuSUQ8A88GT
-         riNA01LSgnqAhVnGkcrzl0JDzSBB/t9hjPr7P87MoYvOxtuiCC9O1Fxezph5bJF2m0lu
-         niFQ==
+        bh=LjqhyajdJYKwDqK1rYEUecgF3iQn80xMPzv0hJ7BRlg=;
+        b=Ol2tJsEyHTZ87XerQ88q7RZTzdRQ9E//zNiq/kGnch9V7Zn6iAJo5tAMK9huTnYCm8
+         wEawGzaGrvc0IWJ4acPoukia+AmqM+kOWud45jgN3mF422bQVg0wKHVjDNVOD/R3imhL
+         ar7dsa4JPR3rEd/eKlyR4bWg0qGgkZME8EdhErTrE72GYCOeBFnthhMLLtnE0yVD6FHJ
+         SLR0zuRmwUY3pJSSo0P/XzhLLU+C+0xIL6r0Pz/02D9gv5lJpA1sUkMESH+edlXtnKSD
+         jc3M9KIqdtpY49+l8ZLl9V8wjkWW9wjGwDbf2ZkskAnDlU5ZdXekjM8o+Iw3cilnMrsS
+         3mMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748428684; x=1749033484;
+        d=1e100.net; s=20230601; t=1748429235; x=1749034035;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IeeR9yH0GpAyOFZydrFxToBZKNrKT1e0eUyjOqJKqG0=;
-        b=xNr9Q86YRnfekA33/dpVeqdSFFae15OLQUDKBhKZaAPiUlZSTm1MhPFXLzG63+p3mc
-         jr7Talpkw/qYdZEmqb1op+Yeo9Yt/epgDIxRdQXZK+qLKDuYiYJtdHP5vpSUTpjiZJ5s
-         XkF7U3e/S8V5fwR+ibpXP5Bk67wrw+HUdCFsiqRiBaIQ0lqA0jThvcPevJ9SmqaCr/Mf
-         mHjGagTukVIOWp6hG0nW0GEBte0VHW4NLN8XqFhxErRLlRXZb16xOCETVMHj7TFRmwKa
-         4+/9b3UYNc0xl2wMWsYjzss36NDsbLcIIW0yes1EOK2Tyz47AY0l0kMhOR/+oNj9bBKa
-         4sLw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlMzBjm0tkyMMH32djpNQvxTH2ABrn13ep6mhZ0s+4oUuaOj3tBx5xYPEy++lAnYXgODB3wn3yNfX05VpW/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5zu7SnK5w+Af1uVTPR4o2xwFBlZQjB/X1op/PBqE0kM1OOMPr
-	DWHpf+Sfc3gAb503QglLXXIqtAb0lCCM6xJZqQCge2pJ/Oy+9UaUrA8q9zVRnLpd53fdymL6Rt+
-	dA8B1zab5XO6PSrFe1A==
-X-Google-Smtp-Source: AGHT+IEQyiB/rjNjbMrROAYgPHAOQltkjwgoUsDbxSNhCEmiFFBD4KxkcRnm6cL1n1mzqucg+R5Lc+Nr+C90dyo=
-X-Received: from wmbdv21.prod.google.com ([2002:a05:600c:6215:b0:450:5dbe:5f11])
+        bh=LjqhyajdJYKwDqK1rYEUecgF3iQn80xMPzv0hJ7BRlg=;
+        b=oI5zK6lVvz/i5QDk6MEB6UdRCcz0Qz4ReyB6+TXDrBE1HX04SXffYW3AusD4STpKDh
+         EDmvwE2oiyQKaR1FoYOEs2ckDWRB4eKIOLozpiEXjJC/W2e+C0SD5YoKHWs3cwkgwci1
+         9nwrBtSM8zf+C74bcAAVyFTYq9cwcUBzsGI6G7y+ZI2mvnYufpqkFMl55/5L/RyIutNa
+         ESWRt1a+yUJGLdhOFTsmv9kz3W4EWdd5lfPL1Y7xC9iB9Wb7/16F1j3OkfCYkP4HQVTN
+         OPItGMHw13TL8ZJIwmj3Wf+x8PHNAgQfEHDlqCLfNG63XP6XEuJp35dIJf6zlOaPQGLW
+         Wwrg==
+X-Forwarded-Encrypted: i=1; AJvYcCVtbsM96011IjS/dTP1ZaPqK36QrrdgTOtQ0mNxA9Fs/fhTBk9q1hFG8aBe51Rf9vOMwNK//823nhaPAYMm8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSbjfqSr7tlq58gZ0VtGyopyWL8qkj+kiXbdokDp+tRTvD+tBw
+	zv9uc89p3LqeCgcqjrxP+MrXb/fQJ3pMkwZbezwyFHVD4OPJTl0/4LpWHXxQwFJNFN6g55Kz8ac
+	ZfcwPiB9g1MwHZEoxeA==
+X-Google-Smtp-Source: AGHT+IE+opBHokkVpdFQ5IoCIRLjKWUCarl4R8LN6fOCasflCO70IXIp/1PAEYCd3I6TPAjKvNgZbGswp299YFE=
+X-Received: from wmqc17.prod.google.com ([2002:a05:600c:a51:b0:442:dfbc:dc3])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5f8b:0:b0:3a4:c95f:c1d1 with SMTP id ffacd0b85a97d-3a4cb428313mr13345804f8f.4.1748428683991;
- Wed, 28 May 2025 03:38:03 -0700 (PDT)
-Date: Wed, 28 May 2025 10:38:01 +0000
-In-Reply-To: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com>
+ 2002:a05:600c:5396:b0:43c:fe5e:f040 with SMTP id 5b1f17b1804b1-45077e36cc8mr14321085e9.23.1748429234963;
+ Wed, 28 May 2025 03:47:14 -0700 (PDT)
+Date: Wed, 28 May 2025 10:47:12 +0000
+In-Reply-To: <20250527221211.GB2023217@ZenIV>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com>
-Message-ID: <aDbniZzL1ZOSnfVi@google.com>
-Subject: Re: [PATCH v10 0/5] rust: replace kernel::str::CStr w/ core::ffi::CStr
+References: <20250527-userptr-newtype-v2-1-a789d266f6b0@google.com> <20250527221211.GB2023217@ZenIV>
+Message-ID: <aDbpsB3ayj6tFfbI@google.com>
+Subject: Re: [PATCH v2] uaccess: rust: use newtype for user pointers
 From: Alice Ryhl <aliceryhl@google.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, Benno Lossin <lossin@kernel.org>, 
-	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	linux-block@vger.kernel.org
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sat, May 24, 2025 at 04:33:00PM -0400, Tamir Duberstein wrote:
-> This picks up from Michal Rostecki's work[0]. Per Michal's guidance I
-> have omitted Co-authored tags, as the end result is quite different.
+On Tue, May 27, 2025 at 11:12:11PM +0100, Al Viro wrote:
+> On Tue, May 27, 2025 at 01:53:12PM +0000, Alice Ryhl wrote:
+> > In C code we use sparse with the __user annotation to detect cases where
+> > a user pointer is mixed up with other things. To replicate that, we
+> > introduce a new struct UserPtr that serves the same purpose using the
+> > newtype pattern.
+> > 
+> > The UserPtr type is not marked with #[derive(Debug)], which means that
+> > it's not possible to print values of this type. This avoids ASLR
+> > leakage.
+> > 
+> > The type is added to the prelude as it is a fairly fundamental type
+> > similar to c_int. The wrapping_add() method is renamed to
+> > wrapping_byte_add() for consistency with the method name found on raw
+> > pointers.
 > 
-> Link: https://lore.kernel.org/rust-for-linux/20240819153656.28807-2-vadorovsky@protonmail.com/t/#u [0]
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1075
+> That's considerably weaker than __user, though - with
+> 	struct foo {struct bar x; struct baz y[2]; };
+> 	struct foo __user *p;
+> 	void f(struct bar __user *);
+> sparse does figure out that f(&p->y[1]) is a type error - &p->y[1] is
+> struct baz __user * and f() expects struct bar __user *.
 > 
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> It's not just mixing userland pointers with other things - it's not mixing
+> userland pointers to different types, etc.
+> 
+> In practice I've seen quite a few brainos caught by that...
 
-Overall LGTM, thanks! Left a few comments on individual patches, but I
-can probably give a RB when those a fixed. :)
+We don't currently have any way to perform that kind of pointer-math on
+user pointers, nor do we have any users of it. I imagine that this type
+checking is only useful if you can actually perform pointer math in the
+first place?
+
+Right now, actual reading/writing to userspace is done via the
+UserSliceReader and UserSliceWriter types rather than directly on
+UserPtr, and UserPtr is just the constructor for those other types.
+There is already some means of type checking on UserSliceReader and
+UserSliceWriter, so I'm inclined to say that this is good enough.
+
+Of course, if we ever add a way to do pointer math on user pointers,
+then they should have a pointee type and hence also this check.
 
 Alice
