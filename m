@@ -1,85 +1,80 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50CF20551C
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 10:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555A74C9F
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 10:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748427692; cv=none; b=UYSG1uFmzU3urHCLNlNMUwzK8vvgUoMAyKtd4tCXGhRmvoOlP21XMloSYgr4ghaJMRgJ7+a3ZQLeFR/PWyrMIj2w0LTH/XSOIaWsX4sLWOf8X6XznttJpweL1hVPHZ+HG3s2dvTdcNnWb8RINU0Mbk/sbDBG85ZtZG+/1/EY6+s=
+	t=1748427820; cv=none; b=RDXzndr7sdX7zAlubKDftS7oQyu/vBEJG6B0YaniGA2k+UW4O+oDHNwvOjlxKxG1Txl8M2DhiRYvdxkPkOlM6d+XgniuaJHS32pc6z5C9jCOBIBBFeKMzhZ5XCnsJQPKE/5hqLddC7p2z+ti0hpks1wuD2iSWXXnqWZ7FBKNx80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748427692; c=relaxed/simple;
-	bh=dcMsoNk413jU5nMOVSSWNMWozGrxa6Y/JoRiP9+BC/w=;
+	s=arc-20240116; t=1748427820; c=relaxed/simple;
+	bh=MM/ozcOCXZ5d+VyTWQymctGaa9SnFX03kQYidoP+Ecs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ogWJMWgeHWynV5jTI103grSTuseAD5RLZSZXBDVFAG/V9gYwJv6AuWcTreN9RNexusdL08bV7W+ODTuqbhyyY1tZidCj08Io2WX4OF4Y0YuQdbQCSA1k00UoFXLfnfu4Rg+K8Sdf7h/iXj7N6DFSTRwIohclpk49gIl2j6QTN4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dPGc8QOZ; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=R1YFZrXuRIvUJ3m3eVMfwTlBURLuYvaA8AGm97Az+PE5P2MnxnR8zwrZ4HYrkxR0Ykhyo0lXM3pxV3M4erHytmFmNhQjZI8ogNyNfW7SkFDgV6+/DAzMJJ4vE/P37cNXBu1OqoH0LIL1Q7cWVwt29dGQ651iLxC9hzVj3gwsHKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kHTRpn45; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dPGc8QOZ"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45048826b64so3537905e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 03:21:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kHTRpn45"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-442d472cf7fso35937175e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 03:23:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748427689; x=1749032489; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1748427817; x=1749032617; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ihiUk54rwHLhPgQ/ymNPw0bmICGiLYzE3RfqwI1pWg8=;
-        b=dPGc8QOZEEOtso2iiK+PNqTfM11KNVC0sX2yftEkhPp8JR9hFAxJKOGokvsok0nJUd
-         mx/2MxhInCejAtp732bS2ikE2y7eLEm7XoPtfRppkUxSJLEE7dY82J+ZHe/iI16ol7fr
-         7yKHDNfvZoZlt3g2cQ11ZaPv0QauV6DpqC3uNQANv9aGfRkXDI90RBhUsTH61MxSY2qO
-         2wAqDY9g9YGlY5njlyu8u3ioG64IIVzjS9zBCPvMPAnjkTpD/P3H9+NwgQ8CkkYVFaGw
-         j7/HFzjiryTSe26tXWkZ6Fj4WmzHdoQmNBIoXXEVUNHYmyaT3Tb5H1Ppg9WPj1dxXKcI
-         gKMg==
+        bh=UOkwFKzz2wqGgEsUgo/sGUbk2ueBcmlhvGMY23/sxjQ=;
+        b=kHTRpn45wVHyvyIrtziiDYxY1F5uQQ/Mnhzwd+4zObVGTKUnVVENnV+lWN8tgMsIEl
+         owMliJvOYSOnEetNUuR6/rGqjQ1pxTstq/zf/e7MxGv62j/BEhB3x2/pVqBrSWO2u0fU
+         HL6jogp12sEIUze4BZfH+INO1cMURFwGKDQQPqf87bj/lv3z3F0QFKKadYRW1RGZOQ/B
+         fdF+l3GTDxJPCFlw+Tg9PqKvo22xzCeD78w6r8IMNFS6vk4Ap+Rj6RvkcOPrtSa/vh2N
+         27aDuJKRlSzfHhixoNPOgtY2/OWOdsMsFzU10qVIn9uP0eHiVYfEvUZrqHoGLedb/dy6
+         z6kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748427689; x=1749032489;
+        d=1e100.net; s=20230601; t=1748427817; x=1749032617;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ihiUk54rwHLhPgQ/ymNPw0bmICGiLYzE3RfqwI1pWg8=;
-        b=sVB8zrqu6ac8bwkKD0l4LFGJzFLs5qehuF1d8vLQpV2kwvH8i/AHDRwWGNrDuJIxYU
-         M/rlDOHPG8x27AqutHBjyYZ/tK0zC7BCdHjvbs5S2W3tCiAtdyrwcdsLWnhMATdh84jx
-         yTovt65F/TH37kiAEvEf+F4XSIloyVZbcNwz4WwNIdObxFyVZomGnJDAtjgmpRUAUkBi
-         pvXtDjssBfqHxNtuVePjklIW6iFzofDaTAjMM5ZXaecOMZMlRWC2kZHQxZ/14+t5oVjy
-         TJFUPl6uSQwroZa/jxy8wDSbYjZdQdNMwo5S+Ai7dv58C2Wz7Y57g34jpQq9iEbJbiLF
-         AZwg==
-X-Forwarded-Encrypted: i=1; AJvYcCXg3RXzWAld+zOJ0s5UxTzOvNo5DJjRRDwrN7AxiV7XzhusmpWvWehjgB5SlVymYEo9ZBgVIz/WeUJydvtVZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxovScrAsQk+YALOqaeJi1Kgj5NGlobfGmh4ADUSBEzfBsS9+/5
-	IQAt7qDYTXvDOn5JD/23uBNaEkREF49Y2PmVg16eLJtT40BAwzIq10zO1G6XF579ruD0gLENcm5
-	tQKbXGh8FHdgn3oRZUg==
-X-Google-Smtp-Source: AGHT+IHs5mJnbDInw3TkGPf3wo/Sg9XehLgPlODOdQf67wGziF/MJj+S+6bCTlQgb/SVU7imTB0yCuQAEVqM6f8=
-X-Received: from wmbez3.prod.google.com ([2002:a05:600c:83c3:b0:442:f8e9:a2ac])
+        bh=UOkwFKzz2wqGgEsUgo/sGUbk2ueBcmlhvGMY23/sxjQ=;
+        b=gdsjJkAIqjklx0E5hTeZ3lc/vgTnedOG6cczKuy3nkWduNk5ovz31pAeBHr7BHSx2H
+         txwIcBX5jRv84ErNUh6uUg6rKT2XygKyL+N7bRIkcC4cSO8Cr2mq6zJN6YJP/HxRHVAT
+         gLRaQs/fw56Pesxt5Wcg5Hdoj14Scl6J4+s4Fxk88h1+IPwKL5useAXps5Gu46HkOVMx
+         +ldHX2goGMFsN4U6GW+/e2KIsIQVA74kgo9s4CbOErfWC9ITfVyljMmLmiSQDE2gp1oF
+         IPupzkXxdBZKRHEc2tQ6MBNi6oYaUsIXY9967wWlQvoB4Hs5pv/h7P9QmXGtgQkyKpqK
+         mnNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWex1byeSmrvSJNSmKTQayTg6u6yGbgkzH3NzlfOVtWlmf8Sw+ES6f4gzqJ6iasrqOt3W1aLZUWa9vssDxDvw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKPTb+9jswalxZyzCtXdxTeedevcRdoKocebEEKjecnibIV2wQ
+	1r4mwD/QRokhxom9eB+8QtBrmb5q64WQKRRMGUJQBBxB3E9BgLI3g6o3eEo9pcFn5roUUcqrjma
+	QiNWpzq4cHY7KX0+KPA==
+X-Google-Smtp-Source: AGHT+IE/d7QvjBd9m9AiElll2EXSy/M+uGwax68KFlLRDUZEw5WjgchZ+RZlIS0fNhH6I9/raBwqDL4gIz57Ke0=
+X-Received: from wmqe8.prod.google.com ([2002:a05:600c:4e48:b0:442:ccef:e0aa])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3f07:b0:442:f4d4:522 with SMTP id 5b1f17b1804b1-44c916072e2mr127245905e9.5.1748427689385;
- Wed, 28 May 2025 03:21:29 -0700 (PDT)
-Date: Wed, 28 May 2025 10:21:27 +0000
-In-Reply-To: <20250527204928.5117-1-albinbabuvarghese20@gmail.com>
+ 2002:a05:600c:3b02:b0:43d:412e:8a81 with SMTP id 5b1f17b1804b1-44c937d12dfmr114075975e9.28.1748427816674;
+ Wed, 28 May 2025 03:23:36 -0700 (PDT)
+Date: Wed, 28 May 2025 10:23:34 +0000
+In-Reply-To: <20250528083431.1875345-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250527204928.5117-1-albinbabuvarghese20@gmail.com>
-Message-ID: <aDbjp1oCqtGi6W9l@google.com>
-Subject: Re: [PATCH v2] rust/list: replace unwrap() with ? in doctest examples
+References: <20250528083431.1875345-1-pbonzini@redhat.com>
+Message-ID: <aDbkJhSA2SJphO7i@google.com>
+Subject: Re: [PATCH] rust: add helper for mutex_trylock
 From: Alice Ryhl <aliceryhl@google.com>
-To: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	Stephen Rothwell <sfr@canb.auug.org.au>
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, May 27, 2025 at 04:49:28PM -0400, Albin Babu Varghese wrote:
-> Using `unwrap()` in kernel doctests can cause panics on error and may
-> give newcomers the mistaken impression that panicking is acceptable
-> in kernel code.
+On Wed, May 28, 2025 at 10:34:30AM +0200, Paolo Bonzini wrote:
+> After commit c5b6ababd21a ("locking/mutex: implement mutex_trylock_nested",
+> currently in the KVM tree) mutex_trylock() will be a macro when lockdep is
+> enabled.  Rust therefore needs the corresponding helper.  Just add it and
+> the rust/bindings/bindings_helpers_generated.rs Makefile rules will do
+> their thing.
 > 
-> Replace all `.unwrap()` calls in `kernel::list`
-> examples with `.ok_or(EINVAL)?` so that errors are properly propagated.
-> 
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1164
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Reviewed-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1164
-> Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
