@@ -1,111 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DCB27585C;
-	Wed, 28 May 2025 09:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B99A278E60;
+	Wed, 28 May 2025 09:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748423444; cv=none; b=teZCqozypTd1iBNIevwmbam2JFC9Vg4+SgbC2MtD/cUCapn2wwdsJQxTOVMM8WN1sNDuhABMSqjkosqVmw9qpFkcgf6hhWJYV7WvZEBmTixPIDhlkpxgUTcMYzWPEkoFCyH9BIjbmisvS99STsQ0HWCONNjs81LAq0HyjRgPUBE=
+	t=1748425167; cv=none; b=q07Fr2DQPrXSHnNBudaU5zU7+2lcvrNoSLcQ89Xs02a0eRBlh4L6BVBxWHGpm+FrfiltRs0+RUTYQas9PmEw3jac6WNV3pEMiaFRlOeqVLByeLZ/lK6sVol2M9mEq/W2fF6YAz37SeKt7maQc0VlgJ/UBsIkSYOkHGsdNqjFWuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748423444; c=relaxed/simple;
-	bh=af5JUKcthRKAQgniGzokaJiKen7a00vYt3vsaVOT2BQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DIeNe1xujOecDdkRbzTkBkC2YjFH4KHoapvlcz7uXXlc/1gJuIGh4hxP0ak1xxC+kVAjw5WF/el+wBarvmtfg5GkRk9gFr9iTaN/gZmt+MiTHQPs/YXOeI89CNmucxmlP3s6TLTgyYiQmfgNI5DCS7UPMPKQZSUKaLBOnfclFEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BDQqpOGv; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1748425167; c=relaxed/simple;
+	bh=y4NzMxD9tmogr+AetKOa3VXWiWOLUF+6spJ2YgI8RsY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d/jOcDncrth8A9PXbDWjJn4Ta6u9QeF4PExu46N0fJw+9KxvLQ2nNPWIRUFrencDU5Bhw/bEEWNcBuMpDIcgHOHiesQx3fT40CQLwM8uLR5HRoifkQrmlCftY1zPlhWy1zqJIOhE4LS031BzKbKWLsgyuVMIqk395gp5RwwJjik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rz0ddtiF; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BDQqpOGv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748423442; x=1779959442;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=af5JUKcthRKAQgniGzokaJiKen7a00vYt3vsaVOT2BQ=;
-  b=BDQqpOGvazRQYzXDMeBL8ZZPmcDXvDpvLFZPj+Lb/kyQopBbrFS7R4Jh
-   iw0N3esyK0cTLifD0WqjMJ69VcInRmVZgATrIJu4WI2WdJscMc2WG5ywC
-   lIMvP32W0stfJBf1Qd/oX+WjOEGcP1tdFI4qA18MMV+HHwOaU7A5QfPUH
-   lZKrQ1xR8T/bnCYr67INx593XyJRCQQThjrzEcT2g7vkPV55Zg6NO7P+I
-   00j6A+bLxsTV1vOytN83FGf6tIS9iJTB89gUE0aDC8bq5Xu81GeebVa2+
-   OZksV10TUFZ+ZdYhSTD+Xvs6Hr1xxY5atpo/rD/A0bPrak3x8uNheAKbj
-   g==;
-X-CSE-ConnectionGUID: QTS/5hW1SYG0w6St1B7Q7g==
-X-CSE-MsgGUID: zvM3jp4iSF+XBCpBebVBXw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="50326608"
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
-   d="scan'208";a="50326608"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 02:10:41 -0700
-X-CSE-ConnectionGUID: Ig1TGYOjTf2XVusvXjCvvQ==
-X-CSE-MsgGUID: 8Uw5VHDBRgSXHe3hgjU49g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
-   d="scan'208";a="143012443"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 28 May 2025 02:10:37 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uKCnz-000VTk-01;
-	Wed, 28 May 2025 09:10:35 +0000
-Date: Wed, 28 May 2025 17:10:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Burak Emir <bqe@google.com>, Yury Norov <yury.norov@gmail.com>,
-	Kees Cook <kees@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Burak Emir <bqe@google.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v9 4/5] rust: add find_bit_benchmark_rust module.
-Message-ID: <202505281613.EHiMAdkN-lkp@intel.com>
-References: <20250526150141.3407433-5-bqe@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rz0ddtiF"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-311f6be42f1so37547a91.0;
+        Wed, 28 May 2025 02:39:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748425165; x=1749029965; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZQBoysENhIbgW5/kLFhu2v5G6iCydX7mEkkhpaN14T0=;
+        b=Rz0ddtiF85FovreUueojk0HHigqQKTsz06tTQa32/Sq9vmZnp/LxnW+L8dYn6zhrh1
+         awWf3hm7MTwiTaGVPIuoifcvaadmsxL2ZWJe12TJDbM1xDfGew1h8h60YdBbRyUniHXx
+         v8gDTz3K3eVvDScswnZP2/NhksvgRXx3HGknM4yo9HsWk5Q89Yi6yP+E52xbFsEROAMd
+         IPHfCwxCx+uCV9Wne/tG1SdNzFbhApvPsMZsPMrHCpP3LaMmkPuKIDTbX0ovrL4yT6wn
+         14n316aYxgaBMwEtuFrWdQVkamNxKs4Z+4dcJAy0Vwn5n0BBewLgeCj1JDnwV1+vwEo7
+         AcKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748425165; x=1749029965;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZQBoysENhIbgW5/kLFhu2v5G6iCydX7mEkkhpaN14T0=;
+        b=kHijPsgQeEtHWaK+hC5aVdtMqAJaaL20yxv4lq25hmBon5DIyOCfRQ4aZ3qmUvbIu7
+         Yagpv0bOFUIQsAFQWd5xe4V9xAnlVDTLP6PwHgTyczd7iWTy7dYX4T2GSXnNIYQwPq4L
+         hfzZO3oEg9DqPmBJvkxN4CiXNCutKtJtxS9C7iejPiAocMbzWtkuLAggKBTzA15Wl6TM
+         ufNea0iqOZnkFDYgpzIF3Lb8rKrbi/IwCbkvfoYk1MYMGC4Fhid0b7gK0bc1WxfYNSIk
+         kKutEInZRHwsG1PDHvJRWS+ENaK7HdT2myrE7fc+WJt2wbxW2vxkjiHgspuG9FZMGXMc
+         bf4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWIBczkzF24amG7+kZnVa5Qer7V1XH6E2wKqtNKuUFCeLeI30czmKXwowZnn6YbhVN/Sz8=@vger.kernel.org, AJvYcCWJJr8QHfo7vnfF3ZQ+fc48wDSRcPSTmzIWLBnAUjjIdo0bi4nC+l9eETRFc1Q3X50olvawvoXlFShTndF0LdA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMclseVYDs8yXfqQJm1OjDeBRANAZwph3SGICLbj85aqRrLIfl
+	ISrNwl6NP777R6FCBBwzcKvYgRRurQsy+Qibgq5pZ6OyN6i6tYIlet2RUbOv7yRV7kf6iy5Hg1i
+	ThGjj9+Xrnfcy4LWpxLS2gmcvqdiZheU=
+X-Gm-Gg: ASbGncs5ck6SgfmBs0DqZB1qGxenep35fiwpI7b+Q9Tr1gc6AMbYbPVHtH9KMbg7DJ9
+	qJFccVVw1cUsE0Cj/BZtTgruvVqBz3D2PmzvVJnT1yA8kKK+uV6euP64Q1KxALoB1mHR/X/MxPU
+	8EtcjxPQKvqMNNE/1qGzP5Fr+Zwe5GXZde
+X-Google-Smtp-Source: AGHT+IES7Q+itUfT5wFGMqq1cdttplKaNdUc32Nx59Bv5rwPOYXCpDB88AGK9vWYeBz/+WcV0xKa7x6/E1mxh1Z7838=
+X-Received: by 2002:a17:90b:1e10:b0:311:488:f506 with SMTP id
+ 98e67ed59e1d1-311e1a122b4mr1202559a91.6.1748425164739; Wed, 28 May 2025
+ 02:39:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250526150141.3407433-5-bqe@google.com>
+References: <20250528083431.1875345-1-pbonzini@redhat.com>
+In-Reply-To: <20250528083431.1875345-1-pbonzini@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 28 May 2025 11:39:12 +0200
+X-Gm-Features: AX0GCFvBLnlzWD65XoPoEaCqR8aQRkKJqxadBtl2y6UrWx3JHjZf3XpuLM3RmeQ
+Message-ID: <CANiq72nwM79eGSAt8FjKgoYCJd-bLeTojaQAtg3SECE28uByQQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: add helper for mutex_trylock
+To: Paolo Bonzini <pbonzini@redhat.com>, Boqun Feng <boqun.feng@gmail.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Burak,
+On Wed, May 28, 2025 at 10:34=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com=
+> wrote:
+>
+>         Ok to apply to the KVM tree?
 
-kernel test robot noticed the following build errors:
+Yeah, looks good to me, thanks!
 
-[auto build test ERROR on akpm-mm/mm-nonmm-unstable]
-[also build test ERROR on kees/for-next/hardening kees/for-next/pstore kees/for-next/kspp linus/master v6.15]
-[cannot apply to rust/rust-next next-20250527]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Burak-Emir/rust-add-bindings-for-bitmap-h/20250526-230435
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-patch link:    https://lore.kernel.org/r/20250526150141.3407433-5-bqe%40google.com
-patch subject: [PATCH v9 4/5] rust: add find_bit_benchmark_rust module.
-config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20250528/202505281613.EHiMAdkN-lkp@intel.com/config)
-compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project f819f46284f2a79790038e1f6649172789734ae8)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250528/202505281613.EHiMAdkN-lkp@intel.com/reproduce)
+Cc'ing Boqun just in case and so that he is aware. Boqun: this fixes a
+Rust build error on the kvm branch which failed on merging into -next:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505281613.EHiMAdkN-lkp@intel.com/
+    https://lore.kernel.org/linux-next/20250528152832.3ce43330@canb.auug.or=
+g.au/
 
-All errors (new ones prefixed by >>):
-
->> error[E0463]: can't find crate for `core`
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Miguel
