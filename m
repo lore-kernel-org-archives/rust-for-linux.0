@@ -1,65 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20C94C9F;
-	Wed, 28 May 2025 10:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE9727603D
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 10:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748427940; cv=none; b=JevuTB0IuWyY5A5oPw4f9OOLFikffDbHXqZ0U6/SI6+q8bxO26HOu5CYVDmcOrmM/hry2nVlbVb/urD6T4F1c/3j4nXCkEfvcC1TpWUKgPTUAkbGSEUDEzzk6MdQiZZKmtAIZBR1lhaj8u3+x0Y9qnKMfeSNsGVLdzkz2DMMzf0=
+	t=1748428597; cv=none; b=bUCbXRDZPoA+ZW5CHgu+QQm/YA3j/Y+ruY3knJyaaNj0zMJ07xreA0VIHehS4oXV0ffs5rBeEbvpp8ELKqqSrEfOjh4DyN0JnIsruRH+3uaEmMKE6MpFFd0pgVZj4cJkq1uMmiVzQ/6pTYxVYstlwFys+7MnQ+S2RNeP//5wPl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748427940; c=relaxed/simple;
-	bh=yn1kjL2j1FxCyhnNv2768phSpYJ1y+Yq4unHgP3yEYI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tiZoswM4CYQodJw4iUurrhU0WrHsAn6xka4cmkb9Sxk0A0+aLSIzY7e4u5GdrvDuC9SxnK0MU0v3LlvYKh5i1/jZERW7jYtM3X/s5YDhK/Uih7reu4sTir84nSikIjtyHXE3EtrskyBXCRdfGX9x6NMJ+RY5lp2uKl0xOswB1cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PkB48l0v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748428597; c=relaxed/simple;
+	bh=Si1j6uouuZRKixZgcv6BHoJXWodMnlY2oC/q9yWhRtM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pC533zs9iHDHy+6qD5Ypj7cc6TkAQgLCEnQfeG/cwx3N/cI0KO5xQlLzD7Ko+khM6GkNecx2e02q129/MXyCi0vLJDC3wwWtGSXHktBX2UeE/TFZZkLCX4Wo+VzMOFyzLuccZ07+sExCr06A8yKLXJu6Ra4Rut2KDXwzHyHorf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B5eSM2ys; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PkB48l0v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2615C4CEE7;
-	Wed, 28 May 2025 10:25:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748427940;
-	bh=yn1kjL2j1FxCyhnNv2768phSpYJ1y+Yq4unHgP3yEYI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PkB48l0v++wCEV8s2dXt2Dw06PfEcbrcuMSMrvCacLdXQe3QBz3HmibkNyUel6Lxy
-	 W4f9drmzm6dH42rkaWYVoei9KviWmlXFUX3LL0DtSihkxW3vlm9xEkG578BAWThihu
-	 Ysmn+GOTVdV8ptu8PrLmuUlM8kMcCId9iz1nc87xiNMhUet7Z8UY8i43cvY3bt8PPv
-	 7u1Ppa2oBHkIzbf4Nef+SBYCKTv54HNyzKg94saJtwn/bo2SuqR6V3DdF67OR7b3RK
-	 erkXdxHbVA4XA8PHVx1q0yTLG+oDOsf+QBUU8tekwSRdAKpI+pkS5Cj6SyrqpNhmHH
-	 ew5OUEqwBTZSg==
-Message-ID: <5853f5f8-004a-4107-acbf-31986150308a@kernel.org>
-Date: Wed, 28 May 2025 12:25:35 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B5eSM2ys"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-43f251dc364so25079715e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 May 2025 03:36:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748428594; x=1749033394; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Si1j6uouuZRKixZgcv6BHoJXWodMnlY2oC/q9yWhRtM=;
+        b=B5eSM2ys+lzU9jsSKW8f2NVwNe8eM8+bJ9Ksg0qLUykjwmdFPweLQsA2/kF+LfbdR8
+         EsIc+idddvAhVYGr1+sUwYD72Xxq4Phgts9qUcpqLWH+zBunCLT3mtJRvorYWaH269ia
+         76WYrmuuTpaSXQ8kuLwNcE2+uzJ/VTMxs1CwpmHEICrvEzUCg77IGhCE9EiXGSZf7oO6
+         cdUa6gukkH8IQC4asmvi9L4vk+ZfJZwyoAAApzCpjJjmSJxvcZjnKFqxENnZ6YR8a/4u
+         CwEEY+jVnVwEYzBGXymd/EtIjY0b5Fek0EzcpNvaUSIVlrGx5DPowZVn1EwrZkjzaW1r
+         Tgbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748428594; x=1749033394;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Si1j6uouuZRKixZgcv6BHoJXWodMnlY2oC/q9yWhRtM=;
+        b=RFzFzp7jR78chSMDfwhc5yEZ6lr8NN7y9eA8aUmGoLgK4MLh/8r41ZcMnzi+dmi8R+
+         joRTLQeQofeuW7zeJi+p1JlZxBuRK85dz1hJ4TCZ6MAGm8PxToSAf7G6pBaM+DNZ9SdE
+         F8JaCoiKRtPJf6PTx4TCWYhtbcG0uFCp9OFCieWZguWxXvY+F0LIIbRn2iDBtn+mzHwa
+         SHbNXFuIlR7Gu8RVDHi0qCwiP8iw7cDDtmSe7XKkT8PMwWR2fGEG2JvqRuG+wiQqP7WC
+         attKb7ZLHgRGg4Fn00Tq6z0pTXAUTTXgC7AKBCljZQBCmOE9ijRRc2wAZuRIojjGDNaE
+         JhLg==
+X-Forwarded-Encrypted: i=1; AJvYcCV4P7k3hN/bizzS9vcdmsSGp3jsRvBd72ufKjClahtvB4VLUw20Y9I7sSA0kSJO9PmlnGX/H2HuuNoxUkhMVQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxd9UKTe9IsjBWTgNwz5aro9MAu03GpvoUYrDepRk9YgnPpExTR
+	GDAHyFj9CnAkQbKn3Sb8loSRNjhAArOAJqk7gMtjNHzbA9V/UaJpfKm7lAZf1Nn9syhBVZPDTiz
+	eOHCx5tWjTDqB9so+Gg==
+X-Google-Smtp-Source: AGHT+IHiPY375iu6n+ZkU8ZC6vWYnO6vfkfIsES083JMYvmdbEogAqIJfVfK9XDvKlL1n6CsZmK6dlKKd2C91Us=
+X-Received: from wmbhc21.prod.google.com ([2002:a05:600c:8715:b0:442:f984:ed5e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a13:b0:43d:160:cd9e with SMTP id 5b1f17b1804b1-44c91fbb448mr159783095e9.17.1748428594079;
+ Wed, 28 May 2025 03:36:34 -0700 (PDT)
+Date: Wed, 28 May 2025 10:36:31 +0000
+In-Reply-To: <CAJ-ks9nd6_iGK+ie-f+F0x4kwpyEGJ-kQiQGt-ffdbVN5S6kOg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust/list: replace unwrap() with ? in doctest examples
-To: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250527204928.5117-1-albinbabuvarghese20@gmail.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20250527204928.5117-1-albinbabuvarghese20@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250524-cstr-core-v10-0-6412a94d9d75@gmail.com>
+ <20250524-cstr-core-v10-4-6412a94d9d75@gmail.com> <DA66NJXU86M4.1HU12P6E79JLO@kernel.org>
+ <CAJ-ks9nd6_iGK+ie-f+F0x4kwpyEGJ-kQiQGt-ffdbVN5S6kOg@mail.gmail.com>
+Message-ID: <aDbnLzPIGiAZISOq@google.com>
+Subject: Re: [PATCH v10 4/5] rust: replace `kernel::c_str!` with C-Strings
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Benno Lossin <lossin@kernel.org>, Michal Rostecki <vadorovsky@protonmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	linux-block@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/27/25 10:49 PM, Albin Babu Varghese wrote:
-> Using `unwrap()` in kernel doctests can cause panics on error and may
-> give newcomers the mistaken impression that panicking is acceptable
-> in kernel code.
-> 
-> Replace all `.unwrap()` calls in `kernel::list`
-> examples with `.ok_or(EINVAL)?` so that errors are properly propagated.
-> 
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1164
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Reviewed-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1164
-> Signed-off-by: Albin Babu Varghese <albinbabuvarghese20@gmail.com>
+On Mon, May 26, 2025 at 06:29:46PM -0400, Tamir Duberstein wrote:
+> On Mon, May 26, 2025 at 11:04=E2=80=AFAM Benno Lossin <lossin@kernel.org>=
+ wrote:
+> >
+> > On Sat May 24, 2025 at 10:33 PM CEST, Tamir Duberstein wrote:
+> > > +macro_rules! c_str_avoid_literals {
+> >
+> > I don't like this name, how about `concat_to_c_str` or
+> > `concat_with_nul`?
+> >
+> > This macro also is useful from macros that have a normal string literal=
+,
+> > but can't turn it into a `c""` one.
+>=20
+> Uh, can you give an example? I'm not attached to the name.
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+I also think it should be renamed. Right now it sounds like it creates a
+c string while avoiding literals in the input ... whatever that means. I
+like Benno's suggestions, but str_to_cstr! could also work?
+
+Alice
