@@ -1,112 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C495A111AD;
-	Wed, 28 May 2025 18:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CAE28E5E2;
+	Wed, 28 May 2025 18:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748455583; cv=none; b=I0DGH0oUwC1vztlYifPcbYUt01UWgFUhWO0lYSvFauvVcepyABr5b9HkeZxl2mrBn7a1HJ225327sUr1YIeebrjPN16r38CSvV495uztzvANfLUD1zZtLiwQSBfXzyn8/QwBZriUDLEy0K1gZ+6HodII5PK0QjnjHHM/yY2nNvk=
+	t=1748456709; cv=none; b=mGG+5ZHk4i8A19EWQP8UUhlARuB3LI5gG3iupXck91cV47uV8CPfxw4GR9mLrSiSAJ3/5I6Wc6hU64VcCiRq+USkeoEMLBy25L3q8816oNEZSMydLu5AC2T+Ib3lUGiTytp2IKeQgZS4YG+06deBPzpvXRDsEGAGbjHPFYVpJrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748455583; c=relaxed/simple;
-	bh=SwYQFIc7r2JHQ2hnmDJnXLD9YNcIS11EmU+W4n5WpnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ioTWUxN7Qflcgv4wD+BORdChkgsBa0Ung05XWhUbr3OR8AE2Tt7c7XqcXM5XOeZLXioqcR2bXnNItVxzG7L3JPESpwSKEjloUjTHs44x6SzMNhvoaRALzqnZcbKR7fVSI2UkHwzi6M5Gi1x5tG0dCCMSts9CmSlT5oXnMkcCHtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPYy9JI5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748456709; c=relaxed/simple;
+	bh=uyZuRX4Nw7zrA3erUec/G18l0Gbl/4E+/efJ+fXP/Os=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BGNwLUw7T+2dvm3Y6VqdF4MJHcTvlD+sQ8Hl0zdlL9R+YylgmcNuUBk8ebVl6DsZNmWyKdlCzv3+z2HfosYR1mRpanQY5IYbvuT2u8T0E3M7jwE+gpiDic6TfkzhR082bJStRmpiNNbMdbpHM30E5LPD3jycLshXf88dWGe3Tz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0FQyEv/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPYy9JI5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DC1C4CEE3;
-	Wed, 28 May 2025 18:06:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0FQyEv/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE678C4CEE3;
+	Wed, 28 May 2025 18:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748455583;
-	bh=SwYQFIc7r2JHQ2hnmDJnXLD9YNcIS11EmU+W4n5WpnE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tPYy9JI5+Gq5oIXon40EQ7pZd9jgDOyyAG7rfA1wIsXVU6Qg1E7TFYs9rekn7ijcZ
-	 czdAEjOqRjbCaQC5a1Zf4ZXBhNSpGOM39Oj+BUsp0Ckgzc7oP4wjVoJpmhgSzBO8UY
-	 5oUxUni4HiriTQY9fnXq7QAo5h55D801ScHz80ztdfprIIDTx7TDfUn9rwRHrCdzi+
-	 ysZHBygnTEMVto2mSjV+I5Ulb/YBHAebj1cxrloW8JxHyYDno1597lDZ496iqVPqrU
-	 ZtE5dX013juINIBqTO3C/BtjYmsX30k0MKDhpZ0Hec8EXu8wiVsfefoMfdmdpninH4
-	 pmAXzwCsHDwEQ==
-Date: Wed, 28 May 2025 20:06:16 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Ying Huang <huang.ying.caritas@gmail.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 3/3] rust: platform: allow ioremap of platform
- resources
-Message-ID: <aDdQmJ-pen_MQNDB@cassiopeiae>
-References: <20250509-topics-tyr-platform_iomem-v8-0-e9f1725a40da@collabora.com>
- <20250509-topics-tyr-platform_iomem-v8-3-e9f1725a40da@collabora.com>
- <aCYVG-VVdJXYnSTt@pollux>
- <5B875DFB-D655-4BAC-A475-43AE309520E2@collabora.com>
+	s=k20201202; t=1748456708;
+	bh=uyZuRX4Nw7zrA3erUec/G18l0Gbl/4E+/efJ+fXP/Os=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=W0FQyEv/QioiuwoXwBKXsKDlVluV9IVTUhLest3VzzvccYmh5FG0+vlM4kH/YaQv8
+	 Gfo3A0Pazh0yR6NnJvrrMfuxXf8i8FuzMBFqASaOuU3D/VZ47b+4HtxIzmPvQYyG2M
+	 ZzikGfb1lXIJ++r53dmE4OlkmFSNZr7FONgbSLSwgJt/V8eimYx1u6V5SKNEsvt83O
+	 S6Kf8mRaD6yjEgaqZ4pClowcAFOdqt2SY/eiLwDcXhCI+1ezcZghoj6GOXuTqCcZ7M
+	 N5Xo66QWz4K5GzMaQdVKUB2eVK1jdqj1VV0iuXS7rYdlEDPiX2vz5MoiEWlYKoeg1B
+	 EKQ39xNYlM5uw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org,  Arnd Bergmann <arnd@arndb.de>,  Boqun
+ Feng <boqun.feng@gmail.com>,  linux-kernel@vger.kernel.org,
+  a.hindborg@samsung.com,  frederic@kernel.org,  lyude@redhat.com,
+  tglx@linutronix.de,  anna-maria@linutronix.de,  jstultz@google.com,
+  sboyd@kernel.org,  ojeda@kernel.org,  alex.gaynor@gmail.com,
+  gary@garyguo.net,  bjorn3_gh@protonmail.com,  benno.lossin@proton.me,
+  aliceryhl@google.com,  tmgross@umich.edu,  chrisi.schrefl@gmail.com,
+  linux@armlinux.org.uk
+Subject: Re: [PATCH v2] rust: time: Avoid 64-bit integer division on 32-bit
+ architectures
+In-Reply-To: <20250502004524.230553-1-fujita.tomonori@gmail.com> (FUJITA
+	Tomonori's message of "Fri, 2 May 2025 09:45:24 +0900")
+References: <20250502004524.230553-1-fujita.tomonori@gmail.com>
+User-Agent: mu4e 1.12.7; emacs 30.1
+Date: Wed, 28 May 2025 20:24:50 +0200
+Message-ID: <87seko1tl9.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5B875DFB-D655-4BAC-A475-43AE309520E2@collabora.com>
+Content-Type: text/plain
 
-On Wed, May 28, 2025 at 02:29:44PM -0300, Daniel Almeida wrote:
-> Hi Danilo,
-> 
-> […]
-> 
-> > 
-> >> +    ///     let offset = 0; // Some offset.
-> >> +    ///
-> >> +    ///     // If the size is known at compile time, use `ioremap_resource_sized`.
-> >> +    ///     // No runtime checks will apply when reading and writing.
-> >> +    ///     let resource = pdev.resource(0).ok_or(ENODEV)?;
-> >> +    ///     let iomem = pdev.ioremap_resource_sized::<42>(&resource)?;
-> >> +    ///
-> >> +    ///     // Read and write a 32-bit value at `offset`. Calling `try_access()` on
-> >> +    ///     // the `Devres` makes sure that the resource is still valid.
-> >> +    ///     let data = iomem.try_access().ok_or(ENODEV)?.read32_relaxed(offset);
-> >> +    ///
-> >> +    ///     iomem.try_access().ok_or(ENODEV)?.write32_relaxed(data, offset);
-> > 
-> > Since this won't land for v6.16, can you please use Devres::access() [1]
-> > instead? I.e.
-> > 
-> > let iomem = pdev.ioremap_resource_sized::<42>(&resource)?;
-> > let io = Devres::access(pdev.as_ref())?;
-> > 
-> > let data = io.read32_relaxed(offset);
-> > io.write32_relaxed(data, offset);
-> > 
-> > Devres::access() is in nova-next and lands in v6.16.
-> > 
-> > [1] https://gitlab.freedesktop.org/drm/nova/-/commit/f301cb978c068faa8fcd630be2cb317a2d0ec063
-> 
-> Devres:access takes &Device<Bound>, but the argument in probe() is
-> &Device<Core>.
-> 
-> Are these two types supposed to convert between them? I see no explicit
-> function to do so.
+FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
 
-Yes, it comes from impl_device_context_deref!() [1], which, as the name implies,
-implements the corresponding Deref traits.
+> Avoid 64-bit integer division that 32-bit architectures don't
+> implement generally. This uses ktime_to_us() and ktime_to_ms()
+> instead.
+>
+> The time abstraction needs i64 / u32 division so C's div_s64() can be
+> used but ktime_to_us() and ktime_to_ms() provide a simpler solution
+> for this time abstraction problem on 32-bit architectures.
+>
+> 32-bit ARM is the only 32-bit architecture currently supported by
+> Rust. Using the cfg attribute, only 32-bit architectures will call
+> ktime_to_us() and ktime_to_ms(), while the other 64-bit architectures
+> will continue to use the current code as-is to avoid the overhead.
+>
+> One downside of calling the C's functions is that the as_micros/millis
+> methods can no longer be const fn. We stick with the simpler approach
+> unless there's a compelling need for a const fn.
+>
+> Suggested-by: Arnd Bergmann <arnd@arndb.de>
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Device dereference in the following way:
+Looks good to me.
 
-	&Device<Core> -> &Device<Bound> -> &Device (i.e. &Device<Normal>)
 
-You can just pass in the &Device<Core>, it will work.
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git/tree/rust/kernel/device.rs?h=driver-core-next#n284
+
+Best regards,
+Andreas Hindborg
+
+
