@@ -1,91 +1,156 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DC5219E93;
-	Thu, 29 May 2025 14:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0208F193062;
+	Thu, 29 May 2025 15:32:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748529630; cv=none; b=JJyc6U9tdVT51BC+6W10q4H/ur+C9oktVAGCKHCy4HC8+oWHfsbIxsIY7TbSsKzwXq3O266VvAGu6wizVeqsld5Vm07XssI3EgN3KpVsx4vBur6zKk73AIAvhtEcRRDZE9GuiyTWIGdVM5alwWMOXZ5vx4sNqzwIOLS/V74kz00=
+	t=1748532722; cv=none; b=OVJAiyu+XxvE9yQb/kit5ZKiO+z04RK/fCgB59A4TRdTSvKp0JFamXcCh0cwR1vB0ev0tW1Ixj2up/2f/VAFKq+dmgHsJM8enIt30nLKdM3RGC8EmzKkAiI7rjvYYFw0AAPUz0HcoZRUewPudHaMCsmHRv03HNLmRY6ez3wqhzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748529630; c=relaxed/simple;
-	bh=+D/ua2DayKacabvOy+QeVljqypmxdT49CtH2UyTiVnk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g82gd9d0icBEeROREEEN+FlPvwQE51GCL/3/siYa/dANsbDk5rg62EEAj89i5nURMGj/+AyGuggEJt9mlHOdQGlWf4qsWUKI6/4L5pe7s3yxdkTIyFvOM5OId9P+RspogS5Xf8EiF3dmvQftxI6nWOGIayPRld8EX7OivGDN78c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EdsUfVx8; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748532722; c=relaxed/simple;
+	bh=JnQAvMylwZtpa5EhFORjb44aBv934LT+uOUV5qfL2yI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=ZtXWp9gM3+33I5K0NKVZ3gQzgvVGfNE8i2I3DT9VF8vIHLjAcoiyavyYrmp5pKaz94TjUYdboERH0mYfy2go8vAVHTJ7duN/fmlDcoDvuLYqyCYLskqF/9XXHh9ZHIPkEDxlf5525aqBF+XDyWZJhwBK0PYgq3hkwojlLBmzm5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L965RAaj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EdsUfVx8"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-32a648b1300so5218391fa.3;
-        Thu, 29 May 2025 07:40:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748529627; x=1749134427; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+D/ua2DayKacabvOy+QeVljqypmxdT49CtH2UyTiVnk=;
-        b=EdsUfVx8QrZFiL3sIN9LK6ZBgQKIyK6IZdSQFgorw+9ylO2FLQmGPAsDBtoph3TbPS
-         KoI/TElS+ntdtuREU2pjcXIQHKinA96qO9ebGVU/vbAY6MYeVqEffsb1iGZjTm0lhon+
-         vQPhsyRsBIzVpWFuaRYLD0m8zerF1E630A0E5cNjigsDhrLSo781qV2QPul/nAWI2Tni
-         Ir3x7WxYSZhSR6PdRjChrRVLvfA2mOP4TTX1VdnJKXskMZucxht/72mFstDnXf9Aap7c
-         48EaSKoLgMWMAon7CccsU+slR8gfQZgEG5aaPOM9Crm5+jjt1jaYtb7bLg5XIEMUsFal
-         FJ3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748529627; x=1749134427;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+D/ua2DayKacabvOy+QeVljqypmxdT49CtH2UyTiVnk=;
-        b=jDIL9qB4JlzOAjZOLTqTvoxXEWzN6R0RpNqSHFgkZkykKiMVRF3frKJ3L7MS+9wmU6
-         zE+6s6qm4JiB3j4L4pU61RDLVGd2joJ68BCHJQnTceAj3tGnVuA1NgQNkVaAl+JGb6od
-         i9D4SWiFh74W8bIzdYlEmPcyPXe5VBhZK3gbnPwpAIkgB4CcJMe/BjvLW75pBiA2ZL5J
-         kBzVa3My+DwzjH5hgB/HFi/S6NoxoPh6EZAMuQlS4zhGDhKIs6hxkEtNF7c8CJ4xH0ql
-         HTEbnZ9wtj9HrKBnajIoqDtjBOhePW0ZxKCN3zwdKVn32REhFHBWxke6GL4WVip2eFxY
-         6yaA==
-X-Forwarded-Encrypted: i=1; AJvYcCUS06raeIHhVVpfiwaPb1mxCs51kMw+HVPzF/KZ/u0JBKLTqJenGdCxxwvLc4GUgNVREI//jN6FOjrqGqs=@vger.kernel.org, AJvYcCVDzLgSNLOahzCfnHAlfMKgYpCbfoUH13rb4kACvHAAXf2Dt/MZPOyjB0dNlSnHHoPqgr6QSVqJnBLnmGxV1Ds=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlX4++ioUIwvuf42tkIMJ1W8yPbabFxdXaLbOtJKCMIrRApv+H
-	uRlRu94osjoh+Z8aAAeTgiQWQ/Qpq8cdk3HVtDvAaudsueFCX2mGpymLlT6GcQHd35YG2Xnedpv
-	e2p0vyed06HWJHSZePM8p9sIqmNagdQA=
-X-Gm-Gg: ASbGncvBTVPI/23x3GoDjq9mq/z7jhxo73Z9lxhiaNin8/rUBMuW/QSkpLnXie6jtcq
-	ilXXMYxhBuUmu2zSXg8gklN7CYt7Y7t6zQKBJhHNuULNgn6Cuu30GHz0tz+KxPP2qPImHxEwUFC
-	nHMi+Ft381UMdRwKImEkFx9yE+RhQfXGcV28ybGidfZsKiDusKd141dfoLB+FgM4c7/b0UZ6pqU
-	/ee
-X-Google-Smtp-Source: AGHT+IFIOsZlPLfXgxVBZMlZkFL+ShhOCVyRcVsmCdRASQwye7R6HGJ7F25pQsrgAc7az+7LsPsd35Q7hlRxdRlLmpc=
-X-Received: by 2002:a05:651c:b0d:b0:30c:50fd:9afe with SMTP id
- 38308e7fff4ca-32a8cd69223mr8661fa.9.1748529626577; Thu, 29 May 2025 07:40:26
- -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L965RAaj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA78C4CEE7;
+	Thu, 29 May 2025 15:31:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748532721;
+	bh=JnQAvMylwZtpa5EhFORjb44aBv934LT+uOUV5qfL2yI=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=L965RAajIHrP4rROHeGuafOkcSpLL9JC4sooqbPYk/mwzfkB5b3ezUIkg2PA5aWBF
+	 ASfy1AG6kbEOvY5suuTkn44TaNrVr+vyVf7V04Hsctz642dQag3yL3Xql5IblVFGid
+	 Bglm96yBQhgL11YrkNp49+IKJcUNUDwg4WBLnPXPwqZ6i5dfE5fdtvnU97nZl4D4QF
+	 XSRxfUTgMZdJLzJbZCPS8ISvsedUwa75BAlAzAUfEhya3rs3Uwhm6YJve1OvgfpCng
+	 cJWE4d0RynExFQc6JlAM3hsIctZAPStZ7o+fd84lw37/jA34+mZf4kjbdNi47p0aq9
+	 CLiqJIcLcHx/w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250529-b4-container-of-type-check-v4-1-bf3a7ad73cec@gmail.com> <CANiq72=B4JMK4eqK0tL5ECWFAKcBGm0O9LsZ74dd38N2GrZOMg@mail.gmail.com>
-In-Reply-To: <CANiq72=B4JMK4eqK0tL5ECWFAKcBGm0O9LsZ74dd38N2GrZOMg@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 29 May 2025 10:39:49 -0400
-X-Gm-Features: AX0GCFs8RwRoBePQBurTxBlqD-hIi994O8rqwQfy4IZ_mcLMn1HjxIjuEcyh0Ew
-Message-ID: <CAJ-ks9nTrOuDK1W-qFpsMow5Wf7XG9hGBbf6h_kS2Xo16wyHjA@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: check type of `$ptr` in `container_of!`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 29 May 2025 17:31:57 +0200
+Message-Id: <DA8R4900CNVG.1IMAV3SFPFS0B@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4] rust: check type of `$ptr` in `container_of!`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250529-b4-container-of-type-check-v4-1-bf3a7ad73cec@gmail.com>
+In-Reply-To: <20250529-b4-container-of-type-check-v4-1-bf3a7ad73cec@gmail.com>
 
-On Thu, May 29, 2025 at 9:30=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu May 29, 2025 at 3:11 PM CEST, Tamir Duberstein wrote:
+> Add a compile-time check that `*$ptr` is of the type of `$type->$($f)*`.
+> Rename those placeholders for clarity.
 >
-> On Thu, May 29, 2025 at 3:11=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
-> >
-> > Rename those placeholders for clarity.
+> Given the incorrect usage:
 >
-> We can also put this in a separate one if it is OK with you.
+>> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+>> index 8d978c896747..6a7089149878 100644
+>> --- a/rust/kernel/rbtree.rs
+>> +++ b/rust/kernel/rbtree.rs
+>> @@ -329,7 +329,7 @@ fn raw_entry(&mut self, key: &K) -> RawEntry<'_, K, =
+V> {
+>>          while !(*child_field_of_parent).is_null() {
+>>              let curr =3D *child_field_of_parent;
+>>              // SAFETY: All links fields we create are in a `Node<K, V>`=
+.
+>> -            let node =3D unsafe { container_of!(curr, Node<K, V>, links=
+) };
+>> +            let node =3D unsafe { container_of!(curr, Node<K, V>, key) =
+};
+>>
+>>              // SAFETY: `node` is a non-null node so it is valid by the =
+type invariants.
+>>              match key.cmp(unsafe { &(*node).key }) {
+>
+> this patch produces the compilation error:
+>
+>> error[E0308]: mismatched types
+>>    --> rust/kernel/lib.rs:220:45
+>>     |
+>> 220 |         $crate::assert_same_type(field_ptr, (&raw const (*containe=
+r_ptr).$($fields)*).cast_mut());
+>>     |         ------------------------ ---------  ^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut rb_node`, found `*mut K`
+>>     |         |                        |
+>>     |         |                        expected all arguments to be this=
+ `*mut bindings::rb_node` type because they need to match the type of this =
+parameter
+>>     |         arguments to this function are incorrect
+>>     |
+>>    ::: rust/kernel/rbtree.rs:270:6
+>>     |
+>> 270 | impl<K, V> RBTree<K, V>
+>>     |      - found this type parameter
+>> ...
+>> 332 |             let node =3D unsafe { container_of!(curr, Node<K, V>, =
+key) };
+>>     |                                 ----------------------------------=
+-- in this macro invocation
+>>     |
+>>     =3D note: expected raw pointer `*mut bindings::rb_node`
+>>                found raw pointer `*mut K`
+>> note: function defined here
+>>    --> rust/kernel/lib.rs:227:8
+>>     |
+>> 227 | pub fn assert_same_type<T>(_: T, _: T) {}
+>>     |        ^^^^^^^^^^^^^^^^ -  ----  ---- this parameter needs to matc=
+h the `*mut bindings::rb_node` type of parameter #1
+>>     |                         |  |
+>>     |                         |  parameter #2 needs to match the `*mut b=
+indings::rb_node` type of this parameter
+>>     |                         parameter #1 and parameter #2 both referen=
+ce this parameter `T`
+>>     =3D note: this error originates in the macro `container_of` (in Nigh=
+tly builds, run with -Z macro-backtrace for more info)
 
-All fine. The only problem with the version you pushed is that it
-evaluates $ptr twice, which was flagged by Alice in the v1 review.
+In the future we could make this a proc-macro and improve the error
+message by creating the function inline and setting the spans for the
+parameter of the function to the spans coming from the input.
+
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://lore.kernel.org/all/CAH5fLgh6gmqGBhPMi2SKn7mCmMWfOSiS0WP5wB=
+uGPYh9ZTAiww@mail.gmail.com/
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+---
+Cheers,
+Benno
+
+> ---
+> Changes in v4:
+> - Revert back to v1 with assert_same_type extracted out of the macro. (Mi=
+guel Ojeda)
+> - Drop Benno's RB since the implementation changed.
+> - Rebase on rust-next.
+> - Link to v3: https://lore.kernel.org/r/20250423-b4-container-of-type-che=
+ck-v3-1-7994c56cf359@gmail.com
+>
+> Changes in v3:
+> - Fix comment typo.
+> - s/^;/   / in commit message and cover letter. (Miguel Ojeda)
+> - Evaluate $ptr only once. (Alice Ryhl)
+> - Link to v2: https://lore.kernel.org/r/20250412-b4-container-of-type-che=
+ck-v2-1-f3cc9934c160@gmail.com
+>
+> Changes in v2:
+> - Wrap in `if false` to improve unoptimized codegen. (Alice Ryhl)
+> - Shrink implementation using an array literal instead of a function.
+> - Link to v1: https://lore.kernel.org/r/20250411-b4-container-of-type-che=
+ck-v1-1-08262ef67c95@gmail.com
+> ---
+>  rust/kernel/lib.rs | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
