@@ -1,234 +1,189 @@
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2043.outbound.protection.outlook.com [40.107.244.43])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A701DF73C;
-	Thu, 29 May 2025 06:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748501629; cv=fail; b=ns+Glfyvix67URmBbld6U9mNzEL4Cbdhb5w+b8zkNOXv6xrLYWiET3zYp442pxHb/AkodpIuRE3WTVqnNa8mfOu+fSBzfHKV6/P7LmxANB6TGlp0Ui1iEqGf4M4AYgTnQZJe6freegPKfmrcKvHuOMGeYfK40Kxi00MY6uydtAo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748501629; c=relaxed/simple;
-	bh=ZZmICa0MQapNb6FJMq/mZ/MKgkNoVNWxxe4AMoHfmxk=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=cmEqBloHHQawwy1FedbZFfOjVk/TWnHYDKbCFfzW2BheBTeXSgYkU+lnZES8NoA9W/dBfB2/rqRIcRYX2lOutvnBYdT5PeByl6NINPsLpIL8cDbhC1GStp1VtCLMqQLi1w4U80eorX8fDyW3lZTqrKnajLTcC9n/tGcyt0Ck35A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=huN5k6Vg; arc=fail smtp.client-ip=40.107.244.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE31C1373;
+	Thu, 29 May 2025 07:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748503661; cv=none; b=qJBPL4E2T8Utxxb0cEmoR/9vbJJY36jcfJdTbXZdXEpKTtf54fsuZO89Nv/otQUhx6lFdHCF/JrwJunrZFJWtMhmu623ijTEZlGNMB15y4RAS4AaHQfI+aLwsqclvEByaSf/W09I9BXV+g8yPMohiLrEsF+0xQ9Wy06ey4oGEsM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748503661; c=relaxed/simple;
+	bh=s6s6ARYurnzqxgQbwLV10a+xTKOthHY4uyCNDCpcO+Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=C6qrHmyFjiXk882IreeI9ne+OkqXPcvImbsP4H/o9odJdzjXG5J+eDvFPkfbsBynonUmxcC3JpEiBrdmmrSqGJd4Ntp7xmPCnfBSOlNUYPY3PeLlxmDEa7TY54e0MEiwB9hYOE0NPFtIosX32w5akWYbx6qqm7gp09+nELfHgWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qMpEeeVo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="huN5k6Vg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dzz6BJTT/XJZRurCOVMWBsIfDQe+vvJWpd/fCN9uZk4bUhdJHkFeC6YJc5CxSeWu3j4TRw1mfjHE1ba+o05jTnX9KOtooQUthOSaS7U/AjkLiyhvDUs2XkDD2qFjHwG4lKCPnRNDBn4xgVosj4Sd37DHC2RZPNicGYkOkb4QBJovd+wjlistbJPlMCwamBKZRNI45zJx8Euo/U9XxBeMeN+fPO9FbUgn/l1v0Nrcy8PxeZfiV1g97cQIUxCva6PwZgR8YKzhmNZb8G31SNO+Lwzdn2ry0NQ7qH8zZUcxU+RAsctOqzxQSD4Q2V599feZ2WTUzhnZLRepuzKJukNp8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DqRkh38b98lLLLyz7q/HL4nW/qlrJNGNWAMUvX+yRV0=;
- b=Bn6MV/Eg5jUjthI6PMPVs5NA5sM5HKxx8ku7+UfSmdbQlCayGWsgVRYD2DqnxMnh2NLJDEFDolKowVAc7ZF7OuQudk41uniX8C8GiYab3b1bxMNXBCDzDNQLSSgip0fQ8czd6XJqtM+fa2VkwA7vdLBQqeKWyYoMd7Ya0ZfGWZzKxKrUuF+wjk2TsnVe8Ws4U6kV3MhkBUugf58gQ/Kuz0sUQ3Xg8sP2d01ALGZm6FhSF3vaEPkCmpM3Mh/CP422R//JPVDNhJ/ZNy1y1SBpijoVLLSZEpeRRsYG39pKtCrOx602yt3zZaf5HcQyxMvq2cJkoNmlbqAiI8nfvOv8Rw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DqRkh38b98lLLLyz7q/HL4nW/qlrJNGNWAMUvX+yRV0=;
- b=huN5k6Vg66OlmG3TMCM/3vKELvySLwVnBp/iG7KSCJBYkq16RpE9gaSHuCNTcKmCHzxd8p9VyTNB6WIvIvh3oj7QgeIX4cmPaZT0vEsQfGeLZ3Iq93iLeHUi3O9gx4TYnR5PkZjDsh/E5lm54/x1/bBN0ijRKqbW/SrLTmVrMnCqwMDhPsyw/UrCf6RTzkNIqbuv3u6YyV3ugVzqNvHEzmI04L44aMcoLhp6GIUu+oy3FCK3Z571vOq4PEDY4ZOcNtr5EiWg0UP1mURYMRnNxt+koDLcYwR9tZeOS089f1VDn5VIsSFZod10h075kiuB1X6j7vxOdSa90dowr6zjcg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by IA0PR12MB8694.namprd12.prod.outlook.com (2603:10b6:208:488::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.24; Thu, 29 May
- 2025 06:53:45 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%5]) with mapi id 15.20.8769.025; Thu, 29 May 2025
- 06:53:45 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 29 May 2025 15:53:42 +0900
-Message-Id: <DA8G3G918FS4.X8D7PQMT4TGB@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Timur Tabi" <timur@kernel.org>,
- "John Hubbard" <jhubbard@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: add basic ELF sections parser
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250515-elf-v1-1-4b53745453c0@nvidia.com>
- <2025051543-override-rockiness-3ead@gregkh>
- <D9WLFTPRB9FJ.OL6I760HKALZ@nvidia.com>
- <D9WP3YU31199.Q8IEDBJZ87LU@nvidia.com>
- <2025051532-gentleman-reset-58f2@gregkh>
- <CAOZdJXWKLu0y+kwC+Bm8nBCLizQVpsDdDUoS--hVgz2vnuZJQg@mail.gmail.com>
- <8b14b078-b899-42e8-8522-599daa65bc63@nvidia.com>
- <2025051647-urology-think-b8e0@gregkh>
- <D9XMAV4ERYK7.39TLQBLYTX3TU@nvidia.com> <aCc_PSOPkLWTcTru@pollux>
- <D9XNS413TVXB.3SWWJE4JGEN8B@nvidia.com>
- <CAOZdJXW+PoFgxH+wPEum-kYvRmSRd8c4kaxvbNAq5dfZJiXapA@mail.gmail.com>
- <D9Y0VJKOAQAY.2GJSAZ5II54VV@nvidia.com>
-In-Reply-To: <D9Y0VJKOAQAY.2GJSAZ5II54VV@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0192.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:382::18) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qMpEeeVo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530A4C4CEE7;
+	Thu, 29 May 2025 07:27:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748503660;
+	bh=s6s6ARYurnzqxgQbwLV10a+xTKOthHY4uyCNDCpcO+Y=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=qMpEeeVoObJ4LXrmnAI6HhhTQnWyL4trC4W2xAaEynolLiOyEIaXO9yrQPdG/gcKj
+	 zI4Q23eUy2bD7gfPx6tMhtQaRvyCnHGvwVon2VSerZc0qxt4Rp/QjxKEmqSUKa2DBd
+	 YkYE1+w6BAxQzA1FR41e5JsBHzNRgP2r/jHRrWDfc+5qknnAG/7aF2XvZAUiRC4qNq
+	 5nmKqyc39jos7ZK6dRgaeO6AHW1SR23eFDi0FnZI8+Lg7JMwKZcW9vKkot8Quhs+Y5
+	 pwaFtzUPhcmpiT5Oq+t2wdOSV174YxaroTBIp5vYK7Fh25Yy2YdYHjk+OqVGtC6OEE
+	 kdmsCvhTsnWEg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA0PR12MB8694:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa82016c-9b03-43d7-9b26-08dd9e7d8e3a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bmk1d1hSNXF3RVpLQythZWwxbCtlc253YWpMV3ArZllyQ2hZNld3blBUNG5V?=
- =?utf-8?B?NktDWU5wQjFBV0dGV3lScEpjeGpROEFVNXYzbWc1OFJwdkZIdWQzNHZESkxF?=
- =?utf-8?B?eFdpdXhWa0ZZbHRYeFdaQXYzV3dybk5oZ0IzMmZoWW5ibUFNV1BjeWRTUEhJ?=
- =?utf-8?B?MHZCSng3aTAzbG5uUVl4SzF5MGFzK1V2Njk3ZlFWMm1VNHRsYlNDV3Q4VXBT?=
- =?utf-8?B?Q1RNUUhYZTIrT2o3TGZ0YTB4WG1yNlp3dUo4YXZCM1hsYXl1V0pONlREN2Iw?=
- =?utf-8?B?REh4VVRLVFNrYW9PNWRJNmVVWXdDaFE2bnNyMFFJK0FQU2ZXcXl1WjloOEc4?=
- =?utf-8?B?TU1ZWHJQQmV3cWVFaHBoaFYzeXF2K2JzTjA5a0EzVXBuT0hsTWFlRlMrTzdK?=
- =?utf-8?B?SXVGbXE5eFdEaGpYeFVET3lNNCswdnRoeWJWSnE5eUZGaHN0bkxOQXU5Y3Ro?=
- =?utf-8?B?NTBPSlZROWxIS1ZKNzFhU2ZUUnoxN2E5UXFwRy9rKytFMXBRa1ZSZWw5VmFn?=
- =?utf-8?B?V1dsRG40RnQrZnRNUCtUblQvODBYNWh1QmpTNzdFbXh3UDFGSW03MkZJdmFY?=
- =?utf-8?B?ZnA1eTVVUkZWZjRWOFFiemJWaWU4U3N2TFN3WTJsK0dtbjZOVzNyY1NhQ1Ns?=
- =?utf-8?B?dmlkOXVPZlZzTjBDdXVqQnFxdlRSZzQ0M0xIUzgwV3ZNRGJ0Z3EwcjEyYy9t?=
- =?utf-8?B?U3NVaUo2c29kQ1VCeGFzRXR5cEhCNTRrREY2VHpNa25JL1Y1Tkc3L2ZKbGNj?=
- =?utf-8?B?cVVoK2gvRFdWSlRTODEycm5rMFR3THBPTmZrS3cweExSVEFIbldIbUxldUF6?=
- =?utf-8?B?b0VQc1Z4TTBmRWJMeTNJTXN0M3R4S1BtbHBiM2RVcWo1ZEpEYS9iRzVqVW1B?=
- =?utf-8?B?T2lpK3p0eUN4b092R1VMNm1WVUVISU5SR2JvSEdVaEQrN0tCcnVpSVVnK1Bj?=
- =?utf-8?B?eTFDODN5bzZ6emxFbkRwNGxrT0VHZTdSKzdURW5OMkVFdmpGS1BJeUU5RVIy?=
- =?utf-8?B?bDdPRnZ1N0hCL3FKUnRRVEF3cUlKVS9JSG0xd3JyOEtyWmR1MG5jaEhzOExl?=
- =?utf-8?B?SnlFN0VFUWtvWThRMUowQWdYVm9zeXliYTByMFRkWFg1SHl3SUdGRlVPNkdG?=
- =?utf-8?B?NjlTb2lZN0krSFAwT2dWWEsxWHdzL1JDc2JzT2VwYW8wSHRYdmIyWjNYeGE2?=
- =?utf-8?B?V3ZDWlZkK1NVWTRPVVFDczJ3VE9odkdEWlh2ajV5a0tWd0xhZFVjRVJUc1Rz?=
- =?utf-8?B?NVB1U0dMUm8wU3VkY1VGWW9ZU1p0SUFXOG9QVzlNK0o5UWl1Z0xBQ0RDNTZP?=
- =?utf-8?B?SHhSVGZ0SWRBaDlkVmc5SmJtQmg4VWJSLzJFL2pUb0lpQ04raUg5N1JualFa?=
- =?utf-8?B?djd3RWhGaEphNU96TW5wWS9xOFdoenlpYnMxNjJnbi83bzMzVzRyTUlYRWJZ?=
- =?utf-8?B?akZ0a0hOdjZiU0tPNXJMRi9HMEpadml2Q2dvdFVXdXh2MmM3V1BLOU1jejVv?=
- =?utf-8?B?LzJMdGNmTXZuYWIwMHQ3MS9ObzR6dFNiOUlSQ0lCWnFDcyt6dkcwMFRJWUZv?=
- =?utf-8?B?TDZ3N09ZZjc2Mnc4aUtQdSs4bUZob0pzMXJqNHFQd3RlVWF0QlkyOWNxNHR3?=
- =?utf-8?B?aDJqSXdoQXcydjR0L3ltU2d3cUZmU2F0ckRrbEpCWGJhSTlhRkRFdkFwRm4v?=
- =?utf-8?B?OHpyb2tmd0JJdk1nVkpLTTVuVjlQQUYvQmVHRzRlTWp6NXRQWEd0TjBYbTd4?=
- =?utf-8?B?eTRJdFNaWXRLci9qQXB0Zk9QK2FVTURCRnF3REp3bU55UWp0Tk5tZlV3R3lQ?=
- =?utf-8?B?OU9KRXIzMHNuV1lEQm1DakNWTStOSnFtenpUK2c4NGlGbVZqaTFCMnZvSGVt?=
- =?utf-8?B?Q3RkRlNsWThSRmJybC9odWM5N1FtUENib2RhbjdKRyt3b0dnVmZtS0c1R1BN?=
- =?utf-8?Q?UskRqw08bNA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YzlFMlZTK2RIQnpRZE1MeUFHRkE5ZUNRa2RKZzVoUThLRDVBNlZ1clRjTE40?=
- =?utf-8?B?dEhMOXlsdVg0QmJNcGZnajJibHYwUGtKdEZhaWlmZXVQTC8zeEJDWkhXNnhR?=
- =?utf-8?B?QnRBaUhpWWhpVTMrcThBOEFaZ0crMlM3bVZ1T0hTY3ZXOGVWSS9vT2xuam13?=
- =?utf-8?B?S0JmbVdmK00vRWc3V3NFZDRVeGUvZ0ZCTjQxNUNYdVRFckFDSGo5ZFZUcEti?=
- =?utf-8?B?MVN1Z1dCallqY093MUF3VGdrRFJBYkZOeE0zRWRvMVhHb05GWU1ENkpVUWZr?=
- =?utf-8?B?MUs3K3IvTnNNamFrNjFlR1A3a0xKd1Q5eTVXMVkwRVg5TEFNbWIyTW9yL0pZ?=
- =?utf-8?B?REVYN3JDM2FqaUdTMkphYU03RlgvdjFGRk1PZGJ5K09wajBjS0gvMnVWZ2xT?=
- =?utf-8?B?T0lRRXFldForUGd0aGx3QURwMm5CQ0dla2w5cXB0SVd3UW9EdzZPVm5JTlJo?=
- =?utf-8?B?R2J4bkZVRVNub2p0U2xZbHVOa1JJRmx4TGQ3Rnl6czVhcnFzbEg4ZmkydTZk?=
- =?utf-8?B?b2VHczJKZXpYei94UmVYOXh6YWJkL3RKM0RKSDdQN0tJZXEvMHAvMkhsTGc5?=
- =?utf-8?B?M2dkRGNOSWdwMUdENnliU3RVSUtsRW1iVWtTV3kvQWJ0blIyYXpJeThJRWpl?=
- =?utf-8?B?NldmV1I4dWowOVdpNmV5NU1acEx5MzR2R3RuRG5raDVvOTJOWHpDaVhIdDZi?=
- =?utf-8?B?UGxNWC92enBsMVU4ZjJDQ28xMG05S0VuODJ0SlpLUTNMM280Uys1eDdTc2FQ?=
- =?utf-8?B?a3VndVdZYVBPeENTOTc1em1XYmc5M1RGU2tIOXlGWGFqSEtTOE8rWk9SNHh5?=
- =?utf-8?B?VTltWHhJalNoM2pQVVZpVkF3aTJuVktWOHAxbVNhTFVzblFaTFlZRDhvbklG?=
- =?utf-8?B?bjIrWnQ5b2ZuYzBrK0xhMjlDTkJFZWl4dFA5THZkU0pLY1pudkR2YktLdGlZ?=
- =?utf-8?B?NEpIMGNhNmd4bDNNOHdnOEh3UlZBN3ZqbDkvUERnczJHd3kyRjBhK21NL29O?=
- =?utf-8?B?d0RiZ3Bsb3REZ3pSSnBjOGU2UkJRdEtnaGY2LzhPc1RNeFRyRWNtRXZPM21w?=
- =?utf-8?B?MUlBcS9uRFFETVlMNmI0SklJc0ZjV2g2ZzlLRGU5WU5yU1dUbUNKOWlNWnJs?=
- =?utf-8?B?MXBOUytuRU9rMzlaUkJpNnl1bUFQS2hiWGJBVDJNbmlCR25Yank4RjNzWnJN?=
- =?utf-8?B?UkR0RTV2aWtoTUNlZklSK29ES1YzZWZVVGwxVGRGTUVFb281dnB1WXJUR1U4?=
- =?utf-8?B?WXJqKzBRRk1ucmlMVkk1aFA1Qi9ZUFZKZ2pINUhRZXdmalJSb0R0cmhmMHZy?=
- =?utf-8?B?aTVyMHJnTTI3NFc1bjZieElSVmdYTFFDZG5qd3BJRlhpWGpFYTRGNVFFdXNn?=
- =?utf-8?B?V3RlVlFZQTNFOEpRcmcyRGhMczJzWW0yVDhHcVp0ekpQSzlkUWNQaGZYMllp?=
- =?utf-8?B?djJVWWdSdUplbk11dzUxek9oT0F1MmxGVm5wbUtad2pUcUNNMktSN0h6d012?=
- =?utf-8?B?Q3EzbFhLWXVrNjMzKy9qTEtISVNIVm5HOXlsdFJ3dEhCN0NqSmcxQkppaU5Y?=
- =?utf-8?B?VzgwdUVuMVNhR3BseWRZbHk0OTJldmZLcW9QQlhUT1dyZmt3c05qMkRFT01r?=
- =?utf-8?B?ZnJoMkI3Mjcrd2lsQ2grb204U3BPZzF2UHpYSkt5L3kzMHMvQU9tdXVGc1pj?=
- =?utf-8?B?d1piL29Jd05UcVJWbUpodzZLVzlSdW1SbUR3VkNTYnkySDI0T0JYOHNtSWV6?=
- =?utf-8?B?UStKdDhNK3R2N2w2bmFNanBwTFdlbmZLWEdiWXVIZlFCY0ZQTVp4RDByRnBl?=
- =?utf-8?B?OWVkbFM0ODEyaGNDc1ZRN05Md05hMTBTSVdWbkFuMXA5aDVuR0JCRHB3NVJr?=
- =?utf-8?B?T0FzQkd0UDgzU041OFpXZlNzWXRES0lpczFwRjR6ZXZqV3crNFpFWjl3N2Ju?=
- =?utf-8?B?dFhhUzdwc3EyRGRYc0h5ZVR5YVFSb3FXTUx1T1hXTFFTSDJSR29MeHNuZHBB?=
- =?utf-8?B?S2NuZWpCN0JTYXoxeFFCak95dGc5K2VjQUhDVGJjeVkrNFZRYlJqQlUrSXZZ?=
- =?utf-8?B?d2JXTUx5dks3RHpScDJiYmlORzVEeDg1U2grVk5SRGJXNmlQeUNZdjNheDJs?=
- =?utf-8?B?UmF3R2dWSmpXV0h4RFVTalRKS3IyRW5EanEvbUxlQ0lsNnU5Tkc5QlN1M29N?=
- =?utf-8?Q?KXvU2xM9mdlpje96SDZdG0z2InX8dQOwjV0OBj+zeqci?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa82016c-9b03-43d7-9b26-08dd9e7d8e3a
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 06:53:45.2529
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ok/+r2X+3PUrMCIMtnSRIYXBbpnAeSuDOQX3vl1rVCj7ZrU0PmFK8GN14vAWeDPrIRjWWZG+IWzXzGYtRl4iyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8694
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 29 May 2025 09:27:33 +0200
+Message-Id: <DA8GTD7LT7KO.1A3LBQGEQTCEW@kernel.org>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v4 04/20] rust: add new `num` module with useful integer
+ operations
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>
+X-Mailer: aerc 0.20.1
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-4-05dfd4f39479@nvidia.com>
+ <DA82KFLNAOG7.R7YT4BHCLNZQ@kernel.org>
+ <DA88YHU4AZT7.B8JGZHW9P9L9@nvidia.com>
+In-Reply-To: <DA88YHU4AZT7.B8JGZHW9P9L9@nvidia.com>
 
-Hi Greg,
-
-On Sat May 17, 2025 at 9:51 AM JST, Alexandre Courbot wrote:
-> On Sat May 17, 2025 at 1:28 AM JST, Timur Tabi wrote:
->> On Fri, May 16, 2025 at 9:35=E2=80=AFAM Alexandre Courbot <acourbot@nvid=
-ia.com> wrote:
+On Thu May 29, 2025 at 3:18 AM CEST, Alexandre Courbot wrote:
+> On Thu May 29, 2025 at 5:17 AM JST, Benno Lossin wrote:
+>> On Wed May 21, 2025 at 8:44 AM CEST, Alexandre Courbot wrote:
+>>> Introduce the `num` module, featuring the `NumExt` extension trait
+>>> that expands unsigned integers with useful operations for the kernel.
 >>>
->>> We use ELF as a container format to associate binary blobs with named
->>> sections. Can we extract these sections into individual files that we
->>> load using request_firmware()? Why yes, we could.
+>>> These are to be used by the nova-core driver, but they are so ubiquitou=
+s
+>>> that other drivers should be able to take advantage of them as well.
+>>>
+>>> The currently implemented operations are:
+>>>
+>>> - align_down()
+>>> - align_up()
+>>> - fls()
+>>>
+>>> But this trait is expected to be expanded further.
+>>>
+>>> `NumExt` is on unsigned types using a macro. An approach using another
+>>> trait constrained by the operator traits that we need (`Add`, `Sub`,
+>>> etc) was also considered, but had to be dropped as we need to use
+>>> wrapping operations, which are not provided by any trait.
+>>>
+>>> Co-developed-by: Joel Fernandes <joelagnelf@nvidia.com>
+>>> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>> ---
+>>>  rust/kernel/lib.rs |  1 +
+>>>  rust/kernel/num.rs | 82 ++++++++++++++++++++++++++++++++++++++++++++++=
+++++++++
+>>>  2 files changed, 83 insertions(+)
 >>
->> Actually, I don't think we can.  This is the actual GSP-RM ELF image
->> you're talking about.  This comes packaged as one binary blob and it's
->> intended to be mostly opaque.  We can't just disassemble the ELF
->> sections and then re-assemble them in the driver.
->>
->> Unfortunately, for pre-Hopper booting, we need to do a little
->> pre-processing on the image, referencing the ELF sections, and based
->> on data from fuses that cannot be read in user-space.
+>> Have you proposed `align_down` to upstream rust? Not saying that we
+>> shouldn't do it here, but if we haven't tried yet, it might be a good
+>> idea to just get them upstreamed. (if you do, it should probably be
+>> named `prev_multiple_of`)
 >
-> I'd like to reinforce Timur's point a bit because it is crucial to
-> understanding why we need an ELF parser here.
->
-> On post-Hopper, the GSP ELF binary is passed as-is to the booter
-> firmware and it is the latter that performs the blob extraction from the
-> ELF sections. So for these chips no ELF parsing takes place in the
-> kernel which actually acts as a dumb pipe.
->
-> However, pre-Hopper does not work like that, and for these the same GSP
-> image (coming from the same ELF file) needs to be extracted by the
-> kernel and handed out to booter. It's for these that we need to do the
-> light parsing introduced by this patch.
->
-> So while I believe this provides a strong justification for having the
-> parser, I also understand Greg's reluctance to make this available to
-> everyone when nova-core is the only user in sight and the general
-> guideline is to avoid processing in the kernel.
->
-> OTOH, it is quite short and trivial, and if some drivers need a
-> packaging format then it might as well be ELF. The imagination DRM
-> driver for instance appears to load firmware parts from an ELF binary
-> obtained using request_firmware (lookup `process_elf_command_stream`) -
-> very similar to what we are doing here.
->
-> `drivers/remoteproc` also has what appears to be a complete ELF parser
-> and loader, which it uses on firmware obtained using `request_firmware`
-> (check `remoteproc_elf_loader.c` and how the arguments to the functions
-> defined there are `struct firmware *`). Admittedly, it's probably easier
-> to justify here, but the core principle is the same and we are just
-> doing a much simpler version of that.
->
-> And there are likely more examples, so there might be a case for a
-> shared ELF parser. For nova-core purposes, either way would work.
+> I haven't yet - haven't ever contributed anything to upstream Rust, so
+> I'll have to look that one up first. :) But I agree a `prev_multiple_of`
+> could be useful.
 
-Gentle ping on this, as you can there are other drivers using ELF as a
-container format for firmware. In light of this information, I guess
-there is a point for having a common parser in the kernel. What do you
-think?
+I'd recommend opening a thread on Zulip before you go implement stuff.
+Then you can also get a more rusty name for `fls` :)
+
+>>> +    /// Align `self` up to `alignment`.
+>>> +    ///
+>>> +    /// `alignment` must be a power of 2 for accurate results.
+>>> +    ///
+>>> +    /// Wraps around to `0` if the requested alignment pushes the resu=
+lt above the type's limits.
+>>> +    ///
+>>> +    /// # Examples
+>>> +    ///
+>>> +    /// ```
+>>> +    /// use kernel::num::NumExt;
+>>> +    ///
+>>> +    /// assert_eq!(0x4fffu32.align_up(0x1000), 0x5000);
+>>> +    /// assert_eq!(0x4000u32.align_up(0x1000), 0x4000);
+>>> +    /// assert_eq!(0x0u32.align_up(0x1000), 0x0);
+>>> +    /// assert_eq!(0xffffu16.align_up(0x100), 0x0);
+>>> +    /// assert_eq!(0x4fffu32.align_up(0x0), 0x0);
+>>> +    /// ```
+>>> +    fn align_up(self, alignment: Self) -> Self;
+>>
+>> Isn't this `next_multiple_of` [1] (it also allows non power of 2
+>> inputs).
+>>
+>> [1]: https://doc.rust-lang.org/std/primitive.u32.html#method.next_multip=
+le_of
+>
+> It is, however the fact that `next_multiple_of` works with non powers of
+> two also means it needs to perform a modulo operation. That operation
+> might well be optimized away by the compiler, but ACAICT we have no way
+> of proving it will always be the case, hence the always-optimal
+> implementation here.
+
+When you use a power of 2 constant, then I'm very sure that it will get
+optimized [1]. Even with non-powers of 2, you don't get a division [2].
+If you find some code that is not optimized, then sure add a custom
+function.
+
+[1]: https://godbolt.org/z/57M9e36T3
+[2]: https://godbolt.org/z/9P4P8zExh
+
+> Also in the kernel we tend to use the `align` nomenclature and I think we
+> should preserve that for clarity.
+
+That's also fair, but we lose the constness of `next_multiple_of`, so
+you can't use `align_up` in a const function. That might confuse people
+and then they write their own const helper function... I'd prefer we use
+all functions that are available in the stdlib.
+
+>>> +
+>>> +    /// Find Last Set Bit: return the 1-based index of the last (i.e. =
+most significant) set bit in
+>>> +    /// `self`.
+>>> +    ///
+>>> +    /// Equivalent to the C `fls` function.
+>>> +    ///
+>>> +    /// # Examples
+>>> +    ///
+>>> +    /// ```
+>>> +    /// use kernel::num::NumExt;
+>>> +    ///
+>>> +    /// assert_eq!(0x0u32.fls(), 0);
+>>> +    /// assert_eq!(0x1u32.fls(), 1);
+>>> +    /// assert_eq!(0x10u32.fls(), 5);
+>>> +    /// assert_eq!(0xffffu32.fls(), 16);
+>>> +    /// assert_eq!(0x8000_0000u32.fls(), 32);
+>>> +    /// ```
+>>> +    fn fls(self) -> u32;
+>>
+>> Isn't this just `trailing_zeros` [2]?
+>>
+>> [2]: https://doc.rust-lang.org/std/primitive.u32.html#method.trailing_ze=
+ros
+>
+> No, `trailing_zeros` counts from the LSB up to the first bit set to 1,
+> whereas fls does that from the MSB. For instance, `0xffffu32.fls() =3D=3D
+> 16` but `0xffffu32.trailing_zeros() =3D=3D 0`.
+
+Ah right... Then maybe add that to the upstream suggestion :)
+
+---
+Cheers,
+Benno
