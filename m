@@ -1,143 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BC5A55;
-	Thu, 29 May 2025 09:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8C61DF244;
+	Thu, 29 May 2025 11:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748510473; cv=none; b=Frz3ugIVUqORWLKyVFjwtiKQAacFZqxil5vMu234qZ7TPdvx8TqRe29AnVJqMt4Pm2VoSiUf/0O7QnsAho3dPrlMxwq0u5t8d6gDv37gI4C8/p9h/qoNFx2c1BQGN4TNboA2n5sKrLdT6PUt+oy4EoSHK12FywuH2idqJS7+K7M=
+	t=1748519985; cv=none; b=VliVTotHi3/gsKeV1eZFbW3TP3AGsH25yllIM3jm5F/RCXV/BoDQzg0KrpX9jLD8WcVcupduKvb+TYRWg+GvWDbaH8/HyKNnkioKSyXdWztcMPL7YWAELQgJ6hll4IV9QW9tZisNPKG9DMLkz4OBaIrfsMvb0hojxvTJUQtcVHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748510473; c=relaxed/simple;
-	bh=1BWuf5GwypVzVnJaQNR4TuFejVewmz1nogJhTtrWZrk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=BWS4SrjqetZKtfr5hvwEpiMd0KiskBBO/2Jcfb6RlRn5LuYbL8dRg+RyaIZq3g5U94LZyHYVRwXdvtgNJB8HVqba+HmPSCJGBPOf3EnJWuSuqUQaYgCZ71S/TVLX2Ckpg3b6ifmJHA09Y8wc3MQQs+U4v3tUl2qrxrUcKug9VLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMiM/pbb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748519985; c=relaxed/simple;
+	bh=hrQZUfq1HtgJZiMeRsahooZJWcunYC2oMDiMYLc/kdg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AvyxwNrMdaEco2NbO/aSpBI/Vr3QMVzwZPD1yX711z4f2nIlqM385o3IqxZmMtVwAb2W0mNURnlCYVcuKI5+sipJBgqR3P/6hCVX3A5bqAgnBJSTi4CyQL6118c64aSEw0p+iSQ1k6BiXC8n52NlLOZQBd+PR5VUgelkIH8w6TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mk/Wy55X; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMiM/pbb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43660C4CEE7;
-	Thu, 29 May 2025 09:21:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748510472;
-	bh=1BWuf5GwypVzVnJaQNR4TuFejVewmz1nogJhTtrWZrk=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=IMiM/pbb8w6RTnihHCBAdPtkRUfm86DBMVoozK5GXbXtn28Wf5+ip7LSheg3+rOc3
-	 1C1Lhiim2SnXyxOZSIJ6fzzyaAWif4IPK72oxXft6tnpB8UtI04UXvmEflaSn7CFW7
-	 C+8hi8ek6BBXcRNDkD+5lwUFQSZjQDGPFzeZepg/MZVxwzZYJV8og7HY8HuH09fnvt
-	 TA02AsCG04EslZ2VyqfR1hNKdVFtHyPuGvmfaB8bboJ1+Af5xLGp2SLAVYCv3wqGh0
-	 j4KJrBHhy1QUCEYBByobMJf4/l1gM6pgJbC7Z9IT3Cx8rv460auz0dYcePakgwkmis
-	 9wZJFwmFBiF5g==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mk/Wy55X"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2346891c2ecso561545ad.1;
+        Thu, 29 May 2025 04:59:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748519984; x=1749124784; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hrQZUfq1HtgJZiMeRsahooZJWcunYC2oMDiMYLc/kdg=;
+        b=mk/Wy55XKyQXhrRjhz48jWgmxV8rmDFtUaqXshp3JNpz9dRVXI66aWMMPNBJIqh373
+         rVLCGUD59//fKnKBS+CWGcSJxb/7QqhHD6m6SKF1ZzbpZrTW09DXWQlSjG5wxHfWCkWa
+         H/7CCdWJ5NFKqVRD2dYrtWJMDXCrL35ms8wGF6VoPJQ/3eSbvL0Ws2P/4ADiGebSU1gm
+         iX9Yk/1bUb3llL7rxjJJ8m56aNdHMb9sEU4Eq855pjRfYzu+PXuQjuh2SD0s3SaUNMRo
+         TGc/8cn/47yzYaa46yanyDPr035IoOIEWOlxeeQTAWCueGS0WKyuKQE9uP7ipLMnsS9o
+         7fxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748519984; x=1749124784;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hrQZUfq1HtgJZiMeRsahooZJWcunYC2oMDiMYLc/kdg=;
+        b=XuZk7938+KQhhmeS+Wkfsy/Q7hNTm2XYtyoDtTTWPzZIuWb5N1OnnDSojlOSToX19I
+         RZbGe63812Z8Qtp8cN5Vp8NEwTvSsay6DKPwZwmmQlfHQT8HVXIcxbn/l9n3lAj6bfJE
+         2NkhocMpd9i/ce0y6e/yETSnJFtF0uOCuDLaSeU9WUfs2yMmvp0Iud8s7pmgXvY1Bpa+
+         KnT1d8OA1sjWBJdYcZqwO8ZK2RV1QgRgICC8kyMMYxf6Ri3sp2WA60O4I85Js9PJ7jaz
+         xyzxh8kMmL2EcCFGXGpYSAdMA2NNNnbI9mjVH9AVJiCq0WuyPsgtwrbLevzTIrtOvxJj
+         WmkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUk791HyM0yPRLxADwJSiYC6dq0OGVCQco0a/XLWrTvmUSqoDNPtUtvng653MtXrLX4/pfkwtsJfdOZ+5eiPrY=@vger.kernel.org, AJvYcCVMUYobe2ceDXZdpTBNdzFGAh/LfVyZbBAw8nnlKmTLZKUIpgSqCJed0bIUMimvx/9/721la7XwfEZITVs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSKTzE7qzc9TDreDCbaKfqlqrQmvNjTGFa3gg4F4abnLlbuMit
+	GG8CAD6s/oxLmBQZ3d3Ro9TF1UAURdKKf7sReT2g3AvuwWQAhgK7DrliJQH70u0vbrh+sXoIjeg
+	zTsN7NEKUNi+RO3/+NPe36DtmuOXTWGM=
+X-Gm-Gg: ASbGnctI15SMDK3XySWCCBE+58f4q4LA0AVj06Q3M3JQkHJ++X9GeTqgo+HwBJ6cxdK
+	2prKoFZHm+0XNKbfUhU6hKBBXZs5J9rSDNMf22sbSK8h81+koCI5SVrm+ArxvXSX/OE/NWuFYPz
+	y40IjY9C9cnSlNQbzNOyj5cJ2CWD7XMmcXESlhbAJ74Yg=
+X-Google-Smtp-Source: AGHT+IGCpY3RHBMmzkVvjkuYglQ9/3Pqgdr2420gAHJjrlwgGl3gwpO8P5aXEeh9Mbd3otOl/WacGuYMkpx5vz4+x0I=
+X-Received: by 2002:a17:902:d4c2:b0:231:c9bb:6105 with SMTP id
+ d9443c01a7336-234cbb0a8afmr37597715ad.0.1748519983663; Thu, 29 May 2025
+ 04:59:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250409-container-of-mutness-v1-1-64f472b94534@gmail.com>
+In-Reply-To: <20250409-container-of-mutness-v1-1-64f472b94534@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 29 May 2025 13:59:30 +0200
+X-Gm-Features: AX0GCFtBrmFqdI_rFZEqd_BjHJtCQBrZ4WC4qznTc4-Yd0Xqk5FpwhCTMDKBf8M
+Message-ID: <CANiq72=B=AwWFJorzi7m83Y520uLzk+k5Hcu_dLHEuRvO7BY8Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: retain pointer mut-ness in `container_of!`
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 29 May 2025 11:21:07 +0200
-Message-Id: <DA8J8BHPNBAM.IUBJ8TL9L6U8@kernel.org>
-Subject: Re: [RFC RESEND v10 04/14] rust: Introduce interrupt module
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Boqun Feng"
- <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Wedson Almeida Filho" <wedsonaf@gmail.com>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Xiangfei Ding" <dingxiangfei2009@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250527222254.565881-1-lyude@redhat.com>
- <20250527222254.565881-5-lyude@redhat.com>
-In-Reply-To: <20250527222254.565881-5-lyude@redhat.com>
 
-On Wed May 28, 2025 at 12:21 AM CEST, Lyude Paul wrote:
-> This introduces a module for dealing with interrupt-disabled contexts,
-> including the ability to enable and disable interrupts along with the
-> ability to annotate functions as expecting that IRQs are already
-> disabled on the local CPU.
+On Wed, Apr 9, 2025 at 4:43=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
 >
-> [Boqun: This is based on Lyude's work on interrupt disable abstraction,
-> I port to the new local_interrupt_disable() mechanism to make it work
-> as a guard type. I cannot even take the credit of this design, since
-> Lyude also brought up the same idea in zulip. Anyway, this is only for
-> POC purpose, and of course all bugs are mine]
+> Avoid casting the input pointer to `*const _`, allowing the output
+> pointer to be `*mut` if the input is `*mut`. This allows a number of
+> `*const` to `*mut` conversions to be removed at the cost of slightly
+> worse ergonomics when the macro is used with a reference rather than a
+> pointer; the only example of this was in the macro's own doctest.
 >
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Co-Developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Two nits below, with those fixed:
+Applied to rust-next -- thanks everyone!
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-
-> diff --git a/rust/kernel/interrupt.rs b/rust/kernel/interrupt.rs
-> new file mode 100644
-> index 0000000000000..e66aa85f79940
-> --- /dev/null
-> +++ b/rust/kernel/interrupt.rs
-> @@ -0,0 +1,83 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Interrupt controls
-> +//!
-> +//! This module allows Rust code to annotate areas of code where local p=
-rocessor interrupts should
-> +//! be disabled, along with actually disabling local processor interrupt=
-s.
-> +//!
-> +//! # =E2=9A=A0=EF=B8=8F Warning! =E2=9A=A0=EF=B8=8F
-> +//!
-> +//! The usage of this module can be more complicated than meets the eye,=
- especially surrounding
-> +//! [preemptible kernels]. It's recommended to take care when using the =
-functions and types defined
-> +//! here and familiarize yourself with the various documentation we have=
- before using them, along
-> +//! with the various documents we link to here.
-> +//!
-> +//! # Reading material
-> +//!
-> +//! - [Software interrupts and realtime (LWN)](https://lwn.net/Articles/=
-520076)
-> +//!
-> +//! [preemptible kernels]: https://www.kernel.org/doc/html/latest/lockin=
-g/preempt-locking.html
-> +
-> +use bindings;
-
-This shouldn't be necessary, right?
-
-> +impl LocalInterruptDisabled {
-> +    const ASSUME_DISABLED: &'static LocalInterruptDisabled =3D &LocalInt=
-erruptDisabled(NotThreadSafe);
-
-I'd move this into the function body.
-
----
 Cheers,
-Benno
-
-> +
-> +    /// Assume that local processor interrupts are disabled on preemptib=
-le kernels.
-> +    ///
-> +    /// This can be used for annotating code that is known to be run in =
-contexts where local
-> +    /// processor interrupts are disabled on preemptible kernels. It mak=
-es no changes to the local
-> +    /// interrupt state on its own.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// For the whole life `'a`, local interrupts must be disabled on pr=
-eemptible kernels. This
-> +    /// could be a context like for example, an interrupt handler.
-> +    pub unsafe fn assume_disabled<'a>() -> &'a LocalInterruptDisabled {
-> +        Self::ASSUME_DISABLED
-> +    }
-> +}
+Miguel
