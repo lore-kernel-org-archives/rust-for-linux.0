@@ -1,109 +1,128 @@
-Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6284421A92F;
-	Thu, 29 May 2025 14:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.15.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865C022B598
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 May 2025 14:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748528630; cv=none; b=hNv1X7ALK7ERqqKJl9mBySHbK6CBuFfqNxFAnw1J0ac2duRcwmv4C8ZvMxtPqzCIkVmdJNH1sJO8meO6NIbixRmkRFbzi2QWg6TnTm3Pas9FYWAFIQlIAo7g475G/gZaJVHBSgI+SOromKWnttm2vu9rFitzlmmoh/fcfgXB2c4=
+	t=1748529398; cv=none; b=p31/kvGO7P+RHVvvUd2pFtJR6Zb1l6p1obzz+j4epOjUK3JU2JwDtln8d6hOLtoOhL6w00AX6Njm83ZYuzwl7XynNiNXxCc92Lp/CzN8s4PqDmVifHxAM6OH3PLyJIGXVkOBUQJwLiSbHFrDKK560PAMfop8vV7KNG3uNMniTAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748528630; c=relaxed/simple;
-	bh=vMTVSByqMNrfkYziJ5GzUMRwRxKpnrG5sJUwP0QUUkU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QRDzTGXGpEg1mv2t82I60tf3rHZfAmPFhWrXsXg+phVNdF1JLrvYnQRMqgrQy8pPKNWGIEURwD9pTfyQnnosPPe2BPjf46JMQktJF6x59IelSKYAAvmdQNdNLmLXoOmATax5F0XFfRtelQs97JYhVJ8pQB/ThGvfy4ny00duXPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz; spf=pass smtp.mailfrom=tesarici.cz; dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b=kTjlgtz6; arc=none smtp.client-ip=37.205.15.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tesarici.cz
+	s=arc-20240116; t=1748529398; c=relaxed/simple;
+	bh=E1Hvr0aiKuXuUgEPMWVB//h7yGnjN0omlQtZf62bVm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pIrI/nR/A/e1YQ/71wyRSJhOPnhzCrc7sRXeFAkqBg9XnSyevhF/eJCK2Txjm/wCgK8FIae0OJD/Xx8pNte8dBvLcBVvGmYZLJlVoBg0eWzDzth8seUP8lpX1zjjmscssf9yvTt4Q3//NQbqyIDiIy+EE3q/3U7mXhRsxKti3QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=YSFvfWxc; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b="kTjlgtz6"
-Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by bee.tesarici.cz (Postfix) with ESMTPSA id 62F9E237D72;
-	Thu, 29 May 2025 16:14:25 +0200 (CEST)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
-	t=1748528065; bh=/heSIOkrc6S13I1DyoRw7pZSmG/U2TSfn78nKHqvfyM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kTjlgtz6DudrpDALWockeOMzedddM4W/o4YX+J5W3D/7w04LQvmnkx0TrV55g08wV
-	 QvDm1cmzIVF/CFB3cVjDWh9XJt6aNOL/cQxOVJFVzu36galgD6vBJH6M4WPO0S49uO
-	 I1+wl6vd378SUruFCMNelQOZ4yVTD3s4Qgg2dUyjeqQI6V1sPQyz4wWENgcP18yTta
-	 9qDND63VO/Zrqf6oCycGqYBM/7ahEL2Rqlgkfioyim2Zgzk0jIME5sd+t0g37nI8cv
-	 wMHInV63c13NKV/fT2AMCHzPWly9e1TC66WF+INFW9HXtWC3kMoCEmTPJp1KFojLix
-	 tehkz5n0oTQfQ==
-Date: Thu, 29 May 2025 16:14:24 +0200
-From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To: Jason Gunthorpe <jgg@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="YSFvfWxc"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7d09b0a5050so46201585a.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 29 May 2025 07:36:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1748529395; x=1749134195; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=E1Hvr0aiKuXuUgEPMWVB//h7yGnjN0omlQtZf62bVm8=;
+        b=YSFvfWxcXgB60DNgiqJCfcGN3JpQf1octpJW8j+a1DbaMMMy+ductnLS7S4nD0MH1Y
+         aWez51DZJRKNJnLCJFu0wQhPc5f5f16Tb+G91XtoiTAmyZebUsC5FlXKM/3uEJvMqbXx
+         s4wx4hHxuS2for/oa+qyiNpUy8YtQ7rbAxxpbgmEgnkfuS6Ow9eYFIrVy4xgiNLjKnzf
+         0pXCQ7j/z8ckEb3bPZKy/RdZz5HWJ7ItKaIVrPduSW6xhtk/xk/0Zp4LkvK91MnVEMju
+         yb/9xAvXi30eXa7D3w2Cv/Yog4C2QQPNZdk0r3f+oInLa4YLw9lbvn96QGwZ5bRw4RMw
+         lC3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748529395; x=1749134195;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=E1Hvr0aiKuXuUgEPMWVB//h7yGnjN0omlQtZf62bVm8=;
+        b=fle7MfGPzVjFZuJDnllmGTROtgioEJUqBBDwLQ3pIW15US5Ipzt1oAcwNUwVc97S/n
+         Y+ZQ1zn7vkZ1N2skn7GhyXMNb9RQqqwwPSiYStKJ3k2FDyaDd5BAiJ0ih+mogCxICm8u
+         LOOusqT/pNOONVSA0rWg0t9V3mLLfJb75H9ltM/Y+UOdn8fNvW29UakdXQ3YaJ9hKHv9
+         AgnJSqHYBZp8mZnCoDLOUEhXU0SxTV06Bm3c2JJ3aYm+siZzyNwejzq6AeASn5GIrMGP
+         icUE7FYwsbggwNTuk3iMZmaOMv5syOXjdvdGHuaZLnZ+j33iR579hb1Br08FyA2Jsc3n
+         s3OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUtdZJ4Ybdm5DxqTgcWSGFQolfDHtuSxctQfOjewU/sUHc6fpqiLarkYjNOj5Dk2OGL0gTswQxpNe7EesGeSQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0jgJT/nVxi33eB5Egbw2m/8DCDGNyTbBOB75BxjAFPaUi1Mzz
+	TqH4w47URqEngxn1r2ElxsPRTbT62oFVw5GhfNvKSknDVAw5jJ5uuxFT6OeQiX24O6s=
+X-Gm-Gg: ASbGncvd+faL+vB+H284ELtlFk7AOncVZ3vvHaW21IKP7tK02VHzudf1oyV6CJOGOuO
+	9hYpC+HKGTMNgy0n5dTkCyvRDabyA2GlvZys7M6maqPnVpy7m512XA8novH5y+6Zm1iuur/iREm
+	PTr0cgB9EIj4alDZbV5c9N9J5oZv0sD9Dy+jW/Ew6Nu7aB2U9TMYa2oK6gnotXkEJfbVPHLhykj
+	az3KqZtPz0g/SNC5zWQo9/bZNul9vy0IHslEj/vXy8jhW0YLJwn2udXQo5sVcFUFXSj2ngFCzFC
+	5AT7K7gvgjCch04SJkDYEk1gZbiLr/llX+dA/GJ5uAoOFIzkzfeaAPTmM8OXmdI/rMnTvnh4ggC
+	syC43Dd2gBeE/UXCW9ZYzF2clmnR7sCva5ab57A==
+X-Google-Smtp-Source: AGHT+IGpcYVT5cYIdznQQc6oKOroKWgcBUMZpSmhMxRN4GrkZsGglFNBG5TKOZ7dmu0d8fNzvRGa1A==
+X-Received: by 2002:a05:620a:3199:b0:7cd:92:9f48 with SMTP id af79cd13be357-7ceecbf94f5mr3319030085a.52.1748529395150;
+        Thu, 29 May 2025 07:36:35 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d09a10e3d0sm99198085a.50.2025.05.29.07.36.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 May 2025 07:36:34 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uKeN0-00000000wqC-0IaM;
+	Thu, 29 May 2025 11:36:34 -0300
+Date: Thu, 29 May 2025 11:36:34 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
 Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, acourbot@nvidia.com,
- dakr@kernel.org, lyude@redhat.com, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, open
- list <linux-kernel@vger.kernel.org>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>,
- airlied@redhat.com, rust-for-linux@vger.kernel.org, "open list:DMA MAPPING
- HELPERS" <iommu@lists.linux.dev>, Andrew Morton
- <akpm@linux-foundation.org>, Herbert Xu <herbert@gondor.apana.org.au>, Sui
- Jingfeng <sui.jingfeng@linux.dev>, Randy Dunlap <rdunlap@infradead.org>,
- Michael Kelley <mhklinux@outlook.com>
+	dakr@kernel.org, lyude@redhat.com, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Michael Kelley <mhklinux@outlook.com>
 Subject: Re: [PATCH 1/2] rust: add initial scatterlist bindings
-Message-ID: <20250529161424.5cd95308@meshulam.tesarici.cz>
-In-Reply-To: <20250529004550.GB192517@ziepe.ca>
+Message-ID: <20250529143634.GD192517@ziepe.ca>
 References: <20250528221525.1705117-1-abdiel.janulgue@gmail.com>
-	<20250528221525.1705117-2-abdiel.janulgue@gmail.com>
-	<20250529004550.GB192517@ziepe.ca>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-suse-linux-gnu)
+ <20250528221525.1705117-2-abdiel.janulgue@gmail.com>
+ <20250529004550.GB192517@ziepe.ca>
+ <20250529161424.5cd95308@meshulam.tesarici.cz>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250529161424.5cd95308@meshulam.tesarici.cz>
 
-On Wed, 28 May 2025 21:45:50 -0300
-Jason Gunthorpe <jgg@ziepe.ca> wrote:
+On Thu, May 29, 2025 at 04:14:24PM +0200, Petr Tesařík wrote:
+> Thank you, Jason. You already made this suggestion for the RFC version,
+> and it begs the question if perhaps the underlying C API should also be
+> deprecated and eventually removed from the kernel.
 
-> On Thu, May 29, 2025 at 01:14:05AM +0300, Abdiel Janulgue wrote:
-> > +impl SGEntry<Unmapped> {
-> > +    /// Set this entry to point at a given page.
-> > +    pub fn set_page(&mut self, page: &Page, length: u32, offset: u32) {
-> > +        let c: *mut bindings::scatterlist = self.0.get();
-> > +        // SAFETY: according to the `SGEntry` invariant, the scatterlist pointer is valid.
-> > +        // `Page` invariant also ensures the pointer is valid.
-> > +        unsafe { bindings::sg_set_page(c, page.as_ptr(), length, offset) };
-> > +    }
-> > +}  
-> 
-> Wrong safety statement. sg_set_page captures the page.as_ptr() inside
-> the C datastructure so the caller must ensure it holds a reference on
-> the page while it is contained within the scatterlist.
-> 
-> Which this API doesn't force to happen.
-> 
-> Most likely for this to work for rust you have to take a page
-> reference here and ensure the page reference is put back during sg
-> destruction. A typical normal pattern would 'move' the reference from
-> the caller into the scatterlist.
-> 
-> I also think set_page should not be exposed to rust at all, it should
-> probably only build scatterlists using the append APIs inside scatter
-> tables where the entire model is much cleaner.
-> 
-> Because this is also wrong in the sense that it destroys whatever
-> sg_page was already there, which may have been holding a page refcount
-> and thus it would leak it.
+It is not "broken", it is just complicated to use right and doesn't
+fit the sematics rust would expect.
 
-Thank you, Jason. You already made this suggestion for the RFC version,
-and it begs the question if perhaps the underlying C API should also be
-deprecated and eventually removed from the kernel.
+Yes, it would be nice if more places used sgtable and append instead
+but there are so many places and many weird special cases.
 
-A quick grep shows about 200 call sites, which may take some time to
-remove, but if the API is apparently broken without people knowing, we
-should start doing something about it.
+scatterlist is so widely used and in so many bonkers ways it is felt
+to be unchangable.
 
-Petr T
+My advice is that rust should not just have a thin wrapper around
+scatterlist but actually provide a sane correct higher level API and
+wall off more of the difficult choices (like set_page)
+
+Arguably Rust shouldn't have scatterlist at all, but only sgtable
+which is the higher level and easier to use interface.
+
+We also just merged a non-scatterlist DMA mapping API, maybe rust
+shouldn't have scatterlist at all. IDK.
+
+Jason
