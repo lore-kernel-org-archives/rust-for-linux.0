@@ -1,94 +1,96 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931E3647;
-	Thu, 29 May 2025 13:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D66B1DC997;
+	Thu, 29 May 2025 13:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748524917; cv=none; b=hCGrAVQaZDhPcXwBnmqq4tVCDfqG1YvgElUC0exJr7Nzc8IKZK/NWioNeFgU43azKy/zjV5txTS49vEJ8fscF7lsJiUiNQauQv6SIcjYd85D7VWRxn9ZRNgiNjEhTy7aCZJH+CsJrb81mzYaxDo2xjNIF8NdByrIE6f6lV8TLuU=
+	t=1748525108; cv=none; b=rnmPekVLUx7y/9e+rIA4VK84xJqsSCRDQPKH2s+c7TYGpAZHj5++LBE+9mJ23i1Roly+8GQxfKUr+EFvq68AGFBxEFe0ywydqYcSHlWK+3WbUJZ0fxHRRO3tKhd/ZI3Af6xSXXAqLZ+0OOMk3gujHMnIXXP6hHHbZKT6p96332I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748524917; c=relaxed/simple;
-	bh=SN6Mu4JxvkIGTbp2VoyF8l025poz7YYnqBe3byiyb+Q=;
+	s=arc-20240116; t=1748525108; c=relaxed/simple;
+	bh=SNBC/CW4BqGwUJUus9i0AbgvfWAY+4prT9ZBY6kNPMQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CaCYG+09J4SvWK+UVkDAtDbb3c8o5/YECdVKamyp9jO9MepRt4B51tVZGgv7ZKnGuvHI2DXs3aqtalfLW7+188gS3ilXy1RYzOFznhDXxowMl/pHVemyxAUj8hX9zw/4GL+iVrVSEsyQLmHAQwm2GG2DmoLp6eNeOksQSRT77b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SRqL0uu5; arc=none smtp.client-ip=209.85.214.178
+	 To:Cc:Content-Type; b=nsIimc4UzX3Wgl571sWMV+xC7JzeaKoqYVld4MG80Z3AxZZlQRYKIgnk/u7br2ekP+u0nr81P6x4A1v0xW9UmphmUbYOLBiWfFB0+yMcryaf/cUNxN8oyBwE5tPT85zzM1GppUzq1YiK4ZQCNlg+bQWNrwBGpHqubsf1cRw9gDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WAGODEn4; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SRqL0uu5"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2322d8316f6so1064625ad.3;
-        Thu, 29 May 2025 06:21:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WAGODEn4"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-31232d5b1deso26705a91.3;
+        Thu, 29 May 2025 06:25:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748524916; x=1749129716; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748525107; x=1749129907; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SN6Mu4JxvkIGTbp2VoyF8l025poz7YYnqBe3byiyb+Q=;
-        b=SRqL0uu5UAiK7emC6cU3gG1kTyFmeDOAkog3G7bqgiWZf3nymoSkgD7fD8nRNZTkAv
-         KPzkKSzvzfk9rRZdcPoiNxjvFRIhgSMlmDj7+Nf91xDbXqPY1ywZMi8utd66xU16Ozah
-         mT142MNJG22R8on6sKbWBk5doSWXfy/mCOFdz8OFGuY+lloLXLxGuqLhtzUTj1hPCi/b
-         3dDQCmtDu2vDw5wqOWgVMjgdpLkBigmM42FDRCDoN+hZ9oW6YAjrlZNpMbJaq73phttb
-         VjdG3Nqs9sU17OMOhT2SYrH7TKbGvKtcBylBS8dAKMeqgxShhbIMKm9z+NloLwHuNDeT
-         GNvg==
+        bh=SNBC/CW4BqGwUJUus9i0AbgvfWAY+4prT9ZBY6kNPMQ=;
+        b=WAGODEn4m9qryT2P/9cdGD5VBE+Mx+8sT67NDqRsTLGxIu6GZSIK62fC/sg6T4F+9w
+         uXb3BuKGkWHIS3LqOvBEvF+Hi5/H54MZ0qjdNsdOqLRSKN1XF9QHXK8iMaBX2OSOZ3uS
+         lS4Zka3e3GKMaQqi5XfsSRDr71p4BaQlpgxXtD0t/Ib7M3lHfzmdVG+YukeQ9BMm3cO8
+         RgtDHvlCmWewyFmNaBuQ4tmLalnysPhze9jTcmHJGdkxIKCXBFeqB8wxgVtzegQ64d6T
+         88/tLH6XIKQNO6nx4UG8bWBCn0C26Vjp3/Ge9LV9CHpQ734HXju0LhpnZmPn3ygGKWOv
+         bKVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748524916; x=1749129716;
+        d=1e100.net; s=20230601; t=1748525107; x=1749129907;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SN6Mu4JxvkIGTbp2VoyF8l025poz7YYnqBe3byiyb+Q=;
-        b=HlPcarBHtDOouMWnTud4raUml0o2y05DIrTH2bgEqPeQzAg7L7mW4fSbFfBCYunv6F
-         LXYFt56KEzOx6t4p3+l+cp5ax60Q71F0rIYFKZnpIK7riQj3+F3fHFB2KqK7pQFLzAg8
-         GjVmVFpzvLMyY/6FxLkHDm8a2q4810qvtq3IYGAGcZgErLQtsKGHQTdE6Y6zY2vNPbo5
-         LyzuM+ovFxznddiyv3uog32xl5v0MFSaD+QjyqpUJ7dcQI/W05p7wSP14NvvdOf71dlS
-         vW7lSOmE9BpVgLLA+oUfwSnGdndzBkqG7o0b/M2CN1PClBmcDD3yALrAB9dBviNqy9cV
-         mbeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU8mjN0P4R1HOw9J/MzA1O/ecbeNcpKguYzN4pj0n9saP6/46jBaIYqUjus9arhJT0/EKcY+NlElLNiWn+Vj7Wv@vger.kernel.org, AJvYcCUawHqA8nBZ/g0lw90QYbTGNAc7Q5b5XDzzp+d9ovgpmjhZO7IPmJ9Rs0TjDanj7+aqMeUuVtp/ZNFB/sc=@vger.kernel.org, AJvYcCX37SLC84ahPhqiP6jgPqqHzDUFoTU7vH+USxBmmWoZcMYMolCReb/5qkwnF9AXP47zJWRQwCwChjMFqpVT8gg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4oM3xycSzTmma30bGyXgic90dsG2bFJb3pzcYYNSPVwxwAU5T
-	8GXz8t/boDBgrbDFzA9B/SRHMXgdhE3KDVAgQSn/WRZOKufl8S8NkKwEqY+m+ClORNUCL4oiI5z
-	LSMZklEFWpX3MroLesj2f0DOkUW0deFc=
-X-Gm-Gg: ASbGncvmLsY5/IJOVyGCyh2ga3Y2PqtyzlNeFb/Iby01saqmgbkRj7vxRZUfz9e+2L8
-	JYeI2TGbU01qAsXn7p8xxf+htBh82FzgKN8iYFPN5z7FWfmPbkvlxGwXWd3lH/kZUYV37jfO3zr
-	dpQ46FaUdnpBtvh94JQu5E/fitIaI+7pchFB7Ke82yMWc=
-X-Google-Smtp-Source: AGHT+IEw3IfjRiVmB9B6f5XuML+7UkncMFZmzabzcloIvrow/Wn2iV4+leCCTt22pE+x9RCQAjX6Ih6PN46tqK1oGuI=
-X-Received: by 2002:a17:902:c407:b0:235:737:7a8 with SMTP id
- d9443c01a7336-23507370992mr13730985ad.3.1748524915877; Thu, 29 May 2025
- 06:21:55 -0700 (PDT)
+        bh=SNBC/CW4BqGwUJUus9i0AbgvfWAY+4prT9ZBY6kNPMQ=;
+        b=biTVkA+9w0aJB7cogmqjp+k0kQmfE6XEKb8aeUG57pnd9PP5tCULusZVLOcrrRV8fp
+         MvO0PBA4cf3aupFhFWC4dVn6lMQdYNNpk9rX4xX59/M0m5Myp4SbRoKDj3IG2VXQRBFq
+         8tZLP4e5UIrwxgMfc/fEYvuoQpw5MIrteFYBX1AZ8ZCnTyy4XUHJfRF1ASR1HUw1nx6q
+         FFOf2rrUGDb5JUYY04le39+dVcche1jbYpAuj+2yQTa+gchV+M04rkhDX8ubOeU4P0rm
+         UMU5lVua4HCOEdc91SiW9nSufL6T0gMk4Kb6YV6m5OWfD9tszR1uv99Kdo2DPbojRRGE
+         NYcg==
+X-Forwarded-Encrypted: i=1; AJvYcCXOEQfHHHXTYB/UROvPY5DNSoak1qAz7bYvowSHC+ncffvi+5oX7Dv3w8sZYMbuoguRKPsEs3ki1JEMC+YRKKY=@vger.kernel.org, AJvYcCXUi0UUM11b0fawqluyEEUK0E1CXRyl8dbpigL3/GYsee1i2SYr7QEKqgjqFu5dUZTGSW2gxvKoQpwLsug=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8Zw4y/vnRk+yVIAEks4/jFgR5rlIsc+AuZOCR6tMagtK2meYs
+	h3Iwf/KwJMI3uOe0qbP2otdmvWK7Jma0100T3lBmZgEUzwlMJUkiwbMWvhgwGhLtcPund3r9T0H
+	SnC4P+BVUaHtPgcAASv97dcyLiUCBdHE=
+X-Gm-Gg: ASbGnctZm0waDprIssVcLQg5yU234wCRevucg19x+ZaBNlitPDhj+AiVkOyjiTJNTtn
+	WEqMaegZhNdj/fPM6o7MWOScQrE1ek/fwNJiFX6za7H5Xea+WGdK+5ZkoiIkOKy0N0jLHUmPsQk
+	4V6ubZWsvtn+kiGB19hjFVEeTWrF8XWMCW
+X-Google-Smtp-Source: AGHT+IFUGeQX+wqDeFHIerYJF6j/noSc3Hz+tFljHNob4fC+SSfoannFSCVYB5WFfpAYw5HdpNcbfQdLk2aM98wRGLE=
+X-Received: by 2002:a17:90a:e7cd:b0:311:c5d9:2c8b with SMTP id
+ 98e67ed59e1d1-311c5d93147mr5290976a91.5.1748525106633; Thu, 29 May 2025
+ 06:25:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250529-idiomatic-match-slice-v2-0-4925ca2f1550@gmail.com> <20250529-idiomatic-match-slice-v2-2-4925ca2f1550@gmail.com>
-In-Reply-To: <20250529-idiomatic-match-slice-v2-2-4925ca2f1550@gmail.com>
+References: <20250529-b4-container-of-type-check-v4-1-bf3a7ad73cec@gmail.com>
+In-Reply-To: <20250529-b4-container-of-type-check-v4-1-bf3a7ad73cec@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 29 May 2025 15:21:43 +0200
-X-Gm-Features: AX0GCFuco26rV0hLqSzHou5ShkVizO8CV01DHgm65dtjBe0oghAxdH5dFDdhRcA
-Message-ID: <CANiq72nigDV2R_9PNOv98nGBxDZ=46WcRM7V05nQWni5VQRw6w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: emit path candidates in panic message
+Date: Thu, 29 May 2025 15:24:52 +0200
+X-Gm-Features: AX0GCFtlCPwO-6oVfk4_3NAdN4BXBfT--uFREchAbAOR3pNMYgJR7LRJIKFes4Q
+Message-ID: <CANiq72mKAt0W_L2L8DX_xpTqxX9CVR_ZJA62C0VM40zF2qwCAg@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: check type of `$ptr` in `container_of!`
 To: Tamir Duberstein <tamird@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 29, 2025 at 3:15=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+On Thu, May 29, 2025 at 3:11=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
  wrote:
 >
-> Include all information in the panic message rather than emit fragments
-> to stderr.
+> Add a compile-time check that `*$ptr` is of the type of `$type->$($f)*`.
+> Rename those placeholders for clarity.
 
-Could we explain the "why" as well in the message? (i.e. not just the "what=
-")
+I had a variation of v1 already applied locally, let me push and you
+can take a look.
 
-Thanks!
+> +/// Helper for `container_of!`.
+> +#[doc(hidden)]
+> +pub fn assert_same_type<T>(_: T, _: T) {}
+
+I meant to have a proper function, possibly "public" (not hidden I
+mean). We can do that later, no worries.
 
 Cheers,
 Miguel
