@@ -1,129 +1,170 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61931C84A5
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 May 2025 20:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B87F1DEFE8;
+	Thu, 29 May 2025 21:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748550125; cv=none; b=qE32nzOVVj9pvWJebeQvj6OKllEh8EWUqnlEzGPrUSNh3zma8AGIOpHHrshhmuspoqxVDmdnrt0NFjMN0CousosBaFTqFdca7pqLDCRd4xkm/XHDIUZeUemqeH7BdzEaGcERvhUljiXDULHTZ/nj2EyLXGdN3Hp0NY8KSS4yBGk=
+	t=1748553604; cv=none; b=EOYy/bwLUWKXHA9VfJddElwCJhGKI4wU1YGN4zQv1ndL93NDHtvOjOJmWKsDOPDZVZn4nhe1cLTASQl+Ib8DpVe6YRmgJNSM8lRNcIhNTkzWjqck5z+j2pmiSfFwCGKYyxMeuKZIa4Km3V/eYQUTYmaordlw5rGHi8eiYiFdJlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748550125; c=relaxed/simple;
-	bh=88KBlBNDTnic+JsYCxqjG3y9pP7yu3lwxaT4n7CRKtg=;
+	s=arc-20240116; t=1748553604; c=relaxed/simple;
+	bh=0++LZUZpJ3GvBids+E5UU/owBZZ4gJOS4xWxQrexAuQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sqPAx+6r0aRDrUTNgFf4Gv1D78uqKg+1/jloctXGxA9++Zd5jwSk2xRQUc28k4cS5W9i8wW0ilLY7VMGyTa4K3z4eBkRH0lWRBnQW2aXQEdC2guRNybrQfxhoaOujNKc4azlo/19CAfm/rsQugGSZh4ZLdSuTdhV/HKhKW0jAyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XvFFCQiS; arc=none smtp.client-ip=209.85.216.52
+	 To:Cc:Content-Type; b=lmkz/je6klQjSXTmUxTq6gSoH8E6f1qU4QTbvYxct/5lN8Og5wGZT63zJIfNNKifqwtzWqi6SxiO2bbwltU1otOvjyOG97CBEbTPKD2kcw4zTZO5da9rmOrpMNXHyy0Iu1kRPBI7ClTV+jDN334Um/bPsq9/2Vsc7vTOmb5+SSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gCJizGB5; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XvFFCQiS"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-30e5438316bso162131a91.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 29 May 2025 13:22:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gCJizGB5"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3087a70557bso186891a91.2;
+        Thu, 29 May 2025 14:20:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748550123; x=1749154923; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748553602; x=1749158402; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XgmAyy4ntJwzfRdXgrKqd9MI0ZMc9i9sz9xCG6PRwlI=;
-        b=XvFFCQiSgoNHqUM1FKSl8GdSFr1QaaN22LYybGydvE7ktqQ9+gtrnAndcDKxl85x0i
-         A02+zPXfGMS4fA0ALpz9DJ30Tl2JvRnKHPUhxV4jDfOnSHWfqw8a59qkwg6TPjPPe140
-         RHiFk8Cc5IC5cHrjdW8LszcSUArbZU8gO9C6TQw4SQFC8D1UG0lwIp6nsUu1x3KCb6xk
-         kBwCZm9BhcN4LBVtjmZ5/ke2wtxXFdW3/sCfgOI4RMU6otgZVoFt9ZbI60g5RK2Owku6
-         M32V7XU3JGnHMLPsb3TYzt6LDoyLSVUAnmi759ZOnBa5vmKrtrlChegH+5rb/qaAcGcL
-         K+uw==
+        bh=LULgnj8mgpeuIbU+1+RH9F8LPHyJxHaqsByN5Cl7VAY=;
+        b=gCJizGB55tzfwqwoQk/y+MLoBMS+Td68gmiQ1E6HY8LZrX+d0uIiaxFoEjZ7+RKcDX
+         2jaVIXAlscFfMfTpMhcZ8z/p0Ph4H9X4vPmkGhPxfpXpsulLSRsdrUD4c9HrVdGfX+ev
+         Sh3mys6GEJRCTml211U7iNyUgq5Ll2mVo5J1w8vqu3SPlfzaMH6gI2g8pVnbQcrNUTV1
+         5aFTQ6DfIImVM3j/CGqxzmPYoCO5Y+27ieiIkCC7LAqzT+p5c8XYtKJAZrCL/DwnK+a1
+         xAwZpQvvpimt/OOEtJqUBz/DQbvuj11iDXdm6MyXL7m1adDVpKK/ozuucmxWpvvCp3KQ
+         Xf7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748550123; x=1749154923;
+        d=1e100.net; s=20230601; t=1748553602; x=1749158402;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XgmAyy4ntJwzfRdXgrKqd9MI0ZMc9i9sz9xCG6PRwlI=;
-        b=VQfsYMy6wtT1o60L+0f0HM6UckmUjIwwojV7XRQvWiWDKkaB28QuTYDrgL7PBSR0ps
-         A8NowEeNWLna90WS9OtdRy3j8CgqhqYzmuJ+HxfEf/SsDFuFLjo5yT+ysjr3wQIimDeu
-         z747Z21V0Us1P/ZkLiQDEWpdU5vEnweXhNa+se4dQSTU1f+9CRjmRFGkPKJer4LLxPXQ
-         GDY86Pk46x6qWPcJehXhIkBC0pZj6fXa9E5LYrezPiwYkyJ29Xp/HIX290Oh7FLZrXQt
-         TKsl+5wS75O90dwv+CqoaX0b6f6ulwOkIF7TR2LRQmUHROV0jtSAdeR4qctbG7H+bZaR
-         vGvg==
-X-Forwarded-Encrypted: i=1; AJvYcCXK4H9ZXN93Jsgm3fyNtqxZQbwSDeFlDBmMKrSnuuARCi4XtH7mZgRhH1ANtgI7rrIVLWmUYDKV7SBl3u/ajg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvdD1yDDHz1uUhwWalF3Ss0PSqxaz5b3sTzgjtofuASl+H5PwB
-	f42AqKvXSp/dFe+vp6eKLVkNGB20WPO/5MpqJ+uydz50OwJwJktEkGBCSC+cro0+XY53wTZHAho
-	1AO0Rx7yEVg7cD6xQmEGSakpWVS7tHX8=
-X-Gm-Gg: ASbGncteQf/o84s8+JSCEjiR4Nw2P6ZmHEeC4SaRqnBrZC8GkTXZ3ii2XjhKD+rV6cG
-	eVXAde9kwmGCm1JuPb7kHtyi1oI2BTidLPetUkO8G3GLF8K6B1ZGlHeKpIOCxVFsTmxgepjPNTz
-	cmRjDoNHGtLNnoBpearDNLxUix3nSb4Rf0KH5zlj85eZ0=
-X-Google-Smtp-Source: AGHT+IHpgIjSOgh1Qj7Mmjjg2S1kioHxStupHqnUwyjD3MXc3zLSFqa6SsC8dMBeVyKemBJFmT1tnkbwHcmhlEMBUz0=
-X-Received: by 2002:a17:90b:4cce:b0:312:25dd:1c8a with SMTP id
- 98e67ed59e1d1-312413ef121mr451752a91.2.1748550122851; Thu, 29 May 2025
- 13:22:02 -0700 (PDT)
+        bh=LULgnj8mgpeuIbU+1+RH9F8LPHyJxHaqsByN5Cl7VAY=;
+        b=h7Rom9DtfsurdbrgeHoVL0RFibfwANJmry6urmLj5ZkmG6PZJjCqeG0NDUUMNcyuGe
+         kvAxdYoQ2bwVOONWF9CtqoC87vArL/sAPGDmHfXqcMwqRgm6FA+ffbN8cNtPIREvHWY7
+         lcXRilZtkjV50OxbdEWa5OoGeXqnsKXb6pJmU+4sSXXeqptG+HI9rvB3MKfrjVULoBZB
+         2/NyxDGdwIR49Sm3tiVYYOucOw7n9IXbGkV7Jm5xtIfgbpLq9nZqQRmHBfWiW3uA4vls
+         CgC+/IfLHn7UH32Q1Y33EcpKSdBkyBdeBUC2JcUYn4gm2JBkuDZdWZqNM30BrSegsRwb
+         lGWA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3leiP1soVqbvxm+qvMGErfHQHdiCLuGe7+mGoOyDwKPEZZZkDP6ODEsWX1SJ74oolqpvZdOfd6tENGXsoBOI=@vger.kernel.org, AJvYcCX3DyyjpK5VBqIIiAOv4Yk9UymwqppFo/JB1ZXhmRNgCAcfAu67B7u984TcJqxX+fW6aNYc9uYh7vxzcns=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0eZ5Vj5SZoL6F3KNxItaZK4FEHgH75i5MIdubJPyk9+P6io9x
+	LcgVBO6kN4i8tzgE5fE6v5SCabYw8pFJztJYE5/64FOnMj4uuOpeQv5Be9wqvx7r32ICfcflqcH
+	NSFSpbq5aGp7JwVAKCfT1/DNkRDchI10=
+X-Gm-Gg: ASbGncv6HDhuDqQIBW4mDAZRTOj2EVJT3RulYddI6nXSpD0tZv287G/KrvvDkWW5/un
+	0DEe7b4tg53h1W09ds19xYjSE9QNCaXR5hyNxwqKKeOawpgRRT9154xzO8V64m/tBgduBicNlpl
+	flMzL68AoGV+yCN+kFYE97dqOLa297oOwL+OrE1ha/NRf7jXTn+bPGtQ==
+X-Google-Smtp-Source: AGHT+IES40CgwS/YOf1l/IjgZf9QAjUIUwge87svyQafynEBoF9nUJVQIWezfhgcz4uExX9A7iXpfvv4mP9es0kcvxI=
+X-Received: by 2002:a17:90b:1f81:b0:311:e8cc:4250 with SMTP id
+ 98e67ed59e1d1-3124daf3e85mr26367a91.3.1748553602532; Thu, 29 May 2025
+ 14:20:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250529184547.1447995-1-ttabi@nvidia.com>
-In-Reply-To: <20250529184547.1447995-1-ttabi@nvidia.com>
+References: <20250529-b4-container-of-type-check-v4-1-bf3a7ad73cec@gmail.com>
+In-Reply-To: <20250529-b4-container-of-type-check-v4-1-bf3a7ad73cec@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 29 May 2025 22:21:50 +0200
-X-Gm-Features: AX0GCFtrtR__gnB8ABZqtsxkj73OV7XVqHWs-DhQu0CepWcp7Jl-bohiS5Ohq0I
-Message-ID: <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
-Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 29 May 2025 23:19:49 +0200
+X-Gm-Features: AX0GCFu8AdUNF2fm6Omgj-O7DrSdoGzRyUjuJjYBjmiFifBnmxvk1MXSWCtJDsI
+Message-ID: <CANiq72mFiCrzawVUVOU2giJtBVsRdAO3sGtDsZptPuFvmid3EQ@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: check type of `$ptr` in `container_of!`
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 29, 2025 at 8:46=E2=80=AFPM Timur Tabi <ttabi@nvidia.com> wrote=
-:
+On Thu, May 29, 2025 at 3:11=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
 >
-> Introduce the sfile (short file) macro that returns the stem of
-> the current source file filename.
+> Add a compile-time check that `*$ptr` is of the type of `$type->$($f)*`.
+> Rename those placeholders for clarity.
+>
+> Given the incorrect usage:
+>
+> > diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+> > index 8d978c896747..6a7089149878 100644
+> > --- a/rust/kernel/rbtree.rs
+> > +++ b/rust/kernel/rbtree.rs
+> > @@ -329,7 +329,7 @@ fn raw_entry(&mut self, key: &K) -> RawEntry<'_, K,=
+ V> {
+> >          while !(*child_field_of_parent).is_null() {
+> >              let curr =3D *child_field_of_parent;
+> >              // SAFETY: All links fields we create are in a `Node<K, V>=
+`.
+> > -            let node =3D unsafe { container_of!(curr, Node<K, V>, link=
+s) };
+> > +            let node =3D unsafe { container_of!(curr, Node<K, V>, key)=
+ };
+> >
+> >              // SAFETY: `node` is a non-null node so it is valid by the=
+ type invariants.
+> >              match key.cmp(unsafe { &(*node).key }) {
+>
+> this patch produces the compilation error:
+>
+> > error[E0308]: mismatched types
+> >    --> rust/kernel/lib.rs:220:45
+> >     |
+> > 220 |         $crate::assert_same_type(field_ptr, (&raw const (*contain=
+er_ptr).$($fields)*).cast_mut());
+> >     |         ------------------------ ---------  ^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut rb_node`, found `*mut K`
+> >     |         |                        |
+> >     |         |                        expected all arguments to be thi=
+s `*mut bindings::rb_node` type because they need to match the type of this=
+ parameter
+> >     |         arguments to this function are incorrect
+> >     |
+> >    ::: rust/kernel/rbtree.rs:270:6
+> >     |
+> > 270 | impl<K, V> RBTree<K, V>
+> >     |      - found this type parameter
+> > ...
+> > 332 |             let node =3D unsafe { container_of!(curr, Node<K, V>,=
+ key) };
+> >     |                                 ---------------------------------=
+--- in this macro invocation
+> >     |
+> >     =3D note: expected raw pointer `*mut bindings::rb_node`
+> >                found raw pointer `*mut K`
+> > note: function defined here
+> >    --> rust/kernel/lib.rs:227:8
+> >     |
+> > 227 | pub fn assert_same_type<T>(_: T, _: T) {}
+> >     |        ^^^^^^^^^^^^^^^^ -  ----  ---- this parameter needs to mat=
+ch the `*mut bindings::rb_node` type of parameter #1
+> >     |                         |  |
+> >     |                         |  parameter #2 needs to match the `*mut =
+bindings::rb_node` type of this parameter
+> >     |                         parameter #1 and parameter #2 both refere=
+nce this parameter `T`
+> >     =3D note: this error originates in the macro `container_of` (in Nig=
+htly builds, run with -Z macro-backtrace for more info)
+>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://lore.kernel.org/all/CAH5fLgh6gmqGBhPMi2SKn7mCmMWfOSiS0WP5wB=
+uGPYh9ZTAiww@mail.gmail.com/
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-What is the use case, temporary debug statements or something more
-permanent? If the former, what about `dbg!()`?
+Applied to `rust-next` -- thanks everyone!
 
-i.e. can we give an example of how it will be used? (Ideally please
-put it in the docs, so that it gets built and tested)
+    [ We decided to go with a variation of v1 [1] that became v4, since it
+      seems like the obvious approach, the error messages seem good enough
+      and the debug performance should be fine, given the kernel is always
+      built with -O2.
 
-> The macro goes avoids str::rfind() because currently, that function is no=
-t
+      In the future, we may want to make the helper non-hidden, with
+      proper documentation, for others to use.
 
-"goes avoids"
+      [1] https://lore.kernel.org/rust-for-linux/CANiq72kQWNfSV0KK6qs6oJt+a=
+GdgY=3DhXg=3DwJcmK3zYcokY1LNw@mail.gmail.com/
 
-> +/// Returns just the base filename of the current file.
-> +/// file!() returns the full path of the current file, which is often to=
-o long.
-> +/// Use this macro to trace your code:
-> +/// pr_err!("{}:{}\n", sfile!(), line!());
+        - Miguel ]
 
-Please format docs as we usually do (please check the rendered form --
-this will probably be a single paragraph without code spans etc.).
-
-> +/// Note: Avoiding rfind() allows this macro to be evaluated at compile =
-time
-> +/// in most situations, such as the above pr_err!() example.  However,
-> +/// because .. is apparently a non-const operator, the following will no=
-t work:
-
-This seems like an implementation detail, so probably it should not be
-part of the docs (`///`).
-
-Anyway, please see what Benno said, of course.
-
-> +        /// Return the index of the last occurrence of @needle in @hayst=
-ack,
-
-We don't use `@` in Rust docs (we do have a single case of that -- I
-will create a "good first issue" for it).
-
-> +        const fn find_last_or_zero(haystack: &str, needle: char) -> usiz=
-e {
-
-If helpers within macros are needed, and especially if the use case is
-not just temporary debugging statements, then it may be best to put
-them as helpers outside, to avoid generating all this code on every
-macro invocation.
-
-Thanks!
+    [ Added intra-doc link. - Miguel ]
 
 Cheers,
 Miguel
