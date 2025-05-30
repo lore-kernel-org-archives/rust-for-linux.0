@@ -1,25 +1,25 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776AC27F73D;
-	Fri, 30 May 2025 19:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5968327FD5B;
+	Fri, 30 May 2025 19:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748633387; cv=none; b=aFVWO/XXxSOUVnwETNSFx9LmX/3xshYAGYa3t695whOkj/ixzoNPHYV7R4OtRMfFxxP/xZlCNZ0Zr6tB/3L+zvvdVu1Q2S4xIPDfNZZVcGmnrBcN0DKpEagKQXG4w9n4bdJTEjomQt0WuPlkHPC1cZ5ylLFIuAS/d7eFLZ/U7Is=
+	t=1748633389; cv=none; b=aj4GNcimxkOLVlmHlsfCjfd2A1Hdif2K6CpMDfgyhDkGTmBUHgJAHIWKVmpEbllKhcViM/je/mHFwpmv25eqVG4Ei4KJTj/kSDfhetcS0hv4K8emPy5pN/qc0Vivh9Fzb3F6AOhToBPxJjpWBKqrHNaM4aO9ZR92Gnm1ljFkZXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748633387; c=relaxed/simple;
-	bh=g9o8w8TrbJ6UXm7tThVCg2x8n9R5RdvKtpambAUDTsI=;
+	s=arc-20240116; t=1748633389; c=relaxed/simple;
+	bh=PTCY1jhE8pJs7JEsYCU7z7GmKRJLt4yqfC1uMhJlfaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdA9pybs1O2SowVn7pe69HHpOSJ46lidIvM6Extz/gfX+uX/tlbJTPHsi+fMbwqGgOFsu0uwGoQn+wOKPNcBzS9Wg/ab4EP7VYoOgc8AHkCVAeLQcPLYsToHtBpv2j3RoZinAfsE35cFkS+Ps4V6IAY3DWk3w7uQ5UJAUbXwnKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.172
+	 MIME-Version; b=UVFlSk9fS7lu/D9vzSjO7/zcw6OhoAEX0rALUBS3GVO4uNWSMiNqQCPVyg6yE/FAOIdysPVWI+DFQlDYwjOWiEe+R9IqKQNO0fhBOBgysGvOzQ8WB6oByQd55dG+WBqJIps1SfYglxGdwmzLCnuCXVIxH6nry/bTQ20ZzZlE51I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4b8Cww0VcDz9sp9;
-	Fri, 30 May 2025 21:29:36 +0200 (CEST)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4b8Cx35z0dz9tjh;
+	Fri, 30 May 2025 21:29:43 +0200 (CEST)
 From: Remo Senekowitsch <remo@buenzli.dev>
 To: Rob Herring <robh@kernel.org>,
 	Saravana Kannan <saravanak@google.com>,
@@ -40,9 +40,9 @@ To: Rob Herring <robh@kernel.org>,
 Cc: linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v7 5/9] rust: device: Introduce PropertyGuard
-Date: Fri, 30 May 2025 21:28:52 +0200
-Message-ID: <20250530192856.1177011-6-remo@buenzli.dev>
+Subject: [PATCH v7 8/9] rust: device: Add property_get_reference_args
+Date: Fri, 30 May 2025 21:28:55 +0200
+Message-ID: <20250530192856.1177011-9-remo@buenzli.dev>
 In-Reply-To: <20250530192856.1177011-1-remo@buenzli.dev>
 References: <20250530192856.1177011-1-remo@buenzli.dev>
 Precedence: bulk
@@ -52,86 +52,102 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4b8Cx35z0dz9tjh
 
-This abstraction is a way to force users to specify whether a property
-is supposed to be required or not. This allows us to move error
-logging of missing required properties into core, preventing a lot of
-boilerplate in drivers.
-
-It will be used by upcoming methods for reading device properties.
+Allow Rust code to read reference args from device properties. The
+wrapper type `FwNodeReferenceArgs` allows callers to access the buffer
+of read args safely.
 
 Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
 ---
- rust/kernel/device/property.rs | 59 ++++++++++++++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ rust/kernel/device/property.rs | 67 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
 diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-index 8e0414b0517e4..b789fbbd0e6cc 100644
+index 743f296bfb03c..4dec6ef591620 100644
 --- a/rust/kernel/device/property.rs
 +++ b/rust/kernel/device/property.rs
-@@ -155,3 +155,62 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-         unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
+@@ -297,6 +297,64 @@ pub fn children<'a>(&'a self) -> impl Iterator<Item = ARef<FwNode>> + 'a {
+             Some(next)
+         })
      }
++
++    /// Finds a reference with arguments.
++    pub fn property_get_reference_args(
++        &self,
++        prop: &CStr,
++        nargs: NArgs<'_>,
++        index: u32,
++    ) -> Result<FwNodeReferenceArgs> {
++        let mut out_args = FwNodeReferenceArgs::default();
++
++        let (nargs_prop, nargs) = match nargs {
++            NArgs::Prop(nargs_prop) => (nargs_prop.as_char_ptr(), 0),
++            NArgs::N(nargs) => (ptr::null(), nargs),
++        };
++
++        // SAFETY:
++        // - `self.0.get()` is valid.
++        // - `prop.as_char_ptr()` is valid and zero-terminated.
++        // - `nargs_prop` is valid and zero-terminated if `nargs`
++        //   is zero, otherwise it is allowed to be a null-pointer.
++        let ret = unsafe {
++            bindings::fwnode_property_get_reference_args(
++                self.0.get(),
++                prop.as_char_ptr(),
++                nargs_prop,
++                nargs,
++                index,
++                &mut out_args.0,
++            )
++        };
++        to_result(ret)?;
++
++        Ok(out_args)
++    }
++}
++
++/// The return value of [`FwNode::property_get_reference_args`].
++#[repr(transparent)]
++#[derive(Copy, Clone, Default)]
++pub struct FwNodeReferenceArgs(bindings::fwnode_reference_args);
++
++impl FwNodeReferenceArgs {
++    /// Returns the slice of reference arguments.
++    pub fn as_slice(&self) -> &[u64] {
++        // SAFETY: As per the safety invariant of `FwNodeReferenceArgs`, `nargs`
++        // is the number of elements in `args` that is valid.
++        unsafe { core::slice::from_raw_parts(self.0.args.as_ptr(), self.0.nargs as usize) }
++    }
++
++    /// Returns the number of reference arguments.
++    pub fn len(&self) -> usize {
++        self.0.nargs as usize
++    }
++
++    /// Returns `true` if there are no reference arguments.
++    pub fn is_empty(&self) -> bool {
++        self.0.nargs == 0
++    }
  }
-+
-+/// A helper for reading device properties.
-+///
-+/// Use [`Self::required_by`] if a missing property is considered a bug and
-+/// [`Self::optional`] otherwise.
-+///
-+/// For convenience, [`Self::or`] and [`Self::or_default`] are provided.
-+pub struct PropertyGuard<'fwnode, 'name, T> {
-+    /// The result of reading the property.
-+    inner: Result<T>,
-+    /// The fwnode of the property, used for logging in the "required" case.
-+    fwnode: &'fwnode FwNode,
-+    /// The name of the property, used for logging in the "required" case.
-+    name: &'name CStr,
+ 
+ // SAFETY: Instances of `FwNode` are always reference-counted.
+@@ -463,6 +521,15 @@ fn read_from_fwnode_property(fwnode: &FwNode, name: &CStr) -> Result<Self> {
+     i64: fwnode_property_read_u64_array,
+ }
+ 
++/// The number of arguments of a reference.
++pub enum NArgs<'a> {
++    /// The name of the property of the reference indicating the number of
++    /// arguments.
++    Prop(&'a CStr),
++    /// The known number of arguments.
++    N(u32),
 +}
 +
-+impl<T> PropertyGuard<'_, '_, T> {
-+    /// Access the property, indicating it is required.
-+    ///
-+    /// If the property is not present, the error is automatically logged. If a
-+    /// missing property is not an error, use [`Self::optional`] instead. The
-+    /// device is required to associate the log with it.
-+    pub fn required_by(self, dev: &super::Device) -> Result<T> {
-+        if self.inner.is_err() {
-+            dev_err!(
-+                dev,
-+                "{}: property '{}' is missing\n",
-+                self.fwnode.display_path(),
-+                self.name
-+            );
-+        }
-+        self.inner
-+    }
-+
-+    /// Access the property, indicating it is optional.
-+    ///
-+    /// In contrast to [`Self::required_by`], no error message is logged if
-+    /// the property is not present.
-+    pub fn optional(self) -> Option<T> {
-+        self.inner.ok()
-+    }
-+
-+    /// Access the property or the specified default value.
-+    ///
-+    /// Do not pass a sentinel value as default to detect a missing property.
-+    /// Use [`Self::required_by`] or [`Self::optional`] instead.
-+    pub fn or(self, default: T) -> T {
-+        self.inner.unwrap_or(default)
-+    }
-+}
-+
-+impl<T: Default> PropertyGuard<'_, '_, T> {
-+    /// Access the property or a default value.
-+    ///
-+    /// Use [`Self::or`] to specify a custom default value.
-+    pub fn or_default(self) -> T {
-+        self.inner.unwrap_or_default()
-+    }
-+}
+ /// A helper for reading device properties.
+ ///
+ /// Use [`Self::required_by`] if a missing property is considered a bug and
 -- 
 2.49.0
 
