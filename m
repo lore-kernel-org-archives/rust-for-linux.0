@@ -1,102 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C251027D782;
-	Fri, 30 May 2025 19:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BB227F728;
+	Fri, 30 May 2025 19:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748633385; cv=none; b=nxZcaIcwPQCYP2t7pKXve9ICgTqkUugBG2twSaMcTIc0bfVQN8sJTeKZ1M+hg2pFI4bH7w0JvFUOdolT0g2T2UDtgeP1RkZ4a6Ai+nf9KKz1aljQjDI5OyC82yFUK/LXgLWffutFTaFJGGCtY0GKes0tOyX0WThyZwwTn4fsuhA=
+	t=1748633387; cv=none; b=DtObrJoYqw3PghPrNFMzeLJKwjOkZfRrwSfORpVTOR6o36jfK5TpQcSmF3+quo7YXXgyEoeDPp7XewpJRYiXCFEHUDKWbCIb8d0JdYquIN+r5lvBERilMHjj9TDKX/VE3B5NGxchW+xj/FKatkviUWarfPWtYYe8r5Cc5EePIVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748633385; c=relaxed/simple;
-	bh=Vmc8CCowR6HPAOQhbXqxKQP5HL/aFpHG6KvoQhK51/E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=MNw08JlXKvKk6gaUiMlS4ow5cSLfeJc8Z9zCBUwTTNt9B8eG93hpkm0eqdHJy/sEC9j1PPAn4ttgyo557UpV8dCKp0gHXuYpSL1jAt8dcZio1ye2WYOKolbNh9qvkzZnDz9av8q/Iewn1GjCbApJGxT7hTyBs7lQi/5Vl/+JsM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cD6j8uGN; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cD6j8uGN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A51DC4CEED;
-	Fri, 30 May 2025 19:29:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748633385;
-	bh=Vmc8CCowR6HPAOQhbXqxKQP5HL/aFpHG6KvoQhK51/E=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=cD6j8uGNJKBcWgVNurz1/IYRlyiWDk0srjPIJshnBdC4AEi3Mg1hXujl+BRrcBaVc
-	 YaN5tjSpgp+4BoBWbpvElSudFLrfoMuOoTK+093mNaA5iqc7HuevFyqE3dAYL3KFNH
-	 J8eVzbD4cHAcedAbffrlcPc8xO0+00BDKpH82Woxrnutm5aHLK3QzMkP/rB177kx60
-	 Pwxk+WaTkgMEJXWSwt4iGa8xbEjRmCbfxdC7SndHn9oiSeQLZJIIZqtWZ6qrqEEP8A
-	 CO7hMCO6okm0RYQlEt1tQsPyzGVLp3+dATbyo36ttC+HthkzDjkQt1GQrafafDJt8u
-	 MDcY4yuifekiw==
+	s=arc-20240116; t=1748633387; c=relaxed/simple;
+	bh=zjzPLer1jj+pD4o7dlzeQ6cCtXPEX+biqUZye3ccJuk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d3ZUXpZ049qmoOs6lb7sWCath5phfZ8aw0xvjPe26/VyFWTXmENlGD56aE7N9mx7hlP/0pw8brrHd4tFYLvnt6l+vJAyTOtNwz6se/ORJ4Wuk1+/MB01Nc3CyQmM3ceqUv+bzD+Sbr06gQe5eIsI58LQQtqIEjT96u+rBDGtkek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4b8Cx12sKkz9srN;
+	Fri, 30 May 2025 21:29:41 +0200 (CEST)
+From: Remo Senekowitsch <remo@buenzli.dev>
+To: Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Remo Senekowitsch <remo@buenzli.dev>
+Cc: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v7 7/9] rust: device: Add child accessor and iterator
+Date: Fri, 30 May 2025 21:28:54 +0200
+Message-ID: <20250530192856.1177011-8-remo@buenzli.dev>
+In-Reply-To: <20250530192856.1177011-1-remo@buenzli.dev>
+References: <20250530192856.1177011-1-remo@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 May 2025 21:29:40 +0200
-Message-Id: <DA9QST4SISFK.37NSCTH594NSF@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/7] rust: types: support fallible PinInit types in
- Opaque::pin_init
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <chrisi.schrefl@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250530142447.166524-1-dakr@kernel.org>
- <20250530142447.166524-2-dakr@kernel.org>
-In-Reply-To: <20250530142447.166524-2-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4b8Cx12sKkz9srN
 
-On Fri May 30, 2025 at 4:24 PM CEST, Danilo Krummrich wrote:
-> Currently, Opaque::pin_init only supports infallible PinInit
-> implementations, i.e. impl PinInit<T, Infallible>.
->
-> This has been sufficient so far, since users such as Revocable do not
-> support fallibility.
->
-> Since this is about to change, make Opaque::pin_init() generic over the
-> error type E.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/types.rs | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 22985b6f6982..75c99d6facf9 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -354,13 +354,13 @@ pub const fn zeroed() -> Self {
->      }
-> =20
->      /// Create an opaque pin-initializer from the given pin-initializer.
-> -    pub fn pin_init(slot: impl PinInit<T>) -> impl PinInit<Self> {
-> -        Self::ffi_init(|ptr: *mut T| {
-> +    pub fn pin_init<E>(slot: impl PinInit<T, E>) -> impl PinInit<Self, E=
-> {
-> +        Self::try_ffi_init(|ptr: *mut T| -> Result<(), E> {
->              // SAFETY:
->              //   - `ptr` is a valid pointer to uninitialized memory,
-> -            //   - `slot` is not accessed on error; the call is infallib=
-le,
-> +            //   - `slot` is not accessed on error,
->              //   - `slot` is pinned in memory.
-> -            let _ =3D unsafe { PinInit::<T>::__pinned_init(slot, ptr) };
-> +            unsafe { PinInit::<T, E>::__pinned_init(slot, ptr) }
+Allow Rust drivers to access children of a fwnode either by name or by
+iterating over all of them.
 
-Could you move this function into an `impl pin_init::Wrapper<T>` block?
-(it's the same function, but in a trait that was recently added)
+In C, there is the function `fwnode_get_next_child_node` for iteration
+and the macro `fwnode_for_each_child_node` that helps with handling the
+pointers. Instead of a macro, a native iterator is used in Rust such
+that regular for-loops can be used.
 
-Thanks!
-
+Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
 ---
-Cheers,
-Benno
+ rust/kernel/device/property.rs | 56 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
->          })
->      }
-> =20
+diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
+index 46884c433606a..743f296bfb03c 100644
+--- a/rust/kernel/device/property.rs
++++ b/rust/kernel/device/property.rs
+@@ -241,6 +241,62 @@ pub fn property_read<'fwnode, 'name, T: Property>(
+             name,
+         }
+     }
++
++    /// Returns first matching named child node handle.
++    pub fn get_child_by_name(&self, name: &CStr) -> Option<ARef<Self>> {
++        // SAFETY: `self` and `name` are valid by their type invariants.
++        let child =
++            unsafe { bindings::fwnode_get_named_child_node(self.as_raw(), name.as_char_ptr()) };
++        if child.is_null() {
++            return None;
++        }
++        // SAFETY:
++        // - `fwnode_get_named_child_node` returns a pointer with its refcount
++        //   incremented.
++        // - That increment is relinquished, i.e. the underlying object is not
++        //   used anymore except via the newly created `ARef`.
++        Some(unsafe { Self::from_raw(child) })
++    }
++
++    /// Returns an iterator over a node's children.
++    pub fn children<'a>(&'a self) -> impl Iterator<Item = ARef<FwNode>> + 'a {
++        let mut prev: Option<ARef<FwNode>> = None;
++
++        core::iter::from_fn(move || {
++            let prev_ptr = match prev.take() {
++                None => ptr::null_mut(),
++                Some(prev) => {
++                    // We will pass `prev` to `fwnode_get_next_child_node`,
++                    // which decrements its refcount, so we use
++                    // `ARef::into_raw` to avoid decrementing the refcount
++                    // twice.
++                    let prev = ARef::into_raw(prev);
++                    prev.as_ptr().cast()
++                }
++            };
++            // SAFETY:
++            // - `self.as_raw()` is valid by its type invariant.
++            // - `prev_ptr` may be null, which is allowed and corresponds to
++            //   getting the first child. Otherwise, `prev_ptr` is valid, as it
++            //   is the stored return value from the previous invocation.
++            // - `prev_ptr` has its refount incremented.
++            // - The increment of `prev_ptr` is relinquished, i.e. the
++            //   underlying object won't be used anymore.
++            let next = unsafe { bindings::fwnode_get_next_child_node(self.as_raw(), prev_ptr) };
++            if next.is_null() {
++                return None;
++            }
++            // SAFETY:
++            // - `next` is valid because `fwnode_get_next_child_node` returns a
++            //   pointer with its refcount incremented.
++            // - That increment is relinquished, i.e. the underlying object
++            //   won't be used anymore, except via the newly created
++            //   `ARef<Self>`.
++            let next = unsafe { FwNode::from_raw(next) };
++            prev = Some(next.clone());
++            Some(next)
++        })
++    }
+ }
+ 
+ // SAFETY: Instances of `FwNode` are always reference-counted.
+-- 
+2.49.0
 
