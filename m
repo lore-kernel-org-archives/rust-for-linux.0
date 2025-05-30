@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0351EA91;
-	Fri, 30 May 2025 19:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2471123CF12;
+	Fri, 30 May 2025 19:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748632785; cv=none; b=sC9EPSaC/LCKXNoQZU2lXTACtPyrjGDlkF1WmPMfhN7sLLM8HyxJ6D/nssEO6fEYDYMm1crqbfC5BICdBI46lppiIfafwgSIiNPihIagrzfgZTGqeUvUv07mrEPl4fuWHVkvdg8Nwq9TVaRCWoiIqp4cIeO9vA7eorqwhUIk4Uk=
+	t=1748633073; cv=none; b=qNhNY5zeFIn+t8Toe6ziFY1mX+bVKSctB7qAjAEtiPwRhzJ1J+1NhaBOEWdgmSFVct1ghCiVjXwfM+8xrxyEs0CWGN5zX9XCaeSCFRvbo1RkLH45c18ltGk9mSydv4jGNkhZTwauV1blm8QU/ExHTr49NGkbLfKDYvxdJune5Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748632785; c=relaxed/simple;
-	bh=U63pN07ZQ4WQ9dRpc9+Jygbz/Zq9XWUsdbSpzj/39WE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=bTKC2rUcuhYXcwr+p+zfdi/af2ZsdYfjO0ifq+VoL1obqCyO47v5iBFCWC5M1ZTRqANqOJ6MIOPopONPmEGY9k0qI+iA8GiATdAKQdxAVE+SlopoMMQwWn6WSuPTUpZ7yn3z7VvzunpOXOouCskJMI5mqK9ya4tOx8NXRC/rJdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pt0LSisb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748633073; c=relaxed/simple;
+	bh=H11030nFrNAGRfgABJ/vGtiV49oAW7S/aC2MEYd038o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=UvdTxzWIWPTFkGSKN5nDLlaZKQodXQSl1LbwtYNbu+JZEME4TvTy8nTTbTxsFb7z9A8fMIHkGqiP49oKQkWA0LAAT6TnSRFKsUrrX+b98DkrEDsZeN9iFv/NeHN6/fkZacOoHdej1cVX3PcGGrIBklLWZ52VZDgUHhvtNftGAj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ChRmfzht; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pt0LSisb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEF0C4CEE9;
-	Fri, 30 May 2025 19:19:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ChRmfzht"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF93C4CEE9;
+	Fri, 30 May 2025 19:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748632784;
-	bh=U63pN07ZQ4WQ9dRpc9+Jygbz/Zq9XWUsdbSpzj/39WE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pt0LSisbBloaqfL59quYklOYSmIS8dLvpY3JrZQtLnRVhmeutmGS0N1iz8At5wpdy
-	 nA05jJORq4qoAi6k4LKt+/uLtKp+2I9JdPewyOHssCkp7dlpQ75z64QvzudomKQOFe
-	 D9gS3MLF2lpmtppZEIUF+ljeIcPH8Si2qVHbCOAlvylVIqbh9Yf1mMjPAvXR3gXuKD
-	 7erbzAmKt/3TbG1YzsH42sVYf1a4iYLjiI6wtYblYwa48fnhOj/SmXcRJf75HWy1kq
-	 FIgkTYhE4V47J+OYNF7dHFZ06EcXYzx8vEsN4E0gkQ0cn1N40n91BTF/WzzMnY6iip
-	 qaISUVcNWVl1Q==
+	s=k20201202; t=1748633072;
+	bh=H11030nFrNAGRfgABJ/vGtiV49oAW7S/aC2MEYd038o=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ChRmfzhtjv7BPisD2fRKRD1YJRkO0/XlazV5AH/jeZP5ASNmiWpLcvBOESmMVWLvO
+	 8oAmtnD1fzGpq/uRZ7EVhh+RzobGGldfmReWBryvpQEnEYePueH9STCqLTZqOHpZcL
+	 F/jtwhsazX0u8RUMcCBdZPzD96MSlBMS744ukSFK8RqudAivlA8uQP8PqEUfmwmDru
+	 g6wP7aoKYCdYY3EhPbhzyrzxr8Med6dqYwcQPQKCoLZzSOh7NzJZwjt6mc6w1Z9m/C
+	 b408GdMm+7GMyOTvGCLglkTx4dUw++Zfk91hHCsJeMwksMcFQOsxVDsId8aX9lDVf+
+	 awIVmmPM3M3ZA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,58 +34,56 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 May 2025 21:19:39 +0200
-Message-Id: <DA9QL5A8747E.17QE50WBD6JOT@kernel.org>
+Date: Fri, 30 May 2025 21:24:28 +0200
+Message-Id: <DA9QOTLU4U5M.2X7K7UWJ53QGI@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 0/7] misc device: support device drivers
 From: "Benno Lossin" <lossin@kernel.org>
-To: <saivishnu725@gmail.com>, <rust-for-linux@vger.kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <gregkh@linuxfoundation.org>, <daniel.almeida@collabora.com>,
- <me@kloenk.dev>
-Subject: Re: [PATCH] rust: doc: Clean up formatting in io.rs
+To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>
 X-Mailer: aerc 0.20.1
-References: <20250530123129.31505-2-saivishnu725@gmail.com>
-In-Reply-To: <20250530123129.31505-2-saivishnu725@gmail.com>
+References: <20250530142447.166524-1-dakr@kernel.org>
+ <9e0acb35-7d10-4a8e-b5c6-968d1310146b@gmail.com>
+ <96891e54-8614-4f98-8a98-ad90f18c8e43@gmail.com>
+In-Reply-To: <96891e54-8614-4f98-8a98-ad90f18c8e43@gmail.com>
 
-On Fri May 30, 2025 at 2:31 PM CEST, saivishnu725 wrote:
-> From: Sai Vishnu M <saivishnu725@gmail.com>
+On Fri May 30, 2025 at 7:29 PM CEST, Christian Schrefl wrote:
+> On 30.05.25 6:37 PM, Christian Schrefl wrote:
+>> On 30.05.25 4:24 PM, Danilo Krummrich wrote:
+>>> This patch series adds support for device drivers to the misc device
+>>> abstraction.
+>>>
+>>> For design details, please see:
+>>>   * patch 5 "rust: miscdevice: properly support device drivers"
+>>>   * patch 6 "rust: miscdevice: expose the parent device as &Device<Boun=
+d>"
+>>>
+>>> This patch series depends on the pin-init series from Benno [1] as well=
+ as on
+>>> the misc device series from Christian [2], with UnsafePinned replaced w=
+ith
+>>> Opaque, as suggested by Alice, since UnsafePinned may still take a whil=
+e to
+>>> land.
+>>=20
+>> If you want I can send out a new version using `Opaque`.
+>>=20
+>> We could also add a type alias like:
+>>=20
+>> type UnsafePinned<T> =3D Opaque<T>;
 >
-> Replace `@` with backticks in a comment of `io.rs` to follow Rust doc
-> convention
->
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1167
-> Signed-off-by: Sai Vishnu M <saivishnu725@gmail.com>
-> ---
->  rust/kernel/io.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index 72d80a6f131e..92bc4e3cd8ec 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -43,7 +43,7 @@ pub fn maxsize(&self) -> usize {
->      }
->  }
-> =20
-> -/// IO-mapped memory, starting at the base address @addr and spanning @m=
-axlen bytes.
-> +/// IO-mapped memory, starting at the base address `addr` and spanning `=
-maxlen` bytes.
+> I forgot that Opaque doesn't drop, this would not be quite as simple,
+> but with a newtype with a `Drop` impl it should be possible.
 
-I would just remove the second part of the sentence. This is a struct
-and its only field is an `IoRaw`, which does have those two fields, but
-they are private, so nobody reading the docs will benefit from knowing
-this.
+That's one issue another is that `Opaque` also allows uninitialized
+memory and (if the upstream one isn't changed) also modifies the
+behavior of shared references. I don't think we should name it
+`UnsafePinned` if it doesn't guarantee the same thing as the upstream
+one.
 
 ---
 Cheers,
 Benno
-
->  ///
->  /// The creator (usually a subsystem / bus such as PCI) is responsible f=
-or creating the
->  /// mapping, performing an additional region request etc.
-
