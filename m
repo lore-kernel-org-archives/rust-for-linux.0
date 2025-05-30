@@ -1,129 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32F219F464
-	for <rust-for-linux@vger.kernel.org>; Fri, 30 May 2025 03:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B248B18991E;
+	Fri, 30 May 2025 05:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748576914; cv=none; b=EeeSr8O5eRrBz6zhnqEJTOkbuRN6rvp/JQeU7wR4hQiArLX6jtTGY+2IYREo7IctBjGZ80LhRT+KTIDjKkZIfqhjqWJn+Huu/qfASOMt770/QYBdEE94e8Xecs7mHbd8i83VhgDhkeF2/dO60BnNp/yZLIGkAq99P7rpwwTEkB4=
+	t=1748581987; cv=none; b=ohUoabE+O0dKI/9gOInaOtKnn9Eyh3tv2odSEasnP6CDGFO4LyXGrS816aqsn/WKcy7jNDx8Rs595f/Ots5h/mg4g86MnCN10eN3EDulzdfv7x0XRiqcS8HGJPQT8JzHUOQhQW1m6pmNzLBxPvHHsU+41kOg0PFjzbwtv1tsqKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748576914; c=relaxed/simple;
-	bh=aoeFrEdC768y7i2Z+5cR7TBTWbTsj3mR869KdADzkQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WuyYsTuIfA65iXoRkLLPwL6zTZ619YyScf2xWsMRzCe6VFNZx1dqR7E0TDcT0n/qJq7BC/QMh+PfJX47Tlb51pS7m7eUMwNsK++Yf7rEX2EqwZyeHa+JFOGnuJgJ6uYcA/Ca1DfazePxOOSrUILHXtcKa/Grw6l3dSLlclS3iMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Na3QG/5L; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1748581987; c=relaxed/simple;
+	bh=ABXcBcI46740XMmqpKEU0ZDPqOeZjAzBxnVDnWBJ4iA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KyIzcccRnmwaov5f10rtt3yo4hSN/7cKpbbQEqkASwUpRXrPpEIZZcdkmzNM0y+Bk5JqnUwOyYKcH/N7vx7By+NFGU+6Uy1x4rjW+jLotJ/vEkgxHR25GAutoO1B3k9t2rDwzOEnOmK6eKCNsv6GN4QE0Tle/3qorKFbZHMSo2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fx7jl9Ld; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Na3QG/5L"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748576913; x=1780112913;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aoeFrEdC768y7i2Z+5cR7TBTWbTsj3mR869KdADzkQ4=;
-  b=Na3QG/5L8B/gY18GZ8ZAJL9JglmrGi/DGyD3VikbHF+9oa9y2f4Gy2gG
-   3g7JAbVP8Sv/Qz/yywSSOI5ongC3amKRSTjnVoshyKeru810ZDL3c8YBL
-   I5r1Prq71jlVXNEUXMYlqiwn1Y/BsKy9rF0v2WJ9QIXFs1BNLYN2Mqior
-   tTMmyCqtCd0YeUNtoDjXDipl4fpnyR7tu/XTMeEJfkr4iH1tUuzFi0TKE
-   U/YQ11FWAbQ/T6a6aZIcuIiS993untYLfphVovQFl0tKChaqMSDhW4o2E
-   iz7/a+Wwt1LFJwIz+7XTjVKAaguWmz0JrWjUUyakSOLmYjfANCbtCeGMR
-   w==;
-X-CSE-ConnectionGUID: jvEsInw4Rf2LIFqhqXp2kQ==
-X-CSE-MsgGUID: +W0WULdbQw6yQZv8scvq2A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11448"; a="50664027"
-X-IronPort-AV: E=Sophos;i="6.16,194,1744095600"; 
-   d="scan'208";a="50664027"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2025 20:48:32 -0700
-X-CSE-ConnectionGUID: Q7+l9vfQRDG9IWwqSN4D1A==
-X-CSE-MsgGUID: CIDTXEiGQduf3uJQOcr8zQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,194,1744095600"; 
-   d="scan'208";a="144739724"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 29 May 2025 20:48:30 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uKqjM-000XJQ-1K;
-	Fri, 30 May 2025 03:48:28 +0000
-Date: Fri, 30 May 2025 11:47:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Timur Tabi <ttabi@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
-Message-ID: <202505301109.ySBz6GOs-lkp@intel.com>
-References: <20250529184547.1447995-1-ttabi@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fx7jl9Ld"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39A9C4CEE9;
+	Fri, 30 May 2025 05:13:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748581987;
+	bh=ABXcBcI46740XMmqpKEU0ZDPqOeZjAzBxnVDnWBJ4iA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Fx7jl9LdKwwReTtrI7QsT6LFaGn0vvss5pRJ32itsL/OYRvOh1jVYJSTvjGW9D0C/
+	 GOZjyEYHLPX2OImVlIKWgAnKJgI9ClF8qxwldtr6T0Yvb/+aJ+yQc0XqQj1NLWMN2O
+	 2fZsblIl5q/qxmJ8MNfwMJTxizUYJQkzJ7Eoy2wTaTOWCRxVMg6nHI+H9tbKKLnWbZ
+	 R71OVtpCqXEWTKwvI+8c65vXkLRlqn2+E85B56NL0iLqHDDe63mD2BMZ17yoAQXYST
+	 mzQAwkJqU+sh6/TQORT0Ck7ZfHqknyg7VjCcAgqKsHTIwyELFgKh8SV/iNfh6FMmtc
+	 6yzX0sgePbrlw==
+From: Christian Brauner <brauner@kernel.org>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Pekka Ristola <pekkarr@protonmail.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: file: mark `LocalFile` as `repr(transparent)`
+Date: Fri, 30 May 2025 07:12:59 +0200
+Message-ID: <20250530-minuten-beheben-df4e8ce17716@brauner>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250527204636.12573-1-pekkarr@protonmail.com>
+References: <20250527204636.12573-1-pekkarr@protonmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250529184547.1447995-1-ttabi@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1335; i=brauner@kernel.org; h=from:subject:message-id; bh=ABXcBcI46740XMmqpKEU0ZDPqOeZjAzBxnVDnWBJ4iA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRY2sVMnL7n9POedeGPm0XmX/9eeusqo0ydab/W1vVcm 2KdvJRudJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzE/Dgjw4M85rkPefVCKxYG nLqu+tv3lrXf5ZsqwRLVutt2BlmVljAyTPl85Pfrn38ybv7abqv1Zn+oyNZPu9NK2lLqjNZVczr bcQMA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-Hi Timur,
+On Tue, 27 May 2025 20:48:55 +0000, Pekka Ristola wrote:
+> Unsafe code in `LocalFile`'s methods assumes that the type has the same
+> layout as the inner `bindings::file`. This is not guaranteed by the default
+> struct representation in Rust, but requires specifying the `transparent`
+> representation.
+> 
+> The `File` struct (which also wraps `bindings::file`) is already marked as
+> `repr(transparent)`, so this change makes their layouts equivalent.
+> 
+> [...]
 
-kernel test robot noticed the following build errors:
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on linus/master v6.15 next-20250529]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Timur-Tabi/rust-introduce-sfile-macro-for-easier-code-tracing/20250530-024820
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20250529184547.1447995-1-ttabi%40nvidia.com
-patch subject: [PATCH] rust: introduce sfile macro for easier code tracing
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250530/202505301109.ySBz6GOs-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250530/202505301109.ySBz6GOs-lkp@intel.com/reproduce)
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505301109.ySBz6GOs-lkp@intel.com/
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-All errors (new ones prefixed by >>):
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
 
-   PATH=/opt/cross/clang-18/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   INFO PATH=/opt/cross/rustc-1.78.0-bindgen-0.65.1/cargo/bin:/opt/cross/clang-18/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
-   make: Entering directory '/kbuild/src/consumer'
-   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
->> Diff in rust/kernel/print.rs at line 468:
-    
-            let start = find_last_or_zero(FILE, '/') + 1;
-            let len = find_last_or_len(&FILE[start..], '.');
-   -        &FILE[start..start+len]
-   +        &FILE[start..start + len]
-        }};
-    }
-    
->> Diff in rust/kernel/print.rs at line 468:
-    
-            let start = find_last_or_zero(FILE, '/') + 1;
-            let len = find_last_or_len(&FILE[start..], '.');
-   -        &FILE[start..start+len]
-   +        &FILE[start..start + len]
-        }};
-    }
-    
-   make[2]: *** [Makefile:1826: rustfmt] Error 123
-   make[2]: Target 'rustfmtcheck' not remade because of errors.
-   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'rustfmtcheck' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'rustfmtcheck' not remade because of errors.
-   make: Leaving directory '/kbuild/src/consumer'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[1/2] rust: file: mark `LocalFile` as `repr(transparent)`
+      https://git.kernel.org/vfs/vfs/c/15ecd83dc062
+[2/2] rust: file: improve safety comments
+      https://git.kernel.org/vfs/vfs/c/946026ba4293
