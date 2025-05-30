@@ -1,332 +1,184 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799AF2185A6;
-	Fri, 30 May 2025 20:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9FE2116F5;
+	Fri, 30 May 2025 20:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748638016; cv=none; b=e+KY5xbwqFowlWMfKdsSNntpNaaSMmlgJ+62X2QH1wWLrGdXyNcVsLYsqZcVqzG45raLwAgrNOiHhnQEdsQKtYB9KxlY1yzMOzQvpy+GP2DmkJgWtrDnCRuixHlcmLjGgxMRHH2Jo7XDtaBXNP1CmpmThzS9D++D6hYlV+/Jj/k=
+	t=1748638406; cv=none; b=iNxwF7DBPTkvUPidSYiVZZor5bkhwEtvBlsDyhXk6qdxtbpufTVY+5lw04S/EtIzGy+Vivts88CsbFNEJlhyKTQUCVt/NUeYZ3LVWc7sEwaYvPMT38RpQ+x5+xzignQtKSyMJ4TpqcUa7jqrLFCtBh5jaK2hBF6/eV+d0mZv7N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748638016; c=relaxed/simple;
-	bh=Tl9KVLjAYo8nLG7kxM/4N+/E474ZkjS1L1eq4887tp0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ie6OrECrWXuDDH6L7C7BqNnFMHR9W+7WlZvgzcD9CryKrdRtrP8HhzhGegsMW5QEPg8x0fBF9b1TgJKC0ByjQyYm1aXFbwuNId/ylUA+TBoxojdmIcgCCgsx0DaIcrpjOTWMsGDQcd3MEB9ABbIGZ8pc5gljvqhyVeeSO1IlGoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SajlyGUO; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1748638406; c=relaxed/simple;
+	bh=YVT4uvEvFXOsSBx4+D+qPFb/3c/ZaJlDw9VoSq9O6n0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZsdAn5rU1IXcZq/2iCATUceRBVstUkXn/J5jsexGv2+C2TsT9Po7DwIoWkHwOQKt0hoQji0skyp6Vd7mOqijVjVeGc2QjNJNByqtUggE9SrR0RQBnEo2uUCcl4G9Jg7gu+0Jy+jBrb/tBrrbYw2/0+LyDs00DlMQ8zKXxrZvVdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQoXd4jG; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SajlyGUO"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a4ef2c2ef3so1839905f8f.2;
-        Fri, 30 May 2025 13:46:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQoXd4jG"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-442eb5d143eso23331055e9.0;
+        Fri, 30 May 2025 13:53:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748638013; x=1749242813; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r3qDm3mLZcRdoxx+80MjSPgoFL99DEoKU4L7ojs6jpw=;
-        b=SajlyGUOoZN6g4NnZHQ7Eni4XTBwDWb9C9SaHAIm9u71jiyE54loPZl197aIBYRrlj
-         URVB8Kru3ihz3HYnwzTI7VDv6UBD344zc692hp1iyOiJtK3JxqWDlm18wWRU/Anui9CA
-         k/K3JZcACmgkFzkXLxPMGvUx2t/d5HSfgTlT96xQjntFlh5xWThljLtPmjJlQ5bTVgE9
-         WMSnFgSVtT+9bbU2p4lJKBXrdvLuDxbW4emDz9arcKzxnWL5QN6LNxvtEwo+juFsYINE
-         sBy5vUtMvNRvol0jUMfpODFgCUSnenrH9xaqavLjhGtBjPHf5iGJAhHWkPxZv1VfhOpU
-         RqFg==
+        d=gmail.com; s=20230601; t=1748638403; x=1749243203; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vTQhwZuH1D3pG1/efE1/+CfG22aLhAJyJR5QOwhnJto=;
+        b=QQoXd4jGVGbBxAJUUqQc09WU+Cdo18ikpjMauHRc+LI5BYrz78RnBGUqFSoCeFqPfF
+         ZzDjBHpGo+ORpXfWu43rdA598H69ewb2khLDr1yl53rEvE02uhlyXNfnbo6Q8qZr5diM
+         oS/hp/I8Tw2gDLvf7ODOW7WUJWeuNlSF7TGG7AfjdMc8uY5l1veQWcdtdEB7cQzYWH0Z
+         yZ4IAuF6c8kb4AworWY7X0B6T2suYpQ6E8UnNbtP/g9Je0eiNuhQOWbmpQedJb25NWBa
+         z1b6YoazB+gj8X31+cT0PRnaFLnQ+EzMcnJtLEAjXtqEyOqa8AGBedcInnOXAH3FilPz
+         fkFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748638013; x=1749242813;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r3qDm3mLZcRdoxx+80MjSPgoFL99DEoKU4L7ojs6jpw=;
-        b=mKYQoDlAifK8RZk/Lw+mkskZEl76x4fTgJUw2cG2a+ED7IvgnL67MrGFi5xDSPHyjH
-         5PMSqLOEtPMOZ4JtqmS6LycMh1hX/2sjkW9cWfpS2OCAFK5Uo7bO0UTJuYi0iqnTigk0
-         xQZYKBnvE2/Zmny9rok13O+Vi3icVwyQQWjzyaDbXWnSq9Tw9YVy7TfhJOEatFVQsFVR
-         xY2etbIy5OSc685WSiNAVnU8qPDGfGJYXM1ystSWa/t2oVaju+hI4kUtevfysJ2AZDVM
-         GvruEDqgF881T0XaMFVc7zNEezemsSL/4fPbdDDRgiw2QqAK+ZgrDh7Cm6KPh7RM43q4
-         405g==
-X-Forwarded-Encrypted: i=1; AJvYcCVe8ks0Gka4UHJ/VaSAw7E/oEdjk79Q745XLXcZqw8DyKkdF+Mx0IlFKJCesOFoeRNTlDLnIJmjoGRZshmqCgk=@vger.kernel.org, AJvYcCXXrgjvx+V00QGQwMTuBAUzUG/djJDE5vkaqTAs8IGfvasrdFhVX6npTzcSgiRX94W5WLx7G+hAYfxZljo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBCLVfKmZakXH9EFVDWubkrs+bVe2oFnVc804wWYVYQVRxaZmG
-	hW22X6r0DW1rdsKAHrdGkZAvijYuiN8krXcP/yWNTf3UxjB8cTB2WXBp
-X-Gm-Gg: ASbGncsnl8Eif9GhU636MO/5++bDs1lzIc1IeIzGoh2iAGqTZWBSeqc6k5wFrHEsYnD
-	5biTPEmVGyDn3av5q9IbAxKErpx3Tk80kLMdKRQMIsP7LeuJHOy22hLaX4HqZ8k5IF5G7Oz0Qx3
-	QqbYFaU+qrwjZLIt+3cpzC1nSugRF9ZRTk9sf+040loUiUwyx3enZJWDuZ34xUNnXtk+l+7tf1v
-	wXDHM2UaxQKsh0v1U107k20NK9baTHu9WPAN7bUGs5vIcrOidX76sV3ss0Daq1LOcZs9o6A1ybd
-	9LK3NlAQfmOA3NXE+bnzUauJP2wJEcpPRSO291sn
-X-Google-Smtp-Source: AGHT+IG2U7sxwRFJgIe+wXnLV5jDUaFc12c2xgUl6sDvdj2Uc3RTKkIChBO0snB+hq8AiC8DumV1uA==
-X-Received: by 2002:a5d:5f84:0:b0:3a4:e706:52f5 with SMTP id ffacd0b85a97d-3a4f7a4b4e2mr4055593f8f.13.1748638012631;
-        Fri, 30 May 2025 13:46:52 -0700 (PDT)
-Received: from [10.0.1.162] ([2001:871:22a:cd68::171c])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-450d7fa21e4sm28045405e9.11.2025.05.30.13.46.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 May 2025 13:46:52 -0700 (PDT)
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-Date: Fri, 30 May 2025 22:46:29 +0200
-Subject: [PATCH v4 3/3] rust: miscdevice: adjust the rust_misc_device
- sample to use RegistrationData.
+        d=1e100.net; s=20230601; t=1748638403; x=1749243203;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vTQhwZuH1D3pG1/efE1/+CfG22aLhAJyJR5QOwhnJto=;
+        b=PvOoMktR74kJ1YQ1Ga3LZv4+yW2MGVXZK2raJKWxscj2AtnDTjaCClfx0ZgrBRsBKl
+         TTasaypf7EHPGdiwKVeSm44K1vrPHThS35pQqiPQi6zQ3ubn9l/D7BSg9syuqxmK/kOF
+         /KJUp8Neu+Q5AQXj2ELeWMEyxUnqCQ7wbpat3dNPloUliunblr07gfS9nLha+YlJUafS
+         kf/oL1evZlAMaMAWaG6DXyKtu0gxsc65cyU4dsBWYnfzUozWjk6lSkzCGgfeGNVLVDKW
+         Q52sd6Yafcwo7PeortA04MS+yqWvNCt4FUh7rgHtNug1kfLSoXVkjxLpyfwKArzDxIE1
+         zLgg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAVF2moZnpGp0/zWSZ5Q5Lh2T6zYEMmTbP8obaXHouFvCOqx0sXh3K6q+ozwKFO4YRmqBVzjpvDmK9fV8=@vger.kernel.org, AJvYcCUwsYgIn1A+uXjSJ3MA2NsDReashsYid7CUzUZDk0119lV5pbF6iBYDV/6o4fue5NlMSNUfccIdoMeEHyOakHM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykBKSm2+vuMQBEec0TVpFFFMmQW3q+gWxeXShA9MQpipI3l4qL
+	ceguXCt8qdrjZcWPhj6sHKtquUOm/+fMY6XS8aV1oN+WcWw3dz6paiX0
+X-Gm-Gg: ASbGncvh7MfEXih7izGzu+a1kELAInMTVZAF9JtbnK8PTRHkqlETOyAWrNQEAzTUalu
+	MPoQUKZdBgDl2WoUn/YuHfM8Y9LUTSaSCW2Q3p0TlPXcdFk5HRSHTaMczWf0KAaMNF0y1vZtlVM
+	Vl/DXtJe3tpmOxZQPGpU7/PHcmaIoYrnr/99cXmh3Iib1w4EMfH3ouqTX9+3f+iOtpZaxkGZMSk
+	qBxt+xU3UHpiDOY3RrpMt34oMzupdQjtkunU2ACJ9b4jKASER0Ukx1fGM8IktakWkEMxlyolBE6
+	0yQfxdwR73/8EdCue8fudwNSI+G1CXHffUAKUHEfLcAn7L+f48fnOIEM4cdtAYTU
+X-Google-Smtp-Source: AGHT+IFmAiP1RxGGJAA9EDRk9rB/7AW5wQ90IzgbMxbykuqqcsbgSu4G72rFo2Oq2y7hQkDfe3RR2A==
+X-Received: by 2002:a05:600c:5392:b0:441:d2d8:bd8b with SMTP id 5b1f17b1804b1-450d653615emr47615675e9.8.1748638402920;
+        Fri, 30 May 2025 13:53:22 -0700 (PDT)
+Received: from ?IPV6:2001:871:22a:cd68::171c? ([2001:871:22a:cd68::171c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe73fbcsm5746401f8f.48.2025.05.30.13.53.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 May 2025 13:53:22 -0700 (PDT)
+Message-ID: <fa66bd89-e52b-45ef-969c-c6f147f20185@gmail.com>
+Date: Fri, 30 May 2025 22:53:21 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250530-b4-rust_miscdevice_registrationdata-v4-3-d313aafd7e59@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] rust: implement `Wrapper<T>` for `Opaque<T>`
+To: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Benno Lossin <lossin@kernel.org>
+Cc: =?UTF-8?Q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250530-b4-rust_miscdevice_registrationdata-v4-0-d313aafd7e59@gmail.com>
-In-Reply-To: <20250530-b4-rust_miscdevice_registrationdata-v4-0-d313aafd7e59@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Benno Lossin <lossin@kernel.org>, Benno Lossin <lossin@kernel.org>
-Cc: =?utf-8?q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Christian Schrefl <chrisi.schrefl@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1748638009; l=8048;
- i=chrisi.schrefl@gmail.com; s=20250119; h=from:subject:message-id;
- bh=Tl9KVLjAYo8nLG7kxM/4N+/E474ZkjS1L1eq4887tp0=;
- b=NQY75oA+Cqbyk6jh52HUGfjBuBmiXt2Cs4Heq8BWGIpSE/uxLWmKPQ+zBMkQk/0bOf7QFAIYR
- 2ZgEtrbnvqdDZ7CxWjRzmpmrgf8u3CWRrUjxw3xoVP6u3+OsHXFyYwe
-X-Developer-Key: i=chrisi.schrefl@gmail.com; a=ed25519;
- pk=EIyitYCrzxWlybrqoGqiL2jyvO7Vp9X40n0dQ6HE4oU=
+ <20250530-b4-rust_miscdevice_registrationdata-v4-1-d313aafd7e59@gmail.com>
+Content-Language: en-US, de-DE
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <20250530-b4-rust_miscdevice_registrationdata-v4-1-d313aafd7e59@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add a second mutex to the RustMiscDevice, which is shared between all
-instances of the device using an Arc and the RegistrationData of
-MiscDeviceRegistration.
+On 30.05.25 10:46 PM, Christian Schrefl wrote:
+> Moves the implementation for `pin-init` from an associated function
+> to the trait function of the `Wrapper` trait and extends the
+> implementation to support pin-initializers with error types.
+> 
+> Adds a use for the `Wrapper` trait in `revocable.rs`, to use the new
+> `pin-init` function. This is currently the only usage in the kernel.
+> 
+> Reviewed-by: Gerald Wisböck <gerald.wisboeck@feather.ink>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+> ---
 
-This is mostly to demonstrate the capability to share data in this way.
+Danilo, FYI this is basically a patch from my `UnsafePinned`
+series [0] that I've used instead of your patch [1] that does something similar.
+(I've only dropped `the call is infallible` from the safety
+comment like in your patch since I missed that before).
 
-Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
----
- samples/rust/rust_misc_device.rs | 120 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 110 insertions(+), 10 deletions(-)
+Let me know if you want me to handle this any different.
 
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index 67a6172fbbf72dd42a1b655f5f5a782101432707..3c96cf8fe747427106f2e436c3dba33008c7fd53 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -18,6 +18,8 @@
- //! #define RUST_MISC_DEV_HELLO _IO('|', 0x80)
- //! #define RUST_MISC_DEV_GET_VALUE _IOR('|', 0x81, int)
- //! #define RUST_MISC_DEV_SET_VALUE _IOW('|', 0x82, int)
-+//! #define RUST_MISC_DEV_GET_SHARED_VALUE _IOR('|', 0x83, int)
-+//! #define RUST_MISC_DEV_SET_SHARED_VALUE _IOW('|', 0x84, int)
- //!
- //! int main() {
- //!   int value, new_value;
-@@ -86,6 +88,62 @@
- //!     return -1;
- //!   }
- //!
-+//!   value++;
-+//!
-+//!   // Set shared value to something different
-+//!   printf("Submitting new shared value (%d)\n", value);
-+//!   ret = ioctl(fd, RUST_MISC_DEV_SET_SHARED_VALUE, &value);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to submit new value");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   // Close the device file
-+//!   printf("Closing /dev/rust-misc-device\n");
-+//!   close(fd);
-+//!
-+//!   // Open the device file again
-+//!   printf("Opening /dev/rust-misc-device again for reading\n");
-+//!   fd = open("/dev/rust-misc-device", O_RDWR);
-+//!   if (fd < 0) {
-+//!     perror("open");
-+//!     return errno;
-+//!   }
-+//!
-+//!   // Ensure new value was applied
-+//!   printf("Fetching new value\n");
-+//!   ret = ioctl(fd, RUST_MISC_DEV_GET_SHARED_VALUE, &new_value);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to fetch the new value");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   if (value != new_value) {
-+//!     printf("Failed: Committed and retrieved values are different (%d - %d)\n",
-+//!            value, new_value);
-+//!     close(fd);
-+//!     return -1;
-+//!   }
-+//!
-+//!   value = 0;
-+//!   // Ensure non-shared value is still 0
-+//!   printf("Fetching new value\n");
-+//!   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &new_value);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to fetch the new value");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   if (value != new_value) {
-+//!     printf("Failed: Committed and retrieved values are different (%d - %d)\n",
-+//!            value, new_value);
-+//!     close(fd);
-+//!     return -1;
-+//!   }
-+//!
- //!   // Close the device file
- //!   printf("Closing /dev/rust-misc-device\n");
- //!   close(fd);
-@@ -94,7 +152,6 @@
- //!   return 0;
- //! }
- //! ```
--
- use core::pin::Pin;
- 
- use kernel::{
-@@ -105,7 +162,7 @@
-     miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
-     new_mutex,
-     prelude::*,
--    sync::Mutex,
-+    sync::{Arc, Mutex},
-     types::ARef,
-     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
- };
-@@ -113,6 +170,8 @@
- const RUST_MISC_DEV_HELLO: u32 = _IO('|' as u32, 0x80);
- const RUST_MISC_DEV_GET_VALUE: u32 = _IOR::<i32>('|' as u32, 0x81);
- const RUST_MISC_DEV_SET_VALUE: u32 = _IOW::<i32>('|' as u32, 0x82);
-+const RUST_MISC_DEV_GET_SHARED_VALUE: u32 = _IOR::<i32>('|' as u32, 0x83);
-+const RUST_MISC_DEV_SET_SHARED_VALUE: u32 = _IOW::<i32>('|' as u32, 0x84);
- 
- module! {
-     type: RustMiscDeviceModule,
-@@ -130,14 +189,17 @@ struct RustMiscDeviceModule {
- 
- impl kernel::InPlaceModule for RustMiscDeviceModule {
-     fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
--        pr_info!("Initialising Rust Misc Device Sample\n");
-+        pr_info!("Initializing Rust Misc Device Sample\n");
- 
-         let options = MiscDeviceOptions {
-             name: c_str!("rust-misc-device"),
-         };
- 
-         try_pin_init!(Self {
--            _miscdev <- MiscDeviceRegistration::register(options, ()),
-+            _miscdev <- MiscDeviceRegistration::register(
-+                options,
-+                Arc::pin_init(new_mutex!(Inner { value: 0_i32 }), GFP_KERNEL)?
-+            ),
-         })
-     }
- }
-@@ -148,8 +210,9 @@ struct Inner {
- 
- #[pin_data(PinnedDrop)]
- struct RustMiscDevice {
-+    shared: Arc<Mutex<Inner>>,
-     #[pin]
--    inner: Mutex<Inner>,
-+    unique: Mutex<Inner>,
-     dev: ARef<Device>,
- }
- 
-@@ -157,7 +220,7 @@ struct RustMiscDevice {
- impl MiscDevice for RustMiscDevice {
-     type Ptr = Pin<KBox<Self>>;
- 
--    type RegistrationData = ();
-+    type RegistrationData = Arc<Mutex<Inner>>;
- 
-     fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
-         let dev = ARef::from(misc.device());
-@@ -167,7 +230,8 @@ fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Se
-         KBox::try_pin_init(
-             try_pin_init! {
-                 RustMiscDevice {
--                    inner <- new_mutex!( Inner{ value: 0_i32 } ),
-+                    shared: misc.data().clone(),
-+                    unique <- new_mutex!(Inner { value: 0_i32 }),
-                     dev: dev,
-                 }
-             },
-@@ -183,6 +247,12 @@ fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result
-         match cmd {
-             RUST_MISC_DEV_GET_VALUE => me.get_value(UserSlice::new(arg, size).writer())?,
-             RUST_MISC_DEV_SET_VALUE => me.set_value(UserSlice::new(arg, size).reader())?,
-+            RUST_MISC_DEV_GET_SHARED_VALUE => {
-+                me.get_shared_value(UserSlice::new(arg, size).writer())?
-+            }
-+            RUST_MISC_DEV_SET_SHARED_VALUE => {
-+                me.set_shared_value(UserSlice::new(arg, size).reader())?
-+            }
-             RUST_MISC_DEV_HELLO => me.hello()?,
-             _ => {
-                 dev_err!(me.dev, "-> IOCTL not recognised: {}\n", cmd);
-@@ -193,7 +263,6 @@ fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result
-         Ok(0)
-     }
- }
--
- #[pinned_drop]
- impl PinnedDrop for RustMiscDevice {
-     fn drop(self: Pin<&mut Self>) {
-@@ -204,7 +273,7 @@ fn drop(self: Pin<&mut Self>) {
- impl RustMiscDevice {
-     fn set_value(&self, mut reader: UserSliceReader) -> Result<isize> {
-         let new_value = reader.read::<i32>()?;
--        let mut guard = self.inner.lock();
-+        let mut guard = self.unique.lock();
- 
-         dev_info!(
-             self.dev,
-@@ -217,7 +286,38 @@ fn set_value(&self, mut reader: UserSliceReader) -> Result<isize> {
-     }
- 
-     fn get_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
--        let guard = self.inner.lock();
-+        let guard = self.unique.lock();
-+        let value = guard.value;
-+
-+        // Free-up the lock and use our locally cached instance from here
-+        drop(guard);
-+
-+        dev_info!(
-+            self.dev,
-+            "-> Copying data to userspace (value: {})\n",
-+            &value
-+        );
-+
-+        writer.write::<i32>(&value)?;
-+        Ok(0)
-+    }
-+
-+    fn set_shared_value(&self, mut reader: UserSliceReader) -> Result<isize> {
-+        let new_value = reader.read::<i32>()?;
-+        let mut guard = self.shared.lock();
-+
-+        dev_info!(
-+            self.dev,
-+            "-> Copying data from userspace (value: {})\n",
-+            new_value
-+        );
-+
-+        guard.value = new_value;
-+        Ok(0)
-+    }
-+
-+    fn get_shared_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
-+        let guard = self.shared.lock();
-         let value = guard.value;
- 
-         // Free-up the lock and use our locally cached instance from here
+[0]: https://lore.kernel.org/rust-for-linux/20250511-rust_unsafe_pinned-v4-2-a86c32e47e3d@gmail.com/
+[1]: https://lore.kernel.org/rust-for-linux/20250530142447.166524-2-dakr@kernel.org/
 
--- 
-2.49.0
+Cheers
+Christian
+
+>  rust/kernel/revocable.rs |  2 ++
+>  rust/kernel/types.rs     | 25 +++++++++++++------------
+>  2 files changed, 15 insertions(+), 12 deletions(-)
+> 
+> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> index 1e5a9d25c21b279b01f90b02997492aa4880d84f..4db68ea2207ebafcc09d082fdc1e281f31846a38 100644
+> --- a/rust/kernel/revocable.rs
+> +++ b/rust/kernel/revocable.rs
+> @@ -5,6 +5,8 @@
+>  //! The [`Revocable`] type wraps other types and allows access to them to be revoked. The existence
+>  //! of a [`RevocableGuard`] ensures that objects remain valid.
+>  
+> +use pin_init::Wrapper;
+> +
+>  use crate::{bindings, prelude::*, sync::rcu, types::Opaque};
+>  use core::{
+>      marker::PhantomData,
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 86562e738eac85480a048041e979335b81c5e3c9..7ab70d5f76099c3442dce5b02c6b226fc74c851e 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -9,7 +9,7 @@
+>      ops::{Deref, DerefMut},
+>      ptr::NonNull,
+>  };
+> -use pin_init::{PinInit, Zeroable};
+> +use pin_init::{PinInit, Wrapper, Zeroable};
+>  
+>  /// Used to transfer ownership to and from foreign (non-Rust) languages.
+>  ///
+> @@ -345,17 +345,6 @@ pub const fn uninit() -> Self {
+>          }
+>      }
+>  
+> -    /// Create an opaque pin-initializer from the given pin-initializer.
+> -    pub fn pin_init(slot: impl PinInit<T>) -> impl PinInit<Self> {
+> -        Self::ffi_init(|ptr: *mut T| {
+> -            // SAFETY:
+> -            //   - `ptr` is a valid pointer to uninitialized memory,
+> -            //   - `slot` is not accessed on error; the call is infallible,
+> -            //   - `slot` is pinned in memory.
+> -            let _ = unsafe { PinInit::<T>::__pinned_init(slot, ptr) };
+> -        })
+> -    }
+> -
+>      /// Creates a pin-initializer from the given initializer closure.
+>      ///
+>      /// The returned initializer calls the given closure with the pointer to the inner `T` of this
+> @@ -406,6 +395,18 @@ pub const fn raw_get(this: *const Self) -> *mut T {
+>          UnsafeCell::raw_get(this.cast::<UnsafeCell<MaybeUninit<T>>>()).cast::<T>()
+>      }
+>  }
+> +impl<T> Wrapper<T> for Opaque<T> {
+> +    /// Create an opaque pin-initializer from the given pin-initializer.
+> +    fn pin_init<E>(slot: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+> +        Self::try_ffi_init(|ptr: *mut T| {
+> +            // SAFETY:
+> +            //   - `ptr` is a valid pointer to uninitialized memory,
+> +            //   - `slot` is not accessed on error,
+> +            //   - `slot` is pinned in memory.
+> +            unsafe { PinInit::<T, E>::__pinned_init(slot, ptr) }
+> +        })
+> +    }
+> +}
+>  
+>  /// Types that are _always_ reference counted.
+>  ///
+> 
 
