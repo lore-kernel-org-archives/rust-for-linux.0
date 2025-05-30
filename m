@@ -1,190 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275231B808;
-	Fri, 30 May 2025 20:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CD922B8C6;
+	Fri, 30 May 2025 20:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748636143; cv=none; b=Xhpth2H8U4IMweqjihs5QV4bGft/GfV8/ZOAS9XyOVoNDg+ilFYmRgIalYQe376wu/Fxa0Oxdh3o+AhpDRC/B15YiBLjQ1HKpnp/F4qF4q8alJghxcRBFPKjv+Ms5HmwT96ltl46SPhAOghQY74gfoEBhSQBF1J2x2jJ0P/yK4s=
+	t=1748636581; cv=none; b=m2yAaR83tgkDB9Lze1phEmKytRDc4FWTle+/tolWyQpk1RTNZGQkXSvieATQFKYoK+EFqANfLz36yrtGrAKO1k8kdIPVdmlKvnLFVll1afEPB8Jo3+KolMjryli1Y8vtv4Lmt9aS0Vps1RYcLwshQGGg0m2EAXwfswVp+NO1xYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748636143; c=relaxed/simple;
-	bh=KrOIZHhxSkUJP3vmGlK2SK7rs9E8suR8dQyCNjZZ+6A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=hGAm2SqGBu1o9QJv7Guo6Pcd5G8Lt3jYJm5JTPcchiGMXVyigb3k8d0v9lEkgBHtaur1mzxE7+KT+doaZTvhH0Tzzox7wAPFiowq0bORr+D1EODVXu6oYZZh5xjqZ+LyfQqHY6azHjYWx1jwVnOFYY6xRFbUBnL++Rwh9rvfeyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rPb25AMk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748636581; c=relaxed/simple;
+	bh=fjpOAmZBAdbVoTbSpMSnKF6D7WZWE7u5WiUuXNJJZSA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mAGf9dV2sKfbG3HSYvivlXdLxDAfzEH5L+sa4VECk8Vnn6oJolBhAh4ARwj17isYygUxue8EeBqbjve2A9P1sHE1t/d1jJx+E5YjWVM1SPg7nF0gQseuXFfdnccU6PjU5eq7WzfAokNuuz829asmtui9lZKS12NdBwugoAImRSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mUVvmowz; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rPb25AMk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C649C4CEE9;
-	Fri, 30 May 2025 20:15:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748636142;
-	bh=KrOIZHhxSkUJP3vmGlK2SK7rs9E8suR8dQyCNjZZ+6A=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=rPb25AMkFBCUgpeNqxvLQ29tcXSqi2ZrVODYBx08eYeYlpeY79vvJDhTMV/V/9aBV
-	 w0NaYqUx1rmhMP7ubS/4sqA1ciI/oGjXsoQNy07F3omYK4rDckGaGGS6F7yTKBz4JA
-	 zCGynzbxzMSTd7DAS1/7/KpHYteceSiPgJ538iJ3PrKBHxYiS/TctRpLs8yOm0PajF
-	 kTVtOHvl8r/6FZXTyymwcWguzQca4k48EfW3yY/lA1GTPZA7X1kjdKYm56YU56WbiQ
-	 D2v9kIqtK0uxhktn9GQniQ+UoT93Leevv8g0BCTXNCB7ZhRY20+DMI2TRupCmDMs4S
-	 PNXlyIPsjzUcw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mUVvmowz"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43edecbfb94so25482735e9.1;
+        Fri, 30 May 2025 13:22:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748636578; x=1749241378; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LPBFbYDATVBGoB/V8gk2ImwmUCtuFjEx3Hr9OaoPFAI=;
+        b=mUVvmowzyn8RlnY6quiqvf7S5dNloHxTcezTjOizazT3ncyiSTlIZUQz0FY0IF7As1
+         9nFuYY/662Bw+rmr7cmqUxRcsUXnYk/jJxbaJ4glhcGOZ1jvVR+kjKuNUm0JcHIXJ5eM
+         +sydjCx4MPMuejY/5hC44h7FVQEnLeQnxyvo5PJcCswplMfmZx/AMR2N2tQxntq777jO
+         x9l7/2P4fHx+vureohUIWhI3bgzp1bJcQieuJQ8WjUm8sOrKu5P8mX09j28/7mZXklIL
+         uT6tOIu49rCd4iF2tzCDFS7DAvMsCDvpuYztsMHU70N92hiX384SwVduXywQdCApuzMh
+         xTGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748636578; x=1749241378;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LPBFbYDATVBGoB/V8gk2ImwmUCtuFjEx3Hr9OaoPFAI=;
+        b=O/qwwvq92uPtMHU0QHH/hMxxF9PdoKp3ytuvfOWFOVgrVxnB8jTwok/4PH4R1j2JfR
+         +mElBJKQtnm+DjveiCSC83ONZAx8iS2SLbvqsAVxjyQ77Iw3ueDcHh8i4iIqNLv46AXI
+         Z9s3EroX8f874K6gnDdlABUUO5KCzo6REM1o4V0sWUdxRboz6UTW3PNlPcEs8TfEm+lo
+         uX0TvI77XKPnnBAE+53gEEuI9RDidN+S27qpLhvPmHKl6ZcaxZ63rpxPrX8DVAfPoTHJ
+         aJq6igTO0Eeapi9zRM7u+FykNjNT0K8aaF6gEUARI5EWLSMD5wY6zbjaTKzKG30gv1/E
+         uHbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuB+vzrT5PMb8/eKte/1moIkh8su2cY0foL0v/OUdeCgSyJPK7JDHLMMQQRGpc6509Hn4j9NMsUsTZJ3A=@vger.kernel.org, AJvYcCXNGztbKfOVW89Umv/K/jabgSrfA3AJOZKWV+21/HMo/gXfPe7cjhPNZNpQ7aaQUxLDBwS9hI57Vx84gCLZNo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDy00EwqAmhapa1cpMaLl6H4EhEPl0IuwGbho5/ZDI5SA6Axl7
+	68EFUrENSZ4h8niqXNLTxLlbl6OMYgtGX1L+dWiZNbxWazxwh6uhXIpl
+X-Gm-Gg: ASbGncuPIADD6E/RvLYfvfmEmbMGvUlaSnn8vE4+lWLZWkD0pnvG3rSkEsVXzyFdg7x
+	Ci6Lqu8jcdFfRpruwFNHCSa/vZ82HeZyfKPhlCirR7AtPAIBugSaUHeIe5Tm7y7q+5IST355r/R
+	7X7/LO7FM83ClhL5S7dIEPcGa0cmjoP7EcX5IHWq44DDFUYA9b/6omVL1PRJXjcCdcHH/Preldp
+	7iG16CdN1cqa808f9vL7v7mTFin+vnbkz398nlsqySYtZ7nqnCMILTxlTWhyiOiZ1qIzt4OhotW
+	m+09LChP/X2U4F/AlXbbNGgrKkw76hJGb1yqVWFe3XxOssgQ68LCk3jZcTe6+BCJ
+X-Google-Smtp-Source: AGHT+IG8RDi2BeZKsFRzuE7h/ot3AqyMQo054BxblMbsLjyZX8+PqOO+XyTTQHOqF7v/XhIwYBsBRg==
+X-Received: by 2002:a05:600c:3b0d:b0:450:d61f:dd45 with SMTP id 5b1f17b1804b1-450d64cef2bmr48133255e9.4.1748636577553;
+        Fri, 30 May 2025 13:22:57 -0700 (PDT)
+Received: from ?IPV6:2001:871:22a:cd68::171c? ([2001:871:22a:cd68::171c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d80136ffsm27766085e9.40.2025.05.30.13.22.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 30 May 2025 13:22:57 -0700 (PDT)
+Message-ID: <0dfe6958-1dc8-4e36-aab8-e83a6da4d0e0@gmail.com>
+Date: Fri, 30 May 2025 22:22:55 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] rust: add UnsafePinned type
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Sky <sky@sky9.dev>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ =?UTF-8?Q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ llvm@lists.linux.dev
+References: <20250511-rust_unsafe_pinned-v4-0-a86c32e47e3d@gmail.com>
+ <20250511-rust_unsafe_pinned-v4-1-a86c32e47e3d@gmail.com>
+ <CANiq72n0EcibX3Vx95tiPEkd04DA4hjY-TJQs9YSOmHj=VZ_5g@mail.gmail.com>
+Content-Language: en-US, de-DE
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <CANiq72n0EcibX3Vx95tiPEkd04DA4hjY-TJQs9YSOmHj=VZ_5g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 30 May 2025 22:15:37 +0200
-Message-Id: <DA9RRZVPZSMW.1LGW9H4G0RLT5@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 7/7] rust: sample: misc: implement device driver sample
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <chrisi.schrefl@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250530142447.166524-1-dakr@kernel.org>
- <20250530142447.166524-8-dakr@kernel.org>
-In-Reply-To: <20250530142447.166524-8-dakr@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri May 30, 2025 at 4:24 PM CEST, Danilo Krummrich wrote:
-> In order to demonstrate and test a MiscDeviceRegistration with a parent
-> device, introduce CONFIG_SAMPLE_RUST_MISC_DEVICE_WITH_PARENT.
->
-> If CONFIG_SAMPLE_RUST_MISC_DEVICE_WITH_PARENT=3Dy the misc device sample
-> is initialized with a parent device (faux), otherwise it is initialized
-> without a parent device, i.e. the exact same way as without this patch.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  samples/rust/Kconfig             |  8 +++++
->  samples/rust/rust_misc_device.rs | 50 +++++++++++++++++++++++++++++---
->  2 files changed, 54 insertions(+), 4 deletions(-)
->
-> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> index b1006ab4bc3c..9948ec0939ef 100644
-> --- a/samples/rust/Kconfig
-> +++ b/samples/rust/Kconfig
-> @@ -30,6 +30,14 @@ config SAMPLE_RUST_MISC_DEVICE
-> =20
->  	  If unsure, say N.
-> =20
-> +config SAMPLE_RUST_MISC_DEVICE_WITH_PARENT
-> +	bool "Create a misc device with a parent device"
-> +	depends on SAMPLE_RUST_MISC_DEVICE
-> +	default n
-> +	help
-> +	  Say Y here if you want the misc device sample to create a misc
-> +	  device with a parent device.
-> +
+On 20.05.25 11:26 PM, Miguel Ojeda wrote:
+> On Sun, May 11, 2025 at 8:21 PM Christian Schrefl
+> <chrisi.schrefl@gmail.com> wrote:
+>>
+>> Signed-off-by: Sky <sky@sky9.dev>
+> 
+> Apologies for not noticing this earlier...
+> 
+> Since this is a Signed-off-by, the DCO applies, and it requires that
+> the name is a "known identity":
+> 
+>     https://docs.kernel.org/process/submitting-patches.html#developer-s-certificate-of-origin-1-1
+> 
+> Sky: is that name one you use to sign paperwork etc.? If so, that is
+> fine (and apologies in that case!) -- please let me know. If not,
+> please feel free to ping me in private if needed.
 
-Why not create a separate file? The `cfg`s might confuse newcomers
-looking at the sample.
+Since it seems like Sky has not responded for 10 days
+is should be fine to just drop their COB & SOB.
 
->  config SAMPLE_RUST_PRINT
->  	tristate "Printing macros"
->  	help
-> diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_de=
-vice.rs
-> index 9bf1a0f64e6e..175638d6d341 100644
-> --- a/samples/rust/rust_misc_device.rs
-> +++ b/samples/rust/rust_misc_device.rs
-> @@ -167,6 +167,9 @@
->      uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
->  };
-> =20
-> +#[cfg(CONFIG_SAMPLE_RUST_MISC_DEVICE_WITH_PARENT)]
-> +use kernel::faux;
-> +
->  const RUST_MISC_DEV_HELLO: u32 =3D _IO('|' as u32, 0x80);
->  const RUST_MISC_DEV_GET_VALUE: u32 =3D _IOR::<i32>('|' as u32, 0x81);
->  const RUST_MISC_DEV_SET_VALUE: u32 =3D _IOW::<i32>('|' as u32, 0x82);
-> @@ -181,19 +184,33 @@
->      license: "GPL",
->  }
-> =20
-> +#[cfg(not(CONFIG_SAMPLE_RUST_MISC_DEVICE_WITH_PARENT))]
->  #[pin_data]
->  struct RustMiscDeviceModule {
->      #[pin]
->      _miscdev: MiscDeviceRegistration<RustMiscDevice>,
->  }
-> =20
-> -impl kernel::InPlaceModule for RustMiscDeviceModule {
-> -    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-> +#[cfg(CONFIG_SAMPLE_RUST_MISC_DEVICE_WITH_PARENT)]
-> +struct RustMiscDeviceModule {
-> +    _faux: faux::Registration,
-> +    _miscdev: Pin<KBox<MiscDeviceRegistration<RustMiscDevice>>>,
-> +}
-> +
-> +impl RustMiscDeviceModule {
-> +    fn init() -> MiscDeviceOptions {
->          pr_info!("Initializing Rust Misc Device Sample\n");
-> =20
-> -        let options =3D MiscDeviceOptions {
-> +        MiscDeviceOptions {
->              name: c_str!("rust-misc-device"),
-> -        };
-> +        }
-> +    }
-> +}
-> +
-> +#[cfg(not(CONFIG_SAMPLE_RUST_MISC_DEVICE_WITH_PARENT))]
-> +impl kernel::InPlaceModule for RustMiscDeviceModule {
-> +    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-> +        let options =3D Self::init();
-> =20
->          try_pin_init!(Self {
->              _miscdev <- MiscDeviceRegistration::register(
-> @@ -205,6 +222,31 @@ fn init(_module: &'static ThisModule) -> impl PinIni=
-t<Self, Error> {
->      }
->  }
-> =20
-> +#[cfg(CONFIG_SAMPLE_RUST_MISC_DEVICE_WITH_PARENT)]
-> +impl kernel::Module for RustMiscDeviceModule {
-> +    fn init(_module: &'static ThisModule) -> Result<Self> {
-> +        let options =3D Self::init();
-> +        let faux =3D faux::Registration::new(c_str!("rust-misc-device-sa=
-mple"), None)?;
-> +
-> +        // For every other bus, this would be called from Driver::probe(=
-), which would return a
-> +        // `Result<Pin<KBox<T>>>`, but faux always binds to a "dummy" dr=
-iver, hence probe() is
+I only offered to add it since the upstream implementation
+that this is based on was entirely done by them.
 
-Not clear what `T` is supposed to be, do you mean `Self`?
+If you want to wait for some more time that's fine as well.
 
-> +        // not required.
-> +        let misc =3D KBox::pin_init(
-> +            MiscDeviceRegistration::register(
-> +                options,
-> +                Arc::pin_init(new_mutex!(Inner { value: 0_i32 }), GFP_KE=
-RNEL),
-> +                Some(faux.as_ref()),
-> +            ),
-> +            GFP_KERNEL,
-> +        )?;
-
-You could also initialize this module variation in-place. (this would
-also require the pin-init change to reference initialized fields)
-
----
-Cheers,
-Benno
-
-> +
-> +        Ok(Self {
-> +            _faux: faux,
-> +            _miscdev: misc,
-> +        })
-> +    }
-> +}
-> +
->  struct Inner {
->      value: i32,
->  }
-
+Cheers
+Christian
