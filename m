@@ -1,93 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B248B18991E;
-	Fri, 30 May 2025 05:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3BB28E7;
+	Fri, 30 May 2025 06:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748581987; cv=none; b=ohUoabE+O0dKI/9gOInaOtKnn9Eyh3tv2odSEasnP6CDGFO4LyXGrS816aqsn/WKcy7jNDx8Rs595f/Ots5h/mg4g86MnCN10eN3EDulzdfv7x0XRiqcS8HGJPQT8JzHUOQhQW1m6pmNzLBxPvHHsU+41kOg0PFjzbwtv1tsqKs=
+	t=1748586103; cv=none; b=AyjV/XiHcM+2XrfLBapbJcvQNF6Ht+j/O4Qt/RgHnJcMyWZv8zGk3oyXGfUBYnfmh4RohydXY/WfL4ThYitfyqU+H8W2H3UOhHbNUUygISSGxXmgnn/fU4vjfdTJ/8u9oKsro910BONldZQGjN2GtGJj7dzhUkXtXNdlY4VDEnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748581987; c=relaxed/simple;
-	bh=ABXcBcI46740XMmqpKEU0ZDPqOeZjAzBxnVDnWBJ4iA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KyIzcccRnmwaov5f10rtt3yo4hSN/7cKpbbQEqkASwUpRXrPpEIZZcdkmzNM0y+Bk5JqnUwOyYKcH/N7vx7By+NFGU+6Uy1x4rjW+jLotJ/vEkgxHR25GAutoO1B3k9t2rDwzOEnOmK6eKCNsv6GN4QE0Tle/3qorKFbZHMSo2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fx7jl9Ld; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748586103; c=relaxed/simple;
+	bh=VpqxYC41wgu2mTGNJCW2xRMKvPZQZvoCbvlcteSN3Mg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tvGWSxnw8S/M9Wk1C4kqaaUdFZxKBAGmbn7OSJkFaxKv5kndcTnwW3Q2od+wD8JIzE8aygtq8ZMM4usYi+LX8xM6uuwxnjdj0+N7uHSFqUpXd/dqyRrDG5yMYef5hNKjbZi9kVVQqSnUPHU8Nk88c5edJaTPl5Wr3qmvAw9D920=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxRmOqQs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fx7jl9Ld"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39A9C4CEE9;
-	Fri, 30 May 2025 05:13:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748581987;
-	bh=ABXcBcI46740XMmqpKEU0ZDPqOeZjAzBxnVDnWBJ4iA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fx7jl9LdKwwReTtrI7QsT6LFaGn0vvss5pRJ32itsL/OYRvOh1jVYJSTvjGW9D0C/
-	 GOZjyEYHLPX2OImVlIKWgAnKJgI9ClF8qxwldtr6T0Yvb/+aJ+yQc0XqQj1NLWMN2O
-	 2fZsblIl5q/qxmJ8MNfwMJTxizUYJQkzJ7Eoy2wTaTOWCRxVMg6nHI+H9tbKKLnWbZ
-	 R71OVtpCqXEWTKwvI+8c65vXkLRlqn2+E85B56NL0iLqHDDe63mD2BMZ17yoAQXYST
-	 mzQAwkJqU+sh6/TQORT0Ck7ZfHqknyg7VjCcAgqKsHTIwyELFgKh8SV/iNfh6FMmtc
-	 6yzX0sgePbrlw==
-From: Christian Brauner <brauner@kernel.org>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxRmOqQs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6FCC4CEE9;
+	Fri, 30 May 2025 06:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1748586102;
+	bh=VpqxYC41wgu2mTGNJCW2xRMKvPZQZvoCbvlcteSN3Mg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=yxRmOqQsRFjc7gDNI2g03OpZD+lFBwvwN0XmWBxlNazJPwSwW1qNk1YoLRnT9tqz/
+	 HHsfp8mgMmmXbq74XamKoiZ1tKY5CusfrOfmxi3BM4AIVeakL7XNOZpomp5BOujFeq
+	 OqnwHPlz+Y+xagArzFaUnrD1aWN6GVZABJeFz5Ss=
+Date: Fri, 30 May 2025 08:21:39 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Timur Tabi <timur@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Pekka Ristola <pekkarr@protonmail.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: file: mark `LocalFile` as `repr(transparent)`
-Date: Fri, 30 May 2025 07:12:59 +0200
-Message-ID: <20250530-minuten-beheben-df4e8ce17716@brauner>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250527204636.12573-1-pekkarr@protonmail.com>
-References: <20250527204636.12573-1-pekkarr@protonmail.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: add basic ELF sections parser
+Message-ID: <2025053058-siding-emperor-d8fd@gregkh>
+References: <8b14b078-b899-42e8-8522-599daa65bc63@nvidia.com>
+ <2025051647-urology-think-b8e0@gregkh>
+ <D9XMAV4ERYK7.39TLQBLYTX3TU@nvidia.com>
+ <aCc_PSOPkLWTcTru@pollux>
+ <D9XNS413TVXB.3SWWJE4JGEN8B@nvidia.com>
+ <CAOZdJXW+PoFgxH+wPEum-kYvRmSRd8c4kaxvbNAq5dfZJiXapA@mail.gmail.com>
+ <D9Y0VJKOAQAY.2GJSAZ5II54VV@nvidia.com>
+ <DA8G3G918FS4.X8D7PQMT4TGB@nvidia.com>
+ <2025052932-pyramid-unvisited-68f7@gregkh>
+ <DA935OIFBM1H.3CMSHQ46LLG4P@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1335; i=brauner@kernel.org; h=from:subject:message-id; bh=ABXcBcI46740XMmqpKEU0ZDPqOeZjAzBxnVDnWBJ4iA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRY2sVMnL7n9POedeGPm0XmX/9eeusqo0ydab/W1vVcm 2KdvJRudJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzE/Dgjw4M85rkPefVCKxYG nLqu+tv3lrXf5ZsqwRLVutt2BlmVljAyTPl85Pfrn38ybv7abqv1Zn+oyNZPu9NK2lLqjNZVczr bcQMA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DA935OIFBM1H.3CMSHQ46LLG4P@nvidia.com>
 
-On Tue, 27 May 2025 20:48:55 +0000, Pekka Ristola wrote:
-> Unsafe code in `LocalFile`'s methods assumes that the type has the same
-> layout as the inner `bindings::file`. This is not guaranteed by the default
-> struct representation in Rust, but requires specifying the `transparent`
-> representation.
+On Fri, May 30, 2025 at 09:58:02AM +0900, Alexandre Courbot wrote:
+> > But for now, doing it in generic code, that all systems end up loading,
+> > yet very very very few would ever actually use makes no sense.  And
+> > adding it to a driver also doesn't make sense as you can define your
+> > user/kernel api now, it's not set in stone at all given that there is no
+> > existing code merged.
 > 
-> The `File` struct (which also wraps `bindings::file`) is already marked as
-> `repr(transparent)`, so this change makes their layouts equivalent.
-> 
-> [...]
+> Eschewing this from the driver would require duplicating the GSP
+> firmware (a healthy 26MB compressed binary) in linux-firmware to provide
+> both ELF and non-ELF versions of the same code, and also store the other
+> ELF sections as their own files. I expect this to be a hard sell for
+> linux-firmware.
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Why would the linux-firmware people care about the size of firmware
+blobs being given to them?  That's the whole reason for their existance,
+to put them in one place instead of having to download them from random
+locations on the internet, or to have them in the kernel tree itself.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+It's already 300MB or so for the whole project, what's 26MB more?  It's
+not like the collection is ever going to get smaller :)
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+thanks,
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+greg k-h
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/2] rust: file: mark `LocalFile` as `repr(transparent)`
-      https://git.kernel.org/vfs/vfs/c/15ecd83dc062
-[2/2] rust: file: improve safety comments
-      https://git.kernel.org/vfs/vfs/c/946026ba4293
