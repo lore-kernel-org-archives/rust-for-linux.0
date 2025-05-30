@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18FC225412;
-	Fri, 30 May 2025 18:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C72D17A305;
+	Fri, 30 May 2025 18:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748630322; cv=none; b=vFUEQV4FxOvD/kckXRwKJ+UU8ADiPoA3U7nWWSbFj6DrmTgK0DyMeAFppFVLyk+ujZ2mVWIwtD7sMsVNDwghi7YCmIo3HROpFtDK+pjnQESXT5KqvIBuwKFJB0z3EOpq5g1Simv8pUhTuJK7qUU90R3F8+MBMwnBsxSt37y6rxs=
+	t=1748630712; cv=none; b=AJNaOmdlU/Y8/o8tvH77v+Vr3lHDaHEP8Hab81gq/Q9+tshHEDIJkSjPmbZLEYrpVqv9iNRT6RhlwG/ce2NrkD9td/b+Ed0OvBJ0MjPBMzBFrpcE/JhJS+eH7fWPDqlJWf7MEEvYXT3+VbR7uu+u8PR1HNOsCf+rcKK7Sj+oLIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748630322; c=relaxed/simple;
-	bh=Kg5KBVaEBU3PjO2hxbIqIef9RfVpaplA7hMk1GsmEbc=;
+	s=arc-20240116; t=1748630712; c=relaxed/simple;
+	bh=WhTr/vuNP7VQtz2uE8C6WdslFGZO/dmOeZfl4MeTbu8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JhQE4DfRcFTUlOXotN78l0IUibnxc/JiYXxicgcR0C/sPWqJNpQaSTccmYhDrgtNWFYKZG9jkfJrs3sdf0RuOvm7GVyA33OjeJDLDmt8XQKvaYErDBy36er877Pf7nf0ab9ptGgQqWwMVyTOYp3uNzFZ7NuVPRanmL3a9pJ0Jxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a9ygWVM4; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=nt4p0GnA+hFOvh5oe3/WWCLPBQ5YxXs7cPI4iILH8ub1KWjn/RBZDPicv0mV/21NORYTnWDH5cIT/kM4Wd0fGLS0I6IimPd/S5VvhHyIKmSfuhpRR1I+cjXN8/m80aNemJooeY9eYvzyxQzxAeu51q6re9KsI9EUi3GD5D4fCys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t/ViDTBc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a9ygWVM4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74476C4CEE9;
-	Fri, 30 May 2025 18:38:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t/ViDTBc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBD0C4CEE9;
+	Fri, 30 May 2025 18:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748630321;
-	bh=Kg5KBVaEBU3PjO2hxbIqIef9RfVpaplA7hMk1GsmEbc=;
+	s=k20201202; t=1748630710;
+	bh=WhTr/vuNP7VQtz2uE8C6WdslFGZO/dmOeZfl4MeTbu8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a9ygWVM483ysOOejKgo4t5/8UKWf4B8wOVDRT+M1Tm7F4NXMSBNqy9+YA6Pw/t2o7
-	 GWTCQ0gMDB0boA9sZtGxWZkOilIvzLHSlYZdbzLL2wdBy6BEpWHZM5dLKjQ00roJPk
-	 x2JTtYYpOatd8tkfPRENI+zNqS3yEK9dYbmqp3H6z1UoQVcM0Ig7f/puHLRzy4KO4v
-	 UTIZ+FOUAO37/vttn0v9Z+RZlsI29Yq1mvz6FqTJYGu5UhE86pXSKFQtq3E/3/sj4j
-	 HgOaAR2/BfHoij2tvmRpEPtLAB30zXvf3xFfMnisRxWcYk9nV0feHCm/ZgkpFn5mRO
-	 ln0m8LzG2fX2w==
-Date: Fri, 30 May 2025 20:38:35 +0200
+	b=t/ViDTBc8/PRrdguA4+dkYzS8OmAzcxl0kJSoO1PLLF/n4OAzjY8VB7ZzLmmqPQv8
+	 GYwl7S7MAgO8fK2BgqHQ0iFiU/MG0L68gna93GokvTHcNETa03IgOwVkHxIRJF1+ur
+	 emsJ+4c2gcLO9kijDRf2IhjeJCgHCPUDMu5MzF6T68TOSclwCkPP7gKP4xxiz0cRcA
+	 kD/DXb0fRJ2A4dYLQFI6udmwdlEzywKCIhHcxi3SYmSTCo0PWRVmzUbNhfBOzrsLMA
+	 MDtRtLFDwidiqM+3z1MbJucDOadA9X6GcC6Wth+Eae3Jupdo0yyxtP61H9KGvB/uG4
+	 8/o505otO2CXA==
+Date: Fri, 30 May 2025 20:45:05 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Christian Schrefl <chrisi.schrefl@gmail.com>
 Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
@@ -34,11 +34,10 @@ Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
 	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
 	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/7] rust: miscdevice: properly support device drivers
-Message-ID: <aDn7K1FPlFPUsjo0@pollux>
+Subject: Re: [PATCH 0/7] misc device: support device drivers
+Message-ID: <aDn8sSzjNk7gCGn5@pollux>
 References: <20250530142447.166524-1-dakr@kernel.org>
- <20250530142447.166524-6-dakr@kernel.org>
- <726b746e-d2c1-4208-b2cc-d08d24abd7cf@gmail.com>
+ <9e0acb35-7d10-4a8e-b5c6-968d1310146b@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,54 +46,13 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <726b746e-d2c1-4208-b2cc-d08d24abd7cf@gmail.com>
+In-Reply-To: <9e0acb35-7d10-4a8e-b5c6-968d1310146b@gmail.com>
 
-On Fri, May 30, 2025 at 07:35:56PM +0200, Christian Schrefl wrote:
-> On 30.05.25 4:24 PM, Danilo Krummrich wrote:
+Hi Christian,
 
-<snip>
+On Fri, May 30, 2025 at 06:37:29PM +0200, Christian Schrefl wrote:
+> If you want I can send out a new version using `Opaque`.
 
-> > +#[pinned_drop]
-> > +impl<T: MiscDevice> PinnedDrop for RawDeviceRegistration<T> {
-> > +    fn drop(self: Pin<&mut Self>) {
-> > +        // SAFETY: We know that the device is registered by the type invariants.
-> > +        unsafe { bindings::misc_deregister(self.inner.get()) };
-> > +    }> +}
-
-<snip>
-
-> >  #[pinned_drop]
-> >  impl<T: MiscDevice> PinnedDrop for MiscDeviceRegistration<T> {
-> >      fn drop(self: Pin<&mut Self>) {
-> > -        // SAFETY: We know that the device is registered by the type invariants.
-> > -        unsafe { bindings::misc_deregister(self.inner.get()) };
-> > -
-> >          // SAFETY: `self.data` is valid for dropping.
-> >          unsafe { core::ptr::drop_in_place(self.data.get()) };
-> 
-> I think this can race for a use after free.
-> The data gets freed in this `Drop` impl but the `miscdevice_deregister` call will only
-> happen in the `DeviceRegistrationInner` `Drop` implementatation, since the fields 
-> will only be dropped after the `drop` function has executed.
-
-Yes and no. :-) The fun part is that the drop order actually depends on whether
-we have a parent device and use Devres or whether we have no parent device.
-
-In the first case the drop order is correct by chance, due to Devres revoking
-things when the parent device in unbound, which happens before, since the faux
-device is dropped first.
-
-But in general you're right, this needs to be fixed.
-
-> Either  inner: DeviceRegistrationInner<T> needs to be wrapped in a ManuallyDrop and
-> dropped manually,
-> or the Data needs to be wrapped in a type that will automatically drop it (this would
-> be fine with `UnsafePinned`).
-
-There's also option 3), which is moving the drop_in_place() for the registration
-data into RawDeviceRegistration::drop(), right below misc_deregister(), until we
-have `UnsafePinned`.
-
-(This is fine, since RawDeviceRegistration already has (and requires) a pointer
-to the registration data and hence is always embedded in a
-MiscDeviceRegistration.)
+Sounds good, you can also give me a version that you want me to add to this
+series, given that in order to use Opaque you also need the Opaque patch of this
+series. Without you can't pass an impl PinInit<T, Error> to Opaque.
