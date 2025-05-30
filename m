@@ -1,64 +1,64 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D47D21CFF6;
-	Fri, 30 May 2025 16:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F261A5B8B;
+	Fri, 30 May 2025 16:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748621678; cv=none; b=VgTm/RE1dJV2fReEddjAzWAJZTHQT22RemslewdwfUTQ9l4WZsHkhAanOS5DeYyhiUdRNNEwMhlcArzB4DVBOiy/YWLJPhPGDaos0wvBzE4r1M01M4TH7oZCnWkFYQjAak/owR3MlsHMFx9lzCdsgueBxxJMimeWV6nkBWhGbUY=
+	t=1748621740; cv=none; b=jI5DB0omRoa1X10bksc8uPk0nTxYRMMJ/w13B4sOI6AdNEqrontvzQm5hXhSKP1JnG4KwR1k7aXoeYowxu/gcoNQKXFK2aQC2CVlZBSOaep1+4BTGCSu7Ah/LRRKkFpFWfpO7LFVqf3XjCWhMHSenSlZevfnvq9aIiqNYJB7iyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748621678; c=relaxed/simple;
-	bh=07SjjF787R53d2NiXMYqs6iqzev11R/uOyi6Z3gUHuY=;
+	s=arc-20240116; t=1748621740; c=relaxed/simple;
+	bh=nMHhGzKx6l1yFtYUlEhM7VyCxgik5nVNLeVZurJT0e8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mp5T9+A8Vuzm0IoIUHBJamKl/LYXDrYCCbXC0+6J8GTVdi6MHp7WsYT7GgauOCMJgKmiejV66UjtOIC/7/BCheaWOjuf/ImZtiKc0PPxYPiThM4S33ayf4PmvbxGGjqvi0zHUrR12qOi5bdRi2Mzp3+ZL+q7ILQJ/B2EgzQy9vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GZfb2Bhg; arc=none smtp.client-ip=209.85.221.43
+	 In-Reply-To:Content-Type; b=I+iGNQAdhuVe9KgxfOmyC/HOiOvkseetYSERx51nWRoT9OnUPjgVvjP53q90C3SrOD9ILcYO65gvhpZNAx9dzz7jR2m0FVdwl9GZNXowccA/cXof42Qlo8kDldyCMPcosiFlj3sV0xCBlUAsBy5Yqu1pUvM8Q/RjvEpz4iqopQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YUr+R+IG; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GZfb2Bhg"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a363d15c64so1495932f8f.3;
-        Fri, 30 May 2025 09:14:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YUr+R+IG"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-442f9043f56so13813185e9.0;
+        Fri, 30 May 2025 09:15:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748621675; x=1749226475; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748621736; x=1749226536; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=nYfPIik2VZq+X4ZDMfQ+Lt7jynuL6/hkz3PFespndps=;
-        b=GZfb2BhgAn+bMGugKaucQ0qau/07bPJkY3vz7p4bzWezMEef+GxDol2TFiZW/kqbVs
-         r/DYbZUain3t0onU0aWTMu4jnC4YlSn+Z0IlZKGhmpN7Nbp6qysRNA03WRWO4QT+AOOC
-         jpfS3edk2LbpTReUMA7Umw8NIMGDI6Zux6u1cl73QwUcBdWcQbGFY9Q3WVX44Ezr+Y8x
-         f1w9lS7vZOSM0/yIGxv9ZSHvA8Kx3x+syVf37wt5hPrNc/Bx8NPRSC735DowUJ2lbdIa
-         YJQoOVWZJ3I2fGWLyEvvUyFziMRfkZCgZwH8tteq0hXUKnzBft/z8w+ClQXq0jf6wZ6O
-         zE6g==
+        bh=Qy6uONJd9YDsRJcfKs6FIt0MY6YyHzNaH+4QdToi3oA=;
+        b=YUr+R+IGaL/e8+/FZ/+dFP8WXDe6jjbfpHobP7stBPsIN0E3GqmR06x67+gXnbNKFi
+         CVCgYHBTdKz8UDwQd4ogiC2rj9v6pR5wOpgDnnihaJBo2e1mDHbPOvlEbEKBBySQA01F
+         sJcX2X7GO/eT/WKG9lQ3R83idbBWp7PECbmabjA3o5eQUCb0fr7awqRJuUkdsAfRtAQ6
+         DGJ3umOXgbDZJ5HDui0Qu4byIQVPhxUR6fi9zIaVE8e8uk31yM7/VpCJxQ7LDAzh32H+
+         UBx0g0TN5Pm7O1KNwGl7C1Y9fs0axQlTZ01MvMthGimIFkaQINJl6uoQTcp8hXUFKtLi
+         6mJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748621675; x=1749226475;
+        d=1e100.net; s=20230601; t=1748621736; x=1749226536;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nYfPIik2VZq+X4ZDMfQ+Lt7jynuL6/hkz3PFespndps=;
-        b=hpS/2tczC5E4aT0o3qMvmZIbkb0LjFs/bP78AoY0S3pIqI8My+hJHOlKAIt95CbgGJ
-         t1tnSEnNzt48AxzXsho+m/YXHCJ/Gw90rFI30i4jlyj9zoWVOI6eFyCeBwyoCy7oPZVU
-         a0ssfJNoT1qffmVsv2LEUD4qFQ1CCa1AslYlb2jwHmZToypWN+EOZChaHPLa7OfN6jx/
-         NgX0r5WgFWu93xMo1lmNEE1SstQg6XBIXhvVkkZsts8VjnILwcP8dWdWmcRc4qyNj5zs
-         7vDaaOzpRJAFeLNF5PxBqrqm/T9eG73HCUZZ33GRqWZZ8sd3NzbIq+KExGHVc3LPnhx4
-         AHuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbaI/IOMK16zVjHNsQQTHHIxqAI9keDRMsHQUfhjbJL/kH4irLBMij/+TBpCm7TBknkhRylHvCYCyDawM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdwL6hn+WZFBvs0ufIq55BW2HSMVbwrYj7Jwvj/WVJWd2R345R
-	c6t8E37BWT+y3ktU5cnV9srRK6o3zTJOPT3g6FUMtqKc3CeFyWopOefx
-X-Gm-Gg: ASbGnctoC3AXF5Ao/vJeOKAbO4TEG945WToFGmecbQ/J8CRXXjbvMRW0miHVlUVxNSw
-	HuMxxUIdRu2oa5Ky9+SXJOx8NkdnqwbBWynhevW+8yEvPlmCb5BxqoaV6U7F0s5X8ZY87wdZRHV
-	urQ9d2NWI3L6LgDHvupthkfkoYKPgXfTMKXOwiwNO6bHPWZNwusux+2kbt7DPtJW1fIEh2GkwQA
-	i8sAmVo0pT5sGujA76kfzGtdrDzoJg4PJHcELJwuy/3ZuBi0RHPUzmw7Y3POncuGgz/hsBP1h9N
-	Pv1aa7qhkwXI29i5Nlf2g0dVMaIxqBXwI2TuxCL4ukd/ZWyFIGq4FOhod8ksyM7J
-X-Google-Smtp-Source: AGHT+IHiJzE7KyvRIHrRSU+sorY+syXUuDJVU/hS8oEKl6EdHGkEiBm1A0zvKqlv0HxbU5qHaF/JRA==
-X-Received: by 2002:a05:6000:310a:b0:3a4:dfc2:2a3e with SMTP id ffacd0b85a97d-3a4f7a6d223mr3555270f8f.39.1748621675123;
-        Fri, 30 May 2025 09:14:35 -0700 (PDT)
+        bh=Qy6uONJd9YDsRJcfKs6FIt0MY6YyHzNaH+4QdToi3oA=;
+        b=dTaRxoRnbNhgzUE/vCI8HRL4oW58/g/te1AhNjKGZ2yxdwKHumyci6m5i5Xvx7Ke1n
+         YTHcOkY1GFcapfiYvEkBGpOcVVNYwZI/b5TzQn98lib2stxVfjsLcKP16xhnz2myyoY4
+         tsDHo4dKe9a6AeDZOshVujDoP1rWaWbhRyq+Hn/imQFAluMHmA9sT87r9DjprHl+i5nt
+         obeOX9gFEVGyXrBU7gs0YkzEYecVOEbohQlFslJCL9gbwOnKiQ7hD+1b+McQnuQU5zmr
+         7e/BDyZHZomH6pNQMMpofDVDPeBs/McXOU3JE1IHbXD9tFax1oFSiVgBKTETKtTyNElO
+         Z1Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCVu5mLIoWKNO5NKAZyPQq7N4w3ToKbleVs/gz84AvZVk8hkTDLQTcVWmRZ6NdNwkSgfVTcTxdqAeKCt2aQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweOUYpWf8IUg9ItN+zl5//O73i9mLjQwBAM1xnEOJDfGyOJVdk
+	AqPtmF4uCb/1E4kXnfsDJjS+UYdEZR9KrRZ7L9oxpHMJjkrE/88rSwh9
+X-Gm-Gg: ASbGncu0t4pYaYINnggkZFF8D+H4iOf0KpcfcWq+VydqVbHRjunrQizcWw8LbUyOetT
+	L9MrYy+BYY44zp3cw6AArl0ezaTm+pDZfOkbes7/8x1xXs4BXzBhURgwvSPgYNSq3QXS19BohCU
+	jL+UOHZm1DTlTBGhHNHknN5LiJsO5NOE/Dh657FiwETVdcxpW55lmHTZ648M4yb1livCA4aUauF
+	dam0YsQoYTzaBa4Cu/Aw24q+hDX3dC81eIOfnVJoBIUEQp/ZWkqEm1nzhJ+hqQm5l1rR7Wbuc6i
+	nj5eLB5A9BE/tmbYKRBXMVam6aKdZiebisFxwIX/wxYjZ4EFcgIcR9nNa9tYqSmB
+X-Google-Smtp-Source: AGHT+IF3Qheau+41FJN4zh+ru7u19FUa9vqxVjioTQgILtoyR31hRsBY/unJ+M14by/h2EdXRVD++A==
+X-Received: by 2002:a05:600c:4fc6:b0:43d:fa59:cc8f with SMTP id 5b1f17b1804b1-450d6599897mr37801315e9.33.1748621736182;
+        Fri, 30 May 2025 09:15:36 -0700 (PDT)
 Received: from ?IPV6:2001:871:22a:cd68::171c? ([2001:871:22a:cd68::171c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d8013e0esm21418975e9.39.2025.05.30.09.14.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7fa2493sm21651905e9.16.2025.05.30.09.15.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 May 2025 09:14:34 -0700 (PDT)
-Message-ID: <4d0a5cd9-c7e3-47d5-a55e-a4f234463e3e@gmail.com>
-Date: Fri, 30 May 2025 18:14:33 +0200
+        Fri, 30 May 2025 09:15:35 -0700 (PDT)
+Message-ID: <d30be54d-f2dd-4394-b677-193cb2d77f1c@gmail.com>
+Date: Fri, 30 May 2025 18:15:35 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -66,8 +66,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] rust: types: support fallible PinInit types in
- Opaque::pin_init
+Subject: Re: [PATCH 2/7] rust: revocable: support fallible PinInit types
 To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
  rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
  boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
@@ -75,21 +74,21 @@ To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
  tmgross@umich.edu
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250530142447.166524-1-dakr@kernel.org>
- <20250530142447.166524-2-dakr@kernel.org>
+ <20250530142447.166524-3-dakr@kernel.org>
 Content-Language: en-US, de-DE
 From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20250530142447.166524-2-dakr@kernel.org>
+In-Reply-To: <20250530142447.166524-3-dakr@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 30.05.25 4:24 PM, Danilo Krummrich wrote:
-> Currently, Opaque::pin_init only supports infallible PinInit
+> Currently, Revocable::new() only supports infallible PinInit
 > implementations, i.e. impl PinInit<T, Infallible>.
 > 
-> This has been sufficient so far, since users such as Revocable do not
+> This has been sufficient so far, since users such as Devres do not
 > support fallibility.
 > 
-> Since this is about to change, make Opaque::pin_init() generic over the
+> Since this is about to change, make Revocable::new() generic over the
 > error type E.
 > 
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
@@ -97,29 +96,39 @@ On 30.05.25 4:24 PM, Danilo Krummrich wrote:
 
 Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
 
->  rust/kernel/types.rs | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  rust/kernel/devres.rs    | 2 +-
+>  rust/kernel/revocable.rs | 7 +++++--
+>  2 files changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 22985b6f6982..75c99d6facf9 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -354,13 +354,13 @@ pub const fn zeroed() -> Self {
->      }
+> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> index 0f79a2ec9474..2dbe17d6ea1f 100644
+> --- a/rust/kernel/devres.rs
+> +++ b/rust/kernel/devres.rs
+> @@ -98,7 +98,7 @@ struct DevresInner<T> {
+>  impl<T> DevresInner<T> {
+>      fn new(dev: &Device<Bound>, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+>          let inner = Arc::pin_init(
+> -            pin_init!( DevresInner {
+> +            try_pin_init!( DevresInner {
+>                  dev: dev.into(),
+>                  callback: Self::devres_callback,
+>                  data <- Revocable::new(data),
+> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> index db4aa46bb121..ca738f75dc10 100644
+> --- a/rust/kernel/revocable.rs
+> +++ b/rust/kernel/revocable.rs
+> @@ -80,8 +80,11 @@ unsafe impl<T: Sync + Send> Sync for Revocable<T> {}
 >  
->      /// Create an opaque pin-initializer from the given pin-initializer.
-> -    pub fn pin_init(slot: impl PinInit<T>) -> impl PinInit<Self> {
-> -        Self::ffi_init(|ptr: *mut T| {
-> +    pub fn pin_init<E>(slot: impl PinInit<T, E>) -> impl PinInit<Self, E> {
-> +        Self::try_ffi_init(|ptr: *mut T| -> Result<(), E> {
->              // SAFETY:
->              //   - `ptr` is a valid pointer to uninitialized memory,
-> -            //   - `slot` is not accessed on error; the call is infallible,
-> +            //   - `slot` is not accessed on error,
->              //   - `slot` is pinned in memory.
-> -            let _ = unsafe { PinInit::<T>::__pinned_init(slot, ptr) };
-> +            unsafe { PinInit::<T, E>::__pinned_init(slot, ptr) }
+>  impl<T> Revocable<T> {
+>      /// Creates a new revocable instance of the given data.
+> -    pub fn new(data: impl PinInit<T>) -> impl PinInit<Self> {
+> -        pin_init!(Self {
+> +    pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, Error>
+> +    where
+> +        Error: From<E>,
+> +    {
+> +        try_pin_init!(Self {
+>              is_available: AtomicBool::new(true),
+>              data <- Opaque::pin_init(data),
 >          })
->      }
->  
 
