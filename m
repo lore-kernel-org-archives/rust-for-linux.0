@@ -1,171 +1,99 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C54171092;
-	Fri, 30 May 2025 19:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B32227CB35;
+	Fri, 30 May 2025 19:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748633781; cv=none; b=HJgqY2MWGRHbmMgwEq54G8n/Hjw4SgfhRYwX23ubJjzp7OelELrEW6DAr3locaPq2mpqNRZA03cAd1Q1ZtCPyDSENT0MvMFpAuknWcpddm8nDAyxyImwxLr9ojqK4lTBAyUF7Mm9n6F9kNyfCRc4AbcR+BwEyIWNAyitvbW3dWA=
+	t=1748633984; cv=none; b=RPyI6PObBOJ+8/pEnoRqFc7DTxrXVXpG/swNheMFJ9NlSk/dvCNbGHsMGawcfHnU3IkFiEEujv7sf/lnXmsi+k+pwcs/4Cq6s/J18Q2mjdw9WQE6D4NdLtsEy/rirxEMnGmNxlKoNU/ApwD7amLOrPXlawLeBNJIk1Vnehy37I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748633781; c=relaxed/simple;
-	bh=RQ1cgmsBiYtBcV2JvJx6KX21xrWXKFk4Ysc0nbvB/Fw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B0YeIuXdvCxrDZQOhWTR3B87YEPQNpRok1gEKZEFUBR+G1AjQhIzNhZrTvZoD6LgVhUV9O8GymcV9ov+L8NeLeZWM1eJz6VJfOkFdhdO7he5FGHFoINKssoEsZDpV6G2lu7hQykU9awspMPNkwT+vuljL7BkmJ7SirktyKKuUx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F4rqJOlo; arc=none smtp.client-ip=209.85.222.171
+	s=arc-20240116; t=1748633984; c=relaxed/simple;
+	bh=H1WGz5RhUovF5mXwPz9RoiIvca8vAzBYad6Ei6JH8IE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XSFL7naNJPo7GqAnGTHYt4UV+ZnJPQhaxh60+yHYr31EaYAxpFcozE/wtPBwv1xGIHZFdHN08o8rmIdawXJAPdlfiaD/tXAjxxqDp1/PpKzh7BZKYAUlJfgH9/LLRwz3SPbaMpYxwKAIdeWCgkovgdSLMfT2Pc2Rm/EAJ2cDD4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xe5EGs9r; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F4rqJOlo"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7cf749ef9b1so233957685a.2;
-        Fri, 30 May 2025 12:36:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xe5EGs9r"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3120dd42103so223106a91.0;
+        Fri, 30 May 2025 12:39:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748633777; x=1749238577; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1748633982; x=1749238782; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e3CLWQG0fpm6H2RjIdxn9ZQPGTCS57iwIFP+Fd0KOAU=;
-        b=F4rqJOlob1Kr3KmlF3nRO7JNzn4xblfmU1HI2hPcUVs68w2qNWiM8EYNniRPF8XT9+
-         jv2Sju7gqbCVqSG3hmOyyOSuOOW3n+m0VAf+pxK3f56iDsvmc3kpJ+mNAgfhOAYduiLf
-         OXSSA/0rmXMahGhFS+9q0Oq0QsXAgt0crmwpmLUGadGlF9qRfdpKud0YXDkoHSi4gKaC
-         JnlI5c3j7rr7EU3+MJVM5kXQW6OBB0oGwHtnPDRKAH9nxS6KVq5DdKM11H6HZT5hBnOw
-         4glHKB38N2dbhD6XtzvGtp1hoDRuACEXkt7xApkkh7brp2D9uM+aABlUC2fDtxaoqh91
-         5EnQ==
+        bh=H1WGz5RhUovF5mXwPz9RoiIvca8vAzBYad6Ei6JH8IE=;
+        b=Xe5EGs9rtbDzxZPNfLWwrd4FcyB2o47dOLZY2aR6KKy/i+iFEj99STM4FYOJ9coMfz
+         w6FGnyxtE6J6++8dt8UsJV25mkUIAre3lV2fYs7vFatb7g5eMnXvNA5M91REiQ0f2bDM
+         atBdi1H4xiQSGaQopUDX34UEoGcWI/64p/fdFs+FXN6xlVWKviq/tOegUrbjbPalxjBw
+         QOf8UPkrVz7HtrZgSUid+YQnhYb+2bf8ajpf9Zl3FPDY/dvI0gsOS/Fe8uqc8XdLlPrL
+         krQRgpu30maH7FhQ0F3sgZK2MRWDpN7TlZQsz9Bl3qnW7Q84n6EqSeGNZpHMdMqb2Tfj
+         AILw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748633777; x=1749238577;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1748633982; x=1749238782;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=e3CLWQG0fpm6H2RjIdxn9ZQPGTCS57iwIFP+Fd0KOAU=;
-        b=glLDULy+KyWJPHHDvy3KuZ5FTaUNi97DYQ6P4NbsXxRl+l6dr7QRHBRas8/V/qfdDB
-         WE+FSQjdMTNLMP8anyh0HUJqDGygTeevkAnf8lXfWBkEqEl0/1dLPVDP/KWOQo0dADBy
-         KSOTurIF2h4qCMXyot2Wx7WhgNJnGhAhmQkAH6TcvBNvpVxSVQXWSZM5YtaJ+L5XZ9zL
-         4L99vKay5jEOCfmFhmLHMlek/C/vimanLy62oGcRcI4VUGXXjR5++4FhySKkXYF8blBu
-         4D1hQGCyIaGNdcFBgg9/B0Uv/ctC6d9a5iIa8wYQzGSg/BXOhHwJshMTCArOAAqYiEb1
-         9EUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUkyUUegmReMT9xbIFVm/KohwUVxI5q5N3nD6QBo4cBlCAiOsE2XWuVmSs9TWkdglb/aMLolQm5Y7y7zja9kxM=@vger.kernel.org, AJvYcCWgn6F0sPnwKXk4oQiB4U7qhEHMTuwezAS+BaDTXqrXNvU9WsvylRYwd093+i2PQoK2H5Y+T3Tb1Wfb1bI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiEDKYcb+aA2b9urwgnWe5mV/NIB5PkB6rp6nT3W+h8Kgzl2Y6
-	FG2ByREBKZMQ8XPeDJeP3OzbdLkow8RmSHLOKuEjDl3lO5EOESYvsFtL
-X-Gm-Gg: ASbGncsThcMUGHGX9z0i9MR6r6bTBRb95g2GYpoxLKxY3YAWkb7CXKVKOqYJ74P1KuS
-	bzzVgoBu06QcbSPpegIpSngflDUEJPm6ZozgcLQ6NJMiPJOz3MN2nme1f/Y0bOvALyIzFESE/x3
-	X69FxL5pZWN3mtYDKwe4QGtwLj3LEqYDCAb/Ej5TdT9udEb95TmswHSmldEQ0NQ/Gxh4Bk4trmO
-	wvH0PqvSs50ufStdUTZzhR4dA13BKVVTbT6sqFlb9TXJGVw56bJ1WgQzwi49SdLkWrHf5KnOCeY
-	FBX02gBhhEHhMa04osIpV6+QP6mc74Lre6MXRrRYp0lJJZqJkJOfs1Ub0GHsKng4K1nCGQBVYgJ
-	jlcdVAfgMxx4/oJ6tZlvXptdnDJS5iCPIBQYivql5eQ==
-X-Google-Smtp-Source: AGHT+IFiBM82z8gOjhNxN3QjK51zi++nQGc+Dmiv8EOfRzy2ZiVHjoBycd573cXAGEAIUetEKf+KDQ==
-X-Received: by 2002:a05:620a:1b9b:b0:7c5:49d6:733a with SMTP id af79cd13be357-7d0a1fa598cmr745351685a.21.1748633776777;
-        Fri, 30 May 2025 12:36:16 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d09a115aabsm281505485a.60.2025.05.30.12.36.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 May 2025 12:36:16 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 115E61200043;
-	Fri, 30 May 2025 15:36:16 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 30 May 2025 15:36:16 -0400
-X-ME-Sender: <xms:rwg6aEl3uIEYoeIYaVTvgw4KoknUnF2o0_JgOwzCQ6jUOHk6RZgKyQ>
-    <xme:rwg6aD18-INRY-Di_hHHI6iIJjxiw3gw7_VKKVbWXquUBbprVP9DrzwhGlSfuqyYn
-    Dl4YkuZXAQrqbLyMQ>
-X-ME-Received: <xmr:rwg6aCoMCNZkHCopabAJlVPvJgOful7L9Ttlpu5m4jWEzZuoqhfY13cU_w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvleekjeculddtuddrgeefvddrtd
-    dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
-    fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
-    dtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhf
-    gggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquh
-    hnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhephfetvdfgtdeu
-    kedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddvhedtnecuffhomhgrihhnpe
-    hkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqd
-    eiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhl
-    rdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudeipdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtoheptghhrhhishhirdhstghhrhgvfhhlsehgmhgrihhlrdgtohhmpdhrtghpthhtoh
-    epuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhu
-    gihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhi
-    esghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothho
-    nhhmrghilhdrtghomh
-X-ME-Proxy: <xmx:rwg6aAlW9kMQZwsOZ_iuqRS-U2H3frjD1GwISOwNT3PLoRzxT_iePA>
-    <xmx:sAg6aC18vpumpSx6T5GkvXoXr_5rKJpGQ-FNEGd_dB0CFacR6ARzWw>
-    <xmx:sAg6aHvpDXRy9LQElPCPngUTToXkeCf1E9NxgOWoZglxFVTGrX7qKA>
-    <xmx:sAg6aOV8skPFim459YZqQFpVpaOnbHSB_YhfPFpKRYTD7A96a063BA>
-    <xmx:sAg6aF24AfFaY9GRlCrPGXmDNq--0CQYRvFpNibdQXG9LlNunt36UFtT>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 May 2025 15:36:15 -0400 (EDT)
-Date: Fri, 30 May 2025 12:36:14 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/7] misc device: support device drivers
-Message-ID: <aDoIrq6YCh-KwV4S@Mac.home>
-References: <20250530142447.166524-1-dakr@kernel.org>
- <9e0acb35-7d10-4a8e-b5c6-968d1310146b@gmail.com>
- <96891e54-8614-4f98-8a98-ad90f18c8e43@gmail.com>
- <DA9QOTLU4U5M.2X7K7UWJ53QGI@kernel.org>
- <aDoIeYM2b8kXG8-O@Mac.home>
+        bh=H1WGz5RhUovF5mXwPz9RoiIvca8vAzBYad6Ei6JH8IE=;
+        b=ZyGAwNie7J+PHHgFmVIJOTu8jwQ1LkE9ffB38B4pc23yDKnSJYDGFcaI+w54v5kpfn
+         ys+JOdhtHzP7DgX/hGL/EdYJ3gE04g7VLGThaAO5Ma9VQ9vNn5bJ8HH+pE+Jk/KMKkDc
+         7BIOl09TQLCwQsYHfIB0jHZfz9wVqbD5S+DDXvAXUbTbrSFTzi0+cEqjrblQI7DEc/bO
+         KGGe7Xq5FmoiFYu0Rbmyu01dDVVg9SFdTnzjEcVoYXYFVMaIPPiokeK95RAFTQuX6vnR
+         IzuBiaED0XstJ2JUJ+/Rw5mLpX/4viZcBkNlzs0Uzg3QQCaDmwLVp+IypW+2R2Oq6Tvh
+         G1ew==
+X-Forwarded-Encrypted: i=1; AJvYcCVMShyFnhOtsNhs4fJ2ugNyn3v+0wW0t3ocNpzi7fjl+mTGrX8uoSHda6E4U1yvTlnYz48WKikEciUvClo=@vger.kernel.org, AJvYcCW7zyaRPq0IQ6GwGvXgpI2lodzBPAEp48rXL8An8I1Tq6y/xkS4HF+s0+r46IeU6dmd/XSlQFlCFNC34GH5L08=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOOTJV6AH8OTA4lsOJnOu/ej0ZgnrjTVNKdcgKnotXQTgLKzNX
+	gbyDU+3et9/hzk2VkUdeTcWV3IWx+ZsUy6syDLKk+RfTa3SO36yz3Tshp5QNnCNq0HOxHEHKmYH
+	gnGeZfseGvwqk4w3qCSZwMVxTYmd0ous=
+X-Gm-Gg: ASbGnctjNBjN0Bv1QG7BLv4wvqiKsYz6S/BUumZzgde6o8ERG8vDIDHwJPaUrHWDrDI
+	oYbtXwg5XOElivhoK+UPQn0oHiBJsusDHBV0h1i8nJIAOWi2/hUKGoMpsXvJjD1XnJQ3H2V6tTI
+	6mT8W1ezApfiqIhXv8GTy49+3c3eO7tCnW
+X-Google-Smtp-Source: AGHT+IHfwY4o1XHOGibWqDb1qC6c71mdohlNkmM000lr89PyvRCfULfyT0JRbFlqJU0VHdITLqczkSqu+BkXjgjVi98=
+X-Received: by 2002:a17:90b:384e:b0:312:639:a06d with SMTP id
+ 98e67ed59e1d1-3124db30c05mr2033614a91.5.1748633982212; Fri, 30 May 2025
+ 12:39:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aDoIeYM2b8kXG8-O@Mac.home>
+References: <20250530123129.31505-2-saivishnu725@gmail.com> <DA9QL5A8747E.17QE50WBD6JOT@kernel.org>
+In-Reply-To: <DA9QL5A8747E.17QE50WBD6JOT@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 30 May 2025 21:39:30 +0200
+X-Gm-Features: AX0GCFut53lQ8caCny6yGPDJ5RsJq7lLttlmUwUDsqRGyy5sWuVLz_Q9tHpgOG0
+Message-ID: <CANiq72npoVzz01syorhUcED=tcs9FJf8bFHthFrUQ-bE-AXJ8Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: doc: Clean up formatting in io.rs
+To: Benno Lossin <lossin@kernel.org>
+Cc: saivishnu725@gmail.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, gregkh@linuxfoundation.org, daniel.almeida@collabora.com, 
+	me@kloenk.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 30, 2025 at 12:35:21PM -0700, Boqun Feng wrote:
-> On Fri, May 30, 2025 at 09:24:28PM +0200, Benno Lossin wrote:
-> > On Fri May 30, 2025 at 7:29 PM CEST, Christian Schrefl wrote:
-> > > On 30.05.25 6:37 PM, Christian Schrefl wrote:
-> > >> On 30.05.25 4:24 PM, Danilo Krummrich wrote:
-> > >>> This patch series adds support for device drivers to the misc device
-> > >>> abstraction.
-> > >>>
-> > >>> For design details, please see:
-> > >>>   * patch 5 "rust: miscdevice: properly support device drivers"
-> > >>>   * patch 6 "rust: miscdevice: expose the parent device as &Device<Bound>"
-> > >>>
-> > >>> This patch series depends on the pin-init series from Benno [1] as well as on
-> > >>> the misc device series from Christian [2], with UnsafePinned replaced with
-> > >>> Opaque, as suggested by Alice, since UnsafePinned may still take a while to
-> > >>> land.
-> 
-> Maybe I'm missing something, but don't we have our own version of
-> `UnsafePinned` [1] which can be replaced once Rust upstream has the
-> `UnsafePinned` stabilized. I don't see any discussion about abandoning
-> that effort.
-> 
+On Fri, May 30, 2025 at 9:19=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
+>
+> I would just remove the second part of the sentence. This is a struct
+> and its only field is an `IoRaw`, which does have those two fields, but
+> they are private, so nobody reading the docs will benefit from knowing
+> this.
 
-Missing the link..
+If we had something else talking about those things in the docs, it
+could be useful to refer to them by an identifier, but I agree there
+is nothing. Well, the invariants mention them, but those are a bit of
+a special case.
 
-[1]: https://lore.kernel.org/rust-for-linux/20250430-rust_unsafe_pinned-v2-0-fc8617a74024@gmail.com/
+An alternative to keep the sentence is to say "at a base ..." (i.e.
+not "the") and "spanning a number of bytes" or similar.
 
-> Regards,
-> Boqun
-> 
-> > >> 
-> > >> If you want I can send out a new version using `Opaque`.
-> > >> 
-> > >> We could also add a type alias like:
-> > >> 
-> > >> type UnsafePinned<T> = Opaque<T>;
-> > >
-> > > I forgot that Opaque doesn't drop, this would not be quite as simple,
-> > > but with a newtype with a `Drop` impl it should be possible.
-> > 
-> > That's one issue another is that `Opaque` also allows uninitialized
-> > memory and (if the upstream one isn't changed) also modifies the
-> > behavior of shared references. I don't think we should name it
-> > `UnsafePinned` if it doesn't guarantee the same thing as the upstream
-> > one.
-> > 
-> > ---
-> > Cheers,
-> > Benno
+We should also probably add "region" there, after "memory", or
+similar, especially if we remove the second part.
+
+Cheers,
+Miguel
