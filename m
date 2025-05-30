@@ -1,350 +1,86 @@
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0209C1D61AA;
-	Fri, 30 May 2025 08:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A115F21D5B3;
+	Fri, 30 May 2025 09:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748592231; cv=none; b=IRx+EmAkGcjnRY4i8ZkZNgqIiwfm9tCAuJSUuNncmLbbN3GgJhBefpZkJJIddc4EZovNtAZgVL9GZfMZziC73tPxyLAmC2i5vqVuHf6HymtviaORuThykDvUrjf8DZ5of/Bp6BZ5+vWftL8LNV+zqApggTl8HjHOGUD03HCHmXc=
+	t=1748595651; cv=none; b=rYIePvZM7IUsjyhmrsRAa28kBz6d8RrjABuqyZ2VcAVqZjf8dSg3Zzqosw4FA4B9w+aWcj9uKErjokWJBOnFj8RZgdx+HvVZ292NtF0pjW8FX16SAbb4/b7Rq7uFKAoPn62aEKHT26y6Q/bvdr1ga1DnbnP7i8jwb725gJdz8QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748592231; c=relaxed/simple;
-	bh=MOZRfILlxYLTD5YPIe1ukUVdwB74Lc8RJ5ifhuojFsE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=U1y83/La4Ii256wFYkfo69uiuIln5Vt7JoXQGHRrRmS2vayOMFff8iDSY3gtx/wEZGt9pCbI6XdMqO4cT+rJvVDjhpJNpySZloMxLYWBAPwVWUH3rnEX6HPFuDC5RU/PUJCe5TZp2JceKtqChlUnBcDy4TaBRkGmRi7hg+WtTzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=RpVg/SAz; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+	s=arc-20240116; t=1748595651; c=relaxed/simple;
+	bh=gNIbx1N9UqqVUej1ctL6a3XA1FWPgsPdOnRM+BgoZi8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CH4ToLeF22esUuQow1jcFXYrUmrhzDP3XYMJYeNzoWXZ9cLdaHfXn9pQcRGn/diNLxbIgnCY921JAW7rQNES7uU8B8JVlsLNLmzKZm8+9osMPOZfGZV5gUwWZRz6uTdgrOA9jzT4vP/N+v/NhkFPFUD9fOwVAQAZQZhVXTDtL98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctSgh+iR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="RpVg/SAz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=+FQ7mAJWoOpdEQTP2UWDOkXe0sgkjazV/6cKTyxk9EY=; t=1748592229;
-	x=1749024229; b=RpVg/SAzeTHW9iVd0qAEDdquy03idZeON58JPD6gIbu2l3qxoD06zD31NS9I1
-	cOzzlm+tQXbD3e+A0EFN5hTvZiqMstEHL1rVcFB73lPBSM2vFbuSJNueLYfpETCJ/oYqJ7qi+5+0J
-	wZRGxwvD5ktppJzf5OwDmvXuWX5UMKMYWAo3NrlE8l++bCnt/V5rVT3hVpXDaG/DPnHlnU3iyFwqP
-	ARI3V2yyLiyCBgD5u4X0VBrXSQVHmzDXfV3fehr5czXxQNgbdoi1rSgR/5jqcw5fbRBR3riRhAp+x
-	nCIe+jR66WfqSgG9/gmRGNO2chPs//aPOFsZKEL0MyECdZpdvA==;
-Received: from [2a02:8108:8984:1d00:a0cf:1912:4be:477f]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1uKuRp-006ZdF-2k;
-	Fri, 30 May 2025 09:46:37 +0200
-Message-ID: <699ec35a-5453-4900-b535-a9a9863bb9bf@leemhuis.info>
-Date: Fri, 30 May 2025 09:46:35 +0200
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctSgh+iR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F68C4CEE9;
+	Fri, 30 May 2025 09:00:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1748595651;
+	bh=gNIbx1N9UqqVUej1ctL6a3XA1FWPgsPdOnRM+BgoZi8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ctSgh+iRBTE0Y46oJJpPc80V1gnDTrbvbXOzn92/BCBveHrTWnWihWl/dUiZNcfDJ
+	 E7woVkfr6xJaBP7/dFRNI4rwarqEw3l/xygMcNazwNX61PMmCknsS+i0TCI2nnZ20P
+	 sF2J3I+X89jk3CFk8tdIQmVcAtZsnzOkhV+xS+BE=
+Date: Fri, 30 May 2025 11:00:47 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Timur Tabi <timur@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: add basic ELF sections parser
+Message-ID: <2025053007-playtime-french-c2fa@gregkh>
+References: <D9XMAV4ERYK7.39TLQBLYTX3TU@nvidia.com>
+ <aCc_PSOPkLWTcTru@pollux>
+ <D9XNS413TVXB.3SWWJE4JGEN8B@nvidia.com>
+ <CAOZdJXW+PoFgxH+wPEum-kYvRmSRd8c4kaxvbNAq5dfZJiXapA@mail.gmail.com>
+ <D9Y0VJKOAQAY.2GJSAZ5II54VV@nvidia.com>
+ <DA8G3G918FS4.X8D7PQMT4TGB@nvidia.com>
+ <2025052932-pyramid-unvisited-68f7@gregkh>
+ <DA935OIFBM1H.3CMSHQ46LLG4P@nvidia.com>
+ <2025053058-siding-emperor-d8fd@gregkh>
+ <DA9AS88BCFX2.FET64FP3J2WO@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: REGRESSION: armv7 build mismatched types
-To: Rudraksha Gupta <guptarud@gmail.com>, linux-kernel@vger.kernel.org,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Tamir Duberstein <tamird@gmail.com>
-References: <700ebe13-c2d3-48e3-800f-8dc327efb6fc@gmail.com>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <700ebe13-c2d3-48e3-800f-8dc327efb6fc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1748592229;a15d77b2;
-X-HE-SMSGID: 1uKuRp-006ZdF-2k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DA9AS88BCFX2.FET64FP3J2WO@nvidia.com>
 
-CCing linux-next and Tamir Duberstein, who authored the culprit.
+On Fri, May 30, 2025 at 03:56:37PM +0900, Alexandre Courbot wrote:
+> On Fri May 30, 2025 at 3:21 PM JST, Greg KH wrote:
+> > On Fri, May 30, 2025 at 09:58:02AM +0900, Alexandre Courbot wrote:
+> >> > But for now, doing it in generic code, that all systems end up loading,
+> >> > yet very very very few would ever actually use makes no sense.  And
+> >> > adding it to a driver also doesn't make sense as you can define your
+> >> > user/kernel api now, it's not set in stone at all given that there is no
+> >> > existing code merged.
+> >> 
+> >> Eschewing this from the driver would require duplicating the GSP
+> >> firmware (a healthy 26MB compressed binary) in linux-firmware to provide
+> >> both ELF and non-ELF versions of the same code, and also store the other
+> >> ELF sections as their own files. I expect this to be a hard sell for
+> >> linux-firmware.
+> >
+> > Why would the linux-firmware people care about the size of firmware
+> > blobs being given to them?  That's the whole reason for their existance,
+> > to put them in one place instead of having to download them from random
+> > locations on the internet, or to have them in the kernel tree itself.
+> >
+> > It's already 300MB or so for the whole project, what's 26MB more?
+> 
+> Roughtly 1/10th of the current total size as avoidable overhead. ^_^;
 
-On 30.05.25 08:23, Rudraksha Gupta wrote:
-> Logs: https://gitlab.postmarketos.org/LogicalErzor/pmaports/-/jobs/1368490
-> 
-> Archive: https://web.archive.org/web/20250530060232/https://
-> gitlab.postmarketos.org/LogicalErzor/pmaports/-/jobs/1368490/raw
-
-I ran into the same error on aarch64 and x86_64 when building -next for
-Fedora today using the rawhide config:
-
-https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-rawhide-x86_64/09103515-next-next-all/builder-live.log.gz
-https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-rawhide-aarch64/09103515-next-next-all/builder-live.log.gz
-
-Reverting b20fbbc08a363f ("rust: check type of `$ptr` in
-`container_of!`") fixed things. That's the patch Rudraksha suspected to
-be the root of the problem (see the quote below).
-
-Ciao, Thorsten
-
-> Snip:
-> 
-> ||
-> 
-> |EXPORTS rust/exports_core_generated.h|
-> |
-> ||
-> RUSTC L rust/compiler_builtins.o
-> ||
-> RUSTC L rust/ffi.o
-> ||
-> RUSTC L rust/build_error.o
-> ||
-> RUSTC L rust/pin_init.o
-> ||
-> RUSTC L rust/bindings.o
-> ||
-> RUSTC L rust/uapi.o
-> ||
-> EXPORTS rust/exports_bindings_generated.h
-> ||
-> RUSTC L rust/kernel.o
-> ||
-> error[E0308]: mismatched types
-> ||
-> --> rust/kernel/lib.rs:234:45
-> ||
-> |
-> ||
-> 234 | $crate::assert_same_type(field_ptr, (&raw const (*container_ptr).
-> $($fields)*).cast_mut());
-> ||
-> | ------------------------ ---------
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*const
-> drm_device`, found `*mut Opaque<drm_device>`
-> ||
-> | | |
-> ||
-> | | expected all arguments to be this `*const drm_device` type because
-> they need to match the type of this parameter
-> ||
-> | arguments to this function are incorrect
-> ||
-> |
-> ||
-> ::: rust/kernel/drm/device.rs:140:18
-> ||
-> |
-> ||
-> 140 | unsafe { crate::container_of!(ptr, Self, dev) }.cast_mut()
-> ||
-> | ------------------------------------ in this macro invocation
-> ||
-> |
-> ||
-> = note: expected raw pointer `*const drm_device`
-> ||
-> found raw pointer `*mut Opaque<drm_device>`
-> ||
-> note: function defined here
-> ||
-> --> rust/kernel/lib.rs:241:8
-> ||
-> |
-> ||
-> 241 | pub fn assert_same_type<T>(_: T, _: T) {}
-> ||
-> | ^^^^^^^^^^^^^^^^ - ---- ---- this parameter needs to match the `*const
-> drm_device` type of parameter #1
-> ||
-> | | |
-> ||
-> | | parameter #2 needs to match the `*const drm_device` type of this
-> parameter
-> ||
-> | parameter #1 and parameter #2 both reference this parameter `T`
-> ||
-> = note: this error originates in the macro `crate::container_of` (in
-> Nightly builds, run with -Z macro-backtrace for more info)
-> ||
-> error[E0308]: mismatched types
-> ||
-> --> rust/kernel/lib.rs:234:45
-> ||
-> |
-> ||
-> 234 | $crate::assert_same_type(field_ptr, (&raw const (*container_ptr).
-> $($fields)*).cast_mut());
-> ||
-> | ------------------------ ---------
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut
-> drm_gem_object`, found `*mut Opaque<drm_gem_object>`
-> ||
-> | | |
-> ||
-> | | expected all arguments to be this `*mut drm_gem_object` type because
-> they need to match the type of this parameter
-> ||
-> | arguments to this function are incorrect
-> ||
-> |
-> ||
-> ::: rust/kernel/drm/gem/mod.rs:130:20
-> ||
-> |
-> ||
-> 130 | unsafe { &*crate::container_of!(self_ptr, Object<T>, obj) }
-> ||
-> | ---------------------------------------------- in this macro invocation
-> ||
-> |
-> ||
-> = note: expected raw pointer `*mut drm_gem_object`
-> ||
-> found raw pointer `*mut Opaque<drm_gem_object>`
-> ||
-> note: function defined here
-> ||
-> --> rust/kernel/lib.rs:241:8
-> ||
-> |
-> ||
-> 241 | pub fn assert_same_type<T>(_: T, _: T) {}
-> ||
-> | ^^^^^^^^^^^^^^^^ - ---- ---- this parameter needs to match the `*mut
-> drm_gem_object` type of parameter #1
-> ||
-> | | |
-> ||
-> | | parameter #2 needs to match the `*mut drm_gem_object` type of this
-> parameter
-> ||
-> | parameter #1 and parameter #2 both reference this parameter `T`
-> ||
-> = note: this error originates in the macro `crate::container_of` (in
-> Nightly builds, run with -Z macro-backtrace for more info)
-> ||
-> error[E0308]: mismatched types
-> ||
-> --> rust/kernel/lib.rs:234:45
-> ||
-> |
-> ||
-> 234 | $crate::assert_same_type(field_ptr, (&raw const (*container_ptr).
-> $($fields)*).cast_mut());
-> ||
-> | ------------------------ ---------
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `*mut
-> drm_gem_object`, found `*mut Opaque<drm_gem_object>`
-> ||
-> | | |
-> ||
-> | | expected all arguments to be this `*mut drm_gem_object` type because
-> they need to match the type of this parameter
-> ||
-> | arguments to this function are incorrect
-> ||
-> |
-> ||
-> ::: rust/kernel/drm/gem/mod.rs:273:29
-> ||
-> |
-> ||
-> 273 | let this = unsafe { crate::container_of!(obj, Self, obj) };
-> ||
-> | ------------------------------------ in this macro invocation
-> ||
-> |
-> ||
-> = note: expected raw pointer `*mut drm_gem_object`
-> ||
-> found raw pointer `*mut Opaque<drm_gem_object>`
-> ||
-> note: function defined here
-> ||
-> --> rust/kernel/lib.rs:241:8
-> ||
-> |
-> ||
-> 241 | pub fn assert_same_type<T>(_: T, _: T) {}
-> ||
-> | ^^^^^^^^^^^^^^^^ - ---- ---- this parameter needs to match the `*mut
-> drm_gem_object` type of parameter #1
-> ||
-> | | |
-> ||
-> | | parameter #2 needs to match the `*mut drm_gem_object` type of this
-> parameter
-> ||
-> | parameter #1 and parameter #2 both reference this parameter `T`
-> ||
-> = note: this error originates in the macro `crate::container_of` (in
-> Nightly builds, run with -Z macro-backtrace for more info)
-> ||
-> error: aborting due to 3 previous errors
-> ||
-> For more information about this error, try `rustc --explain E0308`.
-> ||
-> make[2]: *** [rust/Makefile:538: rust/kernel.o] Error 1
-> ||
-> make[1]: *** [/home/pmos/build/src/linux-next-next-20250530/
-> Makefile:1285: prepare] Error 2
-> ||make: *** [Makefile:248: __sub-make] Error 2|
-> 
-> 
-> Bad: next-20250530
-> 
-> Good: next-20250528
-> 
-> 
-> Likely introduced with: https://lore.kernel.org/all/
-> CANiq72mFiCrzawVUVOU2giJtBVsRdAO3sGtDsZptPuFvmid3EQ@mail.gmail.com/
-> 
-> 
-> Repo: https://gitlab.postmarketos.org/LogicalErzor/pmaports/-/tree/rust/
-> device/testing/linux-next
-> 
-> How it's built (Alpine-like build system):
-> 
-> - https://archive.ph/vxEmk
-> 
-> Config fragments (in addition to qcom_defconfig):
-> 
-> - https://archive.ph/q4hfc
-> 
-> - https://archive.ph/RKgFf
-> 
-> 
-> 
-
+It's just storage on a disk, that's not an issue.  Storage sizes just
+increased by more than that in the days we've taken on this email
+thread :)
