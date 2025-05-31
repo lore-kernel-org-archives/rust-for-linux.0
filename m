@@ -1,130 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA49DF49;
-	Sat, 31 May 2025 13:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069EF23C4F8;
+	Sat, 31 May 2025 13:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748698230; cv=none; b=GHYY8itIWqpG8JqUJO4rFZw+Z3eFL6y6Ch6pJdV2JN7b/BvbRHYhJc/UCTObU6zlVM8ReDDDxmRVZA1sN2qQ/NA2M5VVKhw3fQLy61t6bLOlo5Dr9rCtEXoMwf+Wat3nTQYQ4AlaxjKaaVcYPttHX/0VAawaXvhD4QHV7oHYR4A=
+	t=1748698816; cv=none; b=tfscMufjN171mG+ZLgkNqmu7ojJka9iq6bQKd6dWc4MEgX0jdlAhd8aXhYt9IlQisdZ/SfcKLZcuAFFbcl2Epq9mCBLBLr3jcPQ2rAMZxvRrsdEz7AD1iaFiMeLsgj1r9nBp75owwWoUVdilDog/CUxzD6QYtW1vBRhHi2w/TuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748698230; c=relaxed/simple;
-	bh=zj+WBrSuNwFmmoBsrUNBJ+MTo+uK/TgeY97Q8lyyqDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SRH7FvEnnl+hd5UY8ngSyw0MfwzDnm7DuPccWqVyrosI3eKaQXwMeW1I/GcSiN5PKtDh437R5RqQJJVMNOYjy3nSCxlBGfacHD6WjPoFXZ8wIjx5SPmapgDgL77HxxSNFtmVwB5JzRQrOzbwVoI0YMEBw8RUWhlttEjzjMjwpdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9uq+fwv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748698816; c=relaxed/simple;
+	bh=bWDjmSzU2yzp+AegH1vxwlklLZWf4yPOlRPht57hKkc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cMBes/3sclmxswjW6/HGft11S46+ZpqNY9r6XCTnn1lfmcS6ejKJIgJ0HEGXT5huTR1xZQkT61b2Wsz5Vw1oq/eG6VlUGEa2yoh9WuhInyh+QaIqd1fbObz1CTTm3tkruRNdQb/1+s5+IKpJpcrH2omjU0wZpy2BZVhQAhZdPO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4+EE4Hk; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9uq+fwv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF31C4CEE3;
-	Sat, 31 May 2025 13:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748698229;
-	bh=zj+WBrSuNwFmmoBsrUNBJ+MTo+uK/TgeY97Q8lyyqDY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t9uq+fwvwNpBw6Zg2xtaPoeEFzwPv9A8f3nSC3OswmaWszFXpX2ocYpIg57T2Pjzp
-	 QcYk5a8k10SRBZ5to1ZIUd3i/q9wIdRQ2WDh9x5Qr8sY9bhaAKzvQ5tIo48Jme/24f
-	 x196EAAskCHYpb5/Gk4Cyd0NMbxdE/sS4k+XByWA=
-Date: Sat, 31 May 2025 15:30:26 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Timur Tabi <timur@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: add basic ELF sections parser
-Message-ID: <2025053117-snowy-tradition-eb9e@gregkh>
-References: <2025052932-pyramid-unvisited-68f7@gregkh>
- <DA935OIFBM1H.3CMSHQ46LLG4P@nvidia.com>
- <2025053047-theology-unsaid-d6ac@gregkh>
- <DA9AU3OBT29Z.3CX827C91I3IH@nvidia.com>
- <2025053050-maggot-landfall-d5eb@gregkh>
- <DA9KIGDH4IF6.2T383ZVLTJN0G@nvidia.com>
- <2025053039-reselect-thinness-e0a2@gregkh>
- <CAOZdJXVvmDro0Mv36grqQ6LB_1O5GzwPx+Dde+wsfu9Cu_me7A@mail.gmail.com>
- <2025053148-gore-badass-1d1d@gregkh>
- <DAACKTM8B9A1.3SI9LRGNMSBH3@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4+EE4Hk"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-234b9b01a76so2508935ad.3;
+        Sat, 31 May 2025 06:40:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748698814; x=1749303614; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TjytCL6VHWdVLEYo4df5YAeMdP0m5fLZbWIXvH9pJt8=;
+        b=c4+EE4Hkwd+/77kokQpAfQ3P8BvrylpjZENvYN5KvDqUY6fUhgxySR76Xof1826BtH
+         qQv8/J3Dmn23u3sSZ5dE+A62iFYaBgz7VMBOBZuL6S9ML/YhQmYQb7ogk6dynxEmDiZT
+         kbyuLxzDsKVsV3e6BU/njiG3w613PikhBHWkOqSq7PtSzUOUJUSwZR4OPh4Fi203hVC4
+         iwthqJWu/fN/xGSiD5hrNzIP9euKYhuilxtZBm3Gn73Ldpjt8Nj6hclXori5W024YcXw
+         pNxpArlAu+RCSRfmnBm4/xeHoszr3yfY8ENci33SUCdv4lOea5Sz66lpmmT6MKWjCaiQ
+         GUGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748698814; x=1749303614;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TjytCL6VHWdVLEYo4df5YAeMdP0m5fLZbWIXvH9pJt8=;
+        b=QhwbzJVLTyfL1D2lwN4VpxufNTD52G7kiUKgC0/uBfILp24ZS9z31CYX1fotypzDfm
+         FoHINYOUZKX+U18K6nxDrzm3lXAVWf2PyFMu09S6qKGxuD9E3xJ/P0ME88SmV03g5IJ5
+         xiRbMpwMnMg0J8o8yWLsb/rblT4+4uKZRL6DlKYG1v2iPjRbtzVN+4gZUYb55kq0AAQ/
+         lNFWO+FctK+S3NmgAbSzuNm3tFZkScch0oo0/XMliQ+BRhm028D9eEzHOcXHIls8FhVm
+         utp+M59pJd1Dd+KBXsWzI2UhTVJW9lyAqYjaVBeZth1DhbjwcEmZJkWF12f2qF9iQ4JM
+         Wb9g==
+X-Forwarded-Encrypted: i=1; AJvYcCW2CXyJYVXwxoN3yY4nFxlvwkntbMF4c7V9gbLxX3ACorI1vdMxLxhPzA7HurcbNRrZWFjmzSx3cxgOtTim1fo=@vger.kernel.org, AJvYcCWK9X8Fb3mkv4fa9lfgJVHLnM+Nu6RsHdDlYzYyTKoGQxnup2uNn6UbZZYfwFJ9yHzv65rv1aNF2sHrC7M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJZz8fd4DM51Y9BiZw86gKbHF7VY1xgmFRFJSX0fbgm33NHfHb
+	vkWL5M5TmYHKhDkwqvGsxmwyNaC0bB/dUyvvwuqMAw25heOTO3pp3DKRgGQw5mqKPMsXFkzkR9k
+	jTyK/SNCga3Sr83XpJJjNB5jAYn5nTRc=
+X-Gm-Gg: ASbGncsL3ChOu0RenCbq6MQuSqiPlZ1CzQ7BOwKW555apKuDbVUqdD+TH+j+luY0WmH
+	iqEfvrHXkbt6avRI5cw5YqLzRFmPrufDJZvFKkfuLNw9Gn2M/5weWxdw9GPhhfhL6PciIlqGWwz
+	rHJQ050RLRqFm4OeGC9OVJAzGFr8qwguBb2Vv3KAfPGSc=
+X-Google-Smtp-Source: AGHT+IGM/VopKp/r6apLhI9rmp9l1qxkDiRkPFj/MKpgaRuzrg6NcdRAoIs0amXnu7mRkqF+MHQp9zxNSktQEX8jyuI=
+X-Received: by 2002:a17:902:ce82:b0:22e:6d69:1775 with SMTP id
+ d9443c01a7336-2352960ce85mr39194065ad.11.1748698814133; Sat, 31 May 2025
+ 06:40:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DAACKTM8B9A1.3SI9LRGNMSBH3@nvidia.com>
+References: <20250530-b4-rust_miscdevice_registrationdata-v4-0-d313aafd7e59@gmail.com>
+ <20250530-b4-rust_miscdevice_registrationdata-v4-3-d313aafd7e59@gmail.com> <DAACGEDVW8D4.66KOF7PWD1I0@kernel.org>
+In-Reply-To: <DAACGEDVW8D4.66KOF7PWD1I0@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 31 May 2025 15:40:01 +0200
+X-Gm-Features: AX0GCFsJX8q4mifGojT5sQ1ck48NjEHPefut2SFVLV2ufOJhDgn09COymBLeliA
+Message-ID: <CANiq72=mdaekPrR-LWzfM5hKkNaQ=zGqDFh42Mbi8eqQT71tLg@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] rust: miscdevice: adjust the rust_misc_device
+ sample to use RegistrationData.
+To: Benno Lossin <lossin@kernel.org>
+Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, 
+	=?UTF-8?Q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 31, 2025 at 09:33:38PM +0900, Alexandre Courbot wrote:
-> Hi Greg,
-> 
-> On Sat May 31, 2025 at 2:45 PM JST, Greg KH wrote:
-> > On Fri, May 30, 2025 at 01:10:50PM -0500, Timur Tabi wrote:
-> >> On Fri, May 30, 2025 at 10:42 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >> >
-> >> > On Fri, May 30, 2025 at 11:34:02PM +0900, Alexandre Courbot wrote:
-> >> > > So to try to answer your question, I am not disagreeing that userspace
-> >> > > is capable of doing what we currently do in the kernel. My follow-up
-> >> > > questions to that are: how do we command userspace to do that work for
-> >> > > us when we request the firmware, how do we provide the result to the
-> >> > > kernel, and is this something that distros can adopt easily? I'm happy
-> >> > > to consider doing things this way, but would need a few pointers to look
-> >> > > into.
-> >> >
-> >> > Again, look at how your firmware for your devices in your laptop are
-> >> > loaded today.
-> >
-> > Note, I am talking about non-gpu firmare images here (wifi, usb
-> > controllers, etc.) that are using the firmware download subsystem for
-> > ages as examples of what to look at as to how to trigger a firmware
-> > image to be loaded by userspace into the device.
-> 
-> I would really appreciate it if you could point me precisely to one
-> example (a link, a function, a file) of what you are describing because
-> I'm starting to wonder whether we are talking about the same thing.
-> 
-> Previously I mentioned udev and CONFIG_FW_LOADER_USER_HELPER, but you
-> haven't confirmed whether that was what you had in mind or not. Assuming
-> that udev is involved, I tried to snoop events while a
-> `request_firwmare` call is performed using `udevadm monitor`, but that
-> revealed no event related to firmware loading. Then looking deeper into
-> the kernel documentation confirmed that the kernel does indeed a direct
-> filesystem lookup in request_firmware [1]. IOW, the kernel looks for the
-> requested file, and if it cannot find it it's game over. This matches my
-> observations with udevadm, as I tried requesting a non-existing file and
-> no uevent was generated. I don't see what user-space can do here.
-> 
-> I also tried to look up this "firmware download subsystem" you
-> mentioned, but couldn't find anything under that name - I suspect you
-> are talking about the sysfs loading mechanism, but AFAIU this depends on 
-> CONFIG_FW_LOADER_USER_HELPER which doesn't seem to be widely enabled
-> (not on my distro at least).
+On Sat, May 31, 2025 at 2:27=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
+>
+> Let's keep this newline.
 
-Yes, that is what I am referring to, as you all seem to want to do
-"complex things without a specific filename choosen".  Look at
-Documentation/driver-api/firmware/fallback-mechanisms.rst for the
-details there.
+There is also another apparently spurious change:
 
-Or, better yet, just have your driver name all of the individual files
-that must be loaded and then no userspace things are needed.  That "big"
-firmware file will have already been split up into the different parts
-when you write it out to the filesystem, so no need to parse anything.
+> -        pr_info!("Initialising Rust Misc Device Sample\n");
+> +        pr_info!("Initializing Rust Misc Device Sample\n");
 
-If this isn't going to work for some reason, I think we need a better
-"this is EXACTLY what we need to send to the hardware for the firmware
-image(s) it requires" as I'm totally confused based on the different
-people talking on this thread about totally different hypotheticals
-(i.e. 12 line elf parsers in C vs. a giant elf parser in rust, random
-hypothetical hardware values that userspace "can not know", pointing at
-obsolete crazy interfaces like remoteproc that just happen to do crazy
-things, etc.)
+In general, please try to avoid unrelated changes in patches.
 
-So step back, come up with a solid design document, and let's start over
-please.
+Thanks!
 
-thanks,
-
-greg k-h
+Cheers,
+Miguel
