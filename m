@@ -1,87 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0142904;
-	Sat, 31 May 2025 05:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C63ABE46;
+	Sat, 31 May 2025 07:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748670590; cv=none; b=YoHzGebxMORwJF+V1il/7lDfi39OxW5lcywerg4wF4/cssNP6CPwfnmNgh4vKUhqAIgMAC+//0JcJPost4ML1ejqWUb13LGhaOmxSSpWYxIPCodhsn/OAOj241We/XGDFwM6taQI6VyrvrhxJBb0tRpYWn/+uiSm1nUVI/WHalY=
+	t=1748677092; cv=none; b=EiZB+3Jld+OawiXPYtYpRmZsQApBSoTPcavpU8yfa5e3hrl940sZWsIqzdmniiF/pUHcKr6RPrKbQPddLfz6e5fq7wYzvhsGG7E2MAcifwxEJxGOW9/L8SpTTqKKdaiLCUj+ABmoM2F5eHlW5zq73E+yftVZ4SFdBwmSlIVC2Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748670590; c=relaxed/simple;
-	bh=3rztAwoj/CLKv7pyv7i7aukmruToEE0/FZ2bxxCzmxM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bZ9suoUQYFmcCERD9urgiopEh14unKFNdMDhphxJdhDQ3ASW2kJeJ7KbLibQlLQbnVIdbm1jS+tqgDFwnkQ3jZBASIOUI9lTrwR8ipcveUuz4bNdui5UMNSteTAIj+exg6O+81K1vODuji//oL0aJ9jPAe/10dnEaNKSAI+eEcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CctRSZB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748677092; c=relaxed/simple;
+	bh=sOSwqv8iikuP9e7lDjX6UD+qNQoBTAK/pKuD3jZ//KY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=GSp6mO9FVOzo7VbPhD/gMybEurLSBooeKsOOqTxoLXuqhLzps4mbRhuKTkFGeg87DnWA8n9u2KNuNyx0HnLzk2E19kV3ald0hN1fF6ADdV5GrrXXUOWU1TSzAmfsareuD+Scrn6qKFkTzOUjTDrxDlPv7IWdLKFo6V8sPyBSj10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/3FjNM9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CctRSZB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D5AC4CEE3;
-	Sat, 31 May 2025 05:49:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1748670589;
-	bh=3rztAwoj/CLKv7pyv7i7aukmruToEE0/FZ2bxxCzmxM=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/3FjNM9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FFB0C4CEE3;
+	Sat, 31 May 2025 07:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748677090;
+	bh=sOSwqv8iikuP9e7lDjX6UD+qNQoBTAK/pKuD3jZ//KY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0CctRSZBzVq5upNYar9hc5fdQL8nvDgDWnSOyL1X08oXi0XwwRaCBpORb0c2y5wv9
-	 iGJenbHnFR6gCzQJ2FckQORDSqiyQKGOAlIYhmn0379UZM22QS2bYnpoaG5XEHNJIq
-	 KpJof6NBRpvxT4wBPVoEKkyO5cvqiRRLxM+fw3Nw=
-Date: Sat, 31 May 2025 07:49:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: acpi: add `acpi::DeviceId` abstraction
-Message-ID: <2025053111-anteater-balsamic-8d01@gregkh>
-References: <20250530123815.1766726-1-igor.korotin.linux@gmail.com>
- <aDnD_Bb3l6GiI_8K@cassiopeiae>
- <CAG7QV92rtk7NUKzUoApkopv1LF2WVjqyNA9hPt=yCuEvdJjoCA@mail.gmail.com>
+	b=N/3FjNM9jAjzMYG5+ce6LfBiY+E6Yir+b2VSv4x8lOTBiSEz9oiIWi36zxJiZXSHV
+	 2K05+jPMli7x/uFzbB3gQ3DT9fBFpCNcBYSmXZly9553FocdCBhR5qdl36KvAtQ0d6
+	 HKvSiG6wbh2A67qa4sDS5HcJBuwE1WWoCOemFQy1geJytG4S2L6dkIVZ22GzkRnGMW
+	 dVt8GweELAgKOWh+ALOJ3gaCgIbY5uZ00F8dMMZaDWDl1lcDBKdqE1mPsjNjJ9kLV/
+	 baiZfKFes5vdPzcoxEhzdlStewwAeIUfpAZ8S0YROFjzvGiRT25ZQZ9KrSgYucDA42
+	 bAyhcTE6IeosA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG7QV92rtk7NUKzUoApkopv1LF2WVjqyNA9hPt=yCuEvdJjoCA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 31 May 2025 09:38:05 +0200
+Message-Id: <DAA6AJ0N7JAA.WCEOCHKVFLDD@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Sai Vishnu" <saivishnu725@gmail.com>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
+ <gregkh@linuxfoundation.org>, <daniel.almeida@collabora.com>,
+ <me@kloenk.dev>
+Subject: Re: [PATCH] rust: doc: Clean up formatting in io.rs
+X-Mailer: aerc 0.20.1
+References: <20250530123129.31505-2-saivishnu725@gmail.com>
+ <DA9QL5A8747E.17QE50WBD6JOT@kernel.org>
+ <CANiq72npoVzz01syorhUcED=tcs9FJf8bFHthFrUQ-bE-AXJ8Q@mail.gmail.com>
+ <CAFttn54qYu3ajcBPWWnhjAS-6pQ8Ox3ujbTF6D=Q_BOMkTLq6g@mail.gmail.com>
+In-Reply-To: <CAFttn54qYu3ajcBPWWnhjAS-6pQ8Ox3ujbTF6D=Q_BOMkTLq6g@mail.gmail.com>
 
-On Fri, May 30, 2025 at 05:11:29PM +0100, Igor Korotin wrote:
-> On Fri, May 30, 2025 at 3:43 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > On Fri, May 30, 2025 at 01:38:06PM +0100, Igor Korotin wrote:
-> > > `acpi::DeviceId` is an abstraction around `struct acpi_device_id`.
-> > >
-> > > This is used by subsequent patches, in particular the i2c driver
-> > > abstractions, to create ACPI device ID tables.
-> > >
-> > > Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
-> >
-> > As Greg mentioned it would be nice to see the subsequent patches.
-> 
-> Ok. There's a little misunderstanding from my side. I'm in the
-> progress of implementation
-> of I2C driver abstractions. I2C drivers can use either "of" or "acpi".
-> The idea was to push this
-> change first, because:
->  - It's quite standalone one.
->  - I'm not sure how much time it will take me to finalize I2C drivers
-> abstractions.
+On Sat May 31, 2025 at 4:57 AM CEST, Sai Vishnu wrote:
+> On Sat, May 31, 2025 at 1:09=E2=80=AFAM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+>>
+>> We should also probably add "region" there, after "memory", or
+>> similar, especially if we remove the second part.
+>
+> Thanks for the feedback! I=E2=80=99ve decided to update the comment to ju=
+st:
+>
+> /// IO-mapped memory
+>
+> I=E2=80=99m new to kernel development. Should I just share the updated pa=
+tch
+> here or send a v2 that refers to this one? Thanks!
 
-If you don't need it now, then there's no rush to get it merged now :)
+Normally, you send a v2 with a changelog and a link to each previous
+version. For patch series with a cover letter it is often placed there.
+Since you don't need one, you should put the changelog after the `---`
+(anything that isn't a diff there will be ignored by git when applying).
 
-> If it is not appropriate way of commits, I'll then keep it until all is done.
+I'd give others a few more days to review. (this patch there most likely
+won't be any additional comments, but it also doesn't hurt)
 
-We would like to see it be used first, to ensure that the code is
-actually correct.
-
-thanks,
-
-greg k-h
+---
+Cheers,
+Benno
