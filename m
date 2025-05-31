@@ -1,94 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0182F22D9F8;
-	Sat, 31 May 2025 08:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5924320A5E5;
+	Sat, 31 May 2025 10:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748680070; cv=none; b=GWxlZI7Ylg58pTMGEny7xKyzRgmnOgtANny62g9H+PD6vy4NKM29q9SAnY76Nc5+FPK7d4Da1iLSG2UNzUHu43PcvDSCoIJD1HmHJBQMUU7VlqXaCqHv50Goug+3WN5+BExRQzfY4t87iEGUCyG9ZV0tfFVgM/UN+JZ0PwxWOGk=
+	t=1748686351; cv=none; b=sUTVfOzYSYe8KcFeS9kurZ5SiXov3XR6HaW57BjnxccrKHTCHqOODGjmS3Wrhazsdd/ic72aQcPWNk+OKGGLpzgIXPSoi35wdZY4gytu74NbfRat7/EBohsewnrh9s080DnC3TbVs9P7XH1/xKHkFMl/ImeonpFBCNQ1HtkUZGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748680070; c=relaxed/simple;
-	bh=YV7jAOWu5f2uMd0mrJSv6w/Tw0RCII65EBVJz164jz8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=A1Mq6eHRzoYN+KfDqzzQ6Xl4zLcGrua2N/QHlqIg0tPlMvlPo6aGYzLkVLaTl+XoHeRc6mMJd7IcAWC3rf4QVVirJAseLV8BhC4K9cgb98U5wwEiTRs7BsTbj91liq67V606JjDczzBhSpWR1/YQ2VrLFGRZ0OMF0wAH3zbGeDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iJ2JfGT4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748686351; c=relaxed/simple;
+	bh=mJ5Rl0qcXcb/5doOfmKI8NZWnM2jDWsTV88Tpvy+T6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DhaPc27K/6T1dsgbbtHcfF4/SWE3OKx3/yrm/RHY3Ll30FvDJRuLaHBz9Y2tuWO92u4gaqCwjGYOSjQ/0Zmo6a+nluGw2/jldNdx4KWM5YIHvMrcuvq6wvjU48N7U/mgvF/mrZpdzpuhfAKLJQ97wxmZKmkPChMJgCirhGhNX5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rt4BfImM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iJ2JfGT4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E941C4CEE3;
-	Sat, 31 May 2025 08:27:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rt4BfImM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A432FC4CEE3;
+	Sat, 31 May 2025 10:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748680069;
-	bh=YV7jAOWu5f2uMd0mrJSv6w/Tw0RCII65EBVJz164jz8=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=iJ2JfGT4BkPHgrhmvWfX1d06XnMTYiysW/CRPYMsQ6BDq37xVznYfbiPttwY0cgdO
-	 DelfKC2Moizs2E5EgdMBzPHCT0/H8O5j4AQFtr3HC4aO7XvC9MIyZ2MhnAdYQCd+dd
-	 i/JZ5LzMXAxzHaey9rQIPa1EONP69dPf2dPPQ6a+dkt3cDQzhpynuVqvUWbeCmFfVS
-	 44b+rMK4JMCEebVGZcyPJ0OMGDZxizsBHsieCIKJVoPq+enLW9tUB2uQQxppQ9/bQx
-	 0WFmwNbh2F2EM6QOia9jIk0B/yFRN4su8oxsH+dyHgrblGyanP+vxkQl32Ir+z5bKt
-	 C7Ka0pPOHjrjg==
+	s=k20201202; t=1748686350;
+	bh=mJ5Rl0qcXcb/5doOfmKI8NZWnM2jDWsTV88Tpvy+T6s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rt4BfImM1YnVSBaYAS8IPRSbIwVj91TOQs/cl8Z1bnYBr/N6Fv7DHQ0QXrIju/zH2
+	 3KIR7O72VXDYNvAiGdgSk6uFDG0eDFqvc+71AGa9oNbt3zCDnn9yLmKFl6zr/3mwcT
+	 +L4JlOPWEI+RnNOrxiAabvouK7Fqy8ILsp/WDxJgbd9MFkVaeHyjMxPde71iBI6bSi
+	 Ra3H/Yct21uXvydBCuMsp+CSs0BrPmIY1Q3fiQta4UY3qoTec85Ehmo6hZEwGet1Gv
+	 V9Y8M93PnQtD7LG60jPc73TJyN1W0YcJncvHea25CsX/TA9WtsUGbw5ViKac/sJSAy
+	 tCt1TzdGST2aQ==
+Date: Sat, 31 May 2025 12:12:24 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: acpi: add `acpi::DeviceId` abstraction
+Message-ID: <aDrWCBAxPnu7VY0P@pollux>
+References: <20250530123815.1766726-1-igor.korotin.linux@gmail.com>
+ <aDnD_Bb3l6GiI_8K@cassiopeiae>
+ <CAG7QV92rtk7NUKzUoApkopv1LF2WVjqyNA9hPt=yCuEvdJjoCA@mail.gmail.com>
+ <2025053111-anteater-balsamic-8d01@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 31 May 2025 10:27:44 +0200
-Message-Id: <DAA7CJOUJPNL.F7UH9KD8JANF@kernel.org>
-Subject: Re: [PATCH 6/7] rust: miscdevice: expose the parent device as
- &Device<Bound>
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <chrisi.schrefl@gmail.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250530142447.166524-1-dakr@kernel.org>
- <20250530142447.166524-7-dakr@kernel.org>
-In-Reply-To: <20250530142447.166524-7-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025053111-anteater-balsamic-8d01@gregkh>
 
-On Fri May 30, 2025 at 4:24 PM CEST, Danilo Krummrich wrote:
-> @@ -227,11 +229,21 @@ fn drop(self: Pin<&mut Self>) {
->      }
->  }
-> =20
-> +/// The arguments passed to the file operation callbacks of a [`MiscDevi=
-ceRegistration`].
-> +pub struct MiscArgs<'a, T: MiscDevice> {
-> +    /// The [`Device`] representation of the `struct miscdevice`.
-> +    pub device: &'a Device,
-> +    /// The parent [`Device`] of [`Self::device`].
-> +    pub parent: Option<&'a Device<Bound>>,
-> +    /// The `RegistrationData` passed to [`MiscDeviceRegistration::regis=
-ter`].
-> +    pub data: &'a T::RegistrationData,
+On Sat, May 31, 2025 at 07:49:46AM +0200, Greg KH wrote:
+> On Fri, May 30, 2025 at 05:11:29PM +0100, Igor Korotin wrote:
+> > On Fri, May 30, 2025 at 3:43 PM Danilo Krummrich <dakr@kernel.org> wrote:
+> > >
+> > > On Fri, May 30, 2025 at 01:38:06PM +0100, Igor Korotin wrote:
+> > > > `acpi::DeviceId` is an abstraction around `struct acpi_device_id`.
+> > > >
+> > > > This is used by subsequent patches, in particular the i2c driver
+> > > > abstractions, to create ACPI device ID tables.
+> > > >
+> > > > Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+> > >
+> > > As Greg mentioned it would be nice to see the subsequent patches.
+> > 
+> > Ok. There's a little misunderstanding from my side. I'm in the
+> > progress of implementation
+> > of I2C driver abstractions. I2C drivers can use either "of" or "acpi".
+> > The idea was to push this
+> > change first, because:
+> >  - It's quite standalone one.
+> >  - I'm not sure how much time it will take me to finalize I2C drivers
+> > abstractions.
+> 
+> If you don't need it now, then there's no rush to get it merged now :)
+> 
+> > If it is not appropriate way of commits, I'll then keep it until all is done.
+> 
+> We would like to see it be used first, to ensure that the code is
+> actually correct.
 
-Here I would also just use `T`, remove the `MiscDevice` bound and then
-use `MiscArgs<'_, Self::RegistrationData>` below.
+Alternatively, if you want to upstream this dependency already you can send the
+following patches:
 
-> +}
-> +
->  /// Trait implemented by the private data of an open misc device.
->  #[vtable]
->  pub trait MiscDevice: Sized {
->      /// What kind of pointer should `Self` be wrapped in.
-> -    type Ptr: ForeignOwnable + Send + Sync;
-> +    type Ptr: Send + Sync;
+  - this acpi::DeviceId abstraction
+  - the glue code for the generic adapter trait in rust/kernel/driver.rs
+  - use this glue code in the platform abstraction
+  - add acpi support to the platform sample driver
 
-There is no info about this change in the commit message. Why are we
-changing this? This seems a bit orthogonal to the other change, maybe do
-it in a separate patch?
-
-Also `Ptr` doesn't make much sense for the name, since now that the
-`ForeignOwnable` bound is gone, I could set this to `Self` and then have
-access to `&Self` in the callbacks.
-
-Would that also make sense to use as a general change? So don't store
-`Self::Ptr`, but `Self` directly?
-
----
-Cheers,
-Benno
+This way we can already validate that the code works correctly. All this is
+required anyways if the I2C device you write a driver for is on the platform
+bus.
