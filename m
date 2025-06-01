@@ -1,66 +1,97 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CE05BAF0
-	for <rust-for-linux@vger.kernel.org>; Sun,  1 Jun 2025 13:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE81A1BE251;
+	Sun,  1 Jun 2025 16:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748785041; cv=none; b=nf2fu806r3r5QuvojX+WTOuaa9GB+UqU/W50jEQXt72Dahx3qF/QCQuWuR4wwM4ZEYdrkjReREODs9o1xB7wmNSI4Lw41XoQj+RqlVq7dnhbXcR3i7JyCWZ9I/ZGEFzrDcgdQVABVw0BpDn+qoq+uggLGeg6vWd+MaLXzmsOJmQ=
+	t=1748794171; cv=none; b=Zd1kLny06JdnOsZ8rhKTz60ik7KfYFVsBrNxQMIDxGGyvYJ/dazhToOVw0+fxbEKDHPY3jiCAf9mw4UCAd81qyS9HEhskTj7L1lvMIlFBo2Hl4cnutZ2vuTib3Q2gh+j4tFGtpZjXmqoaudjwtzdh5JXySRSuK3QristOCKfaiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748785041; c=relaxed/simple;
-	bh=TT7F8Of0B/PvQiptkXDQpuvHHwfhY6b2dVPxC6Axhj4=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=COtoKQUJ3cJDMsTBpjzBXKTPFs8rzBm3HzMl0sIroASWds3CTEyHpumgGESWrqObnsj2+f/9DXmsgITz/PSYwEqVx7J14pmxkGIx3HlnjO0/NUt1HEsFmmbTxY/G7BLvfFqSdE30fTv/xGFmgPuyd+qnz44Afru/T6A476okr/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GASl4ZLg; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748794171; c=relaxed/simple;
+	bh=AxYAU+ZdB9zo4fhtMdkeMneVNBWpWuCIqSB05ns5SX0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=im9Lb+FtWLYB4WqjRw59nLbptnqo9MI/BUhN8uTQMPDwc8Ngm58JFFBKOVwX1K1ISuqGHJDCnZJ98MiMeWUGJZY2YpKVowx8wYS+F/3Emym//if2zppGljnGWpoylcKX3CIPjfu4tq/6MJP5yiGgZbRsmJF4t7qzrFTBgF0LYDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7p7PyKS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GASl4ZLg"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ad891bb0957so626693966b.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 01 Jun 2025 06:37:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748785037; x=1749389837; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=TT7F8Of0B/PvQiptkXDQpuvHHwfhY6b2dVPxC6Axhj4=;
-        b=GASl4ZLgslQ53MTiH1PVHqoKfI4EPBwun/g0noIXbooIbhIw13Ae6jJnvTjjkDCRWB
-         qoldHe/P1V2ZI2s7etWa0t7lRfEAH1Kg5s0LM5UtEtYY30g77m41INqw/M2ik6KBiRPH
-         vzMlDmfTm4ZUQ3b1MihJ9h5AhBReLPi97x+ww/293HPefH52BLtfqL7bmCFXYNQwcMih
-         hcoV8s3JEsTngx6bM4oAB5V0kOcd9NihqOlWlPtEseLhzncfNbKkt+9/XDLOrqVM0Qkb
-         5bQ2Jx+SLHNJwt5FjOsykSPx3FrVDWQTNGhPtiiEd6JU330x0DyAB2U7/UAWqr6+oUvy
-         STIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748785037; x=1749389837;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TT7F8Of0B/PvQiptkXDQpuvHHwfhY6b2dVPxC6Axhj4=;
-        b=CC8bjboi/FBwtelW455tnP5IPRnfgsDAFe+v8RRVkAwOeMR9SRQaxshFh4mFucR5NB
-         UeladYJ+QQBup3CQgGcb+9ptCtT+MHtgU8Bt+iyz1jh+5PcIfSOF/n3bWbWav/SGzI9L
-         N9s/QwlQyhEpa/nrA25/buAIeuKbVMHeMoFPiICr/p38EaebEShScCIa/6l4JhYwYZSj
-         umelarBOqIcIhbxWW6uxpeh5WzuGSnt555WrcuC7TlsMJR1B0YZk9kz3OB+csbSONfFW
-         YXqE7KxVyAyXv9n732rVfsMkFworZ1zdOmGJk1P0lkMyDo+/AW93+lzb11E8ZlKye8JR
-         lR+A==
-X-Gm-Message-State: AOJu0Yz4f3JaV80tyZoaHU6xqVr2V21szBTcp8UbTK5KgtgajIcsel2F
-	2Tai31g+6C+ZDEFGsyoTYUa7TsHzr+RN0lp+dKLHgBnHeNrp+jEFEdGoHYBLDLBFMXhNMM0Y8z/
-	Egh0rRYsDeQpfhPl81oUdNOfqDzVctgAs2A==
-X-Gm-Gg: ASbGnctaCdlbC8/ex4Nqr0Zz4+ALeUzy1L4W3tBO+fF5a6qcjqRY2kDIolom3eaxZ92
-	cs4hpbjMAbpxYHpq60BW/GpkZFXfghuwvupErQ8Fz/5cC6cVlgLwvFDHTB3f9bSDQrXysu8dcox
-	NNjBAR62fdgo29jAonsp8mijEiSrZNodfjiw7tobIQFA==
-X-Google-Smtp-Source: AGHT+IEDZYxiZfYZFfSbIrb2xGy+wEdzDvv5u7J5u5UzHtrp5j8syD7eieoOkZAUnfn04oZCZjfWgNmT69cxYEKKX/M=
-X-Received: by 2002:a17:907:7b8c:b0:ad8:8529:4fa5 with SMTP id
- a640c23a62f3a-adb32580593mr1144600266b.46.1748785036919; Sun, 01 Jun 2025
- 06:37:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7p7PyKS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7260CC4CEE7;
+	Sun,  1 Jun 2025 16:09:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748794171;
+	bh=AxYAU+ZdB9zo4fhtMdkeMneVNBWpWuCIqSB05ns5SX0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=W7p7PyKSSYxhu+o6atcr6r8QUb2UvzDV8ObmIEx4uKe4mijQo1hQmr8wk6T0HGwaJ
+	 iahWVcL3TGmlStv0ekQJNr/fbbQmJ7aqTwIqe2GBN8IeFc7ZvKeoDGr+Ux2JkACmkP
+	 vonQydoVnCNG05+N+eWrEbFUeJs8bTmqxJbC1bjO+HsmY3InECUxrwmv6BPrdNZQ6E
+	 7Rgof4IG7LgA7jsCE/WFR5bF9A7oNq+lFGmpGq1PDY0qBy9VzwAxud7bl1zMBltbiK
+	 tverdNJIL+hjkJsgUCzoa9pvELZMC2saTrJSHATAQYUqkV4ahzf5Gp6ADoh4EB7p82
+	 3CvXWBVxdIAqA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Anand Moon <linux.amoon@gmail.com>
-Date: Sun, 1 Jun 2025 19:06:59 +0530
-X-Gm-Features: AX0GCFuRS-wVKUdz54vieLGBP66iIVom2DuXYjo9tCpsn5zvPulV_nSEdxBayDc
-Message-ID: <CANAwSgRby9wCw4Z9YJkYdsn344dz24iLhY-sb2+6USzRjcrhuQ@mail.gmail.com>
-Subject: 
-To: rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 01 Jun 2025 18:09:26 +0200
+Message-Id: <DABBSL9WTE9P.DX3I6CFIYH7P@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/2] uaccess: rust: add
+ UserSliceReader::strcpy_into_buf
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+X-Mailer: aerc 0.20.1
+References: <20250527-strncpy-from-user-v4-0-82168470d472@google.com>
+ <20250527-strncpy-from-user-v4-2-82168470d472@google.com>
+ <DA9P904SL0KL.1QNQAI240QLH6@kernel.org>
+ <CAH5fLgjZrJ66VnW0J_CHc-3yUFOt+DRWgTCNxoftACga+Lw+fA@mail.gmail.com>
+ <DAAG8AUG7GE2.EVO9Y6PZTHDI@kernel.org>
+ <CAH5fLgjNCQV8zsfdeq21iXiu_VOpt=WGnm9nMp-B0bOEMEBctw@mail.gmail.com>
+ <DAAMVOZJDNNT.1JR5YY3ICI0Q5@kernel.org>
+ <CAH5fLgj8WkjDs6qCmzxYsYTH=_knWyZDrwqLopvGZEBk931aXQ@mail.gmail.com>
+In-Reply-To: <CAH5fLgj8WkjDs6qCmzxYsYTH=_knWyZDrwqLopvGZEBk931aXQ@mail.gmail.com>
 
-subscibe
+On Sat May 31, 2025 at 11:09 PM CEST, Alice Ryhl wrote:
+> On Sat, May 31, 2025 at 10:38=E2=80=AFPM Benno Lossin <lossin@kernel.org>=
+ wrote:
+>> Maybe I misunderstood the code, but if you do this:
+>>
+>>     let slice =3D UserSlice::new(ptr, 1024);
+>>     let mut buf =3D [0; 42];
+>>     let s =3D slice.strcpy_into_buf(&mut buf)?;
+>>
+>> Then it will read 42 characters from userspace and (if there was no nul
+>> byte) overwrite the last character with `\0`. If we now do
+>>
+>>     let mut buf2 =3D [0; 42];
+>>     let s2 =3D slice.strcpy_into_buf(&mut buf2)?;
+>>
+>> Then that will continue the read at index 42, but effectively one
+>> character will get skipped.
+>>
+>> (Now it's not possible to call `strcpy_into_buf` multiple times, but I
+>> see no real reason why it isn't a `&mut self` method. Also a user could
+>> call `clone_reader` and then manually `skip` 42 bytes. Although they
+>> might only skip 41 bytes, since that's the length of the CStr. But that
+>> runs into the problem that if there was a `\0` at index 41, then
+>> repeated uses of the pattern above will yield empty strings.)
+>
+> I removed the ability to call it multiple times to avoid dealing with
+> this kind of question. You may submit a follow-up patch to change it
+> if you have a use-case.
+
+I don't have a use-case, but we should document this behavior somewhere
+especially since the ability to only call this function once guarantees
+the correctness.
+
+---
+Cheers,
+Benno
