@@ -1,224 +1,202 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2065.outbound.protection.outlook.com [40.107.243.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B428F610D
-	for <rust-for-linux@vger.kernel.org>; Sat, 31 May 2025 21:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748725798; cv=none; b=hwbU6Q/lMoSH67a9sycGycE7xGJubGe1Do/BfpZ447Z1rhTpNRrWHVZ8df3dyX81IB+UD9mpo2wbirc19U14nSpwI0nPlACGv4/aUCb1Qevl4f48Nn3Stp2fE9o7cztnjE+2kYGwfzgcPw+NEkF91NJR3eaxCz3PROCtlrYNlRA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748725798; c=relaxed/simple;
-	bh=u8a2NkNNd1pqKtbAGadHEEcUwqWQAaGjVUfFSf3L4H4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qwoaOJygrW6IZQ+HPNOrBDwLZ4JHg67iTLN77Hoo2MfFNCM5B2ELmEcuYRqNmcqGI9pGB0LtZD+mgI7Zy588wZF9SD8ojQP1NvXsQklhxMST5xQZ2+X+kP28bB/c0n9oYKRvKsrgtrwdv1RxDKCHs76h+DzEzMX1xCDT4olYbjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pPAlIMwK; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617486ADD;
+	Sun,  1 Jun 2025 03:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748746853; cv=fail; b=dULo8OPFn5tWugK5Yv49lxRrwsiXbgBy5ilkWKIMOh1kO81zy7vrhMizXzkp68mDGlzjanSjYdigx+KCjAYurGLyJmPDX81FjUfm7z6vgq4HdOpe6rnP9hywihRyvgmo86kgvIPdEg0i816ioZPDQetjah8UCpzeXl14AlLPcXs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748746853; c=relaxed/simple;
+	bh=LrikHPp7PQchiAX3alXXX3KOTj9wjhG5lSgAf1iaDsQ=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=B0WAJOu47fxdbYsM5eRQHrTbZ4Z3/Tx92IB8iONFPqVUljEBkrS5HdN1ci0tbhsU+QXpiuEtrMm0NBOFSAFB6Cid53V7BNrid/cXDUdD5//jO6DPNfYuwRPnkjCDwcMvMVyqhngLCVlETzFTMFRMRuwxLs0oLnvEZNyhPrX2M4Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tnFYPOfy; arc=fail smtp.client-ip=40.107.243.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pPAlIMwK"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43ea40a6e98so33552655e9.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 31 May 2025 14:09:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748725795; x=1749330595; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d4MAljZb6VaLb+JJfW2inrM+R4knjNKG7SImE66ez2c=;
-        b=pPAlIMwKtLLJ1jQqdS46p/pu9Kwv9MiT6B8CGQZ2zxLmMYV3Dz9jC61p4P35XtNjpK
-         c5vQTGgpQFINKftPp/htW9hmc3QRUe5W9pdqnFk+KeejKofWRSlPArR4RKge1w8r0ldT
-         nFvd35YRV9YwiSri/CxM9yu9X4JLExhg38aFKtti7xa3Fa6LgIr4pbWWyDMEXQ/F9SpI
-         /v8yLSOIyr7RRKvXzozGI3q5dV+H7jHRIVCUBoCcVZyXBWGjQnqELH1dbKC20L7COJN9
-         zYpLyBRdBrpG66Vxb+8jWILBFJborx3JUMcz46ZuUpj2pwSsKbz+iMLl6OKc2gfjZin0
-         8TUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748725795; x=1749330595;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d4MAljZb6VaLb+JJfW2inrM+R4knjNKG7SImE66ez2c=;
-        b=erogIIlUpOdOwJc9j3fGafe7cxYSdoT7Gai6/RoT0Xq0jqwFGk1jvwx74b0zuYdOwu
-         vP9eqhLxSMjaUOBjkclFh5xDkIUFTg2mJoW8lGCkVqxUZ9tGpquVuLeDH3O+JsdGRUX5
-         s/u4bgHgq8V7f7D5V/kpr3tl/iCIh5KxMQ2X7G3N1ImrNX8N4DG1tp4K9JBqHnpxMTyE
-         aaelk6mBuPsqn4PpM6sNhsXxKujwByR6VmQWAJv0sJwKlYAS4neiHq2UYvtx56EW0Jlh
-         z/bDqWPZ45lN+OQ4kSJEIlReBL1p2Gn9j0/FD3W0wz0BxrzyGwd4o4q9nTL++orZPZTd
-         Iueg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJOStP3Qqxyrgr9vPsrhMjqIf0F+BSJX0BO0uEwVUsn8VprgnykvzUUbMQse2+oEQEZVCYQJyQNmbaD9KWHA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyrj9uztHZYxZf9hySeOzxCuNpX1zHkKmmqkfY0VjJK6a8Z1fpc
-	LR3B7ONYZTHLLwNaEYUiXWyXqCi5k7ceHeU0ecfP0+GQVPZjVliprb2nxV18FHzgX8pcnIiRxje
-	e+DYw9KiemHV7ewmqIbr1561mDTN5lut5f6CZOZK4
-X-Gm-Gg: ASbGnctA2QQWW7JttbnZV6GbmU+euCOIPGq3qhpw6/APjbqLCkTahL8qMMce1djid2D
-	hfTOkSVa8Kczktr2L4wDE5j3luF4fbRB5AC+cMokV0ZsTxAVNMvCz4+9I+wJGVrJ4qT3DZ3Qo8d
-	CZI11FfnB4C6H39UrD1WXi7vaAjfxqDYA0oe5fsRGnrcYe
-X-Google-Smtp-Source: AGHT+IFIRaZbn8gKcVwGvsqHeJaCCSovLLe9GrV5ROw/dR94c7J1c/uOa2ltNvjq+/U/6CRBtT2Ujn5IoXb9e8TneFU=
-X-Received: by 2002:a05:6000:402a:b0:3a4:ebc2:d6ec with SMTP id
- ffacd0b85a97d-3a4f7a4d257mr5846489f8f.14.1748725794909; Sat, 31 May 2025
- 14:09:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tnFYPOfy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aRjrP/ce35YAKfgxjC9otE7MsepHNu4WCDba3NGYuKCcgEZQb/l3BX8QBXTMLgrVRhRVvUKAZGLftnDOPMkpzkIbId1T9kiJEXxJVDayAh9XY/I9KO1cTFPHPsX+P67BhhlYc/SD3yIX8Yvs7D1l2spHX/lBKMN8qSjA8Syznfa17zQJhV+/fe04JAmnlR+3dyLUlNBt3CZAK5TkJF57qtH726GhOyCkAE9c3MwNu4Q2RyaITsCjoZDD8OSkRwyDQ0hXVU7dq7Z4lWCi1w63aCtVo508rw7Xe+sgPqG0gZVGhNWeRg79xKvtU0DoH9EdwlYrSKDroV4OnHCAnm2xQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GVFE8RLv0bJF2HGiJQbjYDA/efpJfbl047vjuHgHeRA=;
+ b=eUa1XaD4BGkrGAUXGMouQQbwS9yuBrzN8oGoHrOQ6PAP0g3wEhxUKGzABBJtAQ99ke4TGFoqJfeSTvtonjBULkg/uwWcV124xzhlPep1WM7l/iug869eJqS8MZ/CZcDZwkn45hYy01AYbepmB7g+K4b+mPkMHcUpPYTbWGaPy9671jk4dHE6cW7uGIgmW+hBi4GBP8Xo+rj2bRd5R81skUX+XQqBuW4sOcQaQ469aGAMqjBLkAN3mBeXKWHyuzgm1/04TUP3bu64OiaUKeWQaZ5Ix0nDCd8QkGzL8yNiaZ0iCxxpjgTlgTxbQGDTt07N8kcFQrNltX4q6fK7WmSehg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GVFE8RLv0bJF2HGiJQbjYDA/efpJfbl047vjuHgHeRA=;
+ b=tnFYPOfyvW6fW9yg80Vjy8Ao7aPVPqQRHt+pud3UjxIIj4mZjzep2FzxClznn34DQIedg9YziIjs0OlPqkigBeGoNsgSVrQC0hC9wnOpjYrYyMYzED+LENBhGcC8+DMAvNwdkygtMXW02YN9il3H72WHtX8CEDLrOyfg0qkQp0DCOE1xb+QiIsbNJiS4ydIRbFfW55Iez8vSu5Xxk0gKPMuRqkyki7pGG8s4y6ppLZQBAzxOGC4mb88E5dbC0IaNMh4rHMJWwnCl3bJ+vzU3gxxFg1J8rwqhKvpOseD9jI9bLY/38BcsqNr5XuzCoV7V46B134L1GFaA0NLaxS/z6A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DS7PR12MB9504.namprd12.prod.outlook.com (2603:10b6:8:252::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.31; Sun, 1 Jun
+ 2025 03:00:48 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%5]) with mapi id 15.20.8769.029; Sun, 1 Jun 2025
+ 03:00:47 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH 0/4] rust: a few common Borrow/BorrowMut implementations
+Date: Sun, 01 Jun 2025 12:00:38 +0900
+Message-Id: <20250601-borrow_impls-v1-0-e1caeb428db4@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFbCO2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDU2ND3aT8oqL88vjM3IKcYl2LlLTUNOO05NRUS2MloJaCotS0zAqwcdG
+ xtbUAwfY5tl4AAAA=
+X-Change-ID: 20250531-borrow_impls-8dfef3fcee93
+To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: TYAPR01CA0209.jpnprd01.prod.outlook.com
+ (2603:1096:404:29::29) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250527-strncpy-from-user-v4-0-82168470d472@google.com>
- <20250527-strncpy-from-user-v4-2-82168470d472@google.com> <DA9P904SL0KL.1QNQAI240QLH6@kernel.org>
- <CAH5fLgjZrJ66VnW0J_CHc-3yUFOt+DRWgTCNxoftACga+Lw+fA@mail.gmail.com>
- <DAAG8AUG7GE2.EVO9Y6PZTHDI@kernel.org> <CAH5fLgjNCQV8zsfdeq21iXiu_VOpt=WGnm9nMp-B0bOEMEBctw@mail.gmail.com>
- <DAAMVOZJDNNT.1JR5YY3ICI0Q5@kernel.org>
-In-Reply-To: <DAAMVOZJDNNT.1JR5YY3ICI0Q5@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sat, 31 May 2025 23:09:43 +0200
-X-Gm-Features: AX0GCFvR4yJBxRf9_0uyJroI03dydMcK82Y-sUNhb1wu-pGif1hyrxWf-JFooEs
-Message-ID: <CAH5fLgj8WkjDs6qCmzxYsYTH=_knWyZDrwqLopvGZEBk931aXQ@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] uaccess: rust: add UserSliceReader::strcpy_into_buf
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS7PR12MB9504:EE_
+X-MS-Office365-Filtering-Correlation-Id: ba972b80-f746-423b-0375-08dda0b8819f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZmdhNVZVd2pYWHVtbHFBaFBlTkpXREt4eEV5MGg4RGw5T2NNQml1Zk9KTnJO?=
+ =?utf-8?B?UDZieDFRMDFxSjluTXhkZW0vaThNRDZqTklySDdOWnNJcGhSUkhwZyt3bmUv?=
+ =?utf-8?B?Kyt4OEZJTGkyR1d4QUF2L3hkN21Bb0VRT1hGQUlwTjNtazJvb3FCVzBtQmRi?=
+ =?utf-8?B?OUVrWmRhVW9nSk1QSEk5Vng5RkQ0ZU5STGxGWXVZYlNDbnBFcExuKzV4bHM1?=
+ =?utf-8?B?OEJnSE1HaGJzMnk2TW1pbmFsT3lOeHF6dFAvT2ZzYVJqSFF5blp1WWMzclN1?=
+ =?utf-8?B?czd3eFdMRkVBNnc4bkpQMkZSQkYwRWQzOUlna05VYVk1UkZJVCtnblRmREpV?=
+ =?utf-8?B?eUsvTnNFQkNqdFVpQnI1K3B3aTdETXZUa1pnbm02bHgrN0tkWDlJaEZtSHE5?=
+ =?utf-8?B?MXd1a213RGlzbEY1TkJLdnF5UTd3VDhXRExhMlhnM2xIKy9Hb2JGbWJQUEhQ?=
+ =?utf-8?B?SVVyTnlqMFVQc2pBTmRlSjk0ZDJnTWJ2aXZOKzlkbzQzQnRtZ1RrRk44LzBh?=
+ =?utf-8?B?U2pza3krSWYxZmVVYXdqTlhvRExwRW50N2k5REF6SUZGSitzTjB5dEtpME1l?=
+ =?utf-8?B?ZE0wckFvbUlBK2xaeDJibFU0VG5JajFkOE5HNE5CUXV1R2JZU1orU0d6bDgw?=
+ =?utf-8?B?WUxhNzFXa0ErR3ZacDh4T2ZZdFlabFlEbURKZ0NlNm1rSC9XYStOdytjdEpy?=
+ =?utf-8?B?S3g0UVJSeGZNSURNaUVBMWVjWTRwajlhZGZjNDhLYSswYjlsV0lRQ2FlelVP?=
+ =?utf-8?B?eWwzbkJ3bFBLWnlTSzhmMU5Da1I3aHQzQ21Rc1NxR0dvekZKaDVPUDJiajRs?=
+ =?utf-8?B?NTBOdEJtYzZMWkFMMWQ3aW9kdjA4bVNybmRmN1k5TWh0OGM1RVBrcWQwVS9F?=
+ =?utf-8?B?S0g3dUNVOGFzUDlCR2VCcmVqdmZNY1JCNTdSbzk2bWtJa0ZaWU9PbFpFMjcv?=
+ =?utf-8?B?NEJJUjhuZmcxSmRBTUlvSk9XZGFaejRjaTFhaDdWeWlQaTVmNTE0dGxBVHo0?=
+ =?utf-8?B?QzQwc1B0VU1WWjdHeFpjR1FUM20wa3NIMlZDOUZLRGRLTkZmQmlLakRxTFpX?=
+ =?utf-8?B?NzNhaDRyLzdzS0cxR1dFK1NwcERSa2swUDMvUEFtak9NOHRwdTh3TGtUVEMw?=
+ =?utf-8?B?dHNERjlKeGZUb0NWSGNYbkRpWDhSSnFtSVpVR01YekNVS0daZndQSktKRHdw?=
+ =?utf-8?B?UW1mYVA2N0Y4TVRXSHJoYlRSclE1c3lObkFTRjB1MUdvY2tPVEFQRTFjMlF4?=
+ =?utf-8?B?NFJlUWlmUllpR0pldFl1bVdHcThWNTVubmR0YjFncFRiYVhETTJHaXZZMHQ4?=
+ =?utf-8?B?VVFoMXYrMzJ3N1pLWjkxUTk2YjlEZE5ZcnFSdkQ4ZUQyU2tWUitwWTlUeWdE?=
+ =?utf-8?B?VG5Tc0ZYalZ1ZEttZFd2UFdpU3NEdFlBblBZYy8xUjZJcXJZbERwV09XRHU3?=
+ =?utf-8?B?emtjTlNVOFl5M0NQWmpNTm4wZjFhRHNwaURjOXNXVll1WkU1SkZEZGRTMmt1?=
+ =?utf-8?B?cXNZYWdyNzdBQ3k5dmlkb0pTZ1FudDVvVkxPZUZsWmgwUGV3U1RaTHNrWEsz?=
+ =?utf-8?B?Njh2YVAwV2NTV2dpTDJsRlpLemgyZFdkbC9VYkRyVWxDRmhidE0vK2JxcDRI?=
+ =?utf-8?B?QkQwSDNyMXJ1OW5DNjFxd3Z5TzR2LzlJVkJ5T2pDc1NMamRqb3ZJSkNLTzRz?=
+ =?utf-8?B?R1VuYlFKaEFRMnJyRGpvMzJTelF0RE44Z2g3MkRHT010Vi8vWTM4MGRjQ01m?=
+ =?utf-8?B?d1RxZ1B2WkwxTDIrUXVJOG9sK3VhR1oycldmK3dudkEvVzlxTDF2Y2hKYldu?=
+ =?utf-8?B?L3hkMEhhTzJvZTJNYkNGelJmVXMwSlk0UitiUHZNN0Rqa3hPMjIvaS9QL1RC?=
+ =?utf-8?B?ZlVUL1Q3eCtMcGsvSjNEY3BvM2x2ZUxpV20rQkxBVWowWWtNalhwQ3lsVy9x?=
+ =?utf-8?B?anBRaU9FNXFLcEpDanlLaWIrOGt3Tmg1bGtXTXQ2MDRnRlpIbzlNcHAxMjBT?=
+ =?utf-8?B?VjdkUisyYUd3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OWFHQkxNMGNUTVEwVlBiMm5PdDJ6WGNaeWVnYXpMaDdjRzdjRHNieE4zMmE4?=
+ =?utf-8?B?Q2ZlS1ZSb0NwaWtOMUdTc1dzNlV6VnA5N3Frc0puUFdob2h3Yi9lU2xlR3d2?=
+ =?utf-8?B?MHdCdVlZNlhnTjlzWGlGR2ZiNjlpRGJqemdVOUdRQzk3YzdUb0QrdWtxcERp?=
+ =?utf-8?B?SWlhNnBodHcyaEFYMEp6RnJxRlV5MzZLT2pSZVMrTUhoUkNoMUtja2VSYW5l?=
+ =?utf-8?B?b1l4WjB4dGh0UFhhb1RvNVArV21rcGo1ZCtLSnJFdndSaEpYNXZQd3BqRFFQ?=
+ =?utf-8?B?M3hYSkYrYnZ1VHZ0bWRvMlF3NkQ3azZEUWFPMURWTC82VGxZZ2VnY285bWl1?=
+ =?utf-8?B?RVBZb3ZXV2t0REpCVVovWWJCTGU2c3hNbFY1eHpkVyt3NDMzV3UycTE0QVY1?=
+ =?utf-8?B?ZDk4dVlvdTNEZzdrdnZKbndCS0E5L0VLQjVMdXlZUVlJRi9hOGlWSnlhS3lp?=
+ =?utf-8?B?L1NCQ3dXalN2NGxHQkhldWczblhBV3dwYUJyVUxTdUVWY2RDWStjU2Uya1Jt?=
+ =?utf-8?B?L0Z5NTdDc1ZPaTZBdnNKa2Q4THZySm5zSTc0N3M4TGNGaEFIK3dLckdmZ1A1?=
+ =?utf-8?B?d2NIYVRwbjE4WkU5NS8ySVU2NnlqQTlQSEJxZ0FtYTB2YXpsa09JVllwZHNu?=
+ =?utf-8?B?cFZad2c0cDI4M0tCWW5adHVQN3pTc0tiZ3NSZ3g0ejV0R1lJR1kvWFFzUlpm?=
+ =?utf-8?B?ZDNab1ZhTXp1a2o1Ym1abHdxODA5d2E3RDRDRXdNOGR5OU41YlV6SzBQUHNK?=
+ =?utf-8?B?L1RvajNsZnRIMjRhNmM3U0NMSDBlelRkK3pZSGhlY09GSFhaZ1JEa3BNWllC?=
+ =?utf-8?B?OHEvc0hickNnL1cxVitnQTJEMkdGUDdic1g3R2xqWHhpNmoxdjZoekpYREdM?=
+ =?utf-8?B?K0F0ODJzRmdxNTUyejUvN1VMdGhydGlIMzBSbVhtOWhCalg4Mm1IN2pEMUpE?=
+ =?utf-8?B?OWt2TFd5dDAwTGd5NWRaOW5GeHNieGdoVDBYUmZucm10QWg3VGRnY2VjTDV4?=
+ =?utf-8?B?QStBN0NBWVFmK2JvTElLcGR4ODBGb0krSkVVSVV0OU1ldVQ2eGx3VFZ6cW83?=
+ =?utf-8?B?VjdhVEJ6WHFpY1NLdlNveFhGQVM2aVFNQkR4cXdVNFhkbW5FUFhEaC9qelp4?=
+ =?utf-8?B?OEE0VWhvWUlHSmg5MGljdlBuVloremlUUXhhMlI0YWRTMENpdVhjQlRwc2VP?=
+ =?utf-8?B?czFNRXNWcWNSaVV5dmlkSGdXZm5wbXJrbXpqUW1DOGRVeldWbUpabVJUTXBw?=
+ =?utf-8?B?Q0FwKzV6aHhPMnZqTzdpMnlZOGlHL3NWTVJxYSsrQlQvM08zd0czMDNqUVRG?=
+ =?utf-8?B?d3RTTFA3eXdCOWR0QktOdmRydnpUREtJK01vcUxmNWtZdkd0WStPV2I2REV3?=
+ =?utf-8?B?VE5HOW1rNzJyb1hiaXhMRzZhS3FGU2lheEoySlhESGsveDQvdHVvc1lSVUgw?=
+ =?utf-8?B?cUFza0xIcEtBZGJ3Q0dsVGpxbUh0N3RFTlZTeDFhazA3SDJaSno1Z3M4UjRp?=
+ =?utf-8?B?bDFCd0tjU3hVLzlBeTZxMUE0cDlURjg5clMwYmN0NnlsMDMwR29kZDVLcjBj?=
+ =?utf-8?B?WVFmVTlRSDBRaGlDYjI3a01pQ2t3OTdGaWx5OGVyZUg0VU1lZ201K1BST2dH?=
+ =?utf-8?B?KzJWaStjZVdhdENZRm16dXhaTTc5dTFaeXp6dWtScWVRV2k3bGFSSlRWUHJn?=
+ =?utf-8?B?UStPL1Myb1c4MWRPWnhNRmxGbXg0SVRZSEZGeUNrSWlqb09heWd1azVaaEJj?=
+ =?utf-8?B?ZVF5SndXRkhoNmtXSUtTTHg0MFZjTGVRUWtBaTlsS1lUa2NhVkFpT2h4amty?=
+ =?utf-8?B?YzFuWEhuMWRYZDBISWt1RXZNbW5iY2ZmN0FReVdSc3dqVWV4a3d4eXd6NHNj?=
+ =?utf-8?B?UGpreFk5SVlhaFhDNS85cWlYa1V0MlU1T1BmU1pCWnk5M0ZzenJLaHpoMkM3?=
+ =?utf-8?B?aVVGdXhCRjI0K29TR3R6ZzNhVWV5NXNsaHdzYWVGb2cyTUw2N3FtWk4xMXZl?=
+ =?utf-8?B?S2NuMEkrSE1rT0RiQTZ4Q1Q2SVl3dFhQa1ZmNnVaWFB2M0d5dnlhYythTXZD?=
+ =?utf-8?B?NS9ZeXp4OHE0cVB4bTBwYmhvbGFKeVhWdWlRelhBblp2cjc5M25VMFpKYmdl?=
+ =?utf-8?B?NTlLbEJPZzY5Ui9ZUjdIYURRL2lkRkY2WHZhWktMSHBqNHpOVW13Ukp6UXJx?=
+ =?utf-8?Q?LCy58lA1CKY4NH7+ly4ZuCmPo7IReFpe0vSXZeGxY1W/?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba972b80-f746-423b-0375-08dda0b8819f
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2025 03:00:46.8622
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wH53hJVJmH5gHgZjcsMVOCpeKw0YWdTihtcjz9tMPLCOlaS+gI0X1C8YWkk6uPkxzCIcs5E+wIU1ZtgalbrCGw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9504
 
-On Sat, May 31, 2025 at 10:38=E2=80=AFPM Benno Lossin <lossin@kernel.org> w=
-rote:
->
-> On Sat May 31, 2025 at 7:38 PM CEST, Alice Ryhl wrote:
-> > On Sat, May 31, 2025 at 5:25=E2=80=AFPM Benno Lossin <lossin@kernel.org=
-> wrote:
-> >> On Sat May 31, 2025 at 3:25 PM CEST, Alice Ryhl wrote:
-> >> > On Fri, May 30, 2025 at 8:16=E2=80=AFPM Benno Lossin <lossin@kernel.=
-org> wrote:
-> >> >> On Tue May 27, 2025 at 2:34 PM CEST, Alice Ryhl wrote:
-> >> >> > This patch adds a more convenient method for reading C strings fr=
-om
-> >> >> > userspace. Logic is added to NUL-terminate the buffer when necess=
-ary so
-> >> >> > that a &CStr can be returned.
-> >> >> >
-> >> >> > Note that we treat attempts to read past `self.length` as a fault=
-, so
-> >> >> > this returns EFAULT if that limit is exceeded before `buf.len()` =
-is
-> >> >> > reached.
-> >> >> >
-> >> >> > Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> >> >> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> >> >> > ---
-> >> >> >  rust/kernel/uaccess.rs | 56 ++++++++++++++++++++++++++++++++++++=
-+++++++++++++-
-> >> >> >  1 file changed, 55 insertions(+), 1 deletion(-)
-> >> >> >
-> >> >> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> >> >> > index 9b1e4016fca2c25a44a8417c7e35e0fcf08aa959..e6534b52a1920254d=
-61f8349426d4cdb38286089 100644
-> >> >> > --- a/rust/kernel/uaccess.rs
-> >> >> > +++ b/rust/kernel/uaccess.rs
-> >> >> > @@ -293,6 +293,61 @@ pub fn read_all<A: Allocator>(mut self, buf:=
- &mut Vec<u8, A>, flags: Flags) -> R
-> >> >> >          unsafe { buf.set_len(buf.len() + len) };
-> >> >> >          Ok(())
-> >> >> >      }
-> >> >> > +
-> >> >> > +    /// Read a NUL-terminated string from userspace and return i=
-t.
-> >> >> > +    ///
-> >> >> > +    /// The string is read into `buf` and a NUL-terminator is ad=
-ded if the end of `buf` is reached.
-> >> >> > +    /// Since there must be space to add a NUL-terminator, the b=
-uffer must not be empty. The
-> >> >> > +    /// returned `&CStr` points into `buf`.
-> >> >> > +    ///
-> >> >> > +    /// Fails with [`EFAULT`] if the read happens on a bad addre=
-ss (some data may have been
-> >> >> > +    /// copied).
-> >> >> > +    #[doc(alias =3D "strncpy_from_user")]
-> >> >> > +    pub fn strcpy_into_buf<'buf>(self, buf: &'buf mut [u8]) -> R=
-esult<&'buf CStr> {
-> >> >> > +        if buf.is_empty() {
-> >> >> > +            return Err(EINVAL);
-> >> >> > +        }
-> >> >> > +
-> >> >> > +        // SAFETY: The types are compatible and `strncpy_from_us=
-er` doesn't write uninitialized
-> >> >> > +        // bytes to `buf`.
-> >> >> > +        let mut dst =3D unsafe { &mut *(buf as *mut [u8] as *mut=
- [MaybeUninit<u8>]) };
-> >> >> > +
-> >> >> > +        // We never read more than `self.length` bytes.
-> >> >> > +        if dst.len() > self.length {
-> >> >> > +            dst =3D &mut dst[..self.length];
-> >> >> > +        }
-> >> >> > +
-> >> >> > +        let mut len =3D raw_strncpy_from_user(dst, self.ptr)?;
-> >> >> > +        if len < dst.len() {
-> >> >> > +            // Add one to include the NUL-terminator.
-> >> >> > +            //
-> >> >> > +            // This means that we could not fill the entire buff=
-er, but we had to stop reading
-> >> >> > +            // because we hit the `self.length` limit of this `U=
-serSliceReader`. Since we did not
-> >> >> > +            // fill the buffer, we treat this case as if we trie=
-d to read past the `self.length`
-> >> >> > +            // limit and received a page fault, which is consist=
-ent with other `UserSliceReader`
-> >> >> > +            // methods that also return page faults when you exc=
-eed `self.length`.
-> >> >> > +            return Err(EFAULT);
-> >> >> > +        } else {
-> >> >> > +            // This implies that len =3D=3D buf.len().
-> >> >> > +            //
-> >> >> > +            // This means that we filled the buffer exactly. In =
-this case, we add a NUL-terminator
-> >> >> > +            // and return it. Unlike the `len < dst.len()` branc=
-h, don't modify `len` because it
-> >> >> > +            // already represents the length including the NUL-t=
-erminator.
-> >> >> > +            //
-> >> >> > +            // SAFETY: Due to the check at the beginning, the bu=
-ffer is not empty.
-> >> >> > +            unsafe { *buf.last_mut().unwrap_unchecked() =3D 0 };
-> >> >>
-> >> >> In this case you're overwriting the last character read. Should we =
-give
-> >> >> `raw_strncpy_from_user` access to one less byte and then write NUL =
-into
-> >> >> that?
-> >> >
-> >> > Why? I'm not interested in changing the implementation just because.
-> >> > It needs to be significantly simpler, and I do not think it is.
-> >>
-> >> Sure, but then I think we should document this behavior.
-> >
-> > Document what? I understood your suggestion as a change to the
-> > implementation of strcpy_into_buf that would not change its behavior.
-> > Did I misunderstand?
->
-> Maybe I misunderstood the code, but if you do this:
->
->     let slice =3D UserSlice::new(ptr, 1024);
->     let mut buf =3D [0; 42];
->     let s =3D slice.strcpy_into_buf(&mut buf)?;
->
-> Then it will read 42 characters from userspace and (if there was no nul
-> byte) overwrite the last character with `\0`. If we now do
->
->     let mut buf2 =3D [0; 42];
->     let s2 =3D slice.strcpy_into_buf(&mut buf2)?;
->
-> Then that will continue the read at index 42, but effectively one
-> character will get skipped.
->
-> (Now it's not possible to call `strcpy_into_buf` multiple times, but I
-> see no real reason why it isn't a `&mut self` method. Also a user could
-> call `clone_reader` and then manually `skip` 42 bytes. Although they
-> might only skip 41 bytes, since that's the length of the CStr. But that
-> runs into the problem that if there was a `\0` at index 41, then
-> repeated uses of the pattern above will yield empty strings.)
+The Borrow trait has multiple uses, one of them being to store either an
+owned value or a reference to it inside a generic container. This series
+adds these implementations for `Box`, `Arc`, `Vec`, and `CString`. I
+came across the need for this while experimenting with the scatterlist
+abstraction series [1].
 
-I removed the ability to call it multiple times to avoid dealing with
-this kind of question. You may submit a follow-up patch to change it
-if you have a use-case.
+This series provides just the `Borrow` and `BorrowMut` implementations,
+but another common use of `Borrow` in the standard library is to use the
+borrowed type for key lookups in collections. For this to work, a few
+consistency traits (`Eq`, `Hash`, and `Ord`) need to be implemented. I
+am not sure whether we want this on kernel types as well, but please let
+me know if we do and I will add them in the next revision.
 
-Alice
+[1] https://lore.kernel.org/rust-for-linux/DA9JTYA0EQU8.26M0ZX80FOBWY@nvidia.com/
+
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Alexandre Courbot (4):
+      rust: alloc: implement `Borrow` and `BorrowMut` for `Vec`
+      rust: alloc: implement `Borrow` and `BorrowMut` for `Arc` types
+      rust: alloc: implement `Borrow` and `BorrowMut` for `KBox`
+      rust: alloc: implement `Borrow` and `BorrowMut` for `CString`
+
+ rust/kernel/alloc/kbox.rs | 21 +++++++++++++++++++++
+ rust/kernel/alloc/kvec.rs | 19 +++++++++++++++++++
+ rust/kernel/str.rs        | 13 +++++++++++++
+ rust/kernel/sync/arc.rs   | 21 ++++++++++++++++++++-
+ 4 files changed, 73 insertions(+), 1 deletion(-)
+---
+base-commit: 7a17bbc1d952057898cb0739e60665908fbb8c72
+change-id: 20250531-borrow_impls-8dfef3fcee93
+
+Best regards,
+-- 
+Alexandre Courbot <acourbot@nvidia.com>
+
