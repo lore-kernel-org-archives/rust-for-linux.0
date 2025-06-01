@@ -1,99 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56C72BD11;
-	Sun,  1 Jun 2025 16:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101B32DCC00;
+	Sun,  1 Jun 2025 16:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748795072; cv=none; b=Blqcyl0AQa4S2kpAEN7hcQl5GYxP1qhKpbIiwWcWksymffqGY/Gi8r383anyEnDesw92Gb6SHJ2+41BeZytuFZCRDKp40TznnM/b9izfI+GBPxB1BEsf0zCN9QMzbi0bODV92MZjIL1M8tluWQUAMi3a1kvIKD6adPz2mCS42Do=
+	t=1748796726; cv=none; b=sja6l/aOsmjqADcewC6tf4W0ck/p9XsW6PorRb97fi9JeIv1t+wmyctfrKimhgQUfur5EvL+TK0Rg6lg6Nse6IjklpQmOgGYFJBWZxijidRxdWw96g7VLwwjMjnE9KXWApH/PlJGggLD924v+J0Z7pIV7CHTFof4KaMlLbE9CMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748795072; c=relaxed/simple;
-	bh=PMAkhQy/Nj8Qt7aS/e+j9Xv4t7buO1RGFex1w+i2gQo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=f03FB8NvQFzHf8HUFxW9cAoW1Y5rxgsrZIOPy6dFcvNfxlUsS5x0OL915mcowajxNFUazWyjE2/BnPiN/f3KDqv2VsbOmRkHFZaIKi+b9Jp2jNkj8dIxo6XCzLHY0FpUVTyKGzVlgz9Y9IKp5l8oEnQg0lQx8anychF1jSO/+SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdDYm3ma; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748796726; c=relaxed/simple;
+	bh=UbnRKOIb8R4X34xidCbuV+vQdzZLrArWOaKM9rS04wg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P2zjg7PJRncxwGyOFbg/ymmmtD/CUJ4x806+7G9YMerxOeGlT364d6JsVmDHCMfErH3a4uX5FCSbh/1yUDdVnonE/5SmXwM1/mzC/EK5opCodPnYgAfsACfhXEAXkiWGMCZZzpSFOapXzKcKREjBvB6rAJMnxS9RQqc4OAQ62eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lddbf6S/; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdDYm3ma"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0113C4CEE7;
-	Sun,  1 Jun 2025 16:24:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748795071;
-	bh=PMAkhQy/Nj8Qt7aS/e+j9Xv4t7buO1RGFex1w+i2gQo=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=BdDYm3makofis/Ax9rM0GzHSjQ+tNLU+f0PbFUOY9BF9dLvdOuyAKODKHjXLDjvbP
-	 5lIXeyJX1Xl+VIqXf9pDgFbbwa+bXMlhD/l8wRETbbNVaTT0/++1IFmhMG/96JI24o
-	 cNiilVHw+p2wn++Q3SnqEDr8/FVMKw5nODG2riXGlUux6OwYxsqNRKvlhJsCDxkYzF
-	 ssijqz3/s6CQP9JL+AzW9YgvNLlsseQ8OJKw+7qVKg+DVx3cTb2bFgptyZfSejssMM
-	 uW5xwVxTdstNKC4LvO4wJIsDsux0vx/2U2FLofXrHXcGfGKkW/IeXYjmdwSCap6h7B
-	 mPzWDuxHoh+Qw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lddbf6S/"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-22e331215dbso32853235ad.1;
+        Sun, 01 Jun 2025 09:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748796724; x=1749401524; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wbak7H6pr/6hIm/LiGFHyNHZ2+qK0IK8bgGbAXQNjAg=;
+        b=Lddbf6S/rftdxN2gMKP0SSeldZMBQwz0v5uTXL6VujaYdKccWN803zvWMlGGpwzB63
+         wEjrqxvejgvha9msj7NlGKj14AkKKvwpkYNfMb7SZfasb3meMbKdtU4QD7xk+ldInvxc
+         31JsoAjD4J8UDWroNC6lCy2acMdCUjIiMHrzbh0CQnH7O1JWIir8kJC6CZSAGPKwmbVF
+         VSkYdMi68uvdzeLFglvejI8aGSW+yHRpsca/dfqxMFeRwpqsn+uX9ifAT7Tvz/SUz1Fl
+         glTvaIti3XP2pJTjcf1X41oQfkfITJtaUfmzDKDs6AKk4K1AGQjvgvEH1SAMVCBQqIfj
+         YRcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748796724; x=1749401524;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wbak7H6pr/6hIm/LiGFHyNHZ2+qK0IK8bgGbAXQNjAg=;
+        b=i9onbAjyVSCYpJWIze4/Da/ab8OkYLxGBOyeTY2IrgKrQwtMqjx+TEUJ2rSU6X/JES
+         kqeoP3WRa6qhsxn/IqaK9jSI7fpZ+eolgU0JQ2AHqXjAZcVYVYGLXEJ9AA5k55VM7pgK
+         0mR3J5IuSX3FhgqUUUajtmZOjNwwFeFwws1odHNj2/chcQRmuANdxE21ZNDgBf8Vq8j8
+         FA7BU4Fa2YSfLWWQccELfl/XQ0w8riTrkXoNfzFeWiiCvfq6mHpBPJfhjPl6pQzFks50
+         1bqO0vzLDhj/52R8DuEBgjSS16HHQix1c79Bkq7fUyW8mr29yuIW30YEP9O7S1/PKbid
+         64VQ==
+X-Gm-Message-State: AOJu0Yx2lS+r7DGYRo2FboEm2Y6rsSWmciAYp6MiCrxNnHLVmRSyq3zS
+	AVG1c8U5Wrti7QJ3aUiyPKhRi4ANvuMbXCIO0f8h5G80GKy2jDcrcHjLPjuULKjy5AzmV/7A
+X-Gm-Gg: ASbGncvj3q3JFkm0OeM4frYkKugbsHGiN/we4xWNybLhXQGTp3rzrhRtgJPTIjx4Dwe
+	IQnoQNgHWuARYUWmv7rs865iXEIgEWjt1O4LLSVRJ5rLItzuEok40mv8hxRgjNIIeJnr+M5I6gP
+	8CL+1wZXdzjyLBNe/zW84y1nHoR5NufgIBi9KpqmxFuBMTFR5ncc1xT5WimrEzyP5prh+SZ28D7
+	vtvFjel/5xItF9hNlCTZmW+6PTMqGriADcg+AUlsDH1SwpLRqMxI9sjNohaGYzBG90Lif3A/D0m
+	THVZKP46v1XhqKn5vCwbvUd1kjFpO7ET3gNOLKecb+t+JfI345A29Q+xdWNPWAlP4jUv3Ps=
+X-Google-Smtp-Source: AGHT+IGeDJjrbwzyS1Wg772RHmi9rPI6nbhOAVh2yaUOVAlwrPukrsS4oGt1w0FBAXCeHYoCM5v5CA==
+X-Received: by 2002:a17:902:f650:b0:215:a303:24e9 with SMTP id d9443c01a7336-2352af0b242mr166372125ad.3.1748796724045;
+        Sun, 01 Jun 2025 09:52:04 -0700 (PDT)
+Received: from localhost.localdomain ([2409:40f2:11ab:2cf2:10cd:85bd:e95:5230])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506bd92f8sm57211115ad.88.2025.06.01.09.51.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Jun 2025 09:52:03 -0700 (PDT)
+From: saivishnu725@gmail.com
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	gregkh@linuxfoundation.org,
+	daniel.almeida@collabora.com,
+	me@kloenk.dev,
+	Sai Vishnu M <saivishnu725@gmail.com>
+Subject: [PATCH v2] rust: doc: Clean up formatting in io.rs
+Date: Sun,  1 Jun 2025 22:19:40 +0530
+Message-ID: <20250601164939.5306-2-saivishnu725@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 01 Jun 2025 18:24:19 +0200
-Message-Id: <DABC3ZAQ01GG.1VT5NL7PIMTEO@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
- <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <llvm@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <linux-block@vger.kernel.org>
-Subject: Re: [PATCH v11 1/5] rust: macros: reduce collections in `quote!`
- macro
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Tamir Duberstein" <tamird@gmail.com>, "Michal Rostecki"
- <vadorovsky@protonmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Brendan Higgins" <brendan.higgins@linux.dev>, "David Gow"
- <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
- "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Luis Chamberlain"
- <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "FUJITA
- Tomonori" <fujita.tomonori@gmail.com>, "Rob Herring" <robh@kernel.org>,
- "Saravana Kannan" <saravanak@google.com>, "Peter Zijlstra"
- <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
- <will@kernel.org>, "Waiman Long" <longman@redhat.com>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Bill Wendling" <morbo@google.com>, "Justin Stitt"
- <justinstitt@google.com>, "Andrew Lunn" <andrew@lunn.ch>, "Heiner Kallweit"
- <hkallweit1@gmail.com>, "Russell King" <linux@armlinux.org.uk>, "David S.
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Bjorn
- Helgaas" <bhelgaas@google.com>, "Arnd Bergmann" <arnd@arndb.de>, "Jens
- Axboe" <axboe@kernel.dk>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250530-cstr-core-v11-0-cd9c0cbcb902@gmail.com>
- <20250530-cstr-core-v11-1-cd9c0cbcb902@gmail.com>
-In-Reply-To: <20250530-cstr-core-v11-1-cd9c0cbcb902@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri May 30, 2025 at 2:27 PM CEST, Tamir Duberstein wrote:
-> Remove a handful of unncessary intermediate vectors and token streams;
-> mainly the top-level stream can be directly extended with the notable
-> exception of groups.
+From: Sai Vishnu M <saivishnu725@gmail.com>
 
-What's the motivation for this? I wouldn't spend much effort on this
-file, as it'll go away when we add the `quote` crate.
-
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1167
+Signed-off-by: Sai Vishnu M <saivishnu725@gmail.com>
 ---
-Cheers,
-Benno
+ rust/kernel/io.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Remove an unnecessary `#[allow(dead_code)]` added in commit dbd5058ba60c
-> ("rust: make pin-init its own crate").
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
->  rust/macros/quote.rs | 104 ++++++++++++++++++++++++---------------------=
-------
->  1 file changed, 49 insertions(+), 55 deletions(-)
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 92bc4e3cd8ec..41404c1e17b3 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -43,7 +43,7 @@ pub fn maxsize(&self) -> usize {
+     }
+ }
+ 
+-/// IO-mapped memory, starting at the base address `addr` and spanning `maxlen` bytes.
++/// IO-mapped memory region.
+ ///
+ /// The creator (usually a subsystem / bus such as PCI) is responsible for creating the
+ /// mapping, performing an additional region request etc.
+-- 
+
+v1: Edit the doc comment for `IoMem` to remove the usage of
+`@` for parameters and replace them with backticks.
+Link to v1: https://lkml.org/lkml/2025/5/30/550
+v2: Removed reference to internal variables altogether.
+
+Thanks!
+
+2.49.0
+
