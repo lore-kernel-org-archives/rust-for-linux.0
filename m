@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5893F4F1;
-	Sun,  1 Jun 2025 16:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56C72BD11;
+	Sun,  1 Jun 2025 16:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748794630; cv=none; b=feq+yjGcQTff1IUxq6tES3v8R1NkrVye1cfNdT/sKXM6lXtanK2yKOLTIuzUGUPfZ07/cBboGsg3FbchHegvLW4S9nvWyE9OdD6pEV0OkCWXHBkeF7ay9dZSKEQqXLwGvEfmDEHkMdp/NB8ZXBi57ASyZ+sB6wK2J/XdwxogDQc=
+	t=1748795072; cv=none; b=Blqcyl0AQa4S2kpAEN7hcQl5GYxP1qhKpbIiwWcWksymffqGY/Gi8r383anyEnDesw92Gb6SHJ2+41BeZytuFZCRDKp40TznnM/b9izfI+GBPxB1BEsf0zCN9QMzbi0bODV92MZjIL1M8tluWQUAMi3a1kvIKD6adPz2mCS42Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748794630; c=relaxed/simple;
-	bh=OT9Aeb2zGcb+W4cAlHss0YZpWf6/DCJ/xREoRP1znf4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=YZvjE0eJOYiL/hE31X1TVETHajDtU3dIQs+bfvuJFcc0NVWEWUpSruF1GN9rdm+Gnc6ejOqpsY4yKOU8B/Q277NLuvZOPcmz202um6//EkcvVQGKpTb/oBkco53uIQeAI0hT9QoIhaps5GlhaV5Ck+4FIL1tvJB2HsH4jatrIY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sHTB2Txj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748795072; c=relaxed/simple;
+	bh=PMAkhQy/Nj8Qt7aS/e+j9Xv4t7buO1RGFex1w+i2gQo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=f03FB8NvQFzHf8HUFxW9cAoW1Y5rxgsrZIOPy6dFcvNfxlUsS5x0OL915mcowajxNFUazWyjE2/BnPiN/f3KDqv2VsbOmRkHFZaIKi+b9Jp2jNkj8dIxo6XCzLHY0FpUVTyKGzVlgz9Y9IKp5l8oEnQg0lQx8anychF1jSO/+SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdDYm3ma; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sHTB2Txj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCD8C4CEE7;
-	Sun,  1 Jun 2025 16:17:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdDYm3ma"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0113C4CEE7;
+	Sun,  1 Jun 2025 16:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748794630;
-	bh=OT9Aeb2zGcb+W4cAlHss0YZpWf6/DCJ/xREoRP1znf4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sHTB2Txj08pyNFo0rz0Ea7mA+ykxcBZWxOiEA6Yk/y1zoYtlWZ74smOfsfe9PJz9W
-	 CdJ4yIN7KIJVdfWxtIijfAfqmCBAGz/dSJJSXl3AQMTVVKE9NJImwOKb/8JG+Y8SoA
-	 W5trsTZQc16o19WPxPFKTUsNbX8ET8/k/hCzTbeK/+cZJBtaYRPTdArUVYBppSmmbf
-	 Bic4tkvKdTrgZw38dkkjG2kxiKIAo06goAadgoRjWdPqVs+g2lCj3pD5VpX+pbCEvQ
-	 xHJcqXaWCKCO1EAkMd03D3qMu0JBMW4wAg1r0RmZ7QxD5C7xLD4xK5BvW4rtl1L+4T
-	 E5/Va4M5nj4wg==
+	s=k20201202; t=1748795071;
+	bh=PMAkhQy/Nj8Qt7aS/e+j9Xv4t7buO1RGFex1w+i2gQo=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=BdDYm3makofis/Ax9rM0GzHSjQ+tNLU+f0PbFUOY9BF9dLvdOuyAKODKHjXLDjvbP
+	 5lIXeyJX1Xl+VIqXf9pDgFbbwa+bXMlhD/l8wRETbbNVaTT0/++1IFmhMG/96JI24o
+	 cNiilVHw+p2wn++Q3SnqEDr8/FVMKw5nODG2riXGlUux6OwYxsqNRKvlhJsCDxkYzF
+	 ssijqz3/s6CQP9JL+AzW9YgvNLlsseQ8OJKw+7qVKg+DVx3cTb2bFgptyZfSejssMM
+	 uW5xwVxTdstNKC4LvO4wJIsDsux0vx/2U2FLofXrHXcGfGKkW/IeXYjmdwSCap6h7B
+	 mPzWDuxHoh+Qw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,42 +34,66 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 01 Jun 2025 18:17:05 +0200
-Message-Id: <DABBYG8W5F5U.1MXKCC6LSHBPV@kernel.org>
+Date: Sun, 01 Jun 2025 18:24:19 +0200
+Message-Id: <DABC3ZAQ01GG.1VT5NL7PIMTEO@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
+ <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <llvm@lists.linux.dev>,
+ <linux-pci@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <linux-block@vger.kernel.org>
+Subject: Re: [PATCH v11 1/5] rust: macros: reduce collections in `quote!`
+ macro
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+To: "Tamir Duberstein" <tamird@gmail.com>, "Michal Rostecki"
+ <vadorovsky@protonmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/4] rust: alloc: implement `Borrow` and `BorrowMut` for
- `Arc` types
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Brendan Higgins" <brendan.higgins@linux.dev>, "David Gow"
+ <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+ "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "FUJITA
+ Tomonori" <fujita.tomonori@gmail.com>, "Rob Herring" <robh@kernel.org>,
+ "Saravana Kannan" <saravanak@google.com>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
+ <will@kernel.org>, "Waiman Long" <longman@redhat.com>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
+ "Bill Wendling" <morbo@google.com>, "Justin Stitt"
+ <justinstitt@google.com>, "Andrew Lunn" <andrew@lunn.ch>, "Heiner Kallweit"
+ <hkallweit1@gmail.com>, "Russell King" <linux@armlinux.org.uk>, "David S.
+ Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Arnd Bergmann" <arnd@arndb.de>, "Jens
+ Axboe" <axboe@kernel.dk>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250601-borrow_impls-v1-0-e1caeb428db4@nvidia.com>
- <20250601-borrow_impls-v1-2-e1caeb428db4@nvidia.com>
-In-Reply-To: <20250601-borrow_impls-v1-2-e1caeb428db4@nvidia.com>
+References: <20250530-cstr-core-v11-0-cd9c0cbcb902@gmail.com>
+ <20250530-cstr-core-v11-1-cd9c0cbcb902@gmail.com>
+In-Reply-To: <20250530-cstr-core-v11-1-cd9c0cbcb902@gmail.com>
 
-On Sun Jun 1, 2025 at 5:00 AM CEST, Alexandre Courbot wrote:
-> Implement these two common traits, which allow generic types to store
-> either an owned value or a reference to it, leveraging the `Deref`
-> implementation.
+On Fri May 30, 2025 at 2:27 PM CEST, Tamir Duberstein wrote:
+> Remove a handful of unncessary intermediate vectors and token streams;
+> mainly the top-level stream can be directly extended with the notable
+> exception of groups.
 
-Same here.
+What's the motivation for this? I wouldn't spend much effort on this
+file, as it'll go away when we add the `quote` crate.
 
 ---
 Cheers,
 Benno
 
+> Remove an unnecessary `#[allow(dead_code)]` added in commit dbd5058ba60c
+> ("rust: make pin-init its own crate").
 >
-> `Arc` can only implement `Borrow`, but `UniqueArc` is able to support
-> both.
->
-> `ForeignOwnable` makes a call to its own `borrow` method which must be
-> disambiguated.
->
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > ---
->  rust/kernel/sync/arc.rs | 21 ++++++++++++++++++++-
->  1 file changed, 20 insertions(+), 1 deletion(-)
+>  rust/macros/quote.rs | 104 ++++++++++++++++++++++++---------------------=
+------
+>  1 file changed, 49 insertions(+), 55 deletions(-)
