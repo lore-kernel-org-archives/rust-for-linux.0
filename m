@@ -1,98 +1,247 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2076.outbound.protection.outlook.com [40.107.244.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8DA1B412A;
-	Mon,  2 Jun 2025 11:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748862693; cv=none; b=J8n5wBmeZmPGld3tPZmwrflWxUy5slgLyHRlVaJrRhj9ZwC6/WEPsbDqHyhk/+QdGaseCPYRDiqOGbhdZQJ+3zQuqXTSS2WTzxv7i6aPE4jM3cE707f0qiTm1HAGgBqAWpxevCCQQ2KSdAZ9EvFidrg0AH0LQdpmU9K080ZHZfE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748862693; c=relaxed/simple;
-	bh=SOjGNSW14/xBT2UsSSuvfNWvvNMcBWixS2oXTkx416c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TG2cFqGEBccd/xwp2ujdoqAJGUnBqJZMRqIZJ35e/t1A0I9Pmy5ds5zVq8owT/6wqK2CQFQaCyiA7Sf3htubWa+mK0t5aGkuZbAchV4ACJ8W54vDXWZZ+gW+RGx+JdohKDu7M/CLiXzzyIqlPiVmlVV8hJb3Ub+tIioVtc21zIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JkbeG9Lr; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AD54A1A;
+	Mon,  2 Jun 2025 11:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748863246; cv=fail; b=Zcsg+lfFw3HOQWhAwKWfatVf71ysvhPOIRUaSRa/rmn0NFUqFSz/OwkIVde8Zi8BU/IOwAICtnFeRe9bXn5I1OiRrvGlm81EdU+lg9hE1MUtADA7o5MBTIjsTu9S8iZ+SHmpHl8FLN+TFAyC0cmA2XmSRIMfGSJQN2JaIAxd7Zw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748863246; c=relaxed/simple;
+	bh=KygejJUYe7P8qiGUF+6DT6of0JHNUBFw8HNxnyJnoM8=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=ELZBLotR8Ees80nxLctVhMWQAB/8r1TeFkNvfaWbRvpSB68R2jWgSBKBKQRJnsMacwJV5ieQ+2dOdKPokWzAboAhF42OZ5IdviFP+C2vK7d/4efQi0sgrZMh3XrUxgNrSXfuWI/ycNmghOUxfUgApS6EYb5IMJvoTqjrWQ0zOl4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Zq5xrXb1; arc=fail smtp.client-ip=40.107.244.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JkbeG9Lr"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7406c6dd2b1so4163530b3a.0;
-        Mon, 02 Jun 2025 04:11:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748862692; x=1749467492; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SOjGNSW14/xBT2UsSSuvfNWvvNMcBWixS2oXTkx416c=;
-        b=JkbeG9Lr0KKdtHoUIPMFDfWIcRfcjwSB08BlWI+0222a5aeepREsAvdL6x86AD3rS6
-         yvv1l5yGhZARcuzDL17ifT6+M41CClAWrmlwSNqbB2YzCaHNirRgz/TBqxcOdTsp66hE
-         KycpBZjlhKfyjOLY2/o9f1b/q6m5rhP0lO3Xz4KKt6YCtgjF+ChiK1jTpdU+mMnCfFfF
-         YihhfcB4C8VR6pwaGAU+Az+j9PYki9hxzI+dX5EeG8IlVdfy79U4I3W7DmYHzhkeer9Q
-         8BnbScxdx5IujvWYiTdthFVcz/zzh4+IDMDJSvhcsRWvjw1HJVGuSwxM3neFYeA+9EKb
-         jljw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748862692; x=1749467492;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SOjGNSW14/xBT2UsSSuvfNWvvNMcBWixS2oXTkx416c=;
-        b=ohcsAEITWFw8xnNcYQ6LYo/HFirQIkVifjzOE3PJuWnIcbDN+fhx9zjsZZ50NsrANr
-         0c5p0aozGxZDSZc4AojRnmwSUJzj3Ipv37+D+7p7LHvE9KpuIF5pJrJkGl/8WbPnpcCE
-         byY96B+Elr7xzcWv2HC5MLlyQa40oYexw2pxObNskCM8ZDP1xwj+rrWeExY/NJOpUAM/
-         RwNbYCxtpN+84EFLjqTdZgXq5u4nO6Fli3xfQR6GjNwa6b70lYCAoJqK7FB5Oo0BqrqV
-         GD56WQoTzfrPTt15xyk6ln6lKRhFH7K3/zew5E9HBKsM81SRH6CKE2hK5oeYL68pR+W+
-         4Nyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVI3ni3oGreT4wplcwZjxom1Dfdx8vDnFDoMWZ03ehlEQDSSVB1jfFLgUxUCejI1cBO8HUnqAmFj1rGfZA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmgRn9Sy88l/CLekNqmtMxU37ayIzrKlM5IibrqIGW4i95/+/V
-	4ETHICEJIyQdpNmCUe+RIppMe3CtGDXiMpCih79Ih9tnNitObByubQ88LXcil+45P4SOnz96Ujx
-	XVuBzHUpdTGy2QnevxgxCdniG18ysrJU=
-X-Gm-Gg: ASbGnctvLIcjzAy4Hdb2e1tPtjuB3WrHCGPu6ElOT25q7AMYlcILkT3GJa5Y++dGUjb
-	H0IiQV0BO2N+5XXbppkTGOXJ5y+/Vkb5lkls5Ry87tfbYgRKQ6nSTD9w8/7/ZZDsi44Gkt86EHN
-	0YojGeOFuWjpWgfo4YR8eulLXk7U3CPSwH8mmYGX9PwSFQNlxP3wl9QnsR5/iPyAAQgg==
-X-Google-Smtp-Source: AGHT+IEndQjLdhiP6A0nQ6vA7U2d5miDEZEf1JYhcaA1W5PWXcjW92kStxqRleNjUCIRM/jEy5sYYGpvQDJY/zv1Dxo=
-X-Received: by 2002:a17:90b:264c:b0:311:1617:5bc4 with SMTP id
- 98e67ed59e1d1-31214ecdacamr24038231a91.12.1748862691728; Mon, 02 Jun 2025
- 04:11:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Zq5xrXb1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J9Kg5aqh2vtv789wBJSGM3NxG8sUEl/KY79RScSfSlvS4QFV2etM7/1euc4FT5eaDoX/7UxO1jo+is3Q97fSnQs4BXXkvE4csfh7BjOeKkgmJXOufmdp+32KHcFM0wEbvz2c1NjhJ7xxZZkfJcPJUz2J9X6MDshi9gDTpQccKTV9arM2CvPSM3YPGUsQMZg344lNKMvj0tQRDhKhvL7twjhNuTtWD86vgO9PWSzVT18tZqOW21DkYd1zUpzfwR9lfjpT/rZL3E+IqDHYW9YI9/3gf6G1vK0cU3oFlu2KT+APmxRMNCC/2q7EnThr1/wqVH2Dsx/GFws3wf6k1qTXOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=986HdkUUb2hVOV2+D9qxq/xSPIZXpsCYNOk0k6KDGIM=;
+ b=e7vE4ucbqcrcQg1/lrHvHcbERiUVMG+Yx2AZMGsRXRjLqNW+i3onfzY6QIyRtYSjYVXNTXeaSo4G7MCfOKCUAFUqydqZoZpnaG9hAY4pcTngD53mpNtRkxIlKX/tr80WQl9RhsJXol65Uzb8NMn6Y9DJ5p9mCrTanMickKGIdHJo0yACvLGxDph3Ix2RIpnQEypOzKiFtIH01cT4dOjWqlgnmDbFVQof3gqyLPNjK7k1+BJGdv7c41yJsyBqDaBjdsT9VlP6m8lSt4WlLjc8z8l7gJMSMr+6LTMSgQEIM5nhIS3HEsibMILivb2qAdhIme589B3y53MoxEoixWiCEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=986HdkUUb2hVOV2+D9qxq/xSPIZXpsCYNOk0k6KDGIM=;
+ b=Zq5xrXb1uqIMmq3hiT2YLtCBzaRCZ88ctufrz8aX6rLEnUVmYxzIXjJ57ReToVSCVnkuuTZAYmoL5b/C/wZywYaD7u6x0GqlvUkEzi2G5Uw6X8X24EGhid9km4pg+q4UoVX5b4pxOkjlgV0kXDbLPUnnKbxARhRHvHnq6MmYmstmHoe6P7uNyd+WOHkMGGif2rsCjks8QaYusb1fMcmfDF6mSDtEFTyMoJeIH5YBheD9PnoTtA57/JXGrzzwX793pGCsPZ1lenTPWGw/Gmg8Zuyp/7YkQ5cZdYUDIsBQA2sDmL9/BSnv6tkzT+qE7eJ1teRYvYqaZpgukp3KdpTjaQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SN7PR12MB7250.namprd12.prod.outlook.com (2603:10b6:806:2aa::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.30; Mon, 2 Jun
+ 2025 11:20:41 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8769.037; Mon, 2 Jun 2025
+ 11:20:40 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 02 Jun 2025 20:20:34 +0900
+Message-Id: <DAC09YUQ6NAN.3KL0WKZQ40DES@nvidia.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v4 13/20] gpu: nova-core: register sysmem flush page
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Lyude Paul" <lyude@redhat.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-13-05dfd4f39479@nvidia.com>
+ <44f13ec88af918893e2a4b7050dce9ac184e3b75.camel@redhat.com>
+ <aD2Ge8RM1uTT726z@pollux>
+In-Reply-To: <aD2Ge8RM1uTT726z@pollux>
+X-ClientProxiedBy: TYAPR01CA0193.jpnprd01.prod.outlook.com
+ (2603:1096:404:29::13) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602083119.17752-2-saivishnu725@gmail.com> <2025060244-dragster-unknowing-23f0@gregkh>
-In-Reply-To: <2025060244-dragster-unknowing-23f0@gregkh>
-From: Sai Vishnu <saivishnu725@gmail.com>
-Date: Mon, 2 Jun 2025 16:41:20 +0530
-X-Gm-Features: AX0GCFu3T3OR2_GG4ZzL7Loc9bKzO9dhY9CsI7icXQD9dgQfxG219UDY6QCd2ZY
-Message-ID: <CAFttn56vNVcE=pcGgxGrSZf=r=h_ceFwEf+D71yc9GnANww5Aw@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: doc: Clean up formatting in io.rs
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, daniel.almeida@collabora.com, me@kloenk.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB7250:EE_
+X-MS-Office365-Filtering-Correlation-Id: e68164fe-e89b-4969-f430-08dda1c78192
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TTBZMjljZ2lJcVZDSjQ1OVRxTG0vMGZ6TEtpbk1Pa04zNHI1bFQxSUdtNUNL?=
+ =?utf-8?B?c2l6UldmSzZrcHVVTU9sbjNaQ0drUTVlNks0Y1A4aXpmOCtLLzZKTHdFNjRm?=
+ =?utf-8?B?V2ZmbitVK1ZYaURkL0FidVZSejdPdFlVVzRIbE5iekRhdDdSMW81em5vVkhs?=
+ =?utf-8?B?L2xtQ3ByRnBKa2w3ekZHQnRVTHBPQ2drMFZOUTFVZjRKU2VqeGQ3d29LLzBx?=
+ =?utf-8?B?QVM4MVI5bVcvbTdUT2Z4bDNIWTltKzhBbTArQ0gzd3hPQTJGb2VscUZEUkhT?=
+ =?utf-8?B?Q3NkbnE2NFQ4MElvQXBwc0hGaXRxWEJXTXo2ZDkvRG5ibWpLR2NpaS9NQW5D?=
+ =?utf-8?B?TFlhWjg2Uk13QW8vSFpxMzVnQXU4TTN4KzhpN3pHczI4T1oxUmtsdTF2UFov?=
+ =?utf-8?B?TlBQQ1JhdVVOUHBvdDI5aHlPTG9yUzRYdGltalNOcVBwVlhGemdoVlFSdENE?=
+ =?utf-8?B?SWk1bkMzNU4xV2dhdWl0NlRuL01KRmpoaHRONGNZeXQ5eFRWZlgvUVpGMXBU?=
+ =?utf-8?B?WlNocHdSVlVEZXRxeHJTUlYrR0dvaUJZZ0VZVGpJYTJ0T3dhc0RnWm1oS3NW?=
+ =?utf-8?B?aWFHS085TG5mMUwzQ1UwM29keEN1QW9kQVFpS01yOFdOREVMaDkrZWYyc2Jh?=
+ =?utf-8?B?eDhnY3JCNVo2NEUxN0pPeTVBNlBnem9aSnJsT2xqcm9vYXdzRE1XWGJ0eFYx?=
+ =?utf-8?B?Z2pDa2EwWWpjclM5aWxFR0o3NVJHKzlSMEJydFdFQ253OXoycnI4eVpDWWxm?=
+ =?utf-8?B?UnE0bEVCKzJBeXYzS3lVTEExQTVWN2lwVE0xVmRVemhhOHFFZHRtOU5qRFJu?=
+ =?utf-8?B?UFhmME1aNGwyeXpuNHczZWZ0M2NRNWJSUzZaMkZ6dW4xb0pReFEzNHRidlpE?=
+ =?utf-8?B?NVpHK3NRMXpVUFVVWkZBQWgzZUp4TmlFalNLU21MK1hVTUMrMExMQ0tpUWtm?=
+ =?utf-8?B?U3FQQnpsUnBVTDNOL0ljOFNQTFFETlF6RG5YMjhpQ0dkaER1dnkyYTRqM1gr?=
+ =?utf-8?B?L01jZ1hEODllelRydHJQYmdLaFFUdC80Y3FHMWVYYmxUSkphdnY4NDUreEhB?=
+ =?utf-8?B?RWMvc3oyQU93bm9FakRxWFdQSGdvdlpiZkFMdnZrRjY1Wlg2b2dBZVZ5SHU4?=
+ =?utf-8?B?a0NVU0tJaS9rdHFic3R1ZnZUdDNwZ3owN1JTQ0tIY3hseVJXbW5FR2huU21U?=
+ =?utf-8?B?RDliUzc2OU9XV3ZyRmJjZGlrbmhXWm9vc0twTG0wK2orU3Z4ekpMOFVWWXdK?=
+ =?utf-8?B?V0xTVVdCSTF0RHBnWWJtalN1dzRPNVZwcHhWbkRFTDhCTW01b0NWYjM0cEMw?=
+ =?utf-8?B?ZTRzRlJmOGpKRTVaem1yM09oRHFBMGQ1b2JRZERPM2FRL2c2UVNTVGZOT1Ro?=
+ =?utf-8?B?TndJZE9sT2l4SXBDU1ZRRDUzUUgwQ1Vnd21jSzJ4bGZLVmVIckVYQTVOWmZ0?=
+ =?utf-8?B?cUVzZVFKMk84Qm0zZWc2Tkp0ZzZtbW5DZk9Ua3JJUVo4ZlNBd2ZwSEVhYlBJ?=
+ =?utf-8?B?Umxrb3pQT0RMRThWYzRnRVJyRTlSWWZZRVJXYXdoSTE0WDJ1K0xPY09TdTlC?=
+ =?utf-8?B?ZWpZRUhiMjRvL3pNNitYWVozOUJadnFKaFg2d3F5VTJTZUVjTWw2VWphcmww?=
+ =?utf-8?B?ZSt1TUdNbnFMWk5RNDFUaW80QmtKVzk3TExUeExVa3hRU3NqV2p5dS9SK2pU?=
+ =?utf-8?B?bEtzOFMveUVLMlZHeTJGSGZWMFdyRHdOTTFxVEJFQThkS0FzNXpheHZXVU9q?=
+ =?utf-8?B?VVQ1KzRCN2huMWh6SERoT25LZzgvcXRnWWxWRnR2TDlLdWNob2cvQzNkbW1u?=
+ =?utf-8?B?eVhHdE1EbHoxUi9tV1RaUzdoWEpZa1prZ3o5M0Vlb1ltOThjUkw4MHNDdm42?=
+ =?utf-8?B?cWcwTStJSVVNQ001eVJxdzBZTHdwd0ZHZW5wbWFzazRXOExvYjVCU1c0THBF?=
+ =?utf-8?Q?WdWuzJ6i6RM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UXpnZkExOHY4ekptZlNKamozb0ViR0lmYzR6dUNid1FCbU5sYlBtWm1JM3dr?=
+ =?utf-8?B?dVV4L3luVzg4enAvT1JRdERraEZOQ09MWTYrcG1kVy9pZ1A1VWZVVjhDNFVR?=
+ =?utf-8?B?Rm5WMmt1aWszRWRMblJGQTRWN0lzMjFtcVdZemF6aFQ3VnppM0V3RW1FTTlG?=
+ =?utf-8?B?MTNocVhwd2M4YXpFWTJKTndTU3h5ckhtNU5rWFJmK0lrNFo0SFhobEJDOGJy?=
+ =?utf-8?B?THZ0RTRDV2ZNSXlzdllqN1NCUk9EWWVrWFBBZTJxVWVFUnIwNEtZSFVKdGVh?=
+ =?utf-8?B?a3Z6M0RLWEhMdmd4M2FKZGpYcGFxN0Z5ZlBWaFZ5dTluc3BTNE1XbWtnUmRa?=
+ =?utf-8?B?b2w5SUpEZ3I2S3BFeEc0KzVmWmhma3pVT25DN0FrVkEyWlQwUitXMkpmdGlP?=
+ =?utf-8?B?ZXlxTlNqMzBZZTJYRjF1am81ZSs2NXYraUNWZ0RLNGJSUlRQZXZzdk9kRlhh?=
+ =?utf-8?B?RlZyUlRQRC9GNklOK0dRMlZOVkhnNzEvb1BPczF2TldGd3U0TG81NjhKZ0ZT?=
+ =?utf-8?B?NmFSZzdLTi84WWlrZDNyTmg0WlAxMkhrVVQ1bHNpa0hNMFVLZzd0bmxuQnVp?=
+ =?utf-8?B?d3hJcmY4OU5FU2RXOFR5cUw4TXcya1doUHlMSEIxVnROc2J0MGZpRUNEdjNu?=
+ =?utf-8?B?NnlQY09lZWJQamczaE9xclg2VEdSM0hnVGd0NVh0M3FCNUdhVkJ4bDVvaGFz?=
+ =?utf-8?B?UUhkeWRtaWdzWStLR0Z0TUNDRmJFSnVWN2RlRDhuLzBqZVpZeW1Pc3NpdVRm?=
+ =?utf-8?B?NzR6Z3FuU2lkejdrMmZPNDFzS09mZHovaEkzWGVuYzQyajFvWjdKNDFlQU5s?=
+ =?utf-8?B?NjBEYlVlb2pLVDZTTW9rZFVoYzB3elo3V3FSbzY4NzlVYkF4R3FaMHJ5bGpR?=
+ =?utf-8?B?MnJRRWRqWjBsaDdBSHc2dHZVeDVsK2V1MWxJYng5R0Y3YUN1b1NsSW9qd0lD?=
+ =?utf-8?B?QTBUeVdGaUx4UFE2bkNTWEx5dDMvMElkaTB2QkhNVHFjbGJwNndZSXpiUUFI?=
+ =?utf-8?B?dmE3Wlp3eEdQQ2FMV3lQWDZtMllFN3o1TGpjY1k4Y09CRXY2VWRGc29qZFBk?=
+ =?utf-8?B?cEl4YStJRzdMZXNaT3d1aHAzSjVVc3JCTDNKSFZuYnl1ai8vTzB1cGhHY0xh?=
+ =?utf-8?B?UWhrTGpEbjVoQk1mRFltOWlOaDNBWEYzaXRyZ1I1Vkl6QnlGNTZnSzl5R0hr?=
+ =?utf-8?B?bStTUkx4UEZ5RG9pUVUwVGIyS2Q4akpwa1F0TERJVlA5YmhBUFNOVStCWUc0?=
+ =?utf-8?B?ak55TUZ5SW9TWFVVTkNqZEh1NU0zVzhsT0w0OWxGcE0xZzhvT28zYjRad2Ry?=
+ =?utf-8?B?QThqZlRhanQyR1l2aHd2NXNNTXA3NHloOG4yZWsyU05yVFhDZlZNUFFJOHF6?=
+ =?utf-8?B?K1JMY1BiazNoUDNNRnlUbDJyYlhFbExtRldFTlBabDRQZFhJUmovcm9VemZw?=
+ =?utf-8?B?QnhNNFdLK21wd2NPY2E5WGRkRVdkYVVBSnA1bzNtdGhDUDR1SStvMEdlUGw0?=
+ =?utf-8?B?ZExoYTcwZnpDZXFaRlp6STJNM2tCK1hHTmROMlI4Q212NTAraG54WjBlMFRJ?=
+ =?utf-8?B?WkRMdk1URzI4alhWQS9qMXpwcDVDVVlXOWx2NUFwZDI1Y3E1aEJyQXZ6bUdz?=
+ =?utf-8?B?SlNnT2YxdHg4c0FMN3NDVzdGZW81aXFxc0FvcG5yb1FSRTlIa0JSMXpCTStO?=
+ =?utf-8?B?RHR2N0ozYWpMTGRvSkNpSU1hbEN2RlFHTlV6UFZwZEYzdkJVQUVvMXZCSFNJ?=
+ =?utf-8?B?VXBZY2pNZSttRVAwbmNweGZMK1lkV2JKWVRFMVZLYUNNeDBEdjV5Q2U1N2E5?=
+ =?utf-8?B?VmFpMFlkc3A2TEFhRXdBS2xlOXFwalJKL3NtTmlIVG9DazlOa2ZxTEJiMm1R?=
+ =?utf-8?B?djQvVDFTM29TSzhGQ3JEUXMyOTU5SHB4SjdQRmd2dWxWWmpNZGxycTdGZU1G?=
+ =?utf-8?B?UlFQcjRwUGkweXp0Y3ozYmQyM2NvaVBwY3gweC9wbHZGYitJZ1R5ejlXZXBW?=
+ =?utf-8?B?cGpRWjRYbnlqNWtZK2FOVytWcmYwZUlBdUJlYWxONmsyY0dkeXVUeVljcFM0?=
+ =?utf-8?B?d0tXbDVsWGZRbjhQTDZvS2tkY3QwdUxRTVh0aHlML2tQV2JiemdVcFBLYXox?=
+ =?utf-8?B?aHN6NWp0eWs1RzNLNm5GM3V1dXpET0lrK1poQ0dBVk8xUURHZHVMRXd6ZlZL?=
+ =?utf-8?Q?Vx7B2jWcI3vrV2lG6/8AMW/1JW98pyhs8fy2SCQ2Si93?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e68164fe-e89b-4969-f430-08dda1c78192
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2025 11:20:40.3124
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uJU2YwQaGFnpc1SKs4WE8nosNhh7RjnS9tST905fLgn/lhg5Aa36SklCH3NvhyYvsr2W4RHDlT//fpDw91Ittg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7250
 
-> below the first --- line
+On Mon Jun 2, 2025 at 8:09 PM JST, Danilo Krummrich wrote:
+> On Fri, May 30, 2025 at 05:57:44PM -0400, Lyude Paul wrote:
+>> On Wed, 2025-05-21 at 15:45 +0900, Alexandre Courbot wrote:
+>> > Reserve a page of system memory so sysmembar can perform a read on it =
+if
+>> > a system write occurred since the last flush. Do this early as it can =
+be
+>> > required to e.g. reset the GPU falcons.
+>> >=20
+>> > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> > ---
+>> >  drivers/gpu/nova-core/gpu.rs  | 45 ++++++++++++++++++++++++++++++++++=
++++++++--
+>> >  drivers/gpu/nova-core/regs.rs | 10 ++++++++++
+>> >  2 files changed, 53 insertions(+), 2 deletions(-)
+>> >=20
+>> > diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.=
+rs
+>> > index 50417f608dc7b445958ae43444a13c7593204fcf..a4e2cf1b529cc25fc168f6=
+8f9eaa6f4a7a9748eb 100644
+>> > --- a/drivers/gpu/nova-core/gpu.rs
+>> > +++ b/drivers/gpu/nova-core/gpu.rs
+>> > @@ -2,6 +2,7 @@
+>> > =20
+>> >  use kernel::{device, devres::Devres, error::code::*, pci, prelude::*}=
+;
+>> > =20
+>> > +use crate::dma::DmaObject;
+>> >  use crate::driver::Bar0;
+>> >  use crate::firmware::{Firmware, FIRMWARE_VERSION};
+>> >  use crate::gfw;
+>> > @@ -158,12 +159,32 @@ fn new(bar: &Bar0) -> Result<Spec> {
+>> >  }
+>> > =20
+>> >  /// Structure holding the resources required to operate the GPU.
+>> > -#[pin_data]
+>> > +#[pin_data(PinnedDrop)]
+>> >  pub(crate) struct Gpu {
+>> >      spec: Spec,
+>> >      /// MMIO mapping of PCI BAR 0
+>> >      bar: Devres<Bar0>,
+>> >      fw: Firmware,
+>> > +    /// System memory page required for flushing all pending GPU-side=
+ memory writes done through
+>> > +    /// PCIE into system memory.
+>> > +    sysmem_flush: DmaObject,
+>> > +}
+>> > +
+>> > +#[pinned_drop]
+>> > +impl PinnedDrop for Gpu {
+>> > +    fn drop(self: Pin<&mut Self>) {
+>> > +        // Unregister the sysmem flush page before we release it.
+>> > +        let _ =3D self.bar.try_access_with(|b| {
+>> > +            regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::default()
+>> > +                .set_adr_39_08(0)
+>> > +                .write(b);
+>> > +            if self.spec.chipset >=3D Chipset::GA102 {
+>> > +                regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::default()
+>> > +                    .set_adr_63_40(0)
+>> > +                    .write(b);
+>> > +            }
+>> > +        });
+>> > +    }
+>
+> Sorry that I haven't noticed this before -- I think this should be self
+> contained in a new type (e.g. SysmemFlush).
 
-Is it the one below the Signed off by line? To get the complete picture:
-1. commit title
-2. commit message
-3. signed off and other tags
----
-4. The version log or any other necessary comments
-5. actual diff
----
+Agreed, a new type sounds like the best way to do and would also address
+Lyude's comment. Note however that the destructor will need access to
+the Bar, so somehow it will need to be called from the Gpu's own
+`PinnedDrop` implementation (or the solution you come with to do it from
+`Device::remove`).
 
-Additionally, I suppose the `base-commit` tag should also be placed in
-3 (above/below Signed-off-by), as it was added to the very end by
-`git` when generating the patch.
-I am sincerely apologizing for taking at least 4 versions for a simple
-fix, but I am trying to figure out how to properly create and send
-patches.
-This clearly explains what you meant:
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#commentary
-.
-I will send v4 after thoroughly reading it multiple times.
-
-Thanks for all the time and patience!
