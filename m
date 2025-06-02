@@ -1,132 +1,268 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC887485;
-	Mon,  2 Jun 2025 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A0214F70;
+	Mon,  2 Jun 2025 12:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748867179; cv=none; b=EIFsE4yVD3YgnUCr5vc6o0I0xz+AdPd7H0k3Fr1JMaapoZJ9TLpYArZ+CWpwKNtT3lJPim2A35oheFwKeVELk82KFiksJA/QbO+KVd8ArJQXX323Uw0VabAGl4kPWwSQ18nmsqbY8nOKinM4HK/OpieT8G5qN201Otd2nb3LGU8=
+	t=1748868081; cv=none; b=plcDzF0m1choyWjKko8KyAinaifemo1KblNJmW6iWxiCS+O8V8v5uYnGkgEooPFzUMhKgI9z7P0sQ2r/HVed2PCExhUZDhQt6UqOQ6TDZKpORjMmlzgRMLHQheEcqqvmCm6CV6O8jAEt3WmbDQmVLTafrSeBotw8ds0amM5jcQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748867179; c=relaxed/simple;
-	bh=pGav0rV/4DOUeGB4H+ahrH4gCJmO5uEhsOKx1aE0EmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W15GFh1G5SqLNNhNxJ9wgZI7eJ/ce7BGPsca8l9CVdDlIPxSXXO8biRav7h7dhCyKqNINu2q3iBdNGL5biQXO+NMlaf7Gg8fqIUkmtQsBVieVS2Ma3tos+rk6IPglYONfMh1NaE0Y6yFIcOfczi3OaCbE5v9Ye5/eqJMnaW6SwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxjHyms0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748868081; c=relaxed/simple;
+	bh=kz/ozhzfzYQI+bSbQCl/NLHFLo2+5yc6Xm0+YiRP1xQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ZYpnhMy96iA/tEImX7IFDY3gcAd6WRLhfn1MzLKFryBnqHL6mEjWa8abl2OLbu8OlchZdV3YgVKn0+t+fhaB6rktq8yicIrgbXvlbvZxXZwFskrOflNp+wpOspgQx0cKkhVIFh7Nwr05jj42cCXCwwY5Y0+rPPyk2SQU11NYhLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aYgaaj79; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxjHyms0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027E9C4CEEB;
-	Mon,  2 Jun 2025 12:26:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aYgaaj79"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD019C4CEEB;
+	Mon,  2 Jun 2025 12:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748867178;
-	bh=pGav0rV/4DOUeGB4H+ahrH4gCJmO5uEhsOKx1aE0EmE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qxjHyms02HjbpPTnGWZmqPqj+KZ/H1XdJ1NYNG9XS0FeIlay0EBDS/PLxYFMVRGuH
-	 S+7p1YqfJWknZdMnu2Td8xPx83dfa8SHf8G3sbAUBzuNSFEda7QDF8dOx1fNV/riLh
-	 JOuLYdLUrSsjhDhA0C9EKzqtgKFYox3J4kBIesPZwmnoOOQ5gb18yvnZyr/FMETj5N
-	 Kz2EV3nl1s3gMZnLm6UoygG3u42IfoVBWRY0lTH7P+IGy87/ALjBjlRFSOXyuJFPna
-	 JevSrOgnIB/vTQN9wAlY6CrFAffxKMjqm+yDdHenBqjrMn7XybM64UjNNC3FvVDTml
-	 4v6OBQp0S88tA==
-Date: Mon, 2 Jun 2025 14:26:11 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v4 15/20] gpu: nova-core: firmware: add ucode descriptor
- used by FWSEC-FRTS
-Message-ID: <aD2YY_zpo01rYkgN@pollux>
-References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-15-05dfd4f39479@nvidia.com>
+	s=k20201202; t=1748868080;
+	bh=kz/ozhzfzYQI+bSbQCl/NLHFLo2+5yc6Xm0+YiRP1xQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=aYgaaj79rEyv/VLcC6pvzVY69NqOTaOkUhVZbIgHN2L1AA7iaWCmIfatQoR0mkXXC
+	 Z0fA6r63aZfYxUrEFPNCk4Ns3rmkZcom1SnQcvmHp8squbGs9/GUxcGJzBwILz50el
+	 rNLzbywJjQBNhcUpgCvv6CyQRXjYR4wEpSF6iEIV01RUtv5MpnrQ33GQCWdKvExkvS
+	 PmiyZZxytmgqxP14tEjeUNHnimp18wZLEtdYng2FnBPGt9MDSq/NhxYq8JDXknSpmG
+	 GwhDDP7T8jDdcuXLZVMkxrYo4rluQ825yDiGnoQ7dx+EGHMWKNmDIxGwZxUpm7d0fK
+	 2Og7FvVYHt5iQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+Cc: <rust-for-linux@vger.kernel.org>,  <boqun.feng@gmail.com>,
+  <frederic@kernel.org>,  <lyude@redhat.com>,  <tglx@linutronix.de>,
+  <anna-maria@linutronix.de>,  <jstultz@google.com>,  <sboyd@kernel.org>,
+  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,  <gary@garyguo.net>,
+  <bjorn3_gh@protonmail.com>,  <benno.lossin@proton.me>,
+  <aliceryhl@google.com>,  <tmgross@umich.edu>,  <dakr@kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 4/5] rust: time: Make HasHrTimer generic over
+ HrTimerMode
+In-Reply-To: <20250504045959.238068-5-fujita.tomonori@gmail.com> (FUJITA
+	Tomonori's message of "Sun, 04 May 2025 13:59:57 +0900")
+References: <20250504045959.238068-1-fujita.tomonori@gmail.com>
+	<HhGhHOv9fvWu0G7TihU0V5UMif0USODr5QagKogYlf-zE9P6uyPWYdEckCaFi747sl_vkLi5XDB_O9BFcwsjow==@protonmail.internalid>
+	<20250504045959.238068-5-fujita.tomonori@gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Mon, 02 Jun 2025 14:41:10 +0200
+Message-ID: <877c1u71uh.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250521-nova-frts-v4-15-05dfd4f39479@nvidia.com>
+Content-Type: text/plain
 
-On Wed, May 21, 2025 at 03:45:10PM +0900, Alexandre Courbot wrote:
-> FWSEC-FRTS is the first firmware we need to run on the GSP falcon in
-> order to initiate the GSP boot process. Introduce the structure that
-> describes it.
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+
+> Add a `TimerMode` associated type to the `HasHrTimer` trait to
+> represent the operational mode of the timer, such as absolute or
+> relative expiration.  This new type must implement the `HrTimerMode`
+> trait, which defines how expiration values are interpreted.
+>
+> Update the `start()` method to accept an `expires` parameter of type
+> `<Self::TimerMode as HrTimerMode>::Expires` instead of the fixed `Ktime`.
+> This enables different timer modes to provide strongly typed expiration
+> values, such as `Instant<C>` or `Delta`.
+>
+> The `impl_has_hr_timer` macro is also extended to allow specifying the
+> `HrTimerMode`. In the following example, it guarantees that the
+> `start()` method for `Foo` only accepts `Instant<Monotonic>`. Using a
+> `Delta` or an `Instant` with a different clock source will result in a
+> compile-time error:
+>
+> struct Foo {
+>     #[pin]
+>     timer: HrTimer<Self>,
+>
+> }
+>
+> impl_has_hr_timer! {
+>     impl HasHrTimer<Self> for Foo {
+>         mode = AbsoluteMode<Monotonic>,
+>         self.timer
+>     }
+> }
+>
+> This design eliminates runtime mismatches between expires types and
+> clock sources, and enables stronger type-level guarantees throughout
+> hrtimer.
+>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > ---
->  drivers/gpu/nova-core/firmware.rs | 43 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
-> 
-> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-> index 4b8a38358a4f6da2a4d57f8db50ea9e788c3e4b5..f675fb225607c3efd943393086123b7aeafd7d4f 100644
-> --- a/drivers/gpu/nova-core/firmware.rs
-> +++ b/drivers/gpu/nova-core/firmware.rs
-> @@ -41,6 +41,49 @@ pub(crate) fn new(dev: &device::Device, chipset: Chipset, ver: &str) -> Result<F
->      }
+>  rust/kernel/time/hrtimer.rs         | 55 ++++++++++++++++++++++-------
+>  rust/kernel/time/hrtimer/arc.rs     |  8 +++--
+>  rust/kernel/time/hrtimer/pin.rs     |  8 +++--
+>  rust/kernel/time/hrtimer/pin_mut.rs |  8 +++--
+>  rust/kernel/time/hrtimer/tbox.rs    |  8 +++--
+>  5 files changed, 66 insertions(+), 21 deletions(-)
+>
+> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+> index 55e1825425b6..3355ae6fe76d 100644
+> --- a/rust/kernel/time/hrtimer.rs
+> +++ b/rust/kernel/time/hrtimer.rs
+> @@ -98,7 +98,6 @@ pub fn to_ns(self) -> i64 {
+>  pub struct HrTimer<T> {
+>      #[pin]
+>      timer: Opaque<bindings::hrtimer>,
+> -    mode: bindings::hrtimer_mode,
+>      _t: PhantomData<T>,
 >  }
->  
-> +/// Structure used to describe some firmwares, notably FWSEC-FRTS.
-> +#[repr(C)]
-> +#[derive(Debug, Clone)]
-> +pub(crate) struct FalconUCodeDescV3 {
-> +    /// Header defined by `NV_BIT_FALCON_UCODE_DESC_HEADER_VDESC*` in OpenRM.
+>
+> @@ -112,9 +111,10 @@ unsafe impl<T> Sync for HrTimer<T> {}
+>
+>  impl<T> HrTimer<T> {
+>      /// Return an initializer for a new timer instance.
+> -    pub fn new<U: ClockSource, M: HrTimerMode>() -> impl PinInit<Self>
+> +    pub fn new() -> impl PinInit<Self>
+>      where
+>          T: HrTimerCallback,
+> +        T: HasHrTimer<T>,
+>      {
+>          pin_init!(Self {
+>              // INVARIANT: We initialize `timer` with `hrtimer_setup` below.
+> @@ -126,12 +126,11 @@ pub fn new<U: ClockSource, M: HrTimerMode>() -> impl PinInit<Self>
+>                      bindings::hrtimer_setup(
+>                          place,
+>                          Some(T::Pointer::run),
+> -                        U::ID,
+> -                        M::C_MODE,
+> +                        <<T as HasHrTimer<T>>::TimerMode as HrTimerMode>::Clock::ID,
+> +                        <T as HasHrTimer<T>>::TimerMode::C_MODE,
+>                      );
+>                  }
+>              }),
+> -            mode: M::C_MODE,
+>              _t: PhantomData,
+>          })
+>      }
+> @@ -193,6 +192,11 @@ pub(crate) unsafe fn raw_cancel(this: *const Self) -> bool {
+>  /// exist. A timer can be manipulated through any of the handles, and a handle
+>  /// may represent a cancelled timer.
+>  pub trait HrTimerPointer: Sync + Sized {
+> +    /// The operational mode associated with this timer.
 > +    ///
-> +    /// Bits `31:16` contain the size of the header, after which the actual ucode data starts.
-
-The field is private; this information is much more needed in Self::size().
-
-> +    hdr: u32,
-> +    /// Stored size of the ucode after the header.
-> +    stored_size: u32,
-> +    /// Offset in `DMEM` at which the signature is expected to be found.
-> +    pub(crate) pkc_data_offset: u32,
-> +    /// Offset after the code segment at which the app headers are located.
-> +    pub(crate) interface_offset: u32,
-> +    /// Base address at which to load the code segment into `IMEM`.
-> +    pub(crate) imem_phys_base: u32,
-> +    /// Size in bytes of the code to copy into `IMEM`.
-> +    pub(crate) imem_load_size: u32,
-> +    /// Virtual `IMEM` address (i.e. `tag`) at which the code should start.
-> +    pub(crate) imem_virt_base: u32,
-> +    /// Base address at which to load the data segment into `DMEM`.
-> +    pub(crate) dmem_phys_base: u32,
-> +    /// Size in bytes of the data to copy into `DMEM`.
-> +    pub(crate) dmem_load_size: u32,
-> +    /// Mask of the falcon engines on which this firmware can run.
-> +    pub(crate) engine_id_mask: u16,
-> +    /// ID of the ucode used to infer a fuse register to validate the signature.
-> +    pub(crate) ucode_id: u8,
-> +    /// Number of signatures in this firmware.
-> +    pub(crate) signature_count: u8,
-> +    /// Versions of the signatures, used to infer a valid signature to use.
-> +    pub(crate) signature_versions: u16,
-> +    _reserved: u16,
-> +}
+> +    /// This defines how the expiration value is interpreted.
+> +    type TimerMode: HrTimerMode;
 > +
-> +// To be removed once that code is used.
-> +#[expect(dead_code)]
-> +impl FalconUCodeDescV3 {
+>      /// A handle representing a started or restarted timer.
+>      ///
+>      /// If the timer is running or if the timer callback is executing when the
+> @@ -205,7 +209,7 @@ pub trait HrTimerPointer: Sync + Sized {
+>
+>      /// Start the timer with expiry after `expires` time units. If the timer was
+>      /// already running, it is restarted with the new expiry time.
+> -    fn start(self, expires: Ktime) -> Self::TimerHandle;
+> +    fn start(self, expires: <Self::TimerMode as HrTimerMode>::Expires) -> Self::TimerHandle;
+>  }
+>
+>  /// Unsafe version of [`HrTimerPointer`] for situations where leaking the
+> @@ -220,6 +224,11 @@ pub trait HrTimerPointer: Sync + Sized {
+>  /// [`UnsafeHrTimerPointer`] outlives any associated [`HrTimerPointer::TimerHandle`]
+>  /// instances.
+>  pub unsafe trait UnsafeHrTimerPointer: Sync + Sized {
+> +    /// The operational mode associated with this timer.
+> +    ///
+> +    /// This defines how the expiration value is interpreted.
+> +    type TimerMode: HrTimerMode;
+> +
+>      /// A handle representing a running timer.
+>      ///
+>      /// # Safety
+> @@ -236,7 +245,7 @@ pub unsafe trait UnsafeHrTimerPointer: Sync + Sized {
+>      ///
+>      /// Caller promises keep the timer structure alive until the timer is dead.
+>      /// Caller can ensure this by not leaking the returned [`Self::TimerHandle`].
+> -    unsafe fn start(self, expires: Ktime) -> Self::TimerHandle;
+> +    unsafe fn start(self, expires: <Self::TimerMode as HrTimerMode>::Expires) -> Self::TimerHandle;
+>  }
+>
+>  /// A trait for stack allocated timers.
+> @@ -246,9 +255,14 @@ pub unsafe trait UnsafeHrTimerPointer: Sync + Sized {
+>  /// Implementers must ensure that `start_scoped` does not return until the
+>  /// timer is dead and the timer handler is not running.
+>  pub unsafe trait ScopedHrTimerPointer {
+> +    /// The operational mode associated with this timer.
+> +    ///
+> +    /// This defines how the expiration value is interpreted.
+> +    type TimerMode: HrTimerMode;
+> +
+>      /// Start the timer to run after `expires` time units and immediately
+>      /// after call `f`. When `f` returns, the timer is cancelled.
+> -    fn start_scoped<T, F>(self, expires: Ktime, f: F) -> T
+> +    fn start_scoped<T, F>(self, expires: <Self::TimerMode as HrTimerMode>::Expires, f: F) -> T
+>      where
+>          F: FnOnce() -> T;
+>  }
+> @@ -260,7 +274,13 @@ unsafe impl<T> ScopedHrTimerPointer for T
+>  where
+>      T: UnsafeHrTimerPointer,
+>  {
+> -    fn start_scoped<U, F>(self, expires: Ktime, f: F) -> U
+> +    type TimerMode = T::TimerMode;
+> +
+> +    fn start_scoped<U, F>(
+> +        self,
+> +        expires: <<T as UnsafeHrTimerPointer>::TimerMode as HrTimerMode>::Expires,
+> +        f: F,
+> +    ) -> U
+>      where
+>          F: FnOnce() -> U,
+>      {
+> @@ -335,6 +355,11 @@ pub unsafe trait HrTimerHandle {
+>  /// their documentation. All the methods of this trait must operate on the same
+>  /// field.
+>  pub unsafe trait HasHrTimer<T> {
+> +    /// The operational mode associated with this timer.
+> +    ///
+> +    /// This defines how the expiration value is interpreted.
+> +    type TimerMode: HrTimerMode;
+> +
+>      /// Return a pointer to the [`HrTimer`] within `Self`.
+>      ///
+>      /// This function is useful to get access to the value without creating
+> @@ -382,14 +407,14 @@ unsafe fn c_timer_ptr(this: *const Self) -> *const bindings::hrtimer {
+>      /// - `this` must point to a valid `Self`.
+>      /// - Caller must ensure that the pointee of `this` lives until the timer
+>      ///   fires or is canceled.
+> -    unsafe fn start(this: *const Self, expires: Ktime) {
+> +    unsafe fn start(this: *const Self, expires: <Self::TimerMode as HrTimerMode>::Expires) {
+>          // SAFETY: By function safety requirement, `this` is a valid `Self`.
+>          unsafe {
+>              bindings::hrtimer_start_range_ns(
+>                  Self::c_timer_ptr(this).cast_mut(),
+> -                expires.to_ns(),
+> +                expires.as_nanos(),
+>                  0,
+> -                (*Self::raw_get_timer(this)).mode,
+> +                <Self::TimerMode as HrTimerMode>::Clock::ID as u32,
+>              );
+>          }
+>      }
+> @@ -579,12 +604,16 @@ macro_rules! impl_has_hr_timer {
+>          impl$({$($generics:tt)*})?
+>              HasHrTimer<$timer_type:ty>
+>              for $self:ty
+> -        { self.$field:ident }
+> +        {
+> +            mode = $mode:ty,
+> +            self.$field:ident
 
-    const HDR_SIZE_SHIFT: u32 = 16;
-    const HDR_SIZE_MASK: u32 = 0xffff0000;
+How about:
 
-> +    pub(crate) fn size(&self) -> usize {
-> +        ((self.hdr & 0xffff0000) >> 16) as usize
+  mode = $mode:ty,
+  field = self.$field:ident
 
-	((self.hdr & HDR_SIZE_MASK) >> Self::HDR_SIZE_SHIFT)
+So that there is some sort of red line when calling this. We could also
+consider adopting another syntax for association:
 
-In this case it may look a bit pointless, but I think it would make sense to
-establish to store consts for shifts and masks in general, such that one can get
-an easy overview of the layout of the structure.
+  mode: $mode:ty,
+  field: self.$field:ident
+
+or something else like `<-` or `->` ?
+
+
+Best regards,
+Andreas Hindborg
+
+
