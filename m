@@ -1,56 +1,58 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC65C43164
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 08:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C49F9D6
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 08:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748852971; cv=none; b=ufYkoE3jQI/hICpAg133sf5mRbMRWKB1sSVHojJSUx79QEsf7QgIes/VzbqD4WGr5PyMChY9zqirw0sIgtI/+ekFbnay7N+JGlSvB/2jPaoyDTtv0FKfrkOextjn277og5T83x5Iv9e4DAn1kIQzelPu8VZ6ecRml35dFLcMnBg=
+	t=1748853052; cv=none; b=WjBgquzd7rdBNqCu7MY7mfeX2c4tHsTzS5uEII8jmzAsmEMm4AQ9Cpnim94oEUPmFU9g6CNm7dk5HyGwm7Njy411XgEchGFl2X8ZmsoFjlVjk3o2Ncydu/96WG6K99T1rVgeyi/FPZdvuRowGsT33zI3D5OftUG5M4kb3+2aoHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748852971; c=relaxed/simple;
-	bh=tfq+oFb0HlgMyr/raKYVwTlerX3E5/qx2jk3UWH/zxw=;
+	s=arc-20240116; t=1748853052; c=relaxed/simple;
+	bh=ns49bkK3CDS/szk2+TQ9dOEMC7e9uFL7vYLWkhS566c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZTm8pgZ26I301K441w9OXyA1DQMHsb1GmieD5c1sVyk3pE1PqPRe5s7qZlHYCTOCi4Cs5jF/6bftK7HDPFeWo0/jTsWPEc4kE+21SyFj2Rr5E/hfIyEEau3sh64jrW12MuSnzRod2tqtoP6VK0ODVu69O1q5X2B1OelmUYY/udI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mhHBmA3i; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=MD+34QLTnas6+o1eWhna3JbnvFdOVLShbrb/FTF8gwcGCLt6bAXkMU+IjNQTy2r3T/0gNMsv3SqP1TIcfyXWAwzfbOCzCA2mByY3pTz46IFmqDhUfHaX3kcVXP9fIZ0GGjA8VrIushK2rzG1ZbnfNZZSDZPrQKpcLjgx/QvFsc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2LjX0e8N; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mhHBmA3i"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-451d30992bcso10527615e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 01:29:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2LjX0e8N"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-ad8a2dc92ddso273483466b.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 01:30:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748852968; x=1749457768; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZbpJCV8zQjR5DojHMaY/jEI40JXedsZY/k7Ga4GE9fA=;
-        b=mhHBmA3ijD+Lj8bV+GihwOUhiyrmnydLgVn+apeqK732gYaJlabIgUxDoG5uhGmxN1
-         d1jn1C4nNpQNR6cvt4FJwoW/6H2APdEpqDDmfYd6PkSvXzLB84WRHqm7F+FFgy8hNDZe
-         Pe91SpmJ+9pgKFEaph282tlhPHa+OEQbNFEHTWPpohiTAsy7piAm3/gw17Zrt9t5tA9Z
-         lV2B+L7QGBc2hNmN0oU+tIknwohCAsRoroyy+JDrSz1wA4aSKiasOGs/cfveW1UT9sf0
-         o/5RdZURLslmvphsWkkxlwxf/haIRWaMR7TqRK04qmhIO3hcXFIFxVOQe072qwmXkgZv
-         Moug==
+        d=google.com; s=20230601; t=1748853049; x=1749457849; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TywMR7y70/2Ma+CWu+fUEdXPjI+octXcTv8IdMArRtw=;
+        b=2LjX0e8N0BfDySfk3dc+s7Ixt6KrfLpNkjN2qYeNrrQpmerYdp+l9Vn51Fgo/+WA4y
+         EZzm8+AGgmxvlTGoXcbhV/JPPL9rhRrGRhK5plw6rZ+VDdwRYPZ1LhfRHCqT/+Or+QT1
+         +lqrWwnocFIfJZT0ktNuKtKa3W2+RYBiwc2J0Y3wIn4np4/ANqqfv+ENOax6fnF0dj88
+         FUKtJ9Px2Ahc4UIznXQK9VNukXSEm/z0x35iZQ28r+vtyNjgKhSbwddM9bZXbixnSXUn
+         jj6OKtNRQOsF6xKTczFXBCotccJ+KqHWOa+OpEvLcp1PzWxbHtEGDORK3xcdUd6EgX9c
+         pQrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748852968; x=1749457768;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZbpJCV8zQjR5DojHMaY/jEI40JXedsZY/k7Ga4GE9fA=;
-        b=axr3KDmTlKhq0KUMXCBJvjo9VyhSXfk54amGOd2IsmuT+Zs41J0Smh4niEIqO2U6ye
-         0Mx+w7S//PHZEkflVliiSZxviVTnx+UgF3kYhkH9XvSJz53qvyrNuy9cxiLNR0GGGSJL
-         VlJhQ95gHPYRnHgOOyZoAFYrD315UbPlPW24pmZ1gh2E08WsHRokApacVBS7Ngx1/NaD
-         EA2syuClcWy7H3lc8mNvG+uHn3HWyshPcy68+WtkdGidT/N46wMhMquHvTfTb/QqfUwK
-         luoPIDie18o4Z9EJEVjpRnFgNjuyGhmtOXah1cUsk3IdStN5CXKXAPXaF+YGPiyHqKA0
-         RxyA==
-X-Forwarded-Encrypted: i=1; AJvYcCWSy0TTjsp8hP9ag7H/g+DYuou1ZXxiSbQV3sfk0XfpK/mfIURjp8pCQl1f8luJCdEyH5Tug0wvhQUvGRQb3Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFc4p8yOHqHnewKS1lln5JWUaC6gPqQgP2ywUTFa/3HdNbTNjm
-	5ERsSyhekmNDfVjKTdRBY1KH9UNjUhugOyCYdCMFQ67S8Xw97Fs9DlYFMcG7ooeBEYuSl28QoAn
-	H7zYW4/M3lEzZhQdHjw==
-X-Google-Smtp-Source: AGHT+IEYL7osQ39DZQWSxjkteIgaxCeOKxb7imH7KmQjn71xdjWPClNvGxRadK2XafQ3SYOwC0XxYFDSYVTD7Rw=
-X-Received: from wmbfp6.prod.google.com ([2002:a05:600c:6986:b0:450:ce9d:a742])
+        d=1e100.net; s=20230601; t=1748853049; x=1749457849;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TywMR7y70/2Ma+CWu+fUEdXPjI+octXcTv8IdMArRtw=;
+        b=OTAZdOd95xg2QFeBZXeVVMPGjiZ8M4an4/a0BGfpGGiHXAN6NBW6HqOGYOyGu5Ek2j
+         ehJ3jDfJ6ZsnXZDjn33GEBNVCHgHChjtZdAGd8IsWh4WhqwyWqR6wNPZh5s6wxLEtoaw
+         BlFHApNisJqJsAJysQdkG/ZyVfy6Ab2zZbwh8ZIsFaho3cBdo0E0KuX4nKx4zWlzh1HU
+         qiXRS90i5/k/uTmhIAE1jloCNOC1gbn3Nn6cAOy1BRQHdZmGR2eNxpf+/PAdaZ8lHy3H
+         xyPn2x74+c9HxNWaJ/kAyvREgtlXpvngOaedpFWkGO+ykFV7IbOvo11+/jTyW9Z/gjHc
+         fbqg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0elRAwP4PiqufFz0ZzxH8udlO8xv48MQYAZZv60FarkHmHuJPLTDRbLraQNAHWNY6FKZXTWljwt8btk9GPw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQ+7DRnjoyzMYOr8HGRcw5mOE8aNJkeaFzuOCDSL+PKBZrS7mg
+	8iyYHn/gmOFJAXv/2SXWLZ1QxiClf/Mje4dtgvD3CatVmfS0vye7h9De/U0hgerlVTb7tk9TOPI
+	7Z8ycvBYkq2t4ZWeCdg==
+X-Google-Smtp-Source: AGHT+IGV2U9U17LPEUPNxc6eU7TihpVD2gyF0A6GZFV7pQNqkXSGeluQ1886domh1Zqik8CIwrhg6Bp3hBPQ2pU=
+X-Received: from ejctp16.prod.google.com ([2002:a17:907:c490:b0:ad9:18c:7b55])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6219:b0:43c:ec97:75db with SMTP id 5b1f17b1804b1-4511ecc3e06mr62032565e9.11.1748852968229;
- Mon, 02 Jun 2025 01:29:28 -0700 (PDT)
-Date: Mon, 2 Jun 2025 08:29:26 +0000
-In-Reply-To: <DA9GNN7GH1VE.2NDPJZLNHAUP4@kernel.org>
+ 2002:a17:907:72c3:b0:ad5:6ca3:c795 with SMTP id a640c23a62f3a-adb494d5bc4mr719727466b.33.1748853049333;
+ Mon, 02 Jun 2025 01:30:49 -0700 (PDT)
+Date: Mon, 2 Jun 2025 08:30:47 +0000
+In-Reply-To: <DABBSL9WTE9P.DX3I6CFIYH7P@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,9 +60,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250527-strncpy-from-user-v4-0-82168470d472@google.com>
- <20250527-strncpy-from-user-v4-1-82168470d472@google.com> <DA9GNN7GH1VE.2NDPJZLNHAUP4@kernel.org>
-Message-ID: <aD1g5jFOrMUXeHhM@google.com>
-Subject: Re: [PATCH v4 1/2] uaccess: rust: add strncpy_from_user
+ <20250527-strncpy-from-user-v4-2-82168470d472@google.com> <DA9P904SL0KL.1QNQAI240QLH6@kernel.org>
+ <CAH5fLgjZrJ66VnW0J_CHc-3yUFOt+DRWgTCNxoftACga+Lw+fA@mail.gmail.com>
+ <DAAG8AUG7GE2.EVO9Y6PZTHDI@kernel.org> <CAH5fLgjNCQV8zsfdeq21iXiu_VOpt=WGnm9nMp-B0bOEMEBctw@mail.gmail.com>
+ <DAAMVOZJDNNT.1JR5YY3ICI0Q5@kernel.org> <CAH5fLgj8WkjDs6qCmzxYsYTH=_knWyZDrwqLopvGZEBk931aXQ@mail.gmail.com>
+ <DABBSL9WTE9P.DX3I6CFIYH7P@kernel.org>
+Message-ID: <aD1hN2w2__fZ2hWH@google.com>
+Subject: Re: [PATCH v4 2/2] uaccess: rust: add UserSliceReader::strcpy_into_buf
 From: Alice Ryhl <aliceryhl@google.com>
 To: Benno Lossin <lossin@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -71,49 +77,48 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 30, 2025 at 01:32:44PM +0200, Benno Lossin wrote:
-> On Tue May 27, 2025 at 2:34 PM CEST, Alice Ryhl wrote:
-> > This patch adds a direct wrapper around the C function of the same name.
-> > It's not really intended for direct use by Rust code since
-> > strncpy_from_user has a somewhat unfortunate API where it only
-> > nul-terminates the buffer if there's space for the nul-terminator. This
-> > means that a direct Rust wrapper around it could not return a &CStr
-> > since the buffer may not be a cstring. However, we still add the method
-> > to build more convenient APIs on top of it, which will happen in
-> > subsequent patches.
+On Sun, Jun 01, 2025 at 06:09:26PM +0200, Benno Lossin wrote:
+> On Sat May 31, 2025 at 11:09 PM CEST, Alice Ryhl wrote:
+> > On Sat, May 31, 2025 at 10:38=E2=80=AFPM Benno Lossin <lossin@kernel.or=
+g> wrote:
+> >> Maybe I misunderstood the code, but if you do this:
+> >>
+> >>     let slice =3D UserSlice::new(ptr, 1024);
+> >>     let mut buf =3D [0; 42];
+> >>     let s =3D slice.strcpy_into_buf(&mut buf)?;
+> >>
+> >> Then it will read 42 characters from userspace and (if there was no nu=
+l
+> >> byte) overwrite the last character with `\0`. If we now do
+> >>
+> >>     let mut buf2 =3D [0; 42];
+> >>     let s2 =3D slice.strcpy_into_buf(&mut buf2)?;
+> >>
+> >> Then that will continue the read at index 42, but effectively one
+> >> character will get skipped.
+> >>
+> >> (Now it's not possible to call `strcpy_into_buf` multiple times, but I
+> >> see no real reason why it isn't a `&mut self` method. Also a user coul=
+d
+> >> call `clone_reader` and then manually `skip` 42 bytes. Although they
+> >> might only skip 41 bytes, since that's the length of the CStr. But tha=
+t
+> >> runs into the problem that if there was a `\0` at index 41, then
+> >> repeated uses of the pattern above will yield empty strings.)
 > >
-> > Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> > I removed the ability to call it multiple times to avoid dealing with
+> > this kind of question. You may submit a follow-up patch to change it
+> > if you have a use-case.
+>=20
+> I don't have a use-case, but we should document this behavior somewhere
+> especially since the ability to only call this function once guarantees
+> the correctness.
 
-Thanks!
-
-> > +/// Reads a nul-terminated string into `dst` and returns the length.
-> > +///
-> > +/// This reads from userspace until a NUL byte is encountered, or until `dst.len()` bytes have been
-> > +/// read. Fails with [`EFAULT`] if a read happens on a bad address (some data may have been
-> > +/// copied). When the end of the buffer is encountered, no NUL byte is added, so the string is
-> > +/// *not* guaranteed to be NUL-terminated when `Ok(dst.len())` is returned.
-> > +///
-> > +/// # Guarantees
-> > +///
-> > +/// When this function returns `Ok(len)`, it is guaranteed that the first `len` bytes of `dst` are
-> > +/// initialized and non-zero. Furthermore, if `len < dst.len()`, then `dst[len]` is a NUL byte.
-> > +/// Unsafe code may rely on these guarantees.
-> > +#[inline]
-> > +#[expect(dead_code)]
-> > +fn raw_strncpy_from_user(dst: &mut [MaybeUninit<u8>], src: UserPtr) -> Result<usize> {
-> 
-> We could also return `&[u8]` here instead of the size. Would that
-> improve the users of this API?
-
-Beyond what Greg says, convenience of use is not a goal *at all* of this
-function. It's purpose is to faithfully wrap the C function and match
-its semantics exactly. Ease of use is taken care of by patch 2 of this
-series.
+I'll add a comment, though I would note that what we pass to
+strncpy_from_user isn't really relevant here, even if the method was
+&mut self. In that case, the thing that matters is how much we change
+self.length by.
 
 Alice
