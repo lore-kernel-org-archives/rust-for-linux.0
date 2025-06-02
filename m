@@ -1,233 +1,177 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5454D22A7F1
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 14:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875224; cv=none; b=mi+Rv4a5BAezBuN1pllSh9zb0AWJEVF4610buz7U8NMnoxceg7W5w26IHLNTNu6SQDFLpZ3PPFiCxbzP9PHTiQEI3kNQrwqs124ZHYLbqGCP5hR8NdthGWzyvVN2gAHbNbEKuH0q3sHOJwe4lkLbHRlIzEWAZlgyTuHDL6AVU8o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875224; c=relaxed/simple;
-	bh=07XG5x+QAeJhTjZQ2/UKCylVkGAFsJMZTfx4cUJDjGk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P3IEqgyVFqT8lV+YmNlj9MeHcoPfCI2bTpmEIoKfjUckutXGsnOdJ6tMFpoo80ydQ58zdISQKYAzfLkF3J77x6JM8sYsxHGyFAh26/6mTUnvJ3HT/ajgZ3d6LTy/Afw7FBlC7ve7ZxqnYAh7voh3/kZM5aXUtyiJNIFPMcVMey8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LfiujJPO; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C439320E6E3;
+	Mon,  2 Jun 2025 14:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748875298; cv=pass; b=jI0yZ03b7d+sGlkH0/R/G28h6Mf6a6bl9oqxGJth9N6fOORPeSJIvs+9Zt8vNwqqNVB4n96qbdW4J6DaBnkcXFJttcqa0NL6xuZY8nn4Ng5P2o68lNusP83D1CcoX0rp4cs4AjGgW0RP11RVj0Cv49jhs3k+B0Nq00AecFuO5v8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748875298; c=relaxed/simple;
+	bh=5WVenTmoa5TTU/MD1JJjX5B70QxApWgt4Q80ak6CXgs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=WDXoXI4mI5J/eFjHwZtaL9g7EjVXdh3VPbfx0S20+gPW67iOwdVC5SU9b2Z7JBCx5aMzIDConQ6yM2ODJ8hxvgD4+t6jRCvS/J1kP2eLkbOh4C7wxGoaUJTCi/0ACrHJi5DtpVrvWq2ribFxnw9fGRzZ5cV1JA7G5/3RQy1H4ns=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=eieLBwZa; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LfiujJPO"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a4f78ebec8so1858762f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 07:40:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748875219; x=1749480019; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gzJqzJEUCc0XLsoz3b6HngePdRvcXa5BR8sAyxQH6Bw=;
-        b=LfiujJPOaxdy40m0ZkY9eOfZVM8zwMmXk8bzlitLBCux/uqErObyEHr+hMF79EeI4g
-         28xNK+QBOuFXJAAH6exY3+WUBoHyu6g0EQkz9etNOWu0r/3vmayuOMjLtZYQTRlVxf/W
-         ooJwOMIQ6q4wyjup32k7+dfE5if4S3dFwY4Eux8Tfo/okaSlaArv14pB6qfX2IDf1c55
-         gQnOF7sbfA5YtuMoZ7MJu9eY6ctVTxhdvmwND4CQy1U5NdWRrRC5Dio7Gt87+8Zuvic+
-         y/gz/nGZ+Hsb5pG/a7OTEyhdn7840RscuUCAR8py3Ed3LB3/Ple/IV8rOYEKnKMz/i4m
-         N6LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748875219; x=1749480019;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gzJqzJEUCc0XLsoz3b6HngePdRvcXa5BR8sAyxQH6Bw=;
-        b=CEruP9yJcMw4gBxPjixTHoZuqDGixFq5GKD2smYW+KdzL2yYC9kWmTm2uP8R/xGTHY
-         p+4IT/uYM1NT62Y3MWh2/WJZA1rrdw+KNhVi4Qw5ckF5fmqmOQGJoyHDLn2FdmTIRU/2
-         eF9PGsUSiGQjdd8EUN0lRYbL9N2Lr2rpIWXOIzNvfJdK/97vBPGAoXLGqiKs+lEXCc//
-         YFxs//z9RUxKtpR03Og7JGXLf4FOIy1caIY2r7dfoB3fnhod1yTpW10Fnqef1DxcDRHG
-         HsvFcE5FJpYv6lAtudDOGVhnDsywBqyf7Fn3vFERhqC0W0aQn1OJihT0XEILvOxMGmUU
-         A4QA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdMXxMBGHt7VlbfU5Jy3+oF4sUsHDjOzGuXG81f0nzahIomybmKh8I04FCBv8tAwVRcH8unYz0gL31fEtbig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSqJ0JpDKbFrDHzQxXl6tU238d1QbGbxaUOlyxK75T27MqdHtW
-	LPVzjXkUC+rwwl74G6LCHm4WhAMFqW2pzF51uJ6Wqaj9ntI8r6ueFhPHyH3Fjolb1Lj3zO6w1O+
-	psRfQpTfl8pwq7H7kuyR+VGBddgsGUTLNDmSOYvzg
-X-Gm-Gg: ASbGncvTG/aTXpTISUG/BNUP/1Jx+nn3A7sHsPBac66cFFjUPLjVi/qgTvzsYEYwOmG
-	tkXQLU0Iw5taumKQPeE7B0V01PfdLLeaamvf0FeXlKHYsAWKDP/IlPHvuB+/6wqXC4fa5DUq914
-	oMCgOyX+YsSpZHQiXJO77Bnbm//s3HaHXsT3JluywmErX9
-X-Google-Smtp-Source: AGHT+IFtXYNUotTHkadpuR3zhkQf1TtUFXklWZRqHyZgW9DzEoGcgbokF2oSS1iOj5zHldAAyXwronzMKN0qfxi3blQ=
-X-Received: by 2002:a05:6000:2303:b0:3a4:da87:3a73 with SMTP id
- ffacd0b85a97d-3a4f89dcc3amr8905954f8f.42.1748875219346; Mon, 02 Jun 2025
- 07:40:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="eieLBwZa"
+ARC-Seal: i=1; a=rsa-sha256; t=1748875262; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=IurCQZowWQ7DVk1aMDNPnhleQ1UnlpzoqmVWwf8tAg+uB+YlWupn9JlNkBlSbM8a1AURbgXewqYpYvdIflQzsI+kcbMCYUdp+fmeoC7OaT062MbzDOF0Pk3ADzmWh42wA29+Q5EjQKVSnbHmBLsKcH20ZatIAddBCDl3LJWgYtA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1748875262; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yAP4nEvzkvKipuKZ8I4LuAwMeif0jM6XM9ojDsGXtFI=; 
+	b=IVNaUHnZMj8Mwt4VQwtQzNHurkB1sgd1ZsPE2FIK2IYEPG6ZWoJXu70C7QnTc2tAecVeM3hOmc1hjO1nZdQWsxLYQnWKQi2m2jME8wM6nk31T7BqsFkrtLrCE7EwaRDH15gQHbnQmm6/D6mkQAyyn9zBz/+wJTsCFeMicU1PQd4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1748875262;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=yAP4nEvzkvKipuKZ8I4LuAwMeif0jM6XM9ojDsGXtFI=;
+	b=eieLBwZajIX02Bc3fZGX5e58OdEu9b9KW7QVC1Pg8DxoegVKYr/hMfj0eSWWak0T
+	N95LY60N8fxy3YCv2Tg5iYJE331lDstw+88vEhG9pzoJ8m6r92HZI+3nS6vP8gvEEr2
+	bgXq1u792FLzmUq5yrIxnuASB1Ixb+s0kl30D6X8=
+Received: by mx.zohomail.com with SMTPS id 1748875259269248.6443780135536;
+	Mon, 2 Jun 2025 07:40:59 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250602133653.1606388-1-bqe@google.com> <20250602133653.1606388-5-bqe@google.com>
- <aD2118mMOs8CZyGa@yury>
-In-Reply-To: <aD2118mMOs8CZyGa@yury>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 2 Jun 2025 16:40:04 +0200
-X-Gm-Features: AX0GCFsPsbx9hoHYGMRNqYNAZfer2osv1pLFziy8aDAkBITPNbhAdtkRbp8KGC0
-Message-ID: <CAH5fLghi4jgS+MuG48aLnYb6N6_FOeR0pLCjG3z5XdLve5tdhQ@mail.gmail.com>
-Subject: Re: [PATCH v10 4/5] rust: add find_bit_benchmark_rust module.
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
-	Carlos LLama <cmllamas@google.com>, Pekka Ristola <pekkarr@protonmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aCXxnUdO8--5y8Zo@pollux>
+Date: Mon, 2 Jun 2025 11:40:43 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <1FCFF2CD-9CF1-4716-AFDA-78A5AFAF113F@collabora.com>
+References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
+ <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
+ <aCUQ0VWgoxdmIUaS@pollux>
+ <A7E3A124-AF77-4A4A-B4E2-AE7DDB1CE007@collabora.com>
+ <aCXYaCGvO_tI1OOh@pollux>
+ <39C56E3E-07C6-44BB-B5F6-38090F037032@collabora.com>
+ <aCXh1g5FWNiz7exb@pollux>
+ <BEDD659F-B222-4150-9018-3B59126140E6@collabora.com>
+ <aCXv86nAARGgoqEq@pollux> <aCXxnUdO8--5y8Zo@pollux>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Mon, Jun 2, 2025 at 4:32=E2=80=AFPM Yury Norov <yury.norov@gmail.com> wr=
-ote:
->
-> On Mon, Jun 02, 2025 at 01:36:45PM +0000, Burak Emir wrote:
-> > Microbenchmark protected by a config FIND_BIT_BENCHMARK_RUST,
-> > following `find_bit_benchmark.c` but testing the Rust Bitmap API.
-> >
-> > We add a fill_random() method protected by the config in order to
-> > maintain the abstraction.
-> >
-> > The sample output from the benchmark, both C and Rust version:
-> >
-> > find_bit_benchmark.c output:
-> > ```
-> > Start testing find_bit() with random-filled bitmap
-> > [  438.101937] find_next_bit:                  860188 ns, 163419 iterat=
-ions
-> > [  438.109471] find_next_zero_bit:             912342 ns, 164262 iterat=
-ions
-> > [  438.116820] find_last_bit:                  726003 ns, 163419 iterat=
-ions
-> > [  438.130509] find_nth_bit:                  7056993 ns,  16269 iterat=
-ions
-> > [  438.139099] find_first_bit:                1963272 ns,  16270 iterat=
-ions
-> > [  438.173043] find_first_and_bit:           27314224 ns,  32654 iterat=
-ions
-> > [  438.180065] find_next_and_bit:              398752 ns,  73705 iterat=
-ions
-> > [  438.186689]
-> >                Start testing find_bit() with sparse bitmap
-> > [  438.193375] find_next_bit:                    9675 ns,    656 iterat=
-ions
-> > [  438.201765] find_next_zero_bit:            1766136 ns, 327025 iterat=
-ions
-> > [  438.208429] find_last_bit:                    9017 ns,    656 iterat=
-ions
-> > [  438.217816] find_nth_bit:                  2749742 ns,    655 iterat=
-ions
-> > [  438.225168] find_first_bit:                 721799 ns,    656 iterat=
-ions
-> > [  438.231797] find_first_and_bit:               2819 ns,      1 iterat=
-ions
-> > [  438.238441] find_next_and_bit:                3159 ns,      1 iterat=
-ions
-> > ```
-> >
-> > find_bit_benchmark_rust.rs output:
-> > ```
-> > [  451.182459] find_bit_benchmark_rust_module:
-> > [  451.186688] Start testing find_bit() Rust with random-filled bitmap
-> > [  451.194450] next_bit:                       777950 ns, 163644 iterat=
-ions
-> > [  451.201997] next_zero_bit:                  918889 ns, 164036 iterat=
-ions
-> > [  451.208642] Start testing find_bit() Rust with sparse bitmap
-> > [  451.214300] next_bit:                         9181 ns,    654 iterat=
-ions
-> > [  451.222806] next_zero_bit:                 1855504 ns, 327026 iterat=
-ions
-> > ```
-> >
-> > Here are the results from 32 samples, with 95% confidence interval.
-> > The microbenchmark was built with RUST_BITMAP_HARDENED=3Dn and run on a
-> > machine that did not execute other processes.
-> >
-> > Random-filled bitmap:
-> > +-----------+-------+-----------+--------------+-----------+-----------=
-+
-> > | Benchmark | Lang  | Mean (ms) | Std Dev (ms) | 95% CI Lo | 95% CI Hi =
-|
-> > +-----------+-------+-----------+--------------+-----------+-----------=
-+
-> > | find_bit/ | C     |    825.07 |        53.89 |    806.40 |    843.74 =
-|
-> > | next_bit  | Rust  |    870.91 |        46.29 |    854.88 |    886.95 =
-|
-> > +-----------+-------+-----------+--------------+-----------+-----------=
-+
-> > | find_zero/| C     |    933.56 |        56.34 |    914.04 |    953.08 =
-|
-> > | next_zero | Rust  |    945.85 |        60.44 |    924.91 |    966.79 =
-|
-> > +-----------+-------+-----------+--------------+-----------+-----------=
-+
-> >
-> > Rust appears 5.5% slower for next_bit, 1.3% slower for next_zero.
-> >
-> > Sparse bitmap:
-> > +-----------+-------+-----------+--------------+-----------+-----------=
-+
-> > | Benchmark | Lang  | Mean (ms) | Std Dev (ms) | 95% CI Lo | 95% CI Hi =
-|
-> > +-----------+-------+-----------+--------------+-----------+-----------=
-+
-> > | find_bit/ | C     |     13.17 |         6.21 |     11.01 |     15.32 =
-|
-> > | next_bit  | Rust  |     14.30 |         8.27 |     11.43 |     17.17 =
-|
-> > +-----------+-------+-----------+--------------+-----------+-----------=
-+
-> > | find_zero/| C     |   1859.31 |        82.30 |   1830.80 |   1887.83 =
-|
-> > | next_zero | Rust  |   1908.09 |       139.82 |   1859.65 |   1956.54 =
-|
-> > +-----------+-------+-----------+--------------+-----------+-----------=
-+
-> >
-> > Rust appears 8.5% slower for next_bit, 2.6% slower for next_zero.
-> >
-> > In summary, taking the arithmetic mean of all slow-downs, we can say
-> > the Rust API has a 4.5% slowdown.
-> >
-> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> > Suggested-by: Yury Norov <yury.norov@gmail.com>
-> > Signed-off-by: Burak Emir <bqe@google.com>
+Danilo,
 
-> > +const BITMAP_LEN: usize =3D 4096 * 8 * 10;
-> > +// Reciprocal of the fraction of bits that are set in sparse bitmap.
-> > +const SPARSENESS: usize =3D 500;
->
-> Is there any simple mechanism to keep C and rust sizes synced? (If no,
-> not a big deal to redefine them.)
+> On 15 May 2025, at 10:52, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Thu, May 15, 2025 at 03:45:28PM +0200, Danilo Krummrich wrote:
+>> On Thu, May 15, 2025 at 10:16:33AM -0300, Daniel Almeida wrote:
+>>>=20
+>>>>>=20
+>>>>> Well, not really, because this impl PinInit can be assigned to =
+something larger
+>>>>> that is already pinned, like drm::Device::Data for example, which =
+is (or was)
+>>>>> already behind an Arc, or any other private data in other =
+subsystems.
+>>>>>=20
+>>>>> IIUC what you proposed has yet another indirection. If we reuse =
+the example
+>>>>> from above, that would be an Arc for the drm Data, and another Arc =
+for the
+>>>>> handler itself?
+>>>>=20
+>>>> Can't you implement Handler for drm::Device::Data and e.g. make =
+Registration
+>>>> take an Arc<T: Handler>?
+>>>=20
+>>> No, because drivers may need more than one handler. Panthor needs 3, =
+for
+>>> example, for 3 different lines.
+>>>=20
+>>>>=20
+>>>> The irq::Registration itself doesn't need to be allocated =
+dynamically, so it'd
+>>>> still be a single allocation, no?
+>>>>=20
+>>>=20
+>>> Right, the registrations don't, but the handlers do.
+>>=20
+>> Why does the handler need to be allocated dynamically?
+>>=20
+>> What about something like the following?
+>>=20
+>> pub struct Registration<T, H: Handler<T>> { ... };
+>>=20
+>> pub trait Handler<T> {
+>>   fn handle_irq(&T) -> IrqReturn;
+>> }
+>>=20
+>> // Could be `drm::Device::Data`.
+>> struct MyData { ... };
+>>=20
+>> // Implements `Handler<MyData>`.
+>> struct IRQHandler1;
+>> struct IRQHandler2;
+>>=20
+>> // `data` is `Arc<MyData>`
+>> irq::Registration::<IRQHandler1>::new(data, ...);
+>> irq::Registration::<IRQHandler2>::new(data, ...);
+>>=20
+>> With that you can have as many IRQs as you want without any =
+additional
+>> allocation.
+>=20
+> Alternatively we could also do the following, which is probably =
+simpler.
+>=20
+> pub struct Registration<H: Handler> { ... };
+>=20
+> pub trait Handler {
+>   fn handle_irq(&self) -> IrqReturn;
+> }
+>=20
+> // Could be `drm::Device::Data`.
+> struct MyData { ... };
+>=20
+> // Implements `Handler`.
+> struct IRQHandler1(Arc<MyData>);
+> struct IRQHandler2(Arc<MyData>);
+>=20
+> // `data` is `Arc<MyData>`
+> let handler1 =3D IRQHandler1::new(data);
+> let handler2 =3D IRQHandler2::new(data);
+>=20
+> irq::Registration::new(handler1, ...);
+> irq::Registration::new(handler2, ...);
+>=20
 
-Rust can access constants from header files, so you can move it to a
-header file.
+I am trying to implement this, but isn't this what we have already?
 
-> > +module! {
-> > +    type: FindBitBenchmarkModule,
->
-> I think we agreed to have the type something less unique, like:
->
->         Benchmark.
->
-> > +    name: "find_bit_benchmark_rust_module",
->
-> What is the name policy for rust? Maybe a more human-readable name
-> would work better here?
+I guess the only difference would be removing the handler() accessor, as =
+the
+caller is now expected to figure this part out on his own, i.e.:
 
-I don't think there's any particular policy for Rust. Name modules in
-the same manner you would C modules.
+In your example (IIUC) that would mean accessing the Arc in IRQHandler1
+and IRQHandler2 through some other clone and from the actual T:Handler =
+in
+the callback.
 
-> All the above are nits. Please have my
->
-> Reviewed-by: Yury Norov [NVIDIA] <yury.norov@gmail.com>
->
-> Thanks,
-> Yury
-
-Alice
+=E2=80=94 Daniel=
