@@ -1,94 +1,167 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EDD6ADD;
-	Mon,  2 Jun 2025 17:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DED224245;
+	Mon,  2 Jun 2025 17:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748884300; cv=none; b=jGJA6a8HCt3kDMNDODDTB1VZ+Hz0Ua9BSI7eY5yrpIUAl0RPHPVQWOqnzeDzq/zYMu84gYyJNReqbtTuzNCKTJw7inOQmhhQI+qOdajN6VORBZlZhz3vJI4Jrp1DC4EVCs6NXXWPn9Tn/aF3jfSxovyf7wW1bmiVNGtUeIUP3ho=
+	t=1748885466; cv=none; b=UkZ1FW2xqzv/VihQh6M/FtpoQceGWRRypeHxRK6RkgvaA1qKdcHxSsOZRX+toTrX8SSqgwnntC4iEu6OmQZFuK25Pu+/UU3rTr6v0FYw4acsps/JMafuxDkML44JRMNWGkM0eEe+RKH4qTrz9C5cOOowsxq1cTLcCGdA3bm/KoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748884300; c=relaxed/simple;
-	bh=wqA3gAOIJ90h6rmokvpadlXr026asFXBgCdCuLK4RZc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HFGhH0OH2Yn+mzbBBx4HEiBx2F0tWbTb48BzEa/0zkYBwqjAoL4V5WfhxIHz0zjhNUpX/geVnmgtK5EL7Okg5NuawrI8JcpVffCv6BC4ijMdGYkGe896aqTEQ1zwFddh2jJpOivM1AsflKhxDXFLduN3+Cf/iOnOy/z8Z3ZCJBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eWEWms8Z; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748885466; c=relaxed/simple;
+	bh=A9MilKd7v8rxKZ+GFEjZyV9ZgWub5FkEKrTwUm7LxkE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NzcBmVAM2/NfhSd4aOmTM+3HpRTaONC7IGHQ1U3qhmPA1fHiGyi+14FiPg2ANyrJbeFUCbRJGvw6rRNYTYFuAjfiLgbZouTAmzqJ1Hypb9/xXK0qJBcfxZeskw75lCtp1mbORRKHjPSfvtEuTyIKZG2/5T4jRy6lKL0JOunR2v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qLIpf8R2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eWEWms8Z"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-312c8e85aa9so162378a91.1;
-        Mon, 02 Jun 2025 10:11:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748884299; x=1749489099; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wqA3gAOIJ90h6rmokvpadlXr026asFXBgCdCuLK4RZc=;
-        b=eWEWms8ZWWscHCoSvwNcsAnvCMtGWDHnQUGVPFHZjMQerVpk/0UqmIONXXcdtt4MWF
-         MMYwgDXHviJUC7b4uCgImTtnwUc2Tjdy00l7mWMNIcSYrdmms3WicAkowK/KHt+68jtx
-         Nkn7lMRwqPXwT+oP0HPGOuhNPe/RtY361HR0J4lqASP5GcTnezASvJK6RF7LEX/fMq76
-         3nH0j0kRryUkZF00LIrcV8Rsm242O9mUCi0vcNQbHKUSm8iOhI0WrTR1LNDY5CPDuBiC
-         fx0el9InIKUhmv+HlmxMn/Y/ilSwmeb9qQ14rSjsdKXMMjvId5iExGaYB/m4hjUTiWQT
-         7mmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748884299; x=1749489099;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wqA3gAOIJ90h6rmokvpadlXr026asFXBgCdCuLK4RZc=;
-        b=BNxhR0nW1TAKmvIv/iN+eHWa7lfnUsKkXtE/NQ2hzlW0MnWLyKDqiyluia+gnoYv4x
-         zsD905StQhEfBYl9dN7BeXgi6rTyTP+o9J1ugf3hL8cLGijtINqskLTogtcqr1Wu2frg
-         T2nspitMGIa/3HCayDlnFIeYvNyEZ3XkaaAixveicws5cfGlTjAh/M+2N10n0tS/jRLA
-         Bbdak/N92jdZMIiWqMYuaRa24V/H7wUJE0BC/kFCtJCjmkbB8JbBXPOl2A/RWcFbpvCv
-         CpJ2qhhjnizipWMzjz0FJPgR6zLbSrddyU7u+Dz4mzyzlG606hgQ/AWab+fn0e47V9QK
-         XuYw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZQmwSaf48ujC+9E2jm2nYQdkAf8PPA5GfsMptF5QiMDXASD/eMekanWaJPU6UpSzjEy/xSE+YT0GbRhk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgFGRWWUenw3DLE8IYP02gXeQnypEgDeinn0ZN4gQQZ4HvwvLI
-	sreQcxjtNIolwxVxbmVknV3cUpie/7+XlvqA30pDMWm6gexzK6gueJnC412iSjSegS7nDyWDJq8
-	1iOnu3J/kbuaRKeMkZKYO/oZu6MolapM=
-X-Gm-Gg: ASbGnctv85iaEMuTxWdG7zXpwsvKep3kuJgrx2VZUDs55pvxrXwwHibsLLKp466PaKS
-	XHUE7Cs0Jo3yVeSAOdjvWx0A3HR/BOvquQhgagaZaZZC3+U+GkxTKEJBfpivhVzqG8IUonU6EW3
-	IDRImczEuWkPJQq3jPeo1oW5QnIhfA+I1e
-X-Google-Smtp-Source: AGHT+IEfrSPsxf1XX3lHo0JjSM1GkHbWkjMed/BNHzjQq1AJqrR9ru0QrCwyFbkK3Pe4yAwGRoKab9CVSKbrOkD+mLE=
-X-Received: by 2002:a17:90b:1f81:b0:311:e8cc:4250 with SMTP id
- 98e67ed59e1d1-3124daf3e85mr7626902a91.3.1748884298579; Mon, 02 Jun 2025
- 10:11:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qLIpf8R2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48436C4CEEE;
+	Mon,  2 Jun 2025 17:31:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748885466;
+	bh=A9MilKd7v8rxKZ+GFEjZyV9ZgWub5FkEKrTwUm7LxkE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qLIpf8R2lyZSyIjUxLP00WMUHLGwAT9GGxXNTVsqahLWzrxlLkDhLbuMAmI/y2sh2
+	 IPDYn2bCJq68p3u2G3TdNETC3TzwGBZ7xDC3849wQ89INO5Rykp88+CYWVQnIpuKqZ
+	 VAkuthiNLBsnqC38VnnQMDfLOmldRND9fNn0nUXeDUiTk67omcwQP1o9xTQeIFZhWh
+	 AcaZDqRBhm2McNEIc14XwmWn0ryIUGxnTUEtDG4z7ctg+O/lg3a9NCyLTRYRr7H4Jo
+	 1HSKL0z6WfwnYDmrtoQ7/ETSl57bnAQrWGdSIgvG74xEtmLijnkqlzZ1gNnOA33Nn1
+	 EBLm6pI1Ifxnw==
+Date: Mon, 2 Jun 2025 19:31:00 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
+Message-ID: <aD3f1GSZJ6K-RP5r@pollux>
+References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
+ <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
+ <aCUQ0VWgoxdmIUaS@pollux>
+ <aD3PCc6QREqNgBYU@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602164923.48893-2-saivishnu725@gmail.com>
-In-Reply-To: <20250602164923.48893-2-saivishnu725@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 2 Jun 2025 19:11:25 +0200
-X-Gm-Features: AX0GCFvJ-nZPYNYx6wd1Q6mENot3z6AGWlF1PmGUXgDgZrwDbaVAs820xsVzAUc
-Message-ID: <CANiq72=scAG0bOJuj6VJ+cemtXMc0QKQZKfUoSg2rzwF94UVvw@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: doc: Clean up formatting in io.rs
-To: Sai Vishnu M <saivishnu725@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, gregkh@linuxfoundation.org, daniel.almeida@collabora.com, 
-	me@kloenk.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aD3PCc6QREqNgBYU@google.com>
 
-On Mon, Jun 2, 2025 at 6:51=E2=80=AFPM Sai Vishnu M <saivishnu725@gmail.com=
-> wrote:
->
-> From: Sai Vishnu M <saivishnu725@gmail.com>
+On Mon, Jun 02, 2025 at 04:19:21PM +0000, Alice Ryhl wrote:
+> On Wed, May 14, 2025 at 11:53:21PM +0200, Danilo Krummrich wrote:
+> > On Wed, May 14, 2025 at 04:20:51PM -0300, Daniel Almeida wrote:
+> > > +/// // This is running in process context.
+> > > +/// fn register_irq(irq: u32, handler: Handler) -> Result<Arc<Registration<Handler>>> {
+> > > +///     let registration = Registration::register(irq, flags::SHARED, c_str!("my-device"), handler);
+> > > +///
+> > > +///     // You can have as many references to the registration as you want, so
+> > > +///     // multiple parts of the driver can access it.
+> > > +///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
+> > 
+> > This makes it possible to arbitrarily extend the lifetime of an IRQ
+> > registration. However, we must guarantee that the IRQ is unregistered when the
+> > corresponding device is unbound. We can't allow drivers to hold on to device
+> > resources after the corresponding device has been unbound.
+> > 
+> > Why does the data need to be part of the IRQ registration itself? Why can't we
+> > pass in an Arc<T> instance already when we register the IRQ?
+> > 
+> > This way we'd never have a reason to ever access the Registration instance
+> > itself ever again and we can easily wrap it as Devres<irq::Registration> -
+> > analogously to devm_request_irq() on the C side - without any penalties.
+> 
+> If we step away from the various Rust abstractions for a moment, then it
+> sounds like the request_irq API must follow these rules:
+> 
+> 1. Ensure that free_irq is called before the device is unbound.
+> 2. Ensure that associated data remains valid until after free_irq is
+>    called.
+> 
+> We don't necessarily need to ensure that the Registration object itself
+> is dropped before the device is unbound - as long as free_irq is called
+> in time, it's okay.
+> 
+> Now, if we use Devres, the way this is enforced is that during cleanup
+> of a device, we call free_irq *and* we destroy the associated data right
+> afterwards. By also destroying the associated data at that moment, it
+> becomes necessary to use rcu_read_lock() to access the associated data.
+> But if we just don't destroy the associated data during device cleanup,
+> then that requirement goes away.
+> 
+> Based on this, we could imagine something along these lines:
+> 
+>     struct RegistrationInner(i32);
+>     impl Drop for RegistrationInner {
+>         fn drop(&mut self) {
+>             free_irq(...);
+>         }
+>     }
+>     
+>     struct Registration<T> {
+>         reg: Devres<RegistrationInner>,
+>         data: T,
+>     }
+> 
+> Here you can access the `data` on the registration at any time without
+> synchronization.
 
-I think this line should not have been generated by Git, but it should not =
-hurt.
+I was just about to reply to Daniel proposing exactly this alternative, it's
+equivalent with what I went with in the MiscDeviceRegistration patches for
+supporting the device driver use-case [1].
 
-Apart from that, looks good, thanks!
+So, I'm perfectly fine with this approach.
 
-I can pick it up, but if someone else does:
+[1] https://lore.kernel.org/lkml/20250530142447.166524-6-dakr@kernel.org/
 
-Acked-by: Miguel Ojeda <ojeda@kerrnel.org>
+> 
+> Note that with this, I don't think the rcu-based devres is really the
+> right choice. It would make more sense to have a mutex along these
+> lines:
+> 
+>     // drop Registration
+>     if devm_remove_callback() {
+>         free_irq();
+>     } else {
+>         mutex_lock();
+>         free_irq();
+>         mutex_unlock();
+>     }
+>     
+>     // devm callback
+>     mutex_lock();
+>     free_irq();
+>     mutex_unlock();
+> 
+> This avoids that really expensive call to synchronize_rcu() in the devm
+> callback.
 
-Cheers,
-Miguel
+This would indeed be an optimization for the special case that we never care
+about actually accessing the Revocable, i.e. where we have no need to make the
+"read" have minimal overhead.
+
+However, I think we can do even better and, at the same time, avoid this special
+case optimization and have everything be the common case with what I already
+plan on implementing:
+
+I want that regardless of how many devres callbacks a driver registers by having
+Devres wrapped objects around, there's only a *single* synchronize_rcu() call for
+all of them.
+
+We can achieve this by having the devres callbacks on driver unbind in two
+stages, the first callback flips the Revocable's atomic for for all Devres
+objects, then there is a single synchronize_rcu() and then we drop_in_place()
+all the Revocable's data for all Devres objects.
+
+As mentioned above I plan on implementing this, but given that it's "just" a
+performance optimization for the driver unbind path and given that we're not
+very close to a production driver upstream, it haven't had the highest priority
+for me to implement so far.
