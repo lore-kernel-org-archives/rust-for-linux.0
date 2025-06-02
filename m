@@ -1,119 +1,312 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BEE523A;
-	Mon,  2 Jun 2025 17:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D43C33F7;
+	Mon,  2 Jun 2025 18:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748886347; cv=none; b=YgPB191qEK+d+sq+JeZ1bStCng0MbgfTQDBc82WIHu1B8HTooY8Kho/OLHl0VBLL+cGGr+e5/zTOI4HUkWEjCDwovPakayHt1us5DjCYrMD8/kXxIo86vwdkX/gygJUHFkQHVEwkBobgIWvgwOmUetj+Occ29uR6uQwYaSCBIeE=
+	t=1748888195; cv=none; b=aqpKGlpRTxQaeTRen/x8l5NyZuU6QTFP5ksPs0VRDxY9mmORUqKdcQ5QINehdyf72Zd6CYqVwPf6SVjviU4N7Kn1kSk6lo6erJQidrnx7UrIml+7farJEBUhcwDiSBNi8FKTYh+twWTUNJ041ysOJYzrLM1TG9FfVrpzoH7VkII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748886347; c=relaxed/simple;
-	bh=cmbRGzAjJbcU9RL43GysVar9nkxMGOGwNZHu/XCzKYY=;
+	s=arc-20240116; t=1748888195; c=relaxed/simple;
+	bh=zNWAUbcKyJBk0kKrgV3xuUBKPT3li2490MVoXiEBg8w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B1a6x8suOIevfgQyU+ZWXAdUk1CJNY2sw7Cr0hMiDVblEJJ0KykFrI+AqhJjKm/x864peyuwZjJedNbmB010Ts4o2TgNfFlHXuqx0jnOYMRCSsMZFiEWDyR5CNX/qOJo6BrKPIE/c0CcHusb8dSnhn1YsDovPsQ2q7jESf/QeMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FrXTRgOp; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=P1EbFW0EXYQuPFXG0NIhCAZR7CpIgkzeBXL9oNF/2ZqnQm+QcdqPwlSuyqZjcbR/v5wwUrpDsJaGCRE0EtlVXAEuHky1MpbJ+CIVM4qd2RN0Ki4W3/CxXi9O6ofZ+GbgTnxhI/61GSLlP1KUb5hVsO5rWsIiYsEn2ag7N89fduc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JoqyfRwO; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FrXTRgOp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2094C4CEEB;
-	Mon,  2 Jun 2025 17:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748886346;
-	bh=cmbRGzAjJbcU9RL43GysVar9nkxMGOGwNZHu/XCzKYY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FrXTRgOp9pyO95akq2p0KZh/+Mt4AwNc55moU5tw7Ofn7Au8gEqipKsgMEjbDzCy3
-	 CyHNnXquTsnSnIjTcyNcUw73GQI94iYoURbDO2tf67x91uUwTeLVhxANp/gi43B/Q8
-	 7ymigCbERhnU0PRurvctPGbUaj4gY4P01FHU+Ys+NId210fl+xvtALBfFcZBeSWAQg
-	 +eJVG4R5cL0zzNQ3Gt8sxcpSBJ4aZV77OPeij421CWb3U3n8iVu5TuaXq8/7mvnMLp
-	 4SWiAMn8s72Lw7+hihzfMBAhmLSsRirTiXUEMYhxtKZ+ta36Z/RD7OkmgMgXwgW8FA
-	 c53VMNBscIGGQ==
-Date: Mon, 2 Jun 2025 19:45:41 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JoqyfRwO"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6fac7b6fd32so24579616d6.3;
+        Mon, 02 Jun 2025 11:16:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748888192; x=1749492992; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SRlNBEAau2uoDFvTup1FiFXZP9+zaPSqdDKtHcYY0H8=;
+        b=JoqyfRwOorl/JLuNF8fZyBqKdEBPYQ3ZA+tpRy7JtCrdaIXTTOT/Lxd2uw+aabuOwA
+         +DJYXAMzuDsF0t3+VGyAuNyx5hRIfonal9xIfztWSQnDapVrorkeSgl9Ci9myhJaOp1Y
+         2hFH1ix4R+XO7lpwQlk8y618cU9sqGfWkGroMAcanMyHdDFPfnY0uF8PFDmWQ2/23qHq
+         qMx9iIN/4xFqbeUrjHWMA6sjuouri85W5z0O1lQKvFgv64mufdxsWx0CzLvrXZyWJH3s
+         sxRzMBDWlsyupzcbZizLkcbNNPIPe1XjDjGsdS5zur9dCniUZ5fuuzFK374P+V+YcPy2
+         Q/Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748888192; x=1749492992;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SRlNBEAau2uoDFvTup1FiFXZP9+zaPSqdDKtHcYY0H8=;
+        b=NwB7ZtyhdIQAjD2etWLmtOPG1wgvf/KLZT3C3Khh22pZ+cxNhn4f0pwHuR5gdDlFDw
+         kvxKmcKJP0CqicwXYObe2I2aJtWRBZFLnEcjNEuFxyOZ0M7AZExRM2M4engOrGNk0WB7
+         Mr6jw8dOInpNFUfueXvWPZwJ8PVYfDAzieqvJsHvOe2cKbDGD5lnL02qa7VmgMG/z3wN
+         /cVdZF2ur38V/RfJVMMucZbqL3ciJ4mLxtF2ik0KQfpxo/FzqvJMXaIpF2KCij4S6x0R
+         UC88N5eIgUJocWxVBkjCoDRWKBwqFBfbsPiGItQHPagAZ1aJ+YNvWq4G/VMeu0ZtM0z4
+         FzDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvvSKbLyWyXfGv/Bw0nkXKM6xmhPu65Cd1/BRV78biWiv1VfD7n3s1N0G/utlPphhPcr5hWh/LKQ7l1kQ=@vger.kernel.org, AJvYcCXO7Jntr+O56Onh+s5KFhF+jd74uVV5eYpFQxX32ESTzLWZXqDmEEG1WLI70V9vIKD+9jC0ePFPjeMs1eCk1/c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwanrfBZgMS1onDvk3tcwrTW3K0QvM4Uq5n49i5bW/DfMMCJOzA
+	VJ14h61AFsBAk3LXvSbUfeHtUZhW54Y9lEJBiYDnYf2PevGYJKHWzh8A
+X-Gm-Gg: ASbGncstxeJbb9QmPO3jkASZtY8aqBXy75puAWhyx/I4ExQhrZnO3NZHgtBBaWMubUA
+	mS+63fMCMbzJdOJ0yyeTmgTfXRLHoY0leTuYHZH1+MdXSKePgKRbGZ/xDp/V/kdcQYBoWvUEgrw
+	WyOxc3bjEcIn1TMSVi+brSgellzduUoc01EQIzi+fiiQ6b1Lfz+lji+iFvfnielHoMwVv8SGTKr
+	uuZKHWntJ6Aeb5KfUkk5OdWsAntg+fc9v0O8DCC5++1CUCOJWcSTN371Ft5d9ju4up4QI+dcGNc
+	WA291VJI2zzp7jMq9hNp8E7BGxuVWKAHtT7cgOb+dOMbvx7rU+BUerfuFkKFMfbbovJu2uc29Y4
+	jY5k1Mf6zlkRKDR26fz3TWoDwzMYE/z58xPq+H9z2ZQ==
+X-Google-Smtp-Source: AGHT+IEe02Ts6fudZZKvuJiiRdgTKQlb3ymVTT1vDrGxfsPYiVCd7y9hm/fVo+gse/NjhWsOcOZLXw==
+X-Received: by 2002:a05:6214:5096:b0:6ed:1651:e8c1 with SMTP id 6a1803df08f44-6fad90aa622mr139829746d6.13.1748888191615;
+        Mon, 02 Jun 2025 11:16:31 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fac6d33901sm64619586d6.18.2025.06.02.11.16.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Jun 2025 11:16:31 -0700 (PDT)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3E2781200043;
+	Mon,  2 Jun 2025 14:16:30 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 02 Jun 2025 14:16:30 -0400
+X-ME-Sender: <xms:fuo9aA4iLPqlA3x25neXOeb1An4hS53uemKAwp3t-ARz3QpFxqrHlg>
+    <xme:fuo9aB4wQfyYHBUffYs1SQPEg1fS9jpydKhLR57DHYMSwcfrWkyq_ukkIxcAF2JW-
+    tnVnSggQd3cfnTjdg>
+X-ME-Received: <xmr:fuo9aPfIBFD18APSNYv9ewZwhxJJCbiRP28qgl9q4YDNfu27SbwuTQsGfw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdefkeefieculddtuddrgeefvddrtd
+    dtmdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggft
+    fghnshhusghstghrihgsvgdpuffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftd
+    dtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhf
+    gggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquh
+    hnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhepjeevtdehjeeu
+    ffehveegiedtheduvefggfegvdeiteevteffffdtgfeikeelvdfgnecuffhomhgrihhnpe
+    hgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgpdhruhhsthdqlhgrnhhgrdhorhhg
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopeefjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhiise
+    hinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgt
+    ohhmpdhrtghpthhtohepjhhurhhirdhlvghllhhisehrvgguhhgrthdrtghomhdprhgtph
+    htthhopehvihhntggvnhhtrdhguhhithhtohhtsehlihhnrghrohdrohhrghdprhgtphht
+    thhopeguihgvthhmrghrrdgvghhgvghmrghnnhesrghrmhdrtghomhdprhgtphhtthhope
+    hrohhsthgvughtsehgohhoughmihhsrdhorhhgpdhrtghpthhtohepsghsvghgrghllhes
+    ghhoohhglhgvrdgtohhmpdhrtghpthhtohepmhhgohhrmhgrnhesshhushgvrdguvg
+X-ME-Proxy: <xmx:fuo9aFLnLhnBaZrtQ1HUKA72O4g8ugPwjxYxkcTs1UkKR-LNdeRrJg>
+    <xmx:fuo9aELup3TotpZtfZQsWTPWOkfh0h9kFTwgckNa7zToJZjPq07umw>
+    <xmx:fuo9aGxaTu1BrxOiSAHAB1hAYAEHxEgpJL-mxqxJC3_OQzyLVkccuQ>
+    <xmx:fuo9aIIZx-VGPzfR4rjsxqcmcYt1R0eGHpp6kzPNZb8Pkma55DHcaw>
+    <xmx:fuo9aDZ1Of_87oijWBAVQj3R2pvxg7hud4gkBiPIpN2PiWyv3Bjn48Hx>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Jun 2025 14:16:29 -0400 (EDT)
+Date: Mon, 2 Jun 2025 11:16:28 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] rust: platform: add irq accessors
-Message-ID: <aD3jRbuxc0NQt6MC@pollux>
-References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
- <20250514-topics-tyr-request_irq-v3-2-d6fcc2591a88@collabora.com>
- <aCsK7s0qepzIiA-l@pollux>
- <CA34AB78-D9DC-433A-B6DF-663849A07370@collabora.com>
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,	Justin Stitt <justinstitt@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Tamir Duberstein <tamird@gmail.com>,	Kunwu Chan <kunwu.chan@hotmail.com>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Borys Tyran <borys.tyran@protonmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Panagiotis Foliadis <pfoliadis@posteo.net>,	linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,	llvm@lists.linux.dev,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 4/5] sched/core: Add __might_sleep_precision()
+Message-ID: <aD3l70xwuAVd3Zpz@tardis.local>
+References: <20250506045843.51258-1-boqun.feng@gmail.com>
+ <20250506045843.51258-5-boqun.feng@gmail.com>
+ <aB2aAEELa3253nBh@gmail.com>
+ <aB2sZ60WI5thp6ve@Mac.home>
+ <aCsm0x_mSUgAayvU@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA34AB78-D9DC-433A-B6DF-663849A07370@collabora.com>
+In-Reply-To: <aCsm0x_mSUgAayvU@Mac.home>
 
-On Mon, Jun 02, 2025 at 11:56:28AM -0300, Daniel Almeida wrote:
-> Hi Danilo,
+On Mon, May 19, 2025 at 05:40:51AM -0700, Boqun Feng wrote:
+> On Fri, May 09, 2025 at 12:19:03AM -0700, Boqun Feng wrote:
+> > On Fri, May 09, 2025 at 08:00:32AM +0200, Ingo Molnar wrote:
+> > > 
+> > > * Boqun Feng <boqun.feng@gmail.com> wrote:
+> > > 
+> > > > From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > > > 
+> > > > Add __might_sleep_precision(), Rust friendly version of
+> > > > __might_sleep(), which takes a pointer to a string with the length
+> > > > instead of a null-terminated string.
+> > > > 
+> > > > Rust's core::panic::Location::file(), which gives the file name of a
+> > > > caller, doesn't provide a null-terminated
+> > > > string. __might_sleep_precision() uses a precision specifier in the
+> > > > printk format, which specifies the length of a string; a string
+> > > > doesn't need to be a null-terminated.
+> > > > 
+> > > > Modify __might_sleep() to call __might_sleep_precision() but the
+> > > > impact should be negligible. When printing the error (sleeping
+> > > > function called from invalid context), the precision string format is
+> > > > used instead of the simple string format; the precision specifies the
+> > > > the maximum length of the displayed string.
+> > > > 
+> > > > Note that Location::file() providing a null-terminated string for
+> > > > better C interoperability is under discussion [1].
+> > > > 
+> > > > [1]: https://github.com/rust-lang/libs-team/issues/466
+> > > > 
+> > > > Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > > > Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
+> > > > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > > > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > > > Link: https://lore.kernel.org/r/20250410225623.152616-2-fujita.tomonori@gmail.com
+> > > > ---
+> > > >  include/linux/kernel.h |  2 ++
+> > > >  kernel/sched/core.c    | 62 ++++++++++++++++++++++++++++--------------
+> > > >  2 files changed, 43 insertions(+), 21 deletions(-)
+> > > > 
+> > > > diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+> > > > index be2e8c0a187e..086ee1dc447e 100644
+> > > > --- a/include/linux/kernel.h
+> > > > +++ b/include/linux/kernel.h
+> > > > @@ -87,6 +87,7 @@ extern int dynamic_might_resched(void);
+> > > >  #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+> > > >  extern void __might_resched(const char *file, int line, unsigned int offsets);
+> > > >  extern void __might_sleep(const char *file, int line);
+> > > > +extern void __might_sleep_precision(const char *file, int len, int line);
+> > > 
+> > > Ugh.
+> > > 
+> > > Firstly, '_precision' is really ambiguous in this context and suggests 
+> > > 'precise sleep' or something like that, which this is not about at all. 
+> > > So the naming here is all sorts of bad already.
+> > > 
+> > 
+> > I accept this is not a good naming.
+> > 
+> > > But more importantly, this is really a Rust problem. Does Rust really 
+> > > have no NUL-terminated strings? It should hide them in shame and 
+> > 
+> > You can create NUL-terminated strings in Rust of course, but in this
+> > case, because we want to use the "#[trace_caller]" attribute [1], which
+> > allows might_sleep() in Rust to be defined as a function, and can use
+> > Location::caller() to get the caller file and line number information,
+> > and `Location` type yet doesn't return a Nul-terminated string literal,
+> > so we have to work this around.
+> > 
+> > > construct proper, robust strings, instead of spreading this disease to 
+> > > the rest of the kernel, IMHO ...
+> > > 
+> > > Rust is supposed to be about increased security, right? How does extra, 
+> > > nonsensical complexity for simple concepts such as strings achieve 
+> > > that? If the Rust runtime wants to hook into debug facilities of the 
+> > > Linux kernel then I have bad news: almost all strings used by kernel 
+> > > debugging facilities are NUL-terminated.
+> > 
+> > This is more of a special case because `Location` is used (i.e. file
+> > name is the string literal). For things like user-defined string, we use
+> > the macro c_str!(), which generates NUL-terminated strings. For example,
+> > lockdep class names.
+> > 
+> > > 
+> > > So I really don't like this patch. Is there no other way to do this?
+> > > 
+> > 
 > 
-> […]
+> Trying to see if we can make some forward-progress on this one,
+> considering:
 > 
-> >> +
-> >> +    /// Same as [`Self::irq_by_name`] but does not print an error message if an IRQ
-> >> +    /// cannot be obtained.
-> >> +    pub fn optional_irq_by_name(&self, name: &CStr) -> Result<u32> {
-> >> +        // SAFETY: `self.as_raw` returns a valid pointer to a `struct platform_device`.
-> >> +        let res = unsafe {
-> >> +            bindings::platform_get_irq_byname_optional(self.as_raw(), name.as_char_ptr())
-> >> +        };
-> >> +
-> >> +        if res < 0 {
-> >> +            return Err(Error::from_errno(res));
-> >> +        }
-> >> +
-> >> +        Ok(res as u32)
-> >> +    }
-> > 
-> > I don't like the indirection of claiming a u32 representing the IRQ number from
-> > a bus device and stuffing it into an irq::Registration.
-> > 
-> > It would be better we we'd make it impossible (or at least harder) for a driver
-> > to pass the wrong number to irq::Registration.
-> > 
-> > I see two options:
-> > 
-> >  1) Make the platform::Device accessors themselves return an
-> >     irq::Registration.
-> > 
-> >  2) Make the platform::Device accessors return some kind of transparent cookie,
-> >     that drivers can't create themselves that can be fed into the
-> >     irq::Registration.
-> > 
-> > My preference would be 1) if there's no major ergonomic issue with that.
+> 1. #[track_caller] is really a desired feature to be used for Rust's
+>    might_sleep(), Alice's reply [3] also explains a bit more on the
+>    "why" part.
 > 
-> Isn’t 1 way more cluttered?
+> 2. To achieve #1, we will need to handle the file name returned by
+>    Rust's `Location` struct, especially Location::file() will return a
+>    string literal without a tailing NUL.
+> 
+> 3. Other than the current approach proposed by this patch, if the
+>    existing might_sleep() functionality does not couple (task) state
+>    inquiries with debug printing, we can maybe avoid printing the
+>    non-NUL-terminated string in C's __might_sleep*() function by
+>    printing Location::file() in Rust code:
+> 
+>     #[track_caller]
+>     fn might_sleep() {
+>         let loc = Location::caller();
+> 
+> 	if (__might_sleep_is_violated()) {
+> 	    pr_err!("BUG: sleeping function called from invalid context at {loc}\n");
+> 	    
+> 	    ...
+> 	}
+>     }
+> 
+>     but this essentially would add more changes into C code compared to
+>     the current patch.
+> 
+> 4. This is only a special case where we need the "debug information"
+>    provided by Rust, so this won't happen a lot; and printing a
+>    non-NUL-terminated string is already supported by printk already, so
+>    we reuse what kernel already has here.
+> 
+> Given the above, I think the current patch is the best solution.
+> 
 
-I don't think so, your irq::Registration::register() function needs a reference
-to the registering device anyways.
+Ingo,
 
-And given that, now that I think about it, it even has to be this way.
+Alice made some progress on providing the NUL-terminated string for `Location`
+[4] [5], which means in the future, we can avoid the __might_sleep_precision()
+workaround here, and yet remain the benefit of `#[track_caller]` (Thanks
+Alice!). This also means we'd better keep the workaround right now, because that
+keeps the same interface if we have NUL-terminated string from
+`Location::file()`. And we can revert this workaround easily when the feature is
+available in Rust. So I think we should take this.
 
-Otherwise, I could provide irq::Registration::register() an IRQ number that does
-not belong to the bus device that is passed into irq::Registration::register().
+Moving forwards, let me know if you need me to resend the pull request (there
+are also a very trivial improvements in it as well), and I could rename
+__might_sleep_precision() to something else (like __might_sleep_nonnulfilename()
+or anything) in the resend. Thoughts?
 
-So, irq::Registration::register() even needs to be unsafe, with the safety
-requirement that the IRQ number must belong to the corresponding device and
-should be wrapped by bus device abstractions providing the safe driver API.
+[4]: https://github.com/rust-lang/libs-team/issues/466#issuecomment-2914476468
+[5]: https://github.com/rust-lang/rust/issues/141727
 
-> That's because the accessors would have to forward all of the arguments (i.e.:
-> currently 4) to register().
+Regards,
+Boqun
 
-It's only the additional arguments below, which you can also wrap in an
-irq::Args structure to keep things cleaner. :)
-
-+        flags: Flags,
-+        name: &'static CStr,
-+        handler: T,
+> [3]: https://lore.kernel.org/lkml/aB3I62o8hWSULGBm@google.com/
+> 
+> Regards,
+> Boqun
+> 
+> > There's a `c_str` [2] macro which could generates a NUL-terminated
+> > string, but using that will requires might_sleep() defined as a macro as
+> > well. Given that might_sleep() is the user interface that most users
+> > will use, and how it handles string literal for file names is an
+> > implementation detail, so I figured it's better we resolve in the
+> > current way.
+> > 
+> > [1]: https://rustc-dev-guide.rust-lang.org/backend/implicit-caller-location.html
+> > [2]: https://rust.docs.kernel.org/kernel/macro.c_str.html
+> > 
+> > Regards,
+> > Boqun
+> > 
+> > > Thanks,
+> > > 
+> > > 	Ingo
