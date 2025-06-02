@@ -1,100 +1,42 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0B820F063
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 11:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394EE20FAA8;
+	Mon,  2 Jun 2025 11:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748864462; cv=none; b=u4/uhxFtYNbC4PJkVRjjKuGEqVU2veTJFiupKBlXlmgiqiPrLiqrwMW8//Pa6mmhhq6I2XKgjYWyUvRhaezto8evy9WPLctoImyx4sOdqFQhEvmi9i5VeoxIf18rqEdznbe1oBb+oDUBjbFeCKaLRr8IRBjKn5WkYJ18QNZYugU=
+	t=1748865561; cv=none; b=t4SJ7FfThkMSzDj2Bny37L1n5fm+pECpfaXS8gfG5CLde33kFsI4Iay/M34jxAQwlaCDRZXafll7N3ogQSc5WtYm0z4Hysb7HJb9Y4Qx6K4fZ74vXRovggPdgE2MzyX2FOJfzIM7NZ3UFHZvSiVW+2jjUWY92duPzWyRF9qnJoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748864462; c=relaxed/simple;
-	bh=U8K0uf4aWhhzfObYJoePKwQHyJj41+wsc7eB/15CdT4=;
+	s=arc-20240116; t=1748865561; c=relaxed/simple;
+	bh=v4VP9unh12AL136UdUGxszRm8EB2W+tnWbUHeEwMpKs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RHeMnnaiYaoD0azu9hCARe+M+IqSaBJK5zH1MlLNgBSO0vnOQh13NoHZFFqKz/FYIdpfJc74jo2w2iHhhOKK5xASJn6qdbnVa8OaCT5NbZX6na5NvP1NseqZ3adkiA00dOqsPouS4r7kSOa/2kXOAWhPM9mqZeNn761r1FwQU8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=W8l422xP; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=H2pKhJUyYL6+AuclKFrGolOPTwI2tKOvJIoJ5UCwG2uPMx7BNGih2aEpIdIcO+dpam/iyTvjSQqE8W002gjx+vglAzjwcYIiYWzY3i3VQD1M0Wb3p0wt+gPhTI+Y4wQopSqJ+rQbK4iokZldddIl9JDBUAc3/7Kf0Dh+tI2L3IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0yTtOvn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="W8l422xP"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7382a999970so925627a34.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 04:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1748864459; x=1749469259; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U8K0uf4aWhhzfObYJoePKwQHyJj41+wsc7eB/15CdT4=;
-        b=W8l422xPONQtWanqExljoiqYDcuuSKIujEdkeeOJis4HmKcTVzt0fdqvaUjHPxPzb6
-         ovVADiWgVpkVr0xIGKWqCQvRYeHvUSka4R3UPQybh+jRwnxypLu940mxHbePZtpGxOIh
-         Ae4O1VpiNigjaMxdAGh538eEwXsLCXgKrnU8TIUbXoO7x9rEJEV9APRXhEINitUpJhsB
-         NpqIJoyVYvGEOxmK3JnoGNLOLnF32TAIY7r2+SrN2doAh5rbcIZ0uXyRszMSR905A3kc
-         SgTxN/BmXz9KWkAZlUWWCO+hXyppdX8GgjHRDrgZhrCDgG5uNjBJIKYXPLcaG7Xfx5Qd
-         CEHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748864459; x=1749469259;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U8K0uf4aWhhzfObYJoePKwQHyJj41+wsc7eB/15CdT4=;
-        b=rP8fZRml3wMGC+46weMy7qQvIwaLRMOK9Gbru083W/BWYkb86z3HXnjv4pudy+BrUd
-         gqGne1mI9+2cUDElET5WkTRS58s5zddRclNY7CfaiucXmykWAM1XxPCSOl8SHYi8/KY9
-         6Gr8Mi/qpTfgX+G68vFVaS03Jc+3KgqaxCwT3AQ+NGyEfyS12G3UvYBlXf4PxuSMncZO
-         6Sd545CDufI37pr9PuT+YrV55FOF2IF17TMNgxM2rNWg2aUpz2WyYU7KFm4azvlxZzON
-         J18SaHNuT9UEhvKWzyCqGFdVaFD8zRynImN80aXQwwJc4dlMsSC61Qdvm4k6ihLUZ9TA
-         Eegw==
-X-Forwarded-Encrypted: i=1; AJvYcCUPB0qAmIW8bR3jXHk1ydBEt/a7QpJDlY5GC4BBzM93UyIdsC79Hn2P6Wi3xGWEqqE1ONN+J79s81+YOTOEEw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHo+DztGwAGdzvhJ+w1n9o8Hnvhj3gMAxnzeFvjceSBGgy1i23
-	mjFAVBjE9nd23nHkZG161Kwd7Dd/xWOLx2x8SVIhRvdvADLi55dFs4zSnk8Fp+FKE1UsdLTQQpw
-	sODDx
-X-Gm-Gg: ASbGncsmyPw+OZTNYf3OAg8lPmNebVB2H01vayTnUbS0ZKtpkrzwuSuumUzuPbQHC0F
-	1AoFDHZfkJfjD11/ivqJNfWHSSywRPihyelQjzn8YlUBtaTHb8wbqmEgtIlv1agNTnYK/zAtA9H
-	JMv0MDiVCV/LfZ5jJjm8qSLo7RRisK+FtuPqH5uEXRaohisw7zPcUzWzPGyM49wnagTuWutdshj
-	3qcxPXDDD12BdO4nhJnUpPVAXKO4jBTRlHZQbJrsWyqEZcBYHKon/lN3HaLZ7lCOBrUGCQ5VIRD
-	M7Cjqi+y/KA4rlROBegvd7NNt006S65UN1+VK4N7SwZHyWPL2bGs22/dc2RmXNMkUlbXXGA8adE
-	DmtyoquBW01xulGy7UjX2J3fjrCI=
-X-Google-Smtp-Source: AGHT+IGfF18ffm8VzY6ByMTGaYLJNsId5S1P2oW9/h5gR4uH/hdOQWknfp/QYUyMCIClWhNY/nUI7w==
-X-Received: by 2002:a05:6214:248d:b0:6e8:f166:b19c with SMTP id 6a1803df08f44-6faced23964mr189368276d6.41.1748864448996;
-        Mon, 02 Jun 2025 04:40:48 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fac6d4d498sm60065976d6.27.2025.06.02.04.40.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Jun 2025 04:40:47 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1uM3X5-00000001XQw-1BjZ;
-	Mon, 02 Jun 2025 08:40:47 -0300
-Date: Mon, 2 Jun 2025 08:40:47 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, dakr@kernel.org,
-	lyude@redhat.com, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	Petr Tesarik <petr@tesarici.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH 1/2] rust: add initial scatterlist bindings
-Message-ID: <20250602114047.GA298147@ziepe.ca>
-References: <20250528221525.1705117-1-abdiel.janulgue@gmail.com>
- <20250528221525.1705117-2-abdiel.janulgue@gmail.com>
- <20250529004550.GB192517@ziepe.ca>
- <DA9JTYA0EQU8.26M0ZX80FOBWY@nvidia.com>
- <20250530141419.GA292183@ziepe.ca>
- <DA9KQF9CY77R.77PBMU8Y1FPY@nvidia.com>
- <20250530145026.GB293473@ziepe.ca>
- <DAAD0NZOCHS5.9FTVJIOI12QI@nvidia.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0yTtOvn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3054EC4CEEB;
+	Mon,  2 Jun 2025 11:59:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1748865560;
+	bh=v4VP9unh12AL136UdUGxszRm8EB2W+tnWbUHeEwMpKs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m0yTtOvnx+eMOPqsN2iw5RBQBIHdSS4WCQQOBN5WJIG24H0DAnC6Y3XiAXKqqkRy+
+	 Hkj1arRfFgEzGPb0vgD/5vAZi41qMPpXkRrgtqiuJWHt4za6iY5TBKtNpB1p2OM47y
+	 V+J2qS3pA9W4oHJ2lCSfQyx2igzrh+9OrGhazVlc=
+Date: Mon, 2 Jun 2025 13:59:17 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Sai Vishnu <saivishnu725@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	Benno Lossin <lossin@kernel.org>, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+	daniel.almeida@collabora.com, me@kloenk.dev
+Subject: Re: [PATCH v3] rust: doc: Clean up formatting in io.rs
+Message-ID: <2025060238-vanilla-cardboard-eb74@gregkh>
+References: <20250602083119.17752-2-saivishnu725@gmail.com>
+ <2025060244-dragster-unknowing-23f0@gregkh>
+ <CAFttn56vNVcE=pcGgxGrSZf=r=h_ceFwEf+D71yc9GnANww5Aw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -103,20 +45,37 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DAAD0NZOCHS5.9FTVJIOI12QI@nvidia.com>
+In-Reply-To: <CAFttn56vNVcE=pcGgxGrSZf=r=h_ceFwEf+D71yc9GnANww5Aw@mail.gmail.com>
 
-On Sat, May 31, 2025 at 09:54:20PM +0900, Alexandre Courbot wrote:
+On Mon, Jun 02, 2025 at 04:41:20PM +0530, Sai Vishnu wrote:
+> > below the first --- line
+> 
+> Is it the one below the Signed off by line? To get the complete picture:
+> 1. commit title
+> 2. commit message
+> 3. signed off and other tags
+> ---
+> 4. The version log or any other necessary comments
+> 5. actual diff
+> ---
+> 
+> Additionally, I suppose the `base-commit` tag should also be placed in
+> 3 (above/below Signed-off-by), as it was added to the very end by
+> `git` when generating the patch.
 
-> So if I understood your idea correctly, this would mean creating the
-> SGTable and mapping it in one call, eschewing the typestate entirely?
+No, that is fine.
 
-Probably no need for a type state
+> I am sincerely apologizing for taking at least 4 versions for a simple
+> fix, but I am trying to figure out how to properly create and send
+> patches.
+> This clearly explains what you meant:
+> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#commentary
 
-> And the `SGTable` would own the backing data, and only release it upon
-> destruction and unmapping?
+Yes, that is what you should be reading.
 
-But I don't think you can do this, it is not allowed to pin kmalloc
-memory for instance so you have to do something as you showed to tie
-the lifetime to the kmalloc across the sgtable lifetime.
+Also see the thousands of examples of good patches on the mailing lists
+for real-world examples.
 
-Jason
+thanks,
+
+greg k-h
