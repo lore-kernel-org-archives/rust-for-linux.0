@@ -1,109 +1,119 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0000D1514E4;
-	Mon,  2 Jun 2025 21:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ADC2C3254
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 23:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748899205; cv=none; b=HPZ9bRto6qFJ+k1xJLV91WHIe9LkVstGaC1f+23URmRAKtUXl+higxv2oyP+ISs32iGz3sT0xbAU8jqcEcFsqsKVOSmF+Dvq6MZzMPgUXLIaq4Q5bXmAf1OhRvBHIapioCRfQiuhFPH9hkXiOY7AkpbKklQK3eev7fs9MsFGlpA=
+	t=1748906929; cv=none; b=BIHGj4veqjEEw0fQMTfYuHNxyGaOlWKyZvUYNm7QhlCbc+Gu2HvjMS6LzMt7DrQdsoNjgf02VF2zBwFubmZyJYez0u/s6z1hFBynHkf7MBcH9L27tm2jIbTKlJIqqT78awo6e5iDA0jXrMcuEBfQinidcHtu0ilI/KFk/JlsZ0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748899205; c=relaxed/simple;
-	bh=zRYSgvThWwZxaNl/CufN+FxgyjCanKiIaUURCNOV7rw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j+P2xnXHFYJAMQIxKxVc7h1v+HM2QYnz/VoIOnEKMhZDC2QH31pb7vFnFs1uqCMAxXEqTOvse7TAqBLIqaa1gIT0uEFjgd9ywOUnLMLyiKK0TzyCbPFoXLa15MDttD8BsGOzpotFeBqs06ENnVQ4hzIZ0qwBRPkMfJ7nu5mh058=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHQ/wUYb; arc=none smtp.client-ip=209.85.218.50
+	s=arc-20240116; t=1748906929; c=relaxed/simple;
+	bh=90VFPrSConkA3YaAjhllgGvtc7bwvxjDQ4EC5BZJhNk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Uuoy8HWikF6NgNZLSm+ORECD8JkUWTOY4J02C0ue/YCnH794zzGsvmuv06+Cb6FMXbxCoHNihEjxH9DeyZtNwR6BOT4N4xdtbwS5BeVENuU0Lde55OXR0PNM4oQtS8BnG1BdLG1j3EyotsWKKO8fLRxR2qQ4qJ1SRWjpXR9E6l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NhZxuIuM; arc=none smtp.client-ip=209.85.222.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHQ/wUYb"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ad89333d603so952113266b.2;
-        Mon, 02 Jun 2025 14:20:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NhZxuIuM"
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-87dfe8388f8so993272241.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 16:28:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748899202; x=1749504002; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hdUEsBdZpON7jrH6ZJsC2up0CamAqY5UjT4R1pWvEcE=;
-        b=ZHQ/wUYbitDVDyudfftCMTCJBcQIR2crugzjr2Y9pw9PqPa4S/QK0+rzZAR6SN2Ci6
-         Ts6Kqul/qmGdMRYDJrlm28pHq4DNpFIrXjv5DrHCEEWUFZpvY7OOFhkn3+rOsVwfRhqi
-         0gDD0AtbghiyV9Taodkd+AjI2N/QcHoFef6U2IyiDd7UwyvRGdPSZD27BLDfuJqziWkQ
-         xNVJgGogAzvDjpQo0M7JNZuWiEnKqvxEwAPaF2NoEZwXQcQ356H4xIy+cRUrMaQTLm9t
-         i2lzi9ZQH0Q+1c0LkMjGV3kPBppEsENoFHKaLf5RHQ6+Os8/Zr6CjyOjKdcoOEjfrH1M
-         5U/A==
+        d=gmail.com; s=20230601; t=1748906927; x=1749511727; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sAuPBwmXwTSeJ2XYEad17pgAmp9jnBCGFvIFMuyIxz8=;
+        b=NhZxuIuMWxqY9XRbNLabYK/965gLw/CPYQ6I3uvgRH9INj+hgz6aVMj+yKydodOrZo
+         1OtYfrdOsEJI5I+5GveXZOXWZ/DjsIrcXJjUmdKCkpjtFMA8i0T7kaSsaOoPwC8FLBV2
+         wAxDwRK++ozCocBJJgefVLbwenZZBTAHTYPc1ADzootmrfA0yGCMMfvNz6aYb/rno4kV
+         A5cQMLYAPDkRSbAZyR5TGrnRK9Dw63se1rEy++v29zfMFVzBBpDHPtLRkYSaZzQfbAWn
+         WBlhvlzC8Cka5BVNwTgNe9VK9flgX5nwWrReyVsah0PqkYjHe2tO6LmMfzNb42I6EQCJ
+         GnMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748899202; x=1749504002;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hdUEsBdZpON7jrH6ZJsC2up0CamAqY5UjT4R1pWvEcE=;
-        b=OGqRsQ5C2GSpj8HetuFV/efVKqtfPMj27q024rZSEnulvNXpTyV8lTSEeFXVcywhD8
-         X1N3mytNiHvCG6z0X3rwrS6KB/BHwEsKeUvm4suCXd1dmNu7YmfoSY2JLjwioLHncRHj
-         VshKaMg2dHJat0IOOh8PsxwvNBKdzRRgWU8WeEdalYgWU2k4ZMP6Ue3990JfA/2YpoKM
-         Tc46ZA8f6/cgjY/IEPjl19oec65JNf5VTsXHfeTmLptGQGCz+GauWLNivEOAsUPcRDnq
-         0U6yyJhrTlwQ2Mikm4Z76amas8BqDEbpOxzHvEStp2Wq6nqVX21Qd8cfGzgFddTkmoiY
-         4b8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVcTxazCS65HuoYxH6pBQ04lR99QqFVVn+LW1gOyA8lI4I22e0A8zRk8t3WHjArJ6yHQYWLcwDPo8hprL8=@vger.kernel.org, AJvYcCVf2czGXOW+kjRx+zKybJX6G3v0sZLu+ZI+Tv+IiajVCSQ5o0Jn6zxyd6+LQUjkLm5CdpP1jVNw4WR0mxuszek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpnhySfanEI738BuNbBhGG5aB3HPcXxmgB64Qdozc+8uauQWjv
-	yZF41RwoC2OWDfSJAipPrtNRi9p36LNtbN4vcdpHyq9iy72AalLvAbz9
-X-Gm-Gg: ASbGnct1kq3zt20TYELQfFKo+9x90w/ECntdCfSBY5QcE1EFBhl2aKlytno2jOSbA0r
-	dQnoAXIUKC3FmV24pPr+4cP4NvCun0NE1YMOVM+k0iOisUKbdVWr6ZrLnRKPbcvd89QuCrc4AXy
-	31T+VeW5OeN6qcdZhkQu+07rXOEXgdBVocvIWhCeTIBvNEVOze8qbaCaisKmuxlE7aya2SK55zy
-	iOc7B0mJJUhg5Ka9yhewvfl6VZ1uUuoKxg9CaC12wS818HyF9mEvqj2Yq9jN78hMQoPTyRG6KtV
-	yRY/1MPrFZtIwwy70EB9Zq43yPpBIFWQufso0Q5VaxiW0fowuPqirdodkAq8fQtfjq+qs/uO3pL
-	96pINLQ3xPw==
-X-Google-Smtp-Source: AGHT+IFJJf1xtcKNWTGZSbngbMDy8Gtm5lWF/ASzb2cGdMdwOdtb92j/YwD3lmYIOsmitKTM+AcNiA==
-X-Received: by 2002:a17:907:7ea0:b0:ad8:9909:20ac with SMTP id a640c23a62f3a-adb3243b5f4mr1234826366b.50.1748899202038;
-        Mon, 02 Jun 2025 14:20:02 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:cd68::171c? ([2001:871:22a:cd68::171c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ada5d7fed53sm850073066b.27.2025.06.02.14.20.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Jun 2025 14:20:01 -0700 (PDT)
-Message-ID: <6802d4d3-e2f2-4150-a9fd-26002527b42a@gmail.com>
-Date: Mon, 2 Jun 2025 23:20:00 +0200
+        d=1e100.net; s=20230601; t=1748906927; x=1749511727;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sAuPBwmXwTSeJ2XYEad17pgAmp9jnBCGFvIFMuyIxz8=;
+        b=RMSwxKw9aKPUjAsWjzYmBgcFboaW0GiLfKOuewxG/F4g5dd0IFfz/L10t0GsTz1XV4
+         l9U1pA3ROj+k2VZ79wQ76YYFG8vQfYAYIT8rxUKSM3CQf6WUBNZGhCDZLZ1l+Ca1qutW
+         b9AbAGAeHAxRC2gGryz3QnBEfiZRb/wBozlgCq9YLO26PPTjnCPdygtPGZc5qluNPJCn
+         f8SgCBgwZNobsXdGP+m0N4ywQrEVf7sDgXMNPqgTnizAlLtwjPD7TRmrP2MDzZIeJBun
+         t7tWWtp3Y4cL5oP1jWXfZAMV9RDnY9by/aHI8OI6fDn+PCijJ2DZvbpE6QfstVGbJtOj
+         IwtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOObB16qURD9I+DMeB+zYcACGZFiiJqA/zaLr8++LrNNvAZOFhYx2bAcLMgzGWJVfNQhIJimSH5RZwxPwmgQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDIukdvD088eJ1bJ3DSZxF9Nr6psW8UATZhdxwI0Hf/tHoYGqt
+	cP/2sCw27ZDjY1aHzQhtGYKcX7txWX5oar0Z2QcEw0/GVAuHOqcWsqPirfeUbw==
+X-Gm-Gg: ASbGncvvSFKPtDyrNqdoPkcwKxoAlJdM/e2p+6sKo9HExKC9cXf/YtoTKeklcYXoVc2
+	7d5G5pSBhKE4S2c9rEdkIOaX6kUucFYMG7oj39r0cOVh8FIaZa/uX0Ak3eB8mzbC72A9/REMIqC
+	dsbcKM/aA0KVbCiHseJNxacYxVd8jvpaQeFnX+k0WKDQYCkj9W3f9dBtMAWzWS4UJjk57877/rF
+	cLOQmeTbe/VfFJ64llopIttU8qAi6xvTD5haQq+cwuoOk73rPAIMzMjddMLng9Utqg4RbN4QjoT
+	+QEtWFM5dWYOPODA3DfQ1/4a0wlLeOoBWbdDluzw
+X-Google-Smtp-Source: AGHT+IFWEuCGc4CrXV6Dzd3fN/VBwAH4LYpU8p17+uExNoyyhxWM36btqA/ivId0GipJfjq9XMxc4g==
+X-Received: by 2002:a05:6102:3a11:b0:4e6:d9f2:957c with SMTP id ada2fe7eead31-4e701bd3ed6mr8018231137.23.1748906927024;
+        Mon, 02 Jun 2025 16:28:47 -0700 (PDT)
+Received: from fedora.. ([2804:14c:64:af90::1001])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-87e2a39014csm6891262241.24.2025.06.02.16.28.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Jun 2025 16:28:46 -0700 (PDT)
+From: Marcelo Moreira <marcelomoreira1905@gmail.com>
+To: lossin@kernel.org,
+	dakr@kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	~lkcamp/patches@lists.sr.ht
+Subject: [PATCH v4 0/3] rust: revocable: documentation and refactorings
+Date: Mon,  2 Jun 2025 20:26:21 -0300
+Message-ID: <20250602232842.144304-1-marcelomoreira1905@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] rust: miscdevice: adjust the rust_misc_device
- sample to use RegistrationData.
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- =?UTF-8?Q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250530-b4-rust_miscdevice_registrationdata-v4-0-d313aafd7e59@gmail.com>
- <20250530-b4-rust_miscdevice_registrationdata-v4-3-d313aafd7e59@gmail.com>
- <DAACGEDVW8D4.66KOF7PWD1I0@kernel.org>
- <CANiq72=mdaekPrR-LWzfM5hKkNaQ=zGqDFh42Mbi8eqQT71tLg@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <CANiq72=mdaekPrR-LWzfM5hKkNaQ=zGqDFh42Mbi8eqQT71tLg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 31.05.25 3:40 PM, Miguel Ojeda wrote:
-> On Sat, May 31, 2025 at 2:27 PM Benno Lossin <lossin@kernel.org> wrote:
->>
->> Let's keep this newline.
-> 
-> There is also another apparently spurious change:
-> 
->> -        pr_info!("Initialising Rust Misc Device Sample\n");
->> +        pr_info!("Initializing Rust Misc Device Sample\n");
-> 
-> In general, please try to avoid unrelated changes in patches.
+This series of patches brings documentation and refactorings to the `Revocable` type.
 
-Sorry, fixed all three for v5.
+The main changes include:
+- Clarifying the write invariant and updating associated safety comments for `Revocable<T>`.
+- Refactoring `RevocableGuard` to be internally safe by holding a direct reference (`&'a T`), simplifying its usage and reducing unsafe code.
+- Splitting the internal `revoke_internal` function into two distinct, explicit functions: `revoke()` (safe, synchronizing with RCU) and `revoke_nosync()` (unsafe, without RCU synchronization).
 
-Cheers
-Christian
+This is v4 of the patch series.
+
+Changes since v3:
+- Refined the wording of the `Revocable<T>` invariants to be more precise about read and write validity conditions, specifically including RCU read-side lock acquisition timing for reads and RCU grace period for writes.
+- Simplified the `try_access_with_guard` safety comment for better conciseness.
+- Refactored `RevocableGuard` to use `&'a T` instead of `*const T`, removing its internal invariants and `unsafe` blocks.
+- Simplified `Revocable::try_access` to leverage `try_access_with_guard` and `map`.
+- Split `revoke_internal` into `revoke()` and `revoke_nosync()` functions, making synchronization behavior explicit.
+- Link to v3: https://lore.kernel.org/rust-for-linux/DA6XFLKUTP1P.RR6P5AK9PKIZ@kernel.org/T/#t
+
+Changes in v2:
+- Refined the wording of the invariants in `Revocable<T>` to be more direct and address feedback regarding the phrase 'must occur'.
+- Added '// INVARIANT:' comments in `try_access` and `try_access_with_guard` as suggested by reviewers.
+- Added the missing invariant for `RevocableGuard<'_, T>` regarding the validity of `data_ref`.
+- Updated the safety comment in the `Deref` implementation of `RevocableGuard` to refer to the new invariant.
+- Link to v2: https://lore.kernel.org/rust-for-linux/CAPZ3m_jw0LxK1MmseaamNYhj9VY8AXtJ0AOcYd9qcn=5wPE4eA@mail.gmail.com/T/#t
+
+Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
+
+---
+
+Marcelo Moreira (3):
+  rust: revocable: update write invariant and fix safety comments
+  rust: revocable: simplify RevocableGuard for internal safety
+  rust: revocable: split revoke_internal into revoke and revoke_nosync
+
+ rust/kernel/revocable.rs | 84 +++++++++++++++++-----------------------
+ 1 file changed, 36 insertions(+), 48 deletions(-)
+
+--- base-commit: 7a17bbc1d952057898cb0739e60665908fbb8c72
+
+Cheers,
+Marcelo Moreira
+-- 
+2.49.0
+
