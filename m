@@ -1,130 +1,159 @@
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99E61FF61E
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 10:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCE71B412A;
+	Mon,  2 Jun 2025 11:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748861808; cv=none; b=uFzViH3C21qdIQZagIbEeHENXUE5nT/1P8s0i0RdOrh0UnU1vKfcc0NI365eFb3Um/aapKe3vs5Nm+4gklUlRceo7aQyqIF6rODu1pa4jBrcJiGZVVY5ihAHjqvJ4HOa+d3wKNS+mLh2zBs4YRfAkcSwjRuHXAsL0RwURjGn4jA=
+	t=1748862595; cv=none; b=Nu1nX1osP/Ogv5nWB8cg29G8YsUpsGnvPoSgeL9yMXN6nlqetM+/FeSEYuu1q8wEHdvDxzdHwqjxey8rAxmSrGlPnV/OYHwxyaPTQGzYY6Ha7vX3vqBMFBafPjW+biLpynWYPjxozYFjjA0n2aT8cTolo3ZEPSKRcCtUTCFn4Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748861808; c=relaxed/simple;
-	bh=Bo1Dn3w37seMAP+bw5pDOhXBdEtsC55jIbo6qBxZVSk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HOX3nj2CDiva4FyyBVytyqkfGb2dzLlIpCLGCXaTvZ2WewXQA8hbp0SLFeyx9R7HM9RwUk5mmaLAE0BCizOZXW487EotrzrKmw8rT03qPsnQRtzXPzvFsKPel7hKTlkdxiWp+EmFcrtPdxP+Q7vCs8Jw8uKh6JmboYCYvyh2lkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R4Oqv6GL; arc=none smtp.client-ip=209.85.167.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1748862595; c=relaxed/simple;
+	bh=a7I7HJvFQ9VEde/6Ve3ViLZ6lotsk0Tp4rZAPkF0fNg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gShevZiZcgYUFrBnH74qMOnLZEHnrlYqvVXJOcm1CvvMH///rhXcuKv5uM0fIbixI/0P4AJfFrRYrYDLouAeD8lUwz0EkDeQMxcXvlPkYPxmmFIlcSC1JkabmLNcVAK78laIq0VhEjH1tTa2qWZlnuG/+w7MBYNoe8qn7REkbz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Evq5kpWg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R4Oqv6GL"
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-403407e998eso2536128b6e.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 03:56:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748861805; x=1749466605; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bo1Dn3w37seMAP+bw5pDOhXBdEtsC55jIbo6qBxZVSk=;
-        b=R4Oqv6GLLaD6df16lbj1nmmT+HNq/u21bPhjUNsupTvST40J6CW+5zKSaPSzeyC2Yu
-         ZsdR2J9lij8N8wkho0QRoRq3VB4GC4YfOuuoYeL6O9lA4oEWp1CVxuGWL4TpjBNoymTj
-         MU/KwmeLTNVxMXcnjecAqlthiNOZGUh8RDX4ijL2FMLCHQZ9RaTibdElardGyIY7ljcC
-         7xiG9kujalVxaMwMtNNC/LrGzOXcUZZgsTUtr4Ituce2hqnlSR4DZb2DpIntaL0QK7pJ
-         8Ysum07gZdD3rDvjkDfBc600ymfBF0pfCgveOmy3khWy2eNL6BJO99Wms8XjvdyJHxl/
-         gUBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748861805; x=1749466605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bo1Dn3w37seMAP+bw5pDOhXBdEtsC55jIbo6qBxZVSk=;
-        b=flXG3FKb28huclWYgksV/RxR8EKRzBvNwQAWLgfVXUmIujpzP6kDde4W2XP0Ukg6vF
-         CN60wJW6Yjc9HmFM0SF7oo90JxANiGpROqZXRxSN+Em+4SIjBSWAYNwTAwaocKyT1mFB
-         QyOCVVApOwLkmpwjtBh+cKb01f6Wr51Bj+5/jFg0VNxZLeZNgEG9zwphKTqIvbX+DMtI
-         kQcMBKqcN6fXQx+6upCcgsndm82AsJvjqMAQXka1kiD84uPnpWjMbFkcPCer+rGlVLrD
-         ybZDvnjR/ZaoCF0h126fuIC81adtgWVBV4YLJ74MLGHodwpZwv5WT25UaZnq2j6wDwFO
-         1vMA==
-X-Forwarded-Encrypted: i=1; AJvYcCWW8fG76Z0tF24kamGzY09rQAEWSQJjKCAgexL68KrtJ646FNK7gkVw+CvffDqb4LETNoOneVSjiny/8sSHww==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywvaqr86yu8lqfnSDAYbNyZl1+6vIHVhaGAWJC0mbQMm6LzIOT5
-	UlOHxED8jXM4F2r7OUeYxt0azluqhEWKX+aldqukgwuRLRxvRqfkgwU+Nlyy3M6Vkjy6D7jMmKr
-	jDsh8TQulNp3Jq7aCHjKYT/DcBWAqOSxH73ZT8JlS
-X-Gm-Gg: ASbGnctFddDZg64Cq/pNovqkIL4kwzXqSFzZxu0L1FVqHZpDia2RF/Effy3Sl5D0U2R
-	yyZz6DtbxOIea1IzdPkptCJC9FckzZJsRxyuhgHevkPjOfOKSRXCfp7KkE/OvW4HqT7OyZuqR8w
-	8ntuEDh6gawGzTeAM9+AmR8NPTnGed4qd2GbsZpATkgOfDDoHCB3wh7QdDIDEFfYNg9vwO1NtbB
-	Q==
-X-Google-Smtp-Source: AGHT+IGCwnRveAFrn3m1cHd75Jseg91XQxQvUPPL0lIKIgwRZ6smz4rU2A5lacSedSenmk+Jlg2FWjdBjazxr2GujXg=
-X-Received: by 2002:a05:6870:818e:b0:2c1:6948:d57c with SMTP id
- 586e51a60fabf-2e948cb5422mr4678788fac.28.1748861805503; Mon, 02 Jun 2025
- 03:56:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Evq5kpWg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527A8C4CEEB;
+	Mon,  2 Jun 2025 11:09:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748862595;
+	bh=a7I7HJvFQ9VEde/6Ve3ViLZ6lotsk0Tp4rZAPkF0fNg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Evq5kpWgyNewVa6YT61xGlwHz1Grol3+yKM9bYOYALw03KfYmvv7GSA1oSUXJS3eM
+	 oFfmAhCaCJQSAvbnElZ8w2UM76LOBplvkfvTBfX/b2V44DIUArNvb5+Jl8nvZ+yJaY
+	 aWD9hB2h7W6+K/LCrUzUX5MjTuXVcYlLd9G+inj6nIjcK5hlHyZdpXxvi9qIq7oEq4
+	 GsKZJfupAMWnZI3aGqbG2KWl2qv9BaAOt+YZsapTx6OCTxbY3DkfMh2TFq3ofNAFzx
+	 g7Ja/ia+jkqK3Ai72I6OUUFZfIegyiPXOiIsZAp6xUpt2tZqeyrvCFq86R3BTb9Aig
+	 l9GfmqD20qvow==
+Date: Mon, 2 Jun 2025 13:09:47 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Lyude Paul <lyude@redhat.com>, Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v4 13/20] gpu: nova-core: register sysmem flush page
+Message-ID: <aD2Ge8RM1uTT726z@pollux>
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-13-05dfd4f39479@nvidia.com>
+ <44f13ec88af918893e2a4b7050dce9ac184e3b75.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250526150141.3407433-1-bqe@google.com> <aDXPhs79tQGTNU9b@yury>
-In-Reply-To: <aDXPhs79tQGTNU9b@yury>
-From: Burak Emir <bqe@google.com>
-Date: Mon, 2 Jun 2025 12:56:33 +0200
-X-Gm-Features: AX0GCFsptb4AjM3AXX__0mElF1fRr3ofVuwEuTFh0eet1zbR-ixQIe0moGlg4S0
-Message-ID: <CACQBu=Wtd=b+BwCGqXgw=pJdFexDH8GfVXHdnGVcOKD9seeo0A@mail.gmail.com>
-Subject: Re: [PATCH v9 0/5] rust: adds Bitmap API, ID pool and bindings
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	Carlos Llamas <cmllamas@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <44f13ec88af918893e2a4b7050dce9ac184e3b75.camel@redhat.com>
 
-+Carlos
+On Fri, May 30, 2025 at 05:57:44PM -0400, Lyude Paul wrote:
+> On Wed, 2025-05-21 at 15:45 +0900, Alexandre Courbot wrote:
+> > Reserve a page of system memory so sysmembar can perform a read on it if
+> > a system write occurred since the last flush. Do this early as it can be
+> > required to e.g. reset the GPU falcons.
+> > 
+> > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> > ---
+> >  drivers/gpu/nova-core/gpu.rs  | 45 +++++++++++++++++++++++++++++++++++++++++--
+> >  drivers/gpu/nova-core/regs.rs | 10 ++++++++++
+> >  2 files changed, 53 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+> > index 50417f608dc7b445958ae43444a13c7593204fcf..a4e2cf1b529cc25fc168f68f9eaa6f4a7a9748eb 100644
+> > --- a/drivers/gpu/nova-core/gpu.rs
+> > +++ b/drivers/gpu/nova-core/gpu.rs
+> > @@ -2,6 +2,7 @@
+> >  
+> >  use kernel::{device, devres::Devres, error::code::*, pci, prelude::*};
+> >  
+> > +use crate::dma::DmaObject;
+> >  use crate::driver::Bar0;
+> >  use crate::firmware::{Firmware, FIRMWARE_VERSION};
+> >  use crate::gfw;
+> > @@ -158,12 +159,32 @@ fn new(bar: &Bar0) -> Result<Spec> {
+> >  }
+> >  
+> >  /// Structure holding the resources required to operate the GPU.
+> > -#[pin_data]
+> > +#[pin_data(PinnedDrop)]
+> >  pub(crate) struct Gpu {
+> >      spec: Spec,
+> >      /// MMIO mapping of PCI BAR 0
+> >      bar: Devres<Bar0>,
+> >      fw: Firmware,
+> > +    /// System memory page required for flushing all pending GPU-side memory writes done through
+> > +    /// PCIE into system memory.
+> > +    sysmem_flush: DmaObject,
+> > +}
+> > +
+> > +#[pinned_drop]
+> > +impl PinnedDrop for Gpu {
+> > +    fn drop(self: Pin<&mut Self>) {
+> > +        // Unregister the sysmem flush page before we release it.
+> > +        let _ = self.bar.try_access_with(|b| {
+> > +            regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::default()
+> > +                .set_adr_39_08(0)
+> > +                .write(b);
+> > +            if self.spec.chipset >= Chipset::GA102 {
+> > +                regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::default()
+> > +                    .set_adr_63_40(0)
+> > +                    .write(b);
+> > +            }
+> > +        });
+> > +    }
 
-On Tue, May 27, 2025 at 4:43=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
-rote:
->
-> On Mon, May 26, 2025 at 03:01:29PM +0000, Burak Emir wrote:
-> > We include set_bit_atomic and clear_bit_atomic operations. One has
-> > to avoid races with non-atomic operations, which is ensure by the
-> > Rust type system: either callers have shared references &bitmap in
-> > which case the mutations are atomic operations. Or there is a
-> > exclusive reference &mut bitmap, in which case there is no concurrent
-> > access.
->
-> Here I'm lost. In the other email you say:
->
-> > You also commented on the API. The weirdness of the API is all due to
-> > the separating "request to shrink/grow" from allocation.
-> > Since allocation can happen while other threads may mess with the id
-> > pool, one has to double check that the request to shrink/grow still
-> > makes sense.
->
-> And here you say:
->
-> > there is a
-> > exclusive reference &mut bitmap, in which case there is no concurrent
-> > access
->
-> So to me it sounds like if I want to resize, I just allocate a new bitmap=
-,
-> take this exclusive reference, copy IDs, swap the pointers in
-> corresponding class, and that's it. What did I miss?
+Sorry that I haven't noticed this before -- I think this should be self
+contained in a new type (e.g. SysmemFlush).
 
-The two emails are about two related but different things:
-1. the bitmap API which uses kmalloc with GFP_KERNEL, and what you
-suggest could be done with &mut references
-2. the id_pool and its fine-grained API that permits controlling the
-time of allocation, which is used in binder which relies on a
-spinlock.
+We should also move this kind of cleanup into the Driver::remove() callback,
+where we still have a bound device, to avoid try_access_with().
 
-My limited understanding is that calling kmalloc w/ GFP_KERNEL while
-holding a spinlock is not good, since the kmalloc may sleep.
-You can see this "first unlock, then alloc, then lock again" pattern
-in binder code here:
-https://github.com/torvalds/linux/blob/15d9da3f818cae676f822a04407d3c17b533=
-57d2/drivers/android/binder.c#L1099
+I already have this on my list to implement for quite a while, because I wasn't
+quite sure yet what's the best way to approach this, but I think the simple
+remove() callback to perform tear down operations on device resources is fine.
 
-cheers,
-- Burak
+I'll prepare the corresponding patches and subsequently rework those bits
+accordingly.
+
+> >  }
+> >  
+> >  impl Gpu {
+> > @@ -187,10 +208,30 @@ pub(crate) fn new(
+> >          gfw::wait_gfw_boot_completion(bar)
+> >              .inspect_err(|_| dev_err!(pdev.as_ref(), "GFW boot did not complete"))?;
+> >  
+> > +        // System memory page required for sysmembar to properly flush into system memory.
+> > +        let sysmem_flush = {
+> > +            let page = DmaObject::new(pdev.as_ref(), kernel::bindings::PAGE_SIZE)?;
+> > +
+> > +            // Register the sysmem flush page.
+> > +            let handle = page.dma_handle();
+> > +
+> > +            regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::default()
+> > +                .set_adr_39_08((handle >> 8) as u32)
+> > +                .write(bar);
+> > +            if spec.chipset >= Chipset::GA102 {
+> > +                regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::default()
+> > +                    .set_adr_63_40((handle >> 40) as u32)
+> > +                    .write(bar);
+> > +            }
+> > +
+> 
+> Small nit - would it make sense for us to just add a function for initiating a
+> sysmem memory flush that you could pass the bar to? Seems like it might be a
+> bit less error prone if we end up having to do this elsewhere
+
+Agreed -- but let's solve this with a new type and make it a method instead.
