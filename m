@@ -1,265 +1,230 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9531DF268;
-	Mon,  2 Jun 2025 13:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FE12AD1C
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 13:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748871244; cv=none; b=fhPrUpO3wRgxvG2aVAiIA9OkWlVYLqXlc7iWDY1Dy9uNoCyB6FAQzUX5+pd9rQkP4pASii7xF5wgqJTOg/qGrKX25a3pTI8x6vhVoEkYFO+d2dlqGvZCEdOKUDOqWTJOna3ZySZ0L1B3eCXn357RUT3lyi7lIoxwAmuL1V+LwwQ=
+	t=1748871421; cv=none; b=QQlEuE8y7n7JYIvIRJ5a77bPhK51ipK73k4mEJhGlxVmzBlW7Ciweqzlub0NjMuKdLbE2OAW79CGwg1unXBUllRtsY2WuSoDNu9lb+4oNA1W+xrRbTdwNd1JfmZIzAgSvf1BeZWRFS5R3BkwBGnBMf8vscOK0k390bi2Ye6rlqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748871244; c=relaxed/simple;
-	bh=iZvHDfvfAD+yKJVYln/PMQ78EgZJYPP9rx+IC7Zkrww=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fvyyw2jQHkeuAOKaFI8FI4Zz+rUcP1NJ/qlPcr6kXRHldNI8Larzjgf9FiTftMQZq+3ZxD+z0bGlx5ILI6xiw6jPFbUhq1/TYopN1jPo98WnRllPiVDWzbDYnbmWkKsb+qk1j0OOlRWE3LuvHJo1BWBPqferBD61OLRo1N+z7n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTbx93gx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748871421; c=relaxed/simple;
+	bh=QHSS6EnyJgLgXZ8y0Fsif8DRC6T2WbBqWKFRmSvkFaY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bAcinqEW3hlStbKHdRqd/OQS8litd0zYgKpEcAMWdzbYfI3N4EliiIotmXLWvYOii7qdzPBjcZbC3SABQR/9Uw1Swkli73Bge//YwMg6/89/BZSdmhmYyI2XcenMAdCXrpLfkwSRCtK1cFMQITKhJ1sOTDfaPtUZkcyZDK92KYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MWqvsxs6; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bqe.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTbx93gx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55687C4CEEB;
-	Mon,  2 Jun 2025 13:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748871244;
-	bh=iZvHDfvfAD+yKJVYln/PMQ78EgZJYPP9rx+IC7Zkrww=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QTbx93gxASCTQGU/HsrECc9MgbYuQnPnkPi9dGbSj3E/zI7TsrZ/bSobLj01apVd3
-	 neH4I2bnm/DjWxXvd2jVsat7zqaER8ao745HV7rSSKgnTidL3E+N4U+jGLVUAGJdG6
-	 h9dZZjGZ5rg7U5/tFSYGGkrAHiRPwDNVtLbbxf2O0yCM3UunRjsAn2SDDw+2aMr68w
-	 i0ed19vNdyMrcm8TsOArOiOUzRARLJv/eCiKLuOknn6iS/R5ch3p3Ucr2y8pBTAael
-	 fEJngYe6nK/bNEEQWmMnCfocsnVvLnrls2t4Q/MUDGg2D6dOgq/Knd+hp4x+hdI0Nx
-	 uj6P+WeFhSUhQ==
-Date: Mon, 2 Jun 2025 15:33:56 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	Shirish Baskaran <sbaskaran@nvidia.com>
-Subject: Re: [PATCH v4 16/20] nova-core: Add support for VBIOS ucode
- extraction for boot
-Message-ID: <aD2oROKpaU8Bmyj-@pollux>
-References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-16-05dfd4f39479@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MWqvsxs6"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-450cf229025so12140555e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 06:36:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748871417; x=1749476217; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xp41BqileRut15GE0tOdaNpTK0mK4C6NmbTB45C0bk4=;
+        b=MWqvsxs61IMIC1vsMQHXzK2QX2ZoPTPZWpaNDAyUl3hB2JUt84MKrV4A3CvM1x401m
+         zW5PrKVFOpbtduNd5GuAEuzwn/wIoQBmw1W01LNX4dl1yUJeCWcKnqeOcaClo6jKjRKw
+         3lZAk1fvkcdGJRaF9DbgjVr/qSPsEnIRlRylWAab7YCDEuSk8/yEKhhXiV6IDKzteWeo
+         PYNtOg2rG6bQTckJPYeK1Fa5X6X3EDgJVIEJoKJhDFp6uvUXKY8Of8t0qrHXpeJloA5k
+         dQ7aZQHhpT8TFZnV05tbq2T0CH8kwpyPskoAXZZZhb/3Sti1wBLUsZRNeqI8AzXX87Nt
+         akhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748871417; x=1749476217;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xp41BqileRut15GE0tOdaNpTK0mK4C6NmbTB45C0bk4=;
+        b=KkDZ5XXb6wYMRCawUez6HHzVcJYevZxzB0+8d+EuEaa2YBkGrco/nEIDPrf/TgPlN/
+         ltIgjIgBS2ruwcRS4PbOkyFTA09D05jiG0HTY6DPO71kfhcY2ozC96b45EJD/5VPzoqq
+         hjTsG3yEkQum7S5mKKDYFDSA2wRCKQ8VAZLZWdJOQI2ZaoSQBtnaYyCBL/fahoYULjUU
+         dqg6PQqoXOuv5fW05yb59BAR6a0ZNw5xmTPl9HKh4jidA9E9sGV1SaLmtbVz3hyDr4MO
+         VZfdpJB7nFk5KM8BBiQDLmddf3unyO4pbB193kDqjyJ2h65EwUOuoOrGcWqiJdmP5BAP
+         Znaw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/lhHCc27d/Ez03Y11HRTJrAzcQ3cq5dia2Tmfwh9jGaheRBta89FsnW8hETXw0reL97j5vlGcgg3BDRcV/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1YcJ/kD8xnLDiR936s4ahRuO+U8QhdMKoKb4UNVhhNdoMjg0M
+	0Cz/yoU3Z/enzNkCy/9s8FpOinNDBk0NhwNQkUuMre2lDyPc/Q5Ul7H5hBpIiWuQIZ63tQ==
+X-Google-Smtp-Source: AGHT+IFVxblwBsZVLpkF/wlyRk+n/tNaJXkE5BjYQ4XZYwoJJW7Z3LHpe4iEt/C7U7pvYZKCxhq62F8=
+X-Received: from wmbep23.prod.google.com ([2002:a05:600c:8417:b0:43c:ef7b:ffac])
+ (user=bqe job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:37ce:b0:442:e109:3027
+ with SMTP id 5b1f17b1804b1-451220ad6d4mr65615665e9.24.1748871417012; Mon, 02
+ Jun 2025 06:36:57 -0700 (PDT)
+Date: Mon,  2 Jun 2025 13:36:41 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250521-nova-frts-v4-16-05dfd4f39479@nvidia.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.1204.g71687c7c1d-goog
+Message-ID: <20250602133653.1606388-1-bqe@google.com>
+Subject: [PATCH v10 0/5] rust: adds Bitmap API, ID pool and bindings
+From: Burak Emir <bqe@google.com>
+To: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>
+Cc: Burak Emir <bqe@google.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+	Carlos LLama <cmllamas@google.com>, Pekka Ristola <pekkarr@protonmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, May 21, 2025 at 03:45:11PM +0900, Alexandre Courbot wrote:
-> +impl Vbios {
+This series adds a Rust bitmap API for porting the approach from
+commit 15d9da3f818c ("binder: use bitmap for faster descriptor lookup")
+to Rust. The functionality in dbitmap.h makes use of bitmap and bitops.
 
-<snip>
+The Rust bitmap API provides a safe abstraction to underlying bitmap
+and bitops operations. For now, only includes method necessary for
+dbitmap.h, more can be added later. We perform bounds checks for
+hardening, violations are programmer errors that result in panics.
 
-> +    pub(crate) fn fwsec_header(&self, pdev: &device::Device) -> Result<&FalconUCodeDescV3> {
-> +        self.fwsec_image.fwsec_header(pdev)
-> +    }
-> +
-> +    pub(crate) fn fwsec_ucode(&self, pdev: &device::Device) -> Result<&[u8]> {
-> +        self.fwsec_image.fwsec_ucode(pdev, self.fwsec_header(pdev)?)
-> +    }
-> +
-> +    pub(crate) fn fwsec_sigs(&self, pdev: &device::Device) -> Result<&[u8]> {
-> +        self.fwsec_image.fwsec_sigs(pdev, self.fwsec_header(pdev)?)
-> +    }
+We include set_bit_atomic and clear_bit_atomic operations. One has
+to avoid races with non-atomic operations, which is ensure by the
+Rust type system: either callers have shared references &bitmap in
+which case the mutations are atomic operations. Or there is a
+exclusive reference &mut bitmap, in which case there is no concurrent
+access.
 
-Can't we just implement Deref here? Why do we need this indirection?
+This version includes an optimization to represent the bitmap inline,
+as suggested by Yury.
 
-> +impl PcirStruct {
-> +    fn new(pdev: &pci::Device, data: &[u8]) -> Result<Self> {
-> +        if data.len() < core::mem::size_of::<PcirStruct>() {
-> +            dev_err!(pdev.as_ref(), "Not enough data for PcirStruct\n");
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let mut signature = [0u8; 4];
-> +        signature.copy_from_slice(&data[0..4]);
-> +
-> +        // Signature should be "PCIR" (0x52494350) or "NPDS" (0x5344504e)
-> +        if &signature != b"PCIR" && &signature != b"NPDS" {
-> +            dev_err!(
-> +                pdev.as_ref(),
-> +                "Invalid signature for PcirStruct: {:?}\n",
-> +                signature
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let mut class_code = [0u8; 3];
-> +        class_code.copy_from_slice(&data[13..16]);
-> +
-> +        Ok(PcirStruct {
-> +            signature,
-> +            vendor_id: u16::from_le_bytes([data[4], data[5]]),
-> +            device_id: u16::from_le_bytes([data[6], data[7]]),
-> +            device_list_ptr: u16::from_le_bytes([data[8], data[9]]),
-> +            pci_data_struct_len: u16::from_le_bytes([data[10], data[11]]),
-> +            pci_data_struct_rev: data[12],
-> +            class_code,
-> +            image_len: u16::from_le_bytes([data[16], data[17]]),
-> +            vendor_rom_rev: u16::from_le_bytes([data[18], data[19]]),
-> +            code_type: data[20],
-> +            last_image: data[21],
-> +            max_runtime_image_len: u16::from_le_bytes([data[22], data[23]]),
-> +        })
-> +    }
-> +
-> +    /// Check if this is the last image in the ROM
-> +    fn is_last(&self) -> bool {
-> +        self.last_image & LAST_IMAGE_BIT_MASK != 0
-> +    }
-> +
-> +    /// Calculate image size in bytes
-> +    fn image_size_bytes(&self) -> Result<usize> {
-> +        if self.image_len > 0 {
+We ran a simple microbenchmark which shows that overall the Rust API 
+can be expected to be about 4.5% slower than C API.
 
-Please make this check when creating the structure...
+We introduce a Rust API that would replace (dbitmap.h) in file 
+id_pool.rs. This data structure is tightly coupled to the bitmap API. 
+Includes an example of usage that requires releasing a spinlock, as 
+expected in Binder driver.
 
-> +            // Image size is in 512-byte blocks
+This is v10 of a patch introducing Rust bitmap API [v9]. Thanks
+for all the helpful comments, this series has improved significantly
+as a result of your work.
 
-...and make this a type invariant.
+Changes v9 --> v10:
+- change helper to use `unsigned long` for `nr` parameter (Boqun)
+- add missing and fix safety comments (Boqun, Pekka)
+- move benchmark module output and results to #4 commit msg.
+- use pr_cont to avoid repeating find_bit_benchmark_rust log prefix.
 
-> +            Ok(self.image_len as usize * 512)
+Changes v8 --> v9:
+- added a new type `CBitmap` that makes any C bitmap accessible with
+  the same API, and add Deref so both Bitmap and
+  CBitmap can share the same implementation.  Full credit for this 
+  goes to Alice who suggested idea and code.
+- added config dependency on CONFIG_RUST that was missing from
+  CONIG_FIND_BIT_BENCHMARK_RUST.
+- implemented Send for Bitmap, it is actually needed by Binder.
+- reworded commit msg for clarity.
+- removed unsafe for atomic ops.
+- renamed `bitmap_hardening_assert` to `bitmap_assert` and make operations
+  do nothing and log error when RUST_BITMAP_HARDENED is off.
+- update author information in find_bit_benchmark_rust.rs
+- Various improvements to id_pool, better names and comments.
 
-It should also be a type invariant that this does not overflow.
+Changes v7 --> v8:
+- added Acked-by for bindings patches
+- add RUST_BITMAP_HARDENED config, making extra bound-checks configurable.
+  This is added to security/Kconfig.hardening 
+- changed checks of `index` return value to >=
+- removed change to FIND_BIT_BENCHMARK
 
-The same applies to NpdeStruct.
+Changes v6 --> v7:
+- Added separate unit tests in bitmap.rs and benchmark module,
+  following the example in find_bit_benchmark.c
+- Added discussion about using vendored bitset to commit message.
+- Refined warning about naming convention
 
-> +        } else {
-> +            Err(EINVAL)
-> +        }
-> +    }
-> +}
+Changes v5 --> v6:
+- Added SAFETY comment for atomic operations.
+- Added missing volatile to bitops set_bit and clear_bit bindings.
+- Fixed condition on `nbits` to be <= i32::MAX, update SAFETY comments.
+- Readability improvements.
+- Updated doc comments wording and indentation.
 
-<snip>
+Changes v4 --> v5: (suggested by Yury and Alice)
+- rebased on next-20250318
+- split MAINTAINERS changes
+- no dependencies on [1] and [2] anymore - Viresh,
+  please do add a separate section if you want to maintain cpumask.rs
+  separately.
+- imports atomic and non-atomic variants, introduces a naming convention
+  set_bit and set_bit_atomic on the Rust side.
+- changed naming and comments. Keeping `new`.
+- change dynamic_id_pool to id_pool
+- represent bitmap inline when possible
+- add some more tests
+- add myself to M: line for the Rust abstractions
 
-> +    /// Try to find NPDE in the data, the NPDE is right after the PCIR.
-> +    fn find_in_data(
-> +        pdev: &pci::Device,
-> +        data: &[u8],
-> +        rom_header: &PciRomHeader,
-> +        pcir: &PcirStruct,
-> +    ) -> Option<Self> {
-> +        // Calculate the offset where NPDE might be located
-> +        // NPDE should be right after the PCIR structure, aligned to 16 bytes
-> +        let pcir_offset = rom_header.pci_data_struct_offset as usize;
-> +        let npde_start = (pcir_offset + pcir.pci_data_struct_len as usize + 0x0F) & !0x0F;
+Changes v3 --> v4:
+- Rebased on Viresh's v3 [2].
+- split into multiple patches, separate Rust and bindings. (Yury)
+- adds dynamic_id_pool.rs to show the Binder use case. (Yury)
+- include example usage that requires release of spinlock (Alice)
+- changed bounds checks to `assert!`, shorter (Yury)
+- fix param names in binding helpers. (Miguel)
+- proper rustdoc formatting, and use examples as kunit tests. (Miguel)
+- reduce number of Bitmap methods, and simplify API through
+  use Option<usize> to handle the "not found" case.
+- make Bitmap pointer accessors private, so Rust Bitmap API
+  provides an actual abstraction boundary (Tamir)
+- we still return `AllocError` in `Bitmap::new` in case client code
+  asks for a size that is too large. Intentionally
+  different from other bounds checks because it is not about
+  access but allocation, and we expect that client code need
+  never handle AllocError and nbits > u32::MAX situations
+  differently.
 
-What's this magic offset and mask?
+Changes v2 --> v3:
+- change `bitmap_copy` to `copy_from_bitmap_and_extend` which
+  zeroes out extra bits. This enables dbitmap shrink and grow use
+  cases while offering a consistent and understandable Rust API for
+  other uses (Alice)
 
-> +
-> +        // Check if we have enough data
-> +        if npde_start + 11 > data.len() {
+Changes v1 --> v2:
+- Rebased on Yury's v2 [1] and Viresh's v3 [2] changes related to
+  bitmap.
+- Removed import of `bindings::*`, keeping only prefix (Miguel)
+- Renamed panic methods to make more explicit (Miguel)
+- use markdown in doc comments and added example/kunit test (Miguel)
+- Added maintainer section for BITOPS API BINDINGS [RUST] (Yury)
+- Added M: entry for bitmap.rs which goes to Alice (Viresh, Alice)
+- Changed calls from find_* to _find_*, removed helpers (Yury)
+- Use non-atomic __set_bit and __clear_bit from Bitmap Rust API (Yury)
 
-'+ 11'?
+Link [1] https://lore.kernel.org/all/20250224233938.3158-1-yury.norov@gmail.com/
+Link [2] https://lore.kernel.org/rust-for-linux/cover.1742296835.git.viresh.kumar@linaro.org/
+Link [v9] https://lore.kernel.org/rust-for-linux/20250526150141.3407433-1-bqe@google.com/
 
-> +            dev_err!(pdev.as_ref(), "Not enough data for NPDE\n");
+*** BLURB HERE ***
 
-BiosImageBase declares this as "NVIDIA PCI Data Extension (optional)". If it's
-really optional, why is this an error?
+Burak Emir (5):
+  rust: add bindings for bitmap.h
+  rust: add bindings for bitops.h
+  rust: add bitmap API.
+  rust: add find_bit_benchmark_rust module.
+  rust: add dynamic ID pool abstraction for bitmap
 
-> +            return None;
-> +        }
-> +
-> +        // Try to create NPDE from the data
-> +        NpdeStruct::new(pdev, &data[npde_start..])
-> +            .inspect_err(|e| {
-> +                dev_err!(pdev.as_ref(), "Error creating NpdeStruct: {:?}\n", e);
-> +            })
-> +            .ok()
+ MAINTAINERS                     |  15 +
+ lib/Kconfig.debug               |  13 +
+ lib/Makefile                    |   1 +
+ lib/find_bit_benchmark_rust.rs  |  95 ++++++
+ rust/bindings/bindings_helper.h |   2 +
+ rust/helpers/bitmap.c           |   9 +
+ rust/helpers/bitops.c           |  23 ++
+ rust/helpers/helpers.c          |   2 +
+ rust/kernel/bitmap.rs           | 588 ++++++++++++++++++++++++++++++++
+ rust/kernel/id_pool.rs          | 222 ++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ security/Kconfig.hardening      |  10 +
+ 12 files changed, 982 insertions(+)
+ create mode 100644 lib/find_bit_benchmark_rust.rs
+ create mode 100644 rust/helpers/bitmap.c
+ create mode 100644 rust/helpers/bitops.c
+ create mode 100644 rust/kernel/bitmap.rs
+ create mode 100644 rust/kernel/id_pool.rs
 
-So, this returns None if it's a real error. This indicates that the return type
-should just be Result<Option<Self>>.
+-- 
+2.49.0.1204.g71687c7c1d-goog
 
-> +struct FwSecBiosPartial {
-
-Since this structure follows the builder pattern, can we please call it
-FwSecBiosBuilder?
-
-> +    base: BiosImageBase,
-> +    // FWSEC-specific fields
-> +    // These are temporary fields that are used during the construction of
-> +    // the FwSecBiosPartial. Once FwSecBiosPartial is constructed, the
-> +    // falcon_ucode_offset will be copied into a new FwSecBiosImage.
-> +
-> +    // The offset of the Falcon data from the start of Fwsec image
-> +    falcon_data_offset: Option<usize>,
-> +    // The PmuLookupTable starts at the offset of the falcon data pointer
-> +    pmu_lookup_table: Option<PmuLookupTable>,
-> +    // The offset of the Falcon ucode
-> +    falcon_ucode_offset: Option<usize>,
-> +}
-> +
-> +struct FwSecBiosImage {
-> +    base: BiosImageBase,
-> +    // The offset of the Falcon ucode
-> +    falcon_ucode_offset: usize,
-> +}
-> +
-> +// Convert from BiosImageBase to BiosImage
-> +impl TryFrom<BiosImageBase> for BiosImage {
-
-Why is this a TryFrom impl, instead of a regular constructor, i.e.
-BiosImage::new()?
-
-I don't think this is a canonical conversion.
-
-> +    type Error = Error;
-> +
-> +    fn try_from(base: BiosImageBase) -> Result<Self> {
-> +        match base.pcir.code_type {
-> +            0x00 => Ok(BiosImage::PciAt(base.try_into()?)),
-> +            0x03 => Ok(BiosImage::Efi(EfiBiosImage { base })),
-> +            0x70 => Ok(BiosImage::Nbsi(NbsiBiosImage { base })),
-> +            0xE0 => Ok(BiosImage::FwSecPartial(FwSecBiosPartial {
-> +                base,
-> +                falcon_data_offset: None,
-> +                pmu_lookup_table: None,
-> +                falcon_ucode_offset: None,
-> +            })),
-> +            _ => Err(EINVAL),
-> +        }
-> +    }
-> +}
-
-<snip>
-
-> +impl TryFrom<BiosImageBase> for PciAtBiosImage {
-
-Same here.
-
-> +    type Error = Error;
-> +
-> +    fn try_from(base: BiosImageBase) -> Result<Self> {
-> +        let data_slice = &base.data;
-> +        let (bit_header, bit_offset) = PciAtBiosImage::find_bit_header(data_slice)?;
-> +
-> +        Ok(PciAtBiosImage {
-> +            base,
-> +            bit_header,
-> +            bit_offset,
-> +        })
-> +    }
-> +}
-
-<snip>
-
-> +impl FwSecBiosImage {
-> +    fn new(pdev: &pci::Device, data: FwSecBiosPartial) -> Result<Self> {
-
-Please add a method FwSecBiosBuilder::build() that returns an instance of
-FwSecBiosImage instead.
