@@ -1,109 +1,129 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F06C229B16;
-	Mon,  2 Jun 2025 14:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748875493; cv=none; b=gOqno4Tcw5hbSw0Z8RShhR4ZBZ9Ol0i2mTuoKTlP97TEZRLgxP1GuS3VPx7omt1M6ALeL8ElIQLFrHtokTFMa/IiRh/2DDAJT8CUzt6cmedVf4ahnwLAVGqTwkAp2dsyoi1qYfZo2x2yS9srimKAPR/b55/0c/HdOALsZms/jeU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748875493; c=relaxed/simple;
-	bh=jSvHY/i9wEUbIaNH6yIcqYLtUbQfSWmdbAEqoNOUres=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Iq6/A2F978VqIv5HP/PL3g0th5l1BMrDZAAteOVWtGwJbkTrkDuSQhGGO/ksaQTm8ryac5u2VVewYR0Wa/EkWrwYg3pDMihvfCL7xoiGLruG7j94REOLBDNcYQSIltIDC2akRS3ylgjiURlmVh63sRDFKg1Q02Cxplb/UvmWc00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MdheS4wv; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6027322A4DB;
+	Mon,  2 Jun 2025 14:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748876233; cv=pass; b=BLNuEX0vVgET4fysWzh45Czew6J6Af8Lq19iYX+opUe6mic2alMYSlyggzImmQwYcAWtemw5osOUQaBHa+GmwTIRCyjCu7g6gpiEY3BnfyPLWMpxRq/EToVTRwImwKRymsmf7sp0V4IxB6FT4IBNoD9/kar3eGGRupDVCJOE+Gs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748876233; c=relaxed/simple;
+	bh=fqmaKdL6+SP2p0NooH1UzlIgSWoHuY1uQbCgGLpfntQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=kZ21UBY7bo+ZdScufVw8L1ManfKf0YSst66JRRUlLAS45gR2EcAOJNpuL/h8jOxr46jTtR0ZQPjSIY8ja1EbnygLKN4kS3Gftu47zMrr20ItBmcO3hRQ5pWUxJekpze4QfSpk+4Q9of8wkp0Ffi8dAjIXcaTrRQlaxldEMcVrcQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=IcL/sGjB; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MdheS4wv"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b16c64b8cbcso462473a12.3;
-        Mon, 02 Jun 2025 07:44:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748875492; x=1749480292; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jSvHY/i9wEUbIaNH6yIcqYLtUbQfSWmdbAEqoNOUres=;
-        b=MdheS4wvfE9j9D8BOWyyXbz4cJMM1x/wvCwlYMERT9nULI4Qy6IzZGWUjYlA7ma5mo
-         V0pBHLkbLYTKPpgAQjrPOyWcFvc1D0ZIi5MUhs4AuHgX9K/nPEQCnnrqnoGac4Tk14Zr
-         X6qxjGyoe59Wq7/anf0ZZM2lIJvHz27cKm3mOdiceQIOBCsETljzfOlwZDfDxQBPGrjl
-         QeIABRZ0SDFWZcW5vKj/4tC39pITGIWqutzaGIrq/jA4ZCCCECmDkz8muHadEd7+4TNB
-         e/RxuXEmThixH3C82+5Aom5IAEeMc92cwcme/9eHb/1YmOh0p+3/fgV2i6eNqCFmXT6h
-         OWIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748875492; x=1749480292;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jSvHY/i9wEUbIaNH6yIcqYLtUbQfSWmdbAEqoNOUres=;
-        b=g/R8eWrZgf+F5E2tMbQzfjkordslNkulpX50AqDOhGjGdfoiX1mWxmvPMTFAsW0no4
-         agwY12LTEiAPSI2LhBo5e6txNlSRtAX1iMaxOH6duYkgbA4a94hn9O/ZS51WZe3rq4o6
-         WA6AmKj86kjQXk1K89GXPwoUEx3B/BvwXjZtun4O1A4nAU0Y+SC9KSMaAfA7oTvfXClb
-         lKFNPIkdcmH2YJ+jUxoywZ803T975VM6hYC82m0s0UoSv//8UNrDJzB31aHevL6uNnss
-         uQnTWpoVuq0N5iHlm++A1VRXKR8r3yIAOOt8R7CSQ/v+y+sQFBu18Iqrpk5uHaMz4Yl2
-         xHXA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0Iw2UJihaTIImnt38rg/bOKqFyb1s1XR6iEgG2u5sXmNgRGwJzrt+qCSGzeq/if2acKDzT8sNlOdcclgR@vger.kernel.org, AJvYcCW8GpQ8FP32KFCI1BfJMViovdn+E3stVdIccbhdECZi7Hfq4vo3lJnh39uj2yZqEoK2Fr1L5E8nlBAMYAAdQQU=@vger.kernel.org, AJvYcCWbIgL4SZHC3iJ3OLs8CS+u6+HHBT5UY1Pc/nODEfH0BrCVZXsOXH5NbSxweuofahGTCfDpPLCMkXQF5ML+ixY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7B48ddNc7ZwI7ldr8k+PUAorRtKXTYMQbCuf+nl1cRXL9FjgA
-	qmmE1y+0xjKzR5ybttsJ6oYg1hanl4zbBZVfpDyWKevaslb7gztrwoSSmSu+mpDqL/5ppioZ85p
-	i9bWRrqHb0OoJ+PIeMw6A6jdVxRSn3fs=
-X-Gm-Gg: ASbGncuoxvOayQH4cJ7ytkJ/I2TFXf9cMlC7UOanojfanKhHK3uCjhMRcy30bk168bA
-	cbQrfzIzw0PVPGeoOzzq5QEetKaUxY1TtYkTb+G/vgW261l6mV1ca8gmZhtMZiZ8GX2/sHjf8F1
-	KvDHqSTaQx4G6fuQ8g7skjsTw7GUh/Mlq+
-X-Google-Smtp-Source: AGHT+IFvBpHreqj20x7/UKsZDEN6zgCxt+bJaSe71NQ1Ky0ZfUsdJH2lN+Zi0j9OlW+A9XZ+6wei/QevbLQY/sL+UGI=
-X-Received: by 2002:a17:90b:4f4d:b0:310:8d79:dfe4 with SMTP id
- 98e67ed59e1d1-31241849819mr8385278a91.4.1748875491587; Mon, 02 Jun 2025
- 07:44:51 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="IcL/sGjB"
+ARC-Seal: i=1; a=rsa-sha256; t=1748876207; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=XmfrqtlhlnldH4kwzX4xslwYHfQBNdHqcBelQXZ6Lrcg7iHEviQmrTe484+B/xbtqKltYjBoA7hv30bsOrW5l+9qFgt5w63z3CLt7Ic4BG9A6qlvwb6xLgm2N/tI8KTnV4yxABMuhHgBBMqrkLAfJn2UzOztNkd0zECYmwQNmaY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1748876207; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=3qYcFLdgo7IjTr+AbRql4HwQ6X5sGT8wD6ZLBAhVXkw=; 
+	b=V2Pgs07EDkFlFzQZYf8C2Eu8sLYTW4UkxbSudhkqHGH2B+lucnObRvfhD2J29nmrUPus6qYkq3KfZDcAw4T2IBh5EapHUv/O3uL+MGLhLW8RJSt4/JONbADXfG+5m9HO/o96xTZQ8u69OtgK9awa3NLDBz/URPSXisDM5PWsWU4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1748876207;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=3qYcFLdgo7IjTr+AbRql4HwQ6X5sGT8wD6ZLBAhVXkw=;
+	b=IcL/sGjBT3DRi2YktskR8cKL3Je68UDw+2KjwU3PSWChgPgVgG/dBjRUtXJTCKJC
+	Evu8mwiN6SMxFkupAvGNr8utQwkAxrKvaBB185mzeVeb+yeQ5ZeYiiKQUDwLggDrUOs
+	PU/A8XS18f+meXanq4e42XbngvGHl8exX2QywJIw=
+Received: by mx.zohomail.com with SMTPS id 1748876204841691.2107514249591;
+	Mon, 2 Jun 2025 07:56:44 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250602133653.1606388-1-bqe@google.com> <20250602133653.1606388-5-bqe@google.com>
- <aD2118mMOs8CZyGa@yury>
-In-Reply-To: <aD2118mMOs8CZyGa@yury>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 2 Jun 2025 16:44:38 +0200
-X-Gm-Features: AX0GCFutabTiVIbZhB05ZjbsqalKvGcsfDqJNzy2av3u6PaYBZk25GvRzCdeIco
-Message-ID: <CANiq72k7wnHsd6jrckkZtRpwbTPE+5ikbCw=_RexuRvwBSp-Rg@mail.gmail.com>
-Subject: Re: [PATCH v10 4/5] rust: add find_bit_benchmark_rust module.
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Burak Emir <bqe@google.com>, Kees Cook <kees@kernel.org>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>, Carlos LLama <cmllamas@google.com>, 
-	Pekka Ristola <pekkarr@protonmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v3 2/2] rust: platform: add irq accessors
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aCsK7s0qepzIiA-l@pollux>
+Date: Mon, 2 Jun 2025 11:56:28 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <CA34AB78-D9DC-433A-B6DF-663849A07370@collabora.com>
+References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
+ <20250514-topics-tyr-request_irq-v3-2-d6fcc2591a88@collabora.com>
+ <aCsK7s0qepzIiA-l@pollux>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Mon, Jun 2, 2025 at 4:32=E2=80=AFPM Yury Norov <yury.norov@gmail.com> wr=
-ote:
->
-> > +const BITMAP_LEN: usize =3D 4096 * 8 * 10;
-> > +// Reciprocal of the fraction of bits that are set in sparse bitmap.
-> > +const SPARSENESS: usize =3D 500;
->
-> Is there any simple mechanism to keep C and rust sizes synced? (If no,
-> not a big deal to redefine them.)
+Hi Danilo,
 
-One may pick them from C (possibly with a `RUST_HELPER_*` if needed).
-If they are non-trivial macros, then using an `enum` instead of a
-`#define` on the C side is also an alternative.
+[=E2=80=A6]
 
-> What is the name policy for rust? Maybe a more human-readable name
-> would work better here?
+>> +
+>> +    /// Same as [`Self::irq_by_name`] but does not print an error =
+message if an IRQ
+>> +    /// cannot be obtained.
+>> +    pub fn optional_irq_by_name(&self, name: &CStr) -> Result<u32> {
+>> +        // SAFETY: `self.as_raw` returns a valid pointer to a =
+`struct platform_device`.
+>> +        let res =3D unsafe {
+>> +            =
+bindings::platform_get_irq_byname_optional(self.as_raw(), =
+name.as_char_ptr())
+>> +        };
+>> +
+>> +        if res < 0 {
+>> +            return Err(Error::from_errno(res));
+>> +        }
+>> +
+>> +        Ok(res as u32)
+>> +    }
+>=20
+> I don't like the indirection of claiming a u32 representing the IRQ =
+number from
+> a bus device and stuffing it into an irq::Registration.
+>=20
+> It would be better we we'd make it impossible (or at least harder) for =
+a driver
+> to pass the wrong number to irq::Registration.
+>=20
+> I see two options:
+>=20
+>  1) Make the platform::Device accessors themselves return an
+>     irq::Registration.
+>=20
+>  2) Make the platform::Device accessors return some kind of =
+transparent cookie,
+>     that drivers can't create themselves that can be fed into the
+>     irq::Registration.
+>=20
+> My preference would be 1) if there's no major ergonomic issue with =
+that.
 
-Up to the maintainers, and generally the same as for C. In the global
-Rust samples and things like that we have `rust` in the name since
-they are Rust samples after all, but there is no need to say `rust` or
-`module` in actual modules etc. unless there is a reason for it.
+Isn=E2=80=99t 1 way more cluttered?
 
-I hope that helps!
+That's because the accessors would have to forward all of the arguments =
+(i.e.:
+currently 4) to register().
 
-Cheers,
-Miguel
+Going with approach 2 lets us keep the two APIs distinct, we'd only have =
+to
+take in the cookie in place of the u32, of course.
+
+=E2=80=94 Daniel=
