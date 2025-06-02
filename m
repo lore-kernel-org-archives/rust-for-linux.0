@@ -1,56 +1,56 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432D61A3A80
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 16:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DB221C190
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 16:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748880162; cv=none; b=FxjfPoUnq3WoGgGoVr5sYhEq83uGGpkciDuPRsEInmF6h6SSdLxn/jK1VUDIsQHZySRt+Po6hLWxDChWWZMcSn0J0ude+UdhwGOfc38K2mE4KrQN+Lgki7ZJyWII3dAtsrCxxTjKVf0DNh8672r1N0teBhnFzd0pzjSznqhexSw=
+	t=1748881167; cv=none; b=OAUOHadIAGQK49+HLbisfYCQyrREnF2O5rZkUi521iRq++QniprfASDejDkxi5x8DlTNC6ayzJmUVDU2/XFcR8w+Dm4Xs+D07vO9rFl0J/SsZEL2JyBhh+aru5Of4zaIE0cJGgn+bNGF60aL/t1carq1UkNl3hUhdJSfSjx+oN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748880162; c=relaxed/simple;
-	bh=6NfF/X3yQ0XHNDEeB3ap42sSQz7382eJ+Iu/Erbmta4=;
+	s=arc-20240116; t=1748881167; c=relaxed/simple;
+	bh=ljIrxYiJzxGe7Czc47ScoMraWr5MaF89zkDh0vKT6Tw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=F2GK52HRkpTFV/ugn7q739/9coHVDTqFvTQNxaNDV/frpvMiIcsyhqOhNH7Fh+/GOhwPn0dE+27liXLnDPtD+25XmRk2A8VxXOuZWO29gN4jRratyJgYPJEnMg/hV/ReKyBab5xy4nDq8avS2sYqcGjeHLBhLhAodtGrn6/IObU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J9/BQFxs; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=iGlLL3Gpn6BFYiN0wzW+DPpT/R/nRibkh4KVfEAA8pnJbSPz1x2VOxrNyhjcplz0BiibanXm+r5F/88blohbXESByDe6xLjITU5byzc9w9EVmmwI+CJ7b5ntBbOkKC/wfN+rEwJ/4nx4O6rCwMckAtm4RZtaEK3J+/r7FDtRkkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1mXTW4nB; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J9/BQFxs"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a50816ccc6so938727f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 09:02:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1mXTW4nB"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-442fda1cba7so21732755e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 09:19:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748880159; x=1749484959; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1748881163; x=1749485963; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5LSRzdKUmCfZ6ZEE5fydRUyqDXoWGCBC1D0jQYKLUL0=;
-        b=J9/BQFxsZhIwlCDz5SXBS/iueKbpK1pyjFzr22hVE/h1/8slUTcv5GyAAwDeWWr1kA
-         4taHqIeLvnAB9+Xr3OEUsmUwEJzWr3xPUpBaNECaLhUh/fZ12ESL9pOsbXpKg12HT+Ui
-         KgCG8bdzPpCTM+5m4EafxDqIlOiMzw5Pt1QgjQ32MxGU2z+BTeSh17Dl4UFxfFHzO7Z4
-         rFS/9uuhuuy2cFf0waoYQR4MFWO3qOQbEXAi7BXcvvKw7BFj6XHVCkD3kegCX7R+DFA/
-         vqkQ5/JiIh4qe+fPBGC5ueU5TXFaJJkEotK4X7IoPMvSnWwSx5WIqLFvygtwx19IZc5f
-         Ts6w==
+        bh=XuOsHwV8/b0lID06SIdHpZB8Xl8LCaN/OUfGvnqpXk8=;
+        b=1mXTW4nBf73BVQjx9mCDmB6cLvSEk4nC74OM3gj6lEtfFzojAhPv7EcVMy2Rf15e/6
+         q7uvEDZlKGc40DLRVIFooTxW3+Bkd+SIVigz6E1ia+53tdsKlp1Pw+7h4unQp9aLvHTB
+         Okw3Lq5BbbFbTm/ipslLxGq2QDsEIIbspqS3GLAUO06pOO4RXlXOA/o8J7E2yb5nNsye
+         Om/m6SkY2ydczEOYMnUIFNmeFVbLeHTAD4k6LDfmSu4g2bs1ua+p7rSf5cKg466W5iW4
+         5r1Bx+4bu33GDzCdkvy7ztdN5ZK36dJ/vuu66ZGlikpIw4M55DwzFkM8fCBBonja1HDv
+         mNZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748880159; x=1749484959;
+        d=1e100.net; s=20230601; t=1748881163; x=1749485963;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5LSRzdKUmCfZ6ZEE5fydRUyqDXoWGCBC1D0jQYKLUL0=;
-        b=MqAgyYvRGzLCcxpnQJadydq+cgj7/8FNt1Tw6HTcb6X6ajlpf8MmAt9XX/b5QKDQt1
-         JPGlf2s2iRyxa/mGw2Kbpueqxk2MuY329JlMyV5zIr5rEoOnxS6BPf0MFBrgCOzigfZs
-         4jIRxUGWS1qJovBuPQwHoHnvXW6mx7qAHE3RZ5TosoYou0EWR7nO572B1j1cKSc7stEd
-         q7rj0OCi7zQlSgWa0TJo3qPuN0mdZ1iF6XWgECaYd7ABY6LEmQAOYt1fLRE2dTYVr657
-         /HkUyDdRbxH7lXx3q5JezBpnDpNK5yiGYCfw5gCYS94Mwl3jmg/skOqtCLVb4Qlo5KMY
-         0Gpw==
-X-Forwarded-Encrypted: i=1; AJvYcCVoY1hPiuomthvGVWldZb1eHHn866dQ0ZgBUqWJeQCPstnmVBivCpgPp+ThpOfaaMS4Gx/6j8Y1EW73y/d8RQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9yHVTCztLGvpklHTcfJdYu8r3xZI+AFeuYZl/NuHSgiKqF3e1
-	w2WWf6XGoC1BxcdpEqM8+6w8KKKO1HN2fUTXjViU/3kP+ZScy6Nd0YewMBaUaIJ5KZP/3W+aOb/
-	JJfTBhq2PiAQHrOO6FQ==
-X-Google-Smtp-Source: AGHT+IG8cLazPRIdxKpkEHN0QpVz7JJD0lWn7hgDZa3uU8xfy6JHF1/OrcOMgFXS+oLc0dKG6umKocG6VFxuQNY=
-X-Received: from wmbfp6.prod.google.com ([2002:a05:600c:6986:b0:450:ce9d:a742])
+        bh=XuOsHwV8/b0lID06SIdHpZB8Xl8LCaN/OUfGvnqpXk8=;
+        b=sDkBAhyhHPsd2Wca5O7WnheZNshYuPCwvVYkjEZiGNDpqKqD6jirBo9kknxRR9x8KM
+         /HDn+EWfA6wOh9Y4WK4OQFxyTQ0QwgmFHhepCL+0QpsriL3TrFv3t3MQJdi6Sj+3MCB5
+         CqUlkawQaDIZJZaL+JJvVAdnzQT6tW4eE5N6n705dX9A4+0SUvqkY4/K7W5tEiM+s6lN
+         wcjS6FMxkzx4SFMtRRsnhmQlgrf4QXvMAWCVSN/E0YZ9gAQfSjx0Z4t6BnWeR0DhLq+X
+         o10ssOg67rSZM9G/m0FlU6i0NFKswxur0pLGF5BFusf+KqJdaXPKDrSzkio7tDz4cDvl
+         6igg==
+X-Forwarded-Encrypted: i=1; AJvYcCXWkW5Q2X4e89+fafmSoUn4MfM10IucYIwWiZy+MnG4vDB2y3gzC6J9SJj4GvR00T2vdxeTpnoDnk63Q0DMFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9C0rzxivfjmCbERoqO0o3kJ1Zfj8SzvyI+PcUwxNJ1GSIuI4r
+	lf5iHYGPvUAw85218lje1+QzvDe/6hsiRiVEuJXMd1+yu813bvv+SxWkZP/2fasfuHWr67tQWmQ
+	PAdvyX2tiIjYYyOQJAQ==
+X-Google-Smtp-Source: AGHT+IHSoq9Hg+bK+/GeaKnDjhYI/ippomoPHfGqVG5kdYjQ3Y/8lR8OvZ7OHaRyk7G5A2dqSYUHiV9mzFamY18=
+X-Received: from wmbbi20.prod.google.com ([2002:a05:600c:3d94:b0:451:d70f:eb87])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1885:b0:3a4:eb80:fcc2 with SMTP id ffacd0b85a97d-3a4fe15ad82mr7450176f8f.11.1748880159443;
- Mon, 02 Jun 2025 09:02:39 -0700 (PDT)
-Date: Mon, 2 Jun 2025 16:02:37 +0000
-In-Reply-To: <aCXxnUdO8--5y8Zo@pollux>
+ 2002:a05:600c:46cb:b0:442:d9fb:d9f1 with SMTP id 5b1f17b1804b1-450d882b051mr118531105e9.4.1748881163711;
+ Mon, 02 Jun 2025 09:19:23 -0700 (PDT)
+Date: Mon, 2 Jun 2025 16:19:21 +0000
+In-Reply-To: <aCUQ0VWgoxdmIUaS@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,12 +58,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
- <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
- <aCUQ0VWgoxdmIUaS@pollux> <A7E3A124-AF77-4A4A-B4E2-AE7DDB1CE007@collabora.com>
- <aCXYaCGvO_tI1OOh@pollux> <39C56E3E-07C6-44BB-B5F6-38090F037032@collabora.com>
- <aCXh1g5FWNiz7exb@pollux> <BEDD659F-B222-4150-9018-3B59126140E6@collabora.com>
- <aCXv86nAARGgoqEq@pollux> <aCXxnUdO8--5y8Zo@pollux>
-Message-ID: <aD3LHfkmuXR-wPzm@google.com>
+ <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com> <aCUQ0VWgoxdmIUaS@pollux>
+Message-ID: <aD3PCc6QREqNgBYU@google.com>
 Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
@@ -77,81 +73,88 @@ Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.or
 	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, May 15, 2025 at 03:52:29PM +0200, Danilo Krummrich wrote:
-> On Thu, May 15, 2025 at 03:45:28PM +0200, Danilo Krummrich wrote:
-> > On Thu, May 15, 2025 at 10:16:33AM -0300, Daniel Almeida wrote:
-> > > 
-> > > >> 
-> > > >> Well, not really, because this impl PinInit can be assigned to something larger
-> > > >> that is already pinned, like drm::Device::Data for example, which is (or was)
-> > > >> already behind an Arc, or any other private data in other subsystems.
-> > > >> 
-> > > >> IIUC what you proposed has yet another indirection. If we reuse the example
-> > > >> from above, that would be an Arc for the drm Data, and another Arc for the
-> > > >> handler itself?
-> > > > 
-> > > > Can't you implement Handler for drm::Device::Data and e.g. make Registration
-> > > > take an Arc<T: Handler>?
-> > > 
-> > > No, because drivers may need more than one handler. Panthor needs 3, for
-> > > example, for 3 different lines.
-> > > 
-> > > > 
-> > > > The irq::Registration itself doesn't need to be allocated dynamically, so it'd
-> > > > still be a single allocation, no?
-> > > > 
-> > > 
-> > > Right, the registrations don't, but the handlers do.
-> > 
-> > Why does the handler need to be allocated dynamically?
-> > 
-> > What about something like the following?
-> > 
-> > 	pub struct Registration<T, H: Handler<T>> { ... };
-> > 
-> > 	pub trait Handler<T> {
-> > 	   fn handle_irq(&T) -> IrqReturn;
-> > 	}
-> > 
-> > 	// Could be `drm::Device::Data`.
-> > 	struct MyData { ... };
-> > 
-> > 	// Implements `Handler<MyData>`.
-> > 	struct IRQHandler1;
-> > 	struct IRQHandler2;
-> > 
-> > 	// `data` is `Arc<MyData>`
-> > 	irq::Registration::<IRQHandler1>::new(data, ...);
-> > 	irq::Registration::<IRQHandler2>::new(data, ...);
-> > 
-> > With that you can have as many IRQs as you want without any additional
-> > allocation.
+On Wed, May 14, 2025 at 11:53:21PM +0200, Danilo Krummrich wrote:
+> On Wed, May 14, 2025 at 04:20:51PM -0300, Daniel Almeida wrote:
+> > +/// // This is running in process context.
+> > +/// fn register_irq(irq: u32, handler: Handler) -> Result<Arc<Registration<Handler>>> {
+> > +///     let registration = Registration::register(irq, flags::SHARED, c_str!("my-device"), handler);
+> > +///
+> > +///     // You can have as many references to the registration as you want, so
+> > +///     // multiple parts of the driver can access it.
+> > +///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
 > 
-> Alternatively we could also do the following, which is probably simpler.
+> This makes it possible to arbitrarily extend the lifetime of an IRQ
+> registration. However, we must guarantee that the IRQ is unregistered when the
+> corresponding device is unbound. We can't allow drivers to hold on to device
+> resources after the corresponding device has been unbound.
 > 
-> 	pub struct Registration<H: Handler> { ... };
+> Why does the data need to be part of the IRQ registration itself? Why can't we
+> pass in an Arc<T> instance already when we register the IRQ?
 > 
-> 	pub trait Handler {
-> 	   fn handle_irq(&self) -> IrqReturn;
-> 	}
-> 
-> 	// Could be `drm::Device::Data`.
-> 	struct MyData { ... };
-> 
-> 	// Implements `Handler`.
-> 	struct IRQHandler1(Arc<MyData>);
-> 	struct IRQHandler2(Arc<MyData>);
-> 
-> 	// `data` is `Arc<MyData>`
-> 	let handler1 = IRQHandler1::new(data);
-> 	let handler2 = IRQHandler2::new(data);
-> 
-> 	irq::Registration::new(handler1, ...);
-> 	irq::Registration::new(handler2, ...);
+> This way we'd never have a reason to ever access the Registration instance
+> itself ever again and we can easily wrap it as Devres<irq::Registration> -
+> analogously to devm_request_irq() on the C side - without any penalties.
 
-Yeah there's no reason to *force* the user to store an Arc. The user
-could store data that is only accessed by the irq callback without an
-Arc. I agree that for shared content you probably want to access it
-through an Arc.
+If we step away from the various Rust abstractions for a moment, then it
+sounds like the request_irq API must follow these rules:
+
+1. Ensure that free_irq is called before the device is unbound.
+2. Ensure that associated data remains valid until after free_irq is
+   called.
+
+We don't necessarily need to ensure that the Registration object itself
+is dropped before the device is unbound - as long as free_irq is called
+in time, it's okay.
+
+Now, if we use Devres, the way this is enforced is that during cleanup
+of a device, we call free_irq *and* we destroy the associated data right
+afterwards. By also destroying the associated data at that moment, it
+becomes necessary to use rcu_read_lock() to access the associated data.
+But if we just don't destroy the associated data during device cleanup,
+then that requirement goes away.
+
+Based on this, we could imagine something along these lines:
+
+    struct RegistrationInner(i32);
+    impl Drop for RegistrationInner {
+        fn drop(&mut self) {
+            free_irq(...);
+        }
+    }
+    
+    struct Registration<T> {
+        reg: Devres<RegistrationInner>,
+        data: T,
+    }
+
+Here you can access the `data` on the registration at any time without
+synchronization.
+
+Note that with this, I don't think the rcu-based devres is really the
+right choice. It would make more sense to have a mutex along these
+lines:
+
+    // drop Registration
+    if devm_remove_callback() {
+        free_irq();
+    } else {
+        mutex_lock();
+        free_irq();
+        mutex_unlock();
+    }
+    
+    // devm callback
+    mutex_lock();
+    free_irq();
+    mutex_unlock();
+
+This avoids that really expensive call to synchronize_rcu() in the devm
+callback.
+
+Of course, for cases where the callback is only removed in the devm
+callback, you could also do away with the registration, take a
+ForeignOwnable that you can turn into the void pointer, and have the
+devm callback call free_irq followed by dropping the ForeignOwnable
+pointer.
 
 Alice
