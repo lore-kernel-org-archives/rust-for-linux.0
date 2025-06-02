@@ -1,125 +1,135 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773261474DA;
-	Mon,  2 Jun 2025 08:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8781537C8
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 08:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748853288; cv=none; b=cb59rBC3vWStf81ys0YDz/1Qx9HuKUfJy9n6Bu++CGRso96nu2JCS47hT9cjZGOT2lbMlfMp77z1EnXna0FR5LwAwASWZ995cWIE79Tr6DN8Itkc0zptWSrFI2y/gTbRF6Rsy/imO+A4A3ImEHxafgc+T5UaAjLgGmDm7gqQ7JE=
+	t=1748853923; cv=none; b=ufu92/HXLhkJpIelro0AxI6tOrsdZNkno7g67nOEL38Bea++tBOJpAooCLlgsUPyRnKv2w8OiWIv/eNdLWu1iHha1wYuSCz3xIGR2zKtHKnBR0OIiNcUdFbx9bz6d0kcEeC5f1QtnWJq27cBVrsz8A91O+nNWWBNovhyDj6cGRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748853288; c=relaxed/simple;
-	bh=J0M3jyHJqytQ2fRxhIn0EzqB+KBXvL25DDYU1JG4HoA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=muI5LP3KeaW1KDN7FzAA2yKpCZVe3ln+E4sMdZZLg47IIlAmDbvdHsDKvJ2RUR4LIMycPAWiEcOCsIC6+W9Du8c4tY8vzrug+tKLO02rJWTnr2P+hxSWJr15IXkz0ylU3TOvtYuYp7UpdbvCSJvU33tLZ5J253ZoVZJS9xWBkfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izVHQ4IU; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748853923; c=relaxed/simple;
+	bh=FnmJdnnfQEOeXtBs17TTqlpvE/Z6l2P4aZY4NkM4qxc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FcYOYZ3FxXh4+8MbTOePKJAwLEHLgswErlWY2EreFZ33JRp6N5mSXc4HSkVQEURmeKLQ65xJYgxYLs4R28JNoMzPFPWuryGif8FWPgwgh0MdQ8F3FIg2DztOq+FEAQpZNwZrQbEh/wbm3WvpgTrvqloQoppxG7K5YRYvF3+Gi9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aIOjdn0/; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izVHQ4IU"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7399a2dc13fso5208193b3a.2;
-        Mon, 02 Jun 2025 01:34:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aIOjdn0/"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-451d7de4ae3so5995255e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 01:45:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748853286; x=1749458086; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uk1R1JyhCIe/fQRvoiM0DWTwBgVcs7kTPMVdocZRyaM=;
-        b=izVHQ4IU6ttTXwkDqtXrJlVtvMXzgw6ZaYzxdBgffrmHIXsiWBBXss1HqjeqTEUHSl
-         QxKYH2ciN+rJ9pyTsz7Yadi0nEdwmuTFg03Ton6W9FJOePf7tWCkaXPcKywk3izK7rrB
-         kvdEL5z62SMxRMFlefdGOlzDbe7qd8G0M8WVGakvcaQ0ljV/YXKcg4SODdtNmABnKGss
-         0jS+mgHBsht77afKEznC7ZJ6BygPaXQZ2cn/GSzqN2174A5K3Fy4yIwPBqiz2Eqz58vs
-         9XnKs1r6ghyqayRjg848NUBvpxWXHwldtTBw9D0dGGyCqkTbXDy+jHprgULKYGztnL4y
-         fMJQ==
+        d=google.com; s=20230601; t=1748853919; x=1749458719; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6VThKlttpzakaK+gyheH3wNtNAtAxPTgkZTge5fKamo=;
+        b=aIOjdn0/uAGIvgue2rZNxXVyyYtn34qf2+wdYw83h/wiSyICBU6FpJAx7yeu2Otmy7
+         PDdjE99CIEyrE3tCK+4Tp9moDWlygpdD/3Y5HLkH3d4m+pbsy2I47tNLMwXethtqAqkD
+         wbLcujv5avzsXJLY8dE8DEmTwM5jHSsRDWdWBz68Bb0OMSd7DsyBfHGAq5sUoeibiva5
+         aZk+wrdp55qS5xqrAfnXJ9ayEHvfuSCpIWfxUZlmwN/loCWl8ZOQ86hz7QuXJEQ60Y60
+         xo7B1QqcLAL2gWI2dNl+Gj5F8SlZSMwVMy7yXqO7r4+9fnBXLVEM5mSPfTmxexxD1LVa
+         2Lew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748853286; x=1749458086;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uk1R1JyhCIe/fQRvoiM0DWTwBgVcs7kTPMVdocZRyaM=;
-        b=r5Yb+gBfk5ZehW/A9YnB/taE4EbceVOxPbqPcXyuYWKneiV7+soUB3OY9BnoU3OXcm
-         +VF1+60vUGcxa/QgULyH02DNm2QSFn2tQ7s5jzc7R12oOdyVDtrkLUIvwgk6rv+1Ade7
-         byrjIjWZPbJcRh0QOg4dl+5wVR86SnwVHbVJLH/Haw9rhWfbXUQOJpvH52IxPAlc8JnH
-         TqmEqe6qFV0+3GtDbpI1viRz95Cy/pHxNHYQsajQnrXUDhy5q8IJDaBROhp2YPHT9DQz
-         WR+41NIJLLi7UTKXkIKIPcH/RyGi0/oh3O+14MLzvH9lh2NZw2fhKgEX0FjH+ZyjMC38
-         0p2w==
-X-Gm-Message-State: AOJu0YxV7ZaUwXLACERxZdXKeKSQ5XKTXogdBVlilu8N3a4RyiCQQj7j
-	8AAFEYG7fsMyM7FExmVajUoeyOGlV2BNFmdSDufegQxhGgdE+aUpMVvXH+1aUmlQYP8Iig==
-X-Gm-Gg: ASbGncs5U91Oir9oYrmlMhAUa7l7oJHQf3BOoPZOby0oVbodh+xhukw6IK7+ChTsyZ/
-	vBW+kWyqaMgbLTjsbWZ5H1hLXcHsgooZXMdBvOtYhPlmOzLc667yFSH3XBb8bArUi3plGuWLngn
-	lr2RVEwd0B1sIoUfKFDAT3PJcSBCkbib1Gu/xdJ55UqA8kZf69HQ2+k+AUE37YbHTkHmsMLk1dR
-	vEK5O8sg8+RLp/c95r49/hcaBrqWZY9po/5ReSQHU1f1GNPN/MLr/0y/LFqPzp1W8rW2cCfw8b0
-	5HzzqQfsqD5fsw2HSw8Y2CD6/xvCJWH1pOiDUxaytw==
-X-Google-Smtp-Source: AGHT+IEbVb5ocQumAcWvPMi4UZGbZ15BBhbTJ6hJC2hPqqZwe3KERujm/wa0uH1aU67X+MCsr1/tIw==
-X-Received: by 2002:a05:6a00:148d:b0:747:bd28:1ca1 with SMTP id d2e1a72fcca58-747c1a1f6fdmr16951983b3a.3.1748853286529;
-        Mon, 02 Jun 2025 01:34:46 -0700 (PDT)
-Received: from localhost.localdomain ([2409:40f2:11ab:2cf2:10cd:85bd:e95:5230])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-747afed33casm7099687b3a.73.2025.06.02.01.34.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Jun 2025 01:34:45 -0700 (PDT)
-From: Sai Vishnu M <saivishnu725@gmail.com>
-X-Google-Original-From: Sai Vishnu M
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	gregkh@linuxfoundation.org,
-	daniel.almeida@collabora.com,
-	me@kloenk.dev,
-	Sai Vishnu M <saivishnu725@gmail.com>
-Subject: [PATCH v3] rust: doc: Clean up formatting in io.rs
-Date: Mon,  2 Jun 2025 14:01:20 +0530
-Message-ID: <20250602083119.17752-2-saivishnu725@gmail.com>
-X-Mailer: git-send-email 2.49.0
+        d=1e100.net; s=20230601; t=1748853919; x=1749458719;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6VThKlttpzakaK+gyheH3wNtNAtAxPTgkZTge5fKamo=;
+        b=xAXXjCbbu6ffZY5yuCkwxPsVQIGMyY88fyY8y4yEfQvAU72sfiL7F+CTMXIM5AiYpM
+         YwQpTyNxINwT1SIQoY3Jq2K+/kt4cL9JHB4JnyU+rZ8NLsrJe/ijGhlEH4biCmoY6hP7
+         mm7PVLKIbnH/64ek0nma2q4dPggmWDj+pFjn3juUXHHOKcQQJLY/xd1GF+q//L3ezTCm
+         TuXc8OF02yOkP6h0MIHmf0B5TzVMDWgLzJhvK48ztTdy2xF6jbqgGQt3ouoQD+BsOryf
+         2rffCYPyFEPASLMJWTKZRNsKdNd47sY6VEWifRcJhV59y9ghga5AUZopJShZXyN+NySb
+         NSuw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQJu2Ql18dX6Dtbqud0RxzR8MWU39reJ04absByRRzdLigiyZXEnV1GP7fQLryx6/KIpBkMxTvPRlK86OvAQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwL/o8IT8T8yjzNFTyPBikmsRPWPCluyi6qZVjlZTq14/GgqxsK
+	w0ysXMhP6VrbO7aCdnoG3F7YFYzSP19q+0iXiAqCBs/rR7nt7BFNyMOaeIF1P0h9CCNxekBRGQM
+	DbrFkB7OSYzFNuFnQrA==
+X-Google-Smtp-Source: AGHT+IHMPBuyHnbsu1fzojxAvVWoB+t0RQajrCfQEAuCK7B7x+b6pusC9Fc1oNLvaFICxRkoCWW8Tzuvcbz6+Eo=
+X-Received: from wmbdo10.prod.google.com ([2002:a05:600c:680a:b0:450:dcf2:1c36])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:1a8a:b0:3a4:dfc2:b9e1 with SMTP id ffacd0b85a97d-3a4f89a7e71mr9312736f8f.2.1748853918569;
+ Mon, 02 Jun 2025 01:45:18 -0700 (PDT)
+Date: Mon, 2 Jun 2025 08:45:16 +0000
+In-Reply-To: <20250530-cstr-core-v11-4-cd9c0cbcb902@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250530-cstr-core-v11-0-cd9c0cbcb902@gmail.com> <20250530-cstr-core-v11-4-cd9c0cbcb902@gmail.com>
+Message-ID: <aD1knOuEFxv6VQy1@google.com>
+Subject: Re: [PATCH v11 4/5] rust: replace `kernel::c_str!` with C-Strings
+From: Alice Ryhl <aliceryhl@google.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, Benno Lossin <lossin@kernel.org>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	linux-block@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-From: Sai Vishnu M <saivishnu725@gmail.com>
+On Fri, May 30, 2025 at 08:27:45AM -0400, Tamir Duberstein wrote:
+> C-String literals were added in Rust 1.77. Replace instances of
+> `kernel::c_str!` with C-String literals where possible and rename
+> `kernel::c_str!` to `str_to_cstr!` to clarify its intended use.
+> 
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1075
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Removed reference to internal variables in the comment of `IoMem`
-This avoids using private variable names in public documentation.
+> -/// Creates a new [`CStr`] from a string literal.
+> +/// Creates a static C string wrapper at compile time.
 
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes:  https://github.com/Rust-for-Linux/linux/issues/1167
+A C string *wrapper*? What do you mean? I would drop the word "wrapper"
+here.
 
-Signed-off-by: Sai Vishnu M <saivishnu725@gmail.com>
----
- rust/kernel/io.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> -/// The string literal should not contain any `NUL` bytes.
+> +/// Rust supports C string literals since Rust 1.77, and they should be used instead of this macro
+> +/// where possible. This macro exists to allow static *non-literal* C strings to be created at
+> +/// compile time. This is most often used in other macros.
+> +///
+> +/// # Panics
+> +///
+> +/// This macro panics if the operand contains an interior `NUL` byte.
+>  ///
+>  /// # Examples
+>  ///
+>  /// ```
+> -/// # use kernel::c_str;
+> +/// # use kernel::str_to_cstr;
+>  /// # use kernel::str::CStr;
+> -/// const MY_CSTR: &CStr = c_str!("My awesome CStr!");
+> +/// const MY_CSTR: &CStr = str_to_cstr!(concat!(file!(), ":", line!(), ": My CStr!"));
+>  /// ```
+>  #[macro_export]
+> -macro_rules! c_str {
+> +macro_rules! str_to_cstr {
+> +    // NB: we could write `($str:lit) => compile_error!("use a C string literal instead");` here but
+> +    // that would trigger when the literal is at the top of several macro expansions. That would be
+> +    // too limiting to macro authors, so we rely on the name as a hint instead.
+>      ($str:expr) => {{
+>          const S: &str = concat!($str, "\0");
+>          const C: &$crate::str::CStr = match $crate::str::CStr::from_bytes_with_nul(S.as_bytes()) {
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 72d80a6f131e..41404c1e17b3 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -43,7 +43,7 @@ pub fn maxsize(&self) -> usize {
-     }
- }
- 
--/// IO-mapped memory, starting at the base address @addr and spanning @maxlen bytes.
-+/// IO-mapped memory region.
- ///
- /// The creator (usually a subsystem / bus such as PCI) is responsible for creating the
- /// mapping, performing an additional region request etc.
-
-v1: Used backticks instead of `@` for parameters
-link: https://lore.kernel.org/rust-for-linux/20250530123129.31505-2-saivishnu725@gmail.com/
-
-v2: removed reference to the variable entirely.
-link: https://lore.kernel.org/rust-for-linux/20250601164939.5306-2-saivishnu725@gmail.com/
-
-v3: Moved changelog to commit message. Used the proper parent commit.
-
-base-commit: 7a17bbc1d952057898cb0739e60665908fbb8c72
--- 
-2.49.0
-
+Alice
