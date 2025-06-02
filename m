@@ -1,65 +1,65 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8781537C8
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 08:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BAE1C8606
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Jun 2025 08:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748853923; cv=none; b=ufu92/HXLhkJpIelro0AxI6tOrsdZNkno7g67nOEL38Bea++tBOJpAooCLlgsUPyRnKv2w8OiWIv/eNdLWu1iHha1wYuSCz3xIGR2zKtHKnBR0OIiNcUdFbx9bz6d0kcEeC5f1QtnWJq27cBVrsz8A91O+nNWWBNovhyDj6cGRU=
+	t=1748853992; cv=none; b=MfvekCF+aUkvG77pzspO9jwPesAj+ieVXmvB4uW1izXjRPjd9047IWESxfXfACPYw70xbPn1E1AOHFxoLxH/yn8+nlH8DpbiHYl9cQnWXC2qUfZEiv2GdbSa88sxyE8nxFQ2EWsyjuap8ykONF4i8CNLZUxQY6cGq2KXyUw5HIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748853923; c=relaxed/simple;
-	bh=FnmJdnnfQEOeXtBs17TTqlpvE/Z6l2P4aZY4NkM4qxc=;
+	s=arc-20240116; t=1748853992; c=relaxed/simple;
+	bh=jMbUYSpsToA7O3te9eApd0pFDpdOD0eqFMFbPLpvW2I=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FcYOYZ3FxXh4+8MbTOePKJAwLEHLgswErlWY2EreFZ33JRp6N5mSXc4HSkVQEURmeKLQ65xJYgxYLs4R28JNoMzPFPWuryGif8FWPgwgh0MdQ8F3FIg2DztOq+FEAQpZNwZrQbEh/wbm3WvpgTrvqloQoppxG7K5YRYvF3+Gi9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aIOjdn0/; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=XIitUbiuh0mS3iQauLdL9a5rjJfR0BsYDVJaYBUiA3CsxFi2DamXMgm5FGRWIKasFJ9MrKSZE3uMAE4CRqJVFb2FmjShmCN+vVIQGwDjvC2rKBazML/staDmJD/2UevmrUKGlSMK8tt2tRs0/L8wy9J7s1i74ekls+bHdSat7KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zh5H11YE; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aIOjdn0/"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-451d7de4ae3so5995255e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 01:45:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zh5H11YE"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-450dada0f83so18544595e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Jun 2025 01:46:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1748853919; x=1749458719; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1748853989; x=1749458789; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6VThKlttpzakaK+gyheH3wNtNAtAxPTgkZTge5fKamo=;
-        b=aIOjdn0/uAGIvgue2rZNxXVyyYtn34qf2+wdYw83h/wiSyICBU6FpJAx7yeu2Otmy7
-         PDdjE99CIEyrE3tCK+4Tp9moDWlygpdD/3Y5HLkH3d4m+pbsy2I47tNLMwXethtqAqkD
-         wbLcujv5avzsXJLY8dE8DEmTwM5jHSsRDWdWBz68Bb0OMSd7DsyBfHGAq5sUoeibiva5
-         aZk+wrdp55qS5xqrAfnXJ9ayEHvfuSCpIWfxUZlmwN/loCWl8ZOQ86hz7QuXJEQ60Y60
-         xo7B1QqcLAL2gWI2dNl+Gj5F8SlZSMwVMy7yXqO7r4+9fnBXLVEM5mSPfTmxexxD1LVa
-         2Lew==
+        bh=ktsVoxepsNTrdCKxowANypGkEb6jHKbHJKn1XhGy1Uw=;
+        b=zh5H11YEjyHf/ZrGbGCtt0Ram36PTgfDVCpkP50fPzhGYifYz56NsRHr1SJDNOLkQ/
+         K0iIa1gQLeNm/fTQQs/czGTGqMofzLe2kIGZYtnEa+BEwPMN7UyWN1IEcthJNN3RVcUy
+         0Z7P2OkpuUPlOXy/X0P85wCgLYOEdFcCBqAJHOTcb4wGIUzFx63gWOmKA8CdR7tnTkj/
+         Zz70blfHTTQpuj78I9t7GOjB5Mf744L7BHpQJkQhGqV18HSQgzt5WvCsdmR4R1upBO/A
+         9MPR8B2tW4PgVrYLjVzx81Q6Bbx4p4HWo6rlttExAAA3/ib3ASiiG4OPZWaLzyvHrXdy
+         ebLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748853919; x=1749458719;
+        d=1e100.net; s=20230601; t=1748853989; x=1749458789;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6VThKlttpzakaK+gyheH3wNtNAtAxPTgkZTge5fKamo=;
-        b=xAXXjCbbu6ffZY5yuCkwxPsVQIGMyY88fyY8y4yEfQvAU72sfiL7F+CTMXIM5AiYpM
-         YwQpTyNxINwT1SIQoY3Jq2K+/kt4cL9JHB4JnyU+rZ8NLsrJe/ijGhlEH4biCmoY6hP7
-         mm7PVLKIbnH/64ek0nma2q4dPggmWDj+pFjn3juUXHHOKcQQJLY/xd1GF+q//L3ezTCm
-         TuXc8OF02yOkP6h0MIHmf0B5TzVMDWgLzJhvK48ztTdy2xF6jbqgGQt3ouoQD+BsOryf
-         2rffCYPyFEPASLMJWTKZRNsKdNd47sY6VEWifRcJhV59y9ghga5AUZopJShZXyN+NySb
-         NSuw==
-X-Forwarded-Encrypted: i=1; AJvYcCWQJu2Ql18dX6Dtbqud0RxzR8MWU39reJ04absByRRzdLigiyZXEnV1GP7fQLryx6/KIpBkMxTvPRlK86OvAQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL/o8IT8T8yjzNFTyPBikmsRPWPCluyi6qZVjlZTq14/GgqxsK
-	w0ysXMhP6VrbO7aCdnoG3F7YFYzSP19q+0iXiAqCBs/rR7nt7BFNyMOaeIF1P0h9CCNxekBRGQM
-	DbrFkB7OSYzFNuFnQrA==
-X-Google-Smtp-Source: AGHT+IHMPBuyHnbsu1fzojxAvVWoB+t0RQajrCfQEAuCK7B7x+b6pusC9Fc1oNLvaFICxRkoCWW8Tzuvcbz6+Eo=
-X-Received: from wmbdo10.prod.google.com ([2002:a05:600c:680a:b0:450:dcf2:1c36])
+        bh=ktsVoxepsNTrdCKxowANypGkEb6jHKbHJKn1XhGy1Uw=;
+        b=FZ6H40ufA8aXWNzDNOeUKT9dBT0E9ibeeMueM7AvlKNtNaW9n2Djz8kYzt3mtwSWC9
+         FRgNckLBHXlxpyNVmAl30lSlsRhF2D69PzSfmPfKEqmkjtzx0WXyrnCWdNw0rh745SWs
+         d8JZx5Vxd9cWky0EAt4Pg6QetQbO+7vEqrDI4jlweQNh6NQTgrgqlYZq1S2dKqcWQtXz
+         +zicadgWsWJR/Wvtue2lW2DRcp3vx1oCOkTpk2cy1yYXnAzA0W46jOrIwgNnrLveq+vU
+         gH2io1B/pfPxKRLpnGs6zwJ7E0F508U/vux4tm0RDrNWNXF7TIkhE3yp+lDwUZzYSDv4
+         /o6g==
+X-Forwarded-Encrypted: i=1; AJvYcCVc16BTN51I7ugM6nzRe6tDttT6Y1vGEdNLDx944ILhva6cfHk1InRyLGmhAysKL9iKX5tfa+DtyzljJFCeQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCkdro8l3mJndu6U7WOzbtAbURJ76Q+hle/6+yH7+ZuhxAZ7/4
+	113fCkXJLfbwiM/aXJL9H86Ym+HwiDmVJm4oOfCDMx9LIiui3kkxB5iXgiO5egIf11/Uzi9oSRs
+	9Biw59t6FTGI68jFO4g==
+X-Google-Smtp-Source: AGHT+IEN8wW1H0RTzFbTdIlqYAJYXEVRMaA4cvq7c8CG74BNxW0QzTAmaWpfyWc/gO5HljzZUpfF3+rdjR1DcgY=
+X-Received: from wmbhc27.prod.google.com ([2002:a05:600c:871b:b0:450:d422:69f9])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1a8a:b0:3a4:dfc2:b9e1 with SMTP id ffacd0b85a97d-3a4f89a7e71mr9312736f8f.2.1748853918569;
- Mon, 02 Jun 2025 01:45:18 -0700 (PDT)
-Date: Mon, 2 Jun 2025 08:45:16 +0000
-In-Reply-To: <20250530-cstr-core-v11-4-cd9c0cbcb902@gmail.com>
+ 2002:a05:600c:4ec9:b0:442:ccfa:fa with SMTP id 5b1f17b1804b1-45121fb9373mr61377385e9.27.1748853988668;
+ Mon, 02 Jun 2025 01:46:28 -0700 (PDT)
+Date: Mon, 2 Jun 2025 08:46:26 +0000
+In-Reply-To: <20250530-cstr-core-v11-3-cd9c0cbcb902@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250530-cstr-core-v11-0-cd9c0cbcb902@gmail.com> <20250530-cstr-core-v11-4-cd9c0cbcb902@gmail.com>
-Message-ID: <aD1knOuEFxv6VQy1@google.com>
-Subject: Re: [PATCH v11 4/5] rust: replace `kernel::c_str!` with C-Strings
+References: <20250530-cstr-core-v11-0-cd9c0cbcb902@gmail.com> <20250530-cstr-core-v11-3-cd9c0cbcb902@gmail.com>
+Message-ID: <aD1k4rRK8Pt5Tkva@google.com>
+Subject: Re: [PATCH v11 3/5] rust: replace `CStr` with `core::ffi::CStr`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Tamir Duberstein <tamird@gmail.com>
 Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -90,46 +90,59 @@ Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>
 	linux-block@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, May 30, 2025 at 08:27:45AM -0400, Tamir Duberstein wrote:
-> C-String literals were added in Rust 1.77. Replace instances of
-> `kernel::c_str!` with C-String literals where possible and rename
-> `kernel::c_str!` to `str_to_cstr!` to clarify its intended use.
+On Fri, May 30, 2025 at 08:27:44AM -0400, Tamir Duberstein wrote:
+> `kernel::ffi::CStr` was introduced in commit d126d2380131 ("rust: str:
+> add `CStr` type") in November 2022 as an upstreaming of earlier work
+> that was done in May 2021[0]. That earlier work, having predated the
+> inclusion of `CStr` in `core`, largely duplicated the implementation of
+> `std::ffi::CStr`.
 > 
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1075
+> `std::ffi::CStr` was moved to `core::ffi::CStr` in Rust 1.64 in
+> September 2022. Hence replace `kernel::str::CStr` with `core::ffi::CStr`
+> to reduce our custom code footprint, and retain needed custom
+> functionality through an extension trait.
+> 
+> C-String literals were added in Rust 1.77, while our MSRV is 1.78. Thus
+> opportunistically replace instances of `kernel::c_str!` with C-String
+> literals where other code changes were already necessary or where
+> existing code triggered clippy lints; the rest will be done in a later
+> commit.
+> 
+> Link: https://github.com/Rust-for-Linux/linux/commit/faa3cbcca03d0dec8f8e43f1d8d5c0860d98a23f [0]
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-> -/// Creates a new [`CStr`] from a string literal.
-> +/// Creates a static C string wrapper at compile time.
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> index 2494c96e105f..582ab648b14c 100644
+> --- a/rust/kernel/firmware.rs
+> +++ b/rust/kernel/firmware.rs
+> @@ -4,7 +4,14 @@
+>  //!
+>  //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+>  
+> -use crate::{bindings, device::Device, error::Error, error::Result, ffi, str::CStr};
+> +use crate::{
+> +    bindings,
+> +    device::Device,
+> +    error::Error,
+> +    error::Result,
+> +    ffi,
+> +    str::{CStr, CStrExt as _},
+> +};
 
-A C string *wrapper*? What do you mean? I would drop the word "wrapper"
-here.
+Did you not add CStrExt to the prelude?
 
-> -/// The string literal should not contain any `NUL` bytes.
-> +/// Rust supports C string literals since Rust 1.77, and they should be used instead of this macro
-> +/// where possible. This macro exists to allow static *non-literal* C strings to be created at
-> +/// compile time. This is most often used in other macros.
-> +///
-> +/// # Panics
-> +///
-> +/// This macro panics if the operand contains an interior `NUL` byte.
->  ///
->  /// # Examples
->  ///
->  /// ```
-> -/// # use kernel::c_str;
-> +/// # use kernel::str_to_cstr;
->  /// # use kernel::str::CStr;
-> -/// const MY_CSTR: &CStr = c_str!("My awesome CStr!");
-> +/// const MY_CSTR: &CStr = str_to_cstr!(concat!(file!(), ":", line!(), ": My CStr!"));
->  /// ```
->  #[macro_export]
-> -macro_rules! c_str {
-> +macro_rules! str_to_cstr {
-> +    // NB: we could write `($str:lit) => compile_error!("use a C string literal instead");` here but
-> +    // that would trigger when the literal is at the top of several macro expansions. That would be
-> +    // too limiting to macro authors, so we rely on the name as a hint instead.
->      ($str:expr) => {{
->          const S: &str = concat!($str, "\0");
->          const C: &$crate::str::CStr = match $crate::str::CStr::from_bytes_with_nul(S.as_bytes()) {
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -164,6 +164,8 @@ pub fn name(&self) -> Option<&'static CStr> {
+>          if ptr.is_null() {
+>              None
+>          } else {
+> +            use crate::str::CStrExt as _;
+> +
+>              // SAFETY: The string returned by `errname` is static and `NUL`-terminated.
+>              Some(unsafe { CStr::from_char_ptr(ptr) })
+>          }
+
+Ditto here.
 
 Alice
