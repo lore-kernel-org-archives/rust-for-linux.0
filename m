@@ -1,95 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D17522F754;
-	Tue,  3 Jun 2025 13:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F35F18C00B;
+	Tue,  3 Jun 2025 13:31:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748957025; cv=none; b=kIU9JfchYEp7/zmv8A9QR7OxfnV44Txiz528JIUGIMd/A+M1MIC8dJQaDRTc4KckXhkIKZUkUuw8CXcQ+Xub8F8lbibc600lPs0qhQzbkMcdI1375uM0iN32tpYW8uNhBQTmyBi9pL4d27Ff1KhgNlKf+UBnGJ5KekF/z6AVvc0=
+	t=1748957476; cv=none; b=nGkCMj8lQi3e0y+ahFeIbHp20h3x+at/lDLOTtVmvhT/R7izTEL5ZudVyxk2W88+ltVeFqMWJXW+Ov9UcmT6ZdNDn0mmVtS7ddqDEXPNScznmHYSzLvgq1Jn15uP9VhmQ/9rgSBiZqwRDxNVUoTFjIEn29YQTQGwZSIc3MWCupk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748957025; c=relaxed/simple;
-	bh=HGwYyw4Mesm+h+CsA+i4y5waGWiE+tpQES3zA7dABzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EAEtCMmdRX5eMOSggVUdq4dpc2ebhRdXW7Lfny5SojoFbUBDwMrdAfRSrT2lnLg/m069lBsjKuhRVSM9o05FH2Zr0EXuc8IjL7OlxVQnEW8DfnWqZ9PhESjVgKYuQi7ecBCv6eA6LCkP0i3DU3aYYkiekAejpiow/JbRWh4LrDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mBhZ0Siv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748957476; c=relaxed/simple;
+	bh=4M38nY14Zk4uIT4KNRMaOqbkR6WTrZ0EgcH/VHetF+Q=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=dio40EjBZmQd7WTpww6J4ku4gSspWJFyCbIolYd+47dv42Dgy3NEPUaVfiHNKf117URiPFvaVyTh/Cpd/hChb9W0z6UZbwtH9YXClyRrbfgrOAH61rFnepz2uJVcTQv5JnK2iJ2+fdkELyIwcL2wskteWwcLR8psfGvhibQfW5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UXkXnMfT; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mBhZ0Siv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03A6C4CEED;
-	Tue,  3 Jun 2025 13:23:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748957024;
-	bh=HGwYyw4Mesm+h+CsA+i4y5waGWiE+tpQES3zA7dABzE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mBhZ0SivRzLRx0FhwwRERCHY+BJgxei4rW8cYIMx60QxPxl7jfCv9LGvUfEi+cMwG
-	 GmAhD62LXJvgYmPTzkUoRfmX4pUkTqwAtmL39e1bP0GFgn87Vmu7Oe0OfCX8TD2gSi
-	 BrCnGMs/ReCuUb7n/BCc1pV1srk3Msu2VpsZs9JmelknTCKr1zd/J2lU23PmrmPvDa
-	 r+MBT32WfZyVuQFP5e5+lsW5jvd+huiDmbffwFQ2dUKKxpz4ZBO5gDFyjK42V1Tvgb
-	 OHCfr+08WMPqb1/tSFG9qNpDvyvb9BFVQ+FlyDmRs9wD+xOlgPmTU1YPg8J6mw6x8l
-	 8NR//4MX1JXJw==
-Date: Tue, 3 Jun 2025 15:23:38 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-acpi@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: acpi: add `acpi::DeviceId` abstraction
-Message-ID: <aD73Won8t4jlYYs_@cassiopeiae>
-References: <20250530123815.1766726-1-igor.korotin.linux@gmail.com>
- <aDnD_Bb3l6GiI_8K@cassiopeiae>
- <CAG7QV92rtk7NUKzUoApkopv1LF2WVjqyNA9hPt=yCuEvdJjoCA@mail.gmail.com>
- <2025053111-anteater-balsamic-8d01@gregkh>
- <aDrWCBAxPnu7VY0P@pollux>
- <CAG7QV936MPp7RLH_D6+K8mRcgPdpNsGFWF_D10b1C8op7YRtqA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UXkXnMfT"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22e16234307so46450885ad.0;
+        Tue, 03 Jun 2025 06:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748957475; x=1749562275; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zCsykEXQA3gGGqXe33kKDyL1+M4szlXxFg36Pt4llCQ=;
+        b=UXkXnMfTeemBI09TBxLN4R/FG372Kjw+dxo1bMyHSd0A4KFeA3l2AkWs3EURtB/l5e
+         pYEo1TbDQQ/9SvKB/LHNhXwmFnDbDblaZr67XwnWsGm0sU6b5uSGuT0py3zgR4UDoenA
+         JiHW7TWuRL0oD/3g8FgUPobcC18t3hqg3NDBMhIenLZi8cRIlBpBC23CfzTpHW9M9p79
+         60ZhH3KJqp8omkHkSGMOAZepRKUd3CRiQJEfMiN3tvgkx495mlqlT57K24/vJWQ4+Q+D
+         K2P3exXLE0he/JawW7IhjhR6I5Th9VGNxNmucCv4rdtNZb7bnhOKR5yNmB4oNCxbYcqj
+         htTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748957475; x=1749562275;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zCsykEXQA3gGGqXe33kKDyL1+M4szlXxFg36Pt4llCQ=;
+        b=gQm29ZGna+YV2XDQOmAL31L2EabwzyN+fYpAKyPI2y16LmvOZUgbfJiTrVH1zHYDWv
+         0JnCr/2hjnN5LCPgDLiw323nwdSMcTpD3BfYHTwThzFIraZRxwMSrvd3TQ9/Z1x0YlgA
+         IDneU2/xJlmSCAT8tkze0tc+/6NbZ1HFGeArmRQx+pjUHv2fagezydVrCkbx5KjBCMu+
+         x20kUmOOF85lwYuHxy0PG2hEdUFLmU4/k+0pjSyk+hVgW17OiBYg6eqbSmHPRmgxgG8a
+         TaXJMwbyHjsRtkuDx76N2NwbK8Oi86Gd9OorJDzdLVR/NqTD9YjnEkBsB69ry+JrgZIf
+         vBXg==
+X-Forwarded-Encrypted: i=1; AJvYcCWx9HJvXTFEuywa97pR5n5DDWyPsDt/G2JkP8pI015eBWUCNd5mzsjdbnp7ZG6AJgi50Y0F6m26BKbOwTQ=@vger.kernel.org, AJvYcCXLGmQM8pWmHNaLHkKfZk2/ILamZv7TPiTabWZfy5ME70sFIf7MgfXnGJkVDnfVc+M72yz0gg+6RLIrFs7KulY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywhk80W0EQDICHe7jpCX36Rvtp67gDQR0HU8ug1bWZkQ5ryXQYT
+	gQ67rVm6+mCyRPgYybncr6yfJK1glYRWcLc3fXSXJoV9Qnli5KKha/LK/71XRJkt
+X-Gm-Gg: ASbGncuF3TNkMArN9mkQUesacFDgM2to3lVum5eNA1Z9hXiL91dIfArHgZKvv2BZEHv
+	UOPUp7u4xEuqtKBl8j/o5pK2w5ibXTzqr2AV5wlDVDUXZW4IYk9THBVKm86O8dCVG8U/qe80b9y
+	jFMvImJUTej9scNJurfWDQZw4v9TGsDFf/uDLUPJmfdxT47TvUKBcO8bLbWYgCSopwYbRpU5ErD
+	wqFuQv2xLz6VFRiVi+XJWIF7oiN5q1l6Rq4hM3GsvQt8B5JQRmTs/artGFInkpMNsEzMc4YsiQh
+	WZGaI4pLiULMGFyYGSGeJmfHwK5cl31rtrX+WBZrzyWgoWzAfFSYXfALn2F/q2eobf3n9KcX38m
+	cHc5QxYrNJCszljSAEwxn2NVGq4K9sPGp1g==
+X-Google-Smtp-Source: AGHT+IGPnYH7ig/dELvu/tvaDE6VqviOSLWl/L6Wgl5h0diS8DlJPtnA9Bpqq5UdH9AidfCPbPdlpw==
+X-Received: by 2002:a17:902:efcf:b0:221:1497:7b08 with SMTP id d9443c01a7336-235c9b52d4amr30337935ad.23.1748957474675;
+        Tue, 03 Jun 2025 06:31:14 -0700 (PDT)
+Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506bdb4besm87281045ad.64.2025.06.03.06.31.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Jun 2025 06:31:14 -0700 (PDT)
+Date: Tue, 03 Jun 2025 22:31:02 +0900 (JST)
+Message-Id: <20250603.223102.1013545444814279294.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: aliceryhl@google.com, fujita.tomonori@gmail.com,
+ rust-for-linux@vger.kernel.org, boqun.feng@gmail.com, frederic@kernel.org,
+ lyude@redhat.com, tglx@linutronix.de, anna-maria@linutronix.de,
+ jstultz@google.com, sboyd@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, tmgross@umich.edu, dakr@kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/5] rust: time: Change Delta methods to take &self
+ instead of self
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <87cybm72ud.fsf@kernel.org>
+References: <Mt0LwmRyNV7VeUvIiRpECX8VzX1D-BG2wI48N58jht_p7RwsCKlrAM1nXjlqUdVIe3cXdhia_xjlVOav1TikdA==@protonmail.internalid>
+	<aD1fgizC4FPT07vt@google.com>
+	<87cybm72ud.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG7QV936MPp7RLH_D6+K8mRcgPdpNsGFWF_D10b1C8op7YRtqA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 03, 2025 at 01:55:47PM +0100, Igor Korotin wrote:
-> > Alternatively, if you want to upstream this dependency already you can send the
-> > following patches:
-> >
-> >   - this acpi::DeviceId abstraction
-> >   - the glue code for the generic adapter trait in rust/kernel/driver.rs
-> >   - use this glue code in the platform abstraction
-> >   - add acpi support to the platform sample driver
-> >
-> > This way we can already validate that the code works correctly. All this is
-> > required anyways if the I2C device you write a driver for is on the platform
-> > bus.
+On Mon, 02 Jun 2025 14:19:38 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
+
+> "Alice Ryhl" <aliceryhl@google.com> writes:
 > 
-> A few questions if I may:
-> 1. I committed to 4 different files: `acpi.rs`, `driver.rs`,
-> `platform.rs`, platform rust sample driver.
-> Should I commit all of this as one commit or split each part to a
-> separate commit and send it as a patch sequence?
+>> On Sun, May 04, 2025 at 01:59:54PM +0900, FUJITA Tomonori wrote:
+>>> Change several methods of the `Delta` type in Rust to take `&self`
+>>> instead of `self`. These methods do not mutate or consume the `Delta`
+>>> value and are more idiomatically expressed as taking a shared
+>>> reference. This change improves consistency with common Rust practice
+>>> and allows calling these methods on references without requiring an
+>>> explicit copy or move of the value.
+>>
+>> For small values that can be freely copied, I actualy think that using
+>> `self` is more common Rust practice.
+> 
+> Besides best practice, the value will pass in a register. There is no
+> benefit at all from passing a reference here and no improved ergonomics
+> from using a reference.
 
-Every entry of my list above should be a separate commit. It might happen that
-writing the glue code for the generic adapter trait in rust/kernel/driver.rs
-breaks the build in the platform abstraction, then you have to fix it up in the
-same commit, i.e. we never break the build. Please also see [1].
+Yeah, but somehow I thought that using &self is more common practice
+in Rust.
 
-> 2. From author's point of view, as Danilo noticed, `acpi table`
-> abstraction code is in general just copy-paste from `of table`
-> abstraction code. How should I explicitly mark that fact?
-
-You don't need to do anything specific here. You authored the commit, even
-though it's based on existing code.
-
-If you want you can add a note in the commit message that your case is based on
-the OF table abstraction. But AFAIC, you don't have to.
-
-[1] https://docs.kernel.org/process/submitting-patches.html#separate-your-changes
+I'll drop this patch in the next version.
