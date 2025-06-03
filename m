@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F851C3BEB
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Jun 2025 21:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2B4227EB9
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Jun 2025 21:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748987645; cv=none; b=cHjNmaNgQzuTpp4Ri1pVVr2sNogJfLLtwrjuyLIcbame7cpioHhyrwy0pyPOLUa8GYdnKI0ELrVohgMl83Pa3veNcgm52uLvs3LH/d283l/2P3tUR1amog5vlWjY4pquQoX9fxxwu3wsiisdTW1aoz0/MSyZjXxR/YNIaHkl/IE=
+	t=1748987905; cv=none; b=GVeTOknUAc0Cz6RLGgzG+MGH77Ad/m5NSh/gZrzihUChpIWO7TJ4FiDuiDSwZrN2IomouvD3hEexoyqiCsLKY0uy/lS2wvv1Tww5yd+f1xDzshAqGqjvbytPchIhtdFsazK6B34j6LLTh7X6wjSO3gQif0PF8QRke0vBe5C+/FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748987645; c=relaxed/simple;
-	bh=vY4Dx5DYpGIndN4KC5TJ+g7rVF/qITgLKfx0wrEGOzg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
-	 References:In-Reply-To; b=SJ+AM+J0dObKJS+cTKQG70vAkA8q9Yt2Q/OYLHQrQ2E0U9e2KWjFojsqYrbv65OKsZhYaWecQWQAvqTJza3K+kN+0OUaykZJDMsZcGgm7xARxwvzAddE0sBngKwROMz4uFTaVM3BQtuW8WVmNAruu0hHRUJ7c2P/NYvbNZxrO/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0rS8ZnU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748987905; c=relaxed/simple;
+	bh=VIp5mP/mts6kKZiTqIErKPmCZhUCDV/4ud/matPR57Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=daOZGeqvmRf7sQCe6feEw9ZqL1MVQfi4T4ez+TH1OGyUaAvT98WLGv6oa/LUWpEIiXa4LicuNGGHJKh2BEVvjZ6qabzLLtRqsyZYndMgiswgWFd5Mki8mfK0cGifWZqVuRWYOkIqk7BXPQg7aD7Q2/r/Bs2eZVgfKER06WF2W+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zaw3VM1S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0rS8ZnU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAA4C4CEED;
-	Tue,  3 Jun 2025 21:54:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zaw3VM1S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68540C4CEED;
+	Tue,  3 Jun 2025 21:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748987644;
-	bh=vY4Dx5DYpGIndN4KC5TJ+g7rVF/qITgLKfx0wrEGOzg=;
-	h=Date:Subject:From:To:References:In-Reply-To:From;
-	b=Z0rS8ZnUidH798bWoHZGeVHVtNlz8MEtqXnlixQITk4MhwpQCnUiVWF989XkuSG+b
-	 M9aXGBeEQqVSRsTUvYkySg1YM2hHktctGYcbDp8tBynHFM/hxx/q4FPSGydLNxqPh/
-	 IrGz2emEkYx4kX0hDZhIHIbO2l9ts6TAG6HUYALkqv7XlWnPlg0YU99I3fKz2QeIMM
-	 5xOBDLakdEYmupweLQdcJ9P1wzdcsd0+C5M4Skl6jS7OLFNa25QjMRV4SyosAJiS/Y
-	 NCIwDQ+hKd0fUIXvJB7zHwQ5BieR0Vw8+D3uFAUNwtMDSuGp7QVOFY9lFZruYhEUDE
-	 d7i9d84LyDolg==
+	s=k20201202; t=1748987904;
+	bh=VIp5mP/mts6kKZiTqIErKPmCZhUCDV/4ud/matPR57Y=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=Zaw3VM1Sf8hb8bFyV98EUdyUm0PFEPWh/fTf9abwu8RBFS2esu64/U8dXHSjhF3uX
+	 2fsUyTZbd8MBTPBYZ/ouQGQ2o3UtXhBOH+yMKozD5je3Vm6FrSp2MTUpm9nrQSYuEK
+	 LD4ukVfdQOyphAXmEgb5IoSGKwIemKqNSrfYDV3fjg1kXJ7F/+acgDY2LBqFTJN+ji
+	 mr8vyfVOy1THSaIBnRkPCTWBws7ttSTK5vaKqPM8GAC/vh6JmapxxnQ5zr3vrkYQOZ
+	 lMGbAat5rekteTQ9U8VRUZw2ltgpPDBqen5JuoejfDu7XCoToFTKLeS8bTO7YL727E
+	 DmTtEPeaqu+0Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,73 +34,42 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Jun 2025 23:54:01 +0200
-Message-Id: <DAD8DI7Q8YV8.OKUS6GUZDLQF@kernel.org>
+Date: Tue, 03 Jun 2025 23:58:21 +0200
+Message-Id: <DAD8GTNP7E50.3CEF051DAP051@kernel.org>
+To: "Timur Tabi" <ttabi@nvidia.com>, "miguel.ojeda.sandonis@gmail.com"
+ <miguel.ojeda.sandonis@gmail.com>
+Cc: "ojeda@kernel.org" <ojeda@kernel.org>, "dakr@kernel.org"
+ <dakr@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
 Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Timur Tabi" <ttabi@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>,
- "dakr@kernel.org" <dakr@kernel.org>, "aliceryhl@google.com"
- <aliceryhl@google.com>, "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>
 X-Mailer: aerc 0.20.1
 References: <20250529184547.1447995-1-ttabi@nvidia.com>
- <DA8X4RXQKX5J.N4S9TWX90OU9@kernel.org>
- <2846f3423a0641c54ef0368308549fe51c06565b.camel@nvidia.com>
-In-Reply-To: <2846f3423a0641c54ef0368308549fe51c06565b.camel@nvidia.com>
+ <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
+ <0602b06ba5fbd640b6db50165688c026911ed7b3.camel@nvidia.com>
+In-Reply-To: <0602b06ba5fbd640b6db50165688c026911ed7b3.camel@nvidia.com>
 
-On Tue Jun 3, 2025 at 7:15 PM CEST, Timur Tabi wrote:
-> On Thu, 2025-05-29 at 22:14 +0200, Benno Lossin wrote:
->> >=20
->> > The macro goes avoids str::rfind() because currently, that function is=
- not
->> > const.=C2=A0 The compiler emits a call to memrchr, even when called on=
- string
->> > literals.=C2=A0 Instead, the macro implements its own versions of rfin=
-d(),
->> > allowing the compiler to generate the slice at compile time.
->> >=20
->> > Unfortunately, Rust does not consider the .. operator to be const eith=
-er,
->> > so sfind!() cannot be assigned to consts.=C2=A0 For example, the follo=
-wing will
->> > not compile:
->>=20
->> This is not the `..` operator, but rather the index operation of a str
->> (`&FILE[start..]`). It can be made const by using `from_utf8` [1] and
->> manually creating the correct byte slice using `unsafe` [2] instead.
->>=20
->> [1]: https://doc.rust-lang.org/std/str/fn.from_utf8.html
->> [2]: https://doc.rust-lang.org/std/slice/fn.from_raw_parts.html
+On Tue Jun 3, 2025 at 8:15 PM CEST, Timur Tabi wrote:
+> On Thu, 2025-05-29 at 22:21 +0200, Miguel Ojeda wrote:
+>> If helpers within macros are needed, and especially if the use case is
+>> not just temporary debugging statements, then it may be best to put
+>> them as helpers outside, to avoid generating all this code on every
+>> macro invocation.
 >
+> That's the beauty of this macro -- it doesn't generate any code.  Not rea=
+lly, at least.  The
+> compiler determines at compile time the slice inside file!() that this ma=
+cro generates, so all that=20
+> happens is the compiler emits hard-coded offsets into the string literal.
 >
-> Ok, it took a lot of trial-and-error on my part, but I got this to work.
-
-Great!
-
-> It's not pretty, though.  Is this what you intended?
+> You can see for yourself here:  https://rust.godbolt.org/z/e947zsxfP
 >
->         let start =3D find_last_or_zero(FILE, '/') + 1;
->         let end =3D find_last_or_len(FILE, '.');
->        =20
->         let base_ptr: *const u8 =3D FILE.as_ptr();
->         let ptr: *const u8 =3D unsafe { base_ptr.add(start) };
->         let slice =3D unsafe { core::slice::from_raw_parts(ptr, end - sta=
-rt) };
->         unsafe { core::str::from_utf8_unchecked(slice) }
+> This is the whole reason I go through such lengths to avoid rfind() and t=
+he .. operator.
 
-Yeah that's roughly what I had in mind.
-
-Maybe we should check that `end >=3D start` in case the filename is empty
-(which shouldn't happen)? I'm not sure what happens with overflows /
-other `unsafe` precondition violations...
-
-> The good news is that this allows
->
-> 	const SFILE: &'static str =3D sfile!();
->
-> to work, so thank you.
-
-That'll be useful :)
+It still generates source code that the compiler has to check and
+remove. So it'll probably be faster in the long term if we move the
+functions outside (and thus only define them once).
 
 ---
 Cheers,
