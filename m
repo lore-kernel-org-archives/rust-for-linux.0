@@ -1,91 +1,89 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB99518DB24;
-	Tue,  3 Jun 2025 22:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8118C22688C;
+	Tue,  3 Jun 2025 22:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748989589; cv=none; b=LqxBBZtM/csuFlmaCwzjRAB+Had0XUxsgmbWceOlp77dOXNXK1enSuUIBgWgD2enHlZR95fTuVa1WMXogjUs+UXGReDaKJgRdQrY+Zrcs6JUFevKvYUfT2IJTnm6Ssdw6jimhoQuQhkr8U1dVdXTQ63bZNgO4OYIe6+/o/UrcKw=
+	t=1748991242; cv=none; b=jlsukX7qP5DYUSloG7BoDW0yBD1kEDMOYCHW6+7hzOWT1864H8rOKrSbWfu8lhtZp3tfWxabrGwbNvvLrZ109ppACp+Z5c9fFzVXppaSzv7UN2upSLYxoljmqhBoOlrWBpWi4qTdgW8WZRADlwFOMGTi+1sFaKvjz8tLCDMPnA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748989589; c=relaxed/simple;
-	bh=zfz0c69FmOJCdnkXBAWjeZ3ec55qgxSzUQXGbh7JbEE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F3Yra8inr9ft494GnqlrvU5bG7Z7luGCSKt2mY6pIeeTAyQ0YSKJopcqypRW36C3tFEhXe2jwpDIYEuY10rRfkCBDTSdiK0RR0qZRBZLNUrJrXCiYJyjomJYYDvr6/Z6oVGycZFV+UqyVWi/gVx7SsWXXUIgowMh5e3GX4wXEcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BIoX8otJ; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748991242; c=relaxed/simple;
+	bh=/WogzThYcDrkaGD5+tbfG99pqzoVtuU8upkXweLfeGg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=QsAk1BhMCYiAyOZbWtcLzaLTH0TdoA/5QnlBN7r0UzAjSgUvFcymbfLpNXdFbwAoZU6DXwpaO4+SQcboteUVcMp4VGa7u00OO/io7d6OAIK/ABUPsVzNysHgxYdt0YDjhEEe4cPUKMMMj/ghVC7LJ8y+0BIIXTtW1aRtD43bTuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vR4WSSkw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BIoX8otJ"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-23519817b57so4993005ad.3;
-        Tue, 03 Jun 2025 15:26:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748989587; x=1749594387; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=spS60ybMSuhEoBnhprr08UeCQOS996miorjWsXmMPCI=;
-        b=BIoX8otJihRarstr08r5VaWztJTwd6L7Y8CvA3Lkmh3CdBfnvC1hsnQeiouR7DtJCl
-         CVCL25X/2tZWkrmyJt7q6k8kuiXS+Yz5pgidkUzkZ8Fnlo0HqSSb9p7T7ClIMzba5569
-         et+7pYDdDORFZMW/GabbncslrW1L2bu15LzlwKjuh8VbmcBw+yin1/1GjUdpq8yaK5C/
-         tPEXrcNfUSLdF/dn9gg8hSudZd7XzLdqrQQDJyvxxTvXNssQH1Z/V4maZ7IJKC3XMuvj
-         dx/WSuwTxMaV0I7PAOYB38dP75JihtCehHdcHVKT6ovWadQPHZd6DNnw9/QBqwTo9kOd
-         Bzzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748989587; x=1749594387;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=spS60ybMSuhEoBnhprr08UeCQOS996miorjWsXmMPCI=;
-        b=YKqlmDCAX6AZgQiP3ujmRnVUSoyOTirCwYBkA2fmmtIqjOjkhRKTcUr3JCDNI/dHmY
-         iCaG+i11Vh9+LHMm4BDAQXm2TPQsbEu0yc63xdUY7T4l+ns5KxhlAdcF1UNieLt2mwyd
-         Atc1mHC2iUZwXU1jzMSzoOUlFXBDs151Ttacb4wCHn6pyu3I+XX4JgeVM4D2IalwE70O
-         XAtm/QJXTx2yxVPZub9KayQ/LD5ZQ5IvF9H0H9DDR1TRJ1WgwphV3xNN1V7QizeIpuh1
-         kh/EmnLYzXd9UibUELF+6jl6zd4moC26qM33hJFTgkorYTzsdhkR5qYm6vCG0ZzqibaN
-         psvA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwVuKap2eE4f3ZoFHhL17nh5+ND4qkJ09tAAjgxabuMN2MxZenE6SKKYXgTGpzp3EZaQRyFpcnuCDRvmo=@vger.kernel.org, AJvYcCW9TRk6xAKoIWzRdfo2pDmR462cswl9HtZ8QQpVuwlRybXuKLAvO8xUMPsXtb3GCKCoVrZ+FLUNyRLyoffyHkg=@vger.kernel.org, AJvYcCXbv2Efn2nu7ytkCRYvgGvfjahZmNxeMQAjFxVYnFhvVA53u0K0TkEVtUS8V7LGDh/J7L/OBKjZnFtUqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP+5NMjJhjwte30UTmTqfA9VuJyikZoky+cHQjbBLLNJosFK+L
-	WQk+vv6tYhNMDj7n7CrZ9EBgZwAAXAdGC6ei9QN6aBzlOzbXbZWP7VIGKrBE/fc3fHgmIm20aLN
-	rRT5saXxHdO6gn1ASFCrhZcLKKZrfwaY=
-X-Gm-Gg: ASbGncvRwAu2l+iIQjbTcBth9WaRUcatvUDT4wzOl3Fr6TItA+35S5yL0TxqSSvp9em
-	qT4zAQZW10quKBlovctYEJJzUVF0ORNpuu5hhg9a5aGrpXRNRKb63smzH0PRl8u29OxWFfZhCjo
-	4TKjfvAvKwcTc2zEPzIbn8sa/9xihSov22
-X-Google-Smtp-Source: AGHT+IHYe4MifwZmarTiGrmPgQXYs94V6HqZaBrwfAdvRpZP4olnAr0bDFZ1PORuNElDs5cZ2+9XBUxmqKGqQyL6VWI=
-X-Received: by 2002:a17:903:32cf:b0:234:c549:da0c with SMTP id
- d9443c01a7336-235e0f37687mr2464635ad.0.1748989587025; Tue, 03 Jun 2025
- 15:26:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vR4WSSkw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACD1C4CEED;
+	Tue,  3 Jun 2025 22:53:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748991242;
+	bh=/WogzThYcDrkaGD5+tbfG99pqzoVtuU8upkXweLfeGg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=vR4WSSkwjWc7+MIDx5kQ7h1lUGN9qHfwZaooBTnk/6jljnxEf7hIBnCavCXqPy66J
+	 g3p0hWqc8Og46r80WqG/38Gq3HwyBJGBbnZGvS7uxDvo9oEymBi5+IiPpnP4+RXlx8
+	 Xp9ueXLfWQTAA3lrebMVjTL8OtM6F7hqMehMefM7GW8f3Y3QTmraILDfnmgE69LEe6
+	 fIqGDpAFMDB1U1poNrQaGZQZdkjFNd2zG/FHoioroboHQjxY24rMRAs2BT4ZKHOjYk
+	 BcbfQ/6yvZYiSRkNYVu62yPX9WrGdhc2ls2/hmsXxnlvL7VzsZqLwG+PD5YX/IIsXb
+	 A2O/oYXdRRVWA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <700ebe13-c2d3-48e3-800f-8dc327efb6fc@gmail.com>
- <CANiq72mFL4dn+0JppLLfxyKnM+xYwKeduFw2j07hUfxWVVHdUw@mail.gmail.com>
- <f5d5b84c-0850-4df9-bad7-61fff12c4248@leemhuis.info> <CANiq72=+qUNJu5j+uoveMrTbngwA89+ScwjUPd9OyVGqps54aw@mail.gmail.com>
- <20250604073118.4205f303@canb.auug.org.au>
-In-Reply-To: <20250604073118.4205f303@canb.auug.org.au>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 4 Jun 2025 00:26:14 +0200
-X-Gm-Features: AX0GCFsOpisR9zReSwsbnHOeUt07nmPeJXowIYZoqNdvdu6R35lnffHM6XE6fuk
-Message-ID: <CANiq72=EttF8tieqakoyYxfu_-LyUjCTcaogtO-Z1HajGx7LMg@mail.gmail.com>
-Subject: Re: REGRESSION: armv7 build mismatched types
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Thorsten Leemhuis <linux@leemhuis.info>, linux-kernel@vger.kernel.org, 
-	Linux regressions mailing list <regressions@lists.linux.dev>, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Jun 2025 00:53:55 +0200
+Message-Id: <DAD9NDFY2RXV.3LDMFVUYN0IKD@kernel.org>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v4 04/20] rust: add new `num` module with useful integer
+ operations
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-4-05dfd4f39479@nvidia.com>
+ <DA82KFLNAOG7.R7YT4BHCLNZQ@kernel.org>
+ <DA88YHU4AZT7.B8JGZHW9P9L9@nvidia.com>
+ <DA8GTD7LT7KO.1A3LBQGEQTCEW@kernel.org> <aD1xVkggDrCvA7ve@pollux>
+In-Reply-To: <aD1xVkggDrCvA7ve@pollux>
 
-On Tue, Jun 3, 2025 at 11:32=E2=80=AFPM Stephen Rothwell <sfr@canb.auug.org=
-.au> wrote:
+On Mon Jun 2, 2025 at 11:39 AM CEST, Danilo Krummrich wrote:
+> On Thu, May 29, 2025 at 09:27:33AM +0200, Benno Lossin wrote:
+>> That's also fair, but we lose the constness of `next_multiple_of`, so
+>> you can't use `align_up` in a const function. That might confuse people
+>> and then they write their own const helper function... I'd prefer we use
+>> all functions that are available in the stdlib.
 >
-> Damn!  I knew I would forget.  Sorry about that, it will be applied
-> today.
+> Considering that, what's the suggestion for this trait?
+>
+> I don't think we should have a trait with align_down() and fls() only and
+> otherwise use next_multiple_of(), i.e. mix things up.
 
-No worries! If you prefer that I send a reminder in this kind of
-cases, I would be happy to do so.
+Agreed.
 
-Thanks!
+> I think we should either align with the Rust nomenclature - whatever this=
+ means
+> for fls() - or implement the trait with all three methods.
 
+The longterm perspective would be to choose the Rust one. But I'd also
+understand if people want the kernel's own terms used. Still I prefer
+the Rust ones :)
+
+---
 Cheers,
-Miguel
+Benno
