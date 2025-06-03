@@ -1,73 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEB0238176;
-	Tue,  3 Jun 2025 13:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217CA238C2D;
+	Tue,  3 Jun 2025 13:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748958599; cv=none; b=A086o1INSP9kqTSNEcchBU3jREsDrvzfnyEOGjrU/BjgiQ3TDmWIVVWM+KlhmmEw5eaJMchzYOh0Rzao7d1C9hac1D2du2licwFGF3/tN+jo8c7CoZ4RdZR7xozfcaaWznBGVSORVrgwsTHzkJ8Yww+dPvACbZ3zzMZCqMuglnc=
+	t=1748958721; cv=none; b=MH8zoN+qU8UgAoza1XkwDHs0qOL+8ii2nmnx7svdgVyeNy8npBnb1qG4eHwO5nbc/abH3vQ++gf4lGZK7gICUo4qAG2lMVvZqa/mV9uC+EcJESvuJSNZD6q8+H2OOzS38EDXIsB98N5NHffLcdUlqY4ChkaxGZxxvazroaQXx+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748958599; c=relaxed/simple;
-	bh=U6g39ClQB+hk5GPvCuPP+9un1adxAxTlTy6EwW+tjrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uAGLn8IVoWsnG2yrKYB3jGyx6IillEMnUiU2kFvlY2mzeZdnk+rdQ3qXSpKIBsS+VrkCZ5KZc0Tmy5YeopbSA7xEoGcoYPKEMk/oX9S9uJufCGC5SbT8gIxCKVjCxPJsT2duz0qqN1VbPodmTxx9go7efY8dEOUivv4K8wXQVx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=boN5joj4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748958721; c=relaxed/simple;
+	bh=NXR1qTYe4S1yY/IRghcXhwqMURAdPna2jLsb3ojL4VY=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=L4tk/uo+Z85/E/0QpWq8px4rg3ZImQ9DLJt+ey00KHKo1+bfMt6a+2iG/fwqCA/7FsaEcjSlz+lM2Mo+v4f6xf5R8DGA+yr7egvGb0FP40UaPI57Lq5H1hJVozos7fdNA8+KzfSKkh5ewUtExXvi0SPIcxtcqbyEYa91tEQ+0jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SWsQZrT7; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="boN5joj4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170BBC4CEEF;
-	Tue,  3 Jun 2025 13:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748958598;
-	bh=U6g39ClQB+hk5GPvCuPP+9un1adxAxTlTy6EwW+tjrA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=boN5joj49PYGWo0gzBJX9Z4fLk/NDlwvoC+0Td17+T9qgc+Il0E7LuvK9sMl/G4+X
-	 94m9luK4AsFPfQHk/DPxNsvCT1YFSHR9HtPgNjCZ4uFukxc338IUpe+Z0mwKMuHqOv
-	 JRnyefbAM8+5ub9OsVv2TerLN2K4kOJ9xBE0tNAewRta3zM3tDifEmeaHnmJq2R/ee
-	 37TahppRi/kTwKRoQa0tqoCka33buLW51YU0wwdmxK/VT9SBr4DpZcViPvWKocCkw3
-	 tE8esBfYyrNZ8zcPAUn+VHY/k9MsDfdI1d5L7uQ7ZLOkhh2NV0J4QRmoLOSAdu2/UB
-	 dVjgLMUI7ULdw==
-Message-ID: <11ff2b73-c77b-4142-a492-1e525d530aeb@kernel.org>
-Date: Tue, 3 Jun 2025 15:49:52 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SWsQZrT7"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-234ade5a819so50069785ad.1;
+        Tue, 03 Jun 2025 06:51:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748958719; x=1749563519; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6KhjbOMj7kQ7BxqljTrV8nKS4Gy6cQNvf7i0KC2fdKA=;
+        b=SWsQZrT7cI5e1fejMQiDbN/eN94qknWaQTMwSyA1T/nfCl7ASXVEAvh01tjylLdx5t
+         y1kRZHgeMdTngQqMgTUfA5nwWbsSh8tknnMFgkMKQgSqtGMDaQqW1m/cqy1F1oqmY4DP
+         EvDohatubhL8ng32HJ6XI4qdUZuwinYVoqAXc1jnLR+ZBj9uAbl8ALxUHXol0CXTNt05
+         WwYYC93h0iQFCSpMliFYX6TKVDCx2Tvh3bV9pA1kGoHWPuCmwcGqG9pvFclZC/UiYB/N
+         JcSElzzYrpgqcuUyGKghBy+MjzvLIMXDWc4+IO9cbKFIBInUn/D0soNG66Z4HW3yCqq9
+         2JDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748958719; x=1749563519;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6KhjbOMj7kQ7BxqljTrV8nKS4Gy6cQNvf7i0KC2fdKA=;
+        b=Qc0q4rWewfmwkou7b5x+bOd+J2qi9jKZH004RwcoftCiN/6++VR4Frrx7K8AaoxtZj
+         2TZnAay0xZl0xg4SaZ9GEhNCsech9Y3HZTyoS5SQNyPLt638LMsPDF18+Kj154987Uz5
+         /P+/ejhKts1pjX2e+KDwG33Km1h0C9mPaY5LgYE0FmnH+GBq/zPWFylvxSZI5P00HJGJ
+         MMlUE6Mrs5RdFpYjdc3dlnoR1S5kRnXvin+0eF6xMamWaG4064VuuwudPmRiCvIMjkgM
+         RI+8DbgX/EJle3hCq8/0n+EpLfxOcbF9Pol+XGTEA/CC6dGGeW9Aj6mzaZOiAI3NRQzv
+         dHUA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUgttfwtSxZO9T5gNka0nCdSOJsMzTykauZ+ii24+jz6K018F3Xbx7+3WjtG+B8yb/a95TS8Day+S0o9s=@vger.kernel.org, AJvYcCXYVxJ6gR1d7BTcB8sSUZoOAYhIZIKL6W5fuTfvkiFI4ojRW8BW2r8FUi8Dlra6/JavDy6VmErKyxX+p63fuPE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0wE6Sp9hJymDpzxK/+JXJMRIUY/bfLFfTxs8qwXNjuAYJgtxq
+	Izgrt0W8czxGSXN0IZMqVjtcSMGv1I+VMRFXP45uuSdZP55WW44/Yg1Do5khfywJ
+X-Gm-Gg: ASbGncssXnK68B8zNHWdVux4WxTSOkkG8OAzqqUNf1b09ClrHtwc/T9onr0thGdHEA3
+	eJic/O5UnVZzyi/jxzxxcTwu+yrtRFJ2kVXDRoQVH9STAhOWxNiV40mcrcHNm56g/hERrjvPiux
+	ggV8Alqnc/DoHVpAXrrdkR1N8YX8QYdlpYHzgPoxf7gNo7Weyx0YTwERrGDU/3xnUjvoR7+RRau
+	V1pxRqPl0GMK62gFiev1ypG44tEIQvoA4nBZ0vLu79ZxOa63vsQ4iJqLrgc5W6kbWX26+omWUk0
+	wtRY4quiOBT+zLfzpSpklwb2qV/DWldsud38W3pu6EwjHsg/evln/blPU0z/vOw2TZm2FsturMe
+	tQV0Xpn6ZbSMUZMIqjiA/FFvnik+Qya/OL/jTW/vg0gv6
+X-Google-Smtp-Source: AGHT+IHyD5KvbTYxjb3ruO/fAO6V7egBmvMC4zHEr5ErXMQ0i/jDrOv7HitdHOg5MddXssBDcDFYKg==
+X-Received: by 2002:a17:902:e5d2:b0:235:779:edfa with SMTP id d9443c01a7336-2355f74fdafmr189779655ad.32.1748958719228;
+        Tue, 03 Jun 2025 06:51:59 -0700 (PDT)
+Received: from localhost (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23506d19c88sm87192855ad.247.2025.06.03.06.51.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Jun 2025 06:51:58 -0700 (PDT)
+Date: Tue, 03 Jun 2025 22:51:43 +0900 (JST)
+Message-Id: <20250603.225143.1147206358060510971.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+ boqun.feng@gmail.com, frederic@kernel.org, lyude@redhat.com,
+ tglx@linutronix.de, anna-maria@linutronix.de, jstultz@google.com,
+ sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 3/5] rust: time: Add HrTimerExpires trait
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <87ecw61c8v.fsf@kernel.org>
+References: <20250504045959.238068-1-fujita.tomonori@gmail.com>
+	<20250504045959.238068-4-fujita.tomonori@gmail.com>
+	<87ecw61c8v.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 16/20] nova-core: Add support for VBIOS ucode
- extraction for boot
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- Shirish Baskaran <sbaskaran@nvidia.com>
-References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-16-05dfd4f39479@nvidia.com> <aD2oROKpaU8Bmyj-@pollux>
- <20250602151506.GA779285@joelnvbox> <DACQW908WCLA.2JHRLQ3V18FPD@nvidia.com>
- <2f03e11d-3621-4314-a232-611a5fd9ffcb@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <2f03e11d-3621-4314-a232-611a5fd9ffcb@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On 6/3/25 3:47 PM, Joel Fernandes wrote:
-> On 6/3/2025 4:12 AM, Alexandre Courbot wrote:
->> Would it then make sense to make `FwSecBiosImage` public, add an `fn
->> fwsec_image(&self) -> &FwSecBiosImage` method and have the caller call
->> its methods directly (maybe renamed to `header`, `ucode` and `sigs`)?
-> 
-> Yeah, that seems better. Danilo, you're good with that idea too?
+On Fri, 30 May 2025 15:04:00 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-Thanks, that sounds good to me!
+>> +/// Defines a new `HrTimerMode` implementation with a given expiration type and C mode.
+>> +#[doc(hidden)]
+>> +macro_rules! define_hrtimer_mode {
+>> +    (
+>> +        $(#[$meta:meta])*
+>> +        $vis:vis struct $name:ident<$clock:ident> {
+>> +            c = $mode:ident,
+>> +            expires = $expires:ty
+>> +        }
+>> +    ) => {
+>> +        $(#[$meta])*
+>> +        $vis struct $name<$clock: $crate::time::ClockSource>(
+>> +            ::core::marker::PhantomData<$clock>
+>> +        );
+> 
+> I think a macro is too much here. The code would be easier to read
+> without the macro, and the macro does not remove much code here.
+> 
+> Could you try to do the trait implementations without the macro?
+
+Something like the following, right? If so, I'll do in the next
+version. I'm also fine with that way.
+
+/// Timer that expires at a fixed point in time.
+pub struct AbsoluteMode<C: ClockSource>(PhantomData<C>);
+
+impl<C: ClockSource> HrTimerMode for AbsoluteMode<C> {
+    const C_MODE: bindings::hrtimer_mode = bindings::hrtimer_mode_HRTIMER_MODE_ABS;
+
+    type Clock = C;
+    type Expires = Instant<C>;
+}
+
+instead of
+
+define_hrtimer_mode! {
+    /// Timer that expires at a fixed point in time.
+    pub struct AbsoluteMode<C> {
+        c = HRTIMER_MODE_ABS,
+        expires = Instant<C>
+    }
+}
