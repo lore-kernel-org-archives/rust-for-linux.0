@@ -1,206 +1,195 @@
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2075.outbound.protection.outlook.com [40.107.96.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44521FBEA9;
-	Tue,  3 Jun 2025 08:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748938339; cv=fail; b=T+qp4szQBIWDGySWkLRkKuCEAjT1XaVG4L24Z0nUqub/E6ytz70Kse4JUDPMAhvtIPMMbNwcUkoOrZmCFJHeIXoJzyJ+wIQ1d/F++5Zq6lo8sIHUBortV+HqCxdxfpDFMGMnQFlWrHEhq9IeLY0yMSEKyD79KzJr062fi6Wo7YA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748938339; c=relaxed/simple;
-	bh=0wkSDUYVu6MGeYxGS2yZ0lCOwVMFPdRt1a+lV6hAgRc=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=rrxkWuEpvE7E9qnLngJZ8+uP4wHXEpkwYyZN5tPyOygh+6d+2/jnuxndid5RNdezDE1FQ+YVt6JUX2rNfRnaKmhOV4Xj9Rqko7ydD13MfvBHWKZIZ0/Vg2pLPVyTKhJydkMuQczYFYyS9YUAklu0oUC4ipPnpX2b+rZtZngbPeo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tmfVQe8S; arc=fail smtp.client-ip=40.107.96.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7C02690E7
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Jun 2025 08:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748939327; cv=none; b=e5xXE4uQAx8vyezRm2QRfIhkACgabPPrmKrg2PQvomTGn916t8rX54sxCcq4BvyoaYBgVm/Opk3pBErZN+u7X8NVT+ISjOVhsi2oDT2sG2nDMwlHsMDfEDPUgZiy+KfSLEeImpmWFr7XID6iiV94BB0UbrjNrw9eFj70p9FgJXE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748939327; c=relaxed/simple;
+	bh=fR5uG73M1Zmo/F/EfXLNtbe02orN27IMBiuBa8oMiE0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=swASmEp94ruTOIAR2P7qFnE0vXqFQR2vlPQvgVLXUgBmwZhSxqLLHPnDXYfNXn72K+N+IHWAHGpqew+dx/1RsmF23hlzCf+UEGwIBstPU1j3PKZn3b9xdy+SapuDRdbPOVDc4itGjrTdhmDWBCwZa8ySJl3JhJpn68FIzeKa02U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x7IQ5nfX; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tmfVQe8S"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R1MMH+0Pv4e9esZWeaH7qWhb0rfBMyGnrTWOh3pGUsyMLkIFCUEd+QMBgsILWDPZ0NLntgZGoGFKMRYLPFMLPnr/3BlgHuHZhoMe9ZOD+QhRqVrAHvN42K0fmSfnxJN6IvcXf0FRk1aVF8tHiPSAIrgiZ6RbPpCU2JPPEhM0O+SBqZUEBbGYLQBg1A2L5MrOwyZm7ysI+GjfqhIgxq1y+7vuyuLDX9ePCWJgXg83n77sqeSOOAPcQ0LQJWoY5UWo2nMEwffYeifnP3w69TzTxCOuOfPNDdc1qhacBnvti0cRE1Vh2RKkTRSn1Ef9dkso6gITmHk0EzHn+gzFBDWaQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oeCFC542bweMFO2vVjU9No2sCr+HdR15IkukK5uRZ2k=;
- b=WTxKp+9/3hCiJNkJPJWqXl0NyEYvkHecj4txt9cYkN9XA7WXKYqQR6AAYLh/9kCGNLrJWgQQYvZgqbaDlsYOdJJk+fzMe7aZRBo8CsdYTNvQTd8IFHl1hE19oy4lx+yzDt6MOQ6LR2kAtB5A36Y+kPan5yovNr0XbaKaa/sde4wTl1ZjGj8U/5zM30j9UTIfm/hmAPazSQHH+1kKaYnvOy/Qfylpqie9p41zeNwTsODxA7v+o3P9WrpuJJV8/AbLDVtiEgsBaJMK9JTGKd2SL+/QRkQxFeh8wkaNU4e8M6BqFCZ9C8ck9m2HpfquIQGJPYKJcmzhO/F1C+CTimL0Ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oeCFC542bweMFO2vVjU9No2sCr+HdR15IkukK5uRZ2k=;
- b=tmfVQe8SYdiNanwUyG1V9+5xahKt+wKFcIOLgQUwLa/C8M6wNfqsw9dUdEBjC3zTOM4kFqmgjnH7ZVs/knPvzqgXJ3mxHPvCoGinVqx0m0Vf/plxbh51LiQLz1e4ZkpaVOCvEa8fhGVyMj7ZamZNdE5jLGg99Tv2aWq+MXKJMaTNHGg7UfpdXXVAxq/O5BULwEJC1oA5FoyO8kb67TlMWrWfl+TS/MzmLq+/qQrYAZEJw21AawM5Q81N1C0Q2mxt9lzp0FWeWIchkvYpjuoJwoiD6Ir5Q3hpMP0nHgRNj566FEhijHpkFP2zC5OL5gKzQhXOxGApD34+eV0+OZxyYw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA1PR12MB7221.namprd12.prod.outlook.com (2603:10b6:806:2bd::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Tue, 3 Jun
- 2025 08:12:13 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8769.037; Tue, 3 Jun 2025
- 08:12:13 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Jun 2025 17:12:09 +0900
-Message-Id: <DACQW908WCLA.2JHRLQ3V18FPD@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- "Shirish Baskaran" <sbaskaran@nvidia.com>
-Subject: Re: [PATCH v4 16/20] nova-core: Add support for VBIOS ucode
- extraction for boot
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-16-05dfd4f39479@nvidia.com>
- <aD2oROKpaU8Bmyj-@pollux> <20250602151506.GA779285@joelnvbox>
-In-Reply-To: <20250602151506.GA779285@joelnvbox>
-X-ClientProxiedBy: OS7PR01CA0289.jpnprd01.prod.outlook.com
- (2603:1096:604:25a::12) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x7IQ5nfX"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-450d6768d4dso27989675e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Jun 2025 01:28:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748939324; x=1749544124; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GQ0VvJnIzT1+EN3W5MConvlQrO30Hn+2ClVpKXxeTRU=;
+        b=x7IQ5nfXpu4Nyd9rjS94M1KxRTWKr2tmDnoZ2piU3Eks7LJ+BFsSMPFOmy3ZZyECbL
+         3/eoo+SfgNOjiHHXXhrZEDHhUbm7qGA5+fcUEZnBMj8VNG+02ArZJxm/3Zuezn7gZNM3
+         27GBAfN6o9LpxsfHqG0RIkz8m3IMMex2trL7Px1hTZt7TEWK/jQf7VSplEzrpiZZOPQA
+         tckGN1ptUoidvuaYmHS4xcfss3Z/PKr6kH0kD7rm91I3GOSheYQGt7UwhDwhY5rErqDa
+         xYT0WX+cAFAGRz3UZDJEwUXfh0/XlExgjennlTUhT+QEbal6mviZWnTASblOkkjN9piZ
+         mOdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748939324; x=1749544124;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GQ0VvJnIzT1+EN3W5MConvlQrO30Hn+2ClVpKXxeTRU=;
+        b=K2LWihRFdVeem0z45szUsVmxZwVkWHTat6fjRjntJ273uO9jCemjS01AgFYOBgULQJ
+         V/Qrw9NrVuaqpVGDb9U/ttoxbfQZ22bQBZYem1bgnl4M7UeHF2LA1WYFAvynTIUqzr6i
+         QGtYjlEbc8Hs6QV3yt0gp1AplMxYQBCFlcY+OVE3tq4PWgvsJaUvhrTFz8LkZyjeWZS8
+         1nNoJni5/7X7E/dfhFLi9dgE4t67iSL+MUQKrlKplUxdfSuxJxkE8MQ6IoVNVKQBfISS
+         ph2nDMLCWRqIaxj6Q4e+L2Twk72x83VVwl8LO+ZhJ/KkUtYmUJjBOXkFrrU05ipZtpx6
+         M2cA==
+X-Forwarded-Encrypted: i=1; AJvYcCURI13BAtt06XRtyWCceZgC5LStObIY9GE7ARt10KNXGbXdO7RJhkPloKKvbln0kI+iHXDftZP1Pdqtg1J4VQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVDSyb6JQHV5frktUDwh9dwabBzNA+JvGVXosWgJibAh1I6fNF
+	Tchp5NtBcvCOef4ijjbLGmfzH5+3jaPMf7u7ynrFK7euMJG5niInvQXzG3rhq6uWGUC5j9xRpQB
+	T/+psrd+pUmDAIKIFng==
+X-Google-Smtp-Source: AGHT+IGD6dDaLc68TZA4IPE+uie06M/8+5fGtLBwtAQrZjhcYSy5uESPsnmpErj6d0BKEI0MwUH9MfLQNIQONLo=
+X-Received: from wmbbi20.prod.google.com ([2002:a05:600c:3d94:b0:451:d70f:eb87])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c2a:b0:444:c28f:e81a with SMTP id 5b1f17b1804b1-450d887e0f4mr138940435e9.27.1748939324248;
+ Tue, 03 Jun 2025 01:28:44 -0700 (PDT)
+Date: Tue, 3 Jun 2025 08:28:42 +0000
+In-Reply-To: <aD3f1GSZJ6K-RP5r@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB7221:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8765b9f9-9267-4ff7-753d-08dda2765886
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T2ZtUzFnejJEOWF1S2xrUDZZV2N6ZjlCNjFKMkNuVHZaOXAxQVdwNEVwZG01?=
- =?utf-8?B?WHFPMHhIL3cwQWZScDB6SGVNM2lFS3Bxb3lIcUNEbzBYRU0zTGxZNEEwMXRV?=
- =?utf-8?B?ZmZ4OEdhUmUvbVprbk55N0k5dU1xYll4WmZDQnlmclVwMFI3NHNtdkJKZ0pN?=
- =?utf-8?B?bnpHTjl4cDFoREZkdGpXd2VvRFR0YWM1bG1YM1ZORmFEZzVjTWZOZTNLQ1Bi?=
- =?utf-8?B?RzR4blI1S1JWZTJ3cUp1VTM3WG1aMk9TU244bXdneUxDbkVCM3JNL0ZNOHJE?=
- =?utf-8?B?QWpwdGk2Z09DRU4zK2VyUllIRGdMcVBBY0lNTFhqUjZIZVNKM1lVUWpudUdO?=
- =?utf-8?B?TlM5UEVvcnFrNE1ZSXBiOXd1NHEwOGlFTXJjdmpvck1YWk1HamNFMTFlZTFC?=
- =?utf-8?B?czVpWmMzdHkzRzNtOEUxZEE3eGVheE1YVXFBa1lGay81MFh2aVdEUUtMVXg3?=
- =?utf-8?B?KzFQV2dCZ3dUWVpIbERhRjFSQ2hTc1FJbUFyMlM5UXJCdkY3Y3VuTm94aXZS?=
- =?utf-8?B?ZHNncEJuQlpFeVl0eWlEb0Ixc1YwUW9NSGJSQ2puL1FXOVlPTHZwbXhQTTFa?=
- =?utf-8?B?WWhrNzFsV0UwTldPR09DRFV6SlRCRG9UR0JjRUkydWs2RDI2aHFnRHViUTVs?=
- =?utf-8?B?ay9vTzNjNTV1RVg4M1VxSUcySmFpOXdkWkNVZnZldnJnR2s1c1pKTXpUT0Mz?=
- =?utf-8?B?bEtNbG5ySHBQQ2dENXM1bXNQZkdwMisxTk02VVU1U3V5Ung4Q01IakRybS9x?=
- =?utf-8?B?SVRObjc3amx6SkZXenFlMnJhb0V6T2RoWEhpSWM3RU9PUDJlcHdjUFJCMWJs?=
- =?utf-8?B?amNMS1pnZ0tmK0xydDZ2QWlHWjVHSHRzL0F2VS82TjhYWHRoeVBUTHJrMHBB?=
- =?utf-8?B?Nmp4NlFjK2VoZm9VNmpYcEtQVnFZYktCcmpyS200RzVQRHJpR0l4b2d0YzF2?=
- =?utf-8?B?bmVnaXpESzU3bEIwaklVVTREblBROGJwS0xZUkI2ZE9vbko1ZC8vWWlhWmEv?=
- =?utf-8?B?SVJ0c2pleHl6VWtQWXVRSCttSjN4eW5qUG9wd1RFU2lCazJ6UVdVUENBaVNm?=
- =?utf-8?B?VVJDSktYbEFBYkFIR2J4WjdPTWhsWk9LNkdjR3hrQmQzaUJmL3ZZa1JESzJv?=
- =?utf-8?B?UTczK0lnRkVjcldndnp1dW1EUS9LUEhaYWFaVEgzVkJNNE9KOHdOTzVQMFJo?=
- =?utf-8?B?Vy9Rb1VJZXRwazFSeE9nSUU1Sy9xSCtJNFIxN2NKQ3pxdHlTK0M0ZWRuN0NH?=
- =?utf-8?B?VC9Yb01UdzVUQ1NVV2lVQlJ4L1IzbXplS0JZSXNJWTcyYVNiTTQzUzdBQUtJ?=
- =?utf-8?B?Q3NwZEg3RHFEcGlKL1FnenhPR3huN0tkbHZFdnhyR3JBNUdsZDlYbkFrd09B?=
- =?utf-8?B?Vkh5eFZ3eGd6cVU2aGpVTkJNOGc2RXhPNnQ2L1NPSWh1Y3h4NGJTRWpLU3BQ?=
- =?utf-8?B?K2J6L0x6cTJYRm5SWkJvZnFyNjNBV2VOWHIvZFp1eGRhMGN0S1UvcDBxeTRK?=
- =?utf-8?B?azgwYTF3UFMyUjArdFpzNEdmbGdzVUwwR0lvTEtkemJkWEd2WENtc0Y0clQ1?=
- =?utf-8?B?eVpkSEM2RTlIZVhtcHptMU9CY1hwQXIzUWJPV1k0c0F0SzArQ2VtaTdxb2JM?=
- =?utf-8?B?L1p5UWovQ2wwME1pYUhPWFdIMVloa2Vqd1NUSWREbzNUd2lvZnB1MUxNR1Bn?=
- =?utf-8?B?c3FEU05zRjV0bnBXem9wVEUxeDNFdnFUdUwxbEFjeTlhV3pJMlBTcS9vN2hF?=
- =?utf-8?B?RDlOTUNTODRWQ0lNbVVISUVnSUZJMmVJSHlxbmxlT3hvMndLRmhGK04wS2I2?=
- =?utf-8?B?d3pWRHRpQTg1SzdxQk1DYVdBN2lzcHB6ZTZOTlR2RVRkbVFTWWpBWVI2MzZ3?=
- =?utf-8?B?NzlNa2tHUGNXKzFQMG5KZkFidlJIUHg1WldITWVnd3paZ0NJbnJPUmk2OXZS?=
- =?utf-8?Q?qahkhqrypUU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WDF6eFR4a0NFd1o1OEpLQzNyN2pWY1dSeXVSSnNIOXIrQXkzdERVbG5HaFhY?=
- =?utf-8?B?RWNTYU4vSE1BazZQelhwVk9QNUw5Qlo1ZEVlbllaK2lCRXhUdkx6djZtWXl5?=
- =?utf-8?B?UmdZMFRQa1ZSN2V0QmVMTnJSYXdMaG4wNlgrTVRnZUk3QWlPL1JiQjVabWtv?=
- =?utf-8?B?Z1FsMzFkU3NraS9NbnVLTHlqNkprY2grM0EyMWI0STJtaHpiNmRPeFBiQVpY?=
- =?utf-8?B?OEZvYmJpQ3FyNmdqenFONFQwbzR0OE15bWJCcWh3QnY5M1llUHBBZ2NRWTNy?=
- =?utf-8?B?SEsrZmZmZWVpS0R4N1ZwVHcxMTUzbVhGb0lOM2htZ3hJNWVBMkhNQ0FaK0RO?=
- =?utf-8?B?cjJxcTFTOWJOTTc0MlBsSDIzQjhwYS9sdHB1ajREUE93QlV2YzRIWEg1ZHc5?=
- =?utf-8?B?aDhBV0gzRWFKd2k0S2hlM0NmR09uSFRxRWVmWDFJTnQxWXIxVGNMZnBzN3dL?=
- =?utf-8?B?ZUQ3QkRkcDkvZnU5WTNwdHFqcGVrOWFqMjAyN1NrYVhFdzdZcVVpVFNwSEo0?=
- =?utf-8?B?bFRkZ0NrTmJCMFU0bitwTFh3TUN5anhnRmFQbmpobjEzVkVpRTk4V2xBVTVx?=
- =?utf-8?B?SHRMWTRiYW5Hc1RVRDhQRVZoTTkrTm5vaDFUVkxKRE5EN0dKa2x2Y1dKTzdr?=
- =?utf-8?B?enM3eXJscmd2bTl2eEdqQVB0VDA2US9jdnpaRFI1Q1JTZmR2Q2FibERRODVi?=
- =?utf-8?B?K3ZtTllnTE5iUmJyODRHTFR0MVZ6OE55c3FIZG93NU9rV01mVGNxZUFhd3Zs?=
- =?utf-8?B?ZkVyMHZzWXVKSVlWREpVRmMwdmlLNExmWWhYQU5SU2h1S0JtQTR6dFdtcUxG?=
- =?utf-8?B?SkhPejhlZzZhZW9sZ0pPRUlHUEVqZHRNcnN6VEtVakRJRkJLTWsyTFh5b2tt?=
- =?utf-8?B?SG51VGdNWHRaSzNRaEZGUDFqMTNkaFZJOEdIRWZPb2JycTBDR3dYSSt2Y0RD?=
- =?utf-8?B?a2ZoSlJCR0dobXBNbS9zS2x5UXd3RGhOTXptaXo3UnZPbzlScGhyTzNNTndq?=
- =?utf-8?B?ZXd5Z0hpUTJyQUNKZlNpRmJsUHQ3L0EwckdnQS90N1dNRHZTVm1YeHQ0ZW1K?=
- =?utf-8?B?YTJNbkVkQXF6R2hIa1o4NzdnbjY0bEEyQXNVM3BTREJWUVlla0dLNkRvQVdv?=
- =?utf-8?B?V0dyMVRObDAyZ29xTGxLSHJCN1VHcTBjYmJXL1ZHamJndlYxTllvVW96QXVS?=
- =?utf-8?B?OXRJMlVzNkZkN2Frc3ZNTjNCQXhBK0VSSHFLcEUyUUIyMlJCcmpUU3NzeTRs?=
- =?utf-8?B?bHRhME1pSU4wbnJrWFc2Zzd1UDhRejkxNGN3Y2ZCRnowbnhUOCtjbnVzTFhT?=
- =?utf-8?B?a2p6MjQ1N2czaGpocjBNWHVSVklwY2FYSTJjbFpibmpnRUIycGgrUkp5VGNz?=
- =?utf-8?B?SVczVGpxSmxWWkpybjdMRmNJOVpQWS82aUlXNFlmTUI1K1JkVTNDTUZSYk5H?=
- =?utf-8?B?UnAweVlYR2JEKzZBTloyRGNiWTRYZlo0U1dZZTcxZjZYUk1uRW0zZXE5UWRv?=
- =?utf-8?B?dkcxa1E4OHAweDlwYlZ5WE85T2x0WjJKYlZzNG1yNG5VZlpFT0QzSTBxc21h?=
- =?utf-8?B?OUswNDg0Tm8zd1ZOcUdOSmczWUN1UzUwMGNPcUx4T25xdzA0cWo1czA1QlhD?=
- =?utf-8?B?aDFtTjB6ZDZBb1NsUzZmdEkrNTljUnExT2dIVCtIR2NGTTlaT3F3cXhTUXRn?=
- =?utf-8?B?SGhuck5BMDVyamoyTUZBRGtJeEx2bkYxRUNVTVZWSFlNUjZRWGR2NFVBQkY2?=
- =?utf-8?B?b3lvcnhhbFQvbFRsREp5N0o2MjRQWHRJbmNland0WmcwbVpGaWZtWVUyYW9T?=
- =?utf-8?B?NVQ1Mi9DTzdPTWVHM3lTdkdvMzJ4ZTRMVHRndGgvT0lUeWhJYS9sQTRZQmt2?=
- =?utf-8?B?bFY4aUw1NjkvU0N6QUZtd29VRklReHk0ZkVPblNmTlFkTldJUkxlWFU2UStN?=
- =?utf-8?B?WHl3Rlp6LzZ1dE4vWXBBZktXQ25xZzVLLzFDZ3NkWFF1SnFtdnV6MlhyWVhS?=
- =?utf-8?B?ZnhqNm1CV1Z0enhJeDd3L292MG9LTjFNNFprMXZNaUVhaG4yUTRwVE9GdkQ4?=
- =?utf-8?B?TlJpcDFHZ2hlZFVhNjhRSlBpN0ZTdjllRGoyWVo5dUgzNHFvZ3Fza3QyNHlK?=
- =?utf-8?B?MTZ2MDN3YU9IYWFyUUw2YUNzejhYVkM3SzNYd1lnQVQwaW1OK09UL1VKL1Jt?=
- =?utf-8?Q?LD8/6PAEEuz4eAVBEvSU75YlclydHhHpsDTkZhv9t9hy?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8765b9f9-9267-4ff7-753d-08dda2765886
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2025 08:12:13.3783
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QPQe93ZNJz78wwX+BiMWpegCU89+B33hIW7POe8y0xvgp+p9vsQNglL8kRf9iwQc6zMwKtFAaXIA8zlHO7rk8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7221
+Mime-Version: 1.0
+References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
+ <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
+ <aCUQ0VWgoxdmIUaS@pollux> <aD3PCc6QREqNgBYU@google.com> <aD3f1GSZJ6K-RP5r@pollux>
+Message-ID: <aD6yOte8g4_pcks7@google.com>
+Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue Jun 3, 2025 at 12:15 AM JST, Joel Fernandes wrote:
-> On Mon, Jun 02, 2025 at 03:33:56PM +0200, Danilo Krummrich wrote:
->> On Wed, May 21, 2025 at 03:45:11PM +0900, Alexandre Courbot wrote:
->> > +impl Vbios {
->>=20
->> <snip>
->>=20
->> > +    pub(crate) fn fwsec_header(&self, pdev: &device::Device) -> Resul=
-t<&FalconUCodeDescV3> {
->> > +        self.fwsec_image.fwsec_header(pdev)
->> > +    }
->> > +
->> > +    pub(crate) fn fwsec_ucode(&self, pdev: &device::Device) -> Result=
-<&[u8]> {
->> > +        self.fwsec_image.fwsec_ucode(pdev, self.fwsec_header(pdev)?)
->> > +    }
->> > +
->> > +    pub(crate) fn fwsec_sigs(&self, pdev: &device::Device) -> Result<=
-&[u8]> {
->> > +        self.fwsec_image.fwsec_sigs(pdev, self.fwsec_header(pdev)?)
->> > +    }
->>=20
->> Can't we just implement Deref here? Why do we need this indirection?
->
-> We could, but it seems weird to deref a Vbios struct to an FwsecBiosImage
-> struct. Conceptually a Vbios is a collection of things and it could have
-> future extensions to its struct.
+On Mon, Jun 02, 2025 at 07:31:00PM +0200, Danilo Krummrich wrote:
+> On Mon, Jun 02, 2025 at 04:19:21PM +0000, Alice Ryhl wrote:
+> > On Wed, May 14, 2025 at 11:53:21PM +0200, Danilo Krummrich wrote:
+> > > On Wed, May 14, 2025 at 04:20:51PM -0300, Daniel Almeida wrote:
+> > > > +/// // This is running in process context.
+> > > > +/// fn register_irq(irq: u32, handler: Handler) -> Result<Arc<Registration<Handler>>> {
+> > > > +///     let registration = Registration::register(irq, flags::SHARED, c_str!("my-device"), handler);
+> > > > +///
+> > > > +///     // You can have as many references to the registration as you want, so
+> > > > +///     // multiple parts of the driver can access it.
+> > > > +///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
+> > > 
+> > > This makes it possible to arbitrarily extend the lifetime of an IRQ
+> > > registration. However, we must guarantee that the IRQ is unregistered when the
+> > > corresponding device is unbound. We can't allow drivers to hold on to device
+> > > resources after the corresponding device has been unbound.
+> > > 
+> > > Why does the data need to be part of the IRQ registration itself? Why can't we
+> > > pass in an Arc<T> instance already when we register the IRQ?
+> > > 
+> > > This way we'd never have a reason to ever access the Registration instance
+> > > itself ever again and we can easily wrap it as Devres<irq::Registration> -
+> > > analogously to devm_request_irq() on the C side - without any penalties.
+> > 
+> > If we step away from the various Rust abstractions for a moment, then it
+> > sounds like the request_irq API must follow these rules:
+> > 
+> > 1. Ensure that free_irq is called before the device is unbound.
+> > 2. Ensure that associated data remains valid until after free_irq is
+> >    called.
+> > 
+> > We don't necessarily need to ensure that the Registration object itself
+> > is dropped before the device is unbound - as long as free_irq is called
+> > in time, it's okay.
+> > 
+> > Now, if we use Devres, the way this is enforced is that during cleanup
+> > of a device, we call free_irq *and* we destroy the associated data right
+> > afterwards. By also destroying the associated data at that moment, it
+> > becomes necessary to use rcu_read_lock() to access the associated data.
+> > But if we just don't destroy the associated data during device cleanup,
+> > then that requirement goes away.
+> > 
+> > Based on this, we could imagine something along these lines:
+> > 
+> >     struct RegistrationInner(i32);
+> >     impl Drop for RegistrationInner {
+> >         fn drop(&mut self) {
+> >             free_irq(...);
+> >         }
+> >     }
+> >     
+> >     struct Registration<T> {
+> >         reg: Devres<RegistrationInner>,
+> >         data: T,
+> >     }
+> > 
+> > Here you can access the `data` on the registration at any time without
+> > synchronization.
+> 
+> I was just about to reply to Daniel proposing exactly this alternative, it's
+> equivalent with what I went with in the MiscDeviceRegistration patches for
+> supporting the device driver use-case [1].
+> 
+> So, I'm perfectly fine with this approach.
+> 
+> [1] https://lore.kernel.org/lkml/20250530142447.166524-6-dakr@kernel.org/
 
-Would it then make sense to make `FwSecBiosImage` public, add an `fn
-fwsec_image(&self) -> &FwSecBiosImage` method and have the caller call
-its methods directly (maybe renamed to `header`, `ucode` and `sigs`)?
+Ah, ok.
+
+> > 
+> > Note that with this, I don't think the rcu-based devres is really the
+> > right choice. It would make more sense to have a mutex along these
+> > lines:
+> > 
+> >     // drop Registration
+> >     if devm_remove_callback() {
+> >         free_irq();
+> >     } else {
+> >         mutex_lock();
+> >         free_irq();
+> >         mutex_unlock();
+> >     }
+> >     
+> >     // devm callback
+> >     mutex_lock();
+> >     free_irq();
+> >     mutex_unlock();
+> > 
+> > This avoids that really expensive call to synchronize_rcu() in the devm
+> > callback.
+> 
+> This would indeed be an optimization for the special case that we never care
+> about actually accessing the Revocable, i.e. where we have no need to make the
+> "read" have minimal overhead.
+> 
+> However, I think we can do even better and, at the same time, avoid this special
+> case optimization and have everything be the common case with what I already
+> plan on implementing:
+> 
+> I want that regardless of how many devres callbacks a driver registers by having
+> Devres wrapped objects around, there's only a *single* synchronize_rcu() call for
+> all of them.
+> 
+> We can achieve this by having the devres callbacks on driver unbind in two
+> stages, the first callback flips the Revocable's atomic for for all Devres
+> objects, then there is a single synchronize_rcu() and then we drop_in_place()
+> all the Revocable's data for all Devres objects.
+> 
+> As mentioned above I plan on implementing this, but given that it's "just" a
+> performance optimization for the driver unbind path and given that we're not
+> very close to a production driver upstream, it haven't had the highest priority
+> for me to implement so far.
+
+That optimization sounds like something we definitely want, but I have
+one question: is free_irq() safe to use in atomic context / inside
+rcu_read_lock()? What about the threaded-irq variant? After all, don't
+they sleep until existing callbacks finish running?
+
+Alice
