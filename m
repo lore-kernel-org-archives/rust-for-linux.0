@@ -1,150 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23321AD51;
-	Tue,  3 Jun 2025 23:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1C92C3271;
+	Tue,  3 Jun 2025 23:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748991735; cv=none; b=LACvMsAWBaVRFmkVgqDBFTONccxMI9LXew44m6WZ00ox4roR1We+6ljr/AC1fPpSXQb0cF1hfvE+LKrpFCg11fQV3WYbJkm9lGWJsQ1YTLh4OoY388zkFbRMP04c/8044dOoJVeC5etxy2aTPvkKVATgtS+OYfjlmZKtMbbQ6qg=
+	t=1748993167; cv=none; b=gxcYf/X0OMqVaklc16VivSPLbEpu4N03GLs2U7/chXvlbTraNT7MvDPTtIfXh+Acp7CgXXVKYT45dO1dHlSAvFh/dwzRtUtYR0yJ7keRuLoTLAUjnlq5p83m1X3Ei0akMEtzVTpZUDYMKZkjjT1XV4GNPAzqfguAd7XsrA8fGtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748991735; c=relaxed/simple;
-	bh=wA9HkPQG67Xv/ILlkMs87n47KUYJA9nWUAoT/yrb1ik=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=hZKQuh4uHmi+ueSAAlMH/unfLQYOF4zOgqskYLw7IWQukVWWnRnCQg4azhtDgjtb58YyFZr/KC9mgaaiAFp6PF0lP7PfLDY/icCFZ5yAMPKl4kSiHi4i4uyc6vqS1JEz1Ic8ZBnPTWybWXxeO47XeKjCs1Bitat8MejUUqrA3M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+Zu0IAs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748993167; c=relaxed/simple;
+	bh=t55H9+CCM1iexCI5xCqNbPIww7zc7J5kzl4qRl4r9UM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kESR1+smrVcD+JwuHdHBc163rk/evpDr1nF/FXvvQ6MW165jZ571LIlEbXR+6u9kpKmMmaFsZa0V9+1xPttgAwVVyODtOz2SbgBJLP56rrQFli3/k6oDnbvKeLHliIVuGDoUKC2EC7Ln9BbiqLKFMwCOudAILNepmjL0dw3UbfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mQked4Lw; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+Zu0IAs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9208C4CEED;
-	Tue,  3 Jun 2025 23:02:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748991734;
-	bh=wA9HkPQG67Xv/ILlkMs87n47KUYJA9nWUAoT/yrb1ik=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=M+Zu0IAsKgu/xv3rmVmunAByeBtBNqrDRm4YMs0PLMJU1tlGX5STA//XeAct7TWA1
-	 AMMULlpmnGGnh9CzoEsntXgeYNNhTYsfzgvreTYQlwvEbp9gttaO3PSjgYLz98T/Gn
-	 ckGU38Nnb6SklnFXHcdCpoO3VOEPVsgBmI/eNeZmSlolUL+ZJIiTdD2aM3JUbySNFj
-	 9lvU6ke80KCl8oeMhf+3/cKRwSW2TH1e+sW0w/5CRoAs2FFhC4PKPABFJ8Dx96IbML
-	 sDM0j77a4liPSzH86gRSiHoqjwM0V1xDiIwjIBXXZU43Q9gaZ8kixvtiF2/fts2WfT
-	 JXGOgYt1GzYOg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mQked4Lw"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7c922169051so333189485a.0;
+        Tue, 03 Jun 2025 16:26:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1748993164; x=1749597964; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0a3qr4ebW99L9FDdCCaT36ed+qYvbvVbKdCj4BGtDLI=;
+        b=mQked4Lwn5kWC+Gxtr3S/VGErnWU2W+1MarLKK1ZSA00X1NbPYdYZzY6DWWwfuM0m7
+         LP+q5NT3iCFW9NNEUO2bgEUMw8k2d8yUWw1eK4H9barYlsyvk8P9oHy15q3XxM+44+nK
+         gN9r/s3Zx3b0ZsxRycxs3u7NKNesDtysfaTXpPBKO5ngNeiTPbt4ckYS1A0jUVCvX7nI
+         eQGXIbT90TRbcJopX3PDyFLqLIYMv++td0/xptk+jfNuSiQeqa9SH/G94hNvOZfYM2Gu
+         dwMBejxWgFwRmHFk2Kn+1Mz3GWUkR6d04q1qvWQd04OLG6S1YP9UfpvsEi2jiYFyJ0CL
+         vx8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748993164; x=1749597964;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0a3qr4ebW99L9FDdCCaT36ed+qYvbvVbKdCj4BGtDLI=;
+        b=EDuzlmtEVgxffzNvQZ0M6kXoPkElnCie4YPMFBVo7TCJkIETD5kVGwTVFtELnh+Tw2
+         qX/tljG17amZHgRL1FEsstK9/e0f+7CQWWq+VqELcRTzLOWphOxhNJ8KLBJUBMsfsRAV
+         eS4KW/OHUDLuQ9Cg6R/Ph6ncBWtf3fxt8sTNvdfP9gbRvZsMAThD3zsjoHRVdv4Uw4t6
+         JCWcAKoASyMjs9aqoiyCiVV/WP+jdX7o9wbq4blD4TRv0vZyQZ0FH/gVqJeJk2Su7z5r
+         vJSd87GT33gbXMvx7KJx0nwa5E4rc/je1uGUkyBEajppg6O1fB1d/8xMc0kDZCNsRqTu
+         sufw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEmCFhdYTMPOfCmKl6lNmZvPOsXgNS3SPDqvnEmn4JxRaAisPfzXa8bYketCceyDpdZfDeXPcQoHCvJsE=@vger.kernel.org, AJvYcCX8OoMnMOKkc1+zVlbMV3vzW5VUd4aPtFwjwGEc3BM+zR20uBvlapisJrLUWUMzdupya1OZwqYwVZXzDxx8tKM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxe4aEyipTHm2UaLjfcrHqwB+dz/Lz254rSx1O4R9ZA5X6j16Py
+	IgiHlOd8IPi6HeWt7GehcfxNcGYceJwqcF0GAL9/W4gFKDSakaTKgNgR
+X-Gm-Gg: ASbGncsyh+gWrqPjDAUZULy8m7werE8iV19BrgyBPSPWOpazFjnIFEFce4B2GNHAa8N
+	Y6a0/WiKFQJihivatHShMNzjGGgj47Prw8djbqUYkYgvEMwrDaNfWPyPM3rEyDaIT6BuQFCOhrC
+	5l3HjO9DMTD5X7aRVZfP2+PNRHOgPmAQWTg+Cfoa1cLdTAbj7+xquoSeWVPz4MUV07Thr9z9Dox
+	Sqgeu3k5cYx9nHO9g2O5ShQxI3TIrpsvnO9A1Nr67wlxG4X8bh5TGUm68dWSi1sij5OcPrVkbUU
+	KCsg4mZ6LS4IDZBJLqeE1g+KNvEdZB9n4r/Iylq6OhmO/kCKMVUARiC5YFCoIz1kp0x8Jgo73GX
+	1BJmuNJl39BXF0mSlajFjPxGmoV33lE7rqfIfFfKXlw==
+X-Google-Smtp-Source: AGHT+IFn8aUvUKppvaTXbRaXpTpaaRRw6n1scKvDByP9sRKLASnjHffP9oelLTz5kJBWC+TwOM5FQA==
+X-Received: by 2002:a05:620a:2913:b0:7ce:bdc6:af03 with SMTP id af79cd13be357-7d2198b63c0mr154454285a.34.1748993164148;
+        Tue, 03 Jun 2025 16:26:04 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d09a11274dsm927795085a.58.2025.06.03.16.26.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Jun 2025 16:26:03 -0700 (PDT)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E62BB1200043;
+	Tue,  3 Jun 2025 19:26:02 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Tue, 03 Jun 2025 19:26:02 -0400
+X-ME-Sender: <xms:ioQ_aIh6ftfWkQlPd9qtso8FVC2fMGYZTUO5jVb54bAbE6Z1GJ7z0w>
+    <xme:ioQ_aBB4RpBGT-GfkDS3P_d4PY9JnR4hJnzIc0M3CJQhbQcpY6BjDB1IPzAsOnGEz
+    CmnscdaMJoKNHqoXw>
+X-ME-Received: <xmr:ioQ_aAHX_0N2arXNoqEVjdepd8HAi7iEacQ6DbKl8VjYyaLv00nYPUUzy3Bp>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduvdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
+    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
+    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
+    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudehpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghp
+    thhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhl
+    rdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoh
+    epsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggv
+    nhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusg
+    horhhgsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:ioQ_aJTd6CaM42q2RLtri0IeioP7Sqyc2FGiPSPn8-JGsMtWGAm2hQ>
+    <xmx:ioQ_aFwU7aB070GW0Ni3H5GWfEza_wI7w57J0qcCZW8T6jTvV52kyA>
+    <xmx:ioQ_aH7v8pKPU7GQGbD4RL1DqC9gWN0bc9vMwzWxrYdBhX7lq2G1rw>
+    <xmx:ioQ_aCy-YFPGGhCLVUKVZEdNjvCACKpBN9JawdGOlokZKRpz6QDrqQ>
+    <xmx:ioQ_aJhNTewALMSpzSDjQGqS0UN-BPwRLZ9V1Vw_EhPZytzpRdLrmfTG>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Jun 2025 19:26:02 -0400 (EDT)
+Date: Tue, 3 Jun 2025 16:26:01 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, chrisi.schrefl@gmail.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] rust: devres: fix race in Devres::drop()
+Message-ID: <aD-EiRChuScS5TK-@tardis.local>
+References: <20250603205416.49281-1-dakr@kernel.org>
+ <20250603205416.49281-4-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Jun 2025 01:02:08 +0200
-Message-Id: <DAD9TNUBUGPN.1ED519FYR29U4@kernel.org>
-Subject: Re: [PATCH v4 04/20] rust: add new `num` module with useful integer
- operations
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>
-X-Mailer: aerc 0.20.1
-References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-4-05dfd4f39479@nvidia.com>
- <DA82KFLNAOG7.R7YT4BHCLNZQ@kernel.org>
- <DA88YHU4AZT7.B8JGZHW9P9L9@nvidia.com>
- <DA8GTD7LT7KO.1A3LBQGEQTCEW@kernel.org>
- <DAC2L6ZKR6U2.WOMERUJIOENK@nvidia.com>
-In-Reply-To: <DAC2L6ZKR6U2.WOMERUJIOENK@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250603205416.49281-4-dakr@kernel.org>
 
-On Mon Jun 2, 2025 at 3:09 PM CEST, Alexandre Courbot wrote:
-> On Thu May 29, 2025 at 4:27 PM JST, Benno Lossin wrote:
->> On Thu May 29, 2025 at 3:18 AM CEST, Alexandre Courbot wrote:
->>> On Thu May 29, 2025 at 5:17 AM JST, Benno Lossin wrote:
->>>> On Wed May 21, 2025 at 8:44 AM CEST, Alexandre Courbot wrote:
->>>>> +    /// Align `self` up to `alignment`.
->>>>> +    ///
->>>>> +    /// `alignment` must be a power of 2 for accurate results.
->>>>> +    ///
->>>>> +    /// Wraps around to `0` if the requested alignment pushes the re=
-sult above the type's limits.
->>>>> +    ///
->>>>> +    /// # Examples
->>>>> +    ///
->>>>> +    /// ```
->>>>> +    /// use kernel::num::NumExt;
->>>>> +    ///
->>>>> +    /// assert_eq!(0x4fffu32.align_up(0x1000), 0x5000);
->>>>> +    /// assert_eq!(0x4000u32.align_up(0x1000), 0x4000);
->>>>> +    /// assert_eq!(0x0u32.align_up(0x1000), 0x0);
->>>>> +    /// assert_eq!(0xffffu16.align_up(0x100), 0x0);
->>>>> +    /// assert_eq!(0x4fffu32.align_up(0x0), 0x0);
->>>>> +    /// ```
->>>>> +    fn align_up(self, alignment: Self) -> Self;
->>>>
->>>> Isn't this `next_multiple_of` [1] (it also allows non power of 2
->>>> inputs).
->>>>
->>>> [1]: https://doc.rust-lang.org/std/primitive.u32.html#method.next_mult=
-iple_of
->>>
->>> It is, however the fact that `next_multiple_of` works with non powers o=
-f
->>> two also means it needs to perform a modulo operation. That operation
->>> might well be optimized away by the compiler, but ACAICT we have no way
->>> of proving it will always be the case, hence the always-optimal
->>> implementation here.
->>
->> When you use a power of 2 constant, then I'm very sure that it will get
->> optimized [1]. Even with non-powers of 2, you don't get a division [2].
->> If you find some code that is not optimized, then sure add a custom
->> function.
->>
->> [1]: https://godbolt.org/z/57M9e36T3
->> [2]: https://godbolt.org/z/9P4P8zExh
->
-> That's impressive and would definitely work well with a constant. But
-> when the value is not known at compile-time, the division does occur
-> unfortunately: https://godbolt.org/z/WK1bPMeEx
->
-> So I think we will still need a kernel-optimized version of these
-> alignment functions.
+On Tue, Jun 03, 2025 at 10:48:52PM +0200, Danilo Krummrich wrote:
+> In Devres::drop() we first remove the devres action and then drop the
+> wrapped device resource.
+> 
+> The design goal is to give the owner of a Devres object control over when
+> the device resource is dropped, but limit the overall scope to the
+> corresponding device being bound to a driver.
+> 
+> However, there's a race that was introduced with commit 8ff656643d30
+> ("rust: devres: remove action in `Devres::drop`"), but also has been
+> (partially) present from the initial version on.
+> 
+> In Devres::drop(), the devres action is removed successfully and
+> subsequently the destructor of the wrapped device resource runs.
+> However, there is no guarantee that the destructor of the wrapped device
+> resource completes before the driver core is done unbinding the
+> corresponding device.
+> 
+> If in Devres::drop(), the devres action can't be removed, it means that
+> the devres callback has been executed already, or is still running
+> concurrently. In case of the latter, either Devres::drop() wins revoking
+> the Revocable or the devres callback wins revoking the Revocable. If
+> Devres::drop() wins, we (again) have no guarantee that the destructor of
+> the wrapped device resource completes before the driver core is done
+> unbinding the corresponding device.
+> 
+> Depending on the specific device resource, this can potentially lead to
+> user-after-free bugs.
+> 
 
-Hmm what exactly is the use-case for a variable align amount? Could you
-store it in const generics?
+This all sounds reasonable, one question though: it seems to me the
+problem exists only for the device resources that expect the device
+being bounded, so hypothetically if the device resources can be
+programmed against unbound devices, then the current behavior should be
+fine? For example, in your case, you want free_irq() to happen before
+the device becomes unbound, which is of course reasonable, but it sounds
+more like a design choice (or what device model we want to use), because
+hypothetically you can program an irq that still works even if the
+device is unbound, no?
 
-If not, there are also these two variants that are more efficient:
+Again this sounds reasonable to me, just want to check my understanding
+here.
 
-* option: https://godbolt.org/z/ecnb19zaM
-* unsafe: https://godbolt.org/z/EqTaGov71
+Regards,
+Boqun
 
-So if the compiler can infer it from context it still optimizes it :)
-
-But yeah to be extra sure, you need your version. By the way, what
-happens if `align` is not a power of 2 in your version?
-
->>> Also in the kernel we tend to use the `align` nomenclature and I think =
-we
->>> should preserve that for clarity.
->>
->> That's also fair, but we lose the constness of `next_multiple_of`, so
->> you can't use `align_up` in a const function. That might confuse people
->> and then they write their own const helper function... I'd prefer we use
->> all functions that are available in the stdlib.
->
-> We definitely want const variants of these, one way or the other (const
-> methods in traits are not available yet unfortunately). And yes, on
-> principle I am aligned (haha) with using stdlib functions when possible.
-
-Then I'd recommend getting in touch with upstream Rust :) And choose
-rusty names for our trait so we have an easy switch.
-
----
-Cheers,
-Benno
+> In order to fix this, implement the following logic.
+> 
+> In the devres callback, we're always good when we get to revoke the
+> device resource ourselves, i.e. Revocable::revoke() returns true.
+> 
+> If Revocable::revoke() returns false, it means that Devres::drop(),
+> concurrently, already drops the device resource and we have to wait for
+> Devres::drop() to signal that it finished dropping the device resource.
+> 
+> Note that if we hit the case where we need to wait for the completion of
+> Devres::drop() in the devres callback, it means that we're actually
+> racing with a concurrent Devres::drop() call, which already started
+> revoking the device resource for us. This is rather unlikely and means
+> that the concurrent Devres::drop() already started doing our work and we
+> just need to wait for it to complete it for us. Hence, there should not
+> be any additional overhead from that.
+> 
+> (Actually, for now it's even better if Devres::drop() does the work for
+> us, since it can bypass the synchronize_rcu() call implied by
+> Revocable::revoke(), but this goes away anyways once I get to implement
+> the split devres callback approach, which allows us to first flip the
+> atomics of all registered Devres objects of a certain device, execute a
+> single synchronize_rcu() and then drop all revocable objects.)
+> 
+> In Devres::drop() we try to revoke the device resource. If that is *not*
+> successful, it means that the devres callback already did and we're good.
+> 
+> Otherwise, we try to remove the devres action, which, if successful,
+> means that we're good, since the device resource has just been revoked
+> by us *before* we removed the devres action successfully.
+> 
+> If the devres action could not be removed, it means that the devres
+> callback must be running concurrently, hence we signal that the device
+> resource has been revoked by us, using the completion.
+> 
+> This makes it safe to drop a Devres object from any task and at any point
+> of time, which is one of the design goals.
+> 
+[...]
