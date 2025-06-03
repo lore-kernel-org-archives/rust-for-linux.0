@@ -1,216 +1,229 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2089.outbound.protection.outlook.com [40.107.94.89])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2070.outbound.protection.outlook.com [40.107.243.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673FF283FF2
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Jun 2025 18:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264F418C03F
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Jun 2025 19:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748974534; cv=fail; b=Z118n1DB3EyH+GTIKwUlrEDxFgU8XBtMRATs2cjT+j7xoYReJGNSuSc9Aq3pUr6q4oV6L63xlexUbK63u1ARum3fQdeKWeBxVTTW7sXXpu3FsMoueZlbSqJ1ft2pk+mjuzZN1fKUuU8m3vfFsomCdraEcrJJINdQxjE5r9LIPuQ=
+	t=1748980505; cv=fail; b=U0Ve7BU4LRqVpK3bqusFkeiiBoruEhFoQjMac4W+0nP8RsmFkW4BVuLfpYWEw7R2qp7hoO5uEFk/lRdzfUW8iehIIhkNw0v5UXmGcBQwi6k7Rx0su4HXX6BYQm66mVqnuYWGEj0xbr1bzbK2kl14YfS3dBYm1DHw31NuYSu4KzQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748974534; c=relaxed/simple;
-	bh=aviKPLZHHP9bQXgpGmUmKSXqpeiCAhMy/+UJ4UWoAZY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UWuNwtLMcLP7bPOCaRop8bUCFrdDHYza4CZ6Nq/XpONWbtzgTqOYebE+SerTuOSodtHJCJtbs+KDv6efGRkqhwD4VXiRWC/qqZVMmMvS41nOjBTtwRKqTDJB8fLVDSuHwr2BZ3TGnD7QctjbVzo0O8oOZuRwK2WWKMA9oMTt9eQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=N+FzRbuU; arc=fail smtp.client-ip=40.107.94.89
+	s=arc-20240116; t=1748980505; c=relaxed/simple;
+	bh=PQnhtPCu6awUs1gS+++IL3gjhFL80WQ+oqBpwG9ZPww=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fz1zuVFHncn/KmDnBgkhI1rQymPQ5xgVIEcqGaI+Sv/p/JXTPMGGYiJRAxYUy/xSVzmldIKsiRhhPFeYhAhM3iE74JW2mKU4XreU7SxwDo/h41DYKGg72ZxSraS/B50F3JLf6ZsnLU+bYcFSinKhRR4kzy8SxFPHMbpclPRRDFc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qx3a+y+N; arc=fail smtp.client-ip=40.107.243.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="N+FzRbuU"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qx3a+y+N"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jk8P367NWpqx7OLGHbEWGeDPqBhNBjkU33BLWUetQGFGZDPMAOaoj7dTjsRzjLWUeLbb9QA2N3DEx8aG62kSHrRXBnSh+fsCFNQrq9GDXj7vGkv2uJiL+uIkc19m6cCCu7M8+/SlYrE7+GZyhEs4RqJND4PcTmpPJ3iEUI08cnuIP2aKdkvtMKrRF7ywqsGAPXh9XO9JqSN6gsImu+yQzRsOCZXjfHd3SrbhTHj8aSeUGHJPYN+LcAc/f8BIILv9NiKTVge6sxG+bj45Feo9vrPzugz+ri39LzQJbBWpUpfiKbyYvv8qrLIHxKVFwFxy6JENbWbOQL+tjKAeVHVJSQ==
+ b=HHfzAdvNZgo5OLgO3mMMMcr7S0Opplbgn2nP7kC3E6j3a/UrWOBOV62i5wEvOgWtL69ajBX4zv3y8cs/+fhiVmGhVBWroQaahWJCmyWZeswWuTPoE74emmzAzSw5+gaEBtn6/pS9mK0IK9WfdOR++Hgzm2F2JY2igDcspX3U5daLrqsbUb8Yjcx5Ajg7FjAy5fDxG3F3Jf6L4WWR1VFzZD+p3OK/9V+QSvUx4fH7ZdBYnqvM5lmXcRLZ3zIdUWYSRlvyA2zKyPONfV5Fn35y1HQOHMN4opk43hhMhZxw6JqUr7zwaf6wtCPe3o7xJhI5FsumfnQmhYD1yIMJZSn1ag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aviKPLZHHP9bQXgpGmUmKSXqpeiCAhMy/+UJ4UWoAZY=;
- b=lP+9G7cs4JIt/Od2+3vxAmyDb3A4VMJMV4/PfKODWSxppJftwGDxfK+A04Ro7FFQz0BqpPMgUK50PRStC6K2uccEiHr6MyZq/0NN64MHoPVrK8CR9F8H9cbXgj3lfWdydaHD6t+awZfZn99Il3mG6dqAi/t5yQWNX+OkGuTqO18E+cXMgej6ZHfqQNqzSx8XOOk+R07WamB1Gwv5TqDkqaRDlzFdDrNvlM445CVGBrTtBFZVJZEcBPP+VfHYj19yYaA/W8q7whNT9BBqz+EgevHM5qlufAJGgcRLXZ2b3OnHEjJNsEe+gd22ss69HalfCY3B5EyTyadPB8VZ+LUTaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
+ bh=ZgwTtzyZ+PvcUeFvXU3aa+oesFh35fdQ2YvbQoAnx6A=;
+ b=irPBIX2BCIKVFhuUDw8WaRxNo41WPIL/Jw2BL/uB19YsfVNXR0sfvE6GCuGziIKhocp1NwK//FiPfaXVW/L+Z3evO4ewppjZ5YwUJwiCiHKe7ZvcYC5KVYDHPS2lBeDArK9AINV6/ZIIxnqyir6wAGF3j4lBmM7/UBTuryOdvu1AWaFNQj+0zzf1qfpWQLzLSJ4A4I9jVDcydpqk/BNDOSTRnDb4sui9vJK7kxKvBBwVba7EUR51pGuScl3Xd54wlAvwtOkNofZ136XlCkfcQKO+W8AMK96Sy5N2yPC/7JUJEtfkfiKirhG6+oCavdAb7zJTufCXtTTq6RugNfZJIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aviKPLZHHP9bQXgpGmUmKSXqpeiCAhMy/+UJ4UWoAZY=;
- b=N+FzRbuUFQweG8MFJLCQNjgBYQz39vq/vaE/ynHIAj6xrBwNR5zNNe/5k5WBiKiAcNmqiuq3u2S2UnvBukQHE9s1Uoyr60mIOpJ7Llm0LMv2V7Q5abmu152kTXr9RKwSqJumIhM6YYycVA4T3Wvsw5jZpNAjqSBWlp/0y4OfBNwPTxp5PJVNmDDPS1nl9NLgvsSoWjiktXNOFCz6xttCrFA8gtdMCLr7037GySs8w7lsa4dJkpVGrPJsI9sf9oQoFJZy3l4MY+HAlTvl6ssvDJAq1uRDYMpmGW3GGstav4sSDUtaoDxAu4wmQ4NfLLbixPVbpHD7cJlm+FSUKjptCg==
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20)
- by SJ1PR12MB6052.namprd12.prod.outlook.com (2603:10b6:a03:489::15) with
+ bh=ZgwTtzyZ+PvcUeFvXU3aa+oesFh35fdQ2YvbQoAnx6A=;
+ b=qx3a+y+NYjDrcMETOHmpXCYbb0dK7wXbaEbANFrcmwpUnizS9bemcw5hwgMsqwM8jnkHaARfH3eFKqeKDipenQKtOR7mk0pDOUZbpfdyTpWClfXtUF45nlp/HldqKLODFA1tTqa0kzmifCL/KEg2pll2YMlgcXUldp75zVdsBWCNSv9SCiAke6y2XSVhd/W2iA+dGpD9X51LFcmT/dCN4AcXOQIUF7URDhybQtx26ZD4cD3QSwMuPbiStzRGCVIlMJHbvKEoQyXtaL5+7IWTFUQZQ1zHSBaCYNQgxJ8RRroOkmM4fS4gQjQFAZZLxxQlfYCsq1+7tW2yo/4pn45C2A==
+Received: from SN7PR04CA0059.namprd04.prod.outlook.com (2603:10b6:806:120::34)
+ by IA1PR12MB9030.namprd12.prod.outlook.com (2603:10b6:208:3f2::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Tue, 3 Jun
- 2025 18:15:30 +0000
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56]) by CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56%5]) with mapi id 15.20.8792.034; Tue, 3 Jun 2025
- 18:15:29 +0000
+ 2025 19:55:00 +0000
+Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
+ (2603:10b6:806:120:cafe::2b) by SN7PR04CA0059.outlook.office365.com
+ (2603:10b6:806:120::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8746.30 via Frontend Transport; Tue,
+ 3 Jun 2025 19:55:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8792.29 via Frontend Transport; Tue, 3 Jun 2025 19:55:00 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 3 Jun 2025
+ 12:54:43 -0700
+Received: from ttabi.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Tue, 3 Jun
+ 2025 12:54:42 -0700
 From: Timur Tabi <ttabi@nvidia.com>
-To: "miguel.ojeda.sandonis@gmail.com" <miguel.ojeda.sandonis@gmail.com>
-CC: "ojeda@kernel.org" <ojeda@kernel.org>, "dakr@kernel.org"
-	<dakr@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
-Thread-Topic: [PATCH] rust: introduce sfile macro for easier code tracing
-Thread-Index: AQHb0Mn7MGE1brglZEyKYzrCM8w6zLPqDQoAgAe4WoA=
-Date: Tue, 3 Jun 2025 18:15:29 +0000
-Message-ID: <0602b06ba5fbd640b6db50165688c026911ed7b3.camel@nvidia.com>
-References: <20250529184547.1447995-1-ttabi@nvidia.com>
-	 <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
-In-Reply-To:
- <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY5PR12MB6526:EE_|SJ1PR12MB6052:EE_
-x-ms-office365-filtering-correlation-id: d75bf761-79ad-4f16-ab73-08dda2ca9f7d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?SUp2c0JIb0RrazdUOXQwQndTRnJYOTdheW9VMW9sY2xqdStsaC9CeHMvZGEw?=
- =?utf-8?B?dXNYdHF2eGZZTUE5OHlPN3Uyd0RWOXZwWlAzYVB3ZU9iMDREQ2FOMUR6Y0hQ?=
- =?utf-8?B?alJXYkZlRm1yNG1ES3N4empyU0JlUDNhMHljZzd6WTFzVTlMdWxhOWt0aWVX?=
- =?utf-8?B?eUhsdTQreXlYcTIwa0NHdE1Ea3NpVkRDYkhpcnNKSTBDYTlhblVKQTYwMlIr?=
- =?utf-8?B?VEFMbm1GOHhtMTZLUGc4RklXTHR5S29GdXB1RStTMXJGWDNDZGxFcTk3RTJo?=
- =?utf-8?B?OVRvUTk3eVE1NEtEdVgwWklTOEpORXAxVkVVL0wvbnN5cnQ0NU9YaVpCc1Za?=
- =?utf-8?B?NHZWK2JJSXNYZTZIbzhLRmhERms0MldjaFZNV2VmMU5MdjJMd0h0RE9Kd29o?=
- =?utf-8?B?ZzFFaHZ4Q0Nianc5NGQ5cENERUtIZEM5RVhyN3VkeEQwbkxzZ3JTS0lubkFN?=
- =?utf-8?B?VTM1NWFjV1RNMkFxY0tIMG91cW81TFA4eW1XQ2taQlU0SUw0V3hvWVhlU1R3?=
- =?utf-8?B?dEx0TTRjVzhYdUNaRkxMZHJvSTF1OG9SVnlOZVRodTRhVUZWOVAwMTFwOWlO?=
- =?utf-8?B?Y25ldy8zMW9lbTRCdm9Bei9oMDBSaGNQMlp3cU9WU2xwdnV6K2NqM1BQMWVI?=
- =?utf-8?B?VGZ1V0lhN3ZNRmQ5WTlmQTB4OTcyWTMyZTgrMHFDWjRSV1BKZThtYWlsYWY1?=
- =?utf-8?B?TWZ3SWoySXU5a1ljNFBITGIxaHFuTk91TzlJNHZwc3lUbDJYRWozNkxSYmpn?=
- =?utf-8?B?K1pmRkw4L3VZaWk3TmlReDFJZytCWnNXVFVnUVhLcFloaUdEcERQejdBbk1M?=
- =?utf-8?B?R1Z4SDA4WHNRaXV3V3gyNy9kU0k5ZUdZYjFzZGZnZ3h4c01ORFFSVG1iNmZu?=
- =?utf-8?B?RDJnK0NISHJJNDRYUDIxYk5aL3BqUzhQMHJiR2pJWWVMN0x2L1FtTExNSW1L?=
- =?utf-8?B?bXRjekZkc1F6M3Z4bWdLWEhxK3FrMkNsb00rYUpqMjg2UjAwamwzVkFXMWc5?=
- =?utf-8?B?VHlrMFlZMTBHVTN5cnR2NFlnVjF4QnVKVWZ1dENZWWVVWUdEN1QvU2xybjI1?=
- =?utf-8?B?RlovUE9EaDd3L2tZNmZ3UEdWTWcyc05HdG8zbUF2VzVSZjQySGl0dzhwZTg3?=
- =?utf-8?B?WWxvb2Uwd1M3dkpRN0sremVzaERiemF4bmF3YkFpVk9scmlRVFdWM2lNaTRM?=
- =?utf-8?B?V0h0WFB5SDlrNTVKTThhcEtqcTJDcmhQdnZVOURXZmUyNEdCUnc4cEhTelg5?=
- =?utf-8?B?NjdLTUNDaFJFSktqcGVheDhUUXRMQTFBd2xVL1d0WjdsUmpUTnVkWUJtNTk5?=
- =?utf-8?B?eW1jNHZORWtTZmZEN0NmYVVrcXVEOWFGYXVmRkMySHBBeDhaQjRhWTE5Y3dI?=
- =?utf-8?B?UEE2TFZ4bStFamZXWXlSYzBCai9Famlyak5HWU5LS21WZkZOQTZQWStiNHh3?=
- =?utf-8?B?c0kvVFVwdGZjaTRPTmxrNStrRUE2WDc4NEp5SVNKTDM5cnRuS3lUbzRzWUdj?=
- =?utf-8?B?RkdRRVpvN1BwZlU3QkI1TUp4ZnlSRTJkV3FadmJiOGJFQjZrRDR1K1dkN3dT?=
- =?utf-8?B?Q2RLTXFFMXR0VW54dm5VVFhPbTB0T29jWmpEOUpCSG00UEtSaUN6VC9BN1lx?=
- =?utf-8?B?TW1IbTIrQ3Zzb09VSTF5UVZyK2xoUERkeGl0U3MzTGxyd1czZXhCUVVPVzgx?=
- =?utf-8?B?VUk4eTFGRlMwcXNseVdNZlkzdlZEYllTdEF4SFc3M2h3emlrMmI5OFM5WXRS?=
- =?utf-8?B?NUtzczZrTzNCS0tVWllEOFR0Vlh4R010U2phN0NCK1A0ZTc3aUJCUmRjNHJW?=
- =?utf-8?B?NHdQOXBienQ5azBFTVlCN0NtRXRuS1dFQmF4cjZnQ0hYSjVWYU1PeFY3eDRh?=
- =?utf-8?B?YWFLZTVkNEVnQ01qd2ZvM2hMTEdWTjNmQ2x3Z2dINDVvQjE3VlVHSEkxWkNL?=
- =?utf-8?B?UVcwZ0lSUHZRU0lUVmlkV1BKeHBYdE9JU0pESHNXU1dENG12MkRvQUY2ZzRO?=
- =?utf-8?Q?f+zG8RIEJaou8jJl74t0KQ8HeLHvAU=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6526.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?dk5tOHBxWmducHZMWEJnT1M2bWlLZ2FISitBRzRGR1JYVlFocVhwOWRNb0lN?=
- =?utf-8?B?Wk5BclRpbXdJVm5SbUpVZG05WGZpZlNhOTBua2VNRXlkVEljWHlhNUt6WWV3?=
- =?utf-8?B?QUJSV3pPdGQvdStaaGxmWFY2RlFpRVRld1pLTWUzNTBrSFl3TUJ4dzNscnox?=
- =?utf-8?B?dnhBRUM2TGNSK1pVVWZQWUZHZWZmT2ZZcWV0c2tPSXQwRisrcjFRTWh1Nnov?=
- =?utf-8?B?Ly9mWDV2NFhLdFlwYzc5MDVsRUlrc2w4OVhYRU82RjRDMzhKY3IraWZGZ0dh?=
- =?utf-8?B?Qm80c3FtV1R3bFpiVTdTMGdjS3VNK3N1SXdIbmdKcHdBYWdhaE5vY1ZpcDlk?=
- =?utf-8?B?QnB2S2NwSkZXOXE2WkVVNW5kSjZFTENIQVNJSFVJcHM0ZksxeXhKM2ZJYmtr?=
- =?utf-8?B?MVk4b0Y4bWJmSFJmUFBNdTlVYXdST2Q0cThZbU5yTllhUjJMNEwwUEpVdklk?=
- =?utf-8?B?UHl0YnpDYzhtVFhmYXllaVdHVXBVMTZIWWZ0RjU0cGFjaW5xV2IremlaRTVR?=
- =?utf-8?B?TjUzQkwzZjJvQVRIMVRaRW5HUzYvQTcyd3pYY2tQaVMzU2JzZHdSWXg2NW5H?=
- =?utf-8?B?TC9zOGplTEx4a1NQUlprbElQOGwrdmtwN3BTdXl3cDF1dlpHRWhvaldDY2Yz?=
- =?utf-8?B?akt6bDhWdk5sdXgrbmdMWVVTZW5uK0Mwam9iZEJWa3NWWURBNlN5WnlEWkU2?=
- =?utf-8?B?MHJLRWh2Qi80c2d2dGNMNXpBNkJ1N3V4blQ1dSszTzBJRFVwNnpYZ1FOeWNB?=
- =?utf-8?B?Rkk1UU9Bbm5mY1dLcEZQQ3M0T3V3QnNnWlF1dUIvRExoaWxOTEZraUNsZWxL?=
- =?utf-8?B?dmZyTE5zUHVjeFB1dHZ1V1BjaXNlOVhCQjNmTEp2V1VrbDB1NDlJQmR4V3RV?=
- =?utf-8?B?M0pyRGtITDBIaVI4emZIMHpHOWhja1g4NG90aWxKcHVaSDZzR2o5VlhxS0gx?=
- =?utf-8?B?dEJwRGQ4Y2MxbHRncWZJOE8ycnRWRThtalJ4R2Q2RWZoSEFweEdXZ0d4NGls?=
- =?utf-8?B?dFZrbC9ZYk1xZE5VRjRIVFFsZHIvMDAvUEpKTXJYUEt5b1gxL2h5THdJZytO?=
- =?utf-8?B?aHRZV3Bqd0xMeFdPT1lYR2lUYlJIbXBCd2ZYTmNWUkpOVEdyWE9BT2RiMlFB?=
- =?utf-8?B?ZkN2QmplVUw1bUptOFVUMXgxMlZxQklZc1FDVW9BRkNBZ2R3THFYS01lT0t6?=
- =?utf-8?B?Ti9IUnNTdnFxZ0lIWTNqNG8zaFdWc2xLNmFhRk5ZZXNRTXhGK2R3MTI5U3RG?=
- =?utf-8?B?WU5pZnl5V3hnZlRHN1E3eDJYbWdadytQa0RYYlhTS2JqTTBMeUc2ODZnZ3lu?=
- =?utf-8?B?dFdKTWNqMnA3MW5WSkp2d2tmT2ZyL20rTW5HNU1nRXhTanVxRE9vWkVUcSsw?=
- =?utf-8?B?NFFSeWZqVURtK3JETXVCZ0JieWg5MHdRcFNnMGpkTUU1OVg0NDE3NjczT2ND?=
- =?utf-8?B?aVZjYmRTbEd5dFIycHZnL2JaWlA0N21VQ2N0Smh6UTRxdG5qY1NCNEJ5MEhF?=
- =?utf-8?B?bzFSejMzam41VXR2ek1CNHNhRE82cG1lM1JRTjJCTisxeDB6b1VNRWdFRjU2?=
- =?utf-8?B?a09XQzJLME9iN1M4RkowMG9nakhURldkZVpPU01VNmM1L0N3b21lR2RLekwy?=
- =?utf-8?B?MXExRWJ0QXNHL3M1eHNFOWNpZ0YvUy9Xc0d0VGtIdm1PempkNHBTU3Z6RUU2?=
- =?utf-8?B?NGVmdlVaY1N0OWZwQkkveXNrV2I0RVZZd1I2WHRrdFlSeEdGaTZsQkJFRzRV?=
- =?utf-8?B?bmFPbHl2VVJmMmVENjB4MnhGWGI4UEd4VitjdUZia21LbW16QzV3cUtPR0hn?=
- =?utf-8?B?VDZacFRMOHBuOWdpdkxVQVlOTkFqeTkxWGYyZHBFbTFSck5lb2hvNmJEcitG?=
- =?utf-8?B?dVNPU0lEaURENDRDUlVyUFJJc09SWWlKbHZSL2QxQTR1dVozd1JNS0xqM0xF?=
- =?utf-8?B?ZnFxVElLZm4xODBXQ0lyV3J1NHM5cnlaU3RIcDUzMFAyUDhNM2t3UDVrRDJZ?=
- =?utf-8?B?SDVycWJ3VnpmVkxvcUhqMUhmY2RJY2dIOWpMdDA3V0VIQ3NLYWRBTklxeG1O?=
- =?utf-8?B?WmlacG9OL0FPM3VaempvU1p0Z25jQjlUZGxmSHpJbnQyUDR1NHNYT2d2MjU2?=
- =?utf-8?Q?ZYpZPQYP3yPiIsn+GmPOJ7ZmH?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <72F9E4FD46F31A4E94AA0C88C20088C4@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+To: Miguel Ojeda <ojeda@kernel.org>, <lossin@kernel.org>, Alice Ryhl
+	<aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+	<rust-for-linux@vger.kernel.org>
+Subject: [PATCH] [v2] rust: introduce sfile macro for succinct code tracing
+Date: Tue, 3 Jun 2025 14:54:26 -0500
+Message-ID: <20250603195426.2360773-1-ttabi@nvidia.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|IA1PR12MB9030:EE_
+X-MS-Office365-Filtering-Correlation-Id: 15f70f0e-519b-4b77-2bf6-08dda2d8865f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zmW1AdmwqPJff3xEfThUTvtlhIfJxXt1NGDdPedJErUJNqJPnvDh/hN/Us9V?=
+ =?us-ascii?Q?lR8gc3LmoPAr9/qAc/4u0Ju1EAX1VlEr40mS/26cDqLnCaq8mdiKHMdAUXaS?=
+ =?us-ascii?Q?TQ8p4nhb3J+G9ZX+AEhsVVc38DN052tn98DouIazmD3ST+RmTffr1ixV60UB?=
+ =?us-ascii?Q?8OeisuJ3JA+pCLNb9dKfAs1W0AhJGftBfJmtkVktzBcWu8WhSyaAw//9Jdcs?=
+ =?us-ascii?Q?JnbdPurIDMZQysiJUB/0iExBnHyGzdwMkJXlxvOe2hGwh23LKSBHbO7X3aCs?=
+ =?us-ascii?Q?Clm84XIu1pYpO/gwjMkem9YqsJE510ouSFZnNeLw0PKtOJ74ggScegEj/rwi?=
+ =?us-ascii?Q?dymRYk9MxJ6LlQYlcuuqyBX0pqsq2LR+9DmwuWaKnMj4w9/lWwJZHKDBQVKi?=
+ =?us-ascii?Q?Vvj6R6sdH+NVpB01GBl3fknfCAguCvmsvH02QlIHaFWoygaAam0PN3k0E5UX?=
+ =?us-ascii?Q?8HIZTv9wrtQpUCPG98MUSVSZ6EnPU0vo6g37vqu4EIiupSuSrb9CGykvHf3k?=
+ =?us-ascii?Q?cELp8kL7U9WlTbrv3Bd2QnT9bt+bJOGW7Mn5vAZkmAtICjGfo2zO3ZnDTt4V?=
+ =?us-ascii?Q?ENxU2t9tut4wZ0fOIogr7+vODlp6u02tZkWZBaNvF8S7PI+69+NA/sb843SH?=
+ =?us-ascii?Q?MkDiBBCncIm0yKA7IQy/AYIPh3ntqrIiCI6V1ewgn1f4PFmkTdrIwwgWrfhP?=
+ =?us-ascii?Q?Nqh9V04ejCgHToqlSvhTYlMF2iBI0sy/CqgzTnsfbEhjgZa/rHVP7YvyhgGE?=
+ =?us-ascii?Q?PddeJ5m8BG+iRp1uNHdJeNdG5As460xd2tYV3YBqyhKUs7TBJX1gBOfjshML?=
+ =?us-ascii?Q?StdT2tiSJ73M+YtWgBQTje7LoCte54F9d3bnW0qEb+UrExZzte1pPDDEV6Ws?=
+ =?us-ascii?Q?G9tQwLKl6b/bF0/dUL8R7Mv3TLm4w++c58wTAHY0B79lll3fJO8e8yu/C1OW?=
+ =?us-ascii?Q?ZT5z7ltnBEvpu27hxFU4hpu7em541Mhct8qzCyJmUyJxDCCMOsYQrl3M4/cW?=
+ =?us-ascii?Q?52ms1e9qu2Zr8AWMAKQxsubTisFsKw68gzgwDis0UhY2Ja1Cd4hREZxXk34w?=
+ =?us-ascii?Q?GKlmMrPam8N4YBNZ9T+H1N3EpREkQVLTO4ZQiMIQ9fZqtOeYr9ZCX51wNvUd?=
+ =?us-ascii?Q?mYMsDHEU9yJvcUQx0hJ2JuE09BM9eiAKplmblPaGZyAurm3J78BCB8pCxw9R?=
+ =?us-ascii?Q?bLem0bZJ5uc+pWjTsPtVLQeUlyUkM7C+I5KvaTMI8oQzN4PxX6eWXaao88M3?=
+ =?us-ascii?Q?dBAfTJhcBRSgrq8pWXO8Rn/SMTmj7mjEM03V622IEJnC9VCgw01p1Pjwm9ef?=
+ =?us-ascii?Q?pwsFEfje2Plkg+98vVo3NkwojB3Aq1UwFP/iP8z66PU9+8p5HWOcAuGF7jhG?=
+ =?us-ascii?Q?Ll62IaSQ0gexarheWd1FCvKZGuQyWbcb/isD1Ui1JwZyjjtPx/AbQ4oP7LE1?=
+ =?us-ascii?Q?fwlBr+o0xIGe4CF6bA8rSQ0Poo12H6GPhbtYpmi1D8gguc7Fn6/QY0snL+Dy?=
+ =?us-ascii?Q?aphSlpWGEylnl2aWnD/22fikhrL09x7UM81p?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6526.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d75bf761-79ad-4f16-ab73-08dda2ca9f7d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jun 2025 18:15:29.8858
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2025 19:55:00.5861
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vlMnIB3R/LCU5QSL3CQG+bD0sqJcJ2zU0sGJLzvQ0fMiYofmKRRhJaTrR+eN8hd6J+9ofg1B4e3wuUECfW6SCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6052
+X-MS-Exchange-CrossTenant-Network-Message-Id: 15f70f0e-519b-4b77-2bf6-08dda2d8865f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00036F3F.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9030
 
-T24gVGh1LCAyMDI1LTA1LTI5IGF0IDIyOjIxICswMjAwLCBNaWd1ZWwgT2plZGEgd3JvdGU6DQo+
-IE9uIFRodSwgTWF5IDI5LCAyMDI1IGF0IDg6NDbigK9QTSBUaW11ciBUYWJpIDx0dGFiaUBudmlk
-aWEuY29tPiB3cm90ZToNCj4gPiANCj4gPiBJbnRyb2R1Y2UgdGhlIHNmaWxlIChzaG9ydCBmaWxl
-KSBtYWNybyB0aGF0IHJldHVybnMgdGhlIHN0ZW0gb2YNCj4gPiB0aGUgY3VycmVudCBzb3VyY2Ug
-ZmlsZSBmaWxlbmFtZS4NCj4gDQo+IFdoYXQgaXMgdGhlIHVzZSBjYXNlLCB0ZW1wb3JhcnkgZGVi
-dWcgc3RhdGVtZW50cyBvciBzb21ldGhpbmcgbW9yZQ0KPiBwZXJtYW5lbnQ/IElmIHRoZSBmb3Jt
-ZXIsIHdoYXQgYWJvdXQgYGRiZyEoKWA/DQoNClRlbXBvcmFyeSwgZGVmaW5pdGVseS4NCg0KU28g
-ZGJnISgpIHVzZXMgZmlsZSEoKSwgd2hpY2ggbWVhbnMgdGhhdCBpdCBwcmludHMgdGhlIGZ1bGwg
-cGF0aCwgZS5nLjoNCg0KCVtzcmMvbWFpbi5yczozOjhdIG4gPD0gMSA9IGZhbHNlDQoNCklmIHRo
-ZSBmdWxsIHBhdGggaXMgbm90IHRvbyBsb25nIGZvciB5b3UsIHRoYXQncyBva2F5LiAgSXQgaXMg
-dG9vIGxvbmcgZm9yIG1lLCB3aGljaCBpcyB3aHkgSSB3cm90ZQ0KdGhpcyBtYWNyby4gIFNvIGlm
-IGRiZyEoKSB3ZXJlIHRvIHVzZSBzZmlsZSEoKSwgaXQgd291bGQgbG9vayBsaWtlIHRoaXM6DQoN
-CglbbWFpbjozOjhdIG4gPD0gMSA9IGZhbHNlDQoNCj4gaS5lLiBjYW4gd2UgZ2l2ZSBhbiBleGFt
-cGxlIG9mIGhvdyBpdCB3aWxsIGJlIHVzZWQ/IChJZGVhbGx5IHBsZWFzZQ0KPiBwdXQgaXQgaW4g
-dGhlIGRvY3MsIHNvIHRoYXQgaXQgZ2V0cyBidWlsdCBhbmQgdGVzdGVkKQ0KPiANCj4gPiBUaGUg
-bWFjcm8gZ29lcyBhdm9pZHMgc3RyOjpyZmluZCgpIGJlY2F1c2UgY3VycmVudGx5LCB0aGF0IGZ1
-bmN0aW9uIGlzIG5vdA0KPiANCj4gImdvZXMgYXZvaWRzIg0KDQpGaXhlZCwgdGhhbmtzLg0KDQo+
-IA0KPiA+ICsvLy8gUmV0dXJucyBqdXN0IHRoZSBiYXNlIGZpbGVuYW1lIG9mIHRoZSBjdXJyZW50
-IGZpbGUuDQo+ID4gKy8vLyBmaWxlISgpIHJldHVybnMgdGhlIGZ1bGwgcGF0aCBvZiB0aGUgY3Vy
-cmVudCBmaWxlLCB3aGljaCBpcyBvZnRlbiB0b28gbG9uZy4NCj4gPiArLy8vIFVzZSB0aGlzIG1h
-Y3JvIHRvIHRyYWNlIHlvdXIgY29kZToNCj4gPiArLy8vIHByX2VyciEoInt9Ont9XG4iLCBzZmls
-ZSEoKSwgbGluZSEoKSk7DQo+IA0KPiBQbGVhc2UgZm9ybWF0IGRvY3MgYXMgd2UgdXN1YWxseSBk
-byAocGxlYXNlIGNoZWNrIHRoZSByZW5kZXJlZCBmb3JtIC0tDQo+IHRoaXMgd2lsbCBwcm9iYWJs
-eSBiZSBhIHNpbmdsZSBwYXJhZ3JhcGggd2l0aG91dCBjb2RlIHNwYW5zIGV0Yy4pLg0KDQpBaCwg
-SSBzZWUgd2hhdCB5b3UgbWVhbi4gIFRoYW5rcywgSSdsbCBmaXggaXQuDQoNCj4gDQo+ID4gKy8v
-LyBOb3RlOiBBdm9pZGluZyByZmluZCgpIGFsbG93cyB0aGlzIG1hY3JvIHRvIGJlIGV2YWx1YXRl
-ZCBhdCBjb21waWxlIHRpbWUNCj4gPiArLy8vIGluIG1vc3Qgc2l0dWF0aW9ucywgc3VjaCBhcyB0
-aGUgYWJvdmUgcHJfZXJyISgpIGV4YW1wbGUuwqAgSG93ZXZlciwNCj4gPiArLy8vIGJlY2F1c2Ug
-Li4gaXMgYXBwYXJlbnRseSBhIG5vbi1jb25zdCBvcGVyYXRvciwgdGhlIGZvbGxvd2luZyB3aWxs
-IG5vdCB3b3JrOg0KPiANCj4gVGhpcyBzZWVtcyBsaWtlIGFuIGltcGxlbWVudGF0aW9uIGRldGFp
-bCwgc28gcHJvYmFibHkgaXQgc2hvdWxkIG5vdCBiZQ0KPiBwYXJ0IG9mIHRoZSBkb2NzIChgLy8v
-YCkuDQoNCk9rLg0KDQo+IA0KPiBBbnl3YXksIHBsZWFzZSBzZWUgd2hhdCBCZW5ubyBzYWlkLCBv
-ZiBjb3Vyc2UuDQo+IA0KPiA+ICvCoMKgwqDCoMKgwqDCoCAvLy8gUmV0dXJuIHRoZSBpbmRleCBv
-ZiB0aGUgbGFzdCBvY2N1cnJlbmNlIG9mIEBuZWVkbGUgaW4gQGhheXN0YWNrLA0KPiANCj4gV2Ug
-ZG9uJ3QgdXNlIGBAYCBpbiBSdXN0IGRvY3MgKHdlIGRvIGhhdmUgYSBzaW5nbGUgY2FzZSBvZiB0
-aGF0IC0tIEkNCj4gd2lsbCBjcmVhdGUgYSAiZ29vZCBmaXJzdCBpc3N1ZSIgZm9yIGl0KS4NCg0K
-SSBzZWUgb3RoZXIgY29tbWVudHMgdXNlIGJhY2stdGlja3MuICANCg0KPiA+ICvCoMKgwqDCoMKg
-wqDCoCBjb25zdCBmbiBmaW5kX2xhc3Rfb3JfemVybyhoYXlzdGFjazogJnN0ciwgbmVlZGxlOiBj
-aGFyKSAtPiB1c2l6ZSB7DQo+IA0KPiBJZiBoZWxwZXJzIHdpdGhpbiBtYWNyb3MgYXJlIG5lZWRl
-ZCwgYW5kIGVzcGVjaWFsbHkgaWYgdGhlIHVzZSBjYXNlIGlzDQo+IG5vdCBqdXN0IHRlbXBvcmFy
-eSBkZWJ1Z2dpbmcgc3RhdGVtZW50cywgdGhlbiBpdCBtYXkgYmUgYmVzdCB0byBwdXQNCj4gdGhl
-bSBhcyBoZWxwZXJzIG91dHNpZGUsIHRvIGF2b2lkIGdlbmVyYXRpbmcgYWxsIHRoaXMgY29kZSBv
-biBldmVyeQ0KPiBtYWNybyBpbnZvY2F0aW9uLg0KDQpUaGF0J3MgdGhlIGJlYXV0eSBvZiB0aGlz
-IG1hY3JvIC0tIGl0IGRvZXNuJ3QgZ2VuZXJhdGUgYW55IGNvZGUuICBOb3QgcmVhbGx5LCBhdCBs
-ZWFzdC4gIFRoZQ0KY29tcGlsZXIgZGV0ZXJtaW5lcyBhdCBjb21waWxlIHRpbWUgdGhlIHNsaWNl
-IGluc2lkZSBmaWxlISgpIHRoYXQgdGhpcyBtYWNybyBnZW5lcmF0ZXMsIHNvIGFsbCB0aGF0IA0K
-aGFwcGVucyBpcyB0aGUgY29tcGlsZXIgZW1pdHMgaGFyZC1jb2RlZCBvZmZzZXRzIGludG8gdGhl
-IHN0cmluZyBsaXRlcmFsLg0KDQpZb3UgY2FuIHNlZSBmb3IgeW91cnNlbGYgaGVyZTogIGh0dHBz
-Oi8vcnVzdC5nb2Rib2x0Lm9yZy96L2U5NDd6c3hmUA0KDQpUaGlzIGlzIHRoZSB3aG9sZSByZWFz
-b24gSSBnbyB0aHJvdWdoIHN1Y2ggbGVuZ3RocyB0byBhdm9pZCByZmluZCgpIGFuZCB0aGUgLi4g
-b3BlcmF0b3IuDQoNCj4gDQo+IFRoYW5rcyENCj4gDQo+IENoZWVycywNCj4gTWlndWVsDQoNCg==
+Introduce the sfile (short file) macro that returns the stem of
+the current source file filename.
+
+Rust provides a file!() macro that is similar to C's __FILE__ predefined
+macro.  Unlike __FILE__, however, file!() returns a full path, which is
+klunky when used for debug traces such as
+
+	pr_info!("{}:{}\n", file!(), line!());
+
+sfile!() can be used in situations instead, to provide a more compact
+print.  For example, if file!() returns "rust/kernel/print.rs", sfile!()
+returns just "print".
+
+The macro avoids str::rfind() because currently, that function is not
+const.  The compiler emits a call to memrchr, even when called on string
+literals.  Instead, the macro implements its own versions of rfind(),
+allowing the compiler to generate the slice at compile time.
+
+The macro also uses some unsafe functions in order to avoid indexing
+into a str, which apparently is not completely a const operation.
+
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+---
+ rust/kernel/print.rs | 63 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
+
+diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+index cf4714242e14..1fd1497af887 100644
+--- a/rust/kernel/print.rs
++++ b/rust/kernel/print.rs
+@@ -414,3 +414,66 @@ macro_rules! pr_cont (
+         $crate::print_macro!($crate::print::format_strings::CONT, true, $($arg)*)
+     )
+ );
++
++/// Returns just the base filename of the current file.  This differs from the
++/// built-in file!() macro, which returns the full path of the current file.
++/// Using the base filename gives you more succinct logging prints.
++///
++/// # Examples
++///
++/// ```
++/// pr_err!("{}:{}\n", sfile!(), line!());
++/// ```
++#[macro_export]
++macro_rules! sfile {
++    () => {{
++        const FILE: &str = file!();
++        assert!(FILE.is_ascii()); // .as_bytes() does not support non-ascii filenames
++
++        // Return the index of the last occurrence of `needle` in `haystack`,
++        // or zero if not found.  We can't use rfind() because it's not const (yet).
++        // Avoiding rfind() allows this macro to be evaluated at compile time.
++        const fn find_last_or_zero(haystack: &str, needle: char) -> usize {
++            let bytes = haystack.as_bytes();
++            let mut i = haystack.len();
++            while i > 0 {
++                i -= 1;
++                if bytes[i] == needle as u8 {
++                    return i;
++                }
++            }
++            0
++        }
++
++        // Return the index of the last occurrence of `needle` in `haystack`,
++        // or the length of the string if not found.
++        const fn find_last_or_len(haystack: &str, needle: char) -> usize {
++            let len = haystack.len();
++            let bytes = haystack.as_bytes();
++            let mut i = len;
++            while i > 0 {
++                i -= 1;
++                if bytes[i] == needle as u8 {
++                    return i;
++                }
++            }
++            len
++        }
++        let start = find_last_or_zero(FILE, '/') + 1;
++        let end = find_last_or_len(FILE, '.');
++
++        // We use these unsafe functions because apparently indexing into
++        // a string using normal Rust methods is not completely const operation.
++
++        let base_ptr: *const u8 = FILE.as_ptr();
++        // SAFETY: We know that `start` is <= the length of FILE, because FILE
++        // never ends in a slash.
++        let ptr: *const u8 = unsafe { base_ptr.add(start) };
++        // SAFETY: We also know that `end` < the length of FILE.
++        // If `end` < `start`, this will generate a compiler error.
++        let slice = unsafe { core::slice::from_raw_parts(ptr, end - start) };
++        // SAFETY: We know that the slice is valid UTF-8, because we checked
++        // that FILE is ASCII (via is_ascii() above).
++        unsafe { core::str::from_utf8_unchecked(slice) }
++    }};
++}
+-- 
+2.43.0
+
