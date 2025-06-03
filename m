@@ -1,201 +1,349 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011061.outbound.protection.outlook.com [52.101.70.61])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2060.outbound.protection.outlook.com [40.107.236.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E732C3244;
-	Tue,  3 Jun 2025 05:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3096A18E1F;
+	Tue,  3 Jun 2025 07:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.60
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748927466; cv=fail; b=hijFyO13h2ROE4lAcI/886I1vxYcvg/l67v8WC8AVNTH6IwKF9leoaDiQP7Ia39OrRb/xsQ6AH/MfdBOuPria4u5GdbBCegNR1/Qbj2kujDCo0oAMVGSBLpx4KCuCyOm8Cc2AhBenzWCOWGtriM3wOg0V2xp3orXgfa10D/fx8I=
+	t=1748937591; cv=fail; b=iPqO3ROlvhn0CnYOe+HcOPq47q0YBtFAq39dGAXJVmOo8K5tNt1oBqiKFs0uXDn2z2KMDfo+SEAIlJrYbgm4ak2UXpErhXaeSL2imk/HR/mBp4YAdmXvpd7CobLwtoAdih4FAXeD8nwW10px8FBRAId7E3lXs1b9pS7udxxjjTc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748927466; c=relaxed/simple;
-	bh=PAjQI1p3fF0LIvhUuQeC9Aqd1r6HJvNs7tDDfnPylEw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=uo853ZjGEacSuH7nutUK4POmdeeqSQn8Bd1gvRU/s1kg0VZstElkqJxwwwzuOV0cGBrtrzu/XpdVRHK4XBXtu2SBmzKH4K6nE3aObfn3OHVKeoil4OGaF/fq9CpvvS4PzF8ewq/KKP97mL0186jRK3//+M4KkthhcdfzYnSKHS8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=QTCUYEyk; arc=fail smtp.client-ip=52.101.70.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	s=arc-20240116; t=1748937591; c=relaxed/simple;
+	bh=FII5siq+MIOKJqMh3Q5cD03eL1ilqZZ0kCT0UID/Hdk=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=s4uEghNHvZsMctpDJqSwAvkynLWP4lr2fUdaYXWB4ztpu5duJnCcSrd8L3QLrNiKAr7IS6lS2YrATFFUBrBPswj/fuB7HOm7t7JdXBAt2pC7EE8kVWyK3/Hoz+D+U/zHVFkFm3hsmGQpH/xl+nsKvkqY217zM2ms4YTHIAhG/e4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HtN7IwJu; arc=fail smtp.client-ip=40.107.236.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="QTCUYEyk"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HtN7IwJu"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bmGvnNHvFrFoljY1QP9zTEOPKa5hUximKBLS6JnqFeWeLdKhCZv8ZFLMOuwPJxRQt57KqpvhofxOkavnTSueiNXR29mHPObWU11w3Y0+oOiLg2AFsPrGRSZynHD7ICCg2pFjbGbxYzchODMo9RaYbNkcNG5btz8l3on8a5lYLw0swdx5m8bT+8lcmWvELvTKYvqyN8gkqFRmgFHn023P/FTFeUipzn3Z/yPCxsimMhw+TBTcmDP6gN792M2LQWakLYRlK+mu65uvWhQp/h45peCCdZbwiNQR0n0XCpEcIPhK8LfV7+QmFdfzOQhD+aiCd/WlW6DLdEdGuKMuNCP/aQ==
+ b=nn4F0sQP7H0qRWqu+EQui5sI58OJ07x79Rn0fjCerlSQikIzHxZo3DrahFFhm+phkKQmqfSBJo1kQ6OErI5fBcMCi6eTAcmaXumUUpp0TViUbn4PeS6IJXXPgnU+40e3sk7HbaLxfA3fUcRXqoaz88ANFeU62x/u+5wSc8uKkha4VdMKNjwNZyBvboRGEOEBzruLumbOwSdvxxZHNbHlEhO9IbeOIE24brzD22p3Nn72lP3yMrwwrgFHslzNn4hxiBE4L3LcJ6cdPj9/m5ReLGzipPyguo0LGFdLl5qG/fUYcgfA+8OH2btr/30NFtqJyyx7iw6lvVAv8rx9YSHXOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vEyEuVBuWZwtqpT6OdeDlX1LsaM9BZjsv5MjA6tFt3s=;
- b=l8d4KAc5aUd14qEtF3XEoJuJXjH1HplfwPx2FDEgzfslWRgf8MdtZWp/s94zvu9x59g77UPs2PEOI8vzLfVR5VFsDoJkJ2RrwzVbtIdobNCa3Yp9FbM4EW7WLiRM51wKvTdYakf7lREZd7MaFHFPn3DpXTQGQIEWA9JMd9AU1yarRuOW53jLiPYE73Fbm/jApvXPbUbLwZph0jfrkTJlLATuP2HV/hCKBfuMnftf38P4s+fmtJfH2wLu2cs/AAUrMLqpPFrjNaKvpkLzQsKHj0KjZx0N4/TbBzI66uLzxSX9mIcAQ3Dzind4FWl9uRMxFLGDs6yRNT0riHhHvb6bOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=buenzli.dev smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ bh=h9D4cP9AU8YK11EQtRDhYyqQCVnL8dHspVVZfPo9iyc=;
+ b=nzJOix9YsQQhikNddk38LO5W1SYdLGFfC/wA7UGLVrrQL5gWscuhoEHyRXWfZ/f5nEO2eLV0poSMu3cUaqBRYIhC2ZvOFN6+1+9VVvemiZ000feAtny+sD3rR6qigXD4JP5hoKf6jIMjh6/LphRcOn5OBh2UJPuzH1TT+QVEPBT739YpG3BpfyOkj//1WliGT2MoK7kGFFK1UmiEcZh5sAj1u5AD7hRvhL19ynOWr6XvV3nY20qbfAoGJkv2lyaB6bHjHbinCvl0rC5nE81h4E/FdRNXdAPamcPMShydoHGZ2k+n/ONRMJ4JnCXtJY7O3njj/IXbdAlEZ0jtdatZQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vEyEuVBuWZwtqpT6OdeDlX1LsaM9BZjsv5MjA6tFt3s=;
- b=QTCUYEyk0rrjfeY/8Q/rHjrI7dkbZihB2oehC2asttLlrYmwO5v20/975hv+mvVAALJUhZM1IvYdQWL52dH/Ifbl+e7yOV941Pw2NYHjtpW1CUzQW+RIOKHHXA5brq9Qmp31pvHRVV+xgZMJa2z6llYhcE4q4+6/9JiA7AnAN3hOQHvadJBEp6JUxWDabRfIyKoOHnlfZSdijqOfDO1ZFGScoJIefXAc+a7cNWuQ5DTQJNtQM6zIifnuNSeV1ZFZlYvEE2eS91Gu6vJ+K0+sIh4k8Itv0wQoHzbJNyEdvyVWVPFK0FRLfaFxF6neQtXrEqBEUSzR8/gS9YzTKjKWUw==
-Received: from DU7PR01CA0002.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:50f::24) by DB9PR10MB7363.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:10:45d::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.34; Tue, 3 Jun
- 2025 05:10:57 +0000
-Received: from DB5PEPF00014B93.eurprd02.prod.outlook.com
- (2603:10a6:10:50f:cafe::28) by DU7PR01CA0002.outlook.office365.com
- (2603:10a6:10:50f::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.24 via Frontend Transport; Tue,
- 3 Jun 2025 05:11:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- DB5PEPF00014B93.mail.protection.outlook.com (10.167.8.231) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8792.29 via Frontend Transport; Tue, 3 Jun 2025 05:10:57 +0000
-Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 3 Jun
- 2025 07:10:56 +0200
-Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by
- SI-EXCAS2001.de.bosch.com (10.139.217.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.43; Tue, 3 Jun 2025 07:10:56 +0200
-Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
- (10.124.11.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Tue, 3 Jun
- 2025 07:10:55 +0200
-Message-ID: <b2225fa4-ffdb-4156-afb9-561484d6d78e@de.bosch.com>
-Date: Tue, 3 Jun 2025 07:10:49 +0200
+ bh=h9D4cP9AU8YK11EQtRDhYyqQCVnL8dHspVVZfPo9iyc=;
+ b=HtN7IwJupk6UDw0PhrWNW/N+8qqgYwCK3fVfJpvBCKHm34UA63w5rMS5TRBP3kD0JXXtEzP+3bUzi7NUMbAirsLFCfXXihSIlxDneir/azD6RjWs/SNoAbqdQF/614Z53bn734bwS1qvO1w7u0Wm6lGoMPDbZKlv63IQOesOBcFgdaF3zAnwrh7XZI3S3HbqKf7FMAFXqoDjPlXg799+EvOavuRhl0CfMQtlQordFNu03mUjXIB/StIn9tv/3dgyhQ1YuCXMaKRYmOBA8p+a97zwR1/Dy3+PcxanWJhKYO6WZrg9THILmX9t+RTcjUlOxFIWm7OFp3Vb2KnUsneiVA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SN7PR12MB7979.namprd12.prod.outlook.com (2603:10b6:806:32a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.37; Tue, 3 Jun
+ 2025 07:59:46 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8769.037; Tue, 3 Jun 2025
+ 07:59:46 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 03 Jun 2025 16:59:43 +0900
+Message-Id: <DACQMQ1EEZJ8.2O2RCPN1E1CIV@nvidia.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v4 14/20] gpu: nova-core: add falcon register
+ definitions and base code
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-14-05dfd4f39479@nvidia.com>
+ <aD2Ttry3arneEzSd@pollux>
+In-Reply-To: <aD2Ttry3arneEzSd@pollux>
+X-ClientProxiedBy: TYCP286CA0348.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:7c::11) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v7 0/9] More Rust bindings for device property reads
-To: Remo Senekowitsch <remo@buenzli.dev>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
-	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
-	<rafael@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<rust-for-linux@vger.kernel.org>
-References: <20250530192856.1177011-1-remo@buenzli.dev>
-Content-Language: en-GB
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20250530192856.1177011-1-remo@buenzli.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5PEPF00014B93:EE_|DB9PR10MB7363:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3cc0368-dad1-4811-9186-08dda25d0638
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB7979:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2c65649-9e6d-4d0f-605e-08dda2749b5c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026|7416014|921020;
+	BCL:0;ARA:13230040|10070799003|1800799024|366016|7416014|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TTgxK0tMdmpuR3hiME40QXAvTWxWbWNsa3RRS2VWR0dIMURyQThESTVjcFJQ?=
- =?utf-8?B?OWg0WVBEdHRaOU1BckhIOEljdUNmQ0kydzI2enI4dEpINC9UdEhZVzcrUDVB?=
- =?utf-8?B?VDU3emlzc3pKcWJ6RmJ6NGtNRjMrT2hKTm5QdGhac2Rrdm1QV0o1ZVNHTGov?=
- =?utf-8?B?bGwzWkZLbDVzVjhOdW5BR0VBQ1FqQ3BUN0FveHRYUG1MemN5YTQ2Nzc0R09n?=
- =?utf-8?B?RnFCOStJdUpaM2gwRTJNOUtNVUtzbjh0THpCeWI4VEd0Qk9HdnRWZlp6UVdK?=
- =?utf-8?B?M01IOXNib0dDTFB6ejVBMTJkMkxuUW5YSTU0OFVMK2pTa01abWJaRDFuWENO?=
- =?utf-8?B?U3hxU0JKcHpKMHY0d1BCT1ZEbGZNeEVOWUdXOXFsK3JNT0t3WWErRVRSTHpV?=
- =?utf-8?B?QVpiUmJKTzIyQ1RuTjFsanFkUGdhTmJjeXkvZGIrQWNNbm5XUmZ5Y1owMDZ3?=
- =?utf-8?B?RHUveGx6aE04OEt1Z1Y1ZVZ2bmZvRDB4UnBGWGdVSit6Y2p6K3lZcE1UL1py?=
- =?utf-8?B?REdSSmJZZUExRDJwd1lNVFY0b2pvM1dGYW9CVTltVnlERWkyNHI0MFgvcmdU?=
- =?utf-8?B?RHJma0FYSmJkUjlJcXBEY242cWMzVThJcUoxRWh6TmRkM01CbEdydk90MVFv?=
- =?utf-8?B?OUJpT1k1UjFzYkVXYjlBWHN0Ti84L2s3dVdIU2s5SlJhb24yaUZsb0tlWUVI?=
- =?utf-8?B?eWRXME9xTHVZYVR0N3VLbTh6K1JSSEQvcktvNFhCTmpUdDFJOE10NHVVWFFP?=
- =?utf-8?B?WHJqeG1Hdzdod0hQMG05ejVycmFKUEd4MmpFY1UvcFZpV0ZPNmgvamMrNEtz?=
- =?utf-8?B?bWZJbXVGL2VsRlBtVjVTcENTNkNuM202Y0FHdk94V2thS0MxR01tbjQ2WXBY?=
- =?utf-8?B?dmlLU0greEM3OGlHQ3Z4SWFJUXBhd0NHYUVkTnBPNUp2cmYrYXBmSkpRcEZ3?=
- =?utf-8?B?ajFjYVdOdmlOVnRha1F1dmxFUnBjUC9qajVjRS83N3UvSzl4YWZkV0JWbUpr?=
- =?utf-8?B?OG9memRzRDF0UG9iL1FqeDlZTDZSS09PMUc1QTVHNmRuK2N1ejJpdUFENXNs?=
- =?utf-8?B?TytkdlM3ZzZMV1Ixbis2SmUvdmZEeHRWd05UcWduYzFaSWtwZFk5ek9ERUlB?=
- =?utf-8?B?M0dtWmh1NUdhNHhjZWI1SFR5R2ZpK2xESExVbDhtVjE3c3FsUG1MTVdPY3FT?=
- =?utf-8?B?RDAzSU82aFh2VitpZ0hKcmtDMGVUaUJTRDczQXoyMzRxR3Q5bjVlVS93WGUy?=
- =?utf-8?B?Y28xRWZCMEJrMmdDUFpxZmVCUjlMMGE3dG1Mb00rblMwdHpOVm9YVXlsdVl6?=
- =?utf-8?B?YjRacGptcFVudFA5Sk5IdXBZTDhnYktUY2tSSGJNNDBNdDU4MDdyanZ2RDZw?=
- =?utf-8?B?dlgraHRRUTl2cVN5YUZhWXoyMDZyUFdwbmpHUDV3aGcvc1NjMUZMby9ISzNz?=
- =?utf-8?B?RFluSEZPRHhpdUl6QkZSazJZRjNraGlHVUVQWTFLQWdkeXlTTlZFSE4zY29Y?=
- =?utf-8?B?RTFQalRGbnFrb3c1L0lORjlaSGlBRGxDRXhuek5oZHoyWHp5Q1JEUU9wVUVZ?=
- =?utf-8?B?OE9ZZzcrVko3UU84REtGeVB1R2VVdmJKcDZ2R1hjNGtxeCtzUFlFRi9lWjl6?=
- =?utf-8?B?eENXbUhwL0lhT1lZYnd3WUVVQXQzQWhGQ09NU0NZcW50ZXhuWk81SXFxWWEx?=
- =?utf-8?B?UHFBRDFUQWVPV2xnb1AwbURkVHo0MTZYQmdhaEdCVWEzK1BPeU8xdG1WbU5a?=
- =?utf-8?B?N09OTFU3QjV3U1Yzc0Y3dlpRbUpXcnlTV1locG1veDNQMnljRFdYelFlYWRu?=
- =?utf-8?B?Sjhjc2t3Yzl5V2k5dHpJNXlZR2FnSWN0bGcxcWpKK2NOSUpYb29lUmlEYStl?=
- =?utf-8?B?ZEdjSWRuem9semFCUXU5N0x3Z21vL09BRGNjOVI5WnJNTENvYmRXeTZZODEy?=
- =?utf-8?B?YUY2ajZBSmdsUCtYMHlna0U4WjZLNWQvampvcFJwQ0I1M3NSWStFRXFtRmtN?=
- =?utf-8?B?V0Fmckd6MEthcVJuWGRFRVhzWXljMWhEWldTdWFUTElTTVUrK21pYWc0VnVt?=
- =?utf-8?B?RGc5TkJEVStTKzNVMzlsY0hsMzNSYjY2Zi8zdz09?=
+	=?utf-8?B?ZUxOdUczaGRrL1c0Vlc4MGFIQllFN25ia1hadXZUYW52bzB2b2RGVG1DbVJQ?=
+ =?utf-8?B?UEYwVkR0OGpCYjAydnVZdjR0QTcyZ1EwTjlvTi9qWjlTUTM0dlRRY3I1UXpp?=
+ =?utf-8?B?RmNXRWtwc2lPMzRRR0FmOG1wVFpISnRkalJZMHh2dVh2TFloTUhoMndmZm0v?=
+ =?utf-8?B?YS9LaXBYcnFJK0NhT3dGcnRIMWM2bElvai8rYWxKMmY4ajNmOUxxRVAvZHpm?=
+ =?utf-8?B?QXdPVFhCcllFdUVVbC8zTzJ3ZFJyTGh1Z3F2S3J3alZNaEo4Z0pyUnhRNnRE?=
+ =?utf-8?B?N3lGa1NBSzFKWjlHYXFVcFhabjhxbTZyUkxFbG9VSHZSbHpYN3k0NjhkNWNW?=
+ =?utf-8?B?TG0rSFhQR3pldTVmemcweDd5bytUMURQV3BVcHg3VlRzRjJKb2JDU2pONndu?=
+ =?utf-8?B?Nms4Zkt3cWp4RmdHQlZDWmJwK2xoOHFGQlNUV051YlRvd0hDL3pUQkx0RW5E?=
+ =?utf-8?B?UW04WFkrMzBjai85eEcrQkdCYzRkOFpLRVhsNExkRDFiWHhGcEcxOFBLdHZa?=
+ =?utf-8?B?QXFuMHJkK3dGUVkrVWpUSWhPazF4SGxoUUY4Ui9SbXBCRTlBRjgvNUFKczJJ?=
+ =?utf-8?B?djZseE9iWGxLYVZnbVRleTluWGpuVTN5elkrODBDdDhYR2NHV080ZnlOeDRV?=
+ =?utf-8?B?bGJ2VWw4Ym11cU1hSFo2by9neGorbnBaYlhKS1VROFhTSXNOSWF1YXFQbkI5?=
+ =?utf-8?B?S0FiQzV6VTJwa011d2hoVEFYNElldUQ1L0hEeWhCWWEzeEk0dEhFVWIzeU53?=
+ =?utf-8?B?TkM2QnB4UHYrK0xtdVlHdGtmWEJiTU1URkQxbm13V2xVNlVkdHZWTGpSVnRu?=
+ =?utf-8?B?em1LMGg4VTRZYTd5NUV4aHowUlE4QjMxQ2JzcFI2K1NWSEI3NWNyMkI2TnRD?=
+ =?utf-8?B?YVViN0xWM1ZLWVlTeTZFL28xR2VhdEUyS211Q1h0bFZDY090QW5kSC9pclJp?=
+ =?utf-8?B?VWI1TkJXeE1tYjNNbTk4NnhDNldwV0w1RGladS9PRTV4eFRhQmRCVk1PWVlp?=
+ =?utf-8?B?TWFFeUV0ang4YnJsRkw5V3BWdDVkL1dZcVFXQ1VRbXhzNzJkQ1NsUEx5eThX?=
+ =?utf-8?B?d3ZobkVJOG9KN1pPL2xWalhQem1zaE1oSHFuZXJCaVE4MGw1U1V0clFoUEtn?=
+ =?utf-8?B?TUR1YnlxekIremhXR2U0SFVUcjVuWTB0VzNWSllmRVFZQTdRdk9UUHhVNUxL?=
+ =?utf-8?B?Z3g5SVNRU1pvc2RMaHNnOFpoMzBsVTVybXBDWWZVUGtCV0VlNURwRkpWbUw5?=
+ =?utf-8?B?dGpyREttS3lteEthMmZGQmU4RDlIcjd2V1JSc2NzUXl0ZnFJc3BoNHZUUkZP?=
+ =?utf-8?B?Y1g0VTBLSFVQNXFQRXpWYXI1Ym1NcXRZaE9zMXdHM3lIdit6b1h0WHFJbkxt?=
+ =?utf-8?B?VklYdy9wcG84YUVsejFpUm54d09abE0rdHRDcDJ2QWlvczFVWXlvdDJGOWta?=
+ =?utf-8?B?b0c0MlF4VElWcUlDV21JWVR2QndBQVdpTk5FKzIvUFFUeDZ3Nlc5N0hWOW9M?=
+ =?utf-8?B?aElVQVhicTV0QW5PdUJHcVRObGJZNktmb1NsNG85YmFMM3IzZGllOWN3eGpa?=
+ =?utf-8?B?SEZoeE5hOEZqMVVSY0ZjS29oc1hBQ2VtSnFES21OVm56K3VwdTdydWk5VGhn?=
+ =?utf-8?B?YXFKTEpXVWV4QVl2ZkMwQmF4azd0TGxPUm5KUS9ldHpBOG5aSTZBVWhscEt5?=
+ =?utf-8?B?T1JQbzVMRitMSWoybEZwQnE2dDZsUzRpSHh4NHU0OEpnWTdITnpEYXFOVlBD?=
+ =?utf-8?B?VW5VRW5TMTVCTzVVeFRFbHdBU0xTREw5OTV0VnhUL1VpWXJsTmhWVERxRTZW?=
+ =?utf-8?B?dXZXeUVOQzF6aVlnOWllUnVQbFVFdVNRbzdaUk1jMjZWWmdWNitOZXlxQ3E5?=
+ =?utf-8?B?alE2MVE0MmlYK29paHhDbXZ1V0dkbUIxREdRQU9nT1l4ZWpvUGJjRFpvZGlG?=
+ =?utf-8?Q?3Lp0OR0SMek=3D?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026)(7416014)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2025 05:10:57.5538
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YTBuZUxLSGV4VmovZGZvU25EaW5xektUL1dWLy80TUNrOWFrS2xhd2YxSEIy?=
+ =?utf-8?B?aDNUb1RUM2VTd2NOWmxkQTFCVGpWR3AzRjdYd3ZodElvT3FiMVdrV2hOS1pD?=
+ =?utf-8?B?L09BdEhjemNpNkJWVUphM0pUMmNvcXNsdFNkclBFVHVSQXlwbHM3UWE4MmRS?=
+ =?utf-8?B?TVdGSmR1VWl2UjZ1NmFLREEvUVJ3UnFSeGZld2tXNHJpWXU3QmpnVVZMRFdG?=
+ =?utf-8?B?MUdjRjFqeiszcC9iUWFWN3BzN1Nnck9JVURyZU00d3JTWVM5aGc4S0pPd05h?=
+ =?utf-8?B?bVNhVEpvekNOclhWUHU3ZjNMbW1rUml6REVmdnJyWXNtRWdlN2lWS3BlT1Iy?=
+ =?utf-8?B?Z3NUOHRvK3RFL1hhSmpTK3Fxb2RtbWh6dGxTZnoxT1MxOHhSbzVrd3FVYXpr?=
+ =?utf-8?B?ZE8zMWxQYWMwMDN6NFBWREgzTkRWQzRpRW1zeHdPZ3R6U2I0WDUvcHM4VTBu?=
+ =?utf-8?B?QXZJWEhkdUVBcVdZb0lFTi90QTV6bWdIZHdWL1JvMVJiMkFjM2tZNlg1RW5s?=
+ =?utf-8?B?a0pqRnEzSk5zN3hVNFBBTjlkWEJES3NNUkVqNFRyZnpkZlpSdDVhbTF4T09F?=
+ =?utf-8?B?aDNRZGZIZ3JUK0NBeTlYZ0dFaENGRXNNTGlCNzhTWVY3aG9wOFMyQUw1NjNJ?=
+ =?utf-8?B?VEowSFZtQzhvSnYrNGhKa1dGOEUxTVpQcDNmTFF5bno1bWxQVDJZSTY5T0ZZ?=
+ =?utf-8?B?R3pTQ0s3V1dmYTJUMXRmV1VsQ1hMQXJVMXhyQXMxZmxacmQ1RXZHMTRPdGJW?=
+ =?utf-8?B?STA3UDJKcGkyUE1aRmVka01mSis0N2dNN1d4N0ZKazNKNXlLQlcyZmFlaVJa?=
+ =?utf-8?B?QnpYb1dZWHJCM1U5Z0ZFRVF2MTVKcldKWlAvZGhYTnpqVGUzYnkxTDZPZUV2?=
+ =?utf-8?B?cXhQMURhVGtiNTJ6TUwxN1JLeUt1M0lFVXErU2FNcnE4eXU0VlZoRjFmRlNh?=
+ =?utf-8?B?QktnLzR4a3B6emRvN2IwaHZQWi9rYUhocm5QY09aMGMrRG93U2JUam5KVmRi?=
+ =?utf-8?B?TW11Nlc2OU16KzlwaVhGMlp5TElmN2Ivb1B2ZWI1K05DYnRyNDROTU15RTBH?=
+ =?utf-8?B?ZnZzMEw1TFhJLzFPVzJWTjNpbUxHdmFMQmpkR29JM0FzRXZDeWlzNzRieXYw?=
+ =?utf-8?B?bEc0TUlpQWxTT1Z3eU53c0xWQzg2NnFQNUZ6OXpWZk0xclZmRjNMR3JrbStM?=
+ =?utf-8?B?SEN1RE9PRnBIQUlWMGtXRTkrWHp6eHhRY29iTzh2OFMzQTZhVnkzRndMUjdY?=
+ =?utf-8?B?NXJOcitSdFNqd052Y2lWSnMzNlpwQk15S1l2UitNV29xbWNyUDlzQ1F3N0M2?=
+ =?utf-8?B?aysxNjdsUzZJM3dTZytxaVJTdkN0blE4M2VzZkVLaGppYThJS0pwSzBRNEs5?=
+ =?utf-8?B?K3VFb3RTdVlhNVlqL3AvVTJDNmVxOHJtbXhkS3IrN2xPOFhQaFN2MFZia0Uv?=
+ =?utf-8?B?V3U0VkJtVzJzTHByRHg2WWRQTXg5V0xicGNBVlVDUkhZdmJDSHd1STdlUUZo?=
+ =?utf-8?B?blVIclgwdEhLRzM2K2FNcUpLelc3ZCtFM05wLzZIajBaa2kyamhEbFpmWk1w?=
+ =?utf-8?B?SHVVMHU2ZXkxUTUyRVpWTlZiY21KQnF0bjhCblBmOXpmenUwTkdWRjFhbFJZ?=
+ =?utf-8?B?Rk9KMWlyUWsrZXdqTjJxU2tqM0ZJQUJMNk45Mkl2V1BCVUpMQXBpVnNGMlpW?=
+ =?utf-8?B?UThRUFFMUFM4Q3dJSElWRGcwbzBLNkR5R09qcWtkUGNzL0dtRnFyTjh4OUVF?=
+ =?utf-8?B?bi94MWQxK2V6RkpleG52ekd5amR1N0paMmswUjBMTVllaWEzQXowN1hqeVFz?=
+ =?utf-8?B?emo0VFNjL1Q1RExFQUlncVI2MFgya1o4alFqQ01HOWRuZnZCU2phaHVtVnRn?=
+ =?utf-8?B?SjRUNkFtT09oSHZvWUkzajdOYUFSa3kxYzc4OU01VU1QN2lESHZFZWI4V29t?=
+ =?utf-8?B?MHJ3YWtOWWJzUzc2Qy9hbERBcGVLVVJtK1J0aFZVNzd5QmVTUFk4WHFaOHFm?=
+ =?utf-8?B?WmxjWlk1NHpDdG1naW0wRlpKNExCOTA2SnpRa3VTVlMzSHJ1UlF3N2N1Zysr?=
+ =?utf-8?B?ZFRuSE1QZnFlNzRZSnp6L2trK3J3V01admtkcHU4QUpXN2h4bDgzVWdhY01Z?=
+ =?utf-8?B?ZTI3MmpYWGxYM0l5anNrZWlaYmFVekNiUk1makFwTHcxWS90U1Z2QWlpSEll?=
+ =?utf-8?Q?oiv355cy1yvAASNxVDq/9QAvvvTnORzwCGh2vUapHWDH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2c65649-9e6d-4d0f-605e-08dda2749b5c
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2025 07:59:46.5036
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3cc0368-dad1-4811-9186-08dda25d0638
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B93.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR10MB7363
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: k0qHcSmJ1bAxyHGLB0GS8BNklMz4EBtkJhLL5Vl/dQDkSCBBnGOKQ4SHWcBW9BzQdaxF/cdPFPUOBMb8oMCHeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7979
 
-Hi Remo,
+On Mon Jun 2, 2025 at 9:06 PM JST, Danilo Krummrich wrote:
+> On Wed, May 21, 2025 at 03:45:09PM +0900, Alexandre Courbot wrote:
+>> Add the common Falcon code and HAL for Ampere GPUs, and instantiate the
+>> GSP and SEC2 Falcons that will be required to boot the GSP.
+>
+> Maybe add a few more words about the architectural approach taken here?
 
-On 30/05/2025 21:28, Remo Senekowitsch wrote:
-> changes in v7:
-> * Fix a typo in a commit message.
-> * Fix bug in `FwNode::display_path`. I took a slightly different
->   approach than the one suggested, using `Either` to handle the
->   owned and borrowed case. That also removes the conditional
->   `fwnode_handle_put` at the end.
-> * Move `FwNode::from_raw` to the commit which first introduces the
->   `FwNode` abstraction. It is needed in an earlier commit than before
->   and I think it fits better there.
-> 
-> Best regards,
-> Remo
-> 
-> Remo Senekowitsch (9):
->   rust: device: Create FwNode abstraction for accessing device
->     properties
->   rust: device: Enable accessing the FwNode of a Device
->   rust: device: Add property_present() to FwNode
->   rust: device: Enable printing fwnode name and path
->   rust: device: Introduce PropertyGuard
->   rust: device: Implement accessors for firmware properties
->   rust: device: Add child accessor and iterator
->   rust: device: Add property_get_reference_args
->   samples: rust: platform: Add property read examples
-> 
->  MAINTAINERS                                  |   1 +
->  drivers/of/unittest-data/tests-platform.dtsi |   3 +
->  rust/helpers/helpers.c                       |   1 +
->  rust/helpers/property.c                      |   8 +
->  rust/kernel/device.rs                        |  17 +
->  rust/kernel/device/property.rs               | 590 +++++++++++++++++++
->  samples/rust/rust_driver_platform.rs         |  60 +-
->  7 files changed, 679 insertions(+), 1 deletion(-)
->  create mode 100644 rust/helpers/property.c
->  create mode 100644 rust/kernel/device/property.rs
-I have tested this series with x86/Qemu running the sample. And the same
-on real custom ARM64 hardware. Additionally, I ported a custom driver on
-ARM64 to use this (well, it just uses the trivial
-property_read().required_by()). So if it helps
+Sure, note this will only be valid for Ampere though.
 
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+>
+>> +/// Valid values for the `size` field of the [`crate::regs::NV_PFALCON_=
+FALCON_DMATRFCMD`] register.
+>> +#[repr(u8)]
+>> +#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]
+>> +pub(crate) enum DmaTrfCmdSize {
+>> +    /// 256 bytes transfer.
+>> +    #[default]
+>> +    Size256B =3D 0x6,
+>
+> Can we use a constant from `regs` to assign this value? Or is *this* mean=
+t to be
+> the corresponding constant?
 
-for the whole series.
+This is the corresponding constant, as meant by the register value.
 
-Btw, many thanks for working on this!
+>
+>> +}
+>
+> I wonder what's the correct thing to do for enum variants that do *not* h=
+ave an
+> arbitrary value, but match a specific register value in general.
+>
+> Should those be part of the `regs` module?
 
-Dirk
+Both approaches seem possible. I like to keep `regs` focused on
+registers and importing the types it needs from other modules. After
+all, these types are used in the code as well, so putting then into `regs`
+would turn that file into a mix of completely unrelated types. IMHO
+having these in their respective module is cleaner, and also helps
+keeping their names short as we don't need to prefix the type with the
+module's name (i.e. if the type above was declared in `regs` it would
+likely have to be named `FalconDmaTrfCmdSize`).
+
+>
+>> +    /// Wait for memory scrubbing to complete.
+>> +    fn reset_wait_mem_scrubbing(&self, bar: &Bar0) -> Result {
+>> +        util::wait_on(Duration::from_millis(20), || {
+>
+> I general, I think there can be quite a lot of parameters such timeouts c=
+an
+> depend on, e.g. chipset, firmware version, etc.
+>
+> I think it could make sense to establish a rule for the project that for =
+such
+> timeouts we require a dedicated `// TIMEOUT: ` comment that mentions the =
+worst
+> case scenario, which we derived this timeout value from.
+
+Not opposed to it. When the timeouts differ for some reason, I'd
+recommend putting the different requirements into their own HAL and use
+the accurate/expected values for each though.
+
+>
+>> +    /// Perform a DMA write according to `load_offsets` from `dma_handl=
+e` into the falcon's
+>> +    /// `target_mem`.
+>> +    ///
+>> +    /// `sec` is set if the loaded firmware is expected to run in secur=
+e mode.
+>> +    fn dma_wr(
+>> +        &self,
+>> +        bar: &Bar0,
+>> +        dma_handle: bindings::dma_addr_t,
+>> +        target_mem: FalconMem,
+>> +        load_offsets: FalconLoadTarget,
+>> +        sec: bool,
+>> +    ) -> Result {
+>> +        const DMA_LEN: u32 =3D 256;
+>> +
+>> +        // For IMEM, we want to use the start offset as a virtual addre=
+ss tag for each page, since
+>> +        // code addresses in the firmware (and the boot vector) are vir=
+tual.
+>> +        //
+>> +        // For DMEM we can fold the start offset into the DMA handle.
+>> +        let (src_start, dma_start) =3D match target_mem {
+>> +            FalconMem::Imem =3D> (load_offsets.src_start, dma_handle),
+>> +            FalconMem::Dmem =3D> (
+>> +                0,
+>> +                dma_handle + load_offsets.src_start as bindings::dma_ad=
+dr_t,
+>
+> We should make this a method of CoherentAllocation, such that we can get =
+a
+> boundary check on the offset calculation.
+
+Do you mean getting a dma_handle with a specific offset? Guess this
+could be an opportunity to also define a type for DMA handles as Lyude
+suggested.
+
+>
+> For this purpose dma_rw() should also have the `F: FalconFirmware<Target =
+=3D E>`
+> generic I think.
+>
+> (No worries about the dependencies; I can create a shared tag for the DMA
+> patches and merge it into the nova tree, such that it doesn't block this
+> series.)
+>
+>> +            // Wait for the transfer to complete.
+>> +            util::wait_on(Duration::from_millis(2000), || {
+>
+> Yeah, I really think some timeout justification would be nice.
+
+Is "OpenRM does this" an acceptable justification? :) I think here we
+are just waiting some arbitrarily large amount of time to be confident
+that the transfer has indeed failed.
+
+>
+>> +/// Hardware Abstraction Layer for Falcon cores.
+>> +///
+>> +/// Implements chipset-specific low-level operations. The trait is gene=
+ric against [`FalconEngine`]
+>> +/// so its `BASE` parameter can be used in order to avoid runtime bound=
+ checks when accessing
+>> +/// registers.
+>> +pub(crate) trait FalconHal<E: FalconEngine>: Sync {
+>> +    // Activates the Falcon core if the engine is a risvc/falcon dual e=
+ngine.
+>> +    fn select_core(&self, _falcon: &Falcon<E>, _bar: &Bar0) -> Result<(=
+)> {
+>> +        Ok(())
+>> +    }
+>> +
+>> +    /// Returns the fused version of the signature to use in order to r=
+un a HS firmware on this
+>> +    /// falcon instance. `engine_id_mask` and `ucode_id` are obtained f=
+rom the firmware header.
+>> +    fn get_signature_reg_fuse_version(
+>
+> Unless the method increases a reference count, please don't use the 'get'
+> prefix.
+
+Ack.
+
+>
+>> +        &self,
+>> +        falcon: &Falcon<E>,
+>> +        bar: &Bar0,
+>> +        engine_id_mask: u16,
+>> +        ucode_id: u8,
+>> +    ) -> Result<u32>;
+>> +
+>> +    // Program the boot ROM registers prior to starting a secure firmwa=
+re.
+>> +    fn program_brom(&self, falcon: &Falcon<E>, bar: &Bar0, params: &Fal=
+conBromParams)
+>> +        -> Result<()>;
+>> +}
+>> +
+>> +impl Chipset {
+>> +    /// Returns a boxed falcon HAL adequate for this chipset.
+>> +    ///
+>> +    /// We use a heap-allocated trait object instead of a statically de=
+fined one because the
+>> +    /// generic `FalconEngine` argument makes it difficult to define al=
+l the combinations
+>> +    /// statically.
+>> +    ///
+>> +    /// TODO: replace the return type with `KBox` once it gains the abi=
+lity to host trait objects.
+>
+> I think we can do this for v5. :-)
+
+Happy to! :)
