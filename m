@@ -1,88 +1,91 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F7A1A00F0
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Jun 2025 22:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB99518DB24;
+	Tue,  3 Jun 2025 22:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748988927; cv=none; b=GRbpXfJbsPCinLkTxYst5jGx8rBiywF1faPiMa/V6sza4lqBx3mutrmkLxRV/QkCxhxsttCgehd8QCBPO2M+uGek9kmRkW+7FzNeoBjRh0R+XxhEZ5w83v1DSyt3ypqc80Mirlnzv8j+tk4ufUjuzhw2kdb7mhbzzW9L1Gp7jpc=
+	t=1748989589; cv=none; b=LqxBBZtM/csuFlmaCwzjRAB+Had0XUxsgmbWceOlp77dOXNXK1enSuUIBgWgD2enHlZR95fTuVa1WMXogjUs+UXGReDaKJgRdQrY+Zrcs6JUFevKvYUfT2IJTnm6Ssdw6jimhoQuQhkr8U1dVdXTQ63bZNgO4OYIe6+/o/UrcKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748988927; c=relaxed/simple;
-	bh=eE00HajaQkAY2cyU/BKG2JnRJzN84Ad2iyF3rFM6IXs=;
+	s=arc-20240116; t=1748989589; c=relaxed/simple;
+	bh=zfz0c69FmOJCdnkXBAWjeZ3ec55qgxSzUQXGbh7JbEE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T3i/Y4Fcr/654wY53wZoBwFc1Cq3+dYeVuOfXN8qsuPoECLP2gD+caxDeFkBUt9Az0P1Ljpz918FjWh+1eHmCjnaNYFpcDW3R7Kx/a7CfTDTPytzL2qALGqtlADDBCq9BMt9GGF5R17VElxpi6dKpF3kLuKhMkKu8nmVcXQexIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PollvnIr; arc=none smtp.client-ip=209.85.216.49
+	 To:Cc:Content-Type; b=F3Yra8inr9ft494GnqlrvU5bG7Z7luGCSKt2mY6pIeeTAyQ0YSKJopcqypRW36C3tFEhXe2jwpDIYEuY10rRfkCBDTSdiK0RR0qZRBZLNUrJrXCiYJyjomJYYDvr6/Z6oVGycZFV+UqyVWi/gVx7SsWXXUIgowMh5e3GX4wXEcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BIoX8otJ; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PollvnIr"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-311f6be42f1so1124732a91.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Jun 2025 15:15:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BIoX8otJ"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-23519817b57so4993005ad.3;
+        Tue, 03 Jun 2025 15:26:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748988925; x=1749593725; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1748989587; x=1749594387; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eE00HajaQkAY2cyU/BKG2JnRJzN84Ad2iyF3rFM6IXs=;
-        b=PollvnIr6SYNg16fWGkrgAj44eNw58zE2pU/pLFqSQAMA3UKFR6KeGZrgqhqtn1/op
-         MpOt2xHVdavnaq0M45FFa/Vc/O5PCSkTq2xkhaVlKFnhhU5DKLle+P2b723D/0NjCJMl
-         erx7S5h2P3Qn6cZEaIZmuMex+UzljlKhceTuyyUC8MjK09Rx4Jg/byWeyWWO033scMdr
-         3ms6i2NaoJ9GTCBORJSIaVspayEgKZn7HeLZ9tDQEo7okm58FJYiTLzr9jcEEnc9U4Ry
-         D3NiMtQ59fqk2nQcGwnVwkmIrFOFriiyYVLHHRvFW3utp37VP3nFPbrIo0IDVEnjnjE+
-         yxrg==
+        bh=spS60ybMSuhEoBnhprr08UeCQOS996miorjWsXmMPCI=;
+        b=BIoX8otJihRarstr08r5VaWztJTwd6L7Y8CvA3Lkmh3CdBfnvC1hsnQeiouR7DtJCl
+         CVCL25X/2tZWkrmyJt7q6k8kuiXS+Yz5pgidkUzkZ8Fnlo0HqSSb9p7T7ClIMzba5569
+         et+7pYDdDORFZMW/GabbncslrW1L2bu15LzlwKjuh8VbmcBw+yin1/1GjUdpq8yaK5C/
+         tPEXrcNfUSLdF/dn9gg8hSudZd7XzLdqrQQDJyvxxTvXNssQH1Z/V4maZ7IJKC3XMuvj
+         dx/WSuwTxMaV0I7PAOYB38dP75JihtCehHdcHVKT6ovWadQPHZd6DNnw9/QBqwTo9kOd
+         Bzzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748988925; x=1749593725;
+        d=1e100.net; s=20230601; t=1748989587; x=1749594387;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eE00HajaQkAY2cyU/BKG2JnRJzN84Ad2iyF3rFM6IXs=;
-        b=Bxe/Vi5KbfO2krniTHt7XmYl0r965vHHpd1Ns2P1U30I2PygeEZIrVx2669v8lVVsz
-         QoE3o1eyyuPDOmU9Aze4pAJuO2kI/GIKKZYScBUcG4qFnVJB2PeQ5C7fxE4ecyNVK2YE
-         Bivb+pHDc5DOeKEjleYbv8xftQGgWcAvbOD14SYoXSNUCLndX9QVWtZmJ7uWUDvWL8Ng
-         LBDNesxApcNqNZJYwoPpGTWWTz2EwVr5Gs5Jwod45+bTOn4ioDvpIE6DbDjDWVw5IT4P
-         TroiNfdiGjRjX60Es1Qs+l6wjSN8ReDH8nZXJnp+8Vy88bVfW39sLdZrg67i1l8f0YxO
-         7PZg==
-X-Forwarded-Encrypted: i=1; AJvYcCW4rf88spitRehJfYi8X9jh0tArt0xFstqMsjwXmbA9uuJt39INAGrQNMmCg6DDzh4+Eu9z9CPsYWmaBzQwxA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YziF2+jXkedyXDs2V2T9StGrujyRy6RbKBazPB/rdtnxwGhHKlm
-	BUXCT+iBnXSebSMjS/UIUxDZ9dJVAREPpOv5OFeGvUCt6hFMyeu7CnGEmwKecGKRmjLqXRGRFkq
-	e8wp7qvdg5HCz3YMkxCtciU+WILhUzZ9Miluu
-X-Gm-Gg: ASbGncvoUDmIJM+PaPelKIm6tXJ1g6a3WkxnvGxm+3F1EagRJKYUzrx0UANx19no3Rk
-	JokMaPRZDV6xjyvoHXx+3fE5AEEBPv1YaOraQPZndBiTCHnLgW7Ke3Zg5sK2EBhDtGzIzeZY5Ir
-	RvcWSwXwdpTsmpa6z7NmDr3zrRG7oTdfHIvy3nk+yKELo=
-X-Google-Smtp-Source: AGHT+IGZSW42fVuyEqPvij+P8pJf9eer8APlxbSOZ6q5mVoRpox19Dh9gWa2oXyoDYdcqHT+tyrZkH+3v4LWffzgI2A=
-X-Received: by 2002:a17:90b:48c6:b0:30a:80bc:ad4 with SMTP id
- 98e67ed59e1d1-3130cabf1f7mr365140a91.0.1748988924923; Tue, 03 Jun 2025
- 15:15:24 -0700 (PDT)
+        bh=spS60ybMSuhEoBnhprr08UeCQOS996miorjWsXmMPCI=;
+        b=YKqlmDCAX6AZgQiP3ujmRnVUSoyOTirCwYBkA2fmmtIqjOjkhRKTcUr3JCDNI/dHmY
+         iCaG+i11Vh9+LHMm4BDAQXm2TPQsbEu0yc63xdUY7T4l+ns5KxhlAdcF1UNieLt2mwyd
+         Atc1mHC2iUZwXU1jzMSzoOUlFXBDs151Ttacb4wCHn6pyu3I+XX4JgeVM4D2IalwE70O
+         XAtm/QJXTx2yxVPZub9KayQ/LD5ZQ5IvF9H0H9DDR1TRJ1WgwphV3xNN1V7QizeIpuh1
+         kh/EmnLYzXd9UibUELF+6jl6zd4moC26qM33hJFTgkorYTzsdhkR5qYm6vCG0ZzqibaN
+         psvA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwVuKap2eE4f3ZoFHhL17nh5+ND4qkJ09tAAjgxabuMN2MxZenE6SKKYXgTGpzp3EZaQRyFpcnuCDRvmo=@vger.kernel.org, AJvYcCW9TRk6xAKoIWzRdfo2pDmR462cswl9HtZ8QQpVuwlRybXuKLAvO8xUMPsXtb3GCKCoVrZ+FLUNyRLyoffyHkg=@vger.kernel.org, AJvYcCXbv2Efn2nu7ytkCRYvgGvfjahZmNxeMQAjFxVYnFhvVA53u0K0TkEVtUS8V7LGDh/J7L/OBKjZnFtUqg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwP+5NMjJhjwte30UTmTqfA9VuJyikZoky+cHQjbBLLNJosFK+L
+	WQk+vv6tYhNMDj7n7CrZ9EBgZwAAXAdGC6ei9QN6aBzlOzbXbZWP7VIGKrBE/fc3fHgmIm20aLN
+	rRT5saXxHdO6gn1ASFCrhZcLKKZrfwaY=
+X-Gm-Gg: ASbGncvRwAu2l+iIQjbTcBth9WaRUcatvUDT4wzOl3Fr6TItA+35S5yL0TxqSSvp9em
+	qT4zAQZW10quKBlovctYEJJzUVF0ORNpuu5hhg9a5aGrpXRNRKb63smzH0PRl8u29OxWFfZhCjo
+	4TKjfvAvKwcTc2zEPzIbn8sa/9xihSov22
+X-Google-Smtp-Source: AGHT+IHYe4MifwZmarTiGrmPgQXYs94V6HqZaBrwfAdvRpZP4olnAr0bDFZ1PORuNElDs5cZ2+9XBUxmqKGqQyL6VWI=
+X-Received: by 2002:a17:903:32cf:b0:234:c549:da0c with SMTP id
+ d9443c01a7336-235e0f37687mr2464635ad.0.1748989587025; Tue, 03 Jun 2025
+ 15:26:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250529184547.1447995-1-ttabi@nvidia.com> <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
- <0602b06ba5fbd640b6db50165688c026911ed7b3.camel@nvidia.com>
- <DAD8GTNP7E50.3CEF051DAP051@kernel.org> <5cbe30e8f1219dd67fd4de9a1156adc054db4779.camel@nvidia.com>
-In-Reply-To: <5cbe30e8f1219dd67fd4de9a1156adc054db4779.camel@nvidia.com>
+References: <700ebe13-c2d3-48e3-800f-8dc327efb6fc@gmail.com>
+ <CANiq72mFL4dn+0JppLLfxyKnM+xYwKeduFw2j07hUfxWVVHdUw@mail.gmail.com>
+ <f5d5b84c-0850-4df9-bad7-61fff12c4248@leemhuis.info> <CANiq72=+qUNJu5j+uoveMrTbngwA89+ScwjUPd9OyVGqps54aw@mail.gmail.com>
+ <20250604073118.4205f303@canb.auug.org.au>
+In-Reply-To: <20250604073118.4205f303@canb.auug.org.au>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 4 Jun 2025 00:15:12 +0200
-X-Gm-Features: AX0GCFumQniz5ikCwrjz0bQY-e7MZkPOQMQmBeCG7AXUHjNqLBLeUSj8f3jSheY
-Message-ID: <CANiq72kEA-hzqkrXxSUk4bp63NFG=TxmQU+9+yiJsoyuQr86Qg@mail.gmail.com>
-Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: "lossin@kernel.org" <lossin@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>, 
-	"dakr@kernel.org" <dakr@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Date: Wed, 4 Jun 2025 00:26:14 +0200
+X-Gm-Features: AX0GCFsOpisR9zReSwsbnHOeUt07nmPeJXowIYZoqNdvdu6R35lnffHM6XE6fuk
+Message-ID: <CANiq72=EttF8tieqakoyYxfu_-LyUjCTcaogtO-Z1HajGx7LMg@mail.gmail.com>
+Subject: Re: REGRESSION: armv7 build mismatched types
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Thorsten Leemhuis <linux@leemhuis.info>, linux-kernel@vger.kernel.org, 
+	Linux regressions mailing list <regressions@lists.linux.dev>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Linux Next Mailing List <linux-next@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 4, 2025 at 12:05=E2=80=AFAM Timur Tabi <ttabi@nvidia.com> wrote=
-:
+On Tue, Jun 3, 2025 at 11:32=E2=80=AFPM Stephen Rothwell <sfr@canb.auug.org=
+.au> wrote:
 >
-> But won't that cause the functions to always be compiled and exist in the=
- kernel, even if sfile!()
-> is never used?
+> Damn!  I knew I would forget.  Sorry about that, it will be applied
+> today.
 
-Not necessarily, why?
+No worries! If you prefer that I send a reminder in this kind of
+cases, I would be happy to do so.
+
+Thanks!
 
 Cheers,
 Miguel
