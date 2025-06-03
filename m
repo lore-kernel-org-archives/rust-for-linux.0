@@ -1,128 +1,150 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73B21A2643
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Jun 2025 22:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23321AD51;
+	Tue,  3 Jun 2025 23:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748991243; cv=none; b=R1m+pgHgu+30inDKZOZLUxxlg4oqL3Jp/oqyChvmiPWqpLAt4lyQcs48tD36uIy+n7A7TGupKsfg8o8EPOF5vpHg697cekYVh9kw0PSaobRfQjSJTcTFUK8AEISQTxquQowO7/2ZL16ZlGZ/WyPgLPSt27u65N55B4f0slmxsUA=
+	t=1748991735; cv=none; b=LACvMsAWBaVRFmkVgqDBFTONccxMI9LXew44m6WZ00ox4roR1We+6ljr/AC1fPpSXQb0cF1hfvE+LKrpFCg11fQV3WYbJkm9lGWJsQ1YTLh4OoY388zkFbRMP04c/8044dOoJVeC5etxy2aTPvkKVATgtS+OYfjlmZKtMbbQ6qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748991243; c=relaxed/simple;
-	bh=BezHkDhH8IsyV1FszV09GPvbFRmWxPPkDFdB5cspXI4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iJ89XkB447y2Cr3wq8sxjTbmu34NvL2HdDoG868D96eyyYH6Xujq1wWTXfaN69ETg+YGbizteipDtZvm9tTmY1CwFDos8sMUIdXaqk3ZbQOLhCJANBC6nwnGRyKcMWLNFa/vX64vwH5KmGSkhlNiPaF5IkXXCVvg/oQIMIgVBYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=et8tTmxJ; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1748991735; c=relaxed/simple;
+	bh=wA9HkPQG67Xv/ILlkMs87n47KUYJA9nWUAoT/yrb1ik=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=hZKQuh4uHmi+ueSAAlMH/unfLQYOF4zOgqskYLw7IWQukVWWnRnCQg4azhtDgjtb58YyFZr/KC9mgaaiAFp6PF0lP7PfLDY/icCFZ5yAMPKl4kSiHi4i4uyc6vqS1JEz1Ic8ZBnPTWybWXxeO47XeKjCs1Bitat8MejUUqrA3M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+Zu0IAs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="et8tTmxJ"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-313067339e9so69688a91.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Jun 2025 15:54:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748991241; x=1749596041; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MnSfEe+i82HBMYcdFD1/gIBac6DNtSZjdfe2qiaYsPk=;
-        b=et8tTmxJRzSfjvgoSLZVv6VF7ilRIOwxQ2eef1RuHb1QDO399x9iIiPrF1L7z1ZGe0
-         6GHfX5JXp1pR9rCXkTvp/yX3D+LdNXD7cOyKNHIwbbEjSZs3AHqzzuVhbyvp00h41eto
-         uxSZg8cxxNvufSSujQp6e6I7GVowvtE6RWJr9KlZiNOE+lJHzbakMhz5/m5YhzMQ+Sko
-         jVQg62FNJc7GYH+oDY0o/DdzrknbVAapP8mZmO4WljHmQJQ/YEFMMgu9mhde8D9jxc91
-         LIjSxNWc9VStxrV7MUTP99C5iYyvKBQoAe53+fcuPBcOTijLlbnhH7/C6ffnbmtrZvrW
-         1EjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748991241; x=1749596041;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MnSfEe+i82HBMYcdFD1/gIBac6DNtSZjdfe2qiaYsPk=;
-        b=ooBu0baOvBZCMfq+FN8hTP0AGcoIkBqMLkyX+GBJBoZaQzPvSYCRFgQbPysWhwQkO9
-         U5x6lvAblsfZutElCwtiQixHNwESbZRTyUBuPRGlVLhcS7EG9qKWLe7v3/a52xccDMDT
-         x/bfpC56NmPyixKSF9mQI691y8AWv+ySbkr+YABJjtWApe6Dd9bU1nc+03pgq6773Lty
-         HAjyv5lQhtVgBd6Ks5ErOC4BPEwaxpKcyWGhinj5DzIYCk31DvWQaSHwrQYnhdfW3w0g
-         697nYnUUf5fEf5GbtZ7/daEW2jTwqACo+UhYgicvRsCh4/pprGETOHHiI6PcvSeNkbbV
-         cZFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXyoTl5UdoVaZJGdVoI7vTuzja29TOxz+iK4Yrncpul1fWKCrkPyNkGEhG7g7lVbj3sxTPB8ItEdFS3RcDpnQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOJL6qZXbesdT+ANf0+iP1d+RilrlmLJxl3OUMMihZ01kvD/+K
-	q6ui7I0KwJBT5oL+/VjJ/irOHg0RvUuckukSgEYoUPNIs2oKosyId6wslUUf9iOgN8fTvMdkV4r
-	KYlAtieN+WtU2KzQovsWdeSpmEcpBZ7g=
-X-Gm-Gg: ASbGncsTCQ9edw6xgMrGAveIh1ZchnkUc9K3VmWxXeYKe/7iOTJpJhwaHgcA5U/HnUq
-	q1TnKAj6YN686qrAlcUvka/8XUF2iLP3EDK5tmCyeDDVDuJu8L1pA2VmF+Jiku2FPSRPhZFVaAW
-	M1x+inQMwZnwAXSJ3VJUR845g8JYB80iYG
-X-Google-Smtp-Source: AGHT+IGZYa4G23AxHyDqkwpvUikcMMrsHVuTEYvc6/YTGbJz/tSyWQnJvLIFquldlYvaVpty5JLVZSDLL1jLQ6MakO4=
-X-Received: by 2002:a17:90b:5587:b0:311:b0d3:851 with SMTP id
- 98e67ed59e1d1-3130cd2f168mr398070a91.4.1748991241046; Tue, 03 Jun 2025
- 15:54:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+Zu0IAs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9208C4CEED;
+	Tue,  3 Jun 2025 23:02:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748991734;
+	bh=wA9HkPQG67Xv/ILlkMs87n47KUYJA9nWUAoT/yrb1ik=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=M+Zu0IAsKgu/xv3rmVmunAByeBtBNqrDRm4YMs0PLMJU1tlGX5STA//XeAct7TWA1
+	 AMMULlpmnGGnh9CzoEsntXgeYNNhTYsfzgvreTYQlwvEbp9gttaO3PSjgYLz98T/Gn
+	 ckGU38Nnb6SklnFXHcdCpoO3VOEPVsgBmI/eNeZmSlolUL+ZJIiTdD2aM3JUbySNFj
+	 9lvU6ke80KCl8oeMhf+3/cKRwSW2TH1e+sW0w/5CRoAs2FFhC4PKPABFJ8Dx96IbML
+	 sDM0j77a4liPSzH86gRSiHoqjwM0V1xDiIwjIBXXZU43Q9gaZ8kixvtiF2/fts2WfT
+	 JXGOgYt1GzYOg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250603195426.2360773-1-ttabi@nvidia.com>
-In-Reply-To: <20250603195426.2360773-1-ttabi@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 4 Jun 2025 00:53:48 +0200
-X-Gm-Features: AX0GCFtqkofNTFlU3jOmJsEEMWJ5r5MOjrCwwbjjZqvHim_veDBNKEnt1Iv9L10
-Message-ID: <CANiq72nGZusApAFztsZOoLhRWJYEMmRY6XfAC89e4-dW6snC8Q@mail.gmail.com>
-Subject: Re: [PATCH] [v2] rust: introduce sfile macro for succinct code tracing
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, lossin@kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Jun 2025 01:02:08 +0200
+Message-Id: <DAD9TNUBUGPN.1ED519FYR29U4@kernel.org>
+Subject: Re: [PATCH v4 04/20] rust: add new `num` module with useful integer
+ operations
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+X-Mailer: aerc 0.20.1
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-4-05dfd4f39479@nvidia.com>
+ <DA82KFLNAOG7.R7YT4BHCLNZQ@kernel.org>
+ <DA88YHU4AZT7.B8JGZHW9P9L9@nvidia.com>
+ <DA8GTD7LT7KO.1A3LBQGEQTCEW@kernel.org>
+ <DAC2L6ZKR6U2.WOMERUJIOENK@nvidia.com>
+In-Reply-To: <DAC2L6ZKR6U2.WOMERUJIOENK@nvidia.com>
 
-On Tue, Jun 3, 2025 at 9:55=E2=80=AFPM Timur Tabi <ttabi@nvidia.com> wrote:
+On Mon Jun 2, 2025 at 3:09 PM CEST, Alexandre Courbot wrote:
+> On Thu May 29, 2025 at 4:27 PM JST, Benno Lossin wrote:
+>> On Thu May 29, 2025 at 3:18 AM CEST, Alexandre Courbot wrote:
+>>> On Thu May 29, 2025 at 5:17 AM JST, Benno Lossin wrote:
+>>>> On Wed May 21, 2025 at 8:44 AM CEST, Alexandre Courbot wrote:
+>>>>> +    /// Align `self` up to `alignment`.
+>>>>> +    ///
+>>>>> +    /// `alignment` must be a power of 2 for accurate results.
+>>>>> +    ///
+>>>>> +    /// Wraps around to `0` if the requested alignment pushes the re=
+sult above the type's limits.
+>>>>> +    ///
+>>>>> +    /// # Examples
+>>>>> +    ///
+>>>>> +    /// ```
+>>>>> +    /// use kernel::num::NumExt;
+>>>>> +    ///
+>>>>> +    /// assert_eq!(0x4fffu32.align_up(0x1000), 0x5000);
+>>>>> +    /// assert_eq!(0x4000u32.align_up(0x1000), 0x4000);
+>>>>> +    /// assert_eq!(0x0u32.align_up(0x1000), 0x0);
+>>>>> +    /// assert_eq!(0xffffu16.align_up(0x100), 0x0);
+>>>>> +    /// assert_eq!(0x4fffu32.align_up(0x0), 0x0);
+>>>>> +    /// ```
+>>>>> +    fn align_up(self, alignment: Self) -> Self;
+>>>>
+>>>> Isn't this `next_multiple_of` [1] (it also allows non power of 2
+>>>> inputs).
+>>>>
+>>>> [1]: https://doc.rust-lang.org/std/primitive.u32.html#method.next_mult=
+iple_of
+>>>
+>>> It is, however the fact that `next_multiple_of` works with non powers o=
+f
+>>> two also means it needs to perform a modulo operation. That operation
+>>> might well be optimized away by the compiler, but ACAICT we have no way
+>>> of proving it will always be the case, hence the always-optimal
+>>> implementation here.
+>>
+>> When you use a power of 2 constant, then I'm very sure that it will get
+>> optimized [1]. Even with non-powers of 2, you don't get a division [2].
+>> If you find some code that is not optimized, then sure add a custom
+>> function.
+>>
+>> [1]: https://godbolt.org/z/57M9e36T3
+>> [2]: https://godbolt.org/z/9P4P8zExh
 >
-> +/// built-in file!() macro, which returns the full path of the current f=
-ile.
+> That's impressive and would definitely work well with a constant. But
+> when the value is not known at compile-time, the division does occur
+> unfortunately: https://godbolt.org/z/WK1bPMeEx
+>
+> So I think we will still need a kernel-optimized version of these
+> alignment functions.
 
-This is missing a code span and it is still using a single sentence
-for the "short title".
+Hmm what exactly is the use-case for a variable align amount? Could you
+store it in const generics?
 
-> +/// ```
-> +/// pr_err!("{}:{}\n", sfile!(), line!());
-> +/// ```
+If not, there are also these two variants that are more efficient:
 
-Examples are built and tested, so please make sure they work -- this
-will likely fail to build, since `sfile!` is not imported nor in the
-prelude.
+* option: https://godbolt.org/z/ecnb19zaM
+* unsafe: https://godbolt.org/z/EqTaGov71
 
-> +        assert!(FILE.is_ascii()); // .as_bytes() does not support non-as=
-cii filenames
+So if the compiler can infer it from context it still optimizes it :)
 
-We generally avoid comments after a statement, instead we typically
-put them in the previous line.
+But yeah to be extra sure, you need your version. By the way, what
+happens if `align` is not a power of 2 in your version?
 
-Also: code span is missing, "ASCII", and we end them with periods.
+>>> Also in the kernel we tend to use the `align` nomenclature and I think =
+we
+>>> should preserve that for clarity.
+>>
+>> That's also fair, but we lose the constness of `next_multiple_of`, so
+>> you can't use `align_up` in a const function. That might confuse people
+>> and then they write their own const helper function... I'd prefer we use
+>> all functions that are available in the stdlib.
+>
+> We definitely want const variants of these, one way or the other (const
+> methods in traits are not available yet unfortunately). And yes, on
+> principle I am aligned (haha) with using stdlib functions when possible.
 
-> +        // Return the index of the last occurrence of `needle` in `hayst=
-ack`,
-> +        // or zero if not found.  We can't use rfind() because it's not =
-const (yet).
-> +        // Avoiding rfind() allows this macro to be evaluated at compile=
- time.
+Then I'd recommend getting in touch with upstream Rust :) And choose
+rusty names for our trait so we have an easy switch.
 
-The first sentence should be `///`, and the rest a comment. It also
-lacks code spans.
-
-> +        // We use these unsafe functions because apparently indexing int=
-o
-> +        // a string using normal Rust methods is not completely const op=
-eration.
-
-Hmm... I am confused about what this is trying to say. `rfind` is not
-const, but that does not imply "indexing into a string" is not const
-(what "indexing into a string" means here?)
-
-Also, we should try to avoid "apparently". And what does "not
-completely const" mean here?
-
-By the way, please use the standard "[...]" for patch titles -- you
-can pass e.g. `-v2` to Git for that. (And ideally please provide `--base` t=
-oo).
-
-Thanks!
-
+---
 Cheers,
-Miguel
+Benno
