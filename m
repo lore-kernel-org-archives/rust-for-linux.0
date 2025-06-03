@@ -1,80 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40382820B5;
-	Tue,  3 Jun 2025 09:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8232820D3
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Jun 2025 09:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748943810; cv=none; b=ZWxjbAGviJbGK1Ds9fcBq3sWWF1z/+KvNVVwxEosaxPuLwcMflgY4JhMPQDNEQw3PIejtbtqcoAn5xKE+bJpjCqOosXaTJ8qAqngv0Uyr9sfU1VDWbZB4+QJjQ8Rxl2BJhLkleHgqOpAYdh6ir5POzJsfWnRsL+WpdZ6NdRKHHs=
+	t=1748944658; cv=none; b=fI+/7axEWHVMB/QnI1/DD+4599Ubbki1Tr3YGlTL1N/PsbY+Zz83+5FtnUkd4fqvnVJBQ7EA+oqxkmsv4pSQyJsMM+le7zlvUWDEybWHa5I/i8Xjqz7+kNff0m4KJbXuoXMqGOyoc6BtmLQ+k5fFK+GLR2DIgEih/+Dwml+ZcEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748943810; c=relaxed/simple;
-	bh=qP17+3iWiPn1wGGHbP/Gtri9Gy08Qm0Dsdo2SoPMpSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RLvwxzWrCSvzdIvNDIcxUuBmIyBY4F/yPaMLXnMsrRq0yO/4hpjgm8ziRg4YLzFefKB04wHljNoga5gERlkCEMISHmd3Mssfojtxma/+OZ2+T0rdERCOsv0fdJboYMXZlPTkHbCrCrGZJGd2XtRxdiK7QW9qOJLewHXiwMO8uqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7ICk3tL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1748944658; c=relaxed/simple;
+	bh=HUYg6tnlo6LIuj5RzUJU0Hk0XI6OM9+JcOCISjp77ac=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lZz3znzG9XRiafgS1lfvquDyPj77YMtwClFUm2HLi5s8g2YhzJSQEMee2z00JpJLVlTak7o0JvxwvmVyj8Vr9UPSDiDc3WM4KjdxF3LkmDyIUJC70j60mCBnQTdOLIuSkk4r7aghovYii5QhUSnP3KGnRo8/YXgV8suMaCKBHXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i1+6MtsE; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7ICk3tL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476C6C4CEED;
-	Tue,  3 Jun 2025 09:43:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748943810;
-	bh=qP17+3iWiPn1wGGHbP/Gtri9Gy08Qm0Dsdo2SoPMpSs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c7ICk3tLO9R4sLjArr0+9M04GtCdBXbVXXgJ/WRCKq9Eq8Fq3bgff2DvVzwiykFtF
-	 kWxf2ZDo9M/BklvxbtKgNDUkO1Ead5wWC8A9Z8QZcoXKQwx97BEECgcJWEHlDOJqHx
-	 AtC7DtYDKnayGzs3MZilAsHfpGl/YLOHzJNl7ybaLTfqJmGSFugcMKGGkqqaCwh3ss
-	 FJLXU4WyD6i7bvTOWoHiA9ObffAo651e2NP7rXAf54+NDhKd7MGDt8gXJwOlDLnBUF
-	 Xr5NcRI4vXlOTTgm/ywsbSWCtkkus7B1Y0FPVseN08OhZyai3bXwRMzNtPmlcl+9D6
-	 l4+v3jN9lVlPg==
-Date: Tue, 3 Jun 2025 11:43:24 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
-Message-ID: <aD7DvBfAxKi7Fpg_@cassiopeiae>
-References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
- <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
- <aCUQ0VWgoxdmIUaS@pollux>
- <aD3PCc6QREqNgBYU@google.com>
- <aD3f1GSZJ6K-RP5r@pollux>
- <aD6yOte8g4_pcks7@google.com>
- <aD62ZGBwqXxTroeX@cassiopeiae>
- <aD64YNuqbPPZHAa5@google.com>
- <aD68BzKRAvmNBLaV@cassiopeiae>
- <CAH5fLgjweugttOtuiyawNp5s2N9JPoo5FTJ+Zs9t_S87ggC1Gg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i1+6MtsE"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-450cfb790f7so41547935e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Jun 2025 02:57:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1748944654; x=1749549454; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C6+feKlfKhI5kze4o9p8P4CQwHVLqCyFn82D6V8i7sk=;
+        b=i1+6MtsEUFieETwiWbo/Aj1VEfUjjOgZpRxL8MolGO1QWjEQM/2Ycq6Mi074BfAau7
+         +EFALgUWN/8xEVxLjWAOG6bR4UfWa2GCIQENKED1nDdt7p9b1Vaavf4EjngtXTMJHdLv
+         VOr4oj3JMxHnSsve7VqG4VKBJ2ujE6JsboEj0LqOuelC6xNt5mzAgKAN4/sMY334xHCy
+         X8fRVaHBDs8kQBMKh7HwoF0p5E9M5uG+uPrtRRhUZ7LgxPHs5GyW05+bF0nZ5dXv4Wl4
+         mJNT1Gs+Fvb940eO8KzDcDN+fRGvD2LmFc4fP//rZ7FtZXgtFjEYnLTU2f3RtYGKbpEp
+         tTcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748944654; x=1749549454;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C6+feKlfKhI5kze4o9p8P4CQwHVLqCyFn82D6V8i7sk=;
+        b=jU7bDUOe/ncoH4/BItjyqohsi9rwhAtHlId+dhikbk6wLvaa1mhZzf85W0YWXwYQzu
+         rUbb2OLPPHBF41aV3Xac6kmlXqxORlQrRKq/ULCgvJxaDlBP5VYO+XjccJTiG0HALn1M
+         Wq77MSNLVRiJUTnDENEojqNo3+R8CfgpKy1fERakQxNymKC8wjaAhH03nKqF37mAdros
+         6hcjDT4VPlYE9xWZIFdPNVt2I48y7HId3K4dEWT1oUjn5vyuxg2Q6z6btE2i/aqm02VE
+         ZG2A+IUuxm5izDjzuLhjP1mRAZ7cjjItghp8Z53B7nh0nUXqZQvWgaO17pS/fV76xVA6
+         TqaA==
+X-Forwarded-Encrypted: i=1; AJvYcCVyNUlr1wo0R1fZ6DNtsTOD1wcwVeLznh711MTv3kdCa+s03UXmAJ78hqFjl8jMFLnMBCpkLX9YTDgfX5oasA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrrSVRuDV4k0KuLPtE/C2x2COlKwQwQe59WkMB/KKVyF8N2JGF
+	tezMP3EgAXcDNJEzorHDtMNNRwcOMsNprbg+L6C8dOrEDW8KEh3ocPL5PyH4+Qaz0HnBY5ez4hQ
+	pTF8h3OUOExwye/HOkt13FnZliBfDjKljG+lBWS9E
+X-Gm-Gg: ASbGncvbMBTIdVzF2O7jxHKZoo1zWPRAJ9wulnJZcnHPnYPKpXwjIynxdb5LI9q4dAX
+	ve63U/8tSyvvS0A+WL0VCkuyQND51QFYcUaIDW6tqxLZgXbzaQ18vE9LH1n34Dgms3AT/Olw/yF
+	cjWth5O1flcHfFCsroxuQt+a5jAQsbOXZSyWtSX/WvhhoifwpDXxUEytzY11I/caWiV94/tRvD0
+	w==
+X-Google-Smtp-Source: AGHT+IFaRpKtfqRwNn+cyqukgUbE7AiFp4RZFCy4cJS/hTiEnKZaWDVSLmPS5HDIyQeVhBx0kCKVfKoLraWlgCMk7Nc=
+X-Received: by 2002:a5d:4e84:0:b0:3a4:f7e6:2b29 with SMTP id
+ ffacd0b85a97d-3a4f7e62b33mr11322039f8f.5.1748944654473; Tue, 03 Jun 2025
+ 02:57:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAH5fLgjweugttOtuiyawNp5s2N9JPoo5FTJ+Zs9t_S87ggC1Gg@mail.gmail.com>
+References: <20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com>
+ <20250514-topics-tyr-request_irq-v3-1-d6fcc2591a88@collabora.com>
+ <aCUQ0VWgoxdmIUaS@pollux> <aD3PCc6QREqNgBYU@google.com> <aD3f1GSZJ6K-RP5r@pollux>
+ <aD6yOte8g4_pcks7@google.com> <aD62ZGBwqXxTroeX@cassiopeiae>
+ <aD64YNuqbPPZHAa5@google.com> <aD68BzKRAvmNBLaV@cassiopeiae>
+ <CAH5fLgjweugttOtuiyawNp5s2N9JPoo5FTJ+Zs9t_S87ggC1Gg@mail.gmail.com> <aD7DvBfAxKi7Fpg_@cassiopeiae>
+In-Reply-To: <aD7DvBfAxKi7Fpg_@cassiopeiae>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 3 Jun 2025 11:57:22 +0200
+X-Gm-Features: AX0GCFu2Qb02ePG_vA66oahKh3c5RaA1SFpPb1S4Mza3WCkE8mws-HZ6_8E-yY4
+Message-ID: <CAH5fLggKL4jMjrJJEYV=Snqftu+oc4-sTNj9spinON5kHVP9xg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] rust: irq: add support for request_irq()
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 03, 2025 at 11:18:40AM +0200, Alice Ryhl wrote:
-> I don't think that helps. If Devres::drop gets to swap is_available
-> before the devm callback performs the swap, then the devm callback is
-> just a no-op and the device still doesn't wait for free_irq() to
-> finish running.
+On Tue, Jun 3, 2025 at 11:43=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Tue, Jun 03, 2025 at 11:18:40AM +0200, Alice Ryhl wrote:
+> > I don't think that helps. If Devres::drop gets to swap is_available
+> > before the devm callback performs the swap, then the devm callback is
+> > just a no-op and the device still doesn't wait for free_irq() to
+> > finish running.
+>
+> True, this will indeed always be racy. The rule from the C API has always=
+ been
+> that devm_{remove,release}_action() must not be called if a concurrent un=
+bind
+> can't be ruled out. Consequently, the same is true for Revocable::revoke(=
+) in
+> this case.
+>
+> I think Devres::drop() shouldn't do anything then and instead we should p=
+rovide
+> Devres::release() and Devres::remove(), which require the &Device<Bound>
+> reference the Devres object was created with, in order to prove that ther=
+e
+> can't be a concurrent unbind, just like Devres::access().
 
-True, this will indeed always be racy. The rule from the C API has always been
-that devm_{remove,release}_action() must not be called if a concurrent unbind
-can't be ruled out. Consequently, the same is true for Revocable::revoke() in
-this case.
+What I suggested with the mutex would work if you remove the devm
+callback *after* calling free_irq.
 
-I think Devres::drop() shouldn't do anything then and instead we should provide
-Devres::release() and Devres::remove(), which require the &Device<Bound>
-reference the Devres object was created with, in order to prove that there
-can't be a concurrent unbind, just like Devres::access().
+    // drop Registration
+    mutex_lock();
+    free_irq();
+    mutex_unlock();
+    devm_remove_callback();
+
+    // devm callback
+    mutex_lock();
+    free_irq();
+    mutex_unlock();
+
+Another simpler option is to just not support unregistering the irq
+callback except through devm. Then you don't have a registration at
+all. Creating the callback can take an irq number and a ForeignOwnable
+to put in the void pointer. The devm callback calls free_irq and drops
+the ForeignOwnable.
+
+Alice
