@@ -1,56 +1,56 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A9782864
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Jun 2025 09:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F0B28D839
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Jun 2025 09:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749029882; cv=none; b=KNJo2pBBUMAJANpHGxelrAdtvOl+tlC1vgWFx8lOXT0Su02MMAZtb5zUfvTvpN4kyNqw1d+nG2QPbK1l7DxCXJmdxdE8er31cVoDCpwSdjSY3fJ/orTlRkXjArcZCXSq5J12gHHlLSKsw0wv/wnaByac0DF0upm5Y0NgYfzPhdk=
+	t=1749030043; cv=none; b=oLJcXWDcFjjAYQKqWTeo5epz/xvb3ss5ZNVwNA/3rnmtllzyY/wwq3qX96zPS/NBSA4+YlfhwXKjk/GnJUToFkKgoP324kzoeqG4sbhxohLU9mz2CSISQpORRrbJdLJT4wy6DDlOTrEYpVrdCJBdTMR+nMXr6ib7/hjZ6EEy9jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749029882; c=relaxed/simple;
-	bh=IefVJKRoaTZXyYlWJwwqwPpNNzeZVtle+HBXhnWHRus=;
+	s=arc-20240116; t=1749030043; c=relaxed/simple;
+	bh=2AruANEOT2TfaHViGN/mXT/ZeJRHo2KXBQ+B3XqP5g0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=igF/Qvd8Tz+UO/NBDwEFlll64viomELTpo0JjY5VhPNW28mIh7WroMR9xOZShQvMu+mK24Bbot2q96iqfBvNs0YcQ4SGtbS7PUdZ6Jte8wtzNR7Z3giJ5McvxnWIQBUbZgoPUPmgkRgZTKP5UW2+zK6+IDJQnfcVwMqO2CFO3SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JOGYFj+5; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=I2P3cMnvshAKvIDKvBypDxCt70Fqvkm6HMappXyJcmBlc55buU8LXcVgoIHiFdv8ATpobfDnEoeAVJEChilTFrlPLd22xaL3ZW55uLtOhIwaimOTnLXJSxrGGgLNZjNmTuqW0aB/9Qlefk7ZVnCZEtul/xlKzbUEphCdOauLE30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UFf6Wc6I; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JOGYFj+5"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-450cf229025so18707485e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jun 2025 02:38:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UFf6Wc6I"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a50816ccc6so2222812f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jun 2025 02:40:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749029879; x=1749634679; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1749030040; x=1749634840; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w9Z4UCGtO6U0GVT4g7AwP3ADkarkEdCLcrxioVcqn6k=;
-        b=JOGYFj+5OBQXm17ZWZ/atAlN2VVVHVerzisuifHukR1jQ8N05g9NSxXDaYCctkZmRk
-         R6LkH5KNfqusgDwaG/j6gDz7Kgsj2k9fQGpzQmZUwO1cGM8pXmzkYwC4zkbfUWgW2hSe
-         WS7HXFauCwbkSaFGm7MB7wuFdjQZdfObuj6NkirUB/9gy1yrrT/7HgJE7eCTvbVPKw4H
-         5QGOHBW2jdkW3KiCgEkO1SkYzQObDxySBjvjioerorW/J4sVYoxbzaCw3a9TRmENOzSt
-         i9PoMbEqZJHzb0gbXMWevlPrDxR451n3LqCCifZuLh+kz5YuLsgWOcwT6DQ1WZWpdgsL
-         bbeA==
+        bh=i7WJDavWNIrVWIggT8ORRLc16fn6NWCVuLOAw9yDBto=;
+        b=UFf6Wc6IrhVLIka4adYEGE79bXgEvAIZC1oO+cn6HiFr0X8kZYUxjC9KCoGah7WN6s
+         3FtDCoR0wtsm0vvNaat+gxS0BfxeEK7bn5UDz4bFHpWXJ17bMY84UJ5l0tSMGhrbB+49
+         hf/FLMeBhHMNBoApn2tnnZWHvr3bBwBYnPyt5gtizYUloL3j90x7ZDhCcAVO/0PVD8CE
+         OvShFtS5RajqXI2ZbikYViEhvn5OxsIjBJvKZJp4u3ekXEf5oNUosFg0Kp/h7kpNcFVg
+         u473UYKnuMjAQbPZA4iQDyB9bVGg5juZ/NjJ2jinXbozLkm8rp0dXJKrtiLeuK+30Evd
+         oBXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749029879; x=1749634679;
+        d=1e100.net; s=20230601; t=1749030040; x=1749634840;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w9Z4UCGtO6U0GVT4g7AwP3ADkarkEdCLcrxioVcqn6k=;
-        b=TXLtbl2M9INpmd9qRQAiRsUiHFMADMcZMA9sqrcujmKd+OajiRXyquvYIiiY7GiGoQ
-         wFkg1dLyKc/Y7eZ/0yG7q2jYLFAEfnUmzP23QVdZmzJQJqAPL4eOws/qeMD8/2Y0/lQU
-         75ntfU9Mk2jKGGUMicwH3rBlgSqTa77ginKcgXrt4/ESWAxU5EvdAzLyGWG0LovxGxmo
-         oQb2tzOYB5GVmcoA6Mf51dSpWKUgrcYBbi6KgHdPK5pEUid3zh/HOzJMfeO5V7ksZQwW
-         2iZz6zI6hB+awQZN1zLeURXO5ps71P8qqIStp+2IMAec/YQlI0IOo/VgDLEXtEMRU6vO
-         G4ZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYolRLc59WHBjoIfpo5lk8rozD2BwSaXXsQu4ZHXfz4I3mJ3P98110zJKEIMiOvK3yOBuPVC2NSLz6K1VlGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEl4BuGACivEZoKw5lKIOrZHmjtFFDz/jv95qB3kuReEMNWgny
-	FeTVpZir0EY6N1s3Zk3uvaZLMNyW2aj9t/4ngo2AkyW6+isnqGFWMHpJS4CgNa+zZS8wdLLoCOJ
-	ukLJ2md+xXD/12El/5A==
-X-Google-Smtp-Source: AGHT+IHbB15ak9OkLyyLKjiL2SuiJUR5ZPZ+YNrGcnXzpsUEWmNZ70EDL0B0udyTAmN0Mlas7cyYu9RJKod5RTQ=
-X-Received: from wmbay12.prod.google.com ([2002:a05:600c:1e0c:b0:43d:b30:d2df])
+        bh=i7WJDavWNIrVWIggT8ORRLc16fn6NWCVuLOAw9yDBto=;
+        b=KNOxsfdkF5SzZyU+VDa200q5tBlNgggi2xxKJXlE2euj81Y4iGCiUhmosvQAn/yvSn
+         yzKPocrkpiGJllixobbHC5osThCym2oLYIhvsKum/DbBvx2gqVW0yTK6EqiBW6TsDDa+
+         yTozSQfIhLWS4tpUKCf9TeVUS9oaaAMH5ec3PLgbp/mt7oFdbhgAniXUds/4T1XJKf4C
+         mtlyH7ZZ/Mr1prdTARCF+0uAu0M7tSK/I/VDFgVcXA8gIe2lRG1052bUpCihdS1rqBZn
+         6qt//z0XiILxo8TODpKYP388mHwh0jAbu0mYECI2H4QfFFIGhQNEfLQ1/5pilnMMvoX/
+         toBA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7pzi1HXY6zrifmTIWXOq8czFmanbzAoo2ojA/oWQ66+5tO0492bmNCQE2ZujR3CLVXY+CTHQPdt5fSPyeUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOrmTS7nfCr/bWnd1QvNjw04JPr0x258xYWVnQpgcp0t0pAzTX
+	Yb3X4ltblZM2mbBRQ/fa/HZtL7AoYxGpJDkCJEsgql4GxI663ugoWs/LLaTmlm7keNJJvgu+GId
+	bFRVxiKI8vg/LPdBBQw==
+X-Google-Smtp-Source: AGHT+IETm21fGX6EDVvCILpaGt3LhqUeqy+mLvIfJDOMBQXcjhqGiJe96JoM5T9wMnLNcUF5CHiClrXvuov77ts=
+X-Received: from wmsd10.prod.google.com ([2002:a05:600c:3aca:b0:451:d70f:eb87])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:35d4:b0:43c:f44c:72a6 with SMTP id 5b1f17b1804b1-451f0a63602mr16072705e9.2.1749029879077;
- Wed, 04 Jun 2025 02:37:59 -0700 (PDT)
-Date: Wed, 4 Jun 2025 09:37:56 +0000
-In-Reply-To: <DAACCYW3QRQE.1O75L2SHJYVPM@kernel.org>
+ 2002:a05:6000:2209:b0:3a4:e56a:48c5 with SMTP id ffacd0b85a97d-3a51d8ffd92mr1637145f8f.16.1749030040535;
+ Wed, 04 Jun 2025 02:40:40 -0700 (PDT)
+Date: Wed, 4 Jun 2025 09:40:38 +0000
+In-Reply-To: <3eef5777-9190-4782-8433-7b6ad4b9acd3@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,12 +58,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250530-b4-rust_miscdevice_registrationdata-v4-0-d313aafd7e59@gmail.com>
- <20250530-b4-rust_miscdevice_registrationdata-v4-2-d313aafd7e59@gmail.com> <DAACCYW3QRQE.1O75L2SHJYVPM@kernel.org>
-Message-ID: <aEAT9B669Qvi0rlR@google.com>
+ <20250530-b4-rust_miscdevice_registrationdata-v4-2-d313aafd7e59@gmail.com>
+ <DAACCYW3QRQE.1O75L2SHJYVPM@kernel.org> <3eef5777-9190-4782-8433-7b6ad4b9acd3@gmail.com>
+Message-ID: <aEAUlvPbX9vFWhdI@google.com>
 Subject: Re: [PATCH v4 2/3] rust: miscdevice: add additional data to MiscDeviceRegistration
 From: Alice Ryhl <aliceryhl@google.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
@@ -74,123 +75,31 @@ Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Miguel Ojeda <ojeda@kernel.org
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sat, May 31, 2025 at 02:23:23PM +0200, Benno Lossin wrote:
-> On Fri May 30, 2025 at 10:46 PM CEST, Christian Schrefl wrote:
-> > @@ -45,32 +46,46 @@ pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
-> >  /// # Invariants
-> >  ///
-> >  /// `inner` is a registered misc device.
-> > -#[repr(transparent)]
-> > +#[repr(C)]
+On Mon, Jun 02, 2025 at 11:16:33PM +0200, Christian Schrefl wrote:
+> On 31.05.25 2:23 PM, Benno Lossin wrote:
+> > On Fri May 30, 2025 at 10:46 PM CEST, Christian Schrefl wrote:
+> >> +        unsafe { core::ptr::drop_in_place(self.data.get()) };
+> >>      }
+> >>  }
+> >>  
+> >> @@ -109,6 +135,13 @@ pub trait MiscDevice: Sized {
+> >>      /// What kind of pointer should `Self` be wrapped in.
+> >>      type Ptr: ForeignOwnable + Send + Sync;
+> >>  
+> >> +    /// The additional data carried by the [`MiscDeviceRegistration`] for this [`MiscDevice`].
+> >> +    /// If no additional data is required than the unit type `()` should be used.
+> >> +    ///
+> >> +    /// This data can be accessed in [`MiscDevice::open()`] using
+> >> +    /// [`MiscDeviceRegistration::data()`].
+> >> +    type RegistrationData: Sync;
+> > 
+> > Why do we require `Sync` here?
 > 
-> Why do we need linear layout? `container_of!` also works with the `Rust`
-> layout.
-> 
-> >  #[pin_data(PinnedDrop)]
-> > -pub struct MiscDeviceRegistration<T> {
-> > +pub struct MiscDeviceRegistration<T: MiscDevice> {
-> >      #[pin]
-> >      inner: Opaque<bindings::miscdevice>,
-> > +    #[pin]
-> > +    data: Opaque<T::RegistrationData>,
-> >      _t: PhantomData<T>,
-> 
-> No need to keep the `PhantomData` field around, since you're using `T`
-> above.
-> 
-> >  }
-> >  
-> > -// SAFETY: It is allowed to call `misc_deregister` on a different thread from where you called
-> > -// `misc_register`.
-> > -unsafe impl<T> Send for MiscDeviceRegistration<T> {}
-> > -// SAFETY: All `&self` methods on this type are written to ensure that it is safe to call them in
-> > -// parallel.
-> > -unsafe impl<T> Sync for MiscDeviceRegistration<T> {}
-> > +// SAFETY:
-> > +// - It is allowed to call `misc_deregister` on a different thread from where you called
-> > +//   `misc_register`.
-> > +// - Only implements `Send` if `MiscDevice::RegistrationData` is also `Send`.
-> > +unsafe impl<T: MiscDevice> Send for MiscDeviceRegistration<T> where T::RegistrationData: Send {}
-> > +
-> > +// SAFETY:
-> > +// - All `&self` methods on this type are written to ensure that it is safe to call them in
-> > +//   parallel.
-> > +// - `MiscDevice::RegistrationData` is always `Sync`.
-> > +unsafe impl<T: MiscDevice> Sync for MiscDeviceRegistration<T> {}
-> 
-> I would feel better if we still add the `T::RegistrationData: Sync`
-> bound here even if it is vacuous today.
-> 
-> >  impl<T: MiscDevice> MiscDeviceRegistration<T> {
-> >      /// Register a misc device.
-> > -    pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, Error> {
-> > +    pub fn register(
-> > +        opts: MiscDeviceOptions,
-> > +        data: impl PinInit<T::RegistrationData, Error>,
-> > +    ) -> impl PinInit<Self, Error> {
-> >          try_pin_init!(Self {
-> > +            data <- Opaque::pin_init(data),
-> >              inner <- Opaque::try_ffi_init(move |slot: *mut bindings::miscdevice| {
-> >                  // SAFETY: The initializer can write to the provided `slot`.
-> >                  unsafe { slot.write(opts.into_raw::<T>()) };
-> >  
-> > -                // SAFETY: We just wrote the misc device options to the slot. The miscdevice will
-> > -                // get unregistered before `slot` is deallocated because the memory is pinned and
-> > -                // the destructor of this type deallocates the memory.
-> > +                // SAFETY:
-> > +                // * We just wrote the misc device options to the slot. The miscdevice will
-> > +                //   get unregistered before `slot` is deallocated because the memory is pinned and
-> > +                //   the destructor of this type deallocates the memory.
-> > +                // * `data` is Initialized before `misc_register` so no race with `fops->open()`
-> > +                //   is possible.
-> >                  // INVARIANT: If this returns `Ok(())`, then the `slot` will contain a registered
-> >                  // misc device.
-> >                  to_result(unsafe { bindings::misc_register(slot) })
-> > @@ -93,13 +108,24 @@ pub fn device(&self) -> &Device {
-> >          // before the underlying `struct miscdevice` is destroyed.
-> >          unsafe { Device::as_ref((*self.as_raw()).this_device) }
-> >      }
-> > +
-> > +    /// Access the additional data stored in this registration.
-> > +    pub fn data(&self) -> &T::RegistrationData {
-> > +        // SAFETY:
-> > +        // * No mutable reference to the value contained by `self.data` can ever be created.
-> > +        // * The value contained by `self.data` is valid for the entire lifetime of `&self`.
-> 
-> Please add type invariants for these two requirements.
-> 
-> > +        unsafe { &*self.data.get() }
-> > +    }
-> >  }
-> >  
-> >  #[pinned_drop]
-> > -impl<T> PinnedDrop for MiscDeviceRegistration<T> {
-> > +impl<T: MiscDevice> PinnedDrop for MiscDeviceRegistration<T> {
-> >      fn drop(self: Pin<&mut Self>) {
-> >          // SAFETY: We know that the device is registered by the type invariants.
-> >          unsafe { bindings::misc_deregister(self.inner.get()) };
-> > +
-> > +        // SAFETY: `self.data` is valid for dropping and nothing uses it anymore.
-> 
-> Ditto.
-> 
-> > +        unsafe { core::ptr::drop_in_place(self.data.get()) };
-> >      }
-> >  }
-> >  
-> > @@ -109,6 +135,13 @@ pub trait MiscDevice: Sized {
-> >      /// What kind of pointer should `Self` be wrapped in.
-> >      type Ptr: ForeignOwnable + Send + Sync;
-> >  
-> > +    /// The additional data carried by the [`MiscDeviceRegistration`] for this [`MiscDevice`].
-> > +    /// If no additional data is required than the unit type `()` should be used.
-> > +    ///
-> > +    /// This data can be accessed in [`MiscDevice::open()`] using
-> > +    /// [`MiscDeviceRegistration::data()`].
-> > +    type RegistrationData: Sync;
-> 
-> Why do we require `Sync` here?
-> 
-> We might want to give this a shorter name?
+> Needed for `MiscDeviceRegistration` to be `Send`, see response above.
 
+Even if `MiscDeviceRegistration` is non-Send, the registration data must
+still be Sync. The f_ops->open callback can *always* be called from any
+thread no matter what we do here, so the data it gives you access must
+always be Sync no matter what.
 
+Alice
