@@ -1,125 +1,168 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4222289E0D
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Jun 2025 09:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC451E3772;
+	Wed,  4 Jun 2025 09:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749030249; cv=none; b=SZV5H0zFeaH+sD90Wmr2s6GQP9SkbvwKRxbXHeANiCDe7n3Svx6O1V3tfhKFG4qqo6v4cAkFxGdm2q/fW3ZVBkMq3/8pZMb8rxCNn1j5l3DKTc4PUYyUD3HPatlChaNfMoY4Gd7QPVEcIUTVKd54RinZ1dcNeKf5Q15F/ZsgKBM=
+	t=1749030601; cv=none; b=FJEpgikllfavLd8KOxzDAeevYWRIpEtKnbfv0zIPbFuR7XAGjnshlx2zVUEY972XuKLveNRpa1uAGNvgARxmB62LHRWfsRNQ0iJwyYmNPw1n1Hv9u6lL4uP6a5Ooys2Vt+IxUXnJLw0I1Jwg0vzCNjaQU9fpE0Tk5rsW9WUCOT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749030249; c=relaxed/simple;
-	bh=8lsgt4lYbx9qeHWoJ//m4adykVeulUH7zxixSoJF3wY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NuwmIaMUN008sBdChYeNhiuebW5cCgpPj4bW48n2ipG3ZOoGrEq5c0WkCJhX5xhe4lKIq0ymJJV97yvulfRTp9vaQnDpfG4iCTcREkpaSGCfdBznO1KAx8oc7Iy95sZDVk1yBGC8sghS0UmdLJQk421YQQ1hrjl5GtLlH0PZLt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LYaxHj0y; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1749030601; c=relaxed/simple;
+	bh=Ab424E9k28t4IDBrmxzZpiv39b/KLWE7lhSswN4XFJ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UD8lhii3n3PYd85uRkge722gBa94sLe5sH3nXzm/IN3k+QAYwLBPBccbMzCDPZabtQcMRAGqbvHZG1//aSI1c1Cb9V2IwNVPcQz+RlEn9pUe2+oSO+Ino4XckEXVVLCwzWW7/gW6GPs0FwV4AlKeMaP6UMaOUM1Q+y+gOGpvTi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ig2Owuvf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LYaxHj0y"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43edecbfb46so50112105e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jun 2025 02:44:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749030246; x=1749635046; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wwmXxEStKu/KsGcy7lzyMmwCyyMR9O88p/WT4fw4xb0=;
-        b=LYaxHj0yGzDxSwGkcw7mKGAjOC74mfmhvBpTvHTtSlGXX/B7eI4kVQkwcyyaiu4IuL
-         LMBbQupfEz+y3oLabV83hImec6FPgngKeghifCa+Hqn3/VVZDVUlePu5xTMGjNyaUXCA
-         M6aHxVO2sSbceoFQuZEzboGJOgZ8L+wmaVgH/E5qORGWFN7yNyJIPTBB2l4KTEaeie3t
-         jdISmul4bsuuOJWsZC5UPVgDMyxpFX6kj341qWf5lXfsED6KVkQ8zebpfgSh0CCxu4zu
-         ov0JD+8j2Ptwtbtsi61QQvswtZsvtMBLkAmuwKJlRgKuSVyxEci4ilbINn886sxfS5p9
-         weXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749030246; x=1749635046;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wwmXxEStKu/KsGcy7lzyMmwCyyMR9O88p/WT4fw4xb0=;
-        b=HPMwavrCNVWkEjxjIdT/A5vTjLGFzO4GtnwiFB8eZib7jlkFwB7zYoT9oR8GwPwQI6
-         pWgSxUG5dqBT6PJ747jqGqkx+qqCeiGOzco2YdIf6WHe6xfloWjtggr6AxsRQvRW8ftd
-         2tPMmPYCzpQRUctgFI1Q842O8A+rmF4tMAfaMTUn2RTVduHHbtqb6WDfEMU94eGwLJ4t
-         fRBGBPzggAiUQlgRuhAF+UZwLaPmjRxfTN/G+RUuxO01h5+7V+l1IBwtmcsjmo26U0dN
-         0TuFnUYl9mshkvABsY1lmC7hUl6g8nBONtGE/nSdhUmzDjVIcMIRIL1nuVcFz5hwe4bz
-         /T8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVx1KbCQ7c+jH9rSvMmL0n0BrZf/skdloxGO8VveXB6EmDNY24+Ea1liyPZ8F3oYzaO/xr4mRPzTwTXGqVzug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YweXZ3EVa8IJxGFyC+ikr8pNXqYr5S9VEHRVXe6XpXPgJL3u3DK
-	gbFJkJT+QTJy5tABhzj+1iN2uMx0rB5u/cZNdvlbC7lLPZ0dxpqezH2BIChZIhV9DKOuWe2eA4I
-	g6D26CQHj38vY8ABDVDEX0yDL+ne/VexoC52IaVXL
-X-Gm-Gg: ASbGncuhYYlYDykk/8h3UlQwGX5Mqukajh5hk8ninuo4tL7KT6d5jPznCIYvjM09sTm
-	p3WXZ2kA1jABxv/eETstjXlOu4SwC0vEuGUClGrcNxoZMxQegd97y0iMc5HifJmyXmpVjSgXtmr
-	ECDvBMDEyDO8R2GqCji0krVOy93r79elYGvbVtnwI12iPmGqDTYa4mMZQbOB+WyzzU9dOL0Vk+m
-	A==
-X-Google-Smtp-Source: AGHT+IHbH0sbOu2aLCykXmUYG/Z0HR7If7xStvI/5Hsw8iqmRB0BuG1Q75yKx8Ud65YPZh31Zc39TybJPsJRkOst3QM=
-X-Received: by 2002:a05:600c:6287:b0:442:f482:c42d with SMTP id
- 5b1f17b1804b1-451f0a88f40mr17637945e9.9.1749030246080; Wed, 04 Jun 2025
- 02:44:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ig2Owuvf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC7AC4CEE7;
+	Wed,  4 Jun 2025 09:49:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749030600;
+	bh=Ab424E9k28t4IDBrmxzZpiv39b/KLWE7lhSswN4XFJ0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ig2Owuvfk1TYotGhEXFMRgP7tIhEPMEP8zhQituOqKBsNEWNJ3JmRw/dOcKRd8KCC
+	 hmtstscqscz2CND9P4MWh0aysetXK6HmrZBtHwz5DIBwZOBbvtGMYH3+99qcC8sRjx
+	 VG1e/6UqOIlPY0GxyUGp+GlcXkkgLQeUmgY8KUfiHdQrxOcTi/cZ7Z36tT1S8L5Dvi
+	 sSezxPBIpJJAAU6hNRZ9LyxeSzb2qGi9pjx1EwfiZHQ4HI01GOM0uSGaP079DtZTGg
+	 VP7J8jgZ0j40VuAoBH4oG4Qs5+AWJ6JTqrfGxTAVQL7akPvOtM75IZp8pAsvJ/LG2Y
+	 31hajWnW/fwOw==
+Date: Wed, 4 Jun 2025 11:49:54 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, chrisi.schrefl@gmail.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] rust: devres: fix race in Devres::drop()
+Message-ID: <aEAWwnyP4zwwrccX@pollux>
+References: <20250603205416.49281-1-dakr@kernel.org>
+ <20250603205416.49281-4-dakr@kernel.org>
+ <aD-EiRChuScS5TK-@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250530-b4-rust_miscdevice_registrationdata-v4-0-d313aafd7e59@gmail.com>
- <20250530-b4-rust_miscdevice_registrationdata-v4-2-d313aafd7e59@gmail.com>
- <DAACCYW3QRQE.1O75L2SHJYVPM@kernel.org> <3eef5777-9190-4782-8433-7b6ad4b9acd3@gmail.com>
- <aEAUlvPbX9vFWhdI@google.com> <311a3039-286a-49e6-b47a-75f5a173e922@gmail.com>
-In-Reply-To: <311a3039-286a-49e6-b47a-75f5a173e922@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 4 Jun 2025 11:43:54 +0200
-X-Gm-Features: AX0GCFuYXOtsO_7aTKEy1dYtvgjIP7i0rumgMFrVhehopyYitpLczg7J7iD0CuA
-Message-ID: <CAH5fLgiwDTAqZqHgvtC3VqJQVpqDD3ScucCdSn_1gQ9N3MkT3g@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] rust: miscdevice: add additional data to MiscDeviceRegistration
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	=?UTF-8?Q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aD-EiRChuScS5TK-@tardis.local>
 
-On Wed, Jun 4, 2025 at 11:42=E2=80=AFAM Christian Schrefl
-<chrisi.schrefl@gmail.com> wrote:
->
-> On 04.06.25 11:40 AM, Alice Ryhl wrote:
-> > On Mon, Jun 02, 2025 at 11:16:33PM +0200, Christian Schrefl wrote:
-> >> On 31.05.25 2:23 PM, Benno Lossin wrote:
-> >>> On Fri May 30, 2025 at 10:46 PM CEST, Christian Schrefl wrote:
-> >>>> +        unsafe { core::ptr::drop_in_place(self.data.get()) };
-> >>>>      }
-> >>>>  }
-> >>>>
-> >>>> @@ -109,6 +135,13 @@ pub trait MiscDevice: Sized {
-> >>>>      /// What kind of pointer should `Self` be wrapped in.
-> >>>>      type Ptr: ForeignOwnable + Send + Sync;
-> >>>>
-> >>>> +    /// The additional data carried by the [`MiscDeviceRegistration=
-`] for this [`MiscDevice`].
-> >>>> +    /// If no additional data is required than the unit type `()` s=
-hould be used.
-> >>>> +    ///
-> >>>> +    /// This data can be accessed in [`MiscDevice::open()`] using
-> >>>> +    /// [`MiscDeviceRegistration::data()`].
-> >>>> +    type RegistrationData: Sync;
-> >>>
-> >>> Why do we require `Sync` here?
-> >>
-> >> Needed for `MiscDeviceRegistration` to be `Send`, see response above.
-> >
-> > Even if `MiscDeviceRegistration` is non-Send, the registration data mus=
-t
-> > still be Sync. The f_ops->open callback can *always* be called from any
-> > thread no matter what we do here, so the data it gives you access must
-> > always be Sync no matter what.
->
-> Right I meant to write `Sync` sorry.
+On Tue, Jun 03, 2025 at 04:26:01PM -0700, Boqun Feng wrote:
+> On Tue, Jun 03, 2025 at 10:48:52PM +0200, Danilo Krummrich wrote:
+> > In Devres::drop() we first remove the devres action and then drop the
+> > wrapped device resource.
+> > 
+> > The design goal is to give the owner of a Devres object control over when
+> > the device resource is dropped, but limit the overall scope to the
+> > corresponding device being bound to a driver.
+> > 
+> > However, there's a race that was introduced with commit 8ff656643d30
+> > ("rust: devres: remove action in `Devres::drop`"), but also has been
+> > (partially) present from the initial version on.
+> > 
+> > In Devres::drop(), the devres action is removed successfully and
+> > subsequently the destructor of the wrapped device resource runs.
+> > However, there is no guarantee that the destructor of the wrapped device
+> > resource completes before the driver core is done unbinding the
+> > corresponding device.
+> > 
+> > If in Devres::drop(), the devres action can't be removed, it means that
+> > the devres callback has been executed already, or is still running
+> > concurrently. In case of the latter, either Devres::drop() wins revoking
+> > the Revocable or the devres callback wins revoking the Revocable. If
+> > Devres::drop() wins, we (again) have no guarantee that the destructor of
+> > the wrapped device resource completes before the driver core is done
+> > unbinding the corresponding device.
+> > 
+> > Depending on the specific device resource, this can potentially lead to
+> > user-after-free bugs.
+> > 
+> 
+> This all sounds reasonable, one question though: it seems to me the
+> problem exists only for the device resources that expect the device
+> being bounded, so hypothetically if the device resources can be
+> programmed against unbound devices, then the current behavior should be
+> fine?
 
-It is still the case that RegistrationData must always be Sync no
-matter what. But I guess that also applies to MiscDeviceRegistration.
+I don't think that such device resources exist from a semantical point of view.
 
-Alice
+We always have to guarantee that a driver released the device resources once the
+corresponding device is unbound from the driver.
+
+However, there certainly are differences between how fatal it is if we don't do
+so.
+
+Complementing your example below, if we for instance fail to release a memory
+region in time, a subsequent driver probing the device may fail requesting the
+corresponding region.
+
+> For example, in your case, you want free_irq() to happen before
+> the device becomes unbound, which is of course reasonable, but it sounds
+> more like a design choice (or what device model we want to use), because
+> hypothetically you can program an irq that still works even if the
+> device is unbound, no?
+
+You can, just like for every other registration (e.g. class devices, such as
+misc device), but it's sub-optimal, since then we could not treat the
+registering device of the registration as &Device<Bound>, which allows direct
+access to device resources with Devres::access(). Please see also [1] and [2].
+
+We have two (safe and correct) ways to access device resources, one is the
+runtime checked access through Revocable::try_access() (which implies the RCU
+read-side critical section and atomic check); the other one is the compile-time
+checked access through providing a &Device<Bound> as cookie for directy access
+without runtime overhead.
+
+Wherever possible, we want to enable the latter, which means that registrations
+need to be properly guarded.
+
+[1] https://lore.kernel.org/lkml/20250530142447.166524-6-dakr@kernel.org/
+[2] https://lore.kernel.org/lkml/20250530142447.166524-7-dakr@kernel.org/
+
+> Again this sounds reasonable to me, just want to check my understanding
+> here.
+> 
+> Regards,
+> Boqun
+> 
+> > In order to fix this, implement the following logic.
+> > 
+> > In the devres callback, we're always good when we get to revoke the
+> > device resource ourselves, i.e. Revocable::revoke() returns true.
+> > 
+> > If Revocable::revoke() returns false, it means that Devres::drop(),
+> > concurrently, already drops the device resource and we have to wait for
+> > Devres::drop() to signal that it finished dropping the device resource.
+> > 
+> > Note that if we hit the case where we need to wait for the completion of
+> > Devres::drop() in the devres callback, it means that we're actually
+> > racing with a concurrent Devres::drop() call, which already started
+> > revoking the device resource for us. This is rather unlikely and means
+> > that the concurrent Devres::drop() already started doing our work and we
+> > just need to wait for it to complete it for us. Hence, there should not
+> > be any additional overhead from that.
+> > 
+> > (Actually, for now it's even better if Devres::drop() does the work for
+> > us, since it can bypass the synchronize_rcu() call implied by
+> > Revocable::revoke(), but this goes away anyways once I get to implement
+> > the split devres callback approach, which allows us to first flip the
+> > atomics of all registered Devres objects of a certain device, execute a
+> > single synchronize_rcu() and then drop all revocable objects.)
+> > 
+> > In Devres::drop() we try to revoke the device resource. If that is *not*
+> > successful, it means that the devres callback already did and we're good.
+> > 
+> > Otherwise, we try to remove the devres action, which, if successful,
+> > means that we're good, since the device resource has just been revoked
+> > by us *before* we removed the devres action successfully.
+> > 
+> > If the devres action could not be removed, it means that the devres
+> > callback must be running concurrently, hence we signal that the device
+> > resource has been revoked by us, using the completion.
+> > 
+> > This makes it safe to drop a Devres object from any task and at any point
+> > of time, which is one of the design goals.
+> > 
+> [...]
