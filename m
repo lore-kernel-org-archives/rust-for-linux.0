@@ -1,97 +1,187 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3B41ACEAF;
-	Wed,  4 Jun 2025 08:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4C718C03F
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Jun 2025 09:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749026908; cv=none; b=ro9fInuRH8r9SVpfjAOaDqKcPQvaL7F/+3XH0aI0/RvWMPFw7GmcfvLlyaYvsNizy5P1tracST2fJrBdBDavzbajb7fdfDilhpEgGOQ/Dy5wLXY6fqwHf7tx5jvpP6nFwb9se8qzmXstTgGqduakrD8JKcjgKrJsetXQyn1QNrU=
+	t=1749027625; cv=none; b=PgKut6DY+S44szkuURbBMNR2GmGny6l9oknaAPeiddGLq53c4/Tn/ckcwSrMOxoAQoj5muBSqSTZEGci7uKldBNCRxarpagqPfxC7Lclkyz0tvCsnl84WZpd/YmAHU7PzAzbKT64XwXlQhlJ4ITIInvoT9x93H1O2X1BSCBg42o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749026908; c=relaxed/simple;
-	bh=B22946g//iI1Zeum0E3UnQPVhm0Sl1Gxrt0bukW4dSc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kGq8UM7iXzJKCsBuI7PKCEHLo1WKU/2lZk7dFp5T4Qb/ZxK4utnGThtRTq4l6qyKO7IJyH2LsyrvijVqvqtQGCeUJTveyN4Y91Q6ER3al6W3OgmWnZEWaVoCtazQfJmubZDn+MRNuBiKJmElXP68K39UQ5a8DKfhhhhXdPILlWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=anElONG6; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749027625; c=relaxed/simple;
+	bh=WWSVrkloq7pwBtF0fI+ECc+vU7jSih7MauL6+8GvsvA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Ruc7yRkFtQp+OO4IcwN84PbreTCVWs0wQlLAKiLr+F+JvBFoADmDYZatsb/HprwvvNaZWBCY9eM5PSe+qNqQ9A6fP0BilCNAyahOz3/GRVb8kge6bjMRk0DY9Pkva9Wlzh9WNpgDAnSc6tckw1mbAakSzEUwWBun6FY7V2ugTzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mFfhtMVu; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="anElONG6"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2352b04c7c1so7059805ad.3;
-        Wed, 04 Jun 2025 01:48:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mFfhtMVu"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-450df53d461so36440395e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jun 2025 02:00:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749026906; x=1749631706; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B22946g//iI1Zeum0E3UnQPVhm0Sl1Gxrt0bukW4dSc=;
-        b=anElONG6zJV+9OGPZHOrFJ0KPUn0XUxrFfaiIEMydh7kcNUtIXWCIo4iBg3WHGPFsC
-         vUf21ywOa2BbiDmQ0+WjvRb05SESDS7gaWVh23+W64AR56WvQBT8FB3W3aJ7v5EJ/Hwi
-         pJgjZKH3f5eHyZUOK0yeV6UE2PoguXVE3tqAwffiA4Qf/8oksj/AzqJLqksFyW5yE3o4
-         ZRwjIkAWU05TLBqVeLSB+KPWHH01+Z9lL+I4ZBhcQ3Xz/PPMXjlyWoK0wB/fVzAI6hVL
-         uxsvPtclumd1kSh53oPH6DwV+YYGlfVJO0GJcbC6p9Eg/2MqnGlm/Q43EA7Hak0eHzfF
-         VK3g==
+        d=google.com; s=20230601; t=1749027622; x=1749632422; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KjEMH/TqNnUE/z+eJUzsFegKG7rEAJKYvPFdSAPotXY=;
+        b=mFfhtMVu50axpE61XD9ECrYgNLCMpKW1U6Ow5hxrrWLEPUm2QCbbArdfNqQJTvroFm
+         KBiyOhHu52np4+WxiuCMijtb3BsqiHT6lfeG5gD8W2A+Hvsst9IAh9X+1eQc2LKOcdl6
+         mspKvcXDmLZhLDUpMwgnNxsNHfFIsUYtC6T9wvCQiZ/DNuVZURS1AhBKBryCazJZPYqG
+         OdJcb1PFYzQL3FeS7233g65OcnwVwxIeQOyxtSWBRUlvLMxa20JLsBbIlpsGmdTkCjEY
+         jAdgqWoDOj/Rhf+XzcEeJMLMX7ttpQnkv3Zbz10PB+g1dmwXsCzjZbXMqvt+t6TbwQG+
+         02oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749026907; x=1749631707;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B22946g//iI1Zeum0E3UnQPVhm0Sl1Gxrt0bukW4dSc=;
-        b=A2jCzLzxJD0NkYmnSHnwbkgx94hE0Poy3Q8AL4rz5RxWdmZcnodkQUfM2KBjXfspeK
-         Qwl3qptods3lj6Rl8apQJ/f/uvY0FksonwaXs0sqSAs540+2xfYZ00VWJV2gVKbsaYj0
-         aK1ZO3AheISf/2+w/vcTaaV+Qda29cuXiR/EapNJkK4++m9exZJ3KDZRWYvYhyTJOOdn
-         PlOKhzLePL/S/rBXRYN7kPn74F211rsgHiJENd8oUxIDlNXEjaP0m2bByRvV2IUfsAkm
-         gfD8vQr9uE4WNvPS0uhZWCQH+WELaPkFs7V4J0BFBtXlRg06Pjb072tcLb2sSQc7/iUw
-         yGqA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8Abd+5P9+iRflUMkfsS+rc+9uE1m74yXSzbZIQYbItma5WgOH/8LfJyHxUgxFbvU0LIHkjWFx+mlaB6c=@vger.kernel.org, AJvYcCWlnsjU8u43nQF2JBtijhzDo1IpwEMxIQPZzGPsgbDS6MgRQIqn7KIEqHD+XxmeiiRimsf+XxO6iDt8APhKraA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPhd4LccHhCDbrXEkXnuphROaKnonilZ2d9Xw0N25LGEz2/WCO
-	mICLd7eFb1pDp/pMYb6QYkHXzjaiwtnA2iOBZMTy0qQm8a0Il5+GtOCIfuB+b1Jo8yBVVWmUde0
-	O924ny3UFMVitkjzWKwAqaYJn1P6w++k=
-X-Gm-Gg: ASbGncuVVVEiqkOm2TIhmm315yZXGDOkA9Pkiif8/MCzM191R6OBVvJrYkyyAX/29uJ
-	MKTvMYa89MkuF8oWd6+6XFgJFXx7EH21adP5GSMHMOuW85k7TI9ifRHKjWldVM5aNRCugIfXK/N
-	eFy3Q/ONmIAiu7cLlIeQ38LO/WdU4g/SoI7ZuDMN6CkQI=
-X-Google-Smtp-Source: AGHT+IGo5kz/xDs6MHPuQ3dDfVTBUxM0wfrY+gZ2cPa0H7JewFX4CC+DfgvHavmOLx1rUE4sayDMUurW6TzmyxGZZ1w=
-X-Received: by 2002:a17:902:f684:b0:234:d778:1411 with SMTP id
- d9443c01a7336-235e11f7977mr10030555ad.11.1749026906596; Wed, 04 Jun 2025
- 01:48:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749027622; x=1749632422;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KjEMH/TqNnUE/z+eJUzsFegKG7rEAJKYvPFdSAPotXY=;
+        b=sjEV3WaM8oH2yx4cv7YHotYHRfYo1fETGOV895Bq4gmb9h+byEnmeI+0eq5YfRv+p3
+         fM5IxGE2YqzKYbUi6mNaibSh2gylXntRO5esOn7aC7CKkJEpkMnukJ+hAoJ5nUHMWIDw
+         wTfPj1rCFc3hjOhDrvXBHQsDfB44RSQf9ayi1Z17dbzkKzngM8TODmPz8NqlZuHZN6ZV
+         P1DCS7msph/ElxLyMycw/N3F7WhvtFA/k4eplryphQm2JbYUl03j8twZgiBYdF8bhr4N
+         nTfXeKkhdavBT5AmLpQL0nBwaf0MIkXH7Gvgr+x7EpsdkKQqXfspHSs6soU56AHctvgP
+         XQJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWDMCNgsjPF+G2PWMyzaNksiYvHyjQEtw4or+fY9DOPUBn2Ye3IfSj0OOnCMnrrfuQ3hjQBBRFJyiNQstwMcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCIDjLZAxqthkGsHA/EZhfk262SrT4o/9NlS0S1tDBwrR72ufH
+	DmVhm4RKQWyzXFgfqiTp30xFH+kPfofWrIuFz2/zjFSujLYyY7wXMppi3DYKzvVQNZra8ILlxHs
+	y0IPNwaIMbNB6lkEXZw==
+X-Google-Smtp-Source: AGHT+IFzBiaDtFCOSU2dybkHtHIaIwGYDPYEPLMon3bbK+M6KlCqiMYESKGwbiLZ8/HKB/xEFOV0lt8yaHNVlzc=
+X-Received: from wmtg4.prod.google.com ([2002:a05:600c:8b54:b0:450:dcc5:70fd])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:348e:b0:44a:b7a3:b95f with SMTP id 5b1f17b1804b1-451f0b249a2mr16127135e9.25.1749027622526;
+ Wed, 04 Jun 2025 02:00:22 -0700 (PDT)
+Date: Wed, 4 Jun 2025 09:00:20 +0000
+In-Reply-To: <20250603195426.2360773-1-ttabi@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250530-b4-rust_miscdevice_registrationdata-v4-0-d313aafd7e59@gmail.com>
- <20250530-b4-rust_miscdevice_registrationdata-v4-2-d313aafd7e59@gmail.com>
- <DAACCYW3QRQE.1O75L2SHJYVPM@kernel.org> <3eef5777-9190-4782-8433-7b6ad4b9acd3@gmail.com>
- <DADAEIT9E1R8.1J69W5DKYAQGY@kernel.org>
-In-Reply-To: <DADAEIT9E1R8.1J69W5DKYAQGY@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 4 Jun 2025 10:48:13 +0200
-X-Gm-Features: AX0GCFsLB4H1RcJdYLIIq7_smD_2AP3DrC79dyRAE4xTA9ppo2fCwk6B7iPTvS0
-Message-ID: <CANiq72=893T0ZHawsym358N5iexbj+5UEL_RqMA_w_dEbJ+Ujw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] rust: miscdevice: add additional data to MiscDeviceRegistration
-To: Benno Lossin <lossin@kernel.org>
-Cc: Christian Schrefl <chrisi.schrefl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	=?UTF-8?Q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250603195426.2360773-1-ttabi@nvidia.com>
+Message-ID: <aEALJCHeJ6GLnaxo@google.com>
+Subject: Re: [PATCH] [v2] rust: introduce sfile macro for succinct code tracing
+From: Alice Ryhl <aliceryhl@google.com>
+To: Timur Tabi <ttabi@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, lossin@kernel.org, Danilo Krummrich <dakr@kernel.org>, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jun 4, 2025 at 1:29=E2=80=AFAM Benno Lossin <lossin@kernel.org> wro=
-te:
->
-> (the `assert_sync` function should maybe be somewhere where everyone can
-> use it)
+On Tue, Jun 03, 2025 at 02:54:26PM -0500, Timur Tabi wrote:
+> Introduce the sfile (short file) macro that returns the stem of
+> the current source file filename.
+> 
+> Rust provides a file!() macro that is similar to C's __FILE__ predefined
+> macro.  Unlike __FILE__, however, file!() returns a full path, which is
+> klunky when used for debug traces such as
+> 
+> 	pr_info!("{}:{}\n", file!(), line!());
+> 
+> sfile!() can be used in situations instead, to provide a more compact
+> print.  For example, if file!() returns "rust/kernel/print.rs", sfile!()
+> returns just "print".
+> 
+> The macro avoids str::rfind() because currently, that function is not
+> const.  The compiler emits a call to memrchr, even when called on string
+> literals.  Instead, the macro implements its own versions of rfind(),
+> allowing the compiler to generate the slice at compile time.
+> 
+> The macro also uses some unsafe functions in order to avoid indexing
+> into a str, which apparently is not completely a const operation.
+> 
+> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
 
-+1, and likely part of the prelude too.
+What is the use-case for this macro?
 
-(We may want to put all these into an `assert.rs` or similar too.)
+>  rust/kernel/print.rs | 63 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 63 insertions(+)
+> 
+> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+> index cf4714242e14..1fd1497af887 100644
+> --- a/rust/kernel/print.rs
+> +++ b/rust/kernel/print.rs
+> @@ -414,3 +414,66 @@ macro_rules! pr_cont (
+>          $crate::print_macro!($crate::print::format_strings::CONT, true, $($arg)*)
+>      )
+>  );
+> +
+> +/// Returns just the base filename of the current file.  This differs from the
+> +/// built-in file!() macro, which returns the full path of the current file.
+> +/// Using the base filename gives you more succinct logging prints.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// pr_err!("{}:{}\n", sfile!(), line!());
+> +/// ```
+> +#[macro_export]
+> +macro_rules! sfile {
+> +    () => {{
+> +        const FILE: &str = file!();
+> +        assert!(FILE.is_ascii()); // .as_bytes() does not support non-ascii filenames
+> +
+> +        // Return the index of the last occurrence of `needle` in `haystack`,
+> +        // or zero if not found.  We can't use rfind() because it's not const (yet).
+> +        // Avoiding rfind() allows this macro to be evaluated at compile time.
+> +        const fn find_last_or_zero(haystack: &str, needle: char) -> usize {
+> +            let bytes = haystack.as_bytes();
+> +            let mut i = haystack.len();
+> +            while i > 0 {
+> +                i -= 1;
+> +                if bytes[i] == needle as u8 {
+> +                    return i;
+> +                }
+> +            }
+> +            0
+> +        }
+> +
+> +        // Return the index of the last occurrence of `needle` in `haystack`,
+> +        // or the length of the string if not found.
+> +        const fn find_last_or_len(haystack: &str, needle: char) -> usize {
+> +            let len = haystack.len();
+> +            let bytes = haystack.as_bytes();
+> +            let mut i = len;
+> +            while i > 0 {
+> +                i -= 1;
+> +                if bytes[i] == needle as u8 {
+> +                    return i;
+> +                }
+> +            }
+> +            len
+> +        }
+> +        let start = find_last_or_zero(FILE, '/') + 1;
 
-Cheers,
-Miguel
+Is plus one really correct when this returns zero?
+
+> +        let end = find_last_or_len(FILE, '.');
+
+I'm thinking that you should only have one method here returning Option,
+and that the two calls should match on the Option.
+
+let start = match find_last(FILE, '/') {
+    Some(slash) => slash + 1,
+    None => 0,
+};
+let end = match find_last(FILE, '.') {
+    Some(dot) => dot,
+    None => FILE.len(),
+};
+
+> +
+> +        // We use these unsafe functions because apparently indexing into
+> +        // a string using normal Rust methods is not completely const operation.
+> +
+> +        let base_ptr: *const u8 = FILE.as_ptr();
+> +        // SAFETY: We know that `start` is <= the length of FILE, because FILE
+> +        // never ends in a slash.
+> +        let ptr: *const u8 = unsafe { base_ptr.add(start) };
+> +        // SAFETY: We also know that `end` < the length of FILE.
+> +        // If `end` < `start`, this will generate a compiler error.
+> +        let slice = unsafe { core::slice::from_raw_parts(ptr, end - start) };
+> +        // SAFETY: We know that the slice is valid UTF-8, because we checked
+> +        // that FILE is ASCII (via is_ascii() above).
+> +        unsafe { core::str::from_utf8_unchecked(slice) }
+
+Instead of this, I'm thinking you could have a const str slicing method.
+You can use is_char_boundary() asserts to get rid of the ASCII check.
+
+Alice
