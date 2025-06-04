@@ -1,109 +1,71 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F45D28C030;
-	Wed,  4 Jun 2025 10:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6C91D7E4A;
+	Wed,  4 Jun 2025 10:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749032021; cv=none; b=ri6DIZkZGIXPH50MpmoPC/KN9NeBv9YZqUliHiQddyGR7rUIq0xxQaQ6ehhahbjBLK1usnpAGyDTH9pW/J908sodD/kUwKfCYLiA/pxa0Qo/juSTQalZh0L9T0+OMz4jysQluviICJavY0UtFkHaKPE6dM6W7eqwGhy12ZNIHOc=
+	t=1749032593; cv=none; b=Xvoveh4QYtzLAt1dUWfzfvHzg3DLhg2DIuqFFVL7wxcTjc2chl4JcfUthlrH7F1yNgKYK3Dshbe1gN+uGfRXQNZbMQkjkeWln52LeTRslULa1lJXMegMPrQv+w3UJkALd2LCjr3hU4XhKyyRyyRuz9MPX2tx7eeQU6YJpCqD9ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749032021; c=relaxed/simple;
-	bh=lMABpan9iE9b5FiftfCZKRFqnb71Y82a2DsbpqpyudU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LBvbpZgab3mnc1H32+tcuSuB9ihFzaVUyU99JKUDlJkAfmSjAFw4pvW8ntXdecYQ5ZOJ/yHtbpb0v49P6LS/H3aGNrj8WNSB6xRLXI+M+3gUZtBgoEh/PfNg1KBksEiwQD/mZF9D8DI6zdmpT9g0boxBGOCrpyj84dry/aEzWpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iXwFfY6B; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749032593; c=relaxed/simple;
+	bh=IsZt5w6RNpSLAPXJ4G5EuYXatQFaY7xih6awDDId0ns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ua63+6+/S+O2SSqNUcVdc2hQ1L0HJ6GWs5QSES5VUwT1SJ86knimnBTtFt+QTUcW+eX6FT1xm9WX6ECtV1NuK39bbE12U+9cjPIIt0YvcwQ3tziIoCGFv2nPklqrk65gp3lKONtXLUhATY91fgkaOK0x0v6ysVe5kYCE+VdNpo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZs6XMtk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iXwFfY6B"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-312a806f002so465153a91.3;
-        Wed, 04 Jun 2025 03:13:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749032019; x=1749636819; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lMABpan9iE9b5FiftfCZKRFqnb71Y82a2DsbpqpyudU=;
-        b=iXwFfY6BPN1C0v4YHx4cZNM9dxMgUI2516TUs7SUsEfSISpKeb9LgrL9I5jYoIneMM
-         TnHMaTRusqb0BR6bvtqZWnIqMuqQBX7+1EYJ1ffLdJp2zjGdosDqikPa2C0bRRcJXSUg
-         zULAaFZvUeHLXVMi77zDAwNDLsPVveuJuIJTcGA4yXWp3z+Cz90sgGxFHpI5kJB3ul/h
-         7qFOPBu6laNyUXE1btEnCe/VMtUZg+ZxhWteJSgCX0HxJStSOCaww5cCliSylKY5CACT
-         EejO1M3Yh0F9NFff75SpSSnJLilZOrpr/1uOsBaoUOmuf17iSUtdfB67ZG4MzXDsWW4S
-         zZFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749032019; x=1749636819;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lMABpan9iE9b5FiftfCZKRFqnb71Y82a2DsbpqpyudU=;
-        b=dtLkQufKE0+i7T5CSffdtCKKfX6UNOR8BFvS28FiF11kp0jZOoow67ZXncsfzTYHzA
-         n/ENeedlDFPsrBWXuiTp7jZB2ilGedWJt+atAOr/tmXlKg9sNqmE8MYYdDVoODEQtmWg
-         4z2VTZsdvOwgUpUJ4P1mepjMcMON1Vb4ZwcpcU1lY3G3No53nQ5KesNheROf7HBcNL0H
-         0HqtmSdsFLL1AHn5JHuenjQ3ps685e82ytxYgB+exRbaC9LOB5HocJRqDb8apiLr5nSe
-         lpE8lktYD5wNrfIW4dVKvFr2IsnCvSUyxeeF1JgB5vLKp8bCehkgJmBq6+Os3Y65FyUV
-         x0+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXVwZoNQK/Q97uijViO9HWSwe4WDWZDP1yrEQw/wF+rjFZindoBkSXsXB3s1PxB7Wx1KWBvAhvK4b4v6ws=@vger.kernel.org, AJvYcCXv49qcdo5vQxDfuJQElZrQJa6w/pE8kerPyStoCv9Dqu0AkiQZ++3HmCkrYPBNc1dWqDB59VlqD9S5OHjPDEc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkPOfXS493ijyn81c6U1i8exz7J/Y4CF0jR8WhTrIYCj/r8I3Z
-	X0YrGD4GRkMGjD1VfiuplEFf9o6f1bD2ntb5TyqjQ2QTuzFZ1NZJQuykueiUGnDXHU0jxR0vxwg
-	9WmDXhVFKXlkqaVm47bqMxE6T3YiuUnA=
-X-Gm-Gg: ASbGncvsVeFglyzbiRim5o6Imbtwsk/xZaS6ofd33KAWQKpjSjl/JKNG4Ixm9YS875i
-	+WnBxQ/OsKIok96I4BIETQwoJO83I9xGPSBoUeVnZkdAVq3vFNvP0vNFLg5ako0iUMCM/3FBVCq
-	ydGlAtEjgDSLDfJVo+u/Dfv3wIxYxnbyxoQZMCf3P4AcE=
-X-Google-Smtp-Source: AGHT+IFcTXBF+gTGjJ32WA7AwDMf5FOdkFiFympx6S8u4ynrijxsyC/aBymU2IsbEIbDK9n3nW8sDRHu3GPTwfVni/g=
-X-Received: by 2002:a17:90b:2ec5:b0:311:9c9a:58db with SMTP id
- 98e67ed59e1d1-3130ccaf030mr1374802a91.1.1749032019354; Wed, 04 Jun 2025
- 03:13:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZs6XMtk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180C4C4CEF0;
+	Wed,  4 Jun 2025 10:23:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749032592;
+	bh=IsZt5w6RNpSLAPXJ4G5EuYXatQFaY7xih6awDDId0ns=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LZs6XMtkTpWknLrbNMU2qVWSTB1LLd2aXLOfCV25H+8gfPhhVMl9OxupmmvlwR4ZW
+	 saXtJxodZpnDExgUfzyHpo70AnH9xZ0V4XLkcR5ahWWBP+3hEc6ew5Pdok1Tyfu8L2
+	 nrKV8/NhBwDCnZ+FoLUQSlZK/uhkzCufVFO4SjlBe0pcdbfX0A2UQX9oHpkNHypb9V
+	 UetIRQqyXSd0rtz79LUkxXFM5gCcobA+45lxNOAjRl57+XRZ7BYyZcppcbIDv8dWui
+	 D3jkB/cNP8Cqc8Yc4SjB4n9Vzc2Jz3Iwwt+6qHWJ3Ml3znlDwS5Uo55ldzP7NGp9Lr
+	 qGoEQCEilSS6Q==
+Date: Wed, 4 Jun 2025 12:23:05 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v4 17/20] gpu: nova-core: compute layout of the FRTS
+ region
+Message-ID: <aEAeibsMAdlmIfch@cassiopeiae>
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-17-05dfd4f39479@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250530-b4-rust_miscdevice_registrationdata-v4-0-d313aafd7e59@gmail.com>
- <20250530-b4-rust_miscdevice_registrationdata-v4-2-d313aafd7e59@gmail.com>
- <DAACCYW3QRQE.1O75L2SHJYVPM@kernel.org> <3eef5777-9190-4782-8433-7b6ad4b9acd3@gmail.com>
- <DADAEIT9E1R8.1J69W5DKYAQGY@kernel.org> <CANiq72=893T0ZHawsym358N5iexbj+5UEL_RqMA_w_dEbJ+Ujw@mail.gmail.com>
- <de844563-651a-4a6e-bf61-7a7b41d1cb43@gmail.com>
-In-Reply-To: <de844563-651a-4a6e-bf61-7a7b41d1cb43@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 4 Jun 2025 12:13:27 +0200
-X-Gm-Features: AX0GCFvf3tldhMcAt47pMJDVKok6Hzu38Q8OPRGaR3AE0QqUvMjIGgC2Mn7Wukk
-Message-ID: <CANiq72mWN+o-wF0GNi34PttNqaNWoYuiY9H+KJs5Q_Gi=hesyg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] rust: miscdevice: add additional data to MiscDeviceRegistration
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	=?UTF-8?Q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250521-nova-frts-v4-17-05dfd4f39479@nvidia.com>
 
-On Wed, Jun 4, 2025 at 11:54=E2=80=AFAM Christian Schrefl
-<chrisi.schrefl@gmail.com> wrote:
->
-> I think that we can add it to `build_assert.rs`, since this would
-> be a build time construct.
+On Wed, May 21, 2025 at 03:45:12PM +0900, Alexandre Courbot wrote:
+> +impl Chipset {
+> +    /// Returns the HAL corresponding to this chipset.
+> +    pub(super) fn get_fb_fal(self) -> &'static dyn FbHal {
 
-Hmm... it definitely makes sense, but I am not sure we want to mix
-them -- the `build_assert!` is fairly special / different from the
-others, since it is not really at compile-time like the others (which
-is why it is a last-resort option), and it would be nice to have its
-implementation self-contained in a different mod/file too.
+Please don't use the 'get' prefix here.
 
-Perhaps `compile_asserts.rs` or similar if we want to split them into
-compiletime/buildtime/runtime?
-
-> Should I do this in a separate series?
-
-Yeah, no worries, it can be done later.
-
-Thanks!
-
-Cheers,
-Miguel
+Also, I feel like it's a bit random to have this on Chipset. I think the
+standalone function to create a HAL was fine. (Same for falcon/hal.rs, where I
+missed this.)
