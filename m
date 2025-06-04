@@ -1,87 +1,142 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8564E28E610;
-	Wed,  4 Jun 2025 11:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A0E4C92;
+	Wed,  4 Jun 2025 12:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749034812; cv=none; b=g7pfxw4lwi0QhWW1mv66Yq96HEvBw4Frr9xUF0FNjDYb65S3MeKqGV3VOHlH0Lt6pT1yyPDzQW0lMI5ILpvzms8Ud885qi5t9Z0EY5BRHQY/NrIoB2qXBB4Ms9b1KIbSSe9p0ETw9FXJME3kjQfYGbVqH7hD4+0EIJEGF+es55Q=
+	t=1749040329; cv=none; b=gEjHodq6p+JRrL5aNBPm1Uw5VlmUMgBvSObBGQa2WSU5hghPX/A2S9dnBCdMDsGTNq0pYch56zLVxki086KF5oK1ziqTpQ4ZPofjTCgWWSlam6e67KEwlAgkTqv8YRPpo/yfyGrcWwAOwFjZT+e1Y6VcaskLYVB6PyWqYXDT6jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749034812; c=relaxed/simple;
-	bh=Schw2RsYLQNpi+xEERdg/mqlrK2JYXvaTEsebGb49Qo=;
-	h=From:Content-Type:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=anSyolsIVfXow+E49868S2ZT/chg0/Wb5UFjh2F55blx37dePxBKL5m/VAEwgD9BVmEIhOOx6V1+ZjmdLneCLOQeVUjQn9C0lDdpKLzyqS55qYjJD7u2PcEajH5mSXaxyNX4UGhCc1srGGRXzJTwGnMPNu93zfaA5+vV2ZtNHhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BZ2MRuyK; arc=none smtp.client-ip=209.85.219.51
+	s=arc-20240116; t=1749040329; c=relaxed/simple;
+	bh=PSAtI+pLo/Q2Xlq1c9GfZ74wRv6150SmJdXYrUeDBp4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=brdQEUVdysTx2N2HQVNtmLlNe84ih+yGcW6ncMtmqZUkC8N3sOqgbMSzWs+ZqO/VTs60xTZEpCxS5mBbZUSkkXRdHjHKlcFnmn7GWTdCF6ydsT+fWGNfHJ8jsmc7wDRPXShQki7RRpz+qszgWuloEdh1EdtOEH46EhY+CD2HR1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OkAvOxw3; arc=none smtp.client-ip=209.85.128.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BZ2MRuyK"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6fadd3ad18eso41105676d6.2;
-        Wed, 04 Jun 2025 04:00:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OkAvOxw3"
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-442f9043f56so41733455e9.0;
+        Wed, 04 Jun 2025 05:32:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749034809; x=1749639609; darn=vger.kernel.org;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :content-transfer-encoding:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Schw2RsYLQNpi+xEERdg/mqlrK2JYXvaTEsebGb49Qo=;
-        b=BZ2MRuyKYoHD8j+DnuImZItXZQ3K8DKvbsQt62JPHfNF02NjNOAX6BzTTtydTgdT5G
-         nS4tC94c58sPEaEW+OJoFZoYs0+s+C8tNLYqpl9AYG8s5aIBN7bnftYjJ8Fqp0BoOIx4
-         slFXTw8ChywA/pz0jrbWNGvHwg1rct8tpDJso1DHkble7l8mJ314UTrrWdozLonk/kaa
-         2+0P4xubQmEHpE3/piEhfaI4nQblCLuKGIo99nqVyMG3pBACELG0HAxGlqG/HuygqrI5
-         qXyLBXu5HPs7i/cxyxjhlY4vHGvyT9sMtrza5uqM+BwkJAWQ1wNUFPc2dmKcr0yswYja
-         9ARw==
+        d=gmail.com; s=20230601; t=1749040326; x=1749645126; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=A8kZ/aDiYOkf9h5oCh4UvH8Rt42D9SQNqq0ELvzG+vI=;
+        b=OkAvOxw31Fm1Tpgm8b8hawEVTETYJtWTo6qeVa9VVujvjX4d2gpCtihp4sOL6b2fFU
+         ixtv2lXPXikHc1Ys4REP0VIXWNFz8E8MdLD7g/9Kb52pkMU0KbhNJy3coF4YhQvUqEC7
+         liEfq4DEVhWckKueBfjULTpLkXexeiKzk9cnTjeIJSzK2B1hae8X7d7L75ZTJ+17sUZL
+         UI1Fi8h4XpKWAXqArCgU1E3P1vuHGyZJpHxTkM5UXRfS8400+4gLy14YRtnZFKo2hrI2
+         ei7f7ajgoRysb2A3bq8MpTTEGzK8WdFhMOhXqFwvwMwE+5O3AZlHLVpxQDQlkN6v6+BK
+         pBDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749034809; x=1749639609;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :content-transfer-encoding:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Schw2RsYLQNpi+xEERdg/mqlrK2JYXvaTEsebGb49Qo=;
-        b=rIu1At9fVPdw47ykXecSZ9kMxUqiDRGF8q65qsD73qjTlg50WhTGAv/S6yiVQ4gKMQ
-         eCeSXdOJ2nTplaNualTyru7lnneuo6BmFa8iYuC5kVY42EfjDzlSSAjLdvCaEsotsW+B
-         rxQ0II/FLRizladPsEnQTUoE220zeMD8SWVHV27liKukWi2VJNL/5Iu+446yb8aeOtyp
-         gpufPQDDygGONo72nkWSFyqowYs3npPcZ0S/X3TiGsNiMYwIPVfPZGP2N1khNtAQmxPf
-         x6KfaKMJMUIH9NDgUiNDF+Zc+DeTD2NLjjiGE0KstxovGechzqQC2pXpYFlAjmR+/jLf
-         9U5g==
-X-Forwarded-Encrypted: i=1; AJvYcCU5tMW+MZAi0UF/KeERsOUWicdZz9rFMc8lx0tmG8OJrbQVI/p5+f+Yo5z2p39d6BTaFwF8YuEfXkESqqM=@vger.kernel.org, AJvYcCWmwiDXNUw9pNgtKCQa1Q0ibvU5SkKzX6eEEYqkZ60Qk58Ti62G/9kf2jqS0JzVwoOWN7mKtWRJjfmxlBzz6qs=@vger.kernel.org, AJvYcCWubQjVnxcBCjJzYS8MF6y0+zlQWEoc3j0q5bReFlazmoEJEY8tNZ1yX77EDmfsbsTcrxd3mA4rHQjYyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYGa6v5z2CBTquYErqSoKtzpqp2mk0MYIu1yotm5YKla3enP+6
-	oldmlMTxDvy6WOXDdrrewyk7xs/I88/R5a7dlLfb+JdtQyJlFwEeD1MP
-X-Gm-Gg: ASbGncvjRbMaDbJAL9I3clIO4kLqC2a36kjitQDG0WbqFPYOlZEguWxEV6hPhESqVvJ
-	bB5Qmzosr7tD0YZIyeQABqP1YEmPFPYDdITxDRx0MmV5Q/y0XIcchkLdJ6bZJkrRdhe4G5aoFe1
-	tdAUDhMkrjj5g0ghIudDaFGEx9egovnqw+0cKrYMoLU3kP/8QJVzMYfXQCu43jFfgsdejvWGfjF
-	cb+W4p5v47lACb8Y9+O+OVcRORjLWhKnL46D9Mw73iplV4f8Dk6Ncm1RidgT6xkfmCS1f7zmXbh
-	iQLcKQT2m4EZWXnFflkvfM+w16zCeuR1IgxKkSv06Ld1bMusXBnWT4KXqM8i3BbwR9yzE1WhnJL
-	8Ky94QUuzy5tUqi2vZDXoUkVx2TpVvONTk8xktbbrWw==
-X-Google-Smtp-Source: AGHT+IEqSF8mjarZ/kRpcwxU9I19cNQnsgHots4Mmgea27/PfoN1l+IsQDKOfP8c8Ri0J7J4W7BS0g==
-X-Received: by 2002:ad4:5ce2:0:b0:6fa:bb44:fddf with SMTP id 6a1803df08f44-6faf6e87e98mr35729696d6.16.1749034808945;
-        Wed, 04 Jun 2025 04:00:08 -0700 (PDT)
-Received: from smtpclient.apple (104-12-136-65.lightspeed.irvnca.sbcglobal.net. [104.12.136.65])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fafb6899dasm3364456d6.21.2025.06.04.04.00.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jun 2025 04:00:08 -0700 (PDT)
-From: Rudraksha Gupta <guptarud@gmail.com>
-X-Google-Original-From: Rudraksha Gupta <GuptaRud@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+        d=1e100.net; s=20230601; t=1749040326; x=1749645126;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A8kZ/aDiYOkf9h5oCh4UvH8Rt42D9SQNqq0ELvzG+vI=;
+        b=E4zBgFDL6t2pFwFVup0eyVqhi7Z8r9Px9ApRlPoYz4Fx/PBWkjFc5rP9wyQMGoe2AU
+         zVLUeST4vncP5118CDmZdAMi17KPkdsadQ53LLdZWr8B9kfElRK/LjR1HuUZba3boWsV
+         cl24JQcd7of8dtRB86e0wMf1MwVe3ATqEnmTBu73UF0NR1K6MN3gagZ4B2c1XelbLhhA
+         aij17VKHwputM6ZvcSYpjqjhrNpvAy/4MCGvIn87fp1wQp5YDRnHn5YMT4AakKxJxkmJ
+         0lRcwdKo+pbAY3vZyJCfQxqC7v/HoKmkpsij8OyyZ7sR06xdx7y2ZQIHPEFGMtjGJAXn
+         g5bw==
+X-Forwarded-Encrypted: i=1; AJvYcCV0cZqmUGfep74hg0DC0rjfcahDMQizctHuhOXvUSYpfm1xmd5CCoC9W4iPHwNo7eTovb5WOSqQEQI3gNWasdg=@vger.kernel.org, AJvYcCVG1ittkFYFvdRSvHd4p2z/oIACkbML6NYn6BPUkzHAUuChWH21a/Cb3B+wqHF4hfUkl5ZM3kBI/muJi4B2@vger.kernel.org, AJvYcCVVyouKx/j6FiM0RylnpsT/81gJ/syHOPirJA7PtH0Y5f8VqeZdmjEuGUJM1hjEhjfYIdT9iuX2oOXSjA==@vger.kernel.org, AJvYcCVbqix9064ZNmnTbxkDDGTX3L6S7IxUtL6Lf4Rc/G6cj/y9+y70/slvYYAXvkVhEnGOti96rbRKcWPw@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrC9Obk49RfpHfWCkij1VjQzFn0IxMBOMjbGqLlz8JH1MNQsJq
+	GnhjDXmVmxFu6dMx6DMGauL3p7hZ2VAI0g+oK6g8s7ZUVghEneAUGTeu
+X-Gm-Gg: ASbGncvA+EGlyGgyfvh4nW18V9cxdEDuBnDQs23HbVkIKu05xzah9hS9jWA7W/CqZKK
+	IckNY29B38FkDjs3JhbnDoinv+Ue/y2O+v+BSwv+755u5tlEYtYFsww+ob+wb1VhS8L7JjpFr6M
+	L59f8Gcy2kChR+zz34qelvtO9uGqRaAdklCFjOHjGXUFLCtymMRwlRANJBF1IDUP3QuKqnA4z6r
+	b1E8SHmx7WF7BchASoR4TsUUVUhrB7WLPq9G513SbH+yJE8GPaVEkECO68+X8zdbpKpwN9HYG3h
+	SBIw0+gRNrlaHPBDn6pZSnFfQ05Z1ZtusIqffgDy+2YMgEdMeCjI24HpnpYXQGYpfRxeWL5zoXJ
+	2QTTFO/BXUYIXqd3WdyKQ0xqucHq2
+X-Google-Smtp-Source: AGHT+IGdLaFVhNtwtOVwGjagea6FvBR1QsRFelh3QuUgD4knq/vMES6atm6mlno8cGKeqS0tJEseEQ==
+X-Received: by 2002:a05:600c:350b:b0:43d:17f1:2640 with SMTP id 5b1f17b1804b1-451f0b209d8mr23102975e9.26.1749040326138;
+        Wed, 04 Jun 2025 05:32:06 -0700 (PDT)
+Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d8006c21sm194467085e9.33.2025.06.04.05.32.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Jun 2025 05:32:05 -0700 (PDT)
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tamir Duberstein <tamird@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Xiangfei Ding <dingxiangfei2009@gmail.com>,
+	Igor Korotin <igor.korotin.linux@gmail.com>
+Subject: [PATCH v1 0/5] rust: Add ACPI match table support for Rust drivers
+Date: Wed,  4 Jun 2025 13:29:39 +0100
+Message-ID: <20250604122945.3445776-1-igor.korotin.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: REGRESSION: armv7 build mismatched types
-Date: Wed, 4 Jun 2025 03:59:56 -0700
-Message-Id: <C830877D-1EC4-4F94-947B-8B5CD7E09546@gmail.com>
-References: <CANiq72kghKg7FU=W_yO_q9VuCf=smiyzvrcU8oOFG2FFFsOQiA@mail.gmail.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Thorsten Leemhuis <linux@leemhuis.info>, linux-kernel@vger.kernel.org,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-In-Reply-To: <CANiq72kghKg7FU=W_yO_q9VuCf=smiyzvrcU8oOFG2FFFsOQiA@mail.gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: iPhone Mail (20H360)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Perfect! Works for me now, thanks :)
+This patch series introduces support for ACPI match tables in Rust 
+drivers.
 
-Thanks,
-Rudraksha
+Currently, Rust abstractions support only Open Firmware (OF) device 
+matching. This series extends the driver model to support ACPI-based 
+matching, enabling Rust drivers to bind to ACPI-described devices.
+
+Changes include:
+  - A new `acpi::DeviceId` abstraction for working with 
+   `struct acpi_device_id`.
+  - A helper function `is_of_node()` for determining fwnode types.
+  - Updates to the core `Adapter` trait and `platform::Driver` to support
+    optional ACPI ID tables.
+  - A sample implementation in the Rust platform driver, demonstrating 
+    multi-bus matching.
+
+This is especially useful for writing drivers that work across platforms 
+using both OF and ACPI.
+
+Tested using QEMU with a custom SSDT that creates an ACPI device matching
+the sample Rust platform driver.
+
+Igor Korotin (5):
+  rust: acpi: add `acpi::DeviceId` abstraction
+  rust: helpers: Add `is_of_node` helper function
+  rust: driver: Add ACPI id table support to Adapter trait
+  rust: platform: Add ACPI match table support to `Driver` trait
+  samples: rust: add ACPI match table example to platform driver
+
+ MAINTAINERS                          |  2 +
+ rust/bindings/bindings_helper.h      |  1 +
+ rust/helpers/helpers.c               |  1 +
+ rust/helpers/of.c                    |  6 +++
+ rust/kernel/acpi.rs                  | 62 ++++++++++++++++++++++++++++
+ rust/kernel/driver.rs                | 58 ++++++++++++++++++++++++--
+ rust/kernel/lib.rs                   |  1 +
+ rust/kernel/platform.rs              | 17 +++++++-
+ samples/rust/rust_driver_platform.rs | 41 +++++++++++++++++-
+ 9 files changed, 183 insertions(+), 6 deletions(-)
+ create mode 100644 rust/helpers/of.c
+ create mode 100644 rust/kernel/acpi.rs
+
+-- 
+2.43.0
+
