@@ -1,107 +1,63 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32581C27
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Jun 2025 04:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958E442065;
+	Thu,  5 Jun 2025 04:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749097138; cv=none; b=q2/6M9/a6tGwn1drCLFGQhjLZptI3BGfXQ8TjlnkwTPsa/VnVmCGY9B2GNFTpzlkB+ZI1Cmyj2+6utoSzpIq8c174egN3TWlXCjdaKOwE3tH/NqeHzZ4in8hX2sjzcPs5M0cb1FskPllkcxVkkUKXInbzQ16w6tTRBMKcG9U9vA=
+	t=1749097440; cv=none; b=HR9pBc1AR67xoQMIzQCRkkguzSO70fA45ueW+2vzmFZ83//zMhBvHNoc0gagYgM5Kg8yDQB0JRRlpE8dm40TTe6VdEcVJsAut7sjnF9nDX8oGE4vic+dBeSVpvN78ybDGmKJhZEiP7TMtN4eAW9fraaYCgElbNOBmA6a0sQ27EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749097138; c=relaxed/simple;
-	bh=bx2Kj9sSofrF7t7EIXeCJJOaXbVRllv9Bpb6i+w+zdY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qPK2kMVZxU8d1keTCtI5cVECS6IAyGYJTtHO4c5F6xrnFNLwwQ4oq+351teM1qD0FIetIb7CBvY8SPTgCDRtG6tlNEKaNUMxQtxMcOnnCuVRV+vJSW1vzfeBO/oZurMoHbCI4fBFpE9e+JKTpLytun0/KQBNnd2Y/pt95dT+svA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TfGWkikd; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1749097440; c=relaxed/simple;
+	bh=cl/9dwi0NgI67Cm44M2Id5f8c++OtBegUIKnmKrji74=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Ffl0q6A5+nxIYDMl1KgzqGaZX4btrF67R3UzQ52guvAwi8z9kbdgPny7pmcoRpXqxmTXbLLjQcAncXcJQjEuV8muraeaKeXBkQz/+o0ctFZPG0ciWYTB5/3kvQpBIOUdCd4oAG//VWUXuQoWFf7SICvRtiOU35g3sTs9Mgty9oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSk7bTlf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TfGWkikd"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6069d764980so3308722a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jun 2025 21:18:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1749097134; x=1749701934; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=F9yo9o38fJyHqRjj2p+pl4O+P1rBusXLank2hy0x8o4=;
-        b=TfGWkikdx3IvQsRx8zsyNbm0iaWb+bwSyZUhj7qIYm7SoDn6Me7Sd6KDwPpQffKRMB
-         iRjXdTghP9Kb6AsHQ4Kz9Q81+5pzXIvTcRpPovMUW76R3Q32yKtTC8V+eMfD9Eq/CBEW
-         xEroqTBqIg5bBRcZo1+bjgyc5LUztfHQzHAWg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749097134; x=1749701934;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F9yo9o38fJyHqRjj2p+pl4O+P1rBusXLank2hy0x8o4=;
-        b=nxgL8LvWtNAhZJL0g6eNlX3qf24c+avcAf26xRC0fOtRwAjy0Gue6mwzm5A/amwjz8
-         ANfoAW4c/bMBAN1A6I8yFkNH5yYABz+RwkZFj+3qv7nJMmzEPVrVPfPKu2K7oZZ7zpAF
-         u62EyND+I36J9jDCAuYaOdq8mF9xeduKKvAa3OJfdzTWY17jpLaYR/63WhiAGRHPqPny
-         RCN7POdSlXH2bTekoyLHOWsC1w9fAxeUnMC4JhKGw5sAw/ifAQHDo7GqEJS3WbLS6q97
-         n43HnZeGiBgvVLM9eu1ipQOXpSCd6VMLrjyQBjir7j/8XuG2RsxByZU9aRR92ZpEWaFM
-         sLYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7YOSM4v4Ltd/Ubf+NzQrhjFlnin8o1vSeKOlSzBwRBBZvWyM+dJb5t9lyTVUlM44IIISuIm+03u40Smot1A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYfgN2Royp6WcBt6ySrRQhXbH0aRxud8h0KyrJyo6Ewa5XF1Kl
-	Rs/kYh3Dsjos5OfJE5ekt0oXWrKnWTkMnGvFCbwPh09gfLlFtgcPdHw531qcqzOGhJ4UBziwGOj
-	T/MJJwA0=
-X-Gm-Gg: ASbGncvjBxlQ1lpJdc27XTX7Vx/gdfCuq62EaybQsfXm3fcPnQMnukAyDz4E9dSEz0t
-	pmPZjmgHySlltH08qFI00d1W6iVHQzb/RTkHZeiry/0znMQT5CR9446pmEN8xlspcC7FyJGTfVv
-	ItCC1JFroBS+KrJwqzKKgIYpRfl97I3x9WfO4vOPmiJHQU42j94plvJ5KJafmFwU6mzlV+sETEe
-	eyn57bbbg8D1n0QoqFbIyGb3XOwD9AWgoBet36TZHSmkyLwjj23bBo2l+jKWNyER+sT1cZrxm7O
-	ywn91Y9f3asDoJIb8HUAr/j0eHFnGgdld/7z6DFuObgmpizBGJx65buUC0YqpqORpVqL40bGY+7
-	DVEdYiHccCKqoHQzkeFtaBNPAwQ==
-X-Google-Smtp-Source: AGHT+IEt24v/1gDbf0J4d8IU/ZUROW8DamJrkj9xDD5BfdhJuffrTj37ciUX/QY0AQAWPD/wko4M1w==
-X-Received: by 2002:a05:6402:5193:b0:607:bf5:233a with SMTP id 4fb4d7f45d1cf-60722636c9emr1698304a12.10.1749097133903;
-        Wed, 04 Jun 2025 21:18:53 -0700 (PDT)
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6070d3961aasm1100190a12.36.2025.06.04.21.18.53
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Jun 2025 21:18:53 -0700 (PDT)
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6020ff8d35dso1281148a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jun 2025 21:18:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUGlPzSPxGcN+t6qi/KDZlxdvESZhr4rB17bY5TN2bglOETJxnOO+SKQQrn6Rs0ZiOz8qYdqtVzbIXQQzJALg==@vger.kernel.org
-X-Received: by 2002:a05:6402:50cf:b0:601:470b:6d47 with SMTP id
- 4fb4d7f45d1cf-60722629489mr1800092a12.1.1749097132977; Wed, 04 Jun 2025
- 21:18:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSk7bTlf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704BDC4CEE7;
+	Thu,  5 Jun 2025 04:24:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749097440;
+	bh=cl/9dwi0NgI67Cm44M2Id5f8c++OtBegUIKnmKrji74=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=qSk7bTlfW/T/rKpWbhFHi655q/IS5OcwbFcA8qAbAe7WffeDUYoTlM565ctLty85e
+	 PJrJqlgNSNGzRhm/IeR3KJTrZm1FG2Hvw7YGDP8WzwRZl8tXo0JJ8MI5JlgeOghPTr
+	 nJAn1spaH1cS7xrb01v0nDccs+UPFVJpg1UdZiAgKvmJSU1zZAuWYojjRbbI2bquNf
+	 CgdCQkPqLJ9LnOo9n9b/OmDEYsV2Iu2jBn6TrmgVFvnnKUtEIlJBKpSSJh7gYR++CS
+	 FC23DWTTakSgWQMbrQ6bGp7SJrx9BJQcnsGDdbPS+yZJxFwYGNJpJak8Jg7SnZQhRW
+	 Sah1B5DJl/ncw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE160380CED9;
+	Thu,  5 Jun 2025 04:24:33 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust for 6.16
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20250605025400.244965-1-ojeda@kernel.org>
+References: <20250605025400.244965-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20250605025400.244965-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git rust-6.16-test-merge
+X-PR-Tracked-Commit-Id: 7a17bbc1d952057898cb0739e60665908fbb8c72
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: ec7714e4947909190ffb3041a03311a975350fe0
+Message-Id: <174909747230.2573604.4030348226584390118.pr-tracker-bot@kernel.org>
+Date: Thu, 05 Jun 2025 04:24:32 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250605025400.244965-1-ojeda@kernel.org>
-In-Reply-To: <20250605025400.244965-1-ojeda@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 4 Jun 2025 21:18:36 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wik7gvxt-CEak_4HsGziRwo6-7q9LGeW37Pj9182dJ=ow@mail.gmail.com>
-X-Gm-Features: AX0GCFtAvs9wozQ-rwI1G083uyw9H3jq8x4n8f2NRql_pfJMWPUvLEz1uBEkqq0
-Message-ID: <CAHk-=wik7gvxt-CEak_4HsGziRwo6-7q9LGeW37Pj9182dJ=ow@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust for 6.16
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 4 Jun 2025 at 19:54, Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> There are a few conflicts, including semantic ones, but they are all
-> easy to apply. The resolutions in the latest linux-next are fine; I also
-> did a test merge -- please check either to catch the semantic ones
+The pull request you sent on Thu,  5 Jun 2025 04:54:00 +0200:
 
-Hmm. I don't understand why the suggested merge adds those
+> https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git rust-6.16-test-merge
 
-        let self_ptr: *mut Opaque<bindings::drm_gem_object> = self_ptr.cast();
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/ec7714e4947909190ffb3041a03311a975350fe0
 
-        let ptr: *mut Opaque<bindings::drm_gem_object> = obj.cast();
+Thank you!
 
-cases to rust/kernel/drm/gem/mod.rs, and it built cleanly for me
-without those changes, but that may be because my build doesn't
-trigger this.
-
-But in the name of safety, and because I didn't understand that
-change, I modified my merge to do what you did.
-
-                 Linus
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
