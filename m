@@ -1,490 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2053.outbound.protection.outlook.com [40.107.93.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904B142A97;
-	Thu,  5 Jun 2025 10:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749119958; cv=none; b=N7cLqOmZLmt25+7+fgzGJq1LosVimvCFPwMOsrPVIoY4fXaFbbcYIXR3rTaf1rEakfunpT98wBy/9+YGJQJdMxqmoQSFt1xudnX+mAIeGHiS1srxT9asgdG8OVG3w+qeCJc4cl7XktZ7HKnGxGOru9dRXAL1vOxzfMYIhV6BixA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749119958; c=relaxed/simple;
-	bh=7OhA0PovjsmvN9Ea8pjicG1JaTKuYtzo56D5nmggPkU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VoMLEzVjC8otzBElIPIwt+tb3rgDFkX1IrrtAmlm6sqh1aSZEWVhVL9fhocgKl8ogTPgjC6Ln81fpMU86Nvyj+TYljDCIuqD2GNERLUZNE5TL87ABBjPqnOOhlgBVEY+2hdYtXifND+WpD2KS1u597suL333UiDd8DpZR2fgO5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ua9Z62JT; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB1F20ADE6;
+	Thu,  5 Jun 2025 13:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749129289; cv=fail; b=IDiFP3eUI/RjLAnpjp9YVW/mM4lKC6/9f5CxwIj+mnfs351RqakZtrssLsAM7oRelAeye1gHnuKnmlGiYvOXaNvytDx7jz2Ox6SYyvaFWa3n7A3Gyj/6shKi8pFLte/FaQhClpBQBABu6kYYADdY6uEwEsmbO4odb+V4nlEWxAs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749129289; c=relaxed/simple;
+	bh=LPvBZw69cRTXJXOKFVuu2PdDt/zeFN0Kv6RgUHzrkIQ=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=mq1/KDtDMuIlssS2q0oYYN8mheqsRduoxKXlhZqGRcVJguEy/GAontnH9An+C2GyA9Ia87ZXLxdmjjjYfFyGJ/9VlDH93q0TbIJD1HjqRl7hSjvgplOrmFvnF6C3sT9/BP56TPRkUCVbgw9a+GhL4xJvGDnlAA6Cbd62Fzhqyvk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=phH/wl0R; arc=fail smtp.client-ip=40.107.93.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ua9Z62JT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4C6C4CEE7;
-	Thu,  5 Jun 2025 10:39:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749119957;
-	bh=7OhA0PovjsmvN9Ea8pjicG1JaTKuYtzo56D5nmggPkU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ua9Z62JTbGBwyF7nkPI9iUc5Lu6bHbSiOu05EB1wU24/vXt6tLEJpTaTLZlTBhDBy
-	 nZ4zpxoPDwdIe/BcX9n1otNSJe3fi+t1ChyT89C1kmf5c5n2yliUMsuO9oXgV/QZ2E
-	 3HIDyWcQwc1jLgyUje1d037D5dqyi5HQEJ3tfGeNFkAKAkfP6Ol5+QqRR+M1U6vK4W
-	 N3siwD8vc/H/pXwVMmEd++AttR+sBGmg8g85Kcdz9EY2/g4hkjARLn96FKs87nsTfv
-	 ffklBq1zBtNhqOlipgFbTzxq9u10nYsQHUwO77ELFSD/tXijCR6VaR+g7uHanXmHc4
-	 BVLq2DrXd6T+w==
-Date: Thu, 5 Jun 2025 12:39:14 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>, 
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH RFC 2/6] pwm: Add Rust driver for T-HEAD TH1520 SoC
-Message-ID: <q6dkihyfosi3k4mtrvyff54nbsjpovmujdbmoqhapo7daznpja@of2p5gtmcq2m>
-References: <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
- <CGME20250524211521eucas1p1929a51901c91d1a37e9f4c2da86ff7b0@eucas1p1.samsung.com>
- <20250524-rust-next-pwm-working-fan-for-sending-v1-2-bdd2d5094ff7@samsung.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="phH/wl0R"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hN07mCYcLUz0ui+DEaxbuuFimcI7qgIgyNrnxnp8czVEAzCrWdjL+JFUrf3tBEJapWtlAxr73lsJ6UytBkxUQ8vbIAMRDfEFUV4RZ/OwhCvCO0BR24tt6A0hCKXgp7wtJSP/yHMgPOh1sLWqbWNw1wlUvoeplNngRq0jCBGxzWW59EHqSG0b+rIX2mUBr5nHkAHVY6WjPMSd4/pdp8NSvmdWMzmVvQgKddDuPaa7YtvJPXNOHz1jYmiLfnaeuA1te1VuGrcmGHJfZLDf27Tzw4EFuLkOYLaymruzxd0X/9cDuUv22x/qU8MJevyhyaJzT50+jKlLDnFPCJOJWwXsfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a+4ar+O0J1EbyJpjO8W4mSY7xvUa6/oDmMQYuemv/Z4=;
+ b=RVBsSyzGy+hs6zvo0Ga7ZO+KOLDF1JKaJ2AKn1126l4ve+VHCRxkzwJR7YcJcK07/rObNyWQzWex6yzC9Q9tNv6plkHh1niexOPqYqXanr7GtP4JmBr6C3mnmOkVtBMGieDFimfPFdZJbkVCxqv5LJuqJnm0LVikGEc9O0+SoyqaPUN4IIE9aZ7YlG5w1d1vlcUsDSiJIAPKlvwKGzOk4pvcsmOx3c3P1cIoG3gXEqHTornA8Wl8JrD65xs0fpnNB+FvilPiZPAy1Zjw0WqYR8AiXjUHte8LSchEVhhfPNSi3js+D3H91NcBiJcBmJILq8ER7U0uMTLOFKGj4I+Jag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a+4ar+O0J1EbyJpjO8W4mSY7xvUa6/oDmMQYuemv/Z4=;
+ b=phH/wl0RuRbK3f9JhqQB6V73jSEjLQOjg/xNUPhXkzi6DE31c76Nxg/sXp6rN4MRnRSnUUogt+98Gt55dPYT7aZva1BUvj+anWFpI9qUBTcjiZRNnNfSaRKOX2q2L5I7BPBUHShdmcY+IU4IE00I8WkyrFoLt3QPzghWohWMM8KDVSCPj4ZlmAbhWkTPBg4AL9foeG7tJw74ICrap4t6qbd/MpHFlnDhzjTGblCkIXU0UEbTaLo45Yeo8uKUiyjbvFeM9Zv2URlnmx+KzV+OB58LWsBP+iH3BoLpx0pnh+sNUM6gkqPBI6+O48SgKeSI9Wj1p+bTpoNt8AFS79//FQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by CYXPR12MB9385.namprd12.prod.outlook.com (2603:10b6:930:e2::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.34; Thu, 5 Jun
+ 2025 13:14:44 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8792.034; Thu, 5 Jun 2025
+ 13:14:43 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Jun 2025 22:14:39 +0900
+Message-Id: <DAEMKY67UZ5J.2OK3SDS80CYYS@nvidia.com>
+Cc: "Lyude Paul" <lyude@redhat.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v4 17/20] gpu: nova-core: compute layout of the FRTS
+ region
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-17-05dfd4f39479@nvidia.com>
+ <632966ba8231e8f3c20350b217b225301280cdd3.camel@redhat.com>
+ <DADGJZGG5PXE.170H96D26HIN6@nvidia.com> <aEAew5aBnfSqXFdT@cassiopeiae>
+In-Reply-To: <aEAew5aBnfSqXFdT@cassiopeiae>
+X-ClientProxiedBy: TYCP286CA0115.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29c::19) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ilvp5okyjxiiq75c"
-Content-Disposition: inline
-In-Reply-To: <20250524-rust-next-pwm-working-fan-for-sending-v1-2-bdd2d5094ff7@samsung.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CYXPR12MB9385:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7174a0f0-b31a-45a3-8c39-08dda432ef99
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NVBRcXNMUFhKN2RlZ2owMnFJT1B4cWhMZThKei9OYVpIQlYxNjRPbkZjbFM0?=
+ =?utf-8?B?Z3htZHFHUnVUOVhOSGEyVWtuOVBrb2NCSldxVW9rTTNObHB1S0tUSDFVSnRP?=
+ =?utf-8?B?dFp5MHlGZElHYVNjbkRtOEVJbFhUNHAzL29QOTAveFdGTVF4RXVWbU4vWHVQ?=
+ =?utf-8?B?UVRJN0RPYlljUDgxcjRGcm1ZZURmM1JGUmpkNW1FR01uRng5czZrMzMxSm00?=
+ =?utf-8?B?eW1lL1R3SC9oMThyenhPV2hxSHRmcDhjeUNrMVBaVFk0eVZmZ1IxTlhwaDJ2?=
+ =?utf-8?B?NGdGUjRwbXBSelJHZkdiUGg5NVMxeHIzV2pzUFU1OWtIKzNTclJlcE5jekhi?=
+ =?utf-8?B?Uko3VlI1T3Z2cjZLTWt5Nlo0SmhvZURjWGF3UjR0Rnl0VzNXQkc5MnlpMWox?=
+ =?utf-8?B?RzdPOUtpbFlFRVpJaS9HZkQvMTRXSHVSUTlESFBEbVo2NHVteGE3WFpEN25J?=
+ =?utf-8?B?dGgwNnBDNnNPK1IrdXh6Y01icXlEY2xJYVZML1UvZXdvSE9oRFVzWWxMa1lo?=
+ =?utf-8?B?ejhzNGxKV29yYS9XTjRBSm80aTl2dnJDNnJYR0JQZjNUcmU5YU1oaW5ZVGRV?=
+ =?utf-8?B?aStmZWp4RitZeUtkVWpXUkhZdktqZlR6WnA1WVU0Z3RoalBZeVF5bzA3VmN0?=
+ =?utf-8?B?bWh1aWFlNkVUbCtpZkNDSWJzb0trWHZWUG1qMXVSNVlQclRhaGhVSzRQbkIz?=
+ =?utf-8?B?TWpLQkdPRXV1ckc4alVxcDFKMzJWS2MvRS9WdU9pc3N0NGp4WDhmWVFBdzVo?=
+ =?utf-8?B?TzNna0NlM0JpbENoVzJSUHdoMzBlb3NXdGUwZGhNMGZiZ3ZUZ2M1MHJtQ2ov?=
+ =?utf-8?B?TkR1aEIzSytDSkJZcXgvUFNrYmRYZFZ4RUc0T09IUUx0d2dpZnN0WEdjZU91?=
+ =?utf-8?B?aC9pUjE1aVVtZmQ3WXhxVkRUZjFES0REeFFORFYxL1NSRFlnMHZzZ1FrSVhv?=
+ =?utf-8?B?bU81bHczT252Rk9HSUZpem43UjdCUEdFbkxOK04xRUNIZW1kaXhKUlUwSnA1?=
+ =?utf-8?B?T3QrYktDL3pJeThHbklxQUg4ZjVnY2E2MzJ6RWhOT2xEc2haRUxoTGtHOXE3?=
+ =?utf-8?B?bnR1TFVPUlFsTkc3aVBJR0lOVWhJaHoySERDNEo0YythYmdRK0dHSExGUlB6?=
+ =?utf-8?B?eGtLWldQMUt5dVR5Yll4QjhldkhCNDNJYlloOUJvOHo4MlZIY1JOQmRydXJh?=
+ =?utf-8?B?TEJLeit2L1ExVGNxN0RYWk1xRVBoanVnb1ZKQi90Z3RrRVRacUp1SHM3TFE2?=
+ =?utf-8?B?RzZTQjdQSEhjWGlKOEVqRmFEa1lXYkRTWmxKNTExTnk2M0dld0JDbVNDUVJZ?=
+ =?utf-8?B?bnhzWFRFTDQyd3N0Qy85cEhvaWRNNnVwejBJUmsrSW5FbDd2TCtRNmEyWW04?=
+ =?utf-8?B?Y3VEZzB4MGlEU3VsQlNveEtmZXJHajZubUQwNllVSC9CZ3pUK0lhRlRJOVZS?=
+ =?utf-8?B?ZVdaN0JDR1RCMWZaNHBLNkJsVFIzQnVTNVBhQWYxcEpCaGZwdlRsZGQ4TzZi?=
+ =?utf-8?B?RE1uMmxSUGJMQXhiYnp0N0hDUS95N0dyV1RyTW5oTW12cGp6QVREOGR1TFhU?=
+ =?utf-8?B?M2N4cUFvUmZIeXlKR01mOElmbzZmR1c0MS9hR2IzYU8vTlVOMzBHUWtWR1k2?=
+ =?utf-8?B?UmNkOXZwV3krWGFMd1pxcG92eEFrQWxJRGlhTmJtVEpYcTZUWVJxaER6Q3lD?=
+ =?utf-8?B?WjZEdjczWGdoQzVDOGFqdjREeUJ4SjJENjVFdGZ5RjF4NnNtazh2VXVRa3RK?=
+ =?utf-8?B?cmg2MWNYQklHbmlUaFM4UTgwM1hWVXJtZzZCWERJZCtkK3dyOWxySE9iaVE0?=
+ =?utf-8?B?WDR5VzBxaUlnMFpxbFZITHpGTU9YWVhmV0NnVGpSVFJUUUgxOEJLSVEyNUt3?=
+ =?utf-8?B?MGk0aHQ0eGtPektVRWRMbHFMSEZyWkF0QTN3dytnTFh3UytpUEFKc3ZKclI0?=
+ =?utf-8?Q?+MLh7G+9SZk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SC9ldlR5ZlFZam9NcTBGbG9FK2o2S05VTzNmSGlCUzFPb1VIMUtiRjhNRHpo?=
+ =?utf-8?B?Z0JnTmxsRlFLZDNGV3NacDg2SnhFSVBpWFpUSVcrdGV5WTZDTkJERzlrdndI?=
+ =?utf-8?B?Z1FyeEZsdXd0eDdFZ1VLdm16UTV6VGJXdFZaNC9Zd2dLR3FqL1FuTnlmb3or?=
+ =?utf-8?B?MnhhR2Z0NmhzbHBrS1hLNmxlM2JvaWsyYXFveDBUZmZoTkhUYTlVdHF0U1Ar?=
+ =?utf-8?B?VnNmSE92VStqTEJ5aUJ0Q050cUFCeHNGNjJSYWNFTHVuN2o4TVErRDlUM2xN?=
+ =?utf-8?B?MVRRRkZ0bW1UeUdpbnoxMEV0UFFmeGx0YUtBaTh4WEhyUEJENUxDQmt4VDRs?=
+ =?utf-8?B?VGtEVkVnWjdWOFJYZ1RHSnhLQ2dOMmg4VDZZcUt4UVozWEdaRWVoam53RlJj?=
+ =?utf-8?B?Sys1K1V3NVJCem1vazU0SEJzNEMxazFkRElUcmUrR2dqak1UckZWejVPRUlM?=
+ =?utf-8?B?aC9LNDJTUXhsZlFZRjdlRGc2STNQcHczZkkvSmZhblNLZFRZMm4wUitvYk5i?=
+ =?utf-8?B?eEpZVERBNmJybzJGQ0hNd2lSdmFyUTI2N25zbGdtQ0czbFdxc3U0VTFVNTI0?=
+ =?utf-8?B?Y1daVS84VHI3MHZpQzFDMlNtVHFBd0g0MHJsenNEMW8yTkpLd1FoeEFMWEg0?=
+ =?utf-8?B?NS9yNVVYK2dZRnYzbG1IczVramFlLzErV2d1ZWtYVWE3Y2FWRENMTVo0VWpG?=
+ =?utf-8?B?ZUFjMGY4MkprTHVWcnNQQjc2MWFMMUM3M25JZkZXRCthcXQwZ1JKTVIwMCtr?=
+ =?utf-8?B?OTVaMkVRR1Y5MjlBL1lGM3ZyVEJncTBjc1V3V3FsTFphR3dqc1orZ0g3OGpC?=
+ =?utf-8?B?OUxYWjBHKzE5bU1lODNpMm9OQWNOOWk5bDhmNDlXV0VlSi9uM1UwWkppWUxp?=
+ =?utf-8?B?MXdLT3JCTmtEZklBOUJHQVZyd0IwR05nRkJ6cUNUdzBrN3laeSsrWmNtRHBq?=
+ =?utf-8?B?Q1FGNGlhcVY3eFo0TWd3WVdxdFJLYTNhc0VIVXdab0JpZ2VDTUNWaSs1ZCty?=
+ =?utf-8?B?MzFPZE5ROStGb2xwU3FudnpNUzkvb3Q2MlN5MXBUQkFyVEFva1ZFVW4xRmlE?=
+ =?utf-8?B?YkVxazVKeTd2QXNtRnhPV2pyVDVtSm9RV3FHSE1leC92dk10WXQ0WDBuaGxU?=
+ =?utf-8?B?UEVSRWg5ODVwLzBOWktIeTNNdG41d3RLVSs5R2Nabk5GVTJkWE1uV2d6K0dD?=
+ =?utf-8?B?bVRjNDBKSzJnM1FqNnBFMUllaE44QjhYVXk1blo4TWhwc3lET3ljT2gyWG9h?=
+ =?utf-8?B?TllWUzN2d3ViZFFZTXFrNW9QTmNSYzl4MFhpN1ZGYVhoS0hQTTFrVVVvK09V?=
+ =?utf-8?B?YTdoSmlza2ZFMnNIdjY3ZWtmM0ZYQTN3MGdiVmE0cnZ4WVkraUpVQUd5ZTB2?=
+ =?utf-8?B?d0pTK0R0RG5vY2pZZSt0OGhKR1RqWHRBdWxGbzZvRit4NlQyQmsrWDMrcmk1?=
+ =?utf-8?B?aHBUejBXMDJ0bG1NRDFHaDBVcEJHcTV5UytJRjFGNFp4RVF3cGFFUXByQkpx?=
+ =?utf-8?B?c3k3N1UxSzV3WDZjNUg0bDBqSDBhYURuWStlYUg1KzBweFRSYlV6bUlXdUlJ?=
+ =?utf-8?B?di81N2dqZWw5V2xGaFlEc2k1R2hZSmV1RGg2K2ZFdmZlUGl1Mzhkc1JnNldt?=
+ =?utf-8?B?MUEwTE9VQi9zSytMMlRtZUJBZjQza29pVUU5ZjM3b00yZmNtZmZZekdvSmg0?=
+ =?utf-8?B?cjRwV043Vi9WdDQ0dGdId1hWQ1V0NVB1UWpXTStsT1h0V0ltQ3A4dXNDR0E1?=
+ =?utf-8?B?b29Hd3Q3aVlUTjVMdmxncEorQUpid016d1Q4VjR5M0hVKzBNcTJFell2K0lv?=
+ =?utf-8?B?QVppZU5JUndrc3p5SDk5WSsxaitwSVJUTTFsZ0EwaTJXNjNlWTN0MFdBY0ZT?=
+ =?utf-8?B?aDRKRkF4bldmUFljMVpxVVVBeFFTeVo2ZnNmQWo0bEtQN2VSdHdPa3IvSVZt?=
+ =?utf-8?B?MmlmOVkzQXM5WXNnNk12WjRLZm82b25PcVZCT2d4V3hFVkxMUkRTNVUvNjMw?=
+ =?utf-8?B?V1V2c2tvY1loTE1mUXR3Y1lhOGV2TEd3Q3JiZk54Wm43cVp4di90ak9iaERE?=
+ =?utf-8?B?ZXVmbzNWUXROVkJHMGl6WHRFQ0IrUlB4a2NRN2VGOGp6dkVzYTQrdTJGNkJy?=
+ =?utf-8?B?VlllbUE2YWY5RjRLa0NvWHphdXkzMTNMS1RsNngxb296UFQ4bjllRkc3NndT?=
+ =?utf-8?Q?zKOeaSErR5HakZbs9WogZGKkcF7fsqkzyenJEBle8z+d?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7174a0f0-b31a-45a3-8c39-08dda432ef99
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2025 13:14:43.3687
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yRTid4Uc8mEs75du/DSMYBXkKsS83LshEMP7XxEHTMXgJQyQvMoWQP3Dg1lTxboyRpP+GlYX4kreWmJa2bz57A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9385
 
+On Wed Jun 4, 2025 at 7:24 PM JST, Danilo Krummrich wrote:
+> On Wed, Jun 04, 2025 at 01:18:37PM +0900, Alexandre Courbot wrote:
+>> On Wed Jun 4, 2025 at 6:14 AM JST, Lyude Paul wrote:
+>> > On Wed, 2025-05-21 at 15:45 +0900, Alexandre Courbot wrote:
+>> >> +                const NV_PRAMIN_SIZE: u64 =3D 0x100000;
+>> >
+>> > Don't leave those size constants out, they're getting lonely :C
+>>=20
+>> Not quite sure where I should put these; they are not used (for now)
+>> anywhere else, so the relevant scope is not obvious to me. Any
+>> suggestion?
+>
+> I assume Lyude means that you should use SZ_1M here. :)
 
---ilvp5okyjxiiq75c
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH RFC 2/6] pwm: Add Rust driver for T-HEAD TH1520 SoC
-MIME-Version: 1.0
+Ahhhhh *thunderclap of Enlightenment*
 
-Hello,
-
-I don't speak Rust, so please double-check all my feedback if it really
-applies.
-
-On Sat, May 24, 2025 at 11:14:56PM +0200, Michal Wilczynski wrote:
-> Introduce a PWM driver for the T-HEAD TH1520 SoC written in Rust. It
-> utilizes the Rust PWM abstractions added in the previous commit.
->=20
-> The driver implements the standard PwmOps for the PWM framework,
-> supporting configuration of period, duty cycle, and polarity for the
-> TH1520's PWM channels. It uses devm managed resources for the PWM chip
-> itself and Rust DevRes for I/O memory. Clock management is handled using
-> Rust's RAII pattern.
->=20
-> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> ---
->  MAINTAINERS               |   1 +
->  drivers/pwm/Kconfig       |   6 +
->  drivers/pwm/Makefile      |   1 +
->  drivers/pwm/pwm_th1520.rs | 272 ++++++++++++++++++++++++++++++++++++++++=
-++++++
->  4 files changed, 280 insertions(+)
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2b080e8f3d873b1e401b3a2fe1207c224c4591fc..0cfac73aea65076c5ccb50a25=
-ea686fb86b472b8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -20986,6 +20986,7 @@ F:	drivers/mailbox/mailbox-th1520.c
->  F:	drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
->  F:	drivers/pinctrl/pinctrl-th1520.c
->  F:	drivers/pmdomain/thead/
-> +F:	drivers/pwm/pwm_th1520.rs
->  F:	include/dt-bindings/clock/thead,th1520-clk-ap.h
->  F:	include/dt-bindings/power/thead,th1520-power.h
->  F:	include/linux/firmware/thead/thead,th1520-aon.h
-> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-> index b5bd5c13b3a5e5a575a0fbfb2e285f5665b7a671..796fcd8343b7c8e30f62edc2e=
-0fecf0e9b1ae20e 100644
-> --- a/drivers/pwm/Kconfig
-> +++ b/drivers/pwm/Kconfig
-> @@ -684,6 +684,12 @@ config PWM_TEGRA
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called pwm-tegra.
-> =20
-> +config PWM_TH1520_RUST
-> +	tristate "TH1520 PWM support (Rust)"
-> +	depends on RUST_PWM_ABSTRACTIONS
-> +	help
-> +	  Generic PWM framework driver for TH1520 SoC.
-> +
->  config PWM_TIECAP
->  	tristate "ECAP PWM support"
->  	depends on ARCH_OMAP2PLUS || ARCH_DAVINCI_DA8XX || ARCH_KEYSTONE || ARC=
-H_K3 || COMPILE_TEST
-> diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
-> index 539e0def3f82fcb866ab83a0346a15f7efdd7127..6890f860ada6f1a6ed43dd3a3=
-a9584cd2fa877f3 100644
-> --- a/drivers/pwm/Makefile
-> +++ b/drivers/pwm/Makefile
-> @@ -70,3 +70,4 @@ obj-$(CONFIG_PWM_TWL_LED)	+=3D pwm-twl-led.o
->  obj-$(CONFIG_PWM_VISCONTI)	+=3D pwm-visconti.o
->  obj-$(CONFIG_PWM_VT8500)	+=3D pwm-vt8500.o
->  obj-$(CONFIG_PWM_XILINX)	+=3D pwm-xilinx.o
-> +obj-$(CONFIG_PWM_TH1520_RUST)	+=3D pwm_th1520.o
-> diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..4665e293e8d0bdc1a62a4e295=
-cdaf4d47b3dd134
-> --- /dev/null
-> +++ b/drivers/pwm/pwm_th1520.rs
-> @@ -0,0 +1,272 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (c) 2025 Samsung Electronics Co., Ltd.
-> +// Author: Michal Wilczynski <m.wilczynski@samsung.com>
-> +
-> +//! Rust T-HEAD TH1520 PWM driver
-> +use kernel::{c_str, clk::Clk, device, io::mem::IoMem, of, platform, prel=
-ude::*, pwm, time};
-> +
-> +const MAX_PWM_NUM: u32 =3D 6;
-> +
-> +const fn th1520_pwm_chn_base(n: u32) -> u32 {
-> +    n * 0x20
-> +}
-> +const fn th1520_pwm_ctrl(n: u32) -> u32 {
-> +    th1520_pwm_chn_base(n) + 0x00
-> +}
-> +const fn th1520_pwm_per(n: u32) -> u32 {
-> +    th1520_pwm_chn_base(n) + 0x08
-> +}
-> +const fn th1520_pwm_fp(n: u32) -> u32 {
-> +    th1520_pwm_chn_base(n) + 0x0c
-> +}
-> +
-> +const PWM_START: u32 =3D 1 << 0;
-> +const PWM_CFG_UPDATE: u32 =3D 1 << 2;
-> +const PWM_CONTINUOUS_MODE: u32 =3D 1 << 5;
-> +const PWM_FPOUT: u32 =3D 1 << 8;
-> +const PWM_INFACTOUT: u32 =3D 1 << 9;
-> +
-> +struct Th1520PwmChipData {
-> +    clk: Clk,
-> +    iomem: kernel::devres::Devres<IoMem<0>>,
-> +}
-> +
-> +impl Th1520PwmChipData {
-> +    fn _config(
-> +        &self,
-> +        hwpwm: u32,
-> +        duty_ns: u64,
-> +        period_ns: u64,
-> +        target_polarity: pwm::Polarity,
-
-Why "target_polarity"? duty_ns and period_ns also don't contain
-"target_"?
-
-> +    ) -> Result<u32> {
-> +        let regs =3D self.iomem.try_access().ok_or_else(|| {
-> +            pr_err!("PWM-{}: Failed to access I/O memory in _config\n", =
-hwpwm);
-> +            EBUSY
-> +        })?;
-> +
-> +        // Calculate cycle values
-> +        let rate_hz_u64 =3D self.clk.rate().as_hz() as u64;
-> +
-> +        if duty_ns > period_ns {
-> +            pr_err!(
-> +                "PWM-{}: Duty {}ns > period {}ns\n",
-> +                hwpwm,
-> +                duty_ns,
-> +                period_ns
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +        if period_ns =3D=3D 0 {
-> +            pr_err!("PWM-{}: Period is zero\n", hwpwm);
-> +            return Err(EINVAL);
-> +        }
-
-You don't need to check for period_ns =3D=3D 0 explicitly. This case then
-hits period_cycle =3D=3D 0 below.
-
-> +
-> +        let mut period_cycle =3D mul_div_u64(period_ns, rate_hz_u64, tim=
-e::NSEC_PER_SEC as u64);
-
-if period_ns is big and rate_hz_u64 > NSEC_PER_SEC this might overflow.
-
-Typically refuse to probe if rate_hz_u64 > NSEC_PER_SEC and call
-clk_rate_exclusive_get().
-
-> +        if period_cycle > u32::MAX as u64 {
-> +            period_cycle =3D u32::MAX as u64;
-> +        }
-> +        if period_cycle =3D=3D 0 {
-> +            pr_err!(
-> +                "PWM-{}: Calculated period_cycle is zero, not allowed by=
- HW\n",
-> +                hwpwm
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let mut duty_cycle =3D mul_div_u64(duty_ns, rate_hz_u64, time::N=
-SEC_PER_SEC as u64);
-> +        if duty_cycle > u32::MAX as u64 {
-> +            duty_cycle =3D u32::MAX as u64;
-> +        }
-> +
-> +        let mut base_ctrl_val =3D PWM_INFACTOUT | PWM_CONTINUOUS_MODE;
-> +        if target_polarity =3D=3D pwm::Polarity::Normal {
-> +            // FPOUT=3D1 for Normal
-> +            base_ctrl_val |=3D PWM_FPOUT;
-> +        } else {
-> +            // Inversed, FPOUT=3D0
-> +            base_ctrl_val &=3D !PWM_FPOUT;
-> +        }
-> +        regs.try_write32(base_ctrl_val, th1520_pwm_ctrl(hwpwm) as usize)=
-?;
-> +        pr_debug!(
-> +            "PWM-{}: _config: Initial CTRL write (polarity, mode): 0x{:x=
-}\n",
-> +            hwpwm,
-> +            base_ctrl_val
-> +        );
-> +
-> +        // Write period and duty registers
-> +        regs.try_write32(period_cycle as u32, th1520_pwm_per(hwpwm) as u=
-size)?;
-> +        regs.try_write32(duty_cycle as u32, th1520_pwm_fp(hwpwm) as usiz=
-e)?;
-> +        pr_debug!(
-> +            "PWM-{}: _config: Period_cyc=3D{}, Duty_cyc=3D{}\n",
-> +            hwpwm,
-> +            period_cycle,
-> +            duty_cycle
-> +        );
-> +
-> +        // Apply period/duty by toggling CFG_UPDATE from 0 to 1.
-> +        // The `base_ctrl_val` (just written to HW) has CFG_UPDATE=3D0. =
-Now set it.
-> +        let ctrl_val_for_update =3D base_ctrl_val | PWM_CFG_UPDATE;
-> +        regs.try_write32(ctrl_val_for_update, th1520_pwm_ctrl(hwpwm) as =
-usize)?;
-> +        pr_debug!(
-> +            "PWM-{}: _config: CTRL write with CFG_UPDATE: 0x{:x}\n",
-> +            hwpwm,
-> +            ctrl_val_for_update
-> +        );
-> +
-> +        Ok(ctrl_val_for_update)
-> +    }
-> +
-> +    fn _enable(&self, hwpwm: u32, ctrl_val_after_config: u32) -> Result {
-> +        let regs =3D self.iomem.try_access().ok_or_else(|| {
-> +            pr_err!("PWM-{}: Failed to access I/O memory in _enable\n", =
-hwpwm);
-> +            EBUSY
-> +        })?;
-> +
-> +        // ctrl_val_after_config already has mode, polarity, and CFG_UPD=
-ATE correctly set.
-> +        // Now add the START bit. START bit auto-clears.
-> +        let ctrl_to_start =3D ctrl_val_after_config | PWM_START;
-> +        regs.try_write32(ctrl_to_start, th1520_pwm_ctrl(hwpwm) as usize)=
-?;
-> +        pr_debug!(
-> +            "PWM-{}: _enable: CTRL write with START: 0x{:x}\n",
-> +            hwpwm,
-> +            ctrl_to_start
-> +        );
-> +        Ok(())
-> +    }
-> +
-> +    fn _disable(&self, hwpwm: u32) -> Result<()> {
-> +        let regs =3D self.iomem.try_access().ok_or_else(|| {
-> +            pr_err!("PWM-{}: Failed to access I/O memory in _disable\n",=
- hwpwm);
-> +            EINVAL
-> +        })?;
-> +
-> +        let mut ctrl_val =3D regs.try_read32(th1520_pwm_ctrl(hwpwm) as u=
-size)?;
-> +        pr_debug!("PWM-{}: _disable: Read CTRL: 0x{:x}\n", hwpwm, ctrl_v=
-al);
-> +
-> +        // Ensure CFG_UPDATE is 0 before updating duty (Limitation #4)
-> +        if (ctrl_val & PWM_CFG_UPDATE) !=3D 0 {
-> +            ctrl_val &=3D !PWM_CFG_UPDATE;
-> +            regs.try_write32(ctrl_val, th1520_pwm_ctrl(hwpwm) as usize)?;
-> +            pr_debug!(
-> +                "PWM-{}: _disable: Cleared CFG_UPDATE, wrote CTRL: 0x{:x=
-}\n",
-> +                hwpwm,
-> +                ctrl_val
-> +            );
-> +        }
-> +
-> +        // Set duty cycle to 0
-> +        regs.try_write32(0, th1520_pwm_fp(hwpwm) as usize)?;
-> +        pr_debug!("PWM-{}: _disable: Wrote 0 to DUTY (FP) register\n", h=
-wpwm);
-> +
-> +        // Apply the 0% duty by toggling CFG_UPDATE from 0 to 1
-> +        // Use the ctrl_val that has CFG_UPDATE cleared (or was already =
-clear)
-> +        ctrl_val |=3D PWM_CFG_UPDATE;
-> +        regs.try_write32(ctrl_val, th1520_pwm_ctrl(hwpwm) as usize)?;
-> +        pr_debug!(
-> +            "PWM-{}: _disable: Set CFG_UPDATE, wrote CTRL: 0x{:x}\n",
-> +            hwpwm,
-> +            ctrl_val
-> +        );
-> +
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl pwm::PwmOps for Th1520PwmChipData {
-> +    // This driver implements get_state
-
-I don't spot the get_state implementation?!
-
-> +    fn apply(
-> +        pwm_chip_ref: &mut pwm::Chip,
-> +        pwm_dev: &mut pwm::Device,
-> +        target_state: &pwm::State,
-
-In C code I like these variables be called "chip", "pwm" and "state"
-respectively. Is that possible here, too?
-
-> +    ) -> Result {
-> +        let data: &Th1520PwmChipData =3D pwm_chip_ref.get_drvdata().ok_o=
-r(EINVAL)?;
-> +        let hwpwm =3D pwm_dev.hwpwm();
-> +
-> +        if !target_state.enabled() {
-> +            if pwm_dev.state().enabled() {
-> +                data._disable(hwpwm)?;
-> +            }
-> +
-> +            return Ok(());
-> +        }
-> +
-> +        // Configure period, duty, and polarity.
-> +        // This function also latches period/duty with CFG_UPDATE.
-> +        // It returns the control value that was written with CFG_UPDATE=
- set.
-> +        let ctrl_val_after_config =3D data._config(
-> +            hwpwm,
-> +            target_state.duty_cycle(),
-> +            target_state.period(),
-> +            target_state.polarity(),
-> +        )?;
-> +
-> +        // Enable by setting START bit if it wasn't enabled before this =
-apply call
-> +        if !pwm_dev.state().enabled() {
-> +            data._enable(hwpwm, ctrl_val_after_config)?;
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl Drop for Th1520PwmChipData {
-> +    fn drop(&mut self) {
-> +        self.clk.disable_unprepare();
-> +    }
-> +}
-> +
-> +fn mul_div_u64(a: u64, b: u64, c: u64) -> u64 {
-> +    if c =3D=3D 0 {
-> +        return 0;
-> +    }
-> +    a.wrapping_mul(b) / c
-> +}
-
-Is this save if a * b > U64_MAX? I would have expected such a function
-to already exist in generic code.
-
-> +static TH1520_PWM_OPS: pwm::PwmOpsVTable =3D pwm::create_pwm_ops::<Th152=
-0PwmChipData>();
-> +
-> +struct Th1520PwmPlatformDriver;
-> +
-> +kernel::of_device_table!(
-> +    OF_TABLE,
-> +    MODULE_OF_TABLE,
-> +    <Th1520PwmPlatformDriver as platform::Driver>::IdInfo,
-> +    [(of::DeviceId::new(c_str!("thead,th1520-pwm")), ())]
-> +);
-> +
-> +impl platform::Driver for Th1520PwmPlatformDriver {
-> +    type IdInfo =3D ();
-> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D Some(&OF_TA=
-BLE);
-> +
-> +    fn probe(
-> +        pdev: &platform::Device<device::Core>,
-> +        _id_info: Option<&Self::IdInfo>,
-> +    ) -> Result<Pin<KBox<Self>>> {
-> +        let resource =3D pdev.resource(0).ok_or(ENODEV)?;
-> +        let iomem =3D pdev.ioremap_resource(&resource)?;
-> +
-> +        let clk =3D Clk::get(pdev.as_ref(), None)?;
-> +
-> +        clk.prepare_enable()?;
-
-Is there something like devm_clk_get_enabled() such that the drop
-function becomes redundant?
-
-> +        let driver_data =3D KBox::new(Th1520PwmChipData { clk, iomem }, =
-GFP_KERNEL)?;
-> +        let pwm_chip =3D pwm::devm_chip_alloc(pdev.as_ref(), MAX_PWM_NUM=
-, 0)?;
-> +
-> +        let result =3D pwm::devm_chip_add(pdev.as_ref(), pwm_chip, &TH15=
-20_PWM_OPS);
-> +        if result.is_err() {
-> +            pr_err!("Failed to add PWM chip: {:?}\n", result);
-> +            return Err(EIO);
-> +        }
-> +
-> +        pwm_chip.set_drvdata(driver_data);
-> +        pr_info!("T-HEAD TH1520 PWM probed correctly\n");
-
-Please degrade to pr_debug. Each driver emitting a message is an
-annoyance.
-
-> +        Ok(KBox::new(Self, GFP_KERNEL)?.into())
-> +    }
-> +}
-> +
-> +kernel::module_platform_driver! {
-> +    type: Th1520PwmPlatformDriver,
-> +    name: "pwm_th1520",
-> +    author: "Michal Wilczynski",
-> +    description: "T-HEAD TH1520 PWM driver",
-> +    license: "GPL v2",
-> +}
-
-Best regards
-Uwe
-
---ilvp5okyjxiiq75c
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhBc88ACgkQj4D7WH0S
-/k6MCwgAmH6luE1Gvacr9B2cr0B5Oc37cNczAiM0g5LXlECg/MAyxvMyLJZU39Ty
-NfypdYP4HVJ7fbaySzY8yridWfaK08J0Hlfq0oCCwBaSZ0wnV/2i1ZuJbO76PJ8I
-m0JuyT5w6cQIfnUZKAfEjLGGXi/sTQoJVc/5wHbFfVA2vb398y13/cmgiu7DHqOZ
-5Sec8L9rm+v5pLZN5PcdxrETfKGcFVuIWz3Un9g7wYTP/ASrXoJhZ4M1ctliAfB1
-scOblaUEn4o5/SDE9NEmN56BUvUYoBMA8KsYZ1pIyDRMLwQ7CGEsw6LiDyhcAigZ
-remDwm6kqooeF/7QZCPz/Bh+iYSK2g==
-=WleQ
------END PGP SIGNATURE-----
-
---ilvp5okyjxiiq75c--
+Of course. Done. :)
