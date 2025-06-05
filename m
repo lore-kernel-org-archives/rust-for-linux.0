@@ -1,104 +1,107 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F8E3C2F
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Jun 2025 03:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32581C27
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Jun 2025 04:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749093673; cv=none; b=YNubwtiC+oc+spks0o3yoBQgt3hu8lT3Z6Hr7T0CMAAcJtERc/eKBfNKKGEPf/STODDaweyEz+QQ5R390oHQu0aV0y+qeHQDm/o26OLZY5d0cf0xJVeCtqkyhp6Fu1dmBcdHhkKlHL7M9/JZeWUqeiInLZGSdf9txiE0veaPdHE=
+	t=1749097138; cv=none; b=q2/6M9/a6tGwn1drCLFGQhjLZptI3BGfXQ8TjlnkwTPsa/VnVmCGY9B2GNFTpzlkB+ZI1Cmyj2+6utoSzpIq8c174egN3TWlXCjdaKOwE3tH/NqeHzZ4in8hX2sjzcPs5M0cb1FskPllkcxVkkUKXInbzQ16w6tTRBMKcG9U9vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749093673; c=relaxed/simple;
-	bh=9cqkUh/94/jAztrHd3kGTvkbnLs3KCXf0d9g805QAng=;
+	s=arc-20240116; t=1749097138; c=relaxed/simple;
+	bh=bx2Kj9sSofrF7t7EIXeCJJOaXbVRllv9Bpb6i+w+zdY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MxoOw+bK6Q/5aDbbZ6bgHcSw+G07GyCfyOQEAD7i7e823jaSceUUoz95LSe+3Z+Xl6u5pVJdiMbcYI/HzyNVDOkylUeVp2eZm+G2NSdH4b7GjgQI03Qd4+8omirsuDFvw45wMFK0vhRLG6i3+J99ULJHPLQ27qRUU/j+pr56rG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WwI9tWEZ; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=qPK2kMVZxU8d1keTCtI5cVECS6IAyGYJTtHO4c5F6xrnFNLwwQ4oq+351teM1qD0FIetIb7CBvY8SPTgCDRtG6tlNEKaNUMxQtxMcOnnCuVRV+vJSW1vzfeBO/oZurMoHbCI4fBFpE9e+JKTpLytun0/KQBNnd2Y/pt95dT+svA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TfGWkikd; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WwI9tWEZ"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b26e6c551f8so59590a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jun 2025 20:21:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TfGWkikd"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6069d764980so3308722a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jun 2025 21:18:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749093671; x=1749698471; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XKeHDkRHvvG3Nwc+BDg5xLcqtmjNd5Yum870K1Oag7c=;
-        b=WwI9tWEZ6HEyhpvhvfBhr67ZPM1By4xQk9qSOBMNVMR+jy3AZotUy3YI7u9+Y7kS3V
-         SQ8vX3yR0zLoMDqLcGMdSVIl3kH+r/ncYP3h3GI2HVO17ZDj56/B2xD+TpltHP7RvIz6
-         Wb3ABleg84ndxceVgTDZW3hDuj3ROVqMuomFy0SJ8vyGbWgHEqrjEN3OYnMDtt7MDBaz
-         QwD9f/FA6mz4Iaz05eQUQpK09/tG7R6N3CpgX2PHahPiF+vjb+HeUksHJ3ewPallTCkC
-         Bzhpkz0dKHuj/j4w4sEgArS4N4rEBhTQTi+UG5RhX37r+y+n8E536vOs1yHKfyBbW21W
-         doIw==
+        d=linux-foundation.org; s=google; t=1749097134; x=1749701934; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=F9yo9o38fJyHqRjj2p+pl4O+P1rBusXLank2hy0x8o4=;
+        b=TfGWkikdx3IvQsRx8zsyNbm0iaWb+bwSyZUhj7qIYm7SoDn6Me7Sd6KDwPpQffKRMB
+         iRjXdTghP9Kb6AsHQ4Kz9Q81+5pzXIvTcRpPovMUW76R3Q32yKtTC8V+eMfD9Eq/CBEW
+         xEroqTBqIg5bBRcZo1+bjgyc5LUztfHQzHAWg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749093671; x=1749698471;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XKeHDkRHvvG3Nwc+BDg5xLcqtmjNd5Yum870K1Oag7c=;
-        b=HrwQbOWDVEoSnEg4kF3BrwoN4Z1lcP1/ugTXXPpHvMH7LxMYHzENc8lV77AruoNs+h
-         jCuvnrOcCm8/VayT9byKw7wd9hnfzYl7GLqFKz78kcfAMS6KIrTHK5o1tUyap3za2ZDV
-         Vi22T6R+8gduzqU67wSAoTyQi30SA8duHXECpCqnJkKX0px4YYnJauz7wwG2kMWUUbNn
-         4q7OpgzV5PqUKZDLjLzeVXkiupAz+/ojfGcVMAvwTkCReh6/AaNAbYNCYuveLuafczw9
-         TEhW8cfm6TcSdCFKXcQ3PvdUSlsQ6/yQz6fI4k72k7jgbdfomNtcGE00n/EUd3WplLnu
-         Xskg==
-X-Forwarded-Encrypted: i=1; AJvYcCVPh+/cCto06sypxf5kWnQyWrT1zi8Hm4bLzbB3xomNMhSibAgVaEn7Mfh/V48RyavhxNzJEfEJMOT29B5OEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzQzAXl0yeCSuKmEE7rwBN7qa+0s1kCDqMWrs+a7XcRMaV7mmQ
-	ZWMoyreFhDSZv+O5abEkjP7qdVnVe0PgKywDd7hqs4ufuAgDIqSg5PAM13BBpOw1HTEn+j3jinj
-	vNTf7rIhBO4HZ4siwnBOmz5AhKwhs85E=
-X-Gm-Gg: ASbGncufxNQ4P9cMG13+uDrxFC4KRUxln5ZhFsp2036PsSiLSAd3+sLRofJVXr62kwJ
-	cfzAHiZQZf42gwyAMNqtL1SvNl/ij6bWxHkTB843j3mB4rSCEg+u25mACYlIpBYSb+YVgIQGm6y
-	o4ChqhJc1356IPF7IJ6vNQp++ZTT2FCQu+1PMjh2sIYfU=
-X-Google-Smtp-Source: AGHT+IELwU1JkAvl3I2x+7A8CI8gF3DwTj2T8vfXGOYkk1hRCFqDPeTfd43tyHU6IdG1uwepRGbuGe5+eOIIIwjXYKI=
-X-Received: by 2002:a17:90b:52c8:b0:312:639:a06d with SMTP id
- 98e67ed59e1d1-3130cd679d5mr2937579a91.5.1749093670944; Wed, 04 Jun 2025
- 20:21:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749097134; x=1749701934;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F9yo9o38fJyHqRjj2p+pl4O+P1rBusXLank2hy0x8o4=;
+        b=nxgL8LvWtNAhZJL0g6eNlX3qf24c+avcAf26xRC0fOtRwAjy0Gue6mwzm5A/amwjz8
+         ANfoAW4c/bMBAN1A6I8yFkNH5yYABz+RwkZFj+3qv7nJMmzEPVrVPfPKu2K7oZZ7zpAF
+         u62EyND+I36J9jDCAuYaOdq8mF9xeduKKvAa3OJfdzTWY17jpLaYR/63WhiAGRHPqPny
+         RCN7POdSlXH2bTekoyLHOWsC1w9fAxeUnMC4JhKGw5sAw/ifAQHDo7GqEJS3WbLS6q97
+         n43HnZeGiBgvVLM9eu1ipQOXpSCd6VMLrjyQBjir7j/8XuG2RsxByZU9aRR92ZpEWaFM
+         sLYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW7YOSM4v4Ltd/Ubf+NzQrhjFlnin8o1vSeKOlSzBwRBBZvWyM+dJb5t9lyTVUlM44IIISuIm+03u40Smot1A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYfgN2Royp6WcBt6ySrRQhXbH0aRxud8h0KyrJyo6Ewa5XF1Kl
+	Rs/kYh3Dsjos5OfJE5ekt0oXWrKnWTkMnGvFCbwPh09gfLlFtgcPdHw531qcqzOGhJ4UBziwGOj
+	T/MJJwA0=
+X-Gm-Gg: ASbGncvjBxlQ1lpJdc27XTX7Vx/gdfCuq62EaybQsfXm3fcPnQMnukAyDz4E9dSEz0t
+	pmPZjmgHySlltH08qFI00d1W6iVHQzb/RTkHZeiry/0znMQT5CR9446pmEN8xlspcC7FyJGTfVv
+	ItCC1JFroBS+KrJwqzKKgIYpRfl97I3x9WfO4vOPmiJHQU42j94plvJ5KJafmFwU6mzlV+sETEe
+	eyn57bbbg8D1n0QoqFbIyGb3XOwD9AWgoBet36TZHSmkyLwjj23bBo2l+jKWNyER+sT1cZrxm7O
+	ywn91Y9f3asDoJIb8HUAr/j0eHFnGgdld/7z6DFuObgmpizBGJx65buUC0YqpqORpVqL40bGY+7
+	DVEdYiHccCKqoHQzkeFtaBNPAwQ==
+X-Google-Smtp-Source: AGHT+IEt24v/1gDbf0J4d8IU/ZUROW8DamJrkj9xDD5BfdhJuffrTj37ciUX/QY0AQAWPD/wko4M1w==
+X-Received: by 2002:a05:6402:5193:b0:607:bf5:233a with SMTP id 4fb4d7f45d1cf-60722636c9emr1698304a12.10.1749097133903;
+        Wed, 04 Jun 2025 21:18:53 -0700 (PDT)
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6070d3961aasm1100190a12.36.2025.06.04.21.18.53
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Jun 2025 21:18:53 -0700 (PDT)
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6020ff8d35dso1281148a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Jun 2025 21:18:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUGlPzSPxGcN+t6qi/KDZlxdvESZhr4rB17bY5TN2bglOETJxnOO+SKQQrn6Rs0ZiOz8qYdqtVzbIXQQzJALg==@vger.kernel.org
+X-Received: by 2002:a05:6402:50cf:b0:601:470b:6d47 with SMTP id
+ 4fb4d7f45d1cf-60722629489mr1800092a12.1.1749097132977; Wed, 04 Jun 2025
+ 21:18:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250529184547.1447995-1-ttabi@nvidia.com> <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
- <0602b06ba5fbd640b6db50165688c026911ed7b3.camel@nvidia.com>
- <DAD8GTNP7E50.3CEF051DAP051@kernel.org> <5cbe30e8f1219dd67fd4de9a1156adc054db4779.camel@nvidia.com>
- <CANiq72kEA-hzqkrXxSUk4bp63NFG=TxmQU+9+yiJsoyuQr86Qg@mail.gmail.com> <8d78b126676f71a112a538f79b80ce6a6f513ce7.camel@nvidia.com>
-In-Reply-To: <8d78b126676f71a112a538f79b80ce6a6f513ce7.camel@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 5 Jun 2025 05:20:58 +0200
-X-Gm-Features: AX0GCFsEKdI9sGcXqJTOVC13wrnYqiRKVj9SzY85rVE4UBWPA-cr-I6_FiKInoA
-Message-ID: <CANiq72keqFkNQvd7qu2gszeAu+Ms3f9ucPeeFfyTi48qpPoUJw@mail.gmail.com>
-Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: "ojeda@kernel.org" <ojeda@kernel.org>, "dakr@kernel.org" <dakr@kernel.org>, 
-	"lossin@kernel.org" <lossin@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+References: <20250605025400.244965-1-ojeda@kernel.org>
+In-Reply-To: <20250605025400.244965-1-ojeda@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 4 Jun 2025 21:18:36 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wik7gvxt-CEak_4HsGziRwo6-7q9LGeW37Pj9182dJ=ow@mail.gmail.com>
+X-Gm-Features: AX0GCFtAvs9wozQ-rwI1G083uyw9H3jq8x4n8f2NRql_pfJMWPUvLEz1uBEkqq0
+Message-ID: <CAHk-=wik7gvxt-CEak_4HsGziRwo6-7q9LGeW37Pj9182dJ=ow@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust for 6.16
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 5, 2025 at 1:12=E2=80=AFAM Timur Tabi <ttabi@nvidia.com> wrote:
+On Wed, 4 Jun 2025 at 19:54, Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> I've never actually seen a compiler do this, to be honest, but it makes a=
- lot of sense.  If you
+> There are a few conflicts, including semantic ones, but they are all
+> easy to apply. The resolutions in the latest linux-next are fine; I also
+> did a test merge -- please check either to catch the semantic ones
 
-I am not sure what you meant here, but this sort of thing is common
-and expected -- e.g. you can see it here for C on both GCC and Clang:
+Hmm. I don't understand why the suggested merge adds those
 
-    https://godbolt.org/z/3dqYznsbz
+        let self_ptr: *mut Opaque<bindings::drm_gem_object> = self_ptr.cast();
 
-If you mark it `pub` (e.g. non-`static` in C), then the compiler needs
-to "export" it. It may still be inlined, or not.
+        let ptr: *mut Opaque<bindings::drm_gem_object> = obj.cast();
 
-However, in Rust, even if you mark something `pub`, that does not
-necessarily mean it will actually create a symbol. For instance, in
-your Rust example, if you mark your public `rfind_const` as
-`#[inline]`, then you will see it does not get generated anymore and
-your CE outputs match again.
+cases to rust/kernel/drm/gem/mod.rs, and it built cleanly for me
+without those changes, but that may be because my build doesn't
+trigger this.
 
-Moreover, if the function is small enough (and your compiler is recent
-enough), Rust will do it for you.
+But in the name of safety, and because I didn't understand that
+change, I modified my merge to do what you did.
 
-I hope that helps.
-
-Cheers,
-Miguel
+                 Linus
