@@ -1,50 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D8E145355;
-	Thu,  5 Jun 2025 15:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D7C18C031
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Jun 2025 15:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749136123; cv=none; b=MY34ryuONHqmVt90r2Hxw/GR1c19yqsbXs1bb7CJp+jNfcwFDu9ZTiypjxLy/8Mo5cU2bFG2S8ZwNEnUK92dAR39NCPf/RC/h6v8o4Zj63JgTC8akgrWuk9mKYggGQJoURQsyRpm2QEBDPLE5WRBvbY06P0IHJFZ40n8vIqTm54=
+	t=1749136867; cv=none; b=F9vqL8LeTyygOZBe1HsRADn6BGgYerKSSuAO/ey4s1FUhTSMi9t4zv/MA1AJkqoQD3nS7FoAu2/rEIrZvBHfdmd5/3d6a8c6qO9gp3sSTgtRnd8r+UDvIjYg0h+HcMmDgO6CTEZTgkFUxuuZY0Tua1J6Qr0Sn3LdiHS4mH2MmAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749136123; c=relaxed/simple;
-	bh=eZKF+KQlpwHqJNTPOrcnmE84pyon0govQK9/bnf1jLA=;
+	s=arc-20240116; t=1749136867; c=relaxed/simple;
+	bh=p3iIjtUqZSQDmdZMgNu1zZhSYbeOUfnLNeZXJOh8lEg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HujX8FrA27oZgPkOoUBNi9RCJb9q2WYFE+FnEzZiBNed3THwL9RH4gRAskdRiz0GyEBXNabYtJ4dNdAkQheRAfdn+0KA2nnKq3VMmt7Z3dhe76WZvL3xPgdHMahFFfN5Vu91kb0EUvTgM1ZJ6/56pLz/AEqxi4M2IvRP7GjMbeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pMTGSVmn; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VxuMXP3EOB4YSR0jRpO8LbDnxvYeyycieizC0o2KHj3A+IxzzihINUifyX2H4/HS6QvwbqXggTMMz2rPRpAxD8xqAgL7Km5wi1JAW0H7+KlnRAy+mvjcxFNkv8xvg6tAnWAPehrN09A5l2Nojr2dhWfvUnnzanvGfuNXbY0mV3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfPAVUav; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pMTGSVmn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51B5C4CEE7;
-	Thu,  5 Jun 2025 15:08:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749136122;
-	bh=eZKF+KQlpwHqJNTPOrcnmE84pyon0govQK9/bnf1jLA=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfPAVUav"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782C3C4CEE7;
+	Thu,  5 Jun 2025 15:21:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1749136866;
+	bh=p3iIjtUqZSQDmdZMgNu1zZhSYbeOUfnLNeZXJOh8lEg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pMTGSVmnD5T11tXRr2QpazpKp63Fa92vzW3P2GCGr2TrgJnUusGrUnbvhcqH1o8e4
-	 GxZzRnHaex7DTHwGessFNcJtXT+MCWJPqLhPJ+Z0Y1uiPyqOfOQwl8YEnfuDJvunkG
-	 KLJQSRSgqsPK8ujg/oxFAn1Hn6kLt6Xqpbcl6C2jdrrIUJvi4JZj4/3jiGHd6eMdiI
-	 U5KHK6N7hZo7r2mlza3meQcwdM+NB5TDDeC3hVKLOdn2c1E1xQqqSm3vkiJdOyL2D8
-	 F6eE25r7j6hxOpEap3A97O/DZ9oKkZJORv6ABccQLj/M7Qz3zFCKSbESNd7vADV1mI
-	 zlOdUG++DGS4A==
-Date: Thu, 5 Jun 2025 10:08:40 -0500
-From: Rob Herring <robh@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Saravana Kannan <saravanak@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v7 5/9] rust: device: Introduce PropertyGuard
-Message-ID: <20250605150840.GA2539727-robh@kernel.org>
-References: <20250530192856.1177011-1-remo@buenzli.dev>
- <20250530192856.1177011-6-remo@buenzli.dev>
+	b=IfPAVUav/JV8j3srHt9GTUudRwv4MmK7MUDe4yWKHSrGz7oOw2yVvvwmsJsfukVEY
+	 UYDwnxfY91P0/wp+sIJMCehB/0t8+YyfC9BpFSK1E4a7OpgY5WTiS4J6MgjiLEFYz2
+	 yFmKrpdiZLq3rc4iy4QuiZWwlmu73wIIl5v5CzoY=
+Date: Thu, 5 Jun 2025 17:21:04 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: Timur Tabi <ttabi@nvidia.com>
+Cc: "ojeda@kernel.org" <ojeda@kernel.org>,
+	"dakr@kernel.org" <dakr@kernel.org>,
+	"aliceryhl@google.com" <aliceryhl@google.com>,
+	"miguel.ojeda.sandonis@gmail.com" <miguel.ojeda.sandonis@gmail.com>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
+Message-ID: <2025060511-surcharge-overfill-a721@gregkh>
+References: <20250529184547.1447995-1-ttabi@nvidia.com>
+ <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
+ <0602b06ba5fbd640b6db50165688c026911ed7b3.camel@nvidia.com>
+ <CANiq72ncoP6oDbKEes7Lz_K6FAz-MZY1aZNAdsYK8Sz-pwyUDQ@mail.gmail.com>
+ <7f644a70cc0c91bb42badd1ac747518843bb1ef7.camel@nvidia.com>
+ <CANiq72mLEFV6iEX43=+d+5P8g9HT+Wip7eTBgPgqXQ--=dQxWQ@mail.gmail.com>
+ <874ffd400b0632cff99b618661adffe472abbf8d.camel@nvidia.com>
+ <2025060508-spool-twistable-66af@gregkh>
+ <7faac30f75f2ba651995d9667c463706b61ffca5.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,62 +50,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250530192856.1177011-6-remo@buenzli.dev>
+In-Reply-To: <7faac30f75f2ba651995d9667c463706b61ffca5.camel@nvidia.com>
 
-On Fri, May 30, 2025 at 09:28:52PM +0200, Remo Senekowitsch wrote:
-> This abstraction is a way to force users to specify whether a property
-> is supposed to be required or not. This allows us to move error
-> logging of missing required properties into core, preventing a lot of
-> boilerplate in drivers.
+On Thu, Jun 05, 2025 at 03:02:03PM +0000, Timur Tabi wrote:
+> On Thu, 2025-06-05 at 08:07 +0200, Greg KH wrote:
+> > > Maybe dbs!(), or just d!() ?
+> > 
+> > Wait, why are we trying to reimplement the existing pr_dbg() code in a
+> > non-standard-way?
 > 
-> It will be used by upcoming methods for reading device properties.
+> pr_dbg() is not changing.  We're talking about the standard Rust macro dbg!()
 > 
-> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> ---
->  rust/kernel/device/property.rs | 59 ++++++++++++++++++++++++++++++++++
->  1 file changed, 59 insertions(+)
+> 	https://doc.rust-lang.org/std/macro.dbg.html
 > 
-> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-> index 8e0414b0517e4..b789fbbd0e6cc 100644
-> --- a/rust/kernel/device/property.rs
-> +++ b/rust/kernel/device/property.rs
-> @@ -155,3 +155,62 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
->          unsafe { bindings::fwnode_handle_put(obj.cast().as_ptr()) }
->      }
->  }
-> +
-> +/// A helper for reading device properties.
-> +///
-> +/// Use [`Self::required_by`] if a missing property is considered a bug and
-> +/// [`Self::optional`] otherwise.
-> +///
-> +/// For convenience, [`Self::or`] and [`Self::or_default`] are provided.
-> +pub struct PropertyGuard<'fwnode, 'name, T> {
-> +    /// The result of reading the property.
-> +    inner: Result<T>,
-> +    /// The fwnode of the property, used for logging in the "required" case.
-> +    fwnode: &'fwnode FwNode,
-> +    /// The name of the property, used for logging in the "required" case.
-> +    name: &'name CStr,
-> +}
-> +
-> +impl<T> PropertyGuard<'_, '_, T> {
-> +    /// Access the property, indicating it is required.
-> +    ///
-> +    /// If the property is not present, the error is automatically logged. If a
-> +    /// missing property is not an error, use [`Self::optional`] instead. The
-> +    /// device is required to associate the log with it.
-> +    pub fn required_by(self, dev: &super::Device) -> Result<T> {
-> +        if self.inner.is_err() {
-> +            dev_err!(
-> +                dev,
-> +                "{}: property '{}' is missing\n",
-> +                self.fwnode.display_path(),
+> the "problem" with dbg! is that it uses file!(), which outputs the full relative path of the
+> source file, which can be quite lengthy.  IOW, I think dbg!() is often too noisy.
 
-Is it possible to make "{self.fwnode}: property..." work? Just need to 
-implement Display trait on FwNode, right?
+And I'm saying "don't use dbg!()" :)
 
-Doesn't look to me like we can alter what we print like in C, but for 
-dmesg it's usually the full path we want anyways.
+Or, better yet, have it do exactly what pr_dbg() does, as we don't seem
+to _have_ to have dbg!() follow anything other than whatever we want it
+to follow.
 
-Rob
+> And we're not talking about changing dbg!() either.  In cases where a given Rust driver has
+> multiple source files of the same name but in different paths, you probably want dbg!() to use
+> file!().
+
+Again, just do what pr_dbg() does, nothing more and nothing less.
+
+> But in situations where you don't have that file layout, maybe you would prefer the output of my
+> sfile!() macro.
+
+Nope, use what pr_dbg() does please.  It will provide the needed file
+info if the user asks for it through the standard user/kernel api that
+we all know and "love".
+
+thanks,
+
+greg k-h
