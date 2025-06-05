@@ -1,109 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B6D278E7A;
-	Thu,  5 Jun 2025 17:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB1B18C06
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Jun 2025 17:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749144646; cv=none; b=b8waJ1VChoKgEMb8ApseMQsHwv8jZWrtdwCu9HNGWhoC2rf647ljrOP5xfw8YHRZO17r6JNlg5SJB1koZR1ltiGX3zuWqWsZV+AMoblxXoaY+LftsywwqsneG5N1NGNJEsAJn8r/yQHKch9xqLqLfDAp8VU8E+HNmzIliOv15ic=
+	t=1749145192; cv=none; b=tNRgOc0WmzEjvZA1qV4iJ6AMzHDPVZQorD6YvE+XGn/He4Iajj6h40UhTbLrAPdAMcUZ/KBOHY+VpVeMM1CrwKKsYxlI8ECC5f4MbxP+OczPCp1PRZP9SgVy8JYovy4E6Go7+l0yIthCfRfhg2yLCl+bHCzEg67S7c7VDJKR10U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749144646; c=relaxed/simple;
-	bh=iVeuKT9g4qIU2SS3gVoZJT6OGFbjdSuSpj8u0pAAnfU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=IimKfODYVSHQA78aQ9k5zXIwRP/Ph6jMJftUn+1Bvre9GKIhAU7E5p3NU6y0RTs2F41OSW3cnWYtxZzlCXjDnzemJyHjg2xMREeRFPv700QvAFRgHYgLjrSxOEIsurgYpPhokhuB9tZf7M9jm7aP8TAkHz2wlpEHbROxpUB71k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ukykh5rt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749145192; c=relaxed/simple;
+	bh=Pdgb08ny/SLt/yMKXyMyhsUJOflgLMR1JSP5P2PkELY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ViU3PXKUASyQNM0dBw+WY7sQRfcSngtDPOZ84jbVmcejZDH5jXcigezpOOfpFrwJyY6Bc2iOSKAeIewcvtgTU8jfpxnOxkGjhR+XMJsJNIG+AuR8L/OG5+mY6ddJn7sKC3ykfwYX8Yl2gFkpxt8xWLwicoNdo43GZekrVoLLEfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ERE7fPe1; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ukykh5rt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A42C4CEE7;
-	Thu,  5 Jun 2025 17:30:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749144645;
-	bh=iVeuKT9g4qIU2SS3gVoZJT6OGFbjdSuSpj8u0pAAnfU=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=Ukykh5rtahNiWIg95gPqqUduHq8LFf7IFgi3KuQ8KIlb4NHUxQBL1xcCaBGkanUP6
-	 iY03dUH5S2vxPOd557v2M+tAKlCe5NvnytRzuMlsHXhR2nQqoZVUn7h+UgHCWnQRmV
-	 XZx7ZsAbcAFXPm5B+hMYeYrc1xKwTRbT9JQ2kH9/bUXzSrVr7WZOQhoA8ee6cVNzdS
-	 AXgCVCoKuBVjquYFqtjxwwUBxIg6qa/krQiJ9HrG1rRtS+7LSprrNasQBc5CpwSQTG
-	 YjaNe9AXVFkro/Z0+XDcaFDAEpUNduBafRHkYVrfReVAtgc5hzRsa99lw+mnIu//kR
-	 aESvmpOBFEGJg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ERE7fPe1"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b26ed911f4cso170234a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Jun 2025 10:39:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749145190; x=1749749990; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UnHaT3YtqEqEkb1SccLcszSPhIlgELG7NwRN+u4Cffk=;
+        b=ERE7fPe1k4WjwKUTNQ0NcMHEuKTzBD14eOSer0F+x6XE4KwixCyr/T59x/PpHMfvJE
+         uALSzsrLelXgUQEAaDQPRDs/gva2tfUPDbT/tuYAuc9NaaIGutlpwSc5IIgZVRmxpNT4
+         WU2EASdxcy7vj/JfxNzhC+8ZsjYNE3y3KMu1rPxOVI4BH1zkjAIgAqtLoLRQj65/x7v7
+         yn3yDSuL2fh9Uf7qb7R6iFvkL2lL7yI1lOeHmntYPS3vS5P2Ha2BQAFkEgARgNJm1LvT
+         UMozihTMHGGXDP6fS+lCBIl0NnuNzpe9sHhQ/oBP/0fk55uomuUCdxmRLL0p30N6cW20
+         emgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749145190; x=1749749990;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UnHaT3YtqEqEkb1SccLcszSPhIlgELG7NwRN+u4Cffk=;
+        b=D3I228cYq4Z+oeMDbz7sgcPN6GKYFxA7XAf4gpebU6jy8DcxUhvjKzksGRCsO8EyYK
+         nmVG4jjdE+utOVjxxK0GofS9RF1wy2ZqtwPQ8PgbUgg/QOdvARjtZG+/FXCwhsBk5axU
+         wuauOBOrcwhVSkyAcDPOW7i422s7iym7uh06XPRfLZpRhGASjDLjdkcwuHHNDG4asUJC
+         ZJHfWgzBDbF7jrGIDlQCsUsyioLnc9dgzv9VJZA4UnT0WrYiXmPjFRLXn86bbVySHqPU
+         2WejuywcrEgW+XOe2vSdsbkrjsgT/c7ubR3BfgX+AM2GW6/7Lm61Xu93My7vEnivnTeT
+         0KPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXTG322r+ro+mKe4NVJZEPnDj9arovQ0g14BipTpBEf+Y1gbOMJ9oJkTE14EbGgNG+f0QL75f17HkybvmaTGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlU1Fz9U13ThsOlysSWZ8JCf8m7OO3x6MAppOJ7NYHPJfveGZa
+	KbqGgjoVeyRVarIzblke/uJsSImwbMEWqAeZHmtN2TGGsF/IzpECV/ZYQirMe485e7yI6UXfbIh
+	Ar0bW6izn58LZlNszVZ3SbOtDcQXh/lw=
+X-Gm-Gg: ASbGncudpPYu8E1k2KJgRUZhT8WvCMlHZs3Dkxun/X0CFKF5ObemtVTX8zcHuvK8WhO
+	FQD7f4YxgEBRjhXEnpXzFlMN3+uTWfqVXU9y/RQeDOQn2iXsN7I4aWyE36J++cgwBKztjb6tsAQ
+	8Fq+ixAbHSDVX0mF+4tAVkdfsYF9cQFq5UGSOpwxlE3P8=
+X-Google-Smtp-Source: AGHT+IEpLfjAQ/qYmiJjTHGLJgUwAKlQOPxsxdep4svglH9LffH70bI25+SpF+JSGjdroXLTd4RGhCC2Quan4ekGs14=
+X-Received: by 2002:a17:90b:1e01:b0:311:c1da:3858 with SMTP id
+ 98e67ed59e1d1-313472d24damr240457a91.0.1749145189800; Thu, 05 Jun 2025
+ 10:39:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
+ <0602b06ba5fbd640b6db50165688c026911ed7b3.camel@nvidia.com>
+ <CANiq72ncoP6oDbKEes7Lz_K6FAz-MZY1aZNAdsYK8Sz-pwyUDQ@mail.gmail.com>
+ <7f644a70cc0c91bb42badd1ac747518843bb1ef7.camel@nvidia.com>
+ <CANiq72mLEFV6iEX43=+d+5P8g9HT+Wip7eTBgPgqXQ--=dQxWQ@mail.gmail.com>
+ <874ffd400b0632cff99b618661adffe472abbf8d.camel@nvidia.com>
+ <2025060508-spool-twistable-66af@gregkh> <7faac30f75f2ba651995d9667c463706b61ffca5.camel@nvidia.com>
+ <2025060511-surcharge-overfill-a721@gregkh> <CANiq72khbkdS625Bcb1iX1EbUwo1iQOLVoke698SUm9BA3PgYw@mail.gmail.com>
+ <2025060531-backless-venus-68f3@gregkh>
+In-Reply-To: <2025060531-backless-venus-68f3@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 5 Jun 2025 19:39:37 +0200
+X-Gm-Features: AX0GCFubbeUF_5cm45swWZTn9wggjKmvsJeXffC8nywvywoiFdoXucmsqmTl5DE
+Message-ID: <CANiq72=CBdbVutqY2-tA21mUf-W+TPHZwMvhDHA68zUQK+xMzg@mail.gmail.com>
+Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+Cc: Timur Tabi <ttabi@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>, 
+	"dakr@kernel.org" <dakr@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Jun 2025 19:30:39 +0200
-Message-Id: <DAES0YHHTRQS.3EGLTCPLP3SK3@kernel.org>
-To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Sky" <sky@sky9.dev>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, =?utf-8?q?Gerald_Wisb=C3=B6ck?=
- <gerald.wisboeck@feather.ink>, "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>, "Bill Wendling"
- <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <llvm@lists.linux.dev>
-Subject: Re: [PATCH v4 1/3] rust: add UnsafePinned type
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250511-rust_unsafe_pinned-v4-0-a86c32e47e3d@gmail.com>
- <20250511-rust_unsafe_pinned-v4-1-a86c32e47e3d@gmail.com>
- <1553eea9-9ced-410a-b6e7-886e11e2edba@gmail.com>
-In-Reply-To: <1553eea9-9ced-410a-b6e7-886e11e2edba@gmail.com>
 
-On Thu Jun 5, 2025 at 7:03 PM CEST, Christian Schrefl wrote:
-> On 11.05.25 8:21 PM, Christian Schrefl wrote:
->> +/// This type provides a way to opt-out of typical aliasing rules;
->> +/// specifically, `&mut UnsafePinned<T>` is not guaranteed to be a uniq=
-ue pointer.
->> +///
->> +/// However, even if you define your type like `pub struct Wrapper(Unsa=
-fePinned<...>)`, it is still
->> +/// very risky to have an `&mut Wrapper` that aliases anything else. Ma=
-ny functions that work
->> +/// generically on `&mut T` assume that the memory that stores `T` is u=
-niquely owned (such as
->> +/// `mem::swap`). In other words, while having aliasing with `&mut Wrap=
-per` is not immediate
->> +/// Undefined Behavior, it is still unsound to expose such a mutable re=
-ference to code you do not
->> +/// control! Techniques such as pinning via [`Pin`](core::pin::Pin) are=
- needed to ensure soundness.
->> +///
->> +/// Similar to [`UnsafeCell`], [`UnsafePinned`] will not usually show u=
-p in
->> +/// the public API of a library. It is an internal implementation detai=
-l of libraries that need to
->> +/// support aliasing mutable references.
->> +///
->> +/// Further note that this does *not* lift the requirement that shared =
-references must be read-only!
->> +/// Use [`UnsafeCell`] for that.
+On Thu, Jun 5, 2025 at 6:42=E2=80=AFPM gregkh@linuxfoundation.org
+<gregkh@linuxfoundation.org> wrote:
 >
-> The upstream rust PR [0] that changes this was just merged. So now `Unsaf=
-ePinned` includes
-> `UnsafeCell` semantics. It's probably best to also change this in the ker=
-nel docs.
-> Though it's still the case that removing the guarantee is simpler than ad=
-ding it back later,
-> so let me know what you all think.
+> Ah, I didn't realize this, so thanks.  The dbg!() implementation in the
+> kernel tree matches the userspace stuff, so the documentation refers to
+> "release builds" and the like.  It would be good if we could say
+> something like "Use ONLY for local debugging code, NEVER submit a patch
+> with this used in it."
 
-Depends on how "stable" this decision is. I haven't followed the
-discussion, but given that this once changed to the "non-backwards"
-compatible case it feels permanent.
+You're welcome!
 
-How close is it to stabilization?
+So we added this at the bottom of those docs:
 
-If it's close-ish, then I'd suggest we change this to reflect the new
-semantics. If not, then we should leave it as-is.
+    Note that the macro is intended as a temporary debugging tool to
+be used during development. Therefore, avoid committing `dbg!` macro
+invocations into the kernel tree.
 
----
+But, you are right, we may want to remove the sentence above that one
+about "release builds" (or, rather, replace it with some of what I
+wrote in the previous reply).
+
+> Or we can add it to checkpatch to catch when people inevitably do submit
+> patches with it?  :)
+
+We (are supposed to) have something better -- we disallow the macro in
+Clippy, i.e. one should get a warning about it:
+
+    disallowed-macros =3D [
+        # The `clippy::dbg_macro` lint only works with `std::dbg!`,
+thus we simulate
+        # it here, see: https://github.com/rust-lang/rust-clippy/issues/113=
+03.
+        { path =3D "kernel::dbg", reason =3D "the `dbg!` macro is intended
+as a debugging tool", allow-invalid =3D true },
+    ]
+
+Sadly, I reported false negatives with it a while ago:
+
+    https://github.com/rust-lang/rust-clippy/issues/11431
+
+And it appears that Clippy is not recognizing `kernel::dbg` at the
+moment -- commit c016722fd575 ("rust: clean Rust 1.88.0's warning
+about `clippy::disallowed_macros` configuration") has some more
+details.
+
+But eventually it should work. Worst case, indeed, we can move it to
+`checkpatch.pl`.
+
 Cheers,
-Benno
-
-> [0]: https://github.com/rust-lang/rust/pull/140638
+Miguel
